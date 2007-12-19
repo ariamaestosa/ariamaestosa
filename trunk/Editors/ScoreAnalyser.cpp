@@ -43,6 +43,7 @@ namespace AriaMaestosa
 		subtail_amount = 0;
 		y = -1;
 		tied_with_x = -1;
+        tie_up = false;
 		tail_type = TAIL_NONE;
 		
         draw_tail = true;
@@ -67,6 +68,8 @@ namespace AriaMaestosa
 void NoteRenderInfo::tieWith(NoteRenderInfo& renderInfo)
 {
     tied_with_x = renderInfo.x;
+    if(tail_type == TAIL_NONE) tie_up = renderInfo.tail_type;
+    else tie_up = tail_type;
 }
 void NoteRenderInfo::triplet_arc(int pixel1, int pixel2)
 {

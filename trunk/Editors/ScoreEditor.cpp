@@ -709,7 +709,7 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo)
 	{
 		const float center_x = (renderInfo.tied_with_x + renderInfo.x)/2.0 + 6;
 		const float radius_x = (renderInfo.tied_with_x - renderInfo.x)/2.0;
-        const bool show_above = renderInfo.tail_type != TAIL_UP;
+        const bool show_above = (renderInfo.tail_type == TAIL_NONE ? renderInfo.tie_up : renderInfo.tail_type != TAIL_UP);
         
         const int base_y = renderInfo.getYBase(); 
 		drawArc(center_x, base_y + (show_above ? 0 : 10), radius_x, 15, show_above);
