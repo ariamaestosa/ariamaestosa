@@ -1,0 +1,161 @@
+NOTE: sorry, this is very raw :)
+
+  ************************* ON RELEASE *************************
+	- update translation
+	- add scons-local
+	- update version in about dialog
+	- update version in info.plist
+	- update changelog in docs
+	- update version in docs (main, download, compile)
+    - give permissions, check info.plist is the right one
+ 
+ tar cj --exclude '.svn' --exclude '.DS_Store' --exclude '.sconsign' -f AriaSrc.tar.bz2 .
+ 
+ - put docs in source download too
+ 
+  Linux: docs in /usr/doc/<package-name> (but on SuSE they go to/usr/share/doc/packages/<package-name>)
+  http://www.pathname.com/fhs/
+
+# tar cj --exclude '.svn' --exclude '.DS_Store' --exclude '.sconsign' -f AriaSrc-1.1b3.tar.bz2 AriaSrc-1.1b3
+  
+    ADD LINK TO TG ON WEBSITE
+    
+  ************************* LONG TERM: *************************
+ 
+ - guitar pro import
+ - midi keyboard support
+ - mod support
+ - new control editor
+ - notation printing and export
+ - riff-based song editing (e.g. to repeat chorus you don't need to keep multiple copies of it)
+  
+************************* NEW FEATURES TO ADD: *************************
+
+  - key is not saved to midi files
+  
+  - when saving, don't delete current file, save to another location then swap
+  
+ - tab exporter:
+		skip series of empty measures
+		more than one track
+		show tuning on tab
+ 
+ - know what happens when adding too much channels in auto mode
+
+ * allow setting notes sharp/flat in a graphical way
+
+ - change whole track pitch/volume
+ 
+  - show song duration
+ 
+ - copy control events along notes
+ 
+ - tabbing though fields in select notes dialog should select their content
+ - too easy for top bar stuff to gain focus - enter should have focus go back to main pane
+ 
+ - set default volume
+ - shift-click on a selected notes unselects it
+ 
+ - multiple program changes
+ - precise tempo bend (not controller-like, more like a sudden change)
+ - change volume relatively on a bunch of notes
+ - select notes and all similar menu items should be disabled in controller mode
+ 
+ - white space below chords in guitar editor should not be 'dead' as it is now (e.g. should be able to start selection from there)
+
+ - general code layout could be improved, e.g. measure bar is in GUI but does tons of calulation
+  
+ - doesnt handle when there's too many songs open for all to be visible
+ 
+ 
+ UNSURE:
+ - guess key feature
+ - guitar mode - allow to paste pitch or string fret
+ - hear note/drum by clicking on its name in left part
+ - controllers have only coarse values (no fine value)
+ - y zoom (make keyboard view more compact?)
+ - draw correctly short tablature notes [don't repeat number when it's the same for several consecutive short notes?]
+ - deal with multiple tracks per channel, multiple channels per track
+ - fullscreen?
+ - resize notes by dragging
+ - when hitting space during a selection, finish selection before playing
+ - clicking outside volume picker should close it
+ - song length should automatically grow when pasting goes past the end of the song
+ - only render areas that actually need it
+ - fix overlapping notes that don't have the same start tick
+ - use auto_ptr/parent_ptr/something like that... make it clear what pointer "hold" the object and wich ones are only conveniance shortcuts
+ - the first click, that activates a track, should not deselect
+ - score editor should be able to display notes with more than 2 subtails (unusure... those with 2 are already so small and barely visible) 
+ 
+ ************************* BUGS: *************************
+  
+ - unsure note length is okay with measure != 4/4. check forumlae on wikipedia : http://en.wikipedia.org/wiki/Modern_musical_symbols
+
+ ## CAN'T REPRODUCE:
+ ## crash when opening file by double-clicking on it and aria is currently closed (can't reproduce)
+ ## switching to score editor while playback causes crash (can't reproduce)
+ ## scale doesn't always work (no clue why... multiple time sig changes? midi imported? multiple docs open?) (can't reproduce)
+ ## can't undo 'paste'
+ ## awake.mid : crash near the end
+ 
+* copy/paste in controller mode (or at least disable them!) 
+
++ beaming choose a maximal number of notes per beam (e.g. 4 1/8 in 4/4 measures) but if you put like 5 or 6 of them in a row,
+  it doesn't always do wise choices regarding wich ones should be beamed (i.e. it doesn't consider beats)
++ test score editor in non-4/4 measures
++ loading a key from a file probably won't appear in keyboard editor
++ note splitting should be wiser (like silences... complete beat)
++ escape on volume picker still doesn't always work
++ accidentals should last entire measure
++ stop rendering when red playback line is no more visible
++ score editor - sharp of flat notes at time=0 have their sign hidden behind grey bar
++ rearrange notes doesn't always undo correctly
++ 1/8 notes shouldn't be ebamed by groups of tree in 3/4 measures
+
+- in a chord that lasts 2 4/4 measures, each note of the chord has its own tie
+- render a bit less often to be easier on processor
+
+- drum editor... cannot start selection below drums (when only used ones are shown)
+- sometimes pasting in guitar editor gives wrong notes
+
+- clicking on a note should play it and it doesn't always work (like when note is selected)
+- at the very top, in keyboard editor, wrong notes are greyed out
+- when changing measure length, song length becomes wrong
+- probably too many paint events (duplicate ones at times) track and remove them
+- import midi. save to aria. no name suggested.
+- "rearrange selected notes" doesn't always work optimally
+- switching tracks tends to deselect measures
+- accentuated characters in copyright/song title gets broken (and possibly track name too) UTF-8 doesn't seem to work either
+- importing midis exported by aria have a blank track 0
+- reordering tracks should be nicer
+- hard to resize last track
+- hitting space when nothing is selected should do nothing
+- controller editor should keep drum instrument in a drum track
+- if you select measures, but move your mouse outside measure pane before releasing, you get nothing
+   
+  - tab export sometimes does 41-42 43-44 and not 41-44
+  - tab exporter does not always respect max line width (e.g. underwater light)
+  - tab exporter has problems with notes that are not snapped to large grids (e.g. arpeggio beginning of vers le soleil)
+  - tab exporter long note exception applies only to perfect wholes and halves... there are other long notes
+  - repetition length > 2 gives weird results
+  - tab exporter doesnt respect max line width if one measure is longer than max
+  - tab export : x2 can appear on new line...
+  - tab export : repeatd measures need measure numbers
+  
+ 
+ MINOR / CLEANUP :
+- decide a naming convention for variables
+ - some drums that are not standard drumset preview fine but dont play correctly (SFX and one other. bug in QT?)
+ - .aria files don't remember whether drums are minimized
+ - .aria files don't remember docked tracks
+ - trigger coreaudio note player at startup
+ 
+ - bug when repeatedly pressing play and space at the same time
+ 
+ - FIXMEs
+ - in .aria files, pitch should be midi pitch, not my reverse pitch
+ 
+ - copyright editor should have the text field appear multiline but not be not accept line breaks (enter should default to activating OK button)
+ - drum editor draws too many horizontal lines at bottom when you collapse sections
+ - making tempo bend curve start at tick=0 might cause double event?
+ 
