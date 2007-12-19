@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="257"
+   name=""
+   committed-date="2006-12-20T17:29:03.363399Z"
+   url="https://clicker.jdkoftinoff.com/projects/svn/jdks/trunk/libjdkmidi/trunk/include/jdkmidi"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="dir"
+   uuid="2d8d2584-6715-0410-9a13-bf73d4e0f2fd"
+   repos="https://clicker.jdkoftinoff.com/projects/svn/jdks"
+   revision="316"/>
+<entry
+   committed-rev="101"
+   name="tick.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="cafe9884c78184fb0996b6e43fc71672"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:11.000000Z"/>
+<entry
+   committed-rev="101"
+   name="sequencer.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="d67b468b73bb30b0565519ab3ffb8d4c"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:11.000000Z"/>
+<entry
+   committed-rev="101"
+   name="filewrite.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="07d00bbb16884a4678256c6bb1c7f47d"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:11.000000Z"/>
+<entry
+   committed-rev="257"
+   name="filewritemultitrack.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-12-20T17:29:03.363399Z"
+   checksum="d21f44a3284b90915f04e825b3424aad"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:10.000000Z"/>
+<entry
+   committed-rev="101"
+   name="driver.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="c676f9d64ca955a527c019fa3c7cc79e"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:11.000000Z"/>
+<entry
+   committed-rev="101"
+   name="keysig.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="d91af18162094768e2feb8174d9f5af4"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:11.000000Z"/>
+<entry
+   committed-rev="101"
+   name="parser.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="9ad579621745548468a731476fba0771"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:12.000000Z"/>
+<entry
+   committed-rev="101"
+   name="track.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="7c3e0c25d6241894e77004f4751fc17e"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:12.000000Z"/>
+<entry
+   committed-rev="101"
+   name="matrix.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="849fc9a1731a3b507162004d7d828453"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:12.000000Z"/>
+<entry
+   committed-rev="101"
+   name="song.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="a4daba5079f058df1d480022f8794afe"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:12.000000Z"/>
+<entry
+   committed-rev="101"
+   name="edittrack.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="32f2fd9ead99902f45e884e72ac20124"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:12.000000Z"/>
+<entry
+   committed-rev="101"
+   name="manager.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="9d6f169e8f576b23501eefc96c0c60eb"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:12.000000Z"/>
+<entry
+   committed-rev="101"
+   name="sysex.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="a1cf92a81de14ea671789da98fd32efc"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:13.000000Z"/>
+<entry
+   committed-rev="101"
+   name="fileread.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="b509c6bc75e5de7672a0f553307a9028"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:13.000000Z"/>
+<entry
+   committed-rev="101"
+   name="filereadmultitrack.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="bfa79779a4739141e80977e351da99dd"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:13.000000Z"/>
+<entry
+   committed-rev="101"
+   name="driverwin32.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="c72cba25f92395e1fe2027162c5b74c3"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:13.000000Z"/>
+<entry
+   committed-rev="101"
+   name="process.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="8b6d3a4c0ec5a714b15e31ce89f7064b"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:13.000000Z"/>
+<entry
+   committed-rev="101"
+   name="file.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="1f248c689c4ae8385505c1e910645aa7"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:13.000000Z"/>
+<entry
+   committed-rev="257"
+   name="multitrack.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-12-20T17:29:03.363399Z"
+   checksum="1ec62fa0e5a9d98de4ab67c63b103820"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:13.000000Z"/>
+<entry
+   committed-rev="101"
+   name="showcontrolhandler.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="89537630b2cd336576e2869e1ae33de9"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:13.000000Z"/>
+<entry
+   committed-rev="101"
+   name="fileshow.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="3b7f649644ed63a7caf80bcdc72ad9fa"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:14.000000Z"/>
+<entry
+   committed-rev="101"
+   name="advancedsequencer.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="30fb91595f1884c488f527dac32890ba"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:14.000000Z"/>
+<entry
+   committed-rev="101"
+   name="driverdump.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="caac96c97270e36082422be2de627264"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:14.000000Z"/>
+<entry
+   committed-rev="101"
+   name="showcontrol.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="5c950521bb35dd4c7c1e6a8130a273ee"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:14.000000Z"/>
+<entry
+   committed-rev="101"
+   name="midi.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="b0ce9f277ca884febc0aa170333c8dc2"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:15.000000Z"/>
+<entry
+   committed-rev="101"
+   name="queue.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="162676de0c41cdd89ee0da27c528d0e9"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:15.000000Z"/>
+<entry
+   committed-rev="101"
+   name="tempo.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="c40dbea274eeac7b782ec295903b89e6"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:15.000000Z"/>
+<entry
+   committed-rev="101"
+   name="msg.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="c18436b9b7805d12e30256a8c8235ac6"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:15.000000Z"/>
+<entry
+   committed-rev="101"
+   name="world.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="59c15563dc89fa38613c5ecc7fbbfebd"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:15.000000Z"/>
+<entry
+   committed-rev="101"
+   name="smpte.h"
+   text-time="2007-03-17T16:02:16.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="376457f326c8ee63b4ca782bcc03dc43"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:16.000000Z"/>
+</wc-entries>

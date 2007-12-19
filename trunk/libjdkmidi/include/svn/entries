@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="257"
+   name=""
+   committed-date="2006-12-20T17:29:03.363399Z"
+   url="https://clicker.jdkoftinoff.com/projects/svn/jdks/trunk/libjdkmidi/trunk/include"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="dir"
+   uuid="2d8d2584-6715-0410-9a13-bf73d4e0f2fd"
+   repos="https://clicker.jdkoftinoff.com/projects/svn/jdks"
+   revision="316"/>
+<entry
+   name="jdkmidi"
+   kind="dir"/>
+</wc-entries>

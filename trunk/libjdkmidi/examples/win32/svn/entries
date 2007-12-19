@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="110"
+   name=""
+   committed-date="2006-09-09T21:07:24.627858Z"
+   url="https://clicker.jdkoftinoff.com/projects/svn/jdks/trunk/libjdkmidi/trunk/examples/win32"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="dir"
+   uuid="2d8d2584-6715-0410-9a13-bf73d4e0f2fd"
+   repos="https://clicker.jdkoftinoff.com/projects/svn/jdks"
+   revision="316"/>
+<entry
+   committed-rev="110"
+   name="jdkmidi_test_drvwin32.cpp"
+   text-time="2007-03-17T16:02:30.000000Z"
+   committed-date="2006-09-09T21:07:24.627858Z"
+   checksum="3d01eadb9d27fc03b783032cf3e275c1"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:30.000000Z"/>
+</wc-entries>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="8"
+   name=""
+   committed-date="2006-06-04T23:48:35.640987Z"
+   url="https://clicker.jdkoftinoff.com/projects/svn/jdks/trunk/libjdkmidi/trunk/songs"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="dir"
+   uuid="2d8d2584-6715-0410-9a13-bf73d4e0f2fd"
+   repos="https://clicker.jdkoftinoff.com/projects/svn/jdks"
+   revision="316"/>
+<entry
+   committed-rev="8"
+   name="jeffswedding.mid"
+   text-time="2007-03-17T16:02:27.000000Z"
+   committed-date="2006-06-04T23:48:35.640987Z"
+   checksum="925430dfbea2efbf8cd2aa2228e79a30"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:27.000000Z"/>
+</wc-entries>

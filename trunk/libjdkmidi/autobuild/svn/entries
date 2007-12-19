@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="316"
+   name=""
+   committed-date="2007-01-28T21:53:56.838659Z"
+   url="https://clicker.jdkoftinoff.com/projects/svn/jdks/trunk/magicmakefile/branches/v4/autobuild"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="dir"
+   uuid="2d8d2584-6715-0410-9a13-bf73d4e0f2fd"
+   repos="https://clicker.jdkoftinoff.com/projects/svn/jdks"
+   revision="316"/>
+<entry
+   name="linux"
+   kind="dir"/>
+<entry
+   name="macosx-universal"
+   kind="dir"/>
+<entry
+   committed-rev="289"
+   name="configure"
+   text-time="2007-03-17T16:02:41.000000Z"
+   committed-date="2007-01-25T23:16:14.610876Z"
+   checksum="51014b921bfab1a712fc82efc3e279f1"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:38.000000Z"/>
+<entry
+   name="posix"
+   kind="dir"/>
+<entry
+   name="mingw32"
+   kind="dir"/>
+<entry
+   committed-rev="277"
+   name="project.mak-example"
+   text-time="2007-03-17T16:02:41.000000Z"
+   committed-date="2007-01-25T19:40:57.221640Z"
+   checksum="2aaf5032a05ef562ae3b6a364f6ffc93"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:39.000000Z"/>
+<entry
+   committed-rev="275"
+   name="GNUmakefile"
+   text-time="2007-03-17T16:02:41.000000Z"
+   committed-date="2007-01-25T19:39:05.798361Z"
+   checksum="7abdb176298a5874338833a9e242ec0b"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:39.000000Z"/>
+<entry
+   committed-rev="308"
+   name="magic.mak"
+   text-time="2007-03-17T16:02:41.000000Z"
+   committed-date="2007-01-26T00:23:53.503144Z"
+   checksum="39ca478b3eafab6d669436df16207b52"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:39.000000Z"/>
+<entry
+   committed-rev="277"
+   name="project.sh-example"
+   text-time="2007-03-17T16:02:41.000000Z"
+   committed-date="2007-01-25T19:40:57.221640Z"
+   checksum="fadf8caccfc5912ff89b17905891695d"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:39.000000Z"/>
+<entry
+   name="linuxppc-cross"
+   kind="dir"/>
+<entry
+   name="freebsd"
+   kind="dir"/>
+<entry
+   name="generic"
+   kind="dir"/>
+<entry
+   name="solaris"
+   kind="dir"/>
+<entry
+   name="mingw32-cross"
+   kind="dir"/>
+</wc-entries>
