@@ -52,6 +52,7 @@ public:
     
     // used to display ties (display a tie between this note and specified X coord). a value of -1 means no tie.
 	int tied_with_x;
+    bool tie_up; // used if tail_type == TAIL_NONE, otherwise tie location is determined with tail_type
     
 	TAIL tail_type;
     
