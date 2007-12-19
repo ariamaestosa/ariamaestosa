@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="288"
+   name=""
+   committed-date="2007-01-25T23:08:56.784633Z"
+   url="https://clicker.jdkoftinoff.com/projects/svn/jdks/trunk/libjdkmidi/trunk"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="dir"
+   uuid="2d8d2584-6715-0410-9a13-bf73d4e0f2fd"
+   repos="https://clicker.jdkoftinoff.com/projects/svn/jdks"
+   prop-time="2007-03-17T16:02:31.000000Z"
+   revision="316"/>
+<entry
+   committed-rev="180"
+   name="project.sh"
+   text-time="2007-03-17T16:02:31.000000Z"
+   committed-date="2006-11-12T19:18:26.897390Z"
+   checksum="ef541b72b99346be840b2f6350bdfb8d"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:10.000000Z"/>
+<entry
+   committed-rev="288"
+   name="configure"
+   text-time="2007-03-17T16:02:31.000000Z"
+   committed-date="2007-01-25T23:08:56.784633Z"
+   checksum="519bb698759ac055b01f6eb2b423ac36"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:10.000000Z"/>
+<entry
+   name="include"
+   kind="dir"/>
+<entry
+   name="gui"
+   kind="dir"/>
+<entry
+   committed-rev="288"
+   name="GNUmakefile"
+   text-time="2007-03-17T16:02:31.000000Z"
+   committed-date="2007-01-25T23:08:56.784633Z"
+   checksum="555f1696bde75d882b2f19cbb761312f"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:25.000000Z"/>
+<entry
+   name="src"
+   kind="dir"/>
+<entry
+   name="docs"
+   kind="dir"/>
+<entry
+   name="songs"
+   kind="dir"/>
+<entry
+   name="build"
+   kind="dir"/>
+<entry
+   name="tools"
+   kind="dir"/>
+<entry
+   name="tests"
+   kind="dir"/>
+<entry
+   committed-rev="4"
+   name="CHANGELOG.txt"
+   text-time="2007-03-17T16:02:31.000000Z"
+   committed-date="2006-06-04T20:42:36.279024Z"
+   checksum="e7a3606fcb6bf8eec43c092ca51ec9be"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:29.000000Z"/>
+<entry
+   committed-rev="3"
+   name="COPYING"
+   text-time="2007-03-17T16:02:31.000000Z"
+   committed-date="2006-06-04T16:28:47.917999Z"
+   checksum="94d55d512a9ba36caa9b7df079bae19f"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:30.000000Z"/>
+<entry
+   committed-rev="4"
+   name="README.txt"
+   text-time="2007-03-17T16:02:31.000000Z"
+   committed-date="2006-06-04T20:42:36.279024Z"
+   checksum="5e13cc3d8d332bd22a2dbb1f4d22f8ae"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:30.000000Z"/>
+<entry
+   committed-rev="97"
+   name="project.mak"
+   text-time="2007-03-17T16:02:31.000000Z"
+   committed-date="2006-09-01T22:21:45.227611Z"
+   checksum="483ccd536fd1d36d5e778c1f2ba54410"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:30.000000Z"/>
+<entry
+   name="examples"
+   kind="dir"/>
+</wc-entries>

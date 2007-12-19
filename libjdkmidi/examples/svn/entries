@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="110"
+   name=""
+   committed-date="2006-09-09T21:07:24.627858Z"
+   url="https://clicker.jdkoftinoff.com/projects/svn/jdks/trunk/libjdkmidi/trunk/examples"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="dir"
+   uuid="2d8d2584-6715-0410-9a13-bf73d4e0f2fd"
+   repos="https://clicker.jdkoftinoff.com/projects/svn/jdks"
+   revision="316"/>
+<entry
+   committed-rev="101"
+   name="jdkmidi_rewrite_midifile.cpp"
+   text-time="2007-03-17T16:02:31.000000Z"
+   committed-date="2006-09-09T02:30:09.118645Z"
+   checksum="99b801f4a55112720730f594934f3fe4"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:30.000000Z"/>
+<entry
+   name="win32"
+   kind="dir"/>
+<entry
+   committed-rev="107"
+   name="jdkmidi_test_parse.cpp"
+   text-time="2007-03-17T16:02:31.000000Z"
+   committed-date="2006-09-09T18:14:19.846916Z"
+   checksum="059985b60babc600bd13241889e8be28"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:30.000000Z"/>
+<entry
+   committed-rev="107"
+   name="jdkmidi_test_sequencer.cpp"
+   text-time="2007-03-17T16:02:31.000000Z"
+   committed-date="2006-09-09T18:14:19.846916Z"
+   checksum="3c22e6e956152871de6dbd63c30b43a2"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:30.000000Z"/>
+<entry
+   committed-rev="107"
+   name="jdkmidi_test_drv.cpp"
+   text-time="2007-03-17T16:02:31.000000Z"
+   committed-date="2006-09-09T18:14:19.846916Z"
+   checksum="6a80ec7d8f40085959d82111657ee7cd"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:30.000000Z"/>
+<entry
+   committed-rev="107"
+   name="jdkmidi_test_multitrack.cpp"
+   text-time="2007-03-17T16:02:31.000000Z"
+   committed-date="2006-09-09T18:14:19.846916Z"
+   checksum="594a7bb46f2da1b6fed214ec0070e872"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:31.000000Z"/>
+<entry
+   committed-rev="107"
+   name="jdkmidi_test_multitrack1.cpp"
+   text-time="2007-03-17T16:02:31.000000Z"
+   committed-date="2006-09-09T18:14:19.846916Z"
+   checksum="03d106cff1ab0dc79d7037b45c2b3a68"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:31.000000Z"/>
+<entry
+   committed-rev="107"
+   name="jdkmidi_test_show.cpp"
+   text-time="2007-03-17T16:02:31.000000Z"
+   committed-date="2006-09-09T18:14:19.846916Z"
+   checksum="66096bbe08198ce37b838332b2ba9e74"
+   last-author="jeffk@jdkoftinoff.com"
+   kind="file"
+   prop-time="2007-03-17T16:02:31.000000Z"/>
+</wc-entries>
