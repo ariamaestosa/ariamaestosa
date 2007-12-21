@@ -422,8 +422,8 @@ void analyseNoteInfo( std::vector<NoteRenderInfo>& gatheredNoteInfo, ScoreEditor
             const int denom = getMeasureBar()->getTimeSigDenominator();
             int max_amount_of_notes_beamed_toghether = 4;
             
-            if(num == 3 and denom == 4) max_amount_of_notes_beamed_toghether = 2;
-            else if(num == 6 and denom == 4) max_amount_of_notes_beamed_toghether = 3;
+            if(num == 3 and denom == 4) max_amount_of_notes_beamed_toghether = 2 * (int)(std::pow(2.0,subtail_amount-1));
+            else if((num == 6 and denom == 4) or (num == 6 and denom == 8)) max_amount_of_notes_beamed_toghether = 3 * (int)(std::pow(2.0,subtail_amount-1));
             else max_amount_of_notes_beamed_toghether = num * (int)(std::pow(2.0,subtail_amount-1));
             
             if(gatheredNoteInfo[i].triplet) max_amount_of_notes_beamed_toghether=3;

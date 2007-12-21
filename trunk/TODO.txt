@@ -99,6 +99,7 @@ NOTE: sorry, this is very raw :)
  ## awake.mid : crash near the end
  
 * copy/paste in controller mode (or at least disable them!) 
+* crash when emptying tempo in control view [reported, not tested]
 
 + beaming choose a maximal number of notes per beam (e.g. 4 1/8 in 4/4 measures) but if you put like 5 or 6 of them in a row,
   it doesn't always do wise choices regarding wich ones should be beamed (i.e. it doesn't consider beats)

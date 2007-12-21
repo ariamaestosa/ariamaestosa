@@ -9,6 +9,8 @@
 - improved grouping of beamed notes in common non-4/4 time signatures
 - improved grouping of beamed triplets
 - converted keys image from gif to png
+- improved handling of ties with whole notes
+- Improved beamed notes grouping in non-4/4 time signatures
 
  1.1b5
 - note beams
