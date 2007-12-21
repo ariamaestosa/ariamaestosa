@@ -49,6 +49,8 @@ namespace AriaMaestosa {
     
     class ScoreMidiConverter
     {	
+        DECLARE_LEAK_CHECK();
+        
         // indicates which notes on the staff are sharp/flat/natural,
         // where the array index is an element of the NOTES enum declared in ScoreEditor.h
         int scoreNotesSharpness[7];
