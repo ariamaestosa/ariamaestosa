@@ -1,0 +1,16 @@
+1. run ./update_pot.sh from international directory if string catalog is not up-tp-date
+2. open poEdit
+    -> for a first time :
+          use 'File > New catalog from POT file'
+          select 'aria_maestosa.pot'
+          enter appropriate information
+          create a new directory with your language code as name
+          save the file with 'aria_maestosa.po' as name
+    -> for an update to an existing translation :
+          open the po file in poEdit
+          choose 'Catalog > update from POT file'
+          select the 'aria_maestosa.pot' file
+3. Select strings and translate =)
+    The translation goes in the text area under the original
+    Make sure to keep all \t or \n characters, otherwise you will get errors
+4. Save. A .mo file will be generated, copy it to the appropriate location in the Resources folder
