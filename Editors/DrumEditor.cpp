@@ -456,23 +456,28 @@ void DrumEditor::mouseDown(RelativeXCoord x, const int y)
 	
 	const int drumID = getDrumAtY(y);
 	
-	if(drumID < 0) return;
-	if(drumID > (int)drums.size()-1) return;
-	
-	const int note = drums[ drumID ].midiKey;
-	
-	if(note==-1)
-	{
-		// user clicked on a section. if click is on the triangle, expand/collapse it. otherwise, it just selects nothing.
-		if(x.getRelativeTo(EDITOR) < 25 and x.getRelativeTo(EDITOR) > 0)
+	if(drumID >= 0 and drumID < (int)drums.size())
+    {
+        const int note = drums[ drumID ].midiKey;
+        
+        if(note==-1)
         {
-			drums[ drumID ].sectionExpanded = !drums[ drumID ].sectionExpanded;
-            return;
+            // user clicked on a section. if click is on the triangle, expand/collapse it. otherwise, it just selects nothing.
+            if(x.getRelativeTo(EDITOR) < 25 and x.getRelativeTo(EDITOR) > 0)
+            {
+                drums[ drumID ].sectionExpanded = !drums[ drumID ].sectionExpanded;
+                return;
+            }
+            else // select none
+                track->selectNote(ALL_NOTES, false, true);
         }
-		else
-			track->selectNote(ALL_NOTES, false, true);
 	}
-	
+    else
+    {
+        // select none
+        track->selectNote(ALL_NOTES, false, true);
+    }
+    
 	Editor::mouseDown(x, y);
     
 }
