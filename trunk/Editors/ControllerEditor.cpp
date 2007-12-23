@@ -24,7 +24,6 @@
 #include "Editors/ControllerEditor.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
-#include "Pickers/VolumeSlider.h"
 #include "Pickers/TuningPicker.h"
 #include "Images/ImageProvider.h"
 #include "GUI/GLPane.h"

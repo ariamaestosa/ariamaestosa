@@ -28,6 +28,7 @@
 
 namespace AriaMaestosa {
 	
+    
 DEFINE_EVENT_TYPE(wxEVT_DESTROY_VOLUME_SLIDER)
 		
 BEGIN_EVENT_TABLE(VolumeSlider, wxDialog)
@@ -48,6 +49,41 @@ END_EVENT_TABLE()
 
 VolumeSlider* sliderframe = NULL;
 
+#ifdef __WXMAC__
+    class MyEvtHandler : public wxEvtHandler
+    {
+public:
+        
+        virtual bool ProcessEvent(wxEvent& event)
+        {
+            if(event.GetEventType() == wxEVT_KEY_DOWN or event.GetEventType() == wxEVT_CHAR)
+            {
+                
+                wxKeyEvent& evt = dynamic_cast<wxKeyEvent&>(event);
+                
+                if(evt.GetKeyCode()==WXK_ESCAPE || evt.GetKeyCode()==WXK_CANCEL || evt.GetKeyCode()==WXK_DELETE)
+                {
+                    sliderframe->closeWindow();
+                }
+                else if(evt.GetKeyCode()==WXK_RETURN)
+                {
+                    wxCommandEvent dummyEvt;
+                    sliderframe->enterPressed(dummyEvt);
+                }
+                else wxEvtHandler::ProcessEvent(event);
+                    
+                return true;
+            }
+            else
+            {
+                wxEvtHandler::ProcessEvent(event);
+                return true;
+            }
+    }
+        
+    };
+#endif
+    
 void freeVolumeSlider()
 	{
 		if(sliderframe != NULL)
@@ -68,18 +104,27 @@ VolumeSlider::VolumeSlider() : wxDialog(NULL, 0,  wxT("volume"), wxDefaultPositi
 {
 	INIT_LEAK_CHECK();
     
-    slider=new wxSlider(this, 1, 60, 0, 127, wxDefaultPosition, wxSize(50,128), wxSL_VERTICAL | wxSL_INVERSE);
+    pane = new wxPanel(this);
+    
+    slider=new wxSlider(pane, 1, 60, 0, 127, wxDefaultPosition, wxSize(50,128), wxSL_VERTICAL | wxSL_INVERSE);
 
     wxSize smallsize = wxDefaultSize;
     smallsize.x = 50;
 
-    valueText=new wxTextCtrl(this, 2, wxT("0"), wxPoint(0,130), smallsize, wxTE_PROCESS_ENTER);
+    valueText=new wxTextCtrl(pane, 2, wxT("0"), wxPoint(0,130), smallsize, wxTE_PROCESS_ENTER);
     noteID=-1;
     currentTrack=NULL;
     
+
+#ifdef __WXMAC__
+    PushEventHandler( new MyEvtHandler() );
+    pane->PushEventHandler( new MyEvtHandler() );
+#else
     Connect(GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
     slider->Connect(slider->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
+    pane->Connect(pane->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
     valueText->Connect(valueText->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
+#endif
 }
 
 void VolumeSlider::closed(wxCloseEvent& evt)
@@ -101,7 +146,7 @@ void VolumeSlider::show(int x, int y, int noteID, Track* track)
     char buffer[3];
     sprintf (buffer, "%d", currentTrack->getNoteVolume(noteID));
     valueText->SetValue( fromCString(buffer) );
-        
+    
     slider->SetFocus();
     returnCode = ShowModal();
 }
@@ -181,6 +226,11 @@ void VolumeSlider::enterPressed(wxCommandEvent& evt)
 
 void VolumeSlider::closeWindow()
 {
+#ifdef __WXMAC__
+    PopEventHandler(true);
+    pane->PopEventHandler(true);
+#endif
+    
 	wxDialog::EndModal(returnCode);
 	currentTrack=NULL;
 	getGLPane()->SetFocus();

@@ -25,7 +25,6 @@
 #include "wxAdditions/bsizer.h"
 
 #include "Config.h"
-#include "Pickers/VolumeSlider.h"
 
 #include "ptr_vector.h"
 

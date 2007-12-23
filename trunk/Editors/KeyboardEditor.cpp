@@ -33,7 +33,6 @@
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 #include "Pickers/MagneticGrid.h"
-#include "Pickers/VolumeSlider.h"
 #include "Pickers/KeyPicker.h"
 #include "GUI/GLPane.h"
 #include "GUI/GraphicalTrack.h"
