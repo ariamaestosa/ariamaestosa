@@ -97,28 +97,27 @@ NOTE: sorry, this is very raw :)
  ## scale doesn't always work (no clue why... multiple time sig changes? midi imported? multiple docs open?) (can't reproduce)
  ## can't undo 'paste'
  ## awake.mid : crash near the end
+ ## crash when emptying tempo in control view [reported, not tested] 
  
 * copy/paste in controller mode (or at least disable them!) 
-* crash when emptying tempo in control view [reported, not tested]
 
 + beaming choose a maximal number of notes per beam (e.g. 4 1/8 in 4/4 measures) but if you put like 5 or 6 of them in a row,
   it doesn't always do wise choices regarding wich ones should be beamed (i.e. it doesn't consider beats)
 + test score editor in non-4/4 measures
 + loading a key from a file probably won't appear in keyboard editor
-+ note splitting should be wiser (like silences... complete beat)
-+ escape on volume picker still doesn't always work
 + accidentals should last entire measure
-+ stop rendering when red playback line is no more visible
 + score editor - sharp of flat notes at time=0 have their sign hidden behind grey bar
-+ rearrange notes doesn't always undo correctly
-+ 1/8 notes shouldn't be ebamed by groups of tree in 3/4 measures
-
++ 1/8 notes shouldn't be beamed by groups of tree in 3/4 measures
 - in a chord that lasts 2 4/4 measures, each note of the chord has its own tie
+
++ rearrange notes doesn't always undo correctly
++ note splitting should be wiser (like silences... complete beat)
+
 - render a bit less often to be easier on processor
++ stop rendering when red playback line is no more visible
 
 - drum editor... cannot start selection below drums (when only used ones are shown)
 - sometimes pasting in guitar editor gives wrong notes
-
 - clicking on a note should play it and it doesn't always work (like when note is selected)
 - at the very top, in keyboard editor, wrong notes are greyed out
 - when changing measure length, song length becomes wrong
