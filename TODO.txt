@@ -101,6 +101,8 @@ NOTE: sorry, this is very raw :)
  
 * copy/paste in controller mode (or at least disable them!) 
 
++ exporting to audio via timidity still buggy. switch away from wxExecute? give better feedback.
+
 + beaming choose a maximal number of notes per beam (e.g. 4 1/8 in 4/4 measures) but if you put like 5 or 6 of them in a row,
   it doesn't always do wise choices regarding wich ones should be beamed (i.e. it doesn't consider beats)
 + test score editor in non-4/4 measures

@@ -41,7 +41,6 @@ EVT_COMMAND_SCROLL_PAGEDOWN(1, VolumeSlider::volumeSlideChanging)
 
 EVT_TEXT(2, VolumeSlider::volumeTextChanged)
 EVT_TEXT_ENTER(2, VolumeSlider::enterPressed)
-EVT_KEY_DOWN(VolumeSlider::keyPress)
 
 EVT_CLOSE(VolumeSlider::closed)
 	
@@ -65,8 +64,7 @@ void showVolumeSlider(int x, int y, int noteID, Track* track)
 	sliderframe->show(x,y,noteID, track);
 }
 	
-// FIXME - is it really necessary to give a translated name to that caption-less dialog? check if it appears in the taskbar in linux
-VolumeSlider::VolumeSlider() : wxDialog(NULL, 0,  _("volume"), wxDefaultPosition, wxSize(50,160), wxSTAY_ON_TOP )
+VolumeSlider::VolumeSlider() : wxDialog(NULL, 0,  wxT("volume"), wxDefaultPosition, wxSize(50,160), wxSTAY_ON_TOP )
 {
 	INIT_LEAK_CHECK();
     
@@ -79,9 +77,9 @@ VolumeSlider::VolumeSlider() : wxDialog(NULL, 0,  _("volume"), wxDefaultPosition
     noteID=-1;
     currentTrack=NULL;
     
-    Connect(GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress));
-    slider->Connect(slider->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress));
-    valueText->Connect(valueText->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress));
+    Connect(GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
+    slider->Connect(slider->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
+    valueText->Connect(valueText->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
 }
 
 void VolumeSlider::closed(wxCloseEvent& evt)
@@ -104,8 +102,8 @@ void VolumeSlider::show(int x, int y, int noteID, Track* track)
     sprintf (buffer, "%d", currentTrack->getNoteVolume(noteID));
     valueText->SetValue( fromCString(buffer) );
         
-    returnCode=ShowModal();
-	//SetFocus();
+    slider->SetFocus();
+    returnCode = ShowModal();
 }
 
 void VolumeSlider::volumeSlideChanged(wxScrollEvent& evt)
@@ -183,10 +181,6 @@ void VolumeSlider::enterPressed(wxCommandEvent& evt)
 
 void VolumeSlider::closeWindow()
 {
-    Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress));
-    slider->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress));
-    valueText->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress));
-    
 	wxDialog::EndModal(returnCode);
 	currentTrack=NULL;
 	getGLPane()->SetFocus();
@@ -202,12 +196,12 @@ void VolumeSlider::keyPress(wxKeyEvent& evt)
     {
         closeWindow();
     }
-    
-    if(evt.GetKeyCode()==WXK_RETURN)
+    else if(evt.GetKeyCode() == WXK_RETURN)
     {
         wxCommandEvent dummyEvt;
         enterPressed(dummyEvt);
     }
+    else evt.Skip(true);
 }
 
 }
