@@ -11,6 +11,7 @@
 - converted keys image from gif to png
 - improved handling of ties with whole notes
 - Improved beamed notes grouping in non-4/4 time signatures
+- Hopefully fixed volume picker not closing when pressing escape on all platforms
 
  1.1b5
 - note beams

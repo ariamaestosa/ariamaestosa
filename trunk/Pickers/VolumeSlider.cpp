@@ -47,88 +47,28 @@ EVT_CLOSE(VolumeSlider::closed)
 	
 END_EVENT_TABLE()
 
-VolumeSlider* slider = NULL;
-	
-
-class MyEvtHandler : public wxEvtHandler
-{
-public:
-	
-	virtual bool ProcessEvent(wxEvent& event)
-	{
-		if(event.GetEventType() == wxEVT_KEY_DOWN or event.GetEventType() == wxEVT_CHAR)
-		{
-			
-			wxKeyEvent& evt = dynamic_cast<wxKeyEvent&>(event);
-			
-			if(evt.GetKeyCode()==WXK_ESCAPE || evt.GetKeyCode()==WXK_CANCEL || evt.GetKeyCode()==WXK_DELETE)
-			{
-				slider->closeWindow();
-			}
-			
-			if(evt.GetKeyCode()==WXK_RETURN)
-			{
-				wxCommandEvent dummyEvt;
-				slider->enterPressed(dummyEvt);
-			}
-			return true;
-		}
-		else
-		{
-			wxEvtHandler::ProcessEvent(event);
-			return true;
-		}
-	}
-
-};
+VolumeSlider* sliderframe = NULL;
 
 void freeVolumeSlider()
 	{
-		if(slider != NULL)
+		if(sliderframe != NULL)
 		{
-			slider->Destroy();
-			slider = NULL;
+			sliderframe->Destroy();
+			sliderframe = NULL;
 		}
 
 	}
 	
 void showVolumeSlider(int x, int y, int noteID, Track* track)
 {
-	if(slider == NULL) slider = new VolumeSlider();
-	slider->show(x,y,noteID, track);
+	if(sliderframe == NULL) sliderframe = new VolumeSlider();
+	sliderframe->show(x,y,noteID, track);
 }
 	
+// FIXME - is it really necessary to give a translated name to that caption-less dialog? check if it appears in the taskbar in linux
 VolumeSlider::VolumeSlider() : wxDialog(NULL, 0,  _("volume"), wxDefaultPosition, wxSize(50,160), wxSTAY_ON_TOP )
 {
 	INIT_LEAK_CHECK();
-	
-    
-    // FIXME- is it automatically destroyed?
-	PushEventHandler( new MyEvtHandler() );
-	
-    /*
-      http://wxforum.shadonet.com/viewtopic.php?t=16966
-     You pointed out an important issue regarding the memory leaks possibilities. Like you, I didn't find in the documentation any explicit mention
-     as to perform the PopEventHandler call. However, in the "event" sample provided with wxWidgets, they do call it in the frame's destructor,
-     stating that "we must pop any remaining event handlers to avoid memory leaks and crashes!". Therefore, I decided to do so.
-
-     void xxx::delete_key_event_handlers(wxWindow * current_window)
-     {
-         // Delete the key event handler from every control in the window (to avoid memory leaks)
-         wxWindow * child;
-         wxWindowList children = current_window->GetChildren();
-         for ( wxWindowListNode * node = children.GetFirst(); node; node = node->GetNext() )
-         {
-             // Delete the handler
-             child = node->GetData();
-             child->PopEventHandler(true);
-             
-             // Recursion on the child's children
-             delete_key_event_handlers(child);
-         }
-     }
-     
-        */
     
     slider=new wxSlider(this, 1, 60, 0, 127, wxDefaultPosition, wxSize(50,128), wxSL_VERTICAL | wxSL_INVERSE);
 
@@ -138,12 +78,14 @@ VolumeSlider::VolumeSlider() : wxDialog(NULL, 0,  _("volume"), wxDefaultPosition
     valueText=new wxTextCtrl(this, 2, wxT("0"), wxPoint(0,130), smallsize, wxTE_PROCESS_ENTER);
     noteID=-1;
     currentTrack=NULL;
+    
+    Connect(GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress));
+    slider->Connect(slider->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress));
+    valueText->Connect(valueText->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress));
 }
 
 void VolumeSlider::closed(wxCloseEvent& evt)
 {
-	//std::cout << "***** close event *****" << std::endl;
-	//closeWindow();
 }
 
 void VolumeSlider::show(int x, int y, int noteID, Track* track)
@@ -241,11 +183,14 @@ void VolumeSlider::enterPressed(wxCommandEvent& evt)
 
 void VolumeSlider::closeWindow()
 {
-	PopEventHandler(true);
+    Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress));
+    slider->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress));
+    valueText->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress));
+    
 	wxDialog::EndModal(returnCode);
 	currentTrack=NULL;
 	getGLPane()->SetFocus();
-	
+    
 	wxCommandEvent event( wxEVT_DESTROY_VOLUME_SLIDER, 100000 );
 	getMainFrame()->GetEventHandler()->AddPendingEvent( event );
 	
@@ -253,6 +198,16 @@ void VolumeSlider::closeWindow()
 
 void VolumeSlider::keyPress(wxKeyEvent& evt)
 {
+    if(evt.GetKeyCode()==WXK_ESCAPE || evt.GetKeyCode()==WXK_CANCEL || evt.GetKeyCode()==WXK_DELETE)
+    {
+        closeWindow();
+    }
+    
+    if(evt.GetKeyCode()==WXK_RETURN)
+    {
+        wxCommandEvent dummyEvt;
+        enterPressed(dummyEvt);
+    }
 }
 
 }
