@@ -37,7 +37,6 @@
 #include "Editors/RelativeXCoord.h"
 #include "Pickers/DrumChoice.h"
 #include "Pickers/MagneticGrid.h"
-#include "Pickers/VolumeSlider.h"
 #include "main.h"
 
 namespace AriaMaestosa {

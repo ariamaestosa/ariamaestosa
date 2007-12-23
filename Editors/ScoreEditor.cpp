@@ -21,7 +21,6 @@
 #include "Editors/RelativeXCoord.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
-#include "Pickers/VolumeSlider.h"
 #include "Pickers/KeyPicker.h"
 #include "Images/ImageProvider.h"
 #include "Images/Drawable.h"

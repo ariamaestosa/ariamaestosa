@@ -21,45 +21,10 @@
 #include "main.h"
 
 /*
-namespace AriaMaestosa {
-
-	//class Sequence;
-
-//#define WINDOW 0
-//#define EDITOR 1
-//#define MIDI 2
-
-enum
-{
-    WINDOW,
-    EDITOR,
-    MIDI
-};
-
-class RelativeXCoord
-{
-	//int value;
-    //Sequence* sequence;
-    int relativeTo;
-	int relativeToEditor;
-	int relativeToWindow, relativeToMidi;
-
-	bool verbose;
-
-public:
-		RelativeXCoord();
-    RelativeXCoord(int i, int relativeTo);
-    void setValue(int i, int relativeTo);
-	void convertTo(int relativeTo);
-    int getRelativeTo(int returnRelativeTo);
-
-};
-}
-
-#define _relativecoord_
-#include "Editors/Editor.h"
-#include "Midi/Sequence.h"
-*/
+ * This class is there to ease midi coord manipulation.
+ * Each location can be expressed in 3 ways: pixel within the window, pixel within the editor, midi tick
+ * This class allows to seamlessly work with all these data formats.
+ */
 
 namespace AriaMaestosa
 {
@@ -102,6 +67,7 @@ void RelativeXCoord::setValue(int i, RelativeType relativeTo)
 	}
 	else if(relativeTo == EDITOR)
 	{
+        // FIXME - howcome is it 'deprecated'?
 		std::cout << "COORD SET RELATIVE TO EDITOR!!! That will probably fail as it is deprecated" << std::endl;
 		relativeToEditor = i;
 	}
@@ -112,6 +78,12 @@ void RelativeXCoord::setValue(int i, RelativeType relativeTo)
 	}
 
 }
+
+/*
+ * Convert the way this data is stored. For instance, if you
+ * enter data as pixels, but want to keep the same tick even
+ * though scrolling occurs, you could convert it to midi ticks.
+ */
 
 void RelativeXCoord::convertTo(RelativeType relativeTo)
 {
@@ -203,7 +175,8 @@ Sequence* sequence = getMainFrame()->getCurrentSequence();
 				else
 				{
 					std::cout << "!! RelativeXCoord ERROR - needs one of 3" << std::endl;
-					assert(0);
+                    return -1;
+					//assert(0);
 				}
 
 			return relativeToEditor;
@@ -221,7 +194,8 @@ Sequence* sequence = getMainFrame()->getCurrentSequence();
 					else
 					{
 						std::cout << "!! RelativeXCoord ERROR - needs one of 3" << std::endl;
-						assert(0);
+                        return -1;
+						//assert(0);
 					}
 			}
 			break;

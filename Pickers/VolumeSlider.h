@@ -27,30 +27,7 @@ namespace AriaMaestosa {
 	
 class Note; // forward
 class Track;
-/*
-class wxDestroyVolumeSliderEvent : public wxNotifyEvent
-{
-public:
-	wxDestroyVolumeSliderEvent( wxEventType commandType = wxEVT_NULL, int id = 0 );
-	
-	// required for sending with wxPostEvent()
-	wxEvent* Clone();
-};
 
-DECLARE_EVENT_MACRO( wxEVT_DESTROY_VOLUME_SLIDER, -1 )
-
-typedef void (wxEvtHandler::*wxDestroyVolumeSliderEventFunction)(wxDestroyVolumeSliderEvent&);
-
-#define EVT_DESTROY_VOLUME_SLIDER(id, fn) \
-DECLARE_EVENT_TABLE_ENTRY( wxEVT_DESTROY_VOLUME_SLIDER, id, -1, \
-						   (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) (wxNotifyEventFunction) \
-						   wxStaticCastEvent( wxDestroyVolumeSliderEventFunction, & fn ), (wxObject *) NULL ),
-
-
-// code implementing the event type and the event class
-
-DEFINE_EVENT_TYPE( wxEVT_DESTROY_VOLUME_SLIDER )
-*/
 
 DECLARE_EVENT_TYPE(wxEVT_DESTROY_VOLUME_SLIDER, -1)
 
@@ -64,6 +41,7 @@ class VolumeSlider : public wxDialog
 	
     wxSlider* slider;
     wxTextCtrl* valueText;
+    wxPanel* pane;
     int returnCode;
     
     int noteID;
