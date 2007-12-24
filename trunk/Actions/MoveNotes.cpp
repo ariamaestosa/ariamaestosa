@@ -18,6 +18,7 @@
 #include "Actions/EditAction.h"
 #include "Midi/Track.h"
 #include "GUI/GraphicalTrack.h"
+#include "Editors/Editor.h"
 
 namespace AriaMaestosa
 {

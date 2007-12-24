@@ -51,9 +51,6 @@ class GLPane : public wxGLCanvas
 	int mousey_current;
     bool isMouseDown_bool;
     
-    bool leftArrow;
-    bool rightArrow;
-    
     int currentTick;
     int draggingTrack; // which track the user is dragging (in a track reordering process), or -1 if none
 	
@@ -76,6 +73,8 @@ public:
     
     MainFrame* mainFrame;
     bool isVisible; // is frame shown
+    bool leftArrow;
+    bool rightArrow;
     
     // -----------------------------------------------------
     
