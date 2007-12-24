@@ -47,22 +47,17 @@ bool MidiContext::askOpenDevice()
                         wxString( wxT(")") );
     }
 
-    wxString userChoice = wxGetSingleChoice(_("Select an ALSA midi port to use for output."),
+    int userChoice = wxGetSingleChoiceIndex(_("Select an ALSA midi port to use for output."),
                                             _("ALSA midi port choice"),
                                             deviceAmount, choices);
-    if(userChoice.IsEmpty()) return false;
+    if(userChoice == -1) return false;
 
-    for(int n=0; n<deviceAmount; n++)
+    bool success = openDevice(getDevice(userChoice));
+    if(success) return true;
+    else
     {
-        if(choices[n].IsSameAs(userChoice))
-        {
-            bool success = openDevice(getDevice(n));
-            if(success) return true;
-            else
-            {
-                return askOpenDevice();
-            }
-        }
+        wxMessageBox( _("The selected ALSA device could not be opened.") );
+        return askOpenDevice();
     }
     return false;
 }

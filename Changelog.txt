@@ -15,6 +15,9 @@
 - Improved drum editor behaviour when few drums are shown
 - Removed many useless renders during song playback
 - Fixed linux crash
+- Improved ALSA port opening code on linux
+- Improved export to sampled audio on linux
+- Improved i18n support on linux
 
  1.1b5
 - note beams

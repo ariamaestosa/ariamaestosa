@@ -1,8 +1,3 @@
-/*
-all:
-	g++ midi_receiver.cpp -o AlsaNoteTest -lasound
-*/
-
 #include "wx/wx.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Players/pmidi/alsaNotePlayer.h"
@@ -137,8 +132,6 @@ void allSoundOff()
 
 void resetAllControllers()
 {
-    std::cout << "reset all controllers" << std::endl;
-
     for(int channel=0; channel<16; channel++)
     {
         controlChange(channel, 0x78 /*120*/ /* all sound off */, 0);
