@@ -49,6 +49,7 @@
 #include <signal.h>
 #include <iostream>
 #include <pthread.h>
+#include <stdlib.h>
 
 #include "wx/wx.h"
 #include "wx/utils.h"
@@ -70,7 +71,7 @@ namespace PlatformMidiManager {
 
 int currentTick;
 int stored_songLength;
-bool /*playing,*/ must_stop=false;
+bool must_stop=false;
 Sequence* sequence;
 
 int lastPlayedNote = -1, lastChannel;
@@ -139,55 +140,30 @@ bool playSelected(Sequence* sequence, /*out*/int* startTick)
 		return true;
 }
 
-void terminateAudioSave();
-class wxMyProcess : public wxProcess
-{
-
-public:
-	wxMyProcess(int flags) : wxProcess(flags)
-	{
-	}
-	void OnTerminate(int pid, int status)
-	{
-		std::cout << "DONE!" << std::endl;
-		if(status != 0)
-		{
-/*
-			wxInputStream* stream = process.GetInputStream();
-			char c;
-			while(c = stream->GetC() and stream->LastRead()>0)
-			{
-				std::cout << c;
-			}
-*/
-			wxMessageBox( _("An error occured while exporting audio file.") );
-		}
-		terminateAudioSave();
-	}
-
-};
-wxMyProcess* process;
-wxString tempMidiFile;
-void terminateAudioSave()
-{
-	WaitWindow::hide();
-	wxRemoveFile(tempMidiFile);
-	delete process;
-}
 
 void exportAudioFile(Sequence* sequence, wxString filepath)
 {
-	process = new wxMyProcess(/*wxPROCESS_REDIRECT*/ wxPROCESS_DEFAULT );
-
+	//process = new wxMyProcess(/ wxPROCESS_DEFAULT );
 	// e.g. timidity -Ow -o song.wav song.mid
-	tempMidiFile = filepath.BeforeLast('/') + wxT("/aria_temp_file.mid");
+
+    // the file is exported to midi, and then we tell timidity to make it into wav
+	wxString tempMidiFile = filepath.BeforeLast('/') + wxT("/aria_temp_file.mid");
 
 	AriaMaestosa::PlatformMidiManager::exportMidiFile(sequence, tempMidiFile);
 	//wxString cmd = wxT("timidity -Ow -o ") + filepath + wxT(" ") + tempMidiFile;
 	wxString cmd = wxT("timidity -Ow -o \"") + filepath + wxT("\" \"") + tempMidiFile + wxT("\"");
 	std::cout << "executing " << toCString( cmd ) << std::endl;
 
-	wxExecute( cmd, wxEXEC_ASYNC, process );
+    int status = system( toCString(cmd) );
+
+	std::cout << "DONE!" << std::endl;
+	if(status != 0)
+    {
+		wxMessageBox( _("An error occured while exporting audio file.") );
+	}
+	
+	WaitWindow::hide();
+	wxRemoveFile(tempMidiFile);
 }
 
 bool exportMidiFile(Sequence* sequence, wxString filepath)

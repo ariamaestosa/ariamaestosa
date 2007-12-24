@@ -623,14 +623,6 @@ void MainFrame::menuEvent_exportSampledAudio(wxCommandEvent& evt)
 
 	std::cout << "export audio file " << toCString(audioFilePath) << std::endl;
 	PlatformMidiManager::exportAudioFile( getCurrentSequence(), audioFilePath );
-/*
-  // I think it should work with my latest OpenGl changes. To be tested.
-	// FIXME - to work around a GTK bug. might also a bug with my graphics drivers, unsure.
-#ifdef __WXGTK__
-	glPane->render();
-#endif
-    //WaitWindow::hide();
- */
 }
 
 void MainFrame::menuEvent_undo(wxCommandEvent& evt)

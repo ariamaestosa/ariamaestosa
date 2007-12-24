@@ -32,6 +32,10 @@
 
 #include "Config.h"	
 
+#ifdef __WXGTK__
+#include "wx/stdpaths.h"
+#endif
+
 IMPLEMENT_APP(AriaMaestosa::wxWidgetApp)
 
 #ifdef _MORE_DEBUG_CHECKS
@@ -108,34 +112,44 @@ bool wxWidgetApp::OnInit()
 		language = wxLANGUAGE_DEFAULT;
 		std::cout << "failed to read prefs" << std::endl;
 	}
-	//std::cout << "language: " << language << std::endl;
-	
-	if(language==wxLANGUAGE_DEFAULT) std::cout << "language : default" << std::endl;
-	if(language==wxLANGUAGE_ENGLISH) std::cout << "language : english" << std::endl;
-	if(language==wxLANGUAGE_FRENCH) std::cout << "language : french" << std::endl;
-	
+
+	if(language == wxLANGUAGE_DEFAULT) std::cout << "language : default" << std::endl;
+	else if(language == wxLANGUAGE_ENGLISH) std::cout << "language : english" << std::endl;
+	else if(language == wxLANGUAGE_FRENCH) std::cout << "language : french" << std::endl;
+
 	if(wxLocale::IsAvailable(language))
 	{
-		locale = new wxLocale( language, wxLOCALE_CONV_ENCODING );
-		if(! locale->IsOk() )
-		{
-			std::cout << "selected language is wrong" << std::endl;
-			delete locale;
-			locale = new wxLocale( wxLANGUAGE_ENGLISH );
-		}
-	}
-	else
-	{
-		std::cout << "selected language not available" << std::endl;
+	    locale = new wxLocale( language, wxLOCALE_CONV_ENCODING );
+
+        #ifdef __WXGTK__
+        // add locale search paths
+        locale->AddCatalogLookupPathPrefix(wxT("/usr"));
+        locale->AddCatalogLookupPathPrefix(wxT("/usr/local"));
+        wxStandardPaths* paths = (wxStandardPaths*) &wxStandardPaths::Get();
+        wxString prefix = paths->GetInstallPrefix();
+        locale->AddCatalogLookupPathPrefix( prefix );
+        #endif
+
+	    locale = new wxLocale( language, wxLOCALE_CONV_ENCODING );
+        locale->AddCatalog(wxT("aria_maestosa"));
+
+	    if(! locale->IsOk() )
+	    {
+		    std::cout << "selected language is wrong" << std::endl;
+		    delete locale;
+		    locale = new wxLocale( wxLANGUAGE_ENGLISH );
+	    }
+    }
+    else
+    {
+        std::cout << "The selected language is not supported by your system."
+                  << "Try installing support for this language." << std::endl;
 		locale = new wxLocale( wxLANGUAGE_ENGLISH );
-	}
-	
-	//locale = new wxLocale( language, wxLOCALE_CONV_ENCODING );
+    }
+
 	// wxLANGUAGE_DEFAULT
 	// wxLANGUAGE_ENGLISH
 	// wxLANGUAGE_FRENCH
-	
-	locale->AddCatalog(wxT("aria_maestosa"));
 	
     PlatformMidiManager::initMidiPlayer();
 
