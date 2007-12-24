@@ -37,8 +37,10 @@ const float current_file_version = 1.0;
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
-
 #include "Midi/CommonMidiUtils.h"
+
+#include "Editors/Editor.h"
+
 #include "IO/IOUtils.h"
 
 #include "OpenGL.h"

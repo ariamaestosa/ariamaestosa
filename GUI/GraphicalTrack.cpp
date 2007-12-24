@@ -765,11 +765,36 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
     if(!collapsed)
 	{
         // --------------------------------------------------
+        // render editor
         getCurrentEditor()->render(getGLPane()->getMouseX_current(),
 								   getGLPane()->getMouseY_current(),
 								   getGLPane()->getMouseX_initial(),
 								   getGLPane()->getMouseY_initial(), focus);
         // --------------------------------------------------
+        // render playback progress line
+    
+        glLoadIdentity();
+        glDisable(GL_TEXTURE_2D);
+        
+        if( currentTick!=-1 and not getGLPane()->leftArrow and not getGLPane()->rightArrow)
+		{
+            glColor3f(0.8, 0, 0);
+            
+            RelativeXCoord tick(currentTick, MIDI);
+            const int x_coord = tick.getRelativeTo(WINDOW);
+            
+            glLineWidth(1);
+            
+            glBegin(GL_LINES);
+            glVertex2f(x_coord, getCurrentEditor()->getEditorYStart());
+            glVertex2f(x_coord, getCurrentEditor()->getYEnd());
+            glEnd();
+            
+        }
+        glEnable(GL_TEXTURE_2D);
+        
+        // --------------------------------------------------
+        // render track borders
         
         if(!focus) glColor3f(0.5, 0.5, 0.5);
         else glColor3f(1,1,1);
@@ -806,27 +831,6 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
         whiteBorderDrawable->rotate(90);
         whiteBorderDrawable->scale(1, height /*number of pixels high*/ /20.0 );
         whiteBorderDrawable->render();
-        
-        // --------------------------------------------------
-        
-        glLoadIdentity();
-        glDisable(GL_TEXTURE_2D);
-        
-        // draw playback progress line
-        if( currentTick!=-1)
-		{
-            glColor3f(0.8, 0, 0);
-            
-            RelativeXCoord tick(currentTick, MIDI);
-            
-            glLineWidth(1);
-
-            glBegin(GL_LINES);
-            glVertex2f(tick.getRelativeTo(WINDOW) /*- sequence->getXScrollInPixels()*/, getCurrentEditor()->getEditorYStart());
-            glVertex2f(tick.getRelativeTo(WINDOW) /*- sequence->getXScrollInPixels()*/, getCurrentEditor()->getYEnd());
-            glEnd();
-            
-        }
         
     }
     

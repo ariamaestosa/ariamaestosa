@@ -22,7 +22,6 @@
 
 #include "irrXML/irrXML.h"
 
-#include "Editors/Editor.h"
 #include "Config.h"
 
 namespace AriaMaestosa {
@@ -36,6 +35,7 @@ class GuitarEditor;
 class DrumEditor;
 class ScoreEditor;
 class RelativeXCoord;
+class Editor;
 
 enum {
     KEYBOARD,

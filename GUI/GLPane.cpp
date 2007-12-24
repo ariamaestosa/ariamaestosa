@@ -966,15 +966,13 @@ void GLPane::render(bool paintEvent)
 
         RelativeXCoord tick(currentTick, MIDI);
 
-		//std::cout << "tick " << currentTick << " is on pixel " << tick.getRelativeTo(WINDOW) << std::endl;
-
         const int XStart = getEditorXStart();
-        const int XEnd = getWidth()-15;
+        const int XEnd = getWidth();
 
         glLineWidth(2);
         glColor3f(0.8, 0, 0);
 
-        if(tick.getRelativeTo(WINDOW)/* - mainFrame->getCurrentSequence()->getXScrollInPixels()*/ < XStart) // current tick is before the visible area
+        if(tick.getRelativeTo(WINDOW) < XStart) // current tick is before the visible area
 		{
 
             leftArrow=true;
@@ -992,21 +990,21 @@ void GLPane::render(bool paintEvent)
             glEnd();
 
         }
-		else if(tick.getRelativeTo(WINDOW) /*- mainFrame->getCurrentSequence()->getXScrollInPixels()*/ > XEnd ) // current tick is after the visible area
+		else if(tick.getRelativeTo(WINDOW) > XEnd ) // current tick is after the visible area
 		{
 
             leftArrow=false;
             rightArrow=true;
 
             glBegin(GL_LINES);
-            glVertex2f(XEnd - 25, measureBarY + 10);
-            glVertex2f(XEnd - 10, measureBarY + 10);
+            glVertex2f(XEnd - 15 - 25, measureBarY + 10);
+            glVertex2f(XEnd - 15 - 10, measureBarY + 10);
             glEnd();
 
             glBegin(GL_TRIANGLE_STRIP);
-            glVertex2f(XEnd - 5, measureBarY + 10);
-            glVertex2f(XEnd - 15, measureBarY + 5);
-            glVertex2f(XEnd - 15, measureBarY + 15);
+            glVertex2f(XEnd - 15 - 5, measureBarY + 10);
+            glVertex2f(XEnd - 15 - 15, measureBarY + 5);
+            glVertex2f(XEnd - 15 - 15, measureBarY + 15);
             glEnd();
 
         }
@@ -1016,9 +1014,10 @@ void GLPane::render(bool paintEvent)
             leftArrow=false;
             rightArrow=false;
 
+            // red line in measure bar
             glBegin(GL_LINES);
-            glVertex2f(tick.getRelativeTo(WINDOW)/* - mainFrame->getCurrentSequence()->getXScrollInPixels()*/, measureBarY + 1);
-            glVertex2f(tick.getRelativeTo(WINDOW)/* - mainFrame->getCurrentSequence()->getXScrollInPixels()*/, measureBarY + 20);
+            glVertex2f(tick.getRelativeTo(WINDOW), measureBarY + 1);
+            glVertex2f(tick.getRelativeTo(WINDOW), measureBarY + 20);
             glEnd();
 
         }
@@ -1045,6 +1044,8 @@ void GLPane::saveToFile(wxFileOutputStream& fileout)
 
 void GLPane::enterPlayLoop()
 {
+    leftArrow = false;
+    rightArrow = false;
     timeBeforeFollowingPlayback = getMeasureBar()->defaultMeasureLengthInTicks();
     lastTick = -1;
     activateRenderLoop(true);
@@ -1088,7 +1089,24 @@ void GLPane::playbackRenderLoop()
 			}
 			
             setCurrentTick( playbackStartTick + currentTick );
-            render();
+            
+            RelativeXCoord tick(this->currentTick, MIDI);
+            const int XStart = getEditorXStart();
+            const int XEnd = getWidth();
+            const int tick_pixel = tick.getRelativeTo(WINDOW);
+            
+            if(tick_pixel < XStart and leftArrow)
+            {
+                // current tick is before the visible area and arrow already there. no need to render again.
+            }
+            else if(tick_pixel > XEnd and rightArrow)
+            {
+                // current tick is after the visible area and arrow already there. no need to render again.
+            }
+            else
+            {  
+                render();
+            }
             lastTick = playbackStartTick + currentTick;
         }
 

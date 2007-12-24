@@ -114,15 +114,15 @@ NOTE: sorry, this is very raw :)
 + note splitting should be wiser (like silences... complete beat)
 
 - render a bit less often to be easier on processor
-+ stop rendering when red playback line is no more visible
+- probably too many paint events (duplicate ones at times) track and remove them
 
 - sometimes pasting in guitar editor gives wrong notes
+- "rearrange selected notes" doesn't always work optimally
+
 - clicking on a note should play it and it doesn't always work (like when note is selected)
 - at the very top, in keyboard editor, wrong notes are greyed out
 - when changing measure length, song length becomes wrong
-- probably too many paint events (duplicate ones at times) track and remove them
 - import midi. save to aria. no name suggested.
-- "rearrange selected notes" doesn't always work optimally
 - switching tracks tends to deselect measures
 - accentuated characters in copyright/song title gets broken (and possibly track name too) UTF-8 doesn't seem to work either
 - importing midis exported by aria have a blank track 0
@@ -130,7 +130,7 @@ NOTE: sorry, this is very raw :)
 - hard to resize last track
 - hitting space when nothing is selected should do nothing
 - controller editor should keep drum instrument in a drum track
-- if you select measures, but move your mouse outside measure pane before releasing, you get nothing
+- if you select measures in the measure bar, but move the cursor below measure pane before releasing, you get nothing
    
   - tab export sometimes does 41-42 43-44 and not 41-44
   - tab exporter does not always respect max line width (e.g. underwater light)
