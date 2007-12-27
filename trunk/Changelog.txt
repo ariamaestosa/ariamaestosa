@@ -2,7 +2,7 @@
 - made it easier to trigger tuning picker in guitar editor
 - drum editor : selection now works if click/drag starts on black section header
 - more improvements to lightweight vertical scrollbar
-- handle no vertical scrollbar is needed in drum editor
+- handle when no vertical scrollbar is needed in drum editor
 - fixed notes not beaming in chords of some imported midis
 - fixed note subtails disappearing in some imported midis
 - fixed amount of measures too short in some imported midis
@@ -18,6 +18,9 @@
 - Improved ALSA port opening code on linux
 - Improved export to sampled audio on linux
 - Improved i18n support on linux
+- Cleaned up image loading code
+- Refactored beaming code so that smarter beaming becomes possible
+- Fixed triplets beaming with non-triplets
 
  1.1b5
 - note beams

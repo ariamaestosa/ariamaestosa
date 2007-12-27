@@ -31,10 +31,13 @@ public:
     float xscale, yscale;
     Image* image;
     bool xflip, yflip;
+    bool delete_image;
     // -------------------------------------------
     
     
     Drawable(Image* image=(Image*)0);
+    Drawable(wxString imagePath);
+    ~Drawable();
     
     void setFlip(bool x, bool y);
     

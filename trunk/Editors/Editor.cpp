@@ -272,8 +272,8 @@ void Editor::renderScrollbar()
     sbArrowDrawable->render();
     
 	// -------- thumb ------
-    sbBarDrawable->move(getWidth() - 24, (int)(from_y+barHeight+37+(height-36)*sb_position));
-    sbBarDrawable->render();
+    sbThumbDrawable->move(getWidth() - 24, (int)(from_y+barHeight+37+(height-36)*sb_position));
+    sbThumbDrawable->render();
     
 }
 
@@ -287,15 +287,15 @@ void Editor::mouseDown(RelativeXCoord x, int y)
 	if(useVerticalScrollbar_bool)
 	{
 		// check if user is grabbing the scroll bar
-		if(x.getRelativeTo(WINDOW)>sbBarDrawable->x and
-		   x.getRelativeTo(WINDOW)<sbBarDrawable->x+sbBarDrawable->image->width and
+		if(x.getRelativeTo(WINDOW)>sbThumbDrawable->x and
+		   x.getRelativeTo(WINDOW)<sbThumbDrawable->x+sbThumbDrawable->image->width and
 		   y<getYEnd()-15 and y>getEditorYStart())
 		{
 			click_on_scrollbar = true;
 						
 			// grabbing the thumb
 			const int thumb_pos = (int)(from_y+barHeight+37+(height-36)*sb_position);
-			if(y>thumb_pos and y<thumb_pos + sbBarDrawable->image->height)
+			if(y>thumb_pos and y<thumb_pos + sbThumbDrawable->image->height)
 			{
 				verticalScrolling = true; 
 			}
@@ -421,7 +421,7 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
 				
 				if(useVerticalScrollbar_bool)
 				{
-					if(mousex_current.getRelativeTo(WINDOW) > sbBarDrawable->x or mousex_initial.getRelativeTo(WINDOW) > sbBarDrawable->x) goto end_of_func;
+					if(mousex_current.getRelativeTo(WINDOW) > sbThumbDrawable->x or mousex_initial.getRelativeTo(WINDOW) > sbThumbDrawable->x) goto end_of_func;
 				}
 				else
 				{
@@ -582,8 +582,8 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 		click_on_scrollbar = false;
 		
 		// make thumb slide to mouse
-		if(mousex_current.getRelativeTo(WINDOW) > sbBarDrawable->x and
-		   mousex_current.getRelativeTo(WINDOW) < sbBarDrawable->x+sbBarDrawable->image->width and
+		if(mousex_current.getRelativeTo(WINDOW) > sbThumbDrawable->x and
+		   mousex_current.getRelativeTo(WINDOW) < sbThumbDrawable->x+sbThumbDrawable->image->width and
 		   mousey_current < getYEnd()-15 and mousey_current>getEditorYStart())
 		{
 			
