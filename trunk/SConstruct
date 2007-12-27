@@ -1,21 +1,89 @@
-message = "\n\nOPTIONS:\n\nplatform=[mac,linux] (required)\nplayer=[macframeworks, pmidialsa](facultative if your platform has a default player)\nrelease=[debug, beta, final] (if unspecified, defaults to final.)\n\n"
-
 import sys
 import os
 
+#
+# Usage:
+# % scons
+#       does a release build, auto-detects yout system
+# % scons [platform=macosx/linux] [release=debug/release]
+#       specify build type and/or platform
+# % scons install
+#       installs Aria, auto-detects system
+# % scons install [platform=linux/macosx] prefix=/usr/local
+#       install + specify platform and/or prefix (prefix only used for linux, default is /usr/local)
+# % scons uninstall [platform=linux prefix=/usr/local]
+#       linux only (on mac just drag to trash)
+#
+
+
+# if not env.GetOption('clean'):
+
+
 def main_Aria_func():
     
-    install = ARGUMENTS.get('install', 0)
-    uninstall = ARGUMENTS.get('uninstall', 0)
-    
-    if install and 'linux' in install:
-        install_Aria_linux()
-    elif install and 'mac' in install:
-        install_Aria_mac()
-    if uninstall and 'linux' in uninstall:
-        uninstall_Aria_linux()
+    # find operating system
+    givenos = ARGUMENTS.get('platform', 0)
+    if givenos == 0:
+        #auto-detect
+        if os.uname()[0] == 'Linux':
+            which_os = "linux"
+        elif os.uname()[0] == 'Darwin':
+            which_os = "macosx"
+        else:
+            print "Unknown operating system : " + os.uname()[0] + " please specify 'platform=[linux/macosx]'"
+            sys.exit(0)
+    elif givenos == "macosx":
+        which_os = "macosx"
+    elif givenos == "linux":
+        which_os = "linux"
     else:
-        compile_Aria()
+        print "Unknown operating system : " + givenos + " please specify 'platform=[linux/macosx]'"
+        sys.exit(0)
+    
+    if which_os == "linux":
+        print"*** Operating system : Linux" 
+    elif which_os == "macosx":
+        print"*** Operating system : mac OS X" 
+    
+    # check what to do
+    if 'install' in COMMAND_LINE_TARGETS:
+        # install
+        if which_os == "linux":
+            install_Aria_linux()
+        elif which_os == "macosx":
+            install_Aria_mac()
+        else:
+            print "Unknown operation or system"
+            sys.exit(0)
+        
+    elif 'uninstall' in COMMAND_LINE_TARGETS:
+        # uninstall
+        if which_os == "linux":
+            uninstall_Aria_linux()
+        else:
+            print "Unknown operation or system"
+
+            
+    else:
+        # compile
+        
+        # check build style
+        bstyle = ARGUMENTS.get('release', 0)
+        if bstyle == 0:
+            build_type = "release"
+        elif bstyle == "release":
+            build_type = "release"
+        elif bstyle == "debug":
+            build_type = "debug"
+        else:
+            build_type = "debug"
+        
+        if build_type == "debug":
+            print "*** Build type : debug"
+        elif build_type == "release":
+            print "*** Build type : release"
+              
+        compile_Aria(build_type, which_os)
 
 
 def uninstall_Aria_linux():
@@ -36,9 +104,10 @@ def uninstall_Aria_linux():
     app_path = prefix + "bin/Aria"
     locale_path = prefix + "share/locale/"
     
-    os.system("sudo rm -r " + resource_path)
-    os.system("sudo rm " + app_path)
-    os.system("sudo rm " + locale_path + "fr/LC_MESSAGES/aria_maestosa.mo")
+    os.system("rm -r " + resource_path)
+    os.system("rm " + app_path)
+    os.system("rm " + locale_path + "fr/LC_MESSAGES/aria_maestosa.mo")
+    sys.exit(0)
    
 def sys_command(command):
     print command
@@ -58,7 +127,7 @@ def install_Aria_mac():
     sys_command("tar cj --exclude '.svn' --exclude '.DS_Store' --exclude '.sconsign' -f ./rsrc.tar.bz2 Resources")
     sys_command("mv ./rsrc.tar.bz2 ./AriaMaestosa.app/Contents/")
     sys_command("cd ./AriaMaestosa.app/Contents/ && bzip2 -d ./rsrc.tar.bz2 && tar -xf ./rsrc.tar && rm ./rsrc.tar")
-    print "** Done. (The application icon will eventually appear)"
+    print "*** Done. (The application icon will eventually appear)"
     sys.exit(0)
     
 def install_Aria_linux():
@@ -80,46 +149,55 @@ def install_Aria_linux():
     locale_path = prefix + "share/locale/"
     
     # copy resources
-    os.system("sudo mkdir -p " + resource_path)
-    os.system("sudo cp -r --remove-destination Resources/* " + resource_path)
+    os.system("mkdir -p " + resource_path)
+    os.system("cp -r --remove-destination Resources/* " + resource_path)
     
     # copy executable
-    os.system("sudo cp --remove-destination ./Aria " + app_path)
+    os.system("cp --remove-destination ./Aria " + app_path)
     
     #copy translations
-    os.system("sudo cp ./Resources/fr.lproj/aria_maestosa.mo " + locale_path + "fr/LC_MESSAGES/aria_maestosa.mo")
+    os.system("cp ./Resources/fr.lproj/aria_maestosa.mo " + locale_path + "fr/LC_MESSAGES/aria_maestosa.mo")
     
     #copy docs
-    os.system("sudo cp -r ./../docs " + resource_path)
+    os.system("cp -r ./../docs " + resource_path)
 
     os.system("echo Installation done")
     sys.exit(0)
 
 
-def compile_Aria():
+def compile_Aria(build_type, which_os):
 
     # check if user defined his own WXCONFIG, else use defaults
     WXCONFIG = ARGUMENTS.get('WXCONFIG', 0)
 
     if WXCONFIG == 0:
-        print "No wx-config specified, using default"
+        print "*** wx-config : default"
         WXCONFIG = 'wx-config'
+    else:
+        print "*** wx-config : " + WXCONFIG
+        
 
-    libjdk_include_path = ['./libjdkmidi/include']
-    libjdk_lib_path = ['./libjdkmidi/tmp/build/lib'] 
-
-    #  --------------------- headers, libs, etc.  ---------------------
-
-    header_search_path = ['wxAdditions','.'] + libjdk_include_path
-    libpath = ['.'] + libjdk_lib_path
+    # check build type and init build flags
+    if build_type == "debug":
+        c_flags = ['-g','-D_MORE_DEBUG_CHECKS','-D_CHECK_FOR_LEAKS','-Wfatal-errors']
+        
+    elif build_type == "release":
+        c_flags = ['-O3']
+    
+    else:
+        print 'Unknown build type, cannot continue'
+        sys.exit(0)
+        
+    # init common library and header search paths
+    header_search_path = ['wxAdditions','.','./libjdkmidi/include']
+    libpath = ['.','./libjdkmidi/tmp/build/lib']
     libs = ['libjdkmidi']
 
-    # **********************************************************************************************
-    # *********************************** COMMON SOURCES *******************************************
-    # **********************************************************************************************
+    print " "
 
-    print "*** Adding common sources"
-
+    # add common sources
+    print "*** Adding source files"
+    
     sources = Split("""
     Actions/AddControlEvent.cpp
     Actions/AddControllerSlide.cpp
@@ -189,54 +267,33 @@ def compile_Aria():
     wxAdditions/bsizer.cpp
     """)
 
-    # *************** retrieve info from arguments ************
-
-    player_arg = ARGUMENTS.get('player', 0)
-    platform_arg = ARGUMENTS.get('platform', 0)
-    release_arg = ARGUMENTS.get('release', 0)
 
     # **********************************************************************************************
-    # *************************************** PLAYERS **********************************************
+    # ********************************* PLATFORM SPECIFIC ******************************************
     # ********************************************************************************************** 
-    
-    # this part just checks the user entered something, and if not pick a default value
-    if player_arg and 'macframeworks' in player_arg:
-        print "*** Player: Mac Frameworks"
-    elif player_arg and 'pmidialsa' in player_arg:
-        print "*** Player: pmidi/Alsa"
-    else:
-    
-        # default values
-        if platform_arg and 'mac' in platform_arg:
-            print "*** Player: unspecified. Defaulting to Mac Frameworks."
-            player_arg = 'macframeworks'
-    
-        elif platform_arg and 'linux' in platform_arg:
-            print "*** Player: unspecified. Defaulting to pMidi/Alsa."
-            player_arg = 'pmidialsa'
-    
-        else:
-            print"\n\n/!\\ Please specify a platform ",message
-            sys.exit(0)
-    
-    
-    #  --------------------- add platform native sources if necessary  ---------------------
-    
-    if 'macframeworks' in player_arg:
+
+    # OS X (QTKit, CoreAudio, audiotoolbox)
+    if which_os == "macosx":
         source_mac_native = Split("""Midi/Players/Mac/AudioToolboxPlayer.cpp
         Midi/Players/Mac/CoreAudioNotePlayer.cpp
         Midi/Players/Mac/MacPlayerInterface.cpp
         """)
     
-        print "*** Adding mac sources"
-        c_flags = ['-D_MAC_QUICKTIME_COREAUDIO']
+        print "*** Adding mac source files and libraries"
+        c_flags = c_flags + ['-D_MAC_QUICKTIME_COREAUDIO']
         sources = sources + source_mac_native
         header_search_path = header_search_path + ['Midi/Players/Mac']
     
-    # --------------------- add pmidi sources if necessary ----------------------
+        linkflags =  ['-framework','OpenGL','-framework','GLUT','-framework','AGL',
+        '-framework','QTKit','-framework', 'Quicktime','-framework','CoreAudio',
+        '-framework','AudioToolbox','-framework','AudioUnit','-framework','AppKit',
+        '-framework','Carbon','-framework','Cocoa','-framework','IOKit','-framework','System']
+        
+    # linux (pMidi/Alsa/tiMidity)
+    elif which_os == "linux":
     
-    if 'pmidialsa' in player_arg:
-    
+        print "*** Adding pMidi/Alsa source files and libraries"
+        
         source_pmidi = Split("""
         Midi/Players/pmidi/elements.cpp
         Midi/Players/pmidi/alsaNotePlayer.cpp
@@ -248,27 +305,10 @@ def compile_Aria():
         Midi/Players/pmidi/seqlib.cpp
         Midi/Players/pmidi/seqmidi.cpp
         """)
-        
-        print "*** Adding pMidi/Alsa sources"
-        c_flags = ['-DwxUSE_GLCANVAS=1','-D_PMIDI_ALSA']
         sources = sources + source_pmidi
-        #header_search_path = header_search_path + ['/usr/include/glib-2.0/','/usr/include/glib-2.0/glib','/usr/lib/glib-2.0/include']
         
-    # ***********************************************************************************************
-    # ************************************* PLATFORM ************************************************
-    # ***********************************************************************************************
-    
-    print "*** Adding libs"
-    
-    if platform_arg and 'mac' in platform_arg:
-    
-        linkflags =  ['-framework','OpenGL','-framework','GLUT','-framework','AGL',
-        '-framework','QTKit','-framework', 'Quicktime','-framework','CoreAudio',
-        '-framework','AudioToolbox','-framework','AudioUnit','-framework','AppKit',
-        '-framework','Carbon','-framework','Cocoa','-framework','IOKit','-framework','System']
-    
-    elif platform_arg and 'linux' in platform_arg:
-    
+        c_flags = c_flags + ['-DwxUSE_GLCANVAS=1','-D_PMIDI_ALSA']
+        
         linkflags = ['-Iusr/include','-Wl,--rpath,/usr/local/lib/']
         libpath = libpath + ['usr/local/lib/','usr/lib/', '/opt/gnome/lib']
         
@@ -281,35 +321,11 @@ def compile_Aria():
         dl
         m
         """)
-    
+        
     else:
     
-        print "\n\n*** /!\\ Platform must be either mac or linux ",message
+        print "\n\n*** /!\\ Platform must be either mac or linux "
         sys.exit(0) 
-    
-    # ***************************************************************************************************
-    # *********************************** DEBUG/RELEASE *************************************************
-    # ***************************************************************************************************
-    
-    if release_arg and 'debug' in release_arg:
-    
-        print '*** Release: debug'
-        c_flags = c_flags + ['-g','-D_MORE_DEBUG_CHECKS','-D_CHECK_FOR_LEAKS','-Wfatal-errors']
-        
-    elif release_arg and 'beta' in release_arg:
-    
-        print '*** Release: beta'
-        c_flags = c_flags + ['-O3','-g','-D_CHECK_FOR_LEAKS']
-        
-    elif release_arg and 'final' in release_arg:
-    
-        print '*** Release: final'
-        c_flags = c_flags + ['-O3']
-    
-    else:
-    
-        print '*** Release: Unspecified. Defaulting to final'
-        c_flags = c_flags + ['-O3']
     
     
     # **************************************************************************************************
@@ -319,35 +335,23 @@ def compile_Aria():
     env = Environment()
     env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,gl'])
     
-    if 'pmidialsa' in player_arg:
+    if which_os == "linux":
         env.ParseConfig( 'pkg-config --cflags glib-2.0' )
         
-    object_list = env.Object(
-    source = sources,
-    CPPPATH = env['CPPPATH'] + header_search_path,
-    CCFLAGS = c_flags + env['CCFLAGS']#['`'] + [WXCONFIG] + ['--cppflags`']
-    )
+    # add our own flags to the environment
+    env.Append(CPPPATH=header_search_path)
+    env.Append(CCFLAGS=c_flags)
+    env.Append(LIBPATH = libpath)
+    env.Append(LIBS = libs)
+    env.Append(LINKFLAGS = linkflags)
     
-    if platform_arg and 'mac' in platform_arg:
+    object_list = env.Object(source = sources)
+    
+    if which_os == "macosx":
         print "Building QTKitPlayer.mm..."
         os.system("gcc -x objective-c++ -c -O3 -D_MAC_QUICKTIME_COREAUDIO Midi/Players/Mac/QTKitPlayer.mm -I. -IMidi -IMidi/Players -IMidi/Players/Mac")
         object_list = object_list + ['QTKitPlayer.o']
     
-    # check if we are using a LIBPATH before trying to add it to build params
-    # this is because depending on platform and player there is not always one
-    # and we don't want to trigger errors
-    try:
-        env['LIBPATH']
-    except KeyError:
-        print "No libpath in config"
-    else:
-        libpath = libpath + env['LIBPATH']
-    
-    env.Program(
-    target = 'Aria',
-    source = object_list,
-    LIBPATH = libpath,
-    LIBS = env['LIBS'] + libs,
-    LINKFLAGS = linkflags)
+    env.Program( target = 'Aria', source = object_list )
 
 main_Aria_func()
