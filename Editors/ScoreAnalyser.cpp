@@ -24,46 +24,166 @@
 namespace AriaMaestosa
 {
     
-    NoteRenderInfo::NoteRenderInfo(int tick, int x, int level, int tick_length, int sign, const bool selected, int pitch)
+class BeamGroup
+{
+    int first_id, last_id;
+    int min_level, mid_level, max_level;
+    
+public:
+    BeamGroup(const int first_id, const int last_id)
     {
-		// what we know before render pass 1
-		NoteRenderInfo::selected = selected;
-		NoteRenderInfo::tick = tick;
-		NoteRenderInfo::tick_length = tick_length;
-		NoteRenderInfo::x = x;
-		NoteRenderInfo::sign = sign;
-		NoteRenderInfo::level = level;
-		NoteRenderInfo::pitch = pitch;
-		
-		// what we will know after render pass 1
-		//unknown_duration = false;
-		instant_hit=false;
-		triplet = false;
-		dotted = false;
-		subtail_amount = 0;
-		y = -1;
-		tied_with_x = -1;
-        tie_up = false;
-		tail_type = TAIL_NONE;
-		
-        draw_tail = true;
+         BeamGroup::first_id = first_id;
+         BeamGroup::last_id = last_id;
+    }
+    void calculateLevel(std::vector<NoteRenderInfo>& gatheredNoteInfo, ScoreMidiConverter* converter)
+    {
+        min_level = 999;
+        max_level = -999;
         
-		triplet_show_above = false;
-		triplet_x1 = -1;
-		triplet_x2 = -1;
-        drag_triplet_sign = false;
+        for(int i=first_id;i<=last_id; i++)
+        {
+            if(gatheredNoteInfo[i].chord)
+            {
+                if(gatheredNoteInfo[i].min_chord_level < min_level) min_level = gatheredNoteInfo[i].min_chord_level;
+                if(gatheredNoteInfo[i].max_chord_level > max_level) max_level = gatheredNoteInfo[i].max_chord_level;
+            }
+            else
+            {
+                const int level = converter->noteToLevel(gatheredNoteInfo[i].pitch);   
+                if(level < min_level) min_level = level;
+                if(level > max_level) max_level = level;
+            }
+        }
         
-        beam_show_above = false;
-        beam_to_x = -1;
-        beam_to_y = -1;
-        beam = false;
+        // if nothing found (most likely meaning we only have one triplet note alone) use values from the first
+        if(min_level == 999)  min_level = converter->noteToLevel(gatheredNoteInfo[first_id].pitch);
+        if(max_level == -999) max_level = converter->noteToLevel(gatheredNoteInfo[first_id].pitch);
         
-        chord = false;
-        max_chord_y = -1;
-        min_chord_y = -1;
-        tail_y = -1;
-        min_chord_level=-1;
-        max_chord_level=-1;
+        mid_level = (int)round( (min_level + max_level)/2.0 );
+    }
+    
+    void doBeam(std::vector<NoteRenderInfo>& gatheredNoteInfo, ScoreEditor* editor)
+    {
+        if(last_id == first_id) return; // note alone, no beaming to perform
+        
+        ScoreMidiConverter* converter = editor->getScoreMidiConverter();
+        const int y_step = editor->getYStep();
+        
+        // check for number of "beamable" notes and split if current amount is not acceptable with the current time sig
+        // FIXME - not always right
+        const int num = getMeasureBar()->getTimeSigNumerator();
+        const int denom = getMeasureBar()->getTimeSigDenominator();
+        const int subtail_amount = gatheredNoteInfo[first_id].subtail_amount;
+        
+        int max_amount_of_notes_beamed_toghether = 4;
+        
+        if(num == 3 and denom == 4) max_amount_of_notes_beamed_toghether = 2 * (int)(std::pow(2.0,subtail_amount-1));
+        else if((num == 6 and denom == 4) or (num == 6 and denom == 8)) max_amount_of_notes_beamed_toghether = 3 * (int)(std::pow(2.0,subtail_amount-1));
+        else max_amount_of_notes_beamed_toghether = num * (int)(std::pow(2.0,subtail_amount-1));
+        if(gatheredNoteInfo[first_id].triplet) max_amount_of_notes_beamed_toghether=3;
+        
+        const int beamable_note_amount = last_id - first_id + 1;
+        
+        if(beamable_note_amount > max_amount_of_notes_beamed_toghether)
+        {
+            // amount is not acceptable, split
+            BeamGroup first_half(first_id, first_id + max_amount_of_notes_beamed_toghether - 1);
+            BeamGroup second_half(first_id + max_amount_of_notes_beamed_toghether, last_id);
+            
+            first_half.doBeam(gatheredNoteInfo, editor);
+            second_half.doBeam(gatheredNoteInfo, editor);
+            return;
+        }
+        
+        calculateLevel(gatheredNoteInfo, converter);
+
+        gatheredNoteInfo[first_id].beam_show_above = (mid_level < converter->getMiddleCLevel()-5 ? false : true);
+        gatheredNoteInfo[first_id].beam = true;
+        
+        for(int j=first_id; j<=last_id; j++)
+        {
+            // give correct tail type (up or down)
+            gatheredNoteInfo[j].tail_type = ( gatheredNoteInfo[first_id].beam_show_above ?  TAIL_UP : TAIL_DOWN );
+        }
+        
+        const int last_tail_y_end = gatheredNoteInfo[last_id].getTailYTo();
+        gatheredNoteInfo[first_id].beam_to_x = gatheredNoteInfo[last_id].getTailX();
+        
+        if(gatheredNoteInfo[first_id].beam_show_above)
+        {
+            const int min_level_y = min_level*y_step + editor->getEditorYStart() - editor->getYScrollInPixels() - 2;
+            
+            // choose y coords so that all notes are correctly in
+            gatheredNoteInfo[first_id].beam_to_y = std::min(min_level_y - 10, last_tail_y_end); // Y to
+            if(gatheredNoteInfo[first_id].getTailYFrom() > min_level_y - 25) gatheredNoteInfo[first_id].tail_y = min_level_y - 25; // Y from
+        }
+        else
+        {
+            const int max_level_y = max_level*y_step + editor->getEditorYStart() - editor->getYScrollInPixels();
+            
+            // choose y coords so that all notes are correctly in
+            gatheredNoteInfo[first_id].beam_to_y = std::max(max_level_y + 10, last_tail_y_end); // Y to
+            if(gatheredNoteInfo[first_id].getTailYFrom() < max_level_y + 25) gatheredNoteInfo[first_id].tail_y = max_level_y + 25; // Y from
+        }
+        
+        // fix all note tails so they point in the right direction and have the correct height
+        const int from_x = gatheredNoteInfo[first_id].getTailX();
+        const int from_y = gatheredNoteInfo[first_id].getTailYTo();
+        const int to_x = gatheredNoteInfo[first_id].beam_to_x;
+        const int to_y = gatheredNoteInfo[first_id].beam_to_y;
+        
+        for(int j=first_id; j<=last_id; j++)
+        {
+            // give correct tail height (so it doesn't end above or below beam line)
+            // rel_pos will be 0 for first note of a beamed serie, and 1 for the last one
+            const float rel_pos = (float)(gatheredNoteInfo[j].getTailX() - from_x) / (float)(to_x - from_x);
+            gatheredNoteInfo[j].tail_y = from_y + (int)round( (to_y - from_y) * rel_pos );
+            
+            if(j != first_id) gatheredNoteInfo[j].subtail_amount = 0;
+        }
+    }
+};
+
+NoteRenderInfo::NoteRenderInfo(int tick, int x, int level, int tick_length, int sign, const bool selected, int pitch)
+{
+    // what we know before render pass 1
+    NoteRenderInfo::selected = selected;
+    NoteRenderInfo::tick = tick;
+    NoteRenderInfo::tick_length = tick_length;
+    NoteRenderInfo::x = x;
+    NoteRenderInfo::sign = sign;
+    NoteRenderInfo::level = level;
+    NoteRenderInfo::pitch = pitch;
+    
+    // what we will know after render pass 1
+    //unknown_duration = false;
+    instant_hit=false;
+    triplet = false;
+    dotted = false;
+    subtail_amount = 0;
+    y = -1;
+    tied_with_x = -1;
+    tie_up = false;
+    tail_type = TAIL_NONE;
+    
+    draw_tail = true;
+    
+    triplet_show_above = false;
+    triplet_x1 = -1;
+    triplet_x2 = -1;
+    drag_triplet_sign = false;
+    
+    beam_show_above = false;
+    beam_to_x = -1;
+    beam_to_y = -1;
+    beam = false;
+    
+    chord = false;
+    max_chord_y = -1;
+    min_chord_y = -1;
+    tail_y = -1;
+    min_chord_level=-1;
+    max_chord_level=-1;
 }
 void NoteRenderInfo::tieWith(NoteRenderInfo& renderInfo)
 {
@@ -90,9 +210,7 @@ int NoteRenderInfo::getTailX()
 }
 int NoteRenderInfo::getTailYFrom()
 {
-    //const int chord_tail_y = (chord ? (tail_type == TAIL_UP ? chord_y_max : chord_y_min) : -1);
-    
-    const int tail_y_base = getYBase(); //(chord_tail_y == -1 ? y : tail_y_from);
+    const int tail_y_base = getYBase();
     if(tail_type == TAIL_UP) return (tail_y_base + 3);
     else if(tail_type == TAIL_DOWN) return (tail_y_base + 6);
     else return -1;
@@ -149,7 +267,7 @@ void analyseNoteInfo( std::vector<NoteRenderInfo>& gatheredNoteInfo, ScoreEditor
      * is draw tails, triplet signs, etc. so at this point a chord of note behaves just
      * like a single note).
      */
-    for(int i=0; i<gatheredNoteInfo.size(); i++)
+    for(int i=0; i<(int)gatheredNoteInfo.size(); i++)
     {
         int start_tick_of_next_note = -1;
         int first_note_of_chord = -1;
@@ -166,12 +284,12 @@ void analyseNoteInfo( std::vector<NoteRenderInfo>& gatheredNoteInfo, ScoreEditor
         
         while(true) // FIXME - it should be checked whether there is a chord BEFORE entering the while loop. same for others below
         {
-            if(i+1<gatheredNoteInfo.size())
+            if(i+1<(int)gatheredNoteInfo.size())
             {
                 start_tick_of_next_note = gatheredNoteInfo[i+1].tick;
             }else start_tick_of_next_note=-1;
             
-            if(!(i<gatheredNoteInfo.size())) break;
+            if(!(i<(int)gatheredNoteInfo.size())) break;
             
             // check if we're in a chord (i.e. many notes that play at the same time). also check they have tails :
             // for instance wholes have no tails and thus there is no special processing to do on them.
@@ -240,7 +358,7 @@ void analyseNoteInfo( std::vector<NoteRenderInfo>& gatheredNoteInfo, ScoreEditor
                 gatheredNoteInfo[i] = summary;
                 
                 // now that we summarised concurrent notes into a single one, we can erase the other notes of the chord
-                assertExpr(i,<,gatheredNoteInfo.size());
+                assertExpr(i,<,(int)gatheredNoteInfo.size());
                 gatheredNoteInfo.erase( gatheredNoteInfo.begin()+first_note_of_chord, gatheredNoteInfo.begin()+i );
                 i = first_note_of_chord-2;
                 if(i<0) i=0;
@@ -335,7 +453,6 @@ void analyseNoteInfo( std::vector<NoteRenderInfo>& gatheredNoteInfo, ScoreEditor
                         for(int j=first_triplet; j<=i; j++)
                         {
                             gatheredNoteInfo[j].tail_type = ( gatheredNoteInfo[first_triplet].triplet_show_above ? TAIL_DOWN : TAIL_UP );
-                           // gatheredNoteInfo[j].triplet = false;
                             gatheredNoteInfo[j].drag_triplet_sign = false;
                         }
                     }
@@ -348,12 +465,10 @@ void analyseNoteInfo( std::vector<NoteRenderInfo>& gatheredNoteInfo, ScoreEditor
                     if(gatheredNoteInfo[first_triplet].triplet_show_above)
                     {
                         gatheredNoteInfo[first_triplet].triplet_y = min_level*y_step + editor->getEditorYStart() - editor->getYScrollInPixels() - 2;
-                        //if(gatheredNoteInfo[first_triplet].tail_y_from != -1) gatheredNoteInfo[first_triplet].triplet_y = gatheredNoteInfo[first_triplet].tail_y_from -2;
                     }
                     else
                     {
                         gatheredNoteInfo[first_triplet].triplet_y = max_level*y_step + editor->getEditorYStart() - editor->getYScrollInPixels();
-                        //if(gatheredNoteInfo[first_triplet].tail_y_from != -1) gatheredNoteInfo[first_triplet].triplet_y = gatheredNoteInfo[first_triplet].tail_y_from;
                     }
                     
                     gatheredNoteInfo[first_triplet].drag_triplet_sign = true;
@@ -383,8 +498,6 @@ void analyseNoteInfo( std::vector<NoteRenderInfo>& gatheredNoteInfo, ScoreEditor
         
         int subtail_amount = gatheredNoteInfo[i].subtail_amount;
         int first_of_serie = i;
-        int min_level = 999;
-        int max_level = -999;
         bool last_of_a_serie = false;
         
         int measure = getMeasureBar()->measureAtTick( gatheredNoteInfo[i].tick );
@@ -400,9 +513,11 @@ void analyseNoteInfo( std::vector<NoteRenderInfo>& gatheredNoteInfo, ScoreEditor
             
             if(!(i<visibleNoteAmount)) break;
             
-            // if notes are consecutive
-            if(start_tick_of_next_note != -1 and aboutEqual_tick(start_tick_of_next_note, gatheredNoteInfo[i].tick+gatheredNoteInfo[i].tick_length) and
-               gatheredNoteInfo[i+1].subtail_amount == subtail_amount and subtail_amount > 0);
+            // if notes are consecutive and of same length
+            if(start_tick_of_next_note != -1 and
+               aboutEqual_tick(start_tick_of_next_note, gatheredNoteInfo[i].tick+gatheredNoteInfo[i].tick_length) and
+               gatheredNoteInfo[i+1].subtail_amount == subtail_amount and subtail_amount > 0 and
+               gatheredNoteInfo[i+1].triplet == gatheredNoteInfo[i].triplet);
             else
             {
                 //notes are no more consecutive. it is likely a special action will be performed at the end of a serie
@@ -417,93 +532,17 @@ void analyseNoteInfo( std::vector<NoteRenderInfo>& gatheredNoteInfo, ScoreEditor
                 previous_measure = measure;
             }
             
-            // FIXME - not always right
-            const int num = getMeasureBar()->getTimeSigNumerator();
-            const int denom = getMeasureBar()->getTimeSigDenominator();
-            int max_amount_of_notes_beamed_toghether = 4;
-            
-            if(num == 3 and denom == 4) max_amount_of_notes_beamed_toghether = 2 * (int)(std::pow(2.0,subtail_amount-1));
-            else if((num == 6 and denom == 4) or (num == 6 and denom == 8)) max_amount_of_notes_beamed_toghether = 3 * (int)(std::pow(2.0,subtail_amount-1));
-            else max_amount_of_notes_beamed_toghether = num * (int)(std::pow(2.0,subtail_amount-1));
-            
-            if(gatheredNoteInfo[i].triplet) max_amount_of_notes_beamed_toghether=3;
-            
-            if(i - first_of_serie == max_amount_of_notes_beamed_toghether-1) last_of_a_serie = true;
-            
-            if(gatheredNoteInfo[i].chord)
-            {
-                if(gatheredNoteInfo[i].min_chord_level < min_level) min_level = gatheredNoteInfo[i].min_chord_level;
-                if(gatheredNoteInfo[i].max_chord_level > max_level) max_level = gatheredNoteInfo[i].max_chord_level;
-            }
-            else
-            {
-                const int level = converter->noteToLevel(gatheredNoteInfo[i].pitch);   
-                if(level < min_level) min_level = level;
-                if(level > max_level) max_level = level;
-            }
-
-            if(i != first_of_serie) gatheredNoteInfo[i].subtail_amount = 0;
-            
             // it's the last of a serie, perform actions
             if( last_of_a_serie)
             {
                 if(i>first_of_serie)
                 {
-                    // if nothing found (most likely meaning we only have one triplet note alone) use values from the first
-                    if(min_level == 999)  min_level = converter->noteToLevel(gatheredNoteInfo[first_of_serie].pitch);
-                    if(max_level == -999) max_level = converter->noteToLevel(gatheredNoteInfo[first_of_serie].pitch);
-                    
-                    const int mid_level = (int)round( (min_level + max_level)/2.0 );
-                    gatheredNoteInfo[first_of_serie].beam_show_above = (mid_level < converter->getMiddleCLevel()-5 ? false : true);
-                    gatheredNoteInfo[first_of_serie].beam = true;
-                    
-                    for(int j=first_of_serie; j<=i; j++)
-                    {
-                        // give correct tail type (up or down)
-                        gatheredNoteInfo[j].tail_type = ( gatheredNoteInfo[first_of_serie].beam_show_above ?  TAIL_UP : TAIL_DOWN );
-                    }
-                    
-                    const int last_tail_y_end = gatheredNoteInfo[i].getTailYTo();
-                    gatheredNoteInfo[first_of_serie].beam_to_x = gatheredNoteInfo[i].getTailX();
-                    
-                    if(gatheredNoteInfo[first_of_serie].beam_show_above)
-                    {
-                        // what's wrong is that it places highest level as though it was on last note but it may be on middle note
-                        const int min_level_y = min_level*y_step + editor->getEditorYStart() - editor->getYScrollInPixels() - 2;
-                        
-                        // choose y coords so that all notes are correctly in
-                        gatheredNoteInfo[first_of_serie].beam_to_y = std::min(min_level_y - 10, last_tail_y_end); // Y to
-                        if(gatheredNoteInfo[first_of_serie].getTailYFrom() > min_level_y - 25) gatheredNoteInfo[first_of_serie].tail_y = min_level_y - 25; // Y from
-                    }
-                    else
-                    {
-                        const int max_level_y = max_level*y_step + editor->getEditorYStart() - editor->getYScrollInPixels();
-                        
-                        // choose y coords so that all notes are correctly in
-                        gatheredNoteInfo[first_of_serie].beam_to_y = std::max(max_level_y + 10, last_tail_y_end); // Y to
-                        if(gatheredNoteInfo[first_of_serie].getTailYFrom() < max_level_y + 25) gatheredNoteInfo[first_of_serie].tail_y = max_level_y + 25; // Y from
-                    }
-                    
-                    // fix all note tails so they point in the right direction and have the correct height
-                    const int from_x = gatheredNoteInfo[first_of_serie].getTailX();
-                    const int from_y = gatheredNoteInfo[first_of_serie].getTailYTo();
-                    const int to_x = gatheredNoteInfo[first_of_serie].beam_to_x;
-                    const int to_y = gatheredNoteInfo[first_of_serie].beam_to_y;
-                    
-                    for(int j=first_of_serie; j<=i; j++)
-                    {
-                        // give correct tail height (so it doesn't end above or below beam line)
-                        // rel_pos will be 0 for first note of a beamed serie, and 1 for the last one
-                        const float rel_pos = (float)(gatheredNoteInfo[j].getTailX() - from_x) / (float)(to_x - from_x);
-                        gatheredNoteInfo[j].tail_y = from_y + (int)round( (to_y - from_y) * rel_pos );
-                    }
-                    
+                    BeamGroup beam(first_of_serie, i);
+                    beam.doBeam(gatheredNoteInfo, editor);
                 }
                 
                 // reset
                 first_of_serie = -1;
-                min_level = 999;
-                max_level = -999;
                 break;
             }
             

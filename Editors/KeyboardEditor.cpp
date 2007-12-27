@@ -197,7 +197,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     assert(sbArrowDrawable->image!=NULL);
     assert(sbBackgDrawable->image!=NULL);
-    assert(sbBarDrawable->image!=NULL);
+    assert(sbThumbDrawable->image!=NULL);
     assert(noteTrackDrawable->image!=NULL);
     //assert(noteTrackBackgDrawable->image!=NULL);
     

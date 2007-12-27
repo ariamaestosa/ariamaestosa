@@ -45,8 +45,36 @@ Drawable::Drawable(Image* image_arg)
     xflip=false;
     yflip=false;
     
+    delete_image = false;
+    
     if(image_arg!=NULL) setImage(image_arg);
     else image=NULL;
+}
+
+Drawable::Drawable(wxString imagePath)
+{
+    INIT_LEAK_CHECK();
+	
+    x=0;
+    y=0;
+    hotspotX=0;
+    hotspotY=0;
+    angle=0;
+    
+    xscale=1;
+    yscale=1;
+    
+    xflip=false;
+    yflip=false;
+    
+    delete_image = true;
+    
+    image = new Image(imagePath);
+}
+
+Drawable::~Drawable()
+{
+    if(delete_image) delete image;
 }
 
 void Drawable::setFlip(bool x, bool y)

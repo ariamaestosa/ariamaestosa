@@ -519,7 +519,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
     
     assert(sbArrowDrawable->image!=NULL);
     assert(sbBackgDrawable->image!=NULL);
-    assert(sbBarDrawable->image!=NULL);
+    assert(sbThumbDrawable->image!=NULL);
     
     glEnable(GL_SCISSOR_TEST);
     // glScissor doesn't seem to follow the coordinate system so this ends up in all kinds of weird code to map to my coord system (from_y going down)

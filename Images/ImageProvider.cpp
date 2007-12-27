@@ -20,196 +20,80 @@
 
 #include "wx/wx.h"
 
+#define _DECLARE_IMAGES_
+#include "Images/ImageProvider.h"
+#undef _DECLARE_IMAGES_
+
 namespace AriaMaestosa {
-	
-    // FIXME - merge Image and Drawable
-    
-	// note display
-    Image* noteTrackImg;
-    Drawable* noteTrackDrawable;
-    
-    // scrollbar
-    Image* sbArrowImg;
-    Image* sbArrowDownImg;
-    Image* sbBackgImg;
-    Image* sbBarImg;
-    
-    Drawable* sbArrowDrawable;
-    Drawable* sbBackgDrawable;
-    Drawable* sbBarDrawable;
-    
-    // track UI
-    Image* cornerImg;
-    Image* borderImg;
-    Image* whiteCornerImg;
-    Image* whiteBorderImg;
-    
-    Drawable* cornerDrawable;
-    Drawable* borderDrawable;
-    Drawable* whiteCornerDrawable;
-    Drawable* whiteBorderDrawable;
-    
-    // collapseDrawable
-    Image* collapseImg;
-    Image* expandImg;
-    Image* dockTrackImg;
-    
-    Drawable* collapseDrawable;
-    Drawable* dockTrackDrawable;
-    
-    // mute
-    Image* muteOnImg;
-    Image* muteOffImg;
-    
-    Drawable* muteDrawable;
-    
-    // combo box
-    Image* comboBorderImg;
-    Image* comboBodyImg;
-    Image* comboSelectImg;
-    
-    Drawable* comboBorderDrawable;
-    Drawable* comboBodyDrawable;
-    Drawable* comboSelectDrawable;
-    
-    // Editor modes
-    Image* guitar_viewImg;
-    Image* keyboard_viewImg;
-    Image* score_viewImg;
-    Image* drum_viewImg;
-    Image* controller_viewImg;
-    
-    Drawable* guitar_view;
-    Drawable* keyboard_view;
-    Drawable* score_view;
-    Drawable* drum_view;
-    Drawable* controller_view;
-    
-    Image* tabBorderImg;
-    Image* tabImg;
-    
-    Drawable* tabBorderDrawable;
-    Drawable* tabDrawable;
-	
-	// score
-	Image* keyGImg;
-    Drawable* keyG;
-	Image* keyFImg;
-    Drawable* keyF;
-	
-	Image* noteClosedImg;
-    Drawable* noteClosed;
-	
-	Image* noteOpenImg;
-    Drawable* noteOpen;
-	
-	Image* noteTailImg;
-    Drawable* noteTail;
-	
-	Image* sharpImg;
-    Drawable* sharpSign;
-	Image* flatImg;
-    Drawable* flatSign;
-	Image* naturalImg;
-    Drawable* naturalSign;
-	
-	Image* silence4Img;
-	Drawable* silence4;
-	Image* silence8Img;
-	Drawable* silence8;
-	
+
 namespace ImageProvider {
 	
 bool images_loaded = false;
 	
 void loadImages()
 {
-	
-	noteTrackImg=new Image(wxT("notetrack.png"));
+	// scrollbar
 	sbArrowImg=new Image(wxT("sb_arrow.png"));
 	sbArrowDownImg=new Image(wxT("sb_arrow_sel.png"));
-	sbBackgImg=new Image(wxT("sb_backg.png"));
-	sbBarImg=new Image(wxT("sb_thumb.tga"));
+	sbArrowDrawable = new Drawable(sbArrowImg);
+    sbBackgDrawable = new Drawable(wxT("sb_backg.png"));
+	sbThumbDrawable = new Drawable(wxT("sb_thumb.tga"));
+    
+	noteTrackDrawable = new Drawable(wxT("notetrack.png"));
 	
-	noteTrackDrawable=new Drawable(noteTrackImg);
-	sbArrowDrawable=new Drawable(sbArrowImg);
-	sbBackgDrawable=new Drawable(sbBackgImg);
-	sbBarDrawable=new Drawable(sbBarImg);
-	
-	cornerImg=new Image(wxT("corner.jpg"));
-	borderImg=new Image(wxT("border.jpg"));
-	whiteCornerImg=new Image(wxT("white_corner.png"));
-	whiteBorderImg=new Image(wxT("white_border.png"));
-	collapseImg=new Image(wxT("collapse.jpg"));
+	// track header buttons
+    collapseImg=new Image(wxT("collapse.jpg"));
 	expandImg=new Image(wxT("expand.jpg"));
-	dockTrackImg=new Image(wxT("dock.png"));
+    collapseDrawable = new Drawable( collapseImg);
+
 	muteOnImg=new Image(wxT("mute_on.png"));
 	muteOffImg=new Image(wxT("mute_off.png"));
-	comboBorderImg=new Image(wxT("combo_side.png"));
-	comboBodyImg=new Image(wxT("combo_body.png"));
-	comboSelectImg=new Image(wxT("combo_select.png"));
+	muteDrawable = new Drawable( muteOffImg);
+
+    dockTrackDrawable = new Drawable( wxT("dock.png"));
+    
+	guitar_view = new Drawable( wxT("guitar_view.jpg"));
+	keyboard_view = new Drawable( wxT("keyboard_view.jpg"));
+	score_view = new Drawable( wxT("score_view.jpg"));
+	drum_view = new Drawable( wxT("drum_view.png"));
+	controller_view = new Drawable( wxT("controller_view.jpg"));
+    
+    // track borders
+	cornerDrawable = new Drawable(wxT("corner.jpg"));
+	borderDrawable = new Drawable(wxT("border.jpg"));
+	whiteCornerDrawable = new Drawable(wxT("white_corner.png"));
+	whiteBorderDrawable = new Drawable( wxT("white_border.png"));
+
+    // combo
+	comboBorderDrawable = new Drawable( wxT("combo_side.png"));
+	comboBodyDrawable = new Drawable( wxT("combo_body.png"));
+	comboSelectDrawable = new Drawable( wxT("combo_select.png"));
 	
-	cornerDrawable=new Drawable(cornerImg);
-	borderDrawable=new Drawable(borderImg);
-	whiteCornerDrawable=new Drawable(whiteCornerImg);
-	whiteBorderDrawable=new Drawable( whiteBorderImg);
-	dockTrackDrawable=new Drawable( dockTrackImg);
-	collapseDrawable=new Drawable( collapseImg);
-	muteDrawable=new Drawable( muteOffImg);
-	comboBorderDrawable=new Drawable( comboBorderImg);
-	comboBodyDrawable=new Drawable( comboBodyImg);
-	comboSelectDrawable=new Drawable( comboSelectImg);
+    // document tabs
+	tabDrawable = new Drawable( wxT("tab_body.png"));
+	tabBorderDrawable = new Drawable( wxT("tab_side.png"));
 	
-	guitar_viewImg=new Image(wxT("guitar_view.jpg"));
-	keyboard_viewImg=new Image(wxT("keyboard_view.jpg"));
-	score_viewImg=new Image(wxT("score_view.jpg"));
-	drum_viewImg=new Image(wxT("drum_view.png"));
-	controller_viewImg=new Image(wxT("controller_view.jpg"));
-	
-	guitar_view=new Drawable( guitar_viewImg);
-	keyboard_view=new Drawable( keyboard_viewImg);
-	score_view=new Drawable( score_viewImg);
-	drum_view=new Drawable( drum_viewImg);
-	controller_view=new Drawable( controller_viewImg);
-	
-	tabImg=new Image(wxT("tab_body.png"));
-	tabBorderImg=new Image(wxT("tab_side.png"));
-	tabDrawable=new Drawable( tabImg);
-	tabBorderDrawable=new Drawable( tabBorderImg);
-	
-	keyGImg=new Image(wxT("score/keyG.png"));
-	keyG=new Drawable(keyGImg);
+    // score
+	keyG = new Drawable(wxT("score/keyG.png"));
 	keyG -> setHotspot( 15, 33 );
 		
-	keyFImg=new Image(wxT("score/FKey.png"));
-	keyF=new Drawable(keyFImg);
+	keyF = new Drawable(wxT("score/FKey.png"));
 	keyF -> setHotspot( 7, 13 );
 	
-	noteClosedImg = new Image(wxT("score/noteclosed.png"));
-    noteClosed = new Drawable(noteClosedImg);
+    noteClosed = new Drawable(wxT("score/noteclosed.png"));
+    noteOpen = new Drawable(wxT("score/noteopen.png"));
+    noteTail = new Drawable(wxT("score/notetail.png"));
+    sharpSign = new Drawable(wxT("score/sharp.png"));
+	sharpSign -> setHotspot( sharpSign->image->width/2, sharpSign->image->height/2 );
 	
-	noteOpenImg = new Image(wxT("score/noteopen.png"));
-    noteOpen = new Drawable(noteOpenImg);
+    naturalSign = new Drawable(wxT("score/natural.png"));
+	naturalSign -> setHotspot( naturalSign->image->width/2, naturalSign->image->height/2 );
 	
-	noteTailImg = new Image(wxT("score/notetail.png"));
-    noteTail = new Drawable(noteTailImg);
-	
-	sharpImg = new Image(wxT("score/sharp.png"));
-    sharpSign = new Drawable(sharpImg);
-	sharpSign -> setHotspot( sharpImg->width/2, sharpImg->height/2 );
-	
-	naturalImg = new Image(wxT("score/natural.png"));
-    naturalSign = new Drawable(naturalImg);
-	naturalSign -> setHotspot( naturalImg->width/2, naturalImg->height/2 );
-	
-	flatImg = new Image(wxT("score/flat.png"));
-    flatSign = new Drawable(flatImg);
+    flatSign = new Drawable(wxT("score/flat.png"));
 	flatSign -> setHotspot( 2, 12 );
 	
-	silence4Img = new Image(wxT("score/silence4.png"));
-    silence4 = new Drawable(silence4Img);
-	silence8Img = new Image(wxT("score/silence8.png"));
-    silence8 = new Drawable(silence8Img);
+    silence4 = new Drawable(wxT("score/silence4.png"));
+    silence8 = new Drawable(wxT("score/silence8.png"));
 	
 	images_loaded = true;
 }
@@ -220,35 +104,21 @@ void unloadImages()
 	if(!images_loaded) return;
 	images_loaded = false;
 
-	delete noteTrackImg; noteTrackImg=NULL;
 	delete sbArrowImg;
 	delete sbArrowDownImg;
-	delete sbBackgImg;
-	delete sbBarImg;
-	
-	delete keyGImg;
-	delete keyG;
+
 	
 	delete noteTrackDrawable;
 	delete sbArrowDrawable;
 	delete sbBackgDrawable;
-	delete sbBarDrawable;
+	delete sbThumbDrawable;
 	
-	delete cornerImg;
-	delete borderImg;
-	delete whiteCornerImg;
-	delete whiteBorderImg;
 	delete collapseImg;
 	delete expandImg;
+    
 	delete muteOnImg;
 	delete muteOffImg;
-	delete comboBorderImg;
-	delete comboBodyImg;
-	delete comboSelectImg;
-	delete dockTrackImg;
 	
-	delete tabImg;
-	delete tabBorderImg;
 	delete tabDrawable;
 	delete tabBorderDrawable;
 	
@@ -263,44 +133,25 @@ void unloadImages()
 	delete comboSelectDrawable;
 	delete dockTrackDrawable;
 	
-	delete guitar_viewImg;
-	delete keyboard_viewImg;
-	delete score_viewImg;
-	delete controller_viewImg;
-	delete drum_viewImg;
-	
 	delete guitar_view;
 	delete drum_view;
 	delete keyboard_view;
 	delete score_view;
 	delete controller_view;
 	
-	
-	delete noteClosedImg;
     delete noteClosed;
-	delete noteOpenImg;
     delete noteOpen;
-	delete noteTailImg;
     delete noteTail;
 	
-	delete sharpImg;
     delete sharpSign;
-	delete flatImg;
     delete flatSign;
-	delete naturalImg;
     delete naturalSign;
 	
-	delete keyFImg;
     delete keyF;
-	
-	delete silence4Img;
+	delete keyG;
+    
     delete silence4;
-	delete silence8Img;
     delete silence8;
-	
-#ifdef _MORE_DEBUG_CHECKS
-	std::cout << "~ImageProvider END" << std::endl;
-#endif
 	
 }
 

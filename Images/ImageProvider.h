@@ -17,104 +17,75 @@
 #ifndef _imageprovider_
 #define _imageprovider_
 
+#ifdef _DECLARE_IMAGES_
+#define IMG_DEC
+#else
+#define IMG_DEC extern
+#endif
+
 namespace AriaMaestosa {
 	
-class Image; // forward
 class Drawable;
+class Image;
 
 // note display
-extern Image* noteTrackImg;
-extern Drawable* noteTrackDrawable;
+IMG_DEC Drawable* noteTrackDrawable;
 
 // scrollbar
-extern Image* sbArrowImg;
-extern Image* sbArrowDownImg;
-extern Image* sbBackgImg;
-extern Image* sbBarImg;
-
-extern Drawable* sbArrowDrawable;
-extern Drawable* sbBackgDrawable;
-extern Drawable* sbBarDrawable;
+IMG_DEC Image* sbArrowImg;
+IMG_DEC Image* sbArrowDownImg;
+IMG_DEC Drawable* sbArrowDrawable;
+IMG_DEC Drawable* sbBackgDrawable;
+IMG_DEC Drawable* sbThumbDrawable;
 
 // track UI
-extern Image* cornerImg;
-extern Image* borderImg;
-extern Image* whiteCornerImg;
-extern Image* whiteBorderImg;
+IMG_DEC Drawable* cornerDrawable;
+IMG_DEC Drawable* borderDrawable;
+IMG_DEC Drawable* whiteCornerDrawable;
+IMG_DEC Drawable* whiteBorderDrawable;
 
-extern Drawable* cornerDrawable;
-extern Drawable* borderDrawable;
-extern Drawable* whiteCornerDrawable;
-extern Drawable* whiteBorderDrawable;
+// collapse
+IMG_DEC Image* collapseImg;
+IMG_DEC Image* expandImg;
 
-// collapseDrawable
-extern Image* collapseImg;
-extern Image* expandImg;
-extern Image* dockTrackImg;
+IMG_DEC Drawable* collapseDrawable;
 
-extern Drawable* collapseDrawable;
-extern Drawable* dockTrackDrawable;
+// dock
+IMG_DEC Drawable* dockTrackDrawable;
 
 // mute
-extern Image* muteOnImg;
-extern Image* muteOffImg;
+IMG_DEC Image* muteOnImg;
+IMG_DEC Image* muteOffImg;
 
-extern Drawable* muteDrawable;
+IMG_DEC Drawable* muteDrawable;
 
 // combo box
-extern Image* comboBorderImg;
-extern Image* comboBodyImg;
-extern Image* comboSelectImg;
-
-extern Drawable* comboBorderDrawable;
-extern Drawable* comboBodyDrawable;
-extern Drawable* comboSelectDrawable;
+IMG_DEC Drawable* comboBorderDrawable;
+IMG_DEC Drawable* comboBodyDrawable;
+IMG_DEC Drawable* comboSelectDrawable;
 
 // Editor modes
-extern Image* guitar_viewImg;
-extern Image* keyboard_viewImg;
-extern Image* score_viewImg;
-extern Image* drum_viewImg;
-extern Image* controller_viewImg;
+IMG_DEC Drawable* guitar_view;
+IMG_DEC Drawable* keyboard_view;
+IMG_DEC Drawable* score_view;
+IMG_DEC Drawable* drum_view;
+IMG_DEC Drawable* controller_view;
 
-extern Drawable* guitar_view;
-extern Drawable* keyboard_view;
-extern Drawable* score_view;
-extern Drawable* drum_view;
-extern Drawable* controller_view;
-
-extern Image* tabBorderImg;
-extern Image* tabImg;
-
-extern Drawable* tabBorderDrawable;
-extern Drawable* tabDrawable;
+// document tabs
+IMG_DEC Drawable* tabBorderDrawable;
+IMG_DEC Drawable* tabDrawable;
 
 // score
-extern Image* keyGImg;
-extern Drawable* keyG;
-extern Image* keyFImg;
-extern Drawable* keyF;
-
-extern Image* noteClosedImg;
-extern Drawable* noteClosed;
-
-extern Image* noteOpenImg;
-extern Drawable* noteOpen;
-
-extern Image* noteTailImg;
-extern Drawable* noteTail;
-
-extern Image* sharpImg;
-extern Drawable* sharpSign;
-extern Image* flatImg;
-extern Drawable* flatSign;
-extern Image* naturalImg;
-extern Drawable* naturalSign;
-
-extern Image* silence4Img;
-extern Drawable* silence4;
-extern Image* silence8Img;
-extern Drawable* silence8;
+IMG_DEC Drawable* keyG;
+IMG_DEC Drawable* keyF;
+IMG_DEC Drawable* noteClosed;
+IMG_DEC Drawable* noteOpen;
+IMG_DEC Drawable* noteTail;
+IMG_DEC Drawable* sharpSign;
+IMG_DEC Drawable* flatSign;
+IMG_DEC Drawable* naturalSign;
+IMG_DEC Drawable* silence4;
+IMG_DEC Drawable* silence8;
 
 namespace ImageProvider {
     

@@ -89,8 +89,6 @@ NOTE: sorry, this is very raw :)
  
  ************************* BUGS: *************************
   
- - unsure note length is okay with measure != 4/4. check forumlae on wikipedia : http://en.wikipedia.org/wiki/Modern_musical_symbols
-
  ## CAN'T REPRODUCE:
  ## crash when opening file by double-clicking on it and aria is currently closed (can't reproduce)
  ## switching to score editor while playback causes crash (can't reproduce)
@@ -105,6 +103,7 @@ NOTE: sorry, this is very raw :)
 + linux: no need to install icns files
 + linux: exporting to audio via timidity still buggy. switch away from wxExecute? give better feedback.
 
++ unsure note length is okay with measure != 4/4. check forumlae on wikipedia : http://en.wikipedia.org/wiki/Modern_musical_symbols
 + beaming choose a maximal number of notes per beam (e.g. 4 1/8 in 4/4 measures) but if you put like 5 or 6 of them in a row,
   it doesn't always do wise choices regarding wich ones should be beamed (i.e. it doesn't consider beats)
 + loading a key from a file probably won't appear in keyboard editor
@@ -114,6 +113,12 @@ NOTE: sorry, this is very raw :)
 
 + rearrange notes doesn't always undo correctly
 + note splitting should be wiser (like silences... complete beat)
+
+
+- error at startup (quicktime will not play dummy file to init it?)
+        error:
+        -->Mac OS error -208
+        -->(null)
 
 - render a bit less often to be easier on processor
 - probably too many paint events (duplicate ones at times) track and remove them

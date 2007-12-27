@@ -899,7 +899,7 @@ void ScoreEditor::renderSilence(const int tick, const int tick_length)
 void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 						 RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {
-	if(halfh == -1) halfh = noteOpenImg->height/2;
+	if(halfh == -1) halfh = noteOpen->image->height/2;
 
     if(!ImageProvider::imagesLoaded()) return;
     const int yscroll = getYScrollInPixels();
@@ -1506,7 +1506,7 @@ int ScoreEditor::getYScrollInPixels()
 
 NoteSearchResult ScoreEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 {
-	const int halfh = noteOpenImg->height/2;
+	const int halfh = noteOpen->image->height/2;
 	const int noteAmount = track->getNoteAmount();
 	const int mx = x.getRelativeTo(WINDOW);
 	
@@ -1602,7 +1602,7 @@ void ScoreEditor::moveNote(Note& note, const int relativeX, const int relativeY)
 
 void ScoreEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current, RelativeXCoord& mousex_initial, int mousey_initial)
 {
-	const int halfh = noteOpenImg->height/2;
+	const int halfh = noteOpen->image->height/2;
 	const int noteAmount = track->getNoteAmount();
 	const int mxc = mousex_current.getRelativeTo(WINDOW);
 	const int mxi = mousex_initial.getRelativeTo(WINDOW);
