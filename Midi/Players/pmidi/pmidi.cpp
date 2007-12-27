@@ -49,7 +49,7 @@
 #include <signal.h>
 #include <iostream>
 #include <pthread.h>
-#include <stdlib.h>
+#include <stdio.h>
 
 #include "wx/wx.h"
 #include "wx/utils.h"
@@ -140,7 +140,6 @@ bool playSelected(Sequence* sequence, /*out*/int* startTick)
 		return true;
 }
 
-
 void exportAudioFile(Sequence* sequence, wxString filepath)
 {
 	//process = new wxMyProcess(/ wxPROCESS_DEFAULT );
@@ -150,18 +149,42 @@ void exportAudioFile(Sequence* sequence, wxString filepath)
 	wxString tempMidiFile = filepath.BeforeLast('/') + wxT("/aria_temp_file.mid");
 
 	AriaMaestosa::PlatformMidiManager::exportMidiFile(sequence, tempMidiFile);
-	//wxString cmd = wxT("timidity -Ow -o ") + filepath + wxT(" ") + tempMidiFile;
-	wxString cmd = wxT("timidity -Ow -o \"") + filepath + wxT("\" \"") + tempMidiFile + wxT("\"");
+	wxString cmd = wxT("timidity -Ow -o \"") + filepath + wxT("\" \"") + tempMidiFile + wxT("\" -idt");
 	std::cout << "executing " << toCString( cmd ) << std::endl;
 
-    int status = system( toCString(cmd) );
+    //int status = system( toCString(cmd) );
 
-	std::cout << "DONE!" << std::endl;
-	if(status != 0)
+    FILE * command_output;
+    char output[128];
+    int amount_read = 1;
+  
+std::cout << "-----------------\ntimidity output\n-----------------\n";
+    try
     {
-		wxMessageBox( _("An error occured while exporting audio file.") );
-	}
-	
+        command_output = popen(toCString(cmd), "r");
+        if(command_output == NULL) throw;
+
+        while(amount_read > 0)
+        {
+            amount_read = fread(output, 1, 127, command_output);
+            if(amount_read <= 0) break;
+            else
+            {
+                output[amount_read] = '\0';
+                std::cout << output;
+                fflush(stdout);
+            }
+        }
+    }
+    catch(...)
+    {
+        wxMessageBox( _("An error occured while exporting audio file.") );
+        return;
+    }
+
+    std::cout << "\n-----------------" << std::endl;
+    pclose(command_output);
+
 	WaitWindow::hide();
 	wxRemoveFile(tempMidiFile);
 }
