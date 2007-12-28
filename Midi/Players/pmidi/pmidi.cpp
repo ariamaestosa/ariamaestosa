@@ -114,8 +114,6 @@ void* add_events_func( void *ptr )
 }
 
 // --- track playback thread ---
-//int track_playback_thread_id;
-//pthread_t track_playback_thread;
 void* track_playback_func( void *ptr )
 {
      AriaMaestosa::trackPlayback_thread_loop();
@@ -123,13 +121,9 @@ void* track_playback_func( void *ptr )
 }
 
 // --- export to audio thread --
-//int audio_export_thread_id;
-//pthread_t audio_export_thread;
 wxString export_audio_filepath;
 void* export_audio_func( void *ptr )
 {
-     	//process = new wxMyProcess(/ wxPROCESS_DEFAULT );
-	// e.g. timidity -Ow -o song.wav song.mid
 
     // the file is exported to midi, and then we tell timidity to make it into wav
 	wxString tempMidiFile = export_audio_filepath.BeforeLast('/') + wxT("/aria_temp_file.mid");
@@ -138,12 +132,10 @@ void* export_audio_func( void *ptr )
 	wxString cmd = wxT("timidity -Ow -o \"") + export_audio_filepath + wxT("\" \"") + tempMidiFile + wxT("\" -idt");
 	std::cout << "executing " << toCString( cmd ) << std::endl;
 
-    //int status = system( toCString(cmd) );
-
     FILE * command_output;
     char output[128];
     int amount_read = 1;
-  
+
     std::cout << "-----------------\ntimidity output\n-----------------\n";
     try
     {
@@ -163,18 +155,17 @@ void* export_audio_func( void *ptr )
     }
     catch(...)
     {
-        //wxMessageBox( _("An error occured while exporting audio file.") );
         std::cout << "An error occured while exporting audio file." << std::endl;
-        // FIXME - give visual feedback
         return (void*)NULL;
     }
 
     std::cout << "\n-----------------" << std::endl;
     pclose(command_output);
 
+    // send hide progress window event
     MAKE_HIDE_PROGRESSBAR_EVENT(event);
     getMainFrame()->GetEventHandler()->AddPendingEvent(event);
-	//WaitWindow::hide();
+
 	wxRemoveFile(tempMidiFile); // FIXME - thread safe?
 
     return (void*)NULL;

@@ -23,12 +23,29 @@
 
 #include "wx/wx.h"
 
-namespace AriaMaestosa {
+namespace AriaMaestosa
+{
+class WaitWindowClass;
+
+    namespace WaitWindow
+    {
+        WaitWindowClass* waitWindow=NULL;
+    }
+
+class PulseNotifier : public wxTimer
+{
+public:
+    PulseNotifier();
+    void Notify();
+    void start();
+};
 
 class WaitWindowClass : public wxDialog
 {
 
 	DECLARE_LEAK_CHECK();
+
+    PulseNotifier pulseNotifier;
 
     wxBoxSizer* boxSizer;
     wxStaticText* label;
@@ -43,11 +60,16 @@ public:
 		INIT_LEAK_CHECK();
 
         boxSizer=new wxBoxSizer(wxVERTICAL);
+        WaitWindowClass::progress_known = progress_known;
 
         // gauge
         progress = new wxGauge( this, wxID_ANY, 100/*, wxDefaultPosition, wxSize(200, 15)*/ );
         if(progress_known) progress->SetValue(0);
-        else progress->Pulse();
+        else
+        {
+            pulseNotifier.start();
+            //progress->Pulse();
+        }
         boxSizer->Add( progress, 1, wxEXPAND | wxALL, 10 );
 
         // label
@@ -62,6 +84,11 @@ public:
         wxSize gaugeSize = progress->GetSize();
         gaugeSize.x = windowSize.x - 20;
         progress->SetSize(gaugeSize);
+    }
+
+    void pulse()
+    {
+        progress->Pulse();
     }
 
     void setProgress(int val)
@@ -79,14 +106,13 @@ public:
 
     void hide()
 	{
+	    if(progress_known) pulseNotifier.Stop();
         wxDialog::Hide();
     }
 
 };
 
 namespace WaitWindow {
-
-    WaitWindowClass* waitWindow=NULL;
 
     void show(wxString message, bool progress_known)
 	{
@@ -108,6 +134,20 @@ namespace WaitWindow {
 		waitWindow->Destroy();
     }
 
+}
+
+PulseNotifier::PulseNotifier() : wxTimer()
+{
+}
+
+void PulseNotifier::Notify()
+{
+    if(WaitWindow::waitWindow != NULL) WaitWindow::waitWindow->pulse();
+}
+
+void PulseNotifier::start()
+{
+    wxTimer::Start(100);
 }
 
 }

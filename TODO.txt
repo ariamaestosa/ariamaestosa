@@ -98,10 +98,11 @@ NOTE: sorry, this is very raw :)
  ## crash when emptying tempo in control view [reported, not tested] 
  
 * copy/paste in controller mode (or at least disable them!) 
+* OS X : run export to audio in a thread, test animated Pulse()
 
 + linux: scons install fails from SVN because docs are not found
 + linux: no need to install icns files
-+ linux: exporting to audio via timidity still buggy. switch away from wxExecute? give better feedback.
+- linux: exporting to audio via timidity : give better feedback about progression?
 
 + unsure note length is okay with measure != 4/4. check forumlae on wikipedia : http://en.wikipedia.org/wiki/Modern_musical_symbols
 + beaming choose a maximal number of notes per beam (e.g. 4 1/8 in 4/4 measures) but if you put like 5 or 6 of them in a row,
