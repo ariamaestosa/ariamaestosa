@@ -95,9 +95,10 @@ namespace AriaMaestosa
 					if(tick<from or tick>to) continue; // this event is not concerned by selection
 					
 					removedControlEvents.push_back( track->sequence->tempoEvents.get(n) );
-					track->sequence->tempoEvents.remove(n);
-					n--;
+					track->sequence->tempoEvents.markToBeRemoved(n);
+					//n--;
 				}//next
+                track->sequence->tempoEvents.removeMarked();
 			}
 			
 		}

@@ -1,4 +1,5 @@
  1.1b6
+- fixed crash when removing tempo events
 - made it easier to trigger tuning picker in guitar editor
 - drum editor : selection now works if click/drag starts on black section header
 - more improvements to lightweight vertical scrollbar
