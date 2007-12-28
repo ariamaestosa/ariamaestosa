@@ -109,6 +109,13 @@ enum IDs
 	MENU_TRACK_REMOVE
 };
 
+
+// events useful if you need to show a
+// progress bar from another thread
+DEFINE_EVENT_TYPE(wxEVT_SHOW_WAIT_WINDOW)
+DEFINE_EVENT_TYPE(wxEVT_UPDATE_WAIT_WINDOW)
+DEFINE_EVENT_TYPE(wxEVT_HIDE_WAIT_WINDOW)
+
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
 
 EVT_SET_FOCUS(MainFrame::onFocus)
@@ -190,11 +197,13 @@ EVT_MENU(wxID_HELP, MainFrame::menuEvent_manual)
 
 EVT_COMMAND  (100000, wxEVT_DESTROY_VOLUME_SLIDER, MainFrame::evt_freeVolumeSlider)
 
+// events useful if you need to show a
+// progress bar from another thread
+EVT_COMMAND  (100001, wxEVT_SHOW_WAIT_WINDOW, MainFrame::evt_showWaitWindow)
+EVT_COMMAND  (100002, wxEVT_UPDATE_WAIT_WINDOW, MainFrame::evt_updateWaitWindow)
+EVT_COMMAND  (100003, wxEVT_HIDE_WAIT_WINDOW, MainFrame::evt_hideWaitWindow)
+
 END_EVENT_TABLE()
-
-
-
-
 
 MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(100,100), wxSize(800,600),
 								 wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCAPTION)
@@ -585,13 +594,6 @@ void MainFrame::menuEvent_exportmidi(wxCommandEvent& evt)
 	{
 		wxMessageBox( _("Sorry, failed to export midi file."));
 	}
-/*	
-        // I think it should work with my latest OpenGl changes. To be tested.
-	// FIXME - to work around a GTK bug. might also a bug with my graphics drivers, unsure.
-#ifdef __WXGTK__
-	glPane->render();
-#endif
- */
 }
 
 void MainFrame::menuEvent_exportSampledAudio(wxCommandEvent& evt)
@@ -618,8 +620,11 @@ void MainFrame::menuEvent_exportSampledAudio(wxCommandEvent& evt)
 	}
 
 	// write data
-    WaitWindow::show( _("Please wait while audio file is being generated.\n\nDepending on the length of your file,\nthis can take several minutes.") );
-	wxYield();
+    //WaitWindow::show( _("Please wait while audio file is being generated.\n\nDepending on the length of your file,\nthis can take several minutes.") );
+	//wxYield(); // FIXME - find a better way
+
+    MAKE_SHOW_PROGRESSBAR_EVENT( event, _("Please wait while audio file is being generated.\n\nDepending on the length of your file,\nthis can take several minutes."), false );
+    GetEventHandler()->AddPendingEvent(event);
 
 	std::cout << "export audio file " << toCString(audioFilePath) << std::endl;
 	PlatformMidiManager::exportAudioFile( getCurrentSequence(), audioFilePath );
@@ -1699,5 +1704,25 @@ MainFrame::~MainFrame()
 #endif
 
 }
+
+/*
+wxCommandEvent event( wxEVT_DESTROY_VOLUME_SLIDER, 100000 );
+	getMainFrame()->GetEventHandler()->AddPendingEvent( event );
+
+event::SetInt/GetInt/SetString/GetString
+*/
+void MainFrame::evt_showWaitWindow(wxCommandEvent& evt)
+{
+    WaitWindow::show( evt.GetString(), evt.GetInt() );
+}
+void MainFrame::evt_updateWaitWindow(wxCommandEvent& evt)
+{
+    WaitWindow::setProgress( evt.GetInt() );
+}
+void MainFrame::evt_hideWaitWindow(wxCommandEvent& evt)
+{
+    WaitWindow::hide();
+}
+
 
 }

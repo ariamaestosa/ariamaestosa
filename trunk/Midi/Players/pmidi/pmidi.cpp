@@ -55,6 +55,8 @@
 #include "wx/utils.h"
 #include "wx/process.h"
 
+// FIXME - this whole player is a total mess
+
 namespace AriaMaestosa
 {
 MidiContext* context;
@@ -78,9 +80,30 @@ int lastPlayedNote = -1, lastChannel;
 
 int songLengthInTicks;
 
-int  add_events_thread_id, track_playback_thread_id;
-pthread_t add_events_thread, track_playback_thread;
+class MyPThread
+{
+    int id;
+    pthread_t thread;
+  public:
+    MyPThread(){}
 
+    void runFunction(void* (*func)(void*) )
+    {
+        id = pthread_create( &thread, NULL, func, (void*)NULL);
+    }
+};
+
+
+namespace threads
+{
+MyPThread add_events;
+MyPThread track_playback;
+MyPThread export_audio;
+}
+
+// -- add events then play thread ---
+//int  add_events_thread_id;
+//pthread_t add_events_thread;
 char* data;
 int datalength = -1;
 
@@ -89,10 +112,78 @@ void* add_events_func( void *ptr )
      AriaMaestosa::prepareAlsaThenPlay(data, datalength);
      return (void*)NULL;
 }
+
+// --- track playback thread ---
+//int track_playback_thread_id;
+//pthread_t track_playback_thread;
 void* track_playback_func( void *ptr )
 {
      AriaMaestosa::trackPlayback_thread_loop();
      return (void*)NULL;
+}
+
+// --- export to audio thread --
+//int audio_export_thread_id;
+//pthread_t audio_export_thread;
+wxString export_audio_filepath;
+void* export_audio_func( void *ptr )
+{
+     	//process = new wxMyProcess(/ wxPROCESS_DEFAULT );
+	// e.g. timidity -Ow -o song.wav song.mid
+
+    // the file is exported to midi, and then we tell timidity to make it into wav
+	wxString tempMidiFile = export_audio_filepath.BeforeLast('/') + wxT("/aria_temp_file.mid");
+
+	AriaMaestosa::PlatformMidiManager::exportMidiFile(sequence, tempMidiFile);
+	wxString cmd = wxT("timidity -Ow -o \"") + export_audio_filepath + wxT("\" \"") + tempMidiFile + wxT("\" -idt");
+	std::cout << "executing " << toCString( cmd ) << std::endl;
+
+    //int status = system( toCString(cmd) );
+
+    FILE * command_output;
+    char output[128];
+    int amount_read = 1;
+  
+    std::cout << "-----------------\ntimidity output\n-----------------\n";
+    try
+    {
+        command_output = popen(toCString(cmd), "r");
+        if(command_output == NULL) throw;
+
+        while(amount_read > 0)
+        {
+            amount_read = fread(output, 1, 127, command_output);
+            if(amount_read <= 0) break;
+            else
+            {
+                output[amount_read] = '\0';
+                std::cout << output << std::endl;
+            }
+        }
+    }
+    catch(...)
+    {
+        //wxMessageBox( _("An error occured while exporting audio file.") );
+        std::cout << "An error occured while exporting audio file." << std::endl;
+        // FIXME - give visual feedback
+        return (void*)NULL;
+    }
+
+    std::cout << "\n-----------------" << std::endl;
+    pclose(command_output);
+
+    MAKE_HIDE_PROGRESSBAR_EVENT(event);
+    getMainFrame()->GetEventHandler()->AddPendingEvent(event);
+	//WaitWindow::hide();
+	wxRemoveFile(tempMidiFile); // FIXME - thread safe?
+
+    return (void*)NULL;
+}
+void exportAudioFile(Sequence* sequence, wxString filepath)
+{
+    PlatformMidiManager::sequence = sequence;
+    PlatformMidiManager::export_audio_filepath = filepath;
+    threads::export_audio.runFunction( &export_audio_func );
 }
 
 bool playSequence(Sequence* sequence, /*out*/int* startTick)
@@ -110,8 +201,10 @@ bool playSequence(Sequence* sequence, /*out*/int* startTick)
 		stored_songLength = songLengthInTicks + sequence->ticksPerBeat();
 
 		// start in a new thread as to not block the UI during playback
-		add_events_thread_id = pthread_create( &add_events_thread, NULL,
-                                                add_events_func, (void*) NULL);
+		//add_events_thread_id = pthread_create( &add_events_thread, NULL,
+        //                                        add_events_func, (void*) NULL);
+
+        threads::add_events.runFunction(&add_events_func);
 
         context->timerStarted = true;
 		return true;
@@ -133,60 +226,12 @@ bool playSelected(Sequence* sequence, /*out*/int* startTick)
 		stored_songLength = songLengthInTicks + sequence->ticksPerBeat();
 
 		// start in a new thread as to not block the UI during playback
-		add_events_thread_id = pthread_create( &add_events_thread, NULL,
-                                                add_events_func, (void*) NULL);
+		//add_events_thread_id = pthread_create( &add_events_thread, NULL,
+        //                                        add_events_func, (void*) NULL);
+        threads::add_events.runFunction(&add_events_func);
 
         context->timerStarted = true;
 		return true;
-}
-
-void exportAudioFile(Sequence* sequence, wxString filepath)
-{
-	//process = new wxMyProcess(/ wxPROCESS_DEFAULT );
-	// e.g. timidity -Ow -o song.wav song.mid
-
-    // the file is exported to midi, and then we tell timidity to make it into wav
-	wxString tempMidiFile = filepath.BeforeLast('/') + wxT("/aria_temp_file.mid");
-
-	AriaMaestosa::PlatformMidiManager::exportMidiFile(sequence, tempMidiFile);
-	wxString cmd = wxT("timidity -Ow -o \"") + filepath + wxT("\" \"") + tempMidiFile + wxT("\" -idt");
-	std::cout << "executing " << toCString( cmd ) << std::endl;
-
-    //int status = system( toCString(cmd) );
-
-    FILE * command_output;
-    char output[128];
-    int amount_read = 1;
-  
-std::cout << "-----------------\ntimidity output\n-----------------\n";
-    try
-    {
-        command_output = popen(toCString(cmd), "r");
-        if(command_output == NULL) throw;
-
-        while(amount_read > 0)
-        {
-            amount_read = fread(output, 1, 127, command_output);
-            if(amount_read <= 0) break;
-            else
-            {
-                output[amount_read] = '\0';
-                std::cout << output;
-                fflush(stdout);
-            }
-        }
-    }
-    catch(...)
-    {
-        wxMessageBox( _("An error occured while exporting audio file.") );
-        return;
-    }
-
-    std::cout << "\n-----------------" << std::endl;
-    pclose(command_output);
-
-	WaitWindow::hide();
-	wxRemoveFile(tempMidiFile);
 }
 
 bool exportMidiFile(Sequence* sequence, wxString filepath)
@@ -364,9 +409,10 @@ void playMidiData(seq_context_t *ctxp, char *data, int length)
     PlatformMidiManager::currentTick=0;
 
     // create the thread that takes care of tracking playback position
-    PlatformMidiManager::track_playback_thread_id =
-    pthread_create( &PlatformMidiManager::track_playback_thread, NULL,
-    PlatformMidiManager::track_playback_func, (void*) NULL);
+    //PlatformMidiManager::track_playback_thread_id =
+    //pthread_create( &PlatformMidiManager::track_playback_thread, NULL,
+    //PlatformMidiManager::track_playback_func, (void*) NULL);
+    PlatformMidiManager::threads::track_playback.runFunction(&PlatformMidiManager::track_playback_func);
 
     while ((event = md_sequence_next(seq)) != NULL)
     {

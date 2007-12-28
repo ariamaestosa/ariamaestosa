@@ -188,7 +188,7 @@ void VolumeSlider::enterPressed(wxCommandEvent& evt)
 {
         
         if(!valueText->GetValue().IsNumber())
-	{
+	    {
             wxBell();
             const int newValue = slider->GetValue();
             char buffer[3];
