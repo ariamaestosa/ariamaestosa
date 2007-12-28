@@ -55,6 +55,16 @@ class VolumeSlider;
 class TuningPicker;
 class KeyPicker;
 
+// events useful if you need to show a
+// progress bar from another thread
+DECLARE_EVENT_TYPE(wxEVT_SHOW_WAIT_WINDOW, -1)
+DECLARE_EVENT_TYPE(wxEVT_UPDATE_WAIT_WINDOW, -1)
+DECLARE_EVENT_TYPE(wxEVT_HIDE_WAIT_WINDOW, -1)
+
+#define MAKE_SHOW_PROGRESSBAR_EVENT(eventname, message, time_known) wxCommandEvent eventname( wxEVT_SHOW_WAIT_WINDOW, 100001 ); eventname.SetString(message); eventname.SetInt(time_known)
+#define MAKE_UPDATE_PROGRESSBAR_EVENT(eventname, progress) wxCommandEvent eventname( wxEVT_UPDATE_WAIT_WINDOW, 100002 ); eventname.SetInt(progress)
+#define MAKE_HIDE_PROGRESSBAR_EVENT(eventname) wxCommandEvent eventname( wxEVT_HIDE_WAIT_WINDOW, 100003 )
+
 class MainFrame : public wxFrame
 {
 
@@ -133,6 +143,11 @@ public:
     void measureDenomChanged(wxCommandEvent& evt);
     void firstMeasureChanged(wxCommandEvent& evt);
 	void changeMeasureAmount(int i, bool throwEvent=true);
+
+    // wait window events
+    void evt_showWaitWindow(wxCommandEvent& evt);
+    void evt_updateWaitWindow(wxCommandEvent& evt);
+    void evt_hideWaitWindow(wxCommandEvent& evt);
 
 	// menus
 	void menuClosed(wxMenuEvent& evt);
