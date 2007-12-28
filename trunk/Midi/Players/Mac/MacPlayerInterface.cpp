@@ -77,7 +77,6 @@ namespace AriaMaestosa {
 namespace PlatformMidiManager {
 
 	void playMidiBytes(char* bytes, int length);
-	void exportToAudio(char* bytes, int length, wxString filename);
 
     AudioToolboxMidiPlayer* audioToolboxMidiPlayer;
 
@@ -143,24 +142,67 @@ namespace PlatformMidiManager {
 		return true;
 	}
 
-	void exportAudioFile(Sequence* sequence, wxString filepath)
-	{
-
-		// when we're saving, we always want song to start at first measure, so temporarly switch firstMeasure to 0, and set it back in the end
+    class MyPThread
+    {
+        int id;
+        pthread_t thread;
+    public:
+            MyPThread(){}
+        
+        void runFunction(void* (*func)(void*) )
+        {
+            id = pthread_create( &thread, NULL, func, (void*)NULL);
+        }
+    };
+    
+    
+    namespace threads
+    {
+        MyPThread export_audio;
+    }
+    
+    wxString export_audio_filepath;
+    void* add_events_func( void *ptr )
+    {
+        // when we're saving, we always want song to start at first measure, so temporarly switch firstMeasure to 0, and set it back in the end
 		const int firstMeasureValue=getMeasureBar()->getFirstMeasure();
 		getMeasureBar()->setFirstMeasure(0);
-
+        
 		char* data;
 		int length = -1;
-
+        
 		int startTick = -1, songLength = -1;
 		makeMidiBytes(sequence, false, &songLength, &startTick, &data, &length, true);
+        
+		//exportToAudio( data, length, filepath );
+        qtkit_setData(data, length);
 
-		exportToAudio( data, length, filepath );
-
+        wxCSConv cs( wxFONTENCODING_UTF8 ); // FIXME - mb_str() ?
+        wxCharBuffer output = cs.cWC2MB(export_audio_filepath.wc_str());
+        
+		bool success = qtkit_exportToAiff( (char*)output.data() );
+		if(!success)
+		{
+            // FIXME - give visual message. warning this is a thread.
+			std::cout << "EXPORTING FAILED" << std::endl;
+		}
+        //WaitWindow::hide();
+        
+        // send hide progress window event
+        MAKE_HIDE_PROGRESSBAR_EVENT(event);
+        getMainFrame()->GetEventHandler()->AddPendingEvent(event);
+        
 		free(data);
-
 		getMeasureBar()->setFirstMeasure(firstMeasureValue);
+        
+        return (void*)NULL;
+    }
+    
+	void exportAudioFile(Sequence* sequence, wxString filepath)
+	{
+        PlatformMidiManager::sequence = sequence;
+        export_audio_filepath = filepath;
+        threads::export_audio.runFunction( &add_events_func );
 	}
 
 
@@ -245,36 +287,6 @@ namespace PlatformMidiManager {
 			return audioToolboxMidiPlayer->getPosition() * sequence->ticksPerBeat();
 		}
     }
-
-
-    void exportToAudio(char* bytes, int length, wxString filename)
-	{
-
-        qtkit_setData(bytes, length);
-		//bool success = qtkit_exportToAiff( "/Users/mathieu/Desktop/cauteriser.aiff" );
-		//wxCSConv cs( wxFONTENCODING_UTF8 );
-		//std::cout << "		Converted : " << ( const char * ) filename.mb_str( cs ) << std::endl;
-		//const char* path_utf = ( const char * ) filename.mb_str( cs );
-		//bool success = qtkit_exportToAiff( (char*)path_utf );
-
-		//std::cout << (char*)to_UTF8_CString(filename) << std::endl;
-		//bool success = qtkit_exportToAiff( (char*)to_UTF8_CString(filename) );
-
-
-        wxCSConv cs( wxFONTENCODING_UTF8 );
-        wxCharBuffer output = cs.cWC2MB(filename.wc_str());
-
-		bool success = qtkit_exportToAiff( (char*)output.data() );
-
-		//bool success = qtkit_exportToAiff( (char*)(filename.ToAscii().data()) );
-       // bool success = qtkit_exportToAiff( (char*)toCString(filename) );
-		if(!success)
-		{
-			std::cout << "EXPORTING FAILED" << std::endl;
-		}
-	WaitWindow::hide();
-    }
-
 
     void initMidiPlayer()
 	{

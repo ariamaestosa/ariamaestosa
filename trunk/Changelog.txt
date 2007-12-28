@@ -22,6 +22,7 @@
 - Refactored beaming code so that smarter beaming becomes possible
 - Fixed triplets beaming with non-triplets
 - Improved scons build system
+- Made wait window progress bar pulse correctly
 
  1.1b5
 - note beams
