@@ -52,7 +52,7 @@ class WaitWindowClass : public wxDialog
     wxGauge* progress;
 
     bool progress_known;
-
+    
 public:
     WaitWindowClass(wxString message, bool progress_known) : wxDialog( NULL, wxID_ANY,  _("Please wait..."), wxDefaultPosition, wxSize(400,200), wxCAPTION | wxSTAY_ON_TOP )
 	{
