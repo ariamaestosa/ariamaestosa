@@ -97,8 +97,11 @@ NOTE: sorry, this is very raw :)
  ## awake.mid : crash near the end
  ## crash when emptying tempo in control view [reported, not tested] 
  
-* ram-zet, rip.midi : when you hit play, the whole song plays higher than it should... only in CoreAudio player, QTKit plays it okay
-* copy/paste not supported in controller mode (or at least disable them!) 
+* ram-zet, rip.midi : when you hit play, the whole song plays higher than it should... only in CoreAudio player, QTKit plays it okay. only when starting from measure 1
+* ram-zet, rip.midi : look at score for intro choir...
+* copy/paste not supported in controller mode (or at least disable them!)
+ 
++ scons warning : 'install' is found inside 'uninstall' (fix commited, not tested)
 
 + when wait dialog appears, you can still edit tracks and do operations that may be harmful to current process.
     yet you can't make it modal otherwise the background process stops.

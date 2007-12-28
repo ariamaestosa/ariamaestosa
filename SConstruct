@@ -43,29 +43,26 @@ def main_Aria_func():
     if which_os == "linux":
         print"*** Operating system : Linux" 
     elif which_os == "macosx":
-        print"*** Operating system : mac OS X" 
-    
-    # check what to do
-    if 'install' in COMMAND_LINE_TARGETS:
-        # install
-        if which_os == "linux":
-            install_Aria_linux()
-        elif which_os == "macosx":
-            install_Aria_mac()
-        else:
-            print "Unknown operation or system"
-            sys.exit(0)
-        
-    elif 'uninstall' in COMMAND_LINE_TARGETS:
-        # uninstall
-        if which_os == "linux":
-            uninstall_Aria_linux()
-        else:
-            print "Unknown operation or system"
-
-            
-    else:
-        # compile
+		print"*** Operating system : mac OS X" 
+	
+	# check what to do
+	if 'uninstall' in COMMAND_LINE_TARGETS:
+		# uninstall
+		if which_os == "linux":
+			uninstall_Aria_linux()
+		else:
+			print "Unknown operation or system"
+	elif 'install' in COMMAND_LINE_TARGETS:
+		# install
+		if which_os == "linux":
+			install_Aria_linux()
+		elif which_os == "macosx":
+			install_Aria_mac()
+		else:
+			print "Unknown operation or system"
+			sys.exit(0)	 
+	else:
+		# compile
         
         # check build style
         bstyle = ARGUMENTS.get('release', 0)
