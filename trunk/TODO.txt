@@ -96,9 +96,8 @@ NOTE: sorry, this is very raw :)
  ## can't undo 'paste'
  ## awake.mid : crash near the end
  ## crash when emptying tempo in control view [reported, not tested] 
+ ## ram-zet, rip.midi : look at score for intro choir...
  
-* ram-zet, rip.midi : when you hit play, the whole song plays higher than it should... only in CoreAudio player, QTKit plays it okay. only when starting from measure 1
-* ram-zet, rip.midi : look at score for intro choir...
 * copy/paste not supported in controller mode (or at least disable them!)
  
 + scons warning : 'install' is found inside 'uninstall' (fix commited, not tested)
@@ -111,8 +110,6 @@ NOTE: sorry, this is very raw :)
 - linux: exporting to audio via timidity : give better feedback about progression?
 
 + unsure note length is okay with measure != 4/4. check forumlae on wikipedia : http://en.wikipedia.org/wiki/Modern_musical_symbols
-+ beaming choose a maximal number of notes per beam (e.g. 4 1/8 in 4/4 measures) but if you put like 5 or 6 of them in a row,
-  it doesn't always do wise choices regarding wich ones should be beamed (i.e. it doesn't consider beats)
 + loading a key from a file probably won't appear in keyboard editor
 + accidentals should last entire measure
 + score editor - sharp of flat notes at time=0 have their sign hidden behind grey bar

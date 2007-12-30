@@ -67,7 +67,8 @@ ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu()
     Append( 94 ,wxT("Celeste"));
     Append( 95 ,wxT("Phaser"));
     
-    Append( 71 ,wxT("Timber/ Harmonic"));
+    Append( 70 ,wxT("Timber Variation"));
+    Append( 71 ,wxT("Timber/Harmonic"));
     Append( 72 ,wxT("Release Time"));
     Append( 73 ,wxT("Attack Time"));
     Append( 74 ,wxT("Brightness"));
@@ -88,6 +89,18 @@ ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu()
     Append( 77 ,wxT("Vibrato Depth"));
     Append( 78 ,wxT("Vibrato Delay"));
 
+    AppendSeparator();
+    Append( 12 ,wxT("Effect 1"));
+    Append( 13 ,wxT("Effect 2"));
+    
+    Append( 16 ,wxT("General Purpose 1"));
+    Append( 17 ,wxT("General Purpose 2"));
+    Append( 18 ,wxT("General Purpose 3"));
+    Append( 19 ,wxT("General Purpose 4"));
+    Append( 80 ,wxT("General Purpose 5"));
+    Append( 81 ,wxT("General Purpose 6"));
+    Append( 82 ,wxT("General Purpose 7"));
+    Append( 83 ,wxT("General Purpose 8"));
     
     ControllerChoice::parent = parent;
 }
@@ -133,7 +146,8 @@ char* ControllerChoice::getControllerName()
     else if(controllerID== 8 ) return "Balance";
     else if(controllerID== 11 ) return "Expression";
 	
-    else if(controllerID== 71 ) return "Timber/Harmonic";
+    else if(controllerID== 70 ) return "Timber Variation";
+    else if(controllerID== 71 ) return "Timber/ Harmonic";
     else if(controllerID== 72 ) return "Release Time";
     else if(controllerID== 73 ) return "Attack Time";
     else if(controllerID== 74 ) return "Brightness";
@@ -157,7 +171,23 @@ char* ControllerChoice::getControllerName()
     else if(controllerID== 77 ) return "Vibrato Depth";
     else if(controllerID== 78 ) return "Vibrato Delay";
 
-    else{
+    else if(controllerID== 12 ) return "Effect 1";
+    else if(controllerID== 13 ) return "Effect 2";
+    
+    
+    else if(controllerID== 16 ) return "General Purpose 1";
+    else if(controllerID== 17 ) return "General Purpose 2";
+    else if(controllerID== 18 ) return "General Purpose 3";
+    else if(controllerID== 19 ) return "General Purpose 4";
+    else if(controllerID== 80 ) return "General Purpose 5";
+    else if(controllerID== 81 ) return "General Purpose 6";
+    else if(controllerID== 82 ) return "General Purpose 7";
+    else if(controllerID== 83 ) return "General Purpose 8";
+    
+    // 32-63 (0x20-0x3F) 	LSB for controllers 0-31
+    
+    else
+    {
         std::cout << "wrong controller ID: " << controllerID << std::endl;
         return (char*) _("Wrong controller ID");
     }

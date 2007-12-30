@@ -1,5 +1,7 @@
  1.1b7
-- Made note beaming somewhat wiser about how it selects which notes to beam toghether
+- Made note beaming wiser about how it selects which notes to beam toghether
+- When importing midi, remove events from unsupported controllers (fixes some playback bugs)
+- Added more midi controllers
  
  1.1b6
 - fixed crash when removing tempo events
