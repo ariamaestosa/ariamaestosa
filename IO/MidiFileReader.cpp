@@ -319,7 +319,23 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 			{
                 const int controllerID = event->GetController();
                 const int value = 127-event->GetControllerValue();
-                    
+                
+                if(controllerID > 31 and controllerID < 64)
+                {
+                    // LSB... not supported by Aria ATM
+                    std::cout << "WARNING: This midi files contains LSB controller data. Aria does not support fine control changes and will discard this info." << std::endl;
+                    continue;
+                }
+                
+                
+                if(controllerID == 3 or controllerID == 6 or controllerID == 9 or (controllerID > 19 and controllerID < 32) or
+                   controllerID == 79 or (controllerID > 84 and controllerID < 91)
+                   or (controllerID > 95 and controllerID < 200))
+                {
+                    std::cout << "WARNING : This midi file uses unsupported controller #" << controllerID << ". Its events will be discarded." << std::endl;
+                    continue;
+                }
+                
                 ariaTrack->addController_import(tick, value, controllerID);
                
 				continue;

@@ -47,7 +47,6 @@ public:
     char* getControllerName(); 
     
 	wxString getTopLabel();
-	//char* getMidLabel();
 	wxString getBottomLabel();
 	
     void menuSelected(wxCommandEvent& evt);
