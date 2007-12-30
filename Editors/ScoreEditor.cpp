@@ -516,8 +516,8 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteR
 	
 	if(renderInfo.triplet)
 	{
-		renderInfo.triplet_x1 = renderInfo.x + 8;
-		renderInfo.triplet_y = renderInfo.y;
+		renderInfo.triplet_arc_x_start = renderInfo.x + 8;
+		renderInfo.triplet_arc_y = renderInfo.y;
 	}
 	
 	assertExpr(renderInfo.level,>,-1);
@@ -694,12 +694,12 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo)
 	// triplet
 	if (renderInfo.drag_triplet_sign)
 	{
-		const int center_x = (renderInfo.triplet_x2 == -1 ? renderInfo.triplet_x1 : (renderInfo.triplet_x1 + renderInfo.triplet_x2)/2);
-		const int radius_x = (renderInfo.triplet_x2 == -1 or  renderInfo.triplet_x2 == renderInfo.triplet_x1 ?
-							  10 : (renderInfo.triplet_x2 - renderInfo.triplet_x1)/2);
-		drawArc(center_x, renderInfo.triplet_y + (renderInfo.triplet_show_above ? 0 : 10), radius_x, 10, renderInfo.triplet_show_above);
+		const int center_x = (renderInfo.triplet_arc_x_end == -1 ? renderInfo.triplet_arc_x_start : (renderInfo.triplet_arc_x_start + renderInfo.triplet_arc_x_end)/2);
+		const int radius_x = (renderInfo.triplet_arc_x_end == -1 or  renderInfo.triplet_arc_x_end == renderInfo.triplet_arc_x_start ?
+							  10 : (renderInfo.triplet_arc_x_end - renderInfo.triplet_arc_x_start)/2);
+		drawArc(center_x, renderInfo.triplet_arc_y + (renderInfo.triplet_show_above ? 0 : 10), radius_x, 10, renderInfo.triplet_show_above);
 
-		glRasterPos2f(center_x-2, ( renderInfo.triplet_show_above? renderInfo.triplet_y : renderInfo.triplet_y+18) );
+		glRasterPos2f(center_x-2, ( renderInfo.triplet_show_above? renderInfo.triplet_arc_y : renderInfo.triplet_arc_y+18) );
 		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, '3');
 
 	}

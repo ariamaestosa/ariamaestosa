@@ -17,6 +17,16 @@
 #ifndef _scoreanalyser_
 #define _scoreanalyser_
 
+/*
+ * ScoreAnalyser contains what is necessary to decide how to render the score. Editors like Keyboard or Drum draw all notes
+ * seperately from each other, so there rendering is simple and can be done in a single render pass. Score, however,
+ * features much more complex interaction. For instance, draw a single triplet sign for 3 consecutive triplets, beam notes,
+ * draw chords correctly, etc. The first render pass of the score editor is where the "main round" of each note is rendered.
+ * In this pass, a NoteRenderInfo object is added to a vector for each visible note. These objects contain basic information
+ * on each note. The vector of visible notes is then passed to the ScoreAnalyser functions. These functions will analyse notes
+ * and modify the NoteRenderInfo objects as needed so that they render nicely in the next rendering passes of the score editor.
+ */
+
 
 #include <vector>
 
@@ -35,6 +45,8 @@ enum TAIL
  *  This vector contains one of these for each visible note. This vector is then analysed and used in the
  *  next rendering passes. The object starts with a few info fields, passed in the constructors, and builds/tweaks
  *  the others as needed in the next passes. The vector is destroyed and recreated with each render.
+ *
+ *  A few utility methods will ease setting some variables, but they are usually changed directly from code.
  */
 class NoteRenderInfo
 {
@@ -54,7 +66,11 @@ public:
 	int tied_with_x;
     bool tie_up; // used if tail_type == TAIL_NONE, otherwise tie location is determined with tail_type
     
+    // is tail up, down? or is there no tail?
 	TAIL tail_type;
+    
+    // sould we draw tail?
+    bool draw_tail;
     
     // location and duration of note
 	int tick, tick_length;
@@ -64,13 +80,9 @@ public:
     // sharp, flat, natural, none
 	int sign;
 	
-
-    
-    bool draw_tail;
-	
 	// triplets
 	bool triplet_show_above, triplet, drag_triplet_sign;
-	int triplet_x1, triplet_x2, triplet_y; // where to display the "triplet arc" than contains a "3"
+	int triplet_arc_x_start, triplet_arc_x_end, triplet_arc_y; // where to display the "triplet arc" than contains a "3"
 	
     // beams
     // FIXME - is beam_show_above really necessary, since it's always the same direction as tail_type?
@@ -82,11 +94,9 @@ public:
     
     // chord
     bool chord;
+    // since a chord contains many notes, keep info about the highest and lowest note of the chord
     int max_chord_y, min_chord_y, min_chord_level, max_chord_level;
 
-    // when there is a chord (i.e. many notes playing at the same time), only one of the bunch will have a tail.
-    // the one that has a tail will have this variable set. it indicates where the tail should end in y
-    // coords so that all notes of the chord are included by the tail.
 	NoteRenderInfo(int tick, int x, int level, int tick_length, int sign, const bool selected, int pitch);
 	void tieWith(NoteRenderInfo& renderInfo);
 	void triplet_arc(int pixel1, int pixel2);
@@ -98,6 +108,7 @@ public:
     int getYBase();
 };
 
+// the main function of ScoreAnalyser, where everything starts
 void analyseNoteInfo( std::vector<NoteRenderInfo>& info, ScoreEditor* editor );
 
 /*
