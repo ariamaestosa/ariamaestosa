@@ -1,3 +1,6 @@
+ 1.1b7
+- Made note beaming somewhat wiser about how it selects which notes to beam toghether
+ 
  1.1b6
 - fixed crash when removing tempo events
 - made it easier to trigger tuning picker in guitar editor

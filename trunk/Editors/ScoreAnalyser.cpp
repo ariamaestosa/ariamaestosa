@@ -23,7 +23,12 @@
 
 namespace AriaMaestosa
 {
-    
+
+/*
+ * This class receives a range of IDs of notes that are candidates for beaming. Its job is to decide
+ * how to beam the notes in order to get maximal results, as well as changing the NoteRenderInfo objects
+ * accordingly so that the render is correct.
+ */
 class BeamGroup
 {
     int first_id, last_id;
@@ -87,11 +92,37 @@ public:
         if(beamable_note_amount > max_amount_of_notes_beamed_toghether)
         {
             // amount is not acceptable, split
-            BeamGroup first_half(first_id, first_id + max_amount_of_notes_beamed_toghether - 1);
-            BeamGroup second_half(first_id + max_amount_of_notes_beamed_toghether, last_id);
             
-            first_half.doBeam(gatheredNoteInfo, editor);
-            second_half.doBeam(gatheredNoteInfo, editor);
+            // try to find where beamed groups of such notes usually start and end in the measure
+            const int group_len = gatheredNoteInfo[first_id].tick_length * max_amount_of_notes_beamed_toghether;
+            const int first_tick_in_measure = getMeasureBar()->firstTickInMeasure( getMeasureBar()->measureAtTick(gatheredNoteInfo[first_id].tick_length) );
+            
+            int split_at_id = -1;
+            for(int n=first_id+1; n<=last_id; n++)
+            {
+                if( (gatheredNoteInfo[n].tick - first_tick_in_measure) % group_len == 0 )
+                {
+                    split_at_id = n;
+                    break;
+                }
+            }
+            
+            if(split_at_id == -1)
+            {
+                // dumb split
+                BeamGroup first_half(first_id, first_id + max_amount_of_notes_beamed_toghether - 1);
+                BeamGroup second_half(first_id + max_amount_of_notes_beamed_toghether, last_id);
+                first_half.doBeam(gatheredNoteInfo, editor);
+                second_half.doBeam(gatheredNoteInfo, editor);
+            }
+            else
+            {
+                BeamGroup first_half(first_id, split_at_id - 1);
+                BeamGroup second_half(split_at_id, last_id);
+                first_half.doBeam(gatheredNoteInfo, editor);
+                second_half.doBeam(gatheredNoteInfo, editor);
+            }
+            
             return;
         }
         
@@ -169,8 +200,8 @@ NoteRenderInfo::NoteRenderInfo(int tick, int x, int level, int tick_length, int 
     draw_tail = true;
     
     triplet_show_above = false;
-    triplet_x1 = -1;
-    triplet_x2 = -1;
+    triplet_arc_x_start = -1;
+    triplet_arc_x_end = -1;
     drag_triplet_sign = false;
     
     beam_show_above = false;
@@ -193,8 +224,8 @@ void NoteRenderInfo::tieWith(NoteRenderInfo& renderInfo)
 }
 void NoteRenderInfo::triplet_arc(int pixel1, int pixel2)
 {
-    triplet_x1 = pixel1;
-    triplet_x2 = pixel2;
+    triplet_arc_x_start = pixel1;
+    triplet_arc_x_end = pixel2;
 }
 void NoteRenderInfo::setTriplet()
 {
@@ -464,16 +495,16 @@ void analyseNoteInfo( std::vector<NoteRenderInfo>& gatheredNoteInfo, ScoreEditor
                     
                     if(gatheredNoteInfo[first_triplet].triplet_show_above)
                     {
-                        gatheredNoteInfo[first_triplet].triplet_y = min_level*y_step + editor->getEditorYStart() - editor->getYScrollInPixels() - 2;
+                        gatheredNoteInfo[first_triplet].triplet_arc_y = min_level*y_step + editor->getEditorYStart() - editor->getYScrollInPixels() - 2;
                     }
                     else
                     {
-                        gatheredNoteInfo[first_triplet].triplet_y = max_level*y_step + editor->getEditorYStart() - editor->getYScrollInPixels();
+                        gatheredNoteInfo[first_triplet].triplet_arc_y = max_level*y_step + editor->getEditorYStart() - editor->getYScrollInPixels();
                     }
                     
                     gatheredNoteInfo[first_triplet].drag_triplet_sign = true;
                    // gatheredNoteInfo[first_triplet].triplet = true;
-                    gatheredNoteInfo[first_triplet].triplet_x2 = gatheredNoteInfo[i].x + 8;
+                    gatheredNoteInfo[first_triplet].triplet_arc_x_end = gatheredNoteInfo[i].x + 8;
                 }
                 
                 // reset search for triplets

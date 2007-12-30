@@ -16,7 +16,7 @@ NOTE: sorry, this is very raw :)
   Linux: docs in /usr/doc/<package-name> (but on SuSE they go to/usr/share/doc/packages/<package-name>)
   http://www.pathname.com/fhs/
 
-# tar cj --exclude '.svn' --exclude '.DS_Store' --exclude '.sconsign' -f AriaSrc-1.1b3.tar.bz2 AriaSrc-1.1b3
+# tar cj --exclude '.svn' --exclude '.DS_Store' --exclude '.sconsign' -f AriaSrc-1.1b6.tar.bz2 AriaSrc-1.1b6
   
     ADD LINK TO TG ON WEBSITE
     
