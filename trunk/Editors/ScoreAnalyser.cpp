@@ -88,12 +88,20 @@ public:
         if(gatheredNoteInfo[first_id].triplet) max_amount_of_notes_beamed_toghether=3;
         
         const int beamable_note_amount = last_id - first_id + 1;
+                
+        // if max_amount_of_notes_beamed_toghether is an even number, don't accept an odd number of grouped notes
+        const int base_unit = (max_amount_of_notes_beamed_toghether % 2 == 0 ? 2 : 1);
+        if(beamable_note_amount <= max_amount_of_notes_beamed_toghether and beamable_note_amount % base_unit != 0)
+        {
+            max_amount_of_notes_beamed_toghether = base_unit;
+        }
         
         if(beamable_note_amount > max_amount_of_notes_beamed_toghether)
         {
             // amount is not acceptable, split
             
             // try to find where beamed groups of such notes usually start and end in the measure
+            // this is where splitting should be performed
             const int group_len = gatheredNoteInfo[first_id].tick_length * max_amount_of_notes_beamed_toghether;
             const int first_tick_in_measure = getMeasureBar()->firstTickInMeasure( getMeasureBar()->measureAtTick(gatheredNoteInfo[first_id].tick_length) );
             
