@@ -104,7 +104,6 @@ NOTE: sorry, this is very raw :)
     yet you can't make it modal otherwise the background process stops.
 
 - if a midi has control events in an empty track they might be removed during import (though what could go there? tempo events are already stored in sequence)
-- during midi import, if no track name is given, use "untitled" instead of leaving name empty 
 
 + linux: scons install fails from SVN because docs are not found
 + linux: no need to install icns files

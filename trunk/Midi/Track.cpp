@@ -1189,8 +1189,15 @@ void Track::copy()
 }
 
 
-void Track::setName(wxString name)  {		Track::name = name;		}
-wxString& Track::getName()			{		return name;			}
+void Track::setName(wxString name)
+{
+    if(name.Trim().IsEmpty()) Track::name = wxString( _("Untitled") );
+    else Track::name = name;
+}
+wxString& Track::getName()
+{
+    return name;
+}
 
 // -----------------------------------------------------------------------------------------------------
 // ------------------------------------------- SAVE/LOAD -----------------------------------------------
