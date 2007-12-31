@@ -103,7 +103,7 @@ namespace AriaMaestosa
 			}//next
 		}//endif
 		
-		getMeasureBar()->timeSigEventsUpdated();
+		getMeasureBar()->updateMeasureInfo();
 }
 InsertEmptyMeasures::InsertEmptyMeasures(int measureID, int amount)
 {

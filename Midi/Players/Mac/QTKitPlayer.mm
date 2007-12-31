@@ -88,7 +88,7 @@ void qtkit_play()
     [pool release];
 }
 
-bool qtkit_exportToAiff(char* filename)
+bool qtkit_exportToAiff(const char* filename)
 {
     printf("QTKit will save to %s\n", filename);
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];

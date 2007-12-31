@@ -34,7 +34,7 @@ public:
 	// these do not indicate where the measure is, it is just a way to speed up calculations by storing
 	// values there instead of recalculating them everytime. they will be changed everytime a time sig even is modified
 	// this way no need to recalculate every frame, only on change.
-	// MeasureBar::timeSigEventsUpdated() is the method that should be called whenever any of the TImeSig events has one of
+	// MeasureBar::updateMeasureInfo() is the method that should be called whenever any of the TImeSig events has one of
 	// its above params changed
 	int tick, pixel;
 };
