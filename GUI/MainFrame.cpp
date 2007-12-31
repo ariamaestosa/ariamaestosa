@@ -619,14 +619,14 @@ void MainFrame::menuEvent_exportSampledAudio(wxCommandEvent& evt)
 		if (answer != wxYES) return;
 	}
 
-	// write data
-    //WaitWindow::show( _("Please wait while audio file is being generated.\n\nDepending on the length of your file,\nthis can take several minutes.") );
-	//wxYield(); // FIXME - find a better way
-
+	
+    // show progress bar
     MAKE_SHOW_PROGRESSBAR_EVENT( event, _("Please wait while audio file is being generated.\n\nDepending on the length of your file,\nthis can take several minutes."), false );
     GetEventHandler()->AddPendingEvent(event);
 
 	std::cout << "export audio file " << toCString(audioFilePath) << std::endl;
+    
+    // write data
 	PlatformMidiManager::exportAudioFile( getCurrentSequence(), audioFilePath );
 }
 

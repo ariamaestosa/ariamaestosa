@@ -92,9 +92,6 @@ public:
 		
         wxDialog::Center();
         code = wxDialog::ShowModal();
-        //wxDialog::Show();
-        
-        wxYield();
     }
 	
     void hide()

@@ -1110,7 +1110,6 @@ void GLPane::playbackRenderLoop()
             lastTick = playbackStartTick + currentTick;
         }
 
-        //wxYield();
         wxMilliSleep(10);
 }
 

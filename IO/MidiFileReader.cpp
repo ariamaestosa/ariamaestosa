@@ -227,7 +227,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                                       log(trackID)*100/log(trackAmount)
                                       )
                                 );
-        wxYield();
+        wxYield(); // FIXME - use a thread instead
         
          // ----------------------------------- for each event -------------------------------------
         
