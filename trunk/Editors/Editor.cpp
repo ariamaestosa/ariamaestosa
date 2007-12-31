@@ -650,11 +650,11 @@ void Editor::render()
 }
 
 
-const int getEditorXStart()	{	return 90;								}
+const int getEditorXStart()         {	return 90;								}
 const int Editor::getXEnd()			{	return width - 5;						} // FIXME - adapt to include vertical scrollbar
 const int Editor::getTrackYStart()	{	return from_y;							}
 const int Editor::getEditorYStart()	{	return from_y+barHeight+20;				}
-const int Editor::getYEnd()			{	return 20+height + from_y+barHeight+20;	} // FIXME - what about to_y ???
+const int Editor::getYEnd()			{	return to_y - 10;                       }
 const int Editor::getWidth()		{	return width;							}
 
 int Editor::getYScrollInPixels()
