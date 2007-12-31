@@ -4,6 +4,7 @@
 - Added more midi controllers
 - Fixed zooming in songs with multiple time signatures
 - Made zooming smoother by removing unneeded render
+- Fixed removing empty tracks in imported midis
  
  1.1b6
 - fixed crash when removing tempo events

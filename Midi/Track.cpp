@@ -45,10 +45,11 @@
 
 #include "wx/utils.h"
 
-namespace AriaMaestosa {
+namespace AriaMaestosa
+{
 
 	Track::Track(MainFrame* parent, Sequence* sequence)
-{
+    {
 		INIT_LEAK_CHECK();
 
 		name = wxString( _("Untitled") );
@@ -62,7 +63,7 @@ namespace AriaMaestosa {
 
 		instrument = 0;
 		drumKit = 0;
-}
+    }
 
 /*
  * This is the method called for performing any action that can be undone.
@@ -74,7 +75,6 @@ namespace AriaMaestosa {
 
 void Track::action( Action::SingleTrackAction* action)
 {
-
 	action->setParentTrack(this);
 	sequence->addToUndoStack( action );
 	action->perform();
