@@ -166,8 +166,6 @@ int Sequence::getXScrollInPixels()
 void Sequence::setXScrollInMidiTicks(int value)
 {
 	x_scroll_in_pixels = (int)( value * zoom );
-    
-    getGLPane()->render();
 }
 void Sequence::setXScrollInPixels(int value)
 {

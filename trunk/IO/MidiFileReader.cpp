@@ -391,7 +391,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 												   new ControllerEvent(sequence,
 																	   201,
 																	   tick,
-																	   /*FIXME - clarify this*/127-(int)((tempo-20.0)/380.0*128.0)
+																	   127-(int)((tempo-20.0)/380.0*128.0)
 																	   )
 												   );
 					continue;
@@ -627,7 +627,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 	sequence->clearUndoStack();
 	
     sequence->importing = false;
-    if(!getMeasureBar()->isMeasureLengthConstant()) getMeasureBar()->timeSigEventsUpdated();
+    if(!getMeasureBar()->isMeasureLengthConstant()) getMeasureBar()->updateMeasureInfo();
     return true;
     
 }

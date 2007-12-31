@@ -176,17 +176,13 @@ namespace PlatformMidiManager {
         
 		//exportToAudio( data, length, filepath );
         qtkit_setData(data, length);
-
-        wxCSConv cs( wxFONTENCODING_UTF8 ); // FIXME - mb_str() ?
-        wxCharBuffer output = cs.cWC2MB(export_audio_filepath.wc_str());
+		bool success = qtkit_exportToAiff( toCString(export_audio_filepath) );
         
-		bool success = qtkit_exportToAiff( (char*)output.data() );
 		if(!success)
 		{
             // FIXME - give visual message. warning this is a thread.
-			std::cout << "EXPORTING FAILED" << std::endl;
+			std::cerr << "EXPORTING FAILED" << std::endl;
 		}
-        //WaitWindow::hide();
         
         // send hide progress window event
         MAKE_HIDE_PROGRESSBAR_EVENT(event);

@@ -160,7 +160,7 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
 		for(int m=measureID; m<measureAmount; m+=1)
 		{
 			new_mx = measureBar->firstPixelInMeasure(m);
-			
+
 			// draw pale lines
 			glColor3f(0.9, 0.9, 0.9);
 			for(; mx < new_mx; mx += beatLength)

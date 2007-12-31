@@ -413,7 +413,6 @@ void MainFrame::init()
         horizontalScrollbar=new wxScrollBar(panel_hscrollbar, SCROLLBAR_H);
 
         // For the first time, set scrollbar manually and not using updateHorizontalScrollbar(), because this method assumes the frame is visible.
-        // FIXME - make more methods detect frame visibiltiy (?) right now it causes many problems to init everything in the right order
         const int editor_size=695, total_size=12*128;
 
         horizontalScrollbar->SetScrollbar(
@@ -732,13 +731,6 @@ void MainFrame::menuEvent_quit(wxCommandEvent& evt)
 
 void MainFrame::menuClosed(wxMenuEvent& evt)
 {
-    /*
-      // I think it should work with my latest OpenGl changes. To be tested.
-    // FIXME - to work around a GTK bug. might also a bug with my graphics drivers, unsure.
-    #ifdef __WXGTK__
-    glPane->render();
-    #endif
-     */
 }
 
 void MainFrame::menuEvent_about(wxCommandEvent& evt)
@@ -917,116 +909,6 @@ void MainFrame::changeChannelManagement(ChannelManagementType mode)
 
 
 // ------------------------------------------------------------------------------------------------------------------------
-// ---------------------------------------------------- TOP BAR -----------------------------------------------------------
-// ------------------------------------------------------------------------------------------------------------------------
-
-void MainFrame::updateTopBarForSequence(Sequence* seq)
-{
-
-    changingValues=true; // ignore events thrown while changing values in the top bar
-
-    // first measure
-{
-    char buffer[4];
-    sprintf (buffer, "%d", seq->measureBar->getFirstMeasure()+1);
-
-    firstMeasure->SetValue( fromCString(buffer) );
-}
-
-// measure length
-{
-    char buffer[4];
-    sprintf (buffer, "%d", getMeasureBar()->getTimeSigNumerator() );
-
-    measureTypeTop->SetValue( fromCString(buffer) );
-}
-
-{
-    char buffer[4];
-    sprintf (buffer, "%d", getMeasureBar()->getTimeSigDenominator() );
-
-    measureTypeBottom->SetValue( fromCString(buffer) );
-}
-
-// tempo
-{
-    char buffer[4];
-    sprintf (buffer, "%d", seq->getTempo() );
-
-    tempoCtrl->SetValue( fromCString(buffer) );
-}
-
-// song length
-{
-    songLength->SetValue( seq->measureBar->getMeasureAmount() );
-}
-
-// zoom
-displayZoom->SetValue( seq->getZoomInPercent() );
-
-// set zoom (reason to set it again is because the first time you open it, it may not already have a zoom)
-getCurrentSequence()->setZoom( seq->getZoomInPercent() );
-
-expandedMeasuresMenuItem->Check( getMeasureBar()->isExpandedMode() );
-
-// scrollbars
-updateHorizontalScrollbar();
-updateVerticalScrollbar();
-
-changingValues=false;
-
-
-}
-
-void MainFrame::songLengthTextChanged(wxCommandEvent& evt){
-
-    static wxString previousString = wxT("");
-
-    // only send event if the same string is sent twice (i.e. first time, because it was typed in, second time because 'enter' was pressed)
-    // or if the same number of chars is kept (e.g. 100 -> 150 will be updated immediatley, but 100 -> 2 will not, since user may actually be typing 250)
-    if(evt.GetString().IsSameAs(previousString) or (previousString.Length()>0 and evt.GetString().Length()>=previousString.Length()) )
-	{
-
-        if(!evt.GetString().IsSameAs(previousString))
-		{
-			if(evt.GetString().Length()==1) return; // too short to update now, user probably just typed the first character of something longer
-        }
-
-        wxSpinEvent unused;
-        songLengthChanged(unused);
-    }
-
-    previousString = evt.GetString();
-
-}
-
-void MainFrame::zoomTextChanged(wxCommandEvent& evt)
-{
-
-    static wxString previousString = wxT("");
-
-    // only send event if the same string is sent twice (i.e. first time, because it was typed in, second time because 'enter' was pressed)
-    // or if the same number of chars is kept (e.g. 100 -> 150 will be updated immediatley, but 100 -> 2 will not, since user may actually be typing 250)
-    if(evt.GetString().IsSameAs(previousString) or (previousString.Length()>0 and evt.GetString().Length()>=previousString.Length()) )
-	{
-
-        if(!evt.GetString().IsSameAs(previousString))
-		{
-            if(evt.GetString().Length()==1) return; // too short to update now, user probably just typed the first character of something longer
-            if(evt.GetString().Length()==2 and atoi_u(evt.GetString())<30 )
-                return; // zoom too small, user probably just typed the first characters of something longer
-        }
-
-        wxSpinEvent unused;
-        zoomChanged(unused); // throw event so that the wxSpinEvent method can catch the change
-    }
-
-    previousString = evt.GetString();
-
-}
-
-
-// ------------------------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------- PLAY/STOP --------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------------
 
@@ -1134,8 +1016,91 @@ void MainFrame::toolsExitPlaybackMode()
 }
 
 // ------------------------------------------------------------------------------------------------------------------------
-// --------------------------------------------- TOP BAR VALUES CHANGED ---------------------------------------------------
+// ---------------------------------------------------- TOP BAR -----------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------------
+
+void MainFrame::updateTopBarForSequence(Sequence* seq)
+{
+    
+    changingValues=true; // ignore events thrown while changing values in the top bar
+    
+    // first measure
+    {
+        char buffer[4];
+        sprintf (buffer, "%d", seq->measureBar->getFirstMeasure()+1);
+        
+        firstMeasure->SetValue( fromCString(buffer) );
+    }
+    
+    // measure length
+    {
+        char buffer[4];
+        sprintf (buffer, "%d", getMeasureBar()->getTimeSigNumerator() );
+        
+        measureTypeTop->SetValue( fromCString(buffer) );
+    }
+    
+    {
+        char buffer[4];
+        sprintf (buffer, "%d", getMeasureBar()->getTimeSigDenominator() );
+        
+        measureTypeBottom->SetValue( fromCString(buffer) );
+    }
+    
+    // tempo
+    {
+        char buffer[4];
+        sprintf (buffer, "%d", seq->getTempo() );
+        
+        tempoCtrl->SetValue( fromCString(buffer) );
+    }
+    
+    // song length
+    {
+        songLength->SetValue( seq->measureBar->getMeasureAmount() );
+    }
+    
+    // zoom
+    displayZoom->SetValue( seq->getZoomInPercent() );
+    
+    // set zoom (reason to set it again is because the first time you open it, it may not already have a zoom)
+    getCurrentSequence()->setZoom( seq->getZoomInPercent() );
+    
+    expandedMeasuresMenuItem->Check( getMeasureBar()->isExpandedMode() );
+    
+    // scrollbars
+    updateHorizontalScrollbar();
+    updateVerticalScrollbar();
+    
+    changingValues=false;
+    
+    
+}
+
+void MainFrame::songLengthTextChanged(wxCommandEvent& evt)
+{
+    
+    static wxString previousString = wxT("");
+    
+    // only send event if the same string is sent twice (i.e. first time, because it was typed in, second time because 'enter' was pressed)
+    // or if the same number of chars is kept (e.g. 100 -> 150 will be updated immediatley, but 100 -> 2 will not, since user may actually be typing 250)
+    if(evt.GetString().IsSameAs(previousString) or (previousString.Length()>0 and evt.GetString().Length()>=previousString.Length()) )
+	{
+        
+        if(!evt.GetString().IsSameAs(previousString))
+		{
+			if(evt.GetString().Length()==1) return; // too short to update now, user probably just typed the first character of something longer
+        }
+        
+        wxSpinEvent unused;
+        songLengthChanged(unused);
+    }
+    
+    previousString = evt.GetString();
+    
+}
+
+
 
 void MainFrame::measureNumChanged(wxCommandEvent& evt)
 {
@@ -1165,14 +1130,6 @@ void MainFrame::measureDenomChanged(wxCommandEvent& evt)
     getMeasureBar()->setTimeSig( top, bottom );
 
 	displayZoom->SetValue( getCurrentSequence()->getZoomInPercent() );
-	/*
-    // recalculate zoom starting from floating-point value, so that we can keep the same zoom even if measure sig changed
-    displayZoom->SetValue(
-                          (int)round(
-                                     (float)getMeasureBar()->measureLengthInPixels()*100.0/128.0
-                                     )
-                          );
-	 */
 }
 
 void MainFrame::firstMeasureChanged(wxCommandEvent& evt)
@@ -1274,8 +1231,34 @@ void MainFrame::zoomChanged(wxSpinEvent& evt)
 
     getCurrentSequence()->setXScrollInMidiTicks( newXScroll );
     updateHorizontalScrollbar( newXScroll );
-
+    if(!getMeasureBar()->isMeasureLengthConstant()) getMeasureBar()->updateMeasureInfo();
+        
     glPane->render();
+}
+
+void MainFrame::zoomTextChanged(wxCommandEvent& evt)
+{
+    // FIXME - AWFUL HACK
+    static wxString previousString = wxT("");
+    
+    // only send event if the same string is sent twice (i.e. first time, because it was typed in, second time because 'enter' was pressed)
+    // or if the same number of chars is kept (e.g. 100 -> 150 will be updated immediatley, but 100 -> 2 will not, since user may actually be typing 250)
+    if(evt.GetString().IsSameAs(previousString) or (previousString.Length()>0 and evt.GetString().Length()>=previousString.Length()) )
+	{
+        
+        if(!evt.GetString().IsSameAs(previousString))
+		{
+            if(evt.GetString().Length()==1) return; // too short to update now, user probably just typed the first character of something longer
+            if(evt.GetString().Length()==2 and atoi_u(evt.GetString())<30 )
+                return; // zoom too small, user probably just typed the first characters of something longer
+        }
+        
+        wxSpinEvent unused;
+        zoomChanged(unused); // throw fake event (easier to process all events from a single method)
+    }
+    
+    previousString = evt.GetString();
+    
 }
 
 /*

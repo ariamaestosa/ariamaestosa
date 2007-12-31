@@ -756,11 +756,7 @@ void ScoreEditor::renderSilence(const int tick, const int tick_length)
         // we need to plit it in two
         const int split_tick = getMeasureBar()->firstTickInMeasure(end_measure);
         
-        //assertExpr(split_tick-tick,>,0);
-       // assertExpr(tick_length-(split_tick-tick),>,0);
-        
         // Check split is valid before attempting.
-        // FIXME - instead of checking for bogus values, make sure they never happen. they currently do
         if(split_tick-tick>0 and tick_length-(split_tick-tick)>0)
         {
             renderSilence(tick, split_tick-tick);

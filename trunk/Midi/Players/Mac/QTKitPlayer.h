@@ -25,7 +25,7 @@ void qtkit_play();
 void qtkit_stop();
 float qtkit_getCurrentTime(); 
 
-bool qtkit_exportToAiff(char* filename);
+bool qtkit_exportToAiff(const char* filename);
 
 void qtkit_init();
 void qtkit_free();

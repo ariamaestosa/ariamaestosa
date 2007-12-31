@@ -136,7 +136,7 @@ public:
 	
 	int getMeasureBarHeight();
 	
-	void timeSigEventsUpdated();
+	void updateMeasureInfo();
 	void updateVector(int newSize);
 	void unselect();
 	

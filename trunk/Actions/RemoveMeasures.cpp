@@ -80,7 +80,7 @@ namespace AriaMaestosa
 										  timeSigChangesBackup[n].denom);
 		}
 		
-		measureBar->timeSigEventsUpdated();
+		measureBar->updateMeasureInfo();
 		
 	}
 	
@@ -243,7 +243,7 @@ namespace AriaMaestosa
 		
 		// shorten song accordingly to the number of measures removed
 		getMainFrame()->changeMeasureAmount( sequence->measureBar->getMeasureAmount() - (to_measure - from_measure) );
-		getMeasureBar()->timeSigEventsUpdated();
+		getMeasureBar()->updateMeasureInfo();
 }
 RemoveMeasures::RemoveMeasures(int from_measure, int to_measure)
 {

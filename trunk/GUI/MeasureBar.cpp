@@ -152,7 +152,7 @@ public:
 		
 		//std::cout << "really removing " << remove_timeSigID << std::endl;
 		getMeasureBar()->eraseTimeSig(remove_timeSigID);
-		getMeasureBar()->timeSigEventsUpdated();
+		getMeasureBar()->updateMeasureInfo();
 		getGLPane()->render();
 	}
 	
@@ -322,7 +322,7 @@ void MeasureBar::setTimeSig(int top, int bottom)
 	{
 		timeSigChanges[selectedTimeSig].denom = bottom;
     }
-	timeSigEventsUpdated();
+	updateMeasureInfo();
 	
 
 	getMainFrame()->getCurrentSequence()->setZoom( getMainFrame()->getCurrentSequence()->getZoomInPercent() ); // update zoom to new measure size
@@ -444,7 +444,7 @@ void MeasureBar::updateVector(int newSize)
 	while((int)measureInfo.size() < newSize) measureInfo.push_back( MeasureInfo() );
 	while((int)measureInfo.size() > newSize) measureInfo.erase( measureInfo.begin()+measureInfo.size()-1 );
 	
-	if(!isMeasureLengthConstant() or expandedMode) timeSigEventsUpdated();
+	if(!isMeasureLengthConstant() or expandedMode) updateMeasureInfo();
 }
 
 int MeasureBar::getMeasureBarHeight()
@@ -634,7 +634,7 @@ void MeasureBar::mouseDown(int x, int y)
 void MeasureBar::setExpandedMode(bool expanded)
 {
 	expandedMode = expanded;
-	timeSigEventsUpdated();
+	updateMeasureInfo();
 	getGLPane()->render();
 }
 
@@ -872,7 +872,7 @@ void MeasureBar::unselect()
  * Time Signatures have changed, update and recalculate information about location of measures and events.
  */
 
-void MeasureBar::timeSigEventsUpdated()
+void MeasureBar::updateMeasureInfo()
 {
 	const int amount = measureInfo.size();
 	const float zoom = getMainFrame()->getCurrentSequence()->getZoom();
@@ -1009,7 +1009,7 @@ void MeasureBar::addTimeSigChange(int measure, int num, int denom) // -1 means "
 				
 				getMainFrame()->changeShownTimeSig( timeSigChanges[n+1].num, timeSigChanges[n+1].denom );
 				
-				if(!getMainFrame()->getCurrentSequence()->importing) timeSigEventsUpdated();
+				if(!getMainFrame()->getCurrentSequence()->importing) updateMeasureInfo();
 				break;
 			}
 		}//next
@@ -1079,7 +1079,7 @@ void MeasureBar::afterImporting()
 	{
 		expandedMode = false;
 	}
-	if(!isMeasureLengthConstant()) timeSigEventsUpdated();
+	if(!isMeasureLengthConstant()) updateMeasureInfo();
 }
 
 bool MeasureBar::readFromFile(irr::io::IrrXMLReader* xml)
