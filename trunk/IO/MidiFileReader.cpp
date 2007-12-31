@@ -553,7 +553,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
         if(sequence->getTrack(n)->getNoteAmount() == 0)
 		{
 			sequence->deleteTrack(n);
-            n=0;
+            n=-1; // track order changed, start again
         }
     }
     
