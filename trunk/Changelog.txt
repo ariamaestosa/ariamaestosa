@@ -6,6 +6,7 @@
 - Made zooming smoother by removing unneeded render
 - Fixed removing empty tracks in imported midis
 - Do not accept empty track names
+- Started switching rendering from plain OpenGL to higher-level primitives, cleaning up code
  
  1.1b6
 - fixed crash when removing tempo events

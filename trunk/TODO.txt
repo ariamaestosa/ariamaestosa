@@ -97,13 +97,15 @@ NOTE: sorry, this is very raw :)
  ## awake.mid : crash near the end
  ## crash when emptying tempo in control view [reported, not tested] 
  ## ram-zet, rip.midi : look at score for intro choir...
- 
+
++ notes in score can only be natural or sharp, never flat. (EasyBeat uses flats when the current key uses flats at armature)
 + scons warning : 'install' is found inside 'uninstall' (fix commited, not tested)
 
 + when wait dialog appears, you can still edit tracks and do operations that may be harmful to current process.
     yet you can't make it modal otherwise the background process stops.
 
 - if a midi has control events in an empty track they might be removed during import (though what could go there? tempo events are already stored in sequence)
+- hitting space should work even if focus is in top bar
 
 + linux: scons install fails from SVN because docs are not found
 + linux: no need to install icns files
