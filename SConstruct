@@ -235,6 +235,7 @@ def compile_Aria(build_type, which_os):
     GUI/GraphicalTrack.cpp
     GUI/MainFrame.cpp
     GUI/MeasureBar.cpp
+    GUI/RenderUtils.cpp
     Images/Drawable.cpp
     Images/Image.cpp
     Images/ImageProvider.cpp
