@@ -24,6 +24,7 @@
 #include "GUI/GraphicalTrack.h"
 #include "GUI/GLPane.h"
 #include "GUI/MeasureBar.h"
+#include "GUI/RenderUtils.h"
 #include "Pickers/MagneticGrid.h"
 #include "Pickers/VolumeSlider.h"
 #include "Images/ImageProvider.h"
@@ -206,9 +207,11 @@ void Editor::renderScrollbar()
 {
     if( !useVerticalScrollbar_bool ) return;
 	
+    AriaRender::images();
+    
 	// ---- scrollbar background -----
     sbBackgDrawable->move(getWidth() - 24, from_y+20+barHeight);
-    sbBackgDrawable->scale(1, height/sbBackgDrawable->image->height);
+    sbBackgDrawable->scale(1, height/sbBackgDrawable->getImageHeight());
     sbBackgDrawable->render();
     
 	// ------ top arrow ------
@@ -225,8 +228,8 @@ void Editor::renderScrollbar()
 	   getGLPane()->isMouseDown() and // only if mouse is down
        mouseX > sbArrowDrawable->x and mouseX2 > sbArrowDrawable->x and // and mouse is located on the arrow
        mouseY > sbArrowDrawable->y and mouseY2 > sbArrowDrawable->y and
-       mouseX < sbArrowDrawable->x+sbArrowDrawable->image->width and mouseX2 < sbArrowDrawable->x+sbArrowDrawable->image->width and
-       mouseY < sbArrowDrawable->y+sbArrowDrawable->image->height and mouseY2 < sbArrowDrawable->y+sbArrowDrawable->image->height)
+       mouseX < sbArrowDrawable->x+sbArrowDrawable->getImageWidth() and mouseX2 < sbArrowDrawable->x+sbArrowDrawable->getImageWidth() and
+       mouseY < sbArrowDrawable->y+sbArrowDrawable->getImageHeight() and mouseY2 < sbArrowDrawable->y+sbArrowDrawable->getImageHeight())
     {
         
         sbArrowDrawable->setImage( sbArrowDownImg );
@@ -252,8 +255,8 @@ void Editor::renderScrollbar()
 	   getGLPane()->isMouseDown() and // only if mouse is down
        mouseX > sbArrowDrawable->x and mouseX2 > sbArrowDrawable->x and // and mouse is lcoated on the arrow
        mouseY > sbArrowDrawable->y and mouseY2 > sbArrowDrawable->y and
-       mouseX < sbArrowDrawable->x+sbArrowDrawable->image->width and mouseX2 < sbArrowDrawable->x+sbArrowDrawable->image->width and
-       mouseY < sbArrowDrawable->y+sbArrowDrawable->image->height and mouseY2 < sbArrowDrawable->y+sbArrowDrawable->image->height)
+       mouseX < sbArrowDrawable->x+sbArrowDrawable->getImageWidth() and mouseX2 < sbArrowDrawable->x+sbArrowDrawable->getImageWidth() and
+       mouseY < sbArrowDrawable->y+sbArrowDrawable->getImageHeight() and mouseY2 < sbArrowDrawable->y+sbArrowDrawable->getImageHeight())
     {
         
         sbArrowDrawable->setImage( sbArrowDownImg );
@@ -288,14 +291,14 @@ void Editor::mouseDown(RelativeXCoord x, int y)
 	{
 		// check if user is grabbing the scroll bar
 		if(x.getRelativeTo(WINDOW)>sbThumbDrawable->x and
-		   x.getRelativeTo(WINDOW)<sbThumbDrawable->x+sbThumbDrawable->image->width and
+		   x.getRelativeTo(WINDOW)<sbThumbDrawable->x+sbThumbDrawable->getImageWidth() and
 		   y<getYEnd()-15 and y>getEditorYStart())
 		{
 			click_on_scrollbar = true;
 						
 			// grabbing the thumb
 			const int thumb_pos = (int)(from_y+barHeight+37+(height-36)*sb_position);
-			if(y>thumb_pos and y<thumb_pos + sbThumbDrawable->image->height)
+			if(y>thumb_pos and y<thumb_pos + sbThumbDrawable->getImageHeight())
 			{
 				verticalScrolling = true; 
 			}
@@ -583,7 +586,7 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 		
 		// make thumb slide to mouse
 		if(mousex_current.getRelativeTo(WINDOW) > sbThumbDrawable->x and
-		   mousex_current.getRelativeTo(WINDOW) < sbThumbDrawable->x+sbThumbDrawable->image->width and
+		   mousex_current.getRelativeTo(WINDOW) < sbThumbDrawable->x+sbThumbDrawable->getImageWidth() and
 		   mousey_current < getYEnd()-15 and mousey_current>getEditorYStart())
 		{
 			

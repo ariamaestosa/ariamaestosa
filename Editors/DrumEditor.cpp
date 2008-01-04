@@ -18,18 +18,14 @@
 #include <cmath>
 #include "Config.h"
 
-#include "wx/wx.h"
-
-#include "OpenGL.h"
-
 #include "Actions/EditAction.h"
 #include "Actions/AddNote.h"
 #include "Actions/MoveNotes.h"
 
 #include "GUI/GLPane.h"
 #include "GUI/GraphicalTrack.h"
+#include "GUI/RenderUtils.h"
 #include "Images/Drawable.h"
-#include "Images/Image.h"
 #include "Images/ImageProvider.h"
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
@@ -517,10 +513,6 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
 						RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {
     
-    assert(sbArrowDrawable->image!=NULL);
-    assert(sbBackgDrawable->image!=NULL);
-    assert(sbThumbDrawable->image!=NULL);
-    
     glEnable(GL_SCISSOR_TEST);
     // glScissor doesn't seem to follow the coordinate system so this ends up in all kinds of weird code to map to my coord system (from_y going down)
     glScissor(10, getGLPane()-> getHeight() - (20+height + from_y+barHeight+20), width - 15, 20+height);
@@ -528,19 +520,15 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
     drawVerticalMeasureLines(getEditorYStart(), getYEnd());
     
     // ----------------------- draw horizontal lines ---------------------
-    glColor3f(0.5, 0.5, 0.5);
+    AriaRender::primitives();
+    AriaRender::color(0.5, 0.5, 0.5);
     const int drumAmount = drums.size();
     for(int drumID=0; drumID<drumAmount+1; drumID++)
 	{
         const int y = getEditorYStart() + drumID*y_step - getYScrollInPixels();
         if(y<getEditorYStart() or y>getYEnd()) continue;
         
-        glBegin(GL_LINES);
-        
-        glVertex2f(getEditorXStart(), y);
-        glVertex2f(getXEnd(), y);
-        
-        glEnd();
+        AriaRender::line(getEditorXStart(), y, getXEnd(), y);
         
     }
 	
@@ -566,63 +554,34 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         }
         const float volume=track->getNoteVolume(n)/127.0;
         
-        if(track->isNoteSelected(n) and focus) glColor3f((1-volume)*1, (1-(volume/2))*1, 0);
-        else glColor3f((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
+        if(track->isNoteSelected(n) and focus) AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
+        else AriaRender::color((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
         
         const int drumy=getYForDrum(drumIDInVector);
         
-        glBegin(GL_TRIANGLES);
-        
-        glVertex2f(drumx, drumy);
-        glVertex2f(drumx, drumy+y_step);
-        glVertex2f(drumx+5, drumy+5);
-        
-        glEnd();
-        
+        AriaRender::triangle(drumx,     drumy,
+                             drumx,     drumy+y_step,
+                             drumx+5,   drumy+5);
     }
     
     
-    glEnable(GL_TEXTURE_2D);
-    
     // ------------------------- mouse drag (preview) ------------------------
-    if(!clickedOnNote)
+    if(!clickedOnNote and mouse_is_in_editor)
 	{
-        if(mouse_is_in_editor)
-		{
-            
-            // selection
-            if(selecting)
-			{
-                glDisable(GL_TEXTURE_2D);
-                glColor3f(0,0,0);
-                glBegin(GL_LINES);
-                
-                glVertex2f(mousex_initial.getRelativeTo(WINDOW), mousey_current);
-                glVertex2f(mousex_initial.getRelativeTo(WINDOW), mousey_initial);
-                
-                glVertex2f(mousex_current.getRelativeTo(WINDOW), mousey_initial);
-                glVertex2f(mousex_initial.getRelativeTo(WINDOW), mousey_initial);
-                
-                glVertex2f(mousex_current.getRelativeTo(WINDOW), mousey_initial);
-                glVertex2f(mousex_current.getRelativeTo(WINDOW), mousey_current);
-                
-                glVertex2f(mousex_initial.getRelativeTo(WINDOW), mousey_current);
-                glVertex2f(mousex_current.getRelativeTo(WINDOW), mousey_current);
-                
-                glEnd();
-                glEnable(GL_TEXTURE_2D);
-            }// end if selection or addition
-        }// end if dragging on track
-        
+        // selection
+        if(selecting)
+        {
+            AriaRender::color(0,0,0);
+            AriaRender::hollow_rect(mousex_initial.getRelativeTo(WINDOW), mousey_initial,
+                                    mousex_current.getRelativeTo(WINDOW), mousey_current);
+        }
     } // end if !clickedOnNote
-
+    
     // ------------------------- move note (preview) -----------------------
     if(clickedOnNote)
 	{
-        
-        glDisable(GL_TEXTURE_2D);
-        
-        glColor4f(1, 0.85, 0, 0.5);
+
+        AriaRender::color(1, 0.85, 0, 0.5);
         
         const int x_difference = mousex_current.getRelativeTo(MIDI)-mousex_initial.getRelativeTo(MIDI);
         const int y_difference = mousey_current-mousey_initial;
@@ -641,11 +600,9 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
 				
 				const int drumy=getYForDrum(drumIDInVector);
 				
-				glBegin(GL_TRIANGLES);
-				glVertex2f(drumx + x_steps_to_move, drumy + y_steps_to_move*y_step);
-				glVertex2f(drumx + x_steps_to_move, drumy + (y_steps_to_move+1)*y_step);
-				glVertex2f(drumx + 5 + x_steps_to_move, drumy + y_step/2 + y_steps_to_move*y_step);
-				glEnd();
+                AriaRender::triangle(drumx + x_steps_to_move,       drumy + y_steps_to_move*y_step,
+                                     drumx + x_steps_to_move,       drumy + (y_steps_to_move+1)*y_step,
+                                     drumx + 5 + x_steps_to_move,   drumy + y_step/2 + y_steps_to_move*y_step);
 			}
             
         }
@@ -665,49 +622,34 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
                 const int drumIDInVector= midiKeyToVectorID[ track->getNotePitchID(n) ];
                 if(drumIDInVector == -1)
 				{
-                    //std::cout << "WARNING: a -1 drum event was found.\n";
                     continue;
                 }
-                //const float volume=track->getNoteVolume(n)/127.0;
                 const int drumy=getYForDrum(drumIDInVector);
                 
-                glBegin(GL_TRIANGLES);
-                glVertex2f(drumx+x_steps_to_move, drumy + y_steps_to_move*y_step);
-                glVertex2f(drumx+x_steps_to_move, drumy + (y_steps_to_move+1)*y_step);
-                glVertex2f(drumx + 5 + x_steps_to_move, drumy + y_step/2 + y_steps_to_move*y_step);
-                glEnd();
-                
+                AriaRender::triangle(drumx+x_steps_to_move,         drumy + y_steps_to_move*y_step,
+                                     drumx+x_steps_to_move,         drumy + (y_steps_to_move+1)*y_step,
+                                     drumx + 5 + x_steps_to_move,   drumy + y_step/2 + y_steps_to_move*y_step);
             }
             
             
         }
-        glEnable(GL_TEXTURE_2D);
-        glLoadIdentity();
-        
+
     }
 
     
     // -----------------------------------------------------------------
     // left part with drum names
     // -----------------------------------------------------------------
-    glLoadIdentity();
-    
-    // grey background
-    glDisable(GL_TEXTURE_2D);
-    if(!focus) glColor3f(0.4, 0.4, 0.4);
-    else glColor3f(0.8, 0.8, 0.8);
-    glBegin(GL_QUADS);
-    
-    glVertex2f( 0, getEditorYStart());
-    glVertex2f( 0, getYEnd());
-    glVertex2f( getEditorXStart()-3, getYEnd());
-    glVertex2f( getEditorXStart()-3, getEditorYStart());
-    
-    glEnd();
 
+    // grey background
+    if(!focus) AriaRender::color(0.4, 0.4, 0.4);
+    else AriaRender::color(0.8, 0.8, 0.8);
     
+    AriaRender::rect(0, getEditorYStart(),
+                     getEditorXStart()-3, getYEnd());
+
     // drum names
-    glColor3f(0,0,0);
+    AriaRender::color(0,0,0);
     int drumY=-1;
     for(int drumID=0; drumID<drumAmount; drumID++)
 	{
@@ -719,65 +661,49 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
 		// only show used drums widget
 		if(drumY==0)
 		{
+            AriaRender::color(0,0,0);
 			if(showUsedDrumsOnly)
 			{
-			    glColor3f(0,0,0);
-                glBegin(GL_TRIANGLES);
-                glVertex2f( getEditorXStart()-73, y+2);
-                glVertex2f( getEditorXStart()-73, y+8);
-                glVertex2f( getEditorXStart()-63, y+5);
-                glEnd();
+                AriaRender::triangle(getEditorXStart()-73, y+2,
+                                     getEditorXStart()-73, y+8,
+                                     getEditorXStart()-63, y+5);
             }
 			else
 			{
-                glBegin(GL_TRIANGLES);
-                glVertex2f( getEditorXStart()-73, y+1);
-                glVertex2f( getEditorXStart()-67, y+1);
-                glVertex2f( getEditorXStart()-70, y+9);
-                glEnd();
+                AriaRender::triangle(getEditorXStart()-73, y+1,
+                                     getEditorXStart()-67, y+1,
+                                     getEditorXStart()-70, y+9);
            }
 			
 		}
 	
-        
-        glRasterPos2f(getEditorXStart()-74, y+9);
-        
         if(drums[drumID].midiKey == -1) // section header
 		{
-            glColor3f(0,0,0);
-            glBegin(GL_QUADS);
-            glVertex2f(getEditorXStart(), y);
-            glVertex2f(getEditorXStart(), y+y_step);
-            glVertex2f(getXEnd(), y+y_step);
-            glVertex2f(getXEnd(), y);
-            glEnd();
-            glColor3f(1,1,1);
+            AriaRender::color(0,0,0);
+            AriaRender::rect(getEditorXStart(), y,
+                             getXEnd(), y+y_step);
+
+            AriaRender::color(1,1,1);
             
             if(!drums[drumID].sectionExpanded) // expand/collapse widget of section header
 			{
-                glBegin(GL_TRIANGLES);
-                glVertex2f( getEditorXStart()+7, y+2);
-                glVertex2f( getEditorXStart()+7, y+8);
-                glVertex2f( getEditorXStart()+17, y+5);
-                glEnd();
+                AriaRender::triangle( getEditorXStart()+7, y+2,
+                                     getEditorXStart()+7, y+8,
+                                     getEditorXStart()+17, y+5 );
             }
 			else
 			{
-                glBegin(GL_TRIANGLES);
-                glVertex2f( getEditorXStart()+7, y+1);
-                glVertex2f( getEditorXStart()+13, y+1);
-                glVertex2f( getEditorXStart()+10, y+9);
-                glEnd();
+                AriaRender::triangle(getEditorXStart()+7, y+1,
+                                     getEditorXStart()+13, y+1,
+                                     getEditorXStart()+10, y+9 );
             }
             
-            glRasterPos2f(getEditorXStart()+20, y+9);
+            AriaRender::text_small(drums[drumID].name, getEditorXStart()+20, y+9);
         }
-        
-        for(int i=0; drums[drumID].name[i]; i++) // draw name
-		{
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, drums[drumID].name[i]);
-        }
-        glColor3f(0,0,0);
+        else
+            AriaRender::text_small(drums[drumID].name, getEditorXStart()-74, y+9);
+
+        AriaRender::color(0,0,0);
         
         // if section is collapsed, skip all its elements
         if(!drums[drumID].sectionExpanded)
@@ -793,14 +719,13 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
     // -----------------------------------------------------------------
     // Scrollbar
     // -----------------------------------------------------------------
-    glEnable(GL_TEXTURE_2D);
-    
-    if(!focus) glColor3f(0.5, 0.5, 0.5);
-    else glColor3f(1,1,1);
+
+    if(!focus) AriaRender::color(0.5, 0.5, 0.5);
+    else AriaRender::color(1,1,1);
 	
 	renderScrollbar();
 	
-    glColor3f(1,1,1);
+    AriaRender::color(1,1,1);
     
     glDisable(GL_SCISSOR_TEST);
     

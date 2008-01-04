@@ -20,14 +20,11 @@
 
 #include "wx/wx.h"
 
-#include "OpenGL.h"
-
 #include "Actions/EditAction.h"
 #include "Actions/AddNote.h"
 
 #include "Images/Drawable.h"
 #include "Images/ImageProvider.h"
-#include "Images/Image.h"
 #include "Editors/KeyboardEditor.h"
 #include "Editors/RelativeXCoord.h"
 #include "Midi/Sequence.h"
@@ -36,6 +33,7 @@
 #include "Pickers/KeyPicker.h"
 #include "GUI/GLPane.h"
 #include "GUI/GraphicalTrack.h"
+#include "GUI/RenderUtils.h"
 
 #include "main.h"
 
@@ -194,12 +192,6 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 {
     
     if(!ImageProvider::imagesLoaded()) return;
-
-    assert(sbArrowDrawable->image!=NULL);
-    assert(sbBackgDrawable->image!=NULL);
-    assert(sbThumbDrawable->image!=NULL);
-    assert(noteTrackDrawable->image!=NULL);
-    //assert(noteTrackBackgDrawable->image!=NULL);
     
     glEnable(GL_SCISSOR_TEST);
     // glScissor doesn't seem to follow the coordinate system so this ends up in all kinds of weird code to map to my coord system (from_y going down)
@@ -217,34 +209,24 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     const int x2 = getXEnd();
     
     // white background
-    glColor4f(1,1,1,1);
-    glBegin(GL_QUADS);
-    glVertex2f(x1, getEditorYStart());
-    glVertex2f(x2, getEditorYStart());
-    glVertex2f(x2, getYEnd());
-    glVertex2f(x1, getYEnd());
-    glEnd();
+    AriaRender::primitives();
+    AriaRender::color(1,1,1);
+    AriaRender::rect(x1, getEditorYStart(), x2, getYEnd());
     
     // horizontal lines
-    glColor4f(0.94, 0.94, 0.94, 1);
+    AriaRender::color(0.94, 0.94, 0.94, 1);
     while(levelid < last_note)
     {
         const int note12 = 11 - ((levelid - 3) % 12);
         if(note_greyed_out[note12])
         {
-            glBegin(GL_QUADS);
-            glVertex2f(x1, y1 + levelid*y_step - yscroll+1);
-            glVertex2f(x2, y1 + levelid*y_step - yscroll+1);
-            glVertex2f(x2, y1 + (levelid+1)*y_step - yscroll+1);
-            glVertex2f(x1, y1 + (levelid+1)*y_step - yscroll+1);
-            glEnd();
+            AriaRender::rect(x1, y1 + levelid*y_step - yscroll+1,
+                             x2, y1 + (levelid+1)*y_step - yscroll+1);
         }
         else
         {
-            glBegin(GL_LINES);
-            glVertex2f(x1, y1 + (levelid+1)*y_step - yscroll+1);
-            glVertex2f(x2, y1 + (levelid+1)*y_step - yscroll+1);
-            glEnd();
+            AriaRender::line(x1, y1 + (levelid+1)*y_step - yscroll+1,
+                             x2, y1 + (levelid+1)*y_step - yscroll+1);
         }
         
         levelid++;
@@ -267,168 +249,97 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
         int y=track->getNotePitchID(n);
         float volume=track->getNoteVolume(n)/127.0;
         
-        if(track->isNoteSelected(n) and focus) glColor3f((1-volume)*1, (1-(volume/2))*1, 0);
-        else glColor3f((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
+        if(track->isNoteSelected(n) and focus) AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
+        else AriaRender::color((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
         
-        glBegin(GL_QUADS);
-        glVertex2f(x1+getEditorXStart()+1, y*y_step+1 + getEditorYStart() - getYScrollInPixels());
-        glVertex2f(x1+getEditorXStart()+1, (y+1)*y_step + getEditorYStart() - getYScrollInPixels());
-        glVertex2f(x2+getEditorXStart()-1, (y+1)*y_step + getEditorYStart() - getYScrollInPixels());
-        glVertex2f(x2+getEditorXStart()-1, y*y_step+1 + getEditorYStart() - getYScrollInPixels());
-        glEnd();
-
-        glColor3f(0, 0, 0);
-        glBegin(GL_LINES);
-        glVertex2f(x1+getEditorXStart()+1, y*y_step+1 + getEditorYStart() - getYScrollInPixels());
-        glVertex2f(x1+getEditorXStart()+1, (y+1)*y_step + getEditorYStart() - getYScrollInPixels());
-        
-        glVertex2f(x1+getEditorXStart()+1, (y+1)*y_step+1 + getEditorYStart() - getYScrollInPixels());
-        glVertex2f(x2+getEditorXStart()-1, (y+1)*y_step+1 + getEditorYStart() - getYScrollInPixels());
-        
-        glVertex2f(x2+getEditorXStart(), (y+1)*y_step + getEditorYStart() - getYScrollInPixels());
-        glVertex2f(x2+getEditorXStart(), y*y_step+1 + getEditorYStart() - getYScrollInPixels());
-        
-        glVertex2f(x1+getEditorXStart()+1, y*y_step+1 + getEditorYStart() - getYScrollInPixels());
-        glVertex2f(x2+getEditorXStart()-1, y*y_step+1 + getEditorYStart() - getYScrollInPixels());
-        glEnd();
-        
+        AriaRender::bordered_rect(x1+getEditorXStart()+1, y*y_step+1 + getEditorYStart() - getYScrollInPixels(),
+                                  x2+getEditorXStart()-1, (y+1)*y_step + getEditorYStart() - getYScrollInPixels());
     }
     
     
     // ------------------ draw keyboard ----------------
     
     // grey background
-    glDisable(GL_TEXTURE_2D);
-    if(!focus) glColor3f(0.4, 0.4, 0.4);
-    else glColor3f(0.8, 0.8, 0.8);
-    glBegin(GL_QUADS);
+    if(!focus) AriaRender::color(0.4, 0.4, 0.4);
+    else AriaRender::color(0.8, 0.8, 0.8);
     
-    glVertex2f( 0, getEditorYStart());
-    glVertex2f( 0, getYEnd());
-    glVertex2f( getEditorXStart()-25, getYEnd());
-    glVertex2f( getEditorXStart()-25, getEditorYStart());
-    
-    glEnd();
+    AriaRender::rect(0, getEditorYStart(), getEditorXStart()-25,  getYEnd());
     
     for(int g_octaveID=0; g_octaveID<11; g_octaveID++)
     {
         int g_octave_y=g_octaveID*120-getYScrollInPixels();
         if(g_octave_y>-120 and g_octave_y<height+20)
         {
+            AriaRender::images();
             
-            glEnable(GL_TEXTURE_2D);
+            if(!focus) AriaRender::color(0.5, 0.5, 0.5);
+            else AriaRender::color(1,1,1);
             
-            if(!focus) glColor3f(0.5, 0.5, 0.5);
-            else glColor3f(1,1,1);
-            
-            noteTrackDrawable->move(getEditorXStart()-noteTrackDrawable->image->width, from_y+barHeight+20 + g_octave_y);
+            noteTrackDrawable->move(getEditorXStart()-noteTrackDrawable->getImageWidth(), from_y+barHeight+20 + g_octave_y);
             noteTrackDrawable->render();
             
+            AriaRender::primitives();
+            AriaRender::color(0,0,0);
             
-            glLoadIdentity();
-            glDisable(GL_TEXTURE_2D);
-            glColor3f(0,0,0);
-            
-            glBegin(GL_LINES);
-            glVertex2f(0, from_y+barHeight+20 + g_octave_y+1);
-            glVertex2f(getEditorXStart()-25, from_y+barHeight+20 + g_octave_y+1);
-            glEnd();
-            
-            glRasterPos2f(30,from_y+barHeight+21 + g_octave_y +120/2);
+            // FIXME - all those from_y+barHeight+20 stuff needs to be cleaned up for good
+            AriaRender::line(0, from_y+barHeight+20 + g_octave_y+1,
+                             getEditorXStart()-25, from_y+barHeight+20 + g_octave_y+1);
             
             char buffer[2];
             sprintf (buffer, "%d", 10-g_octaveID);
-            
-            for(int i=0; buffer[i]; i++){
-                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, buffer[i]);
-            }
-            glEnable(GL_TEXTURE_2D);
+            AriaRender::text(buffer, 30, from_y+barHeight+21 + g_octave_y +120/2);
             
         }//end if
     }//next
 
-    
-    
-    glEnable(GL_TEXTURE_2D);
-    
+                   
     // ------------------------- mouse drag (preview) ------------------------
     
-    if(!clickedOnNote)
+    AriaRender::primitives();
+    
+    if(!clickedOnNote and mouse_is_in_editor)
     {
-        if(mouse_is_in_editor)
-        {
-            
-            // selection
-			if(selecting)
-			{
-                glDisable(GL_TEXTURE_2D);
-                glColor3f(0,0,0);
-                glBegin(GL_LINES);
-                
-				//std::cout << "mousex_initial.getRelativeTo(WINDOW) = " << mousex_initial.getRelativeTo(WINDOW) << std::endl;
-				
-                glVertex2f(mousex_initial.getRelativeTo(WINDOW), mousey_current);
-                glVertex2f(mousex_initial.getRelativeTo(WINDOW), mousey_initial);
-                
-                glVertex2f(mousex_current.getRelativeTo(WINDOW), mousey_initial);
-                glVertex2f(mousex_initial.getRelativeTo(WINDOW), mousey_initial);
-                
-                glVertex2f(mousex_current.getRelativeTo(WINDOW), mousey_initial);
-                glVertex2f(mousex_current.getRelativeTo(WINDOW), mousey_current);
-                
-                glVertex2f(mousex_initial.getRelativeTo(WINDOW), mousey_current);
-                glVertex2f(mousex_current.getRelativeTo(WINDOW), mousey_current);
-                
-                glEnd();
-                glEnable(GL_TEXTURE_2D);
-                
-            }
-			else
-			{
-                // ----------------------- add note (preview) --------------------
-                
-                    glDisable(GL_TEXTURE_2D);
-                    glColor3f(1, 0.85, 0);
-                    
-                    
-                    int preview_x1=
-                        (int)(
-                              (snapMidiTickToGrid(mousex_initial.getRelativeTo(MIDI) /*+ sequence->getXScrollInMidiTicks()*/) -
-                               sequence->getXScrollInMidiTicks())*sequence->getZoom()
-                              );
-                    int preview_x2=
-                        (int)(
-                              (snapMidiTickToGrid(mousex_current.getRelativeTo(MIDI) /*+ sequence->getXScrollInMidiTicks()*/) -
-                               sequence->getXScrollInMidiTicks())*sequence->getZoom()
-                              );
-                    
-                    if(!(preview_x1<0 || preview_x2<0) and preview_x2>preview_x1)
-					{
-                        
-						glBegin(GL_QUADS);
-						
-						glVertex2f(preview_x1+getEditorXStart(), ((mousey_initial - getEditorYStart() + getYScrollInPixels())/y_step)*y_step + getEditorYStart() - getYScrollInPixels());
-						glVertex2f(preview_x1+getEditorXStart(), ((mousey_initial - getEditorYStart() + getYScrollInPixels())/y_step)*y_step+y_step + getEditorYStart() - getYScrollInPixels());
-						glVertex2f(preview_x2+getEditorXStart(), ((mousey_initial - getEditorYStart() + getYScrollInPixels())/y_step)*y_step+y_step + getEditorYStart() - getYScrollInPixels());
-						glVertex2f(preview_x2+getEditorXStart(), ((mousey_initial - getEditorYStart() + getYScrollInPixels())/y_step)*y_step + getEditorYStart() - getYScrollInPixels());
-						
-						glEnd();
-						
-                    }
-                    
-                    glEnable(GL_TEXTURE_2D);
-            }// end if selection or addition
-        }// end if dragging on track
         
-    } // end if !clickedOnNote
+        if(selecting)
+        {
+            // selection
+            AriaRender::color(0,0,0);
+            AriaRender::hollow_rect(mousex_initial.getRelativeTo(WINDOW), mousey_initial,
+                                    mousex_current.getRelativeTo(WINDOW), mousey_current);
+            
+        }
+        else
+        {
+            // add note (preview)
+            AriaRender::color(1, 0.85, 0);
+            
+            
+            int preview_x1=
+                (int)(
+                      (snapMidiTickToGrid(mousex_initial.getRelativeTo(MIDI)) -
+                       sequence->getXScrollInMidiTicks())*sequence->getZoom()
+                      );
+            int preview_x2=
+                (int)(
+                      (snapMidiTickToGrid(mousex_current.getRelativeTo(MIDI)) -
+                       sequence->getXScrollInMidiTicks())*sequence->getZoom()
+                      );
+            
+            if(!(preview_x1<0 or preview_x2<0) and preview_x2>preview_x1)
+            {
+                AriaRender::rect(preview_x1+getEditorXStart(),
+                                 ((mousey_initial - getEditorYStart() + getYScrollInPixels())/y_step)*y_step + getEditorYStart() - getYScrollInPixels(),
+                                 preview_x2+getEditorXStart(),
+                                 ((mousey_initial - getEditorYStart() + getYScrollInPixels())/y_step)*y_step+y_step + getEditorYStart() - getYScrollInPixels());
+            }
+            
+        }// end if selection or addition
+    }
     
     // ------------------------- move note (preview) -----------------------
     if(clickedOnNote)
     {
-        
-        glDisable(GL_TEXTURE_2D);
-        
-        glColor4f(1, 0.85, 0, 0.5);
+        AriaRender::color(1, 0.85, 0, 0.5);
         
         int x_difference = mousex_current.getRelativeTo(MIDI) - mousex_initial.getRelativeTo(MIDI);
         int y_difference = mousey_current - mousey_initial;
@@ -443,13 +354,10 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             int x2=track->getNoteEndInPixels(lastClickedNote) - sequence->getXScrollInPixels();
             int y=track->getNotePitchID(lastClickedNote);
             
-            glBegin(GL_QUADS);
-            glVertex2f(x1+x_step_move+getEditorXStart(), (y+y_step_move)*y_step+1 + getEditorYStart() - getYScrollInPixels());
-            glVertex2f(x1+x_step_move+getEditorXStart(), (y+y_step_move+1)*y_step + getEditorYStart() - getYScrollInPixels());
-            glVertex2f(x2-1+x_step_move+getEditorXStart(), (y+y_step_move+1)*y_step + getEditorYStart() - getYScrollInPixels());
-            glVertex2f(x2-1+x_step_move+getEditorXStart(), (y+y_step_move)*y_step+1 + getEditorYStart() - getYScrollInPixels());
-            glEnd();
-            
+            AriaRender::rect(x1+x_step_move+getEditorXStart(),
+                             (y+y_step_move)*y_step+1 + getEditorYStart() - getYScrollInPixels(),
+                             x2-1+x_step_move+getEditorXStart(),
+                             (y+y_step_move+1)*y_step + getEditorYStart() - getYScrollInPixels());
         }
         else
         {
@@ -462,31 +370,24 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
                 int x1=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
                 int x2=track->getNoteEndInPixels(n) - sequence->getXScrollInPixels();
                 int y=track->getNotePitchID(n);
-                //float volume=track->getNoteVolume(n)/127.0;
-                
-                glBegin(GL_QUADS);
-                glVertex2f(x1+x_step_move+getEditorXStart(), (y+y_step_move)*y_step+1 + getEditorYStart() - getYScrollInPixels());
-                glVertex2f(x1+x_step_move+getEditorXStart(), (y+y_step_move+1)*y_step + getEditorYStart() - getYScrollInPixels());
-                glVertex2f(x2-1+x_step_move+getEditorXStart(), (y+y_step_move+1)*y_step + getEditorYStart() - getYScrollInPixels());
-                glVertex2f(x2-1+x_step_move+getEditorXStart(), (y+y_step_move)*y_step+1 + getEditorYStart() - getYScrollInPixels());
-                glEnd();
+
+                AriaRender::rect(x1+x_step_move+getEditorXStart(),
+                                 (y+y_step_move)*y_step+1 + getEditorYStart() - getYScrollInPixels(),
+                                 x2-1+x_step_move+getEditorXStart(),
+                                 (y+y_step_move+1)*y_step + getEditorYStart() - getYScrollInPixels());
             }//next
             
         }
         
-        glEnable(GL_TEXTURE_2D);
-        glLoadIdentity();
-        
     }
 
     // ---------------------------- scrollbar -----------------------
-    if(!focus) glColor3f(0.5, 0.5, 0.5);
-    else glColor3f(1,1,1);
+    if(!focus) AriaRender::color(0.5, 0.5, 0.5);
+    else AriaRender::color(1,1,1);
     
     renderScrollbar();
     
-    glColor3f(1,1,1);
-    
+    AriaRender::color(1,1,1);
     glDisable(GL_SCISSOR_TEST);
     
 }

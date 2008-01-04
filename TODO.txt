@@ -101,6 +101,8 @@ NOTE: sorry, this is very raw :)
 + notes in score can only be natural or sharp, never flat. (EasyBeat uses flats when the current key uses flats at armature)
 + scons warning : 'install' is found inside 'uninstall' (fix commited, not tested)
 
++ upon opening Aria, horizontal scrollbar is slightly too short. it goes back into place when editing notes (selecting by dragging)
+
 + when wait dialog appears, you can still edit tracks and do operations that may be harmful to current process.
     yet you can't make it modal otherwise the background process stops.
 

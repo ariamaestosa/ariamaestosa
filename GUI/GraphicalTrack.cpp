@@ -30,7 +30,6 @@
 #include "Pickers/DrumChoice.h"
 #include "Pickers/MagneticGrid.h"
 #include "Images/Drawable.h"
-#include "Images/Image.h"
 #include "Images/ImageProvider.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
@@ -148,7 +147,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 		
         const int winX = mousex.getRelativeTo(WINDOW);
         // collapse
-        if(winX > collapseDrawable->x and winX < collapseDrawable->x+collapseDrawable->image->width and
+        if(winX > collapseDrawable->x and winX < collapseDrawable->x+collapseDrawable->getImageWidth() and
 		   mousey > from_y+15 and mousey < from_y+35)
 		{
             collapsed = !collapsed;
@@ -156,7 +155,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         }
         
         // dock
-        if(winX > dockTrackDrawable->x and winX < dockTrackDrawable->x+muteDrawable->image->width and
+        if(winX > dockTrackDrawable->x and winX < dockTrackDrawable->x+muteDrawable->getImageWidth() and
 		   mousey>from_y+10 and mousey<from_y+30)
 		{
             docked = true;
@@ -165,7 +164,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         }
         
         // mute
-        if(winX > muteDrawable->x and winX < muteDrawable->x+muteDrawable->image->width and
+        if(winX > muteDrawable->x and winX < muteDrawable->x+muteDrawable->getImageWidth() and
 		   mousey>from_y+10 and mousey<from_y+30)
 		{
             muted = !muted;
