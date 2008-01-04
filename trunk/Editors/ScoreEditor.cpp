@@ -31,7 +31,6 @@
 #include "Actions/EditAction.h"
 #include "Actions/AddNote.h"
 
-#include "OpenGL.h"
 #include "main.h"
 
 #include <cmath>
@@ -535,9 +534,9 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteR
      */
     if(renderInfo.instant_hit)
 	{
-		glLoadIdentity();
-		glRasterPos2f(renderInfo.x, renderInfo.y + 8);
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, 'X');
+        AriaRender::primitives();
+        AriaRender::color(0,0,0);
+        AriaRender::character('X', renderInfo.x, renderInfo.y + 8);
 	}
 	else if(open)
 	{
@@ -627,9 +626,9 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo)
 {
     AriaRender::primitives();
 	if(renderInfo.selected)
-        AriaRender::color(1,0,0,1);
+        AriaRender::color(1,0,0);
 	else
-		AriaRender::color(0,0,0,1);	
+		AriaRender::color(0,0,0);	
 	
 	// tail
     if(renderInfo.draw_tail)
@@ -669,8 +668,10 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo)
 							  10 : (renderInfo.triplet_arc_x_end - renderInfo.triplet_arc_x_start)/2);
 		drawArc(center_x, renderInfo.triplet_arc_y + (renderInfo.triplet_show_above ? 0 : 10), radius_x, 10, renderInfo.triplet_show_above);
 
-		glRasterPos2f(center_x-2, ( renderInfo.triplet_show_above? renderInfo.triplet_arc_y : renderInfo.triplet_arc_y+18) );
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, '3');
+        AriaRender::color(0,0,0);
+        AriaRender::character_small('3', center_x-2, ( renderInfo.triplet_show_above? renderInfo.triplet_arc_y : renderInfo.triplet_arc_y+18));
+		///glRasterPos2f(center_x-2, ( renderInfo.triplet_show_above? renderInfo.triplet_arc_y : renderInfo.triplet_arc_y+18) );
+		//glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, '3');
 
 	}
 	
@@ -835,8 +836,8 @@ void ScoreEditor::renderSilence(const int tick, const int tick_length)
     {
         drawArc(x+5, y + 25, 10, 10, false);
         
-		glRasterPos2f(x+3, y+31 );
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, '3');
+        AriaRender::color(0,0,0);
+        AriaRender::character_small('3', x+3, y+31);
     }
 	
 }
@@ -844,7 +845,7 @@ void ScoreEditor::renderSilence(const int tick, const int tick_length)
 void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 						 RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {
-	if(halfh == -1) halfh = noteOpen->image->height/2;
+	if(halfh == -1) halfh = noteOpen->getImageHeight()/2;
 
     if(!ImageProvider::imagesLoaded()) return;
     const int yscroll = getYScrollInPixels();
@@ -1385,7 +1386,7 @@ int ScoreEditor::getYScrollInPixels()
 
 NoteSearchResult ScoreEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 {
-	const int halfh = noteOpen->image->height/2;
+	const int halfh = noteOpen->getImageHeight()/2;
 	const int noteAmount = track->getNoteAmount();
 	const int mx = x.getRelativeTo(WINDOW);
 	
@@ -1481,7 +1482,7 @@ void ScoreEditor::moveNote(Note& note, const int relativeX, const int relativeY)
 
 void ScoreEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current, RelativeXCoord& mousex_initial, int mousey_initial)
 {
-	const int halfh = noteOpen->image->height/2;
+	const int halfh = noteOpen->getImageHeight()/2;
 	const int noteAmount = track->getNoteAmount();
 	const int mxc = mousex_current.getRelativeTo(WINDOW);
 	const int mxi = mousex_initial.getRelativeTo(WINDOW);

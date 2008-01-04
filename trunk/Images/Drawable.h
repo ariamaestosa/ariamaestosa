@@ -17,11 +17,12 @@
 #ifndef _drawable_
 #define _drawable_
 
-#include "Images/Image.h"
 #include "Config.h"
 
 namespace AriaMaestosa {
 
+    class Image;
+    
 class Drawable {
 public:
     DECLARE_LEAK_CHECK();
@@ -40,6 +41,9 @@ public:
     ~Drawable();
     
     void setFlip(bool x, bool y);
+    
+    int getImageWidth();
+    int getImageHeight();
     
     void move(int x, int y);
     void setHotspot(int x, int y);

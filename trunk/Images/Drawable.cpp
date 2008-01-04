@@ -15,6 +15,7 @@
  */
 
 #include "Images/Drawable.h"
+#include "Images/Image.h"
 #include "Config.h"
 #include <iostream>
 
@@ -153,6 +154,15 @@ void Drawable::render()
     
     glEnd();
     
+}
+
+int Drawable::getImageWidth()
+{
+    return image->width;
+}
+int Drawable::getImageHeight()
+{
+    return image->height;
 }
 
 

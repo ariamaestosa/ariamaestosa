@@ -84,10 +84,10 @@ void loadImages()
     noteOpen = new Drawable(wxT("score/noteopen.png"));
     noteTail = new Drawable(wxT("score/notetail.png"));
     sharpSign = new Drawable(wxT("score/sharp.png"));
-	sharpSign -> setHotspot( sharpSign->image->width/2, sharpSign->image->height/2 );
+	sharpSign -> setHotspot( sharpSign->getImageWidth()/2, sharpSign->getImageHeight()/2 );
 	
     naturalSign = new Drawable(wxT("score/natural.png"));
-	naturalSign -> setHotspot( naturalSign->image->width/2, naturalSign->image->height/2 );
+	naturalSign -> setHotspot( naturalSign->getImageWidth()/2, naturalSign->getImageHeight()/2 );
 	
     flatSign = new Drawable(wxT("score/flat.png"));
 	flatSign -> setHotspot( 2, 12 );

@@ -151,5 +151,43 @@ void hollow_rect(const int x1, const int y1, const int x2, const int y2)
     glEnd();
 }
 
+void text(const char* string, const int x, const int y)
+{
+    glRasterPos2f(x, y);
+    
+    for(int i=0; string[i]; i++)
+    {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, string[i]);
+    }
+}
+void text_small(const char* string, const int x, const int y)
+{
+    glRasterPos2f(x, y);
+    
+    for(int i=0; string[i]; i++)
+    {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, string[i]);
+    }
+}
+void character(const char character, const int x, const int y)
+{
+    glRasterPos2f(x, y);
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, character);
+}
+void character_small(const char character, const int x, const int y)
+{
+    glRasterPos2f(x, y);
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, character);
+}
+
+void triangle(const int x1, const int y1, const int x2, const int y2, const int x3, const int y3)
+{
+    glBegin(GL_TRIANGLES);
+    glVertex2f(x1, y1);
+    glVertex2f(x2, y2);
+    glVertex2f(x3, y3);
+    glEnd();
+}
+
 }
 }

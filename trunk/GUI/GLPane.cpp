@@ -43,7 +43,6 @@
 #include "GUI/MainFrame.h"
 #include "GUI/MeasureBar.h"
 #include "Images/Drawable.h"
-#include "Images/Image.h"
 #include "Images/ImageProvider.h"
 #include "Midi/Track.h"
 #include "Midi/Note.h"

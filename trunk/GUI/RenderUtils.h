@@ -40,6 +40,12 @@ namespace AriaRender
     void bordered_rect(const int x1, const int y1, const int x2, const int y2);
     void bordered_rect_no_start(const int x1, const int y1, const int x2, const int y2);
     
+    void text(const char* string, const int x, const int y);
+    void text_small(const char* string, const int x, const int y);
+    void character(const char character, const int x, const int y);
+    void character_small(const char character, const int x, const int y);
+    
+    void triangle(const int x1, const int y1, const int x2, const int y2, const int x3, const int y3);
 }
 }
 #endif
