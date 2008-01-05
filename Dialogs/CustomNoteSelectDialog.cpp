@@ -15,7 +15,7 @@
  */
 
 
-#include "main.h"
+#include "AriaCore.h"
 #include "Dialogs/CustomNoteSelectDialog.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
@@ -333,7 +333,7 @@ void CustomNoteSelectDialog::okClicked(wxCommandEvent& evt)
         
     }//next
     
-    getGLPane()->render();
+    Display::render();
 }
 
 void CustomNoteSelectDialog::cancelClicked(wxCommandEvent& evt)

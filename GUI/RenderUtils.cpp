@@ -17,6 +17,7 @@
 
 #include "GUI/RenderUtils.h"
 #include "OpenGL.h"
+#include <cmath>
 
 namespace AriaMaestosa
 {
@@ -160,7 +161,7 @@ void text(const char* string, const int x, const int y)
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, string[i]);
     }
 }
-void text_small(const char* string, const int x, const int y)
+void small_text(const char* string, const int x, const int y)
 {
     glRasterPos2f(x, y);
     
@@ -174,10 +175,27 @@ void character(const char character, const int x, const int y)
     glRasterPos2f(x, y);
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, character);
 }
-void character_small(const char character, const int x, const int y)
+void small_character(const char character, const int x, const int y)
 {
     glRasterPos2f(x, y);
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, character);
+}
+
+void small_text_newline_between_words(const char* string, const int x, const int y)
+{
+    glRasterPos2f(x, y);
+    
+    int line=0;
+    for(int i=0; string[i]; i++)
+    {
+        if(string[i]==' ')
+		{
+            line++;
+            glRasterPos2f(x, y+line*15);
+        }
+		else
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, string[i]);
+    }
 }
 
 void triangle(const int x1, const int y1, const int x2, const int y2, const int x3, const int y3)
@@ -187,6 +205,34 @@ void triangle(const int x1, const int y1, const int x2, const int y2, const int 
     glVertex2f(x2, y2);
     glVertex2f(x3, y3);
     glEnd();
+}
+
+void arc(int center_x, int center_y, int radius_x, int radius_y, bool show_above)
+{
+	glLoadIdentity();
+    
+	const int y_mult = (show_above ? -radius_y : radius_y);
+	
+	glColor3f(0,0,0);
+	glBegin(GL_LINES);
+	for(float angle = 0.2; angle<=M_PI; angle +=0.2)
+	{
+		glVertex2f( center_x + std::cos(angle)*radius_x, center_y + std::sin(angle)*y_mult );
+		glVertex2f( center_x + std::cos(angle-0.2)*radius_x, center_y + std::sin(angle-0.2)*y_mult );
+	}
+	glEnd();	
+}
+
+
+void beginScissors(const int x, const int y, const int width, const int height)
+{
+    glEnable(GL_SCISSOR_TEST);
+    glScissor(x,y,width,height);
+    
+}
+void endScissors()
+{
+    glDisable(GL_SCISSOR_TEST);
 }
 
 }

@@ -19,7 +19,7 @@
 #include "Editors/KeyboardEditor.h"
 #include "GUI/GLPane.h"
 #include "GUI/GraphicalTrack.h"
-#include "main.h"
+#include "AriaCore.h"
 
 namespace AriaMaestosa {
 	
@@ -163,7 +163,7 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
         break;
     }
     
-    getGLPane()->render();
+    Display::render();
 }
 
 }

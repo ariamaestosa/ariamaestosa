@@ -15,7 +15,7 @@
  */
 
 #include "Config.h"
-#include "main.h"
+#include "AriaCore.h"
 
 #include "Actions/MoveNotes.h"
 #include "Editors/Editor.h"
@@ -102,8 +102,11 @@ void Editor::rightClick(RelativeXCoord x, int y)
 	
 	if( result == FOUND_NOTE or result == FOUND_SELECTED_NOTE )
 	{
-		wxPoint winCoord = getGLPane()->ClientToScreen(wxPoint(x.getRelativeTo(WINDOW),y));
-		showVolumeSlider(winCoord.x, winCoord.y, noteID, track);
+		//wxPoint winCoord = getGLPane()->ClientToScreen(wxPoint(x.getRelativeTo(WINDOW),y));
+		//showVolumeSlider(winCoord.x, winCoord.y, noteID, track);
+        int screen_x, screen_y;
+        Display::clientToScreen(x.getRelativeTo(WINDOW),y, &screen_x, &screen_y);
+        showVolumeSlider( screen_x, screen_y, noteID, track);
 	}
 	
 }
@@ -111,9 +114,8 @@ void Editor::rightClick(RelativeXCoord x, int y)
 void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
 {
     
-    glLoadIdentity();
-    glDisable(GL_TEXTURE_2D);
-    glLineWidth(1);
+    AriaRender::primitives();
+    AriaRender::lineWidth(1);
     int count=1;
 	//const int start_x = getEditorXStart() - sequence->getXScrollInPixels() % (int)(getMeasureBar()->measureLengthInPixels());
 	const int start_x = getMeasureBar()->firstPixelInMeasure( getMeasureBar()->measureAtPixel( getEditorXStart() ) );
@@ -133,20 +135,16 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
 			
 			if(count == darkLineEveryXPaleLines)
 			{
-				glColor3f(0.5, 0.5, 0.5);
+                AriaRender::color(0.5, 0.5, 0.5);
 				count = 0;
 			}
-			else glColor3f(0.9, 0.9, 0.9);
+			else AriaRender::color(0.9, 0.9, 0.9);
 			count++;
 			
 			if(mx<getEditorXStart()) continue; // don't draw lines before the beginning
 			
-			glBegin(GL_LINES);
-			glVertex2f(mx, from_y);
-			glVertex2f(mx, to_y);
-			glEnd();
-			
-			
+            AriaRender::line(mx, from_y, mx, to_y);
+
 		}//next line
 		
 	}
@@ -163,40 +161,30 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
 			new_mx = measureBar->firstPixelInMeasure(m);
 
 			// draw pale lines
-			glColor3f(0.9, 0.9, 0.9);
+            AriaRender::color(0.9, 0.9, 0.9);
 			for(; mx < new_mx; mx += beatLength)
 			{
-				glBegin(GL_LINES);
-				glVertex2f(mx, from_y);
-				glVertex2f(mx, to_y);
-				glEnd();
+                AriaRender::line(mx, from_y, mx, to_y);
 			}
 			mx = new_mx;
 			
 			// draw strong line
-            glColor3f(0.5, 0.5, 0.5);
-		
-			glBegin(GL_LINES);
-			glVertex2f(mx, from_y);
-			glVertex2f(mx, to_y);
-			glEnd();
+            AriaRender::color(0.5, 0.5, 0.5);
+            AriaRender::line(mx, from_y,mx, to_y);
 			mx += beatLength;
 				
-			if(mx > getGLPane()->getWidth()) break;
+			if(mx > Display::getWidth()) break;
 			
 		}//next
 		
 		// draw lines till end of screen if we're not there yet
-		const int end_of_screen = getGLPane()->getWidth();
+		const int end_of_screen = Display::getWidth();
 		if( mx < end_of_screen)
 		{
-			glColor3f(0.9, 0.9, 0.9);
+            AriaRender::color(0.9, 0.9, 0.9);
 			for(;mx<end_of_screen; mx +=beatLength)
 			{
-				glBegin(GL_LINES);
-				glVertex2f(mx, from_y);
-				glVertex2f(mx, to_y);
-				glEnd();
+                AriaRender::line(mx, from_y,mx, to_y);
 			}//next
 			
 		}//end if
@@ -218,14 +206,14 @@ void Editor::renderScrollbar()
     sbArrowDrawable->setFlip(false, false);
     sbArrowDrawable->move(getWidth() - 24, from_y+20+barHeight);
     
-    const int mouseX = getGLPane()->getMouseX_initial().getRelativeTo(WINDOW);
-    const int mouseX2 = getGLPane()->getMouseX_current().getRelativeTo(WINDOW);
+    const int mouseX = Display::getMouseX_initial().getRelativeTo(WINDOW);
+    const int mouseX2 = Display::getMouseX_current().getRelativeTo(WINDOW);
     
-    const int mouseY = getGLPane()->getMouseY_initial();
-    const int mouseY2 = getGLPane()->getMouseY_current();
+    const int mouseY = Display:: getMouseY_initial();
+    const int mouseY2 = Display:: getMouseY_current();
     
     if(!verticalScrolling and // ignore arrows if user is dragging thumb
-	   getGLPane()->isMouseDown() and // only if mouse is down
+	   Display:: isMouseDown() and // only if mouse is down
        mouseX > sbArrowDrawable->x and mouseX2 > sbArrowDrawable->x and // and mouse is located on the arrow
        mouseY > sbArrowDrawable->y and mouseY2 > sbArrowDrawable->y and
        mouseX < sbArrowDrawable->x+sbArrowDrawable->getImageWidth() and mouseX2 < sbArrowDrawable->x+sbArrowDrawable->getImageWidth() and
@@ -252,7 +240,7 @@ void Editor::renderScrollbar()
     sbArrowDrawable->move(getWidth() - 24, from_y+barHeight+height+12);
     
     if(!verticalScrolling and // ignore arrows if user is dragging thumb
-	   getGLPane()->isMouseDown() and // only if mouse is down
+	   Display:: isMouseDown() and // only if mouse is down
        mouseX > sbArrowDrawable->x and mouseX2 > sbArrowDrawable->x and // and mouse is lcoated on the arrow
        mouseY > sbArrowDrawable->y and mouseY2 > sbArrowDrawable->y and
        mouseX < sbArrowDrawable->x+sbArrowDrawable->getImageWidth() and mouseX2 < sbArrowDrawable->x+sbArrowDrawable->getImageWidth() and
@@ -498,7 +486,7 @@ void Editor::mouseExited(RelativeXCoord mousex_current, int mousey_current,
 	selecting = false;
 	mouse_is_in_editor = false;
 	
-	getGLPane()->render();
+	Display::render();
 }
 
 NoteSearchResult Editor::noteAt(RelativeXCoord x, const int y, int& noteID) { std::cerr << "ERROR base class method called" << std::endl; return FOUND_NOTHING; }
@@ -562,7 +550,7 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 																	 getMainFrame()->getCurrentSequence()->getXScrollInPixels()+
 																	 (mousex_current.getRelativeTo(WINDOW)-getXEnd()+75)/5 );
 			getMainFrame()->updateHorizontalScrollbar();
-			getGLPane()->render();
+			Display::render();
 			return;
 		}
 		else if(mousex_current.getRelativeTo(WINDOW) < getEditorXStart()+20)
@@ -572,7 +560,7 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 																	 getMainFrame()->getCurrentSequence()->getXScrollInPixels()-
 																	 (getEditorXStart()+20-mousex_current.getRelativeTo(WINDOW))/4 );
 			getMainFrame()->updateHorizontalScrollbar();
-			getGLPane()->render();
+			Display::render();
 			return;
 		}
 	}
@@ -618,7 +606,7 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 				if(sb_position<0) sb_position=0;
 				if(sb_position>1) sb_position=1;
 				
-				getGLPane()->render();
+				Display::render();
 			}
             
 		}//endif
@@ -631,7 +619,7 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 			
 			//std::cout << "scrolling up to " << sb_position << std::endl;
 			
-			getGLPane()->render();
+			Display::render();
 		}
 		
 		if(scroll_down_arrow_pressed)
@@ -641,7 +629,7 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 			
 			//std::cout << "scrolling down to " << sb_position << std::endl;
 			
-			getGLPane()->render();
+			Display::render();
 		}
 	}
  	

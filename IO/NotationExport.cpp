@@ -4,7 +4,7 @@
 #include <wx/file.h>
 
 #include "LeakCheck.h"
-#include "main.h"
+#include "AriaCore.h"
 
 #include "GUI/GraphicalTrack.h"
 #include "GUI/MeasureBar.h"

@@ -22,7 +22,7 @@
 const float current_file_version = 1.0;
 
 #include "Config.h"
-#include "main.h"
+#include "AriaCore.h"
 
 #include "Actions/EditAction.h"
 #include "Actions/SnapNotesToGrid.h"
@@ -79,7 +79,7 @@ Sequence::Sequence()
 		
     sequenceFileName =  _("Untitled");
     
-    if(getGLPane()->isVisible) addTrack();
+    if(Display::isVisible()) addTrack();
     
     copyright = wxT("");
     
@@ -143,7 +143,7 @@ void Sequence::snapNotesToGrid()
     
     tracks[ currentTrack ].action( new Action::SnapNotesToGrid() );
     
-    getGLPane()->render();
+    Display::render();
 }
 
 // ------------------------------------------- scrolling ----------------------------------------
@@ -171,14 +171,14 @@ void Sequence::setXScrollInPixels(int value)
 {
     x_scroll_in_pixels = value;
     
-	const int editor_size=getGLPane()->getWidth()-100,
+	const int editor_size=Display::getWidth()-100,
 		total_size = getMeasureBar()->getTotalPixelAmount();
 
     if( x_scroll_in_pixels < 0 ) x_scroll_in_pixels = 0;
     if( x_scroll_in_pixels >= total_size-editor_size) x_scroll_in_pixels = total_size-editor_size-1;
     
 	
-    getGLPane()->render();
+    Display::render();
 }
 
 void Sequence::setYScroll(int value)
@@ -244,7 +244,7 @@ void Sequence::undo()
 	lastAction->undo();
 	undoStack.erase( undoStack.size() - 1 );
 	
-	getGLPane()->render();
+	Display::render();
 }
 
 // forbid undo, drop all undo information kept in memory.
@@ -268,7 +268,7 @@ void Sequence::loadUndoMemory()
 {
 	if(!somethingDoneToUndo) return;
     tracks[lastModifiedTrack].loadUndoMemory();
-    getGLPane()->render();
+    Display::render();
 }
 */
 
@@ -277,7 +277,7 @@ void Sequence::loadUndoMemory()
 void Sequence::renderTracks(int currentTick, RelativeXCoord mousex, int mousey, int mousey_initial, int from_y)
 {
     
-	const int draggedTrack = getGLPane()->getDraggedTrackID();
+	const int draggedTrack = Display::getDraggedTrackID();
 
 	// draw tracks normally
     if(draggedTrack==-1)
@@ -331,10 +331,10 @@ void Sequence::renderTracks(int currentTick, RelativeXCoord mousex, int mousey, 
 				reorderYScroll -= (100-mousey)*4/100;
 		}
 		
-        if(mousey > getGLPane()->getHeight()-100)
+        if(mousey > Display::getHeight()-100)
 		{
 			if(mousey < last_y+50)
-				reorderYScroll += (mousey - getGLPane()->getHeight()+100)*4/100;
+				reorderYScroll += (mousey - Display::getHeight()+100)*4/100;
         }
 		
         // draw track the user is dragging
@@ -374,7 +374,7 @@ bool Sequence::areMouseHeldDownEventsNeeded()
 	// FIXME - clarify status of this. fix or remove.
 	
 	/*
-	const int draggedTrack = getGLPane()->getDraggedTrackID();
+	const int draggedTrack = Display::getDraggedTrackID();
 	
 	// we're reordering tracks, it is necessary. return true.
 	if(draggedTrack!=-1) return true;
@@ -398,13 +398,13 @@ bool Sequence::areMouseHeldDownEventsNeeded()
 
 void Sequence::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current, RelativeXCoord mousex_initial, int mousey_initial)
 {
-
-	const int draggedTrack = getGLPane()->getDraggedTrackID();
+    // FIXME - dragging tracks has nothing to do in GLPane
+	const int draggedTrack = Display::getDraggedTrackID();
 
 	// if reordering tracks
 	if(draggedTrack!=-1)
 	{
-		getGLPane()->render(); // reordering preview is done while rendering, so calling 'render' will update reordering onscreen.
+		Display::render(); // reordering preview is done while rendering, so calling 'render' will update reordering onscreen.
 		return;
 	}
 	
@@ -469,7 +469,7 @@ void Sequence::addTrack()
 	if(currentTrack>=0 and currentTrack<tracks.size()) tracks.add(new Track(getMainFrame(), this), currentTrack+1); // add new track below active one
 	else tracks.push_back(new Track(getMainFrame(), this));
 	
-    getGLPane()->render();
+    Display::render();
 }
 
 void Sequence::deleteTrack()
@@ -480,7 +480,7 @@ void Sequence::deleteTrack()
 	
 	while(currentTrack>tracks.size()-1) currentTrack -= 1;
 		
-    getGLPane()->render();
+    Display::render();
 }
 
 void Sequence::deleteTrack(int ID)
@@ -502,7 +502,7 @@ void Sequence::deleteTrack(int ID)
 void Sequence::reorderTracks()
 {
 	
-    const int draggedTrack = getGLPane()->getDraggedTrackID();
+    const int draggedTrack = Display::getDraggedTrackID();
 	
     if( reordering_newPosition == draggedTrack ) return;
     if( reordering_newPosition == -1 ) return;
@@ -624,17 +624,15 @@ void Sequence::spacePressed()
 		
 		int startTick = -1;
         bool success = PlatformMidiManager::playSelected(this, &startTick);
-		getGLPane()->setPlaybackStartTick( startTick );
+        Display::setPlaybackStartTick( startTick ); // FIXME - start tick should NOT go in GlPane
 
         if(!success or startTick == -1 ) // failure
 		{
-            getGLPane()->exitPlayLoop();
-            //if(!PlatformMidiManager::isPlaying()) getMainFrame()->toolsExitPlaybackMode();
-			//return;
+            Display::exitPlayLoop();
 		}
 		else
 		{
-            getGLPane()->enterPlayLoop();
+            Display::enterPlayLoop();
 		}
         
     }
@@ -643,7 +641,7 @@ void Sequence::spacePressed()
 		
         getMainFrame()->toolsExitPlaybackMode();
         PlatformMidiManager::stop();
-        getGLPane()->render();
+        Display::render();
         
     }
 	
@@ -660,13 +658,13 @@ void Sequence::copy()
 void Sequence::paste()
 {
     tracks[currentTrack].action( new Action::Paste(false) );
-    getGLPane()->render();   
+    Display::render();   
 }
 
 void Sequence::pasteAtMouse()
 {
     tracks[currentTrack].action( new Action::Paste(true) );
-    getGLPane()->render();   
+    Display::render();   
 }
 
 // ------------------------------------------- selection ----------------------------------------
@@ -674,13 +672,13 @@ void Sequence::pasteAtMouse()
 void Sequence::selectAll()
 {
     tracks[currentTrack].selectNote(ALL_NOTES, true, true);
-    getGLPane()->render();
+    Display::render();
 }
 
 void Sequence::selectNone()
 {
     tracks[currentTrack].selectNote(ALL_NOTES, false, true);
-    getGLPane()->render();
+    Display::render();
 }
 
 // ------------------------------------------- scale ----------------------------------------
@@ -742,7 +740,7 @@ void Sequence::scale(
 
     }
 
-    getGLPane()->render();
+    Display::render();
     
 }
 
@@ -767,7 +765,7 @@ void Sequence::setMeasureSig(int top, int bottom)
     wxSpinEvent unused;
     getMainFrame()->songLengthChanged(unused);
 	
-    getGLPane()->render();
+    Display::render();
 }
 */
 /*
@@ -1176,7 +1174,7 @@ over:
 	
 	importing = false;
 	getMainFrame()->updateHorizontalScrollbar( x_scroll_in_pixels );
-	getGLPane()->render();
+	Display::render();
 	
 	return true;
 	

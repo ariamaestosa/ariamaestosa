@@ -37,7 +37,7 @@
 
 #include "wx/wx.h"
 
-#include "main.h"
+#include "AriaCore.h"
 
 #include "GUI/GLPane.h"
 #include "GUI/MainFrame.h"

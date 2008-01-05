@@ -22,7 +22,7 @@
 #include "IO/IOUtils.h"
 #include <iostream>
 
-#include "main.h"
+#include "AriaCore.h"
 #include "Config.h"
 
 namespace AriaMaestosa {

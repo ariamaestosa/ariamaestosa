@@ -24,7 +24,7 @@
 
 #include "wx/tokenzr.h"
 
-#include "main.h"
+#include "AriaCore.h"
 
 #include <iostream>
 
@@ -321,7 +321,7 @@ public:
 		}
 
 		parent->tuningUpdated();
-		getGLPane()->render();
+		Display::render();
 		
 		Hide();
 	}
@@ -381,7 +381,7 @@ void TuningPicker::menuItemSelected(wxCommandEvent& evt)
 {
     loadTuning( evt.GetId() );
     
-    getGLPane()->render();
+    Display::render();
 }
 
 void TuningPicker::loadTuning(const int id, const bool user_triggered) // if user-triggered, it will be undoable

@@ -18,7 +18,7 @@
 #include "Actions/ShiftString.h"
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
-#include "main.h"
+#include "AriaCore.h"
 
 namespace AriaMaestosa {    
 namespace Action {

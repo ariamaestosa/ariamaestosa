@@ -23,7 +23,7 @@
 #include <iostream>
 
 #include "Config.h"
-#include "main.h"
+#include "AriaCore.h"
 
 namespace AriaMaestosa {
 	
@@ -65,7 +65,7 @@ void DrumChoice::menuSelected(wxCommandEvent& evt)
 	
 	parent->setDrumKit(drumID);
     
-    getGLPane()->render();
+    Display::render();
 }
 
 void DrumChoice::setParent(Track* t)

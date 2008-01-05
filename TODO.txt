@@ -28,6 +28,7 @@ NOTE: sorry, this is very raw :)
  - new control editor
  - notation printing and export
  - riff-based song editing (e.g. to repeat chorus you don't need to keep multiple copies of it)
+ - allow using another renderer than OpenGL
   
 ************************* NEW FEATURES TO ADD: *************************
 
@@ -43,6 +44,8 @@ NOTE: sorry, this is very raw :)
  - know what happens when adding too much channels in auto mode
 
  * allow setting notes sharp/flat in a graphical way
+
++ scroll a bit so you no more see measure 1. then start playing song from measure one. you can see the red line at the left of the screen
 
  - change whole track pitch/volume
  
@@ -105,6 +108,9 @@ NOTE: sorry, this is very raw :)
 
 + when wait dialog appears, you can still edit tracks and do operations that may be harmful to current process.
     yet you can't make it modal otherwise the background process stops.
+
++ what's up with glutInit? wxGlCanvas seems to call it. Crashes suse 10.1.
++ make it easier in code to add new langauges*
 
 - if a midi has control events in an empty track they might be removed during import (though what could go there? tempo events are already stored in sequence)
 - hitting space should work even if focus is in top bar

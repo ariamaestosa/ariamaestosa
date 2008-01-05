@@ -15,10 +15,9 @@
  */
 
 #include "wx/wx.h"
-#include <wx/stdpaths.h>
-#include <wx/config.h>
+#include "wx/stdpaths.h"
+#include "wx/config.h"
 
-#include "main.h"
 
 #include "GUI/MainFrame.h"
 #include "GUI/GLPane.h"
@@ -32,18 +31,16 @@
 
 #include "Config.h"	
 
-#ifdef __WXGTK__
-#include "wx/stdpaths.h"
-#endif
-
-IMPLEMENT_APP(AriaMaestosa::wxWidgetApp)
-
 #ifdef _MORE_DEBUG_CHECKS
 #include "LeakCheck.h"
 #endif
 
+#include "main.h"
+
+IMPLEMENT_APP(AriaMaestosa::wxWidgetApp)
+
 namespace AriaMaestosa {
-	
+
 bool render_loop_on = false;
 
 BEGIN_EVENT_TABLE(wxWidgetApp,wxApp)
@@ -51,19 +48,10 @@ EVT_ACTIVATE_APP(wxWidgetApp::onActivate)
 EVT_IDLE(wxWidgetApp::onIdle)
 END_EVENT_TABLE()
 	
-MainFrame* frame = NULL;
 wxLocale* locale;
-
-MainFrame* getMainFrame(){ assert(frame != NULL); return frame; }
-GLPane* getGLPane() { return frame->glPane; }
-MeasureBar* getMeasureBar() { return frame->getCurrentSequence()->measureBar; }
 
 wxConfig* prefs;
 
-void activateRenderLoop(bool on)
-{
-    ((wxWidgetApp*)wxTheApp)->activateRenderLoop(on);
-}
 void wxWidgetApp::activateRenderLoop(bool on)
 {
     if(on and !render_loop_on)
@@ -81,8 +69,6 @@ void wxWidgetApp::activateRenderLoop(bool on)
 
 void wxWidgetApp::onIdle(wxIdleEvent& evt)
 {
-//if(render_loop_on) std::cout << "rendering loop" << std::endl;
-
     if(render_loop_on)
     {
         frame->glPane->playbackRenderLoop();
@@ -96,13 +82,11 @@ void wxWidgetApp::onActivate(wxActivateEvent& evt)
 	{
 		frame->Raise();
 	}
-	//std::cout << "void wxWidgetApp::onActivate(wxActivateEvent& evt)" << std::endl;
 }
 
 bool wxWidgetApp::OnInit()
 {
-	//checkAppPath();
-	
+    frame = NULL;
 	prefs = (wxConfig*) wxConfig::Get();
 	
 	long language;

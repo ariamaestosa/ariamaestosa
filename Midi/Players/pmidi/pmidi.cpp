@@ -25,7 +25,7 @@
 #ifdef _PMIDI_ALSA
 
 
-#include "main.h"
+#include "AriaCore.h"
 #include "Midi/Players/pmidi/elements.h"
 #include "Midi/Players/pmidi/alsaNotePlayer.h"
 #include "Midi/Players/pmidi/AlsaPort.h"

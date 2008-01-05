@@ -16,7 +16,7 @@
 
 #include <wx/timer.h>
 
-#include "main.h"
+#include "AriaCore.h"
 #include "IO/MidiFileReader.h"
 #include "IO/IOUtils.h"
 #include "Midi/Sequence.h"

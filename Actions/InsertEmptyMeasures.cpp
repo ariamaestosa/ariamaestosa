@@ -20,7 +20,7 @@
 #include "Midi/Sequence.h"
 #include "GUI/MeasureBar.h"
 #include "Actions/RemoveMeasures.h"
-#include "main.h"
+#include "AriaCore.h"
 
 namespace AriaMaestosa
 {

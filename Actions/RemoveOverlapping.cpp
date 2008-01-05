@@ -20,7 +20,7 @@
 #include "Midi/Note.h"
 #include "GUI/GLPane.h"
 #include "wx/wx.h"
-#include "main.h"
+#include "AriaCore.h"
 
 namespace AriaMaestosa
 {
@@ -82,7 +82,7 @@ namespace AriaMaestosa
 		track->removeMarkedNotes();
 		wxEndBusyCursor();
 		
-		getGLPane()->render();
+		Display::render();
 		
 }
 RemoveOverlapping::RemoveOverlapping()

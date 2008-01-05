@@ -4,7 +4,7 @@
 #include <wx/file.h>
 
 #include "Midi/Sequence.h"
-#include "main.h"
+#include "AriaCore.h"
 
 #include "GUI/MeasureBar.h"
 #include "Editors/GuitarEditor.h"
