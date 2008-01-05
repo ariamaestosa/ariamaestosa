@@ -26,8 +26,6 @@
 
 namespace AriaMaestosa {
 	
-	//class Sequence;
-	
 enum RelativeType
 {
     WINDOW,
@@ -37,8 +35,6 @@ enum RelativeType
 
 class RelativeXCoord
 {
-	//int value;
-    //Sequence* sequence;
 	int relativeToEditor;
 	int relativeToWindow, relativeToMidi;
 public:
@@ -52,71 +48,6 @@ public:
 
 RelativeXCoord& RelativeXCoord_empty();
 
-/*
-template <typename TYPE>
-class RelativeXCoord
-{
-    TYPE value;
-    Sequence* sequence;
-    int relativeTo;
-    
-    int relativeToEditor, relativeToWindow, relativeToMidi;
-	
-public:
-		
-	RelativeXCoord()
-	{
-		sequence = getMainFrame()->getCurrentSequence();
-    }
-    
-    RelativeXCoord(Sequence* seq)
-	{
-        sequence = seq;
-    }
-    
-    void setValue(TYPE i, int relativeTo)
-	{
-        value = i;
-        RelativeXCoord::relativeTo = relativeTo;
-        
-        // 1. make relative to editor
-        if(relativeTo == WINDOW)
-		{
-            value -= getEditorXStart();
-        }
-        else if(relativeTo == MIDI)
-		{
-            value = ( TYPE )( value * sequence->getZoom() );
-        }
-        
-        
-        relativeToEditor = value;
-        relativeToWindow = value + getEditorXStart();
-        relativeToMidi = (TYPE)( value / sequence->getZoom() );
-        
-    }
-    
-    TYPE getRelativeTo(int returnRelativeTo)
-	{
-        
-        switch(returnRelativeTo)
-		{
-			case EDITOR:   
-				return relativeToEditor;  
-				break;
-			case WINDOW:   
-				return relativeToWindow;  
-				break;
-			case MIDI:   
-				return relativeToMidi; 
-				break;
-        }
-        std::cout << "Conversion failed!" << std::endl;
-        return -1;
-        
-    }
-};
-*/
 
 }
 

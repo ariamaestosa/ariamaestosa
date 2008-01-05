@@ -18,7 +18,7 @@
 #include "Editors/RelativeXCoord.h"
 #include "GUI/MainFrame.h"
 #include "Midi/Sequence.h"
-#include "main.h"
+#include "AriaCore.h"
 
 /*
  * This class is there to ease midi coord manipulation.

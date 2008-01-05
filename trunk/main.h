@@ -27,7 +27,8 @@ namespace AriaMaestosa {
 	
 class wxWidgetApp : public wxApp {
 public:
-
+    MainFrame* frame;
+    
     bool OnInit();
     int OnExit();
 	void MacOpenFile(const wxString &fileName);
@@ -40,12 +41,9 @@ public:
 	DECLARE_EVENT_TABLE();
 };
 
-MainFrame* getMainFrame();
-GLPane* getGLPane();
-MeasureBar* getMeasureBar();
-
-void activateRenderLoop(bool on);
-
 }
+
+
+DECLARE_APP(AriaMaestosa::wxWidgetApp)
 #endif
 

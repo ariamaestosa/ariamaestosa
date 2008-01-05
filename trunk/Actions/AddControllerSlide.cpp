@@ -22,7 +22,7 @@
 #include "Midi/Sequence.h"
 
 // FIXME - remove, temp
-#include "main.h"
+#include "AriaCore.h"
 #include "GUI/MeasureBar.h"
 
 

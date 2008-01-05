@@ -31,9 +31,8 @@
 #include "Actions/EditAction.h"
 #include "Actions/AddNote.h"
 
-#include "main.h"
+#include "AriaCore.h"
 
-#include <cmath>
 #include <string>
 
 
@@ -385,22 +384,6 @@ ScoreMidiConverter* ScoreEditor::getScoreMidiConverter()
 	return converter;
 }
 
-void drawArc(int center_x, int center_y, int radius_x, int radius_y, bool show_above)
-{
-	glLoadIdentity();
-
-	const int y_mult = (show_above ? -radius_y : radius_y);
-	
-	glColor3f(0,0,0);
-	glBegin(GL_LINES);
-	for(float angle = 0.2; angle<=M_PI; angle +=0.2)
-	{
-		glVertex2f( center_x + std::cos(angle)*radius_x, center_y + std::sin(angle)*y_mult );
-		glVertex2f( center_x + std::cos(angle-0.2)*radius_x, center_y + std::sin(angle-0.2)*y_mult );
-	}
-	glEnd();	
-}
-
 // where 'renderInfo' is a 'NoteRenderInfo' object of current note.
 // 'vector' is where all visible notes will are added, to be analysed after
 void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& vector, const bool recursion)
@@ -666,13 +649,10 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo)
 		const int center_x = (renderInfo.triplet_arc_x_end == -1 ? renderInfo.triplet_arc_x_start : (renderInfo.triplet_arc_x_start + renderInfo.triplet_arc_x_end)/2);
 		const int radius_x = (renderInfo.triplet_arc_x_end == -1 or  renderInfo.triplet_arc_x_end == renderInfo.triplet_arc_x_start ?
 							  10 : (renderInfo.triplet_arc_x_end - renderInfo.triplet_arc_x_start)/2);
-		drawArc(center_x, renderInfo.triplet_arc_y + (renderInfo.triplet_show_above ? 0 : 10), radius_x, 10, renderInfo.triplet_show_above);
+        AriaRender::arc(center_x, renderInfo.triplet_arc_y + (renderInfo.triplet_show_above ? 0 : 10), radius_x, 10, renderInfo.triplet_show_above);
 
         AriaRender::color(0,0,0);
-        AriaRender::character_small('3', center_x-2, ( renderInfo.triplet_show_above? renderInfo.triplet_arc_y : renderInfo.triplet_arc_y+18));
-		///glRasterPos2f(center_x-2, ( renderInfo.triplet_show_above? renderInfo.triplet_arc_y : renderInfo.triplet_arc_y+18) );
-		//glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, '3');
-
+        AriaRender::small_character('3', center_x-2, ( renderInfo.triplet_show_above? renderInfo.triplet_arc_y : renderInfo.triplet_arc_y+18));
 	}
 	
 	// tie
@@ -683,7 +663,7 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo)
         const bool show_above = (renderInfo.tail_type == TAIL_NONE ? renderInfo.tie_up : renderInfo.tail_type != TAIL_UP);
         
         const int base_y = renderInfo.getYBase(); 
-		drawArc(center_x, base_y + (show_above ? 0 : 10), radius_x, 15, show_above);
+        AriaRender::arc(center_x, base_y + (show_above ? 0 : 10), radius_x, 15, show_above);
 	}
 	
     // beam
@@ -834,10 +814,10 @@ void ScoreEditor::renderSilence(const int tick, const int tick_length)
     // triplet
     if(triplet)
     {
-        drawArc(x+5, y + 25, 10, 10, false);
+        AriaRender::arc(x+5, y + 25, 10, 10, false);
         
         AriaRender::color(0,0,0);
-        AriaRender::character_small('3', x+3, y+31);
+        AriaRender::small_character('3', x+3, y+31);
     }
 	
 }
@@ -850,13 +830,10 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
     if(!ImageProvider::imagesLoaded()) return;
     const int yscroll = getYScrollInPixels();
 	
-    
-    glEnable(GL_SCISSOR_TEST);
     // glScissor doesn't seem to follow the coordinate system so this ends up in all kinds of weird code to map to my coord system (from_y going down)
-    // FIXME - isn't there a get track height function?
-    glScissor(10, getGLPane()-> getHeight() - (20+height + from_y+barHeight+20), width-15, 20+height);
+    // FIXME - isn't there a 'get track height' function?
+    AriaRender::beginScissors(10, Display::getHeight() - (20+height + from_y+barHeight+20), width-15, 20+height);
 
-	
     // white background
     AriaRender::primitives();
     AriaRender::color(1,1,1);
@@ -905,10 +882,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 			if(x1 < x2) // when notes are too short to be visible, don't draw them
 			{
 				float volume=track->getNoteVolume(n)/127.0;
-				
-				//if(track->isNoteSelected(n) and focus) glColor3f((1-volume)*1, (1-(volume/2))*1, 0);
-				//else glColor3f((1-volume*0.7), (1-volume*0.7), 1);
-				
+
 				// draw the quad with black border that is visible in linear notation mode
                 AriaRender::primitives();
                 if(track->isNoteSelected(n) and focus)
@@ -1081,59 +1055,53 @@ assertExpr(iters,<,1000);
 		}
 	}
 
-    glLineWidth(1);
-
+    
+    AriaRender::lineWidth(1);
 	// ------------------------- mouse drag (preview) ------------------------
-    	
-	glLoadIdentity();
+    
+    AriaRender::primitives();
 	
-    if(!clickedOnNote)
+    if(!clickedOnNote and mouse_is_in_editor)
     {
-        if(mouse_is_in_editor)
+        // selection
+        if(selecting)
         {
+            AriaRender::color(0, 0, 0);
+            AriaRender::hollow_rect(mousex_initial.getRelativeTo(WINDOW), mousey_initial,
+                                    mousex_current.getRelativeTo(WINDOW), mousey_current);
             
-            AriaRender::primitives();
+        }
+        else
+        {
+            // ----------------------- add note (preview) --------------------
             
-            // selection
-			if(selecting)
-			{
-                AriaRender::color(0, 0, 0);
-                AriaRender::hollow_rect(mousex_initial.getRelativeTo(WINDOW), mousey_initial,
-                                        mousex_current.getRelativeTo(WINDOW), mousey_current);
-
+            AriaRender::color(1, 0.85, 0);
+            
+            int preview_x1=
+                (int)(
+                      (snapMidiTickToGrid(mousex_initial.getRelativeTo(MIDI) ) -
+                       sequence->getXScrollInMidiTicks())*sequence->getZoom()
+                      );
+            int preview_x2=
+                (int)(
+                      (snapMidiTickToGrid(mousex_current.getRelativeTo(MIDI) ) -
+                       sequence->getXScrollInMidiTicks())*sequence->getZoom()
+                      );
+            
+            if(!(preview_x1<0 || preview_x2<0) and preview_x2>preview_x1)
+            {
+                
+                const int y_base = ((mousey_initial - getEditorYStart() + getYScrollInPixels())/y_step)*y_step;
+                const int y_add = getEditorYStart() - getYScrollInPixels();
+                
+                AriaRender::rect(preview_x1+getEditorXStart(), y_base-2 + y_add,
+                                 preview_x2+getEditorXStart(), y_base+y_step+1 + y_add);
+                
             }
-			else
-			{
-                // ----------------------- add note (preview) --------------------
-
-                AriaRender::color(1, 0.85, 0);
-				
-				int preview_x1=
-					(int)(
-						  (snapMidiTickToGrid(mousex_initial.getRelativeTo(MIDI) ) -
-						   sequence->getXScrollInMidiTicks())*sequence->getZoom()
-						  );
-				int preview_x2=
-					(int)(
-						  (snapMidiTickToGrid(mousex_current.getRelativeTo(MIDI) ) -
-						   sequence->getXScrollInMidiTicks())*sequence->getZoom()
-						  );
-				
-				if(!(preview_x1<0 || preview_x2<0) and preview_x2>preview_x1)
-				{
-					
-					const int y_base = ((mousey_initial - getEditorYStart() + getYScrollInPixels())/y_step)*y_step;
-					const int y_add = getEditorYStart() - getYScrollInPixels();
-					
-                    AriaRender::rect(preview_x1+getEditorXStart(), y_base-2 + y_add,
-                                     preview_x2+getEditorXStart(), y_base+y_step+1 + y_add);
-					
-				}
-				
-            }// end if selection or addition
-        }// end if dragging on track
+            
+        }// end if selection or addition
         
-    } // end if !clickedOnNote
+    }
     
 
     // ------------------------- move note (preview) -----------------------
@@ -1309,9 +1277,8 @@ assertExpr(iters,<,1000);
     
     renderScrollbar();
     
-    glColor3f(1,1,1);
-	
-    glDisable(GL_SCISSOR_TEST);
+    AriaRender::color(1,1,1);
+    AriaRender::endScissors();
 }
 
 // ***************************************************************************************************************************************************
@@ -1337,7 +1304,7 @@ void ScoreEditor::mouseDown(RelativeXCoord x, const int y)
 	{
 		getMainFrame()->keyPicker->setParent(track->graphics);
 		getMainFrame()->keyPicker->setChecks( musicalNotationEnabled, linearNotationEnabled );
-		getGLPane()->PopupMenu( getMainFrame()->keyPicker,x.getRelativeTo(WINDOW),y);
+        Display::popupMenu( getMainFrame()->keyPicker,x.getRelativeTo(WINDOW),y);
         return;
 	}
     
@@ -1406,7 +1373,7 @@ NoteSearchResult ScoreEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 			{
 				noteID = n;
 				
-				if(track->isNoteSelected(n) and !getGLPane()->isSelectLessPressed())
+				if(track->isNoteSelected(n) and !Display:: isSelectLessPressed())
 					// clicked on a selected note
 					return FOUND_SELECTED_NOTE;
 				else
@@ -1420,7 +1387,7 @@ NoteSearchResult ScoreEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 			{
 				noteID = n;
 				
-				if(track->isNoteSelected(n) and !getGLPane()->isSelectLessPressed())
+				if(track->isNoteSelected(n) and !Display:: isSelectLessPressed())
 					// clicked on a selected note
 					return FOUND_SELECTED_NOTE;
 				else
@@ -1464,9 +1431,7 @@ void ScoreEditor::moveNote(Note& note, const int relativeX, const int relativeY)
         
         if(relativeY==0) return;
 		
-		GLPane* glPane = getGLPane();
-		
-		if(glPane->isSelectMorePressed() or glPane->isCtrlDown())
+		if(Display::isSelectMorePressed() or Display::isCtrlDown())
 		{
 			note.pitchID += relativeY;
 		}

@@ -22,7 +22,7 @@
 #include "GUI/MeasureBar.h"
 #include "GUI/GLPane.h"
 #include "Clipboard.h"
-#include "main.h"
+#include "AriaCore.h"
 #include "Editors/KeyboardEditor.h"
 
 namespace AriaMaestosa
@@ -82,16 +82,20 @@ namespace AriaMaestosa
 		
 		// if "paste at mouse", use its location to know where to paste track->notes
 		wxPoint mouseLoc=wxGetMousePosition();
-		wxPoint trackMouseLoc=getGLPane()->ScreenToClient(mouseLoc);
+        
+        int trackMouseLoc_x, trackMouseLoc_y;
+		//wxPoint trackMouseLoc=getGLPane()->ScreenToClient(mouseLoc);
+        Display::screenToClient(mouseLoc.x, mouseLoc.y, &trackMouseLoc_x, &trackMouseLoc_y);
+        
 		if( atMouse and
-			trackMouseLoc.y > track->graphics->getCurrentEditor()->getEditorYStart() and
-			trackMouseLoc.y < track->graphics->getCurrentEditor()->getYEnd() and
-			trackMouseLoc.x > getEditorXStart())
+			trackMouseLoc_y > track->graphics->getCurrentEditor()->getEditorYStart() and
+			trackMouseLoc_y < track->graphics->getCurrentEditor()->getYEnd() and
+			trackMouseLoc_x > getEditorXStart())
 		{
 			
-			RelativeXCoord mx(trackMouseLoc.x, WINDOW);
+			RelativeXCoord mx(trackMouseLoc_x, WINDOW);
 			
-			shift=track->graphics->getCurrentEditor()->snapMidiTickToGrid( /*sequence->getXScrollInMidiTicks() +*/ mx.getRelativeTo(MIDI) );
+			shift=track->graphics->getCurrentEditor()->snapMidiTickToGrid( mx.getRelativeTo(MIDI) );
 			
 		}
 		else if(!atMouse and track->sequence->x_scroll_upon_copying == track->sequence->getXScrollInPixels() )
@@ -115,7 +119,7 @@ namespace AriaMaestosa
 				goto regular_paste;
 			
 			// after visible area
-			RelativeXCoord screen_width( getGLPane()->getWidth(), WINDOW );
+			RelativeXCoord screen_width( Display::getWidth(), WINDOW );
 			
 			if((tmp->startTick+tmp->endTick)/2 + shift > /*sequence->getXScrollInMidiTicks() +*/ screen_width.getRelativeTo(MIDI) )
 				goto regular_paste;

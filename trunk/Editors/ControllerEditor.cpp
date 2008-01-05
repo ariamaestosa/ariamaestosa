@@ -15,7 +15,7 @@
  */
 
 
-#include "main.h"
+#include "AriaCore.h"
 
 #include "Actions/EditAction.h"
 #include "Actions/AddControlEvent.h"
@@ -28,8 +28,7 @@
 #include "Images/ImageProvider.h"
 #include "GUI/GLPane.h"
 #include "GUI/MeasureBar.h"
-
-#include "OpenGL.h"
+#include "GUI/RenderUtils.h"
 
 #include <string>
 #include "Pickers/ControllerChoice.h"
@@ -64,12 +63,8 @@ void ControllerEditor::render()
 void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
 							  RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {
-    
-    if(!ImageProvider::imagesLoaded()) return;
-    
-    glEnable(GL_SCISSOR_TEST);
     // glScissor doesn't seem to follow the coordinate system so this ends up in all kinds of weird code to map to my coord system (from_y going down)
-    glScissor(10, getGLPane()-> getHeight() - (20+height + from_y+barHeight+20), width - 15, 20+height);
+    AriaRender::beginScissors(10, Display::getHeight() - (20+height + from_y+barHeight+20), width - 15, 20+height);
     
     // -------------------------------- background ----------------------------
 	
@@ -77,32 +72,14 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
 	const int area_to_y = getYEnd()-15;
 	const float y_zoom = (float)( area_to_y-area_from_y ) / 127.0;
 	
-    glDisable(GL_TEXTURE_2D);
+    AriaRender::primitives();
     
-    glColor3f(0.9, 0.9, 0.9);
-    glBegin(GL_QUADS);
-    glVertex2f( 0, area_from_y);
-    glVertex2f( 0, 0);
-    glVertex2f( getXEnd(), 0);
-    glVertex2f( getXEnd(), area_from_y);
-    glEnd(); 
-    
-    glBegin(GL_QUADS);
-    glVertex2f( 0, area_to_y);
-    glVertex2f( 0, getYEnd());
-    glVertex2f( getXEnd(), getYEnd());
-    glVertex2f( getXEnd(), area_to_y);
-    glEnd(); 
-    
-    glColor3f(1,1,1);
-    glBegin(GL_QUADS);
-    
-    glVertex2f( 0, area_from_y);
-    glVertex2f( 0, area_to_y);
-    glVertex2f( getXEnd(), area_to_y);
-    glVertex2f( getXEnd(), area_from_y);
-    
-    glEnd(); 
+    AriaRender::color(0.9, 0.9, 0.9);
+    AriaRender::rect(0, 0, getXEnd(), area_from_y);
+    AriaRender::rect(0, area_to_y,getXEnd(), getYEnd());
+
+    AriaRender::color(1,1,1);
+    AriaRender::rect(0, area_from_y, getXEnd(), area_to_y);
 
     // -------------------------- selection ------------------------
     
@@ -112,63 +89,45 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
         RelativeXCoord selectX1(selection_begin, MIDI);
         RelativeXCoord selectX2(selection_end, MIDI);
         
-        glColor3f(0.8, 0.9, 1);
-        //const int scroll = sequence->getXScrollInPixels();
-        
-        glBegin(GL_QUADS);
-
-        glVertex2f( selectX1.getRelativeTo(WINDOW) /*- scroll*/, area_from_y);
-        glVertex2f( selectX1.getRelativeTo(WINDOW) /*- scroll*/, area_to_y);
-        glVertex2f( selectX2.getRelativeTo(WINDOW) /*- scroll*/, area_to_y);
-        glVertex2f( selectX2.getRelativeTo(WINDOW) /*- scroll*/, area_from_y);
-        
-        glEnd(); 
+        AriaRender::color(0.8, 0.9, 1);
+        AriaRender::rect(selectX1.getRelativeTo(WINDOW) , area_from_y,
+                         selectX2.getRelativeTo(WINDOW) , area_to_y);
         
     }
 
     // ----------------------------------- middle line -----------------------
-    glColor3f(0.9, 0.9, 0.9);
+    AriaRender::color(0.9, 0.9, 0.9);
 	
 	// tempo
 	if(controllerChoice->getControllerID()==201)
 	{
-		glBegin(GL_LINES);
+
 		// top value is 500, bottom value is 0, find where to put middle value for it to be main tempo
 		const int liney = (int)(
 								area_to_y - (area_to_y-area_from_y)*( (sequence->getTempo()-20) / 380.0)
 								);
-		glVertex2f( 0, liney );
-		glVertex2f( getXEnd(), liney );
-		glEnd();
+        AriaRender::line(0, liney, getXEnd(), liney);
 	}
 	else
 		// all others
 	{
-		glBegin(GL_LINES);
-		glVertex2f( 0, (area_from_y+area_to_y)/2 );
-		glVertex2f( getXEnd(), (area_from_y+area_to_y)/2 );
-		glEnd();
+        AriaRender::line(0, (area_from_y+area_to_y)/2, getXEnd(), (area_from_y+area_to_y)/2);
     }
 
     drawVerticalMeasureLines(area_from_y, area_to_y);
     
 	// ------------------------ min/max, on/off, left/right, etc. -------------------
-	glColor3f(0.5, 0.5, 0.5);
+    AriaRender::color(0.5, 0.5, 0.5);
+    
 	wxString top_name=controllerChoice->getTopLabel();
-	glRasterPos2f( getEditorXStart()+5 , area_from_y + 10);
-	const int top_name_len = top_name.Length();
-    for(int i=0; i<top_name_len; i++) glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, top_name[i]);
-
+    AriaRender::small_text( toCString(top_name),  getEditorXStart()+5 , area_from_y + 10);
 	
 	wxString bottom_name=controllerChoice->getBottomLabel();
-	
-	glRasterPos2f( getEditorXStart()+5 , area_to_y - 5);
-	const int bottom_name_len = bottom_name.Length();
-	for(int i=0; i<bottom_name_len; i++) glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, bottom_name[i]);
-
+    AriaRender::small_text( toCString(bottom_name),  getEditorXStart()+5 , area_to_y - 5);
+    
 	// -------------------------- draw controller events ---------------------
-    glColor3f(0, 0.4, 1);
-    glLineWidth(3);
+    AriaRender::color(0, 0.4, 1);
+    AriaRender::lineWidth(3);
     
     ControllerEvent* tmp;
     int previous_location=-1, previous_value=-1;
@@ -196,10 +155,8 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
 		{
             if(previous_location!=-1 and previous_value!=-1)
 			{
-                glBegin(GL_LINES);
-                glVertex2f(previous_location - scroll, area_from_y+previous_value*y_zoom);
-                glVertex2f(xloc - scroll, area_from_y+previous_value*y_zoom);
-                glEnd();
+                AriaRender::line(previous_location - scroll, area_from_y+previous_value*y_zoom,
+                                 xloc - scroll, area_from_y+previous_value*y_zoom);
             }
         }
         
@@ -210,12 +167,11 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
 	// draw horizontal line drom last event to end of visible area
     if(eventsOfThisType>0)
 	{
-        glBegin(GL_LINES);
-        glVertex2f(previous_location - scroll, area_from_y+previous_value*y_zoom);
-        glVertex2f(getXEnd(), area_from_y+previous_value*y_zoom);
-        glEnd();
+        AriaRender::line(previous_location - scroll, area_from_y+previous_value*y_zoom,
+                         getXEnd(), area_from_y+previous_value*y_zoom);
     }
-    
+
+    // FIXME - remove goto
 afterDrawing:
 		
 	// ----------------------- add controller events (preview) -------------------
@@ -224,8 +180,8 @@ afterDrawing:
     if(mouse_is_in_editor and selection_begin == -1)
 	{
 
-        glLineWidth(3);
-        glColor3f(0, 0.4, 1);
+        AriaRender::lineWidth(3);
+        AriaRender::color(0, 0.4, 1);
         
         if(mousey_initial>=area_from_y and mousey_initial<=area_to_y and !hasBeenResizing)
 		{
@@ -240,61 +196,33 @@ afterDrawing:
 			if(tick2 < 0) tick2 = 0;
             if(tick1 < 0) tick1 = 0; 
 			
-            glBegin(GL_LINES);
-            
-            glVertex2f(
-                       ( tick1 - sequence->getXScrollInMidiTicks())
-                       *sequence->getZoom()+getEditorXStart(), mousey_initial);
-            
-            glVertex2f(
-                       ( tick2 - sequence->getXScrollInMidiTicks())
-                       *sequence->getZoom()+getEditorXStart(), mousey_current);
-            
-            glEnd();
+            AriaRender::line(( tick1 - sequence->getXScrollInMidiTicks())
+                             *sequence->getZoom()+getEditorXStart(), mousey_initial,
+                             ( tick2 - sequence->getXScrollInMidiTicks())
+                             *sequence->getZoom()+getEditorXStart(), mousey_current);
         }
     }
-    glLineWidth(1);
+    AriaRender::lineWidth(1);
 
     // -----------------------------------------------------------------
     // left part with names
     // -----------------------------------------------------------------
-    glLoadIdentity();
     
     // grey background
-    if(!focus) glColor3f(0.4, 0.4, 0.4);
-    else glColor3f(0.8, 0.8, 0.8);
-    glBegin(GL_QUADS);
+    if(!focus) AriaRender::color(0.4, 0.4, 0.4);
+    else AriaRender::color(0.8, 0.8, 0.8);
     
-    glVertex2f( 0, getEditorYStart());
-    glVertex2f( 0, getYEnd());
-    glVertex2f( getEditorXStart(), getYEnd());
-    glVertex2f( getEditorXStart(), getEditorYStart());
-    
-    glEnd();
+    AriaRender::rect( 0, getEditorYStart(),
+                      getEditorXStart(), getYEnd());
     
     // controller name
-    glColor3f(0,0,0);
-    glRasterPos2f(18, getEditorYStart()+15);
-    int line=0;
-    
+    AriaRender::color(0,0,0);
+
     char* controllerName=controllerChoice->getControllerName();
-    for(int i=0; controllerName[i]; i++)
-	{
-        if(controllerName[i]==' ')
-		{
-            line++;
-            glRasterPos2f(18, getEditorYStart()+15+line*15);
-        }
-		else
-		{
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, controllerName[i]);
-        }
-    }
-    
-    
-    
-    glEnable(GL_TEXTURE_2D);
-    glDisable(GL_SCISSOR_TEST);
+    AriaRender::small_text_newline_between_words(controllerName,18, getEditorYStart()+15);
+
+    AriaRender::images();
+    AriaRender::endScissors();
     
 }
 
@@ -317,11 +245,11 @@ void ControllerEditor::mouseDown(RelativeXCoord x, const int y)
 	
 	// check whether we're selecting
 	selecting = false;
-	if(mouse_is_in_editor and getGLPane()->isSelectMorePressed())
+	if(mouse_is_in_editor and Display::isSelectMorePressed())
 		selecting = true;
 	
     if( x.getRelativeTo(WINDOW)<getEditorXStart() and y>getEditorYStart() and !track->graphics->collapsed )
-		getGLPane()->PopupMenu(controllerChoice,x.getRelativeTo(WINDOW),y+15);
+        Display::popupMenu(controllerChoice,x.getRelativeTo(WINDOW),y+15);
 
 }
 
@@ -329,7 +257,7 @@ void ControllerEditor::mouseDrag(RelativeXCoord mousex_current, const int mousey
 								 RelativeXCoord mousex_initial, const int mousey_initial)
 {
 	
-    if( mouse_is_in_editor and selecting /*getGLPane()->isSelectMorePressed()*/ )
+    if( mouse_is_in_editor and selecting /*Display::isSelectMorePressed()*/ )
 	{
         
         // ------------------------ select ---------------------
@@ -347,7 +275,7 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
     if(mouse_is_in_editor)
 	{
         
-        if( selecting /*getGLPane()->isSelectMorePressed()*/ )
+        if( selecting /*Display::isSelectMorePressed()*/ )
 		{
             
             // ------------------------ select ---------------------
@@ -430,7 +358,7 @@ void ControllerEditor::mouseExited(RelativeXCoord mousex_current, int mousey_cur
 {
 	// if mouse leaves the frame, it has the same effect as if it was released (terminate drag, terminate selection, etc.)
 	this->mouseUp(mousex_current, mousey_current, mousex_initial, mousey_initial);
-	getGLPane()->render();
+	Display::render();
 }
 
 int ControllerEditor::getYScrollInPixels()

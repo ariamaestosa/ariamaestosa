@@ -33,7 +33,7 @@
 #include "Editors/RelativeXCoord.h"
 #include "Pickers/DrumChoice.h"
 #include "Pickers/MagneticGrid.h"
-#include "main.h"
+#include "AriaCore.h"
 
 namespace AriaMaestosa {
 	
@@ -315,7 +315,7 @@ NoteSearchResult DrumEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 			
 			noteID = n;
 			
-			if(track->isNoteSelected(n) and !getGLPane()->isSelectLessPressed())
+			if(track->isNoteSelected(n) and !Display:: isSelectLessPressed())
 			{
 				// clicked on a selected note
 				return FOUND_SELECTED_NOTE;
@@ -513,9 +513,8 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
 						RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {
     
-    glEnable(GL_SCISSOR_TEST);
     // glScissor doesn't seem to follow the coordinate system so this ends up in all kinds of weird code to map to my coord system (from_y going down)
-    glScissor(10, getGLPane()-> getHeight() - (20+height + from_y+barHeight+20), width - 15, 20+height);
+    AriaRender::beginScissors(10, Display::getHeight() - (20+height + from_y+barHeight+20), width - 15, 20+height);
         
     drawVerticalMeasureLines(getEditorYStart(), getYEnd());
     
@@ -698,10 +697,10 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
                                      getEditorXStart()+10, y+9 );
             }
             
-            AriaRender::text_small(drums[drumID].name, getEditorXStart()+20, y+9);
+            AriaRender::small_text(drums[drumID].name, getEditorXStart()+20, y+9);
         }
         else
-            AriaRender::text_small(drums[drumID].name, getEditorXStart()-74, y+9);
+            AriaRender::small_text(drums[drumID].name, getEditorXStart()-74, y+9);
 
         AriaRender::color(0,0,0);
         
@@ -726,9 +725,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
 	renderScrollbar();
 	
     AriaRender::color(1,1,1);
-    
-    glDisable(GL_SCISSOR_TEST);
-    
+    AriaRender::endScissors();
 }
 
 

@@ -35,7 +35,7 @@
 #include "GUI/GraphicalTrack.h"
 #include "GUI/RenderUtils.h"
 
-#include "main.h"
+#include "AriaCore.h"
 
 
 
@@ -80,7 +80,7 @@ void KeyboardEditor::mouseDown(RelativeXCoord x, const int y)
 	{
 		getMainFrame()->keyPicker->setParent(track->graphics);
 		getMainFrame()->keyPicker->noChecks();
-		getGLPane()->PopupMenu( getMainFrame()->keyPicker, x.getRelativeTo(WINDOW), y);
+        Display::popupMenu(getMainFrame()->keyPicker, x.getRelativeTo(WINDOW), y);
         return;
 	}
     
@@ -120,7 +120,7 @@ NoteSearchResult KeyboardEditor::noteAt(RelativeXCoord x, const int y, int& note
 		{
 			noteID = n;
 			
-			if(track->isNoteSelected(n) and !getGLPane()->isSelectLessPressed())
+			if(track->isNoteSelected(n) and !Display:: isSelectLessPressed())
 			{
 				// clicked on a selected note
 				return FOUND_SELECTED_NOTE;
@@ -193,14 +193,11 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     
     if(!ImageProvider::imagesLoaded()) return;
     
-    glEnable(GL_SCISSOR_TEST);
     // glScissor doesn't seem to follow the coordinate system so this ends up in all kinds of weird code to map to my coord system (from_y going down)
-    glScissor(10, getGLPane()->getHeight() - (20+height + from_y+barHeight+20), width-15, 20+height);
+    AriaRender::beginScissors(10, Display::getHeight() - (20+height + from_y+barHeight+20), width-15, 20+height);
     
     // ------------------ draw lined background ----------------
-    //glEnable(GL_TEXTURE_2D);
-    
-    glLoadIdentity();
+
     int levelid = getYScrollInPixels()/y_step;
     const int yscroll = getYScrollInPixels();
     const int y1 = getEditorYStart();
@@ -388,7 +385,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     renderScrollbar();
     
     AriaRender::color(1,1,1);
-    glDisable(GL_SCISSOR_TEST);
+    AriaRender::endScissors();
     
 }
 

@@ -31,7 +31,6 @@
 
 namespace AriaMaestosa {
 	
-	class GLPane;
 	class MainFrame;
 	
 	class UnselectedMenu;
@@ -54,7 +53,6 @@ int widthInTicks, widthInPixels;
 class MeasureBar
 {
 	MainFrame* mainFrame;
-	GLPane* glPane;
 	std::vector<MeasureInfo> measureInfo;
 	int lastMeasureInDrag;
 	bool somethingSelected;

@@ -24,7 +24,7 @@
 
 #include <iostream>
 #include "Config.h"
-#include "main.h"
+#include "AriaCore.h"
 
 namespace AriaMaestosa {
 	
@@ -233,7 +233,7 @@ void VolumeSlider::closeWindow()
     
 	wxDialog::EndModal(returnCode);
 	currentTrack=NULL;
-	getGLPane()->SetFocus();
+    Display::requestFocus();
     
 	wxCommandEvent event( wxEVT_DESTROY_VOLUME_SLIDER, 100000 );
 	getMainFrame()->GetEventHandler()->AddPendingEvent( event );

@@ -20,7 +20,7 @@
 #include "Midi/Sequence.h"
 #include "IO/IOUtils.h"
 
-#include "main.h"
+#include "AriaCore.h"
 
 namespace AriaMaestosa {
 	
@@ -93,7 +93,7 @@ void MagneticGrid::grid1selected(wxCommandEvent& evt)
     divider=1;
     label=wxT("1/1");
 	
-    getGLPane()->render();
+    Display::render();
 }
 
 
@@ -113,7 +113,7 @@ void MagneticGrid::grid2selected(wxCommandEvent& evt)
 		divider=3;
 		label=wxT("1/2T");
 	}
-    getGLPane()->render();
+    Display::render();
 }
 
 void MagneticGrid::grid4selected(wxCommandEvent& evt)
@@ -132,7 +132,7 @@ void MagneticGrid::grid4selected(wxCommandEvent& evt)
 		divider=6;
 		label=wxT("1/4T");
 	}
-    getGLPane()->render();
+    Display::render();
 }
 
 void MagneticGrid::grid8selected(wxCommandEvent& evt)
@@ -151,7 +151,7 @@ void MagneticGrid::grid8selected(wxCommandEvent& evt)
 		divider=12;
 		label=wxT("1/8T");
 	}
-    getGLPane()->render();
+    Display::render();
 }
 
 void MagneticGrid::grid16selected(wxCommandEvent& evt)
@@ -170,7 +170,7 @@ void MagneticGrid::grid16selected(wxCommandEvent& evt)
 		divider=24;
 		label=wxT("1/16T");
 	}
-    getGLPane()->render();
+    Display::render();
 }
 
 void MagneticGrid::grid32selected(wxCommandEvent& evt)
@@ -189,7 +189,7 @@ void MagneticGrid::grid32selected(wxCommandEvent& evt)
 		divider=48;
 		label=wxT("1/32T");
 	}
-    getGLPane()->render();
+    Display::render();
 }
 
 void MagneticGrid::grid64selected(wxCommandEvent& evt)
@@ -208,7 +208,7 @@ void MagneticGrid::grid64selected(wxCommandEvent& evt)
 		divider=96;
 		label=wxT("1/64T");
 	}
-    getGLPane()->render();
+    Display::render();
 }
 
 void MagneticGrid::grid128selected(wxCommandEvent& evt)
@@ -227,7 +227,7 @@ void MagneticGrid::grid128selected(wxCommandEvent& evt)
 		divider=192;
 		label=wxT("1/128T");
 	}
-    getGLPane()->render();
+    Display::render();
 }
 
 /*

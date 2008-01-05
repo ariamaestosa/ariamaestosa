@@ -18,7 +18,7 @@
 #include "wx/stdpaths.h"
 #include "wx/html/htmlwin.h"
 
-#include "main.h"
+#include "AriaCore.h"
 
 #include "Actions/EditAction.h"
 #include "Actions/RemoveOverlapping.h"
@@ -401,7 +401,9 @@ void MainFrame::init()
     args[2]=0;
     glPane=new GLPane(this, args);
     verticalSizer->Add(glPane, 0, wxALL, 2, Location::Center() );
-
+    
+    // give a pointer to out GL Pane to AriaCore
+    setGLPane(glPane);
 
     // -------------------------- Horizontal Scrollbar ----------------------------
 

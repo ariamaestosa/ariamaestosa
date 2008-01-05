@@ -25,6 +25,9 @@ namespace AriaRender
     void primitives();
     void images();
 
+    void beginScissors(const int x, const int y, const int width, const int height);
+    void endScissors();
+    
     void color(const float r, const float g, const float b);
     void color(const float r, const float g, const float b, const float a);
     
@@ -41,11 +44,14 @@ namespace AriaRender
     void bordered_rect_no_start(const int x1, const int y1, const int x2, const int y2);
     
     void text(const char* string, const int x, const int y);
-    void text_small(const char* string, const int x, const int y);
+    void small_text(const char* string, const int x, const int y);
+    void small_text_newline_between_words(const char* string, const int x, const int y);
     void character(const char character, const int x, const int y);
-    void character_small(const char character, const int x, const int y);
+    void small_character(const char character, const int x, const int y);
     
     void triangle(const int x1, const int y1, const int x2, const int y2, const int x3, const int y3);
+    
+    void arc(int center_x, int center_y, int radius_x, int radius_y, bool show_above);
 }
 }
 #endif

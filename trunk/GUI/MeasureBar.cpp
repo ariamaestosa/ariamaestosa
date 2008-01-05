@@ -24,11 +24,10 @@
 #include "Actions/RemoveMeasures.h"
 
 #include "OpenGL.h"
-#include "main.h"
+#include "AriaCore.h"
 #include "LeakCheck.h"
 
 #include "GUI/MeasureBar.h"
-#include "GUI/GLPane.h"
 #include "GUI/MainFrame.h"
 
 #include "Midi/Sequence.h"
@@ -153,7 +152,7 @@ public:
 		//std::cout << "really removing " << remove_timeSigID << std::endl;
 		getMeasureBar()->eraseTimeSig(remove_timeSigID);
 		getMeasureBar()->updateMeasureInfo();
-		getGLPane()->render();
+		Display::render();
 	}
 	
 	DECLARE_EVENT_TABLE();
@@ -181,7 +180,6 @@ MeasureBar::MeasureBar()
 	INIT_LEAK_CHECK();
 	
 	mainFrame = getMainFrame();
-	glPane = getGLPane();
 	somethingSelected = false;
 	
 	selectedMenu = new SelectedMenu();
@@ -205,7 +203,7 @@ MeasureBar::MeasureBar()
 void MeasureBar::setMeasureAmount(int measureAmount)
 {
     MeasureBar::measureAmount=measureAmount;
-    getGLPane()->render();
+    Display::render();
 	getMeasureBar()->updateVector(measureAmount);
 }
 
@@ -330,7 +328,7 @@ void MeasureBar::setTimeSig(int top, int bottom)
     wxSpinEvent unused;
     getMainFrame()->songLengthChanged(unused);
 	
-    getGLPane()->render();
+    Display::render();
 }
 
 int MeasureBar::measureAtTick(int tick)
@@ -467,8 +465,8 @@ void MeasureBar::render(int measureBarY_arg)
 	glColor3f(1, 1, 0.9);
     glBegin(GL_QUADS);
     glVertex2f(0, measureBarY);
-    glVertex2f(glPane->getWidth(), measureBarY);
-    glVertex2f(glPane->getWidth(), measureBarY+ height );
+    glVertex2f(Display::getWidth(), measureBarY);
+    glVertex2f(Display::getWidth(), measureBarY+ height );
     glVertex2f(0, measureBarY+height);
     glEnd();
     
@@ -477,15 +475,15 @@ void MeasureBar::render(int measureBarY_arg)
     glColor3f(0, 0, 0);
     glBegin(GL_LINES);
     glVertex2f(0, measureBarY+1);
-    glVertex2f(glPane->getWidth(), measureBarY+1);
+    glVertex2f(Display::getWidth(), measureBarY+1);
     
     glVertex2f(0, measureBarY+20);
-    glVertex2f(glPane->getWidth(), measureBarY+20);
+    glVertex2f(Display::getWidth(), measureBarY+20);
 	
 	if(expandedMode)
 	{
 		glVertex2f(0, measureBarY+40);
-		glVertex2f(glPane->getWidth(), measureBarY+40);	
+		glVertex2f(Display::getWidth(), measureBarY+40);	
 	}
 	
     glEnd();
@@ -499,7 +497,7 @@ void MeasureBar::render(int measureBarY_arg)
 	const float x_initial = getEditorXStart() - mainFrame->getCurrentSequence()->getXScrollInPixels();
 	const float x_step = measureLengthInPixels();
 	
-	for(float n=x_initial; n<glPane->getWidth(); (measureLengthConstant ? n+=x_step : n+=measureLengthInPixels(measureID-1) ) )
+	for(float n=x_initial; n<Display::getWidth(); (measureLengthConstant ? n+=x_step : n+=measureLengthInPixels(measureID-1) ) )
 	{
 		measureID++;
 		if(measureID > measureAmount) break;
@@ -635,7 +633,7 @@ void MeasureBar::setExpandedMode(bool expanded)
 {
 	expandedMode = expanded;
 	updateMeasureInfo();
-	getGLPane()->render();
+	Display::render();
 }
 
 bool MeasureBar::isExpandedMode()
@@ -811,7 +809,7 @@ void MeasureBar::rightClick(int x, int y)
 			{
 				std::cout << "trying to delete " << n << std::endl;
 				unselectedMenu->enable_deleteTimeSig_item(true, n);
-				glPane->PopupMenu( (wxMenu*)unselectedMenu, x, y+20);
+                Display::popupMenu( (wxMenu*)unselectedMenu, x, y+20);
 				return;
 			}
 		}
@@ -842,7 +840,7 @@ void MeasureBar::rightClick(int x, int y)
 		{
 			measureInfo[n].selected=false;
 		}
-		glPane->PopupMenu( (wxMenu*)selectedMenu, x, y+20);
+        Display::popupMenu( (wxMenu*)selectedMenu, x, y+20);
 	}
 	else
 	{
@@ -850,7 +848,7 @@ void MeasureBar::rightClick(int x, int y)
 		insert_at_measure = measureDivisionAt(x)-1;
 
 		unselectedMenu->enable_deleteTimeSig_item(false);
-		glPane->PopupMenu( (wxMenu*)unselectedMenu, x, y+20);
+        Display::popupMenu( (wxMenu*)unselectedMenu, x, y+20);
 	}
 	
 }

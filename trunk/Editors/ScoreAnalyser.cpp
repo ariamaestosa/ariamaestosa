@@ -17,7 +17,7 @@
 #include "Editors/ScoreEditor.h"
 #include "Editors/ScoreAnalyser.h"
 #include "GUI/MeasureBar.h"
-#include "main.h"
+#include "AriaCore.h"
 #include <cmath>
 #include <math.h>
 

@@ -26,7 +26,7 @@
 #include <iostream>
 
 #include "Config.h"
-#include "main.h"
+#include "AriaCore.h"
 
 namespace AriaMaestosa {
     
@@ -117,7 +117,7 @@ void ControllerChoice::menuSelected(wxCommandEvent& evt)
     assertExpr(controllerID,<,205);
     assertExpr(controllerID,>=,0);
     
-    getGLPane()->render();
+    Display::render();
 }
 
 void ControllerChoice::setControllerID(int id)

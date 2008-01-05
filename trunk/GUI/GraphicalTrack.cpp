@@ -25,7 +25,7 @@
 
 #include "Config.h"
 
-#include "main.h"
+#include "AriaCore.h"
 #include "Pickers/InstrumentChoice.h"
 #include "Pickers/DrumChoice.h"
 #include "Pickers/MagneticGrid.h"
@@ -60,7 +60,6 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
     sequence = seq;
     GraphicalTrack::track = track;
     
-    assert(getGLPane());
     assert(track);
     
     grid=new MagneticGrid(this);
@@ -108,7 +107,7 @@ bool GraphicalTrack::mouseWheelMoved(int mx, int my, int value)
 	{
 		
 		getCurrentEditor()->scroll( value / 75.0 );
-		getGLPane()->render();
+		Display::render();
 		
 		return false; // event belongs to this track and was processed, stop searching
 	}
@@ -177,29 +176,29 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 		{
             wxString msg=wxGetTextFromUser( _("Choose a new track title."), wxT("Aria Maestosa"), track->getName() );
             if(msg.Length()>0) track->setName( msg );
-            getGLPane()->render();
+            Display::render();
         }
         
         // grid
         if(winX > grid_x_begin and winX < grid_x_end and mousey < from_y+30 and mousey > from_y+10)
 		{
-            getGLPane()->PopupMenu(grid, 220, from_y+30);
+            Display::popupMenu(grid, 220, from_y+30);
         }
         
         
         // instrument
-        if(winX > getGLPane()->getWidth() - 160 and winX < getGLPane()->getWidth() - 160+14+116 and
+        if(winX > Display::getWidth() - 160 and winX < Display::getWidth() - 160+14+116 and
 		   mousey > from_y+10 and mousey < from_y+30)
 		{
             if(editorMode==DRUM)
 			{
 				getMainFrame()->drumKit_picker->setParent(track);
-				getGLPane()->PopupMenu((wxMenu*)(getMainFrame()->drumKit_picker), getGLPane()->getWidth() - 175, from_y+30);
+                Display::popupMenu((wxMenu*)(getMainFrame()->drumKit_picker), Display::getWidth() - 175, from_y+30);
 			}
             else
 			{
 				getMainFrame()->instrument_picker->setParent(track);
-				getGLPane()->PopupMenu((wxMenu*)(getMainFrame()->instrument_picker), getGLPane()->getWidth() - 175, from_y+30);
+                Display::popupMenu((wxMenu*)(getMainFrame()->instrument_picker), Display::getWidth() - 175, from_y+30);
 			}
         }
         
@@ -207,7 +206,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 		if(sequence->getChannelManagementType() == CHANNEL_MANUAL)
 		{
 
-			if(winX > getGLPane()->getWidth() - 185 and winX < getGLPane()->getWidth() - 185 + 14*2 and
+			if(winX > Display::getWidth() - 185 and winX < Display::getWidth() - 185 + 14*2 and
 			   mousey > from_y+10 and mousey < from_y+30)
 			{
 				const int channel = wxGetNumberFromUser( _("Enter the ID of the channel this track should play in"),
@@ -231,7 +230,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 						}
 					}//next
 					
-					getGLPane()->render();
+					Display::render();
 				}
 			}
 		}			
@@ -303,8 +302,8 @@ void GraphicalTrack::processMouseRelease()
 {
 	//std::cout << "mouse up GraphicalTrack" << std::endl;
 	
-    if(!dragging_resize) getCurrentEditor()->mouseUp(getGLPane()->getMouseX_current(), getGLPane()->getMouseY_current(),
-													 getGLPane()->getMouseX_initial(), getGLPane()->getMouseY_initial());
+    if(!dragging_resize) getCurrentEditor()->mouseUp(Display::getMouseX_current(), Display:: getMouseY_current(),
+													 Display::getMouseX_initial(), Display:: getMouseY_initial());
     
     if(dragging_resize)
 	{
@@ -335,7 +334,7 @@ bool GraphicalTrack::processMouseDrag(RelativeXCoord x, int y)
         int barHeight=EXPANDED_BAR_HEIGHT;
         if(collapsed) barHeight=COLLAPSED_BAR_HEIGHT; 
 		
-        if(!dragging_resize) getCurrentEditor()->mouseDrag(x, y, getGLPane()->getMouseX_initial(), getGLPane()->getMouseY_initial());
+        if(!dragging_resize) getCurrentEditor()->mouseDrag(x, y, Display::getMouseX_initial(), Display:: getMouseY_initial());
         
         // resize drag
         if(dragging_resize)
@@ -416,11 +415,11 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     borderDrawable->move(x+30, y);
     borderDrawable->setFlip(false, false);
     borderDrawable->rotate(0);
-    borderDrawable->scale((getGLPane()->getWidth() - 5 /*margin*/ -20 /*left round cornerDrawable*/ - 20 /*right round cornerDrawable*/)/20.0, 1 );
+    borderDrawable->scale((Display::getWidth() - 5 /*margin*/ -20 /*left round cornerDrawable*/ - 20 /*right round cornerDrawable*/)/20.0, 1 );
     borderDrawable->render();
     
     // top right corner
-    cornerDrawable->move(x+ getGLPane()->getWidth() - 5 /* margin*/ -20 /*left round cornerDrawable*/, y);
+    cornerDrawable->move(x+ Display::getWidth() - 5 /* margin*/ -20 /*left round cornerDrawable*/, y);
     cornerDrawable->setFlip(true, false);
     cornerDrawable->render();
     
@@ -434,7 +433,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     borderDrawable->render();
     
     // right border
-    borderDrawable->move(x+ getGLPane()->getWidth() - 5 /*margin*/ - 20 /*left round cornerDrawable*/ + 20 /*due to rotation of 90 degrees*/, y+20);
+    borderDrawable->move(x+ Display::getWidth() - 5 /*margin*/ - 20 /*left round cornerDrawable*/ + 20 /*due to rotation of 90 degrees*/, y+20);
     borderDrawable->setFlip(false, false);
     borderDrawable->rotate(90);
     borderDrawable->scale(1, barHeight /*number of pixels high*/ /20.0 );
@@ -452,8 +451,8 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     glBegin(GL_QUADS);
     glVertex2f(x+ 30, y+20);
     glVertex2f(x+ 30, y+20+barHeight);
-    glVertex2f(x+ getGLPane()->getWidth() - 5 /* margin*/ - 20 /*right round cornerDrawable*/, y+20+barHeight);
-    glVertex2f(x+ getGLPane()->getWidth() - 5 /* margin*/ - 20 /*right round cornerDrawable*/, y+20);
+    glVertex2f(x+ Display::getWidth() - 5 /* margin*/ - 20 /*right round cornerDrawable*/, y+20+barHeight);
+    glVertex2f(x+ Display::getWidth() - 5 /* margin*/ - 20 /*right round cornerDrawable*/, y+20);
     glEnd();
     
     glEnable(GL_TEXTURE_2D);
@@ -475,11 +474,11 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
         borderDrawable->move(x+30, y+20+barHeight);
         borderDrawable->setFlip(false, true);
         borderDrawable->rotate(0);
-        borderDrawable->scale((getGLPane()->getWidth() - 5 /*margin*/ -20 /*left round cornerDrawable*/ - 20 /*right round cornerDrawable*/)/20.0, 1 );
+        borderDrawable->scale((Display::getWidth() - 5 /*margin*/ -20 /*left round cornerDrawable*/ - 20 /*right round cornerDrawable*/)/20.0, 1 );
         borderDrawable->render();
         
         // bottom right corner
-        cornerDrawable->move(x+ getGLPane()->getWidth() - 5 /*margin*/ -20 /*left round cornerDrawable*/, y+20+barHeight);
+        cornerDrawable->move(x+ Display::getWidth() - 5 /*margin*/ -20 /*left round cornerDrawable*/, y+20+barHeight);
         cornerDrawable->setFlip(true, true);
         cornerDrawable->render();
         
@@ -501,8 +500,8 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
             glBegin(GL_QUADS);
             glVertex2f(x+10, y+barHeight+20);
             glVertex2f(x+10, y+barHeight+40+height);
-            glVertex2f(x+getGLPane()->getWidth() - 5 , y+barHeight+40+height);
-            glVertex2f(x+getGLPane()->getWidth() - 5 , y+barHeight+20);
+            glVertex2f(x+Display::getWidth() - 5 , y+barHeight+40+height);
+            glVertex2f(x+Display::getWidth() - 5 , y+barHeight+20);
             glEnd();
         }//end if
         
@@ -661,15 +660,15 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     glLoadIdentity();
     
     // draw box
-    comboBorderDrawable->move(x+getGLPane()->getWidth() - 160 ,y+7);
+    comboBorderDrawable->move(x+Display::getWidth() - 160 ,y+7);
     comboBorderDrawable->setFlip(false, false);
     comboBorderDrawable->render();
     
-    comboBodyDrawable->move(x+getGLPane()->getWidth() - 160+14, y+7);
+    comboBodyDrawable->move(x+Display::getWidth() - 160+14, y+7);
     comboBodyDrawable->scale(116 /*desired width*/ /4 , 1);
     comboBodyDrawable->render();
     
-    comboBorderDrawable->move(x+getGLPane()->getWidth() - 160+14+116, y+7 );
+    comboBorderDrawable->move(x+Display::getWidth() - 160+14+116, y+7 );
     comboBorderDrawable->setFlip(true,false);
     comboBorderDrawable->render();
     
@@ -681,7 +680,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     // draw instrument name
     glColor3f(0,0,0);
     glLoadIdentity();
-    glRasterPos2f(x+getGLPane()->getWidth() - 155+3,y+26);
+    glRasterPos2f(x+Display::getWidth() - 155+3,y+26);
     glDisable(GL_TEXTURE_2D);
     
     for(unsigned int i=0; i<instrumentname.size(); i++)
@@ -698,11 +697,11 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
 		glEnable(GL_TEXTURE_2D);
 		
 		// draw box
-		comboBorderDrawable->move(x+getGLPane()->getWidth() - 185 ,y+7);
+		comboBorderDrawable->move(x+Display::getWidth() - 185 ,y+7);
 		comboBorderDrawable->setFlip(false, false);
 		comboBorderDrawable->render();
 		
-		comboBorderDrawable->move(x+getGLPane()->getWidth() - 185+14, y+7 );
+		comboBorderDrawable->move(x+Display::getWidth() - 185+14, y+7 );
 		comboBorderDrawable->setFlip(true,false);
 		comboBorderDrawable->render();
 		
@@ -715,8 +714,8 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
 		glLoadIdentity();
 		
 		const int char_amount_in_channel_name = channelName.size();
-		if(char_amount_in_channel_name == 1) glRasterPos2f(x+getGLPane()->getWidth() - 185 + 10,y+26);
-		else glRasterPos2f(x+getGLPane()->getWidth() - 185 + 7,y+26);
+		if(char_amount_in_channel_name == 1) glRasterPos2f(x+Display::getWidth() - 185 + 10,y+26);
+		else glRasterPos2f(x+Display::getWidth() - 185 + 7,y+26);
 			
 		glDisable(GL_TEXTURE_2D);
 		
@@ -748,16 +747,13 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
     
     if(collapsed) to_y = from_y + 45;
     else to_y = y+barHeight+50+height;
-    
-    assert(getGLPane());
-
 
 	// tell the editor about its new location
-    getCurrentEditor()->updatePosition(from_y, to_y, getGLPane()->getWidth(), height, barHeight);
+    getCurrentEditor()->updatePosition(from_y, to_y, Display::getWidth(), height, barHeight);
 
 	// don't waste time drawing it if out of bounds
 	if(to_y < 0) return to_y;
-	if(from_y > getGLPane()->getHeight()) return to_y;
+	if(from_y > Display::getHeight()) return to_y;
 	
     renderHeader(0, y, collapsed, focus);
 
@@ -765,17 +761,17 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
 	{
         // --------------------------------------------------
         // render editor
-        getCurrentEditor()->render(getGLPane()->getMouseX_current(),
-								   getGLPane()->getMouseY_current(),
-								   getGLPane()->getMouseX_initial(),
-								   getGLPane()->getMouseY_initial(), focus);
+        getCurrentEditor()->render(Display::getMouseX_current(),
+								   Display:: getMouseY_current(),
+								   Display::getMouseX_initial(),
+								   Display:: getMouseY_initial(), focus);
         // --------------------------------------------------
         // render playback progress line
     
         glLoadIdentity();
         glDisable(GL_TEXTURE_2D);
         
-        if( currentTick!=-1 and not getGLPane()->leftArrow and not getGLPane()->rightArrow)
+        if( currentTick!=-1 and not Display::leftArrow() and not Display::rightArrow())
 		{
             glColor3f(0.8, 0, 0);
             
@@ -807,11 +803,11 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
         whiteBorderDrawable->move(30, y+20+barHeight+height);
         whiteBorderDrawable->setFlip(false, false);
         whiteBorderDrawable->rotate(0);
-        whiteBorderDrawable->scale((getGLPane()->getWidth() - 5 /* margin*/ - 20 /*left round cornerDrawable*/ - 20 /*right round cornerDrawable*/)/20.0, 1 );
+        whiteBorderDrawable->scale((Display::getWidth() - 5 /* margin*/ - 20 /*left round cornerDrawable*/ - 20 /*right round cornerDrawable*/)/20.0, 1 );
         whiteBorderDrawable->render();
         
         // bottom right corner
-        whiteCornerDrawable->move(getGLPane()->getWidth() - 5 /* margin*/ - 20 /*left round cornerDrawable*/, y+20+barHeight+height);
+        whiteCornerDrawable->move(Display::getWidth() - 5 /* margin*/ - 20 /*left round cornerDrawable*/, y+20+barHeight+height);
         whiteCornerDrawable->setFlip(true, false);
         whiteCornerDrawable->render();
         
@@ -825,7 +821,7 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
         whiteBorderDrawable->render();
         
         // right borderDrawable
-        whiteBorderDrawable->move(getGLPane()->getWidth() - 5 , y+barHeight+20);
+        whiteBorderDrawable->move(Display::getWidth() - 5 , y+barHeight+20);
         whiteBorderDrawable->setFlip(false, true);
         whiteBorderDrawable->rotate(90);
         whiteBorderDrawable->scale(1, height /*number of pixels high*/ /20.0 );

@@ -16,7 +16,7 @@
 
 #include "Config.h"
 #include "Clipboard.h"
-#include "main.h"
+#include "AriaCore.h"
 
 #include "Actions/EditAction.h"
 
@@ -475,7 +475,7 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
     assert(id != SELECTED_NOTES); // not supported in this function
 
 
-    if(!getGLPane()->isSelectMorePressed() and !getGLPane()->isSelectLessPressed()) ignoreModifiers=true; // if no modifier is pressed, don't do any special checks
+    if(!Display::isSelectMorePressed() and !Display:: isSelectLessPressed()) ignoreModifiers=true; // if no modifier is pressed, don't do any special checks
 
     // ----------------------------- select/deselect all notes ----------------------------
     if(id==ALL_NOTES)
@@ -513,8 +513,8 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
 		{ // otherwise, check key modifiers and set value accordingly
             if(selected)
 			{
-                if(getGLPane()->isSelectMorePressed()) notes[id].setSelected(true);
-                else if(getGLPane()->isSelectLessPressed()) notes[id].setSelected( !selected );
+                if(Display::isSelectMorePressed()) notes[id].setSelected(true);
+                else if(Display:: isSelectLessPressed()) notes[id].setSelected( !selected );
             }
         }//end if
 

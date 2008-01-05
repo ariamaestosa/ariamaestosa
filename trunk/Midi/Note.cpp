@@ -14,7 +14,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "main.h"
+#include "AriaCore.h"
 #include "Midi/Note.h"
 #include "GUI/MainFrame.h"
 #include "GUI/GraphicalTrack.h"
@@ -206,93 +206,6 @@ void Note::setVolume(const int vol)
 {
     volume=vol;   
 }
-
-/*
-void Note::move(const int relativeX, const int relativeY, const int mode)
-{
-    
-    if(startTick+relativeX < 0) return; // refuse to move before the start
-    
-    startTick+=relativeX;
-    endTick+=relativeX;
-    
-	// FIXME - belongs to the editors, probably
-    if(mode==GUITAR)
-	{
-        if(string+relativeY<0 or string+relativeY>(int)gtrack->guitarEditor->tuning.size()-1)
-            return; // note will end on a string that doesn't exist if we move it like that
-        
-        string += relativeY;
-        findNoteFromStringAndFret();
-    }
-	else if(mode==SCORE)
-	{
-		if(relativeY==0) return;
-		
-		GLPane* glPane = getGLPane();
-		
-		if(glPane->isSelectMorePressed() or glPane->isCtrlDown())
-		{
-			pitchID+=relativeY;
-		}
-		else
-		{
-			ScoreMidiConverter* conv = gtrack->scoreEditor->getScoreMidiConverter();
-			int noteLevel = conv->noteToLevel(pitchID);
-			noteLevel += relativeY;
-			pitchID = conv->levelToNote(noteLevel);
-		}
-	}
-	else if(mode==DRUM)
-	{
-        
-        if(relativeY==0) return;
-        
-        //
-        //  Since the drums are not in midi order on screen, the procedure to move drums up or down is to:
-        //      1. Find the screen location of this midi key
-        //      2. Move the drum in screen location
-        //      3. Find the new midi key at the new screen location
-        //
-        
-        assert(pitchID>=0);
-        assert(pitchID<128);
-        
-        // find where on screen this particular drum is drawn (their screen position is not in the same order as the midi order)
-        int newVectorLoc = gtrack->drumEditor->midiKeyToVectorID[pitchID];
-        if(newVectorLoc == -1) return;
-        
-        // move to the new location (in screen order)
-        if(newVectorLoc + relativeY < 0 or
-           newVectorLoc + relativeY > (int)gtrack->drumEditor->drums.size()-1 ) return; // discard moves that would result in an out-of-bound note
-        
-        newVectorLoc += relativeY;
-        
-        // skip sections
-        while(gtrack->drumEditor->drums[newVectorLoc].midiKey==-1)
-		{
-
-            newVectorLoc+=(relativeY/abs(relativeY)); // keep the same sign, but only move 1 step at a time from now on
-            
-			// discard moves that would result in an out-of-bound note
-            if(newVectorLoc < 0 or newVectorLoc > (int)gtrack->drumEditor->drums.size()-1 )
-				return;
-        }
-        
-        // find the midi key at the new location
-		const int new_pitchID = gtrack->drumEditor->drums[newVectorLoc].midiKey;
-		if(new_pitchID < 0 or new_pitchID > 127)
-			return; // invalid location - discard
-		
-        pitchID = new_pitchID;
-
-    }
-	else
-	{
-        pitchID+=relativeY;
-    }
-    
-}*/
 
 void Note::resize(const int ticks)
 {

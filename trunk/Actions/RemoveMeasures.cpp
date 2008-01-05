@@ -21,7 +21,7 @@
 #include "Midi/Sequence.h"
 #include "Midi/TimeSigChange.h"
 #include "GUI/MeasureBar.h"
-#include "main.h"
+#include "AriaCore.h"
 
 #include <iostream>
 #include "IO/IOUtils.h"

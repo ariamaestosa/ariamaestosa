@@ -26,7 +26,7 @@
 #include "Images/ImageProvider.h"
 #include "GUI/GLPane.h"
 
-#include "main.h"
+#include "AriaCore.h"
 
 #include "OpenGL.h"
 
@@ -87,7 +87,7 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current, Rel
 
     glEnable(GL_SCISSOR_TEST);
     // glScissor doesn't seem to follow the coordinate system so this ends up in all kinds of weird code to map to my coord system (from_y going down)
-    glScissor(10, getGLPane()-> getHeight() - (20+height + from_y+barHeight+20), width-15, 20+height);
+    glScissor(10, Display::getHeight() - (20+height + from_y+barHeight+20), width-15, 20+height);
 
     // white background
     glDisable(GL_TEXTURE_2D);
@@ -411,7 +411,7 @@ void GuitarEditor::mouseDown(RelativeXCoord x, const int y)
 	if(x.getRelativeTo(EDITOR)<0 and x.getRelativeTo(EDITOR)>-75 and y>getEditorYStart())
 	{
 		getMainFrame()->tuningPicker->setParent(this);
-		getGLPane()->PopupMenu( getMainFrame()->tuningPicker,x.getRelativeTo(WINDOW),y);
+        Display::popupMenu(getMainFrame()->tuningPicker,x.getRelativeTo(WINDOW),y);
         return;
 	}
     
@@ -495,7 +495,7 @@ NoteSearchResult GuitarEditor::noteAt(RelativeXCoord x, const int y, int& noteID
 			
 			noteID = n;
 			
-			if(track->isNoteSelected(n) and !getGLPane()->isSelectLessPressed())
+			if(track->isNoteSelected(n) and !Display:: isSelectLessPressed())
 			{
 				// clicked on a selected note
 				return FOUND_SELECTED_NOTE;

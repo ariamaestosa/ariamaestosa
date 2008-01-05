@@ -22,7 +22,7 @@
  */
 
 #include "GUI/GLPane.h"
-#include "main.h"
+#include "AriaCore.h"
 
 #include "wx/wx.h"
 
