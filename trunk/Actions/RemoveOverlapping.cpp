@@ -18,7 +18,6 @@
 #include "Actions/EditAction.h"
 #include "Midi/Track.h"
 #include "Midi/Note.h"
-#include "GUI/GLPane.h"
 #include "wx/wx.h"
 #include "AriaCore.h"
 

@@ -25,8 +25,6 @@
 #include "Midi/ControllerEvent.h"
 
 #include "GUI/GraphicalTrack.h"
-#include "GUI/MainFrame.h"
-#include "GUI/GLPane.h"
 #include "GUI/MeasureBar.h"
 
 #include "Pickers/MagneticGrid.h"

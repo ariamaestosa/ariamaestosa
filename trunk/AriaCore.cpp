@@ -3,6 +3,10 @@
 #include "GUI/GLPane.h"
 #include "GUI/MainFrame.h"
 #include "Midi/Sequence.h"
+#include "Pickers/TuningPicker.h"
+#include "Pickers/KeyPicker.h"
+#include "Pickers/DrumChoice.h"
+#include "Pickers/InstrumentChoice.h"
 #include "wx/wx.h"
 
 /*
@@ -15,17 +19,53 @@ namespace AriaMaestosa
 {
     
     GLPane* glPane = NULL;
-    void setGLPane(GLPane* pane)
-    {
-        glPane = pane;
-    }
 
+
+
+namespace Core
+{  
+    
+void setGLPane(GLPane* pane)
+{
+    glPane = pane;
+}
     
 void activateRenderLoop(bool on)
 {
     wxGetApp().activateRenderLoop(on);
 }
-    
+
+void setImporting(bool on)
+{
+    getMainFrame()->getCurrentSequence()->importing = on;
+}
+TuningPicker* getTuningPicker()
+{
+    return getMainFrame()->tuningPicker;
+}
+KeyPicker* getKeyPicker()
+{
+    return getMainFrame()->keyPicker;
+}
+DrumChoice* getDrumPicker()
+{
+    return getMainFrame()->drumKit_picker;
+}
+InstrumentChoice* getInstrumentPicker()
+{
+    return getMainFrame()->instrument_picker;
+}
+int playDuringEdit()
+{
+    return getMainFrame()->play_during_edit;
+}
+void songHasFinishedPlaying()
+{
+    getMainFrame()->songHasFinishedPlaying();
+}
+
+}
+
 MainFrame* getMainFrame()
 {
     return wxGetApp().frame;
@@ -39,6 +79,11 @@ GLPane* getGLPane()
 MeasureBar* getMeasureBar()
 {
     return wxGetApp().frame->getCurrentSequence()->measureBar;
+}
+
+Sequence* getCurrentSequence()
+{
+    return getMainFrame()->getCurrentSequence();
 }
     
 namespace Display
@@ -145,6 +190,24 @@ namespace Display
     {
         glPane->setPlaybackStartTick(tick);
     }
+}// end Display namespace
+
+
+namespace DisplayFrame
+{
+    void changeMeasureAmount(const int i)
+    {
+        getMainFrame()->changeMeasureAmount(i);
+    }
+    void updateHorizontalScrollbar(const int thumbPos)
+    {
+        getMainFrame()->updateHorizontalScrollbar(thumbPos);
+    }
+    void updateVerticalScrollbar()
+    {
+        getMainFrame()->updateVerticalScrollbar();
+    }
 }
+
     
 }

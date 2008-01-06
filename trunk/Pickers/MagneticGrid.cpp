@@ -16,7 +16,6 @@
 
 #include "Pickers/MagneticGrid.h"
 #include "GUI/GraphicalTrack.h"
-#include "GUI/GLPane.h"
 #include "Midi/Sequence.h"
 #include "IO/IOUtils.h"
 

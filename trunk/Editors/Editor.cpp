@@ -22,7 +22,6 @@
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
 #include "GUI/GraphicalTrack.h"
-#include "GUI/GLPane.h"
 #include "GUI/MeasureBar.h"
 #include "GUI/RenderUtils.h"
 #include "Pickers/MagneticGrid.h"
@@ -546,20 +545,20 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 		// scroll forward
 		if(mousex_current.getRelativeTo(WINDOW) > getXEnd()-75)
 		{
-			getMainFrame()->getCurrentSequence()->setXScrollInPixels(
-																	 getMainFrame()->getCurrentSequence()->getXScrollInPixels()+
+			getCurrentSequence()->setXScrollInPixels(
+																	 getCurrentSequence()->getXScrollInPixels()+
 																	 (mousex_current.getRelativeTo(WINDOW)-getXEnd()+75)/5 );
-			getMainFrame()->updateHorizontalScrollbar();
+            DisplayFrame::updateHorizontalScrollbar();
 			Display::render();
 			return;
 		}
 		else if(mousex_current.getRelativeTo(WINDOW) < getEditorXStart()+20)
 			// scroll backwards
 		{
-			getMainFrame()->getCurrentSequence()->setXScrollInPixels(
-																	 getMainFrame()->getCurrentSequence()->getXScrollInPixels()-
+			getCurrentSequence()->setXScrollInPixels(
+																	 getCurrentSequence()->getXScrollInPixels()-
 																	 (getEditorXStart()+20-mousex_current.getRelativeTo(WINDOW))/4 );
-			getMainFrame()->updateHorizontalScrollbar();
+			DisplayFrame::updateHorizontalScrollbar();
 			Display::render();
 			return;
 		}

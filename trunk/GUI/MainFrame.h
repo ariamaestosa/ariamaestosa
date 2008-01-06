@@ -25,23 +25,10 @@
 #include "wxAdditions/bsizer.h"
 
 #include "Config.h"
-
+#include "AriaCore.h"
 #include "ptr_vector.h"
 
 namespace AriaMaestosa {
-
-enum
-{
-	PLAY_ALWAYS = 0,
-	PLAY_ON_CHANGE = 1,
-	PLAY_NEVER = 2
-};
-
-enum ChannelManagementType
-{
-	CHANNEL_AUTO,
-	CHANNEL_MANUAL
-};
 
 class GLPane; // forward
 class MusicPlayer;

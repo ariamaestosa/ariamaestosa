@@ -17,7 +17,6 @@
 #include "Pickers/KeyPicker.h"
 #include "Editors/ScoreEditor.h"
 #include "Editors/KeyboardEditor.h"
-#include "GUI/GLPane.h"
 #include "GUI/GraphicalTrack.h"
 #include "AriaCore.h"
 

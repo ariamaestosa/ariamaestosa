@@ -286,7 +286,7 @@ void TablatureExporter::exportTablature(Track* track_arg, wxFile* file_arg, bool
 	track = track_arg;
 	
 	measureAmount = getMeasureBar()->getMeasureAmount();
-	ticksPerBeat = getMainFrame()->getCurrentSequence()->ticksPerBeat();
+	ticksPerBeat = getCurrentSequence()->ticksPerBeat();
 	noteAmount = track->getNoteAmount();
 	editor = track->graphics->guitarEditor;
 	string_amount = editor->tuning.size();

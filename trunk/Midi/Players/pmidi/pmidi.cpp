@@ -445,9 +445,9 @@ void trackPlayback_thread_loop()
     signal(SIGINT, SIG_DFL);
     context->timerStarted = false;
 
-AlsaNotePlayer::resetAllControllers();
+    AlsaNotePlayer::resetAllControllers();
 
-    getMainFrame()->songHasFinishedPlaying();
+    Core::songHasFinishedPlaying();
 
 }
 

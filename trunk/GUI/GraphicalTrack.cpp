@@ -41,7 +41,6 @@
 #include "Editors/ControllerEditor.h"
 #include "Editors/ScoreEditor.h"
 #include "GUI/GLPane.h"
-#include "GUI/MainFrame.h"
 #include "GUI/GraphicalTrack.h"
 #include "IO/IOUtils.h"
 
@@ -150,7 +149,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 		   mousey > from_y+15 and mousey < from_y+35)
 		{
             collapsed = !collapsed;
-            getMainFrame()->updateVerticalScrollbar();
+            DisplayFrame::updateVerticalScrollbar();
         }
         
         // dock
@@ -159,7 +158,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 		{
             docked = true;
             sequence->addToDock( this );
-            getMainFrame()->updateVerticalScrollbar();
+            DisplayFrame::updateVerticalScrollbar();
         }
         
         // mute
@@ -167,7 +166,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 		   mousey>from_y+10 and mousey<from_y+30)
 		{
             muted = !muted;
-            getMainFrame()->updateVerticalScrollbar();
+            DisplayFrame::updateVerticalScrollbar();
         }
         
         // track name
@@ -192,13 +191,13 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 		{
             if(editorMode==DRUM)
 			{
-				getMainFrame()->drumKit_picker->setParent(track);
-                Display::popupMenu((wxMenu*)(getMainFrame()->drumKit_picker), Display::getWidth() - 175, from_y+30);
+                Core::getDrumPicker()->setParent(track);
+                Display::popupMenu((wxMenu*)(Core::getDrumPicker()), Display::getWidth() - 175, from_y+30);
 			}
             else
 			{
-				getMainFrame()->instrument_picker->setParent(track);
-                Display::popupMenu((wxMenu*)(getMainFrame()->instrument_picker), Display::getWidth() - 175, from_y+30);
+				Core::getInstrumentPicker()->setParent(track);
+                Display::popupMenu((wxMenu*)(Core::getInstrumentPicker()), Display::getWidth() - 175, from_y+30);
 			}
         }
         
@@ -308,7 +307,7 @@ void GraphicalTrack::processMouseRelease()
     if(dragging_resize)
 	{
         dragging_resize=false;
-        getMainFrame()->updateVerticalScrollbar();   
+        DisplayFrame::updateVerticalScrollbar();   
     }
 }
 
@@ -350,7 +349,7 @@ bool GraphicalTrack::processMouseDrag(RelativeXCoord x, int y)
                 height+=(y-lastMouseY);
                 if(height<35) height=35; //minimum size
             }
-			getMainFrame()->updateVerticalScrollbar();
+            DisplayFrame::updateVerticalScrollbar();
             
         }
         
@@ -674,8 +673,8 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     
     // get instrument name to display    
     std::string instrumentname;
-    if(editorMode == DRUM) instrumentname = getMainFrame()->drumKit_picker->getDrumName( track->getDrumKit() );
-    else instrumentname = getMainFrame()->instrument_picker->getInstrumentName( track->getInstrument() );
+    if(editorMode == DRUM) instrumentname = Core::getDrumPicker()->getDrumName( track->getDrumKit() );
+    else instrumentname = Core::getInstrumentPicker()->getInstrumentName( track->getInstrument() );
     
     // draw instrument name
     glColor3f(0,0,0);

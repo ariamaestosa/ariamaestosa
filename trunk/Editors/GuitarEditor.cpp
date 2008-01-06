@@ -24,11 +24,9 @@
 #include "Midi/Track.h"
 #include "Pickers/TuningPicker.h"
 #include "Images/ImageProvider.h"
-#include "GUI/GLPane.h"
+#include "GUI/RenderUtils.h"
 
 #include "AriaCore.h"
-
-#include "OpenGL.h"
 
 #include <string>
 
@@ -49,8 +47,9 @@ GuitarEditor::GuitarEditor(Track* track) : Editor(track)
     lastClickedNote=-1;
 
 	// let the tuning picker set-up the tuning of this guitar editor
-    getMainFrame()->tuningPicker->setParent(this); // standard
-	getMainFrame()->tuningPicker->loadTuning(1, false); // standard
+    TuningPicker* picker = Core::getTuningPicker();
+    picker->setParent(this); // standard
+	picker->loadTuning(1, false); // standard
 	
 	Editor::useVerticalScrollbar(false);
 }
@@ -85,37 +84,26 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current, Rel
 
     const int string_amount = tuning.size();
 
-    glEnable(GL_SCISSOR_TEST);
     // glScissor doesn't seem to follow the coordinate system so this ends up in all kinds of weird code to map to my coord system (from_y going down)
-    glScissor(10, Display::getHeight() - (20+height + from_y+barHeight+20), width-15, 20+height);
+    AriaRender::beginScissors(10, Display::getHeight() - (20+height + from_y+barHeight+20), width-15, 20+height);
 
     // white background
-    glDisable(GL_TEXTURE_2D);
-
-    glColor3f(1,1,1);
-    glBegin(GL_QUADS);
-
-    glVertex2f( 0, getEditorYStart());
-    glVertex2f( 0, getYEnd());
-    glVertex2f( getXEnd(), getYEnd());
-    glVertex2f( getXEnd(), getEditorYStart());
-
-    glEnd();
+    AriaRender::primitives();
+    AriaRender::color(1,1,1);
+    AriaRender::rect( 0, getEditorYStart(), getXEnd(), getYEnd());
 
     drawVerticalMeasureLines(getEditorYStart() + first_string_position,
 							 getEditorYStart() + first_string_position + (string_amount-1)*y_step);
 
     // ------------------------------- draw strings -------------------------------
-    glColor3f(0,0,0);
-    glBegin(GL_LINES);
+    AriaRender::color(0,0,0);
 
     for(unsigned int n=0; n<tuning.size(); n++)
 	{
-        glVertex2f( getEditorXStart(), getEditorYStart() + first_string_position + n*y_step );
-        glVertex2f( getXEnd(), getEditorYStart() + first_string_position + n*y_step );
+        AriaRender::line( getEditorXStart(), getEditorYStart() + first_string_position + n*y_step,
+                          getXEnd(), getEditorYStart() + first_string_position + n*y_step);
     }
 
-    glEnd();
 
 
     // ---------------------- draw notes ----------------------------
@@ -134,133 +122,79 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current, Rel
 
         float volume=track->getNoteVolume(n)/127.0;
 
-        if(track->isNoteSelected(n) and focus) glColor3f((1-volume)*1, (1-(volume/2))*1, 0);
-        else glColor3f((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
+        if(track->isNoteSelected(n) and focus) AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
+        else AriaRender::color((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
 
-		// note body
-        glBegin(GL_QUADS);
-        glVertex2f(x1+getEditorXStart(), getEditorYStart()+first_string_position+string*y_step-2);
-        glVertex2f(x1+getEditorXStart(), getEditorYStart()+first_string_position+string*y_step+2);
-        glVertex2f(x2-1+getEditorXStart(), getEditorYStart()+first_string_position+string*y_step+2);
-        glVertex2f(x2-1+getEditorXStart(), getEditorYStart()+first_string_position+string*y_step-2);
-        glEnd();
-
-		// lines around note
-		glColor3f(0, 0, 0);
-        glBegin(GL_LINES);
-        glVertex2f(x1+getEditorXStart(), getEditorYStart()+first_string_position+string*y_step-2);
-        glVertex2f(x1+getEditorXStart(), getEditorYStart()+first_string_position+string*y_step+2);
-
-        glVertex2f(x1+getEditorXStart(), getEditorYStart()+first_string_position+string*y_step+3);
-        glVertex2f(x2-1+getEditorXStart(), getEditorYStart()+first_string_position+string*y_step+3);
-
-        glVertex2f(x2+getEditorXStart(), getEditorYStart()+first_string_position+string*y_step+2);
-        glVertex2f(x2+getEditorXStart(), getEditorYStart()+first_string_position+string*y_step-2);
-
-        glVertex2f(x1+getEditorXStart(), getEditorYStart()+first_string_position+string*y_step-2);
-        glVertex2f(x2-1+getEditorXStart(), getEditorYStart()+first_string_position+string*y_step-2);
-        glEnd();
-
+        AriaRender::bordered_rect_no_start(x1+getEditorXStart(), getEditorYStart()+first_string_position+string*y_step-2,
+                                           x2-1+getEditorXStart(), getEditorYStart()+first_string_position+string*y_step+2);
+        
         // fret number
-        if(track->isNoteSelected(n)  and focus) glColor3f((1-volume)*1, (1-(volume/2))*1, 0);
-        else glColor3f((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
-
-        glBegin(GL_QUADS);
-        glVertex2f(x1+getEditorXStart()-1, getEditorYStart()+first_string_position+string*y_step-8);
-        glVertex2f(x1+getEditorXStart()-1, getEditorYStart()+first_string_position+string*y_step);
-        glVertex2f(x1+14+getEditorXStart(), getEditorYStart()+first_string_position+string*y_step);
-        glVertex2f(x1+9+getEditorXStart(), getEditorYStart()+first_string_position+string*y_step-8);
-        glEnd();
-
-        if((!track->isNoteSelected(n) or !focus) && volume>0.5) glColor3f(1, 1, 1); // if note color is too dark, draw the fret number in whites
-        else glColor3f(0, 0, 0);
-
+        if(track->isNoteSelected(n)  and focus) AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
+        else AriaRender::color((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
+        
+        AriaRender::quad(x1+getEditorXStart()-1, getEditorYStart()+first_string_position+string*y_step-8,
+                         x1+getEditorXStart()-1, getEditorYStart()+first_string_position+string*y_step,
+                         x1+14+getEditorXStart(), getEditorYStart()+first_string_position+string*y_step,
+                         x1+9+getEditorXStart(), getEditorYStart()+first_string_position+string*y_step-8);
+        
+        if((!track->isNoteSelected(n) or !focus) && volume>0.5) AriaRender::color(1, 1, 1); // if note color is too dark, draw the fret number in white
+        else AriaRender::color(0, 0, 0);
+        
         // convert the fret nubmer to chars, and draw it
-        glRasterPos2f(x1+getEditorXStart(), getEditorYStart() + first_string_position + string*y_step + 1);
         char buffer[2];
         sprintf (buffer, "%d", fret);
 
-        for(int i=0; buffer[i]; i++)
-		{
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, buffer[i]);
-        }
-
+        AriaRender::small_text(buffer, x1+getEditorXStart(), getEditorYStart() + first_string_position + string*y_step + 1);
+        
     }//next
-
-
+    
+    
     // mouse drag
-    if(!clickedOnNote)
+    if(!clickedOnNote and mouse_is_in_editor)
 	{
-
-        if(mouse_is_in_editor)
-		{
-
-            // -------------------- selection ----------------------
-			if(selecting)
-			{
-
-                glColor3f(0,0,0);
-                glBegin(GL_LINES);
-
-                glVertex2f(mousex_initial.getRelativeTo(WINDOW), mousey_current);
-                glVertex2f(mousex_initial.getRelativeTo(WINDOW), mousey_initial);
-
-                glVertex2f(mousex_current.getRelativeTo(WINDOW), mousey_initial);
-                glVertex2f(mousex_initial.getRelativeTo(WINDOW), mousey_initial);
-
-                glVertex2f(mousex_current.getRelativeTo(WINDOW), mousey_initial);
-                glVertex2f(mousex_current.getRelativeTo(WINDOW), mousey_current);
-
-                glVertex2f(mousex_initial.getRelativeTo(WINDOW), mousey_current);
-                glVertex2f(mousex_current.getRelativeTo(WINDOW), mousey_current);
-
-                glEnd();
-
+        
+        // -------------------- selection ----------------------
+        if(selecting)
+        {
+            AriaRender::color(0,0,0);
+            AriaRender::hollow_rect(mousex_initial.getRelativeTo(WINDOW), mousey_initial,
+                                    mousex_current.getRelativeTo(WINDOW), mousey_current);
+        }
+        // ----------------------- add note (preview) --------------------
+        else if(mousey_current<getYEnd()-15)
+        {
+            
+            AriaRender::color(1, 0.85, 0);
+            
+            const int preview_x1=
+                (int)(
+                      (snapMidiTickToGrid(mousex_initial.getRelativeTo(MIDI)) -
+                       sequence->getXScrollInMidiTicks())*sequence->getZoom()
+                      );
+            const int preview_x2=
+                (int)(
+                      (snapMidiTickToGrid(mousex_current.getRelativeTo(MIDI)) -
+                       sequence->getXScrollInMidiTicks())*sequence->getZoom()
+                      );
+            
+            int string = (int)round( (float)(mousey_initial - getEditorYStart() - first_string_position) / (float)y_step);
+            
+            if(!(preview_x1<0 || preview_x2<0 || string<0 || (unsigned int)string>tuning.size()-1) and preview_x2>preview_x1)
+            {
+                AriaRender::rect(preview_x1+getEditorXStart(), string*y_step + getEditorYStart() + first_string_position - 5,
+                                 preview_x2+getEditorXStart(), (string+1)*y_step + getEditorYStart() + first_string_position - 5);
             }
-			// ----------------------- add note (preview) --------------------
-			else if(mousey_current<getYEnd()-15)
-			{
-
-                glColor3f(1, 0.85, 0);
-
-                const int preview_x1=
-                    (int)(
-                          (snapMidiTickToGrid(mousex_initial.getRelativeTo(MIDI) /*+ sequence->getXScrollInMidiTicks()*/) -
-                           sequence->getXScrollInMidiTicks())*sequence->getZoom()
-                          );
-                const int preview_x2=
-                    (int)(
-                          (snapMidiTickToGrid(mousex_current.getRelativeTo(MIDI) /*+ sequence->getXScrollInMidiTicks()*/) -
-                           sequence->getXScrollInMidiTicks())*sequence->getZoom()
-                          );
-
-                int string = (int)round( (float)(mousey_initial - getEditorYStart() - first_string_position) / (float)y_step);
-
-                if(!(preview_x1<0 || preview_x2<0 || string<0 || (unsigned int)string>tuning.size()-1) and preview_x2>preview_x1)
-				{
-                    glBegin(GL_QUADS);
-
-                    glVertex2f(preview_x1+getEditorXStart(), string*y_step + getEditorYStart() + first_string_position - 5);
-                    glVertex2f(preview_x1+getEditorXStart(), (string+1)*y_step + getEditorYStart() + first_string_position - 5);
-                    glVertex2f(preview_x2+getEditorXStart(), (string+1)*y_step + getEditorYStart() + first_string_position - 5);
-                    glVertex2f(preview_x2+getEditorXStart(), string*y_step + getEditorYStart() + first_string_position - 5);
-
-                    glEnd();
-                }
-
-            }// end if selection or addition
-
-        }// end if dragging on track
-
-    }// if !clickedOnNote
-     // ------------------------- move note (preview) -----------------------
+            
+        }// end if selection or addition
+        
+    }
+    
+    // ------------------------- move note (preview) -----------------------
     if(clickedOnNote)
 	{
-
-        glDisable(GL_TEXTURE_2D);
-
-        glColor4f(1, 0.85, 0, 0.5);
-
+        
+        AriaRender::color(1, 0.85, 0, 0.5);
+        
         const int x_difference = mousex_current.getRelativeTo(MIDI)-mousex_initial.getRelativeTo(MIDI);
         const int y_difference = mousey_current-mousey_initial;
 
@@ -274,30 +208,27 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current, Rel
             const int x2=track->getNoteEndInPixels(lastClickedNote) - sequence->getXScrollInPixels();
             const int string=track->getNoteString(lastClickedNote);
 
-            glBegin(GL_QUADS);
-            glVertex2f(x1+x_steps_to_move+getEditorXStart(), string*y_step + getEditorYStart() + first_string_position - 5 + y_steps_to_move*y_step);
-            glVertex2f(x1+x_steps_to_move+getEditorXStart(), string*y_step + getEditorYStart() + first_string_position - 5 + (y_steps_to_move+1)*10);
-            glVertex2f(x2-1+x_steps_to_move+getEditorXStart(), string*y_step + getEditorYStart() + first_string_position - 5 + (y_steps_to_move+1)*y_step);
-            glVertex2f(x2-1+x_steps_to_move+getEditorXStart(), string*y_step + getEditorYStart() + first_string_position - 5 + y_steps_to_move*y_step);
-            glEnd();
+            AriaRender::rect(x1+x_steps_to_move+getEditorXStart(),
+                             string*y_step + getEditorYStart() + first_string_position - 5 + y_steps_to_move*y_step,
+                             x2-1+x_steps_to_move+getEditorXStart(),
+                             string*y_step + getEditorYStart() + first_string_position - 5 + (y_steps_to_move+1)*y_step);
         }
 		else
 		{
             // move a bunch of notes
 
-            for(int n=0; n<track->getNoteAmount(); n++){
+            for(int n=0; n<track->getNoteAmount(); n++)
+            {
                 if(!track->isNoteSelected(n)) continue;
 
                 const int x1=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
                 const int x2=track->getNoteEndInPixels(n) - sequence->getXScrollInPixels();
                 const int string=track->getNoteString(n);
 
-                glBegin(GL_QUADS);
-                glVertex2f(x1+x_steps_to_move+getEditorXStart(), string*y_step + getEditorYStart() + first_string_position - 5 + y_steps_to_move*y_step);
-                glVertex2f(x1+x_steps_to_move+getEditorXStart(), string*y_step + getEditorYStart() + first_string_position - 5 + (y_steps_to_move+1)*y_step);
-                glVertex2f(x2-1+x_steps_to_move+getEditorXStart(), string*y_step + getEditorYStart() + first_string_position - 5 + (y_steps_to_move+1)*y_step);
-                glVertex2f(x2-1+x_steps_to_move+getEditorXStart(), string*y_step + getEditorYStart() + first_string_position - 5 + y_steps_to_move*y_step);
-                glEnd();
+                AriaRender::rect(x1+x_steps_to_move+getEditorXStart(),
+                                 string*y_step + getEditorYStart() + first_string_position - 5 + y_steps_to_move*y_step,
+                                 x2-1+x_steps_to_move+getEditorXStart(),
+                                 string*y_step + getEditorYStart() + first_string_position - 5 + (y_steps_to_move+1)*y_step);
             }//next
 
         }//end if lastClickedNote!=-1
@@ -307,129 +238,89 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current, Rel
     // -----------------------------------------------------------------
     // left part with string names
     // -----------------------------------------------------------------
-    glLoadIdentity();
 
     // grey background
-    if(!focus) glColor3f(0.4, 0.4, 0.4);
-    else glColor3f(0.8, 0.8, 0.8);
-    glBegin(GL_QUADS);
-
-    glVertex2f( 0, getEditorYStart());
-    glVertex2f( 0, getYEnd());
-    glVertex2f( getEditorXStart()-3, getYEnd());
-    glVertex2f( getEditorXStart()-3, getEditorYStart());
-
-    glEnd();
-
+    if(!focus) AriaRender::color(0.4, 0.4, 0.4);
+    else AriaRender::color(0.8, 0.8, 0.8);
+    
+    AriaRender::rect( 0, getEditorYStart(),
+                      getEditorXStart()-3, getYEnd());
+    
     // string names
-    glColor3f(0,0,0);
+    AriaRender::color(0,0,0);
 
+    const int text_x = getEditorXStart()-25;
     for(int n=0; n<string_amount; n++)
 	{
-        glRasterPos2f(getEditorXStart()-25, getEditorYStart() + 20 + n*y_step);
-
+        const int text_y = getEditorYStart() + 20 + n*y_step;
+        
         const int octave=tuning[n]/12;
         const int note=tuning[n]%12;
 
+        // FIXME - what about flats?
+        
         switch(note){
             case 0:
-                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, 'B');
+                AriaRender::small_character('B', text_x, text_y);
                 break;
             case 1:
-                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, 'A');
-                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, '#');
+                AriaRender::small_text("A#", text_x, text_y);
                 break;
             case 2:
-                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, 'A');
+                AriaRender::small_character('A', text_x, text_y);
                 break;
             case 3:
-                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, 'G');
-                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, '#');
+                AriaRender::small_text("G#", text_x, text_y);
                 break;
             case 4:
-                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, 'G');
+                AriaRender::small_character('G', text_x, text_y);
                 break;
             case 5:
-                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, 'F');
-                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, '#');
+                AriaRender::small_text("F#", text_x, text_y);
                 break;
             case 6:
-                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, 'F');
+                AriaRender::small_character('F', text_x, text_y);
                 break;
             case 7:
-                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, 'E');
+                AriaRender::small_character('E', text_x, text_y);
                 break;
             case 8:
-                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, 'D');
-                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, '#');
+                AriaRender::small_text("D#", text_x, text_y);
                 break;
             case 9:
-                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, 'D');
+                AriaRender::small_character('D', text_x, text_y);
                 break;
             case 10:
-                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, 'C');
-                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, '#');
+                AriaRender::small_text("C#", text_x, text_y);
                 break;
             case 11:
-                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, 'C');
+                AriaRender::small_character('C', text_x, text_y);
                 break;
         } // end switch
 
         char buffer[2];
         sprintf (buffer, "%d", 10-octave);
-
-        for(int i=0; buffer[i]; i++)
-		{
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, buffer[i]);
-        }
-
+        AriaRender::text_append(buffer);
     }//next
 
 
-
-    glEnable(GL_TEXTURE_2D);
-    glDisable(GL_SCISSOR_TEST);
+    AriaRender::endScissors();
+    AriaRender::images();
 
 }
 
-/*
-void GuitarEditor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
-								 RelativeXCoord mousex_initial, int mousey_initial)
-{
-	Editor::mouseHeldDown(mousex_current, mousey_current, mousex_initial, mousey_initial);
-}
-
-void GuitarEditor::mouseExited(RelativeXCoord mousex_current, int mousey_current,
-							   RelativeXCoord mousex_initial,int mousey_initial)
-{
-	Editor::mouseExited(mousex_current, mousey_current, mousex_initial, mousey_initial);
-}
-*/
 void GuitarEditor::mouseDown(RelativeXCoord x, const int y)
 {
     // user clicked on left bar to change tuning
 	if(x.getRelativeTo(EDITOR)<0 and x.getRelativeTo(EDITOR)>-75 and y>getEditorYStart())
 	{
-		getMainFrame()->tuningPicker->setParent(this);
-        Display::popupMenu(getMainFrame()->tuningPicker,x.getRelativeTo(WINDOW),y);
+        Core::getTuningPicker()->setParent(this);
+        Display::popupMenu(Core::getTuningPicker(),x.getRelativeTo(WINDOW),y);
         return;
 	}
     
 	Editor::mouseDown(x, y);
 }
-/*
-void GuitarEditor::mouseDrag(RelativeXCoord mousex_current, const int mousey_current,
-							 RelativeXCoord mousex_initial, const int mousey_initial)
-{
-	Editor::mouseDrag(mousex_current, mousey_current, mousex_initial, mousey_initial);
-}
-
-void GuitarEditor::mouseUp(RelativeXCoord mousex_current, const int mousey_current,
-						   RelativeXCoord mousex_initial, const int mousey_initial)
-{
-	Editor::mouseUp(mousex_current, mousey_current, mousex_initial, mousey_initial);
-}
-*/
 
 void GuitarEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current, RelativeXCoord& mousex_initial, int mousey_initial)
 {

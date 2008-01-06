@@ -20,7 +20,6 @@
 #include "Midi/Sequence.h"
 #include "GUI/GraphicalTrack.h"
 #include "GUI/MeasureBar.h"
-#include "GUI/GLPane.h"
 #include "Clipboard.h"
 #include "AriaCore.h"
 #include "Editors/KeyboardEditor.h"

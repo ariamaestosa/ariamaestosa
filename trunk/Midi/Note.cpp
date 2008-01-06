@@ -16,21 +16,13 @@
 
 #include "AriaCore.h"
 #include "Midi/Note.h"
-#include "GUI/MainFrame.h"
 #include "GUI/GraphicalTrack.h"
-#include "Editors/KeyboardEditor.h"
-#include "Editors/ScoreEditor.h"
-#include "Editors/GuitarEditor.h"
-#include "Editors/DrumEditor.h"
 #include "Config.h"
 #include "IO/IOUtils.h"
 #include "Pickers/MagneticGrid.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Sequence.h"
-#include "Pickers/DrumChoice.h"
-#include "Pickers/InstrumentChoice.h"
-#include "GUI/GLPane.h"
-
+#include "Editors/GuitarEditor.h"
 
 #include <iostream>
 
@@ -323,7 +315,7 @@ void Note::play(bool change)
 	
 	if(gtrack->sequence->importing) return;
 	
-	const int play = getMainFrame()->play_during_edit;
+	const int play = Core::playDuringEdit();
 	
 	if(play == PLAY_NEVER) return;
 	if(play == PLAY_ON_CHANGE and !change) return;

@@ -22,19 +22,48 @@
 
 class wxMenu;
 
+enum
+{
+	PLAY_ALWAYS = 0,
+	PLAY_ON_CHANGE = 1,
+	PLAY_NEVER = 2
+};
+
+enum ChannelManagementType
+{
+	CHANNEL_AUTO,
+	CHANNEL_MANUAL
+};
+
+
 namespace AriaMaestosa
 {
     class MainFrame;
     class GLPane;
     class MeasureBar;
-    
+    class TuningPicker;
+    class Sequence;
+    class KeyPicker;
+    class DrumChoice;
+    class InstrumentChoice;
     
 MainFrame* getMainFrame();
 GLPane* getGLPane();
 MeasureBar* getMeasureBar();
+Sequence* getCurrentSequence();
 
+namespace Core
+{
 void activateRenderLoop(bool on);
 void setGLPane(GLPane* pane);
+void setImporting(bool on);
+int playDuringEdit();
+void songHasFinishedPlaying();
+TuningPicker* getTuningPicker();
+KeyPicker* getKeyPicker();
+DrumChoice* getDrumPicker();
+InstrumentChoice* getInstrumentPicker();
+}
 
 namespace Display
 {
@@ -68,6 +97,13 @@ void requestFocus();
 // FIXME - should be removed/moved
 int getDraggedTrackID();
 void setPlaybackStartTick(const int tick);
+}
+
+namespace DisplayFrame
+{
+    void changeMeasureAmount(const int i);
+    void updateHorizontalScrollbar(const int thumbPos=-1);
+    void updateVerticalScrollbar();
 }
 
 }

@@ -17,7 +17,6 @@
 #include "Actions/RearrangeNotes.h"
 #include "Pickers/TuningPicker.h"
 #include "Editors/GuitarEditor.h"
-#include "GUI/GLPane.h"
 #include "Midi/Sequence.h"
 #include "IO/IOUtils.h"
 #include "IO/NotationExport.h"

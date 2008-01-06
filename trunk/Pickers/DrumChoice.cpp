@@ -18,7 +18,6 @@
 #include "Pickers/DrumChoice.h"
 #include "GUI/GraphicalTrack.h"
 #include "Midi/Sequence.h"
-#include "GUI/GLPane.h"
 #include "IO/IOUtils.h"
 #include <iostream>
 
@@ -87,7 +86,7 @@ char* DrumChoice::getDrumName(int drumID)
     else
 	{
         std::cout << "wrong drumset ID: " << drumID << std::endl;
-		Sequence* seq = getMainFrame()->getCurrentSequence();
+		Sequence* seq = getCurrentSequence();
 		const int trackAmount = seq->getTrackAmount();
 		for(int n=0; n<trackAmount; n++)
 		{

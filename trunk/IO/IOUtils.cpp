@@ -17,7 +17,6 @@
 
 #include "IO/IOUtils.h"
 #include "IO/AriaFileWriter.h"
-#include "GUI/MainFrame.h"
 #include "Midi/Sequence.h"
 
 #include "AriaCore.h"

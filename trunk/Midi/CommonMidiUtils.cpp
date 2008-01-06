@@ -23,7 +23,6 @@
 #include "Midi/Track.h"
 #include "Midi/Players/PlatformMidiManager.h"
 
-#include "GUI/GLPane.h"
 #include "GUI/MeasureBar.h"
 
 #include "jdkmidi/world.h"

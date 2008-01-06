@@ -161,6 +161,14 @@ void text(const char* string, const int x, const int y)
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, string[i]);
     }
 }
+void text_append(const char* string)
+{
+    for(int i=0; string[i]; i++)
+    {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, string[i]);
+    }
+}
+
 void small_text(const char* string, const int x, const int y)
 {
     glRasterPos2f(x, y);
@@ -223,6 +231,19 @@ void arc(int center_x, int center_y, int radius_x, int radius_y, bool show_above
 	glEnd();	
 }
 
+void quad(const int x1, const int y1,
+          const int x2, const int y2,
+          const int x3, const int y3,
+          const int x4, const int y4)
+{
+    glBegin(GL_QUADS);
+    glVertex2f(x1, y1);
+    glVertex2f(x2, y2);
+    glVertex2f(x3, y3);
+    glVertex2f(x4, y4);
+    glEnd();
+    
+}
 
 void beginScissors(const int x, const int y, const int width, const int height)
 {

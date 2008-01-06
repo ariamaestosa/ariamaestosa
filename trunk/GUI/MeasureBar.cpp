@@ -82,7 +82,7 @@ void removeSelected(wxCommandEvent& event)
 		std::cout << "Unknown answer from wxMessageBox in SelectedMenu::removeSelected() : " << answer << std::endl;
 	}
 	
-	getMainFrame()->getCurrentSequence()->action( new Action::RemoveMeasures(remove_from, remove_to) );
+	getCurrentSequence()->action( new Action::RemoveMeasures(remove_from, remove_to) );
 	getMeasureBar()->selectTimeSig(0);
 }
 
@@ -124,7 +124,7 @@ public:
 										   _("Amount: "), wxT(""), 4 /*default*/, 1 /*min*/);
 		if(number==-1) return;
 		
-		Sequence* seq = getMainFrame()->getCurrentSequence();
+		Sequence* seq = getCurrentSequence();
 		
 		// --------- move notes in all tracks -----------
 		
@@ -238,7 +238,7 @@ void MeasureBar::setFirstMeasure(int firstMeasureID)
 
 int MeasureBar::measureAtPixel(int pixel)
 {
-	const float x1 = 90 - getMainFrame()->getCurrentSequence()->getXScrollInPixels();
+	const float x1 = 90 - getCurrentSequence()->getXScrollInPixels();
 	pixel -= (int)x1;
     
 	if(isMeasureLengthConstant())
@@ -323,7 +323,7 @@ void MeasureBar::setTimeSig(int top, int bottom)
 	updateMeasureInfo();
 	
 
-	getMainFrame()->getCurrentSequence()->setZoom( getMainFrame()->getCurrentSequence()->getZoomInPercent() ); // update zoom to new measure size
+	getCurrentSequence()->setZoom( getCurrentSequence()->getZoomInPercent() ); // update zoom to new measure size
 	
     wxSpinEvent unused;
     getMainFrame()->songLengthChanged(unused);
@@ -357,7 +357,7 @@ int MeasureBar::measureAtTick(int tick)
 		
 		return (int)(
 					 timeSigChanges[ last_id ].measure + 
-			tick / ( getMainFrame()->getCurrentSequence()->ticksPerBeat() *
+			tick / ( getCurrentSequence()->ticksPerBeat() *
 					 timeSigChanges[ last_id ].num *
 					 (4.0/ timeSigChanges[ last_id ].denom ) )
 					 );
@@ -371,13 +371,13 @@ int MeasureBar::firstPixelInMeasure(int id)
 	if(isMeasureLengthConstant())
 	{
 		return (int)(
-					 id * measureLengthInTicks() * getMainFrame()->getCurrentSequence()->getZoom() -
-					 getMainFrame()->getCurrentSequence()->getXScrollInPixels() + 90
+					 id * measureLengthInTicks() * getCurrentSequence()->getZoom() -
+					 getCurrentSequence()->getXScrollInPixels() + 90
 					 );
 	}
 	else
 	{
-		return measureInfo[id].pixel -  getMainFrame()->getCurrentSequence()->getXScrollInPixels() + 90;
+		return measureInfo[id].pixel -  getCurrentSequence()->getXScrollInPixels() + 90;
 	}
 }
 
@@ -407,7 +407,7 @@ int MeasureBar::lastTickInMeasure(int id)
 // used when right-cliking an object - tells on which line between measures pixel is
 int MeasureBar::measureDivisionAt(int pixel)
 {
-	const float x1 = 90 - getMainFrame()->getCurrentSequence()->getXScrollInPixels();
+	const float x1 = 90 - getCurrentSequence()->getXScrollInPixels();
 
 	
 	if(isMeasureLengthConstant())
@@ -494,7 +494,7 @@ void MeasureBar::render(int measureBarY_arg)
 	
 	const bool measureLengthConstant = isMeasureLengthConstant();
 	
-	const float x_initial = getEditorXStart() - mainFrame->getCurrentSequence()->getXScrollInPixels();
+	const float x_initial = getEditorXStart() - getCurrentSequence()->getXScrollInPixels();
 	const float x_step = measureLengthInPixels();
 	
 	for(float n=x_initial; n<Display::getWidth(); (measureLengthConstant ? n+=x_step : n+=measureLengthInPixels(measureID-1) ) )
@@ -678,7 +678,7 @@ void MeasureBar::mouseUp(int mousex_current, int mousey_current, int mousex_init
 	
 	if(lastMeasureInDrag == -1) return; //invalid
 	
-	Sequence* sequence = mainFrame->getCurrentSequence();
+	Sequence* sequence = getCurrentSequence();
 	
 	const int measureAmount = measureInfo.size();
 	
@@ -731,7 +731,7 @@ int MeasureBar::getTotalPixelAmount()
 {
 	if(isMeasureLengthConstant())
 	{
-		return (int)( measureAmount * measureLengthInTicks() * getMainFrame()->getCurrentSequence()->getZoom() );
+		return (int)( measureAmount * measureLengthInTicks() * getCurrentSequence()->getZoom() );
 	}
 	else
 	{
@@ -747,13 +747,13 @@ bool MeasureBar::isMeasureLengthConstant()
 float MeasureBar::measureLengthInPixels(int measure)
 {
 	if(measure==-1) measure=0; // no parameter passed, use measure 0 settings
-	return (float)measureLengthInTicks(measure) * (float)getMainFrame()->getCurrentSequence()->getZoom();
+	return (float)measureLengthInTicks(measure) * (float)getCurrentSequence()->getZoom();
 }
 
 int MeasureBar::measureLengthInTicks(int measure)
 {
 	if(measure==-1) measure=0; // no parameter passed, use measure 0 settings
-	Sequence* sequence = getMainFrame()->getCurrentSequence();
+	Sequence* sequence = getCurrentSequence();
 	
 	const int num = getTimeSigNumerator(measure), denom=getTimeSigDenominator(measure);
 	
@@ -766,7 +766,7 @@ int MeasureBar::measureLengthInTicks(int measure)
 // im not sure if this is used at all or very much
 int MeasureBar::defaultMeasureLengthInTicks()
 {
-	Sequence* sequence = getMainFrame()->getCurrentSequence();
+	Sequence* sequence = getCurrentSequence();
 	
 	return (int)( sequence->ticksPerBeat() * getTimeSigNumerator(0) * (4.0/getTimeSigDenominator(0)) );
 }
@@ -775,20 +775,20 @@ int MeasureBar::defaultMeasureLengthInTicks()
 // im not sure if this is used at all or very much
 float MeasureBar::defaultMeasureLengthInPixels()
 {
-	Sequence* sequence = getMainFrame()->getCurrentSequence();
+	Sequence* sequence = getCurrentSequence();
 	return (float)measureLengthInTicks(0) * (float)sequence->getZoom();
 }
 
 float MeasureBar::beatLengthInPixels()
 {
-	Sequence* sequence = getMainFrame()->getCurrentSequence();
+	Sequence* sequence = getCurrentSequence();
 	
-	return getMainFrame()->getCurrentSequence()->ticksPerBeat() * sequence->getZoom();
+	return getCurrentSequence()->ticksPerBeat() * sequence->getZoom();
 }
 
 int MeasureBar::beatLengthInTicks()
 {
-	return getMainFrame()->getCurrentSequence()->ticksPerBeat();
+	return getCurrentSequence()->ticksPerBeat();
 }
 
 // -----------------------
@@ -873,8 +873,8 @@ void MeasureBar::unselect()
 void MeasureBar::updateMeasureInfo()
 {
 	const int amount = measureInfo.size();
-	const float zoom = getMainFrame()->getCurrentSequence()->getZoom();
-	Sequence* sequence = getMainFrame()->getCurrentSequence();
+	const float zoom = getCurrentSequence()->getZoom();
+	Sequence* sequence = getCurrentSequence();
 	const int ticksPerBeat = sequence->ticksPerBeat();
 	float tick = 0;
 	int timg_sig_event = 0;
@@ -920,7 +920,7 @@ void MeasureBar::updateMeasureInfo()
 	totalNeededLengthInTicks = (int)tick;
 	totalNeededLengthInPixels = (int)( tick * zoom );
 	
-	getMainFrame()->updateHorizontalScrollbar();
+    DisplayFrame::updateHorizontalScrollbar();
 	
 }
 
@@ -981,7 +981,7 @@ void MeasureBar::addTimeSigChange(int measure, int num, int denom) // -1 means "
 			{
 				// a time sig event already exists at this location
 				// if we're not importing, select it
-				if(!getMainFrame()->getCurrentSequence()->importing)
+				if(!getCurrentSequence()->importing)
 				{
 					getMainFrame()->changeShownTimeSig( timeSigChanges[selectedTimeSig].num, timeSigChanges[selectedTimeSig].denom );
 					selectedTimeSig = n;
@@ -1007,7 +1007,7 @@ void MeasureBar::addTimeSigChange(int measure, int num, int denom) // -1 means "
 				
 				getMainFrame()->changeShownTimeSig( timeSigChanges[n+1].num, timeSigChanges[n+1].denom );
 				
-				if(!getMainFrame()->getCurrentSequence()->importing) updateMeasureInfo();
+				if(!getCurrentSequence()->importing) updateMeasureInfo();
 				break;
 			}
 		}//next
@@ -1053,7 +1053,7 @@ void MeasureBar::addTimeSigChangeAtTick(int tick, int num, int denom)
 		const int last_id = timeSigChanges.size() - 1;
 		measure = (int)(
 						measuresPassed + (tick - last_event_tick)  /
-						( getMainFrame()->getCurrentSequence()->ticksPerBeat() *
+						( getCurrentSequence()->ticksPerBeat() *
 						  timeSigChanges[last_id].num *
 						  (4.0/ timeSigChanges[last_id].denom )
 						  )
