@@ -101,6 +101,8 @@ NOTE: sorry, this is very raw :)
  ## crash when emptying tempo in control view [reported, not tested] 
  ## ram-zet, rip.midi : look at score for intro choir...
 
+ * in extended measure management, when you select a time sig event, the wrong numbers appear in the top bar
+
 + notes in score can only be natural or sharp, never flat. (EasyBeat uses flats when the current key uses flats at armature)
 + scons warning : 'install' is found inside 'uninstall' (fix commited, not tested)
 

@@ -508,9 +508,8 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteR
     /*
 	if(renderInfo.unknown_duration)
 	{
-		glLoadIdentity();
-		glRasterPos2f(renderInfo.x, renderInfo.y + 3);
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, '?');
+		AriaRender::primitives();
+        AriaRender::character('?', renderInfo.x, renderInfo.y + 3);
 	}
 	else
      */

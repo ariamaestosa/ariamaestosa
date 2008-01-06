@@ -32,6 +32,7 @@ const float current_file_version = 1.0;
 
 #include "GUI/MainFrame.h"
 #include "GUI/MeasureBar.h"
+#include "GUI/RenderUtils.h"
 
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Sequence.h"
@@ -342,18 +343,13 @@ void Sequence::renderTracks(int currentTick, RelativeXCoord mousex, int mousey, 
         const int arrow_y = (reordering_newPosition > draggedTrack) ?
             mousey_initial + (reordering_newPosition - draggedTrack)*50 - 5 - reorderYScroll :
             mousey_initial - (draggedTrack - reordering_newPosition)*50 - 5 - reorderYScroll;
-           
-        glColor3f(1,0,0);
-        glBegin(GL_LINES);
-        glVertex2f( 26, arrow_y);
-        glVertex2f( 10, arrow_y);
-        glEnd();
         
-        glBegin(GL_TRIANGLE_STRIP);
-        glVertex2f( 35, arrow_y);
-        glVertex2f( 25, arrow_y - 5);
-        glVertex2f( 25, arrow_y + 5);
-        glEnd();
+        AriaRender::primitives();
+        AriaRender::color(1,0,0);
+        AriaRender::line(26, arrow_y, 10, arrow_y);
+        AriaRender::triangle( 35, arrow_y,
+                              25, arrow_y - 5,
+                              25, arrow_y + 5);
     }//end if
     
 }

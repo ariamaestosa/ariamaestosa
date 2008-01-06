@@ -42,6 +42,7 @@
 #include "Editors/ScoreEditor.h"
 #include "GUI/GLPane.h"
 #include "GUI/GraphicalTrack.h"
+#include "GUI/RenderUtils.h"
 #include "IO/IOUtils.h"
 
 namespace AriaMaestosa {
@@ -63,7 +64,6 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
     
     grid=new MagneticGrid(this);
     
-    //mousex_current.setValue(0,WINDOW);
     lastMouseY=0;
     
     collapsed=false;
@@ -400,10 +400,10 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     int barHeight=EXPANDED_BAR_HEIGHT;
     if(closed) barHeight=COLLAPSED_BAR_HEIGHT;
     
-    if(!focus) glColor3f(0.5, 0.5, 0.5);
-    else glColor3f(1,1,1);
+    if(!focus) AriaRender::color(0.5, 0.5, 0.5);
+    else AriaRender::color(1,1,1);
     
-    glEnable(GL_TEXTURE_2D);
+    AriaRender::images();
     
     // top left corner
     cornerDrawable->move(x+10,y);
@@ -441,28 +441,22 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     // --------------------------------------------------
     
     // center
-    glLoadIdentity();
-    glDisable(GL_TEXTURE_2D);
+    AriaRender::primitives();
     
-    if(!focus) glColor3f(0.31/2, 0.31/2, 0.31/2);
-    else glColor3f(0.31, 0.31, 0.31);
+    if(!focus) AriaRender::color(0.31/2, 0.31/2, 0.31/2);
+    else AriaRender::color(0.31, 0.31, 0.31);
     
-    glBegin(GL_QUADS);
-    glVertex2f(x+ 30, y+20);
-    glVertex2f(x+ 30, y+20+barHeight);
-    glVertex2f(x+ Display::getWidth() - 5 /* margin*/ - 20 /*right round cornerDrawable*/, y+20+barHeight);
-    glVertex2f(x+ Display::getWidth() - 5 /* margin*/ - 20 /*right round cornerDrawable*/, y+20);
-    glEnd();
+    AriaRender::rect(x+ 30, y+20, x+ Display::getWidth() - 5 /* margin*/ - 20 /*right round cornerDrawable*/, y+20+barHeight);
     
-    glEnable(GL_TEXTURE_2D);
-    glColor3f(1,1,1);
-    
+
     // --------------------------------------------------
     
     if(closed)
 	{
-        if(!focus) glColor3f(0.5, 0.5, 0.5);
-        else glColor3f(1,1,1);
+         AriaRender::images();
+        
+        if(!focus) AriaRender::color(0.5, 0.5, 0.5);
+        else AriaRender::color(1,1,1);
         
         // bottom left corner
         cornerDrawable->move(x+10, y+20+barHeight);
@@ -481,38 +475,30 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
         cornerDrawable->setFlip(true, true);
         cornerDrawable->render();
         
-        glColor4f(1,1,1,1);
+        AriaRender::color(1,1,1);
         
     }
 	else
 	{
         
         // white area
-        glLoadIdentity();
         
-        if(editorMode != KEYBOARD) // keyboard editor draws its own backgound, so no need to draw it twice
+        
+        if(editorMode != KEYBOARD) // keyboard editor draws its own backgound, so no need to draw it twice // FIXME no more true
 		{
-            glDisable(GL_TEXTURE_2D);
+            AriaRender::primitives();
+            AriaRender::color(1, 1, 1);
             
-            glColor3f(1, 1, 1);
-            
-            glBegin(GL_QUADS);
-            glVertex2f(x+10, y+barHeight+20);
-            glVertex2f(x+10, y+barHeight+40+height);
-            glVertex2f(x+Display::getWidth() - 5 , y+barHeight+40+height);
-            glVertex2f(x+Display::getWidth() - 5 , y+barHeight+20);
-            glEnd();
+            AriaRender::rect(x+10, y+barHeight+20, x+Display::getWidth() - 5 , y+barHeight+40+height);
         }//end if
         
         
     }//end if
     
-    glEnable(GL_TEXTURE_2D);
-    
-    glColor4f(1,1,1,1);
-    
-    if(!focus) glColor3f(0.5, 0.5, 0.5);
-    else glColor3f(1,1,1);
+    AriaRender::images();
+
+    if(!focus) AriaRender::color(0.5, 0.5, 0.5);
+    else AriaRender::color(1,1,1);
     
     int draw_x = 20;
     
@@ -536,8 +522,6 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     dockTrackDrawable->render();
     
     // track name
-    glLoadIdentity();
-    
     track_name_x_begin = draw_x;
     
     comboBorderDrawable->move(x+draw_x,y+7);
@@ -558,34 +542,15 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     
     track_name_x_end = draw_x-8;
     
-    glColor3f(0,0,0);
-    glLoadIdentity();
-    glRasterPos2f(x+track_name_x_begin+10 ,y+26);
-    glDisable(GL_TEXTURE_2D);
-    
-	const unsigned int nameLen = track->getName().size();
-	
-    for(unsigned int i=0; i<nameLen; i++)
-	{
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, track->getName()[i]);
-        
-        // if name is too long
-        float rasterPos[4];
-        glGetFloatv(GL_CURRENT_RASTER_POSITION,rasterPos);
-        if(rasterPos[0] > x+draw_x - 25)
-		{
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, '.');
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, '.');
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, '.');
-            break;
-        }
-        
-    }
-    glEnable(GL_TEXTURE_2D);
+    AriaRender::color(0,0,0);
+    AriaRender::primitives();
+    AriaRender::text_with_bounds(&track->getName(), x+track_name_x_begin+10 ,y+26, x+draw_x - 25);
+
+    AriaRender::images();
     
     // grid
-    if(!focus) glColor3f(0.5, 0.5, 0.5);
-    else glColor3f(1,1,1);
+    if(!focus) AriaRender::color(0.5, 0.5, 0.5);
+    else AriaRender::color(1,1,1);
     
     grid_x_begin = draw_x;
     
@@ -604,59 +569,49 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     
     grid_x_end = draw_x+25;
     
-    glLoadIdentity();
-    glDisable(GL_TEXTURE_2D);
+    AriaRender::primitives();
+    AriaRender::color(0,0,0);
     
-    glColor3f(0,0,0);
-    glRasterPos2f(comboBorderDrawable->x + 10,y+26);
+    AriaRender::text(&grid->label, comboBorderDrawable->x + 10,y+26);
     draw_x += 41;
     
-    for(int i=0; grid->label[i]; i++)
-	{
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, grid->label[i]);
-    }
-    
-    
     // view mode
-    glColor4f(1,1,1,1);
-    
-    glEnable(GL_TEXTURE_2D);
+    AriaRender::images();
     
     
-    if(editorMode==SCORE and focus) glColor3f(1,1,1);
-    else glColor3f(0.4, 0.4, 0.4);
+    if(editorMode==SCORE and focus) AriaRender::color(1,1,1);
+    else AriaRender::color(0.4, 0.4, 0.4);
     score_view->move(x+draw_x, y+7);
     score_view->render();
     draw_x+=32;
     
-    if(editorMode==KEYBOARD and focus) glColor3f(1,1,1);
-    else glColor3f(0.4, 0.4, 0.4);
+    if(editorMode==KEYBOARD and focus) AriaRender::color(1,1,1);
+    else AriaRender::color(0.4, 0.4, 0.4);
     keyboard_view->move(x+draw_x, y+7);
     keyboard_view->render();
     draw_x += 32;
     
-    if(editorMode==GUITAR and focus) glColor3f(1,1,1);
-    else glColor3f(0.4, 0.4, 0.4);
+    if(editorMode==GUITAR and focus) AriaRender::color(1,1,1);
+    else AriaRender::color(0.4, 0.4, 0.4);
     guitar_view->move(x+draw_x, y+7);
     guitar_view->render();
     draw_x += 32;
     
-    if(editorMode==DRUM and focus) glColor3f(1,1,1);
-    else glColor3f(0.4, 0.4, 0.4);
+    if(editorMode==DRUM and focus) AriaRender::color(1,1,1);
+    else AriaRender::color(0.4, 0.4, 0.4);
     drum_view->move(x+draw_x, y+7);
     drum_view->render();
     draw_x += 32;
     
-    if(editorMode==CONTROLLER and focus) glColor3f(1,1,1);
-    else glColor3f(0.4, 0.4, 0.4);
+    if(editorMode==CONTROLLER and focus) AriaRender::color(1,1,1);
+    else AriaRender::color(0.4, 0.4, 0.4);
     controller_view->move(x+draw_x, y+7);
     controller_view->render();
     draw_x += 32;
     
     // ------------------------------- instrument name ---------------------------
-    if(!focus) glColor3f(0.5, 0.5, 0.5);
-    else glColor3f(1,1,1);
-    glLoadIdentity();
+    if(!focus) AriaRender::color(0.5, 0.5, 0.5);
+    else AriaRender::color(1,1,1);
     
     // draw box
     comboBorderDrawable->move(x+Display::getWidth() - 160 ,y+7);
@@ -677,23 +632,18 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     else instrumentname = Core::getInstrumentPicker()->getInstrumentName( track->getInstrument() );
     
     // draw instrument name
-    glColor3f(0,0,0);
-    glLoadIdentity();
-    glRasterPos2f(x+Display::getWidth() - 155+3,y+26);
-    glDisable(GL_TEXTURE_2D);
+    AriaRender::color(0,0,0);
+    AriaRender::primitives();
     
-    for(unsigned int i=0; i<instrumentname.size(); i++)
-	{
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, instrumentname[i]);
-    }
+    AriaRender::text(instrumentname.c_str(), x+Display::getWidth() - 155+3,y+26);
 	
 	// --------------- channel choice ------------
 	if(channel_mode)
 	{
-		if(!focus) glColor3f(0.5, 0.5, 0.5);
-		else glColor3f(1,1,1);
-		glLoadIdentity();
-		glEnable(GL_TEXTURE_2D);
+        AriaRender::images();
+        
+		if(!focus) AriaRender::color(0.5, 0.5, 0.5);
+		else AriaRender::color(1,1,1);
 		
 		// draw box
 		comboBorderDrawable->move(x+Display::getWidth() - 185 ,y+7);
@@ -709,21 +659,15 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
 		sprintf ( buffer, "%d", track->getChannel() );
 		std::string channelName = buffer;
 		
-		glColor3f(0,0,0);
-		glLoadIdentity();
+		AriaRender::color(0,0,0);
+        AriaRender::primitives();
 		
 		const int char_amount_in_channel_name = channelName.size();
-		if(char_amount_in_channel_name == 1) glRasterPos2f(x+Display::getWidth() - 185 + 10,y+26);
-		else glRasterPos2f(x+Display::getWidth() - 185 + 7,y+26);
-			
-		glDisable(GL_TEXTURE_2D);
-		
-		for(int i=0; i<char_amount_in_channel_name; i++)
-		{
-			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, channelName[i]);
-		}
+		if(char_amount_in_channel_name == 1) AriaRender::text(buffer, x+Display::getWidth() - 185 + 10,y+26);
+		else AriaRender::text(channelName.c_str(), x+Display::getWidth() - 185 + 7,y+26);
 	}
 	
+    AriaRender::images();
 }// end func
 
 int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
@@ -767,31 +711,28 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
         // --------------------------------------------------
         // render playback progress line
     
-        glLoadIdentity();
-        glDisable(GL_TEXTURE_2D);
+        AriaRender::primitives();
         
         if( currentTick!=-1 and not Display::leftArrow() and not Display::rightArrow())
 		{
-            glColor3f(0.8, 0, 0);
+            AriaRender::color(0.8, 0, 0);
             
             RelativeXCoord tick(currentTick, MIDI);
             const int x_coord = tick.getRelativeTo(WINDOW);
             
-            glLineWidth(1);
+            AriaRender::lineWidth(1);
             
-            glBegin(GL_LINES);
-            glVertex2f(x_coord, getCurrentEditor()->getEditorYStart());
-            glVertex2f(x_coord, getCurrentEditor()->getYEnd());
-            glEnd();
+            AriaRender::line(x_coord, getCurrentEditor()->getEditorYStart(),
+                             x_coord, getCurrentEditor()->getYEnd());
             
         }
-        glEnable(GL_TEXTURE_2D);
+        AriaRender::images();
         
         // --------------------------------------------------
         // render track borders
         
-        if(!focus) glColor3f(0.5, 0.5, 0.5);
-        else glColor3f(1,1,1);
+        if(!focus) AriaRender::color(0.5, 0.5, 0.5);
+        else AriaRender::color(1,1,1);
         
         // bottom left corner
         whiteCornerDrawable->move(10,y+20+barHeight+height);
@@ -828,7 +769,7 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
         
     }
     
-    glEnable(GL_TEXTURE_2D);
+    AriaRender::images();
     
     // done
     return to_y;

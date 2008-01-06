@@ -17,10 +17,13 @@
 #ifndef _renderutils_
 #define _renderutils_
 
+class wxString;
+
 namespace AriaMaestosa
 {
 namespace AriaRender
 {
+    
     // enter mode
     void primitives();
     void images();
@@ -44,12 +47,15 @@ namespace AriaRender
     void bordered_rect_no_start(const int x1, const int y1, const int x2, const int y2);
     
     void text(const char* string, const int x, const int y);
+    void text(wxString* string, const int x, const int y);
+    int text_return_end_x(wxString* string, const int x, const int y);
     void text_append(const char* string); //  appends to previous rendered text
     void small_text(const char* string, const int x, const int y);
     void small_text_newline_between_words(const char* string, const int x, const int y);
     void character(const char character, const int x, const int y);
     void small_character(const char character, const int x, const int y);
-    
+    void text_with_bounds(wxString* string, const int x, const int y, const int max_x);
+        
     void triangle(const int x1, const int y1, const int x2, const int y2, const int x3, const int y3);
     
     void arc(int center_x, int center_y, int radius_x, int radius_y, bool show_above);

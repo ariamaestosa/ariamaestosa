@@ -42,6 +42,7 @@
 #include "GUI/GraphicalTrack.h"
 #include "GUI/MeasureBar.h"
 #include "GUI/MainFrame.h"
+#include "GUI/RenderUtils.h"
 #include "Images/Drawable.h"
 #include "Images/ImageProvider.h"
 #include "Midi/Track.h"
@@ -766,48 +767,40 @@ void GLPane::render(bool paintEvent)
 {
 
 	if (!GetParent()->IsShown()) return; 
-    //if(!isVisible) return;
     if(!ImageProvider::imagesLoaded()) return;
     if(getCurrentSequence()->importing) return;
 
     wxGLCanvas::SetCurrent();
-    if(paintEvent) wxPaintDC(this);
+    if(paintEvent) wxPaintDC(this); // FIXME - they are deleted as soon as they are created, is that okay??
     else wxClientDC(this);
     
     initOpenGLFor2D();
-    glClear(GL_COLOR_BUFFER_BIT/* | GL_DEPTH_BUFFER_BIT*/);
+    glClear(GL_COLOR_BUFFER_BIT);
 
 
-    glEnable(GL_TEXTURE_2D);
+    AriaRender::images();
 
-    getCurrentSequence()->renderTracks(
-												  currentTick, mousex_current,
-												  mousey_current, mousey_initial,
-												  25 + getMeasureBar()->getMeasureBarHeight());
+    getCurrentSequence()->renderTracks( currentTick, mousex_current,
+                                        mousey_current, mousey_initial,
+                                        25 + getMeasureBar()->getMeasureBarHeight());
 
-    glLoadIdentity();
 
     // -------------------------- draw tab bar at top -------------------------
     // beige background
-
-    glDisable(GL_TEXTURE_2D);
-    glColor3f(1, 1, 0.9);
-    glBegin(GL_QUADS);
-    glVertex2f(0, tabBarY);
-    glVertex2f(getWidth(), tabBarY);
-    glVertex2f(getWidth(), tabBarY+20);
-    glVertex2f(0, tabBarY+20);
-    glEnd();
+    
+    AriaRender::primitives();
+    AriaRender::color(1, 1, 0.9);
+    AriaRender::rect(0, tabBarY, getWidth(), tabBarY+20);
 
     // draw tab
     int start_at_x = 0;
     for(int n=0; n<mainFrame->getSequenceAmount(); n++)
 	{
-        glEnable(GL_TEXTURE_2D);
+        AriaRender::images();
 
         if(mainFrame->getCurrentSequenceID() == n)
 		{
-            glColor3f(1,1,1);
+            AriaRender::color(1,1,1);
             tabBorderDrawable->move(start_at_x, tabBarY);
             tabBorderDrawable->setFlip(false, false);
             tabBorderDrawable->render();
@@ -822,8 +815,7 @@ void GLPane::render(bool paintEvent)
         }
 		else
 		{
-            glEnable(GL_BLEND);
-            glColor4f(1,1,1, 0.4);
+            AriaRender::color(1,1,1, 0.4);
 
             tabBorderDrawable->move(start_at_x, tabBarY+3);
             tabBorderDrawable->setFlip(false, false);
@@ -836,40 +828,17 @@ void GLPane::render(bool paintEvent)
             tabBorderDrawable->move(start_at_x+16+tab_width, tabBarY+3);
             tabBorderDrawable->setFlip(true, false);
             tabBorderDrawable->render();
-            glDisable(GL_BLEND);
         }
-        glLoadIdentity();
-
-        glDisable(GL_TEXTURE_2D);
+        
+        AriaRender::primitives();
 
         // draw tab name
         if(mainFrame->getCurrentSequenceID() == n)
-		{
-            glColor3f(0,0,0);
-            glRasterPos2f(start_at_x+10, tabBarY+18);
-        }
+            AriaRender::color(0,0,0);
 		else
-		{
-            glColor3f(0.4, 0.4, 0.4);
-            glRasterPos2f(start_at_x+10, tabBarY+18);
-        }
-
-        for(unsigned int i=0; i<mainFrame->getSequence(n)->sequenceFileName.size(); i++)
-		{
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, mainFrame->getSequence(n)->sequenceFileName[i]);
-
-            // find where text ends, to truncate too long names
-            float rasterPos[4];
-            glGetFloatv(GL_CURRENT_RASTER_POSITION,rasterPos);
-
-            if(rasterPos[0]>start_at_x+tab_width+12)
-			{
-                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, '.');
-                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, '.');
-                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, '.');
-                break;
-            }
-        }//next
+            AriaRender::color(0.4, 0.4, 0.4);
+        
+        AriaRender::text_with_bounds(&mainFrame->getSequence(n)->sequenceFileName, start_at_x+10, tabBarY+18, start_at_x+tab_width+12);
 
         start_at_x += tab_width+16+16;
     }//next
@@ -879,33 +848,21 @@ void GLPane::render(bool paintEvent)
 	getMeasureBar()->render(measureBarY);
 
     // -------------------------- draw dock -------------------------
-
+    AriaRender::primitives();
     if(getCurrentSequence()->dockSize>0)
 	{
         getCurrentSequence()->dockHeight = 20;
 
-
-        glDisable(GL_TEXTURE_2D);
-        glColor3f(1, 1, 0.9);
-        glBegin(GL_QUADS);
-        glVertex2f(0,getHeight());
-        glVertex2f(getWidth(),getHeight());
-        glVertex2f(getWidth(),getHeight()-getCurrentSequence()->dockHeight);
-        glVertex2f(0,getHeight()-getCurrentSequence()->dockHeight);
-        glEnd();
+        AriaRender::primitives();
+        AriaRender::color(1, 1, 0.9);
+        AriaRender::rect(0,getHeight()-getCurrentSequence()->dockHeight, getWidth(), getHeight());
 
         // black line at the top and bottom
-        glColor3f(0, 0, 0);
-        glBegin(GL_LINES);
-        glVertex2f(0, getHeight()-getCurrentSequence()->dockHeight);
-        glVertex2f(getWidth(), getHeight()-getCurrentSequence()->dockHeight);
-        glEnd();
+        AriaRender::color(0, 0, 0);
+        AriaRender::line(0, getHeight()-getCurrentSequence()->dockHeight,
+                         getWidth(), getHeight()-getCurrentSequence()->dockHeight);
 
-        glColor3f(0,0,0);
-        glLoadIdentity();
         int x=10;
-        glDisable(GL_TEXTURE_2D);
-
         int x_before = 0;
 
         positionsInDock.clear();
@@ -917,40 +874,17 @@ void GLPane::render(bool paintEvent)
 
             x_before = x;
 
-            glColor3f(0,0,0);
-            glRasterPos2f(x+5, getHeight()-5);
+            AriaRender::color(0,0,0);
+            x = AriaRender::text_return_end_x(&getCurrentSequence()->dock[n].track->getName(), x+5, getHeight()-5);
+            x += 5;
 
-            for(unsigned int i=0; i<getCurrentSequence()->dock[n].track->getName().size(); i++)
-			{
-                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, getCurrentSequence()->dock[n].track->getName()[i]);
-            }
-
-            // find where text ends
-            float rasterPos[4];
-            glGetFloatv(GL_CURRENT_RASTER_POSITION,rasterPos);
-            x = (int)(
-                      rasterPos[0] + 5
-                      );
-
-            glColor3f(1, 0.8, 0.7);
-            glLineWidth(2);
-            glBegin(GL_LINES);
-            glVertex2f(x, getHeight()-17);
-            glVertex2f(x, getHeight()-1);
-
-            glVertex2f(x_before, getHeight()-1);
-            glVertex2f(x_before, getHeight()-17);
-
-            glVertex2f(x, getHeight()-17);
-            glVertex2f(x_before, getHeight()-17);
-
-            glVertex2f(x, getHeight()-1);
-            glVertex2f(x_before, getHeight()-1);
-            glEnd();
-
+            AriaRender::color(1, 0.8, 0.7);
+            AriaRender::lineWidth(2);
+            AriaRender::hollow_rect(x, getHeight()-1, x_before, getHeight()-17);
+            
             positionsInDock.push_back(x);
         }//next
-        glLineWidth(1);
+        AriaRender::lineWidth(1);
     }
 	else
 	{
@@ -968,8 +902,8 @@ void GLPane::render(bool paintEvent)
         const int XStart = getEditorXStart();
         const int XEnd = getWidth();
 
-        glLineWidth(2);
-        glColor3f(0.8, 0, 0);
+        AriaRender::lineWidth(2);
+        AriaRender::color(0.8, 0, 0);
 
         if(tick.getRelativeTo(WINDOW) < XStart) // current tick is before the visible area
 		{
@@ -977,35 +911,23 @@ void GLPane::render(bool paintEvent)
             leftArrow=true;
             rightArrow=false;
 
-            glBegin(GL_LINES);
-            glVertex2f( 25, measureBarY + 10);
-            glVertex2f( 10, measureBarY + 10);
-            glEnd();
-
-            glBegin(GL_TRIANGLE_STRIP);
-            glVertex2f( 5, measureBarY + 10);
-            glVertex2f( 15, measureBarY + 5);
-            glVertex2f( 15, measureBarY + 15);
-            glEnd();
-
+            AriaRender::line(25, measureBarY + 10, 10, measureBarY + 10);
+            AriaRender::triangle(5, measureBarY + 10,
+                                 15, measureBarY + 5,
+                                 15, measureBarY + 15);
         }
 		else if(tick.getRelativeTo(WINDOW) > XEnd ) // current tick is after the visible area
 		{
 
             leftArrow=false;
             rightArrow=true;
+            
+            AriaRender::line(XEnd - 15 - 25, measureBarY + 10,
+                             XEnd - 15 - 10, measureBarY + 10);
 
-            glBegin(GL_LINES);
-            glVertex2f(XEnd - 15 - 25, measureBarY + 10);
-            glVertex2f(XEnd - 15 - 10, measureBarY + 10);
-            glEnd();
-
-            glBegin(GL_TRIANGLE_STRIP);
-            glVertex2f(XEnd - 15 - 5, measureBarY + 10);
-            glVertex2f(XEnd - 15 - 15, measureBarY + 5);
-            glVertex2f(XEnd - 15 - 15, measureBarY + 15);
-            glEnd();
-
+            AriaRender::triangle(XEnd - 15 - 5, measureBarY + 10,
+                                 XEnd - 15 - 15, measureBarY + 5,
+                                 XEnd - 15 - 15, measureBarY + 15);
         }
 		else // current tick is inside the visible area
 		{
@@ -1014,14 +936,11 @@ void GLPane::render(bool paintEvent)
             rightArrow=false;
 
             // red line in measure bar
-            glBegin(GL_LINES);
-            glVertex2f(tick.getRelativeTo(WINDOW), measureBarY + 1);
-            glVertex2f(tick.getRelativeTo(WINDOW), measureBarY + 20);
-            glEnd();
-
+            AriaRender::line(tick.getRelativeTo(WINDOW), measureBarY + 1,
+                             tick.getRelativeTo(WINDOW), measureBarY + 20);
         }
 
-        glLineWidth(1);
+        AriaRender::lineWidth(1);
 
     }
 	else
