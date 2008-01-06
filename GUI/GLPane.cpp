@@ -40,8 +40,8 @@
 #include "Actions/DeleteSelected.h"
 
 #include "GUI/GraphicalTrack.h"
-#include "GUI/MainFrame.h"
 #include "GUI/MeasureBar.h"
+#include "GUI/MainFrame.h"
 #include "Images/Drawable.h"
 #include "Images/ImageProvider.h"
 #include "Midi/Track.h"
@@ -165,11 +165,11 @@ GLPane::~GLPane()
  */
 void GLPane::instrumentPopupSelected(wxCommandEvent& evt)
 {
-	mainFrame->instrument_picker->menuSelected( evt );
+    Core::getInstrumentPicker()->menuSelected( evt );
 }
 void GLPane::drumPopupSelected(wxCommandEvent& evt)
 {
-	mainFrame->drumKit_picker->menuSelected( evt );
+    Core::getDrumPicker()->menuSelected( evt );
 }
 
 
@@ -184,7 +184,7 @@ void GLPane::resized(wxSizeEvent& evt)
     Refresh();
 
     // update vertical scrollbar
-    if(mainFrame->getSequenceAmount()>0) mainFrame->updateTopBarForSequence( mainFrame->getCurrentSequence() );
+    if(mainFrame->getSequenceAmount()>0) mainFrame->updateTopBarForSequence( getCurrentSequence() );
 }
 
 /*
@@ -226,7 +226,7 @@ int GLPane::getMouseY_initial()				{	return mousey_initial;	}
 void GLPane::isNowVisible()
 {
 	mainFrame->addSequence();
-    mainFrame->getCurrentSequence()->addTrack();
+    getCurrentSequence()->addTrack();
     isVisible=true;
 }
 
@@ -240,12 +240,12 @@ void GLPane::mouseHeldDown()
     // ----------------------------------- click is in track area ----------------------------
 
 	// check click is within track area
-    if(mousey_current < getHeight()-mainFrame->getCurrentSequence()->dockHeight and
+    if(mousey_current < getHeight()-getCurrentSequence()->dockHeight and
        mousey_current > measureBarY+getMeasureBar()->getMeasureBarHeight())
 	{
 
         // dispatch event to sequence
-		mainFrame->getCurrentSequence()->mouseHeldDown(mousex_current, mousey_current,
+		getCurrentSequence()->mouseHeldDown(mousex_current, mousey_current,
 													   mousex_initial, mousey_initial);
 
     }// end if not on dock
@@ -264,14 +264,14 @@ void GLPane::rightClick(wxMouseEvent& event)
 
 	// check click is not on dock before passing event to tracks
 	// dispatch event to all tracks (stop when either of them uses it)
-    if(event.GetY() < getHeight()-mainFrame->getCurrentSequence()->dockHeight and
+    if(event.GetY() < getHeight()-getCurrentSequence()->dockHeight and
 	   event.GetY() > measureBarY+measureBarHeight)
 	{
-		for(int n=0; n<mainFrame->getCurrentSequence()->getTrackAmount(); n++)
+		for(int n=0; n<getCurrentSequence()->getTrackAmount(); n++)
 		{
-            if(!mainFrame->getCurrentSequence()->getTrack(n)->graphics->processRightMouseClick( RelativeXCoord(event.GetX(),WINDOW) , event.GetY()))
+            if(!getCurrentSequence()->getTrack(n)->graphics->processRightMouseClick( RelativeXCoord(event.GetX(),WINDOW) , event.GetY()))
 			{
-                mainFrame->getCurrentSequence()->setCurrentTrackID(n);
+                getCurrentSequence()->setCurrentTrackID(n);
                 break;
             }
         }
@@ -306,15 +306,15 @@ void GLPane::mouseDown(wxMouseEvent& event)
 	int measureBarHeight = getMeasureBar()->getMeasureBarHeight();
     // ----------------------------------- click is in track area ----------------------------
 	// check click is within track area
-    if(mousey_current < getHeight()-mainFrame->getCurrentSequence()->dockHeight and
+    if(mousey_current < getHeight()-getCurrentSequence()->dockHeight and
        event.GetY() > measureBarY+measureBarHeight)
 	{
         // check if user is moving tracks order
-        for(int n=0; n<mainFrame->getCurrentSequence()->getTrackAmount(); n++)
+        for(int n=0; n<getCurrentSequence()->getTrackAmount(); n++)
 		{
-            const int y = mainFrame->getCurrentSequence()->getTrack(n)->graphics->getCurrentEditor()->getTrackYStart();
+            const int y = getCurrentSequence()->getTrack(n)->graphics->getCurrentEditor()->getTrackYStart();
 
-            if(!mainFrame->getCurrentSequence()->getTrack(n)->graphics->docked and mousey_current>y and mousey_current<y+7)
+            if(!getCurrentSequence()->getTrack(n)->graphics->docked and mousey_current>y and mousey_current<y+7)
 			{
                 draggingTrack = n;
             }
@@ -322,25 +322,25 @@ void GLPane::mouseDown(wxMouseEvent& event)
         }
 
         // dispatch event to all tracks (stop when either of them uses it)
-        for(int n=0; n<mainFrame->getCurrentSequence()->getTrackAmount(); n++)
+        for(int n=0; n<getCurrentSequence()->getTrackAmount(); n++)
 		{
-            if(!mainFrame->getCurrentSequence()->getTrack(n)->graphics->processMouseClick( mousex_current, event.GetY()))
+            if(!getCurrentSequence()->getTrack(n)->graphics->processMouseClick( mousex_current, event.GetY()))
                 break;
         }
     }// end if not on dock
 
     // ----------------------------------- click is in dock ----------------------------
-    if(event.GetY() > getHeight()-mainFrame->getCurrentSequence()->dockHeight)
+    if(event.GetY() > getHeight()-getCurrentSequence()->dockHeight)
 	{
-        assertExpr( (int)positionsInDock.size()/2 ,==,(int)mainFrame->getCurrentSequence()->dock.size());
+        assertExpr( (int)positionsInDock.size()/2 ,==,(int)getCurrentSequence()->dock.size());
 
         for(unsigned int n=0; n<positionsInDock.size(); n+=2)
 		{
 
             if(event.GetX()>positionsInDock[n] and event.GetX()<positionsInDock[n+1])
 			{
-                mainFrame->getCurrentSequence()->dock[n/2].docked = false;
-                mainFrame->getCurrentSequence()->removeFromDock( &mainFrame->getCurrentSequence()->dock[n/2] );
+                getCurrentSequence()->dock[n/2].docked = false;
+                getCurrentSequence()->removeFromDock( &getCurrentSequence()->dock[n/2] );
                 mainFrame->updateVerticalScrollbar();
                 return;
             }
@@ -381,7 +381,7 @@ void GLPane::mouseDown(wxMouseEvent& event)
     render();
 
 	// ask sequence if it is necessary at this point to be notified of mouse held down events. if so, start a timer that will take of it.
-    if(mainFrame->getCurrentSequence()->areMouseHeldDownEventsNeeded()) mouseDownTimer->start();
+    if(getCurrentSequence()->areMouseHeldDownEventsNeeded()) mouseDownTimer->start();
 
 }
 
@@ -408,8 +408,8 @@ void GLPane::mouseMoved(wxMouseEvent& event)
 		{
 			// ----------------------------------- click is in track area ----------------------------
             // check click is not on dock before passing event to current track
-            if(event.GetY() < getHeight()-mainFrame->getCurrentSequence()->dockHeight)
-				mainFrame->getCurrentSequence()->getCurrentTrack()->graphics->processMouseDrag( mousex_current, event.GetY());
+            if(event.GetY() < getHeight()-getCurrentSequence()->dockHeight)
+				getCurrentSequence()->getCurrentTrack()->graphics->processMouseDrag( mousex_current, event.GetY());
 
 			// ----------------------------------- click is in measure bar ----------------------------
 			int measureBarHeight = getMeasureBar()->getMeasureBarHeight();
@@ -453,7 +453,7 @@ void GLPane::mouseReleased(wxMouseEvent& event)
     // if releasing after having dragged a track
     if(draggingTrack!=-1)
 	{
-        mainFrame->getCurrentSequence()->reorderTracks();
+        getCurrentSequence()->reorderTracks();
         draggingTrack=-1;
     }//end if
 
@@ -486,7 +486,7 @@ void GLPane::mouseReleased(wxMouseEvent& event)
 	else
 	{
 	    // disptach mouse up event to current track
-		mainFrame->getCurrentSequence()->getCurrentTrack()->graphics->processMouseRelease();
+		getCurrentSequence()->getCurrentTrack()->graphics->processMouseRelease();
 	}
 
     render();
@@ -509,7 +509,7 @@ void GLPane::keyPressed(wxKeyEvent& evt)
     // ---------------- play selected notes -----------------
     if(evt.GetKeyCode() == WXK_SPACE)
 	{
-        mainFrame->getCurrentSequence()->spacePressed();
+        getCurrentSequence()->spacePressed();
     }
 
     // ---------------- resize notes -----------------
@@ -518,11 +518,11 @@ void GLPane::keyPressed(wxKeyEvent& evt)
 
         if(evt.GetKeyCode()==WXK_LEFT)
 		{
-			mainFrame->getCurrentSequence()->getCurrentTrack()->
+			getCurrentSequence()->getCurrentTrack()->
 			action( new Action::ResizeNotes(
-						-mainFrame->getCurrentSequence()->ticksPerBeat() *
+						-getCurrentSequence()->ticksPerBeat() *
 						4 /
-						mainFrame->getCurrentSequence()->getCurrentTrack()->getGridDivider() ,
+						getCurrentSequence()->getCurrentTrack()->getGridDivider() ,
 						SELECTED_NOTES)
 				   );
             render();
@@ -530,11 +530,11 @@ void GLPane::keyPressed(wxKeyEvent& evt)
 
         if(evt.GetKeyCode()==WXK_RIGHT)
 		{
-			mainFrame->getCurrentSequence()->getCurrentTrack()->
+			getCurrentSequence()->getCurrentTrack()->
 			action( new Action::ResizeNotes(
-						mainFrame->getCurrentSequence()->ticksPerBeat() *
+						getCurrentSequence()->ticksPerBeat() *
 						4 /
-						mainFrame->getCurrentSequence()->getCurrentTrack()->getGridDivider() ,
+						getCurrentSequence()->getCurrentTrack()->getGridDivider() ,
 						SELECTED_NOTES)
 					);
             render();
@@ -543,23 +543,23 @@ void GLPane::keyPressed(wxKeyEvent& evt)
     }
 
 	// FIXME - belongs to the guitar editor, probably
-    if(mainFrame->getCurrentSequence()->getCurrentTrack()->graphics->editorMode == GUITAR)
+    if(getCurrentSequence()->getCurrentTrack()->graphics->editorMode == GUITAR)
 	{
 
         // ------------------- numbers -------------------
 		// number at the top of the keyboard
         if(evt.GetKeyCode() >= 48 and evt.GetKeyCode() <=57)
 		{
-            if(shiftDown) mainFrame->getCurrentSequence()->getCurrentTrack()->action( new Action::NumberPressed(evt.GetKeyCode() - 48 + 10) );
-            else mainFrame->getCurrentSequence()->getCurrentTrack()->action( new Action::NumberPressed(evt.GetKeyCode() - 48) );
+            if(shiftDown) getCurrentSequence()->getCurrentTrack()->action( new Action::NumberPressed(evt.GetKeyCode() - 48 + 10) );
+            else getCurrentSequence()->getCurrentTrack()->action( new Action::NumberPressed(evt.GetKeyCode() - 48) );
             render();
         }
 
 		// numpad
         if(evt.GetKeyCode() >= 324 and evt.GetKeyCode() <=333)
 		{
-            if(shiftDown) mainFrame->getCurrentSequence()->getCurrentTrack()->action( new Action::NumberPressed(evt.GetKeyCode() - 324 + 10) );
-            else mainFrame->getCurrentSequence()->getCurrentTrack()->action( new Action::NumberPressed(evt.GetKeyCode() - 324) );
+            if(shiftDown) getCurrentSequence()->getCurrentTrack()->action( new Action::NumberPressed(evt.GetKeyCode() - 324 + 10) );
+            else getCurrentSequence()->getCurrentTrack()->action( new Action::NumberPressed(evt.GetKeyCode() - 324) );
             render();
         }
 
@@ -569,25 +569,25 @@ void GLPane::keyPressed(wxKeyEvent& evt)
 
             if(evt.GetKeyCode()==WXK_LEFT)
 			{
-                mainFrame->getCurrentSequence()->getCurrentTrack()->action( new Action::ShiftFrets(-1, SELECTED_NOTES) );
+                getCurrentSequence()->getCurrentTrack()->action( new Action::ShiftFrets(-1, SELECTED_NOTES) );
                 render();
             }
 
             if(evt.GetKeyCode()==WXK_RIGHT)
 			{
-                mainFrame->getCurrentSequence()->getCurrentTrack()->action( new Action::ShiftFrets(1, SELECTED_NOTES) );
+                getCurrentSequence()->getCurrentTrack()->action( new Action::ShiftFrets(1, SELECTED_NOTES) );
                 render();
             }
 
             if(evt.GetKeyCode()==WXK_UP)
 			{
-                mainFrame->getCurrentSequence()->getCurrentTrack()->action( new Action::ShiftString(-1, SELECTED_NOTES) );
+                getCurrentSequence()->getCurrentTrack()->action( new Action::ShiftString(-1, SELECTED_NOTES) );
                 render();
             }
 
             if(evt.GetKeyCode()==WXK_DOWN)
 			{
-                mainFrame->getCurrentSequence()->getCurrentTrack()->action( new Action::ShiftString(1, SELECTED_NOTES) );
+                getCurrentSequence()->getCurrentTrack()->action( new Action::ShiftString(1, SELECTED_NOTES) );
                 render();
             }
 
@@ -595,41 +595,41 @@ void GLPane::keyPressed(wxKeyEvent& evt)
     }
 
 	// FIXME - move all editor stuff to editor files
-    if( !commandDown and (!shiftDown or mainFrame->getCurrentSequence()->getCurrentTrack()->graphics->editorMode == SCORE) )
+    if( !commandDown and (!shiftDown or getCurrentSequence()->getCurrentTrack()->graphics->editorMode == SCORE) )
 	{
         // ---------------- move notes -----------------
 
         if(evt.GetKeyCode()==WXK_LEFT)
 		{
-            mainFrame->getCurrentSequence()->getCurrentTrack()->
+            getCurrentSequence()->getCurrentTrack()->
 			action( new Action::MoveNotes(
-					  -mainFrame->getCurrentSequence()->ticksPerBeat() *
+					  -getCurrentSequence()->ticksPerBeat() *
 					  4 /
-					  mainFrame->getCurrentSequence()->getCurrentTrack()->getGridDivider(), 0, SELECTED_NOTES)
+					  getCurrentSequence()->getCurrentTrack()->getGridDivider(), 0, SELECTED_NOTES)
 					);
             render();
         }
 
         if(evt.GetKeyCode()==WXK_RIGHT)
 		{
-            mainFrame->getCurrentSequence()->getCurrentTrack()->
+            getCurrentSequence()->getCurrentTrack()->
 			action( new Action::MoveNotes(
-					  mainFrame->getCurrentSequence()->ticksPerBeat() *
+					  getCurrentSequence()->ticksPerBeat() *
 					  4 /
-					  mainFrame->getCurrentSequence()->getCurrentTrack()->getGridDivider(), 0, SELECTED_NOTES)
+					  getCurrentSequence()->getCurrentTrack()->getGridDivider(), 0, SELECTED_NOTES)
 					);
             render();
         }
 
         if(evt.GetKeyCode()==WXK_UP)
 		{
-            mainFrame->getCurrentSequence()->getCurrentTrack()->action( new Action::MoveNotes(0,-1,SELECTED_NOTES) );
+            getCurrentSequence()->getCurrentTrack()->action( new Action::MoveNotes(0,-1,SELECTED_NOTES) );
             render();
         }
 
         if(evt.GetKeyCode()==WXK_DOWN)
 		{
-            mainFrame->getCurrentSequence()->getCurrentTrack()->action( new Action::MoveNotes(0,1,SELECTED_NOTES) );
+            getCurrentSequence()->getCurrentTrack()->action( new Action::MoveNotes(0,1,SELECTED_NOTES) );
             render();
         }
 
@@ -638,7 +638,7 @@ void GLPane::keyPressed(wxKeyEvent& evt)
         if(evt.GetKeyCode()==WXK_BACK || evt.GetKeyCode()==WXK_DELETE)
 		{
 
-            mainFrame->getCurrentSequence()->getCurrentTrack()->action( new Action::DeleteSelected() );
+            getCurrentSequence()->getCurrentTrack()->action( new Action::DeleteSelected() );
             render();
         }
 
@@ -659,14 +659,14 @@ void GLPane::mouseWheelMoved(wxMouseEvent& event)
 	
 	// ----------------------------------- click is in track area ----------------------------
 	// check click is within track area
-    if(my < getHeight()-mainFrame->getCurrentSequence()->dockHeight and
+    if(my < getHeight()-getCurrentSequence()->dockHeight and
        mx > measureBarY+measureBarHeight)
 	{
 
         // dispatch event to all tracks (stop when either of them uses it)
-        for(int n=0; n<mainFrame->getCurrentSequence()->getTrackAmount(); n++)
+        for(int n=0; n<getCurrentSequence()->getTrackAmount(); n++)
 		{
-            if(!mainFrame->getCurrentSequence()->getTrack(n)->graphics->mouseWheelMoved(mx, my, value))
+            if(!getCurrentSequence()->getTrack(n)->graphics->mouseWheelMoved(mx, my, value))
                 break;
         }
     }// end if not on dock
@@ -768,7 +768,7 @@ void GLPane::render(bool paintEvent)
 	if (!GetParent()->IsShown()) return; 
     //if(!isVisible) return;
     if(!ImageProvider::imagesLoaded()) return;
-    if(mainFrame->getCurrentSequence()->importing) return;
+    if(getCurrentSequence()->importing) return;
 
     wxGLCanvas::SetCurrent();
     if(paintEvent) wxPaintDC(this);
@@ -780,7 +780,7 @@ void GLPane::render(bool paintEvent)
 
     glEnable(GL_TEXTURE_2D);
 
-    mainFrame->getCurrentSequence()->renderTracks(
+    getCurrentSequence()->renderTracks(
 												  currentTick, mousex_current,
 												  mousey_current, mousey_initial,
 												  25 + getMeasureBar()->getMeasureBarHeight());
@@ -880,9 +880,9 @@ void GLPane::render(bool paintEvent)
 
     // -------------------------- draw dock -------------------------
 
-    if(mainFrame->getCurrentSequence()->dockSize>0)
+    if(getCurrentSequence()->dockSize>0)
 	{
-        mainFrame->getCurrentSequence()->dockHeight = 20;
+        getCurrentSequence()->dockHeight = 20;
 
 
         glDisable(GL_TEXTURE_2D);
@@ -890,15 +890,15 @@ void GLPane::render(bool paintEvent)
         glBegin(GL_QUADS);
         glVertex2f(0,getHeight());
         glVertex2f(getWidth(),getHeight());
-        glVertex2f(getWidth(),getHeight()-mainFrame->getCurrentSequence()->dockHeight);
-        glVertex2f(0,getHeight()-mainFrame->getCurrentSequence()->dockHeight);
+        glVertex2f(getWidth(),getHeight()-getCurrentSequence()->dockHeight);
+        glVertex2f(0,getHeight()-getCurrentSequence()->dockHeight);
         glEnd();
 
         // black line at the top and bottom
         glColor3f(0, 0, 0);
         glBegin(GL_LINES);
-        glVertex2f(0, getHeight()-mainFrame->getCurrentSequence()->dockHeight);
-        glVertex2f(getWidth(), getHeight()-mainFrame->getCurrentSequence()->dockHeight);
+        glVertex2f(0, getHeight()-getCurrentSequence()->dockHeight);
+        glVertex2f(getWidth(), getHeight()-getCurrentSequence()->dockHeight);
         glEnd();
 
         glColor3f(0,0,0);
@@ -910,7 +910,7 @@ void GLPane::render(bool paintEvent)
 
         positionsInDock.clear();
 
-        for(int n=0; n<mainFrame->getCurrentSequence()->dockSize; n++)
+        for(int n=0; n<getCurrentSequence()->dockSize; n++)
 		{
 
             positionsInDock.push_back(x_before);
@@ -920,9 +920,9 @@ void GLPane::render(bool paintEvent)
             glColor3f(0,0,0);
             glRasterPos2f(x+5, getHeight()-5);
 
-            for(unsigned int i=0; i<mainFrame->getCurrentSequence()->dock[n].track->getName().size(); i++)
+            for(unsigned int i=0; i<getCurrentSequence()->dock[n].track->getName().size(); i++)
 			{
-                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, mainFrame->getCurrentSequence()->dock[n].track->getName()[i]);
+                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, getCurrentSequence()->dock[n].track->getName()[i]);
             }
 
             // find where text ends
@@ -954,7 +954,7 @@ void GLPane::render(bool paintEvent)
     }
 	else
 	{
-        mainFrame->getCurrentSequence()->dockHeight=0;
+        getCurrentSequence()->dockHeight=0;
     }
 
 
@@ -1038,7 +1038,7 @@ void GLPane::render(bool paintEvent)
 
 void GLPane::saveToFile(wxFileOutputStream& fileout)
 {
-    mainFrame->getCurrentSequence()->saveToFile(fileout);
+    getCurrentSequence()->saveToFile(fileout);
 }
 
 void GLPane::enterPlayLoop()
@@ -1047,7 +1047,7 @@ void GLPane::enterPlayLoop()
     rightArrow = false;
     timeBeforeFollowingPlayback = getMeasureBar()->defaultMeasureLengthInTicks();
     lastTick = -1;
-    activateRenderLoop(true);
+    Core::activateRenderLoop(true);
 }
 void GLPane::setPlaybackStartTick(int newValue)
 {
@@ -1072,19 +1072,19 @@ void GLPane::playbackRenderLoop()
 			{
                 scrollToPlaybackPosition=false;
                 const int x_scroll_in_pixels = (int)( (playbackStartTick + currentTick) *
-                    getMainFrame()->getCurrentSequence()->getZoom() );
-                getMainFrame()->getCurrentSequence()->setXScrollInPixels(x_scroll_in_pixels);
-                getMainFrame()->updateHorizontalScrollbar( playbackStartTick + currentTick );
+                    getCurrentSequence()->getZoom() );
+                getCurrentSequence()->setXScrollInPixels(x_scroll_in_pixels);
+                DisplayFrame::updateHorizontalScrollbar( playbackStartTick + currentTick );
             }
             
 			// if follow playback is checked in the menu
-			if(getMainFrame()->getCurrentSequence()->follow_playback)
+			if(getCurrentSequence()->follow_playback)
 			{
 				int x_scroll_in_pixels = (int)( (playbackStartTick + currentTick - timeBeforeFollowingPlayback) *
-                    getMainFrame()->getCurrentSequence()->getZoom() );
+                    getCurrentSequence()->getZoom() );
 				if( x_scroll_in_pixels < 0 ) x_scroll_in_pixels = 0;
-                getMainFrame()->getCurrentSequence()->setXScrollInPixels(x_scroll_in_pixels);
-				getMainFrame()->updateHorizontalScrollbar( playbackStartTick + currentTick - timeBeforeFollowingPlayback );
+                getCurrentSequence()->setXScrollInPixels(x_scroll_in_pixels);
+                DisplayFrame::updateHorizontalScrollbar( playbackStartTick + currentTick - timeBeforeFollowingPlayback );
 			}
 			
             setCurrentTick( playbackStartTick + currentTick );
@@ -1116,7 +1116,7 @@ void GLPane::exitPlayLoop()
 {
     PlatformMidiManager::stop();
     getMainFrame()->toolsExitPlaybackMode();
-    activateRenderLoop(false);
+    Core::activateRenderLoop(false);
     setCurrentTick( -1 );
     render();
 }

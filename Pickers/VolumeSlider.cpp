@@ -17,7 +17,6 @@
 #include "Pickers/VolumeSlider.h"
 #include "Midi/Note.h"
 #include "Midi/Track.h"
-#include "GUI/GLPane.h"
 #include "GUI/MainFrame.h"
 #include "Actions/EditAction.h"
 #include "Actions/SetNoteVolume.h"

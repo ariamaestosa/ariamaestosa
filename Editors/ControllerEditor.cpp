@@ -26,7 +26,6 @@
 #include "Midi/Track.h"
 #include "Pickers/TuningPicker.h"
 #include "Images/ImageProvider.h"
-#include "GUI/GLPane.h"
 #include "GUI/MeasureBar.h"
 #include "GUI/RenderUtils.h"
 

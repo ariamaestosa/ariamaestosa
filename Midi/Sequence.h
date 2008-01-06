@@ -25,11 +25,11 @@
 #include "Config.h"
 #include "ptr_vector.h"
 #include "GUI/GraphicalTrack.h"
-#include "GUI/MainFrame.h"
 #include "Midi/Track.h"
 #include "Editors/RelativeXCoord.h"
 
 #include "Config.h"
+#include "AriaCore.h"
 
 #include <string>
 

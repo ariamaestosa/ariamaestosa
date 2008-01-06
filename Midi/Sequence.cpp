@@ -30,7 +30,6 @@ const float current_file_version = 1.0;
 #include "Actions/ScaleTrack.h"
 #include "Actions/ScaleSong.h"
 
-#include "GUI/GLPane.h"
 #include "GUI/MainFrame.h"
 #include "GUI/MeasureBar.h"
 
@@ -533,7 +532,7 @@ void Sequence::addToDock(GraphicalTrack* track)
     
 	currentTrack = 0;
 	
-    getMainFrame()->updateVerticalScrollbar();
+    DisplayFrame::updateVerticalScrollbar();
 }
 
 void Sequence::removeFromDock(GraphicalTrack* track)
@@ -548,7 +547,7 @@ void Sequence::removeFromDock(GraphicalTrack* track)
             return;
         }
     }
-    getMainFrame()->updateVerticalScrollbar();
+    DisplayFrame::updateVerticalScrollbar();
     
 }
 
@@ -1173,7 +1172,7 @@ over:
 	clearUndoStack();
 	
 	importing = false;
-	getMainFrame()->updateHorizontalScrollbar( x_scroll_in_pixels );
+    DisplayFrame::updateHorizontalScrollbar( x_scroll_in_pixels );
 	Display::render();
 	
 	return true;

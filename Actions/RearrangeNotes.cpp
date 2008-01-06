@@ -39,7 +39,7 @@ void RearrangeNotes::undo()
 
 void RearrangeNotes::perform()
 {
-	getMainFrame()->getCurrentSequence()->importing = true; // just to make sure notes are not played while reordering
+    Core::setImporting(true); // just to make sure notes are not played while reordering
 	
 	std::vector<int> candidates;
 	
@@ -162,7 +162,7 @@ void RearrangeNotes::perform()
 		}//endif
 	}//next
 
-    getMainFrame()->getCurrentSequence()->importing = false;
+    Core::setImporting(false);
 }
 
 RearrangeNotes::~RearrangeNotes()

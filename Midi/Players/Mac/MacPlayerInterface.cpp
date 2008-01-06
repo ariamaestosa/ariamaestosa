@@ -39,7 +39,6 @@
 
 #include "AriaCore.h"
 
-#include "GUI/GLPane.h"
 #include "GUI/MainFrame.h"
 #include "GUI/MeasureBar.h"
 
@@ -209,7 +208,7 @@ namespace PlatformMidiManager {
 
 		// song ends
 		if(currentTick >= stored_songLength-1 or currentTick == -1){
-			getMainFrame()->songHasFinishedPlaying();
+            Core::songHasFinishedPlaying();
 			currentTick=-1;
 			stop();
 			return -1;

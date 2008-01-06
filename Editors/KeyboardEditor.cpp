@@ -31,7 +31,6 @@
 #include "Midi/Track.h"
 #include "Pickers/MagneticGrid.h"
 #include "Pickers/KeyPicker.h"
-#include "GUI/GLPane.h"
 #include "GUI/GraphicalTrack.h"
 #include "GUI/RenderUtils.h"
 
@@ -78,9 +77,10 @@ void KeyboardEditor::mouseDown(RelativeXCoord x, const int y)
     // user clicked on left bar to change tuning
 	if(x.getRelativeTo(EDITOR)<-20 and x.getRelativeTo(WINDOW)>15 and y>getEditorYStart())
 	{
-		getMainFrame()->keyPicker->setParent(track->graphics);
-		getMainFrame()->keyPicker->noChecks();
-        Display::popupMenu(getMainFrame()->keyPicker, x.getRelativeTo(WINDOW), y);
+        KeyPicker* picker = Core::getKeyPicker();
+		picker->setParent(track->graphics);
+		picker->noChecks();
+        Display::popupMenu(picker, x.getRelativeTo(WINDOW), y);
         return;
 	}
     

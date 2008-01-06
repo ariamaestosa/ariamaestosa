@@ -24,7 +24,6 @@
 #include "Pickers/KeyPicker.h"
 #include "Images/ImageProvider.h"
 #include "Images/Drawable.h"
-#include "GUI/GLPane.h"
 #include "GUI/MeasureBar.h"
 #include "GUI/RenderUtils.h"
 
@@ -1302,9 +1301,10 @@ void ScoreEditor::mouseDown(RelativeXCoord x, const int y)
     // user clicked on left bar to change tuning
 	if(x.getRelativeTo(EDITOR)<-20 and x.getRelativeTo(WINDOW)>15 and y>getEditorYStart())
 	{
-		getMainFrame()->keyPicker->setParent(track->graphics);
-		getMainFrame()->keyPicker->setChecks( musicalNotationEnabled, linearNotationEnabled );
-        Display::popupMenu( getMainFrame()->keyPicker,x.getRelativeTo(WINDOW),y);
+        KeyPicker* picker = Core::getKeyPicker();
+		picker->setParent(track->graphics);
+		picker->setChecks( musicalNotationEnabled, linearNotationEnabled );
+        Display::popupMenu( picker,x.getRelativeTo(WINDOW),y);
         return;
 	}
     

@@ -242,7 +242,7 @@ namespace AriaMaestosa
 		}//endif
 		
 		// shorten song accordingly to the number of measures removed
-		getMainFrame()->changeMeasureAmount( sequence->measureBar->getMeasureAmount() - (to_measure - from_measure) );
+		DisplayFrame::changeMeasureAmount( sequence->measureBar->getMeasureAmount() - (to_measure - from_measure) );
 		getMeasureBar()->updateMeasureInfo();
 }
 RemoveMeasures::RemoveMeasures(int from_measure, int to_measure)

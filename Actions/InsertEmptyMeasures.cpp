@@ -41,7 +41,7 @@ namespace AriaMaestosa
 		const int amountInTicks = amount * getMeasureBar()->measureLengthInTicks(measureID);
 		const int afterTick = getMeasureBar()->firstTickInMeasure(measureID) - 1;
 		
-		getMainFrame()->changeMeasureAmount( getMeasureBar()->getMeasureAmount() + amount );
+        DisplayFrame::changeMeasureAmount( getMeasureBar()->getMeasureAmount() + amount );
 		
 		// move all notes that are after given start tick by the necessary amount
 		const int trackAmount = sequence->getTrackAmount();

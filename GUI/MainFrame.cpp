@@ -403,7 +403,7 @@ void MainFrame::init()
     verticalSizer->Add(glPane, 0, wxALL, 2, Location::Center() );
     
     // give a pointer to out GL Pane to AriaCore
-    setGLPane(glPane);
+    Core::setGLPane(glPane);
 
     // -------------------------- Horizontal Scrollbar ----------------------------
 

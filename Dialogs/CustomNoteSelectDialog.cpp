@@ -19,7 +19,6 @@
 #include "Dialogs/CustomNoteSelectDialog.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
-#include "GUI/GLPane.h"
 #include "GUI/MeasureBar.h"
 #include "GUI/GraphicalTrack.h"
 

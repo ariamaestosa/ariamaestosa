@@ -22,7 +22,6 @@
 #include "Actions/AddNote.h"
 #include "Actions/MoveNotes.h"
 
-#include "GUI/GLPane.h"
 #include "GUI/GraphicalTrack.h"
 #include "GUI/RenderUtils.h"
 #include "Images/Drawable.h"

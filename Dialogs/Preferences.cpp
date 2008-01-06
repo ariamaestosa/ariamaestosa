@@ -16,10 +16,12 @@
 
 
 #include "Dialogs/Preferences.h"
-#include "GUI/MainFrame.h"
 
 #include <iostream>
 #include <wx/config.h>
+#include "AriaCore.h"
+
+#include "GUI/MainFrame.h"
 
 namespace AriaMaestosa {
 	

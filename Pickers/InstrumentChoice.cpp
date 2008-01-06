@@ -18,7 +18,6 @@
 #include "Pickers/InstrumentChoice.h"
 #include "GUI/GraphicalTrack.h"
 #include "Midi/Sequence.h"
-#include "GUI/GLPane.h"
 #include "IO/IOUtils.h"
 #include <iostream>
 
@@ -395,7 +394,7 @@ void InstrumentChoice::menuSelected(wxCommandEvent& evt)
     assertExpr(instrumentID,>=,0);
     
 	parent->setInstrument(instrumentID);
-    getMainFrame()->glPane->render();
+    Display::render();
     
 }
 

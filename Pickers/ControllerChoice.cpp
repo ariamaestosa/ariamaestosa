@@ -20,7 +20,6 @@
 #include "Pickers/ControllerChoice.h"
 #include "GUI/GraphicalTrack.h"
 #include "Midi/Sequence.h"
-#include "GUI/GLPane.h"
 #include "IO/IOUtils.h"
 
 #include <iostream>
