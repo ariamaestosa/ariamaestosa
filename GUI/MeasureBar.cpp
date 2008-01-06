@@ -29,6 +29,7 @@
 
 #include "GUI/MeasureBar.h"
 #include "GUI/MainFrame.h"
+#include "GUI/RenderUtils.h"
 
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
@@ -462,35 +463,22 @@ void MeasureBar::render(int measureBarY_arg)
 	}
 	
 	int height = (expandedMode?40:20);
-	glColor3f(1, 1, 0.9);
-    glBegin(GL_QUADS);
-    glVertex2f(0, measureBarY);
-    glVertex2f(Display::getWidth(), measureBarY);
-    glVertex2f(Display::getWidth(), measureBarY+ height );
-    glVertex2f(0, measureBarY+height);
-    glEnd();
-    
+    AriaRender::primitives();
+    AriaRender::color(1, 1, 0.9);
+    AriaRender::rect(0, measureBarY, Display::getWidth(), measureBarY+ height);
     
     // black line at the top and bottom
-    glColor3f(0, 0, 0);
-    glBegin(GL_LINES);
-    glVertex2f(0, measureBarY+1);
-    glVertex2f(Display::getWidth(), measureBarY+1);
+    AriaRender::color(0, 0, 0);
     
-    glVertex2f(0, measureBarY+20);
-    glVertex2f(Display::getWidth(), measureBarY+20);
+    AriaRender::line(0, measureBarY+1, Display::getWidth(), measureBarY+1);
+    AriaRender::line(0, measureBarY+20, Display::getWidth(), measureBarY+20);
+
+	if(expandedMode) AriaRender::line(0, measureBarY+40, Display::getWidth(), measureBarY+40);
 	
-	if(expandedMode)
-	{
-		glVertex2f(0, measureBarY+40);
-		glVertex2f(Display::getWidth(), measureBarY+40);	
-	}
-	
-    glEnd();
-    
+
     // vertical lines and mesure ID
     int measureID=0;
-    glColor3f(0,0,0);
+    AriaRender::color(0,0,0);
 	
 	const bool measureLengthConstant = isMeasureLengthConstant();
 	
@@ -506,44 +494,23 @@ void MeasureBar::render(int measureBarY_arg)
 		if( measureInfo[measureID-1].selected )
 		{
 			
-			glColor3f(0.71, 0.84, 1);
+            AriaRender::color(0.71, 0.84, 1);
 			
 			if(measureLengthConstant)
-			{
-				glBegin(GL_QUADS);
-				glVertex2f(n, measureBarY+1);
-				glVertex2f(n, measureBarY+19);
-				glVertex2f(n+x_step, measureBarY+19);
-				glVertex2f(n+x_step, measureBarY+1);
-				glEnd();
-			}
+                AriaRender::rect(n, measureBarY+1, n+x_step, measureBarY+19);
 			else
-			{
-				glBegin(GL_QUADS);
-				glVertex2f(n, measureBarY+1);
-				glVertex2f(n, measureBarY+19);
-				glVertex2f(n+measureInfo[measureID-1].widthInPixels, measureBarY+19);
-				glVertex2f(n+measureInfo[measureID-1].widthInPixels, measureBarY+1);
-				glEnd();
-			}
-			glColor3f(0,0,0);
+                AriaRender::rect(n, measureBarY+1, n+measureInfo[measureID-1].widthInPixels, measureBarY+19);
+                                 
+            AriaRender::color(0,0,0);
 		}
 		
 		// vertical line
-		glBegin(GL_LINES);
-		glVertex2f(n, measureBarY);
-		glVertex2f(n, measureBarY+20);
-		glEnd();
+        AriaRender::line(n, measureBarY, n, measureBarY+20);
 		
 		// measure ID
-		glRasterPos2f(n+5, measureBarY+15);
 		char buffer[4];
 		sprintf (buffer, "%d", measureID);
-		
-		for(int i=0; buffer[i]; i++)
-		{
-			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, buffer[i]);
-		}
+        AriaRender::small_text(buffer, n+5, measureBarY+15);
 		
 		if(expandedMode)
 		{
@@ -557,34 +524,30 @@ void MeasureBar::render(int measureBarY_arg)
 					const bool selected = (selectedTimeSig == i);
 					if(selected)
 					{
-						glPointSize(11);
-						glColor3f(1,0,0);
+                        AriaRender::pointSize(11);
+                        AriaRender::color(1,0,0);
 					}
 					else
 					{
-						glPointSize(7);
-						glColor3f(0.5,0,0);
+						AriaRender::pointSize(7);
+						AriaRender::color(0.5,0,0);
 					}
-					glBegin(GL_POINTS);
-					glVertex3f(n, measureBarY + 30, 0);
-					glEnd();
+                    AriaRender::point(n, measureBarY + 30);
 					
-					if(selected) glColor3f(0.5,0,0);
-					else glColor3f(0,0,0);
+					if(selected) AriaRender::color(0.5,0,0);
+					else AriaRender::color(0,0,0);
 					
-					glPointSize(1);
+                    AriaRender::pointSize(1);
 					
 					char denom_name[3];
 					sprintf (denom_name, "%d", timeSigChanges[i].denom);
+                    AriaRender::small_text(denom_name, n + 18, measureBarY + 38);
+                    
 					char num_name[3];
 					sprintf (num_name, "%d", timeSigChanges[i].num);
-					
-					glRasterPos2f(n + 10, measureBarY + 29);
-					for(int charID=0; num_name[charID]; charID++) glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, num_name[charID]);
-					glRasterPos2f(n + 18, measureBarY + 38);
-					for(int charID=0; denom_name[charID]; charID++) glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, denom_name[charID]);
-					
-					glColor3f(0,0,0);
+                    AriaRender::small_text(num_name, n + 10, measureBarY + 29);
+
+                    AriaRender::color(0,0,0);
 					break;
 				}
 			}

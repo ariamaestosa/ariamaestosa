@@ -18,6 +18,8 @@
 #include "GUI/RenderUtils.h"
 #include "OpenGL.h"
 #include <cmath>
+#include "wx/wx.h"
+#include <iostream>
 
 namespace AriaMaestosa
 {
@@ -152,6 +154,8 @@ void hollow_rect(const int x1, const int y1, const int x2, const int y2)
     glEnd();
 }
 
+
+// FIXME- clean up test rendering
 void text(const char* string, const int x, const int y)
 {
     glRasterPos2f(x, y);
@@ -161,11 +165,64 @@ void text(const char* string, const int x, const int y)
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, string[i]);
     }
 }
+void text(wxString* string, const int x, const int y)
+{
+    glRasterPos2f(x, y);
+    
+    const int len = string->Length();
+    for(int i=0; i<len; i++)
+    {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, (*string)[i]);
+    }
+}
+
+int text_return_end_x(wxString* string, const int x, const int y)
+{
+    glRasterPos2f(x, y);
+    
+    const int len = string->Length();
+    for(int i=0; i<len; i++)
+    {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, (*string)[i]);
+    }
+    
+    // find where text ends
+    float rasterPos[4];
+    glGetFloatv(GL_CURRENT_RASTER_POSITION,rasterPos);
+    return (int)( rasterPos[0] );
+    
+}
+
+// used for track name, in case it's too long
+void text_with_bounds(wxString* string, const int x, const int y, const int max_x)
+{
+    glRasterPos2f(x, y);
+    const int len = string->Length();
+    
+    for(int i=0; i<len; i++)
+    {
+       // std::cout << ">" << (*string)[i] << "<" << std::endl;
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, (*string)[i]);
+        
+        // if text is too long
+        float rasterPos[4];
+        glGetFloatv(GL_CURRENT_RASTER_POSITION,rasterPos);
+        if(rasterPos[0] > max_x)
+		{
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, '.');
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, '.');
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, '.');
+            return;
+        }
+    }
+}
+
+// currently used a guitar editor
 void text_append(const char* string)
 {
     for(int i=0; string[i]; i++)
     {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, string[i]);
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, string[i]);
     }
 }
 

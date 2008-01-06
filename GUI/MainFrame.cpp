@@ -552,7 +552,7 @@ void MainFrame::menuEvent_saveas(wxCommandEvent& evt)
 
         // change song name
         getCurrentSequence()->sequenceFileName = getCurrentSequence()->filepath.AfterLast('/').BeforeLast('.');
-        glPane->render();
+        Display::render();
 
     }// end if
 }
@@ -844,7 +844,7 @@ void MainFrame::menuEvent_automaticChannelModeSelected(wxCommandEvent& evt)
 	channelManagement_manual->Check(false);
 
 	getCurrentSequence()->setChannelManagementType(CHANNEL_AUTO);
-	glPane->render();
+	Display::render();
 }
 
 void MainFrame::menuEvent_manualChannelModeSelected(wxCommandEvent& evt)
@@ -876,7 +876,7 @@ void MainFrame::menuEvent_manualChannelModeSelected(wxCommandEvent& evt)
 	}
 
 	getCurrentSequence()->setChannelManagementType(CHANNEL_MANUAL);
-	glPane->render();
+	Display::render();
 }
 
 void MainFrame::menuEvent_expandedMeasuresSelected(wxCommandEvent& evt)
@@ -906,7 +906,7 @@ void MainFrame::changeChannelManagement(ChannelManagementType mode)
 		getCurrentSequence()->setChannelManagementType(CHANNEL_MANUAL);
 	}
 
-	glPane->render();
+	Display::render();
 }
 
 
@@ -933,7 +933,7 @@ void MainFrame::playClicked(wxCommandEvent& evt)
 	{
         glPane->exitPlayLoop();
         //if(!PlatformMidiManager::isPlaying()) toolsExitPlaybackMode();
-        //glPane->render();
+        //Display::render();
     }
 	else
 	{
@@ -954,7 +954,7 @@ void MainFrame::stopClicked(wxCommandEvent& evt)
     toolsExitPlaybackMode();
 
 	PlatformMidiManager::stop();
-    glPane->render();
+    Display::render();
 */
 
 }
@@ -963,7 +963,7 @@ void MainFrame::stopClicked(wxCommandEvent& evt)
 void MainFrame::songHasFinishedPlaying()
 {
     toolsExitPlaybackMode();
-    glPane->render();
+    Display::render();
 }
 
 void MainFrame::toolsEnterPlaybackMode()
@@ -1184,7 +1184,7 @@ void MainFrame::tempoChanged(wxCommandEvent& evt)
 
 	// necessary because tempo controller needs to be visually updated whenever tempo changes
 	// better code could maybe check if tempo controller is visible before rendering - but rendering is quick anyway so it's not really bad
-	glPane->render();
+	Display::render();
 
 }
 
@@ -1235,7 +1235,7 @@ void MainFrame::zoomChanged(wxSpinEvent& evt)
     updateHorizontalScrollbar( newXScroll );
     if(!getMeasureBar()->isMeasureLengthConstant()) getMeasureBar()->updateMeasureInfo();
         
-    glPane->render();
+    Display::render();
 }
 
 void MainFrame::zoomTextChanged(wxCommandEvent& evt)
@@ -1327,7 +1327,7 @@ void MainFrame::horizontalScrolling_arrows(wxScrollEvent& evt)
               );
 
     // check new scroll position is not out of bounds
-    const int editor_size=glPane->getWidth()-100,
+    const int editor_size=Display::getWidth()-100,
 		total_size = getMeasureBar()->getTotalPixelAmount();
        // (int)(
        //       (getCurrentSequence()->getMeasureAmount() * getCurrentSequence()->ticksPerMeasure()) * getCurrentSequence()->getZoom()
@@ -1362,7 +1362,7 @@ void MainFrame::horizontalScrolling_arrows(wxScrollEvent& evt)
 void MainFrame::verticalScrolling(wxScrollEvent& evt)
 {
     getCurrentSequence()->setYScroll( verticalScrollbar->GetThumbPosition() );
-    glPane->render();
+    Display::render();
 }
 
 
@@ -1375,7 +1375,7 @@ void MainFrame::verticalScrolling(wxScrollEvent& evt)
 void MainFrame::verticalScrolling_arrows(wxScrollEvent& evt)
 {
     getCurrentSequence()->setYScroll( verticalScrollbar->GetThumbPosition() );
-    glPane->render();
+    Display::render();
 }
 
 /*
@@ -1385,7 +1385,7 @@ void MainFrame::verticalScrolling_arrows(wxScrollEvent& evt)
 void MainFrame::updateHorizontalScrollbar(int thumbPos)
 {
 
-    const int editor_size=glPane->getWidth()-100,
+    const int editor_size=Display::getWidth()-100,
     total_size = getMeasureBar()->getTotalPixelAmount();
     //(int)(
     //      (getCurrentSequence()->getMeasureAmount() * getCurrentSequence()->ticksPerMeasure()) * getCurrentSequence()->getZoom()
@@ -1436,7 +1436,7 @@ void MainFrame::updateVerticalScrollbar()
     int position = getCurrentSequence()->getYScroll();
 
     const int total_size = getCurrentSequence()->getTotalHeight()+25;
-    const int editor_size = glPane->getHeight();
+    const int editor_size = Display::getHeight();
 
     // if given value is wrong and needs to be changed, we'll need to throw a 'scrolling changed' event to make sure display adapts to new value
     bool changedGivenValue = false;
@@ -1479,7 +1479,7 @@ void MainFrame::updateVerticalScrollbar()
 void MainFrame::addSequence()
 {
     sequences.push_back(new Sequence());
-    glPane->render();
+    Display::render();
 }
 
 /*
@@ -1522,8 +1522,8 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
 
 	setCurrentSequence(0);
 
-	//if(sequences.size()>0) glPane->render();
-	glPane->render();
+	//if(sequences.size()>0) Display::render();
+	Display::render();
 	return true;
 
 }
@@ -1607,7 +1607,7 @@ void MainFrame::loadAriaFile(wxString filePath)
 	if(PlatformMidiManager::isPlaying()) setCurrentSequence(old_currentSequence);
     else updateTopBarForSequence( getCurrentSequence() );
 
-    glPane->render();
+    Display::render();
 
 }
 
@@ -1647,7 +1647,7 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
 	// if a song is currently playing, it needs to stay on top
 	if(PlatformMidiManager::isPlaying()) setCurrentSequence(old_currentSequence);
 
-    glPane->render();
+    Display::render();
 
 }
 
@@ -1657,7 +1657,7 @@ void MainFrame::evt_freeVolumeSlider( wxCommandEvent& evt )
     /*
       // I think it should work with my latest OpenGl changes. To be tested.
 #ifdef __WXGTK__
-	glPane->render();
+	Display::render();
 #endif
      */
 }
