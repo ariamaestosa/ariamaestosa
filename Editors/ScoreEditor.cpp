@@ -438,12 +438,19 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteR
 		return;
 	}
 	
+    // find how to draw notes. how many tails, dotted, triplet, etc.
+    // if note duration is unknown it will be split
 	const float relativeLength = renderInfo.tick_length / (float)(getMeasureBar()->beatLengthInTicks()*4);
 
 	renderInfo.tail_type = (renderInfo.level>=converter->getMiddleCLevel()-5 ? TAIL_UP : TAIL_DOWN);
 	if(relativeLength>=1) renderInfo.tail_type=TAIL_NONE; // whole notes have no tails
 	bool open = false;
 	
+    const int beat = getMeasureBar()->beatLengthInTicks();
+    const int tick_in_measure_start = renderInfo.tick - getMeasureBar()->firstTickInMeasure( measureBegin );
+    const int remaining = beat - (tick_in_measure_start % beat);
+    const bool starts_on_beat = aboutEqual(remaining,0) or aboutEqual(remaining,beat);
+    
 	if( aboutEqual(relativeLength, 1.0) ){ open = true; renderInfo.tail_type=TAIL_NONE; }
 	else if( aboutEqual(relativeLength, 1.0/2.0) ){ open = true; } // 1/2
 	else if( aboutEqual(relativeLength, 1.0/3.0) ){ renderInfo.setTriplet(); open = true; } // triplet 1/2
@@ -454,23 +461,37 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteR
 	else if( aboutEqual(relativeLength, 1.0/16.0) ) renderInfo.subtail_amount = 2; // 1/16
 	else if( aboutEqual(relativeLength, 1.0/24.0) ) { renderInfo.setTriplet(); renderInfo.subtail_amount = 2; } // triplet 1/16
 	else if( aboutEqual(relativeLength, 1.0/32.0) ) renderInfo.subtail_amount = 3; // 1/32
-	else if( aboutEqual(relativeLength, 3.0/4.0) ){ renderInfo.dotted = true; open=true; } // dotted 1/2
-	else if( aboutEqual(relativeLength, 3.0/8.0) ) renderInfo.dotted = true; // dotted 1/4
-	else if( aboutEqual(relativeLength, 3.0/2.0) ){ renderInfo.dotted = true; open=true; } // dotted whole
+	else if( aboutEqual(relativeLength, 3.0/4.0) and starts_on_beat){ renderInfo.dotted = true; open=true; } // dotted 1/2
+	else if( aboutEqual(relativeLength, 3.0/8.0) and starts_on_beat ) renderInfo.dotted = true; // dotted 1/4
+	else if( aboutEqual(relativeLength, 3.0/2.0) and starts_on_beat ){ renderInfo.dotted = true; open=true; } // dotted whole
 	else if( relativeLength < 1.0/32.0 )
 	{
 		renderInfo.instant_hit = true;
 	}
 	else
-	{
-		// note is of unknown duration. split it in a serie of tied notes.
-		float closestShorterDuration = 1;
-		while(closestShorterDuration >= relativeLength) closestShorterDuration /= 2.0;
-		
-		const int firstLength = closestShorterDuration*(float)(getMeasureBar()->beatLengthInTicks()*4);
-		const int secondBeginning = renderInfo.tick + firstLength;
-		RelativeXCoord secondBeginningRel(secondBeginning, MIDI);
-		
+	{ // note is of unknown duration. split it in a serie of tied notes.
+        
+        
+        // how long is the first note after the split?
+        int firstLength_tick;
+
+        // start by reaching the next beat if not already done
+		if(!starts_on_beat and !aboutEqual(remaining, renderInfo.tick_length))
+		{
+            firstLength_tick = remaining;
+		}
+        else
+        {
+            // use division to split note
+            float closestShorterDuration = 1;
+            while(closestShorterDuration >= relativeLength) closestShorterDuration /= 2.0;
+            
+            firstLength_tick = closestShorterDuration*(float)(getMeasureBar()->beatLengthInTicks()*4);
+		}
+        
+        const int secondBeginning_tick = renderInfo.tick + firstLength_tick;
+        RelativeXCoord secondBeginningRel(secondBeginning_tick, MIDI);
+        
 		int initial_id = -1;
 		
 		if(!recursion)
@@ -478,10 +499,10 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteR
 			initial_id = vector.size();
 		}
 		
-		NoteRenderInfo part1(renderInfo.tick, renderInfo.x, renderInfo.level, firstLength, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
+		NoteRenderInfo part1(renderInfo.tick, renderInfo.x, renderInfo.level, firstLength_tick, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
 		renderNote_pass1(part1, vector, true);
-		NoteRenderInfo part2(secondBeginning, secondBeginningRel.getRelativeTo(WINDOW), renderInfo.level,
-						   renderInfo.tick_length-firstLength, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
+		NoteRenderInfo part2(secondBeginning_tick, secondBeginningRel.getRelativeTo(WINDOW), renderInfo.level,
+						   renderInfo.tick_length-firstLength_tick, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
 		renderNote_pass1(part2, vector, true);
 		
 		if(!recursion)
@@ -687,6 +708,7 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo)
     }
 }
 
+
 void ScoreEditor::renderSilence(const int tick, const int tick_length)
 { 
     const int beat = getMeasureBar()->beatLengthInTicks();
@@ -721,8 +743,6 @@ void ScoreEditor::renderSilence(const int tick, const int tick_length)
 	const float relativeLength = tick_length / (float)(getMeasureBar()->beatLengthInTicks()*4);
 	
 	const int tick_in_measure_start = (tick) - getMeasureBar()->firstTickInMeasure( getMeasureBar()->measureAtTick(tick) );
-    //const int tick_in_measure_end = tick_in_measure_start + tick_length;
-    
     const int remaining = beat - (tick_in_measure_start % beat);
     const bool starts_on_beat = aboutEqual(remaining,0) or aboutEqual(remaining,beat);
     

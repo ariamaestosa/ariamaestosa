@@ -45,8 +45,6 @@ NOTE: sorry, this is very raw :)
 
  * allow setting notes sharp/flat in a graphical way
 
-+ scroll a bit so you no more see measure 1. then start playing song from measure one. you can see the red line at the left of the screen
-
  - change whole track pitch/volume
  
   - show song duration
@@ -101,6 +99,9 @@ NOTE: sorry, this is very raw :)
  ## crash when emptying tempo in control view [reported, not tested] 
  ## ram-zet, rip.midi : look at score for intro choir...
 
++ scroll a bit so you no more see measure 1. then start playing song from measure one. you can see the red line at the left of the screen
+
+
  * in extended measure management, when you select a time sig event, the wrong numbers appear in the top bar
 
 + notes in score can only be natural or sharp, never flat. (EasyBeat uses flats when the current key uses flats at armature)
@@ -128,8 +129,6 @@ NOTE: sorry, this is very raw :)
 - in a chord that lasts 2 4/4 measures, each note of the chord has its own tie
 
 + rearrange notes doesn't always undo correctly
-+ note splitting should be wiser (like silences... complete beat)
-
 
 - error at startup (quicktime will not play dummy file to init it?)
         error:

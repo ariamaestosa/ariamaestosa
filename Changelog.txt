@@ -1,9 +1,10 @@
  1.1b7
+- Improved note splitting to be wiser
 - Made note beaming wiser about how it selects which notes to beam toghether
 - When importing midi, remove events from unsupported controllers (fixes some playback bugs)
 - Added more midi controllers
 - Fixed zooming in songs with multiple time signatures
-- Made zooming smoother by removing unneeded render
+- Made zooming smoother by removing unneeded renders
 - Fixed removing empty tracks in imported midis
 - Do not accept empty track names
 - Started switching rendering from plain OpenGL to higher-level primitives, cleaning up code
