@@ -118,8 +118,6 @@ public:
 	void init();
     ~MainFrame();
 
-	void onFocus(wxFocusEvent& evt);
-
     // top bar controls updated
     void tempoChanged(wxCommandEvent& evt);
     void songLengthChanged(wxSpinEvent& evt);
@@ -137,7 +135,6 @@ public:
     void evt_hideWaitWindow(wxCommandEvent& evt);
 
 	// menus
-	void menuClosed(wxMenuEvent& evt);
     void menuEvent_new(wxCommandEvent& evt);
     void menuEvent_close(wxCommandEvent& evt);
 	void menuEvent_exportNotation(wxCommandEvent& evt);

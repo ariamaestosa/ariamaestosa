@@ -157,6 +157,8 @@ int findNotePitch(int note_7, int sharpness)
 	return note;
 }
 
+#pragma mark -
+
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //											ScoreMidiConverter
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -303,6 +305,8 @@ void ScoreMidiConverter::updateConversionData()
 	
 }
 
+#pragma mark -
+
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -320,6 +324,10 @@ ScoreEditor::ScoreEditor(Track* track) : Editor(track)
 	setYStep( y_step );
 	
 	sb_position = converter->getMiddleCLevel() / 73.0;
+}
+ScoreEditor::~ScoreEditor()
+{
+	delete converter;
 }
 
 void ScoreEditor::enableMusicalNotation(const bool enabled)
@@ -373,16 +381,12 @@ void ScoreEditor::loadKey(const int sharpness_symbol, const int symbol_amount)
 	converter->updateConversionData();
 }
 
-ScoreEditor::~ScoreEditor()
-{
-	delete converter;
-}
-
 ScoreMidiConverter* ScoreEditor::getScoreMidiConverter()
 {
 	return converter;
 }
 
+#pragma mark -
 // where 'renderInfo' is a 'NoteRenderInfo' object of current note.
 // 'vector' is where all visible notes will are added, to be analysed after
 void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& vector, const bool recursion)
@@ -1302,6 +1306,7 @@ assertExpr(iters,<,1000);
 // ***************************************************************************************************************************************************
 // ****************************************************    EVENT METHODS      ************************************************************************
 // ***************************************************************************************************************************************************
+#pragma mark -
 
 void ScoreEditor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 								RelativeXCoord mousex_initial, int mousey_initial)
@@ -1352,6 +1357,7 @@ void ScoreEditor::rightClick(RelativeXCoord x, int y)
 // ****************************************************************************************************************************************************
 // ****************************************************    EDITOR METHODS      ************************************************************************
 // ****************************************************************************************************************************************************
+#pragma mark -
 
 
 int ScoreEditor::getYScrollInPixels()

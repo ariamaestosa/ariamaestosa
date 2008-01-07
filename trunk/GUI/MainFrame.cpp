@@ -118,7 +118,7 @@ DEFINE_EVENT_TYPE(wxEVT_HIDE_WAIT_WINDOW)
 
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
 
-EVT_SET_FOCUS(MainFrame::onFocus)
+//EVT_SET_FOCUS(MainFrame::onFocus)
 
 /* scrollbar */
 EVT_COMMAND_SCROLL_THUMBRELEASE(SCROLLBAR_H, MainFrame::horizontalScrolling)
@@ -149,7 +149,7 @@ EVT_SPINCTRL(ZOOM, MainFrame::zoomChanged)
 EVT_TEXT(LENGTH, MainFrame::songLengthTextChanged)
 EVT_TEXT(ZOOM, MainFrame::zoomTextChanged)
 
-EVT_MENU_CLOSE(MainFrame::menuClosed)
+//EVT_MENU_CLOSE(MainFrame::menuClosed)
 
 /* file menu */
 EVT_MENU(MENU_FILE_NEW, MainFrame::menuEvent_new)
@@ -210,6 +210,33 @@ MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(1
 {
 	INIT_LEAK_CHECK();
 
+}
+
+MainFrame::~MainFrame()
+{
+    
+#ifdef _MORE_DEBUG_CHECKS
+    std::cout << "~MainFrame BEGIN" << std::endl;
+#endif
+    
+    ImageProvider::unloadImages();
+    PlatformMidiManager::freeMidiPlayer();
+	CopyrightWindow::free();
+	//ScalePicker::free();
+    
+	aboutDialog->Destroy();
+	customNoteSelectDialog->Destroy();
+    prefs->Destroy();
+    
+	delete instrument_picker;
+	delete drumKit_picker;
+	delete keyPicker;
+	delete tuningPicker;
+    
+#ifdef _MORE_DEBUG_CHECKS
+    std::cout << "~MainFrame END" << std::endl;
+#endif
+    
 }
 
 // this needs to be seperate from the constructor to ensure thet getMainFrame() does not return null
@@ -483,6 +510,9 @@ verticalSizer->Add(verticalScrollbar, 0, wxALL, 0, Location::East() );
 // ------------------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------ MENU EVENTS -----------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------------
+#pragma mark -
+
+// File
 
 void MainFrame::menuEvent_new(wxCommandEvent& evt)
 {
@@ -494,29 +524,9 @@ void MainFrame::menuEvent_close(wxCommandEvent& evt)
     closeSequence();
 }
 
-void MainFrame::menuEvent_customNoteSelect(wxCommandEvent& evt)
-{
-    customNoteSelectDialog->show( getCurrentSequence()->getCurrentTrack() );
-}
-
-void MainFrame::menuEvent_copy(wxCommandEvent& evt)
-{
-    getCurrentSequence()->copy();
-}
-
 void MainFrame::menuEvent_exportNotation(wxCommandEvent& evt)
 {
     exportNotation( getCurrentSequence() );
-}
-
-void MainFrame::menuEvent_paste(wxCommandEvent& evt)
-{
-    getCurrentSequence()->paste();
-}
-
-void MainFrame::menuEvent_pasteAtMouse(wxCommandEvent& evt)
-{
-    getCurrentSequence()->pasteAtMouse();
 }
 
 void MainFrame::menuEvent_save(wxCommandEvent& evt)
@@ -525,35 +535,30 @@ void MainFrame::menuEvent_save(wxCommandEvent& evt)
     else saveAriaFile(getCurrentSequence(), getCurrentSequence()->filepath);
 }
 
-void MainFrame::menuEvent_snapToGrid(wxCommandEvent& evt)
-{
-    getCurrentSequence()->snapNotesToGrid();
-}
-
 void MainFrame::menuEvent_saveas(wxCommandEvent& evt)
 {
 	wxString suggestedName = getCurrentSequence()->suggestFileName() + wxT(".aria");
 	
 	getCurrentSequence()->filepath = showFileDialog( _("Select destination file"), wxT(""), suggestedName,
-											  wxT("Aria Maestosa file|*.aria"), true /*save*/);
-
+                                                     wxT("Aria Maestosa file|*.aria"), true /*save*/);
+    
     if(!getCurrentSequence()->filepath.IsEmpty())
 	{
-
-
+        
+        
 		if( wxFileExists(getCurrentSequence()->filepath) )
 		{
 			int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
-									  wxYES_NO, this);
+                                        wxYES_NO, this);
 			if (answer != wxYES) return;
 		}
-
+        
         saveAriaFile(getCurrentSequence(), getCurrentSequence()->filepath);
-
+        
         // change song name
         getCurrentSequence()->sequenceFileName = getCurrentSequence()->filepath.AfterLast('/').BeforeLast('.');
         Display::render();
-
+        
     }// end if
 }
 
@@ -577,20 +582,20 @@ void MainFrame::menuEvent_exportmidi(wxCommandEvent& evt)
 	// show file dialog
 	wxString midiFilePath = showFileDialog( _("Select destination file"), wxT(""),
 											suggestedName, _("Midi file|*.mid"), true /*save*/);
-
+    
     if(midiFilePath.IsEmpty()) return;
 	
 	// if file already exists, ask for overwriting
 	if( wxFileExists(midiFilePath) )
 	{
 		int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
-								  wxYES_NO, this);
+                                    wxYES_NO, this);
 		if (answer != wxYES) return;
 	}
-
+    
 	// write data to file
 	const bool success = PlatformMidiManager::exportMidiFile( getCurrentSequence(), midiFilePath );
-
+    
 	if(!success)
 	{
 		wxMessageBox( _("Sorry, failed to export midi file."));
@@ -599,36 +604,84 @@ void MainFrame::menuEvent_exportmidi(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_exportSampledAudio(wxCommandEvent& evt)
 {
-
+    
 	wxString extension = PlatformMidiManager::getAudioExtension();
 	wxString wildcard = PlatformMidiManager::getAudioWildcard();
-
+    
 	wxString suggestedName = getCurrentSequence()->suggestFileName() + extension;
 	
 	// show file dialog
 	wxString audioFilePath = showFileDialog(  _("Select destination file"), wxT(""),
 											  suggestedName,
 											  wildcard, true /*save*/);
-
+    
     if(audioFilePath.IsEmpty()) return;
-
+    
 	// if file already exists, ask for overwriting
 	if( wxFileExists(audioFilePath) )
 	{
 		int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
-								   wxYES_NO, this);
+                                    wxYES_NO, this);
 		if (answer != wxYES) return;
 	}
-
+    
 	
     // show progress bar
     MAKE_SHOW_PROGRESSBAR_EVENT( event, _("Please wait while audio file is being generated.\n\nDepending on the length of your file,\nthis can take several minutes."), false );
     GetEventHandler()->AddPendingEvent(event);
-
+    
 	std::cout << "export audio file " << toCString(audioFilePath) << std::endl;
     
     // write data
 	PlatformMidiManager::exportAudioFile( getCurrentSequence(), audioFilePath );
+}
+
+void MainFrame::menuEvent_copyright(wxCommandEvent& evt)
+{
+    CopyrightWindow::show( getCurrentSequence() );
+}
+
+void MainFrame::menuEvent_quit(wxCommandEvent& evt)
+{
+	// close all open sequences
+	while(getSequenceAmount()>0)
+	{
+		if( !closeSequence() )
+		{
+		    // user canceled, don't quit
+			return;
+		}
+	}
+    
+	// quit
+	wxWindow::Destroy();
+}
+
+// Edit
+
+void MainFrame::menuEvent_copy(wxCommandEvent& evt)
+{
+    getCurrentSequence()->copy();
+}
+
+void MainFrame::menuEvent_customNoteSelect(wxCommandEvent& evt)
+{
+    customNoteSelectDialog->show( getCurrentSequence()->getCurrentTrack() );
+}
+
+void MainFrame::menuEvent_paste(wxCommandEvent& evt)
+{
+    getCurrentSequence()->paste();
+}
+
+void MainFrame::menuEvent_pasteAtMouse(wxCommandEvent& evt)
+{
+    getCurrentSequence()->pasteAtMouse();
+}
+
+void MainFrame::menuEvent_snapToGrid(wxCommandEvent& evt)
+{
+    getCurrentSequence()->snapNotesToGrid();
 }
 
 void MainFrame::menuEvent_undo(wxCommandEvent& evt)
@@ -646,6 +699,17 @@ void MainFrame::menuEvent_selectAll(wxCommandEvent& evt)
     getCurrentSequence()->selectAll();
 }
 
+void MainFrame::menuEvent_scale(wxCommandEvent& evt)
+{
+    ScalePicker::pickScale( getCurrentSequence() );
+}
+
+void MainFrame::menuEvent_removeOverlapping(wxCommandEvent& evt)
+{
+	getCurrentSequence()->getCurrentTrack()->action( new Action::RemoveOverlapping() );
+}
+
+// Track
 void MainFrame::menuEvent_addTrack(wxCommandEvent& evt)
 {
     getCurrentSequence()->addTrack();
@@ -666,16 +730,7 @@ void MainFrame::menuEvent_deleteTrack(wxCommandEvent& evt)
 
 }
 
-void MainFrame::menuEvent_scale(wxCommandEvent& evt)
-{
-    ScalePicker::pickScale( getCurrentSequence() );
-}
-
-void MainFrame::menuEvent_copyright(wxCommandEvent& evt)
-{
-    CopyrightWindow::show( getCurrentSequence() );
-}
-
+// Options
 void MainFrame::menuEvent_preferences(wxCommandEvent& evt)
 {
 	prefs->show();
@@ -710,31 +765,95 @@ void MainFrame::menuEvent_playNever(wxCommandEvent& evt)
 	play_during_edit = PLAY_NEVER;
 }
 
-void MainFrame::menuEvent_removeOverlapping(wxCommandEvent& evt)
+void MainFrame::menuEvent_automaticChannelModeSelected(wxCommandEvent& evt)
 {
-	getCurrentSequence()->getCurrentTrack()->action( new Action::RemoveOverlapping() );
-}
-
-void MainFrame::menuEvent_quit(wxCommandEvent& evt)
-{
-	// close all open sequences
-	while(getSequenceAmount()>0)
+    
+	Sequence* sequence = getCurrentSequence();
+	// we were in manual mode... we will need to merge tracks while switching modes. ask user first
+	if( sequence->getChannelManagementType() == CHANNEL_MANUAL)
 	{
-		if( !closeSequence() )
+		int answer = wxMessageBox(  _("If multiple tracks play on the same channel, they will be merged.\nThis cannot be undone.\n\nDo you really want to continue?"),
+								    _("Confirm"),
+                                    wxYES_NO, this);
+        
+		if (answer != wxYES)
 		{
-		    // user canceled, don't quit
+			// nothing will be changed, put checks back
+			channelManagement_automatic->Check(false);
+			channelManagement_manual->Check(true);
 			return;
 		}
+        
+		for(int i=0; i<sequence->getTrackAmount(); i++)
+		{
+			for(int j=0; j<sequence->getTrackAmount(); j++)
+			{
+				if(i == j) continue; //don't compare a track with itself
+                
+				if(sequence->getTrack(i)->getChannel() == sequence->getTrack(j)->getChannel())
+				{
+					sequence->getTrack(i)->mergeTrackIn( sequence->getTrack(j) );
+					sequence->deleteTrack(j);
+					i = 0;
+					j = 0;
+				}
+			}// next j
+		}//next i
+        
+		sequence->setCurrentTrackID(0);
+        
+		// prevent undoing (anyway it would not have worked, would just have given buggy behaviour)
+		sequence->clearUndoStack();
+		//sequence->getCurrentTrack()->saveUndoMemory();
+        
 	}
-
-	// quit
-	wxWindow::Destroy();
+    
+	channelManagement_automatic->Check(true);
+	channelManagement_manual->Check(false);
+    
+	getCurrentSequence()->setChannelManagementType(CHANNEL_AUTO);
+	Display::render();
 }
 
-void MainFrame::menuClosed(wxMenuEvent& evt)
+void MainFrame::menuEvent_manualChannelModeSelected(wxCommandEvent& evt)
 {
+	channelManagement_automatic->Check(false);
+	channelManagement_manual->Check(true);
+    
+	Sequence* sequence = getCurrentSequence();
+	// we were in auto mode... we will need to set channels
+	if( sequence->getChannelManagementType() == CHANNEL_AUTO)
+	{
+		int channel = 0;
+		// iterrate through tarcks, give each one a channel
+		for(int i=0; i<sequence->getTrackAmount(); i++)
+		{
+			//if this is a drum track, give channel 9
+			if(sequence->getTrack(i)->graphics->editorMode == DRUM)
+			{
+				sequence->getTrack(i)->setChannel(9);
+			}
+			else
+                // otherwise, give any channel but 9
+			{
+				sequence->getTrack(i)->setChannel(channel);
+				channel++;
+				if(channel==9) channel++;
+			}
+		}
+	}
+    
+	getCurrentSequence()->setChannelManagementType(CHANNEL_MANUAL);
+	Display::render();
 }
 
+void MainFrame::menuEvent_expandedMeasuresSelected(wxCommandEvent& evt)
+{
+	getCurrentSequence()->measureBar->setExpandedMode( expandedMeasuresMenuItem->IsChecked() );
+	updateVerticalScrollbar();
+}
+
+// help
 void MainFrame::menuEvent_about(wxCommandEvent& evt)
 {
 	aboutDialog->show();
@@ -797,123 +916,11 @@ void MainFrame::menuEvent_manual(wxCommandEvent& evt)
 	wxLaunchDefaultBrowser( path_to_docs );
 }
 
-void MainFrame::menuEvent_automaticChannelModeSelected(wxCommandEvent& evt)
-{
-
-	Sequence* sequence = getCurrentSequence();
-	// we were in manual mode... we will need to merge tracks while switching modes. ask user first
-	if( sequence->getChannelManagementType() == CHANNEL_MANUAL)
-	{
-		int answer = wxMessageBox(  _("If multiple tracks play on the same channel, they will be merged.\nThis cannot be undone.\n\nDo you really want to continue?"),
-								    _("Confirm"),
-								   wxYES_NO, this);
-
-		if (answer != wxYES)
-		{
-			// nothing will be changed, put checks back
-			channelManagement_automatic->Check(false);
-			channelManagement_manual->Check(true);
-			return;
-		}
-
-		for(int i=0; i<sequence->getTrackAmount(); i++)
-		{
-			for(int j=0; j<sequence->getTrackAmount(); j++)
-			{
-				if(i == j) continue; //don't compare a track with itself
-
-				if(sequence->getTrack(i)->getChannel() == sequence->getTrack(j)->getChannel())
-				{
-					sequence->getTrack(i)->mergeTrackIn( sequence->getTrack(j) );
-					sequence->deleteTrack(j);
-					i = 0;
-					j = 0;
-				}
-			}// next j
-		}//next i
-
-		sequence->setCurrentTrackID(0);
-
-		// prevent undoing (anyway it would not have worked, would just have given buggy behaviour)
-		sequence->clearUndoStack();
-		//sequence->getCurrentTrack()->saveUndoMemory();
-
-	}
-
-	channelManagement_automatic->Check(true);
-	channelManagement_manual->Check(false);
-
-	getCurrentSequence()->setChannelManagementType(CHANNEL_AUTO);
-	Display::render();
-}
-
-void MainFrame::menuEvent_manualChannelModeSelected(wxCommandEvent& evt)
-{
-	channelManagement_automatic->Check(false);
-	channelManagement_manual->Check(true);
-
-	Sequence* sequence = getCurrentSequence();
-	// we were in auto mode... we will need to set channels
-	if( sequence->getChannelManagementType() == CHANNEL_AUTO)
-	{
-		int channel = 0;
-		// iterrate through tarcks, give each one a channel
-		for(int i=0; i<sequence->getTrackAmount(); i++)
-		{
-			//if this is a drum track, give channel 9
-			if(sequence->getTrack(i)->graphics->editorMode == DRUM)
-			{
-				sequence->getTrack(i)->setChannel(9);
-			}
-			else
-			// otherwise, give any channel but 9
-			{
-				sequence->getTrack(i)->setChannel(channel);
-				channel++;
-				if(channel==9) channel++;
-			}
-		}
-	}
-
-	getCurrentSequence()->setChannelManagementType(CHANNEL_MANUAL);
-	Display::render();
-}
-
-void MainFrame::menuEvent_expandedMeasuresSelected(wxCommandEvent& evt)
-{
-	getCurrentSequence()->measureBar->setExpandedMode( expandedMeasuresMenuItem->IsChecked() );
-	updateVerticalScrollbar();
-}
-
-void MainFrame::onFocus(wxFocusEvent& evt)
-{
-}
-
-void MainFrame::changeChannelManagement(ChannelManagementType mode)
-{
-	if(mode == CHANNEL_AUTO)
-	{
-		channelManagement_automatic->Check(true);
-		channelManagement_manual->Check(false);
-
-		getCurrentSequence()->setChannelManagementType(CHANNEL_AUTO);
-	}
-	else if(mode == CHANNEL_MANUAL)
-	{
-		channelManagement_automatic->Check(false);
-		channelManagement_manual->Check(true);
-
-		getCurrentSequence()->setChannelManagementType(CHANNEL_MANUAL);
-	}
-
-	Display::render();
-}
-
 
 // ------------------------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------- PLAY/STOP --------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------------
-
+#pragma mark -
 
 void MainFrame::playClicked(wxCommandEvent& evt)
 {
@@ -929,53 +936,29 @@ void MainFrame::playClicked(wxCommandEvent& evt)
 
     glPane->setPlaybackStartTick( startTick );
 
-    if(startTick == -1 or !success /* failure */)
-	{
+    if(startTick == -1 or !success)
         glPane->exitPlayLoop();
-        //if(!PlatformMidiManager::isPlaying()) toolsExitPlaybackMode();
-        //Display::render();
-    }
 	else
-	{
         glPane->enterPlayLoop();
-    }
 
 }
 
 void MainFrame::stopClicked(wxCommandEvent& evt)
 {
-    if(!playback_mode)
-	{
-		//std::cout << "stop refused, playback_mode==false" << std::endl;
-		return;
-	}
+    if(!playback_mode) return;
     glPane->exitPlayLoop();
-/*
-    toolsExitPlaybackMode();
-
-	PlatformMidiManager::stop();
-    Display::render();
-*/
-
-}
-
-// event sent by the MusicPlayer to notify that it has stopped playing because the song is over.
-void MainFrame::songHasFinishedPlaying()
-{
-    toolsExitPlaybackMode();
-    Display::render();
 }
 
 void MainFrame::toolsEnterPlaybackMode()
 {
 	if(playback_mode) return;
-
+    
 	playback_mode = true;
-
-
+    
+    
     stop->Enable(true);
     play->Enable(false);
-
+    
     fileMenu->Enable(MENU_FILE_NEW, false);
     fileMenu->Enable(MENU_FILE_OPEN, false);
     fileMenu->Enable(MENU_FILE_SAVE, false);
@@ -996,10 +979,10 @@ void MainFrame::toolsEnterPlaybackMode()
 void MainFrame::toolsExitPlaybackMode()
 {
 	playback_mode = false;
-
+    
     stop->Enable(false);
     play->Enable(true);
-
+    
     fileMenu->Enable(MENU_FILE_NEW, true);
     fileMenu->Enable(MENU_FILE_OPEN, true);
     fileMenu->Enable(MENU_FILE_SAVE, true);
@@ -1017,9 +1000,12 @@ void MainFrame::toolsExitPlaybackMode()
     tempoCtrl->Enable(true);
 }
 
+
 // ------------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------- TOP BAR -----------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------------
+
+#pragma mark -
 
 void MainFrame::updateTopBarForSequence(Sequence* seq)
 {
@@ -1287,7 +1273,7 @@ void MainFrame::songLengthChanged(wxSpinEvent& evt)
 // ------------------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------ SCROLLBARS ------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------------
-
+#pragma mark -
 /*
  * User scrolled horizontally by dragging.
  * Just make sure to update the display to the new values.
@@ -1302,7 +1288,6 @@ void MainFrame::horizontalScrolling(wxScrollEvent& evt)
 
     const int newValue = horizontalScrollbar->GetThumbPosition();
     if(newValue == getCurrentSequence()->getXScrollInPixels())return;
-    //last_scroll_position = newValue;
 
     getCurrentSequence()->setXScrollInPixels(newValue);
 
@@ -1329,9 +1314,6 @@ void MainFrame::horizontalScrolling_arrows(wxScrollEvent& evt)
     // check new scroll position is not out of bounds
     const int editor_size=Display::getWidth()-100,
 		total_size = getMeasureBar()->getTotalPixelAmount();
-       // (int)(
-       //       (getCurrentSequence()->getMeasureAmount() * getCurrentSequence()->ticksPerMeasure()) * getCurrentSequence()->getZoom()
-       //       );
 
     const int positionInPixels = (int)( newScrollInMidiTicks*getCurrentSequence()->getZoom() );
 
@@ -1473,6 +1455,8 @@ void MainFrame::updateVerticalScrollbar()
 // ------------------------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------- SEQUENCES --------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------------
+#pragma mark -
+
 /*
  * Add a new sequence. There can be multiple sequences if user opens or creates multiple files at the same time.
  */
@@ -1568,6 +1552,8 @@ void MainFrame::setCurrentSequence(int n)
 // ---------------------------------------------------------- I/O ---------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------------
 
+#pragma mark -
+
 /*
  * Opens the .aria file in filepath, reads it and prepares the editor to display and edit it.
  */
@@ -1651,51 +1637,23 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
 
 }
 
+
+
+
+#pragma mark -
+// various events and notifications
+
+// event sent by the MusicPlayer to notify that it has stopped playing because the song is over.
+void MainFrame::songHasFinishedPlaying()
+{
+    toolsExitPlaybackMode();
+    Display::render();
+}
+
 void MainFrame::evt_freeVolumeSlider( wxCommandEvent& evt )
 {
 	freeVolumeSlider();
-    /*
-      // I think it should work with my latest OpenGl changes. To be tested.
-#ifdef __WXGTK__
-	Display::render();
-#endif
-     */
 }
-
-
-MainFrame::~MainFrame()
-{
-
-#ifdef _MORE_DEBUG_CHECKS
-    std::cout << "~MainFrame BEGIN" << std::endl;
-#endif
-
-    ImageProvider::unloadImages();
-    PlatformMidiManager::freeMidiPlayer();
-	CopyrightWindow::free();
-	//ScalePicker::free();
-
-	aboutDialog->Destroy();
-	customNoteSelectDialog->Destroy();
-    prefs->Destroy();
-
-	delete instrument_picker;
-	delete drumKit_picker;
-	delete keyPicker;
-	delete tuningPicker;
-
-#ifdef _MORE_DEBUG_CHECKS
-    std::cout << "~MainFrame END" << std::endl;
-#endif
-
-}
-
-/*
-wxCommandEvent event( wxEVT_DESTROY_VOLUME_SLIDER, 100000 );
-	getMainFrame()->GetEventHandler()->AddPendingEvent( event );
-
-event::SetInt/GetInt/SetString/GetString
-*/
 void MainFrame::evt_showWaitWindow(wxCommandEvent& evt)
 {
     WaitWindow::show( evt.GetString(), evt.GetInt() );
@@ -1709,5 +1667,25 @@ void MainFrame::evt_hideWaitWindow(wxCommandEvent& evt)
     WaitWindow::hide();
 }
 
+
+void MainFrame::changeChannelManagement(ChannelManagementType mode)
+{
+	if(mode == CHANNEL_AUTO)
+	{
+		channelManagement_automatic->Check(true);
+		channelManagement_manual->Check(false);
+        
+		getCurrentSequence()->setChannelManagementType(CHANNEL_AUTO);
+	}
+	else if(mode == CHANNEL_MANUAL)
+	{
+		channelManagement_automatic->Check(false);
+		channelManagement_manual->Check(true);
+        
+		getCurrentSequence()->setChannelManagementType(CHANNEL_MANUAL);
+	}
+    
+	Display::render();
+}
 
 }
