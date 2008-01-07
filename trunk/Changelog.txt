@@ -9,6 +9,7 @@
 - Do not accept empty track names
 - Started switching rendering from plain OpenGL to higher-level primitives, cleaning up code
 - Fixed editing time signatures in manual mode
+- Fixed rendering of silences in empty measures when using manual time signature management
  
  1.1b6
 - fixed crash when removing tempo events
