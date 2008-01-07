@@ -1068,7 +1068,7 @@ assertExpr(iters,<,1000);
 			if(measure_empty[i])
 			{
 				renderSilence(getMeasureBar()->firstTickInMeasure(first_visible_measure+i),
-							  getMeasureBar()->measureLengthInTicks());
+							  getMeasureBar()->measureLengthInTicks(first_visible_measure+i));
 			}
 		}
 	}

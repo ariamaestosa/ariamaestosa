@@ -51,6 +51,9 @@ NOTE: sorry, this is very raw :)
  
  - copy control events along notes
  
+ - what to do with sustain? needs all_sound_off perhaps?
+ - make portamento more usable
+ 
  - tabbing though fields in select notes dialog should select their content
  - too easy for top bar stuff to gain focus - enter should have focus go back to main pane
  
@@ -101,11 +104,7 @@ NOTE: sorry, this is very raw :)
 
 + scroll a bit so you no more see measure 1. then start playing song from measure one. you can see the red line at the left of the screen
 
-
- * in extended measure management, when you select a time sig event, the wrong numbers appear in the top bar
-
 + notes in score can only be natural or sharp, never flat. (EasyBeat uses flats when the current key uses flats at armature)
-+ scons warning : 'install' is found inside 'uninstall' (fix commited, not tested)
 
 + upon opening Aria, horizontal scrollbar is slightly too short. it goes back into place when editing notes (selecting by dragging)
 
@@ -118,6 +117,7 @@ NOTE: sorry, this is very raw :)
 - if a midi has control events in an empty track they might be removed during import (though what could go there? tempo events are already stored in sequence)
 - hitting space should work even if focus is in top bar
 
++ scons warning : 'install' is found inside 'uninstall' (fix commited, not tested)
 + linux: scons install fails from SVN because docs are not found
 + linux: no need to install icns files
 - linux: exporting to audio via timidity : give better feedback about progression?
@@ -143,7 +143,6 @@ NOTE: sorry, this is very raw :)
 
 - clicking on a note should play it and it doesn't always work (like when note is selected)
 - at the very top, in keyboard editor, wrong notes are greyed out
-- when changing measure length, song length becomes wrong
 - import midi. save to aria. no name suggested.
 - switching tracks tends to deselect measures
 - accentuated characters in copyright/song title gets broken (and possibly track name too) UTF-8 doesn't seem to work either
@@ -164,10 +163,11 @@ NOTE: sorry, this is very raw :)
   - tab export : repeatd measures need measure numbers
   
  
- MINOR / CLEANUP :
+ MINOR / CLEANUP / UNSURE:
+ - when changing measure length in a song that already has midi events in it, song length becomes wrong compared to midi events
 - decide a naming convention for variables
  - some drums that are not standard drumset preview fine but dont play correctly (SFX and one other. bug in QT?)
-        I say bug in Qt since it also seems to affect songs made in other software
+        I say bug in QT since it also seems to affect songs made in other software
  - .aria files don't remember whether drums are minimized
  - .aria files don't remember docked tracks
  - trigger coreaudio note player at startup?
