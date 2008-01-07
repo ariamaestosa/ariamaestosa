@@ -8,6 +8,7 @@
 - Fixed removing empty tracks in imported midis
 - Do not accept empty track names
 - Started switching rendering from plain OpenGL to higher-level primitives, cleaning up code
+- Fixed editing time signatures in manual mode
  
  1.1b6
 - fixed crash when removing tempo events

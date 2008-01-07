@@ -563,12 +563,14 @@ void MeasureBar::render(int measureBarY_arg)
 void MeasureBar::mouseDown(int x, int y)
 {
 
-	// time sig change
+	// if click is in time sig change areas
 	if(y>20)
 	{
 		
 		const int measureDivAt_x = measureDivisionAt(x);
 		
+        // we use the 'add' method, however if on event already exists at this location
+        // it will be selected and none will be added
 		addTimeSigChange(measureDivAt_x, -1, -1);
 		
 		return;
@@ -946,8 +948,8 @@ void MeasureBar::addTimeSigChange(int measure, int num, int denom) // -1 means "
 				// if we're not importing, select it
 				if(!getCurrentSequence()->importing)
 				{
-					getMainFrame()->changeShownTimeSig( timeSigChanges[selectedTimeSig].num, timeSigChanges[selectedTimeSig].denom );
 					selectedTimeSig = n;
+                    getMainFrame()->changeShownTimeSig( timeSigChanges[selectedTimeSig].num, timeSigChanges[selectedTimeSig].denom );
 					break;
 				}
 				// if we're importing, replace it with new value
