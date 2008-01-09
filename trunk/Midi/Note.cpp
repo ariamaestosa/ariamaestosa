@@ -26,8 +26,34 @@
 
 #include <iostream>
 
-namespace AriaMaestosa {
+namespace AriaMaestosa
+{
+    
+Note::Note(GraphicalTrack* parent,
+		   const int pitchID_arg,
+		   const int startTick_arg,
+		   const int endTick_arg,
+		   const int volume_arg,
+		   const int string_arg,
+		   const int fret_arg)
+{
+    
+	INIT_LEAK_CHECK();
 	
+    Note::pitchID=pitchID_arg;
+    Note::startTick=startTick_arg;
+    Note::endTick=endTick_arg;
+    Note::volume=volume_arg;
+    Note::string=string_arg;
+    Note::fret=fret_arg;
+    
+    gtrack = parent;
+
+    selected=false;
+    
+    preferred_accidental_sign = -1;
+}	
+
 int Note::getString()
 {
     if(string==-1) findStringAndFretFromNote();
@@ -53,30 +79,7 @@ void Note::setStringAndFret(int string_arg, int fret_arg)
 	findNoteFromStringAndFret();
 }
 
-Note::Note(GraphicalTrack* parent,
-		   const int pitchID_arg,
-		   const int startTick_arg,
-		   const int endTick_arg,
-		   const int volume_arg,
-		   const int string_arg,
-		   const int fret_arg)
-{
-    
-	INIT_LEAK_CHECK();
-	
-    Note::pitchID=pitchID_arg;
-    Note::startTick=startTick_arg;
-    Note::endTick=endTick_arg;
-    Note::volume=volume_arg;
-    Note::string=string_arg;
-    Note::fret=fret_arg;
-    
-    gtrack = parent;
 
-    selected=false;
-    
-    
-}
 
 void Note::checkIfStringAndFretMatchNote(const bool fixStringAndFret)
 {

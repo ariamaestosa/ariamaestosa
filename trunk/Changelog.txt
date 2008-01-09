@@ -1,4 +1,5 @@
  1.1b7
+- Improved setting notes sharp/flat/natural to be easier and more flexible
 - Improved note splitting to be wiser
 - Made note beaming wiser about how it selects which notes to beam toghether
 - When importing midi, remove events from unsupported controllers (fixes some playback bugs)

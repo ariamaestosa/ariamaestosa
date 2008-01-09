@@ -38,9 +38,17 @@
 #include <vector>
 
 namespace AriaMaestosa {
+
+enum NoteToLevelType
+{
+    DIRECT_ON_LEVEL,
+    NATURAL_ON_LEVEL,
+    SHARP_OR_FLAT
+};
     
     class NoteRenderInfo;
-    
+    class Note;    
+
     /*
      * Each note can be represented in many ways (its Y position on screen, its note_7, its note_12, its midi pitch...)
      * This class eases the burden by doing convertions and managing the location where notes should appear and
@@ -58,22 +66,25 @@ namespace AriaMaestosa {
         bool going_in_flats;
         
         int midiNoteToLevel[128];
-        int showSignNexToNote[128];
+        NoteToLevelType midiNoteToLevel_type[128]; // 
+        //int showSignNextToNote[128];
         
         int levelToMidiNote[73]; // we need approximately 73 staff lines total to cover all midi notes
+        int levelToNaturalNote[73];
         
         int middleCLevel;
 public:
             
-            ScoreMidiConverter();
+        ScoreMidiConverter();
         void setNoteSharpness(NOTES note, int sharpness);
         bool goingInSharps();
         bool goingInFlats();
         int getMiddleCLevel();
-        int getSharpnessSignForLevel(const unsigned int level);
-        int getSharpnessSignForMidiNote(const unsigned int note);
+        int getKeySigSharpnessSignForLevel(const unsigned int level);
+       // int getSharpnessSignForMidiNote(const unsigned int note);
+        int getMidiNoteForLevelAndSign(const unsigned int level, int sharpness);
         int levelToNote(const int level);
-        int noteToLevel(const int note);
+        int noteToLevel(Note* noteObj, int* sign=NULL);
         int levelToNote7(const unsigned int level);
         void updateConversionData();
     };
@@ -125,6 +136,8 @@ public:
         void renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& vector, const bool recursion=false);
         void renderNote_pass2(NoteRenderInfo& renderInfo);
 		
+        void signClicked(const int sign);
+        
         int getYStep();
         int getHalfNoteHeight();
         
