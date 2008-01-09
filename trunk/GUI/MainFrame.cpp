@@ -252,7 +252,7 @@ void MainFrame::init()
     customNoteSelectDialog = new CustomNoteSelectDialog();
     changingValues=false;
 
-	SetMinSize(wxSize(670, 330));
+	SetMinSize(wxSize(750, 330));
 
     // ------------------------- menus ---------------------
 

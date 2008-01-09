@@ -220,6 +220,8 @@ void Note::setEnd(const int ticks)
 void Note::saveToFile(wxFileOutputStream& fileout)
 {
 	
+    // FIXME - maybe don't save string/fret if no guitar editor used?
+    // FIXME - maybe don't save selected unless it is selected?
 	writeData( wxT("<note pitch=\"") + to_wxString(pitchID), fileout );
 	writeData( wxT("\" start=\"") + to_wxString(startTick), fileout );
 	writeData( wxT("\" end=\"") + to_wxString(endTick), fileout );
@@ -227,6 +229,9 @@ void Note::saveToFile(wxFileOutputStream& fileout)
 	writeData( wxT("\" fret=\"") + to_wxString(fret), fileout );
 	writeData( wxT("\" string=\"") + to_wxString(string), fileout );
 	writeData( wxT("\" selected=\"") + wxString( selected?wxT("true"):wxT("false")), fileout );
+    
+    if(preferred_accidental_sign != -1) writeData( wxT("\" accidentalsign=\"") + to_wxString(preferred_accidental_sign), fileout );
+    
 	writeData( wxT("\"/>\n"), fileout );
 
 }
@@ -263,28 +268,18 @@ bool Note::readFromFile(irr::io::IrrXMLReader* xml)
 	
 	const char* volume_c = xml->getAttributeValue("volume");
 	if(volume_c!=NULL) volume = atoi(volume_c);
-	else
-	{
-		volume = 80;
-		std::cout << "Missing info from file: note volume" << std::endl;
-	}
-
+	else volume = 80;
+    
+	const char* accsign_c = xml->getAttributeValue("accidentalsign");
+	if(accsign_c != NULL) preferred_accidental_sign = atoi(accsign_c);
 	
 	const char* fret_c = xml->getAttributeValue("fret");
 	if(fret_c!=NULL) fret = atoi(fret_c);
-	else
-	{
-		fret = -1;
-		std::cout << "Missing info from file: note fret" << std::endl;
-	}
+	else fret = -1;
 	
 	const char* string_c = xml->getAttributeValue("string");
 	if(string_c!=NULL) string = atoi(string_c);
-	else
-	{
-		string = -1;
-		std::cout << "Missing info from file: note string" << std::endl;
-	}
+	else string = -1;
 	
 	const char* selected_c = xml->getAttributeValue("selected");
 	if(selected_c!=NULL)
