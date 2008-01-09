@@ -189,18 +189,18 @@ void ScoreMidiConverter::setNoteSharpness(NOTES note, int sharpness)
 	}
 }
 
-// we are using a key that will make flat signs appear next to the key
+// are we using a key that will make flat signs appear next to the key?
 bool ScoreMidiConverter::goingInSharps()
 {
 	return going_in_sharps;
 }
-// we are using a key that will make sharp signs appear next to the key
+// are we using a key that will make sharp signs appear next to the key?
 bool ScoreMidiConverter::goingInFlats()
 {
 	return going_in_flats;
 }
 // what sign should appear next to the key for this note? (FLAT, SHARP or NONE)
-int ScoreMidiConverter::getSharpnessSignForLevel(const unsigned int level)
+int ScoreMidiConverter::getKeySigSharpnessSignForLevel(const unsigned int level)
 {
 	assertExpr(level,<,73);
 	return scoreNotesSharpness[ levelToNote7(level) ];
@@ -208,11 +208,13 @@ int ScoreMidiConverter::getSharpnessSignForLevel(const unsigned int level)
 
 int ScoreMidiConverter::getMiddleCLevel() { return middleCLevel; }
 
+/*
 // with the current key, what sign must be shown next to note if we want it to have given pitch? (FLAT, SHARP, NATURAL or NONE)
 int ScoreMidiConverter::getSharpnessSignForMidiNote(const unsigned int note)
 {
-	return showSignNexToNote[ note ];
+	return showSignNextToNote[ note ];
 }
+*/
 
 // returns what note is at given level
 int ScoreMidiConverter::levelToNote(const int level)
@@ -221,11 +223,51 @@ int ScoreMidiConverter::levelToNote(const int level)
 	return levelToMidiNote[level];
 }
 
-// returns on what level given  note will appear
-int ScoreMidiConverter::noteToLevel(const int note)
+// returns on what level the given note will appear, and with what sign
+int ScoreMidiConverter::noteToLevel(Note* noteObj, int* sign)
 {
+    const int note = noteObj->pitchID;
     if(note>=128 or note<0) return -1;
-	return midiNoteToLevel[note];
+    
+    const int level = midiNoteToLevel[note];
+    const NoteToLevelType current_type = midiNoteToLevel_type[note];
+    
+    if(current_type == SHARP_OR_FLAT)
+    {
+        // decide whether to use a flat or a sharp to display this note
+        // first check if there's a user-specified sign. otherwise pick default (quite arbitrarly)
+        bool useFlats = false;
+        if(noteObj->preferred_accidental_sign != -1)
+        {
+            if(noteObj->preferred_accidental_sign == SHARP) useFlats = false;
+            else if(noteObj->preferred_accidental_sign == FLAT) useFlats = true;
+        }
+        else
+            useFlats = goingInFlats();
+        
+        if(useFlats and (note-1)>0)
+        {
+            if(sign!=NULL) *sign = FLAT;
+            return midiNoteToLevel[note-1];
+        }
+        else if(note < 127)
+        {
+            if(sign!=NULL) *sign = SHARP;
+            return midiNoteToLevel[note+1];
+        }
+        else return -1; // nothing found  
+    }
+    else if(current_type == NATURAL_ON_LEVEL)
+    {
+        if(sign!=NULL) *sign = NATURAL;
+        return level;
+    }
+    else if(current_type == DIRECT_ON_LEVEL)
+    {
+        if(sign!=NULL) *sign = NONE;
+        return level;
+    }
+    else return -1; // nothing found
 }
 
 // what is the name of the note played on this level?
@@ -241,10 +283,14 @@ int ScoreMidiConverter::levelToNote7(const unsigned int level)
 // data needed for all conversions and information requests this class provides
 void ScoreMidiConverter::updateConversionData()
 {
+    
+    // FIXME - mess
+    
 	// reset all
 	for(int n=0; n<128; n++)
 	{
 		midiNoteToLevel[n] = -1;
+        midiNoteToLevel_type[n] = SHARP_OR_FLAT;
 	}
 	
 	middleCLevel = -1;
@@ -265,9 +311,8 @@ void ScoreMidiConverter::updateConversionData()
 		assertExpr(levelToMidiNote[n],>,-1);
 		
 		midiNoteToLevel[ levelToMidiNote[n] ] = n;
-		
-		showSignNexToNote[ levelToMidiNote[n] ] = NONE;
-		
+		midiNoteToLevel_type[ levelToMidiNote[n] ] = DIRECT_ON_LEVEL;
+        
 		// find middle C
 		if( levelToMidiNote[n] == middleCNote128 ) middleCLevel = n; // set on which line is middle C
 		
@@ -276,14 +321,22 @@ void ScoreMidiConverter::updateConversionData()
 		{
 			const int natural_note_on_this_line = findNotePitch( note_7, NATURAL ) + octave*12;
 			
+            // FIXME - it may not be necessary to fill it again every time
+            levelToNaturalNote[n] = natural_note_on_this_line;
+            
 			// only use natural signs if this note cannot be displayed without natural sign on another line
 			// in wich case 'midiNoteToLevel' will have been set (or will be overwritten later)
 			if(midiNoteToLevel[ natural_note_on_this_line ] == -1)
 			{
 				midiNoteToLevel[ natural_note_on_this_line ] = n;
-				showSignNexToNote[ natural_note_on_this_line ] = NATURAL;
+				midiNoteToLevel_type[ natural_note_on_this_line ] = NATURAL_ON_LEVEL;
 			}
 		}
+        else
+        {
+            // FIXME - it may not be necessary to fill it again every time
+            levelToNaturalNote[n] = levelToMidiNote[n];
+        }
 		
 		note_7 --;
 		if(note_7 == 1) octave++;
@@ -293,16 +346,44 @@ void ScoreMidiConverter::updateConversionData()
 	}
 	
 	
-	// fill any midi note that has not been set a level
-	for(int n=0; n<127; n++)
-	{
-		if(midiNoteToLevel[n] == -1)
-		{
-			midiNoteToLevel[n] = midiNoteToLevel[n+1];
-			showSignNexToNote[n] = SHARP;
-		}
-	}
+    /*
+	// fill any midi note that has not been assigned a level
+    const bool useFlats = goingInFlats();
+    if(useFlats)
+    {
+        for(int n=1; n<128; n++)
+        {
+            if(midiNoteToLevel[n] == -1)
+            {   
+                midiNoteToLevel[n] = midiNoteToLevel[n-1];
+                showSignNextToNote[n] = FLAT;
+            }
+        }
+    }
+    else
+    {
+        for(int n=0; n<127; n++)
+        {
+            if(midiNoteToLevel[n] == -1)
+            {
+                midiNoteToLevel[n] = midiNoteToLevel[n+1];
+                showSignNextToNote[n] = SHARP;
+            }
+        }//next
+    }
+     */
 	
+}
+
+int ScoreMidiConverter::getMidiNoteForLevelAndSign(const unsigned int level, int sharpness)
+{
+    if(level < 0 or level > 73) return -1;
+    
+    if(sharpness == NONE) return levelToNote(level);
+    else if(sharpness == NATURAL) return levelToNaturalNote[level];
+    else if(sharpness == SHARP) return levelToNaturalNote[level]-1;
+    else if(sharpness == FLAT) return levelToNaturalNote[level]+1;
+    else return -1; // shouldn't happen
 }
 
 #pragma mark -
@@ -384,6 +465,34 @@ void ScoreEditor::loadKey(const int sharpness_symbol, const int symbol_amount)
 ScoreMidiConverter* ScoreEditor::getScoreMidiConverter()
 {
 	return converter;
+}
+
+// user clicked on a sign in the track's header
+void ScoreEditor::signClicked(const int sign)
+{
+    // FIXME - should be cancellable?
+    const int noteAmount = track->getNoteAmount();
+    for(int n=0; n<noteAmount; n++)
+	{
+        if(track->isNoteSelected(n))
+        {
+            //const int notePitch = track->getNotePitchID(n);
+            const int noteLevel = converter->noteToLevel(track->getNote(n));
+            
+            const int new_pitch = converter->getMidiNoteForLevelAndSign(noteLevel, sign);
+            if(new_pitch == -1)
+            {
+                wxBell();
+                return;
+            }
+            
+            Note* note = track->getNote(n);
+            note->pitchID = new_pitch;
+            note->play(true);
+            
+            if(sign != NATURAL) note->preferred_accidental_sign = sign;
+        }
+    }
 }
 
 #pragma mark -
@@ -807,15 +916,15 @@ void ScoreEditor::renderSilence(const int tick, const int tick_length)
 	else if( type == 8 )
 	{
 		AriaRender::images();
-		silence8->move(x, y);
+		silence8->move(x-3, y);
 		silence8->render();
 	}
 	else if( type == 16 )
 	{
 		AriaRender::images();
-		silence8->move(x-6, y+3);
+		silence8->move(x-7, y+3);
 		silence8->render();
-		silence8->move(x-4, y-3);
+		silence8->move(x-5, y-3);
 		silence8->render();
 	}
 	
@@ -883,8 +992,10 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 	// render pass 1. draw linear notation if relevant, gather information and do initial rendering for musical notation
 	for(int n=0; n<noteAmount; n++)
 	{
-		const int notePitch = track->getNotePitchID(n);
-		const int noteLevel = converter->noteToLevel(notePitch);
+		//const int notePitch = track->getNotePitchID(n);
+        
+        int note_sign;
+		const int noteLevel = converter->noteToLevel(track->getNote(n), &note_sign);
         
         if(noteLevel == -1) continue;
 		const int noteLength = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
@@ -929,17 +1040,17 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 			{
                 AriaRender::images();
                 
-				if(converter->getSharpnessSignForMidiNote(notePitch) == SHARP)
+				if(note_sign == SHARP)
 				{
 					sharpSign->move(x1 - 5, noteLevel*y_step+1 + getEditorYStart() - getYScrollInPixels());
 					sharpSign->render();
 				}
-				else if(converter->getSharpnessSignForMidiNote(notePitch) == FLAT)
+				else if(note_sign == FLAT)
 				{
 					flatSign->move(x1 - 5,  noteLevel*y_step+1 + getEditorYStart() - getYScrollInPixels());
 					flatSign->render();
 				}
-				else if(converter->getSharpnessSignForMidiNote(notePitch) == NATURAL)
+				else if(note_sign == NATURAL)
 				{
 					naturalSign->move(x1 - 5,  noteLevel*y_step+1 + getEditorYStart() - getYScrollInPixels());
 					naturalSign->render();
@@ -953,11 +1064,11 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 		{
 			// rendering pass 1 of notes
 			const int note_x = getEditorXStart() + track->getNoteStartInPixels(n)  - sequence->getXScrollInPixels();
-			NoteRenderInfo currentNote(tick, note_x, noteLevel, noteLength, converter->getSharpnessSignForMidiNote(notePitch),
+			NoteRenderInfo currentNote(tick, note_x, noteLevel, noteLength, note_sign,
 									 track->isNoteSelected(n), track->getNotePitchID(n));
 			renderNote_pass1(currentNote, gatheredNoteInfo);
 		}
-	}
+	} // next note
     
 	// musical notation requires more than one pass
 	if(musicalNotationEnabled)
@@ -1143,8 +1254,8 @@ assertExpr(iters,<,1000);
         {
 			int x1=track->getNoteStartInPixels(lastClickedNote) - sequence->getXScrollInPixels() + getEditorXStart();
 			const int x2=track->getNoteEndInPixels(lastClickedNote) - sequence->getXScrollInPixels() + getEditorXStart();
-			const int notePitch = track->getNotePitchID(lastClickedNote);
-			const int noteLevel = converter->noteToLevel(notePitch);
+			//const int notePitch = track->getNotePitchID(lastClickedNote);
+			const int noteLevel = converter->noteToLevel(track->getNote(lastClickedNote));
             
             AriaRender::rect(x1+1+x_pixel_move, (noteLevel+y_step_move)*y_step+1 + getEditorYStart() - getYScrollInPixels()-1,
                              x2-1+x_pixel_move, (noteLevel+1+y_step_move)*y_step + getEditorYStart() - getYScrollInPixels()-1);
@@ -1160,8 +1271,8 @@ assertExpr(iters,<,1000);
                 
 				int x1=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels() + getEditorXStart();
 				const int x2=track->getNoteEndInPixels(n) - sequence->getXScrollInPixels() + getEditorXStart();
-				const int notePitch = track->getNotePitchID(n);
-				const int noteLevel = converter->noteToLevel(notePitch);
+				//const int notePitch = track->getNotePitchID(n);
+				const int noteLevel = converter->noteToLevel(track->getNote(n));
 				
                 AriaRender::rect(x1+1+x_pixel_move, (noteLevel+y_step_move)*y_step+1 + getEditorYStart() - getYScrollInPixels()-1,
                                  x2-1+x_pixel_move, (noteLevel+1+y_step_move)*y_step + getEditorYStart() - getYScrollInPixels()-1);
@@ -1217,7 +1328,7 @@ assertExpr(iters,<,1000);
 		for(int n = min_level_with_signs; n < max_level_with_signs; n++)
 		{
 			const int liney = getEditorYStart() + n*y_step + y_step/2 - yscroll;
-			const int sharpness = converter->getSharpnessSignForLevel(n);
+			const int sharpness = converter->getKeySigSharpnessSignForLevel(n);
 
 			if(sharpness == SHARP)
 			{
@@ -1266,7 +1377,7 @@ assertExpr(iters,<,1000);
 		for(int n = min_level_with_signs; n < max_level_with_signs; n++)
 		{
 			const int liney = getEditorYStart() + n*y_step + y_step/2 - yscroll;
-			const int sharpness = converter->getSharpnessSignForLevel(n);
+			const int sharpness = converter->getKeySigSharpnessSignForLevel(n);
 			if(sharpness == SHARP)
 			{
 				sharpSign->move( 48 + sharp_sign_x[ converter->levelToNote7(n) ], liney-1 ); sharpSign->render();
@@ -1292,7 +1403,7 @@ assertExpr(iters,<,1000);
 		keyF->move(getEditorXStart() - 65, getEditorYStart() + (middle_c_level+4)*y_step -  yscroll + 5);
 		keyF->render();
 	}
-	
+
 	// ---------------------------- scrollbar -----------------------
     if(!focus) AriaRender::color(0.5, 0.5, 0.5);
     else AriaRender::color(1,1,1);
@@ -1385,8 +1496,8 @@ NoteSearchResult ScoreEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 	for(int n=0; n<noteAmount; n++)
 	{
 		
-		const int notePitch = track->getNotePitchID(n);
-		const int noteLevel = converter->noteToLevel(notePitch);
+		//const int notePitch = track->getNotePitchID(n);
+		const int noteLevel = converter->noteToLevel(track->getNote(n));
         if(noteLevel == -1) continue;
 		const int note_y = getEditorYStart() + y_step*noteLevel - halfh - getYScrollInPixels() + 2;
 		const int note_x = getEditorXStart() + track->getNoteStartInPixels(n)  - sequence->getXScrollInPixels();
@@ -1462,7 +1573,7 @@ void ScoreEditor::moveNote(Note& note, const int relativeX, const int relativeY)
 		}
 		else
 		{
-			int noteLevel = converter->noteToLevel(note.pitchID);
+			int noteLevel = converter->noteToLevel(&note);
 			noteLevel += relativeY;
             if(noteLevel > 0 and noteLevel < 73) // reject illegal notes
                 note.pitchID = converter->levelToNote(noteLevel);
@@ -1479,8 +1590,8 @@ void ScoreEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_c
 	
 	for(int n=0; n<noteAmount; n++)
 	{
-		const int notePitch = track->getNotePitchID(n);
-		const int noteLevel = converter->noteToLevel(notePitch);
+		//const int notePitch = track->getNotePitchID(n);
+		const int noteLevel = converter->noteToLevel(track->getNote(n));
         if(noteLevel == -1) continue;
 		const int note_y = getEditorYStart() + y_step*noteLevel - halfh - getYScrollInPixels() + 2;
 		const int note_x = getEditorXStart() + track->getNoteStartInPixels(n)  - sequence->getXScrollInPixels();

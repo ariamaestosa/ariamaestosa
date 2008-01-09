@@ -54,15 +54,15 @@ public:
             }
             else
             {
-                const int level = converter->noteToLevel(gatheredNoteInfo[i].pitch);   
+                const int level = gatheredNoteInfo[i].level;   
                 if(level < min_level) min_level = level;
                 if(level > max_level) max_level = level;
             }
         }
         
         // if nothing found (most likely meaning we only have one triplet note alone) use values from the first
-        if(min_level == 999)  min_level = converter->noteToLevel(gatheredNoteInfo[first_id].pitch);
-        if(max_level == -999) max_level = converter->noteToLevel(gatheredNoteInfo[first_id].pitch);
+        if(min_level == 999)  min_level = gatheredNoteInfo[first_id].level;
+        if(max_level == -999) max_level = gatheredNoteInfo[first_id].level;
         
         mid_level = (int)round( (min_level + max_level)/2.0 );
     }
@@ -340,8 +340,8 @@ void analyseNoteInfo( std::vector<NoteRenderInfo>& gatheredNoteInfo, ScoreEditor
                 if(first_note_of_chord == i){ break; } //not a bunch of concurrent notes, just a note alone
             }
             
-            // gather info on notes of the chord, for instance their y location (level) abd their duration
-            const int level = converter->noteToLevel(gatheredNoteInfo[i].pitch);
+            // gather info on notes of the chord, for instance their y location (level) and their duration
+            const int level = gatheredNoteInfo[i].level;
             if(level < min_level){ min_level = level; minid = i; }
             if(level > max_level){ max_level = level; maxid = i; }
             
@@ -370,8 +370,8 @@ void analyseNoteInfo( std::vector<NoteRenderInfo>& gatheredNoteInfo, ScoreEditor
                 
                 // determine average note level to know if we put tails above or below
                 // if nothing found (most likely meaning we only have one triplet note alone) use values from the first
-                if(min_level == 999)  min_level = converter->noteToLevel(gatheredNoteInfo[first_note_of_chord].pitch);
-                if(max_level == -999) max_level = converter->noteToLevel(gatheredNoteInfo[first_note_of_chord].pitch);
+                if(min_level == 999)  min_level = gatheredNoteInfo[first_note_of_chord].level;
+                if(max_level == -999) max_level = gatheredNoteInfo[first_note_of_chord].level;
                 const int mid_level = (int)round( (min_level + max_level)/2.0 );
                 
                 const bool tailup = mid_level>=converter->getMiddleCLevel()-3;
@@ -463,7 +463,7 @@ void analyseNoteInfo( std::vector<NoteRenderInfo>& gatheredNoteInfo, ScoreEditor
             }
             else
             {
-                const int level = converter->noteToLevel(gatheredNoteInfo[i].pitch);   
+                const int level = gatheredNoteInfo[i].level;   
                 if(level < min_level) min_level = level;
                 if(level > max_level) max_level = level;
             }
@@ -479,8 +479,8 @@ void analyseNoteInfo( std::vector<NoteRenderInfo>& gatheredNoteInfo, ScoreEditor
                 if(is_triplet)
                 {
                     // if nothing found (most likely meaning we only have one triplet note alone) use values from the first
-                    if(min_level == 999)  min_level = converter->noteToLevel(gatheredNoteInfo[first_triplet].pitch);
-                    if(max_level == -999) max_level = converter->noteToLevel(gatheredNoteInfo[first_triplet].pitch);
+                    if(min_level == 999)  min_level = gatheredNoteInfo[first_triplet].level;
+                    if(max_level == -999) max_level = gatheredNoteInfo[first_triplet].level;
                     
                     int mid_level = (int)round( (min_level + max_level)/2.0 );
                         

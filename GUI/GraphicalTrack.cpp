@@ -50,7 +50,7 @@ namespace AriaMaestosa {
 const int EXPANDED_BAR_HEIGHT = 20;
 const int COLLAPSED_BAR_HEIGHT = 5;
 
-static int grid_x_begin=0, grid_x_end=0, track_name_x_begin=0, track_name_x_end=0;
+static int grid_x_begin=0, grid_x_end=0, track_name_x_begin=0, track_name_x_end=0, sharp_sign_start = -1;
 
 GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
 {
@@ -234,10 +234,10 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 			}
 		}			
 		
-        // modes
+        
         if(mousey > from_y+10 and mousey < from_y+40)
 		{
-
+            // modes
             if(winX > score_view->x and winX < score_view->x+30)
 			{
                 editorMode=SCORE;
@@ -269,7 +269,23 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 			{
                 editorMode=CONTROLLER;
             }
-            
+        }
+        
+        if(editorMode==SCORE and mousey > from_y+15 and mousey < from_y+30)
+		{
+            // sharp/flat signs
+            if(winX > sharp_sign_start-7 and winX < sharp_sign_start+7)
+            {
+                scoreEditor->signClicked(SHARP);
+            }
+            else if(winX > sharp_sign_start+13 and winX < sharp_sign_start+27)
+            {
+                scoreEditor->signClicked(FLAT);
+            }
+            else if(winX > sharp_sign_start+33 and winX < sharp_sign_start+47)
+            {
+                scoreEditor->signClicked(NATURAL);
+            }
         }
         
         return false;
@@ -608,6 +624,47 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     controller_view->move(x+draw_x, y+7);
     controller_view->render();
     draw_x += 32;
+    
+    // --------------------------- sharp/flat buttons if score mode -------------------------
+    if(editorMode==SCORE)
+    {
+        AriaRender::color(1,1,1);
+        
+        //draw_x += 5;
+        
+        comboBorderDrawable->move(x+draw_x,y+7);
+        comboBorderDrawable->setFlip(false, false);
+        comboBorderDrawable->render();
+        
+        comboBodyDrawable->move(x+draw_x+14, y+7);
+        comboBodyDrawable->scale(48 /*desired width*/ /4 , 1);
+        comboBodyDrawable->render();
+        
+        comboBorderDrawable->move(x+draw_x+14+45, y+7 );
+        comboBorderDrawable->setFlip(true,false);
+        comboBorderDrawable->render();
+        
+        AriaRender::color(0,0,0);
+        
+        draw_x += 15;
+        
+        sharp_sign_start = x+draw_x;
+        
+        sharpSign->move(x+draw_x, y+21 );
+        sharpSign->render();
+        
+        draw_x += 20;
+        
+        flatSign->move(x+draw_x, y+24 );
+        flatSign->render();
+        
+        draw_x += 20;
+        
+        naturalSign->move(x+draw_x, y+21 );
+        naturalSign->render();
+        
+        draw_x += 20;
+    }
     
     // ------------------------------- instrument name ---------------------------
     if(!focus) AriaRender::color(0.5, 0.5, 0.5);

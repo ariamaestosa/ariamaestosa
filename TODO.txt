@@ -102,9 +102,11 @@ NOTE: sorry, this is very raw :)
  ## crash when emptying tempo in control view [reported, not tested] 
  ## ram-zet, rip.midi : look at score for intro choir...
 
+* per-note signs are neither undoable nor remembered on save
+
 + scroll a bit so you no more see measure 1. then start playing song from measure one. you can see the red line at the left of the screen
 
-+ notes in score can only be natural or sharp, never flat. (EasyBeat uses flats when the current key uses flats at armature)
++ notes in score can only be natural or sharp, never flat. (EasyBeat uses flats when the current key uses flats in key sig)
 
 + upon opening Aria, horizontal scrollbar is slightly too short. it goes back into place when editing notes (selecting by dragging)
 
@@ -116,6 +118,9 @@ NOTE: sorry, this is very raw :)
 
 - if a midi has control events in an empty track they might be removed during import (though what could go there? tempo events are already stored in sequence)
 - hitting space should work even if focus is in top bar
+
+- score : flat/sharp/natural signs tend to appear obscured (behind note tail if in a group... behind silence... etc.)
+- score : moving a sharp/flat/natural note up or down makes it lose its properties
 
 + scons warning : 'install' is found inside 'uninstall' (fix commited, not tested)
 + linux: scons install fails from SVN because docs are not found
