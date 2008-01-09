@@ -41,10 +41,10 @@ FOUND_NOTHING
 // e.g. F# will be described as SHARP as note, but if you put it in a score where all Fs are #, its visible sign will be NONE
 enum
 {
-    SHARP,
-    FLAT,
-    NATURAL,
-    NONE
+    SHARP = 0,
+    FLAT = 1,
+    NATURAL = 2,
+    NONE = 3
 };
 
 enum NOTES

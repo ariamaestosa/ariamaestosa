@@ -45,6 +45,8 @@ NOTE: sorry, this is very raw :)
 
  * allow setting notes sharp/flat in a graphical way
 
+* make more features accessible graphcially (as opposed to keyboard-only)
+
  - change whole track pitch/volume
  
   - show song duration
@@ -102,7 +104,7 @@ NOTE: sorry, this is very raw :)
  ## crash when emptying tempo in control view [reported, not tested] 
  ## ram-zet, rip.midi : look at score for intro choir...
 
-* per-note signs are neither undoable nor remembered on save
+* per-note signs are not undoable (should be an Action)
 
 + scroll a bit so you no more see measure 1. then start playing song from measure one. you can see the red line at the left of the screen
 
