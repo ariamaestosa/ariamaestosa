@@ -219,16 +219,14 @@ void Note::setEnd(const int ticks)
 // serialization
 void Note::saveToFile(wxFileOutputStream& fileout)
 {
-	
-    // FIXME - maybe don't save string/fret if no guitar editor used?
-    // FIXME - maybe don't save selected unless it is selected?
 	writeData( wxT("<note pitch=\"") + to_wxString(pitchID), fileout );
 	writeData( wxT("\" start=\"") + to_wxString(startTick), fileout );
 	writeData( wxT("\" end=\"") + to_wxString(endTick), fileout );
 	writeData( wxT("\" volume=\"") + to_wxString(volume), fileout );
-	writeData( wxT("\" fret=\"") + to_wxString(fret), fileout );
-	writeData( wxT("\" string=\"") + to_wxString(string), fileout );
-	writeData( wxT("\" selected=\"") + wxString( selected?wxT("true"):wxT("false")), fileout );
+    
+	if(fret != -1) writeData( wxT("\" fret=\"") + to_wxString(fret), fileout );
+	if(string != -1) writeData( wxT("\" string=\"") + to_wxString(string), fileout );
+    if(selected) writeData( wxT("\" selected=\"") + wxString( selected?wxT("true"):wxT("false")), fileout );
     
     if(preferred_accidental_sign != -1) writeData( wxT("\" accidentalsign=\"") + to_wxString(preferred_accidental_sign), fileout );
     
@@ -282,7 +280,7 @@ bool Note::readFromFile(irr::io::IrrXMLReader* xml)
 	else string = -1;
 	
 	const char* selected_c = xml->getAttributeValue("selected");
-	if(selected_c!=NULL)
+	if(selected_c != NULL)
 	{
 		if( !strcmp(selected_c, "true") ) selected = true;
 		else if( !strcmp(selected_c, "false") ) selected = false;
@@ -293,11 +291,7 @@ bool Note::readFromFile(irr::io::IrrXMLReader* xml)
 		}
 		
 	}
-	else
-	{
-		selected = false;
-		std::cout << "Missing info from file: note selected" << std::endl;
-	}
+	else selected = false;
 			
 	
 	return true;

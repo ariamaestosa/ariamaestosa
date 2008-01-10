@@ -11,6 +11,7 @@
 - Started switching rendering from plain OpenGL to higher-level primitives, cleaning up code
 - Fixed editing time signatures in manual mode
 - Fixed rendering of silences in empty measures when using manual time signature management
+- Removed useless stuff from .Aria files, making them significantly smaller
  
  1.1b6
 - fixed crash when removing tempo events
