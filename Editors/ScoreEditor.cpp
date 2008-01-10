@@ -468,31 +468,24 @@ ScoreMidiConverter* ScoreEditor::getScoreMidiConverter()
 }
 
 // user clicked on a sign in the track's header
-void ScoreEditor::signClicked(const int sign)
+void ScoreEditor::setNoteSign(const int sign, const int noteID)
 {
-    // FIXME - should be cancellable?
-    const int noteAmount = track->getNoteAmount();
-    for(int n=0; n<noteAmount; n++)
-	{
-        if(track->isNoteSelected(n))
-        {
-            //const int notePitch = track->getNotePitchID(n);
-            const int noteLevel = converter->noteToLevel(track->getNote(n));
-            
-            const int new_pitch = converter->getMidiNoteForLevelAndSign(noteLevel, sign);
-            if(new_pitch == -1)
-            {
-                wxBell();
-                return;
-            }
-            
-            Note* note = track->getNote(n);
-            note->pitchID = new_pitch;
-            note->play(true);
-            
-            if(sign != NATURAL) note->preferred_accidental_sign = sign;
-        }
+    
+    const int noteLevel = converter->noteToLevel(track->getNote(noteID));
+    
+    const int new_pitch = converter->getMidiNoteForLevelAndSign(noteLevel, sign);
+    if(new_pitch == -1)
+    {
+        wxBell();
+        return;
     }
+    
+    Note* note = track->getNote(noteID);
+    note->pitchID = new_pitch;
+    note->play(true);
+    
+    if(sign != NATURAL) note->preferred_accidental_sign = sign;
+    
 }
 
 #pragma mark -

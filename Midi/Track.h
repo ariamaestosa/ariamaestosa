@@ -77,6 +77,7 @@ namespace Action
 	class NumberPressed;
 	class UpdateGuitarTuning;
 	class Paste;
+    class SetAccidentalSign;
 }
 
 const int SELECTED_NOTES = -1;
@@ -106,7 +107,8 @@ class Track
 	friend class Action::NumberPressed;
 	friend class Action::UpdateGuitarTuning;
 	friend class Action::Paste;
-	
+	friend class Action::SetAccidentalSign;
+    
 	DECLARE_LEAK_CHECK();
 	
     MainFrame* frame;

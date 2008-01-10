@@ -96,15 +96,9 @@ NOTE: sorry, this is very raw :)
  ************************* BUGS: *************************
   
  ## CAN'T REPRODUCE:
- ## crash when opening file by double-clicking on it and aria is currently closed (can't reproduce)
- ## switching to score editor while playback causes crash (can't reproduce)
  ## scale doesn't always work (no clue why... multiple time sig changes? midi imported? multiple docs open?) (can't reproduce)
  ## can't undo 'paste'
- ## awake.mid : crash near the end
  ## crash when emptying tempo in control view [reported, not tested] 
- ## ram-zet, rip.midi : look at score for intro choir...
-
-* per-note signs are not undoable (should be an Action)
 
 + scroll a bit so you no more see measure 1. then start playing song from measure one. you can see the red line at the left of the screen
 

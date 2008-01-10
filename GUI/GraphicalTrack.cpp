@@ -26,6 +26,7 @@
 #include "Config.h"
 
 #include "AriaCore.h"
+#include "Actions/SetAccidentalSign.h"
 #include "Pickers/InstrumentChoice.h"
 #include "Pickers/DrumChoice.h"
 #include "Pickers/MagneticGrid.h"
@@ -276,15 +277,18 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
             // sharp/flat signs
             if(winX > sharp_sign_start-7 and winX < sharp_sign_start+7)
             {
-                scoreEditor->signClicked(SHARP);
+                //scoreEditor->signClicked(SHARP);
+                track->action( new Action::SetAccidentalSign(SHARP) );
             }
             else if(winX > sharp_sign_start+13 and winX < sharp_sign_start+27)
             {
-                scoreEditor->signClicked(FLAT);
+                //scoreEditor->signClicked(FLAT);
+                track->action( new Action::SetAccidentalSign(FLAT) );
             }
             else if(winX > sharp_sign_start+33 and winX < sharp_sign_start+47)
             {
-                scoreEditor->signClicked(NATURAL);
+                //scoreEditor->signClicked(NATURAL);
+                track->action( new Action::SetAccidentalSign(NATURAL) );
             }
         }
         

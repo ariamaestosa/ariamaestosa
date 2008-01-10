@@ -695,7 +695,6 @@ void Sequence::scale(
         if(rel_first_note) relative_to = tracks[currentTrack].getFirstNoteTick(true);
         else if(rel_begin) relative_to=0;
      
-        //tracks[currentTrack].saveUndoMemory();
         tracks[currentTrack].action( new Action::ScaleTrack(factor, relative_to, true) );
     }
 

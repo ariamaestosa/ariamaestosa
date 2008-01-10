@@ -136,7 +136,8 @@ public:
         void renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& vector, const bool recursion=false);
         void renderNote_pass2(NoteRenderInfo& renderInfo);
 		
-        void signClicked(const int sign);
+        // called from 'SetAccidentalSign' Action
+        void setNoteSign(const int sign, const int noteID);
         
         int getYStep();
         int getHalfNoteHeight();
