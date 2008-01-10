@@ -482,7 +482,6 @@ void ScoreEditor::setNoteSign(const int sign, const int noteID)
     
     Note* note = track->getNote(noteID);
     note->pitchID = new_pitch;
-    note->play(true);
     
     if(sign != NATURAL) note->preferred_accidental_sign = sign;
     
