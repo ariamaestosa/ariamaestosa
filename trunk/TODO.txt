@@ -100,9 +100,14 @@ NOTE: sorry, this is very raw :)
  ## can't undo 'paste'
  ## crash when emptying tempo in control view [reported, not tested] 
 
+* test italian translation installing/uninstalling/using on linux
+
 + scroll a bit so you no more see measure 1. then start playing song from measure one. you can see the red line at the left of the screen
 
 + notes in score can only be natural or sharp, never flat. (EasyBeat uses flats when the current key uses flats in key sig)
+
+- preferences dialog is awful
++ do something if opening docs fail!
 
 + upon opening Aria, horizontal scrollbar is slightly too short. it goes back into place when editing notes (selecting by dragging)
 

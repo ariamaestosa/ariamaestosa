@@ -22,6 +22,7 @@
 #include "AriaCore.h"
 
 #include "GUI/MainFrame.h"
+#include "languages.h"
 
 namespace AriaMaestosa {
 	
@@ -46,10 +47,8 @@ Preferences::Preferences(MainFrame* parent) : wxDialog(NULL, wxID_ANY,  _("Prefe
 	{
 	wxStaticText* lang_label = new wxStaticText(this, wxID_ANY,  _("Language"));
 	vert_sizer->Add( lang_label, 0, wxALL, 10 );
-	
-	wxString choices[3] = { wxT("System"), wxT("English"), wxT("Fran\u00E7ais")};
 		
-	lang_combo = new wxChoice(this, 1, wxDefaultPosition, wxDefaultSize, 3, choices );
+	lang_combo = new wxChoice(this, 1, wxDefaultPosition, wxDefaultSize, getLanguageList() );
 	vert_sizer->Add( lang_combo, 0, wxALL, 10 );
 	}
 	
@@ -64,27 +63,11 @@ Preferences::Preferences(MainFrame* parent) : wxDialog(NULL, wxID_ANY,  _("Prefe
 	vert_sizer->Add( play_combo, 0, wxALL, 10 );
 	}
 	
-
-	wxConfig* prefs;
+    lang_combo->Select( getDefaultLanguageID() );
+    
+    wxConfig* prefs;
 	prefs = (wxConfig*) wxConfig::Get();
-	
-	// --- read language from prefs -----
-	long language;
-	if(prefs->Read( wxT("lang"), &language) )
-	{
-		if(language == wxLANGUAGE_DEFAULT)
-		{
-			lang_combo->Select(0);
-		}
-		else if(language == wxLANGUAGE_ENGLISH)
-		{
-			lang_combo->Select(1);
-		}
-		else if(language == wxLANGUAGE_FRENCH)
-		{
-			lang_combo->Select(2);
-		}
-	}
+    
 	// --- read play settings from prefs -----
 	long play_v;
 	if(prefs->Read( wxT("playDuringEdit"), &play_v) )
@@ -137,33 +120,11 @@ void Preferences::show()
 {
 	Center();
 	modalCode = ShowModal();
-	//Show();
 }
 
 void Preferences::languageSelected(wxCommandEvent& evt)
 {
-
-	wxConfig* prefs = (wxConfig*) wxConfig::Get();
-	
-	// wxLANGUAGE_DEFAULT
-	// wxLANGUAGE_ENGLISH
-	// wxLANGUAGE_FRENCH
-	
-	if( lang_combo->GetStringSelection() == wxT("System") )
-	{
-		prefs->Write( wxT("lang"), wxLANGUAGE_DEFAULT );
-	}
-	else if( lang_combo->GetStringSelection() == wxT("English") )
-	{
-		prefs->Write( wxT("lang"), wxLANGUAGE_ENGLISH );
-	}
-	else if( lang_combo->GetStringSelection() == wxT("Fran\u00E7ais") )
-	{
-		prefs->Write( wxT("lang"), wxLANGUAGE_FRENCH );
-	}
-	
-	prefs->Flush();
-	
+    setDefaultLanguage( lang_combo->GetStringSelection() );	
 }
 
 void Preferences::playSelected(wxCommandEvent& evt)
@@ -177,7 +138,6 @@ void Preferences::playSelected(wxCommandEvent& evt)
 void Preferences::okClicked(wxCommandEvent& evt)
 {
 	wxDialog::EndModal(modalCode);
-	//Hide();
 }
 
 }
