@@ -104,6 +104,7 @@ def uninstall_Aria_linux():
     os.system("rm -r " + resource_path)
     os.system("rm " + app_path)
     os.system("rm " + locale_path + "fr/LC_MESSAGES/aria_maestosa.mo")
+    os.system("rm " + locale_path + "it/LC_MESSAGES/aria_maestosa.mo")
     sys.exit(0)
    
 def sys_command(command):
@@ -154,6 +155,7 @@ def install_Aria_linux():
     
     #copy translations
     os.system("cp ./Resources/fr.lproj/aria_maestosa.mo " + locale_path + "fr/LC_MESSAGES/aria_maestosa.mo")
+    os.system("cp ./Resources/it.lproj/aria_maestosa.mo " + locale_path + "it/LC_MESSAGES/aria_maestosa.mo")
     
     #copy docs
     os.system("cp -r ./../docs " + resource_path)
