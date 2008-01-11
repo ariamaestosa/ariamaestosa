@@ -17,6 +17,7 @@
 #include "languages.h"
 #include <iostream>
 #include "wx/config.h"
+#include "wx/stdpaths.h"
 
 namespace AriaMaestosa {
 
@@ -123,3 +124,4 @@ void setDefaultLanguage(wxString langname)
 }
 
 }
+
