@@ -116,6 +116,8 @@ NOTE: sorry, this is very raw :)
 
 + show better warning message when language selected is not supported by OS
 
++ "select alsa midi port", guitar tunings, are not translatable
+
 + what's up with glutInit? wxGlCanvas seems to call it. Crashes suse 10.1.
 + make it easier in code to add new langauges*
 
