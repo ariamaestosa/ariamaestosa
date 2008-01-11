@@ -114,6 +114,8 @@ NOTE: sorry, this is very raw :)
 + when wait dialog appears, you can still edit tracks and do operations that may be harmful to current process.
     yet you can't make it modal otherwise the background process stops.
 
++ show better warning message when language selected is not supported by OS
+
 + what's up with glutInit? wxGlCanvas seems to call it. Crashes suse 10.1.
 + make it easier in code to add new langauges*
 
@@ -123,9 +125,8 @@ NOTE: sorry, this is very raw :)
 - score : flat/sharp/natural signs tend to appear obscured (behind note tail if in a group... behind silence... etc.)
 - score : moving a sharp/flat/natural note up or down makes it lose its properties
 
-+ scons warning : 'install' is found inside 'uninstall' (fix commited, not tested)
 + linux: scons install fails from SVN because docs are not found
-+ linux: no need to install icns files
++ linux: no need to install icns files, nor lprojs
 - linux: exporting to audio via timidity : give better feedback about progression?
 
 + unsure note length is okay with measure != 4/4. check forumlae on wikipedia : http://en.wikipedia.org/wiki/Modern_musical_symbols

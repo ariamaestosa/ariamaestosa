@@ -213,11 +213,13 @@ def compile_Aria(build_type, which_os):
     Actions/ResizeNotes.cpp
     Actions/ScaleSong.cpp
     Actions/ScaleTrack.cpp
+    Actions/SetAccidentalSign.cpp
     Actions/SetNoteVolume.cpp
     Actions/ShiftFrets.cpp
     Actions/ShiftString.cpp
     Actions/SnapNotesToGrid.cpp
     Actions/UpdateGuitarTuning.cpp
+    AriaCore.cpp
     Clipboard.cpp
     Dialogs/About.cpp
     Dialogs/CopyrightWindow.cpp
@@ -249,6 +251,7 @@ def compile_Aria(build_type, which_os):
     IO/TablatureExporter.cpp
     IO/NotationExport.cpp
     irrXML/irrXML.cpp
+    languages.cpp
     LeakCheck.cpp
     main.cpp
     Midi/ControllerEvent.cpp
