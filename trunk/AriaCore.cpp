@@ -71,11 +71,6 @@ MainFrame* getMainFrame()
     return wxGetApp().frame;
 }
 
-GLPane* getGLPane()
-{
-    return glPane;
-}
-
 MeasureBar* getMeasureBar()
 {
     return wxGetApp().frame->getCurrentSequence()->measureBar;

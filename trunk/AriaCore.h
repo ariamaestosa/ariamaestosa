@@ -48,7 +48,6 @@ namespace AriaMaestosa
     class InstrumentChoice;
     
 MainFrame* getMainFrame();
-GLPane* getGLPane();
 MeasureBar* getMeasureBar();
 Sequence* getCurrentSequence();
 

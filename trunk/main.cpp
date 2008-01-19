@@ -94,8 +94,8 @@ bool wxWidgetApp::OnInit()
 
     frame=new MainFrame();
 	frame->init();
-	frame->glPane->render();
-    frame->glPane->swapBuffers();
+    Display::render();
+    //frame->glPane->swapBuffers();
 	
 	SetTopWindow(frame);
 				 

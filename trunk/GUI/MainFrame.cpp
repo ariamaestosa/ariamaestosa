@@ -239,7 +239,6 @@ MainFrame::~MainFrame()
     
 }
 
-// this needs to be seperate from the constructor to ensure thet getMainFrame() does not return null
 void MainFrame::init()
 {
     Centre();
@@ -429,7 +428,7 @@ void MainFrame::init()
     glPane=new GLPane(this, args);
     verticalSizer->Add(glPane, 0, wxALL, 2, Location::Center() );
     
-    // give a pointer to out GL Pane to AriaCore
+    // give a pointer to our GL Pane to AriaCore
     Core::setGLPane(glPane);
 
     // -------------------------- Horizontal Scrollbar ----------------------------
@@ -494,8 +493,8 @@ verticalSizer->Add(verticalScrollbar, 0, wxALL, 0, Location::East() );
 
 	glPane->isNowVisible();
 
-    glPane->setCurrent();
-    glPane->initOpenGLFor2D();
+    //glPane->setCurrent();
+    //glPane->initOpenGLFor2D();
 
 	ImageProvider::loadImages();
 

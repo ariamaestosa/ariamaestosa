@@ -460,7 +460,6 @@ int Sequence::getTotalHeight()
 
 void Sequence::addTrack()
 {
-    //tracks.push_back(new Track(getMainFrame(), this));
 	if(currentTrack>=0 and currentTrack<tracks.size()) tracks.add(new Track(getMainFrame(), this), currentTrack+1); // add new track below active one
 	else tracks.push_back(new Track(getMainFrame(), this));
 	
