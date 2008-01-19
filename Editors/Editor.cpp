@@ -101,8 +101,6 @@ void Editor::rightClick(RelativeXCoord x, int y)
 	
 	if( result == FOUND_NOTE or result == FOUND_SELECTED_NOTE )
 	{
-		//wxPoint winCoord = getGLPane()->ClientToScreen(wxPoint(x.getRelativeTo(WINDOW),y));
-		//showVolumeSlider(winCoord.x, winCoord.y, noteID, track);
         int screen_x, screen_y;
         Display::clientToScreen(x.getRelativeTo(WINDOW),y, &screen_x, &screen_y);
         showVolumeSlider( screen_x, screen_y, noteID, track);

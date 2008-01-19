@@ -26,42 +26,17 @@
 #include "ptr_vector.h"
 #include "Editors/RelativeXCoord.h"
 #include "Config.h"
+#include "GUI/MainPane.h"
 #include <vector>
 
 namespace AriaMaestosa {
 
-class MainFrame; // forward
-class Track; // forward
-class GraphicalTrack; // forward
-class Note;
-class Sequence;
-class MouseDownTimer;
-class MeasureBar;
-
-class GLPane : public wxGLCanvas
+    class MainFrame;
+    
+class GLPane : public wxGLCanvas, public MainPane
 {
     
 	DECLARE_LEAK_CHECK();
-	
-    MouseDownTimer* mouseDownTimer;
-	
-    RelativeXCoord mousex_initial;
-	int mousey_initial;
-    RelativeXCoord mousex_current;
-	int mousey_current;
-    bool isMouseDown_bool;
-    
-    int currentTick;
-    int draggingTrack; // which track the user is dragging (in a track reordering process), or -1 if none
-	
-    std::vector<int> positionsInDock;
-    
-    // used during playback
-    int timeBeforeFollowingPlayback;
-    int lastTick;
-    int playbackStartTick;
-
-    bool scrollToPlaybackPosition;
 
 public:
         
@@ -69,42 +44,17 @@ public:
     GLPane(MainFrame* parent, int* args);
     ~GLPane();
 
-    // --------------------- read-only --------------------
-    
-    MainFrame* mainFrame;
-    bool isVisible; // is frame shown
-    bool leftArrow;
-    bool rightArrow;
-    
-    // -----------------------------------------------------
-    
 	void resized(wxSizeEvent& evt);
-	
-
-    // render loop
-    void enterPlayLoop();
-    void playbackRenderLoop();
-    void setPlaybackStartTick(int newValue);
-    void setCurrentTick(int currentTick=-1);
-    void exitPlayLoop();
-    void scrollNowToPlaybackPosition();
 
     // size
     int getWidth();
     int getHeight();
     
-	int getDraggedTrackID();
-    
     // OpenGL stuff
     void setCurrent();
     void swapBuffers();
-    void render( bool paintEvent = false );
     void initOpenGLFor3D();
     void initOpenGLFor2D();
-    
-    void paintEvent(wxPaintEvent& evt);
-    
-    void isNowVisible(); // called when frame is made visible
     
     // events
     void mouseMoved(wxMouseEvent& event);
@@ -118,20 +68,11 @@ public:
     void keyReleased(wxKeyEvent& event);
 	void instrumentPopupSelected(wxCommandEvent& evt);
 	void drumPopupSelected(wxCommandEvent& evt);
-	
-    bool isMouseDown();
-    RelativeXCoord getMouseX_current();
-    int getMouseY_current();
-    RelativeXCoord getMouseX_initial();
-    int getMouseY_initial();
     
-    bool isSelectMorePressed();
-    bool isSelectLessPressed();
-    bool isCtrlDown();
+    void render(const bool paintEvent = false);
+    
+    void paintEvent(wxPaintEvent& evt);
 
-    // serialization
-    void saveToFile(wxFileOutputStream& fileout);
-      
     DECLARE_EVENT_TABLE()
 };
 

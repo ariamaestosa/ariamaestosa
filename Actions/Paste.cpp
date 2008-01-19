@@ -83,7 +83,7 @@ namespace AriaMaestosa
 		wxPoint mouseLoc=wxGetMousePosition();
         
         int trackMouseLoc_x, trackMouseLoc_y;
-		//wxPoint trackMouseLoc=getGLPane()->ScreenToClient(mouseLoc);
+
         Display::screenToClient(mouseLoc.x, mouseLoc.y, &trackMouseLoc_x, &trackMouseLoc_y);
         
 		if( atMouse and
