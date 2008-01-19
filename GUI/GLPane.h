@@ -26,14 +26,13 @@
 #include "ptr_vector.h"
 #include "Editors/RelativeXCoord.h"
 #include "Config.h"
-#include "GUI/MainPane.h"
 #include <vector>
 
 namespace AriaMaestosa {
 
     class MainFrame;
     
-class GLPane : public wxGLCanvas, public MainPane
+class GLPane : public wxGLCanvas
 {
     
 	DECLARE_LEAK_CHECK();
@@ -56,24 +55,10 @@ public:
     void initOpenGLFor3D();
     void initOpenGLFor2D();
     
-    // events
-    void mouseMoved(wxMouseEvent& event);
-    void mouseDown(wxMouseEvent& event);
-    void mouseWheelMoved(wxMouseEvent& event);
-    void mouseReleased(wxMouseEvent& event);
-    void rightClick(wxMouseEvent& event);
-    void mouseLeftWindow(wxMouseEvent& event);
-    void mouseHeldDown(); // events will be sent regularly to this method when user holds down mouse
-    void keyPressed(wxKeyEvent& event);
-    void keyReleased(wxKeyEvent& event);
-	void instrumentPopupSelected(wxCommandEvent& evt);
-	void drumPopupSelected(wxCommandEvent& evt);
+    bool prepareFrame();
+    void beginFrame();
+    void endFrame();
     
-    void render(const bool paintEvent = false);
-    
-    void paintEvent(wxPaintEvent& evt);
-
-    DECLARE_EVENT_TABLE()
 };
 
 }

@@ -2,6 +2,7 @@
 #include "main.h"
 #include "GUI/GLPane.h"
 #include "GUI/MainFrame.h"
+#include "GUI/MainPane.h"
 #include "Midi/Sequence.h"
 #include "Pickers/TuningPicker.h"
 #include "Pickers/KeyPicker.h"
@@ -9,25 +10,19 @@
 #include "Pickers/InstrumentChoice.h"
 #include "wx/wx.h"
 
-/*
- *  Stuff global to the app.
- *  This mostly wraps glPane methods. The goal of this is that by including AriaCore.h instead of including
- *  glPane.h you don't by the way include wxWidgets and OpenGL and GLUT headers, making compilation possibly faster
- */
-
 namespace AriaMaestosa
 {
     
-    GLPane* glPane = NULL;
+    MainPane* mainPane = NULL;
 
 
 
 namespace Core
 {  
     
-void setGLPane(GLPane* pane)
+void setMainPane(MainPane* pane)
 {
-    glPane = pane;
+    mainPane = pane;
 }
     
 void activateRenderLoop(bool on)
@@ -85,105 +80,105 @@ namespace Display
 {
     void render()
     {
-        glPane->render();
+        mainPane->render();
     }
     int getWidth()
     {
-        return glPane->getWidth();
+        return mainPane->getWidth();
     }
     int getHeight()
     {
-        return glPane->getHeight();
+        return mainPane->getHeight();
     }
     bool isMouseDown()
     {
-        return glPane->isMouseDown();
+        return mainPane->isMouseDown();
     }
     bool isSelectLessPressed()
     {
-        return glPane->isSelectLessPressed();
+        return mainPane->isSelectLessPressed();
     }
     bool isSelectMorePressed()
     {
-        return glPane->isSelectMorePressed();
+        return mainPane->isSelectMorePressed();
     }
     bool isCtrlDown()
     {
-        return glPane->isCtrlDown();
+        return mainPane->isCtrlDown();
     }
     
     void popupMenu(wxMenu* menu, const int x, const int y)
     {
-        glPane->PopupMenu(menu, x, y);
+        mainPane->PopupMenu(menu, x, y);
     }
     
     
     RelativeXCoord getMouseX_current()
     {
-        return glPane->getMouseX_current();
+        return mainPane->getMouseX_current();
     }
     int getMouseY_current()
     {
-        return glPane->getMouseY_current();
+        return mainPane->getMouseY_current();
     }
     RelativeXCoord getMouseX_initial()
     {
-        return glPane->getMouseX_initial();
+        return mainPane->getMouseX_initial();
     }
     int getMouseY_initial()
     {
-        return glPane->getMouseY_initial();
+        return mainPane->getMouseY_initial();
     }
     
     bool leftArrow()
     {
-        return glPane->leftArrow;
+        return mainPane->leftArrow;
     }
     bool rightArrow()
     {
-        return glPane->rightArrow;
+        return mainPane->rightArrow;
     }
     
     bool isVisible()
     {
-        return glPane->isVisible;
+        return mainPane->isVisible;
     }
     
     void clientToScreen(const int x_in, const int y_in, int* x_out, int* y_out)
     {
-        wxPoint winCoord = glPane->ClientToScreen(wxPoint(x_in,y_in));
+        wxPoint winCoord = mainPane->ClientToScreen(wxPoint(x_in,y_in));
         *x_out = winCoord.x;
         *y_out = winCoord.y;
     }
     void screenToClient(const int x_in, const int y_in, int* x_out, int* y_out)
     {
-        wxPoint screenCoord = glPane->ScreenToClient(wxPoint(x_in,y_in));
+        wxPoint screenCoord = mainPane->ScreenToClient(wxPoint(x_in,y_in));
         *x_out = screenCoord.x;
         *y_out = screenCoord.y;
     }
     
     void enterPlayLoop()
     {
-        glPane->enterPlayLoop();
+        mainPane->enterPlayLoop();
     }
     void exitPlayLoop()
     {
-        glPane->exitPlayLoop();
+        mainPane->exitPlayLoop();
     }
     
     void requestFocus()
     {
-        glPane->SetFocus();
+        mainPane->SetFocus();
     }
     
     int getDraggedTrackID()
     {
-        return glPane->getDraggedTrackID();
+        return mainPane->getDraggedTrackID();
     }
     
     void setPlaybackStartTick(const int tick)
     {
-        glPane->setPlaybackStartTick(tick);
+        mainPane->setPlaybackStartTick(tick);
     }
 }// end Display namespace
 

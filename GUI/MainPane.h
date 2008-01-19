@@ -19,13 +19,16 @@
 
 #include "Config.h"
 #include "Editors/RelativeXCoord.h"
+#include "GUI/GLPane.h"
 #include <vector>
 
-namespace AriaMaestosa {
+namespace AriaMaestosa
+{
 
     class MouseDownTimer;
+    class MainFrame;
     
-    class MainPane 
+class MainPane : public GLPane
 {
     
 	DECLARE_LEAK_CHECK();
@@ -53,8 +56,8 @@ namespace AriaMaestosa {
 public:
         
 	
-    MainPane();
-    virtual ~MainPane();
+    MainPane(MainFrame* mainframe, int* args);
+    ~MainPane();
 
     // --------------------- read-only --------------------
     
@@ -72,10 +75,6 @@ public:
     void setCurrentTick(int currentTick=-1);
     void exitPlayLoop();
     void scrollNowToPlaybackPosition();
-
-    // size
-    virtual int getWidth();
-    virtual int getHeight();
     
 	int getDraggedTrackID();
 
@@ -106,10 +105,13 @@ public:
 
     bool do_render();
     
+    void render(const bool paintEvent = false);
+    void paintEvent(wxPaintEvent& evt);
+    
     // serialization
     void saveToFile(wxFileOutputStream& fileout);
       
-    //DECLARE_EVENT_TABLE()
+    DECLARE_EVENT_TABLE()
 };
 
 }

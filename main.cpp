@@ -21,6 +21,7 @@
 
 #include "GUI/MainFrame.h"
 #include "GUI/GLPane.h"
+#include "GUI/MainPane.h"
 #include "GUI/MeasureBar.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Sequence.h"
@@ -70,7 +71,7 @@ void wxWidgetApp::onIdle(wxIdleEvent& evt)
 {
     if(render_loop_on)
     {
-        frame->glPane->playbackRenderLoop();
+        frame->mainPane->playbackRenderLoop();
         evt.RequestMore();
     }
 }
@@ -95,8 +96,7 @@ bool wxWidgetApp::OnInit()
     frame=new MainFrame();
 	frame->init();
     Display::render();
-    //frame->glPane->swapBuffers();
-	
+
 	SetTopWindow(frame);
 				 
     return true;

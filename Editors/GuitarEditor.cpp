@@ -84,8 +84,7 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current, Rel
 
     const int string_amount = tuning.size();
 
-    // glScissor doesn't seem to follow the coordinate system so this ends up in all kinds of weird code to map to my coord system (from_y going down)
-    AriaRender::beginScissors(10, Display::getHeight() - (20+height + from_y+barHeight+20), width-15, 20+height);
+    AriaRender::beginScissors(10, (20+height + from_y+barHeight+20), width-15, 20+height);
 
     // white background
     AriaRender::primitives();

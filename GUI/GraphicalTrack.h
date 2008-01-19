@@ -26,7 +26,6 @@
 
 namespace AriaMaestosa {
 	
-class GLPane; // forward
 class Track;
 class MagneticGrid;
 class KeyboardEditor;

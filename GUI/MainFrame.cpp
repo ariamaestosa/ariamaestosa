@@ -24,7 +24,7 @@
 #include "Actions/RemoveOverlapping.h"
 
 #include "GUI/MainFrame.h"
-#include "GUI/GLPane.h"
+#include "GUI/MainPane.h"
 #include "GUI/GraphicalTrack.h"
 #include "GUI/MeasureBar.h"
 
@@ -425,11 +425,11 @@ void MainFrame::init()
     args[0]=WX_GL_RGBA;
     args[1]=WX_GL_DOUBLEBUFFER;
     args[2]=0;
-    glPane=new GLPane(this, args);
-    verticalSizer->Add(glPane, 0, wxALL, 2, Location::Center() );
+    mainPane=new MainPane(this, args);
+    verticalSizer->Add( static_cast<wxGLCanvas*>(mainPane), 0, wxALL, 2, Location::Center() );
     
     // give a pointer to our GL Pane to AriaCore
-    Core::setGLPane(glPane);
+    Core::setMainPane(mainPane);
 
     // -------------------------- Horizontal Scrollbar ----------------------------
 
@@ -489,17 +489,9 @@ verticalSizer->Add(verticalScrollbar, 0, wxALL, 0, Location::East() );
 	aboutDialog = new AboutDialog();
 	instrument_picker=new InstrumentChoice();
 	drumKit_picker=new DrumChoice();
-	//volumeSlider=new VolumeSlider();
-
-	glPane->isNowVisible();
-
-    //glPane->setCurrent();
-    //glPane->initOpenGLFor2D();
+	mainPane->isNowVisible();
 
 	ImageProvider::loadImages();
-
-
-
 
 #ifdef _show_dialog_on_startup
 	aboutDialog->show();
@@ -933,19 +925,19 @@ void MainFrame::playClicked(wxCommandEvent& evt)
 	const bool success = PlatformMidiManager::playSequence( getCurrentSequence(), /*out*/ &startTick );
 	if(!success) std::cerr << "Couldn't play" << std::endl;
 
-    glPane->setPlaybackStartTick( startTick );
+    mainPane->setPlaybackStartTick( startTick );
 
     if(startTick == -1 or !success)
-        glPane->exitPlayLoop();
+        mainPane->exitPlayLoop();
 	else
-        glPane->enterPlayLoop();
+        mainPane->enterPlayLoop();
 
 }
 
 void MainFrame::stopClicked(wxCommandEvent& evt)
 {
     if(!playback_mode) return;
-    glPane->exitPlayLoop();
+    mainPane->exitPlayLoop();
 }
 
 void MainFrame::toolsEnterPlaybackMode()
