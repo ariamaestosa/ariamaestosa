@@ -15,12 +15,6 @@
  */
 
 
-/*
- * The GLPane is an OpenGL panel. It is where all drawing is done.
- * It also catches all mouse and keybard events issued on track area and it dispatches them to the appropriate object.
- * (e.g.: if user clicks on track, the event is  by GLPane. Then GLPane finds out where the click was issued and transfers the event to the clicked track.
- */
-
 #include "GUI/GLPane.h"
 #include "AriaCore.h"
 
@@ -31,7 +25,6 @@
 #include <iostream>
 #include <cmath>
 
-#include "GUI/GLPane.h"
 #include "GUI/MainFrame.h"
 #include "Config.h"
 
@@ -40,29 +33,8 @@ namespace AriaMaestosa {
 // ==========================================================================================
 // ==========================================================================================
 
-
-BEGIN_EVENT_TABLE(GLPane, wxGLCanvas)
-EVT_MOTION(GLPane::mouseMoved)
-EVT_LEFT_DOWN(GLPane::mouseDown)
-EVT_LEFT_UP(GLPane::mouseReleased)
-EVT_RIGHT_DOWN(GLPane::rightClick)
-EVT_LEAVE_WINDOW(GLPane::mouseLeftWindow)
-
-EVT_SIZE(GLPane::resized)
-
-EVT_KEY_DOWN(GLPane::keyPressed)
-EVT_KEY_UP(GLPane::keyReleased)
-
-EVT_MENU_RANGE(0+10000,127+10000, GLPane::instrumentPopupSelected)
-EVT_MENU_RANGE(0+20000,127+20000, GLPane::drumPopupSelected)
-
-EVT_MOUSEWHEEL(GLPane::mouseWheelMoved)
-EVT_PAINT(GLPane::paintEvent)
-
-END_EVENT_TABLE()
-
 GLPane::GLPane(MainFrame* mainFrame, int* args) :
-    wxGLCanvas(mainFrame, wxID_ANY,  wxDefaultPosition, wxDefaultSize, 0, wxT("GLCanvas"),  args), MainPane()
+    wxGLCanvas(mainFrame, wxID_ANY,  wxDefaultPosition, wxDefaultSize, 0, wxT("GLCanvas"),  args)
 {
 
     INIT_LEAK_CHECK();
@@ -79,48 +51,6 @@ GLPane::~GLPane()
 }
 
 
-// FIXME - find better solution
-void GLPane::mouseMoved(wxMouseEvent& event)
-{
-    MainPane::mouseMoved(event);
-}
-void GLPane::mouseDown(wxMouseEvent& event)
-{
-    MainPane::mouseDown(event);
-}
-void GLPane::mouseWheelMoved(wxMouseEvent& event)
-{
-    MainPane::mouseWheelMoved(event);
-}
-void GLPane::mouseReleased(wxMouseEvent& event)
-{
-    MainPane::mouseReleased(event);
-}
-void GLPane::rightClick(wxMouseEvent& event)
-{
-    MainPane::rightClick(event);
-}
-void GLPane::mouseLeftWindow(wxMouseEvent& event)
-{
-    MainPane::mouseLeftWindow(event);
-}
-
-void GLPane::keyPressed(wxKeyEvent& event)
-{
-    MainPane::keyPressed(event);
-}
-void GLPane::keyReleased(wxKeyEvent& event)
-{
-    MainPane::keyReleased(event);
-}
-void GLPane::instrumentPopupSelected(wxCommandEvent& evt)
-{
-    MainPane::instrumentPopupSelected(evt);
-}
-void GLPane::drumPopupSelected(wxCommandEvent& evt)
-{
-    MainPane::drumPopupSelected(evt);
-}
 
 void GLPane::resized(wxSizeEvent& evt)
 {
@@ -211,26 +141,47 @@ void GLPane::initOpenGLFor2D()
 int GLPane::getWidth()
 {
 
-    if(isVisible) return GetSize().x;
+    if(Display::isVisible()) return GetSize().x;
     else return 795; // default value
 }
 
 int GLPane::getHeight()
 {
-    if(isVisible) return GetSize().y;
+    // FIXME - is it really necessary to check if it's visible?
+    if(Display::isVisible()) return GetSize().y;
     else return 550; // approximately default
 }
 
-
+/*
 void GLPane::paintEvent(wxPaintEvent& evt)
 {
     render(true);
 }
+*/
+bool GLPane::prepareFrame()
+{
+    if(!GetParent()->IsShown()) return false; 
+    wxGLCanvas::SetCurrent();
+    return true;
+}
+
+void GLPane::beginFrame()
+{
+    initOpenGLFor2D();
+    glClear(GL_COLOR_BUFFER_BIT);
+}
+void GLPane::endFrame()
+{
+    glFlush();
+    SwapBuffers();
+}
+
+/*
 void GLPane::render(const bool paintEvent)
 {
     if(!GetParent()->IsShown()) return; 
     wxGLCanvas::SetCurrent();
-    
+
     if(paintEvent)
     {
         wxPaintDC(this);
@@ -253,7 +204,9 @@ void GLPane::render(const bool paintEvent)
             SwapBuffers();
         }
     }
+
 }
+*/
 
 
 }

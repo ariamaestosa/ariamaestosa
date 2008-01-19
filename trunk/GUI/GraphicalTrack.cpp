@@ -41,7 +41,6 @@
 #include "Editors/RelativeXCoord.h"
 #include "Editors/ControllerEditor.h"
 #include "Editors/ScoreEditor.h"
-#include "GUI/GLPane.h"
 #include "GUI/GraphicalTrack.h"
 #include "GUI/RenderUtils.h"
 #include "IO/IOUtils.h"
@@ -632,9 +631,8 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     // --------------------------- sharp/flat buttons if score mode -------------------------
     if(editorMode==SCORE)
     {
-        AriaRender::color(1,1,1);
-        
-        //draw_x += 5;
+        if(!focus) AriaRender::color(0.5, 0.5, 0.5);
+        else AriaRender::color(1,1,1);
         
         comboBorderDrawable->move(x+draw_x,y+7);
         comboBorderDrawable->setFlip(false, false);

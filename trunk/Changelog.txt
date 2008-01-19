@@ -9,7 +9,7 @@
 - Made zooming smoother by removing unneeded renders
 - Fixed removing empty tracks in imported midis
 - Do not accept empty track names
-- Started switching rendering from plain OpenGL to higher-level primitives, cleaning up code
+- switched rendering from plain OpenGL to higher-level primitives, cleaning up code and making it more modular
 - Fixed editing time signatures in manual mode
 - Fixed rendering of silences in empty measures when using manual time signature management
 - Removed useless stuff from .Aria files, making them significantly smaller

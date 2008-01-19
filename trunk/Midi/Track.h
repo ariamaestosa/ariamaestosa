@@ -49,7 +49,6 @@ class Sequence; // forward
 class GraphicalTrack;
 class MainFrame;
 class ControllerEvent;
-class GLPane;
 class FullTrackUndo;
 class NoteRelocator;
 

@@ -17,6 +17,7 @@
 
 #include "GUI/RenderUtils.h"
 #include "OpenGL.h"
+#include "AriaCore.h"
 #include <cmath>
 #include "wx/wx.h"
 #include <iostream>
@@ -305,7 +306,8 @@ void quad(const int x1, const int y1,
 void beginScissors(const int x, const int y, const int width, const int height)
 {
     glEnable(GL_SCISSOR_TEST);
-    glScissor(x,y,width,height);
+    // glScissor doesn't seem to follow the coordinate system so I need to manually reverse the Y coord
+    glScissor(x, Display::getHeight() - y, width, height);
     
 }
 void endScissors()

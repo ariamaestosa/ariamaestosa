@@ -53,28 +53,28 @@
 
 namespace AriaMaestosa {
 
-/*
-BEGIN_EVENT_TABLE(Mainpane, wxGLCanvas)
 
-EVT_MOTION(Mainpane::mouseMoved)
-EVT_LEFT_DOWN(Mainpane::mouseDown)
-EVT_LEFT_UP(Mainpane::mouseReleased)
-EVT_RIGHT_DOWN(Mainpane::rightClick)
-EVT_LEAVE_WINDOW(Mainpane::mouseLeftWindow)
+BEGIN_EVENT_TABLE(MainPane, wxGLCanvas)
+
+EVT_MOTION(MainPane::mouseMoved)
+EVT_LEFT_DOWN(MainPane::mouseDown)
+EVT_LEFT_UP(MainPane::mouseReleased)
+EVT_RIGHT_DOWN(MainPane::rightClick)
+EVT_LEAVE_WINDOW(MainPane::mouseLeftWindow)
      
-EVT_SIZE(Mainpane::resized)
+EVT_SIZE(MainPane::resized)
      
-EVT_KEY_DOWN(Mainpane::keyPressed)
-EVT_KEY_UP(Mainpane::keyReleased)
+EVT_KEY_DOWN(MainPane::keyPressed)
+EVT_KEY_UP(MainPane::keyReleased)
      
-EVT_MENU_RANGE(0+10000,127+10000, Mainpane::instrumentPopupSelected)
-EVT_MENU_RANGE(0+20000,127+20000, Mainpane::drumPopupSelected)
+EVT_MENU_RANGE(0+10000,127+10000, MainPane::instrumentPopupSelected)
+EVT_MENU_RANGE(0+20000,127+20000, MainPane::drumPopupSelected)
      
-EVT_MOUSEWHEEL(Mainpane::mouseWheelMoved)
-EVT_PAINT(Mainpane::paintEvent)
+EVT_MOUSEWHEEL(MainPane::mouseWheelMoved)
+EVT_PAINT(MainPane::paintEvent)
 
 END_EVENT_TABLE()
-*/
+
 const int tab_width=145;
 const int tabBarY = 0;
 const int measureBarY = 20;
@@ -116,7 +116,7 @@ public:
 // ==========================================================================================
 
 
-MainPane::MainPane()
+MainPane::MainPane(MainFrame* mainframe, int* args) : GLPane(mainframe, args)
 {
 
     INIT_LEAK_CHECK();
@@ -143,6 +143,30 @@ MainPane::MainPane()
 MainPane::~MainPane()
 {
 	delete mouseDownTimer;
+}
+
+void MainPane::paintEvent(wxPaintEvent& evt)
+{
+    render(true);
+}
+
+void MainPane::render(const bool paintEvent)
+{
+    if(!prepareFrame()) return;
+    
+    if(paintEvent)
+    {
+        wxPaintDC(this);
+        beginFrame();
+        if(do_render()) endFrame();
+    }
+    else
+    {
+        wxClientDC(this);
+        beginFrame();
+        if(do_render()) endFrame();
+    }
+    
 }
 
 /*
@@ -824,19 +848,6 @@ bool MainPane::do_render()
     return true;
 
 }
-
-// these ones are virtual and to be overriden, and should not be called
-int MainPane::getWidth()
-{
-    assert(false);
-    return -1;
-}
-int MainPane::getHeight()
-{
-    assert(false);
-    return -1;
-}
-
 
 void MainPane::saveToFile(wxFileOutputStream& fileout)
 {

@@ -393,7 +393,7 @@ bool Sequence::areMouseHeldDownEventsNeeded()
 
 void Sequence::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current, RelativeXCoord mousex_initial, int mousey_initial)
 {
-    // FIXME - dragging tracks has nothing to do in GLPane
+    // FIXME - dragging tracks has nothing to do in the display
 	const int draggedTrack = Display::getDraggedTrackID();
 
 	// if reordering tracks

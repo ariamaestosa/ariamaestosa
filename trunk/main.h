@@ -22,7 +22,6 @@
 namespace AriaMaestosa {
 	
 	class MainFrame;
-	class GLPane;
 	class MeasureBar;
 	
 class wxWidgetApp : public wxApp {

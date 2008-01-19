@@ -38,7 +38,6 @@ namespace AriaMaestosa {
 	
 class ControllerEvent;
 class MeasureBar;
-class GLPane;
 class Action::EditAction;
 
 class Sequence {

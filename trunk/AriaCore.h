@@ -39,7 +39,7 @@ enum ChannelManagementType
 namespace AriaMaestosa
 {
     class MainFrame;
-    class GLPane;
+    class MainPane;
     class MeasureBar;
     class TuningPicker;
     class Sequence;
@@ -54,7 +54,7 @@ Sequence* getCurrentSequence();
 namespace Core
 {
 void activateRenderLoop(bool on);
-void setGLPane(GLPane* pane);
+void setMainPane(MainPane* pane);
 void setImporting(bool on);
 int playDuringEdit();
 void songHasFinishedPlaying();

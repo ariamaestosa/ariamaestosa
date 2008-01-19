@@ -953,9 +953,8 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
     if(!ImageProvider::imagesLoaded()) return;
     const int yscroll = getYScrollInPixels();
 	
-    // glScissor doesn't seem to follow the coordinate system so this ends up in all kinds of weird code to map to my coord system (from_y going down)
     // FIXME - isn't there a 'get track height' function?
-    AriaRender::beginScissors(10, Display::getHeight() - (20+height + from_y+barHeight+20), width-15, 20+height);
+    AriaRender::beginScissors(10, (20+height + from_y+barHeight+20), width-15, 20+height);
 
     // white background
     AriaRender::primitives();

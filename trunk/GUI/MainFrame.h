@@ -30,7 +30,6 @@
 
 namespace AriaMaestosa {
 
-class GLPane; // forward
 class MusicPlayer;
 class CustomNoteSelectDialog;
 class Sequence;
@@ -107,7 +106,7 @@ public:
     // ------- read-only -------
 	int play_during_edit; // what is the user's preference for note preview during edits
 	bool playback_mode;
-    GLPane* glPane;
+    MainPane* mainPane;
 	InstrumentChoice* instrument_picker;
 	DrumChoice* drumKit_picker;
 	TuningPicker* tuningPicker;

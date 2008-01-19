@@ -58,7 +58,7 @@ class MeasureBar
 	bool somethingSelected;
 	bool expandedMode;
 
-	int measureBarY; // remember the latest value given by the GLPane
+	int measureBarY; // remember the latest value given by the renderer
 	
 	int selectedTimeSig;
 	int measureAmount;
