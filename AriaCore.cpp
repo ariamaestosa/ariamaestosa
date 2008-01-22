@@ -78,6 +78,10 @@ Sequence* getCurrentSequence()
     
 namespace Display
 {
+#ifdef NO_OPENGL
+    wxDC* renderDC;
+#endif
+    
     void render()
     {
         mainPane->render();

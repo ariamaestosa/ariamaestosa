@@ -14,6 +14,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#ifndef NO_OPENGL
+
 #ifndef _image_loader
 #define _image_loader
 
@@ -27,4 +29,5 @@ GLuint* loadImage(wxString path, int* imageWidth, int* imageHeight, int* texture
 
 }
 
+#endif
 #endif

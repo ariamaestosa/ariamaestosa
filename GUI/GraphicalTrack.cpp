@@ -21,8 +21,6 @@
 #include <iostream>
 #include <wx/numdlg.h>
 
-#include "OpenGL.h"
-
 #include "Config.h"
 
 #include "AriaCore.h"
@@ -561,8 +559,8 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     
     track_name_x_end = draw_x-8;
     
-    AriaRender::color(0,0,0);
     AriaRender::primitives();
+    AriaRender::color(0,0,0);
     AriaRender::text_with_bounds(&track->getName(), x+track_name_x_begin+10 ,y+26, x+draw_x - 25);
 
     AriaRender::images();

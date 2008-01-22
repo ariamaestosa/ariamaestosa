@@ -420,13 +420,18 @@ void MainFrame::init()
     boxSizer->Add(displayZoom, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
     displayZoom->SetRange(0, 500);
 
-    // -------------------------- GL Pane ----------------------------
+    // -------------------------- RenderPane ----------------------------
+#ifndef NO_OPENGL
     int args[3];
     args[0]=WX_GL_RGBA;
     args[1]=WX_GL_DOUBLEBUFFER;
     args[2]=0;
     mainPane=new MainPane(this, args);
     verticalSizer->Add( static_cast<wxGLCanvas*>(mainPane), 0, wxALL, 2, Location::Center() );
+#else
+    mainPane=new MainPane(this, NULL);
+    verticalSizer->Add( static_cast<wxPanel*>(mainPane), 0, wxALL, 2, Location::Center() );
+#endif
     
     // give a pointer to our GL Pane to AriaCore
     Core::setMainPane(mainPane);

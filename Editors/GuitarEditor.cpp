@@ -258,48 +258,50 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current, Rel
 
         // FIXME - what about flats?
         
+        wxString label;
+        
         switch(note){
             case 0:
-                AriaRender::small_character('B', text_x, text_y);
+                label = wxT("B");
                 break;
             case 1:
-                AriaRender::small_text("A#", text_x, text_y);
+                label = wxT("A#");
                 break;
             case 2:
-                AriaRender::small_character('A', text_x, text_y);
+                label = wxT("A");
                 break;
             case 3:
-                AriaRender::small_text("G#", text_x, text_y);
+                label = wxT("G#");
                 break;
             case 4:
-                AriaRender::small_character('G', text_x, text_y);
+                label = wxT("G");
                 break;
             case 5:
-                AriaRender::small_text("F#", text_x, text_y);
+                label = wxT("F#");
                 break;
             case 6:
-                AriaRender::small_character('F', text_x, text_y);
+                label = wxT("F");
                 break;
             case 7:
-                AriaRender::small_character('E', text_x, text_y);
+                label = wxT("E");
                 break;
             case 8:
-                AriaRender::small_text("D#", text_x, text_y);
+                label = wxT("D#");
                 break;
             case 9:
-                AriaRender::small_character('D', text_x, text_y);
+                label = wxT("D");
                 break;
             case 10:
-                AriaRender::small_text("C#", text_x, text_y);
+                label = wxT("C#");
                 break;
             case 11:
-                AriaRender::small_character('C', text_x, text_y);
+                label = wxT("C");
                 break;
         } // end switch
 
-        char buffer[2];
-        sprintf (buffer, "%d", 10-octave);
-        AriaRender::text_append(buffer);
+        label += to_wxString(10-octave);
+        
+        AriaRender::small_text( toCString(label), text_x, text_y );
     }//next
 
 

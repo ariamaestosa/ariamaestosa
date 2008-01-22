@@ -43,8 +43,6 @@ const float current_file_version = 1.0;
 
 #include "IO/IOUtils.h"
 
-#include "OpenGL.h"
-
 #include "irrXML/irrXML.h"
 
 namespace AriaMaestosa {

@@ -49,7 +49,6 @@ namespace AriaRender
     void text(const char* string, const int x, const int y);
     void text(wxString* string, const int x, const int y);
     int text_return_end_x(wxString* string, const int x, const int y);
-    void text_append(const char* string); //  appends to previous rendered text
     void small_text(const char* string, const int x, const int y);
     void small_text_newline_between_words(const char* string, const int x, const int y);
     void character(const char character, const int x, const int y);

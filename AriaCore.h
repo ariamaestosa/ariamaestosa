@@ -19,8 +19,10 @@
 #define _ariacore_
 
 #include "Editors/RelativeXCoord.h"
+#include "Config.h"
 
 class wxMenu;
+class wxDC;
 
 enum
 {
@@ -67,6 +69,10 @@ InstrumentChoice* getInstrumentPicker();
 namespace Display
 {
      
+    #ifdef NO_OPENGL
+    extern wxDC* renderDC;
+    #endif
+    
 void render();
 int getWidth();
 int getHeight();

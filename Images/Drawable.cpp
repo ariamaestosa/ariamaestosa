@@ -19,7 +19,11 @@
 #include "Config.h"
 #include <iostream>
 
+#ifndef NO_OPENGL
 #include "OpenGL.h"
+#else
+#include "AriaCore.h"
+#endif
 
 #include "wx/wx.h"
 
@@ -120,6 +124,7 @@ void Drawable::rotate(int angle)
 
 void Drawable::render()
 {
+#ifndef NO_OPENGL
     assert(image!=NULL);
     
     glLoadIdentity();
@@ -130,7 +135,8 @@ void Drawable::render()
 	{
         glScalef(xscale, yscale, 1);
     }
-    
+
+     // unused
     if(angle!=0)
 	{
         glRotatef(angle, 0,0,1);   
@@ -153,7 +159,65 @@ void Drawable::render()
     glVertex2f( -hotspotX, image->height-hotspotY );
     
     glEnd();
+#else
     
+    if(xflip or yflip or xscale != 1 or yscale != 1 or angle!=0)
+    {
+        int hotspotX_mod = hotspotX;
+        int hotspotY_mod = hotspotY;
+        
+        wxImage modimage = image->image;
+        
+        if(xflip) modimage = modimage.Mirror();
+        if(yflip) modimage = modimage.Mirror(false);
+        
+        if(angle == 90)
+        {
+            modimage = modimage.Rotate90();
+            if(!xflip) hotspotX_mod = hotspotX + image->width;
+            else hotspotX_mod = hotspotX - image->width;
+            //hotspotY_mod = hotspotY - image->height;
+        }
+        
+        if(xscale != 1 or yscale != 1) modimage.Rescale( image->width * xscale, image->height * yscale );
+        
+        wxBitmap modbitmap(modimage);
+        Display::renderDC -> DrawBitmap( modbitmap, x - hotspotX_mod, y - hotspotY_mod);
+    }
+    else
+    {
+        Display::renderDC -> DrawBitmap( *image->bitmap, x - hotspotX, y - hotspotY);
+    }
+    
+    /*
+     // fading an image
+     if(image.Ok())
+     {
+         // fade to white, can be changed to fade towards other colors
+         wxColor fadeto=wxColor(255,255,255);
+         
+         //change this factor to your needs, 0 will give the original image, 255 a complete white image
+         unsigned int fade_factor=200;
+         
+         unsigned int fade_r=fadeto.Red()*fade_factor;
+         unsigned int fade_g=fadeto.Green()*fade_factor;
+         unsigned int fade_b=fadeto.Blue()*fade_factor;
+         unsigned int fade_complement=255-fade_factor;
+         
+         unsigned int pixelcount=image.GetHeight()*image.GetWidth();
+         unsigned char *data=image.GetData();
+         for(unsigned int i=0; i<pixelcount; i++)
+         {
+             // could be optimized by using three 256-byte lookup tables
+             data[0]=(data[0]*fade_complement + fade_r)>>8;
+             data[1]=(data[1]*fade_complement + fade_g)>>8;
+             data[2]=(data[2]*fade_complement + fade_b)>>8;
+             data+=3;
+         }
+     }
+     */
+        
+#endif
 }
 
 int Drawable::getImageWidth()
