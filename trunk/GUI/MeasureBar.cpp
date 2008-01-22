@@ -23,7 +23,6 @@
 #include "Actions/InsertEmptyMeasures.h"
 #include "Actions/RemoveMeasures.h"
 
-#include "OpenGL.h"
 #include "AriaCore.h"
 #include "LeakCheck.h"
 

@@ -14,6 +14,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include "Config.h"
+#ifndef NO_OPENGL
 
 #include "GUI/GLPane.h"
 #include "AriaCore.h"
@@ -26,7 +28,6 @@
 #include <cmath>
 
 #include "GUI/MainFrame.h"
-#include "Config.h"
 
 namespace AriaMaestosa {
 
@@ -152,12 +153,6 @@ int GLPane::getHeight()
     else return 550; // approximately default
 }
 
-/*
-void GLPane::paintEvent(wxPaintEvent& evt)
-{
-    render(true);
-}
-*/
 bool GLPane::prepareFrame()
 {
     if(!GetParent()->IsShown()) return false; 
@@ -176,37 +171,7 @@ void GLPane::endFrame()
     SwapBuffers();
 }
 
-/*
-void GLPane::render(const bool paintEvent)
-{
-    if(!GetParent()->IsShown()) return; 
-    wxGLCanvas::SetCurrent();
-
-    if(paintEvent)
-    {
-        wxPaintDC(this);
-        initOpenGLFor2D();
-        glClear(GL_COLOR_BUFFER_BIT);
-        if(do_render())
-        {
-            glFlush();
-            SwapBuffers();
-        }
-    }
-    else
-    {
-        wxClientDC(this);
-        initOpenGLFor2D();
-        glClear(GL_COLOR_BUFFER_BIT);
-        if(do_render())
-        {
-            glFlush();
-            SwapBuffers();
-        }
-    }
 
 }
-*/
 
-
-}
+#endif

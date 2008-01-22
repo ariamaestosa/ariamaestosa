@@ -13,6 +13,7 @@
 - Fixed editing time signatures in manual mode
 - Fixed rendering of silences in empty measures when using manual time signature management
 - Removed useless stuff from .Aria files, making them significantly smaller
+- Initial support for a non-OpenGL version (mainly for linux where drivers aren't always there)
 
  1.1b6
 - fixed crash when removing tempo events

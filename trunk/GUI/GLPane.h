@@ -14,18 +14,17 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include "Config.h"
+#ifndef NO_OPENGL
+
 #ifndef _glpane_
 #define _glpane_
 
 #include "wx/wx.h"
 #include "wx/glcanvas.h"
-#include "wx/wfstream.h"
-
-#include "irrXML/irrXML.h"
 
 #include "ptr_vector.h"
 #include "Editors/RelativeXCoord.h"
-#include "Config.h"
 #include <vector>
 
 namespace AriaMaestosa {
@@ -62,4 +61,5 @@ public:
 };
 
 }
+#endif
 #endif

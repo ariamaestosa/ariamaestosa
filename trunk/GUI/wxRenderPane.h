@@ -14,50 +14,46 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _image_
-#define _image_
-
 #include "Config.h"
+#ifdef NO_OPENGL
 
-#ifndef NO_OPENGL
-#include "OpenGL.h"
-#else
+#ifndef _wxrender_
+#define _wxrender_
+
 #include "wx/wx.h"
-#endif
+#include "irrXML/irrXML.h"
 
+#include "ptr_vector.h"
+#include "Editors/RelativeXCoord.h"
+#include <vector>
 
 namespace AriaMaestosa {
-	
-class Image {
+
+    class MainFrame;
     
-#ifndef NO_OPENGL
-    GLuint* ID;
-    public:
-#else
-    public:
-    wxImage image;
-    wxBitmap* bitmap;
-#endif
+class wxRenderPane : public wxPanel
+{
     
 	DECLARE_LEAK_CHECK();
-	
-    int width, height, textureWidth, textureHeight;
-    
-    float tex_coord_x;
-    float tex_coord_y;
 
-#ifndef NO_OPENGL
-    GLuint* getID();
-#endif
-    
-    Image();
-    Image(wxString path);
-    ~Image();
-    void load(wxString path);
+public:
         
+	
+    wxRenderPane(MainFrame* parent, int* args);
+    ~wxRenderPane();
+
+	void resized(wxSizeEvent& evt);
+
+    // size
+    int getWidth();
+    int getHeight();
+    
+    bool prepareFrame();
+    void beginFrame();
+    void endFrame();
+    
 };
 
-
 }
-
+#endif
 #endif

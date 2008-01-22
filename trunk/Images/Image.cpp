@@ -23,7 +23,6 @@
 
 #include <iostream>
 #include "Config.h"
-#include "OpenGL.h"
 
 namespace AriaMaestosa {
 	
@@ -40,19 +39,37 @@ Image::Image(wxString path)
 
 void Image::load(wxString path)
 {
+#ifndef NO_OPENGL
     ID=loadImage(path, &width, &height, &textureWidth, &textureHeight);
     
     tex_coord_x= (float)width/(float)textureWidth;
     tex_coord_y= (float)height/(float)textureHeight;
+#else
+    path = getResourcePrefix() + path;
+    if(!image.LoadFile(path))
+    {
+        wxMessageBox( wxT("Failed to load ") + path );
+        exit(1);
+    }
+    width = image.GetWidth();
+    height = image.GetHeight();
+    bitmap = new wxBitmap(image);
+#endif
 }
 
+#ifndef NO_OPENGL
 GLuint* Image::getID()
 {
     return ID;
 }
+#endif
 
 Image::~Image()
 {
+    #ifndef NO_OPENGL
     glDeleteTextures (1, ID);
+    #else
+    delete bitmap;
+    #endif
 }
 }

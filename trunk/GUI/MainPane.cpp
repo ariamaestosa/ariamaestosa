@@ -53,8 +53,11 @@
 
 namespace AriaMaestosa {
 
-
+#ifndef NO_OPENGL
 BEGIN_EVENT_TABLE(MainPane, wxGLCanvas)
+#else
+BEGIN_EVENT_TABLE(MainPane, wxPanel)
+#endif
 
 EVT_MOTION(MainPane::mouseMoved)
 EVT_LEFT_DOWN(MainPane::mouseDown)
@@ -116,7 +119,7 @@ public:
 // ==========================================================================================
 
 
-MainPane::MainPane(MainFrame* mainframe, int* args) : GLPane(mainframe, args)
+MainPane::MainPane(MainFrame* mainframe, int* args) : MAINPANE_BASE_CLASS(mainframe, args)
 {
 
     INIT_LEAK_CHECK();
@@ -156,13 +159,19 @@ void MainPane::render(const bool paintEvent)
     
     if(paintEvent)
     {
-        wxPaintDC(this);
+        wxPaintDC mydc(this);
+        #ifdef NO_OPENGL
+            Display::renderDC = &mydc;
+        #endif
         beginFrame();
         if(do_render()) endFrame();
     }
     else
     {
-        wxClientDC(this);
+        wxClientDC mydc(this);
+        #ifdef NO_OPENGL
+            Display::renderDC = &mydc;
+        #endif
         beginFrame();
         if(do_render()) endFrame();
     }

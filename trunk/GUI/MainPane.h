@@ -19,7 +19,15 @@
 
 #include "Config.h"
 #include "Editors/RelativeXCoord.h"
+
+#ifndef NO_OPENGL
 #include "GUI/GLPane.h"
+#define MAINPANE_BASE_CLASS GLPane
+#else
+#include "GUI/wxRenderPane.h"
+#define MAINPANE_BASE_CLASS wxRenderPane
+#endif
+
 #include <vector>
 
 namespace AriaMaestosa
@@ -28,7 +36,7 @@ namespace AriaMaestosa
     class MouseDownTimer;
     class MainFrame;
     
-class MainPane : public GLPane
+class MainPane : public MAINPANE_BASE_CLASS
 {
     
 	DECLARE_LEAK_CHECK();

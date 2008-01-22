@@ -30,8 +30,6 @@
 #include "Images/Drawable.h"
 #include "IO/IOUtils.h"
 
-#include "OpenGL.h"
-
 namespace AriaMaestosa {
 	
 Editor::Editor(Track* track)

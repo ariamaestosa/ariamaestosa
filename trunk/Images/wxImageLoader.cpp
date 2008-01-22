@@ -14,6 +14,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#ifndef NO_OPENGL
+
 #include "Images/ImageLoader.h"
 #include "Config.h"
 
@@ -173,3 +175,4 @@ namespace AriaMaestosa {
 	
 }
 
+#endif
