@@ -95,10 +95,13 @@ bool wxWidgetApp::OnInit()
 
     frame=new MainFrame();
 	frame->init();
+    
+    frame->updateHorizontalScrollbar(0);
+    
     Display::render();
 
 	SetTopWindow(frame);
-				 
+	
     return true;
 }
 

@@ -1365,13 +1365,9 @@ void MainFrame::updateHorizontalScrollbar(int thumbPos)
 
     const int editor_size=Display::getWidth()-100,
     total_size = getMeasureBar()->getTotalPixelAmount();
-    //(int)(
-    //      (getCurrentSequence()->getMeasureAmount() * getCurrentSequence()->ticksPerMeasure()) * getCurrentSequence()->getZoom()
-    //      );
 
     int position =
 		thumbPos == -1 ?
-		/*(int)(getCurrentSequence()->getXScrollInMidiTicks()*getCurrentSequence()->getZoom())*/
 		getCurrentSequence()->getXScrollInPixels()
 					   :
         (int)(
