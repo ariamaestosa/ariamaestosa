@@ -551,9 +551,8 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 		else if(mousex_current.getRelativeTo(WINDOW) < getEditorXStart()+20)
 			// scroll backwards
 		{
-			getCurrentSequence()->setXScrollInPixels(
-																	 getCurrentSequence()->getXScrollInPixels()-
-																	 (getEditorXStart()+20-mousex_current.getRelativeTo(WINDOW))/4 );
+			getCurrentSequence()->setXScrollInPixels( getCurrentSequence()->getXScrollInPixels()-
+                                                      (getEditorXStart()+20-mousex_current.getRelativeTo(WINDOW))/4 );
 			DisplayFrame::updateHorizontalScrollbar();
 			Display::render();
 			return;

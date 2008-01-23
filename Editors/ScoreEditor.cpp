@@ -983,8 +983,6 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 	// render pass 1. draw linear notation if relevant, gather information and do initial rendering for musical notation
 	for(int n=0; n<noteAmount; n++)
 	{
-		//const int notePitch = track->getNotePitchID(n);
-        
         int note_sign;
 		const int noteLevel = converter->noteToLevel(track->getNote(n), &note_sign);
         
