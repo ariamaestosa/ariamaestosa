@@ -100,14 +100,12 @@ NOTE: sorry, this is very raw :)
  ## can't undo 'paste'
  ## crash when emptying tempo in control view [reported, not tested] 
 
-* test italian translation installing/uninstalling/using on linux
-
-+ scroll a bit so you no more see measure 1. then start playing song from measure one. you can see the red line at the left of the screen
-
-+ notes in score can only be natural or sharp, never flat. (EasyBeat uses flats when the current key uses flats in key sig)
+- setting sharp/flat sign manually sometimes doesn't work (when it's possible to display the note on a level with no sign)
 
 - preferences dialog is awful
 + do something if opening docs fail!
+
++ scons install on mac uses stupid commands to strip SVN files. use "find . -name ".svn" -exec rm -rf '{}' \;" instead
 
 + when wait dialog appears, you can still edit tracks and do operations that may be harmful to current process.
     yet you can't make it modal otherwise the background process stops.
@@ -117,13 +115,11 @@ NOTE: sorry, this is very raw :)
 + "select alsa midi port", guitar tunings, are not translatable
 
 + what's up with glutInit? wxGlCanvas seems to call it. Crashes suse 10.1.
-+ make it easier in code to add new langauges*
 
 - if a midi has control events in an empty track they might be removed during import (though what could go there? tempo events are already stored in sequence)
 - hitting space should work even if focus is in top bar
 
 - score : flat/sharp/natural signs tend to appear obscured (behind note tail if in a group... behind silence... etc.)
-- score : moving a sharp/flat/natural note up or down makes it lose its properties
 
 + linux: scons install fails from SVN because docs are not found
 + linux: no need to install icns files, nor lprojs
@@ -171,6 +167,7 @@ NOTE: sorry, this is very raw :)
   
  
  MINOR / CLEANUP / UNSURE:
+ - score : moving a sharp/flat/natural note up or down makes it lose its properties
  - when changing measure length in a song that already has midi events in it, song length becomes wrong compared to midi events
 - decide a naming convention for variables
  - some drums that are not standard drumset preview fine but dont play correctly (SFX and one other. bug in QT?)
