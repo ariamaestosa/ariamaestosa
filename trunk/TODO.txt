@@ -100,6 +100,8 @@ NOTE: sorry, this is very raw :)
  ## can't undo 'paste'
  ## crash when emptying tempo in control view [reported, not tested] 
 
+* test new locale code on linux
+
 - setting sharp/flat sign manually sometimes doesn't work (when it's possible to display the note on a level with no sign)
 
 - preferences dialog is awful

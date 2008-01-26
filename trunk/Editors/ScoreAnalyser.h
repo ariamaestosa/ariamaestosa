@@ -77,6 +77,9 @@ public:
 	int x, y, level;
     int pitch;
     
+    // measure where the note begins and ends
+    int measureBegin, measureEnd;
+    
     // sharp, flat, natural, none
 	int sign;
 	

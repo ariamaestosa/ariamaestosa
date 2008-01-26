@@ -502,12 +502,10 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteR
 	renderInfo.y = getEditorYStart() + y_step*renderInfo.level - halfh - getYScrollInPixels() + 2;
 	
 	// check if note lasts more than one measure. If so we need to divide it in 2.
-	const int measureBegin = getMeasureBar()->measureAtTick(renderInfo.tick);
-	const int measureEnd = getMeasureBar()->measureAtTick(renderInfo.tick + renderInfo.tick_length - 1);
     
-	if(measureEnd > measureBegin) // note in longer than mesaure, need to divide it in 2
+	if(renderInfo.measureEnd > renderInfo.measureBegin) // note in longer than mesaure, need to divide it in 2
 	{
-		const int firstEnd = getMeasureBar()->lastTickInMeasure(measureBegin);
+		const int firstEnd = getMeasureBar()->lastTickInMeasure(renderInfo.measureBegin);
 		const int firstLength = firstEnd - renderInfo.tick;
 		const int secondLength = renderInfo.tick_length - firstLength;
 		
@@ -527,7 +525,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteR
 		
 		NoteRenderInfo part1(renderInfo.tick, renderInfo.x, renderInfo.level, firstLength, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
 		renderNote_pass1(part1, vector, true);
-		NoteRenderInfo part2(getMeasureBar()->firstTickInMeasure(measureBegin+1), firstEndRel.getRelativeTo(WINDOW),
+		NoteRenderInfo part2(getMeasureBar()->firstTickInMeasure(renderInfo.measureBegin+1), firstEndRel.getRelativeTo(WINDOW),
 						   renderInfo.level, secondLength, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
 		renderNote_pass1(part2, vector, true);
 		
@@ -552,7 +550,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteR
 	bool open = false;
 	
     const int beat = getMeasureBar()->beatLengthInTicks();
-    const int tick_in_measure_start = renderInfo.tick - getMeasureBar()->firstTickInMeasure( measureBegin );
+    const int tick_in_measure_start = renderInfo.tick - getMeasureBar()->firstTickInMeasure( renderInfo.measureBegin );
     const int remaining = beat - (tick_in_measure_start % beat);
     const bool starts_on_beat = aboutEqual(remaining,0) or aboutEqual(remaining,beat);
     
@@ -976,7 +974,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
     
     const int noteAmount = track->getNoteAmount();
 	
-	std::vector<NoteRenderInfo> gatheredNoteInfo;
+	std::vector<NoteRenderInfo> noteRenderInfo;
 	
     const int first_x_to_consider = getMeasureBar()->firstPixelInMeasure( getMeasureBar()->measureAtPixel(0) ) + 1;
     
@@ -1055,7 +1053,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 			const int note_x = getEditorXStart() + track->getNoteStartInPixels(n)  - sequence->getXScrollInPixels();
 			NoteRenderInfo currentNote(tick, note_x, noteLevel, noteLength, note_sign,
 									 track->isNoteSelected(n), track->getNotePitchID(n));
-			renderNote_pass1(currentNote, gatheredNoteInfo);
+			renderNote_pass1(currentNote, noteRenderInfo);
 		}
 	} // next note
     
@@ -1063,15 +1061,15 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 	if(musicalNotationEnabled)
 	{
         // analyse notes to know how to build the score
-        analyseNoteInfo(gatheredNoteInfo, this);
+        analyseNoteInfo(noteRenderInfo, this);
         
 		// ------------------------- second rendering pass -------------------
 		// triplet signs, tied notes, tails and beams
-        const int visibleNoteAmount = gatheredNoteInfo.size();
+        const int visibleNoteAmount = noteRenderInfo.size();
 		for(int i=0; i<visibleNoteAmount; i++)
 		{
-            assertExpr(i,<,(int)gatheredNoteInfo.size());
-			renderNote_pass2(gatheredNoteInfo[i]);
+            assertExpr(i,<,(int)noteRenderInfo.size());
+			renderNote_pass2(noteRenderInfo[i]);
 		}
         
 		// -------------------------- third rendering pass -------------------
@@ -1101,9 +1099,9 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 iters++;
 assertExpr(iters,<,1000);
 #endif
-                assertExpr(i,<,(int)gatheredNoteInfo.size());
+                assertExpr(i,<,(int)noteRenderInfo.size());
 
-				const int measure = getMeasureBar()->measureAtTick(gatheredNoteInfo[i].tick);
+				const int measure = noteRenderInfo[i].measureBegin;
 				assertExpr(measure,>=,0);
                 assertExpr(measure,<,99999);
                 
@@ -1123,9 +1121,9 @@ assertExpr(iters,<,1000);
 					}
 					// if note is not at the very beginning of the new measure, and it's the first note of
 					// the measure, we need to add a silence before it
-					if(!aboutEqual(gatheredNoteInfo[i].tick, getMeasureBar()->firstTickInMeasure(measure) ))
+					if(!aboutEqual(noteRenderInfo[i].tick, getMeasureBar()->firstTickInMeasure(measure) ))
 					{
-						const int silence_length = gatheredNoteInfo[i].tick - getMeasureBar()->firstTickInMeasure(measure);
+						const int silence_length = noteRenderInfo[i].tick - getMeasureBar()->firstTickInMeasure(measure);
 						renderSilence(getMeasureBar()->firstTickInMeasure(measure), silence_length);
 					}
 					previous_note_end = -1; // we switched to another measure, reset and start again
@@ -1136,26 +1134,26 @@ assertExpr(iters,<,1000);
                 if((int)(measure-first_visible_measure) >= (int)visible_measure_amount) break; // we're too far
 				measure_empty[measure-first_visible_measure] = false;
 				
-				const int current_begin_tick = gatheredNoteInfo[i].tick;
+				const int current_begin_tick = noteRenderInfo[i].tick;
                 
 				if( previous_note_end != -1 and !aboutEqual(previous_note_end, current_begin_tick) and (current_begin_tick-previous_note_end)>0 )
 				{
                     renderSilence(previous_note_end, current_begin_tick-previous_note_end);
 				}
-				previous_note_end = gatheredNoteInfo[i].tick + gatheredNoteInfo[i].tick_length;
+				previous_note_end = noteRenderInfo[i].tick + noteRenderInfo[i].tick_length;
                 
 				// if there's multiple notes playing at the same time
-				while(i+1<visibleNoteAmount and gatheredNoteInfo[i].tick==gatheredNoteInfo[i+1].tick)
+				while(i+1<visibleNoteAmount and noteRenderInfo[i].tick==noteRenderInfo[i+1].tick)
 				{
 					i++;
-					previous_note_end = std::max(previous_note_end, gatheredNoteInfo[i].tick + gatheredNoteInfo[i].tick_length);
+					previous_note_end = std::max(previous_note_end, noteRenderInfo[i].tick + noteRenderInfo[i].tick_length);
 				}
 			}//next visible note
             
 			// check for silence after last note
 			const unsigned int last_measure_end = getMeasureBar()->lastTickInMeasure(
 														getMeasureBar()->measureAtTick(
-														gatheredNoteInfo[visibleNoteAmount-1].tick));
+														noteRenderInfo[visibleNoteAmount-1].tick));
 			if(!aboutEqual(previous_note_end, last_measure_end ) and previous_note_end>-1)
 			{
 				const int silence_length = last_measure_end-previous_note_end;
