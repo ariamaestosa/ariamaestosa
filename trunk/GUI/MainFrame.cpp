@@ -214,11 +214,7 @@ MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(1
 
 MainFrame::~MainFrame()
 {
-    
-#ifdef _MORE_DEBUG_CHECKS
-    std::cout << "~MainFrame BEGIN" << std::endl;
-#endif
-    
+
     ImageProvider::unloadImages();
     PlatformMidiManager::freeMidiPlayer();
 	CopyrightWindow::free();
@@ -232,11 +228,7 @@ MainFrame::~MainFrame()
 	delete drumKit_picker;
 	delete keyPicker;
 	delete tuningPicker;
-    
-#ifdef _MORE_DEBUG_CHECKS
-    std::cout << "~MainFrame END" << std::endl;
-#endif
-    
+
 }
 
 void MainFrame::init()

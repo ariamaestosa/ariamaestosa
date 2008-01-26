@@ -65,6 +65,11 @@ enum NoteToLevelType
         bool going_in_sharps;
         bool going_in_flats;
         
+        // for accidentals
+        bool accidentals;
+        int accidentalScoreNotesSharpness[7];
+        int accidentalsMeasure; // because accidentals last only one measure
+        
         int midiNoteToLevel[128];
         NoteToLevelType midiNoteToLevel_type[128]; // 
         //int showSignNextToNote[128];
@@ -87,6 +92,8 @@ public:
         int noteToLevel(Note* noteObj, int* sign=NULL);
         int levelToNote7(const unsigned int level);
         void updateConversionData();
+        
+        void resetAccidentalsForNewRender();
     };
     
 	

@@ -168,6 +168,10 @@ ScoreMidiConverter::ScoreMidiConverter()
     INIT_LEAK_CHECK();
 	for(int n=0; n<7; n++) scoreNotesSharpness[n] = NATURAL;
 	
+    accidentals =  false;
+    for(int n=0; n<7; n++) accidentalScoreNotesSharpness[n] = -1;
+    accidentalsMeasure = -1;
+    
     going_in_sharps = false;
     going_in_flats = false;
 }
@@ -223,6 +227,13 @@ int ScoreMidiConverter::levelToNote(const int level)
 	return levelToMidiNote[level];
 }
 
+void ScoreMidiConverter::resetAccidentalsForNewRender()
+{
+    accidentals =  false;
+    for(int n=0; n<7; n++) accidentalScoreNotesSharpness[n] = -1;
+    accidentalsMeasure = -1;
+}
+
 // returns on what level the given note will appear, and with what sign
 int ScoreMidiConverter::noteToLevel(Note* noteObj, int* sign)
 {
@@ -231,6 +242,9 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, int* sign)
     
     const int level = midiNoteToLevel[note];
     const NoteToLevelType current_type = midiNoteToLevel_type[note];
+    
+    int answer_sign = NONE;
+    int answer_level = -1;
     
     if(current_type == SHARP_OR_FLAT)
     {
@@ -247,27 +261,75 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, int* sign)
         
         if(useFlats and (note-1)>0)
         {
-            if(sign!=NULL) *sign = FLAT;
-            return midiNoteToLevel[note-1];
+            if(sign!=NULL) answer_sign = FLAT;
+            answer_level = midiNoteToLevel[note-1];
         }
         else if(note < 127)
         {
-            if(sign!=NULL) *sign = SHARP;
-            return midiNoteToLevel[note+1];
+            if(sign!=NULL) answer_sign = SHARP;
+            answer_level = midiNoteToLevel[note+1];
         }
-        else return -1; // nothing found  
+        else answer_level = -1; // nothing found  
     }
     else if(current_type == NATURAL_ON_LEVEL)
     {
-        if(sign!=NULL) *sign = NATURAL;
-        return level;
+        if(sign!=NULL) answer_sign = NATURAL;
+        answer_level = level;
     }
     else if(current_type == DIRECT_ON_LEVEL)
     {
-        if(sign!=NULL) *sign = NONE;
-        return level;
+        if(sign!=NULL) answer_sign = NONE;
+        answer_level = level;
     }
-    else return -1; // nothing found
+    else answer_level = -1; // nothing found
+    
+    // accidentals
+    if(sign!=NULL)
+    {
+        if(accidentals)
+        {
+            const int measure = getMeasureBar()->measureAtTick(noteObj->startTick);
+            
+            // when going to another measure, reset accidentals
+            if(measure != accidentalsMeasure)
+            {
+                accidentals =  false;
+                for(int n=0; n<7; n++) accidentalScoreNotesSharpness[n] = -1;
+                accidentalsMeasure = measure;
+            }
+            else
+            {
+                // we are not going in another measure, apply accidental to current note
+                const int current_accidental = accidentalScoreNotesSharpness[ levelToNote7(answer_level) ];
+                if(current_accidental != -1)
+                {
+                    if(current_accidental == answer_sign) answer_sign = NONE;
+                    else if(current_accidental != answer_sign and (answer_sign == NATURAL or answer_sign == NONE)) answer_sign = NATURAL;
+                    
+                }
+            }
+        }
+        
+
+        // set accidentals
+        if(answer_sign != NONE)
+        {
+            accidentals = true;
+            const int measure = getMeasureBar()->measureAtTick(noteObj->startTick);
+            accidentalsMeasure = measure;
+            
+            accidentalScoreNotesSharpness[ levelToNote7(answer_level) ] = answer_sign;
+            
+            
+            if(scoreNotesSharpness[ levelToNote7(answer_level) ] == NATURAL and answer_sign == NATURAL)
+            {
+                accidentalScoreNotesSharpness[ levelToNote7(answer_level) ] = NONE;
+            }
+        }
+    }
+    
+    if(sign!=NULL) *sign = answer_sign;
+    return answer_level;
 }
 
 // what is the name of the note played on this level?
@@ -977,6 +1039,8 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 	std::vector<NoteRenderInfo> noteRenderInfo;
 	
     const int first_x_to_consider = getMeasureBar()->firstPixelInMeasure( getMeasureBar()->measureAtPixel(0) ) + 1;
+    
+    if(musicalNotationEnabled) converter->resetAccidentalsForNewRender();
     
 	// render pass 1. draw linear notation if relevant, gather information and do initial rendering for musical notation
 	for(int n=0; n<noteAmount; n++)

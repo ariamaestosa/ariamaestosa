@@ -1,7 +1,8 @@
  1.1b7
 - Improved setting notes sharp/flat/natural to be easier and more flexible
+- Made accidentals last entire measure
 - Improved note splitting to be wiser
-- Made note beaming wiser about how it selects which notes to beam toghether
+- Made note beaming wiser about how it selects which notes to beam together
 - Added italian translation thanks to Gianluca Pignalberi
 - When importing midi, remove events from unsupported controllers (fixes some playback bugs)
 - Added more midi controllers
