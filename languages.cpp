@@ -52,7 +52,7 @@ void initLanguageSupport(wxConfig* prefs)
         locale->AddCatalogLookupPathPrefix( prefix );
         #endif
 
-	    locale = new wxLocale( language, wxLOCALE_CONV_ENCODING );
+	    //locale = new wxLocale( language, wxLOCALE_CONV_ENCODING );
         locale->AddCatalog(wxT("aria_maestosa"));
 
 	    if(! locale->IsOk() )
