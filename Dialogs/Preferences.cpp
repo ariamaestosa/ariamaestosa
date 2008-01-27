@@ -46,21 +46,24 @@ Preferences::Preferences(MainFrame* parent) : wxDialog(parent, wxID_ANY,  _("Pre
 	// language
 	{
 	wxStaticText* lang_label = new wxStaticText(this, wxID_ANY,  _("Language"));
-	vert_sizer->Add( lang_label, 0, wxALL, 10 );
+	vert_sizer->Add( lang_label, 0, wxALL, 5 );
 
 	lang_combo = new wxChoice(this, 1, wxDefaultPosition, wxDefaultSize, getLanguageList() );
-	vert_sizer->Add( lang_combo, 0, wxALL, 10 );
+	vert_sizer->Add( lang_combo, 0, wxALL, 5 );
 	}
+
+	wxStaticText* empty_space = new wxStaticText(this, wxID_ANY,  _(" "));
+	vert_sizer->Add( empty_space, 0, wxALL, 5 );
 
 	// play settings
 	{
 	wxStaticText* play_label = new wxStaticText(this, wxID_ANY,  _("Play during edit (default value)"));
-	vert_sizer->Add( play_label, 0, wxALL, 10 );
+	vert_sizer->Add( play_label, 0, wxALL, 5 );
 
 	wxString choices[3] = { _("Always"),  _("On note change"),  _("Never")};
 
 	play_combo = new wxChoice(this, 3, wxDefaultPosition, wxDefaultSize, 3, choices );
-	vert_sizer->Add( play_combo, 0, wxALL, 10 );
+	vert_sizer->Add( play_combo, 0, wxALL, 5 );
 	}
 
     lang_combo->Select( getDefaultLanguageID() );
@@ -103,7 +106,11 @@ Preferences::Preferences(MainFrame* parent) : wxDialog(parent, wxID_ANY,  _("Pre
 	}
 	// -----------------------------------
 
+	wxStaticText* empty_space2 = new wxStaticText(this, wxID_ANY,  _(" "));
+	vert_sizer->Add( empty_space2, 0, wxALL, 5 );
+
 	wxStaticText* effect_label = new wxStaticText(this, wxID_ANY,  _("Changes will take effect next time you open the app."));
+	effect_label->SetFont( wxFont(wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_NORMAL) );
 	vert_sizer->Add( effect_label, 0, wxALL, 10 );
 
 	ok_btn = new wxButton(this, 2, wxT("OK"));
