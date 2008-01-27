@@ -43,9 +43,7 @@ NOTE: sorry, this is very raw :)
  
  - know what happens when adding too much channels in auto mode
 
- * allow setting notes sharp/flat in a graphical way
-
-* make more features accessible graphcially (as opposed to keyboard-only)
+ + make more features accessible graphically (as opposed to keyboard-only)
 
  - change whole track pitch/volume
  
@@ -101,7 +99,6 @@ NOTE: sorry, this is very raw :)
  ## crash when emptying tempo in control view [reported, not tested] 
 
 * undoing sign changes in score doesn't quite work (at least when using shift+arrows)
-* test new preferences deleting on mac + new preferences look
 
 - setting sharp/flat sign manually sometimes doesn't work (when it's possible to display the note on a level with no sign)
 
