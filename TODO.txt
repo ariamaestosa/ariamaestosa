@@ -105,7 +105,6 @@ NOTE: sorry, this is very raw :)
 
 - setting sharp/flat sign manually sometimes doesn't work (when it's possible to display the note on a level with no sign)
 
-- preferences dialog is awful
 + do something if opening docs fail!
 
 + scons install on mac uses stupid commands to strip SVN files. use "find . -name ".svn" -exec rm -rf '{}' \;" instead
