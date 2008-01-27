@@ -201,7 +201,7 @@ public:
 	void changeShownTimeSig(int num, int denom);
 
 	void evt_freeVolumeSlider( wxCommandEvent& evt );
-	
+
     DECLARE_EVENT_TABLE();
 };
 

@@ -214,21 +214,20 @@ MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(1
 
 MainFrame::~MainFrame()
 {
-
     ImageProvider::unloadImages();
     PlatformMidiManager::freeMidiPlayer();
 	CopyrightWindow::free();
 	//ScalePicker::free();
-    
+
 	aboutDialog->Destroy();
 	customNoteSelectDialog->Destroy();
+
     prefs->Destroy();
-    
+
 	delete instrument_picker;
 	delete drumKit_picker;
 	delete keyPicker;
 	delete tuningPicker;
-
 }
 
 void MainFrame::init()
@@ -424,7 +423,7 @@ void MainFrame::init()
     mainPane=new MainPane(this, NULL);
     verticalSizer->Add( static_cast<wxPanel*>(mainPane), 0, wxALL, 2, Location::Center() );
 #endif
-    
+
     // give a pointer to our GL Pane to AriaCore
     Core::setMainPane(mainPane);
 
@@ -526,27 +525,27 @@ void MainFrame::menuEvent_save(wxCommandEvent& evt)
 void MainFrame::menuEvent_saveas(wxCommandEvent& evt)
 {
 	wxString suggestedName = getCurrentSequence()->suggestFileName() + wxT(".aria");
-	
+
 	getCurrentSequence()->filepath = showFileDialog( _("Select destination file"), wxT(""), suggestedName,
                                                      wxT("Aria Maestosa file|*.aria"), true /*save*/);
-    
+
     if(!getCurrentSequence()->filepath.IsEmpty())
 	{
-        
-        
+
+
 		if( wxFileExists(getCurrentSequence()->filepath) )
 		{
 			int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
                                         wxYES_NO, this);
 			if (answer != wxYES) return;
 		}
-        
+
         saveAriaFile(getCurrentSequence(), getCurrentSequence()->filepath);
-        
+
         // change song name
         getCurrentSequence()->sequenceFileName = getCurrentSequence()->filepath.AfterLast('/').BeforeLast('.');
         Display::render();
-        
+
     }// end if
 }
 
@@ -566,13 +565,13 @@ void MainFrame::menuEvent_importmidi(wxCommandEvent& evt)
 void MainFrame::menuEvent_exportmidi(wxCommandEvent& evt)
 {
 	wxString suggestedName = getCurrentSequence()->suggestFileName() + wxT(".mid");
-	
+
 	// show file dialog
 	wxString midiFilePath = showFileDialog( _("Select destination file"), wxT(""),
 											suggestedName, _("Midi file|*.mid"), true /*save*/);
-    
+
     if(midiFilePath.IsEmpty()) return;
-	
+
 	// if file already exists, ask for overwriting
 	if( wxFileExists(midiFilePath) )
 	{
@@ -580,10 +579,10 @@ void MainFrame::menuEvent_exportmidi(wxCommandEvent& evt)
                                     wxYES_NO, this);
 		if (answer != wxYES) return;
 	}
-    
+
 	// write data to file
 	const bool success = PlatformMidiManager::exportMidiFile( getCurrentSequence(), midiFilePath );
-    
+
 	if(!success)
 	{
 		wxMessageBox( _("Sorry, failed to export midi file."));
@@ -592,19 +591,19 @@ void MainFrame::menuEvent_exportmidi(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_exportSampledAudio(wxCommandEvent& evt)
 {
-    
+
 	wxString extension = PlatformMidiManager::getAudioExtension();
 	wxString wildcard = PlatformMidiManager::getAudioWildcard();
-    
+
 	wxString suggestedName = getCurrentSequence()->suggestFileName() + extension;
-	
+
 	// show file dialog
 	wxString audioFilePath = showFileDialog(  _("Select destination file"), wxT(""),
 											  suggestedName,
 											  wildcard, true /*save*/);
-    
+
     if(audioFilePath.IsEmpty()) return;
-    
+
 	// if file already exists, ask for overwriting
 	if( wxFileExists(audioFilePath) )
 	{
@@ -612,14 +611,14 @@ void MainFrame::menuEvent_exportSampledAudio(wxCommandEvent& evt)
                                     wxYES_NO, this);
 		if (answer != wxYES) return;
 	}
-    
-	
+
+
     // show progress bar
     MAKE_SHOW_PROGRESSBAR_EVENT( event, _("Please wait while audio file is being generated.\n\nDepending on the length of your file,\nthis can take several minutes."), false );
     GetEventHandler()->AddPendingEvent(event);
-    
+
 	std::cout << "export audio file " << toCString(audioFilePath) << std::endl;
-    
+
     // write data
 	PlatformMidiManager::exportAudioFile( getCurrentSequence(), audioFilePath );
 }
@@ -640,7 +639,7 @@ void MainFrame::menuEvent_quit(wxCommandEvent& evt)
 			return;
 		}
 	}
-    
+
 	// quit
 	wxWindow::Destroy();
 }
@@ -755,7 +754,7 @@ void MainFrame::menuEvent_playNever(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_automaticChannelModeSelected(wxCommandEvent& evt)
 {
-    
+
 	Sequence* sequence = getCurrentSequence();
 	// we were in manual mode... we will need to merge tracks while switching modes. ask user first
 	if( sequence->getChannelManagementType() == CHANNEL_MANUAL)
@@ -763,7 +762,7 @@ void MainFrame::menuEvent_automaticChannelModeSelected(wxCommandEvent& evt)
 		int answer = wxMessageBox(  _("If multiple tracks play on the same channel, they will be merged.\nThis cannot be undone.\n\nDo you really want to continue?"),
 								    _("Confirm"),
                                     wxYES_NO, this);
-        
+
 		if (answer != wxYES)
 		{
 			// nothing will be changed, put checks back
@@ -771,13 +770,13 @@ void MainFrame::menuEvent_automaticChannelModeSelected(wxCommandEvent& evt)
 			channelManagement_manual->Check(true);
 			return;
 		}
-        
+
 		for(int i=0; i<sequence->getTrackAmount(); i++)
 		{
 			for(int j=0; j<sequence->getTrackAmount(); j++)
 			{
 				if(i == j) continue; //don't compare a track with itself
-                
+
 				if(sequence->getTrack(i)->getChannel() == sequence->getTrack(j)->getChannel())
 				{
 					sequence->getTrack(i)->mergeTrackIn( sequence->getTrack(j) );
@@ -787,18 +786,18 @@ void MainFrame::menuEvent_automaticChannelModeSelected(wxCommandEvent& evt)
 				}
 			}// next j
 		}//next i
-        
+
 		sequence->setCurrentTrackID(0);
-        
+
 		// prevent undoing (anyway it would not have worked, would just have given buggy behaviour)
 		sequence->clearUndoStack();
 		//sequence->getCurrentTrack()->saveUndoMemory();
-        
+
 	}
-    
+
 	channelManagement_automatic->Check(true);
 	channelManagement_manual->Check(false);
-    
+
 	getCurrentSequence()->setChannelManagementType(CHANNEL_AUTO);
 	Display::render();
 }
@@ -807,7 +806,7 @@ void MainFrame::menuEvent_manualChannelModeSelected(wxCommandEvent& evt)
 {
 	channelManagement_automatic->Check(false);
 	channelManagement_manual->Check(true);
-    
+
 	Sequence* sequence = getCurrentSequence();
 	// we were in auto mode... we will need to set channels
 	if( sequence->getChannelManagementType() == CHANNEL_AUTO)
@@ -830,7 +829,7 @@ void MainFrame::menuEvent_manualChannelModeSelected(wxCommandEvent& evt)
 			}
 		}
 	}
-    
+
 	getCurrentSequence()->setChannelManagementType(CHANNEL_MANUAL);
 	Display::render();
 }
@@ -852,31 +851,31 @@ class ManualView : public wxFrame
 	wxHtmlWindow* html;
 	wxBorderSizer* sizer;
 	bool success;
-	
-public:	
+
+public:
 	ManualView(wxString file) : wxFrame(NULL, wxID_ANY, _("Manual"))
 	{
 		std::cout << "opening " << toCString(file) << std::endl;
-		
+
 		sizer = new wxBorderSizer();
 		html = new wxHtmlWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_SCROLLBAR_AUTO | wxHW_NO_SELECTION);
 		sizer->Add(html, 1, wxEXPAND, 0, Location::Center());
-		
+
 		success = html->LoadFile(file);
 		SetSizer(sizer);
 		SetAutoLayout(true);
-		
+
 		if(!success)
 		{
 			wxMessageBox( _("Could not open manual") );
 		}
 	}
-	
+
 	void popup()
 	{
-		if(success) Show();	
+		if(success) Show();
 	}
-	
+
 };
 ManualView* manualView = NULL;
 */
@@ -886,7 +885,7 @@ void MainFrame::menuEvent_manual(wxCommandEvent& evt)
 #ifdef __WXMAC__
 	wxString path_to_docs =  wxT("file://") + wxStandardPaths::Get().GetResourcesDir() + wxT("/../../../documentation/man.html");
 #endif
-	
+
 #ifdef __WXGTK__
 	wxString path_to_docs =  wxT("file://") + getResourcePrefix() + wxT("docs/man.html");
 
@@ -894,13 +893,13 @@ void MainFrame::menuEvent_manual(wxCommandEvent& evt)
 	if(! wxFileExists(path_to_docs) )
 		path_to_docs =  wxT("file://") + getResourcePrefix() + wxT("../../docs/man.html");
 #endif
-	
+
 #ifndef __WXMAC__
 #ifndef __WXGTK__
 	#warning "Opening the manual has not been implemented on your system"
 #endif
 #endif
-	
+
 	wxLaunchDefaultBrowser( path_to_docs );
 }
 
@@ -940,13 +939,13 @@ void MainFrame::stopClicked(wxCommandEvent& evt)
 void MainFrame::toolsEnterPlaybackMode()
 {
 	if(playback_mode) return;
-    
+
 	playback_mode = true;
-    
-    
+
+
     stop->Enable(true);
     play->Enable(false);
-    
+
     fileMenu->Enable(MENU_FILE_NEW, false);
     fileMenu->Enable(MENU_FILE_OPEN, false);
     fileMenu->Enable(MENU_FILE_SAVE, false);
@@ -956,7 +955,7 @@ void MainFrame::toolsEnterPlaybackMode()
     fileMenu->Enable(MENU_FILE_EXPORT_MIDI, false);
 	fileMenu->Enable(MENU_FILE_EXPORT_SAMPLED_AUDIO, false);
     fileMenu->Enable(wxID_EXIT, false);
-    
+
     measureTypeBottom->Enable(false);
     measureTypeTop->Enable(false);
     firstMeasure->Enable(false);
@@ -967,10 +966,10 @@ void MainFrame::toolsEnterPlaybackMode()
 void MainFrame::toolsExitPlaybackMode()
 {
 	playback_mode = false;
-    
+
     stop->Enable(false);
     play->Enable(true);
-    
+
     fileMenu->Enable(MENU_FILE_NEW, true);
     fileMenu->Enable(MENU_FILE_OPEN, true);
     fileMenu->Enable(MENU_FILE_SAVE, true);
@@ -980,7 +979,7 @@ void MainFrame::toolsExitPlaybackMode()
     fileMenu->Enable(MENU_FILE_EXPORT_MIDI, true);
 	fileMenu->Enable(MENU_FILE_EXPORT_SAMPLED_AUDIO, true);
     fileMenu->Enable(wxID_EXIT, true);
-    
+
     measureTypeBottom->Enable(true);
     measureTypeTop->Enable(true);
     firstMeasure->Enable(true);
@@ -997,83 +996,83 @@ void MainFrame::toolsExitPlaybackMode()
 
 void MainFrame::updateTopBarForSequence(Sequence* seq)
 {
-    
+
     changingValues=true; // ignore events thrown while changing values in the top bar
-    
+
     // first measure
     {
         char buffer[4];
         sprintf (buffer, "%d", seq->measureBar->getFirstMeasure()+1);
-        
+
         firstMeasure->SetValue( fromCString(buffer) );
     }
-    
+
     // measure length
     {
         char buffer[4];
         sprintf (buffer, "%d", getMeasureBar()->getTimeSigNumerator() );
-        
+
         measureTypeTop->SetValue( fromCString(buffer) );
     }
-    
+
     {
         char buffer[4];
         sprintf (buffer, "%d", getMeasureBar()->getTimeSigDenominator() );
-        
+
         measureTypeBottom->SetValue( fromCString(buffer) );
     }
-    
+
     // tempo
     {
         char buffer[4];
         sprintf (buffer, "%d", seq->getTempo() );
-        
+
         tempoCtrl->SetValue( fromCString(buffer) );
     }
-    
+
     // song length
     {
         songLength->SetValue( seq->measureBar->getMeasureAmount() );
     }
-    
+
     // zoom
     displayZoom->SetValue( seq->getZoomInPercent() );
-    
+
     // set zoom (reason to set it again is because the first time you open it, it may not already have a zoom)
     getCurrentSequence()->setZoom( seq->getZoomInPercent() );
-    
+
     expandedMeasuresMenuItem->Check( getMeasureBar()->isExpandedMode() );
-    
+
     // scrollbars
     updateHorizontalScrollbar();
     updateVerticalScrollbar();
-    
+
     changingValues=false;
-    
-    
+
+
 }
 
 void MainFrame::songLengthTextChanged(wxCommandEvent& evt)
 {
-    
+
     static wxString previousString = wxT("");
-    
+
     // only send event if the same string is sent twice (i.e. first time, because it was typed in, second time because 'enter' was pressed)
     // or if the same number of chars is kept (e.g. 100 -> 150 will be updated immediatley, but 100 -> 2 will not, since user may actually be typing 250)
     if(evt.GetString().IsSameAs(previousString) or (previousString.Length()>0 and evt.GetString().Length()>=previousString.Length()) )
 	{
-        
+
         if(!evt.GetString().IsSameAs(previousString))
 		{
 			if(evt.GetString().Length()==1) return; // too short to update now, user probably just typed the first character of something longer
         }
-        
+
         wxSpinEvent unused;
         songLengthChanged(unused);
     }
-    
+
     previousString = evt.GetString();
-    
+
 }
 
 
@@ -1208,7 +1207,7 @@ void MainFrame::zoomChanged(wxSpinEvent& evt)
     getCurrentSequence()->setXScrollInMidiTicks( newXScroll );
     updateHorizontalScrollbar( newXScroll );
     if(!getMeasureBar()->isMeasureLengthConstant()) getMeasureBar()->updateMeasureInfo();
-        
+
     Display::render();
 }
 
@@ -1216,25 +1215,25 @@ void MainFrame::zoomTextChanged(wxCommandEvent& evt)
 {
     // FIXME - AWFUL HACK
     static wxString previousString = wxT("");
-    
+
     // only send event if the same string is sent twice (i.e. first time, because it was typed in, second time because 'enter' was pressed)
     // or if the same number of chars is kept (e.g. 100 -> 150 will be updated immediatley, but 100 -> 2 will not, since user may actually be typing 250)
     if(evt.GetString().IsSameAs(previousString) or (previousString.Length()>0 and evt.GetString().Length()>=previousString.Length()) )
 	{
-        
+
         if(!evt.GetString().IsSameAs(previousString))
 		{
             if(evt.GetString().Length()==1) return; // too short to update now, user probably just typed the first character of something longer
             if(evt.GetString().Length()==2 and atoi_u(evt.GetString())<30 )
                 return; // zoom too small, user probably just typed the first characters of something longer
         }
-        
+
         wxSpinEvent unused;
         zoomChanged(unused); // throw fake event (easier to process all events from a single method)
     }
-    
+
     previousString = evt.GetString();
-    
+
 }
 
 /*
@@ -1658,17 +1657,17 @@ void MainFrame::changeChannelManagement(ChannelManagementType mode)
 	{
 		channelManagement_automatic->Check(true);
 		channelManagement_manual->Check(false);
-        
+
 		getCurrentSequence()->setChannelManagementType(CHANNEL_AUTO);
 	}
 	else if(mode == CHANNEL_MANUAL)
 	{
 		channelManagement_automatic->Check(false);
 		channelManagement_manual->Check(true);
-        
+
 		getCurrentSequence()->setChannelManagementType(CHANNEL_MANUAL);
 	}
-    
+
 	Display::render();
 }
 
