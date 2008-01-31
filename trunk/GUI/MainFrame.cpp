@@ -883,15 +883,15 @@ ManualView* manualView = NULL;
 void MainFrame::menuEvent_manual(wxCommandEvent& evt)
 {
 #ifdef __WXMAC__
-	wxString path_to_docs =  wxT("file://") + wxStandardPaths::Get().GetResourcesDir() + wxT("/../../../documentation/man.html");
+	wxString path_to_docs =  wxStandardPaths::Get().GetResourcesDir() + wxT("/../../../Documentation/man.html");
 #endif
 
 #ifdef __WXGTK__
-	wxString path_to_docs =  wxT("file://") + getResourcePrefix() + wxT("docs/man.html");
+	wxString path_to_docs =  getResourcePrefix() + wxT("docs/man.html");
 
 	// if kept in place (not installed)
 	if(! wxFileExists(path_to_docs) )
-		path_to_docs =  wxT("file://") + getResourcePrefix() + wxT("../../docs/man.html");
+		path_to_docs =  getResourcePrefix() + wxT("../../docs/man.html");
 #endif
 
 #ifndef __WXMAC__
@@ -900,7 +900,10 @@ void MainFrame::menuEvent_manual(wxCommandEvent& evt)
 #endif
 #endif
 
-	wxLaunchDefaultBrowser( path_to_docs );
+	if(!wxFileExists( path_to_docs ) or !wxLaunchDefaultBrowser( wxT("file://") + path_to_docs ))
+    {
+        wxMessageBox(wxT("Sorry, opening docs failed\n(") + path_to_docs + wxT(" does not appear to exist).\nTry ariamaestosa.sourceforge.net instead."));
+    }
 }
 
 
@@ -1599,9 +1602,8 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
     if(!AriaMaestosa::loadMidiFile( getCurrentSequence(), midiFilePath ) )
 	{
         std::cout << "Loading midi file failed." << std::endl;
+        WaitWindow::hide();
 		wxMessageBox(  _("Sorry, loading midi file failed.") );
-		WaitWindow::hide();
-
 		closeSequence();
 
         return;

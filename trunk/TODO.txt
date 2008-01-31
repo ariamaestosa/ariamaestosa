@@ -9,8 +9,6 @@ NOTE: sorry, this is very raw :)
 	- update version in docs (main, download, compile)
     - give permissions, check info.plist is the right one
  
- tar cj --exclude '.svn' --exclude '.DS_Store' --exclude '.sconsign' -f AriaSrc.tar.bz2 .
- 
  - put docs in source download too
  
   Linux: docs in /usr/doc/<package-name> (but on SuSE they go to/usr/share/doc/packages/<package-name>)
@@ -99,6 +97,11 @@ NOTE: sorry, this is very raw :)
  ## crash when emptying tempo in control view [reported, not tested] 
 
 * undoing sign changes in score doesn't quite work (at least when using shift+arrows)
+* update translation
+
+* crash with "Brandenburg.mid"
+
++ make aria files still smaller by using more default values
 
 - setting sharp/flat sign manually sometimes doesn't work (when it's possible to display the note on a level with no sign)
 
@@ -164,6 +167,16 @@ NOTE: sorry, this is very raw :)
   - tab export : x2 can appear on new line...
   - tab export : repeatd measures need measure numbers
   
+* My CoreAudio player is deprecated on OS X 10.5...
+    Midi/Players/Mac/CoreAudioNotePlayer.cpp: In function 'OSStatus CoreAudioNotePlayer::CreateAUGraph(OpaqueAUGraph*&, ComponentInstanceRecord*&)':
+    Midi/Players/Mac/CoreAudioNotePlayer.cpp:75: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
+    Midi/Players/Mac/CoreAudioNotePlayer.cpp:75: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
+    Midi/Players/Mac/CoreAudioNotePlayer.cpp:80: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
+    Midi/Players/Mac/CoreAudioNotePlayer.cpp:80: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
+    Midi/Players/Mac/CoreAudioNotePlayer.cpp:84: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
+    Midi/Players/Mac/CoreAudioNotePlayer.cpp:84: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
+    Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
+    Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
  
  MINOR / CLEANUP / UNSURE:
  - score : moving a sharp/flat/natural note up or down makes it lose its properties

@@ -48,12 +48,9 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 {
 	
     sequence->importing = true;
-    
-    // the stream used to read the input file
-	wxCSConv cs( wxFONTENCODING_UTF8 ); // convert to UTF-8
-	wxCharBuffer output = cs.cWC2MB(filepath.wc_str());
 	
-    jdkmidi::MIDIFileReadStreamFile rs( (char*)output.data()/*toCString(filepath)*/ );
+    // the stream used to read the input file
+    jdkmidi::MIDIFileReadStreamFile rs( toCString(filepath) );
     
     // the object which will hold all the tracks
     jdkmidi::MIDIMultiTrack jdksequence;
@@ -71,122 +68,6 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 		return false;
 	}
 	
-    /*
-     MIDITrack MIDIMultiTrack::*GetTrack( int trk );
-     const MIDITrack MIDIMultiTrack::*GetTrack( int trk ) const;
-     int MIDIMultiTrack::GetNumTracks()
-     
-     ----------------------------------------------------------------------------------------------------
-     class  MIDITrack 	
-     ----------------------------------------------------------------------------------------------------
-
-         *** const 	MIDITimedBigMessage *GetEvent( int event_num ) const;
-         *** int	GetNumEvents() const;
-
-         
-         MIDITrack( int size=0 );
-         
-         MIDITrack( const MIDITrack &t );
-         
-         ~MIDITrack();
-         
-         void	Clear();
-         void	Shrink();
-         
-         void	ClearAndMerge( const MIDITrack *src1, const MIDITrack *src2 );
-
-         bool	Expand( int increase_amount=(MIDITrackChunkSize) );
-         
-         MIDITimedBigMessage * GetEventAddress( int event_num );
-         
-         const MIDITimedBigMessage * GetEventAddress( int event_num ) const;
-         
-         const 	MIDITimedBigMessage *GetEvent( int event_num ) const;
-         MIDITimedBigMessage *GetEvent( int event_num );
-         bool	GetEvent( int event_num, MIDITimedBigMessage *msg ) const;
-         
-         bool	PutEvent( const MIDITimedBigMessage &msg );
-         bool	PutEvent( const MIDITimedMessage &msg, MIDISystemExclusive *sysex );
-         bool	SetEvent( int event_num, const MIDITimedBigMessage &msg );
-         
-         bool	MakeEventNoOp( int event_num );
-         
-         bool	FindEventNumber( MIDIClockTime time, int *event_num ) const;
-         
-         int	GetBufferSize()	const;
-         int	GetNumEvents() const;
-
-         }
-     
-     ----------------------------------------------------------------------------------------------------
-     MIDITIMEDBIGMESSAGE:
-     ----------------------------------------------------------------------------------------------------
-
-     MIDIClockTime	GetTime() const;
-      MIDISystemExclusive *GetSysEx();
-     
-     char	GetLength() const;
-     
-     unsigned char	GetStatus() const	{ return (unsigned char)status;	}
-     unsigned char	GetChannel() const	{ return (unsigned char)(status&0x0f);	}
-     unsigned char	GetType() const		{ return (unsigned char)(status&0xf0);	}
-     
-     unsigned char	GetMetaType() const	{ return byte1;		}
-     
-     unsigned char	GetByte1() const	{ return byte1;		}
-     unsigned char	GetByte2() const	{ return byte2;		}
-     unsigned char	GetByte3() const	{ return byte3;		}
-     
-     unsigned char	GetNote() const		{ return byte1;		}
-     unsigned char	GetVelocity() const	{ return byte2;		}
-     unsigned char	GetPGValue() const	{ return byte1;		}
-     unsigned char	GetController() const	{ return byte1;		}
-     unsigned char	GetControllerValue() const { return byte2;	}
-     
-     short	GetBenderValue() const;
-     
-     unsigned short	GetMetaValue()	const;
-     unsigned char GetTimeSigNumerator() const;
-     unsigned char GetTimeSigDenominator() const;
-     signed char GetKeySigSharpFlats() const;
-     unsigned char GetKeySigMajorMinor() const;
-     
-     bool	IsChannelMsg() const;
-     
-     bool	IsNoteOn() const;
-     bool	IsNoteOff() const;
-     bool	IsPolyPressure() const;
-     bool	IsControlChange() const;
-     bool	IsProgramChange() const;
-     bool	IsChannelPressure() const;
-     bool	IsPitchBend() const;
-     bool	IsSystemMessage() const;
-     bool	IsSysEx() const;
-     short	GetSysExNum() const;
-     bool	IsMTC() const;
-     bool	IsSongPosition() const;
-    bool	IsSongSelect() const;
-     bool 	IsTuneRequest() const;
-     bool	IsMetaEvent() const; 
-     bool 	IsTextEvent() const;
-     bool	IsAllNotesOff() const;
-     bool	IsNoOp() const;
-     bool	IsTempo() const;
-     bool	IsDataEnd() const;
-     bool 	IsTimeSig() const;
-     bool      IsKeySig() const;
-     bool 	IsBeatMarker() const;
-     
-     //
-     // GetTempo() returns the tempo value in 1/32 bpm
-     //
-     
-     unsigned short	GetTempo32() const;
-     
-     unsigned short	GetLoopNumber() const;
-     
-     */
-    
     jdkmidi::MIDITrack* track;
     jdkmidi::MIDITimedBigMessage* event;
     
