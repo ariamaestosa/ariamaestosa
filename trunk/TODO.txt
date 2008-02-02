@@ -99,15 +99,11 @@ NOTE: sorry, this is very raw :)
 * undoing sign changes in score doesn't quite work (at least when using shift+arrows)
 * update translation
 
-* crash with "Brandenburg.mid"
-
 + make aria files still smaller by using more default values
 
 - setting sharp/flat sign manually sometimes doesn't work (when it's possible to display the note on a level with no sign)
 
 + do something if opening docs fail!
-
-+ scons install on mac uses stupid commands to strip SVN files. use "find . -name ".svn" -exec rm -rf '{}' \;" instead
 
 + when wait dialog appears, you can still edit tracks and do operations that may be harmful to current process.
     yet you can't make it modal otherwise the background process stops.
@@ -117,6 +113,8 @@ NOTE: sorry, this is very raw :)
 + "select alsa midi port", guitar tunings, are not translatable
 
 + what's up with glutInit? wxGlCanvas seems to call it. Crashes suse 10.1.
+
+- use this when installing on linux : http://www.scons.org/wiki/InstallationPrefix
 
 - if a midi has control events in an empty track they might be removed during import (though what could go there? tempo events are already stored in sequence)
 - hitting space should work even if focus is in top bar

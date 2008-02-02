@@ -1,5 +1,6 @@
  1.1b8
 - Fixed crash when importing invalid midis
+- More improvements to scons build system
  
  1.1b7
 - Improved setting notes sharp/flat/natural to be easier and more flexible
