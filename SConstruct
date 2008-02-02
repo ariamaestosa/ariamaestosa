@@ -1,23 +1,19 @@
 import sys
 import os
 
-#
-# Usage:
-# % scons
-#       does a release build, auto-detects yout system
-# % scons [platform=macosx/linux] [release=debug/release]
-#       specify build type and/or platform
-# % scons install
-#       installs Aria, auto-detects system
-# % scons install [platform=linux/macosx] prefix=/usr/local
-#       install + specify platform and/or prefix (prefix only used for linux, default is /usr/local)
-# % scons uninstall [platform=linux prefix=/usr/local]
-#       linux only (on mac just drag to trash)
-#
-
-
-# if not env.GetOption('clean'):
-
+Help("""      Usage:
+        % scons
+            does a release build, auto-detects yout system
+        % scons [platform=macosx/linux] [release=debug/release]
+            specify build type and/or platform
+        % scons WXCONFIG=/path/to/wx-config
+            build using a specified wx-config
+        % scons install
+            installs Aria, auto-detects system
+        % scons install [platform=linux/macosx] prefix=/usr/local
+            install + specify platform and/or prefix (prefix only used for linux, default is /usr/local)
+        % scons uninstall [platform=linux prefix=/usr/local]
+            linux only (on mac just drag to trash)      """)
 
 def main_Aria_func():
     
@@ -82,51 +78,24 @@ def main_Aria_func():
               
         compile_Aria(build_type, which_os)
 
+# ---------------------------- Install Mac OS X -----------------------------
 
-def uninstall_Aria_linux():
-    
-    # check if user defined his own prefix, else use defaults
-    prefix = ARGUMENTS.get('prefix', 0)
-    
-    if prefix == 0:
-        print "*** No prefix specified, defaulting to /usr/local/"
-        prefix = '/usr/local/'
-    else:
-         print "*** Installing to prefix " + prefix
-    
-    if prefix[-1] != "/":
-        prefix += "/"
-        
-    resource_path = prefix + "share/Aria/"
-    app_path = prefix + "bin/Aria"
-    locale_path = prefix + "share/locale/"
-    
-    os.system("rm -r " + resource_path)
-    os.system("rm " + app_path)
-    os.system("rm " + locale_path + "fr/LC_MESSAGES/aria_maestosa.mo")
-    os.system("rm " + locale_path + "it/LC_MESSAGES/aria_maestosa.mo")
-    sys.exit(0)
-   
-def sys_command(command):
-    print command
-    return_status = os.system(command)
-    if return_status != 0:
-        print "An error occured"
-        sys.exit(0)
-        
 def install_Aria_mac():
     sys_command("mkdir -p ./AriaMaestosa.app/Contents/MacOS")
     sys_command("cp ./Aria ./AriaMaestosa.app/Contents/MacOS/Aria\ Maestosa")
     sys_command("cp ./release.plist ./AriaMaestosa.app/Contents/info.plist")
-    #sys_command("cp -r ./Resources ./AriaMaestosa.app/Contents/")
+    sys_command("cp -r ./Resources ./AriaMaestosa.app/Contents/")
     
-    # these stupid commands are a way to remove invisible SVN files from resources.
-    # there must be a better way - unix gurus, help me!
-    sys_command("tar cj --exclude '.svn' --exclude '.DS_Store' --exclude '.sconsign' -f ./rsrc.tar.bz2 Resources")
-    sys_command("mv ./rsrc.tar.bz2 ./AriaMaestosa.app/Contents/")
-    sys_command("cd ./AriaMaestosa.app/Contents/ && bzip2 -d ./rsrc.tar.bz2 && tar -xf ./rsrc.tar && rm ./rsrc.tar")
+    # not good for debug builds
+    # sys_command("strip ./AriaMaestosa.app/Contents/MacOS/Aria\ Maestosa")
+    
+    print "*** Cleaning up..."
+    os.system("cd ./AriaMaestosa.app && find . -name \".svn\" -exec rm -rf '{}' \;")
+    
     print "*** Done. (The application icon will eventually appear)"
     sys.exit(0)
+
+# ---------------------------- Install Linux -----------------------------
     
 def install_Aria_linux():
     
@@ -163,9 +132,46 @@ def install_Aria_linux():
     os.system("echo Installation done")
     sys.exit(0)
 
+# ---------------------------- Uninstall Linux -----------------------------
 
+def uninstall_Aria_linux():
+    
+    # check if user defined his own prefix, else use defaults
+    prefix = ARGUMENTS.get('prefix', 0)
+    
+    if prefix == 0:
+        print "*** No prefix specified, defaulting to /usr/local/"
+        prefix = '/usr/local/'
+    else:
+         print "*** Installing to prefix " + prefix
+    
+    if prefix[-1] != "/":
+        prefix += "/"
+        
+    resource_path = prefix + "share/Aria/"
+    app_path = prefix + "bin/Aria"
+    locale_path = prefix + "share/locale/"
+    
+    os.system("rm -r " + resource_path)
+    os.system("rm " + app_path)
+    os.system("rm " + locale_path + "fr/LC_MESSAGES/aria_maestosa.mo")
+    os.system("rm " + locale_path + "it/LC_MESSAGES/aria_maestosa.mo")
+    sys.exit(0)
+
+# -- small helper func
+def sys_command(command):
+    print command
+    return_status = os.system(command)
+    if return_status != 0:
+        print "An error occured"
+        sys.exit(0)
+        
+# ---------------------------- Compile -----------------------------
 def compile_Aria(build_type, which_os):
 
+    env = Environment()
+
+    # add wxWidgets flags
     # check if user defined his own WXCONFIG, else use defaults
     WXCONFIG = ARGUMENTS.get('WXCONFIG', 0)
 
@@ -175,22 +181,23 @@ def compile_Aria(build_type, which_os):
     else:
         print "*** wx-config : " + WXCONFIG
         
+    env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,gl'])
 
     # check build type and init build flags
     if build_type == "debug":
-        c_flags = ['-g','-D_MORE_DEBUG_CHECKS','-D_CHECK_FOR_LEAKS','-Wfatal-errors']
+        env.Append(CCFLAGS=['-g','-D_MORE_DEBUG_CHECKS','-D_CHECK_FOR_LEAKS','-Wfatal-errors'])
         
     elif build_type == "release":
-        c_flags = ['-O3']
+        env.Append(CCFLAGS=['-O3'])
     
     else:
         print 'Unknown build type, cannot continue'
         sys.exit(0)
         
     # init common library and header search paths
-    header_search_path = ['wxAdditions','.','./libjdkmidi/include']
-    libpath = ['.','./libjdkmidi/tmp/build/lib']
-    libs = ['libjdkmidi']
+    env.Append(CPPPATH = ['wxAdditions','.','./libjdkmidi/include'])
+    env.Append(LIBPATH = ['.','./libjdkmidi/tmp/build/lib'])
+    env.Append(LIBS = ['libjdkmidi'])
 
     print " "
 
@@ -282,17 +289,18 @@ def compile_Aria(build_type, which_os):
         source_mac_native = Split("""Midi/Players/Mac/AudioToolboxPlayer.cpp
         Midi/Players/Mac/CoreAudioNotePlayer.cpp
         Midi/Players/Mac/MacPlayerInterface.cpp
+        Midi/Players/Mac/QTKitPlayer.mm
         """)
     
         print "*** Adding mac source files and libraries"
-        c_flags = c_flags + ['-D_MAC_QUICKTIME_COREAUDIO']
+        env.Append(CCFLAGS=['-D_MAC_QUICKTIME_COREAUDIO'])
         sources = sources + source_mac_native
-        header_search_path = header_search_path + ['Midi/Players/Mac']
+        env.Append(CPPPATH=['Midi/Players/Mac'])
     
-        linkflags =  ['-framework','OpenGL','-framework','GLUT','-framework','AGL',
+        env.Append(LINKFLAGS = ['-framework','OpenGL','-framework','GLUT','-framework','AGL',
         '-framework','QTKit','-framework', 'Quicktime','-framework','CoreAudio',
         '-framework','AudioToolbox','-framework','AudioUnit','-framework','AppKit',
-        '-framework','Carbon','-framework','Cocoa','-framework','IOKit','-framework','System']
+        '-framework','Carbon','-framework','Cocoa','-framework','IOKit','-framework','System'])
         
     # linux (pMidi/Alsa/tiMidity)
     elif which_os == "linux":
@@ -312,12 +320,13 @@ def compile_Aria(build_type, which_os):
         """)
         sources = sources + source_pmidi
         
-        c_flags = c_flags + ['-DwxUSE_GLCANVAS=1','-D_PMIDI_ALSA']
+        env.Append(CCFLAGS=['-DwxUSE_GLCANVAS=1','-D_PMIDI_ALSA'])
         
-        linkflags = ['-Iusr/include','-Wl,--rpath,/usr/local/lib/']
-        libpath = libpath + ['usr/local/lib/','usr/lib/', '/opt/gnome/lib']
+        env.Append(CPPPATH = ['/usr/include'])
+        env.Append(LINKFLAGS = ['-Wl,--rpath,/usr/local/lib/'])
+        env.Append(LIBPATH = ['usr/local/lib/','usr/lib/', '/opt/gnome/lib'])
         
-        libs = libs + Split("""
+        env[LIBS] += Split("""
         GL
         GLU
         glut
@@ -336,27 +345,17 @@ def compile_Aria(build_type, which_os):
     # **************************************************************************************************
     # ******************************************* COMPILE **********************************************
     # **************************************************************************************************
-    
-    env = Environment()
-    env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,gl'])
+    print " "
+    print "*** Done. Will build"
+    print " "
     
     if which_os == "linux":
         env.ParseConfig( 'pkg-config --cflags glib-2.0' )
-        
-    # add our own flags to the environment
-    env.Append(CPPPATH=header_search_path)
-    env.Append(CCFLAGS=c_flags)
-    env.Append(LIBPATH = libpath)
-    env.Append(LIBS = libs)
-    env.Append(LINKFLAGS = linkflags)
     
+    # compile to .o
     object_list = env.Object(source = sources)
     
-    if which_os == "macosx":
-        print "Building QTKitPlayer.mm..."
-        os.system("gcc -x objective-c++ -c -O3 -D_MAC_QUICKTIME_COREAUDIO Midi/Players/Mac/QTKitPlayer.mm -I. -IMidi -IMidi/Players -IMidi/Players/Mac")
-        object_list = object_list + ['QTKitPlayer.o']
-    
+    # link program
     env.Program( target = 'Aria', source = object_list )
 
 main_Aria_func()
