@@ -21,38 +21,40 @@
 
 namespace AriaMaestosa
 {
-	namespace Action
+namespace Action
 {
 	
-	void NumberPressed::undo()
-   {
+void NumberPressed::undo()
+{
 		relocator.setParent(track);
 		relocator.prepareToRelocate();
+        // FIXME - shouldn't it undo all notes??
 		Note* note = relocator.getNextNote();
 		note->setFret(previousNumber);
-   }
-	void NumberPressed::perform()
-	{
-		assert(track != NULL);
-
-		if(track->graphics->editorMode != GUITAR) return;
-		
-		bool played = false;
-		const int amount_n = track->notes.size();
-		for(int n=0; n<amount_n; n++)
-		{
-			if(!track->notes[n].isSelected()) continue;
-			
-			previousNumber = track->notes[n].getFret();
-			track->notes[n].setFret(number);
-			relocator.rememberNote( track->notes[n] );
-			if(!played)
-			{
-				track->notes[n].play(true);
-				played = true;
-			}
-			return;
-		}//next
+}
+void NumberPressed::perform()
+{
+    assert(track != NULL);
+    
+    if(track->graphics->editorMode != GUITAR) return;
+    
+    bool played = false;
+    const int amount_n = track->notes.size();
+    for(int n=0; n<amount_n; n++)
+    {
+        if(!track->notes[n].isSelected()) continue;
+        
+        // FIXME - totally broken, each note had its own fret, we can't store that in a single variable
+        previousNumber = track->notes[n].getFret();
+        track->notes[n].setFret(number);
+        relocator.rememberNote( track->notes[n] );
+        if(!played)
+        {
+            track->notes[n].play(true);
+            played = true;
+        }
+        return;
+    }//next
 }
 NumberPressed::NumberPressed(const int number)
 {

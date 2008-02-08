@@ -77,6 +77,7 @@ namespace Action
 	class UpdateGuitarTuning;
 	class Paste;
     class SetAccidentalSign;
+    class ShiftBySemiTone;
 }
 
 const int SELECTED_NOTES = -1;
@@ -107,6 +108,7 @@ class Track
 	friend class Action::UpdateGuitarTuning;
 	friend class Action::Paste;
 	friend class Action::SetAccidentalSign;
+    friend class Action::ShiftBySemiTone;
     
 	DECLARE_LEAK_CHECK();
 	

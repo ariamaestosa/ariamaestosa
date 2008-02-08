@@ -1617,19 +1617,21 @@ void ScoreEditor::moveNote(Note& note, const int relativeX, const int relativeY)
         note.endTick   += relativeX;
         
         if(relativeY==0) return;
-		
+		/*
 		if(Display::isSelectMorePressed() or Display::isCtrlDown())
 		{
 			note.pitchID += relativeY;
 		}
 		else
 		{
+            */
 			int noteLevel = converter->noteToLevel(&note);
 			noteLevel += relativeY;
             if(noteLevel > 0 and noteLevel < 73) // reject illegal notes
                 note.pitchID = converter->levelToNote(noteLevel);
+            /*
 		}
-        
+        */
 }
 
 void ScoreEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current, RelativeXCoord& mousex_initial, int mousey_initial)

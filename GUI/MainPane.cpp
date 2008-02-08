@@ -30,6 +30,7 @@
 #include "Actions/ShiftString.h"
 #include "Actions/MoveNotes.h"
 #include "Actions/DeleteSelected.h"
+#include "Actions/ShiftBySemiTone.h"
 
 #include "GUI/GraphicalTrack.h"
 #include "GUI/MeasureBar.h"
@@ -542,8 +543,14 @@ void MainPane::keyPressed(wxKeyEvent& evt)
 
     }
 
-	// FIXME - belongs to the guitar editor, probably
-    if(getCurrentSequence()->getCurrentTrack()->graphics->editorMode == GUITAR)
+    // perform editor-specific event filtering
+    
+    // FIXME - belongs to the editor, probably
+    // FIXME - move all editor stuff to editor files
+    // FIXME - too many renders there, maybe even actions do render
+    
+    const int current_editor = getCurrentSequence()->getCurrentTrack()->graphics->editorMode;
+    if(current_editor == GUITAR)
 	{
 
         // ------------------- numbers -------------------
@@ -562,7 +569,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             else getCurrentSequence()->getCurrentTrack()->action( new Action::NumberPressed(evt.GetKeyCode() - 324) );
             Display::render();
         }
-
+        
         // ---------------- shift frets -----------------
         if(!commandDown && shiftDown)
 		{
@@ -594,9 +601,25 @@ void MainPane::keyPressed(wxKeyEvent& evt)
         }
     }
 
-	// FIXME - move all editor stuff to editor files
-    // FIXME - too many renders there, maybe even actions do render
-    if( !commandDown and (!shiftDown or getCurrentSequence()->getCurrentTrack()->graphics->editorMode == SCORE) )
+    if(current_editor == SCORE and (commandDown or shiftDown) )
+    {
+            if(evt.GetKeyCode()==WXK_UP)
+			{
+                getCurrentSequence()->getCurrentTrack()->action( new Action::ShiftBySemiTone(-1, SELECTED_NOTES) );
+                Display::render();
+                return;
+            }
+            
+            if(evt.GetKeyCode()==WXK_DOWN)
+			{
+                getCurrentSequence()->getCurrentTrack()->action( new Action::ShiftBySemiTone(1, SELECTED_NOTES) );
+                Display::render();
+                return;
+            }
+  
+    }
+    
+    if( !commandDown and (!shiftDown or current_editor == SCORE) )
 	{
         // ---------------- move notes -----------------
 
@@ -604,8 +627,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
 		{
             getCurrentSequence()->getCurrentTrack()->
 			action( new Action::MoveNotes(
-					  -getCurrentSequence()->ticksPerBeat() *
-					  4 /
+					  -getCurrentSequence()->ticksPerBeat() * 4 /
 					  getCurrentSequence()->getCurrentTrack()->getGridDivider(), 0, SELECTED_NOTES)
 					);
             Display::render();
@@ -615,8 +637,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
 		{
             getCurrentSequence()->getCurrentTrack()->
 			action( new Action::MoveNotes(
-					  getCurrentSequence()->ticksPerBeat() *
-					  4 /
+					  getCurrentSequence()->ticksPerBeat() * 4 /
 					  getCurrentSequence()->getCurrentTrack()->getGridDivider(), 0, SELECTED_NOTES)
 					);
             Display::render();

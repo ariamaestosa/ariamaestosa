@@ -222,6 +222,7 @@ def compile_Aria(build_type, which_os):
     Actions/ScaleTrack.cpp
     Actions/SetAccidentalSign.cpp
     Actions/SetNoteVolume.cpp
+    Actions/ShiftBySemiTone.cpp
     Actions/ShiftFrets.cpp
     Actions/ShiftString.cpp
     Actions/SnapNotesToGrid.cpp
