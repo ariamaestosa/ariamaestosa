@@ -14,7 +14,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "Actions/ShiftFrets.h"
+#include "Actions/ShiftBySemiTone.h"
 #include "Actions/EditAction.h"
 #include "Midi/Track.h"
 #include "GUI/GraphicalTrack.h"
@@ -23,26 +23,25 @@ namespace AriaMaestosa
 {
 	namespace Action
 {
-	void ShiftFrets::undo()
+	void ShiftBySemiTone::undo()
 	{
-		//undo_obj.restoreState(track);
 		Note* current_note;
 		relocator.setParent(track);
 		relocator.prepareToRelocate();
 		int n=0;
 		while( (current_note = relocator.getNextNote()) and current_note != NULL)
 		{
-			current_note->setFret( frets[n] );
+            current_note->pitchID -= deltaY;
 			n++;
 		}
 	}
-	void ShiftFrets::perform()
+	void ShiftBySemiTone::perform()
 	{
 		assert(track != NULL);
-		assert(noteid != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
 		
-		// only accept to do this in guitar mode
-		if(track->graphics->editorMode != GUITAR)  return;
+		if(track->graphics->editorMode != SCORE) return;
+		
+		assert(noteid != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implemented)
 		
 		// concerns all selected notes
 		if(noteid==SELECTED_NOTES)
@@ -54,8 +53,7 @@ namespace AriaMaestosa
 			{
 				if(!track->notes[n].isSelected()) continue;
 				
-				frets.push_back( track->notes[n].getFret() );
-				track->notes[n].shiftFret(amount);
+                track->notes[n].pitchID += deltaY;
 				relocator.rememberNote( track->notes[n] );
 				
 				if(!played)
@@ -73,20 +71,19 @@ namespace AriaMaestosa
 			assertExpr(noteid,>=,0);
 			assertExpr(noteid,<,track->notes.size());
 			
-			frets.push_back( track->notes[noteid].getFret() );
-			track->notes[noteid].shiftFret(amount);
+			track->notes[noteid].pitchID += deltaY;
 			relocator.rememberNote( track->notes[noteid] );
 			
 			track->notes[noteid].play(true);
 		}
 		
 }
-ShiftFrets::ShiftFrets(const int amount, const int noteid)
+ShiftBySemiTone::ShiftBySemiTone(const int deltaY, const int noteid)
 {
-	ShiftFrets::amount = amount;
-	ShiftFrets::noteid = noteid;
+	ShiftBySemiTone::deltaY = deltaY;
+	ShiftBySemiTone::noteid = noteid;
 }
-ShiftFrets::~ShiftFrets() {}
+ShiftBySemiTone::~ShiftBySemiTone() {}
 
 }
 }
