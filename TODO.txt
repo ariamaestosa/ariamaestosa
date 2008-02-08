@@ -78,7 +78,7 @@ NOTE: sorry, this is very raw :)
  - controllers have only coarse values (no fine value)
  - y zoom (make keyboard view more compact?)
  - draw correctly short tablature notes [don't repeat number when it's the same for several consecutive short notes?]
- - deal with multiple tracks per channel, multiple channels per track
+ - deal with multiple channels per track
  - fullscreen?
  - resize notes by dragging
  - when hitting space during a selection, finish selection before playing
@@ -98,9 +98,10 @@ NOTE: sorry, this is very raw :)
  ## crash when emptying tempo in control view [reported, not tested] 
 
 * update translation
-* numberpressed action undo is totally broken
 
-= score editor : add a note... give it an accidental sign. Move the note up or down with arrow key. Undo - accidental sign is gone.
+* make file save safe (don't erase old file until new one is sucessfully written)
+
++ score editor : add a note... give it an accidental sign. Move the note up or down with arrow key. Undo - accidental sign is gone.
 
 + make aria files still smaller by using more default values
 
