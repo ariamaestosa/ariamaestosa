@@ -28,7 +28,6 @@ void NumberPressed::undo()
 {
 		relocator.setParent(track);
 		relocator.prepareToRelocate();
-        // FIXME - shouldn't it undo all notes??
 		Note* note = relocator.getNextNote();
 		note->setFret(previousNumber);
 }
@@ -44,7 +43,6 @@ void NumberPressed::perform()
     {
         if(!track->notes[n].isSelected()) continue;
         
-        // FIXME - totally broken, each note had its own fret, we can't store that in a single variable
         previousNumber = track->notes[n].getFret();
         track->notes[n].setFret(number);
         relocator.rememberNote( track->notes[n] );
