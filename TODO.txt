@@ -125,9 +125,7 @@ NOTE: sorry, this is very raw :)
 
 + unsure note length is okay with measure != 4/4. check forumlae on wikipedia : http://en.wikipedia.org/wiki/Modern_musical_symbols
 + loading a key from a file probably won't appear in keyboard editor
-+ accidentals should last entire measure
 + score editor - sharp of flat notes at time=0 have their sign hidden behind grey bar
-- in a chord that lasts 2 4/4 measures, each note of the chord has its own tie
 
 + rearrange notes doesn't always undo correctly
 

@@ -814,8 +814,6 @@ void Sequence::prepareEmptyTracksForLoading(int amount)
 void Sequence::saveToFile(wxFileOutputStream& fileout)
 {
 	
-	//fileout.WriteString
-	
 	writeData(wxT("<sequence"), fileout );
 	
 	writeData(wxT(" maintempo=\"") + to_wxString(tempo) +
@@ -833,13 +831,6 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
 			  wxT("\"/>\n"), fileout );
 	
 	measureBar->saveToFile(fileout);
-	/*
-	writeData(wxString("<measure ") + //width=\"") + to_wxString(getMeasureBar()->measureLengthInTicks()) +
-			  wxString("\" firstMeasure=\"") + to_wxString(getMeasureBar()->getFirstMeasure()) +
-			  wxString("\" denom=\"") + to_wxString(measureBar->getTimeSigDenominator()) +
-			  wxString("\" num=\"") + to_wxString(measureBar->getTimeSigNumerator()) +
-			  wxString("\"/>\n\n"), fileout );
-	*/
 	
 	writeData(wxT("<tempo>\n"), fileout );
 	// tempo changes
@@ -864,53 +855,6 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
 	
 	clearUndoStack();
 }
-
-
-
-// convert string to double
-double string2double(char* digit)
-{
-	int sign = 1;
-	
-	double result = 0;
-	
-	// check sign
-	if (*digit == '-')
-	{
-		sign = -1;
-		digit++;
-	}
-	
-	// get integer portion
-	while (*digit >= '0' && *digit <='9')
-	{
-		result = (result * 10) + *digit-'0';
-		digit++;
-	}
-	
-	// get decimal point and fraction, if any.
-	if (*digit == '.' or *digit == ',')
-	{
-		digit++;
-		double scale = 0.1;
-		while (*digit >= '0' && *digit <='9')
-		{
-			result += (*digit-'0') * scale;
-			scale *= 0.1;
-			digit++;
-		}
-	}
-	
-	// error if we're not at the end of the number
-	if (*digit != 0) {
-		return -1;
-	}
-	
-	//set to sign given at the front
-	result = result * sign;
-	return result;
-}
-
 
 /*
  * Called when reading <sequence> ... </sequence> in .aria file
