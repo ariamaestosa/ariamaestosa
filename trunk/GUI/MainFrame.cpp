@@ -997,7 +997,7 @@ void MainFrame::toolsExitPlaybackMode()
 
 #pragma mark -
 
-void MainFrame::updateTopBarForSequence(Sequence* seq)
+void MainFrame::updateTopBarAndScrollbarsForSequence(Sequence* seq)
 {
 
     changingValues=true; // ignore events thrown while changing values in the top bar
@@ -1529,7 +1529,7 @@ void MainFrame::setCurrentSequence(int n)
     assertExpr(n,<,sequences.size());
 
     currentSequence = n;
-	updateTopBarForSequence( getCurrentSequence() );
+	updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
 	changeChannelManagement( getCurrentSequence()->getChannelManagementType() );
 }
 
@@ -1577,7 +1577,7 @@ void MainFrame::loadAriaFile(wxString filePath)
 
 	// if a song is currently playing, it needs to stay on top
 	if(PlatformMidiManager::isPlaying()) setCurrentSequence(old_currentSequence);
-    else updateTopBarForSequence( getCurrentSequence() );
+    else updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
 
     Display::render();
 

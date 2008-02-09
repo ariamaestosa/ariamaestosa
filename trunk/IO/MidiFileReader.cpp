@@ -502,7 +502,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
     getMainFrame()->changeMeasureAmount( measureAmount_i );
     sequence->measureBar->setMeasureAmount( measureAmount_i );
     
-    getMainFrame()->updateTopBarForSequence(sequence);
+    getMainFrame()->updateTopBarAndScrollbarsForSequence(sequence);
     sequence->setZoom(100);
 	
 	sequence->clearUndoStack();

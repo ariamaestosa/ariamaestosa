@@ -64,8 +64,7 @@ void GLPane::resized(wxSizeEvent& evt)
     Refresh();
 
     // update vertical scrollbar
-    // FIXME belongs to mainpane
-    if(getMainFrame()->getSequenceAmount()>0) getMainFrame()->updateTopBarForSequence( getCurrentSequence() );
+    if(getMainFrame()->getSequenceAmount()>0) getMainFrame()->updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
 }
 
 

@@ -176,7 +176,7 @@ public:
     void stopClicked(wxCommandEvent& evt);
 
 	// i/o
-	void updateTopBarForSequence(Sequence* seq);
+	void updateTopBarAndScrollbarsForSequence(Sequence* seq);
 	void loadAriaFile(wxString path);
 	void loadMidiFile(wxString path);
 
