@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-22 19:33-0500\n"
-"PO-Revision-Date: 2007-12-22 19:44-0500\n"
+"POT-Creation-Date: 2008-02-09 15:02-0500\n"
+"PO-Revision-Date: 2008-02-09 15:02-0500\n"
 "Last-Translator: Marianne Gagnon <auria.mg@gmail.com>\n"
 "Language-Team: French <traduc@traduc.org>\n"
 "MIME-Version: 1.0\n"
@@ -46,11 +46,21 @@ msgstr ""
 "\n"
 "\tErgonis Software et"
 
-#: GUI/MeasureBar.cpp:124
+#: Dialogs/About.cpp:42
+msgid ""
+"\n"
+"\n"
+"Translations:\n"
+msgstr ""
+"\n"
+"\n"
+"Traductions:\n"
+
+#: GUI/MeasureBar.cpp:123
 msgid " and "
 msgstr " et "
 
-#: Dialogs/CustomNoteSelectDialog.cpp:112
+#: Dialogs/CustomNoteSelectDialog.cpp:111
 msgid " to "
 msgstr " à "
 
@@ -58,73 +68,73 @@ msgstr " à "
 msgid "About Aria Maestosa"
 msgstr "À propos d'Aria Maestosa"
 
-#: GUI/MainFrame.cpp:293
+#: GUI/MainFrame.cpp:319
 msgid "About this app"
 msgstr "À propos d'Aria Maestosa"
 
-#: GUI/MainFrame.cpp:265
+#: GUI/MainFrame.cpp:291
 msgid "Add Track"
 msgstr "Ajouter une piste"
 
-#: Dialogs/Preferences.cpp:59
-#: GUI/MainFrame.cpp:276
+#: Dialogs/Preferences.cpp:63
+#: GUI/MainFrame.cpp:302
 msgid "Always"
 msgstr "Toujours"
 
-#: GUI/MeasureBar.cpp:125
+#: GUI/MeasureBar.cpp:124
 msgid "Amount: "
 msgstr "Quantité: "
 
-#: GUI/MainFrame.cpp:552
+#: GUI/MainFrame.cpp:554
 msgid "Aria Maestosa file|*.aria"
 msgstr "Document Aria Maestosa|*.aria"
 
-#: GUI/MainFrame.cpp:283
+#: GUI/MainFrame.cpp:309
 msgid "Automatic"
 msgstr "Automatique"
 
-#: Dialogs/CustomNoteSelectDialog.cpp:135
+#: Dialogs/CustomNoteSelectDialog.cpp:134
 #: Dialogs/ScalePicker.cpp:130
 #: IO/NotationExport.cpp:133
-#: Pickers/TuningPicker.cpp:257
+#: Pickers/TuningPicker.cpp:256
 msgid "Cancel"
 msgstr "Annuler"
 
-#: GUI/MainFrame.cpp:1525
+#: GUI/MainFrame.cpp:1477
 msgid "Changes will be lost if you close the sequence. Do you really want to continue?"
 msgstr "Les modifications seront perdues si vous fermez la séquence. Voulez-vous réellement continuer?"
 
-#: Dialogs/Preferences.cpp:121
+#: Dialogs/Preferences.cpp:112
 msgid "Changes will take effect next time you open the app."
 msgstr "Les modifications prendront effet à la prochaine ouverture du logiciel."
 
-#: GUI/GraphicalTrack.cpp:216
+#: GUI/GraphicalTrack.cpp:211
 msgid "Channel choice"
 msgstr "Choix de canal"
 
-#: GUI/MainFrame.cpp:282
+#: GUI/MainFrame.cpp:308
 msgid "Channel management"
 msgstr "Gestion des canaux"
 
-#: GUI/GraphicalTrack.cpp:179
+#: GUI/GraphicalTrack.cpp:174
 msgid "Choose a new track title."
 msgstr "Entrez le nom de la piste."
 
-#: GUI/MainFrame.cpp:232
+#: GUI/MainFrame.cpp:258
 msgid "Close\tCtrl-W"
 msgstr "Fermer\tCtrl-W"
 
-#: GUI/MainFrame.cpp:536
-#: GUI/MainFrame.cpp:576
-#: GUI/MainFrame.cpp:615
-#: GUI/MainFrame.cpp:660
-#: GUI/MainFrame.cpp:817
-#: GUI/MainFrame.cpp:1526
+#: GUI/MainFrame.cpp:538
+#: GUI/MainFrame.cpp:578
+#: GUI/MainFrame.cpp:610
+#: GUI/MainFrame.cpp:709
+#: GUI/MainFrame.cpp:763
+#: GUI/MainFrame.cpp:1478
 #: IO/NotationExport.cpp:236
 msgid "Confirm"
 msgstr "Veuillez confirmer"
 
-#: GUI/MainFrame.cpp:250
+#: GUI/MainFrame.cpp:276
 msgid "Copy\tCtrl-C"
 msgstr "Copier\tCtrl-C"
 
@@ -133,51 +143,51 @@ msgstr "Copier\tCtrl-C"
 msgid "Copyright"
 msgstr "Copyright"
 
-#: Pickers/TuningPicker.cpp:236
+#: Pickers/TuningPicker.cpp:235
 msgid "Custom Tuning Editor"
 msgstr "Accordeur de guitare"
 
-#: GUI/MainFrame.cpp:266
+#: GUI/MainFrame.cpp:292
 msgid "Delete Track"
 msgstr "Supprimer la piste"
 
-#: GUI/MeasureBar.cpp:314
+#: GUI/MeasureBar.cpp:312
 msgid "Denominator must be a power of 2"
 msgstr "Le dénominateur doit être une puissance de 2"
 
-#: GUI/MainFrame.cpp:660
+#: GUI/MainFrame.cpp:709
 msgid "Do you really want to delete this track?"
 msgstr "Voulez-vous vraiment supprimer cette piste?"
 
-#: GUI/MeasureBar.cpp:79
+#: GUI/MeasureBar.cpp:78
 msgid "Do you really want to remove selected measures?"
 msgstr "Voulez-vous réellement supprimer les mesures sélectionnées?"
 
-#: GUI/MeasureBar.cpp:144
+#: GUI/MeasureBar.cpp:143
 msgid "Do you really want to remove this time sig change?"
 msgstr "Voulez-vous vraiment supprimer ce changement de mesure?"
 
-#: GUI/MainFrame.cpp:342
+#: GUI/MainFrame.cpp:368
 msgid "Duration: "
 msgstr "Durée: "
 
-#: GUI/MainFrame.cpp:247
+#: GUI/MainFrame.cpp:273
 msgid "Edit"
 msgstr "Edition"
 
-#: GUI/GraphicalTrack.cpp:214
+#: GUI/GraphicalTrack.cpp:209
 msgid "Enter the ID of the channel this track should play in"
 msgstr "Entrez le numéro du canal dans lequel cette piste doit jouer."
 
-#: GUI/MainFrame.cpp:272
+#: GUI/MainFrame.cpp:298
 msgid "Expanded measure management"
 msgstr "Gestion étendue des mesures"
 
-#: GUI/MainFrame.cpp:240
+#: GUI/MainFrame.cpp:266
 msgid "Export to Audio"
 msgstr "Exporter en audio"
 
-#: GUI/MainFrame.cpp:239
+#: GUI/MainFrame.cpp:265
 msgid "Export to Midi"
 msgstr "Exporter vers Midi"
 
@@ -185,23 +195,23 @@ msgstr "Exporter vers Midi"
 msgid "Export to musical notation"
 msgstr "Exporter notation musicale"
 
-#: Pickers/TuningPicker.cpp:362
+#: Pickers/TuningPicker.cpp:361
 msgid "Export track as tablature"
 msgstr "Exporter la piste en tablature"
 
-#: Images/wxImageLoader.cpp:52
+#: Images/wxImageLoader.cpp:54
 msgid "Failed to load resource image"
 msgstr "Erreur lors de la lecture des images ressource"
 
-#: GUI/MainFrame.cpp:227
+#: GUI/MainFrame.cpp:253
 msgid "File"
 msgstr "Fichier"
 
-#: GUI/MainFrame.cpp:271
+#: GUI/MainFrame.cpp:297
 msgid "Follow Playback"
 msgstr "Suivre la lecture"
 
-#: GUI/MainFrame.cpp:816
+#: GUI/MainFrame.cpp:762
 msgid ""
 "If multiple tracks play on the same channel, they will be merged.\n"
 "This cannot be undone.\n"
@@ -221,19 +231,19 @@ msgstr "Ignorer les pistes non visibles"
 msgid "Ignore muted tracks"
 msgstr "Ignorer les pistes sans son"
 
-#: Dialogs/CustomNoteSelectDialog.cpp:201
+#: Dialogs/CustomNoteSelectDialog.cpp:200
 msgid "Illegal values"
 msgstr "Valeurs incorrectes"
 
-#: GUI/MainFrame.cpp:238
+#: GUI/MainFrame.cpp:264
 msgid "Import Midi File"
 msgstr "Importer un fichier Midi"
 
-#: GUI/MeasureBar.cpp:123
+#: GUI/MeasureBar.cpp:122
 msgid "Insert empty measures between measures "
 msgstr "Insérer des mesures vides entre les mesures "
 
-#: GUI/MeasureBar.cpp:116
+#: GUI/MeasureBar.cpp:115
 msgid "Insert measures"
 msgstr "Insérer des mesures"
 
@@ -241,20 +251,20 @@ msgstr "Insérer des mesures"
 msgid "Invalid file name. (Sorry, accentuated characters are not supported)"
 msgstr "Nom de fichier invalide (Désolé, les charactères accentués ne sont pas supportés)"
 
-#: Dialogs/Preferences.cpp:45
+#: Dialogs/Preferences.cpp:48
 msgid "Language"
 msgstr "Langue"
 
-#: Pickers/ControllerChoice.cpp:200
+#: Pickers/ControllerChoice.cpp:229
 msgid "Left"
 msgstr "Gauche"
 
-#: Pickers/KeyPicker.cpp:35
+#: Pickers/KeyPicker.cpp:34
 msgid "Linear Notation"
 msgstr "Notation linéaire"
 
-#: GUI/MainFrame.cpp:285
-#: GUI/MainFrame.cpp:294
+#: GUI/MainFrame.cpp:311
+#: GUI/MainFrame.cpp:320
 msgid "Manual"
 msgstr "Manuel"
 
@@ -262,69 +272,69 @@ msgstr "Manuel"
 msgid "Maximal number of characters per line"
 msgstr "Nombre maximal de caractères par ligne"
 
-#: GUI/MainFrame.cpp:356
+#: GUI/MainFrame.cpp:382
 msgid "Measure: "
 msgstr "Mesure: "
 
-#: GUI/MainFrame.cpp:569
+#: GUI/MainFrame.cpp:571
 msgid "Midi file|*.mid"
 msgstr "Fichiers Midi|*.mid"
 
-#: GUI/MainFrame.cpp:559
+#: GUI/MainFrame.cpp:561
 msgid "Midi file|*.mid;*.midi"
 msgstr "Fichiers Midi|*.mid;*.midi"
 
-#: Pickers/KeyPicker.cpp:34
+#: Pickers/KeyPicker.cpp:33
 msgid "Musical notation"
 msgstr "Notation musicale"
 
-#: Dialogs/Preferences.cpp:59
-#: GUI/MainFrame.cpp:279
+#: Dialogs/Preferences.cpp:63
+#: GUI/MainFrame.cpp:305
 msgid "Never"
 msgstr "Jamais"
 
-#: GUI/MainFrame.cpp:228
+#: GUI/MainFrame.cpp:254
 msgid "New\tCtrl-N"
 msgstr "Nouveau\tCtrl-N"
 
-#: Pickers/ControllerChoice.cpp:209
+#: Pickers/ControllerChoice.cpp:238
 msgid "Off"
 msgstr "Inactif"
 
-#: Pickers/ControllerChoice.cpp:184
+#: Pickers/ControllerChoice.cpp:213
 msgid "On"
 msgstr "Actif"
 
-#: Dialogs/Preferences.cpp:59
-#: GUI/MainFrame.cpp:277
+#: Dialogs/Preferences.cpp:63
+#: GUI/MainFrame.cpp:303
 msgid "On note change"
 msgstr "Sur un changement de son"
 
-#: GUI/MainFrame.cpp:229
+#: GUI/MainFrame.cpp:255
 msgid "Open\tCtrl-O"
 msgstr "Ouvrir\tCtrl-O"
 
-#: GUI/MainFrame.cpp:251
+#: GUI/MainFrame.cpp:277
 msgid "Paste\tCtrl-V"
 msgstr "Coller\tCtrl-V"
 
-#: GUI/MainFrame.cpp:252
+#: GUI/MainFrame.cpp:278
 msgid "Paste at cursor\tCtrl-Shift-V"
 msgstr "Coller au curseur\tCtrl-Shift-V"
 
-#: GUI/MainFrame.cpp:275
+#: GUI/MainFrame.cpp:301
 msgid "Play during edit"
 msgstr "Jouer durant l'édition"
 
-#: Dialogs/Preferences.cpp:56
+#: Dialogs/Preferences.cpp:60
 msgid "Play during edit (default value)"
 msgstr "Jouer durant l'édition (valeur par défaut)"
 
-#: GUI/MainFrame.cpp:1604
+#: GUI/MainFrame.cpp:1558
 msgid "Please wait while .aria file is loading."
 msgstr "Veuillez patienter, ouverture en cours..."
 
-#: GUI/MainFrame.cpp:621
+#: GUI/MainFrame.cpp:617
 msgid ""
 "Please wait while audio file is being generated.\n"
 "\n"
@@ -336,36 +346,36 @@ msgstr ""
 "Dépendemment de la taille du fichier,\n"
 "cela peut prendre plusieurs minutes."
 
-#: GUI/MainFrame.cpp:1646
+#: GUI/MainFrame.cpp:1600
 msgid "Please wait while midi file is loading."
 msgstr "Veuillez patienter, ouverture en cours..."
 
-#: Dialogs/WaitWindow.cpp:40
+#: Dialogs/WaitWindow.cpp:57
 msgid "Please wait..."
 msgstr "Veuillez patienter..."
 
-#: Dialogs/Preferences.cpp:34
-#: GUI/MainFrame.cpp:287
+#: Dialogs/Preferences.cpp:37
+#: GUI/MainFrame.cpp:313
 msgid "Preferences"
 msgstr "Préférences"
 
-#: GUI/MainFrame.cpp:243
+#: GUI/MainFrame.cpp:269
 msgid "Quit\tCtrl-Q"
 msgstr "Quitter\tCtrl-Q"
 
-#: Pickers/TuningPicker.cpp:360
+#: Pickers/TuningPicker.cpp:359
 msgid "Rearrange selected notes"
 msgstr "Réarranger les notes sélectionnées"
 
-#: GUI/MainFrame.cpp:260
+#: GUI/MainFrame.cpp:286
 msgid "Remove Overlapping Notes"
 msgstr "Enlever les notes superposées"
 
-#: GUI/MeasureBar.cpp:68
+#: GUI/MeasureBar.cpp:67
 msgid "Remove selected measures"
 msgstr "Supprimer les mesures sélectionnées"
 
-#: GUI/MeasureBar.cpp:117
+#: GUI/MeasureBar.cpp:116
 msgid "Remove time sig change"
 msgstr "Supprimer ce changement de mesure"
 
@@ -373,20 +383,20 @@ msgstr "Supprimer ce changement de mesure"
 msgid "Repetitions must be at least 2 measures long"
 msgstr "Les répétitions doivent être longues d'au moins 2 mesures"
 
-#: Pickers/ControllerChoice.cpp:175
+#: Pickers/ControllerChoice.cpp:204
 msgid "Right"
 msgstr "Droite"
 
-#: GUI/MainFrame.cpp:230
+#: GUI/MainFrame.cpp:256
 msgid "Save\tCtrl-S"
 msgstr "Enregistrer\tCtrl-S"
 
-#: GUI/MainFrame.cpp:231
+#: GUI/MainFrame.cpp:257
 msgid "Save As\tCtrl-Shift-S"
 msgstr "Enregistrer sous\tCtrl-Shift-S"
 
 #: Dialogs/ScalePicker.cpp:66
-#: GUI/MainFrame.cpp:259
+#: GUI/MainFrame.cpp:285
 msgid "Scale"
 msgstr "Redimensionner"
 
@@ -394,42 +404,42 @@ msgstr "Redimensionner"
 msgid "Scale notes in..."
 msgstr "Redimensionner les notes de..."
 
-#: GUI/MainFrame.cpp:254
+#: GUI/MainFrame.cpp:280
 msgid "Select All\tCtrl-A"
 msgstr "Sélectionner tout\tCtrl-A"
 
-#: GUI/MainFrame.cpp:255
+#: GUI/MainFrame.cpp:281
 msgid "Select None\tCtrl-Shift-A"
 msgstr "Sélectionner rien\tCtrl-Shift-A"
 
-#: GUI/MainFrame.cpp:256
+#: GUI/MainFrame.cpp:282
 msgid "Select Notes...\tCtrl-F"
 msgstr "Sélection avec critères\tCtrl-F"
 
-#: GUI/MainFrame.cpp:527
-#: GUI/MainFrame.cpp:568
-#: GUI/MainFrame.cpp:606
+#: GUI/MainFrame.cpp:529
+#: GUI/MainFrame.cpp:570
+#: GUI/MainFrame.cpp:601
 #: IO/NotationExport.cpp:220
 msgid "Select destination file"
 msgstr "Veuillez sélectionner l'emplacement du fichier"
 
-#: GUI/MainFrame.cpp:552
+#: GUI/MainFrame.cpp:554
 msgid "Select file"
 msgstr "Veuillez sélectionner un fichier"
 
-#: GUI/MainFrame.cpp:559
+#: GUI/MainFrame.cpp:561
 msgid "Select midi file"
 msgstr "Veuillez sélectionner un fichier midi"
 
-#: Dialogs/CustomNoteSelectDialog.cpp:51
+#: Dialogs/CustomNoteSelectDialog.cpp:50
 msgid "Select notes that..."
 msgstr "Sélectionner les notes qui..."
 
-#: Dialogs/CustomNoteSelectDialog.cpp:42
+#: Dialogs/CustomNoteSelectDialog.cpp:41
 msgid "Select notes..."
 msgstr "Sélection avec critères"
 
-#: GUI/MainFrame.cpp:270
+#: GUI/MainFrame.cpp:296
 msgid "Settings"
 msgstr "Options"
 
@@ -437,11 +447,11 @@ msgstr "Options"
 msgid "Show repeated measures (e.g. chorus) only once"
 msgstr "Exporter les mesures répétées (ex. refrain) une fois seulement"
 
-#: GUI/MainFrame.cpp:258
+#: GUI/MainFrame.cpp:284
 msgid "Snap Notes to Grid"
 msgstr "Ajuster les notes à la grille"
 
-#: GUI/MainFrame.cpp:235
+#: GUI/MainFrame.cpp:261
 msgid "Song info"
 msgstr "Informations sur la séquence"
 
@@ -449,54 +459,55 @@ msgstr "Informations sur la séquence"
 msgid "Song name"
 msgstr "Nom de la chanson"
 
-#: GUI/MainFrame.cpp:586
+#: GUI/MainFrame.cpp:588
 msgid "Sorry, failed to export midi file."
 msgstr "Désolé, le fichier midi n'a pas pu être sauvegardé."
 
-#: GUI/MainFrame.cpp:1610
+#: GUI/MainFrame.cpp:1564
 msgid "Sorry, loading .aria file failed."
 msgstr "Désolé, le fichier n'a pas pu être ouvert."
 
-#: GUI/MainFrame.cpp:1651
+#: GUI/MainFrame.cpp:1606
 msgid "Sorry, loading midi file failed."
 msgstr "Désolé, le fichier midi n'a pas pu être ouvert."
 
-#: GUI/MainFrame.cpp:367
+#: GUI/MainFrame.cpp:393
 msgid "Start: "
 msgstr "Début: "
 
-#: GUI/MainFrame.cpp:331
+#: GUI/MainFrame.cpp:357
 msgid "Tempo: "
 msgstr "Tempo: "
 
-#: GUI/MainFrame.cpp:536
-#: GUI/MainFrame.cpp:576
-#: GUI/MainFrame.cpp:615
+#: GUI/MainFrame.cpp:538
+#: GUI/MainFrame.cpp:578
+#: GUI/MainFrame.cpp:610
 #: IO/NotationExport.cpp:236
 msgid "The file already exists. Do you wish to overwrite it?"
 msgstr "Le fichier existe deja. Voulez-vous l'écraser?"
 
-#: GUI/MainFrame.cpp:264
+#: GUI/MainFrame.cpp:290
 msgid "Tracks"
 msgstr "Pistes"
 
-#: GUI/MainFrame.cpp:248
+#: GUI/MainFrame.cpp:274
 msgid "Undo\tCtrl-Z"
 msgstr "Annuler\tCtrl-Z"
 
-#: main.cpp:175
+#: main.cpp:131
 msgid "Unknown file type: "
 msgstr "Type de fichier inconnu: "
 
-#: IO/MidiFileReader.cpp:518
+#: IO/MidiFileReader.cpp:415
 #: Midi/Sequence.cpp:78
 #: Midi/Sequence.cpp:107
-#: Midi/Track.cpp:54
-#: Midi/Track.cpp:1249
+#: Midi/Track.cpp:53
+#: Midi/Track.cpp:1192
+#: Midi/Track.cpp:1254
 msgid "Untitled"
 msgstr "Sans titre"
 
-#: Midi/Sequence.cpp:973
+#: Midi/Sequence.cpp:962
 msgid ""
 "Warning : you are opening a file saved with a version of\n"
 "Aria Maestosa more recent than the version you currently have.\n"
@@ -506,23 +517,23 @@ msgstr ""
 "ultérieure à la version présentement utilisée.\n"
 "Il est possible que le fichier ne s'ouvre pas correctement."
 
-#: Pickers/ControllerChoice.cpp:162
+#: Pickers/ControllerChoice.cpp:191
 msgid "Wrong controller ID"
 msgstr "Controlleur inconnu"
 
-#: GUI/MeasureBar.cpp:149
+#: GUI/MeasureBar.cpp:148
 msgid "You can't remove the first time signature change."
 msgstr "Vous ne pouvez pas supprimer les premiers chiffres indicateurs"
 
-#: GUI/MainFrame.cpp:375
+#: GUI/MainFrame.cpp:401
 msgid "Zoom: "
 msgstr "Zoom: "
 
-#: Dialogs/CustomNoteSelectDialog.cpp:106
+#: Dialogs/CustomNoteSelectDialog.cpp:105
 msgid "are located in measures "
 msgstr "sont dans les mesures "
 
-#: Dialogs/CustomNoteSelectDialog.cpp:79
+#: Dialogs/CustomNoteSelectDialog.cpp:78
 msgid "are on the same string"
 msgstr "sont sur la même corde"
 
@@ -538,19 +549,19 @@ msgstr ""
 "pour EasyBeat,\n"
 "\t\tun très bon logiciel qui a inspiré Aria (www.ergonis.com).\n"
 
-#: Dialogs/CustomNoteSelectDialog.cpp:91
+#: Dialogs/CustomNoteSelectDialog.cpp:90
 msgid "have a similar duration"
 msgstr "ont une durée semblable"
 
-#: Dialogs/CustomNoteSelectDialog.cpp:64
+#: Dialogs/CustomNoteSelectDialog.cpp:63
 msgid "have a similar volume"
 msgstr "ont un volume semblable"
 
-#: Dialogs/CustomNoteSelectDialog.cpp:82
+#: Dialogs/CustomNoteSelectDialog.cpp:81
 msgid "have the same fret"
 msgstr "sont sur la même fret"
 
-#: Dialogs/CustomNoteSelectDialog.cpp:54
+#: Dialogs/CustomNoteSelectDialog.cpp:53
 msgid "have the same pitch"
 msgstr "ont la même hauteur"
 
@@ -575,10 +586,9 @@ msgid "track"
 msgstr "la piste"
 
 #: Dialogs/About.cpp:37
-msgid "version"
+msgid "version "
 msgstr "version"
 
-#: Pickers/VolumeSlider.cpp:101
-msgid "volume"
-msgstr "volume"
+#~ msgid "volume"
+#~ msgstr "volume"
 
