@@ -52,7 +52,7 @@ Preferences::Preferences(MainFrame* parent) : wxDialog(parent, wxID_ANY,  _("Pre
 	vert_sizer->Add( lang_combo, 0, wxALL, 5 );
 	}
 
-	wxStaticText* empty_space = new wxStaticText(this, wxID_ANY,  _(" "));
+	wxStaticText* empty_space = new wxStaticText(this, wxID_ANY,  wxT(" "));
 	vert_sizer->Add( empty_space, 0, wxALL, 5 );
 
 	// play settings
@@ -106,7 +106,7 @@ Preferences::Preferences(MainFrame* parent) : wxDialog(parent, wxID_ANY,  _("Pre
 	}
 	// -----------------------------------
 
-	wxStaticText* empty_space2 = new wxStaticText(this, wxID_ANY,  _(" "));
+	wxStaticText* empty_space2 = new wxStaticText(this, wxID_ANY,  wxT(" "));
 	vert_sizer->Add( empty_space2, 0, wxALL, 5 );
 
 	wxStaticText* effect_label = new wxStaticText(this, wxID_ANY,  _("Changes will take effect next time you open the app."));

@@ -95,8 +95,6 @@ NOTE: sorry, this is very raw :)
  ## can't undo 'paste'
  ## crash when emptying tempo in control view [reported, not tested] 
 
-* update translation
-
 + score editor : add a note... give it an accidental sign. Move the note up or down with arrow key. Undo - accidental sign is gone.
 
 + make aria files still smaller by using more default values
