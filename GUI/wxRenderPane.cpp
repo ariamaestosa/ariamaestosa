@@ -53,15 +53,9 @@ void wxRenderPane::resized(wxSizeEvent& evt)
 
     wxPanel::OnSize(evt);
 
-    //initOpenGLFor2D();
-    //render();
-
-    //Refresh();
-
     // update vertical scrollbar
-    // FIXME belongs to mainpane
-    // FIXME - why update top baron resize?
-    if(getMainFrame()->getSequenceAmount()>0) getMainFrame()->updateTopBarForSequence( getCurrentSequence() );
+    // FIXME - isn't there a better way to fix vertical scrollvar? (i.e. does this call has any other use than update vertical sb?)
+    if(getMainFrame()->getSequenceAmount()>0) getMainFrame()->updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
 }
 
 int wxRenderPane::getWidth()
