@@ -54,7 +54,7 @@ NOTE: sorry, this is very raw :)
  - many controller effects would gain from being accessible somewhere else than in control editor
  
  - tabbing though fields in select notes dialog should select their content
- - too easy for top bar stuff to gain focus - enter should have focus go back to main pane
+ + too easy for top bar stuff to gain focus - enter should have focus go back to main pane
  
  - set default volume
  - shift-click on a selected notes unselects it
@@ -64,8 +64,6 @@ NOTE: sorry, this is very raw :)
  - change volume relatively on a bunch of notes
  - select notes and all similar menu items should be disabled in controller mode
  
- - white space below chords in guitar editor should not be 'dead' as it is now (e.g. should be able to start selection from there)
-
  - general code layout could be improved, e.g. measure bar is in GUI but does tons of calulation
   
  - doesnt handle when there's too many songs open for all to be visible
@@ -98,8 +96,6 @@ NOTE: sorry, this is very raw :)
  ## crash when emptying tempo in control view [reported, not tested] 
 
 * update translation
-
-* make file save safe (don't erase old file until new one is sucessfully written)
 
 + score editor : add a note... give it an accidental sign. Move the note up or down with arrow key. Undo - accidental sign is gone.
 
@@ -193,7 +189,7 @@ NOTE: sorry, this is very raw :)
  - FIXMEs
  - in .aria files, pitch should be midi pitch, not my reverse pitch
  
- - copyright editor should have the text field appear multiline but not be not accept line breaks (enter should default to activating OK button)
+ - copyright editor should have the text field appear multiline but not accept line breaks (enter should default to activating OK button)
  - drum editor draws too many horizontal lines at bottom when you collapse sections
  - making tempo bend curve start at tick=0 might cause double event?
  
