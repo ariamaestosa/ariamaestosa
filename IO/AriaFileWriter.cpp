@@ -26,9 +26,16 @@ namespace AriaMaestosa {
 	
 void saveAriaFile(Sequence* sequence, wxString filepath)
 {	
-    wxFileOutputStream file( filepath );
+    // do not override a file previously there. If a file was there, move it to a different name and do not delete
+    // it until we know the new file was successfully saved
+    wxString temp_name = filepath + wxT("~");
+    const bool overriding_file = wxFileExists(filepath);
+    if(overriding_file) wxRenameFile( filepath, temp_name, false );
 
+    wxFileOutputStream file( filepath );
     sequence->saveToFile(file);
+    
+    if(overriding_file) wxRemoveFile( temp_name );
 }
 
 bool loadAriaFile(Sequence* sequence, wxString filepath)

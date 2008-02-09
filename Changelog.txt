@@ -2,6 +2,7 @@
 - Fixed crash when importing invalid midis
 - More improvements to scons build system
 - Fixed undoing shift+up/down in score editor
+- Made saving aria files safe : your file is not deleted until the new one is successfully written
  
  1.1b7
 - Improved setting notes sharp/flat/natural to be easier and more flexible
