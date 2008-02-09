@@ -1,8 +1,21 @@
+Version 1.1 new features highlight
+* Fixed countless crashes, bugs and glitches
+* Added new score editor
+* New undo system, that is both faster, work in controller editor and allows for multiple undo
+* Added italian translation
+* Major code cleanup and refactoring
+* Removed useless stuff from .aria files, making them significantly smaller
+* Linux port improved by leaps and bounds, slowly getting more stable
+* Major improvements to build system
+* Improved document icon
+* Added mouse wheels support to vertically scroll tracks
+
  1.1b8
 - Fixed crash when importing invalid midis
 - More improvements to scons build system
 - Fixed undoing shift+up/down in score editor
 - Made saving aria files safe : your file is not deleted until the new one is successfully written
+- Switched some small variables from int to short
  
  1.1b7
 - Improved setting notes sharp/flat/natural to be easier and more flexible

@@ -43,12 +43,13 @@ public:
 	// being drawn near the top of the screen, and low notes near the bottom, this reversed order simplifies drawing
 	// routines (and in the code we draw much more often than we play)
 	// middle C being 71
-	int pitchID;
+	unsigned short pitchID;
 		
-	int startTick, endTick, volume;
+	int startTick, endTick;
+    unsigned short volume;
     
     // for guitar mode
-    int string, fret;
+    short string, fret;
     
     bool selected;
      
