@@ -59,12 +59,10 @@ void GLPane::resized(wxSizeEvent& evt)
     wxGLCanvas::OnSize(evt);
 
     initOpenGLFor2D();
-    //render();
-
     Refresh();
 
-    // update vertical scrollbar
-    if(getMainFrame()->getSequenceAmount()>0) getMainFrame()->updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
+    // FIXME - can it really happen that no sequence is open?
+    if(getMainFrame()->getSequenceAmount()>0) DisplayFrame::updateVerticalScrollbar();
 }
 
 
