@@ -56,6 +56,8 @@ NOTE: sorry, this is very raw :)
  - tabbing though fields in select notes dialog should select their content
  + too easy for top bar stuff to gain focus - enter should have focus go back to main pane
  
+ + reordering tracks should be nicer
+ 
  - set default volume
  - shift-click on a selected notes unselects it
  
@@ -97,25 +99,24 @@ NOTE: sorry, this is very raw :)
 
 + score editor : add a note... give it an accidental sign. Move the note up or down with arrow key. Undo - accidental sign is gone.
 
-+ make aria files still smaller by using more default values
-
-+ many Actions are only used on selected notes, yet they offer an implementation for single notes. This implementation was never tested and may be buggy
++ when closing last sequence, window does not close but app stays open
 
 - setting sharp/flat sign manually sometimes doesn't work (when it's possible to display the note on a level with no sign)
 
-+ when wait dialog appears, you can still edit tracks and do operations that may be harmful to current process.
+- when wait dialog appears, you can still edit tracks and do operations that may be harmful to current process.
     yet you can't make it modal otherwise the background process stops.
 
-+ show better warning message when language selected is not supported by OS
+- show better warning message when language selected is not supported by OS
 
-+ "select alsa midi port", guitar tunings, are not translatable
+- "select alsa midi port", guitar tunings, are not translatable
 
 + what's up with glutInit? wxGlCanvas seems to call it. Crashes suse 10.1.
 
 - use this when installing on linux : http://www.scons.org/wiki/InstallationPrefix
-
+- make aria files still smaller by using more default values
 - if a midi has control events in an empty track they might be removed during import (though what could go there? tempo events are already stored in sequence)
-- hitting space should work even if focus is in top bar
+
+- aria has trouble importing the midi files it saves... "unsupported controller #127"
 
 - score : flat/sharp/natural signs tend to appear obscured (behind note tail if in a group... behind silence... etc.)
 
@@ -145,12 +146,12 @@ NOTE: sorry, this is very raw :)
 - import midi. save to aria. no name suggested.
 - switching tracks tends to deselect measures
 - accentuated characters in copyright/song title gets broken (and possibly track name too) UTF-8 doesn't seem to work either
-- importing midis exported by aria have a blank track 0
-- reordering tracks should be nicer
+
 - hard to resize last track
 - hitting space when nothing is selected should do nothing
 - controller editor should keep drum instrument in a drum track
 - if you select measures in the measure bar, but move the cursor below measure pane before releasing, you get nothing
+    (same with all tracks, rework event handling? determine where click goes on mouse down, and always use same destination on mouse drag?)
    
   - tab export sometimes does 41-42 43-44 and not 41-44
   - tab exporter does not always respect max line width (e.g. underwater light)
@@ -173,6 +174,7 @@ NOTE: sorry, this is very raw :)
     Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
  
  MINOR / CLEANUP / UNSURE:
+ + many Actions are only used on selected notes, yet they offer an implementation for single notes. This implementation was never tested and may be buggy
  - score : moving a sharp/flat/natural note up or down makes it lose its properties
  - when changing measure length in a song that already has midi events in it, song length becomes wrong compared to midi events
 - decide a naming convention for variables

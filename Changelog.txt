@@ -11,6 +11,7 @@ Version 1.1 new features highlight
 * Added mouse wheels support to vertically scroll tracks
 
  1.1b8
+- Hopefully fixed compatiblity problems with intel Tiger systems
 - Fixed crash when importing invalid midis
 - More improvements to scons build system
 - Fixed undoing shift+up/down in score editor

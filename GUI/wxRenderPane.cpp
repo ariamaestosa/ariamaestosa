@@ -50,12 +50,8 @@ wxRenderPane::~wxRenderPane()
 
 void wxRenderPane::resized(wxSizeEvent& evt)
 {
-
     wxPanel::OnSize(evt);
-
-    // update vertical scrollbar
-    // FIXME - isn't there a better way to fix vertical scrollvar? (i.e. does this call has any other use than update vertical sb?)
-    if(getMainFrame()->getSequenceAmount()>0) getMainFrame()->updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
+    if(getMainFrame()->getSequenceAmount()>0) DisplayFrame::updateVerticalScrollbar();
 }
 
 int wxRenderPane::getWidth()
