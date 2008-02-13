@@ -327,15 +327,9 @@ def compile_Aria(build_type, which_os):
         env.Append(LINKFLAGS = ['-Wl,--rpath,/usr/local/lib/'])
         env.Append(LIBPATH = ['usr/local/lib/','usr/lib/', '/opt/gnome/lib'])
         
-        env[LIBS] += Split("""
-        GL
-        GLU
-        glut
-        asound
-        z
-        dl
-        m
-        """)
+        env.Append(LIBS = ['GL', 'GLU', 'glut'])
+        env.Append(LIBS = ['asound'])
+        env.Append(LIBS = ['z','dl','m'])
         
     else:
     
