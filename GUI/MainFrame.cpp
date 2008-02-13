@@ -1487,6 +1487,7 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
 	{
 		// shut down program (we close last window, so wx will shut down the app)
 		Hide();
+        Destroy();
 		return true;
 	}
 
