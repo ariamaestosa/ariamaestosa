@@ -99,8 +99,6 @@ NOTE: sorry, this is very raw :)
 
 + score editor : add a note... give it an accidental sign. Move the note up or down with arrow key. Undo - accidental sign is gone.
 
-+ when closing last sequence, window does not close but app stays open
-
 - setting sharp/flat sign manually sometimes doesn't work (when it's possible to display the note on a level with no sign)
 
 - when wait dialog appears, you can still edit tracks and do operations that may be harmful to current process.

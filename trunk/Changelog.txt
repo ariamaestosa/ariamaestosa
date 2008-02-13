@@ -9,6 +9,10 @@ Version 1.1 new features highlight
 * Major improvements to build system
 * Improved document icon
 * Added mouse wheels support to vertically scroll tracks
+* Made document saving data loss-safe : if your computer crashes or is powered up while an aria file is being saved, no data loss will occurs
+
+1.1b9
+- Fixed behaviour when closing last document
 
  1.1b8
 - Hopefully fixed compatiblity problems with intel Tiger systems
