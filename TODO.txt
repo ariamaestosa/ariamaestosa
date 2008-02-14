@@ -108,7 +108,7 @@ NOTE: sorry, this is very raw :)
 
 - "select alsa midi port", guitar tunings, are not translatable
 
-+ what's up with glutInit? wxGlCanvas seems to call it. Crashes suse 10.1.
+- what's up with glutInit? wxGlCanvas seems to call it. Crashes suse 10.1.
 
 - use this when installing on linux : http://www.scons.org/wiki/InstallationPrefix
 - make aria files still smaller by using more default values
@@ -120,8 +120,6 @@ NOTE: sorry, this is very raw :)
 
 + linux: scons install fails from SVN because docs are not found
 + linux: no need to install icns files, nor lprojs
-- linux: exporting to audio via timidity : give better feedback about progression?
-
 + unsure note length is okay with measure != 4/4. check forumlae on wikipedia : http://en.wikipedia.org/wiki/Modern_musical_symbols
 + loading a key from a file probably won't appear in keyboard editor
 + score editor - sharp of flat notes at time=0 have their sign hidden behind grey bar
@@ -172,6 +170,7 @@ NOTE: sorry, this is very raw :)
     Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
  
  MINOR / CLEANUP / UNSURE:
+ - linux: exporting to audio via timidity : give better feedback about progression?
  + many Actions are only used on selected notes, yet they offer an implementation for single notes. This implementation was never tested and may be buggy
  - score : moving a sharp/flat/natural note up or down makes it lose its properties
  - when changing measure length in a song that already has midi events in it, song length becomes wrong compared to midi events
