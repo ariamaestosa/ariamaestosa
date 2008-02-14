@@ -30,10 +30,18 @@ void MoveNotes::undo()
 		Note* current_note;
 		relocator.setParent(track);
 		relocator.prepareToRelocate();
+        
+        int n = 0;
 		while( (current_note = relocator.getNextNote()) and current_note != NULL)
 		{
-			//current_note->move( -relativeX, -relativeY, mode );
-            track->graphics->getCurrentEditor()->moveNote(*current_note, -relativeX, -relativeY);
+            if( vertical_in_score )
+            {
+                current_note->pitchID = score_pitch[n];
+                track->graphics->getCurrentEditor()->moveNote(*current_note, -relativeX, 0);
+                n++;
+            }
+            else
+                track->graphics->getCurrentEditor()->moveNote(*current_note, -relativeX, -relativeY);
 		}
 		track->reorderNoteVector();
 		track->reorderNoteOffVector();
@@ -41,14 +49,12 @@ void MoveNotes::undo()
 void MoveNotes::perform()
 {
 	assert(track != NULL);
-	// for undo
+    
 	mode = track->graphics->editorMode;
-	
+    if(mode == SCORE and relativeY != 0) vertical_in_score = true;
+    
 	// perform action
-	//track->moveNotes(relativeX, relativeY, noteID, &relocator);
-	assert(noteID != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
-	
-    //saveUndoMemory();
+	assert(noteID != ALL_NOTES); // not supported in this function (not needed)
 	
     if(noteID==SELECTED_NOTES)
 	{
@@ -60,9 +66,7 @@ void MoveNotes::perform()
 		{
             if(!track->notes[n].isSelected()) continue;
 			
-            //track->notes[n].move(relativeX, relativeY, track->graphics->editorMode);
-            track->graphics->getCurrentEditor()->moveNote(track->notes[n], relativeX, relativeY);
-			relocator.rememberNote( track->notes[n] );
+            doMoveOneNote(n);
 			
 			if(!played)
 			{
@@ -78,9 +82,7 @@ void MoveNotes::perform()
         assertExpr(noteID,>=,0);
         assertExpr(noteID,<,track->notes.size());
 		
-        //track->notes[noteID].move(relativeX, relativeY, track->graphics->editorMode);
-        track->graphics->getCurrentEditor()->moveNote(track->notes[noteID], relativeX, relativeY);
-		relocator.rememberNote( track->notes[noteID] );
+        doMoveOneNote(noteID);
 		
 		if(relativeX != 0)
 		{
@@ -92,11 +94,21 @@ void MoveNotes::perform()
     track->reorderNoteVector();
 	track->reorderNoteOffVector();
 }
+
+void MoveNotes::doMoveOneNote(const int noteid)
+{
+    if( vertical_in_score ) score_pitch.push_back( track->notes[noteid].pitchID );
+    track->graphics->getCurrentEditor()->moveNote(track->notes[noteid], relativeX, relativeY);
+    relocator.rememberNote( track->notes[noteid] );
+}
+
 MoveNotes::MoveNotes(const int relativeX, const int relativeY, const int noteID)
 {
 	MoveNotes::relativeX = relativeX;
 	MoveNotes::relativeY = relativeY;
 	MoveNotes::noteID = noteID;
+    
+    vertical_in_score = false;
 }
 MoveNotes::~MoveNotes() {}
 

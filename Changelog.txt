@@ -13,6 +13,7 @@ Version 1.1 new features highlight
 
 1.1b9
 - Fixed behaviour when closing last document
+- Fixed undoing vertical moves in score, when there's accidentals
 
  1.1b8
 - Hopefully fixed compatiblity problems with intel Tiger systems

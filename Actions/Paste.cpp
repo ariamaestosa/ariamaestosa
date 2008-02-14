@@ -62,8 +62,6 @@ namespace AriaMaestosa
 		}
 		if(Clipboard::getSize() == 0) return; // nothing copied
 		
-		// saveUndoMemory();
-		
 		// used to find when the first note is played.
 		// If we're pasting at the mouse cursor, it is necessary to know that so that the first note is next to the cursor.
 		// However, if we're pasting in the first measure, we don't want this info since we want the track->notes to keep their location within the measure.
