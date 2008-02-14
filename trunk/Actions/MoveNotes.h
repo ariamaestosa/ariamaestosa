@@ -33,10 +33,17 @@ namespace Action
 		// for undo
 		NoteRelocator relocator;
 		int mode;
+        
+        // vertical movements in score require a little more than others because of possible accidentals
+        bool vertical_in_score;
+        std::vector<short> score_pitch;
 public:
-			MoveNotes(const int relativeX, const int relativeY, const int noteID);
+        MoveNotes(const int relativeX, const int relativeY, const int noteID);
 		void perform();
 		void undo();
+        
+        void doMoveOneNote(const int noteid);
+        
 		virtual ~MoveNotes();
 	};
 }

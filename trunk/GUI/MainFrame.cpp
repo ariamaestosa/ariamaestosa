@@ -791,7 +791,6 @@ void MainFrame::menuEvent_automaticChannelModeSelected(wxCommandEvent& evt)
 
 		// prevent undoing (anyway it would not have worked, would just have given buggy behaviour)
 		sequence->clearUndoStack();
-		//sequence->getCurrentTrack()->saveUndoMemory();
 
 	}
 
