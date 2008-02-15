@@ -21,7 +21,7 @@
  * ScoreAnalyser contains what is necessary to decide how to render the score. Editors like Keyboard or Drum draw all notes
  * seperately from each other, so there rendering is simple and can be done in a single render pass. Score, however,
  * features much more complex interaction. For instance, draw a single triplet sign for 3 consecutive triplets, beam notes,
- * draw chords correctly, etc. The first render pass of the score editor is where the "main round" of each note is rendered.
+ * draw chords correctly, etc. The first render pass of the score editor is where the head of each note is rendered.
  * In this pass, a NoteRenderInfo object is added to a vector for each visible note. These objects contain basic information
  * on each note. The vector of visible notes is then passed to the ScoreAnalyser functions. These functions will analyse notes
  * and modify the NoteRenderInfo objects as needed so that they render nicely in the next rendering passes of the score editor.
@@ -32,12 +32,12 @@
 
 namespace AriaMaestosa {
     
-enum TAIL
+enum STEM
 {
-	TAIL_UP,
-	TAIL_DOWN,
-    TAIL_BEAM,
-	TAIL_NONE
+	STEM_UP,
+	STEM_DOWN,
+    STEM_BEAM,
+	STEM_NONE
 };
 
 /*
@@ -58,19 +58,19 @@ public:
 	bool dotted;
     
     // a 1/4 will have none, a 1/8 has 1, a 1/16 has 2, etc.
-	int subtail_amount;
+	int flag_amount;
     
 	bool selected;
     
     // used to display ties (display a tie between this note and specified X coord). a value of -1 means no tie.
 	int tied_with_x;
-    bool tie_up; // used if tail_type == TAIL_NONE, otherwise tie location is determined with tail_type
+    bool tie_up; // used if stem_type == STEM_NONE, otherwise tie location is determined with stem_type
     
-    // is tail up, down? or is there no tail?
-	TAIL tail_type;
+    // is stem up, down? or is there no stem?
+	STEM stem_type;
     
-    // sould we draw tail?
-    bool draw_tail;
+    // sould we draw the stem?
+    bool draw_stem;
     
     // location and duration of note
 	int tick, tick_length;
@@ -88,12 +88,12 @@ public:
 	int triplet_arc_x_start, triplet_arc_x_end, triplet_arc_y; // where to display the "triplet arc" than contains a "3"
 	
     // beams
-    // FIXME - is beam_show_above really necessary, since it's always the same direction as tail_type?
+    // FIXME - is beam_show_above really necessary, since it's always the same direction as stem_type?
     bool beam_show_above, beam;
-    // if beam is true, the renderer will draw a beam between the end of this note's tail and the
+    // if beam is true, the renderer will draw a beam between the end of this note's stem and the
     // location specified by these variables.
     int beam_to_x, beam_to_y;
-    int tail_y; // if != -1, the renderer will use this y for tail end instead of calculating it itself
+    int stem_y; // if != -1, the renderer will use this y as stem end instead of calculating it itself
     
     // chord
     bool chord;
@@ -105,9 +105,9 @@ public:
 	void triplet_arc(int pixel1, int pixel2);
     void setTriplet();
     
-    int getTailX();
-    int getTailYFrom();
-    int getTailYTo();
+    int getStemX();
+    int getStemYFrom();
+    int getStemYTo();
     int getYBase();
 };
 

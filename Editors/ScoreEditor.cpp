@@ -603,12 +603,12 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteR
 		return;
 	}
 	
-    // find how to draw notes. how many tails, dotted, triplet, etc.
+    // find how to draw notes. how many flags, dotted, triplet, etc.
     // if note duration is unknown it will be split
 	const float relativeLength = renderInfo.tick_length / (float)(getMeasureBar()->beatLengthInTicks()*4);
 
-	renderInfo.tail_type = (renderInfo.level>=converter->getMiddleCLevel()-5 ? TAIL_UP : TAIL_DOWN);
-	if(relativeLength>=1) renderInfo.tail_type=TAIL_NONE; // whole notes have no tails
+	renderInfo.stem_type = (renderInfo.level>=converter->getMiddleCLevel()-5 ? STEM_UP : STEM_DOWN);
+	if(relativeLength>=1) renderInfo.stem_type=STEM_NONE; // whole notes have no stem
 	bool open = false;
 	
     const int beat = getMeasureBar()->beatLengthInTicks();
@@ -616,16 +616,16 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteR
     const int remaining = beat - (tick_in_measure_start % beat);
     const bool starts_on_beat = aboutEqual(remaining,0) or aboutEqual(remaining,beat);
     
-	if( aboutEqual(relativeLength, 1.0) ){ open = true; renderInfo.tail_type=TAIL_NONE; }
+	if( aboutEqual(relativeLength, 1.0) ){ open = true; renderInfo.stem_type=STEM_NONE; }
 	else if( aboutEqual(relativeLength, 1.0/2.0) ){ open = true; } // 1/2
 	else if( aboutEqual(relativeLength, 1.0/3.0) ){ renderInfo.setTriplet(); open = true; } // triplet 1/2
 	else if( aboutEqual(relativeLength, 1.0/4.0) ); // 1/4
 	else if( aboutEqual(relativeLength, 1.0/6.0) ){ renderInfo.setTriplet(); } // triplet 1/4
-	else if( aboutEqual(relativeLength, 1.0/8.0) ) renderInfo.subtail_amount = 1; // 1/8
-	else if( aboutEqual(relativeLength, 1.0/12.0) ){ renderInfo.setTriplet(); renderInfo.subtail_amount = 1; } // triplet 1/8
-	else if( aboutEqual(relativeLength, 1.0/16.0) ) renderInfo.subtail_amount = 2; // 1/16
-	else if( aboutEqual(relativeLength, 1.0/24.0) ) { renderInfo.setTriplet(); renderInfo.subtail_amount = 2; } // triplet 1/16
-	else if( aboutEqual(relativeLength, 1.0/32.0) ) renderInfo.subtail_amount = 3; // 1/32
+	else if( aboutEqual(relativeLength, 1.0/8.0) ) renderInfo.flag_amount = 1; // 1/8
+	else if( aboutEqual(relativeLength, 1.0/12.0) ){ renderInfo.setTriplet(); renderInfo.flag_amount = 1; } // triplet 1/8
+	else if( aboutEqual(relativeLength, 1.0/16.0) ) renderInfo.flag_amount = 2; // 1/16
+	else if( aboutEqual(relativeLength, 1.0/24.0) ) { renderInfo.setTriplet(); renderInfo.flag_amount = 2; } // triplet 1/16
+	else if( aboutEqual(relativeLength, 1.0/32.0) ) renderInfo.flag_amount = 3; // 1/32
 	else if( aboutEqual(relativeLength, 3.0/4.0) and starts_on_beat){ renderInfo.dotted = true; open=true; } // dotted 1/2
 	else if( aboutEqual(relativeLength, 3.0/8.0) and starts_on_beat ) renderInfo.dotted = true; // dotted 1/4
 	else if( aboutEqual(relativeLength, 3.0/2.0) and starts_on_beat ){ renderInfo.dotted = true; open=true; } // dotted whole
@@ -690,7 +690,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteR
 	
 	assertExpr(renderInfo.level,>,-1);
 	
-	// main round
+	// note head
     /*
 	if(renderInfo.unknown_duration)
 	{
@@ -797,30 +797,30 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo)
 	else
 		AriaRender::color(0,0,0);	
 	
-	// tail
-    if(renderInfo.draw_tail)
+	// stem
+    if(renderInfo.draw_stem)
     {
 
-        if(renderInfo.tail_type == TAIL_UP or renderInfo.tail_type == TAIL_DOWN)
+        if(renderInfo.stem_type == STEM_UP or renderInfo.stem_type == STEM_DOWN)
         {
-            AriaRender::line(renderInfo.getTailX(), renderInfo.getTailYFrom(),
-                             renderInfo.getTailX(), renderInfo.getTailYTo());
+            AriaRender::line(renderInfo.getStemX(), renderInfo.getStemYFrom(),
+                             renderInfo.getStemX(), renderInfo.getStemYTo());
         }
         
         
-        // subtails
-        if(renderInfo.subtail_amount>0 and not renderInfo.beam)
+        // flags
+        if(renderInfo.flag_amount>0 and not renderInfo.beam)
         {
-            const int subtail_y_origin = (renderInfo.tail_type==TAIL_UP ? renderInfo.y - 24 : renderInfo.y + 17);
-            const int subtail_x_origin = (renderInfo.tail_type==TAIL_UP ? renderInfo.x + 9 : renderInfo.x + 1);
-            const int subtail_step = (renderInfo.tail_type==TAIL_UP ? 7 : -7 );
+            const int flag_y_origin = (renderInfo.stem_type==STEM_UP ? renderInfo.y - 24 : renderInfo.y + 17);
+            const int flag_x_origin = (renderInfo.stem_type==STEM_UP ? renderInfo.x + 9 : renderInfo.x + 1);
+            const int flag_step = (renderInfo.stem_type==STEM_UP ? 7 : -7 );
             
-            noteTail->setFlip( false, renderInfo.tail_type!=TAIL_UP );
+            noteTail->setFlip( false, renderInfo.stem_type!=STEM_UP );
             
             AriaRender::images();
-            for(int n=0; n<renderInfo.subtail_amount; n++)
+            for(int n=0; n<renderInfo.flag_amount; n++)
             {
-                noteTail->move( subtail_x_origin , subtail_y_origin + n*subtail_step);	
+                noteTail->move( flag_x_origin , flag_y_origin + n*flag_step);	
                 noteTail->render();
             }
             AriaRender::primitives();
@@ -844,7 +844,7 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo)
 	{
 		const float center_x = (renderInfo.tied_with_x + renderInfo.x)/2.0 + 6;
 		const float radius_x = (renderInfo.tied_with_x - renderInfo.x)/2.0;
-        const bool show_above = (renderInfo.tail_type == TAIL_NONE ? renderInfo.tie_up : renderInfo.tail_type != TAIL_UP);
+        const bool show_above = (renderInfo.stem_type == STEM_NONE ? renderInfo.tie_up : renderInfo.stem_type != STEM_UP);
         
         const int base_y = renderInfo.getYBase(); 
         AriaRender::arc(center_x, base_y + (show_above ? 0 : 10), radius_x, 15, show_above);
@@ -856,14 +856,14 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo)
         AriaRender::color(0,0,0);
         AriaRender::lineWidth(2);
         
-        const int x1 = renderInfo.getTailX();
-        int y1 = renderInfo.getTailYTo();
+        const int x1 = renderInfo.getStemX();
+        int y1 = renderInfo.getStemYTo();
         int y2 = renderInfo.beam_to_y;
         
-        const int y_diff = (renderInfo.tail_type == TAIL_UP ? 5 : -5);
+        const int y_diff = (renderInfo.stem_type == STEM_UP ? 5 : -5);
         
         AriaRender::lineSmooth(true);
-        for(int n=0; n<renderInfo.subtail_amount; n++)
+        for(int n=0; n<renderInfo.flag_amount; n++)
         {
             AriaRender::line(x1, y1, renderInfo.beam_to_x, y2);
             y1 += y_diff;
@@ -1128,7 +1128,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
         analyseNoteInfo(noteRenderInfo, this);
         
 		// ------------------------- second rendering pass -------------------
-		// triplet signs, tied notes, tails and beams
+		// triplet signs, tied notes, flags and beams
         const int visibleNoteAmount = noteRenderInfo.size();
 		for(int i=0; i<visibleNoteAmount; i++)
 		{
