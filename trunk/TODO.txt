@@ -20,6 +20,7 @@ NOTE: sorry, this is very raw :)
     
   ************************* LONG TERM: *************************
  
+ - ability to see other tracks in the background of the current track
  - guitar pro import
  - midi keyboard support
  - mod support
@@ -38,6 +39,8 @@ NOTE: sorry, this is very raw :)
 		skip series of empty measures
 		more than one track
 		show tuning on tab
+
+ - use this when installing on linux : http://www.scons.org/wiki/InstallationPrefix
  
  - know what happens when adding too much channels in auto mode
 
@@ -45,7 +48,7 @@ NOTE: sorry, this is very raw :)
 
  - change whole track pitch/volume
  
-  - show song duration
+ - show song duration
  
  - copy control events along notes
  
@@ -68,6 +71,8 @@ NOTE: sorry, this is very raw :)
  
  - general code layout could be improved, e.g. measure bar is in GUI but does tons of calulation
   
+ - setting sharp/flat sign manually sometimes doesn't work (when it's possible to display the note on a level with no sign)
+ 
  - doesnt handle when there's too many songs open for all to be visible
  
  
@@ -88,7 +93,7 @@ NOTE: sorry, this is very raw :)
  - fix overlapping notes that don't have the same start tick
  - use auto_ptr/parent_ptr/something like that... make it clear what pointer "hold" the object and wich ones are only conveniance shortcuts
  - the first click, that activates a track, should not deselect
- - score editor should be able to display notes with more than 2 subtails (unusure... those with 2 are already so small and barely visible) 
+ - score editor should be able to display notes with more than 2 flags (unusure... those with 2 are already so small and barely visible) 
  
  ************************* BUGS: *************************
   
@@ -97,8 +102,8 @@ NOTE: sorry, this is very raw :)
  ## can't undo 'paste'
  ## crash when emptying tempo in control view [reported, not tested] 
  
-- setting sharp/flat sign manually sometimes doesn't work (when it's possible to display the note on a level with no sign)
-
+ * red images
+ 
 - when wait dialog appears, you can still edit tracks and do operations that may be harmful to current process.
     yet you can't make it modal otherwise the background process stops.
 
@@ -108,13 +113,12 @@ NOTE: sorry, this is very raw :)
 
 - what's up with glutInit? wxGlCanvas seems to call it. Crashes suse 10.1.
 
-- use this when installing on linux : http://www.scons.org/wiki/InstallationPrefix
 - make aria files still smaller by using more default values
 - if a midi has control events in an empty track they might be removed during import (though what could go there? tempo events are already stored in sequence)
 
-- aria has trouble importing the midi files it saves... "unsupported controller #127"
+- aria has trouble importing the midi files it saved itself... "unsupported controller #127"
 
-- score : flat/sharp/natural signs tend to appear obscured (behind note tail if in a group... behind silence... etc.)
+- score : flat/sharp/natural signs tend to appear obscured (behind note stem if in a group... behind silence... etc.)
 
 + linux: scons install fails from SVN because docs are not found
 + linux: no need to install icns files, nor lprojs

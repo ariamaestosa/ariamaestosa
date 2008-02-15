@@ -105,6 +105,7 @@ bool exportMidiFile(Sequence* sequence, wxString filepath)
 		int length = -1, start = -1, numTracks = -1;
 		makeJDKMidiSequence(sequence, tracks, false, &length, &start, &numTracks, false);
 
+        // FIXME - change conversion
 		wxCSConv cs( wxFONTENCODING_UTF8 );
 		wxCharBuffer output = cs.cWC2MB(filepath.wc_str());
 

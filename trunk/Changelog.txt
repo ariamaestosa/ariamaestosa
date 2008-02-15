@@ -49,7 +49,7 @@ Version 1.1 new features highlight
 - more improvements to lightweight vertical scrollbar
 - handle when no vertical scrollbar is needed in drum editor
 - fixed notes not beaming in chords of some imported midis
-- fixed note subtails disappearing in some imported midis
+- fixed note flags disappearing in some imported midis
 - fixed amount of measures too short in some imported midis
 - improved grouping of beamed notes in common non-4/4 time signatures
 - improved grouping of beamed triplets

@@ -78,13 +78,13 @@ public:
         // FIXME - not always right
         const int num = getMeasureBar()->getTimeSigNumerator();
         const int denom = getMeasureBar()->getTimeSigDenominator();
-        const int subtail_amount = noteRenderInfo[first_id].subtail_amount;
+        const int flag_amount = noteRenderInfo[first_id].flag_amount;
         
         int max_amount_of_notes_beamed_toghether = 4;
         
-        if(num == 3 and denom == 4) max_amount_of_notes_beamed_toghether = 2 * (int)(std::pow(2.0,subtail_amount-1));
-        else if((num == 6 and denom == 4) or (num == 6 and denom == 8)) max_amount_of_notes_beamed_toghether = 3 * (int)(std::pow(2.0,subtail_amount-1));
-        else max_amount_of_notes_beamed_toghether = num * (int)(std::pow(2.0,subtail_amount-1));
+        if(num == 3 and denom == 4) max_amount_of_notes_beamed_toghether = 2 * (int)(std::pow(2.0,flag_amount-1));
+        else if((num == 6 and denom == 4) or (num == 6 and denom == 8)) max_amount_of_notes_beamed_toghether = 3 * (int)(std::pow(2.0,flag_amount-1));
+        else max_amount_of_notes_beamed_toghether = num * (int)(std::pow(2.0,flag_amount-1));
         if(noteRenderInfo[first_id].triplet) max_amount_of_notes_beamed_toghether=3;
         
         const int beamable_note_amount = last_id - first_id + 1;
@@ -142,44 +142,44 @@ public:
         
         for(int j=first_id; j<=last_id; j++)
         {
-            // give correct tail type (up or down)
-            noteRenderInfo[j].tail_type = ( noteRenderInfo[first_id].beam_show_above ?  TAIL_UP : TAIL_DOWN );
+            // give correct stem orientation (up or down)
+            noteRenderInfo[j].stem_type = ( noteRenderInfo[first_id].beam_show_above ?  STEM_UP : STEM_DOWN );
         }
         
-        const int last_tail_y_end = noteRenderInfo[last_id].getTailYTo();
-        noteRenderInfo[first_id].beam_to_x = noteRenderInfo[last_id].getTailX();
+        const int last_stem_y_end = noteRenderInfo[last_id].getStemYTo();
+        noteRenderInfo[first_id].beam_to_x = noteRenderInfo[last_id].getStemX();
         
         if(noteRenderInfo[first_id].beam_show_above)
         {
             const int min_level_y = min_level*y_step + editor->getEditorYStart() - editor->getYScrollInPixels() - 2;
             
             // choose y coords so that all notes are correctly in
-            noteRenderInfo[first_id].beam_to_y = std::min(min_level_y - 10, last_tail_y_end); // Y to
-            if(noteRenderInfo[first_id].getTailYFrom() > min_level_y - 25) noteRenderInfo[first_id].tail_y = min_level_y - 25; // Y from
+            noteRenderInfo[first_id].beam_to_y = std::min(min_level_y - 10, last_stem_y_end); // Y to
+            if(noteRenderInfo[first_id].getStemYFrom() > min_level_y - 25) noteRenderInfo[first_id].stem_y = min_level_y - 25; // Y from
         }
         else
         {
             const int max_level_y = max_level*y_step + editor->getEditorYStart() - editor->getYScrollInPixels();
             
             // choose y coords so that all notes are correctly in
-            noteRenderInfo[first_id].beam_to_y = std::max(max_level_y + 10, last_tail_y_end); // Y to
-            if(noteRenderInfo[first_id].getTailYFrom() < max_level_y + 25) noteRenderInfo[first_id].tail_y = max_level_y + 25; // Y from
+            noteRenderInfo[first_id].beam_to_y = std::max(max_level_y + 10, last_stem_y_end); // Y to
+            if(noteRenderInfo[first_id].getStemYFrom() < max_level_y + 25) noteRenderInfo[first_id].stem_y = max_level_y + 25; // Y from
         }
         
-        // fix all note tails so they point in the right direction and have the correct height
-        const int from_x = noteRenderInfo[first_id].getTailX();
-        const int from_y = noteRenderInfo[first_id].getTailYTo();
+        // fix all note stems so they all point in the same direction and have the correct height
+        const int from_x = noteRenderInfo[first_id].getStemX();
+        const int from_y = noteRenderInfo[first_id].getStemYTo();
         const int to_x = noteRenderInfo[first_id].beam_to_x;
         const int to_y = noteRenderInfo[first_id].beam_to_y;
         
         for(int j=first_id; j<=last_id; j++)
         {
-            // give correct tail height (so it doesn't end above or below beam line)
+            // give correct stem height (so it doesn't end above or below beam line)
             // rel_pos will be 0 for first note of a beamed serie, and 1 for the last one
-            const float rel_pos = (float)(noteRenderInfo[j].getTailX() - from_x) / (float)(to_x - from_x);
-            noteRenderInfo[j].tail_y = from_y + (int)round( (to_y - from_y) * rel_pos );
+            const float rel_pos = (float)(noteRenderInfo[j].getStemX() - from_x) / (float)(to_x - from_x);
+            noteRenderInfo[j].stem_y = from_y + (int)round( (to_y - from_y) * rel_pos );
             
-            if(j != first_id) noteRenderInfo[j].subtail_amount = 0;
+            if(j != first_id) noteRenderInfo[j].flag_amount = 0;
         }
     }
 };
@@ -202,13 +202,13 @@ NoteRenderInfo::NoteRenderInfo(int tick, int x, int level, int tick_length, int 
     instant_hit=false;
     triplet = false;
     dotted = false;
-    subtail_amount = 0;
+    flag_amount = 0;
     y = -1;
     tied_with_x = -1;
     tie_up = false;
-    tail_type = TAIL_NONE;
+    stem_type = STEM_NONE;
     
-    draw_tail = true;
+    draw_stem = true;
     
     triplet_show_above = false;
     triplet_arc_x_start = -1;
@@ -223,7 +223,7 @@ NoteRenderInfo::NoteRenderInfo(int tick, int x, int level, int tick_length, int 
     chord = false;
     max_chord_y = -1;
     min_chord_y = -1;
-    tail_y = -1;
+    stem_y = -1;
     min_chord_level=-1;
     max_chord_level=-1;
     
@@ -234,8 +234,8 @@ NoteRenderInfo::NoteRenderInfo(int tick, int x, int level, int tick_length, int 
 void NoteRenderInfo::tieWith(NoteRenderInfo& renderInfo)
 {
     tied_with_x = renderInfo.x;
-    if(tail_type == TAIL_NONE) tie_up = renderInfo.tail_type;
-    else tie_up = tail_type;
+    if(stem_type == STEM_NONE) tie_up = renderInfo.stem_type;
+    else tie_up = stem_type;
 }
 void NoteRenderInfo::triplet_arc(int pixel1, int pixel2)
 {
@@ -248,28 +248,28 @@ void NoteRenderInfo::setTriplet()
     drag_triplet_sign = true;
 }
 
-int NoteRenderInfo::getTailX()
+int NoteRenderInfo::getStemX()
 {
-    if(tail_type == TAIL_UP) return (x + 9);
-    else if(tail_type == TAIL_DOWN) return (x + 1);
+    if(stem_type == STEM_UP) return (x + 9);
+    else if(stem_type == STEM_DOWN) return (x + 1);
     else return -1;
 }
-int NoteRenderInfo::getTailYFrom()
+int NoteRenderInfo::getStemYFrom()
 {
-    const int tail_y_base = getYBase();
-    if(tail_type == TAIL_UP) return (tail_y_base + 3);
-    else if(tail_type == TAIL_DOWN) return (tail_y_base + 6);
+    const int stem_y_base = getYBase();
+    if(stem_type == STEM_UP) return (stem_y_base + 3);
+    else if(stem_type == STEM_DOWN) return (stem_y_base + 6);
     else return -1;
 }
-int NoteRenderInfo::getTailYTo()
+int NoteRenderInfo::getStemYTo()
 {
-   if(tail_type == TAIL_UP) return (tail_y == -1 ?y - 24 : tail_y);
-   else if(tail_type == TAIL_DOWN) return (tail_y == -1 ? y + 33 : tail_y);
+   if(stem_type == STEM_UP) return (stem_y == -1 ?y - 24 : stem_y);
+   else if(stem_type == STEM_DOWN) return (stem_y == -1 ? y + 33 : stem_y);
    else return -1;
 }
 int NoteRenderInfo::getYBase()
 {
-    if(chord) return (tail_type == TAIL_UP ? max_chord_y : min_chord_y);
+    if(chord) return (stem_type == STEM_UP ? max_chord_y : min_chord_y);
     else return y;
 }
 
@@ -301,9 +301,9 @@ void findAndMergeChords(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor
      * The for loop iterates through all notes. When we find notes that play at the same time,
      * the while loop starts and iterates until we reached the end of the chord.
      * when we're done with a chord, we "summarize" it in a single NoteRenderInfo object.
-     * (at this point, the "main round" of the note has been drawn and what's left to do
-        * is draw tails, triplet signs, etc. so at this point a chord of note behaves just
-        * like a single note).
+     * (at this point, the head of the note has been drawn and what's left to do
+     * is draw stems, triplet signs, etc. so at this point a chord of note behaves just
+     * like a single note).
      */
     for(int i=0; i<(int)noteRenderInfo.size(); i++)
     {
@@ -314,7 +314,7 @@ void findAndMergeChords(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor
         int smallest_duration = 999;
         bool last_of_a_serie = false;
         bool triplet = false;
-        int subtail_amount = 0;
+        int flag_amount = 0;
         
         // when we have found a note chord, this variable will contain the ID of the
         // first note of that bunch (the ID of the last will be "i" when we get to it)
@@ -329,9 +329,9 @@ void findAndMergeChords(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor
             
             if(!(i<(int)noteRenderInfo.size())) break;
             
-            // check if we're in a chord (i.e. many notes that play at the same time). also check they have tails :
-            // for instance wholes have no tails and thus there is no special processing to do on them.
-            if(start_tick_of_next_note != -1 and aboutEqual_tick(start_tick_of_next_note, noteRenderInfo[i].tick) and noteRenderInfo[i].tail_type != TAIL_NONE);
+            // check if we're in a chord (i.e. many notes that play at the same time). also check they have stems :
+            // for instance wholes have no stems and thus there is no special processing to do on them.
+            if(start_tick_of_next_note != -1 and aboutEqual_tick(start_tick_of_next_note, noteRenderInfo[i].tick) and noteRenderInfo[i].stem_type != STEM_NONE);
             else
             {
                 //after this one, it stops. mark this as the last so it will finalize stuff.
@@ -350,16 +350,16 @@ void findAndMergeChords(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor
                 smallest_duration = len;
             }
             
-            if(noteRenderInfo[i].subtail_amount > subtail_amount)
+            if(noteRenderInfo[i].flag_amount > flag_amount)
             {
-                subtail_amount = noteRenderInfo[i].subtail_amount;
+                flag_amount = noteRenderInfo[i].flag_amount;
             }
             
             if(noteRenderInfo[i].triplet) triplet = true;
             
-            // remove this note's tail. we only need on tail per chord.
-            // the right tail will be set on last iteration of the chord (see below)
-            noteRenderInfo[i].draw_tail = false;
+            // remove this note's stem. we only need on stem per chord.
+            // the right stem will be set on last iterated note of the chord (see below)
+            noteRenderInfo[i].draw_stem = false;
             
             // the note of this iteration is the end of a chord, so it's time to complete chord information
             if(last_of_a_serie)
@@ -367,31 +367,31 @@ void findAndMergeChords(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor
                 if(maxid == minid) break;
                 if(first_note_of_chord == i) break;
                 
-                // determine average note level to know if we put tails above or below
+                // determine average note level to know if we put stems above or below
                 // if nothing found (most likely meaning we only have one triplet note alone) use values from the first
                 if(min_level == 999)  min_level = noteRenderInfo[first_note_of_chord].level;
                 if(max_level == -999) max_level = noteRenderInfo[first_note_of_chord].level;
                 const int mid_level = (int)round( (min_level + max_level)/2.0 );
                 
-                const bool tailup = mid_level>=converter->getMiddleCLevel()-3;
+                const bool stem_up = mid_level>=converter->getMiddleCLevel()-3;
                 
                 const int maxy = editor->getEditorYStart() + y_step*max_level - halfh - editor->getYScrollInPixels() + 2;
                 const int miny = editor->getEditorYStart() + y_step*min_level - halfh - editor->getYScrollInPixels() + 2;
                 
                 // decide the one note to keep that will "summarize" all others.
-                // it will be the highest or the lowest, depending on if tail is up or down.
+                // it will be the highest or the lowest, depending on if stem is up or down.
                 // feed this NoteRenderInfo object with the info Aria believes will best summarize
                 // the chord. results may vary if you make very different notes play at the same time.
-                NoteRenderInfo summary = noteRenderInfo[ tailup ? minid : maxid ];
+                NoteRenderInfo summary = noteRenderInfo[ stem_up ? minid : maxid ];
                 summary.chord = true;
                 summary.max_chord_y = maxy;
                 summary.min_chord_y = miny;
                 summary.min_chord_level = min_level;
                 summary.max_chord_level = max_level;
-                summary.subtail_amount = subtail_amount;
+                summary.flag_amount = flag_amount;
                 summary.triplet = triplet;
-                summary.draw_tail = true;
-                summary.tail_type = (tailup ? TAIL_UP : TAIL_DOWN);
+                summary.draw_stem = true;
+                summary.stem_type = (stem_up ? STEM_UP : STEM_DOWN);
                 
                 noteRenderInfo[i] = summary;
                 
@@ -486,19 +486,19 @@ void processTriplets(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* e
                     
                     noteRenderInfo[first_triplet].triplet_show_above = (mid_level < converter->getMiddleCLevel()-5);
                     
-                    if(i != first_triplet) // if not a triplet note alone, but a 'chain' of triplets
+                    if(i != first_triplet) // if not a triplet note alone, but a 'serie' of triplets
                     {
-                        // fix all note tails so they point in the right direction
+                        // fix all note stems so they all point in the same direction
                         for(int j=first_triplet; j<=i; j++)
                         {
-                            noteRenderInfo[j].tail_type = ( noteRenderInfo[first_triplet].triplet_show_above ? TAIL_DOWN : TAIL_UP );
+                            noteRenderInfo[j].stem_type = ( noteRenderInfo[first_triplet].triplet_show_above ? STEM_DOWN : STEM_UP );
                             noteRenderInfo[j].drag_triplet_sign = false;
                         }
                     }
                     else
                     {
                         // this is either a triplet alone or a chord... just use the orientation that it already has
-                        noteRenderInfo[first_triplet].triplet_show_above = (noteRenderInfo[first_triplet].tail_type == TAIL_DOWN);
+                        noteRenderInfo[first_triplet].triplet_show_above = (noteRenderInfo[first_triplet].stem_type == STEM_DOWN);
                     }
                     
                     if(noteRenderInfo[first_triplet].triplet_show_above)
@@ -537,14 +537,14 @@ void processNoteBeam(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* e
     
     // beaming
     // all beam information is stored in the first note of the serie.
-    // all others have their subtails removed
+    // all others have their flags removed
     // BeamGroup objects are used to ease beaming
     
     for(int i=0; i<visibleNoteAmount; i++)
     {
         int start_tick_of_next_note = -1;
         
-        int subtail_amount = noteRenderInfo[i].subtail_amount;
+        int flag_amount = noteRenderInfo[i].flag_amount;
         int first_of_serie = i;
         bool last_of_a_serie = false;
         
@@ -564,7 +564,7 @@ void processNoteBeam(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* e
             // if notes are consecutive and of same length
             if(start_tick_of_next_note != -1 and
                aboutEqual_tick(start_tick_of_next_note, noteRenderInfo[i].tick+noteRenderInfo[i].tick_length) and
-               noteRenderInfo[i+1].subtail_amount == subtail_amount and subtail_amount > 0 and
+               noteRenderInfo[i+1].flag_amount == flag_amount and flag_amount > 0 and
                noteRenderInfo[i+1].triplet == noteRenderInfo[i].triplet);
             else
             {
