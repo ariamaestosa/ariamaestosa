@@ -239,6 +239,9 @@ void NoteRenderInfo::tieWith(NoteRenderInfo& renderInfo)
 }
 void NoteRenderInfo::triplet_arc(int pixel1, int pixel2)
 {
+    assertExpr(pixel1,>=,0);
+    assertExpr(pixel2,>=,0);
+    // FIXME - this method seems not even used
     triplet_arc_x_start = pixel1;
     triplet_arc_x_end = pixel2;
 }

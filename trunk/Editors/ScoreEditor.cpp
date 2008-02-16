@@ -828,7 +828,7 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo)
     }
     
 	// triplet
-	if (renderInfo.drag_triplet_sign)
+	if (renderInfo.drag_triplet_sign and renderInfo.triplet_arc_x_start != -1)
 	{
 		const int center_x = (renderInfo.triplet_arc_x_end == -1 ? renderInfo.triplet_arc_x_start : (renderInfo.triplet_arc_x_start + renderInfo.triplet_arc_x_end)/2);
 		const int radius_x = (renderInfo.triplet_arc_x_end == -1 or  renderInfo.triplet_arc_x_end == renderInfo.triplet_arc_x_start ?
