@@ -280,10 +280,14 @@ int NoteRenderInfo::getYBase()
 
 void putInTimeOrder(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* editor)
 {
+    // put notes in time order.
+    // notes that have no stems go last so that they don't disturb note grouping in chords
     const int visibleNoteAmount = noteRenderInfo.size();
     for(int i=1; i<visibleNoteAmount; i++)
     {
-        if(noteRenderInfo[i].tick < noteRenderInfo[i-1].tick)
+        if(noteRenderInfo[i].tick < noteRenderInfo[i-1].tick or
+           ( aboutEqual_tick(noteRenderInfo[i].tick, noteRenderInfo[i-1].tick) and noteRenderInfo[i-1].stem_type != STEM_NONE and noteRenderInfo[i].stem_type == STEM_NONE)
+           )
         {
             NoteRenderInfo tmp = noteRenderInfo[i-1];
             noteRenderInfo[i-1] = noteRenderInfo[i];
@@ -324,6 +328,8 @@ void findAndMergeChords(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor
         // first note of that bunch (the ID of the last will be "i" when we get to it)
         first_note_of_chord = i;
         
+        if(noteRenderInfo[i].stem_type == STEM_NONE) continue;
+        
         while(true) // FIXME - it should be checked whether there is a chord BEFORE entering the while loop. same for others
         {
             if(i+1<(int)noteRenderInfo.size())
@@ -335,7 +341,7 @@ void findAndMergeChords(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor
             
             // check if we're in a chord (i.e. many notes that play at the same time). also check they have stems :
             // for instance wholes have no stems and thus there is no special processing to do on them.
-            if(start_tick_of_next_note != -1 and aboutEqual_tick(start_tick_of_next_note, noteRenderInfo[i].tick) and noteRenderInfo[i].stem_type != STEM_NONE);
+            if(start_tick_of_next_note != -1 and aboutEqual_tick(start_tick_of_next_note, noteRenderInfo[i].tick) and noteRenderInfo[i+1].stem_type != STEM_NONE);
             else
             {
                 //after this one, it stops. mark this as the last so it will finalize stuff.
