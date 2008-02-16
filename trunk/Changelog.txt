@@ -17,6 +17,7 @@ Version 1.1 new features highlight
 - Fixed incorrect display of triplets in complex songs
 - Fixed incorrect note beaming when making notes of different lengths play at the same time
 - Improved handling of whole notes playing along chords
+- Improved handling of ties with chords
 
  1.1b8
 - Hopefully fixed compatiblity problems with intel Tiger systems
