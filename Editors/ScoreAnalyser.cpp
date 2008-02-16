@@ -400,6 +400,9 @@ void findAndMergeChords(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor
                 summary.stem_type = (stem_up ? STEM_UP : STEM_DOWN);
                 summary.tick_length = smallest_duration;
                 
+                summary.tied_with_x = noteRenderInfo[ !stem_up ? minid : maxid ].tied_with_x;
+                summary.tie_up = noteRenderInfo[ !stem_up ? minid : maxid ].tie_up;
+                
                 noteRenderInfo[i] = summary;
                 
                 // now that we summarised concurrent notes into a single one, we can erase the other notes of the chord
