@@ -1124,19 +1124,9 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 	// musical notation requires more than one pass
 	if(musicalNotationEnabled)
 	{
-        // analyse notes to know how to build the score
-        analyseNoteInfo(noteRenderInfo, this);
-        
-		// ------------------------- second rendering pass -------------------
-		// triplet signs, tied notes, flags and beams
-        const int visibleNoteAmount = noteRenderInfo.size();
-		for(int i=0; i<visibleNoteAmount; i++)
-		{
-            assertExpr(i,<,(int)noteRenderInfo.size());
-			renderNote_pass2(noteRenderInfo[i]);
-		}
-        
-		// -------------------------- third rendering pass -------------------
+        int visibleNoteAmount = noteRenderInfo.size();
+
+		// -------------------------- silences rendering pass -------------------
 		// draw silences
 		const unsigned int first_visible_measure = getMeasureBar()->measureAtPixel( getEditorXStart() );
 		const unsigned int last_visible_measure = getMeasureBar()->measureAtPixel( getXEnd() );
@@ -1153,7 +1143,12 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 			// 2 measures so we don't need to care about that.
 			int previous_note_end = -1;
             
+            // last_note_end is similar to previous_note_end, but contains the end tick of the last note that ended
+            // while previous_note_end contains the end tick of the last note that started
+            int last_note_end = -1;
+            
 			int last_measure = -1;
+            
 #ifdef _MORE_DEBUG_CHECKS
  int iters = 0;
 #endif
@@ -1177,10 +1172,10 @@ assertExpr(iters,<,1000);
 				{
 					// if the last note of previous measure does not finish at the end of the measure,
 					// we need to add a silence at the end of it
-					if(last_measure != -1 and !aboutEqual(previous_note_end, getMeasureBar()->firstTickInMeasure(measure) ))
+					if(last_measure != -1 and !aboutEqual(last_note_end, getMeasureBar()->firstTickInMeasure(measure) ))
 					{
-						const int silence_length = getMeasureBar()->firstTickInMeasure(measure)-previous_note_end;
-						renderSilence(previous_note_end, silence_length);
+						const int silence_length = getMeasureBar()->firstTickInMeasure(measure)-last_note_end;
+						renderSilence(last_note_end, silence_length);
 						
 					}
 					// if note is not at the very beginning of the new measure, and it's the first note of
@@ -1190,7 +1185,12 @@ assertExpr(iters,<,1000);
 						const int silence_length = noteRenderInfo[i].tick - getMeasureBar()->firstTickInMeasure(measure);
 						renderSilence(getMeasureBar()->firstTickInMeasure(measure), silence_length);
 					}
-					previous_note_end = -1; // we switched to another measure, reset and start again
+                    
+                    if(last_measure!=-1)
+                    {
+                        previous_note_end = -1; // we switched to another measure, reset and start again
+                        last_note_end = -1;
+                    }
 				}
 
 				last_measure = measure;
@@ -1200,11 +1200,14 @@ assertExpr(iters,<,1000);
 				
 				const int current_begin_tick = noteRenderInfo[i].tick;
                 
-				if( previous_note_end != -1 and !aboutEqual(previous_note_end, current_begin_tick) and (current_begin_tick-previous_note_end)>0 )
+                // silences between two notes
+				if( previous_note_end != -1 and !aboutEqual(previous_note_end, current_begin_tick) and
+                    (current_begin_tick-previous_note_end)>0 /*and previous_note_end >= last_note_end*/)
 				{
                     renderSilence(previous_note_end, current_begin_tick-previous_note_end);
 				}
-				previous_note_end = noteRenderInfo[i].tick + noteRenderInfo[i].tick_length;
+                
+                previous_note_end = noteRenderInfo[i].tick + noteRenderInfo[i].tick_length;
                 
 				// if there's multiple notes playing at the same time
 				while(i+1<visibleNoteAmount and noteRenderInfo[i].tick==noteRenderInfo[i+1].tick)
@@ -1212,39 +1215,55 @@ assertExpr(iters,<,1000);
 					i++;
 					previous_note_end = std::max(previous_note_end, noteRenderInfo[i].tick + noteRenderInfo[i].tick_length);
 				}
+                
+                if(previous_note_end > last_note_end) last_note_end = previous_note_end;
+                    
 			}//next visible note
             
 			// check for silence after last note
 			const unsigned int last_measure_end = getMeasureBar()->lastTickInMeasure(
 														getMeasureBar()->measureAtTick(
 														noteRenderInfo[visibleNoteAmount-1].tick));
-			if(!aboutEqual(previous_note_end, last_measure_end ) and previous_note_end>-1)
+			if(!aboutEqual(last_note_end, last_measure_end ) and last_note_end>-1)
 			{
-				const int silence_length = last_measure_end-previous_note_end;
-				renderSilence(previous_note_end, silence_length);
+				const int silence_length = last_measure_end-last_note_end;
+				renderSilence(last_note_end, silence_length);
 			}
-            
-			
+
+
 		}// end if there are visible notes
 
-        
-		// draw silences in empty measures
-		for(int i=0; i<visible_measure_amount; i++)
-		{
-			if(measure_empty[i])
-			{
-				renderSilence(getMeasureBar()->firstTickInMeasure(first_visible_measure+i),
-							  getMeasureBar()->measureLengthInTicks(first_visible_measure+i));
-			}
-		}
-	}
 
-    
+        // draw silences in empty measures
+        for(int i=0; i<visible_measure_amount; i++)
+        {
+            if(measure_empty[i])
+            {
+                renderSilence(getMeasureBar()->firstTickInMeasure(first_visible_measure+i),
+                      getMeasureBar()->measureLengthInTicks(first_visible_measure+i));
+            }
+        }
+
+        // ------------------------- second note rendering pass -------------------
+
+        // analyse notes to know how to build the score
+        analyseNoteInfo(noteRenderInfo, this);
+
+        // triplet signs, tied notes, flags and beams
+        visibleNoteAmount = noteRenderInfo.size();
+        for(int i=0; i<visibleNoteAmount; i++)
+        {
+            assertExpr(i,<,(int)noteRenderInfo.size());
+            renderNote_pass2(noteRenderInfo[i]);
+        }
+    }
+
+
     AriaRender::lineWidth(1);
-	// ------------------------- mouse drag (preview) ------------------------
-    
+    // ------------------------- mouse drag (preview) ------------------------
+
     AriaRender::primitives();
-	
+
     if(!clickedOnNote and mouse_is_in_editor)
     {
         // selection
