@@ -21,8 +21,6 @@
 #include "Midi/ControllerEvent.h"
 #include "Midi/Sequence.h"
 
-// FIXME - remove, temp
-#include "AriaCore.h"
 #include "GUI/MeasureBar.h"
 
 

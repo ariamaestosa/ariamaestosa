@@ -407,34 +407,6 @@ void ScoreMidiConverter::updateConversionData()
 			note_7 = 6;
 	}
 	
-	
-    /*
-	// fill any midi note that has not been assigned a level
-    const bool useFlats = goingInFlats();
-    if(useFlats)
-    {
-        for(int n=1; n<128; n++)
-        {
-            if(midiNoteToLevel[n] == -1)
-            {   
-                midiNoteToLevel[n] = midiNoteToLevel[n-1];
-                showSignNextToNote[n] = FLAT;
-            }
-        }
-    }
-    else
-    {
-        for(int n=0; n<127; n++)
-        {
-            if(midiNoteToLevel[n] == -1)
-            {
-                midiNoteToLevel[n] = midiNoteToLevel[n+1];
-                showSignNextToNote[n] = SHARP;
-            }
-        }//next
-    }
-     */
-	
 }
 
 int ScoreMidiConverter::getMidiNoteForLevelAndSign(const unsigned int level, int sharpness)

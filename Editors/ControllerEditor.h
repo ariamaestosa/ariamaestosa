@@ -51,6 +51,8 @@ public:
     void render(RelativeXCoord mousex_current, int mousey_current,
 				RelativeXCoord mousex_initial, int mousey_initial, bool focus=false);
     
+    void renderEvents();
+    
     void selectAll( bool selected );
     
     void updatePosition(const int from_y, const int to_y, const int width, const int height, const int barHeight);
