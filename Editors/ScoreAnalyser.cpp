@@ -291,6 +291,7 @@ void putInTimeOrder(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* ed
             i -= 2; if(i<0) i=0;
         }
     }
+
 }
 
 void findAndMergeChords(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* editor)
@@ -323,7 +324,7 @@ void findAndMergeChords(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor
         // first note of that bunch (the ID of the last will be "i" when we get to it)
         first_note_of_chord = i;
         
-        while(true) // FIXME - it should be checked whether there is a chord BEFORE entering the while loop. same for others below
+        while(true) // FIXME - it should be checked whether there is a chord BEFORE entering the while loop. same for others
         {
             if(i+1<(int)noteRenderInfo.size())
             {
@@ -349,14 +350,10 @@ void findAndMergeChords(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor
             
             const int len = noteRenderInfo[i].tick_length;
             if(len < smallest_duration)
-            {
                 smallest_duration = len;
-            }
             
             if(noteRenderInfo[i].flag_amount > flag_amount)
-            {
                 flag_amount = noteRenderInfo[i].flag_amount;
-            }
             
             if(noteRenderInfo[i].triplet) triplet = true;
             
@@ -395,6 +392,7 @@ void findAndMergeChords(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor
                 summary.triplet = triplet;
                 summary.draw_stem = true;
                 summary.stem_type = (stem_up ? STEM_UP : STEM_DOWN);
+                summary.tick_length = smallest_duration;
                 
                 noteRenderInfo[i] = summary;
                 
