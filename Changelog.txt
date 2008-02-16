@@ -18,6 +18,7 @@ Version 1.1 new features highlight
 - Fixed incorrect note beaming when making notes of different lengths play at the same time
 - Improved handling of whole notes playing along chords
 - Improved handling of ties with chords
+- Fixed many cases of incorrect silence rendering
 
  1.1b8
 - Hopefully fixed compatiblity problems with intel Tiger systems
