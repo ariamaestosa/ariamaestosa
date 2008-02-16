@@ -46,6 +46,8 @@ NOTE: sorry, this is very raw :)
 
  + make more features accessible graphically (as opposed to keyboard-only)
 
+ + cursor should change when hitting key modifiers (at least a select icon when hitting shift in control editor)
+
  - change whole track pitch/volume
  
  - show song duration

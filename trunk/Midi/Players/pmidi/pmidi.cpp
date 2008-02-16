@@ -166,7 +166,7 @@ void* export_audio_func( void *ptr )
     MAKE_HIDE_PROGRESSBAR_EVENT(event);
     getMainFrame()->GetEventHandler()->AddPendingEvent(event);
 
-	wxRemoveFile(tempMidiFile); // FIXME - thread safe?
+	wxRemoveFile(tempMidiFile);
 
     return (void*)NULL;
 }

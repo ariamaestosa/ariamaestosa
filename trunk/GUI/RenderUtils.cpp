@@ -159,7 +159,7 @@ void hollow_rect(const int x1, const int y1, const int x2, const int y2)
 }
 
 
-// FIXME- clean up test rendering
+// FIXME- clean up text rendering
 void text(const char* string, const int x, const int y)
 {
     glRasterPos2f(x, y);
@@ -468,7 +468,7 @@ void hollow_rect(const int x1, const int y1, const int x2, const int y2)
 
 const int FONTSHIFT = -12;
 
-// FIXME- clean up test rendering
+// FIXME- clean up text rendering
 void text(const char* string, const int x, const int y)
 {
     Display::renderDC -> SetFont( *wxNORMAL_FONT );

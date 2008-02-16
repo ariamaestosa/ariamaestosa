@@ -59,6 +59,59 @@ void ControllerEditor::render()
 	render( RelativeXCoord_empty(), -1, RelativeXCoord_empty(), -1, true );
 }
 
+void ControllerEditor::renderEvents()
+{
+    const int area_from_y = getEditorYStart()+7;
+	const int area_to_y = getYEnd()-15;
+	const float y_zoom = (float)( area_to_y-area_from_y ) / 127.0;
+    
+    AriaRender::color(0, 0.4, 1);
+    AriaRender::lineWidth(3);
+    
+    ControllerEvent* tmp;
+    int previous_location=-1, previous_value=-1;
+    
+    const int currentController = controllerChoice->getControllerID();
+    
+    const int eventAmount = track->getControllerEventAmount( currentController );
+    const int scroll = sequence->getXScrollInPixels();
+    
+    
+    int eventsOfThisType=0;
+    for(int n=0; n<eventAmount; n++)
+	{
+        tmp = track->getControllerEvent(n, currentController);
+        if(tmp->getController() != currentController) continue; // only draw events of this controller
+        eventsOfThisType++;
+        
+        const int xloc = tmp->getPositionInPixels();
+        const unsigned short value = tmp->getValue();
+        
+        if(previous_location - scroll > getXEnd()) // if events are no more visible, stop drawing
+            return;
+        
+        if(xloc - scroll > getEditorXStart())
+		{
+            if(previous_location!=-1 and previous_value!=-1)
+			{
+                AriaRender::line(previous_location - scroll, area_from_y+previous_value*y_zoom,
+                                 xloc - scroll, area_from_y+previous_value*y_zoom);
+            }
+        }
+        
+        previous_location = xloc;
+        previous_value = value;
+    }// next
+	
+	// draw horizontal line drom last event to end of visible area
+    if(eventsOfThisType>0)
+	{
+        AriaRender::line(previous_location - scroll, area_from_y+previous_value*y_zoom,
+                         getXEnd(), area_from_y+previous_value*y_zoom);
+    }
+    
+}
+
 void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
 							  RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {
@@ -68,8 +121,7 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
 	
 	const int area_from_y = getEditorYStart()+7;
 	const int area_to_y = getYEnd()-15;
-	const float y_zoom = (float)( area_to_y-area_from_y ) / 127.0;
-	
+
     AriaRender::primitives();
     
     AriaRender::color(0.9, 0.9, 0.9);
@@ -124,53 +176,7 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     AriaRender::small_text( toCString(bottom_name),  getEditorXStart()+5 , area_to_y - 5);
     
 	// -------------------------- draw controller events ---------------------
-    AriaRender::color(0, 0.4, 1);
-    AriaRender::lineWidth(3);
-    
-    ControllerEvent* tmp;
-    int previous_location=-1, previous_value=-1;
-    
-    const int currentController = controllerChoice->getControllerID();
-    
-    const int eventAmount = track->getControllerEventAmount( currentController );
-    const int scroll = sequence->getXScrollInPixels();
-    
-    
-    int eventsOfThisType=0;
-    for(int n=0; n<eventAmount; n++)
-	{
-        tmp = track->getControllerEvent(n, currentController);
-        if(tmp->getController() != currentController) continue; // only draw events of this controller
-        eventsOfThisType++;
-        
-        const int xloc = tmp->getPositionInPixels();
-        const unsigned short value = tmp->getValue();
-        
-        if(previous_location - scroll > getXEnd()) // if area isn't visible at all, skip drawing
-            goto afterDrawing;
-
-        if(xloc - scroll > getEditorXStart())
-		{
-            if(previous_location!=-1 and previous_value!=-1)
-			{
-                AriaRender::line(previous_location - scroll, area_from_y+previous_value*y_zoom,
-                                 xloc - scroll, area_from_y+previous_value*y_zoom);
-            }
-        }
-        
-        previous_location = xloc;
-        previous_value = value;
-    }// next
-	
-	// draw horizontal line drom last event to end of visible area
-    if(eventsOfThisType>0)
-	{
-        AriaRender::line(previous_location - scroll, area_from_y+previous_value*y_zoom,
-                         getXEnd(), area_from_y+previous_value*y_zoom);
-    }
-
-    // FIXME - remove goto
-afterDrawing:
+    renderEvents();
 		
 	// ----------------------- add controller events (preview) -------------------
 	if(track->graphics->dragging_resize) hasBeenResizing=true;

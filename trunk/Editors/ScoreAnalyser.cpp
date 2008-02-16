@@ -103,8 +103,7 @@ public:
             // try to find where beamed groups of such notes usually start and end in the measure
             // this is where splitting should be performed
             const int group_len = noteRenderInfo[first_id].tick_length * max_amount_of_notes_beamed_toghether;
-            // FIXME - i don't understans that measureAtTick call, it should use a tick, not a length??
-            const int first_tick_in_measure = getMeasureBar()->firstTickInMeasure( getMeasureBar()->measureAtTick(noteRenderInfo[first_id].tick_length) );
+            const int first_tick_in_measure = getMeasureBar()->firstTickInMeasure( getMeasureBar()->measureAtTick(noteRenderInfo[first_id].tick) );
             
             int split_at_id = -1;
             for(int n=first_id+1; n<=last_id; n++)
