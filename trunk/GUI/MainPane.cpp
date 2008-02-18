@@ -48,6 +48,7 @@
 #include "Editors/RelativeXCoord.h"
 #include "Editors/KeyboardEditor.h"
 
+#include "wx/dcbuffer.h"
 
 #include "Config.h"
 
@@ -65,15 +66,15 @@ EVT_LEFT_DOWN(MainPane::mouseDown)
 EVT_LEFT_UP(MainPane::mouseReleased)
 EVT_RIGHT_DOWN(MainPane::rightClick)
 EVT_LEAVE_WINDOW(MainPane::mouseLeftWindow)
-     
+
 EVT_SIZE(MainPane::resized)
-     
+
 EVT_KEY_DOWN(MainPane::keyPressed)
 EVT_KEY_UP(MainPane::keyReleased)
-     
+
 EVT_MENU_RANGE(0+10000,127+10000, MainPane::instrumentPopupSelected)
 EVT_MENU_RANGE(0+20000,127+20000, MainPane::drumPopupSelected)
-     
+
 EVT_MOUSEWHEEL(MainPane::mouseWheelMoved)
 EVT_PAINT(MainPane::paintEvent)
 
@@ -157,10 +158,11 @@ void MainPane::paintEvent(wxPaintEvent& evt)
 void MainPane::render(const bool paintEvent)
 {
     if(!prepareFrame()) return;
-    
+
     if(paintEvent)
     {
-        wxPaintDC mydc(this);
+        wxAutoBufferedPaintDC mydc(this);
+
         #ifdef NO_OPENGL
             Display::renderDC = &mydc;
         #endif
@@ -169,14 +171,24 @@ void MainPane::render(const bool paintEvent)
     }
     else
     {
+#ifdef __WXMAC__
         wxClientDC mydc(this);
+#else
+    #ifdef NO_OPENGL
+        wxClientDC my_client_dc(this);
+        // FIXME - this can maybe be speed up by providing your own bitmap
+        wxBufferedDC mydc(static_cast<wxDC*>(&my_client_dc), wxDefaultSize);
+    #else
+        wxClientDC my_dc(this);
+    #endif
+#endif
         #ifdef NO_OPENGL
-            Display::renderDC = &mydc;
+            Display::renderDC = static_cast<wxDC*>(&mydc);
         #endif
         beginFrame();
         if(do_render()) endFrame();
     }
-    
+
 }
 
 /*
@@ -544,11 +556,11 @@ void MainPane::keyPressed(wxKeyEvent& evt)
     }
 
     // perform editor-specific event filtering
-    
+
     // FIXME - belongs to the editor, probably
     // FIXME - move all editor stuff to editor files
     // FIXME - too many renders there, maybe even actions do render
-    
+
     const int current_editor = getCurrentSequence()->getCurrentTrack()->graphics->editorMode;
     if(current_editor == GUITAR)
 	{
@@ -569,7 +581,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             else getCurrentSequence()->getCurrentTrack()->action( new Action::NumberPressed(evt.GetKeyCode() - 324) );
             Display::render();
         }
-        
+
         // ---------------- shift frets -----------------
         if(!commandDown && shiftDown)
 		{
@@ -609,16 +621,16 @@ void MainPane::keyPressed(wxKeyEvent& evt)
                 Display::render();
                 return;
             }
-            
+
             if(evt.GetKeyCode()==WXK_DOWN)
 			{
                 getCurrentSequence()->getCurrentTrack()->action( new Action::ShiftBySemiTone(1, SELECTED_NOTES) );
                 Display::render();
                 return;
             }
-  
+
     }
-    
+
     if( !commandDown and (!shiftDown or current_editor == SCORE) )
 	{
         // ---------------- move notes -----------------
@@ -676,9 +688,9 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
 	const int value = event.GetWheelRotation() / event.GetWheelDelta();
 	const int my = event.GetY();
 	const int mx = event.GetX();
-	
+
 	const int measureBarHeight = getMeasureBar()->getMeasureBarHeight();
-	
+
 	// ----------------------------------- click is in track area ----------------------------
 	// check click is within track area
     if(my < getHeight()-getCurrentSequence()->dockHeight and
@@ -710,7 +722,7 @@ bool MainPane::do_render()
 
     // -------------------------- draw tab bar at top -------------------------
     // beige background
-    
+
     AriaRender::primitives();
     AriaRender::color(1, 1, 0.9);
     AriaRender::rect(0, tabBarY, getWidth(), tabBarY+20);
@@ -719,7 +731,7 @@ bool MainPane::do_render()
     int start_at_x = 0;
     const int seqamount = getMainFrame()->getSequenceAmount();
     const int currentSeqID = getMainFrame()->getCurrentSequenceID();
-    
+
     for(int n=0; n<seqamount; n++)
 	{
         AriaRender::images();
@@ -755,7 +767,7 @@ bool MainPane::do_render()
             tabBorderDrawable->setFlip(true, false);
             tabBorderDrawable->render();
         }
-        
+
         AriaRender::primitives();
 
         // draw tab name
@@ -763,7 +775,7 @@ bool MainPane::do_render()
             AriaRender::color(0,0,0);
 		else
             AriaRender::color(0.4, 0.4, 0.4);
-        
+
         AriaRender::text_with_bounds(&getMainFrame()->getSequence(n)->sequenceFileName, start_at_x+10, tabBarY+18, start_at_x+tab_width+12);
 
         start_at_x += tab_width+16+16;
@@ -807,7 +819,7 @@ bool MainPane::do_render()
             AriaRender::color(1, 0.8, 0.7);
             AriaRender::lineWidth(2);
             AriaRender::hollow_rect(x, getHeight()-1, x_before, getHeight()-17);
-            
+
             positionsInDock.push_back(x);
         }//next
         AriaRender::lineWidth(1);
@@ -847,7 +859,7 @@ bool MainPane::do_render()
 
             leftArrow=false;
             rightArrow=true;
-            
+
             AriaRender::line(XEnd - 15 - 25, measureBarY + 10,
                              XEnd - 15 - 10, measureBarY + 10);
 
@@ -874,7 +886,7 @@ bool MainPane::do_render()
 		leftArrow=false;
 		rightArrow=true;
 	}
-    
+
     return true;
 
 }
@@ -906,10 +918,10 @@ void MainPane::playbackRenderLoop()
             exitPlayLoop();
             return;
         }
-        
+
         if(lastTick != playbackStartTick + currentTick)
 		{ // only draw if it has changed
-            
+
             // if user has clicked on a little red arrow
             if(scrollToPlaybackPosition)
 			{
@@ -919,7 +931,7 @@ void MainPane::playbackRenderLoop()
                 getCurrentSequence()->setXScrollInPixels(x_scroll_in_pixels);
                 DisplayFrame::updateHorizontalScrollbar( playbackStartTick + currentTick );
             }
-            
+
 			// if follow playback is checked in the menu
 			if(getCurrentSequence()->follow_playback)
 			{
@@ -929,14 +941,14 @@ void MainPane::playbackRenderLoop()
                 getCurrentSequence()->setXScrollInPixels(x_scroll_in_pixels);
                 DisplayFrame::updateHorizontalScrollbar( playbackStartTick + currentTick - timeBeforeFollowingPlayback );
 			}
-			
+
             setCurrentTick( playbackStartTick + currentTick );
-            
+
             RelativeXCoord tick(this->currentTick, MIDI);
             const int XStart = getEditorXStart();
             const int XEnd = getWidth();
             const int tick_pixel = tick.getRelativeTo(WINDOW);
-            
+
             if(tick_pixel < XStart and leftArrow)
             {
                 // current tick is before the visible area and arrow already there. no need to render again.
@@ -946,7 +958,7 @@ void MainPane::playbackRenderLoop()
                 // current tick is after the visible area and arrow already there. no need to render again.
             }
             else
-            {  
+            {
                 Display::render();
             }
             lastTick = playbackStartTick + currentTick;
