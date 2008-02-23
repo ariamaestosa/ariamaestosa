@@ -41,7 +41,7 @@ void images()
 {
     glEnable(GL_TEXTURE_2D);
 }
-    
+
 void color(const float r, const float g, const float b)
 {
     glColor3f(r,g,b);
@@ -96,65 +96,65 @@ void rect(const int x1, const int y1, const int x2, const int y2)
 void bordered_rect_no_start(const int x1, const int y1, const int x2, const int y2)
 {
     rect(x1,y1,x2,y2);
-    
+
     glColor3f(0,0,0);
     glLineWidth(1);
     glBegin(GL_LINES);
-    
+
     //glVertex2f(x1,y1);
     //glvertex2f(x1,y2);
-    
+
     glVertex2f(x1,y2+1);
     glVertex2f(x2,y2+1);
-    
+
     glVertex2f(x2+1,y2);
     glVertex2f(x2+1,y1);
-    
+
     glVertex2f(x1,y1);
     glVertex2f(x2,y1);
-    
+
     glEnd();
 }
 
 void bordered_rect(const int x1, const int y1, const int x2, const int y2)
 {
     rect(x1,y1,x2,y2);
-    
+
     glColor3f(0,0,0);
     glLineWidth(1);
     glBegin(GL_LINES);
-    
+
     glVertex2f(x1,y1);
     glVertex2f(x1,y2);
-    
+
     glVertex2f(x1,y2+1);
     glVertex2f(x2,y2+1);
-    
+
     glVertex2f(x2+1,y2);
     glVertex2f(x2+1,y1);
-    
+
     glVertex2f(x1,y1);
     glVertex2f(x2,y1);
-    
+
     glEnd();
 }
 
 void hollow_rect(const int x1, const int y1, const int x2, const int y2)
 {
     glBegin(GL_LINES);
-    
+
     glVertex2f(x1,y1);
     glVertex2f(x1,y2);
-    
+
     glVertex2f(x1,y2);
     glVertex2f(x2,y2);
-    
+
     glVertex2f(x2,y2);
     glVertex2f(x2,y1);
-    
+
     glVertex2f(x1,y1);
     glVertex2f(x2,y1);
-    
+
     glEnd();
 }
 
@@ -163,7 +163,7 @@ void hollow_rect(const int x1, const int y1, const int x2, const int y2)
 void text(const char* string, const int x, const int y)
 {
     glRasterPos2f(x, y);
-    
+
     for(int i=0; string[i]; i++)
     {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, string[i]);
@@ -172,7 +172,7 @@ void text(const char* string, const int x, const int y)
 void text(wxString* string, const int x, const int y)
 {
     glRasterPos2f(x, y);
-    
+
     const int len = string->Length();
     for(int i=0; i<len; i++)
     {
@@ -183,18 +183,18 @@ void text(wxString* string, const int x, const int y)
 int text_return_end_x(wxString* string, const int x, const int y)
 {
     glRasterPos2f(x, y);
-    
+
     const int len = string->Length();
     for(int i=0; i<len; i++)
     {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, (*string)[i]);
     }
-    
+
     // find where text ends
     float rasterPos[4];
     glGetFloatv(GL_CURRENT_RASTER_POSITION,rasterPos);
     return (int)( rasterPos[0] );
-    
+
 }
 
 // used for track name, in case it's too long
@@ -202,12 +202,12 @@ void text_with_bounds(wxString* string, const int x, const int y, const int max_
 {
     glRasterPos2f(x, y);
     const int len = string->Length();
-    
+
     for(int i=0; i<len; i++)
     {
        // std::cout << ">" << (*string)[i] << "<" << std::endl;
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, (*string)[i]);
-        
+
         // if text is too long
         float rasterPos[4];
         glGetFloatv(GL_CURRENT_RASTER_POSITION,rasterPos);
@@ -224,7 +224,7 @@ void text_with_bounds(wxString* string, const int x, const int y, const int max_
 void small_text(const char* string, const int x, const int y)
 {
     glRasterPos2f(x, y);
-    
+
     for(int i=0; string[i]; i++)
     {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, string[i]);
@@ -244,7 +244,7 @@ void small_character(const char character, const int x, const int y)
 void small_text_newline_between_words(const char* string, const int x, const int y)
 {
     glRasterPos2f(x, y);
-    
+
     int line=0;
     for(int i=0; string[i]; i++)
     {
@@ -270,9 +270,9 @@ void triangle(const int x1, const int y1, const int x2, const int y2, const int 
 void arc(int center_x, int center_y, int radius_x, int radius_y, bool show_above)
 {
 	glLoadIdentity();
-    
+
 	const int y_mult = (show_above ? -radius_y : radius_y);
-	
+
 	glColor3f(0,0,0);
 	glBegin(GL_LINES);
 	for(float angle = 0.2; angle<=M_PI; angle +=0.2)
@@ -280,7 +280,7 @@ void arc(int center_x, int center_y, int radius_x, int radius_y, bool show_above
 		glVertex2f( center_x + std::cos(angle)*radius_x, center_y + std::sin(angle)*y_mult );
 		glVertex2f( center_x + std::cos(angle-0.2)*radius_x, center_y + std::sin(angle-0.2)*y_mult );
 	}
-	glEnd();	
+	glEnd();
 }
 
 void quad(const int x1, const int y1,
@@ -294,7 +294,7 @@ void quad(const int x1, const int y1,
     glVertex2f(x3, y3);
     glVertex2f(x4, y4);
     glEnd();
-    
+
 }
 
 void beginScissors(const int x, const int y, const int width, const int height)
@@ -313,13 +313,15 @@ void endScissors()
 
 #else
 
+#include "Images/Drawable.h"
+
 namespace AriaMaestosa
 {
 namespace AriaRender
 {
-    
+
     bool mode_primitives = false, mode_images = false;
-    
+
 void primitives()
 {
     mode_primitives = true;
@@ -366,26 +368,37 @@ void color(const float r, const float g, const float b)
     rc = (unsigned char)(r*255);
     gc = (unsigned char)(g*255);
     bc = (unsigned char)(b*255);
-    ac = 255;
+
+    if(mode_primitives)
+    {
+        ac = 255;
+        updatePen();
+        updateBrush();
+        updateFontColor();
+    }
+    else
+    {
+        drawable_set_color(r,g,b);
+    }
+}
+
+void color(const float r, const float g, const float b, const float a)
+{
+
+    rc = (unsigned char)(r*255);
+    gc = (unsigned char)(g*255);
+    bc = (unsigned char)(b*255);
+    ac = (unsigned char)(a*255);
+
     if(mode_primitives)
     {
         updatePen();
         updateBrush();
         updateFontColor();
     }
-}
-
-void color(const float r, const float g, const float b, const float a)
-{
-    rc = (unsigned char)(r*255);
-    gc = (unsigned char)(g*255);
-    bc = (unsigned char)(b*255);
-    ac = (unsigned char)(a*255);
-    if(mode_primitives)
+    else
     {
-        updatePen();
-        updateBrush();
-        updateFontColor();
+        drawable_set_color(r,g,b,a);
     }
 }
 
@@ -431,30 +444,30 @@ void bordered_rect_no_start(const int x1, const int y1, const int x2, const int 
 {
     disablePen();
     Display::renderDC -> DrawRectangle( x1, y1, x2-x1+1, y2-y1+1 );
-    
+
     Display::renderDC -> SetPen( *wxBLACK_PEN );
     //Display::renderDC -> DrawLine( x1-1, y1, x1-1, y2 );
     Display::renderDC -> DrawLine( x2+1, y1, x2+1, y2 );
-    
+
     Display::renderDC -> DrawLine( x1, y1-1, x2, y1-1 );
     Display::renderDC -> DrawLine( x1, y2+1, x2, y2+1 );
-    
+
     updatePen();
 }
 
 void bordered_rect(const int x1, const int y1, const int x2, const int y2)
 {
-    
+
     disablePen();
     Display::renderDC -> DrawRectangle( x1, y1, x2-x1+1, y2-y1+1 );
-    
+
     Display::renderDC -> SetPen( *wxBLACK_PEN );
     Display::renderDC -> DrawLine( x1-1, y1, x1-1, y2 );
     Display::renderDC -> DrawLine( x2+1, y1, x2+1, y2 );
-    
+
     Display::renderDC -> DrawLine( x1, y1-1, x2, y1-1 );
     Display::renderDC -> DrawLine( x1, y2+1, x2, y2+1 );
-    
+
     updatePen();
 }
 
@@ -486,7 +499,7 @@ int text_return_end_x(wxString* string, const int x, const int y)
     Display::renderDC -> DrawText( *string, x, y + FONTSHIFT);
     int twidth, theight;
     Display::renderDC -> GetTextExtent( *string, &twidth, &theight );
-    
+
     return twidth + x;
 }
 
@@ -494,7 +507,7 @@ int text_return_end_x(wxString* string, const int x, const int y)
 void text_with_bounds(wxString* string, const int x, const int y, const int max_x)
 {
     wxString message = *string;
-    
+
     bool shortened = false;
     while(true)
     {
@@ -525,7 +538,7 @@ void character(const char character, const int x, const int y)
 {
     char buffer[2];
     sprintf(buffer, "%c", character);
-    
+
     Display::renderDC -> SetFont( *wxNORMAL_FONT );
     Display::renderDC -> DrawText( fromCString(buffer), x, y + FONTSHIFT);
 }
@@ -533,7 +546,7 @@ void small_character(const char character, const int x, const int y)
 {
     char buffer[2];
     sprintf(buffer, "%c", character);
-    
+
     Display::renderDC -> SetFont( *wxSMALL_FONT );
     Display::renderDC -> DrawText( fromCString(buffer), x, y + FONTSHIFT );
 }
