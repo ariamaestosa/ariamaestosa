@@ -95,8 +95,6 @@ MyPThread export_audio;
 }
 
 // -- add events then play thread ---
-//int  add_events_thread_id;
-//pthread_t add_events_thread;
 char* data;
 int datalength = -1;
 
@@ -112,6 +110,8 @@ void* track_playback_func( void *ptr )
      AriaMaestosa::trackPlayback_thread_loop();
      return (void*)NULL;
 }
+
+#pragma mark -
 
 // --- export to audio thread --
 wxString export_audio_filepath;
@@ -170,6 +170,8 @@ void exportAudioFile(Sequence* sequence, wxString filepath)
     threads::export_audio.runFunction( &export_audio_func );
 }
 
+#pragma mark -
+
 // called when app opens
 void initMidiPlayer()
 {
@@ -210,9 +212,6 @@ bool playSequence(Sequence* sequence, /*out*/int* startTick)
 		stored_songLength = songLengthInTicks + sequence->ticksPerBeat();
 
 		// start in a new thread as to not block the UI during playback
-		//add_events_thread_id = pthread_create( &add_events_thread, NULL,
-        //                                        add_events_func, (void*) NULL);
-
         threads::add_events.runFunction(&add_events_func);
 
         context->setPlaying(true);
@@ -234,9 +233,7 @@ bool playSelected(Sequence* sequence, /*out*/int* startTick)
 
 		stored_songLength = songLengthInTicks + sequence->ticksPerBeat();
 
-		// start in a new thread as to not block the UI during playback
-		//add_events_thread_id = pthread_create( &add_events_thread, NULL,
-        //                                        add_events_func, (void*) NULL);
+		// start in a new thread as to not block the UI during playback;
         threads::add_events.runFunction(&add_events_func);
 
         context->setPlaying(true);
@@ -251,10 +248,17 @@ bool exportMidiFile(Sequence* sequence, wxString filepath)
 // returns current midi tick, or -1 if over
 int trackPlaybackProgression()
 {
-    if(context->isPlaying())
+
+    if(context->isPlaying() and
+        !(currentTick >= stored_songLength-1 or currentTick == -1) )
+    {
         return currentTick;
+    }
     else
+    {
+        Core::songHasFinishedPlaying();
         return -1;
+    }
 }
 
 bool isPlaying()
@@ -292,6 +296,7 @@ const wxString getAudioWildcard()
 
 }
 
+#pragma mark -
 
 #include "glib.h"
 
@@ -375,21 +380,19 @@ void playMidiData(seq_context_t *ctxp, char *data, int length)
 
     PlatformMidiManager::currentTick=0;
 
-    // create the thread that takes care of tracking playback position
-    //PlatformMidiManager::track_playback_thread_id =
-    //pthread_create( &PlatformMidiManager::track_playback_thread, NULL,
-    //PlatformMidiManager::track_playback_func, (void*) NULL);
+    // launch a new thread that takes care of tracking playback position
     PlatformMidiManager::threads::track_playback.runFunction(&PlatformMidiManager::track_playback_func);
 
+    // the current thread continues pushing events to the queue
+    // until all events have been processed or playback is interrupted
     while ((event = md_sequence_next(seq)) != NULL)
     {
         if(PlatformMidiManager::must_stop) return;
-
         play(ctxp, event);
     }
 
+    // finish playing
     if(!PlatformMidiManager::must_stop) snd_seq_drain_output((snd_seq_t*)seq_handle(ctxp));
-
 
 }
 
@@ -405,9 +408,12 @@ void trackPlayback_thread_loop()
         PlatformMidiManager::currentTick==-1) PlatformMidiManager::must_stop=true;
     }
 
+    // clean up any events remaining on the queue and stop it
     snd_seq_drop_output(ctxp->handle);
     seq_stop_timer(ctxp);
     AlsaNotePlayer::allSoundOff();
+
+    PlatformMidiManager::currentTick = -1;
 
     if(root != NULL)
     {
@@ -422,8 +428,6 @@ void trackPlayback_thread_loop()
     context->setPlaying(false);
 
     AlsaNotePlayer::resetAllControllers();
-
-    Core::songHasFinishedPlaying();
 
 }
 

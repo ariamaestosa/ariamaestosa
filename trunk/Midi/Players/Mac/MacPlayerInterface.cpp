@@ -147,52 +147,52 @@ namespace PlatformMidiManager {
         pthread_t thread;
     public:
             MyPThread(){}
-        
+
         void runFunction(void* (*func)(void*) )
         {
             id = pthread_create( &thread, NULL, func, (void*)NULL);
         }
     };
-    
-    
+
+
     namespace threads
     {
         MyPThread export_audio;
     }
-    
+
     wxString export_audio_filepath;
     void* add_events_func( void *ptr )
     {
         // when we're saving, we always want song to start at first measure, so temporarly switch firstMeasure to 0, and set it back in the end
 		const int firstMeasureValue=getMeasureBar()->getFirstMeasure();
 		getMeasureBar()->setFirstMeasure(0);
-        
+
 		char* data;
 		int length = -1;
-        
+
 		int startTick = -1, songLength = -1;
 		makeMidiBytes(sequence, false, &songLength, &startTick, &data, &length, true);
-        
+
 		//exportToAudio( data, length, filepath );
         qtkit_setData(data, length);
 		bool success = qtkit_exportToAiff( toCString(export_audio_filepath) );
-        
+
 		if(!success)
 		{
             // FIXME - give visual message. warning this is a thread.
 			std::cerr << "EXPORTING FAILED" << std::endl;
 		}
-        
+
         // send hide progress window event
         MAKE_HIDE_PROGRESSBAR_EVENT(event);
         getMainFrame()->GetEventHandler()->AddPendingEvent(event);
-        
+
 		free(data);
 		getMeasureBar()->setFirstMeasure(firstMeasureValue);
-        
+
         return (void*)NULL;
     }
-    
+
 	void exportAudioFile(Sequence* sequence, wxString filepath)
 	{
         PlatformMidiManager::sequence = sequence;
@@ -207,7 +207,8 @@ namespace PlatformMidiManager {
 	    int currentTick = getCurrentTick();
 
 		// song ends
-		if(currentTick >= stored_songLength-1 or currentTick == -1){
+		if(currentTick >= stored_songLength-1 or currentTick == -1)
+		{
             Core::songHasFinishedPlaying();
 			currentTick=-1;
 			stop();

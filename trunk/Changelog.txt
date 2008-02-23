@@ -1,3 +1,9 @@
+
+1.2b1
+- Fixed glitches and a potential crash source in Alsa player.
+- Code cleanup in Alsa player.
+
+=====================================================================================
 Version 1.1 new features highlight
 * Fixed countless crashes, bugs and glitches
 * Added new score editor
@@ -10,8 +16,9 @@ Version 1.1 new features highlight
 * Improved document icon
 * Added mouse wheels support to vertically scroll tracks
 * Made document saving data loss-safe : if your computer crashes or is powered up while an aria file is being saved, no data loss will occurs
+======================================================================================
 
-1.1b9
+1.1
 - Fixed behaviour when closing last document
 - Fixed undoing vertical moves in score, when there's accidentals
 - Fixed incorrect display of triplets in complex songs
