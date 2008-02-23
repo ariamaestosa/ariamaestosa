@@ -45,7 +45,7 @@
 #include "IO/IOUtils.h"
 #include "Dialogs/WaitWindow.h"
 
-#include <signal.h>
+//#include <signal.h>
 #include <iostream>
 #include <pthread.h>
 #include <stdio.h>
@@ -312,8 +312,8 @@ seq_context_t *g_ctxp;
  seq_context_t *pmidi_openport(int client, int port);
  void playfile(seq_context_t *ctxp, char *filename);
  void play(seq_context_t* arg, struct event *el);
- void set_signal_handler(seq_context_t *ctxp);
- void signal_handler(int sig);
+ //void set_signal_handler(seq_context_t *ctxp);
+ //void signal_handler(int sig);
 
 void prepareAlsaThenPlay(char* data, int length)
 {
@@ -326,7 +326,7 @@ void prepareAlsaThenPlay(char* data, int length)
 
 
     /* Set signal handler */
-    set_signal_handler(ctxp);
+    //set_signal_handler(ctxp);
     playMidiData(ctxp, data, length);
 /*
     seq_free_context(ctxp);
@@ -418,7 +418,7 @@ void trackPlayback_thread_loop()
     seq_free_context(ctxp);
 
     // Restore signal handler
-    signal(SIGINT, SIG_DFL);// FIXME - are these removed or not?
+    //signal(SIGINT, SIG_DFL);// FIXME - are these removed or not?
     context->setPlaying(false);
 
     AlsaNotePlayer::resetAllControllers();
@@ -480,7 +480,7 @@ void play(seq_context_t* arg, struct event *el)
     }
 }
 
-
+/*
 typedef struct sigaction s_sigaction;
 
  void
@@ -493,8 +493,9 @@ set_signal_handler(seq_context_t *ctxp)
     sap->sa_handler = signal_handler;
     sigaction(SIGINT, sap, NULL);
 }
-
+*/
 /* signal handler */
+/*
  void
 signal_handler(int sig)
 {
@@ -506,7 +507,7 @@ signal_handler(int sig)
 
     exit(1);
 }
+*/
 }
 
-//}
 #endif
