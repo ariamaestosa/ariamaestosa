@@ -309,15 +309,15 @@ def compile_Aria(build_type, which_os):
         print "*** Adding pMidi/Alsa source files and libraries"
         
         source_pmidi = Split("""
-        Midi/Players/pmidi/elements.cpp
-        Midi/Players/pmidi/alsaNotePlayer.cpp
-        Midi/Players/pmidi/AlsaPort.cpp
-        Midi/Players/pmidi/mdutil.cpp
-        Midi/Players/pmidi/MidiDataProvider.cpp
-        Midi/Players/pmidi/midiread.cpp
-        Midi/Players/pmidi/pmidi.cpp
-        Midi/Players/pmidi/seqlib.cpp
-        Midi/Players/pmidi/seqmidi.cpp
+        Midi/Players/Alsa/AlsaPort.cpp
+        Midi/Players/Alsa/AlsaNotePlayer.cpp
+        Midi/Players/Alsa/MidiDataProvider.cpp
+        Midi/Players/Alsa/AlsaPlayer.cpp
+        Midi/Players/Alsa/pmidi/elements.cpp
+        Midi/Players/Alsa/pmidi/mdutil.cpp
+        Midi/Players/Alsa/pmidi/midiread.cpp
+        Midi/Players/Alsa/pmidi/seqlib.cpp
+        Midi/Players/Alsa/pmidi/seqmidi.cpp
         """)
         sources = sources + source_pmidi
         
@@ -330,7 +330,8 @@ def compile_Aria(build_type, which_os):
         env.Append(LIBS = ['GL', 'GLU', 'glut'])
         env.Append(LIBS = ['asound'])
         env.Append(LIBS = ['z','dl','m'])
-        
+        env.ParseConfig( 'pkg-config --cflags glib-2.0' )
+
     else:
     
         print "\n\n*** /!\\ Platform must be either mac or linux "
@@ -343,9 +344,6 @@ def compile_Aria(build_type, which_os):
     print " "
     print "*** Done. Will build"
     print " "
-    
-    if which_os == "linux":
-        env.ParseConfig( 'pkg-config --cflags glib-2.0' )
     
     # compile to .o
     object_list = env.Object(source = sources)
