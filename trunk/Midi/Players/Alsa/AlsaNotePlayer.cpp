@@ -39,13 +39,8 @@ namespace AlsaNotePlayer
 }
 }
 
-//#include <stdio.h>
+
 #include <alsa/asoundlib.h>
-//#include <vector>
-//#include <iostream>
-//#include <unistd.h>
-//#include <pthread.h>
-//#include <signal.h>
 
 namespace AriaMaestosa
 {
