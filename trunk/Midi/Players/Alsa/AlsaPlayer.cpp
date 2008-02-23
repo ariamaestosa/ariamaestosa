@@ -54,8 +54,6 @@
 #include "wx/utils.h"
 #include "wx/process.h"
 
-// FIXME - this whole player is a total mess
-
 namespace AriaMaestosa
 {
 MidiContext* context;
