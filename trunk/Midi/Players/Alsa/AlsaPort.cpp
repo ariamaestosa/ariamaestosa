@@ -200,18 +200,7 @@ void MidiContext::setPlaying(bool playing)
 bool MidiContext::openDevice(MidiDevice* device)
 {
     MidiContext::device = device;
-    if(device == NULL)
-    {
-        /*
-        wxMessageBox(   wxString(_("Failed to open ALSA port ")) +
-                        to_wxString(device->client) +
-                        wxString( wxT(":") ) +
-                        to_wxString(device->port) );
-        askOpenDevice();
-        */
-        return false;
-        //exit(1);
-    }
+    if(device == NULL) return false;
     return device->open();
 }
 
