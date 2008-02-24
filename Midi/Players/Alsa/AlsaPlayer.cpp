@@ -33,7 +33,6 @@
 
 #include <alsa/asoundlib.h>
 
-#include "Midi/Players/Alsa/pmidi/seqpriv.h"
 #include "Midi/Players/Alsa/pmidi/seqlib.h"
 #include "Midi/Players/Alsa/pmidi/md.h"
 #include "Midi/Players/Alsa/pmidi/midi.h"

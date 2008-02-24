@@ -26,7 +26,6 @@
 #include <stdio.h>
 #include <string.h>
 #include "Midi/Players/Alsa/pmidi/seqlib.h"
-#include "Midi/Players/Alsa/pmidi/seqpriv.h"
 
 namespace AriaMaestosa
 {
