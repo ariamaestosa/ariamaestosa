@@ -27,21 +27,7 @@
 namespace AriaMaestosa
 {
 
-struct seq_context {
-	snd_seq_t *handle; /* The snd_seq handle to /dev/snd/seq */
-	int  client;/* The client associated with this context */
-	int  queue; /* The queue to use for all operations */
-	snd_seq_addr_t  source;	/* Source for events */
-	GArray  *destlist;	/* Destination list */
-#define ctxndest destlist->len
-#define ctxdest  destlist->data
 
-	char  timer_started;	/* True if timer is running */
-	int   port_count;		/* Ports allocated */
-
-	struct seq_context *main; /* Pointer to the main context */
-	GSList *ctlist;		/* Context list if a main context */
-};
 
 
 
