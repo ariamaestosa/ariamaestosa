@@ -62,7 +62,7 @@ void prepareAlsaThenPlay(char* bytes, int length);
 void trackPlayback_thread_loop();
 
 struct rootElement *root;
-seq_context_t *ctxp;
+//SeqContext* seqContext;
 
 namespace PlatformMidiManager {
 
@@ -303,9 +303,9 @@ const wxString getAudioWildcard()
 namespace AriaMaestosa
 {
 
-void playMidiData(seq_context_t *ctxp, char *data, int length);
+void playMidiData(SeqContext *seqContext, char *data, int length);
 
-seq_context_t *g_ctxp;
+SeqContext *seqContext; // FIXME - why 2? There's already one near the top
 
 /* Number of elements in an array */
 #define NELEM(a) ( sizeof(a)/sizeof((a)[0]) )
@@ -314,16 +314,16 @@ seq_context_t *g_ctxp;
 #define SEP ", \t"	/* Separators for port description */
 
  //seq_context_t *pmidi_openport(char *portdesc);
- seq_context_t *pmidi_openport(int client, int port);
- void playfile(seq_context_t *ctxp, char *filename);
- void play(seq_context_t* arg, struct event *el);
+ SeqContext *pmidi_openport(int client, int port);
+ void playfile(SeqContext* seqContext, char* filename);
+ void play(SeqContext* seqContext, struct event *el);
  //void set_signal_handler(seq_context_t *ctxp);
  //void signal_handler(int sig);
 
 void prepareAlsaThenPlay(char* data, int length)
 {
-    ctxp = pmidi_openport(context->device->client, context->device->port);
-    if (ctxp == NULL)
+    seqContext = pmidi_openport(context->device->client, context->device->port);
+    if (seqContext == NULL)
     {
         std::cout << "Could not open midi port" << std::endl;
         return;
@@ -332,7 +332,7 @@ void prepareAlsaThenPlay(char* data, int length)
 
     /* Set signal handler */
     //set_signal_handler(ctxp);
-    playMidiData(ctxp, data, length);
+    playMidiData(seqContext, data, length);
 /*
     seq_free_context(ctxp);
 
@@ -342,26 +342,23 @@ void prepareAlsaThenPlay(char* data, int length)
     return;
 }
 
-seq_context_t* pmidi_openport(int client, int port)
+SeqContext* pmidi_openport(int client, int port)
 {
-    seq_context_t *ctxp;
+    SeqContext* seqContext = new SeqContext();
 
-    ctxp = seq_create_context();
+    int  err = seqContext->connectToPort(client, port);
 
-    int  err;
-
-    err = seq_connect_add(ctxp, client, port);
     if (err < 0)
     {
         fprintf(stderr, "Could not connect to port %d:%d\n",
                 client, port);
         return NULL;
     }
-    return ctxp;
+    return seqContext;
 
 }
 
-void playMidiData(seq_context_t *ctxp, char *data, int length)
+void playMidiData(SeqContext *seqContext, char *data, int length)
 {
     struct sequenceState *seq;
     struct event* event;
@@ -388,11 +385,12 @@ void playMidiData(seq_context_t *ctxp, char *data, int length)
     while ((event = md_sequence_next(seq)) != NULL)
     {
         if(PlatformMidiManager::must_stop) return;
-        play(ctxp, event);
+        play(seqContext, event);
     }
 
     // finish playing
-    if(!PlatformMidiManager::must_stop) snd_seq_drain_output((snd_seq_t*)seq_handle(ctxp));
+    if(!PlatformMidiManager::must_stop)
+        snd_seq_drain_output(seqContext->getAlsaHandle());
 
 }
 
@@ -401,7 +399,7 @@ void trackPlayback_thread_loop()
     while(!PlatformMidiManager::must_stop)
     {
 
-        PlatformMidiManager::currentTick = get_current_tick(ctxp);
+        PlatformMidiManager::currentTick = seqContext->getCurrentTick();
 
         if(PlatformMidiManager::currentTick >=
         PlatformMidiManager::songLengthInTicks or
@@ -409,8 +407,8 @@ void trackPlayback_thread_loop()
     }
 
     // clean up any events remaining on the queue and stop it
-    snd_seq_drop_output(ctxp->handle);
-    seq_stop_timer(ctxp);
+    snd_seq_drop_output(seqContext->getAlsaHandle());
+    seqContext->stopTimer();
     AlsaNotePlayer::allSoundOff();
 
     PlatformMidiManager::currentTick = -1;
@@ -421,7 +419,7 @@ void trackPlayback_thread_loop()
         root = NULL;
     }
 
-    seq_free_context(ctxp);
+    delete seqContext;
 
     // Restore signal handler
     //signal(SIGINT, SIG_DFL);// FIXME - are these removed or not?
@@ -431,57 +429,76 @@ void trackPlayback_thread_loop()
 
 }
 
+/*
+	unsigned long end;
+	snd_seq_event_t *ep;
 
-void play(seq_context_t* arg, struct event *el)
+	if (strcmp(filename, "-") == 0)
+		root = midi_read(stdin);
+	else
+		root = midi_read_file(filename);
+	if (!root)
+		return;
+
+	//Get the end time for the tracks and echo an event to
+	// wake us up at that time
+
+	end = md_sequence_end_time(seq);
+	seq_midi_echo(ctxp, end);
+
+*/
+void play(SeqContext* seqContext, struct event *el)
 {
-    seq_context_t* ctxp = arg;
     snd_seq_event_t ev;
 
-    seq_midi_event_init(ctxp, &ev, el->element_time, el->device_channel);
+    seq_midi_event_init(seqContext, &ev, el->element_time, el->device_channel);
+
     switch (el->type)
     {
     case MD_TYPE_ROOT:
-        seq_init_tempo(ctxp, MD_ROOT(el)->time_base, 120, 1);
-        seq_start_timer(ctxp);
+        seqContext->initTempo(MD_ROOT(el)->time_base, 120, 1);
+        seqContext->startTimer();
         break;
     case MD_TYPE_NOTE:
-        seq_midi_note(ctxp, &ev, el->device_channel, MD_NOTE(el)->note, MD_NOTE(el)->vel,
+        seq_midi_note(seqContext, &ev, el->device_channel, MD_NOTE(el)->note, MD_NOTE(el)->vel,
                       MD_NOTE(el)->length);
         break;
     case MD_TYPE_CONTROL:
-        seq_midi_control(ctxp, &ev, el->device_channel, MD_CONTROL(el)->control,
+        seq_midi_control(seqContext, &ev, el->device_channel, MD_CONTROL(el)->control,
                          MD_CONTROL(el)->value);
         break;
     case MD_TYPE_PROGRAM:
-        seq_midi_program(ctxp, &ev, el->device_channel, MD_PROGRAM(el)->program);
+        seq_midi_program(seqContext, &ev, el->device_channel, MD_PROGRAM(el)->program);
         break;
     case MD_TYPE_TEMPO:
-        seq_midi_tempo(ctxp, &ev, MD_TEMPO(el)->micro_tempo);
+        seq_midi_tempo(seqContext, &ev, MD_TEMPO(el)->micro_tempo);
         break;
     case MD_TYPE_PITCH:
-        seq_midi_pitchbend(ctxp, &ev, el->device_channel, MD_PITCH(el)->pitch);
+        seq_midi_pitchbend(seqContext, &ev, el->device_channel, MD_PITCH(el)->pitch);
         break;
     case MD_TYPE_PRESSURE:
-        seq_midi_chanpress(ctxp, &ev, el->device_channel, MD_PRESSURE(el)->velocity);
+        seq_midi_chanpress(seqContext, &ev, el->device_channel, MD_PRESSURE(el)->velocity);
         break;
     case MD_TYPE_KEYTOUCH:
-        seq_midi_keypress(ctxp, &ev, el->device_channel, MD_KEYTOUCH(el)->note,
+        seq_midi_keypress(seqContext, &ev, el->device_channel, MD_KEYTOUCH(el)->note,
                           MD_KEYTOUCH(el)->velocity);
         break;
     case MD_TYPE_SYSEX:
-        seq_midi_sysex(ctxp, &ev, MD_SYSEX(el)->status, MD_SYSEX(el)->data,
+        seq_midi_sysex(seqContext, &ev, MD_SYSEX(el)->status, MD_SYSEX(el)->data,
                        MD_SYSEX(el)->length);
         break;
     case MD_TYPE_TEXT:
     case MD_TYPE_KEYSIG:
     case MD_TYPE_TIMESIG:
     case MD_TYPE_SMPTEOFFSET:
-        /* Ones that have no sequencer action */
+
+        // Ones that have no sequencer action
         break;
     default:
         printf("WARNING: play: not implemented yet %d\n", el->type);
         break;
     }
+
 }
 
 /*
