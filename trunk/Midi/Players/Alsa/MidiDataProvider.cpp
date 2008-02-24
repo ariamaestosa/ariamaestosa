@@ -15,6 +15,9 @@ namespace AriaMaestosa
 
 MidiDataProvider::MidiDataProvider(char* filename)
 {
+    /*
+    INIT_LEAK_CHECK();
+
     mode = MODE_FILE;
     fileReader = fopen(filename, "rb");
 	if (fileReader == NULL)
@@ -23,10 +26,13 @@ MidiDataProvider::MidiDataProvider(char* filename)
         printf("Could not open file %s", filename);
         assert(false);
 	}
+	*/
 }
 
 MidiDataProvider::MidiDataProvider(char* data, int length)
 {
+    INIT_LEAK_CHECK();
+
     mode = MODE_BYTES;
     MidiDataProvider:: data = data;
     MidiDataProvider::length = length;

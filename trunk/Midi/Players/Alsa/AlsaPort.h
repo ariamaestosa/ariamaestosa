@@ -1,6 +1,7 @@
 #ifndef _alsaport_
 #define _alsaport_
 
+#include "Config.h"
 #include <alsa/asoundlib.h>
 #include <vector>
 #include "glib.h"
@@ -12,6 +13,8 @@ namespace AriaMaestosa
 
     class MidiContext
     {
+        DECLARE_LEAK_CHECK();
+
         std::vector<MidiDevice> devices;
         bool timerStarted;
 
@@ -26,6 +29,8 @@ namespace AriaMaestosa
         GArray  *destlist;
 
 		MidiContext();
+		~MidiContext();
+
         bool openDevice(MidiDevice* device);
         void closeDevice();
         bool askOpenDevice();
@@ -42,6 +47,7 @@ namespace AriaMaestosa
 
     class MidiDevice
     {
+        DECLARE_LEAK_CHECK();
         MidiContext* midiContext;
     public:
         snd_seq_addr_t address;

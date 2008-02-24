@@ -10,6 +10,7 @@ namespace AriaMaestosa
 
 MidiDevice::MidiDevice(MidiContext* context, int client_arg, int port_arg, const char* name_arg)
 {
+    INIT_LEAK_CHECK();
     client = client_arg;
     port = port_arg;
     name = fromCString(name_arg);
@@ -67,6 +68,25 @@ void MidiDevice::close()
 
 
 #pragma mark -
+
+MidiContext::MidiContext()
+{
+    INIT_LEAK_CHECK();
+    queue = -1;
+}
+
+MidiContext::~MidiContext()
+{
+    /*
+    if(queue != -1)
+    {
+        if(snd_seq_free_queue(sequencer, queue) != 0)
+            printf("deleting queue failed\n");
+        queue = -1;
+    }
+*/
+    g_array_free(destlist, TRUE);
+}
 
 void MidiContext::closeDevice()
 {
@@ -170,7 +190,10 @@ void MidiContext::findDevices()
 					 //SND_SEQ_PORT_TYPE_MIDI_GENERIC);
 
 	address.client = snd_seq_client_id (sequencer);
-	queue = snd_seq_alloc_queue (sequencer);
+
+	// FIXME - what's the use of creating a queue? seqlib does
+	//queue = snd_seq_alloc_queue (sequencer);
+    //if(queue < 0) printf("Failed to allocate queue\n");
 
 	//snd_seq_set_client_pool_output (midiContext.sequencer, 1024);
 	snd_seq_set_client_pool_output (sequencer, 1024);
@@ -182,10 +205,6 @@ void MidiContext::findDevices()
 int MidiContext::getDeviceAmount()
 {
     return devices.size();
-}
-
-MidiContext::MidiContext()
-{
 }
 
 bool MidiContext::isPlaying()

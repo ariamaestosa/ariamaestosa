@@ -23,6 +23,7 @@
  *
  *
  */
+#include "Config.h"
 #include <alsa/asoundlib.h>
 
 namespace AriaMaestosa
@@ -30,6 +31,7 @@ namespace AriaMaestosa
 
 class SeqContext
 {
+    DECLARE_LEAK_CHECK();
     void controlTimer(int onoff);
 
     public:
