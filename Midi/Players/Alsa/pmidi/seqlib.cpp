@@ -69,16 +69,14 @@ SeqContext::SeqContext()
 SeqContext::~SeqContext()
 {
 
-	if (this->main == this) {
+	if (this->main == this)
+	{
 		// This is the main context
-		snd_seq_event_t ev;
-		unsigned long t;
 
 		snd_seq_drop_output(alsa_handle);
 
-		t = 0;
-		seq_midi_event_init(this, &ev, t, 0);
-		seq_midi_control(this, &ev, 0, MIDI_CTL_ALL_SOUNDS_OFF, 0);
+		MidiEvent ev(this, 0, 0);
+		ev.control(MIDI_CTL_ALL_SOUNDS_OFF, 0);
 		// wont build when uncommented, but doesn't seem important so i'll just leave it out
 		//seq_send_to_all(this, &ev);
 		snd_seq_drain_output(alsa_handle);
@@ -91,8 +89,6 @@ SeqContext::~SeqContext()
 /*
  * Creates a new port on the specified context and returns the
  * port number.
- *  Arguments:
- *    this      - Context to create the port for
  */
 int SeqContext::newPort()
 {
@@ -122,7 +118,6 @@ void SeqContext::destroyPort(int port)
  * to the specified client and port combination. A
  * subscription is made to the client/port combination.
  *  Arguments:
- *    this      - Context to modify
  *    client    - Client to send subsequent events to
  *    port      - Port on the client to send events to
  */
@@ -151,7 +146,6 @@ int SeqContext::connectToPort(int client, int port)
  * a macro XXX to convert from SMPTE codes.
  *
  *  Arguments:
- *    this      - Application context
  *    resolution - Ticks per quarter note or realtime resolution
  *    tempo     - Beats per minute
  *    realtime  - True if absolute time base
@@ -198,7 +192,6 @@ int 	snd_seq_get_queue_status (snd_seq_t *handle, int q, snd_seq_queue_status_t 
  * on this context will now use this queue.
  *
  *  Arguments:
- *    this      - Context to modify
  *    q         - The queue number
  */
  /*
@@ -211,7 +204,6 @@ void SeqContext::SetQueue(int q)
  * Send the event to the specified client and port.
  *
  *  Arguments:
- *    this      - Client context
  *    ev        - Event to send
  *    client    - Client to send the event to
  *    port      - Port to send the event to
@@ -236,7 +228,6 @@ int SeqContext::sendTo( snd_seq_event_t *ev, int client, int port)
  * controls etc.
  *
  *  Arguments:
- * 	this: Client context
  * 	ep: Event prototype to be sent
  */
 int SeqContext::sendToAll(snd_seq_event_t *ep)
@@ -324,7 +315,6 @@ void SeqContext::controlTimer(int onoff)
  * successfully written.
  *
  *  Arguments:
- *    this      - Application context
  *    ep        - Event
  */
 int SeqContext::write(snd_seq_event_t *ep)

@@ -36,14 +36,18 @@ namespace AriaMaestosa
  *
  *  Arguments:
  *    seqContext      - Client application
- *    ep        - Event to init
  *    time      - Midi time
  *    devchan   - Midi channel
  */
-void
-seq_midi_event_init(SeqContext *seqContext, snd_seq_event_t *ep,
-        unsigned long time, int devchan)
+
+MidiEvent::MidiEvent(SeqContext *seqContext, unsigned long time, int devchan)
 {
+    INIT_LEAK_CHECK();
+
+    MidiEvent::devchan = devchan;
+    MidiEvent::time = time;
+    MidiEvent::seqContext = seqContext;
+
 	int  dev;
 
 	dev = devchan >> 4;
@@ -56,215 +60,175 @@ seq_midi_event_init(SeqContext *seqContext, snd_seq_event_t *ep,
 	if (dev >= seqContext->ctxndest)
 		dev = dev % seqContext->ctxndest;
 
-	snd_seq_ev_clear(ep);
-	snd_seq_ev_schedule_tick(ep, seqContext->queue, 0, time);
-	ep->source = seqContext->source;
+	snd_seq_ev_clear(&ep);
+	snd_seq_ev_schedule_tick(&ep, seqContext->queue, 0, time);
+	ep.source = seqContext->source;
 	if (seqContext->ctxndest > 0)
-		ep->dest = g_array_index(seqContext->destlist, snd_seq_addr_t, dev);
+		ep.dest = g_array_index(seqContext->destlist, snd_seq_addr_t, dev);
 }
 
 /*
  * Send a note event.
  *  Arguments:
- *    seqContext      - Client context
- *    ep        - Event template
  *    note      - Pitch of noten declared
  *    vel       - Velocity of note
  *    length    - Length of note
  */
-void
-seq_midi_note(SeqContext *seqContext, snd_seq_event_t *ep, int devchan, int note, int vel,
-        int length)
+void MidiEvent::note(int note, int vel, int length)
 {
-	ep->type = SND_SEQ_EVENT_NOTE;
+	ep.type = SND_SEQ_EVENT_NOTE;
 
-	ep->data.note.channel = devchan & 0xf;
-	ep->data.note.note = note;
-	ep->data.note.velocity = vel;
-	ep->data.note.duration = length;
-	seqContext->write(ep);
+	ep.data.note.channel = devchan & 0xf;
+	ep.data.note.note = note;
+	ep.data.note.velocity = vel;
+	ep.data.note.duration = length;
+	seqContext->write(&ep);
 }
 
 /*
  * Send a note on event.
  *  Arguments:
- *    seqContext      - Client context
- *    ep        - Event template
  *    note      - Pitch of note
  *    vel       - Velocity of note
  *    length    - Length of note
  */
-void
-seq_midi_note_on(SeqContext *seqContext, snd_seq_event_t *ep, int devchan, int note, int vel,
-        int length)
+void MidiEvent::noteOn(int note, int vel, int length)
 {
-	ep->type = SND_SEQ_EVENT_NOTEON;
+	ep.type = SND_SEQ_EVENT_NOTEON;
 
-	ep->data.note.channel = devchan & 0xf;
-	ep->data.note.note = note;
-	ep->data.note.velocity = vel;
-	ep->data.note.duration = length;
+	ep.data.note.channel = devchan & 0xf;
+	ep.data.note.note = note;
+	ep.data.note.velocity = vel;
+	ep.data.note.duration = length;
 
-	seqContext->write(ep);
+	seqContext->write(&ep);
 }
 
 /*
  * Send a note off event.
  *  Arguments:
- *    seqContext      - Client context
- *    ep        - Event template
  *    note      - Pitch of note
  *    vel       - Velocity of note
  *    length    - Length of note
  */
-void
-seq_midi_note_off(SeqContext *seqContext, snd_seq_event_t *ep, int devchan, int note, int vel,
-        int length)
+void MidiEvent::noteOff(int note, int vel, int length)
 {
-	ep->type = SND_SEQ_EVENT_NOTEOFF;
+	ep.type = SND_SEQ_EVENT_NOTEOFF;
 
-	ep->data.note.channel = devchan & 0xf;
-	ep->data.note.note = note;
-	ep->data.note.velocity = vel;
-	ep->data.note.duration = length;
+	ep.data.note.channel = devchan & 0xf;
+	ep.data.note.note = note;
+	ep.data.note.velocity = vel;
+	ep.data.note.duration = length;
 
-	seqContext->write(ep);
+	seqContext->write(&ep);
 }
 
 /*
  * Send a key pressure event.
  *  Arguments:
- *    seqContext      - Application context
- *    ep        - Event template
  *    note      - Note to be altered
  *    value     - Pressure value
  */
-void
-seq_midi_keypress(SeqContext *seqContext, snd_seq_event_t *ep, int devchan, int note,
-        int value)
+void MidiEvent::keyPress(int note, int value)
 {
-	ep->type = SND_SEQ_EVENT_KEYPRESS;
+	ep.type = SND_SEQ_EVENT_KEYPRESS;
 
-	ep->data.control.channel = devchan & 0xf;
-	ep->data.control.param = note;
-	ep->data.control.value = value;
-	seqContext->write(ep);
+	ep.data.control.channel = devchan & 0xf;
+	ep.data.control.param = note;
+	ep.data.control.value = value;
+	seqContext->write(&ep);
 }
 
 /*
  * Send a control event.
  *  Arguments:
- *    seqContext      - Application context
- *    ep        - Event template
  *    control   - Controller to change
  *    value     - Value to set it to
  */
-void
-seq_midi_control(SeqContext *seqContext, snd_seq_event_t *ep, int devchan, int control,
-        int value)
+void MidiEvent::control(int control, int value)
 {
-	ep->type = SND_SEQ_EVENT_CONTROLLER;
+	ep.type = SND_SEQ_EVENT_CONTROLLER;
 
-	ep->data.control.channel = devchan & 0xf;
-	ep->data.control.param = control;
-	ep->data.control.value = value;
-	seqContext->write(ep);
+	ep.data.control.channel = devchan & 0xf;
+	ep.data.control.param = control;
+	ep.data.control.value = value;
+	seqContext->write(&ep);
 }
 
 /*
  * Send a program change event.
  *  Arguments:
- *    seqContext      - Application context
- *    ep        - Event template
  *    program   - Program to set
  */
-void
-seq_midi_program(SeqContext *seqContext, snd_seq_event_t *ep, int devchan, int program)
+void MidiEvent::program(int program)
 {
-	ep->type = SND_SEQ_EVENT_PGMCHANGE;
+	ep.type = SND_SEQ_EVENT_PGMCHANGE;
 
-	ep->data.control.channel = devchan & 0xf;
-	ep->data.control.value = program;
-	seqContext->write(ep);
+	ep.data.control.channel = devchan & 0xf;
+	ep.data.control.value = program;
+	seqContext->write(&ep);
 }
 
 /*
  * Send a channel pressure event.
  *  Arguments:
- *    seqContext      - Application context
- *    ep        - Event template
  *    pressure  - Pressure value
  */
-void
-seq_midi_chanpress(SeqContext *seqContext, snd_seq_event_t *ep, int devchan, int pressure)
+void MidiEvent::chanPress(int pressure)
 {
-	ep->type = SND_SEQ_EVENT_CHANPRESS;
+	ep.type = SND_SEQ_EVENT_CHANPRESS;
 
-	ep->data.control.channel = devchan & 0xf;
-	ep->data.control.value = pressure;
-	seqContext->write(ep);
+	ep.data.control.channel = devchan & 0xf;
+	ep.data.control.value = pressure;
+	seqContext->write(&ep);
 }
 
 /*
  * Send a pitchbend message. The bend parameter is centered on
  * zero, negative values mean a lower pitch.
  *  Arguments:
- *    seqContext      - Application context
- *    ep        - Event template
  *    bend      - Bend value, centered on zero.n declared
-/usr/lib/gcc/powerpc-linux-gnu/4.1.2/../../../../include/c++/4.1.2/cstdio:116: error: '::freopen' has not been declared
-/usr/lib/gcc/powerpc-linux-gnu/4.1.2/../../../../include/c++/4.1.2/cstdio:117: error: '::fscanf' has not been d
  */
-void
-seq_midi_pitchbend(SeqContext *seqContext, snd_seq_event_t *ep, int devchan, int bend)
+void MidiEvent::pitchBend(int bend)
 {
-	ep->type = SND_SEQ_EVENT_PITCHBEND;
+	ep.type = SND_SEQ_EVENT_PITCHBEND;
 
-	ep->data.control.channel = devchan & 0xf;
-	ep->data.control.value = bend;
-	seqContext->write(ep);
+	ep.data.control.channel = devchan & 0xf;
+	ep.data.control.value = bend;
+	seqContext->write(&ep);
 }
 
 /*
  * Send a tempo event. The tempo parameter is in microseconds
  * per beat.
  *  Arguments:n declared
-/usr/lib/gcc/powerpc-linux-gnu/4.1.2/../../../../include/c++/4.1.2/cstdio:116: error: '::freopen' has not been declared
-/usr/lib/gcc/powerpc-linux-gnu/4.1.2/../../../../include/c++/4.1.2/cstdio:117: error: '::fscanf' has not been d
- *    seqContext      - Application context
- *    ep        - Event template
  *    tempo     - New tempo in usec per beat
  */
-void
-seq_midi_tempo(SeqContext *seqContext, snd_seq_event_t *ep, int tempo)
+void MidiEvent::tempo(int tempo)
 {
-	ep->type = SND_SEQ_EVENT_TEMPO;
+	ep.type = SND_SEQ_EVENT_TEMPO;
 
-	ep->data.queue.queue = seqContext->queue;
-	ep->data.queue.param.value = tempo;
-	ep->dest.client = SND_SEQ_CLIENT_SYSTEM;
-	ep->dest.port = SND_SEQ_PORT_SYSTEM_TIMER;
-	seqContext->write(ep);
+	ep.data.queue.queue = seqContext->queue;
+	ep.data.queue.param.value = tempo;
+	ep.dest.client = SND_SEQ_CLIENT_SYSTEM;
+	ep.dest.port = SND_SEQ_PORT_SYSTEM_TIMER;
+	seqContext->write(&ep);
 }
 
 /*
  * Send a sysex event. The status byte is to distiguish
  * continuation sysex messages.
  *  Arguments:
- *    seqContext      - Application context
- *    ep        - Event template
  *    status    - Status byte for sysex
  *    data      - Data to send
  *    length    - Length of data
  */
-void
-seq_midi_sysex(SeqContext *seqContext, snd_seq_event_t *ep, int status,
-        unsigned char *data, int length)
+void MidiEvent::sysex(int status, unsigned char *data, int length)
 {
 	unsigned char* ndata;
 	int  nlen;
 
-	ep->type = SND_SEQ_EVENT_SYSEX;
+	ep.type = SND_SEQ_EVENT_SYSEX;
 
 	ndata = (unsigned char*)g_malloc(length + 1);
 	nlen = length +1;
@@ -272,9 +236,9 @@ seq_midi_sysex(SeqContext *seqContext, snd_seq_event_t *ep, int status,
 	ndata[0] = status;
 	memcpy(ndata+1, data, length);
 
-	snd_seq_ev_set_variable(ep, nlen, ndata);
+	snd_seq_ev_set_variable(&ep, nlen, ndata);
 
-	seqContext->write(ep);
+	seqContext->write(&ep);
 
 	g_free(ndata);
 }
@@ -282,21 +246,18 @@ seq_midi_sysex(SeqContext *seqContext, snd_seq_event_t *ep, int status,
 /*
  * Send an echo event back to the source client at the specified
  * time.
- *
- *  Arguments:
- *    seqContext      - Application context
- *    time      - Time of event
  */
-void
-seq_midi_echo(SeqContext *seqContext, unsigned long time)
+ /*
+void MidiEvent::echo()
 {
 	snd_seq_event_t ev;
 
 	seq_midi_event_init(seqContext, &ev, time, 0);
-	/* Loop back */
+	// Loop back
 	ev.dest = seqContext->source;
 	seqContext->write(&ev);
 }
+*/
 
 }
 #endif
