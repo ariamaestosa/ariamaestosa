@@ -38,6 +38,7 @@ static void set_channel(snd_seq_event_t *ep, int chan);
  */
 SeqContext::SeqContext()
 {
+    INIT_LEAK_CHECK();
 	int  q;
 
 	this->main = this; /* This is the main context */

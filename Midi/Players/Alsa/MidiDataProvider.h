@@ -1,6 +1,7 @@
 #ifndef _midi_data_provider_
 #define _midi_data_provider_
 
+#include "Config.h"
 #include "stdio.h"
 
 namespace AriaMaestosa
@@ -9,13 +10,15 @@ namespace AriaMaestosa
 class MidiDataProvider
 {
     //for file mode
-    FILE* fileReader;
+    //FILE* fileReader;
 
     //for byte mode
     char* data;
     int length, pos;
 
     int mode;
+
+    DECLARE_LEAK_CHECK();
   public:
 
     MidiDataProvider(char* filename);
