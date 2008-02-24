@@ -2,6 +2,7 @@
 1.2b1
 - Fixed glitches and a potential crash source in Alsa player.
 - Code cleanup in Alsa player.
+- Fixed crash on linux when trying to activate port choice dialog
 
 =====================================================================================
 Version 1.1 new features highlight

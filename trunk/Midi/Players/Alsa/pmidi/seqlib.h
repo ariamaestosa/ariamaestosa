@@ -98,6 +98,33 @@ void *seq_handle(seq_context_t *ctxp);
 int get_current_tick(seq_context_t* ctxp);
 */
 
+class MidiEvent
+{
+    DECLARE_LEAK_CHECK();
+
+    SeqContext* seqContext;
+    snd_seq_event_t ep;
+    unsigned long time;
+    int devchan;
+
+    public:
+
+    MidiEvent(SeqContext* seqContext, unsigned long time, int devchan);
+
+    void note(int note, int vel, int length);
+    void noteOn(int note, int vel, int length);
+    void noteOff(int note, int vel, int length);
+    void keyPress(int note, int value);
+    void control(int control, int value);
+    void program(int program);
+    void chanPress(int pressure);
+    void pitchBend(int bend);
+    void tempo(int tempo);
+    void sysex(int status, unsigned char *data, int length);
+    //void echo();
+};
+
+/*
 void seq_midi_event_init(SeqContext *ctxp, snd_seq_event_t *ep,
         unsigned long time, int devchan);
 void seq_midi_note(SeqContext *ctxp, snd_seq_event_t *ep, int devchan, int note,
@@ -118,7 +145,7 @@ void seq_midi_tempo(SeqContext *ctxp, snd_seq_event_t *ep, int tempo);
 void seq_midi_sysex(SeqContext *ctxp, snd_seq_event_t *ep, int status,
         unsigned char *data, int length);
 void seq_midi_echo(SeqContext *ctxp, unsigned long time);
-
+*/
 }
 
 

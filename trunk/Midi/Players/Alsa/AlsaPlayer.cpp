@@ -393,6 +393,73 @@ void playMidiData(SeqContext *seqContext, char *data, int length)
 
 }
 
+/*
+	unsigned long end;
+	snd_seq_event_t *ep;
+
+	if (strcmp(filename, "-") == 0)
+		root = midi_read(stdin);
+	else
+		root = midi_read_file(filename);
+	if (!root)
+		return;
+
+	//Get the end time for the tracks and echo an event to
+	// wake us up at that time
+
+	end = md_sequence_end_time(seq);
+	seq_midi_echo(ctxp, end);
+
+*/
+void play(SeqContext* seqContext, struct event *el)
+{
+    MidiEvent ev(seqContext, el->element_time, el->device_channel);
+
+    switch (el->type)
+    {
+    case MD_TYPE_ROOT:
+        seqContext->initTempo(MD_ROOT(el)->time_base, 120, 1);
+        seqContext->startTimer();
+        break;
+    case MD_TYPE_NOTE:
+        ev.note(MD_NOTE(el)->note, MD_NOTE(el)->vel, MD_NOTE(el)->length);
+        break;
+    case MD_TYPE_CONTROL:
+        ev.control(MD_CONTROL(el)->control, MD_CONTROL(el)->value);
+        break;
+    case MD_TYPE_PROGRAM:
+        ev.program(MD_PROGRAM(el)->program);
+        break;
+    case MD_TYPE_TEMPO:
+        ev.tempo(MD_TEMPO(el)->micro_tempo);
+        break;
+    case MD_TYPE_PITCH:
+        ev.pitchBend(MD_PITCH(el)->pitch);
+        break;
+    case MD_TYPE_PRESSURE:
+        ev.chanPress(MD_PRESSURE(el)->velocity);
+        break;
+    case MD_TYPE_KEYTOUCH:
+        ev.keyPress(MD_KEYTOUCH(el)->note, MD_KEYTOUCH(el)->velocity);
+        break;
+    case MD_TYPE_SYSEX:
+        ev.sysex(MD_SYSEX(el)->status, MD_SYSEX(el)->data, MD_SYSEX(el)->length);
+        break;
+    case MD_TYPE_TEXT:
+    case MD_TYPE_KEYSIG:
+    case MD_TYPE_TIMESIG:
+    case MD_TYPE_SMPTEOFFSET:
+
+        // Ones that have no sequencer action
+        break;
+    default:
+        printf("WARNING: play: not implemented yet %d\n", el->type);
+        break;
+    }
+
+}
+
+
 void trackPlayback_thread_loop()
 {
     while(!PlatformMidiManager::must_stop)
@@ -425,78 +492,6 @@ void trackPlayback_thread_loop()
     context->setPlaying(false);
 
     AlsaNotePlayer::resetAllControllers();
-
-}
-
-/*
-	unsigned long end;
-	snd_seq_event_t *ep;
-
-	if (strcmp(filename, "-") == 0)
-		root = midi_read(stdin);
-	else
-		root = midi_read_file(filename);
-	if (!root)
-		return;
-
-	//Get the end time for the tracks and echo an event to
-	// wake us up at that time
-
-	end = md_sequence_end_time(seq);
-	seq_midi_echo(ctxp, end);
-
-*/
-void play(SeqContext* seqContext, struct event *el)
-{
-    snd_seq_event_t ev;
-
-    seq_midi_event_init(seqContext, &ev, el->element_time, el->device_channel);
-
-    switch (el->type)
-    {
-    case MD_TYPE_ROOT:
-        seqContext->initTempo(MD_ROOT(el)->time_base, 120, 1);
-        seqContext->startTimer();
-        break;
-    case MD_TYPE_NOTE:
-        seq_midi_note(seqContext, &ev, el->device_channel, MD_NOTE(el)->note, MD_NOTE(el)->vel,
-                      MD_NOTE(el)->length);
-        break;
-    case MD_TYPE_CONTROL:
-        seq_midi_control(seqContext, &ev, el->device_channel, MD_CONTROL(el)->control,
-                         MD_CONTROL(el)->value);
-        break;
-    case MD_TYPE_PROGRAM:
-        seq_midi_program(seqContext, &ev, el->device_channel, MD_PROGRAM(el)->program);
-        break;
-    case MD_TYPE_TEMPO:
-        seq_midi_tempo(seqContext, &ev, MD_TEMPO(el)->micro_tempo);
-        break;
-    case MD_TYPE_PITCH:
-        seq_midi_pitchbend(seqContext, &ev, el->device_channel, MD_PITCH(el)->pitch);
-        break;
-    case MD_TYPE_PRESSURE:
-        seq_midi_chanpress(seqContext, &ev, el->device_channel, MD_PRESSURE(el)->velocity);
-        break;
-    case MD_TYPE_KEYTOUCH:
-        seq_midi_keypress(seqContext, &ev, el->device_channel, MD_KEYTOUCH(el)->note,
-                          MD_KEYTOUCH(el)->velocity);
-        break;
-    case MD_TYPE_SYSEX:
-        seq_midi_sysex(seqContext, &ev, MD_SYSEX(el)->status, MD_SYSEX(el)->data,
-                       MD_SYSEX(el)->length);
-        break;
-    case MD_TYPE_TEXT:
-    case MD_TYPE_KEYSIG:
-    case MD_TYPE_TIMESIG:
-    case MD_TYPE_SMPTEOFFSET:
-
-        // Ones that have no sequencer action
-        break;
-    default:
-        printf("WARNING: play: not implemented yet %d\n", el->type);
-        break;
-    }
 
 }
 

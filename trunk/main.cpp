@@ -3,12 +3,12 @@
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
- 
+
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
- 
+
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -30,7 +30,7 @@
 
 #include <iostream>
 
-#include "Config.h"	
+#include "Config.h"
 
 #ifdef _MORE_DEBUG_CHECKS
 #include "LeakCheck.h"
@@ -49,7 +49,7 @@ BEGIN_EVENT_TABLE(wxWidgetApp,wxApp)
 EVT_ACTIVATE_APP(wxWidgetApp::onActivate)
 EVT_IDLE(wxWidgetApp::onIdle)
 END_EVENT_TABLE()
-	
+
 wxConfig* prefs;
 
 void wxWidgetApp::activateRenderLoop(bool on)
@@ -59,7 +59,7 @@ void wxWidgetApp::activateRenderLoop(bool on)
         Connect( wxID_ANY, wxEVT_IDLE, wxIdleEventHandler(wxWidgetApp::onIdle) );
         render_loop_on = true;
     }
-    
+
     else if(!on and render_loop_on)
     {
         Disconnect( wxEVT_IDLE, wxIdleEventHandler(wxWidgetApp::onIdle) );
@@ -78,30 +78,32 @@ void wxWidgetApp::onIdle(wxIdleEvent& evt)
 
 void wxWidgetApp::onActivate(wxActivateEvent& evt)
 {
+    #ifdef __WXMAC__
 	if(evt.GetActive())
 	{
 		frame->Raise();
 	}
+	#endif
 }
 
 bool wxWidgetApp::OnInit()
 {
     frame = NULL;
 	prefs = (wxConfig*) wxConfig::Get();
-	
+
 	initLanguageSupport(prefs);
-	
+
     PlatformMidiManager::initMidiPlayer();
 
     frame=new MainFrame();
 	frame->init();
-    
+
     frame->updateHorizontalScrollbar(0);
-    
+
     Display::render();
 
 	SetTopWindow(frame);
-	
+
     return true;
 }
 
@@ -120,17 +122,17 @@ void wxWidgetApp::MacOpenFile(const wxString &fileName)
 
 	if(fileName.EndsWith(wxT("aria")))
 	{
-		frame->loadAriaFile( fileName );	
+		frame->loadAriaFile( fileName );
 	}
 	else if(fileName.EndsWith(wxT("mid")) or fileName.EndsWith(wxT("midi")))
 	{
-		frame->loadMidiFile( fileName );	
+		frame->loadMidiFile( fileName );
 	}
 	else
 	{
-		wxMessageBox(_("Unknown file type: ") + fileName);	
+		wxMessageBox(_("Unknown file type: ") + fileName);
 	}
-	
+
 }
 
 }
