@@ -14,16 +14,18 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include "Pickers/BackgroundPicker.h"
 #include "Pickers/KeyPicker.h"
 #include "Editors/ScoreEditor.h"
 #include "Editors/KeyboardEditor.h"
+#include "Midi/Track.h"
 #include "GUI/GraphicalTrack.h"
 #include "AriaCore.h"
 
 namespace AriaMaestosa {
 	
 BEGIN_EVENT_TABLE(KeyPicker, wxMenu)
-EVT_MENU_RANGE(1,17,KeyPicker::menuItemSelected)
+EVT_MENU_RANGE(1,18,KeyPicker::menuItemSelected)
 END_EVENT_TABLE()
 
 KeyPicker::KeyPicker() : wxMenu()
@@ -48,31 +50,39 @@ KeyPicker::KeyPicker() : wxMenu()
 	Append(13,wxT("Eb, Cm")); // b 3
 	Append(14,wxT("Ab, Fm")); // b 4
     Append(15,wxT("Db, Bbm")); // b 5
-	Append(16,wxT("Gb, Ebm")); // b 6
+	Append(16,wxT("Gb, Ebm")); // b 6 
 	Append(17,wxT("Cb, Abm")); // b 7
-	
+	AppendSeparator();
+    background = Append(18,wxT("Background..."));
 }
 
-void KeyPicker::setParent(GraphicalTrack* parent_arg)
+void KeyPicker::setParent(Track* parent_arg)
 {
-	parent = parent_arg;
+	parent = parent_arg->graphics;
+    if(parent->editorMode == KEYBOARD)
+    {
+        musical_checkbox->Enable(false);
+        linear_checkbox->Enable(false);
+        background->Enable(true);
+    }
+    else if(parent->editorMode == SCORE)
+    {
+        musical_checkbox->Enable(true);
+        linear_checkbox->Enable(true);
+        background->Enable(false);
+    }
+    else
+    {
+        background->Enable(false);
+    }
 }
 
 KeyPicker::~KeyPicker()
 {  
 }
 
-void KeyPicker::noChecks()
-{
-    musical_checkbox->Enable(false);
-    linear_checkbox->Enable(false);
-}
-
 void KeyPicker::setChecks( bool musicalNotationEnabled, bool linearNotationEnabled)
 {
-    musical_checkbox->Enable();
-    linear_checkbox->Enable();
-    
 	musical_checkbox->Check(musicalNotationEnabled);
 	linear_checkbox->Check(linearNotationEnabled);
 }
@@ -81,24 +91,27 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
 {
 	const int id = evt.GetId();
 	
-	if( id < 0 or id > 17 ) return;
+	if( id < 0 or id > 18 ) return;
 	
+    if( id == 18 )
+    {
+        BackgroundPicker::show(parent->track);
+        return;
+    }
+    
 	if( id == 1 ) parent -> scoreEditor -> enableMusicalNotation( musical_checkbox->IsChecked() );
 	else if( id == 2 ) parent -> scoreEditor -> enableLinearNotation( linear_checkbox->IsChecked() );
 	else if( id == 3 )
     {
         parent -> scoreEditor -> loadKey(NATURAL, 0);
-        //parent -> keyboardEditor -> loadKey(NATURAL, 0);
     }
 	else if( id <= 10 )
     {
         parent -> scoreEditor -> loadKey(SHARP, id-3);
-        //parent -> keyboardEditor -> loadKey(SHARP, id-3);
     }
 	else if( id <= 17 )
     {
         parent -> scoreEditor -> loadKey(FLAT, id-10);
-        //parent -> keyboardEditor -> loadKey(FLAT, id-10);
     }
     
     // load in keyboard editor too

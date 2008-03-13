@@ -94,7 +94,7 @@ wxString showFileDialog(wxString message, wxString defaultDir,
 	int answer = dialog->ShowModal();
 	wxString path = dialog->GetPath();
 	dialog->Hide();
-	delete dialog;
+    dialog->Destroy();
 	if(answer != wxID_OK) return wxT("");
 
 	return path;

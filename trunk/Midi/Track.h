@@ -135,6 +135,10 @@ public:
     Track(MainFrame* parent, Sequence* sequence);
     ~Track();
 	
+    // when one track will be removed, all others are notified so they can remove any
+    // link to that track they could have (like background)
+    void trackDeleted(Track* track);
+    
 	// replace events in time order
 	void reorderNoteVector();
 	void reorderNoteOffVector();
@@ -151,10 +155,6 @@ public:
 	// this one should only be called by the midi file loader.
     // its only difference is that it knows all events are OK and that they are in time order, so it doesn't waste time doing checks
     void addController_import(const int x, const int value, const int controller);
-	
-	// undo/redo - these methods are called by FullTrackUndo objects from EditActions.
-    //void loadUndoMemory(FullTrackUndo* undo);
-    //void saveUndoMemory(FullTrackUndo* undo);
     
     // FIXME - debug function, remove
     void checkControlEventsOrder();

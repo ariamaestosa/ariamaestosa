@@ -162,6 +162,7 @@ EVT_MENU(MENU_FILE_EXPORT_SAMPLED_AUDIO, MainFrame::menuEvent_exportSampledAudio
 EVT_MENU(MENU_FILE_CLOSE, MainFrame::menuEvent_close)
 EVT_MENU(MENU_FILE_EXPORT_NOTATION, MainFrame::menuEvent_exportNotation)
 EVT_MENU(MENU_FILE_COPYRIGHT, MainFrame::menuEvent_copyright)
+EVT_MENU(wxID_EXIT, MainFrame::menuEvent_quit)
 
 /* edit menu */
 EVT_MENU(MENU_EDIT_COPY, MainFrame::menuEvent_copy)
@@ -185,7 +186,6 @@ EVT_MENU(MENU_SETTINGS_CHANNEL_MANUAL, MainFrame::menuEvent_manualChannelModeSel
 EVT_MENU(MENU_SETTINGS_MEASURE_EXPANDED, MainFrame::menuEvent_expandedMeasuresSelected)
 
 EVT_MENU(wxID_PREFERENCES, MainFrame::menuEvent_preferences)
-EVT_MENU(wxID_EXIT, MainFrame::menuEvent_quit)
 
 /* Track menu */
 EVT_MENU(MENU_TRACK_ADD, MainFrame::menuEvent_addTrack)

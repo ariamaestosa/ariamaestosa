@@ -64,6 +64,7 @@ Editor::Editor(Track* track)
 
 Editor::~Editor()
 {
+    clearBackgroundTracks();
 }
 
 int Editor::getKeySharpsAmount() { return key_sharps_amnt; }
@@ -78,33 +79,19 @@ void Editor::useVerticalScrollbar(const bool useScrollbar)
 	Editor::useVerticalScrollbar_bool = useScrollbar;
 }
 
+// -------------------------------------- render --------------------------------------
+#pragma mark -
+
+void Editor::render()
+{
+	render( RelativeXCoord_empty(), -1, RelativeXCoord_empty(), -1, true );
+}
+
 void Editor::render(RelativeXCoord mousex_current, int mousey_current,
 					RelativeXCoord mousex_initial, int mousey_initial, const bool focus)
 {
 }
 
-void Editor::updatePosition(int from_y, int to_y, int width, int height, int barHeight)
-{
-    Editor::from_y = from_y;
-    Editor::to_y = to_y;
-    Editor::width = width;
-    Editor::height = height;
-    Editor::barHeight = barHeight;
-}
-
-void Editor::rightClick(RelativeXCoord x, int y)
-{
-	int noteID;
-	const NoteSearchResult result = noteAt(x,y, noteID);
-	
-	if( result == FOUND_NOTE or result == FOUND_SELECTED_NOTE )
-	{
-        int screen_x, screen_y;
-        Display::clientToScreen(x.getRelativeTo(WINDOW),y, &screen_x, &screen_y);
-        showVolumeSlider( screen_x, screen_y, noteID, track);
-	}
-	
-}
 
 void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
 {
@@ -263,6 +250,39 @@ void Editor::renderScrollbar()
     
 }
 
+
+// -------------------------------------- background --------------------------------------
+#pragma mark -
+
+void Editor::clearBackgroundTracks()
+{
+    backgroundTracks.clearWithoutDeleting();
+}
+void Editor::addBackgroundTrack(Track* track)
+{
+    backgroundTracks.push_back(track);
+}
+
+// on track deletion, we need to check if this one is being used and remove references to it if so
+void Editor::trackDeleted(Track* track)
+{
+    Sequence* seq = getCurrentSequence();
+    const int bgTrackAmount = backgroundTracks.size();
+    
+    for(int m=0; m<bgTrackAmount; m++)
+    {
+        if( backgroundTracks.get(m) == track )
+        {
+            backgroundTracks.markToBeRemoved(m);
+        }
+    }//next
+    
+    backgroundTracks.removeMarked();
+}
+
+
+// -------------------------------------- mouse events --------------------------------------
+#pragma mark -
 
 void Editor::mouseDown(RelativeXCoord x, int y)
 {
@@ -484,52 +504,30 @@ void Editor::mouseExited(RelativeXCoord mousex_current, int mousey_current,
 	Display::render();
 }
 
-NoteSearchResult Editor::noteAt(RelativeXCoord x, const int y, int& noteID) { std::cerr << "ERROR base class method called" << std::endl; return FOUND_NOTHING; }
-void Editor::noteClicked(const int id) { std::cerr << "ERROR base class method called" << std::endl; }
-void Editor::addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY) { std::cerr << "ERROR base class method called" << std::endl; }
-void Editor::addNote(const int snappedX, const int mouseY) { std::cerr << "ERROR base class method called" << std::endl; }
-void Editor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current,
-							   RelativeXCoord& mousex_initial, int mousey_initial) { std::cerr << "ERROR base class method called" << std::endl; }
-void Editor::moveNote(Note& note, const int x_steps_to_move, const int y_steps_to_move) { std::cerr << "ERROR base class method called" << std::endl; }
-
-void Editor::makeMoveNoteEvent(const int relativeX, const int relativeY, const int noteID)
-{
-        // move a single note
-        if(noteID!=-1)
-            track->action( new Action::MoveNotes(relativeX, relativeY, noteID) );
-        else
-            // move many notes
-            track->action( new Action::MoveNotes(relativeX, relativeY, SELECTED_NOTES) );
-}
-
-void Editor::setYStep(const int ystep)
-{
-	Editor::ystep = ystep;
-}
-
 /*
  * Is it necessary to send frequent mouse held down events?
  */
-bool Editor::areMouseHeldDownEventsNeeded()
-{
-
-	// if user is clicking on scrollbar but not on thumb, it is needed
-	if(click_on_scrollbar and
-	   not scroll_up_arrow_pressed and
-	   not scroll_down_arrow_pressed and
-	   not verticalScrolling
-	   )
-	{
-		return true;
-	}
-	
-	// is user is clicking on a scroll arrow, it is necessary
-	if(scroll_up_arrow_pressed or scroll_down_arrow_pressed) return true;
-	
-	// otherwise, it is not necessary
-	return false;  
-}
-
+/*
+ bool Editor::areMouseHeldDownEventsNeeded()
+ {
+     
+     // if user is clicking on scrollbar but not on thumb, it is needed
+     if(click_on_scrollbar and
+        not scroll_up_arrow_pressed and
+        not scroll_down_arrow_pressed and
+        not verticalScrolling
+        )
+     {
+         return true;
+     }
+     
+     // is user is clicking on a scroll arrow, it is necessary
+     if(scroll_up_arrow_pressed or scroll_down_arrow_pressed) return true;
+     
+     // otherwise, it is not necessary
+     return false;  
+ }
+ */
 void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 						   RelativeXCoord mousex_initial, int mousey_initial)
 {
@@ -542,8 +540,8 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 		if(mousex_current.getRelativeTo(WINDOW) > getXEnd()-75)
 		{
 			getCurrentSequence()->setXScrollInPixels(
-																	 getCurrentSequence()->getXScrollInPixels()+
-																	 (mousex_current.getRelativeTo(WINDOW)-getXEnd()+75)/5 );
+                                                     getCurrentSequence()->getXScrollInPixels()+
+                                                     (mousex_current.getRelativeTo(WINDOW)-getXEnd()+75)/5 );
             DisplayFrame::updateHorizontalScrollbar();
 			Display::render();
 			return;
@@ -558,7 +556,7 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 			return;
 		}
 	}
-
+    
 	
 	
     // -------------- check if user is clicking on scroll bar, but not grabbing the thumb ----------------
@@ -629,11 +627,57 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
  	
 }
 
-void Editor::render()
+void Editor::rightClick(RelativeXCoord x, int y)
 {
-	render( RelativeXCoord_empty(), -1, RelativeXCoord_empty(), -1, true );
+	int noteID;
+	const NoteSearchResult result = noteAt(x,y, noteID);
+	
+	if( result == FOUND_NOTE or result == FOUND_SELECTED_NOTE )
+	{
+        int screen_x, screen_y;
+        Display::clientToScreen(x.getRelativeTo(WINDOW),y, &screen_x, &screen_y);
+        showVolumeSlider( screen_x, screen_y, noteID, track);
+	}
+	
 }
 
+// -------------------------------------- note stuff to be implemented by children --------------------------------------
+#pragma mark -
+
+NoteSearchResult Editor::noteAt(RelativeXCoord x, const int y, int& noteID) { std::cerr << "ERROR base class method called" << std::endl; return FOUND_NOTHING; }
+void Editor::noteClicked(const int id) { std::cerr << "ERROR base class method called" << std::endl; }
+void Editor::addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY) { std::cerr << "ERROR base class method called" << std::endl; }
+void Editor::addNote(const int snappedX, const int mouseY) { std::cerr << "ERROR base class method called" << std::endl; }
+void Editor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current,
+							   RelativeXCoord& mousex_initial, int mousey_initial) { std::cerr << "ERROR base class method called" << std::endl; }
+void Editor::moveNote(Note& note, const int x_steps_to_move, const int y_steps_to_move) { std::cerr << "ERROR base class method called" << std::endl; }
+
+void Editor::makeMoveNoteEvent(const int relativeX, const int relativeY, const int noteID)
+{
+        // move a single note
+        if(noteID!=-1)
+            track->action( new Action::MoveNotes(relativeX, relativeY, noteID) );
+        else
+            // move many notes
+            track->action( new Action::MoveNotes(relativeX, relativeY, SELECTED_NOTES) );
+}
+
+void Editor::setYStep(const int ystep)
+{
+	Editor::ystep = ystep;
+}
+
+// -------------------------------------- size info --------------------------------------
+#pragma mark -
+
+void Editor::updatePosition(int from_y, int to_y, int width, int height, int barHeight)
+{
+    Editor::from_y = from_y;
+    Editor::to_y = to_y;
+    Editor::width = width;
+    Editor::height = height;
+    Editor::barHeight = barHeight;
+}
 
 const int getEditorXStart()         {	return 90;								}
 const int Editor::getXEnd()			{	return width - 5;						} // FIXME - adapt to include vertical scrollbar

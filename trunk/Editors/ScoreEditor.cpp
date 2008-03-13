@@ -1479,7 +1479,7 @@ void ScoreEditor::mouseDown(RelativeXCoord x, const int y)
 	if(x.getRelativeTo(EDITOR)<-20 and x.getRelativeTo(WINDOW)>15 and y>getEditorYStart())
 	{
         KeyPicker* picker = Core::getKeyPicker();
-		picker->setParent(track->graphics);
+		picker->setParent(track);
 		picker->setChecks( musicalNotationEnabled, linearNotationEnabled );
         Display::popupMenu( picker,x.getRelativeTo(WINDOW),y);
         return;
