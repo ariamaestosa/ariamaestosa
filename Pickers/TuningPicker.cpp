@@ -225,10 +225,12 @@ public:
 		
 	~CustomTuningPicker()
 	{
+        /*
 		for(int n=0; n<10; n++)
 		{
 			delete strings[n];	
 		}
+         */
 	}
 		
 	CustomTuningPicker() :

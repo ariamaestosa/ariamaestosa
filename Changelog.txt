@@ -1,5 +1,6 @@
 
 1.2b1
+- Added feature to see other tracks in background of current track (keyboard view only for now)
 - Fixed glitches and a potential crash source in Alsa player.
 - Code cleanup in Alsa player.
 - Fixed crash on linux when trying to activate port choice dialog
@@ -8,7 +9,7 @@
 Version 1.1 new features highlight
 * Fixed countless crashes, bugs and glitches
 * Added new score editor
-* New undo system, that is both faster, work in controller editor and allows for multiple undo
+* New undo system that is faster, works in controller editor and allows multiple undos
 * Added italian translation
 * Major code cleanup and refactoring
 * Removed useless stuff from .aria files, making them significantly smaller
@@ -16,7 +17,7 @@ Version 1.1 new features highlight
 * Major improvements to build system
 * Improved document icon
 * Added mouse wheels support to vertically scroll tracks
-* Made document saving data loss-safe : if your computer crashes or is powered up while an aria file is being saved, no data loss will occurs
+* Made document saving data loss-safe : if a problem occurs while an aria file is being saved, no data loss will occur
 ======================================================================================
 
 1.1

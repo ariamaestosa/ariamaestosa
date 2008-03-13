@@ -270,6 +270,7 @@ def compile_Aria(build_type, which_os):
     Midi/Track.cpp
     Midi/CommonMidiUtils.cpp
     Midi/TimeSigChange.cpp
+    Pickers/BackgroundPicker.cpp
     Pickers/ControllerChoice.cpp
     Pickers/DrumChoice.cpp
     Pickers/KeyPicker.cpp

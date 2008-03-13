@@ -14,38 +14,20 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _key_picker_
-#define _key_picker_
+#ifndef _bg_picker_
+#define _bg_picker_
 
 #include "wx/wx.h"
 #include "Config.h"
 
 namespace AriaMaestosa {
-	
-	class GraphicalTrack; // forward
-	
-	class KeyPicker : public wxMenu {
-		
-		DECLARE_LEAK_CHECK();
-		GraphicalTrack* parent;
-		
-		wxMenuItem* musical_checkbox;
-		wxMenuItem* linear_checkbox;
-        wxMenuItem* background;
-		
-public:
-			
-		KeyPicker();
-		~KeyPicker();
-		
-		void setChecks( bool musicalNotationEnabled, bool linearNotationEnabled);
-		
-		void menuItemSelected(wxCommandEvent& evt);    
-		void setParent(Track* parent_arg);
-		
-		DECLARE_EVENT_TABLE();
-	};
-	
+    class Track;
+    
+namespace BackgroundPicker{
+        
+    void show(Track* parent);
+        
+}
 }
 
 #endif

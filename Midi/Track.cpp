@@ -80,10 +80,34 @@ void Track::action( Action::SingleTrackAction* action)
 
 Track::~Track()
 {
+    // notify other tracks
+    Sequence* seq = getCurrentSequence();
+    const int trackAmount = seq->getTrackAmount();
+    for(int n=0; n<trackAmount; n++)
+    {
+        Track* track = seq->getTrack(n);
+        if(track != this) track->trackDeleted(this);
+    }
+    
     delete graphics;
     notes.clearAndDeleteAll();
 	noteOff.clearWithoutDeleting();
     controlEvents.clearAndDeleteAll();
+}
+
+// when one track will be removed, all others are notified so they can remove any
+// link to that track they could have (like background)
+void Track::trackDeleted(Track* track)
+{
+    graphics->keyboardEditor->trackDeleted(track);
+    
+    /*
+     // uncomment if these editors get background support too
+    graphics->guitarEditor->trackDelete(track);
+    graphics->drumEditor->trackDelete(track);
+    graphics->controllerEditor->trackDelete(track);
+	graphics->scoreEditor->trackDelete(track);
+    */
 }
 
 Note* Track::getNote(const int id)

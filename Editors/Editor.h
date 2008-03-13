@@ -19,6 +19,7 @@
 #define _editor_
 
 #include "Config.h"
+#include "ptr_vector.h"
 
 #include "Editors/RelativeXCoord.h"
 
@@ -83,6 +84,8 @@ protected:
 	bool mouse_is_in_editor;
     int lastClickedNote; // contains the ID of the latest clicked note, or -1 to mean "selected notes"
 	bool clickedOnNote;
+    
+    ptr_vector<Track> backgroundTracks;
 public:
         
     Editor(Track* track);
@@ -92,8 +95,13 @@ public:
     Sequence* sequence;
     GraphicalTrack* graphicalTrack;
     
+    // background tracks
+    void clearBackgroundTracks();
+    void addBackgroundTrack(Track* track);
+    void trackDeleted(Track* track); // on track deletion, we need to check if this one is being used and remove references to it if so
+    
 	// Is it necessary to send frequent mouse held down events in current situation? this method tells you.
-	bool areMouseHeldDownEventsNeeded();
+	//bool areMouseHeldDownEventsNeeded();
 	
 	// method called by GraphicalTrack to let the Editor know about its position
     void updatePosition(const int from_y, const int to_y, const int width, const int height, const int barHeight);

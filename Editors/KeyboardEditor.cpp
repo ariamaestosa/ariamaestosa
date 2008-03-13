@@ -78,8 +78,7 @@ void KeyboardEditor::mouseDown(RelativeXCoord x, const int y)
 	if(x.getRelativeTo(EDITOR)<-20 and x.getRelativeTo(WINDOW)>15 and y>getEditorYStart())
 	{
         KeyPicker* picker = Core::getKeyPicker();
-		picker->setParent(track->graphics);
-		picker->noChecks();
+		picker->setParent(track);
         Display::popupMenu(picker, x.getRelativeTo(WINDOW), y);
         return;
 	}
@@ -230,6 +229,50 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     drawVerticalMeasureLines(getEditorYStart(), getYEnd());
 
+    // ---------------------- draw background notes ------------------
+    
+    if(backgroundTracks.size() > 0)
+    {
+        const int amount = backgroundTracks.size();
+        int color = 0;
+        // iterate through all tracks that need to be rendered as background
+        for(int bgtrack=0; bgtrack<amount; bgtrack++)
+        {
+            Track* track = backgroundTracks.get(bgtrack);
+            const int noteAmount = track->getNoteAmount();
+
+            // pick a color
+            switch(color)
+            {
+                case 0: AriaRender::color(1, 0.85, 0, 0.5); break;
+                case 1: AriaRender::color(0, 1, 0, 0.5); break;
+                case 2: AriaRender::color(1, 0, 0.85, 0.5); break;
+                case 3: AriaRender::color(1, 0, 0, 0.5); break;
+                case 4: AriaRender::color(0, 0.85, 1, 0.5); break;
+            }
+            color++; if(color>4) color = 0;
+            
+            // render the notes
+            for(int n=0; n<noteAmount; n++)
+            {
+                
+                int x1=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
+                int x2=track->getNoteEndInPixels(n) - sequence->getXScrollInPixels();
+                
+                // don't draw notes that won't be visible
+                if(x2<0) continue;
+                if(x1>width) break;
+                
+                const int y=track->getNotePitchID(n);
+                
+                
+                AriaRender::rect(x1+getEditorXStart(), y*y_step+1 + getEditorYStart() - getYScrollInPixels(),
+                                          x2+getEditorXStart()-1, (y+1)*y_step + getEditorYStart() - getYScrollInPixels());
+            }
+            
+        }
+    }
+    
     // ---------------------- draw notes ----------------------------
     const int noteAmount = track->getNoteAmount();
     for(int n=0; n<noteAmount; n++)
