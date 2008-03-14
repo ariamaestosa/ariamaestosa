@@ -263,6 +263,17 @@ void Editor::addBackgroundTrack(Track* track)
     backgroundTracks.push_back(track);
 }
 
+bool Editor::hasAsBackground(Track* track)
+{
+    const int bgTrackAmount = backgroundTracks.size();
+    
+    for(int m=0; m<bgTrackAmount; m++)
+    {
+        if(backgroundTracks.get(m) == track) return true;
+    }
+    return false;
+}
+
 // on track deletion, we need to check if this one is being used and remove references to it if so
 void Editor::trackDeleted(Track* track)
 {

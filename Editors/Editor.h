@@ -99,6 +99,7 @@ public:
     void clearBackgroundTracks();
     void addBackgroundTrack(Track* track);
     void trackDeleted(Track* track); // on track deletion, we need to check if this one is being used and remove references to it if so
+    bool hasAsBackground(Track* track); // is the Track passed as argument a background of this?
     
 	// Is it necessary to send frequent mouse held down events in current situation? this method tells you.
 	//bool areMouseHeldDownEventsNeeded();

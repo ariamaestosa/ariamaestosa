@@ -40,7 +40,7 @@ public:
 	wxBoxSizer* sizer;
 	wxCheckBox* active;
 
-	BackgroundChoicePanel(wxWindow* parent, const int trackID) : wxPanel(parent)
+	BackgroundChoicePanel(wxWindow* parent, const int trackID, Track* track, const bool activated=false, const bool enabled = false) : wxPanel(parent)
     {
 	
 		INIT_LEAK_CHECK();
@@ -50,8 +50,14 @@ public:
 		// checkbox
 		active = new wxCheckBox(this, 200, wxT(" "));
 		sizer->Add(active, 0, wxALL, 5);
-		
-		sizer->Add( new wxStaticText(this, wxID_ANY, to_wxString(trackID) + wxT(" : ") + getCurrentSequence()->getTrack(trackID)->getName()) , 1, wxALL, 5);
+        
+        if(!enabled)
+        {
+            active->Enable(false);
+        }
+		else if(activated) active->SetValue(true);
+        
+		sizer->Add( new wxStaticText(this, wxID_ANY, to_wxString(trackID) + wxT(" : ") + track->getName()) , 1, wxALL, 5);
 
 		SetSizer(sizer);
 		sizer->Layout();
@@ -103,10 +109,19 @@ public:
             
 		sizer = new wxBoxSizer(wxVERTICAL);
 		
+        Editor* editor = parent->graphics->getCurrentEditor();
+        
         const int trackAmount = getCurrentSequence()->getTrackAmount();
 		for(int n=0; n<trackAmount; n++)
 		{
-            BackgroundChoicePanel* bcp = new BackgroundChoicePanel(this, n);
+            Track* track = getCurrentSequence()->getTrack(n);
+            bool enabled = true;
+            if(track == parent) enabled = false; // can't be background of itself
+            
+            bool activated = false;
+            if(editor->hasAsBackground(track)) activated = true;
+            
+            BackgroundChoicePanel* bcp = new BackgroundChoicePanel(this, n, track, activated, enabled);
 			sizer->Add(bcp, 0, wxALL, 5);
             choicePanels.push_back(bcp);
 		}
@@ -150,6 +165,8 @@ public:
         const int amount = choicePanels.size();
         Editor* editor = parent->graphics->getCurrentEditor();
         Sequence* seq = getCurrentSequence();
+        
+        editor->clearBackgroundTracks();
         
         for(int n=0; n<amount; n++)
         {
