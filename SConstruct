@@ -34,7 +34,7 @@ def main_Aria_func():
         which_os = "macosx"
     elif givenos == "linux":
         which_os = "linux"
-    elif givenos == "linux":
+    elif givenos == "windows":
         which_os = "windows"
     else:
         print "Unknown operating system : " + givenos + " please specify 'platform=[linux/macosx]'"
