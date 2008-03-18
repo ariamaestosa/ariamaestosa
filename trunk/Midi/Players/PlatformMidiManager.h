@@ -34,19 +34,25 @@ namespace PlatformMidiManager {
 	
 	bool playSequence(Sequence* sequence, /*out*/int* startTick);
 	bool playSelected(Sequence* sequence, /*out*/int* startTick);
+    bool isPlaying();
+    void stop();
+    
 	void exportAudioFile(Sequence* sequence, wxString filepath);
 	bool exportMidiFile(Sequence* sequence, wxString filepath);
 	
-	// returns current midi tick, or -1 if over
+    /*
+     * returns midi tick currently being played, -1 if none
+     *
+     * called repeatedly during playback
+     *
+     * difference between 'trackPlaybackProgression' and 'getCurrentTick' is that the first
+     * gets the data from the native API, and acts upon it (for instance checking if song is over)
+     * 'getCurrentTick' just returns the last retrieved tick value. Those 2 can probably be
+     * merged in a future code cleanup
+     */
 	int trackPlaybackProgression();
-	
-	bool isPlaying();
-	
-    void stop();
-	
-	// midi tick currently being played, -1 if none
-    int getCurrentTick();
-    	
+	int getCurrentTick();
+    
 	// called when app opens
     void initMidiPlayer();
 	

@@ -21,7 +21,9 @@ def main_Aria_func():
     givenos = ARGUMENTS.get('platform', 0)
     if givenos == 0:
         #auto-detect
-        if os.uname()[0] == 'Linux':
+        if os.name == 'nt':
+            which_os = "windows"
+        elif os.uname()[0] == 'Linux':
             which_os = "linux"
         elif os.uname()[0] == 'Darwin':
             which_os = "macosx"
@@ -32,6 +34,8 @@ def main_Aria_func():
         which_os = "macosx"
     elif givenos == "linux":
         which_os = "linux"
+    elif givenos == "linux":
+        which_os = "windows"
     else:
         print "Unknown operating system : " + givenos + " please specify 'platform=[linux/macosx]'"
         sys.exit(0)
@@ -40,7 +44,9 @@ def main_Aria_func():
         print"*** Operating system : Linux" 
     elif which_os == "macosx":
         print"*** Operating system : mac OS X" 
-    
+    elif which_os == "windows":
+        print"*** Operating system : Windows (warning: unsupported at this point)" 
+            
     # check what to do
     if 'uninstall' in COMMAND_LINE_TARGETS:
         # uninstall
@@ -333,6 +339,12 @@ def compile_Aria(build_type, which_os):
         env.Append(LIBS = ['z','dl','m'])
         env.ParseConfig( 'pkg-config --cflags glib-2.0' )
 
+    # Windows (currently unsupported)
+    elif which_os == "windows":
+        source_windows = Split("""
+        Midi/Players/Win/WinPlayer.cpp
+        """)
+        sources = sources + source_windows
     else:
     
         print "\n\n*** /!\\ Platform must be either mac or linux "
