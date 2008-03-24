@@ -108,6 +108,8 @@ NOTE: sorry, this is very raw :)
  
  * red images
 
+* will not quit when notation export dialog has been shown (hangs, or crashes)
+
 * copy-paste from a song to another gives wrong results if the two use different sample sizes
 
 * in a measure near the end, place many 1/8ths in a score. scroll back a bit so only half the measure is visible

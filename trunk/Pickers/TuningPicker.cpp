@@ -19,7 +19,7 @@
 #include "Editors/GuitarEditor.h"
 #include "Midi/Sequence.h"
 #include "IO/IOUtils.h"
-#include "IO/NotationExport.h"
+#include "Dialogs/NotationExportDialog.h"
 
 #include "wx/tokenzr.h"
 
