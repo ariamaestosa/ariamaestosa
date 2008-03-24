@@ -33,7 +33,7 @@ class TablatureExporter
 	
 	int measureAmount;
 	int ticksPerBeat;
-	int noteAmount;
+	//int noteAmount;
 	GuitarEditor* editor;
 	int string_amount;
 	int max_length_of_a_line;
@@ -57,7 +57,6 @@ public:
 	TablatureExporter();
 	void exportTablature(Track* t, wxFile* file, bool checkRepetitions);
 	void setMaxLineWidth(int i);
-	void setRepetitionMinimalWidth(int measureAmount);
 	void flush();
 };
 

@@ -238,6 +238,7 @@ def compile_Aria(build_type, which_os):
     Dialogs/About.cpp
     Dialogs/CopyrightWindow.cpp
     Dialogs/CustomNoteSelectDialog.cpp
+    Dialogs/NotationExportDialog.cpp
     Dialogs/Preferences.cpp
     Dialogs/ScalePicker.cpp
     Dialogs/WaitWindow.cpp

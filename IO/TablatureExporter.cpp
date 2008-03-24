@@ -10,6 +10,7 @@
 #include "Editors/GuitarEditor.h"
 #include "IO/IOUtils.h"
 #include "IO/TablatureExporter.h"
+#include "IO/NotationExport.h"
 
 namespace AriaMaestosa
 {
@@ -18,8 +19,7 @@ namespace AriaMaestosa
 // ------------------------------------- first function called ----------------------------------------
 // ----------------------------------------------------------------------------------------------------
 
-	int repetitionMinimalLength;
-	
+    
 TablatureExporter::TablatureExporter()
 {
 	INIT_LEAK_CHECK();	
@@ -43,240 +43,8 @@ void TablatureExporter::flush()
 	file->Write( wxT("\n") );
 	measures_appended = 0;
 	charAmountWhenBeginningMeasure = 2;
-	repetitionMinimalLength = 2;
 	title_line = wxT("");
 }
-
-void TablatureExporter::setRepetitionMinimalWidth(int measureAmount)
-{
-	repetitionMinimalLength = measureAmount;
-}
-
-class MeasureToExport
-{
-public:
-	Track* track;
-	
-	int firstTick, lastTick, firstNote, lastNote;
-
-	// if this measure is later repeated and is not a repetition of a previous measure,
-	// contains ID of all later measures similar to this one
-	std::vector<int> similarMeasuresFoundLater;
-	
-	// if this measure is a repetition of a previous measure, contains the ID of which one
-	int firstSimilarMeasure;
-	
-	int shortestDuration;
-	int id;
-	
-	// true if measure needs to be apart from others
-	// mostly used with repetitions (e.g. x4) to tell where the repetition starts
-	bool cutApart;
-	
-	MeasureToExport()
-	{
-		shortestDuration = -1;
-		firstSimilarMeasure = -1;
-		cutApart = false;
-	}
-	
-	void setID(int id_arg)
-	{
-		id = id_arg;
-	}
-	
-	bool isSameAs(MeasureToExport* array, int compareWithID)
-	{
-		return (array[compareWithID].firstSimilarMeasure == firstSimilarMeasure) or (array[compareWithID].firstSimilarMeasure == id);
-	}
-	
-	// if a repetition is found, it is stored in the variables and returns true,
-	// otherwise returns false
-	bool findConsecutiveRepetition(MeasureToExport* measures, const int measureAmount,
-								   int& firstMeasureThatRepeats /*out*/, int& lastMeasureThatRepeats /*out*/,
-								   int& firstMeasureRepeated /*out*/, int& lastMeasureRepeated /*out*/)
-	{
-		//similarMeasuresFoundLater
-			
-		// check if it works with first measure occurence of similar measures
-		if(id+1<measureAmount and measures[id+1].firstSimilarMeasure == measures[id].firstSimilarMeasure+1 )
-		{
-			int amount = 0;
-			
-			for(int iter=1; iter<measureAmount; iter++)
-			{
-				if(id+iter<measureAmount and measures[id+iter].firstSimilarMeasure == measures[id].firstSimilarMeasure+iter )
-				{
-					amount++;
-				}
-				else
-				{
-					break;
-				}
-			}//next
-			firstMeasureThatRepeats = id;
-			lastMeasureThatRepeats = id + amount;
-			firstMeasureRepeated = measures[id].firstSimilarMeasure;
-			lastMeasureRepeated = measures[id].firstSimilarMeasure + amount;
-			return true;
-		}
-		// check if it works with a later occurence of a similar measure
-		else
-		{
-			const int first_measure =  measures[id].firstSimilarMeasure;
-			const int amount = measures[ first_measure ].similarMeasuresFoundLater.size();
-			for(int laterOccurence=0; laterOccurence<amount; laterOccurence++)
-			{
-				const int checkFromMeasure = measures[ first_measure ].similarMeasuresFoundLater[laterOccurence];
-				std::cout << "		{ lvl 2, testing measure " << checkFromMeasure << std::endl;
-				//if(checkFromMeasure+1<id and measures[checkFromMeasure+1].firstSimilarMeasure ==
-				//   measures[checkFromMeasure].firstSimilarMeasure+1 )
-				//{
-					int amount = 0;
-					
-					// check if there is a consecutive repetition with measures from this area
-					
-					for(int iter=0; iter</*id-checkFromMeasure*/measureAmount; iter++)
-					{
-						if(not(checkFromMeasure+iter<id and
-							   checkFromMeasure+iter<measureAmount and id+iter<measureAmount)) continue;
-						
-						// check if they are identical
-						
-						if( // they are identical because they both are repetitions of the same one
-						   (measures[checkFromMeasure+iter].firstSimilarMeasure == measures[id+iter].firstSimilarMeasure and
-							measures[checkFromMeasure+iter].firstSimilarMeasure != -1)
-						   or
-							// they are identical because the second is a repetition of the first
-							(checkFromMeasure+iter == measures[id+iter].firstSimilarMeasure)
-						   )
-						{
-							std::cout << "			//" << (checkFromMeasure+iter+1) << " is same as " << (id+iter+1) << std::endl;
-							amount++;
-						}
-						else
-						{
-							std::cout << "			//but " << (checkFromMeasure+iter+1) << " is NOT same as " << (id+iter+1) << " (" << measures[checkFromMeasure+iter].firstSimilarMeasure+1 << " != " << measures[id+iter].firstSimilarMeasure+1 << ")" << std::endl;
-							break;
-						}
-					}//next
-					std::cout << "		} amount=" << amount << std::endl;
-					if(amount<repetitionMinimalLength) continue;
-					std::cout << "measure " << id+1  << " is a level 2 repetition" << std::endl;
-					firstMeasureThatRepeats = id;
-					lastMeasureThatRepeats = id + amount-1;
-					firstMeasureRepeated = checkFromMeasure;
-					lastMeasureRepeated = checkFromMeasure + amount-1;
-					return true;
-				//}
-			}//next
-			
-			// if we get there, it never works
-			return false;
-		}
-	}
-	
-	bool calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
-	{
-
-		// if these 2 measures don't even have the same number of notes, they're definitely not the same
-		if(
-		   (checkMeasure.lastNote - checkMeasure.firstNote) != (lastNote - firstNote)
-		   ) return false;
-		
-
-		const int noteAmount = (checkMeasure.lastNote - checkMeasure.firstNote);
-
-		
-		if(noteAmount<1) return false; //empty measure
-		
-		/*
-		 if we get till there, the 2 measures have the same amount of notes.
-		 to know whether they are truly identitcal, we need to compare note by note
-		 we will match each notes from the first measure to the identical one in the second.
-		 If ever one note failes to be matched, then the 2 measures are different.
-		 */
-		int noteMatched_this[noteAmount];
-		int noteMatched_other[noteAmount];
-		for(int n=0; n<noteAmount; n++)
-		{
-			noteMatched_this[n] = false;
-			noteMatched_other[n] = false;
-		}
-		
-		for(int checkNote_this=0; checkNote_this<noteAmount; checkNote_this++)
-		{
-			for(int checkNote_other=0; checkNote_other<noteAmount; checkNote_other++)
-			{
-				if(noteMatched_other[checkNote_other]) continue; // this note was already matched
-				
-				// check start tick matches
-				if(track->getNoteStartInMidiTicks(checkMeasure.firstNote + checkNote_other) - checkMeasure.firstTick !=
-				   track->getNoteStartInMidiTicks(firstNote + checkNote_this) - firstTick)
-				{
-					// they dont match, check the next one
-					continue;
-				}
-				
-				// check end tick matches
-				if(track->getNoteEndInMidiTicks(checkMeasure.firstNote + checkNote_other) - checkMeasure.firstTick !=
-				   track->getNoteEndInMidiTicks(firstNote + checkNote_this) - firstTick)
-				{
-					// they dont match, check the next one
-					continue;
-				}
-				
-				// check pitch matches
-				if(track->getNotePitchID(checkMeasure.firstNote + checkNote_other) !=
-				   track->getNotePitchID(firstNote + checkNote_this))
-				{
-					// they dont match, check the next one
-					continue;
-				}
-				
-				noteMatched_this[checkNote_this] = true;
-				noteMatched_other[checkNote_other] = true;
-				
-				
-			}//next
-			
-			// we couldn't find a note in the other measure that matches this one
-			if(noteMatched_this[checkNote_this] == false) return false;
-			
-		}//next
-		
-		return true;
-	}
-};
-
-// used to determine the order of what appears in the file.
-// the order is found first before writing anything because that allows more flexibility
-enum LayoutElementType
-{
-	SINGLE_MEASURE,
-	SINGLE_REPEATED_MEASURE,
-	EMPTY_MEASURE,
-	REPEATED_RIFF,
-	PLAY_MANY_TIMES
-};
-class LayoutElement
-{
-public:
-	LayoutElement(LayoutElementType type_arg, int measure_arg = -1)
-	{
-		type = type_arg;
-		measure = measure_arg;
-	}
-	
-	LayoutElementType type;
-	
-	int measure; // used in single measure mode
-				 
-	// used in many-measure repetitions. the first 2 ones are the measures that repeat, the last 2 ones the measures being repeated
-	int firstMeasure, lastMeasure, firstMeasureToRepeat, lastMeasureToRepeat;
-	
-	int amountOfTimes; // used for 'play many times' events
-};
 
 void TablatureExporter::exportTablature(Track* track_arg, wxFile* file_arg, bool checkRepetitions_bool_arg)
 {
@@ -287,11 +55,11 @@ void TablatureExporter::exportTablature(Track* track_arg, wxFile* file_arg, bool
 	
 	measureAmount = getMeasureBar()->getMeasureAmount();
 	ticksPerBeat = getCurrentSequence()->ticksPerBeat();
-	noteAmount = track->getNoteAmount();
+	//noteAmount = track->getNoteAmount();
 	editor = track->graphics->guitarEditor;
 	string_amount = editor->tuning.size();
 	
-	int note=0;
+	//int note=0;
 	
 	measures_appended = 0;
 	for(int i=0; i<string_amount; i++) strings.push_back( wxT("") );
@@ -301,7 +69,7 @@ void TablatureExporter::exportTablature(Track* track_arg, wxFile* file_arg, bool
 		strings[s] = wxT("|");	
 	}
 	title_line = wxT("");
-	
+/*	
 	MeasureToExport measures[measureAmount];
 	
 	// -------------------- gather measure information -------------------- 
@@ -375,7 +143,7 @@ void TablatureExporter::exportTablature(Track* track_arg, wxFile* file_arg, bool
 		else if(checkRepetitions_bool and measures[measure].firstSimilarMeasure!=-1)
 		{
 			
-			if(repetitionMinimalLength<2)
+			if(getRepetitionMinimalLength()<2)
 			{
 				LayoutElement element(SINGLE_REPEATED_MEASURE, measure);
 				layoutElements.push_back( element );
@@ -402,7 +170,7 @@ void TablatureExporter::exportTablature(Track* track_arg, wxFile* file_arg, bool
 					}
 				}//next
 				
-				if(amountOfTimes < repetitionMinimalLength)
+				if(amountOfTimes < getRepetitionMinimalLength())
 				{
 #ifdef _verbose
 					std::cout << "play many times refused, measures " << (measure+1) << " to " << (measure+amountOfTimes+1) << " are normal" << std::endl;
@@ -449,7 +217,7 @@ void TablatureExporter::exportTablature(Track* track_arg, wxFile* file_arg, bool
 			{
 				
 				const int amount = lastMeasureThatRepeats - firstMeasureThatRepeats;
-				if(amount+1 >= repetitionMinimalLength)
+				if(amount+1 >= getRepetitionMinimalLength())
 				{
 #ifdef _verbose
 					std::cout << "repetition from " << (firstMeasureThatRepeats+1) << " to " <<
@@ -469,15 +237,14 @@ void TablatureExporter::exportTablature(Track* track_arg, wxFile* file_arg, bool
 					// repetition is not long enough, use normal measures
 				{
 #ifdef _verbose
-					std::cout << "repetition refused because " << (amount+1) << " < " << repetitionMinimalLength << " measures " << (measure+1) << " to " << (measure+repetitionMinimalLength+1) << " are normal" << std::endl;
+					std::cout << "repetition refused because " << (amount+1) << " < " << getRepetitionMinimalLength() << " measures " << (measure+1) << " to " << (measure+getRepetitionMinimalLength()+1) << " are normal" << std::endl;
 #endif
-					for(int iter=0; iter<repetitionMinimalLength; iter++)
+					for(int iter=0; iter<getRepetitionMinimalLength(); iter++)
 					{
 						layoutElements.push_back( LayoutElement(SINGLE_MEASURE, measure+iter) );
 					}
-					measure += repetitionMinimalLength-1;
-				}
-				
+					measure += getRepetitionMinimalLength()-1;
+				}			
 			}
 			else
 			{
@@ -499,7 +266,11 @@ void TablatureExporter::exportTablature(Track* track_arg, wxFile* file_arg, bool
 		}
 		
 	}//next measure
-	
+	*/
+    
+    std::vector<LayoutElement> layoutElements;
+    MeasureToExport measures[measureAmount];
+    getLayoutElements(track, checkRepetitions_bool, layoutElements, measures);
 	// -------------------- generate the tablature  -------------------- 
 	const int layoutElementsAmount = layoutElements.size();
 

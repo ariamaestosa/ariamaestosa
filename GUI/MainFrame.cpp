@@ -42,6 +42,7 @@
 #include "Dialogs/CopyrightWindow.h"
 #include "Dialogs/Preferences.h"
 #include "Dialogs/About.h"
+#include "Dialogs/NotationExportDialog.h"
 
 #include "Pickers/InstrumentChoice.h"
 #include "Pickers/DrumChoice.h"
@@ -52,7 +53,6 @@
 #include "IO/IOUtils.h"
 #include "IO/AriaFileWriter.h"
 #include "IO/MidiFileReader.h"
-#include "IO/NotationExport.h"
 
 #include "Config.h"
 #include <iostream>

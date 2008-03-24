@@ -21,8 +21,8 @@
  * When writing this app, i tried to make everything as cross-platform as possible. So, i've used only cross-platform libs.
  * However, i could not find any satisfying lib to do midi playback.
  *
- * So, i had to implement platform-specific code. To port Aria to another platform, all you need to do is implement these functions, and surrond them
- * with an #ifdef (like in MacPlayerInterface) that will be defined only on the right platform (can often be done in Config.h).
+ * So, i had to implement platform-specific code. To port Aria to another platform, all you need to do is implement these functions, and surround them
+ * with an #ifdef (like in MacPlayerInterface) that will be defined only on the right platform.
  */
 
 namespace AriaMaestosa {
