@@ -374,7 +374,8 @@ void TuningPicker::setParent(GuitarEditor* parent_arg)
 
 TuningPicker::~TuningPicker()
 {  
-	delete ctp;
+	//delete ctp;
+    ctp->Destroy();
 }
 
 
