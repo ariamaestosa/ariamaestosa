@@ -4,6 +4,8 @@
 - Fixed glitches and a potential crash source in Alsa player.
 - Code cleanup in Alsa player.
 - Fixed crash on linux when trying to activate port choice dialog
+- Cleanup in notation export code
+- Fixed dialog deletion for notation export and custom tuning picker, should fix hangs (and possible crashes) on shutdown
 
 =====================================================================================
 Version 1.1 new features highlight

@@ -152,6 +152,7 @@ public:
 	void cancelClicked(wxCommandEvent& evt)
 	{
 		EndModal(dlg_id);
+        Destroy();
 		completeExport(false);
 	}
 	
@@ -167,6 +168,7 @@ public:
 		//repetitionWidth = atoi_u( repMinWidth->GetValue() );
 		repetitionsOf2Measures = repMinWidth->IsChecked();
 		EndModal(dlg_id);
+        Destroy();
 		completeExport(true);
 	}
 	
@@ -181,7 +183,7 @@ EVT_BUTTON(ID_CANCEL, NotationSetup::cancelClicked)
 
 END_EVENT_TABLE()
 
-NotationSetup* setup;
+static NotationSetup* setup;
 Sequence* currentSequence;
 Track* currentTrack;
 
@@ -207,38 +209,38 @@ void exportNotation(Track* t)
 // ----------------------------------------------------------------------------------------------------
 // ---------------------------------------- main writing func -----------------------------------------
 // ----------------------------------------------------------------------------------------------------
-// after dialog is shown and user clicked 'OK' this is called to complete the export
-void completeExport(bool accepted)
+
+wxString askForSavePath()
 {
-	delete setup;	
-	if(!accepted) return;
-	
-show_dialog:
-		
-		if(currentSequence == NULL) currentSequence = currentTrack->sequence;
-	
-		// ask user to select file destination
+    // ask user to select file destination
 	wxString filepath = showFileDialog( _("Select destination file"),
 										wxT(""),
 										currentSequence->sequenceFileName + wxT(".txt"),
 										wxT("text file|*.txt"), true /*save*/);
 	
-	if(filepath.IsEmpty()) return; // user cancelled
-	
-	if(!filepath.IsAscii())
-	{
-		wxMessageBox( _("Invalid file name. (Sorry, accentuated characters are not supported)"));	
-		goto show_dialog;
-	}
+	if(filepath.IsEmpty()) return wxEmptyString; // user cancelled
 	
 	
 	if( wxFileExists(filepath) )
 	{
 		int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
-								   wxYES_NO);
-		if (answer != wxYES) return;
+                                    wxYES_NO);
+		if (answer != wxYES) return askForSavePath();
 	}
+    
+    return filepath;
+}
+
+// after dialog is shown and user clicked 'OK' this is called to complete the export
+void completeExport(bool accepted)
+{
+	if(!accepted) return;
+    
+    if(currentSequence == NULL) currentSequence = currentTrack->sequence;
 	
+    // ask user to select file destination
+	wxString filepath = askForSavePath();
+	if(filepath.IsEmpty()) return;
 	
 	// open file and prepare for writing to it
 	wxFile* file = new wxFile( filepath, wxFile::write );
@@ -271,9 +273,9 @@ show_dialog:
 			{
 				std::cout << "unsupported view"	<< std::endl;
 			}
-
+            
 		}// next track
-
+        
 	}
 	// we want to export a single track
 	else
@@ -287,7 +289,7 @@ show_dialog:
 			//if(repetitionWidth>0) exporter.setRepetitionMinimalWidth(repetitionWidth);
 			if(repetitionsOf2Measures) setRepetitionMinimalLength(2);
 			else setRepetitionMinimalLength(1);
-				
+            
 			exporter.exportTablature( currentTrack, file, checkRepetitions_bool );
 			//exportTablature( currentTrack, file );
 		}
