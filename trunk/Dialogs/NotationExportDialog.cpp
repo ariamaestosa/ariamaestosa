@@ -38,7 +38,7 @@ bool repetitionsOf2Measures = false;
 // ------------------------------------------- setup dialog -------------------------------------------
 // ----------------------------------------------------------------------------------------------------
 
-class NotationSetup : public wxDialog
+class NotationSetup : public wxFrame
 {
 	wxCheckBox* ignoreHidden;
 	wxCheckBox* ignoreMuted;
@@ -54,13 +54,12 @@ class NotationSetup : public wxDialog
 	
 	wxCheckBox* repMinWidth;
 	
-	int dlg_id;
-	
+
 public:
 		
 		DECLARE_LEAK_CHECK();
 	
-	NotationSetup(int mode = -1) : wxDialog(NULL, wxID_ANY,  _("Export to musical notation"), wxPoint(200,200), wxSize(200,400), wxCAPTION)
+	NotationSetup(int mode = -1) : wxFrame(NULL, wxID_ANY,  _("Export to musical notation"), wxPoint(200,200), wxSize(200,400), wxCAPTION | wxSTAY_ON_TOP)
     {
 		INIT_LEAK_CHECK();
 		
@@ -145,13 +144,13 @@ public:
 		boxSizer->SetSizeHints(this);
 		
 		Center();
-		dlg_id = ShowModal();
+		Show();
 
     }
 	
 	void cancelClicked(wxCommandEvent& evt)
 	{
-		EndModal(dlg_id);
+		Hide();
         Destroy();
 		completeExport(false);
 	}
@@ -167,7 +166,7 @@ public:
 		lineWidth = atoi_u( lineWidthCtrl->GetValue() );
 		//repetitionWidth = atoi_u( repMinWidth->GetValue() );
 		repetitionsOf2Measures = repMinWidth->IsChecked();
-		EndModal(dlg_id);
+		Hide();
         Destroy();
 		completeExport(true);
 	}
@@ -176,7 +175,7 @@ public:
 	
 };
 
-BEGIN_EVENT_TABLE(NotationSetup, wxDialog)
+BEGIN_EVENT_TABLE(NotationSetup, wxFrame)
 
 EVT_BUTTON(ID_OK, NotationSetup::okClicked)
 EVT_BUTTON(ID_CANCEL, NotationSetup::cancelClicked)
