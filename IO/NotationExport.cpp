@@ -1,8 +1,17 @@
 #include "IO/NotationExport.h"
 
 #include "Midi/Track.h"
+#include "Midi/Sequence.h"
 #include "GUI/MeasureBar.h"
+#include "Editors/GuitarEditor.h"
 #include "AriaCore.h"
+
+#include <iostream>
+#include "wx/wx.h"
+#include "wx/print.h"
+#include "wx/printdlg.h"
+#include <cmath>
+
 
 namespace AriaMaestosa
 {
@@ -30,14 +39,15 @@ void MeasureToExport::setID(int id_arg)
     id = id_arg;
 }
 
-bool MeasureToExport::isSameAs(MeasureToExport* array, int compareWithID)
+// FIXME - used at all?
+bool MeasureToExport::isSameAs(MeasureToExport& compareWith)
 {
-    return (array[compareWithID].firstSimilarMeasure == firstSimilarMeasure) or (array[compareWithID].firstSimilarMeasure == id);
+    return (compareWith.firstSimilarMeasure == firstSimilarMeasure) or (compareWith.firstSimilarMeasure == id);
 }
 
 // if a repetition is found, it is stored in the variables and returns true,
 // otherwise returns false
-bool MeasureToExport::findConsecutiveRepetition(MeasureToExport* measures, const int measureAmount,
+bool MeasureToExport::findConsecutiveRepetition(std::vector<MeasureToExport>& measures, const int measureAmount,
                                                 int& firstMeasureThatRepeats /*out*/, int& lastMeasureThatRepeats /*out*/,
                                                 int& firstMeasureRepeated /*out*/, int& lastMeasureRepeated /*out*/)
                                                 {
@@ -204,17 +214,19 @@ LayoutElement::LayoutElement(LayoutElementType type_arg, int measure_arg)
     measure = measure_arg;
 }
 
-void getLayoutElements(Track* track, const bool checkRepetitions_bool, std::vector<LayoutElement>& layoutElements, MeasureToExport* measures)
+void getLayoutElements(Track* track, const bool checkRepetitions_bool, std::vector<LayoutPage>& layoutPages, std::vector<MeasureToExport>& measures)
 {
     const int measureAmount = getMeasureBar()->getMeasureAmount();
     int note=0;
     const int noteAmount = track->getNoteAmount();
+    std::vector<LayoutElement> layoutElements;
     
    // MeasureToExport measures[measureAmount];
 	
 	// -------------------- gather measure information -------------------- 
 	for(int measure=0; measure<measureAmount; measure++)
 	{
+        measures.push_back( MeasureToExport() );
 		measures[measure].setID(measure);
 		
 		measures[measure].firstTick = getMeasureBar()->firstTickInMeasure( measure );
@@ -406,8 +418,258 @@ void getLayoutElements(Track* track, const bool checkRepetitions_bool, std::vect
 		
 	}//next measure
     
-    //return layoutElements;
+    
+    // calculate approximative width of each element
+    const int ticksPerBeat = getCurrentSequence()->ticksPerBeat();
+    const int layoutElementsAmount = layoutElements.size();
+    for(int n=0; n<layoutElementsAmount; n++)
+    {
+        layoutElements[n].zoom = 1;
+        layoutElements[n].charWidth = 2;
+        
+        if(layoutElements[n].type == SINGLE_MEASURE)
+        {
+            const int divider = (int)(
+                                      getMeasureBar()->getTimeSigNumerator(layoutElements[n].measure) * (float)ticksPerBeat /
+                                      (float)measures[layoutElements[n].measure].shortestDuration
+                                      );
+            
+            // if notes are very long, zoom a bit because we don't want a too short measure
+            if( divider <= 2 ) layoutElements[n].zoom = 4;
+            if( divider <= 1 ) layoutElements[n].zoom = 8;
+            
+            layoutElements[n].charWidth = (int)round(
+                  (float)(measures[layoutElements[n].measure].lastTick - measures[layoutElements[n].measure].firstTick) /
+                (float)measures[layoutElements[n].measure].shortestDuration
+                  )*layoutElements[n].zoom + 2;
+
+        }
+        else if(layoutElements[n].type == REPEATED_RIFF)
+        {
+            layoutElements[n].charWidth = 5;
+        }
+        
+        std::cout << "elmnt " << n << " width : " << layoutElements[n].charWidth << std::endl;
+    }
+    
+    // lay out in lines and pages
+    layoutPages.push_back( LayoutPage() );
+    
+    int totalLength = 0;
+    int currentLine = 0;
+    int currentPage = 0;
+
+    assertExpr(currentPage,<,layoutPages.size());
+    layoutPages[currentPage].layoutLines.push_back( LayoutLine(track) );
+    
+    std::cout << "+ PAGE " << currentPage << std::endl;
+    std::cout << "    + LINE " << currentLine << std::endl;
+    
+    for(int n=0; n<layoutElementsAmount; n++)
+    {
+        if(totalLength + layoutElements[n].charWidth > maxCharItemsPerLine)
+        {
+            // too much stuff on current line, switch to another line
+            layoutPages[currentPage].layoutLines[currentLine].charWidth = totalLength;
+            totalLength = 0;
+            currentLine++;
+            assertExpr(currentPage,<,layoutPages.size());
+            
+            // ccheck if we need to switch to another page
+            if(layoutPages[currentPage].layoutLines.size() == maxLinesInPage)
+            {
+                // too many lines on page, switch to another page
+                currentLine = 0;
+                currentPage++;
+                layoutPages.push_back( LayoutPage() );
+                std::cout << "+ PAGE " << currentPage << std::endl;
+            }
+            assertExpr(currentPage,<,layoutPages.size());
+            layoutPages[currentPage].layoutLines.push_back( LayoutLine(track) );
+            std::cout << "    + LINE " << currentLine << std::endl;
+        }
+        assertExpr(currentLine,<,layoutPages[currentPage].layoutLines.size());
+        layoutPages[currentPage].layoutLines[currentLine].layoutElements.push_back(layoutElements[n]);
+        totalLength += layoutElements[n].charWidth;
+    }
+    
+
 }
 
+LayoutLine::LayoutLine(Track* parent)
+{
+    LayoutLine::parent = parent;
+    
+    editorMode = parent->graphics->editorMode;
+    
+    if(editorMode == GUITAR)
+    {
+        string_amount = parent->graphics->guitarEditor->tuning.size();
+    }
+}
+
+#pragma mark -
+
+/*
+ * Shows a basic example of how to print stuff in wx.
+ * Use the 'preview' feature here, actually printing this will take much of your ink ^^
+ */
+
+
+class QuickPrint : public wxPrintout
+{
+    wxPageSetupDialogData page_setup;
+    int orient;
+    int max_x, max_y;
+    int pageAmount;
+    
+    static const int brush_size = 15;
+    
+    AriaPrintable* printable;
+    
+public:
+    QuickPrint(AriaPrintable* printable) : wxPrintout( printable->getTitle() )
+    {
+        QuickPrint::printable = printable;
+        pageAmount =  printable->getPageAmount();
+        orient = printable->portraitOrientation() ? wxPORTRAIT : wxLANDSCAPE;
+    }
+    
+    bool OnPrintPage(int pageNum)
+    {
+        std::cout << "printing page " << pageNum << std::endl;
+        
+        wxDC& dc = *GetDC();
+        
+        wxRect bounds = GetLogicalPageRect();
+        
+        const int x0 = bounds.x;
+        const int y0 = bounds.y;
+        const int width = bounds.width;
+        const int height = bounds.height;
+        const int x1 = x0 + width;
+        const int y1 = y0 + height;
+        
+        std::cout << "printable area : (" << x0 << ", " << y0 << ") to (" << x1 << ", " << y1 << ")" << std::endl;
+        printable->printPage(pageNum, dc, x0, y0, x1, y1, width, height);
+
+        return true;
+    }  
+    
+    bool preparePrint(const bool showPageSetupDialog=false)
+    {
+        wxPrintData printdata;
+        printdata.SetPrintMode( wxPRINT_MODE_PRINTER );
+        printdata.SetOrientation( orient ); // wxPORTRAIT, wxLANDSCAPE
+        printdata.SetNoCopies(1);
+        
+        page_setup = wxPageSetupDialogData(printdata);
+        //page_setup.SetMarginTopLeft(wxPoint(16, 16));
+        //page_setup.SetMarginBottomRight(wxPoint(16, 16));
+        
+        if(showPageSetupDialog)
+        {
+            // let user change default values if he wishes to
+            wxPageSetupDialog dialog( NULL,  &page_setup );
+            if(dialog.ShowModal()==wxID_OK)
+            {
+                page_setup = dialog.GetPageSetupData();
+                orient = page_setup.GetPrintData().GetOrientation();
+            }
+            else
+            {
+                std::cout << "user canceled at page setup dialog" << std::endl;
+                return false;
+            }
+        }
+        return true;
+        
+    }
+    
+    void OnBeginPrinting()
+    {
+        // set-up coordinate system however we want
+        // we'll use it when drawing
+        
+        // here i'm using arbitrary an size, use whatever you wish
+        if(orient == wxPORTRAIT)
+        {
+            max_x = 680;
+            max_y = 880;
+        }
+        else 
+        {
+            max_x = 880;
+            max_y = 680;
+        }
+        
+        FitThisSizeToPageMargins(wxSize(max_x, max_y), page_setup);
+    }
+    
+    bool OnBeginDocument(int startPage, int endPage)
+    {
+        std::cout << "beginning to print document, from page " << startPage << " to " << endPage << std::endl;
+        return wxPrintout::OnBeginDocument(startPage, endPage);
+    }
+    
+    void GetPageInfo(int *minPage, int *maxPage, int *pageSelFrom, int *pageSelTo)
+    {
+        *minPage = 1;
+        *maxPage = pageAmount;
+        
+        *pageSelFrom = 1;
+        *pageSelTo = pageAmount;
+    }
+    bool HasPage(int pageNum)
+    {
+        if(pageNum >= 1 and pageNum <= pageAmount)
+            return true;
+        else
+            return false;
+    }
+    
+    void OnEndPrinting()
+    {
+    }
+};
+
+bool printResult(AriaPrintable* printable)
+{
+    
+    QuickPrint myprint( printable );
+    wxPrinter printer;
+    
+    if(!myprint.preparePrint()) return false;
+    const bool success = printer.Print(NULL, &myprint, true /* show dialog */);
+    
+    if(!success) return false;
+    
+    return true;
+}
+
+// methods to be overriden if needed
+AriaPrintable::AriaPrintable()
+{
+}
+
+AriaPrintable::~AriaPrintable()
+{
+}
+wxString AriaPrintable::getTitle()
+{
+    return wxT("Aria Maestosa printed score");
+}
+
+int AriaPrintable::getPageAmount()
+{
+    return 1;
+}
+bool AriaPrintable::portraitOrientation()
+{
+    return true;
+}
+void AriaPrintable::printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const int w, const int h)
+{
+}
 
 }

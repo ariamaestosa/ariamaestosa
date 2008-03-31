@@ -236,14 +236,14 @@ void completeExport(bool accepted)
 	if(!accepted) return;
     
     if(currentSequence == NULL) currentSequence = currentTrack->sequence;
-	
+	/*
     // ask user to select file destination
 	wxString filepath = askForSavePath();
 	if(filepath.IsEmpty()) return;
 	
 	// open file and prepare for writing to it
 	wxFile* file = new wxFile( filepath, wxFile::write );
-	
+	*/
 	// we want to export the entire song
 	if(currentTrack == NULL)
 	{
@@ -262,10 +262,17 @@ void completeExport(bool accepted)
 			std::cout << "Generating notation for " << track->getName() << std::endl;
 			const int mode = track->graphics->editorMode;
 			
-			if( mode == GUITAR)
+			if( mode == GUITAR )
 			{
-				TablatureExporter exporter;
-				exporter.exportTablature( currentTrack, file, checkRepetitions_bool );
+				//TablatureExporter exporter;
+				//exporter.exportTablature( currentTrack, file, checkRepetitions_bool );
+                
+                TablaturePrintable tabPrint( currentTrack, checkRepetitions_bool );
+                if(!printResult(&tabPrint))
+                {
+                    std::cout << "printing did not complete successfully" << std::endl;
+                }
+                std::cout << "printing tablature done." << std::endl;
 				//exportTablature( track, file );
 			}
 			else
@@ -281,8 +288,9 @@ void completeExport(bool accepted)
 	{
 		const int mode = currentTrack->graphics->editorMode;
 		
-		if( mode == GUITAR)
+		if( mode == GUITAR )
 		{
+            /*
 			TablatureExporter exporter;
 			if(lineWidth>0) exporter.setMaxLineWidth(lineWidth);
 			//if(repetitionWidth>0) exporter.setRepetitionMinimalWidth(repetitionWidth);
@@ -291,6 +299,12 @@ void completeExport(bool accepted)
             
 			exporter.exportTablature( currentTrack, file, checkRepetitions_bool );
 			//exportTablature( currentTrack, file );
+             */
+            TablaturePrintable tabPrint( currentTrack, checkRepetitions_bool );
+            if(!printResult(&tabPrint))
+            {
+                std::cout << "error while printing" << std::endl;
+            }
 		}
 		else
 		{
@@ -299,9 +313,9 @@ void completeExport(bool accepted)
 		
 	}
 	
-	file->Flush();
-	file->Close();
-	delete file;
+	//file->Flush();
+	//file->Close();
+	//delete file;
 }
 
 

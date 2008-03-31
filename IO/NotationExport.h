@@ -19,16 +19,17 @@
 #define _NotationExport_
 
 #include <vector>
+#include "wx/wx.h"
 
 namespace AriaMaestosa
 {
     class Track;
     
-
+    static const int maxCharItemsPerLine = 45;
+    static const int maxLinesInPage = 6;
+    
 int getRepetitionMinimalLength();
 void setRepetitionMinimalLength(const int newvalue);
-
-
 
 class MeasureToExport
 {
@@ -55,11 +56,11 @@ public:
 	
 	void setID(int id_arg);
 	
-	bool isSameAs(MeasureToExport* array, int compareWithID);
+	bool isSameAs(MeasureToExport& compareWith);
 
 	// if a repetition is found, it is stored in the variables and returns true,
 	// otherwise returns false
-	bool findConsecutiveRepetition(MeasureToExport* measures, const int measureAmount,
+	bool findConsecutiveRepetition(std::vector<MeasureToExport>& measures, const int measureAmount,
 								   int& firstMeasureThatRepeats /*out*/, int& lastMeasureThatRepeats /*out*/,
 								   int& firstMeasureRepeated /*out*/, int& lastMeasureRepeated /*out*/);
 	
@@ -89,10 +90,48 @@ public:
 	int firstMeasure, lastMeasure, firstMeasureToRepeat, lastMeasureToRepeat;
 	
 	int amountOfTimes; // used for 'play many times' events
+    
+    float zoom;
+    int charWidth;
 };
 
-void getLayoutElements(Track* track, const bool checkRepetitions_bool, std::vector<LayoutElement>& layoutElements, MeasureToExport* measures);
 
+class LayoutLine
+{
+public:
+    Track* parent;
+    LayoutLine(Track* parent);
+    
+    int editorMode; // GUITAR, etc.
+    
+    int charWidth;
+    
+    // only relevant for tabs
+    int string_amount;
+    
+    std::vector<LayoutElement> layoutElements;
+};
+
+class LayoutPage
+{
+public:
+    std::vector<LayoutLine> layoutLines;
+};
+
+void getLayoutElements(Track* track, const bool checkRepetitions_bool, std::vector<LayoutPage>& layoutPages, std::vector<MeasureToExport>& mesaures);
+
+class AriaPrintable
+{
+public:
+    AriaPrintable();
+    virtual ~AriaPrintable();
+    virtual wxString getTitle();
+    virtual int getPageAmount();
+    virtual void printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const int w, const int h);
+    virtual bool portraitOrientation();
+};
+
+bool printResult(AriaPrintable* printable);
 
 }
 

@@ -21,12 +21,33 @@
 #include <wx/file.h>
 #include "Config.h"
 #include <vector>
+#include "IO/NotationExport.h"
 
 namespace AriaMaestosa
 {
+    
+class TablaturePrintable : public AriaPrintable
+{
+    std::vector<LayoutPage> layoutPages;
+    std::vector<MeasureToExport> measures;
+    
+    int text_height;
+    int text_height_half;
+    
+public:
+    TablaturePrintable(Track* track_arg, bool checkRepetitions_bool_arg);
+    ~TablaturePrintable();
+    wxString getTitle();
+    int getPageAmount();
+    
+    void printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const int w, const int h);
+    void drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1);
+};
+
+    /*
 	class Track;
 	class GuitarEditor;
-	
+
 class TablatureExporter
 {
 	DECLARE_LEAK_CHECK();
@@ -59,7 +80,7 @@ public:
 	void setMaxLineWidth(int i);
 	void flush();
 };
-
+*/
 }
 
 #endif

@@ -14,12 +14,188 @@
 
 namespace AriaMaestosa
 {
-
-// ----------------------------------------------------------------------------------------------------
-// ------------------------------------- first function called ----------------------------------------
-// ----------------------------------------------------------------------------------------------------
-
     
+    
+TablaturePrintable::TablaturePrintable(Track* track, bool checkRepetitions_bool)
+{
+
+    getLayoutElements(track, checkRepetitions_bool, layoutPages, measures);
+    
+    std::cout << "\nContains " << layoutPages.size() << " pages\n" << std::endl;
+}
+
+TablaturePrintable::~TablaturePrintable()
+{
+}
+
+wxString TablaturePrintable::getTitle()
+{
+    return wxT("AriaMaestosa tablature");
+}
+int TablaturePrintable::getPageAmount()
+{
+    return layoutPages.size();
+}
+void TablaturePrintable::printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const int w, const int h)
+{
+    dc.SetBackground(*wxWHITE_BRUSH);
+    dc.Clear();
+    
+    wxString label( getTitle() + wxT(", page ") );
+    label << pageNum;
+    dc.SetTextForeground( wxColour(0,0,0) );
+    dc.DrawText( label, x0, y0 );
+    
+    wxCoord txw, txh, descent, externalLeading;
+    dc.GetTextExtent(label, &txw, &txh, &descent, &externalLeading);
+    text_height = txh;
+    text_height_half = (int)round((float)text_height / 2.0);
+    
+    // -------------------- generate the tablature  -------------------- 
+    assertExpr(pageNum-1,<,layoutPages.size());
+    const int lineAmount = layoutPages[pageNum-1].layoutLines.size();
+    
+    /*
+     the equivalent of 4 times "text_height" will not be printed with notation.
+     first : space for title at the top
+     second and third : space below title at top
+     fourth : space below the last line
+     */
+     
+    const float line_height = ((float)h - (float)text_height*4) / (float)maxLinesInPage;
+
+    const int notation_area_origin_y = y0 + text_height*3;
+    for(int l=0; l<lineAmount; l++)
+    { 
+        const float line_y_from = notation_area_origin_y + line_height*l;
+        const float line_y_to = notation_area_origin_y + line_height*(l+0.8f);
+        
+        drawLine(layoutPages[pageNum-1].layoutLines[l], dc, x0, (int)round(line_y_from), x1, (int)round(line_y_to));
+    }
+}
+
+void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1)
+{
+    static const int line_width = 1;
+    
+    Track* track = line.parent;
+    
+    // draw tab background
+    dc.SetPen(  wxPen( wxColour(125,125,125), line_width ) );
+    
+    std::cout << "X range :" << x0 << " " << x1 << std::endl;
+    
+    const int stringAmount = line.string_amount;
+    const float stringHeight = (float)(y1 - y0) / (float)(stringAmount-1);
+    
+    for(int s=0; s<stringAmount; s++)
+    {
+        const int y = (int)round(y0 + stringHeight*s);
+        dc.DrawLine(x0, y, x1, y);
+    }
+    
+    std::vector<LayoutElement>& layoutElements = line.layoutElements;
+    
+    const int layoutElementsAmount = layoutElements.size();
+    
+    int xloc = 2;
+    
+    // 2 spaces allocated for left area of the tab
+    float widthOfAChar = (float)(x1 - x0) / (float)(line.charWidth+2);
+    
+        
+    for(int n=0; n<layoutElementsAmount; n++)
+    {
+        const int meas_x_start = x0 + (int)round(xloc*widthOfAChar) - widthOfAChar;
+        const int meas_x_end = x0 + (int)round((xloc+layoutElements[n].charWidth)*widthOfAChar);
+        const int mesa_w = meas_x_end - meas_x_start;
+        
+        // draw vertical line that starts measure
+        dc.SetPen(  wxPen( wxColour(0,0,0), line_width*2 ) );
+        dc.DrawLine( meas_x_start, y0, meas_x_start, y1);
+        
+        dc.SetTextForeground( wxColour(0,0,255) );
+
+        // ****** empty measure
+        if(layoutElements[n].type == EMPTY_MEASURE)
+        {
+            
+        } 
+        // ****** repetitions
+        else if(layoutElements[n].type == SINGLE_REPEATED_MEASURE or layoutElements[n].type == REPEATED_RIFF)
+        {
+            // FIXME - why do we I apart the measure and not the layout element
+            if(measures[layoutElements[n].measure].cutApart)
+			{
+                // TODO...
+			}
+			
+			wxString message;
+			if(layoutElements[n].type == SINGLE_REPEATED_MEASURE)
+			{
+				message = to_wxString(measures[layoutElements[n].measure].firstSimilarMeasure+1);
+			}
+			else if(layoutElements[n].type == REPEATED_RIFF)
+			{
+				message =	to_wxString(layoutElements[n].firstMeasureToRepeat+1) +
+				wxT(" - ") + 
+				to_wxString(layoutElements[n].lastMeasureToRepeat+1);
+			}
+            
+            dc.DrawText( message, meas_x_start + widthOfAChar/2, (y0+y1)/2-text_height_half );
+        }
+        // ****** play again
+        else if(layoutElements[n].type == PLAY_MANY_TIMES)
+        {
+            wxString label(wxT("X"));
+            label << layoutElements[n].amountOfTimes;
+            dc.DrawText( label, meas_x_start + widthOfAChar/2, (y0+y1)/2-text_height_half );
+        }
+        // ****** normal measure
+        else if(layoutElements[n].type == SINGLE_MEASURE)
+        {  
+            // draw measure ID
+            wxString measureLabel;
+            measureLabel << (measures[layoutElements[n].measure].id+1);
+            dc.DrawText( measureLabel, meas_x_start - widthOfAChar/2, y0 - text_height*1.3 );
+            
+            dc.SetTextForeground( wxColour(0,0,0) );
+            
+            const int firstNote = measures[layoutElements[n].measure].firstNote;
+            const int lastNote = measures[layoutElements[n].measure].lastNote;
+            const int firstTick = measures[layoutElements[n].measure].firstTick;
+            const int lastTick = measures[layoutElements[n].measure].lastTick;   
+            
+            for(int i=firstNote; i<lastNote; i++)
+            {
+                const int tick = track->getNoteStartInMidiTicks(i);
+                const int string = track->getNoteString(i);
+                const int fret = track->getNoteFret(i);
+                
+                const float nratio = ((float)(tick - firstTick) / (float)(lastTick - firstTick));
+                if(nratio < 0 or nratio > 1) std::cout << "note ratio : " << nratio <<
+                    " firstTick=" << firstTick << " lastTick=" << lastTick << " tick=" << tick << std::endl;
+                
+                if(fret < 0)  dc.SetTextForeground( wxColour(255,0,0) );
+                
+                const int drawX = nratio * mesa_w + meas_x_start - widthOfAChar/2;
+                const int drawY = y0 + stringHeight*string -text_height_half;
+                wxString label = to_wxString(fret);
+                
+                dc.DrawText( label, drawX, drawY );
+                
+                if(fret < 0)  dc.SetTextForeground( wxColour(0,0,0) );
+            }
+        }
+        
+        xloc += layoutElements[n].charWidth;
+        
+    }//next element
+}
+
+
+
+#ifdef _DISABLED_
 TablatureExporter::TablatureExporter()
 {
 	INIT_LEAK_CHECK();	
@@ -48,6 +224,12 @@ void TablatureExporter::flush()
 
 void TablatureExporter::exportTablature(Track* track_arg, wxFile* file_arg, bool checkRepetitions_bool_arg)
 {
+    TablaturePrintable tabPrint;
+    if(!printResult(&tabPrint))
+    {
+        std::cout << "failure!" << std::endl;
+    }
+    return;
 
 	checkRepetitions_bool = checkRepetitions_bool_arg;
 	file = file_arg;
@@ -268,9 +450,9 @@ void TablatureExporter::exportTablature(Track* track_arg, wxFile* file_arg, bool
 	}//next measure
 	*/
     
-    std::vector<LayoutElement> layoutElements;
+    std::vector<LayoutLine> layoutLines;
     MeasureToExport measures[measureAmount];
-    getLayoutElements(track, checkRepetitions_bool, layoutElements, measures);
+    getLayoutElements(track, checkRepetitions_bool, layoutLines, measures);
 	// -------------------- generate the tablature  -------------------- 
 	const int layoutElementsAmount = layoutElements.size();
 
@@ -507,5 +689,7 @@ void TablatureExporter::exportTablature(Track* track_arg, wxFile* file_arg, bool
 	
 	
 }
+
+#endif
 
 }
