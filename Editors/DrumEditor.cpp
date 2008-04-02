@@ -366,7 +366,7 @@ void DrumEditor::moveNote(Note& note, const int relativeX, const int relativeY)
      *      3. Find the new midi key at the new screen location
      */
     
-    assert(note.pitchID>=0);
+    //assert(note.pitchID>=0);
     assert(note.pitchID<128);
     
     // find where on screen this particular drum is drawn (their screen position is not in the same order as the midi order)

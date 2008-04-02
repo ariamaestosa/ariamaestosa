@@ -41,6 +41,8 @@ void TablaturePrintable::printPage(const int pageNum, wxDC& dc, const int x0, co
     dc.SetBackground(*wxWHITE_BRUSH);
     dc.Clear();
     
+    dc.SetFont( wxFont(11,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL) );
+    
     wxString label( getTitle() + wxT(", page ") );
     label << pageNum;
     dc.SetTextForeground( wxColour(0,0,0) );
@@ -68,7 +70,7 @@ void TablaturePrintable::printPage(const int pageNum, wxDC& dc, const int x0, co
     for(int l=0; l<lineAmount; l++)
     { 
         const float line_y_from = notation_area_origin_y + line_height*l;
-        const float line_y_to = notation_area_origin_y + line_height*(l+0.8f);
+        const float line_y_to = notation_area_origin_y + line_height*(l+0.6f);
         
         drawLine(layoutPages[pageNum-1].layoutLines[l], dc, x0, (int)round(line_y_from), x1, (int)round(line_y_to));
     }
@@ -106,6 +108,8 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
         
     for(int n=0; n<layoutElementsAmount; n++)
     {
+        std::cout << "element " << n << " width=" << layoutElements[n].charWidth << std::endl;
+        
         const int meas_x_start = x0 + (int)round(xloc*widthOfAChar) - widthOfAChar;
         const int meas_x_end = x0 + (int)round((xloc+layoutElements[n].charWidth)*widthOfAChar);
         const int mesa_w = meas_x_end - meas_x_start;
@@ -157,14 +161,19 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
             // draw measure ID
             wxString measureLabel;
             measureLabel << (measures[layoutElements[n].measure].id+1);
-            dc.DrawText( measureLabel, meas_x_start - widthOfAChar/2, y0 - text_height*1.3 );
+            dc.DrawText( measureLabel, meas_x_start - widthOfAChar/2, y0 - text_height*1.2 );
             
             dc.SetTextForeground( wxColour(0,0,0) );
             
+
             const int firstNote = measures[layoutElements[n].measure].firstNote;
-            const int lastNote = measures[layoutElements[n].measure].lastNote;
+            //const int lastNote = measures[layoutElements[n].measure].lastNote;
             const int firstTick = measures[layoutElements[n].measure].firstTick;
-            const int lastTick = measures[layoutElements[n].measure].lastTick;   
+            const int lastTick = measures[layoutElements[n].measure].lastTick;
+            
+            int lastNote = measures[layoutElements[n].measure].lastNote;
+            
+            // TODO : imcomplete lines don't render correctly
             
             for(int i=firstNote; i<lastNote; i++)
             {
@@ -173,13 +182,17 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
                 const int fret = track->getNoteFret(i);
                 
                 const float nratio = ((float)(tick - firstTick) / (float)(lastTick - firstTick));
-                if(nratio < 0 or nratio > 1) std::cout << "note ratio : " << nratio <<
-                    " firstTick=" << firstTick << " lastTick=" << lastTick << " tick=" << tick << std::endl;
+               //if(nratio < 0 or nratio > 1) std::cout << "note ratio : " << nratio <<
+                //    " firstTick=" << firstTick << " lastTick=" << lastTick << " tick=" << tick << std::endl;
+                
+               // std::cout << "note ratio : " << nratio << " lastTick=" << lastTick << " tick=" << tick << std::endl;
                 
                 if(fret < 0)  dc.SetTextForeground( wxColour(255,0,0) );
                 
-                const int drawX = nratio * mesa_w + meas_x_start - widthOfAChar/2;
-                const int drawY = y0 + stringHeight*string -text_height_half;
+                // substract from width to leave some space on the right (coordinate is from the left of the text string so we need extra space on the right)
+                // if fret number is greater than 9, the string will have two characters so we need to recenter it a bit more
+                const int drawX = nratio * (mesa_w-widthOfAChar*1.5) + meas_x_start + (fret > 9 ? widthOfAChar/4 : widthOfAChar/2);
+                const int drawY = y0 + stringHeight*string - text_height_half*0.8;
                 wxString label = to_wxString(fret);
                 
                 dc.DrawText( label, drawX, drawY );
