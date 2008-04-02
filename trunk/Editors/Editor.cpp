@@ -277,7 +277,7 @@ bool Editor::hasAsBackground(Track* track)
 // on track deletion, we need to check if this one is being used and remove references to it if so
 void Editor::trackDeleted(Track* track)
 {
-    Sequence* seq = getCurrentSequence();
+    //Sequence* seq = getCurrentSequence();
     const int bgTrackAmount = backgroundTracks.size();
     
     for(int m=0; m<bgTrackAmount; m++)

@@ -26,7 +26,7 @@ namespace AriaMaestosa
     class Track;
     
     static const int maxCharItemsPerLine = 45;
-    static const int maxLinesInPage = 6;
+    static const int maxLinesInPage = 7;
     
 int getRepetitionMinimalLength();
 void setRepetitionMinimalLength(const int newvalue);

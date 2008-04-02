@@ -246,12 +246,12 @@ void getLayoutElements(Track* track, const bool checkRepetitions_bool, std::vect
 			
 			const int currentNoteDuration = track->getNoteEndInMidiTicks(note) - track->getNoteStartInMidiTicks(note);
 			
-			if(currentNoteDuration <= 0)  continue; // skpi malformed notes if any
+			if(currentNoteDuration <= 0)  continue; // skip malformed notes if any
 			if( currentNoteDuration < measures[measure].shortestDuration or measures[measure].shortestDuration==-1) measures[measure].shortestDuration = currentNoteDuration;
 			
 		}
 		
-		measures[measure].lastNote = note; // ID of the last note in this measure
+		measures[measure].lastNote = note; // ID of the last note in this measure (or actually, first note in NEXT measure?? FIXME)
 	}
 	
     //-------------------- search for repeated measures if necessary  -------------------- 
