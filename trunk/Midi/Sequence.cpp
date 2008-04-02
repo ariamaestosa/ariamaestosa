@@ -102,6 +102,10 @@ wxString Sequence::suggestFileName()
 	{
 		return getInternalName();
 	}
+    else if(!sequenceFileName.IsEmpty())
+    {
+        return sequenceFileName;
+    }
 	else
 	{
 		return  wxString( _("Untitled") );

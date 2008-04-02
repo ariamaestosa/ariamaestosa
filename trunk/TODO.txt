@@ -145,7 +145,6 @@ NOTE: sorry, this is very raw :)
 
 - clicking on a note should play it and it doesn't always work (like when note is selected)
 - at the very top, in keyboard editor, wrong notes are greyed out
-- import midi. save to aria. no name suggested.
 - switching tracks tends to deselect measures
 - accentuated characters in copyright/song title gets broken (and possibly track name too) UTF-8 doesn't seem to work either
 
