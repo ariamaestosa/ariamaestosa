@@ -449,7 +449,7 @@ void getLayoutElements(Track* track, const bool checkRepetitions_bool, std::vect
             layoutElements[n].charWidth = 5;
         }
         
-        std::cout << "elmnt " << n << " width : " << layoutElements[n].charWidth << std::endl;
+        std::cout << "$$ setting charwidth for element " << n << " : " << layoutElements[n].charWidth << std::endl;
     }
     
     // lay out in lines and pages
@@ -492,7 +492,8 @@ void getLayoutElements(Track* track, const bool checkRepetitions_bool, std::vect
         layoutPages[currentPage].layoutLines[currentLine].layoutElements.push_back(layoutElements[n]);
         totalLength += layoutElements[n].charWidth;
     }
-    
+    // for last line processed
+    layoutPages[currentPage].layoutLines[currentLine].charWidth = totalLength;
 
 }
 

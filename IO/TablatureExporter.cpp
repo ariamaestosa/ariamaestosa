@@ -85,8 +85,6 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
     // draw tab background
     dc.SetPen(  wxPen( wxColour(125,125,125), line_width ) );
     
-    std::cout << "X range :" << x0 << " " << x1 << std::endl;
-    
     const int stringAmount = line.string_amount;
     const float stringHeight = (float)(y1 - y0) / (float)(stringAmount-1);
     
@@ -105,11 +103,11 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
     // 2 spaces allocated for left area of the tab
     float widthOfAChar = (float)(x1 - x0) / (float)(line.charWidth+2);
     
-        
+    assertExpr(line.charWidth,>,0);
+    assertExpr(widthOfAChar,>,0);
+    
     for(int n=0; n<layoutElementsAmount; n++)
     {
-        std::cout << "element " << n << " width=" << layoutElements[n].charWidth << std::endl;
-        
         const int meas_x_start = x0 + (int)round(xloc*widthOfAChar) - widthOfAChar;
         const int meas_x_end = x0 + (int)round((xloc+layoutElements[n].charWidth)*widthOfAChar);
         const int mesa_w = meas_x_end - meas_x_start;
@@ -161,19 +159,15 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
             // draw measure ID
             wxString measureLabel;
             measureLabel << (measures[layoutElements[n].measure].id+1);
-            dc.DrawText( measureLabel, meas_x_start - widthOfAChar/2, y0 - text_height*1.2 );
+            dc.DrawText( measureLabel, meas_x_start - widthOfAChar/4, y0 - text_height*1.4 );
             
             dc.SetTextForeground( wxColour(0,0,0) );
             
 
             const int firstNote = measures[layoutElements[n].measure].firstNote;
-            //const int lastNote = measures[layoutElements[n].measure].lastNote;
             const int firstTick = measures[layoutElements[n].measure].firstTick;
             const int lastTick = measures[layoutElements[n].measure].lastTick;
-            
-            int lastNote = measures[layoutElements[n].measure].lastNote;
-            
-            // TODO : imcomplete lines don't render correctly
+            const int lastNote = measures[layoutElements[n].measure].lastNote;
             
             for(int i=firstNote; i<lastNote; i++)
             {
@@ -182,10 +176,6 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
                 const int fret = track->getNoteFret(i);
                 
                 const float nratio = ((float)(tick - firstTick) / (float)(lastTick - firstTick));
-               //if(nratio < 0 or nratio > 1) std::cout << "note ratio : " << nratio <<
-                //    " firstTick=" << firstTick << " lastTick=" << lastTick << " tick=" << tick << std::endl;
-                
-               // std::cout << "note ratio : " << nratio << " lastTick=" << lastTick << " tick=" << tick << std::endl;
                 
                 if(fret < 0)  dc.SetTextForeground( wxColour(255,0,0) );
                 
