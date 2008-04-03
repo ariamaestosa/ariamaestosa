@@ -271,7 +271,7 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
 				m.SetByte1( 3 );
 
                 const char* internalname = toCString(sequence->getInternalName());
-				
+
 				//std::cout << "name : " << internalname << " (" << sequence->getInternalName().size()+1 << ")" << std::endl;
 				jdkmidi::MIDISystemExclusive sysex( (unsigned char*)internalname,
 													sequence->getInternalName().size()+1,
@@ -417,6 +417,120 @@ int convertTempoBendToBPM(int val)
 {
 	return (int)( (127-val)*380.0/128.0 + 20);
 }
+
+
+
+// ------------------------------------------------------------
+//     generic portable sequencer/timer implementation
+// ------------------------------------------------------------
+
+#pragma mark -
+
+AriaSequenceTimer::AriaSequenceTimer(Sequence* seq)
+{
+    AriaSequenceTimer::seq = seq;
+}
+
+// wxStopWatch :
+// http://docs.wxwidgets.org/stable/wx_wxstopwatch.html#wxstopwatch
+
+void AriaSequenceTimer::run()
+{
+
+    jdkmidi::MIDIMultiTrack jdkmidiseq;
+    int songLengthInTicks;
+    int trackAmount;
+    const bool selectionOnly = false;
+    const int start_tick;
+	makeJDKMidiSequence(sequence, jdkmidiseq, selectionOnly, &songLengthInTicks, start_tick, &trackAmount, true /* for playback */);
+
+    jdkmidi::MIDISequencer jdksequencer(jdkmidiseq);
+    jdksequencer.GoToTimeMs( 0 );
+
+    int bpm = seq->getTempo();
+    const int beatlen = seq->ticksPerBeat();
+
+    double ticks_per_millis = (double)bpm * (double)beatlen / (double)60000.0;
+
+    std::cout << "bpm = " << bpm << " beatlen=" << beatlen << " ticks_per_millis=" << ticks_per_millis << std::endl;
+
+    wxStopWatch timer;
+    timer.Start();
+
+    float next_event_time = 0;
+
+    MIDITimedBigMessage ev;
+    int ev_track;
+
+    while(true)
+    {
+        const long elapsed = timer.Time();
+
+        // process all events that need to be done by the current tick
+        while( next_event_time <= pretend_clock_time )
+        {
+            if(!seq.GetNextEvent( &ev_track, &ev ))
+            {
+                // error
+            }
+
+            // process ev...
+
+            if( ev.IsNoteOn() )
+			{
+                const int note = event.GetNote();
+                const int volume = event->GetVelocity();
+			}
+			else if( ev.IsNoteOff() )
+			{
+                const int note = ev.GetNote();
+			}
+			else if( ev.IsControlChange() )
+			{
+                const int controllerID = ev.GetController();
+                const int value = ev.GetControllerValue();
+			}
+			else if( ev.IsPitchBend() )
+			{
+                const int pitchBendVal = ev.GetBenderValue()
+			}
+			else if( ev.IsProgramChange() )
+			{
+                const int instrument = ev.GetPGValue();
+            }
+            /*
+            else if( ev.IsTempo() )
+			{
+                const int tempo = event->GetTempo32()/32;
+			}*/
+
+            if(!seq.GetNextEventTimeMs( &next_event_time ))
+            {
+                // song end
+                return;
+            }
+
+        }
+/*
+// manual - without jdkmidi
+
+        const int tick = (int)(elapsed * ticks_per_millis);
+        //--------
+        // print some stuff
+        static int i=0;
+        i++;
+        if(i>25)
+        {
+            std::cout << "tick = " << tick << " (" << (int)(tick / beatlen) << " beats, " << (int)(elapsed/1000.0f) << " seconds)" << std::endl;
+            i=0;
+        }
+        //--------
+        */
+
+        wxMilliSleep(10);
+    }
+}
+
 
 
 }
