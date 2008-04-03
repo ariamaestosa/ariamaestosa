@@ -88,7 +88,7 @@ Track::~Track()
         Track* track = seq->getTrack(n);
         if(track != this) track->trackDeleted(this);
     }
-    
+
     delete graphics;
     notes.clearAndDeleteAll();
 	noteOff.clearWithoutDeleting();
@@ -100,7 +100,7 @@ Track::~Track()
 void Track::trackDeleted(Track* track)
 {
     graphics->keyboardEditor->trackDeleted(track);
-    
+
     /*
      // uncomment if these editors get background support too
     graphics->guitarEditor->trackDelete(track);
@@ -213,14 +213,14 @@ bool Track::addNote(Note* note, bool check_for_overlapping_notes)
 void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
 {
 	ptr_vector<ControllerEvent>* vector;
-	
+
 	if(previousValue != NULL) *previousValue = -1;
-	
+
 	// tempo events
 	if(evt->getController()==201) vector = &sequence->tempoEvents;
 	// controller and pitch bend events
 	else vector = &controlEvents;
-	
+
 	// don't bother checking order if we're importing, we know its in time order and all
 	// FIXME - what about 'addController_import' ??
 	if(sequence->importing)
@@ -228,10 +228,10 @@ void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
 		vector->push_back( evt );
 		return;
 	}
-	
+
 	assertExpr(evt->getController(),<,205);
 	assertExpr(evt->getValue(),<,128);
-	
+
 	const int eventAmount=vector->size();
 	for(int n=0; n<eventAmount; n++)
 	{
@@ -251,9 +251,9 @@ void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
 			vector->add( evt, n );
 			return;
 		}//endif
-		
+
 	}//next
-	
+
 	vector->push_back( evt );
 }
 
@@ -415,7 +415,7 @@ void Track::reorderNoteVector()
 {
 	// FIXME - innefficient implementation
 	const int noteAmount = notes.size();
-	
+
 #ifdef _MORE_DEBUG_CHECKS
 	if(notes.size() != noteOff.size())
 	{
@@ -423,12 +423,12 @@ void Track::reorderNoteVector()
 		std::cout << notes.size() << " notes and " << noteOff.size() << " note offs" << std::endl;
 	}
 #endif
-	
+
 	for(int n=0; n<noteAmount-1; n++)
 	{
-		
+
 		assertExpr(n+1,<,notes.size());
-		
+
 		if(notes[n].startTick > notes[n+1].startTick)
 		{
 			notes.swap(n, n+1);
@@ -436,7 +436,7 @@ void Track::reorderNoteVector()
 			else n=0;
 		}
 	}//next
-	
+
 }
 
 /*
@@ -448,17 +448,17 @@ void Track::reorderNoteOffVector()
 	const int noteAmount = noteOff.size();
 #ifdef _MORE_DEBUG_CHECKS
 	if(notes.size() != noteOff.size()) std::cout << "WARNING note on and off events differ in amount" << std::endl;
-#endif	
+#endif
 
 	for(int n=0; n<noteAmount-1; n++)
 	{
-		
+
 		assertExpr(n+1,<,noteOff.size());
 		assert(noteOff.get(n) != NULL);
 		assert(noteOff.get(n+1) != NULL);
 		assert(noteOff.get(n) != 0);
 		assert(noteOff.get(n+1) != 0);
-		
+
 		if(noteOff[n].endTick > noteOff[n+1].endTick)
 		{
 			noteOff.swap(n, n+1);
@@ -466,7 +466,7 @@ void Track::reorderNoteOffVector()
 			else n=0;
 		}//end if
 	}//next
-	
+
 }
 
 void Track::reorderControlVector()
@@ -474,12 +474,12 @@ void Track::reorderControlVector()
 	// FIXME - innefficient implementation
     // FIXME - if bugs in controller editor are fixed that method shouldn't even be necessary
 	const int ctrlAmount = controlEvents.size();
-	
+
 	for(int n=0; n<ctrlAmount-1; n++)
 	{
-		
+
 		assertExpr(n+1,<,ctrlAmount);
-		
+
 		if(controlEvents[n].getTick() > controlEvents[n+1].getTick())
 		{
 			controlEvents.swap(n, n+1);
@@ -487,7 +487,7 @@ void Track::reorderControlVector()
 			else n=0;
 		}
 	}//next
-	
+
 }
 
 
@@ -564,7 +564,7 @@ void Track::playNote(const int id, const bool noteChange)
 
 bool Track::addNote_import(const int pitchID, const int startTick, const int endTick, const int volume, const int string)
 {
-	return addNote( new Note(graphics, pitchID, startTick, endTick, volume, string) ); 
+	return addNote( new Note(graphics, pitchID, startTick, endTick, volume, string) );
 	//return addNote(pitchID, startTick, endTick, volume, string);
 }
 
@@ -604,11 +604,11 @@ void Track::markNoteToBeRemoved(const int id)
 {
 	assertExpr(id,>=,0);
 	assertExpr(id,<,notes.size());
-	
+
 	// also delete corresponding note off event
 	const int namount = noteOff.size();
 	Note* note = notes.get(id);
-	
+
 	for(int i=0; i<namount; i++)
 	{
 		if(noteOff.get(i) == note)
@@ -620,17 +620,17 @@ void Track::markNoteToBeRemoved(const int id)
 		if(i+1 == namount) std::cout << "WARNING could not find note off event corresponding to note on event" << std::endl;
 #endif
 	}
-	
+
 	notes.markToBeRemoved(id);
 }
 void Track::removeMarkedNotes()
 {
-	
+
 	//std::cout << "removing marked" << std::endl;
-	
+
 	notes.removeMarked();
 	noteOff.removeMarked();
-	
+
 #ifdef _MORE_DEBUG_CHECKS
 	if(notes.size() != noteOff.size())
 	{
@@ -681,7 +681,7 @@ int Track::getInstrument()
 // it tells not to do any more recursion
 void Track::setDrumKit(int i, bool recursive)
 {
-	
+
 	// check id validity
 	if (i == 0 ) ; //Standard
     else if (i == 8 ) ; //Room kit
@@ -697,7 +697,7 @@ void Track::setDrumKit(int i, bool recursive)
 		// invalid drum kit ID
         return;
     }
-	
+
 	drumKit = i;
 
 	// if we're in manual channel management mode, change all tracks of the same channel to have the same instrument
@@ -727,7 +727,7 @@ int getActiveMin(int a, int b)
 	if(a==-1 and b==-1) return -1;
 	if(a==-1) return 1;//b
 	if(b==-1) return 0;//a
-		
+
 	if(a <= b) return 0;//a
 	else return 1;//b
 }
@@ -767,29 +767,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 						 bool selectionOnly,
 						 int& startTick)
 {
-// FIXME - remove
-    /*
-	std::cout << "performing check" << std::endl;
-	int old_value = -1;
-	for(int i=0; i<notes.size(); i++)
-	{
-		if(notes[i].startTick < old_value) std::cout << "order error in notes vector\n";
-		old_value = notes[i].startTick;
-	}
-	old_value = -1;
-	for(int i=0; i<noteOff.size(); i++)
-	{
-		if(noteOff[i].endTick < old_value) std::cout << "order error in notes off vector\n";
-		old_value = noteOff[i].endTick;
-	}
-	old_value = -1;
-	for(int i=0; i<controlEvents.size(); i++)
-	{
-		if(controlEvents[i].getTick() < old_value) std::cout << "order error in control vector\n";
-		old_value = controlEvents[i].getTick();
-	}
-	*/
-    
+
 	// ignore track if it's muted
 	// (but for some reason drum track can't be completely omitted)
 	// if we only play selection, ignore mute and play anyway
@@ -907,7 +885,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 	if(graphics->muted and graphics->editorMode == DRUM and !selectionOnly) return -1;
 
 	//std::cout << "-------------------- TRACK -------------" << std::endl;
-	
+
 	while(true)
 	{
 
@@ -920,7 +898,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
 		const int tick_on      = (note_on_id < noteOnAmount)     ?   notes[note_on_id].startTick - firstNoteStartTick      :  -1;
 		const int tick_off     = (note_off_id < noteOffAmount)   ?   noteOff[note_off_id].endTick - firstNoteStartTick     :  -1;
-		
+
 		// ignore control events when only playing selection
 		const int tick_control = (control_evt_id < controllerAmount and !selectionOnly)  ?   controlEvents[control_evt_id].getTick() - firstNoteStartTick : -1;
 
@@ -928,32 +906,6 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
 		if(activeMin==-1) break; // all events have been added
 
-        /*
-#ifdef _MORE_DEBUG_CHECKS
-		static int last_tick = -1;
-		static int last_type = -1;
-		int current_tick;
-		if(activeMin == 2) current_tick = tick_on;
-		if(activeMin == 1) current_tick = tick_control;
-		if(activeMin == 0) current_tick = tick_off;
-		
-		if(last_tick != -1 and last_tick>current_tick)
-		{
-			std::cout << "Wrong event order!!!" << std::endl;
-			std::cout << last_tick;
-			if(last_type == 2) std::cout << " (note on) ";
-			if(last_type == 1) std::cout << " (control) ";
-			if(last_type == 0) std::cout << " (note off) ";
-			std::cout << " then " << current_tick;
-			if(activeMin == 2) std::cout << " (note on) ";
-			if(activeMin == 1) std::cout << " (control) ";
-			if(activeMin == 0) std::cout << " (note off) ";
-			std::cout << std::endl;
-		}
-		last_tick = current_tick;
-		last_type = activeMin;
-#endif
-*/
 		jdkmidi::MIDITimedBigMessage m;
 
 		//  ------------------------ add note on event ------------------------
