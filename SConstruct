@@ -319,13 +319,7 @@ def compile_Aria(build_type, which_os):
         source_pmidi = Split("""
         Midi/Players/Alsa/AlsaPort.cpp
         Midi/Players/Alsa/AlsaNotePlayer.cpp
-        Midi/Players/Alsa/MidiDataProvider.cpp
         Midi/Players/Alsa/AlsaPlayer.cpp
-        Midi/Players/Alsa/pmidi/elements.cpp
-        Midi/Players/Alsa/pmidi/mdutil.cpp
-        Midi/Players/Alsa/pmidi/midiread.cpp
-        Midi/Players/Alsa/pmidi/seqlib.cpp
-        Midi/Players/Alsa/pmidi/seqmidi.cpp
         """)
         sources = sources + source_pmidi
         
