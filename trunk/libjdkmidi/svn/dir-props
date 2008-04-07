@@ -1,7 +1,0 @@
-K 13
-svn:externals
-V 103
-autobuild https://clicker.jdkoftinoff.com/projects/svn/jdks/trunk/magicmakefile/branches/v4/autobuild
-
-
-END
