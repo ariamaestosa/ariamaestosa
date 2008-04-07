@@ -42,7 +42,7 @@ GLPane::GLPane(MainFrame* mainFrame, int* args) :
 
     int argc = 0;
     char** argv = NULL;
-	
+
 	std::cout << "calling glutInit" << std::endl;
     glutInit(&argc, argv);
 }
@@ -68,7 +68,7 @@ void GLPane::resized(wxSizeEvent& evt)
 
 void GLPane::setCurrent()
 {
-	if (!GetParent()->IsShown()) return; 
+	if (!GetParent()->IsShown()) return;
     wxGLCanvas::SetCurrent();
 }
 
@@ -152,7 +152,7 @@ int GLPane::getHeight()
 
 bool GLPane::prepareFrame()
 {
-    if(!GetParent()->IsShown()) return false; 
+    if(!GetParent()->IsShown()) return false;
     wxGLCanvas::SetCurrent();
     return true;
 }

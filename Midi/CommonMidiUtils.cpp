@@ -41,6 +41,12 @@
 
 #include <wx/timer.h>
 
+//#include <sys/resource.h>
+//#include <sys/time.h>
+//#include <unistd.h>
+#include <time.h>
+#include <sys/timeb.h>
+
 #include <iostream>
 
 namespace AriaMaestosa {
@@ -181,6 +187,8 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
 		int channel=0;
 
 		int substract_ticks;
+
+        tracks.SetClksPerBeat( sequence->ticksPerBeat() );
 
 		if(selectionOnly)
 		{
@@ -426,26 +434,79 @@ int convertTempoBendToBPM(int val)
 
 #pragma mark -
 
+class FtimeTimer
+{
+    long initial_sec, initial_millis;
+    public:
+
+    void reset_and_start()
+    {
+        // FIXME - ftime is apparently obsolete (http://linux.die.net/man/3/ftime)
+        // use http://linux.die.net/man/2/gettimeofday instead
+
+        timeb tb;
+        ftime(&tb);
+        initial_sec= tb.time;
+        initial_millis = tb.millitm;
+        //std::cout << "time = " << tb.time << " seconds " << tb.millitm << " millis" << std::endl;
+    }
+
+    int get_elapsed_millis()
+    {
+        timeb tb;
+        ftime(&tb);
+
+        const long current_sec = tb.time;
+        const long current_millis = tb.millitm;
+
+        const long delta_sec = current_sec - initial_sec;
+
+        const long total_millis = delta_sec*1000 - initial_millis + current_millis;
+        return total_millis;
+
+    }
+};
+
+class DummyTimer
+{
+    long time;
+    public:
+    void reset_and_start(){ time=0; }
+    int get_elapsed_millis(){ time+=13; return time; }
+};
+
+
+typedef FtimeTimer BasicTimer;
+//typedef DummyTimer BasicTimer;
+
 AriaSequenceTimer::AriaSequenceTimer(Sequence* seq)
 {
     AriaSequenceTimer::seq = seq;
 }
 
-// wxStopWatch :
-// http://docs.wxwidgets.org/stable/wx_wxstopwatch.html#wxstopwatch
+//jdkmidi::MIDIMultiTrack* jdkmidiseq = NULL;
+//jdkmidi::MIDISequencer* jdksequencer = NULL;
+BasicTimer* timer = NULL;
 
-void AriaSequenceTimer::run()
+void cleanup_sequencer()
+{
+    //if(jdksequencer != NULL) delete jdksequencer;
+    //if(jdkmidiseq != NULL) delete jdkmidiseq;
+    if(timer != NULL) delete timer;
+
+    //jdksequencer = NULL;
+    //jdkmidiseq = NULL;
+    timer = NULL;
+}
+
+void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int songLengthInTicks)
 {
 
-    jdkmidi::MIDIMultiTrack jdkmidiseq;
-    int songLengthInTicks;
-    int trackAmount;
-    const bool selectionOnly = false;
-    const int start_tick;
-	makeJDKMidiSequence(sequence, jdkmidiseq, selectionOnly, &songLengthInTicks, start_tick, &trackAmount, true /* for playback */);
+    std::cout << "  * AriaSequenceTimer::run" << std::endl;
 
-    jdkmidi::MIDISequencer jdksequencer(jdkmidiseq);
-    jdksequencer.GoToTimeMs( 0 );
+    std::cout << "trying to play " << seq->suggestFileName().mb_str() << std::endl;
+
+    jdksequencer->GoToTimeMs( 0 );
 
     int bpm = seq->getTempo();
     const int beatlen = seq->ticksPerBeat();
@@ -454,81 +515,155 @@ void AriaSequenceTimer::run()
 
     std::cout << "bpm = " << bpm << " beatlen=" << beatlen << " ticks_per_millis=" << ticks_per_millis << std::endl;
 
-    wxStopWatch timer;
-    timer.Start();
-
     float next_event_time = 0;
 
-    MIDITimedBigMessage ev;
+    jdkmidi::MIDITimedBigMessage ev;
     int ev_track;
 
-    while(true)
+    jdkmidi::MIDIClockTime tick;
+    if(!jdksequencer->GetNextEventTime(&tick))
     {
-        const long elapsed = timer.Time();
+        std::cout << "failed to get first event time, returning" << std::endl;
+        cleanup_sequencer();
+        return;
+    }
 
+    //jdksequencer->ResetAllTracks();
+
+    long previous_tick = tick;
+
+    next_event_time = tick / ticks_per_millis;
+
+    timer = new BasicTimer();
+    timer->reset_and_start();
+
+    long total_millis = 0;
+    long last_millis = 0;
+
+
+    while(PlatformMidiManager::seq_must_continue())
+    {
         // process all events that need to be done by the current tick
-        while( next_event_time <= pretend_clock_time )
+        while( next_event_time <= total_millis )
         {
-            if(!seq.GetNextEvent( &ev_track, &ev ))
+            if(!jdksequencer->GetNextEvent( &ev_track, &ev ))
             {
                 // error
+                std::cerr << "error, failed to retrieve next event, returning" << std::endl;
+                cleanup_sequencer();
+                return;
             }
-
-            // process ev...
+            const int channel = ev.GetChannel();
 
             if( ev.IsNoteOn() )
 			{
-                const int note = event.GetNote();
-                const int volume = event->GetVelocity();
-			}
+                const int note = ev.GetNote();
+                const int volume = ev.GetVelocity();
+                PlatformMidiManager::seq_note_on(note, volume, channel);
+            }
 			else if( ev.IsNoteOff() )
 			{
                 const int note = ev.GetNote();
+                PlatformMidiManager::seq_note_off(note, channel);
 			}
 			else if( ev.IsControlChange() )
 			{
                 const int controllerID = ev.GetController();
                 const int value = ev.GetControllerValue();
+                PlatformMidiManager::seq_controlchange(controllerID, value, channel);
 			}
 			else if( ev.IsPitchBend() )
 			{
-                const int pitchBendVal = ev.GetBenderValue()
+                const int pitchBendVal = ev.GetBenderValue();
+                PlatformMidiManager::seq_pitch_bend(pitchBendVal, channel);
 			}
 			else if( ev.IsProgramChange() )
 			{
                 const int instrument = ev.GetPGValue();
+                PlatformMidiManager::seq_prog_change(instrument, channel);
             }
-            /*
             else if( ev.IsTempo() )
 			{
-                const int tempo = event->GetTempo32()/32;
-			}*/
+                const int bpm = ev.GetTempo32()/32;
+                ticks_per_millis = (double)bpm * (double)beatlen / (double)60000.0;
+			}
+			/*
+            else if( ev.IsPolyPressure() )
+                std::cout << "poly pressure" << std::endl;
+            else if( ev.IsChannelPressure() )
+                std::cout << "channel pressure" << std::endl;
+            else if( ev.IsSystemMessage() )
+                std::cout << "system message " << std::hex << ev.GetType() << std::endl;
 
-            if(!seq.GetNextEventTimeMs( &next_event_time ))
+            if( ev.IsSysEx() )
+                std::cout << "sys ex " << ev.GetSysExNum() << std::endl;
+            else if( ev.IsSongPosition() )
+                std::cout << "song position" << std::endl;
+            else if( ev.IsNoOp() )
+                std::cout << "no op" << std::endl;
+            else if( ev.IsBeatMarker() )
+                std::cout << "beat marker" << std::endl;
+            else
             {
-                // song end
+                std::cout << "unknown event : " << ev.GetType() << std::endl;
+            }
+            */
+
+            previous_tick = tick;
+
+            if(!jdksequencer->GetNextEventTime(&tick))
+            {
+                cleanup_sequencer();
                 return;
             }
 
+
+            if(tick > songLengthInTicks)
+            {
+                std::cout << "done, thread will exit" << std::endl;
+                PlatformMidiManager::seq_notify_current_tick(-1);
+                cleanup_sequencer();
+                return;
+            }
+
+            PlatformMidiManager::seq_notify_current_tick(previous_tick);
+
+            next_event_time += (tick - previous_tick) / ticks_per_millis;
+
+            /*
+            static int i = 0;
+            i++; if(i>10) i=0;
+            if(i == 1)
+            {
+                std::cout << "next_event_time = " << next_event_time << "  -> tick = " << tick << std::endl;
+            }
+            */
+
         }
+
+        wxThread::Sleep(10);
+
 /*
-// manual - without jdkmidi
-
-        const int tick = (int)(elapsed * ticks_per_millis);
-        //--------
-        // print some stuff
-        static int i=0;
-        i++;
-        if(i>25)
         {
-            std::cout << "tick = " << tick << " (" << (int)(tick / beatlen) << " beats, " << (int)(elapsed/1000.0f) << " seconds)" << std::endl;
-            i=0;
-        }
-        //--------
-        */
+        //jdkmidi::MIDIClockTime tick;
+        //jdksequencer->GetCurrentMIDIClockTime();
+        //std::cout << "current tick got from sequencer : " << tick << std::endl;
+        //PlatformMidiManager::seq_notify_current_tick(tick);
 
-        wxMilliSleep(10);
+        std::cout << "current beat got from sequencer : " << jdksequencer->GetCurrentBeat() << std::endl;
+        }
+*/
+        last_millis = total_millis;
+        const int delta = (timer->get_elapsed_millis() - last_millis);
+
+        total_millis += delta;
+
+
+        // http://www.meangene.com/notes/time.html
+        // http://ftp.traduc.org/doc-vf/gazette-linux/html/2004/103/lg103-G.html
     }
+
+    cleanup_sequencer();
 }
 
 

@@ -12,19 +12,19 @@
 
 namespace AriaMaestosa
 {
-    
+
     MainPane* mainPane = NULL;
 
 
 
 namespace Core
-{  
-    
+{
+
 void setMainPane(MainPane* pane)
 {
     mainPane = pane;
 }
-    
+
 void activateRenderLoop(bool on)
 {
     wxGetApp().activateRenderLoop(on);
@@ -75,13 +75,13 @@ Sequence* getCurrentSequence()
 {
     return getMainFrame()->getCurrentSequence();
 }
-    
+
 namespace Display
 {
 #ifdef NO_OPENGL
     wxDC* renderDC;
 #endif
-    
+
     void render()
     {
         mainPane->render();
@@ -110,13 +110,13 @@ namespace Display
     {
         return mainPane->isCtrlDown();
     }
-    
+
     void popupMenu(wxMenu* menu, const int x, const int y)
     {
         mainPane->PopupMenu(menu, x, y);
     }
-    
-    
+
+
     RelativeXCoord getMouseX_current()
     {
         return mainPane->getMouseX_current();
@@ -133,7 +133,7 @@ namespace Display
     {
         return mainPane->getMouseY_initial();
     }
-    
+
     bool leftArrow()
     {
         return mainPane->leftArrow;
@@ -142,12 +142,12 @@ namespace Display
     {
         return mainPane->rightArrow;
     }
-    
+
     bool isVisible()
     {
         return mainPane->isVisible;
     }
-    
+
     void clientToScreen(const int x_in, const int y_in, int* x_out, int* y_out)
     {
         wxPoint winCoord = mainPane->ClientToScreen(wxPoint(x_in,y_in));
@@ -160,7 +160,7 @@ namespace Display
         *x_out = screenCoord.x;
         *y_out = screenCoord.y;
     }
-    
+
     void enterPlayLoop()
     {
         mainPane->enterPlayLoop();
@@ -169,17 +169,17 @@ namespace Display
     {
         mainPane->exitPlayLoop();
     }
-    
+
     void requestFocus()
     {
         mainPane->SetFocus();
     }
-    
+
     int getDraggedTrackID()
     {
         return mainPane->getDraggedTrackID();
     }
-    
+
     void setPlaybackStartTick(const int tick)
     {
         mainPane->setPlaybackStartTick(tick);
@@ -203,5 +203,5 @@ namespace DisplayFrame
     }
 }
 
-    
+
 }

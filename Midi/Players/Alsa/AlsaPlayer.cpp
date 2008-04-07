@@ -55,22 +55,31 @@
 
 namespace AriaMaestosa
 {
+namespace PlatformMidiManager
+{
+
 MidiContext* context;
 
-void prepareAlsaThenPlay(char* bytes, int length);
-void trackPlayback_thread_loop();
-
-struct rootElement *root;
-//SeqContext* seqContext;
-
-namespace PlatformMidiManager {
-
-int currentTick;
-int stored_songLength;
 bool must_stop=false;
 Sequence* sequence;
 
-int songLengthInTicks;
+void cleanup_after_playback()
+{
+    std::cout << "calling cleanup_after_playback()" << std::endl;
+    context->setPlaying(false);
+    resetAllControllers();
+}
+
+int currentTick;
+void seq_notify_current_tick(const int tick)
+{
+    currentTick = tick;
+
+    if(tick == -1)
+    {
+        std::cout << "---> the sequencer/timer notified '-1'" << std::endl;
+    }
+}
 
 class MyPThread
 {
@@ -88,27 +97,275 @@ class MyPThread
 
 namespace threads
 {
-MyPThread add_events;
-MyPThread track_playback;
 MyPThread export_audio;
 }
 
-// -- add events then play thread ---
-char* data;
-int datalength = -1;
 
-void* add_events_func( void *ptr )
+class SequencerThread : public wxThread
 {
-     AriaMaestosa::prepareAlsaThenPlay(data, datalength);
-     return (void*)NULL;
+    jdkmidi::MIDIMultiTrack* jdkmidiseq;
+    jdkmidi::MIDISequencer* jdksequencer;
+    int songLengthInTicks;
+    bool selectionOnly;
+    int m_start_tick;
+
+    public:
+
+    SequencerThread(const bool selectionOnly)
+    {
+        // std::cout << "  * constructing thread" << std::endl;
+        jdkmidiseq = NULL;
+        jdksequencer = NULL;
+        SequencerThread::selectionOnly = selectionOnly;
+    }
+    ~SequencerThread()
+    {
+        std::cout << "cleaning up sequencer" << std::endl;
+        if(jdksequencer != NULL) delete jdksequencer;
+        if(jdkmidiseq != NULL) delete jdkmidiseq;
+    }
+
+    void prepareSequencer()
+    {
+        // std::cout << "  * SequencerThread::prepareSequencer" << std::endl;
+        jdkmidiseq = new jdkmidi::MIDIMultiTrack();
+        songLengthInTicks = -1;
+        int trackAmount = -1;
+        m_start_tick = 0;
+        makeJDKMidiSequence(sequence, *jdkmidiseq, selectionOnly, &songLengthInTicks,
+                        &m_start_tick, &trackAmount, true /* for playback */);
+
+        std::cout << "trackAmount=" << trackAmount << " start_tick=" << m_start_tick<<
+                " songLengthInTicks=" << songLengthInTicks << std::endl;
+
+        jdksequencer = new jdkmidi::MIDISequencer(jdkmidiseq);
+
+        // std::cout << "  * SequencerThread::prepareSequencer DONE" << std::endl;
+    }
+
+    void go(int* startTick /* out */)
+    {
+        // std::cout << "  * SequencerThread::go" << std::endl;
+
+        if(Create() != wxTHREAD_NO_ERROR)
+        {
+            std::cerr << "error creating thread" << std::endl;
+            return;
+        }
+        SetPriority(85 /* 0 = min, 100 = max */);
+
+        prepareSequencer();
+        *startTick = m_start_tick;
+
+        // std::cout << "  * SequencerThread::go DONE, running thread" << std::endl;
+        Run();
+    }
+
+    ExitCode Entry()
+    {
+        // std::cout << "  * SequencerThread::Entry - thread running" << std::endl;
+        AriaSequenceTimer timer(sequence);
+        timer.run(jdksequencer, songLengthInTicks);
+
+        // std::cout << "  * SequencerThread::prepareSequencer - timer returned" << std::endl;
+
+        must_stop = true;
+        cleanup_after_playback();
+
+        return 0;
+    }
+};
+
+#pragma mark -
+
+// called when app opens
+void initMidiPlayer()
+{
+    alsa_output_module_init();
+
+    context = new MidiContext();
+
+    if(! context->askOpenDevice() )
+    {
+        std::cerr << "failed to open ALSA device" << std::endl;
+        exit(1);
+    }
+    alsa_output_module_setContext(context);
+
+    context->setPlaying(false);
 }
 
-// --- track playback thread ---
-void* track_playback_func( void *ptr )
+// called when app closes
+void freeMidiPlayer()
 {
-     AriaMaestosa::trackPlayback_thread_loop();
-     return (void*)NULL;
+    context->closeDevice();
+    delete context;
+    alsa_output_module_free();
 }
+
+bool playSequence(Sequence* sequence, /*out*/int* startTick)
+{
+    // std::cout << "  * playSequencer" << std::endl;
+    if(context->isPlaying())
+    {
+        std::cout << "cannot play, it's already playing" << std::endl;
+        return false; //already playing
+    }
+    stopNoteIfAny();
+    must_stop = false;
+    context->setPlaying(true);
+
+    PlatformMidiManager::sequence = sequence;
+    PlatformMidiManager::currentTick = 0;
+
+    // std::cout << "  * playSequencer - creating new thread" << std::endl;
+
+    SequencerThread* seqthread = new SequencerThread(false /* selection only */);
+    seqthread->go(startTick);
+
+    return true;
+}
+
+bool playSelected(Sequence* sequence, /*out*/int* startTick)
+{
+    if(context->isPlaying()) return false; //already playing
+    stopNoteIfAny();
+    must_stop = false;
+    context->setPlaying(true);
+
+    PlatformMidiManager::sequence = sequence;
+    PlatformMidiManager::currentTick = 0;
+
+    SequencerThread* seqthread = new SequencerThread(true /* selection only */);
+    seqthread->go(startTick);
+
+    return true;
+
+
+/*
+        if(context->isPlaying()) return false; //already playing
+        stopNoteIfAny();
+        must_stop = false;
+
+        PlatformMidiManager::sequence = sequence;
+        PlatformMidiManager::currentTick = 0;
+
+        songLengthInTicks = -1;
+
+        makeMidiBytes(sequence, true, &songLengthInTicks, startTick, &data, &datalength, true);
+
+		stored_songLength = songLengthInTicks + sequence->ticksPerBeat();
+
+		// start in a new thread as to not block the UI during playback;
+        threads::add_events.runFunction(&add_events_func);
+
+        context->setPlaying(true);
+		return true;
+		*/
+}
+
+// returns current midi tick, or -1 if over
+int trackPlaybackProgression()
+{
+//std::cout << "trackPlaybackProgression ";
+    if(context->isPlaying() and currentTick != -1)
+    {
+        //std::cout << "returning " << currentTick << std::endl;
+        return currentTick;
+    }
+    else
+    {
+        std::cout << "SONG DONE" << std::endl;
+        must_stop = true;
+        Core::songHasFinishedPlaying();
+        return -1;
+    }
+}
+
+bool seq_must_continue()
+{
+    return !must_stop;
+}
+
+bool isPlaying()
+{
+    return context->isPlaying();
+}
+
+void stop()
+{
+    must_stop = true;
+    //context->setPlaying(false);
+
+    //cleanup_after_playback();
+}
+
+/*
+// midi tick currently being played, -1 if none
+int getCurrentTick()
+{
+    std::cout << "get current tick..." << std::endl;
+    if(context->isPlaying())
+        return currentTick;
+    else
+        return -1;
+}
+*/
+
+bool exportMidiFile(Sequence* sequence, wxString filepath)
+{
+	return AriaMaestosa::exportMidiFile(sequence, filepath);
+}
+
+const wxString getAudioExtension()
+{
+    return wxT(".wav");
+}
+
+const wxString getAudioWildcard()
+{
+    return  wxString( _("WAV file")) + wxT("|*.wav");
+}
+
+/*
+void trackPlayback_thread_loop()
+{
+    while(!PlatformMidiManager::must_stop)
+    {
+
+        PlatformMidiManager::currentTick = seqContext->getCurrentTick();
+
+        if(PlatformMidiManager::currentTick >=
+        PlatformMidiManager::songLengthInTicks or
+        PlatformMidiManager::currentTick==-1) PlatformMidiManager::must_stop=true;
+    }
+
+    // clean up any events remaining on the queue and stop it
+    snd_seq_drop_output(seqContext->getAlsaHandle());
+    seqContext->stopTimer();
+    PlatformMidiManager::allSoundOff();
+
+    PlatformMidiManager::currentTick = -1;
+
+    if(root != NULL)
+    {
+        md_free(MD_ELEMENT(root));
+        root = NULL;
+    }
+
+    delete seqContext;
+
+    // Restore signal handler
+    //signal(SIGINT, SIG_DFL);// FIXME - are these removed or not?
+    context->setPlaying(false);
+
+    PlatformMidiManager::resetAllControllers();
+
+}
+*/
+
+
+
 
 #pragma mark -
 
@@ -169,360 +426,9 @@ void exportAudioFile(Sequence* sequence, wxString filepath)
     threads::export_audio.runFunction( &export_audio_func );
 }
 
-#pragma mark -
 
-// called when app opens
-void initMidiPlayer()
-{
-    AlsaNotePlayer::init();
-
-    context = new MidiContext();
-
-    if(! context->askOpenDevice() )
-    {
-        exit(1);
-    }
-    AlsaNotePlayer::setContext(context);
-
-    context->setPlaying(false);
-    stored_songLength = -1;
-}
-
-// called when app closes
-void freeMidiPlayer()
-{
-    context->closeDevice();
-    delete context;
-    AlsaNotePlayer::free();
-}
-
-bool playSequence(Sequence* sequence, /*out*/int* startTick)
-{
-  		if(context->isPlaying()) return false; //already playing
-  		AlsaNotePlayer::stopNoteIfAny();
-        must_stop = false;
-
-		PlatformMidiManager::sequence = sequence;
-        PlatformMidiManager::currentTick = 0;
-
-		songLengthInTicks = -1;
-		makeMidiBytes(sequence, false, &songLengthInTicks, startTick, &data, &datalength, true);
-
-		stored_songLength = songLengthInTicks + sequence->ticksPerBeat();
-
-		// start in a new thread as to not block the UI during playback
-        threads::add_events.runFunction(&add_events_func);
-
-        context->setPlaying(true);
-		return true;
-}
-
-bool playSelected(Sequence* sequence, /*out*/int* startTick)
-{
-        if(context->isPlaying()) return false; //already playing
-        AlsaNotePlayer::stopNoteIfAny();
-        must_stop = false;
-
-        PlatformMidiManager::sequence = sequence;
-        PlatformMidiManager::currentTick = 0;
-
-        songLengthInTicks = -1;
-
-        makeMidiBytes(sequence, true, &songLengthInTicks, startTick, &data, &datalength, true);
-
-		stored_songLength = songLengthInTicks + sequence->ticksPerBeat();
-
-		// start in a new thread as to not block the UI during playback;
-        threads::add_events.runFunction(&add_events_func);
-
-        context->setPlaying(true);
-		return true;
-}
-
-bool exportMidiFile(Sequence* sequence, wxString filepath)
-{
-	return AriaMaestosa::exportMidiFile(sequence, filepath);
-}
-
-// returns current midi tick, or -1 if over
-int trackPlaybackProgression()
-{
-
-    if(context->isPlaying() and
-        !(currentTick >= stored_songLength-1 or currentTick == -1) )
-    {
-        return currentTick;
-    }
-    else
-    {
-        Core::songHasFinishedPlaying();
-        return -1;
-    }
-}
-
-bool isPlaying()
-{
-    return context->isPlaying();
-}
-
-void stop()
-{
-    must_stop = true;
-    context->setPlaying(false);
-}
-
-// midi tick currently being played, -1 if none
-int getCurrentTick()
-{
-    if(context->isPlaying())
-        return currentTick;
-    else
-        return -1;
-}
-
-
-const wxString getAudioExtension()
-{
-    return wxT(".wav");
-}
-
-const wxString getAudioWildcard()
-{
-    return  wxString( _("WAV file")) + wxT("|*.wav");
-}
 
 }
-
-}
-
-#pragma mark -
-
-#include "glib.h"
-
-namespace AriaMaestosa
-{
-
-void playMidiData(SeqContext *seqContext, char *data, int length);
-
-SeqContext *seqContext; // FIXME - why 2? There's already one near the top
-
-/* Number of elements in an array */
-#define NELEM(a) ( sizeof(a)/sizeof((a)[0]) )
-
-#define ADDR_PARTS 4 /* Number of part in a port description addr 1:2:3:4 */
-#define SEP ", \t"	/* Separators for port description */
-
- //seq_context_t *pmidi_openport(char *portdesc);
- SeqContext *pmidi_openport(int client, int port);
- void playfile(SeqContext* seqContext, char* filename);
- void play(SeqContext* seqContext, struct event *el);
- //void set_signal_handler(seq_context_t *ctxp);
- //void signal_handler(int sig);
-
-void prepareAlsaThenPlay(char* data, int length)
-{
-    seqContext = pmidi_openport(context->device->client, context->device->port);
-    if (seqContext == NULL)
-    {
-        std::cout << "Could not open midi port" << std::endl;
-        return;
-    }
-
-
-    /* Set signal handler */
-    //set_signal_handler(ctxp);
-    playMidiData(seqContext, data, length);
-/*
-    seq_free_context(ctxp);
-
-    // Restore signal handler
-    signal(SIGINT, SIG_DFL);
-*/
-    return;
-}
-
-SeqContext* pmidi_openport(int client, int port)
-{
-    SeqContext* seqContext = new SeqContext();
-
-    int  err = seqContext->connectToPort(client, port);
-
-    if (err < 0)
-    {
-        fprintf(stderr, "Could not connect to port %d:%d\n",
-                client, port);
-        return NULL;
-    }
-    return seqContext;
-
-}
-
-void playMidiData(SeqContext *seqContext, char *data, int length)
-{
-    struct sequenceState *seq;
-    struct event* event;
-
-    MidiDataProvider midiData(data, length);
-
-    root = midi_read_file(midiData);
-    if (!root)
-    {
-        std::cout << "ERROR: no root" << std::endl;
-        return;
-    }
-
-    // Loop through all the elements in the song and play them
-    seq = md_sequence_init(root);
-
-    PlatformMidiManager::currentTick=0;
-
-    // launch a new thread that takes care of tracking playback position
-    PlatformMidiManager::threads::track_playback.runFunction(&PlatformMidiManager::track_playback_func);
-
-    // the current thread continues pushing events to the queue
-    // until all events have been processed or playback is interrupted
-    while ((event = md_sequence_next(seq)) != NULL)
-    {
-        if(PlatformMidiManager::must_stop) return;
-        play(seqContext, event);
-    }
-
-    // finish playing
-    if(!PlatformMidiManager::must_stop)
-        snd_seq_drain_output(seqContext->getAlsaHandle());
-
-}
-
-/*
-	unsigned long end;
-	snd_seq_event_t *ep;
-
-	if (strcmp(filename, "-") == 0)
-		root = midi_read(stdin);
-	else
-		root = midi_read_file(filename);
-	if (!root)
-		return;
-
-	//Get the end time for the tracks and echo an event to
-	// wake us up at that time
-
-	end = md_sequence_end_time(seq);
-	seq_midi_echo(ctxp, end);
-
-*/
-void play(SeqContext* seqContext, struct event *el)
-{
-    MidiEvent ev(seqContext, el->element_time, el->device_channel);
-
-    switch (el->type)
-    {
-    case MD_TYPE_ROOT:
-        seqContext->initTempo(MD_ROOT(el)->time_base, 120, 1);
-        seqContext->startTimer();
-        break;
-    case MD_TYPE_NOTE:
-        ev.note(MD_NOTE(el)->note, MD_NOTE(el)->vel, MD_NOTE(el)->length);
-        break;
-    case MD_TYPE_CONTROL:
-        ev.control(MD_CONTROL(el)->control, MD_CONTROL(el)->value);
-        break;
-    case MD_TYPE_PROGRAM:
-        ev.program(MD_PROGRAM(el)->program);
-        break;
-    case MD_TYPE_TEMPO:
-        ev.tempo(MD_TEMPO(el)->micro_tempo);
-        break;
-    case MD_TYPE_PITCH:
-        ev.pitchBend(MD_PITCH(el)->pitch);
-        break;
-    case MD_TYPE_PRESSURE:
-        ev.chanPress(MD_PRESSURE(el)->velocity);
-        break;
-    case MD_TYPE_KEYTOUCH:
-        ev.keyPress(MD_KEYTOUCH(el)->note, MD_KEYTOUCH(el)->velocity);
-        break;
-    case MD_TYPE_SYSEX:
-        ev.sysex(MD_SYSEX(el)->status, MD_SYSEX(el)->data, MD_SYSEX(el)->length);
-        break;
-    case MD_TYPE_TEXT:
-    case MD_TYPE_KEYSIG:
-    case MD_TYPE_TIMESIG:
-    case MD_TYPE_SMPTEOFFSET:
-
-        // Ones that have no sequencer action
-        break;
-    default:
-        printf("WARNING: play: not implemented yet %d\n", el->type);
-        break;
-    }
-
-}
-
-
-void trackPlayback_thread_loop()
-{
-    while(!PlatformMidiManager::must_stop)
-    {
-
-        PlatformMidiManager::currentTick = seqContext->getCurrentTick();
-
-        if(PlatformMidiManager::currentTick >=
-        PlatformMidiManager::songLengthInTicks or
-        PlatformMidiManager::currentTick==-1) PlatformMidiManager::must_stop=true;
-    }
-
-    // clean up any events remaining on the queue and stop it
-    snd_seq_drop_output(seqContext->getAlsaHandle());
-    seqContext->stopTimer();
-    AlsaNotePlayer::allSoundOff();
-
-    PlatformMidiManager::currentTick = -1;
-
-    if(root != NULL)
-    {
-        md_free(MD_ELEMENT(root));
-        root = NULL;
-    }
-
-    delete seqContext;
-
-    // Restore signal handler
-    //signal(SIGINT, SIG_DFL);// FIXME - are these removed or not?
-    context->setPlaying(false);
-
-    AlsaNotePlayer::resetAllControllers();
-
-}
-
-/*
-typedef struct sigaction s_sigaction;
-
- void
-set_signal_handler(seq_context_t *ctxp)
-{
-    s_sigaction* sap = (s_sigaction*) calloc(1, sizeof(struct sigaction));
-
-    g_ctxp = ctxp;
-
-    sap->sa_handler = signal_handler;
-    sigaction(SIGINT, sap, NULL);
-}
-*/
-/* signal handler */
-/*
- void
-signal_handler(int sig)
-{
-    // Close device
-    if (g_ctxp)
-    {
-        seq_free_context(g_ctxp);
-    }
-
-    exit(1);
-}
-*/
 }
 
 #endif

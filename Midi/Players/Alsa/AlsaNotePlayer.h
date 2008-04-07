@@ -7,20 +7,18 @@ namespace AriaMaestosa
 {
     class MidiContext;
 
-namespace AlsaNotePlayer
+namespace PlatformMidiManager
 {
-void setContext(MidiContext* context_arg);
+void alsa_output_module_setContext(MidiContext* context_arg);
 
-void init();
-void free();
+void alsa_output_module_init();
+void alsa_output_module_free();
+
+
  void allSoundOff();
- void  noteOn (int channel, int note, int velocity, int duration);
- void  noteOff (int channel, int note);
- void  controlChange (int channel, int control, int value);
- void  programChange (int channel, int program);
- void  pitchBend (int channel, int value);
- void  resetAllControllers();
+ void resetAllControllers();
  void stopNoteIfAny();
+
 }
 }
 

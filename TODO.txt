@@ -30,6 +30,10 @@ NOTE: sorry, this is very raw :)
   
 ************************* NEW FEATURES TO ADD: *************************
 
+libjdkmidi offers :
+    MIDISequencer *seq 
+    if( !seq->GetNextEventTimeMs )
+
   - key is not saved to midi files
   - when saving, don't delete current file, save to another location then swap
   - copy/paste support in controller mode

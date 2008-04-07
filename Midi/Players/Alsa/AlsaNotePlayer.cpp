@@ -3,10 +3,13 @@
 #include "Midi/Players/Alsa/AlsaNotePlayer.h"
 #include "Midi/Players/Alsa/AlsaPort.h"
 
+#include <alsa/asoundlib.h>
+
 namespace AriaMaestosa
 {
-namespace AlsaNotePlayer
+namespace PlatformMidiManager
 {
+
     void playQueue();
 
     // This is the timer that is started when a single note is played.
@@ -32,52 +35,40 @@ namespace AlsaNotePlayer
     };
 
 
-    int lastPlayedNote = -1, lastChannel;
-    StopNoteTimer* stopNoteTimer = NULL;
-    MidiContext* context;
+int lastPlayedNote = -1, lastChannel;
+StopNoteTimer* stopNoteTimer = NULL;
+MidiContext* context_ref;
 
-}
-}
-
-
-#include <alsa/asoundlib.h>
-
-namespace AriaMaestosa
+void allSoundOff()
 {
-
-namespace PlatformMidiManager
-{
-
-    // play/stop a single preview note
-    void playNote(int noteNum, int volume, int duration, int channel, int instrument)
+    for(int channel=0; channel<16; channel++)
     {
-        using namespace AlsaNotePlayer;
-        if(context->isPlaying()) return;
-        if(lastPlayedNote != -1) stopNote();
-        programChange(channel, instrument);
-        controlChange(channel, 7, 127); // max volume
-        noteOn(channel, noteNum, volume, duration);
-        lastPlayedNote = noteNum;
-        lastChannel = channel;
+        PlatformMidiManager::seq_controlchange(0x78 /*120*/ /* all sound off */, 0, channel);
     }
-
-    void stopNote()
-    {
-        AlsaNotePlayer::noteOff(AlsaNotePlayer::lastChannel, AlsaNotePlayer::lastPlayedNote);
-        AlsaNotePlayer::lastPlayedNote = -1;
-    }
-
 }
 
-namespace AlsaNotePlayer
+void resetAllControllers()
 {
+    for(int channel=0; channel<16; channel++)
+    {
+        seq_controlchange(0x78 /*120*/ /* all sound off */, 0, channel);
+        seq_controlchange(0x79 /*121*/ /* reset controllers */, 0, channel);
+        seq_controlchange(7 /* reset volume */, 127, channel);
+        seq_controlchange( 10 /* reset pan */, 64, channel);
+    }
+    // FIXME - reset pitch bend!!
+}
 
+void stopNoteIfAny()
+{
+    if(lastPlayedNote != -1) stopNote();
+}
 
-void init()
+void alsa_output_module_init()
 {
     stopNoteTimer = new StopNoteTimer();
 }
-void free()
+void alsa_output_module_free()
 {
  	if(stopNoteTimer != NULL)
 	{
@@ -86,128 +77,140 @@ void free()
 	}
 }
 
-void setContext(MidiContext* context_arg)
+void alsa_output_module_setContext(MidiContext* context_arg)
 {
-   context = context_arg;
+   context_ref = context_arg;
 }
 
-void stopNoteIfAny()
+// ----------------------------------------------------------
+// base PlatformMidiManager functions
+
+#pragma mark -
+
+// play/stop a single preview note
+void playNote(int noteNum, int volume, int duration, int channel, int instrument)
 {
-    if(lastPlayedNote != -1) PlatformMidiManager::stopNote();
+    if(context_ref->isPlaying()) return;
+    if(lastPlayedNote != -1) stopNote();
+    seq_prog_change(instrument, channel);
+    seq_controlchange(7, 127, channel); // max volume
+    seq_note_on(noteNum, volume, channel);
+    stopNoteTimer->start(duration);
+
+    lastPlayedNote = noteNum;
+    lastChannel = channel;
 }
 
-void noteOn(int channel, int note, int velocity, int duration)
+void stopNote()
 {
+    seq_note_off(lastPlayedNote, lastChannel);
+    lastPlayedNote = -1;
+}
 
-	snd_seq_event_t event;
+
+// ----------------------------------------------------------
+// PlatformMidiManager generic timer functions
+
+#pragma mark -
+
+void seq_note_on(const int note, const int volume, const int channel)
+{
+    snd_seq_event_t event;
 
 	snd_seq_ev_clear(&event);
 
 	event.queue  = SND_SEQ_QUEUE_DIRECT;
-	event.source = context->address;
+	event.source = context_ref->address;
 
 	snd_seq_ev_set_subs(&event);
 	snd_seq_ev_set_direct(&event);
-	snd_seq_ev_set_noteon(&event, channel, note, velocity);
+	snd_seq_ev_set_noteon(&event, channel, note, volume);
 
-	snd_seq_event_output_direct(context->sequencer, &event);
-	snd_seq_drain_output(context->sequencer);
-
-	stopNoteTimer->start(duration);
+	snd_seq_event_output_direct(context_ref->sequencer, &event);
+	snd_seq_drain_output(context_ref->sequencer);
 }
 
-void noteOff(int channel, int note)
+
+void seq_note_off(const int note, const int channel)
 {
 	snd_seq_event_t event;
 
 	snd_seq_ev_clear(&event);
 
 	event.queue  = SND_SEQ_QUEUE_DIRECT;
-	event.source = context->address;
+	event.source = context_ref->address;
 
 	snd_seq_ev_set_subs(&event);
 	snd_seq_ev_set_direct(&event);
 	snd_seq_ev_set_noteoff(&event, channel, note, 0 /*velocity*/);
 
-	snd_seq_event_output_direct(context->sequencer, &event);
-	snd_seq_drain_output(context->sequencer);
+	snd_seq_event_output_direct(context_ref->sequencer, &event);
+	snd_seq_drain_output(context_ref->sequencer);
 }
 
-void programChange(int channel, int program)
+void seq_prog_change(const int instrumentID, const int channel)
 {
 	snd_seq_event_t event;
 
 	snd_seq_ev_clear(&event);
 
 	event.queue  = SND_SEQ_QUEUE_DIRECT;
-	event.source = context->address;
+	event.source = context_ref->address;
 
 	snd_seq_ev_set_subs(&event);
 	snd_seq_ev_set_direct(&event);
-	snd_seq_ev_set_pgmchange(&event, channel, program);
+	snd_seq_ev_set_pgmchange(&event, channel, instrumentID);
 
-	if (snd_seq_event_output_direct(context->sequencer, &event) < 0)
+	if (snd_seq_event_output_direct(context_ref->sequencer, &event) < 0)
 	{
 		return;
 	}
-	snd_seq_drain_output(context->sequencer);
+	snd_seq_drain_output(context_ref->sequencer);
 }
 
-void allSoundOff()
+void seq_reset()
 {
-    for(int channel=0; channel<16; channel++)
-    {
-        controlChange(channel, 0x78 /*120*/ /* all sound off */, 0);
-    }
+    resetAllControllers();
 }
 
-void resetAllControllers()
-{
-    for(int channel=0; channel<16; channel++)
-    {
-        controlChange(channel, 0x78 /*120*/ /* all sound off */, 0);
-        controlChange(channel, 0x79 /*121*/ /* reset controllers */, 0);
-        controlChange(channel, 7 /* reset volume */, 127);
-        controlChange(channel, 10 /* reset pan */, 64);
-    }
-}
 
-void controlChange(int channel, int control, int value)
+void seq_controlchange(const int controller, const int value, const int channel)
 {
 	snd_seq_event_t event;
 
 	snd_seq_ev_clear(&event);
 
 	event.queue  = SND_SEQ_QUEUE_DIRECT;
-	event.source = context->address;
+	event.source = context_ref->address;
 
 	snd_seq_ev_set_subs(&event);
 	snd_seq_ev_set_direct(&event);
-	snd_seq_ev_set_controller(&event, channel, control, value);
+	snd_seq_ev_set_controller(&event, channel, controller, value);
 
-	if(snd_seq_event_output_direct(context->sequencer, &event) < 0)
+	if(snd_seq_event_output_direct(context_ref->sequencer, &event) < 0)
 	{
 		return;
 	}
-	snd_seq_drain_output(context->sequencer);
+	snd_seq_drain_output(context_ref->sequencer);
 }
 
-void pitchBend(int channel, int value)
+void seq_pitch_bend(const int value, const int channel)
 {
 	snd_seq_event_t event;
 
 	snd_seq_ev_clear(&event);
 
 	event.queue  = SND_SEQ_QUEUE_DIRECT;
-	event.source = context->address;
+	event.source = context_ref->address;
 
 	snd_seq_ev_set_subs(&event);
 	snd_seq_ev_set_direct(&event);
 	snd_seq_ev_set_pitchbend(&event, channel, value);
 
-	snd_seq_event_output_direct(context->sequencer, &event);
-	snd_seq_drain_output(context->sequencer);
+	snd_seq_event_output_direct(context_ref->sequencer, &event);
+	snd_seq_drain_output(context_ref->sequencer);
 }
+
 
 }
 }
