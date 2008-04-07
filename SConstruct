@@ -202,7 +202,7 @@ def compile_Aria(build_type, which_os):
         
     # init common library and header search paths
     env.Append(CPPPATH = ['wxAdditions','.','./libjdkmidi/include'])
-    env.Append(LIBPATH = ['.','./libjdkmidi/tmp/build/lib'])
+    env.Append(LIBPATH = ['.','./libjdkmidi/tmp/build/lib','./libjdkmidi/tmp-target/build/lib'])
     env.Append(LIBS = ['libjdkmidi'])
 
     print " "
