@@ -207,6 +207,8 @@ int MidiContext::getDeviceAmount()
     return devices.size();
 }
 
+// 'timerStarted' is not used by this class
+// it's just a conveniant place to keep this info
 bool MidiContext::isPlaying()
 {
     return timerStarted;
