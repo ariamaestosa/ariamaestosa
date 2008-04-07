@@ -1,0 +1,1 @@
+"${project_top_dir}/configure" "${configure_flags[@]}"
