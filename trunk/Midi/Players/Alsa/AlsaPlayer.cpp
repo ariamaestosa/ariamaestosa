@@ -26,16 +26,16 @@
 
 
 #include "AriaCore.h"
-#include "Midi/Players/Alsa/pmidi/elements.h"
+//#include "Midi/Players/Alsa/pmidi/elements.h"
 #include "Midi/Players/Alsa/AlsaNotePlayer.h"
 #include "Midi/Players/Alsa/AlsaPort.h"
 #include "IO/IOUtils.h"
 
 #include <alsa/asoundlib.h>
 
-#include "Midi/Players/Alsa/pmidi/seqlib.h"
-#include "Midi/Players/Alsa/pmidi/md.h"
-#include "Midi/Players/Alsa/pmidi/midi.h"
+//#include "Midi/Players/Alsa/pmidi/seqlib.h"
+//#include "Midi/Players/Alsa/pmidi/md.h"
+//#include "Midi/Players/Alsa/pmidi/midi.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/CommonMidiUtils.h"
 #include "Midi/Sequence.h"
