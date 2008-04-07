@@ -1,0 +1,1 @@
+add_configure_flags "--target-platform-macosx=1"

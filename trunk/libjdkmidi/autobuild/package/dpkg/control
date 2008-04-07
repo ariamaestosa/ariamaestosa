@@ -1,0 +1,16 @@
+Version: PROJECT_VERSION
+Package: PROJECT_NAME
+Priority: optional
+Architecture: PROJECT_ARCHITECTURE
+Essential: no
+Depends:
+Pre-Depends:
+Recommends:
+Suggests:
+Installed-Size:
+Maintainer: PROJECT_MAINTAINER
+Conflicts:
+Replaces:
+Provides:
+Description: PROJECT_DESCRIPTION
+

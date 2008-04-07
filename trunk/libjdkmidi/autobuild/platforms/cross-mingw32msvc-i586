@@ -1,0 +1,1 @@
+add_configure_flags "--target-platform-mingw32=1" "--native-platform-posix=1" "--cross-compiling=1" "--target-install-dir=${PROJECT}-${PROJECT_VERSION}" "--target-bin-dir=programs" "--target-docs-dir=docs" "--target-share-dir=files" "--compiler-prefix=i586-mingw32msvc-" "--exe=.exe"
