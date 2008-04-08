@@ -168,12 +168,6 @@ void seq_prog_change(const int instrumentID, const int channel)
 	snd_seq_drain_output(context_ref->sequencer);
 }
 
-void seq_reset()
-{
-    resetAllControllers();
-}
-
-
 void seq_controlchange(const int controller, const int value, const int channel)
 {
 	snd_seq_event_t event;
