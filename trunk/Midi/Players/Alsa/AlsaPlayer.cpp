@@ -65,7 +65,6 @@ Sequence* sequence;
 
 void cleanup_after_playback()
 {
-    std::cout << "calling cleanup_after_playback()" << std::endl;
     context->setPlaying(false);
     resetAllControllers();
 }
@@ -74,11 +73,6 @@ int currentTick;
 void seq_notify_current_tick(const int tick)
 {
     currentTick = tick;
-
-    if(tick == -1)
-    {
-        std::cout << "---> the sequencer/timer notified '-1'" << std::endl;
-    }
 }
 
 class MyPThread
@@ -113,7 +107,6 @@ class SequencerThread : public wxThread
 
     SequencerThread(const bool selectionOnly)
     {
-        // std::cout << "  * constructing thread" << std::endl;
         jdkmidiseq = NULL;
         jdksequencer = NULL;
         SequencerThread::selectionOnly = selectionOnly;
@@ -127,7 +120,6 @@ class SequencerThread : public wxThread
 
     void prepareSequencer()
     {
-        // std::cout << "  * SequencerThread::prepareSequencer" << std::endl;
         jdkmidiseq = new jdkmidi::MIDIMultiTrack();
         songLengthInTicks = -1;
         int trackAmount = -1;
@@ -135,18 +127,14 @@ class SequencerThread : public wxThread
         makeJDKMidiSequence(sequence, *jdkmidiseq, selectionOnly, &songLengthInTicks,
                         &m_start_tick, &trackAmount, true /* for playback */);
 
-        std::cout << "trackAmount=" << trackAmount << " start_tick=" << m_start_tick<<
-                " songLengthInTicks=" << songLengthInTicks << std::endl;
+        //std::cout << "trackAmount=" << trackAmount << " start_tick=" << m_start_tick<<
+        //        " songLengthInTicks=" << songLengthInTicks << std::endl;
 
         jdksequencer = new jdkmidi::MIDISequencer(jdkmidiseq);
-
-        // std::cout << "  * SequencerThread::prepareSequencer DONE" << std::endl;
     }
 
     void go(int* startTick /* out */)
     {
-        // std::cout << "  * SequencerThread::go" << std::endl;
-
         if(Create() != wxTHREAD_NO_ERROR)
         {
             std::cerr << "error creating thread" << std::endl;
@@ -157,17 +145,13 @@ class SequencerThread : public wxThread
         prepareSequencer();
         *startTick = m_start_tick;
 
-        // std::cout << "  * SequencerThread::go DONE, running thread" << std::endl;
         Run();
     }
 
     ExitCode Entry()
     {
-        // std::cout << "  * SequencerThread::Entry - thread running" << std::endl;
         AriaSequenceTimer timer(sequence);
         timer.run(jdksequencer, songLengthInTicks);
-
-        // std::cout << "  * SequencerThread::prepareSequencer - timer returned" << std::endl;
 
         must_stop = true;
         cleanup_after_playback();

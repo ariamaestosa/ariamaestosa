@@ -42,16 +42,9 @@ namespace PlatformMidiManager {
 
     /*
      * returns midi tick currently being played, -1 if none
-     *
      * called repeatedly during playback
-     *
-     * difference between 'trackPlaybackProgression' and 'getCurrentTick' is that the first
-     * gets the data from the native API, and acts upon it (for instance checking if song is over)
-     * 'getCurrentTick' just returns the last retrieved tick value. Those 2 can probably be
-     * merged in a future code cleanup
      */
 	int trackPlaybackProgression();
-	//int getCurrentTick();
 
 	// called when app opens
     void initMidiPlayer();
@@ -66,20 +59,22 @@ namespace PlatformMidiManager {
 	const wxString getAudioExtension();
 	const wxString getAudioWildcard();
 
-	// ---------- non-native sequencer interface ---------
-	// fill these only if you use the generic AriaSequenceTimer midi sequencer/timer
-	// if you use a native sequencer in the above functions, these will not be called
+	/* ---------- non-native sequencer interface ---------
+	 * fill these only if you use the generic AriaSequenceTimer midi sequencer/timer
+	 * if you use a native sequencer in the above functions, these will not be called
+     */
 	void seq_note_on(const int note, const int volume, const int channel);
 	void seq_note_off(const int note, const int channel);
 	void seq_prog_change(const int instrument, const int channel);
 	void seq_controlchange(const int controller, const int value, const int channel);
 	void seq_pitch_bend(const int value, const int channel);
-	void seq_reset();
+
 	// called repeatedly by the generic sequencer to tell
 	// the midi player what is the current progression
 	// the sequencer will call this with -1 as argument to indicate it exits.
 	void seq_notify_current_tick(const int tick);
-
+    // will be called by the generic sequencer to determine whether it should continue
+    // return false to stop it.
 	bool seq_must_continue();
 }
 

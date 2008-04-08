@@ -200,10 +200,25 @@ namespace PlatformMidiManager {
         threads::export_audio.runFunction( &add_events_func );
 	}
 
-
+	int getCurrentTick()
+	{
+		if( use_qtkit )
+		{
+			const float time = qtkit_getCurrentTime();
+            
+			if(time == -1) return -1; // not playing
+            
+			return (int)(
+						 time * sequence->getTempo()/60.0 * (float)sequence->ticksPerBeat()
+						 );
+		}
+		else
+		{
+			return audioToolboxMidiPlayer->getPosition() * sequence->ticksPerBeat();
+		}
+    }
 	int trackPlaybackProgression()
 	{
-
 	    int currentTick = getCurrentTick();
 
 		// song ends
@@ -266,24 +281,6 @@ namespace PlatformMidiManager {
 		playing = false;
     }
 
-	int getCurrentTick()
-	{
-		if( use_qtkit )
-		{
-			const float time = qtkit_getCurrentTime();
-
-			if(time == -1) return -1; // not playing
-
-			return (int)(
-						 time * sequence->getTempo()/60.0 * (float)sequence->ticksPerBeat()
-						 );
-		}
-		else
-		{
-			return audioToolboxMidiPlayer->getPosition() * sequence->ticksPerBeat();
-		}
-    }
-
     void initMidiPlayer()
 	{
         qtkit_init();
@@ -291,6 +288,7 @@ namespace PlatformMidiManager {
 		audioToolboxMidiPlayer=new AudioToolboxMidiPlayer();
 
 		// trigger quicktime with empty song, just to make it load
+        // FIXME - doesn't work anymore with newer QT versions
 		char bytes[8];
 		bytes[0] = 'M';
 		bytes[1] = 'T';
@@ -312,6 +310,21 @@ namespace PlatformMidiManager {
 		delete audioToolboxMidiPlayer;
         audioToolboxMidiPlayer=NULL;
     }
+    
+    
+    // ---------- unused since we use native sequencer/timer on OS X ---------
+    void seq_note_on(const int note, const int volume, const int channel){}
+	void seq_note_off(const int note, const int channel){}
+	void seq_prog_change(const int instrument, const int channel){}
+	void seq_controlchange(const int controller, const int value, const int channel){}
+	void seq_pitch_bend(const int value, const int channel){}
+
+	// called repeatedly by the generic sequencer to tell
+	// the midi player what is the current progression
+	// the sequencer will call this with -1 as argument to indicate it exits.
+	void seq_notify_current_tick(const int tick){}
+    
+	bool seq_must_continue(){return false;}
 
 }
 }
