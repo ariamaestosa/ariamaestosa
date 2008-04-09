@@ -135,6 +135,8 @@ EVT_COMMAND_SCROLL_PAGEDOWN(SCROLLBAR_V, MainFrame::verticalScrolling)
 EVT_COMMAND_SCROLL_LINEUP(SCROLLBAR_V, MainFrame::verticalScrolling_arrows)
 EVT_COMMAND_SCROLL_LINEDOWN(SCROLLBAR_V, MainFrame::verticalScrolling_arrows)
 
+EVT_CLOSE(MainFrame::on_close)
+
 /* top bar */
 EVT_BUTTON(PLAY_CLICKED, MainFrame::playClicked)
 EVT_BUTTON(STOP_CLICKED, MainFrame::stopClicked)
@@ -205,12 +207,15 @@ EVT_COMMAND  (100003, wxEVT_HIDE_WAIT_WINDOW, MainFrame::evt_hideWaitWindow)
 
 END_EVENT_TABLE()
 
-MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(100,100), wxSize(800,600),
-								 wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCAPTION)
+#define ARIA_WINDOW_FLAGS wxCLOSE_BOX | wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCAPTION
+
+MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(100,100), wxSize(800,600), ARIA_WINDOW_FLAGS )
 {
 	INIT_LEAK_CHECK();
 
 }
+
+#undef ARIA_WINDOW_FLAGS
 
 MainFrame::~MainFrame()
 {
@@ -506,6 +511,10 @@ void MainFrame::menuEvent_new(wxCommandEvent& evt)
     addSequence();
 }
 
+void MainFrame::on_close(wxCloseEvent& evt)
+{
+    closeSequence();
+}
 void MainFrame::menuEvent_close(wxCommandEvent& evt)
 {
     closeSequence();
