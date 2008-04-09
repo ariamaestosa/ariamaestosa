@@ -109,8 +109,6 @@ libjdkmidi offers :
  
  ************************* BUGS: *************************
   
-* remove time sig change is totally messed up, doesn't remove the one we clicked
-  
 * red images
  
 * copy-paste from a song to another gives wrong results if the two use different sample sizes
