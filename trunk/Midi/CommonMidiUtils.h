@@ -18,7 +18,7 @@
 #define _common_midi_utils_
 
 // forward
-namespace jdkmidi{ class MIDIMultiTrack; class MIDISequencer; }
+namespace jdkmidi{ class MIDIMultiTrack; }
 
 namespace AriaMaestosa {
 
@@ -35,15 +35,6 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
 
 int convertTempoBendToBPM(int val);
 
-
-class AriaSequenceTimer
-{
-    Sequence* seq;
-    public:
-
-    AriaSequenceTimer(Sequence* seq);
-    void run(jdkmidi::MIDISequencer* jdksequencer, const int songLengthInTicks);
-};
 
 }
 
