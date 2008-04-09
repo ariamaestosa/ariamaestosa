@@ -961,12 +961,29 @@ void MeasureBar::addTimeSigChange(int measure, int num, int denom) // -1 means "
 			}	
 			// we checked enough events so that we are past the point where the click occured.
 			// we know there is no event already existing at the clicked measure.
-			if( timeSigChanges[n].measure > measure or n==timeSig_amount_minus_one)
+			if( timeSigChanges[n].measure > measure )
 			{
+
+				if(num==-1 or denom==-1)
+					timeSigChanges.add( new TimeSigChange(measure, timeSigChanges[n].num, timeSigChanges[n].denom), n );
+				else
+					timeSigChanges.add( new TimeSigChange(measure, num, denom), n );
+                
+				selectedTimeSig = n;
+				
+				getMainFrame()->changeShownTimeSig( timeSigChanges[n].num, timeSigChanges[n].denom );
+				
+				if(!getCurrentSequence()->importing) updateMeasureInfo();
+				break;
+			}
+            else if( n==timeSig_amount_minus_one )
+			{
+                
 				if(num==-1 or denom==-1)
 					timeSigChanges.add( new TimeSigChange(measure, timeSigChanges[n].num, timeSigChanges[n].denom), n+1 );
 				else
 					timeSigChanges.add( new TimeSigChange(measure, num, denom), n+1 );
+                
 				selectedTimeSig = n+1;
 				
 				getMainFrame()->changeShownTimeSig( timeSigChanges[n+1].num, timeSigChanges[n+1].denom );
@@ -975,6 +992,16 @@ void MeasureBar::addTimeSigChange(int measure, int num, int denom) // -1 means "
 				break;
 			}
 		}//next
+        
+        /*
+        // check order
+        // FIXME- debug, remove
+        std::cout << "-----" << std::endl;
+        for(int n=0; n<(int)timeSigChanges.size(); n++)
+		{
+            std::cout << "  " << timeSigChanges[n].measure << std::endl;
+        }
+         */
 	}
 	
 }
