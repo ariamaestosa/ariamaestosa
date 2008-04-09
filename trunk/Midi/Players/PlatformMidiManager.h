@@ -32,6 +32,9 @@ namespace AriaMaestosa {
 namespace PlatformMidiManager {
 
 
+    /*
+     * startTick is an 'out' argument where you set where the song starts playing
+     */
 	bool playSequence(Sequence* sequence, /*out*/int* startTick);
 	bool playSelected(Sequence* sequence, /*out*/int* startTick);
     bool isPlaying();
@@ -43,6 +46,8 @@ namespace PlatformMidiManager {
     /*
      * returns midi tick currently being played, -1 if none
      * called repeatedly during playback
+     *
+     * returns number of ticks elapsed *since startTick* as returned above
      */
 	int trackPlaybackProgression();
 
