@@ -6,6 +6,7 @@
 - Cleanup in notation export code
 - Fixed dialog deletion for notation export and custom tuning picker, should fix hangs (and possible crashes) on shutdown
 - Imported midi files now prperly suggest a file name when e.g. re-saving them
+- Added close button to main window (especially useful on linux)
 
 =====================================================================================
 Version 1.1 new features highlight

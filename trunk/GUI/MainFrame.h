@@ -134,6 +134,7 @@ public:
     void evt_hideWaitWindow(wxCommandEvent& evt);
 
 	// menus
+    void on_close(wxCloseEvent& evt);
     void menuEvent_new(wxCommandEvent& evt);
     void menuEvent_close(wxCommandEvent& evt);
 	void menuEvent_exportNotation(wxCommandEvent& evt);

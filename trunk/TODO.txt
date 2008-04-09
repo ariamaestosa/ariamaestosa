@@ -43,7 +43,6 @@ libjdkmidi offers :
 		more than one track
 		show tuning on tab
 
-* add close button to main window
 * crash when cancelling printing
 
  - render a bit less often + probably too many paint events (duplicate ones at times) track and remove them
