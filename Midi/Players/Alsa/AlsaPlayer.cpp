@@ -126,6 +126,7 @@ class SequencerThread : public wxThread
         m_start_tick = 0;
         makeJDKMidiSequence(sequence, *jdkmidiseq, selectionOnly, &songLengthInTicks,
                         &m_start_tick, &trackAmount, true /* for playback */);
+        songLengthInTicks += sequence->ticksPerBeat();
 
         //std::cout << "trackAmount=" << trackAmount << " start_tick=" << m_start_tick<<
         //        " songLengthInTicks=" << songLengthInTicks << std::endl;

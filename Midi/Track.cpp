@@ -254,21 +254,21 @@ bool Track::addNote_import(const int pitchID, const int startTick, const int end
 
 void Track::setNoteEnd_import(const int tick, const int noteID)
 {
-    
+
     assert(noteID != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
     assert(noteID != SELECTED_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
-    
+
     assertExpr(noteID,<,notes.size());
     assertExpr(noteID,>=,0);
-    
+
     notes[noteID].setEnd(tick);
-    
+
 	if(!sequence->importing) reorderNoteOffVector();
 }
 
 void Track::removeNote(const int id)
 {
-    
+
 	// also delete corresponding note off event
 	const int namount = noteOff.size();
 	for(int i=0; i<namount; i++)
@@ -279,20 +279,20 @@ void Track::removeNote(const int id)
 			break;
 		}
 	}
-    
+
 	notes.erase(id);
-    
+
 }
 
 void Track::markNoteToBeRemoved(const int id)
 {
 	assertExpr(id,>=,0);
 	assertExpr(id,<,notes.size());
-    
+
 	// also delete corresponding note off event
 	const int namount = noteOff.size();
 	Note* note = notes.get(id);
-    
+
 	for(int i=0; i<namount; i++)
 	{
 		if(noteOff.get(i) == note)
@@ -304,17 +304,17 @@ void Track::markNoteToBeRemoved(const int id)
 		if(i+1 == namount) std::cout << "WARNING could not find note off event corresponding to note on event" << std::endl;
 #endif
 	}
-    
+
 	notes.markToBeRemoved(id);
 }
 void Track::removeMarkedNotes()
 {
-    
+
 	//std::cout << "removing marked" << std::endl;
-    
+
 	notes.removeMarked();
 	noteOff.removeMarked();
-    
+
 #ifdef _MORE_DEBUG_CHECKS
 	if(notes.size() != noteOff.size())
 	{
@@ -331,7 +331,7 @@ void Track::reorderNoteVector()
 {
 	// FIXME - innefficient implementation
 	const int noteAmount = notes.size();
-    
+
 #ifdef _MORE_DEBUG_CHECKS
 	if(notes.size() != noteOff.size())
 	{
@@ -339,12 +339,12 @@ void Track::reorderNoteVector()
 		std::cout << notes.size() << " notes and " << noteOff.size() << " note offs" << std::endl;
 	}
 #endif
-    
+
 	for(int n=0; n<noteAmount-1; n++)
 	{
-        
+
 		assertExpr(n+1,<,notes.size());
-        
+
 		if(notes[n].startTick > notes[n+1].startTick)
 		{
 			notes.swap(n, n+1);
@@ -352,7 +352,7 @@ void Track::reorderNoteVector()
 			else n=0;
 		}
 	}//next
-    
+
 }
 
 /*
@@ -365,16 +365,16 @@ void Track::reorderNoteOffVector()
 #ifdef _MORE_DEBUG_CHECKS
 	if(notes.size() != noteOff.size()) std::cout << "WARNING note on and off events differ in amount" << std::endl;
 #endif
-    
+
 	for(int n=0; n<noteAmount-1; n++)
 	{
-        
+
 		assertExpr(n+1,<,noteOff.size());
 		assert(noteOff.get(n) != NULL);
 		assert(noteOff.get(n+1) != NULL);
 		assert(noteOff.get(n) != 0);
 		assert(noteOff.get(n+1) != 0);
-        
+
 		if(noteOff[n].endTick > noteOff[n+1].endTick)
 		{
 			noteOff.swap(n, n+1);
@@ -382,7 +382,7 @@ void Track::reorderNoteOffVector()
 			else n=0;
 		}//end if
 	}//next
-    
+
 }
 
 void Track::reorderControlVector()
@@ -390,12 +390,12 @@ void Track::reorderControlVector()
 	// FIXME - innefficient implementation
     // FIXME - if bugs in controller editor are fixed that method shouldn't even be necessary
 	const int ctrlAmount = controlEvents.size();
-    
+
 	for(int n=0; n<ctrlAmount-1; n++)
 	{
-        
+
 		assertExpr(n+1,<,ctrlAmount);
-        
+
 		if(controlEvents[n].getTick() > controlEvents[n+1].getTick())
 		{
 			controlEvents.swap(n, n+1);
@@ -403,7 +403,7 @@ void Track::reorderControlVector()
 			else n=0;
 		}
 	}//next
-    
+
 }
 
 void Track::mergeTrackIn(Track* track)
@@ -414,16 +414,16 @@ void Track::mergeTrackIn(Track* track)
 		Note* a = new Note(track->notes[n]);
 		addNote(a, false);
 	}
-    
+
 	const int controllerAmount = track->controlEvents.size();
 	for(int n=0; n<controllerAmount; n++)
 	{
 		addControlEvent( new ControllerEvent(sequence, track->controlEvents[n].getController(),
 											 track->controlEvents[n].getTick(),
 											 track->controlEvents[n].getValue()) );
-        
+
 	}
-    
+
 }
 
 // FIXME - debug function, remove
@@ -552,42 +552,42 @@ ControllerEvent* Track::getControllerEvent(const int id, const int controllerTyp
 
 int Track::getFirstNoteTick(bool selectionOnly)
 {
-    
+
 	if(!selectionOnly) return notes[0].startTick;
-    
+
     const int noteAmount = notes.size();
     int tick = -1;
-    
+
     for(int n=0; n<noteAmount; n++)
 	{
 		if( notes[n].isSelected() ) return notes[n].startTick;
     }//next
-    
+
     return tick;
-    
+
 }
 
 void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
 {
-    
+
     assert(id != SELECTED_NOTES); // not supported in this function
-    
-    
+
+
     if(!Display::isSelectMorePressed() and !Display:: isSelectLessPressed()) ignoreModifiers=true; // if no modifier is pressed, don't do any special checks
-    
+
     // ----------------------------- select/deselect all notes ----------------------------
     if(id==ALL_NOTES)
 	{
 		// if this is a 'select none' command, unselect any selected measures in the top bar
 		if(selected == FALSE) getMeasureBar()->unselect();
-        
+
         if(graphics->editorMode == CONTROLLER)
 		{ // controller editor must be handled differently
             graphics->controllerEditor->selectAll( selected );
         }
 		else
 		{
-            
+
             if(ignoreModifiers)
 			{
                 for(int n=0; n<notes.size(); n++)
@@ -595,16 +595,16 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
                     notes[n].setSelected(selected);
                 }//next
             }//end if
-            
+
         }// end if
-        
+
     }
 	else  // ----------------------------- select/deselect one specific note ----------------------------
 	{
-        
+
         assertExpr(id,>=,0);
         assertExpr(id,<,notes.size());
-        
+
         // if we ignore +/- key modifiers, just set the value right away
         if(ignoreModifiers) notes[id].setSelected(selected);
         else
@@ -615,7 +615,7 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
                 else if(Display:: isSelectLessPressed()) notes[id].setSelected( !selected );
             }
         }//end if
-        
+
     }//end if
 }
 
@@ -629,12 +629,12 @@ bool Track::isNoteSelected(const int id)
 
 void Track::prepareNotesForGuitarEditor()
 {
-    
+
     for(int n=0; n<notes.size(); n++)
 	{
         notes[n].checkIfStringAndFretMatchNote(true);
     }
-    
+
 }
 
 // --------------------- get/set ---------------------
@@ -667,9 +667,11 @@ int Track::getGridDivider()
 int Track::getChannel()
 {
     // always 9 for drum tracks
-	if(sequence->getChannelManagementType() == CHANNEL_MANUAL and graphics->editorMode == DRUM) return 9;
+    //const bool manual_mode = sequence->getChannelManagementType() == CHANNEL_MANUAL;
 
-	return channel;
+    if(graphics->editorMode == DRUM) return 9;
+    else return channel;
+
 }
 void Track::setChannel(int i)
 {
@@ -751,9 +753,9 @@ void Track::playNote(const int id, const bool noteChange)
 {
 	assertExpr(id,<,notes.size());
 	assertExpr(id,>=,0);
-    
+
 	notes[id].play(noteChange);
-    
+
 }
 
 // returns smallest values, ignoring -1, a being prioritary to b (returns -1 for none, 0 for a, 1 for b)
@@ -797,7 +799,7 @@ int getActiveMin(int a, int b, int c)
  */
 
 int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
-						 int track_ID, /* in channel mode, this argument is NOT considered */
+						 int track_ID, /* in manual channel mode, this argument is NOT considered */
 						 int firstMeasure,
 						 bool selectionOnly,
 						 int& startTick)
@@ -809,8 +811,15 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     if(graphics->muted and graphics->editorMode != DRUM and !selectionOnly)
 		return -1;
 
-    track_ID = getChannel();
-    
+    // if in manual mode, use the user-specified channel ID and not the stock one
+    const bool manual_mode = sequence->getChannelManagementType() == CHANNEL_MANUAL;
+    if(!manual_mode) track_ID = getChannel();
+
+    // drum tracks
+    if(graphics->editorMode == DRUM) track_ID = 9;
+
+    //std::cout << "channel = " << track_ID << std::endl;
+
     // when previewing selected notes (start by finding the note that plays first, to start playing at the right place and note from the beginning)
     int firstNoteStartTick = -1;
     int selectedNoteAmount=0;
