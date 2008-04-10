@@ -113,6 +113,8 @@ libjdkmidi offers :
  
 * copy-paste from a song to another gives wrong results if the two use different sample sizes
 
++ the higher than hopes midi imports with events in wrong time order... check if error is in midi file or in my code... decide how to handle bad midis
+
 + in guitar editor, put 2 notes on two strings. move them down until both are on lowest string. undo and try to get back those you had in the beginning
 
 - class ScalePicker in /Dialogs... should be renamed ScaleDialog, or moved
