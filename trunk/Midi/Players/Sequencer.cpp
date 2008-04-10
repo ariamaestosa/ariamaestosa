@@ -87,27 +87,20 @@ AriaSequenceTimer::AriaSequenceTimer(Sequence* seq)
     AriaSequenceTimer::seq = seq;
 }
 
-//jdkmidi::MIDIMultiTrack* jdkmidiseq = NULL;
-//jdkmidi::MIDISequencer* jdksequencer = NULL;
 BasicTimer* timer = NULL;
 
 void cleanup_sequencer()
 {
-    //if(jdksequencer != NULL) delete jdksequencer;
-    //if(jdkmidiseq != NULL) delete jdkmidiseq;
     if(timer != NULL) delete timer;
-
-    //jdksequencer = NULL;
-    //jdkmidiseq = NULL;
     timer = NULL;
 }
 
 void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int songLengthInTicks)
 {
 
-    std::cout << "  * AriaSequenceTimer::run" << std::endl;
+    //std::cout << "  * AriaSequenceTimer::run" << std::endl;
 
-    std::cout << "trying to play " << seq->suggestFileName().mb_str() << std::endl;
+    //std::cout << "trying to play " << seq->suggestFileName().mb_str() << std::endl;
 
     jdksequencer->GoToTimeMs( 0 );
 
@@ -187,6 +180,7 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
             }
             else if( ev.IsTempo() )
 			{
+			    std::cout << "tempo event" << std::endl;
                 const int bpm = ev.GetTempo32()/32;
                 ticks_per_millis = (double)bpm * (double)beatlen / (double)60000.0;
 			}
@@ -209,8 +203,7 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
             else
             {
                 std::cout << "unknown event : " << ev.GetType() << std::endl;
-            }
-            */
+            }*/
 
             previous_tick = tick;
 
@@ -219,7 +212,7 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
                 cleanup_sequencer();
                 return;
             }
-
+            if(tick < previous_tick) continue; // something wrong about time order...
 
             if(tick > songLengthInTicks)
             {
@@ -231,6 +224,9 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
 
             PlatformMidiManager::seq_notify_current_tick(previous_tick);
 
+            //std::cout << "next_event_time was " << next_event_time << " adding " <<
+            //((tick - previous_tick) / ticks_per_millis) << " tick=" << tick <<
+            //" previous_tick=" << previous_tick << "ticks_per_millis=" << ticks_per_millis << std::endl;
             next_event_time += (tick - previous_tick) / ticks_per_millis;
 
             /*
@@ -260,10 +256,6 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
         const int delta = (timer->get_elapsed_millis() - last_millis);
 
         total_millis += delta;
-
-
-        // http://www.meangene.com/notes/time.html
-        // http://ftp.traduc.org/doc-vf/gazette-linux/html/2004/103/lg103-G.html
     }
 
     cleanup_sequencer();
