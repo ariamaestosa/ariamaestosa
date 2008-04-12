@@ -54,7 +54,7 @@ void TablaturePrintable::printPage(const int pageNum, wxDC& dc, const int x0, co
     text_height_half = (int)round((float)text_height / 2.0);
     
     // -------------------- generate the tablature  -------------------- 
-    assertExpr(pageNum-1,<,layoutPages.size());
+    assertExpr(pageNum-1,<,(int)layoutPages.size());
     const int lineAmount = layoutPages[pageNum-1].layoutLines.size();
     
     /*

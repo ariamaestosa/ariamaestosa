@@ -43,8 +43,6 @@ libjdkmidi offers :
 		more than one track
 		show tuning on tab
 
-* crash when cancelling printing
-
  - render a bit less often + probably too many paint events (duplicate ones at times) track and remove them
  - probably no need to re-render the entire screen everytime like currently done. only dirty portions should be rendered
 
@@ -110,7 +108,7 @@ libjdkmidi offers :
  ************************* BUGS: *************************
   
 * red images
- 
+* crash when cancelling printing
 * copy-paste from a song to another gives wrong results if the two use different sample sizes
 
 + the higher than hopes midi imports with events in wrong time order... check if error is in midi file or in my code... decide how to handle bad midis
