@@ -19,6 +19,7 @@ namespace AriaMaestosa
 TablaturePrintable::TablaturePrintable(Track* track, bool checkRepetitions_bool)
 {
 
+    parent = track;
     getLayoutElements(track, checkRepetitions_bool, layoutPages, measures);
     
     std::cout << "\nContains " << layoutPages.size() << " pages\n" << std::endl;
@@ -30,7 +31,21 @@ TablaturePrintable::~TablaturePrintable()
 
 wxString TablaturePrintable::getTitle()
 {
-    return wxT("AriaMaestosa tablature");
+    wxString song_title = parent->sequence->suggestFileName();
+    wxString track_title = parent->getName();
+    
+    wxString final_title;
+    
+    // give song title
+    if(song_title.IsSameAs(_("Untitled")))
+        final_title = _("Aria Maestosa song");
+    else
+        final_title = song_title;
+    
+    // give track name, if any
+    if(!track_title.IsSameAs(_("Untitled"))) final_title += (wxT(", ") + track_title);
+    
+    return final_title;
 }
 int TablaturePrintable::getPageAmount()
 {
