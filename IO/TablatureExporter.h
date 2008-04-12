@@ -34,6 +34,8 @@ class TablaturePrintable : public AriaPrintable
     int text_height;
     int text_height_half;
     
+    Track* parent;
+    
 public:
     TablaturePrintable(Track* track_arg, bool checkRepetitions_bool_arg);
     ~TablaturePrintable();
