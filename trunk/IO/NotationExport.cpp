@@ -459,7 +459,7 @@ void getLayoutElements(Track* track, const bool checkRepetitions_bool, std::vect
     int currentLine = 0;
     int currentPage = 0;
 
-    assertExpr(currentPage,<,layoutPages.size());
+    assertExpr(currentPage,<,(int)layoutPages.size());
     layoutPages[currentPage].layoutLines.push_back( LayoutLine(track) );
     
     std::cout << "+ PAGE " << currentPage << std::endl;
@@ -473,10 +473,10 @@ void getLayoutElements(Track* track, const bool checkRepetitions_bool, std::vect
             layoutPages[currentPage].layoutLines[currentLine].charWidth = totalLength;
             totalLength = 0;
             currentLine++;
-            assertExpr(currentPage,<,layoutPages.size());
+            assertExpr(currentPage,<,(int)layoutPages.size());
             
             // ccheck if we need to switch to another page
-            if(layoutPages[currentPage].layoutLines.size() == maxLinesInPage)
+            if((int)layoutPages[currentPage].layoutLines.size() == maxLinesInPage)
             {
                 // too many lines on page, switch to another page
                 currentLine = 0;
@@ -484,11 +484,11 @@ void getLayoutElements(Track* track, const bool checkRepetitions_bool, std::vect
                 layoutPages.push_back( LayoutPage() );
                 std::cout << "+ PAGE " << currentPage << std::endl;
             }
-            assertExpr(currentPage,<,layoutPages.size());
+            assertExpr(currentPage,<,(int)layoutPages.size());
             layoutPages[currentPage].layoutLines.push_back( LayoutLine(track) );
             std::cout << "    + LINE " << currentLine << std::endl;
         }
-        assertExpr(currentLine,<,layoutPages[currentPage].layoutLines.size());
+        assertExpr(currentLine,<,(int)layoutPages[currentPage].layoutLines.size());
         layoutPages[currentPage].layoutLines[currentLine].layoutElements.push_back(layoutElements[n]);
         totalLength += layoutElements[n].charWidth;
     }
