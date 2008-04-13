@@ -376,6 +376,8 @@ void getLayoutElements(Track* track, const bool checkRepetitions_bool, std::vect
 					(lastRepeatedMeasure+1) << ")"  << std::endl;
 #endif
 					
+                    //measures[firstMeasureThatRepeats].cutApart = true;
+                    
 					LayoutElement element(REPEATED_RIFF);
 					element.firstMeasure = firstMeasureThatRepeats;
 					element.lastMeasure = lastMeasureThatRepeats;
