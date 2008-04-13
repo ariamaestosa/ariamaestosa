@@ -31,7 +31,7 @@ bool ignoreMuted_bool = false;
 bool ignoreHidden_bool = false;
 bool checkRepetitions_bool = false;
 int lineWidth;
-bool repetitionsOf2Measures = false;
+//bool repetitionsOf2Measures = false;
 //int repetitionWidth;
 
 // ----------------------------------------------------------------------------------------------------
@@ -88,12 +88,13 @@ public:
 		detectRepetitions->SetValue(true);
 		boxSizer->Add(detectRepetitions, 1, wxALL, 5);
 		
+        /*
 		wxSize textCtrlSize(wxDefaultSize); textCtrlSize.SetWidth(55);
 		
 		repMinWidth=new wxCheckBox(this, wxID_ANY,  _("Repetitions must be at least 2 measures long"));
 		repMinWidth->SetValue(true);
 		boxSizer->Add(repMinWidth, 1, wxALL, 5);
-		
+		*/
 		/*
 		// repetition minimal width
 		{
@@ -108,6 +109,7 @@ public:
 		*/
 			
 		// Line width
+        /*
 		{
 			wxBoxSizer* subsizer = new wxBoxSizer(wxHORIZONTAL);
 			boxSizer->Add(subsizer);
@@ -117,7 +119,7 @@ public:
 			lineWidthCtrl = new wxTextCtrl(this, wxID_ANY, wxT("100"), wxDefaultPosition, textCtrlSize);
 			subsizer->Add(lineWidthCtrl, 0, wxALL, 5);
 			
-		}
+		}*/
 		
 		// OK-Cancel buttons
 		{
@@ -163,9 +165,8 @@ public:
 			ignoreHidden_bool = ignoreHidden->IsChecked();
 		}
 		checkRepetitions_bool = detectRepetitions->IsChecked();
-		lineWidth = atoi_u( lineWidthCtrl->GetValue() );
-		//repetitionWidth = atoi_u( repMinWidth->GetValue() );
-		repetitionsOf2Measures = repMinWidth->IsChecked();
+		//lineWidth = atoi_u( lineWidthCtrl->GetValue() );
+		//repetitionsOf2Measures = repMinWidth->IsChecked();
 		Hide();
         Destroy();
 		completeExport(true);
@@ -236,18 +237,12 @@ void completeExport(bool accepted)
 	if(!accepted) return;
     
     if(currentSequence == NULL) currentSequence = currentTrack->sequence;
-	/*
-    // ask user to select file destination
-	wxString filepath = askForSavePath();
-	if(filepath.IsEmpty()) return;
-	
-	// open file and prepare for writing to it
-	wxFile* file = new wxFile( filepath, wxFile::write );
-	*/
+
 	// we want to export the entire song
 	if(currentTrack == NULL)
 	{
-		
+        // NOT YET SUPPORTED
+		/*
 		// iterate through all the the tracks of the sequence, only consider those that are visible and not muted
 		const int track_amount = currentSequence->getTrackAmount();
 		for(int n=0; n<track_amount; n++)
@@ -279,9 +274,9 @@ void completeExport(bool accepted)
 			{
 				std::cout << "unsupported view"	<< std::endl;
 			}
-            
+
 		}// next track
-        
+        */
 	}
 	// we want to export a single track
 	else
@@ -290,16 +285,6 @@ void completeExport(bool accepted)
 		
 		if( mode == GUITAR )
 		{
-            /*
-			TablatureExporter exporter;
-			if(lineWidth>0) exporter.setMaxLineWidth(lineWidth);
-			//if(repetitionWidth>0) exporter.setRepetitionMinimalWidth(repetitionWidth);
-			if(repetitionsOf2Measures) setRepetitionMinimalLength(2);
-			else setRepetitionMinimalLength(1);
-            
-			exporter.exportTablature( currentTrack, file, checkRepetitions_bool );
-			//exportTablature( currentTrack, file );
-             */
             TablaturePrintable tabPrint( currentTrack, checkRepetitions_bool );
             if(!printResult(&tabPrint))
             {
@@ -313,9 +298,6 @@ void completeExport(bool accepted)
 		
 	}
 	
-	//file->Flush();
-	//file->Close();
-	//delete file;
 }
 
 

@@ -43,6 +43,8 @@ libjdkmidi offers :
 		more than one track
 		show tuning on tab
 
+* better controller editor! precise values, etc.
+
  - render a bit less often + probably too many paint events (duplicate ones at times) track and remove them
  - probably no need to re-render the entire screen everytime like currently done. only dirty portions should be rendered
 

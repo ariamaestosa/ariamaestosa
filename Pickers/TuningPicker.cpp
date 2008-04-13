@@ -360,7 +360,7 @@ TuningPicker::TuningPicker() : wxMenu()
     // FIXME - removed because caused memory corruption sometimes. I was never able to find why.
     Append(7, _("Rearrange selected notes"));
     
-	Append(8, _("Export track as tablature"));
+	Append(8, _("Print as tablature"));
 	
 	ctp = new CustomTuningPicker();
 	
