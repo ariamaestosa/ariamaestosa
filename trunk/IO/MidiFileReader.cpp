@@ -120,14 +120,21 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 		realTrackID ++;
 		Track* ariaTrack = sequence->getTrack(realTrackID);
 		
+        lastEventTick = 0;
+        
 		int last_channel = -1;
+        
+        bool need_reorder = false;
+        
         for(int eventID=0; eventID<eventAmount; eventID++)
 		{
             
             event = track->GetEvent( eventID );
             
             const int tick = event->GetTime();
-            if(tick > lastEventTick) lastEventTick = tick;
+            
+            if(tick < lastEventTick) need_reorder = true;
+            else lastEventTick = tick;
             
             const int channel = event->GetChannel();
 			if(channel != last_channel and last_channel != -1 and not event->IsMetaEvent() and
@@ -424,6 +431,12 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 		
         if(ariaTrack->getChannel()==9) ariaTrack->graphics->setEditorMode(DRUM);
 		
+        if(need_reorder)
+        {
+            std::cout << "* midi file is wrong, it will be necessary to reorder midi events" << std::endl;
+            ariaTrack->reorderNoteVector();
+            ariaTrack->reorderControlVector();
+        }
 		ariaTrack->reorderNoteOffVector();
 		//sequence->getTrack(trackID)->freeReservedMemory();
     }//next track
