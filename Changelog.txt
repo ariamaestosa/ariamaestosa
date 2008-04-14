@@ -3,9 +3,9 @@
 - Added feature to see other tracks in background of current track (keyboard view only for now)
 - Major improvements to ALSA/linux player. Fixed crashes. Made code cleaner.
 - Fixed crash on linux when trying to activate port choice dialog
-- Cleanup in notation export code
+- Cleanup in notation export code, switched from basic text generation to proper printing/pdf export
 - Fixed dialog deletion for notation export and custom tuning picker, should fix hangs (and possible crashes) on shutdown
-- Imported midi files now prperly suggest a file name when e.g. re-saving them
+- Imported midi files now properly suggest a file name when e.g. re-saving them
 - Added close button to main window (especially useful on linux)
 - Fixed yet more bugs with multiple time sig changes
 - Fixed importing midi files where events are [incorrectly] not in time order
