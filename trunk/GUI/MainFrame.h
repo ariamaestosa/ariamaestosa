@@ -115,6 +115,7 @@ public:
 
     MainFrame();
 	void init();
+    void initMenuBar();
     ~MainFrame();
 
     // top bar controls updated
@@ -127,7 +128,8 @@ public:
     void measureDenomChanged(wxCommandEvent& evt);
     void firstMeasureChanged(wxCommandEvent& evt);
 	void changeMeasureAmount(int i, bool throwEvent=true);
-
+    void disableMenusForPlayback(const bool disable);
+    
     // wait window events
     void evt_showWaitWindow(wxCommandEvent& evt);
     void evt_updateWaitWindow(wxCommandEvent& evt);
@@ -149,6 +151,7 @@ public:
     void menuEvent_selectAll(wxCommandEvent& evt);
     void menuEvent_addTrack(wxCommandEvent& evt);
     void menuEvent_deleteTrack(wxCommandEvent& evt);
+    void menuEvent_trackBackground(wxCommandEvent& evt);
     void menuEvent_importmidi(wxCommandEvent& evt);
     void menuEvent_exportmidi(wxCommandEvent& evt);
     void menuEvent_exportSampledAudio(wxCommandEvent& evt);

@@ -20,6 +20,8 @@
 #include "AriaCore.h"
 #include "GUI/GraphicalTrack.h"
 #include "Editors/Editor.h"
+#include "Pickers/InstrumentChoice.h"
+#include "Pickers/DrumChoice.h"
 
 #include "wx/tokenzr.h"
 
@@ -47,17 +49,20 @@ public:
 		
 		sizer = new wxBoxSizer(wxHORIZONTAL);
 		
+        const int editorMode = track->graphics->editorMode;
+        
 		// checkbox
 		active = new wxCheckBox(this, 200, wxT(" "));
 		sizer->Add(active, 0, wxALL, 5);
         
-        if(!enabled)
-        {
-            active->Enable(false);
-        }
+        if(!enabled or editorMode==DRUM)  active->Enable(false);
 		else if(activated) active->SetValue(true);
         
-		sizer->Add( new wxStaticText(this, wxID_ANY, to_wxString(trackID) + wxT(" : ") + track->getName()) , 1, wxALL, 5);
+        wxString instrumentname;
+        if(editorMode == DRUM) instrumentname = fromCString( Core::getDrumPicker()->getDrumName( track->getDrumKit() ) );
+        else instrumentname = fromCString( Core::getInstrumentPicker()->getInstrumentName( track->getInstrument() ) );
+        
+		sizer->Add( new wxStaticText(this, wxID_ANY, to_wxString(trackID) + wxT(" : ") + track->getName() + wxT(" (") + instrumentname + wxT(")")) , 1, wxALL, 5);
 
 		SetSizer(sizer);
 		sizer->Layout();
