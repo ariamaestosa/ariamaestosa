@@ -52,7 +52,7 @@ libjdkmidi offers :
 
  - use this when installing on linux : http://www.scons.org/wiki/InstallationPrefix
  
- - know what happens when adding too much channels in auto mode
+ - warn users graphically when adding too much channels in auto mode (right now only on terminal)
 
  + make more features accessible graphically (as opposed to keyboard-only)
 
