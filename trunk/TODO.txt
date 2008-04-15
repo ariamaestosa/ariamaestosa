@@ -43,7 +43,14 @@ libjdkmidi offers :
 		more than one track
 		show tuning on tab
 
+// ----- controller editor ------
 * better controller editor! precise values, etc.
+ - what to do with sustain? needs all_sound_off perhaps?
+ - make portamento more usable
+ + many controller effects would gain from being accessible somewhere else than in control editor
+ - copy control events along notes
+ - precise tempo bend (not controller-like, more like a sudden change)
+// ---------------
 
 + linux : export to wav when not using timidity?
 
@@ -60,16 +67,12 @@ libjdkmidi offers :
 
  + background choices are not saved to .aria files
 
+ + show checkmark next to current key in key picker
+
  - change whole track pitch/volume
  
  - show song duration
- 
- - copy control events along notes
- 
- - what to do with sustain? needs all_sound_off perhaps?
- - make portamento more usable
- - many controller effects would gain from being accessible somewhere else than in control editor
- 
+
  - tabbing though fields in select notes dialog should select their content
  + too easy for top bar stuff to gain focus - enter should have focus go back to main pane
  
@@ -79,7 +82,6 @@ libjdkmidi offers :
  - shift-click on a selected notes unselects it
  
  - multiple program changes
- - precise tempo bend (not controller-like, more like a sudden change)
  - change volume relatively on a bunch of notes
  - select notes and all similar menu items should be disabled in controller mode
  
@@ -114,8 +116,6 @@ libjdkmidi offers :
 * red images
 * crash when cancelling printing
 * copy-paste from a song to another gives wrong results if the two use different sample sizes
-
-+ the higher than hopes midi imports with events in wrong time order... check if error is in midi file or in my code... decide how to handle bad midis
 
 + in guitar editor, put 2 notes on two strings. move them down until both are on lowest string. undo and try to get back those you had in the beginning
 
