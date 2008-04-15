@@ -225,7 +225,11 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
 				if(trackLength > *songLengthInTicks) *songLengthInTicks=trackLength;
 
 				channel++; if (channel==9) channel++;
-
+                if(channel > 15 and sequence->getChannelManagementType() == CHANNEL_AUTO)
+                {
+                    channel = 0;
+                    std::cout << "WARNING: this song has too many channels, expect unpredictable output" << std::endl;
+                }
 			}
 			substract_ticks = *startTick;
 

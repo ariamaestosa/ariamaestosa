@@ -45,6 +45,8 @@ libjdkmidi offers :
 
 * better controller editor! precise values, etc.
 
++ linux : export to wav when not using timidity?
+
  - render a bit less often + probably too many paint events (duplicate ones at times) track and remove them
  - probably no need to re-render the entire screen everytime like currently done. only dirty portions should be rendered
 
@@ -126,18 +128,15 @@ libjdkmidi offers :
 - "select alsa midi port", guitar tunings, are not translatable
 
 - what's up with glutInit? wxGlCanvas seems to call it. Crashes suse 10.1.
-
-- if a midi has control events in an empty track they might be removed during import (though what could go there? tempo events are already stored in sequence)
-
 - aria has trouble importing the midi files it saved itself... "unsupported controller #127"
 
 - score : flat/sharp/natural signs tend to appear obscured (behind note stem if in a group... behind silence... etc.)
++ score editor - sharp of flat notes at time=0 have their sign hidden behind grey bar
 
 + linux: scons install fails from SVN because docs are not found
 + linux: no need to install icns files, nor lprojs
 + unsure note length is okay with measure != 4/4. check forumlae on wikipedia : http://en.wikipedia.org/wiki/Modern_musical_symbols
 + loading a key from a file probably won't appear in keyboard editor
-+ score editor - sharp of flat notes at time=0 have their sign hidden behind grey bar
 
 + rearrange notes doesn't always undo correctly
 
@@ -146,10 +145,9 @@ libjdkmidi offers :
         -->Mac OS error -208
         -->(null)
 
-- sometimes pasting in guitar editor gives wrong notes
 - "rearrange selected notes" doesn't always work optimally
 
-- clicking on a note should play it and it doesn't always work (like when note is selected)
+- clicking on a note should play it and it doesn't always work (like when note is selected) (no event sent?)
 - at the very top, in keyboard editor, wrong notes are greyed out
 - switching tracks tends to deselect measures
 - accentuated characters in copyright/song title gets broken (and possibly track name too) UTF-8 doesn't seem to work either
@@ -181,6 +179,7 @@ libjdkmidi offers :
     Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
  
  MINOR / CLEANUP / UNSURE:
+ - if a midi has control events in an empty track they might be removed during import (though what could go there? tempo events are already stored in sequence)
  - linux: exporting to audio via timidity : give better feedback about progression?
  + many Actions are only used on selected notes, yet they offer an implementation for single notes. This implementation was never tested and may be buggy
  - score : moving a sharp/flat/natural note up or down makes it lose its properties
