@@ -9,6 +9,7 @@
 - Added close button to main window (especially useful on linux)
 - Fixed yet more bugs with multiple time sig changes
 - Fixed importing midi files where events are [incorrectly] not in time order
+- Code cleanup in menu code.
 
 =====================================================================================
 Version 1.1 new features highlight

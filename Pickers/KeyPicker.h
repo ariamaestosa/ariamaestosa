@@ -31,7 +31,7 @@ namespace AriaMaestosa {
 		
 		wxMenuItem* musical_checkbox;
 		wxMenuItem* linear_checkbox;
-        wxMenuItem* background;
+        //wxMenuItem* background;
 		
 public:
 			

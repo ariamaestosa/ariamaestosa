@@ -14,11 +14,10 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "Pickers/BackgroundPicker.h"
+#include "Midi/Track.h"
 #include "Pickers/KeyPicker.h"
 #include "Editors/ScoreEditor.h"
 #include "Editors/KeyboardEditor.h"
-#include "Midi/Track.h"
 #include "GUI/GraphicalTrack.h"
 #include "AriaCore.h"
 
@@ -52,8 +51,6 @@ KeyPicker::KeyPicker() : wxMenu()
     Append(15,wxT("Db, Bbm")); // b 5
 	Append(16,wxT("Gb, Ebm")); // b 6 
 	Append(17,wxT("Cb, Abm")); // b 7
-	AppendSeparator();
-    background = Append(18,wxT("Background..."));
 }
 
 void KeyPicker::setParent(Track* parent_arg)
@@ -63,17 +60,11 @@ void KeyPicker::setParent(Track* parent_arg)
     {
         musical_checkbox->Enable(false);
         linear_checkbox->Enable(false);
-        background->Enable(true);
     }
     else if(parent->editorMode == SCORE)
     {
         musical_checkbox->Enable(true);
         linear_checkbox->Enable(true);
-        background->Enable(false);
-    }
-    else
-    {
-        background->Enable(false);
     }
 }
 
@@ -91,14 +82,8 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
 {
 	const int id = evt.GetId();
 	
-	if( id < 0 or id > 18 ) return;
-	
-    if( id == 18 )
-    {
-        BackgroundPicker::show(parent->track);
-        return;
-    }
-    
+	if( id < 0 or id > 17 ) return;
+
 	if( id == 1 ) parent -> scoreEditor -> enableMusicalNotation( musical_checkbox->IsChecked() );
 	else if( id == 2 ) parent -> scoreEditor -> enableLinearNotation( linear_checkbox->IsChecked() );
 	else if( id == 3 )
