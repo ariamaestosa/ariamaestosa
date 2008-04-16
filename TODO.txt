@@ -117,6 +117,9 @@ libjdkmidi offers :
 * crash when cancelling printing
 * copy-paste from a song to another gives wrong results if the two use different sample sizes
 
++ crash in crimson tide blue sea when scrolling in score mode (because of very long low note...)
++ crimson tide blue sea --> find out why score notes don't beam
+
 + in guitar editor, put 2 notes on two strings. move them down until both are on lowest string. undo and try to get back those you had in the beginning
 
 - class ScalePicker in /Dialogs... should be renamed ScaleDialog, or moved

@@ -1011,6 +1011,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 	std::vector<NoteRenderInfo> noteRenderInfo;
 	
     const int first_x_to_consider = getMeasureBar()->firstPixelInMeasure( getMeasureBar()->measureAtPixel(0) ) + 1;
+    const int last_x_to_consider = getMeasureBar()->lastPixelInMeasure( getMeasureBar()->measureAtPixel(width+15) );
     
     if(musicalNotationEnabled) converter->resetAccidentalsForNewRender();
     
@@ -1029,7 +1030,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
         
         // don't consider notes that won't be visible
         if(x2 < first_x_to_consider) continue;
-        if(x1>width+15) break;
+        if(x1 > last_x_to_consider) break;
         
 		if(linearNotationEnabled)
 		{
