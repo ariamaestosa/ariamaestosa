@@ -128,6 +128,7 @@ public:
 	int firstTickInMeasure(int id);
 	int firstPixelInMeasure(int id);
 	int lastTickInMeasure(int id);
+    int lastPixelInMeasure(int id);
 		
 	void setExpandedMode(bool expanded);
 	bool isExpandedMode();	

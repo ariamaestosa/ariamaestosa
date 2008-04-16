@@ -1,5 +1,5 @@
 
-1.2b1
+1.1.1
 - Added feature to see other tracks in background of current track (keyboard view only for now)
 - Major improvements to ALSA/linux player. Fixed crashes. Made code cleaner.
 - Fixed crash on linux when trying to activate port choice dialog
@@ -10,6 +10,7 @@
 - Fixed yet more bugs with multiple time sig changes
 - Fixed importing midi files where events are [incorrectly] not in time order
 - Code cleanup in menu code.
+- Fixed display errors when scrolling in score
 
 =====================================================================================
 Version 1.1 new features highlight
