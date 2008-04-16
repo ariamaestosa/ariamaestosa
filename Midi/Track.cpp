@@ -813,7 +813,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
     // if in manual mode, use the user-specified channel ID and not the stock one
     const bool manual_mode = sequence->getChannelManagementType() == CHANNEL_MANUAL;
-    if(!manual_mode) track_ID = getChannel();
+    if(manual_mode) track_ID = getChannel();
 
     // drum tracks
     if(graphics->editorMode == DRUM) track_ID = 9;
