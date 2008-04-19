@@ -1,4 +1,7 @@
 
+SVN
+- Added german translation (thanks to Friedrich Weber!)
+
 1.1.1
 - Added feature to see other tracks in background of current track (keyboard view only for now)
 - Major improvements to ALSA/linux player. Fixed crashes. Made code cleaner.

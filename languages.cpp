@@ -37,6 +37,7 @@ void initLanguageSupport(wxConfig* prefs)
 	else if(language == wxLANGUAGE_ENGLISH) std::cout << "language : english" << std::endl;
 	else if(language == wxLANGUAGE_FRENCH) std::cout << "language : french" << std::endl;
     else if(language == wxLANGUAGE_ITALIAN) std::cout << "language : italian" << std::endl;
+    else if(language == wxLANGUAGE_GERMAN) std::cout << "language : german" << std::endl;
     else std::cout << "language : UNKNOWN!!!" << std::endl;
     
 	if(wxLocale::IsAvailable(language))
@@ -80,6 +81,7 @@ wxArrayString getLanguageList()
     list.Add(wxT("English"));           // 1
     list.Add(wxT("Fran\u00E7ais"));     // 2
     list.Add(wxT("Italiano"));          // 3
+    list.Add(wxT("Deutsch"));           // 4
     return list;
 }
 
@@ -93,6 +95,8 @@ int getDefaultLanguageID()
         return 2;
     else if(language == wxLANGUAGE_ITALIAN)
         return 3;
+    else if(language == wxLANGUAGE_GERMAN)
+        return 4;
     else return 0;
 }
 
@@ -119,6 +123,10 @@ void setDefaultLanguage(wxString langname)
     else if( langname == wxT("Italiano") )
     {
         prefs->Write( wxT("lang"), wxLANGUAGE_ITALIAN );
+    }
+    else if( langname == wxT("Deutsch") )
+    {
+        prefs->Write( wxT("lang"), wxLANGUAGE_GERMAN );
     }
     prefs->Flush();
 }
