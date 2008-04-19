@@ -40,7 +40,9 @@ AboutDialog::AboutDialog() : wxDialog(NULL, wxID_ANY,  _("About Aria Maestosa"),
 		wxString(_("\tJ.D. Koftinoff Software for libjdkmidi\n\tThe irrXML team for their great XML parser\n"))+
 		wxString(_("\tThe wxWidgets team\n\twww.freesmug.org for allowing me to access an intel mac")) +
         wxString(_("\n\nTranslations:\n") +
-                 wxString( wxT("\t it : Gianluca Pignalberi")) );
+                 wxString( wxT("\t it : Gianluca Pignalberi\n")) +
+                 wxString( wxT("\t de : Friedrich Weber\n"))
+                 );
 
 
 	textArea = new wxTextCtrl(this, 1, about_text, wxPoint(0,174), wxSize(517,500-174), wxTE_MULTILINE | wxTE_READONLY);
