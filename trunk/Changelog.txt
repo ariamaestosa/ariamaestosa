@@ -1,6 +1,7 @@
 
 SVN
 - Added german translation (thanks to Friedrich Weber!)
+- Cleaned up language code, making adding new languages easier and less error-prone
 
 1.1.1
 - Added feature to see other tracks in background of current track (keyboard view only for now)
