@@ -134,7 +134,7 @@ def install_Aria_linux():
     os.system("cp ./Resources/de.lproj/aria_maestosa.mo " + locale_path + "de/LC_MESSAGES/aria_maestosa.mo")
     
     #copy docs
-    os.system("cp -r ./../docs " + resource_path)
+    os.system("cp -r ./../Documentation " + resource_path)
 
     os.system("echo Installation done")
     sys.exit(0)
