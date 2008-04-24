@@ -604,11 +604,11 @@ void MainFrame::menuEvent_manual(wxCommandEvent& evt)
 #endif
 
 #ifdef __WXGTK__
-	wxString path_to_docs =  getResourcePrefix() + wxT("docs/man.html");
+	wxString path_to_docs =  getResourcePrefix() + wxT("Documentation/man.html");
 
 	// if kept in place (not installed)
 	if(! wxFileExists(path_to_docs) )
-		path_to_docs =  getResourcePrefix() + wxT("../../docs/man.html");
+		path_to_docs =  getResourcePrefix() + wxT("../../Documentation/man.html");
 #endif
 
 #ifndef __WXMAC__
