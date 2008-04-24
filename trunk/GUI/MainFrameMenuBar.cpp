@@ -235,20 +235,21 @@ void MainFrame::menuEvent_saveas(wxCommandEvent& evt)
 {
 	wxString suggestedName = getCurrentSequence()->suggestFileName() + wxT(".aria");
 
-	getCurrentSequence()->filepath = showFileDialog( _("Select destination file"), wxT(""), suggestedName,
+	wxString givenPath = showFileDialog( _("Select destination file"), wxT(""), suggestedName,
                                                      wxT("Aria Maestosa file|*.aria"), true /*save*/);
 
-    if(!getCurrentSequence()->filepath.IsEmpty())
+    if(!givenPath.IsEmpty())
 	{
 
 
-		if( wxFileExists(getCurrentSequence()->filepath) )
+		if( wxFileExists(givenPath) )
 		{
 			int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
                                         wxYES_NO, this);
 			if (answer != wxYES) return;
 		}
-
+        
+        getCurrentSequence()->filepath = givenPath;
         saveAriaFile(getCurrentSequence(), getCurrentSequence()->filepath);
 
         // change song name
