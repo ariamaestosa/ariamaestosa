@@ -120,6 +120,8 @@ NOTE: sorry, this is very raw :)
 
 * opening manual doesn't always work (?)
 
+* crashes when opening ghost of the navigator (freezes because it's reordering, and reorder code is absymally slow)
+
 + crash in crimson tide blue sea when scrolling in score mode (because of very long low note...)
 + crimson tide blue sea --> find out why score notes don't beam
 

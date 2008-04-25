@@ -340,11 +340,19 @@ void Track::reorderNoteVector()
 	}
 #endif
 
+    //int max_n = 0;
+    
 	for(int n=0; n<noteAmount-1; n++)
 	{
 
 		assertExpr(n+1,<,notes.size());
-
+/*
+        if(n > max_n)
+        {
+            max_n = n;
+            std::cout << " #" << n  << "/" << noteAmount << std::endl;
+        }
+        */
 		if(notes[n].startTick > notes[n+1].startTick)
 		{
 			notes.swap(n, n+1);
