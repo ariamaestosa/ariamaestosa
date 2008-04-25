@@ -349,7 +349,7 @@ void Track::reorderNoteVector()
 		{
 			notes.swap(n, n+1);
 			if(n>2) n-= 2;
-			else n=0;
+			else n=-1;
 		}
 	}//next
 
