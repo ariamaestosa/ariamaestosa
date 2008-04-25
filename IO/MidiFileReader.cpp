@@ -79,7 +79,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 	
     const int drum_note_duration = resolution/32+1;
 	
-    int lastEventTick = 0;
+    int lastEventTick = 0; // last event tick for whole song, to find its duration
     
     bool firstTempoEvent=true;
     
@@ -120,7 +120,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 		realTrackID ++;
 		Track* ariaTrack = sequence->getTrack(realTrackID);
 		
-        lastEventTick = 0;
+        int lastEventTick_inTrack = 0;
         
 		int last_channel = -1;
         
@@ -133,8 +133,8 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
             
             const int tick = event->GetTime();
             
-            if(tick < lastEventTick) need_reorder = true;
-            else lastEventTick = tick;
+            if(tick < lastEventTick_inTrack) need_reorder = true;
+            else{ lastEventTick_inTrack = tick; }
             
             const int channel = event->GetChannel();
 			if(channel != last_channel and last_channel != -1 and not event->IsMetaEvent() and
@@ -423,9 +423,8 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 			ariaTrack->setName(trackName);
 		}
 		
-		if(trackID == 0 /*and ariaTrack->getNoteAmount()==0*/)
+		if(trackID == 0)
 		{
-			//std::cout << "candidate seqence name: " << (char*)trackName.c_str() << std::endl;
 			sequence->setInternalName( trackName );
 		}
 		
@@ -438,7 +437,8 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
             ariaTrack->reorderControlVector();
         }
 		ariaTrack->reorderNoteOffVector();
-		//sequence->getTrack(trackID)->freeReservedMemory();
+        
+        if(lastEventTick_inTrack > lastEventTick) lastEventTick = lastEventTick_inTrack;
     }//next track
 	
     // erase empty tracks
@@ -510,6 +510,8 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
     // set song length
 	int measureAmount_i = getMeasureBar()->measureAtTick(lastEventTick) + 1;
 	
+    std::cout << "song length = " << getMeasureBar()->measureAtTick(lastEventTick) << "measures, last_event_tick=" << lastEventTick << std::endl;
+    
 	if(measureAmount_i < 10) measureAmount_i=10;
 	
     getMainFrame()->changeMeasureAmount( measureAmount_i );
