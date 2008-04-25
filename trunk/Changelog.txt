@@ -4,6 +4,7 @@ SVN
 - Cleaned up language code, making adding new languages easier and less error-prone
 - Fixed files being overwriten even if user chose "no" in the overwrite dialog (when he didn't choose another path right away)
 - Fixed song length detection when importing midi files
+- Fixed note ordering bug that could potentially have caused songs to be messed up
 
 1.1.1
 - Added feature to see other tracks in background of current track (keyboard view only for now)
