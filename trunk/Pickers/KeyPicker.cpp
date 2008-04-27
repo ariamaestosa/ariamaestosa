@@ -89,75 +89,17 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
 	else if( id == 3 )
     {
         parent -> scoreEditor -> loadKey(NATURAL, 0);
+        parent -> keyboardEditor -> loadKey(NATURAL, 0);
     }
 	else if( id <= 10 )
     {
         parent -> scoreEditor -> loadKey(SHARP, id-3);
+        parent -> keyboardEditor -> loadKey(SHARP, id-3);
     }
 	else if( id <= 17 )
     {
         parent -> scoreEditor -> loadKey(FLAT, id-10);
-    }
-    
-    // load in keyboard editor too
-    const int note7_to_note12[] = {
-        /* A */ 0,
-        /* B */ 2,
-        /* C */ 3,
-        /* D */ 5,
-        /* E */ 7,
-        /* F */ 8,
-        /* G */ 10};
-    
-    // A, E, B, F#
-    
-    switch(id)
-    {
-    case 3:
-        parent -> keyboardEditor -> loadKey( note7_to_note12[C] /* C */ );
-        break;
-    case 4:
-        parent -> keyboardEditor -> loadKey( note7_to_note12[G] /* G */ );
-        break;
-    case 5:
-        parent -> keyboardEditor -> loadKey( note7_to_note12[D] /* D */ );
-        break;
-    case 6:
-        parent -> keyboardEditor -> loadKey( note7_to_note12[A] /* A */ );
-        break;
-    case 7:
-        parent -> keyboardEditor -> loadKey( note7_to_note12[E] /* E */ );
-        break;
-    case 8:
-        parent -> keyboardEditor -> loadKey( note7_to_note12[B] /* B */ );
-        break;
-    case 9:
-        parent -> keyboardEditor -> loadKey( note7_to_note12[F]+1 /* F# */ );
-        break;
-    case 10:
-        parent -> keyboardEditor -> loadKey( note7_to_note12[C]+1 /* C# */ );
-        break;
-    case 11:
-        parent -> keyboardEditor -> loadKey( note7_to_note12[F] /* F */ );
-        break;
-    case 12:
-        parent -> keyboardEditor -> loadKey( note7_to_note12[B]-1 /* Bb */ );
-        break;
-    case 13:
-        parent -> keyboardEditor -> loadKey( note7_to_note12[E]-1 /* Eb */ );
-        break;
-    case 14:
-        parent -> keyboardEditor -> loadKey( note7_to_note12[A]-1 + 12 /* Ab */ );
-        break;
-    case 15:
-        parent -> keyboardEditor -> loadKey( note7_to_note12[D]-1 /* Db */ );
-        break;
-    case 16:
-        parent -> keyboardEditor -> loadKey( note7_to_note12[G]-1 /* Gb */ );
-        break;
-    case 17:
-        parent -> keyboardEditor -> loadKey( note7_to_note12[C]-1 /* Cb */ );
-        break;
+        parent -> keyboardEditor -> loadKey(FLAT, id-10);
     }
     
     Display::render();

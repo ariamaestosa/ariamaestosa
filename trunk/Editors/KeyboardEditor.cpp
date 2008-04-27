@@ -432,9 +432,54 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 }
 
 
-// if key is e.g. G Major, "major_note" will be set to note12 equivalent of G.
-void KeyboardEditor::loadKey(const int major_note12)
+
+void KeyboardEditor::loadKey(const int sharpness_symbol, const int symbol_amount)
 {
+    static const int note7_to_note12[] = {
+        /* A */ 0,
+        /* B */ 2,
+        /* C */ 3,
+        /* D */ 5,
+        /* E */ 7,
+        /* F */ 8,
+        /* G */ 10};
+    
+    // if key is e.g. G Major, "major_note" will be set to note12 equivalent of G.
+    // to load a minor key, it's just set to the major one that has same sharps and flats
+    // to ease the process
+    int major_note12 = 0;
+    
+    if(symbol_amount == 0 or sharpness_symbol == NATURAL)
+    {
+        major_note12 = note7_to_note12[C];
+    }
+    else if(sharpness_symbol == SHARP)
+    {
+        switch(symbol_amount)
+        {
+            case 1: major_note12 = note7_to_note12[G]; break;
+            case 2: major_note12 = note7_to_note12[D]; break;
+            case 3: major_note12 = note7_to_note12[A]; break;
+            case 4: major_note12 = note7_to_note12[E]; break;
+            case 5: major_note12 = note7_to_note12[B]; break;
+            case 6: major_note12 = note7_to_note12[F]+1; /* F# */break;
+            case 7: major_note12 = note7_to_note12[C]+1; /* C# */ break;
+        }
+    }
+    else if(sharpness_symbol == FLAT)
+    {
+        switch(symbol_amount)
+        {
+            case 1: major_note12 = note7_to_note12[F]; break;
+            case 2: major_note12 = note7_to_note12[B]-1; /* Bb */ break;
+            case 3: major_note12 = note7_to_note12[E]-1; /* Eb */ break;
+            case 4: major_note12 = note7_to_note12[A]-1 + 12; /* Ab */ break;
+            case 5: major_note12 = note7_to_note12[D]-1; /* Db */ break;
+            case 6: major_note12 = note7_to_note12[G]-1; /* Gb */ break;
+            case 7: major_note12 = note7_to_note12[C]-1; /* Cb */break;
+        }
+    }
+    
 #define NEXT n--; if(n<0) n+=12
     int n = major_note12 + 7;
     if(n > 11) n -= 12;
