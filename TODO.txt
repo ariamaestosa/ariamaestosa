@@ -118,10 +118,10 @@ NOTE: sorry, this is very raw :)
 * crash when cancelling printing
 * opening manual doesn't always work (?)
 
-+ crash in crimson tide blue sea when scrolling in score mode (because of very long low note...)
-+ crimson tide blue sea --> find out why score notes don't beam
+* crash in crimson tide blue sea when scrolling in score mode (because of very long low note...)
+* crimson tide blue sea --> find out why score notes don't beam
 
-+ in guitar editor, put 2 notes on two strings. move them down until both are on lowest string. undo and try to get back those you had in the beginning
+* in guitar editor, put 2 notes on two strings. move them down until both are on lowest string. undo and try to get back those you had in the beginning
 
 - class ScalePicker in /Dialogs... should be renamed ScaleDialog, or moved
 - tuningpicker and tuningdialog should be 2 separate things
@@ -140,21 +140,19 @@ NOTE: sorry, this is very raw :)
 + linux: scons install fails from SVN because docs are not found
 + linux: no need to install icns files, nor lprojs
 + unsure note length is okay with measure != 4/4. check forumlae on wikipedia : http://en.wikipedia.org/wiki/Modern_musical_symbols
-+ loading a key from a file probably won't appear in keyboard editor
+
 
 + rearrange notes doesn't always undo correctly
+- "rearrange selected notes" doesn't always work optimally
 
 - error at startup (quicktime will not play dummy file to init it?)
         error:
         -->Mac OS error -208
         -->(null)
 
-- "rearrange selected notes" doesn't always work optimally
-
 - clicking on a note should play it and it doesn't always work (like when note is selected) (no event sent?)
 - at the very top, in keyboard editor, wrong notes are greyed out
 - switching tracks tends to deselect measures
-- accentuated characters in copyright/song title gets broken (and possibly track name too) UTF-8 doesn't seem to work either
 
 - hard to resize last track
 - hitting space when nothing is selected should do nothing

@@ -967,8 +967,16 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
             
             std::cout << "sharps = " << sharps << " flats = " << flats << std::endl;
             
-            if(sharps > flats) scoreEditor->loadKey(SHARP, sharps);
-            else scoreEditor->loadKey(FLAT, flats);
+            if(sharps > flats)
+            {
+                scoreEditor->loadKey(SHARP, sharps);
+                keyboardEditor->loadKey(SHARP, sharps);
+            }
+            else
+            {
+                scoreEditor->loadKey(FLAT, flats);
+                keyboardEditor->loadKey(FLAT, flats);
+            }
         }
         
     }
