@@ -28,6 +28,9 @@ namespace AriaMaestosa
 	void add(Note* n);
 	int getSize();
 	Note* getNote( int index );
+    
+    void setBeatLength(const int beat_length_arg);
+    int getBeatLength();
 }
 
 }
