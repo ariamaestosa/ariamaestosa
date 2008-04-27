@@ -176,7 +176,7 @@ public:
         }
         
         float factor = atof(
-                            toCString(factor_str)
+                            factor_str.mb_str()
                             ) / 100.0;
         
         //std::cout << "factor: " << factor << std::endl;

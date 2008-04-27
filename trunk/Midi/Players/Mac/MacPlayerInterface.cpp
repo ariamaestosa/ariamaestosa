@@ -175,7 +175,7 @@ namespace PlatformMidiManager {
 
 		//exportToAudio( data, length, filepath );
         qtkit_setData(data, length);
-		bool success = qtkit_exportToAiff( toCString(export_audio_filepath) );
+		bool success = qtkit_exportToAiff( export_audio_filepath.mb_str() );
 
 		if(!success)
 		{

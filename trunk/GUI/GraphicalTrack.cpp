@@ -986,7 +986,7 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
 
 			n++;
 			wxString tmp = wxT("string") + to_wxString(n);
-			string_v = (char*)xml->getAttributeValue( toCString(tmp) );
+			string_v = (char*)xml->getAttributeValue( tmp.mb_str() );
 		}
 		
 		if(guitarEditor->tuning.size() < 3)

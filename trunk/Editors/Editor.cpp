@@ -582,7 +582,7 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 		{
 			
 			click_on_scrollbar = true;
-			if(wxGetKeyState(WXK_F1)) std::cout << toCString(extract_filename( fromCString(__FILE__) )) << "@" << __LINE__ << " click_on_scrollbar = true" << std::endl;
+			if(wxGetKeyState(WXK_F1)) std::cout << extract_filename( fromCString(__FILE__) ).mb_str() << "@" << __LINE__ << " click_on_scrollbar = true" << std::endl;
 			
 			// not grabbing the thumb
 			if(

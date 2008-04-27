@@ -301,7 +301,7 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current, Rel
 
         label += to_wxString(10-octave);
         
-        AriaRender::small_text( toCString(label), text_x, text_y );
+        AriaRender::small_text( label.mb_str(), text_x, text_y );
     }//next
 
 

@@ -39,8 +39,6 @@ wxString showFileDialog(wxString message, wxString defaultDir,
 
 wxString getResourcePrefix();
 
-#define toCString(x) x.mb_str()
-
 long atoi_u(wxString s);
 
 wxString fromCString(const char* chars);
