@@ -170,10 +170,10 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     AriaRender::color(0.5, 0.5, 0.5);
     
 	wxString top_name=controllerChoice->getTopLabel();
-    AriaRender::small_text( toCString(top_name),  getEditorXStart()+5 , area_from_y + 10);
+    AriaRender::small_text( top_name.mb_str(),  getEditorXStart()+5 , area_from_y + 10);
 	
 	wxString bottom_name=controllerChoice->getBottomLabel();
-    AriaRender::small_text( toCString(bottom_name),  getEditorXStart()+5 , area_to_y - 5);
+    AriaRender::small_text( bottom_name.mb_str(),  getEditorXStart()+5 , area_to_y - 5);
     
 	// -------------------------- draw controller events ---------------------
     renderEvents();

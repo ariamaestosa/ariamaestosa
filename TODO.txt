@@ -118,8 +118,6 @@ NOTE: sorry, this is very raw :)
 * crash when cancelling printing
 * opening manual doesn't always work (?)
 
-* song name all messed up on export
-
 + crash in crimson tide blue sea when scrolling in score mode (because of very long low note...)
 + crimson tide blue sea --> find out why score notes don't beam
 

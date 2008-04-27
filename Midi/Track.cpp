@@ -889,8 +889,10 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         m.SetText( 3 );
         m.SetByte1( 3 );
 
-        const char* name_c = toCString(name);
-        jdkmidi::MIDISystemExclusive sysex( (unsigned char*)name_c, name.size()+1, name.size()+1, false);
+        char cstring[1024];
+        strcpy(cstring, (const char*)name.mb_str(wxConvUTF8));
+        
+        jdkmidi::MIDISystemExclusive sysex( (unsigned char*)cstring, name.size()+1, name.size()+1, false);
 
         m.CopySysEx( &sysex );
         m.SetTime( 0 );

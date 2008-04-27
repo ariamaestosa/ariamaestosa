@@ -50,7 +50,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
     sequence->importing = true;
 	
     // the stream used to read the input file
-    jdkmidi::MIDIFileReadStreamFile rs( toCString(filepath) );
+    jdkmidi::MIDIFileReadStreamFile rs( filepath.mb_str() );
     
     // the object which will hold all the tracks
     jdkmidi::MIDIMultiTrack jdksequence;

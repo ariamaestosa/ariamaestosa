@@ -111,11 +111,10 @@ bool exportMidiFile(Sequence* sequence, wxString filepath)
 		int length = -1, start = -1, numTracks = -1;
 		makeJDKMidiSequence(sequence, tracks, false, &length, &start, &numTracks, false);
 
-        // FIXME - change conversion
-		wxCSConv cs( wxFONTENCODING_UTF8 );
-		wxCharBuffer output = cs.cWC2MB(filepath.wc_str());
+        char cstring[1024];
+        strcpy(cstring, (const char*)filepath.mb_str(wxConvUTF8));
 
-		jdkmidi::MIDIFileWriteStreamFileName file_stream( (char*)output.data() /*toCString(filepath)*/ );
+		jdkmidi::MIDIFileWriteStreamFileName file_stream( cstring );
 
 		jdkmidi::MIDIFileWriteMultiTrack writer2(
 												 &tracks,
@@ -259,9 +258,10 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
 				m.SetText( 2 );
 				m.SetByte1( 2 );
 
-				const char* copyright = toCString(sequence->getCopyright());
-
-				jdkmidi::MIDISystemExclusive sysex( (unsigned char*)copyright,
+                char cstring[1024];
+                strcpy(cstring, (const char*)sequence->getCopyright().mb_str(wxConvUTF8));
+                
+				jdkmidi::MIDISystemExclusive sysex( (unsigned char*)cstring,
 													sequence->getCopyright().size()+1,
 													sequence->getCopyright().size()+1, false);
 
@@ -282,10 +282,10 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
 				m.SetText( 3 );
 				m.SetByte1( 3 );
 
-                const char* internalname = toCString(sequence->getInternalName());
-
-				//std::cout << "name : " << internalname << " (" << sequence->getInternalName().size()+1 << ")" << std::endl;
-				jdkmidi::MIDISystemExclusive sysex( (unsigned char*)internalname,
+                char cstring[1024];
+                strcpy(cstring, (const char*)sequence->getInternalName().mb_str(wxConvUTF8));
+				
+                jdkmidi::MIDISystemExclusive sysex( (unsigned char*)cstring,
 													sequence->getInternalName().size()+1,
 													sequence->getInternalName().size()+1, false);
 

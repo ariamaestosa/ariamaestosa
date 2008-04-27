@@ -41,7 +41,7 @@ wxString to_wxString(float f)
 
 void assertFailed(wxString message)
 {
-	std::cerr << toCString(message) << std::endl;
+	std::cerr << message.mb_str() << std::endl;
 
 	wxMessageBox( message );
 	exit(1);
@@ -49,7 +49,7 @@ void assertFailed(wxString message)
 
 void writeData(wxString data, wxFileOutputStream& fileout)
 {
-	fileout.Write( toCString(data), data.size());
+	fileout.Write( data.mb_str(), data.size());
 }
 
 wxString extract_filename(wxString filepath)
@@ -80,7 +80,7 @@ long atoi_u(wxString s)
 	if(s.ToLong(&value)) return value;
 	else
 	{
-		std::cerr << "WARNING: Could not parse number " << toCString(s) << std::endl;
+		std::cerr << "WARNING: Could not parse number " << s.mb_str() << std::endl;
 		return -1;
 	}
 }
