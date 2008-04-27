@@ -52,9 +52,7 @@ namespace AriaMaestosa
 	{
 		assert(track != NULL);
 		
-		//undo_obj.saveState(track);
-		//track->paste(atMouse);
-		
+
 		if(track->graphics->editorMode == CONTROLLER)
 		{
 			wxBell();
@@ -62,6 +60,19 @@ namespace AriaMaestosa
 		}
 		if(Clipboard::getSize() == 0) return; // nothing copied
 		
+        const int copied_beat_length = Clipboard::getBeatLength();
+        const int seq_beat_length = track->sequence->ticksPerBeat();
+        float scale_pasted_notes = 1;
+        bool need_to_scale_pasted_notes = false;
+        
+        if(copied_beat_length != seq_beat_length)
+        {
+            scale_pasted_notes = (float)seq_beat_length / (float)copied_beat_length;
+            need_to_scale_pasted_notes = true;
+            std::cout << "pasting from a song with beat=" << copied_beat_length << " to one with beat=" << seq_beat_length <<
+                ", it will be necessary to scale notes by " << scale_pasted_notes << std::endl;
+        }
+        
 		// used to find when the first note is played.
 		// If we're pasting at the mouse cursor, it is necessary to know that so that the first note is next to the cursor.
 		// However, if we're pasting in the first measure, we don't want this info since we want the track->notes to keep their location within the measure.
@@ -126,7 +137,7 @@ namespace AriaMaestosa
 		else
 		{
 			
-regular_paste:
+regular_paste: // FIXME - find better way than goto
 			/*
 			 * This part will change to value of 'shift' variable to make sure pasted track->notes will be visible
 			 */
@@ -156,9 +167,12 @@ regular_paste:
 			
 			Note* tmp=new Note( *(Clipboard::getNote(n)) );
 			
-			//tmp->move( shift , 0, track->graphics->editorMode);
-			//if(atMouse) tmp->move( -beginning , 0, track->graphics->editorMode);
-			
+            if(need_to_scale_pasted_notes)
+            {
+                tmp->startTick *= scale_pasted_notes;
+                tmp->endTick *= scale_pasted_notes;
+            }
+            
             track->graphics->getCurrentEditor()->moveNote(*tmp, shift , 0);
             if(atMouse) track->graphics->getCurrentEditor()->moveNote(*tmp, -beginning , 0);
                 

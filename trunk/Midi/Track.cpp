@@ -1179,7 +1179,8 @@ void Track::copy()
     }
 
 	Clipboard::clear();
-
+    Clipboard::setBeatLength(sequence->ticksPerBeat());
+    
 	int tickOfFirstSelectedNote=-1;
     // place all selected notes into clipboard
     for(int n=0; n<notes.size(); n++)

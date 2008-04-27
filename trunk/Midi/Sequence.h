@@ -92,7 +92,7 @@ class Sequence {
     ptr_vector<ControllerEvent> tempoEvents;
     // ------------------------------------
     
-	// perform an action that affects multiple tracks (see also Sequence::action)
+	// perform an action that affects multiple tracks (see also Track::action)
 	void action( Action::MultiTrackAction* action );
 	
 	void addToUndoStack( Action::EditAction* action );

@@ -25,12 +25,21 @@ namespace AriaMaestosa {
 		
 		// a vector to store copied notes
 		ptr_vector<Note> clipboard;
-		
+		int beat_length = 960; // store beat length of copied notes, in case you want to copy from a song to another with different beat lengths
+        
 		void clear()
 		{
 			clipboard.clearAndDeleteAll();
 		}
-		
+        void setBeatLength(const int beat_length_arg)
+        {
+            beat_length = beat_length_arg;
+        }
+		int getBeatLength()
+        {
+            return beat_length;
+        }
+        
 		void add(Note* n)
 		{
 			clipboard.push_back(n);	

@@ -116,11 +116,9 @@ NOTE: sorry, this is very raw :)
   
 * red images
 * crash when cancelling printing
-* copy-paste from a song to another gives wrong results if the two use different sample sizes
-
 * opening manual doesn't always work (?)
 
-* crashes when opening ghost of the navigator (freezes because it's reordering, and reorder code is absymally slow)
+* song name all messed up on export
 
 + crash in crimson tide blue sea when scrolling in score mode (because of very long low note...)
 + crimson tide blue sea --> find out why score notes don't beam
