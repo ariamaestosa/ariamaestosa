@@ -34,7 +34,7 @@ AboutDialog::AboutDialog() : wxDialog(NULL, wxID_ANY,  _("About Aria Maestosa"),
     titleBitmap.LoadFile( getResourcePrefix()  + wxT("title.jpg") , wxBITMAP_TYPE_JPEG );
     picture=new wxBitmapButton(this, 0, titleBitmap, wxPoint(0,0), wxSize(517,174) );
 
-	wxString about_text =  wxString(_("version ")) + wxT("1.1.1") +
+	wxString about_text =  wxString(_("version ")) + wxT("1.1.2") +
 		wxString(_("\n\nThanks to:\n\n\tErgonis Software and")) + wxT(" G\u00FCnther Blaschek ") +
 		wxString(_("for making EasyBeat,\n\t\ta great app that inspired Aria (www.ergonis.com).\n")) +
 		wxString(_("\tJ.D. Koftinoff Software for libjdkmidi\n\tThe irrXML team for their great XML parser\n"))+

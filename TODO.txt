@@ -35,6 +35,8 @@ NOTE: sorry, this is very raw :)
   * add triplet as a widget, not as a check menu
   * use note icons instead of e.g. "1/8" as text
 
++ add background support in other editors than keyboard
+
   - key is not saved to midi files
   - when saving, don't delete current file, save to another location then swap
   - copy/paste support in controller mode
@@ -118,12 +120,13 @@ NOTE: sorry, this is very raw :)
 * crash when cancelling printing
 * opening manual doesn't always work (?)
 
+* The 131 thing makes absolutey no sense. at least use 128.
+
 * crash in crimson tide blue sea when scrolling in score mode (because of very long low note...)
 * crimson tide blue sea --> find out why score notes don't beam
 
 * in guitar editor, put 2 notes on two strings. move them down until both are on lowest string. undo and try to get back those you had in the beginning
 
-+ current key should be checked in menu
 + elements you get from clicking on the left area should appear in the main menubar too
 
 - class ScalePicker in /Dialogs... should be renamed ScaleDialog, or moved
@@ -154,7 +157,6 @@ NOTE: sorry, this is very raw :)
         -->(null)
 
 - clicking on a note should play it and it doesn't always work (like when note is selected) (no event sent?)
-- at the very top, in keyboard editor, wrong notes are greyed out
 - switching tracks tends to deselect measures
 
 - hard to resize last track
