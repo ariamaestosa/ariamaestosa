@@ -8,6 +8,7 @@ SVN
 - Fixed copying and pasting from a song to another when both songs don't use the same beat resolution
 - Fixed wxString conversions, fixing problems with exporting song name, copyright and track names
 - Key is now correctly loaded from files in keyboard editor too
+- Added check next to currently selected key in key pop-up menu
 
 1.1.1
 - Added feature to see other tracks in background of current track (keyboard view only for now)

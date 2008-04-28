@@ -32,7 +32,24 @@ namespace AriaMaestosa {
 		wxMenuItem* musical_checkbox;
 		wxMenuItem* linear_checkbox;
         //wxMenuItem* background;
+        
+        wxMenuItem* key_c;
 		
+        wxMenuItem* key_sharps_1;
+        wxMenuItem* key_sharps_2;
+        wxMenuItem* key_sharps_3;
+        wxMenuItem* key_sharps_4;
+        wxMenuItem* key_sharps_5;
+        wxMenuItem* key_sharps_6;
+        wxMenuItem* key_sharps_7;
+        
+        wxMenuItem* key_flats_1;
+        wxMenuItem* key_flats_2;
+        wxMenuItem* key_flats_3;
+        wxMenuItem* key_flats_4;
+        wxMenuItem* key_flats_5;
+        wxMenuItem* key_flats_6;
+        wxMenuItem* key_flats_7;
 public:
 			
 		KeyPicker();

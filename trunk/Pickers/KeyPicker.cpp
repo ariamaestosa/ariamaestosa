@@ -33,24 +33,28 @@ KeyPicker::KeyPicker() : wxMenu()
     
     musical_checkbox = AppendCheckItem(1,_("Musical notation")); musical_checkbox->Check(true);
     linear_checkbox = AppendCheckItem(2,_("Linear Notation")); linear_checkbox->Check(true);
+    
 	AppendSeparator();
-    Append(3,wxT("C, Am"));
+    key_c = AppendCheckItem(3,wxT("C, Am"));
+    key_c->Check(true);
+    
 	AppendSeparator();
-	Append(4,wxT("G, Em")); // # 1
-	Append(5,wxT("D, Bm")); // # 2
-	Append(6,wxT("A, F#m")); // # 3
-	Append(7,wxT("E, C#m")); // # 4
-	Append(8,wxT("B, G#m")); // # 5
-	Append(9,wxT("F#, D#m")); // # 6
-	Append(10,wxT("C#, A#m")); // # 7
+	key_sharps_1 = AppendCheckItem(4,wxT("G, Em")); // # 1
+	key_sharps_2 = AppendCheckItem(5,wxT("D, Bm")); // # 2
+	key_sharps_3 = AppendCheckItem(6,wxT("A, F#m")); // # 3
+	key_sharps_4 = AppendCheckItem(7,wxT("E, C#m")); // # 4
+	key_sharps_5 = AppendCheckItem(8,wxT("B, G#m")); // # 5
+	key_sharps_6 = AppendCheckItem(9,wxT("F#, D#m")); // # 6
+	key_sharps_7 = AppendCheckItem(10,wxT("C#, A#m")); // # 7
+    
 	AppendSeparator();
-	Append(11,wxT("F, Dm")); // b 1
-	Append(12,wxT("Bb, Gm")); // b 2
-	Append(13,wxT("Eb, Cm")); // b 3
-	Append(14,wxT("Ab, Fm")); // b 4
-    Append(15,wxT("Db, Bbm")); // b 5
-	Append(16,wxT("Gb, Ebm")); // b 6 
-	Append(17,wxT("Cb, Abm")); // b 7
+	key_flats_1 = AppendCheckItem(11,wxT("F, Dm")); // b 1
+	key_flats_2 = AppendCheckItem(12,wxT("Bb, Gm")); // b 2
+	key_flats_3 = AppendCheckItem(13,wxT("Eb, Cm")); // b 3
+	key_flats_4 = AppendCheckItem(14,wxT("Ab, Fm")); // b 4
+    key_flats_5 = AppendCheckItem(15,wxT("Db, Bbm")); // b 5
+	key_flats_6 = AppendCheckItem(16,wxT("Gb, Ebm")); // b 6 
+	key_flats_7 = AppendCheckItem(17,wxT("Cb, Abm")); // b 7
 }
 
 void KeyPicker::setParent(Track* parent_arg)
@@ -65,6 +69,48 @@ void KeyPicker::setParent(Track* parent_arg)
     {
         musical_checkbox->Enable(true);
         linear_checkbox->Enable(true);
+    }
+    
+    // FIXME - all code confusingly assumes score editor and keyboard editor always use the same key
+    // decide whether they do - if they don't then split the code. if they do, put the common code in a single place
+    key_c->Check(false);
+    key_sharps_1->Check(false);
+    key_sharps_2->Check(false);
+    key_sharps_3->Check(false);
+    key_sharps_4->Check(false);
+    key_sharps_5->Check(false);
+    key_sharps_6->Check(false);
+    key_sharps_7->Check(false);
+    key_flats_1->Check(false);
+    key_flats_2->Check(false);
+    key_flats_3->Check(false);
+    key_flats_4->Check(false);
+    key_flats_5->Check(false);
+    key_flats_6->Check(false);
+    key_flats_7->Check(false);
+    const int sharps = parent->scoreEditor->getKeySharpsAmount();
+    const int flats = parent->scoreEditor->getKeyFlatsAmount();
+    if(sharps==0 and flats==0)
+        key_c->Check(true);
+    else if(sharps > flats)
+    {
+        if(sharps == 1) key_sharps_1->Check(true);
+        else if(sharps == 2) key_sharps_2->Check(true);
+        else if(sharps == 3) key_sharps_3->Check(true);
+        else if(sharps == 4) key_sharps_4->Check(true);
+        else if(sharps == 5) key_sharps_5->Check(true);
+        else if(sharps == 6) key_sharps_6->Check(true);
+        else if(sharps == 7) key_sharps_7->Check(true);
+    }
+    else
+    {
+        if(flats == 1) key_flats_1->Check(true);
+        else if(flats == 2) key_flats_2->Check(true);
+        else if(flats == 3) key_flats_3->Check(true);
+        else if(flats == 4) key_flats_4->Check(true);
+        else if(flats == 5) key_flats_5->Check(true);
+        else if(flats == 6) key_flats_6->Check(true);
+        else if(flats == 7) key_flats_7->Check(true);
     }
 }
 
