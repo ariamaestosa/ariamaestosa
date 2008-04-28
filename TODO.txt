@@ -123,6 +123,9 @@ NOTE: sorry, this is very raw :)
 
 * in guitar editor, put 2 notes on two strings. move them down until both are on lowest string. undo and try to get back those you had in the beginning
 
++ current key should be checked in menu
++ elements you get from clicking on the left area should appear in the main menubar too
+
 - class ScalePicker in /Dialogs... should be renamed ScaleDialog, or moved
 - tuningpicker and tuningdialog should be 2 separate things
 
