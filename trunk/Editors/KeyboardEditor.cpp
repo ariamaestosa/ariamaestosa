@@ -213,7 +213,8 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     while(levelid < last_note)
     {
         const int note12 = 11 - ((levelid - 3) % 12);
-        if(note_greyed_out[note12])
+        if(note_greyed_out[note12] or
+           levelid>131 or levelid<4 /* out of midi range notes... there's a few at the top and bottom -  FIXME - don't show them at all */)
         {
             AriaRender::rect(x1, y1 + levelid*y_step - yscroll+1,
                              x2, y1 + (levelid+1)*y_step - yscroll+1);
