@@ -1104,12 +1104,12 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 		const unsigned int first_visible_measure = getMeasureBar()->measureAtPixel( getEditorXStart() );
 		const unsigned int last_visible_measure = getMeasureBar()->measureAtPixel( getXEnd() );
 		const int visible_measure_amount = last_visible_measure-first_visible_measure+1;
-		bool measure_empty[visible_measure_amount];
-		for(int i=0; i<visible_measure_amount; i++) measure_empty[i] = true;
-        
+		bool measure_empty[visible_measure_amount+1];
+		for(int i=0; i<=visible_measure_amount; i++) measure_empty[i] = true;
+
 		if(visibleNoteAmount>0)
 		{
-			// by comparing the ending of the rpevious note to the beginning of the current note,
+			// by comparing the ending of the previous note to the beginning of the current note,
 			// we can know if there is a silence. If multiple notes play at the same time,
 			// 'previous_note_end' will contain the end position of the longest note.
 			// At this point all notes will already have been split so that they do not overlap on
@@ -1125,6 +1125,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 #ifdef _MORE_DEBUG_CHECKS
  int iters = 0;
 #endif
+
 			for(int i=0; i<visibleNoteAmount; i++)
 			{
 #ifdef _MORE_DEBUG_CHECKS
@@ -1139,7 +1140,7 @@ assertExpr(iters,<,1000);
                 
                 assertExpr(last_measure,>=,-1);
                 assertExpr(last_measure,<,99999);
-                 
+
 				// we switched to another measure
 				if(measure>last_measure)
 				{
@@ -1168,12 +1169,15 @@ assertExpr(iters,<,1000);
 
 				last_measure = measure;
 
-                if((int)(measure-first_visible_measure) >= (int)visible_measure_amount) break; // we're too far
-				measure_empty[measure-first_visible_measure] = false;
-				
-				const int current_begin_tick = noteRenderInfo[i].tick;
+                // remember that this measure was not empty (only if it fits somewhere in the 'measure_empty' array)
+                if( (int)(measure-first_visible_measure) >= 0 and (int)(measure-first_visible_measure) < (int)(visible_measure_amount+1))
+                {
+                    if((int)(measure-first_visible_measure) >= (int)visible_measure_amount) break; // we're too far
+                    measure_empty[measure-first_visible_measure] = false;
+                }
                 
                 // silences between two notes
+                const int current_begin_tick = noteRenderInfo[i].tick;
 				if( previous_note_end != -1 and !aboutEqual(previous_note_end, current_begin_tick) and
                     (current_begin_tick-previous_note_end)>0 /*and previous_note_end >= last_note_end*/)
 				{
@@ -1200,12 +1204,11 @@ assertExpr(iters,<,1000);
 			if(!aboutEqual(last_note_end, last_measure_end ) and last_note_end>-1)
 			{
 				const int silence_length = last_measure_end-last_note_end;
-				renderSilence(last_note_end, silence_length);
+                renderSilence(last_note_end, silence_length);
 			}
 
 
 		}// end if there are visible notes
-
 
         // draw silences in empty measures
         for(int i=0; i<visible_measure_amount; i++)
