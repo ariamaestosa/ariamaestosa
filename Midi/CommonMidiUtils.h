@@ -25,7 +25,7 @@ namespace AriaMaestosa {
 class Sequence; // forward
 
 // these functions are to be used by PlatformMidiManager to ease generating midi data
-void makeMidiBytes(Sequence* sequence, bool selectionOnly, /*out*/int* songlength, /*out*/int* startTick, /*out*/char** midiSongData, /*out*/int* datalength, bool playing);
+void allocAsMidiBytes(Sequence* sequence, bool selectionOnly, /*out*/int* songlength, /*out*/int* startTick, /*out*/char** midiSongData, /*out*/int* datalength, bool playing);
 
 // write a midi file
 bool exportMidiFile(Sequence* sequence, wxString filepath);

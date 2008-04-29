@@ -104,7 +104,7 @@ namespace PlatformMidiManager {
 		int datalength = -1;
 
 		int songLengthInTicks = -1;
-		makeMidiBytes(sequence, false, &songLengthInTicks, startTick, &data, &datalength, true);
+		allocAsMidiBytes(sequence, false, &songLengthInTicks, startTick, &data, &datalength, true);
 
 		stored_songLength = songLengthInTicks + sequence->ticksPerBeat();
 		playMidiBytes(data, datalength);
@@ -125,8 +125,15 @@ namespace PlatformMidiManager {
 		int datalength = -1;
 		int songLengthInTicks = -1;
 
-		makeMidiBytes(sequence, true, &songLengthInTicks, startTick, &data, &datalength, true);
+		allocAsMidiBytes(sequence, true, &songLengthInTicks, startTick, &data, &datalength, true);
 
+        if(songLengthInTicks < 1)
+        {
+            std::cout << "song is empty" << std::endl;
+            free(data);
+            return false;
+        }
+        
 		stored_songLength = songLengthInTicks + sequence->ticksPerBeat();
 		playMidiBytes(data, datalength);
 
@@ -171,7 +178,7 @@ namespace PlatformMidiManager {
 		int length = -1;
 
 		int startTick = -1, songLength = -1;
-		makeMidiBytes(sequence, false, &songLength, &startTick, &data, &length, true);
+		allocAsMidiBytes(sequence, false, &songLength, &startTick, &data, &length, true);
 
 		//exportToAudio( data, length, filepath );
         qtkit_setData(data, length);

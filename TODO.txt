@@ -128,6 +128,8 @@ NOTE: sorry, this is very raw :)
 
 + elements you get from clicking on the left area should appear in the main menubar too
 
+- hitting space when nothing is selected should do nothing (fixed on mac, what about linux?)
+
 - class ScalePicker in /Dialogs... should be renamed ScaleDialog, or moved
 - tuningpicker and tuningdialog should be 2 separate things
 
@@ -159,7 +161,6 @@ NOTE: sorry, this is very raw :)
 - switching tracks tends to deselect measures
 
 - hard to resize last track
-- hitting space when nothing is selected should do nothing
 - controller editor should keep drum instrument in a drum track
 - if you select measures in the measure bar, but move the cursor below measure pane before releasing, you get nothing
     (same with all tracks, rework event handling? determine where click goes on mouse down, and always use same destination on mouse drag?)
