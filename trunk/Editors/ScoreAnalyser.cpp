@@ -318,7 +318,7 @@ void findAndMergeChords(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor
         int first_note_of_chord = -1;
         int min_level = 999, max_level = -999;
         int maxid = i, minid = i; // id of the notes with highest and lowest Y
-        int smallest_duration = 999;
+        int smallest_duration = 99999;
         bool last_of_a_serie = false;
         bool triplet = false;
         int flag_amount = 0;
@@ -354,7 +354,7 @@ void findAndMergeChords(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor
             if(level > max_level){ max_level = level; maxid = i; }
 
             const int len = noteRenderInfo[i].tick_length;
-            if(len < smallest_duration)
+            if(len < smallest_duration or smallest_duration==99999)
                 smallest_duration = len;
 
             if(noteRenderInfo[i].flag_amount > flag_amount)

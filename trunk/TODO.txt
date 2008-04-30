@@ -122,8 +122,6 @@ NOTE: sorry, this is very raw :)
 
 * The 131 thing makes absolutey no sense. at least use 128.
 
-* crimson tide blue sea --> find out why score notes don't beam
-
 * in guitar editor, put 2 notes on two strings. move them down until both are on lowest string. undo and try to get back those you had in the beginning
 
 + elements you get from clicking on the left area should appear in the main menubar too
