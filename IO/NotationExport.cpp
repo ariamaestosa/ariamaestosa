@@ -542,8 +542,11 @@ public:
     {
         std::cout << "printing page " << pageNum << std::endl;
         
-        wxDC& dc = *GetDC();
+        wxDC* ptr = GetDC();
+        if(ptr==NULL or !ptr->IsOk()){ std::cout << "DC is not Ok, interrupting printing" << std::endl; return false; }
+        wxDC& dc = *ptr;
         
+    
         wxRect bounds = GetLogicalPageRect();
         
         const int x0 = bounds.x;

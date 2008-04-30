@@ -13,6 +13,7 @@ SVN
 - Fixed crashes and heap corruption in score editor
 - Fixed weird behaviour when pressing space and nothing is selected
 - Fixed notes not beaming in some imported midis
+- Hitting enter after editing values in top bar will return focus to main pane
 
 1.1.1
 - Added feature to see other tracks in background of current track (keyboard view only for now)
