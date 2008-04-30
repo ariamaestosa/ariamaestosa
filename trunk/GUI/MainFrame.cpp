@@ -207,7 +207,7 @@ void MainFrame::init()
     // ---------------------- tempo ---------------
     boxSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Tempo: ")), 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-    tempoCtrl=new wxTextCtrl(topPane, TEMPO, wxT("120"), wxDefaultPosition, smallTextCtrlSize ); // ID 2
+    tempoCtrl=new wxTextCtrl(topPane, TEMPO, wxT("120"), wxDefaultPosition, smallTextCtrlSize );
 
     boxSizer->Add(tempoCtrl, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
@@ -218,7 +218,7 @@ void MainFrame::init()
     // ---------------------- song length ---------------
     boxSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Duration: ")), 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-    songLength=new wxSpinCtrl(topPane, LENGTH, to_wxString(DEFAULT_SONG_LENGTH), wxDefaultPosition,  // ID 3
+    songLength=new wxSpinCtrl(topPane, LENGTH, to_wxString(DEFAULT_SONG_LENGTH), wxDefaultPosition,
 #ifdef __WXGTK__
 							  averageTextCtrlSize
 #else
@@ -232,18 +232,18 @@ void MainFrame::init()
     // ---------------------- measures ---------------
     boxSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Measure: ")), 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-    measureTypeTop=new wxTextCtrl(topPane, MEASURE_NUM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize ); // ID 4
+    measureTypeTop=new wxTextCtrl(topPane, MEASURE_NUM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize );
     boxSizer->Add(measureTypeTop, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
     boxSizer->Add(new wxStaticText(topPane, wxID_ANY, wxT("/")), 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-    measureTypeBottom=new wxTextCtrl(topPane, MEASURE_DENOM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize ); // ID 5
+    measureTypeBottom=new wxTextCtrl(topPane, MEASURE_DENOM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize );
     boxSizer->Add(measureTypeBottom, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
     // ---------------------- song beginning ---------------
     boxSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Start: ")), 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-    firstMeasure=new wxTextCtrl(topPane, BEGINNING, wxT("1"), wxDefaultPosition, smallTextCtrlSize); // ID 6
+    firstMeasure=new wxTextCtrl(topPane, BEGINNING, wxT("1"), wxDefaultPosition, smallTextCtrlSize);
     boxSizer->Add(firstMeasure, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
     topPane->SetSizer(boxSizer);
@@ -251,7 +251,7 @@ void MainFrame::init()
     // ---------------------- zoom ---------------
     boxSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Zoom: ")), 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-    displayZoom=new wxSpinCtrl(topPane, ZOOM, wxT("100"), wxDefaultPosition, // ID 7
+    displayZoom=new wxSpinCtrl(topPane, ZOOM, wxT("100"), wxDefaultPosition,
 #ifdef __WXGTK__
 							   averageTextCtrlSize
 #else
