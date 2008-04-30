@@ -130,6 +130,8 @@ public:
 	void changeMeasureAmount(int i, bool throwEvent=true);
     void disableMenusForPlayback(const bool disable);
     
+    void enterPressedInTopBar(wxCommandEvent& evt);
+    
     // wait window events
     void evt_showWaitWindow(wxCommandEvent& evt);
     void evt_updateWaitWindow(wxCommandEvent& evt);

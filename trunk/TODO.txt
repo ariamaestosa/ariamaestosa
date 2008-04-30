@@ -58,7 +58,7 @@ NOTE: sorry, this is very raw :)
 + linux : export to wav when not using timidity?
 
  - render a bit less often + probably too many paint events (duplicate ones at times) track and remove them
- - probably no need to re-render the entire screen everytime like currently done. only dirty portions should be rendered
+ - probably no need to re-render the entire screen everytime like currently done. only dirty portions should be rendered (possible using OpenGL and DB?)
 
  - use this when installing on linux : http://www.scons.org/wiki/InstallationPrefix
  
@@ -70,14 +70,11 @@ NOTE: sorry, this is very raw :)
 
  + background choices are not saved to .aria files
 
- + show checkmark next to current key in key picker
-
  - change whole track pitch/volume
  
  - show song duration
 
  - tabbing though fields in select notes dialog should select their content
- + too easy for top bar stuff to gain focus - enter should have focus go back to main pane
  
  + reordering tracks should be nicer
  
@@ -128,9 +125,6 @@ NOTE: sorry, this is very raw :)
 
 - hitting space when nothing is selected should do nothing (fixed on mac, what about linux?)
 
-- class ScalePicker in /Dialogs... should be renamed ScaleDialog, or moved
-- tuningpicker and tuningdialog should be 2 separate things
-
 - when wait dialog appears, you can still edit tracks and do operations that may be harmful to current process.
     yet you can't make it modal otherwise the background process stops.
 
@@ -159,18 +153,14 @@ NOTE: sorry, this is very raw :)
 - switching tracks tends to deselect measures
 
 - hard to resize last track
-- controller editor should keep drum instrument in a drum track
 - if you select measures in the measure bar, but move the cursor below measure pane before releasing, you get nothing
     (same with all tracks, rework event handling? determine where click goes on mouse down, and always use same destination on mouse drag?)
    
   - tab export sometimes does 41-42 43-44 and not 41-44
-  - tab exporter does not always respect max line width (e.g. underwater light)
-  - tab exporter has problems with notes that are not snapped to large grids (e.g. arpeggio beginning of vers le soleil)
   - tab exporter long note exception applies only to perfect wholes and halves... there are other long notes
   - repetition length > 2 gives weird results
-  - tab exporter doesnt respect max line width if one measure is longer than max
   - tab export : x2 can appear on new line...
-  - tab export : repeatd measures need measure numbers
+  - tab export : repeated measures need measure numbers
   
 * My CoreAudio player is deprecated on OS X 10.5...
     Midi/Players/Mac/CoreAudioNotePlayer.cpp: In function 'OSStatus CoreAudioNotePlayer::CreateAUGraph(OpaqueAUGraph*&, ComponentInstanceRecord*&)':
@@ -184,6 +174,10 @@ NOTE: sorry, this is very raw :)
     Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
  
  MINOR / CLEANUP / UNSURE:
+ - controller editor should keep drum instrument in a drum track
+ - class ScalePicker in /Dialogs... should be renamed ScaleDialog, or moved
+- tuningpicker and tuningdialog should be 2 separate things
+
  - if a midi has control events in an empty track they might be removed during import (though what could go there? tempo events are already stored in sequence)
  - linux: exporting to audio via timidity : give better feedback about progression?
  + many Actions are only used on selected notes, yet they offer an implementation for single notes. This implementation was never tested and may be buggy

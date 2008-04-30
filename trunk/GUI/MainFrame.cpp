@@ -107,10 +107,17 @@ EVT_CLOSE(MainFrame::on_close)
 /* top bar */
 EVT_BUTTON(PLAY_CLICKED, MainFrame::playClicked)
 EVT_BUTTON(STOP_CLICKED, MainFrame::stopClicked)
+
 EVT_TEXT(TEMPO, MainFrame::tempoChanged)
+
 EVT_TEXT(MEASURE_NUM, MainFrame::measureNumChanged)
 EVT_TEXT(MEASURE_DENOM, MainFrame::measureDenomChanged)
 EVT_TEXT(BEGINNING, MainFrame::firstMeasureChanged)
+
+EVT_TEXT_ENTER(TEMPO, MainFrame::enterPressedInTopBar)
+EVT_TEXT_ENTER(MEASURE_NUM, MainFrame::enterPressedInTopBar)
+EVT_TEXT_ENTER(MEASURE_DENOM, MainFrame::enterPressedInTopBar)
+EVT_TEXT_ENTER(BEGINNING, MainFrame::enterPressedInTopBar)
 
 EVT_SPINCTRL(LENGTH, MainFrame::songLengthChanged)
 EVT_SPINCTRL(ZOOM, MainFrame::zoomChanged)
@@ -207,7 +214,7 @@ void MainFrame::init()
     // ---------------------- tempo ---------------
     boxSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Tempo: ")), 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-    tempoCtrl=new wxTextCtrl(topPane, TEMPO, wxT("120"), wxDefaultPosition, smallTextCtrlSize );
+    tempoCtrl=new wxTextCtrl(topPane, TEMPO, wxT("120"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER );
 
     boxSizer->Add(tempoCtrl, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
@@ -224,7 +231,7 @@ void MainFrame::init()
 #else
 							  wxDefaultSize
 #endif
-							  );
+							  , wxTE_PROCESS_ENTER);
 
     boxSizer->Add(songLength, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
     songLength->SetRange(0, 10000);
@@ -232,18 +239,18 @@ void MainFrame::init()
     // ---------------------- measures ---------------
     boxSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Measure: ")), 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-    measureTypeTop=new wxTextCtrl(topPane, MEASURE_NUM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize );
+    measureTypeTop=new wxTextCtrl(topPane, MEASURE_NUM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize, wxTE_PROCESS_ENTER );
     boxSizer->Add(measureTypeTop, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
     boxSizer->Add(new wxStaticText(topPane, wxID_ANY, wxT("/")), 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-    measureTypeBottom=new wxTextCtrl(topPane, MEASURE_DENOM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize );
+    measureTypeBottom=new wxTextCtrl(topPane, MEASURE_DENOM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize, wxTE_PROCESS_ENTER );
     boxSizer->Add(measureTypeBottom, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
     // ---------------------- song beginning ---------------
     boxSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Start: ")), 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-    firstMeasure=new wxTextCtrl(topPane, BEGINNING, wxT("1"), wxDefaultPosition, smallTextCtrlSize);
+    firstMeasure=new wxTextCtrl(topPane, BEGINNING, wxT("1"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER);
     boxSizer->Add(firstMeasure, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
     topPane->SetSizer(boxSizer);
@@ -491,7 +498,8 @@ void MainFrame::songLengthTextChanged(wxCommandEvent& evt)
 
     // only send event if the same string is sent twice (i.e. first time, because it was typed in, second time because 'enter' was pressed)
     // or if the same number of chars is kept (e.g. 100 -> 150 will be updated immediatley, but 100 -> 2 will not, since user may actually be typing 250)
-    if(evt.GetString().IsSameAs(previousString) or (previousString.Length()>0 and evt.GetString().Length()>=previousString.Length()) )
+    const bool enter_pressed = evt.GetString().IsSameAs(previousString);
+    if(enter_pressed or (previousString.Length()>0 and evt.GetString().Length()>=previousString.Length()) )
 	{
 
         if(!evt.GetString().IsSameAs(previousString))
@@ -501,6 +509,9 @@ void MainFrame::songLengthTextChanged(wxCommandEvent& evt)
 
         wxSpinEvent unused;
         songLengthChanged(unused);
+        
+        // give keyboard focus back to main pane
+        if(enter_pressed) mainPane->SetFocus();
     }
 
     previousString = evt.GetString();
@@ -650,7 +661,8 @@ void MainFrame::zoomTextChanged(wxCommandEvent& evt)
 
     // only send event if the same string is sent twice (i.e. first time, because it was typed in, second time because 'enter' was pressed)
     // or if the same number of chars is kept (e.g. 100 -> 150 will be updated immediatley, but 100 -> 2 will not, since user may actually be typing 250)
-    if(evt.GetString().IsSameAs(previousString) or (previousString.Length()>0 and evt.GetString().Length()>=previousString.Length()) )
+    const bool enter_pressed = evt.GetString().IsSameAs(previousString);
+    if(enter_pressed or (previousString.Length()>0 and evt.GetString().Length()>=previousString.Length()) )
 	{
 
         if(!evt.GetString().IsSameAs(previousString))
@@ -662,10 +674,19 @@ void MainFrame::zoomTextChanged(wxCommandEvent& evt)
 
         wxSpinEvent unused;
         zoomChanged(unused); // throw fake event (easier to process all events from a single method)
+        
+        // give keyboard focus back to main pane
+        if(enter_pressed) mainPane->SetFocus();
     }
 
     previousString = evt.GetString();
 
+}
+
+void MainFrame::enterPressedInTopBar(wxCommandEvent& evt)
+{
+    // give keyboard focus back to main pane
+    mainPane->SetFocus();
 }
 
 /*
