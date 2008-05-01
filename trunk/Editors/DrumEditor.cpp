@@ -66,7 +66,6 @@ DrumEditor::DrumEditor(Track* track) : Editor(track)
 
 DrumEditor::~DrumEditor()
 {
-	// FIXME- may need to delete menu!
 }
 
 void DrumEditor::useCustomDrumSet()
@@ -702,11 +701,11 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         AriaRender::color(0,0,0);
         
         // if section is collapsed, skip all its elements
+        assertExpr(drumID,<,drums.size());
         if(!drums[drumID].sectionExpanded)
 		{
-            // FIXME - check for array bound?
             drumID++;
-            while(!drums[drumID++].section);
+            while(!drums[drumID++].section){ assertExpr(drumID,<,drums.size()); }
             drumID=drumID-2;
             continue;
         }//end if section collapsed
@@ -740,11 +739,11 @@ int DrumEditor::getDrumAtY(const int given_y)
         if( given_y > y and given_y < y+y_step)  return drumID;
         
         // if section is collapsed, skip all its elements
+        assertExpr(drumID,<,drums.size());
         if(!drums[drumID].sectionExpanded)
 		{
             drumID++;
-            // FIXME - check for array bounds?
-            while(!drums[drumID++].section);
+            while(!drums[drumID++].section){ assertExpr(drumID,<,drums.size()); }
             drumID=drumID-2;
             continue;
         }//end if section collapsed
@@ -770,11 +769,11 @@ int DrumEditor::getYForDrum(const int given_drumID)
         }
         
         // if section is collapsed, skip all its elements
+        assertExpr(drumID,<,drums.size());
         if(!drums[drumID].sectionExpanded)
 		{
             drumID++;
-            // FIXME - check for array bounds?
-            while(!drums[drumID++].section);
+            while(!drums[drumID++].section){ assertExpr(drumID,<,drums.size()); }
             drumID=drumID-2;
             continue;
         }//end if section collapsed
