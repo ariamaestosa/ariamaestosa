@@ -35,8 +35,6 @@ NOTE: sorry, this is very raw :)
   * add triplet as a widget, not as a check menu
   * use note icons instead of e.g. "1/8" as text
 
-+ add background support in other editors than keyboard
-
   - key is not saved to midi files
   - when saving, don't delete current file, save to another location then swap
   - copy/paste support in controller mode
@@ -67,7 +65,7 @@ NOTE: sorry, this is very raw :)
  + make more features accessible graphically (as opposed to keyboard-only)
 
  + cursor should change when hitting key modifiers (at least a select icon when hitting shift in control editor)
-
+ + elements you get from clicking on the left area should appear in the main menubar too
  + background choices are not saved to .aria files
 
  - change whole track pitch/volume
@@ -93,6 +91,7 @@ NOTE: sorry, this is very raw :)
  
  
  UNSURE:
+ - add background support in other editors than keyboard
  - guess key feature
  - guitar mode - allow to paste pitch or string fret
  - hear note/drum by clicking on its name in left part
@@ -105,9 +104,8 @@ NOTE: sorry, this is very raw :)
  - when hitting space during a selection, finish selection before playing
  - clicking outside volume picker should close it
  - song length should automatically grow when pasting goes past the end of the song
- - only render areas that actually need it
  - fix overlapping notes that don't have the same start tick
- - use auto_ptr/parent_ptr/something like that... make it clear what pointer "hold" the object and wich ones are only conveniance shortcuts
+ - use auto_ptr/parent_ptr/something like that... make it clear what pointer "holds" the object and wich ones are only conveniance shortcuts
  - the first click, that activates a track, should not deselect
  - score editor should be able to display notes with more than 2 flags (unusure... those with 2 are already so small and barely visible) 
  
@@ -120,8 +118,6 @@ NOTE: sorry, this is very raw :)
 * The 131 thing makes absolutey no sense. at least use 128.
 
 * in guitar editor, put 2 notes on two strings. move them down until both are on lowest string. undo and try to get back those you had in the beginning
-
-+ elements you get from clicking on the left area should appear in the main menubar too
 
 - hitting space when nothing is selected should do nothing (fixed on mac, what about linux?)
 

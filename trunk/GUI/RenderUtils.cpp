@@ -301,7 +301,7 @@ void beginScissors(const int x, const int y, const int width, const int height)
 {
     glEnable(GL_SCISSOR_TEST);
     // glScissor doesn't seem to follow the coordinate system so I need to manually reverse the Y coord
-    glScissor(x, Display::getHeight() - y, width, height);
+    glScissor(x, Display::getHeight() - y - height, width, height);
 }
 void endScissors()
 {
@@ -591,7 +591,7 @@ void quad(const int x1, const int y1,
 void beginScissors(const int x, const int y, const int width, const int height)
 {
     //Display::renderDC -> DestroyClippingRegion();
-    Display::renderDC -> SetClippingRegion( wxPoint(x, y-height), wxSize(width, height));
+    Display::renderDC -> SetClippingRegion( wxPoint(x, y), wxSize(width, height));
 }
 
 void endScissors()
