@@ -84,7 +84,7 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current, Rel
 
     const int string_amount = tuning.size();
 
-    AriaRender::beginScissors(10, (20+height + from_y+barHeight+20), width-15, 20+height);
+    AriaRender::beginScissors(10, getEditorYStart(), width-15, 20+height);
 
     // white background
     AriaRender::primitives();
