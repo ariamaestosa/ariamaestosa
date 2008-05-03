@@ -55,7 +55,7 @@ class MainPane : public MAINPANE_BASE_CLASS
     std::vector<int> positionsInDock;
     
     // used during playback
-    int timeBeforeFollowingPlayback;
+    int followPlaybackTime;
     int lastTick;
     int playbackStartTick;
 
