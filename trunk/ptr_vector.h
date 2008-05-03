@@ -35,7 +35,7 @@ class ptr_vector
 {
     
 public:
-    std::vector<long> contentsVector;
+    std::vector<TYPE*> contentsVector;
 	
 ptr_vector()
 {
@@ -48,14 +48,12 @@ ptr_vector()
 
 void push_back(TYPE* t)
 {
-        long memloc = (long) t;
-        contentsVector.push_back(memloc);
+        contentsVector.push_back(t);
 }
 
 void add(TYPE* t, int index)
 {
-	long memloc = (long) t;
-	contentsVector.insert(contentsVector.begin()+index, memloc);
+	contentsVector.insert(contentsVector.begin()+index, t);
 }
 
 void swap(int ID1, int ID2)
@@ -66,7 +64,7 @@ void swap(int ID1, int ID2)
 	assertExpr((unsigned int)ID2,<,contentsVector.size());
 	
 	
-	long temp = contentsVector[ID2];
+	TYPE* temp = contentsVector[ID2];
 	
 	contentsVector[ID2] = contentsVector[ID1];
 	contentsVector[ID1] = temp;
@@ -125,7 +123,7 @@ TYPE* get(const int ID)
 	assertExpr(ID,>,-1);
 	assertExpr((unsigned int)ID,<,contentsVector.size());
 	
-	return (TYPE*) contentsVector[ID];
+	return contentsVector[ID];
 }
 
 int size()
@@ -156,7 +154,7 @@ void clearAndDeleteAll()
 	for(unsigned int n=0; n<contentsVector.size(); n++)
 	{
 		
-		TYPE * pointer=( TYPE *) contentsVector[n];
+		TYPE * pointer = contentsVector[n];
 		delete pointer;
 	}
 	contentsVector.clear();
@@ -167,7 +165,7 @@ TYPE& operator[](const unsigned int ID)
 	
 	assertExpr((unsigned int)ID,<,contentsVector.size());
 	
-	return *((TYPE*) contentsVector[ID]);
+	return *(contentsVector[ID]);
 }
 
 void clearWithoutDeleting()
@@ -184,7 +182,7 @@ void remove(TYPE* obj)
 	for(unsigned int n=0; n<contentsVector.size(); n++)
 	{
 		
-		TYPE * pointer=( TYPE *) contentsVector[n];
+		TYPE * pointer = contentsVector[n];
 		if(pointer == obj)
 		{
 			contentsVector.erase(contentsVector.begin()+n);

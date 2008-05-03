@@ -1,4 +1,7 @@
 
+SVN
+- improved vector implementation, fixing possible problems on 64-bits machines
+
 1.1.2
 - Added german translation (thanks to Friedrich Weber!)
 - Cleaned up language code, making adding new languages easier and less error-prone

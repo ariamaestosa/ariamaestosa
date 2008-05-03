@@ -377,7 +377,7 @@ int MeasureBar::firstPixelInMeasure(int id)
 	}
 	else
 	{
-        assertExpr(id,<,measureInfo.size());
+        assertExpr(id,<,(int)measureInfo.size());
 		return measureInfo[id].pixel -  getCurrentSequence()->getXScrollInPixels() + 90;
 	}
 }
@@ -393,7 +393,7 @@ int MeasureBar::lastPixelInMeasure(int id)
 	}
 	else
 	{
-        assertExpr(id,<,measureInfo.size());
+        assertExpr(id,<,(int)measureInfo.size());
 		return measureInfo[id].endPixel -  getCurrentSequence()->getXScrollInPixels() + 90;
 	}
 }
@@ -407,7 +407,7 @@ int MeasureBar::firstTickInMeasure(int id)
 	}
 	else
 	{
-        assertExpr(id,<,measureInfo.size());
+        assertExpr(id,<,(int)measureInfo.size());
 		return measureInfo[id].tick;
 	}
 }
@@ -419,7 +419,7 @@ int MeasureBar::lastTickInMeasure(int id)
 	}
 	else
 	{
-        assertExpr(id,<,measureInfo.size());
+        assertExpr(id,<,(int)measureInfo.size());
 		return measureInfo[id].endTick;
 	}
 }
