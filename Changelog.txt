@@ -1,6 +1,7 @@
 
 SVN
 - improved vector implementation, fixing possible problems on 64-bits machines
+- improved 'follow playback'
 
 1.1.2
 - Added german translation (thanks to Friedrich Weber!)

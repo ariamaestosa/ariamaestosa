@@ -900,7 +900,7 @@ void MainPane::enterPlayLoop()
 {
     leftArrow = false;
     rightArrow = false;
-    timeBeforeFollowingPlayback = getMeasureBar()->defaultMeasureLengthInTicks();
+    followPlaybackTime = getMeasureBar()->defaultMeasureLengthInTicks();
     lastTick = -1;
     Core::activateRenderLoop(true);
 }
@@ -935,11 +935,30 @@ void MainPane::playbackRenderLoop()
 			// if follow playback is checked in the menu
 			if(getCurrentSequence()->follow_playback)
 			{
-				int x_scroll_in_pixels = (int)( (playbackStartTick + currentTick - timeBeforeFollowingPlayback) *
+                RelativeXCoord tick(currentTick, MIDI);
+                const int tick_check = tick.getRelativeTo(WINDOW);
+                
+                const float zoom = getCurrentSequence()->getZoom();
+                const int XStart = getEditorXStart();
+                const int XEnd = getWidth() - followPlaybackTime*zoom;
+                
+                
+                if(tick_check < XStart or tick_check > XEnd)
+                {
+                    int new_scroll_in_pixels = (playbackStartTick + currentTick) * getCurrentSequence()->getZoom();
+                    if(new_scroll_in_pixels < 0) new_scroll_in_pixels=0;
+                    // FIXME - we need a single call to update both data and widget
+                    getCurrentSequence()->setXScrollInPixels(new_scroll_in_pixels);
+                    DisplayFrame::updateHorizontalScrollbar( playbackStartTick + currentTick );
+                }
+                
+                /*
+				int x_scroll_in_pixels = (int)( (playbackStartTick + currentTick - followPlaybackTime) *
                     getCurrentSequence()->getZoom() );
 				if( x_scroll_in_pixels < 0 ) x_scroll_in_pixels = 0;
                 getCurrentSequence()->setXScrollInPixels(x_scroll_in_pixels);
-                DisplayFrame::updateHorizontalScrollbar( playbackStartTick + currentTick - timeBeforeFollowingPlayback );
+                DisplayFrame::updateHorizontalScrollbar( playbackStartTick + currentTick - followPlaybackTime );
+                     */
 			}
 
             setCurrentTick( playbackStartTick + currentTick );
