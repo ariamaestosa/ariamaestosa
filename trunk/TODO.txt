@@ -119,9 +119,6 @@ NOTE: sorry, this is very raw :)
 
 * in guitar editor, put 2 notes on two strings. move them down until both are on lowest string. undo and try to get back those you had in the beginning
 
-- when wait dialog appears, you can still edit tracks and do operations that may be harmful to current process.
-    yet you can't make it modal otherwise the background process stops.
-
 - "select alsa midi port", guitar tunings, are not translatable
 
 - what's up with glutInit? wxGlCanvas seems to call it. Crashes suse 10.1.
@@ -168,6 +165,9 @@ NOTE: sorry, this is very raw :)
     Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
  
  MINOR / CLEANUP / UNSURE:
+ - when wait dialog appears, you can still edit tracks and do operations that may be harmful to current process.
+    yet you can't make it modal otherwise the background process stops.
+    
  - controller editor should keep drum instrument in a drum track
  - class ScalePicker in /Dialogs... should be renamed ScaleDialog, or moved
 - tuningpicker and tuningdialog should be 2 separate things
