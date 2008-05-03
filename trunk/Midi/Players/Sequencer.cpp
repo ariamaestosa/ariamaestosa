@@ -180,7 +180,7 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
             }
             else if( ev.IsTempo() )
 			{
-			    std::cout << "tempo event" << std::endl;
+			    //std::cout << "tempo event" << std::endl;
                 const int bpm = ev.GetTempo32()/32;
                 ticks_per_millis = (double)bpm * (double)beatlen / (double)60000.0;
 			}
