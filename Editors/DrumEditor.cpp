@@ -701,11 +701,11 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         AriaRender::color(0,0,0);
         
         // if section is collapsed, skip all its elements
-        assertExpr(drumID,<,drums.size());
+        assertExpr(drumID,<,(int)drums.size());
         if(!drums[drumID].sectionExpanded)
 		{
             drumID++;
-            while(!drums[drumID++].section){ assertExpr(drumID,<,drums.size()); }
+            while(!drums[drumID++].section){ assertExpr(drumID,<,(int)drums.size()); }
             drumID=drumID-2;
             continue;
         }//end if section collapsed
