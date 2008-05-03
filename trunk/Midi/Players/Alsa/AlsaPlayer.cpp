@@ -360,7 +360,7 @@ void* export_audio_func( void *ptr )
 
 	AriaMaestosa::PlatformMidiManager::exportMidiFile(sequence, tempMidiFile);
 	wxString cmd = wxT("timidity -Ow -o \"") + export_audio_filepath + wxT("\" \"") + tempMidiFile + wxT("\" -idt");
-	std::cout << "executing " << toCString( cmd ) << std::endl;
+	std::cout << "executing " << cmd.mb_str() << std::endl;
 
     FILE * command_output;
     char output[128];
@@ -369,7 +369,7 @@ void* export_audio_func( void *ptr )
     std::cout << "-----------------\ntimidity output\n-----------------\n";
     try
     {
-        command_output = popen(toCString(cmd), "r");
+        command_output = popen(cmd.mb_str(), "r");
         if(command_output == NULL) throw;
 
         while(amount_read > 0)
