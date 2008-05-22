@@ -119,8 +119,6 @@ NOTE: sorry, this is very raw :)
 - "select alsa midi port", guitar tunings, are not translatable
 
 - what's up with glutInit? wxGlCanvas seems to call it. Crashes suse 10.1.
-- aria has trouble importing the midi files it saved itself... "unsupported controller #127"
-
 - score : flat/sharp/natural signs tend to appear obscured (behind note stem if in a group... behind silence... etc.)
 + score editor - sharp of flat notes at time=0 have their sign hidden behind grey bar
 
