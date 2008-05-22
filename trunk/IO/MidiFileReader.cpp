@@ -218,7 +218,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                 
                 if(controllerID == 3 or controllerID == 6 or controllerID == 9 or (controllerID > 19 and controllerID < 32) or
                    controllerID == 79 or (controllerID > 84 and controllerID < 91)
-                   or (controllerID > 95 and controllerID < 200))
+                   or (controllerID > 95 and controllerID < 200 and controllerID!=127 /*stereo mode*/))
                 {
                     std::cout << "WARNING : This midi file uses unsupported controller #" << controllerID << ". Its events will be discarded." << std::endl;
                     continue;

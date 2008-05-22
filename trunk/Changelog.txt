@@ -5,6 +5,7 @@ SVN
 - added warning message when adding too many tracks
 - always play note on click
 - fixed file name being used over song name when printing tablature
+- removed harmless warning on the terminal when loading a midi file saved by aria
 
 1.1.2
 - Added german translation (thanks to Friedrich Weber!)
