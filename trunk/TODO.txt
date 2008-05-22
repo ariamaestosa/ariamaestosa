@@ -19,7 +19,6 @@ NOTE: sorry, this is very raw :)
 
   ************************* LONG TERM: *************************
  
- - ability to see other tracks in the background of the current track
  - guitar pro import
  - midi keyboard support
  - mod support
@@ -60,8 +59,6 @@ NOTE: sorry, this is very raw :)
 
  - use this when installing on linux : http://www.scons.org/wiki/InstallationPrefix
  
- - warn users graphically when adding too much channels in auto mode (right now only on terminal)
-
  + make more features accessible graphically (as opposed to keyboard-only)
 
  + cursor should change when hitting key modifiers (at least a select icon when hitting shift in control editor)
@@ -118,6 +115,9 @@ NOTE: sorry, this is very raw :)
 * The 131 thing makes absolutey no sense. at least use 128.
 
 * in guitar editor, put 2 notes on two strings. move them down until both are on lowest string. undo and try to get back those you had in the beginning
+
++ when printing to tablature, and exporting to PDF, suggested name defaults to "aria maestosa"
++ printing : file name used over internal name at top of page
 
 - "select alsa midi port", guitar tunings, are not translatable
 

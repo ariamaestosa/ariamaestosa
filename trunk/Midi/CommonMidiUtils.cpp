@@ -226,6 +226,7 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
 				channel++; if (channel==9) channel++;
                 if(channel > 15 and sequence->getChannelManagementType() == CHANNEL_AUTO)
                 {
+                    wxMessageBox(_("WARNING: this song has too many\nchannels, expect unpredictable output"));
                     channel = 0;
                     std::cout << "WARNING: this song has too many channels, expect unpredictable output" << std::endl;
                 }
