@@ -212,6 +212,7 @@ void exportNotation(Track* t)
 
 wxString askForSavePath()
 {
+    // FIXME - seems unused
     // ask user to select file destination
 	wxString filepath = showFileDialog( _("Select destination file"),
 										wxT(""),
