@@ -31,7 +31,7 @@ TablaturePrintable::~TablaturePrintable()
 
 wxString TablaturePrintable::getTitle()
 {
-    wxString song_title = parent->sequence->suggestFileName();
+    wxString song_title = parent->sequence->suggestTitle();
     wxString track_title = parent->getName();
     
     wxString final_title;
@@ -45,6 +45,7 @@ wxString TablaturePrintable::getTitle()
     // give track name, if any
     if(!track_title.IsSameAs(_("Untitled"))) final_title += (wxT(", ") + track_title);
     
+    std::cout << "Title = " << final_title.mb_str() << std::endl;
     return final_title;
 }
 int TablaturePrintable::getPageAmount()

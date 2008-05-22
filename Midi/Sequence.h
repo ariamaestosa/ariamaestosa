@@ -104,7 +104,8 @@ class Sequence {
 	~Sequence();
 	
 	wxString suggestFileName();
-	
+	wxString suggestTitle();
+    
     void addToDock(GraphicalTrack* track);
     void removeFromDock(GraphicalTrack* track);
     

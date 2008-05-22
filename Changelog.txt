@@ -4,6 +4,7 @@ SVN
 - improved 'follow playback'
 - added warning message when adding too many tracks
 - always play note on click
+- fixed file name being used over song name when printing tablature
 
 1.1.2
 - Added german translation (thanks to Friedrich Weber!)

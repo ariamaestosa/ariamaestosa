@@ -115,7 +115,6 @@ NOTE: sorry, this is very raw :)
 * in guitar editor, put 2 notes on two strings. move them down until both are on lowest string. undo and try to get back those you had in the beginning
 
 + when printing to tablature, and exporting to PDF, suggested name defaults to "aria maestosa"
-+ printing : file name used over internal name at top of page
 
 - "select alsa midi port", guitar tunings, are not translatable
 

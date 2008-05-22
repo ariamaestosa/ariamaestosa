@@ -92,6 +92,25 @@ Sequence::~Sequence()
 	delete measureBar;
 }
 
+wxString Sequence::suggestTitle()
+{
+	if(!getInternalName().IsEmpty())
+	{
+		return getInternalName();
+	}
+    else if(!sequenceFileName.IsEmpty())
+    {
+        return sequenceFileName;
+    }
+    else if(!filepath.IsEmpty())
+	{
+		return extract_filename(filepath).BeforeLast('.');
+	}
+	else
+	{
+		return  wxString( _("Untitled") );
+	}
+}
 wxString Sequence::suggestFileName()
 {
 	if(!filepath.IsEmpty())
