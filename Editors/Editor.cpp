@@ -352,7 +352,8 @@ void Editor::mouseDown(RelativeXCoord x, int y)
 		else if(result == FOUND_SELECTED_NOTE)
 		{
 			clickedOnNote = true;
-			
+            track->playNote( lastClickedNote, false );
+            
 			// 'noteAt' set 'lastClickedNote' to the ID of the note that was clicked. However at this point
 			// this is not important anymore to know precisely which one was clicked, because all future
 			// operations that can be done will be applied to all selected notes. therefore we set

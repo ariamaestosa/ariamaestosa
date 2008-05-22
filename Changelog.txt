@@ -3,6 +3,7 @@ SVN
 - improved vector implementation, fixing possible problems on 64-bits machines
 - improved 'follow playback'
 - added warning message when adding too many tracks
+- always play note on click
 
 1.1.2
 - Added german translation (thanks to Friedrich Weber!)
