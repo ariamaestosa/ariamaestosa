@@ -763,7 +763,6 @@ void Track::playNote(const int id, const bool noteChange)
 	assertExpr(id,>=,0);
 
 	notes[id].play(noteChange);
-
 }
 
 // returns smallest values, ignoring -1, a being prioritary to b (returns -1 for none, 0 for a, 1 for b)

@@ -112,8 +112,6 @@ NOTE: sorry, this is very raw :)
 * crash when cancelling printing
 * opening manual doesn't always work (?)
 
-* The 131 thing makes absolutey no sense. at least use 128.
-
 * in guitar editor, put 2 notes on two strings. move them down until both are on lowest string. undo and try to get back those you had in the beginning
 
 + when printing to tablature, and exporting to PDF, suggested name defaults to "aria maestosa"
@@ -140,7 +138,6 @@ NOTE: sorry, this is very raw :)
         -->Mac OS error -208
         -->(null)
 
-- clicking on a note should play it and it doesn't always work (like when note is selected) (no event sent?)
 - switching tracks tends to deselect measures
 
 - hard to resize last track
