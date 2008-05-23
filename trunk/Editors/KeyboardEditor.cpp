@@ -94,7 +94,7 @@ void KeyboardEditor::mouseDown(RelativeXCoord x, const int y)
 void KeyboardEditor::addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY)
 {
 	const int note = (mouseY - getEditorYStart() + getYScrollInPixels())/y_step;
-	track->action( new Action::AddNote(note, snapped_start_tick, snapped_end_tick, 80 ) );
+	track->action( new Action::AddNote(note, snapped_start_tick, snapped_end_tick, default_volume ) );
 }
 
 void KeyboardEditor::noteClicked(const int id)

@@ -346,7 +346,7 @@ void DrumEditor::addNote(const int snappedX, const int mouseY)
 	const int note = drums[ drumID ].midiKey;
     if(note == -1) return;
 
-	track->action( new Action::AddNote(note, snappedX, snappedX+sequence->ticksPerBeat()/32+1, 80 ) );
+	track->action( new Action::AddNote(note, snappedX, snappedX+sequence->ticksPerBeat()/32+1, default_volume ) );
 }
 
 void DrumEditor::moveNote(Note& note, const int relativeX, const int relativeY)

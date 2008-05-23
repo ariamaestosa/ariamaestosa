@@ -1600,7 +1600,7 @@ void ScoreEditor::addNote(const int snapped_start_tick, const int snapped_end_ti
 	//std::cout << note << std::endl;
 	//printNoteName( note );
 	
-	track->action( new Action::AddNote(note, snapped_start_tick, snapped_end_tick, 80 ) );
+	track->action( new Action::AddNote(note, snapped_start_tick, snapped_end_tick, default_volume ) );
 }
 
 void ScoreEditor::moveNote(Note& note, const int relativeX, const int relativeY)

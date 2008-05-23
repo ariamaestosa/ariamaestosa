@@ -86,6 +86,8 @@ protected:
 	bool clickedOnNote;
     
     ptr_vector<Track> backgroundTracks;
+    
+    unsigned short default_volume;
 public:
         
     Editor(Track* track);
