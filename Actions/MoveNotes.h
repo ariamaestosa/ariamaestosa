@@ -29,7 +29,8 @@ namespace Action
     {
         DELTA, // moves that only require to know the amount of steps to perform a correct undo
         SCORE_VERTICAL, // these modes require more info than just amount of steps to undo correctly
-        GUITAR_VERTICAL
+        GUITAR_VERTICAL,
+        DRUMS_VERTICAL
     };
     
 	class MoveNotes : public SingleTrackAction
@@ -44,9 +45,9 @@ namespace Action
 		int mode;
         
         // vertical movements in score require a little more than others because of possible accidentals
-        std::vector<short> score_pitch; // for SCORE_VERTICAL mode
-        std::vector<short> fret; // for GUITAR_VERTICAL mode
-        std::vector<short> string;
+        std::vector<short> undo_pitch; // for SCORE_VERTICAL mode
+        std::vector<short> undo_fret; // for GUITAR_VERTICAL mode
+        std::vector<short> undo_string;
 public:
         MoveNotes(const int relativeX, const int relativeY, const int noteID);
 		void perform();

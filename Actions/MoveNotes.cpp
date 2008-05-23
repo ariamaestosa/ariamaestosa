@@ -34,16 +34,16 @@ void MoveNotes::undo()
         int n = 0;
 		while( (current_note = relocator.getNextNote()) and current_note != NULL)
 		{
-            if( move_mode == SCORE_VERTICAL )
+            if( move_mode == SCORE_VERTICAL or move_mode == DRUMS_VERTICAL )
             {
-                current_note->pitchID = score_pitch[n];
+                current_note->pitchID = undo_pitch[n];
                 track->graphics->getCurrentEditor()->moveNote(*current_note, -relativeX, 0);
                 n++;
             }
             else if( move_mode == GUITAR_VERTICAL )
             {
-                current_note->fret = fret[n];
-                current_note->string = string[n];
+                current_note->fret = undo_fret[n];
+                current_note->string = undo_string[n];
                 current_note->findNoteFromStringAndFret();
                 track->graphics->getCurrentEditor()->moveNote(*current_note, -relativeX, 0);
                 n++;
@@ -61,6 +61,7 @@ void MoveNotes::perform()
 	mode = track->graphics->editorMode;
     if(mode == SCORE and relativeY != 0) move_mode = SCORE_VERTICAL;
     else if(mode == GUITAR and relativeY != 0) move_mode = GUITAR_VERTICAL;
+    else if(mode == DRUM and relativeY != 0) move_mode = DRUMS_VERTICAL;
     
 	// perform action
 	assert(noteID != ALL_NOTES); // not supported in this function (not needed)
@@ -106,11 +107,19 @@ void MoveNotes::perform()
 
 void MoveNotes::doMoveOneNote(const int noteid)
 {
-    if( move_mode == SCORE_VERTICAL ) score_pitch.push_back( track->notes[noteid].pitchID );
+    /*
+      In score and drum mode, it is necessary to remember the pitch of the note on vertical moves
+         In score editor because sharp/flats are not accounted in the number of steps
+         In drum editor because the black headers can introduce additional space vertically between notes
+      In guitar editor, it is easier to remember the string and fret, as it's easy for notes to reach the bottom or top
+         of the editor. When this happens, some notes moves while others don't. So the amount of steps isn't enough,
+         we need to track the moves for all notes individually.
+     */
+    if( move_mode == SCORE_VERTICAL or move_mode == DRUMS_VERTICAL ) undo_pitch.push_back( track->notes[noteid].pitchID );
     else if( move_mode == GUITAR_VERTICAL )
     {
-        fret.push_back( track->notes[noteid].fret );
-        string.push_back( track->notes[noteid].string );
+        undo_fret.push_back( track->notes[noteid].fret );
+        undo_string.push_back( track->notes[noteid].string );
     }
     
     track->graphics->getCurrentEditor()->moveNote(track->notes[noteid], relativeX, relativeY);
