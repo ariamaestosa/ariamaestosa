@@ -25,18 +25,28 @@ namespace AriaMaestosa
 namespace Action
 {
 	
+    enum MoveMode
+    {
+        DELTA, // moves that only require to know the amount of steps to perform a correct undo
+        SCORE_VERTICAL, // these modes require more info than just amount of steps to undo correctly
+        GUITAR_VERTICAL
+    };
+    
 	class MoveNotes : public SingleTrackAction
 	{
 		int relativeX, relativeY, noteID;
 		friend class AriaMaestosa::Track;
 		
+        MoveMode move_mode;
+        
 		// for undo
 		NoteRelocator relocator;
 		int mode;
         
         // vertical movements in score require a little more than others because of possible accidentals
-        bool vertical_in_score;
-        std::vector<short> score_pitch;
+        std::vector<short> score_pitch; // for SCORE_VERTICAL mode
+        std::vector<short> fret; // for GUITAR_VERTICAL mode
+        std::vector<short> string;
 public:
         MoveNotes(const int relativeX, const int relativeY, const int noteID);
 		void perform();
