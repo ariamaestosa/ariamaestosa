@@ -34,9 +34,17 @@ void MoveNotes::undo()
         int n = 0;
 		while( (current_note = relocator.getNextNote()) and current_note != NULL)
 		{
-            if( vertical_in_score )
+            if( move_mode == SCORE_VERTICAL )
             {
                 current_note->pitchID = score_pitch[n];
+                track->graphics->getCurrentEditor()->moveNote(*current_note, -relativeX, 0);
+                n++;
+            }
+            else if( move_mode == GUITAR_VERTICAL )
+            {
+                current_note->fret = fret[n];
+                current_note->string = string[n];
+                current_note->findNoteFromStringAndFret();
                 track->graphics->getCurrentEditor()->moveNote(*current_note, -relativeX, 0);
                 n++;
             }
@@ -51,7 +59,8 @@ void MoveNotes::perform()
 	assert(track != NULL);
     
 	mode = track->graphics->editorMode;
-    if(mode == SCORE and relativeY != 0) vertical_in_score = true;
+    if(mode == SCORE and relativeY != 0) move_mode = SCORE_VERTICAL;
+    else if(mode == GUITAR and relativeY != 0) move_mode = GUITAR_VERTICAL;
     
 	// perform action
 	assert(noteID != ALL_NOTES); // not supported in this function (not needed)
@@ -97,7 +106,13 @@ void MoveNotes::perform()
 
 void MoveNotes::doMoveOneNote(const int noteid)
 {
-    if( vertical_in_score ) score_pitch.push_back( track->notes[noteid].pitchID );
+    if( move_mode == SCORE_VERTICAL ) score_pitch.push_back( track->notes[noteid].pitchID );
+    else if( move_mode == GUITAR_VERTICAL )
+    {
+        fret.push_back( track->notes[noteid].fret );
+        string.push_back( track->notes[noteid].string );
+    }
+    
     track->graphics->getCurrentEditor()->moveNote(track->notes[noteid], relativeX, relativeY);
     relocator.rememberNote( track->notes[noteid] );
 }
@@ -108,7 +123,7 @@ MoveNotes::MoveNotes(const int relativeX, const int relativeY, const int noteID)
 	MoveNotes::relativeY = relativeY;
 	MoveNotes::noteID = noteID;
     
-    vertical_in_score = false;
+    move_mode = DELTA;
 }
 MoveNotes::~MoveNotes() {}
 
