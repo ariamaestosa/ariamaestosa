@@ -34,30 +34,34 @@ NOTE: sorry, this is very raw :)
   * add triplet as a widget, not as a check menu
   * use note icons instead of e.g. "1/8" as text
 
+  * multiple program changes
+
   - key is not saved to midi files
-  - when saving, don't delete current file, save to another location then swap
-  - copy/paste support in controller mode
+  
+  - .aria files don't remember whether drums are minimized
+  - .aria files don't remember docked tracks
+  - background choices are not saved to .aria files
   
  - tab exporter:
 		skip series of empty measures
 		more than one track
 		show tuning on tab
 
+ - when scaling entire song, scale control events and time sig changes too
+
 // ----- controller editor ------
 * better controller editor! precise values, etc.
  - what to do with sustain? needs all_sound_off perhaps?
  - make portamento more usable
+ + copy/paste
  + many controller effects would gain from being accessible somewhere else than in control editor
  - copy control events along notes
  - precise tempo bend (not controller-like, more like a sudden change)
 // ---------------
 
-* doesnt handle when there's too many songs open for all to be visible
-
 + linux : export to wav when not using timidity?
 
  - render a bit less often + probably too many paint events (duplicate ones at times) track and remove them
- - probably no need to re-render the entire screen everytime like currently done. only dirty portions should be rendered (possible using OpenGL and DB?)
 
  - use this when installing on linux : http://www.scons.org/wiki/InstallationPrefix
  
@@ -65,7 +69,6 @@ NOTE: sorry, this is very raw :)
 
  + cursor should change when hitting key modifiers (at least a select icon when hitting shift in control editor)
  + elements you get from clicking on the left area should appear in the main menubar too
- + background choices are not saved to .aria files
 
  - change whole track pitch/volume
  
@@ -78,7 +81,7 @@ NOTE: sorry, this is very raw :)
  - set default volume
  - shift-click on a selected notes unselects it
  
- - multiple program changes
+
  - change volume relatively on a bunch of notes
  - select notes and all similar menu items should be disabled in controller mode
  
@@ -89,6 +92,7 @@ NOTE: sorry, this is very raw :)
  
  
  UNSURE:
+ + use wxNewId() ?
  - add background support in other editors than keyboard
  - guess key feature
  - guitar mode - allow to paste pitch or string fret
@@ -112,7 +116,7 @@ NOTE: sorry, this is very raw :)
 * red images
 * crash when cancelling printing
 * opening manual doesn't always work (?)
-
+* doesnt handle when there's too many songs open for all to be visible
 * rearrange notes doesn't always undo correctly
 - "rearrange selected notes" doesn't always work optimally
 
@@ -172,8 +176,6 @@ NOTE: sorry, this is very raw :)
 - decide a naming convention for variables
  - some drums that are not standard drumset preview fine but dont play correctly (SFX and one other. bug in QT?)
         I say bug in QT since it also seems to affect songs made in other software
- - .aria files don't remember whether drums are minimized
- - .aria files don't remember docked tracks
  - trigger coreaudio note player at startup?
  
  - FIXMEs

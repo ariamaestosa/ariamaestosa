@@ -60,6 +60,8 @@ Editor::Editor(Track* track)
     
     key_sharps_amnt = 0;
     key_flats_amnt = 0;
+    
+    default_volume = 80;
 }
 
 Editor::~Editor()
@@ -469,9 +471,6 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
 					addNote( snapped_start, snapped_end, mousey_initial );
 				}
 
-                //int note = (mousey_initial - getEditorYStart() + getYScrollInPixels())/10;
-                //track->action( new Action::AddNote(note, snapped_start, snapped_end, 80 ) );
-				
             }
             
         }
