@@ -7,6 +7,7 @@ SVN
 - fixed file name being used over song name when printing tablature
 - removed harmless warning on the terminal when loading a midi file saved by aria
 - fixed undoing vertical moves in guitar editor
+- fixed undoing vertical moves in drum editor
 
 1.1.2
 - Added german translation (thanks to Friedrich Weber!)

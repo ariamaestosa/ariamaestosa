@@ -116,8 +116,6 @@ NOTE: sorry, this is very raw :)
 * rearrange notes doesn't always undo correctly
 - "rearrange selected notes" doesn't always work optimally
 
-* undoing vertical modes in drum editor does not always work (black headers can change drum patterns)
-
 + when printing to tablature, and exporting to PDF, suggested name defaults to "aria maestosa"
 
 - "select alsa midi port", guitar tunings, are not translatable
