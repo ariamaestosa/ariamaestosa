@@ -119,7 +119,7 @@ public:
 };
 // ==========================================================================================
 // ==========================================================================================
-
+#pragma mark -
 
 MainPane::MainPane(MainFrame* mainframe, int* args) : MAINPANE_BASE_CLASS(mainframe, args)
 {
@@ -149,6 +149,19 @@ MainPane::~MainPane()
 {
 	delete mouseDownTimer;
 }
+
+/*
+ * Called when frame has just been made visible. Does things that can't be done without display.
+ */
+
+void MainPane::isNowVisible()
+{
+	getMainFrame()->addSequence();
+    getCurrentSequence()->addTrack();
+    isVisible=true;
+}
+
+#pragma mark -
 
 void MainPane::paintEvent(wxPaintEvent& evt)
 {
@@ -191,6 +204,192 @@ void MainPane::render(const bool paintEvent)
 
 }
 
+bool MainPane::do_render()
+{
+    
+    if(!ImageProvider::imagesLoaded()) return false;
+    if(getCurrentSequence()->importing) return false;
+    
+    AriaRender::images();
+    
+    getCurrentSequence()->renderTracks( currentTick, mousex_current,
+                                        mousey_current, mousey_initial,
+                                        25 + getMeasureBar()->getMeasureBarHeight());
+    
+    
+    // -------------------------- draw tab bar at top -------------------------
+    // beige background
+    
+    AriaRender::primitives();
+    AriaRender::color(1, 1, 0.9);
+    AriaRender::rect(0, tabBarY, getWidth(), tabBarY+20);
+    
+    // draw tab
+    int start_at_x = 0;
+    const int seqamount = getMainFrame()->getSequenceAmount();
+    const int currentSeqID = getMainFrame()->getCurrentSequenceID();
+    
+    for(int n=0; n<seqamount; n++)
+	{
+        AriaRender::images();
+        
+        if(currentSeqID == n)
+		{
+            AriaRender::color(1,1,1);
+            tabBorderDrawable->move(start_at_x, tabBarY);
+            tabBorderDrawable->setFlip(false, false);
+            tabBorderDrawable->render();
+            
+            tabDrawable->move(start_at_x+16, tabBarY);
+            tabDrawable->scale(tab_width/2.0, 1);
+            tabDrawable->render();
+            
+            tabBorderDrawable->move(start_at_x+16+tab_width, tabBarY);
+            tabBorderDrawable->setFlip(true, false);
+            tabBorderDrawable->render();
+        }
+		else
+		{
+            AriaRender::color(1,1,1, 0.4);
+            
+            tabBorderDrawable->move(start_at_x, tabBarY+3);
+            tabBorderDrawable->setFlip(false, false);
+            tabBorderDrawable->render();
+            
+            tabDrawable->move(start_at_x+16, tabBarY+3);
+            tabDrawable->scale(tab_width/2.0, 1);
+            tabDrawable->render();
+            
+            tabBorderDrawable->move(start_at_x+16+tab_width, tabBarY+3);
+            tabBorderDrawable->setFlip(true, false);
+            tabBorderDrawable->render();
+        }
+        
+        AriaRender::primitives();
+        
+        // draw tab name
+        if(currentSeqID == n)
+            AriaRender::color(0,0,0);
+		else
+            AriaRender::color(0.4, 0.4, 0.4);
+        
+        AriaRender::text_with_bounds(&getMainFrame()->getSequence(n)->sequenceFileName, start_at_x+10, tabBarY+18, start_at_x+tab_width+12);
+        
+        start_at_x += tab_width+16+16;
+    }//next
+    
+    // -------------------------- draw measure top bar -------------------------
+    
+	getMeasureBar()->render(measureBarY);
+    
+    // -------------------------- draw dock -------------------------
+    AriaRender::primitives();
+    if(getCurrentSequence()->dockSize>0)
+	{
+        getCurrentSequence()->dockHeight = 20;
+        
+        AriaRender::primitives();
+        AriaRender::color(1, 1, 0.9);
+        AriaRender::rect(0,getHeight()-getCurrentSequence()->dockHeight, getWidth(), getHeight());
+        
+        // black line at the top and bottom
+        AriaRender::color(0, 0, 0);
+        AriaRender::line(0, getHeight()-getCurrentSequence()->dockHeight,
+                         getWidth(), getHeight()-getCurrentSequence()->dockHeight);
+        
+        int x=10;
+        int x_before = 0;
+        
+        positionsInDock.clear();
+        
+        for(int n=0; n<getCurrentSequence()->dockSize; n++)
+		{
+            
+            positionsInDock.push_back(x_before);
+            
+            x_before = x;
+            
+            AriaRender::color(0,0,0);
+            x = AriaRender::text_return_end_x(&getCurrentSequence()->dock[n].track->getName(), x+5, getHeight()-5);
+            x += 5;
+            
+            AriaRender::color(1, 0.8, 0.7);
+            AriaRender::lineWidth(2);
+            AriaRender::hollow_rect(x, getHeight()-1, x_before, getHeight()-17);
+            
+            positionsInDock.push_back(x);
+        }//next
+        AriaRender::lineWidth(1);
+    }
+	else
+	{
+        getCurrentSequence()->dockHeight=0;
+    }
+    
+    
+    
+    // -------------------------- red line that follows playback, red arrows --------------------------
+    if( currentTick!=-1 ) // if playing
+	{
+        
+        RelativeXCoord tick(currentTick, MIDI);
+        
+        const int XStart = getEditorXStart();
+        const int XEnd = getWidth();
+        
+        AriaRender::lineWidth(2);
+        AriaRender::color(0.8, 0, 0);
+        
+        if(tick.getRelativeTo(WINDOW) < XStart) // current tick is before the visible area
+		{
+            
+            leftArrow=true;
+            rightArrow=false;
+            
+            AriaRender::line(25, measureBarY + 10, 10, measureBarY + 10);
+            AriaRender::triangle(5, measureBarY + 10,
+                                 15, measureBarY + 5,
+                                 15, measureBarY + 15);
+        }
+		else if(tick.getRelativeTo(WINDOW) > XEnd ) // current tick is after the visible area
+		{
+            
+            leftArrow=false;
+            rightArrow=true;
+            
+            AriaRender::line(XEnd - 15 - 25, measureBarY + 10,
+                             XEnd - 15 - 10, measureBarY + 10);
+            
+            AriaRender::triangle(XEnd - 15 - 5, measureBarY + 10,
+                                 XEnd - 15 - 15, measureBarY + 5,
+                                 XEnd - 15 - 15, measureBarY + 15);
+        }
+		else // current tick is inside the visible area
+		{
+            
+            leftArrow=false;
+            rightArrow=false;
+            
+            // red line in measure bar
+            AriaRender::line(tick.getRelativeTo(WINDOW), measureBarY + 1,
+                             tick.getRelativeTo(WINDOW), measureBarY + 20);
+        }
+        
+        AriaRender::lineWidth(1);
+        
+    }
+	else
+	{ // we're not playing, set arrows to false
+		leftArrow=false;
+		rightArrow=true;
+	}
+    
+    return true;
+    
+}
+
+#pragma mark -
+
 /*
  * Since instrument picker is shown by MainPane, its events go to MainPane. So, when MainPane catches InstrumentPicker events, it forwards them to it.
  */
@@ -203,15 +402,7 @@ void MainPane::drumPopupSelected(wxCommandEvent& evt)
     Core::getDrumPicker()->menuSelected( evt );
 }
 
-/*
- * This is called when the song us playing. MainPane needs to know the current tick because when it renders
- * it needs to know where to draw the red line that follows playback.
- */
-
-void MainPane::setCurrentTick(int currentTick)
-{
-    MainPane::currentTick = currentTick;
-}
+#pragma mark -
 
 /*
  * Are key modifiers down on the keyboard?
@@ -223,11 +414,6 @@ bool MainPane::isCtrlDown(){ return wxGetKeyState(WXK_CONTROL); }
 bool MainPane::isMouseDown(){ return isMouseDown_bool; }
 
 /*
- * Returns the ID of the track the user is dragging (in a track reordering process), or -1 if no reoredring is being done
- */
-int MainPane::getDraggedTrackID()				{	return draggingTrack;	}
-
-/*
  * Gives information about the location of the mouse in a drag
  */
 RelativeXCoord MainPane::getMouseX_current()	{	return mousex_current;	}
@@ -235,16 +421,6 @@ int MainPane::getMouseY_current()				{	return mousey_current;	}
 RelativeXCoord MainPane::getMouseX_initial()	{	return mousex_initial;	}
 int MainPane::getMouseY_initial()				{	return mousey_initial;	}
 
-/*
- * Called when frame has just been made visible. Does things that can't be done without display.
- */
-
-void MainPane::isNowVisible()
-{
-	getMainFrame()->addSequence();
-    getCurrentSequence()->addTrack();
-    isVisible=true;
-}
 
 /*
  * Events will be sent regularly to this method when user holds down mouse
@@ -707,194 +883,15 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
 }
 
 
-bool MainPane::do_render()
-{
+#pragma mark -
 
-    if(!ImageProvider::imagesLoaded()) return false;
-    if(getCurrentSequence()->importing) return false;
-
-    AriaRender::images();
-
-    getCurrentSequence()->renderTracks( currentTick, mousex_current,
-                                        mousey_current, mousey_initial,
-                                        25 + getMeasureBar()->getMeasureBarHeight());
+/*
+ * Returns the ID of the track the user is dragging (in a track reordering process), or -1 if no reoredring is being done
+ */
+int MainPane::getDraggedTrackID()				{	return draggingTrack;	}
 
 
-    // -------------------------- draw tab bar at top -------------------------
-    // beige background
-
-    AriaRender::primitives();
-    AriaRender::color(1, 1, 0.9);
-    AriaRender::rect(0, tabBarY, getWidth(), tabBarY+20);
-
-    // draw tab
-    int start_at_x = 0;
-    const int seqamount = getMainFrame()->getSequenceAmount();
-    const int currentSeqID = getMainFrame()->getCurrentSequenceID();
-
-    for(int n=0; n<seqamount; n++)
-	{
-        AriaRender::images();
-
-        if(currentSeqID == n)
-		{
-            AriaRender::color(1,1,1);
-            tabBorderDrawable->move(start_at_x, tabBarY);
-            tabBorderDrawable->setFlip(false, false);
-            tabBorderDrawable->render();
-
-            tabDrawable->move(start_at_x+16, tabBarY);
-            tabDrawable->scale(tab_width/2.0, 1);
-            tabDrawable->render();
-
-            tabBorderDrawable->move(start_at_x+16+tab_width, tabBarY);
-            tabBorderDrawable->setFlip(true, false);
-            tabBorderDrawable->render();
-        }
-		else
-		{
-            AriaRender::color(1,1,1, 0.4);
-
-            tabBorderDrawable->move(start_at_x, tabBarY+3);
-            tabBorderDrawable->setFlip(false, false);
-            tabBorderDrawable->render();
-
-            tabDrawable->move(start_at_x+16, tabBarY+3);
-            tabDrawable->scale(tab_width/2.0, 1);
-            tabDrawable->render();
-
-            tabBorderDrawable->move(start_at_x+16+tab_width, tabBarY+3);
-            tabBorderDrawable->setFlip(true, false);
-            tabBorderDrawable->render();
-        }
-
-        AriaRender::primitives();
-
-        // draw tab name
-        if(currentSeqID == n)
-            AriaRender::color(0,0,0);
-		else
-            AriaRender::color(0.4, 0.4, 0.4);
-
-        AriaRender::text_with_bounds(&getMainFrame()->getSequence(n)->sequenceFileName, start_at_x+10, tabBarY+18, start_at_x+tab_width+12);
-
-        start_at_x += tab_width+16+16;
-    }//next
-
-    // -------------------------- draw measure top bar -------------------------
-
-	getMeasureBar()->render(measureBarY);
-
-    // -------------------------- draw dock -------------------------
-    AriaRender::primitives();
-    if(getCurrentSequence()->dockSize>0)
-	{
-        getCurrentSequence()->dockHeight = 20;
-
-        AriaRender::primitives();
-        AriaRender::color(1, 1, 0.9);
-        AriaRender::rect(0,getHeight()-getCurrentSequence()->dockHeight, getWidth(), getHeight());
-
-        // black line at the top and bottom
-        AriaRender::color(0, 0, 0);
-        AriaRender::line(0, getHeight()-getCurrentSequence()->dockHeight,
-                         getWidth(), getHeight()-getCurrentSequence()->dockHeight);
-
-        int x=10;
-        int x_before = 0;
-
-        positionsInDock.clear();
-
-        for(int n=0; n<getCurrentSequence()->dockSize; n++)
-		{
-
-            positionsInDock.push_back(x_before);
-
-            x_before = x;
-
-            AriaRender::color(0,0,0);
-            x = AriaRender::text_return_end_x(&getCurrentSequence()->dock[n].track->getName(), x+5, getHeight()-5);
-            x += 5;
-
-            AriaRender::color(1, 0.8, 0.7);
-            AriaRender::lineWidth(2);
-            AriaRender::hollow_rect(x, getHeight()-1, x_before, getHeight()-17);
-
-            positionsInDock.push_back(x);
-        }//next
-        AriaRender::lineWidth(1);
-    }
-	else
-	{
-        getCurrentSequence()->dockHeight=0;
-    }
-
-
-
-    // -------------------------- red line that follows playback, red arrows --------------------------
-    if( currentTick!=-1 ) // if playing
-	{
-
-        RelativeXCoord tick(currentTick, MIDI);
-
-        const int XStart = getEditorXStart();
-        const int XEnd = getWidth();
-
-        AriaRender::lineWidth(2);
-        AriaRender::color(0.8, 0, 0);
-
-        if(tick.getRelativeTo(WINDOW) < XStart) // current tick is before the visible area
-		{
-
-            leftArrow=true;
-            rightArrow=false;
-
-            AriaRender::line(25, measureBarY + 10, 10, measureBarY + 10);
-            AriaRender::triangle(5, measureBarY + 10,
-                                 15, measureBarY + 5,
-                                 15, measureBarY + 15);
-        }
-		else if(tick.getRelativeTo(WINDOW) > XEnd ) // current tick is after the visible area
-		{
-
-            leftArrow=false;
-            rightArrow=true;
-
-            AriaRender::line(XEnd - 15 - 25, measureBarY + 10,
-                             XEnd - 15 - 10, measureBarY + 10);
-
-            AriaRender::triangle(XEnd - 15 - 5, measureBarY + 10,
-                                 XEnd - 15 - 15, measureBarY + 5,
-                                 XEnd - 15 - 15, measureBarY + 15);
-        }
-		else // current tick is inside the visible area
-		{
-
-            leftArrow=false;
-            rightArrow=false;
-
-            // red line in measure bar
-            AriaRender::line(tick.getRelativeTo(WINDOW), measureBarY + 1,
-                             tick.getRelativeTo(WINDOW), measureBarY + 20);
-        }
-
-        AriaRender::lineWidth(1);
-
-    }
-	else
-	{ // we're not playing, set arrows to false
-		leftArrow=false;
-		rightArrow=true;
-	}
-
-    return true;
-
-}
-
-void MainPane::saveToFile(wxFileOutputStream& fileout)
-{
-    getCurrentSequence()->saveToFile(fileout);
-}
+#pragma mark -
 
 void MainPane::enterPlayLoop()
 {
@@ -904,10 +901,23 @@ void MainPane::enterPlayLoop()
     lastTick = -1;
     Core::activateRenderLoop(true);
 }
+void MainPane::exitPlayLoop()
+{
+    PlatformMidiManager::stop();
+    getMainFrame()->toolsExitPlaybackMode();
+    Core::activateRenderLoop(false);
+    setCurrentTick( -1 );
+    Display::render();
+}
+
 void MainPane::setPlaybackStartTick(int newValue)
 {
     playbackStartTick = newValue;
 }
+
+/*
+ *  This method is called repeatedly during playback
+ */
 void MainPane::playbackRenderLoop()
 {
         const int currentTick = PlatformMidiManager::trackPlaybackProgression();
@@ -919,8 +929,9 @@ void MainPane::playbackRenderLoop()
             return;
         }
 
+        // only draw if it has changed
         if(lastTick != playbackStartTick + currentTick)
-		{ // only draw if it has changed
+		{
 
             // if user has clicked on a little red arrow
             if(scrollToPlaybackPosition)
@@ -985,15 +996,25 @@ void MainPane::playbackRenderLoop()
         wxMilliSleep(10);
 }
 
-void MainPane::exitPlayLoop()
-{
-    PlatformMidiManager::stop();
-    getMainFrame()->toolsExitPlaybackMode();
-    Core::activateRenderLoop(false);
-    setCurrentTick( -1 );
-    Display::render();
-}
+// sets a flag that will be picked by the playback loop
 void MainPane::scrollNowToPlaybackPosition(){		scrollToPlaybackPosition=true;		}
 
+/*
+ * This is called when the song us playing. MainPane needs to know the current tick because when it renders
+ * it needs to know where to draw the red line that follows playback.
+ */
+
+void MainPane::setCurrentTick(int currentTick)
+{
+    MainPane::currentTick = currentTick;
+}
+
+
+#pragma mark -
+
+void MainPane::saveToFile(wxFileOutputStream& fileout)
+{
+    getCurrentSequence()->saveToFile(fileout);
+}
 
 }
