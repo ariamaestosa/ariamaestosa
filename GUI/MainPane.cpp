@@ -935,15 +935,14 @@ void MainPane::playbackRenderLoop()
 			// if follow playback is checked in the menu
 			if(getCurrentSequence()->follow_playback)
 			{
-                RelativeXCoord tick(currentTick, MIDI);
-                const int tick_check = tick.getRelativeTo(WINDOW);
+                RelativeXCoord tick(playbackStartTick + currentTick, MIDI);
+                const int current_pixel = tick.getRelativeTo(WINDOW);
                 
                 const float zoom = getCurrentSequence()->getZoom();
                 const int XStart = getEditorXStart();
                 const int XEnd = getWidth() - followPlaybackTime*zoom;
                 
-                
-                if(tick_check < XStart or tick_check > XEnd)
+                if(current_pixel < XStart or current_pixel > XEnd)
                 {
                     int new_scroll_in_pixels = (playbackStartTick + currentTick) * getCurrentSequence()->getZoom();
                     if(new_scroll_in_pixels < 0) new_scroll_in_pixels=0;
