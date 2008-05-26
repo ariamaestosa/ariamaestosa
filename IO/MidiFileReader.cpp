@@ -71,7 +71,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
     jdkmidi::MIDITrack* track;
     jdkmidi::MIDITimedBigMessage* event;
     
-	getMainFrame()->changeChannelManagement(CHANNEL_MANUAL);
+    getCurrentSequence()->setChannelManagementType(CHANNEL_MANUAL);
 	getMeasureBar()->beforeImporting();
 	
     const int resolution = jdksequence.GetClksPerBeat();
@@ -506,9 +506,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
     }//next n
 	
 	if(one_track_one_channel)
-	{
-		getMainFrame()->changeChannelManagement(CHANNEL_AUTO);
-	}
+        getCurrentSequence()->setChannelManagementType(CHANNEL_AUTO);
 	
 	getMeasureBar()->afterImporting();
 	
@@ -531,6 +529,8 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 	sequence->clearUndoStack();
 	
     sequence->importing = false;
+    
+    getMainFrame()->updateMenuBarToSequence();
     if(!getMeasureBar()->isMeasureLengthConstant()) getMeasureBar()->updateMeasureInfo();
     return true;
     

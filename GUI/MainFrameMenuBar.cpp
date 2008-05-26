@@ -623,5 +623,24 @@ void MainFrame::menuEvent_manual(wxCommandEvent& evt)
     }
 }
 
+#pragma mark -
+void MainFrame::updateMenuBarToSequence()
+{
+    Sequence* sequence = getCurrentSequence();
+    ChannelManagementType channelMode = sequence->getChannelManagementType();
+    
+    if(channelMode == CHANNEL_AUTO)
+	{
+		channelManagement_automatic->Check(true);
+		channelManagement_manual->Check(false);
+	}
+	else if(channelMode == CHANNEL_MANUAL)
+	{
+		channelManagement_automatic->Check(false);
+		channelManagement_manual->Check(true);
+	}
+    
+    followPlaybackMenuItem->Check( sequence->follow_playback );
+}
 
 }
