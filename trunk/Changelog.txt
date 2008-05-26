@@ -8,6 +8,7 @@ SVN
 - removed harmless warning on the terminal when loading a midi file saved by aria
 - fixed undoing vertical moves in guitar editor
 - fixed undoing vertical moves in drum editor
+- fixed 'follow playback' menu item not properly checked/unchecked when switching between songs
 
 1.1.2
 - Added german translation (thanks to Friedrich Weber!)

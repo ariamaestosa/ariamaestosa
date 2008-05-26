@@ -113,12 +113,19 @@ NOTE: sorry, this is very raw :)
  
  ************************* BUGS: *************************
   
+* "follow playback" all mixed up when red line is not initially visible
+* "follow playback" : hard to follow when horizontal scrolling is changed
++ "settings > play during edit" needs to be apart from other options, it is global while others are local to sequence
+  
 * red images
 * crash when cancelling printing
 * opening manual doesn't always work (?)
 * doesnt handle when there's too many songs open for all to be visible
-* rearrange notes doesn't always undo correctly
+* rearrange notes doesn't always undo correctly (can't reproduce)
 - "rearrange selected notes" doesn't always work optimally
+
+* linux: scons install fails from SVN because docs are not found
++ linux: no need to install icns files, nor lprojs
 
 + when printing to tablature, and exporting to PDF, suggested name defaults to "aria maestosa"
 
@@ -127,10 +134,6 @@ NOTE: sorry, this is very raw :)
 - what's up with glutInit? wxGlCanvas seems to call it. Crashes suse 10.1.
 - score : flat/sharp/natural signs tend to appear obscured (behind note stem if in a group... behind silence... etc.)
 + score editor - sharp of flat notes at time=0 have their sign hidden behind grey bar
-
-+ linux: scons install fails from SVN because docs are not found
-+ linux: no need to install icns files, nor lprojs
-+ unsure note length is okay with measure != 4/4. check forumlae on wikipedia : http://en.wikipedia.org/wiki/Modern_musical_symbols
 
 - error at startup (quicktime will not play dummy file to init it?)
         error:

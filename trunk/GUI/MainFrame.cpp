@@ -981,7 +981,7 @@ void MainFrame::setCurrentSequence(int n)
 
     currentSequence = n;
 	updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
-	changeChannelManagement( getCurrentSequence()->getChannelManagementType() );
+    updateMenuBarToSequence();
 }
 
 
@@ -1103,27 +1103,6 @@ void MainFrame::evt_updateWaitWindow(wxCommandEvent& evt)
 void MainFrame::evt_hideWaitWindow(wxCommandEvent& evt)
 {
     WaitWindow::hide();
-}
-
-
-void MainFrame::changeChannelManagement(ChannelManagementType mode)
-{
-	if(mode == CHANNEL_AUTO)
-	{
-		channelManagement_automatic->Check(true);
-		channelManagement_manual->Check(false);
-
-		getCurrentSequence()->setChannelManagementType(CHANNEL_AUTO);
-	}
-	else if(mode == CHANNEL_MANUAL)
-	{
-		channelManagement_automatic->Check(false);
-		channelManagement_manual->Check(true);
-
-		getCurrentSequence()->setChannelManagementType(CHANNEL_MANUAL);
-	}
-
-	Display::render();
 }
 
 }

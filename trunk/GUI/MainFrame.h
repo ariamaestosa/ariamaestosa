@@ -174,6 +174,8 @@ public:
 	void menuEvent_manualChannelModeSelected(wxCommandEvent& evt);
 	void menuEvent_expandedMeasuresSelected(wxCommandEvent& evt);
 
+    void updateMenuBarToSequence();
+    
     // playback
     void songHasFinishedPlaying();
     void toolsEnterPlaybackMode();
@@ -199,11 +201,10 @@ public:
     int getSequenceAmount();
     bool closeSequence(int id=-1); // -1 means current sequence
     Sequence* getCurrentSequence();
+    Sequence* getSequence(int n);
 	int getCurrentSequenceID();
 	void setCurrentSequence(int n);
-	Sequence* getSequence(int n);
 
-	void changeChannelManagement(ChannelManagementType mode);
 	void changeShownTimeSig(int num, int denom);
 
 	void evt_freeVolumeSlider( wxCommandEvent& evt );
