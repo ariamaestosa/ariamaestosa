@@ -118,8 +118,7 @@ NOTE: sorry, this is very raw :)
 * test multiple time sig changes a bit more
 
 * "follow playback" : hard to follow when horizontal scrolling is changed
-+ "settings > play during edit" needs to be apart from other options, it is global while others are local to sequence
-  
+
 * red images
 * crash when cancelling printing
 * opening manual doesn't always work (?)

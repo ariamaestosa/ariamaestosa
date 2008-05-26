@@ -9,6 +9,7 @@ SVN
 - fixed undoing vertical moves in guitar editor
 - fixed undoing vertical moves in drum editor
 - fixed 'follow playback' menu item not properly checked/unchecked when switching between songs
+- improvement 'settings' menu layout
 
 1.1.2
 - Added german translation (thanks to Friedrich Weber!)
