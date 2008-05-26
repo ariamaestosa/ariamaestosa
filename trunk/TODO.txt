@@ -29,6 +29,7 @@ NOTE: sorry, this is very raw :)
   
 ************************* NEW FEATURES TO ADD: *************************
 
+  * guess key feature
 
   * add new tools, that allow adding notes without dragging-
   * add triplet as a widget, not as a check menu
@@ -94,7 +95,6 @@ NOTE: sorry, this is very raw :)
  UNSURE:
  + use wxNewId() ?
  - add background support in other editors than keyboard
- - guess key feature
  - guitar mode - allow to paste pitch or string fret
  - hear note/drum by clicking on its name in left part
  - controllers have only coarse values (no fine value)
@@ -113,7 +113,10 @@ NOTE: sorry, this is very raw :)
  
  ************************* BUGS: *************************
   
-* "follow playback" all mixed up when red line is not initially visible
+* test menubar changes a bit more (follow playback, channel management)
+* test manual channel management a bit more
+* test multiple time sig changes a bit more
+
 * "follow playback" : hard to follow when horizontal scrolling is changed
 + "settings > play during edit" needs to be apart from other options, it is global while others are local to sequence
   
