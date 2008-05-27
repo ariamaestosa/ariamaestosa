@@ -213,26 +213,30 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
 			const int trackAmount = sequence->getTrackAmount();
 			for(int n=0; n<trackAmount; n++)
 			{
-
+                bool drum_track = sequence->getTrack(n)->graphics->editorMode == DRUM;
+                
 				int trackFirstNote=-1;
-				trackLength = sequence->getTrack(n)->addMidiEvents( tracks.GetTrack(n+1), channel, sequence->measureBar->getFirstMeasure(), false, trackFirstNote );
+				trackLength = sequence->getTrack(n)->addMidiEvents( tracks.GetTrack(n+1), (drum_track ? 9 : channel), sequence->measureBar->getFirstMeasure(), false, trackFirstNote );
 
 				if( (trackFirstNote<(*startTick) and trackFirstNote != -1) or (*startTick)==-1) (*startTick) = trackFirstNote;
-
-
+                
+                
 				if(trackLength == -1) continue; // nothing to play in track (empty track - skip it)
 				if(trackLength > *songLengthInTicks) *songLengthInTicks=trackLength;
-
-				channel++; if (channel==9) channel++;
-                if(channel > 15 and sequence->getChannelManagementType() == CHANNEL_AUTO)
+                
+                if(not drum_track)
                 {
-                    wxMessageBox(_("WARNING: this song has too many\nchannels, expect unpredictable output"));
-                    channel = 0;
-                    std::cout << "WARNING: this song has too many channels, expect unpredictable output" << std::endl;
+                    if(channel > 15 and sequence->getChannelManagementType() == CHANNEL_AUTO)
+                    {
+                        wxMessageBox(_("WARNING: this song has too many\nchannels, expect unpredictable output"));
+                        channel = 0;
+                        std::cout << "WARNING: this song has too many channels, expect unpredictable output" << std::endl;
+                    }
+                    channel++; if (channel==9) channel++;
                 }
 			}
 			substract_ticks = *startTick;
-
+            
 		}
 
 

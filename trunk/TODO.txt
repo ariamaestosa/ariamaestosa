@@ -60,8 +60,8 @@ NOTE: sorry, this is very raw :)
 
 + proper ALSA port selection (in preferences?)
 
- - render a bit less often + probably too many paint events (duplicate ones at times) track and remove them
- 
+ - key is not saved to midi files (the problem is that in midi key is global, in Aria it is local)
+
  + make more features accessible graphically (as opposed to keyboard-only)
 
  + cursor should change when hitting key modifiers (at least a select icon when hitting shift in control editor)
@@ -88,6 +88,7 @@ NOTE: sorry, this is very raw :)
  
  
  UNSURE:
+ - render a bit less often + probably too many paint events (duplicate ones at times) track and remove them
  + use wxNewId() ?
  - add background support in other editors than keyboard
  - guitar mode - allow to paste pitch or string fret
@@ -108,8 +109,6 @@ NOTE: sorry, this is very raw :)
  
  ************************* BUGS: *************************
   
-* Rhapsody - Eternal Glory - has too many tracks, but doesn't switch to manual mode automatically (or i think there is the max amount allowed?)
-  
 * "snap to grid" may collapse a note into an instant hit.
   
 * test new SCONS install target, complete it
@@ -119,8 +118,6 @@ NOTE: sorry, this is very raw :)
 * test manual installation and opening on linux
 
 * test multiple time sig changes a bit more
-
-- key is not saved to midi files
 
 * "follow playback" : hard to follow when horizontal scrolling is changed (Change only on measure change?)
 
