@@ -282,10 +282,20 @@ void putInTimeOrder(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* ed
     // put notes in time order.
     // notes that have no stems go last so that they don't disturb note grouping in chords
     const int visibleNoteAmount = noteRenderInfo.size();
+#ifdef _MORE_DEBUG_CHECKS
+    int iteration = 0;
+#endif
     for(int i=1; i<visibleNoteAmount; i++)
     {
-        if(noteRenderInfo[i].tick < noteRenderInfo[i-1].tick or
-           ( aboutEqual_tick(noteRenderInfo[i].tick, noteRenderInfo[i-1].tick) and noteRenderInfo[i-1].stem_type != STEM_NONE and noteRenderInfo[i].stem_type == STEM_NONE)
+#ifdef _MORE_DEBUG_CHECKS
+        iteration++;
+        assertExpr(iteration,<,100000);
+#endif
+        
+        // put in time order
+        // making sure notes without stem come before notes with a stem
+        if( noteRenderInfo[i].tick < noteRenderInfo[i-1].tick or
+           ( noteRenderInfo[i].tick == noteRenderInfo[i-1].tick and noteRenderInfo[i-1].stem_type != STEM_NONE and noteRenderInfo[i].stem_type == STEM_NONE)
            )
         {
             NoteRenderInfo tmp = noteRenderInfo[i-1];
