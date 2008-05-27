@@ -118,11 +118,10 @@ NOTE: sorry, this is very raw :)
 
 - key is not saved to midi files
 
-* "follow playback" : hard to follow when horizontal scrolling is changed
+* "follow playback" : hard to follow when horizontal scrolling is changed (Change only on measure change?)
 
 * red images
 * crash when cancelling printing
-* doesnt handle when there's too many songs open for all to be visible
 * rearrange notes doesn't always undo correctly (can't reproduce)
 - "rearrange selected notes" doesn't always work optimally
 

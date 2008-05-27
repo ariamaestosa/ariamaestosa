@@ -80,9 +80,9 @@ EVT_PAINT(MainPane::paintEvent)
 
 END_EVENT_TABLE()
 
-const int tab_width=145;
 const int tabBarY = 0;
 const int measureBarY = 20;
+int tab_width=145;
 
 // when this is set to 'true', the app will wait for a new click to be begun to process any mouse events (i.e. current click/drag is not valid anymore)
 bool invalidateMouseEvents=false;
@@ -228,6 +228,11 @@ bool MainPane::do_render()
     int start_at_x = 0;
     const int seqamount = getMainFrame()->getSequenceAmount();
     const int currentSeqID = getMainFrame()->getCurrentSequenceID();
+    
+    // if too many tabs for all to be visible, make them smaller
+    tab_width = 145;
+    if( seqamount*(tab_width+16+16) > Display::getWidth() )
+        tab_width = Display::getWidth() / seqamount - 32;
     
     for(int n=0; n<seqamount; n++)
 	{
