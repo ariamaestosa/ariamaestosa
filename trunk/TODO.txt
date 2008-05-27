@@ -9,8 +9,6 @@ NOTE: sorry, this is very raw :)
 	- update version in docs (main, download, compile)
     - give permissions, check info.plist is the right one
  
- - put docs in source download too
- 
   Linux: docs in /usr/doc/<package-name> (but on SuSE they go to/usr/share/doc/packages/<package-name>)
   http://www.pathname.com/fhs/
 
@@ -115,7 +113,9 @@ NOTE: sorry, this is very raw :)
 * test new SCONS install target, complete it
   + linux: no need to install icns files
   + install docs (include them in SVN?)
-  
+
+* test manual installation and opening on linux
+
 * test menubar changes a bit more (follow playback, channel management)
 * test manual channel management a bit more
 * test multiple time sig changes a bit more
@@ -124,7 +124,6 @@ NOTE: sorry, this is very raw :)
 
 * red images
 * crash when cancelling printing
-* opening manual doesn't always work (?)
 * doesnt handle when there's too many songs open for all to be visible
 * rearrange notes doesn't always undo correctly (can't reproduce)
 - "rearrange selected notes" doesn't always work optimally

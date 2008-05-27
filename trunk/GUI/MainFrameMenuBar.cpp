@@ -601,7 +601,7 @@ ManualView* manualView = NULL;
 void MainFrame::menuEvent_manual(wxCommandEvent& evt)
 {
 #ifdef __WXMAC__
-	wxString path_to_docs =  wxStandardPaths::Get().GetResourcesDir() + wxT("/../../../Documentation/man.html");
+	wxString path_to_docs =  getResourcePrefix() + wxT("Documentation/man.html");
 #endif
 
 #ifdef __WXGTK__
@@ -609,7 +609,7 @@ void MainFrame::menuEvent_manual(wxCommandEvent& evt)
 
 	// if kept in place (not installed)
 	if(! wxFileExists(path_to_docs) )
-		path_to_docs =  getResourcePrefix() + wxT("../../Documentation/man.html");
+		path_to_docs =  getResourcePrefix() + wxT("../Documentation/man.html");
 #endif
 
 #ifndef __WXMAC__
