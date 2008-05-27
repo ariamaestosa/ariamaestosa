@@ -216,7 +216,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 				{
 					track->setChannel(channel);
 					
-					// check what is the isntrument currently used in thsi channel, if any
+					// check what is the instrument currently used in this channel, if any
 					const int trackAmount = sequence->getTrackAmount();
 					for(int n=0; n<trackAmount; n++) // find another track that has same channel and use the same instrument
 					{
