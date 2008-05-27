@@ -1,20 +1,48 @@
 import sys
 import os
 
-Help("""      Usage:
+Help("""
+      Usage:
         % scons
-            does a release build, auto-detects yout system
-        % scons [platform=macosx/linux] [release=debug/release]
-            specify build type and/or platform
-        % scons WXCONFIG=/path/to/wx-config
-            build using a specified wx-config
+            does a release build, auto-detects your system
+            
+        Flags you can pass when calling 'scons' :
+            platform=[macosx/linux/unix]
+                specify platform, if not auto-detected
+            release=[debug/release]
+                specify build type
+            WXCONFIG=/path/to/wx-config
+                build using a specified wx-config
+                
         % scons install
-            installs Aria, auto-detects system
-        % scons install [platform=linux/macosx] prefix=/usr/local
-            install + specify platform and/or prefix (prefix only used for linux, default is /usr/local)
-        % scons uninstall [platform=linux prefix=/usr/local]
-            linux only (on mac just drag to trash)      """)
+            installs Aria, auto-detects system (run as root if necessary)
+            
+        Flags you can pass when calling 'scons install' :
+            platform=[macosx/linux/unix]
+                specify platform, if not auto-detected
+            prefix=[/opt/local]
+                install to a different prefix than default /usr/local
+            
+        % scons uninstall [prefix=/usr/local]
+            uninstalls Aria, takes same flags as 'scons install'.
+            If you specified a custom install prefix, you need to specify it again.
+            * Note available on mac OS X, just drag the generated app to the trash.
+      """)
 
+# ------- for the install target
+import SCons
+from SCons.Script.SConscript import SConsEnvironment
+SConsEnvironment.Chmod = SCons.Action.ActionFactory(os.chmod, lambda dest, mode: 'Chmod("%s", 0%o)' % (dest, mode))
+
+def InstallPerm(env, dest, files, perm):
+    obj = env.Install(dest, files)
+    for i in obj:
+        env.AddPostAction(i, env.Chmod(str(i), perm))
+    return dest
+
+SConsEnvironment.InstallPerm = InstallPerm
+
+# ------------------------------- find system, build type ----------------------
 def main_Aria_func():
     
     # find operating system
@@ -28,11 +56,13 @@ def main_Aria_func():
         elif os.uname()[0] == 'Darwin':
             which_os = "macosx"
         else:
-            print "Unknown operating system : " + os.uname()[0] + " please specify 'platform=[linux/macosx]'"
+            print "Unknown operating system : " + os.uname()[0] + ", defaulting to Unix"
             sys.exit(0)
     elif givenos == "macosx":
         which_os = "macosx"
     elif givenos == "linux":
+        which_os = "linux"
+    elif givenos == "unix":
         which_os = "linux"
     elif givenos == "windows":
         which_os = "windows"
@@ -46,7 +76,18 @@ def main_Aria_func():
         print"*** Operating system : mac OS X" 
     elif which_os == "windows":
         print"*** Operating system : Windows (warning: unsupported at this point)" 
-            
+        
+    # check build style
+    bstyle = ARGUMENTS.get('release', 0)
+    if bstyle == 0:
+        build_type = "release"
+    elif bstyle == "release":
+        build_type = "release"
+    elif bstyle == "debug":
+        build_type = "debug"
+    else:
+        build_type = "debug"
+
     # check what to do
     if 'uninstall' in COMMAND_LINE_TARGETS:
         # uninstall
@@ -57,26 +98,18 @@ def main_Aria_func():
     elif 'install' in COMMAND_LINE_TARGETS:
         # install
         if which_os == "linux":
-            install_Aria_linux()
+            #install_Aria_linux()
+            compile_Aria(build_type, which_os)
         elif which_os == "macosx":
-            install_Aria_mac()
+            #install_Aria_mac()
+            # FIXME - for testing purposes, revert
+            compile_Aria(build_type, which_os)
         else:
             print "Unknown operation or system"
             sys.exit(0)     
     else:
         # compile
-        
-        # check build style
-        bstyle = ARGUMENTS.get('release', 0)
-        if bstyle == 0:
-            build_type = "release"
-        elif bstyle == "release":
-            build_type = "release"
-        elif bstyle == "debug":
-            build_type = "debug"
-        else:
-            build_type = "debug"
-        
+                
         if build_type == "debug":
             print "*** Build type : debug"
         elif build_type == "release":
@@ -91,52 +124,12 @@ def install_Aria_mac():
     sys_command("cp ./Aria ./AriaMaestosa.app/Contents/MacOS/Aria\ Maestosa")
     sys_command("cp ./release.plist ./AriaMaestosa.app/Contents/info.plist")
     sys_command("cp -r ./Resources ./AriaMaestosa.app/Contents/")
-    
-    # not good for debug builds
-    # sys_command("strip ./AriaMaestosa.app/Contents/MacOS/Aria\ Maestosa")
+    sys_command("cp -r ./mac-i18n ./AriaMaestosa.app/Contents/")
     
     print "*** Cleaning up..."
     os.system("cd ./AriaMaestosa.app && find . -name \".svn\" -exec rm -rf '{}' \;")
     
-    print "*** Done. (The application icon will eventually appear)"
-    sys.exit(0)
-
-# ---------------------------- Install Linux -----------------------------
-    
-def install_Aria_linux():
-    
-    # check if user defined his own prefix, else use defaults
-    prefix = ARGUMENTS.get('prefix', 0)
-    
-    if prefix == 0:
-        print "*** No prefix specified, defaulting to /usr/local/"
-        prefix = '/usr/local/'
-    else:
-         print "*** Installing to prefix " + prefix
-    
-    if prefix[-1] != "/":
-        prefix += "/"
-        
-    resource_path = prefix + "share/Aria/"
-    app_path = prefix + "bin/Aria"
-    locale_path = prefix + "share/locale/"
-    
-    # copy resources
-    os.system("mkdir -p " + resource_path)
-    os.system("cp -r --remove-destination Resources/* " + resource_path)
-    
-    # copy executable
-    os.system("cp --remove-destination ./Aria " + app_path)
-    
-    #copy translations
-    os.system("cp ./Resources/fr.lproj/aria_maestosa.mo " + locale_path + "fr/LC_MESSAGES/aria_maestosa.mo")
-    os.system("cp ./Resources/it.lproj/aria_maestosa.mo " + locale_path + "it/LC_MESSAGES/aria_maestosa.mo")
-    os.system("cp ./Resources/de.lproj/aria_maestosa.mo " + locale_path + "de/LC_MESSAGES/aria_maestosa.mo")
-    
-    #copy docs
-    os.system("cp -r ./../Documentation " + resource_path)
-
-    os.system("echo Installation done")
+    print "*** Done"
     sys.exit(0)
 
 # ---------------------------- Uninstall Linux -----------------------------
@@ -161,8 +154,7 @@ def uninstall_Aria_linux():
     
     os.system("rm -r " + resource_path)
     os.system("rm " + app_path)
-    os.system("rm " + locale_path + "fr/LC_MESSAGES/aria_maestosa.mo")
-    os.system("rm " + locale_path + "it/LC_MESSAGES/aria_maestosa.mo")
+    os.system("rm " + locale_path + "*/LC_MESSAGES/aria_maestosa.mo")
     sys.exit(0)
 
 # -- small helper func
@@ -349,9 +341,9 @@ def compile_Aria(build_type, which_os):
         sys.exit(0) 
     
     
-    # **************************************************************************************************
-    # ******************************************* COMPILE **********************************************
-    # **************************************************************************************************
+    # *********************************************************************************************
+    # **************************************** COMPILE ********************************************
+    # *********************************************************************************************
     print " "
     print "*** Done. Will build"
     print " "
@@ -360,6 +352,37 @@ def compile_Aria(build_type, which_os):
     object_list = env.Object(source = sources)
     
     # link program
-    env.Program( target = 'Aria', source = object_list )
+    executable = env.Program( target = 'Aria', source = object_list )
+
+    # install target
+    if 'install' in COMMAND_LINE_TARGETS:
+        # check if user defined his own prefix, else use defaults
+        prefix = ARGUMENTS.get('prefix', 0)
+    
+        if prefix == 0:
+            print "*** No prefix specified, defaulting to /usr/local/"
+            prefix = '/usr/local/'
+        else:
+            print "*** Installing to prefix " + prefix
+
+        try:
+            umask = os.umask(022)
+        except OSError:     # ignore on systems that don't support umask
+            pass
+    
+        bin_dir = os.path.join(prefix, "bin")
+        data_dir = os.path.join(prefix, "share")
+        env.Alias("install", env.InstallPerm( bin_dir, executable, 0775 ))
+        env.Alias("install", env.InstallPerm( data_dir, Glob("./Resources/*"), 0664 ))
+
+        mo_files = Glob("./international/*/aria_maestosa.mo",strings=True)
+        for mo in mo_files:
+            index_lo = mo.find("international/") + len("international/")
+            index_hi = mo.find("/aria_maestosa.mo")
+            lang_name = mo[index_lo:index_hi]
+            install_location = data_dir+"/locale/"+lang_name+"/LC_MESSAGES/aria_maestosa.mo"
+            env.Alias("install", env.InstallAs( install_location, mo ) )
+
+        # FIXME - install docs
 
 main_Aria_func()
