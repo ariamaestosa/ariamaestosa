@@ -35,8 +35,6 @@ NOTE: sorry, this is very raw :)
 
   * multiple program changes
 
-  - key is not saved to midi files
-  
   - .aria files don't remember whether drums are minimized
   - .aria files don't remember docked tracks
   - background choices are not saved to .aria files
@@ -116,9 +114,9 @@ NOTE: sorry, this is very raw :)
 
 * test manual installation and opening on linux
 
-* test menubar changes a bit more (follow playback, channel management)
-* test manual channel management a bit more
 * test multiple time sig changes a bit more
+
+- key is not saved to midi files
 
 * "follow playback" : hard to follow when horizontal scrolling is changed
 
@@ -163,6 +161,8 @@ NOTE: sorry, this is very raw :)
     Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
  
  MINOR / CLEANUP / UNSURE:
+ - in manual channel management mode, it's still a bit too easy to get multiple tracks on the same channel with different isntruments
+    (for isntance by switching to and from drum editor, etc.)
  - when wait dialog appears, you can still edit tracks and do operations that may be harmful to current process.
     yet you can't make it modal otherwise the background process stops.
     

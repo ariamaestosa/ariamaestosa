@@ -58,7 +58,38 @@ namespace AriaMaestosa
 		graphics = new GraphicalTrack(this, sequence);
 		graphics->createEditors();
 		channel = 0;
-
+        if( sequence->getChannelManagementType() == CHANNEL_MANUAL )
+        {
+            // if in manual channel management mode, we need to give it a proper channel
+            // the following array will store what channels are currently taken
+            bool channel_taken[16];
+            for(int i=0; i<16; i++) channel_taken[i] = false;
+            
+            const int track_amount = sequence->getTrackAmount();
+            for(int i=0; i<track_amount; i++)
+			{
+                assertExpr(sequence->getTrack(i)->getChannel(),>=,0);
+                assertExpr(sequence->getTrack(i)->getChannel(),<,16);
+				channel_taken[sequence->getTrack(i)->getChannel()] = true;
+            }
+            for(int i=0; i<16; i++)
+            {
+                if(i==9) continue; // don't use channel 9, it's for drums
+                // use first not-yet-used channel
+                if(not channel_taken[i])
+                {
+                    channel = i;
+                    break;
+                }
+                else if(i == 15)
+                {
+                    // we reached the end and still haven't found any...
+                    // FIXME - the given instrument might be wrong
+                }
+            }
+        }
+        
+        
 		instrument = 0;
 		drumKit = 0;
     }

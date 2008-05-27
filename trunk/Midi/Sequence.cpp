@@ -92,6 +92,8 @@ Sequence::~Sequence()
 	delete measureBar;
 }
 
+
+#pragma mark -
 wxString Sequence::suggestTitle()
 {
 	if(!getInternalName().IsEmpty())
@@ -132,6 +134,7 @@ wxString Sequence::suggestFileName()
 }
 
 // ------------------------------------------- text info ----------------------------------------
+#pragma mark -
 void Sequence::setCopyright( wxString copyright )
 {
     Sequence::copyright = copyright;
@@ -152,7 +155,7 @@ wxString Sequence::getInternalName()
 }
 
 // ------------------------------------------- grid ----------------------------------------
-
+#pragma mark -
 /*
  * When user selects 'snap notes to grid' from menu. Simply disptaches the event to the appropriate track.
  */
@@ -168,6 +171,7 @@ void Sequence::snapNotesToGrid()
 }
 
 // ------------------------------------------- scrolling ----------------------------------------
+#pragma mark -
 
 int Sequence::getYScroll()
 {
@@ -207,8 +211,8 @@ void Sequence::setYScroll(int value)
     y_scroll = value;
 }
 
-// ------------------------------------------- zoom ----------------------------------------
-
+// ------------------------------------------- setup ----------------------------------------
+#pragma mark -
 float Sequence::getZoom()
 {
     return zoom;
@@ -227,8 +231,36 @@ void Sequence::setZoom(int zoom)
 	
 }
 
-// ------------------------------------------- undo ----------------------------------------
+void Sequence::setChannelManagementType(ChannelManagementType type)
+{
+	channelManagement = type;
+}
+ChannelManagementType Sequence::getChannelManagementType()
+{
+	return channelManagement;
+}
 
+/*
+ * Get various information about resolution.
+ * Ticks per beat is the number of time units in a quarter note.
+ * Ticks per measure returns how many ticks there would be in a whole measure considering the beat resolution and the measure time signature.
+ */
+
+int Sequence::ticksPerBeat(){		return beatResolution;		}
+/*
+ int Sequence::ticksPerMeasure()
+ {
+     return (int)(
+                  beatResolution * measureBar->getTimeSigNumerator() * (4.0/measureBar->getTimeSigDenominator())
+                  );
+     
+ }
+ */
+void Sequence::setTicksPerBeat(int res){		beatResolution = res;		}
+
+
+// ------------------------------------------- actions and undo ----------------------------------------
+#pragma mark -
 /*
  * This is the method called for performing any action that can be undone.
  * A EditAction object is used to describe the task, and it also knows how to revert it.
@@ -294,7 +326,7 @@ void Sequence::loadUndoMemory()
 */
 
 // ------------------------------------------- render ----------------------------------------
-
+#pragma mark -
 void Sequence::renderTracks(int currentTick, RelativeXCoord mousex, int mousey, int mousey_initial, int from_y)
 {
     
@@ -435,26 +467,6 @@ void Sequence::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current, 
 
 
 
-// ------------------------------------------- resolution ----------------------------------------
-
-/*
- * Get various information about resolution.
- * Ticks per beat is the number of time units in a quarter note.
- * Ticks per measure returns how many ticks there would be in a whole measure considering the beat resolution and the measure time signature.
- */
-
-int Sequence::ticksPerBeat(){		return beatResolution;		}
-/*
-int Sequence::ticksPerMeasure()
-{
-	return (int)(
-				 beatResolution * measureBar->getTimeSigNumerator() * (4.0/measureBar->getTimeSigDenominator())
-				 );
-
-}
-*/
-void Sequence::setTicksPerBeat(int res){		beatResolution = res;		}
-
 // ------------------------------------------- info ----------------------------------------
 
 /*
@@ -478,11 +490,13 @@ int Sequence::getTotalHeight()
 }
 
 // ------------------------------------------- tracks ----------------------------------------
-
+#pragma mark -
 void Sequence::addTrack()
 {
-	if(currentTrack>=0 and currentTrack<tracks.size()) tracks.add(new Track(getMainFrame(), this), currentTrack+1); // add new track below active one
-	else tracks.push_back(new Track(getMainFrame(), this));
+	if(currentTrack>=0 and currentTrack<tracks.size())
+        tracks.add(new Track(getMainFrame(), this), currentTrack+1); // add new track below active one
+	else
+        tracks.push_back(new Track(getMainFrame(), this));
 	
     Display::render();
 }
@@ -536,36 +550,6 @@ void Sequence::reorderTracks()
 	if(! (currentTrack<tracks.size()) ) currentTrack=0;
 }
 
-/*
- * Hide a track by sending it to the 'dock'
- */
-
-void Sequence::addToDock(GraphicalTrack* track)
-{
-    
-    dock.push_back(track);
-    dockSize = dock.size();
-    
-	currentTrack = 0;
-	
-    DisplayFrame::updateVerticalScrollbar();
-}
-
-void Sequence::removeFromDock(GraphicalTrack* track)
-{
-    
-    for(int n=0; n<dock.size(); n++)
-	{
-        if(&dock[n] == track)
-		{
-            dock.remove( n );
-            dockSize = dock.size();
-            return;
-        }
-    }
-    DisplayFrame::updateVerticalScrollbar();
-    
-}
 
 Track* Sequence::getCurrentTrack()
 {
@@ -611,19 +595,39 @@ void Sequence::setCurrentTrack(Track* track)
 	
 }
 
-// ------------------------------------------- editing modes ----------------------------------------
+/*
+ * Hide a track by sending it to the 'dock'
+ */
 
-void Sequence::setChannelManagementType(ChannelManagementType type)
+void Sequence::addToDock(GraphicalTrack* track)
 {
-	channelManagement = type;
+    
+    dock.push_back(track);
+    dockSize = dock.size();
+    
+	currentTrack = 0;
+	
+    DisplayFrame::updateVerticalScrollbar();
 }
-ChannelManagementType Sequence::getChannelManagementType()
+
+void Sequence::removeFromDock(GraphicalTrack* track)
 {
-	return channelManagement;
+    
+    for(int n=0; n<dock.size(); n++)
+	{
+        if(&dock[n] == track)
+		{
+            dock.remove( n );
+            dockSize = dock.size();
+            return;
+        }
+    }
+    DisplayFrame::updateVerticalScrollbar();
+    
 }
 
 // ------------------------------------------- playback ----------------------------------------
-
+#pragma mark -
 void Sequence::spacePressed()
 {
 
@@ -818,7 +822,7 @@ void Sequence::addTempoEvent_import( ControllerEvent* evt )
 }
 
 // ------------------------------------------- i/o ----------------------------------------
-
+#pragma mark -
 /*
  * Called before loading, prepares empty tracks
  */

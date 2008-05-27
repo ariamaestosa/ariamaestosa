@@ -475,7 +475,7 @@ void MainFrame::menuEvent_automaticChannelModeSelected(wxCommandEvent& evt)
 
 	Sequence* sequence = getCurrentSequence();
 	// we were in manual mode... we will need to merge tracks while switching modes. ask user first
-	if( sequence->getChannelManagementType() == CHANNEL_MANUAL)
+	if( sequence->getChannelManagementType() == CHANNEL_MANUAL )
 	{
 		int answer = wxMessageBox(  _("If multiple tracks play on the same channel, they will be merged.\nThis cannot be undone.\n\nDo you really want to continue?"),
 								    _("Confirm"),

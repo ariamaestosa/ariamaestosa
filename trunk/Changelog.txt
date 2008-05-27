@@ -12,6 +12,7 @@ SVN
 - improvement 'settings' menu layout
 - improved scons towards a real install target
 - moved docs inside resources so they're always available
+- fixed adding new tracks in manual channel management mode
 
 1.1.2
 - Added german translation (thanks to Friedrich Weber!)
