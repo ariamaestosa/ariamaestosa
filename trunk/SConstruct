@@ -56,7 +56,7 @@ def main_Aria_func():
         elif os.uname()[0] == 'Darwin':
             which_os = "macosx"
         else:
-            print "Unknown operating system : " + os.uname()[0] + ", defaulting to Unix"
+            print "Unknown operating system : " + os.uname()[0] + ", defaulting to Linux-like Unix"
             sys.exit(0)
     elif givenos == "macosx":
         which_os = "macosx"
@@ -67,7 +67,7 @@ def main_Aria_func():
     elif givenos == "windows":
         which_os = "windows"
     else:
-        print "Unknown operating system : " + givenos + " please specify 'platform=[linux/macosx]'"
+        print "Unknown operating system : " + givenos + " please specify 'platform=[linux/macosx/unix]'"
         sys.exit(0)
     
     if which_os == "linux":

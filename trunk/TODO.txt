@@ -43,7 +43,7 @@ NOTE: sorry, this is very raw :)
   - .aria files don't remember docked tracks
   - background choices are not saved to .aria files
   
- - tab exporter:
+ * tab exporter:
 		skip series of empty measures
 		more than one track
 		show tuning on tab
@@ -62,9 +62,9 @@ NOTE: sorry, this is very raw :)
 
 + linux : export to wav when not using timidity?
 
- - render a bit less often + probably too many paint events (duplicate ones at times) track and remove them
++ proper ALSA port selection (in preferences?)
 
- - use this when installing on linux : http://www.scons.org/wiki/InstallationPrefix
+ - render a bit less often + probably too many paint events (duplicate ones at times) track and remove them
  
  + make more features accessible graphically (as opposed to keyboard-only)
 
@@ -81,7 +81,6 @@ NOTE: sorry, this is very raw :)
  
  - set default volume
  - shift-click on a selected notes unselects it
- 
 
  - change volume relatively on a bunch of notes
  - select notes and all similar menu items should be disabled in controller mode
@@ -114,6 +113,8 @@ NOTE: sorry, this is very raw :)
  ************************* BUGS: *************************
   
 * test new SCONS install target, complete it
+  + linux: no need to install icns files
+  + install docs (include them in SVN?)
   
 * test menubar changes a bit more (follow playback, channel management)
 * test manual channel management a bit more
@@ -128,12 +129,7 @@ NOTE: sorry, this is very raw :)
 * rearrange notes doesn't always undo correctly (can't reproduce)
 - "rearrange selected notes" doesn't always work optimally
 
-* linux: scons install fails from SVN because docs are not found
-+ linux: no need to install icns files, nor lprojs
-
 + when printing to tablature, and exporting to PDF, suggested name defaults to "aria maestosa"
-
-- "select alsa midi port", guitar tunings, are not translatable
 
 - what's up with glutInit? wxGlCanvas seems to call it. Crashes suse 10.1.
 - score : flat/sharp/natural signs tend to appear obscured (behind note stem if in a group... behind silence... etc.)
