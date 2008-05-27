@@ -13,6 +13,8 @@ SVN
 - improved scons towards a real install target
 - moved docs inside resources so they're always available
 - fixed adding new tracks in manual channel management mode
+- correctly handle when there's too many tabs open for all to be visible
+- code cleanup
 
 1.1.2
 - Added german translation (thanks to Friedrich Weber!)
