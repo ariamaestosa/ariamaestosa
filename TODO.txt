@@ -24,6 +24,7 @@ NOTE: sorry, this is very raw :)
  - notation printing and export
  - riff-based song editing (e.g. to repeat chorus you don't need to keep multiple copies of it)
  - allow using another renderer than OpenGL
+ - multiple program changes
   
 ************************* NEW FEATURES TO ADD: *************************
 
@@ -32,8 +33,6 @@ NOTE: sorry, this is very raw :)
   * add new tools, that allow adding notes without dragging-
   * add triplet as a widget, not as a check menu
   * use note icons instead of e.g. "1/8" as text
-
-  * multiple program changes
 
   - .aria files don't remember whether drums are minimized
   - .aria files don't remember docked tracks
@@ -108,9 +107,7 @@ NOTE: sorry, this is very raw :)
  - score editor should be able to display notes with more than 2 flags (unusure... those with 2 are already so small and barely visible) 
  
  ************************* BUGS: *************************
-  
-* "snap to grid" may collapse a note into an instant hit.
-  
+    
 * test new SCONS install target, complete it
   + linux: no need to install icns files
   + install docs (include them in SVN?)

@@ -715,12 +715,20 @@ void Editor::scroll(float amount)
 
 int Editor::snapMidiTickToGrid(int absolute_x)
 {
-    
-    return (int)( round(
-                        (float)absolute_x/
-                        (float)(sequence->ticksPerBeat()*4 / graphicalTrack->grid->divider)
-                        )*(sequence->ticksPerBeat()*4 / graphicalTrack->grid->divider)
-                  );
+        return (int)( 
+                      round((float)absolute_x/
+                            (float)(sequence->ticksPerBeat()*4 / graphicalTrack->grid->divider))
+                          *(sequence->ticksPerBeat()*4 / graphicalTrack->grid->divider)
+                      );
+}
+
+int Editor::snapMidiTickToGrid_ceil(int absolute_x)
+{
+        return (int)(
+                      ceil((float)absolute_x/
+                            (float)(sequence->ticksPerBeat()*4 / graphicalTrack->grid->divider))
+                          *(sequence->ticksPerBeat()*4 / graphicalTrack->grid->divider)
+                      );
 }
 
 }

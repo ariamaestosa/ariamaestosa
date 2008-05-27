@@ -54,7 +54,16 @@ namespace AriaMaestosa
 			note_end.push_back( track->notes[n].endTick );
 			
 			track->notes[n].startTick = track->graphics->getCurrentEditor()->snapMidiTickToGrid( track->notes[n].startTick );
-			track->notes[n].endTick = track->graphics->getCurrentEditor()->snapMidiTickToGrid( track->notes[n].endTick );
+            
+            int end_tick = track->graphics->getCurrentEditor()->snapMidiTickToGrid( track->notes[n].endTick );
+            if( track->notes[n].startTick == end_tick )
+            {
+                // note was collapsed, not good.
+                // use the 'ceil' variant of snapTickToGrid instead
+                end_tick = track->graphics->getCurrentEditor()->snapMidiTickToGrid_ceil( track->notes[n].endTick );
+            }
+            
+			track->notes[n].endTick = end_tick;
 			relocator.rememberNote(track->notes[n]);
 		}
 		

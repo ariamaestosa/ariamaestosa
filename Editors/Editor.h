@@ -126,8 +126,10 @@ public:
     void drawVerticalMeasureLines(int from_y, int to_y);
 	
 	// give this method a midi tick, it returns it snapped using current grid.
+    // the 'ceil' variant will only snap the tick to a bigger value
     int snapMidiTickToGrid(int absolute_x);
-	
+	int snapMidiTickToGrid_ceil(int absolute_x);
+    
 	// if you use a scrollbar, call this method somewhere near the end of your render method.
 	void renderScrollbar();
 
