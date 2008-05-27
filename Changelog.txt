@@ -14,6 +14,7 @@ SVN
 - moved docs inside resources so they're always available
 - fixed adding new tracks in manual channel management mode
 - correctly handle when there's too many tabs open for all to be visible
+- fixed crash in score editor
 - code cleanup
 
 1.1.2

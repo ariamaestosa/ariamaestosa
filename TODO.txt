@@ -108,6 +108,10 @@ NOTE: sorry, this is very raw :)
  
  ************************* BUGS: *************************
   
+* Rhapsody - Eternal Glory - has too many tracks, but doesn't switch to manual mode automatically (or i think there is the max amount allowed?)
+  
+* "snap to grid" may collapse a note into an instant hit.
+  
 * test new SCONS install target, complete it
   + linux: no need to install icns files
   + install docs (include them in SVN?)
