@@ -381,7 +381,6 @@ def compile_Aria(build_type, which_os):
             install_location = data_dir+"/locale/"+lang_name+"/LC_MESSAGES/aria_maestosa.mo"
             env.Alias("install", env.InstallAs( install_location, mo ) )
 
-        # FIXME - install docs
         # FIXME - 'score' subfolder in 'share' is created with wrong permissions
 
 main_Aria_func()

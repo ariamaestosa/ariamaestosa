@@ -1,0 +1,129 @@
+<html>
+<body link=black hlink=black vlink=black>
+
+<!----------------------------- TITLE ------------------------->
+
+<center>
+<img src="banner.jpg">
+</center>
+
+<center>
+<br/><br/>
+<h2>Building</h2>
+</center>
+
+<!----------------------------- CONTENT ------------------------->
+
+<blockquote>
+
+First, download the source code <A href="http://downloads.sourceforge.net/ariamaestosa/AriaSrc-1.1.2.tar.bz2">here</A> or from the sourceforge page.<br/>
+Aria is written in C++. To build it from source, you will need to install <a href="http://www.wxwidgets.org">wxWidgets</A>. I am currently using 2.8.x.<br/><br/>
+
+Aria also uses these, however you do not need to download and install them yourself because they are included either in the source package or by default on every mac.<br/>
+<list>
+<li/> <a href="http://www.scons.org/">scons</A>
+<li/> <a href="http://www.opengl.org">OpenGL</A> and GLUT
+<li/> <a href="http://www.jdkoftinoff.com/main/Free_Projects/C++_MIDI_Library/"> libjdkmidi</A>
+<li/> <a href="http://www.ambiera.com/irrxml/index.html">irrXML</A>
+</list>
+
+<br/><br/>(Please note that these instructions are for building with scons. You can also build with your favorite IDE/build system, but you'll then need to set up things yourself.)<br/><br/>
+
+
+<font size=2>
+
+<center><b>Prerequisites - Mac OS X</b></center>
+You will need to install Developer Tools from the mac OS X install disc. You need OS X 10.4.<br/><br/>
+
+<center><b>Prerequisites - Linux</b></center>
+<br/>The Linux version has been tested less than the mac one but appears to be getting more stable. At this point, you might want to build it to help me test it - it might also be stable enough for production but no promise :).<br/>
+<br/>You will need Python, Alsa (including -dev packages if your distro uses them), wxGTK (wxWidgets), OpenGL (-dev packages if any), gcc/g++ (build-essential in Ubuntu). For midi playback, you will need a softsynth like Timidity with a soundbank (more info below)<br/><br/>
+
+<center><b>Installing wxWidgets - Mac OS X</b></center><br/>
+
+First, download and install wxWidgets. I usually build static. Don't forget to enable OpenGL support.
+<br/><br/>Example terminal commands (read the instructions that come with wxWidgets or wxWiki for more info):<br/>
+<blockquote>
+<pre>cd wxMac2.8.x
+mkdir osx-build && cd osx-build
+../configure --with-libjpeg=builtin --with-libpng=builtin --with-regex=builtin --with-libtiff=builtin
+     --with-zlib=builtin --with-expat=builtin --with-opengl --enable-unicode --disable-shared
+make
+sudo make install</pre></blockquote>Make sure <i>wx-config --libs</i> points to the 2.8 libs when run from a terminal. Mac OS X 10.4 comes with wxWidgets 2.5 pre-installed. It is <b>not</b> recommended to build Aria with it. If you install wxWidgets 2.8 from source, it will default to installing in /usr/local, however pre-installed 2.5 is in /usr, so be careful about conflicts. If /usr comes before /usr/local in yout PATH environment variable, you  will get the 2.5 libs. For getting 2.5 out of the way quickly, just get /usr/bin/wx-config out of the way (sudo mv /usr/bin/wx-config /usr/bin/wx-config-2.5). If your computer does not find wx-config, make sure /usr/local/bin is in your PATH (or pass WXCONFIG=/usr/local/bin/wx-config to scons - see explainations below).
+<br/><br/>
+
+<center><b>Installing wxWidgets - Linux</b></center>
+
+You can simply download wxWidgets 2.8 from your distribution's repositories. It needs OpenGL support enabled and to be Unicode, and don't forget to install -dev packages if your distribution uses them.
+<br/><br/>If you want to build wxWidgets from source, you can use commands like (read the instructions that come with wxWidgets or wxWiki for more info):<br/>
+<blockquote>
+<pre>cd wxGTK2.8.x<br/>mkdir gtk-build && cd gtk-build<br/>../configure --with-opengl --enable-unicode<br/>make<br/>sudo make install</pre></blockquote>
+
+Make sure <i>wx-config --libs</i> points to the 2.8 libs when run from a terminal. If it does not, it is likely that your distribution's wxWidgets (in /usr/) is picked up before the one you built (in /usr/local/). To fix this, you can pass WXCONFIG=/usr/local/bin/wx-config to scons when building - more info below.
+<br/><br/>
+
+<center><b>building libjdkmidi (any platform)</b></center>
+
+Then you need to build libjdkmidi - its source is included with Aria however it is built seperately.<br/>
+<blockquote>
+<pre>
+cd /path/to/Aria/Src
+cd libjdkmidi
+./configure
+make
+cd ..
+</pre>
+</blockquote>
+
+<center><b>Compiling Aria (any platform)</b></center>
+You are now ready to build Aria itself. All you need to do is type the command appropriate for your system :<br/>
+<b>Note</b>: if you are building from the source archive, you do not need to install scons. Simply replace any occurence of <i>scons</i> in the commands below with <i>python scons/scons.py</i>.
+<blockquote><pre>scons</pre><br/></blockquote>
+ This will do a release build.<br/>You can specify <i>release=[debug/release]</i> for different build styles if you wish. You can also pass <i>WXCONFIG=/path/to/wx-config</i> to specify what wx-config to use when building (wx-config is what tells the build system where are the wxWidgets headers and libraries).
+<br/><br/>
+
+<b><center>Finishing on OS X</center></b>
+
+You can make a mac OS X app bundle with the following command:
+<blockquote><pre>
+scons install
+</pre></blockquote>
+<br/>
+
+<b><center>Finishing on Linux</center></b>
+
+At this point, if you are happy with letting Aria live in this folder, you can simply run it with <i>./Aria</i>
+
+<br/><br/>
+
+You can also install Aria into /usr/local/ by running the following command as root :
+
+<blockquote><pre>scons install </pre></blockquote>
+
+or, to specify an install prefix :
+
+<blockquote><pre>
+scons install prefix=/usr/
+</pre></blockquote>
+
+You can uninstall it later if you want with
+<blockquote><pre>
+scons uninstall prefix=/usr
+</pre></blockquote>
+
+Don't forget to specify the prefix it was installed into if it is not the default one.<br/><br/>
+
+If it is not already the case, you will need to install a softsynth like Timidity configured with flags : <blockquote><pre>./configure --enable-audio=alsa --enable-server --enable-alsaseq</pre></blockquote> and a soundbank, and run it as Alsa daemon with commands (in the case of Timidity) :
+
+<blockquote><pre>
+sudo modprobe snd-seq-midisudo timidity -iA -B2,8 -Os -EFreverb=0
+</pre></blockquote>
+-EFreverb=0 disables reverbering because it tends to cause problems, but you can leave that part out if you computer is very fast.<br/><br/>
+
+Then, to open Aria, type <i>Aria</i> in a terminal - enjoy!
+</font>
+<br/><br/><br/><br/>
+If you have any question or issue, do not hesitate to contact me!
+
+</body>
+</html>
