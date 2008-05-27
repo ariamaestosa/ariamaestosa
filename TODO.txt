@@ -113,6 +113,8 @@ NOTE: sorry, this is very raw :)
  
  ************************* BUGS: *************************
   
+* test new SCONS install target, complete it
+  
 * test menubar changes a bit more (follow playback, channel management)
 * test manual channel management a bit more
 * test multiple time sig changes a bit more
