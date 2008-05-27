@@ -101,9 +101,7 @@ def main_Aria_func():
             #install_Aria_linux()
             compile_Aria(build_type, which_os)
         elif which_os == "macosx":
-            #install_Aria_mac()
-            # FIXME - for testing purposes, revert
-            compile_Aria(build_type, which_os)
+            install_Aria_mac()
         else:
             print "Unknown operation or system"
             sys.exit(0)     
@@ -384,5 +382,6 @@ def compile_Aria(build_type, which_os):
             env.Alias("install", env.InstallAs( install_location, mo ) )
 
         # FIXME - install docs
+        # FIXME - 'score' subfolder in 'share' is created with wrong permissions
 
 main_Aria_func()
