@@ -66,6 +66,10 @@ NOTE: sorry, this is very raw :)
  + cursor should change when hitting key modifiers (at least a select icon when hitting shift in control editor)
  + elements you get from clicking on the left area should appear in the main menubar too
 
+ + if you select measures in the measure bar, but move the cursor below measure pane before releasing, you get nothing
+    (same with all tracks, rework event handling? determine where click goes on mouse down, and always use same destination on mouse drag?)
+    (use CaptureMouse to allow drags to continue off-screen?)
+   
  - change whole track pitch/volume
  
  - show song duration
@@ -114,8 +118,6 @@ NOTE: sorry, this is very raw :)
 
 * test manual installation and opening on linux
 
-* test multiple time sig changes a bit more
-
 * "follow playback" : hard to follow when horizontal scrolling is changed (Change only on measure change?)
 
 * red images
@@ -134,12 +136,8 @@ NOTE: sorry, this is very raw :)
         -->Mac OS error -208
         -->(null)
 
-- switching tracks tends to deselect measures
-
 - hard to resize last track
-- if you select measures in the measure bar, but move the cursor below measure pane before releasing, you get nothing
-    (same with all tracks, rework event handling? determine where click goes on mouse down, and always use same destination on mouse drag?)
-   
+
   - tab export sometimes does 41-42 43-44 and not 41-44
   - tab exporter long note exception applies only to perfect wholes and halves... there are other long notes
   - repetition length > 2 gives weird results
