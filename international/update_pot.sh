@@ -1,2 +1,4 @@
 cd ..
-xgettext -d AriaS -s --keyword=_ -p international -o aria_maestosa.pot *.cpp */*.cpp
+CPP_FILE_LIST=`find . -name '*.cpp' -print`
+echo $CPP_FILE_LIST
+xgettext -d AriaS -s --keyword=_ -p international -o aria_maestosa.pot $CPP_FILE_LIST

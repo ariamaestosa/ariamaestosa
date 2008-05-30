@@ -109,11 +109,11 @@ def main_Aria_func():
         sys.exit(0)
     
     if which_os == "linux":
-        print"*** Operating system : Linux" 
+        print">> Operating system : Linux" 
     elif which_os == "macosx":
-        print"*** Operating system : mac OS X" 
+        print">> Operating system : mac OS X" 
     elif which_os == "windows":
-        print"*** Operating system : Windows (warning: unsupported at this point)" 
+        print">> Operating system : Windows (warning: unsupported at this point)" 
         
     # check build style
     bstyle = ARGUMENTS.get('release', 0)
@@ -147,9 +147,9 @@ def main_Aria_func():
         # compile
                 
         if build_type == "debug":
-            print "*** Build type : debug"
+            print ">> Build type : debug"
         elif build_type == "release":
-            print "*** Build type : release"
+            print ">> Build type : release"
               
         compile_Aria(build_type, which_os)
 
@@ -176,10 +176,10 @@ def uninstall_Aria_linux():
     prefix = ARGUMENTS.get('prefix', 0)
     
     if prefix == 0:
-        print "*** No prefix specified, defaulting to /usr/local/"
+        print ">> No prefix specified, defaulting to /usr/local/"
         prefix = '/usr/local/'
     else:
-         print "*** Installing to prefix " + prefix
+         print ">> Prefix: " + prefix
     
     if prefix[-1] != "/":
         prefix += "/"
@@ -191,9 +191,12 @@ def uninstall_Aria_linux():
     os.system("rm -r " + resource_path)
     os.system("rm " + app_path)
     os.system("rm " + locale_path + "*/LC_MESSAGES/aria_maestosa.mo")
+
+    print "\n*** Uninstall done"
     sys.exit(0)
 
 # -- small helper func
+# executes a command on the system shell and prints it to stdout
 def sys_command(command):
     print command
     return_status = os.system(command)
@@ -211,10 +214,10 @@ def compile_Aria(build_type, which_os):
     WXCONFIG = ARGUMENTS.get('WXCONFIG', 0)
 
     if WXCONFIG == 0:
-        print "*** wx-config : default"
+        print ">> wx-config : default"
         WXCONFIG = 'wx-config'
     else:
-        print "*** wx-config : " + WXCONFIG
+        print ">> wx-config : " + WXCONFIG
         
     env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,gl'])
 
@@ -281,7 +284,7 @@ def compile_Aria(build_type, which_os):
         pass
     else:
     
-        print "\n\n*** /!\\ Platform must be either mac or linux "
+        print "\n\n/!\\ Platform must be either mac or linux "
         sys.exit(0) 
     
     
@@ -304,10 +307,10 @@ def compile_Aria(build_type, which_os):
         prefix = ARGUMENTS.get('prefix', 0)
     
         if prefix == 0:
-            print "*** No prefix specified, defaulting to /usr/local/"
+            print ">> No prefix specified, defaulting to /usr/local/"
             prefix = '/usr/local/'
         else:
-            print "*** Installing to prefix " + prefix
+            print ">> Prefix : " + prefix
 
         try:
             umask = os.umask(022)
@@ -316,6 +319,7 @@ def compile_Aria(build_type, which_os):
     
         bin_dir = os.path.join(prefix, "bin")
         data_dir = os.path.join(prefix, "share/Aria")
+        locale_dir = os.path.join(prefix, "share/locale")
         env.Alias("install", env.InstallPerm( bin_dir, executable, 0775 ))
         env.Alias("install", env.InstallPerm( data_dir, Glob("./Resources/*"), 0664 ))
 
@@ -324,7 +328,7 @@ def compile_Aria(build_type, which_os):
             index_lo = mo.find("international/") + len("international/")
             index_hi = mo.find("/aria_maestosa.mo")
             lang_name = mo[index_lo:index_hi]
-            install_location = data_dir+"/locale/"+lang_name+"/LC_MESSAGES/aria_maestosa.mo"
+            install_location = locale_dir + "/" + lang_name + "/LC_MESSAGES/aria_maestosa.mo"
             env.Alias("install", env.InstallAs( install_location, mo ) )
 
         # FIXME - 'score' subfolder in 'share' is created with wrong permissions

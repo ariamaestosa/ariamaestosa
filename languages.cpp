@@ -107,6 +107,10 @@ void initLanguageSupport(wxConfig* prefs)
 
 }
 
+/*
+ * Returns the list of langauges in a human-readable form.
+ * Useful to e.g. create a combo of available languages.
+ */
 wxArrayString getLanguageList()
 {
     wxArrayString list;
