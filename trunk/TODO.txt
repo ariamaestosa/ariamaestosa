@@ -112,6 +112,8 @@ NOTE: sorry, this is very raw :)
  
  ************************* BUGS: *************************
     
+* test scons improvements on OS X
+
 * test new SCONS install target, complete it
   + linux: no need to install icns files
 

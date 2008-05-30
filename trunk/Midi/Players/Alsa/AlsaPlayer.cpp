@@ -22,7 +22,7 @@
  * Meanwhile, if someone is knowledgable in Alsa, don't hesistate to help!! ^^
  */
 
-#ifdef _PMIDI_ALSA
+#ifdef _ALSA
 
 
 #include "AriaCore.h"

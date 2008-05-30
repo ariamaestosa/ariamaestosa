@@ -17,6 +17,7 @@ SVN
 - fixed crash in score editor
 - fixed 'snap notes to grid' sometimes collapsing notes of duration 0
 - code cleanup
+- more improvements to scons build system
 
 1.1.2
 - Added german translation (thanks to Friedrich Weber!)

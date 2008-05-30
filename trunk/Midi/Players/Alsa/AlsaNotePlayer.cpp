@@ -1,3 +1,5 @@
+#ifdef _ALSA
+
 #include "wx/wx.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Players/Alsa/AlsaNotePlayer.h"
@@ -208,3 +210,5 @@ void seq_pitch_bend(const int value, const int channel)
 
 }
 }
+
+#endif

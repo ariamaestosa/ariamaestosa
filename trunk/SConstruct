@@ -32,6 +32,8 @@ Help("""
 # ------- for the install target
 import SCons
 from SCons.Script.SConscript import SConsEnvironment
+
+# function to set correct permissions while installing
 SConsEnvironment.Chmod = SCons.Action.ActionFactory(os.chmod, lambda dest, mode: 'Chmod("%s", 0%o)' % (dest, mode))
 
 def InstallPerm(env, dest, files, perm):
@@ -41,6 +43,42 @@ def InstallPerm(env, dest, files, perm):
     return dest
 
 SConsEnvironment.InstallPerm = InstallPerm
+
+# recursive Glob
+import fnmatch
+class RecursiveGlob:
+
+    def __init__(self, directory, pattern="*"):
+        self.dir_stack = [directory]
+        self.pattern = pattern
+        self.files = []
+        self.index = 0
+
+    def pop_dir(self):
+        # pop next directory from stack
+        self.directory = self.dir_stack.pop()
+        self.files = os.listdir(self.directory)
+        self.index = 0
+
+        if 'libjdkmidi' in self.directory:
+            # ignore libjdkmidi stuff
+            self.pop_dir()
+
+    def __getitem__(self, index):
+        while 1:
+            try:
+                file = self.files[self.index]
+                self.index = self.index + 1
+            except IndexError:
+                # pop next directory from stack
+                self.pop_dir()
+            else:
+                # got a filename
+                fullname = os.path.join(self.directory, file)
+                if os.path.isdir(fullname) and not os.path.islink(fullname):
+                    self.dir_stack.append(fullname)
+                if fnmatch.fnmatch(file, self.pattern):
+                    return fullname
 
 # ------------------------------- find system, build type ----------------------
 def main_Aria_func():
@@ -201,85 +239,9 @@ def compile_Aria(build_type, which_os):
     # add common sources
     print "*** Adding source files"
     
-    sources = Split("""
-    Actions/AddControlEvent.cpp
-    Actions/AddControllerSlide.cpp
-    Actions/AddNote.cpp
-    Actions/DeleteSelected.cpp
-    Actions/EditAction.cpp
-    Actions/InsertEmptyMeasures.cpp
-    Actions/MoveNotes.cpp
-    Actions/NumberPressed.cpp
-    Actions/Paste.cpp
-    Actions/RearrangeNotes.cpp
-    Actions/RemoveMeasures.cpp
-    Actions/RemoveOverlapping.cpp
-    Actions/ResizeNotes.cpp
-    Actions/ScaleSong.cpp
-    Actions/ScaleTrack.cpp
-    Actions/SetAccidentalSign.cpp
-    Actions/SetNoteVolume.cpp
-    Actions/ShiftBySemiTone.cpp
-    Actions/ShiftFrets.cpp
-    Actions/ShiftString.cpp
-    Actions/SnapNotesToGrid.cpp
-    Actions/UpdateGuitarTuning.cpp
-    AriaCore.cpp
-    Clipboard.cpp
-    Dialogs/About.cpp
-    Dialogs/CopyrightWindow.cpp
-    Dialogs/CustomNoteSelectDialog.cpp
-    Dialogs/NotationExportDialog.cpp
-    Dialogs/Preferences.cpp
-    Dialogs/ScalePicker.cpp
-    Dialogs/WaitWindow.cpp
-    Editors/ControllerEditor.cpp
-    Editors/DrumEditor.cpp
-    Editors/Editor.cpp
-    Editors/GuitarEditor.cpp
-    Editors/KeyboardEditor.cpp
-    Editors/ScoreAnalyser.cpp
-    Editors/ScoreEditor.cpp
-    Editors/RelativeXCoord.cpp
-    GUI/GLPane.cpp
-    GUI/GraphicalTrack.cpp
-    GUI/MainFrame.cpp
-    GUI/MainFrameMenuBar.cpp
-    GUI/MainPane.cpp
-    GUI/MeasureBar.cpp
-    GUI/RenderUtils.cpp
-    GUI/wxRenderPane.cpp
-    Images/Drawable.cpp
-    Images/Image.cpp
-    Images/ImageProvider.cpp
-    Images/wxImageLoader.cpp
-    IO/AriaFileWriter.cpp
-    IO/IOUtils.cpp
-    IO/MidiFileReader.cpp
-    IO/MidiToMemoryStream.cpp
-    IO/TablatureExporter.cpp
-    IO/NotationExport.cpp
-    irrXML/irrXML.cpp
-    languages.cpp
-    LeakCheck.cpp
-    main.cpp
-    Midi/ControllerEvent.cpp
-    Midi/Note.cpp
-    Midi/Sequence.cpp
-    Midi/Track.cpp
-    Midi/CommonMidiUtils.cpp
-    Midi/TimeSigChange.cpp
-    Pickers/BackgroundPicker.cpp
-    Pickers/ControllerChoice.cpp
-    Pickers/DrumChoice.cpp
-    Pickers/KeyPicker.cpp
-    Pickers/InstrumentChoice.cpp
-    Pickers/MagneticGrid.cpp
-    Pickers/TuningPicker.cpp
-    Pickers/VolumeSlider.cpp
-    wxAdditions/bsizer.cpp
-    """)
-
+    sources = []
+    for file in RecursiveGlob(".", "*.cpp"):
+        sources = sources + [file]
 
     # **********************************************************************************************
     # ********************************* PLATFORM SPECIFIC ******************************************
@@ -287,15 +249,10 @@ def compile_Aria(build_type, which_os):
 
     # OS X (QTKit, CoreAudio, audiotoolbox)
     if which_os == "macosx":
-        source_mac_native = Split("""Midi/Players/Mac/AudioToolboxPlayer.cpp
-        Midi/Players/Mac/CoreAudioNotePlayer.cpp
-        Midi/Players/Mac/MacPlayerInterface.cpp
-        Midi/Players/Mac/QTKitPlayer.mm
-        """)
-    
+
         print "*** Adding mac source files and libraries"
         env.Append(CCFLAGS=['-D_MAC_QUICKTIME_COREAUDIO'])
-        sources = sources + source_mac_native
+        sources = sources + ['Midi/Players/Mac/QTKitPlayer.mm']
         env.Append(CPPPATH=['Midi/Players/Mac'])
     
         env.Append(LINKFLAGS = ['-framework','OpenGL','-framework','GLUT','-framework','AGL',
@@ -303,20 +260,12 @@ def compile_Aria(build_type, which_os):
         '-framework','AudioToolbox','-framework','AudioUnit','-framework','AppKit',
         '-framework','Carbon','-framework','Cocoa','-framework','IOKit','-framework','System'])
         
-    # linux (pMidi/Alsa/tiMidity)
+    # linux (Alsa/tiMidity)
     elif which_os == "linux":
     
-        print "*** Adding pMidi/Alsa source files and libraries"
+        print "*** Adding Alsa source files and libraries"
         
-        source_pmidi = Split("""
-        Midi/Players/Sequencer.cpp
-        Midi/Players/Alsa/AlsaPort.cpp
-        Midi/Players/Alsa/AlsaNotePlayer.cpp
-        Midi/Players/Alsa/AlsaPlayer.cpp
-        """)
-        sources = sources + source_pmidi
-        
-        env.Append(CCFLAGS=['-DwxUSE_GLCANVAS=1','-D_PMIDI_ALSA'])
+        env.Append(CCFLAGS=['-DwxUSE_GLCANVAS=1','-D_ALSA'])
         
         env.Append(CPPPATH = ['/usr/include'])
         env.Append(LINKFLAGS = ['-Wl,--rpath,/usr/local/lib/'])
@@ -329,10 +278,7 @@ def compile_Aria(build_type, which_os):
 
     # Windows (currently unsupported)
     elif which_os == "windows":
-        source_windows = Split("""
-        Midi/Players/Win/WinPlayer.cpp
-        """)
-        sources = sources + source_windows
+        pass
     else:
     
         print "\n\n*** /!\\ Platform must be either mac or linux "

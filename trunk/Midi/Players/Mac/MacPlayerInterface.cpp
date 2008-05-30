@@ -30,8 +30,8 @@
 
  */
 
-#include "Config.h"
 #ifdef _MAC_QUICKTIME_COREAUDIO
+#include "Config.h"
 
 #include <iostream>
 

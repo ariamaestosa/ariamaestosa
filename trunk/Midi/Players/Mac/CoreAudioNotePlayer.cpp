@@ -18,8 +18,8 @@
 
 // refer to MacPlayerInterface for docs
 
-#include "Config.h"
 #ifdef _MAC_QUICKTIME_COREAUDIO
+#include "Config.h"
 
 #include "Midi/Players/Mac/CoreAudioNotePlayer.h"
 
