@@ -108,7 +108,7 @@ void MainFrame::initMenuBar()
 
 #define QUICK_ADD_MENU( MENUID, MENUSTRING, METHOD ) Append( MENUID,  MENUSTRING ); Connect(MENUID, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( METHOD ) );
 #define QUICK_ADD_CHECK_MENU( MENUID, MENUSTRING, METHOD ) AppendCheckItem( MENUID,  MENUSTRING ); Connect(MENUID, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( METHOD ) );
-        
+
 	// File menu
     fileMenu = new wxMenu();
     menuBar->Append(fileMenu,  _("File") );
@@ -117,7 +117,7 @@ void MainFrame::initMenuBar()
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_SAVE, _("Save\tCtrl-S"), MainFrame::menuEvent_save );
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_SAVE_AS, _("Save As\tCtrl-Shift-S"), MainFrame::menuEvent_saveas );
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_CLOSE, _("Close\tCtrl-W"), MainFrame::menuEvent_close );
-    
+
     fileMenu->AppendSeparator();
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_COPYRIGHT, _("Song info"), MainFrame::menuEvent_copyright );
 	fileMenu->AppendSeparator();
@@ -129,11 +129,11 @@ void MainFrame::initMenuBar()
 
     fileMenu -> QUICK_ADD_MENU ( wxID_EXIT, _("Quit\tCtrl-Q"), MainFrame::menuEvent_quit );
 
-  
+
 	// Edit menu
     editMenu = new wxMenu();
     menuBar->Append(editMenu,  _("Edit"));
-    
+
     editMenu -> QUICK_ADD_MENU ( MENU_EDIT_UNDO, _("Undo\tCtrl-Z"), MainFrame::menuEvent_undo );
     editMenu->AppendSeparator();
     editMenu -> QUICK_ADD_MENU ( MENU_EDIT_COPY, _("Copy\tCtrl-C"), MainFrame::menuEvent_copy );
@@ -156,13 +156,13 @@ void MainFrame::initMenuBar()
     trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_REMOVE, _("Delete Track"), MainFrame::menuEvent_deleteTrack );
     trackMenu->AppendSeparator();
     trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_BACKG, _("Background"), MainFrame::menuEvent_trackBackground );
-    
+
 	// Settings menu
 	settingsMenu = new wxMenu();
 	menuBar->Append(settingsMenu,  _("Settings"));
     followPlaybackMenuItem = settingsMenu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_FOLLOW_PLAYBACK, _("Follow Playback"), MainFrame::menuEvent_followPlayback );
     expandedMeasuresMenuItem = settingsMenu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_MEASURE_EXPANDED, _("Expanded measure management"), MainFrame::menuEvent_expandedMeasuresSelected );
-    
+
 	wxMenu* channelMode_menu = new wxMenu();
 	settingsMenu->AppendSubMenu(channelMode_menu,  _("Channel management") );
 	channelManagement_automatic = channelMode_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_CHANNELS_AUTO,  _("Automatic"), MainFrame::menuEvent_automaticChannelModeSelected);
@@ -170,7 +170,7 @@ void MainFrame::initMenuBar()
 	channelManagement_manual = channelMode_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_CHANNEL_MANUAL,  _("Manual"), MainFrame::menuEvent_manualChannelModeSelected);
 
     settingsMenu->AppendSeparator(); // ----- global
-    
+
     wxMenu* playDuringEdits_menu = new wxMenu();
 	settingsMenu->AppendSubMenu(playDuringEdits_menu,  _("Play during edit") );
 	playDuringEdits_always = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_ALWAYS,  _("Always"), MainFrame::menuEvent_playAlways);
@@ -192,7 +192,7 @@ void MainFrame::initMenuBar()
 void MainFrame::disableMenusForPlayback(const bool disable)
 {
     const bool on = !disable;
-    
+
     fileMenu->Enable(MENU_FILE_NEW, on);
     fileMenu->Enable(MENU_FILE_OPEN, on);
     fileMenu->Enable(MENU_FILE_SAVE, on);
@@ -249,7 +249,7 @@ void MainFrame::menuEvent_saveas(wxCommandEvent& evt)
                                         wxYES_NO, this);
 			if (answer != wxYES) return;
 		}
-        
+
         getCurrentSequence()->filepath = givenPath;
         saveAriaFile(getCurrentSequence(), getCurrentSequence()->filepath);
 
@@ -600,23 +600,7 @@ ManualView* manualView = NULL;
 
 void MainFrame::menuEvent_manual(wxCommandEvent& evt)
 {
-#ifdef __WXMAC__
 	wxString path_to_docs =  getResourcePrefix() + wxT("Documentation/man.html");
-#endif
-
-#ifdef __WXGTK__
-	wxString path_to_docs =  getResourcePrefix() + wxT("Documentation/man.html");
-
-	// if kept in place (not installed)
-	if(! wxFileExists(path_to_docs) )
-		path_to_docs =  getResourcePrefix() + wxT("../Documentation/man.html");
-#endif
-
-#ifndef __WXMAC__
-#ifndef __WXGTK__
-	#warning "Opening the manual has not been implemented on your system"
-#endif
-#endif
 
 	if(!wxFileExists( path_to_docs ) or !wxLaunchDefaultBrowser( wxT("file://") + path_to_docs ))
     {
@@ -629,7 +613,7 @@ void MainFrame::updateMenuBarToSequence()
 {
     Sequence* sequence = getCurrentSequence();
     ChannelManagementType channelMode = sequence->getChannelManagementType();
-    
+
     if(channelMode == CHANNEL_AUTO)
 	{
 		channelManagement_automatic->Check(true);
@@ -640,7 +624,7 @@ void MainFrame::updateMenuBarToSequence()
 		channelManagement_automatic->Check(false);
 		channelManagement_manual->Check(true);
 	}
-    
+
     followPlaybackMenuItem->Check( sequence->follow_playback );
 }
 

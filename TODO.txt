@@ -114,9 +114,10 @@ NOTE: sorry, this is very raw :)
     
 * test new SCONS install target, complete it
   + linux: no need to install icns files
-  + install docs (include them in SVN?)
 
-* test manual installation and opening on linux
+* on linux, manual and items in Score (i.e. subfolders don't have the right permissions)
+  scons: *** [install] /usr/local/share/Aria/Documentation: Is a directory
+  scons: building terminated because of errors.
 
 * "follow playback" : hard to follow when horizontal scrolling is changed (Change only on measure change?)
 

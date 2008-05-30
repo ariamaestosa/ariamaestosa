@@ -369,7 +369,7 @@ def compile_Aria(build_type, which_os):
             pass
     
         bin_dir = os.path.join(prefix, "bin")
-        data_dir = os.path.join(prefix, "share")
+        data_dir = os.path.join(prefix, "share/Aria")
         env.Alias("install", env.InstallPerm( bin_dir, executable, 0775 ))
         env.Alias("install", env.InstallPerm( data_dir, Glob("./Resources/*"), 0664 ))
 
