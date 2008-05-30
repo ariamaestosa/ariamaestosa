@@ -1,3 +1,5 @@
+#ifdef _ALSA
+
 #include "Midi/Players/Alsa/AlsaPort.h"
 #include <iostream>
 #include "wx/wx.h"
@@ -227,3 +229,5 @@ bool MidiContext::openDevice(MidiDevice* device)
 
 
 }
+
+#endif
