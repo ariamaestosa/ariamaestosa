@@ -112,8 +112,6 @@ NOTE: sorry, this is very raw :)
  
  ************************* BUGS: *************************
     
-* test scons improvements on OS X
-
 * "follow playback" : hard to follow when horizontal scrolling is changed (Change only on measure change?)
 
 * red images
