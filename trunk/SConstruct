@@ -291,10 +291,11 @@ def compile_Aria(build_type, which_os):
     # *********************************************************************************************
     # **************************************** COMPILE ********************************************
     # *********************************************************************************************
-    print " "
-    print "*** Done. Will build"
-    print " "
     
+    print " "
+    print "*** Setup done."
+    print " "
+
     # compile to .o
     object_list = env.Object(source = sources)
     
@@ -303,6 +304,7 @@ def compile_Aria(build_type, which_os):
 
     # install target
     if 'install' in COMMAND_LINE_TARGETS:
+
         # check if user defined his own prefix, else use defaults
         prefix = ARGUMENTS.get('prefix', 0)
     
@@ -312,6 +314,7 @@ def compile_Aria(build_type, which_os):
         else:
             print ">> Prefix : " + prefix
 
+        # set umask so created directories have the correct permissions
         try:
             umask = os.umask(022)
         except OSError:     # ignore on systems that don't support umask
@@ -320,9 +323,31 @@ def compile_Aria(build_type, which_os):
         bin_dir = os.path.join(prefix, "bin")
         data_dir = os.path.join(prefix, "share/Aria")
         locale_dir = os.path.join(prefix, "share/locale")
-        env.Alias("install", env.InstallPerm( bin_dir, executable, 0775 ))
-        env.Alias("install", env.InstallPerm( data_dir, Glob("./Resources/*"), 0664 ))
 
+        if not os.path.exists(prefix):
+            Execute(Mkdir(prefix))
+
+        # install executable
+        env.Alias("install", env.InstallPerm( bin_dir, executable, 0775 ))
+        
+        # install data files
+        data_files = []
+        for file in RecursiveGlob("./Resources", "*"):
+            if ".svn" in file or ".icns" in file or "*" in file:
+                continue
+            index = file.find("Resources/") + len("Resources/")
+            filename_relative = file[index:len(file)]
+            source = os.path.join("./Resources", filename_relative)
+            target = os.path.join(data_dir, filename_relative)
+            
+            env.Alias("install", target)
+            env.Command( target, source,
+            [
+            Copy("$TARGET","$SOURCE"),
+            Chmod("$TARGET", 0664),
+            ])
+
+        # install .mo files
         mo_files = Glob("./international/*/aria_maestosa.mo",strings=True)
         for mo in mo_files:
             index_lo = mo.find("international/") + len("international/")
@@ -330,7 +355,5 @@ def compile_Aria(build_type, which_os):
             lang_name = mo[index_lo:index_hi]
             install_location = locale_dir + "/" + lang_name + "/LC_MESSAGES/aria_maestosa.mo"
             env.Alias("install", env.InstallAs( install_location, mo ) )
-
-        # FIXME - 'score' subfolder in 'share' is created with wrong permissions
 
 main_Aria_func()
