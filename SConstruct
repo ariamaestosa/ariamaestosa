@@ -15,7 +15,7 @@ Help("""
                 build using a specified wx-config
                 
         % scons install
-            installs Aria, auto-detects system (run as root if necessary)
+            Installs Aria, auto-detects system (run as root if necessary)
             
         Flags you can pass when calling 'scons install' :
             platform=[macosx/linux/unix]
@@ -23,10 +23,10 @@ Help("""
             prefix=[/opt/local]
                 install to a different prefix than default /usr/local
             
-        % scons uninstall [prefix=/usr/local]
-            uninstalls Aria, takes same flags as 'scons install'.
+        % scons uninstall
+            Uninstalls Aria, takes same flags as 'scons install'.
             If you specified a custom install prefix, you need to specify it again.
-            * Note available on mac OS X, just drag the generated app to the trash.
+            * Not available on mac OS X, just drag the generated app to the trash.
       """)
 
 # ------- for the install target
