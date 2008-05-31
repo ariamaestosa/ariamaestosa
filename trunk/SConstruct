@@ -29,21 +29,6 @@ Help("""
             * Not available on mac OS X, just drag the generated app to the trash.
       """)
 
-# ------- for the install target
-import SCons
-from SCons.Script.SConscript import SConsEnvironment
-
-# function to set correct permissions while installing
-SConsEnvironment.Chmod = SCons.Action.ActionFactory(os.chmod, lambda dest, mode: 'Chmod("%s", 0%o)' % (dest, mode))
-
-def InstallPerm(env, dest, files, perm):
-    obj = env.Install(dest, files)
-    for i in obj:
-        env.AddPostAction(i, env.Chmod(str(i), perm))
-    return dest
-
-SConsEnvironment.InstallPerm = InstallPerm
-
 # recursive Glob
 import fnmatch
 class RecursiveGlob:
@@ -328,8 +313,15 @@ def compile_Aria(build_type, which_os):
             Execute(Mkdir(prefix))
 
         # install executable
-        env.Alias("install", env.InstallPerm( bin_dir, executable, 0775 ))
-        
+        executable_target = bin_dir + "/Aria"
+        env.Alias("install", executable_target)
+        env.Command( executable_target, executable,
+        [
+        Copy("$TARGET","$SOURCE"),
+        Chmod("$TARGET", 0775),
+        ])        
+
+
         # install data files
         data_files = []
         for file in RecursiveGlob("./Resources", "*"):
