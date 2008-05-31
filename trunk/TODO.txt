@@ -117,8 +117,7 @@ NOTE: sorry, this is very raw :)
 * "follow playback" : hard to follow when horizontal scrolling is changed (Change only on measure change?)
 
 * red images
-* crash when cancelling printing
-* rearrange notes doesn't always undo correctly (can't reproduce)
+* crash when cancelling printing (wx bug?)
 - "rearrange selected notes" doesn't always work optimally
 
 + when printing to tablature, and exporting to PDF, suggested name defaults to "aria maestosa"
