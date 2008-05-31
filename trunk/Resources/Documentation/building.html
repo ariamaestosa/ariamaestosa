@@ -17,18 +17,20 @@
 <blockquote>
 
 First, download the source code <A href="http://downloads.sourceforge.net/ariamaestosa/AriaSrc-1.1.2.tar.bz2">here</A> or from the sourceforge page.<br/>
-Aria is written in C++. To build it from source, you will need to install <a href="http://www.wxwidgets.org">wxWidgets</A>. I am currently using 2.8.x.<br/><br/>
-
-Aria also uses these, however you do not need to download and install them yourself because they are included either in the source package or by default on every mac.<br/>
+Aria is written in C++.
+<br/><br/><b>Dependencies : </b>
 <list>
-<li/> <a href="http://www.scons.org/">scons</A>
-<li/> <a href="http://www.opengl.org">OpenGL</A> and GLUT
-<li/> <a href="http://www.jdkoftinoff.com/main/Free_Projects/C++_MIDI_Library/"> libjdkmidi</A>
-<li/> <a href="http://www.ambiera.com/irrxml/index.html">irrXML</A>
+<li/> <a href="http://www.wxwidgets.org">wxWidgets</A>. I am currently using 2.8.x.
+<li/> <a href="http://www.opengl.org">OpenGL</A> and GLUT (included by default on mac OS X)
+<li/> <a href="http://www.jdkoftinoff.com/main/Free_Projects/C++_MIDI_Library/"> libjdkmidi</A> (included in the Aria source)
+<li/> <a href="http://www.ambiera.com/irrxml/index.html">irrXML</A> (included in the Aria source)
 </list>
 
-<br/><br/>(Please note that these instructions are for building with scons. You can also build with your favorite IDE/build system, but you'll then need to set up things yourself.)<br/><br/>
-
+<br/><b>Build system : </b>
+<list>
+<li/> <a href="http://www.scons.org/">scons</A> (included in source tarballs. tobuild from SVN, install scons 0.98 or better)
+<li/> You can also build with your favorite IDE/build system, but you'll then need to set up things yourself.
+</list><br/>
 
 <font size=2>
 
@@ -100,7 +102,8 @@ You can also install Aria into /usr/local/ by running the following command as r
 
 <blockquote><pre>scons install </pre></blockquote>
 
-or, to specify an install prefix :
+This will require scons 0.98.4 or later to work correctly.<br/>
+Or, to specify an install prefix :
 
 <blockquote><pre>
 scons install prefix=/usr/
