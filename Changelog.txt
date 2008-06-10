@@ -1,5 +1,5 @@
 
-SVN
+1.1.3
 - improved vector implementation, fixing possible problems on 64-bits machines
 - improved 'follow playback'
 - added warning message when adding too many tracks
