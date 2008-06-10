@@ -114,11 +114,13 @@ NOTE: sorry, this is very raw :)
     
 * "follow playback" : hard to follow when horizontal scrolling is changed (Change only on measure change?)
 
+* undos in guitar editor that rely on string and fret will be wrong if tuning changed meanwhile
+
 * red images
 * crash when cancelling printing (wx bug?)
 - "rearrange selected notes" doesn't always work optimally
 
-+ when printing to tablature, and exporting to PDF, suggested name defaults to "aria maestosa"
++ when printing to tablature, and exporting to PDF, suggested name defaults to "aria maestosa" (wx limitation?)
 
 - what's up with glutInit? wxGlCanvas seems to call it. Crashes suse 10.1.
 - score : flat/sharp/natural signs tend to appear obscured (behind note stem if in a group... behind silence... etc.)
