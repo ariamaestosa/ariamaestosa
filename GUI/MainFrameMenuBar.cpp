@@ -600,7 +600,7 @@ ManualView* manualView = NULL;
 
 void MainFrame::menuEvent_manual(wxCommandEvent& evt)
 {
-	wxString path_to_docs =  getResourcePrefix() + wxT("Documentation/man.html");
+	wxString path_to_docs =  getResourcePrefix() + wxT("Documentation/index.html");
 
 	if(!wxFileExists( path_to_docs ) or !wxLaunchDefaultBrowser( wxT("file://") + path_to_docs ))
     {
