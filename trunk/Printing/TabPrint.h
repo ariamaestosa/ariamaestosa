@@ -21,7 +21,8 @@
 #include <wx/file.h>
 #include "Config.h"
 #include <vector>
-#include "IO/NotationExport.h"
+#include "Printing/PrintingBase.h"
+#include "Printing/PrintLayout.h"
 
 namespace AriaMaestosa
 {
@@ -46,43 +47,6 @@ public:
     void drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1);
 };
 
-    /*
-	class Track;
-	class GuitarEditor;
-
-class TablatureExporter
-{
-	DECLARE_LEAK_CHECK();
-	
-	int measureAmount;
-	int ticksPerBeat;
-	//int noteAmount;
-	GuitarEditor* editor;
-	int string_amount;
-	int max_length_of_a_line;
-	
-	bool checkRepetitions_bool;
-	int measures_appended;
-	std::vector<wxString> strings;
-	wxString title_line;
-	
-	Track* track;
-	wxFile* file;
-	
-	// ------- reset at every measure --------
-	int zoom;
-	int added_chars;
-	// contains the number of characters each line contained, before adding new ones for this measure.
-	int charAmountWhenBeginningMeasure;
-	
-public:
-		
-	TablatureExporter();
-	void exportTablature(Track* t, wxFile* file, bool checkRepetitions);
-	void setMaxLineWidth(int i);
-	void flush();
-};
-*/
 }
 
 #endif

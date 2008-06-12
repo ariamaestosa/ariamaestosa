@@ -15,8 +15,8 @@
  */
 
 
-#ifndef _NotationExport_
-#define _NotationExport_
+#ifndef _print_layout_h_
+#define _print_layout_h_
 
 #include <vector>
 #include "wx/wx.h"
@@ -119,19 +119,6 @@ public:
 };
 
 void getLayoutElements(Track* track, const bool checkRepetitions_bool, std::vector<LayoutPage>& layoutPages, std::vector<MeasureToExport>& mesaures);
-
-class AriaPrintable
-{
-public:
-    AriaPrintable();
-    virtual ~AriaPrintable();
-    virtual wxString getTitle();
-    virtual int getPageAmount();
-    virtual void printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const int w, const int h);
-    virtual bool portraitOrientation();
-};
-
-bool printResult(AriaPrintable* printable);
 
 }
 

@@ -9,8 +9,9 @@
 #include "GUI/MeasureBar.h"
 #include "Editors/GuitarEditor.h"
 #include "IO/IOUtils.h"
-#include "IO/TablatureExporter.h"
-#include "IO/NotationExport.h"
+#include "Printing/TabPrint.h"
+#include "Printing/PrintingBase.h"
+#include "Printing/PrintLayout.h"
 
 namespace AriaMaestosa
 {
