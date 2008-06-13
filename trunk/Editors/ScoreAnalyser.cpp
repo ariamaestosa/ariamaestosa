@@ -16,7 +16,7 @@
 
 #include "Editors/ScoreEditor.h"
 #include "Editors/ScoreAnalyser.h"
-#include "GUI/MeasureBar.h"
+#include "Midi/MeasureData.h"
 #include "AriaCore.h"
 #include <cmath>
 #include <math.h>
@@ -76,8 +76,8 @@ public:
 
         // check for number of "beamable" notes and split if current amount is not acceptable with the current time sig
         // FIXME - not always right
-        const int num = getMeasureBar()->getTimeSigNumerator();
-        const int denom = getMeasureBar()->getTimeSigDenominator();
+        const int num = getMeasureData()->getTimeSigNumerator();
+        const int denom = getMeasureData()->getTimeSigDenominator();
         const int flag_amount = noteRenderInfo[first_id].flag_amount;
 
         int max_amount_of_notes_beamed_toghether = 4;
@@ -103,7 +103,7 @@ public:
             // try to find where beamed groups of such notes usually start and end in the measure
             // this is where splitting should be performed
             const int group_len = noteRenderInfo[first_id].tick_length * max_amount_of_notes_beamed_toghether;
-            const int first_tick_in_measure = getMeasureBar()->firstTickInMeasure( getMeasureBar()->measureAtTick(noteRenderInfo[first_id].tick) );
+            const int first_tick_in_measure = getMeasureData()->firstTickInMeasure( getMeasureData()->measureAtTick(noteRenderInfo[first_id].tick) );
 
             int split_at_id = -1;
             for(int n=first_id+1; n<=last_id; n++)
@@ -227,8 +227,8 @@ NoteRenderInfo::NoteRenderInfo(int tick, int x, int level, int tick_length, int 
     max_chord_level=-1;
 
     // measure where the note begins and ends
-    measureBegin = getMeasureBar()->measureAtTick(tick);
-	measureEnd = getMeasureBar()->measureAtTick(tick + tick_length - 1);
+    measureBegin = getMeasureData()->measureAtTick(tick);
+	measureEnd = getMeasureData()->measureAtTick(tick + tick_length - 1);
 }
 void NoteRenderInfo::tieWith(NoteRenderInfo& renderInfo)
 {
@@ -652,7 +652,7 @@ bool aboutEqual(const float float1, const float float2)
 }
 bool aboutEqual_tick(const int int1, const int int2)
 {
-	return std::abs(int1 - int2) < getMeasureBar()->beatLengthInTicks()/16;
+	return std::abs(int1 - int2) < getMeasureData()->beatLengthInTicks()/16;
 }
 
 

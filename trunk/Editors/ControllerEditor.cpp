@@ -26,7 +26,7 @@
 #include "Midi/Track.h"
 #include "Pickers/TuningPicker.h"
 #include "Images/ImageProvider.h"
-#include "GUI/MeasureBar.h"
+#include "Midi/MeasureData.h"
 #include "GUI/RenderUtils.h"
 
 #include <string>
@@ -401,7 +401,7 @@ void ControllerEditor::selectAll( bool selected )
 
         selection_begin = 0;
         //selection_end = sequence->getMeasureAmount() * sequence->ticksPerMeasure();
-        selection_end = getMeasureBar()->getTotalTickAmount();
+        selection_end = getMeasureData()->getTotalTickAmount();
     }
     
 }

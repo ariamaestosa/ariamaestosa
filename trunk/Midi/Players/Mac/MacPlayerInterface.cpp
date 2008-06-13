@@ -40,7 +40,7 @@
 #include "AriaCore.h"
 
 #include "GUI/MainFrame.h"
-#include "GUI/MeasureBar.h"
+#include "Midi/MeasureData.h"
 
 #include "Dialogs/WaitWindow.h"
 
@@ -171,8 +171,8 @@ namespace PlatformMidiManager {
     void* add_events_func( void *ptr )
     {
         // when we're saving, we always want song to start at first measure, so temporarly switch firstMeasure to 0, and set it back in the end
-		const int firstMeasureValue=getMeasureBar()->getFirstMeasure();
-		getMeasureBar()->setFirstMeasure(0);
+		const int firstMeasureValue=getMeasureData()->getFirstMeasure();
+		getMeasureData()->setFirstMeasure(0);
 
 		char* data;
 		int length = -1;
@@ -195,7 +195,7 @@ namespace PlatformMidiManager {
         getMainFrame()->GetEventHandler()->AddPendingEvent(event);
 
 		free(data);
-		getMeasureBar()->setFirstMeasure(firstMeasureValue);
+		getMeasureData()->setFirstMeasure(firstMeasureValue);
 
         return (void*)NULL;
     }

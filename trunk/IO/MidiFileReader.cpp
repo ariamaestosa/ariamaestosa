@@ -23,7 +23,7 @@
 #include "Midi/Track.h"
 #include "GUI/GraphicalTrack.h"
 #include "GUI/MainFrame.h"
-#include "GUI/MeasureBar.h"
+#include "Midi/MeasureData.h"
 #include "Pickers/InstrumentChoice.h"
 #include "Pickers/DrumChoice.h"
 #include "Dialogs/WaitWindow.h"
@@ -72,7 +72,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
     jdkmidi::MIDITimedBigMessage* event;
     
     getCurrentSequence()->setChannelManagementType(CHANNEL_MANUAL);
-	getMeasureBar()->beforeImporting();
+	getMeasureData()->beforeImporting();
 	
     const int resolution = jdksequence.GetClksPerBeat();
     sequence->setTicksPerBeat( resolution );
@@ -288,7 +288,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
             }
 			else if( event->IsTimeSig() )
 			{
-				getMeasureBar()->addTimeSigChangeAtTick( tick, (int)event->GetTimeSigNumerator(), (int)event->GetTimeSigDenominator() );
+				getMeasureData()->addTimeSigChange_import( tick, (int)event->GetTimeSigNumerator(), (int)event->GetTimeSigDenominator() );
 				continue;
             }
 			else if( event->IsKeySig() )
@@ -508,20 +508,20 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 	if(one_track_one_channel)
         getCurrentSequence()->setChannelManagementType(CHANNEL_AUTO);
 	
-	getMeasureBar()->afterImporting();
+	getMeasureData()->afterImporting();
 	
     sequence->setXScrollInPixels(0);
-    sequence->measureBar->setFirstMeasure(0);
+    sequence->measureData->setFirstMeasure(0);
     
     // set song length
-	int measureAmount_i = getMeasureBar()->measureAtTick(lastEventTick) + 1;
+	int measureAmount_i = getMeasureData()->measureAtTick(lastEventTick) + 1;
 	
-    std::cout << "song length = " << getMeasureBar()->measureAtTick(lastEventTick) << "measures, last_event_tick=" << lastEventTick << std::endl;
+    std::cout << "song length = " << getMeasureData()->measureAtTick(lastEventTick) << "measures, last_event_tick=" << lastEventTick << std::endl;
     
 	if(measureAmount_i < 10) measureAmount_i=10;
 	
     getMainFrame()->changeMeasureAmount( measureAmount_i );
-    sequence->measureBar->setMeasureAmount( measureAmount_i );
+    sequence->measureData->setMeasureAmount( measureAmount_i );
     
     getMainFrame()->updateTopBarAndScrollbarsForSequence(sequence);
     sequence->setZoom(100);
@@ -531,7 +531,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
     sequence->importing = false;
     
     getMainFrame()->updateMenuBarToSequence();
-    if(!getMeasureBar()->isMeasureLengthConstant()) getMeasureBar()->updateMeasureInfo();
+    if(!getMeasureData()->isMeasureLengthConstant()) getMeasureData()->updateMeasureInfo();
     return true;
     
 }

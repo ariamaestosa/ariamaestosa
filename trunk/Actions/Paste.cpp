@@ -19,7 +19,7 @@
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
 #include "GUI/GraphicalTrack.h"
-#include "GUI/MeasureBar.h"
+#include "Midi/MeasureData.h"
 #include "Clipboard.h"
 #include "AriaCore.h"
 #include "Editors/KeyboardEditor.h"
@@ -143,9 +143,9 @@ regular_paste: // FIXME - find better way than goto
 			 */
 			
 			// if not "paste at mouse", find first visible measure
-			int measure = getMeasureBar()->measureAtTick(track->sequence->getXScrollInMidiTicks())-1;
+			int measure = getMeasureData()->measureAtTick(track->sequence->getXScrollInMidiTicks())-1;
 			if(measure < 0) measure = 0;
-			const int lastMeasureStart = getMeasureBar()->firstTickInMeasure( measure );
+			const int lastMeasureStart = getMeasureData()->firstTickInMeasure( measure );
 			shift = track->graphics->keyboardEditor->snapMidiTickToGrid(lastMeasureStart);
 			
 			// find if all track->notes will be visible in the location just calculated,
@@ -155,7 +155,7 @@ regular_paste: // FIXME - find better way than goto
 			// check if note is before visible area
 			while((first_note.startTick + first_note.endTick)/2 + shift < track->sequence->getXScrollInMidiTicks())
 			{
-				shift = getMeasureBar()->firstTickInMeasure( getMeasureBar()->measureAtTick( shift )+1 );
+				shift = getMeasureData()->firstTickInMeasure( getMeasureData()->measureAtTick( shift )+1 );
 			}//end if
 			
 		}

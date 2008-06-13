@@ -31,7 +31,7 @@ const float current_file_version = 1.0;
 #include "Actions/ScaleSong.h"
 
 #include "GUI/MainFrame.h"
-#include "GUI/MeasureBar.h"
+#include "Midi/MeasureData.h"
 #include "GUI/RenderUtils.h"
 
 #include "Midi/Players/PlatformMidiManager.h"
@@ -82,14 +82,14 @@ Sequence::Sequence()
     copyright = wxT("");
     
 	channelManagement = CHANNEL_AUTO;
-	measureBar = new MeasureBar();
+	measureData = new MeasureData();
 }
 
 Sequence::~Sequence()
 {
 	dock.clearWithoutDeleting();
 	tracks.clearAndDeleteAll();
-	delete measureBar;
+	delete measureData;
 }
 
 
@@ -197,7 +197,7 @@ void Sequence::setXScrollInPixels(int value)
     x_scroll_in_pixels = value;
     
 	const int editor_size=Display::getWidth()-100,
-		total_size = getMeasureBar()->getTotalPixelAmount();
+		total_size = getMeasureData()->getTotalPixelAmount();
 
     if( x_scroll_in_pixels < 0 ) x_scroll_in_pixels = 0;
     if( x_scroll_in_pixels >= total_size-editor_size) x_scroll_in_pixels = total_size-editor_size-1;
@@ -226,7 +226,7 @@ int Sequence::getZoomInPercent()
 void Sequence::setZoom(int zoom)
 {
 	
-	Sequence::zoom = (zoom/100.0) * 128.0 / ((float)getMeasureBar()->beatLengthInTicks() * 4);
+	Sequence::zoom = (zoom/100.0) * 128.0 / ((float)getMeasureData()->beatLengthInTicks() * 4);
 	Sequence::zoom_percent = zoom;
 	
 }
@@ -484,7 +484,7 @@ int Sequence::getTotalHeight()
         totalHeight += tracks[n].graphics->getTotalHeight() + 10;    
     }
     
-	if(getMeasureBar()->isExpandedMode()) totalHeight += 20;
+	if(getMeasureData()->isExpandedMode()) totalHeight += 20;
 	
     return totalHeight;
 }
@@ -843,7 +843,7 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
 	writeData(wxT("<sequence"), fileout );
 	
 	writeData(wxT(" maintempo=\"") + to_wxString(tempo) +
-			  wxT("\" measureAmount=\"") + to_wxString(measureBar->getMeasureAmount()) +
+			  wxT("\" measureAmount=\"") + to_wxString(measureData->getMeasureAmount()) +
 			  wxT("\" currentTrack=\"") + to_wxString(currentTrack) +
 			  wxT("\" beatResolution=\"") + to_wxString(beatResolution) +
 			  wxT("\" internalName=\"") + internal_sequenceName +
@@ -856,7 +856,7 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
 			  wxT("\" zoom=\"") + to_wxString(zoom_percent) +
 			  wxT("\"/>\n"), fileout );
 	
-	measureBar->saveToFile(fileout);
+	measureData->saveToFile(fileout);
 	
 	writeData(wxT("<tempo>\n"), fileout );
 	// tempo changes
@@ -891,7 +891,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
 
 	importing = true;
 	tracks.clearAndDeleteAll();
-	measureBar->beforeImporting();
+	measureData->beforeImporting();
 	
 	bool copyright_mode = false;
 	bool tempo_mode = false;
@@ -936,8 +936,8 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
 					if(measureAmount_c != NULL)
 					{
 						std::cout << "measureAmount = " <<  atoi(measureAmount_c) << std::endl;
-						measureBar->setMeasureAmount( atoi(measureAmount_c) );
-						getMainFrame()->changeMeasureAmount( measureBar->getMeasureAmount(), false);
+						measureData->setMeasureAmount( atoi(measureAmount_c) );
+						getMainFrame()->changeMeasureAmount( measureData->getMeasureAmount(), false);
 					}
 					else
 					{
@@ -1043,12 +1043,12 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
 				// ---------- measure ------
 				else if (!strcmp("measure", xml->getNodeName()))
 				{
-					if(! measureBar->readFromFile(xml) )
+					if(! measureData->readFromFile(xml) )
 						return false;
                 } 
 				else if (!strcmp("timesig", xml->getNodeName()))
 				{
-					if(! measureBar->readFromFile(xml) )
+					if(! measureData->readFromFile(xml) )
 						return false;
 				}
 				// ---------- track ------
@@ -1130,7 +1130,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
 
 over:
 	
-	measureBar->afterImporting();
+	measureData->afterImporting();
 	clearUndoStack();
 	
 	importing = false;

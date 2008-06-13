@@ -22,7 +22,7 @@
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
 #include "GUI/GraphicalTrack.h"
-#include "GUI/MeasureBar.h"
+#include "Midi/MeasureData.h"
 #include "GUI/RenderUtils.h"
 #include "Pickers/MagneticGrid.h"
 #include "Pickers/VolumeSlider.h"
@@ -101,15 +101,15 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
     AriaRender::primitives();
     AriaRender::lineWidth(1);
     int count=1;
-	//const int start_x = getEditorXStart() - sequence->getXScrollInPixels() % (int)(getMeasureBar()->measureLengthInPixels());
-	const int start_x = getMeasureBar()->firstPixelInMeasure( getMeasureBar()->measureAtPixel( getEditorXStart() ) );
+	//const int start_x = getEditorXStart() - sequence->getXScrollInPixels() % (int)(getMeasureData()->measureLengthInPixels());
+	const int start_x = getMeasureData()->firstPixelInMeasure( getMeasureData()->measureAtPixel( getEditorXStart() ) );
 		
-	if(getMeasureBar()->isMeasureLengthConstant())
+	if(getMeasureData()->isMeasureLengthConstant())
 	{
 		
 		//const float zoom = sequence->getZoom();
-		const float increment = getMeasureBar()->beatLengthInPixels();
-		const int darkLineEveryXPaleLines = (int)round(getMeasureBar()->measureLengthInPixels() / getMeasureBar()->beatLengthInPixels());
+		const float increment = getMeasureData()->beatLengthInPixels();
+		const int darkLineEveryXPaleLines = (int)round(getMeasureData()->measureLengthInPixels() / getMeasureData()->beatLengthInPixels());
 		
 		const int end = getXEnd();
 		
@@ -134,7 +134,7 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
 	}
 	else
 	{
-		MeasureBar* measureBar = getMeasureBar();
+		MeasureData* measureBar = getMeasureData();
 		const int measureAmount = measureBar->getMeasureAmount();
 		const int beatLength = (int)( measureBar->beatLengthInPixels() );
 		int mx=start_x, new_mx;

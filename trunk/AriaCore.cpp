@@ -66,9 +66,9 @@ MainFrame* getMainFrame()
     return wxGetApp().frame;
 }
 
-MeasureBar* getMeasureBar()
+MeasureData* getMeasureData()
 {
-    return wxGetApp().frame->getCurrentSequence()->measureBar;
+    return wxGetApp().frame->getCurrentSequence()->measureData;
 }
 
 Sequence* getCurrentSequence()

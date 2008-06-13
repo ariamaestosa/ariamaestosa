@@ -25,7 +25,7 @@
 #include "Midi/ControllerEvent.h"
 
 #include "GUI/GraphicalTrack.h"
-#include "GUI/MeasureBar.h"
+#include "Midi/MeasureData.h"
 
 #include "Pickers/MagneticGrid.h"
 #include "Pickers/InstrumentChoice.h"
@@ -618,7 +618,7 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
     if(id==ALL_NOTES)
 	{
 		// if this is a 'select none' command, unselect any selected measures in the top bar
-		if(selected == FALSE) getMeasureBar()->unselect();
+		if(selected == FALSE) getMeasureData()->unselect();
 
         if(graphics->editorMode == CONTROLLER)
 		{ // controller editor must be handled differently
@@ -881,7 +881,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     }
 	else
 	{
-        firstNoteStartTick = getMeasureBar()->firstTickInMeasure(firstMeasure);
+        firstNoteStartTick = getMeasureData()->firstTickInMeasure(firstMeasure);
         startTick = firstNoteStartTick;
     }
 
@@ -1232,7 +1232,7 @@ void Track::copy()
     }//next
 
     // remove all empty measures before notes, so that they appear in the current measure when pasting
-	const int lastMeasureStart = getMeasureBar()->firstTickInMeasure( getMeasureBar()->measureAtTick(tickOfFirstSelectedNote) );
+	const int lastMeasureStart = getMeasureData()->firstTickInMeasure( getMeasureData()->measureAtTick(tickOfFirstSelectedNote) );
 
 	const int clipboard_size = Clipboard::getSize();
 	for(int n=0; n<clipboard_size; n++)

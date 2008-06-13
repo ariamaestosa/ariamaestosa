@@ -32,8 +32,8 @@
 #include "Actions/DeleteSelected.h"
 #include "Actions/ShiftBySemiTone.h"
 
-#include "GUI/GraphicalTrack.h"
 #include "GUI/MeasureBar.h"
+#include "GUI/GraphicalTrack.h"
 #include "GUI/MainFrame.h"
 #include "GUI/RenderUtils.h"
 #include "Images/Drawable.h"
@@ -41,6 +41,7 @@
 #include "Midi/Track.h"
 #include "Midi/Note.h"
 #include "Midi/Sequence.h"
+#include "Midi/MeasureData.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Pickers/MagneticGrid.h"
 #include "Pickers/InstrumentChoice.h"
@@ -214,7 +215,7 @@ bool MainPane::do_render()
     
     getCurrentSequence()->renderTracks( currentTick, mousex_current,
                                         mousey_current, mousey_initial,
-                                        25 + getMeasureBar()->getMeasureBarHeight());
+                                        25 + getMeasureData()->graphics->getMeasureBarHeight());
     
     
     // -------------------------- draw tab bar at top -------------------------
@@ -285,7 +286,7 @@ bool MainPane::do_render()
     
     // -------------------------- draw measure top bar -------------------------
     
-	getMeasureBar()->render(measureBarY);
+	getMeasureData()->graphics->render(measureBarY);
     
     // -------------------------- draw dock -------------------------
     AriaRender::primitives();
@@ -438,7 +439,7 @@ void MainPane::mouseHeldDown()
 
 	// check click is within track area
     if(mousey_current < getHeight()-getCurrentSequence()->dockHeight and
-       mousey_current > measureBarY+getMeasureBar()->getMeasureBarHeight())
+       mousey_current > measureBarY+getMeasureData()->graphics->getMeasureBarHeight())
 	{
 
         // dispatch event to sequence
@@ -455,7 +456,7 @@ void MainPane::mouseHeldDown()
 
 void MainPane::rightClick(wxMouseEvent& event)
 {
-	const int measureBarHeight = getMeasureBar()->getMeasureBarHeight();
+	const int measureBarHeight = getMeasureData()->graphics->getMeasureBarHeight();
 
     Display::requestFocus();
 
@@ -477,7 +478,7 @@ void MainPane::rightClick(wxMouseEvent& event)
 	// ----------------------------------- click is in measure bar ----------------------------
     if(event.GetY() > measureBarY and event.GetY() < measureBarY+measureBarHeight)
 	{
-		getMeasureBar()->rightClick(event.GetX(), event.GetY() - measureBarY);
+		getMeasureData()->graphics->rightClick(event.GetX(), event.GetY() - measureBarY);
 	}
 
     Display::render();
@@ -500,7 +501,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
 
     isMouseDown_bool=true;
 
-	int measureBarHeight = getMeasureBar()->getMeasureBarHeight();
+	int measureBarHeight = getMeasureData()->graphics->getMeasureBarHeight();
     // ----------------------------------- click is in track area ----------------------------
 	// check click is within track area
     if(mousey_current < getHeight()-getCurrentSequence()->dockHeight and
@@ -555,7 +556,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
             start_at_x += tab_width+16+16;
             if(event.GetX() < start_at_x)
 			{
-				//getMeasureBar()->unselect();
+				//getMeasureData()->unselect();
 				getMainFrame()->setCurrentSequence(n);
                 return;
             }
@@ -567,7 +568,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
 	{
 		if( ! (currentTick!=-1 and (leftArrow or rightArrow)) ) // ignore when playing
 		{
-			getMeasureBar()->mouseDown(mousex_current.getRelativeTo(WINDOW), mousey_current - measureBarY);
+			getMeasureData()->graphics->mouseDown(mousex_current.getRelativeTo(WINDOW), mousey_current - measureBarY);
 		}
 
     }
@@ -606,11 +607,11 @@ void MainPane::mouseMoved(wxMouseEvent& event)
 				getCurrentSequence()->getCurrentTrack()->graphics->processMouseDrag( mousex_current, event.GetY());
 
 			// ----------------------------------- click is in measure bar ----------------------------
-			int measureBarHeight = getMeasureBar()->getMeasureBarHeight();
+			int measureBarHeight = getMeasureData()->graphics->getMeasureBarHeight();
 			if(mousey_initial > measureBarY and mousey_initial < measureBarY+measureBarHeight and
 			   event.GetY() > measureBarY and event.GetY() < measureBarY+measureBarHeight)
 			{
-				getMeasureBar()->mouseDrag(mousex_current.getRelativeTo(WINDOW), mousey_current - measureBarY,
+				getMeasureData()->graphics->mouseDrag(mousex_current.getRelativeTo(WINDOW), mousey_current - measureBarY,
 										   mousex_initial.getRelativeTo(WINDOW), mousey_initial - measureBarY);
 			}
         }
@@ -652,7 +653,7 @@ void MainPane::mouseReleased(wxMouseEvent& event)
     }//end if
 
 	// ----------------------------------- click is in measure bar ----------------------------
-	int measureBarHeight = getMeasureBar()->getMeasureBarHeight();
+	int measureBarHeight = getMeasureData()->graphics->getMeasureBarHeight();
 	if(mousey_initial > measureBarY and mousey_initial < measureBarY+measureBarHeight and
 	   event.GetY() > measureBarY and event.GetY() < measureBarY+measureBarHeight)
 	{
@@ -669,12 +670,12 @@ void MainPane::mouseReleased(wxMouseEvent& event)
             if(mousex_current.getRelativeTo(WINDOW)>getWidth()-45 and mousex_current.getRelativeTo(WINDOW)<getWidth()-20)
 				scrollNowToPlaybackPosition();
         }
-
+        
 		// measure selection
 		if( ! (currentTick!=-1 and (leftArrow or rightArrow)) ) // ignore when playing
 		{
-			getMeasureBar()->mouseUp(mousex_current.getRelativeTo(WINDOW), mousey_current - measureBarY,
-									 mousex_initial.getRelativeTo(WINDOW), mousey_initial - measureBarY);
+			getMeasureData()->graphics->mouseUp(mousex_current.getRelativeTo(WINDOW), mousey_current - measureBarY,
+                                                mousex_initial.getRelativeTo(WINDOW), mousey_initial - measureBarY);
 		}
 	}
 	else
@@ -870,7 +871,7 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
 	const int my = event.GetY();
 	const int mx = event.GetX();
 
-	const int measureBarHeight = getMeasureBar()->getMeasureBarHeight();
+	const int measureBarHeight = getMeasureData()->graphics->getMeasureBarHeight();
 
 	// ----------------------------------- click is in track area ----------------------------
 	// check click is within track area
@@ -902,7 +903,7 @@ void MainPane::enterPlayLoop()
 {
     leftArrow = false;
     rightArrow = false;
-    followPlaybackTime = getMeasureBar()->defaultMeasureLengthInTicks();
+    followPlaybackTime = getMeasureData()->defaultMeasureLengthInTicks();
     lastTick = -1;
     Core::activateRenderLoop(true);
 }
@@ -998,6 +999,7 @@ void MainPane::playbackRenderLoop()
             lastTick = playbackStartTick + currentTick;
         }
 
+        // FIXME - why pause the main thread, aren't there better ways?
         wxMilliSleep(10);
 }
 

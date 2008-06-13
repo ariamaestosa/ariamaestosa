@@ -42,7 +42,7 @@ namespace AriaMaestosa
 {
     class MainFrame;
     class MainPane;
-    class MeasureBar;
+    class MeasureData;
     class TuningPicker;
     class Sequence;
     class KeyPicker;
@@ -50,7 +50,7 @@ namespace AriaMaestosa
     class InstrumentChoice;
     
 MainFrame* getMainFrame();
-MeasureBar* getMeasureBar();
+MeasureData* getMeasureData();
 Sequence* getCurrentSequence();
 
 namespace Core

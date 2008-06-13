@@ -24,7 +24,7 @@
 #include "Pickers/KeyPicker.h"
 #include "Images/ImageProvider.h"
 #include "Images/Drawable.h"
-#include "GUI/MeasureBar.h"
+#include "Midi/MeasureData.h"
 #include "GUI/RenderUtils.h"
 
 #include "Actions/EditAction.h"
@@ -288,7 +288,7 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, int* sign)
     {
         if(accidentals)
         {
-            const int measure = getMeasureBar()->measureAtTick(noteObj->startTick);
+            const int measure = getMeasureData()->measureAtTick(noteObj->startTick);
             
             // when going to another measure, reset accidentals
             if(measure != accidentalsMeasure)
@@ -315,7 +315,7 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, int* sign)
         if(answer_sign != NONE)
         {
             accidentals = true;
-            const int measure = getMeasureBar()->measureAtTick(noteObj->startTick);
+            const int measure = getMeasureData()->measureAtTick(noteObj->startTick);
             accidentalsMeasure = measure;
             
             accidentalScoreNotesSharpness[ levelToNote7(answer_level) ] = answer_sign;
@@ -539,7 +539,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteR
     
 	if(renderInfo.measureEnd > renderInfo.measureBegin) // note in longer than mesaure, need to divide it in 2
 	{
-		const int firstEnd = getMeasureBar()->lastTickInMeasure(renderInfo.measureBegin);
+		const int firstEnd = getMeasureData()->lastTickInMeasure(renderInfo.measureBegin);
 		const int firstLength = firstEnd - renderInfo.tick;
 		const int secondLength = renderInfo.tick_length - firstLength;
 		
@@ -559,7 +559,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteR
 		
 		NoteRenderInfo part1(renderInfo.tick, renderInfo.x, renderInfo.level, firstLength, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
 		renderNote_pass1(part1, vector, true);
-		NoteRenderInfo part2(getMeasureBar()->firstTickInMeasure(renderInfo.measureBegin+1), firstEndRel.getRelativeTo(WINDOW),
+		NoteRenderInfo part2(getMeasureData()->firstTickInMeasure(renderInfo.measureBegin+1), firstEndRel.getRelativeTo(WINDOW),
 						   renderInfo.level, secondLength, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
 		renderNote_pass1(part2, vector, true);
 		
@@ -577,14 +577,14 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteR
 	
     // find how to draw notes. how many flags, dotted, triplet, etc.
     // if note duration is unknown it will be split
-	const float relativeLength = renderInfo.tick_length / (float)(getMeasureBar()->beatLengthInTicks()*4);
+	const float relativeLength = renderInfo.tick_length / (float)(getMeasureData()->beatLengthInTicks()*4);
 
 	renderInfo.stem_type = (renderInfo.level>=converter->getMiddleCLevel()-5 ? STEM_UP : STEM_DOWN);
 	if(relativeLength>=1) renderInfo.stem_type=STEM_NONE; // whole notes have no stem
 	bool open = false;
 	
-    const int beat = getMeasureBar()->beatLengthInTicks();
-    const int tick_in_measure_start = renderInfo.tick - getMeasureBar()->firstTickInMeasure( renderInfo.measureBegin );
+    const int beat = getMeasureData()->beatLengthInTicks();
+    const int tick_in_measure_start = renderInfo.tick - getMeasureData()->firstTickInMeasure( renderInfo.measureBegin );
     const int remaining = beat - (tick_in_measure_start % beat);
     const bool starts_on_beat = aboutEqual(remaining,0) or aboutEqual(remaining,beat);
     
@@ -623,7 +623,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteR
             float closestShorterDuration = 1;
             while(closestShorterDuration >= relativeLength) closestShorterDuration /= 2.0;
             
-            firstLength_tick = closestShorterDuration*(float)(getMeasureBar()->beatLengthInTicks()*4);
+            firstLength_tick = closestShorterDuration*(float)(getMeasureData()->beatLengthInTicks()*4);
 		}
         
         const int secondBeginning_tick = renderInfo.tick + firstLength_tick;
@@ -848,16 +848,16 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo)
 
 void ScoreEditor::renderSilence(const int tick, const int tick_length)
 { 
-    const int beat = getMeasureBar()->beatLengthInTicks();
+    const int beat = getMeasureData()->beatLengthInTicks();
     
     if(tick_length<2) return;
     
     // check if silence spawns over more than one measure
-    const int end_measure = getMeasureBar()->measureAtTick(tick+tick_length-1);
-    if(getMeasureBar()->measureAtTick(tick) != end_measure)
+    const int end_measure = getMeasureData()->measureAtTick(tick+tick_length-1);
+    if(getMeasureData()->measureAtTick(tick) != end_measure)
     {
         // we need to plit it in two
-        const int split_tick = getMeasureBar()->firstTickInMeasure(end_measure);
+        const int split_tick = getMeasureData()->firstTickInMeasure(end_measure);
         
         // Check split is valid before attempting.
         if(split_tick-tick>0 and tick_length-(split_tick-tick)>0)
@@ -877,9 +877,9 @@ void ScoreEditor::renderSilence(const int tick, const int tick_length)
 	
 	int dot_delta_x = 0, dot_delta_y = 0;
 	
-	const float relativeLength = tick_length / (float)(getMeasureBar()->beatLengthInTicks()*4);
+	const float relativeLength = tick_length / (float)(getMeasureData()->beatLengthInTicks()*4);
 	
-	const int tick_in_measure_start = (tick) - getMeasureBar()->firstTickInMeasure( getMeasureBar()->measureAtTick(tick) );
+	const int tick_in_measure_start = (tick) - getMeasureData()->firstTickInMeasure( getMeasureData()->measureAtTick(tick) );
     const int remaining = beat - (tick_in_measure_start % beat);
     const bool starts_on_beat = aboutEqual(remaining,0) or aboutEqual(remaining,beat);
     
@@ -912,7 +912,7 @@ void ScoreEditor::renderSilence(const int tick, const int tick_length)
 		float closestShorterDuration = 1;
 		while(closestShorterDuration >= relativeLength) closestShorterDuration /= 2.0;
 		
-		const int firstLength = closestShorterDuration*(float)(getMeasureBar()->beatLengthInTicks()*4);
+		const int firstLength = closestShorterDuration*(float)(getMeasureData()->beatLengthInTicks()*4);
 
 		renderSilence(tick, firstLength);
 		renderSilence(tick+firstLength, tick_length - firstLength);
@@ -1009,8 +1009,8 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 	
 	std::vector<NoteRenderInfo> noteRenderInfo;
 	
-    const int first_x_to_consider = getMeasureBar()->firstPixelInMeasure( getMeasureBar()->measureAtPixel(0) ) + 1;
-    const int last_x_to_consider = getMeasureBar()->lastPixelInMeasure( getMeasureBar()->measureAtPixel(width+15) );
+    const int first_x_to_consider = getMeasureData()->firstPixelInMeasure( getMeasureData()->measureAtPixel(0) ) + 1;
+    const int last_x_to_consider = getMeasureData()->lastPixelInMeasure( getMeasureData()->measureAtPixel(width+15) );
     
     if(musicalNotationEnabled) converter->resetAccidentalsForNewRender();
     
@@ -1100,8 +1100,8 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
 		// -------------------------- silences rendering pass -------------------
 		// draw silences
-		const unsigned int first_visible_measure = getMeasureBar()->measureAtPixel( getEditorXStart() );
-		const unsigned int last_visible_measure = getMeasureBar()->measureAtPixel( getXEnd() );
+		const unsigned int first_visible_measure = getMeasureData()->measureAtPixel( getEditorXStart() );
+		const unsigned int last_visible_measure = getMeasureData()->measureAtPixel( getXEnd() );
 		const int visible_measure_amount = last_visible_measure-first_visible_measure+1;
 		bool measure_empty[visible_measure_amount+1];
 		for(int i=0; i<=visible_measure_amount; i++) measure_empty[i] = true;
@@ -1145,18 +1145,18 @@ assertExpr(iters,<,1000);
 				{
 					// if the last note of previous measure does not finish at the end of the measure,
 					// we need to add a silence at the end of it
-					if(last_measure != -1 and !aboutEqual(last_note_end, getMeasureBar()->firstTickInMeasure(measure) ))
+					if(last_measure != -1 and !aboutEqual(last_note_end, getMeasureData()->firstTickInMeasure(measure) ))
 					{
-						const int silence_length = getMeasureBar()->firstTickInMeasure(measure)-last_note_end;
+						const int silence_length = getMeasureData()->firstTickInMeasure(measure)-last_note_end;
 						renderSilence(last_note_end, silence_length);
 						
 					}
 					// if note is not at the very beginning of the new measure, and it's the first note of
 					// the measure, we need to add a silence before it
-					if(!aboutEqual(noteRenderInfo[i].tick, getMeasureBar()->firstTickInMeasure(measure) ))
+					if(!aboutEqual(noteRenderInfo[i].tick, getMeasureData()->firstTickInMeasure(measure) ))
 					{
-						const int silence_length = noteRenderInfo[i].tick - getMeasureBar()->firstTickInMeasure(measure);
-						renderSilence(getMeasureBar()->firstTickInMeasure(measure), silence_length);
+						const int silence_length = noteRenderInfo[i].tick - getMeasureData()->firstTickInMeasure(measure);
+						renderSilence(getMeasureData()->firstTickInMeasure(measure), silence_length);
 					}
                     
                     if(last_measure!=-1)
@@ -1197,8 +1197,8 @@ assertExpr(iters,<,1000);
 			}//next visible note
             
 			// check for silence after last note
-			const unsigned int last_measure_end = getMeasureBar()->lastTickInMeasure(
-														getMeasureBar()->measureAtTick(
+			const unsigned int last_measure_end = getMeasureData()->lastTickInMeasure(
+														getMeasureData()->measureAtTick(
 														noteRenderInfo[visibleNoteAmount-1].tick));
 			if(!aboutEqual(last_note_end, last_measure_end ) and last_note_end>-1)
 			{
@@ -1214,8 +1214,8 @@ assertExpr(iters,<,1000);
         {
             if(measure_empty[i])
             {
-                renderSilence(getMeasureBar()->firstTickInMeasure(first_visible_measure+i),
-                      getMeasureBar()->measureLengthInTicks(first_visible_measure+i));
+                renderSilence(getMeasureData()->firstTickInMeasure(first_visible_measure+i),
+                      getMeasureData()->measureLengthInTicks(first_visible_measure+i));
             }
         }
 

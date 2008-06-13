@@ -18,7 +18,7 @@
 #include "Actions/EditAction.h"
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
-#include "GUI/MeasureBar.h"
+#include "Midi/MeasureData.h"
 #include "Actions/RemoveMeasures.h"
 #include "AriaCore.h"
 
@@ -38,10 +38,10 @@ namespace AriaMaestosa
 		assert(sequence != NULL);
 		
 		// convert measures into midi ticks
-		const int amountInTicks = amount * getMeasureBar()->measureLengthInTicks(measureID);
-		const int afterTick = getMeasureBar()->firstTickInMeasure(measureID) - 1;
+		const int amountInTicks = amount * getMeasureData()->measureLengthInTicks(measureID);
+		const int afterTick = getMeasureData()->firstTickInMeasure(measureID) - 1;
 		
-        DisplayFrame::changeMeasureAmount( getMeasureBar()->getMeasureAmount() + amount );
+        DisplayFrame::changeMeasureAmount( getMeasureData()->getMeasureAmount() + amount );
 		
 		// move all notes that are after given start tick by the necessary amount
 		const int trackAmount = sequence->getTrackAmount();
@@ -77,8 +77,8 @@ namespace AriaMaestosa
 		const int tempo_event_amount = sequence->tempoEvents.size();
 		if(tempo_event_amount>0)
 		{
-			//const int first_tick = getMeasureBar()->firstTickInMeasure(measureID+1) - 1;
-			//const int amountInTicks = amount * getMeasureBar()->measureLengthInTicks(measureID+1);
+			//const int first_tick = getMeasureData()->firstTickInMeasure(measureID+1) - 1;
+			//const int amountInTicks = amount * getMeasureData()->measureLengthInTicks(measureID+1);
 			for(int n=0; n<tempo_event_amount; n++)
 			{
 				if(sequence->tempoEvents[n].getTick() > afterTick)
@@ -90,20 +90,20 @@ namespace AriaMaestosa
 		}
 		
 		// ----------------- move time sig changes -----------------
-		if(!getMeasureBar()->isMeasureLengthConstant())
+		if(!getMeasureData()->isMeasureLengthConstant())
 		{
-			const int timeSigAmount = getMeasureBar()->getTimeSigAmount();
+			const int timeSigAmount = getMeasureData()->getTimeSigAmount();
 			for(int n=0; n<timeSigAmount; n++)
 			{
-				if( getMeasureBar()->getTimeSig(n).measure >= measureID+1 and
+				if( getMeasureData()->getTimeSig(n).measure >= measureID+1 and
 					n!=0 /* dont move first time sig event*/ )
 				{
-					getMeasureBar()->getTimeSig(n).measure += amount;
+					getMeasureData()->getTimeSig(n).measure += amount;
 				}
 			}//next
 		}//endif
 		
-		getMeasureBar()->updateMeasureInfo();
+		getMeasureData()->updateMeasureInfo();
 }
 InsertEmptyMeasures::InsertEmptyMeasures(int measureID, int amount)
 {
