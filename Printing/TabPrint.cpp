@@ -6,7 +6,7 @@
 #include "Midi/Sequence.h"
 #include "AriaCore.h"
 
-#include "GUI/MeasureBar.h"
+#include "Midi/MeasureData.h"
 #include "Editors/GuitarEditor.h"
 #include "IO/IOUtils.h"
 #include "Printing/TabPrint.h"

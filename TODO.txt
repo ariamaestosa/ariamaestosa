@@ -84,8 +84,6 @@ NOTE: sorry, this is very raw :)
  - change volume relatively on a bunch of notes
  - select notes and all similar menu items should be disabled in controller mode
  
- - general code layout could be improved, e.g. measure bar is in GUI but does tons of calulation
-  
  - setting sharp/flat sign manually sometimes doesn't work (when it's possible to display the note on a level with no sign)
  
  
@@ -113,6 +111,8 @@ NOTE: sorry, this is very raw :)
  ************************* BUGS: *************************
     
 * "follow playback" : hard to follow when horizontal scrolling is changed (Change only on measure change?)
+
++ some of the newer classes don't use leak check
 
 * undos in guitar editor that rely on string and fret will be wrong if tuning changed meanwhile
 

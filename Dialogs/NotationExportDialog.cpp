@@ -7,12 +7,12 @@
 #include "AriaCore.h"
 
 #include "GUI/GraphicalTrack.h"
-#include "GUI/MeasureBar.h"
+#include "Midi/MeasureData.h"
+#include "Midi/Sequence.h"
 #include "Editors/GuitarEditor.h"
 #include "IO/IOUtils.h"
-#include "IO/TablatureExporter.h"
-#include "IO/NotationExport.h"
-#include "Midi/Sequence.h"
+#include "Printing/TabPrint.h"
+#include "Printing/PrintingBase.h"
 #include "Dialogs/NotationExportDialog.h"
 
 namespace AriaMaestosa

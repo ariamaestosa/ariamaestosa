@@ -20,7 +20,7 @@
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
 #include "Midi/TimeSigChange.h"
-#include "GUI/MeasureBar.h"
+#include "Midi/MeasureData.h"
 #include "AriaCore.h"
 
 #include <iostream>
@@ -68,7 +68,7 @@ namespace AriaMaestosa
 		
 		// add removed time sig events again
 		
-		MeasureBar* measureBar = getMeasureBar();
+		MeasureData* measureBar = getMeasureData();
 		const int t_amount = timeSigChangesBackup.size();
 		
 		// keep a backup copy of measure events
@@ -90,8 +90,8 @@ namespace AriaMaestosa
 		assert(sequence != NULL);
 		
 		// find the range of ticks that need to be removed (convert measure IDs to midi ticks)
-		const int from_tick = getMeasureBar()->firstTickInMeasure(from_measure) - 1;
-		const int to_tick = getMeasureBar()->firstTickInMeasure(to_measure);
+		const int from_tick = getMeasureData()->firstTickInMeasure(from_measure) - 1;
+		const int to_tick = getMeasureData()->firstTickInMeasure(to_measure);
 		
 		// find the amount of ticks that will be removed. This will be used to move back notes located after the area that is removed.
 		const int amountInTicks = to_tick - from_tick - 1;
@@ -171,7 +171,7 @@ namespace AriaMaestosa
 		}
 		
 		// ----------------------- erase/move time sig events ------------------------
-		MeasureBar* measureBar = getMeasureBar();
+		MeasureData* measureBar = getMeasureData();
 		timeSigChangesBackup.clear();
 		
 		if(!measureBar->isMeasureLengthConstant())
@@ -242,8 +242,8 @@ namespace AriaMaestosa
 		}//endif
 		
 		// shorten song accordingly to the number of measures removed
-		DisplayFrame::changeMeasureAmount( sequence->measureBar->getMeasureAmount() - (to_measure - from_measure) );
-		getMeasureBar()->updateMeasureInfo();
+		DisplayFrame::changeMeasureAmount( sequence->measureData->getMeasureAmount() - (to_measure - from_measure) );
+		getMeasureData()->updateMeasureInfo();
 }
 RemoveMeasures::RemoveMeasures(int from_measure, int to_measure)
 {

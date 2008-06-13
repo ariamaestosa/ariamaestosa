@@ -3,7 +3,7 @@
 
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
-#include "GUI/MeasureBar.h"
+#include "Midi/MeasureData.h"
 #include "Editors/GuitarEditor.h"
 #include "AriaCore.h"
 
@@ -215,7 +215,7 @@ LayoutElement::LayoutElement(LayoutElementType type_arg, int measure_arg)
 
 void getLayoutElements(Track* track, const bool checkRepetitions_bool, std::vector<LayoutPage>& layoutPages, std::vector<MeasureToExport>& measures)
 {
-    const int measureAmount = getMeasureBar()->getMeasureAmount();
+    const int measureAmount = getMeasureData()->getMeasureAmount();
     int note=0;
     const int noteAmount = track->getNoteAmount();
     std::vector<LayoutElement> layoutElements;
@@ -228,8 +228,8 @@ void getLayoutElements(Track* track, const bool checkRepetitions_bool, std::vect
         measures.push_back( MeasureToExport() );
 		measures[measure].setID(measure);
 		
-		measures[measure].firstTick = getMeasureBar()->firstTickInMeasure( measure );
-		measures[measure].lastTick = getMeasureBar()->lastTickInMeasure( measure );
+		measures[measure].firstTick = getMeasureData()->firstTickInMeasure( measure );
+		measures[measure].lastTick = getMeasureData()->lastTickInMeasure( measure );
 		
 		// first note in measure (which is also last note of previous measure, that was set in last iteration of the for loop)
 		measures[measure].firstNote = note;
@@ -431,7 +431,7 @@ void getLayoutElements(Track* track, const bool checkRepetitions_bool, std::vect
         if(layoutElements[n].type == SINGLE_MEASURE)
         {
             const int divider = (int)(
-                                      getMeasureBar()->getTimeSigNumerator(layoutElements[n].measure) * (float)ticksPerBeat /
+                                      getMeasureData()->getTimeSigNumerator(layoutElements[n].measure) * (float)ticksPerBeat /
                                       (float)measures[layoutElements[n].measure].shortestDuration
                                       );
             

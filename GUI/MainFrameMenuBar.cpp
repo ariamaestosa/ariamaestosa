@@ -24,7 +24,7 @@
 #include "GUI/MainFrame.h"
 #include "GUI/MainPane.h"
 #include "GUI/GraphicalTrack.h"
-#include "GUI/MeasureBar.h"
+#include "Midi/MeasureData.h"
 
 #include "Midi/Sequence.h"
 #include "Midi/Players/PlatformMidiManager.h"
@@ -553,7 +553,7 @@ void MainFrame::menuEvent_manualChannelModeSelected(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_expandedMeasuresSelected(wxCommandEvent& evt)
 {
-	getCurrentSequence()->measureBar->setExpandedMode( expandedMeasuresMenuItem->IsChecked() );
+	getCurrentSequence()->measureData->setExpandedMode( expandedMeasuresMenuItem->IsChecked() );
 	updateVerticalScrollbar();
 }
 

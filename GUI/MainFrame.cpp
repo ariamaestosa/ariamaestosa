@@ -14,10 +14,6 @@
  51 Franklin Street, Fifth Floor, Boston, MA 0MENU_EDIT_FOLLOW_PLAYBACK0-1301 USA.
  */
 
-//#include "wx/utils.h"
-//#include "wx/stdpaths.h"
-//#include "wx/html/htmlwin.h"
-
 #include "AriaCore.h"
 
 #include "Actions/EditAction.h"
@@ -28,6 +24,7 @@
 #include "GUI/GraphicalTrack.h"
 #include "GUI/MeasureBar.h"
 
+#include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/CommonMidiUtils.h"
@@ -441,7 +438,7 @@ void MainFrame::updateTopBarAndScrollbarsForSequence(Sequence* seq)
     // first measure
     {
         char buffer[4];
-        sprintf (buffer, "%d", seq->measureBar->getFirstMeasure()+1);
+        sprintf (buffer, "%d", getMeasureData()->getFirstMeasure()+1);
 
         firstMeasure->SetValue( fromCString(buffer) );
     }
@@ -449,14 +446,14 @@ void MainFrame::updateTopBarAndScrollbarsForSequence(Sequence* seq)
     // measure length
     {
         char buffer[4];
-        sprintf (buffer, "%d", getMeasureBar()->getTimeSigNumerator() );
+        sprintf (buffer, "%d", getMeasureData()->getTimeSigNumerator() );
 
         measureTypeTop->SetValue( fromCString(buffer) );
     }
 
     {
         char buffer[4];
-        sprintf (buffer, "%d", getMeasureBar()->getTimeSigDenominator() );
+        sprintf (buffer, "%d", getMeasureData()->getTimeSigDenominator() );
 
         measureTypeBottom->SetValue( fromCString(buffer) );
     }
@@ -471,7 +468,7 @@ void MainFrame::updateTopBarAndScrollbarsForSequence(Sequence* seq)
 
     // song length
     {
-        songLength->SetValue( seq->measureBar->getMeasureAmount() );
+        songLength->SetValue( getMeasureData()->getMeasureAmount() );
     }
 
     // zoom
@@ -480,7 +477,7 @@ void MainFrame::updateTopBarAndScrollbarsForSequence(Sequence* seq)
     // set zoom (reason to set it again is because the first time you open it, it may not already have a zoom)
     getCurrentSequence()->setZoom( seq->getZoomInPercent() );
 
-    expandedMeasuresMenuItem->Check( getMeasureBar()->isExpandedMode() );
+    expandedMeasuresMenuItem->Check( getMeasureData()->isExpandedMode() );
 
     // scrollbars
     updateHorizontalScrollbar();
@@ -530,7 +527,7 @@ void MainFrame::measureNumChanged(wxCommandEvent& evt)
 
     if(bottom < 1 or top<1 or bottom>32 or top>32) return;
 
-    getMeasureBar()->setTimeSig( top, bottom );
+    getMeasureData()->setTimeSig( top, bottom );
 
 	displayZoom->SetValue( getCurrentSequence()->getZoomInPercent() );
 }
@@ -545,7 +542,7 @@ void MainFrame::measureDenomChanged(wxCommandEvent& evt)
 
     if(bottom < 1 or top<1 or bottom>32 or top>32) return;
 
-    getMeasureBar()->setTimeSig( top, bottom );
+    getMeasureData()->setTimeSig( top, bottom );
 
 	displayZoom->SetValue( getCurrentSequence()->getZoomInPercent() );
 }
@@ -559,16 +556,16 @@ void MainFrame::firstMeasureChanged(wxCommandEvent& evt)
 
 	if(firstMeasure->GetValue().Length()<1) return; // text field empty, wait until user enters something to update data
 
-    if( !firstMeasure->GetValue().IsNumber() or start < 0 or start > getMeasureBar()->getMeasureAmount() )
+    if( !firstMeasure->GetValue().IsNumber() or start < 0 or start > getMeasureData()->getMeasureAmount() )
 	{
         wxBell();
 
-		firstMeasure->SetValue( to_wxString(getMeasureBar()->getFirstMeasure()+1) );
+		firstMeasure->SetValue( to_wxString(getMeasureData()->getFirstMeasure()+1) );
 
     }
     else
 	{
-		getMeasureBar()->setFirstMeasure( start-1 );
+		getMeasureData()->setFirstMeasure( start-1 );
     }
 
 }
@@ -610,7 +607,7 @@ void MainFrame::changeMeasureAmount(int i, bool throwEvent)
     if(changingValues) return; // discard events thrown because the computer changes values
 
     songLength->SetValue(i);
-    getMeasureBar()->updateVector(i);
+    getMeasureData()->updateVector(i);
 
     if(throwEvent)
 	{
@@ -649,7 +646,7 @@ void MainFrame::zoomChanged(wxSpinEvent& evt)
 
     getCurrentSequence()->setXScrollInMidiTicks( newXScroll );
     updateHorizontalScrollbar( newXScroll );
-    if(!getMeasureBar()->isMeasureLengthConstant()) getMeasureBar()->updateMeasureInfo();
+    if(!getMeasureData()->isMeasureLengthConstant()) getMeasureData()->updateMeasureInfo();
 
     Display::render();
 }
@@ -702,7 +699,7 @@ void MainFrame::songLengthChanged(wxSpinEvent& evt)
 
     if(newLength>0)
 	{
-        getMeasureBar()->setMeasureAmount(newLength);
+        getMeasureData()->setMeasureAmount(newLength);
 
         updateHorizontalScrollbar();
 
@@ -748,12 +745,12 @@ void MainFrame::horizontalScrolling_arrows(wxScrollEvent& evt)
 	const int newScrollInMidiTicks =
         (int)(
               getCurrentSequence()->getXScrollInMidiTicks() +
-              factor * getMeasureBar()->defaultMeasureLengthInTicks()
+              factor * getMeasureData()->defaultMeasureLengthInTicks()
               );
 
     // check new scroll position is not out of bounds
     const int editor_size=Display::getWidth()-100,
-		total_size = getMeasureBar()->getTotalPixelAmount();
+		total_size = getMeasureData()->getTotalPixelAmount();
 
     const int positionInPixels = (int)( newScrollInMidiTicks*getCurrentSequence()->getZoom() );
 
@@ -808,7 +805,7 @@ void MainFrame::updateHorizontalScrollbar(int thumbPos)
 {
 
     const int editor_size=Display::getWidth()-100,
-    total_size = getMeasureBar()->getTotalPixelAmount();
+    total_size = getMeasureData()->getTotalPixelAmount();
 
     int position =
 		thumbPos == -1 ?

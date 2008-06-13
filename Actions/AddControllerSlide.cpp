@@ -21,7 +21,7 @@
 #include "Midi/ControllerEvent.h"
 #include "Midi/Sequence.h"
 
-#include "GUI/MeasureBar.h"
+#include "Midi/MeasureData.h"
 
 
 namespace AriaMaestosa
@@ -123,7 +123,7 @@ namespace AriaMaestosa
         std::cout << "************************************************" << std::endl;
         std::cout << "before starting" << std::endl;
            for(int ixc=0; ixc<track->controlEvents.size(); ixc++)
-               std::cout << ((float)track->controlEvents[ixc].getTick()/(float)getMeasureBar()->beatLengthInTicks()) << std::endl;
+               std::cout << ((float)track->controlEvents[ixc].getTick()/(float)getMeasureData()->beatLengthInTicks()) << std::endl;
         */
         
 		// track is empty, events can be added without any further checking
@@ -234,7 +234,7 @@ namespace AriaMaestosa
         std::cout << "-------------" << std::endl;
         std::cout << "we added new events" << std::endl;
         for(int ixc=0; ixc<track->controlEvents.size(); ixc++)
-            std::cout << ((float)track->controlEvents[ixc].getTick()/(float)getMeasureBar()->beatLengthInTicks()) << std::endl;
+            std::cout << ((float)track->controlEvents[ixc].getTick()/(float)getMeasureData()->beatLengthInTicks()) << std::endl;
         */
         
 #ifdef _MORE_DEBUG_CHECKS

@@ -23,7 +23,7 @@
 #include "Midi/Track.h"
 #include "Midi/Players/PlatformMidiManager.h"
 
-#include "GUI/MeasureBar.h"
+#include "Midi/MeasureData.h"
 
 #include "jdkmidi/world.h"
 #include "jdkmidi/track.h"
@@ -104,8 +104,8 @@ namespace AriaMaestosa {
 bool exportMidiFile(Sequence* sequence, wxString filepath)
 {
 		// when we're saving, we always want song to start at first measure, so temporarly switch firstMeasure to 0, and set it back in the end
-		const int firstMeasureValue=sequence->measureBar->getFirstMeasure();
-		sequence->measureBar->setFirstMeasure(0);
+		const int firstMeasureValue = sequence->measureData->getFirstMeasure();
+		sequence->measureData->setFirstMeasure(0);
 
 		jdkmidi::MIDIMultiTrack tracks;
 		int length = -1, start = -1, numTracks = -1;
@@ -128,28 +128,28 @@ bool exportMidiFile(Sequence* sequence, wxString filepath)
 			return false;
 		}
 
-		sequence->measureBar->setFirstMeasure(firstMeasureValue);
+		sequence->measureData->setFirstMeasure(firstMeasureValue);
 
 		return true;
 
 }
 
-void addTimeSigFromVector(int n, int amount, MeasureBar* measureBar, jdkmidi::MIDIMultiTrack& tracks, int substract_ticks)
+void addTimeSigFromVector(int n, int amount, MeasureData* measureData, jdkmidi::MIDIMultiTrack& tracks, int substract_ticks)
 {
 	jdkmidi::MIDITimedBigMessage m;
-	int tick_time = measureBar->getTimeSig(n).tick - substract_ticks < 0;
+	int tick_time = measureData->getTimeSig(n).tick - substract_ticks < 0;
 	if(tick_time)
 	{
-		if( (n+1<amount and measureBar->getTimeSig(n+1).tick > substract_ticks) or n+1==amount)
+		if( (n+1<amount and measureData->getTimeSig(n+1).tick > substract_ticks) or n+1==amount)
 			tick_time = 0; // we need to consider event because it's the last and will affect future measures
 		else
 			return; // event does not affect anything not in played measures, ignore it
 
 	}
-	m.SetTime( measureBar->getTimeSig(n).tick - substract_ticks );
+	m.SetTime( measureData->getTimeSig(n).tick - substract_ticks );
 
-	float denom = (float)log(measureBar->getTimeSig(n).denom)/(float)log(2);
-	m.SetTimeSig( measureBar->getTimeSig(n).num, (int)denom );
+	float denom = (float)log(measureData->getTimeSig(n).denom)/(float)log(2);
+	m.SetTimeSig( measureData->getTimeSig(n).num, (int)denom );
 
 	if( !tracks.GetTrack(0)->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl;  return; }
 }
@@ -194,7 +194,7 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
 			//  ---------------------------- add events to tracks --------------------
 			trackLength = sequence->getCurrentTrack()->addMidiEvents( tracks.GetTrack(sequence->getCurrentTrackID()+1),
 																	  channel,
-																	  sequence->measureBar->getFirstMeasure(),
+																	  sequence->measureData->getFirstMeasure(),
 																	  true,
 																	  *startTick );
 
@@ -216,7 +216,8 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
                 bool drum_track = sequence->getTrack(n)->graphics->editorMode == DRUM;
                 
 				int trackFirstNote=-1;
-				trackLength = sequence->getTrack(n)->addMidiEvents( tracks.GetTrack(n+1), (drum_track ? 9 : channel), sequence->measureBar->getFirstMeasure(), false, trackFirstNote );
+				trackLength = sequence->getTrack(n)->addMidiEvents( tracks.GetTrack(n+1), (drum_track ? 9 : channel),
+                                                                    sequence->measureData->getFirstMeasure(), false, trackFirstNote );
 
 				if( (trackFirstNote<(*startTick) and trackFirstNote != -1) or (*startTick)==-1) (*startTick) = trackFirstNote;
                 
@@ -308,14 +309,14 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
 		// FIXME find real problem
 		if(!playing)
 		{
-			if( getMeasureBar()->isMeasureLengthConstant() )
+			if( getMeasureData()->isMeasureLengthConstant() )
 			{
 				// time signature
 				jdkmidi::MIDITimedBigMessage m;
 				m.SetTime( 0 );
 
-				float denom = (float)log(getMeasureBar()->getTimeSigDenominator())/(float)log(2);
-				m.SetTimeSig( getMeasureBar()->getTimeSigNumerator(), (int)denom );
+				float denom = (float)log(getMeasureData()->getTimeSigDenominator())/(float)log(2);
+				m.SetTimeSig( getMeasureData()->getTimeSigNumerator(), (int)denom );
 
 				if( !tracks.GetTrack(0)->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl;  return false; }
 
@@ -329,8 +330,8 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
 			else
 			{
 				// add both tempo changes and measures in time order
-				MeasureBar* measureBar = getMeasureBar();
-				const int timesig_amount = measureBar->getTimeSigAmount();
+				MeasureData* measureData = getMeasureData();
+				const int timesig_amount = measureData->getTimeSigAmount();
 				const int tempo_amount = sequence->tempoEvents.size();
 				int timesig_id = 0; // which time sig event should be the next added
 				int tempo_id = 0; // which tempo event should be the next added
@@ -338,7 +339,7 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
 				// at each loop, check which event comes next, the time sig one or the tempo one.
 				while(true)
 				{
-					const int timesig_tick = (timesig_id < timesig_amount ? measureBar->getTimeSig(timesig_id).tick : -1);
+					const int timesig_tick = (timesig_id < timesig_amount ? measureData->getTimeSig(timesig_id).tick : -1);
 					const int tempo_tick = (tempo_id < tempo_amount ? sequence->tempoEvents[tempo_id].getTick() : -1);
 
 					if(timesig_tick==-1 and tempo_tick==-1) break; // all events added, done
@@ -349,12 +350,12 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
 					}
 					else if(tempo_tick==-1)
 					{
-						addTimeSigFromVector(timesig_id, timesig_amount, measureBar, tracks, substract_ticks);
+						addTimeSigFromVector(timesig_id, timesig_amount, measureData, tracks, substract_ticks);
 						timesig_id++;
 					}
 					else if(tempo_tick > timesig_tick)
 					{
-						addTimeSigFromVector(timesig_id, timesig_amount, measureBar, tracks, substract_ticks);
+						addTimeSigFromVector(timesig_id, timesig_amount, measureData, tracks, substract_ticks);
 						timesig_id++;
 					}
 					else

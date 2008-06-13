@@ -19,7 +19,7 @@
 #include "Dialogs/CustomNoteSelectDialog.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
-#include "GUI/MeasureBar.h"
+#include "Midi/MeasureData.h"
 #include "GUI/GraphicalTrack.h"
 
 namespace AriaMaestosa {
@@ -320,7 +320,7 @@ void CustomNoteSelectDialog::okClicked(wxCommandEvent& evt)
             bool passTest = false;
             
             // find in which measure the note is
-			const int test_value = getMeasureBar()->measureAtTick( currentTrack->getNoteStartInMidiTicks(n) );
+			const int test_value = getMeasureData()->measureAtTick( currentTrack->getNoteStartInMidiTicks(n) );
 
             if(test_value >= from_measure_value-1 and test_value <= to_measure_value-1) passTest=true;
 
