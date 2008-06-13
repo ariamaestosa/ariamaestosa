@@ -202,7 +202,6 @@ namespace AriaMaestosa
 						{
 							if( measureBar->getTimeSig(i).measure == from_measure)
 							{
-								//removedTimeSigChanges.push_back( measureBar->removeTimeSig(i) );
 								measureBar->eraseTimeSig(i);
 								i -= 2; if(i<-1) i=-1;
 							}
@@ -213,7 +212,6 @@ namespace AriaMaestosa
 					}
 					else
 					{
-						//removedTimeSigChanges.push_back( measureBar->removeTimeSig(n) );
 						measureBar->eraseTimeSig(n);
 					}
 					n -= 2; if(n<-1) n=-1; // restart a bit earlier cause order in vector changed
@@ -229,7 +227,6 @@ namespace AriaMaestosa
 					{
 						if( i!=n and measureBar->getTimeSig(i).measure == new_measure)
 						{
-							//removedTimeSigChanges.push_back( measureBar->removeTimeSig(i) );
 							measureBar->eraseTimeSig(i);
 							i -= 2; if(i<0) i=0;
 						}
