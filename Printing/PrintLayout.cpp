@@ -26,6 +26,8 @@ void setRepetitionMinimalLength(const int newvalue)
     repetitionMinimalLength = newvalue;
 }
 
+#pragma mark -
+
 MeasureToExport::MeasureToExport()
 {
     shortestDuration = -1;
@@ -202,6 +204,7 @@ bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
     return true;
 }
 
+#pragma mark -
 
 // used to determine the order of what appears in the file.
 // the order is found first before writing anything because that allows more flexibility
@@ -213,16 +216,26 @@ LayoutElement::LayoutElement(LayoutElementType type_arg, int measure_arg)
     measure = measure_arg;
 }
 
-void getLayoutElements(Track* track, const bool checkRepetitions_bool, std::vector<LayoutPage>& layoutPages, std::vector<MeasureToExport>& measures)
+LayoutLine::LayoutLine(Track* parent)
 {
-    const int measureAmount = getMeasureData()->getMeasureAmount();
+    LayoutLine::parent = parent;
+    
+    editorMode = parent->graphics->editorMode;
+    
+    if(editorMode == GUITAR)
+    {
+        string_amount = parent->graphics->guitarEditor->tuning.size();
+    }
+}
+
+#pragma mark -
+
+void generateMeasures(Track* track, std::vector<MeasureToExport>& measures)
+{
     int note=0;
     const int noteAmount = track->getNoteAmount();
-    std::vector<LayoutElement> layoutElements;
-    
-   // MeasureToExport measures[measureAmount];
-	
-	// -------------------- gather measure information -------------------- 
+    const int measureAmount = getMeasureData()->getMeasureAmount();
+    // -------------------- gather measure information -------------------- 
 	for(int measure=0; measure<measureAmount; measure++)
 	{
         measures.push_back( MeasureToExport() );
@@ -251,32 +264,35 @@ void getLayoutElements(Track* track, const bool checkRepetitions_bool, std::vect
 		}
 		
 		measures[measure].lastNote = note; // ID of the last note in this measure (or actually, first note in NEXT measure?? FIXME)
-	}
-	
-    //-------------------- search for repeated measures if necessary  -------------------- 
-	if(checkRepetitions_bool)
-	{
-		for(int measure=0; measure<measureAmount; measure++)
-		{
-			measures[measure].track = track;
-			
-			// check current measure against all previous measures to see if it is not a repetition
-			for(int checkMeasure=0; checkMeasure<measure; checkMeasure++)
-			{
-				const bool isSameAs = measures[measure].calculateIfMeasureIsSameAs(measures[checkMeasure]);
-				
-				if(!isSameAs) continue;
-				measures[measure].firstSimilarMeasure = checkMeasure;
-				measures[checkMeasure].similarMeasuresFoundLater.push_back(measure);
-				break;
-			}//next
-		}//next
-		
-	}//endif check repetitions
-	
-	// -------------------- calculate tablature layout ----------------------
-	
-	for(int measure=0; measure<measureAmount; measure++)
+	}    
+}
+
+void findSimilarMeasures(Track* track, std::vector<MeasureToExport>& measures)
+{
+    const int measureAmount = getMeasureData()->getMeasureAmount();
+    
+    for(int measure=0; measure<measureAmount; measure++)
+    {
+        measures[measure].track = track;
+        
+        // check current measure against all previous measures to see if it is not a repetition
+        for(int checkMeasure=0; checkMeasure<measure; checkMeasure++)
+        {
+            const bool isSameAs = measures[measure].calculateIfMeasureIsSameAs(measures[checkMeasure]);
+            
+            if(!isSameAs) continue;
+            measures[measure].firstSimilarMeasure = checkMeasure;
+            measures[checkMeasure].similarMeasuresFoundLater.push_back(measure);
+            break;
+        }//next
+    }//next
+}
+
+void generateOutputOrder(std::vector<LayoutElement>& layoutElements, std::vector<MeasureToExport>& measures, bool checkRepetitions_bool)
+{
+    const int measureAmount = getMeasureData()->getMeasureAmount();
+    
+    for(int measure=0; measure<measureAmount; measure++)
 	{
 #ifdef _verbose
 		std::cout << (measure+1) << ":" << std::endl;
@@ -418,8 +434,10 @@ void getLayoutElements(Track* track, const bool checkRepetitions_bool, std::vect
 		}
 		
 	}//next measure
-    
-    
+}
+
+void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements, std::vector<MeasureToExport>& measures)
+{
     // calculate approximative width of each element
     const int ticksPerBeat = getCurrentSequence()->ticksPerBeat();
     const int layoutElementsAmount = layoutElements.size();
@@ -440,10 +458,10 @@ void getLayoutElements(Track* track, const bool checkRepetitions_bool, std::vect
             if( divider <= 1 ) layoutElements[n].zoom = 8;
             
             layoutElements[n].charWidth = (int)round(
-                  (float)(measures[layoutElements[n].measure].lastTick - measures[layoutElements[n].measure].firstTick) /
-                (float)measures[layoutElements[n].measure].shortestDuration
-                  )*layoutElements[n].zoom + 2;
-
+                                                     (float)(measures[layoutElements[n].measure].lastTick - measures[layoutElements[n].measure].firstTick) /
+                                                     (float)measures[layoutElements[n].measure].shortestDuration
+                                                     )*layoutElements[n].zoom + 2;
+            
         }
         else if(layoutElements[n].type == REPEATED_RIFF)
         {
@@ -451,7 +469,12 @@ void getLayoutElements(Track* track, const bool checkRepetitions_bool, std::vect
         }
         
         std::cout << "$$ setting charwidth for element " << n << " : " << layoutElements[n].charWidth << std::endl;
-    }
+    }        
+}
+
+void calculatePageLayout(std::vector<LayoutPage>& layoutPages, std::vector<LayoutElement>& layoutElements, Track* track)
+{
+    const int layoutElementsAmount = layoutElements.size();
     
     // lay out in lines and pages
     layoutPages.push_back( LayoutPage() );
@@ -459,7 +482,7 @@ void getLayoutElements(Track* track, const bool checkRepetitions_bool, std::vect
     int totalLength = 0;
     int currentLine = 0;
     int currentPage = 0;
-
+    
     assertExpr(currentPage,<,(int)layoutPages.size());
     layoutPages[currentPage].layoutLines.push_back( LayoutLine(track) );
     
@@ -495,19 +518,20 @@ void getLayoutElements(Track* track, const bool checkRepetitions_bool, std::vect
     }
     // for last line processed
     layoutPages[currentPage].layoutLines[currentLine].charWidth = totalLength;
-
 }
 
-LayoutLine::LayoutLine(Track* parent)
+void calculateLayoutElements(Track* track, const bool checkRepetitions_bool, std::vector<LayoutPage>& layoutPages, std::vector<MeasureToExport>& measures)
 {
-    LayoutLine::parent = parent;
+    std::vector<LayoutElement> layoutElements;
     
-    editorMode = parent->graphics->editorMode;
-    
-    if(editorMode == GUITAR)
-    {
-        string_amount = parent->graphics->guitarEditor->tuning.size();
-    }
+    generateMeasures(track, measures);
+
+    // search for repeated measures if necessary
+	if(checkRepetitions_bool) findSimilarMeasures(track, measures);
+	
+	generateOutputOrder(layoutElements, measures, checkRepetitions_bool);
+    calculateRelativeLengths(layoutElements, measures);
+    calculatePageLayout(layoutPages, layoutElements, track);
 }
 
 

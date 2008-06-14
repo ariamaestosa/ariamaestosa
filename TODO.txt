@@ -138,6 +138,7 @@ NOTE: sorry, this is very raw :)
   - repetition length > 2 gives weird results
   - tab export : x2 can appear on new line...
   - tab export : repeated measures need measure numbers
+  - sometimes uses, in repetitions, measures numbers that do not appear on the tab (that are inside a previous repetition)
   
 * My CoreAudio player is deprecated on OS X 10.5...
     Midi/Players/Mac/CoreAudioNotePlayer.cpp: In function 'OSStatus CoreAudioNotePlayer::CreateAUGraph(OpaqueAUGraph*&, ComponentInstanceRecord*&)':
