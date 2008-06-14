@@ -1,6 +1,6 @@
 
 SVN
-- working towards printing more than one track at once
+- Cleaned up printing code, working towards printing more than one track at once
 - major code cleanup in measure handling code
 
 1.1.3

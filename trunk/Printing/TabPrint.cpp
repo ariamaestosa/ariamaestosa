@@ -21,7 +21,7 @@ TablaturePrintable::TablaturePrintable(Track* track, bool checkRepetitions_bool)
 {
 
     parent = track;
-    getLayoutElements(track, checkRepetitions_bool, layoutPages, measures);
+    calculateLayoutElements(track, checkRepetitions_bool, layoutPages, measures);
     
     std::cout << "\nContains " << layoutPages.size() << " pages\n" << std::endl;
 }
