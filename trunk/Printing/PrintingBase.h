@@ -19,20 +19,32 @@
 #define _print_base_h_
 
 #include <vector>
+#include "Printing/PrintLayout.h"
 #include "wx/wx.h"
 
 namespace AriaMaestosa
 {
+    class Track;
     
 class AriaPrintable
 {
+protected:
+    Track* parent;
+    std::vector<LayoutPage> layoutPages;
+    ptr_vector<MeasureToExport> measures;
+    
+    int text_height;
+    int text_height_half;
 public:
-    AriaPrintable();
+    AriaPrintable(Track* parent, bool checkRepetitions_bool);
     virtual ~AriaPrintable();
-    virtual wxString getTitle();
-    virtual int getPageAmount();
-    virtual void printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const int w, const int h);
-    virtual bool portraitOrientation();
+    wxString getTitle();
+    int getPageAmount();
+    void printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const int w, const int h);
+
+    bool portraitOrientation();
+    
+    virtual void drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1);
 };
 
 bool printResult(AriaPrintable* printable);

@@ -130,9 +130,6 @@ public:
     int getFirstNote(ptr_vector<MeasureToExport>& measures, const int layoutElementID);
     int getLastNote(ptr_vector<MeasureToExport>& measures, const int layoutElementID);
     
-    // only relevant for tabs
-    int string_amount;
-    
     std::vector<LayoutElement> layoutElements;
 };
 
