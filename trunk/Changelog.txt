@@ -2,6 +2,7 @@
 SVN
 - Cleaned up printing code, working towards printing more than one track at once
 - major code cleanup in measure handling code
+- fixed default suggested name when exporting to PDF on mac OS X
 
 1.1.3
 - improved vector implementation, fixing possible problems on 64-bits machines
