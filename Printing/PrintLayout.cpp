@@ -28,16 +28,14 @@ void setRepetitionMinimalLength(const int newvalue)
 
 #pragma mark -
 
-MeasureToExport::MeasureToExport()
+MeasureToExport::MeasureToExport(const int measID)
 {
     shortestDuration = -1;
     firstSimilarMeasure = -1;
     cutApart = false;
-}
-
-void MeasureToExport::setID(int id_arg)
-{
-    id = id_arg;
+    id = measID;
+    firstTick = getMeasureData()->firstTickInMeasure( measID );
+    lastTick = getMeasureData()->lastTickInMeasure( measID );
 }
 
 // FIXME - used at all?
@@ -48,11 +46,10 @@ bool MeasureToExport::isSameAs(MeasureToExport& compareWith)
 
 // if a repetition is found, it is stored in the variables and returns true,
 // otherwise returns false
-bool MeasureToExport::findConsecutiveRepetition(std::vector<MeasureToExport>& measures, const int measureAmount,
+bool MeasureToExport::findConsecutiveRepetition(ptr_vector<MeasureToExport>& measures, const int measureAmount,
                                                 int& firstMeasureThatRepeats /*out*/, int& lastMeasureThatRepeats /*out*/,
                                                 int& firstMeasureRepeated /*out*/, int& lastMeasureRepeated /*out*/)
                                                 {
-    //similarMeasuresFoundLater
     
     // check if it works with first measure occurence of similar measures
     if(id+1<measureAmount and measures[id+1].firstSimilarMeasure == measures[id].firstSimilarMeasure+1 )
@@ -135,73 +132,119 @@ bool MeasureToExport::findConsecutiveRepetition(std::vector<MeasureToExport>& me
 bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
 {
     
-    // if these 2 measures don't even have the same number of notes, they're definitely not the same
-    if(
-       (checkMeasure.lastNote - checkMeasure.firstNote) != (lastNote - firstNote)
-       ) return false;
-    
-    
-    const int noteAmount = (checkMeasure.lastNote - checkMeasure.firstNote);
-    
-    
-    if(noteAmount<1) return false; //empty measure
-    
-    /*
-     if we get till there, the 2 measures have the same amount of notes.
-     to know whether they are truly identitcal, we need to compare note by note
-     we will match each notes from the first measure to the identical one in the second.
-     If ever one note failes to be matched, then the 2 measures are different.
-     */
-    int noteMatched_this[noteAmount];
-    int noteMatched_other[noteAmount];
-    for(int n=0; n<noteAmount; n++)
+    const int trackRefAmount = trackRef.size();
+    for(int tref=0; tref<trackRefAmount; tref++)
     {
-        noteMatched_this[n] = false;
-        noteMatched_other[n] = false;
-    }
-    
-    for(int checkNote_this=0; checkNote_this<noteAmount; checkNote_this++)
-    {
-        for(int checkNote_other=0; checkNote_other<noteAmount; checkNote_other++)
+        
+        const int my_first_note = trackRef[tref].firstNote;
+        const int my_last_note = trackRef[tref].lastNote;
+        const int his_first_note = checkMeasure.trackRef[tref].firstNote;
+        const int his_last_note = checkMeasure.trackRef[tref].lastNote;
+
+        assert( trackRef.size() == checkMeasure.trackRef.size() );
+        assertExpr( tref,<,(int)trackRef.size() );
+        assert( trackRef[tref].track == checkMeasure.trackRef[tref].track );
+        Track* track = trackRef[tref].track;
+        
+        // if these 2 measures don't even have the same number of notes, they're definitely not the same
+        if(
+           (his_last_note - his_first_note) != (my_last_note - my_first_note)
+           ) return false;
+        
+        
+        const int noteAmount = (his_last_note - his_first_note);
+        
+        
+        if(noteAmount<1) return false; //empty measure
+        
+        /*
+         if we get till there, the 2 measures have the same amount of notes.
+         to know whether they are truly identitcal, we need to compare note by note
+         we will match each notes from the first measure to the identical one in the second.
+         If ever one note failes to be matched, then the 2 measures are different.
+         */
+        int noteMatched_this[noteAmount];
+        int noteMatched_other[noteAmount];
+        for(int n=0; n<noteAmount; n++)
         {
-            if(noteMatched_other[checkNote_other]) continue; // this note was already matched
-            
-            // check start tick matches
-            if(track->getNoteStartInMidiTicks(checkMeasure.firstNote + checkNote_other) - checkMeasure.firstTick !=
-               track->getNoteStartInMidiTicks(firstNote + checkNote_this) - firstTick)
-            {
-                // they dont match, check the next one
-                continue;
-            }
-            
-            // check end tick matches
-            if(track->getNoteEndInMidiTicks(checkMeasure.firstNote + checkNote_other) - checkMeasure.firstTick !=
-               track->getNoteEndInMidiTicks(firstNote + checkNote_this) - firstTick)
-            {
-                // they dont match, check the next one
-                continue;
-            }
-            
-            // check pitch matches
-            if(track->getNotePitchID(checkMeasure.firstNote + checkNote_other) !=
-               track->getNotePitchID(firstNote + checkNote_this))
-            {
-                // they dont match, check the next one
-                continue;
-            }
-            
-            noteMatched_this[checkNote_this] = true;
-            noteMatched_other[checkNote_other] = true;
-            
-            
-        }//next
+            noteMatched_this[n] = false;
+            noteMatched_other[n] = false;
+        }
         
-        // we couldn't find a note in the other measure that matches this one
-        if(noteMatched_this[checkNote_this] == false) return false;
+        for(int checkNote_this=0; checkNote_this<noteAmount; checkNote_this++)
+        {
+            for(int checkNote_other=0; checkNote_other<noteAmount; checkNote_other++)
+            {
+                if(noteMatched_other[checkNote_other]) continue; // this note was already matched
+                
+                // check start tick matches
+                if(track->getNoteStartInMidiTicks(his_first_note + checkNote_other) - checkMeasure.firstTick !=
+                   track->getNoteStartInMidiTicks(my_first_note + checkNote_this) - firstTick)
+                {
+                    // they dont match, check the next one
+                    continue;
+                }
+                
+                // check end tick matches
+                if(track->getNoteEndInMidiTicks(his_first_note + checkNote_other) - checkMeasure.firstTick !=
+                   track->getNoteEndInMidiTicks(my_first_note + checkNote_this) - firstTick)
+                {
+                    // they dont match, check the next one
+                    continue;
+                }
+                
+                // check pitch matches
+                if(track->getNotePitchID(his_first_note + checkNote_other) !=
+                   track->getNotePitchID(my_first_note + checkNote_this))
+                {
+                    // they dont match, check the next one
+                    continue;
+                }
+                
+                noteMatched_this[checkNote_this] = true;
+                noteMatched_other[checkNote_other] = true;
+                
+                
+            }//next note
+            
+            // we couldn't find a note in the other measure that matches this one
+            if(noteMatched_this[checkNote_this] == false) return false;
+            
+        }//next note
         
-    }//next
+    } // next track reference
     
     return true;
+}
+
+int MeasureToExport::addTrackReference(const int firstNote, Track* track)
+{
+    MeasureTrackReference* newTrackRef = new MeasureTrackReference();
+    newTrackRef->track = track;
+    
+    // first note in measure (which is also last note of previous measure, that was set in last iteration of the for loop)
+    newTrackRef->firstNote = firstNote;
+
+    // find what the first, last and shortest note in current measure
+    const int noteAmount = track->getNoteAmount();
+    int note=firstNote;
+    for(; note<noteAmount; note++)
+    {
+        // stop when we're at next measure - it will be done in next measure iteration
+        if( track->getNoteStartInMidiTicks(note) >= lastTick ) break;
+        
+        const int currentNoteDuration = track->getNoteEndInMidiTicks(note) - track->getNoteStartInMidiTicks(note);
+        
+        if(currentNoteDuration <= 0)  continue; // skip malformed notes if any
+        if( currentNoteDuration < shortestDuration or shortestDuration==-1) shortestDuration = currentNoteDuration;
+        
+    }
+    
+    newTrackRef->lastNote = note; // ID of the last note in this measure (or actually, first note in NEXT measure?? FIXME)
+    
+    trackRef.push_back( newTrackRef );
+
+    return newTrackRef->lastNote;
 }
 
 #pragma mark -
@@ -216,68 +259,95 @@ LayoutElement::LayoutElement(LayoutElementType type_arg, int measure_arg)
     measure = measure_arg;
 }
 
-LayoutLine::LayoutLine(Track* parent)
+LayoutLine::LayoutLine()
 {
-    LayoutLine::parent = parent;
+    //LayoutLine::parent = parent;
     
+    /*
     editorMode = parent->graphics->editorMode;
     
     if(editorMode == GUITAR)
     {
         string_amount = parent->graphics->guitarEditor->tuning.size();
     }
+     */
+    
+    currentTrack = 0;
+    
+    // FIXME - proper implementation for multiple tracks
+    string_amount = getCurrentSequence()->getCurrentTrack()->graphics->guitarEditor->tuning.size();
+}
+
+// FIXME - awful
+int LayoutLine::getTrackAmount(ptr_vector<MeasureToExport>& measures)
+{
+    // FIXME - make proper implementation where it can vary from line to line
+    return measures[0].trackRef.size();
+}
+void LayoutLine::setCurrentTrack(const int n)
+{
+    currentTrack = n;
+}
+Track* LayoutLine::getTrack(ptr_vector<MeasureToExport>& measures)
+{
+    // FIXME - make proper implementation that will not crash if layout element 0 is not a normal measure...
+   // std::cout << "LayoutLine::getTrack, measure = " << layoutElements[0].measure << std::endl;
+   // if(layoutElements[0].measure != -1) return measures[layoutElements[0].measure].trackRef[currentTrack].track;
+    return measures[0].trackRef[currentTrack].track;
+}
+int LayoutLine::getFirstNote(ptr_vector<MeasureToExport>& measures, const int layoutElementID)
+{
+    return measures[layoutElements[layoutElementID].measure].trackRef[currentTrack].firstNote;
+}
+int LayoutLine::getLastNote(ptr_vector<MeasureToExport>& measures, const int layoutElementID)
+{
+    return measures[layoutElements[layoutElementID].measure].trackRef[currentTrack].lastNote;
 }
 
 #pragma mark -
 
-void generateMeasures(Track* track, std::vector<MeasureToExport>& measures)
+void generateMeasures(ptr_vector<Track>& tracks, ptr_vector<MeasureToExport>& measures)
 {
-    int note=0;
-    const int noteAmount = track->getNoteAmount();
+    //MeasureTrackReference
+    
+    const int trackAmount = tracks.size();
     const int measureAmount = getMeasureData()->getMeasureAmount();
-    // -------------------- gather measure information -------------------- 
-	for(int measure=0; measure<measureAmount; measure++)
-	{
-        measures.push_back( MeasureToExport() );
-		measures[measure].setID(measure);
-		
-		measures[measure].firstTick = getMeasureData()->firstTickInMeasure( measure );
-		measures[measure].lastTick = getMeasureData()->lastTickInMeasure( measure );
-		
-		// first note in measure (which is also last note of previous measure, that was set in last iteration of the for loop)
-		measures[measure].firstNote = note;
-		
-		// ------------------------------------ find what the first, last and shortest note in current measure --------------------------------------
-		// find what is the shortest note in this measure. this will help determine how big it must be made.
-		// to do this, iterate through notes, keeping the smallest length we find, stopping when we reach next measure
-		// this by the way finds where the measure begins and end, thus filling up 'measureFirstNote' and 'measureLastNote' variables.
-		for(; note<noteAmount; note++)
-		{
-			// stop when we're at next measure - it will be done in next measure iteration
-			if( track->getNoteStartInMidiTicks(note) >= measures[measure].lastTick ) break;
-			
-			const int currentNoteDuration = track->getNoteEndInMidiTicks(note) - track->getNoteStartInMidiTicks(note);
-			
-			if(currentNoteDuration <= 0)  continue; // skip malformed notes if any
-			if( currentNoteDuration < measures[measure].shortestDuration or measures[measure].shortestDuration==-1) measures[measure].shortestDuration = currentNoteDuration;
-			
-		}
-		
-		measures[measure].lastNote = note; // ID of the last note in this measure (or actually, first note in NEXT measure?? FIXME)
-	}    
+    
+    for(int tr=0; tr<trackAmount; tr++)
+    {
+        
+        Track* track = tracks.get(tr);
+        
+        // add measures
+        for(int measure=0; measure<measureAmount; measure++)
+        {
+             measures.push_back( new MeasureToExport(measure) );
+        }
+        
+        int note=0;
+        // give them track references
+        for(int measure=0; measure<measureAmount; measure++)
+        {
+            assertExpr(measure,<,measures.size());
+            note = measures[measure].addTrackReference(note, track);
+            
+            std::cout << "meas% " << (measures[measure].trackRef[0].track->getName().mb_str()) << std::endl;
+                
+        } // next measure
+    } // next track
 }
 
-void findSimilarMeasures(Track* track, std::vector<MeasureToExport>& measures)
+void findSimilarMeasures(ptr_vector<MeasureToExport>& measures)
 {
     const int measureAmount = getMeasureData()->getMeasureAmount();
     
     for(int measure=0; measure<measureAmount; measure++)
     {
-        measures[measure].track = track;
-        
         // check current measure against all previous measures to see if it is not a repetition
         for(int checkMeasure=0; checkMeasure<measure; checkMeasure++)
         {
+            assertExpr(measure,<,(int)measures.size());
+            assertExpr(checkMeasure,<,(int)measures.size());
             const bool isSameAs = measures[measure].calculateIfMeasureIsSameAs(measures[checkMeasure]);
             
             if(!isSameAs) continue;
@@ -288,7 +358,7 @@ void findSimilarMeasures(Track* track, std::vector<MeasureToExport>& measures)
     }//next
 }
 
-void generateOutputOrder(std::vector<LayoutElement>& layoutElements, std::vector<MeasureToExport>& measures, bool checkRepetitions_bool)
+void generateOutputOrder(std::vector<LayoutElement>& layoutElements, ptr_vector<MeasureToExport>& measures, bool checkRepetitions_bool)
 {
     const int measureAmount = getMeasureData()->getMeasureAmount();
     
@@ -395,6 +465,7 @@ void generateOutputOrder(std::vector<LayoutElement>& layoutElements, std::vector
                     
 					LayoutElement element(REPEATED_RIFF);
 					element.firstMeasure = firstMeasureThatRepeats;
+                    element.measure = firstMeasureThatRepeats;
 					element.lastMeasure = lastMeasureThatRepeats;
 					element.firstMeasureToRepeat = firstRepeatedMeasure;
 					element.lastMeasureToRepeat = lastRepeatedMeasure;
@@ -436,7 +507,7 @@ void generateOutputOrder(std::vector<LayoutElement>& layoutElements, std::vector
 	}//next measure
 }
 
-void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements, std::vector<MeasureToExport>& measures)
+void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements, ptr_vector<MeasureToExport>& measures)
 {
     // calculate approximative width of each element
     const int ticksPerBeat = getCurrentSequence()->ticksPerBeat();
@@ -472,7 +543,7 @@ void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements, std::v
     }        
 }
 
-void calculatePageLayout(std::vector<LayoutPage>& layoutPages, std::vector<LayoutElement>& layoutElements, Track* track)
+void calculatePageLayout(std::vector<LayoutPage>& layoutPages, std::vector<LayoutElement>& layoutElements)
 {
     const int layoutElementsAmount = layoutElements.size();
     
@@ -484,7 +555,7 @@ void calculatePageLayout(std::vector<LayoutPage>& layoutPages, std::vector<Layou
     int currentPage = 0;
     
     assertExpr(currentPage,<,(int)layoutPages.size());
-    layoutPages[currentPage].layoutLines.push_back( LayoutLine(track) );
+    layoutPages[currentPage].layoutLines.push_back( LayoutLine() );
     
     std::cout << "+ PAGE " << currentPage << std::endl;
     std::cout << "    + LINE " << currentLine << std::endl;
@@ -509,7 +580,7 @@ void calculatePageLayout(std::vector<LayoutPage>& layoutPages, std::vector<Layou
                 std::cout << "+ PAGE " << currentPage << std::endl;
             }
             assertExpr(currentPage,<,(int)layoutPages.size());
-            layoutPages[currentPage].layoutLines.push_back( LayoutLine(track) );
+            layoutPages[currentPage].layoutLines.push_back( LayoutLine() );
             std::cout << "    + LINE " << currentLine << std::endl;
         }
         assertExpr(currentLine,<,(int)layoutPages[currentPage].layoutLines.size());
@@ -520,18 +591,18 @@ void calculatePageLayout(std::vector<LayoutPage>& layoutPages, std::vector<Layou
     layoutPages[currentPage].layoutLines[currentLine].charWidth = totalLength;
 }
 
-void calculateLayoutElements(Track* track, const bool checkRepetitions_bool, std::vector<LayoutPage>& layoutPages, std::vector<MeasureToExport>& measures)
+void calculateLayoutElements(ptr_vector<Track>& track, const bool checkRepetitions_bool, std::vector<LayoutPage>& layoutPages, ptr_vector<MeasureToExport>& measures)
 {
     std::vector<LayoutElement> layoutElements;
     
     generateMeasures(track, measures);
-
+    
     // search for repeated measures if necessary
-	if(checkRepetitions_bool) findSimilarMeasures(track, measures);
+	if(checkRepetitions_bool) findSimilarMeasures(measures);
 	
 	generateOutputOrder(layoutElements, measures, checkRepetitions_bool);
     calculateRelativeLengths(layoutElements, measures);
-    calculatePageLayout(layoutPages, layoutElements, track);
+    calculatePageLayout(layoutPages, layoutElements);
 }
 
 

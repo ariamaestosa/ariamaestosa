@@ -30,7 +30,7 @@ namespace AriaMaestosa
 class TablaturePrintable : public AriaPrintable
 {
     std::vector<LayoutPage> layoutPages;
-    std::vector<MeasureToExport> measures;
+    ptr_vector<MeasureToExport> measures;
     
     int text_height;
     int text_height_half;
