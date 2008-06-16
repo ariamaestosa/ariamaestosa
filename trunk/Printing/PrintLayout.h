@@ -19,6 +19,7 @@
 #define _print_layout_h_
 
 #include <vector>
+#include "ptr_vector.h"
 #include "wx/wx.h"
 
 namespace AriaMaestosa
@@ -31,12 +32,31 @@ namespace AriaMaestosa
 int getRepetitionMinimalLength();
 void setRepetitionMinimalLength(const int newvalue);
 
+class MeasureTrackReference
+{
+public:
+    Track* track;
+    int firstNote, lastNote;
+};
+
 class MeasureToExport
 {
 public:
-	Track* track;
+	//Track* track;
 	
-	int firstTick, lastTick, firstNote, lastNote;
+    MeasureToExport(const int measID);
+    
+    // Finds the notes correcsponding to this measure
+    // in the given track and keep the reference.
+    // Returns the ID of the last note in this measure
+    int addTrackReference(const int firstNote, Track* track);
+    
+    // used when we print more than one track
+    // each track we print will have one entry here
+    // for each printed measure
+    ptr_vector<MeasureTrackReference> trackRef;
+    
+	int firstTick, lastTick;
 
 	// if this measure is later repeated and is not a repetition of a previous measure,
 	// contains ID of all later measures similar to this one
@@ -52,15 +72,11 @@ public:
 	// mostly used with repetitions (e.g. x4) to tell where the repetition starts
 	bool cutApart;
 	
-	MeasureToExport();
-	
-	void setID(int id_arg);
-	
 	bool isSameAs(MeasureToExport& compareWith);
 
 	// if a repetition is found, it is stored in the variables and returns true,
 	// otherwise returns false
-	bool findConsecutiveRepetition(std::vector<MeasureToExport>& measures, const int measureAmount,
+	bool findConsecutiveRepetition(ptr_vector<MeasureToExport>& measures, const int measureAmount,
 								   int& firstMeasureThatRepeats /*out*/, int& lastMeasureThatRepeats /*out*/,
 								   int& firstMeasureRepeated /*out*/, int& lastMeasureRepeated /*out*/);
 	
@@ -84,7 +100,7 @@ public:
 	
 	LayoutElementType type;
 	
-	int measure; // used in single measure mode
+	int measure;
 				 
 	// used in many-measure repetitions. the first 2 ones are the measures that repeat, the last 2 ones the measures being repeated
 	int firstMeasure, lastMeasure, firstMeasureToRepeat, lastMeasureToRepeat;
@@ -98,13 +114,21 @@ public:
 
 class LayoutLine
 {
+    int currentTrack;
 public:
-    Track* parent;
-    LayoutLine(Track* parent);
+    LayoutLine();
     
     int editorMode; // GUITAR, etc.
     
     int charWidth;
+    
+    // FIXME - the argument is weird
+    // find a better way to store the measure vector
+    int getTrackAmount(ptr_vector<MeasureToExport>& measures);
+    void setCurrentTrack(const int n);
+    Track* getTrack(ptr_vector<MeasureToExport>& measures);
+    int getFirstNote(ptr_vector<MeasureToExport>& measures, const int layoutElementID);
+    int getLastNote(ptr_vector<MeasureToExport>& measures, const int layoutElementID);
     
     // only relevant for tabs
     int string_amount;
@@ -118,7 +142,7 @@ public:
     std::vector<LayoutLine> layoutLines;
 };
 
-void calculateLayoutElements(Track* track, const bool checkRepetitions_bool, std::vector<LayoutPage>& layoutPages, std::vector<MeasureToExport>& mesaures);
+void calculateLayoutElements(ptr_vector<Track>& track, const bool checkRepetitions_bool, std::vector<LayoutPage>& layoutPages, ptr_vector<MeasureToExport>& mesaures);
 
 }
 

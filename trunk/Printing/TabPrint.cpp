@@ -21,7 +21,11 @@ TablaturePrintable::TablaturePrintable(Track* track, bool checkRepetitions_bool)
 {
 
     parent = track;
-    calculateLayoutElements(track, checkRepetitions_bool, layoutPages, measures);
+    ptr_vector<Track> tracks;
+    tracks.push_back(track);
+    calculateLayoutElements(tracks, checkRepetitions_bool, layoutPages, measures);
+    
+    tracks.clearWithoutDeleting();
     
     std::cout << "\nContains " << layoutPages.size() << " pages\n" << std::endl;
 }
@@ -53,6 +57,9 @@ int TablaturePrintable::getPageAmount()
 {
     return layoutPages.size();
 }
+
+// FIXME - move to a general tab printing file, not only for tabs
+// FIXME - make it support multiple tracks
 void TablaturePrintable::printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const int w, const int h)
 {
     dc.SetBackground(*wxWHITE_BRUSH);
@@ -97,7 +104,8 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
 {
     static const int line_width = 1;
     
-    Track* track = line.parent;
+    //Track* track = line.parent;
+    Track* track = line.getTrack(measures);
     
     // draw tab background
     dc.SetPen(  wxPen( wxColour(125,125,125), line_width ) );
@@ -144,6 +152,7 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
         else if(layoutElements[n].type == SINGLE_REPEATED_MEASURE or layoutElements[n].type == REPEATED_RIFF)
         {
             // FIXME - why do I cut apart the measure and not the layout element?
+            std::cout << "TABPRINT meas = " << layoutElements[n].measure << std::endl;
             if(measures[layoutElements[n].measure].cutApart)
 			{
                 // TODO...
@@ -183,10 +192,10 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
             dc.SetTextForeground( wxColour(0,0,0) );
             
 
-            const int firstNote = measures[layoutElements[n].measure].firstNote;
+            const int firstNote = line.getFirstNote(measures, n);
+            const int lastNote = line.getLastNote(measures, n);
             const int firstTick = measures[layoutElements[n].measure].firstTick;
             const int lastTick = measures[layoutElements[n].measure].lastTick;
-            const int lastNote = measures[layoutElements[n].measure].lastNote;
             
             for(int i=firstNote; i<lastNote; i++)
             {
