@@ -1,4 +1,6 @@
+#include "AriaCore.h"
 #include "Printing/PrintingBase.h"
+#include "GUI/MainFrame.h"
 #include "wx/wx.h"
 #include "wx/print.h"
 #include "wx/printdlg.h"
@@ -135,12 +137,20 @@ public:
 
 bool printResult(AriaPrintable* printable)
 {
+#ifdef __WXMAC__
+    // change window title so any generated PDF is given the right name
+    getMainFrame()->SetTitle(printable->getTitle());
+#endif
     
     QuickPrint myprint( printable );
     wxPrinter printer;
     
     if(!myprint.preparePrint()) return false;
     const bool success = printer.Print(NULL, &myprint, true /* show dialog */);
+
+#ifdef __WXMAC__
+    getMainFrame()->SetTitle(wxT("Aria Maestosa"));
+#endif
     
     if(!success) return false;
     

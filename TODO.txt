@@ -120,8 +120,6 @@ NOTE: sorry, this is very raw :)
 * crash when cancelling printing (wx bug?)
 - "rearrange selected notes" doesn't always work optimally
 
-+ when printing to tablature, and exporting to PDF, suggested name defaults to "aria maestosa" (wx limitation?)
-
 - what's up with glutInit? wxGlCanvas seems to call it. Crashes suse 10.1.
 - score : flat/sharp/natural signs tend to appear obscured (behind note stem if in a group... behind silence... etc.)
 + score editor - sharp of flat notes at time=0 have their sign hidden behind grey bar
