@@ -1,6 +1,9 @@
 #include "AriaCore.h"
 #include "Printing/PrintingBase.h"
 #include "GUI/MainFrame.h"
+#include "Midi/Track.h"
+#include "Midi/Sequence.h"
+
 #include "wx/wx.h"
 #include "wx/print.h"
 #include "wx/printdlg.h"
@@ -8,11 +11,6 @@
 
 namespace AriaMaestosa
 {
-
-/*
- * Shows a basic example of how to print stuff in wx.
- * Use the 'preview' feature here, actually printing this will take much of your ink ^^
- */
 
 
 class QuickPrint : public wxPrintout
@@ -160,8 +158,17 @@ bool printResult(AriaPrintable* printable)
 #pragma mark -
 
 // methods to be overriden if needed
-AriaPrintable::AriaPrintable()
+AriaPrintable::AriaPrintable(Track* track, bool checkRepetitions_bool)
 {
+    AriaPrintable::parent = track;
+    
+    ptr_vector<Track> tracks;
+    tracks.push_back(track);
+    calculateLayoutElements(tracks, checkRepetitions_bool, layoutPages, measures);
+    
+    tracks.clearWithoutDeleting();
+    
+    std::cout << "\nContains " << layoutPages.size() << " pages\n" << std::endl;
 }
 
 AriaPrintable::~AriaPrintable()
@@ -169,20 +176,79 @@ AriaPrintable::~AriaPrintable()
 }
 wxString AriaPrintable::getTitle()
 {
-    return wxT("Aria Maestosa printed score");
+    wxString song_title = parent->sequence->suggestTitle();
+    wxString track_title = parent->getName();
+    
+    wxString final_title;
+    
+    // give song title
+    if(song_title.IsSameAs(_("Untitled")))
+        final_title = _("Aria Maestosa song");
+    else
+        final_title = song_title;
+    
+    // give track name, if any
+    if(!track_title.IsSameAs(_("Untitled"))) final_title += (wxT(", ") + track_title);
+    
+    std::cout << "Title = " << final_title.mb_str() << std::endl;
+    return final_title;    
 }
 
 int AriaPrintable::getPageAmount()
 {
-    return 1;
+    return layoutPages.size();
 }
 bool AriaPrintable::portraitOrientation()
 {
+    // FIXME - any use??
     return true;
 }
+
+// FIXME - make it support multiple tracks
 void AriaPrintable::printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const int w, const int h)
 {
+    dc.SetBackground(*wxWHITE_BRUSH);
+    dc.Clear();
+    
+    dc.SetFont( wxFont(11,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL) );
+    
+    wxString label( getTitle() + wxT(", page ") );
+    label << pageNum;
+    dc.SetTextForeground( wxColour(0,0,0) );
+    dc.DrawText( label, x0, y0 );
+    
+    wxCoord txw, txh, descent, externalLeading;
+    dc.GetTextExtent(label, &txw, &txh, &descent, &externalLeading);
+    text_height = txh;
+    text_height_half = (int)round((float)text_height / 2.0);
+    
+    // -------------------- generate the tablature  -------------------- 
+    assertExpr(pageNum-1,<,(int)layoutPages.size());
+    const int lineAmount = layoutPages[pageNum-1].layoutLines.size();
+    
+    /*
+     the equivalent of 4 times "text_height" will not be printed with notation.
+     first : space for title at the top
+     second and third : space below title at top
+     fourth : space below the last line
+     */
+    
+    const float line_height = ((float)h - (float)text_height*4) / (float)maxLinesInPage;
+    
+    const int notation_area_origin_y = y0 + text_height*3;
+    for(int l=0; l<lineAmount; l++)
+    { 
+        const float line_y_from = notation_area_origin_y + line_height*l;
+        const float line_y_to = notation_area_origin_y + line_height*(l+0.6f);
+        
+        drawLine(layoutPages[pageNum-1].layoutLines[l], dc, x0, (int)round(line_y_from), x1, (int)round(line_y_to));
+    }
+    
 }
 
+void AriaPrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1)
+{
+    // should not be called, override in children
+}
 
 }

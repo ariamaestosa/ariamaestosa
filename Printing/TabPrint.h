@@ -29,21 +29,11 @@ namespace AriaMaestosa
     
 class TablaturePrintable : public AriaPrintable
 {
-    std::vector<LayoutPage> layoutPages;
-    ptr_vector<MeasureToExport> measures;
-    
-    int text_height;
-    int text_height_half;
-    
-    Track* parent;
-    
+    int string_amount;
 public:
     TablaturePrintable(Track* track_arg, bool checkRepetitions_bool_arg);
-    ~TablaturePrintable();
-    wxString getTitle();
-    int getPageAmount();
-    
-    void printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const int w, const int h);
+    virtual ~TablaturePrintable();
+
     void drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1);
 };
 

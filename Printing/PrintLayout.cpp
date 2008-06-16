@@ -273,9 +273,6 @@ LayoutLine::LayoutLine()
      */
     
     currentTrack = 0;
-    
-    // FIXME - proper implementation for multiple tracks
-    string_amount = getCurrentSequence()->getCurrentTrack()->graphics->guitarEditor->tuning.size();
 }
 
 // FIXME - awful
