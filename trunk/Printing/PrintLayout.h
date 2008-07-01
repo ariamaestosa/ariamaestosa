@@ -25,6 +25,7 @@
 namespace AriaMaestosa
 {
     class Track;
+    class AriaPrintable;
     
     static const int maxCharItemsPerLine = 45;
     static const int maxLinesInPage = 7;
@@ -115,8 +116,9 @@ public:
 class LayoutLine
 {
     int currentTrack;
+    AriaPrintable* printable;
 public:
-    LayoutLine();
+    LayoutLine(AriaPrintable* parent);
     
     int editorMode; // GUITAR, etc.
     
@@ -124,11 +126,13 @@ public:
     
     // FIXME - the argument is weird
     // find a better way to store the measure vector
-    int getTrackAmount(ptr_vector<MeasureToExport>& measures);
+    int getTrackAmount();
     void setCurrentTrack(const int n);
-    Track* getTrack(ptr_vector<MeasureToExport>& measures);
-    int getFirstNote(ptr_vector<MeasureToExport>& measures, const int layoutElementID);
-    int getLastNote(ptr_vector<MeasureToExport>& measures, const int layoutElementID);
+    Track* getTrack();
+    int getFirstNoteInElement(const int layoutElementID);
+    int getLastNoteInElement(const int layoutElementID);
+    
+    MeasureToExport& getMeasureForElement(const int layoutElementID);
     
     std::vector<LayoutElement> layoutElements;
 };

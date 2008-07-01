@@ -27,11 +27,11 @@
 namespace AriaMaestosa
 {
     
-class TablaturePrintable : public AriaPrintable
+class TablaturePrintable : public EditorPrintable
 {
     int string_amount;
 public:
-    TablaturePrintable(Track* track_arg, bool checkRepetitions_bool_arg);
+    TablaturePrintable(Track* track_arg);
     virtual ~TablaturePrintable();
 
     void drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1);

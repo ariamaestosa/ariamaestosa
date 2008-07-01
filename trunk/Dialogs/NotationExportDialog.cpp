@@ -236,14 +236,14 @@ wxString askForSavePath()
 void completeExport(bool accepted)
 {
 	if(!accepted) return;
-    
     if(currentSequence == NULL) currentSequence = currentTrack->sequence;
 
+    AriaPrintable notationPrint(currentSequence);
+    
 	// we want to export the entire song
 	if(currentTrack == NULL)
 	{
-        // NOT YET SUPPORTED
-		/*
+
 		// iterate through all the the tracks of the sequence, only consider those that are visible and not muted
 		const int track_amount = currentSequence->getTrackAmount();
 		for(int n=0; n<track_amount; n++)
@@ -256,48 +256,23 @@ void completeExport(bool accepted)
 				continue;
 			
 			std::cout << "Generating notation for " << track->getName() << std::endl;
-			const int mode = track->graphics->editorMode;
-			
-			if( mode == GUITAR )
-			{
-				//TablatureExporter exporter;
-				//exporter.exportTablature( currentTrack, file, checkRepetitions_bool );
-                
-                TablaturePrintable tabPrint( currentTrack, checkRepetitions_bool );
-                if(!printResult(&tabPrint))
-                {
-                    std::cout << "printing did not complete successfully" << std::endl;
-                }
-                std::cout << "printing tablature done." << std::endl;
-				//exportTablature( track, file );
-			}
-			else
-			{
-				std::cout << "unsupported view"	<< std::endl;
-			}
-
-		}// next track
-        */
+            
+            notationPrint.addTrack( track, track->graphics->editorMode );
+            
+        }// next track
+        
+        
 	}
 	// we want to export a single track
 	else
 	{
-		const int mode = currentTrack->graphics->editorMode;
-		
-		if( mode == GUITAR )
-		{
-            TablaturePrintable tabPrint( currentTrack, checkRepetitions_bool );
-            if(!printResult(&tabPrint))
-            {
-                std::cout << "error while printing" << std::endl;
-            }
-		}
-		else
-		{
-			std::cout << "unsupported view"	<< std::endl;
-		}
-		
+        notationPrint.addTrack( currentTrack, currentTrack->graphics->editorMode );        
 	}
+    
+    notationPrint.calculateLayout( checkRepetitions_bool );
+    
+    if(!printResult(&notationPrint))
+        std::cerr << "error while printing" << std::endl;
 	
 }
 

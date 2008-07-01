@@ -26,17 +26,37 @@ namespace AriaMaestosa
 {
     class Track;
     
+class EditorPrintable
+{
+public:
+        EditorPrintable();
+        virtual ~EditorPrintable();
+        virtual void drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1);
+};
+    
 class AriaPrintable
 {
+    friend class AriaMaestosa::LayoutLine;
 protected:
-    Track* parent;
+    ptr_vector<Track> tracks;
+    ptr_vector<EditorPrintable> editorPrintables;
+    
     std::vector<LayoutPage> layoutPages;
     ptr_vector<MeasureToExport> measures;
     
+    Sequence* sequence;
+public:
+    // ---------------------------------------
+    // global info for printables, read-only
+    // FIXME - find cleaner way
     int text_height;
     int text_height_half;
-public:
-    AriaPrintable(Track* parent, bool checkRepetitions_bool);
+    // ---------------------------------------
+    
+    AriaPrintable(Sequence* parent);
+    void addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */);
+    void calculateLayout(bool checkRepetitions_bool);
+    
     virtual ~AriaPrintable();
     wxString getTitle();
     int getPageAmount();
@@ -44,8 +64,9 @@ public:
 
     bool portraitOrientation();
     
-    virtual void drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1);
 };
+
+AriaPrintable* getCurrentPrintable();
 
 bool printResult(AriaPrintable* printable);
     

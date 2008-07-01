@@ -17,7 +17,7 @@ namespace AriaMaestosa
 {
     
     
-TablaturePrintable::TablaturePrintable(Track* track, bool checkRepetitions_bool) : AriaPrintable(track, checkRepetitions_bool)
+TablaturePrintable::TablaturePrintable(Track* track) : EditorPrintable()
 {
     string_amount = track->graphics->guitarEditor->tuning.size();
 }
@@ -30,8 +30,7 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
 {
     static const int line_width = 1;
     
-    //Track* track = line.parent;
-    Track* track = line.getTrack(measures);
+    Track* track = line.getTrack();
     
     // draw tab background
     dc.SetPen(  wxPen( wxColour(125,125,125), line_width ) );
@@ -77,18 +76,19 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
         else if(layoutElements[n].type == SINGLE_REPEATED_MEASURE or layoutElements[n].type == REPEATED_RIFF)
         {
             // FIXME - why do I cut apart the measure and not the layout element?
-            std::cout << "TABPRINT meas = " << layoutElements[n].measure << std::endl;
+            /*
             if(measures[layoutElements[n].measure].cutApart)
 			{
                 // TODO...
                 //dc.SetPen(  wxPen( wxColour(0,0,0), line_width*4 ) );
                 //dc.DrawLine( meas_x_start, y0, meas_x_start, y1);
 			}
-			
+			*/
+            
 			wxString message;
 			if(layoutElements[n].type == SINGLE_REPEATED_MEASURE)
 			{
-				message = to_wxString(measures[layoutElements[n].measure].firstSimilarMeasure+1);
+				message = to_wxString(/*measures[layoutElements[n].measure]*/ line.getMeasureForElement(n).firstSimilarMeasure+1);
 			}
 			else if(layoutElements[n].type == REPEATED_RIFF)
 			{
@@ -97,30 +97,30 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
 				to_wxString(layoutElements[n].lastMeasureToRepeat+1);
 			}
             
-            dc.DrawText( message, meas_x_start + widthOfAChar/2, (y0+y1)/2-text_height_half );
+            dc.DrawText( message, meas_x_start + widthOfAChar/2, (y0+y1)/2 - getCurrentPrintable()->text_height_half );
         }
         // ****** play again
         else if(layoutElements[n].type == PLAY_MANY_TIMES)
         {
             wxString label(wxT("X"));
             label << layoutElements[n].amountOfTimes;
-            dc.DrawText( label, meas_x_start + widthOfAChar/2, (y0+y1)/2-text_height_half );
+            dc.DrawText( label, meas_x_start + widthOfAChar/2, (y0+y1)/2 - getCurrentPrintable()->text_height_half );
         }
         // ****** normal measure
         else if(layoutElements[n].type == SINGLE_MEASURE)
         {  
             // draw measure ID
             wxString measureLabel;
-            measureLabel << (measures[layoutElements[n].measure].id+1);
-            dc.DrawText( measureLabel, meas_x_start - widthOfAChar/4, y0 - text_height*1.4 );
+            measureLabel << (line.getMeasureForElement(n).id+1);
+            dc.DrawText( measureLabel, meas_x_start - widthOfAChar/4, y0 - getCurrentPrintable()->text_height*1.4 );
             
             dc.SetTextForeground( wxColour(0,0,0) );
             
 
-            const int firstNote = line.getFirstNote(measures, n);
-            const int lastNote = line.getLastNote(measures, n);
-            const int firstTick = measures[layoutElements[n].measure].firstTick;
-            const int lastTick = measures[layoutElements[n].measure].lastTick;
+            const int firstNote = line.getFirstNoteInElement(n);
+            const int lastNote = line.getLastNoteInElement(n);
+            const int firstTick = line.getMeasureForElement(n).firstTick;
+            const int lastTick = line.getMeasureForElement(n).lastTick;
             
             for(int i=firstNote; i<lastNote; i++)
             {
@@ -135,7 +135,7 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
                 // substract from width to leave some space on the right (coordinate is from the left of the text string so we need extra space on the right)
                 // if fret number is greater than 9, the string will have two characters so we need to recenter it a bit more
                 const int drawX = nratio * (mesa_w-widthOfAChar*1.5) + meas_x_start + (fret > 9 ? widthOfAChar/4 : widthOfAChar/2);
-                const int drawY = y0 + stringHeight*string - text_height_half*0.8;
+                const int drawY = y0 + stringHeight*string - getCurrentPrintable()->text_height_half*0.8;
                 wxString label = to_wxString(fret);
                 
                 dc.DrawText( label, drawX, drawY );
