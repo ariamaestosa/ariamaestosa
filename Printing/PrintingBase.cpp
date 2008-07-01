@@ -1,5 +1,6 @@
 #include "AriaCore.h"
 #include "Printing/PrintingBase.h"
+#include "Printing/TabPrint.h"
 #include "GUI/MainFrame.h"
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
@@ -157,27 +158,47 @@ bool printResult(AriaPrintable* printable)
 
 #pragma mark -
 
-// methods to be overriden if needed
-AriaPrintable::AriaPrintable(Track* track, bool checkRepetitions_bool)
+AriaPrintable* currentPrintable = NULL;
+
+AriaPrintable* getCurrentPrintable()
 {
-    AriaPrintable::parent = track;
-    
-    ptr_vector<Track> tracks;
-    tracks.push_back(track);
-    calculateLayoutElements(tracks, checkRepetitions_bool, layoutPages, measures);
-    
-    tracks.clearWithoutDeleting();
-    
-    std::cout << "\nContains " << layoutPages.size() << " pages\n" << std::endl;
+    assert(currentPrintable != NULL);
+    return currentPrintable;
 }
 
+AriaPrintable::AriaPrintable(Sequence* parent)
+{
+    sequence = parent;
+    currentPrintable = this;
+}
 AriaPrintable::~AriaPrintable()
 {
+    tracks.clearWithoutDeleting();
+    currentPrintable = NULL;
+}
+
+void AriaPrintable::addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */)
+{
+    if(mode == GUITAR)
+    {
+        editorPrintables.push_back(new TablaturePrintable(track));   
+    }
+    else
+    {
+        std::cerr << "AriaPrintable::addTrack : mode " << mode << " not supported for printing" << std::endl;
+        return;
+    }
+    tracks.push_back(track);
+}
+void AriaPrintable::calculateLayout(bool checkRepetitions_bool)
+{
+    calculateLayoutElements(tracks, checkRepetitions_bool, layoutPages, measures);
 }
 wxString AriaPrintable::getTitle()
 {
-    wxString song_title = parent->sequence->suggestTitle();
-    wxString track_title = parent->getName();
+    wxString song_title = sequence->suggestTitle();
+    wxString track_title;
+    if(tracks.size()==1) tracks[0].getName();
     
     wxString final_title;
     
@@ -188,7 +209,7 @@ wxString AriaPrintable::getTitle()
         final_title = song_title;
     
     // give track name, if any
-    if(!track_title.IsSameAs(_("Untitled"))) final_title += (wxT(", ") + track_title);
+    if(!track_title.IsSameAs(_("Untitled")) and track_title.Length()>0) final_title += (wxT(", ") + track_title);
     
     std::cout << "Title = " << final_title.mb_str() << std::endl;
     return final_title;    
@@ -204,9 +225,11 @@ bool AriaPrintable::portraitOrientation()
     return true;
 }
 
-// FIXME - make it support multiple tracks
 void AriaPrintable::printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const int w, const int h)
 {
+    // FIXME - make it support multiple tracks
+    EditorPrintable* printEngine = editorPrintables.get(0);
+    
     dc.SetBackground(*wxWHITE_BRUSH);
     dc.Clear();
     
@@ -241,14 +264,16 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc, const int x0, const i
         const float line_y_from = notation_area_origin_y + line_height*l;
         const float line_y_to = notation_area_origin_y + line_height*(l+0.6f);
         
-        drawLine(layoutPages[pageNum-1].layoutLines[l], dc, x0, (int)round(line_y_from), x1, (int)round(line_y_to));
+        printEngine->drawLine(layoutPages[pageNum-1].layoutLines[l], dc, x0, (int)round(line_y_from), x1, (int)round(line_y_to));
     }
     
 }
 
-void AriaPrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1)
-{
-    // should not be called, override in children
-}
+
+
+// do not call, override in children
+EditorPrintable::EditorPrintable(){}
+EditorPrintable::~EditorPrintable(){}
+void EditorPrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1){}
 
 }

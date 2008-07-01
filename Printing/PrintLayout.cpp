@@ -259,46 +259,37 @@ LayoutElement::LayoutElement(LayoutElementType type_arg, int measure_arg)
     measure = measure_arg;
 }
 
-LayoutLine::LayoutLine()
+LayoutLine::LayoutLine(AriaPrintable* parent)
 {
-    //LayoutLine::parent = parent;
-    
-    /*
-    editorMode = parent->graphics->editorMode;
-    
-    if(editorMode == GUITAR)
-    {
-        string_amount = parent->graphics->guitarEditor->tuning.size();
-    }
-     */
-    
+    printable = parent;
     currentTrack = 0;
 }
 
-// FIXME - awful
-int LayoutLine::getTrackAmount(ptr_vector<MeasureToExport>& measures)
+int LayoutLine::getTrackAmount()
 {
     // FIXME - make proper implementation where it can vary from line to line
-    return measures[0].trackRef.size();
+    return printable->measures[0].trackRef.size();
 }
 void LayoutLine::setCurrentTrack(const int n)
 {
     currentTrack = n;
 }
-Track* LayoutLine::getTrack(ptr_vector<MeasureToExport>& measures)
+Track* LayoutLine::getTrack()
 {
     // FIXME - make proper implementation that will not crash if layout element 0 is not a normal measure...
-   // std::cout << "LayoutLine::getTrack, measure = " << layoutElements[0].measure << std::endl;
-   // if(layoutElements[0].measure != -1) return measures[layoutElements[0].measure].trackRef[currentTrack].track;
-    return measures[0].trackRef[currentTrack].track;
+    return printable->measures[0].trackRef[currentTrack].track;
 }
-int LayoutLine::getFirstNote(ptr_vector<MeasureToExport>& measures, const int layoutElementID)
+int LayoutLine::getFirstNoteInElement(const int layoutElementID)
 {
-    return measures[layoutElements[layoutElementID].measure].trackRef[currentTrack].firstNote;
+    return getMeasureForElement(layoutElementID).trackRef[currentTrack].firstNote;
 }
-int LayoutLine::getLastNote(ptr_vector<MeasureToExport>& measures, const int layoutElementID)
+int LayoutLine::getLastNoteInElement(const int layoutElementID)
 {
-    return measures[layoutElements[layoutElementID].measure].trackRef[currentTrack].lastNote;
+    return getMeasureForElement(layoutElementID).trackRef[currentTrack].lastNote;
+}
+MeasureToExport& LayoutLine::getMeasureForElement(const int layoutElementID)
+{
+    return printable->measures[layoutElements[layoutElementID].measure];
 }
 
 #pragma mark -
@@ -552,7 +543,7 @@ void calculatePageLayout(std::vector<LayoutPage>& layoutPages, std::vector<Layou
     int currentPage = 0;
     
     assertExpr(currentPage,<,(int)layoutPages.size());
-    layoutPages[currentPage].layoutLines.push_back( LayoutLine() );
+    layoutPages[currentPage].layoutLines.push_back( LayoutLine(getCurrentPrintable()) );
     
     std::cout << "+ PAGE " << currentPage << std::endl;
     std::cout << "    + LINE " << currentLine << std::endl;
@@ -577,7 +568,7 @@ void calculatePageLayout(std::vector<LayoutPage>& layoutPages, std::vector<Layou
                 std::cout << "+ PAGE " << currentPage << std::endl;
             }
             assertExpr(currentPage,<,(int)layoutPages.size());
-            layoutPages[currentPage].layoutLines.push_back( LayoutLine() );
+            layoutPages[currentPage].layoutLines.push_back( LayoutLine(getCurrentPrintable()) );
             std::cout << "    + LINE " << currentLine << std::endl;
         }
         assertExpr(currentLine,<,(int)layoutPages[currentPage].layoutLines.size());
