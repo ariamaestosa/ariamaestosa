@@ -27,8 +27,8 @@ namespace AriaMaestosa
     class Track;
     class AriaPrintable;
     
-    static const int maxCharItemsPerLine = 45;
-    static const int maxLinesInPage = 7;
+    static const int maxCharItemsPerLine = 52;
+    static const int maxLinesInPage = 10;
     
 int getRepetitionMinimalLength();
 void setRepetitionMinimalLength(const int newvalue);

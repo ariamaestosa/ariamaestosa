@@ -251,7 +251,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc, const int x0, const i
     dc.SetBackground(*wxWHITE_BRUSH);
     dc.Clear();
     
-    dc.SetFont( wxFont(11,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL) );
+    dc.SetFont( wxFont(9,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL) );
     
     wxString label( getTitle() + wxT(", page ") );
     label << pageNum;
@@ -265,9 +265,8 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc, const int x0, const i
     
     // -------------------- generate the tablature  -------------------- 
     
+    float y_from = y0 + text_height*3;
     
-    const int notation_area_origin_y = y0 + text_height*3;
-    float y_from = notation_area_origin_y;
     for(int l=0; l<lineAmount; l++)
     { 
         float y_to = y_from + page.layoutLines[l].getTrackAmount()*track_height;
@@ -286,6 +285,6 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc, const int x0, const i
 // do not call, override in children
 EditorPrintable::EditorPrintable(){}
 EditorPrintable::~EditorPrintable(){}
-void EditorPrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1){}
+void EditorPrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const bool draw_m_num){}
 
 }
