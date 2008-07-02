@@ -120,8 +120,6 @@ class LayoutLine
 public:
     LayoutLine(AriaPrintable* parent);
     
-    int editorMode; // GUITAR, etc.
-    
     int charWidth;
     
     // FIXME - the argument is weird
@@ -131,6 +129,8 @@ public:
     Track* getTrack();
     int getFirstNoteInElement(const int layoutElementID);
     int getLastNoteInElement(const int layoutElementID);
+    
+    void printYourself(wxDC& dc, const int x0, const int y0, const int x1, const int y1);
     
     MeasureToExport& getMeasureForElement(const int layoutElementID);
     

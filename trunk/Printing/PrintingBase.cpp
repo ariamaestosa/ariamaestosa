@@ -227,8 +227,26 @@ bool AriaPrintable::portraitOrientation()
 
 void AriaPrintable::printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const int w, const int h)
 {
-    // FIXME - make it support multiple tracks
-    EditorPrintable* printEngine = editorPrintables.get(0);
+    assertExpr(pageNum-1,<,(int)layoutPages.size());
+    LayoutPage& page = layoutPages[pageNum-1];
+
+    const int lineAmount = page.layoutLines.size();
+    
+    int totalTrackAmount = 0;
+    for(int l=0; l<lineAmount; l++)
+    {
+        totalTrackAmount += page.layoutLines[l].getTrackAmount();
+    }
+
+    
+    /*
+     the equivalent of 4 times "text_height" will not be printed with notation.
+     first : space for title at the top
+     second and third : space below title at top
+     fourth : space below the last line
+     */
+    
+    const float track_height = ( (float)h - (float)text_height*4 ) / (float) std::max(totalTrackAmount, maxLinesInPage);
     
     dc.SetBackground(*wxWHITE_BRUSH);
     dc.Clear();
@@ -246,25 +264,19 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc, const int x0, const i
     text_height_half = (int)round((float)text_height / 2.0);
     
     // -------------------- generate the tablature  -------------------- 
-    assertExpr(pageNum-1,<,(int)layoutPages.size());
-    const int lineAmount = layoutPages[pageNum-1].layoutLines.size();
     
-    /*
-     the equivalent of 4 times "text_height" will not be printed with notation.
-     first : space for title at the top
-     second and third : space below title at top
-     fourth : space below the last line
-     */
-    
-    const float line_height = ((float)h - (float)text_height*4) / (float)maxLinesInPage;
     
     const int notation_area_origin_y = y0 + text_height*3;
+    float y_from = notation_area_origin_y;
     for(int l=0; l<lineAmount; l++)
     { 
-        const float line_y_from = notation_area_origin_y + line_height*l;
-        const float line_y_to = notation_area_origin_y + line_height*(l+0.6f);
+        float y_to = y_from + page.layoutLines[l].getTrackAmount()*track_height;
+        //const float line_y_from = notation_area_origin_y + line_height*l;
+        //const float line_y_to = notation_area_origin_y + line_height*(l+1);
         
-        printEngine->drawLine(layoutPages[pageNum-1].layoutLines[l], dc, x0, (int)round(line_y_from), x1, (int)round(line_y_to));
+        page.layoutLines[l].printYourself(dc, x0, (int)round(y_from), x1, (int)round(y_to));
+        
+        y_from = y_to;
     }
     
 }
