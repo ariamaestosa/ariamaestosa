@@ -306,7 +306,16 @@ void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x
     
     for(int n=0; n<trackAmount; n++)
     {
-        printable->editorPrintables.get(currentTrack)->drawLine(*this, dc, x0, y0+n*track_height, x1, y0+(n+0.6f)*track_height);
+        // draw vertical grey lines to show these measures belong toghether
+        if(n>1)
+        {
+            dc.SetPen(  wxPen( wxColour(150,150,150), 3 ) );
+            dc.DrawLine( x0, y0, x0, y1);
+            dc.DrawLine( x1, y0, x1, y1);
+        }
+        
+        setCurrentTrack(n);
+        printable->editorPrintables.get(currentTrack)->drawLine(*this, dc, x0, y0+n*track_height, x1, y0+(n+0.6f)*track_height, n==0);
     }
 }
 
@@ -562,8 +571,10 @@ void calculatePageLayout(std::vector<LayoutPage>& layoutPages, std::vector<Layou
     assertExpr(currentPage,<,(int)layoutPages.size());
     layoutPages[currentPage].layoutLines.push_back( LayoutLine(getCurrentPrintable()) );
     
-    std::cout << "+ PAGE " << currentPage << std::endl;
-    std::cout << "    + LINE " << currentLine << std::endl;
+    //std::cout << "+ PAGE " << currentPage << std::endl;
+    //std::cout << "    + LINE " << currentLine << std::endl;
+    
+    int trackAmount = 0;
     
     for(int n=0; n<layoutElementsAmount; n++)
     {
@@ -572,21 +583,23 @@ void calculatePageLayout(std::vector<LayoutPage>& layoutPages, std::vector<Layou
             // too much stuff on current line, switch to another line
             layoutPages[currentPage].layoutLines[currentLine].charWidth = totalLength;
             totalLength = 0;
+            trackAmount += layoutPages[currentPage].layoutLines[currentLine].getTrackAmount();
             currentLine++;
             assertExpr(currentPage,<,(int)layoutPages.size());
             
             // check if we need to switch to another page
-            if((int)layoutPages[currentPage].layoutLines.size() == maxLinesInPage)
+            if(trackAmount == maxLinesInPage)
             {
                 // too many lines on page, switch to another page
                 currentLine = 0;
                 currentPage++;
                 layoutPages.push_back( LayoutPage() );
-                std::cout << "+ PAGE " << currentPage << std::endl;
+                trackAmount = 0;
+                //std::cout << "+ PAGE " << currentPage << std::endl;
             }
             assertExpr(currentPage,<,(int)layoutPages.size());
             layoutPages[currentPage].layoutLines.push_back( LayoutLine(getCurrentPrintable()) );
-            std::cout << "    + LINE " << currentLine << std::endl;
+            //std::cout << "    + LINE " << currentLine << std::endl;
         }
         assertExpr(currentLine,<,(int)layoutPages[currentPage].layoutLines.size());
         layoutPages[currentPage].layoutLines[currentLine].layoutElements.push_back(layoutElements[n]);

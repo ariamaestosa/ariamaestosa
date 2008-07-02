@@ -26,7 +26,7 @@ TablaturePrintable::~TablaturePrintable()
 {
 }
 
-void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1)
+void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1, bool show_measure_number)
 {
     static const int line_width = 1;
     
@@ -88,7 +88,7 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
 			wxString message;
 			if(layoutElements[n].type == SINGLE_REPEATED_MEASURE)
 			{
-				message = to_wxString(/*measures[layoutElements[n].measure]*/ line.getMeasureForElement(n).firstSimilarMeasure+1);
+				message = to_wxString(line.getMeasureForElement(n).firstSimilarMeasure+1);
 			}
 			else if(layoutElements[n].type == REPEATED_RIFF)
 			{
@@ -110,13 +110,16 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
         else if(layoutElements[n].type == SINGLE_MEASURE)
         {  
             // draw measure ID
-            wxString measureLabel;
-            measureLabel << (line.getMeasureForElement(n).id+1);
-            dc.DrawText( measureLabel, meas_x_start - widthOfAChar/4, y0 - getCurrentPrintable()->text_height*1.4 );
+            if(show_measure_number)
+            {
+                wxString measureLabel;
+                measureLabel << (line.getMeasureForElement(n).id+1);
+                dc.DrawText( measureLabel, meas_x_start - widthOfAChar/4, y0 - getCurrentPrintable()->text_height*1.4 );
+            }
             
             dc.SetTextForeground( wxColour(0,0,0) );
             
-
+            
             const int firstNote = line.getFirstNoteInElement(n);
             const int lastNote = line.getLastNoteInElement(n);
             const int firstTick = line.getMeasureForElement(n).firstTick;
