@@ -268,7 +268,8 @@ LayoutLine::LayoutLine(AriaPrintable* parent)
 int LayoutLine::getTrackAmount()
 {
     // FIXME - make proper implementation where it can vary from line to line
-    return printable->measures[0].trackRef.size();
+    // if some lines are empty or identical
+    return printable->tracks.size();
 }
 void LayoutLine::setCurrentTrack(const int n)
 {
@@ -276,8 +277,9 @@ void LayoutLine::setCurrentTrack(const int n)
 }
 Track* LayoutLine::getTrack()
 {
-    // FIXME - make proper implementation that will not crash if layout element 0 is not a normal measure...
-    return printable->measures[0].trackRef[currentTrack].track;
+    assertExpr(currentTrack,>=,0);
+    assertExpr(currentTrack,<,printable->tracks.size());
+    return printable->tracks.get(currentTrack);
 }
 int LayoutLine::getFirstNoteInElement(const int layoutElementID)
 {
@@ -292,12 +294,26 @@ MeasureToExport& LayoutLine::getMeasureForElement(const int layoutElementID)
     return printable->measures[layoutElements[layoutElementID].measure];
 }
 
+void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x1, const int y1)
+{
+    assertExpr(currentTrack,>=,0);
+    assertExpr(currentTrack,<,printable->editorPrintables.size());
+    
+    const int trackAmount = getTrackAmount();
+    
+    const float height = (float)(y1 - y0) * ( trackAmount>1 ? 0.9f : 1.0f);
+    const float track_height = height / trackAmount;
+    
+    for(int n=0; n<trackAmount; n++)
+    {
+        printable->editorPrintables.get(currentTrack)->drawLine(*this, dc, x0, y0+n*track_height, x1, y0+(n+0.6f)*track_height);
+    }
+}
+
 #pragma mark -
 
 void generateMeasures(ptr_vector<Track>& tracks, ptr_vector<MeasureToExport>& measures)
 {
-    //MeasureTrackReference
-    
     const int trackAmount = tracks.size();
     const int measureAmount = getMeasureData()->getMeasureAmount();
     
@@ -533,6 +549,7 @@ void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements, ptr_ve
 
 void calculatePageLayout(std::vector<LayoutPage>& layoutPages, std::vector<LayoutElement>& layoutElements)
 {
+    // FIXME - add support for printng multiple tracks
     const int layoutElementsAmount = layoutElements.size();
     
     // lay out in lines and pages
@@ -558,7 +575,7 @@ void calculatePageLayout(std::vector<LayoutPage>& layoutPages, std::vector<Layou
             currentLine++;
             assertExpr(currentPage,<,(int)layoutPages.size());
             
-            // ccheck if we need to switch to another page
+            // check if we need to switch to another page
             if((int)layoutPages[currentPage].layoutLines.size() == maxLinesInPage)
             {
                 // too many lines on page, switch to another page

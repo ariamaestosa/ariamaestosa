@@ -38,9 +38,7 @@ class AriaPrintable
 {
     friend class AriaMaestosa::LayoutLine;
 protected:
-    ptr_vector<Track> tracks;
-    ptr_vector<EditorPrintable> editorPrintables;
-    
+
     std::vector<LayoutPage> layoutPages;
     ptr_vector<MeasureToExport> measures;
     
@@ -51,6 +49,9 @@ public:
     // FIXME - find cleaner way
     int text_height;
     int text_height_half;
+    
+    ptr_vector<Track> tracks;
+    ptr_vector<EditorPrintable> editorPrintables;
     // ---------------------------------------
     
     AriaPrintable(Sequence* parent);
