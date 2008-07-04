@@ -30,7 +30,7 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
 {
     Track* track = line.getTrack();
     
-    // draw tab background
+    // draw tab background (guitar strings)
     dc.SetPen(  wxPen( wxColour(125,125,125), 1 ) );
     
     const float stringHeight = (float)(y1 - y0) / (float)(string_amount-1);
@@ -40,11 +40,6 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
         const int y = (int)round(y0 + stringHeight*s);
         dc.DrawLine(x0, y, x1, y);
     }
-    
-    //std::vector<LayoutElement>& layoutElements = line.layoutElements;
-    
-    //const int layoutElementsAmount = layoutElements.size();
-    
     
     beginLine(&dc, &line, x0, y0, x1, y1, show_measure_number);
     
@@ -73,9 +68,8 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
             
             if(fret < 0)  dc.SetTextForeground( wxColour(0,0,0) );
         }
-        // }
         
-}//next element
+    }//next element
 }
 
 
