@@ -251,22 +251,40 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc, const int x0, const i
     dc.SetBackground(*wxWHITE_BRUSH);
     dc.Clear();
     
-    dc.SetFont( wxFont(9,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL) );
+    // draw title
+    wxString label = getTitle();
     
-    wxString label( getTitle() + wxT(", page ") );
-    label << pageNum;
+    int title_x = x0;
+    
+    if(pageNum == 1)
+    {
+        // on page one make title big and centered
+        dc.SetFont( wxFont(13,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD) );
+        wxCoord txw, txh, descent, externalLeading;
+        dc.GetTextExtent(label, &txw, &txh, &descent, &externalLeading);
+        title_x = (x0+x1)/2 - txw/2;
+    }
+    else
+    {
+        // on other pages, repeat the title in small font, not centered, with page number
+        label += wxT(", page ");
+        label << pageNum;
+        dc.SetFont( wxFont(9,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL) );
+    }
+
     dc.SetTextForeground( wxColour(0,0,0) );
-    dc.DrawText( label, x0, y0 );
+    dc.DrawText( label, title_x, y0 );
     
+    // set font we will use and get info about it
+    dc.SetFont( wxFont(9,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL) );
+
     wxCoord txw, txh, descent, externalLeading;
     dc.GetTextExtent(label, &txw, &txh, &descent, &externalLeading);
     text_height = txh;
     text_height_half = (int)round((float)text_height / 2.0);
     
     // ask all EditorPrintables to render their part
-    
     float y_from = y0 + text_height*3;
-    
     for(int l=0; l<lineAmount; l++)
     { 
         float y_to = y_from + page.layoutLines[l].getTrackAmount()*track_height;

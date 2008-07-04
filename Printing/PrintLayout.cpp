@@ -323,8 +323,8 @@ void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x
         if(n>1)
         {
             dc.SetPen(  wxPen( wxColour(150,150,150), 3 ) );
-            dc.DrawLine( x0, y0, x0, y1);
-            dc.DrawLine( x1, y0, x1, y1);
+            dc.DrawLine( x0+3, y0, x0+3, y1);
+            dc.DrawLine( x1-3, y0, x1-3, y1);
         }
         
         setCurrentTrack(n);

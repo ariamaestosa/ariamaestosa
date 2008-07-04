@@ -120,7 +120,7 @@ void MainFrame::initMenuBar()
 
     fileMenu->AppendSeparator();
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_COPYRIGHT, _("Song info"), MainFrame::menuEvent_copyright );
-	fileMenu->AppendSeparator();
+	//fileMenu->AppendSeparator();
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_NOTATION, _("Print musical notation"), MainFrame::menuEvent_exportNotation );
     fileMenu->AppendSeparator();
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_IMPORT_MIDI, _("Import Midi File"), MainFrame::menuEvent_importmidi );
