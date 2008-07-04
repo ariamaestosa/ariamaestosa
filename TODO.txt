@@ -110,6 +110,9 @@ NOTE: sorry, this is very raw :)
  
  ************************* BUGS: *************************
     
+* erasing control events by selecting them and pressing BACKSPACE not working (in imported midi if it makes any difference)
+    came back shortly after (?)
+    
 * "follow playback" : hard to follow when horizontal scrolling is changed (Change only on measure change?)
 
 + some of the newer classes don't use leak check
