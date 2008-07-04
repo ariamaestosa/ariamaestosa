@@ -1,9 +1,10 @@
 
 SVN
 - Added ability to print more than one track at once
-- Cleaned up printing code
+- Major code cleanup in printing code
 - Major code cleanup in measure handling code
 - Fixed default suggested name when exporting to PDF on mac OS X
+- Improved printing output by putting a bigger centered title on first page.
 
 1.1.3
 - improved vector implementation, fixing possible problems on 64-bits machines

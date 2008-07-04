@@ -33,6 +33,14 @@ namespace AriaMaestosa
 int getRepetitionMinimalLength();
 void setRepetitionMinimalLength(const int newvalue);
 
+/*
+ A description of a measure to print. If we print more than one track at once,
+ each measure will hold multiple 'MeasureTrackReference' instances.
+ A 'MeasureTrackReference' "ties" a MeasureToExport to a Track object,
+ by keeping a pointer to it and holding the range of notes in that track
+ that belong to this measure.
+ */
+
 class MeasureTrackReference
 {
 public:
@@ -43,8 +51,6 @@ public:
 class MeasureToExport
 {
 public:
-	//Track* track;
-	
     MeasureToExport(const int measID);
     
     // Finds the notes correcsponding to this measure
@@ -57,6 +63,7 @@ public:
     // for each printed measure
     ptr_vector<MeasureTrackReference> trackRef;
     
+    // first and last tick in this measure
 	int firstTick, lastTick;
 
 	// if this measure is later repeated and is not a repetition of a previous measure,
@@ -66,14 +73,20 @@ public:
 	// if this measure is a repetition of a previous measure, contains the ID of which one
 	int firstSimilarMeasure;
 	
+    // shortest note in the measure (will be used to
+    // determine "zoom" on measure. e.g. a measure with very
+    // short notes takes more room).
 	int shortestDuration;
+    
+    // ID of the measure
 	int id;
 	
 	// true if measure needs to be apart from others
 	// mostly used with repetitions (e.g. x4) to tell where the repetition starts
+    // FIXME - doesn't really belong here, should be a layout element
 	bool cutApart;
 	
-	bool isSameAs(MeasureToExport& compareWith);
+    bool calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure);
 
 	// if a repetition is found, it is stored in the variables and returns true,
 	// otherwise returns false
@@ -81,7 +94,6 @@ public:
 								   int& firstMeasureThatRepeats /*out*/, int& lastMeasureThatRepeats /*out*/,
 								   int& firstMeasureRepeated /*out*/, int& lastMeasureRepeated /*out*/);
 	
-    bool calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure);
 };
 
 // used to determine the order of what appears in the file.
@@ -112,7 +124,11 @@ public:
     int charWidth;
 };
 
-
+/*
+ A line on a notation to print. Can contain more than one track.
+ Essentially holds some 'LayoutElement' objects (the ones that fit
+ on this line)
+ */
 class LayoutLine
 {
     int currentTrack;
