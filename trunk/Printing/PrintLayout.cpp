@@ -289,9 +289,22 @@ int LayoutLine::getLastNoteInElement(const int layoutElementID)
 {
     return getMeasureForElement(layoutElementID).trackRef[currentTrack].lastNote;
 }
+int LayoutLine::getFirstNoteInElement(LayoutElement* layoutElement)
+{
+    return getMeasureForElement(layoutElement).trackRef[currentTrack].firstNote;
+}
+int LayoutLine::getLastNoteInElement(LayoutElement* layoutElement)
+{
+    return getMeasureForElement(layoutElement).trackRef[currentTrack].lastNote;
+}
+
 MeasureToExport& LayoutLine::getMeasureForElement(const int layoutElementID)
 {
     return printable->measures[layoutElements[layoutElementID].measure];
+}
+MeasureToExport& LayoutLine::getMeasureForElement(LayoutElement* layoutElement)
+{
+    return printable->measures[layoutElement->measure];
 }
 
 void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x1, const int y1)

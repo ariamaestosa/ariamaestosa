@@ -129,10 +129,13 @@ public:
     Track* getTrack();
     int getFirstNoteInElement(const int layoutElementID);
     int getLastNoteInElement(const int layoutElementID);
-    
+    int getFirstNoteInElement(LayoutElement* layoutElement);
+    int getLastNoteInElement(LayoutElement* layoutElement);
+
     void printYourself(wxDC& dc, const int x0, const int y0, const int x1, const int y1);
     
     MeasureToExport& getMeasureForElement(const int layoutElementID);
+    MeasureToExport& getMeasureForElement(LayoutElement* layoutElement);
     
     std::vector<LayoutElement> layoutElements;
 };

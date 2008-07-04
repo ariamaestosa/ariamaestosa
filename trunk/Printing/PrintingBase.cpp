@@ -28,9 +28,9 @@ class QuickPrint : public wxPrintout
 public:
     QuickPrint(AriaPrintable* printable) : wxPrintout( printable->getTitle() )
     {
-            QuickPrint::printable = printable;
-            pageAmount =  printable->getPageAmount();
-            orient = printable->portraitOrientation() ? wxPORTRAIT : wxLANDSCAPE;
+        QuickPrint::printable = printable;
+        pageAmount =  printable->getPageAmount();
+        orient = printable->portraitOrientation() ? wxPORTRAIT : wxLANDSCAPE;
     }
     
     bool OnPrintPage(int pageNum)
@@ -263,28 +263,146 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc, const int x0, const i
     text_height = txh;
     text_height_half = (int)round((float)text_height / 2.0);
     
-    // -------------------- generate the tablature  -------------------- 
+    // ask all EditorPrintables to render their part
     
     float y_from = y0 + text_height*3;
     
     for(int l=0; l<lineAmount; l++)
     { 
         float y_to = y_from + page.layoutLines[l].getTrackAmount()*track_height;
-        //const float line_y_from = notation_area_origin_y + line_height*l;
-        //const float line_y_to = notation_area_origin_y + line_height*(l+1);
-        
         page.layoutLines[l].printYourself(dc, x0, (int)round(y_from), x1, (int)round(y_to));
-        
         y_from = y_to;
     }
     
 }
 
 
+#pragma mark -
 
 // do not call, override in children
 EditorPrintable::EditorPrintable(){}
 EditorPrintable::~EditorPrintable(){}
 void EditorPrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const bool draw_m_num){}
+
+void EditorPrintable::beginLine(wxDC* dc, LayoutLine* line,  int x0, const int y0, const int x1, const int y1, bool show_measure_number)
+{
+    EditorPrintable::x0 = x0;
+    EditorPrintable::y0 = y0;
+    EditorPrintable::x1 = x1;
+    EditorPrintable::y1 = y1;
+    EditorPrintable::show_measure_number = show_measure_number;
+    EditorPrintable::currentLine = line;
+    EditorPrintable::dc = dc;
+    
+    currentLayoutElement = -1;
+    layoutElementsAmount = currentLine->layoutElements.size();
+    
+    // 2 spaces allocated for left area of the tab
+    widthOfAChar = (float)(x1 - x0) / (float)(line->charWidth+2);
+    
+    assertExpr(line->charWidth,>,0);
+    assertExpr(widthOfAChar,>,0);
+    
+}
+int EditorPrintable::getCurrentElementXStart()
+{
+    return x0 + (int)round(xloc*widthOfAChar) - widthOfAChar;
+}
+int EditorPrintable::getCurrentElementXEnd()
+{
+    return x0 + (int)round((xloc+currentLine->layoutElements[currentLayoutElement].charWidth)*widthOfAChar);
+}
+LayoutElement* EditorPrintable::getNextElement()
+{
+    currentLayoutElement ++;
+    
+    if(!(currentLayoutElement<layoutElementsAmount)) return NULL;
+    
+    std::vector<LayoutElement>& layoutElements = currentLine->layoutElements;
+    
+    if(currentLayoutElement == 0) xloc = 2;
+    if(currentLayoutElement > 0) xloc += layoutElements[currentLayoutElement-1].charWidth;
+    
+    const int elem_x_start = getCurrentElementXStart();
+
+    // draw vertical line that starts measure
+    dc->SetPen(  wxPen( wxColour(0,0,0), 2 ) );
+    dc->DrawLine( elem_x_start, y0, elem_x_start, y1);
+    
+    dc->SetTextForeground( wxColour(0,0,255) );
+    
+    // ****** empty measure
+    if(layoutElements[currentLayoutElement].type == EMPTY_MEASURE)
+    {
+    } 
+    // ****** repetitions
+    else if(layoutElements[currentLayoutElement].type == SINGLE_REPEATED_MEASURE or layoutElements[currentLayoutElement].type == REPEATED_RIFF)
+    {
+        // FIXME - why do I cut apart the measure and not the layout element?
+        /*
+         if(measures[layoutElements[n].measure].cutApart)
+         {
+             // TODO...
+             //dc.SetPen(  wxPen( wxColour(0,0,0), 4 ) );
+             //dc.DrawLine( elem_x_start, y0, elem_x_start, y1);
+         }
+         */
+        
+        wxString message;
+        if(layoutElements[currentLayoutElement].type == SINGLE_REPEATED_MEASURE)
+        {
+            message = to_wxString(currentLine->getMeasureForElement(currentLayoutElement).firstSimilarMeasure+1);
+        }
+        else if(layoutElements[currentLayoutElement].type == REPEATED_RIFF)
+        {
+            message =	to_wxString(layoutElements[currentLayoutElement].firstMeasureToRepeat+1) +
+            wxT(" - ") + 
+            to_wxString(layoutElements[currentLayoutElement].lastMeasureToRepeat+1);
+        }
+        
+        dc->DrawText( message, elem_x_start + widthOfAChar/2, (y0+y1)/2 - getCurrentPrintable()->text_height_half );
+    }
+    // ****** play again
+    else if(layoutElements[currentLayoutElement].type == PLAY_MANY_TIMES)
+    {
+        wxString label(wxT("X"));
+        label << layoutElements[currentLayoutElement].amountOfTimes;
+        dc->DrawText( label, elem_x_start + widthOfAChar/2, (y0+y1)/2 - getCurrentPrintable()->text_height_half );
+    }
+    // ****** normal measure
+    else if(layoutElements[currentLayoutElement].type == SINGLE_MEASURE)
+    {  
+        // draw measure ID
+        if(show_measure_number)
+        {
+            wxString measureLabel;
+            measureLabel << (currentLine->getMeasureForElement(currentLayoutElement).id+1);
+            dc->DrawText( measureLabel, elem_x_start - widthOfAChar/4, y0 - getCurrentPrintable()->text_height*1.4 );
+        }
+        
+        dc->SetTextForeground( wxColour(0,0,0) );
+    }
+    
+    return &layoutElements[currentLayoutElement];
+}
+
+/*
+ * relative_note_position ranges from 0 (at the very beginning of the layout element)
+ * to 1 (at the very end of the layout element)
+ */
+int EditorPrintable::getNotePrintX(int noteID)
+{
+    const int elem_x_start = getCurrentElementXStart();
+    const int elem_x_end = getCurrentElementXEnd();
+    const int elem_w = elem_x_end - elem_x_start;
+    
+    const int firstTick = currentLine->getMeasureForElement(currentLayoutElement).firstTick;
+    const int lastTick = currentLine->getMeasureForElement(currentLayoutElement).lastTick;
+    const int tick = currentLine->getTrack()->getNoteStartInMidiTicks(noteID);
+    
+    const float nratio = ((float)(tick - firstTick) / (float)(lastTick - firstTick));
+    
+    return (int)round(nratio * (elem_w-widthOfAChar*1.5) + elem_x_start);
+}
 
 }
