@@ -38,12 +38,6 @@ MeasureToExport::MeasureToExport(const int measID)
     lastTick = getMeasureData()->lastTickInMeasure( measID );
 }
 
-// FIXME - used at all?
-bool MeasureToExport::isSameAs(MeasureToExport& compareWith)
-{
-    return (compareWith.firstSimilarMeasure == firstSimilarMeasure) or (compareWith.firstSimilarMeasure == id);
-}
-
 // if a repetition is found, it is stored in the variables and returns true,
 // otherwise returns false
 bool MeasureToExport::findConsecutiveRepetition(ptr_vector<MeasureToExport>& measures, const int measureAmount,

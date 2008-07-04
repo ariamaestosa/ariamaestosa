@@ -43,6 +43,8 @@ NOTE: sorry, this is very raw :)
 		more than one track
 		show tuning on tab
 
+* printing : allow setting font size, number of lines per page, zoom, etc...
+
  - when scaling entire song, scale control events and time sig changes too
 
 // ----- controller editor ------
