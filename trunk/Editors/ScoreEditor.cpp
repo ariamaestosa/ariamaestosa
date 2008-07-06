@@ -524,9 +524,10 @@ void ScoreEditor::setNoteSign(const int sign, const int noteID)
 #pragma mark -
 // where 'renderInfo' is a 'NoteRenderInfo' object of current note.
 // 'vector' is where all visible notes will are added, to be analysed after
-void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& vector, const bool recursion)
+void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
 {
     
+
     AriaRender::lineWidth(2);
 	if(renderInfo.selected)
         AriaRender::color(1,0,0);
@@ -534,134 +535,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteR
         AriaRender::color(0,0,0);	
 
 	renderInfo.y = getEditorYStart() + y_step*renderInfo.level - halfh - getYScrollInPixels() + 2;
-	
-	// check if note lasts more than one measure. If so we need to divide it in 2.
-    
-	if(renderInfo.measureEnd > renderInfo.measureBegin) // note in longer than mesaure, need to divide it in 2
-	{
-		const int firstEnd = getMeasureData()->lastTickInMeasure(renderInfo.measureBegin);
-		const int firstLength = firstEnd - renderInfo.tick;
-		const int secondLength = renderInfo.tick_length - firstLength;
-		
-		RelativeXCoord firstEndRel(firstEnd, MIDI);
-		
-		// split the note in two, and collect resulting notes in a vector.
-		// then we can iterate through that vector and tie all notes together
-		// (remember, note may be split in more than 2 if one of the 2 initial halves has a rare length)
-		
-		
-		int initial_id = -1;
-		
-		if(!recursion)
-		{
-			initial_id = vector.size();
-		}
-		
-		NoteRenderInfo part1(renderInfo.tick, renderInfo.x, renderInfo.level, firstLength, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
-		renderNote_pass1(part1, vector, true);
-		NoteRenderInfo part2(getMeasureData()->firstTickInMeasure(renderInfo.measureBegin+1), firstEndRel.getRelativeTo(WINDOW),
-						   renderInfo.level, secondLength, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
-		renderNote_pass1(part2, vector, true);
-		
-		if(!recursion)
-		{
-			const int amount = vector.size();
-			for(int i=initial_id+1; i<amount; i++)
-			{
-				vector[i].tieWith(vector[i-1]);
-			}
-		}
-		
-		return;
-	}
-	
-    // find how to draw notes. how many flags, dotted, triplet, etc.
-    // if note duration is unknown it will be split
-	const float relativeLength = renderInfo.tick_length / (float)(getMeasureData()->beatLengthInTicks()*4);
 
-	renderInfo.stem_type = (renderInfo.level>=converter->getMiddleCLevel()-5 ? STEM_UP : STEM_DOWN);
-	if(relativeLength>=1) renderInfo.stem_type=STEM_NONE; // whole notes have no stem
-	bool open = false;
-	
-    const int beat = getMeasureData()->beatLengthInTicks();
-    const int tick_in_measure_start = renderInfo.tick - getMeasureData()->firstTickInMeasure( renderInfo.measureBegin );
-    const int remaining = beat - (tick_in_measure_start % beat);
-    const bool starts_on_beat = aboutEqual(remaining,0) or aboutEqual(remaining,beat);
-    
-	if( aboutEqual(relativeLength, 1.0) ){ open = true; renderInfo.stem_type=STEM_NONE; }
-	else if( aboutEqual(relativeLength, 1.0/2.0) ){ open = true; } // 1/2
-	else if( aboutEqual(relativeLength, 1.0/3.0) ){ renderInfo.setTriplet(); open = true; } // triplet 1/2
-	else if( aboutEqual(relativeLength, 1.0/4.0) ); // 1/4
-	else if( aboutEqual(relativeLength, 1.0/6.0) ){ renderInfo.setTriplet(); } // triplet 1/4
-	else if( aboutEqual(relativeLength, 1.0/8.0) ) renderInfo.flag_amount = 1; // 1/8
-	else if( aboutEqual(relativeLength, 1.0/12.0) ){ renderInfo.setTriplet(); renderInfo.flag_amount = 1; } // triplet 1/8
-	else if( aboutEqual(relativeLength, 1.0/16.0) ) renderInfo.flag_amount = 2; // 1/16
-	else if( aboutEqual(relativeLength, 1.0/24.0) ) { renderInfo.setTriplet(); renderInfo.flag_amount = 2; } // triplet 1/16
-	else if( aboutEqual(relativeLength, 1.0/32.0) ) renderInfo.flag_amount = 3; // 1/32
-	else if( aboutEqual(relativeLength, 3.0/4.0) and starts_on_beat){ renderInfo.dotted = true; open=true; } // dotted 1/2
-	else if( aboutEqual(relativeLength, 3.0/8.0) and starts_on_beat ) renderInfo.dotted = true; // dotted 1/4
-	else if( aboutEqual(relativeLength, 3.0/2.0) and starts_on_beat ){ renderInfo.dotted = true; open=true; } // dotted whole
-	else if( relativeLength < 1.0/32.0 )
-	{
-		renderInfo.instant_hit = true;
-	}
-	else
-	{ // note is of unknown duration. split it in a serie of tied notes.
-        
-        
-        // how long is the first note after the split?
-        int firstLength_tick;
-
-        // start by reaching the next beat if not already done
-		if(!starts_on_beat and !aboutEqual(remaining, renderInfo.tick_length))
-		{
-            firstLength_tick = remaining;
-		}
-        else
-        {
-            // use division to split note
-            float closestShorterDuration = 1;
-            while(closestShorterDuration >= relativeLength) closestShorterDuration /= 2.0;
-            
-            firstLength_tick = closestShorterDuration*(float)(getMeasureData()->beatLengthInTicks()*4);
-		}
-        
-        const int secondBeginning_tick = renderInfo.tick + firstLength_tick;
-        RelativeXCoord secondBeginningRel(secondBeginning_tick, MIDI);
-        
-		int initial_id = -1;
-		
-		if(!recursion)
-		{
-			initial_id = vector.size();
-		}
-		
-		NoteRenderInfo part1(renderInfo.tick, renderInfo.x, renderInfo.level, firstLength_tick, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
-		renderNote_pass1(part1, vector, true);
-		NoteRenderInfo part2(secondBeginning_tick, secondBeginningRel.getRelativeTo(WINDOW), renderInfo.level,
-						   renderInfo.tick_length-firstLength_tick, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
-		renderNote_pass1(part2, vector, true);
-		
-		if(!recursion)
-		{
-			const int amount = vector.size();
-			for(int i=initial_id+1; i<amount; i++)
-			{
-				vector[i].tieWith(vector[i-1]);
-			}
-		}
-		
-		return;
-	}
-	
-	if(renderInfo.triplet)
-	{
-		renderInfo.triplet_arc_x_start = renderInfo.x + 8;
-		renderInfo.triplet_arc_y = renderInfo.y;
-	}
-	
-	assertExpr(renderInfo.level,>,-1);
-	
 	// note head
     /*
 	if(renderInfo.unknown_duration)
@@ -677,7 +551,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteR
         AriaRender::color(0,0,0);
         AriaRender::character('X', renderInfo.x, renderInfo.y + 8);
 	}
-	else if(open)
+	else if(renderInfo.hollow_head)
 	{
         AriaRender::images();
 		noteOpen->move(renderInfo.x, renderInfo.y);
@@ -704,6 +578,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteR
             AriaRender::line(renderInfo.x-5, lvly, renderInfo.x+15, lvly);
 		}
 	}
+
 	if(FKey and renderInfo.level > middle_c_level + 11)
 	{
 		for(int lvl=middle_c_level + 11; lvl<=renderInfo.level-renderInfo.level%2+2; lvl += 2)
@@ -712,7 +587,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteR
 			AriaRender::line(renderInfo.x-5, lvly, renderInfo.x+15, lvly);
 		}
 	}
-    
+
 	if(renderInfo.level == middle_c_level)
 	{
 		const int lvly = getEditorYStart() + y_step*(middle_c_level+1) - halfh - getYScrollInPixels() + 2;
@@ -757,8 +632,6 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteR
 		naturalSign->render();
 		AriaRender::primitives();
 	}
-	     
-	vector.push_back(renderInfo);
 }
 
 void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo)
@@ -787,13 +660,13 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo)
             const int flag_x_origin = (renderInfo.stem_type==STEM_UP ? renderInfo.x + 9 : renderInfo.x + 1);
             const int flag_step = (renderInfo.stem_type==STEM_UP ? 7 : -7 );
             
-            noteTail->setFlip( false, renderInfo.stem_type!=STEM_UP );
+            noteFLag->setFlip( false, renderInfo.stem_type!=STEM_UP );
             
             AriaRender::images();
             for(int n=0; n<renderInfo.flag_amount; n++)
             {
-                noteTail->move( flag_x_origin , flag_y_origin + n*flag_step);	
-                noteTail->render();
+                noteFLag->move( flag_x_origin , flag_y_origin + n*flag_step);	
+                noteFLag->render();
             }
             AriaRender::primitives();
         }
@@ -1085,19 +958,24 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 		
 		if(musicalNotationEnabled)
 		{
-			// rendering pass 1 of notes
+			// build visible notes vector with initial info in it
 			const int note_x = getEditorXStart() + track->getNoteStartInPixels(n)  - sequence->getXScrollInPixels();
+
 			NoteRenderInfo currentNote(tick, note_x, noteLevel, noteLength, note_sign,
 									 track->isNoteSelected(n), track->getNotePitchID(n));
-			renderNote_pass1(currentNote, noteRenderInfo);
+			addToVector(currentNote, noteRenderInfo, converter->getMiddleCLevel(), false);
 		}
 	} // next note
     
+
 	// musical notation requires more than one pass
 	if(musicalNotationEnabled)
 	{
         int visibleNoteAmount = noteRenderInfo.size();
 
+        // first rendering pass
+        for(int i=0; i<visibleNoteAmount; i++) renderNote_pass1( noteRenderInfo[i] );
+            
 		// -------------------------- silences rendering pass -------------------
 		// draw silences
 		const unsigned int first_visible_measure = getMeasureData()->measureAtPixel( getEditorXStart() );

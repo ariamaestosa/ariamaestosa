@@ -108,7 +108,7 @@ public:
 public:
             
             
-            ScoreEditor(Track* track);
+        ScoreEditor(Track* track);
         
         ScoreMidiConverter* getScoreMidiConverter();
         
@@ -140,7 +140,7 @@ public:
         void selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current, RelativeXCoord& mousex_initial, int mousey_initial);
 		
         void renderSilence(const int tick, const int tick_length);
-        void renderNote_pass1(NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& vector, const bool recursion=false);
+        void renderNote_pass1(NoteRenderInfo& renderInfo);
         void renderNote_pass2(NoteRenderInfo& renderInfo);
 		
         // called from 'SetAccidentalSign' Action
