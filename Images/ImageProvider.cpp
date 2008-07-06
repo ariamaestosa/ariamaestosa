@@ -82,7 +82,7 @@ void loadImages()
 	
     noteClosed = new Drawable(wxT("score/noteclosed.png"));
     noteOpen = new Drawable(wxT("score/noteopen.png"));
-    noteTail = new Drawable(wxT("score/notetail.png"));
+    noteFLag = new Drawable(wxT("score/notetail.png"));
     sharpSign = new Drawable(wxT("score/sharp.png"));
 	sharpSign -> setHotspot( sharpSign->getImageWidth()/2, sharpSign->getImageHeight()/2 );
 	
@@ -141,7 +141,7 @@ void unloadImages()
 	
     delete noteClosed;
     delete noteOpen;
-    delete noteTail;
+    delete noteFLag;
 	
     delete sharpSign;
     delete flatSign;

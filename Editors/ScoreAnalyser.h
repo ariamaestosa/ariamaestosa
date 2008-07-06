@@ -60,6 +60,8 @@ public:
     // a 1/4 will have none, a 1/8 has 1, a 1/16 has 2, etc.
 	int flag_amount;
     
+    bool hollow_head;
+    
 	bool selected;
     
     // used to display ties (display a tie between this note and specified X coord). a value of -1 means no tie.
@@ -110,6 +112,8 @@ public:
     int getStemYTo();
     int getYBase();
 };
+
+void addToVector( NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& info, const int middleCLevel, const bool recursion );
 
 // the main function of ScoreAnalyser, where everything starts
 void analyseNoteInfo( std::vector<NoteRenderInfo>& info, ScoreEditor* editor );
