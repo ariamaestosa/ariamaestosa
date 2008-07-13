@@ -50,6 +50,9 @@ enum STEM
  */
 class NoteRenderInfo
 {
+    // used to display ties (display a tie between this note and specified X coord). a value of -1 means no tie.
+	int tied_with_x;
+    bool tie_up; // used if stem_type == STEM_NONE, otherwise tie location is determined with stem_type
 public:
     // for very short notes, e.g. drum notes. Note will appear as a X.
 	bool instant_hit;
@@ -63,10 +66,6 @@ public:
     bool hollow_head;
     
 	bool selected;
-    
-    // used to display ties (display a tie between this note and specified X coord). a value of -1 means no tie.
-	int tied_with_x;
-    bool tie_up; // used if stem_type == STEM_NONE, otherwise tie location is determined with stem_type
     
     // is stem up, down? or is there no stem?
 	STEM stem_type;
@@ -103,7 +102,13 @@ public:
     int max_chord_y, min_chord_y, min_chord_level, max_chord_level;
 
 	NoteRenderInfo(int tick, int x, int level, int tick_length, int sign, const bool selected, int pitch);
+    
 	void tieWith(NoteRenderInfo& renderInfo);
+    void setTiedToPixel(const int pixel);
+    int getTiedToPixel();
+    void setTieUp(const bool up);
+    bool isTieUp();
+    
 	void triplet_arc(int pixel1, int pixel2);
     void setTriplet();
     

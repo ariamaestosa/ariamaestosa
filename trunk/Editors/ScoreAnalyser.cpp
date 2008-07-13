@@ -236,6 +236,23 @@ void NoteRenderInfo::tieWith(NoteRenderInfo& renderInfo)
     if(stem_type == STEM_NONE) tie_up = renderInfo.stem_type;
     else tie_up = stem_type;
 }
+void NoteRenderInfo::setTiedToPixel(const int pixel)
+{
+    tied_with_x = pixel;
+}
+int NoteRenderInfo::getTiedToPixel()
+{
+    return tied_with_x;
+}
+void NoteRenderInfo::setTieUp(const bool up)
+{
+    tie_up = up;
+}
+bool NoteRenderInfo::isTieUp()
+{
+    return (stem_type == STEM_NONE ? tie_up : stem_type != STEM_UP);
+}
+
 void NoteRenderInfo::triplet_arc(int pixel1, int pixel2)
 {
     assertExpr(pixel1,>=,0);
@@ -409,8 +426,8 @@ void findAndMergeChords(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor
                 summary.stem_type = (stem_up ? STEM_UP : STEM_DOWN);
                 summary.tick_length = smallest_duration;
 
-                summary.tied_with_x = noteRenderInfo[ !stem_up ? minid : maxid ].tied_with_x;
-                summary.tie_up = noteRenderInfo[ !stem_up ? minid : maxid ].tie_up;
+                summary.setTiedToPixel(noteRenderInfo[ !stem_up ? minid : maxid ].getTiedToPixel());
+                summary.setTieUp(noteRenderInfo[ !stem_up ? minid : maxid ].isTieUp());
 
                 noteRenderInfo[i] = summary;
 
