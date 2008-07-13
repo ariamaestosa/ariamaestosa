@@ -685,11 +685,11 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo)
 	}
 	
 	// tie
-	if(renderInfo.tied_with_x != -1)
+	if(renderInfo.getTiedToPixel() != -1)
 	{
-		const float center_x = (renderInfo.tied_with_x + renderInfo.x)/2.0 + 6;
-		const float radius_x = (renderInfo.tied_with_x - renderInfo.x)/2.0;
-        const bool show_above = (renderInfo.stem_type == STEM_NONE ? renderInfo.tie_up : renderInfo.stem_type != STEM_UP);
+		const float center_x = (renderInfo.getTiedToPixel() + renderInfo.x)/2.0 + 6;
+		const float radius_x = (renderInfo.getTiedToPixel() - renderInfo.x)/2.0;
+        const bool show_above = renderInfo.isTieUp();
         
         const int base_y = renderInfo.getYBase(); 
         AriaRender::arc(center_x, base_y + (show_above ? 0 : 10), radius_x, 15, show_above);
