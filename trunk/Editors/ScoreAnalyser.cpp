@@ -203,7 +203,7 @@ NoteRenderInfo::NoteRenderInfo(int tick, int x, int level, int tick_length, int 
     dotted = false;
     flag_amount = 0;
     y = -1;
-    tied_with_x = -1;
+    tied_with_tick = -1;
     tie_up = false;
     stem_type = STEM_NONE;
 
@@ -231,18 +231,26 @@ NoteRenderInfo::NoteRenderInfo(int tick, int x, int level, int tick_length, int 
 	measureEnd = getMeasureData()->measureAtTick(tick + tick_length - 1);
 }
 void NoteRenderInfo::tieWith(NoteRenderInfo& renderInfo)
-{
-    tied_with_x = renderInfo.x;
+{    
+    tied_with_tick = renderInfo.tick;
+    
     if(stem_type == STEM_NONE) tie_up = renderInfo.stem_type;
     else tie_up = stem_type;
 }
-void NoteRenderInfo::setTiedToPixel(const int pixel)
+void NoteRenderInfo::setTiedToTick(const int tick)
 {
-    tied_with_x = pixel;
+    tied_with_tick = tick;
 }
 int NoteRenderInfo::getTiedToPixel()
 {
-    return tied_with_x;
+    if(tied_with_tick == -1) return -1; // no tie
+    
+    RelativeXCoord tied_with(tied_with_tick, MIDI);
+    return tied_with.getRelativeTo(WINDOW);
+}
+int NoteRenderInfo::getTiedToTick()
+{
+    return tied_with_tick;
 }
 void NoteRenderInfo::setTieUp(const bool up)
 {
@@ -426,7 +434,7 @@ void findAndMergeChords(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor
                 summary.stem_type = (stem_up ? STEM_UP : STEM_DOWN);
                 summary.tick_length = smallest_duration;
 
-                summary.setTiedToPixel(noteRenderInfo[ !stem_up ? minid : maxid ].getTiedToPixel());
+                summary.setTiedToTick(noteRenderInfo[ !stem_up ? minid : maxid ].getTiedToTick());
                 summary.setTieUp(noteRenderInfo[ !stem_up ? minid : maxid ].isTieUp());
 
                 noteRenderInfo[i] = summary;
