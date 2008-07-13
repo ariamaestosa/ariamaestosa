@@ -34,6 +34,11 @@ NOTE: sorry, this is very raw :)
   * add triplet as a widget, not as a check menu
   * use note icons instead of e.g. "1/8" as text
 
+ * "track play position" default value should be in preferences
+ * Add "pause" button
+
+ * Button to maximize track
+
   - .aria files don't remember whether drums are minimized
   - .aria files don't remember docked tracks
   - background choices are not saved to .aria files
@@ -44,6 +49,8 @@ NOTE: sorry, this is very raw :)
 		show tuning on tab
 
 * printing : allow setting font size, number of lines per page, zoom, etc...
+
++ changes to song should be heard if done while playing
 
  - when scaling entire song, scale control events and time sig changes too
 
@@ -112,6 +119,8 @@ NOTE: sorry, this is very raw :)
  
  ************************* BUGS: *************************
     
+* 9/8 doesn't work (Aria cannot handle measure lengths that are not multiples of 1/4 notes)
+
 * erasing control events by selecting them and pressing BACKSPACE not working (in imported midi if it makes any difference)
     came back shortly after (?)
     
