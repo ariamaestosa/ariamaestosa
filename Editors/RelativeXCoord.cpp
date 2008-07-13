@@ -72,7 +72,7 @@ void RelativeXCoord::setValue(int i, RelativeType relativeTo)
 	}
 	else
 	{
-		std::cout << "!! RelativeXCoord ERROR - needs one of 3" << std::endl;
+		std::cout << "!! RelativeXCoord ERROR - needs one of 3 (A)" << std::endl;
 		assert(0);
 	}
 
@@ -104,7 +104,7 @@ void RelativeXCoord::convertTo(RelativeType relativeTo)
 				}
 				else
 				{
-					std::cout << "!! RelativeXCoord ERROR - needs one of 3" << std::endl;
+					std::cout << "!! RelativeXCoord ERROR - needs one of 3 (B)" << std::endl;
 					assert(0);
 				}
 			relativeToWindow = -1;
@@ -121,7 +121,7 @@ void RelativeXCoord::convertTo(RelativeType relativeTo)
 					}
 					else
 					{
-						std::cout << "!! RelativeXCoord ERROR - needs one of 3" << std::endl;
+						std::cout << "!! RelativeXCoord ERROR - needs one of 3 (C)" << std::endl;
 						assert(0);
 					}
 			}
@@ -141,7 +141,7 @@ void RelativeXCoord::convertTo(RelativeType relativeTo)
 					}
 					else
 					{
-						std::cout << "!! RelativeXCoord ERROR - needs one of 3" << std::endl;
+						std::cout << "!! RelativeXCoord ERROR - needs one of 3 (D)" << std::endl;
 						assert(0);
 					}
 
@@ -157,7 +157,7 @@ void RelativeXCoord::convertTo(RelativeType relativeTo)
 int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
 {
 
-Sequence* sequence = getCurrentSequence();
+    Sequence* sequence = getCurrentSequence();
 	switch(returnRelativeTo)
 	{
 		case EDITOR:
@@ -173,7 +173,7 @@ Sequence* sequence = getCurrentSequence();
 				}
 				else
 				{
-					std::cout << "!! RelativeXCoord ERROR - needs one of 3" << std::endl;
+					std::cout << "!! RelativeXCoord ERROR - needs one of 3 (E)" << std::endl;
                     return -1;
 					//assert(0);
 				}
@@ -192,7 +192,7 @@ Sequence* sequence = getCurrentSequence();
 					}
 					else
 					{
-						std::cout << "!! RelativeXCoord ERROR - needs one of 3" << std::endl;
+						std::cout << "!! RelativeXCoord ERROR - needs one of 3 (F)" << std::endl;
                         return -1;
 						//assert(0);
 					}
@@ -212,7 +212,7 @@ Sequence* sequence = getCurrentSequence();
 					}
 					else
 					{
-						std::cout << "!! RelativeXCoord ERROR - needs one of 3" << std::endl;
+						std::cout << "!! RelativeXCoord ERROR - needs one of 3 (G)" << std::endl;
 						return -1;
 						//assert(0);
 					}

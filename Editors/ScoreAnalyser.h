@@ -50,8 +50,8 @@ enum STEM
  */
 class NoteRenderInfo
 {
-    // used to display ties (display a tie between this note and specified X coord). a value of -1 means no tie.
-	int tied_with_x;
+    // used to display ties (display a tie between this note and specified tick). a value of -1 means no tie.
+	int tied_with_tick;
     bool tie_up; // used if stem_type == STEM_NONE, otherwise tie location is determined with stem_type
 public:
     // for very short notes, e.g. drum notes. Note will appear as a X.
@@ -104,8 +104,9 @@ public:
 	NoteRenderInfo(int tick, int x, int level, int tick_length, int sign, const bool selected, int pitch);
     
 	void tieWith(NoteRenderInfo& renderInfo);
-    void setTiedToPixel(const int pixel);
+    void setTiedToTick(const int pixel);
     int getTiedToPixel();
+    int getTiedToTick();
     void setTieUp(const bool up);
     bool isTieUp();
     
