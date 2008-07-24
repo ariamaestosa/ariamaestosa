@@ -110,7 +110,7 @@ bool wxWidgetApp::OnInit()
 
 int wxWidgetApp::OnExit()
 {
-#ifdef _CHECK_FOR_LEAKS
+#ifdef _MORE_DEBUG_CHECKS
 	MemoryLeaks::checkForLeaks();
 #endif
     return 0;

@@ -80,50 +80,50 @@ public:
 };
 /*
  * In Aria changes to tracks are represented with EditAction subclasses.
- * When a change must be done, a new EditSction object is instanciated and
+ * When a change must be done, a new EditAction object is instanciated and
  * placed in a stack. The goal of this is to be able to provide multiple undos,
  * by reversing the operations of the stack. Each EditAction subclass should
  * also be able to revert its action.
  */
 	
-	namespace Action
-	{
+namespace Action
+{
 		
 	
-	class EditAction
-	{
-		
-		DECLARE_LEAK_CHECK();
-		friend class AriaMaestosa::Track;
+class EditAction
+{
+    friend class AriaMaestosa::Track;
 		
 public:
-		EditAction();
-		virtual void perform();
-		virtual void undo();
-		virtual ~EditAction();
+    LEAK_CHECK(EditAction);
+        
+    EditAction();
+    virtual void perform();
+    virtual void undo();
+    virtual ~EditAction();
 		
-	};
+};
 	
-	class SingleTrackAction : public EditAction
-	{
+class SingleTrackAction : public EditAction
+{
 protected:
-		Track* track;
+    Track* track;
 public:		
-		SingleTrackAction();
-		void setParentTrack(Track* parent);
-        virtual ~SingleTrackAction();
-	};
+    SingleTrackAction();
+    void setParentTrack(Track* parent);
+    virtual ~SingleTrackAction();
+};
 		
-	class MultiTrackAction : public EditAction
-	{
+class MultiTrackAction : public EditAction
+{
 protected:
-		Sequence* sequence;
+    Sequence* sequence;
 public:		
-		MultiTrackAction();
-		void setParentSequence(Sequence* parent); // for multi-track actions
-        virtual ~MultiTrackAction();
-	};
+    MultiTrackAction();
+    void setParentSequence(Sequence* parent); // for multi-track actions
+    virtual ~MultiTrackAction();
+};
 	
-	}
+}
 }
 #endif

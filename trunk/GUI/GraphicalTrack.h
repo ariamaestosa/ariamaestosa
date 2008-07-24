@@ -46,14 +46,11 @@ enum {
 
 class GraphicalTrack
 {
-    
-	DECLARE_LEAK_CHECK();
-	
     int height;
     int lastMouseY;
 	
 public:
-        
+    LEAK_CHECK(GraphicalTrack);
     
     // ----------- read-only fields -----------
 	bool dragging_resize;

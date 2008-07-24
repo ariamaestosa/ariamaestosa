@@ -34,7 +34,7 @@ namespace AriaMaestosa {
 	
 Editor::Editor(Track* track)
 {
-	INIT_LEAK_CHECK();
+	
 	
 	ystep = 10;
 	

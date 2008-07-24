@@ -14,6 +14,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include "Config.h"
 #include "Dialogs/About.h"
 
 #include "wx/utils.h"
@@ -25,7 +26,7 @@ namespace AriaMaestosa {
 	
 AboutDialog::AboutDialog() : wxDialog(NULL, wxID_ANY,  _("About Aria Maestosa"), wxDefaultPosition, wxSize(517, 500) )
 {
-	INIT_LEAK_CHECK();
+	
 	
 	//wxImage* titleImage=new wxImage(wxStandardPaths::Get().GetResourcesDir() + wxT("/")  + wxT("title.jpg"), wxBITMAP_TYPE_JPEG);
     //wxBitmap* titleBitmap=new wxBitmap(*titleImage, wxBITMAP_TYPE_PNG);

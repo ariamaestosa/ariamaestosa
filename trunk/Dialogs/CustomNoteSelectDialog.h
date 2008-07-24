@@ -29,8 +29,7 @@ class Track;
 
 class CustomNoteSelectDialog : public wxDialog
 {
-	DECLARE_LEAK_CHECK();
-	
+
     wxBoxSizer* boxSizer;
     wxCheckBox* cb_pitch;
     //wxCheckBox* cb_note;
@@ -48,6 +47,7 @@ class CustomNoteSelectDialog : public wxDialog
     Track* currentTrack;
     
 public:
+    LEAK_CHECK(CustomNoteSelectDialog);
     CustomNoteSelectDialog();
     
     void okClicked(wxCommandEvent& evt);

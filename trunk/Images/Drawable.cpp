@@ -47,7 +47,7 @@ void drawable_set_color(float rarg, float garg, float barg, float aarg)
 Drawable::Drawable(Image* image_arg)
 {
 
-	INIT_LEAK_CHECK();
+	
 
     x=0;
     y=0;
@@ -69,7 +69,7 @@ Drawable::Drawable(Image* image_arg)
 
 Drawable::Drawable(wxString imagePath)
 {
-    INIT_LEAK_CHECK();
+    
 
     x=0;
     y=0;

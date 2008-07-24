@@ -64,8 +64,6 @@ class MeasureData
     // contains one item for each time signature change event
     ptr_vector<TimeSigChange> timeSigChanges;
     
-	DECLARE_LEAK_CHECK();
-    
 	bool somethingSelected;
     int selectedTimeSig;
     
@@ -74,6 +72,8 @@ class MeasureData
 	int totalNeededLengthInPixels;
 public:
     
+    LEAK_CHECK(MeasureData);
+        
     MeasureBar* graphics; /* holds */
         
 	MeasureData();

@@ -38,9 +38,6 @@ namespace AriaMaestosa
     
 class MainPane : public MAINPANE_BASE_CLASS
 {
-    
-	DECLARE_LEAK_CHECK();
-	
     MouseDownTimer* mouseDownTimer;
 	
     RelativeXCoord mousex_initial;
@@ -62,7 +59,7 @@ class MainPane : public MAINPANE_BASE_CLASS
     bool scrollToPlaybackPosition;
 
 public:
-        
+    LEAK_CHECK(MainPane);    
 	
     MainPane(MainFrame* mainframe, int* args);
     ~MainPane();

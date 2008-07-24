@@ -29,7 +29,7 @@ END_EVENT_TABLE()
 
 KeyPicker::KeyPicker() : wxMenu()
 {
-	INIT_LEAK_CHECK();
+	
     
     musical_checkbox = AppendCheckItem(1,_("Musical notation")); musical_checkbox->Check(true);
     linear_checkbox = AppendCheckItem(2,_("Linear Notation")); linear_checkbox->Check(true);

@@ -101,7 +101,7 @@ void showVolumeSlider(int x, int y, int noteID, Track* track)
 	
 VolumeSlider::VolumeSlider() : wxDialog(NULL, 0,  wxT("volume"), wxDefaultPosition, wxSize(50,160), wxSTAY_ON_TOP )
 {
-	INIT_LEAK_CHECK();
+	
     
     pane = new wxPanel(this);
     

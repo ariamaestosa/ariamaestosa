@@ -14,35 +14,44 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include "Config.h"
+#include <ptr_vector.h>
+
+#ifdef _MORE_DEBUG_CHECKS
 
 #include "ptr_vector.h"
 
 #include "LeakCheck.h"
 #include <iostream>
 
+namespace AriaMaestosa
+{
 namespace MemoryLeaks
 {
 	
-	AriaMaestosa::ptr_vector<Object> obj;
+ptr_vector<MyObject> obj;
 	
-
-void LeakCheck::setLocation(char* f, int i)
+void addObj(MyObject* myObj)
 {
-		myObj = new Object(f,i);
-		obj.push_back( myObj );
+    obj.push_back(myObj);
 }
-	
-Object::Object(char* f, int l)
+    
+void removeObj(MyObject* myObj)
 {
-	file = f;
-	line = l;
+    obj.remove(myObj);
+    delete myObj;
+}
+    
+MyObject::MyObject(char* f, int l)
+{
+        file = f;
+        line = l;
 }
 
-void Object::print()
+void MyObject::print()
 {
 	std::cout << "Undeleted object " << file << " (" << line << ")" << std::endl;
 }
-
 
 void checkForLeaks()
 {
@@ -56,7 +65,7 @@ void checkForLeaks()
 	}
 	else
 	{
-		std::cout << "ok (no Aria class left leaking)" << std::endl;
+		std::cout << "ok (no watched class left leaking)" << std::endl;
 		return;
 	}
 	std::cout << "LEAK CHECK: " << obj.size() << " watched objects leaking" << std::endl;
@@ -69,14 +78,6 @@ void checkForLeaks()
 }
 
 
-
-LeakCheck::LeakCheck()
-{
 }
-
-LeakCheck::~LeakCheck()
-{
-	obj.remove( myObj );
 }
-
-}
+#endif

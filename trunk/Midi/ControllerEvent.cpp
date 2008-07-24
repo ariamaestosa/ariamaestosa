@@ -25,7 +25,7 @@ namespace AriaMaestosa {
 	
 ControllerEvent::ControllerEvent(Sequence* sequence, unsigned short controller, int tick, unsigned short value)
 {
-	INIT_LEAK_CHECK();
+	
 	
     ControllerEvent::controller=controller;
     ControllerEvent::tick=tick;

@@ -36,16 +36,16 @@ namespace AriaMaestosa {
  */
 class BackgroundChoicePanel : public wxPanel
 {
-	DECLARE_LEAK_CHECK();
-	
 public:
+    LEAK_CHECK(BackgroundChoicePanel);
+    
 	wxBoxSizer* sizer;
 	wxCheckBox* active;
 
 	BackgroundChoicePanel(wxWindow* parent, const int trackID, Track* track, const bool activated=false, const bool enabled = false) : wxPanel(parent)
     {
 	
-		INIT_LEAK_CHECK();
+		
 		
 		sizer = new wxBoxSizer(wxHORIZONTAL);
 		
@@ -84,8 +84,6 @@ public:
 class BackgroundPickerFrame : public wxDialog
 {
 	
-	DECLARE_LEAK_CHECK();
-	
 	wxPanel* buttonPane;
 	wxButton* ok_btn;
 	wxButton* cancel_btn;
@@ -100,7 +98,8 @@ class BackgroundPickerFrame : public wxDialog
     int modalid;
     
 public:
-		
+    LEAK_CHECK(BackgroundPickerFrame);
+    
 	~BackgroundPickerFrame()
 	{
 	}
@@ -108,7 +107,7 @@ public:
 	BackgroundPickerFrame(Track* parent) :
 		wxDialog(NULL, wxID_ANY,  _("Track Background"), wxPoint(100,100), wxSize(500,300), wxCAPTION )
 	{
-		INIT_LEAK_CHECK();
+		
 			
         BackgroundPickerFrame::parent = parent;
             

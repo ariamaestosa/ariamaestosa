@@ -26,15 +26,14 @@ namespace AriaMaestosa {
 	
 class AboutDialog : public wxDialog
 {
-	DECLARE_LEAK_CHECK();
-	
+
 	int dialogID;
 	
 	wxBitmapButton* picture;
 	wxTextCtrl* textArea;
 	
 public:
-	
+    LEAK_CHECK(AboutDialog);
 	
 	AboutDialog();
 	void show();

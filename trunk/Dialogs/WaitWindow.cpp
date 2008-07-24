@@ -42,9 +42,6 @@ public:
 
 class WaitWindowClass : public wxDialog
 {
-
-	DECLARE_LEAK_CHECK();
-
     PulseNotifier pulseNotifier;
 
     wxBoxSizer* boxSizer;
@@ -54,10 +51,12 @@ class WaitWindowClass : public wxDialog
     bool progress_known;
     
 public:
+    LEAK_CHECK(WaitWindowClass);
+        
     WaitWindowClass(wxString message, bool progress_known) : wxDialog( NULL, wxID_ANY,  _("Please wait..."), wxDefaultPosition, wxSize(400,200), wxCAPTION | wxSTAY_ON_TOP )
 	{
 
-		INIT_LEAK_CHECK();
+		
 
         boxSizer=new wxBoxSizer(wxVERTICAL);
         WaitWindowClass::progress_known = progress_known;

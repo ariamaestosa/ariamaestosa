@@ -22,15 +22,18 @@
 #include <AudioToolbox/AudioToolbox.h>
 #include "Config.h"
 
-class AudioToolboxMidiPlayer {
+namespace AriaMaestosa
+{
+
+class AudioToolboxMidiPlayer
+{
 	
-	DECLARE_LEAK_CHECK();
-	
-    MusicPlayer musicPlayer;
-    MusicSequence musicSequence;
+    ::MusicPlayer musicPlayer;
+    ::MusicSequence musicSequence;
     bool playing;
 	
 public:
+    LEAK_CHECK(AudioToolboxMidiPlayer);
         
     void loadSequence(char* midiData, int length);
     
@@ -41,6 +44,7 @@ public:
     int getPosition();
 };
 
+}
 
 #endif
 

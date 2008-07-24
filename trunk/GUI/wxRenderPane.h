@@ -34,10 +34,8 @@ namespace AriaMaestosa {
 class wxRenderPane : public wxPanel
 {
 
-	DECLARE_LEAK_CHECK();
-
 public:
-
+    LEAK_CHECK(wxRenderPane);
 
     wxRenderPane(MainFrame* parent, int* args);
     ~wxRenderPane();

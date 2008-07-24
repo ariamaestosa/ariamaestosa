@@ -125,7 +125,7 @@ public:
 MainPane::MainPane(MainFrame* mainframe, int* args) : MAINPANE_BASE_CLASS(mainframe, args)
 {
 
-    INIT_LEAK_CHECK();
+    
 
     currentTick=-1;
     draggingTrack = -1;

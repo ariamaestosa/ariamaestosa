@@ -57,8 +57,6 @@ enum NoteToLevelType
     
     class ScoreMidiConverter
     {	
-        DECLARE_LEAK_CHECK();
-        
         // indicates which notes on the staff are sharp/flat/natural,
         // where the array index is an element of the NOTES enum declared in ScoreEditor.h
         int scoreNotesSharpness[7];
@@ -79,7 +77,8 @@ enum NoteToLevelType
         
         int middleCLevel;
 public:
-            
+        LEAK_CHECK(ScoreMidiConverter);
+        
         ScoreMidiConverter();
         void setNoteSharpness(NOTES note, int sharpness);
         bool goingInSharps();

@@ -48,7 +48,7 @@ namespace AriaMaestosa
 
 	Track::Track(MainFrame* parent, Sequence* sequence)
     {
-		INIT_LEAK_CHECK();
+		
 
 		name = wxString( _("Untitled") );
 
@@ -1101,6 +1101,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
 					m.SetTime( time );
 
+                    // FIXME
 					// ((value * 127) - 8191) ?
 					int pitchBendVal = (127-controlEvents[control_evt_id].getValue())*128-128*128;
 

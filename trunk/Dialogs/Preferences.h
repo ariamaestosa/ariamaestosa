@@ -30,8 +30,6 @@ class Preferences : public wxDialog
 
 	int modalCode;
 
-	DECLARE_LEAK_CHECK();
-
 	wxBoxSizer* vert_sizer;
 	//wxStaticText* lang_label;
 
@@ -42,7 +40,8 @@ class Preferences : public wxDialog
 
 	MainFrame* parent;
 public:
-
+    LEAK_CHECK(Preferences);
+        
 	Preferences(MainFrame* parent);
     ~Preferences();
 	void show();

@@ -46,7 +46,7 @@ namespace AriaMaestosa
 	
 MeasureData::MeasureData()
 {
-	INIT_LEAK_CHECK();
+	
 	
     somethingSelected = false;
 	selectedTimeSig = 0;

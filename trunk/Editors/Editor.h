@@ -57,8 +57,6 @@ enum NOTES
 
 class Editor
 {
-	DECLARE_LEAK_CHECK();
-	
     bool verticalScrolling; // is user is dragging the scroll thumb
     int lastDragY; // the Y position of the mouse during last drag event (to see how much mouse has moved between 2 events)
 	
@@ -89,7 +87,8 @@ protected:
     
     unsigned short default_volume;
 public:
-        
+    LEAK_CHECK(Editor);
+    
     Editor(Track* track);
     virtual ~Editor();
 		

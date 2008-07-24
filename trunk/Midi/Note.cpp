@@ -38,7 +38,7 @@ Note::Note(GraphicalTrack* parent,
 		   const int fret_arg)
 {
     
-	INIT_LEAK_CHECK();
+	
 	
     Note::pitchID=pitchID_arg;
     Note::startTick=startTick_arg;

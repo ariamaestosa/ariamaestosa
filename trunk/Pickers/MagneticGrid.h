@@ -29,10 +29,8 @@ namespace AriaMaestosa {
 	
 class GraphicalTrack; // forward
 
-class MagneticGrid : public wxMenu {
-    
-	DECLARE_LEAK_CHECK();
-	
+class MagneticGrid : public wxMenu
+{
 	bool triplet;
 	
     wxMenuItem* grid1;
@@ -50,7 +48,8 @@ class MagneticGrid : public wxMenu {
     void resetChecks();
     
 public:
-    
+    LEAK_CHECK(MagneticGrid);
+        
     MagneticGrid(GraphicalTrack* parent);
     ~MagneticGrid();
     

@@ -29,7 +29,7 @@ void drawable_set_color(float r, float g, float b, float a=1);
 
 class Drawable {
 public:
-    DECLARE_LEAK_CHECK();
+    LEAK_CHECK(Drawable);
 
     // ------------ read-only fields -------------
     int x,y, angle, hotspotX, hotspotY;

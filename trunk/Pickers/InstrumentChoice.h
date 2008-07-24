@@ -29,9 +29,6 @@ class Track; // forward
 
 class InstrumentChoice : public wxMenu
 {
-
-	DECLARE_LEAK_CHECK();
-	
     wxMenuItem* inst_menus[128];
     char* inst_name[128];
     
@@ -55,7 +52,8 @@ class InstrumentChoice : public wxMenu
     
     int instrumentID;
 public:
-    
+    LEAK_CHECK(InstrumentChoice);
+        
     InstrumentChoice();
     ~InstrumentChoice();
         

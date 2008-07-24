@@ -70,9 +70,9 @@ namespace AriaMaestosa {
  */
 class StringEditor : public wxPanel
 {
-	DECLARE_LEAK_CHECK();
-	
 public:
+    LEAK_CHECK(StringEditor);
+    
 	wxBoxSizer* sizer;
 	wxCheckBox* active;
 	wxChoice* note_choice;
@@ -152,7 +152,7 @@ public:
 	StringEditor(wxWindow* parent) : wxPanel(parent)
     {
 	
-		INIT_LEAK_CHECK();
+		
 		
 		sizer = new wxBoxSizer(wxHORIZONTAL);
 		
@@ -207,9 +207,6 @@ END_EVENT_TABLE()
 
 class CustomTuningPicker : public wxFrame
 {
-	
-	DECLARE_LEAK_CHECK();
-	
 	wxPanel* buttonPane;
 	wxButton* ok_btn;
 	wxButton* cancel_btn;
@@ -222,7 +219,8 @@ class CustomTuningPicker : public wxFrame
 	StringEditor* strings[10];
 	
 public:
-		
+    LEAK_CHECK(CustomTuningPicker);
+        
 	~CustomTuningPicker()
 	{
         /*
@@ -236,7 +234,7 @@ public:
 	CustomTuningPicker() :
 		wxFrame(NULL, wxID_ANY,  _("Custom Tuning Editor"), wxPoint(100,100), wxSize(500,300), wxCAPTION )
 	{
-		INIT_LEAK_CHECK();
+		
 			
 		sizer = new wxBoxSizer(wxVERTICAL);
 		
@@ -346,7 +344,7 @@ END_EVENT_TABLE()
 
 TuningPicker::TuningPicker() : wxMenu()
 {
-	INIT_LEAK_CHECK();
+	
     
     Append(1,wxT("Standard"));
     Append(2,wxT("Dropped D")); // D-A-d-g-b-e'

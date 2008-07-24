@@ -36,9 +36,6 @@ void freeVolumeSlider();
 
 class VolumeSlider : public wxDialog
 {
-	
-	DECLARE_LEAK_CHECK();
-	
     wxSlider* slider;
     wxTextCtrl* valueText;
     wxPanel* pane;
@@ -48,6 +45,8 @@ class VolumeSlider : public wxDialog
     Track* currentTrack;
 	
 public:
+    LEAK_CHECK(VolumeSlider);
+    
     VolumeSlider();
     
     void show(int x, int y, int noteID, Track* track);

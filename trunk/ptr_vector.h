@@ -15,7 +15,8 @@
  */
 
 /*
- * I made this class to work like a regular vector, except that contentsVector are placed one the heap so third-party contentsVector can keep pointers to them.
+ * I made this class to work like a regular vector, except that contentsVector are placed
+ * one the heap so third-party contentsVector can keep pointers to them.
  */
 
 #ifndef _ptr_vector_
@@ -25,7 +26,6 @@
 #include <iostream>
 
 #include "Config.h"
-#include "wx/wx.h"
 
 namespace AriaMaestosa
 {

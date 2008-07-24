@@ -42,8 +42,6 @@ class Action::EditAction;
 
 class Sequence {
 	
-	DECLARE_LEAK_CHECK();
-	
     int tempo;
     int beatResolution;
 	
@@ -68,6 +66,8 @@ class Sequence {
 	
  public:   
     
+    LEAK_CHECK(Sequence);
+        
     // this object is to be modified by MainFrame, to remember where to save this sequence
     wxString filepath;
     

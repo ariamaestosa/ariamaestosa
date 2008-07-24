@@ -25,15 +25,14 @@ namespace AriaMaestosa {
 class GuitarEditor; // forward
 class CustomTuningPicker;
 	
-class TuningPicker : public wxMenu {
-
-	DECLARE_LEAK_CHECK();
-	
+class TuningPicker : public wxMenu
+{
     void resetChecks();
     GuitarEditor* parent;
     CustomTuningPicker* ctp;
 	
 public:
+    LEAK_CHECK(TuningPicker);
         
     TuningPicker();
     ~TuningPicker();

@@ -32,7 +32,7 @@ namespace Action
 	
 EditAction::EditAction()
 {
-		INIT_LEAK_CHECK();
+		
 }
 void SingleTrackAction::setParentTrack(Track* parent)
 {
