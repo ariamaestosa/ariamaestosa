@@ -39,7 +39,7 @@ class Image {
     wxBitmap* bitmap;
 #endif
     
-	DECLARE_LEAK_CHECK();
+	LEAK_CHECK(Image);
 	
     int width, height, textureWidth, textureHeight;
     

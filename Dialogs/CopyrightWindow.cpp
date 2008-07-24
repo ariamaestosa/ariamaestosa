@@ -30,8 +30,6 @@ namespace AriaMaestosa {
 class CopyrightWindowClass : public wxDialog
 {
     
-	DECLARE_LEAK_CHECK();
-	
     wxBoxSizer* boxSizer;
     wxTextCtrl* copyrightInput;
 	wxTextCtrl* nameInput;
@@ -42,10 +40,12 @@ class CopyrightWindowClass : public wxDialog
     int code;
     
 public:
+    LEAK_CHECK(CopyrightWindowClass);
+    
     CopyrightWindowClass(Sequence* seq) : wxDialog( NULL, wxID_ANY,  _("Copyright"), wxDefaultPosition, wxSize(400,400), wxCAPTION )
 	{
             
-			INIT_LEAK_CHECK();
+			
 			
             sequence = seq;
             

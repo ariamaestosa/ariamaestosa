@@ -28,13 +28,6 @@
 // -------------------- my assert stuff -----------------
 #include <iostream>
 
-#ifdef _CHECK_FOR_LEAKS
-#include "LeakCheck.h"
-#else
-#define DECLARE_LEAK_CHECK()
-#define INIT_LEAK_CHECK()
-#endif
-
 
 #ifdef _MORE_DEBUG_CHECKS
 
@@ -49,5 +42,8 @@
 #define assertExpr(v1,sign,v2)
 
 #endif
+
+
+#include "LeakCheck.h"
 
 #endif

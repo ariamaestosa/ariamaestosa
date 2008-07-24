@@ -31,13 +31,11 @@ class GraphicalTrack; // forward
 
 class ControllerChoice : public wxMenu
 {
-    
-	DECLARE_LEAK_CHECK();
-	
     GraphicalTrack* parent;
     int controllerID;
     
 public:
+    LEAK_CHECK(ControllerChoice);
         
     ControllerChoice(GraphicalTrack* parent);
     ~ControllerChoice();

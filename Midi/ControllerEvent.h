@@ -28,13 +28,13 @@ class Sequence;
 
 class ControllerEvent {
 	
-    DECLARE_LEAK_CHECK();
-	
     int tick;
     unsigned short controller, value;
     Sequence* sequence;
     
-public:    
+public:  
+    LEAK_CHECK(ControllerEvent);
+        
     ControllerEvent(Sequence* sequence, unsigned short controller, int tick, unsigned short value);
     
     unsigned short getController();

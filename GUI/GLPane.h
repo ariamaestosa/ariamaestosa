@@ -33,11 +33,8 @@ namespace AriaMaestosa {
 
 class GLPane : public wxGLCanvas
 {
-
-	DECLARE_LEAK_CHECK();
-
 public:
-
+    LEAK_CHECK(GLPane);
 
     GLPane(MainFrame* parent, int* args);
     ~GLPane();

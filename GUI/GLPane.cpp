@@ -38,7 +38,7 @@ GLPane::GLPane(MainFrame* mainFrame, int* args) :
     wxGLCanvas(mainFrame, wxID_ANY,  wxDefaultPosition, wxDefaultSize, 0, wxT("GLCanvas"),  args)
 {
 
-    INIT_LEAK_CHECK();
+    
 
     int argc = 0;
     char** argv = NULL;

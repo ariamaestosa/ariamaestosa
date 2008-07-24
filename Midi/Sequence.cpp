@@ -50,7 +50,7 @@ namespace AriaMaestosa {
 
 Sequence::Sequence()
 {
-    INIT_LEAK_CHECK();
+    
     
     reordering_newPosition = -1;
 	

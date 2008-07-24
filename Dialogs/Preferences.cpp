@@ -37,7 +37,7 @@ END_EVENT_TABLE()
 Preferences::Preferences(MainFrame* parent) : wxDialog(parent, wxID_ANY,  _("Preferences"), wxPoint(100,100), wxSize(500,300), wxCAPTION )
 {
 
-	INIT_LEAK_CHECK();
+	
 
 	Preferences::parent = parent;
 

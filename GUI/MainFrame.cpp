@@ -136,7 +136,7 @@ END_EVENT_TABLE()
 
 MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(100,100), wxSize(800,600), ARIA_WINDOW_FLAGS )
 {
-	INIT_LEAK_CHECK();
+	
 
 }
 

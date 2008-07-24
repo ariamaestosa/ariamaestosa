@@ -39,7 +39,7 @@ END_EVENT_TABLE()
 
 ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu()
 {
-    INIT_LEAK_CHECK();
+    
 	
     controllerID=7;
     

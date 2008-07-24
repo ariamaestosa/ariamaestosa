@@ -30,7 +30,6 @@
 
 namespace AriaMaestosa {
 
-class MusicPlayer;
 class CustomNoteSelectDialog;
 class Sequence;
 class Preferences;
@@ -53,9 +52,6 @@ DECLARE_EVENT_TYPE(wxEVT_HIDE_WAIT_WINDOW, -1)
 
 class MainFrame : public wxFrame
 {
-
-	DECLARE_LEAK_CHECK();
-
 	AboutDialog* aboutDialog;
 
     wxBorderSizer* verticalSizer;
@@ -98,7 +94,8 @@ class MainFrame : public wxFrame
     wxBitmapButton* stop;
 
 public:
-
+    LEAK_CHECK(MainFrame);
+    
 	// READ AND WRITE
 	bool changingValues; // set this to true when modifying the controls in the top bar, this allows to ignore all events thrown by their modification.
 	wxTextCtrl* tempoCtrl;

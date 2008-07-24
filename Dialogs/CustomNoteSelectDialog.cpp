@@ -40,7 +40,7 @@ END_EVENT_TABLE()
 
 CustomNoteSelectDialog::CustomNoteSelectDialog() : wxDialog(NULL, wxID_ANY,  _("Select notes..."), wxPoint(300,100), wxSize(200,400))
 {
-	INIT_LEAK_CHECK();
+	
     
     wxSize smallTextCtrlSize(wxDefaultSize);
     smallTextCtrlSize.SetWidth(35);

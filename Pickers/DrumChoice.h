@@ -30,13 +30,11 @@ class Track;
 	
 class DrumChoice : public wxMenu
 {
-	
- DECLARE_LEAK_CHECK();
-	
     Track* parent;
 
 public:
-        
+    LEAK_CHECK(DrumChoice);   
+    
     DrumChoice();
     ~DrumChoice();
     

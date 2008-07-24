@@ -42,7 +42,7 @@ END_EVENT_TABLE()
 MagneticGrid::MagneticGrid(GraphicalTrack* parent) : wxMenu()
 {
     
-	INIT_LEAK_CHECK();
+	
 	
 	triplet= false;
 	

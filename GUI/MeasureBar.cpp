@@ -57,13 +57,11 @@ namespace AriaMaestosa
 class SelectedMenu : public wxMenu
 {
 	
-	DECLARE_LEAK_CHECK();
-	
 public:
-	
+	LEAK_CHECK(SelectedMenu);
 SelectedMenu() : wxMenu()
 {
-		INIT_LEAK_CHECK();
+		
 		
 		Append(1, _("Remove selected measures"));
 
@@ -102,16 +100,15 @@ END_EVENT_TABLE()
 
 class UnselectedMenu : public wxMenu
 {
-	
-	DECLARE_LEAK_CHECK();
 	wxMenuItem* deleteTimeSig;
 	int remove_timeSigID;
 	
 public:
-	
+    LEAK_CHECK(UnselectedMenu);
+        
 	UnselectedMenu() : wxMenu()
 	{
-		INIT_LEAK_CHECK();
+		
 		
 		Append(2, _("Insert measures"));
 		deleteTimeSig = Append(3, _("Remove time sig change"));
@@ -169,7 +166,7 @@ END_EVENT_TABLE()
 	
 MeasureBar::MeasureBar(MeasureData* parent)
 {
-	INIT_LEAK_CHECK();
+	
 	
 	
 	selectedMenu = new SelectedMenu();

@@ -29,9 +29,6 @@ namespace AriaMaestosa {
 	
 class ScalePickerFrame : public wxDialog
 {
-    
-	DECLARE_LEAK_CHECK();
-	
     wxStaticText* label;
     wxStaticText* label2;
     wxStaticText* label3;
@@ -63,11 +60,11 @@ class ScalePickerFrame : public wxDialog
     Sequence* sequence;
     
 public:
+    LEAK_CHECK(ScalePickerFrame);
+    
 	ScalePickerFrame(Sequence* seq) : wxDialog( NULL, wxID_ANY,  _("Scale"), wxDefaultPosition, wxSize(400,200), wxCAPTION )
 	{
-            
-			INIT_LEAK_CHECK();
-			
+
             sequence = seq;
             
             contentPane = new wxPanel(this);

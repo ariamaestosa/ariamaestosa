@@ -53,7 +53,7 @@ static int grid_x_begin=0, grid_x_end=0, track_name_x_begin=0, track_name_x_end=
 GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
 {
 	
-	INIT_LEAK_CHECK();
+	
 	
     sequence = seq;
     GraphicalTrack::track = track;

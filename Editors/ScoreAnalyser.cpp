@@ -299,6 +299,11 @@ int NoteRenderInfo::getYBase()
     if(chord) return (stem_type == STEM_UP ? max_chord_y : min_chord_y);
     else return y;
 }
+int NoteRenderInfo::getBaseLevel()
+{
+    if(chord) return (stem_type == STEM_UP ? max_chord_level : min_chord_level);
+    else return level;
+}
 
 #pragma mark -
 

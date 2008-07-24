@@ -85,6 +85,7 @@ const int ALL_NOTES = -2;
 
 class Track
 {
+    // FIXME - find better way?
 	friend class FullTrackUndo;
 	friend class NoteRelocator;
 	friend class ControlEventRelocator;
@@ -110,8 +111,6 @@ class Track
 	friend class Action::SetAccidentalSign;
     friend class Action::ShiftBySemiTone;
 
-	DECLARE_LEAK_CHECK();
-
     MainFrame* frame;
     int trackUniqueID;
     ptr_vector<Note> notes;
@@ -125,7 +124,7 @@ class Track
 	int instrument, drumKit;
 
 public:
-
+    LEAK_CHECK(Track);
 
     // ------------- read-only -------------
     GraphicalTrack* graphics;

@@ -53,12 +53,19 @@ class NoteRenderInfo
     // used to display ties (display a tie between this note and specified tick). a value of -1 means no tie.
 	int tied_with_tick;
     bool tie_up; // used if stem_type == STEM_NONE, otherwise tie location is determined with stem_type
+    
+    
 public:
     // for very short notes, e.g. drum notes. Note will appear as a X.
 	bool instant_hit;
     
     // if note has a dot
 	bool dotted;
+    
+    // chord
+    bool chord;
+    // since a chord contains many notes, keep info about the highest and lowest note of the chord
+    int max_chord_y, min_chord_y, min_chord_level, max_chord_level;
     
     // a 1/4 will have none, a 1/8 has 1, a 1/16 has 2, etc.
 	int flag_amount;
@@ -95,11 +102,7 @@ public:
     // location specified by these variables.
     int beam_to_x, beam_to_y;
     int stem_y; // if != -1, the renderer will use this y as stem end instead of calculating it itself
-    
-    // chord
-    bool chord;
-    // since a chord contains many notes, keep info about the highest and lowest note of the chord
-    int max_chord_y, min_chord_y, min_chord_level, max_chord_level;
+
 
 	NoteRenderInfo(int tick, int x, int level, int tick_length, int sign, const bool selected, int pitch);
     
@@ -117,6 +120,7 @@ public:
     int getStemYFrom();
     int getStemYTo();
     int getYBase();
+    int getBaseLevel();
 };
 
 void addToVector( NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& info, const int middleCLevel, const bool recursion );

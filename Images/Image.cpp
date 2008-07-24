@@ -28,12 +28,12 @@ namespace AriaMaestosa {
 	
 Image::Image()
 {
-	INIT_LEAK_CHECK();
+	
 }
 
 Image::Image(wxString path)
 {
-	INIT_LEAK_CHECK();
+	
     load(path);
 }
 

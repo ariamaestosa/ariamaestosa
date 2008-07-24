@@ -57,11 +57,11 @@ class NotationSetup : public wxFrame
 
 public:
 		
-		DECLARE_LEAK_CHECK();
+    LEAK_CHECK(NotationSetup);
 	
 	NotationSetup(int mode = -1) : wxFrame(NULL, wxID_ANY,  _("Export to musical notation"), wxPoint(200,200), wxSize(200,400), wxCAPTION | wxSTAY_ON_TOP)
     {
-		INIT_LEAK_CHECK();
+		
 		
 		boxSizer=new wxBoxSizer(wxVERTICAL);
 		

@@ -35,7 +35,7 @@ END_EVENT_TABLE()
 
 DrumChoice::DrumChoice() : wxMenu()
 {
-    INIT_LEAK_CHECK();
+    
     
     Append( 20000 + 0 ,wxT("Standard"));
     Append( 20000 + 8 ,wxT("Room kit"));

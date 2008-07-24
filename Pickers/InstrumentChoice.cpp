@@ -39,7 +39,7 @@ void InstrumentChoice::setParent(Track* track)
 	
 InstrumentChoice::InstrumentChoice() : wxMenu()
 {
-    INIT_LEAK_CHECK();
+    
 	
     // piano
     inst_name[0]="Acoustic Grand Piano";

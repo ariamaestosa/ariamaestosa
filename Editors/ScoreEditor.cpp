@@ -165,7 +165,7 @@ int findNotePitch(int note_7, int sharpness)
 
 ScoreMidiConverter::ScoreMidiConverter()
 {
-    INIT_LEAK_CHECK();
+    
 	for(int n=0; n<7; n++) scoreNotesSharpness[n] = NATURAL;
 	
     accidentals =  false;

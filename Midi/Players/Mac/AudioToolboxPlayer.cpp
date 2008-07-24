@@ -25,9 +25,12 @@
 
 #include "wx/timer.h"
 
+namespace AriaMaestosa
+{
+
 AudioToolboxMidiPlayer::AudioToolboxMidiPlayer()
 {
-	INIT_LEAK_CHECK();
+	
     playing = false;
 
 }
@@ -97,6 +100,8 @@ int AudioToolboxMidiPlayer::getPosition()
 
 AudioToolboxMidiPlayer::~AudioToolboxMidiPlayer()
 {
+}
+
 }
 
 #endif

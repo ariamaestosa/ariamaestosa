@@ -24,9 +24,9 @@ namespace AriaMaestosa {
 	
 	class GraphicalTrack; // forward
 	
-	class KeyPicker : public wxMenu {
+	class KeyPicker : public wxMenu
+    {
 		
-		DECLARE_LEAK_CHECK();
 		GraphicalTrack* parent;
 		
 		wxMenuItem* musical_checkbox;
@@ -51,7 +51,8 @@ namespace AriaMaestosa {
         wxMenuItem* key_flats_6;
         wxMenuItem* key_flats_7;
 public:
-			
+        LEAK_CHECK(KeyPicker);
+        
 		KeyPicker();
 		~KeyPicker();
 		

@@ -30,9 +30,8 @@ class GraphicalTrack; // forward
 
 class Note {
 	
-	DECLARE_LEAK_CHECK();
-
 public:
+    LEAK_CHECK(Note);
     
     // used for score editor. by default, the editor will choose a default sign to display accidentals.
     // however computers are not smart enough to guess correctly so the user has the possibility to 

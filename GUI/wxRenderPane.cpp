@@ -38,7 +38,7 @@ wxRenderPane::wxRenderPane(MainFrame* mainFrame, int* args) :
     wxPanel(mainFrame, wxID_ANY,  wxDefaultPosition, wxDefaultSize)
 {
 
-    INIT_LEAK_CHECK();
+    
 
 }
 
