@@ -98,7 +98,7 @@ namespace AriaMaestosa
 		if( atMouse and
 			trackMouseLoc_y > track->graphics->getCurrentEditor()->getEditorYStart() and
 			trackMouseLoc_y < track->graphics->getCurrentEditor()->getYEnd() and
-			trackMouseLoc_x > getEditorXStart())
+			trackMouseLoc_x > getEditorsXStart())
 		{
 			
 			RelativeXCoord mx(trackMouseLoc_x, WINDOW);

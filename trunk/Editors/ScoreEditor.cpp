@@ -897,8 +897,8 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 		const int noteLength = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
 		const int tick = track->getNoteStartInMidiTicks(n);
 		
-        int x1=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels() + getEditorXStart();
-        const int x2=track->getNoteEndInPixels(n) - sequence->getXScrollInPixels() + getEditorXStart();
+        int x1=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels() + getEditorsXStart();
+        const int x2=track->getNoteEndInPixels(n) - sequence->getXScrollInPixels() + getEditorsXStart();
         
         // don't consider notes that won't be visible
         if(x2 < first_x_to_consider) continue;
@@ -959,7 +959,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 		if(musicalNotationEnabled)
 		{
 			// build visible notes vector with initial info in it
-			const int note_x = getEditorXStart() + track->getNoteStartInPixels(n)  - sequence->getXScrollInPixels();
+			const int note_x = getEditorsXStart() + track->getNoteStartInPixels(n)  - sequence->getXScrollInPixels();
 
 			NoteRenderInfo currentNote(tick, note_x, noteLevel, noteLength, note_sign,
 									 track->isNoteSelected(n), track->getNotePitchID(n));
@@ -978,7 +978,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
             
 		// -------------------------- silences rendering pass -------------------
 		// draw silences
-		const unsigned int first_visible_measure = getMeasureData()->measureAtPixel( getEditorXStart() );
+		const unsigned int first_visible_measure = getMeasureData()->measureAtPixel( getEditorsXStart() );
 		const unsigned int last_visible_measure = getMeasureData()->measureAtPixel( getXEnd() );
 		const int visible_measure_amount = last_visible_measure-first_visible_measure+1;
 		bool measure_empty[visible_measure_amount+1];
@@ -1150,8 +1150,8 @@ assertExpr(iters,<,1000);
                 const int y_base = ((mousey_initial - getEditorYStart() + getYScrollInPixels())/y_step)*y_step;
                 const int y_add = getEditorYStart() - getYScrollInPixels();
                 
-                AriaRender::rect(preview_x1+getEditorXStart(), y_base-2 + y_add,
-                                 preview_x2+getEditorXStart(), y_base+y_step+1 + y_add);
+                AriaRender::rect(preview_x1+getEditorsXStart(), y_base-2 + y_add,
+                                 preview_x2+getEditorsXStart(), y_base+y_step+1 + y_add);
                 
             }
             
@@ -1175,8 +1175,8 @@ assertExpr(iters,<,1000);
         // move a single note
         if(lastClickedNote!=-1)
         {
-			int x1=track->getNoteStartInPixels(lastClickedNote) - sequence->getXScrollInPixels() + getEditorXStart();
-			const int x2=track->getNoteEndInPixels(lastClickedNote) - sequence->getXScrollInPixels() + getEditorXStart();
+			int x1=track->getNoteStartInPixels(lastClickedNote) - sequence->getXScrollInPixels() + getEditorsXStart();
+			const int x2=track->getNoteEndInPixels(lastClickedNote) - sequence->getXScrollInPixels() + getEditorsXStart();
 			//const int notePitch = track->getNotePitchID(lastClickedNote);
 			const int noteLevel = converter->noteToLevel(track->getNote(lastClickedNote));
             
@@ -1192,8 +1192,8 @@ assertExpr(iters,<,1000);
             {
                 if(!track->isNoteSelected(n)) continue;
                 
-				int x1=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels() + getEditorXStart();
-				const int x2=track->getNoteEndInPixels(n) - sequence->getXScrollInPixels() + getEditorXStart();
+				int x1=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels() + getEditorsXStart();
+				const int x2=track->getNoteEndInPixels(n) - sequence->getXScrollInPixels() + getEditorsXStart();
 				//const int notePitch = track->getNotePitchID(n);
 				const int noteLevel = converter->noteToLevel(track->getNote(n));
 				
@@ -1212,7 +1212,7 @@ assertExpr(iters,<,1000);
     else AriaRender::color(0.8, 0.8, 0.8);
     
     AriaRender::rect(0, getEditorYStart(),
-                     getEditorXStart()-3, getYEnd());
+                     getEditorsXStart()-3, getYEnd());
     
 	// ------------------------------- draw keys and horizontal lines -------------------------------
 
@@ -1318,12 +1318,12 @@ assertExpr(iters,<,1000);
     AriaRender::images();
 	if(GKey)
 	{
-		keyG->move(getEditorXStart() - 55, getEditorYStart() + (middle_c_level-6)*y_step -  yscroll + 5);
+		keyG->move(getEditorsXStart() - 55, getEditorYStart() + (middle_c_level-6)*y_step -  yscroll + 5);
 		keyG->render();
 	}
 	if(FKey)
 	{
-		keyF->move(getEditorXStart() - 65, getEditorYStart() + (middle_c_level+4)*y_step -  yscroll + 5);
+		keyF->move(getEditorsXStart() - 65, getEditorYStart() + (middle_c_level+4)*y_step -  yscroll + 5);
 		keyF->render();
 	}
 
@@ -1423,8 +1423,8 @@ NoteSearchResult ScoreEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 		const int noteLevel = converter->noteToLevel(track->getNote(n));
         if(noteLevel == -1) continue;
 		const int note_y = getEditorYStart() + y_step*noteLevel - halfh - getYScrollInPixels() + 2;
-		const int note_x = getEditorXStart() + track->getNoteStartInPixels(n)  - sequence->getXScrollInPixels();
-		const int note_x2 = getEditorXStart() + track->getNoteEndInPixels(n)  - sequence->getXScrollInPixels();
+		const int note_x = getEditorsXStart() + track->getNoteStartInPixels(n)  - sequence->getXScrollInPixels();
+		const int note_x2 = getEditorsXStart() + track->getNoteEndInPixels(n)  - sequence->getXScrollInPixels();
 		
 		if(linearNotationEnabled)
 		{
@@ -1519,7 +1519,7 @@ void ScoreEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_c
 		const int noteLevel = converter->noteToLevel(track->getNote(n));
         if(noteLevel == -1) continue;
 		const int note_y = getEditorYStart() + y_step*noteLevel - halfh - getYScrollInPixels() + 2;
-		const int note_x = getEditorXStart() + track->getNoteStartInPixels(n)  - sequence->getXScrollInPixels();
+		const int note_x = getEditorsXStart() + track->getNoteStartInPixels(n)  - sequence->getXScrollInPixels();
 		
 		if( std::min(mxc, mxi)<note_x and std::max(mxc,mxi)>note_x and
 			std::min(mousey_current, mousey_initial) < note_y and

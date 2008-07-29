@@ -482,8 +482,8 @@ void DrumEditor::mouseUp(RelativeXCoord mousex_current, const int mousey_current
 	Editor::mouseUp(mousex_current, mousey_current, mousex_initial, mousey_initial);
     
 	// ------------------- toggle "only show used drums" widget -----------------
-	if(mousex_current.getRelativeTo(WINDOW) > getEditorXStart()-77 and
-	   mousex_current.getRelativeTo(WINDOW) < getEditorXStart()-67 and
+	if(mousex_current.getRelativeTo(WINDOW) > getEditorsXStart()-77 and
+	   mousex_current.getRelativeTo(WINDOW) < getEditorsXStart()-67 and
 	   mousey_current - getYScrollInPixels() > getEditorYStart()+1 and
 	   mousey_current - getYScrollInPixels() < getEditorYStart()+10)
 	{
@@ -523,7 +523,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         const int y = getEditorYStart() + drumID*y_step - getYScrollInPixels();
         if(y<getEditorYStart() or y>getYEnd()) continue;
         
-        AriaRender::line(getEditorXStart(), y, getXEnd(), y);
+        AriaRender::line(getEditorsXStart(), y, getXEnd(), y);
         
     }
 	
@@ -532,7 +532,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
     const int noteAmount = track->getNoteAmount();
     for(int n=0; n<noteAmount; n++)
 	{
-        const int drumx=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels() + getEditorXStart();
+        const int drumx=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels() + getEditorsXStart();
 
         // don't draw notes that won't visible
         if(drumx<0) continue;
@@ -587,7 +587,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         // move a single note
         if(lastClickedNote != -1)
 		{
-			const int drumx=track->getNoteStartInPixels(lastClickedNote) - sequence->getXScrollInPixels() + getEditorXStart();
+			const int drumx=track->getNoteStartInPixels(lastClickedNote) - sequence->getXScrollInPixels() + getEditorsXStart();
 			
 			const int drumIDInVector= midiKeyToVectorID[ track->getNotePitchID(lastClickedNote) ];
 			if(drumIDInVector != -1)
@@ -609,7 +609,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
 			{
                 if(!track->isNoteSelected(n)) continue;
                 
-                const int drumx=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels() + getEditorXStart();
+                const int drumx=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels() + getEditorsXStart();
                 
                 assert(track->getNotePitchID(n)>0);
                 assert(track->getNotePitchID(n)<128);
@@ -641,7 +641,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
     else AriaRender::color(0.8, 0.8, 0.8);
     
     AriaRender::rect(0, getEditorYStart(),
-                     getEditorXStart()-3, getYEnd());
+                     getEditorsXStart()-3, getYEnd());
 
     // drum names
     AriaRender::color(0,0,0);
@@ -659,15 +659,15 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
             AriaRender::color(0,0,0);
 			if(showUsedDrumsOnly)
 			{
-                AriaRender::triangle(getEditorXStart()-73, y+2,
-                                     getEditorXStart()-73, y+8,
-                                     getEditorXStart()-63, y+5);
+                AriaRender::triangle(getEditorsXStart()-73, y+2,
+                                     getEditorsXStart()-73, y+8,
+                                     getEditorsXStart()-63, y+5);
             }
 			else
 			{
-                AriaRender::triangle(getEditorXStart()-73, y+1,
-                                     getEditorXStart()-67, y+1,
-                                     getEditorXStart()-70, y+9);
+                AriaRender::triangle(getEditorsXStart()-73, y+1,
+                                     getEditorsXStart()-67, y+1,
+                                     getEditorsXStart()-70, y+9);
            }
 			
 		}
@@ -675,28 +675,28 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         if(drums[drumID].midiKey == -1) // section header
 		{
             AriaRender::color(0,0,0);
-            AriaRender::rect(getEditorXStart(), y,
+            AriaRender::rect(getEditorsXStart(), y,
                              getXEnd(), y+y_step);
 
             AriaRender::color(1,1,1);
             
             if(!drums[drumID].sectionExpanded) // expand/collapse widget of section header
 			{
-                AriaRender::triangle( getEditorXStart()+7, y+2,
-                                     getEditorXStart()+7, y+8,
-                                     getEditorXStart()+17, y+5 );
+                AriaRender::triangle( getEditorsXStart()+7, y+2,
+                                     getEditorsXStart()+7, y+8,
+                                     getEditorsXStart()+17, y+5 );
             }
 			else
 			{
-                AriaRender::triangle(getEditorXStart()+7, y+1,
-                                     getEditorXStart()+13, y+1,
-                                     getEditorXStart()+10, y+9 );
+                AriaRender::triangle(getEditorsXStart()+7, y+1,
+                                     getEditorsXStart()+13, y+1,
+                                     getEditorsXStart()+10, y+9 );
             }
             
-            AriaRender::small_text(drums[drumID].name, getEditorXStart()+20, y+9);
+            AriaRender::small_text(drums[drumID].name, getEditorsXStart()+20, y+9);
         }
         else
-            AriaRender::small_text(drums[drumID].name, getEditorXStart()-74, y+9);
+            AriaRender::small_text(drums[drumID].name, getEditorsXStart()-74, y+9);
 
         AriaRender::color(0,0,0);
         

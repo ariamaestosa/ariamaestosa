@@ -78,6 +78,7 @@ public:
     int getCurrentElementXEnd();
     LayoutElement* getNextElement();
     int getNotePrintX(int noteID);
+    int tickToX(const int tick);
 };
     
 class AriaPrintable

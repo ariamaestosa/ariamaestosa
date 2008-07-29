@@ -15,8 +15,8 @@
  */
 
 
-#ifndef _tablature_out_
-#define _tablature_out_
+#ifndef _score_out_
+#define _score_out_
 
 #include <wx/file.h>
 #include "Config.h"
@@ -26,12 +26,11 @@
 namespace AriaMaestosa
 {
     
-class TablaturePrintable : public EditorPrintable
+class ScorePrintable : public EditorPrintable
 {
-    int string_amount;
 public:
-    TablaturePrintable(Track* track_arg);
-    virtual ~TablaturePrintable();
+    ScorePrintable(Track* track_arg);
+    virtual ~ScorePrintable();
 
     void drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1, bool show_measure_number);
 };

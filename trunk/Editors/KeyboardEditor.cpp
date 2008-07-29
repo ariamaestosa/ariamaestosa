@@ -200,7 +200,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     const int yscroll = getYScrollInPixels();
     const int y1 = getEditorYStart();
     const int last_note = ( yscroll + getYEnd() - getEditorYStart() )/y_step;
-    const int x1 = getEditorXStart();
+    const int x1 = getEditorsXStart();
     const int x2 = getXEnd();
     
     // white background
@@ -267,8 +267,8 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
                 const int y=track->getNotePitchID(n);
                 
                 
-                AriaRender::rect(x1+getEditorXStart(), y*y_step+1 + getEditorYStart() - getYScrollInPixels(),
-                                          x2+getEditorXStart()-1, (y+1)*y_step + getEditorYStart() - getYScrollInPixels());
+                AriaRender::rect(x1+getEditorsXStart(), y*y_step+1 + getEditorYStart() - getYScrollInPixels(),
+                                          x2+getEditorsXStart()-1, (y+1)*y_step + getEditorYStart() - getYScrollInPixels());
             }
             
         }
@@ -292,8 +292,8 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
         if(track->isNoteSelected(n) and focus) AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
         else AriaRender::color((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
         
-        AriaRender::bordered_rect(x1+getEditorXStart()+1, y*y_step+1 + getEditorYStart() - getYScrollInPixels(),
-                                  x2+getEditorXStart()-1, (y+1)*y_step + getEditorYStart() - getYScrollInPixels());
+        AriaRender::bordered_rect(x1+getEditorsXStart()+1, y*y_step+1 + getEditorYStart() - getYScrollInPixels(),
+                                  x2+getEditorsXStart()-1, (y+1)*y_step + getEditorYStart() - getYScrollInPixels());
     }
     
     
@@ -303,7 +303,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     if(!focus) AriaRender::color(0.4, 0.4, 0.4);
     else AriaRender::color(0.8, 0.8, 0.8);
     
-    AriaRender::rect(0, getEditorYStart(), getEditorXStart()-25,  getYEnd());
+    AriaRender::rect(0, getEditorYStart(), getEditorsXStart()-25,  getYEnd());
     
     for(int g_octaveID=0; g_octaveID<11; g_octaveID++)
     {
@@ -315,7 +315,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             if(!focus) AriaRender::color(0.5, 0.5, 0.5);
             else AriaRender::color(1,1,1);
             
-            noteTrackDrawable->move(getEditorXStart()-noteTrackDrawable->getImageWidth(), from_y+barHeight+20 + g_octave_y);
+            noteTrackDrawable->move(getEditorsXStart()-noteTrackDrawable->getImageWidth(), from_y+barHeight+20 + g_octave_y);
             noteTrackDrawable->render();
             
             AriaRender::primitives();
@@ -323,7 +323,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             
             // FIXME - all those from_y+barHeight+20 stuff needs to be cleaned up for good
             AriaRender::line(0, from_y+barHeight+20 + g_octave_y+1,
-                             getEditorXStart()-25, from_y+barHeight+20 + g_octave_y+1);
+                             getEditorsXStart()-25, from_y+barHeight+20 + g_octave_y+1);
             
             char buffer[2];
             sprintf (buffer, "%d", 10-g_octaveID);
@@ -367,9 +367,9 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             
             if(!(preview_x1<0 or preview_x2<0) and preview_x2>preview_x1)
             {
-                AriaRender::rect(preview_x1+getEditorXStart(),
+                AriaRender::rect(preview_x1+getEditorsXStart(),
                                  ((mousey_initial - getEditorYStart() + getYScrollInPixels())/y_step)*y_step + getEditorYStart() - getYScrollInPixels(),
-                                 preview_x2+getEditorXStart(),
+                                 preview_x2+getEditorsXStart(),
                                  ((mousey_initial - getEditorYStart() + getYScrollInPixels())/y_step)*y_step+y_step + getEditorYStart() - getYScrollInPixels());
             }
             
@@ -394,9 +394,9 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             int x2=track->getNoteEndInPixels(lastClickedNote) - sequence->getXScrollInPixels();
             int y=track->getNotePitchID(lastClickedNote);
             
-            AriaRender::rect(x1+x_step_move+getEditorXStart(),
+            AriaRender::rect(x1+x_step_move+getEditorsXStart(),
                              (y+y_step_move)*y_step+1 + getEditorYStart() - getYScrollInPixels(),
-                             x2-1+x_step_move+getEditorXStart(),
+                             x2-1+x_step_move+getEditorsXStart(),
                              (y+y_step_move+1)*y_step + getEditorYStart() - getYScrollInPixels());
         }
         else
@@ -411,9 +411,9 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
                 int x2=track->getNoteEndInPixels(n) - sequence->getXScrollInPixels();
                 int y=track->getNotePitchID(n);
 
-                AriaRender::rect(x1+x_step_move+getEditorXStart(),
+                AriaRender::rect(x1+x_step_move+getEditorsXStart(),
                                  (y+y_step_move)*y_step+1 + getEditorYStart() - getYScrollInPixels(),
-                                 x2-1+x_step_move+getEditorXStart(),
+                                 x2-1+x_step_move+getEditorsXStart(),
                                  (y+y_step_move+1)*y_step + getEditorYStart() - getYScrollInPixels());
             }//next
             

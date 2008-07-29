@@ -19,6 +19,8 @@ namespace AriaMaestosa
     
 TablaturePrintable::TablaturePrintable(Track* track) : EditorPrintable()
 {
+    // FIXME  - will that work if printing e.g. a bass track + a guitar track,
+    // both with different string counts?
     string_amount = track->graphics->guitarEditor->tuning.size();
 }
 
@@ -43,14 +45,16 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
     
     beginLine(&dc, &line, x0, y0, x1, y1, show_measure_number);
     
+    // iterate through layout elements
     LayoutElement* currentElement;
     while((currentElement = getNextElement()) and (currentElement != NULL))
     {
         if(currentElement->type != SINGLE_MEASURE) continue;
         
+        // for layout elements containing notes, render them
         const int firstNote = line.getFirstNoteInElement(currentElement);
         const int lastNote = line.getLastNoteInElement(currentElement);
-        
+
         for(int i=firstNote; i<lastNote; i++)
         {
             const int string = track->getNoteString(i);

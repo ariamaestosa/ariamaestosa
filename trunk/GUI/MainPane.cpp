@@ -340,7 +340,7 @@ bool MainPane::do_render()
         
         RelativeXCoord tick(currentTick, MIDI);
         
-        const int XStart = getEditorXStart();
+        const int XStart = getEditorsXStart();
         const int XEnd = getWidth();
         
         AriaRender::lineWidth(2);
@@ -956,7 +956,7 @@ void MainPane::playbackRenderLoop()
                 const int current_pixel = tick.getRelativeTo(WINDOW);
                 
                 const float zoom = getCurrentSequence()->getZoom();
-                const int XStart = getEditorXStart();
+                const int XStart = getEditorsXStart();
                 const int XEnd = getWidth() - followPlaybackTime*zoom;
                 
                 if(current_pixel < XStart or current_pixel > XEnd)
@@ -980,7 +980,7 @@ void MainPane::playbackRenderLoop()
             setCurrentTick( playbackStartTick + currentTick );
 
             RelativeXCoord tick(this->currentTick, MIDI);
-            const int XStart = getEditorXStart();
+            const int XStart = getEditorsXStart();
             const int XEnd = getWidth();
             const int tick_pixel = tick.getRelativeTo(WINDOW);
 

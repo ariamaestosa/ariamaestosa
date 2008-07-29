@@ -136,10 +136,9 @@ class LayoutLine
 public:
     LayoutLine(AriaPrintable* parent);
     
+    // FIXME - change 'chars' to 'units'?
     int charWidth;
     
-    // FIXME - the argument is weird
-    // find a better way to store the measure vector
     int getTrackAmount();
     void setCurrentTrack(const int n);
     Track* getTrack();

@@ -184,7 +184,7 @@ public:
 
 };
 
-const int getEditorXStart();
+const int getEditorsXStart();
 }
 
 #endif
