@@ -1,6 +1,9 @@
 #include "AriaCore.h"
+
 #include "Printing/PrintingBase.h"
 #include "Printing/TabPrint.h"
+#include "Printing/ScorePrint.h"
+
 #include "GUI/MainFrame.h"
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
@@ -182,6 +185,10 @@ void AriaPrintable::addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */)
     if(mode == GUITAR)
     {
         editorPrintables.push_back(new TablaturePrintable(track));   
+    }
+    else if(mode == SCORE)
+    {
+        editorPrintables.push_back(new ScorePrintable(track));   
     }
     else
     {
@@ -410,6 +417,8 @@ LayoutElement* EditorPrintable::getNextElement()
  */
 int EditorPrintable::getNotePrintX(int noteID)
 {
+    return tickToX( currentLine->getTrack()->getNoteStartInMidiTicks(noteID) );
+    /*
     const int elem_x_start = getCurrentElementXStart();
     const int elem_x_end = getCurrentElementXEnd();
     const int elem_w = elem_x_end - elem_x_start;
@@ -417,6 +426,20 @@ int EditorPrintable::getNotePrintX(int noteID)
     const int firstTick = currentLine->getMeasureForElement(currentLayoutElement).firstTick;
     const int lastTick = currentLine->getMeasureForElement(currentLayoutElement).lastTick;
     const int tick = currentLine->getTrack()->getNoteStartInMidiTicks(noteID);
+    
+    const float nratio = ((float)(tick - firstTick) / (float)(lastTick - firstTick));
+    
+    return (int)round(nratio * (elem_w-widthOfAChar*1.5) + elem_x_start);
+     */
+}
+int EditorPrintable::tickToX(const int tick)
+{
+    const int elem_x_start = getCurrentElementXStart();
+    const int elem_x_end = getCurrentElementXEnd();
+    const int elem_w = elem_x_end - elem_x_start;
+    
+    const int firstTick = currentLine->getMeasureForElement(currentLayoutElement).firstTick;
+    const int lastTick = currentLine->getMeasureForElement(currentLayoutElement).lastTick;
     
     const float nratio = ((float)(tick - firstTick) / (float)(lastTick - firstTick));
     

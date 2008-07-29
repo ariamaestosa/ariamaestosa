@@ -101,8 +101,8 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
     AriaRender::primitives();
     AriaRender::lineWidth(1);
     int count=1;
-	//const int start_x = getEditorXStart() - sequence->getXScrollInPixels() % (int)(getMeasureData()->measureLengthInPixels());
-	const int start_x = getMeasureData()->firstPixelInMeasure( getMeasureData()->measureAtPixel( getEditorXStart() ) );
+	//const int start_x = getEditorsXStart() - sequence->getXScrollInPixels() % (int)(getMeasureData()->measureLengthInPixels());
+	const int start_x = getMeasureData()->firstPixelInMeasure( getMeasureData()->measureAtPixel( getEditorsXStart() ) );
 		
 	if(getMeasureData()->isMeasureLengthConstant())
 	{
@@ -125,7 +125,7 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
 			else AriaRender::color(0.9, 0.9, 0.9);
 			count++;
 			
-			if(mx<getEditorXStart()) continue; // don't draw lines before the beginning
+			if(mx<getEditorsXStart()) continue; // don't draw lines before the beginning
 			
             AriaRender::line(mx, from_y, mx, to_y);
 
@@ -138,7 +138,7 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
 		const int measureAmount = measureBar->getMeasureAmount();
 		const int beatLength = (int)( measureBar->beatLengthInPixels() );
 		int mx=start_x, new_mx;
-		const int measureID = measureBar->measureAtPixel(getEditorXStart());
+		const int measureID = measureBar->measureAtPixel(getEditorsXStart());
 		
 		for(int m=measureID; m<measureAmount; m+=1)
 		{
@@ -557,11 +557,11 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 			Display::render();
 			return;
 		}
-		else if(mousex_current.getRelativeTo(WINDOW) < getEditorXStart()+20)
+		else if(mousex_current.getRelativeTo(WINDOW) < getEditorsXStart()+20)
 			// scroll backwards
 		{
 			getCurrentSequence()->setXScrollInPixels( getCurrentSequence()->getXScrollInPixels()-
-                                                      (getEditorXStart()+20-mousex_current.getRelativeTo(WINDOW))/4 );
+                                                      (getEditorsXStart()+20-mousex_current.getRelativeTo(WINDOW))/4 );
 			DisplayFrame::updateHorizontalScrollbar();
 			Display::render();
 			return;
@@ -690,7 +690,7 @@ void Editor::updatePosition(int from_y, int to_y, int width, int height, int bar
     Editor::barHeight = barHeight;
 }
 
-const int getEditorXStart()         {	return 90;								}
+const int getEditorsXStart()         {	return 90;								}
 const int Editor::getXEnd()			{	return width - 5;						} // FIXME - adapt to include vertical scrollbar
 const int Editor::getTrackYStart()	{	return from_y;							}
 const int Editor::getEditorYStart()	{	return from_y+barHeight+20;				}

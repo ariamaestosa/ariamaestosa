@@ -78,6 +78,7 @@ public:
 	STEM stem_type;
     
     // sould we draw the stem?
+    // FIXME - doesn't that override stem_type == STEM_NONE ???
     bool draw_stem;
     
     // location and duration of note

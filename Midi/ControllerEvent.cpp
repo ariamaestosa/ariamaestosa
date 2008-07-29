@@ -60,7 +60,7 @@ void ControllerEvent::setValue(unsigned short value_arg)
 int ControllerEvent::getPositionInPixels()
 {
     return (int)(
-                 tick*sequence->getZoom() + getEditorXStart()
+                 tick*sequence->getZoom() + getEditorsXStart()
                  );
 }
 

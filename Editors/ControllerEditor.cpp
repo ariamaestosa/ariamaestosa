@@ -90,7 +90,7 @@ void ControllerEditor::renderEvents()
         if(previous_location - scroll > getXEnd()) // if events are no more visible, stop drawing
             return;
         
-        if(xloc - scroll > getEditorXStart())
+        if(xloc - scroll > getEditorsXStart())
 		{
             if(previous_location!=-1 and previous_value!=-1)
 			{
@@ -170,10 +170,10 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     AriaRender::color(0.5, 0.5, 0.5);
     
 	wxString top_name=controllerChoice->getTopLabel();
-    AriaRender::small_text( top_name.mb_str(),  getEditorXStart()+5 , area_from_y + 10);
+    AriaRender::small_text( top_name.mb_str(),  getEditorsXStart()+5 , area_from_y + 10);
 	
 	wxString bottom_name=controllerChoice->getBottomLabel();
-    AriaRender::small_text( bottom_name.mb_str(),  getEditorXStart()+5 , area_to_y - 5);
+    AriaRender::small_text( bottom_name.mb_str(),  getEditorsXStart()+5 , area_to_y - 5);
     
 	// -------------------------- draw controller events ---------------------
     renderEvents();
@@ -201,9 +201,9 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
             if(tick1 < 0) tick1 = 0; 
 			
             AriaRender::line(( tick1 - sequence->getXScrollInMidiTicks())
-                             *sequence->getZoom()+getEditorXStart(), mousey_initial,
+                             *sequence->getZoom()+getEditorsXStart(), mousey_initial,
                              ( tick2 - sequence->getXScrollInMidiTicks())
-                             *sequence->getZoom()+getEditorXStart(), mousey_current);
+                             *sequence->getZoom()+getEditorsXStart(), mousey_current);
         }
     }
     AriaRender::lineWidth(1);
@@ -217,7 +217,7 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     else AriaRender::color(0.8, 0.8, 0.8);
     
     AriaRender::rect( 0, getEditorYStart(),
-                      getEditorXStart(), getYEnd());
+                      getEditorsXStart(), getYEnd());
     
     // controller name
     AriaRender::color(0,0,0);
@@ -252,7 +252,7 @@ void ControllerEditor::mouseDown(RelativeXCoord x, const int y)
 	if(mouse_is_in_editor and Display::isSelectMorePressed())
 		selecting = true;
 	
-    if( x.getRelativeTo(WINDOW)<getEditorXStart() and y>getEditorYStart() and !track->graphics->collapsed )
+    if( x.getRelativeTo(WINDOW)<getEditorsXStart() and y>getEditorYStart() and !track->graphics->collapsed )
         Display::popupMenu(controllerChoice,x.getRelativeTo(WINDOW),y+15);
 
 }
@@ -308,7 +308,7 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
             // ------------------------ add controller events ---------------------
             
             // if mouse is out of bounds
-			if(mousex_initial.getRelativeTo(WINDOW) < getEditorXStart()) return;
+			if(mousex_initial.getRelativeTo(WINDOW) < getEditorsXStart()) return;
 			
 			
             if(mousey_initial<area_from_y) return;

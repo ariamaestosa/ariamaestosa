@@ -96,7 +96,7 @@ void RelativeXCoord::convertTo(RelativeType relativeTo)
 
 				if(relativeToWindow != -1)
 				{
-					relativeToEditor = relativeToWindow - getEditorXStart();
+					relativeToEditor = relativeToWindow - getEditorsXStart();
 				}
 				else if(relativeToMidi != -1)
 				{
@@ -117,7 +117,7 @@ void RelativeXCoord::convertTo(RelativeType relativeTo)
 			{
 					if(relativeToMidi != -1)
 					{
-						relativeToWindow = ( int )( relativeToMidi * sequence->getZoom() ) - sequence->getXScrollInPixels() + getEditorXStart();
+						relativeToWindow = ( int )( relativeToMidi * sequence->getZoom() ) - sequence->getXScrollInPixels() + getEditorsXStart();
 					}
 					else
 					{
@@ -137,7 +137,7 @@ void RelativeXCoord::convertTo(RelativeType relativeTo)
 
 					if(relativeToWindow != -1)
 					{
-						relativeToMidi = (int)( ( relativeToWindow - getEditorXStart() ) / sequence->getZoom() ) + sequence->getXScrollInMidiTicks();
+						relativeToMidi = (int)( ( relativeToWindow - getEditorsXStart() ) / sequence->getZoom() ) + sequence->getXScrollInMidiTicks();
 					}
 					else
 					{
@@ -165,7 +165,7 @@ int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
 
 				if(relativeToWindow != -1)
 				{
-					relativeToEditor = relativeToWindow - getEditorXStart();
+					relativeToEditor = relativeToWindow - getEditorsXStart();
 				}
 				else if(relativeToMidi != -1)
 				{
@@ -188,7 +188,7 @@ int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
 			{
 					if(relativeToMidi != -1)
 					{
-						return ( int )( relativeToMidi * sequence->getZoom() ) - sequence->getXScrollInPixels() + getEditorXStart();
+						return ( int )( relativeToMidi * sequence->getZoom() ) - sequence->getXScrollInPixels() + getEditorsXStart();
 					}
 					else
 					{
@@ -208,7 +208,7 @@ int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
 
 					if(relativeToWindow != -1)
 					{
-						return (int)( (relativeToWindow - getEditorXStart()) / sequence->getZoom() ) + sequence->getXScrollInMidiTicks();
+						return (int)( (relativeToWindow - getEditorsXStart()) / sequence->getZoom() ) + sequence->getXScrollInMidiTicks();
 					}
 					else
 					{
