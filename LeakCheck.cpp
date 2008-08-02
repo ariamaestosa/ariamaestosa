@@ -38,8 +38,10 @@ void addObj(MyObject* myObj)
     
 void removeObj(MyObject* myObj)
 {
+    //std::cout << "removeObj " << myObj->file << " (" << myObj->line << ")" << std::endl;
     obj.remove(myObj);
     delete myObj;
+    //std::cout << "removeObj done" << std::endl;
 }
     
 MyObject::MyObject(char* f, int l)
@@ -56,7 +58,7 @@ void MyObject::print()
 void checkForLeaks()
 {
 	
-	std::cout << "checking for leaks... ";
+	std::cout << "checking for leaks... " << std::endl;
 	
 	if(obj.size()>0)
 	{

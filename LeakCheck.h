@@ -35,6 +35,12 @@ public:
         myObj = new MyObject(P :: memCheckGetFile(), P :: memCheckGetLine());
         addObj( myObj );
     }
+    TemplateLeakCheck(const TemplateLeakCheck &t)
+    {
+        myObj = new MyObject(P :: memCheckGetFile(), P :: memCheckGetLine());
+        addObj( myObj );
+    }
+    
     ~TemplateLeakCheck()
     {
         removeObj( myObj );

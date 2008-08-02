@@ -303,14 +303,34 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, int* sign)
                 const int current_accidental = accidentalScoreNotesSharpness[ levelToNote7(answer_level) ];
                 if(current_accidental != -1)
                 {
+                    // the current note continues using the same accidental, no change
                     if(current_accidental == answer_sign) answer_sign = NONE;
-                    else if(current_accidental != answer_sign and (answer_sign == NATURAL or answer_sign == NONE)) answer_sign = NATURAL;
+                    // the current note does NOT continue using the same accidental, display another sign
+                    else if(current_accidental != answer_sign and
+                            (answer_sign == NATURAL or answer_sign == NONE))
+                    {
+                        const int accidentalType = accidentalScoreNotesSharpness[ levelToNote7(answer_level) ];
+                        // we left the original key by adding a sharp of flat,
+                        // and now we come back to the original key. show a
+                        // natural sign
+                        if(accidentalType == FLAT or accidentalType == SHARP)
+                            answer_sign = NATURAL;
+                        // we left the key by using a natural accidental on a key
+                        // flat/sharp, and now we're coming back on the original key
+                        // so show again the original sign
+                        else if(accidentalType == NATURAL /*and answer_sign == NONE*/)
+                            answer_sign = getKeySigSharpnessSignForLevel( levelToNote7(answer_level) );
+                        else
+                        {
+                            answer_sign = NATURAL;
+                            std::cout << "not sure how to interpret this accidental :(" << std::endl;
+                        }
+                    }
                     
                 }
             }
         }
         
-
         // set accidentals
         if(answer_sign != NONE)
         {
@@ -320,8 +340,9 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, int* sign)
             
             accidentalScoreNotesSharpness[ levelToNote7(answer_level) ] = answer_sign;
             
-            
-            if(scoreNotesSharpness[ levelToNote7(answer_level) ] == NATURAL and answer_sign == NATURAL)
+            // remove accidental if no more needed
+            if((scoreNotesSharpness[ levelToNote7(answer_level) ] == NATURAL and answer_sign == NATURAL) or
+               scoreNotesSharpness[ levelToNote7(answer_level) ] == answer_sign)
             {
                 accidentalScoreNotesSharpness[ levelToNote7(answer_level) ] = NONE;
             }

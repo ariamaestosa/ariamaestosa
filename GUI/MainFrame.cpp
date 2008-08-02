@@ -15,6 +15,7 @@
  */
 
 #include "AriaCore.h"
+#include "Config.h"
 
 #include "Actions/EditAction.h"
 #include "Actions/RemoveOverlapping.h"
@@ -51,7 +52,7 @@
 #include "IO/AriaFileWriter.h"
 #include "IO/MidiFileReader.h"
 
-#include "Config.h"
+#include "Clipboard.h"
 #include <iostream>
 
 namespace AriaMaestosa {
@@ -148,7 +149,8 @@ MainFrame::~MainFrame()
     PlatformMidiManager::freeMidiPlayer();
 	CopyrightWindow::free();
 	//ScalePicker::free();
-
+    Clipboard::clear();
+    
 	aboutDialog->Destroy();
 	customNoteSelectDialog->Destroy();
 
