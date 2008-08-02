@@ -120,6 +120,8 @@ NOTE: sorry, this is very raw :)
  - score editor should be able to display notes with more than 2 flags (unusure... those with 2 are already so small and barely visible) 
  
  ************************* BUGS: *************************
+
+* in a key with sharp/flats, a natural accidental does not nicely come back to the key's original sharp/flat (marked with yet another 'natural' instead)
     
 * 9/8 doesn't work (Aria cannot handle measure lengths that are not multiples of 1/4 notes)
 
