@@ -328,7 +328,7 @@ void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x
 
 #pragma mark -
 
-void generateMeasures(ptr_vector<Track>& tracks, ptr_vector<MeasureToExport>& measures)
+void generateMeasures(ptr_vector<Track, REF>& tracks, ptr_vector<MeasureToExport>& measures)
 {
     const int trackAmount = tracks.size();
     const int measureAmount = getMeasureData()->getMeasureAmount();
@@ -616,7 +616,7 @@ void calculatePageLayout(std::vector<LayoutPage>& layoutPages, std::vector<Layou
     layoutPages[currentPage].layoutLines[currentLine].charWidth = totalLength;
 }
 
-void calculateLayoutElements(ptr_vector<Track>& track, const bool checkRepetitions_bool, std::vector<LayoutPage>& layoutPages, ptr_vector<MeasureToExport>& measures)
+void calculateLayoutElements(ptr_vector<Track, REF>& track, const bool checkRepetitions_bool, std::vector<LayoutPage>& layoutPages, ptr_vector<MeasureToExport>& measures)
 {
     std::vector<LayoutElement> layoutElements;
     

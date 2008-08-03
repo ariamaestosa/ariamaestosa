@@ -64,7 +64,6 @@ Editor::Editor(Track* track)
 
 Editor::~Editor()
 {
-    clearBackgroundTracks();
 }
 
 int Editor::getKeySharpsAmount() { return key_sharps_amnt; }

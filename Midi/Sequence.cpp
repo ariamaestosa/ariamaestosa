@@ -87,8 +87,6 @@ Sequence::Sequence()
 
 Sequence::~Sequence()
 {
-	dock.clearWithoutDeleting();
-	tracks.clearAndDeleteAll();
 }
 
 

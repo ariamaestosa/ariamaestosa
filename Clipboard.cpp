@@ -15,6 +15,12 @@
  */
 
 
+/*
+ The clipboard will always delete notes you give it.
+ When you get notes from the Clipboard, or add notes to it,
+ always make a copy of the Note object using the copy constructor.
+*/
+
 #include "Clipboard.h"
 #include "ptr_vector.h"
 #include "Midi/Note.h"

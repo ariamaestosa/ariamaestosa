@@ -30,7 +30,13 @@
 namespace AriaMaestosa
 {
 
-template<typename TYPE>
+enum VECTOR_TYPE
+{
+    REF,
+    HOLD
+};
+    
+template<typename TYPE, VECTOR_TYPE type=HOLD>
 class ptr_vector
 {
     
@@ -43,12 +49,12 @@ ptr_vector()
 
 ~ptr_vector()
 {
-	clearAndDeleteAll();		
+	if(type == HOLD) clearAndDeleteAll();		
 }
 
 void push_back(TYPE* t)
 {
-        contentsVector.push_back(t);
+    contentsVector.push_back(t);
 }
 
 void add(TYPE* t, int index)

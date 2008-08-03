@@ -119,10 +119,6 @@ Track::~Track()
         Track* track = seq->getTrack(n);
         if(track != this) track->trackDeleted(this);
     }
-
-    notes.clearAndDeleteAll();
-	noteOff.clearWithoutDeleting();
-    controlEvents.clearAndDeleteAll();
 }
 
 // when one track will be removed, all others are notified so they can remove any

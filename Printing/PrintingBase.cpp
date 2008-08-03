@@ -176,7 +176,6 @@ AriaPrintable::AriaPrintable(Sequence* parent)
 }
 AriaPrintable::~AriaPrintable()
 {
-    tracks.clearWithoutDeleting();
     currentPrintable = NULL;
 }
 

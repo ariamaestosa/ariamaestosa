@@ -338,8 +338,6 @@ END_EVENT_TABLE()
 
 TuningPicker::TuningPicker() : wxMenu()
 {
-	
-    
     Append(1,wxT("Standard"));
     Append(2,wxT("Dropped D")); // D-A-d-g-b-e'
     Append(3,wxT("Dropped C")); // C-G-c-f-a-d'
@@ -351,8 +349,7 @@ TuningPicker::TuningPicker() : wxMenu()
     Append(7, _("Rearrange selected notes"));
 	Append(8, _("Print as tablature"));
 	
-	ctp = new CustomTuningPicker();
-	
+	INIT_PTR(ctp) = new CustomTuningPicker();
 }
 
 void TuningPicker::setParent(GuitarEditor* parent_arg)
@@ -363,8 +360,6 @@ void TuningPicker::setParent(GuitarEditor* parent_arg)
 
 TuningPicker::~TuningPicker()
 {  
-	//delete ctp;
-    ctp->Destroy();
 }
 
 

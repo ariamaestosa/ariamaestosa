@@ -84,8 +84,6 @@ void NoteRelocator::rememberNote(Note* n)
 }
 NoteRelocator::~NoteRelocator()
 {
-	// clear vector so that the memory is not deallocated.
-	notes.clearWithoutDeleting();
 }
 
 
@@ -115,8 +113,6 @@ void ControlEventRelocator::rememberControlEvent(ControllerEvent& n)
 }
 ControlEventRelocator::~ControlEventRelocator()
 {
-	// clear vector so that the memory is not deallocated.
-	events.clearWithoutDeleting();
 }
 
 

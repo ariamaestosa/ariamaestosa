@@ -39,23 +39,25 @@ namespace AriaMaestosa
 		const int rmtrackamount = removedTrackParts.size();
 		for(int rm=0; rm<rmtrackamount; rm++)
 		{
-			RemovedTrackPart* undo = removedTrackParts.get(rm);
+			RemovedTrackPart* removedBits = removedTrackParts.get(rm);
 			
 			// add removed notes again
-			const int n_amount = undo->removedNotes.size();
+			const int n_amount = removedBits->removedNotes.size();
 			for(int n=0; n<n_amount; n++)
 			{
-				undo->track->addNote( undo->removedNotes.get(n) );
+				removedBits->track->addNote( removedBits->removedNotes.get(n) );
 			}
-			undo->removedNotes.clearWithoutDeleting();
+            // we are using the notes again, so make sure it won't delete them
+			removedBits->removedNotes.clearWithoutDeleting();
 			
 			// add removed control events again
-			const int c_amount = undo->removedControlEvents.size();
+			const int c_amount = removedBits->removedControlEvents.size();
 			for(int n=0; n<c_amount; n++)
 			{
-				undo->track->addControlEvent( undo->removedControlEvents.get(n) );
+				removedBits->track->addControlEvent( removedBits->removedControlEvents.get(n) );
 			}
-			undo->removedControlEvents.clearWithoutDeleting();
+            // we are using the events again, so make sure it won't delete them
+			removedBits->removedControlEvents.clearWithoutDeleting();
 		}
 		
 		// add removed tempo events again
@@ -64,6 +66,7 @@ namespace AriaMaestosa
 		{
 			sequence->addTempoEvent( removedTempoEvents.get(n) );
 		}
+        // we will be using the events again, make sure it doesn't delete them
 		removedTempoEvents.clearWithoutDeleting();
 		
 		// add removed time sig events again
@@ -99,11 +102,11 @@ namespace AriaMaestosa
 		const int trackAmount = sequence->getTrackAmount();
 		for(int t=0; t<trackAmount; t++)
 		{
-			RemovedTrackPart* undo = new RemovedTrackPart();
-			removedTrackParts.push_back( undo );
+			RemovedTrackPart* removedBits = new RemovedTrackPart();
+			removedTrackParts.push_back( removedBits );
 			
 			Track* track = sequence->getTrack(t);
-			undo->track = track;
+			removedBits->track = track;
 			
 			// ------------------------ erase/move notes ------------------------
 			const int amount_n = track->notes.size();
@@ -112,11 +115,11 @@ namespace AriaMaestosa
 				// note is an area that is removed. remove it.
 				if(track->notes[n].startTick > from_tick and track->notes[n].startTick < to_tick)
 				{
-					undo->removedNotes.push_back(track->notes.get(n));
+					removedBits->removedNotes.push_back(track->notes.get(n));
 					track->markNoteToBeRemoved(n); 
 				}
 				// note is in after the removed area. move it back by necessary amound
-				else if(undo->track->notes[n].startTick >= to_tick)
+				else if(removedBits->track->notes[n].startTick >= to_tick)
 				{
 					track->notes[n].startTick -= amountInTicks;
 					track->notes[n].endTick -= amountInTicks;
@@ -131,13 +134,13 @@ namespace AriaMaestosa
 				// delete all controller events located in the area to be deleted
 				if(track->controlEvents[n].getTick() > from_tick and track->controlEvents[n].getTick() < to_tick)
 				{
-					undo->removedControlEvents.push_back( track->controlEvents.get(n) );
+					removedBits->removedControlEvents.push_back( track->controlEvents.get(n) );
 					track->controlEvents.markToBeRemoved(n);
 				}
 				// move all controller events that are after given start tick by the necessary amount
 				else if(track->controlEvents[n].getTick() >= to_tick)
 				{
-					undo->track->controlEvents[n].setTick( track->controlEvents[n].getTick() - amountInTicks );
+					removedBits->track->controlEvents[n].setTick( track->controlEvents[n].getTick() - amountInTicks );
 				}
 			}
 			track->controlEvents.removeMarked();

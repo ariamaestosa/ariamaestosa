@@ -97,7 +97,7 @@ public:
     int text_height;
     int text_height_half;
     
-    ptr_vector<Track> tracks;
+    ptr_vector<Track, REF> tracks;
     ptr_vector<EditorPrintable> editorPrintables;
     // ---------------------------------------
     

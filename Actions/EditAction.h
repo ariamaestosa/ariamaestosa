@@ -55,7 +55,7 @@ public:
 	~NoteRelocator();	
 	
 	//std::vector<NoteInfo> notes;
-	ptr_vector<Note> notes;
+	ptr_vector<Note, REF> notes;
 	void setParent(Track* t);
 	void prepareToRelocate();
 	Note* getNextNote(); // returns one note at a time, and NULL when all of them where given
@@ -72,8 +72,8 @@ public:
 		
 	void rememberControlEvent(ControllerEvent& c);
 	
-	//std::vector<ControlEventInfo> events;
-	ptr_vector<ControllerEvent> events;
+	ptr_vector<ControllerEvent, REF> events;
+    
 	void setParent(Track* t);
 	void prepareToRelocate();
 	ControllerEvent* getNextControlEvent(); // returns one note at a time, and NULL when all of them where given
