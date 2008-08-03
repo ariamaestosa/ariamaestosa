@@ -25,7 +25,7 @@
  */
 
 #include "ptr_vector.h"
-#include "LeakCheck.h"
+#include "Config.h"
 #include "Editors/RelativeXCoord.h"
 #include "Midi/TimeSigChange.h"
 #include "irrXML/irrXML.h"
@@ -74,7 +74,7 @@ public:
     
     LEAK_CHECK(MeasureData);
         
-    MeasureBar* graphics; /* holds */
+    PTR_HOLD(MeasureBar, graphics);
         
 	MeasureData();
 	~MeasureData();

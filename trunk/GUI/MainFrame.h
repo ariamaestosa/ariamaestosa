@@ -52,8 +52,10 @@ DECLARE_EVENT_TYPE(wxEVT_HIDE_WAIT_WINDOW, -1)
 
 class MainFrame : public wxFrame
 {
-	AboutDialog* aboutDialog;
-
+	WX_PTR_HOLD(AboutDialog, aboutDialog);
+    WX_PTR_HOLD(CustomNoteSelectDialog, customNoteSelectDialog);
+    WX_PTR_HOLD(Preferences, prefs);
+    
     wxBorderSizer* verticalSizer;
     wxPanel* topPane;
     wxBoxSizer* boxSizer;
@@ -66,9 +68,6 @@ class MainFrame : public wxFrame
     wxTextCtrl* firstMeasure;
     wxSpinCtrl* songLength;
     wxSpinCtrl* displayZoom;
-
-    CustomNoteSelectDialog* customNoteSelectDialog;
-    Preferences* prefs;
 
     wxMenu* fileMenu;
     wxMenu* editMenu;
@@ -104,10 +103,10 @@ public:
 	int play_during_edit; // what is the user's preference for note preview during edits
 	bool playback_mode;
     MainPane* mainPane;
-	InstrumentChoice* instrument_picker;
-	DrumChoice* drumKit_picker;
-	TuningPicker* tuningPicker;
-	KeyPicker* keyPicker;
+	PTR_HOLD(InstrumentChoice, instrument_picker);
+	PTR_HOLD(DrumChoice, drumKit_picker);
+	PTR_HOLD(TuningPicker, tuningPicker);
+	PTR_HOLD(KeyPicker, keyPicker);
     // ----------------------
 
     MainFrame();

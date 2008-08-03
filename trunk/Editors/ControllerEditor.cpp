@@ -46,7 +46,7 @@ ControllerEditor::ControllerEditor(Track* track) : Editor(track)
     
 	hasBeenResizing = false;
 	
-    controllerChoice=new ControllerChoice(track->graphics);
+    INIT_PTR(controllerChoice) = new ControllerChoice(track->graphics);
 }
 
 int ControllerEditor::getCurrentControllerType()
@@ -373,7 +373,6 @@ int ControllerEditor::getYScrollInPixels()
 
 ControllerEditor::~ControllerEditor()
 {
-    delete controllerChoice;
 }
 
 int ControllerEditor::getSelectionBegin()

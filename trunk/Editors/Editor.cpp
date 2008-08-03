@@ -34,8 +34,6 @@ namespace AriaMaestosa {
 	
 Editor::Editor(Track* track)
 {
-	
-	
 	ystep = 10;
 	
     Editor::track = track;

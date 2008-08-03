@@ -140,7 +140,7 @@ MainPane::MainPane(MainFrame* mainframe, int* args) : MAINPANE_BASE_CLASS(mainfr
     leftArrow=false;
     rightArrow=false;
 
-    mouseDownTimer = new MouseDownTimer(this);
+    INIT_PTR(mouseDownTimer) = new MouseDownTimer(this);
 
     scrollToPlaybackPosition=false;
     playbackStartTick=0; // tells from where the red line should start when playing back
@@ -148,7 +148,6 @@ MainPane::MainPane(MainFrame* mainframe, int* args) : MAINPANE_BASE_CLASS(mainfr
 
 MainPane::~MainPane()
 {
-	delete mouseDownTimer;
 }
 
 /*

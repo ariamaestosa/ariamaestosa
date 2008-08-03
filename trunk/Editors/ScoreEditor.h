@@ -100,7 +100,7 @@ public:
     {
         bool GKey;
         bool FKey;
-        ScoreMidiConverter* converter;
+        PTR_HOLD(ScoreMidiConverter, converter);
         
         bool musicalNotationEnabled, linearNotationEnabled;
         

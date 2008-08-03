@@ -63,13 +63,16 @@ public:
     bool docked;
 	
     Sequence* sequence;
-    MagneticGrid* grid;
 	Track* track;
-    KeyboardEditor* keyboardEditor;
-    GuitarEditor* guitarEditor;
-    DrumEditor* drumEditor;
-    ControllerEditor* controllerEditor;
-	ScoreEditor* scoreEditor;
+    
+    PTR_HOLD( MagneticGrid, grid );
+    
+    // editors
+    PTR_HOLD( KeyboardEditor,   keyboardEditor   );
+    PTR_HOLD( GuitarEditor,     guitarEditor     );
+    PTR_HOLD( DrumEditor,       drumEditor       );
+    PTR_HOLD( ControllerEditor, controllerEditor );
+	PTR_HOLD( ScoreEditor,      scoreEditor      );
     // ----------------------------------------
     
     GraphicalTrack(Track* track, Sequence* parent);

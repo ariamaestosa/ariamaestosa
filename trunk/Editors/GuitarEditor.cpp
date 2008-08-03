@@ -54,6 +54,10 @@ GuitarEditor::GuitarEditor(Track* track) : Editor(track)
 	Editor::useVerticalScrollbar(false);
 }
 
+GuitarEditor::~GuitarEditor()
+{
+}
+
 /*
  * This is called when user changes the tuning. This tells the editor to change notes so that they match the new settings.
  */
@@ -361,10 +365,6 @@ void GuitarEditor::moveNote(Note& note, const int relativeX, const int relativeY
     note.findNoteFromStringAndFret();
 }
 
-
-GuitarEditor::~GuitarEditor()
-{
-}
 
 NoteSearchResult GuitarEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 {

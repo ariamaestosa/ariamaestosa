@@ -115,6 +115,8 @@ namespace CopyrightWindow {
     
     CopyrightWindowClass* copyrightWindow=NULL;
     
+    // FIXME
+    
     void show(Sequence* seq)
 	{
         copyrightWindow = new CopyrightWindowClass(seq);

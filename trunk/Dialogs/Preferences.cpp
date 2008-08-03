@@ -125,7 +125,6 @@ Preferences::Preferences(MainFrame* parent) : wxDialog(parent, wxID_ANY,  _("Pre
 
 Preferences::~Preferences()
 {
-    std::cout << "preferences are being deleted" << std::endl;
 }
 
 void Preferences::show()

@@ -33,7 +33,7 @@ namespace AriaMaestosa
 		
 		NoteRelocator relocator;
 public:
-			ResizeNotes(const int relativeWidth, const int noteID);
+        ResizeNotes(const int relativeWidth, const int noteID);
 		void perform();
 		void undo();
 		virtual ~ResizeNotes();

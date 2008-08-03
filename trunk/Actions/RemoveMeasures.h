@@ -29,7 +29,7 @@ namespace Action
 
 	class RemovedTrackPart
 	{
-public:
+    public:
 		Track* track;
 		ptr_vector<Note> removedNotes;
 		ptr_vector<ControllerEvent> removedControlEvents;
@@ -45,7 +45,7 @@ public:
 		ptr_vector<RemovedTrackPart> removedTrackParts;
 		ptr_vector<ControllerEvent> removedTempoEvents;
 		std::vector<TimeSigChange> timeSigChangesBackup;
-public:
+    public:
 		RemoveMeasures(int from_measure, int to_measure);
 		void perform();
 		void undo();

@@ -33,11 +33,11 @@ namespace Action
 		
 		// for undo
 		int oldVolume;
-		//FullTrackUndo undo_obj;
+
 		NoteRelocator relocator;
 		std::vector<int> volumes;
 public:
-			SetNoteVolume(const int volume, const int noteID);
+        SetNoteVolume(const int volume, const int noteID);
 		void perform();
 		void undo();
 		virtual ~SetNoteVolume();

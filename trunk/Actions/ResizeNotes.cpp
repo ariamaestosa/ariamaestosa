@@ -22,11 +22,11 @@
 
 namespace AriaMaestosa
 {
-	namespace Action
+namespace Action
 {
+        
 	void ResizeNotes::undo()
     {
-		//undo_obj.restoreState(track);
 		Note* current_note;
 		relocator.setParent(track);
 		relocator.prepareToRelocate();

@@ -22,7 +22,7 @@ namespace AriaMaestosa
 {
 	class Note;
     
-	namespace Clipboard
+namespace Clipboard
 {
 	void clear();
 	void add(Note* n);

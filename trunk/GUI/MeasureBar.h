@@ -25,7 +25,7 @@
  */
 
 #include "ptr_vector.h"
-#include "LeakCheck.h"
+#include "Config.h"
 #include "Editors/RelativeXCoord.h"
 #include "Midi/TimeSigChange.h"
 #include "irrXML/irrXML.h"
@@ -46,8 +46,8 @@ class MeasureBar
 	
     int lastMeasureInDrag;
 	
-	UnselectedMenu* unselectedMenu; /* HOLD */
-	SelectedMenu* selectedMenu;
+	PTR_HOLD(UnselectedMenu, unselectedMenu);
+	PTR_HOLD(SelectedMenu, selectedMenu);
 	
     MeasureData* data; /* ref */
     

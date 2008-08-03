@@ -82,14 +82,13 @@ Sequence::Sequence()
     copyright = wxT("");
     
 	channelManagement = CHANNEL_AUTO;
-	measureData = new MeasureData();
+	INIT_PTR(measureData) = new MeasureData();
 }
 
 Sequence::~Sequence()
 {
 	dock.clearWithoutDeleting();
 	tracks.clearAndDeleteAll();
-	delete measureData;
 }
 
 

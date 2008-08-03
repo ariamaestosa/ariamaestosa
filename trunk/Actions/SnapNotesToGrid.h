@@ -29,13 +29,12 @@ namespace Action
 	class SnapNotesToGrid : public SingleTrackAction
 	{
 		friend class AriaMaestosa::Track;
-		//FullTrackUndo undo_obj;
 		
 		NoteRelocator relocator;
 		std::vector<int> note_start;
 		std::vector<int> note_end;
 public:
-			SnapNotesToGrid();
+        SnapNotesToGrid();
 		void perform();
 		void undo();
 		virtual ~SnapNotesToGrid();

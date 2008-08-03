@@ -32,12 +32,12 @@ namespace Action
 		float factor;
 		int relative_to;
 		bool selectionOnly;
-		//FullTrackUndo undo_obj;
+
 		NoteRelocator relocator;
 		std::vector<int> note_start;
 		std::vector<int> note_end;
 public:
-			ScaleTrack(float factor, int relative_to, bool selectionOnly);
+        ScaleTrack(float factor, int relative_to, bool selectionOnly);
 		void perform();
 		void undo();
 		virtual ~ScaleTrack();

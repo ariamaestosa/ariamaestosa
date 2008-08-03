@@ -31,12 +31,12 @@ namespace Action
 	{
 		friend class AriaMaestosa::Track;
 		int amount, noteid;
-		//FullTrackUndo undo_obj;
+
 		NoteRelocator relocator;
 		std::vector<int> frets;
 		std::vector<int> strings;
 public:
-			ShiftString(const int amount, const int noteid);
+        ShiftString(const int amount, const int noteid);
 		void perform();
 		void undo();
 		virtual ~ShiftString();

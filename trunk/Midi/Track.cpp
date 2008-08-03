@@ -48,15 +48,15 @@ namespace AriaMaestosa
 
 	Track::Track(MainFrame* parent, Sequence* sequence)
     {
-		
-
 		name = wxString( _("Untitled") );
 
 		Track::frame=parent;
 
 		Track::sequence = sequence;
-		graphics = new GraphicalTrack(this, sequence);
+        
+		INIT_PTR(graphics) = new GraphicalTrack(this, sequence);
 		graphics->createEditors();
+        
 		channel = 0;
         if( sequence->getChannelManagementType() == CHANNEL_MANUAL )
         {
@@ -120,7 +120,6 @@ Track::~Track()
         if(track != this) track->trackDeleted(this);
     }
 
-    delete graphics;
     notes.clearAndDeleteAll();
 	noteOff.clearWithoutDeleting();
     controlEvents.clearAndDeleteAll();
