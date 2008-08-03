@@ -83,7 +83,7 @@ protected:
     int lastClickedNote; // contains the ID of the latest clicked note, or -1 to mean "selected notes"
 	bool clickedOnNote;
     
-    ptr_vector<Track> backgroundTracks;
+    ptr_vector<Track, REF> backgroundTracks;
     
     unsigned short default_volume;
 public:

@@ -114,7 +114,7 @@ class Track
     MainFrame* frame;
     int trackUniqueID;
     ptr_vector<Note> notes;
-	ptr_vector<Note> noteOff;
+	ptr_vector<Note, REF> noteOff;
     ptr_vector<ControllerEvent> controlEvents;
     int trackid;
 

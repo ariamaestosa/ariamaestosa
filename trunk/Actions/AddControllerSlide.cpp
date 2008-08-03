@@ -81,6 +81,7 @@ namespace AriaMaestosa
                 // FIXME - will iterate through all events everytime... could have better performances
 				track->addControlEvent( removedControlEvents.get(n) );
 			}
+            // we will be using these events again, make sure it doesn't delete them
 			removedControlEvents.clearWithoutDeleting();
 			
 		}

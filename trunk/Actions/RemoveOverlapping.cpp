@@ -23,7 +23,7 @@
 
 namespace AriaMaestosa
 {
-	namespace Action
+namespace Action
 {
 	
 	void RemoveOverlapping::undo()
@@ -33,6 +33,7 @@ namespace AriaMaestosa
 		{
 			track->addNote( removedNotes.get(n), false );
 		}
+        // we will be using the notes again, make sure it doesn't delete them
 		removedNotes.clearWithoutDeleting();
 	}
 	void RemoveOverlapping::perform()

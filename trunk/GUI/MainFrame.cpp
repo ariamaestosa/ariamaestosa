@@ -149,15 +149,6 @@ MainFrame::~MainFrame()
     PlatformMidiManager::freeMidiPlayer();
 	CopyrightWindow::free();
     Clipboard::clear();
-    
-	//aboutDialog->Destroy();
-	//customNoteSelectDialog->Destroy();
-    //prefs->Destroy();
-
-	//delete instrument_picker;
-	//delete drumKit_picker;
-	//delete keyPicker;
-	//delete tuningPicker;
 }
 
 void MainFrame::init()

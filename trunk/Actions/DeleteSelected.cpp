@@ -28,10 +28,8 @@ namespace AriaMaestosa
 {
 	void DeleteSelected::undo()
     {
-		//undo_obj.restoreState(track);
 		const int noteAmount = removedNotes.size();
 		const int controlAmount = removedControlEvents.size();
-		//std::cout << "adding back " << noteAmount << " notes" << std::endl;
 		
 		if(noteAmount > 0)
 		{
@@ -40,6 +38,7 @@ namespace AriaMaestosa
 			{
 				track->addNote( removedNotes.get(n), false );
 			}
+            // we will be using the notes again, make sure it doesn't delete them
 			removedNotes.clearWithoutDeleting();
 			
 		}
@@ -50,6 +49,7 @@ namespace AriaMaestosa
 			{
 				track->addControlEvent( removedControlEvents.get(n) );
 			}
+            // we will be using the notes again, make sure it doesn't delete them
 			removedControlEvents.clearWithoutDeleting();
 			
 		}

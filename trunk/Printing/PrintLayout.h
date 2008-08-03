@@ -161,7 +161,7 @@ public:
     std::vector<LayoutLine> layoutLines;
 };
 
-void calculateLayoutElements(ptr_vector<Track>& track, const bool checkRepetitions_bool, std::vector<LayoutPage>& layoutPages, ptr_vector<MeasureToExport>& mesaures);
+void calculateLayoutElements(ptr_vector<Track, REF>& track, const bool checkRepetitions_bool, std::vector<LayoutPage>& layoutPages, ptr_vector<MeasureToExport>& mesaures);
 
 }
 

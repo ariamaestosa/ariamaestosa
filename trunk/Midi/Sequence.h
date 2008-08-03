@@ -83,7 +83,7 @@ class Sequence {
 
     // dock
     int dockSize;
-    ptr_vector<GraphicalTrack> dock;
+    ptr_vector<GraphicalTrack, REF> dock;
     int dockHeight;
     
     wxString sequenceFileName;
