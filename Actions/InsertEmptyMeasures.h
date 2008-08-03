@@ -31,8 +31,7 @@ namespace Action
 	{
 		friend class AriaMaestosa::Track;
 		int measureID, amount;
-		//bool do_tempo_events_too;
-		//FullTrackUndo undo_obj;
+
 public:
 		InsertEmptyMeasures(int measureID, int amount);
 		void perform();

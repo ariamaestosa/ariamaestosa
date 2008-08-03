@@ -30,10 +30,10 @@ namespace Action
 	{
 		friend class AriaMaestosa::Track;
 		bool atMouse;
-		//FullTrackUndo undo_obj;
+
 		NoteRelocator relocator;
 public:
-			Paste(const bool atMouse);
+        Paste(const bool atMouse);
 		void perform();
 		void undo();
 		virtual ~Paste();

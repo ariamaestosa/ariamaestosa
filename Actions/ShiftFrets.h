@@ -31,7 +31,7 @@ namespace Action
 	{
 		friend class AriaMaestosa::Track;
 		int amount, noteid;
-		//FullTrackUndo undo_obj;
+
 		NoteRelocator relocator;
 		std::vector<int> frets;
 public:

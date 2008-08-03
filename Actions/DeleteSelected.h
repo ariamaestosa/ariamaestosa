@@ -32,11 +32,11 @@ namespace Action
 	class DeleteSelected : public SingleTrackAction
 	{
 		friend class AriaMaestosa::Track;
-		//FullTrackUndo undo_obj;
+
 		ptr_vector<Note> removedNotes;
 		ptr_vector<ControllerEvent> removedControlEvents;
 public:
-			DeleteSelected();
+        DeleteSelected();
 		void perform();
 		void undo();
 		virtual ~DeleteSelected();

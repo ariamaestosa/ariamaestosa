@@ -29,14 +29,14 @@ namespace Action
 	{
 		friend class AriaMaestosa::Track;
 		int x1, value1, x2, value2, controller;
-		//FullTrackUndo undo_obj;
+
 		ControlEventRelocator relocator;
 		ptr_vector<ControllerEvent> removedControlEvents;
 		
 		void addOneEvent(ControllerEvent* ptr, ptr_vector<ControllerEvent>* vector, int id=-1);
         void pushBackOneEvent(ControllerEvent* ptr, ptr_vector<ControllerEvent>* vector);
 public:
-			AddControllerSlide(const int x1, const int value1, const int x2, const int value2, const int controller);
+        AddControllerSlide(const int x1, const int value1, const int x2, const int value2, const int controller);
 		void perform();
 		void undo();
 		

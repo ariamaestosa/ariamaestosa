@@ -34,7 +34,7 @@ namespace Action
 
 		NoteRelocator relocator;
 public:
-			AddNote(const int pitchID, const int startTick, const int endTick, const int volume, const int string=-1);
+        AddNote(const int pitchID, const int startTick, const int endTick, const int volume, const int string=-1);
 		void perform();
 		void undo();
 		virtual ~AddNote();

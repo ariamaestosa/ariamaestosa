@@ -32,10 +32,6 @@
 
 #include "Config.h"
 
-#ifdef _MORE_DEBUG_CHECKS
-#include "LeakCheck.h"
-#endif
-
 #include "languages.h"
 #include "main.h"
 

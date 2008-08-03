@@ -53,7 +53,7 @@ void Image::load(wxString path)
     }
     width = image.GetWidth();
     height = image.GetHeight();
-    bitmap = new wxBitmap(image);
+    INIT_PTR(bitmap) = new wxBitmap(image);
 #endif
 }
 
@@ -68,8 +68,6 @@ Image::~Image()
 {
     #ifndef NO_OPENGL
     glDeleteTextures (1, ID);
-    #else
-    delete bitmap;
     #endif
 }
 }

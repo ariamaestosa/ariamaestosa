@@ -24,7 +24,6 @@
 #include "Actions/RemoveMeasures.h"
 
 #include "AriaCore.h"
-#include "LeakCheck.h"
 
 #include "GUI/MeasureBar.h"
 #include "GUI/MainFrame.h"
@@ -93,7 +92,7 @@ EVT_MENU(1,SelectedMenu::removeSelected)
 END_EVENT_TABLE()
 
 // ****************************************************************************************************************
-
+#pragma mark -
 /*
  * The pop-up menu that is shown if you right-click on an unselected measure in the measure bar
  */
@@ -162,15 +161,12 @@ EVT_MENU(3,UnselectedMenu::removeTimeSig)
 END_EVENT_TABLE()
 
 // ****************************************************************************************************************
-	
+#pragma mark -
 	
 MeasureBar::MeasureBar(MeasureData* parent)
 {
-	
-	
-	
-	selectedMenu = new SelectedMenu();
-	unselectedMenu = new UnselectedMenu();
+	INIT_PTR(selectedMenu)  = new SelectedMenu();
+	INIT_PTR(unselectedMenu) = new UnselectedMenu();
 	
 	lastMeasureInDrag = -1;
 	
@@ -179,8 +175,6 @@ MeasureBar::MeasureBar(MeasureData* parent)
 
 MeasureBar::~MeasureBar()
 {
-	delete selectedMenu;
-	delete unselectedMenu;
 }
 
 

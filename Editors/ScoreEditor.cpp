@@ -450,7 +450,7 @@ ScoreEditor::ScoreEditor(Track* track) : Editor(track)
 {
 	GKey = true;
 	FKey = true;
-	converter = new ScoreMidiConverter();
+	INIT_PTR(converter) = new ScoreMidiConverter();
 	
 	musicalNotationEnabled=true;
 	linearNotationEnabled=true;
@@ -463,7 +463,6 @@ ScoreEditor::ScoreEditor(Track* track) : Editor(track)
 }
 ScoreEditor::~ScoreEditor()
 {
-	delete converter;
 }
 
 void ScoreEditor::enableMusicalNotation(const bool enabled)

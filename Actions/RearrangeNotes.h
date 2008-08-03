@@ -23,23 +23,24 @@ namespace AriaMaestosa
 {
 	class Track;
 	
-	namespace Action
-	{
+namespace Action
+{
 	
-		class RearrangeNotes : public SingleTrackAction
+    class RearrangeNotes : public SingleTrackAction
 	{
 		friend class AriaMaestosa::Track;
 
 		NoteRelocator relocator;
 		std::vector<int> fret;
 		std::vector<int> string;
-public:
+    public:
 		RearrangeNotes();
 		void perform();
 		void undo();
 		virtual ~RearrangeNotes();
 	};
-	}
+    
+}
 }
 
 #endif

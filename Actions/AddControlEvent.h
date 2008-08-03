@@ -30,11 +30,10 @@ namespace Action
 	{
 		friend class AriaMaestosa::Track;
 		int x, value, controller;
-		//FullTrackUndo undo_obj;
 		
 		int removedEventValue; // if any event was replaced by this one...
 public:
-			AddControlEvent(const int x, const int value, const int controller);
+        AddControlEvent(const int x, const int value, const int controller);
 		void perform();
 		void undo();
 		virtual ~AddControlEvent();

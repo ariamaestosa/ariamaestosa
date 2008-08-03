@@ -35,7 +35,7 @@ namespace Action
 		std::vector<int> frets;
 		std::vector<int> strings;
 public:
-			UpdateGuitarTuning();
+        UpdateGuitarTuning();
 		void perform();
 		void undo();
 		virtual ~UpdateGuitarTuning();

@@ -19,6 +19,7 @@
 #include "wx/wx.h"
 #include "GUI/RenderUtils.h"
 
+// FIXME - split in two files
 #ifndef NO_OPENGL
 
 #include "OpenGL.h"

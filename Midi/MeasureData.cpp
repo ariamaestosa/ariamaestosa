@@ -24,7 +24,6 @@
 #include "Actions/RemoveMeasures.h"
 
 #include "AriaCore.h"
-#include "LeakCheck.h"
 
 #include "GUI/MainFrame.h"
 #include "GUI/RenderUtils.h"
@@ -58,14 +57,13 @@ MeasureData::MeasureData()
 	
 	firstMeasure=0;
 	
-    graphics = new MeasureBar(this);
+    INIT_PTR(graphics) = new MeasureBar(this);
     expandedMode = false;
 	updateVector(measureAmount);
 }
 
 MeasureData::~MeasureData()
 {
-    delete graphics;
 }
 
 #pragma mark -

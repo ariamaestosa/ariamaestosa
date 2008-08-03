@@ -69,8 +69,6 @@ Drawable::Drawable(Image* image_arg)
 
 Drawable::Drawable(wxString imagePath)
 {
-    
-
     x=0;
     y=0;
     hotspotX=0;

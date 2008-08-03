@@ -148,18 +148,16 @@ MainFrame::~MainFrame()
     ImageProvider::unloadImages();
     PlatformMidiManager::freeMidiPlayer();
 	CopyrightWindow::free();
-	//ScalePicker::free();
     Clipboard::clear();
     
-	aboutDialog->Destroy();
-	customNoteSelectDialog->Destroy();
+	//aboutDialog->Destroy();
+	//customNoteSelectDialog->Destroy();
+    //prefs->Destroy();
 
-    prefs->Destroy();
-
-	delete instrument_picker;
-	delete drumKit_picker;
-	delete keyPicker;
-	delete tuningPicker;
+	//delete instrument_picker;
+	//delete drumKit_picker;
+	//delete keyPicker;
+	//delete tuningPicker;
 }
 
 void MainFrame::init()
@@ -171,7 +169,6 @@ void MainFrame::init()
 	playback_mode=false;
 	play_during_edit = PLAY_ON_CHANGE;
 
-    customNoteSelectDialog = new CustomNoteSelectDialog();
     changingValues=false;
 
 	SetMinSize(wxSize(750, 330));
@@ -336,12 +333,17 @@ verticalSizer->Add(verticalScrollbar, 0, wxALL, 0, Location::East() );
 
     Show();
 
-	tuningPicker = new TuningPicker();
-	keyPicker = new KeyPicker();
-	prefs=new Preferences(this);
-	aboutDialog = new AboutDialog();
-	instrument_picker=new InstrumentChoice();
-	drumKit_picker=new DrumChoice();
+    // create pickers
+	INIT_PTR( tuningPicker      )  =  new TuningPicker();
+	INIT_PTR( keyPicker         )  =  new KeyPicker();
+    INIT_PTR( instrument_picker )  =  new InstrumentChoice();
+	INIT_PTR( drumKit_picker    )  =  new DrumChoice();
+    
+    // create dialogs (FIXME - don't create until requested by user)
+	INIT_PTR( prefs                  ) =  new Preferences(this);
+	INIT_PTR( aboutDialog            ) =  new AboutDialog();
+    INIT_PTR( customNoteSelectDialog ) =  new CustomNoteSelectDialog();
+        
 	mainPane->isNowVisible();
 
 	ImageProvider::loadImages();

@@ -52,15 +52,12 @@ static int grid_x_begin=0, grid_x_end=0, track_name_x_begin=0, track_name_x_end=
 
 GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
 {
-	
-	
-	
     sequence = seq;
     GraphicalTrack::track = track;
     
     assert(track);
     
-    grid=new MagneticGrid(this);
+    INIT_PTR(grid) = new MagneticGrid(this);
     
     lastMouseY=0;
     
@@ -76,26 +73,16 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
 
 GraphicalTrack::~GraphicalTrack()
 {
-    delete keyboardEditor;
-    delete guitarEditor;
-	delete drumEditor;
-	delete controllerEditor;
-	
-	delete grid;
-	
-	delete scoreEditor;
 }
 
 
 void GraphicalTrack::createEditors()
 {
-    
-    keyboardEditor = new KeyboardEditor(track);
-    guitarEditor = new GuitarEditor(track);
-    drumEditor=new DrumEditor(track);
-    controllerEditor=new ControllerEditor(track);
-	
-	scoreEditor=new ScoreEditor(track);
+    INIT_PTR( keyboardEditor   )  = new KeyboardEditor(track);
+    INIT_PTR( guitarEditor     )  = new GuitarEditor(track);
+    INIT_PTR( drumEditor       )  = new DrumEditor(track);
+    INIT_PTR( controllerEditor )  = new ControllerEditor(track);
+	INIT_PTR( scoreEditor      )  = new ScoreEditor(track);
 }
 
 bool GraphicalTrack::mouseWheelMoved(int mx, int my, int value)
