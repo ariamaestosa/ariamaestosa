@@ -90,7 +90,7 @@ RemoveOverlapping::RemoveOverlapping()
 }
 RemoveOverlapping::~RemoveOverlapping()
 {
-	removedNotes.clearAndDeleteAll();
 }
+
 }
 }

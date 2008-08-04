@@ -33,7 +33,7 @@ namespace Action
 
 		ptr_vector<Note> removedNotes;
 public:
-			RemoveOverlapping();
+        RemoveOverlapping();
 		void perform();
 		void undo();
 		virtual ~RemoveOverlapping();

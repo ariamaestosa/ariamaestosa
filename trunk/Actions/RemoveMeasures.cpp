@@ -70,11 +70,10 @@ namespace AriaMaestosa
 		removedTempoEvents.clearWithoutDeleting();
 		
 		// add removed time sig events again
-		
 		MeasureData* measureBar = getMeasureData();
 		const int t_amount = timeSigChangesBackup.size();
 		
-		// keep a backup copy of measure events
+		// add back the backup copy of measure events
 		for(int n=0; n<t_amount; n++)
 		{
 			//timeSigChangesBackup.push_back( measureBar->getTimeSig(n) );
@@ -252,14 +251,10 @@ RemoveMeasures::RemoveMeasures(int from_measure, int to_measure)
 }
 RemoveMeasures::~RemoveMeasures()
 {
-	removedTempoEvents.clearAndDeleteAll();
-	removedTrackParts.clearAndDeleteAll();
 }
 
 RemovedTrackPart::~RemovedTrackPart()
 {
-	removedNotes.clearAndDeleteAll();
-	removedControlEvents.clearAndDeleteAll();
 }
 
 }
