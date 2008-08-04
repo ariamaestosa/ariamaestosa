@@ -410,10 +410,7 @@ LayoutElement* EditorPrintable::getNextElement()
     return &layoutElements[currentLayoutElement];
 }
 
-/*
- * relative_note_position ranges from 0 (at the very beginning of the layout element)
- * to 1 (at the very end of the layout element)
- */
+
 int EditorPrintable::getNotePrintX(int noteID)
 {
     return tickToX( currentLine->getTrack()->getNoteStartInMidiTicks(noteID) );
@@ -439,6 +436,11 @@ int EditorPrintable::tickToX(const int tick)
     
     const int firstTick = currentLine->getMeasureForElement(currentLayoutElement).firstTick;
     const int lastTick = currentLine->getMeasureForElement(currentLayoutElement).lastTick;
+    
+    /*
+     * note position ranges from 0 (at the very beginning of the layout element)
+     * to 1 (at the very end of the layout element)
+     */
     
     const float nratio = ((float)(tick - firstTick) / (float)(lastTick - firstTick));
     

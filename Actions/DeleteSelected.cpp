@@ -136,8 +136,6 @@ DeleteSelected::DeleteSelected()
 }
 DeleteSelected::~DeleteSelected()
 {
-	removedNotes.clearAndDeleteAll();
-	removedControlEvents.clearAndDeleteAll();
 }
 }
 }

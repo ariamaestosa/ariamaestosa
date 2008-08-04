@@ -257,7 +257,6 @@ AddControllerSlide::AddControllerSlide(const int x1, const int value1, const int
 }
 AddControllerSlide::~AddControllerSlide()
 {
-	removedControlEvents.clearAndDeleteAll();
 }
 
 }
