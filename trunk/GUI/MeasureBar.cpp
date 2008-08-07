@@ -424,7 +424,7 @@ void MeasureBar::rightClick(int x, int y)
 		{
 			if(data->timeSigChanges[n].measure == measure)
 			{
-				std::cout << "trying to delete " << n << std::endl;
+				std::cout << "trying to delete measure " << n << std::endl;
 				unselectedMenu->enable_deleteTimeSig_item(true, n);
                 Display::popupMenu( (wxMenu*)unselectedMenu, x, y+20);
 				return;

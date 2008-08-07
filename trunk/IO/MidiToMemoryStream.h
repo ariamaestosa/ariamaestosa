@@ -17,6 +17,7 @@
 #ifndef _miditomemorystream_
 #define _miditomemorystream_
 
+#include "Config.h"
 #include <sstream>
 #include <vector>
 #include "jdkmidi/filewrite.h"
@@ -31,7 +32,8 @@ class MidiToMemoryStream : public jdkmidi::MIDIFileWriteStream {
     int pos, length;
     
 public:
-    
+    LEAK_CHECK(MidiToMemoryStream);
+        
     MidiToMemoryStream();
     ~MidiToMemoryStream();
     

@@ -65,7 +65,8 @@ public:
     
     //Note(GraphicalTrack* parent, const int pitchID=-1, const int startTick=-1, const int endTick=-1, const int volume=-1);
     Note(GraphicalTrack* parent, const int pitchID=-1, const int startTick=-1, const int endTick=-1, const int volume=-1, const int string=-1, const int fret=-1); // guitar mode only
-
+    ~Note();
+    
     void setParent(GraphicalTrack* parent);
     
     void setVolume(int vol);

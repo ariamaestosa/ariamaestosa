@@ -33,6 +33,7 @@ ptr_vector<MyObject> obj;
 	
 void addObj(MyObject* myObj)
 {
+    //std::cout << "addObj " << myObj->file << " (" << myObj->line << ")" << std::endl;
     obj.push_back(myObj);
 }
     
