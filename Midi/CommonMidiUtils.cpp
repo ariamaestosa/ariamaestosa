@@ -408,7 +408,8 @@ void allocAsMidiBytes(Sequence* sequence, bool selectionOnly, /*out*/int* songle
 	makeJDKMidiSequence(sequence, tracks, selectionOnly, songlength, startTick, &numTracks, playing);
 
 	// create the output stream
-	MidiToMemoryStream* out_stream=new MidiToMemoryStream();
+	PTR_HOLD(MidiToMemoryStream, out_stream);
+    INIT_PTR(out_stream) = new MidiToMemoryStream();
 
 	jdkmidi::MIDIFileWriteMultiTrack writer(
 											&tracks,
@@ -423,12 +424,8 @@ void allocAsMidiBytes(Sequence* sequence, bool selectionOnly, /*out*/int* songle
 	}
 
 	(*midiSongData) = (char*)malloc(out_stream->getDataLength());
-
 	out_stream->storeMidiData( (*midiSongData) );
-
 	*datalength = out_stream->getDataLength();
-
-	delete out_stream;
 }
 
 int convertTempoBendToBPM(int val)

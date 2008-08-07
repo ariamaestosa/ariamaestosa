@@ -51,7 +51,6 @@ namespace AriaMaestosa
 	void Paste::perform()
 	{
 		assert(track != NULL);
-		
 
 		if(track->graphics->editorMode == CONTROLLER)
 		{
@@ -95,6 +94,9 @@ namespace AriaMaestosa
 
         Display::screenToClient(mouseLoc.x, mouseLoc.y, &trackMouseLoc_x, &trackMouseLoc_y);
         
+        /*
+         * Calculate 'shift' (i.e. X position of pasted notes)
+         */
 		if( atMouse and
 			trackMouseLoc_y > track->graphics->getCurrentEditor()->getEditorYStart() and
 			trackMouseLoc_y < track->graphics->getCurrentEditor()->getYEnd() and
@@ -120,18 +122,17 @@ namespace AriaMaestosa
 			
 			// find if first note will be visible in the location just calculated,
 			// otherwise just go to regular pasting code, it will paste them within visible measures
-			Note* tmp=new Note( *(Clipboard::getNote(0)) );
+			Note& tmp = *Clipboard::getNote(0);
 			
 			// before visible area
-			if((tmp->startTick+tmp->endTick)/2 + shift < track->sequence->getXScrollInMidiTicks())
+			if((tmp.startTick + tmp.endTick)/2 + shift < track->sequence->getXScrollInMidiTicks())
 				goto regular_paste;
-			
+            
 			// after visible area
 			RelativeXCoord screen_width( Display::getWidth(), WINDOW );
 			
-			if((tmp->startTick+tmp->endTick)/2 + shift > /*sequence->getXScrollInMidiTicks() +*/ screen_width.getRelativeTo(MIDI) )
-				goto regular_paste;
-			
+			if((tmp.startTick + tmp.endTick)/2 + shift > screen_width.getRelativeTo(MIDI) )
+                goto regular_paste;
 			
 		}
 		else
@@ -139,7 +140,7 @@ namespace AriaMaestosa
 			
 regular_paste: // FIXME - find better way than goto
 			/*
-			 * This part will change to value of 'shift' variable to make sure pasted track->notes will be visible
+			 * This part will change to value of 'shift' variable to make sure pasted notes will be visible
 			 */
 			
 			// if not "paste at mouse", find first visible measure
@@ -164,7 +165,6 @@ regular_paste: // FIXME - find better way than goto
 		const int clipboardSize = Clipboard::getSize();
 		for(int n=0; n<clipboardSize; n++)
 		{
-			
 			Note* tmp=new Note( *(Clipboard::getNote(n)) );
 			
             if(need_to_scale_pasted_notes)
@@ -180,15 +180,15 @@ regular_paste: // FIXME - find better way than goto
 			tmp->setSelected(true);
 			
 			if(track->graphics->editorMode == GUITAR) tmp->checkIfStringAndFretMatchNote(true);
-			
+
 			track->addNote( tmp, false );
 			relocator.rememberNote( *tmp );
 		}//next
 		
 		track->reorderNoteVector();
-		track->reorderNoteOffVector();
-		
+		track->reorderNoteOffVector();	
 }
+
 Paste::Paste(const bool atMouse)
 {
 	Paste::atMouse = atMouse;

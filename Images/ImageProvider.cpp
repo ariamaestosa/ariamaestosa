@@ -44,7 +44,7 @@ void loadImages()
 	// track header buttons
     collapseImg=new Image(wxT("collapse.jpg"));
 	expandImg=new Image(wxT("expand.jpg"));
-    collapseDrawable = new Drawable( collapseImg);
+    collapseDrawable = new Drawable(collapseImg);
 
 	muteOnImg=new Image(wxT("mute_on.png"));
 	muteOffImg=new Image(wxT("mute_off.png"));

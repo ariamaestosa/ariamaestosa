@@ -37,9 +37,6 @@ Note::Note(GraphicalTrack* parent,
 		   const int string_arg,
 		   const int fret_arg)
 {
-    
-	
-	
     Note::pitchID=pitchID_arg;
     Note::startTick=startTick_arg;
     Note::endTick=endTick_arg;
@@ -53,6 +50,9 @@ Note::Note(GraphicalTrack* parent,
     
     preferred_accidental_sign = -1;
 }	
+Note::~Note()
+{
+}
 
 int Note::getString()
 {

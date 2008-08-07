@@ -6,6 +6,7 @@ SVN
 - Fixed default suggested name when exporting to PDF on mac OS X
 - Improved printing output by putting a bigger centered title on first page.
 - More automatic memory management, improved leak checks
+- Fixed memory leaks
 
 1.1.3
 - improved vector implementation, fixing possible problems on 64-bits machines
