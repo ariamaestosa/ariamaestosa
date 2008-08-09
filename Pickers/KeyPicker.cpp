@@ -59,6 +59,8 @@ KeyPicker::KeyPicker() : wxMenu()
 {
     musical_checkbox = AppendCheckItem(MUSICAL_NOTATION,_("Musical notation")); musical_checkbox->Check(true);
     linear_checkbox = AppendCheckItem(LINEAR_NOTATION,_("Linear Notation")); linear_checkbox->Check(true);
+    
+    AppendSeparator();
     gclef = AppendCheckItem(G_CLEF, _("G Clef")); gclef->Check(true);
     fclef = AppendCheckItem(F_CLEF, _("F Clef")); fclef->Check(true);
     octave_above = AppendCheckItem(OCTAVE_ABOVE, _("Octave +1"));
@@ -183,8 +185,22 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
 	
 	if( id < 0 or id > ID_AMOUNT ) return;
 
-	if( id == MUSICAL_NOTATION ) parent -> scoreEditor -> enableMusicalNotation( musical_checkbox->IsChecked() );
-	else if( id == LINEAR_NOTATION ) parent -> scoreEditor -> enableLinearNotation( linear_checkbox->IsChecked() );
+	if( id == MUSICAL_NOTATION )
+    {
+        parent -> scoreEditor -> enableMusicalNotation( musical_checkbox->IsChecked() );
+        
+        // don't allow disabling both
+        if(not musical_checkbox->IsChecked() and not linear_checkbox->IsChecked())
+            parent -> scoreEditor -> enableLinearNotation( true );
+    }
+	else if( id == LINEAR_NOTATION )
+    {
+        parent -> scoreEditor -> enableLinearNotation( linear_checkbox->IsChecked() );
+        
+        // don't allow disabling both
+        if(not musical_checkbox->IsChecked() and not linear_checkbox->IsChecked())
+            parent -> scoreEditor -> enableMusicalNotation( true );
+    }
     else if( id == F_CLEF )
     {
         parent -> scoreEditor -> enableFClef( fclef->IsChecked() );
