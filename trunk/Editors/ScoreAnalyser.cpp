@@ -24,6 +24,12 @@
 namespace AriaMaestosa
 {
 
+int up_down_pivot_level = 0;
+void setUpDownPivotLevel(const int level)
+{
+    up_down_pivot_level = level;
+}
+    
 /*
  * This class receives a range of IDs of notes that are candidates for beaming. Its job is to decide
  * how to beam the notes in order to get maximal results, as well as changing the NoteRenderInfo objects
@@ -136,7 +142,7 @@ public:
 
         calculateLevel(noteRenderInfo, converter);
 
-        noteRenderInfo[first_id].beam_show_above = (mid_level < converter->getMiddleCLevel()-5 ? false : true);
+        noteRenderInfo[first_id].beam_show_above = (mid_level < up_down_pivot_level ? false : true);
         noteRenderInfo[first_id].beam = true;
 
         for(int j=first_id; j<=last_id; j++)
@@ -341,7 +347,6 @@ void findAndMergeChords(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor
 {
     const int halfh = editor->getHalfNoteHeight();
     const int y_step = editor->getYStep();
-    ScoreMidiConverter* converter = editor->getScoreMidiConverter();
 
     /*
      * start by merging notes playing at the same time (chords)
@@ -418,7 +423,7 @@ void findAndMergeChords(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor
                 if(max_level == -999) max_level = noteRenderInfo[first_note_of_chord].level;
                 const int mid_level = (int)round( (min_level + max_level)/2.0 );
 
-                const bool stem_up = mid_level>=converter->getMiddleCLevel()-3;
+                const bool stem_up = mid_level >= up_down_pivot_level+2;
 
                 const int maxy = editor->getEditorYStart() + y_step*max_level - halfh - editor->getYScrollInPixels() + 2;
                 const int miny = editor->getEditorYStart() + y_step*min_level - halfh - editor->getYScrollInPixels() + 2;
@@ -463,7 +468,6 @@ void processTriplets(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* e
 {
     const int visibleNoteAmount = noteRenderInfo.size();
     const int y_step = editor->getYStep();
-    ScoreMidiConverter* converter = editor->getScoreMidiConverter();
 
     for(int i=0; i<visibleNoteAmount; i++)
     {
@@ -533,7 +537,7 @@ void processTriplets(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* e
 
                     int mid_level = (int)round( (min_level + max_level)/2.0 );
 
-                    noteRenderInfo[first_triplet].triplet_show_above = (mid_level < converter->getMiddleCLevel()-5);
+                    noteRenderInfo[first_triplet].triplet_show_above = (mid_level < up_down_pivot_level);
 
                     if(i != first_triplet) // if not a triplet note alone, but a 'serie' of triplets
                     {
@@ -666,7 +670,7 @@ void analyseNoteInfo( std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* 
 
 }// end analyseNotes function
 
-void addToVector( NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& vector, const int middleCLevel, const bool recursion )
+void addToVector( NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& vector, const bool recursion )
 {
     // check if note lasts more than one measure. If so we need to divide it in 2.
 	if(renderInfo.measureEnd > renderInfo.measureBegin) // note in longer than mesaure, need to divide it in 2
@@ -690,10 +694,10 @@ void addToVector( NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& vecto
 		}
 		
 		NoteRenderInfo part1(renderInfo.tick, renderInfo.x, renderInfo.level, firstLength, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
-		addToVector(part1, vector, middleCLevel, true);
+		addToVector(part1, vector, true);
 		NoteRenderInfo part2(getMeasureData()->firstTickInMeasure(renderInfo.measureBegin+1), firstEndRel.getRelativeTo(WINDOW),
                              renderInfo.level, secondLength, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
-		addToVector(part2, vector, middleCLevel, true);
+		addToVector(part2, vector, true);
 		
 		if(!recursion)
 		{
@@ -713,7 +717,7 @@ void addToVector( NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& vecto
     // if note duration is unknown it will be split
 	const float relativeLength = renderInfo.tick_length / (float)(getMeasureData()->beatLengthInTicks()*4);
     
-	renderInfo.stem_type = (renderInfo.level>=middleCLevel-5 ? STEM_UP : STEM_DOWN);
+	renderInfo.stem_type = (renderInfo.level >= up_down_pivot_level ? STEM_UP : STEM_DOWN);
 	if(relativeLength>=1) renderInfo.stem_type=STEM_NONE; // whole notes have no stem
 	renderInfo.hollow_head = false;
 	
@@ -771,10 +775,10 @@ void addToVector( NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& vecto
 		}
 		
 		NoteRenderInfo part1(renderInfo.tick, renderInfo.x, renderInfo.level, firstLength_tick, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
-		addToVector(part1, vector, middleCLevel, true);
+		addToVector(part1, vector, true);
 		NoteRenderInfo part2(secondBeginning_tick, secondBeginningRel.getRelativeTo(WINDOW), renderInfo.level,
                              renderInfo.tick_length-firstLength_tick, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
-		addToVector(part2, vector, middleCLevel, true);
+		addToVector(part2, vector, true);
 		
 		if(!recursion)
 		{
@@ -790,13 +794,13 @@ void addToVector( NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& vecto
 		return;
 	}
 	
-	if(renderInfo.triplet)
-	{
-		renderInfo.triplet_arc_x_start = renderInfo.x + 8;
-		renderInfo.triplet_arc_y = renderInfo.y;
-	}
+    if(renderInfo.triplet)
+    {
+        renderInfo.triplet_arc_x_start = renderInfo.x + 8;
+        renderInfo.triplet_arc_y = renderInfo.y;
+    }
 	
-	assertExpr(renderInfo.level,>,-1);    
+    assertExpr(renderInfo.level,>,-1);    
     
     vector.push_back(renderInfo);
 }

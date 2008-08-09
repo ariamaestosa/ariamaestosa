@@ -31,6 +31,8 @@
 #include <vector>
 
 namespace AriaMaestosa {
+
+void setUpDownPivotLevel(const int level);
     
 enum STEM
 {
@@ -124,7 +126,7 @@ public:
     int getBaseLevel();
 };
 
-void addToVector( NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& info, const int middleCLevel, const bool recursion );
+void addToVector( NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& info, const bool recursion );
 
 // the main function of ScoreAnalyser, where everything starts
 void analyseNoteInfo( std::vector<NoteRenderInfo>& info, ScoreEditor* editor );
