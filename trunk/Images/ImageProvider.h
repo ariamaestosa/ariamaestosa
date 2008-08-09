@@ -76,8 +76,8 @@ IMG_DEC Drawable* tabBorderDrawable;
 IMG_DEC Drawable* tabDrawable;
 
 // score
-IMG_DEC Drawable* keyG;
-IMG_DEC Drawable* keyF;
+IMG_DEC Drawable* clefG_drawable;
+IMG_DEC Drawable* clefF_drawable;
 IMG_DEC Drawable* noteClosed;
 IMG_DEC Drawable* noteOpen;
 IMG_DEC Drawable* noteFLag;

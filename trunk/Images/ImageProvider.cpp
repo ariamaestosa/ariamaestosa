@@ -74,11 +74,11 @@ void loadImages()
 	tabBorderDrawable = new Drawable( wxT("tab_side.png"));
 	
     // score
-	keyG = new Drawable(wxT("score/keyG.png"));
-	keyG -> setHotspot( 15, 33 );
+	clefG_drawable = new Drawable(wxT("score/KeyG.png"));
+	clefG_drawable -> setHotspot( 15, 33 );
 		
-	keyF = new Drawable(wxT("score/FKey.png"));
-	keyF -> setHotspot( 7, 13 );
+	clefF_drawable = new Drawable(wxT("score/FKey.png"));
+	clefF_drawable -> setHotspot( 7, 13 );
 	
     noteClosed = new Drawable(wxT("score/noteclosed.png"));
     noteOpen = new Drawable(wxT("score/noteopen.png"));
@@ -147,8 +147,8 @@ void unloadImages()
     delete flatSign;
     delete naturalSign;
 	
-    delete keyF;
-	delete keyG;
+    delete clefF_drawable;
+	delete clefG_drawable;
     
     delete silence4;
     delete silence8;
