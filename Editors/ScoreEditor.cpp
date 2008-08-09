@@ -998,25 +998,45 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 			NoteRenderInfo currentNote(tick, note_x, noteLevel, noteLength, note_sign,
 									 track->isNoteSelected(n), track->getNotePitchID(n));
             
+            // add note to either G clef score or F clef score
             if(g_clef and not f_clef)
-                addToVector(currentNote, noteRenderInfo_GClef, converter->getMiddleCLevel(), false);
+                addToVector(currentNote, noteRenderInfo_GClef, false);
             else if(f_clef and not g_clef)
-                addToVector(currentNote, noteRenderInfo_FClef, converter->getMiddleCLevel(), false);
+                addToVector(currentNote, noteRenderInfo_FClef, false);
             else if(f_clef and g_clef)
             {
                 const int middleC = converter->getMiddleCLevel();
-                if(noteLevel < middleC) addToVector(currentNote, noteRenderInfo_GClef, middleC, false);
-                else addToVector(currentNote, noteRenderInfo_FClef, middleC, false);
+                if(noteLevel < middleC)
+                {
+                    setUpDownPivotLevel(converter->getMiddleCLevel()-5);
+                    addToVector(currentNote, noteRenderInfo_GClef, false);
+                }
+                else
+                {
+                    setUpDownPivotLevel(converter->getMiddleCLevel()+6);
+                    addToVector(currentNote, noteRenderInfo_FClef, false);
+                }
             }
 		}
 	} // next note
     
 
-	// musical notation requires more than one pass
+	// render musical notation if enabled
 	if(musicalNotationEnabled)
 	{
-        if(g_clef) renderScore(noteRenderInfo_GClef, getEditorYStart() + y_step*(converter->getMiddleCLevel()-8) - getYScrollInPixels() + 1);
-        if(f_clef) renderScore(noteRenderInfo_FClef, getEditorYStart() + y_step*(converter->getMiddleCLevel()+5) - getYScrollInPixels() + 1);
+        if(g_clef)
+        {
+            setUpDownPivotLevel(converter->getMiddleCLevel()-5);
+            const int silences_y = getEditorYStart() + y_step*(converter->getMiddleCLevel()-8) - getYScrollInPixels() + 1;
+            renderScore(noteRenderInfo_GClef, silences_y);
+        }
+        
+        if(f_clef)
+        {
+            setUpDownPivotLevel(converter->getMiddleCLevel()+6);
+            const int silences_y = getEditorYStart() + y_step*(converter->getMiddleCLevel()+5) - getYScrollInPixels() + 1;
+            renderScore(noteRenderInfo_FClef, silences_y);
+        }
     }
 
 

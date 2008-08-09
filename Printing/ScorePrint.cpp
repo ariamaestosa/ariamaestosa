@@ -77,7 +77,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, const in
             
 			NoteRenderInfo currentNote(tick, note_x, noteLevel, noteLength, note_sign,
                                        track->isNoteSelected(n), track->getNotePitchID(n));
-			addToVector(currentNote, noteRenderInfo, converter->getMiddleCLevel(), false);
+			addToVector(currentNote, noteRenderInfo, false);
             
         }
         
