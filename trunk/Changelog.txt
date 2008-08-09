@@ -1,6 +1,7 @@
 
 SVN
 - Added ability to print more than one track at once
+- Allowed showing only G or F clef
 - Major code cleanup in printing code
 - Major code cleanup in measure handling code
 - Fixed default suggested name when exporting to PDF on mac OS X

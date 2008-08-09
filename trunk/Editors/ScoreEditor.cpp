@@ -448,13 +448,14 @@ int ScoreMidiConverter::getMidiNoteForLevelAndSign(const unsigned int level, int
 
 ScoreEditor::ScoreEditor(Track* track) : Editor(track)
 {
-	GKey = true;
-	FKey = true;
+	g_clef = true;
+	f_clef = true;
+    octave_shift = 0;
+    musicalNotationEnabled = true;
+	linearNotationEnabled  = true;
+    
 	INIT_PTR(converter) = new ScoreMidiConverter();
-	
-	musicalNotationEnabled=true;
-	linearNotationEnabled=true;
-	
+
 	converter->updateConversionData();	
 	
 	setYStep( y_step );
@@ -465,15 +466,14 @@ ScoreEditor::~ScoreEditor()
 {
 }
 
-void ScoreEditor::enableMusicalNotation(const bool enabled)
-{
-	musicalNotationEnabled = enabled;
-}
-
-void ScoreEditor::enableLinearNotation(const bool enabled)
-{
-	linearNotationEnabled = enabled;
-}
+/*
+ * These will be called by the popup menu from KeyPicker when the user changes settings
+ */
+void ScoreEditor::enableFClef(bool enabled)     { f_clef = enabled;       }
+void ScoreEditor::enableGClef(bool enabled)     { g_clef = enabled;       }
+void ScoreEditor::setOctaveShift(int octaves)   { octave_shift = octaves; }
+void ScoreEditor::enableMusicalNotation(const bool enabled) { musicalNotationEnabled = enabled; }
+void ScoreEditor::enableLinearNotation(const bool enabled)  { linearNotationEnabled = enabled; }
 
 // order in wich signs of the key signature appear
 const NOTES sharp_order[] = { F, C, G, D, A, E, B };
@@ -590,25 +590,38 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     AriaRender::color(0,0,0);
     AriaRender::lineWidth(1);
 	const int middle_c_level = converter->getMiddleCLevel();
-	if(GKey and renderInfo.level < middle_c_level - 10)
+    
+    // set min and max level where small line is not needed
+    int score_from_level = 0;
+    if(g_clef) score_from_level = middle_c_level - 10;
+    else if(f_clef) score_from_level = middle_c_level + 2;
+    
+    int score_to_level = 999;
+    if(f_clef) score_to_level = middle_c_level + 11;
+    else if(g_clef) score_to_level = middle_c_level - 1;
+    
+    // draw small lines above score if needed
+	if(renderInfo.level < score_from_level)
 	{
-		for(int lvl=middle_c_level - 9; lvl>renderInfo.level+renderInfo.level%2; lvl -= 2)
+		for(int lvl=score_from_level+1; lvl>renderInfo.level+renderInfo.level%2; lvl -= 2)
 		{
 			const int lvly = getEditorYStart() + y_step*lvl - halfh - getYScrollInPixels() + 2;
             AriaRender::line(renderInfo.x-5, lvly, renderInfo.x+15, lvly);
 		}
 	}
 
-	if(FKey and renderInfo.level > middle_c_level + 11)
+    // draw small lines below score if needed
+	if(renderInfo.level > score_to_level)
 	{
-		for(int lvl=middle_c_level + 11; lvl<=renderInfo.level-renderInfo.level%2+2; lvl += 2)
+		for(int lvl=score_to_level; lvl<=renderInfo.level-renderInfo.level%2+2; lvl += 2)
 		{
 			const int lvly = getEditorYStart() + y_step*lvl - halfh - getYScrollInPixels() + 2;
 			AriaRender::line(renderInfo.x-5, lvly, renderInfo.x+15, lvly);
 		}
 	}
 
-	if(renderInfo.level == middle_c_level)
+    // draw small lines between both scores if needed
+	if(g_clef and f_clef and renderInfo.level == middle_c_level)
 	{
 		const int lvly = getEditorYStart() + y_step*(middle_c_level+1) - halfh - getYScrollInPixels() + 2;
 		AriaRender::line(renderInfo.x-5, lvly, renderInfo.x+15, lvly);
@@ -886,11 +899,11 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
 	const int middle_c_level = converter->getMiddleCLevel();
 	
-	if(keyG)
+	if(g_clef)
 		drawVerticalMeasureLines(getEditorYStart() + (middle_c_level-2)*y_step + y_step/2 - yscroll,
-							 getEditorYStart() + (middle_c_level-10)*y_step + y_step/2 - yscroll);
+							     getEditorYStart() + (middle_c_level-10)*y_step + y_step/2 - yscroll);
 	
-	if(keyF)
+	if(f_clef)
 		drawVerticalMeasureLines(getEditorYStart() + (middle_c_level+2)*y_step + y_step/2 - yscroll,
 								 getEditorYStart() + (middle_c_level+10)*y_step + y_step/2 - yscroll);
     
@@ -1238,7 +1251,7 @@ assertExpr(iters,<,1000);
 
 	AriaRender::color(0,0,0);
     
-	if(GKey)
+	if(g_clef)
 	{
         AriaRender::primitives();
         
@@ -1286,7 +1299,7 @@ assertExpr(iters,<,1000);
 		}
 	}
 
-	if(FKey)
+	if(f_clef)
 	{
         AriaRender::primitives();
         AriaRender::color(0,0,0);
@@ -1336,12 +1349,12 @@ assertExpr(iters,<,1000);
 	// --------------------------- key -------------------------
 	
     AriaRender::images();
-	if(GKey)
+	if(g_clef)
 	{
 		keyG->move(getEditorsXStart() - 55, getEditorYStart() + (middle_c_level-6)*y_step -  yscroll + 5);
 		keyG->render();
 	}
-	if(FKey)
+	if(f_clef)
 	{
 		keyF->move(getEditorsXStart() - 65, getEditorYStart() + (middle_c_level+4)*y_step -  yscroll + 5);
 		keyF->render();
@@ -1381,7 +1394,7 @@ void ScoreEditor::mouseDown(RelativeXCoord x, const int y)
 	{
         KeyPicker* picker = Core::getKeyPicker();
 		picker->setParent(track);
-		picker->setChecks( musicalNotationEnabled, linearNotationEnabled );
+		picker->setChecks( musicalNotationEnabled, linearNotationEnabled, f_clef, g_clef, octave_shift );
         Display::popupMenu( picker,x.getRelativeTo(WINDOW),y);
         return;
 	}
