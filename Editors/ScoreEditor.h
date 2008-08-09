@@ -121,6 +121,10 @@ public:
         
         void render(RelativeXCoord mousex_current, int mousey_current,
                     RelativeXCoord mousex_initial, int mousey_initial, bool focus=false);
+        void renderScore(std::vector<NoteRenderInfo>& renderInfo, const int silences_y);
+        void renderSilence(const int tick, const int tick_length, const int silences_y);
+        void renderNote_pass1(NoteRenderInfo& renderInfo);
+        void renderNote_pass2(NoteRenderInfo& renderInfo);
         
         void updatePosition(const int from_y, const int to_y, const int width, const int height, const int barHeight);
         
@@ -141,10 +145,6 @@ public:
         void addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY);
         void moveNote(Note& note, const int x_steps_to_move, const int y_steps_to_move);
         void selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current, RelativeXCoord& mousex_initial, int mousey_initial);
-		
-        void renderSilence(const int tick, const int tick_length);
-        void renderNote_pass1(NoteRenderInfo& renderInfo);
-        void renderNote_pass2(NoteRenderInfo& renderInfo);
 		
         // called from 'SetAccidentalSign' Action
         void setNoteSign(const int sign, const int noteID);

@@ -31,7 +31,7 @@ NOTE: sorry, this is very raw :)
 * new score key/clef features :
   * octave shift not implemented
   * when showing e.g. only F key, notes are always up, never down
-  * silences only appear in one (and appear in the air if G key disabled)
+  * more intelligently decide if notes on C belong to F clef or G clef
 
  * guess key feature
 
@@ -125,7 +125,8 @@ NOTE: sorry, this is very raw :)
  - score editor should be able to display notes with more than 2 flags (unusure... those with 2 are already so small and barely visible) 
  
  ************************* BUGS: *************************
-
+ 
+* black winter day : "not sure how to interpret this accidental :("
 
 * 9/8 doesn't work (Aria cannot handle measure lengths that are not multiples of 1/4 notes)
 
