@@ -31,8 +31,12 @@ namespace AriaMaestosa {
 		
 		wxMenuItem* musical_checkbox;
 		wxMenuItem* linear_checkbox;
-        //wxMenuItem* background;
         
+        wxMenuItem* fclef;
+        wxMenuItem* gclef;
+        wxMenuItem* octave_above;
+        wxMenuItem* octave_below;
+
         wxMenuItem* key_c;
 		
         wxMenuItem* key_sharps_1;
@@ -56,7 +60,7 @@ public:
 		KeyPicker();
 		~KeyPicker();
 		
-		void setChecks( bool musicalNotationEnabled, bool linearNotationEnabled);
+		void setChecks( bool musicalNotationEnabled, bool linearNotationEnabled, bool f_clef, bool g_clef, int octave_shift);
 		
 		void menuItemSelected(wxCommandEvent& evt);    
 		void setParent(Track* parent_arg);

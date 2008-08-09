@@ -28,6 +28,11 @@ NOTE: sorry, this is very raw :)
   
 ************************* NEW FEATURES TO ADD: *************************
 
+* new score key/clef features :
+  * octave shift not implemented
+  * when showing e.g. only F key, notes are always up, never down
+  * silences only appear in one (and appear in the air if G key disabled)
+
  * guess key feature
 
  * add new tools, that allow adding notes without dragging-
@@ -121,8 +126,7 @@ NOTE: sorry, this is very raw :)
  
  ************************* BUGS: *************************
 
-* in a key with sharp/flats, a natural accidental does not nicely come back to the key's original sharp/flat (marked with yet another 'natural' instead)
-    
+
 * 9/8 doesn't work (Aria cannot handle measure lengths that are not multiples of 1/4 notes)
 
 * erasing control events by selecting them and pressing BACKSPACE not working (in imported midi if it makes any difference)

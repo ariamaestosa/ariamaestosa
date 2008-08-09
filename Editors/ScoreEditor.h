@@ -98,8 +98,9 @@ public:
 	
     class ScoreEditor : public Editor
     {
-        bool GKey;
-        bool FKey;
+        bool g_clef;
+        bool f_clef;
+        int octave_shift; // 0 = regular, +1 = alta, -1 = bassa
         PTR_HOLD(ScoreMidiConverter, converter);
         
         bool musicalNotationEnabled, linearNotationEnabled;
@@ -111,6 +112,9 @@ public:
         
         ScoreMidiConverter* getScoreMidiConverter();
         
+        void enableFClef(bool enabled);
+        void enableGClef(bool enabled);
+        void setOctaveShift(int octaves);
         void enableMusicalNotation(const bool enabled);
         void enableLinearNotation(const bool enabled);
         void loadKey(const int sharpness_symbol, const int symbol_amount);
