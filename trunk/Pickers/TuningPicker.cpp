@@ -326,10 +326,24 @@ BEGIN_EVENT_TABLE(CustomTuningPicker, wxFrame)
 EVT_BUTTON(200, CustomTuningPicker::okButton)
 EVT_BUTTON(202, CustomTuningPicker::cancelButton)
 END_EVENT_TABLE()
-		
-		
+
+enum
+{
+    TUNING_STD = 1,
+    TUNING_DROPD,
+    TUNING_DROPC,
+    TUNING_DROPB,
+    TUNING_BASS,
+    TUNING_DROPDBASS,
+    TUNING_CUSTOM,
+    REARRANGE,
+    PRINT_TAB,
+    
+    LAST_ID
+};
+
 BEGIN_EVENT_TABLE(TuningPicker, wxMenu)
-EVT_MENU_RANGE(1,8,TuningPicker::menuItemSelected)
+EVT_MENU_RANGE(1, LAST_ID-1, TuningPicker::menuItemSelected)
 END_EVENT_TABLE()
 
 /*
@@ -338,16 +352,17 @@ END_EVENT_TABLE()
 
 TuningPicker::TuningPicker() : wxMenu()
 {
-    Append(1,wxT("Standard"));
-    Append(2,wxT("Dropped D")); // D-A-d-g-b-e'
-    Append(3,wxT("Dropped C")); // C-G-c-f-a-d'
-    Append(4,wxT("Dropped B")); // B-F#-B-e-g#-c#'
-    Append(6,wxT("Bass"));
+    Append(TUNING_STD,       wxT("Standard"));
+    Append(TUNING_DROPD,     wxT("Dropped D"));
+    Append(TUNING_DROPC,     wxT("Dropped C"));
+    Append(TUNING_DROPB,     wxT("Dropped B"));
+    Append(TUNING_BASS,      wxT("Bass"));
+    Append(TUNING_DROPDBASS, wxT("Drop-D Bass"));
     AppendSeparator();
-    Append(5,wxT("Custom"));
+    Append(TUNING_CUSTOM,    wxT("Custom"));
     AppendSeparator();
-    Append(7, _("Rearrange selected notes"));
-	Append(8, _("Print as tablature"));
+    Append(REARRANGE,        _("Rearrange selected notes"));
+	Append(PRINT_TAB,        _("Print as tablature"));
 	
 	INIT_PTR(ctp) = new CustomTuningPicker();
 }
@@ -373,7 +388,7 @@ void TuningPicker::menuItemSelected(wxCommandEvent& evt)
 void TuningPicker::loadTuning(const int id, const bool user_triggered) // if user-triggered, it will be undoable
 {
     switch(id){
-        case 1: // standard
+        case TUNING_STD: // standard
             
             parent->tuning.clear();
             parent->tuning.push_back( findNote('E',' ',5) );
@@ -385,7 +400,7 @@ void TuningPicker::loadTuning(const int id, const bool user_triggered) // if use
 			parent->tuningUpdated(user_triggered);
             break;
 
-        case 2: // drop D
+        case TUNING_DROPD: // drop D
             
             parent->tuning.clear();
             parent->tuning.push_back( findNote('E',' ',5) );
@@ -397,7 +412,7 @@ void TuningPicker::loadTuning(const int id, const bool user_triggered) // if use
 			parent->tuningUpdated(user_triggered);
             break;
 
-        case 3: // drop C
+        case TUNING_DROPC: // drop C
             
             parent->tuning.clear();
             parent->tuning.push_back( findNote('D',' ',5) );
@@ -409,7 +424,7 @@ void TuningPicker::loadTuning(const int id, const bool user_triggered) // if use
 			parent->tuningUpdated(user_triggered);
             break;
 
-        case 4: // drop B  //B-F#-B-e-g#-c#'
+        case TUNING_DROPB: // drop B  //B-F#-B-e-g#-c#'
             
             parent->tuning.clear();
             parent->tuning.push_back( findNote('C','#',5) );
@@ -421,7 +436,7 @@ void TuningPicker::loadTuning(const int id, const bool user_triggered) // if use
 			parent->tuningUpdated(user_triggered);
             break;
             
-        case 6: // bass
+        case TUNING_BASS: // bass
             
             parent->tuning.clear();
             //parent->tuning.push_back( findNote('E',' ',4) );
@@ -432,19 +447,31 @@ void TuningPicker::loadTuning(const int id, const bool user_triggered) // if use
             parent->tuning.push_back( findNote('E',' ',2) );
 			parent->tuningUpdated(user_triggered);
             break;
+
+        case TUNING_DROPDBASS: // drop-D bass
             
-        case 5: // custom
+            parent->tuning.clear();
+            //parent->tuning.push_back( findNote('E',' ',4) );
+            parent->tuning.push_back( findNote('B',' ',3) );
+            parent->tuning.push_back( findNote('G',' ',3) );
+            parent->tuning.push_back( findNote('D',' ',3) );
+            parent->tuning.push_back( findNote('A',' ',2) );
+            parent->tuning.push_back( findNote('D',' ',2) );
+			parent->tuningUpdated(user_triggered);
+            break;
+            
+        case TUNING_CUSTOM: // custom
 		{
 			ctp->show();
 			break;
 		}
 			
-		case 7: // rearrange notes
+		case REARRANGE: // rearrange notes
 			parent->track->action( new Action::RearrangeNotes() );
 
 			break;
 			
-		case 8: // export tablature
+		case PRINT_TAB:
 				
 			exportNotation( parent->track );
 			
