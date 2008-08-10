@@ -174,6 +174,7 @@ ScoreMidiConverter::ScoreMidiConverter()
     
     going_in_sharps = false;
     going_in_flats = false;
+    octave_shift = 0;
 }
 
 void ScoreMidiConverter::setNoteSharpness(NOTES note, int sharpness)
@@ -211,6 +212,16 @@ int ScoreMidiConverter::getKeySigSharpnessSignForLevel(const unsigned int level)
 }
 
 int ScoreMidiConverter::getMiddleCLevel() { return middleCLevel; }
+
+void ScoreMidiConverter::setOctaveShift(int octaves)   { octave_shift = octaves; }
+int ScoreMidiConverter::getOctaveShift(){ return octave_shift; }
+int ScoreMidiConverter::getScoreCenterCLevel()
+{
+    if(octave_shift == 1) return ottavaAltaCLevel;
+    else if(octave_shift == -1) return ottavaBassaCLevel;
+    
+    return middleCLevel;
+}
 
 /*
 // with the current key, what sign must be shown next to note if we want it to have given pitch? (FLAT, SHARP, NATURAL or NONE)
@@ -377,11 +388,16 @@ void ScoreMidiConverter::updateConversionData()
 	}
 	
 	middleCLevel = -1;
-	
+	ottavaAltaCLevel = -1;
+    ottavaBassaCLevel = -1;
+    
 	int middleCNote128 = 71;
 	if( scoreNotesSharpness[C] == SHARP ) middleCNote128 -= 1;
 	else if( scoreNotesSharpness[C] == FLAT ) middleCNote128 += 1;
 	
+    const int ottavaAltaCNote128 = middleCNote128 - 12;
+    const int ottavaBassaCNote128 = middleCNote128 + 12;
+    
 	// do levelToMidiNote first
 	int note_7 = 0, octave = 0;
 	for(int n=0; n<73; n++)
@@ -398,7 +414,9 @@ void ScoreMidiConverter::updateConversionData()
         
 		// find middle C
 		if( levelToMidiNote[n] == middleCNote128 ) middleCLevel = n; // set on which line is middle C
-		
+		if( levelToMidiNote[n] == ottavaAltaCNote128 ) ottavaAltaCLevel = n;
+        if( levelToMidiNote[n] == ottavaBassaCNote128 ) ottavaBassaCLevel = n;
+                
 		// if note is flat or sharp, also find what this line would be with a natural sign
 		if(sharpness != NATURAL)
 		{
@@ -450,7 +468,6 @@ ScoreEditor::ScoreEditor(Track* track) : Editor(track)
 {
 	g_clef = true;
 	f_clef = true;
-    octave_shift = 0;
     musicalNotationEnabled = true;
 	linearNotationEnabled  = true;
     
@@ -471,7 +488,6 @@ ScoreEditor::~ScoreEditor()
  */
 void ScoreEditor::enableFClef(bool enabled)     { f_clef = enabled;       }
 void ScoreEditor::enableGClef(bool enabled)     { g_clef = enabled;       }
-void ScoreEditor::setOctaveShift(int octaves)   { octave_shift = octaves; }
 void ScoreEditor::enableMusicalNotation(const bool enabled) { musicalNotationEnabled = enabled; }
 void ScoreEditor::enableLinearNotation(const bool enabled)  { linearNotationEnabled = enabled; }
 
@@ -589,7 +605,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     AriaRender::primitives();
     AriaRender::color(0,0,0);
     AriaRender::lineWidth(1);
-	const int middle_c_level = converter->getMiddleCLevel();
+	const int middle_c_level = converter->getScoreCenterCLevel();
     
     // set min and max level where small line is not needed
     int score_from_level = 0;
@@ -897,7 +913,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
     AriaRender::primitives();
     AriaRender::color(1,1,1);
 
-	const int middle_c_level = converter->getMiddleCLevel();
+	const int middle_c_level = converter->getScoreCenterCLevel();
 	
 	if(g_clef)
 		drawVerticalMeasureLines(getEditorYStart() + (middle_c_level-2)*y_step + y_step/2 - yscroll,
@@ -1005,15 +1021,15 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
                 addToVector(currentNote, noteRenderInfo_FClef, false);
             else if(f_clef and g_clef)
             {
-                const int middleC = converter->getMiddleCLevel();
+                const int middleC = converter->getScoreCenterCLevel();
                 if(noteLevel < middleC)
                 {
-                    setUpDownPivotLevel(converter->getMiddleCLevel()-5);
+                    setUpDownPivotLevel(converter->getScoreCenterCLevel()-5);
                     addToVector(currentNote, noteRenderInfo_GClef, false);
                 }
                 else
                 {
-                    setUpDownPivotLevel(converter->getMiddleCLevel()+6);
+                    setUpDownPivotLevel(converter->getScoreCenterCLevel()+6);
                     addToVector(currentNote, noteRenderInfo_FClef, false);
                 }
             }
@@ -1026,15 +1042,15 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 	{
         if(g_clef)
         {
-            setUpDownPivotLevel(converter->getMiddleCLevel()-5);
-            const int silences_y = getEditorYStart() + y_step*(converter->getMiddleCLevel()-8) - getYScrollInPixels() + 1;
+            setUpDownPivotLevel(converter->getScoreCenterCLevel()-5);
+            const int silences_y = getEditorYStart() + y_step*(converter->getScoreCenterCLevel()-8) - getYScrollInPixels() + 1;
             renderScore(noteRenderInfo_GClef, silences_y);
         }
         
         if(f_clef)
         {
-            setUpDownPivotLevel(converter->getMiddleCLevel()+6);
-            const int silences_y = getEditorYStart() + y_step*(converter->getMiddleCLevel()+5) - getYScrollInPixels() + 1;
+            setUpDownPivotLevel(converter->getScoreCenterCLevel()+6);
+            const int silences_y = getEditorYStart() + y_step*(converter->getScoreCenterCLevel()+5) - getYScrollInPixels() + 1;
             renderScore(noteRenderInfo_FClef, silences_y);
         }
     }
@@ -1239,19 +1255,32 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 			}
 		}
 	}
-	
-	
+
 	// --------------------------- clefs -------------------------
     AriaRender::images();
 	if(g_clef)
 	{
-		clefG_drawable->move(getEditorsXStart() - 55, getEditorYStart() + (middle_c_level-6)*y_step -  yscroll + 5);
+        const int clef_y = getEditorYStart() + (middle_c_level-6)*y_step -  yscroll + 5;
+		clefG_drawable->move(getEditorsXStart() - 55, clef_y);
 		clefG_drawable->render();
+        /*
+        AriaRender::color(0, 0, 0);
+        AriaRender::primitives();
+        if(converter->getOctaveShift() == -1) AriaRender::text("8", getEditorsXStart() - 30, clef_y-10 );
+        else if(converter->getOctaveShift() == 1) AriaRender::text("8", getEditorsXStart() - 30, clef_y );
+         */
 	}
 	if(f_clef)
 	{
-		clefF_drawable->move(getEditorsXStart() - 65, getEditorYStart() + (middle_c_level+4)*y_step -  yscroll + 5);
+        const int clef_y = getEditorYStart() + (middle_c_level+4)*y_step -  yscroll + 5;
+		clefF_drawable->move(getEditorsXStart() - 65, clef_y);
 		clefF_drawable->render();
+        /*
+        AriaRender::color(0, 0, 0);
+        AriaRender::primitives();
+        if(converter->getOctaveShift() == -1) AriaRender::text("8", getEditorsXStart() - 30, clef_y-10 );
+        else if(converter->getOctaveShift() == 1) AriaRender::text("8", getEditorsXStart() - 30, clef_y+10 );
+         */
 	}
 
 	// ---------------------------- scrollbar -----------------------
@@ -1433,7 +1462,7 @@ void ScoreEditor::mouseDown(RelativeXCoord x, const int y)
 	{
         KeyPicker* picker = Core::getKeyPicker();
 		picker->setParent(track);
-		picker->setChecks( musicalNotationEnabled, linearNotationEnabled, f_clef, g_clef, octave_shift );
+		picker->setChecks( musicalNotationEnabled, linearNotationEnabled, f_clef, g_clef, converter->getOctaveShift() );
         Display::popupMenu( picker,x.getRelativeTo(WINDOW),y);
         return;
 	}

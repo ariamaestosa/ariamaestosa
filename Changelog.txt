@@ -2,6 +2,7 @@
 SVN
 - Added ability to print more than one track at once
 - Allowed showing only G or F clef
+- Support for moving score one octave up or down
 - Major code cleanup in printing code
 - Major code cleanup in measure handling code
 - Fixed improper handling of accidentals
