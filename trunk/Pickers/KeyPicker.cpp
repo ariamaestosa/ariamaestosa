@@ -220,12 +220,12 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
     else if( id == OCTAVE_ABOVE )
     {
         octave_below -> Check(false);
-        parent -> scoreEditor -> setOctaveShift( octave_above->IsChecked() ? 1 : 0 );
+        parent -> scoreEditor -> getScoreMidiConverter() -> setOctaveShift( octave_above->IsChecked() ? 1 : 0 );
     }
     else if( id == OCTAVE_BELOW )
     {
         octave_above -> Check(false);
-        parent -> scoreEditor -> setOctaveShift( octave_below->IsChecked() ? -1 : 0 );
+        parent -> scoreEditor -> getScoreMidiConverter() -> setOctaveShift( octave_below->IsChecked() ? -1 : 0 );
     }
 	else if( id == KEY_C_AM )
     {

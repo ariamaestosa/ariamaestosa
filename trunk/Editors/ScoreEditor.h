@@ -62,6 +62,7 @@ enum NoteToLevelType
         int scoreNotesSharpness[7];
         bool going_in_sharps;
         bool going_in_flats;
+        int octave_shift; // 0 = regular, +1 = alta, -1 = bassa
         
         // for accidentals
         bool accidentals;
@@ -76,7 +77,9 @@ enum NoteToLevelType
         int levelToNaturalNote[73];
         
         int middleCLevel;
-public:
+        int ottavaAltaCLevel;
+        int ottavaBassaCLevel;
+    public:
         LEAK_CHECK(ScoreMidiConverter);
         
         ScoreMidiConverter();
@@ -84,6 +87,9 @@ public:
         bool goingInSharps();
         bool goingInFlats();
         int getMiddleCLevel();
+        int getScoreCenterCLevel();
+        int getOctaveShift();
+        
         int getKeySigSharpnessSignForLevel(const unsigned int level);
        // int getSharpnessSignForMidiNote(const unsigned int note);
         int getMidiNoteForLevelAndSign(const unsigned int level, int sharpness);
@@ -91,6 +97,8 @@ public:
         int noteToLevel(Note* noteObj, int* sign=NULL);
         int levelToNote7(const unsigned int level);
         void updateConversionData();
+        
+        void setOctaveShift(int octaves);
         
         void resetAccidentalsForNewRender();
     };
@@ -100,21 +108,17 @@ public:
     {
         bool g_clef;
         bool f_clef;
-        int octave_shift; // 0 = regular, +1 = alta, -1 = bassa
         PTR_HOLD(ScoreMidiConverter, converter);
         
         bool musicalNotationEnabled, linearNotationEnabled;
         
-public:
-            
-            
+public: 
         ScoreEditor(Track* track);
-        
         ScoreMidiConverter* getScoreMidiConverter();
         
         void enableFClef(bool enabled);
         void enableGClef(bool enabled);
-        void setOctaveShift(int octaves);
+
         void enableMusicalNotation(const bool enabled);
         void enableLinearNotation(const bool enabled);
         void loadKey(const int sharpness_symbol, const int symbol_amount);
