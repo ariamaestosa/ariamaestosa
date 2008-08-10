@@ -169,7 +169,7 @@ ScoreMidiConverter::ScoreMidiConverter()
 	for(int n=0; n<7; n++) scoreNotesSharpness[n] = NATURAL;
 	
     accidentals =  false;
-    for(int n=0; n<7; n++) accidentalScoreNotesSharpness[n] = -1;
+    for(int n=0; n<7; n++) accidentalScoreNotesSharpness[n] = -1; // FIXME - why -1 and not NONE?
     accidentalsMeasure = -1;
     
     going_in_sharps = false;
@@ -320,10 +320,10 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, int* sign)
                         // so show again the original sign
                         else if(accidentalType == NATURAL /*and answer_sign == NONE*/)
                             answer_sign = getKeySigSharpnessSignForLevel( levelToNote7(answer_level) );
-                        else
+                        else if(accidentalType == NONE)
                         {
+                            // FIXME - not sure this is appropriate
                             answer_sign = NATURAL;
-                            std::cout << "not sure how to interpret this accidental :(" << std::endl;
                         }
                     }
                     
@@ -344,7 +344,7 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, int* sign)
             if((scoreNotesSharpness[ levelToNote7(answer_level) ] == NATURAL and answer_sign == NATURAL) or
                scoreNotesSharpness[ levelToNote7(answer_level) ] == answer_sign)
             {
-                accidentalScoreNotesSharpness[ levelToNote7(answer_level) ] = NONE;
+                accidentalScoreNotesSharpness[ levelToNote7(answer_level) ] = -1;
             }
         }
     }
