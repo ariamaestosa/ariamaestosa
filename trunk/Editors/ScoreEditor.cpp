@@ -741,7 +741,7 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo)
         const bool show_above = renderInfo.isTieUp();
         
         const int base_y = renderInfo.getYBase(); 
-        AriaRender::arc(center_x, base_y + (show_above ? 0 : 10), radius_x, 15, show_above);
+        AriaRender::arc(center_x, base_y + (show_above ? 0 : 10), radius_x, 6, show_above);
 	}
 	
     // beam
