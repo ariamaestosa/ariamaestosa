@@ -21,6 +21,7 @@ NOTE: sorry, this is very raw :)
  - midi keyboard support
  - mod support
  - new control editor
+ - support wide pitch-bend
  - notation printing and export
  - riff-based song editing (e.g. to repeat chorus you don't need to keep multiple copies of it)
  - allow using another renderer than OpenGL
@@ -28,20 +29,16 @@ NOTE: sorry, this is very raw :)
   
 ************************* NEW FEATURES TO ADD: *************************
 
-* new score key/clef features :
-  * octave shift not implemented
-  * more intelligently decide if notes on C belong to F clef or G clef
+ * more intelligently decide if notes on C belong to F clef or G clef
 
  * guess key feature
 
- * add new tools, that allow adding notes without dragging-
+ * add new tools, that allow adding notes without dragging
  * add triplet as a widget, not as a check menu
  * use note icons instead of e.g. "1/8" as text
 
  * "track play position" default value should be in preferences
  * Add "pause" button
-
- * allow separating F and G key, allow +8 and -8 keys, make F and G keys totally separate (find a way to handle C which is between both)
 
  * Button to maximize track
 
