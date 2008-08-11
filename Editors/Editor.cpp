@@ -97,79 +97,47 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
     
     AriaRender::primitives();
     AriaRender::lineWidth(1);
-    int count=1;
-	//const int start_x = getEditorsXStart() - sequence->getXScrollInPixels() % (int)(getMeasureData()->measureLengthInPixels());
 	const int start_x = getMeasureData()->firstPixelInMeasure( getMeasureData()->measureAtPixel( getEditorsXStart() ) );
-		
-	if(getMeasureData()->isMeasureLengthConstant())
-	{
-		
-		//const float zoom = sequence->getZoom();
-		const float increment = getMeasureData()->beatLengthInPixels();
-		const int darkLineEveryXPaleLines = (int)round(getMeasureData()->measureLengthInPixels() / getMeasureData()->beatLengthInPixels());
-		
-		const int end = getXEnd();
-		
-		
-		for(float mx=start_x + increment; mx<end; mx+=increment)
-		{
-			
-			if(count == darkLineEveryXPaleLines)
-			{
-                AriaRender::color(0.5, 0.5, 0.5);
-				count = 0;
-			}
-			else AriaRender::color(0.9, 0.9, 0.9);
-			count++;
-			
-			if(mx<getEditorsXStart()) continue; // don't draw lines before the beginning
-			
+    
+    MeasureData* measureBar = getMeasureData();
+    const int measureAmount = measureBar->getMeasureAmount();
+    const int beatLength = (int)( measureBar->beatLengthInPixels() );
+    int mx=start_x, new_mx;
+    const int measureID = measureBar->measureAtPixel(getEditorsXStart());
+    
+    for(int m=measureID; m<measureAmount; m+=1)
+    {
+        new_mx = measureBar->firstPixelInMeasure(m);
+        
+        // draw pale lines
+        AriaRender::color(0.9, 0.9, 0.9);
+        for(; mx < new_mx; mx += beatLength)
+        {
             AriaRender::line(mx, from_y, mx, to_y);
-
-		}//next line
-		
-	}
-	else
-	{
-		MeasureData* measureBar = getMeasureData();
-		const int measureAmount = measureBar->getMeasureAmount();
-		const int beatLength = (int)( measureBar->beatLengthInPixels() );
-		int mx=start_x, new_mx;
-		const int measureID = measureBar->measureAtPixel(getEditorsXStart());
-		
-		for(int m=measureID; m<measureAmount; m+=1)
-		{
-			new_mx = measureBar->firstPixelInMeasure(m);
-
-			// draw pale lines
-            AriaRender::color(0.9, 0.9, 0.9);
-			for(; mx < new_mx; mx += beatLength)
-			{
-                AriaRender::line(mx, from_y, mx, to_y);
-			}
-			mx = new_mx;
-			
-			// draw strong line
-            AriaRender::color(0.5, 0.5, 0.5);
+        }
+        mx = new_mx;
+        
+        // draw strong line
+        AriaRender::color(0.5, 0.5, 0.5);
+        AriaRender::line(mx, from_y,mx, to_y);
+        mx += beatLength;
+        
+        if(mx > Display::getWidth()) break;
+        
+    }//next
+    
+    // draw lines till end of screen if we're not there yet
+    const int end_of_screen = Display::getWidth();
+    if( mx < end_of_screen)
+    {
+        AriaRender::color(0.9, 0.9, 0.9);
+        for(;mx<end_of_screen; mx +=beatLength)
+        {
             AriaRender::line(mx, from_y,mx, to_y);
-			mx += beatLength;
-				
-			if(mx > Display::getWidth()) break;
-			
-		}//next
-		
-		// draw lines till end of screen if we're not there yet
-		const int end_of_screen = Display::getWidth();
-		if( mx < end_of_screen)
-		{
-            AriaRender::color(0.9, 0.9, 0.9);
-			for(;mx<end_of_screen; mx +=beatLength)
-			{
-                AriaRender::line(mx, from_y,mx, to_y);
-			}//next
-			
-		}//end if
-	}
+        }//next
+        
+    }//end if
+    
 }
 
 void Editor::renderScrollbar()
