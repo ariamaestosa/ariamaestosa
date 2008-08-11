@@ -122,8 +122,6 @@ NOTE: sorry, this is very raw :)
  
  ************************* BUGS: *************************
  
-* 9/8 doesn't work (Aria cannot handle measure lengths that are not multiples of 1/4 notes)
-
 * erasing control events by selecting them and pressing BACKSPACE not working (in imported midi if it makes any difference)
     came back shortly after (?)
     

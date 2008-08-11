@@ -124,8 +124,8 @@ int MeasureData::measureLengthInTicks(int measure)
 	
 	const int num = getTimeSigNumerator(measure), denom=getTimeSigDenominator(measure);
 	
-	return (int)(
-				 sequence->ticksPerBeat() * num * (4.0/ denom)
+	return (int)round(
+				 sequence->ticksPerBeat() * num * (4.0/(float)denom)
 				 );
 }
 
@@ -549,9 +549,6 @@ void MeasureData::updateMeasureInfo()
 	float tick = 0;
 	int timg_sig_event = 0;
 	
-	//std::cout << "udpate with " << timeSigChanges.size() << " key sig events" << std::endl;
-	
-	
 	assertExpr(timg_sig_event,<,timeSigChanges.size());
 	timeSigChanges[timg_sig_event].tick = 0;
 	timeSigChanges[timg_sig_event].pixel = 0;
@@ -578,7 +575,8 @@ void MeasureData::updateMeasureInfo()
 		// set the location of measure in both ticks and pixels so that it can be used later in calculations and drawing
 		measureInfo[n].tick = (int)round( tick );
 		measureInfo[n].pixel = (int)round( tick * zoom );
-		tick += ticksPerBeat * timeSigChanges[timg_sig_event].num * ( 4.0 / timeSigChanges[timg_sig_event].denom );
+        //std::cout << "beats : " << timeSigChanges[timg_sig_event].num * ( 4.0 /(float)timeSigChanges[timg_sig_event].denom ) << std::endl;
+		tick += ticksPerBeat * timeSigChanges[timg_sig_event].num * ( 4.0 /(float)timeSigChanges[timg_sig_event].denom );
 	}
 	
 	// fill length and end of last measure
