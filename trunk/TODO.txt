@@ -19,13 +19,14 @@ NOTE: sorry, this is very raw :)
  
  - guitar pro import
  - midi keyboard support
- - mod support
+ - mod support/better synths support (fluidsynth?)
  - new control editor
  - support wide pitch-bend
  - notation printing and export
  - riff-based song editing (e.g. to repeat chorus you don't need to keep multiple copies of it)
  - allow using another renderer than OpenGL
  - multiple program changes
+ - changes to song should be heard if done while playing
   
 ************************* NEW FEATURES TO ADD: *************************
 
@@ -46,37 +47,41 @@ NOTE: sorry, this is very raw :)
   - .aria files don't remember docked tracks
   - background choices are not saved to .aria files
   
- * tab exporter:
-		skip series of empty measures
-		more than one track
-		show tuning on tab
-
-* printing : allow setting font size, number of lines per page, zoom, etc...
-
-+ changes to song should be heard if done while playing
+ * printing :
+    skip series of empty measures
+    show tuning on tab
+    allow setting font size, number of lines per page, zoom, etc...
+    sometimes does 41-42 43-44 and not 41-44
+    tab export : x2 can appear on new line...
+    repeated measures need measure numbers
+    sometimes uses, in repetitions, measures numbers that do not appear on the tab (that are inside a previous repetition)
+  
 
  - when scaling entire song, scale control events and time sig changes too
 
 // ----- controller editor ------
 * better controller editor! precise values, etc.
+ - points and curves, splines
  - what to do with sustain? needs all_sound_off perhaps?
  - make portamento more usable
  + copy/paste
  + many controller effects would gain from being accessible somewhere else than in control editor
  - copy control events along notes
  - precise tempo bend (not controller-like, more like a sudden change)
+ - wide tempo bends
+ - should maybe appear under current editor? it's always useful to see the notes when applying effects
 // ---------------
 
-+ linux : export to wav when not using timidity?
+ + linux : export to wav when not using timidity?
 
-+ proper ALSA port selection (in preferences?)
+ + proper ALSA port selection (in preferences?)
 
  - key is not saved to midi files (the problem is that in midi key is global, in Aria it is local)
 
  + make more features accessible graphically (as opposed to keyboard-only)
+ + elements you get from clicking on the left area should appear in the main menubar too
 
  + cursor should change when hitting key modifiers (at least a select icon when hitting shift in control editor)
- + elements you get from clicking on the left area should appear in the main menubar too
 
  + if you select measures in the measure bar, but move the cursor below measure pane before releasing, you get nothing
     (same with all tracks, rework event handling? determine where click goes on mouse down, and always use same destination on mouse drag?)
@@ -97,8 +102,6 @@ NOTE: sorry, this is very raw :)
  - select notes and all similar menu items should be disabled in controller mode
  
  - setting sharp/flat sign manually sometimes doesn't work (when it's possible to display the note on a level with no sign)
- 
- 
  
  UNSURE:
  - render a bit less often + probably too many paint events (duplicate ones at times) track and remove them
@@ -146,13 +149,11 @@ NOTE: sorry, this is very raw :)
 
 - hard to resize last track
 
-  - tab export sometimes does 41-42 43-44 and not 41-44
-  - tab exporter long note exception applies only to perfect wholes and halves... there are other long notes
-  - repetition length > 2 gives weird results
-  - tab export : x2 can appear on new line...
-  - tab export : repeated measures need measure numbers
-  - sometimes uses, in repetitions, measures numbers that do not appear on the tab (that are inside a previous repetition)
-  
+ - in manual channel management mode, it's still a bit too easy to get multiple tracks on the same channel with different isntruments
+    (for isntance by switching to and from drum editor, etc.)
+
+ - when changing measure length in a song that already has midi events in it, song length becomes wrong compared to midi events
+
 * My CoreAudio player is deprecated on OS X 10.5...
     Midi/Players/Mac/CoreAudioNotePlayer.cpp: In function 'OSStatus CoreAudioNotePlayer::CreateAUGraph(OpaqueAUGraph*&, ComponentInstanceRecord*&)':
     Midi/Players/Mac/CoreAudioNotePlayer.cpp:75: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
@@ -165,21 +166,18 @@ NOTE: sorry, this is very raw :)
     Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
  
  MINOR / CLEANUP / UNSURE:
- - in manual channel management mode, it's still a bit too easy to get multiple tracks on the same channel with different isntruments
-    (for isntance by switching to and from drum editor, etc.)
  - when wait dialog appears, you can still edit tracks and do operations that may be harmful to current process.
     yet you can't make it modal otherwise the background process stops.
     
  - controller editor should keep drum instrument in a drum track
  - class ScalePicker in /Dialogs... should be renamed ScaleDialog, or moved
-- tuningpicker and tuningdialog should be 2 separate things
+ - tuningpicker and tuningdialog should be 2 separate things
 
  - if a midi has control events in an empty track they might be removed during import (though what could go there? tempo events are already stored in sequence)
  - linux: exporting to audio via timidity : give better feedback about progression?
  + many Actions are only used on selected notes, yet they offer an implementation for single notes. This implementation was never tested and may be buggy
  - score : moving a sharp/flat/natural note up or down makes it lose its properties
- - when changing measure length in a song that already has midi events in it, song length becomes wrong compared to midi events
-- decide a naming convention for variables
+  - decide a naming convention for variables
  - some drums that are not standard drumset preview fine but dont play correctly (SFX and one other. bug in QT?)
         I say bug in QT since it also seems to affect songs made in other software
  - trigger coreaudio note player at startup?
