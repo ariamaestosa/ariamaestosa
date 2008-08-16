@@ -28,7 +28,10 @@ ScorePrintable::~ScorePrintable()
 }
 
 // FIXME - F key, notes above/below score, etc... --> variable score height needed
-void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1, bool show_measure_number)
+void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
+                              const int x0, const int y0,
+                              const int x1, const int y1,
+                              bool show_measure_number)
 {
     Track* track = line.getTrack();
     ScoreEditor* scoreEditor = track->graphics->scoreEditor;
@@ -37,11 +40,13 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, const in
     const int middleC = converter->getMiddleCLevel();
     const int lineAmount = 5;
     
+#define LEVEL_TO_Y( lvl ) y0 + 1 + lineHeight*0.5*(lvl - middleC + 10)
+    
     // draw score background (lines)
     dc.SetPen(  wxPen( wxColour(125,125,125), 1 ) );
     
     const float lineHeight = (float)(y1 - y0) / (float)(lineAmount-1);
-    const int headRadius = (int)round((float)lineHeight*0.35);
+    const int headRadius = (int)round((float)lineHeight*0.72);
     
     for(int s=0; s<lineAmount; s++)
     {
@@ -95,9 +100,9 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, const in
         if(noteRenderInfo[i].hollow_head) dc.SetBrush( *wxTRANSPARENT_BRUSH );
         else dc.SetBrush( *wxBLACK_BRUSH );
         
-        wxPoint headLocation( noteRenderInfo[i].x + headRadius + headRadius/1.5,
-                              y0 + 1 + lineHeight*0.5*(noteRenderInfo[i].getBaseLevel() - middleC + 10));
-        dc.DrawCircle( headLocation, headRadius );
+        wxPoint headLocation( noteRenderInfo[i].x + headRadius + headRadius/1.7,
+                              LEVEL_TO_Y(noteRenderInfo[i].getBaseLevel())-headRadius/2.0 );
+        dc.DrawEllipse( headLocation, wxSize(headRadius+1, headRadius) );
     }
     
 }
