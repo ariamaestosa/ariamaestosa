@@ -122,22 +122,27 @@ class BitmapButton : public AriaWidget
 {
     int y_offset;
     bool enabled;
+    bool toggleBtn;
 public:
     Drawable* drawable;
     
-    BitmapButton(int width, int y_offset, Drawable* drawable) : AriaWidget(width)
+    BitmapButton(int width, int y_offset, Drawable* drawable, bool toggleBtn=false) : AriaWidget(width)
     {
         BitmapButton::drawable = drawable;
         BitmapButton::y_offset = y_offset;
         enabled = true;
+        BitmapButton::toggleBtn = toggleBtn;
     }
     virtual ~BitmapButton(){}
     
     void render()
     {
         if(hidden) return;
-        if(enabled) AriaRender::color(1,1,1);
-        else AriaRender::color(0.4, 0.4, 0.4);
+        if(toggleBtn)
+        {
+            if(enabled) AriaRender::color(1,1,1);
+            else AriaRender::color(0.4, 0.4, 0.4);
+        }
         
         drawable->move(x, y+y_offset);
         drawable->render();        
@@ -168,7 +173,6 @@ public:
         int currentX = x + 14;
         
         const int amount = contents.size();
-        AriaRender::color(0,0,0);
         for(int n=0; n<amount; n++)
         {
             contents[n].setX(currentX);
@@ -176,7 +180,6 @@ public:
             
             width    += contents[n].getWidth();
         }
-        AriaRender::color(1,1,1);
     }
     
     BitmapButton& getItem(const int item)
@@ -193,10 +196,12 @@ public:
         
         // render buttons
         const int amount = contents.size();
+        AriaRender::color(0,0,0);
         for(int n=0; n<amount; n++)
         {
             contents[n].render();
         }
+        AriaRender::color(1,1,1);
     }
 };
 
@@ -316,15 +321,15 @@ void GraphicalTrack::createEditors()
     gridCombo = new ComboBox(80);
     components->addFromLeft(gridCombo);
     
-    scoreButton = new BitmapButton(32, 7, score_view);
+    scoreButton = new BitmapButton(32, 7, score_view, true);
     components->addFromLeft(scoreButton);
-    pianoButton = new BitmapButton(32, 7, keyboard_view);
+    pianoButton = new BitmapButton(32, 7, keyboard_view, true);
     components->addFromLeft(pianoButton);
-    tabButton = new BitmapButton(32, 7, guitar_view);
+    tabButton = new BitmapButton(32, 7, guitar_view, true);
     components->addFromLeft(tabButton);
-    drumButton = new BitmapButton(32, 7, drum_view);
+    drumButton = new BitmapButton(32, 7, drum_view, true);
     components->addFromLeft(drumButton);
-    ctrlButton = new BitmapButton(32, 7, controller_view);
+    ctrlButton = new BitmapButton(32, 7, controller_view, true);
     components->addFromLeft(ctrlButton);
     
     sharpFlatPicker = new ToolBar();
