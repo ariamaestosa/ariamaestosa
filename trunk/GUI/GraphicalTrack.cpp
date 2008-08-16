@@ -29,6 +29,7 @@
 #include "Pickers/DrumChoice.h"
 #include "Pickers/MagneticGrid.h"
 #include "Images/Drawable.h"
+#include "Images/Image.h"
 #include "Images/ImageProvider.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
@@ -52,6 +53,8 @@ protected:
     int x, y, width;
     bool hidden;
 public:
+    LEAK_CHECK(AriaWidget);
+    
     AriaWidget(int width){ AriaWidget::x = x; AriaWidget::width = width; hidden = false;}
     int getX(){ return x; }
     int getY(){ return y; }
@@ -123,15 +126,17 @@ class BitmapButton : public AriaWidget
     int y_offset;
     bool enabled;
     bool toggleBtn;
+    bool centerX;
 public:
     Drawable* drawable;
     
-    BitmapButton(int width, int y_offset, Drawable* drawable, bool toggleBtn=false) : AriaWidget(width)
+    BitmapButton(int width, int y_offset, Drawable* drawable, bool toggleBtn=false, bool centerX=false) : AriaWidget(width)
     {
         BitmapButton::drawable = drawable;
         BitmapButton::y_offset = y_offset;
         enabled = true;
         BitmapButton::toggleBtn = toggleBtn;
+        BitmapButton::centerX = centerX;
     }
     virtual ~BitmapButton(){}
     
@@ -144,8 +149,14 @@ public:
             else AriaRender::color(0.4, 0.4, 0.4);
         }
         
-        drawable->move(x, y+y_offset);
-        drawable->render();        
+        if(centerX and drawable->image->width < width)
+        {
+            const int ajust = (width - drawable->image->width)/2;
+            drawable->move(x + drawable->hotspotX + ajust, y+y_offset);
+        }
+        else
+            drawable->move(x + drawable->hotspotX, y+y_offset);
+        drawable->render();
     }
     
     void enable(const bool enabled)
@@ -158,27 +169,30 @@ public:
 class ToolBar : public BlankField
 {
     ptr_vector<BitmapButton, HOLD> contents;
+    std::vector<int> margin;
 public:
-    ToolBar() : BlankField(28)
+    ToolBar() : BlankField(22)
     {
     }
-    void addItem(BitmapButton* btn)
+    void addItem(BitmapButton* btn, int margin_after)
     {
         contents.push_back(btn);
+        margin.push_back(margin_after);
     }
     void layout()
     {
         if(hidden) return;
-        width = 28;
-        int currentX = x + 14;
+        width = 22;
+        int currentX = x + 11;
         
         const int amount = contents.size();
         for(int n=0; n<amount; n++)
         {
             contents[n].setX(currentX);
-            currentX += contents[n].getWidth();
+            contents[n].setY(y);
             
-            width    += contents[n].getWidth();
+            currentX += contents[n].getWidth() + margin[n];
+            width    += contents[n].getWidth() + margin[n];
         }
     }
     
@@ -197,9 +211,14 @@ public:
         // render buttons
         const int amount = contents.size();
         AriaRender::color(0,0,0);
+        
+        /* test */ //AriaRender::primitives();
+        /* test */ //AriaRender::color(1,0,0);
         for(int n=0; n<amount; n++)
         {
             contents[n].render();
+            //std::cout << contents[n].getY() << std::endl;
+            /* test */// AriaRender::rect( contents[n].getX()-5, contents[n].getY()-5, contents[n].getX()+15, contents[n].getY()+15 );
         }
         AriaRender::color(1,1,1);
     }
@@ -210,6 +229,8 @@ class WidgetLayoutManager
     ptr_vector<AriaWidget, HOLD> widgetsLeft;
     ptr_vector<AriaWidget, HOLD> widgetsRight;
 public:
+    LEAK_CHECK(WidgetLayoutManager);
+    
     WidgetLayoutManager()
     {
     }
@@ -333,9 +354,9 @@ void GraphicalTrack::createEditors()
     components->addFromLeft(ctrlButton);
     
     sharpFlatPicker = new ToolBar();
-    sharpFlatPicker->addItem( new BitmapButton( 20, 21, sharpSign   ) );
-    sharpFlatPicker->addItem( new BitmapButton( 20, 24, flatSign    ) );
-    sharpFlatPicker->addItem( new BitmapButton( 20, 21, naturalSign ) );
+    sharpFlatPicker->addItem( new BitmapButton( 14, 21, sharpSign,   false, true ), 6 );
+    sharpFlatPicker->addItem( new BitmapButton( 14, 24, flatSign,    false, true ), 6 );
+    sharpFlatPicker->addItem( new BitmapButton( 14, 21, naturalSign, false, true ), 0 );
     components->addFromLeft(sharpFlatPicker);
 
     instrumentName = new BlankField(144);
