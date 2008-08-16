@@ -34,7 +34,7 @@ NOTE: sorry, this is very raw :)
 
  * guess key feature
 
- * add new tools, that allow adding notes without dragging
+ * add new tools, that allow adding notes without dragging (and resizing without keyboard, and selecting, and...?)
  * add triplet as a widget, not as a check menu
  * use note icons instead of e.g. "1/8" as text
 

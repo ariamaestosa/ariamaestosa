@@ -44,11 +44,226 @@
 #include "IO/IOUtils.h"
 
 namespace AriaMaestosa {
-	
+
+    
+class AriaWidget
+{
+protected:
+    int x, y, width;
+    bool hidden;
+public:
+    AriaWidget(int width){ AriaWidget::x = x; AriaWidget::width = width; hidden = false;}
+    int getX(){ return x; }
+    int getY(){ return y; }
+    int getWidth(){ return width; }
+    
+    bool isHidden(){ return hidden; }
+    void show(bool shown){ hidden = !shown; }
+    
+    // don't call this, let WidgetLayoutManager do it
+    void setX(const int x){ AriaWidget::x = x; }
+    void setY(const int y){ AriaWidget::y = y; }
+    
+    bool clickIsOnThisWidget(const int mx, const int my)
+    {
+        return (not hidden) and ( mx > x and my > y and mx < x+width and my < y+30);
+    }
+    
+    virtual void render(){}
+    virtual ~AriaWidget(){}
+};
+
+class BlankField : public AriaWidget
+{
+public:
+    BlankField(int width) : AriaWidget(width){}
+    virtual ~BlankField(){}
+    
+    void render()
+    {
+        if(hidden) return;
+        comboBorderDrawable->move(x, y+7);
+        comboBorderDrawable->setFlip(false, false);
+        comboBorderDrawable->render();
+        
+        comboBodyDrawable->move(x + 14, y+7);
+        comboBodyDrawable->scale((width-28)/4.0 , 1);
+        comboBodyDrawable->render();
+        
+        comboBorderDrawable->move(x + width - 14, y+7 );
+        comboBorderDrawable->setFlip(true,false);
+        comboBorderDrawable->render();
+    }
+};
+    
+class ComboBox : public AriaWidget
+{
+public:
+    ComboBox(int width) : AriaWidget(width){}
+    virtual ~ComboBox(){}
+    
+    void render()
+    {
+        if(hidden) return;
+        comboBorderDrawable->move(x, y+7);
+        comboBorderDrawable->setFlip(false, false);
+        comboBorderDrawable->render();
+        
+        comboBodyDrawable->move(x+14, y+7);
+        comboBodyDrawable->scale((width-28-18)/4.0, 1);
+        comboBodyDrawable->render();
+        
+        comboSelectDrawable->move(x+width-14-18, y+7);
+        comboSelectDrawable->render();
+    }
+};
+
+class BitmapButton : public AriaWidget
+{
+    int y_offset;
+    bool enabled;
+public:
+    Drawable* drawable;
+    
+    BitmapButton(int width, int y_offset, Drawable* drawable) : AriaWidget(width)
+    {
+        BitmapButton::drawable = drawable;
+        BitmapButton::y_offset = y_offset;
+        enabled = true;
+    }
+    virtual ~BitmapButton(){}
+    
+    void render()
+    {
+        if(hidden) return;
+        if(enabled) AriaRender::color(1,1,1);
+        else AriaRender::color(0.4, 0.4, 0.4);
+        
+        drawable->move(x, y+y_offset);
+        drawable->render();        
+    }
+    
+    void enable(const bool enabled)
+    {
+        BitmapButton::enabled = enabled;
+    }
+};
+
+
+class ToolBar : public BlankField
+{
+    ptr_vector<BitmapButton, HOLD> contents;
+public:
+    ToolBar() : BlankField(28)
+    {
+    }
+    void addItem(BitmapButton* btn)
+    {
+        contents.push_back(btn);
+    }
+    void layout()
+    {
+        if(hidden) return;
+        width = 28;
+        int currentX = x + 14;
+        
+        const int amount = contents.size();
+        AriaRender::color(0,0,0);
+        for(int n=0; n<amount; n++)
+        {
+            contents[n].setX(currentX);
+            currentX += contents[n].getWidth();
+            
+            width    += contents[n].getWidth();
+        }
+        AriaRender::color(1,1,1);
+    }
+    
+    BitmapButton& getItem(const int item)
+    {
+        return contents[item];
+    }
+    
+    void render()
+    {
+        if(hidden) return;
+        
+        // render background
+        BlankField::render();
+        
+        // render buttons
+        const int amount = contents.size();
+        for(int n=0; n<amount; n++)
+        {
+            contents[n].render();
+        }
+    }
+};
+
+class WidgetLayoutManager
+{
+    ptr_vector<AriaWidget, HOLD> widgetsLeft;
+    ptr_vector<AriaWidget, HOLD> widgetsRight;
+public:
+    WidgetLayoutManager()
+    {
+    }
+    void addFromLeft(AriaWidget* w)
+    {
+        widgetsLeft.push_back(w);
+    }
+    void addFromRight(AriaWidget* w)
+    {
+        widgetsRight.push_back(w);
+    }
+    void layout(const int x_origin, const int y_origin)
+    {
+        const int lamount = widgetsLeft.size();
+        int lx = x_origin;
+        for(int n=0; n<lamount; n++)
+        {
+            widgetsLeft[n].setX(lx);
+            widgetsLeft[n].setY(y_origin);
+            lx += widgetsLeft[n].getWidth();
+        }
+        
+        const int ramount = widgetsRight.size();
+        int rx = Display::getWidth() - 17;
+        for(int n=0; n<ramount; n++)
+        {
+            rx -= widgetsRight[n].getWidth();
+            widgetsRight[n].setX(rx);
+            widgetsRight[n].setY(y_origin);
+        }
+    }
+    void renderAll(bool focus)
+    {
+        AriaRender::images();
+        
+        const int lamount = widgetsLeft.size();
+        for(int n=0; n<lamount; n++)
+        {
+            if(!focus) AriaRender::color(0.5, 0.5, 0.5);
+            else AriaRender::color(1,1,1);
+            
+            widgetsLeft.get(n)->render();
+        }
+        
+        const int ramount = widgetsRight.size();
+        for(int n=0; n<ramount; n++)
+        {
+            if(!focus) AriaRender::color(0.5, 0.5, 0.5);
+            else AriaRender::color(1,1,1);
+            
+            widgetsRight.get(n)->render();
+        }
+    }
+};
+    
+#pragma mark -
+
 const int EXPANDED_BAR_HEIGHT = 20;
 const int COLLAPSED_BAR_HEIGHT = 5;
-
-static int grid_x_begin=0, grid_x_end=0, track_name_x_begin=0, track_name_x_end=0, sharp_sign_start = -1;
 
 GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
 {
@@ -68,7 +283,6 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
     editorMode=KEYBOARD;
     
     height=128;
-    
 }
 
 GraphicalTrack::~GraphicalTrack()
@@ -83,6 +297,47 @@ void GraphicalTrack::createEditors()
     INIT_PTR( drumEditor       )  = new DrumEditor(track);
     INIT_PTR( controllerEditor )  = new ControllerEditor(track);
 	INIT_PTR( scoreEditor      )  = new ScoreEditor(track);
+    
+    // create widgets
+    INIT_PTR(components) = new WidgetLayoutManager();
+    
+    collapseButton = new BitmapButton(28, 15, collapseDrawable);
+    components->addFromLeft(collapseButton);
+    
+    muteButton = new BitmapButton(28, 10, muteDrawable);
+    components->addFromLeft(muteButton);
+    
+    dockButton = new BitmapButton(20, 11, dockTrackDrawable);
+    components->addFromLeft(dockButton);
+    
+    trackName = new BlankField(140);
+    components->addFromLeft(trackName);
+    
+    gridCombo = new ComboBox(80);
+    components->addFromLeft(gridCombo);
+    
+    scoreButton = new BitmapButton(32, 7, score_view);
+    components->addFromLeft(scoreButton);
+    pianoButton = new BitmapButton(32, 7, keyboard_view);
+    components->addFromLeft(pianoButton);
+    tabButton = new BitmapButton(32, 7, guitar_view);
+    components->addFromLeft(tabButton);
+    drumButton = new BitmapButton(32, 7, drum_view);
+    components->addFromLeft(drumButton);
+    ctrlButton = new BitmapButton(32, 7, controller_view);
+    components->addFromLeft(ctrlButton);
+    
+    sharpFlatPicker = new ToolBar();
+    sharpFlatPicker->addItem( new BitmapButton( 20, 21, sharpSign   ) );
+    sharpFlatPicker->addItem( new BitmapButton( 20, 24, flatSign    ) );
+    sharpFlatPicker->addItem( new BitmapButton( 20, 21, naturalSign ) );
+    components->addFromLeft(sharpFlatPicker);
+
+    instrumentName = new BlankField(144);
+    components->addFromRight(instrumentName);
+    
+    channelButton = new BlankField(4);
+    components->addFromRight(channelButton);    
 }
 
 bool GraphicalTrack::mouseWheelMoved(int mx, int my, int value)
@@ -130,16 +385,14 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 		
         const int winX = mousex.getRelativeTo(WINDOW);
         // collapse
-        if(winX > collapseDrawable->x and winX < collapseDrawable->x+collapseDrawable->getImageWidth() and
-		   mousey > from_y+15 and mousey < from_y+35)
+        if( collapseButton->clickIsOnThisWidget(winX, mousey) )
 		{
             collapsed = !collapsed;
             DisplayFrame::updateVerticalScrollbar();
         }
         
         // dock
-        if(winX > dockTrackDrawable->x and winX < dockTrackDrawable->x+muteDrawable->getImageWidth() and
-		   mousey>from_y+10 and mousey<from_y+30)
+        if( dockButton->clickIsOnThisWidget(winX, mousey) )
 		{
             docked = true;
             sequence->addToDock( this );
@@ -147,16 +400,14 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         }
         
         // mute
-        if(winX > muteDrawable->x and winX < muteDrawable->x+muteDrawable->getImageWidth() and
-		   mousey>from_y+10 and mousey<from_y+30)
+        if( muteButton->clickIsOnThisWidget(winX, mousey) )
 		{
             muted = !muted;
             DisplayFrame::updateVerticalScrollbar();
         }
         
         // track name
-        if(winX > track_name_x_begin and winX < track_name_x_end and
-		   mousey > from_y+10 and mousey < from_y+30)
+        if( trackName->clickIsOnThisWidget(winX, mousey) )
 		{
             wxString msg=wxGetTextFromUser( _("Choose a new track title."), wxT("Aria Maestosa"), track->getName() );
             if(msg.Length()>0) track->setName( msg );
@@ -164,15 +415,14 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         }
         
         // grid
-        if(winX > grid_x_begin and winX < grid_x_end and mousey < from_y+30 and mousey > from_y+10)
+        if( gridCombo->clickIsOnThisWidget(winX, mousey) )
 		{
             Display::popupMenu(grid, 220, from_y+30);
         }
         
         
         // instrument
-        if(winX > Display::getWidth() - 160 and winX < Display::getWidth() - 160+14+116 and
-		   mousey > from_y+10 and mousey < from_y+30)
+        if( instrumentName->clickIsOnThisWidget(winX, mousey) )
 		{
             if(editorMode==DRUM)
 			{
@@ -190,8 +440,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 		if(sequence->getChannelManagementType() == CHANNEL_MANUAL)
 		{
 
-			if(winX > Display::getWidth() - 185 and winX < Display::getWidth() - 185 + 14*2 and
-			   mousey > from_y+10 and mousey < from_y+30)
+			if( channelButton->clickIsOnThisWidget(winX, mousey) )
 			{
 				const int channel = wxGetNumberFromUser( _("Enter the ID of the channel this track should play in"),
 														 wxT(""),
@@ -223,19 +472,19 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         if(mousey > from_y+10 and mousey < from_y+40)
 		{
             // modes
-            if(winX > score_view->x and winX < score_view->x+30)
+            if(winX > scoreButton->getX() and winX < scoreButton->getX()+30)
 			{
                 editorMode=SCORE;
             }
             else
-			if(winX > keyboard_view->x and winX < keyboard_view->x+30)
+			if(winX > pianoButton->getX() and winX < pianoButton->getX()+30)
 			{
 				// in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
 				if(editorMode == DRUM and sequence->getChannelManagementType() == CHANNEL_MANUAL) track->setChannel(0);
 				
                 editorMode=KEYBOARD;
             }
-            else if(winX > guitar_view->x and winX < guitar_view->x+30)
+            else if(winX > tabButton->getX() and winX < tabButton->getX()+30)
 			{
 				// in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
 				if(editorMode == DRUM and sequence->getChannelManagementType() == CHANNEL_MANUAL) track->setChannel(0);
@@ -243,14 +492,14 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                 editorMode=GUITAR;
                 track->prepareNotesForGuitarEditor();
             }
-            else if(winX > drum_view->x and winX < drum_view->x+30)
+            else if(winX > drumButton->getX() and winX < drumButton->getX()+30)
 			{
 				// in midi, drums go to channel 9 (10 if you start from one)
 				if(sequence->getChannelManagementType() == CHANNEL_MANUAL) track->setChannel(9);
 				
                 editorMode=DRUM;
             }
-            else if(winX > controller_view->x and winX < controller_view->x+30)
+            else if(winX > ctrlButton->getX() and winX < ctrlButton->getX()+30)
 			{
                 editorMode=CONTROLLER;
             }
@@ -259,21 +508,20 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         if(editorMode==SCORE and mousey > from_y+15 and mousey < from_y+30)
 		{
             // sharp/flat signs
-            if(winX > sharp_sign_start-7 and winX < sharp_sign_start+7)
-            {
-                //scoreEditor->signClicked(SHARP);
+            /*
+            if(winX > sharpFlatPicker->getX()+5 and winX < sharpFlatPicker->getX()+5+13)
                 track->action( new Action::SetAccidentalSign(SHARP) );
-            }
-            else if(winX > sharp_sign_start+13 and winX < sharp_sign_start+27)
-            {
-                //scoreEditor->signClicked(FLAT);
+            else if(winX > sharpFlatPicker->getX()+5+27 and winX < sharpFlatPicker->getX()+5+33)
                 track->action( new Action::SetAccidentalSign(FLAT) );
-            }
-            else if(winX > sharp_sign_start+33 and winX < sharp_sign_start+47)
-            {
-                //scoreEditor->signClicked(NATURAL);
+            else if(winX > sharpFlatPicker->getX()+5+47 and winX < sharpFlatPicker->getX()+5+60)
                 track->action( new Action::SetAccidentalSign(NATURAL) );
-            }
+            */
+            if( sharpFlatPicker->getItem(0).clickIsOnThisWidget(winX, mousey) )
+                track->action( new Action::SetAccidentalSign(SHARP) );
+            else if( sharpFlatPicker->getItem(1).clickIsOnThisWidget(winX, mousey) )
+                track->action( new Action::SetAccidentalSign(FLAT) );
+            else if( sharpFlatPicker->getItem(2).clickIsOnThisWidget(winX, mousey) )
+                track->action( new Action::SetAccidentalSign(NATURAL) );
         }
         
         return false;
@@ -484,10 +732,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     }
 	else
 	{
-        
         // white area
-        
-        
         if(editorMode != KEYBOARD) // keyboard editor draws its own backgound, so no need to draw it twice // FIXME no more true
 		{
             AriaRender::primitives();
@@ -495,210 +740,76 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
             
             AriaRender::rect(x+10, y+barHeight+20, x+Display::getWidth() - 5 , y+barHeight+40+height);
         }//end if
-        
-        
     }//end if
     
-    AriaRender::images();
+    // ------------------ prepare to draw components ------------------ 
+    if(collapsed) collapseButton->drawable->setImage( expandImg );
+    else collapseButton->drawable->setImage( collapseImg );
 
-    if(!focus) AriaRender::color(0.5, 0.5, 0.5);
-    else AriaRender::color(1,1,1);
+    if(muted) muteButton->drawable->setImage( muteOnImg );
+    else muteButton->drawable->setImage( muteOffImg );
     
-    int draw_x = 20;
+    scoreButton -> enable( editorMode == SCORE      and focus );
+    pianoButton -> enable( editorMode == KEYBOARD   and focus );
+    tabButton   -> enable( editorMode == GUITAR     and focus );
+    drumButton  -> enable( editorMode == DRUM       and focus );
+    ctrlButton  -> enable( editorMode == CONTROLLER and focus );
     
-    // collapse
-    if(collapsed) collapseDrawable->setImage( expandImg );
-    else collapseDrawable->setImage( collapseImg );
-    collapseDrawable->move(x+draw_x,y+15);
-    draw_x += 28;
-    collapseDrawable->render();
+    sharpFlatPicker->show(editorMode==SCORE);
     
-    // mute
-    if(muted) muteDrawable->setImage(muteOnImg );
-    else muteDrawable->setImage( muteOffImg );
-    muteDrawable->move(x+draw_x,y+10);
-    draw_x += 28;
-    muteDrawable->render();
+    channelButton->show(channel_mode);
     
-    // dock
-    dockTrackDrawable->move(x+draw_x,y+11);
-    draw_x += 20;
-    dockTrackDrawable->render();
+    // ------------------ layout and draw components ------------------ 
+    components->layout(20, y);
+    sharpFlatPicker->layout();
+    components->renderAll(focus);
     
-    // track name
-    track_name_x_begin = draw_x;
+    //  ------------------ post-drawing  ------------------ 
     
-    comboBorderDrawable->move(x+draw_x,y+7);
-    comboBorderDrawable->setFlip(false, false);
-    comboBorderDrawable->render();
-    draw_x+=14;
-    
-    comboBodyDrawable->move(x+draw_x, y+7);
-    comboBodyDrawable->scale( 112 /*desired width*/ /4 , 1);
-    comboBodyDrawable->render();
-    draw_x+=112;
-    
-    comboBorderDrawable->move(x+draw_x, y+7 );
-    comboBorderDrawable->setFlip(true,false);
-    comboBorderDrawable->render();
-    
-    draw_x += 16;
-    
-    track_name_x_end = draw_x-8;
-    
+    // draw track name
     AriaRender::primitives();
     AriaRender::color(0,0,0);
-    AriaRender::text_with_bounds(&track->getName(), x+track_name_x_begin+10 ,y+26, x+draw_x - 25);
+    AriaRender::text_with_bounds(&track->getName(), trackName->getX()+11 ,y+26, trackName->getX()+trackName->getWidth()-25);
 
-    AriaRender::images();
+    // draw grid label
+    AriaRender::text(&grid->label, gridCombo->getX() + 11,y+26);
     
-    // grid
-    if(!focus) AriaRender::color(0.5, 0.5, 0.5);
-    else AriaRender::color(1,1,1);
-    
-    grid_x_begin = draw_x;
-    
-    comboBorderDrawable->move(x+draw_x,y+7);
-    comboBorderDrawable->setFlip(false, false);
-    comboBorderDrawable->render();
-    draw_x += 14;
-    
-    comboBodyDrawable->move(x+draw_x, y+7);
-    comboBodyDrawable->scale( 36 /*desired width*/ /4 , 1);
-    comboBodyDrawable->render();
-    draw_x += 36;
-    
-    comboSelectDrawable->move(x+draw_x, y+7 );
-    comboSelectDrawable->render();
-    
-    grid_x_end = draw_x+25;
-    
-    AriaRender::primitives();
-    AriaRender::color(0,0,0);
-    
-    AriaRender::text(&grid->label, comboBorderDrawable->x + 10,y+26);
-    draw_x += 41;
-    
-    // view mode
-    AriaRender::images();
-    
-    
-    if(editorMode==SCORE and focus) AriaRender::color(1,1,1);
-    else AriaRender::color(0.4, 0.4, 0.4);
-    score_view->move(x+draw_x, y+7);
-    score_view->render();
-    draw_x+=32;
-    
-    if(editorMode==KEYBOARD and focus) AriaRender::color(1,1,1);
-    else AriaRender::color(0.4, 0.4, 0.4);
-    keyboard_view->move(x+draw_x, y+7);
-    keyboard_view->render();
-    draw_x += 32;
-    
-    if(editorMode==GUITAR and focus) AriaRender::color(1,1,1);
-    else AriaRender::color(0.4, 0.4, 0.4);
-    guitar_view->move(x+draw_x, y+7);
-    guitar_view->render();
-    draw_x += 32;
-    
-    if(editorMode==DRUM and focus) AriaRender::color(1,1,1);
-    else AriaRender::color(0.4, 0.4, 0.4);
-    drum_view->move(x+draw_x, y+7);
-    drum_view->render();
-    draw_x += 32;
-    
-    if(editorMode==CONTROLLER and focus) AriaRender::color(1,1,1);
-    else AriaRender::color(0.4, 0.4, 0.4);
-    controller_view->move(x+draw_x, y+7);
-    controller_view->render();
-    draw_x += 32;
-    
-    // --------------------------- sharp/flat buttons if score mode -------------------------
-    if(editorMode==SCORE)
-    {
-        if(!focus) AriaRender::color(0.5, 0.5, 0.5);
-        else AriaRender::color(1,1,1);
-        
-        comboBorderDrawable->move(x+draw_x,y+7);
-        comboBorderDrawable->setFlip(false, false);
-        comboBorderDrawable->render();
-        
-        comboBodyDrawable->move(x+draw_x+14, y+7);
-        comboBodyDrawable->scale(48 /*desired width*/ /4 , 1);
-        comboBodyDrawable->render();
-        
-        comboBorderDrawable->move(x+draw_x+14+45, y+7 );
-        comboBorderDrawable->setFlip(true,false);
-        comboBorderDrawable->render();
-        
-        AriaRender::color(0,0,0);
-        
-        draw_x += 15;
-        
-        sharp_sign_start = x+draw_x;
-        
-        sharpSign->move(x+draw_x, y+21 );
-        sharpSign->render();
-        
-        draw_x += 20;
-        
-        flatSign->move(x+draw_x, y+24 );
-        flatSign->render();
-        
-        draw_x += 20;
-        
-        naturalSign->move(x+draw_x, y+21 );
-        naturalSign->render();
-        
-        draw_x += 20;
-    }
-    
-    // ------------------------------- instrument name ---------------------------
-    if(!focus) AriaRender::color(0.5, 0.5, 0.5);
-    else AriaRender::color(1,1,1);
-    
-    // draw box
-    comboBorderDrawable->move(x+Display::getWidth() - 160 ,y+7);
-    comboBorderDrawable->setFlip(false, false);
-    comboBorderDrawable->render();
-    
-    comboBodyDrawable->move(x+Display::getWidth() - 160+14, y+7);
-    comboBodyDrawable->scale(116 /*desired width*/ /4 , 1);
-    comboBodyDrawable->render();
-    
-    comboBorderDrawable->move(x+Display::getWidth() - 160+14+116, y+7 );
-    comboBorderDrawable->setFlip(true,false);
-    comboBorderDrawable->render();
-    
-    // get instrument name to display    
+    // draw instrument name  
     std::string instrumentname;
     if(editorMode == DRUM) instrumentname = Core::getDrumPicker()->getDrumName( track->getDrumKit() );
     else instrumentname = Core::getInstrumentPicker()->getInstrumentName( track->getInstrument() );
     
-    // draw instrument name
     AriaRender::color(0,0,0);
     AriaRender::primitives();
     
-    AriaRender::text(instrumentname.c_str(), x+Display::getWidth() - 155+3,y+26);
-	
-	// --------------- channel choice ------------
+    AriaRender::text(instrumentname.c_str(), instrumentName->getX()+11 ,y+26);
+    
+    // sharp/flat buttons if score mode
+/*
+    if(editorMode==SCORE)
+    {
+        AriaRender::images();
+        int draw_x = sharpFlatPicker->getX() + 17;
+        
+        sharpSign->move(draw_x, y+21 );
+        sharpSign->render();
+        
+        draw_x += 20;
+        
+        flatSign->move(draw_x, y+24 );
+        flatSign->render();
+        
+        draw_x += 20;
+        
+        naturalSign->move(draw_x, y+21 );
+        naturalSign->render();
+        
+        draw_x += 20;
+    }
+    */
+    // draw channel number
 	if(channel_mode)
 	{
-        AriaRender::images();
-        
-		if(!focus) AriaRender::color(0.5, 0.5, 0.5);
-		else AriaRender::color(1,1,1);
-		
-		// draw box
-		comboBorderDrawable->move(x+Display::getWidth() - 185 ,y+7);
-		comboBorderDrawable->setFlip(false, false);
-		comboBorderDrawable->render();
-		
-		comboBorderDrawable->move(x+Display::getWidth() - 185+14, y+7 );
-		comboBorderDrawable->setFlip(true,false);
-		comboBorderDrawable->render();
-		
-		// draw channel number
 		char buffer[3];
 		sprintf ( buffer, "%d", track->getChannel() );
 		std::string channelName = buffer;
@@ -707,8 +818,8 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
         AriaRender::primitives();
 		
 		const int char_amount_in_channel_name = channelName.size();
-		if(char_amount_in_channel_name == 1) AriaRender::text(buffer, x+Display::getWidth() - 185 + 10,y+26);
-		else AriaRender::text(channelName.c_str(), x+Display::getWidth() - 185 + 7,y+26);
+		if(char_amount_in_channel_name == 1) AriaRender::text(buffer, channelButton->getX()+5 ,y+26);
+		else AriaRender::text(channelName.c_str(), channelButton->getX()+2 + 7,y+26);
 	}
 	
     AriaRender::images();
