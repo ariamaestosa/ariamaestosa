@@ -3,17 +3,18 @@ SVN
 - Added ability to print more than one track at once
 - Allowed showing only G or F clef
 - Support for moving score one octave up or down
-- Major code cleanup in printing code
-- Major code cleanup in measure handling code
 - Fixed improper handling of accidentals
 - Fixed default suggested name when exporting to PDF on mac OS X
 - Fixed odd-numbered time signatures like 9/8
 - Added DropD-bass tuning preset, cleaned up code
 - Improved printing output by putting a bigger centered title on first page.
-- More automatic memory management, improved leak checks
-- Fixed memory leaks
 - Fixed glitches in score editor settings
 - Nicer-looking ties in score editor
+- Major code cleanup in printing code
+- Major code cleanup in measure handling code
+- Major code cleanup in track widgets
+- More automatic memory management, improved leak checks
+- Fixed memory leaks
 
 1.1.3
 - improved vector implementation, fixing possible problems on 64-bits machines
