@@ -154,7 +154,7 @@ MainFrame::~MainFrame()
 void MainFrame::init()
 {
     Centre();
-
+    
 	prefs = NULL;
 	currentSequence=0;
 	playback_mode=false;
@@ -312,7 +312,7 @@ void MainFrame::init()
                                     5 /*scroll amount*/
                                     );
 
-verticalSizer->Add(verticalScrollbar, 0, wxALL, 0, Location::East() );
+    verticalSizer->Add(verticalScrollbar, 0, wxALL, 0, Location::East() );
 
 
     // -------------------------- finish ----------------------------
@@ -335,9 +335,10 @@ verticalSizer->Add(verticalScrollbar, 0, wxALL, 0, Location::East() );
 	INIT_PTR( aboutDialog            ) =  new AboutDialog();
     INIT_PTR( customNoteSelectDialog ) =  new CustomNoteSelectDialog();
         
+    ImageProvider::loadImages();
 	mainPane->isNowVisible();
 
-	ImageProvider::loadImages();
+	//ImageProvider::loadImages();
 
 #ifdef _show_dialog_on_startup
 	aboutDialog->show();

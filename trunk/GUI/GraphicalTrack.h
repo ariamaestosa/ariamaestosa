@@ -44,11 +44,33 @@ enum {
     CONTROLLER
 };
 
+// lightweight components
+class BlankField;
+class ComboBox;
+class BitmapButton;
+class WidgetLayoutManager;
+class ToolBar;
+
 class GraphicalTrack
 {
     int height;
     int lastMouseY;
 	
+    // widgets
+    PTR_HOLD( WidgetLayoutManager, components );
+    BitmapButton* collapseButton;
+    BitmapButton* muteButton;
+    BitmapButton* dockButton;
+    BlankField* trackName;
+    ComboBox* gridCombo;
+    BitmapButton* scoreButton;
+    BitmapButton* pianoButton;
+    BitmapButton* tabButton;
+    BitmapButton* drumButton;
+    BitmapButton* ctrlButton;
+    ToolBar* sharpFlatPicker;
+    BlankField* instrumentName;
+    BlankField* channelButton;
 public:
     LEAK_CHECK(GraphicalTrack);
     
