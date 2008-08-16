@@ -151,6 +151,30 @@ MainFrame::~MainFrame()
     Clipboard::clear();
 }
 
+class QuickBoxPanel
+{
+    wxBoxSizer* bsizer;
+public:
+    wxPanel* pane;
+    
+    QuickBoxPanel(wxWindow* component, wxSizer* parentsizer, int orientation=wxVERTICAL)
+    {
+        pane = new wxPanel(component);
+        parentsizer->Add(pane, 1, wxEXPAND | wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
+        bsizer = new wxBoxSizer(orientation);
+    }
+    void add(wxWindow* window, int margin=2)
+    {
+        bsizer->Add(window, 1, wxALL | wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL, margin);
+    }
+    ~QuickBoxPanel()
+    {
+        pane->SetSizer(bsizer);
+        bsizer->Layout();
+        bsizer->SetSizeHints(pane);
+    }
+};
+
 void MainFrame::init()
 {
     Centre();
@@ -166,52 +190,47 @@ void MainFrame::init()
 
     initMenuBar();
 
-    // -------------------------- Top Pane ----------------------------
-    verticalSizer = new wxBorderSizer();
-
-    topPane=new wxPanel(this);
-    boxSizer=new wxBoxSizer(wxHORIZONTAL);
-
-    // ---------------- play/stop buttons -------------------
     wxInitAllImageHandlers();
-
-	wxBitmap playBitmap;
-	playBitmap.LoadFile( getResourcePrefix()  + wxT("play.png") , wxBITMAP_TYPE_PNG);
-	play=new wxBitmapButton(topPane, PLAY_CLICKED, playBitmap);
-
-	boxSizer->Add(play, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-	wxBitmap stopBitmap;
-	stopBitmap.LoadFile( getResourcePrefix()  + wxT("stop.png") , wxBITMAP_TYPE_PNG);
-	stop=new wxBitmapButton(topPane, STOP_CLICKED, stopBitmap);
-
-    boxSizer->Add(stop, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-    stop->Enable(false);
-
+    verticalSizer = new wxBorderSizer();
+    
+    // a few presets
     wxSize averageTextCtrlSize(wxDefaultSize);
     averageTextCtrlSize.SetWidth(55);
-
+    
     wxSize smallTextCtrlSize(wxDefaultSize);
     smallTextCtrlSize.SetWidth(35);
-
+    
     wxSize tinyTextCtrlSize(wxDefaultSize);
     tinyTextCtrlSize.SetWidth(25);
 
-    // ---------------------- tempo ---------------
-    boxSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Tempo: ")), 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-    tempoCtrl=new wxTextCtrl(topPane, TEMPO, wxT("120"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER );
-
-    boxSizer->Add(tempoCtrl, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-    topPane->SetSizer(boxSizer);
-
+    
+    // -------------------------- Top Pane ----------------------------
+    topPane=new wxPanel(this);
     verticalSizer->Add(topPane, 0, wxALIGN_CENTER_VERTICAL | wxALL, 2, Location::North() );
+    toolbarSizer=new wxFlexGridSizer(2, 6, 1, 15);
+    topPane->SetSizer(toolbarSizer);
+    
+    // play/stop buttons
+    {
+    QuickBoxPanel quickPane(topPane, toolbarSizer, wxHORIZONTAL);
+    
+	wxBitmap playBitmap;
+	playBitmap.LoadFile( getResourcePrefix()  + wxT("play.png") , wxBITMAP_TYPE_PNG);
+	play=new wxBitmapButton(quickPane.pane, PLAY_CLICKED, playBitmap);
+	quickPane.add(play);
 
-    // ---------------------- song length ---------------
-    boxSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Duration: ")), 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	wxBitmap stopBitmap;
+	stopBitmap.LoadFile( getResourcePrefix()  + wxT("stop.png") , wxBITMAP_TYPE_PNG);
+	stop=new wxBitmapButton(quickPane.pane, STOP_CLICKED, stopBitmap);
+    stop->Enable(false);
+    quickPane.add(stop);
+    }
+    
+    // tempo
+    tempoCtrl=new wxTextCtrl(topPane, TEMPO, wxT("120"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER );
+    toolbarSizer->Add(tempoCtrl, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_CENTER | wxALL, 5);
 
+    // song length
     songLength=new wxSpinCtrl(topPane, LENGTH, to_wxString(DEFAULT_SONG_LENGTH), wxDefaultPosition,
 #ifdef __WXGTK__
 							  averageTextCtrlSize
@@ -220,31 +239,27 @@ void MainFrame::init()
 #endif
 							  , wxTE_PROCESS_ENTER);
 
-    boxSizer->Add(songLength, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+    toolbarSizer->Add(songLength, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
     songLength->SetRange(0, 10000);
 
-    // ---------------------- measures ---------------
-    boxSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Measure: ")), 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+    // measures
+    {
+    QuickBoxPanel quickPane(topPane, toolbarSizer, wxHORIZONTAL);
+    
+    measureTypeTop=new wxTextCtrl(quickPane.pane, MEASURE_NUM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize, wxTE_PROCESS_ENTER );
+    quickPane.add(measureTypeTop,2);
 
-    measureTypeTop=new wxTextCtrl(topPane, MEASURE_NUM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize, wxTE_PROCESS_ENTER );
-    boxSizer->Add(measureTypeTop, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+    quickPane.add(new wxStaticText(quickPane.pane, wxID_ANY, wxT("  /"), wxDefaultPosition, wxSize(15,15)),0);
 
-    boxSizer->Add(new wxStaticText(topPane, wxID_ANY, wxT("/")), 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-    measureTypeBottom=new wxTextCtrl(topPane, MEASURE_DENOM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize, wxTE_PROCESS_ENTER );
-    boxSizer->Add(measureTypeBottom, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-    // ---------------------- song beginning ---------------
-    boxSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Start: ")), 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
+    measureTypeBottom=new wxTextCtrl(quickPane.pane, MEASURE_DENOM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize, wxTE_PROCESS_ENTER );
+    quickPane.add(measureTypeBottom,2);
+    }
+    
+    // song beginning
     firstMeasure=new wxTextCtrl(topPane, BEGINNING, wxT("1"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER);
-    boxSizer->Add(firstMeasure, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+    toolbarSizer->Add(firstMeasure, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-    topPane->SetSizer(boxSizer);
-
-    // ---------------------- zoom ---------------
-    boxSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Zoom: ")), 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
+    // zoom
     displayZoom=new wxSpinCtrl(topPane, ZOOM, wxT("100"), wxDefaultPosition,
 #ifdef __WXGTK__
 							   averageTextCtrlSize
@@ -253,9 +268,18 @@ void MainFrame::init()
 #endif
 							   );
 
-    boxSizer->Add(displayZoom, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+    toolbarSizer->Add(displayZoom, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
     displayZoom->SetRange(0, 500);
 
+    
+    // labels
+    toolbarSizer->Add(new wxStaticText(topPane, wxID_ANY,  wxT(" ")),       0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
+    toolbarSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Tempo")),     0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
+    toolbarSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Duration")),  0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
+    toolbarSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Time Sig")),  0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
+    toolbarSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Start")),     0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
+    toolbarSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Zoom")),      0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
+    
     // -------------------------- RenderPane ----------------------------
 #ifndef NO_OPENGL
     int args[3];

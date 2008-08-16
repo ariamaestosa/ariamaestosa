@@ -10,6 +10,7 @@ SVN
 - Improved printing output by putting a bigger centered title on first page.
 - Fixed glitches in score editor settings
 - Nicer-looking ties in score editor
+- New toolbar layout
 - Major code cleanup in printing code
 - Major code cleanup in measure handling code
 - Major code cleanup in track widgets

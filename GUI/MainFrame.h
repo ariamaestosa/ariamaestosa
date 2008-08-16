@@ -58,7 +58,7 @@ class MainFrame : public wxFrame
     
     wxBorderSizer* verticalSizer;
     wxPanel* topPane;
-    wxBoxSizer* boxSizer;
+    wxFlexGridSizer* toolbarSizer;
 
     wxScrollBar* horizontalScrollbar;
     wxScrollBar* verticalScrollbar;
