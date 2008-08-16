@@ -212,13 +212,9 @@ public:
         const int amount = contents.size();
         AriaRender::color(0,0,0);
         
-        /* test */ //AriaRender::primitives();
-        /* test */ //AriaRender::color(1,0,0);
         for(int n=0; n<amount; n++)
         {
             contents[n].render();
-            //std::cout << contents[n].getY() << std::endl;
-            /* test */// AriaRender::rect( contents[n].getX()-5, contents[n].getY()-5, contents[n].getX()+15, contents[n].getY()+15 );
         }
         AriaRender::color(1,1,1);
     }
@@ -287,6 +283,7 @@ public:
 };
     
 #pragma mark -
+// ------------------------------------------------------------------------
 
 const int EXPANDED_BAR_HEIGHT = 20;
 const int COLLAPSED_BAR_HEIGHT = 5;
@@ -309,20 +306,6 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
     editorMode=KEYBOARD;
     
     height=128;
-}
-
-GraphicalTrack::~GraphicalTrack()
-{
-}
-
-
-void GraphicalTrack::createEditors()
-{
-    INIT_PTR( keyboardEditor   )  = new KeyboardEditor(track);
-    INIT_PTR( guitarEditor     )  = new GuitarEditor(track);
-    INIT_PTR( drumEditor       )  = new DrumEditor(track);
-    INIT_PTR( controllerEditor )  = new ControllerEditor(track);
-	INIT_PTR( scoreEditor      )  = new ScoreEditor(track);
     
     // create widgets
     INIT_PTR(components) = new WidgetLayoutManager();
@@ -358,12 +341,26 @@ void GraphicalTrack::createEditors()
     sharpFlatPicker->addItem( new BitmapButton( 14, 24, flatSign,    false, true ), 6 );
     sharpFlatPicker->addItem( new BitmapButton( 14, 21, naturalSign, false, true ), 0 );
     components->addFromLeft(sharpFlatPicker);
-
+    
     instrumentName = new BlankField(144);
     components->addFromRight(instrumentName);
     
-    channelButton = new BlankField(4);
+    channelButton = new BlankField(28);
     components->addFromRight(channelButton);    
+}
+
+GraphicalTrack::~GraphicalTrack()
+{
+}
+
+
+void GraphicalTrack::createEditors()
+{
+    INIT_PTR( keyboardEditor   )  = new KeyboardEditor(track);
+    INIT_PTR( guitarEditor     )  = new GuitarEditor(track);
+    INIT_PTR( drumEditor       )  = new DrumEditor(track);
+    INIT_PTR( controllerEditor )  = new ControllerEditor(track);
+	INIT_PTR( scoreEditor      )  = new ScoreEditor(track);
 }
 
 bool GraphicalTrack::mouseWheelMoved(int mx, int my, int value)
@@ -534,14 +531,6 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         if(editorMode==SCORE and mousey > from_y+15 and mousey < from_y+30)
 		{
             // sharp/flat signs
-            /*
-            if(winX > sharpFlatPicker->getX()+5 and winX < sharpFlatPicker->getX()+5+13)
-                track->action( new Action::SetAccidentalSign(SHARP) );
-            else if(winX > sharpFlatPicker->getX()+5+27 and winX < sharpFlatPicker->getX()+5+33)
-                track->action( new Action::SetAccidentalSign(FLAT) );
-            else if(winX > sharpFlatPicker->getX()+5+47 and winX < sharpFlatPicker->getX()+5+60)
-                track->action( new Action::SetAccidentalSign(NATURAL) );
-            */
             if( sharpFlatPicker->getItem(0).clickIsOnThisWidget(winX, mousey) )
                 track->action( new Action::SetAccidentalSign(SHARP) );
             else if( sharpFlatPicker->getItem(1).clickIsOnThisWidget(winX, mousey) )
@@ -560,12 +549,9 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 
 bool GraphicalTrack::processRightMouseClick(RelativeXCoord x, int y)
 {
-    
 	if(y>from_y and y<to_y)
 	{
-        
 		getCurrentEditor()->rightClick(x,y);
-		
 		return false;
 	}
 	else
@@ -809,30 +795,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     AriaRender::primitives();
     
     AriaRender::text(instrumentname.c_str(), instrumentName->getX()+11 ,y+26);
-    
-    // sharp/flat buttons if score mode
-/*
-    if(editorMode==SCORE)
-    {
-        AriaRender::images();
-        int draw_x = sharpFlatPicker->getX() + 17;
-        
-        sharpSign->move(draw_x, y+21 );
-        sharpSign->render();
-        
-        draw_x += 20;
-        
-        flatSign->move(draw_x, y+24 );
-        flatSign->render();
-        
-        draw_x += 20;
-        
-        naturalSign->move(draw_x, y+21 );
-        naturalSign->render();
-        
-        draw_x += 20;
-    }
-    */
+
     // draw channel number
 	if(channel_mode)
 	{
@@ -844,8 +807,8 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
         AriaRender::primitives();
 		
 		const int char_amount_in_channel_name = channelName.size();
-		if(char_amount_in_channel_name == 1) AriaRender::text(buffer, channelButton->getX()+5 ,y+26);
-		else AriaRender::text(channelName.c_str(), channelButton->getX()+2 + 7,y+26);
+		if(char_amount_in_channel_name == 1) AriaRender::text(buffer, channelButton->getX()+10, y+26);
+		else AriaRender::text(buffer, channelButton->getX()+7, y+26);
 	}
 	
     AriaRender::images();
