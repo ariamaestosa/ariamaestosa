@@ -100,9 +100,12 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         if(noteRenderInfo[i].hollow_head) dc.SetBrush( *wxTRANSPARENT_BRUSH );
         else dc.SetBrush( *wxBLACK_BRUSH );
         
-        wxPoint headLocation( noteRenderInfo[i].x + headRadius + headRadius/1.7,
-                              LEVEL_TO_Y(noteRenderInfo[i].getBaseLevel())-headRadius/2.0 );
+        const int notey = LEVEL_TO_Y(noteRenderInfo[i].getBaseLevel());
+        
+        wxPoint headLocation( noteRenderInfo[i].x + headRadius + headRadius/1.7, notey-headRadius/2.0 );
         dc.DrawEllipse( headLocation, wxSize(headRadius+1, headRadius) );
+        
+        noteRenderInfo[i].setY(notey+headRadius/2.0);
     }
     
 }
