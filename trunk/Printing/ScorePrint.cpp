@@ -57,6 +57,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     beginLine(&dc, &line, x0, y0, x1, y1, show_measure_number);
     
     std::vector<NoteRenderInfo> noteRenderInfo;
+    setUpDownPivotLevel(middleC-5);
     
     // iterate through layout elements to collect notes in the vector
     // so ScoreAnalyser can prepare the score
@@ -88,6 +89,21 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         
     }//next element
     
+    /*
+    if(g_clef)
+    {
+        setUpDownPivotLevel(converter->getScoreCenterCLevel()-5);
+        const int silences_y = getEditorYStart() + y_step*(converter->getScoreCenterCLevel()-8) - getYScrollInPixels() + 1;
+        renderScore(noteRenderInfo_GClef, silences_y);
+    }
+    
+    if(f_clef)
+    {
+        setUpDownPivotLevel(converter->getScoreCenterCLevel()+6);
+        const int silences_y = getEditorYStart() + y_step*(converter->getScoreCenterCLevel()+4) - getYScrollInPixels() + 1;
+        renderScore(noteRenderInfo_FClef, silences_y);
+    }
+*/    
     // analyse notes to know how to build the score
     analyseNoteInfo(noteRenderInfo, scoreEditor);
     
@@ -106,6 +122,14 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         dc.DrawEllipse( headLocation, wxSize(headRadius+1, headRadius) );
         
         noteRenderInfo[i].setY(notey+headRadius/2.0);
+        
+        // draw stem
+        if(noteRenderInfo[i].stem_type != STEM_NONE)
+        {
+            const bool up = noteRenderInfo[i].stem_type == STEM_UP;
+            dc.DrawLine( noteRenderInfo[i].getStemX() + (up ? 15:13), noteRenderInfo[i].getStemYFrom() + (up ? -8 : -9),
+                         noteRenderInfo[i].getStemX() + (up ? 15:13), noteRenderInfo[i].getStemYTo() + (up ? -13:-8));
+        }
     }
     
 }
