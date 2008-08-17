@@ -56,7 +56,7 @@ class NoteRenderInfo
 	int tied_with_tick;
     bool tie_up; // used if stem_type == STEM_NONE, otherwise tie location is determined with stem_type
     
-    
+    int y;
 public:
     // for very short notes, e.g. drum notes. Note will appear as a X.
 	bool instant_hit;
@@ -85,7 +85,7 @@ public:
     
     // location and duration of note
 	int tick, tick_length;
-	int x, y, level;
+	int x, level;
     int pitch;
     
     // measure where the note begins and ends
@@ -124,6 +124,8 @@ public:
     int getStemYTo();
     int getYBase();
     int getBaseLevel();
+    inline const int getY() const;
+    void setY(const int newY); // too be called by renderer where location is computer from level
 };
 
 void addToVector( NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& info, const bool recursion );

@@ -570,7 +570,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
 	else
         AriaRender::color(0,0,0);	
 
-	renderInfo.y = getEditorYStart() + y_step*renderInfo.level - halfh - getYScrollInPixels() + 2;
+	renderInfo.setY( getEditorYStart() + y_step*renderInfo.level - halfh - getYScrollInPixels() + 2 );
 
 	// note head
     /*
@@ -585,18 +585,18 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
 	{
         AriaRender::primitives();
         AriaRender::color(0,0,0);
-        AriaRender::character('X', renderInfo.x, renderInfo.y + 8);
+        AriaRender::character('X', renderInfo.x, renderInfo.getY() + 8);
 	}
 	else if(renderInfo.hollow_head)
 	{
         AriaRender::images();
-		noteOpen->move(renderInfo.x, renderInfo.y);
+		noteOpen->move(renderInfo.x, renderInfo.getY());
 		noteOpen->render();
 	}
 	else
 	{
 		AriaRender::images();
-		noteClosed->move(renderInfo.x, renderInfo.y);
+		noteClosed->move(renderInfo.x, renderInfo.getY());
 		noteClosed->render();
 	}
 	
@@ -650,34 +650,34 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
 	{
         AriaRender::color(1,1,1);
         AriaRender::pointSize(5);
-        AriaRender::point(renderInfo.x + 14, renderInfo.y + 5);
+        AriaRender::point(renderInfo.x + 14, renderInfo.getY() + 5);
 
 		if(renderInfo.selected) AriaRender::color(1,0,0);
 		else AriaRender::color(0,0,0);
         AriaRender::pointSize(3);
         
-        AriaRender::point(renderInfo.x + 14, renderInfo.y + 5);
+        AriaRender::point(renderInfo.x + 14, renderInfo.getY() + 5);
 	}
 	
 	// sharpness sign
 	if(renderInfo.sign == SHARP)
 	{
 		AriaRender::images();
-		sharpSign->move(renderInfo.x - 5, renderInfo.y + halfh);
+		sharpSign->move(renderInfo.x - 5, renderInfo.getY() + halfh);
 		sharpSign->render();
         AriaRender::primitives();
 	}
 	else if(renderInfo.sign == FLAT)
 	{
 		AriaRender::images();
-		flatSign->move(renderInfo.x - 5, renderInfo.y + halfh);
+		flatSign->move(renderInfo.x - 5, renderInfo.getY() + halfh);
 		flatSign->render();
         AriaRender::primitives();
 	}
 	else if(renderInfo.sign == NATURAL)
 	{
 		AriaRender::images();
-		naturalSign->move(renderInfo.x - 5, renderInfo.y + halfh);
+		naturalSign->move(renderInfo.x - 5, renderInfo.getY() + halfh);
 		naturalSign->render();
 		AriaRender::primitives();
 	}
@@ -705,7 +705,7 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo)
         // flags
         if(renderInfo.flag_amount>0 and not renderInfo.beam)
         {
-            const int flag_y_origin = (renderInfo.stem_type==STEM_UP ? renderInfo.y - 24 : renderInfo.y + 17);
+            const int flag_y_origin = (renderInfo.stem_type==STEM_UP ? renderInfo.getY() - 24 : renderInfo.getY() + 17);
             const int flag_x_origin = (renderInfo.stem_type==STEM_UP ? renderInfo.x + 9 : renderInfo.x + 1);
             const int flag_step = (renderInfo.stem_type==STEM_UP ? 7 : -7 );
             
@@ -1050,7 +1050,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
         if(f_clef)
         {
             setUpDownPivotLevel(converter->getScoreCenterCLevel()+6);
-            const int silences_y = getEditorYStart() + y_step*(converter->getScoreCenterCLevel()+5) - getYScrollInPixels() + 1;
+            const int silences_y = getEditorYStart() + y_step*(converter->getScoreCenterCLevel()+4) - getYScrollInPixels() + 1;
             renderScore(noteRenderInfo_FClef, silences_y);
         }
     }
@@ -1400,9 +1400,10 @@ void ScoreEditor::renderScore(std::vector<NoteRenderInfo>& noteRenderInfo, const
         }//next visible note
 
         // check for silence after last note
-        const unsigned int last_measure_end = getMeasureData()->lastTickInMeasure(
-                                                                          getMeasureData()->measureAtTick(
-                                                                                                          noteRenderInfo[visibleNoteAmount-1].tick));
+        const unsigned int last_measure_end = getMeasureData()->lastTickInMeasure
+                                                 (
+                                                  getMeasureData()->measureAtTick(noteRenderInfo[visibleNoteAmount-1].tick)
+                                                  );
         if(!aboutEqual(last_note_end, last_measure_end ) and last_note_end>-1)
         {
             const int silence_length = last_measure_end-last_note_end;

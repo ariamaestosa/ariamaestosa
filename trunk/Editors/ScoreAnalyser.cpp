@@ -296,7 +296,7 @@ int NoteRenderInfo::getStemYFrom()
 }
 int NoteRenderInfo::getStemYTo()
 {
-   if(stem_type == STEM_UP) return (stem_y == -1 ?y - 24 : stem_y);
+   if(stem_type == STEM_UP) return (stem_y == -1 ? y - 24 : stem_y);
    else if(stem_type == STEM_DOWN) return (stem_y == -1 ? y + 33 : stem_y);
    else return -1;
 }
@@ -309,6 +309,13 @@ int NoteRenderInfo::getBaseLevel()
 {
     if(chord) return (stem_type == STEM_UP ? max_chord_level : min_chord_level);
     else return level;
+}
+inline const int NoteRenderInfo::getY() const{ return y; }
+
+// too be called by renderer where location is computer from level
+void NoteRenderInfo::setY(const int newY)
+{
+    y = newY;
 }
 
 #pragma mark -
@@ -797,7 +804,7 @@ void addToVector( NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& vecto
     if(renderInfo.triplet)
     {
         renderInfo.triplet_arc_x_start = renderInfo.x + 8;
-        renderInfo.triplet_arc_y = renderInfo.y;
+        renderInfo.triplet_arc_y = renderInfo.getY();
     }
 	
     assertExpr(renderInfo.level,>,-1);    

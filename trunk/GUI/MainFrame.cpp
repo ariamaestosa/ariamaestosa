@@ -55,6 +55,7 @@
 #include "Clipboard.h"
 #include <iostream>
 
+
 namespace AriaMaestosa {
 
 
@@ -103,8 +104,13 @@ EVT_COMMAND_SCROLL_LINEDOWN(SCROLLBAR_V, MainFrame::verticalScrolling_arrows)
 EVT_CLOSE(MainFrame::on_close)
 
 /* top bar */
+#ifdef NO_WX_TOOLBAR
 EVT_BUTTON(PLAY_CLICKED, MainFrame::playClicked)
 EVT_BUTTON(STOP_CLICKED, MainFrame::stopClicked)
+#else
+EVT_TOOL(PLAY_CLICKED, MainFrame::playClicked)
+EVT_TOOL(STOP_CLICKED, MainFrame::stopClicked)
+#endif
 
 EVT_TEXT(TEMPO, MainFrame::tempoChanged)
 
@@ -205,6 +211,7 @@ void MainFrame::init()
 
     
     // -------------------------- Top Pane ----------------------------
+#ifdef NO_WX_TOOLBAR
     topPane=new wxPanel(this);
     verticalSizer->Add(topPane, 0, wxALIGN_CENTER_VERTICAL | wxALL, 2, Location::North() );
     toolbarSizer=new wxFlexGridSizer(2, 6, 1, 15);
@@ -269,7 +276,7 @@ void MainFrame::init()
 							   );
 
     toolbarSizer->Add(displayZoom, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
-    displayZoom->SetRange(0, 500);
+    displayZoom->SetRange(25, 500);
 
     
     // labels
@@ -279,6 +286,59 @@ void MainFrame::init()
     toolbarSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Time Sig")),  0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
     toolbarSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Start")),     0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
     toolbarSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Zoom")),      0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
+    
+#else
+    toolbar = this->CreateToolBar(wxTB_HORZ_TEXT | wxNO_BORDER);
+
+    wxBitmap playBitmap;
+    playBitmap.LoadFile( getResourcePrefix()  + wxT("play.png") , wxBITMAP_TYPE_PNG);
+    toolbar->AddTool(PLAY_CLICKED, wxT("Play"), playBitmap);
+
+    wxBitmap stopBitmap;
+    stopBitmap.LoadFile( getResourcePrefix()  + wxT("stop.png") , wxBITMAP_TYPE_PNG);
+    toolbar->AddTool(STOP_CLICKED, wxT("Stop"), stopBitmap);
+
+    toolbar->AddSeparator();
+    
+    measureTypeTop=new wxTextCtrl(toolbar, MEASURE_NUM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize, wxTE_PROCESS_ENTER );
+    toolbar->AddControl(measureTypeTop);
+    wxStaticText* slash = new wxStaticText(toolbar, wxID_ANY, wxT("/"), wxDefaultPosition, wxSize(15,15));
+    slash->SetMinSize(wxSize(15,15));
+    slash->SetMaxSize(wxSize(15,15));
+    toolbar->AddControl( slash );
+    measureTypeBottom=new wxTextCtrl(toolbar, MEASURE_DENOM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize, wxTE_PROCESS_ENTER );
+    toolbar->AddControl(measureTypeBottom);
+
+    firstMeasure=new wxTextCtrl(toolbar, BEGINNING, wxT("1"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER);
+    toolbar->AddControl(firstMeasure);
+
+    songLength=new wxSpinCtrl(toolbar, LENGTH, to_wxString(DEFAULT_SONG_LENGTH), wxDefaultPosition,
+#ifdef __WXGTK__
+							  averageTextCtrlSize
+#else
+							  wxDefaultSize
+#endif
+							  , wxTE_PROCESS_ENTER);
+    toolbar->AddControl(songLength);
+    
+    toolbar->AddSeparator();
+    
+    tempoCtrl=new wxTextCtrl(toolbar, TEMPO, wxT("120"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER );
+    toolbar->AddControl(tempoCtrl);
+    
+    displayZoom=new wxSpinCtrl(toolbar, ZOOM, wxT("100"), wxDefaultPosition,
+    #ifdef __WXGTK__
+                           averageTextCtrlSize
+    #else
+                           wxDefaultSize
+    #endif
+                           );
+    
+    displayZoom->SetRange(25,500);
+    toolbar->AddControl(displayZoom);
+    toolbar->Realize();
+    
+#endif
     
     // -------------------------- RenderPane ----------------------------
 #ifndef NO_OPENGL
@@ -343,7 +403,8 @@ void MainFrame::init()
 
     SetAutoLayout(TRUE);
     SetSizer(verticalSizer);
-
+    Centre();
+    
     verticalSizer->Layout();
 
     Show();
@@ -413,11 +474,14 @@ void MainFrame::toolsEnterPlaybackMode()
 	if(playback_mode) return;
 
 	playback_mode = true;
-
-
+#ifdef NO_WX_TOOLBAR
     stop->Enable(true);
     play->Enable(false);
-
+#else
+    toolbar->EnableTool(PLAY_CLICKED, false);
+    toolbar->EnableTool(STOP_CLICKED, true);
+#endif
+    
     disableMenusForPlayback(true);
 
     measureTypeBottom->Enable(false);
@@ -430,10 +494,14 @@ void MainFrame::toolsEnterPlaybackMode()
 void MainFrame::toolsExitPlaybackMode()
 {
 	playback_mode = false;
-
+#ifdef NO_WX_TOOLBAR
     stop->Enable(false);
     play->Enable(true);
-
+#else
+    toolbar->EnableTool(PLAY_CLICKED, true);
+    toolbar->EnableTool(STOP_CLICKED, false);
+#endif
+    
     disableMenusForPlayback(false);
 
     measureTypeBottom->Enable(true);

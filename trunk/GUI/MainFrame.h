@@ -50,6 +50,10 @@ DECLARE_EVENT_TYPE(wxEVT_HIDE_WAIT_WINDOW, -1)
 #define MAKE_UPDATE_PROGRESSBAR_EVENT(eventname, progress) wxCommandEvent eventname( wxEVT_UPDATE_WAIT_WINDOW, 100002 ); eventname.SetInt(progress)
 #define MAKE_HIDE_PROGRESSBAR_EVENT(eventname) wxCommandEvent eventname( wxEVT_HIDE_WAIT_WINDOW, 100003 )
 
+#if wxMAJOR_VERSION != 3
+#define NO_WX_TOOLBAR   
+#endif
+    
 class MainFrame : public wxFrame
 {
 	WX_PTR_HOLD(AboutDialog, aboutDialog);
@@ -57,9 +61,12 @@ class MainFrame : public wxFrame
     WX_PTR_HOLD(Preferences, prefs);
     
     wxBorderSizer* verticalSizer;
+#ifdef NO_WX_TOOLBAR
     wxPanel* topPane;
     wxFlexGridSizer* toolbarSizer;
-
+#else
+    wxToolBar* toolbar;
+#endif
     wxScrollBar* horizontalScrollbar;
     wxScrollBar* verticalScrollbar;
 
