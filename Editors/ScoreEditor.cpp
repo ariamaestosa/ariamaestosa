@@ -472,9 +472,12 @@ ScoreEditor::ScoreEditor(Track* track) : Editor(track)
 	linearNotationEnabled  = true;
     
 	INIT_PTR(converter) = new ScoreMidiConverter();
-
+    
 	converter->updateConversionData();	
 	
+    INIT_PTR(g_clef_analyser) = new ScoreAnalyser(this, converter->getScoreCenterCLevel()-5);
+    INIT_PTR(f_clef_analyser) = new ScoreAnalyser(this, converter->getScoreCenterCLevel()+6);
+    
 	setYStep( y_step );
 	
 	sb_position = converter->getMiddleCLevel() / 73.0;
@@ -530,6 +533,8 @@ void ScoreEditor::loadKey(const int sharpness_symbol, const int symbol_amount)
 	}
 	
 	converter->updateConversionData();
+    g_clef_analyser->setStemPivot(converter->getScoreCenterCLevel()-5);
+    f_clef_analyser->setStemPivot(converter->getScoreCenterCLevel()+6);
 }
 
 ScoreMidiConverter* ScoreEditor::getScoreMidiConverter()
@@ -768,7 +773,7 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo)
 }
 
 
-void ScoreEditor::renderSilence(const int tick, const int tick_length, const int silences_y)
+void renderSilence(const int tick, const int tick_length, const int silences_y)
 { 
     const int beat = getMeasureData()->beatLengthInTicks();
     
@@ -915,6 +920,9 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
 	const int middle_c_level = converter->getScoreCenterCLevel();
 	
+    g_clef_analyser->clearAndPrepare();
+    f_clef_analyser->clearAndPrepare();
+    
 	if(g_clef)
 		drawVerticalMeasureLines(getEditorYStart() + (middle_c_level-2)*y_step + y_step/2 - yscroll,
 							     getEditorYStart() + (middle_c_level-10)*y_step + y_step/2 - yscroll);
@@ -929,9 +937,6 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
     
     const int noteAmount = track->getNoteAmount();
 	
-	std::vector<NoteRenderInfo> noteRenderInfo_GClef;
-	std::vector<NoteRenderInfo> noteRenderInfo_FClef;
-    
     const int first_x_to_consider = getMeasureData()->firstPixelInMeasure( getMeasureData()->measureAtPixel(0) ) + 1;
     const int last_x_to_consider = getMeasureData()->lastPixelInMeasure( getMeasureData()->measureAtPixel(width+15) );
     
@@ -1016,22 +1021,16 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
             
             // add note to either G clef score or F clef score
             if(g_clef and not f_clef)
-                addToVector(currentNote, noteRenderInfo_GClef, false);
+                g_clef_analyser->addToVector(currentNote, false);
             else if(f_clef and not g_clef)
-                addToVector(currentNote, noteRenderInfo_FClef, false);
+                f_clef_analyser->addToVector(currentNote, false);
             else if(f_clef and g_clef)
             {
                 const int middleC = converter->getScoreCenterCLevel();
                 if(noteLevel < middleC)
-                {
-                    setUpDownPivotLevel(converter->getScoreCenterCLevel()-5);
-                    addToVector(currentNote, noteRenderInfo_GClef, false);
-                }
+                    g_clef_analyser->addToVector(currentNote, false);
                 else
-                {
-                    setUpDownPivotLevel(converter->getScoreCenterCLevel()+6);
-                    addToVector(currentNote, noteRenderInfo_FClef, false);
-                }
+                    f_clef_analyser->addToVector(currentNote, false);
             }
 		}
 	} // next note
@@ -1042,16 +1041,14 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 	{
         if(g_clef)
         {
-            setUpDownPivotLevel(converter->getScoreCenterCLevel()-5);
             const int silences_y = getEditorYStart() + y_step*(converter->getScoreCenterCLevel()-8) - getYScrollInPixels() + 1;
-            renderScore(noteRenderInfo_GClef, silences_y);
+            renderScore(g_clef_analyser, silences_y);
         }
         
         if(f_clef)
         {
-            setUpDownPivotLevel(converter->getScoreCenterCLevel()+6);
             const int silences_y = getEditorYStart() + y_step*(converter->getScoreCenterCLevel()+4) - getYScrollInPixels() + 1;
-            renderScore(noteRenderInfo_FClef, silences_y);
+            renderScore(f_clef_analyser, silences_y);
         }
     }
 
@@ -1294,146 +1291,29 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 }
 
 
-void ScoreEditor::renderScore(std::vector<NoteRenderInfo>& noteRenderInfo, const int silences_y)
+void ScoreEditor::renderScore(ScoreAnalyser* analyser, const int silences_y)
 {
-    int visibleNoteAmount = noteRenderInfo.size();
+    int visibleNoteAmount = analyser->noteRenderInfo.size();
     
-    // first rendering pass
-    for(int i=0; i<visibleNoteAmount; i++) renderNote_pass1( noteRenderInfo[i] );
+    // first note rendering pass
+    for(int i=0; i<visibleNoteAmount; i++) renderNote_pass1( analyser->noteRenderInfo[i] );
     
-    // -------------------------- silences rendering pass -------------------
-    // draw silences
+    // render silences
     const unsigned int first_visible_measure = getMeasureData()->measureAtPixel( getEditorsXStart() );
     const unsigned int last_visible_measure = getMeasureData()->measureAtPixel( getXEnd() );
-    const int visible_measure_amount = last_visible_measure-first_visible_measure+1;
-    bool measure_empty[visible_measure_amount+1];
-    for(int i=0; i<=visible_measure_amount; i++) measure_empty[i] = true;
-    
-    if(visibleNoteAmount>0)
-    {
-        // by comparing the ending of the previous note to the beginning of the current note,
-        // we can know if there is a silence. If multiple notes play at the same time,
-        // 'previous_note_end' will contain the end position of the longest note.
-        // At this point all notes will already have been split so that they do not overlap on
-        // 2 measures so we don't need to care about that.
-        int previous_note_end = -1;
+    analyser->renderSilences( &renderSilence, first_visible_measure, last_visible_measure, silences_y );
         
-        // last_note_end is similar to previous_note_end, but contains the end tick of the last note that ended
-        // while previous_note_end contains the end tick of the last note that started
-        int last_note_end = -1;
-        
-        int last_measure = -1;
-        
-#ifdef _MORE_DEBUG_CHECKS
-        int iters = 0;
-#endif
-        
-        for(int i=0; i<visibleNoteAmount; i++)
-        {
-#ifdef _MORE_DEBUG_CHECKS
-            iters++;
-            assertExpr(iters,<,1000);
-#endif
-            assertExpr(i,<,(int)noteRenderInfo.size());
-            
-            const int measure = noteRenderInfo[i].measureBegin;
-            assertExpr(measure,>=,0);
-            assertExpr(measure,<,99999);
-            
-            assertExpr(last_measure,>=,-1);
-            assertExpr(last_measure,<,99999);
-            
-            // we switched to another measure
-            if(measure>last_measure)
-            {
-                // if the last note of previous measure does not finish at the end of the measure,
-                // we need to add a silence at the end of it
-                if(last_measure != -1 and !aboutEqual(last_note_end, getMeasureData()->firstTickInMeasure(measure) ))
-                {
-                    const int silence_length = getMeasureData()->firstTickInMeasure(measure)-last_note_end;
-                    renderSilence(last_note_end, silence_length, silences_y);
-                    
-                }
-                // if note is not at the very beginning of the new measure, and it's the first note of
-                // the measure, we need to add a silence before it
-                if(!aboutEqual(noteRenderInfo[i].tick, getMeasureData()->firstTickInMeasure(measure) ))
-                {
-                    const int silence_length = noteRenderInfo[i].tick - getMeasureData()->firstTickInMeasure(measure);
-                    renderSilence(getMeasureData()->firstTickInMeasure(measure), silence_length, silences_y);
-                }
-                
-                if(last_measure!=-1)
-                {
-                    previous_note_end = -1; // we switched to another measure, reset and start again
-                    last_note_end = -1;
-                }
-            }
-            
-            last_measure = measure;
-            
-            // remember that this measure was not empty (only if it fits somewhere in the 'measure_empty' array)
-            if( (int)(measure-first_visible_measure) >= 0 and (int)(measure-first_visible_measure) < (int)(visible_measure_amount+1))
-            {
-                if((int)(measure-first_visible_measure) >= (int)visible_measure_amount) break; // we're too far
-                measure_empty[measure-first_visible_measure] = false;
-            }
-            
-            // silences between two notes
-            const int current_begin_tick = noteRenderInfo[i].tick;
-            if( previous_note_end != -1 and !aboutEqual(previous_note_end, current_begin_tick) and
-                (current_begin_tick-previous_note_end)>0 /*and previous_note_end >= last_note_end*/)
-				{
-                    renderSilence(previous_note_end, current_begin_tick-previous_note_end, silences_y);
-				}
-                
-                previous_note_end = noteRenderInfo[i].tick + noteRenderInfo[i].tick_length;
-                
-				// if there's multiple notes playing at the same time
-				while(i+1<visibleNoteAmount and noteRenderInfo[i].tick==noteRenderInfo[i+1].tick)
-				{
-					i++;
-					previous_note_end = std::max(previous_note_end, noteRenderInfo[i].tick + noteRenderInfo[i].tick_length);
-				}
-                
-                if(previous_note_end > last_note_end) last_note_end = previous_note_end;
-                
-        }//next visible note
-
-        // check for silence after last note
-        const unsigned int last_measure_end = getMeasureData()->lastTickInMeasure
-                                                 (
-                                                  getMeasureData()->measureAtTick(noteRenderInfo[visibleNoteAmount-1].tick)
-                                                  );
-        if(!aboutEqual(last_note_end, last_measure_end ) and last_note_end>-1)
-        {
-            const int silence_length = last_measure_end-last_note_end;
-            renderSilence(last_note_end, silence_length, silences_y);
-        }
-
-
-    }// end if there are visible notes
-
-    // draw silences in empty measures
-    for(int i=0; i<visible_measure_amount; i++)
-    {
-        if(measure_empty[i])
-        {
-            renderSilence(getMeasureData()->firstTickInMeasure(first_visible_measure+i),
-                          getMeasureData()->measureLengthInTicks(first_visible_measure+i), silences_y);
-        }
-    }
-
     // ------------------------- second note rendering pass -------------------
 
     // analyse notes to know how to build the score
-    analyseNoteInfo(noteRenderInfo, this);
+    analyser->analyseNoteInfo();
 
     // triplet signs, tied notes, flags and beams
-    visibleNoteAmount = noteRenderInfo.size();
+    visibleNoteAmount = analyser->noteRenderInfo.size();
     for(int i=0; i<visibleNoteAmount; i++)
     {
-        assertExpr(i,<,(int)noteRenderInfo.size());
-        renderNote_pass2(noteRenderInfo[i]);
+        assertExpr(i,<,(int)analyser->noteRenderInfo.size());
+        renderNote_pass2(analyser->noteRenderInfo[i]);
     }
 
 }

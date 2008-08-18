@@ -32,8 +32,6 @@
 
 namespace AriaMaestosa {
 
-void setUpDownPivotLevel(const int level);
-    
 enum STEM
 {
 	STEM_UP,
@@ -124,14 +122,43 @@ public:
     int getStemYTo();
     int getYBase();
     int getBaseLevel();
-    inline const int getY() const;
+    const int getY() const;
     void setY(const int newY); // too be called by renderer where location is computer from level
 };
 
-void addToVector( NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& info, const bool recursion );
+class BeamGroup;
+class ScoreAnalyser
+{
+    friend class BeamGroup;
+    
+    ScoreEditor* editor;
+    int stemPivot;
+public:
+    std::vector<NoteRenderInfo> noteRenderInfo;
+    
+    ScoreAnalyser(ScoreEditor* parent, int stemPivot);
+    
+    // you're done rendering the current frame, prepare to render the next
+    void clearAndPrepare();
+    
+    void addToVector( NoteRenderInfo& renderInfo, const bool recursion );
 
-// the main function of ScoreAnalyser, where everything starts
-void analyseNoteInfo( std::vector<NoteRenderInfo>& info, ScoreEditor* editor );
+    // the main function of ScoreAnalyser, where everything starts
+    void analyseNoteInfo();
+
+    // set the level below which the stem is up, and above which it is down
+    void setStemPivot(const int level);
+    
+    void renderSilences( void (*renderSilenceCallback)(const int, const int, const int),
+                         const int first_visible_measure, const int last_visible_measure,
+                         const int silences_y );
+protected:
+    // fon't call these, 'analyseNoteInfo' will
+    void putInTimeOrder();
+    void findAndMergeChords();
+    void processTriplets();
+    void processNoteBeam();
+};
 
 /*
  * returns whether two values are approximately equal. this is because there is no midi
