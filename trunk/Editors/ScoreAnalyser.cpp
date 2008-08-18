@@ -24,12 +24,6 @@
 namespace AriaMaestosa
 {
 
-int up_down_pivot_level = 0;
-void setUpDownPivotLevel(const int level)
-{
-    up_down_pivot_level = level;
-}
-    
 /*
  * This class receives a range of IDs of notes that are candidates for beaming. Its job is to decide
  * how to beam the notes in order to get maximal results, as well as changing the NoteRenderInfo objects
@@ -39,12 +33,14 @@ class BeamGroup
 {
     int first_id, last_id;
     int min_level, mid_level, max_level;
-
+    ScoreAnalyser* analyser;
+    
 public:
-    BeamGroup(const int first_id, const int last_id)
+    BeamGroup(ScoreAnalyser* analyser, const int first_id, const int last_id)
     {
-         BeamGroup::first_id = first_id;
-         BeamGroup::last_id = last_id;
+        BeamGroup::first_id = first_id;
+        BeamGroup::last_id = last_id;
+        BeamGroup::analyser = analyser;
     }
     void calculateLevel(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreMidiConverter* converter)
     {
@@ -124,15 +120,15 @@ public:
             if(split_at_id == -1)
             {
                 // dumb split
-                BeamGroup first_half(first_id, first_id + max_amount_of_notes_beamed_toghether - 1);
-                BeamGroup second_half(first_id + max_amount_of_notes_beamed_toghether, last_id);
+                BeamGroup first_half(analyser, first_id, first_id + max_amount_of_notes_beamed_toghether - 1);
+                BeamGroup second_half(analyser, first_id + max_amount_of_notes_beamed_toghether, last_id);
                 first_half.doBeam(noteRenderInfo, editor);
                 second_half.doBeam(noteRenderInfo, editor);
             }
             else
             {
-                BeamGroup first_half(first_id, split_at_id - 1);
-                BeamGroup second_half(split_at_id, last_id);
+                BeamGroup first_half(analyser, first_id, split_at_id - 1);
+                BeamGroup second_half(analyser, split_at_id, last_id);
                 first_half.doBeam(noteRenderInfo, editor);
                 second_half.doBeam(noteRenderInfo, editor);
             }
@@ -142,7 +138,7 @@ public:
 
         calculateLevel(noteRenderInfo, converter);
 
-        noteRenderInfo[first_id].beam_show_above = (mid_level < up_down_pivot_level ? false : true);
+        noteRenderInfo[first_id].beam_show_above = (mid_level < analyser->stemPivot ? false : true);
         noteRenderInfo[first_id].beam = true;
 
         for(int j=first_id; j<=last_id; j++)
@@ -310,7 +306,7 @@ int NoteRenderInfo::getBaseLevel()
     if(chord) return (stem_type == STEM_UP ? max_chord_level : min_chord_level);
     else return level;
 }
-inline const int NoteRenderInfo::getY() const{ return y; }
+const int NoteRenderInfo::getY() const{ return y; }
 
 // too be called by renderer where location is computer from level
 void NoteRenderInfo::setY(const int newY)
@@ -319,8 +315,147 @@ void NoteRenderInfo::setY(const int newY)
 }
 
 #pragma mark -
+#pragma mark Score Analyser
 
-void putInTimeOrder(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* editor)
+ScoreAnalyser::ScoreAnalyser(ScoreEditor* parent, int stemPivot)
+{
+    ScoreAnalyser::editor = parent;
+    ScoreAnalyser::stemPivot = stemPivot;
+}
+void ScoreAnalyser::setStemPivot(const int level)
+{
+    stemPivot = level;
+}
+void ScoreAnalyser::clearAndPrepare()
+{
+    noteRenderInfo.clear();
+}
+void ScoreAnalyser::renderSilences( void (*renderSilenceCallback)(const int, const int, const int),
+                                    const int first_visible_measure, const int last_visible_measure,
+                                    const int silences_y)
+{
+    // -------------------------- silences rendering pass -------------------
+    // draw silences
+    
+    const int visible_measure_amount = last_visible_measure-first_visible_measure+1;
+    bool measure_empty[visible_measure_amount+1];
+    for(int i=0; i<=visible_measure_amount; i++) measure_empty[i] = true;
+    
+    const int visibleNoteAmount = noteRenderInfo.size();
+    if(visibleNoteAmount>0)
+    {
+        // by comparing the ending of the previous note to the beginning of the current note,
+        // we can know if there is a silence. If multiple notes play at the same time,
+        // 'previous_note_end' will contain the end position of the longest note.
+        // At this point all notes will already have been split so that they do not overlap on
+        // 2 measures so we don't need to care about that.
+        int previous_note_end = -1;
+        
+        // last_note_end is similar to previous_note_end, but contains the end tick of the last note that ended
+        // while previous_note_end contains the end tick of the last note that started
+        int last_note_end = -1;
+        
+        int last_measure = -1;
+        
+#ifdef _MORE_DEBUG_CHECKS
+        int iters = 0;
+#endif
+        
+        for(int i=0; i<visibleNoteAmount; i++)
+        {
+#ifdef _MORE_DEBUG_CHECKS
+            iters++;
+            assertExpr(iters,<,1000);
+#endif
+            assertExpr(i,<,(int)noteRenderInfo.size());
+            
+            const int measure = noteRenderInfo[i].measureBegin;
+            assertExpr(measure,>=,0);
+            assertExpr(measure,<,99999);
+            
+            assertExpr(last_measure,>=,-1);
+            assertExpr(last_measure,<,99999);
+            
+            // we switched to another measure
+            if(measure>last_measure)
+            {
+                // if the last note of previous measure does not finish at the end of the measure,
+                // we need to add a silence at the end of it
+                if(last_measure != -1 and !aboutEqual(last_note_end, getMeasureData()->firstTickInMeasure(measure) ))
+                {
+                    const int silence_length = getMeasureData()->firstTickInMeasure(measure)-last_note_end;
+                    renderSilenceCallback(last_note_end, silence_length, silences_y);
+                    
+                }
+                // if note is not at the very beginning of the new measure, and it's the first note of
+                // the measure, we need to add a silence before it
+                if(!aboutEqual(noteRenderInfo[i].tick, getMeasureData()->firstTickInMeasure(measure) ))
+                {
+                    const int silence_length = noteRenderInfo[i].tick - getMeasureData()->firstTickInMeasure(measure);
+                    renderSilenceCallback(getMeasureData()->firstTickInMeasure(measure), silence_length, silences_y);
+                }
+                
+                if(last_measure!=-1)
+                {
+                    previous_note_end = -1; // we switched to another measure, reset and start again
+                    last_note_end = -1;
+                }
+            }
+            
+            last_measure = measure;
+            
+            // remember that this measure was not empty (only if it fits somewhere in the 'measure_empty' array)
+            if( (int)(measure-first_visible_measure) >= 0 and (int)(measure-first_visible_measure) < (int)(visible_measure_amount+1))
+            {
+                if((int)(measure-first_visible_measure) >= (int)visible_measure_amount) break; // we're too far
+                measure_empty[measure-first_visible_measure] = false;
+            }
+            
+            // silences between two notes
+            const int current_begin_tick = noteRenderInfo[i].tick;
+            if( previous_note_end != -1 and !aboutEqual(previous_note_end, current_begin_tick) and
+                (current_begin_tick-previous_note_end)>0 /*and previous_note_end >= last_note_end*/)
+				{
+                renderSilenceCallback(previous_note_end, current_begin_tick-previous_note_end, silences_y);
+				}
+                
+                previous_note_end = noteRenderInfo[i].tick + noteRenderInfo[i].tick_length;
+                
+				// if there's multiple notes playing at the same time
+				while(i+1<visibleNoteAmount and noteRenderInfo[i].tick==noteRenderInfo[i+1].tick)
+				{
+					i++;
+					previous_note_end = std::max(previous_note_end, noteRenderInfo[i].tick + noteRenderInfo[i].tick_length);
+				}
+                
+                if(previous_note_end > last_note_end) last_note_end = previous_note_end;
+                
+        }//next visible note
+
+        // check for silence after last note
+        const int lastNoteMeasure = getMeasureData()->measureAtTick(noteRenderInfo[visibleNoteAmount-1].tick);
+        const unsigned int last_measure_end = getMeasureData()->lastTickInMeasure(lastNoteMeasure);
+        if(!aboutEqual(last_note_end, last_measure_end ) and last_note_end>-1)
+        {
+            const int silence_length = last_measure_end-last_note_end;
+            renderSilenceCallback(last_note_end, silence_length, silences_y);
+        }
+
+
+    }// end if there are visible notes
+
+    // draw silences in empty measures
+    for(int i=0; i<visible_measure_amount; i++)
+    {
+        if(measure_empty[i])
+        {
+            renderSilenceCallback(getMeasureData()->firstTickInMeasure(first_visible_measure+i),
+                          getMeasureData()->measureLengthInTicks(first_visible_measure+i), silences_y);
+        }
+    }
+}
+
+void ScoreAnalyser::putInTimeOrder()
 {
     // put notes in time order.
     // notes that have no stems go last so that they don't disturb note grouping in chords
@@ -350,7 +485,7 @@ void putInTimeOrder(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* ed
 
 }
 
-void findAndMergeChords(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* editor)
+void ScoreAnalyser::findAndMergeChords()
 {
     const int halfh = editor->getHalfNoteHeight();
     const int y_step = editor->getYStep();
@@ -430,7 +565,7 @@ void findAndMergeChords(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor
                 if(max_level == -999) max_level = noteRenderInfo[first_note_of_chord].level;
                 const int mid_level = (int)round( (min_level + max_level)/2.0 );
 
-                const bool stem_up = mid_level >= up_down_pivot_level+2;
+                const bool stem_up = mid_level >= stemPivot+2;
 
                 const int maxy = editor->getEditorYStart() + y_step*max_level - halfh - editor->getYScrollInPixels() + 2;
                 const int miny = editor->getEditorYStart() + y_step*min_level - halfh - editor->getYScrollInPixels() + 2;
@@ -471,7 +606,7 @@ void findAndMergeChords(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor
 
 }
 
-void processTriplets(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* editor)
+void ScoreAnalyser::processTriplets()
 {
     const int visibleNoteAmount = noteRenderInfo.size();
     const int y_step = editor->getYStep();
@@ -544,7 +679,7 @@ void processTriplets(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* e
 
                     int mid_level = (int)round( (min_level + max_level)/2.0 );
 
-                    noteRenderInfo[first_triplet].triplet_show_above = (mid_level < up_down_pivot_level);
+                    noteRenderInfo[first_triplet].triplet_show_above = (mid_level < stemPivot);
 
                     if(i != first_triplet) // if not a triplet note alone, but a 'serie' of triplets
                     {
@@ -591,7 +726,7 @@ void processTriplets(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* e
 }
 
 
-void processNoteBeam(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* editor)
+void ScoreAnalyser::processNoteBeam()
 {
     const int visibleNoteAmount = noteRenderInfo.size();
 
@@ -645,7 +780,7 @@ void processNoteBeam(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* e
             {
                 if(i>first_of_serie)
                 {
-                    BeamGroup beam(first_of_serie, i);
+                    BeamGroup beam(this, first_of_serie, i);
                     beam.doBeam(noteRenderInfo, editor);
                 }
 
@@ -668,16 +803,16 @@ void processNoteBeam(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* e
  * so that they can be rendered correctly on a score.
  */
 
-void analyseNoteInfo( std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* editor )
+void ScoreAnalyser::analyseNoteInfo()
 {
-    putInTimeOrder( noteRenderInfo, editor );
-    findAndMergeChords( noteRenderInfo, editor );
-    processTriplets( noteRenderInfo, editor );
-    processNoteBeam( noteRenderInfo, editor );
+    putInTimeOrder();
+    findAndMergeChords();
+    processTriplets();
+    processNoteBeam();
 
 }// end analyseNotes function
 
-void addToVector( NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& vector, const bool recursion )
+void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursion )
 {
     // check if note lasts more than one measure. If so we need to divide it in 2.
 	if(renderInfo.measureEnd > renderInfo.measureBegin) // note in longer than mesaure, need to divide it in 2
@@ -697,23 +832,23 @@ void addToVector( NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& vecto
 		
 		if(!recursion)
 		{
-			initial_id = vector.size();
+			initial_id = noteRenderInfo.size();
 		}
 		
 		NoteRenderInfo part1(renderInfo.tick, renderInfo.x, renderInfo.level, firstLength, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
-		addToVector(part1, vector, true);
+		addToVector(part1, true);
 		NoteRenderInfo part2(getMeasureData()->firstTickInMeasure(renderInfo.measureBegin+1), firstEndRel.getRelativeTo(WINDOW),
                              renderInfo.level, secondLength, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
-		addToVector(part2, vector, true);
+		addToVector(part2, true);
 		
 		if(!recursion)
 		{
             // done splitting, now iterate through all notes that
             // were added in this recusrion and tie them
-			const int amount = vector.size();
+			const int amount = noteRenderInfo.size();
 			for(int i=initial_id+1; i<amount; i++)
 			{
-				vector[i].tieWith(vector[i-1]);
+				noteRenderInfo[i].tieWith(noteRenderInfo[i-1]);
 			}
 		}
 		
@@ -724,7 +859,7 @@ void addToVector( NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& vecto
     // if note duration is unknown it will be split
 	const float relativeLength = renderInfo.tick_length / (float)(getMeasureData()->beatLengthInTicks()*4);
     
-	renderInfo.stem_type = (renderInfo.level >= up_down_pivot_level ? STEM_UP : STEM_DOWN);
+	renderInfo.stem_type = (renderInfo.level >= stemPivot ? STEM_UP : STEM_DOWN);
 	if(relativeLength>=1) renderInfo.stem_type=STEM_NONE; // whole notes have no stem
 	renderInfo.hollow_head = false;
 	
@@ -778,23 +913,23 @@ void addToVector( NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& vecto
 		
 		if(!recursion)
 		{
-			initial_id = vector.size();
+			initial_id = noteRenderInfo.size();
 		}
 		
 		NoteRenderInfo part1(renderInfo.tick, renderInfo.x, renderInfo.level, firstLength_tick, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
-		addToVector(part1, vector, true);
+		addToVector(part1, true);
 		NoteRenderInfo part2(secondBeginning_tick, secondBeginningRel.getRelativeTo(WINDOW), renderInfo.level,
                              renderInfo.tick_length-firstLength_tick, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
-		addToVector(part2, vector, true);
+		addToVector(part2, true);
 		
 		if(!recursion)
 		{
             // done splitting, now iterate through all notes that
             // were added in this recusrion and tie them
-			const int amount = vector.size();
+			const int amount = noteRenderInfo.size();
 			for(int i=initial_id+1; i<amount; i++)
 			{
-				vector[i].tieWith(vector[i-1]);
+				noteRenderInfo[i].tieWith(noteRenderInfo[i-1]);
 			}
 		}
 		
@@ -809,7 +944,7 @@ void addToVector( NoteRenderInfo& renderInfo, std::vector<NoteRenderInfo>& vecto
 	
     assertExpr(renderInfo.level,>,-1);    
     
-    vector.push_back(renderInfo);
+    noteRenderInfo.push_back(renderInfo);
 }
 
 #pragma mark -

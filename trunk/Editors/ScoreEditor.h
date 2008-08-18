@@ -46,8 +46,9 @@ enum NoteToLevelType
     SHARP_OR_FLAT
 };
     
-    class NoteRenderInfo;
-    class Note;    
+class NoteRenderInfo;
+class Note;    
+class ScoreAnalyser;
 
     /*
      * Each note can be represented in many ways (its Y position on screen, its note_7, its note_12, its midi pitch...)
@@ -70,8 +71,7 @@ enum NoteToLevelType
         int accidentalsMeasure; // because accidentals last only one measure
         
         int midiNoteToLevel[128];
-        NoteToLevelType midiNoteToLevel_type[128]; // 
-        //int showSignNextToNote[128];
+        NoteToLevelType midiNoteToLevel_type[128];
         
         int levelToMidiNote[73]; // we need approximately 73 staff lines total to cover all midi notes
         int levelToNaturalNote[73];
@@ -79,6 +79,7 @@ enum NoteToLevelType
         int middleCLevel;
         int ottavaAltaCLevel;
         int ottavaBassaCLevel;
+        
     public:
         LEAK_CHECK(ScoreMidiConverter);
         
@@ -109,6 +110,8 @@ enum NoteToLevelType
         bool g_clef;
         bool f_clef;
         PTR_HOLD(ScoreMidiConverter, converter);
+        PTR_HOLD(ScoreAnalyser, g_clef_analyser);
+        PTR_HOLD(ScoreAnalyser, f_clef_analyser);
         
         bool musicalNotationEnabled, linearNotationEnabled;
         
@@ -125,8 +128,8 @@ public:
         
         void render(RelativeXCoord mousex_current, int mousey_current,
                     RelativeXCoord mousex_initial, int mousey_initial, bool focus=false);
-        void renderScore(std::vector<NoteRenderInfo>& renderInfo, const int silences_y);
-        void renderSilence(const int tick, const int tick_length, const int silences_y);
+        void renderScore(ScoreAnalyser* analyser, const int silences_y);
+        //void renderSilence(const int tick, const int tick_length, const int silences_y);
         void renderNote_pass1(NoteRenderInfo& renderInfo);
         void renderNote_pass2(NoteRenderInfo& renderInfo);
         
