@@ -131,7 +131,7 @@ public:
         void renderScore(ScoreAnalyser* analyser, const int silences_y);
         //void renderSilence(const int tick, const int tick_length, const int silences_y);
         void renderNote_pass1(NoteRenderInfo& renderInfo);
-        void renderNote_pass2(NoteRenderInfo& renderInfo);
+        void renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* analyser);
         
         void updatePosition(const int from_y, const int to_y, const int width, const int height, const int barHeight);
         

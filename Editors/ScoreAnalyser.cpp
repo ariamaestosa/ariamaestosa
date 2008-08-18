@@ -147,8 +147,8 @@ public:
             noteRenderInfo[j].stem_type = ( noteRenderInfo[first_id].beam_show_above ?  STEM_UP : STEM_DOWN );
         }
 
-        const int last_stem_y_end = noteRenderInfo[last_id].getStemYTo();
-        noteRenderInfo[first_id].beam_to_x = noteRenderInfo[last_id].getStemX();
+        const int last_stem_y_end = analyser->getStemYTo(noteRenderInfo[last_id]);
+        noteRenderInfo[first_id].beam_to_x = analyser->getStemX(noteRenderInfo[last_id]);
 
         if(noteRenderInfo[first_id].beam_show_above)
         {
@@ -156,7 +156,8 @@ public:
 
             // choose y coords so that all notes are correctly in
             noteRenderInfo[first_id].beam_to_y = std::min(min_level_y - 10, last_stem_y_end); // Y to
-            if(noteRenderInfo[first_id].getStemYFrom() > min_level_y - 25) noteRenderInfo[first_id].stem_y = min_level_y - 25; // Y from
+            if(analyser->getStemYFrom(noteRenderInfo[first_id]) > min_level_y - analyser->stem_height)
+                noteRenderInfo[first_id].stem_y = min_level_y - analyser->stem_height; // Y from
         }
         else
         {
@@ -164,12 +165,13 @@ public:
 
             // choose y coords so that all notes are correctly in
             noteRenderInfo[first_id].beam_to_y = std::max(max_level_y + 10, last_stem_y_end); // Y to
-            if(noteRenderInfo[first_id].getStemYFrom() < max_level_y + 25) noteRenderInfo[first_id].stem_y = max_level_y + 25; // Y from
+            if(analyser->getStemYFrom(noteRenderInfo[first_id]) < max_level_y + analyser->stem_height)
+                noteRenderInfo[first_id].stem_y = max_level_y + analyser->stem_height; // Y from
         }
 
         // fix all note stems so they all point in the same direction and have the correct height
-        const int from_x = noteRenderInfo[first_id].getStemX();
-        const int from_y = noteRenderInfo[first_id].getStemYTo();
+        const int from_x = analyser->getStemX(noteRenderInfo[first_id]);
+        const int from_y = analyser->getStemYTo(noteRenderInfo[first_id]);
         const int to_x = noteRenderInfo[first_id].beam_to_x;
         const int to_y = noteRenderInfo[first_id].beam_to_y;
 
@@ -177,7 +179,7 @@ public:
         {
             // give correct stem height (so it doesn't end above or below beam line)
             // rel_pos will be 0 for first note of a beamed serie, and 1 for the last one
-            const float rel_pos = (float)(noteRenderInfo[j].getStemX() - from_x) / (float)(to_x - from_x);
+            const float rel_pos = (float)(analyser->getStemX(noteRenderInfo[j]) - from_x) / (float)(to_x - from_x);
             noteRenderInfo[j].stem_y = from_y + (int)round( (to_y - from_y) * rel_pos );
 
             if(j != first_id) noteRenderInfo[j].flag_amount = 0;
@@ -186,6 +188,7 @@ public:
 };
 
 #pragma mark -
+#pragma mark NoteRenderInfo
 
 NoteRenderInfo::NoteRenderInfo(int tick, int x, int level, int tick_length, int sign, const bool selected, int pitch)
 {
@@ -276,26 +279,6 @@ void NoteRenderInfo::setTriplet()
     triplet = true;
     drag_triplet_sign = true;
 }
-
-int NoteRenderInfo::getStemX()
-{
-    if(stem_type == STEM_UP) return (x + 9);
-    else if(stem_type == STEM_DOWN) return (x + 1);
-    else return -1;
-}
-int NoteRenderInfo::getStemYFrom()
-{
-    const int stem_y_base = getYBase();
-    if(stem_type == STEM_UP) return (stem_y_base + 3);
-    else if(stem_type == STEM_DOWN) return (stem_y_base + 6);
-    else return -1;
-}
-int NoteRenderInfo::getStemYTo()
-{
-   if(stem_type == STEM_UP) return (stem_y == -1 ? y - 24 : stem_y);
-   else if(stem_type == STEM_DOWN) return (stem_y == -1 ? y + 33 : stem_y);
-   else return -1;
-}
 int NoteRenderInfo::getYBase()
 {
     if(chord) return (stem_type == STEM_UP ? max_chord_y : min_chord_y);
@@ -321,6 +304,25 @@ ScoreAnalyser::ScoreAnalyser(ScoreEditor* parent, int stemPivot)
 {
     ScoreAnalyser::editor = parent;
     ScoreAnalyser::stemPivot = stemPivot;
+    
+    stem_up_x_offset = 9;
+    stem_up_y_offset = 3;
+    stem_down_x_offset = 1;
+    stem_down_y_offset = 6;
+    stem_height = 27;
+}
+void ScoreAnalyser::setStemSize(
+                  const int stem_up_x_offset,
+                  const int stem_up_y_offset,
+                  const int stem_down_x_offset,
+                  const int stem_down_y_offset,
+                  const int stem_height )
+{
+    ScoreAnalyser::stem_up_x_offset = stem_up_x_offset;
+    ScoreAnalyser::stem_up_y_offset = stem_up_y_offset;
+    ScoreAnalyser::stem_down_x_offset = stem_down_x_offset;
+    ScoreAnalyser::stem_down_y_offset = stem_down_y_offset;
+    ScoreAnalyser::stem_height = stem_height;
 }
 void ScoreAnalyser::setStemPivot(const int level)
 {
@@ -329,6 +331,25 @@ void ScoreAnalyser::setStemPivot(const int level)
 void ScoreAnalyser::clearAndPrepare()
 {
     noteRenderInfo.clear();
+}
+int ScoreAnalyser::getStemX(NoteRenderInfo& note)
+{
+    if     (note.stem_type == STEM_UP)   return (note.x + stem_up_x_offset);
+    else if(note.stem_type == STEM_DOWN) return (note.x + stem_down_x_offset);
+    else return -1;
+}
+int ScoreAnalyser::getStemYFrom(NoteRenderInfo& note)
+{
+    const int stem_y_base = note.getYBase();
+    if     (note.stem_type == STEM_UP)   return (stem_y_base + stem_up_y_offset);
+    else if(note.stem_type == STEM_DOWN) return (stem_y_base + stem_down_y_offset);
+    else return -1;
+}
+int ScoreAnalyser::getStemYTo(NoteRenderInfo& note)
+{
+    if     (note.stem_type == STEM_UP)   return (note.stem_y == -1 ? getStemYFrom(note) - stem_height : note.stem_y);
+    else if(note.stem_type == STEM_DOWN) return (note.stem_y == -1 ? getStemYFrom(note) + stem_height : note.stem_y);
+    else return -1;
 }
 void ScoreAnalyser::renderSilences( void (*renderSilenceCallback)(const int, const int, const int),
                                     const int first_visible_measure, const int last_visible_measure,

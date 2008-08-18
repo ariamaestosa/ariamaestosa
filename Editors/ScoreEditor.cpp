@@ -688,7 +688,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
 	}
 }
 
-void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo)
+void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* analyser)
 {
     AriaRender::primitives();
 	if(renderInfo.selected)
@@ -702,8 +702,8 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo)
 
         if(renderInfo.stem_type == STEM_UP or renderInfo.stem_type == STEM_DOWN)
         {
-            AriaRender::line(renderInfo.getStemX(), renderInfo.getStemYFrom(),
-                             renderInfo.getStemX(), renderInfo.getStemYTo());
+            AriaRender::line(analyser->getStemX(renderInfo), analyser->getStemYFrom(renderInfo),
+                             analyser->getStemX(renderInfo), analyser->getStemYTo(renderInfo)   );
         }
         
         
@@ -755,9 +755,9 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo)
         AriaRender::color(0,0,0);
         AriaRender::lineWidth(2);
         
-        const int x1 = renderInfo.getStemX();
-        int y1 = renderInfo.getStemYTo();
-        int y2 = renderInfo.beam_to_y;
+        const int x1 = analyser->getStemX(renderInfo);
+        int y1       = analyser->getStemYTo(renderInfo);
+        int y2       = renderInfo.beam_to_y;
         
         const int y_diff = (renderInfo.stem_type == STEM_UP ? 5 : -5);
         
@@ -1313,7 +1313,7 @@ void ScoreEditor::renderScore(ScoreAnalyser* analyser, const int silences_y)
     for(int i=0; i<visibleNoteAmount; i++)
     {
         assertExpr(i,<,(int)analyser->noteRenderInfo.size());
-        renderNote_pass2(analyser->noteRenderInfo[i]);
+        renderNote_pass2(analyser->noteRenderInfo[i], analyser);
     }
 
 }
