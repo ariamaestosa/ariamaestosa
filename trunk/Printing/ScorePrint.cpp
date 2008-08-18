@@ -46,7 +46,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     dc.SetPen(  wxPen( wxColour(125,125,125), 1 ) );
     
     const float lineHeight = (float)(y1 - y0) / (float)(lineAmount-1);
-    const int headRadius = (int)round((float)lineHeight*0.72);
+    const int headRadius = 9;//(int)round((float)lineHeight*0.72);
     
     for(int s=0; s<lineAmount; s++)
     {
@@ -56,9 +56,8 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     
     beginLine(&dc, &line, x0, y0, x1, y1, show_measure_number);
     
-    //std::vector<NoteRenderInfo> noteRenderInfo;
-    //setUpDownPivotLevel(middleC-5);
     ScoreAnalyser analyser(scoreEditor, middleC-5);
+    analyser.setStemSize( 19, -4, 9, -4, 35 );
     
     // iterate through layout elements to collect notes in the vector
     // so ScoreAnalyser can prepare the score
@@ -120,7 +119,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         
         const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
         
-        wxPoint headLocation( noteRenderInfo.x + headRadius + headRadius/1.7, notey-headRadius/2.0 );
+        wxPoint headLocation( noteRenderInfo.x + headRadius, notey-headRadius/2.0 );
         dc.DrawEllipse( headLocation, wxSize(headRadius+1, headRadius) );
         
         noteRenderInfo.setY(notey+headRadius/2.0);
@@ -128,10 +127,11 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         // draw stem
         if(noteRenderInfo.stem_type != STEM_NONE)
         {
-            const bool up = noteRenderInfo.stem_type == STEM_UP;
-            dc.DrawLine( noteRenderInfo.getStemX() + (up ? 15:13), noteRenderInfo.getStemYFrom() + (up ? -8 : -9),
-                         noteRenderInfo.getStemX() + (up ? 15:13), noteRenderInfo.getStemYTo() + (up ? -13:-8));
+            dc.DrawLine( analyser.getStemX(noteRenderInfo), analyser.getStemYFrom(noteRenderInfo),
+                         analyser.getStemX(noteRenderInfo), analyser.getStemYTo(noteRenderInfo)    );
         }
+        
+        
     }
     
 }

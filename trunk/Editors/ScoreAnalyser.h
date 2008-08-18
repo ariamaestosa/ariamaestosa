@@ -117,9 +117,6 @@ public:
 	void triplet_arc(int pixel1, int pixel2);
     void setTriplet();
     
-    int getStemX();
-    int getStemYFrom();
-    int getStemYTo();
     int getYBase();
     int getBaseLevel();
     const int getY() const;
@@ -133,10 +130,26 @@ class ScoreAnalyser
     
     ScoreEditor* editor;
     int stemPivot;
+    
+    int stem_up_x_offset;
+    int stem_up_y_offset;
+    int stem_down_x_offset;
+    int stem_down_y_offset;
+    int stem_height;
 public:
     std::vector<NoteRenderInfo> noteRenderInfo;
     
     ScoreAnalyser(ScoreEditor* parent, int stemPivot);
+    
+    void setStemSize( const int stem_up_x_offset,
+                      const int stem_up_y_offset,
+                      const int stem_down_x_offset,
+                      const int stem_down_y_offset,
+                      const int stem_height );
+    
+    int getStemX(NoteRenderInfo& note);
+    int getStemYFrom(NoteRenderInfo& note);
+    int getStemYTo(NoteRenderInfo& note);
     
     // you're done rendering the current frame, prepare to render the next
     void clearAndPrepare();
