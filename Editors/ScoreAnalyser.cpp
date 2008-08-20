@@ -74,7 +74,7 @@ public:
         if(last_id == first_id) return; // note alone, no beaming to perform
 
         ScoreMidiConverter* converter = editor->getScoreMidiConverter();
-        const int y_step = editor->getYStep();
+        //const int y_step = editor->getYStep();
 
         // check for number of "beamable" notes and split if current amount is not acceptable with the current time sig
         // FIXME - not always right
@@ -147,40 +147,36 @@ public:
             noteRenderInfo[j].stem_type = ( noteRenderInfo[first_id].beam_show_above ?  STEM_UP : STEM_DOWN );
         }
 
-        const int last_stem_y_end = analyser->getStemYTo(noteRenderInfo[last_id]);
+        const int last_stem_end_level = analyser->getStemTo(noteRenderInfo[last_id]);
         noteRenderInfo[first_id].beam_to_x = analyser->getStemX(noteRenderInfo[last_id]);
 
         if(noteRenderInfo[first_id].beam_show_above)
         {
-            const int min_level_y = min_level*y_step + editor->getEditorYStart() - editor->getYScrollInPixels() - 2;
-
             // choose y coords so that all notes are correctly in
-            noteRenderInfo[first_id].beam_to_y = std::min(min_level_y - 10, last_stem_y_end); // Y to
-            if(analyser->getStemYFrom(noteRenderInfo[first_id]) > min_level_y - analyser->stem_height)
-                noteRenderInfo[first_id].stem_y = min_level_y - analyser->stem_height; // Y from
+            noteRenderInfo[first_id].beam_to_level = std::min<float>((float)min_level - analyser->min_stem_height, last_stem_end_level); // Y to
+            if(analyser->getStemFrom(noteRenderInfo[first_id]) > min_level - analyser->stem_height)
+                noteRenderInfo[first_id].stem_y_level = min_level - analyser->stem_height; // Y from
         }
         else
         {
-            const int max_level_y = max_level*y_step + editor->getEditorYStart() - editor->getYScrollInPixels();
-
             // choose y coords so that all notes are correctly in
-            noteRenderInfo[first_id].beam_to_y = std::max(max_level_y + 10, last_stem_y_end); // Y to
-            if(analyser->getStemYFrom(noteRenderInfo[first_id]) < max_level_y + analyser->stem_height)
-                noteRenderInfo[first_id].stem_y = max_level_y + analyser->stem_height; // Y from
+            noteRenderInfo[first_id].beam_to_level = std::max<float>((float)max_level + analyser->min_stem_height, last_stem_end_level); // Y to
+            if(analyser->getStemFrom(noteRenderInfo[first_id]) < max_level + analyser->stem_height)
+                noteRenderInfo[first_id].stem_y_level = max_level + analyser->stem_height; // Y from
         }
 
         // fix all note stems so they all point in the same direction and have the correct height
         const int from_x = analyser->getStemX(noteRenderInfo[first_id]);
-        const int from_y = analyser->getStemYTo(noteRenderInfo[first_id]);
+        const int from_level = analyser->getStemTo(noteRenderInfo[first_id]);
         const int to_x = noteRenderInfo[first_id].beam_to_x;
-        const int to_y = noteRenderInfo[first_id].beam_to_y;
+        const int to_level = noteRenderInfo[first_id].beam_to_level;
 
         for(int j=first_id; j<=last_id; j++)
         {
             // give correct stem height (so it doesn't end above or below beam line)
             // rel_pos will be 0 for first note of a beamed serie, and 1 for the last one
             const float rel_pos = (float)(analyser->getStemX(noteRenderInfo[j]) - from_x) / (float)(to_x - from_x);
-            noteRenderInfo[j].stem_y = from_y + (int)round( (to_y - from_y) * rel_pos );
+            noteRenderInfo[j].stem_y_level = (float)from_level + (float)(to_level - from_level) * rel_pos;
 
             if(j != first_id) noteRenderInfo[j].flag_amount = 0;
         }
@@ -221,13 +217,11 @@ NoteRenderInfo::NoteRenderInfo(int tick, int x, int level, int tick_length, int 
 
     beam_show_above = false;
     beam_to_x = -1;
-    beam_to_y = -1;
+    beam_to_level = -1;
     beam = false;
 
     chord = false;
-    max_chord_y = -1;
-    min_chord_y = -1;
-    stem_y = -1;
+    stem_y_level = -1;
     min_chord_level=-1;
     max_chord_level=-1;
 
@@ -279,19 +273,23 @@ void NoteRenderInfo::setTriplet()
     triplet = true;
     drag_triplet_sign = true;
 }
-int NoteRenderInfo::getYBase()
-{
-    if(chord) return (stem_type == STEM_UP ? max_chord_y : min_chord_y);
-    else return y;
-}
+
 int NoteRenderInfo::getBaseLevel()
 {
+    if(chord) std::cout << "this is a chord " << std::endl;
+    
     if(chord) return (stem_type == STEM_UP ? max_chord_level : min_chord_level);
     else return level;
 }
-const int NoteRenderInfo::getY() const{ return y; }
 
-// too be called by renderer where location is computer from level
+/*
+ In an attempt t be view-independant, ScoreAnalyser tries to store Y locations as levels
+ and never as direct coordinate. However, to avoid the overhead of converting frequently
+ from level to coordinate, the renderer is given the option to store the Y coordinate
+ inside the noteRenderInfo.
+ */
+
+const int NoteRenderInfo::getY() const{ return y; }
 void NoteRenderInfo::setY(const int newY)
 {
     y = newY;
@@ -306,23 +304,26 @@ ScoreAnalyser::ScoreAnalyser(ScoreEditor* parent, int stemPivot)
     ScoreAnalyser::stemPivot = stemPivot;
     
     stem_up_x_offset = 9;
-    stem_up_y_offset = 3;
+    stem_up_y_offset = 0.4;
     stem_down_x_offset = 1;
-    stem_down_y_offset = 6;
-    stem_height = 27;
+    stem_down_y_offset = 0.8;
+    stem_height = 5.2;
+    min_stem_height = 3.0;
 }
 void ScoreAnalyser::setStemSize(
                   const int stem_up_x_offset,
-                  const int stem_up_y_offset,
+                  const float stem_up_y_offset,
                   const int stem_down_x_offset,
-                  const int stem_down_y_offset,
-                  const int stem_height )
+                  const float stem_down_y_offset,
+                  const float stem_height,
+                  const float min_stem_height)
 {
     ScoreAnalyser::stem_up_x_offset = stem_up_x_offset;
     ScoreAnalyser::stem_up_y_offset = stem_up_y_offset;
     ScoreAnalyser::stem_down_x_offset = stem_down_x_offset;
     ScoreAnalyser::stem_down_y_offset = stem_down_y_offset;
     ScoreAnalyser::stem_height = stem_height;
+    ScoreAnalyser::min_stem_height = min_stem_height;
 }
 void ScoreAnalyser::setStemPivot(const int level)
 {
@@ -338,18 +339,19 @@ int ScoreAnalyser::getStemX(NoteRenderInfo& note)
     else if(note.stem_type == STEM_DOWN) return (note.x + stem_down_x_offset);
     else return -1;
 }
-int ScoreAnalyser::getStemYFrom(NoteRenderInfo& note)
+float ScoreAnalyser::getStemFrom(NoteRenderInfo& note)
 {
-    const int stem_y_base = note.getYBase();
-    if     (note.stem_type == STEM_UP)   return (stem_y_base + stem_up_y_offset);
-    else if(note.stem_type == STEM_DOWN) return (stem_y_base + stem_down_y_offset);
+    const int stem_base_lvl = note.getBaseLevel();
+    if     (note.stem_type == STEM_UP)   return (stem_base_lvl + stem_up_y_offset);
+    else if(note.stem_type == STEM_DOWN) return (stem_base_lvl + stem_down_y_offset);
     else return -1;
 }
-int ScoreAnalyser::getStemYTo(NoteRenderInfo& note)
+float ScoreAnalyser::getStemTo(NoteRenderInfo& note)
 {
-    if     (note.stem_type == STEM_UP)   return (note.stem_y == -1 ? getStemYFrom(note) - stem_height : note.stem_y);
-    else if(note.stem_type == STEM_DOWN) return (note.stem_y == -1 ? getStemYFrom(note) + stem_height : note.stem_y);
-    else return -1;
+    if(note.stem_y_level != -1) return note.stem_y_level;
+    else if(note.stem_type == STEM_UP)   return getStemFrom(note) - stem_height;
+    else if(note.stem_type == STEM_DOWN) return getStemFrom(note) + stem_height;
+    else{ assert(false); return -1; }
 }
 void ScoreAnalyser::renderSilences( void (*renderSilenceCallback)(const int, const int, const int),
                                     const int first_visible_measure, const int last_visible_measure,
@@ -508,9 +510,6 @@ void ScoreAnalyser::putInTimeOrder()
 
 void ScoreAnalyser::findAndMergeChords()
 {
-    const int halfh = editor->getHalfNoteHeight();
-    const int y_step = editor->getYStep();
-
     /*
      * start by merging notes playing at the same time (chords)
      * The for loop iterates through all notes. When we find notes that play at the same time,
@@ -588,8 +587,8 @@ void ScoreAnalyser::findAndMergeChords()
 
                 const bool stem_up = mid_level >= stemPivot+2;
 
-                const int maxy = editor->getEditorYStart() + y_step*max_level - halfh - editor->getYScrollInPixels() + 2;
-                const int miny = editor->getEditorYStart() + y_step*min_level - halfh - editor->getYScrollInPixels() + 2;
+               // const int maxy = editor->getEditorYStart() + y_step*max_level - halfh - editor->getYScrollInPixels() + 2;
+                //const int miny = editor->getEditorYStart() + y_step*min_level - halfh - editor->getYScrollInPixels() + 2;
 
                 // decide the one note to keep that will "summarize" all others.
                 // it will be the highest or the lowest, depending on if stem is up or down.
@@ -597,8 +596,8 @@ void ScoreAnalyser::findAndMergeChords()
                 // the chord. results may vary if you make very different notes play at the same time.
                 NoteRenderInfo summary = noteRenderInfo[ stem_up ? minid : maxid ];
                 summary.chord = true;
-                summary.max_chord_y = maxy;
-                summary.min_chord_y = miny;
+               // summary.max_chord_y = maxy;
+                //summary.min_chord_y = miny;
                 summary.min_chord_level = min_level;
                 summary.max_chord_level = max_level;
                 summary.flag_amount = flag_amount;
@@ -630,7 +629,6 @@ void ScoreAnalyser::findAndMergeChords()
 void ScoreAnalyser::processTriplets()
 {
     const int visibleNoteAmount = noteRenderInfo.size();
-    const int y_step = editor->getYStep();
 
     for(int i=0; i<visibleNoteAmount; i++)
     {
@@ -719,11 +717,11 @@ void ScoreAnalyser::processTriplets()
 
                     if(noteRenderInfo[first_triplet].triplet_show_above)
                     {
-                        noteRenderInfo[first_triplet].triplet_arc_y = min_level*y_step + editor->getEditorYStart() - editor->getYScrollInPixels() - 2;
+                        noteRenderInfo[first_triplet].triplet_arc_level = min_level;
                     }
                     else
                     {
-                        noteRenderInfo[first_triplet].triplet_arc_y = max_level*y_step + editor->getEditorYStart() - editor->getYScrollInPixels();
+                        noteRenderInfo[first_triplet].triplet_arc_level = max_level;
                     }
 
                     noteRenderInfo[first_triplet].drag_triplet_sign = true;
@@ -960,7 +958,7 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
     if(renderInfo.triplet)
     {
         renderInfo.triplet_arc_x_start = renderInfo.x + 8;
-        renderInfo.triplet_arc_y = renderInfo.getY();
+        renderInfo.triplet_arc_level = renderInfo.level;
     }
 	
     assertExpr(renderInfo.level,>,-1);    
