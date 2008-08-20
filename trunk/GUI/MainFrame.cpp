@@ -169,9 +169,9 @@ public:
         parentsizer->Add(pane, 1, wxEXPAND | wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
         bsizer = new wxBoxSizer(orientation);
     }
-    void add(wxWindow* window, int margin=2)
+    void add(wxWindow* window, int margin=2, int proportion=1, long margins = wxALL)
     {
-        bsizer->Add(window, 1, wxALL | wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL, margin);
+        bsizer->Add(window, proportion, margins | wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL, margin);
     }
     ~QuickBoxPanel()
     {
@@ -254,12 +254,15 @@ void MainFrame::init()
     QuickBoxPanel quickPane(topPane, toolbarSizer, wxHORIZONTAL);
     
     measureTypeTop=new wxTextCtrl(quickPane.pane, MEASURE_NUM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize, wxTE_PROCESS_ENTER );
-    quickPane.add(measureTypeTop,2);
+    quickPane.add(measureTypeTop,2, 1,wxTOP | wxBOTTOM | wxLEFT);
 
-    quickPane.add(new wxStaticText(quickPane.pane, wxID_ANY, wxT("  /"), wxDefaultPosition, wxSize(15,15)),0);
-
+    wxStaticText* slash = new wxStaticText(quickPane.pane, wxID_ANY, wxT(" /"), wxDefaultPosition, wxSize(15,15));
+    quickPane.add(slash, 0, 0);
+    slash->SetMinSize(wxSize(15,15));
+    slash->SetMaxSize(wxSize(15,15));
+    
     measureTypeBottom=new wxTextCtrl(quickPane.pane, MEASURE_DENOM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize, wxTE_PROCESS_ENTER );
-    quickPane.add(measureTypeBottom,2);
+    quickPane.add(measureTypeBottom,2,1, wxTOP | wxBOTTOM | wxRIGHT);
     }
     
     // song beginning

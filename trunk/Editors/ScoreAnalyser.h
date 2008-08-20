@@ -145,8 +145,8 @@ public:
                       const float stem_up_y_offset,
                       const int stem_down_x_offset,
                       const float stem_down_y_offset,
-                      const float stem_height,
-                      const float min_stem_height);
+                      const float stem_height = -1,
+                      const float min_stem_height = -1);
     
     int getStemX(NoteRenderInfo& note);
     float getStemFrom(NoteRenderInfo& note);

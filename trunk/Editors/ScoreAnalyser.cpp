@@ -322,8 +322,8 @@ void ScoreAnalyser::setStemSize(
     ScoreAnalyser::stem_up_y_offset = stem_up_y_offset;
     ScoreAnalyser::stem_down_x_offset = stem_down_x_offset;
     ScoreAnalyser::stem_down_y_offset = stem_down_y_offset;
-    ScoreAnalyser::stem_height = stem_height;
-    ScoreAnalyser::min_stem_height = min_stem_height;
+    if(stem_height != -1) ScoreAnalyser::stem_height = stem_height;
+    if(min_stem_height != -1) ScoreAnalyser::min_stem_height = min_stem_height;
 }
 void ScoreAnalyser::setStemPivot(const int level)
 {
