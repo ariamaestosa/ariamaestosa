@@ -57,7 +57,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     beginLine(&dc, &line, x0, y0, x1, y1, show_measure_number);
     
     ScoreAnalyser analyser(scoreEditor, middleC-5);
-    analyser.setStemSize( 19, -4, 9, -4, 35 );
+    analyser.setStemSize( 19, -4, 9, -4, 35, 25 );
     
     // iterate through layout elements to collect notes in the vector
     // so ScoreAnalyser can prepare the score
@@ -127,8 +127,8 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         // draw stem
         if(noteRenderInfo.stem_type != STEM_NONE)
         {
-            dc.DrawLine( analyser.getStemX(noteRenderInfo), analyser.getStemYFrom(noteRenderInfo),
-                         analyser.getStemX(noteRenderInfo), analyser.getStemYTo(noteRenderInfo)    );
+            dc.DrawLine( analyser.getStemX(noteRenderInfo), LEVEL_TO_Y(analyser.getStemFrom(noteRenderInfo)),
+                         analyser.getStemX(noteRenderInfo), LEVEL_TO_Y(analyser.getStemTo(noteRenderInfo))    );
         }
         
         

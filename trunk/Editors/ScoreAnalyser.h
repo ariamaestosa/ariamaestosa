@@ -65,7 +65,7 @@ public:
     // chord
     bool chord;
     // since a chord contains many notes, keep info about the highest and lowest note of the chord
-    int max_chord_y, min_chord_y, min_chord_level, max_chord_level;
+    int min_chord_level, max_chord_level;
     
     // a 1/4 will have none, a 1/8 has 1, a 1/16 has 2, etc.
 	int flag_amount;
@@ -94,15 +94,15 @@ public:
 	
 	// triplets
 	bool triplet_show_above, triplet, drag_triplet_sign;
-	int triplet_arc_x_start, triplet_arc_x_end, triplet_arc_y; // where to display the "triplet arc" than contains a "3"
+	int triplet_arc_x_start, triplet_arc_x_end, triplet_arc_level; // where to display the "triplet arc" than contains a "3"
 	
     // beams
     // FIXME - is beam_show_above really necessary, since it's always the same direction as stem_type?
     bool beam_show_above, beam;
     // if beam is true, the renderer will draw a beam between the end of this note's stem and the
     // location specified by these variables.
-    int beam_to_x, beam_to_y;
-    int stem_y; // if != -1, the renderer will use this y as stem end instead of calculating it itself
+    int beam_to_x, beam_to_level;
+    float stem_y_level; // if != -1, the renderer will use this y as stem end instead of calculating it itself
 
 
 	NoteRenderInfo(int tick, int x, int level, int tick_length, int sign, const bool selected, int pitch);
@@ -117,10 +117,9 @@ public:
 	void triplet_arc(int pixel1, int pixel2);
     void setTriplet();
     
-    int getYBase();
     int getBaseLevel();
     const int getY() const;
-    void setY(const int newY); // too be called by renderer where location is computer from level
+    void setY(const int newY);
 };
 
 class BeamGroup;
@@ -132,24 +131,26 @@ class ScoreAnalyser
     int stemPivot;
     
     int stem_up_x_offset;
-    int stem_up_y_offset;
+    float stem_up_y_offset;
     int stem_down_x_offset;
-    int stem_down_y_offset;
-    int stem_height;
+    float stem_down_y_offset;
+    float stem_height;
+    float min_stem_height;
 public:
     std::vector<NoteRenderInfo> noteRenderInfo;
     
     ScoreAnalyser(ScoreEditor* parent, int stemPivot);
     
     void setStemSize( const int stem_up_x_offset,
-                      const int stem_up_y_offset,
+                      const float stem_up_y_offset,
                       const int stem_down_x_offset,
-                      const int stem_down_y_offset,
-                      const int stem_height );
+                      const float stem_down_y_offset,
+                      const float stem_height,
+                      const float min_stem_height);
     
     int getStemX(NoteRenderInfo& note);
-    int getStemYFrom(NoteRenderInfo& note);
-    int getStemYTo(NoteRenderInfo& note);
+    float getStemFrom(NoteRenderInfo& note);
+    float getStemTo(NoteRenderInfo& note);
     
     // you're done rendering the current frame, prepare to render the next
     void clearAndPrepare();

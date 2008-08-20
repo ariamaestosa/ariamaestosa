@@ -54,7 +54,7 @@
 namespace AriaMaestosa {
 	
 // will contain half the height of a note 'main circle', this will be used for centering the note on the string
-int halfh = -1;
+int head_radius = -1;
 	
 // height in pixels of each level
 const int y_step = 5;
@@ -563,6 +563,9 @@ void ScoreEditor::setNoteSign(const int sign, const int noteID)
 }
 
 #pragma mark -
+
+#define LEVEL_TO_Y( lvl ) (y_step * lvl + getEditorYStart() - getYScrollInPixels()-2)
+
 // where 'renderInfo' is a 'NoteRenderInfo' object of current note.
 // 'vector' is where all visible notes will are added, to be analysed after
 void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
@@ -575,7 +578,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
 	else
         AriaRender::color(0,0,0);	
 
-	renderInfo.setY( getEditorYStart() + y_step*renderInfo.level - halfh - getYScrollInPixels() + 2 );
+	renderInfo.setY( LEVEL_TO_Y(renderInfo.level) - head_radius + 4 );
 
 	// note head
     /*
@@ -626,7 +629,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
 	{
 		for(int lvl=score_from_level+1; lvl>renderInfo.level+renderInfo.level%2; lvl -= 2)
 		{
-			const int lvly = getEditorYStart() + y_step*lvl - halfh - getYScrollInPixels() + 2;
+			const int lvly = getEditorYStart() + y_step*lvl - head_radius - getYScrollInPixels() + 2;
             AriaRender::line(renderInfo.x-5, lvly, renderInfo.x+15, lvly);
 		}
 	}
@@ -636,7 +639,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
 	{
 		for(int lvl=score_to_level; lvl<=renderInfo.level-renderInfo.level%2+2; lvl += 2)
 		{
-			const int lvly = getEditorYStart() + y_step*lvl - halfh - getYScrollInPixels() + 2;
+			const int lvly = getEditorYStart() + y_step*lvl - head_radius - getYScrollInPixels() + 2;
 			AriaRender::line(renderInfo.x-5, lvly, renderInfo.x+15, lvly);
 		}
 	}
@@ -644,7 +647,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     // draw small lines between both scores if needed
 	if(g_clef and f_clef and renderInfo.level == middle_c_level)
 	{
-		const int lvly = getEditorYStart() + y_step*(middle_c_level+1) - halfh - getYScrollInPixels() + 2;
+		const int lvly = getEditorYStart() + y_step*(middle_c_level+1) - head_radius - getYScrollInPixels() + 2;
 		AriaRender::line(renderInfo.x-5, lvly, renderInfo.x+15, lvly);
 	}
     
@@ -668,21 +671,21 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
 	if(renderInfo.sign == SHARP)
 	{
 		AriaRender::images();
-		sharpSign->move(renderInfo.x - 5, renderInfo.getY() + halfh);
+		sharpSign->move(renderInfo.x - 5, renderInfo.getY() + head_radius);
 		sharpSign->render();
         AriaRender::primitives();
 	}
 	else if(renderInfo.sign == FLAT)
 	{
 		AriaRender::images();
-		flatSign->move(renderInfo.x - 5, renderInfo.getY() + halfh);
+		flatSign->move(renderInfo.x - 5, renderInfo.getY() + head_radius);
 		flatSign->render();
         AriaRender::primitives();
 	}
 	else if(renderInfo.sign == NATURAL)
 	{
 		AriaRender::images();
-		naturalSign->move(renderInfo.x - 5, renderInfo.getY() + halfh);
+		naturalSign->move(renderInfo.x - 5, renderInfo.getY() + head_radius);
 		naturalSign->render();
 		AriaRender::primitives();
 	}
@@ -702,8 +705,8 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
 
         if(renderInfo.stem_type == STEM_UP or renderInfo.stem_type == STEM_DOWN)
         {
-            AriaRender::line(analyser->getStemX(renderInfo), analyser->getStemYFrom(renderInfo),
-                             analyser->getStemX(renderInfo), analyser->getStemYTo(renderInfo)   );
+            AriaRender::line( analyser->getStemX(renderInfo), LEVEL_TO_Y(analyser->getStemFrom(renderInfo)),
+                              analyser->getStemX(renderInfo), LEVEL_TO_Y(analyser->getStemTo(renderInfo))   );
         }
         
         
@@ -732,10 +735,10 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
 		const int center_x = (renderInfo.triplet_arc_x_end == -1 ? renderInfo.triplet_arc_x_start : (renderInfo.triplet_arc_x_start + renderInfo.triplet_arc_x_end)/2);
 		const int radius_x = (renderInfo.triplet_arc_x_end == -1 or  renderInfo.triplet_arc_x_end == renderInfo.triplet_arc_x_start ?
 							  10 : (renderInfo.triplet_arc_x_end - renderInfo.triplet_arc_x_start)/2);
-        AriaRender::arc(center_x, renderInfo.triplet_arc_y + (renderInfo.triplet_show_above ? 0 : 10), radius_x, 10, renderInfo.triplet_show_above);
+        AriaRender::arc(center_x, LEVEL_TO_Y(renderInfo.triplet_arc_level) + (renderInfo.triplet_show_above ? 0 : 10), radius_x, 10, renderInfo.triplet_show_above);
 
         AriaRender::color(0,0,0);
-        AriaRender::small_character('3', center_x-2, ( renderInfo.triplet_show_above? renderInfo.triplet_arc_y : renderInfo.triplet_arc_y+18));
+        AriaRender::small_character('3', center_x-2, LEVEL_TO_Y(renderInfo.triplet_arc_level) + ( renderInfo.triplet_show_above? 0 : 18));
 	}
 	
 	// tie
@@ -745,8 +748,8 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
 		const float radius_x = (renderInfo.getTiedToPixel() - renderInfo.x)/2.0;
         const bool show_above = renderInfo.isTieUp();
         
-        const int base_y = renderInfo.getYBase(); 
-        AriaRender::arc(center_x, base_y + (show_above ? 0 : 10), radius_x, 6, show_above);
+        const int base_y = renderInfo.getY() + head_radius; 
+        AriaRender::arc(center_x, base_y + (show_above ? -5 : 5), radius_x, 6, show_above);
 	}
 	
     // beam
@@ -756,8 +759,8 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
         AriaRender::lineWidth(2);
         
         const int x1 = analyser->getStemX(renderInfo);
-        int y1       = analyser->getStemYTo(renderInfo);
-        int y2       = renderInfo.beam_to_y;
+        int y1       = LEVEL_TO_Y(analyser->getStemTo(renderInfo));
+        int y2       = LEVEL_TO_Y(renderInfo.beam_to_level);
         
         const int y_diff = (renderInfo.stem_type == STEM_UP ? 5 : -5);
         
@@ -907,7 +910,7 @@ void renderSilence(const int tick, const int tick_length, const int silences_y)
 void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 						 RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {
-	if(halfh == -1) halfh = noteOpen->getImageHeight()/2;
+	if(head_radius == -1) head_radius = noteOpen->getImageHeight()/2;
 
     if(!ImageProvider::imagesLoaded()) return;
     const int yscroll = getYScrollInPixels();
@@ -1394,7 +1397,7 @@ int ScoreEditor::getYScrollInPixels()
 
 NoteSearchResult ScoreEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 {
-	const int halfh = noteOpen->getImageHeight()/2;
+	const int head_radius = noteOpen->getImageHeight()/2;
 	const int noteAmount = track->getNoteAmount();
 	const int mx = x.getRelativeTo(WINDOW);
 	
@@ -1404,7 +1407,7 @@ NoteSearchResult ScoreEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 		//const int notePitch = track->getNotePitchID(n);
 		const int noteLevel = converter->noteToLevel(track->getNote(n));
         if(noteLevel == -1) continue;
-		const int note_y = getEditorYStart() + y_step*noteLevel - halfh - getYScrollInPixels() + 2;
+		const int note_y = getEditorYStart() + y_step*noteLevel - head_radius - getYScrollInPixels() + 2;
 		const int note_x = getEditorsXStart() + track->getNoteStartInPixels(n)  - sequence->getXScrollInPixels();
 		const int note_x2 = getEditorsXStart() + track->getNoteEndInPixels(n)  - sequence->getXScrollInPixels();
 		
@@ -1490,7 +1493,7 @@ void ScoreEditor::moveNote(Note& note, const int relativeX, const int relativeY)
 
 void ScoreEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current, RelativeXCoord& mousex_initial, int mousey_initial)
 {
-	const int halfh = noteOpen->getImageHeight()/2;
+	const int head_radius = noteOpen->getImageHeight()/2;
 	const int noteAmount = track->getNoteAmount();
 	const int mxc = mousex_current.getRelativeTo(WINDOW);
 	const int mxi = mousex_initial.getRelativeTo(WINDOW);
@@ -1500,7 +1503,7 @@ void ScoreEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_c
 		//const int notePitch = track->getNotePitchID(n);
 		const int noteLevel = converter->noteToLevel(track->getNote(n));
         if(noteLevel == -1) continue;
-		const int note_y = getEditorYStart() + y_step*noteLevel - halfh - getYScrollInPixels() + 2;
+		const int note_y = getEditorYStart() + y_step*noteLevel - head_radius - getYScrollInPixels() + 2;
 		const int note_x = getEditorsXStart() + track->getNoteStartInPixels(n)  - sequence->getXScrollInPixels();
 		
 		if( std::min(mxc, mxi)<note_x and std::max(mxc,mxi)>note_x and
@@ -1519,6 +1522,6 @@ void ScoreEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_c
 
 
 int ScoreEditor::getYStep(){ return y_step; }
-int ScoreEditor::getHalfNoteHeight(){ return halfh; }
+int ScoreEditor::getHalfNoteHeight(){ return head_radius; }
 
 }
