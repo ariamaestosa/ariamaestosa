@@ -57,7 +57,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     beginLine(&dc, &line, x0, y0, x1, y1, show_measure_number);
     
     ScoreAnalyser analyser(scoreEditor, middleC-5);
-    analyser.setStemSize( 19, -4, 9, -4 );
+    analyser.setStemSize( 19, 0, 9, 0 );
     
     // iterate through layout elements to collect notes in the vector
     // so ScoreAnalyser can prepare the score
