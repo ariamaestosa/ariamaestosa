@@ -150,35 +150,57 @@ public:
         const int last_stem_end_level = analyser->getStemTo(noteRenderInfo[last_id]);
         noteRenderInfo[first_id].beam_to_x = analyser->getStemX(noteRenderInfo[last_id]);
 
+        
+        int beam_to_level;
         if(noteRenderInfo[first_id].beam_show_above)
-        {
-            // choose y coords so that all notes are correctly in
-            noteRenderInfo[first_id].beam_to_level = std::min<float>((float)min_level - analyser->min_stem_height, last_stem_end_level); // Y to
-            if(analyser->getStemFrom(noteRenderInfo[first_id]) > min_level - analyser->stem_height)
-                noteRenderInfo[first_id].stem_y_level = min_level - analyser->stem_height; // Y from
-        }
+            beam_to_level = std::min<float>((float)min_level - analyser->min_stem_height, last_stem_end_level);
         else
-        {
-            // choose y coords so that all notes are correctly in
-            noteRenderInfo[first_id].beam_to_level = std::max<float>((float)max_level + analyser->min_stem_height, last_stem_end_level); // Y to
-            if(analyser->getStemFrom(noteRenderInfo[first_id]) < max_level + analyser->stem_height)
-                noteRenderInfo[first_id].stem_y_level = max_level + analyser->stem_height; // Y from
-        }
-
+            beam_to_level = std::max<float>((float)max_level + analyser->min_stem_height, last_stem_end_level);
+        noteRenderInfo[first_id].beam_to_level = beam_to_level;
+        
         // fix all note stems so they all point in the same direction and have the correct height
-        const int from_x = analyser->getStemX(noteRenderInfo[first_id]);
-        const int from_level = analyser->getStemTo(noteRenderInfo[first_id]);
-        const int to_x = noteRenderInfo[first_id].beam_to_x;
-        const int to_level = noteRenderInfo[first_id].beam_to_level;
-
-        for(int j=first_id; j<=last_id; j++)
+        while(true)
         {
-            // give correct stem height (so it doesn't end above or below beam line)
-            // rel_pos will be 0 for first note of a beamed serie, and 1 for the last one
-            const float rel_pos = (float)(analyser->getStemX(noteRenderInfo[j]) - from_x) / (float)(to_x - from_x);
-            noteRenderInfo[j].stem_y_level = (float)from_level + (float)(to_level - from_level) * rel_pos;
-
-            if(j != first_id) noteRenderInfo[j].flag_amount = 0;
+            const int from_x = analyser->getStemX(noteRenderInfo[first_id]);
+            const float from_level = analyser->getStemTo(noteRenderInfo[first_id]);
+            const int to_x = noteRenderInfo[first_id].beam_to_x;
+            const float to_level = noteRenderInfo[first_id].beam_to_level;
+            
+            bool need_to_start_again = false;
+            for(int j=first_id; j<=last_id; j++)
+            {
+                // give correct stem height (so it doesn't end above or below beam line)
+                // rel_pos will be 0 for first note of a beamed serie, and 1 for the last one
+                const float rel_pos = (float)(analyser->getStemX(noteRenderInfo[j]) - from_x) / (float)(to_x - from_x);
+                noteRenderInfo[j].stem_y_level = (float)from_level + (float)(to_level - from_level) * rel_pos;
+                
+                // check if stem is long enough
+                float diff = noteRenderInfo[j].stem_y_level - analyser->getStemFrom(noteRenderInfo[j]);
+                if( fabsf(diff) < analyser->min_stem_height //or  // too short
+                   // (noteRenderInfo[first_id].beam_show_above and diff>0) or   // totally on the wrong side of the stem
+                   // ((not noteRenderInfo[first_id].beam_show_above) and diff<0) )
+                {
+                    // we've got a problem here. this stem is too short and will look weird
+                    // we'll adjust the height of the beam and try again
+                    float abs_diff = fabsf(diff);
+                    
+                    if(noteRenderInfo[first_id].beam_show_above)
+                    {
+                        noteRenderInfo[first_id].beam_to_level -= (analyser->min_stem_height - abs_diff);
+                        noteRenderInfo[first_id].stem_y_level  -= (analyser->min_stem_height - abs_diff);
+                    }
+                    else
+                    {
+                        noteRenderInfo[first_id].beam_to_level += (analyser->min_stem_height - abs_diff);
+                        noteRenderInfo[first_id].stem_y_level  += (analyser->min_stem_height - abs_diff);
+                    }
+                    need_to_start_again = true;
+                    break;
+                }
+                
+                if(j != first_id) noteRenderInfo[j].flag_amount = 0;
+            }
+            if(not need_to_start_again) break; // we're done, no need to loop again
         }
     }
 };
@@ -308,7 +330,7 @@ ScoreAnalyser::ScoreAnalyser(ScoreEditor* parent, int stemPivot)
     stem_down_x_offset = 1;
     stem_down_y_offset = 0.8;
     stem_height = 5.2;
-    min_stem_height = 3.0;
+    min_stem_height = 4.5;
 }
 void ScoreAnalyser::setStemSize(
                   const int stem_up_x_offset,

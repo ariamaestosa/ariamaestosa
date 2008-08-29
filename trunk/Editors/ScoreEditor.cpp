@@ -705,8 +705,8 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
 
         if(renderInfo.stem_type == STEM_UP or renderInfo.stem_type == STEM_DOWN)
         {
-            AriaRender::line( analyser->getStemX(renderInfo), LEVEL_TO_Y(analyser->getStemFrom(renderInfo)),
-                              analyser->getStemX(renderInfo), LEVEL_TO_Y(analyser->getStemTo(renderInfo))   );
+           AriaRender::line( analyser->getStemX(renderInfo), LEVEL_TO_Y(analyser->getStemFrom(renderInfo)),
+                             analyser->getStemX(renderInfo), LEVEL_TO_Y(analyser->getStemTo(renderInfo))   );
         }
         
         
