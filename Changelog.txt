@@ -6,6 +6,7 @@ SVN
 - Fixed improper handling of accidentals
 - Fixed default suggested name when exporting to PDF on mac OS X
 - Fixed odd-numbered time signatures like 9/8
+- Reworked beaming code, resulting in nicer beams in some cases
 - Added DropD-bass tuning preset, cleaned up code
 - Improved printing output by putting a bigger centered title on first page.
 - Fixed glitches in score editor settings
