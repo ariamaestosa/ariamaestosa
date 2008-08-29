@@ -176,23 +176,29 @@ public:
                 
                 // check if stem is long enough
                 float diff = noteRenderInfo[j].stem_y_level - analyser->getStemFrom(noteRenderInfo[j]);
-                if( fabsf(diff) < analyser->min_stem_height //or  // too short
-                   // (noteRenderInfo[first_id].beam_show_above and diff>0) or   // totally on the wrong side of the stem
-                   // ((not noteRenderInfo[first_id].beam_show_above) and diff<0) )
+                
+                const bool too_short = fabsf(diff) < analyser->min_stem_height;
+                const bool on_wrong_side_of_beam = 
+                    (noteRenderInfo[first_id].beam_show_above and diff>0) or
+                    ((not noteRenderInfo[first_id].beam_show_above) and diff<0);
+                
+                if( too_short or on_wrong_side_of_beam )
                 {
                     // we've got a problem here. this stem is too short and will look weird
                     // we'll adjust the height of the beam and try again
-                    float abs_diff = fabsf(diff);
+                    float beam_shift;
+                    if(too_short) beam_shift = analyser->min_stem_height - fabsf(diff);
+                    else if(on_wrong_side_of_beam) beam_shift = analyser->min_stem_height + fabsf(diff);
                     
                     if(noteRenderInfo[first_id].beam_show_above)
                     {
-                        noteRenderInfo[first_id].beam_to_level -= (analyser->min_stem_height - abs_diff);
-                        noteRenderInfo[first_id].stem_y_level  -= (analyser->min_stem_height - abs_diff);
+                        noteRenderInfo[first_id].beam_to_level -= beam_shift;
+                        noteRenderInfo[first_id].stem_y_level  -= beam_shift;
                     }
                     else
                     {
-                        noteRenderInfo[first_id].beam_to_level += (analyser->min_stem_height - abs_diff);
-                        noteRenderInfo[first_id].stem_y_level  += (analyser->min_stem_height - abs_diff);
+                        noteRenderInfo[first_id].beam_to_level += beam_shift;
+                        noteRenderInfo[first_id].stem_y_level  += beam_shift;
                     }
                     need_to_start_again = true;
                     break;
