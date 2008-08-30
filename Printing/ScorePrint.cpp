@@ -85,6 +85,21 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
                                        track->isNoteSelected(n), track->getNotePitchID(n));
 			analyser.addToVector(currentNote, false);
             
+            // draw note head
+            {
+            NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[analyser.noteRenderInfo.size()-1];
+            
+            dc.SetPen(  wxPen( wxColour(0,0,0), 2 ) );
+            
+            if(noteRenderInfo.hollow_head) dc.SetBrush( *wxTRANSPARENT_BRUSH );
+            else dc.SetBrush( *wxBLACK_BRUSH );
+
+            const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
+            wxPoint headLocation( noteRenderInfo.x + headRadius, notey-headRadius/2.0 );
+            dc.DrawEllipse( headLocation, wxSize(headRadius+1, headRadius) );
+            noteRenderInfo.setY(notey+headRadius/2.0);
+            }
+            
         }
         
     }//next element
@@ -111,18 +126,6 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     for(int i=0; i<noteAmount; i++)
     {
         NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
-        // draw note head
-        dc.SetPen(  wxPen( wxColour(0,0,0), 2 ) );
-
-        if(noteRenderInfo.hollow_head) dc.SetBrush( *wxTRANSPARENT_BRUSH );
-        else dc.SetBrush( *wxBLACK_BRUSH );
-        
-        const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
-        
-        wxPoint headLocation( noteRenderInfo.x + headRadius, notey-headRadius/2.0 );
-        dc.DrawEllipse( headLocation, wxSize(headRadius+1, headRadius) );
-        
-        noteRenderInfo.setY(notey+headRadius/2.0);
         
         // draw stem
         if(noteRenderInfo.stem_type != STEM_NONE)
