@@ -167,7 +167,7 @@ public:
                          const int first_visible_measure, const int last_visible_measure,
                          const int silences_y );
 protected:
-    // fon't call these, 'analyseNoteInfo' will
+    // internal methods performing different steps in score analysis
     void putInTimeOrder();
     void findAndMergeChords();
     void processTriplets();

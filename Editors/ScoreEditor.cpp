@@ -24,6 +24,7 @@
 #include "Pickers/KeyPicker.h"
 #include "Images/ImageProvider.h"
 #include "Images/Drawable.h"
+#include "Images/Image.h"
 #include "Midi/MeasureData.h"
 #include "GUI/RenderUtils.h"
 
@@ -713,17 +714,19 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
         // flags
         if(renderInfo.flag_amount>0 and not renderInfo.beam)
         {
-            const int flag_y_origin = (renderInfo.stem_type==STEM_UP ? renderInfo.getY() - 24 : renderInfo.getY() + 17);
+            static const int stem_height = noteFlag->image->height;
+            const int stem_end = LEVEL_TO_Y(analyser->getStemTo(renderInfo));
+            const int flag_y_origin = (renderInfo.stem_type==STEM_UP ? stem_end : stem_end - stem_height );
             const int flag_x_origin = (renderInfo.stem_type==STEM_UP ? renderInfo.x + 9 : renderInfo.x + 1);
             const int flag_step = (renderInfo.stem_type==STEM_UP ? 7 : -7 );
             
-            noteFLag->setFlip( false, renderInfo.stem_type!=STEM_UP );
+            noteFlag->setFlip( false, renderInfo.stem_type!=STEM_UP );
             
             AriaRender::images();
             for(int n=0; n<renderInfo.flag_amount; n++)
             {
-                noteFLag->move( flag_x_origin , flag_y_origin + n*flag_step);	
-                noteFLag->render();
+                noteFlag->move( flag_x_origin , flag_y_origin + n*flag_step);	
+                noteFlag->render();
             }
             AriaRender::primitives();
         }

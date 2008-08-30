@@ -87,6 +87,7 @@ Sequence::Sequence()
 
 Sequence::~Sequence()
 {
+    std::cout << "cleaning up sequence " << suggestTitle().mb_str() << "..." << std::endl;
 }
 
 

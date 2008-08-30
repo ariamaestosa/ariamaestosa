@@ -80,7 +80,7 @@ IMG_DEC Drawable* clefG_drawable;
 IMG_DEC Drawable* clefF_drawable;
 IMG_DEC Drawable* noteClosed;
 IMG_DEC Drawable* noteOpen;
-IMG_DEC Drawable* noteFLag;
+IMG_DEC Drawable* noteFlag;
 IMG_DEC Drawable* sharpSign;
 IMG_DEC Drawable* flatSign;
 IMG_DEC Drawable* naturalSign;
