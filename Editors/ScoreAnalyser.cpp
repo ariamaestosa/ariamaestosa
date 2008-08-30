@@ -325,8 +325,6 @@ void NoteRenderInfo::setTriplet()
 
 int NoteRenderInfo::getBaseLevel()
 {
-    if(chord) std::cout << "this is a chord " << std::endl;
-    
     if(chord) return (stem_type == STEM_UP ? max_chord_level : min_chord_level);
     else return level;
 }
@@ -649,6 +647,7 @@ void ScoreAnalyser::findAndMergeChords()
                 //summary.min_chord_y = miny;
                 summary.min_chord_level = min_level;
                 summary.max_chord_level = max_level;
+                summary.stem_y_level = (stem_up ? min_level - stem_height : max_level + stem_height);
                 summary.flag_amount = flag_amount;
                 summary.triplet = triplet;
                 summary.draw_stem = true;
