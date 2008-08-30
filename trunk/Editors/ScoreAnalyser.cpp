@@ -317,7 +317,7 @@ void NoteRenderInfo::setTriplet()
 
 int NoteRenderInfo::getBaseLevel()
 {
-    if(chord) return (stem_type == STEM_UP ? max_chord_level : min_chord_level);
+    if(chord) return (stem_type == STEM_UP ? min_chord_level : max_chord_level);
     else return level;
 }
 
@@ -577,11 +577,13 @@ void ScoreAnalyser::findAndMergeChords()
 
         while(true) // FIXME - it should be checked whether there is a chord BEFORE entering the while loop. same for others
         {
+            // find next note's tick if there's one
             if(i+1<(int)noteRenderInfo.size())
             {
                 start_tick_of_next_note = noteRenderInfo[i+1].tick;
             }else start_tick_of_next_note=-1;
 
+            // we've processed all notes, exit the loop
             if(!(i<(int)noteRenderInfo.size())) break;
 
             // check if we're in a chord (i.e. many notes that play at the same time). also check they have stems :
@@ -619,27 +621,28 @@ void ScoreAnalyser::findAndMergeChords()
                 if(first_note_of_chord == i) break;
 
                 // determine average note level to know if we put stems above or below
-                // if nothing found (most likely meaning we only have one triplet note alone) use values from the first
+                // if nothing found use values from the first
                 if(min_level == 999)  min_level = noteRenderInfo[first_note_of_chord].level;
                 if(max_level == -999) max_level = noteRenderInfo[first_note_of_chord].level;
                 const int mid_level = (int)round( (min_level + max_level)/2.0 );
 
                 const bool stem_up = mid_level >= stemPivot+2;
 
-               // const int maxy = editor->getEditorYStart() + y_step*max_level - halfh - editor->getYScrollInPixels() + 2;
-                //const int miny = editor->getEditorYStart() + y_step*min_level - halfh - editor->getYScrollInPixels() + 2;
-
-                // decide the one note to keep that will "summarize" all others.
-                // it will be the highest or the lowest, depending on if stem is up or down.
-                // feed this NoteRenderInfo object with the info Aria believes will best summarize
-                // the chord. results may vary if you make very different notes play at the same time.
+                /*
+                 * decide the one note to keep that will "summarize" all others.
+                 * it will be the highest or the lowest, depending on if stem is up or down.
+                 * feed this NoteRenderInfo object with the info Aria believes will best summarize
+                 * the chord. results may vary if you make very different notes play at the same time.
+                 * Making a chord into a single note allows it to enter other steps of analysis,
+                 * like beaming.
+                 */
                 NoteRenderInfo summary = noteRenderInfo[ stem_up ? minid : maxid ];
                 summary.chord = true;
-               // summary.max_chord_y = maxy;
-                //summary.min_chord_y = miny;
                 summary.min_chord_level = min_level;
                 summary.max_chord_level = max_level;
-                summary.stem_y_level = (stem_up ? min_level - stem_height : max_level + stem_height);
+                summary.stem_y_level = (stem_up ?
+                                        getStemFrom( noteRenderInfo[minid] ) - stem_height :
+                                        getStemFrom( noteRenderInfo[maxid] ) + stem_height);
                 summary.flag_amount = flag_amount;
                 summary.triplet = triplet;
                 summary.draw_stem = true;
