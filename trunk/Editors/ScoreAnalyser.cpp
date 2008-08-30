@@ -158,6 +158,27 @@ public:
             beam_to_level = std::max<float>((float)max_level + analyser->min_stem_height, last_stem_end_level);
         noteRenderInfo[first_id].beam_to_level = beam_to_level;
         
+        noteRenderInfo[first_id].stem_y_level = analyser->getStemTo(noteRenderInfo[first_id]);
+        
+        // check if the stem is too inclined, fix it if necessary
+        const float height_diff = fabsf( noteRenderInfo[first_id].beam_to_level - noteRenderInfo[first_id].stem_y_level );
+
+        if( height_diff > 3 )
+        {
+            const float height_shift = height_diff - 3;
+            const bool end_on_higher_level = (noteRenderInfo[first_id].beam_to_level > noteRenderInfo[first_id].stem_y_level);
+            if(noteRenderInfo[first_id].beam_show_above)
+            {
+                if(end_on_higher_level) noteRenderInfo[first_id].beam_to_level -= height_shift;
+                else noteRenderInfo[first_id].stem_y_level -= height_shift;
+            }
+            else
+            {
+                if(end_on_higher_level) noteRenderInfo[first_id].stem_y_level += height_shift;
+                else noteRenderInfo[first_id].beam_to_level += height_shift;
+            }
+        }
+        
         // fix all note stems so they all point in the same direction and have the correct height
         while(true)
         {
