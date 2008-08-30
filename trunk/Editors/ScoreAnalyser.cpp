@@ -147,19 +147,11 @@ public:
             noteRenderInfo[j].stem_type = ( noteRenderInfo[first_id].beam_show_above ?  STEM_UP : STEM_DOWN );
         }
 
-        const int last_stem_end_level = analyser->getStemTo(noteRenderInfo[last_id]);
-        noteRenderInfo[first_id].beam_to_x = analyser->getStemX(noteRenderInfo[last_id]);
+        // set initial beam info in note
+        noteRenderInfo[first_id].beam_to_x     = analyser->getStemX(noteRenderInfo[last_id]);
+        noteRenderInfo[first_id].beam_to_level = analyser->getStemTo(noteRenderInfo[last_id]);
+        noteRenderInfo[first_id].stem_y_level  = analyser->getStemTo(noteRenderInfo[first_id]);
 
-        
-        int beam_to_level;
-        if(noteRenderInfo[first_id].beam_show_above)
-            beam_to_level = std::min<float>((float)min_level - analyser->min_stem_height, last_stem_end_level);
-        else
-            beam_to_level = std::max<float>((float)max_level + analyser->min_stem_height, last_stem_end_level);
-        noteRenderInfo[first_id].beam_to_level = beam_to_level;
-        
-        noteRenderInfo[first_id].stem_y_level = analyser->getStemTo(noteRenderInfo[first_id]);
-        
         // check if the stem is too inclined, fix it if necessary
         const float height_diff = fabsf( noteRenderInfo[first_id].beam_to_level - noteRenderInfo[first_id].stem_y_level );
 
