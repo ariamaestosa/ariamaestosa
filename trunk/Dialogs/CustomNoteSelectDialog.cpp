@@ -38,18 +38,24 @@ EVT_KEY_DOWN(CustomNoteSelectDialog::keyPress)
 END_EVENT_TABLE()
 
 
-CustomNoteSelectDialog::CustomNoteSelectDialog() : wxDialog(NULL, wxID_ANY,  _("Select notes..."), wxPoint(300,100), wxSize(200,400))
+CustomNoteSelectDialog::CustomNoteSelectDialog() : wxDialog(NULL, wxID_ANY, 
+                                                            //I18N: - title of the custom note select dialog
+                                                            _("Select notes..."),
+                                                            wxPoint(300,100), wxSize(200,400))
 {
-	
-    
+
     wxSize smallTextCtrlSize(wxDefaultSize);
     smallTextCtrlSize.SetWidth(35);
     
     boxSizer=new wxBoxSizer(wxVERTICAL);
     
+    //I18N: - in custom note select dialog. full context :\n\n Select notes that...\n\n* have the same pitch\n* have a similar volume *
+    //I18N: - * are on the same string * have the same fret * have a similar duration * are located in measures ... to ... 
     wxStaticText* txt=new wxStaticText(this, wxID_ANY,  _("Select notes that..."));
     boxSizer->Add(txt, 0, wxALL, 15);
     
+    //I18N: - in custom note select dialog. full context :\n\n Select notes that...\n\n* have the same pitch\n* have a similar volume *
+    //I18N: - * are on the same string * have the same fret * have a similar duration * are located in measures ... to ... 
     cb_pitch=new wxCheckBox(this, wxID_ANY,  _("have the same pitch"));
     boxSizer->Add(cb_pitch, 0, wxALL, 5);
     
@@ -60,6 +66,8 @@ CustomNoteSelectDialog::CustomNoteSelectDialog() : wxDialog(NULL, wxID_ANY,  _("
     boxSizer->Add(panel_volume, 0, wxALL, 0);
     wxBoxSizer* subBoxSizer=new wxBoxSizer(wxHORIZONTAL);
     
+    //I18N: - in custom note select dialog. full context :\n\n Select notes that...\n\n* have the same pitch\n* have a similar volume *
+    //I18N: - * are on the same string * have the same fret * have a similar duration * are located in measures ... to ... 
     cb_volume=new wxCheckBox(panel_volume, wxID_ANY,  _("have a similar volume"));
     subBoxSizer->Add(cb_volume, 0, wxALL, 5);
     
@@ -75,9 +83,13 @@ CustomNoteSelectDialog::CustomNoteSelectDialog() : wxDialog(NULL, wxID_ANY,  _("
     }
     // --------------------------------------
     
+    //I18N: - in custom note select dialog. full context :\n\n Select notes that...\n\n* have the same pitch\n* have a similar volume *
+    //I18N: - * are on the same string * have the same fret * have a similar duration * are located in measures ... to ... 
     cb_string=new wxCheckBox(this, wxID_ANY,  _("are on the same string"));
     boxSizer->Add(cb_string, 0, wxALL, 5);
     
+    //I18N: - in custom note select dialog. full context :\n\n Select notes that...\n\n* have the same pitch\n* have a similar volume *
+    //I18N: - * are on the same string * have the same fret * have a similar duration * are located in measures ... to ... 
     cb_fret=new wxCheckBox(this, wxID_ANY,  _("have the same fret"));
     boxSizer->Add(cb_fret, 0, wxALL, 5);
     
@@ -87,6 +99,8 @@ CustomNoteSelectDialog::CustomNoteSelectDialog() : wxDialog(NULL, wxID_ANY,  _("
         boxSizer->Add(panel_duration, 0, wxALL, 0);
         wxBoxSizer* subBoxSizer=new wxBoxSizer(wxHORIZONTAL);
         
+        //I18N: - in custom note select dialog. full context :\n\n Select notes that...\n\n* have the same pitch\n* have a similar volume *
+        //I18N: - * are on the same string * have the same fret * have a similar duration * are located in measures ... to ... 
         cb_duration=new wxCheckBox(panel_duration, wxID_ANY,  _("have a similar duration"));
         subBoxSizer->Add(cb_duration, 0, wxALL, 5);
 		
@@ -102,12 +116,16 @@ CustomNoteSelectDialog::CustomNoteSelectDialog() : wxDialog(NULL, wxID_ANY,  _("
     boxSizer->Add(panel_measures, 0, wxALL, 0);
     wxBoxSizer* subBoxSizer=new wxBoxSizer(wxHORIZONTAL);
     
+    //I18N: - in custom note select dialog. full context :\n\n Select notes that...\n\n* have the same pitch\n* have a similar volume *
+    //I18N: - * are on the same string * have the same fret * have a similar duration * are located in measures ... to ... 
     cb_measure=new wxCheckBox(panel_measures, wxID_ANY,  _("are located in measures "));
     subBoxSizer->Add(cb_measure, 0, wxALL, 5);
     
     from_measure = new wxTextCtrl(panel_measures, wxID_ANY, wxT("1"), wxDefaultPosition, smallTextCtrlSize);
     subBoxSizer->Add(from_measure, 0, wxALL, 5);
 
+    //I18N: - in custom note select dialog. full context :\n\n Select notes that...\n\n* have the same pitch\n* have a similar volume *
+    //I18N: - * are on the same string * have the same fret * have a similar duration * are located in measures ... to ... 
     wxStaticText* lbl_to = new wxStaticText(panel_measures, wxID_ANY,  _(" to "));
     subBoxSizer->Add(lbl_to, 0, wxALL, 5);
     
@@ -126,7 +144,7 @@ CustomNoteSelectDialog::CustomNoteSelectDialog() : wxDialog(NULL, wxID_ANY,  _("
     boxSizer->Add(panel_ok_cancel, 0, wxALL, 0);
     wxBoxSizer* subBoxSizer=new wxBoxSizer(wxHORIZONTAL);
     
-    wxButton* okbtn=new wxButton(panel_ok_cancel, id_ok, wxT("OK"));
+    wxButton* okbtn=new wxButton(panel_ok_cancel, id_ok, _("OK"));
     subBoxSizer->Add(okbtn, 0, wxALL, 15);
 	
     okbtn->SetDefault();

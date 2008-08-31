@@ -243,7 +243,7 @@ public:
 		
 		buttonsizer = new wxBoxSizer(wxHORIZONTAL);
 		
-		ok_btn = new wxButton(buttonPane, 200, wxT("OK"));
+		ok_btn = new wxButton(buttonPane, 200, _("OK"));
 		ok_btn->SetDefault();
 		buttonsizer->Add(ok_btn, 0, wxALL, 5);
 		

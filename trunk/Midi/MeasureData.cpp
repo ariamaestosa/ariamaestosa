@@ -25,8 +25,6 @@
 
 #include "AriaCore.h"
 
-#include "GUI/MainFrame.h"
-#include "GUI/RenderUtils.h"
 #include "GUI/MeasureBar.h"
 
 #include "Midi/MeasureData.h"
@@ -401,6 +399,7 @@ void MeasureData::setTimeSig(int top, int bottom)
 		if( (int)denom != (float)denom )
 		{
 			wxBell();
+            //I18N: - when setting a wrong time signature
 			wxMessageBox(  _("Denominator must be a power of 2") );
 			return;
 		}

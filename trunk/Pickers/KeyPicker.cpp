@@ -57,13 +57,17 @@ END_EVENT_TABLE()
 
 KeyPicker::KeyPicker() : wxMenu()
 {
+    //I18N: - in the view settings for score editor. whether to show notes in a traditional musical way.
     musical_checkbox = AppendCheckItem(MUSICAL_NOTATION,_("Musical notation")); musical_checkbox->Check(true);
+    //I18N: - in the view settings for score editor. whether to show notes in a "computer" linear way.
     linear_checkbox = AppendCheckItem(LINEAR_NOTATION,_("Linear Notation")); linear_checkbox->Check(true);
     
     AppendSeparator();
     gclef = AppendCheckItem(G_CLEF, _("G Clef")); gclef->Check(true);
     fclef = AppendCheckItem(F_CLEF, _("F Clef")); fclef->Check(true);
+    //I18N: - show score an octave higher
     octave_above = AppendCheckItem(OCTAVE_ABOVE, _("Octave +1"));
+    //I18N: - show score an octave lower
     octave_below = AppendCheckItem(OCTAVE_BELOW, _("Octave -1"));
     
 	AppendSeparator();

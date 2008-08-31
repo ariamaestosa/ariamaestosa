@@ -35,11 +35,15 @@ AboutDialog::AboutDialog() : wxDialog(NULL, wxID_ANY,  _("About Aria Maestosa"),
     titleBitmap.LoadFile( getResourcePrefix()  + wxT("title.jpg") , wxBITMAP_TYPE_JPEG );
     picture=new wxBitmapButton(this, 0, titleBitmap, wxPoint(0,0), wxSize(517,174) );
 
-	wxString about_text =  wxString(_("version ")) + wxT("1.1.3") +
-		wxString(_("\n\nThanks to:\n\n\tErgonis Software and")) + wxT(" G\u00FCnther Blaschek ") +
-		wxString(_("for making EasyBeat,\n\t\ta great app that inspired Aria (www.ergonis.com).\n")) +
-		wxString(_("\tJ.D. Koftinoff Software for libjdkmidi\n\tThe irrXML team for their great XML parser\n"))+
-		wxString(_("\tThe wxWidgets team\n\twww.freesmug.org for allowing me to access an intel mac")) +
+    //I18N: - in about dialog
+	wxString about_text =  wxString::Format(_("version %s"), wxT("1.1.3") ) +
+        //I18N: - in about dialog
+        wxString::Format(_("\n\nThanks to:\n\n\tErgonis Software and %s for making EasyBeat,\n\t\ta great app that inspired Aria (www.ergonis.com).\n"), wxT(" G\u00FCnther Blaschek "))  +
+		//I18N: - in about dialog
+        wxString(_("\tJ.D. Koftinoff Software for libjdkmidi\n\tThe irrXML team for their great XML parser\n")) +
+		//I18N: - in about dialog
+        wxString(_("\tThe wxWidgets team\n\twww.freesmug.org for allowing me to access an intel mac")) +
+        //I18N: - in about dialog
         wxString(_("\n\nTranslations:\n") +
                  wxString( wxT("\t it : Gianluca Pignalberi\n")) +
                  wxString( wxT("\t de : Friedrich Weber\n"))
