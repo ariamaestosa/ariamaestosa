@@ -39,7 +39,6 @@
 
 #include "AriaCore.h"
 
-#include "GUI/MainFrame.h"
 #include "Midi/MeasureData.h"
 
 #include "Dialogs/WaitWindow.h"

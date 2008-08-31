@@ -314,7 +314,7 @@ void MainFrame::init()
 
     firstMeasure=new wxTextCtrl(toolbar, BEGINNING, wxT("1"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER);
     toolbar->AddControl(firstMeasure);
-
+    
     songLength=new wxSpinCtrl(toolbar, LENGTH, to_wxString(DEFAULT_SONG_LENGTH), wxDefaultPosition,
 #ifdef __WXGTK__
 							  averageTextCtrlSize
@@ -340,7 +340,6 @@ void MainFrame::init()
     displayZoom->SetRange(25,500);
     toolbar->AddControl(displayZoom);
     toolbar->Realize();
-    
 #endif
     
     // -------------------------- RenderPane ----------------------------

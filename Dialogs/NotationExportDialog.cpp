@@ -59,7 +59,10 @@ public:
 		
     LEAK_CHECK(NotationSetup);
 	
-	NotationSetup(int mode = -1) : wxFrame(NULL, wxID_ANY,  _("Export to musical notation"), wxPoint(200,200), wxSize(200,400), wxCAPTION | wxSTAY_ON_TOP)
+	NotationSetup(int mode = -1) : wxFrame(NULL, wxID_ANY,
+                                           //I18N: - title of the notation-export dialog
+                                           _("Export to musical notation"),
+                                           wxPoint(200,200), wxSize(200,400), wxCAPTION | wxSTAY_ON_TOP)
     {
 		
 		
@@ -68,11 +71,13 @@ public:
 		if(mode==-1)
 		{
 			// "ignore hidden tracks" checkbox
+            //I18N: - in notation export dialog
 			ignoreHidden=new wxCheckBox(this, wxID_ANY,  _("Ignore hidden tracks"));
 			ignoreHidden->SetValue(true);
 			boxSizer->Add(ignoreHidden, 1, wxALL, 5);
 			
 			// "ignore muted tracks" checkbox
+            //I18N: - in notation export dialog
 			ignoreMuted=new wxCheckBox(this, wxID_ANY,  _("Ignore muted tracks"));
 			ignoreMuted->SetValue(true);
 			boxSizer->Add(ignoreMuted, 1, wxALL, 5);
@@ -84,6 +89,7 @@ public:
 		}
 		
 		// "Show repeated measures only once" checkbox
+        //I18N: - in notation export dialog
 		detectRepetitions=new wxCheckBox(this, wxID_ANY,  _("Show repeated measures (e.g. chorus) only once"));
 		detectRepetitions->SetValue(true);
 		boxSizer->Add(detectRepetitions, 1, wxALL, 5);
@@ -128,7 +134,7 @@ public:
 			
 			wxBoxSizer* subsizer = new wxBoxSizer(wxHORIZONTAL);
 			
-			okButton=new wxButton(buttonPanel, ID_OK, wxT("OK"));
+			okButton=new wxButton(buttonPanel, ID_OK, _("OK"));
 			okButton->SetDefault();
 			subsizer->Add(okButton, 0, wxALL, 15);
 			
@@ -209,7 +215,7 @@ void exportNotation(Track* t)
 // ----------------------------------------------------------------------------------------------------
 // ---------------------------------------- main writing func -----------------------------------------
 // ----------------------------------------------------------------------------------------------------
-
+#if 0
 wxString askForSavePath()
 {
     // FIXME - seems unused
@@ -231,6 +237,7 @@ wxString askForSavePath()
     
     return filepath;
 }
+#endif
 
 // after dialog is shown and user clicked 'OK' this is called to complete the export
 void completeExport(bool accepted)

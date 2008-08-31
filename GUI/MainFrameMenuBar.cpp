@@ -155,6 +155,7 @@ void MainFrame::initMenuBar()
     trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_ADD, _("Add Track"), MainFrame::menuEvent_addTrack );
     trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_REMOVE, _("Delete Track"), MainFrame::menuEvent_deleteTrack );
     trackMenu->AppendSeparator();
+    //I18N: - in the track menu, allows choosing the background of a track
     trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_BACKG, _("Background"), MainFrame::menuEvent_trackBackground );
 
 	// Settings menu
@@ -164,18 +165,25 @@ void MainFrame::initMenuBar()
     expandedMeasuresMenuItem = settingsMenu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_MEASURE_EXPANDED, _("Expanded measure management"), MainFrame::menuEvent_expandedMeasuresSelected );
 
 	wxMenu* channelMode_menu = new wxMenu();
+    //I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
 	settingsMenu->AppendSubMenu(channelMode_menu,  _("Channel management") );
+    //I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
 	channelManagement_automatic = channelMode_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_CHANNELS_AUTO,  _("Automatic"), MainFrame::menuEvent_automaticChannelModeSelected);
 	channelManagement_automatic->Check();
+    //I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
 	channelManagement_manual = channelMode_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_CHANNEL_MANUAL,  _("Manual"), MainFrame::menuEvent_manualChannelModeSelected);
 
     settingsMenu->AppendSeparator(); // ----- global
 
     wxMenu* playDuringEdits_menu = new wxMenu();
+    //I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
 	settingsMenu->AppendSubMenu(playDuringEdits_menu,  _("Play during edit") );
+    //I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
 	playDuringEdits_always = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_ALWAYS,  _("Always"), MainFrame::menuEvent_playAlways);
-	playDuringEdits_onchange = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_ON_CHANGE,  _("On note change"), MainFrame::menuEvent_playOnChange);
+	//I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
+    playDuringEdits_onchange = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_ON_CHANGE,  _("On note change"), MainFrame::menuEvent_playOnChange);
 	playDuringEdits_onchange->Check();
+    //I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
 	playDuringEdits_never = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_NEVER,  _("Never"), MainFrame::menuEvent_playNever);
 
     settingsMenu->QUICK_ADD_MENU( wxID_PREFERENCES,   _("Preferences"), MainFrame::menuEvent_preferences );
@@ -184,6 +192,7 @@ void MainFrame::initMenuBar()
 	helpMenu = new wxMenu();
 	menuBar->Append(helpMenu, wxT("&Help"));
     helpMenu->QUICK_ADD_MENU(wxID_ABOUT,  _("About this app"), MainFrame::menuEvent_about);
+    //I18N: - in help menu - see the help files
     helpMenu->QUICK_ADD_MENU(wxID_HELP,  _("Manual"), MainFrame::menuEvent_manual);
 
     SetMenuBar(menuBar);

@@ -22,7 +22,6 @@
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 #include "GUI/GraphicalTrack.h"
-#include "GUI/MainFrame.h"
 #include "Midi/MeasureData.h"
 #include "Pickers/InstrumentChoice.h"
 #include "Pickers/DrumChoice.h"

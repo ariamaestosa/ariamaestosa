@@ -30,14 +30,13 @@ const float current_file_version = 1.0;
 #include "Actions/ScaleTrack.h"
 #include "Actions/ScaleSong.h"
 
-#include "GUI/MainFrame.h"
-#include "Midi/MeasureData.h"
 #include "GUI/RenderUtils.h"
 
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 #include "Midi/CommonMidiUtils.h"
+#include "Midi/MeasureData.h"
 
 #include "Editors/Editor.h"
 
@@ -759,41 +758,6 @@ void Sequence::scale(
     
 }
 
-
-// ------------------------------------------- measures ----------------------------------------
-/*
-void Sequence::setMeasureSig(int top, int bottom)
-{
-    measureBar->getTimeSigNumerator() = top;
-	
-	float denom = (float)log(bottom)/(float)log(2);
-	if( (int)denom != (float)denom )
-	{
-		wxBell();
-		wxMessageBox(  _("Denominator must be a power of 2") );
-	}
-	
-    measureBar->getTimeSigDenominator() = bottom;
-    
-	setZoom( getZoomInPercent() ); // update zoom to new measure size
-	
-    wxSpinEvent unused;
-    getMainFrame()->songLengthChanged(unused);
-	
-    Display::render();
-}
-*/
-/*
-int Sequence::getMeasureTopValue()
-{
-    return measureBar->getTimeSigNumerator();   
-}
-
-int Sequence::getMeasureBottomValue()
-{
-    return measureBar->getTimeSigDenominator();
-}
-*/
 // ------------------------------------------- tempo ----------------------------------------
 
 void Sequence::setTempo(int tmp)

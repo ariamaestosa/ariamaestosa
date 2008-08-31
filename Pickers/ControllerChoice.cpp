@@ -201,6 +201,7 @@ wxString ControllerChoice::getTopLabel()
 	
 	// pan
 	if(controllerID== 10 or controllerID== 42)
+        //I18N: - when setting pan in controller
 		return wxString( _("Right") );
 	
 	// pitch bend
@@ -210,12 +211,14 @@ wxString ControllerChoice::getTopLabel()
 	if(controllerID== 66 or controllerID== 67 or
 	   controllerID== 68 or controllerID== 69 or
 	   controllerID== 64 or controllerID== 65 )
+        //I18N: - in controller, when a controller can only be on/off
 		return wxString( _("On") );
 	
 	// tempo
 	if(controllerID == 201) return wxT("400");
 	
-	return wxT("Max");
+    //I18N: - in controller, for a controller with min/max range
+	return _("Max");
 }
 
 /*
@@ -226,6 +229,7 @@ wxString ControllerChoice::getBottomLabel()
 {
 	// pan
 	if(controllerID== 10 or controllerID== 42)
+        //I18N: - when setting pan in controller
 		return wxString( _("Left") );
 
 	// pitch bend
@@ -235,13 +239,14 @@ wxString ControllerChoice::getBottomLabel()
 	if(controllerID== 66 or controllerID== 67 or
 	   controllerID== 68 or controllerID== 69 or
 	   controllerID== 64 or controllerID== 65 )
+        //I18N: - in controller, when a controller can only be on/off
 		return wxString( _("Off") );
 	
 	// tempo
 	if(controllerID == 201) return wxT("20");
 	
-	
-	return wxT("Min");
+	//I18N: - in controller, for a controller with min/max range
+	return _("Min");
 }
 
 }

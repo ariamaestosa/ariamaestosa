@@ -34,7 +34,10 @@ EVT_CHOICE(3, Preferences::playSelected)
 
 END_EVENT_TABLE()
 
-Preferences::Preferences(MainFrame* parent) : wxDialog(parent, wxID_ANY,  _("Preferences"), wxPoint(100,100), wxSize(500,300), wxCAPTION )
+Preferences::Preferences(MainFrame* parent) : wxDialog(parent, wxID_ANY,
+                                                       //I18N: - title of the preferences dialog 
+                                                       _("Preferences"),
+                                                       wxPoint(100,100), wxSize(500,300), wxCAPTION )
 {
 
 	
@@ -45,6 +48,7 @@ Preferences::Preferences(MainFrame* parent) : wxDialog(parent, wxID_ANY,  _("Pre
 
 	// language
 	{
+    //I18N: - in the preferences
 	wxStaticText* lang_label = new wxStaticText(this, wxID_ANY,  _("Language"));
 	vert_sizer->Add( lang_label, 0, wxALL, 5 );
 
@@ -57,9 +61,11 @@ Preferences::Preferences(MainFrame* parent) : wxDialog(parent, wxID_ANY,  _("Pre
 
 	// play settings
 	{
+    //I18N: - in the preferences
 	wxStaticText* play_label = new wxStaticText(this, wxID_ANY,  _("Play during edit (default value)"));
 	vert_sizer->Add( play_label, 0, wxALL, 5 );
 
+    //I18N: - in the preferences, for "Play during edit (default value)" (the 3 chocies being "Always", "On note change" and "Never")
 	wxString choices[3] = { _("Always"),  _("On note change"),  _("Never")};
 
 	play_combo = new wxChoice(this, 3, wxDefaultPosition, wxDefaultSize, 3, choices );
@@ -109,6 +115,7 @@ Preferences::Preferences(MainFrame* parent) : wxDialog(parent, wxID_ANY,  _("Pre
 	wxStaticText* empty_space2 = new wxStaticText(this, wxID_ANY,  wxT(" "));
 	vert_sizer->Add( empty_space2, 0, wxALL, 5 );
 
+    //I18N: - in the preferences dialog
 	wxStaticText* effect_label = new wxStaticText(this, wxID_ANY,  _("Changes will take effect next time you open the app."));
 	effect_label->SetFont( wxFont(wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_NORMAL) );
 	vert_sizer->Add( effect_label, 0, wxALL, 10 );

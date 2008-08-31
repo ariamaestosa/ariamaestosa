@@ -42,15 +42,16 @@ class CopyrightWindowClass : public wxDialog
 public:
     LEAK_CHECK(CopyrightWindowClass);
     
-    CopyrightWindowClass(Sequence* seq) : wxDialog( NULL, wxID_ANY,  _("Copyright"), wxDefaultPosition, wxSize(400,400), wxCAPTION )
+    CopyrightWindowClass(Sequence* seq) : wxDialog( NULL, wxID_ANY,
+                                                    //I18N: - title of the copyright/info dialog
+                                                    _("Copyright and song info"),
+                                                    wxDefaultPosition, wxSize(400,400), wxCAPTION )
 	{
-            
-			
-			
             sequence = seq;
             
             boxSizer=new wxBoxSizer(wxVERTICAL);
             
+            //I18N: - title of the copyright/info dialog
 			boxSizer->Add( new wxStaticText(this, wxID_ANY,  _("Song name") ) , 0, wxALL, 2 );
 			
 			// song name
@@ -59,6 +60,7 @@ public:
             nameInput = new wxTextCtrl( this, wxID_ANY,  sequence->getInternalName(), wxDefaultPosition, size_horz);
             boxSizer->Add( nameInput, 0, wxALL, 10 );
 			
+            //I18N: - title of the copyright/info dialog
 			boxSizer->Add( new wxStaticText(this, wxID_ANY,  _("Copyright") ) , 0, wxALL, 2 );
 			
             // text area

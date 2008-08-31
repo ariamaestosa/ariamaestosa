@@ -62,7 +62,10 @@ class ScalePickerFrame : public wxDialog
 public:
     LEAK_CHECK(ScalePickerFrame);
     
-	ScalePickerFrame(Sequence* seq) : wxDialog( NULL, wxID_ANY,  _("Scale"), wxDefaultPosition, wxSize(400,200), wxCAPTION )
+	ScalePickerFrame(Sequence* seq) : wxDialog( NULL, wxID_ANY,
+                                                //I18N: - title of the scale dialog
+                                                _("Scale"),
+                                                wxDefaultPosition, wxSize(400,200), wxCAPTION )
 	{
 
             sequence = seq;
@@ -95,28 +98,35 @@ public:
             
             // --------------------------------------------------- options ---------------------------------------------------
             
-            // scale notes in...
+            //I18N: - in the scale dialog. full context : "Scale notes in...\n\n* selection\n* track\n* song"
             label2 = new wxStaticText( contentPane, wxID_ANY,  _("Scale notes in..."), wxPoint(25,25) );
             verticalSizer->Add( label2, 0, wxALL, 5 );
             
+            //I18N: - in the scale dialog. full context : "Scale notes in...\n\n* selection\n* track\n* song"
             affect_selection=new wxRadioButton( contentPane, 3,  _("selection"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
             verticalSizer->Add( affect_selection, 0, wxALL, 5 );
             affect_selection->SetValue(contentPane);
             
+            //I18N: - in the scale dialog. full context : "Scale notes in...\n\n* selection\n* track\n* song"
             affect_track=new wxRadioButton( contentPane, 3,  _("track"));
             verticalSizer->Add( affect_track, 0, wxALL, 5 );
             
+            //I18N: - in the scale dialog. full context : "Scale notes in...\n\n* selection\n* track\n* song"
             affect_song=new wxRadioButton( contentPane, 3,  _("song"));
             verticalSizer->Add( affect_song, 0, wxALL, 5 );
             
             // relative to...
+            
+            //I18N: - in the scale dialog. full context : "relative to...\n\n* first affected note\n* song beginning"
             label3 = new wxStaticText( contentPane, wxID_ANY,  _("relative to..."), wxPoint(25,25) );
             verticalSizer->Add( label3, 0, wxALL, 5 );
             
+            //I18N: - in the scale dialog. full context : "relative to...\n\n* first affected note\n* song beginning"
             rel_first_note=new wxRadioButton( contentPane, 3,  _("first affected note"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
             verticalSizer->Add( rel_first_note, 0, wxALL, 5 );
             rel_first_note->SetValue(contentPane);
                 
+            //I18N: - in the scale dialog. full context : "relative to...\n\n* first affected note\n* song beginning"
             rel_begin=new wxRadioButton( contentPane, 3,  _("song beginning"));
             verticalSizer->Add( rel_begin, 0, wxALL, 5 );
             
@@ -128,7 +138,7 @@ public:
             horizontalSizerBottom->Add( cancelBtn, 0, wxALL, 5 );
             
 
-            okBtn = new wxButton( bottomPane, 2, wxT("OK"));
+            okBtn = new wxButton( bottomPane, 2, _("OK"));
             horizontalSizerBottom->Add( okBtn, 0, wxALL, 5 );
             
             okBtn->SetDefault();
