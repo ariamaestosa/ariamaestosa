@@ -21,6 +21,7 @@
 #include "IO/IOUtils.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
+#include "GUI/MainFrame.h"
 #include "GUI/GraphicalTrack.h"
 #include "Midi/MeasureData.h"
 #include "Pickers/InstrumentChoice.h"

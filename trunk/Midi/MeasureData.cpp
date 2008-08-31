@@ -26,6 +26,7 @@
 #include "AriaCore.h"
 
 #include "GUI/MeasureBar.h"
+#include "GUI/MainFrame.h"
 
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"

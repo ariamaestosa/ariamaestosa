@@ -31,6 +31,7 @@ const float current_file_version = 1.0;
 #include "Actions/ScaleSong.h"
 
 #include "GUI/RenderUtils.h"
+#include "GUI/MainFrame.h"
 
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Sequence.h"
