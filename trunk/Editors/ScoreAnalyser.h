@@ -51,7 +51,7 @@ enum STEM
 class NoteRenderInfo
 {
     // used to display ties (display a tie between this note and specified tick). a value of -1 means no tie.
-	int tied_with_tick;
+	int tied_with_tick, tied_with_x;
     bool tie_up; // used if stem_type == STEM_NONE, otherwise tie location is determined with stem_type
     
     int y;
@@ -108,7 +108,7 @@ public:
 	NoteRenderInfo(int tick, int x, int level, int tick_length, int sign, const bool selected, int pitch);
     
 	void tieWith(NoteRenderInfo& renderInfo);
-    void setTiedToTick(const int pixel);
+    void tieWith(const int pixel, const int x);
     int getTiedToPixel();
     int getTiedToTick();
     void setTieUp(const bool up);
