@@ -42,14 +42,14 @@ wxString to_wxString(float f)
 void assertFailed(wxString message)
 {
 	std::cerr << message.mb_str() << std::endl;
+    wxMessageBox( message );
 
 #ifdef _MORE_DEBUG_CHECKS
     // trigger debugger
     char* bug = "I will make it bug to automaticaly trigger debugger, to get stack trace";
     bug[183283426] = 'X';
 #endif
-    
-	wxMessageBox( message );
+
 	exit(1);
 }
 

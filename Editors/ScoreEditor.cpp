@@ -465,6 +465,17 @@ int ScoreMidiConverter::getMidiNoteForLevelAndSign(const unsigned int level, int
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MyXConverter : public TickToXConverter
+{
+public:
+    ~MyXConverter(){}
+    int tickToX(const int tick)
+    {
+        RelativeXCoord relX(tick, MIDI);
+        return relX.getRelativeTo(WINDOW);
+    }
+};
+
 ScoreEditor::ScoreEditor(Track* track) : Editor(track)
 {
 	g_clef = true;
@@ -476,8 +487,8 @@ ScoreEditor::ScoreEditor(Track* track) : Editor(track)
     
 	converter->updateConversionData();	
 	
-    INIT_PTR(g_clef_analyser) = new ScoreAnalyser(this, converter->getScoreCenterCLevel()-5);
-    INIT_PTR(f_clef_analyser) = new ScoreAnalyser(this, converter->getScoreCenterCLevel()+6);
+    INIT_PTR(g_clef_analyser) = new ScoreAnalyser(this, new MyXConverter(), converter->getScoreCenterCLevel()-5);
+    INIT_PTR(f_clef_analyser) = new ScoreAnalyser(this, new MyXConverter(), converter->getScoreCenterCLevel()+6);
     
 	setYStep( y_step );
 	
@@ -818,15 +829,15 @@ void renderSilence(const int tick, const int tick_length, const int silences_y)
 	if( aboutEqual(relativeLength, 1.0) ) type = 1;
 	else if (aboutEqual(relativeLength, 3.0/2.0) and starts_on_beat){ type = 1; dotted = true; dot_delta_x = 5; dot_delta_y = 2;}
 	else if (aboutEqual(relativeLength, 1.0/2.0)) type = 2;
-    else if (aboutEqual(relativeLength, 1.0/3.0)){ type = 2; triplet = true; }
 	else if (aboutEqual(relativeLength, 3.0/4.0) and starts_on_beat){ type = 2; dotted = true; dot_delta_x = 5; dot_delta_y = 2;}
-	else if (aboutEqual(relativeLength, 1.0/4.0)) type = 4;
-    else if (aboutEqual(relativeLength, 1.0/6.0)){ type = 4; triplet = true; }
+    else if (aboutEqual(relativeLength, 1.0/4.0)) type = 4;
+    else if (aboutEqual(relativeLength, 1.0/3.0)){ type = 2; triplet = true; }
 	else if (aboutEqual(relativeLength, 3.0/8.0) and starts_on_beat){ type = 4; dotted = true; dot_delta_x = -3; dot_delta_y = 10; }
-	else if (aboutEqual(relativeLength, 1.0/8.0)) type = 8;
-    else if (aboutEqual(relativeLength, 1.0/12.0)){ triplet = true; type = 8; }
+    else if (aboutEqual(relativeLength, 1.0/8.0)) type = 8;
+    else if (aboutEqual(relativeLength, 1.0/6.0)){ type = 4; triplet = true; }
 	else if (aboutEqual(relativeLength, 3.0/16.0) and starts_on_beat){ type = 8; dotted = true; }
 	else if (aboutEqual(relativeLength, 1.0/16.0)) type = 16;
+    else if (aboutEqual(relativeLength, 1.0/12.0)){ triplet = true; type = 8; }
 	else if(relativeLength < 1.0/16.0){ return; }
 	else
 	{

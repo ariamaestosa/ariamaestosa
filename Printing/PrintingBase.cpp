@@ -430,21 +430,29 @@ int EditorPrintable::getNotePrintX(int noteID)
 }
 int EditorPrintable::tickToX(const int tick)
 {
-    const int elem_x_start = getCurrentElementXStart();
-    const int elem_x_end = getCurrentElementXEnd();
-    const int elem_w = elem_x_end - elem_x_start;
     
-    const int firstTick = currentLine->getMeasureForElement(currentLayoutElement).firstTick;
-    const int lastTick = currentLine->getMeasureForElement(currentLayoutElement).lastTick;
-    
-    /*
-     * note position ranges from 0 (at the very beginning of the layout element)
-     * to 1 (at the very end of the layout element)
-     */
-    
-    const float nratio = ((float)(tick - firstTick) / (float)(lastTick - firstTick));
-    
-    return (int)round(nratio * (elem_w-widthOfAChar*1.5) + elem_x_start);
+    for(int n=0; n<layoutElementsAmount; n++)
+    {
+        const int firstTick = currentLine->getMeasureForElement(n).firstTick;
+        const int lastTick = currentLine->getMeasureForElement(n).lastTick;
+        
+        if(tick >= firstTick and tick <= lastTick)
+        {
+            
+            /*
+             * note position ranges from 0 (at the very beginning of the layout element)
+             * to 1 (at the very end of the layout element)
+             */
+            const int elem_x_start = getCurrentElementXStart();
+            const int elem_x_end = getCurrentElementXEnd();
+            const int elem_w = elem_x_end - elem_x_start;
+            const float nratio = ((float)(tick - firstTick) / (float)(lastTick - firstTick));
+            
+            return (int)round(nratio * (elem_w-widthOfAChar*1.5) + elem_x_start);
+        }
+    }
+    assert(false);
+    return 0;
 }
 
 }
