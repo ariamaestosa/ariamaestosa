@@ -341,7 +341,7 @@ void NoteRenderInfo::setY(const int newY)
 #pragma mark -
 #pragma mark Score Analyser
 
-ScoreAnalyser::ScoreAnalyser(ScoreEditor* parent, int stemPivot)
+ScoreAnalyser::ScoreAnalyser(ScoreEditor* parent, TickToXConverter* converter, int stemPivot)
 {
     ScoreAnalyser::editor = parent;
     ScoreAnalyser::stemPivot = stemPivot;
@@ -352,6 +352,8 @@ ScoreAnalyser::ScoreAnalyser(ScoreEditor* parent, int stemPivot)
     stem_down_y_offset = 0.8;
     stem_height = 5.2;
     min_stem_height = 4.5;
+    
+    INIT_PTR(tickToXConverter) = converter;
 }
 void ScoreAnalyser::setStemSize(
                   const int stem_up_x_offset,
@@ -888,23 +890,16 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
 		const int firstLength = firstEnd - renderInfo.tick;
 		const int secondLength = renderInfo.tick_length - firstLength;
 		
-		RelativeXCoord firstEndRel(firstEnd, MIDI);
-		
 		// split the note in two, and collect resulting notes in a vector.
 		// then we can iterate through that vector and tie all notes together
 		// (remember, note may be split in more than 2 if one of the 2 initial halves has a rare length)
 		
-		
 		int initial_id = -1;
-		
-		if(!recursion)
-		{
-			initial_id = noteRenderInfo.size();
-		}
+		if(!recursion) initial_id = noteRenderInfo.size();
 		
 		NoteRenderInfo part1(renderInfo.tick, renderInfo.x, renderInfo.level, firstLength, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
 		addToVector(part1, true);
-		NoteRenderInfo part2(getMeasureData()->firstTickInMeasure(renderInfo.measureBegin+1), firstEndRel.getRelativeTo(WINDOW),
+		NoteRenderInfo part2(getMeasureData()->firstTickInMeasure(renderInfo.measureBegin+1), tickToXConverter->tickToX(firstEnd),
                              renderInfo.level, secondLength, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
 		addToVector(part2, true);
 		
@@ -914,9 +909,7 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
             // were added in this recusrion and tie them
 			const int amount = noteRenderInfo.size();
 			for(int i=initial_id+1; i<amount; i++)
-			{
 				noteRenderInfo[i].tieWith(noteRenderInfo[i-1]);
-			}
 		}
 		
 		return;
@@ -939,12 +932,12 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
 	else if( aboutEqual(relativeLength, 1.0/2.0) ){ renderInfo.hollow_head = true; } // 1/2
 	else if( aboutEqual(relativeLength, 1.0/3.0) ){ renderInfo.setTriplet(); renderInfo.hollow_head = true; } // triplet 1/2
 	else if( aboutEqual(relativeLength, 1.0/4.0) ); // 1/4
-	else if( aboutEqual(relativeLength, 1.0/6.0) ){ renderInfo.setTriplet(); } // triplet 1/4
 	else if( aboutEqual(relativeLength, 1.0/8.0) ) renderInfo.flag_amount = 1; // 1/8
-	else if( aboutEqual(relativeLength, 1.0/12.0) ){ renderInfo.setTriplet(); renderInfo.flag_amount = 1; } // triplet 1/8
+    else if( aboutEqual(relativeLength, 1.0/6.0) ){ renderInfo.setTriplet(); } // triplet 1/4
 	else if( aboutEqual(relativeLength, 1.0/16.0) ) renderInfo.flag_amount = 2; // 1/16
-	else if( aboutEqual(relativeLength, 1.0/24.0) ) { renderInfo.setTriplet(); renderInfo.flag_amount = 2; } // triplet 1/16
+    else if( aboutEqual(relativeLength, 1.0/12.0) ){ renderInfo.setTriplet(); renderInfo.flag_amount = 1; } // triplet 1/8
 	else if( aboutEqual(relativeLength, 1.0/32.0) ) renderInfo.flag_amount = 3; // 1/32
+    else if( aboutEqual(relativeLength, 1.0/24.0) ) { renderInfo.setTriplet(); renderInfo.flag_amount = 2; } // triplet 1/16
 	else if( aboutEqual(relativeLength, 3.0/4.0) and starts_on_beat){ renderInfo.dotted = true; renderInfo.hollow_head=true; } // dotted 1/2
 	else if( aboutEqual(relativeLength, 3.0/8.0) and starts_on_beat ) renderInfo.dotted = true; // dotted 1/4
 	else if( aboutEqual(relativeLength, 3.0/2.0) and starts_on_beat ){ renderInfo.dotted = true; renderInfo.hollow_head=true; } // dotted whole
@@ -974,7 +967,7 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
 		}
         
         const int secondBeginning_tick = renderInfo.tick + firstLength_tick;
-        RelativeXCoord secondBeginningRel(secondBeginning_tick, MIDI);
+        //RelativeXCoord secondBeginningRel(secondBeginning_tick, MIDI);
         
 		int initial_id = -1;
 		
@@ -985,7 +978,7 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
 		
 		NoteRenderInfo part1(renderInfo.tick, renderInfo.x, renderInfo.level, firstLength_tick, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
 		addToVector(part1, true);
-		NoteRenderInfo part2(secondBeginning_tick, secondBeginningRel.getRelativeTo(WINDOW), renderInfo.level,
+		NoteRenderInfo part2(secondBeginning_tick, tickToXConverter->tickToX(secondBeginning_tick), renderInfo.level,
                              renderInfo.tick_length-firstLength_tick, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
 		addToVector(part2, true);
 		
@@ -1010,7 +1003,6 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
     }
 	
     assertExpr(renderInfo.level,>,-1);    
-    
     noteRenderInfo.push_back(renderInfo);
 }
 

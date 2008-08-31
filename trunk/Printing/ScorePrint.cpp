@@ -27,6 +27,21 @@ ScorePrintable::~ScorePrintable()
 {
 }
 
+class PrintXConverter : public TickToXConverter
+{
+    ScorePrintable* parent;
+public:
+    PrintXConverter(ScorePrintable* parent)
+    {
+        PrintXConverter::parent = parent;
+    }
+    ~PrintXConverter(){}
+    int tickToX(const int tick)
+    {
+        return parent->tickToX(tick);
+    }
+};
+
 // FIXME - F key, notes above/below score, etc... --> variable score height needed
 void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
                               const int x0, const int y0,
@@ -56,7 +71,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     
     beginLine(&dc, &line, x0, y0, x1, y1, show_measure_number);
     
-    ScoreAnalyser analyser(scoreEditor, middleC-5);
+    ScoreAnalyser analyser(scoreEditor, new PrintXConverter(this), middleC-5);
     analyser.setStemSize( 19, 0, 9, 0 );
     
     // iterate through layout elements to collect notes in the vector
@@ -170,19 +185,52 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         if(noteRenderInfo.getTiedToPixel() != -1)
         {
             wxPen tiePen( wxColour(0,0,0), 1 ) ;
-            tiePen.SetJoin(wxJOIN_MITER);
+            //tiePen.SetJoin(wxJOIN_BEVEL);
             dc.SetPen( tiePen );
             dc.SetBrush( *wxTRANSPARENT_BRUSH );
             
             const bool show_above = noteRenderInfo.isTieUp();
             const int base_y = LEVEL_TO_Y( noteRenderInfo.getBaseLevel() ) + (show_above ? - 9 : 9); 
             
+            // FIXME - when a note is split in two, it seems like some of the
+            // new created ones receive the score's X coord and not the printerDC's
             dc.DrawEllipticArc(noteRenderInfo.x + headRadius*1.8,
                                base_y - 8,
                                noteRenderInfo.getTiedToPixel() - noteRenderInfo.x,
                                16,
                                (show_above ? 0   : 180),
                                (show_above ? 180 : 360));
+
+/*
+            
+            int center_x = noteRenderInfo.x + headRadius*1.8 + (noteRenderInfo.getTiedToPixel() - noteRenderInfo.x)/2;
+            int center_y = base_y;
+            int radius_x = (noteRenderInfo.getTiedToPixel() - noteRenderInfo.x)/2;
+            int radius_y = (show_above ? -8 : 8);
+            
+            center_x *= 10;
+            center_y *= 10;
+            radius_x *= 10;
+            radius_y *= 10;
+            
+            dc.SetUserScale(0.1, 0.1);
+            wxPoint points[] = 
+            {
+                wxPoint(center_x + radius_x*cos(0.1), center_y + radius_y*sin(0.1)),
+                wxPoint(center_x + radius_x*cos(0.3), center_y + radius_y*sin(0.3)),
+                wxPoint(center_x + radius_x*cos(0.6), center_y + radius_y*sin(0.6)),
+                wxPoint(center_x + radius_x*cos(0.9), center_y + radius_y*sin(0.9)),
+                wxPoint(center_x + radius_x*cos(1.2), center_y + radius_y*sin(1.2)),
+                wxPoint(center_x + radius_x*cos(1.5), center_y + radius_y*sin(1.5)),
+                wxPoint(center_x + radius_x*cos(1.8), center_y + radius_y*sin(1.8)),
+                wxPoint(center_x + radius_x*cos(2.1), center_y + radius_y*sin(2.1)),
+                wxPoint(center_x + radius_x*cos(2.4), center_y + radius_y*sin(2.4)),
+                wxPoint(center_x + radius_x*cos(2.7), center_y + radius_y*sin(2.7)),
+                wxPoint(center_x + radius_x*cos(3.0), center_y + radius_y*sin(3.0)),
+            };
+            dc.DrawSpline(11, points);
+            dc.SetUserScale(1.0, 1.0);
+ */
         }
         
         /*    
