@@ -61,6 +61,25 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     
     // iterate through layout elements to collect notes in the vector
     // so ScoreAnalyser can prepare the score
+    
+    // FIXME - handle both clefs + variable height
+    
+    /*
+     if(g_clef)
+     {
+         setUpDownPivotLevel(converter->getScoreCenterCLevel()-5);
+         const int silences_y = getEditorYStart() + y_step*(converter->getScoreCenterCLevel()-8) - getYScrollInPixels() + 1;
+         renderScore(noteRenderInfo_GClef, silences_y);
+     }
+     
+     if(f_clef)
+     {
+         setUpDownPivotLevel(converter->getScoreCenterCLevel()+6);
+         const int silences_y = getEditorYStart() + y_step*(converter->getScoreCenterCLevel()+4) - getYScrollInPixels() + 1;
+         renderScore(noteRenderInfo_FClef, silences_y);
+     }
+     */    
+    
     LayoutElement* currentElement;
     while((currentElement = getNextElement()) and (currentElement != NULL))
     {
@@ -83,42 +102,30 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
             
 			NoteRenderInfo currentNote(tick, note_x, noteLevel, noteLength, note_sign,
                                        track->isNoteSelected(n), track->getNotePitchID(n));
-			analyser.addToVector(currentNote, false);
-            
-            // draw note head
-            {
-            NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[analyser.noteRenderInfo.size()-1];
-            
-            dc.SetPen(  wxPen( wxColour(0,0,0), 2 ) );
-            
-            if(noteRenderInfo.hollow_head) dc.SetBrush( *wxTRANSPARENT_BRUSH );
-            else dc.SetBrush( *wxBLACK_BRUSH );
-
-            const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
-            wxPoint headLocation( noteRenderInfo.x + headRadius, notey-headRadius/2.0 );
-            dc.DrawEllipse( headLocation, wxSize(headRadius+1, headRadius) );
-            noteRenderInfo.setY(notey+headRadius/2.0);
-            }
-            
+			analyser.addToVector(currentNote, false);   
         }
         
     }//next element
     
-    /*
-    if(g_clef)
+    dc.SetPen(  wxPen( wxColour(0,0,0), 2 ) );
+    
+    // draw note head
     {
-        setUpDownPivotLevel(converter->getScoreCenterCLevel()-5);
-        const int silences_y = getEditorYStart() + y_step*(converter->getScoreCenterCLevel()-8) - getYScrollInPixels() + 1;
-        renderScore(noteRenderInfo_GClef, silences_y);
+    const int noteAmount = analyser.noteRenderInfo.size();
+    for(int i=0; i<noteAmount; i++)
+    {
+        NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
+        
+        if(noteRenderInfo.hollow_head) dc.SetBrush( *wxTRANSPARENT_BRUSH );
+        else dc.SetBrush( *wxBLACK_BRUSH );
+        
+        const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
+        wxPoint headLocation( noteRenderInfo.x + headRadius, notey-headRadius/2.0 );
+        dc.DrawEllipse( headLocation, wxSize(headRadius+1, headRadius) );
+        noteRenderInfo.setY(notey+headRadius/2.0);
+    }
     }
     
-    if(f_clef)
-    {
-        setUpDownPivotLevel(converter->getScoreCenterCLevel()+6);
-        const int silences_y = getEditorYStart() + y_step*(converter->getScoreCenterCLevel()+4) - getYScrollInPixels() + 1;
-        renderScore(noteRenderInfo_FClef, silences_y);
-    }
-*/    
     // analyse notes to know how to build the score
     analyser.analyseNoteInfo();
     
@@ -126,6 +133,8 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     for(int i=0; i<noteAmount; i++)
     {
         NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
+        
+        dc.SetPen(  wxPen( wxColour(0,0,0), 2 ) );
         
         // draw stem
         if(noteRenderInfo.stem_type != STEM_NONE)
@@ -157,28 +166,27 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
             }
         }
         
-        /*    
-            // flags
-        if(renderInfo.flag_amount>0 and not renderInfo.beam)
+        // ties
+        if(noteRenderInfo.getTiedToPixel() != -1)
         {
-                static const int stem_height = noteFlag->image->height;
-                const int stem_end = LEVEL_TO_Y(analyser->getStemTo(renderInfo));
-                const int flag_y_origin = (renderInfo.stem_type==STEM_UP ? stem_end : stem_end - stem_height );
-                const int flag_x_origin = (renderInfo.stem_type==STEM_UP ? renderInfo.x + 9 : renderInfo.x + 1);
-                const int flag_step = (renderInfo.stem_type==STEM_UP ? 7 : -7 );
-                
-                noteFlag->setFlip( false, renderInfo.stem_type!=STEM_UP );
-                
-                AriaRender::images();
-                for(int n=0; n<renderInfo.flag_amount; n++)
-                {
-                    noteFlag->move( flag_x_origin , flag_y_origin + n*flag_step);	
-                    noteFlag->render();
-                }
-                AriaRender::primitives();
+            wxPen tiePen( wxColour(0,0,0), 1 ) ;
+            tiePen.SetJoin(wxJOIN_MITER);
+            dc.SetPen( tiePen );
+            dc.SetBrush( *wxTRANSPARENT_BRUSH );
+            
+            const bool show_above = noteRenderInfo.isTieUp();
+            const int base_y = LEVEL_TO_Y( noteRenderInfo.getBaseLevel() ) + (show_above ? - 9 : 9); 
+            
+            dc.DrawEllipticArc(noteRenderInfo.x + headRadius*1.8,
+                               base_y - 8,
+                               noteRenderInfo.getTiedToPixel() - noteRenderInfo.x,
+                               16,
+                               (show_above ? 0   : 180),
+                               (show_above ? 180 : 360));
         }
-    }
         
+        /*    
+                 
         // triplet
         if (renderInfo.drag_triplet_sign and renderInfo.triplet_arc_x_start != -1)
         {
