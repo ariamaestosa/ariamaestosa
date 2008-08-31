@@ -41,6 +41,8 @@
 
 #include "Midi/MeasureData.h"
 
+#include "GUI/MainFrame.h"
+
 #include "Dialogs/WaitWindow.h"
 
 #include "Midi/Sequence.h"
