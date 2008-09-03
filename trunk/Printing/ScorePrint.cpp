@@ -200,6 +200,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
                                16,
                                (show_above ? 0   : 180),
                                (show_above ? 180 : 360));
+        }
 
 /*
             
@@ -231,6 +232,21 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
             dc.DrawSpline(11, points);
             dc.SetUserScale(1.0, 1.0);
  */
+        // beam
+        if(noteRenderInfo.beam)
+        {
+            const int x1 = analyser.getStemX(noteRenderInfo);
+            int y1       = LEVEL_TO_Y(analyser.getStemTo(noteRenderInfo));
+            int y2       = LEVEL_TO_Y(noteRenderInfo.beam_to_level);
+            
+            const int y_diff = (noteRenderInfo.stem_type == STEM_UP ? 5 : -5);
+            
+            for(int n=0; n<noteRenderInfo.flag_amount; n++)
+            {
+                dc.DrawLine(x1, y1, noteRenderInfo.beam_to_x, y2);
+                y1 += y_diff;
+                y2 += y_diff;
+            }
         }
         
         /*    
