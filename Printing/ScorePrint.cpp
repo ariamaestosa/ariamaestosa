@@ -72,7 +72,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     beginLine(&dc, &line, x0, y0, x1, y1, show_measure_number);
     
     ScoreAnalyser analyser(scoreEditor, new PrintXConverter(this), middleC-5);
-    analyser.setStemSize( 19, 0, 9, 0 );
+    analyser.setStemDrawInfo( 19-3, 0, 9-3, 0 );
     
     // iterate through layout elements to collect notes in the vector
     // so ScoreAnalyser can prepare the score
@@ -135,7 +135,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         else dc.SetBrush( *wxBLACK_BRUSH );
         
         const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
-        wxPoint headLocation( noteRenderInfo.x + headRadius, notey-headRadius/2.0 );
+        wxPoint headLocation( noteRenderInfo.x + headRadius - 3, notey-headRadius/2.0 );
         dc.DrawEllipse( headLocation, wxSize(headRadius+1, headRadius) );
         noteRenderInfo.setY(notey+headRadius/2.0);
     }
@@ -235,18 +235,31 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         // beam
         if(noteRenderInfo.beam)
         {
+            dc.SetPen(  wxPen( wxColour(0,0,0), 2 ) );
+            dc.SetBrush( *wxBLACK_BRUSH );
+            
             const int x1 = analyser.getStemX(noteRenderInfo);
             int y1       = LEVEL_TO_Y(analyser.getStemTo(noteRenderInfo));
             int y2       = LEVEL_TO_Y(noteRenderInfo.beam_to_level);
             
-            const int y_diff = (noteRenderInfo.stem_type == STEM_UP ? 5 : -5);
+            const int y_diff = (noteRenderInfo.stem_type == STEM_UP ? 7 : -7);
             
             for(int n=0; n<noteRenderInfo.flag_amount; n++)
             {
-                dc.DrawLine(x1, y1, noteRenderInfo.beam_to_x, y2);
+                //dc.DrawLine(x1, y1, noteRenderInfo.beam_to_x, y2);
+                wxPoint points[] = 
+                {
+                wxPoint(x1, y1),
+                wxPoint(noteRenderInfo.beam_to_x, y2),
+                wxPoint(noteRenderInfo.beam_to_x, y2+3),
+                wxPoint(x1, y1+3)
+                };
+                dc.DrawPolygon(4, points);
+                
                 y1 += y_diff;
                 y2 += y_diff;
             }
+            dc.SetBrush( *wxTRANSPARENT_BRUSH );
         }
         
         /*    

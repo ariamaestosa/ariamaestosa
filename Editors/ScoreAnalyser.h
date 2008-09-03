@@ -157,7 +157,7 @@ public:
     
     ScoreAnalyser(ScoreEditor* parent, TickToXConverter* converter, int stemPivot);
     
-    void setStemSize( const int stem_up_x_offset,
+    void setStemDrawInfo( const int stem_up_x_offset,
                       const float stem_up_y_offset,
                       const int stem_down_x_offset,
                       const float stem_down_y_offset,
