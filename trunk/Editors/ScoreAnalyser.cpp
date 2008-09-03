@@ -355,7 +355,7 @@ ScoreAnalyser::ScoreAnalyser(ScoreEditor* parent, TickToXConverter* converter, i
     
     INIT_PTR(tickToXConverter) = converter;
 }
-void ScoreAnalyser::setStemSize(
+void ScoreAnalyser::setStemDrawInfo(
                   const int stem_up_x_offset,
                   const float stem_up_y_offset,
                   const int stem_down_x_offset,
