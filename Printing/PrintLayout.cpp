@@ -251,6 +251,9 @@ LayoutElement::LayoutElement(LayoutElementType type_arg, int measure_arg)
 {
     type = type_arg;
     measure = measure_arg;
+    
+    x = -1;
+    x2 = -1;
 }
 
 LayoutLine::LayoutLine(AriaPrintable* parent)

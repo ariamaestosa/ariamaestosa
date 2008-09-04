@@ -345,9 +345,11 @@ LayoutElement* EditorPrintable::getNextElement()
     std::vector<LayoutElement>& layoutElements = currentLine->layoutElements;
     
     if(currentLayoutElement == 0) xloc = 2;
-    if(currentLayoutElement > 0) xloc += layoutElements[currentLayoutElement-1].charWidth;
+    else if(currentLayoutElement > 0) xloc += layoutElements[currentLayoutElement-1].charWidth;
     
     const int elem_x_start = getCurrentElementXStart();
+    currentLine->layoutElements[currentLayoutElement].x = elem_x_start;
+    currentLine->layoutElements[currentLayoutElement].x2 =  getCurrentElementXEnd();
 
     // draw vertical line that starts measure
     dc->SetPen(  wxPen( wxColour(0,0,0), 2 ) );
@@ -443,8 +445,9 @@ int EditorPrintable::tickToX(const int tick)
              * note position ranges from 0 (at the very beginning of the layout element)
              * to 1 (at the very end of the layout element)
              */
-            const int elem_x_start = getCurrentElementXStart();
-            const int elem_x_end = getCurrentElementXEnd();
+            const int elem_x_start = currentLine->layoutElements[n].x;
+            const int elem_x_end = currentLine->layoutElements[n].x2;
+            //std::cout << elem_x_start << ", " << elem_x_end << std::endl;
             const int elem_w = elem_x_end - elem_x_start;
             const float nratio = ((float)(tick - firstTick) / (float)(lastTick - firstTick));
             
