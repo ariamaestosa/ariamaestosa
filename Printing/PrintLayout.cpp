@@ -297,6 +297,7 @@ int LayoutLine::getLastNoteInElement(LayoutElement* layoutElement)
 
 MeasureToExport& LayoutLine::getMeasureForElement(const int layoutElementID)
 {
+    std::cout << "getMeasureForElement in measure " << layoutElements[layoutElementID].measure << " layoutElementID=" << layoutElementID << std::endl;
     return printable->measures[layoutElements[layoutElementID].measure];
 }
 MeasureToExport& LayoutLine::getMeasureForElement(LayoutElement* layoutElement)
