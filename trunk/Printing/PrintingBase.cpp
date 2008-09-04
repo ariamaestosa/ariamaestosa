@@ -438,7 +438,7 @@ int EditorPrintable::tickToX(const int tick)
         const int firstTick = currentLine->getMeasureForElement(n).firstTick;
         const int lastTick = currentLine->getMeasureForElement(n).lastTick;
         
-        if(tick >= firstTick and tick <= lastTick)
+        if(tick >= firstTick and tick < lastTick)
         {
             
             /*
@@ -451,6 +451,7 @@ int EditorPrintable::tickToX(const int tick)
             const int elem_w = elem_x_end - elem_x_start;
             const float nratio = ((float)(tick - firstTick) / (float)(lastTick - firstTick));
             
+            std::cout << "nratio = " << nratio << std::endl;
             return (int)round(nratio * (elem_w-widthOfAChar*1.5) + elem_x_start);
         }
     }
