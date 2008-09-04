@@ -122,6 +122,10 @@ public:
     
     float zoom;
     int charWidth;
+    
+    // filled by EditorPrintable::getNextElement() as the X position is calculated in
+    // case location is needed later (for instance, if more than one rendering pass)
+    int x, x2;
 };
 
 /*

@@ -72,7 +72,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     beginLine(&dc, &line, x0, y0, x1, y1, show_measure_number);
     
     ScoreAnalyser analyser(scoreEditor, new PrintXConverter(this), middleC-5);
-    analyser.setStemDrawInfo( 19-3, 0, 9-3, 0 );
+    analyser.setStemDrawInfo( 16, 0, 6, 0 );
     
     // iterate through layout elements to collect notes in the vector
     // so ScoreAnalyser can prepare the score
@@ -135,7 +135,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         else dc.SetBrush( *wxBLACK_BRUSH );
         
         const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
-        wxPoint headLocation( noteRenderInfo.x + headRadius - 3, notey-headRadius/2.0 );
+        wxPoint headLocation( noteRenderInfo.x + headRadius - 3, notey-headRadius/2.0+1 );
         dc.DrawEllipse( headLocation, wxSize(headRadius+1, headRadius) );
         noteRenderInfo.setY(notey+headRadius/2.0);
     }
