@@ -15,6 +15,7 @@
 namespace AriaMaestosa
 {
 
+
 int repetitionMinimalLength = 2;
     
 int getRepetitionMinimalLength()
@@ -28,14 +29,20 @@ void setRepetitionMinimalLength(const int newvalue)
 
 #pragma mark -
 
+const MeasureToExport nullMeasure(-1);
+
 MeasureToExport::MeasureToExport(const int measID)
 {
     shortestDuration = -1;
     firstSimilarMeasure = -1;
     cutApart = false;
     id = measID;
-    firstTick = getMeasureData()->firstTickInMeasure( measID );
-    lastTick = getMeasureData()->lastTickInMeasure( measID );
+    
+    if(measID != -1)
+    {
+        firstTick = getMeasureData()->firstTickInMeasure( measID );
+        lastTick = getMeasureData()->lastTickInMeasure( measID );
+    }
 }
 
 // if a repetition is found, it is stored in the variables and returns true,
@@ -297,8 +304,9 @@ int LayoutLine::getLastNoteInElement(LayoutElement* layoutElement)
 
 MeasureToExport& LayoutLine::getMeasureForElement(const int layoutElementID)
 {
-    std::cout << "getMeasureForElement in measure " << layoutElements[layoutElementID].measure << " layoutElementID=" << layoutElementID << std::endl;
-    return printable->measures[layoutElements[layoutElementID].measure];
+    const int measID = layoutElements[layoutElementID].measure;
+    if(measID == -1) return (MeasureToExport&)nullMeasure;
+    return printable->measures[measID];
 }
 MeasureToExport& LayoutLine::getMeasureForElement(LayoutElement* layoutElement)
 {

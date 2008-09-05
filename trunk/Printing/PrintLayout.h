@@ -93,8 +93,9 @@ public:
 	bool findConsecutiveRepetition(ptr_vector<MeasureToExport>& measures, const int measureAmount,
 								   int& firstMeasureThatRepeats /*out*/, int& lastMeasureThatRepeats /*out*/,
 								   int& firstMeasureRepeated /*out*/, int& lastMeasureRepeated /*out*/);
-	
 };
+
+extern const MeasureToExport nullMeasure;
 
 // used to determine the order of what appears in the file.
 // the order is found first before writing anything because that allows more flexibility
