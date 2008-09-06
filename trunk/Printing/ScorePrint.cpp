@@ -122,8 +122,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         
     }//next element
     
-    dc.SetPen(  wxPen( wxColour(0,0,0), 2 ) );
-    
+
     // draw note head
     {
     const int noteAmount = analyser.noteRenderInfo.size();
@@ -131,6 +130,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     {
         NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
         
+        dc.SetPen(  wxPen( wxColour(0,0,0), 2 ) );
         if(noteRenderInfo.hollow_head) dc.SetBrush( *wxTRANSPARENT_BRUSH );
         else dc.SetBrush( *wxBLACK_BRUSH );
         
@@ -148,8 +148,22 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         if(noteRenderInfo.sign == SHARP)
         {
             // FIXME - draw correct sign
-            dc.SetTextForeground( wxColour(0,0,0) );
-            dc.DrawText( wxT("#"), noteRenderInfo.x - 3, noteRenderInfo.getY() - 9 );
+            //dc.SetTextForeground( wxColour(0,0,0) );
+            //dc.DrawText( wxT("#"), noteRenderInfo.x - 3, noteRenderInfo.getY() - 9 );
+            const int x = noteRenderInfo.x;
+            const int y = noteRenderInfo.getY() - 6;
+            
+            
+            std::cout << "SHARP x=" << x << " y=" << y << std::endl;
+            dc.SetPen(  wxPen( wxColour(0,0,0), 1 ) );
+            
+            // horizontal lines
+            dc.DrawLine( x-5, y, x+5, y-2 );
+            dc.DrawLine( x-5, y+4, x+5, y+2 );
+            
+            // vertical lines
+            dc.DrawLine( x-2, y-3, x-2, y+6 );
+            dc.DrawLine( x+2, y-4, x+2, y+5 );
         }
         else if(noteRenderInfo.sign == FLAT)
         {
