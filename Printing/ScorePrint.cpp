@@ -138,6 +138,36 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         wxPoint headLocation( noteRenderInfo.x + headRadius - 3, notey-headRadius/2.0+1 );
         dc.DrawEllipse( headLocation, wxSize(headRadius+1, headRadius) );
         noteRenderInfo.setY(notey+headRadius/2.0);
+        
+        if(noteRenderInfo.dotted)
+        {
+            wxPoint headLocation( noteRenderInfo.x + headRadius*2.3, notey+1 );
+            dc.DrawEllipse( headLocation, wxSize(2,2) );
+        }
+        /*     
+         // sharpness sign
+         if(renderInfo.sign == SHARP)
+         {
+             AriaRender::images();
+             sharpSign->move(renderInfo.x - 5, renderInfo.getY() + head_radius);
+             sharpSign->render();
+             AriaRender::primitives();
+         }
+         else if(renderInfo.sign == FLAT)
+         {
+             AriaRender::images();
+             flatSign->move(renderInfo.x - 5, renderInfo.getY() + head_radius);
+             flatSign->render();
+             AriaRender::primitives();
+         }
+         else if(renderInfo.sign == NATURAL)
+         {
+             AriaRender::images();
+             naturalSign->move(renderInfo.x - 5, renderInfo.getY() + head_radius);
+             naturalSign->render();
+             AriaRender::primitives();
+         }
+         */
     }
     }
     
@@ -276,39 +306,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
             AriaRender::small_character('3', center_x-2, LEVEL_TO_Y(renderInfo.triplet_arc_level) + ( renderInfo.triplet_show_above? 0 : 18));
         }
         
-        // tie
-        if(renderInfo.getTiedToPixel() != -1)
-        {
-            const float center_x = (renderInfo.getTiedToPixel() + renderInfo.x)/2.0 + 6;
-            const float radius_x = (renderInfo.getTiedToPixel() - renderInfo.x)/2.0;
-            const bool show_above = renderInfo.isTieUp();
-            
-            const int base_y = renderInfo.getY() + head_radius; 
-            AriaRender::arc(center_x, base_y + (show_above ? -5 : 5), radius_x, 6, show_above);
-        }
-        
-        // beam
-        if(renderInfo.beam)
-        {
-            AriaRender::color(0,0,0);
-            AriaRender::lineWidth(2);
-            
-            const int x1 = analyser->getStemX(renderInfo);
-            int y1       = LEVEL_TO_Y(analyser->getStemTo(renderInfo));
-            int y2       = LEVEL_TO_Y(renderInfo.beam_to_level);
-            
-            const int y_diff = (renderInfo.stem_type == STEM_UP ? 5 : -5);
-            
-            AriaRender::lineSmooth(true);
-            for(int n=0; n<renderInfo.flag_amount; n++)
-            {
-                AriaRender::line(x1, y1, renderInfo.beam_to_x, y2);
-                y1 += y_diff;
-                y2 += y_diff;
-            }
-            AriaRender::lineSmooth(false);
-        }
-*/        
+      */        
         
     }
     
