@@ -144,6 +144,25 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
             wxPoint headLocation( noteRenderInfo.x + headRadius*2.3, notey+1 );
             dc.DrawEllipse( headLocation, wxSize(2,2) );
         }
+        
+        if(noteRenderInfo.sign == SHARP)
+        {
+            // FIXME - draw correct sign
+            dc.SetTextForeground( wxColour(0,0,0) );
+            dc.DrawText( wxT("#"), noteRenderInfo.x - 3, noteRenderInfo.getY() - 9 );
+        }
+        else if(noteRenderInfo.sign == FLAT)
+        {
+            // FIXME - draw correct sign
+            dc.SetTextForeground( wxColour(0,0,0) );
+            dc.DrawText( wxT("b"), noteRenderInfo.x - 3, noteRenderInfo.getY() - 9 );
+        }
+        else if(noteRenderInfo.sign == NATURAL)
+        {
+            // FIXME - draw correct sign
+            dc.SetTextForeground( wxColour(0,0,0) );
+            dc.DrawText( wxT("L"), noteRenderInfo.x - 3, noteRenderInfo.getY() - 9 );
+        }
         /*     
          // sharpness sign
          if(renderInfo.sign == SHARP)
@@ -318,23 +337,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         }
         
         
-        /*    
-                 
-        // triplet
-        if (renderInfo.drag_triplet_sign and renderInfo.triplet_arc_x_start != -1)
-        {
-            const int center_x = (renderInfo.triplet_arc_x_end == -1 ? renderInfo.triplet_arc_x_start : (renderInfo.triplet_arc_x_start + renderInfo.triplet_arc_x_end)/2);
-            const int radius_x = (renderInfo.triplet_arc_x_end == -1 or  renderInfo.triplet_arc_x_end == renderInfo.triplet_arc_x_start ?
-                                  10 : (renderInfo.triplet_arc_x_end - renderInfo.triplet_arc_x_start)/2);
-            AriaRender::arc(center_x, LEVEL_TO_Y(renderInfo.triplet_arc_level) + (renderInfo.triplet_show_above ? 0 : 10), radius_x, 10, renderInfo.triplet_show_above);
-            
-            AriaRender::color(0,0,0);
-            AriaRender::small_character('3', center_x-2, LEVEL_TO_Y(renderInfo.triplet_arc_level) + ( renderInfo.triplet_show_above? 0 : 18));
-        }
-        
-      */        
-        
-    }
+    } // next note
     
 }
 
