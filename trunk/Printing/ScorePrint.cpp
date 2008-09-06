@@ -292,6 +292,32 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
             dc.SetBrush( *wxTRANSPARENT_BRUSH );
         }
         
+        // triplet
+        if (noteRenderInfo.drag_triplet_sign and noteRenderInfo.triplet_arc_x_start != -1)
+        {
+            wxPen tiePen( wxColour(0,0,0), 1 ) ;
+            //tiePen.SetJoin(wxJOIN_BEVEL);
+            dc.SetPen( tiePen );
+            dc.SetBrush( *wxTRANSPARENT_BRUSH );
+            
+            const int center_x = (noteRenderInfo.triplet_arc_x_end == -1 ? noteRenderInfo.triplet_arc_x_start : (noteRenderInfo.triplet_arc_x_start + noteRenderInfo.triplet_arc_x_end)/2);
+            const int radius_x = (noteRenderInfo.triplet_arc_x_end == -1 or  noteRenderInfo.triplet_arc_x_end == noteRenderInfo.triplet_arc_x_start ?
+                                  10 : (noteRenderInfo.triplet_arc_x_end - noteRenderInfo.triplet_arc_x_start)/2);
+
+            const int base_y = LEVEL_TO_Y(noteRenderInfo.triplet_arc_level) + (noteRenderInfo.triplet_show_above ? -16 : 1);
+            
+            dc.DrawEllipticArc(center_x - radius_x,
+                               base_y,
+                               radius_x*2,
+                               16,
+                               (noteRenderInfo.triplet_show_above ? 0   : 180),
+                               (noteRenderInfo.triplet_show_above ? 180 : 360));
+            
+            dc.SetTextForeground( wxColour(0,0,0) );
+            dc.DrawText( wxT("3"), center_x-2, base_y + (noteRenderInfo.triplet_show_above ? 0 : 5) );
+        }
+        
+        
         /*    
                  
         // triplet
