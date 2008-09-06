@@ -1,8 +1,9 @@
 
-SVN
+1.2b1
 - Added ability to print more than one track at once
 - Allowed showing only G or F clef
 - Support for moving score one octave up or down
+- Initial support for score printing
 - Fixed improper handling of accidentals
 - Fixed default suggested name when exporting to PDF on mac OS X
 - Fixed odd-numbered time signatures like 9/8
@@ -12,7 +13,6 @@ SVN
 - Fixed glitches in score editor settings
 - Nicer-looking ties in score editor
 - New toolbar layout
-- Major code cleanup in printing code
 - Major code cleanup in measure handling code
 - Major code cleanup in track widgets
 - More automatic memory management, improved leak checks
