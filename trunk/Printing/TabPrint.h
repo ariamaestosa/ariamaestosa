@@ -25,10 +25,12 @@
 
 namespace AriaMaestosa
 {
+    class GuitarEditor;
     
 class TablaturePrintable : public EditorPrintable
 {
     int string_amount;
+    GuitarEditor* editor;
 public:
     TablaturePrintable(Track* track_arg);
     virtual ~TablaturePrintable();

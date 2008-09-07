@@ -22,6 +22,7 @@ TablaturePrintable::TablaturePrintable(Track* track) : EditorPrintable()
     // FIXME  - will that work if printing e.g. a bass track + a guitar track,
     // both with different string counts?
     string_amount = track->graphics->guitarEditor->tuning.size();
+    editor = track->graphics->guitarEditor;
 }
 
 TablaturePrintable::~TablaturePrintable()
@@ -49,6 +50,48 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
     LayoutElement* currentElement;
     while((currentElement = getNextElement()) and (currentElement != NULL))
     {
+        if(currentElement->type == LINE_HEADER)
+        {
+            wxFont oldfont = dc.GetFont();
+            dc.SetFont( wxFont(13,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD) );
+            dc.SetTextForeground( wxColour(0,0,0) );
+            
+            wxSize textSize = dc.GetMultiLineTextExtent( wxT("T") );
+            const int textY = y0 + (y1 - y0)/2 - textSize.y*3/2;
+                
+            dc.DrawText( wxT("T") , currentElement->x+2, textY );
+            dc.DrawText( wxT("A") , currentElement->x+2, textY + textSize.y  );
+            dc.DrawText( wxT("B") , currentElement->x+2, textY + textSize.y*2 );
+            
+            dc.SetFont( oldfont );
+            wxSize textSize2 = dc.GetTextExtent( wxT("T") );
+            
+            // draw tuning
+            const int tuning_x = currentElement->x+14;
+            for(int n=0; n<string_amount; n++)
+            {
+                const int note   = editor->tuning[n]%12;
+                wxString label;
+                switch(note)
+                {
+                    case 0:  label = wxT("B");  break;
+                    case 1:  label = wxT("A#"); break;
+                    case 2:  label = wxT("A");  break;
+                    case 3:  label = wxT("G#"); break;
+                    case 4:  label = wxT("G");  break;
+                    case 5:  label = wxT("F#"); break;
+                    case 6:  label = wxT("F");  break;
+                    case 7:  label = wxT("E");  break;
+                    case 8:  label = wxT("D#"); break;
+                    case 9:  label = wxT("D");  break;
+                    case 10: label = wxT("C#"); break;
+                    case 11: label = wxT("C");  break;
+                } // end switch
+                dc.DrawText( label, tuning_x, y0 + n*stringHeight - textSize2.y/2 );
+            }//next
+            
+            continue;
+        }
         if(currentElement->type != SINGLE_MEASURE) continue;
         
         // for layout elements containing notes, render them

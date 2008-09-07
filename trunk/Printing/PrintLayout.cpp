@@ -595,6 +595,10 @@ void calculatePageLayout(std::vector<LayoutPage>& layoutPages, std::vector<Layou
     
     int trackAmount = 0;
     
+    LayoutElement el(LayoutElement(LINE_HEADER, -1));
+    el.charWidth = 2;
+    layoutPages[currentPage].layoutLines[currentLine].layoutElements.push_back( el );
+    
     for(int n=0; n<layoutElementsAmount; n++)
     {
         if(totalLength + layoutElements[n].charWidth > maxCharItemsPerLine)
