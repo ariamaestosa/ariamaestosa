@@ -184,9 +184,18 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         }
         else if(noteRenderInfo.sign == NATURAL)
         {
-            // FIXME - draw correct sign
-            dc.SetTextForeground( wxColour(0,0,0) );
-            dc.DrawText( wxT("L"), noteRenderInfo.x - 3, noteRenderInfo.getY() - 9 );
+            const int x = noteRenderInfo.x;
+            const int y = noteRenderInfo.getY() - 6;
+            
+            dc.SetPen(  wxPen( wxColour(0,0,0), 1 ) );
+            
+            // horizontal lines
+            dc.DrawLine( x-3, y,   x+3, y-2 );
+            dc.DrawLine( x-3, y+4, x+3, y+2 );
+            
+            // vertical lines
+            dc.DrawLine( x-3, y+4, x-3, y-6 );
+            dc.DrawLine( x+3, y-2, x+3, y+8 );
         }
 
     } // next note
