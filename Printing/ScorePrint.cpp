@@ -95,6 +95,9 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
      }
      */    
     
+    converter->updateConversionData();
+    converter->resetAccidentalsForNewRender();
+    
     LayoutElement* currentElement;
     while((currentElement = getNextElement()) and (currentElement != NULL))
     {
@@ -124,7 +127,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     
 
     // draw note head
-    {
+    { // we score this because info like 'noteAmount' are bound to change just after
     const int noteAmount = analyser.noteRenderInfo.size();
     for(int i=0; i<noteAmount; i++)
     {
@@ -147,14 +150,9 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         
         if(noteRenderInfo.sign == SHARP)
         {
-            // FIXME - draw correct sign
-            //dc.SetTextForeground( wxColour(0,0,0) );
-            //dc.DrawText( wxT("#"), noteRenderInfo.x - 3, noteRenderInfo.getY() - 9 );
             const int x = noteRenderInfo.x;
             const int y = noteRenderInfo.getY() - 6;
             
-            
-            std::cout << "SHARP x=" << x << " y=" << y << std::endl;
             dc.SetPen(  wxPen( wxColour(0,0,0), 1 ) );
             
             // horizontal lines
@@ -167,9 +165,22 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         }
         else if(noteRenderInfo.sign == FLAT)
         {
-            // FIXME - draw correct sign
-            dc.SetTextForeground( wxColour(0,0,0) );
-            dc.DrawText( wxT("b"), noteRenderInfo.x - 3, noteRenderInfo.getY() - 9 );
+            const int x = noteRenderInfo.x - 2;
+            const int y = noteRenderInfo.getY() - 11;
+            
+            dc.SetPen(  wxPen( wxColour(0,0,0), 1 ) );
+            
+            wxPoint points[] = 
+            {
+                wxPoint(x,     y-3),
+                wxPoint(x,     y+12),
+                wxPoint(x+1,   y+12),
+                wxPoint(x+5,   y+6),
+                wxPoint(x+3,   y+4),
+                wxPoint(x,     y+6)
+            };
+            dc.DrawSpline(6, points);
+            
         }
         else if(noteRenderInfo.sign == NATURAL)
         {
@@ -177,31 +188,8 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
             dc.SetTextForeground( wxColour(0,0,0) );
             dc.DrawText( wxT("L"), noteRenderInfo.x - 3, noteRenderInfo.getY() - 9 );
         }
-        /*     
-         // sharpness sign
-         if(renderInfo.sign == SHARP)
-         {
-             AriaRender::images();
-             sharpSign->move(renderInfo.x - 5, renderInfo.getY() + head_radius);
-             sharpSign->render();
-             AriaRender::primitives();
-         }
-         else if(renderInfo.sign == FLAT)
-         {
-             AriaRender::images();
-             flatSign->move(renderInfo.x - 5, renderInfo.getY() + head_radius);
-             flatSign->render();
-             AriaRender::primitives();
-         }
-         else if(renderInfo.sign == NATURAL)
-         {
-             AriaRender::images();
-             naturalSign->move(renderInfo.x - 5, renderInfo.getY() + head_radius);
-             naturalSign->render();
-             AriaRender::primitives();
-         }
-         */
-    }
+
+    } // next note
     }
     
     // analyse notes to know how to build the score
