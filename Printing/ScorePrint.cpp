@@ -101,6 +101,11 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     LayoutElement* currentElement;
     while((currentElement = getNextElement()) and (currentElement != NULL))
     {
+        if(currentElement->type == LINE_HEADER)
+        {
+            
+            continue;
+        }
         if(currentElement->type != SINGLE_MEASURE) continue;
         
         const int firstNote = line.getFirstNoteInElement(currentElement);
@@ -185,7 +190,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         else if(noteRenderInfo.sign == NATURAL)
         {
             const int x = noteRenderInfo.x;
-            const int y = noteRenderInfo.getY() - 6;
+            const int y = noteRenderInfo.getY() - 5;
             
             dc.SetPen(  wxPen( wxColour(0,0,0), 1 ) );
             

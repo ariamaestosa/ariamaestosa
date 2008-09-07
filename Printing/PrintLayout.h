@@ -105,7 +105,8 @@ enum LayoutElementType
 	SINGLE_REPEATED_MEASURE,
 	EMPTY_MEASURE,
 	REPEATED_RIFF,
-	PLAY_MANY_TIMES
+	PLAY_MANY_TIMES,
+    LINE_HEADER // like the clef and key (on a score) or the word TAB and the tuning (for tabs)
 };
 class LayoutElement
 {
