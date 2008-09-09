@@ -18,15 +18,13 @@ namespace AriaMaestosa
 {
     
     
-ScorePrintable::ScorePrintable(Track* track) : EditorPrintable()
-{
+ScorePrintable::ScorePrintable(Track* track) : EditorPrintable() { }
+ScorePrintable::~ScorePrintable() { }
 
-}
-
-ScorePrintable::~ScorePrintable()
-{
-}
-
+/*
+ * An instance of this will be given to the score analyser. Having a separate x-coord-converter 
+ * allows it to do conversions between units without becoming context-dependent.
+ */
 class PrintXConverter : public TickToXConverter
 {
     ScorePrintable* parent;
@@ -41,6 +39,88 @@ public:
         return parent->tickToX(tick);
     }
 };
+
+/*
+ * A few drawing routines
+ */
+void renderSharp(wxDC& dc, const int x, const int y)
+{
+    dc.SetPen(  wxPen( wxColour(0,0,0), 1 ) );
+    
+    // horizontal lines
+    dc.DrawLine( x-5, y, x+5, y-2 );
+    dc.DrawLine( x-5, y+4, x+5, y+2 );
+    
+    // vertical lines
+    dc.DrawLine( x-2, y-3, x-2, y+6 );
+    dc.DrawLine( x+2, y-4, x+2, y+5 );
+}
+void renderFlat(wxDC& dc, const int x, const int y)
+{
+    dc.SetPen(  wxPen( wxColour(0,0,0), 1 ) );
+    
+    wxPoint points[] = 
+    {
+        wxPoint(x,     y-3),
+        wxPoint(x,     y+12),
+        wxPoint(x+1,   y+12),
+        wxPoint(x+5,   y+6),
+        wxPoint(x+3,   y+4),
+        wxPoint(x,     y+6)
+    };
+    dc.DrawSpline(6, points);
+}
+void renderNatural(wxDC& dc, const int x, const int y)
+{
+    dc.SetPen(  wxPen( wxColour(0,0,0), 1 ) );
+    
+    // horizontal lines
+    dc.DrawLine( x-3, y,   x+3, y-2 );
+    dc.DrawLine( x-3, y+4, x+3, y+2 );
+    
+    // vertical lines
+    dc.DrawLine( x-3, y+4, x-3, y-6 );
+    dc.DrawLine( x+3, y-2, x+3, y+8 );
+}
+void renderGClef(wxDC& dc, const int x, const int y)
+{
+    /*
+    dc.SetPen(  wxPen( wxColour(0,0,0), 1 ) );
+    
+    const float scale = 10;
+    
+#define POINT(MX,MY) wxPoint( (int)round(x + MX*scale), (int)round(y - MY*scale) )
+    
+    wxPoint points[] = 
+    {
+        POINT(4.531, -8.744), // bottom tail
+        POINT(3.181, -9.748),
+        POINT(4.946, -11.236),
+        POINT(7.191, -10.123),
+        POINT(7.577, -6.909),
+        POINT(6.642, -1.336),
+        POINT(4.941, 4.612),
+        POINT(3.852, 10.668),
+        POINT(4.527, 14.740),
+        POINT(6.063, 16.144), // 10 - top
+        POINT(7.227, 15.416),
+        POINT(7.485, 11.511),
+        POINT(5.365, 8.513),
+        POINT(0.796, 3.155),
+        POINT(1.062, -1.551), // 15
+        POINT(5.739, -3.776), // main circle bottom
+        POINT(9.401, 0.390),
+        POINT(6.059, 2.953), // main circle top
+        POINT(3.358, 1.260),
+        POINT(3.908, -1.258), // 20
+        POINT(4.503, -1.487) // G end
+    };
+    
+#undef POINT
+    
+    dc.DrawSpline(21, points);
+     */
+}
 
 // FIXME - F key, notes above/below score, etc... --> variable score height needed
 void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
@@ -69,14 +149,16 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         dc.DrawLine(x0, y, x1, y);
     }
     
+    // get the underlying common implementation rolling too
     beginLine(&dc, &line, x0, y0, x1, y1, show_measure_number);
     
+    // prepare the score analyser
     ScoreAnalyser analyser(scoreEditor, new PrintXConverter(this), middleC-5);
     analyser.setStemDrawInfo( 16, 0, 6, 0 );
+    converter->updateConversionData();
+    converter->resetAccidentalsForNewRender();
     
-    // iterate through layout elements to collect notes in the vector
-    // so ScoreAnalyser can prepare the score
-    
+
     // FIXME - handle both clefs + variable height
     
     /*
@@ -93,25 +175,25 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
          const int silences_y = getEditorYStart() + y_step*(converter->getScoreCenterCLevel()+4) - getYScrollInPixels() + 1;
          renderScore(noteRenderInfo_FClef, silences_y);
      }
-     */    
+     */
     
-    converter->updateConversionData();
-    converter->resetAccidentalsForNewRender();
-    
+    // iterate through layout elements to collect notes in the vector
+    // so ScoreAnalyser can prepare the score
     LayoutElement* currentElement;
     while((currentElement = getNextElement()) and (currentElement != NULL))
     {
         if(currentElement->type == LINE_HEADER)
         {
-            
+            renderGClef(dc, currentElement->x, LEVEL_TO_Y(middleC-5) );
             continue;
         }
+        // we're collecting notes here... types other than regular measures
+        // don't contain notes and thus don't interest us
         if(currentElement->type != SINGLE_MEASURE) continue;
         
         const int firstNote = line.getFirstNoteInElement(currentElement);
         const int lastNote = line.getLastNoteInElement(currentElement);
         
-        // for layout elements containing notes, render them
         for(int n=firstNote; n<lastNote; n++)
         {
             int note_sign;
@@ -130,9 +212,8 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         
     }//next element
     
-
-    // draw note head
-    { // we score this because info like 'noteAmount' are bound to change just after
+    // draw notes heads
+    { // we scope this because info like 'noteAmount' are bound to change just after
     const int noteAmount = analyser.noteRenderInfo.size();
     for(int i=0; i<noteAmount; i++)
     {
@@ -153,55 +234,9 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
             dc.DrawEllipse( headLocation, wxSize(2,2) );
         }
         
-        if(noteRenderInfo.sign == SHARP)
-        {
-            const int x = noteRenderInfo.x;
-            const int y = noteRenderInfo.getY() - 6;
-            
-            dc.SetPen(  wxPen( wxColour(0,0,0), 1 ) );
-            
-            // horizontal lines
-            dc.DrawLine( x-5, y, x+5, y-2 );
-            dc.DrawLine( x-5, y+4, x+5, y+2 );
-            
-            // vertical lines
-            dc.DrawLine( x-2, y-3, x-2, y+6 );
-            dc.DrawLine( x+2, y-4, x+2, y+5 );
-        }
-        else if(noteRenderInfo.sign == FLAT)
-        {
-            const int x = noteRenderInfo.x - 2;
-            const int y = noteRenderInfo.getY() - 11;
-            
-            dc.SetPen(  wxPen( wxColour(0,0,0), 1 ) );
-            
-            wxPoint points[] = 
-            {
-                wxPoint(x,     y-3),
-                wxPoint(x,     y+12),
-                wxPoint(x+1,   y+12),
-                wxPoint(x+5,   y+6),
-                wxPoint(x+3,   y+4),
-                wxPoint(x,     y+6)
-            };
-            dc.DrawSpline(6, points);
-            
-        }
-        else if(noteRenderInfo.sign == NATURAL)
-        {
-            const int x = noteRenderInfo.x;
-            const int y = noteRenderInfo.getY() - 5;
-            
-            dc.SetPen(  wxPen( wxColour(0,0,0), 1 ) );
-            
-            // horizontal lines
-            dc.DrawLine( x-3, y,   x+3, y-2 );
-            dc.DrawLine( x-3, y+4, x+3, y+2 );
-            
-            // vertical lines
-            dc.DrawLine( x-3, y+4, x-3, y-6 );
-            dc.DrawLine( x+3, y-2, x+3, y+8 );
-        }
+        if(noteRenderInfo.sign == SHARP)        renderSharp  ( dc, noteRenderInfo.x,     noteRenderInfo.getY() - 6  );
+        else if(noteRenderInfo.sign == FLAT)    renderFlat   ( dc, noteRenderInfo.x - 2, noteRenderInfo.getY() - 11 );
+        else if(noteRenderInfo.sign == NATURAL) renderNatural( dc, noteRenderInfo.x,     noteRenderInfo.getY() - 5  );
 
     } // next note
     }
@@ -209,6 +244,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     // analyse notes to know how to build the score
     analyser.analyseNoteInfo();
     
+    // now that score was analysed, draw the remaining note bits
     const int noteAmount = analyser.noteRenderInfo.size();
     for(int i=0; i<noteAmount; i++)
     {
