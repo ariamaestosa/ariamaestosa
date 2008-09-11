@@ -124,7 +124,9 @@ NOTE: sorry, this is very raw :)
  - score editor should be able to display notes with more than 2 flags (unusure... those with 2 are already so small and barely visible) 
  
  ************************* BUGS: *************************
- 
+
+* events out-of-time-order still happen
+
 * erasing control events by selecting them and pressing BACKSPACE not working (in imported midi if it makes any difference)
     came back shortly after (?)
     
