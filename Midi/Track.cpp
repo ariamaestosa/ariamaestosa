@@ -289,6 +289,7 @@ void Track::setNoteEnd_import(const int tick, const int noteID)
 
     notes[noteID].setEnd(tick);
 
+    // FIXME - why on earth do i check whether we are importing in a method bearing the name "import" ??
 	if(!sequence->importing) reorderNoteOffVector();
 }
 
@@ -413,7 +414,7 @@ void Track::reorderNoteOffVector()
 		{
 			noteOff.swap(n, n+1);
 			if(n>2) n-= 2;
-			else n=0;
+			else n=-1;
 		}//end if
 	}//next
 
