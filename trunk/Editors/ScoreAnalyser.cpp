@@ -324,6 +324,11 @@ int NoteRenderInfo::getBaseLevel()
     if(chord) return (stem_type == STEM_UP ? min_chord_level : max_chord_level);
     else return level;
 }
+int NoteRenderInfo::getStemOriginLevel()
+{
+    if(chord) return (stem_type == STEM_UP ? max_chord_level : min_chord_level);
+    else return level;
+}
 
 /*
  In an attempt t be view-independant, ScoreAnalyser tries to store Y locations as levels
@@ -386,7 +391,7 @@ int ScoreAnalyser::getStemX(NoteRenderInfo& note)
 }
 float ScoreAnalyser::getStemFrom(NoteRenderInfo& note)
 {
-    const int stem_base_lvl = note.getBaseLevel();
+    const int stem_base_lvl = note.getStemOriginLevel();
     if     (note.stem_type == STEM_UP)   return (stem_base_lvl + stem_up_y_offset);
     else if(note.stem_type == STEM_DOWN) return (stem_base_lvl + stem_down_y_offset);
     else return -1;

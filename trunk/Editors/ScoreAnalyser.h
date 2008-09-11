@@ -130,7 +130,10 @@ public:
 	void triplet_arc(int pixel1, int pixel2);
     void setTriplet();
     
+    // those two will be the same for non-chords.
     int getBaseLevel();
+    int getStemOriginLevel();
+    
     const int getY() const;
     void setY(const int newY);
 };
