@@ -127,6 +127,10 @@ NOTE: sorry, this is very raw :)
 
 * events out-of-time-order still happen
 
+* reordering tracks broken with new GraphicalTrack code
+
+* reordering tracks doesn't play nice with docked tracks
+
 * erasing control events by selecting them and pressing BACKSPACE not working (in imported midi if it makes any difference)
     came back shortly after (?)
     
