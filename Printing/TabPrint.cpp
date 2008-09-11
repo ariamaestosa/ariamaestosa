@@ -56,12 +56,13 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
             dc.SetFont( wxFont(13,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD) );
             dc.SetTextForeground( wxColour(0,0,0) );
             
-            wxSize textSize = dc.GetMultiLineTextExtent( wxT("T") );
-            const int textY = y0 + (y1 - y0)/2 - textSize.y*3/2;
-                
-            dc.DrawText( wxT("T") , currentElement->x+2, textY );
-            dc.DrawText( wxT("A") , currentElement->x+2, textY + textSize.y  );
-            dc.DrawText( wxT("B") , currentElement->x+2, textY + textSize.y*2 );
+           // wxSize textSize = dc.GetTextExtent( wxT("T") );
+            const int h4 = (y1 - y0)/3 - 2;    
+            const int textY = y0 + h4/4;
+            
+            dc.DrawText( wxT("T") , currentElement->x+2, textY);
+            dc.DrawText( wxT("A") , currentElement->x+2, textY + h4  );
+            dc.DrawText( wxT("B") , currentElement->x+2, textY + h4*2 );
             
             dc.SetFont( oldfont );
             wxSize textSize2 = dc.GetTextExtent( wxT("T") );
