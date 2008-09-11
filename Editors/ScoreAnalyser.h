@@ -113,7 +113,8 @@ public:
     bool beam_show_above, beam;
     // if beam is true, the renderer will draw a beam between the end of this note's stem and the
     // location specified by these variables.
-    int beam_to_x, beam_to_level;
+    int beam_to_x;
+    float beam_to_level;
     float stem_y_level; // if != -1, the renderer will use this y as stem end instead of calculating it itself
 
 

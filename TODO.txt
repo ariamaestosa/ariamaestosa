@@ -125,8 +125,6 @@ NOTE: sorry, this is very raw :)
  
  ************************* BUGS: *************************
 
-* events out-of-time-order still happen
-
 * reordering tracks broken with new GraphicalTrack code
 
 * reordering tracks doesn't play nice with docked tracks
