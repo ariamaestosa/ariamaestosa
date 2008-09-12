@@ -171,6 +171,8 @@ public:
             }
         }
         
+        std::cout << "-------------" << std::endl;
+        
         // fix all note stems so they all point in the same direction and have the correct height
         while(true)
         {
@@ -178,41 +180,57 @@ public:
             const float from_level = analyser->getStemTo(noteRenderInfo[first_id]);
             const int to_x = noteRenderInfo[first_id].beam_to_x;
             const float to_level = noteRenderInfo[first_id].beam_to_level;
+            std::cout << " + first_id=" << first_id << " INITIAL STATE : " << from_level << " to " << to_level << std::endl;
             
             bool need_to_start_again = false;
             for(int j=first_id; j<=last_id; j++)
             {
+                std::cout << "    + " << std::endl;
                 // give correct stem height (so it doesn't end above or below beam line)
                 // rel_pos will be 0 for first note of a beamed serie, and 1 for the last one
                 const float rel_pos = (float)(analyser->getStemX(noteRenderInfo[j]) - from_x) / (float)(to_x - from_x);
-                noteRenderInfo[j].stem_y_level = (float)from_level + (float)(to_level - from_level) * rel_pos;
+                if(j != first_id)
+                {
+                    noteRenderInfo[j].stem_y_level = (float)from_level + (float)(to_level - from_level) * rel_pos;
+                    std::cout << "setting y " << j << " to " << noteRenderInfo[j].stem_y_level << std::endl;
+                }
+                
+                std::cout << "beam : " << from_level << " to " << to_level << std::endl;
                 
                 // check if stem is long enough
-                float diff = noteRenderInfo[j].stem_y_level - analyser->getStemFrom(noteRenderInfo[j]);
+                const float height = fabsf(noteRenderInfo[j].stem_y_level - analyser->getStemFrom(noteRenderInfo[j]));
+                const bool too_short = height < analyser->min_stem_height;
                 
-                const bool too_short = fabsf(diff) < analyser->min_stem_height;
+                const float diff = noteRenderInfo[j].stem_y_level - noteRenderInfo[j].getBaseLevel();
                 const bool on_wrong_side_of_beam = 
                     (noteRenderInfo[first_id].beam_show_above and diff>0) or
                     ((not noteRenderInfo[first_id].beam_show_above) and diff<0);
+                
+                std::cout << "on_wrong_side_of_beam=" << on_wrong_side_of_beam <<
+                    " diff=" << diff << " noteRenderInfo[j].stem_y_level=" << noteRenderInfo[j].stem_y_level <<
+                    " from=" << analyser->getStemFrom(noteRenderInfo[j]) << std::endl;
                 
                 if( too_short or on_wrong_side_of_beam )
                 {
                     // we've got a problem here. this stem is too short and will look weird
                     // we'll adjust the height of the beam and try again
                     float beam_shift;
-                    if(too_short) beam_shift = analyser->min_stem_height - fabsf(diff);
-                    else if(on_wrong_side_of_beam) beam_shift = analyser->min_stem_height + fabsf(diff);
+                    if(on_wrong_side_of_beam) beam_shift = analyser->min_stem_height + fabsf(diff);
+                    else if(too_short) beam_shift = analyser->min_stem_height - fabsf(diff);
                     
                     if(noteRenderInfo[first_id].beam_show_above)
                     {
                         noteRenderInfo[first_id].beam_to_level -= beam_shift;
                         noteRenderInfo[first_id].stem_y_level  -= beam_shift;
+                        std::cout << "fixing down by " << beam_shift << " to " << noteRenderInfo[first_id].stem_y_level << ", " << noteRenderInfo[first_id].beam_to_level << std::endl;
                     }
                     else
                     {
                         noteRenderInfo[first_id].beam_to_level += beam_shift;
                         noteRenderInfo[first_id].stem_y_level  += beam_shift;
+                        std::cout << "fixing up" << std::endl;
                     }
+                    std::cout << "asking to start again" << std::endl;
                     need_to_start_again = true;
                     break;
                 }

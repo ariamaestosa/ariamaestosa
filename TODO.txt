@@ -154,7 +154,7 @@ NOTE: sorry, this is very raw :)
 - hard to resize last track
 
  - in manual channel management mode, it's still a bit too easy to get multiple tracks on the same channel with different isntruments
-    (for isntance by switching to and from drum editor, etc.)
+    (for instance by switching to and from drum editor, etc.)
 
  - when changing measure length in a song that already has midi events in it, song length becomes wrong compared to midi events
 
