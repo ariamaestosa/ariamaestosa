@@ -79,8 +79,11 @@ cd ..
 
 <center><b>Compiling Aria (any platform)</b></center>
 You are now ready to build Aria itself. All you need to do is type the command appropriate for your system :<br/>
-<b>Note</b>: if you are building from the source archive, you do not need to install scons. Simply replace any occurence of <i>scons</i> in the commands below with <i>python scons/scons.py</i>.
-<blockquote><pre>scons</pre><br/></blockquote>
+
+<blockquote><pre>
+python scons/scons.py
+</pre><br/></blockquote>
+
  This will do a release build.<br/>You can specify <i>release=[debug/release]</i> for different build styles if you wish. You can also pass <i>WXCONFIG=/path/to/wx-config</i> to specify what wx-config to use when building (wx-config is what tells the build system where are the wxWidgets headers and libraries).
 <br/><br/>
 
@@ -88,7 +91,7 @@ You are now ready to build Aria itself. All you need to do is type the command a
 
 You can make a mac OS X app bundle with the following command:
 <blockquote><pre>
-scons install
+python scons/scons.py install
 </pre></blockquote>
 <br/>
 
@@ -100,18 +103,18 @@ At this point, if you are happy with letting Aria live in this folder, you can s
 
 You can also install Aria into /usr/local/ by running the following command as root :
 
-<blockquote><pre>scons install </pre></blockquote>
+<blockquote><pre>python scons/scons.py install </pre></blockquote>
 
 This will require scons 0.98.4 or later to work correctly.<br/>
 Or, to specify an install prefix :
 
 <blockquote><pre>
-scons install prefix=/usr/
+python scons/scons.py install prefix=/usr/
 </pre></blockquote>
 
 You can uninstall it later if you want with
 <blockquote><pre>
-scons uninstall prefix=/usr
+python scons/scons.py uninstall prefix=/usr
 </pre></blockquote>
 
 Don't forget to specify the prefix it was installed into if it is not the default one.<br/><br/>

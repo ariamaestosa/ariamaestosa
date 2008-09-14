@@ -1,3 +1,9 @@
+NOTE that the AriaMaestosa source tree includes third-party
+librairies/applications : libjdkmidi, irrXML, scons.
+They are released under their own license.
+
+______________________________________________________________________
+
 		    GNU GENERAL PUBLIC LICENSE
 		       Version 2, June 1991
 
