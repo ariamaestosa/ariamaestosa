@@ -48,7 +48,10 @@ class RecursiveGlob:
         if 'libjdkmidi' in self.directory:
             # ignore libjdkmidi stuff
             self.pop_dir()
-
+        if 'scons' in self.directory:
+            # ignore scons stuff
+            self.pop_dir()
+            
     def __getitem__(self, index):
         while 1:
             try:
