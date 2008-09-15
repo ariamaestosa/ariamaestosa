@@ -215,29 +215,6 @@ void exportNotation(Track* t)
 // ----------------------------------------------------------------------------------------------------
 // ---------------------------------------- main writing func -----------------------------------------
 // ----------------------------------------------------------------------------------------------------
-#if 0
-wxString askForSavePath()
-{
-    // FIXME - seems unused
-    // ask user to select file destination
-	wxString filepath = showFileDialog( _("Select destination file"),
-										wxT(""),
-										currentSequence->sequenceFileName + wxT(".txt"),
-										wxT("text file|*.txt"), true /*save*/);
-	
-	if(filepath.IsEmpty()) return wxEmptyString; // user cancelled
-	
-	
-	if( wxFileExists(filepath) )
-	{
-		int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
-                                    wxYES_NO);
-		if (answer != wxYES) return askForSavePath();
-	}
-    
-    return filepath;
-}
-#endif
 
 // after dialog is shown and user clicked 'OK' this is called to complete the export
 void completeExport(bool accepted)
