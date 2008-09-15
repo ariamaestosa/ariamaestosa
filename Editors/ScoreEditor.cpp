@@ -70,71 +70,6 @@ int sharp_sign_x[] = { 5*sign_dist, 7*sign_dist, 2*sign_dist, 4*sign_dist, 6*sig
 
 int flat_sign_x[] = { 3*sign_dist, 1*sign_dist, 6*sign_dist, 4*sign_dist, 2*sign_dist, 7*sign_dist, 5*sign_dist };
 
-// FIXME helper func, delete later
-const char* note_name[] = {"A","B","C","D","E","F","G"};
-void printNoteName(int value)
-{
-		// enter default value
-		if(value!=-1)
-		{
-			
-			const int octave=10 - (value/12);
-			const int note=value%12;
-			
-			std::cout << octave << " : ";
-			
-			switch(note){
-				case 0:
-					std::cout << "B";
-					std::cout << " " << std::endl;
-					break;
-				case 1:
-					std::cout << "A# aka Bb" << std::endl;
-					break;
-				case 2:
-					std::cout << "A";
-					std::cout << " " << std::endl;
-					break;
-				case 3:
-					std::cout << "G# aka Ab" << std::endl;
-					break;
-				case 4:
-					std::cout << "G";
-					std::cout << " " << std::endl;
-					break;
-				case 5:
-					std::cout << "F# aka Gb" << std::endl;
-					break;
-				case 6:
-					std::cout << "F";
-					std::cout << " " << std::endl;
-					break;
-				case 7:
-					std::cout << "E";
-					std::cout << " " << std::endl;
-					break;
-				case 8:
-					std::cout << "D# aka Eb"<< std::endl;
-					break;
-				case 9:
-					std::cout << "D";
-					std::cout << " " << std::endl;
-					break;
-				case 10:
-					std::cout << "C# aka Db" << std::endl;
-					break;
-				case 11:
-					std::cout << "C";
-					std::cout << " " << std::endl;
-					break;
-			} // end switch
-			
-			
-		}
-		
-}
-
-
 int findNotePitch(int note_7, int sharpness)
 {
 	int note=0;
@@ -1474,9 +1409,6 @@ void ScoreEditor::addNote(const int snapped_start_tick, const int snapped_end_ti
 	const int note = converter->levelToNote(level);
 	if(note == -1) return;
     
-	//std::cout << note << std::endl;
-	//printNoteName( note );
-	
 	track->action( new Action::AddNote(note, snapped_start_tick, snapped_end_tick, default_volume ) );
 }
 

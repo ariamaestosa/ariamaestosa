@@ -66,7 +66,7 @@ void RelativeXCoord::setValue(int i, RelativeType relativeTo)
 	}
 	else if(relativeTo == EDITOR)
 	{
-        // FIXME - howcome is it 'deprecated'?
+        // use relative to frame or midi ticks when setting the value of a coord
 		std::cout << "COORD SET RELATIVE TO EDITOR!!! That will probably fail as it is deprecated" << std::endl;
 		relativeToEditor = i;
 	}
