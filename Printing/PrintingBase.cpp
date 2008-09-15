@@ -33,7 +33,7 @@ public:
     {
         QuickPrint::printable = printable;
         pageAmount =  printable->getPageAmount();
-        orient = printable->portraitOrientation() ? wxPORTRAIT : wxLANDSCAPE;
+        orient = wxPORTRAIT;
     }
     
     bool OnPrintPage(int pageNum)
@@ -224,11 +224,6 @@ wxString AriaPrintable::getTitle()
 int AriaPrintable::getPageAmount()
 {
     return layoutPages.size();
-}
-bool AriaPrintable::portraitOrientation()
-{
-    // FIXME - any use??
-    return true;
 }
 
 void AriaPrintable::printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const int w, const int h)
