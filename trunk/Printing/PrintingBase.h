@@ -110,8 +110,6 @@ public:
     int getPageAmount();
     void printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const int w, const int h);
 
-    bool portraitOrientation();
-    
 };
 
 AriaPrintable* getCurrentPrintable();
