@@ -254,7 +254,7 @@ def compile_Aria(build_type, which_os):
     # linux (Alsa/tiMidity)
     elif which_os == "linux":
     
-        print "*** Adding Alsa source files and libraries"
+        print "*** Adding Alsa libraries and defines"
         
         env.Append(CCFLAGS=['-DwxUSE_GLCANVAS=1','-D_ALSA'])
         
@@ -281,7 +281,9 @@ def compile_Aria(build_type, which_os):
     # *********************************************************************************************
     
     print " "
-    print "*** Setup done."
+    print "====================="
+    print "     Setup done "
+    print "====================="
     print " "
 
     # compile to .o
@@ -331,7 +333,7 @@ def compile_Aria(build_type, which_os):
             if ".svn" in file or ".icns" in file or "*" in file:
                 continue
             index = file.find("Resources/") + len("Resources/")
-            filename_relative = file[index:len(file)]
+            filename_relative = file[index:]
             source = os.path.join("./Resources", filename_relative)
             target = os.path.join(data_dir, filename_relative)
             
