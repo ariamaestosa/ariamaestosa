@@ -125,7 +125,7 @@ NOTE: sorry, this is very raw :)
  
  ************************* BUGS: *************************
 
-* reordering tracks broken with new GraphicalTrack code
+* crashes when opening 2+ files from the finder
 
 * reordering tracks doesn't play nice with docked tracks
 
