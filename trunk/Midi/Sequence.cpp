@@ -325,6 +325,7 @@ void Sequence::loadUndoMemory()
 
 // ------------------------------------------- render ----------------------------------------
 #pragma mark -
+// FIXME - -this class shouldn't do  both graphics and data
 void Sequence::renderTracks(int currentTick, RelativeXCoord mousex, int mousey, int mousey_initial, int from_y)
 {
     
@@ -347,8 +348,6 @@ void Sequence::renderTracks(int currentTick, RelativeXCoord mousex, int mousey, 
 	// reordering
 	else
 	{
-
-		
         reordering_newPosition = draggedTrack;
         
         // draw tracks before current
@@ -389,7 +388,7 @@ void Sequence::renderTracks(int currentTick, RelativeXCoord mousex, int mousey, 
         }
 		
         // draw track the user is dragging
-        tracks[draggedTrack].graphics->renderHeader(mousex.getRelativeTo(WINDOW), mousey/* - reorderYScroll*/, true);
+        tracks[draggedTrack].graphics->renderHeader(0, mousey, true, true);
 
         const int arrow_y = (reordering_newPosition > draggedTrack) ?
             mousey_initial + (reordering_newPosition - draggedTrack)*50 - 5 - reorderYScroll :
