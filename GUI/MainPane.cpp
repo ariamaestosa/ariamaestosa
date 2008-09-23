@@ -506,23 +506,24 @@ void MainPane::mouseDown(wxMouseEvent& event)
     if(mousey_current < getHeight()-getCurrentSequence()->dockHeight and
        event.GetY() > measureBarY+measureBarHeight)
 	{
-        // check if user is moving tracks order
-        for(int n=0; n<getCurrentSequence()->getTrackAmount(); n++)
+
+
+        // dispatch event to all tracks (stop when either of them uses it)
+        const unsigned int seq_amount = getCurrentSequence()->getTrackAmount();
+        for(unsigned int n=0; n<seq_amount; n++)
 		{
             const int y = getCurrentSequence()->getTrack(n)->graphics->getCurrentEditor()->getTrackYStart();
-
+            
+            // check if user is moving this track
             if(!getCurrentSequence()->getTrack(n)->graphics->docked and mousey_current>y and mousey_current<y+7)
 			{
                 draggingTrack = n;
             }
-
-        }
-
-        // dispatch event to all tracks (stop when either of them uses it)
-        for(int n=0; n<getCurrentSequence()->getTrackAmount(); n++)
-		{
-            if(!getCurrentSequence()->getTrack(n)->graphics->processMouseClick( mousex_current, event.GetY()))
-                break;
+            else
+            { // otherwise ask the track to check if it has something to do with this event
+                if(!getCurrentSequence()->getTrack(n)->graphics->processMouseClick( mousex_current, event.GetY()))
+                    break;
+            }
         }
     }// end if not on dock
 

@@ -379,12 +379,11 @@ bool GraphicalTrack::mouseWheelMoved(int mx, int my, int value)
 	}
 }
 
-// bool means:
+// return value :
 //  true: the event does not belong to this track and so the program should continue searching to whom the event belongs.
 //  false: the event belongs to this track and was processed
 bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 {
-    
     dragging_resize=false;
     
 	lastMouseY = mousey;
@@ -397,10 +396,12 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         // resize drag
         if(mousey>to_y-15 and mousey<to_y-5)
 		{
-            dragging_resize=true;
+            dragging_resize = true;
+            return false;
         }
         
-        if(!dragging_resize and !collapsed) getCurrentEditor()->mouseDown(mousex, mousey);
+        // if track is not collapsed, let the editor handle the mouse event too
+        if(!collapsed) getCurrentEditor()->mouseDown(mousex, mousey);
         
         if(!ImageProvider::imagesLoaded()) return true;
         assert(collapseDrawable->image!=NULL);
