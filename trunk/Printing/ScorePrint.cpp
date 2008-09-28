@@ -154,7 +154,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     
     // prepare the score analyser
     ScoreAnalyser analyser(scoreEditor, new PrintXConverter(this), middleC-5);
-    analyser.setStemDrawInfo( 16, 0, 6, 0 );
+    analyser.setStemDrawInfo( 14, 0, 6, 0 );
     converter->updateConversionData();
     converter->resetAccidentalsForNewRender();
     
@@ -225,7 +225,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         
         const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
         wxPoint headLocation( noteRenderInfo.x + headRadius - 3, notey-headRadius/2.0+1 );
-        dc.DrawEllipse( headLocation, wxSize(headRadius+1, headRadius) );
+        dc.DrawEllipse( headLocation, wxSize(headRadius-1, headRadius-2) );
         noteRenderInfo.setY(notey+headRadius/2.0);
         
         if(noteRenderInfo.dotted)
@@ -293,11 +293,9 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
             const bool show_above = noteRenderInfo.isTieUp();
             const int base_y = LEVEL_TO_Y( noteRenderInfo.getBaseLevel() ) + (show_above ? - 9 : 9); 
             
-            // FIXME - when a note is split in two, it seems like some of the
-            // new created ones receive the score's X coord and not the printerDC's
-            dc.DrawEllipticArc(noteRenderInfo.x + headRadius*1.8,
+            dc.DrawEllipticArc(noteRenderInfo.x + headRadius*1.6,
                                base_y - 8,
-                               noteRenderInfo.getTiedToPixel() - noteRenderInfo.x,
+                               noteRenderInfo.getTiedToPixel() - noteRenderInfo.x /*- headRadius*1.6*/,
                                16,
                                (show_above ? 0   : 180),
                                (show_above ? 180 : 360));

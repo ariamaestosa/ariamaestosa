@@ -1042,7 +1042,7 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
 	}
     else if (!strcmp("key", xml->getNodeName()))
 	{
-        std::cout << "Found 'key'!" << std::endl;
+        //std::cout << "Found 'key'!" << std::endl;
         char* flats_c = (char*)xml->getAttributeValue("flats");
         char* sharps_c = (char*)xml->getAttributeValue("sharps");
         
@@ -1053,7 +1053,7 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
             if(flats_c != NULL) flats = atoi(flats_c);
             if(sharps_c != NULL) sharps = atoi(sharps_c);
             
-            std::cout << "sharps = " << sharps << " flats = " << flats << std::endl;
+            //std::cout << "sharps = " << sharps << " flats = " << flats << std::endl;
             
             if(sharps > flats)
             {

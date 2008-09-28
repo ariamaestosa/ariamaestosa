@@ -170,6 +170,11 @@ public:
 			ignoreMuted_bool = ignoreMuted->IsChecked();
 			ignoreHidden_bool = ignoreHidden->IsChecked();
 		}
+        else
+        {
+            ignoreMuted_bool = true;
+            ignoreHidden_bool = true;
+        }
 		checkRepetitions_bool = detectRepetitions->IsChecked();
 		//lineWidth = atoi_u( lineWidthCtrl->GetValue() );
 		//repetitionsOf2Measures = repMinWidth->IsChecked();

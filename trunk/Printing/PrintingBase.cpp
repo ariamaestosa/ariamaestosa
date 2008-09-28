@@ -449,9 +449,21 @@ int EditorPrintable::tickToX(const int tick)
             
             return (int)round(nratio * (elem_w-widthOfAChar*1.5) + elem_x_start);
         }
+        
+        /* the tick we were given is not on the current line, but on the next.
+         * this probably means there is a tie from a note on one line to a note
+         * on another line. Return a X at the very right of the page.
+         * FIXME - it's not necessarly a tie
+         */
+        if(n==layoutElementsAmount-1 and tick >= lastTick)
+        {
+            return currentLine->layoutElements[n].x2 + 10;
+        }
     }
-    assert(false);
-    return 0;
+    // FIXME- don't know why it gets there
+    return currentLine->layoutElements[layoutElementsAmount-1].x2 + 10;
+    //assert(false);
+    //return 0;
 }
 
 }
