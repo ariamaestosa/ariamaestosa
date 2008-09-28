@@ -1,4 +1,9 @@
 
+1.2b2
+- Fixed issues with track reordering
+- Improved score printing
+- Code cleanup
+
 1.2b1
 - Added ability to print more than one track at once
 - Allowed showing only G or F clef
