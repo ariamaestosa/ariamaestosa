@@ -363,7 +363,7 @@ void generateMeasures(ptr_vector<Track, REF>& tracks, ptr_vector<MeasureToExport
             assertExpr(measure,<,measures.size());
             note = measures[measure].addTrackReference(note, track);
             
-            std::cout << "meas% " << (measures[measure].trackRef[0].track->getName().mb_str()) << std::endl;
+            //std::cout << "meas% " << (measures[measure].trackRef[0].track->getName().mb_str()) << std::endl;
                 
         } // next measure
     } // next track
