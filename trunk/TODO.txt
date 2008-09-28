@@ -127,6 +127,8 @@ NOTE: sorry, this is very raw :)
 
 * crashes when opening 2+ files from the finder
 
+* make the first measure use a 1/16 signature, and the others use 4/4. Then try using the 1/8 grid to add notes.
+
 * erasing control events by selecting them and pressing BACKSPACE not working (in imported midi if it makes any difference)
     came back shortly after (?)
     

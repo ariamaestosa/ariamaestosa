@@ -313,11 +313,23 @@ void EditorPrintable::beginLine(wxDC* dc, LayoutLine* line,  int x0, const int y
     EditorPrintable::currentLine = line;
     EditorPrintable::dc = dc;
     
-    currentLayoutElement = -1;
-    layoutElementsAmount = currentLine->layoutElements.size();
-    
     // 2 spaces allocated for left area of the tab
     widthOfAChar = (float)(x1 - x0) / (float)(line->charWidth+2);
+    
+    layoutElementsAmount = currentLine->layoutElements.size();
+    
+    // init layout elements' locations
+    for(currentLayoutElement=0; currentLayoutElement<layoutElementsAmount; currentLayoutElement++)
+    {
+        if(currentLayoutElement == 0) xloc = 2;
+        else if(currentLayoutElement > 0) xloc += currentLine->layoutElements[currentLayoutElement-1].charWidth;
+        
+        currentLine->layoutElements[currentLayoutElement].x = getCurrentElementXStart();
+        currentLine->layoutElements[currentLayoutElement].x2 =  getCurrentElementXEnd();
+    }
+    
+    xloc = -1;
+    currentLayoutElement = -1;
     
     assertExpr(line->charWidth,>,0);
     assertExpr(widthOfAChar,>,0);
@@ -339,13 +351,16 @@ LayoutElement* EditorPrintable::getNextElement()
     
     std::vector<LayoutElement>& layoutElements = currentLine->layoutElements;
     
+    const int elem_x_start = currentLine->layoutElements[currentLayoutElement].x;
+    
+    /*
     if(currentLayoutElement == 0) xloc = 2;
     else if(currentLayoutElement > 0) xloc += layoutElements[currentLayoutElement-1].charWidth;
     
     const int elem_x_start = getCurrentElementXStart();
     currentLine->layoutElements[currentLayoutElement].x = elem_x_start;
     currentLine->layoutElements[currentLayoutElement].x2 =  getCurrentElementXEnd();
-
+*/
     // draw vertical line that starts measure
     dc->SetPen(  wxPen( wxColour(0,0,0), 2 ) );
     dc->DrawLine( elem_x_start, y0, elem_x_start, y1);
@@ -411,23 +426,9 @@ LayoutElement* EditorPrintable::getNextElement()
 int EditorPrintable::getNotePrintX(int noteID)
 {
     return tickToX( currentLine->getTrack()->getNoteStartInMidiTicks(noteID) );
-    /*
-    const int elem_x_start = getCurrentElementXStart();
-    const int elem_x_end = getCurrentElementXEnd();
-    const int elem_w = elem_x_end - elem_x_start;
-    
-    const int firstTick = currentLine->getMeasureForElement(currentLayoutElement).firstTick;
-    const int lastTick = currentLine->getMeasureForElement(currentLayoutElement).lastTick;
-    const int tick = currentLine->getTrack()->getNoteStartInMidiTicks(noteID);
-    
-    const float nratio = ((float)(tick - firstTick) / (float)(lastTick - firstTick));
-    
-    return (int)round(nratio * (elem_w-widthOfAChar*1.5) + elem_x_start);
-     */
 }
 int EditorPrintable::tickToX(const int tick)
 {
-    
     for(int n=0; n<layoutElementsAmount; n++)
     {
         MeasureToExport& meas = currentLine->getMeasureForElement(n);
@@ -437,7 +438,6 @@ int EditorPrintable::tickToX(const int tick)
         
         if(tick >= firstTick and tick < lastTick)
         {
-            
             /*
              * note position ranges from 0 (at the very beginning of the layout element)
              * to 1 (at the very end of the layout element)
