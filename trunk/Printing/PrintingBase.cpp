@@ -324,7 +324,7 @@ void EditorPrintable::beginLine(wxDC* dc, LayoutLine* line,  int x0, const int y
         if(currentLayoutElement == 0) xloc = 2;
         else if(currentLayoutElement > 0) xloc += currentLine->layoutElements[currentLayoutElement-1].charWidth;
         
-        currentLine->layoutElements[currentLayoutElement].x = getCurrentElementXStart();
+        currentLine->layoutElements[currentLayoutElement].x  = getCurrentElementXStart();
         currentLine->layoutElements[currentLayoutElement].x2 =  getCurrentElementXEnd();
     }
     

@@ -312,6 +312,23 @@ MeasureToExport& LayoutLine::getMeasureForElement(LayoutElement* layoutElement)
 {
     return printable->measures[layoutElement->measure];
 }
+int LayoutLine::getLastMeasure()
+{
+    for(int n=layoutElements.size()-1; n>=0; n--)
+    {
+        if( layoutElements[n].measure != -1) return layoutElements[n].measure;
+    }
+    return -1;
+}
+int LayoutLine::getFirstMeasure()
+{
+    const int amount = layoutElements.size();
+    for(int n=0; n<amount; n++)
+    {
+        if( layoutElements[n].measure != -1) return layoutElements[n].measure;
+    }
+    return -1;
+}
 
 void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x1, const int y1)
 {
@@ -557,8 +574,11 @@ void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements, ptr_ve
                                       );
             
             // if notes are very long, zoom a bit because we don't want a too short measure
-            if( divider <= 2 ) layoutElements[n].zoom = 4;
-            if( divider <= 1 ) layoutElements[n].zoom = 8;
+            if( divider <= 2 ) layoutElements[n].zoom = 2;
+            if( divider <= 1 ) layoutElements[n].zoom = 4;
+            
+            // for very short notes, zooma bit too otherwise they'll all be stuck toghether
+            if( divider >= 16 ) layoutElements[n].zoom = 2;
             
             layoutElements[n].charWidth = (int)round(
                                                      (float)(measures[layoutElements[n].measure].lastTick - measures[layoutElements[n].measure].firstTick) /
