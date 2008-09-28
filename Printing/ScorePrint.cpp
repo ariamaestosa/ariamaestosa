@@ -122,6 +122,170 @@ void renderGClef(wxDC& dc, const int x, const int y)
      */
 }
 
+PrintXConverter* x_converter;
+
+// leave a pointer to the dc for the callback
+// FIXME find cleaner way
+wxDC* global_dc = NULL;
+void renderSilenceCallback(const int tick, const int tick_length, const int silences_y)
+{
+    assert( global_dc != NULL);
+    
+    // FIXME - merge common parts with the one in ScoreEditor
+    const int beat = getMeasureData()->beatLengthInTicks();
+    
+    if(tick_length<2) return;
+    
+    // check if silence spawns over more than one measure
+    const int end_measure = getMeasureData()->measureAtTick(tick+tick_length-1);
+    if(getMeasureData()->measureAtTick(tick) != end_measure)
+    {
+        // we need to plit it in two
+        const int split_tick = getMeasureData()->firstTickInMeasure(end_measure);
+        
+        // Check split is valid before attempting.
+        if(split_tick-tick>0 and tick_length-(split_tick-tick)>0)
+        {
+            renderSilenceCallback(tick, split_tick-tick, silences_y);
+            renderSilenceCallback(split_tick, tick_length-(split_tick-tick), silences_y);
+            return;
+        }
+    }
+    
+    if(tick < 0) return; // FIXME - find why it happens
+    assertExpr(tick,>,-1);
+
+	const int x = x_converter->tickToX(tick);
+	bool dotted = false, triplet = false;
+	int type = -1;
+	
+	int dot_delta_x = 0, dot_delta_y = 0;
+	
+	const float relativeLength = tick_length / (float)(getMeasureData()->beatLengthInTicks()*4);
+	
+	const int tick_in_measure_start = (tick) - getMeasureData()->firstTickInMeasure( getMeasureData()->measureAtTick(tick) );
+    const int remaining = beat - (tick_in_measure_start % beat);
+    const bool starts_on_beat = aboutEqual(remaining,0) or aboutEqual(remaining,beat);
+    
+	if( aboutEqual(relativeLength, 1.0) ) type = 1;
+	else if (aboutEqual(relativeLength, 3.0/2.0) and starts_on_beat){ type = 1; dotted = true; dot_delta_x = 5; dot_delta_y = 2;}
+	else if (aboutEqual(relativeLength, 1.0/2.0)) type = 2;
+	else if (aboutEqual(relativeLength, 3.0/4.0) and starts_on_beat){ type = 2; dotted = true; dot_delta_x = 5; dot_delta_y = 2;}
+    else if (aboutEqual(relativeLength, 1.0/4.0)) type = 4;
+    else if (aboutEqual(relativeLength, 1.0/3.0)){ type = 2; triplet = true; }
+	else if (aboutEqual(relativeLength, 3.0/8.0) and starts_on_beat){ type = 4; dotted = true; dot_delta_x = -3; dot_delta_y = 10; }
+    else if (aboutEqual(relativeLength, 1.0/8.0)) type = 8;
+    else if (aboutEqual(relativeLength, 1.0/6.0)){ type = 4; triplet = true; }
+	else if (aboutEqual(relativeLength, 3.0/16.0) and starts_on_beat){ type = 8; dotted = true; }
+	else if (aboutEqual(relativeLength, 1.0/16.0)) type = 16;
+    else if (aboutEqual(relativeLength, 1.0/12.0)){ triplet = true; type = 8; }
+	else if(relativeLength < 1.0/16.0){ return; }
+	else
+	{
+		// silence is of unknown duration. split it in a serie of silences.
+		
+		// start by reaching the next beat if not already done
+		if(!starts_on_beat and !aboutEqual(remaining,tick_length))
+		{
+            renderSilenceCallback(tick, remaining, silences_y);
+			renderSilenceCallback(tick+remaining, tick_length - remaining, silences_y);
+			return;
+		}
+		
+		// split in two smaller halves. render using a simple recursion.
+		float closestShorterDuration = 1;
+		while(closestShorterDuration >= relativeLength) closestShorterDuration /= 2.0;
+		
+		const int firstLength = closestShorterDuration*(float)(getMeasureData()->beatLengthInTicks()*4);
+        
+		renderSilenceCallback(tick, firstLength, silences_y);
+		renderSilenceCallback(tick+firstLength, tick_length - firstLength, silences_y);
+		return;
+	}
+	
+    global_dc->SetBrush( *wxBLACK_BRUSH );
+    global_dc->SetPen(  wxPen( wxColour(0,0,0), 2 ) );
+    
+	if( type == 1 )
+	{
+        std::cout << "rendering 1/1 silence" << std::endl;
+        global_dc->DrawRectangle(x, silences_y-5, 10, 5);
+	}
+	else if( type == 2 )
+	{
+        global_dc->DrawRectangle(x, silences_y, 10, 5);
+	}
+	else if( type == 4 )
+	{
+        const int mx = x + 10;
+        const int y = silences_y - 5;
+        wxPoint points[] = 
+        {
+            wxPoint(mx,     y),
+            wxPoint(mx+4,   y+4),
+            wxPoint(mx+5,   y+5),
+            wxPoint(mx+4,   y+6),
+            wxPoint(mx+1,   y+9),
+            wxPoint(mx,     y+10),
+            wxPoint(mx+1,   y+11),
+            wxPoint(mx+4,   y+14),
+            wxPoint(mx+5,   y+15),
+            wxPoint(mx,     y+15),
+            wxPoint(mx+1,   y+17),
+            wxPoint(mx+5,   y+20),
+        };
+        global_dc->DrawSpline(12, points);
+	}
+	else if( type == 8 )
+	{
+        const int mx = x + 10;
+        const int y = silences_y;
+        wxPoint points[] = 
+        {
+        wxPoint(mx,     y+15),
+        wxPoint(mx+7,   y),
+        wxPoint(mx,     y),
+        };
+        global_dc->DrawSpline(3, points);
+        
+        global_dc->DrawCircle(mx, y, 2);
+	}
+	else if( type == 16 )
+	{
+        const int mx = x + 10;
+        const int y = silences_y;
+        wxPoint points[] = 
+        {
+        wxPoint(mx,     y+10),
+        wxPoint(mx+5,   y),
+        wxPoint(mx,     y),
+        };
+        global_dc->DrawSpline(3, points);
+        wxPoint points2[] = 
+        {
+            wxPoint(mx+4,   y+1),
+            wxPoint(mx+10,  y-10),
+            wxPoint(mx+5,     y-10),
+        };
+        global_dc->DrawSpline(3, points2);
+        
+        global_dc->DrawCircle(mx, y, 2);
+        global_dc->DrawCircle(mx+5, y-10, 2);
+	}
+	
+	// dotted
+	if(dotted)
+	{
+
+	}
+    
+    // triplet
+    if(triplet)
+    {
+
+    }
+}
+
 // FIXME - F key, notes above/below score, etc... --> variable score height needed
 void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
                               const int x0, const int y0,
@@ -153,7 +317,8 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     beginLine(&dc, &line, x0, y0, x1, y1, show_measure_number);
     
     // prepare the score analyser
-    ScoreAnalyser analyser(scoreEditor, new PrintXConverter(this), middleC-5);
+    x_converter = new PrintXConverter(this);
+    ScoreAnalyser analyser(scoreEditor, x_converter, middleC-5);
     analyser.setStemDrawInfo( 14, 0, 6, 0 );
     converter->updateConversionData();
     converter->resetAccidentalsForNewRender();
@@ -388,6 +553,19 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         
         
     } // next note
+    
+    // render silences
+    //const int first_measure = line.getMeasureForElement(0).id;
+    //const int last_measure  = line.getMeasureForElement(line.layoutElements.size()-1).id;
+    
+    const int first_measure = line.getFirstMeasure();
+    const int last_measure  = line.getLastMeasure();
+    std::cout << "drawing silences from " << first_measure << " to " << last_measure << std::endl;
+    
+    global_dc = &dc;
+    analyser.renderSilences( &renderSilenceCallback, 
+                             first_measure, last_measure,
+                             LEVEL_TO_Y(middleC - 7) );
     
 }
 

@@ -158,6 +158,9 @@ public:
     MeasureToExport& getMeasureForElement(const int layoutElementID);
     MeasureToExport& getMeasureForElement(LayoutElement* layoutElement);
     
+    int getLastMeasure();
+    int getFirstMeasure();
+        
     std::vector<LayoutElement> layoutElements;
 };
 
