@@ -40,7 +40,7 @@ class ControllerEditor : public Editor
 
 	bool selecting;
 	
-    PTR_HOLD(ControllerChoice, controllerChoice);
+    OwnerPtr<ControllerChoice>  controllerChoice;
     
     int selection_begin, selection_end;
 public:

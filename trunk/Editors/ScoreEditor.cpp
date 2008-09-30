@@ -418,12 +418,12 @@ ScoreEditor::ScoreEditor(Track* track) : Editor(track)
     musicalNotationEnabled = true;
 	linearNotationEnabled  = true;
     
-	INIT_PTR(converter) = new ScoreMidiConverter();
+	converter = new ScoreMidiConverter();
     
 	converter->updateConversionData();	
 	
-    INIT_PTR(g_clef_analyser) = new ScoreAnalyser(this, new MyXConverter(), converter->getScoreCenterCLevel()-5);
-    INIT_PTR(f_clef_analyser) = new ScoreAnalyser(this, new MyXConverter(), converter->getScoreCenterCLevel()+6);
+    g_clef_analyser = new ScoreAnalyser(this, new MyXConverter(), converter->getScoreCenterCLevel()-5);
+    f_clef_analyser = new ScoreAnalyser(this, new MyXConverter(), converter->getScoreCenterCLevel()+6);
     
 	setYStep( y_step );
 	

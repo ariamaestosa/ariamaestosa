@@ -36,7 +36,7 @@ class Image {
 #else
     public:
     wxImage image;
-    PTR_HOLD(wxBitmap, bitmap);
+    OwnerPtr<wxBitmap>  bitmap;
 #endif
     
 	LEAK_CHECK(Image);

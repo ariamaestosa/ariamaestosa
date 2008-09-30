@@ -56,9 +56,9 @@ DECLARE_EVENT_TYPE(wxEVT_HIDE_WAIT_WINDOW, -1)
     
 class MainFrame : public wxFrame
 {
-	WX_PTR_HOLD(AboutDialog, aboutDialog);
-    WX_PTR_HOLD(CustomNoteSelectDialog, customNoteSelectDialog);
-    WX_PTR_HOLD(Preferences, prefs);
+	WxOwnerPtr<AboutDialog>  aboutDialog;
+    WxOwnerPtr<CustomNoteSelectDialog>  customNoteSelectDialog;
+    WxOwnerPtr<Preferences>  prefs;
     
     wxBorderSizer* verticalSizer;
 #ifdef NO_WX_TOOLBAR
@@ -110,10 +110,10 @@ public:
 	int play_during_edit; // what is the user's preference for note preview during edits
 	bool playback_mode;
     MainPane* mainPane;
-	PTR_HOLD(InstrumentChoice, instrument_picker);
-	PTR_HOLD(DrumChoice, drumKit_picker);
-	PTR_HOLD(TuningPicker, tuningPicker);
-	PTR_HOLD(KeyPicker, keyPicker);
+	OwnerPtr<InstrumentChoice>  instrument_picker;
+	OwnerPtr<DrumChoice>        drumKit_picker;
+	OwnerPtr<TuningPicker>      tuningPicker;
+	OwnerPtr<KeyPicker>         keyPicker;
     // ----------------------
 
     MainFrame();

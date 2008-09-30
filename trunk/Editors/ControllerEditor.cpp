@@ -46,7 +46,7 @@ ControllerEditor::ControllerEditor(Track* track) : Editor(track)
     
 	hasBeenResizing = false;
 	
-    INIT_PTR(controllerChoice) = new ControllerChoice(track->graphics);
+    controllerChoice = new ControllerChoice(track->graphics);
 }
 
 int ControllerEditor::getCurrentControllerType()

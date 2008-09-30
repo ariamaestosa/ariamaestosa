@@ -82,7 +82,7 @@ Sequence::Sequence()
     copyright = wxT("");
     
 	channelManagement = CHANNEL_AUTO;
-	INIT_PTR(measureData) = new MeasureData();
+	measureData = new MeasureData();
 }
 
 Sequence::~Sequence()

@@ -53,7 +53,7 @@ void Image::load(wxString path)
     }
     width = image.GetWidth();
     height = image.GetHeight();
-    INIT_PTR(bitmap) = new wxBitmap(image);
+    bitmap = new wxBitmap(image);
 #endif
 }
 

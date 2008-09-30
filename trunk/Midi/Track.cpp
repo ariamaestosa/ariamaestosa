@@ -54,7 +54,7 @@ namespace AriaMaestosa
 
 		Track::sequence = sequence;
         
-		INIT_PTR(graphics) = new GraphicalTrack(this, sequence);
+		graphics = new GraphicalTrack(this, sequence);
 		graphics->createEditors();
         
 		channel = 0;

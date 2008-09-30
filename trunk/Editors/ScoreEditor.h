@@ -109,9 +109,9 @@ class ScoreAnalyser;
     {
         bool g_clef;
         bool f_clef;
-        PTR_HOLD(ScoreMidiConverter, converter);
-        PTR_HOLD(ScoreAnalyser, g_clef_analyser);
-        PTR_HOLD(ScoreAnalyser, f_clef_analyser);
+        OwnerPtr<ScoreMidiConverter>  converter;
+        OwnerPtr<ScoreAnalyser>  g_clef_analyser;
+        OwnerPtr<ScoreAnalyser>  f_clef_analyser;
         
         bool musicalNotationEnabled, linearNotationEnabled;
         

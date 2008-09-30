@@ -43,50 +43,85 @@
 
 #endif
 
-
 #include "LeakCheck.h"
 
 template<typename T>
-class AutoDeletePtr
+class OwnerPtr
 {
 public:
-    T* ptr;
-    AutoDeletePtr()
+    T* raw_ptr;
+    
+    OwnerPtr()
     {
-        ptr = NULL;
+        raw_ptr = NULL;
     }
-    ~AutoDeletePtr()
+    OwnerPtr(T* obj)
     {
-#ifdef _MORE_DEBUG_CHECKS
-        if(ptr == NULL) std::cerr << "Warning, ptr_hold declared but not inited properly" << std::endl;
-        else
-#endif
-            delete this->ptr;
+        raw_ptr = obj;
     }
+    
+    ~OwnerPtr()
+    {
+        delete raw_ptr;
+    }
+    
+    OwnerPtr& operator=(T* ptr)
+    {
+        if(raw_ptr != NULL) delete raw_ptr;
+        
+        raw_ptr = ptr;
+        return *this;
+    }
+    
+    operator T*()
+    { 
+        return raw_ptr; 
+    }
+    
+    T* operator->() const
+    {
+        return raw_ptr;
+    }
+    
 };
 template<typename T>
-class WxAutoDeletePtr
+class WxOwnerPtr
 {
 public:
-    T* ptr;
-    WxAutoDeletePtr()
+    T* raw_ptr;
+    
+    WxOwnerPtr()
     {
-        ptr = NULL;
+        raw_ptr = NULL;
     }
-    ~WxAutoDeletePtr()
+    WxOwnerPtr(T* obj)
     {
-#ifdef _MORE_DEBUG_CHECKS
-        if(ptr == NULL) std::cerr << "Warning, ptr_hold declared but not inited properly" << std::endl;
-        else
-#endif
-            this->ptr->Destroy();
+        raw_ptr = obj;
     }
+    
+    ~WxOwnerPtr()
+    {
+        raw_ptr->Destroy();
+    }
+    
+    WxOwnerPtr& operator=(T* ptr)
+    {
+        if(raw_ptr != NULL) raw_ptr->Destroy();
+        
+        raw_ptr = ptr;
+        return *this;
+    }
+    
+    operator T*()
+    { 
+        return raw_ptr; 
+    }
+    
+    T* operator->() const
+    {
+        return raw_ptr;
+    }
+    
 };
-
-#define PTR_HOLD( type, ptr_name ) type* ptr_name; AutoDeletePtr<type> ptr_name##_ptrhold;
-#define WX_PTR_HOLD( type, ptr_name ) type* ptr_name; WxAutoDeletePtr<type> ptr_name##_ptrhold;
-#define INIT_PTR( ptr_name ) ptr_name = ptr_name##_ptrhold . ptr
-
-
 
 #endif

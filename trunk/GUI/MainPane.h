@@ -38,7 +38,7 @@ namespace AriaMaestosa
     
 class MainPane : public MAINPANE_BASE_CLASS
 {
-    PTR_HOLD(MouseDownTimer, mouseDownTimer);
+    OwnerPtr<MouseDownTimer>  mouseDownTimer;
 	
     RelativeXCoord mousex_initial;
 	int mousey_initial;

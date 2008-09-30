@@ -56,7 +56,7 @@ MeasureData::MeasureData()
 	
 	firstMeasure=0;
 	
-    INIT_PTR(graphics) = new MeasureBar(this);
+    graphics = new MeasureBar(this);
     expandedMode = false;
 	updateVector(measureAmount);
 }

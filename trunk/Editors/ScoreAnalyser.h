@@ -153,7 +153,7 @@ class ScoreAnalyser
     float stem_height;
     float min_stem_height;
     
-    PTR_HOLD(TickToXConverter, tickToXConverter);
+    OwnerPtr<TickToXConverter>  tickToXConverter;
 public:
     LEAK_CHECK(ScoreAnalyser);
     

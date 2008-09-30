@@ -74,7 +74,7 @@ public:
     
     LEAK_CHECK(MeasureData);
         
-    PTR_HOLD(MeasureBar, graphics);
+    OwnerPtr<MeasureBar>  graphics;
         
 	MeasureData();
 	~MeasureData();

@@ -253,7 +253,7 @@ void renderSilenceCallback(const int tick, const int tick_length, const int sile
 	else if( type == 16 )
 	{
         const int mx = x + 10;
-        const int y = silences_y;
+        const int y = silences_y + 5;
         wxPoint points[] = 
         {
         wxPoint(mx,     y+10),

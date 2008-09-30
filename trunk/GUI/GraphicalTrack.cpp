@@ -295,7 +295,7 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
     
     assert(track);
     
-    INIT_PTR(grid) = new MagneticGrid(this);
+    grid = new MagneticGrid(this);
     
     lastMouseY=0;
     
@@ -308,7 +308,7 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
     height=128;
     
     // create widgets
-    INIT_PTR(components) = new WidgetLayoutManager();
+    components = new WidgetLayoutManager();
     
     collapseButton = new BitmapButton(28, 15, collapseDrawable);
     components->addFromLeft(collapseButton);
@@ -356,11 +356,11 @@ GraphicalTrack::~GraphicalTrack()
 
 void GraphicalTrack::createEditors()
 {
-    INIT_PTR( keyboardEditor   )  = new KeyboardEditor(track);
-    INIT_PTR( guitarEditor     )  = new GuitarEditor(track);
-    INIT_PTR( drumEditor       )  = new DrumEditor(track);
-    INIT_PTR( controllerEditor )  = new ControllerEditor(track);
-	INIT_PTR( scoreEditor      )  = new ScoreEditor(track);
+     keyboardEditor     = new KeyboardEditor(track);
+     guitarEditor       = new GuitarEditor(track);
+     drumEditor         = new DrumEditor(track);
+     controllerEditor   = new ControllerEditor(track);
+	 scoreEditor        = new ScoreEditor(track);
 }
 
 bool GraphicalTrack::mouseWheelMoved(int mx, int my, int value)
