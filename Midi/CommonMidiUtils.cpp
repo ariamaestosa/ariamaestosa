@@ -408,8 +408,8 @@ void allocAsMidiBytes(Sequence* sequence, bool selectionOnly, /*out*/int* songle
 	makeJDKMidiSequence(sequence, tracks, selectionOnly, songlength, startTick, &numTracks, playing);
 
 	// create the output stream
-	PTR_HOLD(MidiToMemoryStream, out_stream);
-    INIT_PTR(out_stream) = new MidiToMemoryStream();
+	OwnerPtr<MidiToMemoryStream>  out_stream;
+    out_stream = new MidiToMemoryStream();
 
 	jdkmidi::MIDIFileWriteMultiTrack writer(
 											&tracks,

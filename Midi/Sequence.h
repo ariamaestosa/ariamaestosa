@@ -87,7 +87,7 @@ class Sequence {
     int dockHeight;
     
     wxString sequenceFileName;
-    PTR_HOLD(MeasureData, measureData);
+    OwnerPtr<MeasureData>  measureData;
 	
     ptr_vector<ControllerEvent> tempoEvents;
     // ------------------------------------

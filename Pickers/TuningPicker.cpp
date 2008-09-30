@@ -364,7 +364,7 @@ TuningPicker::TuningPicker() : wxMenu()
     Append(REARRANGE,        _("Rearrange selected notes"));
 	Append(PRINT_TAB,        _("Print as tablature"));
 	
-	INIT_PTR(ctp) = new CustomTuningPicker();
+	ctp = new CustomTuningPicker();
 }
 
 void TuningPicker::setParent(GuitarEditor* parent_arg)

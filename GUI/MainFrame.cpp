@@ -412,15 +412,15 @@ void MainFrame::init()
     Show();
 
     // create pickers
-	INIT_PTR( tuningPicker      )  =  new TuningPicker();
-	INIT_PTR( keyPicker         )  =  new KeyPicker();
-    INIT_PTR( instrument_picker )  =  new InstrumentChoice();
-	INIT_PTR( drumKit_picker    )  =  new DrumChoice();
+	 tuningPicker        =  new TuningPicker();
+	 keyPicker           =  new KeyPicker();
+     instrument_picker   =  new InstrumentChoice();
+	 drumKit_picker      =  new DrumChoice();
     
     // create dialogs (FIXME - don't create until requested by user)
-	INIT_PTR( prefs                  ) =  new Preferences(this);
-	INIT_PTR( aboutDialog            ) =  new AboutDialog();
-    INIT_PTR( customNoteSelectDialog ) =  new CustomNoteSelectDialog();
+	 prefs                   =  new Preferences(this);
+	 aboutDialog             =  new AboutDialog();
+     customNoteSelectDialog  =  new CustomNoteSelectDialog();
         
     ImageProvider::loadImages();
 	mainPane->isNowVisible();

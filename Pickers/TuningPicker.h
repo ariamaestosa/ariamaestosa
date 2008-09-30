@@ -29,7 +29,7 @@ class TuningPicker : public wxMenu
 {
     void resetChecks();
     GuitarEditor* parent;
-    WX_PTR_HOLD(CustomTuningPicker, ctp);
+    WxOwnerPtr<CustomTuningPicker>  ctp;
 	
 public:
     LEAK_CHECK(TuningPicker);

@@ -57,7 +57,7 @@ class GraphicalTrack
     int lastMouseY;
 	
     // widgets
-    PTR_HOLD( WidgetLayoutManager, components );
+    OwnerPtr< WidgetLayoutManager>  components ;
     BitmapButton* collapseButton;
     BitmapButton* muteButton;
     BitmapButton* dockButton;
@@ -87,14 +87,14 @@ public:
     Sequence* sequence;
 	Track* track;
     
-    PTR_HOLD( MagneticGrid, grid );
+    OwnerPtr< MagneticGrid>  grid ;
     
     // editors
-    PTR_HOLD( KeyboardEditor,   keyboardEditor   );
-    PTR_HOLD( GuitarEditor,     guitarEditor     );
-    PTR_HOLD( DrumEditor,       drumEditor       );
-    PTR_HOLD( ControllerEditor, controllerEditor );
-	PTR_HOLD( ScoreEditor,      scoreEditor      );
+    OwnerPtr< KeyboardEditor>    keyboardEditor   ;
+    OwnerPtr< GuitarEditor>      guitarEditor     ;
+    OwnerPtr< DrumEditor>        drumEditor       ;
+    OwnerPtr< ControllerEditor>  controllerEditor ;
+	OwnerPtr< ScoreEditor>       scoreEditor      ;
     // ----------------------------------------
     
     GraphicalTrack(Track* track, Sequence* parent);

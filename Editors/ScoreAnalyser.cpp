@@ -370,7 +370,7 @@ ScoreAnalyser::ScoreAnalyser(ScoreEditor* parent, TickToXConverter* converter, i
     stem_height = 5.2;
     min_stem_height = 4.5;
     
-    INIT_PTR(tickToXConverter) = converter;
+    tickToXConverter = converter;
 }
 void ScoreAnalyser::setStemDrawInfo(
                   const int stem_up_x_offset,

@@ -46,8 +46,8 @@ class MeasureBar
 	
     int lastMeasureInDrag;
 	
-	PTR_HOLD(UnselectedMenu, unselectedMenu);
-	PTR_HOLD(SelectedMenu, selectedMenu);
+	OwnerPtr<UnselectedMenu>  unselectedMenu;
+	OwnerPtr<SelectedMenu>  selectedMenu;
 	
     MeasureData* data; /* ref */
     

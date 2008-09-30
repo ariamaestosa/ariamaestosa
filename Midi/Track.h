@@ -127,7 +127,7 @@ public:
     LEAK_CHECK(Track);
 
     // ------------- read-only -------------
-    PTR_HOLD(GraphicalTrack, graphics);
+    OwnerPtr<GraphicalTrack>  graphics;
     Sequence* sequence;
     // -------------------------------------
 

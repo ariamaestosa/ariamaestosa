@@ -164,8 +164,8 @@ END_EVENT_TABLE()
 	
 MeasureBar::MeasureBar(MeasureData* parent)
 {
-	INIT_PTR(selectedMenu)  = new SelectedMenu();
-	INIT_PTR(unselectedMenu) = new UnselectedMenu();
+	selectedMenu  = new SelectedMenu();
+	unselectedMenu = new UnselectedMenu();
 	
 	lastMeasureInDrag = -1;
 	
