@@ -3,6 +3,7 @@
 - Fixed issues with track reordering
 - Improved score printing
 - Fixed bug in score printing where the first page would be a bunch filled with garbage
+- Improved display and printing of ties on chords
 - Code cleanup
 
 1.2b1
