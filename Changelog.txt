@@ -2,6 +2,7 @@
 1.2b2
 - Fixed issues with track reordering
 - Improved score printing
+- Fixed bug in score printing where the first page would be a bunch filled with garbage
 - Code cleanup
 
 1.2b1

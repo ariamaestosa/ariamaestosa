@@ -208,7 +208,6 @@ void renderSilenceCallback(const int tick, const int tick_length, const int sile
     
 	if( type == 1 )
 	{
-        std::cout << "rendering 1/1 silence" << std::endl;
         global_dc->DrawRectangle(x, silences_y-5, 10, 5);
 	}
 	else if( type == 2 )
@@ -292,6 +291,11 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
                               const int x1, const int y1,
                               bool show_measure_number)
 {
+    assertExpr(y0,>,0);
+    assertExpr(y1,>,0);
+    assertExpr(y0,<,1000);
+    assertExpr(y1,<,1000);
+    
     Track* track = line.getTrack();
     ScoreEditor* scoreEditor = track->graphics->scoreEditor;
     ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
@@ -560,7 +564,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     
     const int first_measure = line.getFirstMeasure();
     const int last_measure  = line.getLastMeasure();
-    std::cout << "drawing silences from " << first_measure << " to " << last_measure << std::endl;
+   // std::cout << "drawing silences from " << first_measure << " to " << last_measure << std::endl;
     
     global_dc = &dc;
     analyser.renderSilences( &renderSilenceCallback, 

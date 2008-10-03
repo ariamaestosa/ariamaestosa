@@ -54,7 +54,7 @@ public:
         const int x1 = x0 + width;
         const int y1 = y0 + height;
         
-        std::cout << "printable area : (" << x0 << ", " << y0 << ") to (" << x1 << ", " << y1 << ")" << std::endl;
+        //std::cout << "printable area : (" << x0 << ", " << y0 << ") to (" << x1 << ", " << y1 << ")" << std::endl;
         printable->printPage(pageNum, dc, x0, y0, x1, y1, width, height);
         
         return true;
@@ -233,22 +233,14 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc, const int x0, const i
 
     const int lineAmount = page.layoutLines.size();
     
+    std::cout << "printing page " << pageNum << ", which has " << lineAmount << " lines" << std::endl;
+    
     int totalTrackAmount = 0;
     for(int l=0; l<lineAmount; l++)
     {
         totalTrackAmount += page.layoutLines[l].getTrackAmount();
     }
 
-    
-    /*
-     the equivalent of 4 times "text_height" will not be printed with notation.
-     first : space for title at the top
-     second and third : space below title at top
-     fourth : space below the last line
-     */
-    
-    const float track_height = ( (float)h - (float)text_height*4 ) / (float) std::max(totalTrackAmount, maxLinesInPage);
-    
     dc.SetBackground(*wxWHITE_BRUSH);
     dc.Clear();
     
@@ -283,6 +275,15 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc, const int x0, const i
     dc.GetTextExtent(label, &txw, &txh, &descent, &externalLeading);
     text_height = txh;
     text_height_half = (int)round((float)text_height / 2.0);
+    
+    /*
+     the equivalent of 4 times "text_height" will not be printed with notation.
+     first : space for title at the top
+     second and third : space below title at top
+     fourth : space below the last line
+     */
+    
+    const float track_height = ( (float)h - (float)text_height*4 ) / (float) std::max(totalTrackAmount, maxLinesInPage);
     
     // ask all EditorPrintables to render their part
     float y_from = y0 + text_height*3;
