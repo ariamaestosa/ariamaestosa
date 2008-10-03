@@ -697,7 +697,7 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
 		const float radius_x = (renderInfo.getTiedToPixel() - renderInfo.x)/2.0;
         const bool show_above = renderInfo.isTieUp();
         
-        const int base_y = renderInfo.getY() + head_radius; 
+        const int base_y = LEVEL_TO_Y(renderInfo.getStemOriginLevel()) + head_radius; 
         AriaRender::arc(center_x, base_y + (show_above ? -5 : 5), radius_x, 6, show_above);
 	}
 	

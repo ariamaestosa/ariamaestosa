@@ -460,7 +460,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
             dc.SetBrush( *wxTRANSPARENT_BRUSH );
             
             const bool show_above = noteRenderInfo.isTieUp();
-            const int base_y = LEVEL_TO_Y( noteRenderInfo.getBaseLevel() ) + (show_above ? - 9 : 9); 
+            const int base_y = LEVEL_TO_Y( noteRenderInfo.getStemOriginLevel() ) + (show_above ? - 9 : 9); 
             
             dc.DrawEllipticArc(noteRenderInfo.x + headRadius*1.6,
                                base_y - 8,
