@@ -82,7 +82,7 @@ bool MeasureToExport::findConsecutiveRepetition(ptr_vector<MeasureToExport>& mea
         for(int laterOccurence=0; laterOccurence<amount; laterOccurence++)
         {
             const int checkFromMeasure = measures[ first_measure ].similarMeasuresFoundLater[laterOccurence];
-            std::cout << "		< lvl 2, testing measure " << checkFromMeasure << std::endl;
+            //std::cout << "		< lvl 2, testing measure " << checkFromMeasure << std::endl;
             //if(checkFromMeasure+1<id and measures[checkFromMeasure+1].firstSimilarMeasure ==
             //   measures[checkFromMeasure].firstSimilarMeasure+1 )
             //{
@@ -105,18 +105,18 @@ bool MeasureToExport::findConsecutiveRepetition(ptr_vector<MeasureToExport>& mea
                         (checkFromMeasure+iter == measures[id+iter].firstSimilarMeasure)
                         )
                     {
-                        std::cout << "			//" << (checkFromMeasure+iter+1) << " is same as " << (id+iter+1) << std::endl;
+                        //std::cout << "			//" << (checkFromMeasure+iter+1) << " is same as " << (id+iter+1) << std::endl;
                         amount++;
                     }
                     else
                     {
-                        std::cout << "			//but " << (checkFromMeasure+iter+1) << " is NOT same as " << (id+iter+1) << " (" << measures[checkFromMeasure+iter].firstSimilarMeasure+1 << " != " << measures[id+iter].firstSimilarMeasure+1 << ")" << std::endl;
+                        //std::cout << "			//but " << (checkFromMeasure+iter+1) << " is NOT same as " << (id+iter+1) << " (" << measures[checkFromMeasure+iter].firstSimilarMeasure+1 << " != " << measures[id+iter].firstSimilarMeasure+1 << ")" << std::endl;
                         break;
                     }
                 }//next
-                std::cout << "		> amount=" << amount << std::endl;
+                //std::cout << "		> amount=" << amount << std::endl;
                 if(amount<repetitionMinimalLength) continue;
-                std::cout << "measure " << id+1  << " is a level 2 repetition" << std::endl;
+                //std::cout << "measure " << id+1  << " is a level 2 repetition" << std::endl;
                 firstMeasureThatRepeats = id;
                 lastMeasureThatRepeats = id + amount-1;
                 firstMeasureRepeated = checkFromMeasure;

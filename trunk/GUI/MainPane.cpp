@@ -124,9 +124,6 @@ public:
 
 MainPane::MainPane(MainFrame* mainframe, int* args) : MAINPANE_BASE_CLASS(mainframe, args)
 {
-
-    
-
     currentTick=-1;
     draggingTrack = -1;
     isVisible=false;
