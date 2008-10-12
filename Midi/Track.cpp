@@ -486,7 +486,7 @@ Note* Track::getNote(const int id)
 	return notes.get(id);
 }
 
-int Track::getNoteStartInPixels(const int id)
+int Track::getNoteStartInPixels(const int id) const
 {
     assertExpr(id,>=,0);
     assertExpr(id,<,notes.size());
@@ -494,7 +494,7 @@ int Track::getNoteStartInPixels(const int id)
     return (int)round( notes[id].startTick * sequence->getZoom() );
 }
 
-int Track::getNoteEndInPixels(const int id)
+int Track::getNoteEndInPixels(const int id) const
 {
     assertExpr(id,>=,0);
     assertExpr(id,<,notes.size());
@@ -502,7 +502,7 @@ int Track::getNoteEndInPixels(const int id)
     return (int)round( notes[id].endTick * sequence->getZoom() );
 }
 
-int Track::getNoteStartInMidiTicks(const int id)
+int Track::getNoteStartInMidiTicks(const int id) const
 {
     assertExpr(id,>=,0);
     assertExpr(id,<,notes.size());
@@ -510,7 +510,7 @@ int Track::getNoteStartInMidiTicks(const int id)
     return notes[id].startTick;
 }
 
-int Track::getNoteEndInMidiTicks(const int id)
+int Track::getNoteEndInMidiTicks(const int id) const
 {
     assertExpr(id,>=,0);
     assertExpr(id,<,notes.size());
@@ -518,19 +518,19 @@ int Track::getNoteEndInMidiTicks(const int id)
     return notes[id].endTick;
 }
 
-int Track::getNotePitchID(const int id)
+int Track::getNotePitchID(const int id) const
 {
     assertExpr(id,>=,0);
     assertExpr(id,<,notes.size());
     return notes[id].pitchID;
 }
 
-int Track::getNoteAmount()
+int Track::getNoteAmount() const
 {
     return notes.size();
 }
 
-int Track::getNoteVolume(const int id)
+int Track::getNoteVolume(const int id) const
 {
     assertExpr(id,>=,0);
     assertExpr(id,<,notes.size());
@@ -561,7 +561,7 @@ int Track::getNoteFret(const int id)
 
 // returns the amount of ALL types of controller, not only of specified type
 // the only goal of id is to determine whether the app is searching for a control event or for a tempo event
-int Track::getControllerEventAmount(const int controllerTypeID)
+int Track::getControllerEventAmount(const int controllerTypeID) const
 {
     if(controllerTypeID==201 /*tempo*/) return sequence->tempoEvents.size();
     return controlEvents.size();
@@ -585,7 +585,7 @@ ControllerEvent* Track::getControllerEvent(const int id, const int controllerTyp
  * Used mostly when scaling relative to track
  */
 
-int Track::getFirstNoteTick(bool selectionOnly)
+int Track::getFirstNoteTick(bool selectionOnly) const
 {
 
 	if(!selectionOnly) return notes[0].startTick;
@@ -654,7 +654,7 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
     }//end if
 }
 
-bool Track::isNoteSelected(const int id)
+bool Track::isNoteSelected(const int id) const
 {
     assertExpr(id,>=,0);
     assertExpr(id,<,notes.size());

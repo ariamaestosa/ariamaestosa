@@ -192,7 +192,7 @@ void Note::setSelected(const bool selected)
     Note::selected = selected;
 }
 
-bool Note::isSelected()
+bool Note::isSelected() const
 {
     return selected;   
 }

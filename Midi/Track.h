@@ -166,14 +166,14 @@ public:
 	void selectNote(const int id, const bool selected, bool ignoreModifiers=false);
 
     // get info on notes
-    int getNoteAmount();
-    int getNoteStartInPixels(const int id);
-    int getNoteEndInPixels(const int id);
-    int getNoteStartInMidiTicks(const int id);
-    int getNoteEndInMidiTicks(const int id);
-    int getNotePitchID(const int id);
-    bool isNoteSelected(const int id);
-    int getNoteVolume(const int id);
+    int getNoteAmount() const;
+    int getNoteStartInPixels(const int id) const;
+    int getNoteEndInPixels(const int id) const;
+    int getNoteStartInMidiTicks(const int id) const;
+    int getNoteEndInMidiTicks(const int id) const;
+    int getNotePitchID(const int id) const;
+    bool isNoteSelected(const int id) const;
+    int getNoteVolume(const int id) const;
     Note* getNote(const int id); // use only if methods above can't do what you want
 
 	void playNote(const int id, const bool noteChange=false);
@@ -181,13 +181,13 @@ public:
 	void markNoteToBeRemoved(const int id);
 	void removeMarkedNotes();
 
-    int getNoteString(const int id); // guitar editor
-    int getNoteFret(const int id); // guitar editor
+    int getNoteString(const int id); // for guitar editor
+    int getNoteFret(const int id); // for guitar editor
     void prepareNotesForGuitarEditor();
 
     // returns the amount of ALL types of controller, not only of specified type
     // the only goal of id is to determine whether the app is searching for a control event or for a tempo event
-    int getControllerEventAmount(const int controllerTypeID);
+    int getControllerEventAmount(const int controllerTypeID) const;
     ControllerEvent* getControllerEvent(const int id, const int controllerTypeID);
 
 	// not to be called during editing, as it does not generate an action in the action stack.
@@ -199,7 +199,7 @@ public:
 
 	void mergeTrackIn(Track* track);
 
-    int getFirstNoteTick(bool selectionOnly=false);
+    int getFirstNoteTick(bool selectionOnly=false) const;
 
 	/*
 	 * only used in manual channel management mode
