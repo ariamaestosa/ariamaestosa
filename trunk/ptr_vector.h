@@ -98,7 +98,7 @@ void markToBeRemoved(const int ID) // object is removed from vector but not dele
 	
 }
 
-bool isMarked(const int ID)
+bool isMarked(const int ID) const
 {
 	assertExpr(ID,>,-1);
 	assertExpr((unsigned int)ID,<,contentsVector.size());
@@ -132,7 +132,7 @@ TYPE* get(const int ID)
 	return contentsVector[ID];
 }
 
-int size()
+int size() const
 {
 	return contentsVector.size();
 }
@@ -173,6 +173,14 @@ TYPE& operator[](const unsigned int ID)
 	
 	return *(contentsVector[ID]);
 }
+const TYPE& operator[](const unsigned int ID) const
+{
+	
+	assertExpr((unsigned int)ID,<,contentsVector.size());
+	
+	return *(contentsVector[ID]);
+}
+
 
 void clearWithoutDeleting()
 {

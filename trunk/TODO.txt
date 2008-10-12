@@ -121,7 +121,6 @@ NOTE: sorry, this is very raw :)
  - clicking outside volume picker should close it
  - song length should automatically grow when pasting goes past the end of the song
  - fix overlapping notes that don't have the same start tick
- - use auto_ptr/parent_ptr/something like that... make it clear what pointer "holds" the object and wich ones are only conveniance shortcuts
  - the first click, that activates a track, should not deselect
  - score editor should be able to display notes with more than 2 flags (unusure... those with 2 are already so small and barely visible) 
  

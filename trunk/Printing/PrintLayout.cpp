@@ -279,7 +279,7 @@ void LayoutLine::setCurrentTrack(const int n)
 {
     currentTrack = n;
 }
-Track* LayoutLine::getTrack()
+Track* LayoutLine::getTrack() const
 {
     assertExpr(currentTrack,>=,0);
     assertExpr(currentTrack,<,printable->tracks.size());
@@ -312,7 +312,7 @@ MeasureToExport& LayoutLine::getMeasureForElement(LayoutElement* layoutElement)
 {
     return printable->measures[layoutElement->measure];
 }
-int LayoutLine::getLastMeasure()
+int LayoutLine::getLastMeasure() const
 {
     for(int n=layoutElements.size()-1; n>=0; n--)
     {
@@ -320,7 +320,7 @@ int LayoutLine::getLastMeasure()
     }
     return -1;
 }
-int LayoutLine::getFirstMeasure()
+int LayoutLine::getFirstMeasure() const
 {
     const int amount = layoutElements.size();
     for(int n=0; n<amount; n++)
@@ -329,7 +329,40 @@ int LayoutLine::getFirstMeasure()
     }
     return -1;
 }
-
+int LayoutLine::getLastNote() const
+{
+    int answer = -1;
+    const int measure = getFirstMeasure();
+    const int from_tick = getMeasureData()->firstTickInMeasure(measure);
+    const int to_tick   = getMeasureData()->lastTickInMeasure(measure);
+    const Track* t = getTrack();
+    const int noteAmount = t->getNoteAmount();
+    for(int n=0; n<noteAmount; n++)
+    {
+        if(t->getNoteStartInMidiTicks(n) >= from_tick and t->getNoteEndInMidiTicks(n) < to_tick)
+        {
+            answer = n;
+        }
+        else if(answer != -1) return answer;
+    }
+    return answer;
+}
+int LayoutLine::getFirstNote() const
+{
+    const int measure = getFirstMeasure();
+    const int from_tick = getMeasureData()->firstTickInMeasure(measure);
+    const int to_tick   = getMeasureData()->lastTickInMeasure(measure);
+    const Track* t = getTrack();
+    const int noteAmount = t->getNoteAmount();
+    for(int n=0; n<noteAmount; n++)
+    {
+        if(t->getNoteStartInMidiTicks(n) >= from_tick and t->getNoteEndInMidiTicks(n) < to_tick)
+        {
+            return n;
+        }
+    }
+    return -1;
+}
 void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x1, const int y1)
 {
     assertExpr(currentTrack,>=,0);
@@ -597,7 +630,6 @@ void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements, ptr_ve
 
 void calculatePageLayout(std::vector<LayoutPage>& layoutPages, std::vector<LayoutElement>& layoutElements)
 {
-    // FIXME - add support for printng multiple tracks
     const int layoutElementsAmount = layoutElements.size();
     
     // lay out in lines and pages

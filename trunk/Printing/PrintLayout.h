@@ -147,7 +147,7 @@ public:
     
     int getTrackAmount();
     void setCurrentTrack(const int n);
-    Track* getTrack();
+    Track* getTrack() const;
     int getFirstNoteInElement(const int layoutElementID);
     int getLastNoteInElement(const int layoutElementID);
     int getFirstNoteInElement(LayoutElement* layoutElement);
@@ -158,9 +158,12 @@ public:
     MeasureToExport& getMeasureForElement(const int layoutElementID);
     MeasureToExport& getMeasureForElement(LayoutElement* layoutElement);
     
-    int getLastMeasure();
-    int getFirstMeasure();
+    int getLastMeasure() const;
+    int getFirstMeasure() const;
         
+    int getLastNote() const;
+    int getFirstNote() const;
+    
     std::vector<LayoutElement> layoutElements;
 };
 
