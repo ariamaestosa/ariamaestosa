@@ -12,7 +12,6 @@ namespace AriaMaestosa
 
 MidiDevice::MidiDevice(MidiContext* context, int client_arg, int port_arg, const char* name_arg)
 {
-    INIT_LEAK_CHECK();
     client = client_arg;
     port = port_arg;
     name = fromCString(name_arg);
@@ -73,7 +72,6 @@ void MidiDevice::close()
 
 MidiContext::MidiContext()
 {
-    INIT_LEAK_CHECK();
     queue = -1;
 }
 
