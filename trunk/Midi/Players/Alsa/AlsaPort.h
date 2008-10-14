@@ -13,12 +13,12 @@ namespace AriaMaestosa
 
     class MidiContext
     {
-        DECLARE_LEAK_CHECK();
-
         std::vector<MidiDevice> devices;
         bool timerStarted;
 
         public:
+        LEAK_CHECK(MidiContext);
+        
         MidiDevice* device;
 
 		snd_seq_t* sequencer;
@@ -47,9 +47,9 @@ namespace AriaMaestosa
 
     class MidiDevice
     {
-        DECLARE_LEAK_CHECK();
         MidiContext* midiContext;
     public:
+        LEAK_CHECK(MidiDevice);
         snd_seq_addr_t address;
         int client, port;
         wxString name;
