@@ -317,12 +317,12 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         if(pitch < highest_pitch || highest_pitch == -1)
         {
             highest_pitch = pitch;
-            highest_level = level;
+            lowest_level = level;
         }
         if(pitch > lowest_pitch  ||  lowest_pitch == -1)
         {
             lowest_pitch  = pitch;
-            lowest_level  = level;
+            highest_level  = level;
         }
     }
     std::cout << "level --> highest : " << highest_level << ", lowest : " << lowest_level << std::endl;
@@ -336,12 +336,34 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     const int g_clef_to   = middle_c_level-2;
     const int f_clef_from = middle_c_level+2;
     const int f_clef_to   = middle_c_level+10;
-        
+    
     const bool g_clef = scoreEditor->isGClefEnabled();
     const bool f_clef = scoreEditor->isFClefEnabled();
-    
-#define LEVEL_TO_Y( lvl ) y0 + 1 + lineHeight*0.5*(lvl - middle_c_level + 10)
 
+    int extra_lines_above_g_score = 0;
+    int extra_lines_under_g_score = 0;
+    int extra_lines_above_f_score = 0;
+    int extra_lines_under_f_score = 0;
+    if(g_clef and not f_clef)
+    {
+        if(lowest_level < g_clef_from) extra_lines_above_g_score = (g_clef_from - lowest_level)/2;
+        if(highest_level > g_clef_to)  extra_lines_under_g_score = (g_clef_to - highest_level)/2;
+    }
+    else if(f_clef and not g_clef)
+    {
+        if(lowest_level < f_clef_from) extra_lines_above_f_score = (f_clef_from - lowest_level)/2;
+        if(highest_level > f_clef_to)  extra_lines_under_f_score = (f_clef_to - highest_level)/2;
+    }
+    else if(f_clef and g_clef)
+    {
+        if(lowest_level < g_clef_from) extra_lines_above_g_score = (g_clef_from - lowest_level)/2;
+        if(highest_level > f_clef_to)  extra_lines_under_f_score = (f_clef_to - highest_level)/2;
+    }
+    //std::cout << "extra_lines_above_g_score = " << extra_lines_above_g_score <<
+    //    " extra_lines_above_g_score = " << extra_lines_above_g_score << 
+    //    " extra_lines_above_f_score = " << extra_lines_above_f_score <<
+    //    " extra_lines_under_f_score = " << extra_lines_under_f_score << std::endl;
+    
     // get the underlying common implementation rolling
     beginLine(&dc, &line, x0, y0, x1, y1, show_measure_number);
     
@@ -366,25 +388,6 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     
     converter->updateConversionData();
     converter->resetAccidentalsForNewRender();
-    
-
-    // FIXME - handle both clefs + variable height
-    
-    /*
-     if(g_clef)
-     {
-         setUpDownPivotLevel(converter->getScoreCenterCLevel()-5);
-         const int silences_y = getEditorYStart() + y_step*(converter->getScoreCenterCLevel()-8) - getYScrollInPixels() + 1;
-         renderScore(noteRenderInfo_GClef, silences_y);
-     }
-     
-     if(f_clef)
-     {
-         setUpDownPivotLevel(converter->getScoreCenterCLevel()+6);
-         const int silences_y = getEditorYStart() + y_step*(converter->getScoreCenterCLevel()+4) - getYScrollInPixels() + 1;
-         renderScore(noteRenderInfo_FClef, silences_y);
-     }
-     */
     
     // iterate through layout elements to collect notes in the vector
     // so ScoreAnalyser can prepare the score
@@ -451,24 +454,24 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     else if(f_clef and g_clef)
     {
         g_clef_y_from = y0;
-        g_clef_y_to = y0 + (int)round((y1 - y0)*0.8/2.0);
-        f_clef_y_from = y0 + (int)round((y1 - y0)*1.2/2.0);
+        g_clef_y_to = y0 + (int)round((y1 - y0)*0.45);
+        f_clef_y_from = y0 + (int)round((y1 - y0)*0.55);
         f_clef_y_to = y1;
     }
     
     if(g_clef)
     {
         drawScore(false /*G*/, *g_clef_analyser, line, dc,
-                  x0, g_clef_y_from,
-                  x1, g_clef_y_to,
+                  abs(extra_lines_above_g_score), abs(extra_lines_under_g_score),
+                  x0, g_clef_y_from, x1, g_clef_y_to,
                   show_measure_number);
     }
     
     if(f_clef)
     {
         drawScore(true /*F*/, *f_clef_analyser, line, dc,
-                  x0, f_clef_y_from,
-                  x1, f_clef_y_to,
+                  abs(extra_lines_above_f_score), abs(extra_lines_under_f_score),
+                  x0, f_clef_y_from, x1, f_clef_y_to,
                   (g_clef ? false : show_measure_number) /* if we have both keys don't show twice */);
     }
     
@@ -478,24 +481,29 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
 
 // -------------------------------------------------------------------
 void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine& line, wxDC& dc,
-                           const int x0, const int y0,
-                           const int x1, const int y1,
-                           bool show_measure_number)
+                               const int extra_lines_above, const int extra_lines_under,
+                               const int x0, const int y0, const int x1, const int y1,
+                               bool show_measure_number)
 {
     Track* track = line.getTrack();
     ScoreEditor* scoreEditor = track->graphics->scoreEditor;
     ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
-    const int middle_c_level = converter->getMiddleCLevel();
+    const int middle_c_level = converter->getScoreCenterCLevel();
+    const int first_score_level = middle_c_level + (f_clef? 2 : -10);
+    const int last_score_level = first_score_level + 8;
+    const int min_level =  first_score_level - extra_lines_above*2;
     const int headRadius = 9;//(int)round((float)lineHeight*0.72);
-        
+           
     // draw score background (lines)
     dc.SetPen(  wxPen( wxColour(125,125,125), 1 ) );
-    const int lineAmount = 5;
+    const int lineAmount = 5 + extra_lines_above + extra_lines_under;
     const float lineHeight = (float)(y1 - y0) / (float)(lineAmount-1);
     
-    for(int s=0; s<lineAmount; s++)
+    #define LEVEL_TO_Y( lvl ) y0 + 1 + lineHeight*0.5*(lvl - min_level)
+    
+    for(int lvl=first_score_level; lvl<=last_score_level; lvl+=2)
     {
-        const int y = (int)round(y0 + lineHeight*s);
+        const int y = LEVEL_TO_Y(lvl);
         dc.DrawLine(x0, y, x1, y);
     }
     
