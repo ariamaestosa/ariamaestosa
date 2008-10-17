@@ -29,6 +29,8 @@ class PrintXConverter : public TickToXConverter
 {
     ScorePrintable* parent;
 public:
+    LEAK_CHECK(PrintXConverter);
+    
     PrintXConverter(ScorePrintable* parent)
     {
         PrintXConverter::parent = parent;
@@ -122,7 +124,7 @@ void renderGClef(wxDC& dc, const int x, const int y)
      */
 }
 
-PrintXConverter* x_converter;
+PrintXConverter* x_converter = NULL;
 
 // leave a pointer to the dc for the callback
 // FIXME find cleaner way
@@ -208,11 +210,11 @@ void renderSilenceCallback(const int tick, const int tick_length, const int sile
     
 	if( type == 1 )
 	{
-        global_dc->DrawRectangle(x, silences_y-5, 10, 5);
+        global_dc->DrawRectangle(x+4, silences_y-5, 10, 5);
 	}
 	else if( type == 2 )
 	{
-        global_dc->DrawRectangle(x, silences_y, 10, 5);
+        global_dc->DrawRectangle(x+4, silences_y, 10, 5);
 	}
 	else if( type == 4 )
 	{
@@ -296,36 +298,72 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     assertExpr(y0,<,1000);
     assertExpr(y1,<,1000);
     
-    std::cout << "line from " << line.getFirstNote() << " to " << line.getLastNote() << std::endl;
+   // std::cout << "line from " << line.getFirstNote() << " to " << line.getLastNote() << std::endl;
     
     Track* track = line.getTrack();
     ScoreEditor* scoreEditor = track->graphics->scoreEditor;
     ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
     
-    const int middleC = converter->getMiddleCLevel();
-    const int lineAmount = 5;
+    const int from_note = line.getFirstNote();
+    const int to_note   = line.getLastNote();
     
-#define LEVEL_TO_Y( lvl ) y0 + 1 + lineHeight*0.5*(lvl - middleC + 10)
-    
-    // draw score background (lines)
-    dc.SetPen(  wxPen( wxColour(125,125,125), 1 ) );
-    
-    const float lineHeight = (float)(y1 - y0) / (float)(lineAmount-1);
-    const int headRadius = 9;//(int)round((float)lineHeight*0.72);
-    
-    for(int s=0; s<lineAmount; s++)
+    // find highest and lowest note we need to render
+    int highest_pitch = -1, lowest_pitch = -1;
+    int highest_level = -1, lowest_level = -1;
+    for(int n=from_note; n<= to_note; n++)
     {
-        const int y = (int)round(y0 + lineHeight*s);
-        dc.DrawLine(x0, y, x1, y);
+        const int pitch = track->getNotePitchID(n);
+        const int level = converter->noteToLevel(track->getNote(n));
+        if(pitch < highest_pitch || highest_pitch == -1)
+        {
+            highest_pitch = pitch;
+            highest_level = level;
+        }
+        if(pitch > lowest_pitch  ||  lowest_pitch == -1)
+        {
+            lowest_pitch  = pitch;
+            lowest_level  = level;
+        }
     }
+    std::cout << "level --> highest : " << highest_level << ", lowest : " << lowest_level << std::endl;
     
-    // get the underlying common implementation rolling too
+    //const int highest_level = converter->noteToLevel(track->getNote(highest));
+   // const int lowest_level  = converter->noteToLevel(track->getNote(lowest));
+    
+    const int middle_c_level = converter->getScoreCenterCLevel(); //converter->getMiddleCLevel();
+
+    const int g_clef_from = middle_c_level-10;
+    const int g_clef_to   = middle_c_level-2;
+    const int f_clef_from = middle_c_level+2;
+    const int f_clef_to   = middle_c_level+10;
+        
+    const bool g_clef = scoreEditor->isGClefEnabled();
+    const bool f_clef = scoreEditor->isFClefEnabled();
+    
+#define LEVEL_TO_Y( lvl ) y0 + 1 + lineHeight*0.5*(lvl - middle_c_level + 10)
+
+    // get the underlying common implementation rolling
     beginLine(&dc, &line, x0, y0, x1, y1, show_measure_number);
     
     // prepare the score analyser
     x_converter = new PrintXConverter(this);
-    ScoreAnalyser analyser(scoreEditor, x_converter, middleC-5);
-    analyser.setStemDrawInfo( 14, 0, 6, 0 );
+    
+    OwnerPtr<ScoreAnalyser> g_clef_analyser;
+    OwnerPtr<ScoreAnalyser> f_clef_analyser;
+    
+    if(g_clef)
+    {
+        g_clef_analyser = new ScoreAnalyser(scoreEditor, new PrintXConverter(this), middle_c_level-5);
+        g_clef_analyser->setStemDrawInfo( 14, 0, 6, 0 );
+        g_clef_analyser->setStemPivot(middle_c_level-5);
+    }
+    if(f_clef)
+    {
+        f_clef_analyser = new ScoreAnalyser(scoreEditor, new PrintXConverter(this), middle_c_level-5);
+        f_clef_analyser->setStemDrawInfo( 14, 0, 6, 0 );
+        f_clef_analyser->setStemPivot(middle_c_level+6);
+    }
+    
     converter->updateConversionData();
     converter->resetAccidentalsForNewRender();
     
@@ -353,9 +391,9 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     LayoutElement* currentElement;
     while((currentElement = getNextElement()) and (currentElement != NULL))
     {
-        if(currentElement->type == LINE_HEADER)
+        if(currentElement->type == LINE_HEADER) // FIME - move to 'drawScore' ?
         {
-            renderGClef(dc, currentElement->x, LEVEL_TO_Y(middleC-5) );
+            //renderGClef(dc, currentElement->x, LEVEL_TO_Y(middle_c_level-5) );
             continue;
         }
         // we're collecting notes here... types other than regular measures
@@ -378,10 +416,88 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
             
 			NoteRenderInfo currentNote(tick, note_x, noteLevel, noteLength, note_sign,
                                        track->isNoteSelected(n), track->getNotePitchID(n));
-			analyser.addToVector(currentNote, false);   
+            
+            // add note to either G clef score or F clef score
+            if(g_clef and not f_clef)
+                g_clef_analyser->addToVector(currentNote, false);
+            else if(f_clef and not g_clef)
+                f_clef_analyser->addToVector(currentNote, false);
+            else if(f_clef and g_clef)
+            {
+                if(noteLevel < middle_c_level)
+                    g_clef_analyser->addToVector(currentNote, false);
+                else
+                    f_clef_analyser->addToVector(currentNote, false);
+            }
         }
         
     }//next element
+        
+    // if we have only one clef, give it the full space.
+    // if we have two, split the space between both
+    int g_clef_y_from, g_clef_y_to;
+    int f_clef_y_from, f_clef_y_to;
+    
+    if(g_clef and not f_clef)
+    {
+        g_clef_y_from = y0;
+        g_clef_y_to = y1;
+    }
+    else if(f_clef and not g_clef)
+    {
+        f_clef_y_from = y0;
+        f_clef_y_to = y1;
+    }
+    else if(f_clef and g_clef)
+    {
+        g_clef_y_from = y0;
+        g_clef_y_to = y0 + (int)round((y1 - y0)*0.8/2.0);
+        f_clef_y_from = y0 + (int)round((y1 - y0)*1.2/2.0);
+        f_clef_y_to = y1;
+    }
+    
+    if(g_clef)
+    {
+        drawScore(false /*G*/, *g_clef_analyser, line, dc,
+                  x0, g_clef_y_from,
+                  x1, g_clef_y_to,
+                  show_measure_number);
+    }
+    
+    if(f_clef)
+    {
+        drawScore(true /*F*/, *f_clef_analyser, line, dc,
+                  x0, f_clef_y_from,
+                  x1, f_clef_y_to,
+                  (g_clef ? false : show_measure_number) /* if we have both keys don't show twice */);
+    }
+    
+    delete x_converter;
+    x_converter = NULL;
+}
+
+// -------------------------------------------------------------------
+void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine& line, wxDC& dc,
+                           const int x0, const int y0,
+                           const int x1, const int y1,
+                           bool show_measure_number)
+{
+    Track* track = line.getTrack();
+    ScoreEditor* scoreEditor = track->graphics->scoreEditor;
+    ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
+    const int middle_c_level = converter->getMiddleCLevel();
+    const int headRadius = 9;//(int)round((float)lineHeight*0.72);
+        
+    // draw score background (lines)
+    dc.SetPen(  wxPen( wxColour(125,125,125), 1 ) );
+    const int lineAmount = 5;
+    const float lineHeight = (float)(y1 - y0) / (float)(lineAmount-1);
+    
+    for(int s=0; s<lineAmount; s++)
+    {
+        const int y = (int)round(y0 + lineHeight*s);
+        dc.DrawLine(x0, y, x1, y);
+    }
     
     // draw notes heads
     { // we scope this because info like 'noteAmount' are bound to change just after
@@ -408,9 +524,9 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         if(noteRenderInfo.sign == SHARP)        renderSharp  ( dc, noteRenderInfo.x,     noteRenderInfo.getY() - 6  );
         else if(noteRenderInfo.sign == FLAT)    renderFlat   ( dc, noteRenderInfo.x - 2, noteRenderInfo.getY() - 11 );
         else if(noteRenderInfo.sign == NATURAL) renderNatural( dc, noteRenderInfo.x,     noteRenderInfo.getY() - 5  );
-
+        
     } // next note
-    }
+    }// end scope
     
     // analyse notes to know how to build the score
     analyser.analyseNoteInfo();
@@ -471,37 +587,37 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
                                (show_above ? 0   : 180),
                                (show_above ? 180 : 360));
         }
-
-/*
-            
-            int center_x = noteRenderInfo.x + headRadius*1.8 + (noteRenderInfo.getTiedToPixel() - noteRenderInfo.x)/2;
-            int center_y = base_y;
-            int radius_x = (noteRenderInfo.getTiedToPixel() - noteRenderInfo.x)/2;
-            int radius_y = (show_above ? -8 : 8);
-            
-            center_x *= 10;
-            center_y *= 10;
-            radius_x *= 10;
-            radius_y *= 10;
-            
-            dc.SetUserScale(0.1, 0.1);
-            wxPoint points[] = 
-            {
-                wxPoint(center_x + radius_x*cos(0.1), center_y + radius_y*sin(0.1)),
-                wxPoint(center_x + radius_x*cos(0.3), center_y + radius_y*sin(0.3)),
-                wxPoint(center_x + radius_x*cos(0.6), center_y + radius_y*sin(0.6)),
-                wxPoint(center_x + radius_x*cos(0.9), center_y + radius_y*sin(0.9)),
-                wxPoint(center_x + radius_x*cos(1.2), center_y + radius_y*sin(1.2)),
-                wxPoint(center_x + radius_x*cos(1.5), center_y + radius_y*sin(1.5)),
-                wxPoint(center_x + radius_x*cos(1.8), center_y + radius_y*sin(1.8)),
-                wxPoint(center_x + radius_x*cos(2.1), center_y + radius_y*sin(2.1)),
-                wxPoint(center_x + radius_x*cos(2.4), center_y + radius_y*sin(2.4)),
-                wxPoint(center_x + radius_x*cos(2.7), center_y + radius_y*sin(2.7)),
-                wxPoint(center_x + radius_x*cos(3.0), center_y + radius_y*sin(3.0)),
-            };
-            dc.DrawSpline(11, points);
-            dc.SetUserScale(1.0, 1.0);
- */
+        
+        /*
+         
+         int center_x = noteRenderInfo.x + headRadius*1.8 + (noteRenderInfo.getTiedToPixel() - noteRenderInfo.x)/2;
+         int center_y = base_y;
+         int radius_x = (noteRenderInfo.getTiedToPixel() - noteRenderInfo.x)/2;
+         int radius_y = (show_above ? -8 : 8);
+         
+         center_x *= 10;
+         center_y *= 10;
+         radius_x *= 10;
+         radius_y *= 10;
+         
+         dc.SetUserScale(0.1, 0.1);
+         wxPoint points[] = 
+         {
+             wxPoint(center_x + radius_x*cos(0.1), center_y + radius_y*sin(0.1)),
+             wxPoint(center_x + radius_x*cos(0.3), center_y + radius_y*sin(0.3)),
+             wxPoint(center_x + radius_x*cos(0.6), center_y + radius_y*sin(0.6)),
+             wxPoint(center_x + radius_x*cos(0.9), center_y + radius_y*sin(0.9)),
+             wxPoint(center_x + radius_x*cos(1.2), center_y + radius_y*sin(1.2)),
+             wxPoint(center_x + radius_x*cos(1.5), center_y + radius_y*sin(1.5)),
+             wxPoint(center_x + radius_x*cos(1.8), center_y + radius_y*sin(1.8)),
+             wxPoint(center_x + radius_x*cos(2.1), center_y + radius_y*sin(2.1)),
+             wxPoint(center_x + radius_x*cos(2.4), center_y + radius_y*sin(2.4)),
+             wxPoint(center_x + radius_x*cos(2.7), center_y + radius_y*sin(2.7)),
+             wxPoint(center_x + radius_x*cos(3.0), center_y + radius_y*sin(3.0)),
+         };
+         dc.DrawSpline(11, points);
+         dc.SetUserScale(1.0, 1.0);
+         */
         // beam
         if(noteRenderInfo.beam)
         {
@@ -518,12 +634,12 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
             {
                 //dc.DrawLine(x1, y1, noteRenderInfo.beam_to_x, y2);
                 wxPoint points[] = 
-                {
+            {
                 wxPoint(x1, y1),
                 wxPoint(noteRenderInfo.beam_to_x, y2),
                 wxPoint(noteRenderInfo.beam_to_x, y2+3),
                 wxPoint(x1, y1+3)
-                };
+            };
                 dc.DrawPolygon(4, points);
                 
                 y1 += y_diff;
@@ -543,7 +659,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
             const int center_x = (noteRenderInfo.triplet_arc_x_end == -1 ? noteRenderInfo.triplet_arc_x_start : (noteRenderInfo.triplet_arc_x_start + noteRenderInfo.triplet_arc_x_end)/2);
             const int radius_x = (noteRenderInfo.triplet_arc_x_end == -1 or  noteRenderInfo.triplet_arc_x_end == noteRenderInfo.triplet_arc_x_start ?
                                   10 : (noteRenderInfo.triplet_arc_x_end - noteRenderInfo.triplet_arc_x_start)/2);
-
+            
             const int base_y = LEVEL_TO_Y(noteRenderInfo.triplet_arc_level) + (noteRenderInfo.triplet_show_above ? -16 : 1);
             
             dc.DrawEllipticArc(center_x - radius_x,
@@ -561,19 +677,22 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     } // next note
     
     // render silences
-    //const int first_measure = line.getMeasureForElement(0).id;
-    //const int last_measure  = line.getMeasureForElement(line.layoutElements.size()-1).id;
-    
     const int first_measure = line.getFirstMeasure();
     const int last_measure  = line.getLastMeasure();
-   // std::cout << "drawing silences from " << first_measure << " to " << last_measure << std::endl;
     
     global_dc = &dc;
-    analyser.renderSilences( &renderSilenceCallback, 
-                             first_measure, last_measure,
-                             LEVEL_TO_Y(middleC - 7) );
+    
+    if(f_clef)
+    {
+        const int silences_y = LEVEL_TO_Y(middle_c_level + 4);
+        analyser.renderSilences( &renderSilenceCallback, first_measure, last_measure, silences_y );
+    }
+    else
+    {
+        const int silences_y = LEVEL_TO_Y(middle_c_level - 7);
+        analyser.renderSilences( &renderSilenceCallback, first_measure, last_measure, silences_y );
+    }
     
 }
-
 
 }
