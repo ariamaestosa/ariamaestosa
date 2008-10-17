@@ -115,13 +115,16 @@ class ScoreAnalyser;
         
         bool musicalNotationEnabled, linearNotationEnabled;
         
-public: 
+    public: 
         ScoreEditor(Track* track);
         ScoreMidiConverter* getScoreMidiConverter();
         
         void enableFClef(bool enabled);
         void enableGClef(bool enabled);
 
+        bool isGClefEnabled() const;
+        bool isFClefEnabled() const;
+        
         void enableMusicalNotation(const bool enabled);
         void enableLinearNotation(const bool enabled);
         void loadKey(const int sharpness_symbol, const int symbol_amount);

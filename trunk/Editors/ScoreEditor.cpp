@@ -403,6 +403,8 @@ int ScoreMidiConverter::getMidiNoteForLevelAndSign(const unsigned int level, int
 class MyXConverter : public TickToXConverter
 {
 public:
+    LEAK_CHECK(MyXConverter);
+    
     ~MyXConverter(){}
     int tickToX(const int tick)
     {
@@ -441,9 +443,13 @@ void ScoreEditor::enableGClef(bool enabled)     { g_clef = enabled;       }
 void ScoreEditor::enableMusicalNotation(const bool enabled) { musicalNotationEnabled = enabled; }
 void ScoreEditor::enableLinearNotation(const bool enabled)  { linearNotationEnabled = enabled; }
 
+/** get info about clefs */
+bool ScoreEditor::isGClefEnabled() const { return g_clef; }
+bool ScoreEditor::isFClefEnabled() const { return f_clef; }
+
 // order in wich signs of the key signature appear
 const NOTES sharp_order[] = { F, C, G, D, A, E, B };
-const NOTES flat_order[] = { B, E, A, D, G, C, F };
+const NOTES flat_order[]  = { B, E, A, D, G, C, F };
 
 // where parameters are e.g. 5 sharps, 3 flats, etc.
 void ScoreEditor::loadKey(const int sharpness_symbol, const int symbol_amount)
