@@ -360,7 +360,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     assertExpr(y0,<,1000);
     assertExpr(y1,<,1000);
     
-   // std::cout << "line from " << line.getFirstNote() << " to " << line.getLastNote() << std::endl;
+    std::cout << "line from " << line.getFirstNote() << " to " << line.getLastNote() << std::endl;
     
     Track* track = line.getTrack();
     ScoreEditor* scoreEditor = track->graphics->scoreEditor;
@@ -387,8 +387,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
             highest_level  = level;
         }
     }
-    std::cout << "level --> highest : " << highest_level << ", lowest : " << lowest_level << std::endl;
-    
+
     //const int highest_level = converter->noteToLevel(track->getNote(highest));
    // const int lowest_level  = converter->noteToLevel(track->getNote(lowest));
     
@@ -398,6 +397,9 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     const int g_clef_to   = middle_c_level-2;
     const int f_clef_from = middle_c_level+2;
     const int f_clef_to   = middle_c_level+10;
+    
+    std::cout << "level --> highest : " << highest_level << ", lowest : " << lowest_level << 
+        " (g_clef_from=" << g_clef_from << ", g_clef_to=" << g_clef_to << ")" << std::endl;
     
     const bool g_clef = scoreEditor->isGClefEnabled();
     const bool f_clef = scoreEditor->isFClefEnabled();
@@ -421,10 +423,10 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         if(lowest_level < g_clef_from) extra_lines_above_g_score = (g_clef_from - lowest_level)/2;
         if(highest_level > f_clef_to)  extra_lines_under_f_score = (f_clef_to - highest_level)/2;
     }
-    //std::cout << "extra_lines_above_g_score = " << extra_lines_above_g_score <<
-    //    " extra_lines_above_g_score = " << extra_lines_above_g_score << 
-    //    " extra_lines_above_f_score = " << extra_lines_above_f_score <<
-    //    " extra_lines_under_f_score = " << extra_lines_under_f_score << std::endl;
+    std::cout << "extra_lines_above_g_score = " << extra_lines_above_g_score <<
+        " extra_lines_under_g_score = " << extra_lines_under_g_score << 
+        " extra_lines_above_f_score = " << extra_lines_above_f_score <<
+        " extra_lines_under_f_score = " << extra_lines_under_f_score << std::endl;
     
     // get the underlying common implementation rolling
     beginLine(&dc, &line, x0, y0, x1, y1, show_measure_number);

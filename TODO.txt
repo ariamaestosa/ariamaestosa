@@ -30,7 +30,6 @@ NOTE: sorry, this is very raw :)
   
 ************************* NEW FEATURES TO ADD: *************************
 
- * Beaming is dependendant on the currently selected key sig, not on the note's measure's key sig!
 
  * more intelligently decide if notes on C belong to F clef or G clef
 
@@ -127,6 +126,8 @@ NOTE: sorry, this is very raw :)
  ************************* BUGS: *************************
 
 * crashes when opening 2+ files from the finder
+
+* Beaming is dependendant on the currently selected key sig, not on the note's measure's key sig!
 
 * make the first measure use a 1/16 signature, and the others use 4/4. Then try using the 1/8 grid to add notes.
 
