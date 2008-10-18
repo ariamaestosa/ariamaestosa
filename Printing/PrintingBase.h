@@ -71,8 +71,14 @@ public:
     EditorPrintable();
     virtual ~EditorPrintable();
         
+    /** Called by the print code when it's time to render a line. This will be handled in the appropriate subclass.
+    */
     virtual void drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1, bool show_measure_number);
 
+    /** Called by the layout code to know the relative height of this line
+    */
+    virtual int calculateHeight(LayoutLine& line) const = 0;
+    
     void beginLine(wxDC* dc, LayoutLine* line, int x0, const int y0, const int x1, const int y1, bool show_measure_number);
     int getCurrentElementXStart();
     int getCurrentElementXEnd();
@@ -87,6 +93,7 @@ class AriaPrintable
 protected:
 
     std::vector<LayoutPage> layoutPages;
+    std::vector<LayoutLine> layoutLines;
     ptr_vector<MeasureToExport> measures;
     
     Sequence* sequence;

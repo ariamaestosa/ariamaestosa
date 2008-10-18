@@ -123,7 +123,7 @@ public:
 	int amountOfTimes; // used for 'play many times' events
     
     float zoom;
-    int charWidth;
+    int unit_width;
     
     // filled by EditorPrintable::getNextElement() as the X position is calculated in
     // case location is needed later (for instance, if more than one rendering pass)
@@ -142,8 +142,8 @@ class LayoutLine
 public:
     LayoutLine(AriaPrintable* parent);
     
-    // FIXME - change 'chars' to 'units'?
-    int charWidth;
+    int unit_width;
+    int level_height;
     
     int getTrackAmount();
     void setCurrentTrack(const int n);
@@ -154,7 +154,8 @@ public:
     int getLastNoteInElement(LayoutElement* layoutElement);
 
     void printYourself(wxDC& dc, const int x0, const int y0, const int x1, const int y1);
-    
+    int calculateHeight();
+        
     MeasureToExport& getMeasureForElement(const int layoutElementID);
     MeasureToExport& getMeasureForElement(LayoutElement* layoutElement);
     
@@ -167,13 +168,15 @@ public:
     std::vector<LayoutElement> layoutElements;
 };
 
-class LayoutPage
+struct LayoutPage
 {
-public:
-    std::vector<LayoutLine> layoutLines;
+    int first_line;
+    int last_line;
 };
 
-void calculateLayoutElements(ptr_vector<Track, REF>& track, const bool checkRepetitions_bool, std::vector<LayoutPage>& layoutPages, ptr_vector<MeasureToExport>& mesaures);
+void calculateLayoutElements(ptr_vector<Track, REF>& track, const bool checkRepetitions_bool,
+                             std::vector<LayoutLine>& layoutLines, std::vector<LayoutPage>& layoutPages,
+                             ptr_vector<MeasureToExport>& mesaures);
 
 }
 

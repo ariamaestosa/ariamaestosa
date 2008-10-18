@@ -198,7 +198,7 @@ void AriaPrintable::addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */)
 }
 void AriaPrintable::calculateLayout(bool checkRepetitions_bool)
 {
-    calculateLayoutElements(tracks, checkRepetitions_bool, layoutPages, measures);
+    calculateLayoutElements(tracks, checkRepetitions_bool, layoutLines, layoutPages, measures);
 }
 wxString AriaPrintable::getTitle()
 {
@@ -226,21 +226,30 @@ int AriaPrintable::getPageAmount()
     return layoutPages.size();
 }
 
-void AriaPrintable::printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const int w, const int h)
+void AriaPrintable::printPage(const int pageNum, wxDC& dc,
+                              const int x0, const int y0,
+                              const int x1, const int y1,
+                              const int w, const int h)
 {
     assertExpr(pageNum-1,<,(int)layoutPages.size());
     LayoutPage& page = layoutPages[pageNum-1];
 
-    const int lineAmount = page.layoutLines.size();
+    const int lineAmount = page.last_line - page.first_line + 1;
     
     std::cout << "printing page " << pageNum << ", which has " << lineAmount << " lines" << std::endl;
-    
+    /*
     int totalTrackAmount = 0;
     for(int l=0; l<lineAmount; l++)
     {
         totalTrackAmount += page.layoutLines[l].getTrackAmount();
     }
-
+*/
+    int total_height = 4;
+    for(int n=page.first_line; n <= page.last_line; n++)
+    {
+        total_height += layoutLines[n].level_height;
+    }
+    
     dc.SetBackground(*wxWHITE_BRUSH);
     dc.Clear();
     
@@ -282,15 +291,19 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc, const int x0, const i
      second and third : space below title at top
      fourth : space below the last line
      */
+    //const float track_height = ( (float)h - (float)text_height*4 ) / (float) std::max(totalTrackAmount, maxLinesInPage);
     
-    const float track_height = ( (float)h - (float)text_height*4 ) / (float) std::max(totalTrackAmount, maxLinesInPage);
+    const float track_area_height = (float)h - (float)text_height*4.0f;
+    
+    std::cout << "printing lines from " << page.first_line << " to " << page.last_line << std::endl;
     
     // ask all EditorPrintables to render their part
     float y_from = y0 + text_height*3;
-    for(int l=0; l<lineAmount; l++)
-    { 
-        float y_to = y_from + page.layoutLines[l].getTrackAmount()*track_height;
-        page.layoutLines[l].printYourself(dc, x0, (int)round(y_from), x1, (int)round(y_to));
+    for(int l=page.first_line; l<=page.last_line; l++)
+    {
+        // give a height proportional to its part of the total height
+        float y_to = y_from + layoutLines[l].level_height*track_area_height/total_height;
+        layoutLines[l].printYourself(dc, x0, (int)round(y_from), x1, (int)round(y_to));
         y_from = y_to;
     }
     
@@ -315,7 +328,7 @@ void EditorPrintable::beginLine(wxDC* dc, LayoutLine* line,  int x0, const int y
     EditorPrintable::dc = dc;
     
     // 2 spaces allocated for left area of the tab
-    widthOfAChar = (float)(x1 - x0) / (float)(line->charWidth+2);
+    widthOfAChar = (float)(x1 - x0) / (float)(line->unit_width+2);
     
     layoutElementsAmount = currentLine->layoutElements.size();
     
@@ -323,7 +336,7 @@ void EditorPrintable::beginLine(wxDC* dc, LayoutLine* line,  int x0, const int y
     for(currentLayoutElement=0; currentLayoutElement<layoutElementsAmount; currentLayoutElement++)
     {
         if(currentLayoutElement == 0) xloc = 2;
-        else if(currentLayoutElement > 0) xloc += currentLine->layoutElements[currentLayoutElement-1].charWidth;
+        else if(currentLayoutElement > 0) xloc += currentLine->layoutElements[currentLayoutElement-1].unit_width;
         
         currentLine->layoutElements[currentLayoutElement].x  = getCurrentElementXStart();
         currentLine->layoutElements[currentLayoutElement].x2 =  getCurrentElementXEnd();
@@ -332,7 +345,7 @@ void EditorPrintable::beginLine(wxDC* dc, LayoutLine* line,  int x0, const int y
     xloc = -1;
     currentLayoutElement = -1;
     
-    assertExpr(line->charWidth,>,0);
+    assertExpr(line->unit_width,>,0);
     assertExpr(widthOfAChar,>,0);
     
 }
@@ -342,7 +355,7 @@ int EditorPrintable::getCurrentElementXStart()
 }
 int EditorPrintable::getCurrentElementXEnd()
 {
-    return x0 + (int)round((xloc+currentLine->layoutElements[currentLayoutElement].charWidth)*widthOfAChar);
+    return x0 + (int)round((xloc+currentLine->layoutElements[currentLayoutElement].unit_width)*widthOfAChar);
 }
 LayoutElement* EditorPrintable::getNextElement()
 {
@@ -356,7 +369,7 @@ LayoutElement* EditorPrintable::getNextElement()
     
     /*
     if(currentLayoutElement == 0) xloc = 2;
-    else if(currentLayoutElement > 0) xloc += layoutElements[currentLayoutElement-1].charWidth;
+    else if(currentLayoutElement > 0) xloc += layoutElements[currentLayoutElement-1].unit_width;
     
     const int elem_x_start = getCurrentElementXStart();
     currentLine->layoutElements[currentLayoutElement].x = elem_x_start;

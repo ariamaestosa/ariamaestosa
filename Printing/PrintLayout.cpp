@@ -252,8 +252,6 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
 
 // used to determine the order of what appears in the file.
 // the order is found first before writing anything because that allows more flexibility
-
-
 LayoutElement::LayoutElement(LayoutElementType type_arg, int measure_arg)
 {
     type = type_arg;
@@ -363,11 +361,22 @@ int LayoutLine::getFirstNote() const
     }
     return -1;
 }
+int LayoutLine::calculateHeight()
+{
+    level_height = 0;
+    
+    const int trackAmount = getTrackAmount();
+    for(int n=0; n<trackAmount; n++)
+    {
+        setCurrentTrack(n);
+        level_height += printable->editorPrintables.get(currentTrack)->calculateHeight(*this);
+    }
+    
+    return level_height;
+}
 void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x1, const int y1)
 {
-    assertExpr(currentTrack,>=,0);
-    assertExpr(currentTrack,<,printable->editorPrintables.size());
-    
+    std::cout << "* one line is asked to print itself..." << std::endl;
     const int trackAmount = getTrackAmount();
     
     const float height = (float)(y1 - y0) * ( trackAmount>1 ? 0.9f : 1.0f);
@@ -597,7 +606,7 @@ void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements, ptr_ve
     for(int n=0; n<layoutElementsAmount; n++)
     {
         layoutElements[n].zoom = 1;
-        layoutElements[n].charWidth = 2;
+        layoutElements[n].unit_width = 2;
         
         if(layoutElements[n].type == SINGLE_MEASURE)
         {
@@ -613,7 +622,7 @@ void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements, ptr_ve
             // for very short notes, zooma bit too otherwise they'll all be stuck toghether
             if( divider >= 16 ) layoutElements[n].zoom = 2;
             
-            layoutElements[n].charWidth = (int)round(
+            layoutElements[n].unit_width = (int)round(
                                                      (float)(measures[layoutElements[n].measure].lastTick - measures[layoutElements[n].measure].firstTick) /
                                                      (float)measures[layoutElements[n].measure].shortestDuration
                                                      )*layoutElements[n].zoom + 2;
@@ -621,13 +630,70 @@ void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements, ptr_ve
         }
         else if(layoutElements[n].type == REPEATED_RIFF)
         {
-            layoutElements[n].charWidth = 5;
+            layoutElements[n].unit_width = 5;
         }
         
-        std::cout << "$$ setting charwidth for element " << n << " : " << layoutElements[n].charWidth << std::endl;
+        //std::cout << "$$ setting charwidth for element " << n << " : " << layoutElements[n].unit_width << std::endl;
     }        
 }
 
+void calculateLineLayout(std::vector<LayoutLine>& layoutLines,
+                         std::vector<LayoutPage>& layoutPages,
+                         std::vector<LayoutElement>& layoutElements)
+{
+    const int layoutElementsAmount = layoutElements.size();
+    
+    int current_width = 0;
+    int current_height = 0;
+    
+    int current_page = 0;
+    layoutPages.push_back( LayoutPage() );
+    layoutPages[current_page].first_line = 0;
+    
+    layoutLines.push_back( LayoutLine(getCurrentPrintable()) );
+    int currentLine = 0;
+    
+    LayoutElement el(LayoutElement(LINE_HEADER, -1));
+    el.unit_width = 2;
+    layoutLines[currentLine].layoutElements.push_back( el );
+    
+    // add layout elements one by one, switching to the next line when there's too many
+    // elements on the current one
+    for(int n=0; n<layoutElementsAmount; n++)
+    {
+        if(current_width + layoutElements[n].unit_width > maxCharItemsPerLine)
+        {
+            // too much stuff on current line, switch to another line
+            layoutLines[currentLine].unit_width = current_width;
+            current_width = 0;
+            const int line_height = layoutLines[currentLine].calculateHeight();
+            current_height += line_height;
+            currentLine++;
+            
+            std::cout << "    adding a new line : " <<  currentLine << std::endl;
+            
+            if(current_height > 60)
+            {
+                layoutPages[current_page].last_line = currentLine-1;
+                current_height = 0;
+                layoutPages.push_back( LayoutPage() );
+                current_page++;
+                std::cout << "adding a new page : " <<  current_page << std::endl;
+                layoutPages[current_page].first_line = currentLine;
+            }
+            
+            layoutLines.push_back( LayoutLine(getCurrentPrintable()) );
+        }
+        assertExpr(currentLine,<,(int)layoutLines.size());
+        layoutLines[currentLine].layoutElements.push_back(layoutElements[n]);
+        current_width += layoutElements[n].unit_width;
+    }
+    // for last line processed
+    layoutLines[currentLine].unit_width = current_width;
+    layoutLines[currentLine].calculateHeight();
+    layoutPages[current_page].last_line = currentLine;
+}
+/*
 void calculatePageLayout(std::vector<LayoutPage>& layoutPages, std::vector<LayoutElement>& layoutElements)
 {
     const int layoutElementsAmount = layoutElements.size();
@@ -648,15 +714,15 @@ void calculatePageLayout(std::vector<LayoutPage>& layoutPages, std::vector<Layou
     int trackAmount = 0;
     
     LayoutElement el(LayoutElement(LINE_HEADER, -1));
-    el.charWidth = 2;
+    el.unit_width = 2;
     layoutPages[currentPage].layoutLines[currentLine].layoutElements.push_back( el );
     
     for(int n=0; n<layoutElementsAmount; n++)
     {
-        if(totalLength + layoutElements[n].charWidth > maxCharItemsPerLine)
+        if(totalLength + layoutElements[n].unit_width > maxCharItemsPerLine)
         {
             // too much stuff on current line, switch to another line
-            layoutPages[currentPage].layoutLines[currentLine].charWidth = totalLength;
+            layoutPages[currentPage].layoutLines[currentLine].unit_width = totalLength;
             totalLength = 0;
             trackAmount += layoutPages[currentPage].layoutLines[currentLine].getTrackAmount();
             currentLine++;
@@ -678,13 +744,15 @@ void calculatePageLayout(std::vector<LayoutPage>& layoutPages, std::vector<Layou
         }
         assertExpr(currentLine,<,(int)layoutPages[currentPage].layoutLines.size());
         layoutPages[currentPage].layoutLines[currentLine].layoutElements.push_back(layoutElements[n]);
-        totalLength += layoutElements[n].charWidth;
+        totalLength += layoutElements[n].unit_width;
     }
     // for last line processed
-    layoutPages[currentPage].layoutLines[currentLine].charWidth = totalLength;
+    layoutPages[currentPage].layoutLines[currentLine].unit_width = totalLength;
 }
-
-void calculateLayoutElements(ptr_vector<Track, REF>& track, const bool checkRepetitions_bool, std::vector<LayoutPage>& layoutPages, ptr_vector<MeasureToExport>& measures)
+*/
+void calculateLayoutElements(ptr_vector<Track, REF>& track, const bool checkRepetitions_bool,
+                             std::vector<LayoutLine>& layoutLines, std::vector<LayoutPage>& layoutPages,
+                             ptr_vector<MeasureToExport>& measures)
 {
     std::vector<LayoutElement> layoutElements;
     
@@ -695,7 +763,7 @@ void calculateLayoutElements(ptr_vector<Track, REF>& track, const bool checkRepe
 	
 	generateOutputOrder(layoutElements, measures, checkRepetitions_bool);
     calculateRelativeLengths(layoutElements, measures);
-    calculatePageLayout(layoutPages, layoutElements);
+    calculateLineLayout(layoutLines, layoutPages, layoutElements);
 }
 
 
