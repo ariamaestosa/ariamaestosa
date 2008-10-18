@@ -215,12 +215,12 @@ void renderSilenceCallback(const int tick, const int tick_length, const int sile
 	if( type == 1 )
 	{
         global_dc->SetPen(  *wxTRANSPARENT_PEN  );
-        global_dc->DrawRectangle(x+4, silences_y+1, 10, global_line_height/2);
+        global_dc->DrawRectangle(x+4, silences_y+1, 12, (int)round(global_line_height/2));
 	}
 	else if( type == 2 )
 	{
         global_dc->SetPen(  *wxTRANSPARENT_PEN  );
-        global_dc->DrawRectangle(x+4, silences_y+global_line_height/2, 10, global_line_height/2+1);
+        global_dc->DrawRectangle(x+4, (int)round(silences_y+global_line_height/2), 12, (int)round(global_line_height/2.0+1));
 	}
 	else if( type == 4 )
 	{
