@@ -314,7 +314,40 @@ int ScorePrintable::calculateHeight(LayoutLine& line) const
             highest_level  = level;
         }
     }
-    return std::max(9 /* height of an empty score */, highest_level-lowest_level);
+    
+    const int middle_c_level = converter->getScoreCenterCLevel(); //converter->getMiddleCLevel();
+    
+    const int g_clef_from = middle_c_level-10;
+    const int g_clef_to   = middle_c_level-2;
+    const int f_clef_from = middle_c_level+2;
+    const int f_clef_to   = middle_c_level+10;
+    
+    const bool g_clef = scoreEditor->isGClefEnabled();
+    const bool f_clef = scoreEditor->isFClefEnabled();
+    
+    int extra_lines_above_g_score = 0;
+    int extra_lines_under_g_score = 0;
+    int extra_lines_above_f_score = 0;
+    int extra_lines_under_f_score = 0;
+    if(g_clef and not f_clef)
+    {
+        if(lowest_level < g_clef_from) extra_lines_above_g_score = (g_clef_from - lowest_level)/2;
+        if(highest_level > g_clef_to)  extra_lines_under_g_score = (g_clef_to - highest_level)/2;
+        return (g_clef_to - g_clef_from) + abs(extra_lines_above_g_score) + abs(extra_lines_under_g_score);
+    }
+    else if(f_clef and not g_clef)
+    {
+        if(lowest_level < f_clef_from) extra_lines_above_f_score = (f_clef_from - lowest_level)/2;
+        if(highest_level > f_clef_to)  extra_lines_under_f_score = (f_clef_to - highest_level)/2;
+        return (f_clef_to - f_clef_from) + abs(extra_lines_above_f_score) + abs(extra_lines_under_f_score);
+    }
+    else if(f_clef and g_clef)
+    {
+        if(lowest_level < g_clef_from) extra_lines_above_g_score = (g_clef_from - lowest_level)/2;
+        if(highest_level > f_clef_to)  extra_lines_under_f_score = (f_clef_to - highest_level)/2;
+        return (f_clef_to - g_clef_from) + abs(extra_lines_above_g_score) + abs(extra_lines_under_f_score);
+    }
+    return -1; // should not happen
 }
 
 void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
