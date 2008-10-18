@@ -947,8 +947,10 @@ void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
 	
 	writeData( wxT("<editor mode=\"") + to_wxString(editorMode) +
 			   wxT("\" height=\"") + to_wxString(height) +
-			   wxT("\" collapsed=\"") + (collapsed?wxT("true"):wxT("false")) +
-			   wxT("\" muted=\"") + (muted?wxT("true"):wxT("false")) +
+			   (collapsed ? wxT("\" collapsed=\"true") : wxT("")) +
+			   (muted ? wxT("\" muted=\"true") : wxT("") ) +
+               wxT("\" g_clef=\"") + (scoreEditor->isGClefEnabled()?wxT("true"):wxT("false")) +
+               wxT("\" f_clef=\"") + (scoreEditor->isFClefEnabled()?wxT("true"):wxT("false")) +
 			   wxT("\"/>\n")
 			   , fileout );
 	
@@ -969,6 +971,7 @@ void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
 	{
         writeData( wxT(" string")+ to_wxString((int)n) + wxT("=\"") + to_wxString((int)guitarEditor->tuning[n]) + wxT("\""), fileout );   
     }
+    
 	writeData( wxT("/>\n\n"), fileout);
 
 }
@@ -1009,7 +1012,6 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
 		}
 		else
 		{
-			std::cout << "Missing info from file: track collapsed" << std::endl;
 			collapsed = false;
 		}
 		
@@ -1027,11 +1029,31 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
 		}
 		else
 		{
-			std::cout << "Missing info from file: track muted" << std::endl;
 			muted = false;
 		}
 		
-		
+        const char* g_clef_c = xml->getAttributeValue("g_clef");
+		if( g_clef_c != NULL )
+		{
+			if(!strcmp(g_clef_c, "true")) scoreEditor->enableGClef(true);
+			else if(!strcmp(g_clef_c, "false")) scoreEditor->enableGClef(false);
+			else
+			{
+				std::cout << "Unknown keyword for attribute 'g_clef' in track: " << g_clef_c << std::endl;
+			}
+			
+		}
+        const char* f_clef_c = xml->getAttributeValue("f_clef");
+		if( f_clef_c != NULL )
+		{
+			if(!strcmp(f_clef_c, "true")) scoreEditor->enableFClef(true);
+			else if(!strcmp(f_clef_c, "false")) scoreEditor->enableFClef(false);
+			else
+			{
+				std::cout << "Unknown keyword for attribute 'f_clef' in track: " << f_clef_c << std::endl;
+			}
+			
+		}
 	}
 	else if (!strcmp("magneticgrid", xml->getNodeName()))
 	{

@@ -30,7 +30,7 @@ NOTE: sorry, this is very raw :)
   
 ************************* NEW FEATURES TO ADD: *************************
 
- * Beaming is dependendant on the currently selected key sig, on on the note's measure's key sig!
+ * Beaming is dependendant on the currently selected key sig, not on the note's measure's key sig!
 
  * more intelligently decide if notes on C belong to F clef or G clef
 
