@@ -334,10 +334,11 @@ int LayoutLine::getLastNote() const
     const int from_tick = getMeasureData()->firstTickInMeasure(measure);
     const int to_tick   = getMeasureData()->lastTickInMeasure(measure);
     const Track* t = getTrack();
+    
     const int noteAmount = t->getNoteAmount();
     for(int n=0; n<noteAmount; n++)
     {
-        if(t->getNoteStartInMidiTicks(n) >= from_tick and t->getNoteEndInMidiTicks(n) < to_tick)
+        if(t->getNoteStartInMidiTicks(n) >= from_tick and t->getNoteStartInMidiTicks(n) < to_tick)
         {
             answer = n;
         }
