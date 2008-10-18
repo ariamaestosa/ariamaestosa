@@ -463,7 +463,7 @@ void generateOutputOrder(std::vector<LayoutElement>& layoutElements, ptr_vector<
 		// ----- empty measure -----
 		if(measures[measure].shortestDuration==-1)
 		{
-			layoutElements.push_back( LayoutElement(EMPTY_MEASURE) );
+			layoutElements.push_back( LayoutElement(EMPTY_MEASURE, measure) );
 		}
 		
 		// repetition
