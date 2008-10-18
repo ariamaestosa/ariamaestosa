@@ -584,25 +584,7 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
     {
         NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
         
-        dc.SetPen(  wxPen( wxColour(0,0,0), 2 ) );
-        if(noteRenderInfo.hollow_head) dc.SetBrush( *wxTRANSPARENT_BRUSH );
-        else dc.SetBrush( *wxBLACK_BRUSH );
-        
-        const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
-        wxPoint headLocation( noteRenderInfo.x + headRadius - 3, notey-headRadius/2.0+2 );
-        dc.DrawEllipse( headLocation, wxSize(headRadius-1, headRadius-2) );
-        noteRenderInfo.setY(notey+headRadius/2.0);
-        
-        if(noteRenderInfo.dotted)
-        {
-            wxPoint headLocation( noteRenderInfo.x + headRadius*2.3, notey+1 );
-            dc.DrawEllipse( headLocation, wxSize(2,2) );
-        }
-        
-        if(noteRenderInfo.sign == SHARP)        renderSharp  ( dc, noteRenderInfo.x,     noteRenderInfo.getY() - 6  );
-        else if(noteRenderInfo.sign == FLAT)    renderFlat   ( dc, noteRenderInfo.x - 2, noteRenderInfo.getY() - 11 );
-        else if(noteRenderInfo.sign == NATURAL) renderNatural( dc, noteRenderInfo.x,     noteRenderInfo.getY() - 5  );
-        
+        dc.SetPen(  wxPen( wxColour(125,125,125), 1 ) );
         // draw small lines above score if needed
         if(noteRenderInfo.level < first_score_level-1)
         {
@@ -622,7 +604,29 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
                 dc.DrawLine(noteRenderInfo.x, y, noteRenderInfo.x+20, y);
             }
         }
-
+        
+        // draw head
+        dc.SetPen(  wxPen( wxColour(0,0,0), 2 ) );
+        if(noteRenderInfo.hollow_head) dc.SetBrush( *wxTRANSPARENT_BRUSH );
+        else dc.SetBrush( *wxBLACK_BRUSH );
+        
+        const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
+        wxPoint headLocation( noteRenderInfo.x + headRadius - 3, notey-headRadius/2.0+2 );
+        dc.DrawEllipse( headLocation, wxSize(headRadius-1, headRadius-2) );
+        noteRenderInfo.setY(notey+headRadius/2.0);
+        
+        // draw dot if note is dotted
+        if(noteRenderInfo.dotted)
+        {
+            wxPoint headLocation( noteRenderInfo.x + headRadius*2.3, notey+1 );
+            dc.DrawEllipse( headLocation, wxSize(2,2) );
+        }
+        
+        // draw sharpness sign if relevant
+        if(noteRenderInfo.sign == SHARP)        renderSharp  ( dc, noteRenderInfo.x,     noteRenderInfo.getY() - 6  );
+        else if(noteRenderInfo.sign == FLAT)    renderFlat   ( dc, noteRenderInfo.x - 2, noteRenderInfo.getY() - 11 );
+        else if(noteRenderInfo.sign == NATURAL) renderNatural( dc, noteRenderInfo.x,     noteRenderInfo.getY() - 5  );
+        
     } // next note
     }// end scope
     
