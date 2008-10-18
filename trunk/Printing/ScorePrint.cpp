@@ -287,7 +287,36 @@ void renderSilenceCallback(const int tick, const int tick_length, const int sile
     }
 }
 
-// FIXME - F key, notes above/below score, etc... --> variable score height needed
+int ScorePrintable::calculateHeight(LayoutLine& line) const
+{
+    Track* track = line.getTrack();
+    ScoreEditor* scoreEditor = track->graphics->scoreEditor;
+    ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
+    
+    const int from_note = line.getFirstNote();
+    const int to_note   = line.getLastNote();
+    
+    // find highest and lowest note we need to render
+    int highest_pitch = -1, lowest_pitch = -1;
+    int highest_level = -1, lowest_level = -1;
+    for(int n=from_note; n<= to_note; n++)
+    {
+        const int pitch = track->getNotePitchID(n);
+        const int level = converter->noteToLevel(track->getNote(n));
+        if(pitch < highest_pitch || highest_pitch == -1)
+        {
+            highest_pitch = pitch;
+            lowest_level = level;
+        }
+        if(pitch > lowest_pitch  ||  lowest_pitch == -1)
+        {
+            lowest_pitch  = pitch;
+            highest_level  = level;
+        }
+    }
+    return std::max(9 /* height of an empty score */, highest_level-lowest_level);
+}
+
 void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
                               const int x0, const int y0,
                               const int x1, const int y1,
