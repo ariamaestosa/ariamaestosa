@@ -1,8 +1,9 @@
 
 1.2b2
 - Fixed issues with track reordering
-- Improved score printing
+- Improved score printing (nicer-looking, both F and G clefs supported, adaptable height, notes above or below score, ...)
 - Fixed bug in score printing where the first page would be a bunch filled with garbage
+- G or F clef view preference saved
 - Improved display and printing of ties on chords
 - Code cleanup
 
