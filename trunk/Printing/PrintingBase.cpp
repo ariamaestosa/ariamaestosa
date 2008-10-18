@@ -332,8 +332,8 @@ void EditorPrintable::beginLine(wxDC* dc, LayoutLine* line,  int x0, const int y
     EditorPrintable::currentLine = line;
     EditorPrintable::dc = dc;
     
-    // 2 spaces allocated for left area of the tab
-    widthOfAChar = (float)(x1 - x0) / (float)(line->unit_width+2);
+    // 2 spaces allocated for left area of the line
+    pixel_width_of_an_unit = (float)(x1 - x0) / (float)(line->width_in_units+2);
     
     layoutElementsAmount = currentLine->layoutElements.size();
     
@@ -341,7 +341,7 @@ void EditorPrintable::beginLine(wxDC* dc, LayoutLine* line,  int x0, const int y
     for(currentLayoutElement=0; currentLayoutElement<layoutElementsAmount; currentLayoutElement++)
     {
         if(currentLayoutElement == 0) xloc = 2;
-        else if(currentLayoutElement > 0) xloc += currentLine->layoutElements[currentLayoutElement-1].unit_width;
+        else if(currentLayoutElement > 0) xloc += currentLine->layoutElements[currentLayoutElement-1].width_in_units;
         
         currentLine->layoutElements[currentLayoutElement].x  = getCurrentElementXStart();
         currentLine->layoutElements[currentLayoutElement].x2 =  getCurrentElementXEnd();
@@ -350,17 +350,17 @@ void EditorPrintable::beginLine(wxDC* dc, LayoutLine* line,  int x0, const int y
     xloc = -1;
     currentLayoutElement = -1;
     
-    assertExpr(line->unit_width,>,0);
-    assertExpr(widthOfAChar,>,0);
+    assertExpr(line->width_in_units,>,0);
+    assertExpr(pixel_width_of_an_unit,>,0);
     
 }
 int EditorPrintable::getCurrentElementXStart()
 {
-    return x0 + (int)round(xloc*widthOfAChar) - widthOfAChar;
+    return x0 + (int)round(xloc*pixel_width_of_an_unit) - pixel_width_of_an_unit;
 }
 int EditorPrintable::getCurrentElementXEnd()
 {
-    return x0 + (int)round((xloc+currentLine->layoutElements[currentLayoutElement].unit_width)*widthOfAChar);
+    return x0 + (int)round((xloc+currentLine->layoutElements[currentLayoutElement].width_in_units)*pixel_width_of_an_unit);
 }
 LayoutElement* EditorPrintable::getNextElement()
 {
@@ -374,7 +374,7 @@ LayoutElement* EditorPrintable::getNextElement()
     
     /*
     if(currentLayoutElement == 0) xloc = 2;
-    else if(currentLayoutElement > 0) xloc += layoutElements[currentLayoutElement-1].unit_width;
+    else if(currentLayoutElement > 0) xloc += layoutElements[currentLayoutElement-1].width_in_units;
     
     const int elem_x_start = getCurrentElementXStart();
     currentLine->layoutElements[currentLayoutElement].x = elem_x_start;
@@ -415,14 +415,14 @@ LayoutElement* EditorPrintable::getNextElement()
             to_wxString(layoutElements[currentLayoutElement].lastMeasureToRepeat+1);
         }
         
-        dc->DrawText( message, elem_x_start + widthOfAChar/2, (y0+y1)/2 - getCurrentPrintable()->text_height_half );
+        dc->DrawText( message, elem_x_start + pixel_width_of_an_unit/2, (y0+y1)/2 - getCurrentPrintable()->text_height_half );
     }
     // ****** play again
     else if(layoutElements[currentLayoutElement].type == PLAY_MANY_TIMES)
     {
         wxString label(wxT("X"));
         label << layoutElements[currentLayoutElement].amountOfTimes;
-        dc->DrawText( label, elem_x_start + widthOfAChar/2, (y0+y1)/2 - getCurrentPrintable()->text_height_half );
+        dc->DrawText( label, elem_x_start + pixel_width_of_an_unit/2, (y0+y1)/2 - getCurrentPrintable()->text_height_half );
     }
     // ****** normal measure
     else if(layoutElements[currentLayoutElement].type == SINGLE_MEASURE)
@@ -432,7 +432,7 @@ LayoutElement* EditorPrintable::getNextElement()
         {
             wxString measureLabel;
             measureLabel << (currentLine->getMeasureForElement(currentLayoutElement).id+1);
-            dc->DrawText( measureLabel, elem_x_start - widthOfAChar/4, y0 - getCurrentPrintable()->text_height*1.4 );
+            dc->DrawText( measureLabel, elem_x_start - pixel_width_of_an_unit/4, y0 - getCurrentPrintable()->text_height*1.4 );
         }
         
         dc->SetTextForeground( wxColour(0,0,0) );
@@ -466,7 +466,7 @@ int EditorPrintable::tickToX(const int tick)
             const int elem_w = elem_x_end - elem_x_start;
             const float nratio = ((float)(tick - firstTick) / (float)(lastTick - firstTick));
             
-            return (int)round(nratio * (elem_w-widthOfAChar*1.5) + elem_x_start);
+            return (int)round(nratio * (elem_w-pixel_width_of_an_unit*1.5) + elem_x_start);
         }
         
         /* the tick we were given is not on the current line, but on the next.

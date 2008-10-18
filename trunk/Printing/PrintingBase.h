@@ -66,7 +66,7 @@ class EditorPrintable
     int layoutElementsAmount;
     wxDC* dc;
 protected:
-    float widthOfAChar;
+    float pixel_width_of_an_unit;
 public:
     EditorPrintable();
     virtual ~EditorPrintable();
