@@ -215,12 +215,12 @@ void renderSilenceCallback(const int tick, const int tick_length, const int sile
 	if( type == 1 )
 	{
         global_dc->SetPen(  *wxTRANSPARENT_PEN  );
-        global_dc->DrawRectangle(x+4, silences_y, 10, global_line_height/2);
+        global_dc->DrawRectangle(x+4, silences_y+1, 10, global_line_height/2);
 	}
 	else if( type == 2 )
 	{
         global_dc->SetPen(  *wxTRANSPARENT_PEN  );
-        global_dc->DrawRectangle(x+4, silences_y+global_line_height/2, 10, global_line_height/2);
+        global_dc->DrawRectangle(x+4, silences_y+global_line_height/2, 10, global_line_height/2+1);
 	}
 	else if( type == 4 )
 	{
@@ -523,9 +523,10 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     }
     else if(f_clef and g_clef)
     {
+        // FIXME - don't split heavenly if one clef contains more stuff than the other...
         g_clef_y_from = y0;
-        g_clef_y_to = y0 + (int)round((y1 - y0)*0.35);
-        f_clef_y_from = y0 + (int)round((y1 - y0)*0.65);
+        g_clef_y_to = y0 + (int)round((y1 - y0)*0.40);
+        f_clef_y_from = y0 + (int)round((y1 - y0)*0.60);
         f_clef_y_to = y1;
     }
     
