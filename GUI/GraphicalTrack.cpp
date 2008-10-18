@@ -944,13 +944,15 @@ void GraphicalTrack::setEditorMode(int mode)
 // ---------------------------------------- serialization -----------------------------------------
 void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
 {
-	
+	const int octave_shift = scoreEditor->getScoreMidiConverter()->getOctaveShift();
+    
 	writeData( wxT("<editor mode=\"") + to_wxString(editorMode) +
 			   wxT("\" height=\"") + to_wxString(height) +
 			   (collapsed ? wxT("\" collapsed=\"true") : wxT("")) +
 			   (muted ? wxT("\" muted=\"true") : wxT("") ) +
                wxT("\" g_clef=\"") + (scoreEditor->isGClefEnabled()?wxT("true"):wxT("false")) +
                wxT("\" f_clef=\"") + (scoreEditor->isFClefEnabled()?wxT("true"):wxT("false")) +
+               ( octave_shift != 0 ? wxT("\" octave_shift=\"")+to_wxString(octave_shift) : wxT("")) +
 			   wxT("\"/>\n")
 			   , fileout );
 	
@@ -1054,6 +1056,13 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
 			}
 			
 		}
+        const char* octave_shift_c = xml->getAttributeValue("octave_shift");
+		if( octave_shift_c != NULL )
+		{
+            int new_value = atoi( octave_shift_c );
+            if(new_value != 0) scoreEditor->getScoreMidiConverter()->setOctaveShift(new_value);
+		}
+
 	}
 	else if (!strcmp("magneticgrid", xml->getNodeName()))
 	{
