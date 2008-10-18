@@ -376,7 +376,6 @@ int LayoutLine::calculateHeight()
 }
 void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x1, const int y1)
 {
-    std::cout << "* one line is asked to print itself..." << std::endl;
     const int trackAmount = getTrackAmount();
     
     const float height = (float)(y1 - y0) * ( trackAmount>1 ? 0.9f : 1.0f);
@@ -670,15 +669,15 @@ void calculateLineLayout(std::vector<LayoutLine>& layoutLines,
             current_height += line_height;
             currentLine++;
             
-            std::cout << "    adding a new line : " <<  currentLine << std::endl;
+           // std::cout << "    adding a new line : " <<  currentLine << std::endl;
             
-            if(current_height > 60)
+            if(current_height > 80)
             {
                 layoutPages[current_page].last_line = currentLine-1;
                 current_height = 0;
                 layoutPages.push_back( LayoutPage() );
                 current_page++;
-                std::cout << "adding a new page : " <<  current_page << std::endl;
+               // std::cout << "adding a new page : " <<  current_page << std::endl;
                 layoutPages[current_page].first_line = currentLine;
             }
             
@@ -693,63 +692,7 @@ void calculateLineLayout(std::vector<LayoutLine>& layoutLines,
     layoutLines[currentLine].calculateHeight();
     layoutPages[current_page].last_line = currentLine;
 }
-/*
-void calculatePageLayout(std::vector<LayoutPage>& layoutPages, std::vector<LayoutElement>& layoutElements)
-{
-    const int layoutElementsAmount = layoutElements.size();
-    
-    // lay out in lines and pages
-    layoutPages.push_back( LayoutPage() );
-    
-    int totalLength = 0;
-    int currentLine = 0;
-    int currentPage = 0;
-    
-    assertExpr(currentPage,<,(int)layoutPages.size());
-    layoutPages[currentPage].layoutLines.push_back( LayoutLine(getCurrentPrintable()) );
-    
-    //std::cout << "+ PAGE " << currentPage << std::endl;
-    //std::cout << "    + LINE " << currentLine << std::endl;
-    
-    int trackAmount = 0;
-    
-    LayoutElement el(LayoutElement(LINE_HEADER, -1));
-    el.unit_width = 2;
-    layoutPages[currentPage].layoutLines[currentLine].layoutElements.push_back( el );
-    
-    for(int n=0; n<layoutElementsAmount; n++)
-    {
-        if(totalLength + layoutElements[n].unit_width > maxCharItemsPerLine)
-        {
-            // too much stuff on current line, switch to another line
-            layoutPages[currentPage].layoutLines[currentLine].unit_width = totalLength;
-            totalLength = 0;
-            trackAmount += layoutPages[currentPage].layoutLines[currentLine].getTrackAmount();
-            currentLine++;
-            assertExpr(currentPage,<,(int)layoutPages.size());
-            
-            // check if we need to switch to another page
-            if(trackAmount == maxLinesInPage)
-            {
-                // too many lines on page, switch to another page
-                currentLine = 0;
-                currentPage++;
-                layoutPages.push_back( LayoutPage() );
-                trackAmount = 0;
-                //std::cout << "+ PAGE " << currentPage << std::endl;
-            }
-            assertExpr(currentPage,<,(int)layoutPages.size());
-            layoutPages[currentPage].layoutLines.push_back( LayoutLine(getCurrentPrintable()) );
-            //std::cout << "    + LINE " << currentLine << std::endl;
-        }
-        assertExpr(currentLine,<,(int)layoutPages[currentPage].layoutLines.size());
-        layoutPages[currentPage].layoutLines[currentLine].layoutElements.push_back(layoutElements[n]);
-        totalLength += layoutElements[n].unit_width;
-    }
-    // for last line processed
-    layoutPages[currentPage].layoutLines[currentLine].unit_width = totalLength;
-}
-*/
+
 void calculateLayoutElements(ptr_vector<Track, REF>& track, const bool checkRepetitions_bool,
                              std::vector<LayoutLine>& layoutLines, std::vector<LayoutPage>& layoutPages,
                              ptr_vector<MeasureToExport>& measures)

@@ -302,7 +302,12 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     for(int l=page.first_line; l<=page.last_line; l++)
     {
         // give a height proportional to its part of the total height
-        float y_to = y_from + layoutLines[l].level_height*track_area_height/total_height;
+        float height = layoutLines[l].level_height*track_area_height/total_height;
+        
+        // track too high, will look weird... shrink a bit
+        while(height/(float)layoutLines[l].level_height > 10) height *= 0.95;
+        
+        float y_to = y_from + height;
         layoutLines[l].printYourself(dc, x0, (int)round(y_from), x1, (int)round(y_to));
         y_from = y_to;
     }
