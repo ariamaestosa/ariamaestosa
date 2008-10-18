@@ -129,6 +129,11 @@ PrintXConverter* x_converter = NULL;
 // leave a pointer to the dc for the callback
 // FIXME find cleaner way
 wxDC* global_dc = NULL;
+
+// leave height of lines for the renderSilence callback
+// FIXME find cleaner way
+int global_line_height=5;
+
 void renderSilenceCallback(const int tick, const int tick_length, const int silences_y)
 {
     assert( global_dc != NULL);
@@ -206,18 +211,20 @@ void renderSilenceCallback(const int tick, const int tick_length, const int sile
 	}
 	
     global_dc->SetBrush( *wxBLACK_BRUSH );
-    global_dc->SetPen(  wxPen( wxColour(0,0,0), 2 ) );
     
 	if( type == 1 )
 	{
-        global_dc->DrawRectangle(x+4, silences_y-5, 10, 5);
+        global_dc->SetPen(  *wxTRANSPARENT_PEN  );
+        global_dc->DrawRectangle(x+4, silences_y, 10, global_line_height/2);
 	}
 	else if( type == 2 )
 	{
-        global_dc->DrawRectangle(x+4, silences_y, 10, 5);
+        global_dc->SetPen(  *wxTRANSPARENT_PEN  );
+        global_dc->DrawRectangle(x+4, silences_y+global_line_height/2, 10, global_line_height/2);
 	}
 	else if( type == 4 )
 	{
+        global_dc->SetPen(  wxPen( wxColour(0,0,0), 2 ) );
         const int mx = x + 10;
         const int y = silences_y - 5;
         wxPoint points[] = 
@@ -239,6 +246,7 @@ void renderSilenceCallback(const int tick, const int tick_length, const int sile
 	}
 	else if( type == 8 )
 	{
+        global_dc->SetPen(  wxPen( wxColour(0,0,0), 2 ) );
         const int mx = x + 10;
         const int y = silences_y;
         wxPoint points[] = 
@@ -253,8 +261,9 @@ void renderSilenceCallback(const int tick, const int tick_length, const int sile
 	}
 	else if( type == 16 )
 	{
+        global_dc->SetPen(  wxPen( wxColour(0,0,0), 2 ) );
         const int mx = x + 10;
-        const int y = silences_y + 5;
+        const int y = silences_y + 8;
         wxPoint points[] = 
         {
         wxPoint(mx,     y+10),
@@ -515,8 +524,8 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     else if(f_clef and g_clef)
     {
         g_clef_y_from = y0;
-        g_clef_y_to = y0 + (int)round((y1 - y0)*0.45);
-        f_clef_y_from = y0 + (int)round((y1 - y0)*0.55);
+        g_clef_y_to = y0 + (int)round((y1 - y0)*0.35);
+        f_clef_y_from = y0 + (int)round((y1 - y0)*0.65);
         f_clef_y_to = y1;
     }
     
@@ -580,7 +589,7 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
         else dc.SetBrush( *wxBLACK_BRUSH );
         
         const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
-        wxPoint headLocation( noteRenderInfo.x + headRadius - 3, notey-headRadius/2.0+1 );
+        wxPoint headLocation( noteRenderInfo.x + headRadius - 3, notey-headRadius/2.0+2 );
         dc.DrawEllipse( headLocation, wxSize(headRadius-1, headRadius-2) );
         noteRenderInfo.setY(notey+headRadius/2.0);
         
@@ -774,11 +783,13 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
     if(f_clef)
     {
         const int silences_y = LEVEL_TO_Y(middle_c_level + 4);
+        global_line_height = lineHeight;
         analyser.renderSilences( &renderSilenceCallback, first_measure, last_measure, silences_y );
     }
     else
     {
-        const int silences_y = LEVEL_TO_Y(middle_c_level - 7);
+        const int silences_y = LEVEL_TO_Y(middle_c_level - 8);
+        global_line_height = lineHeight;
         analyser.renderSilences( &renderSilenceCallback, first_measure, last_measure, silences_y );
     }
     
