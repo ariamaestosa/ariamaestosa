@@ -606,7 +606,7 @@ void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements, ptr_ve
     for(int n=0; n<layoutElementsAmount; n++)
     {
         layoutElements[n].zoom = 1;
-        layoutElements[n].unit_width = 2;
+        layoutElements[n].width_in_units = 2;
         
         if(layoutElements[n].type == SINGLE_MEASURE)
         {
@@ -622,7 +622,7 @@ void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements, ptr_ve
             // for very short notes, zooma bit too otherwise they'll all be stuck toghether
             if( divider >= 16 ) layoutElements[n].zoom = 2;
             
-            layoutElements[n].unit_width = (int)round(
+            layoutElements[n].width_in_units = (int)round(
                                                      (float)(measures[layoutElements[n].measure].lastTick - measures[layoutElements[n].measure].firstTick) /
                                                      (float)measures[layoutElements[n].measure].shortestDuration
                                                      )*layoutElements[n].zoom + 2;
@@ -630,10 +630,10 @@ void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements, ptr_ve
         }
         else if(layoutElements[n].type == REPEATED_RIFF)
         {
-            layoutElements[n].unit_width = 5;
+            layoutElements[n].width_in_units = 5;
         }
         
-        //std::cout << "$$ setting charwidth for element " << n << " : " << layoutElements[n].unit_width << std::endl;
+        //std::cout << "$$ setting charwidth for element " << n << " : " << layoutElements[n].width_in_units << std::endl;
     }        
 }
 
@@ -654,17 +654,17 @@ void calculateLineLayout(std::vector<LayoutLine>& layoutLines,
     int currentLine = 0;
     
     LayoutElement el(LayoutElement(LINE_HEADER, -1));
-    el.unit_width = 2;
+    el.width_in_units = 2;
     layoutLines[currentLine].layoutElements.push_back( el );
     
     // add layout elements one by one, switching to the next line when there's too many
     // elements on the current one
     for(int n=0; n<layoutElementsAmount; n++)
     {
-        if(current_width + layoutElements[n].unit_width > maxCharItemsPerLine)
+        if(current_width + layoutElements[n].width_in_units > maxCharItemsPerLine)
         {
             // too much stuff on current line, switch to another line
-            layoutLines[currentLine].unit_width = current_width;
+            layoutLines[currentLine].width_in_units = current_width;
             current_width = 0;
             const int line_height = layoutLines[currentLine].calculateHeight();
             current_height += line_height;
@@ -686,10 +686,10 @@ void calculateLineLayout(std::vector<LayoutLine>& layoutLines,
         }
         assertExpr(currentLine,<,(int)layoutLines.size());
         layoutLines[currentLine].layoutElements.push_back(layoutElements[n]);
-        current_width += layoutElements[n].unit_width;
+        current_width += layoutElements[n].width_in_units;
     }
     // for last line processed
-    layoutLines[currentLine].unit_width = current_width;
+    layoutLines[currentLine].width_in_units = current_width;
     layoutLines[currentLine].calculateHeight();
     layoutPages[current_page].last_line = currentLine;
 }

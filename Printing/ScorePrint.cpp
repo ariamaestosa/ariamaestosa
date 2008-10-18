@@ -388,9 +388,6 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         }
     }
 
-    //const int highest_level = converter->noteToLevel(track->getNote(highest));
-   // const int lowest_level  = converter->noteToLevel(track->getNote(lowest));
-    
     const int middle_c_level = converter->getScoreCenterCLevel(); //converter->getMiddleCLevel();
 
     const int g_clef_from = middle_c_level-10;
@@ -558,7 +555,7 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
     const int min_level =  first_score_level - extra_lines_above*2;
     const int headRadius = 9;//(int)round((float)lineHeight*0.72);
            
-    // draw score background (lines)
+    // draw score background (horizontal lines)
     dc.SetPen(  wxPen( wxColour(125,125,125), 1 ) );
     const int lineAmount = 5 + extra_lines_above + extra_lines_under;
     const float lineHeight = (float)(y1 - y0) / (float)(lineAmount-1);
@@ -597,6 +594,26 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
         else if(noteRenderInfo.sign == FLAT)    renderFlat   ( dc, noteRenderInfo.x - 2, noteRenderInfo.getY() - 11 );
         else if(noteRenderInfo.sign == NATURAL) renderNatural( dc, noteRenderInfo.x,     noteRenderInfo.getY() - 5  );
         
+        // draw small lines above score if needed
+        if(noteRenderInfo.level < first_score_level-1)
+        {
+            for(int lvl=first_score_level-2; lvl>noteRenderInfo.level+noteRenderInfo.level%2-2; lvl -= 2)
+            {
+                const int y = LEVEL_TO_Y(lvl);
+                dc.DrawLine(noteRenderInfo.x, y, noteRenderInfo.x+20, y);
+            }
+        }
+        
+        // draw small lines below score if needed
+        if(noteRenderInfo.level > last_score_level+1)
+        {
+            for(int lvl=last_score_level+2; lvl<noteRenderInfo.level-noteRenderInfo.level%2+2; lvl += 2)
+            {
+                const int y = LEVEL_TO_Y(lvl);
+                dc.DrawLine(noteRenderInfo.x, y, noteRenderInfo.x+20, y);
+            }
+        }
+
     } // next note
     }// end scope
     

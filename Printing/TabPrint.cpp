@@ -108,7 +108,7 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
             
             // substract from width to leave some space on the right (coordinate is from the left of the text string so we need extra space on the right)
             // if fret number is greater than 9, the string will have two characters so we need to recenter it a bit more
-            const int drawX = getNotePrintX(i) + (fret > 9 ? widthOfAChar/4 : widthOfAChar/2);
+            const int drawX = getNotePrintX(i) + (fret > 9 ? pixel_width_of_an_unit/4 : pixel_width_of_an_unit/2);
             const int drawY = y0 + stringHeight*string - getCurrentPrintable()->text_height_half*0.8;
             wxString label = to_wxString(fret);
             

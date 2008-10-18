@@ -123,7 +123,7 @@ public:
 	int amountOfTimes; // used for 'play many times' events
     
     float zoom;
-    int unit_width;
+    int width_in_units;
     
     // filled by EditorPrintable::getNextElement() as the X position is calculated in
     // case location is needed later (for instance, if more than one rendering pass)
@@ -142,7 +142,7 @@ class LayoutLine
 public:
     LayoutLine(AriaPrintable* parent);
     
-    int unit_width;
+    int width_in_units;
     int level_height;
     
     int getTrackAmount();
