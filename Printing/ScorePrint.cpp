@@ -360,7 +360,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     assertExpr(y0,<,1000);
     assertExpr(y1,<,1000);
     
-    std::cout << "line from " << line.getFirstNote() << " to " << line.getLastNote() << std::endl;
+    std::cout << "==========\nline from note " << line.getFirstNote() << " to " << line.getLastNote() << std::endl;
     
     Track* track = line.getTrack();
     ScoreEditor* scoreEditor = track->graphics->scoreEditor;

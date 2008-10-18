@@ -330,9 +330,10 @@ int LayoutLine::getFirstMeasure() const
 int LayoutLine::getLastNote() const
 {
     int answer = -1;
-    const int measure = getFirstMeasure();
-    const int from_tick = getMeasureData()->firstTickInMeasure(measure);
-    const int to_tick   = getMeasureData()->lastTickInMeasure(measure);
+    const int first_measure = getFirstMeasure();
+    const int last_measure = getLastMeasure();
+    const int from_tick = getMeasureData()->firstTickInMeasure(first_measure);
+    const int to_tick   = getMeasureData()->lastTickInMeasure(last_measure);
     const Track* t = getTrack();
     
     const int noteAmount = t->getNoteAmount();
@@ -350,12 +351,11 @@ int LayoutLine::getFirstNote() const
 {
     const int measure = getFirstMeasure();
     const int from_tick = getMeasureData()->firstTickInMeasure(measure);
-    const int to_tick   = getMeasureData()->lastTickInMeasure(measure);
     const Track* t = getTrack();
     const int noteAmount = t->getNoteAmount();
     for(int n=0; n<noteAmount; n++)
     {
-        if(t->getNoteStartInMidiTicks(n) >= from_tick and t->getNoteEndInMidiTicks(n) < to_tick)
+        if(t->getNoteStartInMidiTicks(n) >= from_tick)
         {
             return n;
         }
