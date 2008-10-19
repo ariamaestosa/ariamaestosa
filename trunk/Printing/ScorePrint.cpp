@@ -47,42 +47,42 @@ public:
  */
 void renderSharp(wxDC& dc, const int x, const int y)
 {
-    dc.SetPen(  wxPen( wxColour(0,0,0), 1 ) );
+    dc.SetPen(  wxPen( wxColour(0,0,0), 10 ) );
     
     // horizontal lines
-    dc.DrawLine( x-5, y, x+5, y-2 );
-    dc.DrawLine( x-5, y+4, x+5, y+2 );
+    dc.DrawLine( x-50, y,    x+50, y-20 );
+    dc.DrawLine( x-50, y+40, x+50, y+20 );
     
     // vertical lines
-    dc.DrawLine( x-2, y-3, x-2, y+6 );
-    dc.DrawLine( x+2, y-4, x+2, y+5 );
+    dc.DrawLine( x-20, y-30, x-20, y+60 );
+    dc.DrawLine( x+20, y-40, x+20, y+50 );
 }
 void renderFlat(wxDC& dc, const int x, const int y)
 {
-    dc.SetPen(  wxPen( wxColour(0,0,0), 1 ) );
+    dc.SetPen(  wxPen( wxColour(0,0,0), 10 ) );
     
     wxPoint points[] = 
     {
-        wxPoint(x,     y-3),
-        wxPoint(x,     y+12),
-        wxPoint(x+1,   y+12),
-        wxPoint(x+5,   y+6),
-        wxPoint(x+3,   y+4),
-        wxPoint(x,     y+6)
+        wxPoint(x,     y-30),
+        wxPoint(x,     y+120),
+        wxPoint(x+10,  y+120),
+        wxPoint(x+50,  y+60),
+        wxPoint(x+30,  y+40),
+        wxPoint(x,     y+60)
     };
     dc.DrawSpline(6, points);
 }
 void renderNatural(wxDC& dc, const int x, const int y)
 {
-    dc.SetPen(  wxPen( wxColour(0,0,0), 1 ) );
+    dc.SetPen(  wxPen( wxColour(0,0,0), 10 ) );
     
     // horizontal lines
-    dc.DrawLine( x-3, y,   x+3, y-2 );
-    dc.DrawLine( x-3, y+4, x+3, y+2 );
+    dc.DrawLine( x-30, y,    x+30, y-20 );
+    dc.DrawLine( x-30, y+40, x+30, y+20 );
     
     // vertical lines
-    dc.DrawLine( x-3, y+4, x-3, y-6 );
-    dc.DrawLine( x+3, y-2, x+3, y+8 );
+    dc.DrawLine( x-30, y+40, x-30, y-60 );
+    dc.DrawLine( x+30, y-20, x+30, y+80 );
 }
 void renderGClef(wxDC& dc, const int x, const int y)
 {
@@ -215,72 +215,72 @@ void renderSilenceCallback(const int tick, const int tick_length, const int sile
 	if( type == 1 )
 	{
         global_dc->SetPen(  *wxTRANSPARENT_PEN  );
-        global_dc->DrawRectangle(x+4, silences_y+1, 12, (int)round(global_line_height/2));
+        global_dc->DrawRectangle(x+40, silences_y, 120, (int)round(global_line_height/2));
 	}
 	else if( type == 2 )
 	{
         global_dc->SetPen(  *wxTRANSPARENT_PEN  );
-        global_dc->DrawRectangle(x+4, (int)round(silences_y+global_line_height/2), 12, (int)round(global_line_height/2.0+1));
+        global_dc->DrawRectangle(x+40, (int)round(silences_y+global_line_height/2)-10, 120, (int)round(global_line_height/2.0+10));
 	}
 	else if( type == 4 )
 	{
-        global_dc->SetPen(  wxPen( wxColour(0,0,0), 2 ) );
+        global_dc->SetPen(  wxPen( wxColour(0,0,0), 20 ) );
         const int mx = x + 10;
         const int y = silences_y - 5;
         wxPoint points[] = 
         {
-            wxPoint(mx,     y),
-            wxPoint(mx+4,   y+4),
-            wxPoint(mx+5,   y+5),
-            wxPoint(mx+4,   y+6),
-            wxPoint(mx+1,   y+9),
-            wxPoint(mx,     y+10),
-            wxPoint(mx+1,   y+11),
-            wxPoint(mx+4,   y+14),
-            wxPoint(mx+5,   y+15),
-            wxPoint(mx,     y+15),
-            wxPoint(mx+1,   y+17),
-            wxPoint(mx+5,   y+20),
+            wxPoint(mx,      y),
+            wxPoint(mx+40,   y+40),
+            wxPoint(mx+50,   y+50),
+            wxPoint(mx+40,   y+60),
+            wxPoint(mx+10,   y+90),
+            wxPoint(mx,      y+100),
+            wxPoint(mx+10,   y+110),
+            wxPoint(mx+40,   y+140),
+            wxPoint(mx+50,   y+150),
+            wxPoint(mx,      y+150),
+            wxPoint(mx+10,   y+170),
+            wxPoint(mx+50,   y+200),
         };
         global_dc->DrawSpline(12, points);
 	}
 	else if( type == 8 )
 	{
-        global_dc->SetPen(  wxPen( wxColour(0,0,0), 2 ) );
-        const int mx = x + 10;
+        global_dc->SetPen(  wxPen( wxColour(0,0,0), 20 ) );
+        const int mx = x + 100;
         const int y = silences_y;
         wxPoint points[] = 
         {
-        wxPoint(mx,     y+15),
-        wxPoint(mx+7,   y),
-        wxPoint(mx,     y),
+        wxPoint(mx,      y+150),
+        wxPoint(mx+70,   y),
+        wxPoint(mx,      y),
         };
         global_dc->DrawSpline(3, points);
         
-        global_dc->DrawCircle(mx, y, 2);
+        global_dc->DrawCircle(mx, y, 12);
 	}
 	else if( type == 16 )
 	{
-        global_dc->SetPen(  wxPen( wxColour(0,0,0), 2 ) );
-        const int mx = x + 10;
-        const int y = silences_y + 8;
+        global_dc->SetPen(  wxPen( wxColour(0,0,0), 20 ) );
+        const int mx = x + 100;
+        const int y = silences_y + 80;
         wxPoint points[] = 
         {
-        wxPoint(mx,     y+10),
-        wxPoint(mx+5,   y),
+        wxPoint(mx,     y+100),
+        wxPoint(mx+50,  y),
         wxPoint(mx,     y),
         };
         global_dc->DrawSpline(3, points);
         wxPoint points2[] = 
         {
-            wxPoint(mx+4,   y+1),
-            wxPoint(mx+10,  y-10),
-            wxPoint(mx+5,     y-10),
+            wxPoint(mx+40,   y+10),
+            wxPoint(mx+100,  y-100),
+            wxPoint(mx+50,   y-100),
         };
         global_dc->DrawSpline(3, points2);
         
-        global_dc->DrawCircle(mx, y, 2);
-        global_dc->DrawCircle(mx+5, y-10, 2);
+        global_dc->DrawCircle(mx, y, 12);
+        global_dc->DrawCircle(mx+50, y-100, 12);
 	}
 	
 	// dotted
@@ -366,8 +366,8 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
 {
     assertExpr(y0,>,0);
     assertExpr(y1,>,0);
-    assertExpr(y0,<,1000);
-    assertExpr(y1,<,1000);
+    assertExpr(y0,<,10000);
+    assertExpr(y1,<,10000);
     
     std::cout << "==========\nline from note " << line.getFirstNote() << " to " << line.getLastNote() << std::endl;
     
@@ -446,13 +446,13 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     if(g_clef)
     {
         g_clef_analyser = new ScoreAnalyser(scoreEditor, new PrintXConverter(this), middle_c_level-5);
-        g_clef_analyser->setStemDrawInfo( 14, 0, 6, 0 );
+        g_clef_analyser->setStemDrawInfo( 140, 0, 60, 0 );
         g_clef_analyser->setStemPivot(middle_c_level-5);
     }
     if(f_clef)
     {
         f_clef_analyser = new ScoreAnalyser(scoreEditor, new PrintXConverter(this), middle_c_level-5);
-        f_clef_analyser->setStemDrawInfo( 14, 0, 6, 0 );
+        f_clef_analyser->setStemDrawInfo( 140, 0, 60, 0 );
         f_clef_analyser->setStemPivot(middle_c_level+6);
     }
     
@@ -563,14 +563,17 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
     const int first_score_level = middle_c_level + (f_clef? 2 : -10);
     const int last_score_level = first_score_level + 8;
     const int min_level =  first_score_level - extra_lines_above*2;
-    const int headRadius = 9;//(int)round((float)lineHeight*0.72);
            
     // draw score background (horizontal lines)
-    dc.SetPen(  wxPen( wxColour(125,125,125), 1 ) );
+    dc.SetPen(  wxPen( wxColour(125,125,125), 10 ) );
     const int lineAmount = 5 + extra_lines_above + extra_lines_under;
     const float lineHeight = (float)(y1 - y0) / (float)(lineAmount-1);
     
     #define LEVEL_TO_Y( lvl ) y0 + 1 + lineHeight*0.5*(lvl - min_level)
+    
+    const int headRadius = (int)round(lineHeight);
+    
+    analyser.setStemDrawInfo( headRadius*2-18, 0, headRadius-20, 0 );
     
     for(int lvl=first_score_level; lvl<=last_score_level; lvl+=2)
     {
@@ -585,14 +588,14 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
     {
         NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
         
-        dc.SetPen(  wxPen( wxColour(125,125,125), 1 ) );
+        dc.SetPen(  wxPen( wxColour(125,125,125), 10 ) );
         // draw small lines above score if needed
         if(noteRenderInfo.level < first_score_level-1)
         {
             for(int lvl=first_score_level-2; lvl>noteRenderInfo.level+noteRenderInfo.level%2-2; lvl -= 2)
             {
                 const int y = LEVEL_TO_Y(lvl);
-                dc.DrawLine(noteRenderInfo.x, y, noteRenderInfo.x+20, y);
+                dc.DrawLine(noteRenderInfo.x, y, noteRenderInfo.x+200, y);
             }
         }
         
@@ -602,31 +605,32 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
             for(int lvl=last_score_level+2; lvl<noteRenderInfo.level-noteRenderInfo.level%2+2; lvl += 2)
             {
                 const int y = LEVEL_TO_Y(lvl);
-                dc.DrawLine(noteRenderInfo.x, y, noteRenderInfo.x+20, y);
+                dc.DrawLine(noteRenderInfo.x, y, noteRenderInfo.x+200, y);
             }
         }
         
         // draw head
-        dc.SetPen(  wxPen( wxColour(0,0,0), 2 ) );
+        dc.SetPen(  wxPen( wxColour(0,0,0), 20 ) );
         if(noteRenderInfo.hollow_head) dc.SetBrush( *wxTRANSPARENT_BRUSH );
         else dc.SetBrush( *wxBLACK_BRUSH );
         
         const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
-        wxPoint headLocation( noteRenderInfo.x + headRadius - 3, notey-headRadius/2.0+2 );
-        dc.DrawEllipse( headLocation, wxSize(headRadius-1, headRadius-2) );
+        wxPoint headLocation( noteRenderInfo.x + headRadius - 20 /* 20 is the width of the pen */,
+                              notey-(headRadius-20)/2.0); /* 20 is the -10 of the vertical radius size + half the width of the pen*/
+        dc.DrawEllipse( headLocation, wxSize(headRadius, headRadius-10) );
         noteRenderInfo.setY(notey+headRadius/2.0);
         
         // draw dot if note is dotted
         if(noteRenderInfo.dotted)
         {
-            wxPoint headLocation( noteRenderInfo.x + headRadius*2.3, notey+1 );
-            dc.DrawEllipse( headLocation, wxSize(2,2) );
+            wxPoint headLocation( noteRenderInfo.x + headRadius*2.3, notey+10 );
+            dc.DrawEllipse( headLocation, wxSize(10,10) );
         }
         
         // draw sharpness sign if relevant
-        if(noteRenderInfo.sign == SHARP)        renderSharp  ( dc, noteRenderInfo.x,     noteRenderInfo.getY() - 6  );
-        else if(noteRenderInfo.sign == FLAT)    renderFlat   ( dc, noteRenderInfo.x - 2, noteRenderInfo.getY() - 11 );
-        else if(noteRenderInfo.sign == NATURAL) renderNatural( dc, noteRenderInfo.x,     noteRenderInfo.getY() - 5  );
+        if(noteRenderInfo.sign == SHARP)        renderSharp  ( dc, noteRenderInfo.x,      noteRenderInfo.getY() - 60  );
+        else if(noteRenderInfo.sign == FLAT)    renderFlat   ( dc, noteRenderInfo.x - 20, noteRenderInfo.getY() - 110 );
+        else if(noteRenderInfo.sign == NATURAL) renderNatural( dc, noteRenderInfo.x,      noteRenderInfo.getY() - 50  );
         
     } // next note
     }// end scope
@@ -640,7 +644,7 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
     {
         NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
         
-        dc.SetPen(  wxPen( wxColour(0,0,0), 2 ) );
+        dc.SetPen(  wxPen( wxColour(0,0,0), 20 ) );
         
         // draw stem
         if(noteRenderInfo.stem_type != STEM_NONE)
@@ -664,9 +668,9 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
                 wxPoint points[] = 
                 {
                     wxPoint(flag_x_origin, flag_y),
-                    wxPoint(flag_x_origin + 3, flag_y + orient*6),
-                    wxPoint(flag_x_origin + 11, flag_y + orient*11),
-                    wxPoint(flag_x_origin + 9, flag_y + orient*15)
+                    wxPoint(flag_x_origin + 30,  flag_y + orient*60),
+                    wxPoint(flag_x_origin + 110, flag_y + orient*110),
+                    wxPoint(flag_x_origin + 90,  flag_y + orient*150)
                 };
                 dc.DrawSpline(4, points);
             }
@@ -675,18 +679,18 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
         // ties
         if(noteRenderInfo.getTiedToPixel() != -1)
         {
-            wxPen tiePen( wxColour(0,0,0), 1 ) ;
+            wxPen tiePen( wxColour(0,0,0), 10 ) ;
             //tiePen.SetJoin(wxJOIN_BEVEL);
             dc.SetPen( tiePen );
             dc.SetBrush( *wxTRANSPARENT_BRUSH );
             
             const bool show_above = noteRenderInfo.isTieUp();
-            const int base_y = LEVEL_TO_Y( noteRenderInfo.getStemOriginLevel() ) + (show_above ? - 9 : 9); 
+            const int base_y = LEVEL_TO_Y( noteRenderInfo.getStemOriginLevel() ) + (show_above ? - 90 : 90); 
             
             dc.DrawEllipticArc(noteRenderInfo.x + headRadius*1.6,
-                               base_y - 8,
+                               base_y - 80,
                                noteRenderInfo.getTiedToPixel() - noteRenderInfo.x /*- headRadius*1.6*/,
-                               16,
+                               160,
                                (show_above ? 0   : 180),
                                (show_above ? 180 : 360));
         }
@@ -724,25 +728,25 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
         // beam
         if(noteRenderInfo.beam)
         {
-            dc.SetPen(  wxPen( wxColour(0,0,0), 2 ) );
+            dc.SetPen(  wxPen( wxColour(0,0,0), 20 ) );
             dc.SetBrush( *wxBLACK_BRUSH );
             
             const int x1 = analyser.getStemX(noteRenderInfo);
             int y1       = LEVEL_TO_Y(analyser.getStemTo(noteRenderInfo));
             int y2       = LEVEL_TO_Y(noteRenderInfo.beam_to_level);
             
-            const int y_diff = (noteRenderInfo.stem_type == STEM_UP ? 7 : -7);
+            const int y_diff = (noteRenderInfo.stem_type == STEM_UP ? 70 : -70);
             
             for(int n=0; n<noteRenderInfo.flag_amount; n++)
             {
                 //dc.DrawLine(x1, y1, noteRenderInfo.beam_to_x, y2);
                 wxPoint points[] = 
-            {
+                {
                 wxPoint(x1, y1),
                 wxPoint(noteRenderInfo.beam_to_x, y2),
-                wxPoint(noteRenderInfo.beam_to_x, y2+3),
-                wxPoint(x1, y1+3)
-            };
+                wxPoint(noteRenderInfo.beam_to_x, y2+30),
+                wxPoint(x1, y1+30)
+                };
                 dc.DrawPolygon(4, points);
                 
                 y1 += y_diff;
@@ -754,26 +758,26 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
         // triplet
         if (noteRenderInfo.drag_triplet_sign and noteRenderInfo.triplet_arc_x_start != -1)
         {
-            wxPen tiePen( wxColour(0,0,0), 1 ) ;
+            wxPen tiePen( wxColour(0,0,0), 10 ) ;
             //tiePen.SetJoin(wxJOIN_BEVEL);
             dc.SetPen( tiePen );
             dc.SetBrush( *wxTRANSPARENT_BRUSH );
             
             const int center_x = (noteRenderInfo.triplet_arc_x_end == -1 ? noteRenderInfo.triplet_arc_x_start : (noteRenderInfo.triplet_arc_x_start + noteRenderInfo.triplet_arc_x_end)/2);
             const int radius_x = (noteRenderInfo.triplet_arc_x_end == -1 or  noteRenderInfo.triplet_arc_x_end == noteRenderInfo.triplet_arc_x_start ?
-                                  10 : (noteRenderInfo.triplet_arc_x_end - noteRenderInfo.triplet_arc_x_start)/2);
+                                  100 : (noteRenderInfo.triplet_arc_x_end - noteRenderInfo.triplet_arc_x_start)/2);
             
-            const int base_y = LEVEL_TO_Y(noteRenderInfo.triplet_arc_level) + (noteRenderInfo.triplet_show_above ? -16 : 1);
+            const int base_y = LEVEL_TO_Y(noteRenderInfo.triplet_arc_level) + (noteRenderInfo.triplet_show_above ? -160 : 10);
             
             dc.DrawEllipticArc(center_x - radius_x,
                                base_y,
                                radius_x*2,
-                               16,
+                               160,
                                (noteRenderInfo.triplet_show_above ? 0   : 180),
                                (noteRenderInfo.triplet_show_above ? 180 : 360));
             
             dc.SetTextForeground( wxColour(0,0,0) );
-            dc.DrawText( wxT("3"), center_x-2, base_y + (noteRenderInfo.triplet_show_above ? 0 : 5) );
+            dc.DrawText( wxT("3"), center_x-20, base_y + (noteRenderInfo.triplet_show_above ? 0 : 50) );
         }
         
         

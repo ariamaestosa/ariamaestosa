@@ -34,7 +34,7 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
     Track* track = line.getTrack();
     
     // draw tab background (guitar strings)
-    dc.SetPen(  wxPen( wxColour(125,125,125), 1 ) );
+    dc.SetPen(  wxPen( wxColour(125,125,125), 10 ) );
     
     const float stringHeight = (float)(y1 - y0) / (float)(string_amount-1);
     
@@ -53,22 +53,22 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
         if(currentElement->type == LINE_HEADER)
         {
             wxFont oldfont = dc.GetFont();
-            dc.SetFont( wxFont(13,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD) );
+            dc.SetFont( wxFont(130,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD) );
             dc.SetTextForeground( wxColour(0,0,0) );
             
            // wxSize textSize = dc.GetTextExtent( wxT("T") );
             const int h4 = (y1 - y0)/3 - 2;    
             const int textY = y0 + h4/4;
             
-            dc.DrawText( wxT("T") , currentElement->x+2, textY);
-            dc.DrawText( wxT("A") , currentElement->x+2, textY + h4  );
-            dc.DrawText( wxT("B") , currentElement->x+2, textY + h4*2 );
+            dc.DrawText( wxT("T") , currentElement->x+20, textY);
+            dc.DrawText( wxT("A") , currentElement->x+20, textY + h4  );
+            dc.DrawText( wxT("B") , currentElement->x+20, textY + h4*2 );
             
             dc.SetFont( oldfont );
             wxSize textSize2 = dc.GetTextExtent( wxT("T") );
             
             // draw tuning
-            const int tuning_x = currentElement->x+14;
+            const int tuning_x = currentElement->x+140;
             for(int n=0; n<string_amount; n++)
             {
                 const int note   = editor->tuning[n]%12;
