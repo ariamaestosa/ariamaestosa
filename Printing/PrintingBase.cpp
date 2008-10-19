@@ -278,7 +278,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     dc.DrawText( label, title_x, y0 );
     
     // set font we will use and get info about it
-    dc.SetFont( wxFont(90,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL) );
+    dc.SetFont( wxFont(60,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL) );
 
     wxCoord txw, txh, descent, externalLeading;
     dc.GetTextExtent(label, &txw, &txh, &descent, &externalLeading);
@@ -381,7 +381,7 @@ LayoutElement* EditorPrintable::getNextElement()
     currentLine->layoutElements[currentLayoutElement].x2 =  getCurrentElementXEnd();
 */
     // draw vertical line that starts measure
-    dc->SetPen(  wxPen( wxColour(0,0,0), 20 ) );
+    dc->SetPen(  wxPen( wxColour(0,0,0), 10 ) );
     dc->DrawLine( elem_x_start, y0, elem_x_start, y1);
     
     dc->SetTextForeground( wxColour(0,0,255) );

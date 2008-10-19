@@ -34,7 +34,7 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
     Track* track = line.getTrack();
     
     // draw tab background (guitar strings)
-    dc.SetPen(  wxPen( wxColour(125,125,125), 10 ) );
+    dc.SetPen(  wxPen( wxColour(125,125,125), 7 ) );
     
     const float stringHeight = (float)(y1 - y0) / (float)(string_amount-1);
     
@@ -53,18 +53,19 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
         if(currentElement->type == LINE_HEADER)
         {
             wxFont oldfont = dc.GetFont();
-            dc.SetFont( wxFont(130,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD) );
+            dc.SetFont( wxFont(100,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD) );
             dc.SetTextForeground( wxColour(0,0,0) );
             
            // wxSize textSize = dc.GetTextExtent( wxT("T") );
             const int h4 = (y1 - y0)/3 - 2;    
-            const int textY = y0 + h4/4;
+            const int textY = y0;
             
             dc.DrawText( wxT("T") , currentElement->x+20, textY);
             dc.DrawText( wxT("A") , currentElement->x+20, textY + h4  );
             dc.DrawText( wxT("B") , currentElement->x+20, textY + h4*2 );
             
-            dc.SetFont( oldfont );
+            //dc.SetFont( wxFont(50, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+            dc.SetFont(oldfont);
             wxSize textSize2 = dc.GetTextExtent( wxT("T") );
             
             // draw tuning
@@ -109,7 +110,7 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
             // substract from width to leave some space on the right (coordinate is from the left of the text string so we need extra space on the right)
             // if fret number is greater than 9, the string will have two characters so we need to recenter it a bit more
             const int drawX = getNotePrintX(i) + (fret > 9 ? pixel_width_of_an_unit/4 : pixel_width_of_an_unit/2);
-            const int drawY = y0 + stringHeight*string - getCurrentPrintable()->text_height_half*0.8;
+            const int drawY = y0 + stringHeight*string - getCurrentPrintable()->text_height_half;
             wxString label = to_wxString(fret);
             
             dc.DrawText( label, drawX, drawY );
