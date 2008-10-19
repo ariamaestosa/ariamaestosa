@@ -340,20 +340,20 @@ int ScorePrintable::calculateHeight(LayoutLine& line) const
     int extra_lines_under_f_score = 0;
     if(g_clef and not f_clef)
     {
-        if(lowest_level < g_clef_from) extra_lines_above_g_score = (g_clef_from - lowest_level)/2;
-        if(highest_level > g_clef_to)  extra_lines_under_g_score = (g_clef_to - highest_level)/2;
+        if(lowest_level!=-1 and lowest_level < g_clef_from) extra_lines_above_g_score = (g_clef_from - lowest_level)/2;
+        if(highest_level!=-1 and highest_level > g_clef_to) extra_lines_under_g_score = (g_clef_to - highest_level)/2;
         return (g_clef_to - g_clef_from) + abs(extra_lines_above_g_score) + abs(extra_lines_under_g_score);
     }
     else if(f_clef and not g_clef)
     {
-        if(lowest_level < f_clef_from) extra_lines_above_f_score = (f_clef_from - lowest_level)/2;
-        if(highest_level > f_clef_to)  extra_lines_under_f_score = (f_clef_to - highest_level)/2;
+        if(lowest_level!=-1 and lowest_level < f_clef_from) extra_lines_above_f_score = (f_clef_from - lowest_level)/2;
+        if(highest_level!=-1 and highest_level > f_clef_to) extra_lines_under_f_score = (f_clef_to - highest_level)/2;
         return (f_clef_to - f_clef_from) + abs(extra_lines_above_f_score) + abs(extra_lines_under_f_score);
     }
     else if(f_clef and g_clef)
     {
-        if(lowest_level < g_clef_from) extra_lines_above_g_score = (g_clef_from - lowest_level)/2;
-        if(highest_level > f_clef_to)  extra_lines_under_f_score = (f_clef_to - highest_level)/2;
+        if(lowest_level!=-1 and lowest_level < g_clef_from) extra_lines_above_g_score = (g_clef_from - lowest_level)/2;
+        if(highest_level!=-1 and highest_level > f_clef_to) extra_lines_under_f_score = (f_clef_to - highest_level)/2;
         return (f_clef_to - g_clef_from) + abs(extra_lines_above_g_score) + abs(extra_lines_under_f_score);
     }
     return -1; // should not happen
@@ -416,18 +416,18 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     int extra_lines_under_f_score = 0;
     if(g_clef and not f_clef)
     {
-        if(lowest_level < g_clef_from) extra_lines_above_g_score = (g_clef_from - lowest_level)/2;
-        if(highest_level > g_clef_to)  extra_lines_under_g_score = (g_clef_to - highest_level)/2;
+        if(lowest_level!=-1 and lowest_level < g_clef_from)  extra_lines_above_g_score = (g_clef_from - lowest_level)/2;
+        if(highest_level!=-1 and highest_level > g_clef_to) extra_lines_under_g_score = (g_clef_to - highest_level)/2;
     }
     else if(f_clef and not g_clef)
     {
-        if(lowest_level < f_clef_from) extra_lines_above_f_score = (f_clef_from - lowest_level)/2;
-        if(highest_level > f_clef_to)  extra_lines_under_f_score = (f_clef_to - highest_level)/2;
+        if(lowest_level!=-1 and lowest_level < f_clef_from) extra_lines_above_f_score = (f_clef_from - lowest_level)/2;
+        if(highest_level!=-1 and highest_level > f_clef_to) extra_lines_under_f_score = (f_clef_to - highest_level)/2;
     }
     else if(f_clef and g_clef)
     {
-        if(lowest_level < g_clef_from) extra_lines_above_g_score = (g_clef_from - lowest_level)/2;
-        if(highest_level > f_clef_to)  extra_lines_under_f_score = (f_clef_to - highest_level)/2;
+        if(lowest_level!=-1 and lowest_level < g_clef_from) extra_lines_above_g_score = (g_clef_from - lowest_level)/2;
+        if(highest_level!=-1 and highest_level > f_clef_to) extra_lines_under_f_score = (f_clef_to - highest_level)/2;
     }
     std::cout << "extra_lines_above_g_score = " << extra_lines_above_g_score <<
         " extra_lines_under_g_score = " << extra_lines_under_g_score << 
