@@ -38,7 +38,7 @@ public:
     
     bool OnPrintPage(int pageNum)
     {
-        std::cout << "printing page " << pageNum << std::endl;
+        std::cout << "\n\n*****\nprinting page " << pageNum << std::endl;
         
         wxDC* ptr = GetDC();
         if(ptr==NULL or !ptr->IsOk()){ std::cerr << "DC is not Ok, interrupting printing" << std::endl; return false; }
@@ -54,7 +54,7 @@ public:
         const int x1 = x0 + width;
         const int y1 = y0 + height;
         
-        //std::cout << "printable area : (" << x0 << ", " << y0 << ") to (" << x1 << ", " << y1 << ")" << std::endl;
+        std::cout << "printable area : (" << x0 << ", " << y0 << ") to (" << x1 << ", " << y1 << ")" << std::endl;
         printable->printPage(pageNum, dc, x0, y0, x1, y1, width, height);
         
         return true;
@@ -98,13 +98,13 @@ public:
         // here i'm using arbitrary an size, use whatever you wish
         if(orient == wxPORTRAIT)
         {
-            max_x = 680;
-            max_y = 880;
+            max_x = 6800;
+            max_y = 8800;
         }
         else 
         {
-            max_x = 880;
-            max_y = 680;
+            max_x = 8800;
+            max_y = 6800;
         }
         
         FitThisSizeToPageMargins(wxSize(max_x, max_y), page_setup);
@@ -261,7 +261,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     if(pageNum == 1)
     {
         // on page one make title big and centered
-        dc.SetFont( wxFont(13,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD) );
+        dc.SetFont( wxFont(130,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD) );
         wxCoord txw, txh, descent, externalLeading;
         dc.GetTextExtent(label, &txw, &txh, &descent, &externalLeading);
         title_x = (x0+x1)/2 - txw/2;
@@ -271,14 +271,14 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
         // on other pages, repeat the title in small font, not centered, with page number
         label += wxT(", page ");
         label << pageNum;
-        dc.SetFont( wxFont(9,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL) );
+        dc.SetFont( wxFont(90,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL) );
     }
 
     dc.SetTextForeground( wxColour(0,0,0) );
     dc.DrawText( label, title_x, y0 );
     
     // set font we will use and get info about it
-    dc.SetFont( wxFont(9,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL) );
+    dc.SetFont( wxFont(90,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL) );
 
     wxCoord txw, txh, descent, externalLeading;
     dc.GetTextExtent(label, &txw, &txh, &descent, &externalLeading);
@@ -305,7 +305,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
         float height = layoutLines[l].level_height*track_area_height/total_height;
         
         // track too high, will look weird... shrink a bit
-        while(height/(float)layoutLines[l].level_height > 10) height *= 0.95;
+        while(height/(float)layoutLines[l].level_height > 100) height *= 0.95;
         
         float y_to = y_from + height;
         layoutLines[l].printYourself(dc, x0, (int)round(y_from), x1, (int)round(y_to));
@@ -381,7 +381,7 @@ LayoutElement* EditorPrintable::getNextElement()
     currentLine->layoutElements[currentLayoutElement].x2 =  getCurrentElementXEnd();
 */
     // draw vertical line that starts measure
-    dc->SetPen(  wxPen( wxColour(0,0,0), 2 ) );
+    dc->SetPen(  wxPen( wxColour(0,0,0), 20 ) );
     dc->DrawLine( elem_x_start, y0, elem_x_start, y1);
     
     dc->SetTextForeground( wxColour(0,0,255) );
