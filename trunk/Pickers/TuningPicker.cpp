@@ -337,7 +337,6 @@ enum
     TUNING_DROPDBASS,
     TUNING_CUSTOM,
     REARRANGE,
-    PRINT_TAB,
     
     LAST_ID
 };
@@ -362,7 +361,6 @@ TuningPicker::TuningPicker() : wxMenu()
     Append(TUNING_CUSTOM,    wxT("Custom"));
     AppendSeparator();
     Append(REARRANGE,        _("Rearrange selected notes"));
-	Append(PRINT_TAB,        _("Print as tablature"));
 	
 	ctp = new CustomTuningPicker();
 }
@@ -470,12 +468,6 @@ void TuningPicker::loadTuning(const int id, const bool user_triggered) // if use
 			parent->track->action( new Action::RearrangeNotes() );
 
 			break;
-			
-		case PRINT_TAB:
-				
-			exportNotation( parent->track );
-			
-				break;
     }// end switch
     
 }
