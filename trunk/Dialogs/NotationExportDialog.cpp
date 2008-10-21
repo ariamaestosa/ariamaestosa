@@ -59,7 +59,7 @@ public:
 		
     LEAK_CHECK(NotationSetup);
 	
-	NotationSetup(int mode = -1) : wxFrame(NULL, wxID_ANY,
+	NotationSetup() : wxFrame(NULL, wxID_ANY,
                                            //I18N: - title of the notation-export dialog
                                            _("Export to musical notation"),
                                            wxPoint(200,200), wxSize(200,400), wxCAPTION | wxSTAY_ON_TOP)
@@ -68,8 +68,8 @@ public:
 		
 		boxSizer=new wxBoxSizer(wxVERTICAL);
 		
-		if(mode==-1)
-		{
+		//if(mode==-1)
+		//{
 			// "ignore hidden tracks" checkbox
             //I18N: - in notation export dialog
 			ignoreHidden=new wxCheckBox(this, wxID_ANY,  _("Ignore hidden tracks"));
@@ -81,12 +81,12 @@ public:
 			ignoreMuted=new wxCheckBox(this, wxID_ANY,  _("Ignore muted tracks"));
 			ignoreMuted->SetValue(true);
 			boxSizer->Add(ignoreMuted, 1, wxALL, 5);
-		}
-		else
-		{
+		//}
+		//else
+		//{
 			ignoreHidden = NULL;
 			ignoreMuted = NULL;
-		}
+		//}
 		
 		// "Show repeated measures only once" checkbox
         //I18N: - in notation export dialog
@@ -207,14 +207,14 @@ void exportNotation(Sequence* sequence)
 {	
 	currentSequence = sequence;
 	currentTrack = NULL;
-	setup = new NotationSetup(GUITAR);
+	setup = new NotationSetup();
 }
 
 void exportNotation(Track* t)
 {	
 	currentTrack = t;
 	currentSequence = NULL;
-	setup = new NotationSetup(GUITAR);
+	setup = new NotationSetup();
 }
 
 // ----------------------------------------------------------------------------------------------------
