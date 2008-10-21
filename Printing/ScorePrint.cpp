@@ -305,6 +305,8 @@ int ScorePrintable::calculateHeight(LayoutLine& line) const
     const int from_note = line.getFirstNote();
     const int to_note   = line.getLastNote();
     
+    if(from_note == -1 || to_note == -1) return 8; 
+    
     // find highest and lowest note we need to render
     int highest_pitch = -1, lowest_pitch = -1;
     int highest_level = -1, lowest_level = -1;
