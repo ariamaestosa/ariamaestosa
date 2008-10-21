@@ -2,10 +2,12 @@
 #include <wx/wx.h>
 #include <wx/sizer.h>
 #include <wx/file.h>
+#include <wx/radiobut.h>
 
 #include "Config.h"
 #include "AriaCore.h"
 
+#include "AriaCore.h"
 #include "GUI/GraphicalTrack.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
@@ -30,6 +32,8 @@ void exportTablature(Track* t, wxFile* file);
 bool ignoreMuted_bool = false;
 bool ignoreHidden_bool = false;
 bool checkRepetitions_bool = false;
+
+bool only_selected_track_bool = false;
 int lineWidth;
 //bool repetitionsOf2Measures = false;
 //int repetitionWidth;
@@ -40,8 +44,12 @@ int lineWidth;
 
 class NotationSetup : public wxFrame
 {
-	wxCheckBox* ignoreHidden;
-	wxCheckBox* ignoreMuted;
+	//wxCheckBox* ignoreHidden;
+	//wxCheckBox* ignoreMuted;
+    
+    wxRadioButton* current_track;
+    wxRadioButton* visible_tracks;
+    
 	wxCheckBox* detectRepetitions;
 	
 	wxPanel* buttonPanel;
@@ -68,31 +76,22 @@ public:
 		
 		boxSizer=new wxBoxSizer(wxVERTICAL);
 		
-		//if(mode==-1)
-		//{
-			// "ignore hidden tracks" checkbox
-            //I18N: - in notation export dialog
-			ignoreHidden=new wxCheckBox(this, wxID_ANY,  _("Ignore hidden tracks"));
-			ignoreHidden->SetValue(true);
-			boxSizer->Add(ignoreHidden, 1, wxALL, 5);
-			
-			// "ignore muted tracks" checkbox
-            //I18N: - in notation export dialog
-			ignoreMuted=new wxCheckBox(this, wxID_ANY,  _("Ignore muted tracks"));
-			ignoreMuted->SetValue(true);
-			boxSizer->Add(ignoreMuted, 1, wxALL, 5);
-		//}
-		//else
-		//{
-			ignoreHidden = NULL;
-			ignoreMuted = NULL;
-		//}
-		
+        //I18N: - in notation export dialog. user can choose to print 'Current track' or 'Visible/enabled tracks'
+        wxStaticBoxSizer* subsizer = new wxStaticBoxSizer(wxVERTICAL, this, _("Print..."));
+        //I18N: - in notation export dialog. user can choose to print 'Current track' or 'Visible/enabled tracks'
+        current_track = new wxRadioButton(this, wxID_ANY, _("Current track") , wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
+        //I18N: - in notation export dialog. user can choose to print 'Current track' or 'Visible/enabled tracks'
+        visible_tracks = new wxRadioButton(this, wxID_ANY, _("Visible/enabled tracks"));
+        
+        subsizer->Add(current_track, 1, wxALL, 5); current_track->SetValue(true);
+        subsizer->Add(visible_tracks, 1, wxALL, 5);
+        boxSizer->Add(subsizer, 1, wxALL, 5);
+        
 		// "Show repeated measures only once" checkbox
         //I18N: - in notation export dialog
 		detectRepetitions=new wxCheckBox(this, wxID_ANY,  _("Show repeated measures (e.g. chorus) only once"));
 		detectRepetitions->SetValue(true);
-		boxSizer->Add(detectRepetitions, 1, wxALL, 5);
+		boxSizer->Add(detectRepetitions, 0, wxALL, 5);
 		
         /*
 		wxSize textCtrlSize(wxDefaultSize); textCtrlSize.SetWidth(55);
@@ -165,16 +164,7 @@ public:
 	
 	void okClicked(wxCommandEvent& evt)
 	{
-		if(ignoreMuted != NULL)
-		{
-			ignoreMuted_bool = ignoreMuted->IsChecked();
-			ignoreHidden_bool = ignoreHidden->IsChecked();
-		}
-        else
-        {
-            ignoreMuted_bool = true;
-            ignoreHidden_bool = true;
-        }
+        only_selected_track_bool = current_track->GetValue();
 		checkRepetitions_bool = detectRepetitions->IsChecked();
 		//lineWidth = atoi_u( lineWidthCtrl->GetValue() );
 		//repetitionsOf2Measures = repMinWidth->IsChecked();
@@ -196,7 +186,6 @@ END_EVENT_TABLE()
 
 static NotationSetup* setup;
 Sequence* currentSequence;
-Track* currentTrack;
 
 // ----------------------------------------------------------------------------------------------------
 // ------------------------------------- first function called ----------------------------------------
@@ -206,17 +195,17 @@ Track* currentTrack;
 void exportNotation(Sequence* sequence)
 {	
 	currentSequence = sequence;
-	currentTrack = NULL;
+	//currentTrack = NULL;
 	setup = new NotationSetup();
 }
-
+/*
 void exportNotation(Track* t)
 {	
 	currentTrack = t;
 	currentSequence = NULL;
 	setup = new NotationSetup();
 }
-
+*/
 // ----------------------------------------------------------------------------------------------------
 // ---------------------------------------- main writing func -----------------------------------------
 // ----------------------------------------------------------------------------------------------------
@@ -225,37 +214,36 @@ void exportNotation(Track* t)
 void completeExport(bool accepted)
 {
 	if(!accepted) return;
-    if(currentSequence == NULL) currentSequence = currentTrack->sequence;
+   // if(currentSequence == NULL) currentSequence = currentTrack->sequence;
 
     AriaPrintable notationPrint(currentSequence);
     
-	// we want to export the entire song
-	if(currentTrack == NULL)
+    // check if we print everything or just one track
+	if(only_selected_track_bool)
 	{
-
+        notationPrint.addTrack( getCurrentSequence()->getCurrentTrack(), getCurrentSequence()->getCurrentTrack()->graphics->editorMode );
+    }
+    else
+    {
 		// iterate through all the the tracks of the sequence, only consider those that are visible and not muted
-		const int track_amount = currentSequence->getTrackAmount();
+
+        const int track_amount = getCurrentSequence()->getTrackAmount();
 		for(int n=0; n<track_amount; n++)
 		{
 			Track* track = currentSequence->getTrack(n);
-			if( (track->graphics->muted and ignoreMuted_bool) or
-				((track->graphics->collapsed or track->graphics->docked) and ignoreHidden_bool)
-				)
-				// track is disabled, ignore it
-				continue;
+            
+            // ignore disabled or hidden tracks
+            if(track->graphics->muted     or
+               track->graphics->collapsed or
+               track->graphics->docked) continue;
 			
-			std::cout << "Generating notation for " << track->getName() << std::endl;
+			std::cout << "Generating notation for track " << n << " : " << track->getName() << std::endl;
             
             notationPrint.addTrack( track, track->graphics->editorMode );
             
         }// next track
         
         
-	}
-	// we want to export a single track
-	else
-	{
-        notationPrint.addTrack( currentTrack, currentTrack->graphics->editorMode );        
 	}
     
     notationPrint.calculateLayout( checkRepetitions_bool );

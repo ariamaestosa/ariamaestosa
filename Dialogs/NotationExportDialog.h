@@ -25,7 +25,7 @@ namespace AriaMaestosa
 	class Track;
 	
 	void exportNotation(Sequence* sequence);
-	void exportNotation(Track* t);
+	//void exportNotation(Track* t);
 }
 
 #endif
