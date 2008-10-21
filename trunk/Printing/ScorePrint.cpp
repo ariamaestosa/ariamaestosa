@@ -312,6 +312,7 @@ int ScorePrintable::calculateHeight(LayoutLine& line) const
     int highest_level = -1, lowest_level = -1;
     for(int n=from_note; n<= to_note; n++)
     {
+        if(n == -1) break; // will happen if line is empty
         const int pitch = track->getNotePitchID(n);
         const int level = converter->noteToLevel(track->getNote(n));
         if(pitch < highest_pitch || highest_pitch == -1)
@@ -385,6 +386,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     int highest_level = -1, lowest_level = -1;
     for(int n=from_note; n<= to_note; n++)
     {
+        if(n == -1) break; // will happen if line is empty
         const int pitch = track->getNotePitchID(n);
         const int level = converter->noteToLevel(track->getNote(n));
         if(pitch < highest_pitch || highest_pitch == -1)
