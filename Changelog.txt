@@ -5,6 +5,7 @@
 - Fixed bug in score printing where the first page would be a bunch filled with garbage
 - G or F clef view preference saved
 - Improved display and printing of ties on chords
+- Fixed bug with magnetic grid when using manual measure management + a very small measure (e.g. 1/16)
 - Code cleanup
 
 1.2b1

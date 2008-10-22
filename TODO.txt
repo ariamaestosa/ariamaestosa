@@ -125,18 +125,16 @@ NOTE: sorry, this is very raw :)
  
  ************************* BUGS: *************************
 
+* if you do "print current track" on e.g. a drum/keyboard track--> crash
+
 * crashes when opening 2+ files from the finder
 
 * Beaming is dependendant on the currently selected key sig, not on the note's measure's key sig!
-
-* make the first measure use a 1/16 signature, and the others use 4/4. Then try using the 1/8 grid to add notes.
 
 * erasing control events by selecting them and pressing BACKSPACE not working (in imported midi if it makes any difference)
     came back shortly after (?)
     
 * "follow playback" : hard to follow when horizontal scrolling is changed (Change only on measure change?)
-
-+ some of the newer classes don't use leak check
 
 * undos in guitar editor that rely on string and fret will be wrong if tuning changed meanwhile
 
