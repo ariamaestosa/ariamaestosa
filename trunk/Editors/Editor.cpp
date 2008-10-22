@@ -678,22 +678,36 @@ void Editor::scroll(float amount)
 	else if(sb_position>1) sb_position=1;
 }
 
-int Editor::snapMidiTickToGrid(int absolute_x)
+int Editor::snapMidiTickToGrid(int tick)
 {
-        return (int)( 
-                      round((float)absolute_x/
-                            (float)(sequence->ticksPerBeat()*4 / graphicalTrack->grid->divider))
-                          *(sequence->ticksPerBeat()*4 / graphicalTrack->grid->divider)
-                      );
+    int origin_tick = 0;
+    if(not getMeasureData()->isMeasureLengthConstant())
+    {
+        const int measure = getMeasureData()->measureAtTick(tick);
+        origin_tick = getMeasureData()->firstTickInMeasure(measure);
+    }
+    
+    return origin_tick + (int)( round((float)(tick-origin_tick)/
+                                      (float)(sequence->ticksPerBeat()*4 / graphicalTrack->grid->divider))
+                                *(sequence->ticksPerBeat()*4 / graphicalTrack->grid->divider)
+                                );
+    
 }
 
-int Editor::snapMidiTickToGrid_ceil(int absolute_x)
+int Editor::snapMidiTickToGrid_ceil(int tick)
 {
-        return (int)(
-                      ceil((float)absolute_x/
-                            (float)(sequence->ticksPerBeat()*4 / graphicalTrack->grid->divider))
-                          *(sequence->ticksPerBeat()*4 / graphicalTrack->grid->divider)
-                      );
+    int origin_tick = 0;
+    if(not getMeasureData()->isMeasureLengthConstant())
+    {
+        const int measure = getMeasureData()->measureAtTick(tick);
+        origin_tick = getMeasureData()->firstTickInMeasure(measure);
+    }
+    
+    return origin_tick + (int)( ceil((float)(tick-origin_tick)/
+                                     (float)(sequence->ticksPerBeat()*4 / graphicalTrack->grid->divider))
+                                *(sequence->ticksPerBeat()*4 / graphicalTrack->grid->divider)
+                                );
+
 }
 
 }
