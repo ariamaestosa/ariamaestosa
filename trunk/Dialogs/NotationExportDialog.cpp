@@ -221,7 +221,18 @@ void completeExport(bool accepted)
     // check if we print everything or just one track
 	if(only_selected_track_bool)
 	{
-        notationPrint.addTrack( getCurrentSequence()->getCurrentTrack(), getCurrentSequence()->getCurrentTrack()->graphics->editorMode );
+        if(not notationPrint.addTrack(
+                                      getCurrentSequence()->getCurrentTrack(),
+                                      getCurrentSequence()->getCurrentTrack()->graphics->editorMode ))
+        {
+            wxString track_name = getCurrentSequence()->getCurrentTrack()->getName();
+
+            //I18N: - %s is the name of the track
+            wxString message = _("Track '%s' could not be printed, since its current\nview (editor) does not support printing.");
+            message.Replace(wxT("%s"), track_name); // wxString::Format crashes, so I need to use this stupid workaround
+            wxMessageBox( message );
+            return;
+        }
     }
     else
     {
@@ -239,7 +250,16 @@ void completeExport(bool accepted)
 			
 			std::cout << "Generating notation for track " << n << " : " << track->getName() << std::endl;
             
-            notationPrint.addTrack( track, track->graphics->editorMode );
+            if(not notationPrint.addTrack( track, track->graphics->editorMode ))
+            {
+                wxString track_name = track->getName();
+                
+                //I18N: - %s is the name of the track
+                wxString message = _("Track '%s' could not be printed, since its current\nview (editor) does not support printing.");
+                message.Replace(wxT("%s"), track_name); // wxString::Format crashes, so I need to use this stupid workaround
+                wxMessageBox( message );
+                return;
+            }
             
         }// next track
         

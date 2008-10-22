@@ -179,7 +179,7 @@ AriaPrintable::~AriaPrintable()
     currentPrintable = NULL;
 }
 
-void AriaPrintable::addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */)
+bool AriaPrintable::addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */)
 {
     if(mode == GUITAR)
     {
@@ -192,9 +192,10 @@ void AriaPrintable::addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */)
     else
     {
         std::cerr << "AriaPrintable::addTrack : mode " << mode << " not supported for printing" << std::endl;
-        return;
+        return false;
     }
     tracks.push_back(track);
+    return true;
 }
 void AriaPrintable::calculateLayout(bool checkRepetitions_bool)
 {
