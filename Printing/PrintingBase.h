@@ -109,7 +109,7 @@ public:
     // ---------------------------------------
     
     AriaPrintable(Sequence* parent);
-    void addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */);
+    bool addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */);
     void calculateLayout(bool checkRepetitions_bool);
     
     virtual ~AriaPrintable();
