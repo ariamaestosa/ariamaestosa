@@ -705,56 +705,17 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
         if(noteRenderInfo.getTiedToPixel() != -1)
         {
             wxPen tiePen( wxColour(0,0,0), 10 ) ;
-            //tiePen.SetJoin(wxJOIN_BEVEL);
             dc.SetPen( tiePen );
             dc.SetBrush( *wxTRANSPARENT_BRUSH );
             
             const bool show_above = noteRenderInfo.isTieUp();
             const int base_y = LEVEL_TO_Y( noteRenderInfo.getStemOriginLevel() ) + (show_above ? - 90 : 90); 
             
-            /*
-            dc.DrawEllipticArc(noteRenderInfo.x + headRadius*1.6,
-                               base_y - 80,
-                               noteRenderInfo.getTiedToPixel() - noteRenderInfo.x ,
-                               160,
-                               (show_above ? 0   : 180),
-                               (show_above ? 180 : 360));*/
-            
             const int center_x = (noteRenderInfo.getTiedToPixel() + noteRenderInfo.x)/2 + headRadius*1.3;
             const int radius_x = abs(noteRenderInfo.getTiedToPixel() - noteRenderInfo.x)/2;
             renderArc(dc, center_x, base_y, radius_x, show_above ? -80 : 80);
         }
         
-        /*
-         
-         int center_x = noteRenderInfo.x + headRadius*1.8 + (noteRenderInfo.getTiedToPixel() - noteRenderInfo.x)/2;
-         int center_y = base_y;
-         int radius_x = (noteRenderInfo.getTiedToPixel() - noteRenderInfo.x)/2;
-         int radius_y = (show_above ? -8 : 8);
-         
-         center_x *= 10;
-         center_y *= 10;
-         radius_x *= 10;
-         radius_y *= 10;
-         
-         dc.SetUserScale(0.1, 0.1);
-         wxPoint points[] = 
-         {
-             wxPoint(center_x + radius_x*cos(0.1), center_y + radius_y*sin(0.1)),
-             wxPoint(center_x + radius_x*cos(0.3), center_y + radius_y*sin(0.3)),
-             wxPoint(center_x + radius_x*cos(0.6), center_y + radius_y*sin(0.6)),
-             wxPoint(center_x + radius_x*cos(0.9), center_y + radius_y*sin(0.9)),
-             wxPoint(center_x + radius_x*cos(1.2), center_y + radius_y*sin(1.2)),
-             wxPoint(center_x + radius_x*cos(1.5), center_y + radius_y*sin(1.5)),
-             wxPoint(center_x + radius_x*cos(1.8), center_y + radius_y*sin(1.8)),
-             wxPoint(center_x + radius_x*cos(2.1), center_y + radius_y*sin(2.1)),
-             wxPoint(center_x + radius_x*cos(2.4), center_y + radius_y*sin(2.4)),
-             wxPoint(center_x + radius_x*cos(2.7), center_y + radius_y*sin(2.7)),
-             wxPoint(center_x + radius_x*cos(3.0), center_y + radius_y*sin(3.0)),
-         };
-         dc.DrawSpline(11, points);
-         dc.SetUserScale(1.0, 1.0);
-         */
         // beam
         if(noteRenderInfo.beam)
         {
@@ -769,7 +730,6 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
             
             for(int n=0; n<noteRenderInfo.flag_amount; n++)
             {
-                //dc.DrawLine(x1, y1, noteRenderInfo.beam_to_x, y2);
                 wxPoint points[] = 
                 {
                 wxPoint(x1, y1),
@@ -789,7 +749,6 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
         if (noteRenderInfo.drag_triplet_sign and noteRenderInfo.triplet_arc_x_start != -1)
         {
             wxPen tiePen( wxColour(0,0,0), 10 ) ;
-            //tiePen.SetJoin(wxJOIN_BEVEL);
             dc.SetPen( tiePen );
             dc.SetBrush( *wxTRANSPARENT_BRUSH );
             
@@ -797,17 +756,11 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
             const int radius_x = (noteRenderInfo.triplet_arc_x_end == -1 or  noteRenderInfo.triplet_arc_x_end == noteRenderInfo.triplet_arc_x_start ?
                                   100 : (noteRenderInfo.triplet_arc_x_end - noteRenderInfo.triplet_arc_x_start)/2);
             
-            const int base_y = LEVEL_TO_Y(noteRenderInfo.triplet_arc_level) + (noteRenderInfo.triplet_show_above ? -160 : 10);
+            const int base_y = LEVEL_TO_Y(noteRenderInfo.triplet_arc_level) + (noteRenderInfo.triplet_show_above ? -80 : 90);
             
-            dc.DrawEllipticArc(center_x - radius_x,
-                               base_y,
-                               radius_x*2,
-                               160,
-                               (noteRenderInfo.triplet_show_above ? 0   : 180),
-                               (noteRenderInfo.triplet_show_above ? 180 : 360));
-            
+            renderArc(dc, center_x + headRadius*1.2, base_y, radius_x, noteRenderInfo.triplet_show_above ? -80 : 80);
             dc.SetTextForeground( wxColour(0,0,0) );
-            dc.DrawText( wxT("3"), center_x-20, base_y + (noteRenderInfo.triplet_show_above ? 0 : 50) );
+            dc.DrawText( wxT("3"), center_x + headRadius, base_y + (noteRenderInfo.triplet_show_above ? -55 : 0) );
         }
         
         
