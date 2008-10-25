@@ -269,7 +269,10 @@ void completeExport(bool accepted)
     notationPrint.calculateLayout( checkRepetitions_bool );
     
     if(!printResult(&notationPrint))
+    {
         std::cerr << "error while printing" << std::endl;
+        wxMessageBox( _("An error occured during printing.") );
+    }
 	
 }
 

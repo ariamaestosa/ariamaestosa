@@ -50,7 +50,6 @@ NOTE: sorry, this is very raw :)
   
  * printing :
     skip series of empty measures
-    show tuning on tab
     allow setting font size, number of lines per page, zoom, etc...
     sometimes does 41-42 43-44 and not 41-44
     tab export : x2 can appear on new line...
@@ -124,8 +123,6 @@ NOTE: sorry, this is very raw :)
  - score editor should be able to display notes with more than 2 flags (unusure... those with 2 are already so small and barely visible) 
  
  ************************* BUGS: *************************
-
-* if you do "print current track" on e.g. a drum/keyboard track--> crash
 
 * crashes when opening 2+ files from the finder
 
