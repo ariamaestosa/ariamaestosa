@@ -86,10 +86,10 @@ void renderNatural(wxDC& dc, const int x, const int y)
 }
 void renderGClef(wxDC& dc, const int x, const int y)
 {
-    /*
-    dc.SetPen(  wxPen( wxColour(0,0,0), 1 ) );
+
+    dc.SetPen(  wxPen( wxColour(0,0,0), 7 ) );
     
-    const float scale = 10;
+    const float scale = 15;
     
 #define POINT(MX,MY) wxPoint( (int)round(x + MX*scale), (int)round(y - MY*scale) )
     
@@ -121,7 +121,7 @@ void renderGClef(wxDC& dc, const int x, const int y)
 #undef POINT
     
     dc.DrawSpline(21, points);
-     */
+
 }
 
 PrintXConverter* x_converter = NULL;
@@ -470,7 +470,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     {
         if(currentElement->type == LINE_HEADER) // FIME - move to 'drawScore' ?
         {
-            //renderGClef(dc, currentElement->x, LEVEL_TO_Y(middle_c_level-5) );
+           // renderGClef(dc, currentElement->x, 500 );
             continue;
         }
         // we're collecting notes here... types other than regular measures
@@ -555,6 +555,27 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
 }
 
 // -------------------------------------------------------------------
+
+void renderArc(wxDC& dc, const int center_x, const int center_y,
+                         const int radius_x, const int radius_y)
+{
+    wxPoint points[] = 
+    {
+    wxPoint(center_x + radius_x*cos(0.1), center_y + radius_y*sin(0.1)),
+    wxPoint(center_x + radius_x*cos(0.3), center_y + radius_y*sin(0.3)),
+    wxPoint(center_x + radius_x*cos(0.6), center_y + radius_y*sin(0.6)),
+    wxPoint(center_x + radius_x*cos(0.9), center_y + radius_y*sin(0.9)),
+    wxPoint(center_x + radius_x*cos(1.2), center_y + radius_y*sin(1.2)),
+    wxPoint(center_x + radius_x*cos(1.5), center_y + radius_y*sin(1.5)),
+    wxPoint(center_x + radius_x*cos(1.8), center_y + radius_y*sin(1.8)),
+    wxPoint(center_x + radius_x*cos(2.1), center_y + radius_y*sin(2.1)),
+    wxPoint(center_x + radius_x*cos(2.4), center_y + radius_y*sin(2.4)),
+    wxPoint(center_x + radius_x*cos(2.7), center_y + radius_y*sin(2.7)),
+    wxPoint(center_x + radius_x*cos(3.0), center_y + radius_y*sin(3.0)),
+    };
+dc.DrawSpline(11, points);
+}
+
 void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine& line, wxDC& dc,
                                const int extra_lines_above, const int extra_lines_under,
                                const int x0, const int y0, const int x1, const int y1,
@@ -575,9 +596,9 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
     
     #define LEVEL_TO_Y( lvl ) y0 + 1 + lineHeight*0.5*(lvl - min_level)
     
-    const int headRadius = (int)round(lineHeight);
+    const int headRadius = (int)round(lineHeight-20);
     
-    analyser.setStemDrawInfo( headRadius*2-18, 0, headRadius-20, 0 );
+    analyser.setStemDrawInfo( headRadius*2-17, 0, headRadius-23, 0 );
     
     for(int lvl=first_score_level; lvl<=last_score_level; lvl+=2)
     {
@@ -619,8 +640,8 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
         else dc.SetBrush( *wxBLACK_BRUSH );
         
         const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
-        wxPoint headLocation( noteRenderInfo.x + headRadius - 20 /* 20 is the width of the pen */,
-                              notey-(headRadius-20)/2.0); /* 20 is the -10 of the vertical radius size + half the width of the pen*/
+        wxPoint headLocation( noteRenderInfo.x + headRadius - 20,
+                              notey-(headRadius-15)/2.0-3);
         dc.DrawEllipse( headLocation, wxSize(headRadius, headRadius-10) );
         noteRenderInfo.setY(notey+headRadius/2.0);
         
@@ -648,7 +669,7 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
     {
         NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
         
-        dc.SetPen(  wxPen( wxColour(0,0,0), 20 ) );
+        dc.SetPen(  wxPen( wxColour(0,0,0), 15 ) );
         
         // draw stem
         if(noteRenderInfo.stem_type != STEM_NONE)
@@ -691,12 +712,17 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
             const bool show_above = noteRenderInfo.isTieUp();
             const int base_y = LEVEL_TO_Y( noteRenderInfo.getStemOriginLevel() ) + (show_above ? - 90 : 90); 
             
+            /*
             dc.DrawEllipticArc(noteRenderInfo.x + headRadius*1.6,
                                base_y - 80,
-                               noteRenderInfo.getTiedToPixel() - noteRenderInfo.x /*- headRadius*1.6*/,
+                               noteRenderInfo.getTiedToPixel() - noteRenderInfo.x ,
                                160,
                                (show_above ? 0   : 180),
-                               (show_above ? 180 : 360));
+                               (show_above ? 180 : 360));*/
+            
+            const int center_x = (noteRenderInfo.getTiedToPixel() + noteRenderInfo.x)/2 + headRadius*1.3;
+            const int radius_x = abs(noteRenderInfo.getTiedToPixel() - noteRenderInfo.x)/2;
+            renderArc(dc, center_x, base_y, radius_x, show_above ? -80 : 80);
         }
         
         /*
@@ -732,14 +758,14 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
         // beam
         if(noteRenderInfo.beam)
         {
-            dc.SetPen(  wxPen( wxColour(0,0,0), 20 ) );
+            dc.SetPen(  wxPen( wxColour(0,0,0), 10 ) );
             dc.SetBrush( *wxBLACK_BRUSH );
             
             const int x1 = analyser.getStemX(noteRenderInfo);
             int y1       = LEVEL_TO_Y(analyser.getStemTo(noteRenderInfo));
             int y2       = LEVEL_TO_Y(noteRenderInfo.beam_to_level);
             
-            const int y_diff = (noteRenderInfo.stem_type == STEM_UP ? 70 : -70);
+            const int y_diff = (noteRenderInfo.stem_type == STEM_UP ? 55 : -55);
             
             for(int n=0; n<noteRenderInfo.flag_amount; n++)
             {
@@ -748,8 +774,8 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
                 {
                 wxPoint(x1, y1),
                 wxPoint(noteRenderInfo.beam_to_x, y2),
-                wxPoint(noteRenderInfo.beam_to_x, y2+30),
-                wxPoint(x1, y1+30)
+                wxPoint(noteRenderInfo.beam_to_x, y2+20),
+                wxPoint(x1, y1+20)
                 };
                 dc.DrawPolygon(4, points);
                 
