@@ -95,6 +95,13 @@ void loadImages()
     silence4 = new Drawable(wxT("score/silence4.png"));
     silence8 = new Drawable(wxT("score/silence8.png"));
 	
+    mgrid_1  = new Drawable(wxT("score/mgrid_1.png"));
+    mgrid_2  = new Drawable(wxT("score/mgrid_2.png"));
+    mgrid_4  = new Drawable(wxT("score/mgrid_4.png"));
+    mgrid_8  = new Drawable(wxT("score/mgrid_8.png"));
+    mgrid_16 = new Drawable(wxT("score/mgrid_16.png"));
+    mgrid_32 = new Drawable(wxT("score/mgrid_32.png"));
+    
 	images_loaded = true;
 }
 
@@ -153,6 +160,12 @@ void unloadImages()
     delete silence4;
     delete silence8;
 	
+    delete mgrid_1;
+    delete mgrid_2;
+    delete mgrid_4;
+    delete mgrid_8;
+    delete mgrid_16;
+    delete mgrid_32;
 }
 
 bool imagesLoaded()
