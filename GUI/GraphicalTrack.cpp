@@ -462,7 +462,22 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         // grid
         if( gridCombo->clickIsOnThisWidget(winX, mousey) )
 		{
-            Display::popupMenu(grid, 220, from_y+30);
+            wxCommandEvent fake_event;
+            
+            if( gridCombo->getItem(0).clickIsOnThisWidget(winX, mousey) )
+                grid->grid1selected(fake_event);
+            else if( gridCombo->getItem(1).clickIsOnThisWidget(winX, mousey) )
+                grid->grid2selected(fake_event);
+            else if( gridCombo->getItem(2).clickIsOnThisWidget(winX, mousey) )
+                grid->grid4selected(fake_event);
+            else if( gridCombo->getItem(3).clickIsOnThisWidget(winX, mousey) )
+                grid->grid8selected(fake_event);
+            else if( gridCombo->getItem(4).clickIsOnThisWidget(winX, mousey) )
+                grid->grid16selected(fake_event);
+            else if( gridCombo->getItem(5).clickIsOnThisWidget(winX, mousey) )
+                grid->grid32selected(fake_event);
+            else if( winX > gridCombo->getItem(5).getX() + 16)
+                Display::popupMenu(grid, gridCombo->getX()+5, from_y+30);
         }
         
         
@@ -807,6 +822,29 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     AriaRender::text_with_bounds(&track->getName(), trackName->getX()+11 ,y+26, trackName->getX()+trackName->getWidth()-25);
 
     // draw grid label
+    int grid_selection_x;
+    switch(grid->divider)
+    {
+        case 1:
+            grid_selection_x = mgrid_1->x;
+            break;
+        case 2:
+            grid_selection_x = mgrid_2->x;
+            break;
+        case 4:
+            grid_selection_x = mgrid_4->x;
+            break;
+        case 8:
+            grid_selection_x = mgrid_8->x;
+            break;
+        case 16:
+            grid_selection_x = mgrid_16->x;
+            break;
+        case 32:
+            grid_selection_x = mgrid_32->x;
+            break;
+    }
+    AriaRender::hollow_rect(grid_selection_x, y+15, grid_selection_x+16, y+30);
     //AriaRender::text(&grid->label, gridCombo->getX() + 11,y+26);
     
     // draw instrument name  

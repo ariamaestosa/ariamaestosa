@@ -1,6 +1,7 @@
 
 1.2b2
 - Fixed issues with track reordering
+- Magnetic grid choice done with icons instead of text
 - Improved score printing (nicer-looking, both F and G clefs supported, adaptable height, notes above or below score, fixed crashes...)
 - Fixed bug in score printing where the first page would be a bunch filled with garbage
 - G or F clef view preference saved
