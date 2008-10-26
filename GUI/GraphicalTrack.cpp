@@ -343,7 +343,8 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
     gridCombo->addItem( new BitmapButton( 16, 14, mgrid_4,  false, true ), 0 );
     gridCombo->addItem( new BitmapButton( 16, 14, mgrid_8,  false, true ), 0 );
     gridCombo->addItem( new BitmapButton( 16, 14, mgrid_16, false, true ), 0 );
-    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_32, false, true ), 25 );
+    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_32, false, true ), 0 );
+    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_triplet, false, true ), 25 );
     components->addFromLeft(gridCombo);
     
     scoreButton = new BitmapButton(32, 7, score_view, true);
@@ -476,6 +477,8 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                 grid->grid16selected(fake_event);
             else if( gridCombo->getItem(5).clickIsOnThisWidget(winX, mousey) )
                 grid->grid32selected(fake_event);
+            else if( gridCombo->getItem(6).clickIsOnThisWidget(winX, mousey) )
+                grid->toggleTriplet();
             else if( winX > gridCombo->getItem(5).getX() + 16)
                 Display::popupMenu(grid, gridCombo->getX()+5, from_y+30);
         }
@@ -829,23 +832,28 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
             grid_selection_x = mgrid_1->x;
             break;
         case 2:
+        case 3:
             grid_selection_x = mgrid_2->x;
             break;
         case 4:
+        case 6:
             grid_selection_x = mgrid_4->x;
             break;
         case 8:
+        case 12:
             grid_selection_x = mgrid_8->x;
             break;
         case 16:
+        case 24:
             grid_selection_x = mgrid_16->x;
             break;
         case 32:
+        case 48:
             grid_selection_x = mgrid_32->x;
             break;
     }
     AriaRender::hollow_rect(grid_selection_x, y+15, grid_selection_x+16, y+30);
-    //AriaRender::text(&grid->label, gridCombo->getX() + 11,y+26);
+    if(grid->isTriplet()) AriaRender::hollow_rect(mgrid_triplet->x, y+15, mgrid_triplet->x+16, y+30);
     
     // draw instrument name  
     std::string instrumentname;

@@ -63,6 +63,9 @@ public:
     void grid128selected(wxCommandEvent& evt);
     void tripletChanged(wxCommandEvent& evt);
 	
+    void toggleTriplet();
+    bool isTriplet() const { return triplet; }
+    
     wxString label;
     int divider;
     
