@@ -41,9 +41,6 @@ END_EVENT_TABLE()
 
 MagneticGrid::MagneticGrid(GraphicalTrack* parent) : wxMenu()
 {
-    
-	
-	
 	triplet= false;
 	
     grid1 = AppendCheckItem(1,wxT("1/1"));
@@ -227,6 +224,13 @@ void MagneticGrid::grid128selected(wxCommandEvent& evt)
 		label=wxT("1/128T");
 	}
     Display::render();
+}
+
+void MagneticGrid::toggleTriplet()
+{
+    gridTriplet->Check( not gridTriplet->IsChecked() );
+    wxCommandEvent useless;
+    tripletChanged(useless);
 }
 
 /*

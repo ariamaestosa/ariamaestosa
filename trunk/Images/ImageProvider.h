@@ -93,6 +93,7 @@ IMG_DEC Drawable* mgrid_4;
 IMG_DEC Drawable* mgrid_8;
 IMG_DEC Drawable* mgrid_16;
 IMG_DEC Drawable* mgrid_32;
+IMG_DEC Drawable* mgrid_triplet;
 
 namespace ImageProvider {
     

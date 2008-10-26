@@ -101,6 +101,7 @@ void loadImages()
     mgrid_8  = new Drawable(wxT("score/mgrid_8.png"));
     mgrid_16 = new Drawable(wxT("score/mgrid_16.png"));
     mgrid_32 = new Drawable(wxT("score/mgrid_32.png"));
+    mgrid_triplet = new Drawable(wxT("score/mgrid_triplet.png"));
     
 	images_loaded = true;
 }
@@ -166,6 +167,7 @@ void unloadImages()
     delete mgrid_8;
     delete mgrid_16;
     delete mgrid_32;
+    delete mgrid_triplet;
 }
 
 bool imagesLoaded()
