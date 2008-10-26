@@ -123,7 +123,8 @@ NOTE: sorry, this is very raw :)
  
  ************************* BUGS: *************************
 
-* update docs for new magnetic grid widget (+update screenshots)
+* importing 'ghost of the navigator' crashes
+* track titlebar looks wrong when importing midis
 
 * score print :
     - measures appear very small if no note starts in them, even if some end in them
