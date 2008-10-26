@@ -87,6 +87,13 @@ IMG_DEC Drawable* naturalSign;
 IMG_DEC Drawable* silence4;
 IMG_DEC Drawable* silence8;
 
+IMG_DEC Drawable* mgrid_1;
+IMG_DEC Drawable* mgrid_2;
+IMG_DEC Drawable* mgrid_4;
+IMG_DEC Drawable* mgrid_8;
+IMG_DEC Drawable* mgrid_16;
+IMG_DEC Drawable* mgrid_32;
+
 namespace ImageProvider {
     
     void loadImages();

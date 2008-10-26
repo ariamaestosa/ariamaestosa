@@ -43,7 +43,7 @@ void Image::load(wxString path)
     ID=loadImage(path, &width, &height, &textureWidth, &textureHeight);
     
     tex_coord_x= (float)width/(float)textureWidth;
-    tex_coord_y= (float)height/(float)textureHeight;
+    tex_coord_y= (float)height/(float)fabsf(textureHeight);
 #else
     path = getResourcePrefix() + path;
     if(!image.LoadFile(path))

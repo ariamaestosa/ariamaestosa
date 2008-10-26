@@ -49,7 +49,8 @@ class BlankField;
 class ComboBox;
 class BitmapButton;
 class WidgetLayoutManager;
-class ToolBar;
+class BlankField;
+template<typename PARENT> class ToolBar;
 
 class GraphicalTrack
 {
@@ -62,13 +63,14 @@ class GraphicalTrack
     BitmapButton* muteButton;
     BitmapButton* dockButton;
     BlankField* trackName;
-    ComboBox* gridCombo;
+    //ComboBox* gridCombo;
+    ToolBar<ComboBox>* gridCombo;
     BitmapButton* scoreButton;
     BitmapButton* pianoButton;
     BitmapButton* tabButton;
     BitmapButton* drumButton;
     BitmapButton* ctrlButton;
-    ToolBar* sharpFlatPicker;
+    ToolBar<BlankField>* sharpFlatPicker;
     BlankField* instrumentName;
     BlankField* channelButton;
 public:

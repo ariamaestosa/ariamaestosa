@@ -127,6 +127,7 @@ class BitmapButton : public AriaWidget
     bool enabled;
     bool toggleBtn;
     bool centerX;
+    float r,g,b;
 public:
     Drawable* drawable;
     
@@ -137,8 +138,19 @@ public:
         enabled = true;
         BitmapButton::toggleBtn = toggleBtn;
         BitmapButton::centerX = centerX;
+        r=1;
+        g=1;
+        b=1;
     }
     virtual ~BitmapButton(){}
+    
+    BitmapButton* setRGB(const float r, const float g, const float b)
+    {
+        BitmapButton::r = r;
+        BitmapButton::g = g;
+        BitmapButton::b = b;
+        return this;
+    }
     
     void render()
     {
@@ -148,6 +160,8 @@ public:
             if(enabled) AriaRender::color(1,1,1);
             else AriaRender::color(0.4, 0.4, 0.4);
         }
+        else
+            AriaRender::color(r,g,b);
         
         if(centerX and drawable->image->width < width)
         {
@@ -165,13 +179,13 @@ public:
     }
 };
 
-
-class ToolBar : public BlankField
+template<typename PARENT>
+class ToolBar : public PARENT
 {
     ptr_vector<BitmapButton, HOLD> contents;
     std::vector<int> margin;
 public:
-    ToolBar() : BlankField(22)
+    ToolBar() : PARENT(22)
     {
     }
     void addItem(BitmapButton* btn, int margin_after)
@@ -181,18 +195,18 @@ public:
     }
     void layout()
     {
-        if(hidden) return;
-        width = 22;
-        int currentX = x + 11;
+        if(PARENT::hidden) return;
+        PARENT::width = 22;
+        int currentX = PARENT::x + 11;
         
         const int amount = contents.size();
         for(int n=0; n<amount; n++)
         {
             contents[n].setX(currentX);
-            contents[n].setY(y);
+            contents[n].setY(PARENT::y);
             
             currentX += contents[n].getWidth() + margin[n];
-            width    += contents[n].getWidth() + margin[n];
+            PARENT::width += contents[n].getWidth() + margin[n];
         }
     }
     
@@ -203,15 +217,14 @@ public:
     
     void render()
     {
-        if(hidden) return;
+        if(PARENT::hidden) return;
         
         // render background
-        BlankField::render();
+        PARENT::render();
         
         // render buttons
         const int amount = contents.size();
-        AriaRender::color(0,0,0);
-        
+
         for(int n=0; n<amount; n++)
         {
             contents[n].render();
@@ -322,7 +335,15 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
     trackName = new BlankField(140);
     components->addFromLeft(trackName);
     
-    gridCombo = new ComboBox(80);
+    //gridCombo = new ComboBox(80);
+    //components->addFromLeft(gridCombo);
+    gridCombo = new ToolBar<ComboBox>();
+    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_1,  false, true ), 0 );
+    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_2,  false, true ), 0 );
+    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_4,  false, true ), 0 );
+    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_8,  false, true ), 0 );
+    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_16, false, true ), 0 );
+    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_32, false, true ), 25 );
     components->addFromLeft(gridCombo);
     
     scoreButton = new BitmapButton(32, 7, score_view, true);
@@ -336,10 +357,10 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
     ctrlButton = new BitmapButton(32, 7, controller_view, true);
     components->addFromLeft(ctrlButton);
     
-    sharpFlatPicker = new ToolBar();
-    sharpFlatPicker->addItem( new BitmapButton( 14, 21, sharpSign,   false, true ), 6 );
-    sharpFlatPicker->addItem( new BitmapButton( 14, 24, flatSign,    false, true ), 6 );
-    sharpFlatPicker->addItem( new BitmapButton( 14, 21, naturalSign, false, true ), 0 );
+    sharpFlatPicker = new ToolBar<BlankField>();
+    sharpFlatPicker->addItem( (new BitmapButton( 14, 21, sharpSign,   false, true ))->setRGB(0,0,0), 6 );
+    sharpFlatPicker->addItem( (new BitmapButton( 14, 24, flatSign,    false, true ))->setRGB(0,0,0), 6 );
+    sharpFlatPicker->addItem( (new BitmapButton( 14, 21, naturalSign, false, true ))->setRGB(0,0,0), 0 );
     components->addFromLeft(sharpFlatPicker);
     
     instrumentName = new BlankField(144);
@@ -775,6 +796,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     // ------------------ layout and draw components ------------------ 
     components->layout(20, y);
     sharpFlatPicker->layout();
+    gridCombo->layout();
     components->renderAll(focus);
     
     //  ------------------ post-drawing  ------------------ 
@@ -785,7 +807,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     AriaRender::text_with_bounds(&track->getName(), trackName->getX()+11 ,y+26, trackName->getX()+trackName->getWidth()-25);
 
     // draw grid label
-    AriaRender::text(&grid->label, gridCombo->getX() + 11,y+26);
+    //AriaRender::text(&grid->label, gridCombo->getX() + 11,y+26);
     
     // draw instrument name  
     std::string instrumentname;

@@ -151,20 +151,25 @@ void Drawable::render()
         glRotatef(angle, 0,0,1);
     }
 
+    bool do_yflip = yflip;
+    // hack, textureHeight made smaller than zero when image was power of two.
+    // in these cases, the image will be upside down so we need to flip it
+    if(image->textureHeight < 0) do_yflip = !yflip;
+    
     glBindTexture(GL_TEXTURE_2D, image->getID()[0] );
 
     glBegin(GL_QUADS);
 
-    glTexCoord2f(xflip? image->tex_coord_x : 0, yflip? 0 : image->tex_coord_y);
+    glTexCoord2f(xflip? image->tex_coord_x : 0, do_yflip? 0 : image->tex_coord_y);
     glVertex2f( -hotspotX, -hotspotY );
 
-    glTexCoord2f(xflip? 0 : image->tex_coord_x, yflip? 0 : image->tex_coord_y);
+    glTexCoord2f(xflip? 0 : image->tex_coord_x, do_yflip? 0 : image->tex_coord_y);
     glVertex2f( image->width-hotspotX, -hotspotY );
 
-    glTexCoord2f(xflip? 0 : image->tex_coord_x, yflip? image->tex_coord_y : 0);
+    glTexCoord2f(xflip? 0 : image->tex_coord_x, do_yflip? image->tex_coord_y : 0);
     glVertex2f( image->width-hotspotX, image->height-hotspotY );
 
-    glTexCoord2f(xflip? image->tex_coord_x : 0, yflip? image->tex_coord_y : 0);
+    glTexCoord2f(xflip? image->tex_coord_x : 0, do_yflip? image->tex_coord_y : 0);
     glVertex2f( -hotspotX, image->height-hotspotY );
 
     glEnd();

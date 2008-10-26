@@ -74,7 +74,6 @@ namespace AriaMaestosa {
 			
 			glTexImage2D(GL_TEXTURE_2D,
 						 0,
-						 //img->HasAlpha() ?  GL_RGBA : GL_RGB, 
 						 img->HasAlpha() ?  4 : 3, 
 						 *imageWidth,
 						 *imageHeight,
@@ -85,7 +84,9 @@ namespace AriaMaestosa {
 						 img->GetData());
 			
 			(*textureWidth)  = (*imageWidth);
-			(*textureHeight) = (*imageHeight);
+            // hack, textureHeight made smaller than zero when image was power of two.
+            // in these cases, the image will be upside down so we need to flip it
+			(*textureHeight) = -(*imageHeight);
 			
 		}
 		else // ----------------- Texture is not a power of two. We need to resize it --------------------
@@ -148,7 +149,6 @@ namespace AriaMaestosa {
 			
 			glTexImage2D(GL_TEXTURE_2D,
 						 0,
-						 //img->HasAlpha() ?  GL_RGBA : GL_RGB,  
 						 img->HasAlpha() ?  4 : 3,
 						 newWidth,
 						 newHeight,
