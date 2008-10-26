@@ -124,6 +124,11 @@ NOTE: sorry, this is very raw :)
  
  ************************* BUGS: *************************
 
+* score print :
+    - measures appear very small if no note starts in them, even if some end in them
+    - silences are drawn in 'repetition' measures
+    - show time sig on printed scores/tabs
+
 * crashes when opening 2+ files from the finder
 
 * Beaming is dependendant on the currently selected key sig, not on the note's measure's key sig!

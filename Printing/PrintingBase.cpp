@@ -431,9 +431,14 @@ LayoutElement* EditorPrintable::getNextElement()
         // draw measure ID
         if(show_measure_number)
         {
+            const int meas_id = currentLine->getMeasureForElement(currentLayoutElement).id+1;
+            
             wxString measureLabel;
-            measureLabel << (currentLine->getMeasureForElement(currentLayoutElement).id+1);
-            dc->DrawText( measureLabel, elem_x_start - pixel_width_of_an_unit/4, y0 - getCurrentPrintable()->text_height*1.4 );
+            measureLabel << meas_id;
+            
+            dc->DrawText( measureLabel,
+                          elem_x_start - ( meas_id > 9 ? pixel_width_of_an_unit/4 : pixel_width_of_an_unit/5 ),
+                          y0 - getCurrentPrintable()->text_height*1.4 );
         }
         
         dc->SetTextForeground( wxColour(0,0,0) );
