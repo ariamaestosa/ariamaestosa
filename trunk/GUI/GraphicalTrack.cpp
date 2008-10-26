@@ -155,13 +155,9 @@ public:
     void render()
     {
         if(hidden) return;
-        if(toggleBtn)
-        {
-            if(enabled) AriaRender::color(1,1,1);
-            else AriaRender::color(0.4, 0.4, 0.4);
-        }
-        else
-            AriaRender::color(r,g,b);
+        
+        if(enabled and (r!=1 or g!=1 or b!=1)) AriaRender::color(r,g,b);
+        else if(not enabled) AriaRender::color(0.4*r, 0.4*g, 0.4*b);
         
         if(centerX and drawable->image->width < width)
         {
@@ -170,6 +166,7 @@ public:
         }
         else
             drawable->move(x + drawable->hotspotX, y+y_offset);
+        
         drawable->render();
     }
     
