@@ -512,8 +512,8 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         
     // if we have only one clef, give it the full space.
     // if we have two, split the space between both
-    int g_clef_y_from, g_clef_y_to;
-    int f_clef_y_from, f_clef_y_to;
+    int g_clef_y_from=-1, g_clef_y_to=-1;
+    int f_clef_y_from=-1, f_clef_y_to=-1;
     
     if(g_clef and not f_clef)
     {
@@ -533,6 +533,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         f_clef_y_from = y0 + (int)round((y1 - y0)*0.60);
         f_clef_y_to = y1;
     }
+    else { assert(false); }
     
     if(g_clef)
     {
