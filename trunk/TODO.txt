@@ -123,8 +123,6 @@ NOTE: sorry, this is very raw :)
  
  ************************* BUGS: *************************
 
-* importing 'ghost of the navigator' crashes
-
 * score print :
     - measures appear very small if no note starts in them, even if some end in them
     - silences are drawn in 'repetition' measures

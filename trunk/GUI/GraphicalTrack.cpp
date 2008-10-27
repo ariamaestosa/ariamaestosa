@@ -849,6 +849,9 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
         case 48:
             grid_selection_x = mgrid_32->x;
             break;
+        default: // Should not happen
+            assert(false);
+            grid_selection_x = mgrid_8->x;
     }
     AriaRender::hollow_rect(grid_selection_x, y+15, grid_selection_x+16, y+30);
     if(grid->isTriplet()) AriaRender::hollow_rect(mgrid_triplet->x, y+15, mgrid_triplet->x+16, y+30);
