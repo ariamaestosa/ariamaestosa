@@ -343,6 +343,7 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
     gridCombo->addItem( new BitmapButton( 16, 14, mgrid_32, false, true ), 0 );
     gridCombo->addItem( new BitmapButton( 16, 14, mgrid_triplet, false, true ), 25 );
     components->addFromLeft(gridCombo);
+    gridCombo->layout();
     
     scoreButton = new BitmapButton(32, 7, score_view, true);
     components->addFromLeft(scoreButton);

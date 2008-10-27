@@ -211,7 +211,7 @@ public:
                     // we'll adjust the height of the beam and try again
                     // (the order of the tests here is important; if the beam is on the wrong
                     // side of the beam AND too short, only the first should should happen)
-                    float beam_shift;
+                    float beam_shift = 0;
                     if(on_wrong_side_of_beam) beam_shift = analyser->min_stem_height + fabsf(diff);
                     else if(too_short) beam_shift = analyser->min_stem_height - stemheight;
                     
