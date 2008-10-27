@@ -141,9 +141,9 @@ END_EVENT_TABLE()
 
 #define ARIA_WINDOW_FLAGS wxCLOSE_BOX | wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCAPTION
 
-MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(100,100), wxSize(800,600), ARIA_WINDOW_FLAGS )
+MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(100,100), wxSize(900,600), ARIA_WINDOW_FLAGS )
 {
-	
+	Maximize(true);
 
 }
 
