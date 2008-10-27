@@ -17,6 +17,8 @@ mkdir -p "$OUTPUT/AriaMaestosa-$VERSION/"
 cp -R "$XCODE_BUILD/$XCODE_TARGET/" "$OUTPUT/AriaMaestosa-$VERSION"
 cp "$SRC_HOME/GPL-license.txt" "$OUTPUT/AriaMaestosa-$VERSION/GPL-license.txt"
 
+find "$OUTPUT/AriaMaestosa-$VERSION/" -name ".svn" -exec rm -rf '{}' \;
+
 #zip -9 -r "$OUTPUT/AriaMaestosa-$VERSION" foo
 #rm -rf "$OUTPUT/AriaMaestosa-$VERSION"
 
