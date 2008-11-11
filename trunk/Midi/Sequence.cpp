@@ -33,6 +33,8 @@ const float current_file_version = 1.0;
 #include "GUI/RenderUtils.h"
 #include "GUI/MainFrame.h"
 
+#include "Dialogs/Preferences.h"
+
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
@@ -69,7 +71,7 @@ Sequence::Sequence()
     
 	x_scroll_upon_copying = -1;
 	
-	follow_playback = false;
+	follow_playback = followPlaybackByDefault();
     
 	//setZoom(100);
 	zoom = (128.0/(beatResolution*4));
