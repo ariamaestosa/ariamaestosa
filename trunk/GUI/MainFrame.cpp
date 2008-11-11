@@ -139,11 +139,54 @@ EVT_COMMAND  (100003, wxEVT_HIDE_WAIT_WINDOW, MainFrame::evt_hideWaitWindow)
 
 END_EVENT_TABLE()
 
+#ifndef NO_WX_TOOLBAR
+CustomToolBar::CustomToolBar(wxWindow* parent) : wxToolBar(parent, wxID_ANY)
+{
+}
+
+void CustomToolBar::add(wxControl* ctrl)
+{
+    AddControl(ctrl);
+}
+void CustomToolBar::realize()
+{
+    Realize();
+    /*
+#ifdef __WXMAC__
+    // http://developer.apple.com/documentation/Carbon/Reference/HIToolbarReference/Reference/reference.html
+    // http://developer.apple.com/documentation/CoreFoundation/Reference/CFArrayRef/Reference/reference.html
+    if(m_macUsesNativeToolbar)
+    {
+        //void* m_macHIToolbarRef ;
+        CFArrayRef array;
+        OSStatus status = HIToolbarCopyItems((HIToolbarRef)m_macHIToolbarRef, &array);
+        std::cout << "got array, status=" << status << std::endl;
+        const int item_amount = CFArrayGetCount(array);
+        
+        std::cout << "item_amount=" << item_amount << std::endl;
+        
+        for(int n=0; n<item_amount; n++)
+        {
+            OSStatus status = HIToolbarItemSetLabel( (HIToolbarItemRef)CFArrayGetValueAtIndex(array, n) , CFSTR("hello") );
+            std::cout << "setting label for item " << n << ", status=" << status << std::endl;
+        }
+        CFRelease(array);
+    }
+#endif
+     */
+}
+#endif
+
 #define ARIA_WINDOW_FLAGS wxCLOSE_BOX | wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCAPTION
 
 MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(100,100), wxSize(900,600), ARIA_WINDOW_FLAGS )
 {
-	Maximize(true);
+#ifndef NO_WX_TOOLBAR
+    //toolbar = this->CreateToolBar(wxTB_HORZ_TEXT | wxNO_BORDER);
+    toolbar = new CustomToolBar(this);
+    SetToolBar(toolbar);
+#endif
+	//Maximize(true);
 
 }
 
@@ -292,8 +335,8 @@ void MainFrame::init()
     toolbarSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Zoom")),      0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
     
 #else
-    toolbar = this->CreateToolBar(wxTB_HORZ_TEXT | wxNO_BORDER);
-
+    //toolbar = this->CreateToolBar(wxTB_HORZ_TEXT | wxNO_BORDER);
+    
     wxBitmap playBitmap;
     playBitmap.LoadFile( getResourcePrefix()  + wxT("play.png") , wxBITMAP_TYPE_PNG);
     toolbar->AddTool(PLAY_CLICKED, wxT("Play"), playBitmap);
@@ -305,16 +348,16 @@ void MainFrame::init()
     toolbar->AddSeparator();
     
     measureTypeTop=new wxTextCtrl(toolbar, MEASURE_NUM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize, wxTE_PROCESS_ENTER );
-    toolbar->AddControl(measureTypeTop);
+    toolbar->add(measureTypeTop);
     wxStaticText* slash = new wxStaticText(toolbar, wxID_ANY, wxT("/"), wxDefaultPosition, wxSize(15,15));
     slash->SetMinSize(wxSize(15,15));
     slash->SetMaxSize(wxSize(15,15));
-    toolbar->AddControl( slash );
+    toolbar->add( slash );
     measureTypeBottom=new wxTextCtrl(toolbar, MEASURE_DENOM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize, wxTE_PROCESS_ENTER );
-    toolbar->AddControl(measureTypeBottom);
+    toolbar->add(measureTypeBottom);
 
     firstMeasure=new wxTextCtrl(toolbar, BEGINNING, wxT("1"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER);
-    toolbar->AddControl(firstMeasure);
+    toolbar->add(firstMeasure);
     
     songLength=new wxSpinCtrl(toolbar, LENGTH, to_wxString(DEFAULT_SONG_LENGTH), wxDefaultPosition,
 #ifdef __WXGTK__
@@ -323,12 +366,12 @@ void MainFrame::init()
 							  wxDefaultSize
 #endif
 							  , wxTE_PROCESS_ENTER);
-    toolbar->AddControl(songLength);
+    toolbar->add(songLength);
     
     toolbar->AddSeparator();
     
     tempoCtrl=new wxTextCtrl(toolbar, TEMPO, wxT("120"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER );
-    toolbar->AddControl(tempoCtrl);
+    toolbar->add(tempoCtrl);
     
     displayZoom=new wxSpinCtrl(toolbar, ZOOM, wxT("100"), wxDefaultPosition,
     #ifdef __WXGTK__
@@ -339,8 +382,8 @@ void MainFrame::init()
                            );
     
     displayZoom->SetRange(25,500);
-    toolbar->AddControl(displayZoom);
-    toolbar->Realize();
+    toolbar->add(displayZoom);
+    toolbar->realize();
 #endif
     
     // -------------------------- RenderPane ----------------------------
@@ -411,7 +454,8 @@ void MainFrame::init()
     verticalSizer->Layout();
 
     Show();
-
+    Maximize(true);
+    
     // create pickers
     tuningPicker        =  new TuningPicker();
     keyPicker           =  new KeyPicker();
