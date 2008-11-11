@@ -188,13 +188,14 @@ void MainFrame::init()
 	prefs = NULL;
 	currentSequence=0;
 	playback_mode=false;
-	play_during_edit = PLAY_ON_CHANGE;
-
+	
     changingValues=false;
 
 	SetMinSize(wxSize(750, 330));
 
+    prefs = new Preferences(this);
     initMenuBar();
+    play_during_edit = getPlayDuringEdit();
 
     wxInitAllImageHandlers();
     verticalSizer = new wxBorderSizer();
@@ -412,15 +413,14 @@ void MainFrame::init()
     Show();
 
     // create pickers
-	 tuningPicker        =  new TuningPicker();
-	 keyPicker           =  new KeyPicker();
-     instrument_picker   =  new InstrumentChoice();
-	 drumKit_picker      =  new DrumChoice();
+    tuningPicker        =  new TuningPicker();
+    keyPicker           =  new KeyPicker();
+    instrument_picker   =  new InstrumentChoice();
+    drumKit_picker      =  new DrumChoice();
     
     // create dialogs (FIXME - don't create until requested by user)
-	 prefs                   =  new Preferences(this);
-	 aboutDialog             =  new AboutDialog();
-     customNoteSelectDialog  =  new CustomNoteSelectDialog();
+    aboutDialog             =  new AboutDialog();
+    customNoteSelectDialog  =  new CustomNoteSelectDialog();
         
     ImageProvider::loadImages();
 	mainPane->isNowVisible();

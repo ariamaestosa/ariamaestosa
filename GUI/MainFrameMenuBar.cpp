@@ -164,6 +164,8 @@ void MainFrame::initMenuBar()
     followPlaybackMenuItem = settingsMenu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_FOLLOW_PLAYBACK, _("Follow Playback"), MainFrame::menuEvent_followPlayback );
     expandedMeasuresMenuItem = settingsMenu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_MEASURE_EXPANDED, _("Expanded measure management"), MainFrame::menuEvent_expandedMeasuresSelected );
 
+    followPlaybackMenuItem->Check( followPlaybackByDefault() );
+    
 	wxMenu* channelMode_menu = new wxMenu();
     //I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
 	settingsMenu->AppendSubMenu(channelMode_menu,  _("Channel management") );
@@ -182,12 +184,19 @@ void MainFrame::initMenuBar()
 	playDuringEdits_always = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_ALWAYS,  _("Always"), MainFrame::menuEvent_playAlways);
 	//I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
     playDuringEdits_onchange = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_ON_CHANGE,  _("On note change"), MainFrame::menuEvent_playOnChange);
-	playDuringEdits_onchange->Check();
     //I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
 	playDuringEdits_never = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_NEVER,  _("Never"), MainFrame::menuEvent_playNever);
 
     settingsMenu->QUICK_ADD_MENU( wxID_PREFERENCES,   _("Preferences"), MainFrame::menuEvent_preferences );
 
+    if(getPlayDuringEdit() == PLAY_ON_CHANGE)
+        playDuringEdits_onchange->Check();
+    else if(getPlayDuringEdit() == PLAY_ALWAYS)
+        playDuringEdits_always->Check();
+    else if(getPlayDuringEdit() == PLAY_NEVER)
+        playDuringEdits_never->Check();
+    else{ assert(false); }
+    
 	// Help menu
 	helpMenu = new wxMenu();
 	menuBar->Append(helpMenu, wxT("&Help"));

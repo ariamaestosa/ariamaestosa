@@ -36,6 +36,8 @@ class Preferences : public wxDialog
 	wxChoice* lang_combo;
 	wxChoice* play_combo;
 
+    wxCheckBox* follow_playback_checkbox;
+    
 	wxButton* ok_btn;
 
 	MainFrame* parent;
@@ -49,9 +51,13 @@ public:
 	void languageSelected(wxCommandEvent& evt);
 	void okClicked(wxCommandEvent& evt);
 	void playSelected(wxCommandEvent& evt);
-
+    void followPlaybackChecked(wxCommandEvent& evt);
+    
 	DECLARE_EVENT_TABLE()
 };
+
+bool followPlaybackByDefault();
+int getPlayDuringEdit();
 
 }
 

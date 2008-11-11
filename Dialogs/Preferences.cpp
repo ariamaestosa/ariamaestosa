@@ -23,14 +23,53 @@
 
 #include "GUI/MainFrame.h"
 #include "languages.h"
+#include "Midi/Sequence.h"
 
 namespace AriaMaestosa {
+
+class QuickBoxLayout
+{
+    wxBoxSizer* bsizer;
+public:
+    wxPanel* pane;
+    
+    QuickBoxLayout(wxWindow* component, wxSizer* parent, int orientation=wxHORIZONTAL)
+    {
+        pane = new wxPanel(component);
+        parent->Add(pane,1,wxEXPAND);
+        bsizer = new wxBoxSizer(orientation);
+    }
+    void add(wxWindow* window)
+    {
+        bsizer->Add(window, 1, wxALL, 10);
+    }
+    ~QuickBoxLayout()
+    {
+        pane->SetSizer(bsizer);
+        bsizer->Layout();
+        //bsizer->SetSizeHints(pane);
+    }
+};
+
+    
+bool follow_playback = false;
+bool followPlaybackByDefault()
+{
+    return follow_playback;
+}
+    
+int play_during_edit = PLAY_ON_CHANGE;
+int getPlayDuringEdit()
+{
+    return play_during_edit;
+}
 
 BEGIN_EVENT_TABLE(Preferences, wxDialog)
 
 EVT_CHOICE(1, Preferences::languageSelected)
 EVT_BUTTON(2, Preferences::okClicked)
 EVT_CHOICE(3, Preferences::playSelected)
+EVT_CHECKBOX(4, Preferences::followPlaybackChecked )
 
 END_EVENT_TABLE()
 
@@ -40,38 +79,42 @@ Preferences::Preferences(MainFrame* parent) : wxDialog(parent, wxID_ANY,
                                                        wxPoint(100,100), wxSize(500,300), wxCAPTION )
 {
 
-	
-
 	Preferences::parent = parent;
 
 	vert_sizer = new wxBoxSizer(wxVERTICAL);
 
 	// language
 	{
+    QuickBoxLayout language_box(this, vert_sizer);
     //I18N: - in the preferences
-	wxStaticText* lang_label = new wxStaticText(this, wxID_ANY,  _("Language"));
-	vert_sizer->Add( lang_label, 0, wxALL, 5 );
-
+    language_box.add(new wxStaticText(language_box.pane , wxID_ANY,  _("Language")));
+    
 	lang_combo = new wxChoice(this, 1, wxDefaultPosition, wxDefaultSize, getLanguageList() );
-	vert_sizer->Add( lang_combo, 0, wxALL, 5 );
+    language_box.add(lang_combo);
 	}
-
-	wxStaticText* empty_space = new wxStaticText(this, wxID_ANY,  wxT(" "));
-	vert_sizer->Add( empty_space, 0, wxALL, 5 );
 
 	// play settings
 	{
+    QuickBoxLayout play_box(this, vert_sizer);
     //I18N: - in the preferences
-	wxStaticText* play_label = new wxStaticText(this, wxID_ANY,  _("Play during edit (default value)"));
-	vert_sizer->Add( play_label, 0, wxALL, 5 );
+	play_box.add( new wxStaticText(play_box.pane, wxID_ANY,  _("Play during edit (default value)")) );
 
     //I18N: - in the preferences, for "Play during edit (default value)" (the 3 chocies being "Always", "On note change" and "Never")
 	wxString choices[3] = { _("Always"),  _("On note change"),  _("Never")};
 
-	play_combo = new wxChoice(this, 3, wxDefaultPosition, wxDefaultSize, 3, choices );
-	vert_sizer->Add( play_combo, 0, wxALL, 5 );
+	play_combo = new wxChoice(play_box.pane, 3, wxDefaultPosition, wxDefaultSize, 3, choices );
+	play_box.add( play_combo );
 	}
-
+    
+    {
+    //I18N: - in the preferences
+    follow_playback_checkbox = new wxCheckBox(this, 4, _("Follow playback by default"), wxDefaultPosition, wxDefaultSize );
+    vert_sizer->Add( follow_playback_checkbox, 0, wxALL, 10 );
+	}
+    
+    
+    // *********** fill values ********
+    
     lang_combo->Select( getDefaultLanguageID() );
 
     wxConfig* prefs;
@@ -84,45 +127,40 @@ Preferences::Preferences(MainFrame* parent) : wxDialog(parent, wxID_ANY,
 		if(play_v == PLAY_ALWAYS)
 		{
 			play_combo->Select(0);
-			parent->play_during_edit = 0;
-
-			wxCommandEvent useless;
-			parent->menuEvent_playAlways(useless);
+            play_during_edit = PLAY_ALWAYS;
 		}
 		else if(play_v == PLAY_ON_CHANGE)
 		{
 			play_combo->Select(1);
-			parent->play_during_edit = 1;
-
-			wxCommandEvent useless;
-			parent->menuEvent_playOnChange(useless);
+			play_during_edit = PLAY_ON_CHANGE;
 		}
 		else if(play_v == PLAY_NEVER)
 		{
 			play_combo->Select(2);
-			parent->play_during_edit = 2;
-
-			wxCommandEvent useless;
-			parent->menuEvent_playNever(useless);
+			play_during_edit = PLAY_NEVER;
 		}
 	}
 	else
 	{
 		play_combo->Select(1);
 	}
+    
+    long followp;
+	if(prefs->Read( wxT("followPlayback"), &followp) )
+	{
+        follow_playback = followp;
+        follow_playback_checkbox->SetValue(follow_playback);
+    }
 	// -----------------------------------
-
-	wxStaticText* empty_space2 = new wxStaticText(this, wxID_ANY,  wxT(" "));
-	vert_sizer->Add( empty_space2, 0, wxALL, 5 );
-
-    //I18N: - in the preferences dialog
-	wxStaticText* effect_label = new wxStaticText(this, wxID_ANY,  _("Changes will take effect next time you open the app."));
-	effect_label->SetFont( wxFont(wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_NORMAL) );
-	vert_sizer->Add( effect_label, 0, wxALL, 10 );
 
 	ok_btn = new wxButton(this, 2, wxT("OK"));
 	vert_sizer->Add( ok_btn, 0, wxALL, 10 );
 
+    //I18N: - in the preferences dialog
+	wxStaticText* effect_label = new wxStaticText(this, wxID_ANY,  _("Changes will take effect next time you open the app."));
+	effect_label->SetFont( wxFont(wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_NORMAL) );
+	vert_sizer->Add( effect_label, 0, wxALL, 10 );    
+    
 	ok_btn -> SetDefault();
 
 	SetSizer( vert_sizer );
@@ -152,6 +190,12 @@ void Preferences::playSelected(wxCommandEvent& evt)
 	prefs->Flush();
 }
 
+void Preferences::followPlaybackChecked(wxCommandEvent& evt)
+{
+    wxConfig* prefs = (wxConfig*) wxConfig::Get();
+	prefs->Write( wxT("followPlayback"), follow_playback_checkbox->GetValue() );
+	prefs->Flush();
+}
 
 void Preferences::okClicked(wxCommandEvent& evt)
 {
