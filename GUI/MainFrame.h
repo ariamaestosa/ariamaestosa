@@ -30,6 +30,7 @@
 
 namespace AriaMaestosa {
 
+    
 class CustomNoteSelectDialog;
 class Sequence;
 class Preferences;
@@ -51,9 +52,19 @@ DECLARE_EVENT_TYPE(wxEVT_HIDE_WAIT_WINDOW, -1)
 #define MAKE_HIDE_PROGRESSBAR_EVENT(eventname) wxCommandEvent eventname( wxEVT_HIDE_WAIT_WINDOW, 100003 )
 
 #if wxMAJOR_VERSION != 3
-#define NO_WX_TOOLBAR   
+#define NO_WX_TOOLBAR 
 #endif
     
+#ifndef NO_WX_TOOLBAR  
+class CustomToolBar : public wxToolBar
+{ 
+public:
+    CustomToolBar(wxWindow* parent);
+    void add(wxControl* ctrl);
+    void realize();
+};
+#endif
+
 class MainFrame : public wxFrame
 {
 	WxOwnerPtr<AboutDialog>  aboutDialog;
@@ -65,7 +76,7 @@ class MainFrame : public wxFrame
     wxPanel* topPane;
     wxFlexGridSizer* toolbarSizer;
 #else
-    wxToolBar* toolbar;
+    CustomToolBar* toolbar;
 #endif
     wxScrollBar* horizontalScrollbar;
     wxScrollBar* verticalScrollbar;
