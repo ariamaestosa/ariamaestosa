@@ -121,6 +121,8 @@ NOTE: sorry, this is very raw :)
  
  ************************* BUGS: *************************
 
+* updated render code in hope to fix rounding errors on some graphics card --> Test on eMac and on Linux!!
+
 * score print :
     - measures appear very small if no note starts in them, even if some end in them
     - silences are drawn in 'repetition' measures

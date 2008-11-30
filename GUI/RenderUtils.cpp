@@ -56,8 +56,8 @@ void color(const float r, const float g, const float b, const float a)
 void line(const int x1, const int y1, const int x2, const int y2)
 {
     glBegin(GL_LINES);
-    glVertex2f(x1,y1);
-    glVertex2f(x2,y2);
+    glVertex2f(x1*10.0, y1*10.0);
+    glVertex2f(x2*10.0, y2*10.0);
     glEnd();
 }
 
@@ -75,22 +75,22 @@ void lineSmooth(const bool enabled)
 void point(const int x, const int y)
 {
     glBegin(GL_POINTS);
-    glVertex2f(x,y);
+    glVertex2f(x*10.0, y*10.0);
     glEnd();
 }
 
 void pointSize(const int n)
 {
-    glPointSize(n);
+    glPointSize(n*10.0);
 }
 
 void rect(const int x1, const int y1, const int x2, const int y2)
 {
     glBegin(GL_QUADS);
-    glVertex2f(x1, y1);
-    glVertex2f(x2, y1);
-    glVertex2f(x2, y2);
-    glVertex2f(x1, y2);
+    glVertex2f(x1*10.0, y1*10.0);
+    glVertex2f(x2*10.0, y1*10.0);
+    glVertex2f(x2*10.0, y2*10.0);
+    glVertex2f(x1*10.0, y2*10.0);
     glEnd();
 }
 
@@ -102,17 +102,14 @@ void bordered_rect_no_start(const int x1, const int y1, const int x2, const int 
     glLineWidth(1);
     glBegin(GL_LINES);
 
-    //glVertex2f(x1,y1);
-    //glvertex2f(x1,y2);
-
-    glVertex2f(x1,y2+1);
-    glVertex2f(x2,y2+1);
-
-    glVertex2f(x2+1,y2);
-    glVertex2f(x2+1,y1);
-
-    glVertex2f(x1,y1);
-    glVertex2f(x2,y1);
+    glVertex2f(round(x1*10.0), round((y2+0.5)*10.0));
+    glVertex2f(round(x2*10.0), round((y2+0.5)*10.0));
+	
+    glVertex2f(round((x2+1)*10.0), round(y2*10.0));
+    glVertex2f(round((x2+1)*10.0), round((y1+0.5)*10.0));
+	
+	glVertex2f(round((x1+0.5)*10.0), round(y1*10.0));
+    glVertex2f(round(x2*10.0), round(y1*10.0));
 
     glEnd();
 }
@@ -125,17 +122,17 @@ void bordered_rect(const int x1, const int y1, const int x2, const int y2)
     glLineWidth(1);
     glBegin(GL_LINES);
 
-    glVertex2f(x1,y1);
-    glVertex2f(x1,y2);
+    glVertex2f(round(x1*10.0), round((y1+0.8)*10.0));
+    glVertex2f(round(x1*10.0), round(y2*10.0));
 
-    glVertex2f(x1,y2+1);
-    glVertex2f(x2,y2+1);
+    glVertex2f(round(x1*10.0), round((y2+0.5)*10.0));
+    glVertex2f(round(x2*10.0), round((y2+0.5)*10.0));
 
-    glVertex2f(x2+1,y2);
-    glVertex2f(x2+1,y1);
+    glVertex2f(round((x2+1)*10.0), round(y2*10.0));
+    glVertex2f(round((x2+1)*10.0), round((y1+0.5)*10.0));
 
-    glVertex2f(x1,y1);
-    glVertex2f(x2,y1);
+	glVertex2f(round((x1+0.5)*10.0), round(y1*10.0));
+    glVertex2f(round(x2*10.0), round(y1*10.0));
 
     glEnd();
 }
@@ -144,17 +141,17 @@ void hollow_rect(const int x1, const int y1, const int x2, const int y2)
 {
     glBegin(GL_LINES);
 
-    glVertex2f(x1,y1);
-    glVertex2f(x1,y2);
+    glVertex2f(x1*10.0, y1*10.0);
+    glVertex2f(x1*10.0, y2*10.0);
 
-    glVertex2f(x1,y2);
-    glVertex2f(x2,y2);
+    glVertex2f(round(x1-1.0)*10.0, y2*10.0);
+    glVertex2f(x2*10.0, y2*10.0);
 
-    glVertex2f(x2,y2);
-    glVertex2f(x2,y1);
+    glVertex2f(x2*10.0, y2*10.0);
+    glVertex2f(x2*10.0, y1*10.0);
 
-    glVertex2f(x1-1,y1);
-    glVertex2f(x2,y1);
+    glVertex2f(round(x1-1.0)*10.0, y1*10.0);
+    glVertex2f(x2*10.0, y1*10.0);
 
     glEnd();
 }
@@ -163,7 +160,7 @@ void hollow_rect(const int x1, const int y1, const int x2, const int y2)
 // FIXME- clean up text rendering
 void text(const char* string, const int x, const int y)
 {
-    glRasterPos2f(x, y);
+    glRasterPos2f(x*10.0, y*10.0);
 
     for(int i=0; string[i]; i++)
     {
@@ -172,7 +169,7 @@ void text(const char* string, const int x, const int y)
 }
 void text(wxString* string, const int x, const int y)
 {
-    glRasterPos2f(x, y);
+    glRasterPos2f(x*10.0, y*10.0);
 
     const int len = string->Length();
     for(int i=0; i<len; i++)
@@ -183,7 +180,7 @@ void text(wxString* string, const int x, const int y)
 
 int text_return_end_x(wxString* string, const int x, const int y)
 {
-    glRasterPos2f(x, y);
+    glRasterPos2f(x*10.0, y*10.0);
 
     const int len = string->Length();
     for(int i=0; i<len; i++)
@@ -194,14 +191,14 @@ int text_return_end_x(wxString* string, const int x, const int y)
     // find where text ends
     float rasterPos[4];
     glGetFloatv(GL_CURRENT_RASTER_POSITION,rasterPos);
-    return (int)( rasterPos[0] );
+    return (int)( rasterPos[0]/10.0f );
 
 }
 
 // used for track name, in case it's too long
 void text_with_bounds(wxString* string, const int x, const int y, const int max_x)
 {
-    glRasterPos2f(x, y);
+    glRasterPos2f(x*10.0, y*10.0);
     const int len = string->Length();
 
     for(int i=0; i<len; i++)
@@ -224,7 +221,7 @@ void text_with_bounds(wxString* string, const int x, const int y, const int max_
 
 void small_text(const char* string, const int x, const int y)
 {
-    glRasterPos2f(x, y);
+    glRasterPos2f(x*10.0, y*10.0);
 
     for(int i=0; string[i]; i++)
     {
@@ -233,18 +230,18 @@ void small_text(const char* string, const int x, const int y)
 }
 void character(const char character, const int x, const int y)
 {
-    glRasterPos2f(x, y);
+    glRasterPos2f(x*10.0, y*10.0);
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, character);
 }
 void small_character(const char character, const int x, const int y)
 {
-    glRasterPos2f(x, y);
+    glRasterPos2f(x*10.0, y*10.0);
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, character);
 }
 
 void small_text_newline_between_words(const char* string, const int x, const int y)
 {
-    glRasterPos2f(x, y);
+    glRasterPos2f(x*10.0, y*10.0);
 
     int line=0;
     for(int i=0; string[i]; i++)
@@ -252,7 +249,7 @@ void small_text_newline_between_words(const char* string, const int x, const int
         if(string[i]==' ')
 		{
             line++;
-            glRasterPos2f(x, y+line*15);
+            glRasterPos2f(x*10.0, y*10.0+line*150);
         }
 		else
             glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, string[i]);
@@ -262,9 +259,9 @@ void small_text_newline_between_words(const char* string, const int x, const int
 void triangle(const int x1, const int y1, const int x2, const int y2, const int x3, const int y3)
 {
     glBegin(GL_TRIANGLES);
-    glVertex2f(x1, y1);
-    glVertex2f(x2, y2);
-    glVertex2f(x3, y3);
+    glVertex2f(x1*10.0, y1*10.0);
+    glVertex2f(x2*10.0, y2*10.0);
+    glVertex2f(x3*10.0, y3*10.0);
     glEnd();
 }
 
@@ -272,13 +269,15 @@ void arc(int center_x, int center_y, int radius_x, int radius_y, bool show_above
 {
 	glLoadIdentity();
 
-	const int y_mult = (show_above ? -radius_y : radius_y);
-
+	const int y_mult = (show_above ? -radius_y*10.0 : radius_y*10.0);
+	center_x *= 10.0;
+	center_y *= 10.0f;
+	
 	glColor3f(0,0,0);
 	glBegin(GL_LINES);
 	for(float angle = 0.2; angle<=M_PI; angle +=0.2)
 	{
-		glVertex2f( center_x + std::cos(angle)*radius_x, center_y + std::sin(angle)*y_mult );
+		glVertex2f( center_x + std::cos(angle)*radius_x,     center_y + std::sin(angle)*y_mult );
 		glVertex2f( center_x + std::cos(angle-0.2)*radius_x, center_y + std::sin(angle-0.2)*y_mult );
 	}
 	glEnd();
@@ -290,10 +289,10 @@ void quad(const int x1, const int y1,
           const int x4, const int y4)
 {
     glBegin(GL_QUADS);
-    glVertex2f(x1, y1);
-    glVertex2f(x2, y2);
-    glVertex2f(x3, y3);
-    glVertex2f(x4, y4);
+    glVertex2f(x1*10.0, y1*10.0);
+    glVertex2f(x2*10.0, y2*10.0);
+    glVertex2f(x3*10.0, y3*10.0);
+    glVertex2f(x4*10.0, y4*10.0);
     glEnd();
 
 }
@@ -302,7 +301,7 @@ void beginScissors(const int x, const int y, const int width, const int height)
 {
     glEnable(GL_SCISSOR_TEST);
     // glScissor doesn't seem to follow the coordinate system so I need to manually reverse the Y coord
-    glScissor(x, Display::getHeight() - y - height, width, height);
+    glScissor(x, (Display::getHeight() - y - height), width, height);
 }
 void endScissors()
 {
@@ -313,6 +312,7 @@ void endScissors()
 }
 
 #else
+#pragma mark -
 
 #include "Images/Drawable.h"
 
