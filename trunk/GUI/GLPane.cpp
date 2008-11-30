@@ -131,7 +131,7 @@ void GLPane::initOpenGLFor2D()
 
     //2D
 
-    gluOrtho2D(0, GetSize().x, GetSize().y, 0);
+    gluOrtho2D(0, GetSize().x*10.0, GetSize().y*10.0, 0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }

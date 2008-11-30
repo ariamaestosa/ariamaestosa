@@ -138,7 +138,7 @@ void Drawable::render()
 
     glLoadIdentity();
 
-    glTranslatef(x,y,0);
+    glTranslatef(x*10.0, y*10.0, 0);
 
     if(xscale!=1 || yscale!=1)
 	{
@@ -161,16 +161,16 @@ void Drawable::render()
     glBegin(GL_QUADS);
 
     glTexCoord2f(xflip? image->tex_coord_x : 0, do_yflip? 0 : image->tex_coord_y);
-    glVertex2f( -hotspotX, -hotspotY );
+    glVertex2f( -hotspotX*10.0, -hotspotY*10.0 );
 
     glTexCoord2f(xflip? 0 : image->tex_coord_x, do_yflip? 0 : image->tex_coord_y);
-    glVertex2f( image->width-hotspotX, -hotspotY );
+    glVertex2f( (image->width-hotspotX)*10.0, -hotspotY*10.0 );
 
     glTexCoord2f(xflip? 0 : image->tex_coord_x, do_yflip? image->tex_coord_y : 0);
-    glVertex2f( image->width-hotspotX, image->height-hotspotY );
+    glVertex2f( (image->width-hotspotX)*10.0, (image->height-hotspotY)*10.0 );
 
     glTexCoord2f(xflip? image->tex_coord_x : 0, do_yflip? image->tex_coord_y : 0);
-    glVertex2f( -hotspotX, image->height-hotspotY );
+    glVertex2f( -hotspotX*10.0, (image->height-hotspotY)*10.0 );
 
     glEnd();
 #else

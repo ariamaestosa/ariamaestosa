@@ -1,6 +1,7 @@
 
 1.2b3
 - Refactored preferences to look better, be cleaner and allow setting a default value for "follow playback"
+- Updated render code in hope to fix rounding errors on some graphics card
 
 1.2b2
 - Fixed issues with track reordering
