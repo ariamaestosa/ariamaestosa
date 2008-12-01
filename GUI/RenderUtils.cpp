@@ -81,7 +81,7 @@ void point(const int x, const int y)
 
 void pointSize(const int n)
 {
-    glPointSize(n*10.0);
+    glPointSize(n);
 }
 
 void rect(const int x1, const int y1, const int x2, const int y2)
@@ -122,7 +122,7 @@ void bordered_rect(const int x1, const int y1, const int x2, const int y2)
     glLineWidth(1);
     glBegin(GL_LINES);
 
-    glVertex2f(round(x1*10.0), round((y1+0.8)*10.0));
+    glVertex2f(round(x1*10.0), round((y1+0.5)*10.0));
     glVertex2f(round(x1*10.0), round(y2*10.0));
 
     glVertex2f(round(x1*10.0), round((y2+0.5)*10.0));
@@ -270,14 +270,15 @@ void arc(int center_x, int center_y, int radius_x, int radius_y, bool show_above
 	glLoadIdentity();
 
 	const int y_mult = (show_above ? -radius_y*10.0 : radius_y*10.0);
-	center_x *= 10.0;
+	center_x *= 10.0f;
 	center_y *= 10.0f;
-	
+	radius_x *= 10.0f;
+    
 	glColor3f(0,0,0);
 	glBegin(GL_LINES);
 	for(float angle = 0.2; angle<=M_PI; angle +=0.2)
 	{
-		glVertex2f( center_x + std::cos(angle)*radius_x,     center_y + std::sin(angle)*y_mult );
+		glVertex2f( center_x + std::cos(angle)    *radius_x, center_y + std::sin(angle)*y_mult );
 		glVertex2f( center_x + std::cos(angle-0.2)*radius_x, center_y + std::sin(angle-0.2)*y_mult );
 	}
 	glEnd();
