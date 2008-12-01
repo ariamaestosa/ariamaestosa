@@ -118,12 +118,15 @@ void bordered_rect(const int x1, const int y1, const int x2, const int y2)
 {
     rect(x1,y1,x2,y2);
 
+    /** the numbers below were determined by trial-and-error in order
+        to work on all computers i have access to... */
+    
     glColor3f(0,0,0);
     glLineWidth(1);
     glBegin(GL_LINES);
 
-    glVertex2f(round(x1*10.0), round((y1+0.5)*10.0));
     glVertex2f(round(x1*10.0), round(y2*10.0));
+    glVertex2f(round(x1*10.0), round((y1+0.549)*10.0));
 
     glVertex2f(round(x1*10.0), round((y2+0.5)*10.0));
     glVertex2f(round(x2*10.0), round((y2+0.5)*10.0));
