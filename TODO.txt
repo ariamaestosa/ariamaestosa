@@ -17,16 +17,27 @@ NOTE: sorry, this is very raw :)
 
   ************************* LONG TERM: *************************
  
+ - notation printing and export (WIP)
  - guitar pro import
  - midi keyboard support
  - mod support/better synths support (fluidsynth?)
  - new control editor
+		- precise values
+		- points and curves, splines
+		- what to do with sustain? needs all_sound_off perhaps?
+		- make portamento more usable
+		+ copy/paste
+		+ many controller effects would gain from being accessible somewhere else than in control editor
+		- copy control events along notes
+		- precise tempo bend (not controller-like, more like a sudden change)
+		- wide tempo bends
+		- should maybe appear under current editor? it's always useful to see the notes when applying effects
  - support wide pitch-bend
- - notation printing and export
- - riff-based song editing (e.g. to repeat chorus you don't need to keep multiple copies of it)
+ - non-linear/riff-based song editing (e.g. to repeat chorus you don't need to keep multiple copies of it)
  - allow using another renderer than OpenGL
  - multiple program changes
  - changes to song should be heard if done while playing
+ - show more than one editor at once
   
 ************************* NEW FEATURES TO ADD: *************************
 
@@ -37,37 +48,15 @@ NOTE: sorry, this is very raw :)
 
  * add new tools, that allow adding notes without dragging (and resizing without keyboard, and selecting, and...?)
 
- * Add "pause" button
+ * Add "pause" button (stop and set starting measure to current one?)
 
  * Button to maximize track
 
   - .aria files don't remember whether drums are minimized
   - .aria files don't remember docked tracks
   - background choices are not saved to .aria files
-  
- * printing :
-    skip series of empty measures
-    allow setting font size, number of lines per page, zoom, etc...
-    sometimes does 41-42 43-44 and not 41-44
-    tab export : x2 can appear on new line...
-    repeated measures need measure numbers
-    sometimes uses, in repetitions, measures numbers that do not appear on the tab (that are inside a previous repetition)
-  
 
  - when scaling entire song, scale control events and time sig changes too
-
-// ----- controller editor ------
-* better controller editor! precise values, etc.
- - points and curves, splines
- - what to do with sustain? needs all_sound_off perhaps?
- - make portamento more usable
- + copy/paste
- + many controller effects would gain from being accessible somewhere else than in control editor
- - copy control events along notes
- - precise tempo bend (not controller-like, more like a sudden change)
- - wide tempo bends
- - should maybe appear under current editor? it's always useful to see the notes when applying effects
-// ---------------
 
  + linux : export to wav when not using timidity?
 
@@ -120,30 +109,43 @@ NOTE: sorry, this is very raw :)
  - score editor should be able to display notes with more than 2 flags (unusure... those with 2 are already so small and barely visible) 
  
  ************************* BUGS: *************************
-
-* updated render code in hope to fix rounding errors on some graphics card --> Test on eMac and on Linux!!
+ 
+* crashes when opening 2+ files from the finder
+* Beaming is dependendant on the currently selected key sig, not on the note's measure's key sig!
+* "follow playback" : hard to follow when horizontal scrolling is changed (Change only on measure change?)
+* undos in guitar editor that rely on string and fret will be wrong if tuning changed meanwhile
+* red images
+* My CoreAudio player is deprecated on OS X 10.5...
+    Midi/Players/Mac/CoreAudioNotePlayer.cpp: In function 'OSStatus CoreAudioNotePlayer::CreateAUGraph(OpaqueAUGraph*&, ComponentInstanceRecord*&)':
+    Midi/Players/Mac/CoreAudioNotePlayer.cpp:75: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
+    Midi/Players/Mac/CoreAudioNotePlayer.cpp:75: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
+    Midi/Players/Mac/CoreAudioNotePlayer.cpp:80: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
+    Midi/Players/Mac/CoreAudioNotePlayer.cpp:80: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
+    Midi/Players/Mac/CoreAudioNotePlayer.cpp:84: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
+    Midi/Players/Mac/CoreAudioNotePlayer.cpp:84: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
+    Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
+    Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
+ 
 
 * score print :
     - measures appear very small if no note starts in them, even if some end in them
     - silences are drawn in 'repetition' measures
     - show G/F clef + key signature
     - show time sig on printed scores/tabs
-
-* crashes when opening 2+ files from the finder
-
-* Beaming is dependendant on the currently selected key sig, not on the note's measure's key sig!
-    
-* "follow playback" : hard to follow when horizontal scrolling is changed (Change only on measure change?)
-
-* undos in guitar editor that rely on string and fret will be wrong if tuning changed meanwhile
-
-* red images
+    - skip series of empty measures
+    - allow setting font size, number of lines per page, zoom, etc...
+    - sometimes does 41-42 43-44 and not 41-44
+    - tab export : x2 can appear on new line...
+    - repeated measures need measure numbers too
+    - sometimes uses, in repetitions, measures numbers that do not appear on the tab (that are inside a previous repetition)
+	
 * crash when cancelling printing (wx bug?)
+
 - "rearrange selected notes" doesn't always work optimally
 
 - what's up with glutInit? wxGlCanvas seems to call it. Crashes suse 10.1.
 - score : flat/sharp/natural signs tend to appear obscured (behind note stem if in a group... behind silence... etc.)
-+ score editor - sharp of flat notes at time=0 have their sign hidden behind grey bar
++ score editor - sharp or flat notes at time=0 have their sign hidden behind grey bar
 
 - error at startup (quicktime will not play dummy file to init it?)
         error:
@@ -156,26 +158,12 @@ NOTE: sorry, this is very raw :)
     (for instance by switching to and from drum editor, etc.)
 
  - when changing measure length in a song that already has midi events in it, song length becomes wrong compared to midi events
-
-* My CoreAudio player is deprecated on OS X 10.5...
-    Midi/Players/Mac/CoreAudioNotePlayer.cpp: In function 'OSStatus CoreAudioNotePlayer::CreateAUGraph(OpaqueAUGraph*&, ComponentInstanceRecord*&)':
-    Midi/Players/Mac/CoreAudioNotePlayer.cpp:75: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
-    Midi/Players/Mac/CoreAudioNotePlayer.cpp:75: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
-    Midi/Players/Mac/CoreAudioNotePlayer.cpp:80: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
-    Midi/Players/Mac/CoreAudioNotePlayer.cpp:80: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
-    Midi/Players/Mac/CoreAudioNotePlayer.cpp:84: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
-    Midi/Players/Mac/CoreAudioNotePlayer.cpp:84: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
-    Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
-    Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
- 
- can't reproduce : erasing control events by selecting them and pressing BACKSPACE not working (in imported midi if it makes any difference)
-    came back shortly after (?)
  
  MINOR / CLEANUP / UNSURE:
  - when wait dialog appears, you can still edit tracks and do operations that may be harmful to current process.
     yet you can't make it modal otherwise the background process stops.
     
- - controller editor should keep drum instrument in a drum track
+ - controller editor should keep drum instrument in a drum track (would be fixed if control editor appears under current editor)
  - class ScalePicker in /Dialogs... should be renamed ScaleDialog, or moved
  - tuningpicker and tuningdialog should be 2 separate things
 
