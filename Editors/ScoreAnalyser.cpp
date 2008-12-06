@@ -1039,7 +1039,7 @@ bool aboutEqual(const float float1, const float float2)
 }
 bool aboutEqual_tick(const int int1, const int int2)
 {
-	return std::abs(int1 - int2) < getMeasureData()->beatLengthInTicks()/16;
+	return abs(int1 - int2) < getMeasureData()->beatLengthInTicks()/16;
 }
 
 

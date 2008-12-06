@@ -264,7 +264,7 @@ def compile_Aria(build_type, which_os):
         
         env.Append(LIBS = ['GL', 'GLU', 'glut'])
         env.Append(LIBS = ['asound'])
-        env.Append(LIBS = ['z','dl','m'])
+        env.Append(LIBS = ['dl','m'])
         env.ParseConfig( 'pkg-config --cflags glib-2.0' )
 
     # Windows (currently unsupported)
