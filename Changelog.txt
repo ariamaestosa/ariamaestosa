@@ -3,6 +3,7 @@
 - Refactored preferences to look better, be cleaner and allow setting a default value for "follow playback"
 - Updated render code in hope to fix rounding errors on some graphics card
 - Fixed items wrongly disabled in key picker
+- Dynamic repartition of height when printing
 
 1.2b2
 - Fixed issues with track reordering

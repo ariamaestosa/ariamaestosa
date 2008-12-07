@@ -366,11 +366,22 @@ int LayoutLine::calculateHeight()
 {
     level_height = 0;
     
+    std::vector<int> heights;
+    
+    /* calculate the total height of this line (which many include multiple tracks */
     const int trackAmount = getTrackAmount();
     for(int n=0; n<trackAmount; n++)
     {
         setCurrentTrack(n);
-        level_height += printable->editorPrintables.get(currentTrack)->calculateHeight(*this);
+        const int this_height = printable->editorPrintables.get(currentTrack)->calculateHeight(*this);
+        heights.push_back(this_height);
+        level_height += this_height;
+    }
+    
+    /* distribute the vertical space between tracks (some track need more vertical space than others) */
+    for(int n=0; n<trackAmount; n++)
+    {
+        height_percent.push_back( (int)round( (float)heights[n] * 100.0f / (float)level_height ) );
     }
     
     return level_height;
@@ -380,10 +391,18 @@ void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x
     const int trackAmount = getTrackAmount();
     
     const float height = (float)(y1 - y0) * ( trackAmount>1 ? 0.9f : 1.0f);
-    const float track_height = height / trackAmount;
     
+    float current_y = y0;
     for(int n=0; n<trackAmount; n++)
     {
+        setCurrentTrack(n);
+        EditorPrintable* track = printable->editorPrintables.get(currentTrack);
+        
+        // determine how much vertical space is allocated for this track
+        const float track_height = height * height_percent[n]/100.0f;
+        
+        std::cout << "allocating " <<track_height << " out of " << height << " (" << height_percent[n] << "%)" << std::endl;
+        
         // draw vertical grey lines to show these measures belong toghether
         if(n>1)
         {
@@ -392,8 +411,9 @@ void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x
             dc.DrawLine( x1-3, y0, x1-3, y1);
         }
         
-        setCurrentTrack(n);
-        printable->editorPrintables.get(currentTrack)->drawLine(*this, dc, x0, y0+n*track_height, x1, y0+(n+0.6f)*track_height, n==0);
+        track->drawLine(*this, dc, x0, current_y, x1, current_y+(0.6f)*track_height, n==0);
+        current_y += track_height;
+        assertExpr(current_y,<=,y1);
     }
 }
 
