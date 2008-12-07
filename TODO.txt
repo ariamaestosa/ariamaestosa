@@ -41,6 +41,7 @@ NOTE: sorry, this is very raw :)
   
 ************************* NEW FEATURES TO ADD: *************************
 
+ * F/G clef settings always disabled, even in score mode...
 
  * more intelligently decide if notes on C belong to F clef or G clef
 

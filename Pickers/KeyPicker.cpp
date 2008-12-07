@@ -109,6 +109,10 @@ void KeyPicker::setParent(Track* parent_arg)
     {
         musical_checkbox->Enable(true);
         linear_checkbox->Enable(true);
+        fclef->Enable(true);
+        gclef->Enable(true);
+        octave_above->Enable(true);
+        octave_below->Enable(true);
     }
     
     // FIXME - all code confusingly assumes score editor and keyboard editor always use the same key
