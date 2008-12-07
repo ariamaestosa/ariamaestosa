@@ -139,6 +139,11 @@ class LayoutLine
 {
     int currentTrack;
     AriaPrintable* printable;
+    
+    /** used to store what percentage of this line's height this track should take.
+     e.g. a score with F+G clefs will need more space than a 4-string bass tab
+     so vertical space must not be divided equally */
+    std::vector<short int> height_percent;
 public:
     LayoutLine(AriaPrintable* parent);
     

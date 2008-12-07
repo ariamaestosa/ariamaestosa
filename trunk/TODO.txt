@@ -41,8 +41,6 @@ NOTE: sorry, this is very raw :)
   
 ************************* NEW FEATURES TO ADD: *************************
 
- * F/G clef settings always disabled, even in score mode...
-
  * more intelligently decide if notes on C belong to F clef or G clef
 
  * guess key feature
@@ -52,6 +50,8 @@ NOTE: sorry, this is very raw :)
  * Add "pause" button (stop and set starting measure to current one?)
 
  * Button to maximize track
+
+ * Show ottava bassa/alta signs, especially when printing
 
   - .aria files don't remember whether drums are minimized
   - .aria files don't remember docked tracks
@@ -129,8 +129,11 @@ NOTE: sorry, this is very raw :)
  
 
 * score print :
+    - don't show "error occured" dialog when clicking "cancel"
     - measures appear very small if no note starts in them, even if some end in them
     - silences are drawn in 'repetition' measures
+    - when printing multiple tracks, it's not clear which ones go toghether
+    - when printing multiple tracks, there's sometimes empty spaces between related tracks
     - show G/F clef + key signature
     - show time sig on printed scores/tabs
     - skip series of empty measures
@@ -139,7 +142,8 @@ NOTE: sorry, this is very raw :)
     - tab export : x2 can appear on new line...
     - repeated measures need measure numbers too
     - sometimes uses, in repetitions, measures numbers that do not appear on the tab (that are inside a previous repetition)
-	
+	- print dialog says it takes 9999 pages or so...
+    
 * crash when cancelling printing (wx bug?)
 
 - "rearrange selected notes" doesn't always work optimally

@@ -369,8 +369,8 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
 {
     assertExpr(y0,>,0);
     assertExpr(y1,>,0);
-    assertExpr(y0,<,10000);
-    assertExpr(y1,<,10000);
+    assertExpr(y0,<,50000);
+    assertExpr(y1,<,50000);
     
     std::cout << "==========\nline from note " << line.getFirstNote() << " to " << line.getLastNote() << std::endl;
     
