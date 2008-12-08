@@ -137,7 +137,7 @@ public:
     }
 };
 
-bool printResult(AriaPrintable* printable)
+int printResult(AriaPrintable* printable)
 {
 #ifdef __WXMAC__
     // change window title so any generated PDF is given the right name
@@ -148,15 +148,17 @@ bool printResult(AriaPrintable* printable)
     wxPrinter printer;
     
     if(!myprint.preparePrint()) return false;
-    const bool success = printer.Print(NULL, &myprint, true /* show dialog */);
+    //const bool success =
+    printer.Print(NULL, &myprint, true /* show dialog */);
 
 #ifdef __WXMAC__
     getMainFrame()->SetTitle(wxT("Aria Maestosa"));
 #endif
     
-    if(!success) return false;
+    return wxPrinter::GetLastError();
     
-    return true;
+    //if(!success) return false;
+    //return true;
 }
 
 #pragma mark -
