@@ -305,7 +305,12 @@ int ScorePrintable::calculateHeight(LayoutLine& line) const
     const int from_note = line.getFirstNote();
     const int to_note   = line.getLastNote();
     
-    if(from_note == -1 || to_note == -1) return 8; 
+    const bool g_clef = scoreEditor->isGClefEnabled();
+    const bool f_clef = scoreEditor->isFClefEnabled();
+    
+    if(from_note == -1 || to_note == -1)
+        if(g_clef xor f_clef) return 5;
+        else return 10; 
     
     // find highest and lowest note we need to render
     int highest_pitch = -1, lowest_pitch = -1;
@@ -334,9 +339,6 @@ int ScorePrintable::calculateHeight(LayoutLine& line) const
     const int f_clef_from = middle_c_level+2;
     const int f_clef_to   = middle_c_level+10;
     
-    const bool g_clef = scoreEditor->isGClefEnabled();
-    const bool f_clef = scoreEditor->isFClefEnabled();
-    
     int extra_lines_above_g_score = 0;
     int extra_lines_under_g_score = 0;
     int extra_lines_above_f_score = 0;
@@ -345,19 +347,19 @@ int ScorePrintable::calculateHeight(LayoutLine& line) const
     {
         if(lowest_level!=-1 and lowest_level < g_clef_from) extra_lines_above_g_score = (g_clef_from - lowest_level)/2;
         if(highest_level!=-1 and highest_level > g_clef_to) extra_lines_under_g_score = (g_clef_to - highest_level)/2;
-        return (g_clef_to - g_clef_from) + abs(extra_lines_above_g_score) + abs(extra_lines_under_g_score);
+        return (g_clef_to - g_clef_from)/2 + abs(extra_lines_above_g_score) + abs(extra_lines_under_g_score);
     }
     else if(f_clef and not g_clef)
     {
         if(lowest_level!=-1 and lowest_level < f_clef_from) extra_lines_above_f_score = (f_clef_from - lowest_level)/2;
         if(highest_level!=-1 and highest_level > f_clef_to) extra_lines_under_f_score = (f_clef_to - highest_level)/2;
-        return (f_clef_to - f_clef_from) + abs(extra_lines_above_f_score) + abs(extra_lines_under_f_score);
+        return (f_clef_to - f_clef_from)/2 + abs(extra_lines_above_f_score) + abs(extra_lines_under_f_score);
     }
     else if(f_clef and g_clef)
     {
         if(lowest_level!=-1 and lowest_level < g_clef_from) extra_lines_above_g_score = (g_clef_from - lowest_level)/2;
         if(highest_level!=-1 and highest_level > f_clef_to) extra_lines_under_f_score = (f_clef_to - highest_level)/2;
-        return (f_clef_to - g_clef_from) + abs(extra_lines_above_g_score) + abs(extra_lines_under_f_score);
+        return (f_clef_to - g_clef_from)/2 + abs(extra_lines_above_g_score) + abs(extra_lines_under_f_score);
     }
     return -1; // should not happen
 }
@@ -372,7 +374,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     assertExpr(y0,<,50000);
     assertExpr(y1,<,50000);
     
-    std::cout << "==========\nline from note " << line.getFirstNote() << " to " << line.getLastNote() << std::endl;
+    //std::cout << "==========\nline from note " << line.getFirstNote() << " to " << line.getLastNote() << std::endl;
     
     Track* track = line.getTrack();
     ScoreEditor* scoreEditor = track->graphics->scoreEditor;
