@@ -3,6 +3,7 @@
 #include <wx/sizer.h>
 #include <wx/file.h>
 #include <wx/radiobut.h>
+#include <wx/print.h>
 
 #include "Config.h"
 #include "AriaCore.h"
@@ -268,7 +269,8 @@ void completeExport(bool accepted)
     
     notationPrint.calculateLayout( checkRepetitions_bool );
     
-    if(!printResult(&notationPrint))
+    wxPrinterError result = (wxPrinterError)printResult(&notationPrint);
+    if(result == wxPRINTER_ERROR)
     {
         std::cerr << "error while printing" << std::endl;
         wxMessageBox( _("An error occured during printing.") );

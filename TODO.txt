@@ -129,7 +129,6 @@ NOTE: sorry, this is very raw :)
  
 
 * score print :
-    - don't show "error occured" dialog when clicking "cancel"
     - measures appear very small if no note starts in them, even if some end in them
     - the "blank space between lines" policy shouldn't apply for the last in a page, it wastes space
     - silences are drawn in 'repetition' measures

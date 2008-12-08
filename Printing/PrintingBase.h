@@ -121,7 +121,7 @@ public:
 
 AriaPrintable* getCurrentPrintable();
 
-bool printResult(AriaPrintable* printable);
+int printResult(AriaPrintable* printable);
     
 }
 
