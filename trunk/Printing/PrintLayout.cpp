@@ -642,7 +642,7 @@ void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements, ptr_ve
             if( divider <= 2 ) layoutElements[n].zoom = 2;
             if( divider <= 1 ) layoutElements[n].zoom = 4;
             
-            // for very short notes, zooma bit too otherwise they'll all be stuck toghether
+            // for very short notes, zoom a bit too otherwise they'll all be stuck toghether
             if( divider >= 16 ) layoutElements[n].zoom = 2;
             
             layoutElements[n].width_in_units = (int)round(
@@ -684,7 +684,7 @@ void calculateLineLayout(std::vector<LayoutLine>& layoutLines,
     // elements on the current one
     for(int n=0; n<layoutElementsAmount; n++)
     {
-        if(current_width + layoutElements[n].width_in_units > maxCharItemsPerLine)
+        if(current_width + layoutElements[n].width_in_units > max_line_width_in_units)
         {
             // too much stuff on current line, switch to another line
             layoutLines[currentLine].width_in_units = current_width;
