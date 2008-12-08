@@ -131,6 +131,7 @@ NOTE: sorry, this is very raw :)
 * score print :
     - don't show "error occured" dialog when clicking "cancel"
     - measures appear very small if no note starts in them, even if some end in them
+    - the "blank space between lines" policy shouldn't apply for the last in a page, it wastes space
     - silences are drawn in 'repetition' measures
     - when printing multiple tracks, it's not clear which ones go toghether
     - when printing multiple tracks, there's sometimes empty spaces between related tracks
@@ -138,11 +139,13 @@ NOTE: sorry, this is very raw :)
     - show time sig on printed scores/tabs
     - skip series of empty measures
     - allow setting font size, number of lines per page, zoom, etc...
+	- print dialog says it takes 9999 pages or so...
+    
+repetition detection:
     - sometimes does 41-42 43-44 and not 41-44
     - tab export : x2 can appear on new line...
     - repeated measures need measure numbers too
     - sometimes uses, in repetitions, measures numbers that do not appear on the tab (that are inside a previous repetition)
-	- print dialog says it takes 9999 pages or so...
     
 * crash when cancelling printing (wx bug?)
 

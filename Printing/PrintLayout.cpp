@@ -369,6 +369,7 @@ int LayoutLine::calculateHeight()
     std::vector<int> heights;
     
     /* calculate the total height of this line (which many include multiple tracks */
+    std::cout << "---- line ----" << std::endl;
     const int trackAmount = getTrackAmount();
     for(int n=0; n<trackAmount; n++)
     {
@@ -376,12 +377,14 @@ int LayoutLine::calculateHeight()
         const int this_height = printable->editorPrintables.get(currentTrack)->calculateHeight(*this);
         heights.push_back(this_height);
         level_height += this_height;
+        std::cout << this_height << "-high" << std::endl;
     }
     
     /* distribute the vertical space between tracks (some track need more vertical space than others) */
     for(int n=0; n<trackAmount; n++)
     {
         height_percent.push_back( (int)round( (float)heights[n] * 100.0f / (float)level_height ) );
+        std::cout << height_percent[n] << "%" << std::endl;
     }
     
     return level_height;
@@ -401,7 +404,7 @@ void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x
         // determine how much vertical space is allocated for this track
         const float track_height = height * height_percent[n]/100.0f;
         
-        std::cout << "allocating " <<track_height << " out of " << height << " (" << height_percent[n] << "%)" << std::endl;
+        std::cout << "* allocating " <<track_height << " out of " << height << " (" << height_percent[n] << "%)" << std::endl;
         
         // draw vertical grey lines to show these measures belong toghether
         if(n>1)
@@ -411,7 +414,7 @@ void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x
             dc.DrawLine( x1-3, y0, x1-3, y1);
         }
         
-        track->drawLine(*this, dc, x0, current_y, x1, current_y+(0.6f)*track_height, n==0);
+        track->drawLine(*this, dc, x0, current_y, x1, current_y+(track_height-220), n==0);
         current_y += track_height;
         assertExpr(current_y,<=,y1);
     }
@@ -692,7 +695,7 @@ void calculateLineLayout(std::vector<LayoutLine>& layoutLines,
             
            // std::cout << "    adding a new line : " <<  currentLine << std::endl;
             
-            if(current_height > 80)
+            if(current_height > 50)
             {
                 layoutPages[current_page].last_line = currentLine-1;
                 current_height = 0;
