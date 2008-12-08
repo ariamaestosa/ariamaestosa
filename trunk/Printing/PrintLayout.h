@@ -150,6 +150,8 @@ public:
     int width_in_units;
     int level_height;
     
+    bool last_of_page;
+    
     int getTrackAmount();
     void setCurrentTrack(const int n);
     Track* getTrack() const;

@@ -256,15 +256,18 @@ LayoutElement::LayoutElement(LayoutElementType type_arg, int measure_arg)
 {
     type = type_arg;
     measure = measure_arg;
-    
+
     x = -1;
     x2 = -1;
 }
 
+#pragma mark -
+    
 LayoutLine::LayoutLine(AriaPrintable* parent)
 {
     printable = parent;
     currentTrack = 0;
+    last_of_page = false;
 }
 
 int LayoutLine::getTrackAmount()
@@ -387,6 +390,10 @@ int LayoutLine::calculateHeight()
         std::cout << height_percent[n] << "%" << std::endl;
     }
     
+    // if we're the last of the page, we need less space cause we don't
+    // need to leave empty space under
+    if(last_of_page) level_height -= 13;
+    
     return level_height;
 }
 void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x1, const int y1)
@@ -394,7 +401,9 @@ void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x
     const int trackAmount = getTrackAmount();
     
     // leave an additional empty space under line if we're printing multiple tracks
-    const float height = (float)(y1 - y0) - ( trackAmount>1 ? 100 : 0 );
+    const float height = (float)(y1 - y0) - ( trackAmount>1 and not last_of_page ? 100 : 0 );
+    
+    std::cout << "last_of_page=" << last_of_page << std::endl;
     
     float current_y = y0;
     for(int n=0; n<trackAmount; n++)
@@ -415,9 +424,11 @@ void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x
             dc.DrawLine( x1-3, y0, x1-3, y1);
         }
         
-        track->drawLine(*this, dc, x0, current_y, x1, current_y+(track_height-220), n==0);
+        track->drawLine(*this, dc, x0, current_y, x1,
+                        current_y+(track_height-220),
+                        n==0);
         current_y += track_height;
-        assertExpr(current_y,<=,y1);
+        //assertExpr(current_y,<=,y1);
     }
 }
 
@@ -696,11 +707,13 @@ void calculateLineLayout(std::vector<LayoutLine>& layoutLines,
             
            // std::cout << "    adding a new line : " <<  currentLine << std::endl;
             
-            if(current_height > 50)
+            // too much lines on current page, switch to a new page
+            if(current_height > 80)
             {
                 layoutPages[current_page].last_line = currentLine-1;
-                current_height = 0;
+                current_height = line_height;
                 layoutPages.push_back( LayoutPage() );
+                layoutLines[currentLine-1].last_of_page = true;
                 current_page++;
                // std::cout << "adding a new page : " <<  current_page << std::endl;
                 layoutPages[current_page].first_line = currentLine;
