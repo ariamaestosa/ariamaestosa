@@ -393,7 +393,8 @@ void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x
 {
     const int trackAmount = getTrackAmount();
     
-    const float height = (float)(y1 - y0) * ( trackAmount>1 ? 0.9f : 1.0f);
+    // leave an additional empty space under line if we're printing multiple tracks
+    const float height = (float)(y1 - y0) - ( trackAmount>1 ? 100 : 0 );
     
     float current_y = y0;
     for(int n=0; n<trackAmount; n++)
