@@ -99,7 +99,7 @@ void showVolumeSlider(int x, int y, int noteID, Track* track)
 	sliderframe->show(x,y,noteID, track);
 }
 	
-VolumeSlider::VolumeSlider() : wxDialog(NULL, 0,  wxT("volume"), wxDefaultPosition, wxSize(50,160), wxSTAY_ON_TOP )
+VolumeSlider::VolumeSlider() : wxDialog(NULL, 0,  _("volume"), wxDefaultPosition, wxSize(50,160), wxSTAY_ON_TOP )
 {
 	
     
