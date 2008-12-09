@@ -14,7 +14,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "Pickers/KeySigPicker.h"
+#include "Pickers/TimeSigPicker.h"
 #include "GUI/MainFrame.h"
 
 #include <iostream>
