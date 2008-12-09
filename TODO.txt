@@ -112,7 +112,6 @@ NOTE: sorry, this is very raw :)
  ************************* BUGS: *************************
  
 * crashes when opening 2+ files from the finder
-* Beaming is dependendant on the currently selected key sig, not on the note's measure's key sig!
 * "follow playback" : hard to follow when horizontal scrolling is changed (Change only on measure change?)
 * undos in guitar editor that rely on string and fret will be wrong if tuning changed meanwhile
 * red images
@@ -130,10 +129,10 @@ NOTE: sorry, this is very raw :)
 
 * score print :
     - measures appear very small if no note starts in them, even if some end in them
-    - the "blank space between lines" policy shouldn't apply for the last in a page, it wastes space
+    - add non-linear printing...
     - silences are drawn in 'repetition' measures
     - when printing multiple tracks, it's not clear which ones go toghether
-    - when printing multiple tracks, there's sometimes empty spaces between related tracks
+    - when there's small lines above/below score, the vertical measure line continues beyonf the score
     - show G/F clef + key signature
     - show time sig on printed scores/tabs
     - skip series of empty measures

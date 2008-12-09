@@ -50,6 +50,16 @@ class NoteRenderInfo;
 class Note;    
 class ScoreAnalyser;
 
+/*
+ * When you switch to a key other C,flat or sharp signs need to appear next to the G and F keys.
+ * These arrays give the X position relative to the left of the key of a flat or sharp sign for each note,
+ * where the index of the array is of type note_7.
+ */
+const int sign_dist = 5;
+const unsigned short int sharp_sign_x[] = { 5*sign_dist, 7*sign_dist, 2*sign_dist, 4*sign_dist, 6*sign_dist, 1*sign_dist, 3*sign_dist };
+const unsigned short int flat_sign_x[] = { 3*sign_dist, 1*sign_dist, 6*sign_dist, 4*sign_dist, 2*sign_dist, 7*sign_dist, 5*sign_dist };
+
+    
     /*
      * Each note can be represented in many ways (its Y position on screen, its note_7, its note_12, its midi pitch...)
      * This class eases the burden by doing convertions and managing the location where notes should appear and

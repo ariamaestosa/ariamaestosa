@@ -60,16 +60,6 @@ int head_radius = -1;
 // height in pixels of each level
 const int y_step = 5;
 
-/*
- * When you switch to a key other C,flat or sharp signs need to appear next to the G and F keys.
- * These arrays give the X position relative to the left of the key of a flat or sharp sign for each note,
- * where the index of the array is of type note_7.
- */
-const int sign_dist = 5;
-int sharp_sign_x[] = { 5*sign_dist, 7*sign_dist, 2*sign_dist, 4*sign_dist, 6*sign_dist, 1*sign_dist, 3*sign_dist };
-
-int flat_sign_x[] = { 3*sign_dist, 1*sign_dist, 6*sign_dist, 4*sign_dist, 2*sign_dist, 7*sign_dist, 5*sign_dist };
-
 int findNotePitch(int note_7, int sharpness)
 {
 	int note=0;
