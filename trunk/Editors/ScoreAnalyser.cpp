@@ -77,13 +77,14 @@ public:
         //const int y_step = editor->getYStep();
 
         // check for number of "beamable" notes and split if current amount is not acceptable with the current time sig
-        // FIXME - not always right
-        const int num = getMeasureData()->getTimeSigNumerator();
-        const int denom = getMeasureData()->getTimeSigDenominator();
+        // only considering note 0 to get the measure should be fine since Aria only beams within the same measure
+        const int num = getMeasureData()->getTimeSigNumerator( noteRenderInfo[0].measureBegin );
+        const int denom = getMeasureData()->getTimeSigDenominator( noteRenderInfo[0].measureBegin );
         const int flag_amount = noteRenderInfo[first_id].flag_amount;
 
         int max_amount_of_notes_beamed_toghether = 4;
 
+        // FIXME - not always right
         if(num == 3 and denom == 4) max_amount_of_notes_beamed_toghether = 2 * (int)(std::pow(2.0,flag_amount-1));
         else if((num == 6 and denom == 4) or (num == 6 and denom == 8)) max_amount_of_notes_beamed_toghether = 3 * (int)(std::pow(2.0,flag_amount-1));
         else max_amount_of_notes_beamed_toghether = num * (int)(std::pow(2.0,flag_amount-1));

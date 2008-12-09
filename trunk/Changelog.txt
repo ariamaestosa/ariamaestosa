@@ -5,7 +5,8 @@
 - Fixed items wrongly disabled in key picker
 - Dynamic repartition of height when printing
 - Don't give error messages when cancelling printing
-- better horizontal distribution when printing
+- Better horizontal distribution when printing
+- Fixed beaming problems when using multiple time signatures
 
 1.2b2
 - Fixed issues with track reordering

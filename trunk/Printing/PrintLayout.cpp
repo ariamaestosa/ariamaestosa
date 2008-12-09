@@ -731,6 +731,7 @@ void calculateLineLayout(std::vector<LayoutLine>& layoutLines,
     layoutPages[current_page].last_line = currentLine;
 }
 
+/** main function called from other classes */
 void calculateLayoutElements(ptr_vector<Track, REF>& track, const bool checkRepetitions_bool,
                              std::vector<LayoutLine>& layoutLines, std::vector<LayoutPage>& layoutPages,
                              ptr_vector<MeasureToExport>& measures)
