@@ -14,8 +14,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _keysigpicker_
-#define _keysigpicker_
+#ifndef _timesigpicker_
+#define _timesigpicker_
 
 #include "wx/wx.h"
 #include "wx/event.h"
