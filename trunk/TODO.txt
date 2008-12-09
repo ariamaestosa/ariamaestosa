@@ -60,7 +60,7 @@ NOTE: sorry, this is very raw :)
  - when scaling entire song, scale control events and time sig changes too
 
  + linux : export to wav when not using timidity?
-
+ + linux : offer to launch timidity deamon if it's not running
  + proper ALSA port selection (in preferences?)
 
  - key is not saved to midi files (the problem is that in midi key is global, in Aria it is local)
