@@ -1012,7 +1012,10 @@ void MainPane::setCurrentTick(int currentTick)
 {
     MainPane::currentTick = currentTick;
 }
-
+int MainPane::getCurrentTick() const
+{
+    return currentTick;
+}
 
 #pragma mark -
 
