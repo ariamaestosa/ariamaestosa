@@ -94,6 +94,9 @@ class MainFrame : public wxFrame
     wxMenu* trackMenu;
 	wxMenu* helpMenu;
 
+    wxBitmap playBitmap;
+    wxBitmap pauseBitmap;
+    
 	wxMenuItem* followPlaybackMenuItem;
 
 	wxMenuItem* playDuringEdits_always;

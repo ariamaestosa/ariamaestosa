@@ -47,8 +47,6 @@ NOTE: sorry, this is very raw :)
 
  * add new tools, that allow adding notes without dragging (and resizing without keyboard, and selecting, and...?)
 
- * Add "pause" button (stop and set starting measure to current one?)
-
  * Button to maximize track
 
  * Show ottava bassa/alta signs, especially when printing
@@ -127,7 +125,7 @@ NOTE: sorry, this is very raw :)
     Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
     Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
  
-
+* crash if closing the main window while time sig picker is open
 * score print :
     - measures appear very small if no note starts in them, even if some end in them
     - add non-linear printing...

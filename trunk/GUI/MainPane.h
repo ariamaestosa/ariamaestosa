@@ -78,6 +78,7 @@ public:
     void playbackRenderLoop();
     void setPlaybackStartTick(int newValue);
     void setCurrentTick(int currentTick=-1);
+    int getCurrentTick() const;
     void exitPlayLoop();
     void scrollNowToPlaybackPosition();
     

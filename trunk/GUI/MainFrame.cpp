@@ -264,8 +264,8 @@ void MainFrame::init()
     {
     QuickBoxPanel quickPane(topPane, toolbarSizer, wxHORIZONTAL);
     
-	wxBitmap playBitmap;
 	playBitmap.LoadFile( getResourcePrefix()  + wxT("play.png") , wxBITMAP_TYPE_PNG);
+    pauseBitmap.LoadFile( getResourcePrefix()  + wxT("pause.png") , wxBITMAP_TYPE_PNG);
 	play=new wxBitmapButton(quickPane.pane, PLAY_CLICKED, playBitmap);
 	quickPane.add(play);
 
@@ -295,21 +295,6 @@ void MainFrame::init()
     // time sig
     timeSig = new wxButton(topPane, MEASURE_NUM, wxT("4/4"));
     toolbarSizer->Add( timeSig, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
-        
-        /*
-    QuickBoxPanel quickPane(topPane, toolbarSizer, wxHORIZONTAL);
-    
-    measureTypeTop=new wxTextCtrl(quickPane.pane, MEASURE_NUM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize, wxTE_PROCESS_ENTER );
-    quickPane.add(measureTypeTop,2, 1,wxTOP | wxBOTTOM | wxLEFT);
-
-    wxStaticText* slash = new wxStaticText(quickPane.pane, wxID_ANY, wxT(" /"), wxDefaultPosition, wxSize(15,15));
-    quickPane.add(slash, 0, 0);
-    slash->SetMinSize(wxSize(15,15));
-    slash->SetMaxSize(wxSize(15,15));
-    
-    measureTypeBottom=new wxTextCtrl(quickPane.pane, MEASURE_DENOM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize, wxTE_PROCESS_ENTER );
-    quickPane.add(measureTypeBottom,2,1, wxTOP | wxBOTTOM | wxRIGHT);
-         */
 
     // song beginning
     firstMeasure=new wxTextCtrl(topPane, BEGINNING, wxT("1"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER);
@@ -339,8 +324,8 @@ void MainFrame::init()
 #else
     //toolbar = this->CreateToolBar(wxTB_HORZ_TEXT | wxNO_BORDER);
     
-    wxBitmap playBitmap;
     playBitmap.LoadFile( getResourcePrefix()  + wxT("play.png") , wxBITMAP_TYPE_PNG);
+    pauseBitmap.LoadFile( getResourcePrefix()  + wxT("pause.png") , wxBITMAP_TYPE_PNG);
     toolbar->AddTool(PLAY_CLICKED, wxT("Play"), playBitmap);
 
     wxBitmap stopBitmap;
@@ -493,7 +478,14 @@ void MainFrame::on_close(wxCloseEvent& evt)
 void MainFrame::playClicked(wxCommandEvent& evt)
 {
 
-	if(playback_mode) return; // already playing
+	if(playback_mode)
+    {
+        // already playing, this button does "pause" instead
+        getMeasureData()->setFirstMeasure( getMeasureData()->measureAtTick(mainPane->getCurrentTick()) );
+        mainPane->exitPlayLoop();
+        updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
+        return;
+    }
 
     toolsEnterPlaybackMode();
 
@@ -524,7 +516,8 @@ void MainFrame::toolsEnterPlaybackMode()
 	playback_mode = true;
 #ifdef NO_WX_TOOLBAR
     stop->Enable(true);
-    play->Enable(false);
+    //play->Enable(false);
+    play->SetBitmapLabel(pauseBitmap);
 #else
     toolbar->EnableTool(PLAY_CLICKED, false);
     toolbar->EnableTool(STOP_CLICKED, true);
@@ -545,7 +538,8 @@ void MainFrame::toolsExitPlaybackMode()
 	playback_mode = false;
 #ifdef NO_WX_TOOLBAR
     stop->Enable(false);
-    play->Enable(true);
+    play->SetBitmapLabel(playBitmap);
+    //play->Enable(true);
 #else
     toolbar->EnableTool(PLAY_CLICKED, true);
     toolbar->EnableTool(STOP_CLICKED, false);
