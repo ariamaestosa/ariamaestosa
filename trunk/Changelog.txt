@@ -7,6 +7,7 @@
 - Don't give error messages when cancelling printing
 - Better horizontal distribution when printing
 - Fixed beaming problems when using multiple time signatures
+- Added new time sig picker, making the interface much nicer when using multiple key sigs
 
 1.2b2
 - Fixed issues with track reordering

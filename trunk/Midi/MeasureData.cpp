@@ -36,6 +36,8 @@
 
 #include "Editors/Editor.h"
 
+#include "Pickers/TimeSigPicker.h"
+
 #include <iostream>
 
 
@@ -447,6 +449,9 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
 				{
 					selectedTimeSig = n;
                     getMainFrame()->changeShownTimeSig( timeSigChanges[selectedTimeSig].num, timeSigChanges[selectedTimeSig].denom );
+                    
+                    wxPoint pt = wxGetMousePosition();
+                    showTimeSigPicker( pt.x, pt.y, timeSigChanges[n].num, timeSigChanges[n].denom );
 					break;
 				}
 				// if we're importing, replace it with new value
