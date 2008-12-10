@@ -314,7 +314,6 @@ void MeasureBar::mouseDown(int x, int y)
 	}
 	
 	const int measure_vectorID = data->measureAtPixel( x );
-	
 	data->measureInfo[measure_vectorID].selected = true;
 	
 	data->somethingSelected = true;

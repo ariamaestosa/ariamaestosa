@@ -171,8 +171,17 @@ void TimeSigPicker::enterPressed(wxCommandEvent& evt)
     getMeasureData()->setTimeSig( top, bottom );
     getMainFrame()->changeShownTimeSig( top, bottom );
     
+    // check if user changed measure mode
     if(variable->IsChecked() != getMeasureData()->isExpandedMode())
     {
+        //when turning it off, ask for a confirmation because all events will be lost
+        if(not variable->IsChecked())
+        {
+            const int answer = wxMessageBox(_("Are you sure you want to go back to having a single time signature?\nAny time sig events you may have added will be lost."),
+                                      _("Confirm"), wxYES_NO);
+            if (answer == wxNO){ closeWindow(); return; }
+        }
+        
         getCurrentSequence()->measureData->setExpandedMode( variable->IsChecked() );
         getMainFrame()->updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
     }
