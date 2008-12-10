@@ -393,25 +393,8 @@ int MeasureData::getTimeSigDenominator(int measure)
 
 void MeasureData::setTimeSig(int top, int bottom)
 {
-	//std::cout << "****** set time sig " << top << " " << bottom << std::endl;
-	if(top > 0)
-	{
-		float denom = (float)log(bottom)/(float)log(2);
-		if( (int)denom != (float)denom )
-		{
-			wxBell();
-            //I18N: - when setting a wrong time signature
-			wxMessageBox(  _("Denominator must be a power of 2") );
-			return;
-		}
-		
-		timeSigChanges[selectedTimeSig].num = top;
-	}
-	
-	if(bottom > 0)
-	{
-		timeSigChanges[selectedTimeSig].denom = bottom;
-    }
+    timeSigChanges[selectedTimeSig].num = top;
+    timeSigChanges[selectedTimeSig].denom = bottom;
 	updateMeasureInfo();
 	
 

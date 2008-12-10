@@ -81,8 +81,9 @@ class MainFrame : public wxFrame
     wxScrollBar* horizontalScrollbar;
     wxScrollBar* verticalScrollbar;
 
-    wxTextCtrl* measureTypeBottom;
-    wxTextCtrl* measureTypeTop;
+    wxButton* timeSig;
+    //wxTextCtrl* measureTypeBottom;
+    //wxTextCtrl* measureTypeTop;
     wxTextCtrl* firstMeasure;
     wxSpinCtrl* songLength;
     wxSpinCtrl* displayZoom;
@@ -138,8 +139,8 @@ public:
     void zoomChanged(wxSpinEvent& evt);
     void songLengthTextChanged(wxCommandEvent& evt);
     void zoomTextChanged(wxCommandEvent& evt);
-    void measureNumChanged(wxCommandEvent& evt);
-    void measureDenomChanged(wxCommandEvent& evt);
+    void timeSigClicked(wxCommandEvent& evt);
+    //void measureDenomChanged(wxCommandEvent& evt);
     void firstMeasureChanged(wxCommandEvent& evt);
 	void changeMeasureAmount(int i, bool throwEvent=true);
     void disableMenusForPlayback(const bool disable);
@@ -222,6 +223,7 @@ public:
 	void changeShownTimeSig(int num, int denom);
 
 	void evt_freeVolumeSlider( wxCommandEvent& evt );
+    void evt_freeTimeSigPicker( wxCommandEvent& evt );
 
     DECLARE_EVENT_TABLE();
 };

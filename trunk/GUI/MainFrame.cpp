@@ -47,6 +47,7 @@
 #include "Pickers/VolumeSlider.h"
 #include "Pickers/TuningPicker.h"
 #include "Pickers/KeyPicker.h"
+#include "Pickers/TimeSigPicker.h"
 
 #include "IO/IOUtils.h"
 #include "IO/AriaFileWriter.h"
@@ -72,7 +73,7 @@ enum IDs
 	SCROLLBAR_V,
 
 	MEASURE_NUM,
-	MEASURE_DENOM,
+	//MEASURE_DENOM,
 };
 
 
@@ -114,13 +115,10 @@ EVT_TOOL(STOP_CLICKED, MainFrame::stopClicked)
 
 EVT_TEXT(TEMPO, MainFrame::tempoChanged)
 
-EVT_TEXT(MEASURE_NUM, MainFrame::measureNumChanged)
-EVT_TEXT(MEASURE_DENOM, MainFrame::measureDenomChanged)
+EVT_BUTTON(MEASURE_NUM, MainFrame::timeSigClicked)
 EVT_TEXT(BEGINNING, MainFrame::firstMeasureChanged)
 
 EVT_TEXT_ENTER(TEMPO, MainFrame::enterPressedInTopBar)
-EVT_TEXT_ENTER(MEASURE_NUM, MainFrame::enterPressedInTopBar)
-EVT_TEXT_ENTER(MEASURE_DENOM, MainFrame::enterPressedInTopBar)
 EVT_TEXT_ENTER(BEGINNING, MainFrame::enterPressedInTopBar)
 
 EVT_SPINCTRL(LENGTH, MainFrame::songLengthChanged)
@@ -130,7 +128,8 @@ EVT_TEXT(LENGTH, MainFrame::songLengthTextChanged)
 EVT_TEXT(ZOOM, MainFrame::zoomTextChanged)
 
 EVT_COMMAND  (100000, wxEVT_DESTROY_VOLUME_SLIDER, MainFrame::evt_freeVolumeSlider)
-
+EVT_COMMAND  (100000, wxEVT_DESTROY_TIMESIG_PICKER, MainFrame::evt_freeTimeSigPicker)
+    
 // events useful if you need to show a
 // progress bar from another thread
 EVT_COMMAND  (100001, wxEVT_SHOW_WAIT_WINDOW, MainFrame::evt_showWaitWindow)
@@ -293,8 +292,11 @@ void MainFrame::init()
     toolbarSizer->Add(songLength, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
     songLength->SetRange(0, 10000);
 
-    // measures
-    {
+    // time sig
+    timeSig = new wxButton(topPane, MEASURE_NUM, wxT("4/4"));
+    toolbarSizer->Add( timeSig, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+        
+        /*
     QuickBoxPanel quickPane(topPane, toolbarSizer, wxHORIZONTAL);
     
     measureTypeTop=new wxTextCtrl(quickPane.pane, MEASURE_NUM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize, wxTE_PROCESS_ENTER );
@@ -307,8 +309,8 @@ void MainFrame::init()
     
     measureTypeBottom=new wxTextCtrl(quickPane.pane, MEASURE_DENOM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize, wxTE_PROCESS_ENTER );
     quickPane.add(measureTypeBottom,2,1, wxTOP | wxBOTTOM | wxRIGHT);
-    }
-    
+         */
+
     // song beginning
     firstMeasure=new wxTextCtrl(topPane, BEGINNING, wxT("1"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER);
     toolbarSizer->Add(firstMeasure, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
@@ -530,8 +532,9 @@ void MainFrame::toolsEnterPlaybackMode()
     
     disableMenusForPlayback(true);
 
-    measureTypeBottom->Enable(false);
-    measureTypeTop->Enable(false);
+    //measureTypeBottom->Enable(false);
+    //measureTypeTop->Enable(false);
+    timeSig->Enable(false);
     firstMeasure->Enable(false);
     songLength->Enable(false);
     tempoCtrl->Enable(false);
@@ -550,8 +553,9 @@ void MainFrame::toolsExitPlaybackMode()
     
     disableMenusForPlayback(false);
 
-    measureTypeBottom->Enable(true);
-    measureTypeTop->Enable(true);
+    //measureTypeBottom->Enable(true);
+    //measureTypeTop->Enable(true);
+    timeSig->Enable(true);
     firstMeasure->Enable(true);
     songLength->Enable(true);
     tempoCtrl->Enable(true);
@@ -577,7 +581,10 @@ void MainFrame::updateTopBarAndScrollbarsForSequence(Sequence* seq)
         firstMeasure->SetValue( fromCString(buffer) );
     }
 
-    // measure length
+    // time signature
+    timeSig->SetLabel( wxString::Format(wxT("%i/%i"), getMeasureData()->getTimeSigNumerator(), getMeasureData()->getTimeSigDenominator() ));
+        
+    /*
     {
         char buffer[4];
         sprintf (buffer, "%d", getMeasureData()->getTimeSigNumerator() );
@@ -591,6 +598,7 @@ void MainFrame::updateTopBarAndScrollbarsForSequence(Sequence* seq)
 
         measureTypeBottom->SetValue( fromCString(buffer) );
     }
+     */
 
     // tempo
     {
@@ -624,7 +632,6 @@ void MainFrame::updateTopBarAndScrollbarsForSequence(Sequence* seq)
 
 void MainFrame::songLengthTextChanged(wxCommandEvent& evt)
 {
-
     static wxString previousString = wxT("");
 
     // only send event if the same string is sent twice (i.e. first time, because it was typed in, second time because 'enter' was pressed)
@@ -646,41 +653,16 @@ void MainFrame::songLengthTextChanged(wxCommandEvent& evt)
     }
 
     previousString = evt.GetString();
-
 }
 
 
-
-void MainFrame::measureNumChanged(wxCommandEvent& evt)
+void MainFrame::timeSigClicked(wxCommandEvent& evt)
 {
-
-    if(changingValues) return; // discard events thrown because the computer changes values
-
-    int top = atoi_u( measureTypeTop->GetValue() );
-    int bottom = atoi_u( measureTypeBottom->GetValue() );
-
-    if(bottom < 1 or top<1 or bottom>32 or top>32) return;
-
-    getMeasureData()->setTimeSig( top, bottom );
-
-	displayZoom->SetValue( getCurrentSequence()->getZoomInPercent() );
+    wxPoint pt = wxGetMousePosition();
+    
+    showTimeSigPicker( pt.x, pt.y, getMeasureData()->getTimeSigNumerator(), getMeasureData()->getTimeSigDenominator() );
 }
-
-void MainFrame::measureDenomChanged(wxCommandEvent& evt)
-{
-
-    if(changingValues) return; // discard events thrown because the computer is changing values
-
-    int top = atoi_u( measureTypeTop->GetValue() );
-    int bottom = atoi_u( measureTypeBottom->GetValue() );
-
-    if(bottom < 1 or top<1 or bottom>32 or top>32) return;
-
-    getMeasureData()->setTimeSig( top, bottom );
-
-	displayZoom->SetValue( getCurrentSequence()->getZoomInPercent() );
-}
-
+    
 void MainFrame::firstMeasureChanged(wxCommandEvent& evt)
 {
 
@@ -757,9 +739,11 @@ void MainFrame::changeMeasureAmount(int i, bool throwEvent)
 
 void MainFrame::changeShownTimeSig(int num, int denom)
 {
-	changingValues = true;
-	measureTypeTop->SetValue( to_wxString(num) );
-	measureTypeBottom->SetValue( to_wxString(denom) );
+	changingValues = true; // FIXME - still necessary?
+	//measureTypeTop->SetValue( to_wxString(num) );
+	//measureTypeBottom->SetValue( to_wxString(denom) );
+    timeSig->SetLabel( wxString::Format(wxT("%i/%i"), num, denom ));
+
 	changingValues = false;
 }
 
@@ -1223,6 +1207,11 @@ void MainFrame::evt_freeVolumeSlider( wxCommandEvent& evt )
 {
 	freeVolumeSlider();
 }
+void MainFrame::evt_freeTimeSigPicker( wxCommandEvent& evt )
+{
+    freeTimeSigPicker();
+}
+    
 void MainFrame::evt_showWaitWindow(wxCommandEvent& evt)
 {
     WaitWindow::show( evt.GetString(), evt.GetInt() );

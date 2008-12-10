@@ -30,29 +30,24 @@ class Track;
 
 DECLARE_EVENT_TYPE(wxEVT_DESTROY_TIMESIG_PICKER, -1)
 
-void showTimeSigPicker();
+void showTimeSigPicker(const int x, const int y, const int num, const int denom);
 void freeTimeSigPicker();
 
-class TimeSigPicker : public wxDialog
+class TimeSigPicker : public wxFrame
 {
     wxTextCtrl* valueTextNum;
     wxTextCtrl* valueTextDenom;
     wxButton* okbtn;
     wxPanel* pane;
-    int returnCode;
-    
-    int noteID;
-	
+    wxCheckBox* variable;
 public:
     LEAK_CHECK(TimeSigPicker);
     
     TimeSigPicker();
     
-    void show();
+    void show(const int x, const int y, const int num, const int denom);
     void closeWindow();
 	
-    void textNumChanged(wxCommandEvent& evt);
-    void textDenomChanged(wxCommandEvent& evt);
     void enterPressed(wxCommandEvent& evt);
 
 	void closed(wxCloseEvent& evt);

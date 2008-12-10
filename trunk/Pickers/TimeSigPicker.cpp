@@ -26,14 +26,15 @@
 namespace AriaMaestosa {
 	
     
-DEFINE_EVENT_TYPE(wxEVT_DESTROY_TIMESIG_PICKER)
+DEFINE_EVENT_TYPE(wxEVT_DESTROY_TIMESIG_PICKER) // actually do something with this event
 		
-BEGIN_EVENT_TABLE(TimeSigPicker, wxDialog)
+BEGIN_EVENT_TABLE(TimeSigPicker, wxFrame)
 
-EVT_TEXT(1, TimeSigPicker::textNumChanged)
-EVT_TEXT(2, TimeSigPicker::textDenomChanged)
+//EVT_TEXT(1, TimeSigPicker::textNumChanged)
+//EVT_TEXT(2, TimeSigPicker::textDenomChanged)
 EVT_TEXT_ENTER(1, TimeSigPicker::enterPressed)
 EVT_TEXT_ENTER(2, TimeSigPicker::enterPressed)
+EVT_BUTTON(3, TimeSigPicker::enterPressed)
     
 EVT_CLOSE(TimeSigPicker::closed)
 	
@@ -57,9 +58,9 @@ namespace TimeSigPickerNames
                 parent->Add(pane,1,wxEXPAND);
                 bsizer = new wxBoxSizer(orientation);
             }
-            void add(wxWindow* window)
+            void add(wxWindow* window, int margin=2, int proportion=1, long margins = wxALL)
             {
-                bsizer->Add(window, 1, wxALL, 10);
+                bsizer->Add(window, proportion, margins | wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL, margin);
             }
             ~QuickBoxLayout()
             {
@@ -69,119 +70,81 @@ namespace TimeSigPickerNames
             }
         };
     
-#ifdef __WXMAC__
-    class MyEvtHandler : public wxEvtHandler
-    {
-public:
-        
-        virtual bool ProcessEvent(wxEvent& event)
-        {
-            if(event.GetEventType() == wxEVT_KEY_DOWN or event.GetEventType() == wxEVT_CHAR)
-            {
-                
-                wxKeyEvent& evt = dynamic_cast<wxKeyEvent&>(event);
-                
-                if(evt.GetKeyCode()==WXK_ESCAPE || evt.GetKeyCode()==WXK_CANCEL || evt.GetKeyCode()==WXK_DELETE)
-                {
-                    timesigpicker_frame->closeWindow();
-                }
-                else if(evt.GetKeyCode()==WXK_RETURN)
-                {
-                    wxCommandEvent dummyEvt;
-                    timesigpicker_frame->enterPressed(dummyEvt);
-                }
-                else wxEvtHandler::ProcessEvent(event);
-                    
-                return true;
-            }
-            else
-            {
-                wxEvtHandler::ProcessEvent(event);
-                return true;
-            }
-    }
-        
-    };
-    #endif
 }
 using namespace TimeSigPickerNames;
     
 void freeTimeSigPicker()
 {
-		if(timesigpicker_frame != NULL)
-		{
-			timesigpicker_frame->Destroy();
-			timesigpicker_frame = NULL;
-		}
+    if(timesigpicker_frame != NULL)
+    {
+        timesigpicker_frame->Destroy();
+        timesigpicker_frame = NULL;
+    }
 
 }
 	
-void showTimeSigPicker()
+void showTimeSigPicker(const int x, const int y, const int num, const int denom)
 {
 	if(timesigpicker_frame == NULL) timesigpicker_frame = new TimeSigPicker();
-	timesigpicker_frame->show();
+	timesigpicker_frame->show(x, y, num, denom);
 }
 
-TimeSigPicker::TimeSigPicker() : wxDialog(NULL, 0,  _("Key Signature"), wxDefaultPosition, wxSize(50,160), wxSTAY_ON_TOP )
+TimeSigPicker::TimeSigPicker() : wxFrame(NULL, 0,  _("Key Signature"), wxDefaultPosition, wxSize(185,130),
+                                         wxCAPTION | wxCLOSE_BOX | wxFRAME_TOOL_WINDOW | wxWANTS_CHARS)
 {
-    pane = new wxPanel(this);
+    pane = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS);
     
     wxSize smallsize = wxDefaultSize;
     smallsize.x = 50;
     
-    // FIXME - query actual values from sequence
-    valueTextNum=new wxTextCtrl(pane, 1, wxT("4"), wxPoint(0,130), smallsize, wxTE_PROCESS_ENTER);
-    wxStaticText* slash = new wxStaticText(pane, wxID_ANY, wxT("/"), wxDefaultPosition, wxSize(15,15));
+    wxBoxSizer* vertical = new wxBoxSizer(wxVERTICAL);
+    QuickBoxLayout horizontal(pane, vertical);
+    valueTextNum=new wxTextCtrl(horizontal.pane, 1, wxT("4"), wxPoint(0,130), smallsize, wxTE_PROCESS_ENTER | wxWANTS_CHARS | wxTAB_TRAVERSAL);
+    wxStaticText* slash = new wxStaticText(horizontal.pane, wxID_ANY, wxT("/"), wxDefaultPosition, wxSize(15,15));
     slash->SetMinSize(wxSize(15,15));
     slash->SetMaxSize(wxSize(15,15));
-    valueTextDenom=new wxTextCtrl(pane, 2, wxT("4"), wxPoint(0,130), smallsize, wxTE_PROCESS_ENTER);
+    valueTextDenom=new wxTextCtrl(horizontal.pane, 2, wxT("4"), wxPoint(0,130), smallsize, wxTE_PROCESS_ENTER | wxWANTS_CHARS | wxTAB_TRAVERSAL);
     okbtn = new wxButton(pane, 3, _("OK"));
     okbtn->SetDefault();
     
-    wxBoxSizer* vertical = new wxBoxSizer(wxHORIZONTAL);
+    horizontal.add(valueTextNum, 5, 0, wxLEFT | wxRIGHT);
+    horizontal.add(slash, 0, 0);
+    horizontal.add(valueTextDenom, 5, 0, wxRIGHT);
     
-    QuickBoxLayout horizontal(pane, vertical);
-    horizontal.add(valueTextNum);
-    horizontal.add(slash);
-    horizontal.add(valueTextDenom);
+    //I18N: - when setting time signature, to indicate it's not constant through song
+    variable = new wxCheckBox(pane, 4, _("Varies throughout song"));
     
-    vertical->Add(okbtn);
+    vertical->Add(variable, 0, wxALL, 5);
+    vertical->Add(okbtn, 0, wxALL | wxALIGN_CENTER, 5);
     
     pane->SetSizer(vertical);
 
 
-#ifdef __WXMAC__
-    PushEventHandler( new MyEvtHandler() );
-    pane->PushEventHandler( new MyEvtHandler() );
-#else
     Connect(GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
-    slider->Connect(valueTextNum->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
     pane->Connect(pane->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
-    valueText->Connect(valueTextDenom->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
-#endif
+    valueTextNum->Connect(valueTextDenom->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
+    valueTextNum->Connect(valueTextNum->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
 }
 
 void TimeSigPicker::closed(wxCloseEvent& evt)
 {
+    if(IsShown()) 
+    {
+        wxCommandEvent event( wxEVT_DESTROY_TIMESIG_PICKER, 100000 );
+        getMainFrame()->GetEventHandler()->AddPendingEvent( event );
+        Hide();
+    }
 }
 
-void TimeSigPicker::show()
+void TimeSigPicker::show(const int x, const int y, const int num, const int denom)
 {
     // show the keysig picking dialog
-    // FIXME- use real position, query real values from sequence
-    int x=0, y=0;
     SetPosition(wxPoint(x,y));
 
-    returnCode = ShowModal();
-}
-
-void TimeSigPicker::textNumChanged(wxCommandEvent& evt)
-{
-    // FIXME - verify for sanity, or is it done in sequence?
-}
-void TimeSigPicker::textDenomChanged(wxCommandEvent& evt)
-{
-    // FIXME - verify for sanity, or is it done in sequence?
+    valueTextNum->SetValue( to_wxString(num) );
+    valueTextDenom->SetValue( to_wxString(denom) );
+    variable->SetValue( getMeasureData()->isExpandedMode() );
+    Show();
 }
     
 void TimeSigPicker::enterPressed(wxCommandEvent& evt)
@@ -196,19 +159,30 @@ void TimeSigPicker::enterPressed(wxCommandEvent& evt)
         return;
     }
     
+    float denom_check = (float)log(bottom)/(float)log(2);
+    if( (int)denom_check != (float)denom_check )
+    {
+        wxBell();
+        //I18N: - when setting a wrong time signature
+        wxMessageBox(  _("Denominator must be a power of 2") );
+        return;
+    }
+    
     getMeasureData()->setTimeSig( top, bottom );
+    getMainFrame()->changeShownTimeSig( top, bottom );
+    
+    if(variable->IsChecked() != getMeasureData()->isExpandedMode())
+    {
+        getCurrentSequence()->measureData->setExpandedMode( variable->IsChecked() );
+        getMainFrame()->updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
+    }
     
     closeWindow();
 }
 
 void TimeSigPicker::closeWindow()
-{
-#ifdef __WXMAC__
-    PopEventHandler(true);
-    pane->PopEventHandler(true);
-#endif
-    
-	wxDialog::EndModal(returnCode);
+{    
+	Hide();
     Display::requestFocus();
     
 	wxCommandEvent event( wxEVT_DESTROY_TIMESIG_PICKER, 100000 );
