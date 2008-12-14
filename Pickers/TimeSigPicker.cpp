@@ -107,6 +107,9 @@ TimeSigPicker::TimeSigPicker() : wxFrame(NULL, 0,  _("Key Signature"), wxDefault
     okbtn = new wxButton(pane, 3, _("OK"));
     okbtn->SetDefault();
     
+    valueTextNum  ->Connect( valueTextNum  ->GetId(), wxEVT_SET_FOCUS, wxFocusEventHandler(TimeSigPicker::onFocus), 0, this); 
+    valueTextDenom->Connect( valueTextDenom->GetId(), wxEVT_SET_FOCUS, wxFocusEventHandler(TimeSigPicker::onFocus), 0, this); 
+    
     horizontal.add(valueTextNum, 5, 0, wxLEFT | wxRIGHT);
     horizontal.add(slash, 0, 0);
     horizontal.add(valueTextDenom, 5, 0, wxRIGHT);
@@ -140,6 +143,13 @@ void TimeSigPicker::closed(wxCloseEvent& evt)
         Hide();
     }
 }
+    
+void TimeSigPicker::onFocus(wxFocusEvent& evt)
+{
+    wxTextCtrl* ctrl = dynamic_cast<wxTextCtrl*>(FindFocus());
+    if(ctrl != NULL) ctrl->SetSelection(-1, -1);
+}
+    
 
 void TimeSigPicker::show(const int x, const int y, const int num, const int denom)
 {
@@ -150,6 +160,7 @@ void TimeSigPicker::show(const int x, const int y, const int num, const int deno
     valueTextDenom->SetValue( to_wxString(denom) );
     variable->SetValue( getMeasureData()->isExpandedMode() );
     Show();
+    valueTextNum->SetSelection( -1, -1 );
 }
 
 void TimeSigPicker::enterPressed(wxCommandEvent& evt)
