@@ -59,7 +59,8 @@ public:
 
 	void closed(wxCloseEvent& evt);
     void keyPress(wxKeyEvent& evt);
-        
+    void onCancel(wxCommandEvent& evt);
+    
     DECLARE_EVENT_TABLE();
 };
 

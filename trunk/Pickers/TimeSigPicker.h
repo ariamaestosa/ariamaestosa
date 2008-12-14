@@ -40,6 +40,7 @@ class TimeSigPicker : public wxFrame
     wxButton* okbtn;
     wxPanel* pane;
     wxCheckBox* variable;
+    
 public:
     LEAK_CHECK(TimeSigPicker);
     
@@ -52,7 +53,8 @@ public:
 
 	void closed(wxCloseEvent& evt);
     void keyPress(wxKeyEvent& evt);
-        
+    void onFocus(wxFocusEvent& evt);
+    
     DECLARE_EVENT_TABLE();
 };
 
