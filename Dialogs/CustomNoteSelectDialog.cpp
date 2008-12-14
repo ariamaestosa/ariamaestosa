@@ -26,7 +26,10 @@ namespace AriaMaestosa {
 	
 enum {
  id_ok,
- id_cancel    
+ id_cancel,
+ ID_TXT1 = 8025,
+ ID_TXT2,
+ ID_TXT3
 };
 
 BEGIN_EVENT_TABLE(CustomNoteSelectDialog, wxDialog)
@@ -35,6 +38,9 @@ EVT_BUTTON(id_ok, CustomNoteSelectDialog::okClicked)
 EVT_BUTTON(id_cancel, CustomNoteSelectDialog::cancelClicked)
 EVT_KEY_DOWN(CustomNoteSelectDialog::keyPress)
 
+//EVT_SET_FOCUS(CustomNoteSelectDialog::onFocus)
+//EVT_KILL_FOCUS(CustomNoteSelectDialog::onFocus)
+    
 END_EVENT_TABLE()
 
 
@@ -74,9 +80,11 @@ CustomNoteSelectDialog::CustomNoteSelectDialog() : wxDialog(NULL, wxID_ANY,
     wxStaticText* lbl_more_or_less = new wxStaticText(panel_volume, wxID_ANY, wxT("+/-"));
     subBoxSizer->Add(lbl_more_or_less, 00, wxALL, 5);
     
-    volume_tolerance = new wxTextCtrl(panel_volume, wxID_ANY, wxT("5"), wxDefaultPosition, smallTextCtrlSize);
+    volume_tolerance = new wxTextCtrl(panel_volume, ID_TXT1, wxT("5"), wxDefaultPosition, smallTextCtrlSize, wxTAB_TRAVERSAL);
     subBoxSizer->Add(volume_tolerance, 0, wxALL, 5);
     
+    volume_tolerance->Connect( volume_tolerance->GetId(), wxEVT_SET_FOCUS, wxFocusEventHandler(CustomNoteSelectDialog::onFocus), 0, this); 
+
     panel_volume->SetAutoLayout(TRUE);
     panel_volume->SetSizer(subBoxSizer);
     subBoxSizer->Layout();
@@ -121,16 +129,18 @@ CustomNoteSelectDialog::CustomNoteSelectDialog() : wxDialog(NULL, wxID_ANY,
     cb_measure=new wxCheckBox(panel_measures, wxID_ANY,  _("are located in measures "));
     subBoxSizer->Add(cb_measure, 0, wxALL, 5);
     
-    from_measure = new wxTextCtrl(panel_measures, wxID_ANY, wxT("1"), wxDefaultPosition, smallTextCtrlSize);
+    from_measure = new wxTextCtrl(panel_measures, ID_TXT2, wxT("1"), wxDefaultPosition, smallTextCtrlSize);
     subBoxSizer->Add(from_measure, 0, wxALL, 5);
-
+    from_measure->Connect( from_measure->GetId(), wxEVT_SET_FOCUS, wxFocusEventHandler(CustomNoteSelectDialog::onFocus), 0, this); 
+        
     //I18N: - in custom note select dialog. full context :\n\n Select notes that...\n\n* have the same pitch\n* have a similar volume *
     //I18N: - * are on the same string * have the same fret * have a similar duration * are located in measures ... to ... 
     wxStaticText* lbl_to = new wxStaticText(panel_measures, wxID_ANY,  _(" to "));
     subBoxSizer->Add(lbl_to, 0, wxALL, 5);
     
-    to_measure = new wxTextCtrl(panel_measures, wxID_ANY, wxT("2"), wxDefaultPosition, smallTextCtrlSize);
+    to_measure = new wxTextCtrl(panel_measures, ID_TXT3, wxT("2"), wxDefaultPosition, smallTextCtrlSize);
     subBoxSizer->Add(to_measure, 0, wxALL, 5);
+    to_measure->Connect( to_measure->GetId(), wxEVT_SET_FOCUS, wxFocusEventHandler(CustomNoteSelectDialog::onFocus), 0, this);
     
     panel_measures->SetAutoLayout(TRUE);
     panel_measures->SetSizer(subBoxSizer);
@@ -164,6 +174,12 @@ CustomNoteSelectDialog::CustomNoteSelectDialog() : wxDialog(NULL, wxID_ANY,
     boxSizer->SetSizeHints(this);
 }
 
+void CustomNoteSelectDialog::onFocus(wxFocusEvent& evt)
+{
+    wxTextCtrl* ctrl = dynamic_cast<wxTextCtrl*>(FindFocus());
+    if(ctrl != NULL) ctrl->SetSelection(-1, -1);
+}
+    
 void CustomNoteSelectDialog::show(Track* currentTrack)
 {
     CustomNoteSelectDialog::currentTrack = currentTrack;
