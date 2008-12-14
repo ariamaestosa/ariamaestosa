@@ -215,9 +215,8 @@ namespace AriaMaestosa {
                 ScalePicker::free();
             }
             
-            void onClose(wxCloseEvent& evt)
+            void onClose(wxCommandEvent& evt)
             {
-                wxMessageBox(wxT("close"));
                 hide();
                 ScalePicker::free();
             }
@@ -230,7 +229,7 @@ namespace AriaMaestosa {
     
     EVT_BUTTON(1, ScalePickerFrame::cancel_clicked)
     EVT_BUTTON(2, ScalePickerFrame::ok_clicked)
-    EVT_CLOSE( ScalePickerFrame::onClose )
+    EVT_COMMAND(wxID_CANCEL, wxEVT_COMMAND_BUTTON_CLICKED, ScalePickerFrame::onClose )
     
     END_EVENT_TABLE()
     
