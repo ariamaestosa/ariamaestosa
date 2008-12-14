@@ -54,6 +54,7 @@ public:
     void cancelClicked(wxCommandEvent& evt);
     void show(Track* currentTrack);
     void keyPress(wxKeyEvent& evt);
+    void onFocus(wxFocusEvent& evt);
     
     DECLARE_EVENT_TABLE()
 };
