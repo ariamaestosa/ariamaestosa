@@ -132,7 +132,9 @@ NOTE: sorry, this is very raw :)
     Midi/Players/Mac/CoreAudioNotePlayer.cpp:84: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
     Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
     Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
- 
+  
+* sometimes doesn't quit
+
 * crash if closing the main window while time sig picker is open
 * score print :
     - measures appear very small if no note starts in them, even if some end in them

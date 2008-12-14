@@ -124,6 +124,11 @@ TimeSigPicker::TimeSigPicker() : wxFrame(NULL, 0,  _("Key Signature"), wxDefault
     pane->Connect(pane->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
     valueTextNum->Connect(valueTextDenom->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
     valueTextNum->Connect(valueTextNum->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
+    
+    Connect(GetId(), wxEVT_CHAR, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
+    pane->Connect(pane->GetId(), wxEVT_CHAR, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
+    valueTextNum->Connect(valueTextDenom->GetId(), wxEVT_CHAR, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
+    valueTextNum->Connect(valueTextNum->GetId(), wxEVT_CHAR, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
 }
 
 void TimeSigPicker::closed(wxCloseEvent& evt)
@@ -146,7 +151,7 @@ void TimeSigPicker::show(const int x, const int y, const int num, const int deno
     variable->SetValue( getMeasureData()->isExpandedMode() );
     Show();
 }
-    
+
 void TimeSigPicker::enterPressed(wxCommandEvent& evt)
 {
     int top = atoi_u( valueTextNum->GetValue() );
