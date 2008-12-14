@@ -9,6 +9,7 @@
 - Fixed beaming problems when using multiple time signatures
 - Added new time sig picker, making the interface much nicer when using multiple key sigs
 - Added pause button
+- Clicking in the blank area of the horizontal scrollbar will move by one measure (instead of a few pixels)
 
 1.2b2
 - Fixed issues with track reordering
