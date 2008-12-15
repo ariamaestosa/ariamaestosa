@@ -7,9 +7,9 @@ Help("""
             does a release build, auto-detects your system
             
         Flags you can pass when calling 'scons' :
-            platform=[macosx/linux/unix]
+            platform=[macosx/linux/unix/windows]
                 specify platform, if not auto-detected
-            release=[debug/release]
+            config=[debug/release]
                 specify build type
             WXCONFIG=/path/to/wx-config
                 build using a specified wx-config
@@ -72,8 +72,8 @@ class RecursiveGlob:
 def main_Aria_func():
     
     # find operating system
-    givenos = ARGUMENTS.get('platform', 0)
-    if givenos == 0:
+    which_os = ARGUMENTS.get('platform', 0)
+    if which_os == 0:
         #auto-detect
         if os.name == 'nt':
             which_os = "windows"
@@ -82,37 +82,25 @@ def main_Aria_func():
         elif os.uname()[0] == 'Darwin':
             which_os = "macosx"
         else:
-            print "Unknown operating system : " + os.uname()[0] + ", defaulting to Linux-like Unix"
+            print "!! Unknown operating system '" + os.uname()[0] + "', defaulting to Linux-like Unix"
             which_os = "linux"
-    elif givenos == "macosx":
-        which_os = "macosx"
-    elif givenos == "linux":
-        which_os = "linux"
-    elif givenos == "unix":
-        which_os = "linux"
-    elif givenos == "windows":
-        which_os = "windows"
-    else:
-        print "Unknown operating system : " + givenos + " please specify 'platform=[linux/macosx/unix]'"
-        sys.exit(0)
+
+    if which_os != 'linux' and which_os != 'macosx' and which_os != 'unix' and which_os != 'windows':
+        print "!! Unknown operating system '" + which_os + "', please specify 'platform=[linux/macosx/unix/windows]'"
+        sys.exit(0) 
     
-    if which_os == "linux":
-        print">> Operating system : Linux" 
-    elif which_os == "macosx":
-        print">> Operating system : mac OS X" 
-    elif which_os == "windows":
-        print">> Operating system : Windows (warning: unsupported at this point)" 
+    print">> Operating system : " + which_os 
+        
+    if which_os == "windows":
+        print "!! Warning :  Windows is unsupported at this point" 
         
     # check build style
-    bstyle = ARGUMENTS.get('release', 0)
-    if bstyle == 0:
-        build_type = "release"
-    elif bstyle == "release":
-        build_type = "release"
-    elif bstyle == "debug":
-        build_type = "debug"
-    else:
-        build_type = "debug"
+    build_type = ARGUMENTS.get('config', 'release')
+    if build_type != 'release' and build_type != 'debug':
+        print "!! Unknown build config " + build_type
+        sys.exit(0) 
+        
+    print ">> Build type : " + build_type
 
     # check what to do
     if 'uninstall' in COMMAND_LINE_TARGETS:
@@ -120,25 +108,19 @@ def main_Aria_func():
         if which_os == "linux":
             uninstall_Aria_linux()
         else:
-            print "Unknown operation or system"
+            print "!! Unknown operation or system (uninstall is not valid on your system)"
+            sys.exit(0)
     elif 'install' in COMMAND_LINE_TARGETS:
         # install
         if which_os == "linux":
-            #install_Aria_linux()
             compile_Aria(build_type, which_os)
         elif which_os == "macosx":
             install_Aria_mac()
         else:
-            print "Unknown operation or system"
+            print "!! Unknown operation or system (install is not valid on your system)"
             sys.exit(0)     
     else:
         # compile
-                
-        if build_type == "debug":
-            print ">> Build type : debug"
-        elif build_type == "release":
-            print ">> Build type : release"
-              
         compile_Aria(build_type, which_os)
 
 # ---------------------------- Install Mac OS X -----------------------------
@@ -199,13 +181,8 @@ def compile_Aria(build_type, which_os):
 
     # add wxWidgets flags
     # check if user defined his own WXCONFIG, else use defaults
-    WXCONFIG = ARGUMENTS.get('WXCONFIG', 0)
-
-    if WXCONFIG == 0:
-        print ">> wx-config : default"
-        WXCONFIG = 'wx-config'
-    else:
-        print ">> wx-config : " + WXCONFIG
+    WXCONFIG = ARGUMENTS.get('WXCONFIG', 'wx-config')
+    print ">> wx-config : " + WXCONFIG
         
     env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,gl'])
 
