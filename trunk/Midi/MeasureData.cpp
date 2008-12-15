@@ -69,10 +69,26 @@ MeasureData::~MeasureData()
 
 #pragma mark -
 
-void MeasureData::setExpandedMode(bool expanded)
+void MeasureData::setExpandedMode(bool arg_expanded)
 {
-	expandedMode = expanded;
+    //when turning it off, ask for a confirmation because all events will be lost
+    if(this->expandedMode and not arg_expanded)
+    {
+        const int answer = wxMessageBox(_("Are you sure you want to go back to having a single time signature? Any time sig events you may have added will be lost. This cannot be undone."),
+                                        _("Confirm"), wxYES_NO);
+        if (answer == wxNO){ getMainFrame()->updateMenuBarToSequence(); return; }
+        
+        // remove all added events
+        selectedTimeSig = 0;
+        timeSigChanges.clearAndDeleteAll();
+        timeSigChanges.push_back( new TimeSigChange(0,4,4) );
+        timeSigChanges[0].tick = 0;
+        timeSigChanges[0].measure = 0;
+    }
+    
+	expandedMode = arg_expanded;
 	updateMeasureInfo();
+    getMainFrame()->updateMenuBarToSequence();
 	Display::render();
 }
 

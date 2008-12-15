@@ -115,7 +115,6 @@ NOTE: sorry, this is very raw :)
  
  ************************* BUGS: *************************
  
-* when going from ultiple time sig events to a single, measures durations remain anyway
 * crashes when opening 2+ files from the finder
 * "follow playback" : hard to follow when horizontal scrolling is changed (Change only on measure change?)
 * undos in guitar editor that rely on string and fret will be wrong if tuning changed meanwhile
