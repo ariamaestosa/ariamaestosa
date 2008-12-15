@@ -41,10 +41,6 @@ NOTE: sorry, this is very raw :)
   
 ************************* NEW FEATURES TO ADD: *************************
 
- * the margin for moving up/down while drawing a note could be a tad higher;
-   when drawing a long note I sometimes end up with a selection rectangle.
-   Even better would be if the note came back when you draw a selection of only a few pixels high 
- 
  * more intelligently decide if notes on C belong to F clef or G clef
 
  * guess key feature
@@ -54,10 +50,6 @@ NOTE: sorry, this is very raw :)
  * Button to maximize track
 
  * Show ottava bassa/alta signs, especially when printing
-
- * in the scale dialog, the percentage is set to 100% with the cursor in front of that.
-   It would be nicer if the entire percentage would be selected, so you can type a new percentage immediately. 
-   A drop list containing 50, 100, 150, and 200% would be even better. 
 
   - .aria files don't remember whether drums are minimized
   - .aria files don't remember docked tracks
