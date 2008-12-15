@@ -13,6 +13,8 @@ Help("""
                 specify build type
             WXCONFIG=/path/to/wx-config
                 build using a specified wx-config
+            CXXFLAGS="custom build flags"
+            LDFLAGS="custom link flags"
                 
         % scons install
             Installs Aria, auto-detects system (run as root if necessary)
@@ -130,7 +132,7 @@ def install_Aria_mac():
     sys_command("cp ./Aria ./AriaMaestosa.app/Contents/MacOS/Aria\ Maestosa")
     sys_command("cp ./release.plist ./AriaMaestosa.app/Contents/info.plist")
     sys_command("cp -r ./Resources ./AriaMaestosa.app/Contents/")
-    sys_command("cp -r ./mac-i18n ./AriaMaestosa.app/Contents/")
+    sys_command("cp -r ./mac-i18n/. ./AriaMaestosa.app/Contents/Resources/.")
     
     print "*** Cleaning up..."
     os.system("cd ./AriaMaestosa.app && find . -name \".svn\" -exec rm -rf '{}' \;")
@@ -210,6 +212,15 @@ def compile_Aria(build_type, which_os):
     sources = []
     for file in RecursiveGlob(".", "*.cpp"):
         sources = sources + [file]
+
+    # add additional flags if any
+    user_flags = ARGUMENTS.get('CXXFLAGS', 0)
+    if user_flags != 0:
+        env.Append(CCFLAGS=Split(user_flags))
+    user_flags = ARGUMENTS.get('LDFLAGS', 0)
+    if user_flags != 0:
+        env.Append(LINKFLAGS=Split(user_flags))
+
 
     # **********************************************************************************************
     # ********************************* PLATFORM SPECIFIC ******************************************
