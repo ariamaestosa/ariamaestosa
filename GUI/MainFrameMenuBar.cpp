@@ -644,6 +644,7 @@ void MainFrame::updateMenuBarToSequence()
 	}
 
     followPlaybackMenuItem->Check( sequence->follow_playback );
+    expandedMeasuresMenuItem->Check(getMeasureData()->isExpandedMode());
 }
 
 }
