@@ -26,7 +26,9 @@ cd $OUTPUT/build
 mkdir -p "$OUTPUT/AriaSrc-$VERSION/"
 cp -R "." "$OUTPUT/AriaSrc-$VERSION"
 cp "./Resources/Documentation/building.html" "$OUTPUT/AriaSrc-$VERSION/"
-tar cj --exclude '.svn' --exclude '.DS_Store' --exclude '.sconsign' -f "$OUTPUT/AriaSrc-$VERSION.tar.bz2" "$OUTPUT/AriaSrc-$VERSION"
+cd $OUTPUT/
+tar cj --exclude '.svn' --exclude '.DS_Store' --exclude '.sconsign' -f "./AriaSrc-$VERSION.tar.bz2" "./AriaSrc-$VERSION"
+cd $OUTPUT/build
 
 # ------ build mac binaries -----
 cd libjdkmidi
