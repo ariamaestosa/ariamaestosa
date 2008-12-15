@@ -84,7 +84,7 @@ You are now ready to build Aria itself. All you need to do is type the command a
 python scons/scons.py
 </pre><br/></blockquote>
 
- This will do a release build.<br/>You can specify <i>release=[debug/release]</i> for different build styles if you wish. You can also pass <i>WXCONFIG=/path/to/wx-config</i> to specify what wx-config to use when building (wx-config is what tells the build system where are the wxWidgets headers and libraries).
+This will do a release build with default wxWidgets. Issue <i>python scons/scons.py --help</i> for a summary of all possible options, like to get a debug build or to use a different wxWidgets build.
 <br/><br/>
 
 <b><center>Finishing on OS X</center></b>
