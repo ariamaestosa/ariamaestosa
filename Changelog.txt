@@ -12,6 +12,7 @@
 - Clicking in the blank area of the horizontal scrollbar will move by one measure (instead of a few pixels)
 - Improved scale dialog
 - Bug fixes in dialog cleanup
+- Made it easier to add new notes (cursor less likely to switch to selection, and possibility to go back)
 
 1.2b2
 - Fixed issues with track reordering

@@ -366,8 +366,11 @@ void Editor::mouseDrag(RelativeXCoord mousex_current, int mousey_current,
     lastDragY = mousey_current;
 	
 	// if user did not click on note and moved the mouse vertically, then he is selecting
-	if(!clickedOnNote and abs(mousey_current-mousey_initial)>ystep and mouse_is_in_editor) selecting=true;
+	if(!clickedOnNote and abs(mousey_current-mousey_initial)>ystep*2 and mouse_is_in_editor) selecting=true;
 	
+    // if selection becomes thin again, come back in note add mode
+    if(selecting and abs(mousey_current-mousey_initial)<ystep) selecting = false;
+    
 	// check mouse is still within track boundaries. if not, terminate selection
 	if(selecting)
 	{
