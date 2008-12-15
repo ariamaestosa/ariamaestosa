@@ -102,6 +102,11 @@ public:
         //wxDialog::Hide();
     }
     
+    void onCancel(wxCommandEvent& evt)
+    {
+        CopyrightWindow::hide();
+    }
+    
     DECLARE_EVENT_TABLE();
     
 };
@@ -109,7 +114,8 @@ public:
 BEGIN_EVENT_TABLE( CopyrightWindowClass, wxDialog )
 
 EVT_BUTTON( 1, CopyrightWindowClass::okClicked )
-
+EVT_COMMAND(wxID_CANCEL, wxEVT_COMMAND_BUTTON_CLICKED, CopyrightWindowClass::onCancel )
+    
 END_EVENT_TABLE()
 
 

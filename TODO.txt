@@ -83,8 +83,6 @@ NOTE: sorry, this is very raw :)
  - change whole track pitch/volume
  
  - show song duration
-
- - tabbing though fields in select notes dialog should select their content
  
  + reordering tracks should be nicer
  
