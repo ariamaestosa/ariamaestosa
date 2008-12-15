@@ -89,7 +89,7 @@ void showTimeSigPicker(const int x, const int y, const int num, const int denom)
 	timesigpicker_frame->show(x, y, num, denom);
 }
 
-TimeSigPicker::TimeSigPicker() : wxFrame(NULL, 0,  _("Key Signature"), wxDefaultPosition, wxSize(185,130),
+TimeSigPicker::TimeSigPicker() : wxFrame(getMainFrame(), 0,  _("Key Signature"), wxDefaultPosition, wxSize(185,130),
                                          wxCAPTION | wxCLOSE_BOX | wxFRAME_TOOL_WINDOW | wxWANTS_CHARS)
 {
     pane = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS);
