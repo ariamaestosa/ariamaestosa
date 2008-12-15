@@ -18,6 +18,9 @@
 
 // refer to MacPlayerInterface for docs
 
+// maybe worth looking at http://developer.apple.com/documentation/QuickTime/RM/MusicAndAudio/qtma/C-Chapter/chapter_1000_section_4.html
+// since my code is deprecated
+
 #ifdef _MAC_QUICKTIME_COREAUDIO
 #include "Config.h"
 
