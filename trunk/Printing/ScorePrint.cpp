@@ -659,9 +659,9 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
         }
         
         // draw sharpness sign if relevant
-        if(noteRenderInfo.sign == SHARP)        renderSharp  ( dc, noteRenderInfo.x,      noteRenderInfo.getY() - 60  );
+        if(noteRenderInfo.sign == SHARP)        renderSharp  ( dc, noteRenderInfo.x - 20, noteRenderInfo.getY() - 50  );
         else if(noteRenderInfo.sign == FLAT)    renderFlat   ( dc, noteRenderInfo.x - 20, noteRenderInfo.getY() - 110 );
-        else if(noteRenderInfo.sign == NATURAL) renderNatural( dc, noteRenderInfo.x,      noteRenderInfo.getY() - 50  );
+        else if(noteRenderInfo.sign == NATURAL) renderNatural( dc, noteRenderInfo.x - 20, noteRenderInfo.getY() - 50  );
         
     } // next note
     }// end scope
