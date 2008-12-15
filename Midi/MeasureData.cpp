@@ -492,6 +492,9 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
 				
 				getMainFrame()->changeShownTimeSig( timeSigChanges[n].num, timeSigChanges[n].denom );
 				
+                wxPoint pt = wxGetMousePosition();
+                showTimeSigPicker( pt.x, pt.y, timeSigChanges[n].num, timeSigChanges[n].denom );
+                
 				if(!getCurrentSequence()->importing) updateMeasureInfo();
 				break;
 			}
@@ -506,7 +509,10 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
 				selectedTimeSig = n+1;
 				
 				getMainFrame()->changeShownTimeSig( timeSigChanges[n+1].num, timeSigChanges[n+1].denom );
-				
+
+                wxPoint pt = wxGetMousePosition();
+                showTimeSigPicker( pt.x, pt.y, timeSigChanges[n].num, timeSigChanges[n].denom );
+                
 				if(!getCurrentSequence()->importing) updateMeasureInfo();
 				break;
 			}
