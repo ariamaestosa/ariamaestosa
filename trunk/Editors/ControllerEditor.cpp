@@ -30,6 +30,7 @@
 #include "GUI/RenderUtils.h"
 
 #include <string>
+#include <cmath>
 #include "Pickers/ControllerChoice.h"
 
 #include "Editors/RelativeXCoord.h"
@@ -326,7 +327,7 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
 
             if(tick1 == tick2)
                 track->action( new Action::AddControlEvent(tick1,
-                                     (int)((mousey_initial-area_from_y)/y_zoom),
+                                     (int)round((float)(mousey_initial-area_from_y)/y_zoom),
                                      controllerChoice->getControllerID()) );
             else
             {

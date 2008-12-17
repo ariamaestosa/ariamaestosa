@@ -1,3 +1,6 @@
+1.2b4
+- A few linux changes
+- Fixed control editor to allow minimal value (0), namely allowing to turn Sustain off.
 
 1.2b3
 - Refactored preferences to look better, be cleaner and allow setting a default value for "follow playback"
