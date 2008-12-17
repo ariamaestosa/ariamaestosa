@@ -2,11 +2,10 @@ NOTE: sorry, this is very raw :)
 
   ************************* ON RELEASE *************************
 	- update translation
-	- add scons-local
 	- update version in about dialog
 	- update version in info.plist
 	- update changelog in docs
-	- update version in docs (main, download, compile)
+	- update version in docs (download, changlelog)
     - give permissions, check info.plist is the right one
  
   Linux: docs in /usr/doc/<package-name> (but on SuSE they go to/usr/share/doc/packages/<package-name>)
@@ -40,6 +39,8 @@ NOTE: sorry, this is very raw :)
  - show more than one editor at once
   
 ************************* NEW FEATURES TO ADD: *************************
+
+ * Add event to stop sustain
 
  * more intelligently decide if notes on C belong to F clef or G clef
 

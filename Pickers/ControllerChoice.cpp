@@ -39,8 +39,6 @@ END_EVENT_TABLE()
 
 ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu()
 {
-
-
     controllerID=7;
 
     Append( 7 ,wxT("Volume")); // fine:39
@@ -89,6 +87,11 @@ ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu()
     Append( 78 ,wxT("Vibrato Delay"));
 
     AppendSeparator();
+    Append( 120 ,wxT("All sound off"));
+    Append( 121 ,wxT("Reset control"));
+    Append( 123 ,wxT("All notes off"));
+    AppendSeparator();
+    
     Append( 12 ,wxT("Effect 1"));
     Append( 13 ,wxT("Effect 2"));
 
@@ -166,6 +169,10 @@ char* ControllerChoice::getControllerName()
     else if(controllerID== 5 or controllerID== 37 ) return "Portamento Time"; // fine:37
     else if(controllerID== 84 ) return "Portamento Control"; // !
 
+    else if(controllerID== 120 ) return "All sound off";
+    else if(controllerID== 121 ) return "Reset control";
+    else if(controllerID== 123 ) return "All notes off";
+    
     else if(controllerID== 76 ) return "Vibrato Rate";
     else if(controllerID== 77 ) return "Vibrato Depth";
     else if(controllerID== 78 ) return "Vibrato Delay";
