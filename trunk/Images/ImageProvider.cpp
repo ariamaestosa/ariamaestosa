@@ -74,7 +74,7 @@ void loadImages()
     tabBorderDrawable = new Drawable( wxT("tab_side.png"));
 
     // score
-    clefG_drawable = new Drawable(wxT("score/KeyG.png"));
+    clefG_drawable = new Drawable(wxT("score/keyG.png"));
     clefG_drawable -> setHotspot( 15, 33 );
 
     clefF_drawable = new Drawable(wxT("score/FKey.png"));
