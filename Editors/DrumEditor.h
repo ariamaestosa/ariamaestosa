@@ -31,7 +31,7 @@ class RelativeXCoord;
 class DrumInfo
 {
 public:
-    DrumInfo(int midiKey, char* name);
+    DrumInfo(int midiKey, const char* name);
     int midiKey; // midiKey -1 means "section title"
     char* name;
     bool section;

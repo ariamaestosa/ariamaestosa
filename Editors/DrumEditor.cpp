@@ -38,10 +38,10 @@ namespace AriaMaestosa {
 
 const int y_step = 10;
 
-DrumInfo::DrumInfo(int midiKey, char* name)
+DrumInfo::DrumInfo(int midiKey, const char* name)
 {
     DrumInfo::midiKey = midiKey;
-    DrumInfo::name = name;
+    DrumInfo::name = (char*)name;
     if(midiKey == -1 ) section=true;
     else section = false;
 
