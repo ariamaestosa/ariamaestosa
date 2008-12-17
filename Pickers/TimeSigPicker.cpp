@@ -147,7 +147,11 @@ void TimeSigPicker::closed(wxCloseEvent& evt)
 void TimeSigPicker::onFocus(wxFocusEvent& evt)
 {
     wxTextCtrl* ctrl = dynamic_cast<wxTextCtrl*>(FindFocus());
-    if(ctrl != NULL) ctrl->SetSelection(-1, -1);
+    if(ctrl != NULL)
+    {
+      ctrl->SetFocus();
+      ctrl->SetSelection(-1, -1);
+    }
 }
     
 
@@ -160,6 +164,7 @@ void TimeSigPicker::show(const int x, const int y, const int num, const int deno
     valueTextDenom->SetValue( to_wxString(denom) );
     variable->SetValue( getMeasureData()->isExpandedMode() );
     Show();
+    valueTextNum->SetFocus();
     valueTextNum->SetSelection( -1, -1 );
 }
 
