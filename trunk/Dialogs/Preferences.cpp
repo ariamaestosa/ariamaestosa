@@ -79,38 +79,38 @@ Preferences::Preferences(MainFrame* parent) : wxDialog(parent, wxID_ANY,
                                                        wxPoint(100,100), wxSize(500,300), wxCAPTION )
 {
 
-	Preferences::parent = parent;
+    Preferences::parent = parent;
 
-	vert_sizer = new wxBoxSizer(wxVERTICAL);
+    vert_sizer = new wxBoxSizer(wxVERTICAL);
 
-	// language
-	{
+    // language
+    {
     QuickBoxLayout language_box(this, vert_sizer);
     //I18N: - in the preferences
     language_box.add(new wxStaticText(language_box.pane , wxID_ANY,  _("Language")));
     
-	lang_combo = new wxChoice(this, 1, wxDefaultPosition, wxDefaultSize, getLanguageList() );
+    lang_combo = new wxChoice(language_box.pane, 1, wxDefaultPosition, wxDefaultSize, getLanguageList() );
     language_box.add(lang_combo);
-	}
+    }
 
-	// play settings
-	{
+    // play settings
+    {
     QuickBoxLayout play_box(this, vert_sizer);
     //I18N: - in the preferences
-	play_box.add( new wxStaticText(play_box.pane, wxID_ANY,  _("Play during edit (default value)")) );
+    play_box.add( new wxStaticText(play_box.pane, wxID_ANY,  _("Play during edit (default value)")) );
 
     //I18N: - in the preferences, for "Play during edit (default value)" (the 3 chocies being "Always", "On note change" and "Never")
-	wxString choices[3] = { _("Always"),  _("On note change"),  _("Never")};
+    wxString choices[3] = { _("Always"),  _("On note change"),  _("Never")};
 
-	play_combo = new wxChoice(play_box.pane, 3, wxDefaultPosition, wxDefaultSize, 3, choices );
-	play_box.add( play_combo );
-	}
+    play_combo = new wxChoice(play_box.pane, 3, wxDefaultPosition, wxDefaultSize, 3, choices );
+    play_box.add( play_combo );
+    }
     
     {
     //I18N: - in the preferences
     follow_playback_checkbox = new wxCheckBox(this, 4, _("Follow playback by default"), wxDefaultPosition, wxDefaultSize );
     vert_sizer->Add( follow_playback_checkbox, 0, wxALL, 10 );
-	}
+    }
     
     
     // *********** fill values ********
@@ -118,54 +118,54 @@ Preferences::Preferences(MainFrame* parent) : wxDialog(parent, wxID_ANY,
     lang_combo->Select( getDefaultLanguageID() );
 
     wxConfig* prefs;
-	prefs = (wxConfig*) wxConfig::Get();
+    prefs = (wxConfig*) wxConfig::Get();
 
-	// --- read play settings from prefs -----
-	long play_v;
-	if(prefs->Read( wxT("playDuringEdit"), &play_v) )
-	{
-		if(play_v == PLAY_ALWAYS)
-		{
-			play_combo->Select(0);
+    // --- read play settings from prefs -----
+    long play_v;
+    if(prefs->Read( wxT("playDuringEdit"), &play_v) )
+    {
+        if(play_v == PLAY_ALWAYS)
+        {
+            play_combo->Select(0);
             play_during_edit = PLAY_ALWAYS;
-		}
-		else if(play_v == PLAY_ON_CHANGE)
-		{
-			play_combo->Select(1);
-			play_during_edit = PLAY_ON_CHANGE;
-		}
-		else if(play_v == PLAY_NEVER)
-		{
-			play_combo->Select(2);
-			play_during_edit = PLAY_NEVER;
-		}
-	}
-	else
-	{
-		play_combo->Select(1);
-	}
+        }
+        else if(play_v == PLAY_ON_CHANGE)
+        {
+            play_combo->Select(1);
+            play_during_edit = PLAY_ON_CHANGE;
+        }
+        else if(play_v == PLAY_NEVER)
+        {
+            play_combo->Select(2);
+            play_during_edit = PLAY_NEVER;
+        }
+    }
+    else
+    {
+        play_combo->Select(1);
+    }
     
     long followp;
-	if(prefs->Read( wxT("followPlayback"), &followp) )
-	{
+    if(prefs->Read( wxT("followPlayback"), &followp) )
+    {
         follow_playback = followp;
         follow_playback_checkbox->SetValue(follow_playback);
     }
-	// -----------------------------------
+    // -----------------------------------
 
-	ok_btn = new wxButton(this, 2, wxT("OK"));
-	vert_sizer->Add( ok_btn, 0, wxALL, 10 );
+    ok_btn = new wxButton(this, 2, wxT("OK"));
+    vert_sizer->Add( ok_btn, 0, wxALL, 10 );
 
     //I18N: - in the preferences dialog
-	wxStaticText* effect_label = new wxStaticText(this, wxID_ANY,  _("Changes will take effect next time you open the app."));
-	effect_label->SetFont( wxFont(wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_NORMAL) );
-	vert_sizer->Add( effect_label, 0, wxALL, 10 );    
+    wxStaticText* effect_label = new wxStaticText(this, wxID_ANY,  _("Changes will take effect next time you open the app."));
+    effect_label->SetFont( wxFont(wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_NORMAL) );
+    vert_sizer->Add( effect_label, 0, wxALL, 10 );    
     
-	ok_btn -> SetDefault();
+    ok_btn -> SetDefault();
 
-	SetSizer( vert_sizer );
-	vert_sizer->Layout();
-	vert_sizer->SetSizeHints( this );
+    SetSizer( vert_sizer );
+    vert_sizer->Layout();
+    vert_sizer->SetSizeHints( this );
 }
 
 Preferences::~Preferences()
@@ -174,8 +174,8 @@ Preferences::~Preferences()
 
 void Preferences::show()
 {
-	Center();
-	modalCode = ShowModal();
+    Center();
+    modalCode = ShowModal();
 }
 
 void Preferences::languageSelected(wxCommandEvent& evt)
@@ -185,21 +185,21 @@ void Preferences::languageSelected(wxCommandEvent& evt)
 
 void Preferences::playSelected(wxCommandEvent& evt)
 {
-	wxConfig* prefs = (wxConfig*) wxConfig::Get();
-	prefs->Write( wxT("playDuringEdit"), play_combo->GetSelection() );
-	prefs->Flush();
+    wxConfig* prefs = (wxConfig*) wxConfig::Get();
+    prefs->Write( wxT("playDuringEdit"), play_combo->GetSelection() );
+    prefs->Flush();
 }
 
 void Preferences::followPlaybackChecked(wxCommandEvent& evt)
 {
     wxConfig* prefs = (wxConfig*) wxConfig::Get();
-	prefs->Write( wxT("followPlayback"), follow_playback_checkbox->GetValue() );
-	prefs->Flush();
+    prefs->Write( wxT("followPlayback"), follow_playback_checkbox->GetValue() );
+    prefs->Flush();
 }
 
 void Preferences::okClicked(wxCommandEvent& evt)
 {
-	wxDialog::EndModal(modalCode);
+    wxDialog::EndModal(modalCode);
 }
 
 }
