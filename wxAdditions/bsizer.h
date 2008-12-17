@@ -4,7 +4,7 @@
 // Author:      Alex Andruschak
 // Modified by:
 // Created:
-// RCS-ID:      $Id: bsizer.h,v 1.10 2000/04/20 
+// RCS-ID:      $Id: bsizer.h,v 1.10 2000/04/20
 // Copyright:   (c) DekaSoft
 // Licence:     wxWindows licence
 /////////////////////////////////////////////////////////////////////////////
@@ -25,7 +25,7 @@
 // wxBorderItemHandle
 //---------------------------------------------------------------------------
 
-class WXDLLEXPORT wxBorderItemHandle: public wxObject  
+class WXDLLEXPORT wxBorderItemHandle: public wxObject
 {
     DECLARE_CLASS(wxBorderItemHandle);
 protected:
@@ -34,8 +34,8 @@ protected:
 
 public:
     wxBorderItemHandle( wxString location );
-	wxBorderItemHandle( int location );
-		
+    wxBorderItemHandle( int location );
+
     wxString          GetLocationName();
     unsigned long     GetLocationCode();
 
@@ -45,11 +45,11 @@ namespace Location
 {
 enum
 {
-	ID_North = 0,
-	ID_South = 1,
-	ID_West = 2,
-	ID_East = 3,
-	ID_Center = 4
+    ID_North = 0,
+    ID_South = 1,
+    ID_West = 2,
+    ID_East = 3,
+    ID_Center = 4
 };
 
 wxObject* North();

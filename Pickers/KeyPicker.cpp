@@ -3,12 +3,12 @@
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
- 
+
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
- 
+
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -22,7 +22,7 @@
 #include "AriaCore.h"
 
 namespace AriaMaestosa {
-	
+
 enum IDs
 {
     MUSICAL_NOTATION = 1,
@@ -31,7 +31,7 @@ enum IDs
     G_CLEF,
     OCTAVE_ABOVE,
     OCTAVE_BELOW,
-    
+
     KEY_C_AM,
     KEY_SHARPS_1,
     KEY_SHARPS_2,
@@ -47,10 +47,10 @@ enum IDs
     KEY_FLATS_5,
     KEY_FLATS_6,
     KEY_FLATS_7,
-    
+
     ID_AMOUNT
 };
-    
+
 BEGIN_EVENT_TABLE(KeyPicker, wxMenu)
 EVT_MENU_RANGE(1, ID_AMOUNT-1, KeyPicker::menuItemSelected)
 END_EVENT_TABLE()
@@ -61,7 +61,7 @@ KeyPicker::KeyPicker() : wxMenu()
     musical_checkbox = AppendCheckItem(MUSICAL_NOTATION,_("Musical notation")); musical_checkbox->Check(true);
     //I18N: - in the view settings for score editor. whether to show notes in a "computer" linear way.
     linear_checkbox = AppendCheckItem(LINEAR_NOTATION,_("Linear Notation")); linear_checkbox->Check(true);
-    
+
     AppendSeparator();
     gclef = AppendCheckItem(G_CLEF, _("G Clef")); gclef->Check(true);
     fclef = AppendCheckItem(F_CLEF, _("F Clef")); fclef->Check(true);
@@ -69,33 +69,33 @@ KeyPicker::KeyPicker() : wxMenu()
     octave_above = AppendCheckItem(OCTAVE_ABOVE, _("Octave +1"));
     //I18N: - show score an octave lower
     octave_below = AppendCheckItem(OCTAVE_BELOW, _("Octave -1"));
-    
-	AppendSeparator();
+
+    AppendSeparator();
     key_c = AppendCheckItem(KEY_C_AM, wxT("C, Am"));
     key_c->Check(true);
-    
-	AppendSeparator();
-	key_sharps_1 = AppendCheckItem( KEY_SHARPS_1, wxT("G, Em"));
-	key_sharps_2 = AppendCheckItem( KEY_SHARPS_2, wxT("D, Bm"));
-	key_sharps_3 = AppendCheckItem( KEY_SHARPS_3, wxT("A, F#m"));
-	key_sharps_4 = AppendCheckItem( KEY_SHARPS_4, wxT("E, C#m"));
-	key_sharps_5 = AppendCheckItem( KEY_SHARPS_5, wxT("B, G#m"));
-	key_sharps_6 = AppendCheckItem( KEY_SHARPS_6, wxT("F#, D#m"));
-	key_sharps_7 = AppendCheckItem( KEY_SHARPS_7, wxT("C#, A#m"));
-    
-	AppendSeparator();
-	key_flats_1 = AppendCheckItem( KEY_FLATS_1, wxT("F, Dm"));
-	key_flats_2 = AppendCheckItem( KEY_FLATS_2, wxT("Bb, Gm"));
-	key_flats_3 = AppendCheckItem( KEY_FLATS_3, wxT("Eb, Cm"));
-	key_flats_4 = AppendCheckItem( KEY_FLATS_4, wxT("Ab, Fm"));
+
+    AppendSeparator();
+    key_sharps_1 = AppendCheckItem( KEY_SHARPS_1, wxT("G, Em"));
+    key_sharps_2 = AppendCheckItem( KEY_SHARPS_2, wxT("D, Bm"));
+    key_sharps_3 = AppendCheckItem( KEY_SHARPS_3, wxT("A, F#m"));
+    key_sharps_4 = AppendCheckItem( KEY_SHARPS_4, wxT("E, C#m"));
+    key_sharps_5 = AppendCheckItem( KEY_SHARPS_5, wxT("B, G#m"));
+    key_sharps_6 = AppendCheckItem( KEY_SHARPS_6, wxT("F#, D#m"));
+    key_sharps_7 = AppendCheckItem( KEY_SHARPS_7, wxT("C#, A#m"));
+
+    AppendSeparator();
+    key_flats_1 = AppendCheckItem( KEY_FLATS_1, wxT("F, Dm"));
+    key_flats_2 = AppendCheckItem( KEY_FLATS_2, wxT("Bb, Gm"));
+    key_flats_3 = AppendCheckItem( KEY_FLATS_3, wxT("Eb, Cm"));
+    key_flats_4 = AppendCheckItem( KEY_FLATS_4, wxT("Ab, Fm"));
     key_flats_5 = AppendCheckItem( KEY_FLATS_5, wxT("Db, Bbm"));
-	key_flats_6 = AppendCheckItem( KEY_FLATS_6, wxT("Gb, Ebm"));
-	key_flats_7 = AppendCheckItem( KEY_FLATS_7, wxT("Cb, Abm"));
+    key_flats_6 = AppendCheckItem( KEY_FLATS_6, wxT("Gb, Ebm"));
+    key_flats_7 = AppendCheckItem( KEY_FLATS_7, wxT("Cb, Abm"));
 }
 
 void KeyPicker::setParent(Track* parent_arg)
 {
-	parent = parent_arg->graphics;
+    parent = parent_arg->graphics;
     if(parent->editorMode == KEYBOARD)
     {
         musical_checkbox->Enable(false);
@@ -114,7 +114,7 @@ void KeyPicker::setParent(Track* parent_arg)
         octave_above->Enable(true);
         octave_below->Enable(true);
     }
-    
+
     // FIXME - all code confusingly assumes score editor and keyboard editor always use the same key
     // but still store the key in both.
     // decide whether they do - if they don't then split the code. if they do, put the common code in a single place
@@ -160,16 +160,16 @@ void KeyPicker::setParent(Track* parent_arg)
 }
 
 KeyPicker::~KeyPicker()
-{  
+{
 }
 
 void KeyPicker::setChecks( bool musicalNotationEnabled, bool linearNotationEnabled, bool f_clef, bool g_clef, int octave_shift )
 {
-	musical_checkbox -> Check(musicalNotationEnabled);
-	linear_checkbox  -> Check(linearNotationEnabled);
+    musical_checkbox -> Check(musicalNotationEnabled);
+    linear_checkbox  -> Check(linearNotationEnabled);
     fclef            -> Check(f_clef);
     gclef            -> Check(g_clef);
-    
+
     if(octave_shift == -1)
     {
         octave_above -> Check(false);
@@ -189,22 +189,22 @@ void KeyPicker::setChecks( bool musicalNotationEnabled, bool linearNotationEnabl
 
 void KeyPicker::menuItemSelected(wxCommandEvent& evt)
 {
-	const int id = evt.GetId();
-	
-	if( id < 0 or id > ID_AMOUNT ) return;
+    const int id = evt.GetId();
 
-	if( id == MUSICAL_NOTATION )
+    if( id < 0 or id > ID_AMOUNT ) return;
+
+    if( id == MUSICAL_NOTATION )
     {
         parent -> scoreEditor -> enableMusicalNotation( musical_checkbox->IsChecked() );
-        
+
         // don't allow disabling both
         if(not musical_checkbox->IsChecked() and not linear_checkbox->IsChecked())
             parent -> scoreEditor -> enableLinearNotation( true );
     }
-	else if( id == LINEAR_NOTATION )
+    else if( id == LINEAR_NOTATION )
     {
         parent -> scoreEditor -> enableLinearNotation( linear_checkbox->IsChecked() );
-        
+
         // don't allow disabling both
         if(not musical_checkbox->IsChecked() and not linear_checkbox->IsChecked())
             parent -> scoreEditor -> enableMusicalNotation( true );
@@ -212,15 +212,15 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
     else if( id == F_CLEF )
     {
         parent -> scoreEditor -> enableFClef( fclef->IsChecked() );
-        
+
         // don't allow disabling both
         if(not gclef->IsChecked() and not fclef->IsChecked())
             parent -> scoreEditor -> enableGClef( true );
     }
-	else if( id == G_CLEF )
+    else if( id == G_CLEF )
     {
         parent -> scoreEditor -> enableGClef( gclef->IsChecked() );
-        
+
         // don't allow disabling both
         if(not gclef->IsChecked() and not fclef->IsChecked())
             parent -> scoreEditor -> enableFClef( true );
@@ -235,22 +235,22 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
         octave_above -> Check(false);
         parent -> scoreEditor -> getScoreMidiConverter() -> setOctaveShift( octave_below->IsChecked() ? -1 : 0 );
     }
-	else if( id == KEY_C_AM )
+    else if( id == KEY_C_AM )
     {
         parent -> scoreEditor    -> loadKey(NATURAL, 0);
         parent -> keyboardEditor -> loadKey(NATURAL, 0);
     }
-	else if( id >= KEY_SHARPS_1 and id <= KEY_SHARPS_7 )
+    else if( id >= KEY_SHARPS_1 and id <= KEY_SHARPS_7 )
     {
         parent -> scoreEditor    -> loadKey(SHARP, id-KEY_SHARPS_1+1 );
         parent -> keyboardEditor -> loadKey(SHARP, id-KEY_SHARPS_1+1) ;
     }
-	else if( id >= KEY_FLATS_1 and id <= KEY_FLATS_7 )
+    else if( id >= KEY_FLATS_1 and id <= KEY_FLATS_7 )
     {
         parent -> scoreEditor    -> loadKey( FLAT, id-KEY_FLATS_1+1 );
         parent -> keyboardEditor -> loadKey( FLAT, id-KEY_FLATS_1+1 );
     }
-    
+
     Display::render();
 }
 

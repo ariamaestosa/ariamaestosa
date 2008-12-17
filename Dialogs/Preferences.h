@@ -28,32 +28,32 @@ class MainFrame;
 class Preferences : public wxDialog
 {
 
-	int modalCode;
+    int modalCode;
 
-	wxBoxSizer* vert_sizer;
-	//wxStaticText* lang_label;
+    wxBoxSizer* vert_sizer;
+    //wxStaticText* lang_label;
 
-	wxChoice* lang_combo;
-	wxChoice* play_combo;
+    wxChoice* lang_combo;
+    wxChoice* play_combo;
 
     wxCheckBox* follow_playback_checkbox;
-    
-	wxButton* ok_btn;
 
-	MainFrame* parent;
+    wxButton* ok_btn;
+
+    MainFrame* parent;
 public:
     LEAK_CHECK(Preferences);
-        
-	Preferences(MainFrame* parent);
-    ~Preferences();
-	void show();
 
-	void languageSelected(wxCommandEvent& evt);
-	void okClicked(wxCommandEvent& evt);
-	void playSelected(wxCommandEvent& evt);
+    Preferences(MainFrame* parent);
+    ~Preferences();
+    void show();
+
+    void languageSelected(wxCommandEvent& evt);
+    void okClicked(wxCommandEvent& evt);
+    void playSelected(wxCommandEvent& evt);
     void followPlaybackChecked(wxCommandEvent& evt);
-    
-	DECLARE_EVENT_TABLE()
+
+    DECLARE_EVENT_TABLE()
 };
 
 bool followPlaybackByDefault();

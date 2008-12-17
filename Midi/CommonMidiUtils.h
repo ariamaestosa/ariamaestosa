@@ -31,7 +31,7 @@ void allocAsMidiBytes(Sequence* sequence, bool selectionOnly, /*out*/int* songle
 bool exportMidiFile(Sequence* sequence, wxString filepath);
 
 bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bool selectionOnly,
-						 /*out*/int* songLengthInTicks, /*out*/int* startTick, /*out*/ int* numTracks, bool playing);
+                         /*out*/int* songLengthInTicks, /*out*/int* startTick, /*out*/ int* numTracks, bool playing);
 
 int convertTempoBendToBPM(int val);
 

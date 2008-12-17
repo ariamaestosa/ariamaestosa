@@ -54,28 +54,28 @@ class NoteRelocator;
 
 namespace Action
 {
-	class EditAction;
-	class SingleTrackAction;
-	class MultiTrackAction;
+    class EditAction;
+    class SingleTrackAction;
+    class MultiTrackAction;
 
-	class MoveNotes;
-	class SetNoteVolume;
-	class ResizeNotes;
-	class DeleteSelected;
-	class RemoveOverlapping;
-	class SnapNotesToGrid;
-	class ScaleTrack;
-	class ScaleSong;
-	class InsertEmptyMeasures;
-	class RemoveMeasures;
-	class AddNote;
-	class AddControlEvent;
-	class AddControllerSlide;
-	class ShiftFrets;
-	class ShiftString;
-	class NumberPressed;
-	class UpdateGuitarTuning;
-	class Paste;
+    class MoveNotes;
+    class SetNoteVolume;
+    class ResizeNotes;
+    class DeleteSelected;
+    class RemoveOverlapping;
+    class SnapNotesToGrid;
+    class ScaleTrack;
+    class ScaleSong;
+    class InsertEmptyMeasures;
+    class RemoveMeasures;
+    class AddNote;
+    class AddControlEvent;
+    class AddControllerSlide;
+    class ShiftFrets;
+    class ShiftString;
+    class NumberPressed;
+    class UpdateGuitarTuning;
+    class Paste;
     class SetAccidentalSign;
     class ShiftBySemiTone;
 }
@@ -86,42 +86,42 @@ const int ALL_NOTES = -2;
 class Track
 {
     // FIXME - find better way?
-	friend class FullTrackUndo;
-	friend class NoteRelocator;
-	friend class ControlEventRelocator;
+    friend class FullTrackUndo;
+    friend class NoteRelocator;
+    friend class ControlEventRelocator;
 
-	friend class Action::MoveNotes;
-	friend class Action::SetNoteVolume;
-	friend class Action::ResizeNotes;
-	friend class Action::DeleteSelected;
-	friend class Action::RemoveOverlapping;
-	friend class Action::SnapNotesToGrid;
-	friend class Action::ScaleTrack;
-	friend class Action::ScaleSong;
-	friend class Action::InsertEmptyMeasures;
-	friend class Action::RemoveMeasures;
-	friend class Action::AddNote;
-	friend class Action::AddControlEvent;
-	friend class Action::AddControllerSlide;
-	friend class Action::ShiftFrets;
-	friend class Action::ShiftString;
-	friend class Action::NumberPressed;
-	friend class Action::UpdateGuitarTuning;
-	friend class Action::Paste;
-	friend class Action::SetAccidentalSign;
+    friend class Action::MoveNotes;
+    friend class Action::SetNoteVolume;
+    friend class Action::ResizeNotes;
+    friend class Action::DeleteSelected;
+    friend class Action::RemoveOverlapping;
+    friend class Action::SnapNotesToGrid;
+    friend class Action::ScaleTrack;
+    friend class Action::ScaleSong;
+    friend class Action::InsertEmptyMeasures;
+    friend class Action::RemoveMeasures;
+    friend class Action::AddNote;
+    friend class Action::AddControlEvent;
+    friend class Action::AddControllerSlide;
+    friend class Action::ShiftFrets;
+    friend class Action::ShiftString;
+    friend class Action::NumberPressed;
+    friend class Action::UpdateGuitarTuning;
+    friend class Action::Paste;
+    friend class Action::SetAccidentalSign;
     friend class Action::ShiftBySemiTone;
 
     MainFrame* frame;
     int trackUniqueID;
     ptr_vector<Note> notes;
-	ptr_vector<Note, REF> noteOff;
+    ptr_vector<Note, REF> noteOff;
     ptr_vector<ControllerEvent> controlEvents;
     int trackid;
 
-	wxString name;
+    wxString name;
 
-	int channel; // only used if in channel mode
-	int instrument, drumKit;
+    int channel; // only used if in channel mode
+    int instrument, drumKit;
 
 public:
     LEAK_CHECK(Track);
@@ -138,20 +138,20 @@ public:
     // link to that track they could have (like background)
     void trackDeleted(Track* track);
 
-	// replace events in time order
-	void reorderNoteVector();
-	void reorderNoteOffVector();
+    // replace events in time order
+    void reorderNoteVector();
+    void reorderNoteOffVector();
     void reorderControlVector();
 
-	void removeNote(const int id);
+    void removeNote(const int id);
 
     void setId(const int id);
 
-	// set notes while importing files. otherwise, use edit actions.
-	bool addNote_import(const int pitchID, const int startTick, const int endTick, const int volume, const int string=-1);
-	void setNoteEnd_import(const int tick, const int noteID);
+    // set notes while importing files. otherwise, use edit actions.
+    bool addNote_import(const int pitchID, const int startTick, const int endTick, const int volume, const int string=-1);
+    void setNoteEnd_import(const int tick, const int noteID);
 
-	// this one should only be called by the midi file loader.
+    // this one should only be called by the midi file loader.
     // its only difference is that it knows all events are OK and that they are in time order, so it doesn't waste time doing checks
     void addController_import(const int x, const int value, const int controller);
 
@@ -160,10 +160,10 @@ public:
 
     int getGridDivider();
 
-	void setName(wxString name);
-	wxString& getName();
+    void setName(wxString name);
+    wxString& getName();
 
-	void selectNote(const int id, const bool selected, bool ignoreModifiers=false);
+    void selectNote(const int id, const bool selected, bool ignoreModifiers=false);
 
     // get info on notes
     int getNoteAmount() const;
@@ -176,10 +176,10 @@ public:
     int getNoteVolume(const int id) const;
     Note* getNote(const int id); // use only if methods above can't do what you want
 
-	void playNote(const int id, const bool noteChange=false);
+    void playNote(const int id, const bool noteChange=false);
 
-	void markNoteToBeRemoved(const int id);
-	void removeMarkedNotes();
+    void markNoteToBeRemoved(const int id);
+    void removeMarkedNotes();
 
     int getNoteString(const int id); // for guitar editor
     int getNoteFret(const int id); // for guitar editor
@@ -190,29 +190,29 @@ public:
     int getControllerEventAmount(const int controllerTypeID) const;
     ControllerEvent* getControllerEvent(const int id, const int controllerTypeID);
 
-	// not to be called during editing, as it does not generate an action in the action stack.
-	bool addNote( Note* note, bool check_for_overlapping_notes=true );
-	void addControlEvent( ControllerEvent* evt, int* previousValue = NULL );
+    // not to be called during editing, as it does not generate an action in the action stack.
+    bool addNote( Note* note, bool check_for_overlapping_notes=true );
+    void addControlEvent( ControllerEvent* evt, int* previousValue = NULL );
 
-	// perform an action that only affects this Track (see also Sequence::action)
-	void action( Action::SingleTrackAction* action);
+    // perform an action that only affects this Track (see also Sequence::action)
+    void action( Action::SingleTrackAction* action);
 
-	void mergeTrackIn(Track* track);
+    void mergeTrackIn(Track* track);
 
     int getFirstNoteTick(bool selectionOnly=false) const;
 
-	/*
-	 * only used in manual channel management mode
-	 * if auto mode is on, the playing code must pick a channel for each track.
-	 * if you use Aria's libjdkmidi/midibytes functions, this will be done for you
-	 */
-	void setChannel(int i);
-	int getChannel();
+    /*
+     * only used in manual channel management mode
+     * if auto mode is on, the playing code must pick a channel for each track.
+     * if you use Aria's libjdkmidi/midibytes functions, this will be done for you
+     */
+    void setChannel(int i);
+    int getChannel();
 
-	void setInstrument(int i, bool recursive=false); // 'recursive' is set to true when the method calls itself
-	int getInstrument();
-	void setDrumKit(int i, bool recursive=false); // 'recursive' is set to true when the method calls itself
-	int getDrumKit();
+    void setInstrument(int i, bool recursive=false); // 'recursive' is set to true when the method calls itself
+    int getInstrument();
+    void setDrumKit(int i, bool recursive=false); // 'recursive' is set to true when the method calls itself
+    int getDrumKit();
 
     void copy();
 

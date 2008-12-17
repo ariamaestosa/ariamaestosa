@@ -104,11 +104,11 @@ void bordered_rect_no_start(const int x1, const int y1, const int x2, const int 
 
     glVertex2f(round(x1*10.0), round((y2+0.5)*10.0));
     glVertex2f(round(x2*10.0), round((y2+0.5)*10.0));
-	
+
     glVertex2f(round((x2+1)*10.0), round(y2*10.0));
     glVertex2f(round((x2+1)*10.0), round((y1+0.5)*10.0));
-	
-	glVertex2f(round((x1+0.5)*10.0), round(y1*10.0));
+
+    glVertex2f(round((x1+0.5)*10.0), round(y1*10.0));
     glVertex2f(round(x2*10.0), round(y1*10.0));
 
     glEnd();
@@ -120,7 +120,7 @@ void bordered_rect(const int x1, const int y1, const int x2, const int y2)
 
     /** the numbers below were determined by trial-and-error in order
         to work on all computers i have access to... */
-    
+
     glColor3f(0,0,0);
     glLineWidth(1);
     glBegin(GL_LINES);
@@ -134,7 +134,7 @@ void bordered_rect(const int x1, const int y1, const int x2, const int y2)
     glVertex2f(round((x2+1)*10.0), round(y2*10.0));
     glVertex2f(round((x2+1)*10.0), round((y1+0.5)*10.0));
 
-	glVertex2f(round((x1+0.5)*10.0), round(y1*10.0));
+    glVertex2f(round((x1+0.5)*10.0), round(y1*10.0));
     glVertex2f(round(x2*10.0), round(y1*10.0));
 
     glEnd();
@@ -213,7 +213,7 @@ void text_with_bounds(wxString* string, const int x, const int y, const int max_
         float rasterPos[4];
         glGetFloatv(GL_CURRENT_RASTER_POSITION,rasterPos);
         if(rasterPos[0] > max_x)
-		{
+        {
             glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, '.');
             glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, '.');
             glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, '.');
@@ -250,11 +250,11 @@ void small_text_newline_between_words(const char* string, const int x, const int
     for(int i=0; string[i]; i++)
     {
         if(string[i]==' ')
-		{
+        {
             line++;
             glRasterPos2f(x*10.0, y*10.0+line*150);
         }
-		else
+        else
             glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, string[i]);
     }
 }
@@ -270,21 +270,21 @@ void triangle(const int x1, const int y1, const int x2, const int y2, const int 
 
 void arc(int center_x, int center_y, int radius_x, int radius_y, bool show_above)
 {
-	glLoadIdentity();
+    glLoadIdentity();
 
-	const int y_mult = (show_above ? -radius_y*10.0 : radius_y*10.0);
-	center_x *= 10.0f;
-	center_y *= 10.0f;
-	radius_x *= 10.0f;
-    
-	glColor3f(0,0,0);
-	glBegin(GL_LINES);
-	for(float angle = 0.2; angle<=M_PI; angle +=0.2)
-	{
-		glVertex2f( center_x + std::cos(angle)    *radius_x, center_y + std::sin(angle)*y_mult );
-		glVertex2f( center_x + std::cos(angle-0.2)*radius_x, center_y + std::sin(angle-0.2)*y_mult );
-	}
-	glEnd();
+    const int y_mult = (show_above ? -radius_y*10.0 : radius_y*10.0);
+    center_x *= 10.0f;
+    center_y *= 10.0f;
+    radius_x *= 10.0f;
+
+    glColor3f(0,0,0);
+    glBegin(GL_LINES);
+    for(float angle = 0.2; angle<=M_PI; angle +=0.2)
+    {
+        glVertex2f( center_x + std::cos(angle)    *radius_x, center_y + std::sin(angle)*y_mult );
+        glVertex2f( center_x + std::cos(angle-0.2)*radius_x, center_y + std::sin(angle-0.2)*y_mult );
+    }
+    glEnd();
 }
 
 void quad(const int x1, const int y1,

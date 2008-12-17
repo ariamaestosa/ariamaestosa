@@ -3,12 +3,12 @@
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
- 
+
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
- 
+
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -35,22 +35,22 @@ namespace AriaMaestosa
 
     class MouseDownTimer;
     class MainFrame;
-    
+
 class MainPane : public MAINPANE_BASE_CLASS
 {
     OwnerPtr<MouseDownTimer>  mouseDownTimer;
-	
+
     RelativeXCoord mousex_initial;
-	int mousey_initial;
+    int mousey_initial;
     RelativeXCoord mousex_current;
-	int mousey_current;
+    int mousey_current;
     bool isMouseDown_bool;
-    
+
     int currentTick;
     int draggingTrack; // which track the user is dragging (in a track reordering process), or -1 if none
-	
+
     std::vector<int> positionsInDock;
-    
+
     // used during playback
     int followPlaybackTime;
     int lastTick;
@@ -59,19 +59,19 @@ class MainPane : public MAINPANE_BASE_CLASS
     bool scrollToPlaybackPosition;
 
 public:
-    LEAK_CHECK(MainPane);    
-	
+    LEAK_CHECK(MainPane);
+
     MainPane(MainFrame* mainframe, int* args);
     ~MainPane();
 
     // --------------------- read-only --------------------
-    
+
     bool isVisible; // is frame shown
     bool leftArrow;
     bool rightArrow;
-    
+
     // -----------------------------------------------------
-    
+
 
     // render loop
     void enterPlayLoop();
@@ -81,11 +81,11 @@ public:
     int getCurrentTick() const;
     void exitPlayLoop();
     void scrollNowToPlaybackPosition();
-    
-	int getDraggedTrackID();
+
+    int getDraggedTrackID();
 
     void isNowVisible(); // called when frame is made visible
-    
+
     // events
     void mouseMoved(wxMouseEvent& event);
     void mouseDown(wxMouseEvent& event);
@@ -96,27 +96,27 @@ public:
     void mouseHeldDown(); // events will be sent regularly to this method when user holds down mouse
     void keyPressed(wxKeyEvent& event);
     void keyReleased(wxKeyEvent& event);
-	void instrumentPopupSelected(wxCommandEvent& evt);
-	void drumPopupSelected(wxCommandEvent& evt);
-	
+    void instrumentPopupSelected(wxCommandEvent& evt);
+    void drumPopupSelected(wxCommandEvent& evt);
+
     bool isMouseDown();
     RelativeXCoord getMouseX_current();
     int getMouseY_current();
     RelativeXCoord getMouseX_initial();
     int getMouseY_initial();
-    
+
     bool isSelectMorePressed();
     bool isSelectLessPressed();
     bool isCtrlDown();
 
     bool do_render();
-    
+
     void render(const bool paintEvent = false);
     void paintEvent(wxPaintEvent& evt);
-    
+
     // serialization
     void saveToFile(wxFileOutputStream& fileout);
-      
+
     DECLARE_EVENT_TABLE()
 };
 

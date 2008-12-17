@@ -38,12 +38,12 @@ GLPane::GLPane(MainFrame* mainFrame, int* args) :
     wxGLCanvas(mainFrame, wxID_ANY,  wxDefaultPosition, wxDefaultSize, 0, wxT("GLCanvas"),  args)
 {
 
-    
+
 
     int argc = 0;
     char** argv = NULL;
 
-	std::cout << "calling glutInit" << std::endl;
+    std::cout << "calling glutInit" << std::endl;
     glutInit(&argc, argv);
 }
 
@@ -68,7 +68,7 @@ void GLPane::resized(wxSizeEvent& evt)
 
 void GLPane::setCurrent()
 {
-	if (!GetParent()->IsShown()) return;
+    if (!GetParent()->IsShown()) return;
     wxGLCanvas::SetCurrent();
 }
 
@@ -83,9 +83,9 @@ void GLPane::initOpenGLFor3D()
      *  Inits the OpenGL viewport for drawing in 3D
      */
 
-    //glShadeModel(GL_SMOOTH);	// Enable Smooth Shading
+    //glShadeModel(GL_SMOOTH);    // Enable Smooth Shading
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Black Background
-    glClearDepth(1.0f);	// Depth Buffer Setup
+    glClearDepth(1.0f);    // Depth Buffer Setup
     glEnable(GL_DEPTH_TEST); // Enables Depth Testing
     glDepthFunc(GL_LEQUAL); // The Type Of Depth Testing To Do
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);

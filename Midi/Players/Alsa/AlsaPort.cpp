@@ -35,16 +35,16 @@ MidiDevice* MidiContext::getDevice(int client, int port)
 
 bool MidiDevice::open()
 {
-	address.client = client;
-	address.port = port;
+    address.client = client;
+    address.port = port;
 
-	snd_seq_port_subscribe_alloca(&midiContext->subs);
+    snd_seq_port_subscribe_alloca(&midiContext->subs);
 
-	snd_seq_port_subscribe_set_sender(midiContext->subs, &midiContext->address);
-	snd_seq_port_subscribe_set_dest(midiContext->subs, &address);
+    snd_seq_port_subscribe_set_sender(midiContext->subs, &midiContext->address);
+    snd_seq_port_subscribe_set_dest(midiContext->subs, &address);
 
-	const int success = snd_seq_subscribe_port(midiContext->sequencer, midiContext->subs);
-	if(success != 0)
+    const int success = snd_seq_subscribe_port(midiContext->sequencer, midiContext->subs);
+    if(success != 0)
     {
         wxMessageBox( _("Failed to open ALSA port.") );
         return false;
@@ -55,16 +55,16 @@ bool MidiDevice::open()
 
 void MidiDevice::close()
 {
-	//snd_seq_port_subscribe_alloca(&midiContext->subs);
-	//snd_seq_port_subscribe_set_sender(midiContext->subs, &midiContext->address);
-	//snd_seq_port_subscribe_set_dest(midiContext->subs, &address);
+    //snd_seq_port_subscribe_alloca(&midiContext->subs);
+    //snd_seq_port_subscribe_set_sender(midiContext->subs, &midiContext->address);
+    //snd_seq_port_subscribe_set_dest(midiContext->subs, &address);
 
-	snd_seq_unsubscribe_port(midiContext->sequencer, midiContext->subs);
-	snd_seq_drop_output(midiContext->sequencer);
+    snd_seq_unsubscribe_port(midiContext->sequencer, midiContext->subs);
+    snd_seq_drop_output(midiContext->sequencer);
     snd_seq_free_queue(midiContext->sequencer, midiContext->queue);
     snd_seq_close(midiContext->sequencer);
 
-	//snd_seq_port_subscribe_free(midiContext.subs);
+    //snd_seq_port_subscribe_free(midiContext.subs);
 }
 
 
@@ -137,69 +137,69 @@ bool MidiContext::askOpenDevice()
 void MidiContext::findDevices()
 {
     devices.clear();
-	snd_seq_client_info_t* clientInfo;
+    snd_seq_client_info_t* clientInfo;
 
-	if (snd_seq_open(&sequencer, "default", SND_SEQ_OPEN_OUTPUT, 0) < 0)
-	{
-		return;
-	}
+    if (snd_seq_open(&sequencer, "default", SND_SEQ_OPEN_OUTPUT, 0) < 0)
+    {
+        return;
+    }
 
-	snd_seq_client_info_alloca(&clientInfo);
-	snd_seq_client_info_set_client(clientInfo, -1);
+    snd_seq_client_info_alloca(&clientInfo);
+    snd_seq_client_info_set_client(clientInfo, -1);
 
-	// iterate through clients
-	while (snd_seq_query_next_client(sequencer, clientInfo) >= 0)
-	{
-		snd_seq_port_info_t* pinfo;
+    // iterate through clients
+    while (snd_seq_query_next_client(sequencer, clientInfo) >= 0)
+    {
+        snd_seq_port_info_t* pinfo;
 
-		snd_seq_port_info_alloca(&pinfo);
-		snd_seq_port_info_set_client(pinfo, snd_seq_client_info_get_client(clientInfo));
-		snd_seq_port_info_set_port(pinfo, -1);
+        snd_seq_port_info_alloca(&pinfo);
+        snd_seq_port_info_set_client(pinfo, snd_seq_client_info_get_client(clientInfo));
+        snd_seq_port_info_set_port(pinfo, -1);
 
-		// and now through ports
-		while (snd_seq_query_next_port(sequencer, pinfo) >= 0)
-		{
-			unsigned int capability = snd_seq_port_info_get_capability(pinfo);
+        // and now through ports
+        while (snd_seq_query_next_port(sequencer, pinfo) >= 0)
+        {
+            unsigned int capability = snd_seq_port_info_get_capability(pinfo);
 
-			if ((capability & SND_SEQ_PORT_CAP_SUBS_WRITE) == 0)
-			{
-				continue;
-			}
+            if ((capability & SND_SEQ_PORT_CAP_SUBS_WRITE) == 0)
+            {
+                continue;
+            }
 
-			int client  = (snd_seq_port_info_get_addr(pinfo))->client;
-			int port    = (snd_seq_port_info_get_addr(pinfo))->port;
+            int client  = (snd_seq_port_info_get_addr(pinfo))->client;
+            int port    = (snd_seq_port_info_get_addr(pinfo))->port;
 
-			std::cout << client << ":" << port << " --> " << snd_seq_port_info_get_name(pinfo) << std::endl;
-			devices.push_back( MidiDevice(this, client, port, snd_seq_port_info_get_name(pinfo)) );
+            std::cout << client << ":" << port << " --> " << snd_seq_port_info_get_name(pinfo) << std::endl;
+            devices.push_back( MidiDevice(this, client, port, snd_seq_port_info_get_name(pinfo)) );
 
-		}
+        }
 
-	}
+    }
 
-	if (snd_seq_set_client_name(sequencer, "Aria") < 0)
-	{
-		return;
-	}
+    if (snd_seq_set_client_name(sequencer, "Aria") < 0)
+    {
+        return;
+    }
 
-	//midiContext.address.port = snd_seq_create_simple_port(midiContext.sequencer, "Aria Port 0", SND_SEQ_PORT_CAP_SUBS_WRITE, SND_SEQ_PORT_TYPE_APPLICATION);
+    //midiContext.address.port = snd_seq_create_simple_port(midiContext.sequencer, "Aria Port 0", SND_SEQ_PORT_CAP_SUBS_WRITE, SND_SEQ_PORT_TYPE_APPLICATION);
     address.port =  snd_seq_create_simple_port(sequencer, "Aria Port 0",
-					 SND_SEQ_PORT_CAP_WRITE |
-					 SND_SEQ_PORT_CAP_SUBS_WRITE |
-					 SND_SEQ_PORT_CAP_READ,
-					 SND_SEQ_PORT_TYPE_APPLICATION);
-					 //SND_SEQ_PORT_TYPE_MIDI_GENERIC);
+                     SND_SEQ_PORT_CAP_WRITE |
+                     SND_SEQ_PORT_CAP_SUBS_WRITE |
+                     SND_SEQ_PORT_CAP_READ,
+                     SND_SEQ_PORT_TYPE_APPLICATION);
+                     //SND_SEQ_PORT_TYPE_MIDI_GENERIC);
 
-	address.client = snd_seq_client_id (sequencer);
+    address.client = snd_seq_client_id (sequencer);
 
-	// FIXME - what's the use of creating a queue? seqlib does
-	//queue = snd_seq_alloc_queue (sequencer);
+    // FIXME - what's the use of creating a queue? seqlib does
+    //queue = snd_seq_alloc_queue (sequencer);
     //if(queue < 0) printf("Failed to allocate queue\n");
 
-	//snd_seq_set_client_pool_output (midiContext.sequencer, 1024);
-	snd_seq_set_client_pool_output (sequencer, 1024);
+    //snd_seq_set_client_pool_output (midiContext.sequencer, 1024);
+    snd_seq_set_client_pool_output (sequencer, 1024);
 
-	destlist = g_array_new(0, 0, sizeof(snd_seq_addr_t));
-	// snd_seq_set_client_pool_output(seq_handle, (seq_len<<1) + 4);
+    destlist = g_array_new(0, 0, sizeof(snd_seq_addr_t));
+    // snd_seq_set_client_pool_output(seq_handle, (seq_len<<1) + 4);
 }
 
 int MidiContext::getDeviceAmount()

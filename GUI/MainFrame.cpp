@@ -62,18 +62,18 @@ namespace AriaMaestosa {
 
 enum IDs
 {
-	PLAY_CLICKED,
-	STOP_CLICKED,
-	TEMPO,
-	ZOOM,
-	LENGTH,
-	BEGINNING,
+    PLAY_CLICKED,
+    STOP_CLICKED,
+    TEMPO,
+    ZOOM,
+    LENGTH,
+    BEGINNING,
 
-	SCROLLBAR_H,
-	SCROLLBAR_V,
+    SCROLLBAR_H,
+    SCROLLBAR_V,
 
-	MEASURE_NUM,
-	//MEASURE_DENOM,
+    MEASURE_NUM,
+    //MEASURE_DENOM,
 };
 
 
@@ -129,7 +129,7 @@ EVT_TEXT(ZOOM, MainFrame::zoomTextChanged)
 
 EVT_COMMAND  (100000, wxEVT_DESTROY_VOLUME_SLIDER, MainFrame::evt_freeVolumeSlider)
 EVT_COMMAND  (100000, wxEVT_DESTROY_TIMESIG_PICKER, MainFrame::evt_freeTimeSigPicker)
-    
+
 // events useful if you need to show a
 // progress bar from another thread
 EVT_COMMAND  (100001, wxEVT_SHOW_WAIT_WINDOW, MainFrame::evt_showWaitWindow)
@@ -161,9 +161,9 @@ void CustomToolBar::realize()
         OSStatus status = HIToolbarCopyItems((HIToolbarRef)m_macHIToolbarRef, &array);
         std::cout << "got array, status=" << status << std::endl;
         const int item_amount = CFArrayGetCount(array);
-        
+
         std::cout << "item_amount=" << item_amount << std::endl;
-        
+
         for(int n=0; n<item_amount; n++)
         {
             OSStatus status = HIToolbarItemSetLabel( (HIToolbarItemRef)CFArrayGetValueAtIndex(array, n) , CFSTR("hello") );
@@ -185,7 +185,7 @@ MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(1
     toolbar = new CustomToolBar(this);
     SetToolBar(toolbar);
 #endif
-	//Maximize(true);
+    //Maximize(true);
 
 }
 
@@ -195,7 +195,7 @@ MainFrame::~MainFrame()
 {
     ImageProvider::unloadImages();
     PlatformMidiManager::freeMidiPlayer();
-	CopyrightWindow::free();
+    CopyrightWindow::free();
     Clipboard::clear();
 }
 
@@ -204,7 +204,7 @@ class QuickBoxPanel
     wxBoxSizer* bsizer;
 public:
     wxPanel* pane;
-    
+
     QuickBoxPanel(wxWindow* component, wxSizer* parentsizer, int orientation=wxVERTICAL)
     {
         pane = new wxPanel(component);
@@ -226,14 +226,14 @@ public:
 void MainFrame::init()
 {
     Centre();
-    
-	prefs = NULL;
-	currentSequence=0;
-	playback_mode=false;
-	
+
+    prefs = NULL;
+    currentSequence=0;
+    playback_mode=false;
+
     changingValues=false;
 
-	SetMinSize(wxSize(750, 330));
+    SetMinSize(wxSize(750, 330));
 
     prefs = new Preferences(this);
     initMenuBar();
@@ -241,41 +241,41 @@ void MainFrame::init()
 
     wxInitAllImageHandlers();
     verticalSizer = new wxBorderSizer();
-    
+
     // a few presets
     wxSize averageTextCtrlSize(wxDefaultSize);
     averageTextCtrlSize.SetWidth(55);
-    
+
     wxSize smallTextCtrlSize(wxDefaultSize);
     smallTextCtrlSize.SetWidth(35);
-    
+
     wxSize tinyTextCtrlSize(wxDefaultSize);
     tinyTextCtrlSize.SetWidth(25);
 
-    
+
     // -------------------------- Top Pane ----------------------------
 #ifdef NO_WX_TOOLBAR
     topPane=new wxPanel(this);
     verticalSizer->Add(topPane, 0, wxALIGN_CENTER_VERTICAL | wxALL, 2, Location::North() );
     toolbarSizer=new wxFlexGridSizer(2, 6, 1, 15);
     topPane->SetSizer(toolbarSizer);
-    
+
     // play/stop buttons
     {
     QuickBoxPanel quickPane(topPane, toolbarSizer, wxHORIZONTAL);
-    
-	playBitmap.LoadFile( getResourcePrefix()  + wxT("play.png") , wxBITMAP_TYPE_PNG);
-    pauseBitmap.LoadFile( getResourcePrefix()  + wxT("pause.png") , wxBITMAP_TYPE_PNG);
-	play=new wxBitmapButton(quickPane.pane, PLAY_CLICKED, playBitmap);
-	quickPane.add(play);
 
-	wxBitmap stopBitmap;
-	stopBitmap.LoadFile( getResourcePrefix()  + wxT("stop.png") , wxBITMAP_TYPE_PNG);
-	stop=new wxBitmapButton(quickPane.pane, STOP_CLICKED, stopBitmap);
+    playBitmap.LoadFile( getResourcePrefix()  + wxT("play.png") , wxBITMAP_TYPE_PNG);
+    pauseBitmap.LoadFile( getResourcePrefix()  + wxT("pause.png") , wxBITMAP_TYPE_PNG);
+    play=new wxBitmapButton(quickPane.pane, PLAY_CLICKED, playBitmap);
+    quickPane.add(play);
+
+    wxBitmap stopBitmap;
+    stopBitmap.LoadFile( getResourcePrefix()  + wxT("stop.png") , wxBITMAP_TYPE_PNG);
+    stop=new wxBitmapButton(quickPane.pane, STOP_CLICKED, stopBitmap);
     stop->Enable(false);
     quickPane.add(stop);
     }
-    
+
     // tempo
     tempoCtrl=new wxTextCtrl(topPane, TEMPO, wxT("120"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER );
     toolbarSizer->Add(tempoCtrl, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_CENTER | wxALL, 5);
@@ -283,11 +283,11 @@ void MainFrame::init()
     // song length
     songLength=new wxSpinCtrl(topPane, LENGTH, to_wxString(DEFAULT_SONG_LENGTH), wxDefaultPosition,
 #ifdef __WXGTK__
-							  averageTextCtrlSize
+                              averageTextCtrlSize
 #else
-							  wxDefaultSize
+                              wxDefaultSize
 #endif
-							  , wxTE_PROCESS_ENTER);
+                              , wxTE_PROCESS_ENTER);
 
     toolbarSizer->Add(songLength, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
     songLength->SetRange(0, 10000);
@@ -303,16 +303,16 @@ void MainFrame::init()
     // zoom
     displayZoom=new wxSpinCtrl(topPane, ZOOM, wxT("100"), wxDefaultPosition,
 #ifdef __WXGTK__
-							   averageTextCtrlSize
+                               averageTextCtrlSize
 #else
-							   wxDefaultSize
+                               wxDefaultSize
 #endif
-							   );
+                               );
 
     toolbarSizer->Add(displayZoom, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
     displayZoom->SetRange(25, 500);
 
-    
+
     // labels
     toolbarSizer->Add(new wxStaticText(topPane, wxID_ANY,  wxT(" ")),       0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
     toolbarSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Tempo")),     0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
@@ -320,10 +320,10 @@ void MainFrame::init()
     toolbarSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Time Sig")),  0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
     toolbarSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Start")),     0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
     toolbarSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Zoom")),      0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
-    
+
 #else
     //toolbar = this->CreateToolBar(wxTB_HORZ_TEXT | wxNO_BORDER);
-    
+
     playBitmap.LoadFile( getResourcePrefix()  + wxT("play.png") , wxBITMAP_TYPE_PNG);
     pauseBitmap.LoadFile( getResourcePrefix()  + wxT("pause.png") , wxBITMAP_TYPE_PNG);
     toolbar->AddTool(PLAY_CLICKED, wxT("Play"), playBitmap);
@@ -333,7 +333,7 @@ void MainFrame::init()
     toolbar->AddTool(STOP_CLICKED, wxT("Stop"), stopBitmap);
 
     toolbar->AddSeparator();
-    
+
     measureTypeTop=new wxTextCtrl(toolbar, MEASURE_NUM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize, wxTE_PROCESS_ENTER );
     toolbar->add(measureTypeTop);
     wxStaticText* slash = new wxStaticText(toolbar, wxID_ANY, wxT("/"), wxDefaultPosition, wxSize(15,15));
@@ -345,21 +345,21 @@ void MainFrame::init()
 
     firstMeasure=new wxTextCtrl(toolbar, BEGINNING, wxT("1"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER);
     toolbar->add(firstMeasure);
-    
+
     songLength=new wxSpinCtrl(toolbar, LENGTH, to_wxString(DEFAULT_SONG_LENGTH), wxDefaultPosition,
 #ifdef __WXGTK__
-							  averageTextCtrlSize
+                              averageTextCtrlSize
 #else
-							  wxDefaultSize
+                              wxDefaultSize
 #endif
-							  , wxTE_PROCESS_ENTER);
+                              , wxTE_PROCESS_ENTER);
     toolbar->add(songLength);
-    
+
     toolbar->AddSeparator();
-    
+
     tempoCtrl=new wxTextCtrl(toolbar, TEMPO, wxT("120"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER );
     toolbar->add(tempoCtrl);
-    
+
     displayZoom=new wxSpinCtrl(toolbar, ZOOM, wxT("100"), wxDefaultPosition,
     #ifdef __WXGTK__
                            averageTextCtrlSize
@@ -367,12 +367,12 @@ void MainFrame::init()
                            wxDefaultSize
     #endif
                            );
-    
+
     displayZoom->SetRange(25,500);
     toolbar->add(displayZoom);
     toolbar->realize();
 #endif
-    
+
     // -------------------------- RenderPane ----------------------------
 #ifndef NO_OPENGL
     int args[3];
@@ -437,29 +437,29 @@ void MainFrame::init()
     SetAutoLayout(TRUE);
     SetSizer(verticalSizer);
     Centre();
-    
+
     verticalSizer->Layout();
 
     Show();
     Maximize(true);
-    
+
     // create pickers
     tuningPicker        =  new TuningPicker();
     keyPicker           =  new KeyPicker();
     instrument_picker   =  new InstrumentChoice();
     drumKit_picker      =  new DrumChoice();
-    
+
     // create dialogs (FIXME - don't create until requested by user)
     aboutDialog             =  new AboutDialog();
     customNoteSelectDialog  =  new CustomNoteSelectDialog();
-        
-    ImageProvider::loadImages();
-	mainPane->isNowVisible();
 
-	//ImageProvider::loadImages();
+    ImageProvider::loadImages();
+    mainPane->isNowVisible();
+
+    //ImageProvider::loadImages();
 
 #ifdef _show_dialog_on_startup
-	aboutDialog->show();
+    aboutDialog->show();
 #endif
 }
 
@@ -478,7 +478,7 @@ void MainFrame::on_close(wxCloseEvent& evt)
 void MainFrame::playClicked(wxCommandEvent& evt)
 {
 
-	if(playback_mode)
+    if(playback_mode)
     {
         // already playing, this button does "pause" instead
         getMeasureData()->setFirstMeasure( getMeasureData()->measureAtTick(mainPane->getCurrentTick()) );
@@ -489,16 +489,16 @@ void MainFrame::playClicked(wxCommandEvent& evt)
 
     toolsEnterPlaybackMode();
 
-	int startTick = -1;
+    int startTick = -1;
 
-	const bool success = PlatformMidiManager::playSequence( getCurrentSequence(), /*out*/ &startTick );
-	if(!success) std::cerr << "Couldn't play" << std::endl;
+    const bool success = PlatformMidiManager::playSequence( getCurrentSequence(), /*out*/ &startTick );
+    if(!success) std::cerr << "Couldn't play" << std::endl;
 
     mainPane->setPlaybackStartTick( startTick );
 
     if(startTick == -1 or !success)
         mainPane->exitPlayLoop();
-	else
+    else
         mainPane->enterPlayLoop();
 
 }
@@ -511,9 +511,9 @@ void MainFrame::stopClicked(wxCommandEvent& evt)
 
 void MainFrame::toolsEnterPlaybackMode()
 {
-	if(playback_mode) return;
+    if(playback_mode) return;
 
-	playback_mode = true;
+    playback_mode = true;
 #ifdef NO_WX_TOOLBAR
     stop->Enable(true);
     //play->Enable(false);
@@ -522,7 +522,7 @@ void MainFrame::toolsEnterPlaybackMode()
     toolbar->EnableTool(PLAY_CLICKED, false);
     toolbar->EnableTool(STOP_CLICKED, true);
 #endif
-    
+
     disableMenusForPlayback(true);
 
     //measureTypeBottom->Enable(false);
@@ -535,7 +535,7 @@ void MainFrame::toolsEnterPlaybackMode()
 
 void MainFrame::toolsExitPlaybackMode()
 {
-	playback_mode = false;
+    playback_mode = false;
 #ifdef NO_WX_TOOLBAR
     stop->Enable(false);
     play->SetBitmapLabel(playBitmap);
@@ -544,7 +544,7 @@ void MainFrame::toolsExitPlaybackMode()
     toolbar->EnableTool(PLAY_CLICKED, true);
     toolbar->EnableTool(STOP_CLICKED, false);
 #endif
-    
+
     disableMenusForPlayback(false);
 
     //measureTypeBottom->Enable(true);
@@ -577,7 +577,7 @@ void MainFrame::updateTopBarAndScrollbarsForSequence(Sequence* seq)
 
     // time signature
     timeSig->SetLabel( wxString::Format(wxT("%i/%i"), getMeasureData()->getTimeSigNumerator(), getMeasureData()->getTimeSigDenominator() ));
-        
+
     /*
     {
         char buffer[4];
@@ -632,16 +632,16 @@ void MainFrame::songLengthTextChanged(wxCommandEvent& evt)
     // or if the same number of chars is kept (e.g. 100 -> 150 will be updated immediatley, but 100 -> 2 will not, since user may actually be typing 250)
     const bool enter_pressed = evt.GetString().IsSameAs(previousString);
     if(enter_pressed or (previousString.Length()>0 and evt.GetString().Length()>=previousString.Length()) )
-	{
+    {
 
         if(!evt.GetString().IsSameAs(previousString))
-		{
-			if(evt.GetString().Length()==1) return; // too short to update now, user probably just typed the first character of something longer
+        {
+            if(evt.GetString().Length()==1) return; // too short to update now, user probably just typed the first character of something longer
         }
 
         wxSpinEvent unused;
         songLengthChanged(unused);
-        
+
         // give keyboard focus back to main pane
         if(enter_pressed) mainPane->SetFocus();
     }
@@ -655,7 +655,7 @@ void MainFrame::timeSigClicked(wxCommandEvent& evt)
     wxPoint pt = wxGetMousePosition();
     showTimeSigPicker( pt.x, pt.y, getMeasureData()->getTimeSigNumerator(), getMeasureData()->getTimeSigDenominator() );
 }
-    
+
 void MainFrame::firstMeasureChanged(wxCommandEvent& evt)
 {
 
@@ -663,18 +663,18 @@ void MainFrame::firstMeasureChanged(wxCommandEvent& evt)
 
     int start = atoi_u( firstMeasure->GetValue() );
 
-	if(firstMeasure->GetValue().Length()<1) return; // text field empty, wait until user enters something to update data
+    if(firstMeasure->GetValue().Length()<1) return; // text field empty, wait until user enters something to update data
 
     if( !firstMeasure->GetValue().IsNumber() or start < 0 or start > getMeasureData()->getMeasureAmount() )
-	{
+    {
         wxBell();
 
-		firstMeasure->SetValue( to_wxString(getMeasureData()->getFirstMeasure()+1) );
+        firstMeasure->SetValue( to_wxString(getMeasureData()->getFirstMeasure()+1) );
 
     }
     else
-	{
-		getMeasureData()->setFirstMeasure( start-1 );
+    {
+        getMeasureData()->setFirstMeasure( start-1 );
     }
 
 }
@@ -686,27 +686,27 @@ void MainFrame::tempoChanged(wxCommandEvent& evt)
     if(changingValues) return; // discard events thrown because the computer changes values
 
     if(!tempoCtrl->GetValue().IsNumber())
-	{
+    {
         wxBell();
-		tempoCtrl->SetValue( to_wxString(getCurrentSequence()->getTempo()) );
-		return;
+        tempoCtrl->SetValue( to_wxString(getCurrentSequence()->getTempo()) );
+        return;
     }
 
     int newTempo = atoi_u(tempoCtrl->GetValue());
 
     if(newTempo<0)
-	{
+    {
         wxBell();
-		tempoCtrl->SetValue( to_wxString(getCurrentSequence()->getTempo()) );
+        tempoCtrl->SetValue( to_wxString(getCurrentSequence()->getTempo()) );
     }
-	else if(newTempo>10 && newTempo<1000)
-	{
+    else if(newTempo>10 && newTempo<1000)
+    {
         getCurrentSequence()->setTempo(newTempo);
     }
 
-	// necessary because tempo controller needs to be visually updated whenever tempo changes
-	// better code could maybe check if tempo controller is visible before rendering - but rendering is quick anyway so it's not really bad
-	Display::render();
+    // necessary because tempo controller needs to be visually updated whenever tempo changes
+    // better code could maybe check if tempo controller is visible before rendering - but rendering is quick anyway so it's not really bad
+    Display::render();
 
 }
 
@@ -719,12 +719,12 @@ void MainFrame::changeMeasureAmount(int i, bool throwEvent)
     getMeasureData()->updateVector(i);
 
     if(throwEvent)
-	{
+    {
         wxSpinEvent evt;
         songLengthChanged(evt);
     }
-	else
-	{
+    else
+    {
         // when reading from file
         updateHorizontalScrollbar();
     }
@@ -732,12 +732,12 @@ void MainFrame::changeMeasureAmount(int i, bool throwEvent)
 
 void MainFrame::changeShownTimeSig(int num, int denom)
 {
-	changingValues = true; // FIXME - still necessary?
-	//measureTypeTop->SetValue( to_wxString(num) );
-	//measureTypeBottom->SetValue( to_wxString(denom) );
+    changingValues = true; // FIXME - still necessary?
+    //measureTypeTop->SetValue( to_wxString(num) );
+    //measureTypeBottom->SetValue( to_wxString(denom) );
     timeSig->SetLabel( wxString::Format(wxT("%i/%i"), num, denom ));
 
-	changingValues = false;
+    changingValues = false;
 }
 
 void MainFrame::zoomChanged(wxSpinEvent& evt)
@@ -753,7 +753,7 @@ void MainFrame::zoomChanged(wxSpinEvent& evt)
 
     getCurrentSequence()->setZoom( newZoom );
 
-	const int newXScroll = (int)( horizontalScrollbar->GetThumbPosition()/oldZoom );
+    const int newXScroll = (int)( horizontalScrollbar->GetThumbPosition()/oldZoom );
 
     getCurrentSequence()->setXScrollInMidiTicks( newXScroll );
     updateHorizontalScrollbar( newXScroll );
@@ -771,10 +771,10 @@ void MainFrame::zoomTextChanged(wxCommandEvent& evt)
     // or if the same number of chars is kept (e.g. 100 -> 150 will be updated immediatley, but 100 -> 2 will not, since user may actually be typing 250)
     const bool enter_pressed = evt.GetString().IsSameAs(previousString);
     if(enter_pressed or (previousString.Length()>0 and evt.GetString().Length()>=previousString.Length()) )
-	{
+    {
 
         if(!evt.GetString().IsSameAs(previousString))
-		{
+        {
             if(evt.GetString().Length()==1) return; // too short to update now, user probably just typed the first character of something longer
             if(evt.GetString().Length()==2 and atoi_u(evt.GetString())<30 )
                 return; // zoom too small, user probably just typed the first characters of something longer
@@ -782,7 +782,7 @@ void MainFrame::zoomTextChanged(wxCommandEvent& evt)
 
         wxSpinEvent unused;
         zoomChanged(unused); // throw fake event (easier to process all events from a single method)
-        
+
         // give keyboard focus back to main pane
         if(enter_pressed) mainPane->SetFocus();
     }
@@ -809,7 +809,7 @@ void MainFrame::songLengthChanged(wxSpinEvent& evt)
     const int newLength=songLength->GetValue();
 
     if(newLength>0)
-	{
+    {
         getMeasureData()->setMeasureAmount(newLength);
 
         updateHorizontalScrollbar();
@@ -853,7 +853,7 @@ void MainFrame::horizontalScrolling_arrows(wxScrollEvent& evt)
     const int newValue = horizontalScrollbar->GetThumbPosition();
     const int factor = newValue - getCurrentSequence()->getXScrollInPixels();
 
-	const int newScrollInMidiTicks =
+    const int newScrollInMidiTicks =
         (int)(
               getCurrentSequence()->getXScrollInMidiTicks() +
               factor * getMeasureData()->defaultMeasureLengthInTicks()
@@ -861,21 +861,21 @@ void MainFrame::horizontalScrolling_arrows(wxScrollEvent& evt)
 
     // check new scroll position is not out of bounds
     const int editor_size=Display::getWidth()-100,
-		total_size = getMeasureData()->getTotalPixelAmount();
+        total_size = getMeasureData()->getTotalPixelAmount();
 
     const int positionInPixels = (int)( newScrollInMidiTicks*getCurrentSequence()->getZoom() );
 
-	// scrollbar out of bounds
+    // scrollbar out of bounds
     if( positionInPixels < 0 )
-	{
+    {
         updateHorizontalScrollbar( 0 );
         getCurrentSequence()->setXScrollInPixels( 0 );
         return;
     }
 
-	// scrollbar out of bounds
+    // scrollbar out of bounds
     if( positionInPixels >= total_size-editor_size)
-	{
+    {
         updateHorizontalScrollbar();
         return;
     }
@@ -919,9 +919,9 @@ void MainFrame::updateHorizontalScrollbar(int thumbPos)
     total_size = getMeasureData()->getTotalPixelAmount();
 
     int position =
-		thumbPos == -1 ?
-		getCurrentSequence()->getXScrollInPixels()
-					   :
+        thumbPos == -1 ?
+        getCurrentSequence()->getXScrollInPixels()
+                       :
         (int)(
               thumbPos*getCurrentSequence()->getZoom()
               );
@@ -929,12 +929,12 @@ void MainFrame::updateHorizontalScrollbar(int thumbPos)
     // if given value is wrong and needs to be changed, we'll need to throw a 'scrolling changed' event to make sure display adapts to new value
     bool changedGivenValue = false;
     if( position < 0 )
-	{
+    {
         position = 0;
         changedGivenValue = true;
     }
     if( position >= total_size-editor_size)
-	{
+    {
         position = total_size-editor_size-1;
         changedGivenValue = true;
     }
@@ -946,11 +946,11 @@ void MainFrame::updateHorizontalScrollbar(int thumbPos)
                                       1
                                       );
 
-	// scrollbar needed to be reajusted to fit in bounds, meaning that internal scroll value might be wrong.
-	// send a scrolling event that will fix that
-	// (internal value will be calculated from scrollbar position)
+    // scrollbar needed to be reajusted to fit in bounds, meaning that internal scroll value might be wrong.
+    // send a scrolling event that will fix that
+    // (internal value will be calculated from scrollbar position)
     if( changedGivenValue )
-	{
+    {
         wxScrollEvent evt;
         horizontalScrolling(evt);
     }
@@ -967,13 +967,13 @@ void MainFrame::updateVerticalScrollbar()
     // if given value is wrong and needs to be changed, we'll need to throw a 'scrolling changed' event to make sure display adapts to new value
     bool changedGivenValue = false;
     if( position < 0 )
-	{
+    {
         position = 0;
         changedGivenValue = true;
     }
 
     if( position >= total_size-editor_size)
-	{
+    {
         position = total_size-editor_size-1;
         changedGivenValue = true;
     }
@@ -985,11 +985,11 @@ void MainFrame::updateVerticalScrollbar()
                                     5 /*scroll amount*/
                                     );
 
-	// scrollbar needed to be reajusted to fit in bounds, meaning that internal scroll value might be wrong.
-	// send a scrolling event that will fix that
-	// (internal value will be calculated from scrollbar position)
+    // scrollbar needed to be reajusted to fit in bounds, meaning that internal scroll value might be wrong.
+    // send a scrolling event that will fix that
+    // (internal value will be calculated from scrollbar position)
     if( changedGivenValue )
-	{
+    {
 
         wxScrollEvent evt;
         verticalScrolling(evt);
@@ -1024,36 +1024,36 @@ int MainFrame::getSequenceAmount()
 bool MainFrame::closeSequence(int id_arg) // -1 means current
 {
 
-	std::cout << "close sequence called" << std::endl;
+    std::cout << "close sequence called" << std::endl;
 
-	int id = id_arg;
-	if(id==-1) id = currentSequence;
+    int id = id_arg;
+    if(id==-1) id = currentSequence;
 
 
-	if(sequences[id].somethingToUndo())
-	{
-		int answer = wxMessageBox(  _("Changes will be lost if you close the sequence. Do you really want to continue?"),
-								    _("Confirm"),
-								   wxYES_NO, this);
-		if (answer != wxYES) return false;
+    if(sequences[id].somethingToUndo())
+    {
+        int answer = wxMessageBox(  _("Changes will be lost if you close the sequence. Do you really want to continue?"),
+                                    _("Confirm"),
+                                   wxYES_NO, this);
+        if (answer != wxYES) return false;
 
-	}
+    }
 
-	sequences.erase( id );
+    sequences.erase( id );
 
-	if(sequences.size()==0)
-	{
-		// shut down program (we close last window, so wx will shut down the app)
-		Hide();
+    if(sequences.size()==0)
+    {
+        // shut down program (we close last window, so wx will shut down the app)
+        Hide();
         Destroy();
-		return true;
-	}
+        return true;
+    }
 
-	setCurrentSequence(0);
+    setCurrentSequence(0);
 
-	//if(sequences.size()>0) Display::render();
-	Display::render();
-	return true;
+    //if(sequences.size()>0) Display::render();
+    Display::render();
+    return true;
 
 }
 
@@ -1079,7 +1079,7 @@ Sequence* MainFrame::getSequence(int n)
 
 int MainFrame::getCurrentSequenceID()
 {
-	return currentSequence;
+    return currentSequence;
 }
 
 void MainFrame::setCurrentSequence(int n)
@@ -1088,7 +1088,7 @@ void MainFrame::setCurrentSequence(int n)
     assertExpr(n,<,sequences.size());
 
     currentSequence = n;
-	updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
+    updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
     updateMenuBarToSequence();
 }
 
@@ -1108,36 +1108,36 @@ void MainFrame::setCurrentSequence(int n)
 void MainFrame::loadAriaFile(wxString filePath)
 {
 
-	if(filePath.IsEmpty()) return;
+    if(filePath.IsEmpty()) return;
 
-	const int old_currentSequence = currentSequence;
+    const int old_currentSequence = currentSequence;
 
-	addSequence();
+    addSequence();
     setCurrentSequence( getSequenceAmount()-1 );
     getCurrentSequence()->filepath=filePath;
 
-	WaitWindow::show(_("Please wait while .aria file is loading.") );
+    WaitWindow::show(_("Please wait while .aria file is loading.") );
 
     const bool success = AriaMaestosa::loadAriaFile(getCurrentSequence(), getCurrentSequence()->filepath);
-	if(!success)
-	{
-		std::cout << "Loading .aria file failed." << std::endl;
-		wxMessageBox(  _("Sorry, loading .aria file failed.") );
-		WaitWindow::hide();
+    if(!success)
+    {
+        std::cout << "Loading .aria file failed." << std::endl;
+        wxMessageBox(  _("Sorry, loading .aria file failed.") );
+        WaitWindow::hide();
 
-		closeSequence();
+        closeSequence();
 
         return;
-	}
+    }
 
-	WaitWindow::hide();
+    WaitWindow::hide();
     updateVerticalScrollbar();
 
     // change song name
     getCurrentSequence()->sequenceFileName = getCurrentSequence()->filepath.AfterLast('/').BeforeLast('.');
 
-	// if a song is currently playing, it needs to stay on top
-	if(PlatformMidiManager::isPlaying()) setCurrentSequence(old_currentSequence);
+    // if a song is currently playing, it needs to stay on top
+    if(PlatformMidiManager::isPlaying()) setCurrentSequence(old_currentSequence);
     else updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
 
     Display::render();
@@ -1151,9 +1151,9 @@ void MainFrame::loadAriaFile(wxString filePath)
 void MainFrame::loadMidiFile(wxString midiFilePath)
 {
 
-	if(midiFilePath.IsEmpty()) return;
+    if(midiFilePath.IsEmpty()) return;
 
-	const int old_currentSequence = currentSequence;
+    const int old_currentSequence = currentSequence;
 
     addSequence();
     setCurrentSequence( getSequenceAmount()-1 );
@@ -1161,11 +1161,11 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
     WaitWindow::show( _("Please wait while midi file is loading.") , true);
 
     if(!AriaMaestosa::loadMidiFile( getCurrentSequence(), midiFilePath ) )
-	{
+    {
         std::cout << "Loading midi file failed." << std::endl;
         WaitWindow::hide();
-		wxMessageBox(  _("Sorry, loading midi file failed.") );
-		closeSequence();
+        wxMessageBox(  _("Sorry, loading midi file failed.") );
+        closeSequence();
 
         return;
     }
@@ -1176,8 +1176,8 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
     // change song name
     getCurrentSequence()->sequenceFileName = midiFilePath.AfterLast('/').BeforeLast('.');
 
-	// if a song is currently playing, it needs to stay on top
-	if(PlatformMidiManager::isPlaying()) setCurrentSequence(old_currentSequence);
+    // if a song is currently playing, it needs to stay on top
+    if(PlatformMidiManager::isPlaying()) setCurrentSequence(old_currentSequence);
 
     Display::render();
 
@@ -1198,13 +1198,13 @@ void MainFrame::songHasFinishedPlaying()
 
 void MainFrame::evt_freeVolumeSlider( wxCommandEvent& evt )
 {
-	freeVolumeSlider();
+    freeVolumeSlider();
 }
 void MainFrame::evt_freeTimeSigPicker( wxCommandEvent& evt )
 {
     freeTimeSigPicker();
 }
-    
+
 void MainFrame::evt_showWaitWindow(wxCommandEvent& evt)
 {
     WaitWindow::show( evt.GetString(), evt.GetInt() );

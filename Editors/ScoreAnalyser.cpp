@@ -34,7 +34,7 @@ class BeamGroup
     int first_id, last_id;
     int min_level, mid_level, max_level;
     ScoreAnalyser* analyser;
-    
+
 public:
     BeamGroup(ScoreAnalyser* analyser, const int first_id, const int last_id)
     {
@@ -155,7 +155,7 @@ public:
         noteRenderInfo[first_id].beam_to_x     = analyser->getStemX(noteRenderInfo[last_id]);
         noteRenderInfo[first_id].beam_to_level = analyser->getStemTo(noteRenderInfo[last_id]);
         noteRenderInfo[first_id].stem_y_level  = analyser->getStemTo(noteRenderInfo[first_id]);
-        
+
         // check if the stem is too inclined, fix it if necessary
         const float height_diff = fabsf( noteRenderInfo[first_id].beam_to_level - noteRenderInfo[first_id].stem_y_level );
 
@@ -174,7 +174,7 @@ public:
                 else noteRenderInfo[first_id].beam_to_level += height_shift;
             }
         }
-        
+
         // fix all note stems so they all point in the same direction and have the correct height
         while(true)
         {
@@ -182,7 +182,7 @@ public:
             const float from_level = analyser->getStemTo(noteRenderInfo[first_id]);
             const int to_x = noteRenderInfo[first_id].beam_to_x;
             const float to_level = noteRenderInfo[first_id].beam_to_level;
-            
+
             bool need_to_start_again = false;
             for(int j=first_id; j<=last_id; j++)
             {
@@ -193,19 +193,19 @@ public:
                 {
                     noteRenderInfo[j].stem_y_level = (float)from_level + (float)(to_level - from_level) * rel_pos;
                 }
-                
+
                 // check if stem is long enough and on right side of beam
                 // here the distinction between base level and stem origin is tricky but necessary
                 // to preporly deal with chords. In a chord, when we check if the stem is long enough,
                 // we don't want to check the entire stem, only the part coming out of the top/bottom note
                 const float stemheight = fabsf(noteRenderInfo[j].stem_y_level - noteRenderInfo[j].getBaseLevel());
                 const bool too_short = stemheight < analyser->min_stem_height;
-                
+
                 const float diff = noteRenderInfo[j].stem_y_level - noteRenderInfo[j].getBaseLevel();
-                const bool on_wrong_side_of_beam = 
+                const bool on_wrong_side_of_beam =
                     (noteRenderInfo[first_id].beam_show_above and diff>0) or
                     ((not noteRenderInfo[first_id].beam_show_above) and diff<0);
-                
+
                 if( too_short or on_wrong_side_of_beam )
                 {
                     // we've got a problem here. this stem is too short and will look weird
@@ -215,7 +215,7 @@ public:
                     float beam_shift = 0;
                     if(on_wrong_side_of_beam) beam_shift = analyser->min_stem_height + fabsf(diff);
                     else if(too_short) beam_shift = analyser->min_stem_height - stemheight;
-                    
+
                     if(noteRenderInfo[first_id].beam_show_above)
                     {
                         noteRenderInfo[first_id].beam_to_level -= beam_shift;
@@ -229,7 +229,7 @@ public:
                     need_to_start_again = true;
                     break;
                 }
-                
+
                 if(j != first_id) noteRenderInfo[j].flag_amount = 0;
             }
             if(not need_to_start_again) break; // we're done, no need to loop again
@@ -282,13 +282,13 @@ NoteRenderInfo::NoteRenderInfo(int tick, int x, int level, int tick_length, int 
 
     // measure where the note begins and ends
     measureBegin = getMeasureData()->measureAtTick(tick);
-	measureEnd = getMeasureData()->measureAtTick(tick + tick_length - 1);
+    measureEnd = getMeasureData()->measureAtTick(tick + tick_length - 1);
 }
 void NoteRenderInfo::tieWith(NoteRenderInfo& renderInfo)
-{    
+{
     tied_with_tick = renderInfo.tick;
     tied_with_x = renderInfo.x;
-    
+
     if(stem_type == STEM_NONE) tie_up = renderInfo.stem_type;
     else tie_up = stem_type;
 }
@@ -301,7 +301,7 @@ int NoteRenderInfo::getTiedToPixel()
 {
     if(tied_with_x == -1) return -1; // no tie
     return tied_with_x;
-    
+
     //RelativeXCoord tied_with(tied_with_tick, MIDI);
     //return tied_with.getRelativeTo(WINDOW);
 }
@@ -363,14 +363,14 @@ ScoreAnalyser::ScoreAnalyser(ScoreEditor* parent, TickToXConverter* converter, i
 {
     ScoreAnalyser::editor = parent;
     ScoreAnalyser::stemPivot = stemPivot;
-    
+
     stem_up_x_offset = 9;
     stem_up_y_offset = 0.4;
     stem_down_x_offset = 1;
     stem_down_y_offset = 0.8;
     stem_height = 5.2;
     min_stem_height = 4.5;
-    
+
     tickToXConverter = converter;
 }
 void ScoreAnalyser::setStemDrawInfo(
@@ -422,11 +422,11 @@ void ScoreAnalyser::renderSilences( void (*renderSilenceCallback)(const int, con
 {
     // -------------------------- silences rendering pass -------------------
     // draw silences
-    
+
     const int visible_measure_amount = last_visible_measure-first_visible_measure+1;
     bool measure_empty[visible_measure_amount+1];
     for(int i=0; i<=visible_measure_amount; i++) measure_empty[i] = true;
-    
+
     const int visibleNoteAmount = noteRenderInfo.size();
     if(visibleNoteAmount>0)
     {
@@ -436,17 +436,17 @@ void ScoreAnalyser::renderSilences( void (*renderSilenceCallback)(const int, con
         // At this point all notes will already have been split so that they do not overlap on
         // 2 measures so we don't need to care about that.
         int previous_note_end = -1;
-        
+
         // last_note_end is similar to previous_note_end, but contains the end tick of the last note that ended
         // while previous_note_end contains the end tick of the last note that started
         int last_note_end = -1;
-        
+
         int last_measure = -1;
-        
+
 #ifdef _MORE_DEBUG_CHECKS
         int iters = 0;
 #endif
-        
+
         for(int i=0; i<visibleNoteAmount; i++)
         {
 #ifdef _MORE_DEBUG_CHECKS
@@ -454,14 +454,14 @@ void ScoreAnalyser::renderSilences( void (*renderSilenceCallback)(const int, con
             assertExpr(iters,<,1000);
 #endif
             assertExpr(i,<,(int)noteRenderInfo.size());
-            
+
             const int measure = noteRenderInfo[i].measureBegin;
             assertExpr(measure,>=,0);
             assertExpr(measure,<,99999);
-            
+
             assertExpr(last_measure,>=,-1);
             assertExpr(last_measure,<,99999);
-            
+
             // we switched to another measure
             if(measure>last_measure)
             {
@@ -471,7 +471,7 @@ void ScoreAnalyser::renderSilences( void (*renderSilenceCallback)(const int, con
                 {
                     const int silence_length = getMeasureData()->firstTickInMeasure(measure)-last_note_end;
                     renderSilenceCallback(last_note_end, silence_length, silences_y);
-                    
+
                 }
                 // if note is not at the very beginning of the new measure, and it's the first note of
                 // the measure, we need to add a silence before it
@@ -480,42 +480,42 @@ void ScoreAnalyser::renderSilences( void (*renderSilenceCallback)(const int, con
                     const int silence_length = noteRenderInfo[i].tick - getMeasureData()->firstTickInMeasure(measure);
                     renderSilenceCallback(getMeasureData()->firstTickInMeasure(measure), silence_length, silences_y);
                 }
-                
+
                 if(last_measure!=-1)
                 {
                     previous_note_end = -1; // we switched to another measure, reset and start again
                     last_note_end = -1;
                 }
             }
-            
+
             last_measure = measure;
-            
+
             // remember that this measure was not empty (only if it fits somewhere in the 'measure_empty' array)
             if( (int)(measure-first_visible_measure) >= 0 and (int)(measure-first_visible_measure) < (int)(visible_measure_amount+1))
             {
                 if((int)(measure-first_visible_measure) >= (int)visible_measure_amount) break; // we're too far
                 measure_empty[measure-first_visible_measure] = false;
             }
-            
+
             // silences between two notes
             const int current_begin_tick = noteRenderInfo[i].tick;
             if( previous_note_end != -1 and !aboutEqual(previous_note_end, current_begin_tick) and
                 (current_begin_tick-previous_note_end)>0 /*and previous_note_end >= last_note_end*/)
-				{
+                {
                 renderSilenceCallback(previous_note_end, current_begin_tick-previous_note_end, silences_y);
-				}
-                
+                }
+
                 previous_note_end = noteRenderInfo[i].tick + noteRenderInfo[i].tick_length;
-                
-				// if there's multiple notes playing at the same time
-				while(i+1<visibleNoteAmount and noteRenderInfo[i].tick==noteRenderInfo[i+1].tick)
-				{
-					i++;
-					previous_note_end = std::max(previous_note_end, noteRenderInfo[i].tick + noteRenderInfo[i].tick_length);
-				}
-                
+
+                // if there's multiple notes playing at the same time
+                while(i+1<visibleNoteAmount and noteRenderInfo[i].tick==noteRenderInfo[i+1].tick)
+                {
+                    i++;
+                    previous_note_end = std::max(previous_note_end, noteRenderInfo[i].tick + noteRenderInfo[i].tick_length);
+                }
+
                 if(previous_note_end > last_note_end) last_note_end = previous_note_end;
-                
+
         }//next visible note
 
         // check for silence after last note
@@ -555,7 +555,7 @@ void ScoreAnalyser::putInTimeOrder()
         iteration++;
         assertExpr(iteration,<,100000);
 #endif
-        
+
         // put in time order
         // making sure notes without stem come before notes with a stem
         if( noteRenderInfo[i].tick < noteRenderInfo[i-1].tick or
@@ -902,125 +902,125 @@ void ScoreAnalyser::analyseNoteInfo()
 void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursion )
 {
     // check if note lasts more than one measure. If so we need to divide it in 2.
-	if(renderInfo.measureEnd > renderInfo.measureBegin) // note in longer than mesaure, need to divide it in 2
-	{
-		const int firstEnd = getMeasureData()->lastTickInMeasure(renderInfo.measureBegin);
-		const int firstLength = firstEnd - renderInfo.tick;
-		const int secondLength = renderInfo.tick_length - firstLength;
-		
-		// split the note in two, and collect resulting notes in a vector.
-		// then we can iterate through that vector and tie all notes together
-		// (remember, note may be split in more than 2 if one of the 2 initial halves has a rare length)
-		
-		int initial_id = -1;
-		if(!recursion) initial_id = noteRenderInfo.size();
-		
-		NoteRenderInfo part1(renderInfo.tick, renderInfo.x, renderInfo.level, firstLength, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
-		addToVector(part1, true);
-		NoteRenderInfo part2(getMeasureData()->firstTickInMeasure(renderInfo.measureBegin+1), tickToXConverter->tickToX(firstEnd),
+    if(renderInfo.measureEnd > renderInfo.measureBegin) // note in longer than mesaure, need to divide it in 2
+    {
+        const int firstEnd = getMeasureData()->lastTickInMeasure(renderInfo.measureBegin);
+        const int firstLength = firstEnd - renderInfo.tick;
+        const int secondLength = renderInfo.tick_length - firstLength;
+
+        // split the note in two, and collect resulting notes in a vector.
+        // then we can iterate through that vector and tie all notes together
+        // (remember, note may be split in more than 2 if one of the 2 initial halves has a rare length)
+
+        int initial_id = -1;
+        if(!recursion) initial_id = noteRenderInfo.size();
+
+        NoteRenderInfo part1(renderInfo.tick, renderInfo.x, renderInfo.level, firstLength, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
+        addToVector(part1, true);
+        NoteRenderInfo part2(getMeasureData()->firstTickInMeasure(renderInfo.measureBegin+1), tickToXConverter->tickToX(firstEnd),
                              renderInfo.level, secondLength, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
-		addToVector(part2, true);
-		
-		if(!recursion)
-		{
+        addToVector(part2, true);
+
+        if(!recursion)
+        {
             // done splitting, now iterate through all notes that
             // were added in this recusrion and tie them
-			const int amount = noteRenderInfo.size();
-			for(int i=initial_id+1; i<amount; i++)
-				noteRenderInfo[i].tieWith(noteRenderInfo[i-1]);
-		}
-		
-		return;
-	}
-	
+            const int amount = noteRenderInfo.size();
+            for(int i=initial_id+1; i<amount; i++)
+                noteRenderInfo[i].tieWith(noteRenderInfo[i-1]);
+        }
+
+        return;
+    }
+
     // find how to draw notes. how many flags, dotted, triplet, etc.
     // if note duration is unknown it will be split
-	const float relativeLength = renderInfo.tick_length / (float)(getMeasureData()->beatLengthInTicks()*4);
-    
-	renderInfo.stem_type = (renderInfo.level >= stemPivot ? STEM_UP : STEM_DOWN);
-	if(relativeLength>=1) renderInfo.stem_type=STEM_NONE; // whole notes have no stem
-	renderInfo.hollow_head = false;
-	
+    const float relativeLength = renderInfo.tick_length / (float)(getMeasureData()->beatLengthInTicks()*4);
+
+    renderInfo.stem_type = (renderInfo.level >= stemPivot ? STEM_UP : STEM_DOWN);
+    if(relativeLength>=1) renderInfo.stem_type=STEM_NONE; // whole notes have no stem
+    renderInfo.hollow_head = false;
+
     const int beat = getMeasureData()->beatLengthInTicks();
     const int tick_in_measure_start = renderInfo.tick - getMeasureData()->firstTickInMeasure( renderInfo.measureBegin );
     const int remaining = beat - (tick_in_measure_start % beat);
     const bool starts_on_beat = aboutEqual(remaining,0) or aboutEqual(remaining,beat);
-    
-	if( aboutEqual(relativeLength, 1.0) ){ renderInfo.hollow_head = true; renderInfo.stem_type=STEM_NONE; }
-	else if( aboutEqual(relativeLength, 1.0/2.0) ){ renderInfo.hollow_head = true; } // 1/2
-	else if( aboutEqual(relativeLength, 1.0/3.0) ){ renderInfo.setTriplet(); renderInfo.hollow_head = true; } // triplet 1/2
-	else if( aboutEqual(relativeLength, 1.0/4.0) ); // 1/4
-	else if( aboutEqual(relativeLength, 1.0/8.0) ) renderInfo.flag_amount = 1; // 1/8
+
+    if( aboutEqual(relativeLength, 1.0) ){ renderInfo.hollow_head = true; renderInfo.stem_type=STEM_NONE; }
+    else if( aboutEqual(relativeLength, 1.0/2.0) ){ renderInfo.hollow_head = true; } // 1/2
+    else if( aboutEqual(relativeLength, 1.0/3.0) ){ renderInfo.setTriplet(); renderInfo.hollow_head = true; } // triplet 1/2
+    else if( aboutEqual(relativeLength, 1.0/4.0) ); // 1/4
+    else if( aboutEqual(relativeLength, 1.0/8.0) ) renderInfo.flag_amount = 1; // 1/8
     else if( aboutEqual(relativeLength, 1.0/6.0) ){ renderInfo.setTriplet(); } // triplet 1/4
-	else if( aboutEqual(relativeLength, 1.0/16.0) ) renderInfo.flag_amount = 2; // 1/16
+    else if( aboutEqual(relativeLength, 1.0/16.0) ) renderInfo.flag_amount = 2; // 1/16
     else if( aboutEqual(relativeLength, 1.0/12.0) ){ renderInfo.setTriplet(); renderInfo.flag_amount = 1; } // triplet 1/8
-	else if( aboutEqual(relativeLength, 1.0/32.0) ) renderInfo.flag_amount = 3; // 1/32
+    else if( aboutEqual(relativeLength, 1.0/32.0) ) renderInfo.flag_amount = 3; // 1/32
     else if( aboutEqual(relativeLength, 1.0/24.0) ) { renderInfo.setTriplet(); renderInfo.flag_amount = 2; } // triplet 1/16
-	else if( aboutEqual(relativeLength, 3.0/4.0) and starts_on_beat){ renderInfo.dotted = true; renderInfo.hollow_head=true; } // dotted 1/2
-	else if( aboutEqual(relativeLength, 3.0/8.0) and starts_on_beat ) renderInfo.dotted = true; // dotted 1/4
-	else if( aboutEqual(relativeLength, 3.0/2.0) and starts_on_beat ){ renderInfo.dotted = true; renderInfo.hollow_head=true; } // dotted whole
-	else if( relativeLength < 1.0/32.0 )
-	{
-		renderInfo.instant_hit = true;
-	}
-	else
-	{ // note is of unknown duration. split it in a serie of tied notes.
-        
-        
+    else if( aboutEqual(relativeLength, 3.0/4.0) and starts_on_beat){ renderInfo.dotted = true; renderInfo.hollow_head=true; } // dotted 1/2
+    else if( aboutEqual(relativeLength, 3.0/8.0) and starts_on_beat ) renderInfo.dotted = true; // dotted 1/4
+    else if( aboutEqual(relativeLength, 3.0/2.0) and starts_on_beat ){ renderInfo.dotted = true; renderInfo.hollow_head=true; } // dotted whole
+    else if( relativeLength < 1.0/32.0 )
+    {
+        renderInfo.instant_hit = true;
+    }
+    else
+    { // note is of unknown duration. split it in a serie of tied notes.
+
+
         // how long is the first note after the split?
         int firstLength_tick;
-        
+
         // start by reaching the next beat if not already done
-		if(!starts_on_beat and !aboutEqual(remaining, renderInfo.tick_length))
-		{
+        if(!starts_on_beat and !aboutEqual(remaining, renderInfo.tick_length))
+        {
             firstLength_tick = remaining;
-		}
+        }
         else
         {
             // use division to split note
             float closestShorterDuration = 1;
             while(closestShorterDuration >= relativeLength) closestShorterDuration /= 2.0;
-            
+
             firstLength_tick = closestShorterDuration*(float)(getMeasureData()->beatLengthInTicks()*4);
-		}
-        
+        }
+
         const int secondBeginning_tick = renderInfo.tick + firstLength_tick;
         //RelativeXCoord secondBeginningRel(secondBeginning_tick, MIDI);
-        
-		int initial_id = -1;
-		
-		if(!recursion)
-		{
-			initial_id = noteRenderInfo.size();
-		}
-		
-		NoteRenderInfo part1(renderInfo.tick, renderInfo.x, renderInfo.level, firstLength_tick, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
-		addToVector(part1, true);
-		NoteRenderInfo part2(secondBeginning_tick, tickToXConverter->tickToX(secondBeginning_tick), renderInfo.level,
+
+        int initial_id = -1;
+
+        if(!recursion)
+        {
+            initial_id = noteRenderInfo.size();
+        }
+
+        NoteRenderInfo part1(renderInfo.tick, renderInfo.x, renderInfo.level, firstLength_tick, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
+        addToVector(part1, true);
+        NoteRenderInfo part2(secondBeginning_tick, tickToXConverter->tickToX(secondBeginning_tick), renderInfo.level,
                              renderInfo.tick_length-firstLength_tick, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
-		addToVector(part2, true);
-		
-		if(!recursion)
-		{
+        addToVector(part2, true);
+
+        if(!recursion)
+        {
             // done splitting, now iterate through all notes that
             // were added in this recusrion and tie them
-			const int amount = noteRenderInfo.size();
-			for(int i=initial_id+1; i<amount; i++)
-			{
-				noteRenderInfo[i].tieWith(noteRenderInfo[i-1]);
-			}
-		}
-		
-		return;
-	}
-	
+            const int amount = noteRenderInfo.size();
+            for(int i=initial_id+1; i<amount; i++)
+            {
+                noteRenderInfo[i].tieWith(noteRenderInfo[i-1]);
+            }
+        }
+
+        return;
+    }
+
     if(renderInfo.triplet)
     {
         renderInfo.triplet_arc_x_start = renderInfo.x + 8;
         renderInfo.triplet_arc_level = renderInfo.level;
     }
-	
-    assertExpr(renderInfo.level,>,-1);    
+
+    assertExpr(renderInfo.level,>,-1);
     noteRenderInfo.push_back(renderInfo);
 }
 
@@ -1033,14 +1033,14 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
 
 bool aboutEqual(const float float1, const float float2)
 {
-	float diff = float1 - float2;
-	if(diff < 0) diff = -diff;
-	if(diff < 1.0/64.0) return true;
-	else return false;
+    float diff = float1 - float2;
+    if(diff < 0) diff = -diff;
+    if(diff < 1.0/64.0) return true;
+    else return false;
 }
 bool aboutEqual_tick(const int int1, const int int2)
 {
-	return abs(int1 - int2) < getMeasureData()->beatLengthInTicks()/16;
+    return abs(int1 - int2) < getMeasureData()->beatLengthInTicks()/16;
 }
 
 

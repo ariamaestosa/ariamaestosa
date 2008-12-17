@@ -9,15 +9,15 @@ namespace AriaMaestosa
 {
 namespace MemoryLeaks
 {
-	
+
 class MyObject
 {
 public:
-	char* file;
-	int line;
-	
-	MyObject(char* f, int l);
-	void print();
+    char* file;
+    int line;
+
+    MyObject(char* f, int l);
+    void print();
 };
 
 void checkForLeaks();
@@ -40,7 +40,7 @@ public:
         myObj = new MyObject(P :: memCheckGetFile(), P :: memCheckGetLine());
         addObj( myObj );
     }
-    
+
     ~TemplateLeakCheck()
     {
         removeObj( myObj );

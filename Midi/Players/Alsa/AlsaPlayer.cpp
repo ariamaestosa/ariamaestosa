@@ -235,14 +235,14 @@ bool playSelected(Sequence* sequence, /*out*/int* startTick)
 
         makeMidiBytes(sequence, true, &songLengthInTicks, startTick, &data, &datalength, true);
 
-		stored_songLength = songLengthInTicks + sequence->ticksPerBeat();
+        stored_songLength = songLengthInTicks + sequence->ticksPerBeat();
 
-		// start in a new thread as to not block the UI during playback;
+        // start in a new thread as to not block the UI during playback;
         threads::add_events.runFunction(&add_events_func);
 
         context->setPlaying(true);
-		return true;
-		*/
+        return true;
+        */
 }
 
 // returns current midi tick, or -1 if over
@@ -295,7 +295,7 @@ int getCurrentTick()
 
 bool exportMidiFile(Sequence* sequence, wxString filepath)
 {
-	return AriaMaestosa::exportMidiFile(sequence, filepath);
+    return AriaMaestosa::exportMidiFile(sequence, filepath);
 }
 
 const wxString getAudioExtension()
@@ -356,11 +356,11 @@ void* export_audio_func( void *ptr )
 {
 
     // the file is exported to midi, and then we tell timidity to make it into wav
-	wxString tempMidiFile = export_audio_filepath.BeforeLast('/') + wxT("/aria_temp_file.mid");
+    wxString tempMidiFile = export_audio_filepath.BeforeLast('/') + wxT("/aria_temp_file.mid");
 
-	AriaMaestosa::PlatformMidiManager::exportMidiFile(sequence, tempMidiFile);
-	wxString cmd = wxT("timidity -Ow -o \"") + export_audio_filepath + wxT("\" \"") + tempMidiFile + wxT("\" -idt");
-	std::cout << "executing " << cmd.mb_str() << std::endl;
+    AriaMaestosa::PlatformMidiManager::exportMidiFile(sequence, tempMidiFile);
+    wxString cmd = wxT("timidity -Ow -o \"") + export_audio_filepath + wxT("\" \"") + tempMidiFile + wxT("\" -idt");
+    std::cout << "executing " << cmd.mb_str() << std::endl;
 
     FILE * command_output;
     char output[128];
@@ -396,7 +396,7 @@ void* export_audio_func( void *ptr )
     MAKE_HIDE_PROGRESSBAR_EVENT(event);
     getMainFrame()->GetEventHandler()->AddPendingEvent(event);
 
-	wxRemoveFile(tempMidiFile);
+    wxRemoveFile(tempMidiFile);
 
     return (void*)NULL;
 }

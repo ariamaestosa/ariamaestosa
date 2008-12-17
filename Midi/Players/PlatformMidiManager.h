@@ -27,7 +27,7 @@
 
 namespace AriaMaestosa {
 
-	class Sequence;
+    class Sequence;
 
 namespace PlatformMidiManager {
 
@@ -35,13 +35,13 @@ namespace PlatformMidiManager {
     /*
      * startTick is an 'out' argument where you set where the song starts playing
      */
-	bool playSequence(Sequence* sequence, /*out*/int* startTick);
-	bool playSelected(Sequence* sequence, /*out*/int* startTick);
+    bool playSequence(Sequence* sequence, /*out*/int* startTick);
+    bool playSelected(Sequence* sequence, /*out*/int* startTick);
     bool isPlaying();
     void stop();
 
-	void exportAudioFile(Sequence* sequence, wxString filepath);
-	bool exportMidiFile(Sequence* sequence, wxString filepath);
+    void exportAudioFile(Sequence* sequence, wxString filepath);
+    bool exportMidiFile(Sequence* sequence, wxString filepath);
 
     /*
      * returns midi tick currently being played, -1 if none
@@ -49,38 +49,38 @@ namespace PlatformMidiManager {
      *
      * returns number of ticks elapsed *since startTick* as returned above
      */
-	int trackPlaybackProgression();
+    int trackPlaybackProgression();
 
-	// called when app opens
+    // called when app opens
     void initMidiPlayer();
 
-	// called when app closes
+    // called when app closes
     void freeMidiPlayer();
 
-	// play/stop a single preview note
-	void playNote(int noteNum, int volume, int duration, int channel, int instrument);
-	void stopNote();
+    // play/stop a single preview note
+    void playNote(int noteNum, int volume, int duration, int channel, int instrument);
+    void stopNote();
 
-	const wxString getAudioExtension();
-	const wxString getAudioWildcard();
+    const wxString getAudioExtension();
+    const wxString getAudioWildcard();
 
-	/* ---------- non-native sequencer interface ---------
-	 * fill these only if you use the generic AriaSequenceTimer midi sequencer/timer
-	 * if you use a native sequencer in the above functions, these will not be called
+    /* ---------- non-native sequencer interface ---------
+     * fill these only if you use the generic AriaSequenceTimer midi sequencer/timer
+     * if you use a native sequencer in the above functions, these will not be called
      */
-	void seq_note_on(const int note, const int volume, const int channel);
-	void seq_note_off(const int note, const int channel);
-	void seq_prog_change(const int instrument, const int channel);
-	void seq_controlchange(const int controller, const int value, const int channel);
-	void seq_pitch_bend(const int value, const int channel);
+    void seq_note_on(const int note, const int volume, const int channel);
+    void seq_note_off(const int note, const int channel);
+    void seq_prog_change(const int instrument, const int channel);
+    void seq_controlchange(const int controller, const int value, const int channel);
+    void seq_pitch_bend(const int value, const int channel);
 
-	// called repeatedly by the generic sequencer to tell
-	// the midi player what is the current progression
-	// the sequencer will call this with -1 as argument to indicate it exits.
-	void seq_notify_current_tick(const int tick);
+    // called repeatedly by the generic sequencer to tell
+    // the midi player what is the current progression
+    // the sequencer will call this with -1 as argument to indicate it exits.
+    void seq_notify_current_tick(const int tick);
     // will be called by the generic sequencer to determine whether it should continue
     // return false to stop it.
-	bool seq_must_continue();
+    bool seq_must_continue();
 }
 
 }
