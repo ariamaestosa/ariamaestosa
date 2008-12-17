@@ -62,38 +62,38 @@ namespace AriaMaestosa {
 enum IDs
 {
 
-	MENU_FILE_NEW = wxID_HIGHEST+1,
-	MENU_FILE_OPEN,
-	MENU_FILE_SAVE,
-	MENU_FILE_SAVE_AS,
-	MENU_FILE_IMPORT_MIDI,
-	MENU_FILE_EXPORT_MIDI,
-	MENU_FILE_EXPORT_SAMPLED_AUDIO,
-	MENU_FILE_EXPORT_NOTATION,
-	MENU_FILE_CLOSE,
-	MENU_FILE_COPYRIGHT,
+    MENU_FILE_NEW = wxID_HIGHEST+1,
+    MENU_FILE_OPEN,
+    MENU_FILE_SAVE,
+    MENU_FILE_SAVE_AS,
+    MENU_FILE_IMPORT_MIDI,
+    MENU_FILE_EXPORT_MIDI,
+    MENU_FILE_EXPORT_SAMPLED_AUDIO,
+    MENU_FILE_EXPORT_NOTATION,
+    MENU_FILE_CLOSE,
+    MENU_FILE_COPYRIGHT,
 
-	MENU_EDIT_COPY,
-	MENU_EDIT_PASTE,
-	MENU_EDIT_SELECT_ALL,
-	MENU_EDIT_SELECT_NONE,
-	MENU_EDIT_SELECT_CUSTOM,
-	MENU_EDIT_PASTE_AT_CURSOR,
-	MENU_EDIT_SNAP_TO_GRID,
-	MENU_EDIT_SCALE,
-	MENU_EDIT_REMOVE_OVERLAPPING,
-	MENU_EDIT_UNDO,
+    MENU_EDIT_COPY,
+    MENU_EDIT_PASTE,
+    MENU_EDIT_SELECT_ALL,
+    MENU_EDIT_SELECT_NONE,
+    MENU_EDIT_SELECT_CUSTOM,
+    MENU_EDIT_PASTE_AT_CURSOR,
+    MENU_EDIT_SNAP_TO_GRID,
+    MENU_EDIT_SCALE,
+    MENU_EDIT_REMOVE_OVERLAPPING,
+    MENU_EDIT_UNDO,
 
-	MENU_SETTINGS_FOLLOW_PLAYBACK,
-	MENU_SETTINGS_PLAY_ALWAYS,
-	MENU_SETTINGS_PLAY_NEVER,
-	MENU_SETTINGS_MEASURE_EXPANDED,
-	MENU_SETTINGS_PLAY_ON_CHANGE,
-	MENU_SETTINGS_CHANNELS_AUTO,
-	MENU_SETTINGS_CHANNEL_MANUAL,
+    MENU_SETTINGS_FOLLOW_PLAYBACK,
+    MENU_SETTINGS_PLAY_ALWAYS,
+    MENU_SETTINGS_PLAY_NEVER,
+    MENU_SETTINGS_MEASURE_EXPANDED,
+    MENU_SETTINGS_PLAY_ON_CHANGE,
+    MENU_SETTINGS_CHANNELS_AUTO,
+    MENU_SETTINGS_CHANNEL_MANUAL,
 
-	MENU_TRACK_ADD,
-	MENU_TRACK_REMOVE,
+    MENU_TRACK_ADD,
+    MENU_TRACK_REMOVE,
     MENU_TRACK_BACKG
 };
 
@@ -109,7 +109,7 @@ void MainFrame::initMenuBar()
 #define QUICK_ADD_MENU( MENUID, MENUSTRING, METHOD ) Append( MENUID,  MENUSTRING ); Connect(MENUID, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( METHOD ) );
 #define QUICK_ADD_CHECK_MENU( MENUID, MENUSTRING, METHOD ) AppendCheckItem( MENUID,  MENUSTRING ); Connect(MENUID, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( METHOD ) );
 
-	// File menu
+    // File menu
     fileMenu = new wxMenu();
     menuBar->Append(fileMenu,  _("File") );
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_NEW, _("New\tCtrl-N"), MainFrame::menuEvent_new );
@@ -120,7 +120,7 @@ void MainFrame::initMenuBar()
 
     fileMenu->AppendSeparator();
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_COPYRIGHT, _("Song info"), MainFrame::menuEvent_copyright );
-	//fileMenu->AppendSeparator();
+    //fileMenu->AppendSeparator();
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_NOTATION, _("Print musical notation"), MainFrame::menuEvent_exportNotation );
     fileMenu->AppendSeparator();
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_IMPORT_MIDI, _("Import Midi File"), MainFrame::menuEvent_importmidi );
@@ -130,7 +130,7 @@ void MainFrame::initMenuBar()
     fileMenu -> QUICK_ADD_MENU ( wxID_EXIT, _("Quit\tCtrl-Q"), MainFrame::menuEvent_quit );
 
 
-	// Edit menu
+    // Edit menu
     editMenu = new wxMenu();
     menuBar->Append(editMenu,  _("Edit"));
 
@@ -149,7 +149,7 @@ void MainFrame::initMenuBar()
     editMenu -> QUICK_ADD_MENU ( MENU_EDIT_REMOVE_OVERLAPPING, _("Remove Overlapping Notes"), MainFrame::menuEvent_removeOverlapping );
 
 
-	// Tracks menu
+    // Tracks menu
     trackMenu = new wxMenu();
     menuBar->Append(trackMenu,  _("Tracks"));
     trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_ADD, _("Add Track"), MainFrame::menuEvent_addTrack );
@@ -158,34 +158,34 @@ void MainFrame::initMenuBar()
     //I18N: - in the track menu, allows choosing the background of a track
     trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_BACKG, _("Background"), MainFrame::menuEvent_trackBackground );
 
-	// Settings menu
-	settingsMenu = new wxMenu();
-	menuBar->Append(settingsMenu,  _("Settings"));
+    // Settings menu
+    settingsMenu = new wxMenu();
+    menuBar->Append(settingsMenu,  _("Settings"));
     followPlaybackMenuItem = settingsMenu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_FOLLOW_PLAYBACK, _("Follow Playback"), MainFrame::menuEvent_followPlayback );
     expandedMeasuresMenuItem = settingsMenu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_MEASURE_EXPANDED, _("Expanded measure management"), MainFrame::menuEvent_expandedMeasuresSelected );
 
     followPlaybackMenuItem->Check( followPlaybackByDefault() );
-    
-	wxMenu* channelMode_menu = new wxMenu();
+
+    wxMenu* channelMode_menu = new wxMenu();
     //I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
-	settingsMenu->AppendSubMenu(channelMode_menu,  _("Channel management") );
+    settingsMenu->AppendSubMenu(channelMode_menu,  _("Channel management") );
     //I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
-	channelManagement_automatic = channelMode_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_CHANNELS_AUTO,  _("Automatic"), MainFrame::menuEvent_automaticChannelModeSelected);
-	channelManagement_automatic->Check();
+    channelManagement_automatic = channelMode_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_CHANNELS_AUTO,  _("Automatic"), MainFrame::menuEvent_automaticChannelModeSelected);
+    channelManagement_automatic->Check();
     //I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
-	channelManagement_manual = channelMode_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_CHANNEL_MANUAL,  _("Manual"), MainFrame::menuEvent_manualChannelModeSelected);
+    channelManagement_manual = channelMode_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_CHANNEL_MANUAL,  _("Manual"), MainFrame::menuEvent_manualChannelModeSelected);
 
     settingsMenu->AppendSeparator(); // ----- global
 
     wxMenu* playDuringEdits_menu = new wxMenu();
     //I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-	settingsMenu->AppendSubMenu(playDuringEdits_menu,  _("Play during edit") );
+    settingsMenu->AppendSubMenu(playDuringEdits_menu,  _("Play during edit") );
     //I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-	playDuringEdits_always = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_ALWAYS,  _("Always"), MainFrame::menuEvent_playAlways);
-	//I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
+    playDuringEdits_always = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_ALWAYS,  _("Always"), MainFrame::menuEvent_playAlways);
+    //I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
     playDuringEdits_onchange = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_ON_CHANGE,  _("On note change"), MainFrame::menuEvent_playOnChange);
     //I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-	playDuringEdits_never = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_NEVER,  _("Never"), MainFrame::menuEvent_playNever);
+    playDuringEdits_never = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_NEVER,  _("Never"), MainFrame::menuEvent_playNever);
 
     settingsMenu->QUICK_ADD_MENU( wxID_PREFERENCES,   _("Preferences"), MainFrame::menuEvent_preferences );
 
@@ -196,10 +196,10 @@ void MainFrame::initMenuBar()
     else if(getPlayDuringEdit() == PLAY_NEVER)
         playDuringEdits_never->Check();
     else{ assert(false); }
-    
-	// Help menu
-	helpMenu = new wxMenu();
-	menuBar->Append(helpMenu, wxT("&Help"));
+
+    // Help menu
+    helpMenu = new wxMenu();
+    menuBar->Append(helpMenu, wxT("&Help"));
     helpMenu->QUICK_ADD_MENU(wxID_ABOUT,  _("About this app"), MainFrame::menuEvent_about);
     //I18N: - in help menu - see the help files
     helpMenu->QUICK_ADD_MENU(wxID_HELP,  _("Manual"), MainFrame::menuEvent_manual);
@@ -218,7 +218,7 @@ void MainFrame::disableMenusForPlayback(const bool disable)
     fileMenu->Enable(MENU_FILE_CLOSE, on);
     fileMenu->Enable(MENU_FILE_IMPORT_MIDI, on);
     fileMenu->Enable(MENU_FILE_EXPORT_MIDI, on);
-	fileMenu->Enable(MENU_FILE_EXPORT_SAMPLED_AUDIO, on);
+    fileMenu->Enable(MENU_FILE_EXPORT_SAMPLED_AUDIO, on);
     fileMenu->Enable(wxID_EXIT, on);
 }
 
@@ -252,21 +252,21 @@ void MainFrame::menuEvent_save(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_saveas(wxCommandEvent& evt)
 {
-	wxString suggestedName = getCurrentSequence()->suggestFileName() + wxT(".aria");
+    wxString suggestedName = getCurrentSequence()->suggestFileName() + wxT(".aria");
 
-	wxString givenPath = showFileDialog( _("Select destination file"), wxT(""), suggestedName,
+    wxString givenPath = showFileDialog( _("Select destination file"), wxT(""), suggestedName,
                                                      wxT("Aria Maestosa file|*.aria"), true /*save*/);
 
     if(!givenPath.IsEmpty())
-	{
+    {
 
 
-		if( wxFileExists(givenPath) )
-		{
-			int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
+        if( wxFileExists(givenPath) )
+        {
+            int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
                                         wxYES_NO, this);
-			if (answer != wxYES) return;
-		}
+            if (answer != wxYES) return;
+        }
 
         getCurrentSequence()->filepath = givenPath;
         saveAriaFile(getCurrentSequence(), getCurrentSequence()->filepath);
@@ -280,76 +280,76 @@ void MainFrame::menuEvent_saveas(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_open(wxCommandEvent& evt)
 {
-	wxString filePath = showFileDialog( _("Select file"), wxT(""), wxT(""),  _("Aria Maestosa file|*.aria"), false /*open*/);
-	MainFrame::loadAriaFile(filePath);
+    wxString filePath = showFileDialog( _("Select file"), wxT(""), wxT(""),  _("Aria Maestosa file|*.aria"), false /*open*/);
+    MainFrame::loadAriaFile(filePath);
 }
 
 
 void MainFrame::menuEvent_importmidi(wxCommandEvent& evt)
 {
-	wxString midiFilePath = showFileDialog( _("Select midi file"), wxT(""), wxT(""),  _("Midi file|*.mid;*.midi"), false /*open*/);
-	MainFrame::loadMidiFile(midiFilePath);
+    wxString midiFilePath = showFileDialog( _("Select midi file"), wxT(""), wxT(""),  _("Midi file|*.mid;*.midi"), false /*open*/);
+    MainFrame::loadMidiFile(midiFilePath);
 }
 
 void MainFrame::menuEvent_exportmidi(wxCommandEvent& evt)
 {
-	wxString suggestedName = getCurrentSequence()->suggestFileName() + wxT(".mid");
+    wxString suggestedName = getCurrentSequence()->suggestFileName() + wxT(".mid");
 
-	// show file dialog
-	wxString midiFilePath = showFileDialog( _("Select destination file"), wxT(""),
-											suggestedName, _("Midi file|*.mid"), true /*save*/);
+    // show file dialog
+    wxString midiFilePath = showFileDialog( _("Select destination file"), wxT(""),
+                                            suggestedName, _("Midi file|*.mid"), true /*save*/);
 
     if(midiFilePath.IsEmpty()) return;
 
-	// if file already exists, ask for overwriting
-	if( wxFileExists(midiFilePath) )
-	{
-		int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
+    // if file already exists, ask for overwriting
+    if( wxFileExists(midiFilePath) )
+    {
+        int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
                                     wxYES_NO, this);
-		if (answer != wxYES) return;
-	}
+        if (answer != wxYES) return;
+    }
 
-	// write data to file
-	const bool success = PlatformMidiManager::exportMidiFile( getCurrentSequence(), midiFilePath );
+    // write data to file
+    const bool success = PlatformMidiManager::exportMidiFile( getCurrentSequence(), midiFilePath );
 
-	if(!success)
-	{
-		wxMessageBox( _("Sorry, failed to export midi file."));
-	}
+    if(!success)
+    {
+        wxMessageBox( _("Sorry, failed to export midi file."));
+    }
 }
 
 void MainFrame::menuEvent_exportSampledAudio(wxCommandEvent& evt)
 {
 
-	wxString extension = PlatformMidiManager::getAudioExtension();
-	wxString wildcard = PlatformMidiManager::getAudioWildcard();
+    wxString extension = PlatformMidiManager::getAudioExtension();
+    wxString wildcard = PlatformMidiManager::getAudioWildcard();
 
-	wxString suggestedName = getCurrentSequence()->suggestFileName() + extension;
+    wxString suggestedName = getCurrentSequence()->suggestFileName() + extension;
 
-	// show file dialog
-	wxString audioFilePath = showFileDialog(  _("Select destination file"), wxT(""),
-											  suggestedName,
-											  wildcard, true /*save*/);
+    // show file dialog
+    wxString audioFilePath = showFileDialog(  _("Select destination file"), wxT(""),
+                                              suggestedName,
+                                              wildcard, true /*save*/);
 
     if(audioFilePath.IsEmpty()) return;
 
-	// if file already exists, ask for overwriting
-	if( wxFileExists(audioFilePath) )
-	{
-		int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
+    // if file already exists, ask for overwriting
+    if( wxFileExists(audioFilePath) )
+    {
+        int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
                                     wxYES_NO, this);
-		if (answer != wxYES) return;
-	}
+        if (answer != wxYES) return;
+    }
 
 
     // show progress bar
     MAKE_SHOW_PROGRESSBAR_EVENT( event, _("Please wait while audio file is being generated.\n\nDepending on the length of your file,\nthis can take several minutes."), false );
     GetEventHandler()->AddPendingEvent(event);
 
-	std::cout << "export audio file " << audioFilePath.mb_str() << std::endl;
+    std::cout << "export audio file " << audioFilePath.mb_str() << std::endl;
 
     // write data
-	PlatformMidiManager::exportAudioFile( getCurrentSequence(), audioFilePath );
+    PlatformMidiManager::exportAudioFile( getCurrentSequence(), audioFilePath );
 }
 
 void MainFrame::menuEvent_copyright(wxCommandEvent& evt)
@@ -359,18 +359,18 @@ void MainFrame::menuEvent_copyright(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_quit(wxCommandEvent& evt)
 {
-	// close all open sequences
-	while(getSequenceAmount()>0)
-	{
-		if( !closeSequence() )
-		{
-		    // user canceled, don't quit
-			return;
-		}
-	}
+    // close all open sequences
+    while(getSequenceAmount()>0)
+    {
+        if( !closeSequence() )
+        {
+            // user canceled, don't quit
+            return;
+        }
+    }
 
-	// quit
-	wxWindow::Destroy();
+    // quit
+    wxWindow::Destroy();
 }
 
 #pragma mark -
@@ -423,7 +423,7 @@ void MainFrame::menuEvent_scale(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_removeOverlapping(wxCommandEvent& evt)
 {
-	getCurrentSequence()->getCurrentTrack()->action( new Action::RemoveOverlapping() );
+    getCurrentSequence()->getCurrentTrack()->action( new Action::RemoveOverlapping() );
 }
 
 #pragma mark -
@@ -441,7 +441,7 @@ void MainFrame::menuEvent_deleteTrack(wxCommandEvent& evt)
                               wxYES_NO, this);
 
     if (answer == wxYES)
-	{
+    {
         getCurrentSequence()->deleteTrack();
         updateVerticalScrollbar();
     }
@@ -456,7 +456,7 @@ void MainFrame::menuEvent_trackBackground(wxCommandEvent& evt)
 // Options
 void MainFrame::menuEvent_preferences(wxCommandEvent& evt)
 {
-	prefs->show();
+    prefs->show();
 }
 
 void MainFrame::menuEvent_followPlayback(wxCommandEvent& evt)
@@ -466,151 +466,151 @@ void MainFrame::menuEvent_followPlayback(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_playAlways(wxCommandEvent& evt)
 {
-	playDuringEdits_always->Check(true);
-	playDuringEdits_onchange->Check(false);
-	playDuringEdits_never->Check(false);
-	play_during_edit = PLAY_ALWAYS;
+    playDuringEdits_always->Check(true);
+    playDuringEdits_onchange->Check(false);
+    playDuringEdits_never->Check(false);
+    play_during_edit = PLAY_ALWAYS;
 }
 
 void MainFrame::menuEvent_playOnChange(wxCommandEvent& evt)
 {
-	playDuringEdits_always->Check(false);
-	playDuringEdits_onchange->Check(true);
-	playDuringEdits_never->Check(false);
-	play_during_edit = PLAY_ON_CHANGE;
+    playDuringEdits_always->Check(false);
+    playDuringEdits_onchange->Check(true);
+    playDuringEdits_never->Check(false);
+    play_during_edit = PLAY_ON_CHANGE;
 }
 
 void MainFrame::menuEvent_playNever(wxCommandEvent& evt)
 {
-	playDuringEdits_always->Check(false);
-	playDuringEdits_onchange->Check(false);
-	playDuringEdits_never->Check(true);
-	play_during_edit = PLAY_NEVER;
+    playDuringEdits_always->Check(false);
+    playDuringEdits_onchange->Check(false);
+    playDuringEdits_never->Check(true);
+    play_during_edit = PLAY_NEVER;
 }
 
 void MainFrame::menuEvent_automaticChannelModeSelected(wxCommandEvent& evt)
 {
 
-	Sequence* sequence = getCurrentSequence();
-	// we were in manual mode... we will need to merge tracks while switching modes. ask user first
-	if( sequence->getChannelManagementType() == CHANNEL_MANUAL )
-	{
-		int answer = wxMessageBox(  _("If multiple tracks play on the same channel, they will be merged.\nThis cannot be undone.\n\nDo you really want to continue?"),
-								    _("Confirm"),
+    Sequence* sequence = getCurrentSequence();
+    // we were in manual mode... we will need to merge tracks while switching modes. ask user first
+    if( sequence->getChannelManagementType() == CHANNEL_MANUAL )
+    {
+        int answer = wxMessageBox(  _("If multiple tracks play on the same channel, they will be merged.\nThis cannot be undone.\n\nDo you really want to continue?"),
+                                    _("Confirm"),
                                     wxYES_NO, this);
 
-		if (answer != wxYES)
-		{
-			// nothing will be changed, put checks back
-			channelManagement_automatic->Check(false);
-			channelManagement_manual->Check(true);
-			return;
-		}
+        if (answer != wxYES)
+        {
+            // nothing will be changed, put checks back
+            channelManagement_automatic->Check(false);
+            channelManagement_manual->Check(true);
+            return;
+        }
 
-		for(int i=0; i<sequence->getTrackAmount(); i++)
-		{
-			for(int j=0; j<sequence->getTrackAmount(); j++)
-			{
-				if(i == j) continue; //don't compare a track with itself
+        for(int i=0; i<sequence->getTrackAmount(); i++)
+        {
+            for(int j=0; j<sequence->getTrackAmount(); j++)
+            {
+                if(i == j) continue; //don't compare a track with itself
 
-				if(sequence->getTrack(i)->getChannel() == sequence->getTrack(j)->getChannel())
-				{
-					sequence->getTrack(i)->mergeTrackIn( sequence->getTrack(j) );
-					sequence->deleteTrack(j);
-					i = 0;
-					j = 0;
-				}
-			}// next j
-		}//next i
+                if(sequence->getTrack(i)->getChannel() == sequence->getTrack(j)->getChannel())
+                {
+                    sequence->getTrack(i)->mergeTrackIn( sequence->getTrack(j) );
+                    sequence->deleteTrack(j);
+                    i = 0;
+                    j = 0;
+                }
+            }// next j
+        }//next i
 
-		sequence->setCurrentTrackID(0);
+        sequence->setCurrentTrackID(0);
 
-		// prevent undoing (anyway it would not have worked, would just have given buggy behaviour)
-		sequence->clearUndoStack();
+        // prevent undoing (anyway it would not have worked, would just have given buggy behaviour)
+        sequence->clearUndoStack();
 
-	}
+    }
 
-	channelManagement_automatic->Check(true);
-	channelManagement_manual->Check(false);
+    channelManagement_automatic->Check(true);
+    channelManagement_manual->Check(false);
 
-	getCurrentSequence()->setChannelManagementType(CHANNEL_AUTO);
-	Display::render();
+    getCurrentSequence()->setChannelManagementType(CHANNEL_AUTO);
+    Display::render();
 }
 
 void MainFrame::menuEvent_manualChannelModeSelected(wxCommandEvent& evt)
 {
-	channelManagement_automatic->Check(false);
-	channelManagement_manual->Check(true);
+    channelManagement_automatic->Check(false);
+    channelManagement_manual->Check(true);
 
-	Sequence* sequence = getCurrentSequence();
-	// we were in auto mode... we will need to set channels
-	if( sequence->getChannelManagementType() == CHANNEL_AUTO)
-	{
-		int channel = 0;
-		// iterrate through tarcks, give each one a channel
-		for(int i=0; i<sequence->getTrackAmount(); i++)
-		{
-			//if this is a drum track, give channel 9
-			if(sequence->getTrack(i)->graphics->editorMode == DRUM)
-			{
-				sequence->getTrack(i)->setChannel(9);
-			}
-			else
+    Sequence* sequence = getCurrentSequence();
+    // we were in auto mode... we will need to set channels
+    if( sequence->getChannelManagementType() == CHANNEL_AUTO)
+    {
+        int channel = 0;
+        // iterrate through tarcks, give each one a channel
+        for(int i=0; i<sequence->getTrackAmount(); i++)
+        {
+            //if this is a drum track, give channel 9
+            if(sequence->getTrack(i)->graphics->editorMode == DRUM)
+            {
+                sequence->getTrack(i)->setChannel(9);
+            }
+            else
                 // otherwise, give any channel but 9
-			{
-				sequence->getTrack(i)->setChannel(channel);
-				channel++;
-				if(channel==9) channel++;
-			}
-		}
-	}
+            {
+                sequence->getTrack(i)->setChannel(channel);
+                channel++;
+                if(channel==9) channel++;
+            }
+        }
+    }
 
-	getCurrentSequence()->setChannelManagementType(CHANNEL_MANUAL);
-	Display::render();
+    getCurrentSequence()->setChannelManagementType(CHANNEL_MANUAL);
+    Display::render();
 }
 
 void MainFrame::menuEvent_expandedMeasuresSelected(wxCommandEvent& evt)
 {
-	getCurrentSequence()->measureData->setExpandedMode( expandedMeasuresMenuItem->IsChecked() );
-	updateVerticalScrollbar();
+    getCurrentSequence()->measureData->setExpandedMode( expandedMeasuresMenuItem->IsChecked() );
+    updateVerticalScrollbar();
 }
 
 #pragma mark -
 // help
 void MainFrame::menuEvent_about(wxCommandEvent& evt)
 {
-	aboutDialog->show();
+    aboutDialog->show();
 }
 /*
 class ManualView : public wxFrame
 {
-	wxHtmlWindow* html;
-	wxBorderSizer* sizer;
-	bool success;
+    wxHtmlWindow* html;
+    wxBorderSizer* sizer;
+    bool success;
 
 public:
-	ManualView(wxString file) : wxFrame(NULL, wxID_ANY, _("Manual"))
-	{
-		std::cout << "opening " << toCString(file) << std::endl;
+    ManualView(wxString file) : wxFrame(NULL, wxID_ANY, _("Manual"))
+    {
+        std::cout << "opening " << toCString(file) << std::endl;
 
-		sizer = new wxBorderSizer();
-		html = new wxHtmlWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_SCROLLBAR_AUTO | wxHW_NO_SELECTION);
-		sizer->Add(html, 1, wxEXPAND, 0, Location::Center());
+        sizer = new wxBorderSizer();
+        html = new wxHtmlWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_SCROLLBAR_AUTO | wxHW_NO_SELECTION);
+        sizer->Add(html, 1, wxEXPAND, 0, Location::Center());
 
-		success = html->LoadFile(file);
-		SetSizer(sizer);
-		SetAutoLayout(true);
+        success = html->LoadFile(file);
+        SetSizer(sizer);
+        SetAutoLayout(true);
 
-		if(!success)
-		{
-			wxMessageBox( _("Could not open manual") );
-		}
-	}
+        if(!success)
+        {
+            wxMessageBox( _("Could not open manual") );
+        }
+    }
 
-	void popup()
-	{
-		if(success) Show();
-	}
+    void popup()
+    {
+        if(success) Show();
+    }
 
 };
 ManualView* manualView = NULL;
@@ -618,9 +618,9 @@ ManualView* manualView = NULL;
 
 void MainFrame::menuEvent_manual(wxCommandEvent& evt)
 {
-	wxString path_to_docs =  getResourcePrefix() + wxT("Documentation/index.html");
+    wxString path_to_docs =  getResourcePrefix() + wxT("Documentation/index.html");
 
-	if(!wxFileExists( path_to_docs ) or !wxLaunchDefaultBrowser( wxT("file://") + path_to_docs ))
+    if(!wxFileExists( path_to_docs ) or !wxLaunchDefaultBrowser( wxT("file://") + path_to_docs ))
     {
         wxMessageBox(wxT("Sorry, opening docs failed\n(") + path_to_docs + wxT(" does not appear to exist).\nTry ariamaestosa.sourceforge.net instead."));
     }
@@ -633,15 +633,15 @@ void MainFrame::updateMenuBarToSequence()
     ChannelManagementType channelMode = sequence->getChannelManagementType();
 
     if(channelMode == CHANNEL_AUTO)
-	{
-		channelManagement_automatic->Check(true);
-		channelManagement_manual->Check(false);
-	}
-	else if(channelMode == CHANNEL_MANUAL)
-	{
-		channelManagement_automatic->Check(false);
-		channelManagement_manual->Check(true);
-	}
+    {
+        channelManagement_automatic->Check(true);
+        channelManagement_manual->Check(false);
+    }
+    else if(channelMode == CHANNEL_MANUAL)
+    {
+        channelManagement_automatic->Check(false);
+        channelManagement_manual->Check(true);
+    }
 
     followPlaybackMenuItem->Check( sequence->follow_playback );
     expandedMeasuresMenuItem->Check(getMeasureData()->isExpandedMode());

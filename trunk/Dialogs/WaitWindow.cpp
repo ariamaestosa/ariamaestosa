@@ -49,14 +49,14 @@ class WaitWindowClass : public wxDialog
     wxGauge* progress;
 
     bool progress_known;
-    
+
 public:
     LEAK_CHECK(WaitWindowClass);
-        
-    WaitWindowClass(wxString message, bool progress_known) : wxDialog( NULL, wxID_ANY,  _("Please wait..."), wxDefaultPosition, wxSize(400,200), wxCAPTION | wxSTAY_ON_TOP )
-	{
 
-		
+    WaitWindowClass(wxString message, bool progress_known) : wxDialog( NULL, wxID_ANY,  _("Please wait..."), wxDefaultPosition, wxSize(400,200), wxCAPTION | wxSTAY_ON_TOP )
+    {
+
+
 
         boxSizer=new wxBoxSizer(wxVERTICAL);
         WaitWindowClass::progress_known = progress_known;
@@ -91,21 +91,21 @@ public:
     }
 
     void setProgress(int val)
-	{
+    {
         progress->SetValue( val );
         Update();
     }
 
     void show()
-	{
+    {
         wxDialog::Center();
         wxDialog::Show();
         wxYield();
     }
 
     void hide()
-	{
-	    if(progress_known) pulseNotifier.Stop();
+    {
+        if(progress_known) pulseNotifier.Stop();
         wxDialog::Hide();
     }
 
@@ -114,7 +114,7 @@ public:
 namespace WaitWindow {
 
     void show(wxString message, bool progress_known)
-	{
+    {
 
         wxBeginBusyCursor();
         waitWindow = new WaitWindowClass(message, progress_known);
@@ -122,15 +122,15 @@ namespace WaitWindow {
     }
 
     void setProgress(int progress)
-	{
+    {
         waitWindow->setProgress( progress );
     }
 
     void hide()
-	{
+    {
         wxEndBusyCursor();
         waitWindow->hide();
-		waitWindow->Destroy();
+        waitWindow->Destroy();
     }
 
 }

@@ -41,7 +41,7 @@ wxString to_wxString(float f)
 
 void assertFailed(wxString message)
 {
-	std::cerr << message.mb_str() << std::endl;
+    std::cerr << message.mb_str() << std::endl;
     wxMessageBox( message );
 
 #ifdef _MORE_DEBUG_CHECKS
@@ -50,74 +50,74 @@ void assertFailed(wxString message)
     bug[183283426] = 'X';
 #endif
 
-	exit(1);
+    exit(1);
 }
 
 void writeData(wxString data, wxFileOutputStream& fileout)
 {
-	fileout.Write( data.mb_str(), data.size());
+    fileout.Write( data.mb_str(), data.size());
 }
 
 wxString extract_filename(wxString filepath)
 {
-	return filepath.AfterLast('/');
+    return filepath.AfterLast('/');
 }
 
 wxString extract_path(wxString str)
 {
         if(str.GetChar(str.Length()) == '/') return str.BeforeLast('/').BeforeLast('/');
-	else return str.BeforeLast('/');
+    else return str.BeforeLast('/');
 }
 
 
 wxString fromCString(const char* chars)
 {
-	return wxString (chars, wxConvUTF8);
+    return wxString (chars, wxConvUTF8);
 }
 wxString fromCString(char* chars)
 {
-	return wxString (chars, wxConvUTF8);
+    return wxString (chars, wxConvUTF8);
 }
 
 
 long atoi_u(wxString s)
 {
-	long value;
-	if(s.ToLong(&value)) return value;
-	else
-	{
-		std::cerr << "WARNING: Could not parse number " << s.mb_str() << std::endl;
-		return -1;
-	}
+    long value;
+    if(s.ToLong(&value)) return value;
+    else
+    {
+        std::cerr << "WARNING: Could not parse number " << s.mb_str() << std::endl;
+        return -1;
+    }
 }
 
 
 wxString showFileDialog(wxString message, wxString defaultDir,
-						wxString filename,
-						wxString wildcard, bool save)
+                        wxString filename,
+                        wxString wildcard, bool save)
 {
-	wxFileDialog* dialog = new wxFileDialog( NULL, message, defaultDir, filename, wildcard, (save?wxFD_SAVE:wxFD_OPEN));
-	int answer = dialog->ShowModal();
-	wxString path = dialog->GetPath();
-	dialog->Hide();
+    wxFileDialog* dialog = new wxFileDialog( NULL, message, defaultDir, filename, wildcard, (save?wxFD_SAVE:wxFD_OPEN));
+    int answer = dialog->ShowModal();
+    wxString path = dialog->GetPath();
+    dialog->Hide();
     dialog->Destroy();
-	if(answer != wxID_OK) return wxT("");
+    if(answer != wxID_OK) return wxT("");
 
-	return path;
+    return path;
 }
 
 wxString getResourcePrefix()
 {
 #if defined(__WXMAC__)
-		return wxStandardPaths::Get().GetResourcesDir() + wxT("/");
+        return wxStandardPaths::Get().GetResourcesDir() + wxT("/");
 #elif defined(__WXGTK__)
 
-		static bool app_in_place = wxFileExists( extract_path(wxStandardPaths::Get().GetExecutablePath())  + wxT("/Resources/collapse.jpg") );
-		
-		if(app_in_place)
-		    return extract_path( wxStandardPaths::Get().GetExecutablePath() ) + wxT("/Resources/");
-		else
-		    return wxStandardPaths::Get().GetResourcesDir() + wxT("/");
+        static bool app_in_place = wxFileExists( extract_path(wxStandardPaths::Get().GetExecutablePath())  + wxT("/Resources/collapse.jpg") );
+
+        if(app_in_place)
+            return extract_path( wxStandardPaths::Get().GetExecutablePath() ) + wxT("/Resources/");
+        else
+            return wxStandardPaths::Get().GetResourcesDir() + wxT("/");
 #else
 
 #warning "Resource Prefix undefined for your platform"

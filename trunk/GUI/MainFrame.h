@@ -30,7 +30,7 @@
 
 namespace AriaMaestosa {
 
-    
+
 class CustomNoteSelectDialog;
 class Sequence;
 class Preferences;
@@ -52,12 +52,12 @@ DECLARE_EVENT_TYPE(wxEVT_HIDE_WAIT_WINDOW, -1)
 #define MAKE_HIDE_PROGRESSBAR_EVENT(eventname) wxCommandEvent eventname( wxEVT_HIDE_WAIT_WINDOW, 100003 )
 
 #if wxMAJOR_VERSION != 3
-#define NO_WX_TOOLBAR 
+#define NO_WX_TOOLBAR
 #endif
-    
-#ifndef NO_WX_TOOLBAR  
+
+#ifndef NO_WX_TOOLBAR
 class CustomToolBar : public wxToolBar
-{ 
+{
 public:
     CustomToolBar(wxWindow* parent);
     void add(wxControl* ctrl);
@@ -67,10 +67,10 @@ public:
 
 class MainFrame : public wxFrame
 {
-	WxOwnerPtr<AboutDialog>  aboutDialog;
+    WxOwnerPtr<AboutDialog>  aboutDialog;
     WxOwnerPtr<CustomNoteSelectDialog>  customNoteSelectDialog;
     WxOwnerPtr<Preferences>  prefs;
-    
+
     wxBorderSizer* verticalSizer;
 #ifdef NO_WX_TOOLBAR
     wxPanel* topPane;
@@ -90,24 +90,24 @@ class MainFrame : public wxFrame
 
     wxMenu* fileMenu;
     wxMenu* editMenu;
-	wxMenu* settingsMenu;
+    wxMenu* settingsMenu;
     wxMenu* trackMenu;
-	wxMenu* helpMenu;
+    wxMenu* helpMenu;
 
     wxBitmap playBitmap;
     wxBitmap pauseBitmap;
-    
-	wxMenuItem* followPlaybackMenuItem;
 
-	wxMenuItem* playDuringEdits_always;
-	wxMenuItem* playDuringEdits_onchange;
-	wxMenuItem* playDuringEdits_never;
+    wxMenuItem* followPlaybackMenuItem;
 
-	wxMenuItem* channelManagement_automatic;
-	wxMenuItem* channelManagement_manual;
-	wxMenuItem* expandedMeasuresMenuItem;
+    wxMenuItem* playDuringEdits_always;
+    wxMenuItem* playDuringEdits_onchange;
+    wxMenuItem* playDuringEdits_never;
 
-	int currentSequence;
+    wxMenuItem* channelManagement_automatic;
+    wxMenuItem* channelManagement_manual;
+    wxMenuItem* expandedMeasuresMenuItem;
+
+    int currentSequence;
     ptr_vector<Sequence> sequences; // contains all open sequences
 
 
@@ -116,23 +116,23 @@ class MainFrame : public wxFrame
 
 public:
     LEAK_CHECK(MainFrame);
-    
-	// READ AND WRITE
-	bool changingValues; // set this to true when modifying the controls in the top bar, this allows to ignore all events thrown by their modification.
-	wxTextCtrl* tempoCtrl;
+
+    // READ AND WRITE
+    bool changingValues; // set this to true when modifying the controls in the top bar, this allows to ignore all events thrown by their modification.
+    wxTextCtrl* tempoCtrl;
 
     // ------- read-only -------
-	int play_during_edit; // what is the user's preference for note preview during edits
-	bool playback_mode;
+    int play_during_edit; // what is the user's preference for note preview during edits
+    bool playback_mode;
     MainPane* mainPane;
-	OwnerPtr<InstrumentChoice>  instrument_picker;
-	OwnerPtr<DrumChoice>        drumKit_picker;
-	OwnerPtr<TuningPicker>      tuningPicker;
-	OwnerPtr<KeyPicker>         keyPicker;
+    OwnerPtr<InstrumentChoice>  instrument_picker;
+    OwnerPtr<DrumChoice>        drumKit_picker;
+    OwnerPtr<TuningPicker>      tuningPicker;
+    OwnerPtr<KeyPicker>         keyPicker;
     // ----------------------
 
     MainFrame();
-	void init();
+    void init();
     void initMenuBar();
     ~MainFrame();
 
@@ -145,21 +145,21 @@ public:
     void timeSigClicked(wxCommandEvent& evt);
     //void measureDenomChanged(wxCommandEvent& evt);
     void firstMeasureChanged(wxCommandEvent& evt);
-	void changeMeasureAmount(int i, bool throwEvent=true);
+    void changeMeasureAmount(int i, bool throwEvent=true);
     void disableMenusForPlayback(const bool disable);
-    
+
     void enterPressedInTopBar(wxCommandEvent& evt);
-    
+
     // wait window events
     void evt_showWaitWindow(wxCommandEvent& evt);
     void evt_updateWaitWindow(wxCommandEvent& evt);
     void evt_hideWaitWindow(wxCommandEvent& evt);
 
-	// menus
+    // menus
     void on_close(wxCloseEvent& evt);
     void menuEvent_new(wxCommandEvent& evt);
     void menuEvent_close(wxCommandEvent& evt);
-	void menuEvent_exportNotation(wxCommandEvent& evt);
+    void menuEvent_exportNotation(wxCommandEvent& evt);
     void menuEvent_open(wxCommandEvent& evt);
     void menuEvent_copy(wxCommandEvent& evt);
     void menuEvent_undo(wxCommandEvent& evt);
@@ -179,53 +179,53 @@ public:
     void menuEvent_snapToGrid(wxCommandEvent& evt);
     void menuEvent_scale(wxCommandEvent& evt);
     void menuEvent_copyright(wxCommandEvent& evt);
-	void menuEvent_preferences(wxCommandEvent& evt);
-	void menuEvent_followPlayback(wxCommandEvent& evt);
-	void menuEvent_removeOverlapping(wxCommandEvent& evt);
-	void menuEvent_playAlways(wxCommandEvent& evt);
-	void menuEvent_playOnChange(wxCommandEvent& evt);
-	void menuEvent_playNever(wxCommandEvent& evt);
+    void menuEvent_preferences(wxCommandEvent& evt);
+    void menuEvent_followPlayback(wxCommandEvent& evt);
+    void menuEvent_removeOverlapping(wxCommandEvent& evt);
+    void menuEvent_playAlways(wxCommandEvent& evt);
+    void menuEvent_playOnChange(wxCommandEvent& evt);
+    void menuEvent_playNever(wxCommandEvent& evt);
     void menuEvent_quit(wxCommandEvent& evt);
-	void menuEvent_about(wxCommandEvent& evt);
+    void menuEvent_about(wxCommandEvent& evt);
     void menuEvent_manual(wxCommandEvent& evt);
-	void menuEvent_automaticChannelModeSelected(wxCommandEvent& evt);
-	void menuEvent_manualChannelModeSelected(wxCommandEvent& evt);
-	void menuEvent_expandedMeasuresSelected(wxCommandEvent& evt);
+    void menuEvent_automaticChannelModeSelected(wxCommandEvent& evt);
+    void menuEvent_manualChannelModeSelected(wxCommandEvent& evt);
+    void menuEvent_expandedMeasuresSelected(wxCommandEvent& evt);
 
     void updateMenuBarToSequence();
-    
+
     // playback
     void songHasFinishedPlaying();
     void toolsEnterPlaybackMode();
     void toolsExitPlaybackMode();
-	void playClicked(wxCommandEvent& evt);
+    void playClicked(wxCommandEvent& evt);
     void stopClicked(wxCommandEvent& evt);
 
-	// i/o
-	void updateTopBarAndScrollbarsForSequence(Sequence* seq);
-	void loadAriaFile(wxString path);
-	void loadMidiFile(wxString path);
+    // i/o
+    void updateTopBarAndScrollbarsForSequence(Sequence* seq);
+    void loadAriaFile(wxString path);
+    void loadMidiFile(wxString path);
 
-	// scrollbars
+    // scrollbars
     void updateVerticalScrollbar();
     void updateHorizontalScrollbar(int thumbPos=-1);
-	void horizontalScrolling(wxScrollEvent& evt);
+    void horizontalScrolling(wxScrollEvent& evt);
     void verticalScrolling(wxScrollEvent& evt);
     void horizontalScrolling_arrows(wxScrollEvent& evt);
     void verticalScrolling_arrows(wxScrollEvent& evt);
 
-	// sequences
-	void addSequence();
+    // sequences
+    void addSequence();
     int getSequenceAmount();
     bool closeSequence(int id=-1); // -1 means current sequence
     Sequence* getCurrentSequence();
     Sequence* getSequence(int n);
-	int getCurrentSequenceID();
-	void setCurrentSequence(int n);
+    int getCurrentSequenceID();
+    void setCurrentSequence(int n);
 
-	void changeShownTimeSig(int num, int denom);
+    void changeShownTimeSig(int num, int denom);
 
-	void evt_freeVolumeSlider( wxCommandEvent& evt );
+    void evt_freeVolumeSlider( wxCommandEvent& evt );
     void evt_freeTimeSigPicker( wxCommandEvent& evt );
 
     DECLARE_EVENT_TABLE();

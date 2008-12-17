@@ -35,7 +35,7 @@ wxString extract_filename(wxString filepath);
 wxString extract_path(wxString str);
 
 wxString showFileDialog(wxString message, wxString defaultDir,
-						wxString filename, wxString wildcard, bool save);
+                        wxString filename, wxString wildcard, bool save);
 
 wxString getResourcePrefix();
 

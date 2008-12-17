@@ -18,18 +18,18 @@ namespace AriaMaestosa
 
         public:
         LEAK_CHECK(MidiContext);
-        
+
         MidiDevice* device;
 
-		snd_seq_t* sequencer;
-		int queue;
-		snd_seq_addr_t address;
-		int port;
-		snd_seq_port_subscribe_t *subs;
+        snd_seq_t* sequencer;
+        int queue;
+        snd_seq_addr_t address;
+        int port;
+        snd_seq_port_subscribe_t *subs;
         GArray  *destlist;
 
-		MidiContext();
-		~MidiContext();
+        MidiContext();
+        ~MidiContext();
 
         bool openDevice(MidiDevice* device);
         void closeDevice();

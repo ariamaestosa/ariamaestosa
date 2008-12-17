@@ -152,39 +152,39 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
             const int channel = ev.GetChannel();
 
             if( ev.IsNoteOn() )
-			{
+            {
                 const int note = ev.GetNote();
                 const int volume = ev.GetVelocity();
                 PlatformMidiManager::seq_note_on(note, volume, channel);
             }
-			else if( ev.IsNoteOff() )
-			{
+            else if( ev.IsNoteOff() )
+            {
                 const int note = ev.GetNote();
                 PlatformMidiManager::seq_note_off(note, channel);
-			}
-			else if( ev.IsControlChange() )
-			{
+            }
+            else if( ev.IsControlChange() )
+            {
                 const int controllerID = ev.GetController();
                 const int value = ev.GetControllerValue();
                 PlatformMidiManager::seq_controlchange(controllerID, value, channel);
-			}
-			else if( ev.IsPitchBend() )
-			{
+            }
+            else if( ev.IsPitchBend() )
+            {
                 const int pitchBendVal = ev.GetBenderValue();
                 PlatformMidiManager::seq_pitch_bend(pitchBendVal, channel);
-			}
-			else if( ev.IsProgramChange() )
-			{
+            }
+            else if( ev.IsProgramChange() )
+            {
                 const int instrument = ev.GetPGValue();
                 PlatformMidiManager::seq_prog_change(instrument, channel);
             }
             else if( ev.IsTempo() )
-			{
-			    //std::cout << "tempo event" << std::endl;
+            {
+                //std::cout << "tempo event" << std::endl;
                 const int bpm = ev.GetTempo32()/32;
                 ticks_per_millis = (double)bpm * (double)beatlen / (double)60000.0;
-			}
-			/*
+            }
+            /*
             else if( ev.IsPolyPressure() )
                 std::cout << "poly pressure" << std::endl;
             else if( ev.IsChannelPressure() )

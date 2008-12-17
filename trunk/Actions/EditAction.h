@@ -3,12 +3,12 @@
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
- 
+
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
- 
+
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -24,10 +24,10 @@
 #include "Midi/ControllerEvent.h"
 
 namespace AriaMaestosa {
-	
-	class Track;
-	class Sequence;
-	
+
+    class Track;
+    class Sequence;
+
 
 /*
  * In the opposite situation, when it is easy to revert the changes, NoteRelocator is used.
@@ -45,38 +45,38 @@ namespace AriaMaestosa {
  */
 class NoteRelocator
 {
-	int id, noteamount_in_track, noteamount_in_relocator;
-	Track* track;
-	friend class Track;
+    int id, noteamount_in_track, noteamount_in_relocator;
+    Track* track;
+    friend class Track;
 public:
-		
-	void rememberNote(Note& n);
+
+    void rememberNote(Note& n);
     void rememberNote(Note* n);
-	~NoteRelocator();	
-	
-	//std::vector<NoteInfo> notes;
-	ptr_vector<Note, REF> notes;
-	void setParent(Track* t);
-	void prepareToRelocate();
-	Note* getNextNote(); // returns one note at a time, and NULL when all of them where given
+    ~NoteRelocator();
+
+    //std::vector<NoteInfo> notes;
+    ptr_vector<Note, REF> notes;
+    void setParent(Track* t);
+    void prepareToRelocate();
+    Note* getNextNote(); // returns one note at a time, and NULL when all of them where given
 };
 
 //class ControlEventInfo { public: int value, control, tick; };
 class ControlEventRelocator
 {
-	int id, amount_in_track, amount_in_relocator;
-	Track* track;
-	friend class Track;
+    int id, amount_in_track, amount_in_relocator;
+    Track* track;
+    friend class Track;
 public:
-	~ControlEventRelocator();
-		
-	void rememberControlEvent(ControllerEvent& c);
-	
-	ptr_vector<ControllerEvent, REF> events;
-    
-	void setParent(Track* t);
-	void prepareToRelocate();
-	ControllerEvent* getNextControlEvent(); // returns one note at a time, and NULL when all of them where given
+    ~ControlEventRelocator();
+
+    void rememberControlEvent(ControllerEvent& c);
+
+    ptr_vector<ControllerEvent, REF> events;
+
+    void setParent(Track* t);
+    void prepareToRelocate();
+    ControllerEvent* getNextControlEvent(); // returns one note at a time, and NULL when all of them where given
 };
 /*
  * In Aria changes to tracks are represented with EditAction subclasses.
@@ -85,45 +85,45 @@ public:
  * by reversing the operations of the stack. Each EditAction subclass should
  * also be able to revert its action.
  */
-	
+
 namespace Action
 {
-		
-	
+
+
 class EditAction
 {
     friend class AriaMaestosa::Track;
-		
+
 public:
     LEAK_CHECK(EditAction);
-        
+
     EditAction();
     virtual void perform();
     virtual void undo();
     virtual ~EditAction();
-		
+
 };
-	
+
 class SingleTrackAction : public EditAction
 {
 protected:
     Track* track;
-public:		
+public:
     SingleTrackAction();
     void setParentTrack(Track* parent);
     virtual ~SingleTrackAction();
 };
-		
+
 class MultiTrackAction : public EditAction
 {
 protected:
     Sequence* sequence;
-public:		
+public:
     MultiTrackAction();
     void setParentSequence(Sequence* parent); // for multi-track actions
     virtual ~MultiTrackAction();
 };
-	
+
 }
 }
 #endif

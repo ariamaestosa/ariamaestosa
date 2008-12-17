@@ -3,12 +3,12 @@
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
- 
+
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
- 
+
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -26,15 +26,15 @@ class wxDC;
 
 enum
 {
-	PLAY_ALWAYS = 0,
-	PLAY_ON_CHANGE = 1,
-	PLAY_NEVER = 2
+    PLAY_ALWAYS = 0,
+    PLAY_ON_CHANGE = 1,
+    PLAY_NEVER = 2
 };
 
 enum ChannelManagementType
 {
-	CHANNEL_AUTO,
-	CHANNEL_MANUAL
+    CHANNEL_AUTO,
+    CHANNEL_MANUAL
 };
 
 
@@ -48,7 +48,7 @@ namespace AriaMaestosa
     class KeyPicker;
     class DrumChoice;
     class InstrumentChoice;
-    
+
 MainFrame* getMainFrame();
 MeasureData* getMeasureData();
 Sequence* getCurrentSequence();
@@ -68,11 +68,11 @@ InstrumentChoice* getInstrumentPicker();
 
 namespace Display
 {
-     
+
     #ifdef NO_OPENGL
     extern wxDC* renderDC;
     #endif
-    
+
 void render();
 int getWidth();
 int getHeight();
@@ -81,7 +81,7 @@ bool isSelectLessPressed();
 bool isSelectMorePressed();
 bool isCtrlDown();
 bool isVisible();
-    
+
 RelativeXCoord getMouseX_current();
 int getMouseY_current();
 RelativeXCoord getMouseX_initial();

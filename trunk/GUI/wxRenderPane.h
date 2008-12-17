@@ -40,7 +40,7 @@ public:
     wxRenderPane(MainFrame* parent, int* args);
     ~wxRenderPane();
 
-	void resized(wxSizeEvent& evt);
+    void resized(wxSizeEvent& evt);
 
     // size
     int getWidth();

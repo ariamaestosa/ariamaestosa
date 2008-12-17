@@ -39,7 +39,7 @@ public:
     GLPane(MainFrame* parent, int* args);
     ~GLPane();
 
-	void resized(wxSizeEvent& evt);
+    void resized(wxSizeEvent& evt);
 
     // size
     int getWidth();

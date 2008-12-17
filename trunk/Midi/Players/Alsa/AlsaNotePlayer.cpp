@@ -72,11 +72,11 @@ void alsa_output_module_init()
 }
 void alsa_output_module_free()
 {
- 	if(stopNoteTimer != NULL)
-	{
-		delete stopNoteTimer;
-		stopNoteTimer = NULL;
-	}
+     if(stopNoteTimer != NULL)
+    {
+        delete stopNoteTimer;
+        stopNoteTimer = NULL;
+    }
 }
 
 void alsa_output_module_setContext(MidiContext* context_arg)
@@ -119,92 +119,92 @@ void seq_note_on(const int note, const int volume, const int channel)
 {
     snd_seq_event_t event;
 
-	snd_seq_ev_clear(&event);
+    snd_seq_ev_clear(&event);
 
-	event.queue  = SND_SEQ_QUEUE_DIRECT;
-	event.source = context_ref->address;
+    event.queue  = SND_SEQ_QUEUE_DIRECT;
+    event.source = context_ref->address;
 
-	snd_seq_ev_set_subs(&event);
-	snd_seq_ev_set_direct(&event);
-	snd_seq_ev_set_noteon(&event, channel, note, volume);
+    snd_seq_ev_set_subs(&event);
+    snd_seq_ev_set_direct(&event);
+    snd_seq_ev_set_noteon(&event, channel, note, volume);
 
-	snd_seq_event_output_direct(context_ref->sequencer, &event);
-	snd_seq_drain_output(context_ref->sequencer);
+    snd_seq_event_output_direct(context_ref->sequencer, &event);
+    snd_seq_drain_output(context_ref->sequencer);
 }
 
 
 void seq_note_off(const int note, const int channel)
 {
-	snd_seq_event_t event;
+    snd_seq_event_t event;
 
-	snd_seq_ev_clear(&event);
+    snd_seq_ev_clear(&event);
 
-	event.queue  = SND_SEQ_QUEUE_DIRECT;
-	event.source = context_ref->address;
+    event.queue  = SND_SEQ_QUEUE_DIRECT;
+    event.source = context_ref->address;
 
-	snd_seq_ev_set_subs(&event);
-	snd_seq_ev_set_direct(&event);
-	snd_seq_ev_set_noteoff(&event, channel, note, 0 /*velocity*/);
+    snd_seq_ev_set_subs(&event);
+    snd_seq_ev_set_direct(&event);
+    snd_seq_ev_set_noteoff(&event, channel, note, 0 /*velocity*/);
 
-	snd_seq_event_output_direct(context_ref->sequencer, &event);
-	snd_seq_drain_output(context_ref->sequencer);
+    snd_seq_event_output_direct(context_ref->sequencer, &event);
+    snd_seq_drain_output(context_ref->sequencer);
 }
 
 void seq_prog_change(const int instrumentID, const int channel)
 {
-	snd_seq_event_t event;
+    snd_seq_event_t event;
 
-	snd_seq_ev_clear(&event);
+    snd_seq_ev_clear(&event);
 
-	event.queue  = SND_SEQ_QUEUE_DIRECT;
-	event.source = context_ref->address;
+    event.queue  = SND_SEQ_QUEUE_DIRECT;
+    event.source = context_ref->address;
 
-	snd_seq_ev_set_subs(&event);
-	snd_seq_ev_set_direct(&event);
-	snd_seq_ev_set_pgmchange(&event, channel, instrumentID);
+    snd_seq_ev_set_subs(&event);
+    snd_seq_ev_set_direct(&event);
+    snd_seq_ev_set_pgmchange(&event, channel, instrumentID);
 
-	if (snd_seq_event_output_direct(context_ref->sequencer, &event) < 0)
-	{
-		return;
-	}
-	snd_seq_drain_output(context_ref->sequencer);
+    if (snd_seq_event_output_direct(context_ref->sequencer, &event) < 0)
+    {
+        return;
+    }
+    snd_seq_drain_output(context_ref->sequencer);
 }
 
 void seq_controlchange(const int controller, const int value, const int channel)
 {
-	snd_seq_event_t event;
+    snd_seq_event_t event;
 
-	snd_seq_ev_clear(&event);
+    snd_seq_ev_clear(&event);
 
-	event.queue  = SND_SEQ_QUEUE_DIRECT;
-	event.source = context_ref->address;
+    event.queue  = SND_SEQ_QUEUE_DIRECT;
+    event.source = context_ref->address;
 
-	snd_seq_ev_set_subs(&event);
-	snd_seq_ev_set_direct(&event);
-	snd_seq_ev_set_controller(&event, channel, controller, value);
+    snd_seq_ev_set_subs(&event);
+    snd_seq_ev_set_direct(&event);
+    snd_seq_ev_set_controller(&event, channel, controller, value);
 
-	if(snd_seq_event_output_direct(context_ref->sequencer, &event) < 0)
-	{
-		return;
-	}
-	snd_seq_drain_output(context_ref->sequencer);
+    if(snd_seq_event_output_direct(context_ref->sequencer, &event) < 0)
+    {
+        return;
+    }
+    snd_seq_drain_output(context_ref->sequencer);
 }
 
 void seq_pitch_bend(const int value, const int channel)
 {
-	snd_seq_event_t event;
+    snd_seq_event_t event;
 
-	snd_seq_ev_clear(&event);
+    snd_seq_ev_clear(&event);
 
-	event.queue  = SND_SEQ_QUEUE_DIRECT;
-	event.source = context_ref->address;
+    event.queue  = SND_SEQ_QUEUE_DIRECT;
+    event.source = context_ref->address;
 
-	snd_seq_ev_set_subs(&event);
-	snd_seq_ev_set_direct(&event);
-	snd_seq_ev_set_pitchbend(&event, channel, value);
+    snd_seq_ev_set_subs(&event);
+    snd_seq_ev_set_direct(&event);
+    snd_seq_ev_set_pitchbend(&event, channel, value);
 
-	snd_seq_event_output_direct(context_ref->sequencer, &event);
-	snd_seq_drain_output(context_ref->sequencer);
+    snd_seq_event_output_direct(context_ref->sequencer, &event);
+    snd_seq_drain_output(context_ref->sequencer);
 }
 
 

@@ -75,30 +75,30 @@ void wxWidgetApp::onIdle(wxIdleEvent& evt)
 void wxWidgetApp::onActivate(wxActivateEvent& evt)
 {
     #ifdef __WXMAC__
-	if(evt.GetActive())
-	{
-		frame->Raise();
-	}
-	#endif
+    if(evt.GetActive())
+    {
+        frame->Raise();
+    }
+    #endif
 }
 
 bool wxWidgetApp::OnInit()
 {
     frame = NULL;
-	prefs = (wxConfig*) wxConfig::Get();
+    prefs = (wxConfig*) wxConfig::Get();
 
-	initLanguageSupport(prefs);
+    initLanguageSupport(prefs);
 
     PlatformMidiManager::initMidiPlayer();
 
     frame=new MainFrame();
-	frame->init();
+    frame->init();
 
     frame->updateHorizontalScrollbar(0);
 
     Display::render();
 
-	SetTopWindow(frame);
+    SetTopWindow(frame);
 
     return true;
 }
@@ -107,7 +107,7 @@ bool wxWidgetApp::OnInit()
 int wxWidgetApp::OnExit()
 {
 #ifdef _MORE_DEBUG_CHECKS
-	MemoryLeaks::checkForLeaks();
+    MemoryLeaks::checkForLeaks();
 #endif
     return 0;
 }
@@ -116,18 +116,18 @@ int wxWidgetApp::OnExit()
 void wxWidgetApp::MacOpenFile(const wxString &fileName)
 {
 
-	if(fileName.EndsWith(wxT("aria")))
-	{
-		frame->loadAriaFile( fileName );
-	}
-	else if(fileName.EndsWith(wxT("mid")) or fileName.EndsWith(wxT("midi")))
-	{
-		frame->loadMidiFile( fileName );
-	}
-	else
-	{
-		wxMessageBox(_("Unknown file type: ") + fileName);
-	}
+    if(fileName.EndsWith(wxT("aria")))
+    {
+        frame->loadAriaFile( fileName );
+    }
+    else if(fileName.EndsWith(wxT("mid")) or fileName.EndsWith(wxT("midi")))
+    {
+        frame->loadMidiFile( fileName );
+    }
+    else
+    {
+        wxMessageBox(_("Unknown file type: ") + fileName);
+    }
 
 }
 

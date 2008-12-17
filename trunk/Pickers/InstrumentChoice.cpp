@@ -3,12 +3,12 @@
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
- 
+
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
- 
+
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -25,7 +25,7 @@
 #include "Config.h"
 
 namespace AriaMaestosa {
-	
+
 BEGIN_EVENT_TABLE(InstrumentChoice, wxMenu)
 
 //EVT_MENU_RANGE(0,127,InstrumentChoice::menuSelected)
@@ -34,13 +34,13 @@ END_EVENT_TABLE()
 
 void InstrumentChoice::setParent(Track* track)
 {
-	parent = track;	
+    parent = track;
 }
-	
+
 InstrumentChoice::InstrumentChoice() : wxMenu()
 {
-    
-	
+
+
     // piano
     inst_name[0]="Acoustic Grand Piano";
     inst_name[1]="Bright Acoustic Piano";
@@ -50,7 +50,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     inst_name[5]="Electric Piano 2";
     inst_name[6]="Harpsichord";
     inst_name[7]="Clavinet";
-    
+
     // chromatic
     inst_name[8]="Celesta";
     inst_name[9]="Glockenspiel";
@@ -60,7 +60,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     inst_name[13]="Xylophone";
     inst_name[14]="Tubular Bells";
     inst_name[15]="Dulcimer";
-    
+
     // organ
     inst_name[16]="Drawbar Organ";
     inst_name[17]="Percussive Organ";
@@ -70,7 +70,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     inst_name[21]="Accordion";
     inst_name[22]="Harmonica";
     inst_name[23]="Tango Accordion";
-    
+
     // guitar
     inst_name[24]="Nylon String Guitar";
     inst_name[25]="Steel String Guitar";
@@ -81,7 +81,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     inst_name[30]="Distortion Guitar";
     inst_name[31]="Guitar Harmonics";
     inst_name[120]="Guitar Fret Noise";
-    
+
     // bass
     inst_name[32]="Acoustic Bass";
     inst_name[33]="Fingered Bass";
@@ -91,7 +91,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     inst_name[37]="Slap bass 2";
     inst_name[38]="Synth Bass 1";
     inst_name[39]="Synth Bass 2";
-    
+
     // orchestra
     inst_name[40]="Violin";
     inst_name[41]="Viola";
@@ -105,7 +105,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     inst_name[50]="Synth Strings 1";
     inst_name[51]="Synth Strings 2";
     inst_name[55]="Orchestral Hit";
-    
+
     // pads, choirs, voices
     inst_name[52]="Choir (ahh)";
     inst_name[53]="Choir (ooh)";
@@ -123,7 +123,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     inst_name[93]="Metallic";
     inst_name[88]="New Age";
     inst_name[96]="Rain";
-    
+
     // brass
     inst_name[56]="Trumpet";
     inst_name[57]="Trombone";
@@ -133,7 +133,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     inst_name[61]="Brass Section";
     inst_name[62]="Synth Brass 1";
     inst_name[63]="Synth Brass 2";
-    
+
     // reed
     inst_name[64]="Soprano Sax";
     inst_name[65]="Alto Sax";
@@ -143,7 +143,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     inst_name[69]="English Horn";
     inst_name[70]="Bassoon";
     inst_name[71]="Clarinet";
-    
+
     // pipe
     inst_name[72]="Piccolo";
     inst_name[73]="Flute";
@@ -153,7 +153,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     inst_name[77]="Shakuachi";
     inst_name[78]="Whistle";
     inst_name[79]="Ocarina";
-    
+
     // synths
     inst_name[80]="Square Wave";
     inst_name[81]="Sawtooth wave";
@@ -166,7 +166,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     inst_name[97]="Sound Track";
     inst_name[99]="Atmosphere";
     inst_name[103]="Star Theme";
-    
+
     // ethnic
     inst_name[104]="Sitar";
     inst_name[105]="Banjo";
@@ -176,7 +176,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     inst_name[109]="Bagpipe";
     inst_name[110]="Fiddle";
     inst_name[111]="Shanai";
-    
+
     // percussion
     inst_name[112]="Tinkle Bell";
     inst_name[113]="Agogo";
@@ -187,7 +187,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     inst_name[47]="Timpani";
     inst_name[118]="Synth Drum";
     inst_name[119]="Reverse Cymbal";
-    
+
     // sound effects
     inst_name[121]="Breath Noise";
     inst_name[122]="Seashore";
@@ -196,7 +196,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     inst_name[125]="Helicopter";
     inst_name[126]="Applause";
     inst_name[127]="Gunshot";
-    
+
     submenu_1_piano=new wxMenu();
     submenu_2_chromatic=new wxMenu();
     submenu_3_organ=new wxMenu();
@@ -212,9 +212,9 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     submenu_13_percussion=new wxMenu();
     submenu_14_sound_effects=new wxMenu();
     submenu_15_drums=new wxMenu();
-    
+
 #define _ADD_INSTR(id, parent) inst_menus[ id ]= parent -> Append( id+10000 ,fromCString(inst_name[ id ]));
-    
+
     Append(wxID_ANY,wxT("Piano"), submenu_1_piano);
     _ADD_INSTR(0, submenu_1_piano);
     _ADD_INSTR(1, submenu_1_piano);
@@ -224,7 +224,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     _ADD_INSTR(5, submenu_1_piano);
     _ADD_INSTR(6, submenu_1_piano);
     _ADD_INSTR(7, submenu_1_piano);
-    
+
     Append(wxID_ANY,wxT("Chromatic"), submenu_2_chromatic);
     _ADD_INSTR(8, submenu_2_chromatic);
     _ADD_INSTR(9, submenu_2_chromatic);
@@ -234,7 +234,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     _ADD_INSTR(13, submenu_2_chromatic);
     _ADD_INSTR(14, submenu_2_chromatic);
     _ADD_INSTR(15, submenu_2_chromatic);
-    
+
     Append(wxID_ANY,wxT("Organ"), submenu_3_organ);
     _ADD_INSTR(16, submenu_3_organ);
     _ADD_INSTR(17, submenu_3_organ);
@@ -244,7 +244,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     _ADD_INSTR(21, submenu_3_organ);
     _ADD_INSTR(22, submenu_3_organ);
     _ADD_INSTR(23, submenu_3_organ);
-    
+
     Append(wxID_ANY,wxT("Guitar"), submenu_4_guitar);
     _ADD_INSTR(24, submenu_4_guitar);
     _ADD_INSTR(25, submenu_4_guitar);
@@ -255,7 +255,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     _ADD_INSTR(30, submenu_4_guitar);
     _ADD_INSTR(31, submenu_4_guitar);
     _ADD_INSTR(120, submenu_4_guitar);
-    
+
     Append(wxID_ANY,wxT("Bass"), submenu_5_bass);
     _ADD_INSTR(32, submenu_5_bass);
     _ADD_INSTR(33, submenu_5_bass);
@@ -265,7 +265,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     _ADD_INSTR(37, submenu_5_bass);
     _ADD_INSTR(38, submenu_5_bass);
     _ADD_INSTR(39, submenu_5_bass);
-    
+
     Append(wxID_ANY,wxT("Strings and Orchestra"), submenu_6_orchestra);
     _ADD_INSTR(40, submenu_6_orchestra);
     _ADD_INSTR(41, submenu_6_orchestra);
@@ -280,7 +280,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     _ADD_INSTR(50, submenu_6_orchestra);
     _ADD_INSTR(51, submenu_6_orchestra);
     _ADD_INSTR(55, submenu_6_orchestra);
-    
+
     Append(wxID_ANY,wxT("Choirs, Pads and Voices"), submenu_7_choirs_pads);
     _ADD_INSTR(52, submenu_7_choirs_pads);
     _ADD_INSTR(53, submenu_7_choirs_pads);
@@ -308,7 +308,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     _ADD_INSTR(61, submenu_8_brass);
     _ADD_INSTR(62, submenu_8_brass);
     _ADD_INSTR(63, submenu_8_brass);
-    
+
     Append(wxID_ANY,wxT("Reed"), submenu_9_reed);
     _ADD_INSTR(64, submenu_9_reed);
     _ADD_INSTR(65, submenu_9_reed);
@@ -351,7 +351,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     _ADD_INSTR(109, submenu_12_ethnic);
     _ADD_INSTR(110, submenu_12_ethnic);
     _ADD_INSTR(111, submenu_12_ethnic);
-    
+
     Append(wxID_ANY,wxT("Percussion"), submenu_13_percussion);
     _ADD_INSTR(112, submenu_13_percussion);
     _ADD_INSTR(113, submenu_13_percussion);
@@ -362,7 +362,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     _ADD_INSTR(118, submenu_13_percussion);
     _ADD_INSTR(119, submenu_13_percussion);
     _ADD_INSTR(47, submenu_13_percussion);
-    
+
     Append(wxID_ANY,wxT("Sound Effects"), submenu_14_sound_effects);
     _ADD_INSTR(121, submenu_14_sound_effects);
     _ADD_INSTR(122, submenu_14_sound_effects);
@@ -371,7 +371,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     _ADD_INSTR(125, submenu_14_sound_effects);
     _ADD_INSTR(126, submenu_14_sound_effects);
     _ADD_INSTR(127, submenu_14_sound_effects);
-    
+
 #undef _ADD_INSTR
 
 }
@@ -383,7 +383,7 @@ InstrumentChoice::~InstrumentChoice()
 /*
 void InstrumentChoice::setInstrumentID(int id)
 {
-    instrumentID = id;   
+    instrumentID = id;
 }
 */
 void InstrumentChoice::menuSelected(wxCommandEvent& evt)
@@ -392,10 +392,10 @@ void InstrumentChoice::menuSelected(wxCommandEvent& evt)
 
     assertExpr(instrumentID,<,128);
     assertExpr(instrumentID,>=,0);
-    
-	parent->setInstrument(instrumentID);
+
+    parent->setInstrument(instrumentID);
     Display::render();
-    
+
 }
 
 
@@ -403,7 +403,7 @@ char* InstrumentChoice::getInstrumentName(int instrumentID)
 {
     assertExpr(instrumentID,<,128);
     assertExpr(instrumentID,>=,0);
-    
+
     return inst_name[instrumentID];
 }
 
