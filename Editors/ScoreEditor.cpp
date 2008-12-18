@@ -134,7 +134,9 @@ bool ScoreMidiConverter::goingInFlats()
 int ScoreMidiConverter::getKeySigSharpnessSignForLevel(const unsigned int level)
 {
     assertExpr(level,<,73);
-    return scoreNotesSharpness[ levelToNote7(level) ];
+    int value = scoreNotesSharpness[ levelToNote7(level) ];
+    if(value == NATURAL) return NONE;
+    else return value;
 }
 
 int ScoreMidiConverter::getMiddleCLevel() { return middleCLevel; }
@@ -251,15 +253,26 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, int* sign)
                         // and now we come back to the original key. show a
                         // natural sign
                         if(accidentalType == FLAT or accidentalType == SHARP)
+                        {
+                            std::cout << "accidentalType == SHARP/FLAT" << std::endl;
                             answer_sign = NATURAL;
+                        }
                         // we left the key by using a natural accidental on a key
                         // flat/sharp, and now we're coming back on the original key
                         // so show again the original sign
                         else if(accidentalType == NATURAL /*and answer_sign == NONE*/)
-                            answer_sign = getKeySigSharpnessSignForLevel( levelToNote7(answer_level) );
+                        {
+                            answer_sign = getKeySigSharpnessSignForLevel( answer_level );
+                            std::cout << "accidentalType == NATURAL" << std::endl;
+                            if(answer_sign == FLAT) std::cout << "answer = FLAT" << std::endl;
+                            if(answer_sign == SHARP) std::cout << "answer = SHARP" << std::endl;
+                            if(answer_sign == NATURAL) std::cout << "answer = NATURAL" << std::endl;
+                            if(answer_sign == NATURAL) std::cout << "answer = NONE" << std::endl;
+                        }
                         else if(accidentalType == NONE)
                         {
                             // FIXME - not sure this is appropriate
+                            std::cout << "accidentalType == NONE :(" << std::endl;
                             answer_sign = NATURAL;
                         }
                     }
