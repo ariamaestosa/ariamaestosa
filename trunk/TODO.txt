@@ -40,12 +40,8 @@ NOTE: sorry, this is very raw :)
   
 ************************* NEW FEATURES TO ADD: *************************
 
- * Add event to stop sustain
-
  * more intelligently decide if notes on C belong to F clef or G clef
-
- * guess key feature
-
+ 
  * add new tools, that allow adding notes without dragging (and resizing without keyboard, and selecting, and...?)
 
  * Button to maximize track
