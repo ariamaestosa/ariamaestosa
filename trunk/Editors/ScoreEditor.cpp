@@ -254,7 +254,6 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, int* sign)
                         // natural sign
                         if(accidentalType == FLAT or accidentalType == SHARP)
                         {
-                            std::cout << "accidentalType == SHARP/FLAT" << std::endl;
                             answer_sign = NATURAL;
                         }
                         // we left the key by using a natural accidental on a key
@@ -263,16 +262,11 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, int* sign)
                         else if(accidentalType == NATURAL /*and answer_sign == NONE*/)
                         {
                             answer_sign = getKeySigSharpnessSignForLevel( answer_level );
-                            std::cout << "accidentalType == NATURAL" << std::endl;
-                            if(answer_sign == FLAT) std::cout << "answer = FLAT" << std::endl;
-                            if(answer_sign == SHARP) std::cout << "answer = SHARP" << std::endl;
-                            if(answer_sign == NATURAL) std::cout << "answer = NATURAL" << std::endl;
-                            if(answer_sign == NATURAL) std::cout << "answer = NONE" << std::endl;
                         }
                         else if(accidentalType == NONE)
                         {
                             // FIXME - not sure this is appropriate
-                            std::cout << "accidentalType == NONE :(" << std::endl;
+                            std::cout << "WARNING: accidentalType == NONE :(" << std::endl;
                             answer_sign = NATURAL;
                         }
                     }
