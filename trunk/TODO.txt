@@ -41,13 +41,15 @@ NOTE: sorry, this is very raw :)
   
 ************************* NEW FEATURES TO ADD: *************************
 
- * more intelligently decide if notes on C belong to F clef or G clef
- 
  * add new tools, that allow adding notes without dragging (and resizing without keyboard, and selecting, and...?)
 
  * Button to maximize track
 
- * Show ottava bassa/alta signs, especially when printing
+ * make more features accessible graphically (as opposed to keyboard-only)
+ 
+ * elements you get from clicking on the left area should appear in the main menubar too
+
+ + Show ottava bassa/alta signs, especially when printing
 
   - .aria files don't remember whether drums are minimized
   - .aria files don't remember docked tracks
@@ -60,9 +62,6 @@ NOTE: sorry, this is very raw :)
  + proper ALSA port selection (in preferences?)
 
  - key is not saved to midi files (the problem is that in midi key is global, in Aria it is local)
-
- + make more features accessible graphically (as opposed to keyboard-only)
- + elements you get from clicking on the left area should appear in the main menubar too
 
  + cursor should change when hitting key modifiers (at least a select icon when hitting shift in control editor)
 
