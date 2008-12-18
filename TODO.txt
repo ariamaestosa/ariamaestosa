@@ -117,7 +117,6 @@ NOTE: sorry, this is very raw :)
     - measures appear very small if no note starts in them, even if some end in them
     - add non-linear printing...
     - silences are drawn in 'repetition' measures
-    - when printing multiple tracks, it's not clear which ones go toghether
     - when there's small lines above/below score, the vertical measure line continues beyonf the score
     - show G/F clef + key signature
     - show time sig on printed scores/tabs

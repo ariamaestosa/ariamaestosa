@@ -22,13 +22,15 @@ Help("""
         Flags you can pass when calling 'scons install' :
             platform=[macosx/linux/unix]
                 specify platform, if not auto-detected
-            prefix=[/opt/local]
+            prefix=[/opt/local or something else]
                 install to a different prefix than default /usr/local
             
         % scons uninstall
             Uninstalls Aria, takes same flags as 'scons install'.
             If you specified a custom install prefix, you need to specify it again.
             * Not available on mac OS X, just drag the generated app to the trash.
+            
+        Use scons -H for help about scons itself, and its terminal flags.
       """)
 
 # recursive Glob
