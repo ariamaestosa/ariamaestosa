@@ -288,7 +288,7 @@ public:
     // when OK button of the tuning picker is pressed
     void okButton(wxCommandEvent& evt)
     {
-
+        parent->previous_tuning = parent->tuning;
         parent->tuning.clear();
 
         // set new tuning
@@ -387,7 +387,7 @@ void TuningPicker::loadTuning(const int id, const bool user_triggered) // if use
 {
     switch(id){
         case TUNING_STD: // standard
-
+            parent->previous_tuning = parent->tuning;
             parent->tuning.clear();
             parent->tuning.push_back( findNote('E',' ',5) );
             parent->tuning.push_back( findNote('B',' ',4) );
@@ -399,7 +399,7 @@ void TuningPicker::loadTuning(const int id, const bool user_triggered) // if use
             break;
 
         case TUNING_DROPD: // drop D
-
+            parent->previous_tuning = parent->tuning;
             parent->tuning.clear();
             parent->tuning.push_back( findNote('E',' ',5) );
             parent->tuning.push_back( findNote('B',' ',4) );
@@ -411,7 +411,7 @@ void TuningPicker::loadTuning(const int id, const bool user_triggered) // if use
             break;
 
         case TUNING_DROPC: // drop C
-
+            parent->previous_tuning = parent->tuning;
             parent->tuning.clear();
             parent->tuning.push_back( findNote('D',' ',5) );
             parent->tuning.push_back( findNote('A',' ',4) );
@@ -423,7 +423,7 @@ void TuningPicker::loadTuning(const int id, const bool user_triggered) // if use
             break;
 
         case TUNING_DROPB: // drop B  //B-F#-B-e-g#-c#'
-
+            parent->previous_tuning = parent->tuning;
             parent->tuning.clear();
             parent->tuning.push_back( findNote('C','#',5) );
             parent->tuning.push_back( findNote('G','#',4) );
@@ -435,7 +435,7 @@ void TuningPicker::loadTuning(const int id, const bool user_triggered) // if use
             break;
 
         case TUNING_BASS: // bass
-
+            parent->previous_tuning = parent->tuning;
             parent->tuning.clear();
             //parent->tuning.push_back( findNote('E',' ',4) );
             parent->tuning.push_back( findNote('B',' ',3) );
@@ -447,7 +447,7 @@ void TuningPicker::loadTuning(const int id, const bool user_triggered) // if use
             break;
 
         case TUNING_DROPDBASS: // drop-D bass
-
+            parent->previous_tuning = parent->tuning;
             parent->tuning.clear();
             //parent->tuning.push_back( findNote('E',' ',4) );
             parent->tuning.push_back( findNote('B',' ',3) );

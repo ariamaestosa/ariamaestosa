@@ -17,6 +17,8 @@
 #include "Actions/UpdateGuitarTuning.h"
 #include "Actions/EditAction.h"
 #include "Midi/Track.h"
+#include "Editors/GuitarEditor.h"
+#include "GUI/GraphicalTrack.h"
 
 namespace AriaMaestosa
 {
@@ -24,6 +26,9 @@ namespace AriaMaestosa
 {
     void UpdateGuitarTuning::undo()
     {
+        GuitarEditor* editor = track->graphics->guitarEditor;
+        editor->tuning = previous_tuning;
+        
         Note* current_note;
         relocator.setParent(track);
         relocator.prepareToRelocate();
@@ -33,12 +38,20 @@ namespace AriaMaestosa
             current_note->setStringAndFret( strings[n], frets[n] );
             n++;
         }
+        
+        const int amount_n = track->notes.size();
+        for(int n=0; n<amount_n; n++)
+        {
+            track->notes[n].checkIfStringAndFretMatchNote(true);
+        }//next
     }
     void UpdateGuitarTuning::perform()
     {
-        //undo_obj.saveState(track);
         assert(track != NULL);
 
+        GuitarEditor* editor = track->graphics->guitarEditor;
+        if(editor == NULL) return; // before editor is created, probably setting initial tuning. FIXME - find cleaner way
+        previous_tuning = editor->previous_tuning;
 
         const int amount_n = track->notes.size();
         for(int n=0; n<amount_n; n++)

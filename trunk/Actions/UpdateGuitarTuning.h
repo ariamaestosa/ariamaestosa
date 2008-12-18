@@ -34,6 +34,8 @@ namespace Action
         NoteRelocator relocator;
         std::vector<int> frets;
         std::vector<int> strings;
+        
+        std::vector<int> previous_tuning;
 public:
         UpdateGuitarTuning();
         void perform();
