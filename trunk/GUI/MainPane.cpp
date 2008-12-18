@@ -952,12 +952,14 @@ void MainPane::playbackRenderLoop()
             {
                 RelativeXCoord tick(playbackStartTick + currentTick, MIDI);
                 const int current_pixel = tick.getRelativeTo(WINDOW);
-
-                const float zoom = getCurrentSequence()->getZoom();
+                
+                //const float zoom = getCurrentSequence()->getZoom();
                 const int XStart = getEditorsXStart();
-                const int XEnd = getWidth() - followPlaybackTime*zoom;
-
-                if(current_pixel < XStart or current_pixel > XEnd)
+                const int XEnd = getWidth() - 50; // 50 is somewhat arbitrary
+                const int last_visible_measure = getMeasureData()->measureAtPixel( XEnd );
+                const int current_measure = getMeasureData()->measureAtTick(playbackStartTick + currentTick);
+                
+                if(current_pixel < XStart or current_measure >= last_visible_measure)
                 {
                     int new_scroll_in_pixels = (playbackStartTick + currentTick) * getCurrentSequence()->getZoom();
                     if(new_scroll_in_pixels < 0) new_scroll_in_pixels=0;

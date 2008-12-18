@@ -101,7 +101,6 @@ NOTE: sorry, this is very raw :)
  
  ************************* BUGS: *************************
 
-* "follow playback" : hard to follow when horizontal scrolling is changed (Change only on measure change?)
 * undos in guitar editor that rely on string and fret will be wrong if tuning changed meanwhile
 * red images
 * My CoreAudio player is deprecated on OS X 10.5...
