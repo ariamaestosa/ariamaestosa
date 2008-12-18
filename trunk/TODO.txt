@@ -50,17 +50,15 @@ NOTE: sorry, this is very raw :)
 
  + Show ottava bassa/alta signs, especially when printing
 
-  - .aria files don't remember whether drums are minimized
-  - .aria files don't remember docked tracks
-  - background choices are not saved to .aria files
+ - .aria files don't remember whether drums are minimized
+ - .aria files don't remember docked tracks
+ - background choices are not saved to .aria files
 
  - when scaling entire song, scale control events and time sig changes too
 
  + linux : export to wav when not using timidity?
  + linux : offer to launch timidity deamon if it's not running
- + proper ALSA port selection (in preferences?)
-
- - key is not saved to midi files (the problem is that in midi key is global, in Aria it is local)
+ + linux : proper ALSA port selection (in preferences?)
 
  + cursor should change when hitting key modifiers (at least a select icon when hitting shift in control editor)
 
@@ -80,9 +78,9 @@ NOTE: sorry, this is very raw :)
  - change volume relatively on a bunch of notes
  - select notes and all similar menu items should be disabled in controller mode
  
+ UNSURE/MINOR:
  - setting sharp/flat sign manually sometimes doesn't work (when it's possible to display the note on a level with no sign)
- 
- UNSURE:
+ - key is not saved to midi files (the problem is that in midi key is global, in Aria it is local)
  - render a bit less often + probably too many paint events (duplicate ones at times) track and remove them
  + use wxNewId() ?
  - add background support in other editors than keyboard

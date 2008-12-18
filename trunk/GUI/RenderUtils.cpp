@@ -194,7 +194,7 @@ int text_return_end_x(wxString* string, const int x, const int y)
     // find where text ends
     float rasterPos[4];
     glGetFloatv(GL_CURRENT_RASTER_POSITION,rasterPos);
-    return (int)( rasterPos[0]/10.0f );
+    return (int)round( rasterPos[0] );
 
 }
 
