@@ -22,6 +22,7 @@ NOTE: sorry, this is very raw :)
  - mod support/better synths support (fluidsynth?)
  - new control editor
 		- precise values
+        - special mode for on/off controllers (e.g. sustain)
 		- points and curves, splines
 		- what to do with sustain? needs all_sound_off perhaps?
 		- make portamento more usable
