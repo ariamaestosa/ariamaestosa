@@ -47,6 +47,7 @@ enum IDs
     KEY_FLATS_5,
     KEY_FLATS_6,
     KEY_FLATS_7,
+    KEY_GUESS,
 
     ID_AMOUNT
 };
@@ -91,6 +92,9 @@ KeyPicker::KeyPicker() : wxMenu()
     key_flats_5 = AppendCheckItem( KEY_FLATS_5, wxT("Db, Bbm"));
     key_flats_6 = AppendCheckItem( KEY_FLATS_6, wxT("Gb, Ebm"));
     key_flats_7 = AppendCheckItem( KEY_FLATS_7, wxT("Cb, Abm"));
+    
+    AppendSeparator();
+    Append( KEY_GUESS, _("Guess Key"));
 }
 
 void KeyPicker::setParent(Track* parent_arg)
@@ -249,6 +253,125 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
     {
         parent -> scoreEditor    -> loadKey( FLAT, id-KEY_FLATS_1+1 );
         parent -> keyboardEditor -> loadKey( FLAT, id-KEY_FLATS_1+1 );
+    }
+    else if( id == KEY_GUESS )
+    {
+        int note_12_occurance[12];
+        for(int n=0; n<12; n++)
+            note_12_occurance[n] = 0;
+        
+        // count how many A's, how many B's, etc., we have in this track
+        const int noteAmount = parent->track->getNoteAmount();
+        for(int n=0; n<noteAmount; n++)
+        {
+            const int pitch = parent->track->getNotePitchID(n);
+            int r = 11-pitch%12;
+            if(r < 0)  r+=12;
+            if(r > 11) r-=12;
+            //std::cout << "r=" << r << std::endl;
+            note_12_occurance[r] += 1;
+        }
+        
+        // find max value, will make it easier to compare values
+        //int max = 0;
+        //for(int n=0; n<12; n++)
+        //    if(note_12_occurance[n] > max) max = note_12_occurance[n];
+        // print values for debug purposes
+        //for(int n=0; n<12; n++)
+        //    std::cout << (note_12_occurance[n] * 100 / max) << std::endl;
+        
+        // test the note repartition pattern found against keys
+        // and grade them ( smaller = less alike, bigger = much alike )
+        // here we only test major keys; a minor one will get the same key sig
+        int key_test[12];
+        for(int n=0; n<12; n++)
+        {
+            key_test[n] = 0; // reset before starting
+            
+            // some values are somehwat arbitrarly multiplied by 2 cause
+            // they are more likely/unlikely to be found in a given key
+            
+            key_test[n] += note_12_occurance[n]*2; // tonic
+            key_test[n] -= note_12_occurance[(n+1)%12]*2; // 2nd minor 
+            key_test[n] += note_12_occurance[(n+2)%12]; // 2nd major 
+            key_test[n] -= note_12_occurance[(n+3)%12]; // 3rd minor 
+            key_test[n] += note_12_occurance[(n+4)%12]; // 3rd major 
+            key_test[n] += note_12_occurance[(n+5)%12]; // 4th
+            key_test[n] -= note_12_occurance[(n+6)%12]*2; // tritone
+            key_test[n] += note_12_occurance[(n+7)%12]*2; // fifth
+            //key_test[n] -= note_12_occurance[(n+8)%12]/2; // 6th minor
+            //key_test[n] += note_12_occurance[(n+9)%12]/2; // 6th major
+            // 6ths are less accounted for, since they could be the 7th of a minor key
+            key_test[n] -= note_12_occurance[(n+10)%12]; // 7th minor
+            key_test[n] += note_12_occurance[(n+11)%12]; // 7th major
+        }
+        
+        int best_candidate = -1;
+        for(int n=0; n<12; n++)
+        {
+            if(best_candidate==-1 or key_test[n]>key_test[best_candidate]) best_candidate = n;
+        }
+        if(best_candidate==-1) return;
+        
+        int sign = NATURAL, amount = 0;
+        switch(best_candidate)
+        {
+            case 0: //C
+                break;
+                
+            case 1: // C#
+                sign = SHARP;
+                amount = 7;
+                break;
+            case 2: // D
+                sign = SHARP;
+                amount = 2;
+                break;
+            case 4: // E
+                sign = SHARP;
+                amount = 4;
+                break; 
+            case 6: // F#
+                sign = SHARP;
+                amount = 6;
+                break; 
+            case 7: // G
+                sign = SHARP;
+                amount = 1;
+                break; 
+            case 9: // A
+                sign = SHARP;
+                amount = 3;
+                break; 
+            case 11: // B
+                sign = SHARP;
+                amount = 5;
+                break; 
+                
+            case 3: // D#
+                sign = FLAT;
+                amount = 3;
+                break;
+            case 5: // F
+                sign = FLAT;
+                amount = 1;
+                break; 
+            case 8: // G#
+                sign = FLAT;
+                amount = 4;
+                break; 
+            case 10: // A#
+                sign = FLAT;
+                amount = 2;
+                break; 
+        }
+        parent -> scoreEditor    -> loadKey(sign, amount);
+        parent -> keyboardEditor -> loadKey(sign, amount);
+        /*
+        wxString choices[12] = { wxT("C"), wxT("C#"), wxT("D"), wxT("D#"), wxT("E"), wxT("F"),
+                                wxT("F#"), wxT("G"), wxT("G#"), wxT("A"), wxT("A#"), wxT("B")};
+        std::cout << "best_candidate = " << choices[best_candidate].mb_str() << std::endl;
+         */
     }
 
     Display::render();
