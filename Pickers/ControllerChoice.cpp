@@ -51,7 +51,7 @@ ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu()
     Append( 200 ,wxT("Pitch Bend"));
 
     // Tempo bend is not a controller but for now it goes there
-    Append( 201 ,wxT("Tempo"));
+    Append( 201 ,wxT("Tempo (global)"));
 
     AppendSeparator();
 
