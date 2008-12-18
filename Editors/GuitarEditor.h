@@ -35,7 +35,8 @@ class GuitarEditor : public Editor
 public:
 
     std::vector<int> tuning;
-
+    std::vector<int> previous_tuning; // for undo purposes
+    
     GuitarEditor(Track* track);
 
     void render();

@@ -300,6 +300,12 @@ const int COLLAPSED_BAR_HEIGHT = 5;
 
 GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
 {
+    keyboardEditor     = NULL;
+    guitarEditor       = NULL;
+    drumEditor         = NULL;
+    controllerEditor   = NULL;
+    scoreEditor        = NULL;
+    
     sequence = seq;
     GraphicalTrack::track = track;
 

@@ -101,7 +101,6 @@ NOTE: sorry, this is very raw :)
  
  ************************* BUGS: *************************
 
-* undos in guitar editor that rely on string and fret will be wrong if tuning changed meanwhile
 * red images
 * My CoreAudio player is deprecated on OS X 10.5...
     Midi/Players/Mac/CoreAudioNotePlayer.cpp: In function 'OSStatus CoreAudioNotePlayer::CreateAUGraph(OpaqueAUGraph*&, ComponentInstanceRecord*&)':

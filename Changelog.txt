@@ -6,6 +6,7 @@
 - In editor popup menus, don't show score options in keyboard mode
 - Fixed docking tracks, which was broken in last release
 - Made 'follow playback' easier to follow by scrolling only on measure change
+- Fixed undoing guitar tuning changes
 
 1.2b3
 - Refactored preferences to look better, be cleaner and allow setting a default value for "follow playback"
