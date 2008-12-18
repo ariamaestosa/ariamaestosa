@@ -984,10 +984,30 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
                 const int middleC = converter->getScoreCenterCLevel();
                 if(noteLevel < middleC)
                     g_clef_analyser->addToVector(currentNote, false);
-                else
+                else if(noteLevel > middleC)
                     f_clef_analyser->addToVector(currentNote, false);
-            }
-        }
+                else
+                {
+                    // note is exactly on middle C... do our best to
+                    // guess on which clef to put this note
+                    // we'll check nearby notes in case it can help us'
+                    int check_note = -1;
+                    if(n>0) check_note=n-1;
+                    else if(n+1<noteAmount) check_note = n+1;
+                    
+                    if(check_note != -1)
+                    {
+                        const int checkNoteLevel = converter->noteToLevel(track->getNote(check_note), NULL);
+                        if(checkNoteLevel > middleC)
+                            f_clef_analyser->addToVector(currentNote, false);
+                        else
+                            g_clef_analyser->addToVector(currentNote, false);
+                    }
+                    else
+                        g_clef_analyser->addToVector(currentNote, false);
+                } // end if note on middle C
+            } // end if both G and F clefs
+        } // end if musical notation enabled
     } // next note
 
 
