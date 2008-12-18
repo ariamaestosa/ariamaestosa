@@ -24,14 +24,13 @@ NOTE: sorry, this is very raw :)
 		- precise values
         - special mode for on/off controllers (e.g. sustain)
 		- points and curves, splines
-		- what to do with sustain? needs all_sound_off perhaps?
 		- make portamento more usable
-		+ copy/paste
-		+ many controller effects would gain from being accessible somewhere else than in control editor
+		- copy/paste
+		- many controller effects would gain from being accessible somewhere else than in control editor
 		- copy control events along notes
-		- precise tempo bend (not controller-like, more like a sudden change)
-		- wide tempo bends
+		- wide pitch bends
 		- should maybe appear under current editor? it's always useful to see the notes when applying effects
+        - support fine values
  - support wide pitch-bend
  - non-linear/riff-based song editing (e.g. to repeat chorus you don't need to keep multiple copies of it)
  - allow using another renderer than OpenGL
@@ -103,10 +102,7 @@ NOTE: sorry, this is very raw :)
  - score editor should be able to display notes with more than 2 flags (unusure... those with 2 are already so small and barely visible) 
  
  ************************* BUGS: *************************
- 
-* when stopping play with spacebar, pause button remains (only on my old PPC?)
- 
-* crashes when opening 2+ files from the finder
+
 * "follow playback" : hard to follow when horizontal scrolling is changed (Change only on measure change?)
 * undos in guitar editor that rely on string and fret will be wrong if tuning changed meanwhile
 * red images
@@ -141,11 +137,15 @@ repetition detection:
     
 * crash when cancelling printing (wx bug?)
 
++ score editor - sharp or flat notes at time=0 have their sign hidden behind grey bar
+
+- when stopping play with spacebar, pause button remains (only on my old PPC?)
+- crashes when opening 2+ files from the finder (can't reproduce)
+
 - "rearrange selected notes" doesn't always work optimally
 
-- what's up with glutInit? wxGlCanvas seems to call it. Crashes suse 10.1.
+- what's up with glutInit? I get double-init messages. Crashes suse 10.1.
 - score : flat/sharp/natural signs tend to appear obscured (behind note stem if in a group... behind silence... etc.)
-+ score editor - sharp or flat notes at time=0 have their sign hidden behind grey bar
 
 - error at startup (quicktime will not play dummy file to init it?)
         error:

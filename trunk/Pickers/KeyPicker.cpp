@@ -63,7 +63,7 @@ KeyPicker::KeyPicker() : wxMenu()
     //I18N: - in the view settings for score editor. whether to show notes in a "computer" linear way.
     linear_checkbox = AppendCheckItem(LINEAR_NOTATION,_("Linear Notation")); linear_checkbox->Check(true);
 
-    AppendSeparator();
+    //AppendSeparator();
     gclef = AppendCheckItem(G_CLEF, _("G Clef")); gclef->Check(true);
     fclef = AppendCheckItem(F_CLEF, _("F Clef")); fclef->Check(true);
     //I18N: - show score an octave higher
@@ -71,6 +71,8 @@ KeyPicker::KeyPicker() : wxMenu()
     //I18N: - show score an octave lower
     octave_below = AppendCheckItem(OCTAVE_BELOW, _("Octave -1"));
 
+    score_items_added = true;
+    
     AppendSeparator();
     key_c = AppendCheckItem(KEY_C_AM, wxT("C, Am"));
     key_c->Check(true);
@@ -102,21 +104,46 @@ void KeyPicker::setParent(Track* parent_arg)
     parent = parent_arg->graphics;
     if(parent->editorMode == KEYBOARD)
     {
+        if(score_items_added)
+        {
+            Remove(musical_checkbox);
+            Remove(linear_checkbox);
+            Remove(fclef);
+            Remove(gclef);
+            Remove(octave_above);
+            Remove(octave_below);
+            score_items_added = false;
+        }
+        /*
         musical_checkbox->Enable(false);
         linear_checkbox->Enable(false);
         fclef->Enable(false);
         gclef->Enable(false);
         octave_above->Enable(false);
         octave_below->Enable(false);
+         */
     }
     else if(parent->editorMode == SCORE)
     {
-        musical_checkbox->Enable(true);
-        linear_checkbox->Enable(true);
-        fclef->Enable(true);
-        gclef->Enable(true);
-        octave_above->Enable(true);
+        if(not score_items_added)
+        {
+            Prepend(octave_below);
+            Prepend(octave_above);
+            Prepend(gclef);
+            Prepend(fclef);
+            //PrependSeparator();
+            Prepend(linear_checkbox);
+            Prepend(musical_checkbox);
+            score_items_added = true;
+        }
+        /*
+         musical_checkbox->Enable(true);
+         linear_checkbox->Enable(true);
+         fclef->Enable(true);
+         gclef->Enable(true);
+         octave_above->Enable(true);
         octave_below->Enable(true);
+        */
     }
 
     // FIXME - all code confusingly assumes score editor and keyboard editor always use the same key

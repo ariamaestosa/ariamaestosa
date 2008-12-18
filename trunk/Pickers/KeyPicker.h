@@ -39,6 +39,8 @@ namespace AriaMaestosa {
 
         wxMenuItem* key_c;
 
+        bool score_items_added;
+        
         wxMenuItem* key_sharps_1;
         wxMenuItem* key_sharps_2;
         wxMenuItem* key_sharps_3;

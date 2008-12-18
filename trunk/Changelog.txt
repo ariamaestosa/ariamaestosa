@@ -3,6 +3,7 @@
 - Fixed control editor to allow minimal value (0), namely allowing to turn Sustain off.
 - Fixed (yet another) bug in accidental handling
 - More intelligently decide if notes on middle C belong to F clef or G clef
+- In editor popup menus, don't show score options in keyboard mode
 
 1.2b3
 - Refactored preferences to look better, be cleaner and allow setting a default value for "follow playback"
