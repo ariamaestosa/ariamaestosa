@@ -42,8 +42,6 @@ NOTE: sorry, this is very raw :)
 
  * add new tools, that allow adding notes without dragging (and resizing without keyboard, and selecting, and...?)
 
- * Button to maximize track
-
  * make more features accessible graphically (as opposed to keyboard-only)
  
  * elements you get from clicking on the left area should appear in the main menubar too

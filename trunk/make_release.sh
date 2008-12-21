@@ -47,7 +47,7 @@ python scons/scons.py install
 
 mkdir -p "$OUTPUT/AriaMaestosa-$VERSION/"
 cp -R "$OUTPUT/build/AriaMaestosa.app" "$OUTPUT/AriaMaestosa-$VERSION"
-cp "./GPL-license.txt" "$OUTPUT/AriaMaestosa-$VERSION/GPL-license.txt"
+cp "./license.txt" "$OUTPUT/AriaMaestosa-$VERSION/license.txt"
 
 # find "$OUTPUT/AriaMaestosa-$VERSION/" -name ".svn" -exec rm -rf '{}' \;
 
