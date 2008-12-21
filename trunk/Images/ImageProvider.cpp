@@ -51,7 +51,8 @@ void loadImages()
     muteDrawable = new Drawable( muteOffImg);
 
     dockTrackDrawable = new Drawable( wxT("dock.png"));
-
+    maximizeTrackDrawable = new Drawable( wxT("maximize.png")  );
+    
     guitar_view = new Drawable( wxT("guitar_view.jpg"));
     keyboard_view = new Drawable( wxT("keyboard_view.jpg"));
     score_view = new Drawable( wxT("score_view.jpg"));
@@ -140,7 +141,8 @@ void unloadImages()
     delete comboBodyDrawable;
     delete comboSelectDrawable;
     delete dockTrackDrawable;
-
+    delete maximizeTrackDrawable;
+    
     delete guitar_view;
     delete drum_view;
     delete keyboard_view;

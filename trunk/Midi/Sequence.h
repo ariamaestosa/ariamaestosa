@@ -70,10 +70,11 @@ class Sequence {
     // this object is to be modified by MainFrame, to remember where to save this sequence
     wxString filepath;
 
-    // these objects are to be modified by tracksˆ
+    // these variables are to be modified by tracks
     int x_scroll_upon_copying; // will store the horizontal scrolling when copying, and upon pasting behaviour will depend if x_scroll has changed since copy
     int notes_shift_when_no_scrolling; // if no scrolling is done, this value will be used to determine where to place notes
-
+    bool maximize_track_mode;
+    
     // ------------ read-only -------------
     bool importing; // set to true when importing - indicates the sequence will have frequent changes and not compute too much until it's over
 
