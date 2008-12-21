@@ -112,7 +112,6 @@ class Track
     friend class Action::ShiftBySemiTone;
 
     MainFrame* frame;
-    int trackUniqueID;
     ptr_vector<Note> notes;
     ptr_vector<Note, REF> noteOff;
     ptr_vector<ControllerEvent> controlEvents;
@@ -129,6 +128,7 @@ public:
     // ------------- read-only -------------
     OwnerPtr<GraphicalTrack>  graphics;
     Sequence* sequence;
+    int trackUniqueID;
     // -------------------------------------
 
     Track(MainFrame* parent, Sequence* sequence);

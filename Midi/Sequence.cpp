@@ -68,7 +68,8 @@ Sequence::Sequence()
     reorderYScroll = 0;
 
     importing=false;
-
+    maximize_track_mode = false;
+    
     x_scroll_upon_copying = -1;
 
     follow_playback = followPlaybackByDefault();

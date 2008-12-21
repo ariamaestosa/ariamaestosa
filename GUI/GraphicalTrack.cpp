@@ -33,6 +33,7 @@
 #include "Images/ImageProvider.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
+#include "Midi/MeasureData.h"
 #include "Editors/KeyboardEditor.h"
 #include "Editors/Editor.h"
 #include "Editors/GuitarEditor.h"
@@ -332,14 +333,15 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
     muteButton = new BitmapButton(28, 10, muteDrawable);
     components->addFromLeft(muteButton);
 
-    dockButton = new BitmapButton(20, 11, dockTrackDrawable);
-    components->addFromLeft(dockButton);
-
+    dockToolBar = new ToolBar<BlankField>();
+    dockToolBar->addItem( new BitmapButton( 16, 14, maximizeTrackDrawable,false, false), 0 );
+    dockToolBar->addItem( new BitmapButton( 16, 14, dockTrackDrawable,    false, false), 0 );
+    components->addFromLeft(dockToolBar);
+    dockToolBar->layout();
+    
     trackName = new BlankField(140);
     components->addFromLeft(trackName);
 
-    //gridCombo = new ComboBox(80);
-    //components->addFromLeft(gridCombo);
     gridCombo = new ToolBar<ComboBox>();
     gridCombo->addItem( new BitmapButton( 16, 14, mgrid_1,  false, true ), 0 );
     gridCombo->addItem( new BitmapButton( 16, 14, mgrid_2,  false, true ), 0 );
@@ -442,13 +444,61 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         }
 
         // dock
-        if( dockButton->clickIsOnThisWidget(winX, mousey) )
+        if( dockToolBar->getItem(0).clickIsOnThisWidget(winX, mousey) )
         {
-            docked = true;
-            sequence->addToDock( this );
-            DisplayFrame::updateVerticalScrollbar();
+            if(not getCurrentSequence()->maximize_track_mode)
+            {
+                const int track_amount = getCurrentSequence()->getTrackAmount();
+                for(int n=0; n<track_amount; n++)
+                {
+                    Track* track = getCurrentSequence()->getTrack(n);
+                    if(track->graphics == this)
+                    {
+                        maximizeHeight();
+                        continue;
+                    }
+                    track->graphics->dock();
+                }
+                getCurrentSequence()->setYScroll(0);
+                DisplayFrame::updateVerticalScrollbar();
+                getCurrentSequence()->maximize_track_mode = true;
+            }
+            else
+            {
+                // switch off maximize mode. 
+                const int track_amount = getCurrentSequence()->getTrackAmount();
+                for(int n=0; n<track_amount; n++)
+                {
+                    Track* track = getCurrentSequence()->getTrack(n);
+                    if(track->graphics->docked) track->graphics->dock(false);
+                    track->graphics->maximizeHeight(false);
+                }
+                DisplayFrame::updateVerticalScrollbar();
+                getCurrentSequence()->maximize_track_mode = false;
+            }
         }
-
+        if( dockToolBar->getItem(1).clickIsOnThisWidget(winX, mousey) )
+        {
+            if(getCurrentSequence()->maximize_track_mode)
+            {
+                // switch off maximize mode. FIXME - duplicate code, see above
+                const int track_amount = getCurrentSequence()->getTrackAmount();
+                for(int n=0; n<track_amount; n++)
+                {
+                    Track* track = getCurrentSequence()->getTrack(n);
+                    if(track->graphics->docked) track->graphics->dock(false);
+                    track->graphics->maximizeHeight(false);
+                }
+                DisplayFrame::updateVerticalScrollbar();
+                getCurrentSequence()->maximize_track_mode = false;
+            }
+            else
+            {
+                dock();
+                DisplayFrame::updateVerticalScrollbar();
+            }
+        }
+        
         // mute
         if( muteButton->clickIsOnThisWidget(winX, mousey) )
         {
@@ -590,7 +640,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         return true;
     }
 }
-
+    
 bool GraphicalTrack::processRightMouseClick(RelativeXCoord x, int y)
 {
     if(y>from_y and y<to_y)
@@ -681,7 +731,32 @@ void GraphicalTrack::setHeight(const int height)
 {
     GraphicalTrack::height = height;
 }
-
+void GraphicalTrack::maximizeHeight(bool maximize)
+{
+    if(maximize)
+    {
+        setHeight(Display::getHeight() - getCurrentSequence()->dockHeight -
+                  (getMeasureData()->isExpandedMode() ? 150 : 130)  ); // FIXME - don't hardcode values
+    }
+    else
+    {
+        if(height > 200) height = 200;
+    }
+}
+void GraphicalTrack::dock(const bool dock)
+{
+    if(dock)
+    {
+        docked = true;
+        getCurrentSequence()->addToDock( this );
+    }
+    else
+    {
+        docked = false;
+        getCurrentSequence()->removeFromDock( this ); 
+    }
+}
+    
 int GraphicalTrack::getTotalHeight()
 {
 
@@ -819,6 +894,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     components->layout(20, y);
     sharpFlatPicker->layout();
     gridCombo->layout();
+    dockToolBar->layout();
     components->renderAll(focus);
 
     //  ------------------ post-drawing  ------------------

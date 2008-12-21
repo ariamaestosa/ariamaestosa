@@ -535,9 +535,31 @@ void MainPane::mouseDown(wxMouseEvent& event)
 
             if(event.GetX()>positionsInDock[n] and event.GetX()<positionsInDock[n+1])
             {
-                getCurrentSequence()->dock[n/2].docked = false;
-                getCurrentSequence()->removeFromDock( &getCurrentSequence()->dock[n/2] );
-                DisplayFrame::updateVerticalScrollbar();
+                if(getCurrentSequence()->maximize_track_mode)
+                {
+                    const int track_amount = getCurrentSequence()->getTrackAmount();
+                    GraphicalTrack* undocked_track = getCurrentSequence()->dock.get(n/2);
+                    Track* undocked = undocked_track->track;
+                    
+                    for(int i=0; i<track_amount; i++)
+                    {
+                        Track* track = getCurrentSequence()->getTrack(i);
+                        if(track->graphics == undocked_track)
+                        {
+                            undocked_track->dock(false);
+                            track->graphics->maximizeHeight();
+                            continue;
+                        }
+                        else if(!track->graphics->docked) track->graphics->dock();
+                    }
+                    DisplayFrame::updateVerticalScrollbar();
+                    getCurrentSequence()->setCurrentTrack(undocked);
+                }
+                else
+                {
+                    getCurrentSequence()->dock[n/2].dock(false);
+                    DisplayFrame::updateVerticalScrollbar();
+                }
                 return;
             }
         }

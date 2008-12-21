@@ -52,7 +52,8 @@ IMG_DEC Drawable* collapseDrawable;
 
 // dock
 IMG_DEC Drawable* dockTrackDrawable;
-
+IMG_DEC Drawable* maximizeTrackDrawable;
+    
 // mute
 IMG_DEC Image* muteOnImg;
 IMG_DEC Image* muteOffImg;

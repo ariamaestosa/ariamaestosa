@@ -37,19 +37,19 @@ AboutDialog::AboutDialog() : wxDialog(NULL, wxID_ANY,  _("About Aria Maestosa"),
 
     //I18N: - in about dialog
     wxString about_text =  wxString::Format(_("version %s"), wxT("1.2 beta 3") ) +
-        //I18N: - in about dialog
-        wxString::Format(_("\n\nThanks to:\n\n\tErgonis Software and %s for making EasyBeat,\n\t\ta great app that inspired Aria (www.ergonis.com).\n"), wxT(" G\u00FCnther Blaschek "))  +
-        //I18N: - in about dialog
-        wxString(_("\tJ.D. Koftinoff Software for libjdkmidi\n\tThe irrXML team for their great XML parser\n")) +
-        //I18N: - in about dialog
-        wxString(_("\tThe wxWidgets team\n\twww.freesmug.org for allowing me to access an intel mac")) +
-        //I18N: - in about dialog
-        wxString(_("\n\nTranslations:\n") +
-                 wxString( wxT("\t it : Gianluca Pignalberi\n")) +
-                 wxString( wxT("\t de : Friedrich Weber\n"))
-                 );
-
-
+    //I18N: - in about dialog
+    wxString::Format(_("\n\nThanks to:\n\n\tErgonis Software and %s for making EasyBeat,\n\t\ta great app that inspired Aria (www.ergonis.com).\n"), wxT(" G\u00FCnther Blaschek "))  +
+    //I18N: - in about dialog
+    wxString(_("\tJ.D. Koftinoff Software for libjdkmidi\n\tThe irrXML team for their great XML parser\n")) +
+    //I18N: - in about dialog
+    wxString(_("\tThe wxWidgets team\n\twww.freesmug.org for allowing me to access an intel mac\n")) +
+    //I18N: - in about dialog
+    wxString(_("\tThe Tango icon set\n")) +
+    //I18N: - in about dialog
+    wxString(_("\nTranslations:\n") +
+             wxString( wxT("\t it : Gianluca Pignalberi\n")) +
+             wxString( wxT("\t de : Friedrich Weber\n"))
+             );
     textArea = new wxTextCtrl(this, 1, about_text, wxPoint(0,174), wxSize(517,500-174), wxTE_MULTILINE | wxTE_READONLY);
 #ifdef __WXMAC__
     textArea->MacCheckSpelling(false);

@@ -291,7 +291,7 @@ void MainFrame::init()
 
     toolbarSizer->Add(songLength, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
     songLength->SetRange(0, 10000);
-
+    
     // time sig
     timeSig = new wxButton(topPane, MEASURE_NUM, wxT("4/4"));
     toolbarSizer->Add( timeSig, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);

@@ -8,6 +8,7 @@
 - Made 'follow playback' easier to follow by scrolling only on measure change
 - Fixed undoing guitar tuning changes
 - When printing multiple tracks, draw a line between them to make clear they belong toghether
+- Added ability to maximize tracks
 
 1.2b3
 - Refactored preferences to look better, be cleaner and allow setting a default value for "follow playback"

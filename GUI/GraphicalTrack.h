@@ -61,9 +61,8 @@ class GraphicalTrack
     OwnerPtr< WidgetLayoutManager>  components ;
     BitmapButton* collapseButton;
     BitmapButton* muteButton;
-    BitmapButton* dockButton;
+    ToolBar<BlankField>* dockToolBar;
     BlankField* trackName;
-    //ComboBox* gridCombo;
     ToolBar<ComboBox>* gridCombo;
     BitmapButton* scoreButton;
     BitmapButton* pianoButton;
@@ -110,11 +109,14 @@ public:
     int render(const int y, const int currentTick, bool focus);
     void setCollapsed(const bool collapsed);
     void setHeight(const int height);
-
+    void maximizeHeight(bool maximize=true);
+    
     void setEditorMode(int mode);
     void createEditors(); // call when you're sure Track, Sequence and GraphicalTrack are set-up properly
     Editor* getCurrentEditor();
 
+    void dock(const bool dock=true);
+    
     bool mouseWheelMoved(int x, int y, int value);
     bool processMouseClick(RelativeXCoord x, int y);
     bool processRightMouseClick(RelativeXCoord x, int y);
