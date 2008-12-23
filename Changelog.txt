@@ -1,4 +1,5 @@
 1.2b4
+- Switched to unified (native) toolbar on mac
 - A few linux changes
 - Fixed control editor to allow minimal value (0), namely allowing to turn Sustain off.
 - Fixed (yet another) bug in accidental handling

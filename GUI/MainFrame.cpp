@@ -72,8 +72,7 @@ enum IDs
     SCROLLBAR_H,
     SCROLLBAR_V,
 
-    MEASURE_NUM,
-    //MEASURE_DENOM,
+    TIME_SIGNATURE
 };
 
 
@@ -115,7 +114,7 @@ EVT_TOOL(STOP_CLICKED, MainFrame::stopClicked)
 
 EVT_TEXT(TEMPO, MainFrame::tempoChanged)
 
-EVT_BUTTON(MEASURE_NUM, MainFrame::timeSigClicked)
+EVT_BUTTON(TIME_SIGNATURE, MainFrame::timeSigClicked)
 EVT_TEXT(BEGINNING, MainFrame::firstMeasureChanged)
 
 EVT_TEXT_ENTER(TEMPO, MainFrame::enterPressedInTopBar)
@@ -139,39 +138,60 @@ EVT_COMMAND  (100003, wxEVT_HIDE_WAIT_WINDOW, MainFrame::evt_hideWaitWindow)
 END_EVENT_TABLE()
 
 #ifndef NO_WX_TOOLBAR
-CustomToolBar::CustomToolBar(wxWindow* parent) : wxToolBar(parent, wxID_ANY)
+
+CustomToolBar::CustomToolBar(wxWindow* parent) : wxToolBar(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_TEXT | wxTB_HORIZONTAL | wxNO_BORDER)
 {
 }
 
-void CustomToolBar::add(wxControl* ctrl)
+void CustomToolBar::add(wxControl* ctrl, wxString label)
 {
+#if wxMAJOR_VERSION >= 3
+    // wxWidgets 3 supports labels under components in toolbar.
+    AddControl(ctrl, label);
+#else
     AddControl(ctrl);
+#endif
+    
+#ifdef __WXMAC__
+    if(not label.IsEmpty())
+    {
+        // work around wxMac limitation (labels under controls in toolbar don't seem to work)
+        // will work only if wx was patched with the supplied patch....
+        wxToolBarToolBase* tool = (wxToolBarToolBase*)FindById(ctrl->GetId());
+        if(tool != NULL) tool->SetLabel(label);
+        else std::cerr << "Failed to set label : " << label.mb_str() << std::endl;
+    }
+#endif
 }
 void CustomToolBar::realize()
 {
     Realize();
     /*
-#ifdef __WXMAC__
-    // http://developer.apple.com/documentation/Carbon/Reference/HIToolbarReference/Reference/reference.html
-    // http://developer.apple.com/documentation/CoreFoundation/Reference/CFArrayRef/Reference/reference.html
-    if(m_macUsesNativeToolbar)
     {
-        //void* m_macHIToolbarRef ;
-        CFArrayRef array;
-        OSStatus status = HIToolbarCopyItems((HIToolbarRef)m_macHIToolbarRef, &array);
-        std::cout << "got array, status=" << status << std::endl;
-        const int item_amount = CFArrayGetCount(array);
-
-        std::cout << "item_amount=" << item_amount << std::endl;
-
-        for(int n=0; n<item_amount; n++)
-        {
-            OSStatus status = HIToolbarItemSetLabel( (HIToolbarItemRef)CFArrayGetValueAtIndex(array, n) , CFSTR("hello") );
-            std::cout << "setting label for item " << n << ", status=" << status << std::endl;
-        }
-        CFRelease(array);
+        wxToolBarTool* tool = (wxToolBarTool*)FindById(TIME_SIGNATURE);
+        HIToolbarItemRef ref = tool->m_toolbarItemRef;
+        HIToolbarItemSetLabel( ref , CFSTR("Time Sig") );
     }
-#endif
+    {
+        wxToolBarTool* tool = (wxToolBarTool*)FindById(TEMPO);
+        HIToolbarItemRef ref = tool->m_toolbarItemRef;
+        HIToolbarItemSetLabel( ref , CFSTR("Tempo") );
+    }
+    {
+        wxToolBarTool* tool = (wxToolBarTool*)FindById(ZOOM);
+        HIToolbarItemRef ref = tool->m_toolbarItemRef;
+        HIToolbarItemSetLabel( ref , CFSTR("Zoom") );
+    }
+    {
+        wxToolBarTool* tool = (wxToolBarTool*)FindById(LENGTH);
+        HIToolbarItemRef ref = tool->m_toolbarItemRef;
+        HIToolbarItemSetLabel( ref , CFSTR("Duration") );
+    }
+    {
+        wxToolBarTool* tool = (wxToolBarTool*)FindById(BEGINNING);
+        HIToolbarItemRef ref = tool->m_toolbarItemRef;
+        HIToolbarItemSetLabel( ref , CFSTR("Start") );
+    }
      */
 }
 #endif
@@ -293,7 +313,7 @@ void MainFrame::init()
     songLength->SetRange(0, 10000);
     
     // time sig
-    timeSig = new wxButton(topPane, MEASURE_NUM, wxT("4/4"));
+    timeSig = new wxButton(topPane, TIME_SIGNATURE, wxT("4/4"));
     toolbarSizer->Add( timeSig, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
     // song beginning
@@ -326,15 +346,19 @@ void MainFrame::init()
 
     playBitmap.LoadFile( getResourcePrefix()  + wxT("play.png") , wxBITMAP_TYPE_PNG);
     pauseBitmap.LoadFile( getResourcePrefix()  + wxT("pause.png") , wxBITMAP_TYPE_PNG);
-    toolbar->AddTool(PLAY_CLICKED, wxT("Play"), playBitmap);
+    toolbar->AddTool(PLAY_CLICKED, _("Play"), playBitmap);
 
     wxBitmap stopBitmap;
     stopBitmap.LoadFile( getResourcePrefix()  + wxT("stop.png") , wxBITMAP_TYPE_PNG);
-    toolbar->AddTool(STOP_CLICKED, wxT("Stop"), stopBitmap);
+    toolbar->AddTool(STOP_CLICKED, _("Stop"), stopBitmap);
 
     toolbar->AddSeparator();
 
-    measureTypeTop=new wxTextCtrl(toolbar, MEASURE_NUM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize, wxTE_PROCESS_ENTER );
+    timeSig = new wxButton(toolbar, TIME_SIGNATURE, wxT("4/4"));
+    toolbar->add( timeSig, _("Time Sig") );
+
+    /*
+    measureTypeTop=new wxTextCtrl(toolbar, TIME_SIGNATURE, wxT("4"), wxDefaultPosition, tinyTextCtrlSize, wxTE_PROCESS_ENTER );
     toolbar->add(measureTypeTop);
     wxStaticText* slash = new wxStaticText(toolbar, wxID_ANY, wxT("/"), wxDefaultPosition, wxSize(15,15));
     slash->SetMinSize(wxSize(15,15));
@@ -342,9 +366,9 @@ void MainFrame::init()
     toolbar->add( slash );
     measureTypeBottom=new wxTextCtrl(toolbar, MEASURE_DENOM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize, wxTE_PROCESS_ENTER );
     toolbar->add(measureTypeBottom);
-
+*/
     firstMeasure=new wxTextCtrl(toolbar, BEGINNING, wxT("1"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER);
-    toolbar->add(firstMeasure);
+    toolbar->add(firstMeasure, _("Start"));
 
     songLength=new wxSpinCtrl(toolbar, LENGTH, to_wxString(DEFAULT_SONG_LENGTH), wxDefaultPosition,
 #ifdef __WXGTK__
@@ -353,12 +377,12 @@ void MainFrame::init()
                               wxDefaultSize
 #endif
                               , wxTE_PROCESS_ENTER);
-    toolbar->add(songLength);
+    toolbar->add(songLength, _("Duration"));
 
     toolbar->AddSeparator();
 
     tempoCtrl=new wxTextCtrl(toolbar, TEMPO, wxT("120"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER );
-    toolbar->add(tempoCtrl);
+    toolbar->add(tempoCtrl, _("Tempo"));
 
     displayZoom=new wxSpinCtrl(toolbar, ZOOM, wxT("100"), wxDefaultPosition,
     #ifdef __WXGTK__
@@ -369,7 +393,7 @@ void MainFrame::init()
                            );
 
     displayZoom->SetRange(25,500);
-    toolbar->add(displayZoom);
+    toolbar->add(displayZoom, _("Zoom"));
     toolbar->realize();
 #endif
 
@@ -519,7 +543,8 @@ void MainFrame::toolsEnterPlaybackMode()
     //play->Enable(false);
     play->SetBitmapLabel(pauseBitmap);
 #else
-    toolbar->EnableTool(PLAY_CLICKED, false);
+    //toolbar->EnableTool(PLAY_CLICKED, false);
+    toolbar->SetToolNormalBitmap(PLAY_CLICKED, pauseBitmap);
     toolbar->EnableTool(STOP_CLICKED, true);
 #endif
 
@@ -541,7 +566,8 @@ void MainFrame::toolsExitPlaybackMode()
     play->SetBitmapLabel(playBitmap);
     //play->Enable(true);
 #else
-    toolbar->EnableTool(PLAY_CLICKED, true);
+    //toolbar->EnableTool(PLAY_CLICKED, true);
+    toolbar->SetToolNormalBitmap(PLAY_CLICKED, playBitmap);
     toolbar->EnableTool(STOP_CLICKED, false);
 #endif
 

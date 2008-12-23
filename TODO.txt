@@ -99,6 +99,8 @@ NOTE: sorry, this is very raw :)
  
  ************************* BUGS: *************************
 
+* get rid of non-native toolbar?
+
 * red images
 * My CoreAudio player is deprecated on OS X 10.5...
     Midi/Players/Mac/CoreAudioNotePlayer.cpp: In function 'OSStatus CoreAudioNotePlayer::CreateAUGraph(OpaqueAUGraph*&, ComponentInstanceRecord*&)':
@@ -115,7 +117,7 @@ NOTE: sorry, this is very raw :)
     - measures appear very small if no note starts in them, even if some end in them
     - add non-linear printing...
     - silences are drawn in 'repetition' measures
-    - when there's small lines above/below score, the vertical measure line continues beyonf the score
+    - when there's small lines above/below score, the vertical measure line continues beyond the score
     - show G/F clef + key signature
     - show time sig on printed scores/tabs
     - skip series of empty measures
