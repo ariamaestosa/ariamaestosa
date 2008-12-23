@@ -235,30 +235,6 @@ MainFrame::~MainFrame()
     Clipboard::clear();
 }
 
-class QuickBoxPanel
-{
-    wxBoxSizer* bsizer;
-public:
-    wxPanel* pane;
-
-    QuickBoxPanel(wxWindow* component, wxSizer* parentsizer, int orientation=wxVERTICAL)
-    {
-        pane = new wxPanel(component);
-        parentsizer->Add(pane, 1, wxEXPAND | wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
-        bsizer = new wxBoxSizer(orientation);
-    }
-    void add(wxWindow* window, int margin=2, int proportion=1, long margins = wxALL)
-    {
-        bsizer->Add(window, proportion, margins | wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL, margin);
-    }
-    ~QuickBoxPanel()
-    {
-        pane->SetSizer(bsizer);
-        bsizer->Layout();
-        bsizer->SetSizeHints(pane);
-    }
-};
-
 void MainFrame::init()
 {
     Centre();
@@ -276,8 +252,16 @@ void MainFrame::init()
     play_during_edit = getPlayDuringEdit();
 
     wxInitAllImageHandlers();
-    verticalSizer = new wxBorderSizer();
-
+#ifdef NO_WX_TOOLBAR
+    borderSizer = new wxFlexGridSizer(3, 2, 0, 0);
+    borderSizer->AddGrowableCol(0);
+    borderSizer->AddGrowableRow(1);
+#else
+    borderSizer = new wxFlexGridSizer(2, 2, 0, 0);
+    borderSizer->AddGrowableCol(0);
+    borderSizer->AddGrowableRow(0);
+#endif
+    
     // a few presets
     wxSize averageTextCtrlSize(wxDefaultSize);
     averageTextCtrlSize.SetWidth(55);
@@ -291,7 +275,8 @@ void MainFrame::init()
 
     // -------------------------- Top Pane ----------------------------
 #ifdef NO_WX_TOOLBAR
-    verticalSizer->Add(toolbar, 0, wxALIGN_CENTER_VERTICAL | wxALL, 2, Location::North() );
+    borderSizer->Add(toolbar, 0, wxALIGN_CENTER_VERTICAL | wxALL, 2);
+    borderSizer->AddSpacer(10);
 #endif
   
     playBitmap.LoadFile( getResourcePrefix()  + wxT("play.png") , wxBITMAP_TYPE_PNG);
@@ -336,7 +321,6 @@ void MainFrame::init()
     displayZoom->SetRange(25,500);
     toolbar->add(displayZoom, _("Zoom"));
     toolbar->realize();
-//#endif
 
     // -------------------------- RenderPane ----------------------------
 #ifndef NO_OPENGL
@@ -345,65 +329,52 @@ void MainFrame::init()
     args[1]=WX_GL_DOUBLEBUFFER;
     args[2]=0;
     mainPane=new MainPane(this, args);
-    verticalSizer->Add( static_cast<wxGLCanvas*>(mainPane), 0, wxALL, 2, Location::Center() );
+    borderSizer->Add( static_cast<wxGLCanvas*>(mainPane), 1, wxEXPAND | wxALL, 2);
 #else
     mainPane=new MainPane(this, NULL);
-    verticalSizer->Add( static_cast<wxPanel*>(mainPane), 0, wxALL, 2, Location::Center() );
+    borderSizer->Add( static_cast<wxPanel*>(mainPane), 1, wxEXPAND | wxALL, 2 );
 #endif
 
     // give a pointer to our GL Pane to AriaCore
     Core::setMainPane(mainPane);
 
-    // -------------------------- Horizontal Scrollbar ----------------------------
-
-    {
-        wxPanel* panel_hscrollbar=new wxPanel(this);
-        verticalSizer->Add(panel_hscrollbar,  0, wxALL, 0, Location::South() );
-        wxBorderSizer* subSizer=new wxBorderSizer();
-
-        horizontalScrollbar=new wxScrollBar(panel_hscrollbar, SCROLLBAR_H);
-
-        // For the first time, set scrollbar manually and not using updateHorizontalScrollbar(), because this method assumes the frame is visible.
-        const int editor_size=695, total_size=12*128;
-
-        horizontalScrollbar->SetScrollbar(
-                                          horizontalScrollbar->GetThumbPosition(),
-                                          editor_size,
-                                          total_size,
-                                          1
-                                          );
-
-        subSizer->Add(horizontalScrollbar, 0, wxALL, 0, Location::Center() );
-
-        wxStaticText* lbl_more_or_less = new wxStaticText(panel_hscrollbar, wxID_ANY, wxT(" __"));
-        subSizer->Add(lbl_more_or_less, 0, wxALL, 0, Location::East() );
-
-        panel_hscrollbar->SetAutoLayout(TRUE);
-        panel_hscrollbar->SetSizer(subSizer);
-        subSizer->Layout();
-    }
-
-
     // -------------------------- Vertical Scrollbar ----------------------------
     verticalScrollbar=new wxScrollBar(this, SCROLLBAR_V, wxDefaultPosition, wxDefaultSize, wxSB_VERTICAL);
-
+    
     verticalScrollbar->SetScrollbar(
                                     0 /*position*/,
                                     530 /*viewable height / thumb size*/,
                                     530 /*height*/,
                                     5 /*scroll amount*/
                                     );
+    
+    borderSizer->Add(verticalScrollbar, 1, wxEXPAND | wxALL, 0 );
 
-    verticalSizer->Add(verticalScrollbar, 0, wxALL, 0, Location::East() );
+    
+    // -------------------------- Horizontal Scrollbar ----------------------------
+    horizontalScrollbar=new wxScrollBar(this, SCROLLBAR_H);
+    borderSizer->Add(horizontalScrollbar, 1, wxEXPAND | wxALL, 0);
+    
+    // For the first time, set scrollbar manually and not using updateHorizontalScrollbar(), because this method assumes the frame is visible.
+    const int editor_size=695, total_size=12*128;
+
+    horizontalScrollbar->SetScrollbar(
+                                      horizontalScrollbar->GetThumbPosition(),
+                                      editor_size,
+                                      total_size,
+                                      1
+                                      );
+
+    borderSizer->AddSpacer(10);
 
 
     // -------------------------- finish ----------------------------
 
     SetAutoLayout(TRUE);
-    SetSizer(verticalSizer);
+    SetSizer(borderSizer);
     Centre();
 
-    verticalSizer->Layout();
+    borderSizer->Layout();
 
     Show();
     Maximize(true);
