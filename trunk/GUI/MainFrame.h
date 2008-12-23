@@ -58,13 +58,23 @@ DECLARE_EVENT_TYPE(wxEVT_HIDE_WAIT_WINDOW, -1)
 #ifndef NO_WX_TOOLBAR
 class CustomToolBar : public wxToolBar
 {
-public:
+    public:
+#else
+class CustomToolBar : public wxPanel
+{
+    std::vector<wxString> labels;
+    wxFlexGridSizer* toolbarSizer;
+    public:
+    void AddSeparator() {}
+    void AddTool(const int id, wxString label, wxBitmap& bmp);
+    void SetToolNormalBitmap(const int id, wxBitmap& bmp);
+    void EnableTool(const int id, const bool enabled);
+#endif
     CustomToolBar(wxWindow* parent);
     void add(wxControl* ctrl, wxString label=wxEmptyString);
     void realize();
 };
-#endif
-
+    
 class MainFrame : public wxFrame
 {
     WxOwnerPtr<AboutDialog>  aboutDialog;
@@ -72,12 +82,8 @@ class MainFrame : public wxFrame
     WxOwnerPtr<Preferences>  prefs;
 
     wxBorderSizer* verticalSizer;
-#ifdef NO_WX_TOOLBAR
-    wxPanel* topPane;
-    wxFlexGridSizer* toolbarSizer;
-#else
     CustomToolBar* toolbar;
-#endif
+
     wxScrollBar* horizontalScrollbar;
     wxScrollBar* verticalScrollbar;
 
@@ -109,10 +115,6 @@ class MainFrame : public wxFrame
 
     int currentSequence;
     ptr_vector<Sequence> sequences; // contains all open sequences
-
-
-    wxBitmapButton* play;
-    wxBitmapButton* stop;
 
 public:
     LEAK_CHECK(MainFrame);

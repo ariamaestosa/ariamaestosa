@@ -167,46 +167,62 @@ void CustomToolBar::realize()
 {
     Realize();
     /*
-    {
         wxToolBarTool* tool = (wxToolBarTool*)FindById(TIME_SIGNATURE);
         HIToolbarItemRef ref = tool->m_toolbarItemRef;
         HIToolbarItemSetLabel( ref , CFSTR("Time Sig") );
-    }
-    {
-        wxToolBarTool* tool = (wxToolBarTool*)FindById(TEMPO);
-        HIToolbarItemRef ref = tool->m_toolbarItemRef;
-        HIToolbarItemSetLabel( ref , CFSTR("Tempo") );
-    }
-    {
-        wxToolBarTool* tool = (wxToolBarTool*)FindById(ZOOM);
-        HIToolbarItemRef ref = tool->m_toolbarItemRef;
-        HIToolbarItemSetLabel( ref , CFSTR("Zoom") );
-    }
-    {
-        wxToolBarTool* tool = (wxToolBarTool*)FindById(LENGTH);
-        HIToolbarItemRef ref = tool->m_toolbarItemRef;
-        HIToolbarItemSetLabel( ref , CFSTR("Duration") );
-    }
-    {
-        wxToolBarTool* tool = (wxToolBarTool*)FindById(BEGINNING);
-        HIToolbarItemRef ref = tool->m_toolbarItemRef;
-        HIToolbarItemSetLabel( ref , CFSTR("Start") );
-    }
      */
 }
+#else
+    // my generic toolbar
+    CustomToolBar::CustomToolBar(wxWindow* parent) : wxPanel(parent, wxID_ANY)
+    {
+        toolbarSizer=new wxFlexGridSizer(2, 6, 1, 15);
+        this->SetSizer(toolbarSizer);
+    }
+    
+    void CustomToolBar::AddTool(const int id, wxString label, wxBitmap& bmp)
+    {
+        wxBitmapButton* btn = new wxBitmapButton(this, id, bmp);
+        toolbarSizer->Add(btn, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+        labels.push_back(label);
+    }
+    
+    void CustomToolBar::add(wxControl* ctrl, wxString label)
+    {
+        toolbarSizer->Add(ctrl, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+        labels.push_back(label);
+    }
+    void CustomToolBar::realize()
+    {
+        const int label_amount = labels.size();
+        toolbarSizer->SetCols( label_amount );
+        
+        for(int n=0; n<label_amount; n++)
+        {
+            toolbarSizer->Add(new wxStaticText(this, wxID_ANY,  labels[n]), 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
+        }
+    }
+    void CustomToolBar::SetToolNormalBitmap(const int id, wxBitmap& bmp)
+    {
+        wxWindow* win = wxWindow::FindWindowById( id, this );
+        wxBitmapButton* btn = dynamic_cast<wxBitmapButton*>(win);
+        if(btn != NULL) btn->SetBitmapLabel(bmp);
+    }
+    void CustomToolBar::EnableTool(const int id, const bool enabled)
+    {
+        wxWindow* win = wxWindow::FindWindowById( id, this );
+        if( win != NULL ) win->Enable(enabled);
+    }
 #endif
 
 #define ARIA_WINDOW_FLAGS wxCLOSE_BOX | wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCAPTION
 
 MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(100,100), wxSize(900,600), ARIA_WINDOW_FLAGS )
 {
-#ifndef NO_WX_TOOLBAR
-    //toolbar = this->CreateToolBar(wxTB_HORZ_TEXT | wxNO_BORDER);
     toolbar = new CustomToolBar(this);
+#ifndef NO_WX_TOOLBAR
     SetToolBar(toolbar);
 #endif
-    //Maximize(true);
-
 }
 
 #undef ARIA_WINDOW_FLAGS
@@ -275,75 +291,9 @@ void MainFrame::init()
 
     // -------------------------- Top Pane ----------------------------
 #ifdef NO_WX_TOOLBAR
-    topPane=new wxPanel(this);
-    verticalSizer->Add(topPane, 0, wxALIGN_CENTER_VERTICAL | wxALL, 2, Location::North() );
-    toolbarSizer=new wxFlexGridSizer(2, 6, 1, 15);
-    topPane->SetSizer(toolbarSizer);
-
-    // play/stop buttons
-    {
-    QuickBoxPanel quickPane(topPane, toolbarSizer, wxHORIZONTAL);
-
-    playBitmap.LoadFile( getResourcePrefix()  + wxT("play.png") , wxBITMAP_TYPE_PNG);
-    pauseBitmap.LoadFile( getResourcePrefix()  + wxT("pause.png") , wxBITMAP_TYPE_PNG);
-    play=new wxBitmapButton(quickPane.pane, PLAY_CLICKED, playBitmap);
-    quickPane.add(play);
-
-    wxBitmap stopBitmap;
-    stopBitmap.LoadFile( getResourcePrefix()  + wxT("stop.png") , wxBITMAP_TYPE_PNG);
-    stop=new wxBitmapButton(quickPane.pane, STOP_CLICKED, stopBitmap);
-    stop->Enable(false);
-    quickPane.add(stop);
-    }
-
-    // tempo
-    tempoCtrl=new wxTextCtrl(topPane, TEMPO, wxT("120"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER );
-    toolbarSizer->Add(tempoCtrl, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_CENTER | wxALL, 5);
-
-    // song length
-    songLength=new wxSpinCtrl(topPane, LENGTH, to_wxString(DEFAULT_SONG_LENGTH), wxDefaultPosition,
-#ifdef __WXGTK__
-                              averageTextCtrlSize
-#else
-                              wxDefaultSize
+    verticalSizer->Add(toolbar, 0, wxALIGN_CENTER_VERTICAL | wxALL, 2, Location::North() );
 #endif
-                              , wxTE_PROCESS_ENTER);
-
-    toolbarSizer->Add(songLength, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
-    songLength->SetRange(0, 10000);
-    
-    // time sig
-    timeSig = new wxButton(topPane, TIME_SIGNATURE, wxT("4/4"));
-    toolbarSizer->Add( timeSig, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-    // song beginning
-    firstMeasure=new wxTextCtrl(topPane, BEGINNING, wxT("1"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER);
-    toolbarSizer->Add(firstMeasure, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-    // zoom
-    displayZoom=new wxSpinCtrl(topPane, ZOOM, wxT("100"), wxDefaultPosition,
-#ifdef __WXGTK__
-                               averageTextCtrlSize
-#else
-                               wxDefaultSize
-#endif
-                               );
-
-    toolbarSizer->Add(displayZoom, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
-    displayZoom->SetRange(25, 500);
-
-
-    // labels
-    toolbarSizer->Add(new wxStaticText(topPane, wxID_ANY,  wxT(" ")),       0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
-    toolbarSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Tempo")),     0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
-    toolbarSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Duration")),  0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
-    toolbarSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Time Sig")),  0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
-    toolbarSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Start")),     0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
-    toolbarSizer->Add(new wxStaticText(topPane, wxID_ANY,  _("Zoom")),      0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
-
-#else
-    //toolbar = this->CreateToolBar(wxTB_HORZ_TEXT | wxNO_BORDER);
-
+  
     playBitmap.LoadFile( getResourcePrefix()  + wxT("play.png") , wxBITMAP_TYPE_PNG);
     pauseBitmap.LoadFile( getResourcePrefix()  + wxT("pause.png") , wxBITMAP_TYPE_PNG);
     toolbar->AddTool(PLAY_CLICKED, _("Play"), playBitmap);
@@ -386,7 +336,7 @@ void MainFrame::init()
     displayZoom->SetRange(25,500);
     toolbar->add(displayZoom, _("Zoom"));
     toolbar->realize();
-#endif
+//#endif
 
     // -------------------------- RenderPane ----------------------------
 #ifndef NO_OPENGL
@@ -529,20 +479,12 @@ void MainFrame::toolsEnterPlaybackMode()
     if(playback_mode) return;
 
     playback_mode = true;
-#ifdef NO_WX_TOOLBAR
-    stop->Enable(true);
-    //play->Enable(false);
-    play->SetBitmapLabel(pauseBitmap);
-#else
-    //toolbar->EnableTool(PLAY_CLICKED, false);
+
     toolbar->SetToolNormalBitmap(PLAY_CLICKED, pauseBitmap);
     toolbar->EnableTool(STOP_CLICKED, true);
-#endif
 
     disableMenusForPlayback(true);
 
-    //measureTypeBottom->Enable(false);
-    //measureTypeTop->Enable(false);
     timeSig->Enable(false);
     firstMeasure->Enable(false);
     songLength->Enable(false);
@@ -552,20 +494,12 @@ void MainFrame::toolsEnterPlaybackMode()
 void MainFrame::toolsExitPlaybackMode()
 {
     playback_mode = false;
-#ifdef NO_WX_TOOLBAR
-    stop->Enable(false);
-    play->SetBitmapLabel(playBitmap);
-    //play->Enable(true);
-#else
-    //toolbar->EnableTool(PLAY_CLICKED, true);
+
     toolbar->SetToolNormalBitmap(PLAY_CLICKED, playBitmap);
     toolbar->EnableTool(STOP_CLICKED, false);
-#endif
 
     disableMenusForPlayback(false);
 
-    //measureTypeBottom->Enable(true);
-    //measureTypeTop->Enable(true);
     timeSig->Enable(true);
     firstMeasure->Enable(true);
     songLength->Enable(true);
