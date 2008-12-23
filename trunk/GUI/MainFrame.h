@@ -22,8 +22,6 @@
 #include "wx/image.h"
 #include "wx/spinctrl.h"
 
-#include "wxAdditions/bsizer.h"
-
 #include "Config.h"
 #include "AriaCore.h"
 #include "ptr_vector.h"
@@ -81,15 +79,13 @@ class MainFrame : public wxFrame
     WxOwnerPtr<CustomNoteSelectDialog>  customNoteSelectDialog;
     WxOwnerPtr<Preferences>  prefs;
 
-    wxBorderSizer* verticalSizer;
+    wxFlexGridSizer* borderSizer;
     CustomToolBar* toolbar;
 
     wxScrollBar* horizontalScrollbar;
     wxScrollBar* verticalScrollbar;
 
     wxButton* timeSig;
-    //wxTextCtrl* measureTypeBottom;
-    //wxTextCtrl* measureTypeTop;
     wxTextCtrl* firstMeasure;
     wxSpinCtrl* songLength;
     wxSpinCtrl* displayZoom;
