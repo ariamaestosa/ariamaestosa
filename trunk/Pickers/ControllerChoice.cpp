@@ -199,6 +199,17 @@ char* ControllerChoice::getControllerName()
     }
 }
 
+    
+bool ControllerChoice::isOnOffController(const int id) const
+{
+    if(controllerID== 66 or controllerID== 67 or
+       controllerID== 68 or controllerID== 69 or
+       controllerID== 64 or controllerID== 65 )
+        return true;
+    
+    return false;
+}
+    
 /*
  * Which label should appear at the top of controller editor for current Controller?
  */
@@ -215,9 +226,7 @@ wxString ControllerChoice::getTopLabel()
     if(controllerID==200) return wxT("+2");
 
     // on/offs
-    if(controllerID== 66 or controllerID== 67 or
-       controllerID== 68 or controllerID== 69 or
-       controllerID== 64 or controllerID== 65 )
+    if( isOnOffController(controllerID) )
         //I18N: - in controller, when a controller can only be on/off
         return wxString( _("On") );
 
@@ -243,9 +252,7 @@ wxString ControllerChoice::getBottomLabel()
     if(controllerID==200) return wxT("-2");
 
     // on/offs
-    if(controllerID== 66 or controllerID== 67 or
-       controllerID== 68 or controllerID== 69 or
-       controllerID== 64 or controllerID== 65 )
+    if( isOnOffController(controllerID) )
         //I18N: - in controller, when a controller can only be on/off
         return wxString( _("Off") );
 

@@ -182,7 +182,8 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     // ----------------------- add controller events (preview) -------------------
     if(track->graphics->dragging_resize) hasBeenResizing=true;
 
-    if(mouse_is_in_editor and selection_begin == -1)
+    const bool on_off = controllerChoice->isOnOffController( controllerChoice->getControllerID() );
+    if(mouse_is_in_editor and selection_begin == -1 and not on_off)
     {
 
         AriaRender::lineWidth(3);
@@ -324,12 +325,22 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
             if(tick2 < 0) tick2 = 0;
             if(tick1 < 0) tick1 = 0;
 
-
+            const bool on_off = controllerChoice->isOnOffController( controllerChoice->getControllerID() );
             if(tick1 == tick2)
+            {
+                int y_value = (int)round((float)(mousey_initial-area_from_y)/y_zoom);
+                if( on_off )
+                {
+                    // on/off controllers should only use values 0 and 127
+                    if(y_value < 64) y_value = 0;
+                    else y_value = 127;
+                }
+                
                 track->action( new Action::AddControlEvent(tick1,
-                                     (int)round((float)(mousey_initial-area_from_y)/y_zoom),
+                                     y_value,
                                      controllerChoice->getControllerID()) );
-            else
+            }
+            else if(not on_off) // on/off controllers can't have slides
             {
                 if(tick1<tick2) track->action( new Action::AddControllerSlide(tick1,
                                                                          (int)( (mousey_initial-area_from_y)/y_zoom ),

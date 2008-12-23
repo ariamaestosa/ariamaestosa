@@ -29,6 +29,7 @@ namespace AriaMaestosa {
 
 class GraphicalTrack; // forward
 
+
 class ControllerChoice : public wxMenu
 {
     GraphicalTrack* parent;
@@ -43,7 +44,8 @@ public:
     int getControllerID();
     void setControllerID(int id);
     char* getControllerName();
-
+    bool isOnOffController(const int id) const;
+    
     wxString getTopLabel();
     wxString getBottomLabel();
 
