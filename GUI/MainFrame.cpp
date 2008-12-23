@@ -354,21 +354,6 @@ void MainFrame::init()
 
     toolbar->AddSeparator();
 
-    timeSig = new wxButton(toolbar, TIME_SIGNATURE, wxT("4/4"));
-    toolbar->add( timeSig, _("Time Sig") );
-
-    /*
-    measureTypeTop=new wxTextCtrl(toolbar, TIME_SIGNATURE, wxT("4"), wxDefaultPosition, tinyTextCtrlSize, wxTE_PROCESS_ENTER );
-    toolbar->add(measureTypeTop);
-    wxStaticText* slash = new wxStaticText(toolbar, wxID_ANY, wxT("/"), wxDefaultPosition, wxSize(15,15));
-    slash->SetMinSize(wxSize(15,15));
-    slash->SetMaxSize(wxSize(15,15));
-    toolbar->add( slash );
-    measureTypeBottom=new wxTextCtrl(toolbar, MEASURE_DENOM, wxT("4"), wxDefaultPosition, tinyTextCtrlSize, wxTE_PROCESS_ENTER );
-    toolbar->add(measureTypeBottom);
-*/
-    firstMeasure=new wxTextCtrl(toolbar, BEGINNING, wxT("1"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER);
-    toolbar->add(firstMeasure, _("Start"));
 
     songLength=new wxSpinCtrl(toolbar, LENGTH, to_wxString(DEFAULT_SONG_LENGTH), wxDefaultPosition,
 #ifdef __WXGTK__
@@ -378,12 +363,18 @@ void MainFrame::init()
 #endif
                               , wxTE_PROCESS_ENTER);
     toolbar->add(songLength, _("Duration"));
-
-    toolbar->AddSeparator();
-
+    
     tempoCtrl=new wxTextCtrl(toolbar, TEMPO, wxT("120"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER );
     toolbar->add(tempoCtrl, _("Tempo"));
-
+    
+    timeSig = new wxButton(toolbar, TIME_SIGNATURE, wxT("4/4"));
+    toolbar->add( timeSig, _("Time Sig") );
+    
+    toolbar->AddSeparator();
+    
+    firstMeasure=new wxTextCtrl(toolbar, BEGINNING, wxT("1"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER);
+    toolbar->add(firstMeasure, _("Start"));
+    
     displayZoom=new wxSpinCtrl(toolbar, ZOOM, wxT("100"), wxDefaultPosition,
     #ifdef __WXGTK__
                            averageTextCtrlSize
