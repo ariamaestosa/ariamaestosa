@@ -225,7 +225,7 @@ void renderSilenceCallback(const int tick, const int tick_length, const int sile
     else if( type == 4 )
     {
         global_dc->SetPen(  wxPen( wxColour(0,0,0), 8 ) );
-        const int mx = x + 10;
+        const int mx = x + 25;
         const int y = silences_y - 5;
         wxPoint points[] =
         {
@@ -247,7 +247,7 @@ void renderSilenceCallback(const int tick, const int tick_length, const int sile
     else if( type == 8 )
     {
         global_dc->SetPen(  wxPen( wxColour(0,0,0), 8 ) );
-        const int mx = x + 50;
+        const int mx = x + 75;
         const int y = silences_y;
         wxPoint points[] =
         {
@@ -641,7 +641,7 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
         }
 
         // draw head
-        dc.SetPen(  wxPen( wxColour(0,0,0), 7 ) );
+        dc.SetPen(  wxPen( wxColour(0,0,0), 10 ) );
         if(noteRenderInfo.hollow_head) dc.SetBrush( *wxTRANSPARENT_BRUSH );
         else dc.SetBrush( *wxBLACK_BRUSH );
 

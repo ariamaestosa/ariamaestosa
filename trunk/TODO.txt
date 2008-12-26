@@ -42,9 +42,9 @@ NOTE: sorry, this is very raw :)
 
  * add new tools, that allow adding notes without dragging (and resizing without keyboard, and selecting, and...?)
 
- * make more features accessible graphically (as opposed to keyboard-only)
+ + make more features accessible graphically (as opposed to keyboard-only)
  
- * elements you get from clicking on the left area should appear in the main menubar too
+ + elements you get from clicking on the left area should appear in the main menubar too
 
  + Show ottava bassa/alta signs, especially when printing
 
@@ -112,11 +112,11 @@ NOTE: sorry, this is very raw :)
     Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
   
 * score print :
-    - measures appear very small if no note starts in them, even if some end in them
     - add non-linear printing...
     - silences are drawn in 'repetition' measures
     - when there's small lines above/below score, the vertical measure line continues beyond the score
     - show G/F clef + key signature
+    - if you show both F and G keys, both are given equal vertical space, even though one may need more than another
     - show time sig on printed scores/tabs
     - skip series of empty measures
     - allow setting font size, number of lines per page, zoom, etc...
