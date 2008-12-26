@@ -499,7 +499,28 @@ void generateOutputOrder(std::vector<LayoutElement>& layoutElements, ptr_vector<
         if(measures[measure].shortestDuration==-1)
         {
             layoutElements.push_back( LayoutElement(EMPTY_MEASURE, measure) );
-        }
+            layoutElements[layoutElements.size()-1].width_in_units = 2;
+            
+            // check that measure is really empty; it's possible that it contains
+            // the end of a note that started in the previous measure.
+            // if this is the case, we need to make the measure broader than the default 2 units
+            const int track_ref_amount = measures[measure].trackRef.size();
+            for(int t=0; t<track_ref_amount; t++)
+            {
+                Track* track = measures[measure].trackRef[t].track;
+                const int noteAmount = track->getNoteAmount();
+                for(int n=0; n<noteAmount; n++)
+                {
+                    if(track->getNoteStartInMidiTicks(n) < measures[measure].firstTick and
+                       track->getNoteEndInMidiTicks(n)  > measures[measure].firstTick)
+                    {
+                        layoutElements[layoutElements.size()-1].width_in_units = 5;
+                        t = 99; // quick hack to totally abort both loops
+                        break;
+                    }
+                }// next note
+            }// next track ref
+        }// end if empty measure
 
         // repetition
         else if(checkRepetitions_bool and measures[measure].firstSimilarMeasure!=-1)
@@ -511,9 +532,6 @@ void generateOutputOrder(std::vector<LayoutElement>& layoutElements, ptr_vector<
                 layoutElements.push_back( element );
                 continue;
             }
-
-            // user requires that repetitions are longer than one measure
-            // check if it is the case
 
             // -------- play same measure multiple times --------
             // check if next measure is the same as current measure
@@ -641,6 +659,9 @@ void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements, ptr_ve
     for(int n=0; n<layoutElementsAmount; n++)
     {
         layoutElements[n].zoom = 1;
+        
+        if(layoutElements[n].type == EMPTY_MEASURE) continue; // was already calculated
+        
         layoutElements[n].width_in_units = 2;
 
         if(layoutElements[n].type == SINGLE_MEASURE)
@@ -651,16 +672,17 @@ void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements, ptr_ve
                                       );
 
             // if notes are very long, zoom a bit because we don't want a too short measure
-            if( divider <= 2 ) layoutElements[n].zoom = 2;
-            if( divider <= 1 ) layoutElements[n].zoom = 4;
-
+            //if( divider <= 2 ) layoutElements[n].zoom = 2;
+            //if( divider <= 1 ) layoutElements[n].zoom = 4;
+            
             // for very short notes, zoom a bit too otherwise they'll all be stuck toghether
             if( divider >= 16 ) layoutElements[n].zoom = 2;
 
             layoutElements[n].width_in_units = (int)round(
-                                                     (float)(measures[layoutElements[n].measure].lastTick - measures[layoutElements[n].measure].firstTick) /
-                                                     (float)measures[layoutElements[n].measure].shortestDuration
-                                                     )*layoutElements[n].zoom + 2;
+                (float)(measures[layoutElements[n].measure].lastTick -
+                        measures[layoutElements[n].measure].firstTick) /
+                (float)measures[layoutElements[n].measure].shortestDuration
+                )*layoutElements[n].zoom + 2;
 
         }
         else if(layoutElements[n].type == REPEATED_RIFF)
