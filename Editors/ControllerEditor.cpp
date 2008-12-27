@@ -224,7 +224,7 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     // controller name
     AriaRender::color(0,0,0);
 
-    char* controllerName=controllerChoice->getControllerName();
+    const char* controllerName=controllerChoice->getControllerName();
     AriaRender::small_text_newline_between_words(controllerName,18, getEditorYStart()+15);
 
     AriaRender::images();
@@ -335,7 +335,7 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
                     if(y_value < 64) y_value = 0;
                     else y_value = 127;
                 }
-                
+
                 track->action( new Action::AddControlEvent(tick1,
                                      y_value,
                                      controllerChoice->getControllerID()) );

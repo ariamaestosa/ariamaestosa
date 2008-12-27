@@ -91,7 +91,7 @@ ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu()
     Append( 121 ,wxT("Reset control"));
     Append( 123 ,wxT("All notes off"));
     AppendSeparator();
-    
+
     Append( 12 ,wxT("Effect 1"));
     Append( 13 ,wxT("Effect 2"));
 
@@ -132,7 +132,7 @@ int ControllerChoice::getControllerID()
     return controllerID;
 }
 
-char* ControllerChoice::getControllerName()
+const char* ControllerChoice::getControllerName()
 {
     if(controllerID== 10 or controllerID== 42) return "Pan"; // fine:42
     else if(controllerID== 7 or controllerID== 39) return "Volume"; // fine:39
@@ -172,7 +172,7 @@ char* ControllerChoice::getControllerName()
     else if(controllerID== 120 ) return "All sound off";
     else if(controllerID== 121 ) return "Reset control";
     else if(controllerID== 123 ) return "All notes off";
-    
+
     else if(controllerID== 76 ) return "Vibrato Rate";
     else if(controllerID== 77 ) return "Vibrato Depth";
     else if(controllerID== 78 ) return "Vibrato Delay";
@@ -199,17 +199,17 @@ char* ControllerChoice::getControllerName()
     }
 }
 
-    
+
 bool ControllerChoice::isOnOffController(const int id) const
 {
     if(controllerID== 66 or controllerID== 67 or
        controllerID== 68 or controllerID== 69 or
        controllerID== 64 or controllerID== 65 )
         return true;
-    
+
     return false;
 }
-    
+
 /*
  * Which label should appear at the top of controller editor for current Controller?
  */

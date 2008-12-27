@@ -43,9 +43,9 @@ public:
 
     int getControllerID();
     void setControllerID(int id);
-    char* getControllerName();
+    const char* getControllerName();
     bool isOnOffController(const int id) const;
-    
+
     wxString getTopLabel();
     wxString getBottomLabel();
 
