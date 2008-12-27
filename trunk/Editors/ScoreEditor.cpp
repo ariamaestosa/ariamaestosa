@@ -83,7 +83,9 @@ int findNotePitch(int note_7, int sharpness)
     return note;
 }
 
+#if 0
 #pragma mark -
+#endif
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //                                            ScoreMidiConverter
@@ -392,7 +394,9 @@ int ScoreMidiConverter::getMidiNoteForLevelAndSign(const unsigned int level, int
     else return -1; // shouldn't happen
 }
 
+#if 0
 #pragma mark -
+#endif
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -512,7 +516,9 @@ void ScoreEditor::setNoteSign(const int sign, const int noteID)
 
 }
 
+#if 0
 #pragma mark -
+#endif
 
 #define LEVEL_TO_Y( lvl ) (y_step * lvl + getEditorYStart() - getYScrollInPixels()-2)
 
@@ -994,7 +1000,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
                     int check_note = -1;
                     if(n>0) check_note=n-1;
                     else if(n+1<noteAmount) check_note = n+1;
-                    
+
                     if(check_note != -1)
                     {
                         const int checkNoteLevel = converter->noteToLevel(track->getNote(check_note), NULL);
@@ -1297,7 +1303,9 @@ void ScoreEditor::renderScore(ScoreAnalyser* analyser, const int silences_y)
 // ***************************************************************************************************************************************************
 // ****************************************************    EVENT METHODS      ************************************************************************
 // ***************************************************************************************************************************************************
+#if 0
 #pragma mark -
+#endif
 
 void ScoreEditor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
                                 RelativeXCoord mousex_initial, int mousey_initial)
@@ -1348,7 +1356,9 @@ void ScoreEditor::rightClick(RelativeXCoord x, int y)
 // ****************************************************************************************************************************************************
 // ****************************************************    EDITOR METHODS      ************************************************************************
 // ****************************************************************************************************************************************************
+#if 0
 #pragma mark -
+#endif
 
 
 int ScoreEditor::getYScrollInPixels()

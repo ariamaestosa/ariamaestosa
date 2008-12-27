@@ -120,7 +120,9 @@ public:
 };
 // ==========================================================================================
 // ==========================================================================================
+#if 0
 #pragma mark -
+#endif
 
 MainPane::MainPane(MainFrame* mainframe, int* args) : MAINPANE_BASE_CLASS(mainframe, args)
 {
@@ -158,7 +160,9 @@ void MainPane::isNowVisible()
     isVisible=true;
 }
 
+#if 0
 #pragma mark -
+#endif
 
 void MainPane::paintEvent(wxPaintEvent& evt)
 {
@@ -391,7 +395,9 @@ bool MainPane::do_render()
 
 }
 
+#if 0
 #pragma mark -
+#endif
 
 /*
  * Since instrument picker is shown by MainPane, its events go to MainPane. So, when MainPane catches InstrumentPicker events, it forwards them to it.
@@ -405,7 +411,9 @@ void MainPane::drumPopupSelected(wxCommandEvent& evt)
     Core::getDrumPicker()->menuSelected( evt );
 }
 
+#if 0
 #pragma mark -
+#endif
 
 /*
  * Are key modifiers down on the keyboard?
@@ -540,7 +548,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
                     const int track_amount = getCurrentSequence()->getTrackAmount();
                     GraphicalTrack* undocked_track = getCurrentSequence()->dock.get(n/2);
                     Track* undocked = undocked_track->track;
-                    
+
                     for(int i=0; i<track_amount; i++)
                     {
                         Track* track = getCurrentSequence()->getTrack(i);
@@ -909,7 +917,9 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
 }
 
 
+#if 0
 #pragma mark -
+#endif
 
 /*
  * Returns the ID of the track the user is dragging (in a track reordering process), or -1 if no reoredring is being done
@@ -917,7 +927,9 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
 int MainPane::getDraggedTrackID()                {    return draggingTrack;    }
 
 
+#if 0
 #pragma mark -
+#endif
 
 void MainPane::enterPlayLoop()
 {
@@ -974,13 +986,13 @@ void MainPane::playbackRenderLoop()
             {
                 RelativeXCoord tick(playbackStartTick + currentTick, MIDI);
                 const int current_pixel = tick.getRelativeTo(WINDOW);
-                
+
                 //const float zoom = getCurrentSequence()->getZoom();
                 const int XStart = getEditorsXStart();
                 const int XEnd = getWidth() - 50; // 50 is somewhat arbitrary
                 const int last_visible_measure = getMeasureData()->measureAtPixel( XEnd );
                 const int current_measure = getMeasureData()->measureAtTick(playbackStartTick + currentTick);
-                
+
                 if(current_pixel < XStart or current_measure >= last_visible_measure)
                 {
                     int new_scroll_in_pixels = (playbackStartTick + currentTick) * getCurrentSequence()->getZoom();
@@ -1042,7 +1054,9 @@ int MainPane::getCurrentTick() const
     return currentTick;
 }
 
+#if 0
 #pragma mark -
+#endif
 
 void MainPane::saveToFile(wxFileOutputStream& fileout)
 {

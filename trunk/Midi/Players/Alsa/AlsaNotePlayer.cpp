@@ -87,7 +87,9 @@ void alsa_output_module_setContext(MidiContext* context_arg)
 // ----------------------------------------------------------
 // base PlatformMidiManager functions
 
+#if 0
 #pragma mark -
+#endif
 
 // play/stop a single preview note
 void playNote(int noteNum, int volume, int duration, int channel, int instrument)
@@ -113,7 +115,9 @@ void stopNote()
 // ----------------------------------------------------------
 // PlatformMidiManager generic timer functions
 
+#if 0
 #pragma mark -
+#endif
 
 void seq_note_on(const int note, const int volume, const int channel)
 {

@@ -20,13 +20,13 @@ MidiDevice::MidiDevice(MidiContext* context, int client_arg, int port_arg, const
 
 MidiDevice* MidiContext::getDevice(int i)
 {
-    if(i<0 or i>devices.size()) return NULL;
+    if(i<0 or i>(int)devices.size()) return NULL;
     return &devices[i];
 }
 
 MidiDevice* MidiContext::getDevice(int client, int port)
 {
-    for(int n=0; n<devices.size(); n++)
+    for(int n=0; n<(int)devices.size(); n++)
     {
         if(devices[n].client == client and devices[n].port == port) return &devices[n];
     }
@@ -68,7 +68,9 @@ void MidiDevice::close()
 }
 
 
+#if 0
 #pragma mark -
+#endif
 
 MidiContext::MidiContext()
 {

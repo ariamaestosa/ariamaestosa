@@ -137,7 +137,9 @@ void Track::trackDeleted(Track* track)
 }
 
 // ------------------- add/remove notes --------------------
+#if 0
 #pragma mark -
+#endif
 
 
 bool Track::addNote(Note* note, bool check_for_overlapping_notes)
@@ -478,7 +480,9 @@ void Track::checkControlEventsOrder()
 
 // ------------------------------------- notes -------------------------------------
 
+#if 0
 #pragma mark -
+#endif
 
 Note* Track::getNote(const int id)
 {
@@ -673,7 +677,9 @@ void Track::prepareNotesForGuitarEditor()
 }
 
 // --------------------- get/set ---------------------
+#if 0
 #pragma mark -
+#endif
 
 void Track::setId(const int id)
 {
@@ -782,7 +788,9 @@ int Track::getDrumKit()
 }
 
 // ------------------------------------- midi playback / IO -------------------------------------
+#if 0
 #pragma mark -
+#endif
 
 void Track::playNote(const int id, const bool noteChange)
 {
