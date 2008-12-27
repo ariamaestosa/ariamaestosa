@@ -316,7 +316,9 @@ void endScissors()
 }
 
 #else
+#if 0
 #pragma mark -
+#endif
 
 #include "Images/Drawable.h"
 

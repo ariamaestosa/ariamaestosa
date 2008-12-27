@@ -35,7 +35,9 @@ namespace AriaMaestosa
 //     generic portable sequencer/timer implementation
 // ------------------------------------------------------------
 
+#if 0
 #pragma mark -
+#endif
 
 class FtimeTimer
 {
@@ -212,9 +214,9 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
                 cleanup_sequencer();
                 return;
             }
-            if(tick < previous_tick) continue; // something wrong about time order...
+            if((long)tick <(long) previous_tick) continue; // something wrong about time order...
 
-            if(tick > songLengthInTicks)
+            if((long)tick > (long)songLengthInTicks)
             {
                 std::cout << "done, thread will exit" << std::endl;
                 PlatformMidiManager::seq_notify_current_tick(-1);

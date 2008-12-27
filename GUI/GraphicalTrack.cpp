@@ -293,7 +293,9 @@ public:
     }
 };
 
+#if 0
 #pragma mark -
+#endif
 // ------------------------------------------------------------------------
 
 const int EXPANDED_BAR_HEIGHT = 20;
@@ -306,7 +308,7 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
     drumEditor         = NULL;
     controllerEditor   = NULL;
     scoreEditor        = NULL;
-    
+
     sequence = seq;
     GraphicalTrack::track = track;
 
@@ -338,7 +340,7 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
     dockToolBar->addItem( new BitmapButton( 16, 14, dockTrackDrawable,    false, false), 0 );
     components->addFromLeft(dockToolBar);
     dockToolBar->layout();
-    
+
     trackName = new BlankField(140);
     components->addFromLeft(trackName);
 
@@ -465,7 +467,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
             }
             else
             {
-                // switch off maximize mode. 
+                // switch off maximize mode.
                 const int track_amount = getCurrentSequence()->getTrackAmount();
                 for(int n=0; n<track_amount; n++)
                 {
@@ -498,7 +500,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                 DisplayFrame::updateVerticalScrollbar();
             }
         }
-        
+
         // mute
         if( muteButton->clickIsOnThisWidget(winX, mousey) )
         {
@@ -640,7 +642,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         return true;
     }
 }
-    
+
 bool GraphicalTrack::processRightMouseClick(RelativeXCoord x, int y)
 {
     if(y>from_y and y<to_y)
@@ -753,10 +755,10 @@ void GraphicalTrack::dock(const bool dock)
     else
     {
         docked = false;
-        getCurrentSequence()->removeFromDock( this ); 
+        getCurrentSequence()->removeFromDock( this );
     }
 }
-    
+
 int GraphicalTrack::getTotalHeight()
 {
 

@@ -157,7 +157,9 @@ class SequencerThread : public wxThread
     }
 };
 
+#if 0
 #pragma mark -
+#endif
 
 // called when app opens
 void initMidiPlayer()
@@ -348,7 +350,9 @@ void trackPlayback_thread_loop()
 
 
 
+#if 0
 #pragma mark -
+#endif
 
 // --- export to audio thread --
 wxString export_audio_filepath;

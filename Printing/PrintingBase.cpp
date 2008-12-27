@@ -161,7 +161,9 @@ int printResult(AriaPrintable* printable)
     //return true;
 }
 
+#if 0
 #pragma mark -
+#endif
 
 AriaPrintable* currentPrintable = NULL;
 
@@ -318,7 +320,9 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
 }
 
 
+#if 0
 #pragma mark -
+#endif
 
 // do not call, override in children
 EditorPrintable::EditorPrintable(){}

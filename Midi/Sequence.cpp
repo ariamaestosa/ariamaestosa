@@ -69,7 +69,7 @@ Sequence::Sequence()
 
     importing=false;
     maximize_track_mode = false;
-    
+
     x_scroll_upon_copying = -1;
 
     follow_playback = followPlaybackByDefault();
@@ -94,7 +94,9 @@ Sequence::~Sequence()
 }
 
 
+#if 0
 #pragma mark -
+#endif
 wxString Sequence::suggestTitle()
 {
     if(!getInternalName().IsEmpty())
@@ -135,7 +137,9 @@ wxString Sequence::suggestFileName()
 }
 
 // ------------------------------------------- text info ----------------------------------------
+#if 0
 #pragma mark -
+#endif
 void Sequence::setCopyright( wxString copyright )
 {
     Sequence::copyright = copyright;
@@ -156,7 +160,9 @@ wxString Sequence::getInternalName()
 }
 
 // ------------------------------------------- grid ----------------------------------------
+#if 0
 #pragma mark -
+#endif
 /*
  * When user selects 'snap notes to grid' from menu. Simply disptaches the event to the appropriate track.
  */
@@ -172,7 +178,9 @@ void Sequence::snapNotesToGrid()
 }
 
 // ------------------------------------------- scrolling ----------------------------------------
+#if 0
 #pragma mark -
+#endif
 
 int Sequence::getYScroll()
 {
@@ -213,7 +221,9 @@ void Sequence::setYScroll(int value)
 }
 
 // ------------------------------------------- setup ----------------------------------------
+#if 0
 #pragma mark -
+#endif
 float Sequence::getZoom()
 {
     return zoom;
@@ -261,7 +271,9 @@ void Sequence::setTicksPerBeat(int res){        beatResolution = res;        }
 
 
 // ------------------------------------------- actions and undo ----------------------------------------
+#if 0
 #pragma mark -
+#endif
 /*
  * This is the method called for performing any action that can be undone.
  * A EditAction object is used to describe the task, and it also knows how to revert it.
@@ -327,7 +339,9 @@ void Sequence::loadUndoMemory()
 */
 
 // ------------------------------------------- render ----------------------------------------
+#if 0
 #pragma mark -
+#endif
 // FIXME - -this class shouldn't do  both graphics and data
 void Sequence::renderTracks(int currentTick, RelativeXCoord mousex, int mousey, int mousey_initial, int from_y)
 {
@@ -490,7 +504,9 @@ int Sequence::getTotalHeight()
 }
 
 // ------------------------------------------- tracks ----------------------------------------
+#if 0
 #pragma mark -
+#endif
 void Sequence::addTrack()
 {
     if(currentTrack>=0 and currentTrack<tracks.size())
@@ -627,7 +643,9 @@ void Sequence::removeFromDock(GraphicalTrack* track)
 }
 
 // ------------------------------------------- playback ----------------------------------------
+#if 0
 #pragma mark -
+#endif
 void Sequence::spacePressed()
 {
 
@@ -787,7 +805,9 @@ void Sequence::addTempoEvent_import( ControllerEvent* evt )
 }
 
 // ------------------------------------------- i/o ----------------------------------------
+#if 0
 #pragma mark -
+#endif
 /*
  * Called before loading, prepares empty tracks
  */

@@ -91,7 +91,9 @@ EVT_MENU(1,SelectedMenu::removeSelected)
 END_EVENT_TABLE()
 
 // ****************************************************************************************************************
+#if 0
 #pragma mark -
+#endif
 /*
  * The pop-up menu that is shown if you right-click on an unselected measure in the measure bar
  */
@@ -160,7 +162,9 @@ EVT_MENU(3,UnselectedMenu::removeTimeSig)
 END_EVENT_TABLE()
 
 // ****************************************************************************************************************
+#if 0
 #pragma mark -
+#endif
 
 MeasureBar::MeasureBar(MeasureData* parent)
 {

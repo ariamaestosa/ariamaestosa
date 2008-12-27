@@ -151,7 +151,7 @@ void CustomToolBar::add(wxControl* ctrl, wxString label)
 #else
     AddControl(ctrl);
 #endif
-    
+
 #ifdef __WXMAC__
     if(not label.IsEmpty())
     {
@@ -179,14 +179,14 @@ void CustomToolBar::realize()
         toolbarSizer=new wxFlexGridSizer(2, 6, 1, 15);
         this->SetSizer(toolbarSizer);
     }
-    
+
     void CustomToolBar::AddTool(const int id, wxString label, wxBitmap& bmp)
     {
         wxBitmapButton* btn = new wxBitmapButton(this, id, bmp);
         toolbarSizer->Add(btn, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
         labels.push_back(label);
     }
-    
+
     void CustomToolBar::add(wxControl* ctrl, wxString label)
     {
         toolbarSizer->Add(ctrl, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
@@ -196,7 +196,7 @@ void CustomToolBar::realize()
     {
         const int label_amount = labels.size();
         toolbarSizer->SetCols( label_amount );
-        
+
         for(int n=0; n<label_amount; n++)
         {
             toolbarSizer->Add(new wxStaticText(this, wxID_ANY,  labels[n]), 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
@@ -261,7 +261,7 @@ void MainFrame::init()
     borderSizer->AddGrowableCol(0);
     borderSizer->AddGrowableRow(0);
 #endif
-    
+
     // a few presets
     wxSize averageTextCtrlSize(wxDefaultSize);
     averageTextCtrlSize.SetWidth(55);
@@ -278,7 +278,7 @@ void MainFrame::init()
     borderSizer->Add(toolbar, 0, wxALIGN_CENTER_VERTICAL | wxALL, 2);
     borderSizer->AddSpacer(10);
 #endif
-  
+
     playBitmap.LoadFile( getResourcePrefix()  + wxT("play.png") , wxBITMAP_TYPE_PNG);
     pauseBitmap.LoadFile( getResourcePrefix()  + wxT("pause.png") , wxBITMAP_TYPE_PNG);
     toolbar->AddTool(PLAY_CLICKED, _("Play"), playBitmap);
@@ -298,18 +298,18 @@ void MainFrame::init()
 #endif
                               , wxTE_PROCESS_ENTER);
     toolbar->add(songLength, _("Duration"));
-    
+
     tempoCtrl=new wxTextCtrl(toolbar, TEMPO, wxT("120"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER );
     toolbar->add(tempoCtrl, _("Tempo"));
-    
+
     timeSig = new wxButton(toolbar, TIME_SIGNATURE, wxT("4/4"));
     toolbar->add( timeSig, _("Time Sig") );
-    
+
     toolbar->AddSeparator();
-    
+
     firstMeasure=new wxTextCtrl(toolbar, BEGINNING, wxT("1"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER);
     toolbar->add(firstMeasure, _("Start"));
-    
+
     displayZoom=new wxSpinCtrl(toolbar, ZOOM, wxT("100"), wxDefaultPosition,
     #ifdef __WXGTK__
                            averageTextCtrlSize
@@ -340,21 +340,21 @@ void MainFrame::init()
 
     // -------------------------- Vertical Scrollbar ----------------------------
     verticalScrollbar=new wxScrollBar(this, SCROLLBAR_V, wxDefaultPosition, wxDefaultSize, wxSB_VERTICAL);
-    
+
     verticalScrollbar->SetScrollbar(
                                     0 /*position*/,
                                     530 /*viewable height / thumb size*/,
                                     530 /*height*/,
                                     5 /*scroll amount*/
                                     );
-    
+
     borderSizer->Add(verticalScrollbar, 1, wxEXPAND | wxALL, 0 );
 
-    
+
     // -------------------------- Horizontal Scrollbar ----------------------------
     horizontalScrollbar=new wxScrollBar(this, SCROLLBAR_H);
     borderSizer->Add(horizontalScrollbar, 1, wxEXPAND | wxALL, 0);
-    
+
     // For the first time, set scrollbar manually and not using updateHorizontalScrollbar(), because this method assumes the frame is visible.
     const int editor_size=695, total_size=12*128;
 
@@ -409,7 +409,9 @@ void MainFrame::on_close(wxCloseEvent& evt)
 // ------------------------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------- PLAY/STOP --------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------------
+#if 0
 #pragma mark -
+#endif
 
 void MainFrame::playClicked(wxCommandEvent& evt)
 {
@@ -482,7 +484,9 @@ void MainFrame::toolsExitPlaybackMode()
 // ---------------------------------------------------- TOP BAR -----------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------------
 
+#if 0
 #pragma mark -
+#endif
 
 void MainFrame::updateTopBarAndScrollbarsForSequence(Sequence* seq)
 {
@@ -743,7 +747,9 @@ void MainFrame::songLengthChanged(wxSpinEvent& evt)
 // ------------------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------ SCROLLBARS ------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------------
+#if 0
 #pragma mark -
+#endif
 /*
  * User scrolled horizontally by dragging.
  * Just make sure to update the display to the new values.
@@ -921,7 +927,9 @@ void MainFrame::updateVerticalScrollbar()
 // ------------------------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------- SEQUENCES --------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------------
+#if 0
 #pragma mark -
+#endif
 
 /*
  * Add a new sequence. There can be multiple sequences if user opens or creates multiple files at the same time.
@@ -1019,7 +1027,9 @@ void MainFrame::setCurrentSequence(int n)
 // ---------------------------------------------------------- I/O ---------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------------
 
+#if 0
 #pragma mark -
+#endif
 
 /*
  * Opens the .aria file in filepath, reads it and prepares the editor to display and edit it.
@@ -1108,7 +1118,9 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
 
 
 
+#if 0
 #pragma mark -
+#endif
 // various events and notifications
 
 // event sent by the MusicPlayer to notify that it has stopped playing because the song is over.

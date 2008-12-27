@@ -237,8 +237,10 @@ public:
     }
 };
 
+#if 0
 #pragma mark -
 #pragma mark NoteRenderInfo
+#endif
 
 NoteRenderInfo::NoteRenderInfo(int tick, int x, int level, int tick_length, int sign, const bool selected, int pitch)
 {
@@ -356,8 +358,10 @@ void NoteRenderInfo::setY(const int newY)
     y = newY;
 }
 
+#if 0
 #pragma mark -
 #pragma mark Score Analyser
+#endif
 
 ScoreAnalyser::ScoreAnalyser(ScoreEditor* parent, TickToXConverter* converter, int stemPivot)
 {
@@ -1024,7 +1028,9 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
     noteRenderInfo.push_back(renderInfo);
 }
 
+#if 0
 #pragma mark -
+#endif
 
 /*
  * Since various midi editors use various note length conventions, and since some durations, like triplets, are only approximative,

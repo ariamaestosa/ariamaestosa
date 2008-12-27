@@ -225,7 +225,9 @@ void MainFrame::disableMenusForPlayback(const bool disable)
 // ------------------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------ MENU EVENTS -----------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------------
+#if 0
 #pragma mark -
+#endif
 
 // File
 
@@ -373,7 +375,9 @@ void MainFrame::menuEvent_quit(wxCommandEvent& evt)
     wxWindow::Destroy();
 }
 
+#if 0
 #pragma mark -
+#endif
 // Edit
 
 void MainFrame::menuEvent_copy(wxCommandEvent& evt)
@@ -426,7 +430,9 @@ void MainFrame::menuEvent_removeOverlapping(wxCommandEvent& evt)
     getCurrentSequence()->getCurrentTrack()->action( new Action::RemoveOverlapping() );
 }
 
+#if 0
 #pragma mark -
+#endif
 // Track
 void MainFrame::menuEvent_addTrack(wxCommandEvent& evt)
 {
@@ -452,7 +458,9 @@ void MainFrame::menuEvent_trackBackground(wxCommandEvent& evt)
     BackgroundPicker::show(getCurrentSequence()->getCurrentTrack());
 }
 
+#if 0
 #pragma mark -
+#endif
 // Options
 void MainFrame::menuEvent_preferences(wxCommandEvent& evt)
 {
@@ -575,7 +583,9 @@ void MainFrame::menuEvent_expandedMeasuresSelected(wxCommandEvent& evt)
     updateVerticalScrollbar();
 }
 
+#if 0
 #pragma mark -
+#endif
 // help
 void MainFrame::menuEvent_about(wxCommandEvent& evt)
 {
@@ -626,7 +636,9 @@ void MainFrame::menuEvent_manual(wxCommandEvent& evt)
     }
 }
 
+#if 0
 #pragma mark -
+#endif
 void MainFrame::updateMenuBarToSequence()
 {
     Sequence* sequence = getCurrentSequence();

@@ -79,7 +79,9 @@ void Editor::useVerticalScrollbar(const bool useScrollbar)
 }
 
 // -------------------------------------- render --------------------------------------
+#if 0
 #pragma mark -
+#endif
 
 void Editor::render()
 {
@@ -219,7 +221,9 @@ void Editor::renderScrollbar()
 
 
 // -------------------------------------- background --------------------------------------
+#if 0
 #pragma mark -
+#endif
 
 void Editor::clearBackgroundTracks()
 {
@@ -260,7 +264,9 @@ void Editor::trackDeleted(Track* track)
 
 
 // -------------------------------------- mouse events --------------------------------------
+#if 0
 #pragma mark -
+#endif
 
 void Editor::mouseDown(RelativeXCoord x, int y)
 {
@@ -621,7 +627,9 @@ void Editor::rightClick(RelativeXCoord x, int y)
 }
 
 // -------------------------------------- note stuff to be implemented by children --------------------------------------
+#if 0
 #pragma mark -
+#endif
 
 NoteSearchResult Editor::noteAt(RelativeXCoord x, const int y, int& noteID) { std::cerr << "ERROR base class method called" << std::endl; return FOUND_NOTHING; }
 void Editor::noteClicked(const int id) { std::cerr << "ERROR base class method called" << std::endl; }
@@ -647,7 +655,9 @@ void Editor::setYStep(const int ystep)
 }
 
 // -------------------------------------- size info --------------------------------------
+#if 0
 #pragma mark -
+#endif
 
 void Editor::updatePosition(int from_y, int to_y, int width, int height, int barHeight)
 {

@@ -67,7 +67,9 @@ MeasureData::~MeasureData()
 {
 }
 
+#if 0
 #pragma mark -
+#endif
 
 void MeasureData::setExpandedMode(bool arg_expanded)
 {
@@ -97,7 +99,9 @@ bool MeasureData::isExpandedMode()
     return expandedMode;
 }
 
+#if 0
 #pragma mark -
+#endif
 
 // ---------------------------------- measures
 
@@ -177,7 +181,9 @@ void MeasureData::unselect()
     graphics->lastMeasureInDrag = -1;
 }
 
+#if 0
 #pragma mark -
+#endif
 
 // ---------------------------------- find measure at a location
 
@@ -362,7 +368,9 @@ int MeasureData::lastTickInMeasure(int id)
 }
 
 
+#if 0
 #pragma mark -
+#endif
 
 // ---------------------------------- time sig change events
 
@@ -531,7 +539,9 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
 
 }
 
+#if 0
 #pragma mark -
+#endif
 // ---------------------------------- refresh measure info
 
 /*
@@ -603,7 +613,9 @@ void MeasureData::updateMeasureInfo()
 }
 
 
+#if 0
 #pragma mark -
+#endif
 // -------------------------------------- IO
 
 // when we import time sig changes, their time is given in ticks. however Aria needs them in measure ID. this variable is used to convert
@@ -687,7 +699,9 @@ void MeasureData::afterImporting()
     if(!isMeasureLengthConstant()) updateMeasureInfo();
 }
 
+#if 0
 #pragma mark -
+#endif
 // -----------------------
 
 int MeasureData::getTotalTickAmount()
@@ -727,7 +741,9 @@ int MeasureData::beatLengthInTicks()
 }
 
 
+#if 0
 #pragma mark -
+#endif
 
 bool MeasureData::readFromFile(irr::io::IrrXMLReader* xml)
 {

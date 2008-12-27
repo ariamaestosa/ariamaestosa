@@ -27,7 +27,9 @@ void setRepetitionMinimalLength(const int newvalue)
     repetitionMinimalLength = newvalue;
 }
 
+#if 0
 #pragma mark -
+#endif
 
 const MeasureToExport nullMeasure(-1);
 
@@ -248,7 +250,9 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
     return newTrackRef->lastNote;
 }
 
+#if 0
 #pragma mark -
+#endif
 
 // used to determine the order of what appears in the file.
 // the order is found first before writing anything because that allows more flexibility
@@ -261,7 +265,9 @@ LayoutElement::LayoutElement(LayoutElementType type_arg, int measure_arg)
     x2 = -1;
 }
 
+#if 0
 #pragma mark -
+#endif
 
 LayoutLine::LayoutLine(AriaPrintable* parent)
 {
@@ -412,7 +418,7 @@ void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x
         dc.DrawLine( x0+3, y0, x0+3, y0+height-150); // FIXME - 150 is an arbitrary number to fit the margin under tracks
         dc.DrawLine( x1-3, y0, x1-3, y0+height-150);
     }
-    
+
     float current_y = y0;
     for(int n=0; n<trackAmount; n++)
     {
@@ -432,7 +438,9 @@ void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x
     }
 }
 
+#if 0
 #pragma mark -
+#endif
 
 void generateMeasures(ptr_vector<Track, REF>& tracks, ptr_vector<MeasureToExport>& measures)
 {
@@ -500,7 +508,7 @@ void generateOutputOrder(std::vector<LayoutElement>& layoutElements, ptr_vector<
         {
             layoutElements.push_back( LayoutElement(EMPTY_MEASURE, measure) );
             layoutElements[layoutElements.size()-1].width_in_units = 2;
-            
+
             // check that measure is really empty; it's possible that it contains
             // the end of a note that started in the previous measure.
             // if this is the case, we need to make the measure broader than the default 2 units
@@ -659,9 +667,9 @@ void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements, ptr_ve
     for(int n=0; n<layoutElementsAmount; n++)
     {
         layoutElements[n].zoom = 1;
-        
+
         if(layoutElements[n].type == EMPTY_MEASURE) continue; // was already calculated
-        
+
         layoutElements[n].width_in_units = 2;
 
         if(layoutElements[n].type == SINGLE_MEASURE)
@@ -674,7 +682,7 @@ void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements, ptr_ve
             // if notes are very long, zoom a bit because we don't want a too short measure
             //if( divider <= 2 ) layoutElements[n].zoom = 2;
             //if( divider <= 1 ) layoutElements[n].zoom = 4;
-            
+
             // for very short notes, zoom a bit too otherwise they'll all be stuck toghether
             if( divider >= 16 ) layoutElements[n].zoom = 2;
 
