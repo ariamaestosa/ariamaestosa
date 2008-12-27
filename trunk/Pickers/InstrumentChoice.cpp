@@ -39,8 +39,6 @@ void InstrumentChoice::setParent(Track* track)
 
 InstrumentChoice::InstrumentChoice() : wxMenu()
 {
-
-
     // piano
     inst_name[0]="Acoustic Grand Piano";
     inst_name[1]="Bright Acoustic Piano";
@@ -213,7 +211,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     submenu_14_sound_effects=new wxMenu();
     submenu_15_drums=new wxMenu();
 
-#define _ADD_INSTR(id, parent) inst_menus[ id ]= parent -> Append( id+10000 ,fromCString(inst_name[ id ]));
+#define _ADD_INSTR(id, parent) inst_menus[ id ]= parent -> Append( id+10000, fromCString(inst_name[ id ].c_str()));
 
     Append(wxID_ANY,wxT("Piano"), submenu_1_piano);
     _ADD_INSTR(0, submenu_1_piano);
@@ -404,7 +402,7 @@ char* InstrumentChoice::getInstrumentName(int instrumentID)
     assertExpr(instrumentID,<,128);
     assertExpr(instrumentID,>=,0);
 
-    return inst_name[instrumentID];
+    return (char*)inst_name[instrumentID].c_str();
 }
 
 
