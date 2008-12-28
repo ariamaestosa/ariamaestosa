@@ -152,7 +152,7 @@ void MainFrame::initMenuBar()
     // Tracks menu
     trackMenu = new wxMenu();
     menuBar->Append(trackMenu,  _("Tracks"));
-    trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_ADD, _("Add Track"), MainFrame::menuEvent_addTrack );
+    trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_ADD, wxString(_("Add Track"))+wxT("\tCtrl-Shift-N"), MainFrame::menuEvent_addTrack );
     trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_REMOVE, wxString(_("Delete Track"))+wxT("\tCtrl-DEL"), MainFrame::menuEvent_deleteTrack );
     trackMenu->AppendSeparator();
     //I18N: - in the track menu, allows choosing the background of a track
@@ -162,7 +162,7 @@ void MainFrame::initMenuBar()
     settingsMenu = new wxMenu();
     menuBar->Append(settingsMenu,  _("Settings"));
     followPlaybackMenuItem = settingsMenu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_FOLLOW_PLAYBACK, _("Follow Playback"), MainFrame::menuEvent_followPlayback );
-    expandedMeasuresMenuItem = settingsMenu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_MEASURE_EXPANDED, _("Expanded measure management"), MainFrame::menuEvent_expandedMeasuresSelected );
+    expandedMeasuresMenuItem = settingsMenu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_MEASURE_EXPANDED, _("Expanded time sig management"), MainFrame::menuEvent_expandedMeasuresSelected );
 
     followPlaybackMenuItem->Check( followPlaybackByDefault() );
 
