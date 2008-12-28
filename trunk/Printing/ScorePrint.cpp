@@ -286,13 +286,13 @@ void renderSilenceCallback(const int tick, const int tick_length, const int sile
     // dotted
     if(dotted)
     {
-
+        // FIXME - implement
     }
 
     // triplet
     if(triplet)
     {
-
+        // FIXME - implement
     }
 }
 
@@ -715,7 +715,7 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
             dc.SetBrush( *wxTRANSPARENT_BRUSH );
 
             const bool show_above = noteRenderInfo.isTieUp();
-            const int base_y = LEVEL_TO_Y( noteRenderInfo.getStemOriginLevel() ) + (show_above ? - 90 : 90);
+            const int base_y = LEVEL_TO_Y( noteRenderInfo.getStemOriginLevel() ) + (show_above ? - 30 : 60);
 
             const int center_x = (noteRenderInfo.getTiedToPixel() + noteRenderInfo.x)/2 + headRadius*1.3;
             const int radius_x = abs(noteRenderInfo.getTiedToPixel() - noteRenderInfo.x)/2;
