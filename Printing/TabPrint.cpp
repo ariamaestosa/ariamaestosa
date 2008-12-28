@@ -48,7 +48,7 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
     
     // iterate through layout elements
     LayoutElement* currentElement;
-    while((currentElement = getNextElement()) and (currentElement != NULL))
+    while((currentElement = continueWithNextElement()) and (currentElement != NULL))
     {
         if(currentElement->type == LINE_HEADER)
         {

@@ -114,7 +114,6 @@ NOTE: sorry, this is very raw :)
 * score print :
     - add non-linear printing...
     - repetitions never detected in multi-track printing
-    - silences are drawn in 'repetition' measures
     - when there's small lines above/below score, the vertical measure line continues beyond the score
     - show G/F clef + key signature
     - if you show both F and G keys, both are given equal vertical space, even though one may need more than another

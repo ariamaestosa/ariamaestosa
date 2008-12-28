@@ -9,6 +9,8 @@
 - Made 'follow playback' easier to follow by scrolling only on measure change
 - Fixed undoing guitar tuning changes
 - When printing multiple tracks, draw a line between them to make clear they belong toghether
+- Fixed silences being drawn in repetitions when printing
+- More minot tweaks to printing
 - Added ability to maximize tracks
 - Improved handling of on/off controllers, namely making sustain usable.
 - More layout and rendering improvements to score printing

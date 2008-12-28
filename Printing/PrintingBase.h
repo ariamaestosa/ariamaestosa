@@ -46,7 +46,7 @@
  determining the position of notes, etc. Only the part of the drawing that is specific
  to a notation mode is left to the child. 'drawLine' is to b overridden by children.
  Children are to call 'beginLine' early. Then they can iterate through LayoutElements
- by calling getNextElement() in a loop until NULL is returned. Then, for
+ by calling continueWithNextElement() in a loop until NULL is returned. Then, for
  returned elements of type SINGLE_MEASURE, the child can get note information by
  using getFIrstNoteInElement(), getLastNoteInElement(), getNotePrintX() and render
  them appropriately.
@@ -82,7 +82,8 @@ public:
     void beginLine(wxDC* dc, LayoutLine* line, int x0, const int y0, const int x1, const int y1, bool show_measure_number);
     int getCurrentElementXStart();
     int getCurrentElementXEnd();
-    LayoutElement* getNextElement();
+    LayoutElement* continueWithNextElement();
+    LayoutElement* getElementForMeasure(const int measureID);
     int getNotePrintX(int noteID);
     int tickToX(const int tick);
 };
