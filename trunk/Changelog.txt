@@ -12,6 +12,8 @@
 - Added ability to maximize tracks
 - Improved handling of on/off controllers, namely making sustain usable.
 - More layout and rendering improvements to score printing
+- Added keyboard shortcuts for more menu elements
+- Added built-in docs viewer on mac
 
 1.2b3
 - Refactored preferences to look better, be cleaner and allow setting a default value for "follow playback"
