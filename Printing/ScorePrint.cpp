@@ -602,9 +602,9 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
 
     #define LEVEL_TO_Y( lvl ) y0 + 1 + lineHeight*0.5*(lvl - min_level)
 
-    const int headRadius = (int)round(lineHeight*1.1);
+    const int headRadius = (int)round(lineHeight);
 
-    analyser.setStemDrawInfo( headRadius*2-22, 0, headRadius-16, 0 );
+    analyser.setStemDrawInfo( headRadius*2-22, 0, headRadius-20, 0 );
 
     for(int lvl=first_score_level; lvl<=last_score_level; lvl+=2)
     {
@@ -641,7 +641,7 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
         }
 
         // draw head
-        dc.SetPen(  wxPen( wxColour(0,0,0), 10 ) );
+        dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
         if(noteRenderInfo.hollow_head) dc.SetBrush( *wxTRANSPARENT_BRUSH );
         else dc.SetBrush( *wxBLACK_BRUSH );
 
