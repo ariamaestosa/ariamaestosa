@@ -56,6 +56,10 @@
 #include "Config.h"
 #include <iostream>
 
+#ifdef __WXMAC__
+#include "wx/html/webkit.h"
+#endif
+
 namespace AriaMaestosa {
 
 
@@ -591,49 +595,42 @@ void MainFrame::menuEvent_about(wxCommandEvent& evt)
 {
     aboutDialog->show();
 }
-/*
+
+#ifdef __WXMAC__
 class ManualView : public wxFrame
 {
-    wxHtmlWindow* html;
-    wxBorderSizer* sizer;
-    bool success;
+    wxWebKitCtrl* html;
+    wxBoxSizer* sizer;
 
 public:
-    ManualView(wxString file) : wxFrame(NULL, wxID_ANY, _("Manual"))
+    ManualView(wxFrame* parent, wxString file) : wxFrame(parent, wxID_ANY, _("Manual"), wxDefaultPosition, wxSize(1000,600))
     {
-        std::cout << "opening " << toCString(file) << std::endl;
+        sizer = new wxBoxSizer(wxHORIZONTAL);
+        wxString filepath = wxT("file://") + file ;
+        filepath.Replace(wxT(" "), wxT("%20"));
+        wxWebKitCtrl* html = new wxWebKitCtrl(this, wxID_ANY, filepath );
+        sizer->Add(html, 1, wxEXPAND);
 
-        sizer = new wxBorderSizer();
-        html = new wxHtmlWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_SCROLLBAR_AUTO | wxHW_NO_SELECTION);
-        sizer->Add(html, 1, wxEXPAND, 0, Location::Center());
-
-        success = html->LoadFile(file);
         SetSizer(sizer);
-        SetAutoLayout(true);
-
-        if(!success)
-        {
-            wxMessageBox( _("Could not open manual") );
-        }
-    }
-
-    void popup()
-    {
-        if(success) Show();
+        Center();
+        Show();
     }
 
 };
-ManualView* manualView = NULL;
-*/
+#endif
 
 void MainFrame::menuEvent_manual(wxCommandEvent& evt)
 {
     wxString path_to_docs =  getResourcePrefix() + wxT("Documentation/index.html");
 
+#ifdef __WXMAC__
+    new ManualView(this, path_to_docs);
+#else
     if(!wxFileExists( path_to_docs ) or !wxLaunchDefaultBrowser( wxT("file://") + path_to_docs ))
     {
         wxMessageBox(wxT("Sorry, opening docs failed\n(") + path_to_docs + wxT(" does not appear to exist).\nTry ariamaestosa.sourceforge.net instead."));
     }
+#endif
 }
 
 #if 0
