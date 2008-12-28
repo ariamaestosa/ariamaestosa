@@ -119,9 +119,9 @@ void MainFrame::initMenuBar()
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_CLOSE, _("Close\tCtrl-W"), MainFrame::menuEvent_close );
 
     fileMenu->AppendSeparator();
-    fileMenu -> QUICK_ADD_MENU ( MENU_FILE_COPYRIGHT, _("Song info"), MainFrame::menuEvent_copyright );
+    fileMenu -> QUICK_ADD_MENU ( MENU_FILE_COPYRIGHT, wxString(_("Song info"))+wxT("\tCtrl-I"), MainFrame::menuEvent_copyright );
     //fileMenu->AppendSeparator();
-    fileMenu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_NOTATION, _("Print musical notation"), MainFrame::menuEvent_exportNotation );
+    fileMenu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_NOTATION, wxString(_("Print musical notation"))+wxT("\tCtrl-P"), MainFrame::menuEvent_exportNotation );
     fileMenu->AppendSeparator();
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_IMPORT_MIDI, _("Import Midi File"), MainFrame::menuEvent_importmidi );
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_MIDI, _("Export to Midi"), MainFrame::menuEvent_exportmidi );
@@ -153,7 +153,7 @@ void MainFrame::initMenuBar()
     trackMenu = new wxMenu();
     menuBar->Append(trackMenu,  _("Tracks"));
     trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_ADD, _("Add Track"), MainFrame::menuEvent_addTrack );
-    trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_REMOVE, _("Delete Track"), MainFrame::menuEvent_deleteTrack );
+    trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_REMOVE, wxString(_("Delete Track"))+wxT("\tCtrl-DEL"), MainFrame::menuEvent_deleteTrack );
     trackMenu->AppendSeparator();
     //I18N: - in the track menu, allows choosing the background of a track
     trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_BACKG, _("Background"), MainFrame::menuEvent_trackBackground );
