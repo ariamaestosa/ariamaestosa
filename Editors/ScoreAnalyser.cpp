@@ -540,7 +540,7 @@ void ScoreAnalyser::renderSilences( void (*renderSilenceCallback)(const int, con
         if(measure_empty[i])
         {
             renderSilenceCallback(getMeasureData()->firstTickInMeasure(first_visible_measure+i),
-                          getMeasureData()->measureLengthInTicks(first_visible_measure+i), silences_y);
+                                  getMeasureData()->measureLengthInTicks(first_visible_measure+i), silences_y);
         }
     }
 }
