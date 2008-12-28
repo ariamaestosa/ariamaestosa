@@ -473,7 +473,10 @@ void ScoreAnalyser::renderSilences( void (*renderSilenceCallback)(const int, con
                 // we need to add a silence at the end of it
                 if(last_measure != -1 and !aboutEqual(last_note_end, getMeasureData()->firstTickInMeasure(measure) ))
                 {
-                    const int silence_length = getMeasureData()->firstTickInMeasure(measure)-last_note_end;
+                    const int last_measure_id = getMeasureData()->measureAtTick(last_note_end-1);
+                    const int silence_length = getMeasureData()->lastTickInMeasure(last_measure_id)-last_note_end;
+                    if(silence_length < 0) continue;
+                   // std::cout << "completing silence at measure " << (1+last_measure_id) << ", len=" << silence_length/getMeasureData()->beatLengthInTicks() << std::endl;
                     renderSilenceCallback(last_note_end, silence_length, silences_y);
 
                 }
@@ -505,21 +508,20 @@ void ScoreAnalyser::renderSilences( void (*renderSilenceCallback)(const int, con
             const int current_begin_tick = noteRenderInfo[i].tick;
             if( previous_note_end != -1 and !aboutEqual(previous_note_end, current_begin_tick) and
                 (current_begin_tick-previous_note_end)>0 /*and previous_note_end >= last_note_end*/)
-                {
+            {
                 renderSilenceCallback(previous_note_end, current_begin_tick-previous_note_end, silences_y);
-                }
+            }
 
-                previous_note_end = noteRenderInfo[i].tick + noteRenderInfo[i].tick_length;
+            previous_note_end = noteRenderInfo[i].tick + noteRenderInfo[i].tick_length;
 
-                // if there's multiple notes playing at the same time
-                while(i+1<visibleNoteAmount and noteRenderInfo[i].tick==noteRenderInfo[i+1].tick)
-                {
-                    i++;
-                    previous_note_end = std::max(previous_note_end, noteRenderInfo[i].tick + noteRenderInfo[i].tick_length);
-                }
+            // if there's multiple notes playing at the same time
+            while(i+1<visibleNoteAmount and noteRenderInfo[i].tick==noteRenderInfo[i+1].tick)
+            {
+                i++;
+                previous_note_end = std::max(previous_note_end, noteRenderInfo[i].tick + noteRenderInfo[i].tick_length);
+            }
 
-                if(previous_note_end > last_note_end) last_note_end = previous_note_end;
-
+            if(previous_note_end > last_note_end) last_note_end = previous_note_end;
         }//next visible note
 
         // check for silence after last note
@@ -539,8 +541,8 @@ void ScoreAnalyser::renderSilences( void (*renderSilenceCallback)(const int, con
     {
         if(measure_empty[i])
         {
-            renderSilenceCallback(getMeasureData()->firstTickInMeasure(first_visible_measure+i),
-                                  getMeasureData()->measureLengthInTicks(first_visible_measure+i), silences_y);
+           renderSilenceCallback(getMeasureData()->firstTickInMeasure(first_visible_measure+i),
+                                 getMeasureData()->measureLengthInTicks(first_visible_measure+i), silences_y);
         }
     }
 }

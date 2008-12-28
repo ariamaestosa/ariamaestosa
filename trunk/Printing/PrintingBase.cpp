@@ -369,7 +369,17 @@ int EditorPrintable::getCurrentElementXEnd()
 {
     return x0 + (int)round((xloc+currentLine->layoutElements[currentLayoutElement].width_in_units)*pixel_width_of_an_unit);
 }
-LayoutElement* EditorPrintable::getNextElement()
+LayoutElement* EditorPrintable::getElementForMeasure(const int measureID)
+{
+    std::vector<LayoutElement>& layoutElements = currentLine->layoutElements;
+    const int amount = layoutElements.size();
+    for(int n=0; n<amount; n++)
+    {
+        if(layoutElements[n].measure == measureID) return &layoutElements[n];
+    }
+    return NULL;
+}
+LayoutElement* EditorPrintable::continueWithNextElement()
 {
     currentLayoutElement ++;
 
@@ -481,20 +491,22 @@ int EditorPrintable::tickToX(const int tick)
             return (int)round(nratio * (elem_w-pixel_width_of_an_unit*1.5) + elem_x_start);
         }
 
+        // given tick is not in a visible measure
+        if(tick < firstTick) return -1;
+        
         /* the tick we were given is not on the current line, but on the next.
          * this probably means there is a tie from a note on one line to a note
          * on another line. Return a X at the very right of the page.
          * FIXME - it's not necessarly a tie
+         * FIXME - ties need better handling
          */
         if(n==layoutElementsAmount-1 and tick >= lastTick)
         {
             return currentLine->layoutElements[n].x2 + 10;
         }
     }
-    // FIXME- don't know why it gets there
-    return currentLine->layoutElements[layoutElementsAmount-1].x2 + 10;
-    //assert(false);
-    //return 0;
+    return -1;
+    //return currentLine->layoutElements[layoutElementsAmount-1].x2 + 10;
 }
 
 }

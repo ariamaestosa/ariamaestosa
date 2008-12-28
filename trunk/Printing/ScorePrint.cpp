@@ -17,8 +17,12 @@
 namespace AriaMaestosa
 {
 
-
-ScorePrintable::ScorePrintable(Track* track) : EditorPrintable() { }
+ScorePrintable* g_printable = NULL;
+    
+ScorePrintable::ScorePrintable(Track* track) : EditorPrintable()
+{
+    g_printable = this;
+}
 ScorePrintable::~ScorePrintable() { }
 
 /*
@@ -125,7 +129,7 @@ void renderGClef(wxDC& dc, const int x, const int y)
 }
 
 PrintXConverter* x_converter = NULL;
-
+    
 // leave a pointer to the dc for the callback
 // FIXME find cleaner way
 wxDC* global_dc = NULL;
@@ -137,15 +141,22 @@ int global_line_height=5;
 void renderSilenceCallback(const int tick, const int tick_length, const int silences_y)
 {
     assert( global_dc != NULL);
-
-    // FIXME - merge common parts with the one in ScoreEditor
+    
+    const int measure = getMeasureData()->measureAtTick(tick);
+    const int end_measure = getMeasureData()->measureAtTick(tick+tick_length-1);
     const int beat = getMeasureData()->beatLengthInTicks();
 
+    {
+    LayoutElement* temp = g_printable->getElementForMeasure(measure);
+    if(temp != NULL and temp->type == REPEATED_RIFF) return; //don't render silences in repetions measure!
+    }
+    
     if(tick_length<2) return;
-
+    
+    // FIXME - merge common parts with the one in ScoreEditor
+    
     // check if silence spawns over more than one measure
-    const int end_measure = getMeasureData()->measureAtTick(tick+tick_length-1);
-    if(getMeasureData()->measureAtTick(tick) != end_measure)
+    if(measure != end_measure)
     {
         // we need to plit it in two
         const int split_tick = getMeasureData()->firstTickInMeasure(end_measure);
@@ -163,6 +174,7 @@ void renderSilenceCallback(const int tick, const int tick_length, const int sile
     assertExpr(tick,>,-1);
 
     const int x = x_converter->tickToX(tick);
+    if(x < 0) return; // this part of score is not printed (e.g. is in a repetition)
     bool dotted = false, triplet = false;
     int type = -1;
 
@@ -413,8 +425,8 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     const int f_clef_from = middle_c_level+2;
     const int f_clef_to   = middle_c_level+10;
 
-    std::cout << "level --> highest : " << biggest_level << ", lowest : " << smallest_level <<
-        " (g_clef_from=" << g_clef_from << ", g_clef_to=" << g_clef_to << ")" << std::endl;
+   // std::cout << "level --> highest : " << biggest_level << ", lowest : " << smallest_level <<
+   //     " (g_clef_from=" << g_clef_from << ", g_clef_to=" << g_clef_to << ")" << std::endl;
 
     const bool g_clef = scoreEditor->isGClefEnabled();
     const bool f_clef = scoreEditor->isFClefEnabled();
@@ -438,10 +450,10 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         if(smallest_level!=-1 and smallest_level < g_clef_from) extra_lines_above_g_score = (g_clef_from - smallest_level)/2;
         if(biggest_level!=-1 and biggest_level > f_clef_to) extra_lines_under_f_score = (f_clef_to - biggest_level)/2;
     }
-    std::cout << "extra_lines_above_g_score = " << extra_lines_above_g_score <<
-        " extra_lines_under_g_score = " << extra_lines_under_g_score <<
-        " extra_lines_above_f_score = " << extra_lines_above_f_score <<
-        " extra_lines_under_f_score = " << extra_lines_under_f_score << std::endl;
+    //std::cout << "extra_lines_above_g_score = " << extra_lines_above_g_score <<
+    //    " extra_lines_under_g_score = " << extra_lines_under_g_score <<
+    //    " extra_lines_above_f_score = " << extra_lines_above_f_score <<
+    //    " extra_lines_under_f_score = " << extra_lines_under_f_score << std::endl;
 
     // get the underlying common implementation rolling
     beginLine(&dc, &line, x0, y0, x1, y1, show_measure_number);
@@ -471,7 +483,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     // iterate through layout elements to collect notes in the vector
     // so ScoreAnalyser can prepare the score
     LayoutElement* currentElement;
-    while((currentElement = getNextElement()) and (currentElement != NULL))
+    while((currentElement = continueWithNextElement()) and (currentElement != NULL))
     {
         if(currentElement->type == LINE_HEADER) // FIME - move to 'drawScore' ?
         {
@@ -719,7 +731,7 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
 
             const int center_x = (noteRenderInfo.getTiedToPixel() + noteRenderInfo.x)/2 + headRadius*1.3;
             const int radius_x = abs(noteRenderInfo.getTiedToPixel() - noteRenderInfo.x)/2;
-            renderArc(dc, center_x, base_y, radius_x, show_above ? -80 : 80);
+            renderArc(dc, center_x, base_y, radius_x, show_above ? -50 : 50);
         }
 
         // beam
