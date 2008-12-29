@@ -40,13 +40,9 @@ NOTE: sorry, this is very raw :)
   
 ************************* NEW FEATURES TO ADD: *************************
 
- * add new tools, that allow adding notes without dragging (and resizing without keyboard, and selecting, and...?)
-
  + make more features accessible graphically (as opposed to keyboard-only)
  
  + elements you get from clicking on the left area should appear in the main menubar too
-
- + Show ottava bassa/alta signs, especially when printing
 
  - .aria files don't remember whether drums are minimized
  - .aria files don't remember docked tracks
@@ -77,6 +73,7 @@ NOTE: sorry, this is very raw :)
  - select notes and all similar menu items should be disabled in controller mode
  
  UNSURE/MINOR:
+  - add new tools, that allow adding notes without dragging (and resizing without keyboard, and selecting, and...?)
  - setting sharp/flat sign manually sometimes doesn't work (when it's possible to display the note on a level with no sign)
  - key is not saved to midi files (the problem is that in midi key is global, in Aria it is local)
  - render a bit less often + probably too many paint events (duplicate ones at times) track and remove them
@@ -121,6 +118,7 @@ NOTE: sorry, this is very raw :)
     - skip series of empty measures
     - allow setting font size, number of lines per page, zoom, etc...
 	- print dialog says it takes 9999 pages or so...
+    - Show ottava bassa/alta signs
     
 repetition detection:
     - sometimes does 41-42 43-44 and not 41-44
