@@ -512,23 +512,28 @@ void MainPane::mouseDown(wxMouseEvent& event)
     if(mousey_current < getHeight()-getCurrentSequence()->dockHeight and
        event.GetY() > measureBarY+measureBarHeight)
     {
-
-
+        click_area = CLICK_TRACK;
+        
         // dispatch event to all tracks (stop when either of them uses it)
-        const unsigned int seq_amount = getCurrentSequence()->getTrackAmount();
-        for(unsigned int n=0; n<seq_amount; n++)
+        const unsigned int track_amount = getCurrentSequence()->getTrackAmount();
+        for(unsigned int n=0; n<track_amount; n++)
         {
             const int y = getCurrentSequence()->getTrack(n)->graphics->getCurrentEditor()->getTrackYStart();
 
             // check if user is moving this track
             if(!getCurrentSequence()->getTrack(n)->graphics->docked and mousey_current>y and mousey_current<y+7)
             {
+                click_area = CLICK_REORDER;
                 draggingTrack = n;
             }
             else
             { // otherwise ask the track to check if it has something to do with this event
-                if(!getCurrentSequence()->getTrack(n)->graphics->processMouseClick( mousex_current, event.GetY()))
+                const bool event_processed = !getCurrentSequence()->getTrack(n)->graphics->processMouseClick( mousex_current, event.GetY());
+                if(event_processed)
+                {
+                    click_in_track = n;
                     break;
+                }
             }
         }
     }// end if not on dock
@@ -536,6 +541,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
     // ----------------------------------- click is in dock ----------------------------
     if(event.GetY() > getHeight()-getCurrentSequence()->dockHeight)
     {
+        click_area = CLICK_DOCK;
         assertExpr( (int)positionsInDock.size()/2 ,==,(int)getCurrentSequence()->dock.size());
 
         for(unsigned int n=0; n<positionsInDock.size(); n+=2)
@@ -576,7 +582,8 @@ void MainPane::mouseDown(wxMouseEvent& event)
     // ----------------------------------- click is in tab bar ----------------------------
     if(!PlatformMidiManager::isPlaying() and event.GetY() > tabBarY and event.GetY() < tabBarY+20)
     {
-
+        click_area = CLICK_TAB_BAR;
+        
         int start_at_x = 0;
         for(int n=0; n<getMainFrame()->getSequenceAmount(); n++)
         {
@@ -594,6 +601,8 @@ void MainPane::mouseDown(wxMouseEvent& event)
     // ----------------------------------- click is in measure bar ----------------------------
     if(event.GetY() > measureBarY and event.GetY() < measureBarY+measureBarHeight)
     {
+        click_area = CLICK_MEASURE_BAR;
+        
         if( ! (currentTick!=-1 and (leftArrow or rightArrow)) ) // ignore when playing
         {
             getMeasureData()->graphics->mouseDown(mousex_current.getRelativeTo(WINDOW), mousey_current - measureBarY);
@@ -625,19 +634,15 @@ void MainPane::mouseMoved(wxMouseEvent& event)
 
     if(event.Dragging())
     {
-
         // we are not reordering tracks
         if(draggingTrack==-1)
         {
             // ----------------------------------- click is in track area ----------------------------
-            // check click is not on dock before passing event to current track
-            if(event.GetY() < getHeight()-getCurrentSequence()->dockHeight)
-                getCurrentSequence()->getCurrentTrack()->graphics->processMouseDrag( mousex_current, event.GetY());
+            if(click_area == CLICK_TRACK)
+                getCurrentSequence()->getTrack(click_in_track)->graphics->processMouseDrag( mousex_current, event.GetY());
 
             // ----------------------------------- click is in measure bar ----------------------------
-            int measureBarHeight = getMeasureData()->graphics->getMeasureBarHeight();
-            if(mousey_initial > measureBarY and mousey_initial < measureBarY+measureBarHeight and
-               event.GetY() > measureBarY and event.GetY() < measureBarY+measureBarHeight)
+            if(click_area == CLICK_MEASURE_BAR)
             {
                 getMeasureData()->graphics->mouseDrag(mousex_current.getRelativeTo(WINDOW), mousey_current - measureBarY,
                                            mousex_initial.getRelativeTo(WINDOW), mousey_initial - measureBarY);
@@ -681,9 +686,7 @@ void MainPane::mouseReleased(wxMouseEvent& event)
     }//end if
 
     // ----------------------------------- click is in measure bar ----------------------------
-    int measureBarHeight = getMeasureData()->graphics->getMeasureBarHeight();
-    if(mousey_initial > measureBarY and mousey_initial < measureBarY+measureBarHeight and
-       event.GetY() > measureBarY and event.GetY() < measureBarY+measureBarHeight)
+    if(click_area == CLICK_MEASURE_BAR)
     {
         // check if user is clicking on red arrow that scrolls to current playback location
         if(leftArrow)
@@ -706,10 +709,10 @@ void MainPane::mouseReleased(wxMouseEvent& event)
                                                 mousex_initial.getRelativeTo(WINDOW), mousey_initial - measureBarY);
         }
     }
-    else
+    else if(click_area == CLICK_TRACK)
     {
         // disptach mouse up event to current track
-        getCurrentSequence()->getCurrentTrack()->graphics->processMouseRelease();
+        getCurrentSequence()->getTrack(click_in_track)->graphics->processMouseRelease();
     }
 
     Display::render();
