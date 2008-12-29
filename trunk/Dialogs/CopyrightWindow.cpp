@@ -18,6 +18,7 @@
 
 #include "Dialogs/CopyrightWindow.h"
 #include "Midi/Sequence.h"
+#include "Midi/CommonMidiUtils.h"
 
 #include <iostream>
 
@@ -37,6 +38,8 @@ class CopyrightWindowClass : public wxDialog
 
     Sequence* sequence;
 
+    wxStaticText* songLength;
+    
     int code;
 
 public:
@@ -47,36 +50,95 @@ public:
                                                     _("Copyright and song info"),
                                                     wxDefaultPosition, wxSize(400,400), wxCAPTION )
     {
-            sequence = seq;
+        sequence = seq;
 
-            boxSizer=new wxBoxSizer(wxVERTICAL);
+        boxSizer=new wxBoxSizer(wxVERTICAL);
 
-            //I18N: - title of the copyright/info dialog
-            boxSizer->Add( new wxStaticText(this, wxID_ANY,  _("Song name") ) , 0, wxALL, 2 );
+        //I18N: - title of the copyright/info dialog
+        boxSizer->Add( new wxStaticText(this, wxID_ANY,  _("Song name") ) , 0, wxALL, 2 );
 
-            // song name
-            wxSize size_horz = wxDefaultSize;
-            size_horz.x = 400;
-            nameInput = new wxTextCtrl( this, wxID_ANY,  sequence->getInternalName(), wxDefaultPosition, size_horz);
-            boxSizer->Add( nameInput, 0, wxALL, 10 );
+        // song name
+        wxSize size_horz = wxDefaultSize;
+        size_horz.x = 400;
+        nameInput = new wxTextCtrl( this, wxID_ANY,  sequence->getInternalName(), wxDefaultPosition, size_horz);
+        boxSizer->Add( nameInput, 0, wxALL, 10 );
 
-            //I18N: - title of the copyright/info dialog
-            boxSizer->Add( new wxStaticText(this, wxID_ANY,  _("Copyright") ) , 0, wxALL, 2 );
+        //I18N: - title of the copyright/info dialog
+        boxSizer->Add( new wxStaticText(this, wxID_ANY,  _("Copyright") ) , 0, wxALL, 2 );
 
-            // text area
-            copyrightInput = new wxTextCtrl( this, wxID_ANY, sequence->getCopyright(), wxDefaultPosition, wxSize(400,75), wxTE_MULTILINE );
-            boxSizer->Add( copyrightInput, 0, wxALL, 10 );
+        // text area
+        copyrightInput = new wxTextCtrl( this, wxID_ANY, sequence->getCopyright(), wxDefaultPosition, wxSize(400,75), wxTE_MULTILINE );
+        boxSizer->Add( copyrightInput, 0, wxALL, 10 );
 
-            // ok button
-            okBtn = new wxButton( this, 1, wxT("OK"));
-            okBtn->SetDefault();
-            boxSizer->Add( okBtn, 0, wxALL, 10 );
+        // song length
+        songLength = new wxStaticText(this, wxID_ANY, wxString(_("Song duration :"))+wxT(" ??:??"));
+        boxSizer->Add( songLength, 0, wxALL, 10 );
+        
+        // ok button
+        okBtn = new wxButton( this, 1, wxT("OK"));
+        okBtn->SetDefault();
+        boxSizer->Add( okBtn, 0, wxALL, 10 );
 
-            SetSizer( boxSizer );
-            boxSizer->Layout();
-            boxSizer->SetSizeHints( this );
-
+        SetSizer( boxSizer );
+        boxSizer->Layout();
+        boxSizer->SetSizeHints( this );
+        
+        // find song duration
+        int last_tick = -1;
+        const int track_amount = seq->getTrackAmount();
+        for(int n=0; n<track_amount; n++)
+        {
+            const int duration = seq->getTrack(n)->getDuration();
+            if(duration > last_tick) last_tick = duration;
         }
+        
+        std::vector<int> tempos;
+        std::vector<int> duration;
+        
+        const int tempo_events_amount = seq->tempoEvents.size();
+        //std::cout << "tempo_events_amount = " << tempo_events_amount << std::endl;
+        if(tempo_events_amount < 1 or (tempo_events_amount==1 and seq->tempoEvents[0].getTick()==0) )
+        {
+            tempos.push_back(seq->getTempo());
+            duration.push_back(last_tick);
+        }
+        else
+        {
+            // multiple tempo changes
+            
+            // from beginning to first event
+            tempos.push_back(seq->getTempo());
+            duration.push_back(seq->tempoEvents[0].getTick());
+            
+            //std::cout << "Firstly, " << (seq->tempoEvents[0].getTick()) << " ticks at " << seq->getTempo() << std::endl;
+            
+            // other events
+            for(int n=1; n<tempo_events_amount; n++)
+            {
+                tempos.push_back( convertTempoBendToBPM(seq->tempoEvents[n-1].getValue()) );
+                duration.push_back(seq->tempoEvents[n].getTick()-seq->tempoEvents[n-1].getTick());
+                //std::cout << (duration[duration.size()-1]) << " ticks at " << (tempos[tempos.size()-1]) << std::endl;
+            }
+            
+            // after last event
+            tempos.push_back( convertTempoBendToBPM(seq->tempoEvents[seq->tempoEvents.size()-1].getValue()) );
+            duration.push_back( last_tick - seq->tempoEvents[seq->tempoEvents.size()-1].getTick() );
+            //std::cout << "Finally, " << (duration[duration.size()-1]) << " ticks at " << (tempos[tempos.size()-1]) << std::endl;
+        }
+        
+
+        int song_duration = 0;
+        const int amount = tempos.size();
+        for(int n=0; n<amount; n++)
+        {
+           // std::cout << " -- adding " << (int)round( ((float)duration[n] * 60.0f ) / ((float)seq->ticksPerBeat() * (float)tempos[n])) << std::endl;
+            song_duration += (int)round( ((float)duration[n] * 60.0f ) / ((float)seq->ticksPerBeat() * (float)tempos[n]));
+        }
+        
+        wxString duration_label = wxString::Format(wxString(_("Song duration :")) + wxT("  %i:%.2i"), (int)(song_duration/60), song_duration%60);
+        //std::cout << song_duration << " --> " << duration_label.mb_str() << std::endl;
+        songLength->SetLabel(duration_label);
+    }
 
 
     void okClicked(wxCommandEvent& evt)
@@ -122,8 +184,6 @@ END_EVENT_TABLE()
 namespace CopyrightWindow {
 
     CopyrightWindowClass* copyrightWindow=NULL;
-
-    // FIXME
 
     void show(Sequence* seq)
     {

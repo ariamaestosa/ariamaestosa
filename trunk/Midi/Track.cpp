@@ -605,7 +605,13 @@ int Track::getFirstNoteTick(bool selectionOnly) const
     return tick;
 
 }
-
+    
+/* returns the last tick in the track */
+int Track::getDuration() const
+{
+    return noteOff[noteOff.size()-1].endTick;
+}
+    
 void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
 {
 
