@@ -1,5 +1,5 @@
 1.2b4
-- Switched to unified (native) toolbar on mac
+- Switched to unified (native) toolbar on mac  (WARNING: requires patching wxWidgets, see docs)
 - A few linux changes
 - Fixed control editor to allow minimal value (0), namely allowing to turn Sustain off.
 - Fixed (yet another) bug in accidental handling
@@ -16,7 +16,7 @@
 - More layout and rendering improvements to score printing
 - Added keyboard shortcuts for more menu elements
 - Added built-in docs viewer on mac
-- Fixed print dialog to show correct page amount instead of 9999
+- Fixed print dialog to show correct page amount instead of 9999 (WARNING: requires patching wxWidgets, see docs)
 
 1.2b3
 - Refactored preferences to look better, be cleaner and allow setting a default value for "follow playback"
