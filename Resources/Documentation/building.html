@@ -58,6 +58,65 @@ First, download and install wxWidgets. I usually build static. Don't forget to e
                      wxMacCFStringHolder( tool->GetLongHelp(), enc ) );
 </pre>
 
+Furthermore, the print dialog in wxWidgets has a bug, it will show 9999 as the number of pages no matter what. To fix this, apply the following patch (this was taken in SVN version of wxWidgets. The same fix works on wx 2.8.x but you will need to apply the changes manually since this patch won't work there. In wx 2.8, the file to patch is instead src/mac/carbon/printmac.cpp).
+<pre>
+Index: src/osx/core/printmac.cpp
+===================================================================
+--- src/osx/core/printmac.cpp (revision 57516)
++++ src/osx/core/printmac.cpp (working copy)
+@@ -468,11 +468,24 @@
+         return false;
+ 
+     printout->SetIsPreview(false);
++    
++    // Get some parameters from the printout, if defined
++    int fromPage, toPage;
++    int minPage, maxPage;
++    printout->GetPageInfo(&minPage, &maxPage, &fromPage, &toPage);
++
++    if (maxPage == 0) return false;
++
++    // Only set min and max, because from and to will be
++    // set by the user
++    m_printDialogData.SetMinPage(minPage);
++    m_printDialogData.SetMaxPage(maxPage);
++    
+     if (m_printDialogData.GetMinPage() < 1)
+         m_printDialogData.SetMinPage(1);
+     if (m_printDialogData.GetMaxPage() < 1)
+         m_printDialogData.SetMaxPage(9999);
+-
++    
+     // Create a suitable device context
+     wxPrinterDC *dc = NULL;
+     if (prompt)
+@@ -526,23 +539,7 @@
+     wxBeginBusyCursor();
+ 
+     printout->OnPreparePrinting();
+-
+-    // Get some parameters from the printout, if defined
+-    int fromPage, toPage;
+-    int minPage, maxPage;
+-    printout->GetPageInfo(&minPage, &maxPage, &fromPage, &toPage);
+-
+-    if (maxPage == 0)
+-    {
+-        wxEndBusyCursor();
+-        return false;
+-    }
+-
+-    // Only set min and max, because from and to have been
+-    // set by the user
+-    m_printDialogData.SetMinPage(minPage);
+-    m_printDialogData.SetMaxPage(maxPage);
+-
++    
+     printout->OnBeginPrinting();
+ 
+     bool keepGoing = true;
+</pre>
+
 <br/><br/>Example terminal commands to build wx (read the instructions that come with wxWidgets or wxWiki for more info):<br/>
 <blockquote>
 <pre>cd wxMac2.8.x
