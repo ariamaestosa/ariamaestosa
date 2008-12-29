@@ -107,10 +107,14 @@ public:
 
     // method called by GraphicalTrack to let the Editor know about its position
     void updatePosition(const int from_y, const int to_y, const int width, const int height, const int barHeight);
-
+    
+    // default volume
+    int Editor::getDefaultVolume() const;
+    void Editor::setDefaultVolume(const int v);
+    
     // get info about key
-    int getKeySharpsAmount();
-    int getKeyFlatsAmount();
+    int getKeySharpsAmount() const;
+    int getKeyFlatsAmount() const;
 
     // ------------------------------------------------------------------------------------------------------
     // utility methods that children may call as needed
@@ -146,7 +150,7 @@ public:
     virtual void rightClick(RelativeXCoord x, int y);
     virtual void mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
                                RelativeXCoord mousex_initial, int mousey_initial);
-    virtual void mouseExited(RelativeXCoord dragX_arg, int mousey_current,
+    virtual void TrackPropertiesDialog(RelativeXCoord dragX_arg, int mousey_current,
                              RelativeXCoord XBeforeDrag_arg, int mousey_initial);
     virtual void render();
     virtual void render(RelativeXCoord mousex_current, int mousey_current,

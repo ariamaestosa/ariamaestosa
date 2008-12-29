@@ -31,9 +31,7 @@
 
 namespace AriaMaestosa {
 
-/*
- * In Custom guitar tuning editor, this is a single string
- */
+
 class BackgroundChoicePanel : public wxPanel
 {
 public:
@@ -44,9 +42,6 @@ public:
 
     BackgroundChoicePanel(wxWindow* parent, const int trackID, Track* track, const bool activated=false, const bool enabled = false) : wxPanel(parent)
     {
-
-
-
         sizer = new wxBoxSizer(wxHORIZONTAL);
 
         const int editorMode = track->graphics->editorMode;
@@ -76,21 +71,17 @@ public:
 
 };
 
-
-/*
- * This is the rame that lets you enter a custom tuning.
- */
-
-class BackgroundPickerFrame : public wxDialog
+// FIXME - rename file and move to Dialogs
+class TrackPropertiesDialog : public wxDialog
 {
-
-    wxPanel* buttonPane;
     wxButton* ok_btn;
     wxButton* cancel_btn;
-    wxBoxSizer* buttonsizer;
 
     wxBoxSizer* sizer;
 
+    wxTextCtrl* volume_text;
+    wxSlider* volume_slider;
+    
     ptr_vector<BackgroundChoicePanel> choicePanels;
 
     Track* parent;
@@ -98,23 +89,31 @@ class BackgroundPickerFrame : public wxDialog
     int modalid;
 
 public:
-    LEAK_CHECK(BackgroundPickerFrame);
+    LEAK_CHECK(TrackPropertiesDialog);
 
-    ~BackgroundPickerFrame()
+    ~TrackPropertiesDialog()
     {
     }
 
-    BackgroundPickerFrame(Track* parent) :
-        wxDialog(NULL, wxID_ANY,  _("Track Background"), wxPoint(100,100), wxSize(500,300), wxCAPTION )
+    TrackPropertiesDialog(Track* parent) :
+        wxDialog(NULL, wxID_ANY,  _("Track Properties"), wxPoint(100,100), wxSize(700,300), wxCAPTION | wxCLOSE_BOX | wxSTAY_ON_TOP )
     {
-
-
-        BackgroundPickerFrame::parent = parent;
+        TrackPropertiesDialog::parent = parent;
 
         sizer = new wxBoxSizer(wxVERTICAL);
 
+        wxPanel* properties_panel = new wxPanel(this);
+        wxPanel* buttonPane = new wxPanel(this);
+        sizer->Add(properties_panel, 1, wxEXPAND | wxALL, 5);
+        sizer->Add(buttonPane, 0, wxALL, 5);
+        
         Editor* editor = parent->graphics->getCurrentEditor();
 
+        wxBoxSizer* props_sizer = new wxBoxSizer(wxHORIZONTAL);
+        
+        // ------ track background -----
+        wxStaticBoxSizer* bg_subsizer = new wxStaticBoxSizer(wxVERTICAL, properties_panel, _("Track Background"));
+        
         const int trackAmount = getCurrentSequence()->getTrackAmount();
         for(int n=0; n<trackAmount; n++)
         {
@@ -125,15 +124,41 @@ public:
             bool activated = false;
             if(editor->hasAsBackground(track)) activated = true;
 
-            BackgroundChoicePanel* bcp = new BackgroundChoicePanel(this, n, track, activated, enabled);
-            sizer->Add(bcp, 0, wxALL, 5);
+            BackgroundChoicePanel* bcp = new BackgroundChoicePanel(properties_panel, n, track, activated, enabled);
+            bg_subsizer->Add(bcp, 0, wxALL, 5);
             choicePanels.push_back(bcp);
         }
-
-        buttonPane = new wxPanel(this);
-        sizer->Add(buttonPane, 0, wxALL, 5);
-
-        buttonsizer = new wxBoxSizer(wxHORIZONTAL);
+        props_sizer->Add(bg_subsizer, 0, wxALL, 5);
+        
+        bg_subsizer->Layout();
+        
+        // ------ other properties ------
+        wxBoxSizer* right_subsizer = new wxBoxSizer(wxVERTICAL);
+        props_sizer->Add(right_subsizer, 0, wxALL, 5);
+        
+        wxStaticBoxSizer* default_volume_subsizer = new wxStaticBoxSizer(wxHORIZONTAL, properties_panel, _("Default Volume"));
+        
+        volume_slider = new wxSlider(properties_panel, 300 /* ID */, 80 /* current */, 0 /* min */, 127 /* max */);
+        default_volume_subsizer->Add(volume_slider, 0, wxALL, 5);
+        
+        wxSize smallsize = wxDefaultSize;
+        smallsize.x = 50;
+        volume_text = new wxTextCtrl(properties_panel, 301, wxT("80"), wxDefaultPosition, smallsize);
+        default_volume_subsizer->Add(volume_text, 0, wxALL, 5);
+        
+        right_subsizer->Add(default_volume_subsizer, 0, wxALL, 0);
+        
+        //right_subsizer->Add( new wxButton(properties_panel, wxID_ANY, wxT("Editor-specific options")), 1, wxALL, 5 );
+        
+        properties_panel->SetSizer(props_sizer);
+        
+        default_volume_subsizer->Layout();
+        right_subsizer->Layout();
+        props_sizer->Layout();
+        props_sizer->SetSizeHints(properties_panel);
+        
+        // ------ bottom OK/cancel buttons ----
+        wxBoxSizer* buttonsizer = new wxBoxSizer(wxHORIZONTAL);
 
         ok_btn = new wxButton(buttonPane, 200, wxT("OK"));
         ok_btn->SetDefault();
@@ -143,8 +168,7 @@ public:
         buttonsizer->Add(cancel_btn, 0, wxALL, 5);
 
         buttonPane->SetSizer(buttonsizer);
-
-        SetAutoLayout(true);
+        
         SetSizer(sizer);
         sizer->Layout();
         sizer->SetSizeHints(this); // resize window to take ideal space
@@ -154,6 +178,11 @@ public:
     void show()
     {
         Center();
+        
+        Editor* editor = parent->graphics->getCurrentEditor();
+        volume_text->SetValue( to_wxString(editor->getDefaultVolume()) );
+        volume_slider->SetValue( editor->getDefaultVolume() );
+        
         modalid = ShowModal();
     }
 
@@ -166,8 +195,12 @@ public:
     // when OK button of the tuning picker is pressed
     void okButton(wxCommandEvent& evt)
     {
-        const int amount = choicePanels.size();
         Editor* editor = parent->graphics->getCurrentEditor();
+        const int value = atoi_u(volume_text->GetValue());
+        if(value >=0 and value < 128) editor->setDefaultVolume( value );
+        else wxBell();
+        
+        const int amount = choicePanels.size();
         Sequence* seq = getCurrentSequence();
 
         editor->clearBackgroundTracks();
@@ -184,23 +217,44 @@ public:
         wxDialog::EndModal(modalid);
         Display::render();
     }
+    
+    void volumeSlideChanging(wxScrollEvent& evt)
+    {
+        const int value = volume_slider->GetValue();
+        if(value >=0 and value < 128) volume_text->SetValue( to_wxString(value) );
+    }
 
+    void volumeTextChanged(wxCommandEvent& evt)
+    {
+        const int value = atoi_u(volume_text->GetValue());
+        volume_slider->SetValue( value );
+    }
 DECLARE_EVENT_TABLE()
 };
 
-BEGIN_EVENT_TABLE(BackgroundPickerFrame, wxDialog)
-EVT_BUTTON(200, BackgroundPickerFrame::okButton)
-EVT_BUTTON(202, BackgroundPickerFrame::cancelButton)
+BEGIN_EVENT_TABLE(TrackPropertiesDialog, wxDialog)
+EVT_BUTTON(200, TrackPropertiesDialog::okButton)
+EVT_BUTTON(202, TrackPropertiesDialog::cancelButton)
+    
+EVT_COMMAND_SCROLL_THUMBTRACK(300, TrackPropertiesDialog::volumeSlideChanging)
+EVT_COMMAND_SCROLL_THUMBRELEASE(300, TrackPropertiesDialog::volumeSlideChanging)
+EVT_COMMAND_SCROLL_LINEUP(300, TrackPropertiesDialog::volumeSlideChanging)
+EVT_COMMAND_SCROLL_LINEDOWN(300, TrackPropertiesDialog::volumeSlideChanging)
+EVT_COMMAND_SCROLL_PAGEUP(300, TrackPropertiesDialog::volumeSlideChanging)
+EVT_COMMAND_SCROLL_PAGEDOWN(300, TrackPropertiesDialog::volumeSlideChanging)
+    
+EVT_TEXT(301, TrackPropertiesDialog::volumeTextChanged)
+    
 END_EVENT_TABLE()
 
 
 
-namespace BackgroundPicker{
+namespace TrackProperties{
 
 
     void show(Track* parent)
     {
-        BackgroundPickerFrame frame(parent);
+        TrackPropertiesDialog frame(parent);
         frame.show();
     }
 

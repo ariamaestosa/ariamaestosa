@@ -64,7 +64,7 @@ public:
 
     void selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current, RelativeXCoord& mousex_initial, int mousey_initial);
 
-    //void mouseExited(RelativeXCoord dragX_arg, int mousey_current,
+    //void TrackPropertiesDialog(RelativeXCoord dragX_arg, int mousey_current,
     //                 RelativeXCoord XBeforeDrag_arg, int mousey_initial);
 
     //void mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,

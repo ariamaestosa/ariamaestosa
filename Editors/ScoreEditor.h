@@ -156,7 +156,7 @@ const unsigned short int flat_sign_x[] = { 3*sign_dist, 1*sign_dist, 6*sign_dist
         void mouseUp(RelativeXCoord mousex_current, int mousey_current,
                      RelativeXCoord mousex_initial, int mousey_initial);
         void rightClick(RelativeXCoord x, int y);
-        void mouseExited(RelativeXCoord mousex_current, int mousey_current,
+        void TrackPropertiesDialog(RelativeXCoord mousex_current, int mousey_current,
                          RelativeXCoord mousex_initial, int mousey_initial);
 
         int getYScrollInPixels();

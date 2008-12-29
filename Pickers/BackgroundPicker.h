@@ -23,7 +23,7 @@
 namespace AriaMaestosa {
     class Track;
     
-namespace BackgroundPicker{
+namespace TrackProperties{
         
     void show(Track* parent);
         

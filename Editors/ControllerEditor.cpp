@@ -369,7 +369,7 @@ void ControllerEditor::rightClick(RelativeXCoord x, const int y)
 
 }
 
-void ControllerEditor::mouseExited(RelativeXCoord mousex_current, int mousey_current,
+void ControllerEditor::TrackPropertiesDialog(RelativeXCoord mousex_current, int mousey_current,
                                    RelativeXCoord mousex_initial, int mousey_initial)
 {
     // if mouse leaves the frame, it has the same effect as if it was released (terminate drag, terminate selection, etc.)
