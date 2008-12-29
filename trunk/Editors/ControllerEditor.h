@@ -63,7 +63,7 @@ public:
     void mouseUp(RelativeXCoord mousex_current, int mousey_current,
                  RelativeXCoord mousex_initial, int mousey_initial);
     void rightClick(RelativeXCoord, const int y);
-    void mouseExited(RelativeXCoord dragX_arg, int mousey_current,
+    void TrackPropertiesDialog(RelativeXCoord dragX_arg, int mousey_current,
                      RelativeXCoord XBeforeDrag_arg, int mousey_initial);
 
     int getSelectionBegin();

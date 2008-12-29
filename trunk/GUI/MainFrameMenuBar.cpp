@@ -159,8 +159,8 @@ void MainFrame::initMenuBar()
     trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_ADD, wxString(_("Add Track"))+wxT("\tCtrl-Shift-N"), MainFrame::menuEvent_addTrack );
     trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_REMOVE, wxString(_("Delete Track"))+wxT("\tCtrl-DEL"), MainFrame::menuEvent_deleteTrack );
     trackMenu->AppendSeparator();
-    //I18N: - in the track menu, allows choosing the background of a track
-    trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_BACKG, _("Background"), MainFrame::menuEvent_trackBackground );
+    //I18N: - in the track menu, allows choosing the properties of a track
+    trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_BACKG, _("Properties"), MainFrame::menuEvent_trackBackground );
 
     // Settings menu
     settingsMenu = new wxMenu();
@@ -459,7 +459,7 @@ void MainFrame::menuEvent_deleteTrack(wxCommandEvent& evt)
 }
 void MainFrame::menuEvent_trackBackground(wxCommandEvent& evt)
 {
-    BackgroundPicker::show(getCurrentSequence()->getCurrentTrack());
+    TrackProperties::show(getCurrentSequence()->getCurrentTrack());
 }
 
 #if 0

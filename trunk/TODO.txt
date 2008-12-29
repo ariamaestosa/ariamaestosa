@@ -61,8 +61,6 @@ NOTE: sorry, this is very raw :)
  
  + reordering tracks should be nicer
  
- - set default volume
- 
  - shift-click on a selected notes unselects it
  - cursor should change when hitting key modifiers (at least a select icon when hitting shift in control editor)
 

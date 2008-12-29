@@ -66,8 +66,11 @@ Editor::~Editor()
 {
 }
 
-int Editor::getKeySharpsAmount() { return key_sharps_amnt; }
-int Editor::getKeyFlatsAmount() { return key_flats_amnt; }
+int Editor::getDefaultVolume() const { return default_volume; }
+void Editor::setDefaultVolume(const int v) { default_volume = v; }
+    
+int Editor::getKeySharpsAmount() const { return key_sharps_amnt; }
+int Editor::getKeyFlatsAmount() const { return key_flats_amnt; }
 
 void Editor::useInstantNotes(bool enabled)
 {
@@ -469,7 +472,7 @@ end_of_func:
 
 }
 
-void Editor::mouseExited(RelativeXCoord mousex_current, int mousey_current,
+void Editor::TrackPropertiesDialog(RelativeXCoord mousex_current, int mousey_current,
                          RelativeXCoord mousex_initial, int mousey_initial)
 {
     if(selecting) selectNotesInRect(mousex_current, mousey_current, mousex_initial, mousey_initial);
