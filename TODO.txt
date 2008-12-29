@@ -62,8 +62,6 @@ NOTE: sorry, this is very raw :)
    
  - change whole track pitch/volume
  
- - show song duration
- 
  + reordering tracks should be nicer
  
  - set default volume

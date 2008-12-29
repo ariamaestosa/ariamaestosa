@@ -200,7 +200,8 @@ public:
     void mergeTrackIn(Track* track);
 
     int getFirstNoteTick(bool selectionOnly=false) const;
-
+    int getDuration() const; // in ticks
+    
     /*
      * only used in manual channel management mode
      * if auto mode is on, the playing code must pick a channel for each track.
