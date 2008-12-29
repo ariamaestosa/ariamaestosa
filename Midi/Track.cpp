@@ -609,6 +609,8 @@ int Track::getFirstNoteTick(bool selectionOnly) const
 /* returns the last tick in the track */
 int Track::getDuration() const
 {
+    if(noteOff.size() < 1) return 0;
+    
     return noteOff[noteOff.size()-1].endTick;
 }
     
