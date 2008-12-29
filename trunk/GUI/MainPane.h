@@ -36,6 +36,15 @@ namespace AriaMaestosa
     class MouseDownTimer;
     class MainFrame;
 
+enum ClickArea
+{
+    CLICK_DOCK,
+    CLICK_MEASURE_BAR,
+    CLICK_REORDER,
+    CLICK_TRACK,
+    CLICK_TAB_BAR
+};
+    
 class MainPane : public MAINPANE_BASE_CLASS
 {
     OwnerPtr<MouseDownTimer>  mouseDownTimer;
@@ -58,6 +67,9 @@ class MainPane : public MAINPANE_BASE_CLASS
 
     bool scrollToPlaybackPosition;
 
+    ClickArea click_area;
+    int click_in_track; // if click_area == CLICK_TRACK, contains the ID of the track
+    
 public:
     LEAK_CHECK(MainPane);
 

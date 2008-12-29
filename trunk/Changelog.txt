@@ -18,6 +18,7 @@
 - Added built-in docs viewer on mac
 - Fixed print dialog to show correct page amount instead of 9999 (WARNING: requires patching wxWidgets, see docs)
 - It is now possible to see song length (minutes:seconds) in song info window
+- Improved mouse events propagation, so areas are less viral about mouse needing to remain within defined boundaries
 
 1.2b3
 - Refactored preferences to look better, be cleaner and allow setting a default value for "follow playback"

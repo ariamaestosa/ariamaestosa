@@ -376,16 +376,6 @@ void Editor::mouseDrag(RelativeXCoord mousex_current, int mousey_current,
 
     // if selection becomes thin again, come back in note add mode
     if(selecting and abs(mousey_current-mousey_initial)<ystep) selecting = false;
-
-    // check mouse is still within track boundaries. if not, terminate selection
-    if(selecting)
-    {
-        if( !(mousey_current<getYEnd()-5 and mousey_current>getEditorYStart() /*and mousex_current < getWidth() - 24*/) )
-        {
-            mouseExited(mousex_current, mousey_current, mousex_initial, mousey_initial);
-        }
-    }
-
 }
 
 void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
