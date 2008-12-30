@@ -139,39 +139,39 @@ END_EVENT_TABLE()
 
 #ifndef NO_WX_TOOLBAR
 
-CustomToolBar::CustomToolBar(wxWindow* parent) : wxToolBar(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_TEXT | wxTB_HORIZONTAL | wxNO_BORDER)
-{
-}
-
-void CustomToolBar::add(wxControl* ctrl, wxString label)
-{
-#if wxMAJOR_VERSION >= 3
-    // wxWidgets 3 supports labels under components in toolbar.
-    AddControl(ctrl, label);
-#else
-    AddControl(ctrl);
-#endif
-
-#ifdef __WXMAC__
-    if(not label.IsEmpty())
+    CustomToolBar::CustomToolBar(wxWindow* parent) : wxToolBar(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_TEXT | wxTB_HORIZONTAL | wxNO_BORDER)
     {
-        // work around wxMac limitation (labels under controls in toolbar don't seem to work)
-        // will work only if wx was patched with the supplied patch....
-        wxToolBarToolBase* tool = (wxToolBarToolBase*)FindById(ctrl->GetId());
-        if(tool != NULL) tool->SetLabel(label);
-        else std::cerr << "Failed to set label : " << label.mb_str() << std::endl;
     }
-#endif
-}
-void CustomToolBar::realize()
-{
-    Realize();
-    /*
-        wxToolBarTool* tool = (wxToolBarTool*)FindById(TIME_SIGNATURE);
-        HIToolbarItemRef ref = tool->m_toolbarItemRef;
-        HIToolbarItemSetLabel( ref , CFSTR("Time Sig") );
-     */
-}
+
+    void CustomToolBar::add(wxControl* ctrl, wxString label)
+    {
+    #if wxMAJOR_VERSION >= 3
+        // wxWidgets 3 supports labels under components in toolbar.
+        AddControl(ctrl, label);
+    #else
+        AddControl(ctrl);
+    #endif
+
+    #ifdef __WXMAC__
+        if(not label.IsEmpty())
+        {
+            // work around wxMac limitation (labels under controls in toolbar don't seem to work)
+            // will work only if wx was patched with the supplied patch....
+            wxToolBarToolBase* tool = (wxToolBarToolBase*)FindById(ctrl->GetId());
+            if(tool != NULL) tool->SetLabel(label);
+            else std::cerr << "Failed to set label : " << label.mb_str() << std::endl;
+        }
+    #endif
+    }
+    void CustomToolBar::realize()
+    {
+        Realize();
+        /*
+            wxToolBarTool* tool = (wxToolBarTool*)FindById(TIME_SIGNATURE);
+            HIToolbarItemRef ref = tool->m_toolbarItemRef;
+            HIToolbarItemSetLabel( ref , CFSTR("Time Sig") );
+         */
+    }
 #else
     // my generic toolbar
     CustomToolBar::CustomToolBar(wxWindow* parent) : wxPanel(parent, wxID_ANY)
@@ -297,6 +297,7 @@ void MainFrame::init()
                               wxDefaultSize
 #endif
                               , wxTE_PROCESS_ENTER);
+    songLength->SetRange(5, 9999);
     toolbar->add(songLength, _("Duration"));
 
     tempoCtrl=new wxTextCtrl(toolbar, TEMPO, wxT("120"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER );

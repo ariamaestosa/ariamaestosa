@@ -1,3 +1,6 @@
+1.2b5
+- More minor linux fixes
+
 1.2b4
 - Switched to unified (native) toolbar on mac  (WARNING: requires patching wxWidgets, see docs)
 - A few linux changes
@@ -147,7 +150,7 @@ Version 1.1 new features highlight
 - Fixed undoing shift+up/down in score editor
 - Made saving aria files safe : your file is not deleted until the new one is successfully written
 - Switched some small variables from int to short
- 
+
  1.1b7
 - Improved setting notes sharp/flat/natural to be easier and more flexible
 - Made accidentals last entire measure
@@ -212,7 +215,7 @@ Version 1.1 new features highlight
 - fixed crash in controller editor
 - triplets no more group across measures
 - fixed bugs when using variable time signatures
- 
+
  1.1b4
 - Fixed crash in tab exporter
 - Now checks for file format version when opening .aria file
@@ -232,7 +235,7 @@ Version 1.1 new features highlight
 - Refactored render loop code, complying wih wxWidgets documentation and hopefully making Aria run better on linux
 - Hopefully fixed controller editor problems
 - Minor clean-up
- 
+
  1.1b3
 - Added score editor
 - major cleanup in Editor code
@@ -242,14 +245,14 @@ Version 1.1 new features highlight
 - volume picker should be cancellable with escape on all systems now.
 - fixed preview when dragging a single drum note
 - .aria files now include a version number for backward compatibility
- 
+
  1.1b2
 - Fixed "save changes beore closing" dialogs appearing when they shouldn't and not appearing when they should
 - Fixed ghost notes appearing our of nowhere
 - Fixed crash when closing song with docked tracks
 - making selections in control editor no more requires you to hold key until after mouse is released
 - Fixed songs sometimes given "Untitled" internal name instead of simply no internal name
- 
+
  1.1b1
 - Make Undo work in Controller Editor too
 - it is now possible to scroll tracks with mouse wheel
@@ -267,15 +270,15 @@ Version 1.1 new features highlight
 - fixed notes being added under last string in guitar editor
 - fixed adding notes "backwards" creating glitches
 - fixed potential memory leak with tab exporter
- 
+
 ------------------------------------------------------------------------------------------------------------------------------------------------------
- 
+
  1.0
 - First iteration of Linux version
 - Corrected name suggestion in file dialogs
 - Fixed importing very short midis
 - Fixed bugs when adding measures before measure 1 in extended mode
- 
+
  1.0b10
 - Fixed PPC binaries
 - Can now save and load files in paths with accentuated characters
@@ -288,7 +291,7 @@ Version 1.1 new features highlight
 - Fixed main window not getting activated when switching to Aria
 - Saving files now suggests a file name
 - Fixed opening files while one is already playing
- 
+
  1.0b9
 - Can now run from paths containing accentuated characters
 - Major Improvements to tab exporter
@@ -317,7 +320,7 @@ Version 1.1 new features highlight
 - Fixed adding and removing measures messing up tempo changes
 - Improved midi importing
 - More code cleanup
- 
+
  1.0b7
 - Added support for channels
 - Reduced memory usage
@@ -326,7 +329,7 @@ Version 1.1 new features highlight
 - Fixed top bar getting messed up when dealing with multiple songs in particular circumstances
 - Improved display of disabled song names to be easier on the eyes
 - Fixed localisation errors on computers whose localisation is not supported
- 
+
  1.0b6
 - Hopefully fixed intel binaries
 - Fixed loading control events
@@ -340,7 +343,7 @@ Version 1.1 new features highlight
 - More major code cleanup
 - Significantly improved build system
 
- 
+
  1.0b5
 - Fixed many measure bar glitches
 - Fixed crash when reordering tracks
@@ -359,7 +362,7 @@ Version 1.1 new features highlight
 - Fixed changing volume of drums sometimes changing the volume of the wrong note
 - Fixed instrument pop-up menu displaying many checks next to instrument
 - Fixed crash when closing last document
- 
+
  1.0b4
 - Fixed keyboard modifiers release sometimes not detected
 - Fixed copying from a song and pasting in another
@@ -375,13 +378,13 @@ Version 1.1 new features highlight
 - Fixed 'remove overlapping notes' remove too much notes
 - Removed 'Score Editor' mode that revealed very hard to implement and is not likely to make it in anytime soon
 - Updated documentation
- 
+
  1.0b3
 - Added intel mac binaries
 - Enhanced build system to be more portable and flexible
 - Tuning editor now has a cancel button
 - Tuning editor now enters current tuning as default values
- 
+
 - Fixed 'export to audio' menu not being player-specific
 - Fixed false detection of overlapping notes in tab mode
 - Fixed 'export to audio' menu not greyed out while playing
@@ -403,7 +406,7 @@ Version 1.1 new features highlight
 - Redisinged Tempo controller to have larger range, show main tempo, not show negative values anymore
 - Fixed no visual response upon closing a file
 - Possibly fixed bug of playing crashes
- 
+
  1.0b2
 - fixed About menu not working
 - fixed About dialog not translated

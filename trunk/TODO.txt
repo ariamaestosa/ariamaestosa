@@ -90,8 +90,6 @@ NOTE: sorry, this is very raw :)
 
  ************************* BUGS: *************************
 
-* track properties on linux... slider is very small
-* duration in standard toolbar (linux) can't go over 100
 * try changing tempo to "60" on linux...
 
 * red images
