@@ -90,8 +90,6 @@ NOTE: sorry, this is very raw :)
 
  ************************* BUGS: *************************
 
-* try changing tempo to "60" on linux...
-
 * red images
 * My CoreAudio player is deprecated on OS X 10.5...
     Midi/Players/Mac/CoreAudioNotePlayer.cpp: In function 'OSStatus CoreAudioNotePlayer::CreateAUGraph(OpaqueAUGraph*&, ComponentInstanceRecord*&)':
