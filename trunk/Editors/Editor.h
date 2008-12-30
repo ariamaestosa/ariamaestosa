@@ -107,11 +107,11 @@ public:
 
     // method called by GraphicalTrack to let the Editor know about its position
     void updatePosition(const int from_y, const int to_y, const int width, const int height, const int barHeight);
-    
+
     // default volume
-    int Editor::getDefaultVolume() const;
-    void Editor::setDefaultVolume(const int v);
-    
+    int getDefaultVolume() const;
+    void setDefaultVolume(const int v);
+
     // get info about key
     int getKeySharpsAmount() const;
     int getKeyFlatsAmount() const;

@@ -45,7 +45,7 @@ void removeObj(MyObject* myObj)
     //std::cout << "removeObj done" << std::endl;
 }
 
-MyObject::MyObject(char* f, int l)
+MyObject::MyObject(const char* f, int l)
 {
         file = f;
         line = l;
@@ -53,7 +53,7 @@ MyObject::MyObject(char* f, int l)
 
 void MyObject::print()
 {
-    std::cout << "Undeleted object " << file << " (" << line << ")" << std::endl;
+    std::cout << "Undeleted object " << file.c_str() << " (" << line << ")" << std::endl;
 }
 
 void checkForLeaks()
