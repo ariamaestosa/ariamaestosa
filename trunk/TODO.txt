@@ -40,8 +40,11 @@ NOTE: sorry, this is very raw :)
 
 ************************* NEW FEATURES TO ADD: *************************
 
+ + shift+arrows move notes by 1 octave (vertically) or by 1 measure (horizontally)
+
  + make more features accessible graphically (as opposed to keyboard-only)
    - add new tools, that allow adding notes without dragging (and resizing without keyboard, and selecting, and...?) ?
+   - add keyboard shortcut to change note length
 
  - allow shift-clicking in measure bar to select more measures
 
@@ -90,8 +93,12 @@ NOTE: sorry, this is very raw :)
 
  ************************* BUGS: *************************
 
+* crash when clicking below last trac, in darkness
+
 * red images
 * My CoreAudio player is deprecated on OS X 10.5...
+    AudioToolboxPlayer.cpp:48: warning: 'MusicSequenceLoadSMFData' is deprecated (declared at /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/MusicPlayer.h:1613)
+    AudioToolboxPlayer.cpp:48: warning: 'MusicSequenceLoadSMFData' is deprecated (declared at /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/MusicPlayer.h:1613)
     Midi/Players/Mac/CoreAudioNotePlayer.cpp: In function 'OSStatus CoreAudioNotePlayer::CreateAUGraph(OpaqueAUGraph*&, ComponentInstanceRecord*&)':
     Midi/Players/Mac/CoreAudioNotePlayer.cpp:75: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
     Midi/Players/Mac/CoreAudioNotePlayer.cpp:75: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)

@@ -108,9 +108,7 @@ wxString showFileDialog(wxString message, wxString defaultDir,
 
 wxString getResourcePrefix()
 {
-#if defined(__WXMAC__)
-        return wxStandardPaths::Get().GetResourcesDir() + wxT("/");
-#elif defined(__WXGTK__)
+#if defined(__WXMAC__) || defined(__WXGTK__)
 
         static bool app_in_place = wxFileExists( extract_path(wxStandardPaths::Get().GetExecutablePath())  + wxT("/Resources/collapse.jpg") );
 
