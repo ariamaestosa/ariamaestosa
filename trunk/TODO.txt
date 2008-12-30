@@ -7,15 +7,15 @@ NOTE: sorry, this is very raw :)
 	- update changelog in docs
 	- update version in docs (download, changlelog)
     - give permissions, check info.plist is the right one
- 
+
   Linux: docs in /usr/doc/<package-name> (but on SuSE they go to/usr/share/doc/packages/<package-name>)
   http://www.pathname.com/fhs/
 
 # tar cj --exclude '.svn' --exclude '.DS_Store' --exclude '.sconsign' -f AriaSrc-1.1b6.tar.bz2 AriaSrc-1.1b6
-  
+
 
   ************************* LONG TERM: *************************
- 
+
  - notation printing and export (WIP)
  - guitar pro import
  - midi keyboard support
@@ -37,14 +37,14 @@ NOTE: sorry, this is very raw :)
  - multiple program changes
  - changes to song should be heard if done while playing
  - show more than one editor at once
-  
+
 ************************* NEW FEATURES TO ADD: *************************
 
  + make more features accessible graphically (as opposed to keyboard-only)
    - add new tools, that allow adding notes without dragging (and resizing without keyboard, and selecting, and...?) ?
-   
+
  - allow shift-clicking in measure bar to select more measures
-   
+
  - .aria files don't remember whether drums are minimized
  - .aria files don't remember docked tracks
  - background choices are not saved to .aria files
@@ -56,17 +56,17 @@ NOTE: sorry, this is very raw :)
  + linux : proper ALSA port selection (in preferences?)
 
  - elements you get from clicking on the left area should appear in the main menubar too
- 
+
  - change whole track pitch/volume
- 
+
  + reordering tracks should be nicer
- 
+
  - shift-click on a selected notes unselects it
  - cursor should change when hitting key modifiers (at least a select icon when hitting shift in control editor)
 
  - change volume relatively on a bunch of notes
  - select notes and all similar menu items should be disabled in controller mode
- 
+
  UNSURE/MINOR:
  - setting sharp/flat sign manually sometimes doesn't work (when it's possible to display the note on a level with no sign)
  - key is not saved to midi files (the problem is that in midi key is global, in Aria it is local)
@@ -86,10 +86,11 @@ NOTE: sorry, this is very raw :)
  - song length should automatically grow when pasting goes past the end of the song
  - fix overlapping notes that don't have the same start tick
  - the first click, that activates a track, should not deselect
- - score editor should be able to display notes with more than 2 flags (unusure... those with 2 are already so small and barely visible) 
- 
+ - score editor should be able to display notes with more than 2 flags (unusure... those with 2 are already so small and barely visible)
+
  ************************* BUGS: *************************
 
+* track properties on linux... slider is very small
 * duration in standard toolbar (linux) can't go over 100
 * try changing tempo to "60" on linux...
 
@@ -104,7 +105,7 @@ NOTE: sorry, this is very raw :)
     Midi/Players/Mac/CoreAudioNotePlayer.cpp:84: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
     Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
     Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
-  
+
 * score print :
     - add non-linear printing...
     - repetitions never detected in multi-track printing
@@ -115,13 +116,13 @@ NOTE: sorry, this is very raw :)
     - skip series of empty measures
     - allow setting font size, number of lines per page, zoom, etc...
     - Show ottava bassa/alta signs
-    
+
 repetition detection:
     - sometimes does 41-42 43-44 and not 41-44
     - tab export : x2 can appear on new line...
     - repeated measures need measure numbers too
     - sometimes uses, in repetitions, measures numbers that do not appear on the tab (that are inside a previous repetition)
-    
+
 * crash when cancelling printing (wx bug?)
 
 + score editor - sharp or flat notes at time=0 have their sign hidden behind grey bar
@@ -145,11 +146,11 @@ repetition detection:
     (for instance by switching to and from drum editor, etc.)
 
  - when changing measure length in a song that already has midi events in it, song length becomes wrong compared to midi events
- 
+
  MINOR / CLEANUP / UNSURE:
  - when wait dialog appears, you can still edit tracks and do operations that may be harmful to current process.
     yet you can't make it modal otherwise the background process stops.
-    
+
  - controller editor should keep drum instrument in a drum track (would be fixed if control editor appears under current editor)
  - class ScalePicker in /Dialogs... should be renamed ScaleDialog, or moved
  - tuningpicker and tuningdialog should be 2 separate things
@@ -162,11 +163,11 @@ repetition detection:
  - some drums that are not standard drumset preview fine but dont play correctly (SFX and one other. bug in QT?)
         I say bug in QT since it also seems to affect songs made in other software
  - trigger coreaudio note player at startup?
- 
+
  - FIXMEs
  - in .aria files, pitch should be midi pitch, not my reverse pitch
- 
+
  - copyright editor should have the text field appear multiline but not accept line breaks (enter should default to activating OK button)
  - drum editor draws too many horizontal lines at bottom when you collapse sections
  - making tempo bend curve start at tick=0 might cause double event?
- 
+
