@@ -612,6 +612,8 @@ void MainFrame::tempoChanged(wxCommandEvent& evt)
 
     if(changingValues) return; // discard events thrown because the computer changes values
 
+    if(tempoCtrl->GetValue().IsEmpty()) return; // user is probably about to enter something else
+
     if(!tempoCtrl->GetValue().IsNumber())
     {
         wxBell();
