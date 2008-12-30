@@ -81,7 +81,7 @@ class TrackPropertiesDialog : public wxDialog
 
     wxTextCtrl* volume_text;
     wxSlider* volume_slider;
-    
+
     ptr_vector<BackgroundChoicePanel> choicePanels;
 
     Track* parent;
@@ -106,14 +106,14 @@ public:
         wxPanel* buttonPane = new wxPanel(this);
         sizer->Add(properties_panel, 1, wxEXPAND | wxALL, 5);
         sizer->Add(buttonPane, 0, wxALL, 5);
-        
+
         Editor* editor = parent->graphics->getCurrentEditor();
 
         wxBoxSizer* props_sizer = new wxBoxSizer(wxHORIZONTAL);
-        
+
         // ------ track background -----
         wxStaticBoxSizer* bg_subsizer = new wxStaticBoxSizer(wxVERTICAL, properties_panel, _("Track Background"));
-        
+
         const int trackAmount = getCurrentSequence()->getTrackAmount();
         for(int n=0; n<trackAmount; n++)
         {
@@ -129,34 +129,37 @@ public:
             choicePanels.push_back(bcp);
         }
         props_sizer->Add(bg_subsizer, 0, wxALL, 5);
-        
+
         bg_subsizer->Layout();
-        
+
         // ------ other properties ------
         wxBoxSizer* right_subsizer = new wxBoxSizer(wxVERTICAL);
         props_sizer->Add(right_subsizer, 0, wxALL, 5);
-        
+
         wxStaticBoxSizer* default_volume_subsizer = new wxStaticBoxSizer(wxHORIZONTAL, properties_panel, _("Default Volume"));
-        
+
         volume_slider = new wxSlider(properties_panel, 300 /* ID */, 80 /* current */, 0 /* min */, 127 /* max */);
         default_volume_subsizer->Add(volume_slider, 0, wxALL, 5);
-        
+#ifdef __WXGTK__
+        volume_slider->SetMinSize( wxSize(127,-1) );
+#endif
+
         wxSize smallsize = wxDefaultSize;
         smallsize.x = 50;
         volume_text = new wxTextCtrl(properties_panel, 301, wxT("80"), wxDefaultPosition, smallsize);
         default_volume_subsizer->Add(volume_text, 0, wxALL, 5);
-        
+
         right_subsizer->Add(default_volume_subsizer, 0, wxALL, 0);
-        
+
         //right_subsizer->Add( new wxButton(properties_panel, wxID_ANY, wxT("Editor-specific options")), 1, wxALL, 5 );
-        
+
         properties_panel->SetSizer(props_sizer);
-        
+
         default_volume_subsizer->Layout();
         right_subsizer->Layout();
         props_sizer->Layout();
         props_sizer->SetSizeHints(properties_panel);
-        
+
         // ------ bottom OK/cancel buttons ----
         wxBoxSizer* buttonsizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -168,7 +171,7 @@ public:
         buttonsizer->Add(cancel_btn, 0, wxALL, 5);
 
         buttonPane->SetSizer(buttonsizer);
-        
+
         SetSizer(sizer);
         sizer->Layout();
         sizer->SetSizeHints(this); // resize window to take ideal space
@@ -178,11 +181,11 @@ public:
     void show()
     {
         Center();
-        
+
         Editor* editor = parent->graphics->getCurrentEditor();
         volume_text->SetValue( to_wxString(editor->getDefaultVolume()) );
         volume_slider->SetValue( editor->getDefaultVolume() );
-        
+
         modalid = ShowModal();
     }
 
@@ -199,7 +202,7 @@ public:
         const int value = atoi_u(volume_text->GetValue());
         if(value >=0 and value < 128) editor->setDefaultVolume( value );
         else wxBell();
-        
+
         const int amount = choicePanels.size();
         Sequence* seq = getCurrentSequence();
 
@@ -217,7 +220,7 @@ public:
         wxDialog::EndModal(modalid);
         Display::render();
     }
-    
+
     void volumeSlideChanging(wxScrollEvent& evt)
     {
         const int value = volume_slider->GetValue();
@@ -235,16 +238,16 @@ DECLARE_EVENT_TABLE()
 BEGIN_EVENT_TABLE(TrackPropertiesDialog, wxDialog)
 EVT_BUTTON(200, TrackPropertiesDialog::okButton)
 EVT_BUTTON(202, TrackPropertiesDialog::cancelButton)
-    
+
 EVT_COMMAND_SCROLL_THUMBTRACK(300, TrackPropertiesDialog::volumeSlideChanging)
 EVT_COMMAND_SCROLL_THUMBRELEASE(300, TrackPropertiesDialog::volumeSlideChanging)
 EVT_COMMAND_SCROLL_LINEUP(300, TrackPropertiesDialog::volumeSlideChanging)
 EVT_COMMAND_SCROLL_LINEDOWN(300, TrackPropertiesDialog::volumeSlideChanging)
 EVT_COMMAND_SCROLL_PAGEUP(300, TrackPropertiesDialog::volumeSlideChanging)
 EVT_COMMAND_SCROLL_PAGEDOWN(300, TrackPropertiesDialog::volumeSlideChanging)
-    
+
 EVT_TEXT(301, TrackPropertiesDialog::volumeTextChanged)
-    
+
 END_EVENT_TABLE()
 
 
