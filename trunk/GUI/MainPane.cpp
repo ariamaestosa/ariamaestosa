@@ -515,6 +515,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
         click_area = CLICK_TRACK;
         
         // dispatch event to all tracks (stop when either of them uses it)
+        click_in_track = -1;
         const unsigned int track_amount = getCurrentSequence()->getTrackAmount();
         for(unsigned int n=0; n<track_amount; n++)
         {
@@ -638,7 +639,7 @@ void MainPane::mouseMoved(wxMouseEvent& event)
         if(draggingTrack==-1)
         {
             // ----------------------------------- click is in track area ----------------------------
-            if(click_area == CLICK_TRACK)
+            if(click_area == CLICK_TRACK and click_in_track != -1)
                 getCurrentSequence()->getTrack(click_in_track)->graphics->processMouseDrag( mousex_current, event.GetY());
 
             // ----------------------------------- click is in measure bar ----------------------------
@@ -709,7 +710,7 @@ void MainPane::mouseReleased(wxMouseEvent& event)
                                                 mousex_initial.getRelativeTo(WINDOW), mousey_initial - measureBarY);
         }
     }
-    else if(click_area == CLICK_TRACK)
+    else if(click_area == CLICK_TRACK and click_in_track != -1)
     {
         // disptach mouse up event to current track
         getCurrentSequence()->getTrack(click_in_track)->graphics->processMouseRelease();
