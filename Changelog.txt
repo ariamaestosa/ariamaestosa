@@ -1,5 +1,7 @@
 1.2b5
 - More minor linux fixes
+- Added Code::Blocks project
+- Fixed crash when clicking below last track
 
 1.2b4
 - Switched to unified (native) toolbar on mac  (WARNING: requires patching wxWidgets, see docs)
