@@ -56,6 +56,9 @@
 #include "Clipboard.h"
 #include <iostream>
 
+#ifdef __WXMAC__
+#include <ApplicationServices/ApplicationServices.h>
+#endif
 
 namespace AriaMaestosa {
 
@@ -220,6 +223,13 @@ END_EVENT_TABLE()
 MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(100,100), wxSize(900,600), ARIA_WINDOW_FLAGS )
 {
     toolbar = new CustomToolBar(this);
+#ifdef __WXMAC__
+ProcessSerialNumber PSN;
+GetCurrentProcess(&PSN);
+TransformProcessType(&PSN,kProcessTransformToForegroundApplication);
+#endif
+
+
 #ifndef NO_WX_TOOLBAR
     SetToolBar(toolbar);
 #endif

@@ -182,6 +182,7 @@ def sys_command(command):
 def compile_Aria(build_type, which_os):
 
     env = Environment()
+    env.Append(PATH = os.environ['PATH'])
 
     # add wxWidgets flags
     # check if user defined his own WXCONFIG, else use defaults

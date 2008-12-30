@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="debug" />
+	<File name="../Actions/AddControlEvent.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="3263" topLine="67" />
+	</File>
+	<File name="../Actions/AddControlEvent.h" open="0" top="0" tabpos="0">
+		<Cursor position="1213" topLine="14" />
+	</File>
+	<File name="../Actions/AddControllerSlide.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="9268" topLine="230" />
+	</File>
+	<File name="../Actions/AddControllerSlide.h" open="0" top="0" tabpos="0">
+		<Cursor position="1487" topLine="20" />
+	</File>
+	<File name="../Actions/AddNote.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2345" topLine="50" />
+	</File>
+	<File name="../Actions/AddNote.h" open="0" top="0" tabpos="0">
+		<Cursor position="1217" topLine="15" />
+	</File>
+	<File name="../Actions/DeleteSelected.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="4234" topLine="106" />
+	</File>
+	<File name="../Actions/DeleteSelected.h" open="0" top="0" tabpos="0">
+		<Cursor position="1193" topLine="19" />
+	</File>
+	<File name="../Actions/EditAction.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2514" topLine="86" />
+	</File>
+	<File name="../Actions/EditAction.h" open="0" top="0" tabpos="0">
+		<Cursor position="3675" topLine="100" />
+	</File>
+	<File name="../Actions/InsertEmptyMeasures.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="4291" topLine="85" />
+	</File>
+	<File name="../Actions/InsertEmptyMeasures.h" open="0" top="0" tabpos="0">
+		<Cursor position="1127" topLine="15" />
+	</File>
+	<File name="../Actions/MoveNotes.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="4532" topLine="107" />
+	</File>
+	<File name="../Actions/MoveNotes.h" open="0" top="0" tabpos="0">
+		<Cursor position="1838" topLine="33" />
+	</File>
+	<File name="../Actions/NumberPressed.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1672" topLine="33" />
+	</File>
+	<File name="../Actions/NumberPressed.h" open="0" top="0" tabpos="0">
+		<Cursor position="1154" topLine="16" />
+	</File>
+	<File name="../Actions/Paste.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="7516" topLine="168" />
+	</File>
+	<File name="../Actions/Paste.h" open="0" top="0" tabpos="0">
+		<Cursor position="1093" topLine="14" />
+	</File>
+	<File name="../Actions/RearrangeNotes.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="5460" topLine="137" />
+	</File>
+	<File name="../Actions/RearrangeNotes.h" open="0" top="0" tabpos="0">
+		<Cursor position="1157" topLine="15" />
+	</File>
+	<File name="../Actions/RemoveMeasures.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="10309" topLine="224" />
+	</File>
+	<File name="../Actions/RemoveMeasures.h" open="0" top="0" tabpos="0">
+		<Cursor position="1530" topLine="29" />
+	</File>
+	<File name="../Actions/RemoveOverlapping.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="3122" topLine="60" />
+	</File>
+	<File name="../Actions/RemoveOverlapping.h" open="0" top="0" tabpos="0">
+		<Cursor position="1139" topLine="15" />
+	</File>
+	<File name="../Actions/ResizeNotes.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2449" topLine="57" />
+	</File>
+	<File name="../Actions/ResizeNotes.h" open="0" top="0" tabpos="0">
+		<Cursor position="1170" topLine="15" />
+	</File>
+	<File name="../Actions/ScaleSong.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1640" topLine="31" />
+	</File>
+	<File name="../Actions/ScaleSong.h" open="0" top="0" tabpos="0">
+		<Cursor position="1175" topLine="17" />
+	</File>
+	<File name="../Actions/ScaleTrack.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2396" topLine="45" />
+	</File>
+	<File name="../Actions/ScaleTrack.h" open="0" top="0" tabpos="0">
+		<Cursor position="1271" topLine="19" />
+	</File>
+	<File name="../Actions/SetAccidentalSign.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1956" topLine="43" />
+	</File>
+	<File name="../Actions/SetAccidentalSign.h" open="0" top="0" tabpos="0">
+		<Cursor position="1235" topLine="16" />
+	</File>
+	<File name="../Actions/SetNoteVolume.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2602" topLine="56" />
+	</File>
+	<File name="../Actions/SetNoteVolume.h" open="0" top="0" tabpos="0">
+		<Cursor position="1253" topLine="19" />
+	</File>
+	<File name="../Actions/ShiftBySemiTone.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2543" topLine="58" />
+	</File>
+	<File name="../Actions/ShiftBySemiTone.h" open="0" top="0" tabpos="0">
+		<Cursor position="1175" topLine="17" />
+	</File>
+	<File name="../Actions/ShiftFrets.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2729" topLine="61" />
+	</File>
+	<File name="../Actions/ShiftFrets.h" open="0" top="0" tabpos="0">
+		<Cursor position="1186" topLine="18" />
+	</File>
+	<File name="../Actions/ShiftString.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2790" topLine="64" />
+	</File>
+	<File name="../Actions/ShiftString.h" open="0" top="0" tabpos="0">
+		<Cursor position="1221" topLine="17" />
+	</File>
+	<File name="../Actions/SnapNotesToGrid.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2465" topLine="46" />
+	</File>
+	<File name="../Actions/SnapNotesToGrid.h" open="0" top="0" tabpos="0">
+		<Cursor position="1166" topLine="16" />
+	</File>
+	<File name="../Actions/UpdateGuitarTuning.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1675" topLine="28" />
+	</File>
+	<File name="../Actions/UpdateGuitarTuning.h" open="0" top="0" tabpos="0">
+		<Cursor position="1180" topLine="18" />
+	</File>
+	<File name="../AriaCore.h" open="0" top="0" tabpos="0">
+		<Cursor position="2375" topLine="92" />
+	</File>
+	<File name="../Clipboard.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1871" topLine="42" />
+	</File>
+	<File name="../Clipboard.h" open="0" top="0" tabpos="0">
+		<Cursor position="869" topLine="4" />
+	</File>
+	<File name="../Config.h" open="0" top="0" tabpos="0">
+		<Cursor position="0" topLine="102" />
+	</File>
+	<File name="../Dialogs/About.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2461" topLine="36" />
+	</File>
+	<File name="../Dialogs/About.h" open="0" top="0" tabpos="0">
+		<Cursor position="995" topLine="15" />
+	</File>
+	<File name="../Dialogs/CopyrightWindow.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="3814" topLine="116" />
+	</File>
+	<File name="../Dialogs/CopyrightWindow.h" open="0" top="0" tabpos="0">
+		<Cursor position="875" topLine="2" />
+	</File>
+	<File name="../Dialogs/CustomNoteSelectDialog.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="13315" topLine="331" />
+	</File>
+	<File name="../Dialogs/CustomNoteSelectDialog.h" open="0" top="0" tabpos="0">
+		<Cursor position="828" topLine="1" />
+	</File>
+	<File name="../Dialogs/NotationExportDialog.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="9362" topLine="252" />
+	</File>
+	<File name="../Dialogs/NotationExportDialog.h" open="0" top="0" tabpos="0">
+		<Cursor position="876" topLine="2" />
+	</File>
+	<File name="../Dialogs/Preferences.h" open="0" top="0" tabpos="0">
+		<Cursor position="1394" topLine="30" />
+	</File>
+	<File name="../Dialogs/ScalePicker.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="9197" topLine="225" />
+	</File>
+	<File name="../Dialogs/ScalePicker.h" open="0" top="0" tabpos="0">
+		<Cursor position="849" topLine="1" />
+	</File>
+	<File name="../Dialogs/WaitWindow.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="3031" topLine="107" />
+	</File>
+	<File name="../Dialogs/WaitWindow.h" open="0" top="0" tabpos="0">
+		<Cursor position="789" topLine="0" />
+	</File>
+	<File name="../Editors/ControllerEditor.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="7535" topLine="211" />
+	</File>
+	<File name="../Editors/ControllerEditor.h" open="0" top="0" tabpos="0">
+		<Cursor position="2419" topLine="47" />
+	</File>
+	<File name="../Editors/DrumEditor.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1395" topLine="31" />
+	</File>
+	<File name="../Editors/DrumEditor.h" open="0" top="0" tabpos="0">
+		<Cursor position="939" topLine="14" />
+	</File>
+	<File name="../Editors/Editor.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="21266" topLine="634" />
+	</File>
+	<File name="../Editors/Editor.h" open="0" top="0" tabpos="0">
+		<Cursor position="7375" topLine="152" />
+	</File>
+	<File name="../Editors/GuitarEditor.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="14557" topLine="391" />
+	</File>
+	<File name="../Editors/GuitarEditor.h" open="0" top="0" tabpos="0">
+		<Cursor position="1853" topLine="30" />
+	</File>
+	<File name="../Editors/KeyboardEditor.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="7124" topLine="164" />
+	</File>
+	<File name="../Editors/KeyboardEditor.h" open="0" top="0" tabpos="0">
+		<Cursor position="1838" topLine="31" />
+	</File>
+	<File name="../Editors/RelativeXCoord.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="6538" topLine="199" />
+	</File>
+	<File name="../Editors/RelativeXCoord.h" open="0" top="0" tabpos="0">
+		<Cursor position="1386" topLine="20" />
+	</File>
+	<File name="../Editors/ScoreAnalyser.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="11175" topLine="228" />
+	</File>
+	<File name="../Editors/ScoreAnalyser.h" open="0" top="0" tabpos="0">
+		<Cursor position="4776" topLine="104" />
+	</File>
+	<File name="../Editors/ScoreEditor.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="48271" topLine="1335" />
+	</File>
+	<File name="../Editors/ScoreEditor.h" open="0" top="0" tabpos="0">
+		<Cursor position="6698" topLine="142" />
+	</File>
+	<File name="../GUI/GLPane.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2086" topLine="62" />
+	</File>
+	<File name="../GUI/GLPane.h" open="0" top="0" tabpos="0">
+		<Cursor position="1075" topLine="16" />
+	</File>
+	<File name="../GUI/GraphicalTrack.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="29707" topLine="932" />
+	</File>
+	<File name="../GUI/GraphicalTrack.h" open="0" top="0" tabpos="0">
+		<Cursor position="3391" topLine="99" />
+	</File>
+	<File name="../GUI/MainFrame.cpp" open="1" top="0" tabpos="5">
+		<Cursor position="4634" topLine="134" />
+	</File>
+	<File name="../GUI/MainFrame.h" open="0" top="0" tabpos="0">
+		<Cursor position="7563" topLine="202" />
+	</File>
+	<File name="../GUI/MainFrameMenuBar.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="21923" topLine="615" />
+	</File>
+	<File name="../GUI/MainPane.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="33762" topLine="1033" />
+	</File>
+	<File name="../GUI/MainPane.h" open="0" top="0" tabpos="0">
+		<Cursor position="2819" topLine="75" />
+	</File>
+	<File name="../GUI/MeasureBar.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="4542" topLine="141" />
+	</File>
+	<File name="../GUI/MeasureBar.h" open="0" top="0" tabpos="0">
+		<Cursor position="1863" topLine="41" />
+	</File>
+	<File name="../GUI/RenderUtils.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="7796" topLine="295" />
+	</File>
+	<File name="../GUI/wxRenderPane.h" open="0" top="0" tabpos="0">
+		<Cursor position="1102" topLine="17" />
+	</File>
+	<File name="../IO/AriaFileWriter.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1806" topLine="30" />
+	</File>
+	<File name="../IO/AriaFileWriter.h" open="0" top="0" tabpos="0">
+		<Cursor position="796" topLine="0" />
+	</File>
+	<File name="../IO/IOUtils.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2718" topLine="98" />
+	</File>
+	<File name="../IO/IOUtils.h" open="0" top="0" tabpos="0">
+		<Cursor position="1211" topLine="18" />
+	</File>
+	<File name="../IO/MidiFileReader.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="22369" topLine="504" />
+	</File>
+	<File name="../IO/MidiFileReader.h" open="0" top="0" tabpos="0">
+		<Cursor position="775" topLine="0" />
+	</File>
+	<File name="../IO/MidiToMemoryStream.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1867" topLine="47" />
+	</File>
+	<File name="../IO/MidiToMemoryStream.h" open="0" top="0" tabpos="0">
+		<Cursor position="872" topLine="0" />
+	</File>
+	<File name="../Images/Drawable.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2560" topLine="124" />
+	</File>
+	<File name="../Images/Image.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="978" topLine="10" />
+	</File>
+	<File name="../Images/Image.h" open="0" top="0" tabpos="0">
+		<Cursor position="1012" topLine="17" />
+	</File>
+	<File name="../Images/ImageLoader.h" open="0" top="0" tabpos="0">
+		<Cursor position="829" topLine="1" />
+	</File>
+	<File name="../Images/ImageProvider.cpp" open="0" top="0" tabpos="1">
+		<Cursor position="2803" topLine="64" />
+	</File>
+	<File name="../Images/ImageProvider.h" open="0" top="0" tabpos="0">
+		<Cursor position="850" topLine="1" />
+	</File>
+	<File name="../Images/wxImageLoader.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="6487" topLine="149" />
+	</File>
+	<File name="../LeakCheck.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2013" topLine="54" />
+	</File>
+	<File name="../LeakCheck.h" open="0" top="0" tabpos="0">
+		<Cursor position="254" topLine="0" />
+	</File>
+	<File name="../Midi/CommonMidiUtils.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="17724" topLine="407" />
+	</File>
+	<File name="../Midi/CommonMidiUtils.h" open="0" top="0" tabpos="0">
+		<Cursor position="1332" topLine="8" />
+	</File>
+	<File name="../Midi/ControllerEvent.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2763" topLine="81" />
+	</File>
+	<File name="../Midi/ControllerEvent.h" open="0" top="0" tabpos="0">
+		<Cursor position="1260" topLine="19" />
+	</File>
+	<File name="../Midi/MeasureData.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="21363" topLine="720" />
+	</File>
+	<File name="../Midi/MeasureData.h" open="0" top="0" tabpos="0">
+		<Cursor position="3798" topLine="110" />
+	</File>
+	<File name="../Midi/Note.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="8732" topLine="293" />
+	</File>
+	<File name="../Midi/Note.h" open="0" top="0" tabpos="0">
+		<Cursor position="2736" topLine="58" />
+	</File>
+	<File name="../Midi/Players/Alsa/AlsaNotePlayer.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2664" topLine="94" />
+	</File>
+	<File name="../Midi/Players/Alsa/AlsaPlayer.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="8056" topLine="329" />
+	</File>
+	<File name="../Midi/Players/Alsa/AlsaPort.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="571" topLine="16" />
+	</File>
+	<File name="../Midi/Players/Alsa/AlsaPort.h" open="0" top="0" tabpos="0">
+		<Cursor position="565" topLine="6" />
+	</File>
+	<File name="../Midi/Players/Mac/AudioToolboxPlayer.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1974" topLine="48" />
+	</File>
+	<File name="../Midi/Players/Mac/AudioToolboxPlayer.h" open="0" top="0" tabpos="0">
+		<Cursor position="993" topLine="8" />
+	</File>
+	<File name="../Midi/Players/Mac/CoreAudioNotePlayer.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="7025" topLine="228" />
+	</File>
+	<File name="../Midi/Players/Mac/MacPlayerInterface.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="9250" topLine="309" />
+	</File>
+	<File name="../Midi/Players/PlatformMidiManager.h" open="0" top="0" tabpos="0">
+		<Cursor position="3221" topLine="57" />
+	</File>
+	<File name="../Midi/Players/Sequencer.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="6619" topLine="206" />
+	</File>
+	<File name="../Midi/Players/Win/WinPlayer.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="6441" topLine="174" />
+	</File>
+	<File name="../Midi/Sequence.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="20024" topLine="784" />
+	</File>
+	<File name="../Midi/Sequence.h" open="0" top="0" tabpos="0">
+		<Cursor position="4793" topLine="137" />
+	</File>
+	<File name="../Midi/TimeSigChange.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="893" topLine="0" />
+	</File>
+	<File name="../Midi/TimeSigChange.h" open="0" top="0" tabpos="0">
+		<Cursor position="1413" topLine="13" />
+	</File>
+	<File name="../Midi/Track.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="21717" topLine="767" />
+	</File>
+	<File name="../Midi/Track.h" open="0" top="0" tabpos="0">
+		<Cursor position="6860" topLine="189" />
+	</File>
+	<File name="../Pickers/BackgroundPicker.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="1829" topLine="8" />
+	</File>
+	<File name="../Pickers/ControllerChoice.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="3622" topLine="127" />
+	</File>
+	<File name="../Pickers/ControllerChoice.h" open="0" top="0" tabpos="0">
+		<Cursor position="1041" topLine="26" />
+	</File>
+	<File name="../Pickers/DrumChoice.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="1793" topLine="64" />
+	</File>
+	<File name="../Pickers/DrumChoice.h" open="1" top="0" tabpos="2">
+		<Cursor position="1064" topLine="23" />
+	</File>
+	<File name="../Pickers/InstrumentChoice.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="12768" topLine="384" />
+	</File>
+	<File name="../Pickers/InstrumentChoice.h" open="0" top="0" tabpos="0">
+		<Cursor position="987" topLine="13" />
+	</File>
+	<File name="../Pickers/KeyPicker.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="8434" topLine="222" />
+	</File>
+	<File name="../Pickers/KeyPicker.h" open="0" top="0" tabpos="0">
+		<Cursor position="1964" topLine="44" />
+	</File>
+	<File name="../Pickers/MagneticGrid.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="8058" topLine="309" />
+	</File>
+	<File name="../Pickers/MagneticGrid.h" open="0" top="0" tabpos="0">
+		<Cursor position="1746" topLine="39" />
+	</File>
+	<File name="../Pickers/TimeSigPicker.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="7355" topLine="187" />
+	</File>
+	<File name="../Pickers/TimeSigPicker.h" open="0" top="0" tabpos="0">
+		<Cursor position="1415" topLine="28" />
+	</File>
+	<File name="../Pickers/TuningPicker.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="14202" topLine="444" />
+	</File>
+	<File name="../Pickers/TuningPicker.h" open="0" top="0" tabpos="0">
+		<Cursor position="1243" topLine="17" />
+	</File>
+	<File name="../Pickers/VolumeSlider.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="5950" topLine="163" />
+	</File>
+	<File name="../Pickers/VolumeSlider.h" open="0" top="0" tabpos="0">
+		<Cursor position="1545" topLine="34" />
+	</File>
+	<File name="../Printing/PrintLayout.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="15512" topLine="417" />
+	</File>
+	<File name="../Printing/PrintLayout.h" open="0" top="0" tabpos="0">
+		<Cursor position="4072" topLine="97" />
+	</File>
+	<File name="../Printing/PrintingBase.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="8947" topLine="299" />
+	</File>
+	<File name="../Printing/ScorePrint.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="17324" topLine="473" />
+	</File>
+	<File name="../TODO.txt" open="1" top="1" tabpos="7">
+		<Cursor position="4198" topLine="73" />
+	</File>
+	<File name="../irrXML/CXMLReaderImpl.h" open="0" top="0" tabpos="0">
+		<Cursor position="18004" topLine="772" />
+	</File>
+	<File name="../irrXML/fast_atof.h" open="0" top="0" tabpos="0">
+		<Cursor position="2372" topLine="114" />
+	</File>
+	<File name="../irrXML/heapsort.h" open="0" top="0" tabpos="0">
+		<Cursor position="1478" topLine="48" />
+	</File>
+	<File name="../irrXML/irrArray.h" open="0" top="0" tabpos="0">
+		<Cursor position="9892" topLine="419" />
+	</File>
+	<File name="../irrXML/irrString.h" open="0" top="0" tabpos="0">
+		<Cursor position="13366" topLine="639" />
+	</File>
+	<File name="../irrXML/irrTypes.h" open="0" top="0" tabpos="0">
+		<Cursor position="2273" topLine="52" />
+	</File>
+	<File name="../irrXML/irrXML.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="3447" topLine="124" />
+	</File>
+	<File name="../irrXML/irrXML.h" open="0" top="0" tabpos="0">
+		<Cursor position="22811" topLine="515" />
+	</File>
+	<File name="../languages.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="3512" topLine="78" />
+	</File>
+	<File name="../main.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2801" topLine="104" />
+	</File>
+	<File name="../main.h" open="0" top="0" tabpos="0">
+		<Cursor position="1096" topLine="14" />
+	</File>
+	<File name="../ptr_vector.h" open="0" top="0" tabpos="0">
+		<Cursor position="4310" topLine="181" />
+	</File>
+</CodeBlocks_layout_file>
