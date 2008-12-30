@@ -72,7 +72,7 @@ void DrumChoice::setParent(Track* t)
     parent = t;
 }
 
-char* DrumChoice::getDrumName(int drumID)
+const char* DrumChoice::getDrumName(int drumID)
 {
     if (drumID == 0 ) return "Standard";
     else if (drumID == 8 ) return "Room kit";

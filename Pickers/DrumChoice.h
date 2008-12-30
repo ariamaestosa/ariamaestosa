@@ -40,7 +40,7 @@ public:
 
     void setParent(Track* t);
 
-    char* getDrumName(int id);
+    const char* getDrumName(int id);
 
     void menuSelected(wxCommandEvent& evt);
 

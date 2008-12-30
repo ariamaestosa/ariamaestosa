@@ -13,10 +13,10 @@ namespace MemoryLeaks
 class MyObject
 {
 public:
-    char* file;
+    std::string file;
     int line;
 
-    MyObject(char* f, int l);
+    MyObject(const char* f, int l);
     void print();
 };
 
@@ -50,7 +50,7 @@ public:
 }
 }
 
-#define LEAK_CHECK( classname ) static char* memCheckGetFile() { return __FILE__; } static int memCheckGetLine() { return __LINE__; } const MemoryLeaks::TemplateLeakCheck< classname > myLeakCheck;
+#define LEAK_CHECK( classname ) static const char* memCheckGetFile() { return __FILE__; } static int memCheckGetLine() { return __LINE__; } MemoryLeaks::TemplateLeakCheck< classname > myLeakCheck;
 
 #else
 #define LEAK_CHECK( classname )
