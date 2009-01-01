@@ -112,9 +112,7 @@ namespace AriaMaestosa {
         SetPosition(wxPoint(x,y));
         slider->SetValue(currentTrack->getNoteVolume(noteID));
 
-        char buffer[3];
-        sprintf (buffer, "%d", currentTrack->getNoteVolume(noteID));
-        valueText->SetValue( fromCString(buffer) );
+        valueText->SetValue( to_wxString(currentTrack->getNoteVolume(noteID)) );
 
         slider->SetFocus();
         returnCode = ShowModal();
@@ -144,9 +142,7 @@ namespace AriaMaestosa {
     void VolumeSlider::volumeSlideChanging(wxScrollEvent& evt)
     {
         const int newValue = slider->GetValue();
-        char buffer[3];
-        sprintf (buffer, "%d", newValue);
-        valueText->SetValue( fromCString(buffer) );
+        valueText->SetValue( to_wxString(newValue) );
     }
 
     void VolumeSlider::volumeTextChanged(wxCommandEvent& evt)
@@ -160,9 +156,7 @@ namespace AriaMaestosa {
         {
             wxBell();
             const int newValue = slider->GetValue();
-            char buffer[3];
-            sprintf (buffer, "%d", newValue);
-            valueText->SetValue( fromCString(buffer) );
+            valueText->SetValue( to_wxString(newValue) );
             return;
         }
 

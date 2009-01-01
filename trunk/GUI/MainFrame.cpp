@@ -505,39 +505,14 @@ void MainFrame::updateTopBarAndScrollbarsForSequence(Sequence* seq)
     changingValues=true; // ignore events thrown while changing values in the top bar
 
     // first measure
-    {
-        char buffer[4];
-        sprintf (buffer, "%d", getMeasureData()->getFirstMeasure()+1);
-
-        firstMeasure->SetValue( fromCString(buffer) );
-    }
+    firstMeasure->SetValue( to_wxString(getMeasureData()->getFirstMeasure()+1) );
 
     // time signature
     timeSig->SetLabel( wxString::Format(wxT("%i/%i"), getMeasureData()->getTimeSigNumerator(), getMeasureData()->getTimeSigDenominator() ));
 
-    /*
-    {
-        char buffer[4];
-        sprintf (buffer, "%d", getMeasureData()->getTimeSigNumerator() );
-
-        measureTypeTop->SetValue( fromCString(buffer) );
-    }
-
-    {
-        char buffer[4];
-        sprintf (buffer, "%d", getMeasureData()->getTimeSigDenominator() );
-
-        measureTypeBottom->SetValue( fromCString(buffer) );
-    }
-     */
 
     // tempo
-    {
-        char buffer[4];
-        sprintf (buffer, "%d", seq->getTempo() );
-
-        tempoCtrl->SetValue( fromCString(buffer) );
-    }
+    tempoCtrl->SetValue( to_wxString(seq->getTempo()) );
 
     // song length
     {

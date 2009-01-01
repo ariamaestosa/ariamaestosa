@@ -111,10 +111,8 @@ bool exportMidiFile(Sequence* sequence, wxString filepath)
         int length = -1, start = -1, numTracks = -1;
         makeJDKMidiSequence(sequence, tracks, false, &length, &start, &numTracks, false);
 
-        char cstring[1024];
-        strcpy(cstring, (const char*)filepath.mb_str(wxConvUTF8));
-
-        jdkmidi::MIDIFileWriteStreamFileName file_stream( cstring );
+        // FIXME - I removed strcpy, but not sure it works anymore...
+        jdkmidi::MIDIFileWriteStreamFileName file_stream( (const char*)filepath.mb_str(wxConvUTF8) );
 
         jdkmidi::MIDIFileWriteMultiTrack writer2(
                                                  &tracks,
@@ -264,10 +262,8 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
                 m.SetText( 2 );
                 m.SetByte1( 2 );
 
-                char cstring[1024];
-                strcpy(cstring, (const char*)sequence->getCopyright().mb_str(wxConvUTF8));
-
-                jdkmidi::MIDISystemExclusive sysex( (unsigned char*)cstring,
+                // FIXME - I removed strcpy, but not sure it works anymore...
+                jdkmidi::MIDISystemExclusive sysex( (unsigned char*)(const char*)sequence->getCopyright().mb_str(wxConvUTF8),
                                                     sequence->getCopyright().size()+1,
                                                     sequence->getCopyright().size()+1, false);
 
@@ -288,10 +284,8 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
                 m.SetText( 3 );
                 m.SetByte1( 3 );
 
-                char cstring[1024];
-                strcpy(cstring, (const char*)sequence->getInternalName().mb_str(wxConvUTF8));
-
-                jdkmidi::MIDISystemExclusive sysex( (unsigned char*)cstring,
+                // FIXME - I removed strcpy, but not sure it works anymore...
+                jdkmidi::MIDISystemExclusive sysex( (unsigned char*)(const char*)sequence->getInternalName().mb_str(wxConvUTF8),
                                                     sequence->getInternalName().size()+1,
                                                     sequence->getInternalName().size()+1, false);
 

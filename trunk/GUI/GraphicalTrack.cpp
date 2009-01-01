@@ -953,16 +953,14 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     // draw channel number
     if(channel_mode)
     {
-        char buffer[3];
-        sprintf ( buffer, "%d", track->getChannel() );
-        std::string channelName = buffer;
+        wxString channelName = to_wxString(track->getChannel());
 
         AriaRender::color(0,0,0);
         AriaRender::primitives();
 
         const int char_amount_in_channel_name = channelName.size();
-        if(char_amount_in_channel_name == 1) AriaRender::text(buffer, channelButton->getX()+10, y+26);
-        else AriaRender::text(buffer, channelButton->getX()+7, y+26);
+        if(char_amount_in_channel_name == 1) AriaRender::text(channelName.mb_str(), channelButton->getX()+10, y+26);
+        else AriaRender::text(channelName.mb_str(), channelButton->getX()+7, y+26);
     }
 
     AriaRender::images();
