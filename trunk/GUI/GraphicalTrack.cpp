@@ -128,7 +128,7 @@ class BitmapButton : public AriaWidget
     bool enabled;
     bool toggleBtn;
     bool centerX;
-    float r,g,b;
+    AriaRender::ImageState state;
 public:
     Drawable* drawable;
 
@@ -139,17 +139,13 @@ public:
         enabled = true;
         BitmapButton::toggleBtn = toggleBtn;
         BitmapButton::centerX = centerX;
-        r=1;
-        g=1;
-        b=1;
+        state = AriaRender::STATE_NORMAL;
     }
     virtual ~BitmapButton(){}
 
-    BitmapButton* setRGB(const float r, const float g, const float b)
+    BitmapButton* setImageState(AriaRender::ImageState state)
     {
-        BitmapButton::r = r;
-        BitmapButton::g = g;
-        BitmapButton::b = b;
+        BitmapButton::state = state;
         return this;
     }
 
@@ -157,8 +153,10 @@ public:
     {
         if(hidden) return;
 
-        if(enabled and (r!=1 or g!=1 or b!=1)) AriaRender::color(r,g,b);
-        else if(not enabled) AriaRender::color(0.4*r, 0.4*g, 0.4*b);
+        if(state != AriaRender::STATE_NORMAL)
+            AriaRender::setImageState(state);
+        else if(not enabled)
+            AriaRender::setImageState(AriaRender::STATE_DISABLED);
 
         if(centerX and drawable->image->width < width)
         {
@@ -227,7 +225,7 @@ public:
         {
             contents[n].render();
         }
-        AriaRender::color(1,1,1);
+        AriaRender::setImageState(AriaRender::STATE_NORMAL);
     }
 };
 
@@ -276,8 +274,8 @@ public:
         const int lamount = widgetsLeft.size();
         for(int n=0; n<lamount; n++)
         {
-            if(!focus) AriaRender::color(0.5, 0.5, 0.5);
-            else AriaRender::color(1,1,1);
+            if(!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
+            else AriaRender::setImageState(AriaRender::STATE_NORMAL);
 
             widgetsLeft.get(n)->render();
         }
@@ -285,8 +283,8 @@ public:
         const int ramount = widgetsRight.size();
         for(int n=0; n<ramount; n++)
         {
-            if(!focus) AriaRender::color(0.5, 0.5, 0.5);
-            else AriaRender::color(1,1,1);
+            if(!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
+            else AriaRender::setImageState(AriaRender::STATE_NORMAL);
 
             widgetsRight.get(n)->render();
         }
@@ -367,9 +365,9 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
     components->addFromLeft(ctrlButton);
 
     sharpFlatPicker = new ToolBar<BlankField>();
-    sharpFlatPicker->addItem( (new BitmapButton( 14, 21, sharpSign,   false, true ))->setRGB(0,0,0), 6 );
-    sharpFlatPicker->addItem( (new BitmapButton( 14, 24, flatSign,    false, true ))->setRGB(0,0,0), 6 );
-    sharpFlatPicker->addItem( (new BitmapButton( 14, 21, naturalSign, false, true ))->setRGB(0,0,0), 0 );
+    sharpFlatPicker->addItem( (new BitmapButton( 14, 21, sharpSign,   false, true ))->setImageState(AriaRender::STATE_NOTE), 6 );
+    sharpFlatPicker->addItem( (new BitmapButton( 14, 24, flatSign,    false, true ))->setImageState(AriaRender::STATE_NOTE), 6 );
+    sharpFlatPicker->addItem( (new BitmapButton( 14, 21, naturalSign, false, true ))->setImageState(AriaRender::STATE_NOTE), 0 );
     components->addFromLeft(sharpFlatPicker);
 
     instrumentName = new BlankField(144);
@@ -785,8 +783,8 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     int barHeight=EXPANDED_BAR_HEIGHT;
     if(closed) barHeight=COLLAPSED_BAR_HEIGHT;
 
-    if(!focus) AriaRender::color(0.5, 0.5, 0.5);
-    else AriaRender::color(1,1,1);
+    if(!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
+    else AriaRender::setImageState(AriaRender::STATE_NORMAL);
 
     AriaRender::images();
 
@@ -840,8 +838,8 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     {
          AriaRender::images();
 
-        if(!focus) AriaRender::color(0.5, 0.5, 0.5);
-        else AriaRender::color(1,1,1);
+        if(!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
+        else AriaRender::setImageState(AriaRender::STATE_NORMAL);
 
         // bottom left corner
         cornerDrawable->move(x+10, y+20+barHeight);
@@ -860,7 +858,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
         cornerDrawable->setFlip(true, true);
         cornerDrawable->render();
 
-        AriaRender::color(1,1,1);
+        AriaRender::setImageState(AriaRender::STATE_NORMAL);
 
     }
     else
@@ -945,9 +943,10 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     if(editorMode == DRUM) instrumentname = Core::getDrumPicker()->getDrumName( track->getDrumKit() );
     else instrumentname = Core::getInstrumentPicker()->getInstrumentName( track->getInstrument() );
 
-    AriaRender::color(0,0,0);
+    
     AriaRender::primitives();
-
+    AriaRender::color(0,0,0);
+    
     AriaRender::text(instrumentname.c_str(), instrumentName->getX()+11 ,y+26);
 
     // draw channel number
@@ -955,9 +954,10 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     {
         wxString channelName = to_wxString(track->getChannel());
 
-        AriaRender::color(0,0,0);
+        
         AriaRender::primitives();
-
+        AriaRender::color(0,0,0);
+        
         const int char_amount_in_channel_name = channelName.size();
         if(char_amount_in_channel_name == 1) AriaRender::text(channelName.mb_str(), channelButton->getX()+10, y+26);
         else AriaRender::text(channelName.mb_str(), channelButton->getX()+7, y+26);
@@ -1027,8 +1027,8 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
         // --------------------------------------------------
         // render track borders
 
-        if(!focus) AriaRender::color(0.5, 0.5, 0.5);
-        else AriaRender::color(1,1,1);
+        if(!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
+        else AriaRender::setImageState(AriaRender::STATE_NORMAL);
 
         // bottom left corner
         whiteCornerDrawable->move(10,y+20+barHeight+height);

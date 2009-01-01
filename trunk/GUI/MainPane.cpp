@@ -241,7 +241,7 @@ bool MainPane::do_render()
 
         if(currentSeqID == n)
         {
-            AriaRender::color(1,1,1);
+            AriaRender::setImageState(AriaRender::STATE_NORMAL);
             tabBorderDrawable->move(start_at_x, tabBarY);
             tabBorderDrawable->setFlip(false, false);
             tabBorderDrawable->render();
@@ -256,7 +256,7 @@ bool MainPane::do_render()
         }
         else
         {
-            AriaRender::color(1,1,1, 0.4);
+            AriaRender::setImageState(AriaRender::STATE_UNSELECTED_TAB);
 
             tabBorderDrawable->move(start_at_x, tabBarY+3);
             tabBorderDrawable->setFlip(false, false);
@@ -317,7 +317,6 @@ bool MainPane::do_render()
 
             AriaRender::color(0,0,0);
             x = AriaRender::text_return_end_x(&getCurrentSequence()->dock[n].track->getName(), x+5, getHeight()-5);
-            std::cout << "x_before=" <<x_before << " x=" << x << std::endl;
             x += 5;
 
             AriaRender::color(1, 0.8, 0.7);
