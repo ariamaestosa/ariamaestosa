@@ -24,6 +24,16 @@ namespace AriaMaestosa
 namespace AriaRender
 {
     
+    enum ImageState
+    {
+        STATE_NORMAL,
+        STATE_NO_FOCUS,
+        STATE_DISABLED,
+        STATE_NOTE,
+        STATE_SELECTED_NOTE,
+        STATE_UNSELECTED_TAB
+    };
+    
     // enter mode
     void primitives();
     void images();
@@ -33,6 +43,7 @@ namespace AriaRender
     
     void color(const float r, const float g, const float b);
     void color(const float r, const float g, const float b, const float a);
+    void setImageState(const ImageState imgst);
     
     void line(const int x1, const int y1, const int x2, const int y2);
     void lineWidth(const int n);

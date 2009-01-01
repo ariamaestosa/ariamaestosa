@@ -22,6 +22,12 @@
 // FIXME - split in two files
 #ifndef NO_OPENGL
 
+
+#if 0
+#pragma mark -
+#pragma mark OpenGL
+#endif
+
 #include "OpenGL.h"
 #include <cmath>
 #include <iostream>
@@ -43,6 +49,32 @@ void images()
     glEnable(GL_TEXTURE_2D);
 }
 
+void setImageState(const ImageState imgst)
+{
+    switch(imgst)
+    {
+        case STATE_NO_FOCUS :
+            color(0.5, 0.5, 0.5);
+            break;
+        case STATE_DISABLED :
+            color(0.4, 0.4, 0.4);
+            break;
+        case STATE_UNSELECTED_TAB :
+            color(1, 1, 1, 0.4);
+            break;
+        case STATE_NORMAL :
+            color(1,1,1);
+            break;
+        case STATE_SELECTED_NOTE :
+            color(1,0,0);
+            break;
+        case STATE_NOTE :
+            color(0,0,0);
+            break;
+        default: assert(false);
+    }
+}
+    
 void color(const float r, const float g, const float b)
 {
     glColor3f(r,g,b);
@@ -316,8 +348,10 @@ void endScissors()
 }
 
 #else
+
 #if 0
 #pragma mark -
+#pragma mark wxDC
 #endif
 
 #include "Images/Drawable.h"

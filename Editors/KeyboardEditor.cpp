@@ -312,8 +312,8 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
         {
             AriaRender::images();
 
-            if(!focus) AriaRender::color(0.5, 0.5, 0.5);
-            else AriaRender::color(1,1,1);
+            if(!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
+            else AriaRender::setImageState(AriaRender::STATE_NORMAL);
 
             noteTrackDrawable->move(getEditorsXStart()-noteTrackDrawable->getImageWidth(), from_y+barHeight+20 + g_octave_y);
             noteTrackDrawable->render();
@@ -421,8 +421,9 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     }
 
     // ---------------------------- scrollbar -----------------------
-    if(!focus) AriaRender::color(0.5, 0.5, 0.5);
-    else AriaRender::color(1,1,1);
+    // FIXME - instead implement ernderScrollbar(focus)...
+    if(!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
+    else AriaRender::setImageState(AriaRender::STATE_NORMAL);
 
     renderScrollbar();
 
