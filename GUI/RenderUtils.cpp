@@ -543,19 +543,18 @@ void small_text(const char* string, const int x, const int y)
 }
 void character(const char character, const int x, const int y)
 {
-    char buffer[2];
-    sprintf(buffer, "%c", character);
+    wxString text;
+    text << character;
 
     Display::renderDC -> SetFont( *wxNORMAL_FONT );
-    Display::renderDC -> DrawText( fromCString(buffer), x, y + FONTSHIFT);
+    Display::renderDC -> DrawText( text, x, y + FONTSHIFT);
 }
 void small_character(const char character, const int x, const int y)
 {
-    char buffer[2];
-    sprintf(buffer, "%c", character);
-
+    wxString text;
+    text << character;
     Display::renderDC -> SetFont( *wxSMALL_FONT );
-    Display::renderDC -> DrawText( fromCString(buffer), x, y + FONTSHIFT );
+    Display::renderDC -> DrawText( text, x, y + FONTSHIFT );
 }
 
 void small_text_newline_between_words(const char* string, const int x, const int y)

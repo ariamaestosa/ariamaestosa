@@ -605,15 +605,15 @@ int Track::getFirstNoteTick(bool selectionOnly) const
     return tick;
 
 }
-    
+
 /* returns the last tick in the track */
 int Track::getDuration() const
 {
     if(noteOff.size() < 1) return 0;
-    
+
     return noteOff[noteOff.size()-1].endTick;
 }
-    
+
 void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
 {
 
@@ -931,10 +931,8 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         m.SetText( 3 );
         m.SetByte1( 3 );
 
-        char cstring[1024];
-        strcpy(cstring, (const char*)name.mb_str(wxConvUTF8));
-
-        jdkmidi::MIDISystemExclusive sysex( (unsigned char*)cstring, name.size()+1, name.size()+1, false);
+        // FIXME - I removed strcpy, but not sure it works anymore...
+        jdkmidi::MIDISystemExclusive sysex( (unsigned char*)(const char*)name.mb_str(wxConvUTF8), name.size()+1, name.size()+1, false);
 
         m.CopySysEx( &sysex );
         m.SetTime( 0 );

@@ -243,9 +243,8 @@ void MeasureBar::render(int measureBarY_arg)
         AriaRender::line(n, measureBarY, n, measureBarY+20);
 
         // measure ID
-        char buffer[4];
-        sprintf (buffer, "%d", measureID);
-        AriaRender::small_text(buffer, n+5, measureBarY+15);
+        wxString buffer = to_wxString(measureID);
+        AriaRender::small_text(buffer.mb_str(), n+5, measureBarY+15);
 
         if(data->expandedMode)
         {
@@ -274,13 +273,11 @@ void MeasureBar::render(int measureBarY_arg)
 
                     AriaRender::pointSize(1);
 
-                    char denom_name[3];
-                    sprintf (denom_name, "%d", data->timeSigChanges[i].denom);
-                    AriaRender::small_text(denom_name, n + 18, measureBarY + 38);
+                    wxString denom_name = to_wxString(data->timeSigChanges[i].denom);
+                    AriaRender::small_text(denom_name.mb_str(), n + 18, measureBarY + 38);
 
-                    char num_name[3];
-                    sprintf (num_name, "%d", data->timeSigChanges[i].num);
-                    AriaRender::small_text(num_name, n + 10, measureBarY + 29);
+                    wxString num_name = to_wxString(data->timeSigChanges[i].num);
+                    AriaRender::small_text(num_name.mb_str(), n + 10, measureBarY + 29);
 
                     AriaRender::color(0,0,0);
                     break;

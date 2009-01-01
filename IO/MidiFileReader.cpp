@@ -266,10 +266,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                 {
                     sequence->setTempo(tempo);
 
-                    char buffer[4];
-                    sprintf (buffer, "%d", tempo);
-
-                    getMainFrame()->tempoCtrl->SetValue( fromCString(buffer) );
+                    getMainFrame()->tempoCtrl->SetValue( to_wxString(tempo) );
                     firstTempoEvent=false;
                     continue;
                 }

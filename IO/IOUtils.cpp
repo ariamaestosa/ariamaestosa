@@ -65,7 +65,7 @@ wxString extract_filename(wxString filepath)
 
 wxString extract_path(wxString str)
 {
-        if(str.GetChar(str.Length()) == '/') return str.BeforeLast('/').BeforeLast('/');
+    if(str.GetChar(str.Length()) == '/') return str.BeforeLast('/').BeforeLast('/');
     else return str.BeforeLast('/');
 }
 

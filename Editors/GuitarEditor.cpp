@@ -144,10 +144,8 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current, Rel
         else AriaRender::color(0, 0, 0);
 
         // convert the fret nubmer to chars, and draw it
-        char buffer[2];
-        sprintf (buffer, "%d", fret);
-
-        AriaRender::small_text(buffer, x1+getEditorsXStart(), getEditorYStart() + first_string_position + string*y_step + 1);
+        wxString fret_number = to_wxString(fret);
+        AriaRender::small_text(fret_number.mb_str(), x1+getEditorsXStart(), getEditorYStart() + first_string_position + string*y_step + 1);
 
     }//next
 
