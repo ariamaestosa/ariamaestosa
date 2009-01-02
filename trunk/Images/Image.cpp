@@ -33,7 +33,6 @@ Image::Image()
 
 Image::Image(wxString path)
 {
-
     load(path);
 }
 
@@ -45,6 +44,12 @@ void Image::load(wxString path)
     tex_coord_x= (float)width/(float)textureWidth;
     tex_coord_y= (float)height/(float)fabsf(textureHeight);
 #else
+    for(int n=0; n<AriaRender::STATE_AMOUNT; n++)
+    {
+        states[n] = NULL;
+        states_bmp[n] = NULL;
+    }
+    
     path = getResourcePrefix() + path;
     if(!image.LoadFile(path))
     {
@@ -56,7 +61,7 @@ void Image::load(wxString path)
     bitmap = new wxBitmap(image);
 #endif
 }
-
+    
 #ifndef NO_OPENGL
 GLuint* Image::getID()
 {
@@ -66,8 +71,75 @@ GLuint* Image::getID()
 
 Image::~Image()
 {
-    #ifndef NO_OPENGL
+#ifndef NO_OPENGL
     glDeleteTextures (1, ID);
-    #endif
+#else
+    for(int n=0; n<AriaRender::STATE_AMOUNT; n++)
+    {
+        if(states[n] != NULL)
+        {
+            delete states[n];
+            delete states_bmp[n];
+        }
+    }
+#endif
 }
+
+#ifdef NO_OPENGL
+wxImage* Image::getImageForState(AriaRender::ImageState s)
+{
+    if(s == AriaRender::STATE_NORMAL) return &image;
+    if(states[s] != NULL) return states[s];
+ 
+    states[s] = new wxImage( image );
+ 
+    float r = 1, g = 1, b = 1;
+    switch(s)
+    {
+        case AriaRender::STATE_NO_FOCUS :
+            r = g = b = 0.5;
+            break;
+        case AriaRender::STATE_DISABLED :
+            r = g = b = 0.4;
+            break;
+        case AriaRender::STATE_UNSELECTED_TAB :
+            r = g = b = 0.5;
+            break;
+        case AriaRender::STATE_SELECTED_NOTE :
+            r = 1;
+            g = b = 0;
+            break;
+        case AriaRender::STATE_NOTE :
+            r = g = b = 0;
+            break;
+        default:break;
+    }
+    
+    const unsigned int pixelcount = image.GetHeight() * image.GetWidth();
+    unsigned char* data = states[s]->GetData();
+    
+    for(unsigned int i=0; i<pixelcount; i++)
+    {
+        //printf("%i %i %i -> ", data[0], data[1], data[2]);
+        data[0]= (unsigned char)( (float)(data[0])*r );
+        data[1]= (unsigned char)( (float)(data[1])*g );
+        data[2]= (unsigned char)( (float)(data[2])*b );
+        //printf("%i %i %i\n", data[0], data[1], data[2]);
+        data += 3;
+    }
+    
+    states_bmp[s] = new wxBitmap( *states[s] );
+    
+    return states[s];
+}
+    
+wxBitmap* Image::getBitmapForState(AriaRender::ImageState s)
+{
+    if(s == AriaRender::STATE_NORMAL) return bitmap;
+    
+    if(states_bmp[s] == NULL) getImageForState(s);
+    return states_bmp[s];
+}
+#endif
+    
 }

@@ -26,12 +26,14 @@ namespace AriaRender
     
     enum ImageState
     {
-        STATE_NORMAL,
-        STATE_NO_FOCUS,
+        STATE_NORMAL = 99,
+        STATE_NO_FOCUS = 0, // to allow setting up an array of modified images, where the the state ID is also the array index
         STATE_DISABLED,
         STATE_NOTE,
         STATE_SELECTED_NOTE,
-        STATE_UNSELECTED_TAB
+        STATE_UNSELECTED_TAB,
+        
+        STATE_AMOUNT
     };
     
     // enter mode

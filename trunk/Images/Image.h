@@ -18,6 +18,7 @@
 #define _image_
 
 #include "Config.h"
+#include "GUI/RenderUtils.h"
 
 #ifndef NO_OPENGL
 #include "OpenGL.h"
@@ -37,16 +38,23 @@ class Image {
     public:
     wxImage image;
     OwnerPtr<wxBitmap>  bitmap;
+    
+    wxImage* states[AriaRender::STATE_AMOUNT];
+    wxBitmap* states_bmp[AriaRender::STATE_AMOUNT];
+    
+    wxImage* getImageForState(AriaRender::ImageState);
+    wxBitmap* getBitmapForState(AriaRender::ImageState);
 #endif
 
     LEAK_CHECK(Image);
 
-    int width, height, textureWidth, textureHeight;
-
+    int width, height;
+    
+#ifndef NO_OPENGL
+    int textureWidth, textureHeight;
     float tex_coord_x;
     float tex_coord_y;
 
-#ifndef NO_OPENGL
     GLuint* getID();
 #endif
 
