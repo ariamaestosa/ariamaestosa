@@ -6,9 +6,9 @@
 		<Option makefile_is_custom="1" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders=" status/;" />
+		<Option virtualFolders="status/; status/;" />
 		<MakeCommands>
-			<Build command="cd .. &amp;&amp; python scons/scons.py config=$target" />
+			<Build command="cd .. &amp;&amp; python scons/scons.py config=$target -j 2" />
 			<CompileFile command="$make -f $makefile $file" />
 			<Clean command="cd .. &amp;&amp; python scons/scons.py --clean" />
 			<DistClean command="cd .. &amp;&amp; python scons/scons.py --clean" />
@@ -27,7 +27,7 @@
 					<Add option="-D_ALSA" />
 				</Compiler>
 				<MakeCommands>
-					<Build command="cd .. &amp;&amp; python scons/scons.py config=debug" />
+					<Build command="cd .. &amp;&amp; python scons/scons.py config=debug -j 2" />
 					<CompileFile command="" />
 					<Clean command="cd .. &amp;&amp; python scons/scons.py --clean" />
 					<DistClean command="cd .. &amp;&amp; python scons/scons.py --clean" />
@@ -49,7 +49,7 @@
 					<Add option="-s" />
 				</Linker>
 				<MakeCommands>
-					<Build command="cd .. &amp;&amp; python scons/scons.py config=release" />
+					<Build command="cd .. &amp;&amp; python scons/scons.py config=release -j 2" />
 					<CompileFile command="" />
 					<Clean command="cd .. &amp;&amp; python scons/scons.py --clean" />
 					<DistClean command="cd .. &amp;&amp; python scons/scons.py --clean" />
