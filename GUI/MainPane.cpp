@@ -190,15 +190,15 @@ void MainPane::render(const bool paintEvent)
 #else
     #ifdef NO_OPENGL
         wxClientDC my_client_dc(this);
-        // FIXME - this can maybe be speed up by providing your own bitmap
         wxBufferedDC mydc(static_cast<wxDC*>(&my_client_dc), wxDefaultSize);
     #else
         wxClientDC my_dc(this);
     #endif
 #endif
-        #ifdef NO_OPENGL
-            Display::renderDC = static_cast<wxDC*>(&mydc);
-        #endif
+        
+#ifdef NO_OPENGL
+        Display::renderDC = static_cast<wxDC*>(&mydc);
+#endif
         beginFrame();
         if(do_render()) endFrame();
     }
@@ -896,8 +896,6 @@ void MainPane::keyPressed(wxKeyEvent& evt)
 
 void MainPane::mouseWheelMoved(wxMouseEvent& event)
 {
-    // event.GetWheelRotation()/1.5;
-    // render();
     const int value = event.GetWheelRotation() / event.GetWheelDelta();
     const int my = event.GetY();
     const int mx = event.GetX();

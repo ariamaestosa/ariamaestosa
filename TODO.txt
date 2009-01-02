@@ -93,6 +93,8 @@ NOTE: sorry, this is very raw :)
 
  ************************* BUGS: *************************
 
+** Kill GLUT! crashes suse and arch...
+
 * red images
 * My CoreAudio player is deprecated on OS X 10.5...
     AudioToolboxPlayer.cpp:48: warning: 'MusicSequenceLoadSMFData' is deprecated (declared at /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/MusicPlayer.h:1613)
@@ -133,7 +135,6 @@ repetition detection:
 
 - "rearrange selected notes" doesn't always work optimally
 
-- what's up with glutInit? I get double-init messages. Crashes suse 10.1.
 - score : flat/sharp/natural signs tend to appear obscured (behind note stem if in a group... behind silence... etc.)
 
 - error at startup (quicktime will not play dummy file to init it?)

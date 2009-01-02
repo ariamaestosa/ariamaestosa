@@ -18,16 +18,18 @@
 #define _drawable_
 
 #include "Config.h"
+#include "GUI/RenderUtils.h"
 
 namespace AriaMaestosa {
 
     class Image;
 
 #ifdef NO_OPENGL
-void drawable_set_color(float r, float g, float b, float a=1);
+void drawable_set_state(AriaRender::ImageState arg);
 #endif
 
-class Drawable {
+class Drawable
+{
 public:
     LEAK_CHECK(Drawable);
 

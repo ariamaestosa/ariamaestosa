@@ -369,10 +369,12 @@ void primitives()
     mode_images = false;
 }
 
+ImageState current_state = STATE_NORMAL;
 void images()
 {
     mode_primitives = false;
     mode_images = true;
+    current_state = STATE_NORMAL;
 }
 
 unsigned char rc = 255;
@@ -381,7 +383,13 @@ unsigned char bc = 255;
 unsigned char ac = 255;
 int lineWidth_i = 1;
 int pointSize_i = 1;
-
+    
+void setImageState(const ImageState imgst)
+{
+    current_state = imgst;
+    drawable_set_state(current_state);
+}
+    
 void updatePen()
 {
     Display::renderDC -> SetPen( wxPen( wxColour( rc, gc, bc, ac ), lineWidth_i ) );
@@ -417,10 +425,6 @@ void color(const float r, const float g, const float b)
         updateBrush();
         updateFontColor();
     }
-    else
-    {
-        drawable_set_color(r,g,b);
-    }
 }
 
 void color(const float r, const float g, const float b, const float a)
@@ -437,10 +441,6 @@ void color(const float r, const float g, const float b, const float a)
         updateBrush();
         updateFontColor();
     }
-    else
-    {
-        drawable_set_color(r,g,b,a);
-    }
 }
 
 void line(const int x1, const int y1, const int x2, const int y2)
@@ -451,6 +451,7 @@ void line(const int x1, const int y1, const int x2, const int y2)
 void lineWidth(const int n)
 {
     lineWidth_i = n;
+    updatePen();
 }
 
 void lineSmooth(const bool enabled)

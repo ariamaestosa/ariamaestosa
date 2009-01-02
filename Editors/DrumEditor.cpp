@@ -493,7 +493,7 @@ void DrumEditor::mouseUp(RelativeXCoord mousex_current, const int mousey_current
 
         if(showUsedDrumsOnly) useCustomDrumSet();
         else useDefaultDrumSet();
-        render();
+        Display::render();
     }
 
 }

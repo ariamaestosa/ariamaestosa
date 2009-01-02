@@ -360,7 +360,7 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
     mouse_is_in_editor=false;
 
 
-    render();
+    Display::render();
 
 }
 

@@ -33,22 +33,17 @@
 
 namespace AriaMaestosa {
 
+AriaRender::ImageState g_state;
+    
 #ifdef NO_OPENGL
-float r=1, g=1, b=1, a=1;
-void drawable_set_color(float rarg, float garg, float barg, float aarg)
+void drawable_set_state(AriaRender::ImageState arg)
 {
-    r = rarg;
-    g = garg;
-    b = barg;
-    a = aarg;
+    g_state = arg;
 }
 #endif
 
 Drawable::Drawable(Image* image_arg)
 {
-
-
-
     x=0;
     y=0;
     hotspotX=0;
@@ -175,14 +170,12 @@ void Drawable::render()
     glEnd();
 #else
 
-    bool disabled = false;
-
-    if(xflip or yflip or xscale != 1 or yscale != 1 or angle!=0 or r != 1 or g != 1 or b != 1)
+    if(xflip or yflip or xscale != 1 or yscale != 1 or angle!=0)
     {
         int hotspotX_mod = hotspotX;
         int hotspotY_mod = hotspotY;
 
-        wxImage modimage = image->image;
+        wxImage modimage = image->getBitmapForState(g_state)->ConvertToImage();
 
         if(xflip) modimage = modimage.Mirror();
         if(yflip) modimage = modimage.Mirror(false);
@@ -198,29 +191,13 @@ void Drawable::render()
         if(xscale != 1 or yscale != 1)
             modimage.Rescale( (int)(image->width * xscale),
                               (int)(image->height * yscale) );
-/*
-        if(r != 1 or g != 1 or b != 1)
-        {
-            const unsigned int pixelcount = modimage.GetHeight()*modimage.GetWidth();
-            unsigned char* data = modimage.GetData();
 
-            for(unsigned int i=0; i<pixelcount; i++)
-            {
-                printf("%i %i %i -> ", data[0], data[1], data[2]);
-                data[0]= (unsigned char)( (float)(data[0])*r );
-                data[1]= (unsigned char)( (float)(data[1])*g );
-                data[2]= (unsigned char)( (float)(data[2])*b );
-                printf("%i %i %i\n", data[0], data[1], data[2]);
-                data += 3;
-            }
-        }
-*/
         wxBitmap modbitmap(modimage);
         Display::renderDC -> DrawBitmap( modbitmap, x - hotspotX_mod, y - hotspotY_mod);
     }
     else
     {
-        Display::renderDC -> DrawBitmap( *image->bitmap, x - hotspotX, y - hotspotY);
+        Display::renderDC -> DrawBitmap( *image->getBitmapForState(g_state), x - hotspotX, y - hotspotY);
     }
 
     /*
