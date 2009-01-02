@@ -529,10 +529,6 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
 
 
     AriaRender::lineWidth(2);
-    if(renderInfo.selected)
-        AriaRender::setImageState(AriaRender::STATE_SELECTED_NOTE);
-    else
-        AriaRender::setImageState(AriaRender::STATE_NOTE);
 
     renderInfo.setY( LEVEL_TO_Y(renderInfo.level) - head_radius + 4 );
 
@@ -554,12 +550,20 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     else if(renderInfo.hollow_head)
     {
         AriaRender::images();
+        if(renderInfo.selected)
+            AriaRender::setImageState(AriaRender::STATE_SELECTED_NOTE);
+        else
+            AriaRender::setImageState(AriaRender::STATE_NOTE);
         noteOpen->move(renderInfo.x, renderInfo.getY());
         noteOpen->render();
     }
     else
     {
         AriaRender::images();
+        if(renderInfo.selected)
+            AriaRender::setImageState(AriaRender::STATE_SELECTED_NOTE);
+        else
+            AriaRender::setImageState(AriaRender::STATE_NOTE);
         noteClosed->move(renderInfo.x, renderInfo.getY());
         noteClosed->render();
     }
@@ -693,7 +697,7 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
         const int center_x = (renderInfo.triplet_arc_x_end == -1 ? renderInfo.triplet_arc_x_start : (renderInfo.triplet_arc_x_start + renderInfo.triplet_arc_x_end)/2);
         const int radius_x = (renderInfo.triplet_arc_x_end == -1 or  renderInfo.triplet_arc_x_end == renderInfo.triplet_arc_x_start ?
                               10 : (renderInfo.triplet_arc_x_end - renderInfo.triplet_arc_x_start)/2);
-        
+
         AriaRender::color(0,0,0);
         AriaRender::arc(center_x, LEVEL_TO_Y(renderInfo.triplet_arc_level) + (renderInfo.triplet_show_above ? 0 : 10), radius_x, 10, renderInfo.triplet_show_above);
         AriaRender::small_character('3', center_x-2, LEVEL_TO_Y(renderInfo.triplet_arc_level) + ( renderInfo.triplet_show_above? 0 : 18));
