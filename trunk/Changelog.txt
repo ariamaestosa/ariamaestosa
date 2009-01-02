@@ -2,6 +2,7 @@
 - More minor linux fixes
 - Added Code::Blocks project
 - Fixed crash when clicking below last track
+- Major refactor of render system : allow software rendering where OpenGL is not optimal
 
 1.2b4
 - Switched to unified (native) toolbar on mac  (WARNING: requires patching wxWidgets, see docs)

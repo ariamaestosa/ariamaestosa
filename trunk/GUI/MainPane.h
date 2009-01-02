@@ -20,12 +20,12 @@
 #include "Config.h"
 #include "Editors/RelativeXCoord.h"
 
-#ifndef NO_OPENGL
-#include "GUI/GLPane.h"
-#define MAINPANE_BASE_CLASS GLPane
+#ifdef RENDERER_OPENGL
+#include "Renderers/GLPane.h"
+#elif defined(RENDERER_WXWIDGETS)
+#include "Renderers/wxRenderPane.h"
 #else
-#include "GUI/wxRenderPane.h"
-#define MAINPANE_BASE_CLASS wxRenderPane
+#error No renderer defined
 #endif
 
 #include <vector>
@@ -45,7 +45,7 @@ enum ClickArea
     CLICK_TAB_BAR
 };
     
-class MainPane : public MAINPANE_BASE_CLASS
+class MainPane : public RenderPane
 {
     OwnerPtr<MouseDownTimer>  mouseDownTimer;
 

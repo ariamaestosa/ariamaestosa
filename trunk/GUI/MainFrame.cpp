@@ -32,7 +32,7 @@
 
 #include "Editors/KeyboardEditor.h"
 
-#include "Images/ImageProvider.h"
+#include "GUI/ImageProvider.h"
 
 #include "Dialogs/CustomNoteSelectDialog.h"
 #include "Dialogs/WaitWindow.h"
@@ -334,14 +334,14 @@ void MainFrame::init()
     toolbar->realize();
 
     // -------------------------- RenderPane ----------------------------
-#ifndef NO_OPENGL
+#ifdef RENDERER_OPENGL
     int args[3];
     args[0]=WX_GL_RGBA;
     args[1]=WX_GL_DOUBLEBUFFER;
     args[2]=0;
     mainPane=new MainPane(this, args);
     borderSizer->Add( static_cast<wxGLCanvas*>(mainPane), 1, wxEXPAND | wxALL, 2);
-#else
+#elif defined(RENDERER_WXWIDGETS)
     mainPane=new MainPane(this, NULL);
     borderSizer->Add( static_cast<wxPanel*>(mainPane), 1, wxEXPAND | wxALL, 2 );
 #endif

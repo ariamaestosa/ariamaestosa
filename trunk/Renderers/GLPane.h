@@ -14,14 +14,15 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "Config.h"
-#ifdef NO_OPENGL
+#ifdef RENDERER_OPENGL
 
-#ifndef _wxrender_
-#define _wxrender_
+#include "Config.h"
+
+#ifndef _glpane_
+#define _glpane_
 
 #include "wx/wx.h"
-#include "irrXML/irrXML.h"
+#include "wx/glcanvas.h"
 
 #include "ptr_vector.h"
 #include "Editors/RelativeXCoord.h"
@@ -31,14 +32,13 @@ namespace AriaMaestosa {
 
     class MainFrame;
 
-class wxRenderPane : public wxPanel
+class GLPane : public wxGLCanvas
 {
-
 public:
-    LEAK_CHECK(wxRenderPane);
+    LEAK_CHECK(GLPane);
 
-    wxRenderPane(MainFrame* parent, int* args);
-    ~wxRenderPane();
+    GLPane(MainFrame* parent, int* args);
+    ~GLPane();
 
     void resized(wxSizeEvent& evt);
 
@@ -46,11 +46,19 @@ public:
     int getWidth();
     int getHeight();
 
+    // OpenGL stuff
+    void setCurrent();
+    void swapBuffers();
+    void initOpenGLFor3D();
+    void initOpenGLFor2D();
+
     bool prepareFrame();
     void beginFrame();
     void endFrame();
 
 };
+
+typedef GLPane RenderPane;
 
 }
 #endif

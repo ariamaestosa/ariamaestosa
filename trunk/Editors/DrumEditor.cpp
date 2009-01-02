@@ -23,9 +23,9 @@
 #include "Actions/MoveNotes.h"
 
 #include "GUI/GraphicalTrack.h"
-#include "GUI/RenderUtils.h"
-#include "Images/Drawable.h"
-#include "Images/ImageProvider.h"
+#include "Renderers/RenderAPI.h"
+#include "Renderers/Drawable.h"
+#include "GUI/ImageProvider.h"
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
 #include "Editors/DrumEditor.h"

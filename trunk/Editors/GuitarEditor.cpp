@@ -23,8 +23,8 @@
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 #include "Pickers/TuningPicker.h"
-#include "Images/ImageProvider.h"
-#include "GUI/RenderUtils.h"
+#include "GUI/ImageProvider.h"
+#include "Renderers/RenderAPI.h"
 
 #include "AriaCore.h"
 

@@ -14,14 +14,14 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "Images/Image.h"
-#include "Images/Drawable.h"
+#include "Renderers/ImageBase.h"
+#include "Renderers/Drawable.h"
 #include "Config.h"
 
 #include "wx/wx.h"
 
 #define _DECLARE_IMAGES_
-#include "Images/ImageProvider.h"
+#include "GUI/ImageProvider.h"
 #undef _DECLARE_IMAGES_
 
 namespace AriaMaestosa {

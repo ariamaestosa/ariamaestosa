@@ -14,18 +14,39 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef NO_OPENGL
+#ifdef RENDERER_OPENGL
 
-#ifndef _image_loader
-#define _image_loader
+#ifndef _glimage_
+#define _glimage_
 
+#include "Config.h"
+#include "Renderers/ImageBase.h"
 #include "OpenGL.h"
 
-#include "wx/wx.h"
 
 namespace AriaMaestosa {
 
-GLuint* loadImage(wxString path, int* imageWidth, int* imageHeight, int* textureWidth, int* textureHeight);
+class Image
+{
+    GLuint* ID;
+public:
+    LEAK_CHECK(Image);
+    
+    int width, height;
+    
+    Image();
+    Image(wxString path);
+    ~Image();
+    void load(wxString path);
+    
+    int textureWidth, textureHeight;
+    float tex_coord_x;
+    float tex_coord_y;
+
+    GLuint* getID();
+
+};
+
 
 }
 

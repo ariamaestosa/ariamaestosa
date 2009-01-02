@@ -18,13 +18,14 @@
 #define _drawable_
 
 #include "Config.h"
-#include "GUI/RenderUtils.h"
+#include "Renderers/RenderAPI.h"
 
 namespace AriaMaestosa {
 
     class Image;
 
-#ifdef NO_OPENGL
+#ifdef RENDERER_WXWIDGETS
+    // FIXME - remove this ifdef
 void drawable_set_state(AriaRender::ImageState arg);
 #endif
 

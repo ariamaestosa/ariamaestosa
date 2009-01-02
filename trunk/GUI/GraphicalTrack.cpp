@@ -28,9 +28,9 @@
 #include "Pickers/InstrumentChoice.h"
 #include "Pickers/DrumChoice.h"
 #include "Pickers/MagneticGrid.h"
-#include "Images/Drawable.h"
-#include "Images/Image.h"
-#include "Images/ImageProvider.h"
+#include "Renderers/Drawable.h"
+#include "Renderers/ImageBase.h"
+#include "GUI/ImageProvider.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 #include "Midi/MeasureData.h"
@@ -42,7 +42,7 @@
 #include "Editors/ControllerEditor.h"
 #include "Editors/ScoreEditor.h"
 #include "GUI/GraphicalTrack.h"
-#include "GUI/RenderUtils.h"
+#include "Renderers/RenderAPI.h"
 #include "IO/IOUtils.h"
 
 namespace AriaMaestosa {
