@@ -73,6 +73,11 @@ wxImage* Image::getImageForState(AriaRender::ImageState s)
 
     states[s] = new wxImage( image );
 
+    static const int MODE_MULTIPLY = 0;
+    static const int MODE_FADE_TO = 1;
+
+    int mode = MODE_MULTIPLY;
+
     float r = 1, g = 1, b = 1;
     switch(s)
     {
@@ -83,7 +88,9 @@ wxImage* Image::getImageForState(AriaRender::ImageState s)
             r = g = b = 0.4;
             break;
         case AriaRender::STATE_UNSELECTED_TAB :
-            r = g = b = 0.5;
+            r = g = 1;
+            b = 0.9;
+            mode = MODE_FADE_TO;
             break;
         case AriaRender::STATE_SELECTED_NOTE :
             r = 1;
@@ -98,14 +105,33 @@ wxImage* Image::getImageForState(AriaRender::ImageState s)
     const unsigned int pixelcount = image.GetHeight() * image.GetWidth();
     unsigned char* data = states[s]->GetData();
 
-    for(unsigned int i=0; i<pixelcount; i++)
+    if(mode == MODE_MULTIPLY)
     {
-        //printf("%i %i %i -> ", data[0], data[1], data[2]);
-        data[0]= (unsigned char)( (float)(data[0])*r );
-        data[1]= (unsigned char)( (float)(data[1])*g );
-        data[2]= (unsigned char)( (float)(data[2])*b );
-        //printf("%i %i %i\n", data[0], data[1], data[2]);
-        data += 3;
+        for(unsigned int i=0; i<pixelcount; i++)
+        {
+            data[0]= (unsigned char)( (float)(data[0])*r );
+            data[1]= (unsigned char)( (float)(data[1])*g );
+            data[2]= (unsigned char)( (float)(data[2])*b );
+            data += 3;
+        }
+    }
+    else if(mode == MODE_FADE_TO)
+    {
+        for(unsigned int i=0; i<pixelcount; i++)
+        {
+            float pr = data[0]/255.0f;
+            float pg = data[1]/255.0f;
+            float pb = data[2]/255.0f;
+
+            pr = (pr + r) / 2.0;
+            pg = (pg + g) / 2.0;
+            pb = (pb + b) / 2.0;
+
+            data[0]= (unsigned char)( pr*255 );
+            data[1]= (unsigned char)( pg*255 );
+            data[2]= (unsigned char)( pb*255 );
+            data += 3;
+        }
     }
 
     states_bmp[s] = new wxBitmap( *states[s] );
