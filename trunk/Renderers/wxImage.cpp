@@ -42,7 +42,7 @@ void Image::load(wxString path)
         states[n] = NULL;
         states_bmp[n] = NULL;
     }
-    
+
     path = getResourcePrefix() + path;
     if(!image.LoadFile(path))
     {
@@ -53,7 +53,7 @@ void Image::load(wxString path)
     height = image.GetHeight();
     bitmap = new wxBitmap(image);
 }
-    
+
 Image::~Image()
 {
     for(int n=0; n<AriaRender::STATE_AMOUNT; n++)
@@ -70,9 +70,9 @@ wxImage* Image::getImageForState(AriaRender::ImageState s)
 {
     if(s == AriaRender::STATE_NORMAL) return &image;
     if(states[s] != NULL) return states[s];
- 
+
     states[s] = new wxImage( image );
- 
+
     float r = 1, g = 1, b = 1;
     switch(s)
     {
@@ -94,10 +94,10 @@ wxImage* Image::getImageForState(AriaRender::ImageState s)
             break;
         default:break;
     }
-    
+
     const unsigned int pixelcount = image.GetHeight() * image.GetWidth();
     unsigned char* data = states[s]->GetData();
-    
+
     for(unsigned int i=0; i<pixelcount; i++)
     {
         //printf("%i %i %i -> ", data[0], data[1], data[2]);
@@ -107,16 +107,16 @@ wxImage* Image::getImageForState(AriaRender::ImageState s)
         //printf("%i %i %i\n", data[0], data[1], data[2]);
         data += 3;
     }
-    
+
     states_bmp[s] = new wxBitmap( *states[s] );
-    
+
     return states[s];
 }
-    
+
 wxBitmap* Image::getBitmapForState(AriaRender::ImageState s)
 {
     if(s == AriaRender::STATE_NORMAL) return bitmap;
-    
+
     if(states_bmp[s] == NULL) getImageForState(s);
     return states_bmp[s];
 }

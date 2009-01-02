@@ -191,11 +191,11 @@ void MainPane::render(const bool paintEvent)
     #ifdef RENDERER_WXWIDGETS
         wxClientDC my_client_dc(this);
         wxBufferedDC mydc(static_cast<wxDC*>(&my_client_dc), wxDefaultSize);
-    #elif define(RENDERER_OPENGL)
+    #elif defined(RENDERER_OPENGL)
         wxClientDC my_dc(this);
     #endif
 #endif
-        
+
 #ifdef RENDERER_WXWIDGETS
         Display::renderDC = static_cast<wxDC*>(&mydc);
 #endif
@@ -512,7 +512,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
        event.GetY() > measureBarY+measureBarHeight)
     {
         click_area = CLICK_TRACK;
-        
+
         // dispatch event to all tracks (stop when either of them uses it)
         click_in_track = -1;
         const unsigned int track_amount = getCurrentSequence()->getTrackAmount();
@@ -583,7 +583,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
     if(!PlatformMidiManager::isPlaying() and event.GetY() > tabBarY and event.GetY() < tabBarY+20)
     {
         click_area = CLICK_TAB_BAR;
-        
+
         int start_at_x = 0;
         for(int n=0; n<getMainFrame()->getSequenceAmount(); n++)
         {
@@ -602,7 +602,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
     if(event.GetY() > measureBarY and event.GetY() < measureBarY+measureBarHeight)
     {
         click_area = CLICK_MEASURE_BAR;
-        
+
         if( ! (currentTick!=-1 and (leftArrow or rightArrow)) ) // ignore when playing
         {
             getMeasureData()->graphics->mouseDown(mousex_current.getRelativeTo(WINDOW), mousey_current - measureBarY);
