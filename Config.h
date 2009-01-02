@@ -19,9 +19,6 @@
 
 #include "IO/IOUtils.h"
 
-// uncomment this if your system doesn't like OpenGL. EXPERIMENTAL.
-// #define NO_OPENGL
-
 // values
 #define DEFAULT_SONG_LENGTH 12
 

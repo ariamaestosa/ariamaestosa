@@ -23,8 +23,8 @@
 #include "Actions/EditAction.h"
 #include "Actions/AddNote.h"
 
-#include "Images/Drawable.h"
-#include "Images/ImageProvider.h"
+#include "Renderers/Drawable.h"
+#include "GUI/ImageProvider.h"
 #include "Editors/KeyboardEditor.h"
 #include "Editors/RelativeXCoord.h"
 #include "Midi/Sequence.h"
@@ -32,7 +32,7 @@
 #include "Pickers/MagneticGrid.h"
 #include "Pickers/KeyPicker.h"
 #include "GUI/GraphicalTrack.h"
-#include "GUI/RenderUtils.h"
+#include "Renderers/RenderAPI.h"
 
 #include "AriaCore.h"
 

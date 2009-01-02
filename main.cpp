@@ -20,12 +20,11 @@
 
 
 #include "GUI/MainFrame.h"
-#include "GUI/GLPane.h"
 #include "GUI/MainPane.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Sequence.h"
-#include "Images/ImageProvider.h"
+#include "GUI/ImageProvider.h"
 #include "IO/IOUtils.h"
 
 #include <iostream>

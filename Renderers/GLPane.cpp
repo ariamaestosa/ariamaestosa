@@ -14,10 +14,11 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "Config.h"
-#ifndef NO_OPENGL
+#ifdef RENDERER_OPENGL
 
-#include "GUI/GLPane.h"
+#include "Config.h"
+
+#include "Renderers/GLPane.h"
 #include "AriaCore.h"
 
 #include "wx/wx.h"

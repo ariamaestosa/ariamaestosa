@@ -69,7 +69,7 @@ InstrumentChoice* getInstrumentPicker();
 namespace Display
 {
 
-    #ifdef NO_OPENGL
+    #ifdef RENDERER_WXWIDGETS
     extern wxDC* renderDC;
     #endif
 

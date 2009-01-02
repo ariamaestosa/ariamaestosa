@@ -25,9 +25,9 @@
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 #include "Pickers/TuningPicker.h"
-#include "Images/ImageProvider.h"
+#include "GUI/ImageProvider.h"
 #include "Midi/MeasureData.h"
-#include "GUI/RenderUtils.h"
+#include "Renderers/RenderAPI.h"
 
 #include <string>
 #include <cmath>

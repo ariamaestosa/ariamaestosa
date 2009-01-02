@@ -13,6 +13,7 @@ Help("""
                 specify build type
             WXCONFIG=/path/to/wx-config
                 build using a specified wx-config
+            renderer=[opengl/wxwidgets]
             CXXFLAGS="custom build flags"
             LDFLAGS="custom link flags"
                 
@@ -97,14 +98,7 @@ def main_Aria_func():
         
     if which_os == "windows":
         print "!! Warning :  Windows is unsupported at this point" 
-        
-    # check build style
-    build_type = ARGUMENTS.get('config', 'release')
-    if build_type != 'release' and build_type != 'debug':
-        print "!! Unknown build config " + build_type
-        sys.exit(0) 
-        
-    print ">> Build type : " + build_type
+
 
     # check what to do
     if 'uninstall' in COMMAND_LINE_TARGETS:
@@ -125,7 +119,7 @@ def main_Aria_func():
             sys.exit(0)     
     else:
         # compile
-        compile_Aria(build_type, which_os)
+        compile_Aria(which_os)
 
 # ---------------------------- Install Mac OS X -----------------------------
 
@@ -179,7 +173,7 @@ def sys_command(command):
         sys.exit(0)
         
 # ---------------------------- Compile -----------------------------
-def compile_Aria(build_type, which_os):
+def compile_Aria(which_os):
 
     env = Environment()
     env.Append(PATH = os.environ['PATH'])
@@ -187,6 +181,26 @@ def compile_Aria(build_type, which_os):
     if 'CXX' in os.environ:
         print ">> Using compiler " + os.environ['CXX']
         env.Replace(CXX = os.environ['CXX'])
+
+    # check build style
+    build_type = ARGUMENTS.get('config', 'release')
+    if build_type != 'release' and build_type != 'debug':
+        print "!! Unknown build config " + build_type
+        sys.exit(0) 
+        
+    print ">> Build type : " + build_type
+    
+    # check renderer
+    renderer = ARGUMENTS.get('renderer', 'opengl')
+    if renderer != 'opengl' and renderer != 'wxwidgets':
+        print "!! Unknown renderer " + renderer
+        sys.exit(0)
+
+    print ">> Renderer : " + renderer
+    if renderer == 'opengl':
+        env.Append(CCFLAGS=['-DRENDERER_OPENGL'])
+    elif renderer == 'wxwidgets':
+        env.Append(CCFLAGS=['-DRENDERER_WXWIDGETS'])
 
     # add wxWidgets flags
     # check if user defined his own WXCONFIG, else use defaults
@@ -241,10 +255,12 @@ def compile_Aria(build_type, which_os):
         sources = sources + ['Midi/Players/Mac/QTKitPlayer.mm']
         env.Append(CPPPATH=['Midi/Players/Mac'])
     
-        env.Append(LINKFLAGS = ['-framework','OpenGL','-framework','GLUT','-framework','AGL',
-        '-framework','QTKit','-framework', 'Quicktime','-framework','CoreAudio',
+        env.Append(LINKFLAGS = ['-framework','QTKit','-framework', 'Quicktime','-framework','CoreAudio',
         '-framework','AudioToolbox','-framework','AudioUnit','-framework','AppKit',
         '-framework','Carbon','-framework','Cocoa','-framework','IOKit','-framework','System'])
+        
+        if renderer == 'opengl':
+            env.Append(LINKFLAGS = ['-framework','OpenGL','-framework','GLUT','-framework','AGL'])
         
     # linux (Alsa/tiMidity)
     elif which_os == "linux":
@@ -257,7 +273,9 @@ def compile_Aria(build_type, which_os):
         env.Append(LINKFLAGS = ['-Wl,--rpath,/usr/local/lib/'])
         env.Append(LIBPATH = ['usr/local/lib/','usr/lib/', '/opt/gnome/lib'])
         
-        env.Append(LIBS = ['GL', 'GLU', 'glut'])
+        if renderer == 'opengl':
+            env.Append(LIBS = ['GL', 'GLU', 'glut'])
+            
         env.Append(LIBS = ['asound'])
         env.Append(LIBS = ['dl','m'])
         env.ParseConfig( 'pkg-config --cflags glib-2.0' )

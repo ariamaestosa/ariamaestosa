@@ -14,58 +14,41 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _image_
-#define _image_
-
+#ifdef RENDERER_WXWIDGETS
 #include "Config.h"
-#include "GUI/RenderUtils.h"
 
-#ifndef NO_OPENGL
-#include "OpenGL.h"
-#else
+#ifndef _wxrender_
+#define _wxrender_
+
 #include "wx/wx.h"
-#endif
-
 
 namespace AriaMaestosa {
 
-class Image {
+    class MainFrame;
 
-#ifndef NO_OPENGL
-    GLuint* ID;
-    public:
-#else
-    public:
-    wxImage image;
-    OwnerPtr<wxBitmap>  bitmap;
-    
-    wxImage* states[AriaRender::STATE_AMOUNT];
-    wxBitmap* states_bmp[AriaRender::STATE_AMOUNT];
-    
-    wxImage* getImageForState(AriaRender::ImageState);
-    wxBitmap* getBitmapForState(AriaRender::ImageState);
-#endif
+class wxRenderPane : public wxPanel
+{
 
-    LEAK_CHECK(Image);
+public:
+    LEAK_CHECK(wxRenderPane);
 
-    int width, height;
-    
-#ifndef NO_OPENGL
-    int textureWidth, textureHeight;
-    float tex_coord_x;
-    float tex_coord_y;
+    wxRenderPane(MainFrame* parent, int* args);
+    ~wxRenderPane();
 
-    GLuint* getID();
-#endif
+    void resized(wxSizeEvent& evt);
 
-    Image();
-    Image(wxString path);
-    ~Image();
-    void load(wxString path);
+    // size
+    int getWidth();
+    int getHeight();
+
+    bool prepareFrame();
+    void beginFrame();
+    void endFrame();
 
 };
 
+typedef wxRenderPane RenderPane;
 
 }
-
+#endif
 #endif

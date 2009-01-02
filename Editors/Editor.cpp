@@ -23,11 +23,11 @@
 #include "Midi/Sequence.h"
 #include "GUI/GraphicalTrack.h"
 #include "Midi/MeasureData.h"
-#include "GUI/RenderUtils.h"
+#include "Renderers/RenderAPI.h"
 #include "Pickers/MagneticGrid.h"
 #include "Pickers/VolumeSlider.h"
-#include "Images/ImageProvider.h"
-#include "Images/Drawable.h"
+#include "GUI/ImageProvider.h"
+#include "Renderers/Drawable.h"
 #include "IO/IOUtils.h"
 
 namespace AriaMaestosa {

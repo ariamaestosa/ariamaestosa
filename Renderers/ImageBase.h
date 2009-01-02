@@ -15,48 +15,13 @@
  */
 
 #include "Config.h"
-#ifndef NO_OPENGL
+#include "Renderers/RenderAPI.h"
 
-#ifndef _glpane_
-#define _glpane_
 
-#include "wx/wx.h"
-#include "wx/glcanvas.h"
-
-#include "ptr_vector.h"
-#include "Editors/RelativeXCoord.h"
-#include <vector>
-
-namespace AriaMaestosa {
-
-    class MainFrame;
-
-class GLPane : public wxGLCanvas
-{
-public:
-    LEAK_CHECK(GLPane);
-
-    GLPane(MainFrame* parent, int* args);
-    ~GLPane();
-
-    void resized(wxSizeEvent& evt);
-
-    // size
-    int getWidth();
-    int getHeight();
-
-    // OpenGL stuff
-    void setCurrent();
-    void swapBuffers();
-    void initOpenGLFor3D();
-    void initOpenGLFor2D();
-
-    bool prepareFrame();
-    void beginFrame();
-    void endFrame();
-
-};
-
-}
-#endif
+#ifdef RENDERER_OPENGL
+    #include "Renderers/GLImage.h"
+#elif defined(RENDERER_WXWIDGETS)
+    #include "Renderers/wxImage.h"
+#else
+    #error No renderer defined!
 #endif

@@ -30,7 +30,7 @@ const float current_file_version = 1.0;
 #include "Actions/ScaleTrack.h"
 #include "Actions/ScaleSong.h"
 
-#include "GUI/RenderUtils.h"
+#include "Renderers/RenderAPI.h"
 #include "GUI/MainFrame.h"
 
 #include "Dialogs/Preferences.h"

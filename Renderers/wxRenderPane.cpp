@@ -14,10 +14,10 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#ifdef RENDERER_WXWIDGETS
 #include "Config.h"
-#ifdef NO_OPENGL
 
-#include "GUI/wxRenderPane.h"
+#include "Renderers/wxRenderPane.h"
 #include "AriaCore.h"
 
 #include "wx/wx.h"

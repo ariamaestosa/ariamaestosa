@@ -14,13 +14,12 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#ifdef RENDERER_WXWIDGETS
 /*
  * This is a class built on top of OpenGL to go with Drawable. It deals with OpenGL textures.
  */
 
-#include "Images/Image.h"
-#include "Images/ImageLoader.h"
-
+#include "Renderers/ImageBase.h"
 #include <iostream>
 #include "Config.h"
 
@@ -38,12 +37,6 @@ Image::Image(wxString path)
 
 void Image::load(wxString path)
 {
-#ifndef NO_OPENGL
-    ID=loadImage(path, &width, &height, &textureWidth, &textureHeight);
-
-    tex_coord_x= (float)width/(float)textureWidth;
-    tex_coord_y= (float)height/(float)fabsf(textureHeight);
-#else
     for(int n=0; n<AriaRender::STATE_AMOUNT; n++)
     {
         states[n] = NULL;
@@ -59,21 +52,10 @@ void Image::load(wxString path)
     width = image.GetWidth();
     height = image.GetHeight();
     bitmap = new wxBitmap(image);
-#endif
 }
     
-#ifndef NO_OPENGL
-GLuint* Image::getID()
-{
-    return ID;
-}
-#endif
-
 Image::~Image()
 {
-#ifndef NO_OPENGL
-    glDeleteTextures (1, ID);
-#else
     for(int n=0; n<AriaRender::STATE_AMOUNT; n++)
     {
         if(states[n] != NULL)
@@ -82,10 +64,8 @@ Image::~Image()
             delete states_bmp[n];
         }
     }
-#endif
 }
 
-#ifdef NO_OPENGL
 wxImage* Image::getImageForState(AriaRender::ImageState s)
 {
     if(s == AriaRender::STATE_NORMAL) return &image;
@@ -140,6 +120,7 @@ wxBitmap* Image::getBitmapForState(AriaRender::ImageState s)
     if(states_bmp[s] == NULL) getImageForState(s);
     return states_bmp[s];
 }
-#endif
-    
+
 }
+
+#endif

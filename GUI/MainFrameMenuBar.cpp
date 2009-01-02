@@ -32,7 +32,7 @@
 
 #include "Editors/KeyboardEditor.h"
 
-#include "Images/ImageProvider.h"
+#include "GUI/ImageProvider.h"
 
 #include "Dialogs/CustomNoteSelectDialog.h"
 #include "Dialogs/WaitWindow.h"

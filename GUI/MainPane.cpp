@@ -35,9 +35,9 @@
 #include "GUI/MeasureBar.h"
 #include "GUI/GraphicalTrack.h"
 #include "GUI/MainFrame.h"
-#include "GUI/RenderUtils.h"
-#include "Images/Drawable.h"
-#include "Images/ImageProvider.h"
+#include "Renderers/RenderAPI.h"
+#include "Renderers/Drawable.h"
+#include "GUI/ImageProvider.h"
 #include "Midi/Track.h"
 #include "Midi/Note.h"
 #include "Midi/Sequence.h"
@@ -56,9 +56,9 @@
 
 namespace AriaMaestosa {
 
-#ifndef NO_OPENGL
+#ifdef RENDERER_OPENGL
 BEGIN_EVENT_TABLE(MainPane, wxGLCanvas)
-#else
+#elif defined(RENDERER_WXWIDGETS)
 BEGIN_EVENT_TABLE(MainPane, wxPanel)
 #endif
 
@@ -124,7 +124,7 @@ public:
 #pragma mark -
 #endif
 
-MainPane::MainPane(MainFrame* mainframe, int* args) : MAINPANE_BASE_CLASS(mainframe, args)
+MainPane::MainPane(MainFrame* mainframe, int* args) : RenderPane(mainframe, args)
 {
     currentTick=-1;
     draggingTrack = -1;
@@ -177,7 +177,7 @@ void MainPane::render(const bool paintEvent)
     {
         wxAutoBufferedPaintDC mydc(this);
 
-        #ifdef NO_OPENGL
+        #ifdef RENDERER_WXWIDGETS
             Display::renderDC = &mydc;
         #endif
         beginFrame();
@@ -188,15 +188,15 @@ void MainPane::render(const bool paintEvent)
 #ifdef __WXMAC__
         wxClientDC mydc(this);
 #else
-    #ifdef NO_OPENGL
+    #ifdef RENDERER_WXWIDGETS
         wxClientDC my_client_dc(this);
         wxBufferedDC mydc(static_cast<wxDC*>(&my_client_dc), wxDefaultSize);
-    #else
+    #elif define(RENDERER_OPENGL)
         wxClientDC my_dc(this);
     #endif
 #endif
         
-#ifdef NO_OPENGL
+#ifdef RENDERER_WXWIDGETS
         Display::renderDC = static_cast<wxDC*>(&mydc);
 #endif
         beginFrame();

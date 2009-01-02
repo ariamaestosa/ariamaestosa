@@ -1,6 +1,5 @@
 #include "AriaCore.h"
 #include "main.h"
-#include "GUI/GLPane.h"
 #include "GUI/MainFrame.h"
 #include "GUI/MainPane.h"
 #include "Midi/Sequence.h"
@@ -78,7 +77,7 @@ Sequence* getCurrentSequence()
 
 namespace Display
 {
-#ifdef NO_OPENGL
+#ifdef RENDERER_WXWIDGETS
     wxDC* renderDC;
 #endif
 
