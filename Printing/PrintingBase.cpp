@@ -339,6 +339,8 @@ void EditorPrintable::beginLine(wxDC* dc, LayoutLine* line,  int x0, const int y
     EditorPrintable::currentLine = line;
     EditorPrintable::dc = dc;
 
+    std::cout << "setting current line to " << line << std::endl;
+    
     // 2 spaces allocated for left area of the line
     pixel_width_of_an_unit = (float)(x1 - x0) / (float)(line->width_in_units+2);
 
@@ -371,6 +373,7 @@ int EditorPrintable::getCurrentElementXEnd()
 }
 LayoutElement* EditorPrintable::getElementForMeasure(const int measureID)
 {
+    assert(currentLine != NULL);
     std::vector<LayoutElement>& layoutElements = currentLine->layoutElements;
     const int amount = layoutElements.size();
     for(int n=0; n<amount; n++)
