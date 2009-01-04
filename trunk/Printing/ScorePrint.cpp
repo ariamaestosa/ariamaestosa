@@ -21,6 +21,7 @@ ScorePrintable* g_printable = NULL;
     
 ScorePrintable::ScorePrintable(Track* track) : EditorPrintable()
 {
+    std::cout << " *** setting global g_printable" << std::endl;
     g_printable = this;
 }
 ScorePrintable::~ScorePrintable() { }
@@ -147,6 +148,7 @@ void renderSilenceCallback(const int tick, const int tick_length, const int sile
     const int beat = getMeasureData()->beatLengthInTicks();
 
     {
+        std::cout << "g_printable = " << g_printable << std::endl;
     LayoutElement* temp = g_printable->getElementForMeasure(measure);
     if(temp != NULL and temp->type == REPEATED_RIFF) return; //don't render silences in repetions measure!
     }
@@ -552,6 +554,8 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     }
     else { assert(false); }
 
+    g_printable = this;
+    
     if(g_clef)
     {
         drawScore(false /*G*/, *g_clef_analyser, line, dc,
@@ -784,6 +788,8 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
 
     } // next note
 
+    g_printable = this;
+    
     // render silences
     const int first_measure = line.getFirstMeasure();
     const int last_measure  = line.getLastMeasure();

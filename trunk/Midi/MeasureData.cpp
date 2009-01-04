@@ -350,7 +350,15 @@ int MeasureData::firstTickInMeasure(int id)
     }
     else
     {
-        assertExpr(id,<,(int)measureInfo.size());
+        // allow going a little past 'official' song end
+        if(id >= (int)measureInfo.size())
+        {
+            if(id > (int)measureInfo.size()+50){ assert(false); } // but not too far, to detect corrupt values
+            
+            return measureInfo[measureInfo.size()-1].endTick;
+        }
+        
+        
         return measureInfo[id].tick;
     }
 }
@@ -362,6 +370,14 @@ int MeasureData::lastTickInMeasure(int id)
     }
     else
     {
+        // allow going a little past 'official' song end
+        if(id >= (int)measureInfo.size())
+        {
+            if(id > (int)measureInfo.size()+50){ assert(false); } // but not too far, to detect corrupt values
+            
+            return measureInfo[measureInfo.size()-1].endTick;
+        }
+        
         assertExpr(id,<,(int)measureInfo.size());
         return measureInfo[id].endTick;
     }

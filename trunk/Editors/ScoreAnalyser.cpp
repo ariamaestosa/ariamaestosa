@@ -921,6 +921,9 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
         int initial_id = -1;
         if(!recursion) initial_id = noteRenderInfo.size();
 
+        if(aboutEqual(firstLength, 0)) return;
+        if(aboutEqual(secondLength, 0)) return;
+        
         NoteRenderInfo part1(renderInfo.tick, renderInfo.x, renderInfo.level, firstLength, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
         addToVector(part1, true);
         NoteRenderInfo part2(getMeasureData()->firstTickInMeasure(renderInfo.measureBegin+1), tickToXConverter->tickToX(firstEnd),

@@ -42,6 +42,8 @@ NOTE: sorry, this is very raw :)
 
  + shift+arrows move notes by 1 octave (vertically) or by 1 measure (horizontally)
 
+ + in preferences : turn off linear view by default
+ 
  + make more features accessible graphically (as opposed to keyboard-only)
    - add new tools, that allow adding notes without dragging (and resizing without keyboard, and selecting, and...?) ?
    - add keyboard shortcut to change note length
@@ -93,7 +95,15 @@ NOTE: sorry, this is very raw :)
 
  ************************* BUGS: *************************
 
+** openong a song containing multiple time sigs opens the time sig editor
+
 ** Kill GLUT! crashes suse and arch...
+
+* rounding errors with vertical lines when zooming
+
+The score ends a bit too early (at the beginning of the last count of the last measure, instead of just after the end), which gives as result that a note that ends at the last count of the last measure cannot be entered using a mouse drag.
+
+The playback sometimes ends prematurely. You can heat this for example if you enter a single percussion "crash" sound. It might be a bug in the MIDI routines; in this case it will be a bit harder to fix.
 
 * red images
 * My CoreAudio player is deprecated on OS X 10.5...
