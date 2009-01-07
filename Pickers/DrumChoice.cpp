@@ -35,8 +35,6 @@ END_EVENT_TABLE()
 
 DrumChoice::DrumChoice() : wxMenu()
 {
-
-
     Append( 20000 + 0 ,wxT("Standard"));
     Append( 20000 + 8 ,wxT("Room kit"));
     Append( 20000 + 16 ,wxT("Power kit"));

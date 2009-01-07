@@ -37,164 +37,140 @@ void InstrumentChoice::setParent(Track* track)
     parent = track;
 }
 
+static const wxString g_inst_names[] =
+{
+    wxT("Acoustic Grand Piano"), // 0
+    wxT("Bright Acoustic Piano"), // 1
+    wxT("Electric Grand Piano"), // 2
+    wxT("Honky-Tonk Piano"), // 3
+    wxT("Electric Piano 1"), // 4
+    wxT("Electric Piano 2"), // 5
+    wxT("Harpsichord"), // 6
+    wxT("Clavinet"), // 7
+    wxT("Celesta"), // 8
+    wxT("Glockenspiel"), // 9
+    wxT("Music Box"), // 10
+    wxT("Vibraphone"), // 11
+    wxT("Marimba"), // 12
+    wxT("Xylophone"), // 13
+    wxT("Tubular Bells"), // 14
+    wxT("Dulcimer"), // 15
+    wxT("Drawbar Organ"), // 16
+    wxT("Percussive Organ"), // 17
+    wxT("Rock Organ"), // 18
+    wxT("Church Organ"), // 19
+    wxT("Reed Organ"), // 20
+    wxT("Accordion"), // 21
+    wxT("Harmonica"), // 22
+    wxT("Tango Accordion"), // 23
+    wxT("Nylon String Guitar"), // 24
+    wxT("Steel String Guitar"), // 25
+    wxT("Jazz Guitar"), // 26
+    wxT("Clean Electric Guitar"), // 27
+    wxT("Muted Electric Guitar"), // 28
+    wxT("Overdrive Guitar"), // 29
+    wxT("Distortion Guitar"), // 30
+    wxT("Guitar Harmonics"), // 31
+    wxT("Acoustic Bass"), // 32
+    wxT("Fingered Bass"), // 33
+    wxT("Picked Bass"), // 34
+    wxT("Fretless Bass"), // 35
+    wxT("Slap Bass 1"), // 36
+    wxT("Slap bass 2"), // 37
+    wxT("Synth Bass 1"), // 38
+    wxT("Synth Bass 2"), // 39
+    wxT("Violin"), // 40
+    wxT("Viola"), // 41
+    wxT("Cello"), // 42
+    wxT("Contrabass"), // 43
+    wxT("Tremolo Strings"), // 44
+    wxT("Pizzicato Strings"), // 45
+    wxT("Orchestral Harp"), // 46
+    wxT("Timpani"), // 47
+    wxT("String Ensemble 1"), // 48
+    wxT("String Ensemble 2"), // 49
+    wxT("Synth Strings 1"), // 50
+    wxT("Synth Strings 2"), // 51
+    wxT("Choir (ahh)"), // 52
+    wxT("Choir (ooh)"), // 53
+    wxT("Synth Voice"), // 54
+    wxT("Orchestral Hit"), // 55
+    wxT("Trumpet"), // 56
+    wxT("Trombone"), // 57
+    wxT("Tuba"), // 58
+    wxT("Muted Trumpet"), // 59
+    wxT("French Horn"), // 60
+    wxT("Brass Section"), // 61
+    wxT("Synth Brass 1"), // 62
+    wxT("Synth Brass 2"), // 63
+    wxT("Soprano Sax"), // 64
+    wxT("Alto Sax"), // 65
+    wxT("Tenor Sax"), // 66
+    wxT("Baritone Sax"), // 67
+    wxT("Oboe"), // 68
+    wxT("English Horn"), // 69
+    wxT("Bassoon"), // 70
+    wxT("Clarinet"), // 71
+    wxT("Piccolo"), // 72
+    wxT("Flute"), // 73
+    wxT("Recorder"), // 74
+    wxT("Pan Flute"), // 75
+    wxT("Blown Bottle"), // 76
+    wxT("Shakuachi"), // 77
+    wxT("Whistle"), // 78
+    wxT("Ocarina"), // 79
+    wxT("Square Wave"), // 80
+    wxT("Sawtooth wave"), // 81
+    wxT("Caliope"), // 82
+    wxT("Chiff"), // 83
+    wxT("Charang"), // 84
+    wxT("Synth Voice 2"), // 85
+    wxT("Fifths"), // 86
+    wxT("Bass & Lead"), // 87
+    wxT("New Age"), // 88
+    wxT("Warm"), // 89
+    wxT("Polysynth"), // 90
+    wxT("Choir"), // 91
+    wxT("Bowed"), // 92
+    wxT("Metallic"), // 93
+    wxT("Halo"), // 94
+    wxT("Sweep"), // 95
+    wxT("Rain"), // 96
+    wxT("Sound Track"), // 97
+    wxT("Crystal"), // 98
+    wxT("Atmosphere"), // 99
+    wxT("Brightness"), // 100
+    wxT("Goblins"), // 101
+    wxT("Drops"), // 102
+    wxT("Star Theme"), // 103
+    wxT("Sitar"), // 104
+    wxT("Banjo"), // 105
+    wxT("Shamisen"), // 106
+    wxT("Koto"), // 107
+    wxT("Kalimba"), // 108
+    wxT("Bagpipe"), // 109
+    wxT("Fiddle"), // 110
+    wxT("Shanai"), // 111
+    wxT("Tinkle Bell"), // 112
+    wxT("Agogo"), // 113
+    wxT("Steel Drums"), // 114
+    wxT("Woodblock"), // 115
+    wxT("Taiko Drum"), // 116
+    wxT("Melodic Drum"), // 117
+    wxT("Synth Drum"), // 118
+    wxT("Reverse Cymbal"), // 119
+    wxT("Guitar Fret Noise"), // 120
+    wxT("Breath Noise"), // 121
+    wxT("Seashore"), // 122
+    wxT("Bird Tweet"), // 123
+    wxT("Telephone Ring"), // 124
+    wxT("Helicopter"), // 125
+    wxT("Applause"), // 126
+    wxT("Gunshot") // 127
+};
+    
 InstrumentChoice::InstrumentChoice() : wxMenu()
 {
-    // piano
-    inst_name[0]="Acoustic Grand Piano";
-    inst_name[1]="Bright Acoustic Piano";
-    inst_name[2]="Electric Grand Piano";
-    inst_name[3]="Honky-Tonk Piano";
-    inst_name[4]="Electric Piano 1";
-    inst_name[5]="Electric Piano 2";
-    inst_name[6]="Harpsichord";
-    inst_name[7]="Clavinet";
-
-    // chromatic
-    inst_name[8]="Celesta";
-    inst_name[9]="Glockenspiel";
-    inst_name[10]="Music Box";
-    inst_name[11]="Vibraphone";
-    inst_name[12]="Marimba";
-    inst_name[13]="Xylophone";
-    inst_name[14]="Tubular Bells";
-    inst_name[15]="Dulcimer";
-
-    // organ
-    inst_name[16]="Drawbar Organ";
-    inst_name[17]="Percussive Organ";
-    inst_name[18]="Rock Organ";
-    inst_name[19]="Church Organ";
-    inst_name[20]="Reed Organ";
-    inst_name[21]="Accordion";
-    inst_name[22]="Harmonica";
-    inst_name[23]="Tango Accordion";
-
-    // guitar
-    inst_name[24]="Nylon String Guitar";
-    inst_name[25]="Steel String Guitar";
-    inst_name[26]="Jazz Guitar";
-    inst_name[27]="Clean Electric Guitar";
-    inst_name[28]="Muted Electric Guitar";
-    inst_name[29]="Overdrive Guitar";
-    inst_name[30]="Distortion Guitar";
-    inst_name[31]="Guitar Harmonics";
-    inst_name[120]="Guitar Fret Noise";
-
-    // bass
-    inst_name[32]="Acoustic Bass";
-    inst_name[33]="Fingered Bass";
-    inst_name[34]="Picked Bass";
-    inst_name[35]="Fretless Bass";
-    inst_name[36]="Slap Bass 1";
-    inst_name[37]="Slap bass 2";
-    inst_name[38]="Synth Bass 1";
-    inst_name[39]="Synth Bass 2";
-
-    // orchestra
-    inst_name[40]="Violin";
-    inst_name[41]="Viola";
-    inst_name[42]="Cello";
-    inst_name[43]="Contrabass";
-    inst_name[44]="Tremolo Strings";
-    inst_name[45]="Pizzicato Strings";
-    inst_name[46]="Orchestral Harp";
-    inst_name[48]="String Ensemble 1";
-    inst_name[49]="String Ensemble 2";
-    inst_name[50]="Synth Strings 1";
-    inst_name[51]="Synth Strings 2";
-    inst_name[55]="Orchestral Hit";
-
-    // pads, choirs, voices
-    inst_name[52]="Choir (ahh)";
-    inst_name[53]="Choir (ooh)";
-    inst_name[89]="Warm";
-    inst_name[91]="Choir";
-    inst_name[94]="Halo";
-    inst_name[92]="Bowed";
-    inst_name[95]="Sweep";
-    inst_name[54]="Synth Voice";
-    inst_name[85]="Synth Voice 2";
-    inst_name[98]="Crystal";
-    inst_name[100]="Brightness";
-    inst_name[101]="Goblins";
-    inst_name[102]="Echo Drops";
-    inst_name[93]="Metallic";
-    inst_name[88]="New Age";
-    inst_name[96]="Rain";
-
-    // brass
-    inst_name[56]="Trumpet";
-    inst_name[57]="Trombone";
-    inst_name[58]="Tuba";
-    inst_name[59]="Muted Trumpet";
-    inst_name[60]="French Horn";
-    inst_name[61]="Brass Section";
-    inst_name[62]="Synth Brass 1";
-    inst_name[63]="Synth Brass 2";
-
-    // reed
-    inst_name[64]="Soprano Sax";
-    inst_name[65]="Alto Sax";
-    inst_name[66]="Tenor Sax";
-    inst_name[67]="Baritone Sax";
-    inst_name[68]="Oboe";
-    inst_name[69]="English Horn";
-    inst_name[70]="Bassoon";
-    inst_name[71]="Clarinet";
-
-    // pipe
-    inst_name[72]="Piccolo";
-    inst_name[73]="Flute";
-    inst_name[74]="Recorder";
-    inst_name[75]="Pan Flute";
-    inst_name[76]="Blown Bottle";
-    inst_name[77]="Shakuachi";
-    inst_name[78]="Whistle";
-    inst_name[79]="Ocarina";
-
-    // synths
-    inst_name[80]="Square Wave";
-    inst_name[81]="Sawtooth wave";
-    inst_name[82]="Caliope";
-    inst_name[83]="Chiff";
-    inst_name[84]="Charang";
-    inst_name[86]="Fifths";
-    inst_name[87]="Bass & Lead";
-    inst_name[90]="Polysynth";
-    inst_name[97]="Sound Track";
-    inst_name[99]="Atmosphere";
-    inst_name[103]="Star Theme";
-
-    // ethnic
-    inst_name[104]="Sitar";
-    inst_name[105]="Banjo";
-    inst_name[106]="Shamisen";
-    inst_name[107]="Koto";
-    inst_name[108]="Kalimba";
-    inst_name[109]="Bagpipe";
-    inst_name[110]="Fiddle";
-    inst_name[111]="Shanai";
-
-    // percussion
-    inst_name[112]="Tinkle Bell";
-    inst_name[113]="Agogo";
-    inst_name[114]="Steel Drums";
-    inst_name[115]="Woodblock";
-    inst_name[116]="Taiko Drum";
-    inst_name[117]="Melodic Drum";
-    inst_name[47]="Timpani";
-    inst_name[118]="Synth Drum";
-    inst_name[119]="Reverse Cymbal";
-
-    // sound effects
-    inst_name[121]="Breath Noise";
-    inst_name[122]="Seashore";
-    inst_name[123]="Bird Tweet";
-    inst_name[124]="Telephone Ring";
-    inst_name[125]="Helicopter";
-    inst_name[126]="Applause";
-    inst_name[127]="Gunshot";
-
     submenu_1_piano=new wxMenu();
     submenu_2_chromatic=new wxMenu();
     submenu_3_organ=new wxMenu();
@@ -211,7 +187,7 @@ InstrumentChoice::InstrumentChoice() : wxMenu()
     submenu_14_sound_effects=new wxMenu();
     submenu_15_drums=new wxMenu();
 
-#define _ADD_INSTR(id, parent) inst_menus[ id ]= parent -> Append( id+10000, fromCString(inst_name[ id ].c_str()));
+#define _ADD_INSTR(id, parent) inst_menus[ id ]= parent -> Append( id+10000, g_inst_names[ id ] );
 
     Append(wxID_ANY,wxT("Piano"), submenu_1_piano);
     _ADD_INSTR(0, submenu_1_piano);
@@ -397,12 +373,12 @@ void InstrumentChoice::menuSelected(wxCommandEvent& evt)
 }
 
 
-char* InstrumentChoice::getInstrumentName(int instrumentID)
+const char* InstrumentChoice::getInstrumentName(int instrumentID)
 {
     assertExpr(instrumentID,<,128);
     assertExpr(instrumentID,>=,0);
 
-    return (char*)inst_name[instrumentID].c_str();
+    return (const char*)g_inst_names[instrumentID].mb_str();
 }
 
 

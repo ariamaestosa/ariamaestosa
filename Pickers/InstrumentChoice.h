@@ -30,7 +30,6 @@ class Track; // forward
 class InstrumentChoice : public wxMenu
 {
     wxMenuItem* inst_menus[128];
-    std::string inst_name[128];
 
     wxMenu* submenu_1_piano;
     wxMenu* submenu_2_chromatic;
@@ -57,7 +56,7 @@ public:
     InstrumentChoice();
     ~InstrumentChoice();
 
-    char* getInstrumentName(int id);
+    const char* getInstrumentName(int id);
 
     void setParent(Track* track);
 
