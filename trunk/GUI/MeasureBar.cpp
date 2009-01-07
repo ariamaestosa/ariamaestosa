@@ -243,12 +243,12 @@ void MeasureBar::render(int measureBarY_arg)
         AriaRender::line(n, measureBarY, n, measureBarY+20);
 
         // measure ID
-        wxString buffer = to_wxString(measureID);
-        AriaRender::small_text(buffer.mb_str(), n+5, measureBarY+15);
+        AriaRender::images();
+        AriaRender::renderNumber(measureID, n+5, measureBarY+18 );
 
+        AriaRender::primitives();
         if(data->expandedMode)
         {
-
             const int amount = data->timeSigChanges.size();
             for(int i=0; i<amount; i++)
             {
@@ -272,12 +272,11 @@ void MeasureBar::render(int measureBarY_arg)
                     else AriaRender::color(0,0,0);
 
                     AriaRender::pointSize(1);
+                    AriaRender::images();
 
-                    wxString denom_name = to_wxString(data->timeSigChanges[i].denom);
-                    AriaRender::small_text(denom_name.mb_str(), n + 18, measureBarY + 38);
-
-                    wxString num_name = to_wxString(data->timeSigChanges[i].num);
-                    AriaRender::small_text(num_name.mb_str(), n + 10, measureBarY + 29);
+                    AriaRender::renderNumber(data->timeSigChanges[i].denom, n + 18, measureBarY + 42 );
+                    AriaRender::renderNumber(data->timeSigChanges[i].num, n + 10, measureBarY + 33 );
+                    AriaRender::primitives();
 
                     AriaRender::color(0,0,0);
                     break;
@@ -320,9 +319,7 @@ void MeasureBar::mouseDown(int x, int y)
     data->somethingSelected = true;
     lastMeasureInDrag = measure_vectorID;
 
-    std::cout << "clicked on measure " << lastMeasureInDrag << std::endl;
-
-
+    // std::cout << "clicked on measure " << lastMeasureInDrag << std::endl;
 }
 
 /*
