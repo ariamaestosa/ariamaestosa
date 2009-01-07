@@ -222,12 +222,11 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
                       getEditorsXStart(), getYEnd());
 
     // controller name
+    AriaRender::images();
     AriaRender::color(0,0,0);
 
-    const char* controllerName=controllerChoice->getControllerName();
-    AriaRender::small_text_newline_between_words(controllerName,18, getEditorYStart()+15);
-
-    AriaRender::images();
+    controllerChoice->renderControllerName( 18,  getEditorYStart()+15 );
+    
     AriaRender::endScissors();
 
 }

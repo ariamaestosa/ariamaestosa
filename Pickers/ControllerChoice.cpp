@@ -31,83 +31,216 @@ namespace AriaMaestosa {
 
 
 BEGIN_EVENT_TABLE(ControllerChoice, wxMenu)
-
 EVT_MENU_RANGE(0,202,ControllerChoice::menuSelected)
-
 END_EVENT_TABLE()
 
-
-ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu()
+    
+static const wxString g_controller_names[] =
+{
+    wxT(""), // 0
+    wxT("Modulation"), // 1, fine 33
+    wxT("Breath"), // 2
+    wxT(""), // 3
+    wxT("Foot"), // 4
+    wxT("Portamento Time"), // 5, fine 37
+    wxT(""), // 6
+    wxT("Volume"), // 7, fine 39
+    wxT("Balance"), // 8
+    wxT(""), // 9
+    wxT("Pan"), // 10, fine 42
+    wxT("Expression"), // 11
+    wxT("Effect 1"), // 12
+    wxT("Effect 2"), // 13
+    wxT(""), // 14
+    wxT(""), // 15
+    wxT("General Purpose 1"), // 16
+    wxT("General Purpose 2"), // 17
+    wxT("General Purpose 3"), // 18
+    wxT("General Purpose 4"), // 19
+    wxT(""), // 20
+    wxT(""), // 21
+    wxT(""), // 22
+    wxT(""), // 23
+    wxT(""), // 24
+    wxT(""), // 25
+    wxT(""), // 26
+    wxT(""), // 27
+    wxT(""), // 28
+    wxT(""), // 29
+    wxT("Pitch Bend"), // 30
+    wxT("Tempo (global)"), // 31
+    wxT(""), // 32
+    wxT(""), // 33
+    wxT(""), // 34
+    wxT(""), // 35
+    wxT(""), // 36
+    wxT(""), // 37
+    wxT(""), // 38
+    wxT(""), // 39
+    wxT(""), // 40
+    wxT(""), // 41
+    wxT(""), // 42
+    wxT(""), // 43
+    wxT(""), // 44
+    wxT(""), // 45
+    wxT(""), // 46
+    wxT(""), // 47
+    wxT(""), // 48
+    wxT(""), // 49
+    wxT(""), // 50
+    wxT(""), // 51
+    wxT(""), // 52
+    wxT(""), // 53
+    wxT(""), // 54
+    wxT(""), // 55
+    wxT(""), // 56
+    wxT(""), // 57
+    wxT(""), // 58
+    wxT(""), // 59
+    wxT(""), // 60
+    wxT(""), // 61
+    wxT(""), // 62
+    wxT(""), // 63
+    wxT("Sustain"), // 64
+    wxT("Portamento"), // 65
+    wxT("Sostenuto"), // 66
+    wxT("Soft Pedal"), // 67
+    wxT("Legato footswitch"), // 68
+    wxT("Hold"), // 69
+    wxT("Timber Variation"), // 70
+    wxT("Timber/Harmonic"), // 71
+    wxT("Release Time"), // 72
+    wxT("Attack Time"), // 73
+    wxT("Brightness"), // 74
+    wxT("Decay Time"), // 75
+    wxT("Vibrato Rate"), // 76
+    wxT("Vibrato Depth"), // 77
+    wxT("Vibrato Delay"), // 78
+    wxT(""), // 79
+    wxT("General Purpose 5"), // 80
+    wxT("General Purpose 6"), // 81
+    wxT("General Purpose 7"), // 82
+    wxT("General Purpose 8"), // 83
+    wxT("Portamento Control"), // 84
+    wxT(""), // 85
+    wxT(""), // 86
+    wxT(""), // 87
+    wxT(""), // 88
+    wxT(""), // 89
+    wxT(""), // 90
+    wxT("Reverb"), // 91
+    wxT("Tremolo"), // 92
+    wxT("Chorus"), // 93
+    wxT("Celeste"), // 94
+    wxT("Phaser"), // 95
+    wxT(""), // 96
+    wxT(""), // 97
+    wxT(""), // 98
+    wxT(""), // 99
+    wxT(""), // 100
+    wxT(""), // 101
+    wxT(""), // 102
+    wxT(""), // 103
+    wxT(""), // 104
+    wxT(""), // 105
+    wxT(""), // 106
+    wxT(""), // 107
+    wxT(""), // 108
+    wxT(""), // 109
+    wxT(""), // 110
+    wxT(""), // 111
+    wxT(""), // 112
+    wxT(""), // 113
+    wxT(""), // 114
+    wxT(""), // 115
+    wxT(""), // 116
+    wxT(""), // 117
+    wxT(""), // 118
+    wxT(""), // 119
+    wxT("All sound off"), // 120
+    wxT("Reset control"), // 121
+    wxT(""), // 122
+    wxT("All notes off"), // 123
+    wxT(""), // 124
+    wxT(""), // 125
+    wxT(""), // 126
+    wxT(""), // 127
+};
+    // 32-63 (0x20-0x3F)     LSB for controllers 0-31
+    
+ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu(), controller_names_renderer(g_controller_names, 124)
 {
     controllerID=7;
 
-    Append( 7 ,wxT("Volume")); // fine:39
-    Append( 10 ,wxT("Pan")); // fine:42
-    Append( 1 ,wxT("Modulation")); // fine:33
-    Append( 91 ,wxT("Reverb"));
-    Append( 64 ,wxT("Sustain"));
+    strings_consolidated = false;
+    
+    Append( 7 , g_controller_names[7 ] ); // Volume // fine:39
+    Append( 10 , g_controller_names[10 ] ); // Pan // fine:42
+    Append( 1 , g_controller_names[1 ] ); // Modulation // fine:33
+    Append( 91 , g_controller_names[91 ] ); // Reverb
+    Append( 64 , g_controller_names[64 ] ); // Sustain
 
     // In the midi specs, pitch bend is not a controller. However, i found it just made sense to place it among controllers, so i assigned it arbitrary ID 200.
-    Append( 200 ,wxT("Pitch Bend"));
+    Append( 200 , wxT("Pitch Bend") ); // Pitch Bend
 
     // Tempo bend is not a controller but for now it goes there
-    Append( 201 ,wxT("Tempo (global)"));
+    Append( 201 , wxT("Tempo (global)") ); // Tempo (global)
 
     AppendSeparator();
 
-    Append( 2 ,wxT("Breath"));
-    Append( 4 ,wxT("Foot"));
-    Append( 8 ,wxT("Balance"));
-    Append( 11 ,wxT("Expression"));
-    Append( 92 ,wxT("Tremolo"));
-    Append( 93 ,wxT("Chorus"));
-    Append( 94 ,wxT("Celeste"));
-    Append( 95 ,wxT("Phaser"));
+    Append( 2 , g_controller_names[2 ] ); // Breath
+    Append( 4 , g_controller_names[4 ] ); // Foot
+    Append( 8 , g_controller_names[8 ] ); // Balance
+    Append( 11 , g_controller_names[11 ] ); // Expression
+    Append( 92 , g_controller_names[92 ] ); // Tremolo
+    Append( 93 , g_controller_names[93 ] ); // Chorus
+    Append( 94 , g_controller_names[94 ] ); // Celeste
+    Append( 95 , g_controller_names[95 ] ); // Phaser
 
     
-    Append( 70 ,wxT("Timber Variation"));
-    Append( 71 ,wxT("Timber/Harmonic"));
-    Append( 72 ,wxT("Release Time"));
-    Append( 73 ,wxT("Attack Time"));
-    Append( 74 ,wxT("Brightness"));
-    Append( 75 ,wxT("Decay Time"));
+    Append( 70 , g_controller_names[70 ] ); // Timber Variation
+    Append( 71 , g_controller_names[71 ] ); // Timber/Harmonic
+    Append( 72 , g_controller_names[72 ] ); // Release Time
+    Append( 73 , g_controller_names[73 ] ); // Attack Time
+    Append( 74 , g_controller_names[74 ] ); // Brightness
+    Append( 75 , g_controller_names[75 ] ); // Decay Time
     
     AppendSeparator();
     
     wxMenu* misc_menu = new wxMenu();
     Append(wxID_ANY,wxT("Misc"), misc_menu);
 
-    misc_menu->Append( 66 ,wxT("Sostenuto"));
-    misc_menu->Append( 67 ,wxT("Soft Pedal"));
-    misc_menu->Append( 68 ,wxT("Legato footswitch"));
-    misc_menu->Append( 69 ,wxT("Hold"));
+    misc_menu->Append( 66 , g_controller_names[66 ] ); // Sostenuto
+    misc_menu->Append( 67 , g_controller_names[67 ] ); // Soft Pedal
+    misc_menu->Append( 68 , g_controller_names[68 ] ); // Legato footswitch
+    misc_menu->Append( 69 , g_controller_names[69 ] ); // Hold
 
     misc_menu->AppendSeparator();
-    misc_menu->Append( 65 ,wxT("Portamento"));
-    misc_menu->Append( 5 ,wxT("Portamento Time")); // fine:37
-    misc_menu->Append( 84 ,wxT("Portamento Control"));
+    misc_menu->Append( 65 , g_controller_names[65 ] ); // Portamento
+    misc_menu->Append( 5 , g_controller_names[5 ] ); // Portamento Time // fine:37
+    misc_menu->Append( 84 , g_controller_names[84 ] ); // Portamento Control
     misc_menu->AppendSeparator();
-    misc_menu->Append( 76 ,wxT("Vibrato Rate"));
-    misc_menu->Append( 77 ,wxT("Vibrato Depth"));
-    misc_menu->Append( 78 ,wxT("Vibrato Delay"));
+    misc_menu->Append( 76 , g_controller_names[76 ] ); // Vibrato Rate
+    misc_menu->Append( 77 , g_controller_names[77 ] ); // Vibrato Depth
+    misc_menu->Append( 78 , g_controller_names[78 ] ); // Vibrato Delay
 
     misc_menu->AppendSeparator();
-    misc_menu->Append( 120 ,wxT("All sound off"));
-    misc_menu->Append( 121 ,wxT("Reset control"));
-    misc_menu->Append( 123 ,wxT("All notes off"));
+    misc_menu->Append( 120 , g_controller_names[120 ] ); // All sound off
+    misc_menu->Append( 121 , g_controller_names[121 ] ); // Reset control
+    misc_menu->Append( 123 , g_controller_names[123 ] ); // All notes off
     misc_menu->AppendSeparator();
 
-    misc_menu->Append( 12 ,wxT("Effect 1"));
-    misc_menu->Append( 13 ,wxT("Effect 2"));
+    misc_menu->Append( 12 , g_controller_names[12 ] ); // Effect 1
+    misc_menu->Append( 13 , g_controller_names[13 ] ); // Effect 2
 
-    misc_menu->Append( 16 ,wxT("General Purpose 1"));
-    misc_menu->Append( 17 ,wxT("General Purpose 2"));
-    misc_menu->Append( 18 ,wxT("General Purpose 3"));
-    misc_menu->Append( 19 ,wxT("General Purpose 4"));
-    misc_menu->Append( 80 ,wxT("General Purpose 5"));
-    misc_menu->Append( 81 ,wxT("General Purpose 6"));
-    misc_menu->Append( 82 ,wxT("General Purpose 7"));
-    misc_menu->Append( 83 ,wxT("General Purpose 8"));
+    misc_menu->Append( 16 , g_controller_names[16 ] ); // General Purpose 1
+    misc_menu->Append( 17 , g_controller_names[17 ] ); // General Purpose 2
+    misc_menu->Append( 18 , g_controller_names[18 ] ); // General Purpose 3
+    misc_menu->Append( 19 , g_controller_names[19 ] ); // General Purpose 4
+    misc_menu->Append( 80 , g_controller_names[80 ] ); // General Purpose 5
+    misc_menu->Append( 81 , g_controller_names[81 ] ); // General Purpose 6
+    misc_menu->Append( 82 , g_controller_names[82 ] ); // General Purpose 7
+    misc_menu->Append( 83 , g_controller_names[83 ] ); // General Purpose 8
 
     ControllerChoice::parent = parent;
 }
@@ -118,7 +251,6 @@ ControllerChoice::~ControllerChoice()
 
 void ControllerChoice::menuSelected(wxCommandEvent& evt)
 {
-
     controllerID=evt.GetId();
 
     assertExpr(controllerID,<,205);
@@ -137,71 +269,35 @@ int ControllerChoice::getControllerID()
     return controllerID;
 }
 
-const char* ControllerChoice::getControllerName()
+void ControllerChoice::renderControllerName(const int x, const int y)
 {
-    if(controllerID== 10 or controllerID== 42) return "Pan"; // fine:42
-    else if(controllerID== 7 or controllerID== 39) return "Volume"; // fine:39
-    else if(controllerID== 1 or controllerID==33) return "Modulation"; // fine:33
-    else if(controllerID== 91 ) return "Reverb";
-    else if(controllerID== 64 ) return "Sustain";
-
-    else if(controllerID== 200 ) return "Pitch Bend";
-    else if(controllerID== 201 ) return "Tempo";
-
-    else if(controllerID== 2 ) return "Breath";
-    else if(controllerID== 4 ) return "Foot";
-    else if(controllerID== 8 ) return "Balance";
-    else if(controllerID== 11 ) return "Expression";
-
-    else if(controllerID== 70 ) return "Timber Variation";
-    else if(controllerID== 71 ) return "Timber/ Harmonic";
-    else if(controllerID== 72 ) return "Release Time";
-    else if(controllerID== 73 ) return "Attack Time";
-    else if(controllerID== 74 ) return "Brightness";
-    else if(controllerID== 75 ) return "Decay Time";
-
-    else if(controllerID== 92 ) return "Tremolo";
-    else if(controllerID== 93 ) return "Chorus";
-    else if(controllerID== 94 ) return "Celeste";
-    else if(controllerID== 95 ) return "Phaser";
-
-    else if(controllerID== 66 ) return "Sostenuto";
-    else if(controllerID== 67 ) return "Soft Pedal";
-    else if(controllerID== 68 ) return "Legato footswitch";
-    else if(controllerID== 69 ) return "Hold";
-
-    else if(controllerID== 65 ) return "Portamento";
-    else if(controllerID== 5 or controllerID== 37 ) return "Portamento Time"; // fine:37
-    else if(controllerID== 84 ) return "Portamento Control"; // !
-
-    else if(controllerID== 120 ) return "All sound off";
-    else if(controllerID== 121 ) return "Reset control";
-    else if(controllerID== 123 ) return "All notes off";
-
-    else if(controllerID== 76 ) return "Vibrato Rate";
-    else if(controllerID== 77 ) return "Vibrato Depth";
-    else if(controllerID== 78 ) return "Vibrato Delay";
-
-    else if(controllerID== 12 ) return "Effect 1";
-    else if(controllerID== 13 ) return "Effect 2";
-
-
-    else if(controllerID== 16 ) return "General Purpose 1";
-    else if(controllerID== 17 ) return "General Purpose 2";
-    else if(controllerID== 18 ) return "General Purpose 3";
-    else if(controllerID== 19 ) return "General Purpose 4";
-    else if(controllerID== 80 ) return "General Purpose 5";
-    else if(controllerID== 81 ) return "General Purpose 6";
-    else if(controllerID== 82 ) return "General Purpose 7";
-    else if(controllerID== 83 ) return "General Purpose 8";
-
-    // 32-63 (0x20-0x3F)     LSB for controllers 0-31
-
+    if(!strings_consolidated)
+    {
+        controller_names_renderer.setFont( wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+        controller_names_renderer.consolidate(Display::renderDC);
+        strings_consolidated = true;
+    }
+    
+    controller_names_renderer.bind();
+    
+    // special cases (non-controllers)
+    if(controllerID==200)
+        controller_names_renderer.get(30).render(x, y);
+    else if(controllerID == 201)
+        controller_names_renderer.get(31).render(x, y);
     else
     {
-        std::cout << "wrong controller ID: " << controllerID << std::endl;
-        return (char*) _("Wrong controller ID");
+        // default (all other controllers)
+        wxGLString& string = controller_names_renderer.get(controllerID);
+        if(string.getWidth() > 75)
+        {
+            string.rotate(45); // if string is too long, rotate it so it fits
+            string.render(x+5, y);
+        }
+        else
+            string.render(x, y);
     }
+    
 }
 
 
