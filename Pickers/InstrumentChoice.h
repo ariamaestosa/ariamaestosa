@@ -19,6 +19,7 @@
 
 #include "wx/wx.h"
 #include "wx/wfstream.h"
+#include "Renderers/RenderAPI.h"
 
 #include "Config.h"
 #include "irrXML/irrXML.h"
@@ -26,7 +27,7 @@
 namespace AriaMaestosa {
 
 class Track; // forward
-
+    
 class InstrumentChoice : public wxMenu
 {
     wxMenuItem* inst_menus[128];
@@ -50,14 +51,19 @@ class InstrumentChoice : public wxMenu
     Track* parent;
 
     int instrumentID;
+    
+    AriaRenderArray inst_names_renderer;
+    bool strings_consolidated;
 public:
+    
     LEAK_CHECK(InstrumentChoice);
 
     InstrumentChoice();
     ~InstrumentChoice();
 
     const char* getInstrumentName(int id);
-
+    void renderInstrumentName(const int instrumentID, const int x, const int y);
+    
     void setParent(Track* track);
 
     void menuSelected(wxCommandEvent& evt);

@@ -79,7 +79,7 @@ protected:
 
     friend class wxGLStringArray;
 
-    void calculateSize(wxDC* dc=NULL);
+    void calculateSize(wxDC* dc, const bool ignore_font=false /* when from array */);
     void consolidateFromArray(wxDC* dc, int x, int y);
 public:
     /** constructs an empty GLString. Set string later with operator=. */

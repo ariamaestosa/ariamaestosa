@@ -236,11 +236,14 @@ void wxGLString::bind()
 {
     glBindTexture(GL_TEXTURE_2D, img->getID()[0] );
 }
-void wxGLString::calculateSize(wxDC* dc)
+void wxGLString::calculateSize(wxDC* dc, const bool ignore_font /* when from array */)
 {
-    if(font.IsOk()) dc->SetFont(font);
-    else dc->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
-    
+    if(!ignore_font)
+    {
+        if(font.IsOk()) dc->SetFont(font);
+        else dc->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
+    }
+        
     dc->GetTextExtent(*this, &w, &h);
 }
 
@@ -429,13 +432,16 @@ void wxGLStringArray::consolidate(wxDC* dc)
 {
     int x=0, y=0;
 
+    if(font.IsOk()) dc->SetFont(font);
+    else dc->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
+    
     // find how much space we need
     int longest_string = 0;
 
     const int amount = strings.size();
     for(int n=0; n<amount; n++)
     {
-        strings[n].calculateSize(dc);
+        strings[n].calculateSize(dc, true);
         y += strings[n].h;
         if(strings[n].w > longest_string) longest_string = strings[n].w;
     }//next

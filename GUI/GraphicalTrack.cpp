@@ -939,15 +939,21 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     if(grid->isTriplet()) AriaRender::hollow_rect(mgrid_triplet->x, y+15, mgrid_triplet->x+16, y+30);
 
     // draw instrument name
-    std::string instrumentname;
-    if(editorMode == DRUM) instrumentname = Core::getDrumPicker()->getDrumName( track->getDrumKit() );
-    else instrumentname = Core::getInstrumentPicker()->getInstrumentName( track->getInstrument() );
-
     
     AriaRender::primitives();
     AriaRender::color(0,0,0);
     
-    AriaRender::text(instrumentname.c_str(), instrumentName->getX()+11 ,y+26);
+    if(editorMode == DRUM) 
+    {
+        std::string instrumentname = Core::getDrumPicker()->getDrumName( track->getDrumKit() );
+        AriaRender::text(instrumentname.c_str(), instrumentName->getX()+11 ,y+26);
+    }
+    else
+    {
+        AriaRender::images();
+        Core::getInstrumentPicker()->renderInstrumentName( track->getInstrument(), instrumentName->getX()+11 ,y+30 );
+    }
+
 
     // draw channel number
     if(channel_mode)
