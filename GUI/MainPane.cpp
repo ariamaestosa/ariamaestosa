@@ -196,9 +196,9 @@ void MainPane::render(const bool paintEvent)
     #endif
 #endif
 
-#ifdef RENDERER_WXWIDGETS
+//#ifdef RENDERER_WXWIDGETS
         Display::renderDC = static_cast<wxDC*>(&mydc);
-#endif
+//#endif
         beginFrame();
         if(do_render()) endFrame();
     }

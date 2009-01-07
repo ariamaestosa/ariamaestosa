@@ -19,7 +19,7 @@
 #define _drumeditor_
 
 #include "Editors/Editor.h"
-
+#include "Renderers/RenderAPI.h"
 #include <vector>
 
 namespace AriaMaestosa {
@@ -31,9 +31,9 @@ class RelativeXCoord;
 class DrumInfo
 {
 public:
-    DrumInfo(int midiKey, const char* name);
+    DrumInfo(int midiKey, const bool a_section=false);
     int midiKey; // midiKey -1 means "section title"
-    char* name;
+ //   wxString section_title;
     bool section;
     bool sectionExpanded;
 };
@@ -42,10 +42,13 @@ class DrumEditor : public Editor
 {
 
     bool showUsedDrumsOnly;
-
+    AriaRenderArray drum_names_renderer;
+    
+    bool strings_consolidated;
+    
 public:
     // ------------------ read-only -------------------
-    std::vector<DrumInfo> drums; // says in which order the drums are drawn, what are their names, how they're divided in sections.
+    std::vector<DrumInfo> drums; // says in which order the drums are drawn, how they're divided in sections, etc.
     int midiKeyToVectorID[128]; // says where each midiKey is located into the vector.
 
     // ------------------------------------------------
