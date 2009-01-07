@@ -947,22 +947,20 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     else
         Core::getInstrumentPicker()->renderInstrumentName( track->getInstrument(), instrumentName->getX()+11 ,y+30 );
 
-
+    AriaRender::images();
+    
     // draw channel number
     if(channel_mode)
     {
         wxString channelName = to_wxString(track->getChannel());
 
-        
-        AriaRender::primitives();
         AriaRender::color(0,0,0);
         
         const int char_amount_in_channel_name = channelName.size();
-        if(char_amount_in_channel_name == 1) AriaRender::text(channelName.mb_str(), channelButton->getX()+10, y+26);
-        else AriaRender::text(channelName.mb_str(), channelButton->getX()+7, y+26);
+        if(char_amount_in_channel_name == 1) AriaRender::renderNumber(channelName, channelButton->getX()+10, y+29);
+        else AriaRender::renderNumber(channelName, channelButton->getX()+7, y+29);
     }
 
-    AriaRender::images();
 }// end func
 
 int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
