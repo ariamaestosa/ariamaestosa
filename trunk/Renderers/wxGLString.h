@@ -50,9 +50,14 @@ public:
     /** scale the rendering and keep the same aspect ratio */
     void scale(float k);
 
-    /** reotate the rendering by 'angle' degrees */
+    /** rotate the rendering by 'angle' degrees */
     void rotate(int angle);
 
+    /** returns the width of this element */
+    int getWidth() const { return w; }
+    /** returns the height of this element */
+    int getheight() const { return h; }
+    
 };
 
 class wxGLStringArray;

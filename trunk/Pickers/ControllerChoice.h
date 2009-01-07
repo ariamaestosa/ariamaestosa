@@ -22,7 +22,7 @@
 #include "wx/wfstream.h"
 
 #include "irrXML/irrXML.h"
-
+#include "Renderers/RenderAPI.h"
 #include "Config.h"
 
 namespace AriaMaestosa {
@@ -35,6 +35,9 @@ class ControllerChoice : public wxMenu
     GraphicalTrack* parent;
     int controllerID;
 
+    AriaRenderArray controller_names_renderer;
+    bool strings_consolidated;
+    
 public:
     LEAK_CHECK(ControllerChoice);
 
@@ -43,7 +46,7 @@ public:
 
     int getControllerID();
     void setControllerID(int id);
-    const char* getControllerName();
+    void renderControllerName(const int x, const int y);
     bool isOnOffController(const int id) const;
 
     wxString getTopLabel();
