@@ -32,8 +32,7 @@ class DrumInfo
 {
 public:
     DrumInfo(int midiKey, const bool a_section=false);
-    int midiKey; // midiKey -1 means "section title"
- //   wxString section_title;
+    int midiKey;
     bool section;
     bool sectionExpanded;
 };
@@ -42,8 +41,8 @@ class DrumEditor : public Editor
 {
 
     bool showUsedDrumsOnly;
-    AriaRenderArray drum_names_renderer;
     
+    AriaRenderArray drum_names_renderer;
     bool strings_consolidated;
     
 public:
