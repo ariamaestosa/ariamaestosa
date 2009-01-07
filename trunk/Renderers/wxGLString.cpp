@@ -8,6 +8,7 @@
 #endif
 
 #include "wx/wx.h"
+#include "AriaCore.h"
 
 namespace AriaMaestosa
 {
@@ -223,10 +224,12 @@ TextTexture::~TextTexture()
 wxGLString::wxGLString() : wxString(wxT("")), TextGLDrawable()
 {
     img = NULL;
+    consolidated = false;
 }
 wxGLString::wxGLString(wxString message) : wxString(message), TextGLDrawable()
 {
     img = NULL;
+    consolidated = false;
 }
 void wxGLString::operator=(wxString& string)
 {
@@ -234,6 +237,8 @@ void wxGLString::operator=(wxString& string)
 }
 void wxGLString::bind()
 {
+    if(not consolidated) consolidate(Display::renderDC);
+    
     glBindTexture(GL_TEXTURE_2D, img->getID()[0] );
 }
 void wxGLString::calculateSize(wxDC* dc, const bool ignore_font /* when from array */)
@@ -273,10 +278,13 @@ void wxGLString::consolidate(wxDC* dc)
     TextGLDrawable::w = power_of_2_w;
     TextGLDrawable::h = power_of_2_h;
     TextGLDrawable::setImage(img);
+    
+    consolidated = true;
 }
 void wxGLString::consolidateFromArray(wxDC* dc, int x, int y)
 {
     dc->DrawText(*this, x, y);
+    consolidated = true;
 }
 
 void wxGLString::setFont(wxFont font)
@@ -331,6 +339,7 @@ void wxGLNumberRenderer::consolidate(wxDC* dc)
     number_location[12] = dc->GetTextExtent(wxT("0 1 2 3 4 5 6 7 8 9 . - ")).GetWidth();
 
     space_w = dc->GetTextExtent(wxT(" ")).GetWidth();
+    consolidated = true;
 }
 void wxGLNumberRenderer::renderNumber(int i, int x, int y)
 {
@@ -346,7 +355,6 @@ void wxGLNumberRenderer::renderNumber(float f, int x, int y)
 }
 void wxGLNumberRenderer::renderNumber(wxString s, int x, int y)
 {
-
     const int full_string_w = TextGLDrawable::w;
 
     const int char_amount = s.Length();
@@ -399,10 +407,13 @@ void wxGLNumberRenderer::renderNumber(wxString s, int x, int y)
 wxGLStringArray::wxGLStringArray()
 {
     img = NULL;
+    consolidated = false;
 }
 wxGLStringArray::wxGLStringArray(const wxString strings_arg[], int amount)
 {
     img = NULL;
+    consolidated = false;
+    
     for(int n=0; n<amount; n++)
         strings.push_back( wxGLString(strings_arg[n]) );
 }
@@ -417,6 +428,8 @@ wxGLString& wxGLStringArray::get(const int id)
 }
 void wxGLStringArray::bind()
 {
+    if(not consolidated) consolidate(Display::renderDC);
+    
     glBindTexture(GL_TEXTURE_2D, img->getID()[0] );
 }
 void wxGLStringArray::addString(wxString string)
@@ -482,6 +495,7 @@ void wxGLStringArray::consolidate(wxDC* dc)
     for(int n=0; n<amount; n++)
         strings[n].setImage(img);
     
+    consolidated = true;
 }
 
 

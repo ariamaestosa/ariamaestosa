@@ -76,6 +76,10 @@ namespace AriaRender
     void small_character(const char character, const int x, const int y);
     void text_with_bounds(wxString* string, const int x, const int y, const int max_x);
         
+    void renderNumber(const int number, const int x, const int y);
+    void renderNumber(const float number, const int x, const int y);
+    void renderNumber(const wxString number, const int x, const int y);
+    
     void triangle(const int x1, const int y1, const int x2, const int y2, const int x3, const int y3);
     
     void arc(int center_x, int center_y, int radius_x, int radius_y, bool show_above);

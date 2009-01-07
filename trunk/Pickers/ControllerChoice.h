@@ -36,7 +36,6 @@ class ControllerChoice : public wxMenu
     int controllerID;
 
     AriaRenderArray controller_names_renderer;
-    bool strings_consolidated;
     
 public:
     LEAK_CHECK(ControllerChoice);
@@ -49,8 +48,8 @@ public:
     void renderControllerName(const int x, const int y);
     bool isOnOffController(const int id) const;
 
-    wxString getTopLabel();
-    wxString getBottomLabel();
+    void renderTopLabel(const int x, const int y);
+    void renderBottomLabel(const int x, const int y);
 
     void menuSelected(wxCommandEvent& evt);
 

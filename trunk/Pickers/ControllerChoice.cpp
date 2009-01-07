@@ -67,17 +67,19 @@ static const wxString g_controller_names[] =
     wxT(""), // 27
     wxT(""), // 28
     wxT(""), // 29
+    // these strings aren't actually controllers, but it'll be quicker to re-use empty spots
+    // so they can join the same openGL string list, and thus render faster
     wxT("Pitch Bend"), // 30
     wxT("Tempo (global)"), // 31
     wxT(""), // 32
-    wxT(""), // 33
-    wxT(""), // 34
-    wxT(""), // 35
-    wxT(""), // 36
-    wxT(""), // 37
-    wxT(""), // 38
-    wxT(""), // 39
-    wxT(""), // 40
+    wxT("On"), // 33
+    wxT("Off"), // 34
+    wxT("Min"), // 35
+    wxT("Max"), // 36
+    wxT("Left"), // 37
+    wxT("Right"), // 38
+    wxT("+2"), // 39
+    wxT("-2"), // 40
     wxT(""), // 41
     wxT(""), // 42
     wxT(""), // 43
@@ -170,10 +172,24 @@ static const wxString g_controller_names[] =
     
 ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu(), controller_names_renderer(g_controller_names, 124)
 {
+    // keep strings translatable
+    //I18N: - in controller, when a controller can only be on/off
+    controller_names_renderer.get(33) = wxString(_("On"));
+    //I18N: - in controller, when a controller can only be on/off
+    controller_names_renderer.get(34) = wxString(_("Off"));
+    //I18N: - in controller, for a controller with min/max range
+    controller_names_renderer.get(35) = wxString(_("Min"));
+    //I18N: - in controller, for a controller with min/max range
+    controller_names_renderer.get(36) = wxString(_("Max"));
+    //I18N: - when setting pan in controller
+    controller_names_renderer.get(37) = wxString(_("Left"));
+    //I18N: - when setting pan in controller
+    controller_names_renderer.get(38) = wxString(_("Right"));
+    
+    controller_names_renderer.setFont( wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+    
     controllerID=7;
 
-    strings_consolidated = false;
-    
     Append( 7 , g_controller_names[7 ] ); // Volume // fine:39
     Append( 10 , g_controller_names[10 ] ); // Pan // fine:42
     Append( 1 , g_controller_names[1 ] ); // Modulation // fine:33
@@ -271,13 +287,6 @@ int ControllerChoice::getControllerID()
 
 void ControllerChoice::renderControllerName(const int x, const int y)
 {
-    if(!strings_consolidated)
-    {
-        controller_names_renderer.setFont( wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-        controller_names_renderer.consolidate(Display::renderDC);
-        strings_consolidated = true;
-    }
-    
     controller_names_renderer.bind();
     
     // special cases (non-controllers)
@@ -311,13 +320,33 @@ bool ControllerChoice::isOnOffController(const int id) const
     return false;
 }
 
+
 /*
  * Which label should appear at the top of controller editor for current Controller?
  */
 
-wxString ControllerChoice::getTopLabel()
+void ControllerChoice::renderTopLabel(const int x, const int y)
 {
+    controller_names_renderer.bind();
+    
+    // pan
+    if(controllerID== 10 or controllerID== 42)
+        controller_names_renderer.get(38).render(x, y);
+    
+    // pitch bend
+    else if(controllerID==200)
+        controller_names_renderer.get(39).render(x, y);
+        
+    // on/offs
+    else if( isOnOffController(controllerID) )
+        controller_names_renderer.get(33).render(x, y);
 
+    // tempo
+    else if(controllerID == 201) AriaRender::renderNumber( wxT("400"), x, y );
+    
+    else
+        controller_names_renderer.get(36).render(x, y);
+    /*
     // pan
     if(controllerID== 10 or controllerID== 42)
         //I18N: - when setting pan in controller
@@ -336,14 +365,34 @@ wxString ControllerChoice::getTopLabel()
 
     //I18N: - in controller, for a controller with min/max range
     return _("Max");
+     */
 }
 
 /*
  * Which label should appear at the bottom of controller editor for current Controller?
  */
 
-wxString ControllerChoice::getBottomLabel()
-{
+void ControllerChoice::renderBottomLabel(const int x, const int y)
+{    
+    // pan
+    if(controllerID== 10 or controllerID== 42)
+        controller_names_renderer.get(37).render(x, y);
+    
+    // pitch bend
+    else if(controllerID==200)
+        controller_names_renderer.get(40).render(x, y);
+    
+    // on/offs
+    else if( isOnOffController(controllerID) )
+        controller_names_renderer.get(34).render(x, y);
+    
+    // tempo
+    else if(controllerID == 201)  AriaRender::renderNumber( wxT("20"), x, y );
+    
+    else
+        controller_names_renderer.get(35).render(x, y);
+    
+    /*
     // pan
     if(controllerID== 10 or controllerID== 42)
         //I18N: - when setting pan in controller
@@ -362,6 +411,7 @@ wxString ControllerChoice::getBottomLabel()
 
     //I18N: - in controller, for a controller with min/max range
     return _("Min");
+     */
 }
 
 }

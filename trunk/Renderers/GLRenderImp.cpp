@@ -327,6 +327,23 @@ void quad(const int x1, const int y1,
 
 }
 
+    
+wxGLNumberRenderer my_number_renderer;
+    
+void renderNumber(const int number, const int x, const int y)
+{
+    renderNumber( to_wxString(number), x, y );
+}
+void renderNumber(const float number, const int x, const int y)
+{
+    renderNumber( to_wxString(number), x, y );
+}
+void renderNumber(const wxString number, const int x, const int y)
+{
+    my_number_renderer.bind();
+    my_number_renderer.renderNumber(number, x, y+2);
+}
+    
 void beginScissors(const int x, const int y, const int width, const int height)
 {
     glEnable(GL_SCISSOR_TEST);

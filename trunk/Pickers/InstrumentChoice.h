@@ -53,7 +53,6 @@ class InstrumentChoice : public wxMenu
     int instrumentID;
     
     AriaRenderArray inst_names_renderer;
-    bool strings_consolidated;
 public:
     
     LEAK_CHECK(InstrumentChoice);

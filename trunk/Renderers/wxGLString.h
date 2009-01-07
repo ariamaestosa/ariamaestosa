@@ -82,6 +82,8 @@ protected:
     TextTexture* img;
     wxFont font;
 
+    bool consolidated;
+    
     friend class wxGLStringArray;
 
     void calculateSize(wxDC* dc, const bool ignore_font=false /* when from array */);
@@ -107,7 +109,7 @@ public:
     /** consolidates the current string info into a GL string. call this after
      setting up strings, font and color (if necessary), and before rendering.
       The wxDC argument is only used to calculate text extents and will not be rendered on. */
-    void consolidate(wxDC* dc);
+    virtual void consolidate(wxDC* dc);
 
     /** render this string at coordinates (x,y). Must be called after bind(). */
     void render(const int x, const int y);
@@ -180,6 +182,7 @@ class wxGLStringArray
     std::vector<wxGLString> strings;
     TextTexture* img;
     wxFont font;
+    bool consolidated;
 public:
     /** constructs an empty array - add elements later using addString */
     wxGLStringArray();
