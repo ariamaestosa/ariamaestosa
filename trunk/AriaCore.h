@@ -69,9 +69,9 @@ InstrumentChoice* getInstrumentPicker();
 namespace Display
 {
 
-    #ifdef RENDERER_WXWIDGETS
+    //#ifdef RENDERER_WXWIDGETS
     extern wxDC* renderDC;
-    #endif
+   // #endif
 
 void render();
 int getWidth();

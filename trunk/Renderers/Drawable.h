@@ -14,8 +14,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _drawable_
-#define _drawable_
+#ifndef _drawable_h_
+#define _drawable_h_
 
 #include "Config.h"
 #include "Renderers/RenderAPI.h"

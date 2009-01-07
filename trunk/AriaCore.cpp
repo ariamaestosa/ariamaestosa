@@ -77,9 +77,9 @@ Sequence* getCurrentSequence()
 
 namespace Display
 {
-#ifdef RENDERER_WXWIDGETS
+//#ifdef RENDERER_WXWIDGETS
     wxDC* renderDC;
-#endif
+//#endif
 
     void render()
     {
