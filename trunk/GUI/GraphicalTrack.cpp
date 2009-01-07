@@ -900,10 +900,18 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     //  ------------------ post-drawing  ------------------
 
     // draw track name
-    AriaRender::primitives();
+    AriaRender::primitives(); // FIXME - find and fix why this is necessary for track name to appear
+    AriaRender::images();
     AriaRender::color(0,0,0);
-    AriaRender::text_with_bounds(&track->getName(), trackName->getX()+11 ,y+26, trackName->getX()+trackName->getWidth()-25);
-
+    wxGLString& track_name = track->getName();
+    track_name.bind();
+    
+    // forbid name to be too long
+    // FIXME - find better way than scaling. add back ...
+    if(track_name.getWidth() > 120) track_name.scale( 120.0f/track_name.getWidth() );
+    else track_name.scale(1.0f);
+    track_name.render(trackName->getX()+11, y+30);
+    
     // draw grid label
     int grid_selection_x;
     switch(grid->divider)
@@ -935,6 +943,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
             assert(false);
             grid_selection_x = mgrid_8->x;
     }
+    AriaRender::primitives();
     AriaRender::hollow_rect(grid_selection_x, y+15, grid_selection_x+16, y+30);
     if(grid->isTriplet()) AriaRender::hollow_rect(mgrid_triplet->x, y+15, mgrid_triplet->x+16, y+30);
 
@@ -957,7 +966,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
         AriaRender::color(0,0,0);
         
         const int char_amount_in_channel_name = channelName.size();
-        if(char_amount_in_channel_name == 1) AriaRender::renderNumber(channelName, channelButton->getX()+10, y+29);
+        if(char_amount_in_channel_name == 1) AriaRender::renderNumber(channelName, channelButton->getX()+10, y+31);
         else AriaRender::renderNumber(channelName, channelButton->getX()+7, y+29);
     }
 

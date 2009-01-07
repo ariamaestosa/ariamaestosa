@@ -42,6 +42,7 @@
 #include "Midi/ControllerEvent.h"
 
 #include "ptr_vector.h"
+#include "Renderers/RenderAPI.h"
 
 namespace AriaMaestosa {
 
@@ -117,7 +118,7 @@ class Track
     ptr_vector<ControllerEvent> controlEvents;
     int trackid;
 
-    wxString name;
+    AriaRenderString name;
 
     int channel; // only used if in channel mode
     int instrument, drumKit;
@@ -161,7 +162,7 @@ public:
     int getGridDivider();
 
     void setName(wxString name);
-    wxString& getName();
+    AriaRenderString& getName();
 
     void selectNote(const int id, const bool selected, bool ignoreModifiers=false);
 
