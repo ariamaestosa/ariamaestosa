@@ -23,6 +23,7 @@
 
 #include "Config.h"
 #include "irrXML/irrXML.h"
+#include "Renderers/RenderAPI.h"
 
 namespace AriaMaestosa {
 
@@ -32,6 +33,9 @@ class DrumChoice : public wxMenu
 {
     Track* parent;
 
+    AriaRenderArray drumkit_names_renderer;
+    bool strings_consolidated;
+    
 public:
     LEAK_CHECK(DrumChoice);
 
@@ -40,8 +44,9 @@ public:
 
     void setParent(Track* t);
 
-    const char* getDrumName(int id);
-
+    const char* getDrumName(int id) const;
+    void renderDrumKitName(const int drumID, const int x, const int y);
+    
     void menuSelected(wxCommandEvent& evt);
 
     DECLARE_EVENT_TABLE();

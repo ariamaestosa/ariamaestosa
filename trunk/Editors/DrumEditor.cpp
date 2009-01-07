@@ -637,7 +637,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
 {
     if(!strings_consolidated)
     {
-        drum_names_renderer.setFont( wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD) );
+        drum_names_renderer.setFont( wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, /*wxFONTWEIGHT_BOLD*/ wxFONTWEIGHT_NORMAL) );
         drum_names_renderer.consolidate(Display::renderDC);
         strings_consolidated = true;
     }
@@ -828,6 +828,8 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
             
             AriaRender::images();
             AriaRender::color(1,1,1);
+            // render twice otherwise it's too pale
+            drum_names_renderer.get(drums[drumID].midiKey-27).render( getEditorsXStart()+20, y+12 );
             drum_names_renderer.get(drums[drumID].midiKey-27).render( getEditorsXStart()+20, y+12 );
 
         }//end if section

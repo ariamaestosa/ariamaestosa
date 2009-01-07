@@ -33,18 +33,33 @@ BEGIN_EVENT_TABLE(DrumChoice, wxMenu)
 END_EVENT_TABLE()
 
 
-DrumChoice::DrumChoice() : wxMenu()
+static const wxString g_drumkit_names[] =
 {
-    Append( 20000 + 0 ,wxT("Standard"));
-    Append( 20000 + 8 ,wxT("Room kit"));
-    Append( 20000 + 16 ,wxT("Power kit"));
-    Append( 20000 + 24 ,wxT("Electronic"));
-    Append( 20000 + 25 ,wxT("Analog"));
-    Append( 20000 + 32 ,wxT("Jazz"));
-    Append( 20000 + 40 ,wxT("Brush"));
-    Append( 20000 + 48 ,wxT("Orchestral"));
-    Append( 20000 + 56 ,wxT("Special Effects"));
+    wxT("Standard"), // 0
+    wxT("Room kit"), // 1
+    wxT("Power kit"), // 2
+    wxT("Electronic"), // 3
+    wxT("Analog"), // 4
+    wxT("Jazz"), // 5
+    wxT("Brush"), // 6
+    wxT("Orchestral"), // 7
+    wxT("Special Effects"), // 8
+};
+    
+DrumChoice::DrumChoice() : wxMenu(), drumkit_names_renderer(g_drumkit_names, 9)
+{
+    Append( 20000 + 0 ,  g_drumkit_names[0]);
+    Append( 20000 + 8 ,  g_drumkit_names[1]);
+    Append( 20000 + 16 , g_drumkit_names[2]);
+    Append( 20000 + 24 , g_drumkit_names[3]);
+    Append( 20000 + 25 , g_drumkit_names[4]);
+    Append( 20000 + 32 , g_drumkit_names[5]);
+    Append( 20000 + 40 , g_drumkit_names[6]);
+    Append( 20000 + 48 , g_drumkit_names[7]);
+    Append( 20000 + 56 , g_drumkit_names[8]);
 
+    strings_consolidated = false;
+    
     DrumChoice::parent = parent;
 }
 
@@ -69,29 +84,49 @@ void DrumChoice::setParent(Track* t)
 {
     parent = t;
 }
-
-const char* DrumChoice::getDrumName(int drumID)
+    
+void DrumChoice::renderDrumKitName(const int drumID, const int x, const int y)
 {
-    if (drumID == 0 ) return "Standard";
-    else if (drumID == 8 ) return "Room kit";
-    else if (drumID == 16 ) return "Power kit";
-    else if (drumID == 24 ) return "Electronic";
-    else if (drumID == 25 ) return "Analog";
-    else if (drumID == 32 ) return "Jazz";
-    else if (drumID == 40 ) return "Brush";
-    else if (drumID == 48 ) return "Orchestral";
-    else if (drumID == 56 ) return "Special Effects";
+    if(!strings_consolidated)
+    {
+        drumkit_names_renderer.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+        drumkit_names_renderer.consolidate(Display::renderDC);
+        strings_consolidated = true;
+    }
+    
+    drumkit_names_renderer.bind();
+    
+    if (drumID == 0 )       drumkit_names_renderer.get(0).render(x, y);
+    else if (drumID == 8 )  drumkit_names_renderer.get(1).render(x, y);
+    else if (drumID == 16 ) drumkit_names_renderer.get(2).render(x, y);
+    else if (drumID == 24 ) drumkit_names_renderer.get(3).render(x, y);
+    else if (drumID == 25 ) drumkit_names_renderer.get(4).render(x, y);
+    else if (drumID == 32 ) drumkit_names_renderer.get(5).render(x, y);
+    else if (drumID == 40 ) drumkit_names_renderer.get(6).render(x, y);
+    else if (drumID == 48 ) drumkit_names_renderer.get(7).render(x, y);
+    else if (drumID == 56 ) drumkit_names_renderer.get(8).render(x, y);
     else
     {
-        std::cout << "wrong drumset ID: " << drumID << std::endl;
+        std::cerr << "wrong drumset ID: " << drumID << std::endl;
         Sequence* seq = getCurrentSequence();
         const int trackAmount = seq->getTrackAmount();
         for(int n=0; n<trackAmount; n++)
-        {
-        seq->getTrack(n)->setDrumKit(0);
-        }
-        return "Standard";
+            seq->getTrack(n)->setDrumKit(0);
     }
+}
+
+const char* DrumChoice::getDrumName(int drumID) const
+{
+    if (drumID == 0 )       return g_drumkit_names[0].mb_str();
+    else if (drumID == 8 )  return g_drumkit_names[1].mb_str();
+    else if (drumID == 16 ) return g_drumkit_names[2].mb_str();
+    else if (drumID == 24 ) return g_drumkit_names[3].mb_str();
+    else if (drumID == 25 ) return g_drumkit_names[4].mb_str();
+    else if (drumID == 32 ) return g_drumkit_names[5].mb_str();
+    else if (drumID == 40 ) return g_drumkit_names[6].mb_str();
+    else if (drumID == 48 ) return g_drumkit_names[7].mb_str();
+    else if (drumID == 56 ) return g_drumkit_names[8].mb_str();
+    else return "?";
 }
 
 }
