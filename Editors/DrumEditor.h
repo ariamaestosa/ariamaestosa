@@ -39,11 +39,9 @@ public:
 
 class DrumEditor : public Editor
 {
-
     bool showUsedDrumsOnly;
     
     AriaRenderArray drum_names_renderer;
-    bool strings_consolidated;
     
 public:
     // ------------------ read-only -------------------

@@ -168,14 +168,14 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     drawVerticalMeasureLines(area_from_y, area_to_y);
 
     // ------------------------ min/max, on/off, left/right, etc. -------------------
+    AriaRender::images();
     AriaRender::color(0.5, 0.5, 0.5);
 
-    wxString top_name=controllerChoice->getTopLabel();
-    AriaRender::small_text( top_name.mb_str(),  getEditorsXStart()+5 , area_from_y + 10);
-
-    wxString bottom_name=controllerChoice->getBottomLabel();
-    AriaRender::small_text( bottom_name.mb_str(),  getEditorsXStart()+5 , area_to_y - 5);
-
+    controllerChoice->renderTopLabel(getEditorsXStart()+5 , area_from_y + 13);
+    controllerChoice->renderBottomLabel(getEditorsXStart()+5 , area_to_y);
+    
+    AriaRender::primitives();
+    
     // -------------------------- draw controller events ---------------------
     renderEvents();
 

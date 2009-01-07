@@ -189,10 +189,11 @@ static const wxString g_drum_names[] =
     clickedOnNote=false;
     lastClickedNote = -1;
     showUsedDrumsOnly=false;
-    strings_consolidated = false;
     
     useDefaultDrumSet();
     Editor::useInstantNotes();
+    
+    drum_names_renderer.setFont( wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, /*wxFONTWEIGHT_BOLD*/ wxFONTWEIGHT_NORMAL) );
 }
 
 DrumEditor::~DrumEditor()
@@ -635,14 +636,6 @@ void DrumEditor::render()
 void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
                         RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {
-    if(!strings_consolidated)
-    {
-        drum_names_renderer.setFont( wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, /*wxFONTWEIGHT_BOLD*/ wxFONTWEIGHT_NORMAL) );
-        drum_names_renderer.consolidate(Display::renderDC);
-        strings_consolidated = true;
-    }
-    
-    
     AriaRender::beginScissors(10, getEditorYStart(), width - 15, 20+height);
 
     drawVerticalMeasureLines(getEditorYStart(), getYEnd());

@@ -171,8 +171,6 @@ static const wxString g_inst_names[] =
     
 InstrumentChoice::InstrumentChoice() : wxMenu(), inst_names_renderer(g_inst_names, 128)
 {
-    strings_consolidated = false;
-    
     submenu_1_piano=new wxMenu();
     submenu_2_chromatic=new wxMenu();
     submenu_3_organ=new wxMenu();
@@ -350,6 +348,8 @@ InstrumentChoice::InstrumentChoice() : wxMenu(), inst_names_renderer(g_inst_name
 
 #undef _ADD_INSTR
 
+    inst_names_renderer.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+    
 }
 
 InstrumentChoice::~InstrumentChoice()
@@ -388,13 +388,6 @@ void InstrumentChoice::renderInstrumentName(const int instrumentID, const int x,
 {
     assertExpr(instrumentID,<,128);
     assertExpr(instrumentID,>=,0);
-    
-    if(!strings_consolidated)
-    {
-        inst_names_renderer.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-        inst_names_renderer.consolidate(Display::renderDC);
-        strings_consolidated = true;
-    }
     
     inst_names_renderer.bind();
     inst_names_renderer.get(instrumentID).render(x, y);

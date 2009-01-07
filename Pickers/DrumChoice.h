@@ -34,7 +34,6 @@ class DrumChoice : public wxMenu
     Track* parent;
 
     AriaRenderArray drumkit_names_renderer;
-    bool strings_consolidated;
     
 public:
     LEAK_CHECK(DrumChoice);
