@@ -325,9 +325,11 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             AriaRender::line(0, from_y+barHeight+20 + g_octave_y+1,
                              getEditorsXStart()-25, from_y+barHeight+20 + g_octave_y+1);
 
-            wxString buffer = to_wxString(10-g_octaveID);
-            AriaRender::text(buffer.mb_str(), 30, from_y+barHeight+21 + g_octave_y +120/2);
-
+            // octave number
+            AriaRender::images();
+            AriaRender::color(0,0,0);
+            AriaRender::renderNumber(10-g_octaveID, 30, from_y+barHeight+21 + g_octave_y +120/2);
+            
         }//end if
     }//next
 
