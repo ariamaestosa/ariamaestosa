@@ -64,45 +64,50 @@ ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu()
     Append( 94 ,wxT("Celeste"));
     Append( 95 ,wxT("Phaser"));
 
+    
     Append( 70 ,wxT("Timber Variation"));
     Append( 71 ,wxT("Timber/Harmonic"));
     Append( 72 ,wxT("Release Time"));
     Append( 73 ,wxT("Attack Time"));
     Append( 74 ,wxT("Brightness"));
     Append( 75 ,wxT("Decay Time"));
-
-
-    Append( 66 ,wxT("Sostenuto"));
-    Append( 67 ,wxT("Soft Pedal"));
-    Append( 68 ,wxT("Legato footswitch"));
-    Append( 69 ,wxT("Hold"));
-
+    
     AppendSeparator();
-    Append( 65 ,wxT("Portamento"));
-    Append( 5 ,wxT("Portamento Time")); // fine:37
-    Append( 84 ,wxT("Portamento Control"));
-    AppendSeparator();
-    Append( 76 ,wxT("Vibrato Rate"));
-    Append( 77 ,wxT("Vibrato Depth"));
-    Append( 78 ,wxT("Vibrato Delay"));
+    
+    wxMenu* misc_menu = new wxMenu();
+    Append(wxID_ANY,wxT("Misc"), misc_menu);
 
-    AppendSeparator();
-    Append( 120 ,wxT("All sound off"));
-    Append( 121 ,wxT("Reset control"));
-    Append( 123 ,wxT("All notes off"));
-    AppendSeparator();
+    misc_menu->Append( 66 ,wxT("Sostenuto"));
+    misc_menu->Append( 67 ,wxT("Soft Pedal"));
+    misc_menu->Append( 68 ,wxT("Legato footswitch"));
+    misc_menu->Append( 69 ,wxT("Hold"));
 
-    Append( 12 ,wxT("Effect 1"));
-    Append( 13 ,wxT("Effect 2"));
+    misc_menu->AppendSeparator();
+    misc_menu->Append( 65 ,wxT("Portamento"));
+    misc_menu->Append( 5 ,wxT("Portamento Time")); // fine:37
+    misc_menu->Append( 84 ,wxT("Portamento Control"));
+    misc_menu->AppendSeparator();
+    misc_menu->Append( 76 ,wxT("Vibrato Rate"));
+    misc_menu->Append( 77 ,wxT("Vibrato Depth"));
+    misc_menu->Append( 78 ,wxT("Vibrato Delay"));
 
-    Append( 16 ,wxT("General Purpose 1"));
-    Append( 17 ,wxT("General Purpose 2"));
-    Append( 18 ,wxT("General Purpose 3"));
-    Append( 19 ,wxT("General Purpose 4"));
-    Append( 80 ,wxT("General Purpose 5"));
-    Append( 81 ,wxT("General Purpose 6"));
-    Append( 82 ,wxT("General Purpose 7"));
-    Append( 83 ,wxT("General Purpose 8"));
+    misc_menu->AppendSeparator();
+    misc_menu->Append( 120 ,wxT("All sound off"));
+    misc_menu->Append( 121 ,wxT("Reset control"));
+    misc_menu->Append( 123 ,wxT("All notes off"));
+    misc_menu->AppendSeparator();
+
+    misc_menu->Append( 12 ,wxT("Effect 1"));
+    misc_menu->Append( 13 ,wxT("Effect 2"));
+
+    misc_menu->Append( 16 ,wxT("General Purpose 1"));
+    misc_menu->Append( 17 ,wxT("General Purpose 2"));
+    misc_menu->Append( 18 ,wxT("General Purpose 3"));
+    misc_menu->Append( 19 ,wxT("General Purpose 4"));
+    misc_menu->Append( 80 ,wxT("General Purpose 5"));
+    misc_menu->Append( 81 ,wxT("General Purpose 6"));
+    misc_menu->Append( 82 ,wxT("General Purpose 7"));
+    misc_menu->Append( 83 ,wxT("General Purpose 8"));
 
     ControllerChoice::parent = parent;
 }
