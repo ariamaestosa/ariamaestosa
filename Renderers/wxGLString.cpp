@@ -234,6 +234,7 @@ wxGLString::wxGLString(wxString message) : wxString(message), TextGLDrawable()
 void wxGLString::operator=(wxString& string)
 {
     (*((wxString*)this))=string;
+    consolidated=false;
 }
 void wxGLString::bind()
 {
@@ -275,8 +276,10 @@ void wxGLString::consolidate(wxDC* dc)
     if(img != NULL) delete img;
     img = new TextTexture(bmp);
 
-    TextGLDrawable::w = power_of_2_w;
-    TextGLDrawable::h = power_of_2_h;
+    TextGLDrawable::texw = power_of_2_w;
+    TextGLDrawable::texh = power_of_2_h;
+    TextGLDrawable::tex_coord_x2 = (float)w / (float)power_of_2_w;
+    TextGLDrawable::tex_coord_y2 = (float)h / (float)power_of_2_h;
     TextGLDrawable::setImage(img);
     
     consolidated = true;
@@ -355,8 +358,8 @@ void wxGLNumberRenderer::renderNumber(float f, int x, int y)
 }
 void wxGLNumberRenderer::renderNumber(wxString s, int x, int y)
 {
-    const int full_string_w = TextGLDrawable::w;
-
+    const int full_string_w = TextGLDrawable::texw;
+    
     const int char_amount = s.Length();
     for(int c=0; c<char_amount; c++)
     {
@@ -386,6 +389,9 @@ void wxGLNumberRenderer::renderNumber(wxString s, int x, int y)
         TextGLDrawable::tex_coord_x1 = (float)number_location[charid] / (float)full_string_w;
         TextGLDrawable::tex_coord_x2 = (float)(number_location[charid+1]-space_w) / (float)full_string_w;
 
+        TextGLDrawable::tex_coord_y1 = 1;
+        TextGLDrawable::tex_coord_y2 = 0;
+        
         const int char_width = number_location[charid+1] - number_location[charid] - space_w;
         TextGLDrawable::w = char_width;
 
@@ -396,7 +402,7 @@ void wxGLNumberRenderer::renderNumber(wxString s, int x, int y)
         x += char_width;
     } // next
 
-    TextGLDrawable::w = full_string_w;
+   // TextGLDrawable::w = full_string_w;
 }
 
 #if 0

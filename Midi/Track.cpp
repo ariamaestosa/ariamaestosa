@@ -49,7 +49,8 @@ namespace AriaMaestosa
     Track::Track(MainFrame* parent, Sequence* sequence)
     {
         name = wxString( _("Untitled") );
-
+        name.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+        
         Track::frame=parent;
 
         Track::sequence = sequence;
@@ -699,7 +700,7 @@ void Track::setName(wxString name)
     if(name.Trim().IsEmpty()) Track::name = wxString( _("Untitled") );
     else Track::name = name;
 }
-wxString& Track::getName()
+AriaRenderString& Track::getName()
 {
     return name;
 }

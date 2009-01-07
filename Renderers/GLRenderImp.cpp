@@ -341,7 +341,7 @@ void renderNumber(const float number, const int x, const int y)
 void renderNumber(const wxString number, const int x, const int y)
 {
     my_number_renderer.bind();
-    my_number_renderer.renderNumber(number, x, y+2);
+    my_number_renderer.renderNumber(number, x, y);
 }
     
 void beginScissors(const int x, const int y, const int width, const int height)

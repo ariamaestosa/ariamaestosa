@@ -33,7 +33,7 @@ protected:
 
     float tex_coord_x1, tex_coord_y1;
     float tex_coord_x2, tex_coord_y2;
-    int w, h;
+    int w, h, texw, texh;
 
     TextGLDrawable(TextTexture* image=(TextTexture*)0);
     void render();
