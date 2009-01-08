@@ -7,12 +7,10 @@
 
 #include "OpenGL/glu.h"
 #include "OpenGL/gl.h"
-#include "GLUT/glut.h"
 
 #else
 
 #include <GL/glu.h>
 #include <GL/gl.h>
-#include <GL/glut.h>
 
 #endif

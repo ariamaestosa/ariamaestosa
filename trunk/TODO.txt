@@ -97,8 +97,6 @@ NOTE: sorry, this is very raw :)
 
 ** openong a song containing multiple time sigs opens the time sig editor
 
-** Kill GLUT! crashes suse and arch...
-
 * rounding errors with vertical lines when zooming
 
 The score ends a bit too early (at the beginning of the last count of the last measure, instead of just after the end), which gives as result that a note that ends at the last count of the last measure cannot be entered using a mouse drag.
