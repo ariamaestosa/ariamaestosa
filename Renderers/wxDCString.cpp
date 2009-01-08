@@ -10,6 +10,11 @@
 namespace AriaMaestosa
 {
     
+#if 0
+#pragma mark -
+#pragma mark wxDCString
+#endif
+    
     /** constructs an empty GLString. Set string later with operator=. */
     wxDCString::wxDCString()
     {
@@ -69,10 +74,14 @@ namespace AriaMaestosa
     
     void wxDCString::operator=(wxString& string)
     {
-        (*this) = string;
+        (*((wxString*)this))=string;
     }
     
     
+#if 0
+#pragma mark -
+#pragma mark wxDCNumberRenderer
+#endif
     
     wxDCNumberRenderer::wxDCNumberRenderer()
     {
@@ -113,6 +122,10 @@ namespace AriaMaestosa
     }
     
     
+#if 0
+#pragma mark -
+#pragma mark wxDCStringArray
+#endif
     
     wxDCStringArray::wxDCStringArray()
     {
