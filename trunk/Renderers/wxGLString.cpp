@@ -256,8 +256,11 @@ void wxGLString::calculateSize(wxDC* dc, const bool ignore_font /* when from arr
 void wxGLString::consolidate(wxDC* dc)
 {
     calculateSize(dc);
-    const int power_of_2_w = pow( 2, (int)ceil((float)log(w)/log(2.0)) );
-    const int power_of_2_h = pow( 2, (int)ceil((float)log(h)/log(2.0)) );
+    const int power_of_2_w = std::max(32, (int)pow( 2, (int)ceil((float)log(w)/log(2.0)) ));
+    const int power_of_2_h = std::max(32, (int)pow( 2, (int)ceil((float)log(h)/log(2.0)) ));
+    
+    //std::cout << "consolidated " << this->mb_str() << ", size=" << w << "x" << h << std::endl;
+    //std::cout << "    " << this->mb_str() << ", size=" << power_of_2_w << "x" << power_of_2_h << std::endl;
     
     wxBitmap bmp(power_of_2_w, power_of_2_h);
     assert(bmp.IsOk());
@@ -279,7 +282,9 @@ void wxGLString::consolidate(wxDC* dc)
     TextGLDrawable::texw = power_of_2_w;
     TextGLDrawable::texh = power_of_2_h;
     TextGLDrawable::tex_coord_x2 = (float)w / (float)power_of_2_w;
-    TextGLDrawable::tex_coord_y2 = (float)h / (float)power_of_2_h;
+    TextGLDrawable::tex_coord_y2 = 1-(float)h / (float)power_of_2_h;
+    TextGLDrawable::tex_coord_y1 = 1;
+
     TextGLDrawable::setImage(img);
     
     consolidated = true;
@@ -388,9 +393,6 @@ void wxGLNumberRenderer::renderNumber(wxString s, int x, int y)
 
         TextGLDrawable::tex_coord_x1 = (float)number_location[charid] / (float)full_string_w;
         TextGLDrawable::tex_coord_x2 = (float)(number_location[charid+1]-space_w) / (float)full_string_w;
-
-        TextGLDrawable::tex_coord_y1 = 1;
-        TextGLDrawable::tex_coord_y2 = 0;
         
         const int char_width = number_location[charid+1] - number_location[charid] - space_w;
         TextGLDrawable::w = char_width;
@@ -468,7 +470,7 @@ void wxGLStringArray::consolidate(wxDC* dc)
     const int power_of_2_w = pow( 2, (int)ceil((float)log(longest_string)/log(2.0)) );
     const int power_of_2_h = pow( 2, (int)ceil((float)log(y)/log(2.0)) );
 
-    std::cout << "bitmap size : " <<  power_of_2_w << ", " << power_of_2_h << std::endl;
+    //std::cout << "bitmap size : " <<  power_of_2_w << ", " << power_of_2_h << std::endl;
     
     wxBitmap bmp(power_of_2_w, power_of_2_h);
     assert(bmp.IsOk());

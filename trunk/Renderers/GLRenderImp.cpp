@@ -41,6 +41,7 @@ void primitives()
 void images()
 {
     glEnable(GL_TEXTURE_2D);
+    glLoadIdentity();
 }
 
 void setImageState(const ImageState imgst)

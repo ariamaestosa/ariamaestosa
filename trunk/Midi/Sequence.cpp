@@ -78,8 +78,9 @@ Sequence::Sequence()
     zoom = (128.0/(beatResolution*4));
     zoom_percent = 100;
 
-    sequenceFileName =  _("Untitled");
-
+    sequenceFileName =  wxString(_("Untitled"));
+    //sequenceFileName.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+    
     if(Display::isVisible()) addTrack();
 
     copyright = wxT("");
