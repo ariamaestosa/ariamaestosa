@@ -190,6 +190,7 @@ void hollow_rect(const int x1, const int y1, const int x2, const int y2)
 
 const int FONTSHIFT = -12;
 
+    /*
 // FIXME- clean up text rendering
 void text(const char* string, const int x, const int y)
 {
@@ -237,12 +238,13 @@ void text_with_bounds(wxString* string, const int x, const int y, const int max_
     Display::renderDC -> SetFont( *wxNORMAL_FONT );
     Display::renderDC -> DrawText( message, x, y + FONTSHIFT );
 }
-
+*/
 void small_text(const char* string, const int x, const int y)
 {
     Display::renderDC -> SetFont( *wxSMALL_FONT );
     Display::renderDC -> DrawText( fromCString(string), x, y + FONTSHIFT);
 }
+        /*
 void character(const char character, const int x, const int y)
 {
     wxString text;
@@ -251,6 +253,7 @@ void character(const char character, const int x, const int y)
     Display::renderDC -> SetFont( *wxNORMAL_FONT );
     Display::renderDC -> DrawText( text, x, y + FONTSHIFT);
 }
+
 void small_character(const char character, const int x, const int y)
 {
     wxString text;
@@ -258,14 +261,13 @@ void small_character(const char character, const int x, const int y)
     Display::renderDC -> SetFont( *wxSMALL_FONT );
     Display::renderDC -> DrawText( text, x, y + FONTSHIFT );
 }
-
 void small_text_newline_between_words(const char* string, const int x, const int y)
 {
     // FIXME - doesn't do what it says
     Display::renderDC -> SetFont( *wxSMALL_FONT );
     Display::renderDC -> DrawText( fromCString(string), x, y + FONTSHIFT);
 }
-
+*/
 void triangle(const int x1, const int y1, const int x2, const int y2, const int x3, const int y3)
 {
     disablePen();

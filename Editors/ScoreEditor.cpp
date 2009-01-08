@@ -545,7 +545,12 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     {
         AriaRender::primitives();
         AriaRender::color(0,0,0);
-        AriaRender::character('X', renderInfo.x, renderInfo.getY() + 8);
+        AriaRender::lineWidth(2);
+        // draw a 'X'
+        AriaRender::line(renderInfo.x-5, renderInfo.getY() - 7,
+                         renderInfo.x+5, renderInfo.getY() + 7);
+        AriaRender::line(renderInfo.x-5, renderInfo.getY() + 7,
+                         renderInfo.x+5, renderInfo.getY() - 7);
     }
     else if(renderInfo.hollow_head)
     {

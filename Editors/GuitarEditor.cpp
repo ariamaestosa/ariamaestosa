@@ -37,9 +37,27 @@ namespace AriaMaestosa {
 const int first_string_position = 17;
 const int y_step = 10;
 
+    // FIXME - what about flats?
+static const wxString g_note_names[] =
+{
+    wxT("B"),  // 0
+    wxT("A#"), // 1
+    wxT("A"),  // 2
+    wxT("G#"), // 3
+    wxT("G"),  // 4
+    wxT("F#"), //5
+    wxT("F"),  //6
+    wxT("E"),  //7
+    wxT("D#"), //8
+    wxT("D"),  //9
+    wxT("C#"), //10
+    wxT("C"),  //11
+};
+
+static AriaRenderArray g_note_names_render(g_note_names, 12);
+    
 GuitarEditor::GuitarEditor(Track* track) : Editor(track)
 {
-
     mouse_is_in_editor=false;
 
     clickedOnNote=false;
@@ -252,62 +270,24 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current, Rel
                       getEditorsXStart()-3, getYEnd());
 
     // string names
+    AriaRender::images();
     AriaRender::color(0,0,0);
 
-    const int text_x = getEditorsXStart()-25;
+    int text_x = getEditorsXStart()-23;
     for(int n=0; n<string_amount; n++)
     {
-        const int text_y = getEditorYStart() + 20 + n*y_step;
-
+        const int text_y = getEditorYStart() + 21 + n*y_step;
+        
         const int octave=tuning[n]/12;
         const int note=tuning[n]%12;
 
-        // FIXME - what about flats?
-
-        wxString label;
-
-        switch(note){
-            case 0:
-                label = wxT("B");
-                break;
-            case 1:
-                label = wxT("A#");
-                break;
-            case 2:
-                label = wxT("A");
-                break;
-            case 3:
-                label = wxT("G#");
-                break;
-            case 4:
-                label = wxT("G");
-                break;
-            case 5:
-                label = wxT("F#");
-                break;
-            case 6:
-                label = wxT("F");
-                break;
-            case 7:
-                label = wxT("E");
-                break;
-            case 8:
-                label = wxT("D#");
-                break;
-            case 9:
-                label = wxT("D");
-                break;
-            case 10:
-                label = wxT("C#");
-                break;
-            case 11:
-                label = wxT("C");
-                break;
-        } // end switch
-
-        label += to_wxString(10-octave);
-
-        AriaRender::small_text( label.mb_str(), text_x, text_y );
+        g_note_names_render.bind();
+        if(note == 1 or note == 3 or note == 5 or note == 8 or note == 10)
+            g_note_names_render.get(note).render(text_x-6, text_y );
+        else
+            g_note_names_render.get(note).render(text_x, text_y );
+        AriaRender::renderNumber( 10-octave, text_x+8, text_y );
+        
     }//next
 
 
