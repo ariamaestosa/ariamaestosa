@@ -46,7 +46,7 @@ namespace AriaMaestosa {
 
 bool loadMidiFile(Sequence* sequence, wxString filepath)
 {
-
+    
     sequence->importing = true;
 
     // the stream used to read the input file
@@ -73,7 +73,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 
     getCurrentSequence()->setChannelManagementType(CHANNEL_MANUAL);
     getMeasureData()->beforeImporting();
-
+    
     const int resolution = jdksequence.GetClksPerBeat();
     sequence->setTicksPerBeat( resolution );
 
@@ -94,7 +94,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
     }
 
     sequence->prepareEmptyTracksForLoading(real_track_amount /*16*/);
-
+    
      // ----------------------------------- for each track -------------------------------------
     int realTrackID=-1;
     for(int trackID=0; trackID<trackAmount; trackID++)
@@ -102,12 +102,13 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 
         track = jdksequence.GetTrack( trackID );
 
-
+        
         WaitWindow::setProgress(
                                 (int)(
                                       log(trackID)*100/log(trackAmount)
                                       )
                                 );
+
         wxYield(); // FIXME - use a thread instead
 
          // ----------------------------------- for each event -------------------------------------
@@ -442,6 +443,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
             ariaTrack->reorderControlVector();
         }
         ariaTrack->reorderNoteOffVector();
+
 
         if(lastEventTick_inTrack > lastEventTick) lastEventTick = lastEventTick_inTrack;
     }//next track
