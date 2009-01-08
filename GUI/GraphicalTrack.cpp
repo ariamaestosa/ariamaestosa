@@ -907,7 +907,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     track_name.bind();
     
     // forbid name to be too long
-    // FIXME - find better way than scaling. add back ...
+    // FIXME - find better way than scaling. add back '...'
     if(track_name.getWidth() > 120) track_name.scale( 120.0f/track_name.getWidth() );
     else track_name.scale(1.0f);
     track_name.render(trackName->getX()+11, y+30);
@@ -966,8 +966,8 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
         AriaRender::color(0,0,0);
         
         const int char_amount_in_channel_name = channelName.size();
-        if(char_amount_in_channel_name == 1) AriaRender::renderNumber(channelName, channelButton->getX()+10, y+31);
-        else AriaRender::renderNumber(channelName, channelButton->getX()+7, y+29);
+        if(char_amount_in_channel_name == 1) AriaRender::renderNumber(channelName, channelButton->getX()+10, y+28);
+        else AriaRender::renderNumber(channelName, channelButton->getX()+7, y+28);
     }
 
 }// end func

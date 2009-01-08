@@ -177,9 +177,9 @@ void MainPane::render(const bool paintEvent)
     {
         wxAutoBufferedPaintDC mydc(this);
 
-        #ifdef RENDERER_WXWIDGETS
+        //#ifdef RENDERER_WXWIDGETS
             Display::renderDC = &mydc;
-        #endif
+        //#endif
         beginFrame();
         if(do_render()) endFrame();
     }
@@ -271,16 +271,25 @@ bool MainPane::do_render()
             tabBorderDrawable->render();
         }
 
-        AriaRender::primitives();
-
+        AriaRender::images();
+        
         // draw tab name
         if(currentSeqID == n)
             AriaRender::color(0,0,0);
         else
             AriaRender::color(0.4, 0.4, 0.4);
 
-        AriaRender::text_with_bounds(&getMainFrame()->getSequence(n)->sequenceFileName, start_at_x+10, tabBarY+18, start_at_x+tab_width+12);
+       // AriaRender::text_with_bounds(&getMainFrame()->getSequence(n)->sequenceFileName, start_at_x+10, tabBarY+18, start_at_x+tab_width+12);
 
+        AriaRenderString& seq_name = getMainFrame()->getSequence(n)->sequenceFileName;
+        seq_name.bind();
+
+        // forbid name to be too long
+        // FIXME - find better way than scaling. add back ...
+        //if(seq_name.getWidth() > tab_width+12) seq_name.scale( (float)(tab_width+12)/seq_name.getWidth() );
+        //else seq_name.scale(1.0f);
+        seq_name.render( start_at_x+10, tabBarY+18);
+        
         start_at_x += tab_width+16+16;
     }//next
 

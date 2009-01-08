@@ -27,6 +27,7 @@
 #include "GUI/GraphicalTrack.h"
 #include "Midi/Track.h"
 #include "Editors/RelativeXCoord.h"
+#include "Renderers/RenderAPI.h"
 
 #include "Config.h"
 #include "AriaCore.h"
@@ -86,7 +87,7 @@ class Sequence {
     ptr_vector<GraphicalTrack, REF> dock;
     int dockHeight;
 
-    wxString sequenceFileName;
+    AriaRenderString sequenceFileName;
     OwnerPtr<MeasureData>  measureData;
 
     ptr_vector<ControllerEvent> tempoEvents;

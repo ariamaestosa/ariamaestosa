@@ -244,7 +244,7 @@ void MeasureBar::render(int measureBarY_arg)
 
         // measure ID
         AriaRender::images();
-        AriaRender::renderNumber(measureID, n+5, measureBarY+20 );
+        AriaRender::renderNumber(measureID, n+5, measureBarY+18 );
 
         AriaRender::primitives();
         if(data->expandedMode)
