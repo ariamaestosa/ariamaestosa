@@ -903,7 +903,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     AriaRender::primitives(); // FIXME - find and fix why this is necessary for track name to appear
     AriaRender::images();
     AriaRender::color(0,0,0);
-    wxGLString& track_name = track->getName();
+    AriaRenderString& track_name = track->getName();
     track_name.bind();
     
     // forbid name to be too long

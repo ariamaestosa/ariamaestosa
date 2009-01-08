@@ -34,7 +34,7 @@ class Image
     wxImage* states[AriaRender::STATE_AMOUNT];
     wxBitmap* states_bmp[AriaRender::STATE_AMOUNT];
 public:
-    LEAK_CHECK(ImageBase);
+    LEAK_CHECK(Image);
     
     int width, height;
     

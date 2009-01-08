@@ -297,7 +297,7 @@ void ControllerChoice::renderControllerName(const int x, const int y)
     else
     {
         // default (all other controllers)
-        wxGLString& string = controller_names_renderer.get(controllerID);
+        AriaRenderString& string = controller_names_renderer.get(controllerID);
         if(string.getWidth() > 75)
         {
             string.rotate(45); // if string is too long, rotate it so it fits
