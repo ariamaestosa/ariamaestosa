@@ -67,14 +67,9 @@ namespace AriaRender
     void bordered_rect(const int x1, const int y1, const int x2, const int y2);
     void bordered_rect_no_start(const int x1, const int y1, const int x2, const int y2);
     
-    void text(const char* string, const int x, const int y);
-    void text(wxString* string, const int x, const int y);
-    int text_return_end_x(wxString* string, const int x, const int y);
     void small_text(const char* string, const int x, const int y);
-    void small_text_newline_between_words(const char* string, const int x, const int y);
     void character(const char character, const int x, const int y);
     void small_character(const char character, const int x, const int y);
-    void text_with_bounds(wxString* string, const int x, const int y, const int max_x);
         
     void renderNumber(const int number, const int x, const int y);
     void renderNumber(const float number, const int x, const int y);

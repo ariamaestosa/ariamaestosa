@@ -120,6 +120,8 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current, Rel
         if(x2<0) continue;
         if(x1>width) break;
 
+        AriaRender::primitives();
+        
         int string=track->getNoteString(n);
         int fret=track->getNoteFret(n);
 
@@ -140,15 +142,17 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current, Rel
                          x1+14+getEditorsXStart(), getEditorYStart()+first_string_position+string*y_step,
                          x1+9+getEditorsXStart(), getEditorYStart()+first_string_position+string*y_step-8);
 
+        AriaRender::images();
+        
         if((!track->isNoteSelected(n) or !focus) && volume>0.5) AriaRender::color(1, 1, 1); // if note color is too dark, draw the fret number in white
         else AriaRender::color(0, 0, 0);
 
-        // convert the fret nubmer to chars, and draw it
-        wxString fret_number = to_wxString(fret);
-        AriaRender::small_text(fret_number.mb_str(), x1+getEditorsXStart(), getEditorYStart() + first_string_position + string*y_step + 1);
-
+        AriaRender::renderNumber(fret, x1+getEditorsXStart(),
+                                 getEditorYStart() + first_string_position + string*y_step + 3);
+        
     }//next
-
+    
+    AriaRender::primitives();
 
     // mouse drag
     if(!clickedOnNote and mouse_is_in_editor)

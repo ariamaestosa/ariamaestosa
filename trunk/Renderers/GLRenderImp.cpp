@@ -186,7 +186,7 @@ void hollow_rect(const int x1, const int y1, const int x2, const int y2)
     glEnd();
 }
 
-
+/*
 // FIXME- clean up text rendering
 void text(const char* string, const int x, const int y)
 {
@@ -248,7 +248,7 @@ void text_with_bounds(wxString* string, const int x, const int y, const int max_
         }
     }
 }
-
+*/
 void small_text(const char* string, const int x, const int y)
 {
     glRasterPos2f(x*10.0, y*10.0);
@@ -268,7 +268,7 @@ void small_character(const char character, const int x, const int y)
     glRasterPos2f(x*10.0, y*10.0);
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, character);
 }
-
+/*
 void small_text_newline_between_words(const char* string, const int x, const int y)
 {
     glRasterPos2f(x*10.0, y*10.0);
@@ -285,7 +285,7 @@ void small_text_newline_between_words(const char* string, const int x, const int
             glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, string[i]);
     }
 }
-
+*/
 void triangle(const int x1, const int y1, const int x2, const int y2, const int x3, const int y3)
 {
     glBegin(GL_TRIANGLES);
