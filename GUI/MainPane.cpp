@@ -279,13 +279,11 @@ bool MainPane::do_render()
         else
             AriaRender::color(0.4, 0.4, 0.4);
 
-       // AriaRender::text_with_bounds(&getMainFrame()->getSequence(n)->sequenceFileName, start_at_x+10, tabBarY+18, start_at_x+tab_width+12);
-
         AriaRenderString& seq_name = getMainFrame()->getSequence(n)->sequenceFileName;
         seq_name.bind();
 
         // forbid name to be too long
-        // FIXME - find better way than scaling. add back ...
+        // FIXME - find better way than scaling. add back '...'
         //if(seq_name.getWidth() > tab_width+12) seq_name.scale( (float)(tab_width+12)/seq_name.getWidth() );
         //else seq_name.scale(1.0f);
         seq_name.render( start_at_x+10, tabBarY+18);
@@ -324,10 +322,14 @@ bool MainPane::do_render()
 
             x_before = x;
 
+            AriaRender::images();
             AriaRender::color(0,0,0);
-            x = AriaRender::text_return_end_x(&getCurrentSequence()->dock[n].track->getName(), x+5, getHeight()-5);
-            x += 5;
+            wxGLString& trackname = getCurrentSequence()->dock[n].track->getName();
+            trackname.bind();
+            trackname.render(x+5, getHeight()-2);
+            x += trackname.getWidth() + 10;
 
+            AriaRender::primitives();
             AriaRender::color(1, 0.8, 0.7);
             AriaRender::lineWidth(2);
             AriaRender::hollow_rect(x, getHeight()-1, x_before, getHeight()-17);

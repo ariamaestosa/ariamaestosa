@@ -38,14 +38,6 @@ namespace AriaMaestosa {
 GLPane::GLPane(MainFrame* mainFrame, int* args) :
     wxGLCanvas(mainFrame, wxID_ANY,  wxDefaultPosition, wxDefaultSize, 0, wxT("GLCanvas"),  args)
 {
-
-
-
-    int argc = 0;
-    char** argv = NULL;
-
-    std::cout << "calling glutInit" << std::endl;
-    glutInit(&argc, argv);
 }
 
 GLPane::~GLPane()
