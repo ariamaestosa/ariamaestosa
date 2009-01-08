@@ -260,7 +260,7 @@ def compile_Aria(which_os):
         '-framework','Carbon','-framework','Cocoa','-framework','IOKit','-framework','System'])
         
         if renderer == 'opengl':
-            env.Append(LINKFLAGS = ['-framework','OpenGL','-framework','GLUT','-framework','AGL'])
+            env.Append(LINKFLAGS = ['-framework','OpenGL','-framework','AGL'])
         
     # linux (Alsa/tiMidity)
     elif which_os == "linux":
@@ -274,7 +274,7 @@ def compile_Aria(which_os):
         env.Append(LIBPATH = ['usr/local/lib/','usr/lib/', '/opt/gnome/lib'])
         
         if renderer == 'opengl':
-            env.Append(LIBS = ['GL', 'GLU', 'glut'])
+            env.Append(LIBS = ['GL', 'GLU'])
             
         env.Append(LIBS = ['asound'])
         env.Append(LIBS = ['dl','m'])

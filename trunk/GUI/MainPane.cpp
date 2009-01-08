@@ -324,7 +324,7 @@ bool MainPane::do_render()
 
             AriaRender::images();
             AriaRender::color(0,0,0);
-            wxGLString& trackname = getCurrentSequence()->dock[n].track->getName();
+            AriaRenderString& trackname = getCurrentSequence()->dock[n].track->getName();
             trackname.bind();
             trackname.render(x+5, getHeight()-2);
             x += trackname.getWidth() + 10;

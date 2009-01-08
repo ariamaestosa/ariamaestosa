@@ -50,6 +50,24 @@ unsigned char bc = 255;
 unsigned char ac = 255;
 int lineWidth_i = 1;
 int pointSize_i = 1;
+
+wxDCNumberRenderer my_number_renderer;
+
+void renderNumber(const int number, const int x, const int y)
+{
+    renderNumber( to_wxString(number), x, y );
+}
+void renderNumber(const float number, const int x, const int y)
+{
+    renderNumber( to_wxString(number), x, y );
+}
+void renderNumber(const wxString number, const int x, const int y)
+{
+    my_number_renderer.bind();
+    my_number_renderer.renderNumber(number, x, y);
+}
+
+    
     
 void setImageState(const ImageState imgst)
 {
@@ -90,8 +108,9 @@ void color(const float r, const float g, const float b)
         ac = 255;
         updatePen();
         updateBrush();
-        updateFontColor();
     }
+    else
+        updateFontColor();
 }
 
 void color(const float r, const float g, const float b, const float a)
@@ -106,8 +125,9 @@ void color(const float r, const float g, const float b, const float a)
     {
         updatePen();
         updateBrush();
-        updateFontColor();
     }
+    else
+        updateFontColor();
 }
 
 void line(const int x1, const int y1, const int x2, const int y2)

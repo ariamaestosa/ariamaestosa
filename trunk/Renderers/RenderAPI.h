@@ -18,9 +18,9 @@
 #define _renderutils_
 
 #ifdef RENDERER_OPENGL
-#include "Renderers/wxGLString.h"
+#include "Renderers/GLwxString.h"
 #elif defined(RENDERER_WXWIDGETS)
-
+#include "Renderers/wxDCString.h"
 #else
 #error No renderer defined!
 #endif
