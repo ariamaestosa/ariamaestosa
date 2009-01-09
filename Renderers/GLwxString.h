@@ -1,3 +1,4 @@
+#ifdef RENDERER_OPENGL
 #ifndef _glstring_
 #define _glstring_
 
@@ -93,7 +94,7 @@ public:
     wxGLString();
     /** constructs a GLstring with 'message' as contents. */
     wxGLString(wxString message);
-    ~wxGLString();
+    virtual ~wxGLString();
 
     /** call just before render() - binds the OpenGL. If you render the same string many
         times, or render from an array, bind only once, this will improve performance */
@@ -102,10 +103,7 @@ public:
     /** set how to draw string for next consolidate() - has no immediate effect,
         you need to call consolidate() to get results  */
     void setFont(wxFont font);
-
-    /** to be called after consolidate() only */
-    void getStringExtent();
-
+    
     /** consolidates the current string info into a GL string. call this after
      setting up strings, font and color (if necessary), and before rendering.
       The wxDC argument is only used to calculate text extents and will not be rendered on. */
@@ -114,8 +112,7 @@ public:
     /** render this string at coordinates (x,y). Must be called after bind(). */
     void render(const int x, const int y);
 
-    /** changes the string of this element - has no immediate effect,
-     you need to call consolidate() to get results */
+    /** changes the string of this element */
     void operator=(wxString& string);
 };
 
@@ -140,7 +137,7 @@ class wxGLNumberRenderer : public wxGLString
     int space_w;
 public:
     wxGLNumberRenderer();
-    ~wxGLNumberRenderer();
+    virtual ~wxGLNumberRenderer();
 
     /** inits the class to be ready to render.
     The wxDC argument is only used to calculate text extents and will not be rendered on. */
@@ -214,4 +211,5 @@ public:
 typedef wxGLStringArray AriaRenderArray;
 
 }
+#endif
 #endif
