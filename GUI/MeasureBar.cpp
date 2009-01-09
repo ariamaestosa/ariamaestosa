@@ -203,7 +203,7 @@ void MeasureBar::render(int measureBarY_arg)
     // black line at the top and bottom
     AriaRender::color(0, 0, 0);
 
-    AriaRender::line(0, measureBarY+1, Display::getWidth(), measureBarY+1);
+    AriaRender::line(0, measureBarY, Display::getWidth(), measureBarY);
     AriaRender::line(0, measureBarY+20, Display::getWidth(), measureBarY+20);
 
     if(data->expandedMode) AriaRender::line(0, measureBarY+40, Display::getWidth(), measureBarY+40);

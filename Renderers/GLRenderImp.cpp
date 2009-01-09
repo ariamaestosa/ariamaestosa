@@ -146,7 +146,8 @@ void bordered_rect(const int x1, const int y1, const int x2, const int y2)
     rect(x1,y1,x2,y2);
 
     /** the numbers below were determined by trial-and-error in order
-        to work on all computers i have access to... */
+        to work on all computers i have access to... damn those graphics
+        drivers and their inconsistent rounding!*/
 
     glColor3f(0,0,0);
     glLineWidth(1);
