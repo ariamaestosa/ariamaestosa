@@ -72,6 +72,7 @@ class GraphicalTrack
     ToolBar<BlankField>* sharpFlatPicker;
     BlankField* instrumentName;
     BlankField* channelButton;
+    
 public:
     LEAK_CHECK(GraphicalTrack);
 

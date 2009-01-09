@@ -955,7 +955,11 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     if(editorMode == DRUM) 
         Core::getDrumPicker()->renderDrumKitName( track->getDrumKit(), instrumentName->getX()+11 ,y+30);
     else
-        Core::getInstrumentPicker()->renderInstrumentName( track->getInstrument(), instrumentName->getX()+11 ,y+30 );
+    {
+        track->instrument_name.bind();
+        track->instrument_name.render(instrumentName->getX()+11 ,y+30);
+    }
+        //Core::getInstrumentPicker()->renderInstrumentName( track->getInstrument(), instrumentName->getX()+11 ,y+30 );
 
     AriaRender::images();
     

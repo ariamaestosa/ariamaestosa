@@ -93,6 +93,9 @@ namespace AriaMaestosa
 
         instrument = 0;
         drumKit = 0;
+        
+        instrument_name = Core::getInstrumentPicker()->getInstrumentName( instrument );
+        instrument_name.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
     }
 
 /*
@@ -734,7 +737,9 @@ void Track::setChannel(int i)
 void Track::setInstrument(int i, bool recursive)
 {
     instrument = i;
-
+    instrument_name = Core::getInstrumentPicker()->getInstrumentName( instrument );
+    instrument_name.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+    
     // if we're in manual channel management mode, change all tracks of the same channel to have the same instrument
     if(sequence->getChannelManagementType() == CHANNEL_MANUAL and not recursive)
     {

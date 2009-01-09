@@ -54,8 +54,8 @@ public:
         else if(activated) active->SetValue(true);
 
         wxString instrumentname;
-        if(editorMode == DRUM) instrumentname = fromCString( Core::getDrumPicker()->getDrumName( track->getDrumKit() ) );
-        else instrumentname = fromCString( Core::getInstrumentPicker()->getInstrumentName( track->getInstrument() ) );
+        if(editorMode == DRUM) instrumentname = Core::getDrumPicker()->getDrumName( track->getDrumKit() );
+        else instrumentname = Core::getInstrumentPicker()->getInstrumentName( track->getInstrument() );
 
         sizer->Add( new wxStaticText(this, wxID_ANY, to_wxString(trackID) + wxT(" : ") + track->getName() + wxT(" (") + instrumentname + wxT(")")) , 1, wxALL, 5);
 

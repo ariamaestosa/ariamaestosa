@@ -108,18 +108,23 @@ void DrumChoice::renderDrumKitName(const int drumID, const int x, const int y)
     }
 }
 
-const char* DrumChoice::getDrumName(int drumID) const
+const wxString& DrumChoice::getDrumName(int drumID) const
 {
-    if (drumID == 0 )       return g_drumkit_names[0].mb_str();
-    else if (drumID == 8 )  return g_drumkit_names[1].mb_str();
-    else if (drumID == 16 ) return g_drumkit_names[2].mb_str();
-    else if (drumID == 24 ) return g_drumkit_names[3].mb_str();
-    else if (drumID == 25 ) return g_drumkit_names[4].mb_str();
-    else if (drumID == 32 ) return g_drumkit_names[5].mb_str();
-    else if (drumID == 40 ) return g_drumkit_names[6].mb_str();
-    else if (drumID == 48 ) return g_drumkit_names[7].mb_str();
-    else if (drumID == 56 ) return g_drumkit_names[8].mb_str();
-    else return "?";
+    if (drumID == 0 )       return g_drumkit_names[0];
+    else if (drumID == 8 )  return g_drumkit_names[1];
+    else if (drumID == 16 ) return g_drumkit_names[2];
+    else if (drumID == 24 ) return g_drumkit_names[3];
+    else if (drumID == 25 ) return g_drumkit_names[4];
+    else if (drumID == 32 ) return g_drumkit_names[5];
+    else if (drumID == 40 ) return g_drumkit_names[6];
+    else if (drumID == 48 ) return g_drumkit_names[7];
+    else if (drumID == 56 ) return g_drumkit_names[8];
+    else
+    {
+        std::cerr << "DrumChoice::getDrumName: invalid drumkit ID : " << drumID << std::endl;
+        static wxString dummy_answer = wxEmptyString; // should not be necessary, only there to shut up warnings
+        return dummy_answer;
+    }
 }
 
 }

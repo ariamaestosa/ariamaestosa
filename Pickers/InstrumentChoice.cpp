@@ -169,7 +169,7 @@ static const wxString g_inst_names[] =
     wxT("Gunshot") // 127
 };
     
-InstrumentChoice::InstrumentChoice() : wxMenu(), inst_names_renderer(g_inst_names, 128)
+InstrumentChoice::InstrumentChoice() : wxMenu()//, inst_names_renderer(g_inst_names, 128)
 {
     submenu_1_piano=new wxMenu();
     submenu_2_chromatic=new wxMenu();
@@ -348,20 +348,13 @@ InstrumentChoice::InstrumentChoice() : wxMenu(), inst_names_renderer(g_inst_name
 
 #undef _ADD_INSTR
 
-    inst_names_renderer.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-    
+
 }
 
 InstrumentChoice::~InstrumentChoice()
 {
     // FIMXE - this should maybe delete the menus
 }
-/*
-void InstrumentChoice::setInstrumentID(int id)
-{
-    instrumentID = id;
-}
-*/
 void InstrumentChoice::menuSelected(wxCommandEvent& evt)
 {
     instrumentID=evt.GetId()-10000;
@@ -375,22 +368,13 @@ void InstrumentChoice::menuSelected(wxCommandEvent& evt)
 }
 
 
-const char* InstrumentChoice::getInstrumentName(int instrumentID)
+const wxString& InstrumentChoice::getInstrumentName(int instrumentID)
 {
     assertExpr(instrumentID,<,128);
     assertExpr(instrumentID,>=,0);
 
-    return (const char*)g_inst_names[instrumentID].mb_str();
+    return g_inst_names[instrumentID];
 }
 
     
-void InstrumentChoice::renderInstrumentName(const int instrumentID, const int x, const int y)
-{
-    assertExpr(instrumentID,<,128);
-    assertExpr(instrumentID,>=,0);
-    
-    inst_names_renderer.bind();
-    inst_names_renderer.get(instrumentID).render(x, y);
-}
-
 }
