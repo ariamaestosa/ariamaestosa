@@ -30,11 +30,6 @@
 namespace AriaMaestosa {
 
 
-BEGIN_EVENT_TABLE(ControllerChoice, wxMenu)
-EVT_MENU_RANGE(0,202,ControllerChoice::menuSelected)
-END_EVENT_TABLE()
-
-
 static const wxString g_controller_names[] =
 {
     wxT(""), // 0
@@ -263,6 +258,9 @@ ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu(), controlle
     misc_menu->Append( 83 , g_controller_names[83 ] ); // General Purpose 8
 
     ControllerChoice::parent = parent;
+
+    Connect(0,202, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ControllerChoice::menuSelected));
+    misc_menu->Connect(0,202, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ControllerChoice::menuSelected), NULL, this);
 }
 
 ControllerChoice::~ControllerChoice()
