@@ -34,7 +34,7 @@ BEGIN_EVENT_TABLE(ControllerChoice, wxMenu)
 EVT_MENU_RANGE(0,202,ControllerChoice::menuSelected)
 END_EVENT_TABLE()
 
-    
+
 static const wxString g_controller_names[] =
 {
     wxT(""), // 0
@@ -169,7 +169,7 @@ static const wxString g_controller_names[] =
     wxT(""), // 127
 };
     // 32-63 (0x20-0x3F)     LSB for controllers 0-31
-    
+
 ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu(), controller_names_renderer(g_controller_names, 124)
 {
     // keep strings translatable
@@ -185,9 +185,13 @@ ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu(), controlle
     controller_names_renderer.get(37) = wxString(_("Left"));
     //I18N: - when setting pan in controller
     controller_names_renderer.get(38) = wxString(_("Right"));
-    
+
+#ifdef __WXMAC__
     controller_names_renderer.setFont( wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-    
+#else
+    controller_names_renderer.setFont( wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+#endif
+
     controllerID=7;
 
     Append( 7 , g_controller_names[7 ] ); // Volume // fine:39
@@ -213,16 +217,16 @@ ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu(), controlle
     Append( 94 , g_controller_names[94 ] ); // Celeste
     Append( 95 , g_controller_names[95 ] ); // Phaser
 
-    
+
     Append( 70 , g_controller_names[70 ] ); // Timber Variation
     Append( 71 , g_controller_names[71 ] ); // Timber/Harmonic
     Append( 72 , g_controller_names[72 ] ); // Release Time
     Append( 73 , g_controller_names[73 ] ); // Attack Time
     Append( 74 , g_controller_names[74 ] ); // Brightness
     Append( 75 , g_controller_names[75 ] ); // Decay Time
-    
+
     AppendSeparator();
-    
+
     wxMenu* misc_menu = new wxMenu();
     Append(wxID_ANY,wxT("Misc"), misc_menu);
 
@@ -288,7 +292,7 @@ int ControllerChoice::getControllerID()
 void ControllerChoice::renderControllerName(const int x, const int y)
 {
     controller_names_renderer.bind();
-    
+
     // special cases (non-controllers)
     if(controllerID==200)
         controller_names_renderer.get(30).render(x, y);
@@ -306,7 +310,7 @@ void ControllerChoice::renderControllerName(const int x, const int y)
         else
             string.render(x, y);
     }
-    
+
 }
 
 
@@ -328,22 +332,22 @@ bool ControllerChoice::isOnOffController(const int id) const
 void ControllerChoice::renderTopLabel(const int x, const int y)
 {
     controller_names_renderer.bind();
-    
+
     // pan
     if(controllerID== 10 or controllerID== 42)
         controller_names_renderer.get(38).render(x, y);
-    
+
     // pitch bend
     else if(controllerID==200)
         controller_names_renderer.get(39).render(x, y);
-        
+
     // on/offs
     else if( isOnOffController(controllerID) )
         controller_names_renderer.get(33).render(x, y);
 
     // tempo
     else if(controllerID == 201) AriaRender::renderNumber( wxT("400"), x, y );
-    
+
     else
         controller_names_renderer.get(36).render(x, y);
     /*
@@ -373,25 +377,25 @@ void ControllerChoice::renderTopLabel(const int x, const int y)
  */
 
 void ControllerChoice::renderBottomLabel(const int x, const int y)
-{    
+{
     // pan
     if(controllerID== 10 or controllerID== 42)
         controller_names_renderer.get(37).render(x, y);
-    
+
     // pitch bend
     else if(controllerID==200)
         controller_names_renderer.get(40).render(x, y);
-    
+
     // on/offs
     else if( isOnOffController(controllerID) )
         controller_names_renderer.get(34).render(x, y);
-    
+
     // tempo
     else if(controllerID == 201)  AriaRender::renderNumber( wxT("20"), x, y );
-    
+
     else
         controller_names_renderer.get(35).render(x, y);
-    
+
     /*
     // pan
     if(controllerID== 10 or controllerID== 42)

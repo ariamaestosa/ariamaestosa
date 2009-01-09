@@ -6,7 +6,7 @@
 		<Option makefile_is_custom="1" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="status/; status/;" />
+		<Option virtualFolders=" status/;" />
 		<MakeCommands>
 			<Build command="cd .. &amp;&amp; python scons/scons.py config=$target -j 2" />
 			<CompileFile command="$make -f $makefile $file" />
@@ -237,8 +237,12 @@
 		<Unit filename="../Renderers/GLPane.cpp" />
 		<Unit filename="../Renderers/GLPane.h" />
 		<Unit filename="../Renderers/GLRenderImp.cpp" />
+		<Unit filename="../Renderers/GLwxString.cpp" />
+		<Unit filename="../Renderers/GLwxString.h" />
 		<Unit filename="../Renderers/ImageBase.h" />
 		<Unit filename="../Renderers/RenderAPI.h" />
+		<Unit filename="../Renderers/wxDCString.cpp" />
+		<Unit filename="../Renderers/wxDCString.h" />
 		<Unit filename="../Renderers/wxDrawable.cpp" />
 		<Unit filename="../Renderers/wxImage.cpp" />
 		<Unit filename="../Renderers/wxImage.h" />

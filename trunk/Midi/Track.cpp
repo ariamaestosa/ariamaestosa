@@ -49,8 +49,13 @@ namespace AriaMaestosa
     Track::Track(MainFrame* parent, Sequence* sequence)
     {
         name = wxString( _("Untitled") );
+        // FIXME - find out why fonts are so different on mac and linux
+#ifdef __WXMAC__
         name.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-        
+#else
+        name.setFont( wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+#endif
+
         Track::frame=parent;
 
         Track::sequence = sequence;
@@ -93,9 +98,13 @@ namespace AriaMaestosa
 
         instrument = 0;
         drumKit = 0;
-        
+
         instrument_name = Core::getInstrumentPicker()->getInstrumentName( instrument );
+#ifdef __WXMAC__
         instrument_name.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+#else
+        instrument_name.setFont( wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+#endif
     }
 
 /*
@@ -739,7 +748,7 @@ void Track::setInstrument(int i, bool recursive)
     instrument = i;
     instrument_name = Core::getInstrumentPicker()->getInstrumentName( instrument );
     instrument_name.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-    
+
     // if we're in manual channel management mode, change all tracks of the same channel to have the same instrument
     if(sequence->getChannelManagementType() == CHANNEL_MANUAL and not recursive)
     {
