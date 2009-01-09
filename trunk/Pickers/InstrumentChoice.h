@@ -52,7 +52,6 @@ class InstrumentChoice : public wxMenu
 
     int instrumentID;
     
-    AriaRenderArray inst_names_renderer;
 public:
     
     LEAK_CHECK(InstrumentChoice);
@@ -60,9 +59,8 @@ public:
     InstrumentChoice();
     ~InstrumentChoice();
 
-    const char* getInstrumentName(int id);
-    void renderInstrumentName(const int instrumentID, const int x, const int y);
-    
+    const wxString& getInstrumentName(int id);
+
     void setParent(Track* track);
 
     void menuSelected(wxCommandEvent& evt);

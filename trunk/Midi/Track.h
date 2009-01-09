@@ -130,6 +130,8 @@ public:
     OwnerPtr<GraphicalTrack>  graphics;
     Sequence* sequence;
     int trackUniqueID;
+    
+    AriaRenderString instrument_name;
     // -------------------------------------
 
     Track(MainFrame* parent, Sequence* sequence);

@@ -43,7 +43,7 @@ public:
 
     void setParent(Track* t);
 
-    const char* getDrumName(int id) const;
+    const wxString& getDrumName(int id) const;
     void renderDrumKitName(const int drumID, const int x, const int y);
     
     void menuSelected(wxCommandEvent& evt);
