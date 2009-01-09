@@ -43,7 +43,7 @@ DrumInfo::DrumInfo(int midiKey, const bool a_section)
     DrumInfo::midiKey = midiKey;
 
     section=a_section;
-    
+
     sectionExpanded=true;
 }
 // ***********************************************************************************************************************************************************
@@ -142,7 +142,7 @@ static const wxString g_drum_names[] =
     wxT("Castanets"), // 85
     wxT("Mute surdo"), // 86
     wxT("Open surdo"), // 87
-    
+
     // sections (using unused instrument slots for these, so they be
     // put in the same string array, improving performance)
     wxT("Drumkit"), // 88
@@ -179,7 +179,7 @@ static const wxString g_drum_names[] =
     wxT(" "), // 118
     wxT(" "), // 119*/
 };
-    
+
     DrumEditor::DrumEditor(Track* track) : Editor(track),
     drum_names_renderer( g_drum_names, 96-27)
 {
@@ -189,11 +189,15 @@ static const wxString g_drum_names[] =
     clickedOnNote=false;
     lastClickedNote = -1;
     showUsedDrumsOnly=false;
-    
+
     useDefaultDrumSet();
     Editor::useInstantNotes();
-    
+
+#ifdef __WXMAC__
     drum_names_renderer.setFont( wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, /*wxFONTWEIGHT_BOLD*/ wxFONTWEIGHT_NORMAL) );
+#else
+    drum_names_renderer.setFont( wxFont(7, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, /*wxFONTWEIGHT_BOLD*/ wxFONTWEIGHT_NORMAL) );
+#endif
 }
 
 DrumEditor::~DrumEditor()
@@ -434,7 +438,7 @@ NoteSearchResult DrumEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 
         const int drumIDInVector= midiKeyToVectorID[ track->getNotePitchID(n) ];
         if(drumIDInVector == -1) continue;
-        
+
         const int drumy=getYForDrum(drumIDInVector);
 
         if(x.getRelativeTo(EDITOR)>drumx-1 and x.getRelativeTo(EDITOR)<drumx+5 and y>drumy and y<drumy+y_step)
@@ -795,7 +799,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
         AriaRender::images();
         drum_names_renderer.bind();
-        
+
         if(drums[drumID].section) // section header
         {
             AriaRender::primitives();
@@ -818,7 +822,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
                                      getEditorsXStart()+10, y+9 );
             }
 
-            
+
             AriaRender::images();
             AriaRender::color(1,1,1);
             // render twice otherwise it's too pale

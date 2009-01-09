@@ -177,9 +177,8 @@ void MainPane::render(const bool paintEvent)
     {
         wxAutoBufferedPaintDC mydc(this);
 
-        //#ifdef RENDERER_WXWIDGETS
-            Display::renderDC = &mydc;
-        //#endif
+        Display::renderDC = &mydc;
+
         beginFrame();
         if(do_render()) endFrame();
     }
@@ -192,13 +191,13 @@ void MainPane::render(const bool paintEvent)
         wxClientDC my_client_dc(this);
         wxBufferedDC mydc(static_cast<wxDC*>(&my_client_dc), wxDefaultSize);
     #elif defined(RENDERER_OPENGL)
-        wxClientDC my_dc(this);
+        wxClientDC mydc(this);
     #endif
 #endif
 
-//#ifdef RENDERER_WXWIDGETS
+
         Display::renderDC = static_cast<wxDC*>(&mydc);
-//#endif
+
         beginFrame();
         if(do_render()) endFrame();
     }
@@ -272,7 +271,7 @@ bool MainPane::do_render()
         }
 
         AriaRender::images();
-        
+
         // draw tab name
         if(currentSeqID == n)
             AriaRender::color(0,0,0);
@@ -287,7 +286,7 @@ bool MainPane::do_render()
         //if(seq_name.getWidth() > tab_width+12) seq_name.scale( (float)(tab_width+12)/seq_name.getWidth() );
         //else seq_name.scale(1.0f);
         seq_name.render( start_at_x+10, tabBarY+18);
-        
+
         start_at_x += tab_width+16+16;
     }//next
 

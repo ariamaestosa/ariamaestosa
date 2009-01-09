@@ -55,7 +55,7 @@ static const wxString g_note_names[] =
 };
 
 static AriaRenderArray g_note_names_render(g_note_names, 12);
-    
+
 GuitarEditor::GuitarEditor(Track* track) : Editor(track)
 {
     mouse_is_in_editor=false;
@@ -63,6 +63,10 @@ GuitarEditor::GuitarEditor(Track* track) : Editor(track)
     clickedOnNote=false;
 
     lastClickedNote=-1;
+
+#ifdef __WXGTK__
+    g_note_names_render.setFont( wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, /*wxFONTWEIGHT_BOLD*/ wxFONTWEIGHT_NORMAL) );
+#endif
 
     // let the tuning picker set-up the tuning of this guitar editor
     TuningPicker* picker = Core::getTuningPicker();
@@ -139,7 +143,7 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current, Rel
         if(x1>width) break;
 
         AriaRender::primitives();
-        
+
         int string=track->getNoteString(n);
         int fret=track->getNoteFret(n);
 
@@ -161,15 +165,15 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current, Rel
                          x1+9+getEditorsXStart(), getEditorYStart()+first_string_position+string*y_step-8);
 
         AriaRender::images();
-        
+
         if((!track->isNoteSelected(n) or !focus) && volume>0.5) AriaRender::color(1, 1, 1); // if note color is too dark, draw the fret number in white
         else AriaRender::color(0, 0, 0);
 
         AriaRender::renderNumber(fret, x1+getEditorsXStart(),
                                  getEditorYStart() + first_string_position + string*y_step + 3);
-        
+
     }//next
-    
+
     AriaRender::primitives();
 
     // mouse drag
@@ -277,7 +281,7 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current, Rel
     for(int n=0; n<string_amount; n++)
     {
         const int text_y = getEditorYStart() + 21 + n*y_step;
-        
+
         const int octave=tuning[n]/12;
         const int note=tuning[n]%12;
 
@@ -287,7 +291,7 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current, Rel
         else
             g_note_names_render.get(note).render(text_x, text_y );
         AriaRender::renderNumber( 10-octave, text_x+8, text_y );
-        
+
     }//next
 
 

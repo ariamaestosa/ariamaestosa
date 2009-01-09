@@ -241,7 +241,7 @@ void wxGLString::operator=(wxString& string)
 void wxGLString::bind()
 {
     if(not consolidated) consolidate(Display::renderDC);
-    
+
     glBindTexture(GL_TEXTURE_2D, img->getID()[0] );
 }
 void wxGLString::calculateSize(wxDC* dc, const bool ignore_font /* when from array */)
@@ -251,7 +251,7 @@ void wxGLString::calculateSize(wxDC* dc, const bool ignore_font /* when from arr
         if(font.IsOk()) dc->SetFont(font);
         else dc->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
     }
-        
+
     dc->GetTextExtent(*this, &w, &h);
 }
 
@@ -260,10 +260,10 @@ void wxGLString::consolidate(wxDC* dc)
     calculateSize(dc);
     const int power_of_2_w = std::max(32, (int)pow( 2, (int)ceil((float)log(w)/log(2.0)) ));
     const int power_of_2_h = std::max(32, (int)pow( 2, (int)ceil((float)log(h)/log(2.0)) ));
-    
+
     //std::cout << "consolidated " << this->mb_str() << ", size=" << w << "x" << h << std::endl;
     //std::cout << "    " << this->mb_str() << ", size=" << power_of_2_w << "x" << power_of_2_h << std::endl;
-    
+
     wxBitmap bmp(power_of_2_w, power_of_2_h);
     assert(bmp.IsOk());
 
@@ -275,7 +275,7 @@ void wxGLString::consolidate(wxDC* dc)
 
         if(font.IsOk()) temp_dc.SetFont(font);
         else temp_dc.SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
-        
+
         temp_dc.DrawText(*this, 0, 0);
     }
     if(img != NULL) delete img;
@@ -288,7 +288,7 @@ void wxGLString::consolidate(wxDC* dc)
     TextGLDrawable::tex_coord_y1 = 1;
 
     TextGLDrawable::setImage(img);
-    
+
     consolidated = true;
 }
 void wxGLString::consolidateFromArray(wxDC* dc, int x, int y)
@@ -321,6 +321,9 @@ wxGLString::~wxGLString()
 wxGLNumberRenderer::wxGLNumberRenderer() : wxGLString( wxT("0 1 2 3 4 5 6 7 8 9 . - ") )
 {
     number_location = new int[13];
+#ifdef __WXGTK__
+    setFont( wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, /*wxFONTWEIGHT_BOLD*/ wxFONTWEIGHT_NORMAL) );
+#endif
 }
 wxGLNumberRenderer::~wxGLNumberRenderer()
 {
@@ -333,7 +336,7 @@ void wxGLNumberRenderer::consolidate(wxDC* dc)
 
     if(font.IsOk()) dc->SetFont(font);
     else dc->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
-        
+
     number_location[0] = 0;
     number_location[1]  = dc->GetTextExtent(wxT("0 ")).GetWidth();
     number_location[2]  = dc->GetTextExtent(wxT("0 1 ")).GetWidth();
@@ -366,7 +369,7 @@ void wxGLNumberRenderer::renderNumber(float f, int x, int y)
 void wxGLNumberRenderer::renderNumber(wxString s, int x, int y)
 {
     const int full_string_w = TextGLDrawable::texw;
-    
+
     const int char_amount = s.Length();
     for(int c=0; c<char_amount; c++)
     {
@@ -395,7 +398,7 @@ void wxGLNumberRenderer::renderNumber(wxString s, int x, int y)
 
         TextGLDrawable::tex_coord_x1 = (float)number_location[charid] / (float)full_string_w;
         TextGLDrawable::tex_coord_x2 = (float)(number_location[charid+1]-space_w) / (float)full_string_w;
-        
+
         const int char_width = number_location[charid+1] - number_location[charid] - space_w;
         TextGLDrawable::w = char_width;
 
@@ -423,7 +426,7 @@ wxGLStringArray::wxGLStringArray(const wxString strings_arg[], int amount)
 {
     img = NULL;
     consolidated = false;
-    
+
     for(int n=0; n<amount; n++)
         strings.push_back( wxGLString(strings_arg[n]) );
 }
@@ -439,7 +442,7 @@ wxGLString& wxGLStringArray::get(const int id)
 void wxGLStringArray::bind()
 {
     if(not consolidated) consolidate(Display::renderDC);
-    
+
     glBindTexture(GL_TEXTURE_2D, img->getID()[0] );
 }
 void wxGLStringArray::addString(wxString string)
@@ -457,7 +460,7 @@ void wxGLStringArray::consolidate(wxDC* dc)
 
     if(font.IsOk()) dc->SetFont(font);
     else dc->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
-    
+
     // find how much space we need
     int longest_string = 0;
 
@@ -470,17 +473,17 @@ void wxGLStringArray::consolidate(wxDC* dc)
     }//next
 
     const int average_string_height = y / amount;
-    
+
     // split in multiple columns if necessary
     int column_amount = 1;
     while (amount/column_amount > 30 and column_amount<10)
         column_amount ++;
-        
+
     const int power_of_2_w = pow( 2, (int)ceil((float)log(longest_string*column_amount)/log(2.0)) );
     const int power_of_2_h = pow( 2, (int)ceil((float)log(y/column_amount)/log(2.0)) );
-    
+
     //std::cout << "bitmap size : " <<  power_of_2_w << ", " << power_of_2_h << " // " << column_amount << " columns" << std::endl;
-    
+
     wxBitmap bmp(power_of_2_w, power_of_2_h);
     assert(bmp.IsOk());
 
@@ -494,7 +497,7 @@ void wxGLStringArray::consolidate(wxDC* dc)
         x = 0;
         if(font.IsOk()) temp_dc.SetFont(font);
         else temp_dc.SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
-        
+
         for(int n=0; n<amount; n++)
         {
             strings[n].consolidateFromArray(&temp_dc, x, y);
@@ -517,7 +520,7 @@ void wxGLStringArray::consolidate(wxDC* dc)
 
     for(int n=0; n<amount; n++)
         strings[n].setImage(img);
-    
+
     consolidated = true;
 }
 

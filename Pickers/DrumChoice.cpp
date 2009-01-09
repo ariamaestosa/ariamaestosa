@@ -45,7 +45,7 @@ static const wxString g_drumkit_names[] =
     wxT("Orchestral"), // 7
     wxT("Special Effects"), // 8
 };
-    
+
 DrumChoice::DrumChoice() : wxMenu(), drumkit_names_renderer(g_drumkit_names, 9)
 {
     Append( 20000 + 0 ,  g_drumkit_names[0]);
@@ -58,8 +58,13 @@ DrumChoice::DrumChoice() : wxMenu(), drumkit_names_renderer(g_drumkit_names, 9)
     Append( 20000 + 48 , g_drumkit_names[7]);
     Append( 20000 + 56 , g_drumkit_names[8]);
 
+#ifdef __WXMAC__
     drumkit_names_renderer.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-    
+#else
+    drumkit_names_renderer.setFont( wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+#endif
+
+
     DrumChoice::parent = parent;
 }
 
@@ -84,11 +89,11 @@ void DrumChoice::setParent(Track* t)
 {
     parent = t;
 }
-    
+
 void DrumChoice::renderDrumKitName(const int drumID, const int x, const int y)
 {
     drumkit_names_renderer.bind();
-    
+
     if (drumID == 0 )       drumkit_names_renderer.get(0).render(x, y);
     else if (drumID == 8 )  drumkit_names_renderer.get(1).render(x, y);
     else if (drumID == 16 ) drumkit_names_renderer.get(2).render(x, y);
