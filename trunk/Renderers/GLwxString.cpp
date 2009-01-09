@@ -1,4 +1,6 @@
-#include "wxGLString.h"
+#ifdef RENDERER_OPENGL
+
+#include "GLwxString.h"
 #include "Config.h"
 
 #ifdef __WXMAC__
@@ -467,10 +469,17 @@ void wxGLStringArray::consolidate(wxDC* dc)
         if(strings[n].w > longest_string) longest_string = strings[n].w;
     }//next
 
-    const int power_of_2_w = pow( 2, (int)ceil((float)log(longest_string)/log(2.0)) );
-    const int power_of_2_h = pow( 2, (int)ceil((float)log(y)/log(2.0)) );
-
-    //std::cout << "bitmap size : " <<  power_of_2_w << ", " << power_of_2_h << std::endl;
+    const int average_string_height = y / amount;
+    
+    // split in multiple columns if necessary
+    int column_amount = 1;
+    while (amount/column_amount > 30 and column_amount<10)
+        column_amount ++;
+        
+    const int power_of_2_w = pow( 2, (int)ceil((float)log(longest_string*column_amount)/log(2.0)) );
+    const int power_of_2_h = pow( 2, (int)ceil((float)log(y/column_amount)/log(2.0)) );
+    
+    //std::cout << "bitmap size : " <<  power_of_2_w << ", " << power_of_2_h << " // " << column_amount << " columns" << std::endl;
     
     wxBitmap bmp(power_of_2_w, power_of_2_h);
     assert(bmp.IsOk());
@@ -482,12 +491,13 @@ void wxGLStringArray::consolidate(wxDC* dc)
         temp_dc.Clear();
 
         y = 0;
+        x = 0;
         if(font.IsOk()) temp_dc.SetFont(font);
         else temp_dc.SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
         
         for(int n=0; n<amount; n++)
         {
-            strings[n].consolidateFromArray(&temp_dc, 0, y);
+            strings[n].consolidateFromArray(&temp_dc, x, y);
 
             strings[n].tex_coord_x1 = (float)x/(float)power_of_2_w;
             strings[n].tex_coord_y1 = 1.0 - (float)y/(float)power_of_2_h;
@@ -495,6 +505,11 @@ void wxGLStringArray::consolidate(wxDC* dc)
             strings[n].tex_coord_y2 = 1.0 - (float)(y+strings[n].h)/(float)power_of_2_h;
 
             y += strings[n].h;
+            if(y > power_of_2_h - average_string_height) // check if we need to switch to next column
+            {
+                y = 0;
+                x += longest_string;
+            }
         }
     }
     if(img != NULL) delete img;
@@ -508,3 +523,5 @@ void wxGLStringArray::consolidate(wxDC* dc)
 
 
 }
+
+#endif
