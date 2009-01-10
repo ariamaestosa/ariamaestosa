@@ -48,10 +48,10 @@ static const wxString g_controller_names[] =
     wxT("Effect 2"), // 13
     wxT(""), // 14
     wxT(""), // 15
-    wxT("General Purpose 1"), // 16
-    wxT("General Purpose 2"), // 17
-    wxT("General Purpose 3"), // 18
-    wxT("General Purpose 4"), // 19
+    wxT("General 1"), // 16
+    wxT("General 2"), // 17
+    wxT("General 3"), // 18
+    wxT("General 4"), // 19
     wxT(""), // 20
     wxT(""), // 21
     wxT(""), // 22
@@ -114,10 +114,10 @@ static const wxString g_controller_names[] =
     wxT("Vibrato Depth"), // 77
     wxT("Vibrato Delay"), // 78
     wxT(""), // 79
-    wxT("General Purpose 5"), // 80
-    wxT("General Purpose 6"), // 81
-    wxT("General Purpose 7"), // 82
-    wxT("General Purpose 8"), // 83
+    wxT("General 5"), // 80
+    wxT("General 6"), // 81
+    wxT("General 7"), // 82
+    wxT("General 8"), // 83
     wxT("Portamento Control"), // 84
     wxT(""), // 85
     wxT(""), // 86
@@ -243,6 +243,7 @@ ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu(), controlle
     misc_menu->Append( 120 , g_controller_names[120 ] ); // All sound off
     misc_menu->Append( 121 , g_controller_names[121 ] ); // Reset control
     misc_menu->Append( 123 , g_controller_names[123 ] ); // All notes off
+    /*
     misc_menu->AppendSeparator();
 
     misc_menu->Append( 12 , g_controller_names[12 ] ); // Effect 1
@@ -256,7 +257,7 @@ ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu(), controlle
     misc_menu->Append( 81 , g_controller_names[81 ] ); // General Purpose 6
     misc_menu->Append( 82 , g_controller_names[82 ] ); // General Purpose 7
     misc_menu->Append( 83 , g_controller_names[83 ] ); // General Purpose 8
-
+*/
     ControllerChoice::parent = parent;
 
     Connect(0,202, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ControllerChoice::menuSelected));
