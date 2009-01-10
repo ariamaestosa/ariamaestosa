@@ -506,7 +506,6 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
             // we know there is no event already existing at the clicked measure.
             if( timeSigChanges[n].measure > measure )
             {
-
                 if(num==-1 or denom==-1)
                     timeSigChanges.add( new TimeSigChange(measure, timeSigChanges[n].num, timeSigChanges[n].denom), n );
                 else
@@ -516,10 +515,13 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
 
                 getMainFrame()->changeShownTimeSig( timeSigChanges[n].num, timeSigChanges[n].denom );
 
-                wxPoint pt = wxGetMousePosition();
-                showTimeSigPicker( pt.x, pt.y, timeSigChanges[n].num, timeSigChanges[n].denom );
-
-                if(!getCurrentSequence()->importing) updateMeasureInfo();
+                if(!getCurrentSequence()->importing)
+                {
+                    wxPoint pt = wxGetMousePosition();
+                    showTimeSigPicker( pt.x, pt.y, timeSigChanges[n].num, timeSigChanges[n].denom );
+                    if(!getCurrentSequence()->importing) updateMeasureInfo();
+                }
+                
                 break;
             }
             else if( n==timeSig_amount_minus_one )
@@ -534,10 +536,12 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
 
                 getMainFrame()->changeShownTimeSig( timeSigChanges[n+1].num, timeSigChanges[n+1].denom );
 
-                wxPoint pt = wxGetMousePosition();
-                showTimeSigPicker( pt.x, pt.y, timeSigChanges[n].num, timeSigChanges[n].denom );
-
-                if(!getCurrentSequence()->importing) updateMeasureInfo();
+                if(!getCurrentSequence()->importing)
+                {
+                    wxPoint pt = wxGetMousePosition();
+                    showTimeSigPicker( pt.x, pt.y, timeSigChanges[n].num, timeSigChanges[n].denom );
+                    if(!getCurrentSequence()->importing) updateMeasureInfo();
+                }
                 break;
             }
         }//next
