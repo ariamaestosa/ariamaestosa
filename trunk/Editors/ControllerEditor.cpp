@@ -225,7 +225,7 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     AriaRender::images();
     AriaRender::color(0,0,0);
 
-    controllerChoice->renderControllerName( 18,  getEditorYStart()+15 );
+    controllerChoice->renderControllerName( 15,  getEditorYStart()+15 );
     
     AriaRender::endScissors();
 
