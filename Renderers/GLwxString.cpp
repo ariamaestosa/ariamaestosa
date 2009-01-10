@@ -109,6 +109,8 @@ TextGLDrawable::TextGLDrawable(TextTexture* image_arg)
     xscale=1;
     yscale=1;
 
+    max_width = -1;
+    
     xflip=false;
     yflip=false;
 
@@ -125,6 +127,11 @@ void TextGLDrawable::setFlip(bool x, bool y)
 {
     xflip=x;
     yflip=y;
+}
+
+void TextGLDrawable::setMaxWidth(const int w)
+{
+    max_width = w;
 }
 
 void TextGLDrawable::move(int x, int y)
@@ -164,25 +171,47 @@ void TextGLDrawable::render()
     if(xscale!=1 || yscale!=1) glScalef(xscale, yscale, 1);
     if(angle!=0) glRotatef(angle, 0,0,1);
 
+    if(max_width != -1 and getWidth()>max_width)
+    {
+        const float ratio = (float)max_width/(float)getWidth();
+        glBegin(GL_QUADS);
+        
+        glTexCoord2f(xflip? tex_coord_x2*ratio : tex_coord_x1,
+                     yflip? tex_coord_y2 : tex_coord_y1);
+        glVertex2f( 0, 0 );
+        
+        glTexCoord2f(xflip? tex_coord_x1 : tex_coord_x2*ratio,
+                     yflip? tex_coord_y2 : tex_coord_y1);
+        glVertex2f( max_width*10, 0 );
+        
+        glTexCoord2f(xflip? tex_coord_x1 : tex_coord_x2*ratio,
+                     yflip? tex_coord_y1 : tex_coord_y2);
+        glVertex2f( max_width*10, h*10 );
+        
+        glTexCoord2f(xflip? tex_coord_x2*ratio : tex_coord_x1,
+                     yflip? tex_coord_y1 : tex_coord_y2);
+        glVertex2f( 0, h*10 );
+    }
+    else
+    {
+        glBegin(GL_QUADS);
 
-    glBegin(GL_QUADS);
+        glTexCoord2f(xflip? tex_coord_x2 : tex_coord_x1,
+                     yflip? tex_coord_y2 : tex_coord_y1);
+        glVertex2f( 0, 0 );
 
-    glTexCoord2f(xflip? tex_coord_x2 : tex_coord_x1,
-                 yflip? tex_coord_y2 : tex_coord_y1);
-    glVertex2f( 0, 0 );
+        glTexCoord2f(xflip? tex_coord_x1 : tex_coord_x2,
+                     yflip? tex_coord_y2 : tex_coord_y1);
+        glVertex2f( w*10, 0 );
 
-    glTexCoord2f(xflip? tex_coord_x1 : tex_coord_x2,
-                 yflip? tex_coord_y2 : tex_coord_y1);
-    glVertex2f( w*10, 0 );
+        glTexCoord2f(xflip? tex_coord_x1 : tex_coord_x2,
+                     yflip? tex_coord_y1 : tex_coord_y2);
+        glVertex2f( w*10, h*10 );
 
-    glTexCoord2f(xflip? tex_coord_x1 : tex_coord_x2,
-                 yflip? tex_coord_y1 : tex_coord_y2);
-    glVertex2f( w*10, h*10 );
-
-    glTexCoord2f(xflip? tex_coord_x2 : tex_coord_x1,
-                 yflip? tex_coord_y1 : tex_coord_y2);
-    glVertex2f( 0, h*10 );
-
+        glTexCoord2f(xflip? tex_coord_x2 : tex_coord_x1,
+                     yflip? tex_coord_y1 : tex_coord_y2);
+        glVertex2f( 0, h*10 );
+    }
     glEnd();
     glPopMatrix();
 }

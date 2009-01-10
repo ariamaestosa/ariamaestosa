@@ -19,18 +19,26 @@ namespace AriaMaestosa
     wxDCString::wxDCString()
     {
         consolidated = false;
+        max_width = -1;
     }
-    /** constructs a GLstring with 'message' as contents. */
     
+    
+    /** constructs a GLstring with 'message' as contents. */
     wxDCString::wxDCString(wxString message) : wxString(message)
     {
         consolidated = false;
+        max_width = -1;
     }
     
     wxDCString::~wxDCString()
     {
     }
     
+    
+    void wxDCString::setMaxWidth(const int w)
+    {
+        max_width = w;
+    }
     
     void wxDCString::setFont(wxFont font)
     {
@@ -54,7 +62,7 @@ namespace AriaMaestosa
     {
         return w;
     }
-    float wxDCString::scale(float f)
+    void wxDCString::scale(float f)
     {
     }
     void wxDCString::rotate(int angle)
@@ -67,14 +75,26 @@ namespace AriaMaestosa
             
         if(font.IsOk()) Display::renderDC->SetFont(font);
         else Display::renderDC->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
-        
-        Display::renderDC->DrawText(*this, x, y-h);
+
+        if(max_width != -1 and getWidth()>max_width)
+        {
+            wxString shortened = *this;
+            
+            while(Display::renderDC->GetTextExtent(shortened).GetWidth() > max_width)
+            {
+                shortened = shortened.Truncate(shortened.size()-1);
+            }
+            Display::renderDC->DrawText(shortened, x, y-h);
+        }
+        else
+            Display::renderDC->DrawText(*this, x, y-h);
     }
     
     
     void wxDCString::operator=(wxString& string)
     {
         (*((wxString*)this))=string;
+        consolidated = false;
     }
     
     

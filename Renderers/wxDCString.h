@@ -21,6 +21,9 @@ protected:
     friend class wxDCStringArray;
 
     bool consolidated;
+    
+    int max_width;
+    
 public:
     /** constructs an empty GLString. Set string later with operator=. */
     wxDCString();
@@ -31,6 +34,8 @@ public:
 
     void bind();
 
+    void setMaxWidth(const int w);
+    
     /** set how to draw string for next consolidate() - has no immediate effect,
         you need to call consolidate() to get results  */
     void setFont(wxFont font);
@@ -45,7 +50,7 @@ public:
     
     
     int getWidth();
-    float scale(float f);
+    void scale(float f);
     void rotate(int angle);
 };
 
