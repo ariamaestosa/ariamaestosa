@@ -79,7 +79,9 @@ Sequence::Sequence()
     zoom_percent = 100;
 
     sequenceFileName =  wxString(_("Untitled"));
-#ifdef __WXGTK__
+#ifdef __WXMAC__
+    sequenceFileName.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+#else
     sequenceFileName.setFont( wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
 #endif
 
