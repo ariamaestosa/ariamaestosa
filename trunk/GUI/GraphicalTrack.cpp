@@ -900,16 +900,11 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     //  ------------------ post-drawing  ------------------
 
     // draw track name
-    AriaRender::primitives(); // FIXME - find and fix why this is necessary for track name to appear
     AriaRender::images();
     AriaRender::color(0,0,0);
     AriaRenderString& track_name = track->getName();
+    track_name.setMaxWidth(120);
     track_name.bind();
-    
-    // forbid name to be too long
-    // FIXME - find better way than scaling. add back '...'
-    if(track_name.getWidth() > 120) track_name.scale( 120.0f/track_name.getWidth() );
-    else track_name.scale(1.0f);
     track_name.render(trackName->getX()+11, y+30);
     
     // draw grid label

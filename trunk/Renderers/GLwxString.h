@@ -36,6 +36,8 @@ protected:
     float tex_coord_x2, tex_coord_y2;
     int w, h, texw, texh;
 
+    int max_width;
+    
     TextGLDrawable(TextTexture* image=(TextTexture*)0);
     void render();
     void setImage(TextTexture* image);
@@ -54,6 +56,8 @@ public:
     /** rotate the rendering by 'angle' degrees */
     void rotate(int angle);
 
+    void setMaxWidth(const int w);
+    
     /** returns the width of this element */
     int getWidth() const { return w; }
     /** returns the height of this element */
