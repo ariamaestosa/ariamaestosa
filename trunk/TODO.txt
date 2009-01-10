@@ -95,7 +95,7 @@ NOTE: sorry, this is very raw :)
 
  ************************* BUGS: *************************
 
-** openong a song containing multiple time sigs opens the time sig editor
+* frets over 9 in tab editor don't display nice anymore
 
 * rounding errors with vertical lines when zooming
 
