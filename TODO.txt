@@ -97,8 +97,6 @@ NOTE: sorry, this is very raw :)
 
 * constraining strings within a certain length is quite ugly
 
-The playback sometimes ends prematurely. You can heat this for example if you enter a single percussion "crash" sound. It might be a bug in the MIDI routines; in this case it will be a bit harder to fix.
-
 * red images
 * My CoreAudio player is deprecated on OS X 10.5...
     AudioToolboxPlayer.cpp:48: warning: 'MusicSequenceLoadSMFData' is deprecated (declared at /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/MusicPlayer.h:1613)
