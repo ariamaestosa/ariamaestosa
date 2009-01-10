@@ -106,8 +106,8 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
 
     MeasureData* measureBar = getMeasureData();
     const int measureAmount = measureBar->getMeasureAmount();
-    const int beatLength = (int)( measureBar->beatLengthInPixels() );
-    int mx=start_x, new_mx;
+    const float beatLength = measureBar->beatLengthInPixels();
+    float mx=start_x, new_mx;
     const int measureID = measureBar->measureAtPixel(getEditorsXStart());
 
     for(int m=measureID; m<measureAmount; m+=1)
@@ -118,13 +118,13 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
         AriaRender::color(0.9, 0.9, 0.9);
         for(; mx < new_mx; mx += beatLength)
         {
-            AriaRender::line(mx, from_y, mx, to_y);
+            AriaRender::line( (int)round(mx), from_y, (int)round(mx), to_y);
         }
         mx = new_mx;
 
         // draw strong line
         AriaRender::color(0.5, 0.5, 0.5);
-        AriaRender::line(mx, from_y,mx, to_y);
+        AriaRender::line((int)round(mx), from_y, (int)round(mx), to_y);
         mx += beatLength;
 
         if(mx > Display::getWidth()) break;
@@ -138,7 +138,7 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
         AriaRender::color(0.9, 0.9, 0.9);
         for(;mx<end_of_screen; mx +=beatLength)
         {
-            AriaRender::line(mx, from_y,mx, to_y);
+            AriaRender::line((int)round(mx), from_y, (int)round(mx), to_y);
         }//next
 
     }//end if

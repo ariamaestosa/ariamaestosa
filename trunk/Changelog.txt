@@ -6,6 +6,7 @@
 - Fixed multiple printing-related crashes and infinite recursions
 - Removed GLUT dependency from OpenGL renderer. consequence : anti-aliased fonts and better Linux support.
 - Fixed time signature editor popping-up when opening a file
+- Fixed rounding issues when zooming
 
 1.2b4
 - Switched to unified (native) toolbar on mac  (WARNING: requires patching wxWidgets, see docs)
