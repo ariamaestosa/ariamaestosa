@@ -467,6 +467,8 @@ void wxGLStringArray::consolidate(wxDC* dc)
     const int amount = strings.size();
     for(int n=0; n<amount; n++)
     {
+        if(strings[n].IsEmpty()) continue;
+        
         strings[n].calculateSize(dc, true);
         y += strings[n].h;
         if(strings[n].w > longest_string) longest_string = strings[n].w;
@@ -500,6 +502,7 @@ void wxGLStringArray::consolidate(wxDC* dc)
 
         for(int n=0; n<amount; n++)
         {
+            if(strings[n].IsEmpty()) continue;
             strings[n].consolidateFromArray(&temp_dc, x, y);
 
             strings[n].tex_coord_x1 = (float)x/(float)power_of_2_w;

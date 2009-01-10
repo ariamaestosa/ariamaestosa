@@ -155,7 +155,7 @@ static const wxString g_controller_names[] =
     wxT(""), // 118
     wxT(""), // 119
     wxT("All sound off"), // 120
-    wxT("Reset control"), // 121
+    wxT("Re set control"), // 121
     wxT(""), // 122
     wxT("All notes off"), // 123
     wxT(""), // 124
