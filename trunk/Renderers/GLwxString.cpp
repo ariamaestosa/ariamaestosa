@@ -508,7 +508,7 @@ void wxGLStringArray::consolidate(wxDC* dc)
             strings[n].tex_coord_y2 = 1.0 - (float)(y+strings[n].h)/(float)power_of_2_h;
 
             y += strings[n].h;
-            if(y > power_of_2_h - average_string_height) // check if we need to switch to next column
+            if(y > power_of_2_h - average_string_height*2) // check if we need to switch to next column
             {
                 y = 0;
                 x += longest_string;
