@@ -159,11 +159,21 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current, Rel
         if(track->isNoteSelected(n)  and focus) AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
         else AriaRender::color((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
 
-        AriaRender::quad(x1+getEditorsXStart()-1, getEditorYStart()+first_string_position+string*y_step-8,
-                         x1+getEditorsXStart()-1, getEditorYStart()+first_string_position+string*y_step,
-                         x1+14+getEditorsXStart(), getEditorYStart()+first_string_position+string*y_step,
-                         x1+9+getEditorsXStart(), getEditorYStart()+first_string_position+string*y_step-8);
-
+        if(fret < 10)
+        {
+            AriaRender::quad(x1+getEditorsXStart()-1, getEditorYStart()+first_string_position+string*y_step-8,
+                             x1+getEditorsXStart()-1, getEditorYStart()+first_string_position+string*y_step,
+                             x1+14+getEditorsXStart(), getEditorYStart()+first_string_position+string*y_step,
+                             x1+9+getEditorsXStart(), getEditorYStart()+first_string_position+string*y_step-8);
+        }
+        else
+        {
+            AriaRender::quad(x1+getEditorsXStart()-1, getEditorYStart()+first_string_position+string*y_step-8,
+                             x1+getEditorsXStart()-1, getEditorYStart()+first_string_position+string*y_step,
+                             x1+18+getEditorsXStart(), getEditorYStart()+first_string_position+string*y_step,
+                             x1+13+getEditorsXStart(), getEditorYStart()+first_string_position+string*y_step-8);
+        }
+        
         AriaRender::images();
 
         if((!track->isNoteSelected(n) or !focus) && volume>0.5) AriaRender::color(1, 1, 1); // if note color is too dark, draw the fret number in white

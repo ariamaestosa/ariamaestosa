@@ -95,11 +95,7 @@ NOTE: sorry, this is very raw :)
 
  ************************* BUGS: *************************
 
-* frets over 9 in tab editor don't display nice anymore
-
-* rounding errors with vertical lines when zooming
-
-The score ends a bit too early (at the beginning of the last count of the last measure, instead of just after the end), which gives as result that a note that ends at the last count of the last measure cannot be entered using a mouse drag.
+* constraining strings within a certain length is quite ugly
 
 The playback sometimes ends prematurely. You can heat this for example if you enter a single percussion "crash" sound. It might be a bug in the MIDI routines; in this case it will be a bit harder to fix.
 
