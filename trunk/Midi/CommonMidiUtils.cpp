@@ -199,7 +199,7 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
             substract_ticks = *startTick;
 
             if(trackLength == -1) return -1; // nothing to play in track (empty track - play nothing)
-            *songLengthInTicks=trackLength;
+            *songLengthInTicks = trackLength + sequence->ticksPerBeat()*2;
 
         }
         else
@@ -379,7 +379,7 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
 
         {
             jdkmidi::MIDITimedBigMessage m;
-            m.SetTime( *songLengthInTicks + sequence->ticksPerBeat()*3 );
+            m.SetTime( *songLengthInTicks + sequence->ticksPerBeat()*4 );
             m.SetControlChange( 0,
                                 127,
                                 0 );

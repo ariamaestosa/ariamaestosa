@@ -107,7 +107,7 @@ namespace PlatformMidiManager {
         int songLengthInTicks = -1;
         allocAsMidiBytes(sequence, false, &songLengthInTicks, startTick, &data, &datalength, true);
 
-        stored_songLength = songLengthInTicks + sequence->ticksPerBeat();
+        stored_songLength = songLengthInTicks + sequence->ticksPerBeat()*3;
         playMidiBytes(data, datalength);
 
         free(data);
