@@ -903,7 +903,6 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     AriaRender::images();
     AriaRender::color(0,0,0);
     AriaRenderString& track_name = track->getName();
-    track_name.setMaxWidth(120);
     track_name.bind();
     track_name.render(trackName->getX()+11, y+30);
     

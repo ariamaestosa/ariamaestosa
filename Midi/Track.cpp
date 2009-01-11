@@ -49,6 +49,8 @@ namespace AriaMaestosa
     Track::Track(MainFrame* parent, Sequence* sequence)
     {
         name = wxString( _("Untitled") );
+        name.setMaxWidth(120);
+        
         // FIXME - find out why fonts are so different on mac and linux
 #ifdef __WXMAC__
         name.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
@@ -105,6 +107,7 @@ namespace AriaMaestosa
 #else
         instrument_name.setFont( wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
 #endif
+        
     }
 
 /*
