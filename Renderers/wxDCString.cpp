@@ -4,6 +4,7 @@
 #include "Config.h"
 
 #include "wx/wx.h"
+#include "wx/tokenzr.h"
 #include "AriaCore.h"
 #include "Renderers/RenderAPI.h"
 
@@ -28,6 +29,7 @@ namespace AriaMaestosa
     {
         consolidated = false;
         max_width = -1;
+        warp = false;
     }
     
     wxDCString::~wxDCString()
@@ -35,9 +37,10 @@ namespace AriaMaestosa
     }
     
     
-    void wxDCString::setMaxWidth(const int w)
+    void wxDCString::setMaxWidth(const int w, const bool warp)
     {
         max_width = w;
+        this->warp = warp;
     }
     
     void wxDCString::setFont(wxFont font)
@@ -78,20 +81,38 @@ namespace AriaMaestosa
 
         if(max_width != -1 and getWidth()>max_width)
         {
-            wxString shortened = *this;
-            
-            while(Display::renderDC->GetTextExtent(shortened).GetWidth() > max_width)
+            if(not warp)
             {
-                shortened = shortened.Truncate(shortened.size()-1);
+                wxString shortened = *this;
+                
+                while(Display::renderDC->GetTextExtent(shortened).GetWidth() > max_width)
+                {
+                    shortened = shortened.Truncate(shortened.size()-1);
+                }
+                Display::renderDC->DrawText(shortened, x, y-h);
             }
-            Display::renderDC->DrawText(shortened, x, y-h);
+            else // wrap
+            {
+                int my_y = y-h;
+                wxString multiline = *this;
+                multiline.Replace(wxT(" "),wxT("\n"));
+                multiline.Replace(wxT("/"),wxT("/\n"));
+
+                wxStringTokenizer tkz(multiline, wxT("\n"));
+                while ( tkz.HasMoreTokens() )
+                {
+                    wxString token = tkz.GetNextToken();
+                    Display::renderDC->DrawText(token, x, my_y);
+                    my_y += h;
+                }
+            }
         }
         else
             Display::renderDC->DrawText(*this, x, y-h);
     }
     
     
-    void wxDCString::operator=(wxString& string)
+    void wxDCString::set(const wxString& string)
     {
         (*((wxString*)this))=string;
         consolidated = false;

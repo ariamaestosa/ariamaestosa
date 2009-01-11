@@ -24,6 +24,8 @@ protected:
     
     int max_width;
     
+    bool warp;
+    
 public:
     /** constructs an empty GLString. Set string later with operator=. */
     wxDCString();
@@ -34,7 +36,7 @@ public:
 
     void bind();
 
-    void setMaxWidth(const int w);
+    void setMaxWidth(const int w, const bool warp=false);
     
     /** set how to draw string for next consolidate() - has no immediate effect,
         you need to call consolidate() to get results  */
@@ -46,7 +48,7 @@ public:
 
     /** changes the string of this element - has no immediate effect,
      you need to call consolidate() to get results */
-    void operator=(wxString& string);
+    void set(const wxString& string);
     
     
     int getWidth();
