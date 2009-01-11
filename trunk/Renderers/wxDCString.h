@@ -88,7 +88,8 @@ public:
     void bind();
 
     void addString(wxString string);
-
+    int getStringAmount() const { return strings.size(); }
+    
     void setFont(wxFont font);
 
     void consolidate(wxDC* dc){}

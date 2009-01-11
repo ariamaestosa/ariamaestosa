@@ -47,6 +47,7 @@ ControllerEditor::ControllerEditor(Track* track) : Editor(track)
 
     hasBeenResizing = false;
 
+    // FIXME - create only one for all
     controllerChoice = new ControllerChoice(track->graphics);
 }
 

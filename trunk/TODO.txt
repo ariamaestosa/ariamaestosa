@@ -95,7 +95,7 @@ NOTE: sorry, this is very raw :)
 
  ************************* BUGS: *************************
 
-* constraining strings within a certain length is quite ugly
+* handling of long controller names is suboptimal (and non-existent in software rendering mdoe)
 
 * red images
 * My CoreAudio player is deprecated on OS X 10.5...
