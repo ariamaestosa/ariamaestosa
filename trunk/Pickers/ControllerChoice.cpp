@@ -196,7 +196,8 @@ ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu()
 #endif
 
     controllerID = 7;
-    controller_label = g_controller_names[controllerID];
+    controller_label.setMaxWidth(75, true);
+    controller_label.set(g_controller_names[controllerID]);
     
     Append( 7 , g_controller_names[7 ] ); // Volume // fine:39
     Append( 10 , g_controller_names[10 ] ); // Pan // fine:42
@@ -283,11 +284,11 @@ void ControllerChoice::menuSelected(wxCommandEvent& evt)
     
     // special cases (non-controllers)
     if(controllerID==200)
-        controller_label = g_controller_names[30];
+        controller_label.set(g_controller_names[30]);
     else if(controllerID == 201)
-        controller_label = g_controller_names[31];
+        controller_label.set(g_controller_names[31]);
     else
-        controller_label = g_controller_names[controllerID];
+        controller_label.set(g_controller_names[controllerID]);
     
     assertExpr(controllerID,<,205);
     assertExpr(controllerID,>=,0);

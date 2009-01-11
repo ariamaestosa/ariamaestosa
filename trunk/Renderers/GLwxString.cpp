@@ -10,6 +10,7 @@
 #endif
 
 #include "wx/wx.h"
+#include "wx/tokenzr.h"
 #include "AriaCore.h"
 
 namespace AriaMaestosa
@@ -109,6 +110,8 @@ TextGLDrawable::TextGLDrawable(TextTexture* image_arg)
     xscale=1;
     yscale=1;
 
+    y_offset = 0;
+    
     max_width = -1;
     
     xflip=false;
@@ -167,7 +170,8 @@ void TextGLDrawable::render()
     assert(image!=NULL);
 
     glPushMatrix();
-    glTranslatef(x*10,y*10-h*10,0);
+    glTranslatef(x*10,(y-h-y_offset)*10,0);
+    
     if(xscale!=1 || yscale!=1) glScalef(xscale, yscale, 1);
     if(angle!=0) glRotatef(angle, 0,0,1);
 
@@ -256,17 +260,20 @@ wxGLString::wxGLString() : wxString(wxT("")), TextGLDrawable()
 {
     img = NULL;
     consolidated = false;
+    warp_after = -1;
 }
 wxGLString::wxGLString(wxString message) : wxString(message), TextGLDrawable()
 {
     img = NULL;
     consolidated = false;
+    warp_after = -1;
 }
-void wxGLString::operator=(wxString& string)
+void wxGLString::set(const wxString& string)
 {
     (*((wxString*)this))=string;
     consolidated=false;
 }
+
 void wxGLString::bind()
 {
     if(not consolidated) consolidate(Display::renderDC);
@@ -286,12 +293,23 @@ void wxGLString::calculateSize(wxDC* dc, const bool ignore_font /* when from arr
 
 void wxGLString::consolidate(wxDC* dc)
 {
+    TextGLDrawable::y_offset = 0;
     calculateSize(dc);
+
+    bool multi_line = false;
+    int single_line_height = 0;
+    if(warp_after != -1 and w > warp_after)
+    {
+        Replace(wxT(" "),wxT("\n"));
+        Replace(wxT("/"),wxT("/\n"));
+        single_line_height = h;
+        dc->GetMultiLineTextExtent(*this, &w, &h);
+        std::cout << "new size: " << w << ", " << h << std::endl;
+        multi_line = true;
+    }
+    
     const int power_of_2_w = std::max(32, (int)pow( 2, (int)ceil((float)log(w)/log(2.0)) ));
     const int power_of_2_h = std::max(32, (int)pow( 2, (int)ceil((float)log(h)/log(2.0)) ));
-
-    //std::cout << "consolidated " << this->mb_str() << ", size=" << w << "x" << h << std::endl;
-    //std::cout << "    " << this->mb_str() << ", size=" << power_of_2_w << "x" << power_of_2_h << std::endl;
 
     wxBitmap bmp(power_of_2_w, power_of_2_h);
     assert(bmp.IsOk());
@@ -305,11 +323,26 @@ void wxGLString::consolidate(wxDC* dc)
         if(font.IsOk()) temp_dc.SetFont(font);
         else temp_dc.SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
 
-        temp_dc.DrawText(*this, 0, 0);
+        if(multi_line)
+        {
+            int y = 0;
+            wxStringTokenizer tkz(*this, wxT("\n"));
+            while ( tkz.HasMoreTokens() )
+            {
+                wxString token = tkz.GetNextToken();
+                temp_dc.DrawText(token, 0, y);
+                y += single_line_height;
+            }
+            TextGLDrawable::y_offset = -y +  single_line_height;
+        }
+        else
+            temp_dc.DrawText(*this, 0, 0);
     }
     if(img != NULL) delete img;
     img = new TextTexture(bmp);
 
+    bmp.SaveFile(wxT("/tmp/test.png"), wxBITMAP_TYPE_PNG);
+    
     TextGLDrawable::texw = power_of_2_w;
     TextGLDrawable::texh = power_of_2_h;
     TextGLDrawable::tex_coord_x2 = (float)w / (float)power_of_2_w;
@@ -336,6 +369,18 @@ void wxGLString::render(const int x, const int y)
     TextGLDrawable::move(x, y);
     TextGLDrawable::render();
 }
+    
+void wxGLString::setMaxWidth(const int w, const bool warp /*false: truncate. true: warp.*/)
+{
+    std::cout << "wxGLString::setMaxWidth " << w << ", " << warp << std::endl;
+    if(not warp)
+        TextGLDrawable::setMaxWidth(w);
+    else
+    {
+        warp_after = w;
+    }
+}
+ 
 wxGLString::~wxGLString()
 {
     if(img != NULL) delete img;

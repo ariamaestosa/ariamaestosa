@@ -32,6 +32,8 @@ protected:
     TextTexture* image;
     bool xflip, yflip;
 
+    int y_offset;
+    
     float tex_coord_x1, tex_coord_y1;
     float tex_coord_x2, tex_coord_y2;
     int w, h, texw, texh;
@@ -87,6 +89,8 @@ protected:
     TextTexture* img;
     wxFont font;
 
+    int warp_after;
+    
     bool consolidated;
     
     friend class wxGLStringArray;
@@ -113,11 +117,14 @@ public:
       The wxDC argument is only used to calculate text extents and will not be rendered on. */
     virtual void consolidate(wxDC* dc);
 
+    void setMaxWidth(const int w, const bool warp=false /*false: truncate. true: warp.*/);
+    
     /** render this string at coordinates (x,y). Must be called after bind(). */
     void render(const int x, const int y);
 
     /** changes the string of this element */
-    void operator=(wxString& string);
+    void set(const wxString& string);
+   // void operator=(wxString& string);
 };
 
 typedef wxGLString AriaRenderString;
