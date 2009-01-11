@@ -95,8 +95,6 @@ NOTE: sorry, this is very raw :)
 
  ************************* BUGS: *************************
 
-* handling of long controller names is suboptimal (and non-existent in software rendering mdoe)
-
 * red images
 * My CoreAudio player is deprecated on OS X 10.5...
     AudioToolboxPlayer.cpp:48: warning: 'MusicSequenceLoadSMFData' is deprecated (declared at /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/MusicPlayer.h:1613)
