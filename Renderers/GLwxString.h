@@ -202,6 +202,8 @@ public:
      immediate effect, you need to call consolidate() to get results  */
     void addString(wxString string);
 
+    int getStringAmount() const { return strings.size(); }
+    
     /** set how to draw string for next consolidate() - has no immediate effect,
      you need to call consolidate() to get results  */
     void setFont(wxFont font);

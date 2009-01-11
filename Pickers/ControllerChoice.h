@@ -34,8 +34,7 @@ class ControllerChoice : public wxMenu
 {
     GraphicalTrack* parent;
     int controllerID;
-
-    AriaRenderArray controller_names_renderer;
+    AriaRenderString controller_label;
 
 public:
     LEAK_CHECK(ControllerChoice);
