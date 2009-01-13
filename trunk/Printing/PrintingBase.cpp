@@ -339,7 +339,7 @@ void EditorPrintable::beginLine(wxDC* dc, LayoutLine* line,  int x0, const int y
     EditorPrintable::currentLine = line;
     EditorPrintable::dc = dc;
 
-    std::cout << "setting current line to " << line << std::endl;
+    //std::cout << "setting current line to " << line << std::endl;
     
     // 2 spaces allocated for left area of the line
     pixel_width_of_an_unit = (float)(x1 - x0) / (float)(line->width_in_units+2);
@@ -349,9 +349,12 @@ void EditorPrintable::beginLine(wxDC* dc, LayoutLine* line,  int x0, const int y
     // init layout elements' locations
     for(currentLayoutElement=0; currentLayoutElement<layoutElementsAmount; currentLayoutElement++)
     {
-        if(currentLayoutElement == 0) xloc = 2;
-        else if(currentLayoutElement > 0) xloc += currentLine->layoutElements[currentLayoutElement-1].width_in_units;
+        //if(currentLayoutElement == 0) xloc = 2;
+        //else if(currentLayoutElement > 0) xloc += currentLine->layoutElements[currentLayoutElement-1].width_in_units;
 
+        if(currentLayoutElement == 0) xloc = 1;
+        else if(currentLayoutElement > 0) xloc += currentLine->layoutElements[currentLayoutElement-1].width_in_units;
+        
         currentLine->layoutElements[currentLayoutElement].x  = getCurrentElementXStart();
         currentLine->layoutElements[currentLayoutElement].x2 =  getCurrentElementXEnd();
     }
