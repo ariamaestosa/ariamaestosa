@@ -785,6 +785,26 @@ void MainPane::keyPressed(wxKeyEvent& evt)
     // FIXME - too many renders there, maybe even actions do render
 
     const int current_editor = getCurrentSequence()->getCurrentTrack()->graphics->editorMode;
+    
+    // ---------------- shift by octave -------------
+    
+    if(current_editor == KEYBOARD and !commandDown and shiftDown)
+    {
+        if(evt.GetKeyCode()==WXK_UP)
+        {
+            getCurrentSequence()->getCurrentTrack()->action( new Action::MoveNotes(0, -12, SELECTED_NOTES));
+            Display::render();
+            return;
+        }
+        
+        if(evt.GetKeyCode()==WXK_DOWN)
+        {
+            getCurrentSequence()->getCurrentTrack()->action( new Action::MoveNotes(0, 12, SELECTED_NOTES));
+            Display::render();
+            return;
+        }
+    }
+    
     if(current_editor == GUITAR)
     {
 
@@ -804,7 +824,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             else getCurrentSequence()->getCurrentTrack()->action( new Action::NumberPressed(evt.GetKeyCode() - 324) );
             Display::render();
         }
-
+        
         // ---------------- shift frets -----------------
         if(!commandDown && shiftDown)
         {
