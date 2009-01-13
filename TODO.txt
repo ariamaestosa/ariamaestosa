@@ -40,8 +40,6 @@ NOTE: sorry, this is very raw :)
 
 ************************* NEW FEATURES TO ADD: *************************
 
- + shift+arrows move notes by 1 octave (vertically) or by 1 measure (horizontally)
-
  + in preferences : turn off linear view by default
  
  + make more features accessible graphically (as opposed to keyboard-only)

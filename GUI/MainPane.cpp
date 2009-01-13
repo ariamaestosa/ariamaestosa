@@ -786,8 +786,25 @@ void MainPane::keyPressed(wxKeyEvent& evt)
 
     const int current_editor = getCurrentSequence()->getCurrentTrack()->graphics->editorMode;
     
-    // ---------------- shift by octave -------------
+    // --------------- move by 1 measure ------------
+    if(current_editor != GUITAR and !commandDown and shiftDown)
+    {
+        if(evt.GetKeyCode()==WXK_LEFT)
+        {
+            getCurrentSequence()->getCurrentTrack()->action( new Action::MoveNotes(-getMeasureData()->measureLengthInTicks(), 0, SELECTED_NOTES));
+            Display::render();
+            return;
+        }
+        
+        if(evt.GetKeyCode()==WXK_RIGHT)
+        {
+            getCurrentSequence()->getCurrentTrack()->action( new Action::MoveNotes(getMeasureData()->measureLengthInTicks(), 0, SELECTED_NOTES));
+            Display::render();
+            return;
+        }
+    }
     
+    // ---------------- shift by octave -------------
     if(current_editor == KEYBOARD and !commandDown and shiftDown)
     {
         if(evt.GetKeyCode()==WXK_UP)
@@ -800,20 +817,6 @@ void MainPane::keyPressed(wxKeyEvent& evt)
         if(evt.GetKeyCode()==WXK_DOWN)
         {
             getCurrentSequence()->getCurrentTrack()->action( new Action::MoveNotes(0, 12, SELECTED_NOTES));
-            Display::render();
-            return;
-        }
-        
-        if(evt.GetKeyCode()==WXK_LEFT)
-        {
-            getCurrentSequence()->getCurrentTrack()->action( new Action::MoveNotes(-getMeasureData()->measureLengthInTicks(), 0, SELECTED_NOTES));
-            Display::render();
-            return;
-        }
-        
-        if(evt.GetKeyCode()==WXK_RIGHT)
-        {
-            getCurrentSequence()->getCurrentTrack()->action( new Action::MoveNotes(getMeasureData()->measureLengthInTicks(), 0, SELECTED_NOTES));
             Display::render();
             return;
         }
