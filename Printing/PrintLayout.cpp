@@ -409,7 +409,7 @@ void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x
     // leave an additional empty space under line if we're printing multiple tracks
     const float height = (float)(y1 - y0) - ( trackAmount>1 and not last_of_page ? 100 : 0 );
 
-    std::cout << "last_of_page=" << last_of_page << std::endl;
+    //std::cout << "last_of_page=" << last_of_page << std::endl;
 
     // draw vertical grey lines to show these lines belong toghether
     if(trackAmount>1)
@@ -428,7 +428,7 @@ void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x
         // determine how much vertical space is allocated for this track
         const float track_height = height * height_percent[n]/100.0f;
 
-        std::cout << "* allocating " <<track_height << " out of " << height << " (" << height_percent[n] << "%)" << std::endl;
+        //std::cout << "* allocating " <<track_height << " out of " << height << " (" << height_percent[n] << "%)" << std::endl;
 
         track->drawLine(*this, dc, x0, current_y, x1,
                         current_y+(track_height-220),
@@ -719,7 +719,7 @@ void calculateLineLayout(std::vector<LayoutLine>& layoutLines,
     int currentLine = 0;
 
     LayoutElement el(LayoutElement(LINE_HEADER, -1));
-    el.width_in_units = 2;
+    el.width_in_units = 5;
     layoutLines[currentLine].layoutElements.push_back( el );
 
     // add layout elements one by one, switching to the next line when there's too many
