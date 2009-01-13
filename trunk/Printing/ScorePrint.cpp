@@ -21,7 +21,7 @@ ScorePrintable* g_printable = NULL;
     
 ScorePrintable::ScorePrintable(Track* track) : EditorPrintable()
 {
-    std::cout << " *** setting global g_printable" << std::endl;
+   // std::cout << " *** setting global g_printable" << std::endl;
     g_printable = this;
 }
 ScorePrintable::~ScorePrintable() { }
@@ -89,12 +89,13 @@ void renderNatural(wxDC& dc, const int x, const int y)
     dc.DrawLine( x-30/2, y+40/2, x-30/2, y-60/2 );
     dc.DrawLine( x+30/2, y-20/2, x+30/2, y+80/2 );
 }
-void renderGClef(wxDC& dc, const int x, const int y)
+void renderGClef(wxDC& dc, const int x, const float score_bottom, const float b_line_y)
 {
 
     dc.SetPen(  wxPen( wxColour(0,0,0), 7 ) );
 
-    const float scale = 15;
+    const float scale = abs(score_bottom - b_line_y) / 6.729;
+    const int y = score_bottom - 3.776*scale;
 
 #define POINT(MX,MY) wxPoint( (int)round(x + MX*scale), (int)round(y - MY*scale) )
 
@@ -148,7 +149,7 @@ void renderSilenceCallback(const int tick, const int tick_length, const int sile
     const int beat = getMeasureData()->beatLengthInTicks();
 
     {
-        std::cout << "g_printable = " << g_printable << std::endl;
+     //   std::cout << "g_printable = " << g_printable << std::endl;
     LayoutElement* temp = g_printable->getElementForMeasure(measure);
     if(temp != NULL and temp->type == REPEATED_RIFF) return; //don't render silences in repetions measure!
     }
@@ -487,11 +488,8 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     LayoutElement* currentElement;
     while((currentElement = continueWithNextElement()) and (currentElement != NULL))
     {
-        if(currentElement->type == LINE_HEADER) // FIME - move to 'drawScore' ?
-        {
-           // renderGClef(dc, currentElement->x, 500 );
-            continue;
-        }
+        if(currentElement->type == LINE_HEADER)  continue;
+        
         // we're collecting notes here... types other than regular measures
         // don't contain notes and thus don't interest us
         if(currentElement->type != SINGLE_MEASURE) continue;
@@ -619,7 +617,7 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
     #define LEVEL_TO_Y( lvl ) y0 + 1 + lineHeight*0.5*(lvl - min_level)
 
     const int headRadius = (int)round(lineHeight);
-
+    
     analyser.setStemDrawInfo( headRadius*2-22, 0, headRadius-20, 0 );
 
     for(int lvl=first_score_level; lvl<=last_score_level; lvl+=2)
@@ -628,6 +626,12 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
         dc.DrawLine(x0, y, x1, y);
     }
 
+    // line header if any
+    if(line.layoutElements[0].type == LINE_HEADER)
+    {
+        if(not f_clef) renderGClef(dc, line.layoutElements[0].x, LEVEL_TO_Y(last_score_level)+10, LEVEL_TO_Y(last_score_level-4)-5);
+    }
+    
     // draw notes heads
     { // we scope this because info like 'noteAmount' are bound to change just after
     const int noteAmount = analyser.noteRenderInfo.size();

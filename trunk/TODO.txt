@@ -40,6 +40,17 @@ NOTE: sorry, this is very raw :)
 
 ************************* NEW FEATURES TO ADD: *************************
 
+* score print :
+    - add non-linear printing...
+    - repetitions never detected in multi-track printing (maybe; would need a test-file to reproduce it)
+    - when there's small lines above/below score, the vertical measure line continues beyond the score
+    - show F clef + key signature
+    - if you show both F and G keys, both are given equal vertical space, even though one may need more than another
+    - show time sig on printed scores/tabs
+    - skip series of empty measures
+    - allow setting font size, number of lines per page, zoom, etc...
+    - Show ottava bassa/alta signs
+    
  + in preferences : turn off linear view by default
  
  + make more features accessible graphically (as opposed to keyboard-only)
@@ -106,17 +117,6 @@ NOTE: sorry, this is very raw :)
     Midi/Players/Mac/CoreAudioNotePlayer.cpp:84: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
     Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
     Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
-
-* score print :
-    - add non-linear printing...
-    - repetitions never detected in multi-track printing
-    - when there's small lines above/below score, the vertical measure line continues beyond the score
-    - show G/F clef + key signature
-    - if you show both F and G keys, both are given equal vertical space, even though one may need more than another
-    - show time sig on printed scores/tabs
-    - skip series of empty measures
-    - allow setting font size, number of lines per page, zoom, etc...
-    - Show ottava bassa/alta signs
 
 repetition detection:
     - sometimes does 41-42 43-44 and not 41-44
