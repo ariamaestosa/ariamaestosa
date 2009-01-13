@@ -803,6 +803,20 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             Display::render();
             return;
         }
+        
+        if(evt.GetKeyCode()==WXK_LEFT)
+        {
+            getCurrentSequence()->getCurrentTrack()->action( new Action::MoveNotes(-getMeasureData()->measureLengthInTicks(), 0, SELECTED_NOTES));
+            Display::render();
+            return;
+        }
+        
+        if(evt.GetKeyCode()==WXK_RIGHT)
+        {
+            getCurrentSequence()->getCurrentTrack()->action( new Action::MoveNotes(getMeasureData()->measureLengthInTicks(), 0, SELECTED_NOTES));
+            Display::render();
+            return;
+        }
     }
     
     if(current_editor == GUITAR)

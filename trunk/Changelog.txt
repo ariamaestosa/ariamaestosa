@@ -9,6 +9,7 @@
 - Fixed rounding issues when zooming
 - Fixed playback ending too quickly
 - Allowed moving notes by octave with shift+up/down
+- Allowed moving notes by one measure with shift+left/right
 
 1.2b4
 - Switched to unified (native) toolbar on mac  (WARNING: requires patching wxWidgets, see docs)
