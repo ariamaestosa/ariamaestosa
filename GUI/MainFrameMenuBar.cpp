@@ -193,11 +193,11 @@ void MainFrame::initMenuBar()
 
     settingsMenu->QUICK_ADD_MENU( wxID_PREFERENCES,   _("Preferences"), MainFrame::menuEvent_preferences );
 
-    if(getPlayDuringEdit() == PLAY_ON_CHANGE)
+    if(playDuringEditByDefault() == PLAY_ON_CHANGE)
         playDuringEdits_onchange->Check();
-    else if(getPlayDuringEdit() == PLAY_ALWAYS)
+    else if(playDuringEditByDefault() == PLAY_ALWAYS)
         playDuringEdits_always->Check();
-    else if(getPlayDuringEdit() == PLAY_NEVER)
+    else if(playDuringEditByDefault() == PLAY_NEVER)
         playDuringEdits_never->Check();
     else{ assert(false); }
 

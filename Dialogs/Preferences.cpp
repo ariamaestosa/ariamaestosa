@@ -59,9 +59,19 @@ bool followPlaybackByDefault()
 }
     
 int play_during_edit = PLAY_ON_CHANGE;
-int getPlayDuringEdit()
+int playDuringEditByDefault()
 {
     return play_during_edit;
+}
+  
+int showLinear = true, showMusical = true;
+int showLinearViewByDefault()
+{
+    return showLinear;
+}
+int showMusicalViewByDefault()
+{
+    return showMusical;
 }
 
 BEGIN_EVENT_TABLE(Preferences, wxDialog)
@@ -70,7 +80,8 @@ EVT_CHOICE(1, Preferences::languageSelected)
 EVT_BUTTON(2, Preferences::okClicked)
 EVT_CHOICE(3, Preferences::playSelected)
 EVT_CHECKBOX(4, Preferences::followPlaybackChecked )
-
+EVT_CHOICE(5, Preferences::scoreViewSelected)
+    
 END_EVENT_TABLE()
 
 Preferences::Preferences(MainFrame* parent) : wxDialog(parent, wxID_ANY,
@@ -106,12 +117,23 @@ Preferences::Preferences(MainFrame* parent) : wxDialog(parent, wxID_ANY,
     play_box.add( play_combo );
     }
     
+    // score view
     {
-    //I18N: - in the preferences
-    follow_playback_checkbox = new wxCheckBox(this, 4, _("Follow playback by default"), wxDefaultPosition, wxDefaultSize );
-    vert_sizer->Add( follow_playback_checkbox, 0, wxALL, 10 );
+        QuickBoxLayout score_view_box(this, vert_sizer);
+        //I18N: - in the preferences
+        score_view_box.add(new wxStaticText(score_view_box.pane , wxID_ANY,  _("Default Score View")));
+        
+        //I18N: - in the preferences, where we choose default score view
+        wxString choices[3] = { _("Both Musical and Linear"),  _("Musical Only"),  _("Linear Only")};
+        scoreview_combo = new wxChoice(score_view_box.pane, 5, wxDefaultPosition, wxDefaultSize, 3, choices );
+        score_view_box.add(scoreview_combo);
     }
     
+    {
+        //I18N: - in the preferences
+        follow_playback_checkbox = new wxCheckBox(this, 4, _("Follow playback by default"), wxDefaultPosition, wxDefaultSize );
+        vert_sizer->Add( follow_playback_checkbox, 0, wxALL, 10 );
+    }
     
     // *********** fill values ********
     
@@ -120,7 +142,7 @@ Preferences::Preferences(MainFrame* parent) : wxDialog(parent, wxID_ANY,
     wxConfig* prefs;
     prefs = (wxConfig*) wxConfig::Get();
 
-    // --- read play settings from prefs -----
+    // --- read settings from existing prefs -----
     long play_v;
     if(prefs->Read( wxT("playDuringEdit"), &play_v) )
     {
@@ -150,6 +172,27 @@ Preferences::Preferences(MainFrame* parent) : wxDialog(parent, wxID_ANY,
     {
         follow_playback = followp;
         follow_playback_checkbox->SetValue(follow_playback);
+    }
+
+    long scorev;
+    if(prefs->Read( wxT("scoreview"), &scorev) )
+    {
+        scoreview_combo->SetSelection(scorev);
+        if(scorev == 0)
+        {
+            showLinear = true;
+            showMusical = true;
+        }
+        else if(scorev == 1)
+        {
+            showLinear = false;
+            showMusical = true;
+        }
+        else if(scorev == 2)
+        {
+            showLinear = true;
+            showMusical = false;
+        }
     }
     // -----------------------------------
 
@@ -194,6 +237,13 @@ void Preferences::followPlaybackChecked(wxCommandEvent& evt)
 {
     wxConfig* prefs = (wxConfig*) wxConfig::Get();
     prefs->Write( wxT("followPlayback"), follow_playback_checkbox->GetValue() );
+    prefs->Flush();
+}
+
+void Preferences::scoreViewSelected(wxCommandEvent& evt)
+{
+    wxConfig* prefs = (wxConfig*) wxConfig::Get();
+    prefs->Write( wxT("scoreview"), scoreview_combo->GetSelection() );
     prefs->Flush();
 }
 

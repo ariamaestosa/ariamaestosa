@@ -259,7 +259,7 @@ void MainFrame::init()
 
     prefs = new Preferences(this);
     initMenuBar();
-    play_during_edit = getPlayDuringEdit();
+    play_during_edit = playDuringEditByDefault();
 
     wxInitAllImageHandlers();
 #ifdef NO_WX_TOOLBAR

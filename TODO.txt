@@ -51,8 +51,6 @@ NOTE: sorry, this is very raw :)
     - allow setting font size, number of lines per page, zoom, etc...
     - Show ottava bassa/alta signs
     
- + in preferences : turn off linear view by default
- 
  + make more features accessible graphically (as opposed to keyboard-only)
    - add new tools, that allow adding notes without dragging (and resizing without keyboard, and selecting, and...?) ?
    - add keyboard shortcut to change note length
@@ -103,6 +101,8 @@ NOTE: sorry, this is very raw :)
  - score editor should be able to display notes with more than 2 flags (unusure... those with 2 are already so small and barely visible)
 
  ************************* BUGS: *************************
+
+* track name label becomes small after being edited
 
 * red images
 * My CoreAudio player is deprecated on OS X 10.5...

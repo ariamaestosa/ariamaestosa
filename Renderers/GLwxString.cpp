@@ -372,7 +372,7 @@ void wxGLString::render(const int x, const int y)
     
 void wxGLString::setMaxWidth(const int w, const bool warp /*false: truncate. true: warp.*/)
 {
-    std::cout << "wxGLString::setMaxWidth " << w << ", " << warp << std::endl;
+   // std::cout << "wxGLString::setMaxWidth " << w << ", " << warp << std::endl;
     if(not warp)
         TextGLDrawable::setMaxWidth(w);
     else
