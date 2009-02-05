@@ -27,7 +27,7 @@
 #include "Renderers/ImageBase.h"
 #include "Midi/MeasureData.h"
 #include "Renderers/RenderAPI.h"
-
+#include "Dialogs/Preferences.h"
 #include "Actions/EditAction.h"
 #include "Actions/AddNote.h"
 
@@ -418,8 +418,8 @@ ScoreEditor::ScoreEditor(Track* track) : Editor(track)
 {
     g_clef = true;
     f_clef = true;
-    musicalNotationEnabled = true;
-    linearNotationEnabled  = true;
+    musicalNotationEnabled = showMusicalViewByDefault();
+    linearNotationEnabled  = showLinearViewByDefault();
 
     converter = new ScoreMidiConverter();
 
