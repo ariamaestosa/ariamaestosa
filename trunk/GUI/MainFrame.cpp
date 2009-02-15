@@ -1054,7 +1054,7 @@ void MainFrame::loadAriaFile(wxString filePath)
     updateVerticalScrollbar();
 
     // change song name
-    getCurrentSequence()->sequenceFileName = getCurrentSequence()->filepath.AfterLast('/').BeforeLast('.');
+    getCurrentSequence()->sequenceFileName.set(getCurrentSequence()->filepath.AfterLast('/').BeforeLast('.'));
 
     // if a song is currently playing, it needs to stay on top
     if(PlatformMidiManager::isPlaying()) setCurrentSequence(old_currentSequence);
@@ -1094,7 +1094,7 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
     updateVerticalScrollbar();
 
     // change song name
-    getCurrentSequence()->sequenceFileName = midiFilePath.AfterLast('/').BeforeLast('.');
+    getCurrentSequence()->sequenceFileName.set(midiFilePath.AfterLast('/').BeforeLast('.'));
 
     // if a song is currently playing, it needs to stay on top
     if(PlatformMidiManager::isPlaying()) setCurrentSequence(old_currentSequence);

@@ -278,7 +278,7 @@ void MainFrame::menuEvent_saveas(wxCommandEvent& evt)
         saveAriaFile(getCurrentSequence(), getCurrentSequence()->filepath);
 
         // change song name
-        getCurrentSequence()->sequenceFileName = getCurrentSequence()->filepath.AfterLast('/').BeforeLast('.');
+        getCurrentSequence()->sequenceFileName.set(getCurrentSequence()->filepath.AfterLast('/').BeforeLast('.'));
         Display::render();
 
     }// end if

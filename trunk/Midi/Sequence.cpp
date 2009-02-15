@@ -52,8 +52,6 @@ namespace AriaMaestosa {
 
 Sequence::Sequence()
 {
-
-
     reordering_newPosition = -1;
 
     dockHeight=0;
@@ -78,7 +76,7 @@ Sequence::Sequence()
     zoom = (128.0/(beatResolution*4));
     zoom_percent = 100;
 
-    sequenceFileName =  wxString(_("Untitled"));
+    sequenceFileName.set(wxString(_("Untitled")));
 #ifdef __WXMAC__
     sequenceFileName.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
 #else
