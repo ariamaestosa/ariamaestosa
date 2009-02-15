@@ -108,7 +108,7 @@ NOTE: sorry, this is very raw :)
 
 * repetitions not always properly detected (e.g. for whom the bell tolls)
 
-* all tracks are named 'acoustic grand piano'.... (sad but true)
+* if filename is too long, name will be longer than tab.
 
 * red images
 * My CoreAudio player is deprecated on OS X 10.5...
