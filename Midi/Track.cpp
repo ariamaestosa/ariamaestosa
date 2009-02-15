@@ -48,7 +48,7 @@ namespace AriaMaestosa
 
     Track::Track(MainFrame* parent, Sequence* sequence)
     {
-        name = wxString( _("Untitled") );
+        name.set( wxString( _("Untitled") ) );
         name.setMaxWidth(120);
         
         // FIXME - find out why fonts are so different on mac and linux
@@ -101,7 +101,7 @@ namespace AriaMaestosa
         instrument = 0;
         drumKit = 0;
 
-        instrument_name = Core::getInstrumentPicker()->getInstrumentName( instrument );
+        instrument_name.set(Core::getInstrumentPicker()->getInstrumentName( instrument ));
 #ifdef __WXMAC__
         instrument_name.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
 #else
@@ -712,8 +712,8 @@ void Track::setId(const int id)
 
 void Track::setName(wxString name)
 {
-    if(name.Trim().IsEmpty()) Track::name = wxString( _("Untitled") );
-    else Track::name = name;
+    if(name.Trim().IsEmpty()) Track::name.set( wxString( _("Untitled") ) );
+    else Track::name.set(name);
 }
 AriaRenderString& Track::getName()
 {
@@ -749,9 +749,8 @@ void Track::setChannel(int i)
 void Track::setInstrument(int i, bool recursive)
 {
     instrument = i;
-    instrument_name = Core::getInstrumentPicker()->getInstrumentName( instrument );
-    instrument_name.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-
+    instrument_name.set(Core::getInstrumentPicker()->getInstrumentName( instrument ));
+    
     // if we're in manual channel management mode, change all tracks of the same channel to have the same instrument
     if(sequence->getChannelManagementType() == CHANNEL_MANUAL and not recursive)
     {

@@ -101,8 +101,14 @@ NOTE: sorry, this is very raw :)
  - score editor should be able to display notes with more than 2 flags (unusure... those with 2 are already so small and barely visible)
 
  ************************* BUGS: *************************
+ 
+* fret numbers in tab editor tend to be "blurry"
 
-* track name label becomes small after being edited
+* problem with render being being rendered one time out of two... :(
+
+* repetitions not always properly detected (e.g. for whom the bell tolls)
+
+* all tracks are named 'acoustic grand piano'.... (sad but true)
 
 * red images
 * My CoreAudio player is deprecated on OS X 10.5...
