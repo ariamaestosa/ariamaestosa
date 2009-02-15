@@ -179,9 +179,12 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current, Rel
         if((!track->isNoteSelected(n) or !focus) && volume>0.5) AriaRender::color(1, 1, 1); // if note color is too dark, draw the fret number in white
         else AriaRender::color(0, 0, 0);
 
+        // draw twice to make it more visible...
         AriaRender::renderNumber(fret, x1+getEditorsXStart(),
                                  getEditorYStart() + first_string_position + string*y_step + 3);
-
+        AriaRender::renderNumber(fret, x1+getEditorsXStart(),
+                                 getEditorYStart() + first_string_position + string*y_step + 3);
+        
     }//next
 
     AriaRender::primitives();
