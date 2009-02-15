@@ -124,7 +124,10 @@ public:
 
     /** changes the string of this element */
     void set(const wxString& string);
-   // void operator=(wxString& string);
+ 
+    // override wxString's operators
+    wxString& operator =(const wxString& str){ set(str); return *this; }
+    wxString& operator =(const wxChar* psz){ set(wxString(psz)); return *this;}
 };
 
 typedef wxGLString AriaRenderString;

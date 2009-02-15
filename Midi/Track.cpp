@@ -1357,7 +1357,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                 else if (!strcmp("instrument", xml->getNodeName()))
                 {
                     const char* id = xml->getAttributeValue("id");
-                    if(id != NULL) instrument = atoi(id);
+                    if(id != NULL) setInstrument( atoi(id) );
                     else
                     {
                         std::cout << "Missing info from file: instrument ID" << std::endl;
@@ -1367,7 +1367,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                 else if (!strcmp("drumkit", xml->getNodeName()))
                 {
                     const char* id = xml->getAttributeValue("id");
-                    if(id != NULL) drumKit = atoi(id);
+                    if(id != NULL) setDrumKit( atoi(id) );
                     else
                     {
                         std::cout << "Missing info from file: drum ID" << std::endl;
