@@ -102,8 +102,6 @@ NOTE: sorry, this is very raw :)
 
  ************************* BUGS: *************************
  
-* fret numbers in tab editor tend to be "blurry"
-
 * problem with render being being rendered one time out of two... :(
 
 * repetitions not always properly detected (e.g. for whom the bell tolls)
