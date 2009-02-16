@@ -104,9 +104,7 @@ NOTE: sorry, this is very raw :)
  
 * problem with render being being rendered one time out of two... :(
 
-* repetitions not always properly detected (e.g. for whom the bell tolls)
-
-* if filename is too long, name will be longer than tab.
+* repetitions not always properly detected for multi-track prints (e.g. for whom the bell tolls)
 
 * red images
 * My CoreAudio player is deprecated on OS X 10.5...
