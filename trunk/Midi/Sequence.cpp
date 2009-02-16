@@ -77,6 +77,7 @@ Sequence::Sequence()
     zoom_percent = 100;
 
     sequenceFileName.set(wxString(_("Untitled")));
+    sequenceFileName.setMaxWidth(155); // FIXME - won't work if lots of sequences are open (tabs will begin to get smaller)
 #ifdef __WXMAC__
     sequenceFileName.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
 #else
