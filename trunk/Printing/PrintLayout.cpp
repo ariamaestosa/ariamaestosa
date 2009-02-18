@@ -253,6 +253,7 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
     bool measure_empty = true;
     for(int note=newTrackRef->firstNote; note<noteAmount; note++)
     {
+        std::cout << "  note " << note << " out of " << noteAmount << std::endl;
         const int start_tick = track->getNoteStartInMidiTicks(note);
         const int end_tick = track->getNoteEndInMidiTicks(note);
         const int currentNoteDuration = end_tick - start_tick;
@@ -260,11 +261,15 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
         if(currentNoteDuration <= 0)  continue; // skip malformed notes if any
         
         // stop when we're at next measure - it will be done in next measure iteration
-        if( start_tick >= lastTick ) break;
-
+        if( start_tick >= lastTick )
+        {
+            std::cout << "breaking at " << note << " because !" << start_tick << " >= " << lastTick  << std::endl;
+            break;
+        }
+        
         // find last note - if many notes end at the same time, keep the one that started last
         if(end_tick > last_note_end ||
-           (end_tick == last_note_end && start_tick > last_note_start)
+           (end_tick == last_note_end && start_tick >= last_note_start)
            )
         {
             last_note = note;
