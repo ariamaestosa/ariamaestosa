@@ -163,7 +163,7 @@ public:
     void printYourself(wxDC& dc, const int x0, const int y0, const int x1, const int y1);
     int calculateHeight();
 
-    MeasureToExport& getMeasureForElement(const int layoutElementID);
+    MeasureToExport& getMeasureForElement(const int layoutElementID) const;
     MeasureToExport& getMeasureForElement(LayoutElement* layoutElement);
 
     int getLastMeasure() const;
