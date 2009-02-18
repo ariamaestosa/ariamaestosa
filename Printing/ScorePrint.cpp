@@ -485,7 +485,6 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
 
     // iterate through layout elements to collect notes in the vector
     // so ScoreAnalyser can prepare the score
-    std::cout << "==========" << std::endl;
     LayoutElement* currentElement;
     while((currentElement = continueWithNextElement()) and (currentElement != NULL))
     {
@@ -500,7 +499,6 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         
         if(firstNote == -1 || lastNote == -1) continue; // empty measure
         
-        std::cout << "rendering notes " << firstNote << "-" << lastNote << std::endl;
         for(int n=firstNote; n<=lastNote; n++)
         {
             int note_sign;

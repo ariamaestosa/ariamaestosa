@@ -249,7 +249,7 @@ void completeExport(bool accepted)
                track->graphics->collapsed or
                track->graphics->docked) continue;
 
-            std::cout << "Generating notation for track " << n << " : " << track->getName() << std::endl;
+            std::cout << "Generating notation for track " << n << " : " << track->getName().mb_str() << std::endl;
 
             if(not notationPrint.addTrack( track, track->graphics->editorMode ))
             {
