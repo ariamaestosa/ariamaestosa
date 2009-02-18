@@ -48,7 +48,7 @@
  Children are to call 'beginLine' early. Then they can iterate through LayoutElements
  by calling continueWithNextElement() in a loop until NULL is returned. Then, for
  returned elements of type SINGLE_MEASURE, the child can get note information by
- using getFIrstNoteInElement(), getLastNoteInElement(), getNotePrintX() and render
+ using getFirstNoteInElement(), getLastNoteInElement(), getNotePrintX() and render
  them appropriately.
  
  */

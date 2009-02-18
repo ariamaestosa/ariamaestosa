@@ -242,6 +242,7 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
     
     int last_note = firstNote, last_note_end = -1, last_note_start = -1;
     
+    bool measure_empty = true;
     for(int note=newTrackRef->firstNote; note<noteAmount; note++)
     {
         const int start_tick = track->getNoteStartInMidiTicks(note);
@@ -261,6 +262,7 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
             last_note = note;
             last_note_end = end_tick;
             last_note_start = start_tick;
+            measure_empty = false;
         }
         
         if( currentNoteDuration < shortestDuration or shortestDuration==-1) shortestDuration = currentNoteDuration;
@@ -275,7 +277,8 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
 
     // if this measure is empty, return the same note as the one given in input (i.e. it was not used)
     // if this measure is not empty, add 1 so next measure will start from the next
-    return newTrackRef->lastNote + ( newTrackRef->lastNote - newTrackRef->firstNote > 0 ? 1 : 0);
+    std::cout << "returning " << newTrackRef->lastNote + ( measure_empty ? 0 : 1) << std::endl;
+    return newTrackRef->lastNote + ( measure_empty ? 0 : 1);
 }
 
 #if 0
