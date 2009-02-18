@@ -482,7 +482,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
 
     converter->updateConversionData();
     converter->resetAccidentalsForNewRender();
-
+    
     // iterate through layout elements to collect notes in the vector
     // so ScoreAnalyser can prepare the score
     LayoutElement* currentElement;

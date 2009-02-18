@@ -773,6 +773,7 @@ void calculateLineLayout(std::vector<LayoutLine>& layoutLines,
 
     LayoutElement el(LayoutElement(LINE_HEADER, -1));
     el.width_in_units = 5;
+    current_width += 5;
     layoutLines[currentLine].layoutElements.push_back( el );
 
     // add layout elements one by one, switching to the next line when there's too many
@@ -786,23 +787,22 @@ void calculateLineLayout(std::vector<LayoutLine>& layoutLines,
             current_width = 0;
             const int line_height = layoutLines[currentLine].calculateHeight();
             current_height += line_height;
-            currentLine++;
-
-           // std::cout << "    adding a new line : " <<  currentLine << std::endl;
 
             // too much lines on current page, switch to a new page
             if(current_height > 80)
             {
-                layoutPages[current_page].last_line = currentLine-1;
+                layoutPages[current_page].last_line = currentLine;
                 current_height = line_height;
                 layoutPages.push_back( LayoutPage() );
-                layoutLines[currentLine-1].last_of_page = true;
+                layoutLines[currentLine].last_of_page = true;
                 current_page++;
                // std::cout << "adding a new page : " <<  current_page << std::endl;
-                layoutPages[current_page].first_line = currentLine;
+                layoutPages[current_page].first_line = currentLine+1;
             }
 
+            //currentLine++;
             layoutLines.push_back( LayoutLine(getCurrentPrintable()) );
+            currentLine = layoutLines.size()-1;
         }
         assertExpr(currentLine,<,(int)layoutLines.size());
         layoutLines[currentLine].layoutElements.push_back(layoutElements[n]);

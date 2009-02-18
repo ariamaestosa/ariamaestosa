@@ -107,7 +107,6 @@ NOTE: sorry, this is very raw :)
 * currently it's unclear whether you are in maximized mode or not. icon should change
 
 * repetitions not always properly detected for multi-track prints when there is a score (e.g. for whom the bell tolls)
-* doesn't handle well notes in last measure of line
 
 * red images
 * My CoreAudio player is deprecated on OS X 10.5...
