@@ -497,6 +497,9 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
 
         const int firstNote = line.getFirstNoteInElement(currentElement);
         const int lastNote = line.getLastNoteInElement(currentElement);
+        
+        if(firstNote == -1 || lastNote == -1) continue; // empty measure
+        
         std::cout << "rendering notes " << firstNote << "-" << lastNote << std::endl;
         for(int n=firstNote; n<=lastNote; n++)
         {

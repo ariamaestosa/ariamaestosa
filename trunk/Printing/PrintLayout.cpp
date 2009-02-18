@@ -234,12 +234,20 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
     MeasureTrackReference* newTrackRef = new MeasureTrackReference();
     newTrackRef->track = track;
 
+    // if firstNote is -1, it means all notes were processed. just add the track ref without searching for notes
+    if(firstNote == -1)
+    {
+        newTrackRef->firstNote = -1;
+        newTrackRef->lastNote = -1;
+        trackRef.push_back( newTrackRef );
+        return -1;
+    }
+    
     // first note in measure (which is also last note of previous measure, that was set in last iteration of the for loop)
     newTrackRef->firstNote = firstNote;
     if(firstNote >= noteAmount) newTrackRef->firstNote = noteAmount-1;
     
     // find what the first, last and shortest note in current measure
-    
     int last_note = firstNote, last_note_end = -1, last_note_start = -1;
     
     bool measure_empty = true;
@@ -275,6 +283,9 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
     std::cout << "--- measure " << (id+1) << " ranges from note  "<< newTrackRef->firstNote << " to " << newTrackRef->lastNote << std::endl;
     trackRef.push_back( newTrackRef );
 
+    // check if all notes were used
+    if(last_note == noteAmount-1) return -1;
+    
     // if this measure is empty, return the same note as the one given in input (i.e. it was not used)
     // if this measure is not empty, add 1 so next measure will start from the next
     std::cout << "returning " << newTrackRef->lastNote + ( measure_empty ? 0 : 1) << std::endl;
