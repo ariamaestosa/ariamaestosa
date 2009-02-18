@@ -46,8 +46,8 @@ void assertFailed(wxString message)
 
 #ifdef _MORE_DEBUG_CHECKS
     // trigger debugger
-    char* bug = (char*)"I will make it bug to automatically trigger Xcode debugger, to get stack trace without having to reproduce it again";
-    bug[183283426] = 'X';
+    int bug1 = 0;
+    bug1 = 5 / bug1;
 #endif
 
     exit(1);

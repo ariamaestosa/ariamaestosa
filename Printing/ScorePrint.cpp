@@ -497,7 +497,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         const int firstNote = line.getFirstNoteInElement(currentElement);
         const int lastNote = line.getLastNoteInElement(currentElement);
 
-        for(int n=firstNote; n<lastNote; n++)
+        for(int n=firstNote; n<=lastNote; n++)
         {
             int note_sign;
             const int noteLevel = converter->noteToLevel(track->getNote(n), &note_sign);
