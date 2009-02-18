@@ -100,6 +100,8 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
         const int firstNote = line.getFirstNoteInElement(currentElement);
         const int lastNote = line.getLastNoteInElement(currentElement);
 
+        if(firstNote == -1 || lastNote == -1) continue; // empty measure
+        
         for(int i=firstNote; i<=lastNote; i++)
         {
             const int string = track->getNoteString(i);
