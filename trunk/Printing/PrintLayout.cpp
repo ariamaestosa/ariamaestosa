@@ -138,7 +138,6 @@ bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
     const int trackRefAmount = trackRef.size();
     for(int tref=0; tref<trackRefAmount; tref++)
     {
-        std::cout << "checking ref " << tref << "...\n";
         const int my_first_note = trackRef[tref].firstNote;
         const int my_last_note = trackRef[tref].lastNote;
         const int his_first_note = checkMeasure.trackRef[tref].firstNote;
@@ -150,10 +149,8 @@ bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
         Track* track = trackRef[tref].track;
 
         // if these 2 measures don't even have the same number of notes, they're definitely not the same
-        if(
-           (his_last_note - his_first_note + 1) != (my_last_note - my_first_note + 1)
-           )
-        {std::cout << "nope cause they don't have the same amount of notes : " << (his_last_note - his_first_note) << " vs " << (my_last_note - my_first_note) << std::endl;
+        if( (his_last_note - his_first_note + 1) != (my_last_note - my_first_note + 1) )
+        {
             return false;
         }
 
@@ -163,7 +160,6 @@ bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
 
         if(noteAmount<1)
         {
-            std::cout << "nope cause it's empty" << std::endl;
             return false; //empty measure
         }
 
@@ -253,7 +249,6 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
     bool measure_empty = true;
     for(int note=newTrackRef->firstNote; note<noteAmount; note++)
     {
-        std::cout << "  note " << note << " out of " << noteAmount << std::endl;
         const int start_tick = track->getNoteStartInMidiTicks(note);
         const int end_tick = track->getNoteEndInMidiTicks(note);
         const int currentNoteDuration = end_tick - start_tick;
@@ -261,11 +256,7 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
         if(currentNoteDuration <= 0)  continue; // skip malformed notes if any
         
         // stop when we're at next measure - it will be done in next measure iteration
-        if( start_tick >= lastTick )
-        {
-            std::cout << "breaking at " << note << " because !" << start_tick << " >= " << lastTick  << std::endl;
-            break;
-        }
+        if( start_tick >= lastTick ) break;
         
         // find last note - if many notes end at the same time, keep the one that started last
         if(end_tick > last_note_end ||
@@ -285,7 +276,7 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
     
     newTrackRef->lastNote = last_note; // ID of the last note in this measure (can it be first note in NEXT measure?? FIXME)
 
-    std::cout << "--- measure " << (id+1) << " ranges from note  "<< newTrackRef->firstNote << " to " << newTrackRef->lastNote << std::endl;
+   // std::cout << "--- measure " << (id+1) << " ranges from note  "<< newTrackRef->firstNote << " to " << newTrackRef->lastNote << std::endl;
     trackRef.push_back( newTrackRef );
 
     // check if all notes were used
@@ -293,7 +284,6 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
     
     // if this measure is empty, return the same note as the one given in input (i.e. it was not used)
     // if this measure is not empty, add 1 so next measure will start from the next
-    std::cout << "returning " << newTrackRef->lastNote + ( measure_empty ? 0 : 1) << std::endl;
     return newTrackRef->lastNote + ( measure_empty ? 0 : 1);
 }
 
@@ -545,7 +535,7 @@ void findSimilarMeasures(ptr_vector<MeasureToExport>& measures)
             assertExpr(measure,<,(int)measures.size());
             assertExpr(checkMeasure,<,(int)measures.size());
             const bool isSameAs = measures[measure].calculateIfMeasureIsSameAs(measures[checkMeasure]);
-            std::cout << "measure " << (measure+1) << " is same as " << (checkMeasure+1) << " ? " << isSameAs << std::endl;
+            //std::cout << "measure " << (measure+1) << " is same as " << (checkMeasure+1) << " ? " << isSameAs << std::endl;
             
             if(!isSameAs) continue;
             measures[measure].firstSimilarMeasure = checkMeasure;
