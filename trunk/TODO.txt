@@ -104,7 +104,9 @@ NOTE: sorry, this is very raw :)
  
 * problem with render being being rendered one time out of two... :(
 
-* repetitions not always properly detected for multi-track prints (e.g. for whom the bell tolls)
+* currently it's unclear whether you are in maximized mode or not. icon should change
+
+* repetitions not always properly detected for multi-track prints when there is a score (e.g. for whom the bell tolls)
 
 * red images
 * My CoreAudio player is deprecated on OS X 10.5...

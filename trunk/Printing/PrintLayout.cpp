@@ -138,7 +138,7 @@ bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
     const int trackRefAmount = trackRef.size();
     for(int tref=0; tref<trackRefAmount; tref++)
     {
-
+        std::cout << "checking ref " << tref << "...\n";
         const int my_first_note = trackRef[tref].firstNote;
         const int my_last_note = trackRef[tref].lastNote;
         const int his_first_note = checkMeasure.trackRef[tref].firstNote;
@@ -152,13 +152,20 @@ bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
         // if these 2 measures don't even have the same number of notes, they're definitely not the same
         if(
            (his_last_note - his_first_note) != (my_last_note - my_first_note)
-           ) return false;
+           )
+        {std::cout << "nope cause they don't have the same amount of notes : " << (his_last_note - his_first_note) << " vs " << (my_last_note - my_first_note) << std::endl;
+            return false;
+        }
 
 
         const int noteAmount = (his_last_note - his_first_note);
 
 
-        if(noteAmount<1) return false; //empty measure
+        if(noteAmount<1)
+        {
+            std::cout << "nope cause it's empty" << std::endl;
+            return false; //empty measure
+        }
 
         /*
          if we get till there, the 2 measures have the same amount of notes.
@@ -222,32 +229,53 @@ bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
 
 int MeasureToExport::addTrackReference(const int firstNote, Track* track)
 {
+    const int noteAmount = track->getNoteAmount();
+    
     MeasureTrackReference* newTrackRef = new MeasureTrackReference();
     newTrackRef->track = track;
 
     // first note in measure (which is also last note of previous measure, that was set in last iteration of the for loop)
     newTrackRef->firstNote = firstNote;
-
+    if(firstNote >= noteAmount) newTrackRef->firstNote = noteAmount-1;
+    
     // find what the first, last and shortest note in current measure
-    const int noteAmount = track->getNoteAmount();
-    int note=firstNote;
-    for(; note<noteAmount; note++)
+    
+    int last_note = firstNote, last_note_end = -1, last_note_start = -1;
+    
+    for(int note=newTrackRef->firstNote; note<noteAmount; note++)
     {
-        // stop when we're at next measure - it will be done in next measure iteration
-        if( track->getNoteStartInMidiTicks(note) >= lastTick ) break;
-
-        const int currentNoteDuration = track->getNoteEndInMidiTicks(note) - track->getNoteStartInMidiTicks(note);
-
+        const int start_tick = track->getNoteStartInMidiTicks(note);
+        const int end_tick = track->getNoteEndInMidiTicks(note);
+        const int currentNoteDuration = end_tick - start_tick;
+        
         if(currentNoteDuration <= 0)  continue; // skip malformed notes if any
+        
+        // stop when we're at next measure - it will be done in next measure iteration
+        if( start_tick >= lastTick ) break;
+
+        // find last note - if many notes end at the same time, keep the one that started last
+        if(end_tick > last_note_end ||
+           (end_tick == last_note_end && start_tick > last_note_start)
+           )
+        {
+            last_note = note;
+            last_note_end = end_tick;
+            last_note_start = start_tick;
+        }
+        
         if( currentNoteDuration < shortestDuration or shortestDuration==-1) shortestDuration = currentNoteDuration;
-
     }
+    assertExpr(last_note,>,-1);
+    assertExpr(last_note,<,noteAmount);
+    
+    newTrackRef->lastNote = last_note; // ID of the last note in this measure (can it be first note in NEXT measure?? FIXME)
 
-    newTrackRef->lastNote = note; // ID of the last note in this measure (or actually, first note in NEXT measure?? FIXME)
-
+    std::cout << "--- measure " << (id+1) << " ranges from note  "<< newTrackRef->firstNote << " to " << newTrackRef->lastNote << std::endl;
     trackRef.push_back( newTrackRef );
 
-    return newTrackRef->lastNote;
+    // if this measure is empty, return the same note as the one given in input (i.e. it was not used)
+    // if this measure is not empty, add 1 so next measure will start from the next
+    return newTrackRef->lastNote + ( newTrackRef->lastNote - newTrackRef->firstNote > 0 ? 1 : 0);
 }
 
 #if 0
@@ -463,8 +491,9 @@ void generateMeasures(ptr_vector<Track, REF>& tracks, ptr_vector<MeasureToExport
         for(int measure=0; measure<measureAmount; measure++)
         {
             assertExpr(measure,<,measures.size());
+            
             note = measures[measure].addTrackReference(note, track);
-
+            
             //std::cout << "meas% " << (measures[measure].trackRef[0].track->getName().mb_str()) << std::endl;
 
         } // next measure
@@ -483,7 +512,8 @@ void findSimilarMeasures(ptr_vector<MeasureToExport>& measures)
             assertExpr(measure,<,(int)measures.size());
             assertExpr(checkMeasure,<,(int)measures.size());
             const bool isSameAs = measures[measure].calculateIfMeasureIsSameAs(measures[checkMeasure]);
-
+            std::cout << "measure " << (measure+1) << " is same as " << (checkMeasure+1) << " ? " << isSameAs << std::endl;
+            
             if(!isSameAs) continue;
             measures[measure].firstSimilarMeasure = checkMeasure;
             measures[checkMeasure].similarMeasuresFoundLater.push_back(measure);
