@@ -151,7 +151,7 @@ bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
 
         // if these 2 measures don't even have the same number of notes, they're definitely not the same
         if(
-           (his_last_note - his_first_note) != (my_last_note - my_first_note)
+           (his_last_note - his_first_note + 1) != (my_last_note - my_first_note + 1)
            )
         {std::cout << "nope cause they don't have the same amount of notes : " << (his_last_note - his_first_note) << " vs " << (my_last_note - my_first_note) << std::endl;
             return false;
@@ -181,9 +181,9 @@ bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
             noteMatched_other[n] = false;
         }
 
-        for(int checkNote_this=0; checkNote_this<noteAmount; checkNote_this++)
+        for(int checkNote_this=0; checkNote_this<=noteAmount; checkNote_this++)
         {
-            for(int checkNote_other=0; checkNote_other<noteAmount; checkNote_other++)
+            for(int checkNote_other=0; checkNote_other<=noteAmount; checkNote_other++)
             {
                 if(noteMatched_other[checkNote_other]) continue; // this note was already matched
 
@@ -337,7 +337,7 @@ int LayoutLine::getLastNoteInElement(LayoutElement* layoutElement)
     return getMeasureForElement(layoutElement).trackRef[currentTrack].lastNote;
 }
 
-MeasureToExport& LayoutLine::getMeasureForElement(const int layoutElementID)
+MeasureToExport& LayoutLine::getMeasureForElement(const int layoutElementID) const
 {
     const int measID = layoutElements[layoutElementID].measure;
     if(measID == -1) return (MeasureToExport&)nullMeasure;
@@ -366,6 +366,18 @@ int LayoutLine::getFirstMeasure() const
 }
 int LayoutLine::getLastNote() const
 {
+    MeasureToExport& meas = getMeasureForElement(layoutElements.size()-1);
+    Track* t = getTrack();
+    
+    const int tamount = meas.trackRef.size();
+    for(int i=0; i<tamount; i++)
+    {
+        if(meas.trackRef[i].track == t) return meas.trackRef[i].lastNote;
+    }
+    assert(false);
+    return -1;
+    
+    /*
     int answer = -1;
     const int first_measure = getFirstMeasure();
     const int last_measure = getLastMeasure();
@@ -383,7 +395,9 @@ int LayoutLine::getLastNote() const
         else if(answer != -1) return answer;
     }
     return answer;
+     */
 }
+     
 int LayoutLine::getFirstNote() const
 {
     const int measure = getFirstMeasure();
