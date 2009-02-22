@@ -75,7 +75,6 @@ wxImage* Image::getImageForState(AriaRender::ImageState s)
 
     static const int MODE_MULTIPLY = 0;
     static const int MODE_FADE_TO = 1;
-    static const int MODE_GRAY_OUT = 1;
     
     int mode = MODE_MULTIPLY;
 
@@ -100,8 +99,11 @@ wxImage* Image::getImageForState(AriaRender::ImageState s)
         case AriaRender::STATE_NOTE :
             r = g = b = 0;
             break;
-        case AriaRender::STATE_GREY:
-            mode = MODE_GRAY_OUT;
+        case AriaRender::STATE_GHOST:
+            r = 1.0f;
+            g = 1.0f;
+            b = 1.0f;
+            mode = MODE_FADE_TO;
             break;
         default:break;
     }
@@ -134,17 +136,6 @@ wxImage* Image::getImageForState(AriaRender::ImageState s)
             data[0]= (unsigned char)( pr*255 );
             data[1]= (unsigned char)( pg*255 );
             data[2]= (unsigned char)( pb*255 );
-            data += 3;
-        }
-    }
-    else if(mode == MODE_GREY_OUT)
-    {
-        for(unsigned int i=0; i<pixelcount; i++)
-        {
-            unsigned char value = ceil((data[0] + data[1] + data[2])/3.0);
-            data[0]= value;
-            data[1]= value;
-            data[2]= value;
             data += 3;
         }
     }
