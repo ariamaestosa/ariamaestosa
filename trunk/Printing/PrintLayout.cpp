@@ -148,18 +148,24 @@ bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
         assert( trackRef[tref].track == checkMeasure.trackRef[tref].track );
         Track* track = trackRef[tref].track;
 
+        //std::cout << "checking measures " << (id+1) << " and " << (checkMeasure.id+1) << std::endl;
+        
         // if these 2 measures don't even have the same number of notes, they're definitely not the same
         if( (his_last_note - his_first_note + 1) != (my_last_note - my_first_note + 1) )
         {
+           // std::cout << "  not the same cause they don't have the same amount of notes : " << (his_last_note - his_first_note + 1) << " vs " << (my_last_note - my_first_note + 1) << std::endl;
             return false;
         }
 
 
         const int noteAmount = (his_last_note - his_first_note);
 
-
+        // don't count empty measures as repetitions 
         if(noteAmount<1)
         {
+            // when comparing a multiple-track line, don't stop on empty measures, for other tracks may not be empty
+            if(trackRefAmount>1) continue;
+            //std::cout << "  not the same cause they're empty" << std::endl;
             return false; //empty measure
         }
 
@@ -214,12 +220,18 @@ bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
             }//next note
 
             // we couldn't find a note in the other measure that matches this one
-            if(noteMatched_this[checkNote_this] == false) return false;
+            if(noteMatched_this[checkNote_this] == false)
+            {
+               // std::cout << "  not the same cause couldn't find a note in the other measure that matches this one\n";
+                return false;
+            }
 
         }//next note
 
     } // next track reference
 
+   // std::cout << "   they're the same!!!" << std::endl;
+    
     return true;
 }
 

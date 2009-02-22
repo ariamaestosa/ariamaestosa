@@ -12,6 +12,7 @@
 - Allowed moving notes by one measure with shift+left/right
 - G clef is now rendered (roughly) on printed scores
 - You can now choose the default view for score editor in preferences
+- Fixed repetiton detection on multiple-track printing
 
 1.2b4
 - Switched to unified (native) toolbar on mac  (WARNING: requires patching wxWidgets, see docs)
