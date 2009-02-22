@@ -106,8 +106,6 @@ NOTE: sorry, this is very raw :)
 
 * currently it's unclear whether you are in maximized mode or not. icon should change
 
-* repetitions not always properly detected for multi-track prints when there is a score (e.g. for whom the bell tolls)
-
 * red images
 * My CoreAudio player is deprecated on OS X 10.5...
     AudioToolboxPlayer.cpp:48: warning: 'MusicSequenceLoadSMFData' is deprecated (declared at /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/MusicPlayer.h:1613)
