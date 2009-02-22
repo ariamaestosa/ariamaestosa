@@ -769,7 +769,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
 {
     // mark 'dock' button as disabled when maximize mode is activated
     dockToolBar->getItem(1).setImageState( getCurrentSequence()->maximize_track_mode ?
-                                          AriaRender::STATE_GREY :
+                                          AriaRender::STATE_GHOST :
                                           AriaRender::STATE_NORMAL );
     
     const bool channel_mode = sequence->getChannelManagementType() == CHANNEL_MANUAL;
