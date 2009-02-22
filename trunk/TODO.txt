@@ -102,9 +102,7 @@ NOTE: sorry, this is very raw :)
 
  ************************* BUGS: *************************
  
-* problem with render being being rendered one time out of two... :(
-
-* currently it's unclear whether you are in maximized mode or not. icon should change
+* problem with render being being rendered one time out of two... :( (hard to reproduce)
 
 * red images
 * My CoreAudio player is deprecated on OS X 10.5...

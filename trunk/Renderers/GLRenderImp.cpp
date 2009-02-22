@@ -66,6 +66,9 @@ void setImageState(const ImageState imgst)
         case STATE_NOTE :
             color(0,0,0);
             break;
+        case STATE_GREY :
+            color(1.0, 1.0, 1.0, 0.5); // not a real gray out, more a fade out...
+            break;
         default: assert(false);
     }
 }
