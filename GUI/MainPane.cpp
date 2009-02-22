@@ -576,6 +576,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
                         }
                         else if(!track->graphics->docked) track->graphics->dock();
                     }
+                    if(undocked->graphics->collapsed) undocked->graphics->setCollapsed(false);
                     DisplayFrame::updateVerticalScrollbar();
                     getCurrentSequence()->setCurrentTrack(undocked);
                 }

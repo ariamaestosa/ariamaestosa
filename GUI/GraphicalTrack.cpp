@@ -126,18 +126,18 @@ class BitmapButton : public AriaWidget
 {
     int y_offset;
     bool enabled;
-    bool toggleBtn;
+    //bool toggleBtn;
     bool centerX;
     AriaRender::ImageState state;
 public:
     Drawable* drawable;
 
-    BitmapButton(int width, int y_offset, Drawable* drawable, bool toggleBtn=false, bool centerX=false) : AriaWidget(width)
+    BitmapButton(int width, int y_offset, Drawable* drawable,/* bool toggleBtn=false,*/ bool centerX=false) : AriaWidget(width)
     {
         BitmapButton::drawable = drawable;
         BitmapButton::y_offset = y_offset;
         enabled = true;
-        BitmapButton::toggleBtn = toggleBtn;
+        //BitmapButton::toggleBtn = toggleBtn;
         BitmapButton::centerX = centerX;
         state = AriaRender::STATE_NORMAL;
     }
@@ -334,8 +334,8 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
     components->addFromLeft(muteButton);
 
     dockToolBar = new ToolBar<BlankField>();
-    dockToolBar->addItem( new BitmapButton( 16, 14, maximizeTrackDrawable,false, false), 0 );
-    dockToolBar->addItem( new BitmapButton( 16, 14, dockTrackDrawable,    false, false), 0 );
+    dockToolBar->addItem( new BitmapButton( 16, 14, maximizeTrackDrawable, false), 0 );
+    dockToolBar->addItem( new BitmapButton( 16, 14, dockTrackDrawable    , false), 0 );
     components->addFromLeft(dockToolBar);
     dockToolBar->layout();
 
@@ -343,31 +343,31 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
     components->addFromLeft(trackName);
 
     gridCombo = new ToolBar<ComboBox>();
-    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_1,  false, true ), 0 );
-    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_2,  false, true ), 0 );
-    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_4,  false, true ), 0 );
-    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_8,  false, true ), 0 );
-    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_16, false, true ), 0 );
-    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_32, false, true ), 0 );
-    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_triplet, false, true ), 25 );
+    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_1, true ), 0 );
+    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_2, true ), 0 );
+    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_4, true ), 0 );
+    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_8, true ), 0 );
+    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_16, true ), 0 );
+    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_32, true ), 0 );
+    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_triplet, true ), 25 );
     components->addFromLeft(gridCombo);
     gridCombo->layout();
 
-    scoreButton = new BitmapButton(32, 7, score_view, true);
+    scoreButton = new BitmapButton(32, 7, score_view);
     components->addFromLeft(scoreButton);
-    pianoButton = new BitmapButton(32, 7, keyboard_view, true);
+    pianoButton = new BitmapButton(32, 7, keyboard_view);
     components->addFromLeft(pianoButton);
-    tabButton = new BitmapButton(32, 7, guitar_view, true);
+    tabButton = new BitmapButton(32, 7, guitar_view);
     components->addFromLeft(tabButton);
-    drumButton = new BitmapButton(32, 7, drum_view, true);
+    drumButton = new BitmapButton(32, 7, drum_view);
     components->addFromLeft(drumButton);
-    ctrlButton = new BitmapButton(32, 7, controller_view, true);
+    ctrlButton = new BitmapButton(32, 7, controller_view);
     components->addFromLeft(ctrlButton);
 
     sharpFlatPicker = new ToolBar<BlankField>();
-    sharpFlatPicker->addItem( (new BitmapButton( 14, 21, sharpSign,   false, true ))->setImageState(AriaRender::STATE_NOTE), 6 );
-    sharpFlatPicker->addItem( (new BitmapButton( 14, 24, flatSign,    false, true ))->setImageState(AriaRender::STATE_NOTE), 6 );
-    sharpFlatPicker->addItem( (new BitmapButton( 14, 21, naturalSign, false, true ))->setImageState(AriaRender::STATE_NOTE), 0 );
+    sharpFlatPicker->addItem( (new BitmapButton( 14, 21, sharpSign,   true ))->setImageState(AriaRender::STATE_NOTE), 6 );
+    sharpFlatPicker->addItem( (new BitmapButton( 14, 24, flatSign,    true ))->setImageState(AriaRender::STATE_NOTE), 6 );
+    sharpFlatPicker->addItem( (new BitmapButton( 14, 21, naturalSign, true ))->setImageState(AriaRender::STATE_NOTE), 0 );
     components->addFromLeft(sharpFlatPicker);
 
     instrumentName = new BlankField(144);
@@ -443,11 +443,12 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
             DisplayFrame::updateVerticalScrollbar();
         }
 
-        // dock
+        // maximize button
         if( dockToolBar->getItem(0).clickIsOnThisWidget(winX, mousey) )
         {
             if(not getCurrentSequence()->maximize_track_mode)
             {
+                // switch on maximize mode
                 const int track_amount = getCurrentSequence()->getTrackAmount();
                 for(int n=0; n<track_amount; n++)
                 {
@@ -477,22 +478,11 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                 getCurrentSequence()->maximize_track_mode = false;
             }
         }
-        if( dockToolBar->getItem(1).clickIsOnThisWidget(winX, mousey) )
+        // dock button
+        else if( dockToolBar->getItem(1).clickIsOnThisWidget(winX, mousey) )
         {
-            if(getCurrentSequence()->maximize_track_mode)
-            {
-                // switch off maximize mode. FIXME - duplicate code, see above
-                const int track_amount = getCurrentSequence()->getTrackAmount();
-                for(int n=0; n<track_amount; n++)
-                {
-                    Track* track = getCurrentSequence()->getTrack(n);
-                    if(track->graphics->docked) track->graphics->dock(false);
-                    track->graphics->maximizeHeight(false);
-                }
-                DisplayFrame::updateVerticalScrollbar();
-                getCurrentSequence()->maximize_track_mode = false;
-            }
-            else
+            // This button is disabled in maximized mode
+            if(not getCurrentSequence()->maximize_track_mode)
             {
                 dock();
                 DisplayFrame::updateVerticalScrollbar();
@@ -777,7 +767,11 @@ int GraphicalTrack::getEditorHeight(){        return height;        }
 
 void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, const bool focus)
 {
-
+    // mark 'dock' button as disabled when maximize mode is activated
+    dockToolBar->getItem(1).setImageState( getCurrentSequence()->maximize_track_mode ?
+                                          AriaRender::STATE_GREY :
+                                          AriaRender::STATE_NORMAL );
+    
     const bool channel_mode = sequence->getChannelManagementType() == CHANNEL_MANUAL;
 
     int barHeight=EXPANDED_BAR_HEIGHT;
@@ -942,6 +936,13 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     AriaRender::hollow_rect(grid_selection_x, y+15, grid_selection_x+16, y+30);
     if(grid->isTriplet()) AriaRender::hollow_rect(mgrid_triplet->x, y+15, mgrid_triplet->x+16, y+30);
 
+    // mark maximize mode as on if relevant
+    if(getCurrentSequence()->maximize_track_mode)
+    {
+        const int rectx = dockToolBar->getItem(0).getX();
+        AriaRender::hollow_rect(rectx, y+13, rectx+16, y+29);
+    }
+    
     // draw instrument name
     AriaRender::images();
     AriaRender::color(0,0,0);
