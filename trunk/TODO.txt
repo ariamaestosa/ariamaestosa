@@ -122,7 +122,7 @@ repetition detection:
     - sometimes does 41-42 43-44 and not 41-44
     - tab export : x2 can appear on new line...
     - repeated measures need measure numbers too
-    - sometimes uses, in repetitions, measures numbers that do not appear on the tab (that are inside a previous repetition)
+    - sometimes uses, in repetitions, measures that are not printed (that are inside a previous repetition)
 
 * crash when cancelling printing (wx bug?)
 
