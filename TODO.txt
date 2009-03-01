@@ -27,33 +27,34 @@ NOTE: sorry, this is very raw :)
 		- make portamento more usable
 		- copy/paste
 		- many controller effects would gain from being accessible somewhere else than in control editor
-		- copy control events along notes
-		- wide pitch bends
-		- should maybe appear under current editor? it's always useful to see the notes when applying effects
+            - tying control events to notes
+            - copy control events along notes
+		- should appear under current editor. it's always useful to see the notes when applying effects
         - support fine values
         - support wide pitch-bend
  - non-linear/riff-based song editing (e.g. to repeat chorus you don't need to keep multiple copies of it)
- - allow using another renderer than OpenGL
  - multiple program changes
  - changes to song should be heard if done while playing
- - show more than one editor at once
+ - show more than one editor at once for the same track
 
 ************************* NEW FEATURES TO ADD: *************************
 
 * score print :
-    - add non-linear printing...
-    - repetitions never detected in multi-track printing (maybe; would need a test-file to reproduce it)
+    - Show ottava bassa/alta signs
     - when there's small lines above/below score, the vertical measure line continues beyond the score
     - show F clef + key signature
     - if you show both F and G keys, both are given equal vertical space, even though one may need more than another
     - show time sig on printed scores/tabs
-    - skip series of empty measures
     - allow setting font size, number of lines per page, zoom, etc...
-    - Show ottava bassa/alta signs
-    
+    - add non-linear printing...
+
+ - printing : skip series of empty measures ?
+
+ - hear note/drum by clicking on its name in left part
+ 
  + make more features accessible graphically (as opposed to keyboard-only)
-   - add new tools, that allow adding notes without dragging (and resizing without keyboard, and selecting, and...?) ?
-   - add keyboard shortcut to change note length
+ - add new tools, that allow adding notes without dragging (and resizing without keyboard, and selecting, and...?) ?
+ - elements you get from clicking on the left area should appear in the main menubar too
 
  - allow shift-clicking in measure bar to select more measures
 
@@ -61,13 +62,13 @@ NOTE: sorry, this is very raw :)
  - .aria files don't remember docked tracks
  - background choices are not saved to .aria files
 
+ - song length should automatically grow when pasting goes past the end of the song
+
  - when scaling entire song, scale control events and time sig changes too
 
  + linux : export to wav when not using timidity?
  + linux : offer to launch timidity deamon if it's not running
  + linux : proper ALSA port selection (in preferences?)
-
- - elements you get from clicking on the left area should appear in the main menubar too
 
  - change whole track pitch/volume
 
@@ -86,7 +87,6 @@ NOTE: sorry, this is very raw :)
  + use wxNewId() ?
  - add background support in other editors than keyboard
  - guitar mode - allow to paste pitch or string fret
- - hear note/drum by clicking on its name in left part
  - controllers have only coarse values (no fine value)
  - y zoom (make keyboard view more compact?)
  - draw correctly short tablature notes [don't repeat number when it's the same for several consecutive short notes?]
@@ -95,7 +95,6 @@ NOTE: sorry, this is very raw :)
  - resize notes by dragging
  - when hitting space during a selection, finish selection before playing
  - clicking outside volume picker should close it
- - song length should automatically grow when pasting goes past the end of the song
  - fix overlapping notes that don't have the same start tick
  - the first click, that activates a track, should not deselect
  - score editor should be able to display notes with more than 2 flags (unusure... those with 2 are already so small and barely visible)
@@ -128,9 +127,6 @@ repetition detection:
 
 + score editor - sharp or flat notes at time=0 have their sign hidden behind grey bar
 
-- when stopping play with spacebar, pause button remains (only on my old PPC?)
-- crashes when opening 2+ files from the finder (can't reproduce)
-
 - "rearrange selected notes" doesn't always work optimally
 
 - score : flat/sharp/natural signs tend to appear obscured (behind note stem if in a group... behind silence... etc.)
@@ -142,7 +138,7 @@ repetition detection:
 
 - hard to resize last track
 
- - in manual channel management mode, it's still a bit too easy to get multiple tracks on the same channel with different isntruments
+ - in manual channel management mode, it's still a bit too easy to get multiple tracks on the same channel with different instruments
     (for instance by switching to and from drum editor, etc.)
 
  - when changing measure length in a song that already has midi events in it, song length becomes wrong compared to midi events
