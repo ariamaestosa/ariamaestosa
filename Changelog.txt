@@ -1,6 +1,7 @@
 1.2b6
 - Better G clef on printed scores
 - Added F clef render on printed scores
+- Added dotted silence rendering
 
 1.2b5
 - More minor linux fixes
