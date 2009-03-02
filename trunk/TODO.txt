@@ -101,8 +101,6 @@ NOTE: sorry, this is very raw :)
 
  ************************* BUGS: *************************
  
-* assert fails when printing one score track if for whom the bell tolls cover
- 
 * problem with render being being rendered one time out of two... :( (hard to reproduce)
 
 * red images

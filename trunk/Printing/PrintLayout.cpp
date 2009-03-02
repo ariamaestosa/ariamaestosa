@@ -388,36 +388,38 @@ int LayoutLine::getFirstMeasure() const
 int LayoutLine::getLastNote() const
 {
     MeasureToExport& meas = getMeasureForElement(layoutElements.size()-1);
-    Track* t = getTrack();
+    const Track* t = getTrack();
     
     const int tamount = meas.trackRef.size();
-    assert(tamount != 0);
-    for(int i=0; i<tamount; i++)
+    if(tamount == 0)
     {
-        if(meas.trackRef[i].track == t) return meas.trackRef[i].lastNote;
-    }
-    assert(false);
-    return -1;
-    
-    /*
-    int answer = -1;
-    const int first_measure = getFirstMeasure();
-    const int last_measure = getLastMeasure();
-    const int from_tick = getMeasureData()->firstTickInMeasure(first_measure);
-    const int to_tick   = getMeasureData()->lastTickInMeasure(last_measure);
-    const Track* t = getTrack();
-
-    const int noteAmount = t->getNoteAmount();
-    for(int n=0; n<noteAmount; n++)
-    {
-        if(t->getNoteStartInMidiTicks(n) >= from_tick and t->getNoteStartInMidiTicks(n) < to_tick)
+        int answer = -1;
+        const int first_measure = getFirstMeasure();
+        const int last_measure = getLastMeasure();
+        const int from_tick = getMeasureData()->firstTickInMeasure(first_measure);
+        const int to_tick   = getMeasureData()->lastTickInMeasure(last_measure);
+        
+        const int noteAmount = t->getNoteAmount();
+        for(int n=0; n<noteAmount; n++)
         {
-            answer = n;
+            if(t->getNoteStartInMidiTicks(n) >= from_tick and t->getNoteStartInMidiTicks(n) < to_tick)
+            {
+                answer = n;
+            }
+            else if(answer != -1) return answer;
         }
-        else if(answer != -1) return answer;
+        return answer;
     }
-    return answer;
-     */
+    else
+    {
+        for(int i=0; i<tamount; i++)
+        {
+            if(meas.trackRef[i].track == t) return meas.trackRef[i].lastNote;
+        }
+        assert(false);
+        return -1;
+    }
+
 }
      
 int LayoutLine::getFirstNote() const
@@ -425,15 +427,31 @@ int LayoutLine::getFirstNote() const
     const int measure = getFirstMeasure();
     const int from_tick = getMeasureData()->firstTickInMeasure(measure);
     const Track* t = getTrack();
-    const int noteAmount = t->getNoteAmount();
-    for(int n=0; n<noteAmount; n++)
+    
+    MeasureToExport& meas = getMeasureForElement(layoutElements.size()-1);
+    const int tamount = meas.trackRef.size();
+    
+    if(tamount == 0)
     {
-        if(t->getNoteStartInMidiTicks(n) >= from_tick)
+        const int noteAmount = t->getNoteAmount();
+        for(int n=0; n<noteAmount; n++)
         {
-            return n;
+            if(t->getNoteStartInMidiTicks(n) >= from_tick)
+            {
+                return n;
+            }
         }
+        return -1;
     }
-    return -1;
+    else
+    {
+        for(int i=0; i<tamount; i++)
+        {
+            if(meas.trackRef[i].track == t) return meas.trackRef[i].firstNote;
+        }
+        assert(false);
+        return -1;
+    }
 }
 int LayoutLine::calculateHeight()
 {
