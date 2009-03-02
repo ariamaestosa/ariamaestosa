@@ -325,7 +325,8 @@ void renderSilenceCallback(const int tick, const int tick_length, const int sile
     // dotted
     if(dotted)
     {
-        // FIXME - implement
+        wxPoint headLocation( x + (type < 4 ? 175 : 75), silences_y+30 );
+        global_dc->DrawEllipse( headLocation, wxSize(15,15) );
     }
 
     // triplet

@@ -391,6 +391,7 @@ int LayoutLine::getLastNote() const
     Track* t = getTrack();
     
     const int tamount = meas.trackRef.size();
+    assert(tamount != 0);
     for(int i=0; i<tamount; i++)
     {
         if(meas.trackRef[i].track == t) return meas.trackRef[i].lastNote;
