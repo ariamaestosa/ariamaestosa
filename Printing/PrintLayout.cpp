@@ -475,12 +475,17 @@ void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x
 
     //std::cout << "last_of_page=" << last_of_page << std::endl;
 
-    // draw vertical grey lines to show these lines belong toghether
+    const int margin_below_track = 220;
+    
+    // draw vertical line to show these lines belong toghether
     if(trackAmount>1)
     {
-        dc.SetPen(  wxPen( wxColour(150,150,150), 3 ) );
-        dc.DrawLine( x0+3, y0, x0+3, y0+height-150); // FIXME - 150 is an arbitrary number to fit the margin under tracks
-        dc.DrawLine( x1-3, y0, x1-3, y0+height-150);
+        dc.SetPen(  wxPen( wxColour(150,150,150), 25 ) );
+        dc.DrawLine( x0-3, y0, x0-3, y0+height-margin_below_track);
+        dc.DrawLine( x0-3, y0, x0+30-3, y0-50);
+        dc.DrawLine( x0-3, y0+height-margin_below_track, x0+30-3, y0+height-margin_below_track+50);
+        
+        dc.DrawLine( x1-3, y0, x1-3, y0+height-margin_below_track);
     }
 
     float current_y = y0;
@@ -495,7 +500,7 @@ void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x
         //std::cout << "* allocating " <<track_height << " out of " << height << " (" << height_percent[n] << "%)" << std::endl;
 
         track->drawLine(*this, dc, x0, current_y, x1,
-                        current_y+(track_height-220),
+                        current_y+(track_height-margin_below_track),
                         n==0);
         current_y += track_height;
         //assertExpr(current_y,<=,y1);
