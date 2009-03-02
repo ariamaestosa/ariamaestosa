@@ -91,7 +91,19 @@ void renderNatural(wxDC& dc, const int x, const int y)
 }
 void renderGClef(wxDC& dc, const int x, const float score_bottom, const float b_line_y)
 {
+    static wxBitmap gclef( getResourcePrefix() + wxT("/score/keyG.png"), wxBITMAP_TYPE_PNG );
+    
+    const int b_on_image = 30;
+    const int bottom_on_image = 49;
+    const float scale = abs(score_bottom - b_line_y) / (float)(bottom_on_image - b_on_image);
+    const int y = score_bottom - bottom_on_image*scale;
+    
+    wxBitmap scaled = wxBitmap(gclef.ConvertToImage().Scale(gclef.GetWidth()*scale, gclef.GetHeight()*scale));
+    
 
+    dc.DrawBitmap(scaled, x, y, true);
+    
+/*
     dc.SetPen(  wxPen( wxColour(0,0,0), 7 ) );
 
     const float scale = abs(score_bottom - b_line_y) / 6.729;
@@ -127,7 +139,7 @@ void renderGClef(wxDC& dc, const int x, const float score_bottom, const float b_
 #undef POINT
 
     dc.DrawSpline(21, points);
-
+*/
 }
 
 PrintXConverter* x_converter = NULL;
@@ -631,7 +643,9 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
     // line header if any
     if(line.layoutElements[0].type == LINE_HEADER)
     {
-        if(not f_clef) renderGClef(dc, line.layoutElements[0].x, LEVEL_TO_Y(last_score_level)+10, LEVEL_TO_Y(last_score_level-4)-5);
+        if(not f_clef) renderGClef(dc, line.layoutElements[0].x,
+                                   LEVEL_TO_Y(last_score_level)+10,
+                                   LEVEL_TO_Y(last_score_level-4)-5);
     }
     
     // draw notes heads
