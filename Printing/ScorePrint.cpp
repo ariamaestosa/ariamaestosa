@@ -459,6 +459,9 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     const bool g_clef = scoreEditor->isGClefEnabled();
     const bool f_clef = scoreEditor->isFClefEnabled();
 
+    const float first_clef_proportion = 0.4;
+    const float second_clef_proportion = 0.4;
+    
     int extra_lines_above_g_score = 0;
     int extra_lines_under_g_score = 0;
     int extra_lines_above_f_score = 0;
@@ -484,7 +487,9 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     //    " extra_lines_under_f_score = " << extra_lines_under_f_score << std::endl;
 
     // get the underlying common implementation rolling
-    beginLine(&dc, &line, x0, y0, x1, y1, show_measure_number);
+    // since height is used to determine where to put repetitions/notes/etc.
+    // only pass the height of the first score if there's 2, so stuff don't appear between both scores
+    beginLine(&dc, &line, x0, y0, x1, ( f_clef and g_clef ? y0+(y1-y0)*first_clef_proportion : y1 ), show_measure_number);
 
     // prepare the score analyser
     x_converter = new PrintXConverter(this);
@@ -573,8 +578,8 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     {
         // FIXME - don't split heavenly if one clef contains more stuff than the other...
         g_clef_y_from = y0;
-        g_clef_y_to = y0 + (int)round((y1 - y0)*0.40);
-        f_clef_y_from = y0 + (int)round((y1 - y0)*0.60);
+        g_clef_y_to = y0 + (int)round((y1 - y0)*first_clef_proportion);
+        f_clef_y_from = y0 + (int)round((y1 - y0)*(1-second_clef_proportion));
         f_clef_y_to = y1;
     }
     else { assert(false); }
@@ -653,6 +658,16 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
         dc.DrawLine(x0, y, x1, y);
     }
 
+    // render vertical dividers
+    const int measure_dividers_from_y = LEVEL_TO_Y(first_score_level);
+    const int measure_dividers_to_y = LEVEL_TO_Y(last_score_level);
+    
+    const int elamount = line.layoutElements.size();
+    for(int n=0; n<elamount; n++)
+    {
+        drawVerticalDivider(&line.layoutElements[n], measure_dividers_from_y, measure_dividers_to_y);
+    }
+    
     // line header if any
     if(line.layoutElements[0].type == LINE_HEADER)
     {
