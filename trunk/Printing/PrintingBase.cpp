@@ -327,7 +327,6 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
 // do not call, override in children
 EditorPrintable::EditorPrintable(){}
 EditorPrintable::~EditorPrintable(){}
-void EditorPrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const bool draw_m_num){}
 
 void EditorPrintable::beginLine(wxDC* dc, LayoutLine* line,  int x0, const int y0, const int x1, const int y1, bool show_measure_number)
 {
@@ -338,8 +337,6 @@ void EditorPrintable::beginLine(wxDC* dc, LayoutLine* line,  int x0, const int y
     EditorPrintable::show_measure_number = show_measure_number;
     EditorPrintable::currentLine = line;
     EditorPrintable::dc = dc;
-
-    //std::cout << "setting current line to " << line << std::endl;
     
     // 2 spaces allocated for left area of the line
     pixel_width_of_an_unit = (float)(x1 - x0) / (float)(line->width_in_units+2);
@@ -385,6 +382,15 @@ LayoutElement* EditorPrintable::getElementForMeasure(const int measureID)
     }
     return NULL;
 }
+    
+void EditorPrintable::drawVerticalDivider(LayoutElement* el, const int y0, const int y1)
+{
+    const int elem_x_start = el->x; // currentLine->layoutElements[elemenentID].x
+
+    // draw vertical line that starts measure
+    dc->SetPen(  wxPen( wxColour(0,0,0), 10 ) );
+    dc->DrawLine( elem_x_start, y0, elem_x_start, y1);
+}
 LayoutElement* EditorPrintable::continueWithNextElement()
 {
     currentLayoutElement ++;
@@ -394,18 +400,6 @@ LayoutElement* EditorPrintable::continueWithNextElement()
     std::vector<LayoutElement>& layoutElements = currentLine->layoutElements;
 
     const int elem_x_start = currentLine->layoutElements[currentLayoutElement].x;
-
-    /*
-    if(currentLayoutElement == 0) xloc = 2;
-    else if(currentLayoutElement > 0) xloc += layoutElements[currentLayoutElement-1].width_in_units;
-
-    const int elem_x_start = getCurrentElementXStart();
-    currentLine->layoutElements[currentLayoutElement].x = elem_x_start;
-    currentLine->layoutElements[currentLayoutElement].x2 =  getCurrentElementXEnd();
-*/
-    // draw vertical line that starts measure
-    dc->SetPen(  wxPen( wxColour(0,0,0), 10 ) );
-    dc->DrawLine( elem_x_start, y0, elem_x_start, y1);
 
     dc->SetTextForeground( wxColour(0,0,255) );
 

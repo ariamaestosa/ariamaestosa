@@ -50,6 +50,8 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
     LayoutElement* currentElement;
     while((currentElement = continueWithNextElement()) and (currentElement != NULL))
     {
+        drawVerticalDivider(currentElement, y0, y1);
+        
         if(currentElement->type == LINE_HEADER)
         {
             wxFont oldfont = dc.GetFont();

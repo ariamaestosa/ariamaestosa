@@ -44,7 +44,7 @@
  
  The EditorPrintable base class manages stuff like drawing measures, repetitions,
  determining the position of notes, etc. Only the part of the drawing that is specific
- to a notation mode is left to the child. 'drawLine' is to b overridden by children.
+ to a notation mode is left to the child. 'drawLine' is to be overridden by children.
  Children are to call 'beginLine' early. Then they can iterate through LayoutElements
  by calling continueWithNextElement() in a loop until NULL is returned. Then, for
  returned elements of type SINGLE_MEASURE, the child can get note information by
@@ -58,6 +58,7 @@ namespace AriaMaestosa
     
 class EditorPrintable
 {
+protected:
     // keeps some info on the track currently being printed
     int x0, y0, x1, y1;
     bool show_measure_number;
@@ -65,7 +66,6 @@ class EditorPrintable
     LayoutLine* currentLine;
     int layoutElementsAmount;
     wxDC* dc;
-protected:
     float pixel_width_of_an_unit;
 public:
     EditorPrintable();
@@ -73,7 +73,7 @@ public:
         
     /** Called by the print code when it's time to render a line. This will be handled in the appropriate subclass.
     */
-    virtual void drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1, bool show_measure_number);
+    virtual void drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1, bool show_measure_number) = 0;
 
     /** Called by the layout code to know the relative height of this line
     */
@@ -86,6 +86,7 @@ public:
     LayoutElement* getElementForMeasure(const int measureID);
     int getNotePrintX(int noteID);
     int tickToX(const int tick);
+    void drawVerticalDivider(LayoutElement* el, const int y0, const int y1);
 };
     
 class AriaPrintable
