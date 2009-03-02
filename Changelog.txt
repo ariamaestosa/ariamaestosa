@@ -1,3 +1,6 @@
+1.2b6
+- Better G clef on printed scores
+
 1.2b5
 - More minor linux fixes
 - Added Code::Blocks project
