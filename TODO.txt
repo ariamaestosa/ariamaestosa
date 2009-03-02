@@ -42,7 +42,7 @@ NOTE: sorry, this is very raw :)
 * score print :
     - Show ottava bassa/alta signs
     - when there's small lines above/below score, the vertical measure line continues beyond the score
-    - show F clef + key signature
+    - show key signature
     - if you show both F and G keys, both are given equal vertical space, even though one may need more than another
     - show time sig on printed scores/tabs
     - allow setting font size, number of lines per page, zoom, etc...
