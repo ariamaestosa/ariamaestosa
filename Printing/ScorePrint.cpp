@@ -68,12 +68,12 @@ void renderFlat(wxDC& dc, const int x, const int y)
 
     wxPoint points[] =
     {
-        wxPoint(x,      y-30/2),
-        wxPoint(x,      y+120/2),
-        wxPoint(x+10/2, y+120/2),
-        wxPoint(x+50/2, y+60/2),
-        wxPoint(x+30/2, y+40/2),
-        wxPoint(x,      y+60/2)
+        wxPoint(x,    y-15-40),
+        wxPoint(x,    y+60-40),
+        wxPoint(x+5,  y+60-40),
+        wxPoint(x+25, y+30-40),
+        wxPoint(x+15, y+20-40),
+        wxPoint(x,    y+30-40)
     };
     dc.DrawSpline(6, points);
 }
@@ -677,6 +677,26 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
         else renderFClef(dc, line.layoutElements[0].x,
                          LEVEL_TO_Y(first_score_level),
                          LEVEL_TO_Y(first_score_level+3));
+        
+        // key
+        
+        // on which level to put the signs (0 is the level of the highest sign when all are shown)
+        const unsigned short int sharp_sign_lvl[] = { 1, 4, 0, 3, 6, 2, 5 };
+        const unsigned short int flat_sign_lvl[] = { 3, 0, 4, 1, 5, 2, 6 };
+        
+        const int sharps = track->graphics->getCurrentEditor()->getKeySharpsAmount();
+        const int flats = track->graphics->getCurrentEditor()->getKeyFlatsAmount();
+        
+        for(int n=0; n<sharps; n++)
+        {
+            const int level = first_score_level + (f_clef ? 1 : -1) + sharp_sign_lvl[n];
+            renderSharp( dc, line.layoutElements[0].x+300+n*35, LEVEL_TO_Y(level) );
+        }
+        for(int n=0; n<flats; n++)
+        {
+            const int level = first_score_level + (f_clef ? 3 : 1) + flat_sign_lvl[n];
+            renderFlat( dc, line.layoutElements[0].x+300+n*35, LEVEL_TO_Y(level) );
+        }
     }
     
     // draw notes heads
@@ -727,7 +747,7 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
 
         // draw sharpness sign if relevant
         if(noteRenderInfo.sign == SHARP)        renderSharp  ( dc, noteRenderInfo.x, noteRenderInfo.getY() - 40  );
-        else if(noteRenderInfo.sign == FLAT)    renderFlat   ( dc, noteRenderInfo.x, noteRenderInfo.getY() - 110 );
+        else if(noteRenderInfo.sign == FLAT)    renderFlat   ( dc, noteRenderInfo.x, noteRenderInfo.getY() - 40  );
         else if(noteRenderInfo.sign == NATURAL) renderNatural( dc, noteRenderInfo.x, noteRenderInfo.getY() - 50  );
 
     } // next note

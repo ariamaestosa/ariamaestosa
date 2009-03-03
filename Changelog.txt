@@ -4,6 +4,7 @@
 - Added dotted silence rendering
 - Printing : fixed vertical measure dividers to play nicely with scores
 - Fixed crash when printing a single track
+- Key signature now appears on printed scores
 
 1.2b5
 - More minor linux fixes

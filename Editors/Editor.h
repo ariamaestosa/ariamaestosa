@@ -76,6 +76,7 @@ protected:
     bool selecting;
     int ystep;
 
+    // FIXME : what does this do here? Musical information belongs in 'Track'
     int key_sharps_amnt;
     int key_flats_amnt;
 
