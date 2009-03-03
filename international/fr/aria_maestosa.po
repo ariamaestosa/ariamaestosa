@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-29 14:11-0500\n"
-"PO-Revision-Date: 2008-12-29 14:14-0500\n"
+"POT-Creation-Date: 2009-03-02 21:19-0500\n"
+"PO-Revision-Date: 2009-03-02 21:21-0500\n"
 "Last-Translator: Marianne Gagnon (Auria) <auria.mg@gmail.com>\n"
 "Language-Team: French <traduc@traduc.org>\n"
 "MIME-Version: 1.0\n"
@@ -98,7 +98,7 @@ msgstr "Ajouter une piste"
 
 #. I18N: - in the preferences, for "Play during edit (default value)" (the 3 chocies being "Always", "On note change" and "Never")
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-#: Dialogs/Preferences.cpp:103
+#: Dialogs/Preferences.cpp:114
 #: GUI/MainFrameMenuBar.cpp:188
 msgid "Always"
 msgstr "Toujours"
@@ -128,24 +128,34 @@ msgstr "Séquence Aria Maestosa"
 msgid "Automatic"
 msgstr "Automatique"
 
+#. I18N: - in notation export dialog
+#: Dialogs/NotationExportDialog.cpp:93
+msgid "Automatically detect repeated measures (experimental!)"
+msgstr "Automatiquement détecter les répétitions (expérimental!)"
+
+#. I18N: - in the preferences, where we choose default score view
+#: Dialogs/Preferences.cpp:127
+msgid "Both Musical and Linear"
+msgstr "Notation linéaire et musicale"
+
 #: Dialogs/CustomNoteSelectDialog.cpp:162
 #: Dialogs/NotationExportDialog.cpp:141
 #: Dialogs/ScalePicker.cpp:142
-#: Pickers/BackgroundPicker.cpp:167
+#: Pickers/BackgroundPicker.cpp:170
 #: Pickers/TuningPicker.cpp:250
 msgid "Cancel"
 msgstr "Annuler"
 
-#: GUI/MainFrame.cpp:965
+#: GUI/MainFrame.cpp:953
 msgid "Changes will be lost if you close the sequence. Do you really want to continue?"
 msgstr "Les modifications seront perdues si vous fermez la séquence. Voulez-vous réellement continuer?"
 
 #. I18N: - in the preferences dialog
-#: Dialogs/Preferences.cpp:160
+#: Dialogs/Preferences.cpp:203
 msgid "Changes will take effect next time you open the app."
 msgstr "Les modifications prendront effet à la prochaine ouverture du logiciel."
 
-#: GUI/GraphicalTrack.cpp:566
+#: GUI/GraphicalTrack.cpp:554
 msgid "Channel choice"
 msgstr "Choix de canal"
 
@@ -154,7 +164,7 @@ msgstr "Choix de canal"
 msgid "Channel management"
 msgstr "Gestion des canaux"
 
-#: GUI/GraphicalTrack.cpp:514
+#: GUI/GraphicalTrack.cpp:502
 msgid "Choose a new track title."
 msgstr "Entrez le nom de la piste."
 
@@ -162,7 +172,7 @@ msgstr "Entrez le nom de la piste."
 msgid "Close\tCtrl-W"
 msgstr "Fermer\tCtrl-W"
 
-#: GUI/MainFrame.cpp:966
+#: GUI/MainFrame.cpp:954
 #: GUI/MainFrameMenuBar.cpp:272
 #: GUI/MainFrameMenuBar.cpp:313
 #: GUI/MainFrameMenuBar.cpp:345
@@ -195,6 +205,11 @@ msgstr "La piste active"
 msgid "Custom Tuning Editor"
 msgstr "Accordeur de guitare"
 
+#. I18N: - in the preferences
+#: Dialogs/Preferences.cpp:124
+msgid "Default Score View"
+msgstr "Affichage par défaut des partitions"
+
 #: Pickers/BackgroundPicker.cpp:139
 msgid "Default Volume"
 msgstr "Volume par défaut"
@@ -220,7 +235,7 @@ msgstr "Voulez-vous réellement supprimer les mesures sélectionnées?"
 msgid "Do you really want to remove this time sig change?"
 msgstr "Voulez-vous vraiment supprimer ce changement de mesure?"
 
-#: GUI/MainFrame.cpp:300
+#: GUI/MainFrame.cpp:311
 msgid "Duration"
 msgstr "Durée"
 
@@ -228,12 +243,11 @@ msgstr "Durée"
 msgid "Edit"
 msgstr "Edition"
 
-#: GUI/GraphicalTrack.cpp:564
+#: GUI/GraphicalTrack.cpp:552
 msgid "Enter the ID of the channel this track should play in"
 msgstr "Entrez le numéro du canal dans lequel cette piste doit jouer."
 
 #: GUI/MainFrameMenuBar.cpp:169
-#, fuzzy
 msgid "Expanded time sig management"
 msgstr "Gestion étendue des mesures"
 
@@ -254,7 +268,7 @@ msgstr "Exporter notation musicale"
 msgid "F Clef"
 msgstr "Clé de Fa"
 
-#: Images/wxImageLoader.cpp:54
+#: Renderers/GLImage.cpp:50
 msgid "Failed to load resource image"
 msgstr "Erreur lors de la lecture des images ressource"
 
@@ -271,7 +285,7 @@ msgid "Follow Playback"
 msgstr "Suivre la lecture"
 
 #. I18N: - in the preferences
-#: Dialogs/Preferences.cpp:111
+#: Dialogs/Preferences.cpp:134
 msgid "Follow playback by default"
 msgstr "Suivre le curseur de lecture par défaut"
 
@@ -316,18 +330,22 @@ msgid "Key Signature"
 msgstr "Tonalité"
 
 #. I18N: - in the preferences
-#: Dialogs/Preferences.cpp:90
+#: Dialogs/Preferences.cpp:101
 msgid "Language"
 msgstr "Langue"
 
 #. I18N: - when setting pan in controller
-#: Pickers/ControllerChoice.cpp:249
+#: Pickers/ControllerChoice.cpp:182
 msgid "Left"
 msgstr "Gauche"
 
 #. I18N: - in the view settings for score editor. whether to show notes in a "computer" linear way.
 #: Pickers/KeyPicker.cpp:64
 msgid "Linear Notation"
+msgstr "Notation linéaire"
+
+#: Dialogs/Preferences.cpp:127
+msgid "Linear Only"
 msgstr "Notation linéaire"
 
 #. I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
@@ -339,7 +357,7 @@ msgid "Manual"
 msgstr "Manuel"
 
 #. I18N: - in controller, for a controller with min/max range
-#: Pickers/ControllerChoice.cpp:237
+#: Pickers/ControllerChoice.cpp:180
 msgid "Max"
 msgstr "Max"
 
@@ -352,9 +370,13 @@ msgid "Midi file|*.mid;*.midi"
 msgstr "Fichiers Midi|*.mid;*.midi"
 
 #. I18N: - in controller, for a controller with min/max range
-#: Pickers/ControllerChoice.cpp:263
+#: Pickers/ControllerChoice.cpp:178
 msgid "Min"
 msgstr "Min"
+
+#: Dialogs/Preferences.cpp:127
+msgid "Musical Only"
+msgstr "Notation musicale"
 
 #. I18N: - in the view settings for score editor. whether to show notes in a traditional musical way.
 #: Pickers/KeyPicker.cpp:62
@@ -362,7 +384,7 @@ msgid "Musical notation"
 msgstr "Notation musicale"
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-#: Dialogs/Preferences.cpp:103
+#: Dialogs/Preferences.cpp:114
 #: GUI/MainFrameMenuBar.cpp:192
 msgid "Never"
 msgstr "Jamais"
@@ -394,17 +416,17 @@ msgid "Octave -1"
 msgstr "Octave -1"
 
 #. I18N: - in controller, when a controller can only be on/off
-#: Pickers/ControllerChoice.cpp:257
+#: Pickers/ControllerChoice.cpp:176
 msgid "Off"
 msgstr "Inactif"
 
 #. I18N: - in controller, when a controller can only be on/off
-#: Pickers/ControllerChoice.cpp:231
+#: Pickers/ControllerChoice.cpp:174
 msgid "On"
 msgstr "Actif"
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-#: Dialogs/Preferences.cpp:103
+#: Dialogs/Preferences.cpp:114
 #: GUI/MainFrameMenuBar.cpp:190
 msgid "On note change"
 msgstr "Sur un changement de son"
@@ -421,7 +443,7 @@ msgstr "Coller\tCtrl-V"
 msgid "Paste at cursor\tCtrl-Shift-V"
 msgstr "Coller au curseur\tCtrl-Shift-V"
 
-#: GUI/MainFrame.cpp:284
+#: GUI/MainFrame.cpp:294
 msgid "Play"
 msgstr "Jouer"
 
@@ -431,11 +453,11 @@ msgid "Play during edit"
 msgstr "Jouer durant l'édition"
 
 #. I18N: - in the preferences
-#: Dialogs/Preferences.cpp:100
+#: Dialogs/Preferences.cpp:111
 msgid "Play during edit (default value)"
 msgstr "Jouer durant l'édition (valeur par défaut)"
 
-#: GUI/MainFrame.cpp:1051
+#: GUI/MainFrame.cpp:1039
 msgid "Please wait while .aria file is loading."
 msgstr "Veuillez patienter, ouverture en cours..."
 
@@ -451,7 +473,7 @@ msgstr ""
 "Dépendemment de la taille du fichier,\n"
 "cela peut prendre plusieurs minutes."
 
-#: GUI/MainFrame.cpp:1093
+#: GUI/MainFrame.cpp:1081
 msgid "Please wait while midi file is loading."
 msgstr "Veuillez patienter, ouverture en cours..."
 
@@ -460,7 +482,7 @@ msgid "Please wait..."
 msgstr "Veuillez patienter..."
 
 #. I18N: - title of the preferences dialog
-#: Dialogs/Preferences.cpp:78
+#: Dialogs/Preferences.cpp:89
 #: GUI/MainFrameMenuBar.cpp:194
 msgid "Preferences"
 msgstr "Préférences"
@@ -500,7 +522,7 @@ msgid "Remove time sig change"
 msgstr "Supprimer ce changement de mesure"
 
 #. I18N: - when setting pan in controller
-#: Pickers/ControllerChoice.cpp:223
+#: Pickers/ControllerChoice.cpp:184
 msgid "Right"
 msgstr "Droite"
 
@@ -568,11 +590,6 @@ msgstr "Sélection avec critères"
 msgid "Settings"
 msgstr "Options"
 
-#. I18N: - in notation export dialog
-#: Dialogs/NotationExportDialog.cpp:93
-msgid "Show repeated measures (e.g. chorus) only once"
-msgstr "Exporter les mesures répétées (ex. refrain) une fois seulement"
-
 #: GUI/MainFrameMenuBar.cpp:151
 msgid "Snap Notes to Grid"
 msgstr "Ajuster les notes à la grille"
@@ -595,23 +612,23 @@ msgstr "Nom de la chanson"
 msgid "Sorry, failed to export midi file."
 msgstr "Désolé, le fichier midi n'a pas pu être sauvegardé."
 
-#: GUI/MainFrame.cpp:1057
+#: GUI/MainFrame.cpp:1045
 msgid "Sorry, loading .aria file failed."
 msgstr "Désolé, le fichier n'a pas pu être ouvert."
 
-#: GUI/MainFrame.cpp:1099
+#: GUI/MainFrame.cpp:1087
 msgid "Sorry, loading midi file failed."
 msgstr "Désolé, le fichier midi n'a pas pu être ouvert."
 
-#: GUI/MainFrame.cpp:311
+#: GUI/MainFrame.cpp:322
 msgid "Start"
 msgstr "Début"
 
-#: GUI/MainFrame.cpp:288
+#: GUI/MainFrame.cpp:298
 msgid "Stop"
 msgstr "Stop"
 
-#: GUI/MainFrame.cpp:303
+#: GUI/MainFrame.cpp:314
 msgid "Tempo"
 msgstr "Tempo"
 
@@ -625,7 +642,7 @@ msgstr "Le fichier existe deja. Voulez-vous l'écraser?"
 msgid "The selected ALSA device could not be opened."
 msgstr "Cette machine ALSA n'a pu être ouverte"
 
-#: GUI/MainFrame.cpp:306
+#: GUI/MainFrame.cpp:317
 msgid "Time Sig"
 msgstr "Mesure"
 
@@ -656,17 +673,17 @@ msgstr "Pistes"
 msgid "Undo\tCtrl-Z"
 msgstr "Annuler\tCtrl-Z"
 
-#: main.cpp:129
+#: main.cpp:128
 msgid "Unknown file type: "
 msgstr "Type de fichier inconnu: "
 
-#: IO/MidiFileReader.cpp:430
-#: Midi/Sequence.cpp:81
-#: Midi/Sequence.cpp:116
-#: Midi/Sequence.cpp:135
+#: IO/MidiFileReader.cpp:428
+#: Midi/Sequence.cpp:79
+#: Midi/Sequence.cpp:120
+#: Midi/Sequence.cpp:139
 #: Midi/Track.cpp:51
-#: Midi/Track.cpp:699
-#: Midi/Track.cpp:1315
+#: Midi/Track.cpp:715
+#: Midi/Track.cpp:1330
 #: Printing/PrintingBase.cpp:217
 #: Printing/PrintingBase.cpp:223
 msgid "Untitled"
@@ -682,7 +699,7 @@ msgstr "Varie au cours de la pièce"
 msgid "Visible/enabled tracks"
 msgstr "Les pistes visibles et actives"
 
-#: Midi/CommonMidiUtils.cpp:232
+#: Midi/CommonMidiUtils.cpp:230
 msgid ""
 "WARNING: this song has too many\n"
 "channels, expect unpredictable output"
@@ -695,7 +712,7 @@ msgstr ""
 msgid "WAV file"
 msgstr "Fichier WAV"
 
-#: Midi/Sequence.cpp:917
+#: Midi/Sequence.cpp:921
 msgid ""
 "Warning : you are opening a file saved with a version of\n"
 "Aria Maestosa more recent than the version you currently have.\n"
@@ -705,15 +722,11 @@ msgstr ""
 "ultérieure à la version présentement utilisée.\n"
 "Il est possible que le fichier ne s'ouvre pas correctement."
 
-#: Pickers/ControllerChoice.cpp:198
-msgid "Wrong controller ID"
-msgstr "Controlleur inconnu"
-
 #: GUI/MeasureBar.cpp:146
 msgid "You can't remove the first time signature change."
 msgstr "Vous ne pouvez pas supprimer les premiers chiffres indicateurs"
 
-#: GUI/MainFrame.cpp:322
+#: GUI/MainFrame.cpp:333
 msgid "Zoom"
 msgstr "Zoom"
 
@@ -793,6 +806,10 @@ msgstr "version %s"
 msgid "volume"
 msgstr "volume"
 
+#~ msgid "Show repeated measures (e.g. chorus) only once"
+#~ msgstr "Exporter les mesures répétées (ex. refrain) une fois seulement"
+#~ msgid "Wrong controller ID"
+#~ msgstr "Controlleur inconnu"
 #~ msgid "Background"
 #~ msgstr "Arrière-plan"
 #~ msgid "Ignore hidden tracks"

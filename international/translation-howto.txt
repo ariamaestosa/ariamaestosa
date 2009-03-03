@@ -1,4 +1,4 @@
-1. run ./update_pot.sh from international directory if string catalog is not up-tp-date
+1. run ./update_pot.sh from Src directory (./international/update_pot.sh) if string catalog is not up-tp-date
 2. open poEdit
     -> for a first time :
           use 'File > New catalog from POT file'

@@ -90,8 +90,8 @@ public:
 
         // "Show repeated measures only once" checkbox
         //I18N: - in notation export dialog
-        detectRepetitions=new wxCheckBox(this, wxID_ANY,  _("Show repeated measures (e.g. chorus) only once"));
-        detectRepetitions->SetValue(true);
+        detectRepetitions=new wxCheckBox(this, wxID_ANY,  _("Automatically detect repeated measures (experimental!)"));
+        detectRepetitions->SetValue(false);
         boxSizer->Add(detectRepetitions, 0, wxALL, 5);
 
         /*

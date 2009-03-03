@@ -1,10 +1,12 @@
 1.2b6
-- Better G clef on printed scores
-- Added F clef render on printed scores
-- Added dotted silence rendering
-- Printing : fixed vertical measure dividers to play nicely with scores
-- Fixed crash when printing a single track
-- Key signature now appears on printed scores
+- Printimng improvements :
+    - Better G clef on printed scores
+    - Added F clef render on printed scores
+    - Added dotted silence rendering
+    - Printing : fixed vertical measure dividers to play nicely with scores
+    - Fixed crash when printing a single track
+    - Key signature now appears on printed scores
+    - Marked repetition detection as experimental, disabled by default
 
 1.2b5
 - More minor linux fixes
