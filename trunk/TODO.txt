@@ -45,7 +45,8 @@ NOTE: sorry, this is very raw :)
     - allow setting font size, number of lines per page, zoom, etc...
     - add non-linear printing...
     - in multi-track-printing, it can repeat silence measures...
-
+    - red images
+    
  - printing : skip series of empty measures ?
 
  - hear note/drum by clicking on its name in left part
@@ -61,7 +62,8 @@ NOTE: sorry, this is very raw :)
  - background choices are not saved to .aria files
 
  - song length should automatically grow when pasting goes past the end of the song
-
+ - when changing measure length in a song that already has midi events in it, song length becomes wrong compared to midi events
+ 
  - when scaling entire song, scale control events and time sig changes too
 
  + linux : export to wav when not using timidity?
@@ -124,10 +126,9 @@ repetition detection:
 * crash when cancelling printing (wx bug?)
 
 + score editor - sharp or flat notes at time=0 have their sign hidden behind grey bar
+- score : flat/sharp/natural signs tend to appear obscured (behind note stem if in a group... behind silence... etc.)
 
 - "rearrange selected notes" doesn't always work optimally
-
-- score : flat/sharp/natural signs tend to appear obscured (behind note stem if in a group... behind silence... etc.)
 
 - error at startup (quicktime will not play dummy file to init it?)
         error:
@@ -138,8 +139,6 @@ repetition detection:
 
  - in manual channel management mode, it's still a bit too easy to get multiple tracks on the same channel with different instruments
     (for instance by switching to and from drum editor, etc.)
-
- - when changing measure length in a song that already has midi events in it, song length becomes wrong compared to midi events
 
  MINOR / CLEANUP / UNSURE:
  - when wait dialog appears, you can still edit tracks and do operations that may be harmful to current process.

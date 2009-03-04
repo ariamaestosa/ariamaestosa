@@ -385,6 +385,8 @@ LayoutElement* EditorPrintable::getElementForMeasure(const int measureID)
     
 void EditorPrintable::drawVerticalDivider(LayoutElement* el, const int y0, const int y1)
 {
+    if(el->type == TIME_SIGNATURE) return;
+    
     const int elem_x_start = el->x; // currentLine->layoutElements[elemenentID].x
 
     // draw vertical line that starts measure
@@ -406,6 +408,20 @@ LayoutElement* EditorPrintable::continueWithNextElement()
     // ****** empty measure
     if(layoutElements[currentLayoutElement].type == EMPTY_MEASURE)
     {
+    }
+    else if(layoutElements[currentLayoutElement].type == TIME_SIGNATURE)
+    {
+        wxString num   = wxString::Format( wxT("%i"), layoutElements[currentLayoutElement].num   );
+        wxString denom = wxString::Format( wxT("%i"), layoutElements[currentLayoutElement].denom );
+        
+        wxFont oldfont = dc->GetFont();
+        dc->SetFont( wxFont(100,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD) );
+        dc->SetTextForeground( wxColour(0,0,0) );
+        
+        dc->DrawText(num,   layoutElements[currentLayoutElement].x+20, y0 + 10);
+        dc->DrawText(denom, layoutElements[currentLayoutElement].x+20, y0 + (y1 - y0)/2 + 10  );
+        
+        dc->SetFont(oldfont);
     }
     // ****** repetitions
     else if(layoutElements[currentLayoutElement].type == SINGLE_REPEATED_MEASURE or layoutElements[currentLayoutElement].type == REPEATED_RIFF)
