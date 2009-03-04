@@ -136,6 +136,8 @@ bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
 {
 
     const int trackRefAmount = trackRef.size();
+    int total_note_amount = 0;
+    
     for(int tref=0; tref<trackRefAmount; tref++)
     {
         const int my_first_note = trackRef[tref].firstNote;
@@ -148,25 +150,23 @@ bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
         assert( trackRef[tref].track == checkMeasure.trackRef[tref].track );
         Track* track = trackRef[tref].track;
 
-        //std::cout << "checking measures " << (id+1) << " and " << (checkMeasure.id+1) << std::endl;
-        
         // if these 2 measures don't even have the same number of notes, they're definitely not the same
         if( (his_last_note - his_first_note + 1) != (my_last_note - my_first_note + 1) )
         {
-           // std::cout << "  not the same cause they don't have the same amount of notes : " << (his_last_note - his_first_note + 1) << " vs " << (my_last_note - my_first_note + 1) << std::endl;
             return false;
         }
 
 
         const int noteAmount = (his_last_note - his_first_note);
-
+        total_note_amount += noteAmount;
+        
         // don't count empty measures as repetitions 
         if(noteAmount<1)
         {
             // when comparing a multiple-track line, don't stop on empty measures, for other tracks may not be empty
+            // for multi-track lines, variable 'total_note_amount' will be checked at the end to verify measure is not empty
             if(trackRefAmount>1) continue;
-            //std::cout << "  not the same cause they're empty" << std::endl;
-            return false; //empty measure
+            return false;
         }
 
         /*
@@ -230,8 +230,7 @@ bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
 
     } // next track reference
 
-   // std::cout << "   they're the same!!!" << std::endl;
-    
+    if(total_note_amount == 0) return false; // don't count empty measures as repeitions
     return true;
 }
 
@@ -421,7 +420,8 @@ int LayoutLine::getLastNote() const
             MeasureToExport& current_meas = getMeasureForElement(el);
             for(int i=0; i<tamount; i++)
             {
-                if(current_meas.trackRef[i].track == t &&
+                if(current_meas.trackRef.size() > 0 && // FIXME - find why it's sometimes 0
+                   current_meas.trackRef[i].track == t &&
                    current_meas.trackRef[i].lastNote != -1)
                 {
                     return current_meas.trackRef[i].lastNote;
@@ -467,7 +467,8 @@ int LayoutLine::getFirstNote() const
             MeasureToExport& current_meas = getMeasureForElement(el);
             for(int i=0; i<tamount; i++)
             {
-                if(current_meas.trackRef[i].track == t &&
+                if(current_meas.trackRef.size() > 0 && // FIXME - find why it's sometimes empty
+                   current_meas.trackRef[i].track == t &&
                    current_meas.trackRef[i].firstNote != -1)
                     return current_meas.trackRef[i].firstNote;
             }
@@ -831,7 +832,7 @@ void calculateLineLayout(std::vector<LayoutLine>& layoutLines,
 
     // add line header
     LayoutElement el(LayoutElement(LINE_HEADER, -1));
-    el.width_in_units = 5;
+    el.width_in_units = 5; // FIXME - determine width dynamically, depending on contents. tabs needs less, C major needs less, etc.
     current_width += 5;
     layoutLines[currentLine].layoutElements.push_back( el );
 
