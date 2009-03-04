@@ -44,8 +44,8 @@ NOTE: sorry, this is very raw :)
     - show time sig on printed scores/tabs
     - allow setting font size, number of lines per page, zoom, etc...
     - add non-linear printing...
-    - in multi-track-printing, it can repeat silence measures...
     - red images
+    - determine width ofl ine header dynamically, depending on contents : tabs needs less space, C major needs less space, etc.
     
  - printing : skip series of empty measures ?
 
