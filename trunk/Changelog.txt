@@ -9,7 +9,7 @@
     - Marked repetition detection as experimental, disabled by default
     - Fixed printing of notes above/below score (previously broken)
     - Further improved vertical division of space
-    - Initial time signature is now printed
+    - Time signature changes are now printed
 
 1.2b5
 - More minor linux fixes
