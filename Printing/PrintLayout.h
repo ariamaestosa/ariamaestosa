@@ -106,7 +106,8 @@ enum LayoutElementType
     EMPTY_MEASURE,
     REPEATED_RIFF,
     PLAY_MANY_TIMES,
-    LINE_HEADER // like the clef and key (on a score) or the word TAB and the tuning (for tabs)
+    LINE_HEADER, // like the clef and key (on a score) or the word TAB and the tuning (for tabs)
+    TIME_SIGNATURE
 };
 class LayoutElement
 {
@@ -120,6 +121,9 @@ public:
     // used in many-measure repetitions. the first 2 ones are the measures that repeat, the last 2 ones the measures being repeated
     int firstMeasure, lastMeasure, firstMeasureToRepeat, lastMeasureToRepeat;
 
+    // used for time sig elements
+    int num, denom;
+    
     int amountOfTimes; // used for 'play many times' events
 
     float zoom;

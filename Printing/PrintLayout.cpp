@@ -829,11 +829,20 @@ void calculateLineLayout(std::vector<LayoutLine>& layoutLines,
     layoutLines.push_back( LayoutLine(getCurrentPrintable()) );
     int currentLine = 0;
 
+    // add line header
     LayoutElement el(LayoutElement(LINE_HEADER, -1));
     el.width_in_units = 5;
     current_width += 5;
     layoutLines[currentLine].layoutElements.push_back( el );
 
+    // add time signature element
+    LayoutElement el2(LayoutElement(TIME_SIGNATURE, -1));
+    el2.width_in_units = 1;
+    el2.num = getMeasureData()->getTimeSigNumerator(0);
+    el2.denom = getMeasureData()->getTimeSigDenominator(0);
+    current_width += 1;
+    layoutLines[currentLine].layoutElements.push_back( el2 );
+    
     // add layout elements one by one, switching to the next line when there's too many
     // elements on the current one
     for(int n=0; n<layoutElementsAmount; n++)
