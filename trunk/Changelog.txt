@@ -8,6 +8,7 @@
     - Key signature now appears on printed scores
     - Marked repetition detection as experimental, disabled by default
     - Fixed printing of notes above/below score (previously broken)
+    - Further improved vertical division of space
 
 1.2b5
 - More minor linux fixes

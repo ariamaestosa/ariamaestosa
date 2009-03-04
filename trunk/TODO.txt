@@ -41,7 +41,6 @@ NOTE: sorry, this is very raw :)
 
 * score print :
     - Show ottava bassa/alta signs
-    - if you show both F and G keys, both are given equal vertical space, even though one may need more than another
     - show time sig on printed scores/tabs
     - allow setting font size, number of lines per page, zoom, etc...
     - add non-linear printing...

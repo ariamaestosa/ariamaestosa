@@ -419,13 +419,11 @@ int LayoutLine::getLastNote() const
         for(int el=elements-1; el>=0; el--)
         { // start searching from last measure in this line
             MeasureToExport& current_meas = getMeasureForElement(el);
-            std::cout << "searching within measure " << current_meas.id << std::endl;
             for(int i=0; i<tamount; i++)
             {
                 if(current_meas.trackRef[i].track == t &&
                    current_meas.trackRef[i].lastNote != -1)
                 {
-                    std::cout << "found!! returning " << current_meas.trackRef[i].lastNote << std::endl;
                     return current_meas.trackRef[i].lastNote;
                 }
             }

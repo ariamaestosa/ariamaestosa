@@ -338,8 +338,6 @@ void renderSilenceCallback(const int tick, const int tick_length, const int sile
 
 int ScorePrintable::calculateHeight(LayoutLine& line) const
 {
-    std::cout << "ScorePrintable::calculateHeight" << std::endl;
-    
     Track* track = line.getTrack();
     ScoreEditor* scoreEditor = track->graphics->scoreEditor;
     ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
@@ -347,8 +345,6 @@ int ScorePrintable::calculateHeight(LayoutLine& line) const
     const int from_note = line.getFirstNote();
     const int to_note   = line.getLastNote();
 
-    std::cout << "from_note=" << from_note << ", to_note=" << to_note << std::endl;
-    
     const bool g_clef = scoreEditor->isGClefEnabled();
     const bool f_clef = scoreEditor->isFClefEnabled();
 
@@ -356,8 +352,6 @@ int ScorePrintable::calculateHeight(LayoutLine& line) const
         if(g_clef xor f_clef) return 5;
         else return 10;
 
-    std::cout << "---- ScorePrintable::calculateHeight" << std::endl;
-    
     // find highest and lowest note we need to render
     int highest_pitch = -1, lowest_pitch = -1;
     int biggest_level = -1, smallest_level = -1;
@@ -471,7 +465,7 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     int extra_lines_under_g_score = 0;
     int extra_lines_above_f_score = 0;
     int extra_lines_under_f_score = 0;
-    if(g_clef and not f_clef)
+    if(g_clef and not f_clef)   // FIXME - duplicated from calculateHeight above
     {
         if(smallest_level!=-1 and smallest_level < g_clef_from)  extra_lines_above_g_score = (g_clef_from - smallest_level)/2;
         if(biggest_level!=-1 and biggest_level > g_clef_to) extra_lines_under_g_score = (g_clef_to - biggest_level)/2;
@@ -496,10 +490,13 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     float first_clef_proportion = 0.4;
     float second_clef_proportion = 0.4;
 
-    if(g_clef and f_clef and extra_lines_above_g_score + extra_lines_under_f_score != 0 /* avoid divison by 0 if nothing under/over scores*/)
+    if(g_clef and f_clef and extra_lines_above_g_score + extra_lines_under_f_score != 0 /* unnecessary if nothing under/over scores*/)
     {
-        first_clef_proportion = 0.8 * extra_lines_above_g_score / (extra_lines_above_g_score + extra_lines_under_f_score);
-        second_clef_proportion = 0.8 * extra_lines_under_f_score / (extra_lines_above_g_score + extra_lines_under_f_score);
+        /*  where 0.8 is used to leave a 0.2 margin between both scores. 5 is the amount of lines needed for the regular score.
+            10 is the amount of lines needed for both regular scores */
+        const float total_height = abs(extra_lines_above_g_score) + abs(extra_lines_under_f_score) + 10.0;
+        first_clef_proportion = 0.8 * (abs(extra_lines_above_g_score)+5.0) / total_height;
+        second_clef_proportion = 0.8 * (abs(extra_lines_under_f_score)+5.0) / total_height;
     }
     
     // get the underlying common implementation rolling
@@ -592,7 +589,6 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     }
     else if(f_clef and g_clef)
     {
-        // FIXME - don't split heavenly if one clef contains more stuff than the other...
         g_clef_y_from = y0;
         g_clef_y_to = y0 + (int)round((y1 - y0)*first_clef_proportion);
         f_clef_y_from = y0 + (int)round((y1 - y0)*(1-second_clef_proportion));
