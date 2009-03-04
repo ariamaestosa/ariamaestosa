@@ -387,18 +387,19 @@ int LayoutLine::getFirstMeasure() const
 }
 int LayoutLine::getLastNote() const
 {
-    MeasureToExport& meas = getMeasureForElement(layoutElements.size()-1);
-    const Track* t = getTrack();
+    // FIXME - there is a dire need for a better way to determine whether we're printing one track or more
+    MeasureToExport& last_meas = getMeasureForElement(layoutElements.size()-1);
+    const int tamount = last_meas.trackRef.size();
     
-    const int tamount = meas.trackRef.size();
     if(tamount == 0)
-    {
+    { // FIXME - used at all? if printing 1 track only, won't there be 1 trackRef?
         int answer = -1;
         const int first_measure = getFirstMeasure();
         const int last_measure = getLastMeasure();
         const int from_tick = getMeasureData()->firstTickInMeasure(first_measure);
         const int to_tick   = getMeasureData()->lastTickInMeasure(last_measure);
         
+        const Track* t = getTrack();
         const int noteAmount = t->getNoteAmount();
         for(int n=0; n<noteAmount; n++)
         {
@@ -412,12 +413,24 @@ int LayoutLine::getLastNote() const
     }
     else
     {
-        for(int i=0; i<tamount; i++)
-        {
-            if(meas.trackRef[i].track == t) return meas.trackRef[i].lastNote;
+        const Track* t = getTrack();
+        
+        const int elements = layoutElements.size();
+        for(int el=elements-1; el>=0; el--)
+        { // start searching from last measure in this line
+            MeasureToExport& current_meas = getMeasureForElement(el);
+            std::cout << "searching within measure " << current_meas.id << std::endl;
+            for(int i=0; i<tamount; i++)
+            {
+                if(current_meas.trackRef[i].track == t &&
+                   current_meas.trackRef[i].lastNote != -1)
+                {
+                    std::cout << "found!! returning " << current_meas.trackRef[i].lastNote << std::endl;
+                    return current_meas.trackRef[i].lastNote;
+                }
+            }
         }
-        assert(false);
-        return -1;
+        return -1; // empty line
     }
 
 }
@@ -426,14 +439,17 @@ int LayoutLine::getFirstNote() const
 {
     const int measure = getFirstMeasure();
     const int from_tick = getMeasureData()->firstTickInMeasure(measure);
-    const Track* t = getTrack();
-    
-    MeasureToExport& meas = getMeasureForElement(layoutElements.size()-1);
-    const int tamount = meas.trackRef.size();
+ 
+    // FIXME - there is a dire need for a better way to determine whether we're printing one track or more
+    MeasureToExport& first_meas = getMeasureForElement(0);
+    const int tamount = first_meas.trackRef.size();
     
     if(tamount == 0)
-    {
+    {// FIXME - used at all? if printing 1 track only, won't there be 1 trackRef?
+        const Track* t = getTrack();
+        assert(t != NULL);
         const int noteAmount = t->getNoteAmount();
+
         for(int n=0; n<noteAmount; n++)
         {
             if(t->getNoteStartInMidiTicks(n) >= from_tick)
@@ -445,12 +461,20 @@ int LayoutLine::getFirstNote() const
     }
     else
     {
-        for(int i=0; i<tamount; i++)
-        {
-            if(meas.trackRef[i].track == t) return meas.trackRef[i].firstNote;
+        const Track* t = getTrack();
+        
+        const int elements = layoutElements.size();
+        for(int el=0; el<elements; el++)
+        { // start searching from first measure in this line
+            MeasureToExport& current_meas = getMeasureForElement(el);
+            for(int i=0; i<tamount; i++)
+            {
+                if(current_meas.trackRef[i].track == t &&
+                   current_meas.trackRef[i].firstNote != -1)
+                    return current_meas.trackRef[i].firstNote;
+            }
         }
-        assert(false);
-        return -1;
+        return -1; // empty line
     }
 }
 int LayoutLine::calculateHeight()
