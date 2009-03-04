@@ -338,6 +338,8 @@ void renderSilenceCallback(const int tick, const int tick_length, const int sile
 
 int ScorePrintable::calculateHeight(LayoutLine& line) const
 {
+    std::cout << "ScorePrintable::calculateHeight" << std::endl;
+    
     Track* track = line.getTrack();
     ScoreEditor* scoreEditor = track->graphics->scoreEditor;
     ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
@@ -345,6 +347,8 @@ int ScorePrintable::calculateHeight(LayoutLine& line) const
     const int from_note = line.getFirstNote();
     const int to_note   = line.getLastNote();
 
+    std::cout << "from_note=" << from_note << ", to_note=" << to_note << std::endl;
+    
     const bool g_clef = scoreEditor->isGClefEnabled();
     const bool f_clef = scoreEditor->isFClefEnabled();
 
@@ -352,6 +356,8 @@ int ScorePrintable::calculateHeight(LayoutLine& line) const
         if(g_clef xor f_clef) return 5;
         else return 10;
 
+    std::cout << "---- ScorePrintable::calculateHeight" << std::endl;
+    
     // find highest and lowest note we need to render
     int highest_pitch = -1, lowest_pitch = -1;
     int biggest_level = -1, smallest_level = -1;
@@ -404,6 +410,7 @@ int ScorePrintable::calculateHeight(LayoutLine& line) const
 
         return 10 + abs(extra_lines_above_g_score) + abs(extra_lines_under_f_score);
     }
+    assert(false);
     return -1; // should not happen
 }
 
@@ -459,8 +466,6 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     const bool g_clef = scoreEditor->isGClefEnabled();
     const bool f_clef = scoreEditor->isFClefEnabled();
 
-    const float first_clef_proportion = 0.4;
-    const float second_clef_proportion = 0.4;
     
     int extra_lines_above_g_score = 0;
     int extra_lines_under_g_score = 0;
@@ -486,6 +491,17 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     //    " extra_lines_above_f_score = " << extra_lines_above_f_score <<
     //    " extra_lines_under_f_score = " << extra_lines_under_f_score << std::endl;
 
+    // Split space between both scores (one may need more than the other)
+    // I use a total of 0.8 to leave a 0.2 free space between both scores.
+    float first_clef_proportion = 0.4;
+    float second_clef_proportion = 0.4;
+
+    if(g_clef and f_clef and extra_lines_above_g_score + extra_lines_under_f_score != 0 /* avoid divison by 0 if nothing under/over scores*/)
+    {
+        first_clef_proportion = 0.8 * extra_lines_above_g_score / (extra_lines_above_g_score + extra_lines_under_f_score);
+        second_clef_proportion = 0.8 * extra_lines_under_f_score / (extra_lines_above_g_score + extra_lines_under_f_score);
+    }
+    
     // get the underlying common implementation rolling
     // since height is used to determine where to put repetitions/notes/etc.
     // only pass the height of the first score if there's 2, so stuff don't appear between both scores
