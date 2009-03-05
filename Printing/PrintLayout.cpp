@@ -814,11 +814,17 @@ void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements, ptr_ve
             // for very short notes, zoom a bit too otherwise they'll all be stuck toghether
             if( divider >= 16 ) layoutElements[n].zoom = 2;
 
+            const float tick_length = (float)(measures[layoutElements[n].measure].lastTick -
+                                              measures[layoutElements[n].measure].firstTick);
+            const float beat_length = tick_length/getMeasureData()->beatLengthInTicks();
+            const int num = getMeasureData()->getTimeSigNumerator(layoutElements[n].measure);
+            const int denom = getMeasureData()->getTimeSigDenominator(layoutElements[n].measure);
+            
             layoutElements[n].width_in_units = (int)round(
-                (float)(measures[layoutElements[n].measure].lastTick -
-                        measures[layoutElements[n].measure].firstTick) /
-                (float)measures[layoutElements[n].measure].shortestDuration
+                tick_length / (float)measures[layoutElements[n].measure].shortestDuration * num / denom
                 )*layoutElements[n].zoom + 2;
+            std::cout << "measure " << (layoutElements[n].measure+1) << " has length " << layoutElements[n].width_in_units <<
+            " units; beats=" << beat_length << std::endl;
 
         }
         else if(layoutElements[n].type == REPEATED_RIFF)
