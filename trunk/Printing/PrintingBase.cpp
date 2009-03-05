@@ -203,7 +203,8 @@ bool AriaPrintable::addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */)
 }
 void AriaPrintable::calculateLayout(bool checkRepetitions_bool)
 {
-    calculateLayoutElements(tracks, checkRepetitions_bool, layoutLines, layoutPages, measures);
+    PrintLayoutManager layout(this, layoutLines /* out */, layoutPages /* out */, measures /* out */);
+    layout.calculateLayoutElements(tracks, checkRepetitions_bool);
 }
 wxString AriaPrintable::getTitle()
 {
@@ -514,7 +515,7 @@ int EditorPrintable::tickToX(const int tick)
          * this probably means there is a tie from a note on one line to a note
          * on another line. Return a X at the very right of the page.
          * FIXME - it's not necessarly a tie
-         * FIXME - ties need better handling
+         * FIXME - ties aand line warping need better handling
          */
         if(n==layoutElementsAmount-1 and tick >= lastTick)
         {

@@ -185,10 +185,34 @@ struct LayoutPage
     int last_line;
 };
 
-void calculateLayoutElements(ptr_vector<Track, REF>& track, const bool checkRepetitions_bool,
-                             std::vector<LayoutLine>& layoutLines, std::vector<LayoutPage>& layoutPages,
-                             ptr_vector<MeasureToExport>& mesaures);
-
+class PrintLayoutManager
+{
+    AriaPrintable* parent;
+    
+    // referencing vectors from AriaPrintable
+    std::vector<LayoutLine>& layoutLines;
+    std::vector<LayoutPage>& layoutPages;
+    ptr_vector<MeasureToExport>& measures;
+    
+    std::vector<LayoutElement> layoutElements;
+    
+    void calculateLineLayout();
+    
+    void calculateRelativeLengths();
+    
+    void generateOutputOrder(bool checkRepetitions_bool);
+    void generateMeasures(ptr_vector<Track, REF>& tracks);
+    
+    void findSimilarMeasures();
+public:
+    PrintLayoutManager(AriaPrintable* parent,
+                       std::vector<LayoutLine>& layoutLines  /* out */,
+                       std::vector<LayoutPage>& layoutPages  /* out */,
+                       ptr_vector<MeasureToExport>& mesaures /* out */);
+    
+    void calculateLayoutElements(ptr_vector<Track, REF>& track, const bool checkRepetitions_bool);
+};
+    
 }
 
 #endif

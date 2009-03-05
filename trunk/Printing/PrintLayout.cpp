@@ -552,7 +552,7 @@ void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x
 #pragma mark -
 #endif
 
-void generateMeasures(ptr_vector<Track, REF>& tracks, ptr_vector<MeasureToExport>& measures)
+void PrintLayoutManager::generateMeasures(ptr_vector<Track, REF>& tracks)
 {
     const int trackAmount = tracks.size();
     const int measureAmount = getMeasureData()->getMeasureAmount();
@@ -582,7 +582,7 @@ void generateMeasures(ptr_vector<Track, REF>& tracks, ptr_vector<MeasureToExport
     } // next track
 }
 
-void findSimilarMeasures(ptr_vector<MeasureToExport>& measures)
+void PrintLayoutManager::findSimilarMeasures()
 {
     const int measureAmount = getMeasureData()->getMeasureAmount();
 
@@ -604,7 +604,7 @@ void findSimilarMeasures(ptr_vector<MeasureToExport>& measures)
     }//next
 }
 
-void generateOutputOrder(std::vector<LayoutElement>& layoutElements, ptr_vector<MeasureToExport>& measures, bool checkRepetitions_bool)
+void PrintLayoutManager::generateOutputOrder(bool checkRepetitions_bool)
 {
     const int measureAmount = getMeasureData()->getMeasureAmount();
 
@@ -787,7 +787,7 @@ void generateOutputOrder(std::vector<LayoutElement>& layoutElements, ptr_vector<
     }//next measure
 }
 
-void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements, ptr_vector<MeasureToExport>& measures)
+void PrintLayoutManager::calculateRelativeLengths()
 {
     // calculate approximative width of each element
     const int ticksPerBeat = getCurrentSequence()->ticksPerBeat();
@@ -816,7 +816,7 @@ void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements, ptr_ve
 
             const float tick_length = (float)(measures[layoutElements[n].measure].lastTick -
                                               measures[layoutElements[n].measure].firstTick);
-            const float beat_length = tick_length/getMeasureData()->beatLengthInTicks();
+            //const float beat_length = tick_length/getMeasureData()->beatLengthInTicks();
             const int num = getMeasureData()->getTimeSigNumerator(layoutElements[n].measure);
             const int denom = getMeasureData()->getTimeSigDenominator(layoutElements[n].measure);
             
@@ -833,9 +833,7 @@ void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements, ptr_ve
     }
 }
 
-void calculateLineLayout(std::vector<LayoutLine>& layoutLines,
-                         std::vector<LayoutPage>& layoutPages,
-                         std::vector<LayoutElement>& layoutElements)
+void PrintLayoutManager::calculateLineLayout()
 {
     const int layoutElementsAmount = layoutElements.size();
 
@@ -893,21 +891,29 @@ void calculateLineLayout(std::vector<LayoutLine>& layoutLines,
     layoutPages[current_page].last_line = currentLine;
 }
 
-/** main function called from other classes */
-void calculateLayoutElements(ptr_vector<Track, REF>& track, const bool checkRepetitions_bool,
-                             std::vector<LayoutLine>& layoutLines, std::vector<LayoutPage>& layoutPages,
-                             ptr_vector<MeasureToExport>& measures)
-{
-    std::vector<LayoutElement> layoutElements;
 
-    generateMeasures(track, measures);
+PrintLayoutManager::PrintLayoutManager(AriaPrintable* parent,
+                                       std::vector<LayoutLine>& layoutLines_a /* out */,
+                                       std::vector<LayoutPage>& layoutPages_a /* out */,
+                                       ptr_vector<MeasureToExport>& measures_a /* out */) :
+                                       layoutLines(layoutLines_a), layoutPages(layoutPages_a), measures(measures_a)
+{
+    this->parent = parent;
+}
+
+/** main function called from other classes */
+void PrintLayoutManager::calculateLayoutElements
+                            (ptr_vector<Track, REF>& track,
+                             const bool checkRepetitions_bool)
+{
+    generateMeasures(track);
 
     // search for repeated measures if necessary
-    if(checkRepetitions_bool) findSimilarMeasures(measures);
-
-    generateOutputOrder(layoutElements, measures, checkRepetitions_bool);
-    calculateRelativeLengths(layoutElements, measures);
-    calculateLineLayout(layoutLines, layoutPages, layoutElements);
+    if(checkRepetitions_bool) findSimilarMeasures();
+    
+    generateOutputOrder(checkRepetitions_bool);
+    calculateRelativeLengths();
+    calculateLineLayout();
 }
 
 
