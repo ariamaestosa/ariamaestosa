@@ -823,9 +823,6 @@ void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements, ptr_ve
             layoutElements[n].width_in_units = (int)round(
                 tick_length / (float)measures[layoutElements[n].measure].shortestDuration * num / denom
                 )*layoutElements[n].zoom + 2;
-            std::cout << "measure " << (layoutElements[n].measure+1) << " has length " << layoutElements[n].width_in_units <<
-            " units; beats=" << beat_length << std::endl;
-
         }
         else if(layoutElements[n].type == REPEATED_RIFF)
         {
