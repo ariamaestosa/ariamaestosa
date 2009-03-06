@@ -801,8 +801,16 @@ void PrintLayoutManager::calculateLineLayout()
 
     // add line header
     LayoutElement el(LayoutElement(LINE_HEADER, -1));
-    el.width_in_units = 5; // FIXME - determine width dynamically, depending on contents. tabs needs less, C major needs less, etc.
-    current_width += 5;
+    
+    int header_width = 2;
+    
+    if(getCurrentPrintable()->is_score_editor_used)
+    {
+        header_width = 5;
+    }
+    
+    el.width_in_units = header_width; // FIXME - determine width dynamically, depending on contents. tabs needs less, C major needs less, etc.
+    current_width += header_width;
     layoutLines[currentLine].layoutElements.push_back( el );
     
     // add layout elements one by one, switching to the next line when there's too many
