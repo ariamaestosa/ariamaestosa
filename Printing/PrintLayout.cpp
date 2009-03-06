@@ -324,10 +324,8 @@ LayoutLine::LayoutLine(AriaPrintable* parent)
     last_of_page = false;
 }
 
-int LayoutLine::getTrackAmount()
+int LayoutLine::getTrackAmount() const
 {
-    // FIXME - make proper implementation where it can vary from line to line
-    // if some lines are empty or identical
     return printable->tracks.size();
 }
 void LayoutLine::setCurrentTrack(const int n)
@@ -386,95 +384,49 @@ int LayoutLine::getFirstMeasure() const
 }
 int LayoutLine::getLastNote() const
 {
-    // FIXME - there is a dire need for a better way to determine whether we're printing one track or more
-    MeasureToExport& last_meas = getMeasureForElement(layoutElements.size()-1);
-    const int tamount = last_meas.trackRef.size();
+    const int track_amount = getTrackAmount();
+    const Track* t = getTrack();
     
-    if(tamount == 0)
-    { // FIXME - used at all? if printing 1 track only, won't there be 1 trackRef?
-        int answer = -1;
-        const int first_measure = getFirstMeasure();
-        const int last_measure = getLastMeasure();
-        const int from_tick = getMeasureData()->firstTickInMeasure(first_measure);
-        const int to_tick   = getMeasureData()->lastTickInMeasure(last_measure);
-        
-        const Track* t = getTrack();
-        const int noteAmount = t->getNoteAmount();
-        for(int n=0; n<noteAmount; n++)
+    const int elements = layoutElements.size();
+    for(int el=elements-1; el>=0; el--)
+    { // start searching from last measure in this line
+        MeasureToExport& current_meas = getMeasureForElement(el);
+        for(int i=0; i<track_amount; i++)
         {
-            if(t->getNoteStartInMidiTicks(n) >= from_tick and t->getNoteStartInMidiTicks(n) < to_tick)
+            if(current_meas.trackRef.size() > 0 && // FIXME - find why it's sometimes 0
+               current_meas.trackRef[i].track == t &&
+               current_meas.trackRef[i].lastNote != -1)
             {
-                answer = n;
-            }
-            else if(answer != -1) return answer;
-        }
-        return answer;
-    }
-    else
-    {
-        const Track* t = getTrack();
-        
-        const int elements = layoutElements.size();
-        for(int el=elements-1; el>=0; el--)
-        { // start searching from last measure in this line
-            MeasureToExport& current_meas = getMeasureForElement(el);
-            for(int i=0; i<tamount; i++)
-            {
-                if(current_meas.trackRef.size() > 0 && // FIXME - find why it's sometimes 0
-                   current_meas.trackRef[i].track == t &&
-                   current_meas.trackRef[i].lastNote != -1)
-                {
-                    return current_meas.trackRef[i].lastNote;
-                }
+                return current_meas.trackRef[i].lastNote;
             }
         }
-        return -1; // empty line
     }
-
+    return -1; // empty line
 }
      
 int LayoutLine::getFirstNote() const
 {
     const int measure = getFirstMeasure();
-    const int from_tick = getMeasureData()->firstTickInMeasure(measure);
- 
-    // FIXME - there is a dire need for a better way to determine whether we're printing one track or more
-    MeasureToExport& first_meas = getMeasureForElement(0);
-    const int tamount = first_meas.trackRef.size();
+   // const int from_tick = getMeasureData()->firstTickInMeasure(measure);
     
-    if(tamount == 0)
-    {// FIXME - used at all? if printing 1 track only, won't there be 1 trackRef?
-        const Track* t = getTrack();
-        assert(t != NULL);
-        const int noteAmount = t->getNoteAmount();
-
-        for(int n=0; n<noteAmount; n++)
+    const int track_amount = getTrackAmount();
+    
+    const Track* t = getTrack();
+    
+    const int elements = layoutElements.size();
+    for(int el=0; el<elements; el++)
+    { // start searching from first measure in this line
+        MeasureToExport& current_meas = getMeasureForElement(el);
+        for(int i=0; i<track_amount; i++)
         {
-            if(t->getNoteStartInMidiTicks(n) >= from_tick)
-            {
-                return n;
-            }
+            if(current_meas.trackRef.size() > 0 && // FIXME - find why it's sometimes empty
+               current_meas.trackRef[i].track == t &&
+               current_meas.trackRef[i].firstNote != -1)
+                return current_meas.trackRef[i].firstNote;
         }
-        return -1;
     }
-    else
-    {
-        const Track* t = getTrack();
-        
-        const int elements = layoutElements.size();
-        for(int el=0; el<elements; el++)
-        { // start searching from first measure in this line
-            MeasureToExport& current_meas = getMeasureForElement(el);
-            for(int i=0; i<tamount; i++)
-            {
-                if(current_meas.trackRef.size() > 0 && // FIXME - find why it's sometimes empty
-                   current_meas.trackRef[i].track == t &&
-                   current_meas.trackRef[i].firstNote != -1)
-                    return current_meas.trackRef[i].firstNote;
-            }
-        }
-        return -1; // empty line
-    }
+    return -1; // empty line
+    
 }
 int LayoutLine::calculateHeight()
 {

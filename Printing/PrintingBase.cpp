@@ -177,6 +177,9 @@ AriaPrintable::AriaPrintable(Sequence* parent)
 {
     sequence = parent;
     currentPrintable = this;
+    is_guitar_editor_used = false;
+    is_score_editor_used = false;
+    track_amount = 0;
 }
 AriaPrintable::~AriaPrintable()
 {
@@ -188,10 +191,12 @@ bool AriaPrintable::addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */)
     if(mode == GUITAR)
     {
         editorPrintables.push_back(new TablaturePrintable(track));
+        is_guitar_editor_used = true;
     }
     else if(mode == SCORE)
     {
         editorPrintables.push_back(new ScorePrintable(track));
+        is_score_editor_used = true;
     }
     else
     {
@@ -199,6 +204,7 @@ bool AriaPrintable::addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */)
         return false;
     }
     tracks.push_back(track);
+    track_amount = tracks.size();
     return true;
 }
 void AriaPrintable::calculateLayout(bool checkRepetitions_bool)

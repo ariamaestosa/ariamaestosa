@@ -108,6 +108,10 @@ public:
     
     ptr_vector<Track, REF> tracks;
     ptr_vector<EditorPrintable> editorPrintables;
+    
+    bool is_guitar_editor_used;
+    bool is_score_editor_used;
+    int track_amount;
     // ---------------------------------------
     
     AriaPrintable(Sequence* parent);
