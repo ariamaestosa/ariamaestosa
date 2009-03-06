@@ -156,7 +156,7 @@ public:
 
     bool last_of_page;
 
-    int getTrackAmount();
+    int getTrackAmount() const;
     void setCurrentTrack(const int n);
     Track* getTrack() const;
     int getFirstNoteInElement(const int layoutElementID);
