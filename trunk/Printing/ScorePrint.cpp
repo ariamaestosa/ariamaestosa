@@ -698,16 +698,24 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
         
         const int sharps = track->graphics->getCurrentEditor()->getKeySharpsAmount();
         const int flats = track->graphics->getCurrentEditor()->getKeyFlatsAmount();
-        
-        for(int n=0; n<sharps; n++)
+        assertExpr(line.layoutElements.size(),>=,0);
+
+        if(sharps > 0 or flats > 0)
         {
-            const int level = first_score_level + (f_clef ? 1 : -1) + sharp_sign_lvl[n];
-            renderSharp( dc, line.layoutElements[0].x+300+n*35, LEVEL_TO_Y(level) );
-        }
-        for(int n=0; n<flats; n++)
-        {
-            const int level = first_score_level + (f_clef ? 3 : 1) + flat_sign_lvl[n];
-            renderFlat( dc, line.layoutElements[0].x+300+n*35, LEVEL_TO_Y(level) );
+            int x_space_per_symbol = (line.layoutElements[0].x2 - line.layoutElements[0].x
+                                      - 300 - 50 /* some additional space */) / std::max(sharps, flats);
+            if(x_space_per_symbol > 50) x_space_per_symbol = 50;
+            
+            for(int n=0; n<sharps; n++)
+            {
+                const int level = first_score_level + (f_clef ? 1 : -1) + sharp_sign_lvl[n];
+                renderSharp( dc, line.layoutElements[0].x+300+n*x_space_per_symbol, LEVEL_TO_Y(level) );
+            }
+            for(int n=0; n<flats; n++)
+            {
+                const int level = first_score_level + (f_clef ? 3 : 1) + flat_sign_lvl[n];
+                renderFlat( dc, line.layoutElements[0].x+300+n*x_space_per_symbol, LEVEL_TO_Y(level) );
+            }
         }
         
         // also show ottava bassa/alta if relevant
