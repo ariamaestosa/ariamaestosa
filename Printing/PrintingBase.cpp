@@ -429,9 +429,13 @@ LayoutElement* EditorPrintable::continueWithNextElement()
         wxFont oldfont = dc->GetFont();
         dc->SetFont( wxFont(100,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD) );
         dc->SetTextForeground( wxColour(0,0,0) );
+
+        wxSize text_size = dc->GetTextExtent(denom);
+        assertExpr(currentLayoutElement+1,<,layoutElements.size());
+        const int text_x = layoutElements[currentLayoutElement+1].x - text_size.GetWidth() - 20;
         
-        dc->DrawText(num,   layoutElements[currentLayoutElement].x+20, y0 + 10);
-        dc->DrawText(denom, layoutElements[currentLayoutElement].x+20, y0 + (y1 - y0)/2 + 10  );
+        dc->DrawText(num,   text_x, y0 + 10);
+        dc->DrawText(denom, text_x, y0 + (y1 - y0)/2 + 10  );
         
         dc->SetFont(oldfont);
     }
