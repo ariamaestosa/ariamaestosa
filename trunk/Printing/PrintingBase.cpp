@@ -180,6 +180,7 @@ AriaPrintable::AriaPrintable(Sequence* parent)
     is_guitar_editor_used = false;
     is_score_editor_used = false;
     track_amount = 0;
+    max_signs_in_keysig = 0;
 }
 AriaPrintable::~AriaPrintable()
 {
@@ -197,6 +198,10 @@ bool AriaPrintable::addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */)
     {
         editorPrintables.push_back(new ScorePrintable(track));
         is_score_editor_used = true;
+        
+        max_signs_in_keysig = std::max( max_signs_in_keysig,
+                                       std::max(track->graphics->getCurrentEditor()->getKeySharpsAmount(),
+                                                track->graphics->getCurrentEditor()->getKeyFlatsAmount()) );
     }
     else
     {
