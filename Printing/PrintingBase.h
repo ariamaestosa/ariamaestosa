@@ -112,6 +112,7 @@ public:
     bool is_guitar_editor_used;
     bool is_score_editor_used;
     int track_amount;
+    int max_signs_in_keysig; // the max number of sharp/flats we'll need to display at header (useful to allocate proper size)
     // ---------------------------------------
     
     AriaPrintable(Sequence* parent);
