@@ -709,6 +709,21 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
             const int level = first_score_level + (f_clef ? 3 : 1) + flat_sign_lvl[n];
             renderFlat( dc, line.layoutElements[0].x+300+n*35, LEVEL_TO_Y(level) );
         }
+        
+        // also show ottava bassa/alta if relevant
+        const int octave_shift = track->graphics->scoreEditor->getScoreMidiConverter()->getOctaveShift(); // FIXME - woot
+        if(octave_shift > 0)
+        {
+            dc.SetTextForeground( wxColour(0,0,0) );
+            const int y = LEVEL_TO_Y(first_score_level - 2);
+            dc.DrawText(wxT("8va"), line.layoutElements[0].x+200, y);
+        }
+        else if(octave_shift < 0)
+        {
+            dc.SetTextForeground( wxColour(0,0,0) );
+            const int y = LEVEL_TO_Y(last_score_level);
+            dc.DrawText(wxT("8vb"), line.layoutElements[0].x+200, y);
+        }
     }
     
     // draw notes heads

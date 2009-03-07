@@ -10,6 +10,7 @@
     - Fixed printing of notes above/below score (previously broken)
     - Further improved vertical division of space
     - Time signature changes are now printed
+    - Now shows ottava bassa/alta signs
 
 1.2b5
 - More minor linux fixes
