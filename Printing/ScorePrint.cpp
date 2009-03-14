@@ -735,7 +735,7 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
         if(octave_shift > 0)
         {
             dc.SetTextForeground( wxColour(0,0,0) );
-            const int y = LEVEL_TO_Y(first_score_level - 2);
+            const int y = LEVEL_TO_Y(first_score_level - 3);
             dc.DrawText(wxT("8va"), line.layoutElements[0].x+200, y);
         }
         else if(octave_shift < 0)
