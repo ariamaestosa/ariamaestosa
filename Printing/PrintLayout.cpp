@@ -406,7 +406,7 @@ int LayoutLine::getLastNote() const
      
 int LayoutLine::getFirstNote() const
 {
-    const int measure = getFirstMeasure();
+    //const int measure = getFirstMeasure();
    // const int from_tick = getMeasureData()->firstTickInMeasure(measure);
     
     const int track_amount = getTrackAmount();
@@ -569,6 +569,20 @@ void PrintLayoutManager::generateOutputOrder(bool checkRepetitions_bool)
 #endif
         int firstMeasureThatRepeats, lastMeasureThatRepeats, firstRepeatedMeasure, lastRepeatedMeasure; // used when finding repetitions
 
+        if(getMeasureData()->getTimeSigDenominator(measure) != previous_denom ||
+           getMeasureData()->getTimeSigNumerator(measure) != previous_num)
+        {
+            // add time signature element
+            LayoutElement el2(LayoutElement(TIME_SIGNATURE, -1));
+            el2.width_in_units = 1;
+            el2.num = getMeasureData()->getTimeSigNumerator(measure);
+            el2.denom = getMeasureData()->getTimeSigDenominator(measure);
+            
+            previous_num = el2.num;
+            previous_denom = el2.denom;
+            layoutElements.push_back( el2 );
+        }
+
         // ----- empty measure -----
         if(measures[measure].shortestDuration==-1)
         {
@@ -595,7 +609,6 @@ void PrintLayoutManager::generateOutputOrder(bool checkRepetitions_bool)
                 }// next note
             }// next track ref
         }// end if empty measure
-
         // repetition
         else if(checkRepetitions_bool and measures[measure].firstSimilarMeasure!=-1)
         {
@@ -719,20 +732,6 @@ void PrintLayoutManager::generateOutputOrder(bool checkRepetitions_bool)
 #ifdef _verbose
             std::cout << "measure " << (measure+1) << " is normal" << std::endl;
 #endif
-            if(getMeasureData()->getTimeSigDenominator(measure) != previous_denom ||
-               getMeasureData()->getTimeSigNumerator(measure) != previous_num)
-            {
-                // add time signature element
-                LayoutElement el2(LayoutElement(TIME_SIGNATURE, -1));
-                el2.width_in_units = 1;
-                el2.num = getMeasureData()->getTimeSigNumerator(measure);
-                el2.denom = getMeasureData()->getTimeSigDenominator(measure);
-                
-                previous_num = el2.num;
-                previous_denom = el2.denom;
-                layoutElements.push_back( el2 );
-            }
-            
             layoutElements.push_back( LayoutElement(SINGLE_MEASURE, measure) );
         }
 
