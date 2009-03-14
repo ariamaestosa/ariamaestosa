@@ -525,7 +525,7 @@ int EditorPrintable::tickToX(const int tick)
             const int elem_w = elem_x_end - elem_x_start;
             const float nratio = ((float)(tick - firstTick) / (float)(lastTick - firstTick));
 
-            return (int)round(nratio * (elem_w-pixel_width_of_an_unit*1.5) + elem_x_start);
+            return (int)round(nratio * (elem_w-pixel_width_of_an_unit*0.7) + elem_x_start);
         }
 
         // given tick is not in a visible measure
