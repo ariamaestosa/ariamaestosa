@@ -806,7 +806,7 @@ void PrintLayoutManager::calculateLineLayout()
     
     if(getCurrentPrintable()->is_score_editor_used)
     {
-        header_width = (int)round(2.0 + getCurrentPrintable()->max_signs_in_keysig*4.0/7.0); // 4/7 is an empirical ratio
+        header_width = (int)round(3.0 + getCurrentPrintable()->max_signs_in_keysig*4.0/7.0); // 4/7 is an empirical ratio
     }
     
     el.width_in_units = header_width; // FIXME - determine width dynamically, depending on contents. tabs needs less, C major needs less, etc.
