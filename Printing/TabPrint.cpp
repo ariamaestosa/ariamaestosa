@@ -96,6 +96,12 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
             
             continue;
         }
+        if(currentElement->type == TIME_SIGNATURE)
+        {
+            EditorPrintable::renderTimeSignatureChange(currentElement, y0, y1);
+            continue;
+        }
+        
         if(currentElement->type != SINGLE_MEASURE) continue;
         
         // for layout elements containing notes, render them

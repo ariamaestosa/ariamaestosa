@@ -523,6 +523,30 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         f_clef_analyser->setStemPivot(middle_c_level+6);
     }
 
+    // if we have only one clef, give it the full space.
+    // if we have two, split the space between both
+    int g_clef_y_from=-1, g_clef_y_to=-1;
+    int f_clef_y_from=-1, f_clef_y_to=-1;
+    
+    if(g_clef and not f_clef)
+    {
+        g_clef_y_from = y0;
+        g_clef_y_to = y1;
+    }
+    else if(f_clef and not g_clef)
+    {
+        f_clef_y_from = y0;
+        f_clef_y_to = y1;
+    }
+    else if(f_clef and g_clef)
+    {
+        g_clef_y_from = y0;
+        g_clef_y_to = y0 + (int)round((y1 - y0)*first_clef_proportion);
+        f_clef_y_from = y0 + (int)round((y1 - y0)*(1-second_clef_proportion));
+        f_clef_y_to = y1;
+    }
+    else { assert(false); }
+    
     converter->updateConversionData();
     converter->resetAccidentalsForNewRender();
     
@@ -531,6 +555,13 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
     LayoutElement* currentElement;
     while((currentElement = continueWithNextElement()) and (currentElement != NULL))
     {
+        if(currentElement->type == TIME_SIGNATURE)
+        {
+           // if(g_clef) EditorPrintable::renderTimeSignatureChange(currentElement, g_clef_y_from, g_clef_y_to);
+           // else EditorPrintable::renderTimeSignatureChange(currentElement, f_clef_y_from, f_clef_y_to);
+            continue;
+        }
+        
         if(currentElement->type == LINE_HEADER)  continue;
         
         // we're collecting notes here... types other than regular measures
@@ -571,30 +602,6 @@ void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
         }
 
     }//next element
-
-    // if we have only one clef, give it the full space.
-    // if we have two, split the space between both
-    int g_clef_y_from=-1, g_clef_y_to=-1;
-    int f_clef_y_from=-1, f_clef_y_to=-1;
-
-    if(g_clef and not f_clef)
-    {
-        g_clef_y_from = y0;
-        g_clef_y_to = y1;
-    }
-    else if(f_clef and not g_clef)
-    {
-        f_clef_y_from = y0;
-        f_clef_y_to = y1;
-    }
-    else if(f_clef and g_clef)
-    {
-        g_clef_y_from = y0;
-        g_clef_y_to = y0 + (int)round((y1 - y0)*first_clef_proportion);
-        f_clef_y_from = y0 + (int)round((y1 - y0)*(1-second_clef_proportion));
-        f_clef_y_to = y1;
-    }
-    else { assert(false); }
 
     g_printable = this;
     
@@ -670,7 +677,7 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
         dc.DrawLine(x0, y, x1, y);
     }
 
-    // render vertical dividers
+    // ---- render vertical dividers and time signature changes
     const int measure_dividers_from_y = LEVEL_TO_Y(first_score_level);
     const int measure_dividers_to_y = LEVEL_TO_Y(last_score_level);
     
@@ -678,9 +685,14 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
     for(int n=0; n<elamount; n++)
     {
         drawVerticalDivider(&line.layoutElements[n], measure_dividers_from_y, measure_dividers_to_y);
+        
+        if(line.layoutElements[n].type == TIME_SIGNATURE)
+        {
+            EditorPrintable::renderTimeSignatureChange(&line.layoutElements[n], LEVEL_TO_Y(first_score_level), LEVEL_TO_Y(last_score_level));
+        }
     }
     
-    // line header if any
+    // ---- line header if any
     if(line.layoutElements[0].type == LINE_HEADER)
     {
         if(!f_clef) renderGClef(dc, line.layoutElements[0].x,
@@ -734,7 +746,7 @@ void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine&
         }
     }
     
-    // draw notes heads
+    // ---- draw notes heads
     { // we scope this because info like 'noteAmount' are bound to change just after
     const int noteAmount = analyser.noteRenderInfo.size();
     for(int i=0; i<noteAmount; i++)
