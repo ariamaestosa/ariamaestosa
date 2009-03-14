@@ -365,9 +365,14 @@ void EditorPrintable::beginLine(wxDC* dc, LayoutLine* line,  int x0, const int y
         else if(currentLayoutElement > 0) xloc += currentLine->layoutElements[currentLayoutElement-1].width_in_units;
         
         currentLine->layoutElements[currentLayoutElement].x  = getCurrentElementXStart();
-        currentLine->layoutElements[currentLayoutElement].x2 =  getCurrentElementXEnd();
+        if(currentLayoutElement > 0)
+            currentLine->layoutElements[currentLayoutElement-1].x2 =  currentLine->layoutElements[currentLayoutElement].x;
+        //std::cout << "layout element " << currentLayoutElement <<  " from " <<
+       //     currentLine->layoutElements[currentLayoutElement].x << " to " << currentLine->layoutElements[currentLayoutElement].x2 << std::endl;
     }
-
+    // for last
+    currentLine->layoutElements[currentLine->layoutElements.size()-1].x2 = x1; // FIXME - fix naming conventions... in track it's x1, in element it's x2
+    
     xloc = -1;
     currentLayoutElement = -1;
 
@@ -379,10 +384,7 @@ int EditorPrintable::getCurrentElementXStart()
 {
     return x0 + (int)round(xloc*pixel_width_of_an_unit) - pixel_width_of_an_unit;
 }
-int EditorPrintable::getCurrentElementXEnd()
-{
-    return x0 + (int)round((xloc+currentLine->layoutElements[currentLayoutElement].width_in_units)*pixel_width_of_an_unit);
-}
+
 LayoutElement* EditorPrintable::getElementForMeasure(const int measureID)
 {
     assert(currentLine != NULL);
@@ -405,6 +407,23 @@ void EditorPrintable::drawVerticalDivider(LayoutElement* el, const int y0, const
     dc->SetPen(  wxPen( wxColour(0,0,0), 10 ) );
     dc->DrawLine( elem_x_start, y0, elem_x_start, y1);
 }
+void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0, const int y1)
+{
+    wxString num   = wxString::Format( wxT("%i"), el->num   );
+    wxString denom = wxString::Format( wxT("%i"), el->denom );
+    
+    wxFont oldfont = dc->GetFont();
+    dc->SetFont( wxFont(100,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD) );
+    dc->SetTextForeground( wxColour(0,0,0) );
+    
+    wxSize text_size = dc->GetTextExtent(denom);
+    const int text_x = el->x2 - text_size.GetWidth() - 20;
+    
+    dc->DrawText(num,   text_x, y0 + 10);
+    dc->DrawText(denom, text_x, y0 + (y1 - y0)/2 + 10  );
+    
+    dc->SetFont(oldfont);    
+}
 LayoutElement* EditorPrintable::continueWithNextElement()
 {
     currentLayoutElement ++;
@@ -421,23 +440,9 @@ LayoutElement* EditorPrintable::continueWithNextElement()
     if(layoutElements[currentLayoutElement].type == EMPTY_MEASURE)
     {
     }
+    // ****** time signature change
     else if(layoutElements[currentLayoutElement].type == TIME_SIGNATURE)
     {
-        wxString num   = wxString::Format( wxT("%i"), layoutElements[currentLayoutElement].num   );
-        wxString denom = wxString::Format( wxT("%i"), layoutElements[currentLayoutElement].denom );
-        
-        wxFont oldfont = dc->GetFont();
-        dc->SetFont( wxFont(100,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD) );
-        dc->SetTextForeground( wxColour(0,0,0) );
-
-        wxSize text_size = dc->GetTextExtent(denom);
-        assertExpr(currentLayoutElement+1,<,layoutElements.size());
-        const int text_x = layoutElements[currentLayoutElement+1].x - text_size.GetWidth() - 20;
-        
-        dc->DrawText(num,   text_x, y0 + 10);
-        dc->DrawText(denom, text_x, y0 + (y1 - y0)/2 + 10  );
-        
-        dc->SetFont(oldfont);
     }
     // ****** repetitions
     else if(layoutElements[currentLayoutElement].type == SINGLE_REPEATED_MEASURE or layoutElements[currentLayoutElement].type == REPEATED_RIFF)

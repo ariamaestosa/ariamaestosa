@@ -81,12 +81,12 @@ public:
     
     void beginLine(wxDC* dc, LayoutLine* line, int x0, const int y0, const int x1, const int y1, bool show_measure_number);
     int getCurrentElementXStart();
-    int getCurrentElementXEnd();
     LayoutElement* continueWithNextElement();
     LayoutElement* getElementForMeasure(const int measureID);
     int getNotePrintX(int noteID);
     int tickToX(const int tick);
     void drawVerticalDivider(LayoutElement* el, const int y0, const int y1);
+    void renderTimeSignatureChange(LayoutElement* el, const int y0, const int y1);
 };
     
 class AriaPrintable
