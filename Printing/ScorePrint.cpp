@@ -173,9 +173,9 @@ void renderSilenceCallback(const int tick, const int tick_length, const int sile
     const int beat = getMeasureData()->beatLengthInTicks();
 
     {
-     //   std::cout << "g_printable = " << g_printable << std::endl;
-    LayoutElement* temp = g_printable->getElementForMeasure(measure);
-    if(temp != NULL and temp->type == REPEATED_RIFF) return; //don't render silences in repetions measure!
+        LayoutElement* temp = g_printable->getElementForMeasure(measure);
+        if(temp != NULL and (temp->type == REPEATED_RIFF or temp->type == SINGLE_REPEATED_MEASURE))
+            return; //don't render silences in repetions measure!
     }
     
     if(tick_length<2) return;
