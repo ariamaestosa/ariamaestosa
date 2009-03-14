@@ -779,7 +779,7 @@ void ScoreAnalyser::processTriplets()
                         // fix all note stems so they all point in the same direction
                         for(int j=first_triplet; j<=i; j++)
                         {
-                            noteRenderInfo[j].stem_type = ( noteRenderInfo[first_triplet].triplet_show_above ? STEM_DOWN : STEM_UP );
+                            //noteRenderInfo[j].stem_type = ( noteRenderInfo[first_triplet].triplet_show_above ? STEM_DOWN : STEM_UP );
                             noteRenderInfo[j].drag_triplet_sign = false;
                         }
                     }
