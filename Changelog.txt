@@ -12,6 +12,7 @@
     - Time signature changes are now printed
     - Now shows ottava bassa/alta signs
     - Added support for printing triplet silences
+    - Fixed bug where random notes would appear at the far right of the page
 
 1.2b5
 - More minor linux fixes

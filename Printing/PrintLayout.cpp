@@ -250,7 +250,7 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
         return -1;
     }
     
-    // first note in measure (which is also last note of previous measure, that was set in last iteration of the for loop)
+    // first note in measure
     newTrackRef->firstNote = firstNote;
     if(firstNote >= noteAmount) newTrackRef->firstNote = noteAmount-1;
     
@@ -266,7 +266,7 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
         
         if(currentNoteDuration <= 0)  continue; // skip malformed notes if any
         
-        // stop when we're at next measure - it will be done in next measure iteration
+        // stop when we're at next measure
         if( start_tick >= lastTick ) break;
         
         // find last note - if many notes end at the same time, keep the one that started last
@@ -282,10 +282,16 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
         
         if( currentNoteDuration < shortestDuration or shortestDuration==-1) shortestDuration = currentNoteDuration;
     }
+    std::cout << "measure_empty=" << measure_empty << std::endl;
     assertExpr(last_note,>,-1);
     assertExpr(last_note,<,noteAmount);
     
-    newTrackRef->lastNote = last_note; // ID of the last note in this measure (can it be first note in NEXT measure?? FIXME)
+    if(measure_empty)
+    {
+        newTrackRef->firstNote = -1;
+        newTrackRef->lastNote = -1;
+    }
+    else newTrackRef->lastNote = last_note; // ID of the last note in this measure
 
    // std::cout << "--- measure " << (id+1) << " ranges from note  "<< newTrackRef->firstNote << " to " << newTrackRef->lastNote << std::endl;
     trackRef.push_back( newTrackRef );
@@ -295,7 +301,7 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
     
     // if this measure is empty, return the same note as the one given in input (i.e. it was not used)
     // if this measure is not empty, add 1 so next measure will start from the next
-    return newTrackRef->lastNote + ( measure_empty ? 0 : 1);
+    return last_note + ( measure_empty ? 0 : 1);
 }
 
 #if 0
@@ -344,6 +350,7 @@ int LayoutLine::getFirstNoteInElement(const int layoutElementID)
 }
 int LayoutLine::getLastNoteInElement(const int layoutElementID)
 {
+    std::cout << "last note in element " << layoutElementID << " of track " << currentTrack << " is " << getMeasureForElement(layoutElementID).trackRef[currentTrack].lastNote << " from measure " << getMeasureForElement(layoutElementID).id << std::endl;
     return getMeasureForElement(layoutElementID).trackRef[currentTrack].lastNote;
 }
 int LayoutLine::getFirstNoteInElement(LayoutElement* layoutElement)
