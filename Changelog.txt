@@ -11,6 +11,7 @@
     - Further improved vertical division of space
     - Time signature changes are now printed
     - Now shows ottava bassa/alta signs
+    - Added support for printing triplet silences
 
 1.2b5
 - More minor linux fixes
