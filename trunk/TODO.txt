@@ -41,7 +41,6 @@ NOTE: sorry, this is very raw :)
 
 * score print :
     - red images
-    - not all types of silcens are rendered (e.g. triplet silences)
     - X notes not printed right
     ? allow setting font size, number of lines per page, zoom, etc...
     * add non-linear printing...
