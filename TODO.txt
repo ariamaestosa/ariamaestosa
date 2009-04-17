@@ -45,13 +45,14 @@ NOTE: sorry, this is very raw :)
     - X notes not printed right
     ? allow setting font size, number of lines per page, zoom, etc...
     * add non-linear printing...
-    
  - printing : skip series of empty measures ?
 
- - hear note/drum by clicking on its name in left part
+ * hear note/drum by clicking on its name in left part
+ 
+ * copy entire measures through measure bar
  
  + make more features accessible graphically (as opposed to keyboard-only)
- - add new tools, that allow adding notes without dragging (and resizing without keyboard, and selecting, and...?) ?
+ + add new tools, that allow adding notes without dragging (and resizing without keyboard, and selecting, and...?) ?
  - elements you get from clicking on the left area should appear in the main menubar too
 
  - allow shift-clicking in measure bar to select more measures
