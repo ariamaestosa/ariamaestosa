@@ -852,7 +852,7 @@ namespace AriaMaestosa
                 
                 for(int n=0; n<noteRenderInfo.flag_amount; n++)
                 {
-                    const int flag_y = stem_end + n*flag_step;
+                    const int flag_y = stem_end + n*flag_step*5;
                     const int orient = (noteRenderInfo.stem_type==STEM_UP ? 1 : -1 );
                     
                     wxPoint points[] =
