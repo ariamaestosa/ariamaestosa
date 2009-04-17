@@ -220,7 +220,7 @@ namespace AriaMaestosa
         }
         
         if(tick < 0) return; // FIXME - find why it happens
-        assertExpr(tick,>,-1);
+        // assertExpr(tick,>,-1);
         
         const int x = x_converter->tickToX(tick);
         if(x < 0) return; // this part of score is not printed (e.g. is in a repetition)
@@ -273,15 +273,21 @@ namespace AriaMaestosa
         
         global_dc->SetBrush( *wxBLACK_BRUSH );
         
+        int silence_center = -1;
+        
         if( type == 1 )
         {
             global_dc->SetPen(  *wxTRANSPARENT_PEN  );
+            // FIXME - more hardcoded values
             global_dc->DrawRectangle(x+40, silences_y, 120, (int)round(global_line_height/2));
+            silence_center = x+40+120/2;
         }
         else if( type == 2 )
         {
             global_dc->SetPen(  *wxTRANSPARENT_PEN  );
+            // FIXME - hardcoded values
             global_dc->DrawRectangle(x+40, (int)round(silences_y+global_line_height/2)-10, 120, (int)round(global_line_height/2.0+10));
+            silence_center = x+40+120/2;
         }
         else if( type == 4 )
         {
@@ -304,6 +310,8 @@ namespace AriaMaestosa
                 wxPoint(mx+25,   y+100),
             };
             global_dc->DrawSpline(12, points);
+            
+            silence_center = mx + 25;
         }
         else if( type == 8 )
         {
@@ -319,6 +327,8 @@ namespace AriaMaestosa
             global_dc->DrawSpline(3, points);
             
             global_dc->DrawCircle(mx, y, 6);
+            
+            silence_center = mx + 45/2;
         }
         else if( type == 16 )
         {
@@ -342,6 +352,8 @@ namespace AriaMaestosa
             
             global_dc->DrawCircle(mx, y, 6);
             global_dc->DrawCircle(mx+25, y-50, 6);
+            
+            silence_center = mx + 50/2;
         }
         
         // dotted
@@ -359,15 +371,15 @@ namespace AriaMaestosa
             global_dc->SetPen( tiePen );
             global_dc->SetBrush( *wxTRANSPARENT_BRUSH );
             
-            const int center_x = x;
             const int radius_x = 50;
             
             const int base_y = silences_y + 100;
+
+            static wxSize triplet_3_size = global_dc->GetTextExtent(wxT("3"));
             
-            // empirical values... FIXME
-            renderArc(*global_dc, center_x + (type < 4 ? 110 : 25), base_y, radius_x, 80);
+            renderArc(*global_dc, silence_center, base_y, radius_x, 80);
             global_dc->SetTextForeground( wxColour(0,0,0) );
-            global_dc->DrawText( wxT("3"), center_x + (type < 4 ? 100 : 20), base_y );
+            global_dc->DrawText( wxT("3"), silence_center - triplet_3_size.GetWidth()/2, base_y );
         }
     }
     
