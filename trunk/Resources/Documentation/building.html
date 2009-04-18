@@ -129,7 +129,7 @@ sudo make install</pre></blockquote>Make sure <i>wx-config --libs</i> points to 
 
 <center><b>Installing wxWidgets - Linux</b></center>
 
-You can simply download wxWidgets 2.8 from your distribution's repositories. It needs OpenGL support enabled and to be Unicode, and don't forget to install -dev packages if your distribution uses them.
+You can simply download wxWidgets 2.8 from your distribution's repositories. It needs OpenGL support enabled if you want to use the OpenGL renderer, and should be Unicode. Don't forget to install -dev packages if your distribution uses them.
 <br/><br/>If you want to build wxWidgets from source, you can use commands like (read the instructions that come with wxWidgets or wxWiki for more info):<br/>
 <blockquote>
 <pre>cd wxGTK2.8.x<br/>mkdir gtk-build && cd gtk-build<br/>../configure --with-opengl --enable-unicode<br/>make<br/>sudo make install</pre></blockquote>
