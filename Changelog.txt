@@ -14,6 +14,7 @@
     - Added support for printing triplet silences
     - Fixed bug where random notes would appear at the far right of the page
     - Fixed rendering notes with more than 1 flags (was broken when not beamed)
+    - Fixed bug where notes would appear at the far left of the page and not in their measure
 
 1.2b5
 - More minor linux fixes

@@ -270,7 +270,7 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
         if( start_tick >= lastTick ) break;
         
         // find last note - if many notes end at the same time, keep the one that started last
-        if(end_tick > last_note_end ||
+        if(start_tick > last_note_start || end_tick > last_note_start ||
            (end_tick == last_note_end && start_tick >= last_note_start)
            )
         {
@@ -282,7 +282,6 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
         
         if( currentNoteDuration < shortestDuration or shortestDuration==-1) shortestDuration = currentNoteDuration;
     }
-    std::cout << "measure_empty=" << measure_empty << std::endl;
     assertExpr(last_note,>,-1);
     assertExpr(last_note,<,noteAmount);
     
@@ -293,6 +292,8 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
     }
     else newTrackRef->lastNote = last_note; // ID of the last note in this measure
 
+    std::cout << "measure " << id << " empty=" << measure_empty << " from=" << newTrackRef->firstNote << " to=" << newTrackRef->lastNote << std::endl;
+    
    // std::cout << "--- measure " << (id+1) << " ranges from note  "<< newTrackRef->firstNote << " to " << newTrackRef->lastNote << std::endl;
     trackRef.push_back( newTrackRef );
 
