@@ -1,3 +1,8 @@
+1.2b7
+- fixed bug when loading file that used a magnetic grid size from drop-down menu and not visible on the widget
+- fixed drawing dead notes (X)
+- improved print layout
+
 1.2b6
 - Printing improvements :
     - Better G clef on printed scores
