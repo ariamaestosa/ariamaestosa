@@ -2,6 +2,7 @@
 - fixed bug when loading file that used a magnetic grid size from drop-down menu and not visible on the widget
 - fixed drawing dead notes (X)
 - improved print layout
+- improved look of printed note heads
 
 1.2b6
 - Printing improvements :
