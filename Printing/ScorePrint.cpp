@@ -557,10 +557,18 @@ namespace AriaMaestosa
         OwnerPtr<ScoreAnalyser> g_clef_analyser;
         OwnerPtr<ScoreAnalyser> f_clef_analyser;
         
+        /*
+         void setStemDrawInfo( const int stem_up_x_offset,
+         const float stem_up_y_offset,
+         const int stem_down_x_offset,
+         const float stem_down_y_offset,
+         const float stem_height = -1,
+         const float min_stem_height = -1);
+         */
         if(g_clef)
         {
             g_clef_analyser = new ScoreAnalyser(scoreEditor, new PrintXConverter(this), middle_c_level-5);
-            g_clef_analyser->setStemDrawInfo( 140, 0, 60, 0 );
+            g_clef_analyser->setStemDrawInfo( 140 /* stem up x offset */, 0, 60, 0 );
             g_clef_analyser->setStemPivot(middle_c_level-5);
         }
         if(f_clef)
@@ -692,9 +700,18 @@ namespace AriaMaestosa
         
 #define LEVEL_TO_Y( lvl ) y0 + 1 + lineHeight*0.5*(lvl - min_level)
         
-        const int headRadius = (int)round(lineHeight);
+        const int headRadius = 34; //(int)round(lineHeight*0.8);
         
-        analyser.setStemDrawInfo( headRadius*2-22, 0, headRadius-20, 0 );
+        
+        /*
+         void setStemDrawInfo( const int stem_up_x_offset,
+         const float stem_up_y_offset,
+         const int stem_down_x_offset,
+         const float stem_down_y_offset,
+         const float stem_height = -1,
+         const float min_stem_height = -1);
+         */
+        analyser.setStemDrawInfo( headRadius*2 + 36, 0, 36, 0 );
         
         for(int lvl=first_score_level; lvl<=last_score_level; lvl+=2)
         {
@@ -801,8 +818,8 @@ namespace AriaMaestosa
                 
                 // draw head
                 const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
-                wxPoint headLocation( noteRenderInfo.x + headRadius - 20,
-                                     notey-(headRadius-15)/2.0-3);
+                wxPoint headLocation( noteRenderInfo.x + (headRadius),
+                                     notey-(headRadius-5)/2.0); // FIXME....
                 
                 if(noteRenderInfo.instant_hit)
                 {
@@ -811,10 +828,33 @@ namespace AriaMaestosa
                 else
                 {
                     dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
+                    dc.SetBrush( *wxBLACK_BRUSH );
+                    const int cx = headLocation.x + 30;
+                    const int cy = headLocation.y;
+                    wxPoint points[25];
+                    for(int n=0; n<25; n++)
+                    {
+                        // FIXME - instead of always substracting to radius, just make it smaller...
+                        const float angle = n/25.0*6.283185f /* 2*PI */;
+                        points[n] = wxPoint( cx + 6 + (headRadius-5)*cos(angle),
+                                             cy + headRadius/2 + (headRadius - 14)*sin(angle) - headRadius*(-0.5f + fabsf( (n-12.5f)/12.5f ))/2.0f );
+                    }
+                    /*=
+                    {
+                        wxPoint(cx, cy),
+                        wxPoint(cx, cy),
+                        wxPoint(cx, cy),
+                        wxPoint(cx, cy),
+                    };*/
+                    if(noteRenderInfo.hollow_head) dc.DrawSpline(25, points);
+                    else dc.DrawPolygon(25, points, -3);
+                    
+                    /*
+                    dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
                     if(noteRenderInfo.hollow_head) dc.SetBrush( *wxTRANSPARENT_BRUSH );
                     else dc.SetBrush( *wxBLACK_BRUSH );
                     
-                    dc.DrawEllipse( headLocation, wxSize(headRadius, headRadius-10) );
+                    dc.DrawEllipse( headLocation, wxSize(headRadius, headRadius-10) );*/
                 }
                 noteRenderInfo.setY(notey+headRadius/2.0);
                 
