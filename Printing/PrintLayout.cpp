@@ -280,6 +280,9 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
             measure_empty = false;
         }
         
+        // store duration if it's the shortest yet (but ignore dead/instant-hit notes)
+        const float relativeLength = (end_tick - start_tick) / (float)(getMeasureData()->beatLengthInTicks()*4);
+        if( relativeLength < 1.0/32.0 ) continue;
         if( currentNoteDuration < shortestDuration or shortestDuration==-1) shortestDuration = currentNoteDuration;
     }
     assertExpr(last_note,>,-1);
@@ -292,7 +295,7 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
     }
     else newTrackRef->lastNote = last_note; // ID of the last note in this measure
 
-    std::cout << "measure " << id << " empty=" << measure_empty << " from=" << newTrackRef->firstNote << " to=" << newTrackRef->lastNote << std::endl;
+    //std::cout << "measure " << id << " empty=" << measure_empty << " from=" << newTrackRef->firstNote << " to=" << newTrackRef->lastNote << std::endl;
     
    // std::cout << "--- measure " << (id+1) << " ranges from note  "<< newTrackRef->firstNote << " to " << newTrackRef->lastNote << std::endl;
     trackRef.push_back( newTrackRef );
@@ -842,7 +845,11 @@ void PrintLayoutManager::calculateLineLayout()
                 current_page++;
                // std::cout << "adding a new page : " <<  current_page << std::endl;
                 layoutPages[current_page].first_line = currentLine+1;
+                
+               // std::cout << "next page...\n";
             }
+
+            //std::cout << "*&^*&^*&^%$%$#@#@!! current_height = " << current_height << std::endl;
 
             //currentLine++;
             layoutLines.push_back( LayoutLine(getCurrentPrintable()) );
