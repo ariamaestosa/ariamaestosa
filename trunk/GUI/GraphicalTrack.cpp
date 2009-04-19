@@ -927,9 +927,8 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
         case 48:
             grid_selection_x = mgrid_32->x;
             break;
-        default: // Should not happen
-            assert(false);
-            grid_selection_x = mgrid_8->x;
+        default: // length is chosen from drop-down menu
+            grid_selection_x = -1;
     }
     AriaRender::primitives();
     AriaRender::color(0,0,0);
