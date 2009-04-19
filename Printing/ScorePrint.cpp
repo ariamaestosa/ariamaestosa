@@ -800,14 +800,22 @@ namespace AriaMaestosa
                 }
                 
                 // draw head
-                dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
-                if(noteRenderInfo.hollow_head) dc.SetBrush( *wxTRANSPARENT_BRUSH );
-                else dc.SetBrush( *wxBLACK_BRUSH );
-                
                 const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
                 wxPoint headLocation( noteRenderInfo.x + headRadius - 20,
                                      notey-(headRadius-15)/2.0-3);
-                dc.DrawEllipse( headLocation, wxSize(headRadius, headRadius-10) );
+                
+                if(noteRenderInfo.instant_hit)
+                {
+                    dc.DrawText(wxT("X"), headLocation.x, headLocation.y);
+                }
+                else
+                {
+                    dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
+                    if(noteRenderInfo.hollow_head) dc.SetBrush( *wxTRANSPARENT_BRUSH );
+                    else dc.SetBrush( *wxBLACK_BRUSH );
+                    
+                    dc.DrawEllipse( headLocation, wxSize(headRadius, headRadius-10) );
+                }
                 noteRenderInfo.setY(notey+headRadius/2.0);
                 
                 // draw dot if note is dotted
@@ -843,8 +851,8 @@ namespace AriaMaestosa
                             analyser.getStemX(noteRenderInfo), LEVEL_TO_Y(analyser.getStemTo(noteRenderInfo))    );
             }
             
-            // drag flags
-            if(noteRenderInfo.flag_amount>0 and not noteRenderInfo.beam)
+            // draw flags
+            if(not noteRenderInfo.instant_hit and noteRenderInfo.flag_amount>0 and not noteRenderInfo.beam)
             {
                 const int stem_end = LEVEL_TO_Y(analyser.getStemTo(noteRenderInfo));
                 const int flag_x_origin = analyser.getStemX(noteRenderInfo);
