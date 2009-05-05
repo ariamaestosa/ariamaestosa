@@ -31,10 +31,12 @@ TablaturePrintable::~TablaturePrintable()
 
 void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1, bool show_measure_number)
 {
+    wxFont oldfont = dc.GetFont();
+    
     Track* track = line.getTrack();
     
     // draw tab background (guitar strings)
-    dc.SetPen(  wxPen( wxColour(125,125,125), 7 ) );
+    dc.SetPen(  wxPen( wxColour(125,125,125), 5 ) );
     
     const float stringHeight = (float)(y1 - y0) / (float)(string_amount-1);
     
@@ -54,7 +56,6 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
         
         if(currentElement->type == LINE_HEADER)
         {
-            wxFont oldfont = dc.GetFont();
             dc.SetFont( wxFont(100,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD) );
             dc.SetTextForeground( wxColour(0,0,0) );
             
@@ -110,6 +111,9 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
 
         if(firstNote == -1 || lastNote == -1) continue; // empty measure
         
+        dc.SetFont( wxFont(75, wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD) );
+        wxSize textSize3 = dc.GetTextExtent( wxT("X") );
+        
         for(int i=firstNote; i<=lastNote; i++)
         {
             const int string = track->getNoteString(i);
@@ -120,7 +124,7 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
             // substract from width to leave some space on the right (coordinate is from the left of the text string so we need extra space on the right)
             // if fret number is greater than 9, the string will have two characters so we need to recenter it a bit more
             const int drawX = getNotePrintX(i) + (fret > 9 ? pixel_width_of_an_unit/4 : pixel_width_of_an_unit/2);
-            const int drawY = y0 + stringHeight*string - getCurrentPrintable()->text_height_half;
+            const int drawY = y0 + stringHeight*string - textSize3.y/2;
             wxString label = to_wxString(fret);
             
             dc.DrawText( label, drawX, drawY );
@@ -128,6 +132,7 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
             if(fret < 0)  dc.SetTextForeground( wxColour(0,0,0) );
         }
         
+        dc.SetFont(oldfont);
     }//next element
 }
 

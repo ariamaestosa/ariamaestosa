@@ -295,7 +295,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     dc.DrawText( label, title_x, y0 );
 
     // set font we will use and get info about it
-    dc.SetFont( wxFont(60,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL) );
+    dc.SetFont( wxFont(75,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL) );
 
     wxCoord txw, txh, descent, externalLeading;
     dc.GetTextExtent(label, &txw, &txh, &descent, &externalLeading);
@@ -307,13 +307,14 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
      first : space for title at the top
      second and third : space below title at top
      fourth : space below the last line
+     If it's the first page, leave more space because the title there is bigger. FIXME - compute proper size
      */
-    //const float track_height = ( (float)h - (float)text_height*4 ) / (float) std::max(totalTrackAmount, maxLinesInPage);
-
-    const float track_area_height = (float)h - (float)text_height*4.0f;
+    const float track_area_height = (float)h - (float)text_height*4.0f + (pageNum == 1 ? 100 : 0);
 
     std::cout << "printing lines from " << page.first_line << " to " << page.last_line << std::endl;
 
+    const wxFont regularFont = wxFont(75, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+    
     // ask all EditorPrintables to render their part
     float y_from = y0 + text_height*3;
     for(int l=page.first_line; l<=page.last_line; l++)
@@ -328,6 +329,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
         float used_y_from = y_from;
         if(used_height < height) used_y_from -= (height - used_height)/2; // center vertically in available space 
         
+        dc.SetFont( regularFont );
         layoutLines[l].printYourself(dc, x0, (int)round(used_y_from), x1, (int)round(used_y_from + used_height));
         y_from += height;
     }
@@ -416,7 +418,7 @@ void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0,
     wxString denom = wxString::Format( wxT("%i"), el->denom );
     
     wxFont oldfont = dc->GetFont();
-    dc->SetFont( wxFont(100,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD) );
+    dc->SetFont( wxFont(150,wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD) );
     dc->SetTextForeground( wxColour(0,0,0) );
     
     wxSize text_size = dc->GetTextExtent(denom);
