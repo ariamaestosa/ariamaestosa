@@ -377,9 +377,9 @@ namespace AriaMaestosa
 
             static wxSize triplet_3_size = global_dc->GetTextExtent(wxT("3"));
             
-            renderArc(*global_dc, silence_center, base_y, radius_x, 80);
+            renderArc(*global_dc, silence_center - 9, base_y, radius_x, 80);
             global_dc->SetTextForeground( wxColour(0,0,0) );
-            global_dc->DrawText( wxT("3"), silence_center - triplet_3_size.GetWidth()/2, base_y );
+            global_dc->DrawText( wxT("3"), silence_center - triplet_3_size.GetWidth()/3 - 11, base_y-20 );
         }
     }
     
@@ -924,7 +924,7 @@ namespace AriaMaestosa
                 const bool show_above = noteRenderInfo.isTieUp();
                 const int base_y = LEVEL_TO_Y( noteRenderInfo.getStemOriginLevel() ) + (show_above ? - 30 : 60);
                 
-                const int center_x = (noteRenderInfo.getTiedToPixel() + noteRenderInfo.x)/2 + headRadius*1.3;
+                const int center_x = (noteRenderInfo.getTiedToPixel() + noteRenderInfo.x)/2 + headRadius*2;
                 const int radius_x = abs(noteRenderInfo.getTiedToPixel() - noteRenderInfo.x)/2;
                 renderArc(dc, center_x, base_y, radius_x, show_above ? -50 : 50);
             }
@@ -965,7 +965,9 @@ namespace AriaMaestosa
                 dc.SetPen( tiePen );
                 dc.SetBrush( *wxTRANSPARENT_BRUSH );
                 
-                const int center_x = (noteRenderInfo.triplet_arc_x_end == -1 ? noteRenderInfo.triplet_arc_x_start : (noteRenderInfo.triplet_arc_x_start + noteRenderInfo.triplet_arc_x_end)/2);
+                const int center_x = (noteRenderInfo.triplet_arc_x_end == -1 ?
+                                      noteRenderInfo.triplet_arc_x_start :
+                                      (noteRenderInfo.triplet_arc_x_start + noteRenderInfo.triplet_arc_x_end)/2) + headRadius;
                 const int radius_x = (noteRenderInfo.triplet_arc_x_end == -1 or  noteRenderInfo.triplet_arc_x_end == noteRenderInfo.triplet_arc_x_start ?
                                       100 : (noteRenderInfo.triplet_arc_x_end - noteRenderInfo.triplet_arc_x_start)/2);
                 
@@ -973,7 +975,7 @@ namespace AriaMaestosa
                 
                 renderArc(dc, center_x + headRadius*1.2, base_y, radius_x, noteRenderInfo.triplet_show_above ? -80 : 80);
                 dc.SetTextForeground( wxColour(0,0,0) );
-                dc.DrawText( wxT("3"), center_x + headRadius, base_y + (noteRenderInfo.triplet_show_above ? -55 : 0) );
+                dc.DrawText( wxT("3"), center_x + headRadius/2, base_y + (noteRenderInfo.triplet_show_above ? -75 : -20) );
             }
             
             

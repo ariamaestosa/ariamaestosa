@@ -4,6 +4,7 @@
 - improved print layout
 - improved look of printed note heads
 - improved look of printed tabs
+- improved printing of triplets and ties
 
 1.2b6
 - Printing improvements :
