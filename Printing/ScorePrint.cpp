@@ -313,25 +313,6 @@ namespace AriaMaestosa
             
             silence_radius = silenceBigger.GetWidth()/2;
             silence_center = x + 50 + silence_radius;
-            
-            /*
-            global_dc->SetPen(  wxPen( wxColour(0,0,0), 8 ) );
-            const int mx = x + 75;
-            const int y = silences_y;
-            wxPoint points[] =
-            {
-                wxPoint(mx,      y+150/2),
-                wxPoint(mx+45,   y),
-                wxPoint(mx,      y),
-            };
-            global_dc->DrawSpline(3, points);
-            
-            silence_radius = 3;
-            global_dc->DrawCircle(mx, y, silence_radius*2);
-            silence_radius = 3;
-            
-            silence_center = mx + 45/2;
-             */
         }
         else if( type == 16 )
         {

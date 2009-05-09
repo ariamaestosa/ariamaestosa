@@ -136,5 +136,16 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
     }//next element
 }
 
+int TablaturePrintable::calculateHeight(LayoutLine& line) const
+{
+    const int from_note = line.getFirstNote();
+    const int to_note   = line.getLastNote();
+    
+    // check if empty
+    if(from_note == -1 || to_note == -1)
+        return 0;
+    
+    return string_amount;
+}  
 
 }
