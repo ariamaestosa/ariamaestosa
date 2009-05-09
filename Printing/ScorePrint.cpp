@@ -305,6 +305,16 @@ namespace AriaMaestosa
         }
         else if( type == 8 )
         {
+            static wxBitmap silence( getResourcePrefix() + wxT("/score/silence8.png"), wxBITMAP_TYPE_PNG );
+            const float scale = 6.5f;
+            static wxBitmap silenceBigger = wxBitmap(silence.ConvertToImage().Scale(silence.GetWidth()*scale, silence.GetHeight()*scale));
+            
+            global_dc->DrawBitmap( silenceBigger, x+50, silences_y-15 );
+            
+            silence_radius = silenceBigger.GetWidth()/2;
+            silence_center = x + 50 + silence_radius;
+            
+            /*
             global_dc->SetPen(  wxPen( wxColour(0,0,0), 8 ) );
             const int mx = x + 75;
             const int y = silences_y;
@@ -321,6 +331,7 @@ namespace AriaMaestosa
             silence_radius = 3;
             
             silence_center = mx + 45/2;
+             */
         }
         else if( type == 16 )
         {
