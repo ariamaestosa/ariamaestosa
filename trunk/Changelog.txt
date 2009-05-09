@@ -8,6 +8,7 @@
 - fixed vertical centering of tracks + fixed assertion failure
 - hide empty lines when printing
 - improved silence printing
+- fixed rendering dotted notes
 
 1.2b6
 - Printing improvements :

@@ -282,15 +282,15 @@ namespace AriaMaestosa
             // FIXME - remove hardcoded values
             silence_radius = 60;
             global_dc->DrawRectangle(x+40, silences_y, silence_radius*2, (int)round(global_line_height/2));
-            silence_center = x+40+120/2;
+            silence_center = x+40+silence_radius;
         }
         else if( type == 2 )
         {
-            silence_radius = 16;
+            silence_radius = 60;
             global_dc->SetPen(  *wxTRANSPARENT_PEN  );
             // FIXME - hardcoded values
-            global_dc->DrawRectangle(x+40, (int)round(silences_y+global_line_height/2)-10, silence_radius*2, (int)round(global_line_height/2.0+10));
-            silence_center = x+40+120/2;
+            global_dc->DrawRectangle(x+40, (int)round(silences_y+global_line_height/2), silence_radius*2, (int)round(global_line_height/2.0));
+            silence_center = x+40+silence_radius;
         }
         else if( type == 4 )
         {
@@ -352,7 +352,6 @@ namespace AriaMaestosa
         // dotted
         if(dotted)
         {
-            // empirical values... FIXME
             wxPoint headLocation( silence_center + silence_radius + 20, silences_y+30 );
             global_dc->DrawEllipse( headLocation, wxSize(15,15) );
         }
@@ -837,29 +836,18 @@ namespace AriaMaestosa
                         points[n] = wxPoint( cx + 6 + (headRadius-5)*cos(angle),
                                              cy + headRadius/2 + (headRadius - 14)*sin(angle) - headRadius*(-0.5f + fabsf( (n-12.5f)/12.5f ))/2.0f );
                     }
-                    /*=
-                    {
-                        wxPoint(cx, cy),
-                        wxPoint(cx, cy),
-                        wxPoint(cx, cy),
-                        wxPoint(cx, cy),
-                    };*/
+
                     if(noteRenderInfo.hollow_head) dc.DrawSpline(25, points);
                     else dc.DrawPolygon(25, points, -3);
                     
-                    /*
-                    dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
-                    if(noteRenderInfo.hollow_head) dc.SetBrush( *wxTRANSPARENT_BRUSH );
-                    else dc.SetBrush( *wxBLACK_BRUSH );
-                    
-                    dc.DrawEllipse( headLocation, wxSize(headRadius, headRadius-10) );*/
                 }
                 noteRenderInfo.setY(notey+headRadius/2.0);
                 
                 // draw dot if note is dotted
                 if(noteRenderInfo.dotted)
                 {
-                    wxPoint headLocation( noteRenderInfo.x + headRadius*2.3, notey+10 );
+                    // FIXME - what's that?? 4 head radiuses to get it visible?? coords are really screwed up
+                    wxPoint headLocation( noteRenderInfo.x + headRadius*3 + 20, notey+10 );
                     dc.DrawEllipse( headLocation, wxSize(10,10) );
                 }
                 
