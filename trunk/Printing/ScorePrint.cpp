@@ -274,44 +274,34 @@ namespace AriaMaestosa
         global_dc->SetBrush( *wxBLACK_BRUSH );
         
         int silence_center = -1;
+        int silence_radius = -1;
         
         if( type == 1 )
         {
             global_dc->SetPen(  *wxTRANSPARENT_PEN  );
-            // FIXME - more hardcoded values
-            global_dc->DrawRectangle(x+40, silences_y, 120, (int)round(global_line_height/2));
+            // FIXME - remove hardcoded values
+            silence_radius = 60;
+            global_dc->DrawRectangle(x+40, silences_y, silence_radius*2, (int)round(global_line_height/2));
             silence_center = x+40+120/2;
         }
         else if( type == 2 )
         {
+            silence_radius = 16;
             global_dc->SetPen(  *wxTRANSPARENT_PEN  );
             // FIXME - hardcoded values
-            global_dc->DrawRectangle(x+40, (int)round(silences_y+global_line_height/2)-10, 120, (int)round(global_line_height/2.0+10));
+            global_dc->DrawRectangle(x+40, (int)round(silences_y+global_line_height/2)-10, silence_radius*2, (int)round(global_line_height/2.0+10));
             silence_center = x+40+120/2;
         }
         else if( type == 4 )
         {
-            global_dc->SetPen(  wxPen( wxColour(0,0,0), 8 ) );
-            const int mx = x + 25;
-            const int y = silences_y - 5;
-            wxPoint points[] =
-            {
-                wxPoint(mx,      y),
-                wxPoint(mx+20,   y+20),
-                wxPoint(mx+25,   y+25),
-                wxPoint(mx+20,   y+30),
-                wxPoint(mx+5,    y+45),
-                wxPoint(mx,      y+50),
-                wxPoint(mx+5,    y+55),
-                wxPoint(mx+20,   y+70),
-                wxPoint(mx+25,   y+75),
-                wxPoint(mx,      y+75),
-                wxPoint(mx+5,    y+85),
-                wxPoint(mx+25,   y+100),
-            };
-            global_dc->DrawSpline(12, points);
+            static wxBitmap silence( getResourcePrefix() + wxT("/score/silence4.png"), wxBITMAP_TYPE_PNG );
+            const float scale = 6.5f;
+            static wxBitmap silenceBigger = wxBitmap(silence.ConvertToImage().Scale(silence.GetWidth()*scale, silence.GetHeight()*scale));
+
+            global_dc->DrawBitmap( silenceBigger, x+25, silences_y-15 );
             
-            silence_center = mx + 25;
+            silence_radius = silenceBigger.GetWidth()/2;
+            silence_center = x + 25 + silence_radius;
         }
         else if( type == 8 )
         {
@@ -326,7 +316,9 @@ namespace AriaMaestosa
             };
             global_dc->DrawSpline(3, points);
             
-            global_dc->DrawCircle(mx, y, 6);
+            silence_radius = 3;
+            global_dc->DrawCircle(mx, y, silence_radius*2);
+            silence_radius = 3;
             
             silence_center = mx + 45/2;
         }
@@ -354,13 +346,14 @@ namespace AriaMaestosa
             global_dc->DrawCircle(mx+25, y-50, 6);
             
             silence_center = mx + 50/2;
+            silence_radius = 25;
         }
         
         // dotted
         if(dotted)
         {
             // empirical values... FIXME
-            wxPoint headLocation( x + (type < 4 ? 175 : 75), silences_y+30 );
+            wxPoint headLocation( silence_center + silence_radius + 20, silences_y+30 );
             global_dc->DrawEllipse( headLocation, wxSize(15,15) );
         }
         

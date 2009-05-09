@@ -104,6 +104,7 @@ NOTE: sorry, this is very raw :)
  
 * when hiding empty lines during printing, if a track doesn't appear at the top of the page, you never see its key and clef
 * hiding empty lines should be configurable
+* score print : time sig changes : no bar should appear adter time sig change
  
 * closing manual view with Cmd-W shuts down Aria
  
@@ -125,7 +126,7 @@ NOTE: sorry, this is very raw :)
 
 repetition detection:
     - sometimes does 41-42 43-44 and not 41-44
-    - tab export : x2 can appear on new line...
+    - x2 can appear on new line...
     - repeated measures need measure numbers too
     - sometimes uses, in repetitions, measures that are not printed (that are inside a previous repetition)
 
