@@ -100,8 +100,6 @@ NOTE: sorry, this is very raw :)
 
  ************************* BUGS: *************************
  
-* assert failure (y0 > 0) when printing short scores
- 
 * score editor at wrong octave
  
 * closing manual view with Cmd-W shuts down Aria

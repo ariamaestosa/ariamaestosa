@@ -5,6 +5,7 @@
 - improved look of printed note heads
 - improved look of printed tabs
 - improved printing of triplets and ties
+- fixed vertical centering of tracks + fixed assertion failure
 
 1.2b6
 - Printing improvements :
