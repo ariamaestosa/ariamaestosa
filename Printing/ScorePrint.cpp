@@ -392,12 +392,17 @@ namespace AriaMaestosa
         const int from_note = line.getFirstNote();
         const int to_note   = line.getLastNote();
         
+
         const bool g_clef = scoreEditor->isGClefEnabled();
         const bool f_clef = scoreEditor->isFClefEnabled();
         
+        // check if empty
         if(from_note == -1 || to_note == -1)
-            if(g_clef xor f_clef) return 5;
-            else return 10;
+        {
+            return 0;
+            //if(g_clef xor f_clef) return 5;
+            //else return 10;
+        }
         
         // find highest and lowest note we need to render
         int highest_pitch = -1, lowest_pitch = -1;

@@ -102,6 +102,9 @@ NOTE: sorry, this is very raw :)
  
 * score editor at wrong octave
  
+* when hiding empty lines during printing, if a track doesn't appear at the top of the page, you never see its key and clef
+* hiding empty lines should be configurable
+ 
 * closing manual view with Cmd-W shuts down Aria
  
 * problem with render being being rendered one time out of two... :( (hard to reproduce)

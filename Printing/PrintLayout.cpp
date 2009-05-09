@@ -470,44 +470,53 @@ int LayoutLine::calculateHeight()
 
     return level_height;
 }
-void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x1, const int y1)
+void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x1, const int y1,
+                              const int margin_below, const int margin_above)
 {
-    std::cout << "printYourself : line from " << y0 << " to " << y1 << std::endl;
-    
-    
     const int trackAmount = getTrackAmount();
+    
+    // ---- empty space around whole line
+    const float height = (float)(y1 - y0);// - ( trackAmount>1 and not last_of_page ? 100 : 0 );
 
-    // leave an additional empty space under line if we're printing multiple tracks
-    const float height = (float)(y1 - y0) - ( trackAmount>1 and not last_of_page ? 100 : 0 );
-
-    //std::cout << "last_of_page=" << last_of_page << std::endl;
-
-    const int margin_below_track = 220;
+    const int my0 = y0 + margin_above;
+    const int my1 = y0 + height - margin_below;
     
     // draw vertical line to show these lines belong toghether
     if(trackAmount>1)
     {
         dc.SetPen(  wxPen( wxColour(150,150,150), 25 ) );
-        dc.DrawLine( x0-3, y0, x0-3, y0+height-margin_below_track);
-        dc.DrawLine( x0-3, y0, x0+30-3, y0-50);
-        dc.DrawLine( x0-3, y0+height-margin_below_track, x0+30-3, y0+height-margin_below_track+50);
+        dc.DrawLine( x0-3, my0, x0-3, my1); // vertical line
+        dc.DrawLine( x0-3, my0, x0-3+30, my0-50); // top thingy
+        dc.DrawLine( x0-3, my1, x0-3+30, my1+50); // bottom thingy
         
-        dc.DrawLine( x1-3, y0, x1-3, y0+height-margin_below_track);
+        dc.DrawLine( x1-3, my0, x1-3, my1); // right-side line
     }
 
-    float current_y = y0;
+    // ---- space between individual tracks
+    const int space_between_tracks = 150;
+    
+    float current_y = my0;
     for(int n=0; n<trackAmount; n++)
     {
         setCurrentTrack(n);
         EditorPrintable* track = printable->editorPrintables.get(currentTrack);
 
+        // skip empty tracks
+        if(height_percent[n] == 0) continue;
+
+        
         // determine how much vertical space is allocated for this track
-        const float track_height = height * height_percent[n]/100.0f;
+        const float track_height = (height - margin_below - margin_above) * height_percent[n]/100.0f;
 
         //std::cout << "* allocating " <<track_height << " out of " << height << " (" << height_percent[n] << "%)" << std::endl;
 
-        track->drawLine(*this, dc, x0, current_y, x1,
-                        current_y+(track_height-margin_below_track),
+        const float position = (float)n / trackAmount;
+        const float space_above_line = space_between_tracks*position;
+        const float space_below_line = space_between_tracks*(1-position);
+        
+        track->drawLine(*this, dc,
+                        x0, current_y + space_above_line,
+                        x1, current_y + track_height - space_below_line,
                         n==0);
         current_y += track_height;
         //assertExpr(current_y,<=,y1);

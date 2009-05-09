@@ -247,20 +247,14 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
                               const int x0, const int y0,
                               const int x1, const int y1,
                               const int w, const int h)
-{
+{    
     assertExpr(pageNum-1,<,(int)layoutPages.size());
     LayoutPage& page = layoutPages[pageNum-1];
 
     const int lineAmount = page.last_line - page.first_line + 1;
 
     std::cout << "printing page " << pageNum << ", which has " << lineAmount << " lines" << std::endl;
-    /*
-    int totalTrackAmount = 0;
-    for(int l=0; l<lineAmount; l++)
-    {
-        totalTrackAmount += page.layoutLines[l].getTrackAmount();
-    }
-*/
+
     int total_height = 4;
     for(int n=page.first_line; n <= page.last_line; n++)
     {
@@ -269,7 +263,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
 
     dc.SetBackground(*wxWHITE_BRUSH);
     dc.Clear();
-
+    
     // draw title
     wxString label = getTitle();
 
@@ -303,13 +297,11 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     text_height_half = (int)round((float)text_height / 2.0);
 
     /*
-     the equivalent of 4 times "text_height" will not be printed with notation.
-     first : space for title at the top
-     second and third : space below title at top
-     fourth : space below the last line
+     the equivalent of 3 times "text_height" will not be printed with notation.
+     --> space for title at the top, and some space under it
      If it's the first page, leave more space because the title there is bigger. FIXME - compute proper size
      */
-    const float track_area_height = (float)h - (float)text_height*4.0f + (pageNum == 1 ? 100 : 0);
+    const float track_area_height = (float)h - (float)text_height*3.0f + (pageNum == 1 ? 100 : 0);
 
     std::cout << "printing lines from " << page.first_line << " to " << page.last_line << std::endl;
 
@@ -320,17 +312,38 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     for(int l=page.first_line; l<=page.last_line; l++)
     {
         // give a height proportional to its part of the total height
-        const float height = layoutLines[l].level_height*track_area_height/total_height;
+        float height = layoutLines[l].level_height*track_area_height/total_height;
 
         float used_height = height;
         // track too high, will look weird... shrink a bit
-        while(used_height/(float)layoutLines[l].level_height > 115) used_height *= 0.95;
+        while(used_height/(float)layoutLines[l].level_height > 115)
+        {
+            used_height *= 0.95;
+        }
+        if(height > h/5) height = used_height*1.3; // shrink total height when track is way too large (if page contains only a few tracks)
 
         float used_y_from = y_from;
-        if(used_height < height) used_y_from += (height - used_height)/2; // center vertically in available space 
+        
+        // center vertically in available space  if more space than needed
+        if(used_height < height) used_y_from += (height - used_height)/2;
+        
+        // split margin above and below depending on position within page
+        const int line_amount = page.last_line - page.first_line;
+        const float position = line_amount == 0 ? 0 : (float)(l - page.first_line) / line_amount;
+        int margin_above = 250*position;
+        int margin_below = 250*(1-position);
         
         dc.SetFont( regularFont );
-        layoutLines[l].printYourself(dc, x0, (int)round(used_y_from), x1, (int)round(used_y_from + used_height));
+        layoutLines[l].printYourself(dc,
+                                     x0, (int)round(used_y_from), x1,
+                                     (int)round(used_y_from + used_height),
+                                     margin_below, margin_above);
+        
+        //dc.SetPen( wxPen( wxColour(255,0,0), 20 ) );
+        //dc.DrawLine(x0, (int)round(used_y_from), x1, (int)round(used_y_from));
+        //dc.SetPen( wxPen( wxColour(0, 255,0), 20 ) );
+        //dc.DrawLine(x0, (int)round(used_y_from + used_height), x1, (int)round(used_y_from + used_height));
+        
         y_from += height;
     }
 
