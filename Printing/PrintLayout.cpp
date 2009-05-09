@@ -472,6 +472,9 @@ int LayoutLine::calculateHeight()
 }
 void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x1, const int y1)
 {
+    std::cout << "printYourself : line from " << y0 << " to " << y1 << std::endl;
+    
+    
     const int trackAmount = getTrackAmount();
 
     // leave an additional empty space under line if we're printing multiple tracks

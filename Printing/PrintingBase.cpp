@@ -324,10 +324,10 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
 
         float used_height = height;
         // track too high, will look weird... shrink a bit
-        while(used_height/(float)layoutLines[l].level_height > 130) used_height *= 0.95;
+        while(used_height/(float)layoutLines[l].level_height > 115) used_height *= 0.95;
 
         float used_y_from = y_from;
-        if(used_height < height) used_y_from -= (height - used_height)/2; // center vertically in available space 
+        if(used_height < height) used_y_from += (height - used_height)/2; // center vertically in available space 
         
         dc.SetFont( regularFont );
         layoutLines[l].printYourself(dc, x0, (int)round(used_y_from), x1, (int)round(used_y_from + used_height));
