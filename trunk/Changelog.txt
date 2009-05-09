@@ -6,6 +6,7 @@
 - improved look of printed tabs
 - improved printing of triplets and ties
 - fixed vertical centering of tracks + fixed assertion failure
+- hide empty lines when printing
 
 1.2b6
 - Printing improvements :
