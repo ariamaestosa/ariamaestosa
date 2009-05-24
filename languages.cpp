@@ -15,6 +15,7 @@
  */
 
 #include "languages.h"
+#include "AriaCore.h"
 #include <iostream>
 #include "wx/config.h"
 #include "wx/stdpaths.h"
@@ -24,8 +25,8 @@
 namespace AriaMaestosa {
 
 wxLocale* locale;
-long language;
-
+static long language_aria_id = 0;
+static long language_wx_id = wxLANGUAGE_DEFAULT;
 
 class AriaLanguage
 {
@@ -43,7 +44,7 @@ public:
 
 std::vector<AriaLanguage> languages;
 
-void initLanguageSupport(wxConfig* prefs)
+void buildLanguageList()
 {
     // build list of existing languages
     languages.push_back( AriaLanguage( wxLANGUAGE_DEFAULT, wxT("System") ) );        // 0
@@ -51,21 +52,32 @@ void initLanguageSupport(wxConfig* prefs)
     languages.push_back( AriaLanguage( wxLANGUAGE_FRENCH,  wxT("Fran\u00E7ais") ) ); // 2
     languages.push_back( AriaLanguage( wxLANGUAGE_ITALIAN, wxT("Italiano") ) );      // 3
     languages.push_back( AriaLanguage( wxLANGUAGE_GERMAN,  wxT("Deutsch") ) );       // 4
+}
+
+void initLanguageSupport()
+{
+    if(languages.size() == 0) buildLanguageList();
 
     // read language from preferences
-    if(! prefs->Read( wxT("lang"), &language) )
+    language_aria_id = Core::getPrefsValue("lang");
+    if(language_aria_id == -1)
     {
         // couldn't read from prefs, use default
-        language = wxLANGUAGE_DEFAULT;
-        std::cout << "failed to read prefs" << std::endl;
+        language_aria_id = 0;
+        language_wx_id = wxLANGUAGE_DEFAULT;
+        std::cout << "failed to read language from prefs" << std::endl;
     }
+    // preferences contain Aria-ID of supported languages (see list above)
+    // we need to convert this to a wx language code before using
+    language_wx_id = languages[language_aria_id].wxlangcode;
 
-    // check if this language is known. not really necessary, just informative in case something goes wrong
+    // check if this language is known. not really necessary, just informative
+    // in case something goes wrong
     const int lang_amount = languages.size();
     bool language_known = false;
     for(int i=0; i<lang_amount; i++)
     {
-        if(language == languages[i].wxlangcode)
+        if(language_wx_id == languages[i].wxlangcode)
         {
             std::cout << "language : " << languages[i].langname.mb_str() << std::endl;
             language_known = true;
@@ -74,9 +86,9 @@ void initLanguageSupport(wxConfig* prefs)
     if(!language_known) std::cout << "Warning, the language code stored in preferences is unknown to Aria" << std::endl;
 
     // load language if possible, fall back to english otherwise
-    if(wxLocale::IsAvailable(language))
+    if(wxLocale::IsAvailable(language_wx_id))
     {
-        locale = new wxLocale( language, wxLOCALE_CONV_ENCODING );
+        locale = new wxLocale( language_wx_id, wxLOCALE_CONV_ENCODING );
 
         #ifdef __WXGTK__
         // add locale search paths
@@ -94,7 +106,8 @@ void initLanguageSupport(wxConfig* prefs)
             std::cout << "selected language is wrong" << std::endl;
             delete locale;
             locale = new wxLocale( wxLANGUAGE_ENGLISH );
-            language = wxLANGUAGE_ENGLISH;
+            language_aria_id = 0;
+            language_wx_id = wxLANGUAGE_ENGLISH;
         }
     }
     else
@@ -102,7 +115,8 @@ void initLanguageSupport(wxConfig* prefs)
         std::cout << "The selected language is not supported by your system."
                   << "Try installing support for this language." << std::endl;
         locale = new wxLocale( wxLANGUAGE_ENGLISH );
-        language = wxLANGUAGE_ENGLISH;
+        language_aria_id = 0;
+        language_wx_id = wxLANGUAGE_ENGLISH;
     }
 
 }
@@ -113,6 +127,8 @@ void initLanguageSupport(wxConfig* prefs)
  */
 wxArrayString getLanguageList()
 {
+    if(languages.size() == 0) buildLanguageList();
+
     wxArrayString list;
 
     const int lang_amount = languages.size();
@@ -124,37 +140,11 @@ wxArrayString getLanguageList()
     return list;
 }
 
-int getDefaultLanguageID()
+int getDefaultLanguageAriaID()
 {
-
-    const int lang_amount = languages.size();
-    for(int i=0; i<lang_amount; i++)
-    {
-        if(language == languages[i].wxlangcode)
-        {
-            return i;
-        }
-    }
-    return 0;
-
+    return language_aria_id;
 }
 
-void setDefaultLanguage(wxString langname)
-{
-    wxConfig* prefs = (wxConfig*) wxConfig::Get();
-
-    // find which one is selected and write its ID to te preferences config file
-    const int lang_amount = languages.size();
-    for(int i=0; i<lang_amount; i++)
-    {
-        if(langname == languages[i].langname)
-        {
-            prefs->Write( wxT("lang"), languages[i].wxlangcode );
-        }
-    }
-
-    prefs->Flush();
-}
 
 }
 

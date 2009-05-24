@@ -31,7 +31,6 @@
 
 #include "Config.h"
 
-#include "languages.h"
 #include "main.h"
 
 IMPLEMENT_APP(AriaMaestosa::wxWidgetApp)
@@ -85,8 +84,6 @@ bool wxWidgetApp::OnInit()
 {
     frame = NULL;
     prefs = (wxConfig*) wxConfig::Get();
-
-    initLanguageSupport(prefs);
 
     PlatformMidiManager::initMidiPlayer();
 

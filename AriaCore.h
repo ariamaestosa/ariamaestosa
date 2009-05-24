@@ -64,6 +64,9 @@ TuningPicker* getTuningPicker();
 KeyPicker* getKeyPicker();
 DrumChoice* getDrumPicker();
 InstrumentChoice* getInstrumentPicker();
+
+long getPrefsValue( const char* entryName );
+
 }
 
 namespace Display

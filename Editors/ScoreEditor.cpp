@@ -418,8 +418,10 @@ ScoreEditor::ScoreEditor(Track* track) : Editor(track)
 {
     g_clef = true;
     f_clef = true;
-    musicalNotationEnabled = showMusicalViewByDefault();
-    linearNotationEnabled  = showLinearViewByDefault();
+
+    const long scoreView = Core::getPrefsValue("scoreview");
+    musicalNotationEnabled = scoreView == 0 or scoreView == 1;
+    linearNotationEnabled  = scoreView == 0 or scoreView == 2;
 
     converter = new ScoreMidiConverter();
 
@@ -705,7 +707,7 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
 
         AriaRender::color(0,0,0);
         AriaRender::arc(center_x, LEVEL_TO_Y(renderInfo.triplet_arc_level) + (renderInfo.triplet_show_above ? 0 : 10), radius_x, 10, renderInfo.triplet_show_above);
-        
+
         AriaRender::images();
         AriaRender::renderNumber(wxT("3"), center_x-2, LEVEL_TO_Y(renderInfo.triplet_arc_level) + ( renderInfo.triplet_show_above? 2 : 20));
         AriaRender::primitives();
@@ -871,7 +873,7 @@ void renderSilence(const int tick, const int tick_length, const int silences_y)
         AriaRender::arc(x+5, silences_y + 25, 10, 10, false);
 
         AriaRender::color(0,0,0);
-        
+
         AriaRender::images();
         AriaRender::renderNumber(wxT("3"), x+3, silences_y+31);
         AriaRender::primitives();

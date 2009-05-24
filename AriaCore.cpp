@@ -2,6 +2,7 @@
 #include "main.h"
 #include "GUI/MainFrame.h"
 #include "GUI/MainPane.h"
+#include "Dialogs/Preferences.h"
 #include "Midi/Sequence.h"
 #include "Pickers/TuningPicker.h"
 #include "Pickers/KeyPicker.h"
@@ -27,6 +28,11 @@ void setMainPane(MainPane* pane)
 void activateRenderLoop(bool on)
 {
     wxGetApp().activateRenderLoop(on);
+}
+
+long getPrefsValue( const char* entryName )
+{
+    return getMainFrame()->prefs->getValue( wxString(entryName, wxConvUTF8) );
 }
 
 void setImporting(bool on)
