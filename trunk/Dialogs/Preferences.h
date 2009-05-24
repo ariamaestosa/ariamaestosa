@@ -25,9 +25,19 @@ namespace AriaMaestosa {
 
     class MainFrame;
 
-    class Preferences : public wxDialog
+    class PreferencesData
     {
+        void fillSettingsVector();
+    public:
+        PreferencesData();
+        void saveFromValues();
 
+        long getValue(wxString entryName);
+    };
+
+    class PreferencesDialog : public wxDialog
+    {
+        PreferencesData* data;
         int modalCode;
 
         wxBoxSizer* vert_sizer;
@@ -42,10 +52,10 @@ namespace AriaMaestosa {
 
         MainFrame* parent;
     public:
-        LEAK_CHECK(Preferences);
+        LEAK_CHECK(PreferencesDialog);
 
-        Preferences(MainFrame* parent);
-        ~Preferences();
+        PreferencesDialog(MainFrame* parent, PreferencesData* data);
+        ~PreferencesDialog();
         void show();
 
         //void languageSelected(wxCommandEvent& evt);

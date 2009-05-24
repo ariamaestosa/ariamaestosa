@@ -32,7 +32,7 @@ void activateRenderLoop(bool on)
 
 long getPrefsValue( const char* entryName )
 {
-    return getMainFrame()->prefs->getValue( wxString(entryName, wxConvUTF8) );
+    return wxGetApp().prefs->getValue( wxString(entryName, wxConvUTF8) );
 }
 
 void setImporting(bool on)

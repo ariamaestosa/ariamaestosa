@@ -25,7 +25,9 @@
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Sequence.h"
 #include "GUI/ImageProvider.h"
+#include "Dialogs/Preferences.h"
 #include "IO/IOUtils.h"
+#include "languages.h"
 
 #include <iostream>
 
@@ -83,8 +85,10 @@ void wxWidgetApp::onActivate(wxActivateEvent& evt)
 bool wxWidgetApp::OnInit()
 {
     frame = NULL;
-    prefs = (wxConfig*) wxConfig::Get();
+    // prefs = (wxConfig*) wxConfig::Get();
 
+    prefs = new PreferencesData();
+    initLanguageSupport();
     PlatformMidiManager::initMidiPlayer();
 
     frame=new MainFrame();

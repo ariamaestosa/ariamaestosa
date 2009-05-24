@@ -1,5 +1,6 @@
 #ifdef _ALSA
 
+#include "AriaCore.h"
 #include "Midi/Players/Alsa/AlsaPort.h"
 #include <iostream>
 #include "wx/wx.h"
@@ -90,6 +91,48 @@ MidiContext::~MidiContext()
     g_array_free(destlist, TRUE);
 }
 
+void runTimidity()
+{
+    // start by checking if TiMidity is already running
+    FILE * command_output;
+    char output[128];
+    int amount_read = 1;
+    std::string full_output;
+
+
+    command_output = popen("ps -A", "r");
+    if(command_output != NULL)
+    {
+        while(amount_read > 0)
+        {
+            amount_read = fread(output, 1, 127, command_output);
+            if(amount_read <= 0) break;
+            else
+            {
+                output[amount_read] = '\0';
+                full_output += output;
+                //std::cout << output << std::endl;
+            }
+        }
+    }
+
+    pclose(command_output);
+
+    const bool timidityIsRunning = full_output.find("timidity") != std::string::npos;
+    if(timidityIsRunning)
+    {
+        std::cout << "TiMidity appears to be already running.\n";
+        return;
+    }
+
+    //  -c '/home/mmg/Desktop/timidity-synth/default/timidity.cfg'
+    // -EFreverb=0
+    std::cout << "Launching TiMidity ALSA deamon\n";
+    wxString cmd("timidity -iA -B2,8 -Os", wxConvUTF8);
+    wxExecute(cmd);
+    wxMilliSleep(500); // let the timidity deamon some time to start
+}
+
 void MidiContext::closeDevice()
 {
     device->close();
@@ -97,6 +140,12 @@ void MidiContext::closeDevice()
 
 bool MidiContext::askOpenDevice()
 {
+    const bool launchTimidity = Core::getPrefsValue("launchTimidity") != 0;
+    if(launchTimidity)
+    {
+        runTimidity();
+    }
+
     findDevices();
 
     // -------------- ask user to choose a midi port -----------------
@@ -104,29 +153,56 @@ bool MidiContext::askOpenDevice()
 
     if(deviceAmount < 1)
     {
-        wxMessageBox( _("No midi port available, aborting.") );
-        exit(1);
+        wxMessageBox( _("No midi port found, no sound will be available.") );
+        return false;
     }
 
     wxString choices[deviceAmount];
     MidiDevice* currentDevice;
-    for(int n=0; n<deviceAmount; n++)
+
+    bool success = false;
+
+    if(launchTimidity)
     {
-        currentDevice = getDevice(n);
-        choices[n] =    to_wxString(currentDevice->client) +
-                        wxString( wxT(":") ) +
-                        to_wxString(currentDevice->port) +
-                        wxString( wxT(" (") ) +
-                        currentDevice->name +
-                        wxString( wxT(")") );
+        success = openTimidityDevice();
+        /*
+        MidiDevice* device = getDevice(Core::getPrefsValue("alsaClient"),
+                                        Core::getPrefsValue("alsaPort"));
+
+        if( device == NULL )
+        {
+            runTimidity();
+            device = getDevice(Core::getPrefsValue("alsaClient"),
+                                        Core::getPrefsValue("alsaPort"));
+        }
+
+        if(device != NULL)
+        {
+            success = openDevice( device );
+        }
+        */
+    }
+    else
+    {
+        for(int n=0; n<deviceAmount; n++)
+        {
+            currentDevice = getDevice(n);
+            choices[n] =    to_wxString(currentDevice->client) +
+                            wxString( wxT(":") ) +
+                            to_wxString(currentDevice->port) +
+                            wxString( wxT(" (") ) +
+                            currentDevice->name +
+                            wxString( wxT(")") );
+        }
+
+        int userChoice = wxGetSingleChoiceIndex(_("Select an ALSA midi port to use for output."),
+                                                _("ALSA midi port choice"),
+                                                deviceAmount, choices);
+        if(userChoice == -1) return false;
+
+        success = openDevice(getDevice(userChoice));
     }
 
-    int userChoice = wxGetSingleChoiceIndex(_("Select an ALSA midi port to use for output."),
-                                            _("ALSA midi port choice"),
-                                            deviceAmount, choices);
-    if(userChoice == -1) return false;
-
-    bool success = openDevice(getDevice(userChoice));
     if(success) return true;
     else
     {
@@ -138,7 +214,7 @@ bool MidiContext::askOpenDevice()
 
 void MidiContext::findDevices()
 {
-    devices.clear();
+    devices.clearAndDeleteAll();
     snd_seq_client_info_t* clientInfo;
 
     if (snd_seq_open(&sequencer, "default", SND_SEQ_OPEN_OUTPUT, 0) < 0)
@@ -172,7 +248,7 @@ void MidiContext::findDevices()
             int port    = (snd_seq_port_info_get_addr(pinfo))->port;
 
             std::cout << client << ":" << port << " --> " << snd_seq_port_info_get_name(pinfo) << std::endl;
-            devices.push_back( MidiDevice(this, client, port, snd_seq_port_info_get_name(pinfo)) );
+            devices.push_back( new MidiDevice(this, client, port, snd_seq_port_info_get_name(pinfo)) );
 
         }
 
@@ -225,6 +301,23 @@ bool MidiContext::openDevice(MidiDevice* device)
     MidiContext::device = device;
     if(device == NULL) return false;
     return device->open();
+}
+
+bool MidiContext::openTimidityDevice()
+{
+    std::cout << "Aria will try to pick a TiMidity port automatically\n";
+    for(int n=0; n<devices.size(); n++)
+    {
+        if(devices[n].name.Find( wxT("TiMidity") ) != wxNOT_FOUND)
+        {
+            MidiContext::device = devices.get(n);
+            std::cout << "Trying to open device " << device->name.mb_str() << " "
+                      << device->client << ":" << device->port << std::endl;
+            if( device->open() ) return true;
+            std::cout << "Opening device failed.\n";
+        }
+    }
+    return false;
 }
 
 

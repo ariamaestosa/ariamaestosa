@@ -18,15 +18,18 @@
 #define _mainh_
 
 #include "wx/wx.h"
+#include "Config.h"
 
 namespace AriaMaestosa {
 
     class MainFrame;
     class MeasureBar;
+    class PreferencesData;
 
 class wxWidgetApp : public wxApp {
 public:
     MainFrame* frame;
+    OwnerPtr<PreferencesData>  prefs;
 
     bool OnInit();
     int OnExit();

@@ -53,7 +53,8 @@ public:
 enum SettingType
 {
     SETTING_ENUM,
-    SETTING_BOOL
+    SETTING_BOOL,
+    SETTING_INT
 };
 
 class Setting
@@ -61,6 +62,7 @@ class Setting
 public:
     wxChoice* m_combo;
     wxCheckBox* m_checkbox;
+    wxSpinCtrl* m_number;
 
     wxString      m_name;
     wxString      m_user_name;
@@ -91,7 +93,7 @@ std::vector<Setting> g_settings;
 
 
 // ---- define all settings
-void fillSettingsVector()
+void PreferencesData::fillSettingsVector()
 {
     // ---- language
     Setting languages(wxT("lang"), wxT("Language"), SETTING_ENUM, getDefaultLanguageAriaID() );
@@ -115,21 +117,87 @@ void fillSettingsVector()
     // ---- follow playback
     Setting followp(wxT("followPlayback"), _("Follow playback by default"), SETTING_BOOL, 0 );
     g_settings.push_back( followp );
+
+    #ifdef __WXGTK__
+/*
+    Setting usePort(wxT("usePort"), _("Automatically use this Alsa port (format 'Client:Port')"),
+        SETTING_BOOL, 0 );
+    g_settings.push_back( usePort );
+
+    Setting alsaClient(wxT("alsaClient"), _("Alsa Client"), SETTING_INT, 128 );
+    g_settings.push_back( alsaClient );
+    Setting alsaPort(wxT("alsaPort"), _("Alsa Port"), SETTING_INT, 0 );
+    g_settings.push_back( alsaPort );
+*/
+    Setting launchTim(wxT("launchTimidity"), _("Automatically launch TiMidity and pick a port"), SETTING_BOOL, 1 );
+    g_settings.push_back( launchTim );
+    #endif
+}
+
+// TODO : refactor. move preferences data out of here. make less use of globals.
+PreferencesData::PreferencesData()
+{
+    fillSettingsVector();
+
+    // --- read values from file
+    wxConfig* prefs = (wxConfig*) wxConfig::Get();
+
+    long value;
+
+    // for each setting
+    const int settingAmount = g_settings.size();
+    for(int i=0; i<settingAmount; i++)
+    {
+        // see if this value is defined in file
+        if(prefs->Read( g_settings[i].m_name, &value) )
+        {
+            g_settings[i].m_value = value;
+        }
+    }
+}
+
+void PreferencesData::saveFromValues()
+{
+    wxConfig* prefs = (wxConfig*) wxConfig::Get();
+
+    const int settingAmount = g_settings.size();
+    for(int i=0; i<settingAmount; i++)
+    {
+        prefs->Write( g_settings[i].m_name, g_settings[i].m_value );
+    }
+
+    prefs->Flush();
+}
+
+long PreferencesData::getValue(wxString entryName)
+{
+
+    const int settingAmount = g_settings.size();
+    for(int i=0; i<settingAmount; i++)
+    {
+        if( g_settings[i].m_name == entryName )
+        {
+            //std::cout << g_settings[i].m_value << std::endl;
+            return g_settings[i].m_value;
+        }
+    }
+    std::cout << "prefs value not found : " << entryName.mb_str() << std::endl;
+    return -1;
 }
 
 
-BEGIN_EVENT_TABLE(Preferences, wxDialog)
-EVT_BUTTON(2, Preferences::okClicked)
+BEGIN_EVENT_TABLE(PreferencesDialog, wxDialog)
+EVT_BUTTON(2, PreferencesDialog::okClicked)
 END_EVENT_TABLE()
 
-Preferences::Preferences(MainFrame* parent) : wxDialog(parent, wxID_ANY,
-                                                       //I18N: - title of the preferences dialog
-                                                       _("Preferences"),
-                                                       wxPoint(100,100), wxSize(500,300), wxCAPTION )
+PreferencesDialog::PreferencesDialog(MainFrame* parent, PreferencesData* data) :
+        wxDialog(parent, wxID_ANY,
+        //I18N: - title of the preferences dialog
+        _("Preferences"), wxPoint(100,100), wxSize(500,300), wxCAPTION )
 {
-    Preferences::parent = parent;
+    PreferencesDialog::parent = parent;
+    PreferencesDialog::data = data;
 
-    fillSettingsVector();
 
     // ---- add widgets
     vert_sizer = new wxBoxSizer(wxVERTICAL);
@@ -144,38 +212,26 @@ Preferences::Preferences(MainFrame* parent) : wxDialog(parent, wxID_ANY,
 
             g_settings[i].m_combo = new wxChoice(box.pane, 1, wxDefaultPosition, wxDefaultSize,  g_settings[i].m_choices );
             box.add(g_settings[i].m_combo);
-
-            //g_settings[i].m_combo->Connect( g_settings[i].m_combo->GetId(),
-            //                                wxEVT_COMMAND_CHOICE_SELECTED,
-            //                                wxCommandEventHandler(Preferences::onSettingChanged),
-            //                                NULL, this );
         }
         else if( g_settings[i].m_type == SETTING_BOOL )
         {
             g_settings[i].m_checkbox = new wxCheckBox(this, wxID_ANY, g_settings[i].m_user_name, wxDefaultPosition, wxDefaultSize );
             vert_sizer->Add( g_settings[i].m_checkbox, 0, wxALL, 10 );
-
-            //g_settings[i].m_checkbox->Connect(
-            //        g_settings[i].m_combo->GetId(),
-            //        wxEVT_COMMAND_CHECKBOX_CLICKED,
-            //        wxCommandEventHandler(Preferences::onSettingChanged),
-            //        NULL, this );
         }
-    }
-
-
-    // --- read values from file
-    wxConfig* prefs = (wxConfig*) wxConfig::Get();
-    long value;
-    // for each setting
-    for(int i=0; i<settingAmount; i++)
-    {
-        // see if this value is defined in file
-        if(prefs->Read( g_settings[i].m_name, &value) )
+        else if( g_settings[i].m_type == SETTING_INT )
         {
-            g_settings[i].m_value = value;
+            QuickBoxLayout box(this, vert_sizer);
+            //I18N: - in preferences window
+            box.add(new wxStaticText(box.pane , wxID_ANY, g_settings[i].m_user_name ));
+
+            g_settings[i].m_number = new wxSpinCtrl(box.pane, wxID_ANY,
+                    wxString::Format(wxT("%i"), g_settings[i].m_value),
+                    wxDefaultPosition, wxDefaultSize,  wxSP_ARROW_KEYS, 0, 99999 );
+            box.add(g_settings[i].m_number);
         }
     }
+
+
 
     updateWidgetsFromValues();
 
@@ -195,11 +251,11 @@ Preferences::Preferences(MainFrame* parent) : wxDialog(parent, wxID_ANY,
     vert_sizer->SetSizeHints( this );
 }
 
-Preferences::~Preferences()
+PreferencesDialog::~PreferencesDialog()
 {
 }
 
-void Preferences::updateWidgetsFromValues()
+void PreferencesDialog::updateWidgetsFromValues()
 {
     const int settingAmount = g_settings.size();
 
@@ -214,16 +270,20 @@ void Preferences::updateWidgetsFromValues()
         {
             g_settings[i].m_checkbox->SetValue(g_settings[i].m_value);
         }
+        else if( g_settings[i].m_type == SETTING_INT )
+        {
+            g_settings[i].m_number->SetValue(g_settings[i].m_value);
+        }
     }
 }
 
-void Preferences::show()
+void PreferencesDialog::show()
 {
     Center();
     modalCode = ShowModal();
 }
 
-void Preferences::updateValuesFromWidgets()
+void PreferencesDialog::updateValuesFromWidgets()
 {
     // update all values from widgets
     const int settingAmount = g_settings.size();
@@ -237,44 +297,19 @@ void Preferences::updateValuesFromWidgets()
         {
             g_settings[i].m_value = g_settings[i].m_checkbox->GetValue();
         }
+        else if( g_settings[i].m_type == SETTING_INT )
+        {
+            g_settings[i].m_value = g_settings[i].m_number->GetValue();
+        }
     }
 }
 
-
-void Preferences::saveFromValues()
-{
-    wxConfig* prefs = (wxConfig*) wxConfig::Get();
-
-    const int settingAmount = g_settings.size();
-    for(int i=0; i<settingAmount; i++)
-    {
-        prefs->Write( g_settings[i].m_name, g_settings[i].m_value );
-    }
-
-    prefs->Flush();
-}
-
-void Preferences::okClicked(wxCommandEvent& evt)
+void PreferencesDialog::okClicked(wxCommandEvent& evt)
 {
     updateValuesFromWidgets();
-    saveFromValues();
+    data->saveFromValues();
     wxDialog::EndModal(modalCode);
 }
 
-long Preferences::getValue(wxString entryName)
-{
-
-    const int settingAmount = g_settings.size();
-    for(int i=0; i<settingAmount; i++)
-    {
-        if( g_settings[i].m_name == entryName )
-        {
-            std::cout << g_settings[i].m_value << std::endl;
-            return g_settings[i].m_value;
-        }
-    }
-    std::cout << "prefs value not found : " << entryName.mb_str() << std::endl;
-    return -1;
-}
 
 }

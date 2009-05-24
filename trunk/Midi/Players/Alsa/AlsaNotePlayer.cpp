@@ -43,6 +43,8 @@ MidiContext* context_ref;
 
 void allSoundOff()
 {
+    if(!sound_available) return;
+
     for(int channel=0; channel<16; channel++)
     {
         PlatformMidiManager::seq_controlchange(0x78 /*120*/ /* all sound off */, 0, channel);
@@ -51,6 +53,8 @@ void allSoundOff()
 
 void resetAllControllers()
 {
+    if(!sound_available) return;
+
     for(int channel=0; channel<16; channel++)
     {
         seq_controlchange(0x78 /*120*/ /* all sound off */, 0, channel);
@@ -63,6 +67,8 @@ void resetAllControllers()
 
 void stopNoteIfAny()
 {
+    if(!sound_available) return;
+
     if(lastPlayedNote != -1) stopNote();
 }
 
@@ -81,6 +87,8 @@ void alsa_output_module_free()
 
 void alsa_output_module_setContext(MidiContext* context_arg)
 {
+    if(!sound_available) return;
+
    context_ref = context_arg;
 }
 
@@ -94,6 +102,8 @@ void alsa_output_module_setContext(MidiContext* context_arg)
 // play/stop a single preview note
 void playNote(int noteNum, int volume, int duration, int channel, int instrument)
 {
+    if(!sound_available) return;
+
     if(context_ref->isPlaying()) return;
     if(lastPlayedNote != -1) stopNote();
     seq_prog_change(instrument, channel);
@@ -107,6 +117,8 @@ void playNote(int noteNum, int volume, int duration, int channel, int instrument
 
 void stopNote()
 {
+    if(!sound_available) return;
+
     seq_note_off(lastPlayedNote, lastChannel);
     lastPlayedNote = -1;
 }

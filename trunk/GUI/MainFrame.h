@@ -31,7 +31,7 @@ namespace AriaMaestosa {
 
 class CustomNoteSelectDialog;
 class Sequence;
-class Preferences;
+class PreferencesDialog;
 class AboutDialog;
 class InstrumentChoice;
 class DrumChoice;
@@ -119,14 +119,14 @@ public:
     wxTextCtrl* tempoCtrl;
 
     // ------- read-only -------
-    WxOwnerPtr<Preferences>  prefs;
     int play_during_edit; // what is the user's preference for note preview during edits
     bool playback_mode;
     MainPane* mainPane;
-    OwnerPtr<InstrumentChoice>  instrument_picker;
-    OwnerPtr<DrumChoice>        drumKit_picker;
-    OwnerPtr<TuningPicker>      tuningPicker;
-    OwnerPtr<KeyPicker>         keyPicker;
+    WxOwnerPtr<PreferencesDialog> preferences;
+    OwnerPtr<InstrumentChoice>    instrument_picker;
+    OwnerPtr<DrumChoice>          drumKit_picker;
+    OwnerPtr<TuningPicker>        tuningPicker;
+    OwnerPtr<KeyPicker>           keyPicker;
     // ----------------------
 
     MainFrame();
