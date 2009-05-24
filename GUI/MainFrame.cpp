@@ -55,6 +55,7 @@
 #include "IO/MidiFileReader.h"
 
 #include "Clipboard.h"
+#include "main.h"
 #include <iostream>
 
 #ifdef __WXMAC__
@@ -250,16 +251,12 @@ void MainFrame::init()
 {
     Centre();
 
-    prefs = NULL;
     currentSequence=0;
     playback_mode=false;
 
     changingValues=false;
 
     SetMinSize(wxSize(750, 330));
-
-    prefs = new Preferences(this);
-    initLanguageSupport();
 
     initMenuBar();
     play_during_edit = Core::getPrefsValue("playDuringEdit");
@@ -285,6 +282,7 @@ void MainFrame::init()
     wxSize tinyTextCtrlSize(wxDefaultSize);
     tinyTextCtrlSize.SetWidth(25);
 
+    preferences = new PreferencesDialog(this, wxGetApp().prefs);
 
     // -------------------------- Top Pane ----------------------------
 #ifdef NO_WX_TOOLBAR

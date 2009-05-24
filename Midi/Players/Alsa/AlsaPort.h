@@ -13,7 +13,7 @@ namespace AriaMaestosa
 
     class MidiContext
     {
-        std::vector<MidiDevice> devices;
+        ptr_vector<MidiDevice> devices;
         bool timerStarted;
 
         public:
@@ -32,6 +32,7 @@ namespace AriaMaestosa
         ~MidiContext();
 
         bool openDevice(MidiDevice* device);
+        bool openTimidityDevice();
         void closeDevice();
         bool askOpenDevice();
 

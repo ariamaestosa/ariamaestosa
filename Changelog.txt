@@ -10,6 +10,7 @@
 - improved silence printing
 - fixed rendering dotted notes
 - cleaned up preferences implementation
+- added an option to automatically launch TiMidity and pick port on linux
 
 1.2b6
 - Printing improvements :

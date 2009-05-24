@@ -54,6 +54,8 @@ namespace AriaMaestosa
 namespace PlatformMidiManager
 {
 
+bool sound_available;
+
 MidiContext* context;
 
 bool must_stop=false;
@@ -61,6 +63,8 @@ Sequence* sequence;
 
 void cleanup_after_playback()
 {
+    if(!sound_available) return;
+
     context->setPlaying(false);
     resetAllControllers();
 }
@@ -171,8 +175,13 @@ void initMidiPlayer()
     if(! context->askOpenDevice() )
     {
         std::cerr << "failed to open ALSA device" << std::endl;
-        exit(1);
+        sound_available = false;
+        alsa_output_module_free();
+        return;
+        // exit(1);
     }
+    sound_available = true;
+
     alsa_output_module_setContext(context);
 
     context->setPlaying(false);
@@ -188,6 +197,8 @@ void freeMidiPlayer()
 
 bool playSequence(Sequence* sequence, /*out*/int* startTick)
 {
+    if(!sound_available) return true;
+
     // std::cout << "  * playSequencer" << std::endl;
     if(context->isPlaying())
     {
@@ -211,6 +222,8 @@ bool playSequence(Sequence* sequence, /*out*/int* startTick)
 
 bool playSelected(Sequence* sequence, /*out*/int* startTick)
 {
+    if(!sound_available) return true;
+
     if(context->isPlaying()) return false; //already playing
     stopNoteIfAny();
     must_stop = false;
@@ -250,6 +263,8 @@ bool playSelected(Sequence* sequence, /*out*/int* startTick)
 // returns current midi tick, or -1 if over
 int trackPlaybackProgression()
 {
+    if(!sound_available) return 0;
+
 //std::cout << "trackPlaybackProgression ";
     if(context->isPlaying() and currentTick != -1)
     {
@@ -267,11 +282,15 @@ int trackPlaybackProgression()
 
 bool seq_must_continue()
 {
+    if(!sound_available) return false;
+
     return !must_stop;
 }
 
 bool isPlaying()
 {
+    if(!sound_available) return false;
+
     return context->isPlaying();
 }
 

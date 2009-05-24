@@ -55,6 +55,7 @@
 
 #include "Config.h"
 #include <iostream>
+#include "main.h"
 
 #ifdef __WXMAC__
 #include "wx/html/webkit.h"
@@ -469,7 +470,7 @@ void MainFrame::menuEvent_trackBackground(wxCommandEvent& evt)
 // Options
 void MainFrame::menuEvent_preferences(wxCommandEvent& evt)
 {
-    prefs->show();
+    preferences->show();
 }
 
 void MainFrame::menuEvent_followPlayback(wxCommandEvent& evt)
