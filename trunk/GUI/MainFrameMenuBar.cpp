@@ -168,7 +168,7 @@ void MainFrame::initMenuBar()
     followPlaybackMenuItem = settingsMenu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_FOLLOW_PLAYBACK, _("Follow Playback"), MainFrame::menuEvent_followPlayback );
     expandedMeasuresMenuItem = settingsMenu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_MEASURE_EXPANDED, _("Expanded time sig management"), MainFrame::menuEvent_expandedMeasuresSelected );
 
-    followPlaybackMenuItem->Check( followPlaybackByDefault() );
+    followPlaybackMenuItem->Check( Core::getPrefsValue("followPlayback") != 0 );
 
     wxMenu* channelMode_menu = new wxMenu();
     //I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
@@ -193,11 +193,12 @@ void MainFrame::initMenuBar()
 
     settingsMenu->QUICK_ADD_MENU( wxID_PREFERENCES,   _("Preferences"), MainFrame::menuEvent_preferences );
 
-    if(playDuringEditByDefault() == PLAY_ON_CHANGE)
+    const int playValue = Core::getPrefsValue("playDuringEdit");
+    if(playValue == PLAY_ON_CHANGE)
         playDuringEdits_onchange->Check();
-    else if(playDuringEditByDefault() == PLAY_ALWAYS)
+    else if(playValue == PLAY_ALWAYS)
         playDuringEdits_always->Check();
-    else if(playDuringEditByDefault() == PLAY_NEVER)
+    else if(playValue == PLAY_NEVER)
         playDuringEdits_never->Check();
     else{ assert(false); }
 

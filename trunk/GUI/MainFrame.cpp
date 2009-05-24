@@ -16,6 +16,7 @@
 
 #include "AriaCore.h"
 #include "Config.h"
+#include "languages.h"
 
 #include "Actions/EditAction.h"
 #include "Actions/RemoveOverlapping.h"
@@ -258,8 +259,10 @@ void MainFrame::init()
     SetMinSize(wxSize(750, 330));
 
     prefs = new Preferences(this);
+    initLanguageSupport();
+
     initMenuBar();
-    play_during_edit = playDuringEditByDefault();
+    play_during_edit = Core::getPrefsValue("playDuringEdit");
 
     wxInitAllImageHandlers();
 #ifdef NO_WX_TOOLBAR

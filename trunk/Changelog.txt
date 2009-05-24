@@ -9,6 +9,7 @@
 - hide empty lines when printing
 - improved silence printing
 - fixed rendering dotted notes
+- cleaned up preferences implementation
 
 1.2b6
 - Printing improvements :

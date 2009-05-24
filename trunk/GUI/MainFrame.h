@@ -72,12 +72,11 @@ class CustomToolBar : public wxPanel
     void add(wxControl* ctrl, wxString label=wxEmptyString);
     void realize();
 };
-    
+
 class MainFrame : public wxFrame
 {
     WxOwnerPtr<AboutDialog>  aboutDialog;
     WxOwnerPtr<CustomNoteSelectDialog>  customNoteSelectDialog;
-    WxOwnerPtr<Preferences>  prefs;
 
     wxFlexGridSizer* borderSizer;
     CustomToolBar* toolbar;
@@ -120,6 +119,7 @@ public:
     wxTextCtrl* tempoCtrl;
 
     // ------- read-only -------
+    WxOwnerPtr<Preferences>  prefs;
     int play_during_edit; // what is the user's preference for note preview during edits
     bool playback_mode;
     MainPane* mainPane;

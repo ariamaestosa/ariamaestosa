@@ -70,7 +70,7 @@ Sequence::Sequence()
 
     x_scroll_upon_copying = -1;
 
-    follow_playback = followPlaybackByDefault();
+    follow_playback = Core::getPrefsValue("followPlayback") != 0;
 
     //setZoom(100);
     zoom = (128.0/(beatResolution*4));
