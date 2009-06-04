@@ -471,13 +471,19 @@ int LayoutLine::calculateHeight()
     return level_height;
 }
 void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x1, const int y1,
-                              const int margin_below, const int margin_above)
+                            int margin_below, int margin_above)
 {
     const int trackAmount = getTrackAmount();
     
     // ---- empty space around whole line
     const float height = (float)(y1 - y0);// - ( trackAmount>1 and not last_of_page ? 100 : 0 );
 
+    if(height < 0.0001) return; // empty line. TODO : todo - draw empty bars to show there's something?
+    
+    // make sure margins are within acceptable bounds
+    if(margin_below > height) margin_below = height/5;
+    if(margin_above > height) margin_above = height/5;
+    
     const int my0 = y0 + margin_above;
     const int my1 = y0 + height - margin_below;
     
@@ -513,7 +519,7 @@ void LayoutLine::printYourself(wxDC& dc, const int x0, const int y0, const int x
         const float position = (float)n / trackAmount;
         const float space_above_line = space_between_tracks*position;
         const float space_below_line = space_between_tracks*(1-position);
-        
+
         track->drawLine(*this, dc,
                         x0, current_y + space_above_line,
                         x1, current_y + track_height - space_below_line,

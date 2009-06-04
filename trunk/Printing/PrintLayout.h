@@ -164,7 +164,7 @@ public:
     int getFirstNoteInElement(LayoutElement* layoutElement);
     int getLastNoteInElement(LayoutElement* layoutElement);
 
-    void printYourself(wxDC& dc, const int x0, const int y0, const int x1, const int y1, const int margin_below, const int margin_above);
+    void printYourself(wxDC& dc, const int x0, const int y0, const int x1, const int y1, int margin_below, int margin_above);
     int calculateHeight();
 
     MeasureToExport& getMeasureForElement(const int layoutElementID) const;

@@ -133,7 +133,7 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
         }
         
         dc.SetFont(oldfont);
-    }//next element
+    }//next element 
 }
 
 int TablaturePrintable::calculateHeight(LayoutLine& line) const
