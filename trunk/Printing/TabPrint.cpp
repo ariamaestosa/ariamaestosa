@@ -46,8 +46,9 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
         dc.DrawLine(x0, y, x1, y);
     }
     
-    beginLine(&dc, &line, x0, x1, show_measure_number);
+    beginLine(&line, x0, x1, show_measure_number);
     setLineYCoords(y0, y1);
+    setCurrentDC(&dc);
 
     // iterate through layout elements
     LayoutElement* currentElement;

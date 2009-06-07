@@ -645,7 +645,7 @@ namespace AriaMaestosa
         x_converter = new PrintXConverter(this);
     
         // get the underlying common implementation rolling
-        beginLine(&dc, &line, x0, x1, show_measure_number);
+        beginLine(&line, x0, x1, show_measure_number);
     
         // analyze the score and get the results
         analyzeScore(line);
@@ -654,6 +654,8 @@ namespace AriaMaestosa
         // since height is used to determine where to put repetitions/notes/etc.
         // only pass the height of the first score if there's 2, so stuff don't appear between both scores
         setLineYCoords(y0, ( scoreData->f_clef and scoreData->g_clef ? y0+(y1-y0)*scoreData->first_clef_proportion : y1 ));
+        
+        setCurrentDC(&dc);
         
         // if we have only one clef, give it the full space.
         // if we have two, split the space between both
