@@ -40,7 +40,7 @@ public:
                   const int x0, const int y0, const int x1, const int y1, bool show_measure_number);
     int calculateHeight(LayoutLine& line) const;
     
-    void analyzeScore(LayoutLine& line);
+    void gatherScoreInfo(LayoutLine& line);
 };
 
 }
