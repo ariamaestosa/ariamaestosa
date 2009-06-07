@@ -368,13 +368,17 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
 EditorPrintable::EditorPrintable(){}
 EditorPrintable::~EditorPrintable(){}
 
-void EditorPrintable::beginLine(wxDC* dc, LayoutLine* line,  int x0, const int x1, bool show_measure_number)
+void EditorPrintable::setCurrentDC(wxDC* dc)
+{
+    EditorPrintable::dc = dc;
+}
+    
+void EditorPrintable::beginLine(LayoutLine* line,  int x0, const int x1, bool show_measure_number)
 {
     EditorPrintable::x0 = x0;
     EditorPrintable::x1 = x1;
     EditorPrintable::show_measure_number = show_measure_number;
     EditorPrintable::currentLine = line;
-    EditorPrintable::dc = dc;
     
     // 2 spaces allocated for left area of the line
     pixel_width_of_an_unit = (float)(x1 - x0) / (float)(line->width_in_units+2);
