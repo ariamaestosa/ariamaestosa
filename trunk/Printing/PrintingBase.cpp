@@ -368,12 +368,10 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
 EditorPrintable::EditorPrintable(){}
 EditorPrintable::~EditorPrintable(){}
 
-void EditorPrintable::beginLine(wxDC* dc, LayoutLine* line,  int x0, const int y0, const int x1, const int y1, bool show_measure_number)
+void EditorPrintable::beginLine(wxDC* dc, LayoutLine* line,  int x0, const int x1, bool show_measure_number)
 {
     EditorPrintable::x0 = x0;
-    EditorPrintable::y0 = y0;
     EditorPrintable::x1 = x1;
-    EditorPrintable::y1 = y1;
     EditorPrintable::show_measure_number = show_measure_number;
     EditorPrintable::currentLine = line;
     EditorPrintable::dc = dc;
@@ -395,8 +393,6 @@ void EditorPrintable::beginLine(wxDC* dc, LayoutLine* line,  int x0, const int y
         currentLine->layoutElements[currentLayoutElement].x  = getCurrentElementXStart();
         if(currentLayoutElement > 0)
             currentLine->layoutElements[currentLayoutElement-1].x2 =  currentLine->layoutElements[currentLayoutElement].x;
-        //std::cout << "layout element " << currentLayoutElement <<  " from " <<
-       //     currentLine->layoutElements[currentLayoutElement].x << " to " << currentLine->layoutElements[currentLayoutElement].x2 << std::endl;
     }
     // for last
     currentLine->layoutElements[currentLine->layoutElements.size()-1].x2 = x1; // FIXME - fix naming conventions... in track it's x1, in element it's x2
@@ -406,8 +402,15 @@ void EditorPrintable::beginLine(wxDC* dc, LayoutLine* line,  int x0, const int y
 
     assertExpr(line->width_in_units,>,0);
     assertExpr(pixel_width_of_an_unit,>,0);
-
 }
+    
+void EditorPrintable::setLineYCoords(const int y0, const int y1)
+{
+    EditorPrintable::y0 = y0;
+    EditorPrintable::y1 = y1;
+}
+
+    
 int EditorPrintable::getCurrentElementXStart()
 {
     return x0 + (int)round(xloc*pixel_width_of_an_unit) - pixel_width_of_an_unit;
@@ -535,6 +538,7 @@ int EditorPrintable::getNotePrintX(int noteID)
 }
 int EditorPrintable::tickToX(const int tick)
 {
+    std::cout << "tickToX : ";
     for(int n=0; n<layoutElementsAmount; n++)
     {
         MeasureToExport& meas = currentLine->getMeasureForElement(n);
@@ -553,9 +557,16 @@ int EditorPrintable::tickToX(const int tick)
             const int elem_w = elem_x_end - elem_x_start;
             const float nratio = ((float)(tick - firstTick) / (float)(lastTick - firstTick));
 
+            assertExpr(elem_w, >, 0);
+            
+            std::cout << "nratio=" << nratio << " elem_w=" << elem_w << std::endl;
+            
+            std::cout << (int)round(nratio * (elem_w-pixel_width_of_an_unit*0.7) + elem_x_start) << "(C) \n";
             return (int)round(nratio * (elem_w-pixel_width_of_an_unit*0.7) + elem_x_start);
         }
 
+        if(tick < firstTick) std::cout << "-1 (A)\n";
+        
         // given tick is not in a visible measure
         if(tick < firstTick) return -1;
         
@@ -567,9 +578,12 @@ int EditorPrintable::tickToX(const int tick)
          */
         if(n==layoutElementsAmount-1 and tick >= lastTick)
         {
+            if(tick < firstTick) std::cout << (currentLine->layoutElements[n].x2 + 10) << " (D)\n";
             return currentLine->layoutElements[n].x2 + 10;
         }
     }
+    
+    std::cout << "-1 (B)\n";
     return -1;
     //return currentLine->layoutElements[layoutElementsAmount-1].x2 + 10;
 }

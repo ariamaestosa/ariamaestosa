@@ -134,6 +134,12 @@ public:
     int x, x2;
 };
 
+class EditorData
+    {
+    public:
+        virtual ~EditorData() {}
+    };
+    
 /*
  A line on a notation to print. Can contain more than one track.
  Essentially holds some 'LayoutElement' objects (the ones that fit
@@ -151,6 +157,9 @@ class LayoutLine
 public:
     LayoutLine(AriaPrintable* parent);
 
+    // editors can put data of their own there.
+    OwnerPtr<EditorData> editor_data;
+    
     int width_in_units;
     int level_height;
 
