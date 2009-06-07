@@ -788,7 +788,7 @@ namespace AriaMaestosa
         
         // ------------------ preliminary part : backgrounds -----------------
 
-        // draw score background (horizontal lines)
+        // ---- draw score background (horizontal lines)
         dc.SetPen(  wxPen( wxColour(125,125,125), 7 ) );
         const int lineAmount = 5 + extra_lines_above + extra_lines_under;
         const float lineHeight = (float)(y1 - y0) / (float)(lineAmount-1);
@@ -867,17 +867,16 @@ namespace AriaMaestosa
             }
         }
         
-        // ------------------ first part : simple basic drawing -----------------
-
+        // ------------------ first part : basic unintelligent drawing -----------------
+        // for all parts of score notes that can be rendered without using the ScoreAnalyser.
+        
         // ---- draw notes heads
         { // we scope this because info like 'noteAmount' are bound to change just after
             const int noteAmount = analyser.noteRenderInfo.size();
             for(int i=0; i<noteAmount; i++)
             {
                 NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
-                
-                std::cout << "** Note x = " << noteRenderInfo.x << "\n";
-                
+                                
                 dc.SetPen(  wxPen( wxColour(125,125,125), 8 ) );
                 // draw small lines above score if needed
                 if(noteRenderInfo.level < first_score_level-1)
