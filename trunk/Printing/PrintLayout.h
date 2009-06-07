@@ -126,7 +126,7 @@ public:
     
     int amountOfTimes; // used for 'play many times' events
 
-    float zoom;
+    //float zoom;
     int width_in_units;
 
     // filled by EditorPrintable::continueWithNextElement() as the X position is calculated in

@@ -10,6 +10,7 @@
 #include <iostream>
 #include "wx/wx.h"
 #include <cmath>
+#include <map>
 
 
 namespace AriaMaestosa
@@ -255,7 +256,8 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
     if(firstNote >= noteAmount) newTrackRef->firstNote = noteAmount-1;
     
     // find what the first, last and shortest note in current measure
-    int last_note = firstNote, last_note_end = -1, last_note_start = -1;
+    int lastNote = firstNote;
+    int last_note_end = -1, last_note_start = -1;
     
     bool measure_empty = true;
     for(int note=newTrackRef->firstNote; note<noteAmount; note++)
@@ -274,7 +276,7 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
            (end_tick == last_note_end && start_tick >= last_note_start)
            )
         {
-            last_note = note;
+            lastNote = note;
             last_note_end = end_tick;
             last_note_start = start_tick;
             measure_empty = false;
@@ -285,15 +287,15 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
         if( relativeLength < 1.0/32.0 ) continue;
         if( currentNoteDuration < shortestDuration or shortestDuration==-1) shortestDuration = currentNoteDuration;
     }
-    assertExpr(last_note,>,-1);
-    assertExpr(last_note,<,noteAmount);
+    assertExpr(lastNote,>,-1);
+    assertExpr(lastNote,<,noteAmount);
     
     if(measure_empty)
     {
         newTrackRef->firstNote = -1;
         newTrackRef->lastNote = -1;
     }
-    else newTrackRef->lastNote = last_note; // ID of the last note in this measure
+    else newTrackRef->lastNote = lastNote; // ID of the last note in this measure
 
     //std::cout << "measure " << id << " empty=" << measure_empty << " from=" << newTrackRef->firstNote << " to=" << newTrackRef->lastNote << std::endl;
     
@@ -301,11 +303,11 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
     trackRef.push_back( newTrackRef );
 
     // check if all notes were used
-    if(last_note == noteAmount-1) return -1;
+    if(lastNote == noteAmount-1) return -1;
     
     // if this measure is empty, return the same note as the one given in input (i.e. it was not used)
     // if this measure is not empty, add 1 so next measure will start from the next
-    return last_note + ( measure_empty ? 0 : 1);
+    return lastNote + ( measure_empty ? 0 : 1);
 }
 
 #if 0
@@ -769,6 +771,8 @@ void PrintLayoutManager::generateOutputOrder(bool checkRepetitions_bool)
     }//next measure
 }
 
+const bool linear = false;
+    
 void PrintLayoutManager::calculateRelativeLengths()
 {
     // calculate approximative width of each element
@@ -776,7 +780,8 @@ void PrintLayoutManager::calculateRelativeLengths()
     const int layoutElementsAmount = layoutElements.size();
     for(int n=0; n<layoutElementsAmount; n++)
     {
-        layoutElements[n].zoom = 1;
+        float zoom = 1;
+        //layoutElements[n].zoom = 1;
 
         if(layoutElements[n].type == EMPTY_MEASURE) continue; // was already calculated
 
@@ -784,27 +789,94 @@ void PrintLayoutManager::calculateRelativeLengths()
 
         if(layoutElements[n].type == SINGLE_MEASURE)
         {
-            const int divider = (int)(
-                                      getMeasureData()->getTimeSigNumerator(layoutElements[n].measure) * (float)ticksPerBeat /
-                                      (float)measures[layoutElements[n].measure].shortestDuration
-                                      );
+            if(linear)
+            {
+                // ---- for linear printing mode
+                const int divider = (int)(
+                                          getMeasureData()->getTimeSigNumerator(layoutElements[n].measure) * (float)ticksPerBeat /
+                                                                                (float)measures[layoutElements[n].measure].shortestDuration
+                                          );
 
-            // if notes are very long, zoom a bit because we don't want a too short measure
-            //if( divider <= 2 ) layoutElements[n].zoom = 2;
-            //if( divider <= 1 ) layoutElements[n].zoom = 4;
+                // if notes are very long, zoom a bit because we don't want a too short measure
+                //if( divider <= 2 ) layoutElements[n].zoom = 2;
+                //if( divider <= 1 ) layoutElements[n].zoom = 4;
 
-            // for very short notes, zoom a bit too otherwise they'll all be stuck toghether
-            if( divider >= 16 ) layoutElements[n].zoom = 2;
+                // for very short notes, zoom a bit too otherwise they'll all be stuck toghether
+                if( divider >= 16 ) zoom = 2;
 
-            const float tick_length = (float)(measures[layoutElements[n].measure].lastTick -
-                                              measures[layoutElements[n].measure].firstTick);
-            //const float beat_length = tick_length/getMeasureData()->beatLengthInTicks();
-            const int num = getMeasureData()->getTimeSigNumerator(layoutElements[n].measure);
-            const int denom = getMeasureData()->getTimeSigDenominator(layoutElements[n].measure);
-            
-            layoutElements[n].width_in_units = (int)round(
-                tick_length / (float)measures[layoutElements[n].measure].shortestDuration * num / denom
-                )*layoutElements[n].zoom + 2;
+                const float tick_length = (float)(measures[layoutElements[n].measure].lastTick -
+                                                  measures[layoutElements[n].measure].firstTick);
+                //const float beat_length = tick_length/getMeasureData()->beatLengthInTicks();
+                const int num = getMeasureData()->getTimeSigNumerator(layoutElements[n].measure);
+                const int denom = getMeasureData()->getTimeSigDenominator(layoutElements[n].measure);
+                
+                layoutElements[n].width_in_units = (int)round(
+                    tick_length / (float)measures[layoutElements[n].measure].shortestDuration * num / denom
+                    )*zoom + 2;
+            }
+            else
+            {
+                // ---- for non-linear printing mode
+                
+                // determine a list of all ticks on which a note starts.
+                // then we can determine where within this measure should this note be drawn
+                
+                std::map< int /* tick */, float /* position */ > all_ticks_map;
+                std::vector<int> all_ticks_vector;
+                
+                // build a list of all ticks
+                MeasureToExport& meas = measures[layoutElements[n].measure];
+                const int trackAmount = meas.trackRef.size();
+                for(int i=0; i<trackAmount; i++)
+                {
+                    const int first_note = meas.trackRef[i].firstNote;
+                    const int last_note = meas.trackRef[i].lastNote;
+                    
+                    if(first_note == -1 or last_note == -1) continue; // empty measure
+                    
+                    for(int n=first_note; n<=last_note; n++)
+                    {
+                        const int tick = meas.trackRef[i].track->getNoteStartInMidiTicks(n);
+                        all_ticks_map[ tick ] = -1; // will be set later
+                    }
+                }
+                
+                std::map<int,float>::iterator it;
+                for ( it=all_ticks_map.begin() ; it != all_ticks_map.end(); it++ )
+                {
+                    // building the full list from 'map' prevents duplicates
+                    all_ticks_vector.push_back( (*it).first );
+                }
+                
+                // order the vector
+                const int all_ticks_amount = all_ticks_vector.size();
+                bool changed = false; // bubble sort - FIXME : use something better
+                do
+                {
+                    changed = false;
+                    for(int i=0; i<all_ticks_amount-1; i++)
+                    {
+                        if(all_ticks_vector[i] > all_ticks_vector[i+1])
+                        {
+                            int tmp = all_ticks_vector[i];
+                            all_ticks_vector[i] = all_ticks_vector[i+1];
+                            all_ticks_vector[i+1] = tmp;
+                            changed = true;
+                        }
+                    }
+                } while(changed);
+                
+                // associate a relative position to each note
+                for(int i=0; i<all_ticks_amount; i++)
+                {
+                    all_ticks_map[ all_ticks_vector[i] ] = (float)i/all_ticks_amount;
+                }
+                
+                // TODO : also count silences, they need some space too
+                // TODO : ask ScoreEditor to know if some notes require more space because they have accidentals
+                layoutElements[n].width_in_units = all_ticks_amount;
+                std::cout << "***** unit width = " << layoutElements[n].width_in_units << std::endl;
+            }
         }
         else if(layoutElements[n].type == REPEATED_RIFF)
         {
@@ -836,10 +908,11 @@ void PrintLayoutManager::calculateLineLayout()
     
     if(getCurrentPrintable()->is_score_editor_used)
     {
+        // FIXME : this needs to be in pixels/print units, not my note-relative units.
         header_width = (int)round(3.0 + getCurrentPrintable()->max_signs_in_keysig*4.0/7.0); // 4/7 is an empirical ratio
     }
     
-    el.width_in_units = header_width; // FIXME - determine width dynamically, depending on contents. tabs needs less, C major needs less, etc.
+    el.width_in_units = header_width;
     current_width += header_width;
     layoutLines[currentLine].layoutElements.push_back( el );
     
