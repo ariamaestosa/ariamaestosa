@@ -79,7 +79,10 @@ public:
     */
     virtual int calculateHeight(LayoutLine& line) const = 0;
     
-    void beginLine(wxDC* dc, LayoutLine* line, int x0, const int y0, const int x1, const int y1, bool show_measure_number);
+    void beginLine(wxDC* dc, LayoutLine* line, int x0, const int x1, bool show_measure_number);
+    void setLineYCoords(const int y0, const int y1);
+
+    
     int getCurrentElementXStart();
     LayoutElement* continueWithNextElement();
     LayoutElement* getElementForMeasure(const int measureID);
