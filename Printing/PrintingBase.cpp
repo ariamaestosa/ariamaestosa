@@ -542,7 +542,6 @@ int EditorPrintable::getNotePrintX(int noteID)
 }
 int EditorPrintable::tickToX(const int tick)
 {
-    std::cout << "tickToX : ";
     for(int n=0; n<layoutElementsAmount; n++)
     {
         MeasureToExport& meas = currentLine->getMeasureForElement(n);
@@ -562,14 +561,9 @@ int EditorPrintable::tickToX(const int tick)
             const float nratio = ((float)(tick - firstTick) / (float)(lastTick - firstTick));
 
             assertExpr(elem_w, >, 0);
-            
-            std::cout << "nratio=" << nratio << " elem_w=" << elem_w << std::endl;
-            
-            std::cout << (int)round(nratio * (elem_w-pixel_width_of_an_unit*0.7) + elem_x_start) << "(C) \n";
+                        
             return (int)round(nratio * (elem_w-pixel_width_of_an_unit*0.7) + elem_x_start);
         }
-
-        if(tick < firstTick) std::cout << "-1 (A)\n";
         
         // given tick is not in a visible measure
         if(tick < firstTick) return -1;
@@ -582,12 +576,10 @@ int EditorPrintable::tickToX(const int tick)
          */
         if(n==layoutElementsAmount-1 and tick >= lastTick)
         {
-            if(tick < firstTick) std::cout << (currentLine->layoutElements[n].x2 + 10) << " (D)\n";
             return currentLine->layoutElements[n].x2 + 10;
         }
     }
     
-    std::cout << "-1 (B)\n";
     return -1;
     //return currentLine->layoutElements[layoutElementsAmount-1].x2 + 10;
 }
