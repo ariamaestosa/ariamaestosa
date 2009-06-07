@@ -463,7 +463,7 @@ namespace AriaMaestosa
         OwnerPtr<ScoreAnalyser> f_clef_analyser;
     };
     
-    void ScorePrintable::analyzeScore(LayoutLine& line)
+    void ScorePrintable::gatherScoreInfo(LayoutLine& line)
     {
         LayoutLine* previousLine = currentLine;
         currentLine = &line;
@@ -639,6 +639,7 @@ namespace AriaMaestosa
         assertExpr(y1,>,0);
         assertExpr(y0,<,50000);
         assertExpr(y1,<,50000);
+        setCurrentDC(&dc);
         
         //std::cout << "==========\nline from note " << line.getFirstNote() << " to " << line.getLastNote() << std::endl;
         
@@ -647,15 +648,13 @@ namespace AriaMaestosa
         // get the underlying common implementation rolling
         beginLine(&line, x0, x1, show_measure_number);
     
-        // analyze the score and get the results
-        analyzeScore(line);
+        // gather score info
+        gatherScoreInfo(line);
         ScoreData* scoreData = dynamic_cast<ScoreData*>(line.editor_data.raw_ptr);
         
         // since height is used to determine where to put repetitions/notes/etc.
         // only pass the height of the first score if there's 2, so stuff don't appear between both scores
         setLineYCoords(y0, ( scoreData->f_clef and scoreData->g_clef ? y0+(y1-y0)*scoreData->first_clef_proportion : y1 ));
-        
-        setCurrentDC(&dc);
         
         // if we have only one clef, give it the full space.
         // if we have two, split the space between both
@@ -772,17 +771,8 @@ namespace AriaMaestosa
         const int first_score_level = middle_c_level + (f_clef? 2 : -10);
         const int last_score_level = first_score_level + 8;
         const int min_level =  first_score_level - extra_lines_above*2;
-        
-        // draw score background (horizontal lines)
-        dc.SetPen(  wxPen( wxColour(125,125,125), 7 ) );
-        const int lineAmount = 5 + extra_lines_above + extra_lines_under;
-        const float lineHeight = (float)(y1 - y0) / (float)(lineAmount-1);
-        
-#define LEVEL_TO_Y( lvl ) y0 + 1 + lineHeight*0.5*(lvl - min_level)
-        
-        const int headRadius = 34; //(int)round(lineHeight*0.8);
-        
-        
+        const int headRadius = 40; //(int)round(lineHeight*0.8);
+
         /*
          void setStemDrawInfo( const int stem_up_x_offset,
          const float stem_up_y_offset,
@@ -791,7 +781,17 @@ namespace AriaMaestosa
          const float stem_height = -1,
          const float min_stem_height = -1);
          */
-        analyser.setStemDrawInfo( headRadius*2 + 36, 0, 36, 0 );
+        analyser.setStemDrawInfo( headRadius*2 + 26, 0, 39, 0 );
+        
+#define LEVEL_TO_Y( lvl ) y0 + 1 + lineHeight*0.5*(lvl - min_level)
+                
+        
+        // ------------------ preliminary part : backgrounds -----------------
+
+        // draw score background (horizontal lines)
+        dc.SetPen(  wxPen( wxColour(125,125,125), 7 ) );
+        const int lineAmount = 5 + extra_lines_above + extra_lines_under;
+        const float lineHeight = (float)(y1 - y0) / (float)(lineAmount-1);
         
         for(int lvl=first_score_level; lvl<=last_score_level; lvl+=2)
         {
@@ -825,7 +825,6 @@ namespace AriaMaestosa
                              LEVEL_TO_Y(first_score_level+3));
             
             // key
-            
             // on which level to put the signs (0 is the level of the highest sign when all are shown)
             const unsigned short int sharp_sign_lvl[] = { 1, 4, 0, 3, 6, 2, 5 };
             const unsigned short int flat_sign_lvl[] = { 3, 0, 4, 1, 5, 2, 6 };
@@ -868,6 +867,8 @@ namespace AriaMaestosa
             }
         }
         
+        // ------------------ first part : simple basic drawing -----------------
+
         // ---- draw notes heads
         { // we scope this because info like 'noteAmount' are bound to change just after
             const int noteAmount = analyser.noteRenderInfo.size();
@@ -944,6 +945,7 @@ namespace AriaMaestosa
             } // next note
         }// end scope
         
+        // ------------------ second part : intelligent drawing of the rest -----------------
         // analyse notes to know how to build the score
         analyser.analyseNoteInfo();
         
