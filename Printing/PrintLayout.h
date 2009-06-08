@@ -19,6 +19,7 @@
 #define _print_layout_h_
 
 #include <vector>
+#include <map>
 #include "ptr_vector.h"
 #include "wx/wx.h"
 
@@ -52,7 +53,10 @@ class MeasureToExport
 {
 public:
     MeasureToExport(const int measID);
-
+    
+    // for non-linear printing
+    std::map< int /* tick */, float /* position */ > ticks_relative_position;
+    
     // Finds the notes correcsponding to this measure
     // in the given track and keep the reference.
     // Returns the ID of the last note in this measure
