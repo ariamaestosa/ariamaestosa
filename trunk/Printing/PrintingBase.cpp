@@ -181,6 +181,7 @@ AriaPrintable::AriaPrintable(Sequence* parent)
     is_score_editor_used = false;
     track_amount = 0;
     max_signs_in_keysig = 0;
+    linearPrinting = false; // TODO : make configurable
 }
 AriaPrintable::~AriaPrintable()
 {
@@ -542,6 +543,7 @@ int EditorPrintable::getNotePrintX(int noteID)
 }
 int EditorPrintable::tickToX(const int tick)
 {
+    // find in which measure this tick belongs
     for(int n=0; n<layoutElementsAmount; n++)
     {
         MeasureToExport& meas = currentLine->getMeasureForElement(n);
@@ -551,17 +553,28 @@ int EditorPrintable::tickToX(const int tick)
 
         if(tick >= firstTick and tick < lastTick)
         {
-            /*
-             * note position ranges from 0 (at the very beginning of the layout element)
-             * to 1 (at the very end of the layout element)
-             */
             const int elem_x_start = currentLine->layoutElements[n].x;
             const int elem_x_end = currentLine->layoutElements[n].x2;
             const int elem_w = elem_x_end - elem_x_start;
-            const float nratio = ((float)(tick - firstTick) / (float)(lastTick - firstTick));
-
+            
+            float nratio;
+            
+            if(getCurrentPrintable()->linearPrinting)
+            {
+                /*
+                 * note position ranges from 0 (at the very beginning of the layout element)
+                 * to 1 (at the very end of the layout element)
+                 */
+                nratio = ((float)(tick - firstTick) / (float)(lastTick - firstTick));
+            }
+            else
+            {
+                // In non-linear mode, use ratio that was computed previously
+                nratio = meas.ticks_relative_position[tick];
+            }
+            
             assertExpr(elem_w, >, 0);
-                        
+            
             return (int)round(nratio * (elem_w-pixel_width_of_an_unit*0.7) + elem_x_start);
         }
         

@@ -771,8 +771,6 @@ void PrintLayoutManager::generateOutputOrder(bool checkRepetitions_bool)
     }//next measure
 }
 
-const bool linear = false;
-    
 void PrintLayoutManager::calculateRelativeLengths()
 {
     // calculate approximative width of each element
@@ -789,7 +787,7 @@ void PrintLayoutManager::calculateRelativeLengths()
 
         if(layoutElements[n].type == SINGLE_MEASURE)
         {
-            if(linear)
+            if(getCurrentPrintable()->linearPrinting)
             {
                 // ---- for linear printing mode
                 const int divider = (int)(
@@ -821,11 +819,12 @@ void PrintLayoutManager::calculateRelativeLengths()
                 // determine a list of all ticks on which a note starts.
                 // then we can determine where within this measure should this note be drawn
                 
-                std::map< int /* tick */, float /* position */ > all_ticks_map;
                 std::vector<int> all_ticks_vector;
                 
                 // build a list of all ticks
                 MeasureToExport& meas = measures[layoutElements[n].measure];
+                std::map< int /* tick */, float /* position */ >& ticks_relative_position = meas.ticks_relative_position;
+                
                 const int trackAmount = meas.trackRef.size();
                 for(int i=0; i<trackAmount; i++)
                 {
@@ -837,12 +836,12 @@ void PrintLayoutManager::calculateRelativeLengths()
                     for(int n=first_note; n<=last_note; n++)
                     {
                         const int tick = meas.trackRef[i].track->getNoteStartInMidiTicks(n);
-                        all_ticks_map[ tick ] = -1; // will be set later
+                        ticks_relative_position[ tick ] = -1; // will be set later
                     }
                 }
                 
                 std::map<int,float>::iterator it;
-                for ( it=all_ticks_map.begin() ; it != all_ticks_map.end(); it++ )
+                for ( it=ticks_relative_position.begin() ; it != ticks_relative_position.end(); it++ )
                 {
                     // building the full list from 'map' prevents duplicates
                     all_ticks_vector.push_back( (*it).first );
@@ -869,7 +868,7 @@ void PrintLayoutManager::calculateRelativeLengths()
                 // associate a relative position to each note
                 for(int i=0; i<all_ticks_amount; i++)
                 {
-                    all_ticks_map[ all_ticks_vector[i] ] = (float)i/all_ticks_amount;
+                    ticks_relative_position[ all_ticks_vector[i] ] = (float)i/all_ticks_amount;
                 }
                 
                 // TODO : also count silences, they need some space too
