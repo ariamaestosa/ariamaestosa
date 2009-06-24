@@ -142,6 +142,8 @@ namespace AriaMaestosa
      */
     class LayoutLine
         {
+            friend class AriaPrintable;
+            
             int currentTrack;
             AriaPrintable* printable;
             
@@ -162,13 +164,14 @@ namespace AriaMaestosa
             
             int getTrackAmount() const;
             void setCurrentTrack(const int n);
+            int getCurrentTrack() const { return currentTrack; }
             Track* getTrack() const;
             int getFirstNoteInElement(const int layoutElementID);
             int getLastNoteInElement(const int layoutElementID);
             int getFirstNoteInElement(LayoutElement* layoutElement);
             int getLastNoteInElement(LayoutElement* layoutElement);
             
-            void printYourself(wxDC& dc, const int x0, const int y0, const int x1, const int y1, int margin_below, int margin_above);
+            //void printYourself(wxDC& dc, const int x0, const int y0, const int x1, const int y1, int margin_below, int margin_above);
             int calculateHeight();
             
             MeasureToExport& getMeasureForElement(const int layoutElementID) const;
