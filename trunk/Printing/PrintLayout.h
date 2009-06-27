@@ -56,14 +56,18 @@ class PrintLayoutManager
     
     void findSimilarMeasures();
     
+    void setLineCoords(LayoutLine& line, const int x0, const int y0, const int x1, const int y1,
+                       int margin_below, int margin_above);
+    
 public:
     PrintLayoutManager(AriaPrintable* parent,
                        std::vector<LayoutLine>& layoutLines  /* out */,
                        std::vector<LayoutPage>& layoutPages  /* out */,
                        ptr_vector<MeasureToExport>& mesaures /* out */);
     
-    void setLineCoords(LayoutLine& line, const int x0, const int y0, const int x1, const int y1,
-                       int margin_below, int margin_above);
+    // FIXME : clean up these parameters
+    void layTracksInPage(LayoutPage& page, const int text_height, const float track_area_height, const int total_height,
+                         const int h, const int x0, const int y0, const int x1);
     
     void calculateLayoutElements(ptr_vector<Track, REF>& track, const bool checkRepetitions_bool);
 };
