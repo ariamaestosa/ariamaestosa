@@ -36,8 +36,7 @@ public:
     ScorePrintable(Track* track_arg);
     virtual ~ScorePrintable();
 
-    void drawLine(LayoutLine& line, wxDC& dc,
-                  const int x0, const int y0, const int x1, const int y1, bool show_measure_number);
+    void drawLine(LayoutLine& line, wxDC& dc);
     int calculateHeight(LayoutLine& line) const;
     
     void gatherScoreInfo(LayoutLine& line);

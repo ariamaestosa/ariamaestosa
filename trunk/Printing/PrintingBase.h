@@ -23,6 +23,8 @@
 #include "wx/wx.h"
 
 /*
+ FIXME : this is outdated, update
+ 
  Printing module overview :
  
  An 'AriaPrintable' object is created. Then tracks are added to it through 'addTrack'.
@@ -71,17 +73,19 @@ public:
         
     /** Called by the print code when it's time to render a line. This will be handled in the appropriate subclass.
     */
-    virtual void drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1, bool show_measure_number) = 0;
+    virtual void drawLine(LayoutLine& line, wxDC& dc) = 0;
 
     /** Called by the layout code to know the relative height of this line
     */
     virtual int calculateHeight(LayoutLine& line) const = 0;
     
-    void beginLine(LayoutLine* line, int x0, const int x1, bool show_measure_number);
+    void setLineCoords(LayoutLine& line, TrackRenderInfo& track, int x0, const int y0, const int x1, const int y1, bool show_measure_number);
+    void setCurrentTrack(LayoutLine* line);
+    
     void setLineYCoords(const int y0, const int y1);
     void setCurrentDC(wxDC* dc);
     
-    int getCurrentElementXStart();
+   // int getCurrentElementXStart();
     LayoutElement* continueWithNextElement();
     LayoutElement* getElementForMeasure(const int measureID);
     int getNotePrintX(int noteID);

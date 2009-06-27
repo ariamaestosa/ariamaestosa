@@ -630,23 +630,17 @@ namespace AriaMaestosa
         currentLine = previousLine;
     }
     
-    void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc,
-                                  const int x0, const int y0,
-                                  const int x1, const int y1,
-                                  bool show_measure_number)
+    void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc)
     {
-        assertExpr(y0,>,0);
-        assertExpr(y1,>,0);
-        assertExpr(y0,<,50000);
-        assertExpr(y1,<,50000);
+        TrackRenderInfo& renderInfo = line.getTrackRenderInfo();
+
+        assertExpr(renderInfo.y0,>,0);
+        assertExpr(renderInfo.y1,>,0);
+        assertExpr(renderInfo.y0,<,50000);
+        assertExpr(renderInfo.y1,<,50000);
         setCurrentDC(&dc);
         
-        //std::cout << "==========\nline from note " << line.getFirstNote() << " to " << line.getLastNote() << std::endl;
-        
         x_converter = new PrintXConverter(this);
-    
-        // get the underlying common implementation rolling
-        beginLine(&line, x0, x1, show_measure_number);
     
         // gather score info
         gatherScoreInfo(line);
@@ -654,7 +648,10 @@ namespace AriaMaestosa
         
         // since height is used to determine where to put repetitions/notes/etc.
         // only pass the height of the first score if there's 2, so stuff don't appear between both scores
-        setLineYCoords(y0, ( scoreData->f_clef and scoreData->g_clef ? y0+(y1-y0)*scoreData->first_clef_proportion : y1 ));
+        setLineYCoords(renderInfo.y0,
+                       ( scoreData->f_clef and scoreData->g_clef ?
+                        renderInfo.y0 + (renderInfo.y1 - renderInfo.y0)*scoreData->first_clef_proportion :
+                        renderInfo.y1 ));
         
         // if we have only one clef, give it the full space.
         // if we have two, split the space between both
@@ -663,78 +660,29 @@ namespace AriaMaestosa
         
         if(scoreData->g_clef and not scoreData->f_clef)
         {
-            g_clef_y_from = y0;
-            g_clef_y_to = y1;
+            g_clef_y_from = renderInfo.y0;
+            g_clef_y_to = renderInfo.y1;
         }
         else if(scoreData->f_clef and not scoreData->g_clef)
         {
-            f_clef_y_from = y0;
-            f_clef_y_to = y1;
+            f_clef_y_from = renderInfo.y0;
+            f_clef_y_to = renderInfo.y1;
         }
         else if(scoreData->f_clef and scoreData->g_clef)
         {
-            g_clef_y_from = y0;
-            g_clef_y_to = y0 + (int)round((y1 - y0)*scoreData->first_clef_proportion);
-            f_clef_y_from = y0 + (int)round((y1 - y0)*(1-scoreData->second_clef_proportion));
-            f_clef_y_to = y1;
+            g_clef_y_from = renderInfo.y0;
+            g_clef_y_to = renderInfo.y0 + (int)round((renderInfo.y1 - renderInfo.y0)*scoreData->first_clef_proportion);
+            f_clef_y_from = renderInfo.y0 + (int)round((renderInfo.y1 - renderInfo.y0)*(1-scoreData->second_clef_proportion));
+            f_clef_y_to = renderInfo.y1;
         }
         else { assert(false); }
         
 
         
-        // iterate through layout elements to collect notes in the vector
-        // so ScoreAnalyser can prepare the score
+        // iterate through layout elements... FIXME : needed?
         LayoutElement* currentElement;
         while((currentElement = continueWithNextElement()) and (currentElement != NULL))
         {
-            /*
-            if(currentElement->type == TIME_SIGNATURE)
-            {
-                // if(g_clef) EditorPrintable::renderTimeSignatureChange(currentElement, g_clef_y_from, g_clef_y_to);
-                // else EditorPrintable::renderTimeSignatureChange(currentElement, f_clef_y_from, f_clef_y_to);
-                continue;
-            }
-            
-            if(currentElement->type == LINE_HEADER)  continue;
-            
-            // we're collecting notes here... types other than regular measures
-            // don't contain notes and thus don't interest us
-            if(currentElement->type != SINGLE_MEASURE) continue;
-            
-            const int firstNote = line.getFirstNoteInElement(currentElement);
-            const int lastNote = line.getLastNoteInElement(currentElement);
-            
-            if(firstNote == -1 || lastNote == -1) continue; // empty measure
-            
-            for(int n=firstNote; n<=lastNote; n++)
-            {
-                int note_sign;
-                const int noteLevel = converter->noteToLevel(track->getNote(n), &note_sign);
-                
-                if(noteLevel == -1) continue;
-                const int noteLength = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
-                const int tick = track->getNoteStartInMidiTicks(n);
-                
-                const int note_x = tickToX(tick);
-                
-                NoteRenderInfo currentNote(tick, note_x, noteLevel, noteLength, note_sign,
-                                           track->isNoteSelected(n), track->getNotePitchID(n));
-                
-                // add note to either G clef score or F clef score
-                if(g_clef and not f_clef)
-                    g_clef_analyser->addToVector(currentNote, false);
-                else if(f_clef and not g_clef)
-                    f_clef_analyser->addToVector(currentNote, false);
-                else if(f_clef and g_clef)
-                {
-                    if(noteLevel < middle_c_level)
-                        g_clef_analyser->addToVector(currentNote, false);
-                    else
-                        f_clef_analyser->addToVector(currentNote, false);
-                }
-            }
-             */
-            
         }//next element
         
         g_printable = this;
@@ -743,16 +691,16 @@ namespace AriaMaestosa
         {
             drawScore(false /*G*/, *(scoreData->g_clef_analyser), line, dc,
                       abs(scoreData->extra_lines_above_g_score), abs(scoreData->extra_lines_under_g_score),
-                      x0, g_clef_y_from, x1, g_clef_y_to,
-                      show_measure_number);
+                      renderInfo.x0, g_clef_y_from, renderInfo.x1, g_clef_y_to,
+                      renderInfo.show_measure_number);
         }
         
         if(scoreData->f_clef)
         {
             drawScore(true /*F*/, *(scoreData->f_clef_analyser), line, dc,
                       abs(scoreData->extra_lines_above_f_score), abs(scoreData->extra_lines_under_f_score),
-                      x0, f_clef_y_from, x1, f_clef_y_to,
-                      (scoreData->g_clef ? false : show_measure_number) /* if we have both keys don't show twice */);
+                      renderInfo.x0, f_clef_y_from, renderInfo.x1, f_clef_y_to,
+                      (scoreData->g_clef ? false : renderInfo.show_measure_number) /* if we have both keys don't show twice */);
         }
         
         delete x_converter;

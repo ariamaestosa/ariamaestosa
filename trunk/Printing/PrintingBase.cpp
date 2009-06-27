@@ -377,7 +377,7 @@ void AriaPrintable::printLine(LayoutLine& line, wxDC& dc, const int x0, const in
     const int my0 = y0 + margin_above;
     const int my1 = y0 + height - margin_below;
     
-    // draw vertical line to show these lines belong toghether
+    // ---- Draw vertical line to show these lines belong toghether
     if(trackAmount>1)
     {
         dc.SetPen(  wxPen( wxColour(150,150,150), 25 ) );
@@ -388,33 +388,48 @@ void AriaPrintable::printLine(LayoutLine& line, wxDC& dc, const int x0, const in
         dc.DrawLine( x1-3, my0, x1-3, my1); // right-side line
     }
     
-    // ---- space between individual tracks
+    // ---- Determine tracks positions and sizes
+    // FIXME : this is layout, should go in PrintLayout.cpp
+    // space between individual tracks
     const int space_between_tracks = 150;
     
     float current_y = my0;
     for(int n=0; n<trackAmount; n++)
     {
+        std::cout << "%%%% setting track coords " << n << std::endl;
+
         line.setCurrentTrack(n);
-        EditorPrintable* track = editorPrintables.get(line.getCurrentTrack());
+        EditorPrintable* editorPrintable = editorPrintables.get(line.getCurrentTrack());
         
         // skip empty tracks
         if(line.height_percent[n] == 0) continue;
         
-        
         // determine how much vertical space is allocated for this track
         const float track_height = (height - margin_below - margin_above) * line.height_percent[n]/100.0f;
-        
-        //std::cout << "* allocating " <<track_height << " out of " << height << " (" << height_percent[n] << "%)" << std::endl;
         
         const float position = (float)n / trackAmount;
         const float space_above_line = space_between_tracks*position;
         const float space_below_line = space_between_tracks*(1-position);
         
-        track->drawLine(line, dc,
-                        x0, current_y + space_above_line,
-                        x1, current_y + track_height - space_below_line,
-                        n==0);
+        editorPrintable->setLineCoords(line, line.getTrackRenderInfo(),
+                                       x0, current_y + space_above_line,
+                                       x1, current_y + track_height - space_below_line,
+                                       n==0);
+        
         current_y += track_height;
+    }
+    
+    // ---- Do the actual drawing
+    for(int n=0; n<trackAmount; n++)
+    {
+        // skip empty tracks
+        if(line.height_percent[n] == 0) continue;
+        
+        std::cout << "==== printing track " << n << std::endl;
+        line.setCurrentTrack(n);
+        EditorPrintable* editorPrintable = editorPrintables.get(line.getCurrentTrack());
+        editorPrintable->setCurrentTrack(&line);
+        editorPrintable->drawLine(line, dc);
     }
 }
     
@@ -432,52 +447,60 @@ void EditorPrintable::setCurrentDC(wxDC* dc)
     EditorPrintable::dc = dc;
 }
     
-void EditorPrintable::beginLine(LayoutLine* line,  int x0, const int x1, bool show_measure_number)
+void EditorPrintable::setCurrentTrack(LayoutLine* line)
 {
-    line->x0 = x0;
-    line->x1 = x1;
-    line->show_measure_number = show_measure_number;
     EditorPrintable::currentLine = line;
+}
+
+void EditorPrintable::setLineCoords(LayoutLine& line, TrackRenderInfo& track,  int x0, const int y0, const int x1, const int y1, bool show_measure_number)
+{
+    track.x0 = x0;
+    track.x1 = x1;
+    track.y0 = y0;
+    track.y1 = y1;
+    track.show_measure_number = show_measure_number;
+        
+    if(&line.getTrackRenderInfo() != &track) std::cerr << "TrackRenderInfo is not the right one!!!!!!!!!\n";
+    std::cout << "coords for current track " << line.getCurrentTrack() << " : " << x0 << ", " << y0 << ", " << x1 << ", " << y1 << std::endl;
     
     // 2 spaces allocated for left area of the line
-    pixel_width_of_an_unit = (float)(x1 - x0) / (float)(line->width_in_units+2);
+    pixel_width_of_an_unit = (float)(x1 - x0) / (float)(line.width_in_units+2);
 
-    layoutElementsAmount = currentLine->layoutElements.size();
+    layoutElementsAmount = line.layoutElements.size();
 
-    // init layout elements' locations
+    int xloc = 0;
+    
+    // init coords of each layout element
     for(currentLayoutElement=0; currentLayoutElement<layoutElementsAmount; currentLayoutElement++)
     {
-        //if(currentLayoutElement == 0) xloc = 2;
-        //else if(currentLayoutElement > 0) xloc += currentLine->layoutElements[currentLayoutElement-1].width_in_units;
-
-        if(currentLayoutElement == 0) line->xloc = 1;
-        else if(currentLayoutElement > 0) line->xloc += currentLine->layoutElements[currentLayoutElement-1].width_in_units;
+        if(currentLayoutElement == 0) xloc = 1;
+        else if(currentLayoutElement > 0) xloc += line.layoutElements[currentLayoutElement-1].width_in_units;
         
-        currentLine->layoutElements[currentLayoutElement].x  = getCurrentElementXStart();
+        line.layoutElements[currentLayoutElement].x  = x0 + (int)round(xloc*pixel_width_of_an_unit) - pixel_width_of_an_unit;
+
         if(currentLayoutElement > 0)
-            currentLine->layoutElements[currentLayoutElement-1].x2 =  currentLine->layoutElements[currentLayoutElement].x;
+            line.layoutElements[currentLayoutElement-1].x2 =  line.layoutElements[currentLayoutElement].x;
     }
     // for last
-    currentLine->layoutElements[currentLine->layoutElements.size()-1].x2 = x1; // FIXME - fix naming conventions... in track it's x1, in element it's x2
+    line.layoutElements[line.layoutElements.size()-1].x2 = x1; // FIXME - fix naming conventions... in track it's x1, in element it's x2
     
-    line->xloc = -1;
     currentLayoutElement = -1;
 
-    assertExpr(line->width_in_units,>,0);
+    assertExpr(line.width_in_units,>,0);
     assertExpr(pixel_width_of_an_unit,>,0);
 }
     
 void EditorPrintable::setLineYCoords(const int y0, const int y1)
 {
-    currentLine->y0 = y0;
-    currentLine->y1 = y1;
+    currentLine->getTrackRenderInfo().y0 = y0;
+    currentLine->getTrackRenderInfo().y1 = y1;
 }
 
-    
+    /*
 int EditorPrintable::getCurrentElementXStart()
 {
     return currentLine->x0 + (int)round(currentLine->xloc*pixel_width_of_an_unit) - pixel_width_of_an_unit;
-}
+}*/
 
 LayoutElement* EditorPrintable::getElementForMeasure(const int measureID)
 {
@@ -530,6 +553,8 @@ LayoutElement* EditorPrintable::continueWithNextElement()
 
     dc->SetTextForeground( wxColour(0,0,255) );
 
+    TrackRenderInfo& renderInfo = currentLine->getTrackRenderInfo();
+    
     // ****** empty measure
     if(layoutElements[currentLayoutElement].type == EMPTY_MEASURE)
     {
@@ -563,20 +588,22 @@ LayoutElement* EditorPrintable::continueWithNextElement()
             to_wxString(layoutElements[currentLayoutElement].lastMeasureToRepeat+1);
         }
 
-        dc->DrawText( message, elem_x_start + pixel_width_of_an_unit/2, (currentLine->y0 + currentLine->y1)/2 - getCurrentPrintable()->text_height_half );
+        dc->DrawText( message, elem_x_start + pixel_width_of_an_unit/2,
+                     (renderInfo.y0 + renderInfo.y1)/2 - getCurrentPrintable()->text_height_half );
     }
     // ****** play again
     else if(layoutElements[currentLayoutElement].type == PLAY_MANY_TIMES)
     {
         wxString label(wxT("X"));
         label << layoutElements[currentLayoutElement].amountOfTimes;
-        dc->DrawText( label, elem_x_start + pixel_width_of_an_unit/2, (currentLine->y0 + currentLine->y1)/2 - getCurrentPrintable()->text_height_half );
+        dc->DrawText( label, elem_x_start + pixel_width_of_an_unit/2,
+                     (renderInfo.y0 + renderInfo.y1)/2 - getCurrentPrintable()->text_height_half );
     }
     // ****** normal measure
     else if(layoutElements[currentLayoutElement].type == SINGLE_MEASURE)
     {
         // draw measure ID
-        if(currentLine->show_measure_number)
+        if(renderInfo.show_measure_number)
         {
             const int meas_id = currentLine->getMeasureForElement(currentLayoutElement).id+1;
 
@@ -585,7 +612,7 @@ LayoutElement* EditorPrintable::continueWithNextElement()
 
             dc->DrawText( measureLabel,
                           elem_x_start - ( meas_id > 9 ? pixel_width_of_an_unit/4 : pixel_width_of_an_unit/5 ),
-                          currentLine->y0 - getCurrentPrintable()->text_height*1.4 );
+                          renderInfo.y0 - getCurrentPrintable()->text_height*1.4 );
         }
 
         dc->SetTextForeground( wxColour(0,0,0) );
