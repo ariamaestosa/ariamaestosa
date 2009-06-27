@@ -16,6 +16,11 @@
 
 namespace AriaMaestosa
 {
+#if 0
+#pragma mark -
+#pragma mark ScoreData
+#endif
+    
     class ScoreData : public EditorData
         {
         public:
@@ -34,16 +39,10 @@ namespace AriaMaestosa
             OwnerPtr<ScoreAnalyser> f_clef_analyser;
         };
 
-    
-    
-    ScorePrintable* g_printable = NULL;
-    
-    ScorePrintable::ScorePrintable(Track* track) : EditorPrintable()
-    {
-        // std::cout << " *** setting global g_printable" << std::endl;
-        g_printable = this;
-    }
-    ScorePrintable::~ScorePrintable() { }
+#if 0
+#pragma mark -
+#pragma mark PrintXConverter
+#endif
     
     /*
      * An instance of this will be given to the score analyser. Having a separate x-coord-converter
@@ -65,6 +64,14 @@ namespace AriaMaestosa
                 return parent->tickToX(tick);
             }
         };
+    
+    // global (FIXME)
+    PrintXConverter* x_converter = NULL;
+    
+#if 0
+#pragma mark -
+#pragma mark Render Routines
+#endif
     
     /*
      * A few drawing routines
@@ -173,10 +180,6 @@ namespace AriaMaestosa
         dc.DrawBitmap(scaled, x, score_top, true);
     }
     
-    PrintXConverter* x_converter = NULL;
-    
-    // -------------------------------------------------------------------
-    
     void renderArc(wxDC& dc, const int center_x, const int center_y,
                    const int radius_x, const int radius_y)
     {
@@ -200,6 +203,7 @@ namespace AriaMaestosa
     // leave a pointer to the dc for the callback
     // FIXME find cleaner way
     wxDC* global_dc = NULL;
+    ScorePrintable* g_printable = NULL;
     
     // leave height of lines for the renderSilence callback
     // FIXME find cleaner way
@@ -316,7 +320,7 @@ namespace AriaMaestosa
             static wxBitmap silence( getResourcePrefix() + wxT("/score/silence4.png"), wxBITMAP_TYPE_PNG );
             const float scale = 6.5f;
             static wxBitmap silenceBigger = wxBitmap(silence.ConvertToImage().Scale(silence.GetWidth()*scale, silence.GetHeight()*scale));
-
+            
             global_dc->DrawBitmap( silenceBigger, x+25, silences_y-15 );
             
             silence_radius = silenceBigger.GetWidth()/2;
@@ -377,7 +381,7 @@ namespace AriaMaestosa
             const int radius_x = 50;
             
             const int base_y = silences_y + 100;
-
+            
             static wxSize triplet_3_size = global_dc->GetTextExtent(wxT("3"));
             
             renderArc(*global_dc, silence_center - 9, base_y, radius_x, 80);
@@ -386,7 +390,20 @@ namespace AriaMaestosa
         }
     }
     
-
+#if 0
+#pragma mark -
+#pragma mark ScorePrintable (EditorPrintable common interface)
+#endif
+    
+    
+    ScorePrintable::ScorePrintable(Track* track) : EditorPrintable()
+    {
+        // std::cout << " *** setting global g_printable" << std::endl;
+        g_printable = this;
+    }
+    ScorePrintable::~ScorePrintable() { }
+    
+      
     int ScorePrintable::calculateHeight(LayoutLine& line)
     {
         gatherScoreInfo(line);
@@ -399,6 +416,89 @@ namespace AriaMaestosa
                 abs(scoreData->extra_lines_under_f_score);
 
     }
+    
+    void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc)
+    {
+        TrackRenderInfo& renderInfo = line.getTrackRenderInfo();
+        
+        assertExpr(renderInfo.y0,>,0);
+        assertExpr(renderInfo.y1,>,0);
+        assertExpr(renderInfo.y0,<,50000);
+        assertExpr(renderInfo.y1,<,50000);
+        setCurrentDC(&dc);
+        
+        x_converter = new PrintXConverter(this);
+        
+        // gather score info
+        analyzeScore(line);
+        ScoreData* scoreData = dynamic_cast<ScoreData*>(line.editor_data.raw_ptr);
+        
+        // since height is used to determine where to put repetitions/notes/etc.
+        // only pass the height of the first score if there's 2, so stuff don't appear between both scores
+        setLineYCoords(renderInfo.y0,
+                       ( scoreData->f_clef and scoreData->g_clef ?
+                        renderInfo.y0 + (renderInfo.y1 - renderInfo.y0)*scoreData->first_clef_proportion :
+                        renderInfo.y1 ));
+        
+        // if we have only one clef, give it the full space.
+        // if we have two, split the space between both
+        int g_clef_y_from=-1, g_clef_y_to=-1;
+        int f_clef_y_from=-1, f_clef_y_to=-1;
+        
+        if(scoreData->g_clef and not scoreData->f_clef)
+        {
+            g_clef_y_from = renderInfo.y0;
+            g_clef_y_to = renderInfo.y1;
+        }
+        else if(scoreData->f_clef and not scoreData->g_clef)
+        {
+            f_clef_y_from = renderInfo.y0;
+            f_clef_y_to = renderInfo.y1;
+        }
+        else if(scoreData->f_clef and scoreData->g_clef)
+        {
+            g_clef_y_from = renderInfo.y0;
+            g_clef_y_to = renderInfo.y0 + (int)round((renderInfo.y1 - renderInfo.y0)*scoreData->first_clef_proportion);
+            f_clef_y_from = renderInfo.y0 + (int)round((renderInfo.y1 - renderInfo.y0)*(1-scoreData->second_clef_proportion));
+            f_clef_y_to = renderInfo.y1;
+        }
+        else { assert(false); }
+        
+        
+        
+        // iterate through layout elements... FIXME : needed?
+        LayoutElement* currentElement;
+        while((currentElement = continueWithNextElement()) and (currentElement != NULL))
+        {
+        }//next element
+        
+        g_printable = this;
+        
+        if(scoreData->g_clef)
+        {
+            drawScore(false /*G*/, *(scoreData->g_clef_analyser), line, dc,
+                      abs(scoreData->extra_lines_above_g_score), abs(scoreData->extra_lines_under_g_score),
+                      renderInfo.x0, g_clef_y_from, renderInfo.x1, g_clef_y_to,
+                      renderInfo.show_measure_number);
+        }
+        
+        if(scoreData->f_clef)
+        {
+            drawScore(true /*F*/, *(scoreData->f_clef_analyser), line, dc,
+                      abs(scoreData->extra_lines_above_f_score), abs(scoreData->extra_lines_under_f_score),
+                      renderInfo.x0, f_clef_y_from, renderInfo.x1, f_clef_y_to,
+                      (scoreData->g_clef ? false : renderInfo.show_measure_number) /* if we have both keys don't show twice */);
+        }
+        
+        delete x_converter;
+        x_converter = NULL;
+    }
+
+    
+#if 0
+#pragma mark -
+#pragma mark ScorePrintable (private utils)
+#endif
     
     void ScorePrintable::gatherScoreInfo(LayoutLine& line)
     {
@@ -468,10 +568,11 @@ namespace AriaMaestosa
             if(smallest_level!=-1 and smallest_level < g_clef_from) scoreData->extra_lines_above_g_score = (g_clef_from - smallest_level)/2;
             if(biggest_level!=-1 and biggest_level > f_clef_to) scoreData->extra_lines_under_f_score = (f_clef_to - biggest_level)/2;
         }
-        //std::cout << "extra_lines_above_g_score = " << extra_lines_above_g_score <<
-        //    " extra_lines_under_g_score = " << extra_lines_under_g_score <<
-        //    " extra_lines_above_f_score = " << extra_lines_above_f_score <<
-        //    " extra_lines_under_f_score = " << extra_lines_under_f_score << std::endl;
+        
+        std::cout << "extra_lines_above_g_score = " << scoreData->extra_lines_above_g_score <<
+            " extra_lines_under_g_score = " << scoreData->extra_lines_under_g_score <<
+            " extra_lines_above_f_score = " << scoreData->extra_lines_above_f_score <<
+            " extra_lines_under_f_score = " << scoreData->extra_lines_under_f_score << std::endl;
         
         // restore previous current lien (FIXME not too pretty)
         currentLine = previousLine;
@@ -586,82 +687,6 @@ namespace AriaMaestosa
         currentLine = previousLine;
     }
     
-    void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc)
-    {
-        TrackRenderInfo& renderInfo = line.getTrackRenderInfo();
-
-        assertExpr(renderInfo.y0,>,0);
-        assertExpr(renderInfo.y1,>,0);
-        assertExpr(renderInfo.y0,<,50000);
-        assertExpr(renderInfo.y1,<,50000);
-        setCurrentDC(&dc);
-        
-        x_converter = new PrintXConverter(this);
-    
-        // gather score info
-        analyzeScore(line);
-        ScoreData* scoreData = dynamic_cast<ScoreData*>(line.editor_data.raw_ptr);
-        
-        // since height is used to determine where to put repetitions/notes/etc.
-        // only pass the height of the first score if there's 2, so stuff don't appear between both scores
-        setLineYCoords(renderInfo.y0,
-                       ( scoreData->f_clef and scoreData->g_clef ?
-                        renderInfo.y0 + (renderInfo.y1 - renderInfo.y0)*scoreData->first_clef_proportion :
-                        renderInfo.y1 ));
-        
-        // if we have only one clef, give it the full space.
-        // if we have two, split the space between both
-        int g_clef_y_from=-1, g_clef_y_to=-1;
-        int f_clef_y_from=-1, f_clef_y_to=-1;
-        
-        if(scoreData->g_clef and not scoreData->f_clef)
-        {
-            g_clef_y_from = renderInfo.y0;
-            g_clef_y_to = renderInfo.y1;
-        }
-        else if(scoreData->f_clef and not scoreData->g_clef)
-        {
-            f_clef_y_from = renderInfo.y0;
-            f_clef_y_to = renderInfo.y1;
-        }
-        else if(scoreData->f_clef and scoreData->g_clef)
-        {
-            g_clef_y_from = renderInfo.y0;
-            g_clef_y_to = renderInfo.y0 + (int)round((renderInfo.y1 - renderInfo.y0)*scoreData->first_clef_proportion);
-            f_clef_y_from = renderInfo.y0 + (int)round((renderInfo.y1 - renderInfo.y0)*(1-scoreData->second_clef_proportion));
-            f_clef_y_to = renderInfo.y1;
-        }
-        else { assert(false); }
-        
-
-        
-        // iterate through layout elements... FIXME : needed?
-        LayoutElement* currentElement;
-        while((currentElement = continueWithNextElement()) and (currentElement != NULL))
-        {
-        }//next element
-        
-        g_printable = this;
-        
-        if(scoreData->g_clef)
-        {
-            drawScore(false /*G*/, *(scoreData->g_clef_analyser), line, dc,
-                      abs(scoreData->extra_lines_above_g_score), abs(scoreData->extra_lines_under_g_score),
-                      renderInfo.x0, g_clef_y_from, renderInfo.x1, g_clef_y_to,
-                      renderInfo.show_measure_number);
-        }
-        
-        if(scoreData->f_clef)
-        {
-            drawScore(true /*F*/, *(scoreData->f_clef_analyser), line, dc,
-                      abs(scoreData->extra_lines_above_f_score), abs(scoreData->extra_lines_under_f_score),
-                      renderInfo.x0, f_clef_y_from, renderInfo.x1, f_clef_y_to,
-                      (scoreData->g_clef ? false : renderInfo.show_measure_number) /* if we have both keys don't show twice */);
-        }
-        
-        delete x_converter;
-        x_converter = NULL;
-    }
     
     void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine& line, wxDC& dc,
                                    const int extra_lines_above, const int extra_lines_under,
