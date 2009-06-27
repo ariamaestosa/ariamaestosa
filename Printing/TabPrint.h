@@ -36,7 +36,7 @@ public:
     virtual ~TablaturePrintable();
 
     void drawLine(LayoutLine& line, wxDC& dc);
-    int calculateHeight(LayoutLine& line) const;
+    int calculateHeight(LayoutLine& line);
     
 };
 

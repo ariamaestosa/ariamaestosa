@@ -54,6 +54,12 @@ public:
     {
         raw_ptr = NULL;
     }
+    OwnerPtr(OwnerPtr& copyCtor)
+    {
+        this->raw_ptr = copyCtor.raw_ptr;
+        copyCtor.raw_ptr; // prevent the oldder instance from deleting the pointer
+    }
+    
     OwnerPtr(T* obj)
     {
         raw_ptr = obj;

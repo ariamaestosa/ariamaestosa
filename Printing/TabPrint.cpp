@@ -167,7 +167,7 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc)
     std::cout << "Tablature : done\n";
 }
 
-int TablaturePrintable::calculateHeight(LayoutLine& line) const
+int TablaturePrintable::calculateHeight(LayoutLine& line)
 {
     const int from_note = line.getFirstNote();
     const int to_note   = line.getLastNote();

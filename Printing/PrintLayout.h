@@ -41,7 +41,7 @@ class PrintLayoutManager
     AriaPrintable* parent;
     
     // referencing vectors from AriaPrintable
-    std::vector<LayoutLine>& layoutLines;
+    ptr_vector<LayoutLine>& layoutLines;
     std::vector<LayoutPage>& layoutPages;
     ptr_vector<MeasureToExport>& measures;
     
@@ -61,7 +61,7 @@ class PrintLayoutManager
     
 public:
     PrintLayoutManager(AriaPrintable* parent,
-                       std::vector<LayoutLine>& layoutLines  /* out */,
+                       ptr_vector<LayoutLine>& layoutLines  /* out */,
                        std::vector<LayoutPage>& layoutPages  /* out */,
                        ptr_vector<MeasureToExport>& mesaures /* out */);
     
