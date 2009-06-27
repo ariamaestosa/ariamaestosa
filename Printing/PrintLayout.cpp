@@ -360,20 +360,24 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
 // FIXME : find clearer names to this and 'layInLinesAndPages' so they can be told apart (layInLinesAndPages separates
 // layout element sin page and line objects, this one gives them coords on-page). Maybe send 'layInLinesAndPages' and friends
 // to the LayoutTree.cpp file ?
-void PrintLayoutManager::layTracksInPage(LayoutPage& page, const int text_height, const float track_area_height, const int total_height,
-                                         const int h, const int x0, const int y0, const int x1)
+/**
+  * \param text_height       Height of the title header (for page 1), height of the bottom page # text (for other pages)
+  * \param level_y_amount    Height of the track in levels
+  * \param track_area_height Height of the track in print units
+  */
+void PrintLayoutManager::layTracksInPage(LayoutPage& page, const int text_height, const float track_area_height, const int level_y_amount,
+                                         const int pageHeight, const int x0, const int y0, const int x1)
 {
+    
     // ---- Lay out tracks
     float y_from = y0 + text_height*3;
     for(int l=page.first_line; l<=page.last_line; l++)
     {
-        // FIXME : move to layout?
-        
         //std::cout << "layoutLines[l].level_height = " << layoutLines[l].level_height << " track_area_height=" << track_area_height
         //          << " total_height=" << total_height << std::endl;
         
         // give a height proportional to its part of the total height
-        float height = (track_area_height/total_height)*layoutLines[l].level_height;
+        float height = (track_area_height/level_y_amount)*layoutLines[l].level_height;
         
         float used_height = height;
         
@@ -382,7 +386,9 @@ void PrintLayoutManager::layTracksInPage(LayoutPage& page, const int text_height
         {
             used_height *= 0.95;
         }
-        if(height > h/5 && height > used_height*1.3) height = used_height*1.3; // shrink total height when track is way too large (if page contains only a few tracks)
+        
+        // shrink total height when track is way too large (if page contains only a few tracks)
+        if(height > pageHeight/5 && height > used_height*1.3) height = used_height*1.3;  
         
         float used_y_from = y_from;
         

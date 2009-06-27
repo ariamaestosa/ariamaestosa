@@ -256,10 +256,10 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
 
     std::cout << "printing page " << pageNum << ", which has " << lineAmount << " lines" << std::endl;
 
-    int total_height = 4;
+    int level_y_amount = 4;
     for(int n=page.first_line; n <= page.last_line; n++)
     {
-        total_height += layoutLines[n].level_height;
+        level_y_amount += layoutLines[n].level_height;
     }
 
     dc.SetBackground(*wxWHITE_BRUSH);
@@ -305,8 +305,8 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
      */
     const float track_area_height = (float)h - (float)text_height*3.0f + (pageNum == 1 ? 100 : 0);
 
-    
-    layout->layTracksInPage(page, text_height, track_area_height, total_height, h, x0, y0, x1);
+    // ---- Give each track an area on the page
+    layout->layTracksInPage(page, text_height, track_area_height, level_y_amount, h, x0, y0, x1);
     
     // ---- Draw the tracks
     const wxFont regularFont = wxFont(75, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
