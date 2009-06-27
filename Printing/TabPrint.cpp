@@ -41,6 +41,9 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc)
     
     Track* track = line.getTrack();
     
+    std::cout << "Tablature : starting new line\n";
+
+    
     // draw tab background (guitar strings)
     dc.SetPen(  wxPen( wxColour(125,125,125), 5 ) );
     
@@ -58,10 +61,14 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc)
     LayoutElement* currentElement;
     while((currentElement = continueWithNextElement()) and (currentElement != NULL))
     {
+        std::cout << "Tablature : starting new layout element. Type = " << currentElement->getType() << "\n";
+        
         drawVerticalDivider(currentElement, renderInfo.y0, renderInfo.y1);
         
-        if(currentElement->type == LINE_HEADER)
+        if(currentElement->getType() == LINE_HEADER)
         {
+            std::cout << "Tablature : it's a header\n";
+
             dc.SetFont( wxFont(100,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD) );
             dc.SetTextForeground( wxColour(0,0,0) );
             
@@ -103,22 +110,38 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc)
             
             continue;
         }
-        if(currentElement->type == TIME_SIGNATURE)
+        if(currentElement->getType() == TIME_SIGNATURE)
         {
+            std::cout << "Tablature : it's a time sig\n";
+
             EditorPrintable::renderTimeSignatureChange(currentElement, renderInfo.y0, renderInfo.y1);
             continue;
         }
         
-        if(currentElement->type != SINGLE_MEASURE) continue;
+        if(currentElement->getType() != SINGLE_MEASURE)
+        {
+            std::cout << "Tablature : it's something else we won't draw : ";
+            if(currentElement->getType() == SINGLE_REPEATED_MEASURE) std::cout << "SINGLE_REPEATED_MEASURE\n";
+            if(currentElement->getType() == EMPTY_MEASURE) std::cout << "EMPTY_MEASURE\n";
+            if(currentElement->getType() == REPEATED_RIFF) std::cout << "REPEATED_RIFF\n";
+            if(currentElement->getType() == PLAY_MANY_TIMES) std::cout << "PLAY_MANY_TIMES\n";
+            continue;
+        }
         
         // for layout elements containing notes, render them
         const int firstNote = line.getFirstNoteInElement(currentElement);
         const int lastNote = line.getLastNoteInElement(currentElement);
 
-        if(firstNote == -1 || lastNote == -1) continue; // empty measure
+        if(firstNote == -1 || lastNote == -1)
+        {
+            std::cout << "Tablature : it's an empty measure\n";
+            continue; // empty measure
+        }
         
         dc.SetFont( wxFont(75, wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD) );
         wxSize textSize3 = dc.GetTextExtent( wxT("X") );
+        
+        std::cout << "Tablature : drawing notes " << firstNote << " to " << lastNote << std::endl;
         
         for(int i=firstNote; i<=lastNote; i++)
         {
@@ -140,6 +163,8 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc)
         
         dc.SetFont(oldfont);
     }//next element 
+    
+    std::cout << "Tablature : done\n";
 }
 
 int TablaturePrintable::calculateHeight(LayoutLine& line) const

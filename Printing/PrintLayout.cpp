@@ -170,6 +170,8 @@ void PrintLayoutManager::findSimilarMeasures()
     }//next
 }
 
+#define _verbose 1
+    
 void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
 {
     const int measureAmount = getMeasureData()->getMeasureAmount();
@@ -200,6 +202,9 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
         // ----- empty measure -----
         if(measures[measure].shortestDuration==-1)
         {
+#ifdef _verbose
+            std::cout << "measure " << (measure+1) << " is empty\n";
+#endif
             layoutElements.push_back( LayoutElement(EMPTY_MEASURE, measure) );
             layoutElements[layoutElements.size()-1].width_in_units = 2;
 
@@ -362,11 +367,11 @@ void PrintLayoutManager::calculateRelativeLengths()
         float zoom = 1;
         //layoutElements[n].zoom = 1;
 
-        if(layoutElements[n].type == EMPTY_MEASURE) continue; // was already calculated
+        if(layoutElements[n].getType() == EMPTY_MEASURE) continue; // was already calculated
 
         layoutElements[n].width_in_units = 2;
 
-        if(layoutElements[n].type == SINGLE_MEASURE)
+        if(layoutElements[n].getType() == SINGLE_MEASURE)
         {
             if(getCurrentPrintable()->linearPrinting)
             {
@@ -458,7 +463,7 @@ void PrintLayoutManager::calculateRelativeLengths()
                 std::cout << "***** unit width = " << layoutElements[n].width_in_units << std::endl;
             }
         }
-        else if(layoutElements[n].type == REPEATED_RIFF)
+        else if(layoutElements[n].getType() == REPEATED_RIFF)
         {
             layoutElements[n].width_in_units = 5;
         }
@@ -538,7 +543,65 @@ void PrintLayoutManager::layInLinesAndPages()
     layoutPages[current_page].last_line = currentLine;
 }
 
+void PrintLayoutManager::setLineCoords(LayoutLine& line, const int x0, const int y0, const int x1, const int y1,
+                                  int margin_below, int margin_above)
+{
+    const int trackAmount = line.getTrackAmount();
+    
+    
+    line.x0 = x0;
+    line.y0 = y0;
+    line.x1 = x1;
+    line.y1 = y1;
+    line.margin_below = margin_below;
+    line.margin_above = margin_above;
+    
+    // ---- empty space around whole line
+    const float height = (float)(y1 - y0);// - ( trackAmount>1 and not last_of_page ? 100 : 0 );
+    
+    if(height < 0.0001) return; // empty line. TODO : todo - draw empty bars to show there's something?
+    
+    // make sure margins are within acceptable bounds
+    if(margin_below > height) margin_below = height/5;
+    if(margin_above > height) margin_above = height/5;
+    
+    const int my0 = y0 + margin_above;
+    
+    // ---- Determine tracks positions and sizes
+    // FIXME : this is layout, should go in PrintLayout.cpp
+    // space between individual tracks
+    const int space_between_tracks = 150;
+    
+    float current_y = my0;
+    for(int n=0; n<trackAmount; n++)
+    {
+        std::cout << "%%%% setting track coords " << n << std::endl;
+        
+        line.setCurrentTrack(n);
+        EditorPrintable* editorPrintable = parent->editorPrintables.get(line.getCurrentTrack());
+        
+        // skip empty tracks
+        if(line.height_percent[n] == 0) continue;
+        
+        // determine how much vertical space is allocated for this track
+        const float track_height = (height - margin_below - margin_above) * line.height_percent[n]/100.0f;
+        
+        const float position = (float)n / trackAmount;
+        const float space_above_line = space_between_tracks*position;
+        const float space_below_line = space_between_tracks*(1-position);
+        
+        editorPrintable->setLineCoords(line, line.getTrackRenderInfo(),
+                                       x0, current_y + space_above_line,
+                                       x1, current_y + track_height - space_below_line,
+                                       n==0);
+        
+        current_y += track_height;
+    }
+    
+    
+}
 
+    
 PrintLayoutManager::PrintLayoutManager(AriaPrintable* parent,
                                        std::vector<LayoutLine>& layoutLines_a /* out */,
                                        std::vector<LayoutPage>& layoutPages_a /* out */,

@@ -55,11 +55,15 @@ class PrintLayoutManager
     void generateMeasures(ptr_vector<Track, REF>& tracks);
     
     void findSimilarMeasures();
+    
 public:
     PrintLayoutManager(AriaPrintable* parent,
                        std::vector<LayoutLine>& layoutLines  /* out */,
                        std::vector<LayoutPage>& layoutPages  /* out */,
                        ptr_vector<MeasureToExport>& mesaures /* out */);
+    
+    void setLineCoords(LayoutLine& line, const int x0, const int y0, const int x1, const int y1,
+                       int margin_below, int margin_above);
     
     void calculateLayoutElements(ptr_vector<Track, REF>& track, const bool checkRepetitions_bool);
 };

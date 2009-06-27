@@ -196,7 +196,7 @@ namespace AriaMaestosa
         
         {
             LayoutElement* temp = g_printable->getElementForMeasure(measure);
-            if(temp != NULL and (temp->type == REPEATED_RIFF or temp->type == SINGLE_REPEATED_MEASURE))
+            if(temp != NULL and (temp->getType() == REPEATED_RIFF or temp->getType() == SINGLE_REPEATED_MEASURE))
                 return; //don't render silences in repetions measure!
         }
         
@@ -585,7 +585,7 @@ namespace AriaMaestosa
             
             // we're collecting notes here... types other than regular measures
             // don't contain notes and thus don't interest us
-            if(currentElement->type != SINGLE_MEASURE) continue;
+            if(currentElement->getType() != SINGLE_MEASURE) continue;
             
             const int firstNote = line.getFirstNoteInElement(currentElement);
             const int lastNote = line.getLastNoteInElement(currentElement);
@@ -756,14 +756,14 @@ namespace AriaMaestosa
         {
             drawVerticalDivider(&line.layoutElements[n], measure_dividers_from_y, measure_dividers_to_y);
             
-            if(line.layoutElements[n].type == TIME_SIGNATURE)
+            if(line.layoutElements[n].getType() == TIME_SIGNATURE)
             {
                 EditorPrintable::renderTimeSignatureChange(&line.layoutElements[n], LEVEL_TO_Y(first_score_level), LEVEL_TO_Y(last_score_level));
             }
         }
         
         // ---- line header if any
-        if(line.layoutElements[0].type == LINE_HEADER)
+        if(line.layoutElements[0].getType() == LINE_HEADER)
         {
             if(!f_clef) renderGClef(dc, line.layoutElements[0].x,
                                     LEVEL_TO_Y(last_score_level)+10,
