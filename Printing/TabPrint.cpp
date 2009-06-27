@@ -29,8 +29,14 @@ TablaturePrintable::~TablaturePrintable()
 {
 }
 
-void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1, bool show_measure_number)
+void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc)
 {
+    TrackRenderInfo& renderInfo = line.getTrackRenderInfo();
+    assertExpr(renderInfo.y0,>,0);
+    assertExpr(renderInfo.y1,>,0);
+    assertExpr(renderInfo.y0,<,50000);
+    assertExpr(renderInfo.y1,<,50000);
+    
     wxFont oldfont = dc.GetFont();
     
     Track* track = line.getTrack();
@@ -38,23 +44,21 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
     // draw tab background (guitar strings)
     dc.SetPen(  wxPen( wxColour(125,125,125), 5 ) );
     
-    const float stringHeight = (float)(y1 - y0) / (float)(string_amount-1);
+    const float stringHeight = (float)(renderInfo.y1 - renderInfo.y0) / (float)(string_amount-1);
     
     for(int s=0; s<string_amount; s++)
     {
-        const int y = (int)round(y0 + stringHeight*s);
-        dc.DrawLine(x0, y, x1, y);
+        const int y = (int)round(renderInfo.y0 + stringHeight*s);
+        dc.DrawLine(renderInfo.x0, y, renderInfo.x1, y);
     }
     
-    beginLine(&line, x0, x1, show_measure_number);
-    setLineYCoords(y0, y1);
     setCurrentDC(&dc);
 
     // iterate through layout elements
     LayoutElement* currentElement;
     while((currentElement = continueWithNextElement()) and (currentElement != NULL))
     {
-        drawVerticalDivider(currentElement, y0, y1);
+        drawVerticalDivider(currentElement, renderInfo.y0, renderInfo.y1);
         
         if(currentElement->type == LINE_HEADER)
         {
@@ -62,8 +66,8 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
             dc.SetTextForeground( wxColour(0,0,0) );
             
            // wxSize textSize = dc.GetTextExtent( wxT("T") );
-            const int h4 = (y1 - y0)/3 - 2;    
-            const int textY = y0;
+            const int h4 = (renderInfo.y1 - renderInfo.y0)/3 - 2;    
+            const int textY = renderInfo.y0;
             
             dc.DrawText( wxT("T") , currentElement->x+20, textY);
             dc.DrawText( wxT("A") , currentElement->x+20, textY + h4  );
@@ -94,14 +98,14 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
                     case 10: label = wxT("C#"); break;
                     case 11: label = wxT("C");  break;
                 } // end switch
-                dc.DrawText( label, tuning_x, y0 + n*stringHeight - textSize2.y/2 );
+                dc.DrawText( label, tuning_x, renderInfo.y0 + n*stringHeight - textSize2.y/2 );
             }//next
             
             continue;
         }
         if(currentElement->type == TIME_SIGNATURE)
         {
-            EditorPrintable::renderTimeSignatureChange(currentElement, y0, y1);
+            EditorPrintable::renderTimeSignatureChange(currentElement, renderInfo.y0, renderInfo.y1);
             continue;
         }
         
@@ -126,7 +130,7 @@ void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc, const int x0, cons
             // substract from width to leave some space on the right (coordinate is from the left of the text string so we need extra space on the right)
             // if fret number is greater than 9, the string will have two characters so we need to recenter it a bit more
             const int drawX = getNotePrintX(i) + (fret > 9 ? pixel_width_of_an_unit/4 : pixel_width_of_an_unit/2);
-            const int drawY = y0 + stringHeight*string - textSize3.y/2;
+            const int drawY = renderInfo.y0 + stringHeight*string - textSize3.y/2;
             wxString label = to_wxString(fret);
             
             dc.DrawText( label, drawX, drawY );

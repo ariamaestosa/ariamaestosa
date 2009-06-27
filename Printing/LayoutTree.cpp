@@ -238,6 +238,9 @@ LayoutLine::LayoutLine(AriaPrintable* parent)
     printable = parent;
     currentTrack = 0;
     last_of_page = false;
+    
+    while((int)trackRenderInfo.size() < parent->track_amount)
+        trackRenderInfo.push_back(TrackRenderInfo());
 }
 
 int LayoutLine::getTrackAmount() const
@@ -282,6 +285,14 @@ MeasureToExport& LayoutLine::getMeasureForElement(LayoutElement* layoutElement)
 {
     return printable->measures[layoutElement->measure];
 }
+    
+TrackRenderInfo& LayoutLine::getTrackRenderInfo()
+{
+    assertExpr(currentTrack,>=,0);
+    assertExpr(currentTrack,<,(int)trackRenderInfo.size());
+    return trackRenderInfo[currentTrack];
+}
+
 int LayoutLine::getLastMeasure() const
 {
     for(int n=layoutElements.size()-1; n>=0; n--)

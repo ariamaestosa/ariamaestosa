@@ -20,6 +20,8 @@
 #include <map>
 #include "ptr_vector.h"
 
+#include "Printing/LayoutTree.h"
+
 namespace AriaMaestosa
 {
     class Track;
@@ -135,6 +137,12 @@ namespace AriaMaestosa
             virtual ~EditorData() {}
         };
     
+    struct TrackRenderInfo
+    {
+        int x0, y0, x1, y1;
+        bool show_measure_number;
+    };
+    
     /*
      A line on a notation to print. Can contain more than one track.
      Essentially holds some 'LayoutElement' objects (the ones that fit
@@ -145,6 +153,8 @@ namespace AriaMaestosa
             friend class AriaPrintable;
             
             int currentTrack;
+            std::vector<TrackRenderInfo> trackRenderInfo;
+            
             AriaPrintable* printable;
             
             /** used to store what percentage of this line's height this track should take.
@@ -152,14 +162,12 @@ namespace AriaMaestosa
              so vertical space must not be divided equally */
             std::vector<short int> height_percent;
         public:
-            int x0, y0, x1, y1;
-            bool show_measure_number;
-            int xloc;
-            
             LayoutLine(AriaPrintable* parent);
-            
+
             // editors can put data of their own there.
             OwnerPtr<EditorData> editor_data;
+            
+            TrackRenderInfo& getTrackRenderInfo();
             
             int width_in_units;
             int level_height;
