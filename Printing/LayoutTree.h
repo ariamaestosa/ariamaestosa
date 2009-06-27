@@ -152,6 +152,10 @@ namespace AriaMaestosa
              so vertical space must not be divided equally */
             std::vector<short int> height_percent;
         public:
+            int x0, y0, x1, y1;
+            bool show_measure_number;
+            int xloc;
+            
             LayoutLine(AriaPrintable* parent);
             
             // editors can put data of their own there.

@@ -47,11 +47,11 @@ class PrintLayoutManager
     
     std::vector<LayoutElement> layoutElements;
     
-    void calculateLineLayout();
+    void layInLinesAndPages();
     
     void calculateRelativeLengths();
     
-    void generateOutputOrder(bool checkRepetitions_bool);
+    void createLayoutElements(bool checkRepetitions_bool);
     void generateMeasures(ptr_vector<Track, REF>& tracks);
     
     void findSimilarMeasures();
