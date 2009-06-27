@@ -104,6 +104,8 @@ protected:
     std::vector<LayoutLine> layoutLines;
     ptr_vector<MeasureToExport> measures;
     
+    OwnerPtr<PrintLayoutManager> layout;
+    
     Sequence* sequence;
 public:
     // ---------------------------------------
@@ -130,10 +132,7 @@ public:
     wxString getTitle();
     int getPageAmount();
     void printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const int w, const int h);
-    void printLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1,
-                       int margin_below, int margin_above);
-    void setLineCoords(LayoutLine& line, const int x0, const int y0, const int x1, const int y1,
-                       int margin_below, int margin_above);
+    void printLine(LayoutLine& line, wxDC& dc);
 };
 
 AriaPrintable* getCurrentPrintable();

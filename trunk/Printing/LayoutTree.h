@@ -108,10 +108,11 @@ namespace AriaMaestosa
     };
     class LayoutElement
         {
+            LayoutElementType type;
         public:
             LayoutElement(LayoutElementType type_arg, int measure_arg = -1);
-            
-            LayoutElementType type;
+    
+            LayoutElementType getType() const { return type; }
             
             int measure;
             
@@ -157,12 +158,17 @@ namespace AriaMaestosa
             
             AriaPrintable* printable;
             
+        public:
             /** used to store what percentage of this line's height this track should take.
              e.g. a score with F+G clefs will need more space than a 4-string bass tab
              so vertical space must not be divided equally */
             std::vector<short int> height_percent;
-        public:
+            
+            /**
+             Misc info about the coords of this track
+             */
             int x0, y0, x1, y1;
+            int margin_below, margin_above;
             
             LayoutLine(AriaPrintable* parent);
 

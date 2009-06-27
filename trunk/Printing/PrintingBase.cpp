@@ -215,8 +215,8 @@ bool AriaPrintable::addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */)
 }
 void AriaPrintable::calculateLayout(bool checkRepetitions_bool)
 {
-    PrintLayoutManager layout(this, layoutLines /* out */, layoutPages /* out */, measures /* out */);
-    layout.calculateLayoutElements(tracks, checkRepetitions_bool);
+    layout = new PrintLayoutManager(this, layoutLines /* out */, layoutPages /* out */, measures /* out */);
+    layout->calculateLayoutElements(tracks, checkRepetitions_bool);
 }
 wxString AriaPrintable::getTitle()
 {
@@ -265,7 +265,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     dc.SetBackground(*wxWHITE_BRUSH);
     dc.Clear();
     
-    // draw title
+    // ---- Draw title / page number
     wxString label = getTitle();
 
     int title_x = x0;
@@ -285,18 +285,19 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
         label << pageNum;
         dc.SetFont( wxFont(90,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL) );
     }
-
+    
     dc.SetTextForeground( wxColour(0,0,0) );
     dc.DrawText( label, title_x, y0 );
-
-    // set font we will use and get info about it
+    
+    // ---- Set font we will use and get info about it
     dc.SetFont( wxFont(75,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL) );
-
+    
     wxCoord txw, txh, descent, externalLeading;
     dc.GetTextExtent(label, &txw, &txh, &descent, &externalLeading);
     text_height = txh;
     text_height_half = (int)round((float)text_height / 2.0);
-
+    
+    
     /*
      the equivalent of 3 times "text_height" will not be printed with notation.
      --> space for title at the top, and some space under it
@@ -304,24 +305,21 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
      */
     const float track_area_height = (float)h - (float)text_height*3.0f + (pageNum == 1 ? 100 : 0);
 
-    //std::cout << "printing lines from " << page.first_line << " to " << page.last_line << std::endl;
-
-    const wxFont regularFont = wxFont(75, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
     
-    // ask all EditorPrintables to render their part
+    // ---- Lay out tracks
     float y_from = y0 + text_height*3;
     for(int l=page.first_line; l<=page.last_line; l++)
     {
+        // FIXME : move to layout?
         
-        // FIXME : laying out tracks on page should be done in PrintLayout probably?
+        //std::cout << "layoutLines[l].level_height = " << layoutLines[l].level_height << " track_area_height=" << track_area_height
+        //          << " total_height=" << total_height << std::endl;
         
         // give a height proportional to its part of the total height
         float height = (track_area_height/total_height)*layoutLines[l].level_height;
-        //std::cout << "We have " << track_area_height << " for tracks and a total of " << total_height <<
-        //" levels. This line has " << layoutLines[l].level_height << " lines, so it received height " << height << 
-        //" y_from=" << y_from << std::endl;
         
         float used_height = height;
+        
         // track too high, will look weird... shrink a bit
         while(used_height/(float)layoutLines[l].level_height > 115)
         {
@@ -333,7 +331,6 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
         
         // center vertically in available space  if more space than needed
         if(used_height < height) used_y_from += (height - used_height)/2;
-        //std::cout << "used_height=" << used_height << " ; height=" << height << " used_height=" << used_height << std::endl;
         
         // split margin above and below depending on position within page
         const int line_amount = page.last_line - page.first_line;
@@ -341,101 +338,47 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
         int margin_above = 250*position;
         int margin_below = 250*(1-position);
         
-        std::cout << "height=" << height << " used_height=" << used_height << " used_y_from=" << used_y_from << " margin_above=" << margin_above << " margin_below=" << margin_below << std::endl;
+        //std::cout << "height=" << height << " used_height=" << used_height << " used_y_from=" << used_y_from << " margin_above=" << margin_above << " margin_below=" << margin_below << std::endl;
         
-        dc.SetFont( regularFont );
-        printLine(layoutLines[l], dc, x0, (int)round(used_y_from), x1,
-                                     (int)round(used_y_from + used_height),
-                                     margin_below, margin_above);
-        
-        //dc.SetPen( wxPen( wxColour(255,0,0), 20 ) );
-        //dc.DrawLine(x0, (int)round(used_y_from), x1, (int)round(used_y_from));
-        //dc.SetPen( wxPen( wxColour(0, 255,0), 20 ) );
-        //dc.DrawLine(x0, (int)round(used_y_from + used_height), x1, (int)round(used_y_from + used_height));
-        
+        layout->setLineCoords(layoutLines[l], x0, used_y_from, x1, used_y_from+used_height, margin_below, margin_above);
+
         y_from += height;
-        std::cout << "yfrom is now " << y_from << std::endl;
+        //std::cout << "yfrom is now " << y_from << std::endl;
     }
     
+    // ---- Draw the tracks
+    const wxFont regularFont = wxFont(75, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 
-}
-
-void AriaPrintable::setLineCoords(LayoutLine& line, const int x0, const int y0, const int x1, const int y1,
-                                  int margin_below, int margin_above)
-{
-    const int trackAmount = line.getTrackAmount();
-    
-    
-    line.x0 = x0;
-    line.y0 = y0;
-    line.x1 = x1;
-    line.y1 = y1;
-    
-    // ---- empty space around whole line
-    const float height = (float)(y1 - y0);// - ( trackAmount>1 and not last_of_page ? 100 : 0 );
-    
-    if(height < 0.0001) return; // empty line. TODO : todo - draw empty bars to show there's something?
-    
-    // make sure margins are within acceptable bounds
-    if(margin_below > height) margin_below = height/5;
-    if(margin_above > height) margin_above = height/5;
-    
-    const int my0 = y0 + margin_above;
-    
-    // ---- Determine tracks positions and sizes
-    // FIXME : this is layout, should go in PrintLayout.cpp
-    // space between individual tracks
-    const int space_between_tracks = 150;
-    
-    float current_y = my0;
-    for(int n=0; n<trackAmount; n++)
+    for(int l=page.first_line; l<=page.last_line; l++)
     {
-        std::cout << "%%%% setting track coords " << n << std::endl;
-        
-        line.setCurrentTrack(n);
-        EditorPrintable* editorPrintable = editorPrintables.get(line.getCurrentTrack());
-        
-        // skip empty tracks
-        if(line.height_percent[n] == 0) continue;
-        
-        // determine how much vertical space is allocated for this track
-        const float track_height = (height - margin_below - margin_above) * line.height_percent[n]/100.0f;
-        
-        const float position = (float)n / trackAmount;
-        const float space_above_line = space_between_tracks*position;
-        const float space_below_line = space_between_tracks*(1-position);
-        
-        editorPrintable->setLineCoords(line, line.getTrackRenderInfo(),
-                                       x0, current_y + space_above_line,
-                                       x1, current_y + track_height - space_below_line,
-                                       n==0);
-        
-        current_y += track_height;
+        dc.SetFont( regularFont );
+        printLine(layoutLines[l], dc);
     }
+
+
     
-    
+
 }
 
-void AriaPrintable::printLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1,
-                               int margin_below, int margin_above)
-{
-    setLineCoords(line, x0, y0, x1, y1, margin_below, margin_above);
-    
+void AriaPrintable::printLine(LayoutLine& line, wxDC& dc)
+{    
     const int trackAmount = line.getTrackAmount();
     
     // ---- Draw vertical line to show these lines belong toghether
-    const int my0 = line.y0 + margin_above;
-    const int my1 = line.y0 + (line.y1 - line.y0) - margin_below;
+    const int my0 = line.y0 + line.margin_above;
+    const int my1 = line.y0 + (line.y1 - line.y0) - line.margin_below;
     
     if(trackAmount>1)
     {
         dc.SetPen(  wxPen( wxColour(150,150,150), 25 ) );
-        dc.DrawLine( x0-3, my0, x0-3, my1); // vertical line
-        dc.DrawLine( x0-3, my0, x0-3+30, my0-50); // top thingy
-        dc.DrawLine( x0-3, my1, x0-3+30, my1+50); // bottom thingy
+        dc.DrawLine( line.x0-3, my0, line.x0-3, my1); // vertical line
+        dc.DrawLine( line.x0-3, my0, line.x0-3+30, my0-50); // top thingy
+        dc.DrawLine( line.x0-3, my1, line.x0-3+30, my1+50); // bottom thingy
         
-        dc.DrawLine( x1-3, my0, x1-3, my1); // right-side line
+        dc.DrawLine( line.x1-3, my0, line.x1-3, my1); // right-side line
     }
+    
+    std::cout << "======== Printing Line (contains " << line.layoutElements.size() << " layout elements)" << std::endl;
     
     // ---- Do the actual track drawing
     for(int n=0; n<trackAmount; n++)
@@ -468,6 +411,8 @@ void EditorPrintable::setCurrentDC(wxDC* dc)
 void EditorPrintable::setCurrentTrack(LayoutLine* line)
 {
     EditorPrintable::currentLine = line;
+    EditorPrintable::currentLayoutElement = 0;
+    EditorPrintable::layoutElementsAmount = line->layoutElements.size();
 }
 
 void EditorPrintable::setLineCoords(LayoutLine& line, TrackRenderInfo& track,  int x0, const int y0, const int x1, const int y1, bool show_measure_number)
@@ -534,7 +479,7 @@ LayoutElement* EditorPrintable::getElementForMeasure(const int measureID)
     
 void EditorPrintable::drawVerticalDivider(LayoutElement* el, const int y0, const int y1)
 {
-    if(el->type == TIME_SIGNATURE) return;
+    if(el->getType() == TIME_SIGNATURE) return;
     
     const int elem_x_start = el->x; // currentLine->layoutElements[elemenentID].x
 
@@ -559,11 +504,17 @@ void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0,
     
     dc->SetFont(oldfont);    
 }
+    
 LayoutElement* EditorPrintable::continueWithNextElement()
 {
+    //std::cout << "---- layout element is now " << currentLayoutElement << std::endl;
     currentLayoutElement ++;
 
-    if(!(currentLayoutElement<layoutElementsAmount)) return NULL;
+    if(!(currentLayoutElement<layoutElementsAmount))
+    {
+        //std::cout << "---- returning NULL because we have a total of " << layoutElementsAmount << " elements\n";
+        return NULL;
+    }
 
     std::vector<LayoutElement>& layoutElements = currentLine->layoutElements;
 
@@ -574,15 +525,16 @@ LayoutElement* EditorPrintable::continueWithNextElement()
     TrackRenderInfo& renderInfo = currentLine->getTrackRenderInfo();
     
     // ****** empty measure
-    if(layoutElements[currentLayoutElement].type == EMPTY_MEASURE)
+    if(layoutElements[currentLayoutElement].getType() == EMPTY_MEASURE)
     {
     }
     // ****** time signature change
-    else if(layoutElements[currentLayoutElement].type == TIME_SIGNATURE)
+    else if(layoutElements[currentLayoutElement].getType() == TIME_SIGNATURE)
     {
     }
     // ****** repetitions
-    else if(layoutElements[currentLayoutElement].type == SINGLE_REPEATED_MEASURE or layoutElements[currentLayoutElement].type == REPEATED_RIFF)
+    else if(layoutElements[currentLayoutElement].getType() == SINGLE_REPEATED_MEASURE or
+            layoutElements[currentLayoutElement].getType() == REPEATED_RIFF)
     {
         // FIXME - why do I cut apart the measure and not the layout element?
         /*
@@ -595,11 +547,11 @@ LayoutElement* EditorPrintable::continueWithNextElement()
          */
 
         wxString message;
-        if(layoutElements[currentLayoutElement].type == SINGLE_REPEATED_MEASURE)
+        if(layoutElements[currentLayoutElement].getType() == SINGLE_REPEATED_MEASURE)
         {
             message = to_wxString(currentLine->getMeasureForElement(currentLayoutElement).firstSimilarMeasure+1);
         }
-        else if(layoutElements[currentLayoutElement].type == REPEATED_RIFF)
+        else if(layoutElements[currentLayoutElement].getType() == REPEATED_RIFF)
         {
             message =    to_wxString(layoutElements[currentLayoutElement].firstMeasureToRepeat+1) +
             wxT(" - ") +
@@ -610,7 +562,7 @@ LayoutElement* EditorPrintable::continueWithNextElement()
                      (renderInfo.y0 + renderInfo.y1)/2 - getCurrentPrintable()->text_height_half );
     }
     // ****** play again
-    else if(layoutElements[currentLayoutElement].type == PLAY_MANY_TIMES)
+    else if(layoutElements[currentLayoutElement].getType() == PLAY_MANY_TIMES)
     {
         wxString label(wxT("X"));
         label << layoutElements[currentLayoutElement].amountOfTimes;
@@ -618,8 +570,10 @@ LayoutElement* EditorPrintable::continueWithNextElement()
                      (renderInfo.y0 + renderInfo.y1)/2 - getCurrentPrintable()->text_height_half );
     }
     // ****** normal measure
-    else if(layoutElements[currentLayoutElement].type == SINGLE_MEASURE)
+    else if(layoutElements[currentLayoutElement].getType() == SINGLE_MEASURE)
     {
+        //std::cout << "---- element is normal\n";
+        
         // draw measure ID
         if(renderInfo.show_measure_number)
         {
@@ -636,6 +590,7 @@ LayoutElement* EditorPrintable::continueWithNextElement()
         dc->SetTextForeground( wxColour(0,0,0) );
     }
 
+    //std::cout << "---- Returning element " << currentLayoutElement << " which is " << &layoutElements[currentLayoutElement] << std::endl;
     return &layoutElements[currentLayoutElement];
 }
 
