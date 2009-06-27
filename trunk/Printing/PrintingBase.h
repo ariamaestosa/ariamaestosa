@@ -60,9 +60,7 @@ class EditorPrintable
 {
 protected:
     // keeps some info on the track currently being printed
-    int x0, y0, x1, y1;
-    bool show_measure_number;
-    int xloc, currentLayoutElement;
+    int currentLayoutElement;
     LayoutLine* currentLine;
     int layoutElementsAmount;
     wxDC* dc;

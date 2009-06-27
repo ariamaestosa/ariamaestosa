@@ -170,7 +170,7 @@ void PrintLayoutManager::findSimilarMeasures()
     }//next
 }
 
-void PrintLayoutManager::generateOutputOrder(bool checkRepetitions_bool)
+void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
 {
     const int measureAmount = getMeasureData()->getMeasureAmount();
 
@@ -467,7 +467,7 @@ void PrintLayoutManager::calculateRelativeLengths()
     }
 }
 
-void PrintLayoutManager::calculateLineLayout()
+void PrintLayoutManager::layInLinesAndPages()
 {
     const int layoutElementsAmount = layoutElements.size();
 
@@ -558,9 +558,9 @@ void PrintLayoutManager::calculateLayoutElements
     // search for repeated measures if necessary
     if(checkRepetitions_bool) findSimilarMeasures();
     
-    generateOutputOrder(checkRepetitions_bool);
+    createLayoutElements(checkRepetitions_bool);
     calculateRelativeLengths();
-    calculateLineLayout();
+    layInLinesAndPages();
 }
 
 

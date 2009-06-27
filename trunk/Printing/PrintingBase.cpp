@@ -434,9 +434,9 @@ void EditorPrintable::setCurrentDC(wxDC* dc)
     
 void EditorPrintable::beginLine(LayoutLine* line,  int x0, const int x1, bool show_measure_number)
 {
-    EditorPrintable::x0 = x0;
-    EditorPrintable::x1 = x1;
-    EditorPrintable::show_measure_number = show_measure_number;
+    line->x0 = x0;
+    line->x1 = x1;
+    line->show_measure_number = show_measure_number;
     EditorPrintable::currentLine = line;
     
     // 2 spaces allocated for left area of the line
@@ -450,8 +450,8 @@ void EditorPrintable::beginLine(LayoutLine* line,  int x0, const int x1, bool sh
         //if(currentLayoutElement == 0) xloc = 2;
         //else if(currentLayoutElement > 0) xloc += currentLine->layoutElements[currentLayoutElement-1].width_in_units;
 
-        if(currentLayoutElement == 0) xloc = 1;
-        else if(currentLayoutElement > 0) xloc += currentLine->layoutElements[currentLayoutElement-1].width_in_units;
+        if(currentLayoutElement == 0) line->xloc = 1;
+        else if(currentLayoutElement > 0) line->xloc += currentLine->layoutElements[currentLayoutElement-1].width_in_units;
         
         currentLine->layoutElements[currentLayoutElement].x  = getCurrentElementXStart();
         if(currentLayoutElement > 0)
@@ -460,7 +460,7 @@ void EditorPrintable::beginLine(LayoutLine* line,  int x0, const int x1, bool sh
     // for last
     currentLine->layoutElements[currentLine->layoutElements.size()-1].x2 = x1; // FIXME - fix naming conventions... in track it's x1, in element it's x2
     
-    xloc = -1;
+    line->xloc = -1;
     currentLayoutElement = -1;
 
     assertExpr(line->width_in_units,>,0);
@@ -469,14 +469,14 @@ void EditorPrintable::beginLine(LayoutLine* line,  int x0, const int x1, bool sh
     
 void EditorPrintable::setLineYCoords(const int y0, const int y1)
 {
-    EditorPrintable::y0 = y0;
-    EditorPrintable::y1 = y1;
+    currentLine->y0 = y0;
+    currentLine->y1 = y1;
 }
 
     
 int EditorPrintable::getCurrentElementXStart()
 {
-    return x0 + (int)round(xloc*pixel_width_of_an_unit) - pixel_width_of_an_unit;
+    return currentLine->x0 + (int)round(currentLine->xloc*pixel_width_of_an_unit) - pixel_width_of_an_unit;
 }
 
 LayoutElement* EditorPrintable::getElementForMeasure(const int measureID)
@@ -563,20 +563,20 @@ LayoutElement* EditorPrintable::continueWithNextElement()
             to_wxString(layoutElements[currentLayoutElement].lastMeasureToRepeat+1);
         }
 
-        dc->DrawText( message, elem_x_start + pixel_width_of_an_unit/2, (y0+y1)/2 - getCurrentPrintable()->text_height_half );
+        dc->DrawText( message, elem_x_start + pixel_width_of_an_unit/2, (currentLine->y0 + currentLine->y1)/2 - getCurrentPrintable()->text_height_half );
     }
     // ****** play again
     else if(layoutElements[currentLayoutElement].type == PLAY_MANY_TIMES)
     {
         wxString label(wxT("X"));
         label << layoutElements[currentLayoutElement].amountOfTimes;
-        dc->DrawText( label, elem_x_start + pixel_width_of_an_unit/2, (y0+y1)/2 - getCurrentPrintable()->text_height_half );
+        dc->DrawText( label, elem_x_start + pixel_width_of_an_unit/2, (currentLine->y0 + currentLine->y1)/2 - getCurrentPrintable()->text_height_half );
     }
     // ****** normal measure
     else if(layoutElements[currentLayoutElement].type == SINGLE_MEASURE)
     {
         // draw measure ID
-        if(show_measure_number)
+        if(currentLine->show_measure_number)
         {
             const int meas_id = currentLine->getMeasureForElement(currentLayoutElement).id+1;
 
@@ -585,7 +585,7 @@ LayoutElement* EditorPrintable::continueWithNextElement()
 
             dc->DrawText( measureLabel,
                           elem_x_start - ( meas_id > 9 ? pixel_width_of_an_unit/4 : pixel_width_of_an_unit/5 ),
-                          y0 - getCurrentPrintable()->text_height*1.4 );
+                          currentLine->y0 - getCurrentPrintable()->text_height*1.4 );
         }
 
         dc->SetTextForeground( wxColour(0,0,0) );
