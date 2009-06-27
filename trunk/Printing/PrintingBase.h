@@ -77,7 +77,7 @@ public:
 
     /** Called by the layout code to know the relative height of this line
     */
-    virtual int calculateHeight(LayoutLine& line) const = 0;
+    virtual int calculateHeight(LayoutLine& line) = 0;
     
     void setCurrentTrack(LayoutLine* line);
     
@@ -101,7 +101,7 @@ class AriaPrintable
 protected:
 
     std::vector<LayoutPage> layoutPages;
-    std::vector<LayoutLine> layoutLines;
+    ptr_vector<LayoutLine> layoutLines;
     ptr_vector<MeasureToExport> measures;
     
     OwnerPtr<PrintLayoutManager> layout;

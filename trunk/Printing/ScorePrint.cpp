@@ -16,6 +16,25 @@
 
 namespace AriaMaestosa
 {
+    class ScoreData : public EditorData
+        {
+        public:
+            virtual ~ScoreData() {}
+            
+            int middle_c_level, from_note, to_note;
+            bool g_clef, f_clef;
+            int extra_lines_above_g_score;
+            int extra_lines_under_g_score;
+            int extra_lines_above_f_score;
+            int extra_lines_under_f_score;
+            float first_clef_proportion ;
+            float second_clef_proportion;
+            
+            OwnerPtr<ScoreAnalyser> g_clef_analyser;
+            OwnerPtr<ScoreAnalyser> f_clef_analyser;
+        };
+
+    
     
     ScorePrintable* g_printable = NULL;
     
@@ -367,104 +386,24 @@ namespace AriaMaestosa
         }
     }
     
-    int ScorePrintable::calculateHeight(LayoutLine& line) const
-    {
-        Track* track = line.getTrack();
-        ScoreEditor* scoreEditor = track->graphics->scoreEditor;
-        ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
-        
-        const int from_note = line.getFirstNote();
-        const int to_note   = line.getLastNote();
-        
 
-        const bool g_clef = scoreEditor->isGClefEnabled();
-        const bool f_clef = scoreEditor->isFClefEnabled();
-        
-        // check if empty
-        if(from_note == -1 || to_note == -1)
-        {
-            return 0;
-            //if(g_clef xor f_clef) return 5;
-            //else return 10;
-        }
-        
-        // find highest and lowest note we need to render
-        int highest_pitch = -1, lowest_pitch = -1;
-        int biggest_level = -1, smallest_level = -1;
-        for(int n=from_note; n<= to_note; n++)
-        {
-            if(n == -1) break; // will happen if line is empty
-            const int pitch = track->getNotePitchID(n);
-            const int level = converter->noteToLevel(track->getNote(n));
-            if(pitch < highest_pitch || highest_pitch == -1)
-            {
-                highest_pitch = pitch;
-                smallest_level = level;
-            }
-            if(pitch > lowest_pitch  ||  lowest_pitch == -1)
-            {
-                lowest_pitch  = pitch;
-                biggest_level  = level;
-            }
-        }
-        
-        const int middle_c_level = converter->getScoreCenterCLevel(); //converter->getMiddleCLevel();
-        
-        const int g_clef_from = middle_c_level-10;
-        const int g_clef_to   = middle_c_level-2;
-        const int f_clef_from = middle_c_level+2;
-        const int f_clef_to   = middle_c_level+10;
-        
-        int extra_lines_above_g_score = 0;
-        int extra_lines_under_g_score = 0;
-        int extra_lines_above_f_score = 0;
-        int extra_lines_under_f_score = 0;
-        
-        if(g_clef and not f_clef)
-        {
-            if(smallest_level!=-1 and smallest_level < g_clef_from) extra_lines_above_g_score = (g_clef_from - smallest_level)/2;
-            if(biggest_level!=-1 and biggest_level > g_clef_to) extra_lines_under_g_score = (g_clef_to - biggest_level)/2;
-            
-            return 5 + abs(extra_lines_above_g_score) + abs(extra_lines_under_g_score);
-        }
-        else if(f_clef and not g_clef)
-        {
-            if(smallest_level!=-1 and smallest_level < f_clef_from) extra_lines_above_f_score = (f_clef_from - smallest_level)/2;
-            if(biggest_level!=-1 and biggest_level > f_clef_to) extra_lines_under_f_score = (f_clef_to - biggest_level)/2;
-            
-            return 5 + abs(extra_lines_above_f_score) + abs(extra_lines_under_f_score);
-        }
-        else if(f_clef and g_clef)
-        {
-            if(smallest_level!=-1 and smallest_level < g_clef_from) extra_lines_above_g_score = (g_clef_from - smallest_level)/2;
-            if(biggest_level!=-1 and biggest_level > f_clef_to) extra_lines_under_f_score = (f_clef_to - biggest_level)/2;
-            
-            return 10 + abs(extra_lines_above_g_score) + abs(extra_lines_under_f_score);
-        }
-        assert(false);
-        return -1; // should not happen
-    }
-    
-    class ScoreData : public EditorData
+    int ScorePrintable::calculateHeight(LayoutLine& line)
     {
-    public:
-        virtual ~ScoreData() {}
+        gatherScoreInfo(line);
         
-        int middle_c_level, from_note, to_note;
-        bool g_clef, f_clef;
-        int extra_lines_above_g_score;
-        int extra_lines_under_g_score;
-        int extra_lines_above_f_score;
-        int extra_lines_under_f_score;
-        float first_clef_proportion ;
-        float second_clef_proportion;
+        ScoreData* scoreData = dynamic_cast<ScoreData*>(line.editor_data.raw_ptr);
+        assert(scoreData != NULL);
         
-        OwnerPtr<ScoreAnalyser> g_clef_analyser;
-        OwnerPtr<ScoreAnalyser> f_clef_analyser;
-    };
+        return (scoreData->g_clef ? 5 : 0) + (scoreData->f_clef ? 5 : 0) + 
+                abs(scoreData->extra_lines_above_g_score) +
+                abs(scoreData->extra_lines_under_f_score);
+
+    }
     
     void ScorePrintable::gatherScoreInfo(LayoutLine& line)
     {
+        if(line.editor_data != NULL) return; // already set
+        
         LayoutLine* previousLine = currentLine;
         currentLine = &line;
         
@@ -514,7 +453,7 @@ namespace AriaMaestosa
         scoreData->extra_lines_under_g_score = 0;
         scoreData->extra_lines_above_f_score = 0;
         scoreData->extra_lines_under_f_score = 0;
-        if(scoreData->g_clef and not scoreData->f_clef)   // FIXME - duplicated from calculateHeight above
+        if(scoreData->g_clef and not scoreData->f_clef)
         {
             if(smallest_level!=-1 and smallest_level < g_clef_from)  scoreData->extra_lines_above_g_score = (g_clef_from - smallest_level)/2;
             if(biggest_level!=-1 and biggest_level > g_clef_to) scoreData->extra_lines_under_g_score = (g_clef_to - biggest_level)/2;
@@ -533,6 +472,23 @@ namespace AriaMaestosa
         //    " extra_lines_under_g_score = " << extra_lines_under_g_score <<
         //    " extra_lines_above_f_score = " << extra_lines_above_f_score <<
         //    " extra_lines_under_f_score = " << extra_lines_under_f_score << std::endl;
+        
+        // restore previous current lien (FIXME not too pretty)
+        currentLine = previousLine;
+
+    }
+    
+    void ScorePrintable::analyzeScore(LayoutLine& line)
+    {
+        LayoutLine* previousLine = currentLine;
+        currentLine = &line;
+        
+        ScoreData* scoreData = dynamic_cast<ScoreData*>(line.editor_data.raw_ptr);
+        assert(scoreData != NULL);
+        
+        Track* track = line.getTrack();
+        ScoreEditor* scoreEditor = track->graphics->scoreEditor;
+        ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         
         // Split space between both scores (one may need more than the other)
         // I use a total of 0.8 to leave a 0.2 free space between both scores.
@@ -643,7 +599,7 @@ namespace AriaMaestosa
         x_converter = new PrintXConverter(this);
     
         // gather score info
-        gatherScoreInfo(line);
+        analyzeScore(line);
         ScoreData* scoreData = dynamic_cast<ScoreData*>(line.editor_data.raw_ptr);
         
         // since height is used to determine where to put repetitions/notes/etc.

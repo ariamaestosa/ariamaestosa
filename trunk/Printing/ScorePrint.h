@@ -32,12 +32,13 @@ class ScorePrintable : public EditorPrintable
     void drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine& line, wxDC& dc,
                    const int extra_lines_above, const int extra_lines_under,
                    const int x0, const int y0, const int x1, const int y1, bool show_measure_number);
+    void analyzeScore(LayoutLine& line);
 public:
     ScorePrintable(Track* track_arg);
     virtual ~ScorePrintable();
 
     void drawLine(LayoutLine& line, wxDC& dc);
-    int calculateHeight(LayoutLine& line) const;
+    int calculateHeight(LayoutLine& line);
     
     void gatherScoreInfo(LayoutLine& line);
 };

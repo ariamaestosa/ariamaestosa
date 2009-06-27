@@ -15,7 +15,8 @@
 
 namespace AriaMaestosa
 {
-
+const int MAX_LEVELS_ON_PAGE = 74;
+    
 
 int repetitionMinimalLength = 2;
 
@@ -540,7 +541,7 @@ void PrintLayoutManager::layInLinesAndPages()
     layoutPages.push_back( LayoutPage() );
     layoutPages[current_page].first_line = 0;
 
-    layoutLines.push_back( LayoutLine(getCurrentPrintable()) );
+    layoutLines.push_back( new LayoutLine(getCurrentPrintable()) );
     int currentLine = 0;
 
     // add line header
@@ -571,7 +572,7 @@ void PrintLayoutManager::layInLinesAndPages()
             current_height += line_height;
 
             // too much lines on current page, switch to a new page
-            if(current_height > 80)
+            if(current_height > MAX_LEVELS_ON_PAGE)
             {
                 layoutPages[current_page].last_line = currentLine;
                 current_height = line_height;
@@ -587,7 +588,7 @@ void PrintLayoutManager::layInLinesAndPages()
             //std::cout << "*&^*&^*&^%$%$#@#@!! current_height = " << current_height << std::endl;
 
             //currentLine++;
-            layoutLines.push_back( LayoutLine(getCurrentPrintable()) );
+            layoutLines.push_back( new LayoutLine(getCurrentPrintable()) );
             currentLine = layoutLines.size()-1;
         }
         assertExpr(currentLine,<,(int)layoutLines.size());
@@ -660,7 +661,7 @@ void PrintLayoutManager::setLineCoords(LayoutLine& line, const int x0, const int
 
     
 PrintLayoutManager::PrintLayoutManager(AriaPrintable* parent,
-                                       std::vector<LayoutLine>& layoutLines_a /* out */,
+                                       ptr_vector<LayoutLine>& layoutLines_a /* out */,
                                        std::vector<LayoutPage>& layoutPages_a /* out */,
                                        ptr_vector<MeasureToExport>& measures_a /* out */) :
                                        layoutLines(layoutLines_a), layoutPages(layoutPages_a), measures(measures_a)
