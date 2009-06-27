@@ -306,45 +306,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     const float track_area_height = (float)h - (float)text_height*3.0f + (pageNum == 1 ? 100 : 0);
 
     
-    // ---- Lay out tracks
-    float y_from = y0 + text_height*3;
-    for(int l=page.first_line; l<=page.last_line; l++)
-    {
-        // FIXME : move to layout?
-        
-        //std::cout << "layoutLines[l].level_height = " << layoutLines[l].level_height << " track_area_height=" << track_area_height
-        //          << " total_height=" << total_height << std::endl;
-        
-        // give a height proportional to its part of the total height
-        float height = (track_area_height/total_height)*layoutLines[l].level_height;
-        
-        float used_height = height;
-        
-        // track too high, will look weird... shrink a bit
-        while(used_height/(float)layoutLines[l].level_height > 115)
-        {
-            used_height *= 0.95;
-        }
-        if(height > h/5 && height > used_height*1.3) height = used_height*1.3; // shrink total height when track is way too large (if page contains only a few tracks)
-
-        float used_y_from = y_from;
-        
-        // center vertically in available space  if more space than needed
-        if(used_height < height) used_y_from += (height - used_height)/2;
-        
-        // split margin above and below depending on position within page
-        const int line_amount = page.last_line - page.first_line;
-        const float position = line_amount == 0 ? 0 : (float)(l - page.first_line) / line_amount;
-        int margin_above = 250*position;
-        int margin_below = 250*(1-position);
-        
-        //std::cout << "height=" << height << " used_height=" << used_height << " used_y_from=" << used_y_from << " margin_above=" << margin_above << " margin_below=" << margin_below << std::endl;
-        
-        layout->setLineCoords(layoutLines[l], x0, used_y_from, x1, used_y_from+used_height, margin_below, margin_above);
-
-        y_from += height;
-        //std::cout << "yfrom is now " << y_from << std::endl;
-    }
+    layout->layTracksInPage(page, text_height, track_area_height, total_height, h, x0, y0, x1);
     
     // ---- Draw the tracks
     const wxFont regularFont = wxFont(75, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
