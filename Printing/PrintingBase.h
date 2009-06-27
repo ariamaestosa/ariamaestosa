@@ -79,12 +79,13 @@ public:
     */
     virtual int calculateHeight(LayoutLine& line) const = 0;
     
-    void setLineCoords(LayoutLine& line, TrackRenderInfo& track, int x0, const int y0, const int x1, const int y1, bool show_measure_number);
     void setCurrentTrack(LayoutLine* line);
     
     void setLineYCoords(const int y0, const int y1);
     void setCurrentDC(wxDC* dc);
     
+    void setLineCoords(LayoutLine& line, TrackRenderInfo& track, int x0, const int y0, const int x1, const int y1, bool show_measure_number);
+
    // int getCurrentElementXStart();
     LayoutElement* continueWithNextElement();
     LayoutElement* getElementForMeasure(const int measureID);
@@ -130,6 +131,8 @@ public:
     int getPageAmount();
     void printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const int w, const int h);
     void printLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1,
+                       int margin_below, int margin_above);
+    void setLineCoords(LayoutLine& line, const int x0, const int y0, const int x1, const int y1,
                        int margin_below, int margin_above);
 };
 

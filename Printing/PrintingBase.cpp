@@ -360,10 +360,16 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
 
 }
 
-void AriaPrintable::printLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1,
-                               int margin_below, int margin_above)
+void AriaPrintable::setLineCoords(LayoutLine& line, const int x0, const int y0, const int x1, const int y1,
+                                  int margin_below, int margin_above)
 {
     const int trackAmount = line.getTrackAmount();
+    
+    
+    line.x0 = x0;
+    line.y0 = y0;
+    line.x1 = x1;
+    line.y1 = y1;
     
     // ---- empty space around whole line
     const float height = (float)(y1 - y0);// - ( trackAmount>1 and not last_of_page ? 100 : 0 );
@@ -375,18 +381,6 @@ void AriaPrintable::printLine(LayoutLine& line, wxDC& dc, const int x0, const in
     if(margin_above > height) margin_above = height/5;
     
     const int my0 = y0 + margin_above;
-    const int my1 = y0 + height - margin_below;
-    
-    // ---- Draw vertical line to show these lines belong toghether
-    if(trackAmount>1)
-    {
-        dc.SetPen(  wxPen( wxColour(150,150,150), 25 ) );
-        dc.DrawLine( x0-3, my0, x0-3, my1); // vertical line
-        dc.DrawLine( x0-3, my0, x0-3+30, my0-50); // top thingy
-        dc.DrawLine( x0-3, my1, x0-3+30, my1+50); // bottom thingy
-        
-        dc.DrawLine( x1-3, my0, x1-3, my1); // right-side line
-    }
     
     // ---- Determine tracks positions and sizes
     // FIXME : this is layout, should go in PrintLayout.cpp
@@ -397,7 +391,7 @@ void AriaPrintable::printLine(LayoutLine& line, wxDC& dc, const int x0, const in
     for(int n=0; n<trackAmount; n++)
     {
         std::cout << "%%%% setting track coords " << n << std::endl;
-
+        
         line.setCurrentTrack(n);
         EditorPrintable* editorPrintable = editorPrintables.get(line.getCurrentTrack());
         
@@ -419,7 +413,31 @@ void AriaPrintable::printLine(LayoutLine& line, wxDC& dc, const int x0, const in
         current_y += track_height;
     }
     
-    // ---- Do the actual drawing
+    
+}
+
+void AriaPrintable::printLine(LayoutLine& line, wxDC& dc, const int x0, const int y0, const int x1, const int y1,
+                               int margin_below, int margin_above)
+{
+    setLineCoords(line, x0, y0, x1, y1, margin_below, margin_above);
+    
+    const int trackAmount = line.getTrackAmount();
+    
+    // ---- Draw vertical line to show these lines belong toghether
+    const int my0 = line.y0 + margin_above;
+    const int my1 = line.y0 + (line.y1 - line.y0) - margin_below;
+    
+    if(trackAmount>1)
+    {
+        dc.SetPen(  wxPen( wxColour(150,150,150), 25 ) );
+        dc.DrawLine( x0-3, my0, x0-3, my1); // vertical line
+        dc.DrawLine( x0-3, my0, x0-3+30, my0-50); // top thingy
+        dc.DrawLine( x0-3, my1, x0-3+30, my1+50); // bottom thingy
+        
+        dc.DrawLine( x1-3, my0, x1-3, my1); // right-side line
+    }
+    
+    // ---- Do the actual track drawing
     for(int n=0; n<trackAmount; n++)
     {
         // skip empty tracks
