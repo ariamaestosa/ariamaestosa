@@ -55,7 +55,7 @@ const unsigned short int flat_sign_x[] = { 3*sign_dist, 1*sign_dist, 6*sign_dist
     {
         // indicates which notes on the staff are sharp/flat/natural,
         // where the array index is an element of the NOTES enum declared in ScoreEditor.h
-        int scoreNotesSharpness[7];
+        PitchSign scoreNotesSharpness[7];
         bool going_in_sharps;
         bool going_in_flats;
         int octave_shift; // 0 = regular, +1 = alta, -1 = bassa
@@ -79,18 +79,18 @@ const unsigned short int flat_sign_x[] = { 3*sign_dist, 1*sign_dist, 6*sign_dist
         LEAK_CHECK(ScoreMidiConverter);
 
         ScoreMidiConverter();
-        void setNoteSharpness(NOTES note, int sharpness);
+        void setNoteSharpness(NOTES note, PitchSign sharpness);
         bool goingInSharps();
         bool goingInFlats();
         int getMiddleCLevel();
         int getScoreCenterCLevel();
         int getOctaveShift();
 
-        int getKeySigSharpnessSignForLevel(const unsigned int level);
+        PitchSign getKeySigSharpnessSignForLevel(const unsigned int level);
        // int getSharpnessSignForMidiNote(const unsigned int note);
         int getMidiNoteForLevelAndSign(const unsigned int level, int sharpness);
         int levelToNote(const int level);
-        int noteToLevel(Note* noteObj, int* sign=NULL);
+        int noteToLevel(Note* noteObj, PitchSign* sign=NULL);
         int levelToNote7(const unsigned int level);
         void updateConversionData();
 
@@ -122,7 +122,7 @@ const unsigned short int flat_sign_x[] = { 3*sign_dist, 1*sign_dist, 6*sign_dist
 
         void enableMusicalNotation(const bool enabled);
         void enableLinearNotation(const bool enabled);
-        void loadKey(const int sharpness_symbol, const int symbol_amount);
+        void loadKey(const PitchSign sharpness_symbol, const int symbol_amount);
 
         void render(RelativeXCoord mousex_current, int mousey_current,
                     RelativeXCoord mousex_initial, int mousey_initial, bool focus=false);

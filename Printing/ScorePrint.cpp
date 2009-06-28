@@ -430,7 +430,7 @@ namespace AriaMaestosa
         x_converter = new PrintXConverter(this);
         
         // gather score info
-        analyzeScore(line);
+        gatherNotesAndBasicSetup(line);
         ScoreData* scoreData = dynamic_cast<ScoreData*>(line.editor_data.raw_ptr);
         
         // since height is used to determine where to put repetitions/notes/etc.
@@ -476,7 +476,7 @@ namespace AriaMaestosa
         
         if(scoreData->g_clef)
         {
-            drawScore(false /*G*/, *(scoreData->g_clef_analyser), line, dc,
+            analyseAndDrawScore(false /*G*/, *(scoreData->g_clef_analyser), line, dc,
                       abs(scoreData->extra_lines_above_g_score), abs(scoreData->extra_lines_under_g_score),
                       renderInfo.x0, g_clef_y_from, renderInfo.x1, g_clef_y_to,
                       renderInfo.show_measure_number);
@@ -484,7 +484,7 @@ namespace AriaMaestosa
         
         if(scoreData->f_clef)
         {
-            drawScore(true /*F*/, *(scoreData->f_clef_analyser), line, dc,
+            analyseAndDrawScore(true /*F*/, *(scoreData->f_clef_analyser), line, dc,
                       abs(scoreData->extra_lines_above_f_score), abs(scoreData->extra_lines_under_f_score),
                       renderInfo.x0, f_clef_y_from, renderInfo.x1, f_clef_y_to,
                       (scoreData->g_clef ? false : renderInfo.show_measure_number) /* if we have both keys don't show twice */);
@@ -574,23 +574,6 @@ namespace AriaMaestosa
             " extra_lines_above_f_score = " << scoreData->extra_lines_above_f_score <<
             " extra_lines_under_f_score = " << scoreData->extra_lines_under_f_score << std::endl;
         
-        // restore previous current lien (FIXME not too pretty)
-        currentLine = previousLine;
-
-    }
-    
-    void ScorePrintable::analyzeScore(LayoutLine& line)
-    {
-        LayoutLine* previousLine = currentLine;
-        currentLine = &line;
-        
-        ScoreData* scoreData = dynamic_cast<ScoreData*>(line.editor_data.raw_ptr);
-        assert(scoreData != NULL);
-        
-        Track* track = line.getTrack();
-        ScoreEditor* scoreEditor = track->graphics->scoreEditor;
-        ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
-        
         // Split space between both scores (one may need more than the other)
         // I use a total of 0.8 to leave a 0.2 free space between both scores.
         scoreData->first_clef_proportion = 0.4;
@@ -607,24 +590,41 @@ namespace AriaMaestosa
         }
 
         
-        /*
-         void setStemDrawInfo( const int stem_up_x_offset,
-         const float stem_up_y_offset,
-         const int stem_down_x_offset,
-         const float stem_down_y_offset,
-         const float stem_height = -1,
-         const float min_stem_height = -1);
-         */
+        // restore previous current lien (FIXME not too pretty)
+        currentLine = previousLine;
+
+    }
+    
+    /**
+     * Goes a bit further that 'gatherScoreInfo' : builds analyzers objects and gathers notes. Does
+     * not perform any actual analysis with the ScoreAnalyser(s)
+     */
+    void ScorePrintable::gatherNotesAndBasicSetup(LayoutLine& line)
+    {
+        LayoutLine* previousLine = currentLine;
+        currentLine = &line;
+        
+        ScoreData* scoreData = dynamic_cast<ScoreData*>(line.editor_data.raw_ptr);
+        assert(scoreData != NULL);
+        
+        Track* track = line.getTrack();
+        ScoreEditor* scoreEditor = track->graphics->scoreEditor;
+        ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
+        
+
+        // ---- Build score analyzers
         if(scoreData->g_clef)
         {
             scoreData->g_clef_analyser = new ScoreAnalyser(scoreEditor, new PrintXConverter(this), scoreData->middle_c_level-5);
-            scoreData->g_clef_analyser->setStemDrawInfo( 140 /* stem up x offset */, 0, 60, 0 );
+            scoreData->g_clef_analyser->setStemDrawInfo( 140 /* stem up x offset */, 0 /* stem_up_y_offset */,
+                                                         60 /* stem_down_x_offset */, 0  /* stem_down_y_offset */);
             scoreData->g_clef_analyser->setStemPivot(scoreData->middle_c_level-5);
         }
         if(scoreData->f_clef)
         {
             scoreData->f_clef_analyser = new ScoreAnalyser(scoreEditor, new PrintXConverter(this), scoreData->middle_c_level-5);
-            scoreData->f_clef_analyser->setStemDrawInfo( 140, 0, 60, 0 );
+            scoreData->f_clef_analyser->setStemDrawInfo( 140 /* stem up x offset */, 0 /* stem_up_y_offset */,
+                                                         60 /* stem_down_x_offset */, 0 /* stem_down_y_offset */ );
             scoreData->f_clef_analyser->setStemPivot(scoreData->middle_c_level+6);
         }
 
@@ -651,7 +651,7 @@ namespace AriaMaestosa
             
             for(int n=firstNote; n<=lastNote; n++)
             {
-                int note_sign;
+                PitchSign note_sign;
                 const int noteLevel = converter->noteToLevel(track->getNote(n), &note_sign);
                 
                 if(noteLevel == -1) continue;
@@ -688,7 +688,7 @@ namespace AriaMaestosa
     }
     
     
-    void ScorePrintable::drawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine& line, wxDC& dc,
+    void ScorePrintable::analyseAndDrawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine& line, wxDC& dc,
                                    const int extra_lines_above, const int extra_lines_under,
                                    const int x0, const int y0, const int x1, const int y1,
                                    bool show_measure_number)

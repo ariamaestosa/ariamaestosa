@@ -242,7 +242,7 @@ public:
 #pragma mark NoteRenderInfo
 #endif
 
-NoteRenderInfo::NoteRenderInfo(int tick, int x, int level, int tick_length, int sign, const bool selected, int pitch)
+NoteRenderInfo::NoteRenderInfo(int tick, int x, int level, int tick_length, PitchSign sign, const bool selected, int pitch)
 {
     // what we know before render pass 1
     NoteRenderInfo::selected = selected;
