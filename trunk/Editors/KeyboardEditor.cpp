@@ -436,7 +436,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
 
 
-void KeyboardEditor::loadKey(const int sharpness_symbol, const int symbol_amount)
+void KeyboardEditor::loadKey(const PitchSign sharpness_symbol, const int symbol_amount)
 {
     static const int note7_to_note12[] = {
         /* A */ 0,

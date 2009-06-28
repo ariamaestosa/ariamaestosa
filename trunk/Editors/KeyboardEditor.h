@@ -55,7 +55,7 @@ public:
     void addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY);
     void moveNote(Note& note, const int relativeX, const int relativeY);
 
-    void loadKey(const int sharpness_symbol, const int symbol_amount);
+    void loadKey(const PitchSign sharpness_symbol, const int symbol_amount);
 };
 }
 

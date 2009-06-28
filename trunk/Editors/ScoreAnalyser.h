@@ -102,7 +102,7 @@ public:
     int measureBegin, measureEnd;
 
     // sharp, flat, natural, none
-    int sign;
+    PitchSign sign;
 
     // triplets
     bool triplet_show_above, triplet, drag_triplet_sign;
@@ -118,7 +118,7 @@ public:
     float stem_y_level; // if != -1, the renderer will use this y as stem end instead of calculating it itself
 
 
-    NoteRenderInfo(int tick, int x, int level, int tick_length, int sign, const bool selected, int pitch);
+    NoteRenderInfo(int tick, int x, int level, int tick_length, PitchSign sign, const bool selected, int pitch);
 
     void tieWith(NoteRenderInfo& renderInfo);
     void tieWith(const int pixel, const int x);

@@ -340,7 +340,8 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
         }
         if(best_candidate==-1) return;
         
-        int sign = NATURAL, amount = 0;
+        PitchSign sign = NATURAL;
+        int amount = 0;
         switch(best_candidate)
         {
             case 0: //C

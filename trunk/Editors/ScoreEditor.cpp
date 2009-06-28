@@ -60,7 +60,7 @@ int head_radius = -1;
 // height in pixels of each level
 const int y_step = 5;
 
-int findNotePitch(int note_7, int sharpness)
+int findNotePitch(int note_7, PitchSign sharpness)
 {
     int note=0;
 
@@ -105,7 +105,7 @@ ScoreMidiConverter::ScoreMidiConverter()
     octave_shift = 0;
 }
 
-void ScoreMidiConverter::setNoteSharpness(NOTES note, int sharpness)
+void ScoreMidiConverter::setNoteSharpness(NOTES note, PitchSign sharpness)
 {
 
     scoreNotesSharpness[note] = sharpness;
@@ -133,10 +133,12 @@ bool ScoreMidiConverter::goingInFlats()
     return going_in_flats;
 }
 // what sign should appear next to the key for this note? (FLAT, SHARP or NONE)
-int ScoreMidiConverter::getKeySigSharpnessSignForLevel(const unsigned int level)
+PitchSign ScoreMidiConverter::getKeySigSharpnessSignForLevel(const unsigned int level)
 {
     assertExpr(level,<,73);
-    int value = scoreNotesSharpness[ levelToNote7(level) ];
+    
+    PitchSign value = scoreNotesSharpness[ levelToNote7(level) ];
+    
     if(value == NATURAL) return NONE;
     else return value;
 }
@@ -176,7 +178,7 @@ void ScoreMidiConverter::resetAccidentalsForNewRender()
 }
 
 // returns on what level the given note will appear, and with what sign
-int ScoreMidiConverter::noteToLevel(Note* noteObj, int* sign)
+int ScoreMidiConverter::noteToLevel(Note* noteObj, PitchSign* sign)
 {
     const int note = noteObj->pitchID;
     if(note>=128 or note<0) return -1;
@@ -184,7 +186,7 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, int* sign)
     const int level = midiNoteToLevel[note];
     const NoteToLevelType current_type = midiNoteToLevel_type[note];
 
-    int answer_sign = NONE;
+    PitchSign answer_sign = NONE;
     int answer_level = -1;
 
     if(current_type == SHARP_OR_FLAT)
@@ -337,7 +339,7 @@ void ScoreMidiConverter::updateConversionData()
     int note_7 = 0, octave = 0;
     for(int n=0; n<73; n++)
     {
-        const int sharpness = scoreNotesSharpness[note_7];
+        const PitchSign sharpness = scoreNotesSharpness[note_7];
 
         levelToMidiNote[n] = findNotePitch( note_7, sharpness ) + octave*12;
 
@@ -455,7 +457,7 @@ const NOTES sharp_order[] = { F, C, G, D, A, E, B };
 const NOTES flat_order[]  = { B, E, A, D, G, C, F };
 
 // where parameters are e.g. 5 sharps, 3 flats, etc.
-void ScoreEditor::loadKey(const int sharpness_symbol, const int symbol_amount)
+void ScoreEditor::loadKey(const PitchSign sharpness_symbol, const int symbol_amount)
 {
     // reset key signature before beginning
     converter->setNoteSharpness(A, NATURAL);
@@ -923,7 +925,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
     // render pass 1. draw linear notation if relevant, gather information and do initial rendering for musical notation
     for(int n=0; n<noteAmount; n++)
     {
-        int note_sign;
+        PitchSign note_sign;
         const int noteLevel = converter->noteToLevel(track->getNote(n), &note_sign);
 
         if(noteLevel == -1) continue;
@@ -1190,7 +1192,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
         for(int n = min_level_with_signs; n < max_level_with_signs; n++)
         {
             const int liney = getEditorYStart() + n*y_step + y_step/2 - yscroll;
-            const int sharpness = converter->getKeySigSharpnessSignForLevel(n);
+            const PitchSign sharpness = converter->getKeySigSharpnessSignForLevel(n);
 
             if(sharpness == SHARP)
             {
