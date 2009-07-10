@@ -58,7 +58,7 @@ namespace AriaMaestosa {
             Sequence* sequence;
 
         public:
-            LEAK_CHECK(ScalePickerFrame);
+            LEAK_CHECK();
 
             ScalePickerFrame(Sequence* seq) : wxDialog( NULL, wxID_ANY,
                                                        //I18N: - title of the scale dialog

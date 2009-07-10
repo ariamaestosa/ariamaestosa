@@ -54,7 +54,7 @@ class InstrumentChoice : public wxMenu
     
 public:
     
-    LEAK_CHECK(InstrumentChoice);
+    LEAK_CHECK();
 
     InstrumentChoice();
     ~InstrumentChoice();

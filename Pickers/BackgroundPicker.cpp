@@ -35,7 +35,7 @@ namespace AriaMaestosa {
 class BackgroundChoicePanel : public wxPanel
 {
 public:
-    LEAK_CHECK(BackgroundChoicePanel);
+    LEAK_CHECK();
 
     wxBoxSizer* sizer;
     wxCheckBox* active;
@@ -89,7 +89,7 @@ class TrackPropertiesDialog : public wxDialog
     int modalid;
 
 public:
-    LEAK_CHECK(TrackPropertiesDialog);
+    LEAK_CHECK();
 
     ~TrackPropertiesDialog()
     {

@@ -33,7 +33,7 @@ class AboutDialog : public wxDialog
     wxTextCtrl* textArea;
 
 public:
-    LEAK_CHECK(AboutDialog);
+    LEAK_CHECK();
 
     AboutDialog();
     void show();

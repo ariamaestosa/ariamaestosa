@@ -30,7 +30,7 @@ class Image
 {
     GLuint* ID;
 public:
-    LEAK_CHECK(Image);
+    LEAK_CHECK();
     
     int width, height;
     

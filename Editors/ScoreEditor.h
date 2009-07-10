@@ -76,7 +76,7 @@ const unsigned short int flat_sign_x[] = { 3*sign_dist, 1*sign_dist, 6*sign_dist
         int ottavaBassaCLevel;
 
     public:
-        LEAK_CHECK(ScoreMidiConverter);
+        LEAK_CHECK();
 
         ScoreMidiConverter();
         void setNoteSharpness(NOTES note, PitchSign sharpness);

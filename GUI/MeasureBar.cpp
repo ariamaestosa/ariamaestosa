@@ -56,7 +56,7 @@ class SelectedMenu : public wxMenu
 {
 
 public:
-    LEAK_CHECK(SelectedMenu);
+    LEAK_CHECK();
 SelectedMenu() : wxMenu()
 {
 
@@ -104,7 +104,7 @@ class UnselectedMenu : public wxMenu
     int remove_timeSigID;
 
 public:
-    LEAK_CHECK(UnselectedMenu);
+    LEAK_CHECK();
 
     UnselectedMenu() : wxMenu()
     {

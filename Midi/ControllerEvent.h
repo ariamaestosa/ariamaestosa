@@ -33,7 +33,7 @@ class ControllerEvent {
     Sequence* sequence;
 
 public:
-    LEAK_CHECK(ControllerEvent);
+    LEAK_CHECK();
 
     ControllerEvent(Sequence* sequence, unsigned short controller, int tick, unsigned short value);
 

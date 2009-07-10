@@ -36,7 +36,7 @@ class DrumChoice : public wxMenu
     AriaRenderArray drumkit_names_renderer;
     
 public:
-    LEAK_CHECK(DrumChoice);
+    LEAK_CHECK();
 
     DrumChoice();
     ~DrumChoice();

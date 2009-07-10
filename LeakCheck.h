@@ -10,13 +10,16 @@ namespace AriaMaestosa
 namespace MemoryLeaks
 {
 
+class AbstractLeakCheck;
+    
 class MyObject
 {
 public:
     std::string file;
     int line;
-
-    MyObject(const char* f, int l);
+    AbstractLeakCheck* obj;
+    
+    MyObject(AbstractLeakCheck* obj);
     void print();
 };
 
@@ -25,35 +28,48 @@ void checkForLeaks();
 void addObj(MyObject* myObj);
 void removeObj(MyObject* myObj);
 
-template<typename P>
-class TemplateLeakCheck
+class AbstractLeakCheck
 {
     MyObject* myObj;
 public:
-    TemplateLeakCheck()
+    AbstractLeakCheck()
     {
-        myObj = new MyObject(P :: memCheckGetFile(), P :: memCheckGetLine());
-        addObj( myObj );
-    }
-    TemplateLeakCheck(const TemplateLeakCheck &t)
-    {
-        myObj = new MyObject(P :: memCheckGetFile(), P :: memCheckGetLine());
+        myObj = new MyObject( this );
         addObj( myObj );
     }
 
-    ~TemplateLeakCheck()
+    AbstractLeakCheck(const AbstractLeakCheck &t)
+    {
+        myObj = new MyObject( this );
+        addObj( myObj );
+    }
+
+    virtual ~AbstractLeakCheck()
     {
         removeObj( myObj );
+    }
+    
+    virtual void print() const
+    {
     }
 };
 
 }
 }
 
-#define LEAK_CHECK( classname ) static const char* memCheckGetFile() { return __FILE__; } static int memCheckGetLine() { return __LINE__; } MemoryLeaks::TemplateLeakCheck< classname > myLeakCheck;
+#define LEAK_CHECK() \
+class LeakCheck : public MemoryLeaks::AbstractLeakCheck\
+{  public:\
+    virtual void print() const\
+    { \
+        printf("Undeleted object at %s : %i\n",  __FILE__, __LINE__);\
+    } \
+    virtual ~LeakCheck() {} \
+}; \
+LeakCheck leack_check_instance;
 
 #else
-#define LEAK_CHECK( classname )
+#define LEAK_CHECK()
 #endif
 
 #endif

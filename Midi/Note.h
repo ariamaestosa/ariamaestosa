@@ -28,10 +28,11 @@ namespace AriaMaestosa {
 
 class GraphicalTrack; // forward
 
-class Note {
+class Note
+{
 
 public:
-    LEAK_CHECK(Note);
+    LEAK_CHECK();
 
     // used for score editor. by default, the editor will choose a default sign to display accidentals.
     // however computers are not smart enough to guess correctly so the user has the possibility to

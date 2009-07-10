@@ -95,7 +95,7 @@ class EditAction
     friend class AriaMaestosa::Track;
 
 public:
-    LEAK_CHECK(EditAction);
+    LEAK_CHECK();
 
     EditAction();
     virtual void perform();

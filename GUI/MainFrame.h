@@ -112,7 +112,7 @@ class MainFrame : public wxFrame
     ptr_vector<Sequence> sequences; // contains all open sequences
 
 public:
-    LEAK_CHECK(MainFrame);
+    LEAK_CHECK();
 
     // READ AND WRITE
     bool changingValues; // set this to true when modifying the controls in the top bar, this allows to ignore all events thrown by their modification.

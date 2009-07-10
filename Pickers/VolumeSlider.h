@@ -45,7 +45,7 @@ class VolumeSlider : public wxDialog
     Track* currentTrack;
 
 public:
-    LEAK_CHECK(VolumeSlider);
+    LEAK_CHECK();
 
     VolumeSlider();
 

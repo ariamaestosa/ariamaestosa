@@ -71,7 +71,7 @@ namespace AriaMaestosa {
 class StringEditor : public wxPanel
 {
 public:
-    LEAK_CHECK(StringEditor);
+    LEAK_CHECK();
 
     wxBoxSizer* sizer;
     wxCheckBox* active;
@@ -219,7 +219,7 @@ class CustomTuningPicker : public wxFrame
     StringEditor* strings[10];
 
 public:
-    LEAK_CHECK(CustomTuningPicker);
+    LEAK_CHECK();
 
     ~CustomTuningPicker()
     {

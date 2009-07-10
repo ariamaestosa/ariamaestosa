@@ -47,7 +47,7 @@ class CustomNoteSelectDialog : public wxDialog
     Track* currentTrack;
 
 public:
-    LEAK_CHECK(CustomNoteSelectDialog);
+    LEAK_CHECK();
     CustomNoteSelectDialog();
 
     void okClicked(wxCommandEvent& evt);

@@ -24,6 +24,7 @@ namespace AriaMaestosa {
 class TimeSigChange
 {
 public:
+    LEAK_CHECK();
 
     TimeSigChange(int measure, int num, int denom);
 

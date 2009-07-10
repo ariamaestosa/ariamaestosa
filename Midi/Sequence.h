@@ -66,7 +66,7 @@ class Sequence {
 
  public:
 
-    LEAK_CHECK(Sequence);
+    LEAK_CHECK();
 
     // this object is to be modified by MainFrame, to remember where to save this sequence
     wxString filepath;

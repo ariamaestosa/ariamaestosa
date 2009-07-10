@@ -72,7 +72,7 @@ class MeasureData
     int totalNeededLengthInPixels;
 public:
 
-    LEAK_CHECK(MeasureData);
+    LEAK_CHECK();
 
     OwnerPtr<MeasureBar>  graphics;
 
