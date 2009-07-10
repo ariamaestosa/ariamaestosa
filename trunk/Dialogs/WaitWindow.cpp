@@ -51,7 +51,7 @@ class WaitWindowClass : public wxDialog
     bool progress_known;
 
 public:
-    LEAK_CHECK(WaitWindowClass);
+    LEAK_CHECK();
 
     WaitWindowClass(wxString message, bool progress_known) : wxDialog( NULL, wxID_ANY,  _("Please wait..."), wxDefaultPosition, wxSize(400,200), wxCAPTION | wxSTAY_ON_TOP )
     {

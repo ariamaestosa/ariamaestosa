@@ -88,7 +88,7 @@ protected:
 
     unsigned short default_volume;
 public:
-    LEAK_CHECK(Editor);
+    LEAK_CHECK();
 
     Editor(Track* track);
     virtual ~Editor();

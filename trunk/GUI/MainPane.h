@@ -71,7 +71,7 @@ class MainPane : public RenderPane
     int click_in_track; // if click_area == CLICK_TRACK, contains the ID of the track
     
 public:
-    LEAK_CHECK(MainPane);
+    LEAK_CHECK();
 
     MainPane(MainFrame* mainframe, int* args);
     ~MainPane();

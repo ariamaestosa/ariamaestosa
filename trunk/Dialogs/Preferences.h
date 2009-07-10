@@ -52,7 +52,7 @@ namespace AriaMaestosa {
 
         MainFrame* parent;
     public:
-        LEAK_CHECK(PreferencesDialog);
+        LEAK_CHECK();
 
         PreferencesDialog(MainFrame* parent, PreferencesData* data);
         ~PreferencesDialog();

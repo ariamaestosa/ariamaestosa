@@ -406,7 +406,7 @@ int ScoreMidiConverter::getMidiNoteForLevelAndSign(const unsigned int level, int
 class MyXConverter : public TickToXConverter
 {
 public:
-    LEAK_CHECK(MyXConverter);
+    LEAK_CHECK();
 
     ~MyXConverter(){}
     int tickToX(const int tick)

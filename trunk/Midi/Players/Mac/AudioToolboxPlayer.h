@@ -33,7 +33,7 @@ class AudioToolboxMidiPlayer
     bool playing;
 
 public:
-    LEAK_CHECK(AudioToolboxMidiPlayer);
+    LEAK_CHECK();
 
     void loadSequence(char* midiData, int length);
 

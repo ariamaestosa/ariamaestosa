@@ -43,7 +43,7 @@ class CopyrightWindowClass : public wxDialog
     int code;
 
 public:
-    LEAK_CHECK(CopyrightWindowClass);
+    LEAK_CHECK();
 
     CopyrightWindowClass(Sequence* seq) : wxDialog( NULL, wxID_ANY,
                                                     //I18N: - title of the copyright/info dialog

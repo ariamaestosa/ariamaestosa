@@ -42,7 +42,7 @@ class TimeSigPicker : public wxFrame
     wxCheckBox* variable;
 
 public:
-    LEAK_CHECK(TimeSigPicker);
+    LEAK_CHECK();
 
     TimeSigPicker();
 

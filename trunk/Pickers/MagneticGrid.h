@@ -48,7 +48,7 @@ class MagneticGrid : public wxMenu
     void resetChecks();
 
 public:
-    LEAK_CHECK(MagneticGrid);
+    LEAK_CHECK();
 
     MagneticGrid(GraphicalTrack* parent);
     ~MagneticGrid();

@@ -74,7 +74,7 @@ class GraphicalTrack
     BlankField* channelButton;
     
 public:
-    LEAK_CHECK(GraphicalTrack);
+    LEAK_CHECK();
 
     // ----------- read-only fields -----------
     bool dragging_resize;

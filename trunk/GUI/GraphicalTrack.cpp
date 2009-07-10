@@ -54,7 +54,7 @@ protected:
     int x, y, width;
     bool hidden;
 public:
-    LEAK_CHECK(AriaWidget);
+    LEAK_CHECK();
 
     AriaWidget(int width){ AriaWidget::x = x; AriaWidget::width = width; hidden = false;}
     int getX(){ return x; }
@@ -234,7 +234,7 @@ class WidgetLayoutManager
     ptr_vector<AriaWidget, HOLD> widgetsLeft;
     ptr_vector<AriaWidget, HOLD> widgetsRight;
 public:
-    LEAK_CHECK(WidgetLayoutManager);
+    LEAK_CHECK();
 
     WidgetLayoutManager()
     {

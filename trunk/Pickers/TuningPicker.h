@@ -32,7 +32,7 @@ class TuningPicker : public wxMenu
     WxOwnerPtr<CustomTuningPicker>  ctp;
 
 public:
-    LEAK_CHECK(TuningPicker);
+    LEAK_CHECK();
 
     TuningPicker();
     ~TuningPicker();

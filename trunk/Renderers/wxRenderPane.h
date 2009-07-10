@@ -30,7 +30,7 @@ class wxRenderPane : public wxPanel
 {
 
 public:
-    LEAK_CHECK(wxRenderPane);
+    LEAK_CHECK();
 
     wxRenderPane(MainFrame* parent, int* args);
     ~wxRenderPane();

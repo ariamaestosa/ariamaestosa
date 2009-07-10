@@ -46,7 +46,7 @@ enum STEM
 class TickToXConverter
 {
 public:
-    LEAK_CHECK(TickToXConverter);
+    LEAK_CHECK();
 
     virtual int tickToX(const int tick){assert(0); return-1;}
     virtual ~TickToXConverter(){}
@@ -155,7 +155,7 @@ class ScoreAnalyser
 
     OwnerPtr<TickToXConverter>  tickToXConverter;
 public:
-    LEAK_CHECK(ScoreAnalyser);
+    LEAK_CHECK();
 
     std::vector<NoteRenderInfo> noteRenderInfo;
 

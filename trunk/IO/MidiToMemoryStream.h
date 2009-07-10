@@ -32,7 +32,7 @@ class MidiToMemoryStream : public jdkmidi::MIDIFileWriteStream {
     int pos, length;
 
 public:
-    LEAK_CHECK(MidiToMemoryStream);
+    LEAK_CHECK();
 
     MidiToMemoryStream();
     ~MidiToMemoryStream();

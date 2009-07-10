@@ -52,7 +52,7 @@ namespace AriaMaestosa
         {
             ScorePrintable* parent;
         public:
-            LEAK_CHECK(PrintXConverter);
+            LEAK_CHECK();
             
             PrintXConverter(ScorePrintable* parent)
             {

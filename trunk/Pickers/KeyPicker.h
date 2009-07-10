@@ -57,7 +57,7 @@ namespace AriaMaestosa {
         wxMenuItem* key_flats_6;
         wxMenuItem* key_flats_7;
 public:
-        LEAK_CHECK(KeyPicker);
+        LEAK_CHECK();
 
         KeyPicker();
         ~KeyPicker();

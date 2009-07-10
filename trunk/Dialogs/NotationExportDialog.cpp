@@ -66,7 +66,7 @@ class NotationSetup : public wxFrame
 
 public:
 
-    LEAK_CHECK(NotationSetup);
+    LEAK_CHECK();
 
     NotationSetup() : wxFrame(NULL, wxID_ANY,
                                            //I18N: - title of the notation-export dialog

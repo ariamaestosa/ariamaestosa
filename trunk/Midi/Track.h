@@ -124,7 +124,7 @@ class Track
     int instrument, drumKit;
 
 public:
-    LEAK_CHECK(Track);
+    LEAK_CHECK();
 
     // ------------- read-only -------------
     OwnerPtr<GraphicalTrack>  graphics;

@@ -32,7 +32,7 @@ void drawable_set_state(AriaRender::ImageState arg);
 class Drawable
 {
 public:
-    LEAK_CHECK(Drawable);
+    LEAK_CHECK();
 
     // ------------ read-only fields -------------
     int x,y, angle, hotspotX, hotspotY;

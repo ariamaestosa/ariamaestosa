@@ -52,7 +52,7 @@ class MeasureBar
     MeasureData* data; /* ref */
 
 public:
-    LEAK_CHECK(MeasureBar);
+    LEAK_CHECK();
 
     MeasureBar(MeasureData* parent);
     ~MeasureBar();
