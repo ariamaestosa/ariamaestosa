@@ -40,18 +40,6 @@ enum STEM
     STEM_NONE
 };
 
-// this small is meant to help separate the analyzer from any coordinate system
-// each part of the program that wishes to use the ScoreAnalyser should derive from
-// this class and provide and instance to the ScoreAnalyser
-class TickToXConverter
-{
-public:
-    LEAK_CHECK();
-
-    virtual int tickToX(const int tick){assert(0); return-1;}
-    virtual ~TickToXConverter(){}
-};
-
 /*
  *  Contains info about a single visible. A vector of these objects is created inthe first rendering pass.
  *  This vector contains one of these for each visible note. This vector is then analysed and used in the
@@ -150,21 +138,15 @@ class ScoreAnalyser
     float stem_down_y_offset;
     float stem_height;
     float min_stem_height;
-
-    OwnerPtr<TickToXConverter>  tickToXConverter;
 public:
     LEAK_CHECK();
 
     std::vector<NoteRenderInfo> noteRenderInfo;
 
-    ScoreAnalyser(ScoreEditor* parent, TickToXConverter* converter, int stemPivot);
+    ScoreAnalyser(ScoreEditor* parent, int stemPivot);
 
-    void setStemDrawInfo( const int stem_up_x_offset,
-                      const float stem_up_y_offset,
-                      const int stem_down_x_offset,
-                      const float stem_down_y_offset,
-                      const float stem_height = -1,
-                      const float min_stem_height = -1);
+    void setStemDrawInfo( const float stem_height = -1,
+                         const float min_stem_height = -1);
 
     float getStemFrom(NoteRenderInfo& note);
     float getStemTo(NoteRenderInfo& note);

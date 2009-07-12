@@ -344,7 +344,7 @@ void NoteRenderInfo::setY(const int newY)
 #pragma mark Score Analyser
 #endif
 
-ScoreAnalyser::ScoreAnalyser(ScoreEditor* parent, TickToXConverter* converter, int stemPivot)
+ScoreAnalyser::ScoreAnalyser(ScoreEditor* parent, int stemPivot)
 {
     ScoreAnalyser::editor = parent;
     ScoreAnalyser::stemPivot = stemPivot;
@@ -355,21 +355,11 @@ ScoreAnalyser::ScoreAnalyser(ScoreEditor* parent, TickToXConverter* converter, i
     stem_down_y_offset = 0.8;
     stem_height = 5.2;
     min_stem_height = 4.5;
-
-    tickToXConverter = converter;
 }
 void ScoreAnalyser::setStemDrawInfo(
-                  const int stem_up_x_offset,
-                  const float stem_up_y_offset,
-                  const int stem_down_x_offset,
-                  const float stem_down_y_offset,
                   const float stem_height,
                   const float min_stem_height)
 {
-    ScoreAnalyser::stem_up_x_offset = stem_up_x_offset;
-    ScoreAnalyser::stem_up_y_offset = stem_up_y_offset;
-    ScoreAnalyser::stem_down_x_offset = stem_down_x_offset;
-    ScoreAnalyser::stem_down_y_offset = stem_down_y_offset;
     if(stem_height != -1) ScoreAnalyser::stem_height = stem_height;
     if(min_stem_height != -1) ScoreAnalyser::min_stem_height = min_stem_height;
 }
