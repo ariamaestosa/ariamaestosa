@@ -639,9 +639,7 @@ namespace AriaMaestosa
                 const int noteLength = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
                 const int tick = track->getNoteStartInMidiTicks(n);
                 
-                const int note_x = tickToX(tick);
-                
-                NoteRenderInfo currentNote(tick, note_x, noteLevel, noteLength, note_sign,
+                NoteRenderInfo currentNote(tick, noteLevel, noteLength, note_sign,
                                            track->isNoteSelected(n), track->getNotePitchID(n));
                 
                 // add note to either G clef score or F clef score
@@ -786,14 +784,17 @@ namespace AriaMaestosa
             {
                 NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
                                 
+                const int noteX = x_converter->tickToX(noteRenderInfo.tick);
+                
                 dc.SetPen(  wxPen( wxColour(125,125,125), 8 ) );
+                
                 // draw small lines above score if needed
                 if(noteRenderInfo.level < first_score_level-1)
                 {
                     for(int lvl=first_score_level-2; lvl>noteRenderInfo.level+noteRenderInfo.level%2-2; lvl -= 2)
                     {
                         const int y = LEVEL_TO_Y(lvl);
-                        dc.DrawLine(noteRenderInfo.x, y, noteRenderInfo.x+200, y);
+                        dc.DrawLine(noteX, y, noteX+200, y);
                     }
                 }
                 
@@ -803,13 +804,13 @@ namespace AriaMaestosa
                     for(int lvl=last_score_level+2; lvl<noteRenderInfo.level-noteRenderInfo.level%2+2; lvl += 2)
                     {
                         const int y = LEVEL_TO_Y(lvl);
-                        dc.DrawLine(noteRenderInfo.x, y, noteRenderInfo.x+200, y);
+                        dc.DrawLine(noteX, y, noteX+200, y);
                     }
                 }
                 
                 // draw head
                 const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
-                wxPoint headLocation( noteRenderInfo.x + note_x_shift,
+                wxPoint headLocation( noteX + note_x_shift,
                                      notey-(headRadius-5)/2.0); // FIXME....
                 
                 if(noteRenderInfo.instant_hit)
@@ -840,15 +841,14 @@ namespace AriaMaestosa
                 // draw dot if note is dotted
                 if(noteRenderInfo.dotted)
                 {
-                    // FIXME - what's that?? 4 head radiuses to get it visible?? coords are really screwed up
-                    wxPoint headLocation( noteRenderInfo.x + headRadius*3 + 20, notey+10 );
+                    wxPoint headLocation( noteX + note_x_shift + headRadius*2 + 20, notey+10 );
                     dc.DrawEllipse( headLocation, wxSize(10,10) );
                 }
                 
                 // draw sharpness sign if relevant
-                if(noteRenderInfo.sign == SHARP)        renderSharp  ( dc, noteRenderInfo.x, noteRenderInfo.getY() - 40  );
-                else if(noteRenderInfo.sign == FLAT)    renderFlat   ( dc, noteRenderInfo.x, noteRenderInfo.getY() - 40  );
-                else if(noteRenderInfo.sign == NATURAL) renderNatural( dc, noteRenderInfo.x, noteRenderInfo.getY() - 50  );
+                if(noteRenderInfo.sign == SHARP)        renderSharp  ( dc, noteX, noteRenderInfo.getY() - 40  );
+                else if(noteRenderInfo.sign == FLAT)    renderFlat   ( dc, noteX, noteRenderInfo.getY() - 40  );
+                else if(noteRenderInfo.sign == NATURAL) renderNatural( dc, noteX, noteRenderInfo.getY() - 50  );
                 
             } // next note
         }// end scope
@@ -896,7 +896,7 @@ namespace AriaMaestosa
             }
             
             // ties
-            if(noteRenderInfo.getTiedToPixel() != -1)
+            if(noteRenderInfo.getTiedToTick() != -1)
             {
                 wxPen tiePen( wxColour(0,0,0), 10 ) ;
                 dc.SetPen( tiePen );
@@ -905,8 +905,11 @@ namespace AriaMaestosa
                 const bool show_above = noteRenderInfo.isTieUp();
                 const int base_y = LEVEL_TO_Y( noteRenderInfo.getStemOriginLevel() ) + (show_above ? - 30 : 60);
                 
-                const int center_x = (noteRenderInfo.getTiedToPixel() + noteRenderInfo.x)/2 + headRadius*2;
-                const int radius_x = abs(noteRenderInfo.getTiedToPixel() - noteRenderInfo.x)/2;
+                const int noteX = x_converter->tickToX(noteRenderInfo.tick);
+                const int tiedToPixel = x_converter->tickToX(noteRenderInfo.getTiedToTick());
+                
+                const int center_x = (tiedToPixel + noteX)/2 + headRadius*2;
+                const int radius_x = abs(tiedToPixel - noteX)/2;
                 renderArc(dc, center_x, base_y, radius_x, show_above ? -50 : 50);
             }
             

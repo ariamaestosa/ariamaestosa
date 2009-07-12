@@ -63,7 +63,7 @@ public:
 class NoteRenderInfo
 {
     // used to display ties (display a tie between this note and specified tick). a value of -1 means no tie.
-    int tied_with_tick, tied_with_x;
+    int tied_with_tick;
     bool tie_up; // used if stem_type == STEM_NONE, otherwise tie location is determined with stem_type
 
     int y;
@@ -95,7 +95,7 @@ public:
 
     // location and duration of note
     int tick, tick_length;
-    int x, level;
+    int level;
     int pitch;
 
     // measure where the note begins and ends
@@ -118,11 +118,10 @@ public:
     float stem_y_level; // if != -1, the renderer will use this y as stem end instead of calculating it itself
 
 
-    NoteRenderInfo(int tick, int x, int level, int tick_length, PitchSign sign, const bool selected, int pitch);
+    NoteRenderInfo(int tick, int level, int tick_length, PitchSign sign, const bool selected, int pitch);
 
     void tieWith(NoteRenderInfo& renderInfo);
-    void tieWith(const int pixel, const int x);
-    int getTiedToPixel();
+    void tieWith(const int tick);
     int getTiedToTick();
     void setTieUp(const bool up);
     bool isTieUp();

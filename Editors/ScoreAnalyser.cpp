@@ -242,13 +242,12 @@ public:
 #pragma mark NoteRenderInfo
 #endif
 
-NoteRenderInfo::NoteRenderInfo(int tick, int x, int level, int tick_length, PitchSign sign, const bool selected, int pitch)
+NoteRenderInfo::NoteRenderInfo(int tick, int level, int tick_length, PitchSign sign, const bool selected, int pitch)
 {
     // what we know before render pass 1
     NoteRenderInfo::selected = selected;
     NoteRenderInfo::tick = tick;
     NoteRenderInfo::tick_length = tick_length;
-    NoteRenderInfo::x = x;
     NoteRenderInfo::sign = sign;
     NoteRenderInfo::level = level;
     NoteRenderInfo::pitch = pitch;
@@ -261,7 +260,6 @@ NoteRenderInfo::NoteRenderInfo(int tick, int x, int level, int tick_length, Pitc
     flag_amount = 0;
     y = -1;
     tied_with_tick = -1;
-    tied_with_x = -1;
     tie_up = false;
     stem_type = STEM_NONE;
 
@@ -289,23 +287,14 @@ NoteRenderInfo::NoteRenderInfo(int tick, int x, int level, int tick_length, Pitc
 void NoteRenderInfo::tieWith(NoteRenderInfo& renderInfo)
 {
     tied_with_tick = renderInfo.tick;
-    tied_with_x = renderInfo.x;
 
     if(stem_type == STEM_NONE) tie_up = renderInfo.stem_type;
     else tie_up = stem_type;
 }
-void NoteRenderInfo::tieWith(const int tick, const int x)
+void NoteRenderInfo::tieWith(const int tick)
 {
     tied_with_tick = tick;
-    tied_with_x = x;
-}
-int NoteRenderInfo::getTiedToPixel()
-{
-    if(tied_with_x == -1) return -1; // no tie
-    return tied_with_x;
 
-    //RelativeXCoord tied_with(tied_with_tick, MIDI);
-    //return tied_with.getRelativeTo(WINDOW);
 }
 int NoteRenderInfo::getTiedToTick()
 {
@@ -747,9 +736,8 @@ void ScoreAnalyser::findAndMergeChords()
                 summary.stem_type = (stem_up ? STEM_UP : STEM_DOWN);
                 summary.tick_length = smallest_duration;
 
-                summary.tieWith( noteRenderInfo[ !stem_up ? minid : maxid ].getTiedToTick(),
-                                 noteRenderInfo[ !stem_up ? minid : maxid ].getTiedToPixel() );
-                summary.setTieUp(noteRenderInfo[ !stem_up ? minid : maxid ].isTieUp());
+                summary.tieWith( noteRenderInfo[ !stem_up ? minid : maxid ].getTiedToTick() );
+                summary.setTieUp( noteRenderInfo[ !stem_up ? minid : maxid ].isTieUp() );
 
                 noteRenderInfo[i] = summary;
 
@@ -992,9 +980,9 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
         if(aboutEqual(firstLength, 0)) return;
         if(aboutEqual(secondLength, 0)) return;
         
-        NoteRenderInfo part1(renderInfo.tick, renderInfo.x, renderInfo.level, firstLength, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
+        NoteRenderInfo part1(renderInfo.tick, renderInfo.level, firstLength, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
         addToVector(part1, true);
-        NoteRenderInfo part2(getMeasureData()->firstTickInMeasure(renderInfo.measureBegin+1), tickToXConverter->tickToX(firstEnd),
+        NoteRenderInfo part2(getMeasureData()->firstTickInMeasure(renderInfo.measureBegin+1),
                              renderInfo.level, secondLength, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
         addToVector(part2, true);
 
@@ -1071,9 +1059,9 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
             initial_id = noteRenderInfo.size();
         }
 
-        NoteRenderInfo part1(renderInfo.tick, renderInfo.x, renderInfo.level, firstLength_tick, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
+        NoteRenderInfo part1(renderInfo.tick, renderInfo.level, firstLength_tick, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
         addToVector(part1, true);
-        NoteRenderInfo part2(secondBeginning_tick, tickToXConverter->tickToX(secondBeginning_tick), renderInfo.level,
+        NoteRenderInfo part2(secondBeginning_tick, renderInfo.level,
                              renderInfo.tick_length-firstLength_tick, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
         addToVector(part2, true);
 
