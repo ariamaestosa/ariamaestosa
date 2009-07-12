@@ -106,7 +106,7 @@ public:
 
     // triplets
     bool triplet_show_above, triplet, drag_triplet_sign;
-    int triplet_arc_x_start, triplet_arc_x_end, triplet_arc_level; // where to display the "triplet arc" than contains a "3"
+    int triplet_arc_tick_start, triplet_arc_tick_end, triplet_arc_level; // where to display the "triplet arc" than contains a "3"
 
     // beams
     // FIXME - is beam_show_above really necessary, since it's always the same direction as stem_type?
@@ -127,7 +127,6 @@ public:
     void setTieUp(const bool up);
     bool isTieUp();
 
-    void triplet_arc(int pixel1, int pixel2);
     void setTriplet();
 
     // those two will be the same for non-chords.

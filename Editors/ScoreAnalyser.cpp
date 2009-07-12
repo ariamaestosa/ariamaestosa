@@ -268,8 +268,8 @@ NoteRenderInfo::NoteRenderInfo(int tick, int x, int level, int tick_length, Pitc
     draw_stem = true;
 
     triplet_show_above = false;
-    triplet_arc_x_start = -1;
-    triplet_arc_x_end = -1;
+    triplet_arc_tick_start = -1;
+    triplet_arc_tick_end = -1;
     drag_triplet_sign = false;
 
     beam_show_above = false;
@@ -320,14 +320,6 @@ bool NoteRenderInfo::isTieUp()
     return (stem_type == STEM_NONE ? tie_up : stem_type != STEM_UP);
 }
 
-void NoteRenderInfo::triplet_arc(int pixel1, int pixel2)
-{
-    assertExpr(pixel1,>=,0);
-    assertExpr(pixel2,>=,0);
-    // FIXME - this method seems not even used
-    triplet_arc_x_start = pixel1;
-    triplet_arc_x_end = pixel2;
-}
 void NoteRenderInfo::setTriplet()
 {
     triplet = true;
@@ -876,7 +868,7 @@ void ScoreAnalyser::processTriplets()
 
                     noteRenderInfo[first_triplet].drag_triplet_sign = true;
                     // noteRenderInfo[first_triplet].triplet = true;
-                    noteRenderInfo[first_triplet].triplet_arc_x_end = noteRenderInfo[i].x + 8;
+                    noteRenderInfo[first_triplet].triplet_arc_tick_end = noteRenderInfo[i].tick;
                 }
 
                 // reset search for triplets
@@ -1101,7 +1093,7 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
 
     if(renderInfo.triplet)
     {
-        renderInfo.triplet_arc_x_start = renderInfo.x + 8;
+        renderInfo.triplet_arc_tick_start = renderInfo.tick;
         renderInfo.triplet_arc_level = renderInfo.level;
     }
 

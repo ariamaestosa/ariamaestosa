@@ -944,17 +944,25 @@ namespace AriaMaestosa
             }
             
             // triplet
-            if (noteRenderInfo.drag_triplet_sign and noteRenderInfo.triplet_arc_x_start != -1)
+            if (noteRenderInfo.drag_triplet_sign and noteRenderInfo.triplet_arc_tick_start != -1)
             {
                 wxPen tiePen( wxColour(0,0,0), 10 ) ;
                 dc.SetPen( tiePen );
                 dc.SetBrush( *wxTRANSPARENT_BRUSH );
                 
-                const int center_x = (noteRenderInfo.triplet_arc_x_end == -1 ?
-                                      noteRenderInfo.triplet_arc_x_start :
-                                      (noteRenderInfo.triplet_arc_x_start + noteRenderInfo.triplet_arc_x_end)/2) + headRadius;
-                const int radius_x = (noteRenderInfo.triplet_arc_x_end == -1 or  noteRenderInfo.triplet_arc_x_end == noteRenderInfo.triplet_arc_x_start ?
-                                      100 : (noteRenderInfo.triplet_arc_x_end - noteRenderInfo.triplet_arc_x_start)/2);
+                int triplet_arc_x_start = x_converter->tickToX(noteRenderInfo.triplet_arc_tick_start);
+                int triplet_arc_x_end = -1;
+                
+                if (noteRenderInfo.triplet_arc_tick_end != -1)
+                {
+                    triplet_arc_x_end = x_converter->tickToX(noteRenderInfo.triplet_arc_tick_end);
+                }
+                
+                const int center_x = (triplet_arc_x_end == -1 ?
+                                      triplet_arc_x_start :
+                                      (triplet_arc_x_start + triplet_arc_x_end)/2) + headRadius;
+                const int radius_x = (triplet_arc_x_end == -1 or  triplet_arc_x_end == triplet_arc_x_start ?
+                                      100 : (triplet_arc_x_end - triplet_arc_x_start)/2);
                 
                 const int base_y = LEVEL_TO_Y(noteRenderInfo.triplet_arc_level) + (noteRenderInfo.triplet_show_above ? -80 : 90);
                 
