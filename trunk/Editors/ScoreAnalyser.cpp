@@ -152,7 +152,7 @@ public:
         }
 
         // set initial beam info in note
-        noteRenderInfo[first_id].beam_to_x     = analyser->getStemX(noteRenderInfo[last_id]);
+        noteRenderInfo[first_id].beam_to_tick  = noteRenderInfo[last_id].tick;
         noteRenderInfo[first_id].beam_to_level = analyser->getStemTo(noteRenderInfo[last_id]);
         noteRenderInfo[first_id].stem_y_level  = analyser->getStemTo(noteRenderInfo[first_id]);
 
@@ -178,9 +178,9 @@ public:
         // fix all note stems so they all point in the same direction and have the correct height
         while(true)
         {
-            const int from_x = analyser->getStemX(noteRenderInfo[first_id]);
+            const int from_tick = noteRenderInfo[first_id].tick;
             const float from_level = analyser->getStemTo(noteRenderInfo[first_id]);
-            const int to_x = noteRenderInfo[first_id].beam_to_x;
+            const int to_tick = noteRenderInfo[first_id].beam_to_tick;
             const float to_level = noteRenderInfo[first_id].beam_to_level;
 
             bool need_to_start_again = false;
@@ -188,7 +188,7 @@ public:
             {
                 // give correct stem height (so it doesn't end above or below beam line)
                 // rel_pos will be 0 for first note of a beamed serie, and 1 for the last one
-                const float rel_pos = (float)(analyser->getStemX(noteRenderInfo[j]) - from_x) / (float)(to_x - from_x);
+                const float rel_pos = (float)(noteRenderInfo[j].tick - from_tick) / (float)(to_tick - from_tick);
                 if(j != first_id)
                 {
                     noteRenderInfo[j].stem_y_level = (float)from_level + (float)(to_level - from_level) * rel_pos;
@@ -273,7 +273,7 @@ NoteRenderInfo::NoteRenderInfo(int tick, int x, int level, int tick_length, Pitc
     drag_triplet_sign = false;
 
     beam_show_above = false;
-    beam_to_x = -1;
+    beam_to_tick = -1;
     beam_to_level = -1;
     beam = false;
 
@@ -399,12 +399,6 @@ void ScoreAnalyser::setStemPivot(const int level)
 void ScoreAnalyser::clearAndPrepare()
 {
     noteRenderInfo.clear();
-}
-int ScoreAnalyser::getStemX(NoteRenderInfo& note)
-{
-    if     (note.stem_type == STEM_UP)   return (note.x + stem_up_x_offset);
-    else if(note.stem_type == STEM_DOWN) return (note.x + stem_down_x_offset);
-    else return -1;
 }
 float ScoreAnalyser::getStemFrom(NoteRenderInfo& note)
 {

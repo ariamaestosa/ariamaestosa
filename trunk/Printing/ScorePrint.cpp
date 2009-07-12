@@ -556,6 +556,30 @@ namespace AriaMaestosa
 
     }
     
+    namespace PrintStemParams
+    {
+        int stem_up_x_offset;
+        float stem_up_y_offset;
+        int stem_down_x_offset;
+        float stem_down_y_offset;
+        int note_x_shift = 0;
+        
+        const int getStemX(const int tick, const STEM stem_type)
+        {
+            const int noteX = x_converter->tickToX(tick);
+            
+            if     (stem_type == STEM_UP)   return (noteX + stem_up_x_offset + note_x_shift);
+            else if(stem_type == STEM_DOWN) return (noteX + stem_down_x_offset + note_x_shift);
+            else return -1;
+        }
+        const int getStemX(const NoteRenderInfo& noteRenderInfo)
+        {
+            return getStemX(noteRenderInfo.tick, noteRenderInfo.stem_type);
+        }
+    }
+    using namespace PrintStemParams;
+    
+    
     /**
      * Goes a bit further that 'gatherScoreInfo' : builds analyzers objects and gathers notes. Does
      * not perform any actual analysis with the ScoreAnalyser(s)
@@ -577,15 +601,11 @@ namespace AriaMaestosa
         if(scoreData->g_clef)
         {
             scoreData->g_clef_analyser = new ScoreAnalyser(scoreEditor, new PrintXConverter(this), scoreData->middle_c_level-5);
-            scoreData->g_clef_analyser->setStemDrawInfo( 140 /* stem up x offset */, 0 /* stem_up_y_offset */,
-                                                         60 /* stem_down_x_offset */, 0  /* stem_down_y_offset */);
             scoreData->g_clef_analyser->setStemPivot(scoreData->middle_c_level-5);
         }
         if(scoreData->f_clef)
         {
             scoreData->f_clef_analyser = new ScoreAnalyser(scoreEditor, new PrintXConverter(this), scoreData->middle_c_level-5);
-            scoreData->f_clef_analyser->setStemDrawInfo( 140 /* stem up x offset */, 0 /* stem_up_y_offset */,
-                                                         60 /* stem_down_x_offset */, 0 /* stem_down_y_offset */ );
             scoreData->f_clef_analyser->setStemPivot(scoreData->middle_c_level+6);
         }
 
@@ -661,17 +681,16 @@ namespace AriaMaestosa
         const int first_score_level = middle_c_level + (f_clef? 2 : -10);
         const int last_score_level = first_score_level + 8;
         const int min_level =  first_score_level - extra_lines_above*2;
-        const int headRadius = 40; //(int)round(lineHeight*0.8);
+        const int headRadius = 36; //(int)round(lineHeight*0.8);
 
-        /*
-         void setStemDrawInfo( const int stem_up_x_offset,
-         const float stem_up_y_offset,
-         const int stem_down_x_offset,
-         const float stem_down_y_offset,
-         const float stem_height = -1,
-         const float min_stem_height = -1);
-         */
-        analyser.setStemDrawInfo( headRadius*2 + 26, 0, 39, 0 );
+        note_x_shift = headRadius + 36; // shift by a 'headRadius', since note will be drawn centered on its X and not left-aligned
+        
+        stem_up_x_offset = headRadius - 10;
+        stem_up_y_offset = 0;
+        stem_down_x_offset = -headRadius + 4;
+        stem_down_y_offset = 0;
+        
+        analyser.setStemDrawInfo( stem_up_x_offset, stem_up_y_offset, stem_down_x_offset, stem_down_y_offset );
         
 #define LEVEL_TO_Y( lvl ) y0 + 1 + lineHeight*0.5*(lvl - min_level)
                 
@@ -790,25 +809,25 @@ namespace AriaMaestosa
                 
                 // draw head
                 const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
-                wxPoint headLocation( noteRenderInfo.x + (headRadius),
+                wxPoint headLocation( noteRenderInfo.x + note_x_shift,
                                      notey-(headRadius-5)/2.0); // FIXME....
                 
                 if(noteRenderInfo.instant_hit)
                 {
-                    dc.DrawText(wxT("X"), headLocation.x, headLocation.y);
+                    dc.DrawText(wxT("X"), headLocation.x - 36, headLocation.y);
                 }
                 else
                 {
                     dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
                     dc.SetBrush( *wxBLACK_BRUSH );
-                    const int cx = headLocation.x + 30;
+                    const int cx = headLocation.x;
                     const int cy = headLocation.y;
                     wxPoint points[25];
                     for(int n=0; n<25; n++)
                     {
                         // FIXME - instead of always substracting to radius, just make it smaller...
                         const float angle = n/25.0*6.283185f /* 2*PI */;
-                        points[n] = wxPoint( cx + 6 + (headRadius-5)*cos(angle),
+                        points[n] = wxPoint( cx + (headRadius-5)*cos(angle),
                                              cy + headRadius/2 + (headRadius - 14)*sin(angle) - headRadius*(-0.5f + fabsf( (n-12.5f)/12.5f ))/2.0f );
                     }
 
@@ -848,16 +867,16 @@ namespace AriaMaestosa
             
             // draw stem
             if(noteRenderInfo.stem_type != STEM_NONE)
-            {
-                dc.DrawLine( analyser.getStemX(noteRenderInfo), LEVEL_TO_Y(analyser.getStemFrom(noteRenderInfo)),
-                            analyser.getStemX(noteRenderInfo), LEVEL_TO_Y(analyser.getStemTo(noteRenderInfo))    );
+            {                
+                dc.DrawLine( getStemX(noteRenderInfo), LEVEL_TO_Y(analyser.getStemFrom(noteRenderInfo)),
+                             getStemX(noteRenderInfo), LEVEL_TO_Y(analyser.getStemTo(noteRenderInfo))    );
             }
             
             // draw flags
             if(not noteRenderInfo.instant_hit and noteRenderInfo.flag_amount>0 and not noteRenderInfo.beam)
             {
                 const int stem_end = LEVEL_TO_Y(analyser.getStemTo(noteRenderInfo));
-                const int flag_x_origin = analyser.getStemX(noteRenderInfo);
+                const int flag_x_origin = getStemX(noteRenderInfo);
                 const int flag_step = (noteRenderInfo.stem_type==STEM_UP ? 7 : -7 );
                 
                 for(int n=0; n<noteRenderInfo.flag_amount; n++)
@@ -897,19 +916,23 @@ namespace AriaMaestosa
                 dc.SetPen(  wxPen( wxColour(0,0,0), 10 ) );
                 dc.SetBrush( *wxBLACK_BRUSH );
                 
-                const int x1 = analyser.getStemX(noteRenderInfo);
+                const int x1 = getStemX(noteRenderInfo);
                 int y1       = LEVEL_TO_Y(analyser.getStemTo(noteRenderInfo));
                 int y2       = LEVEL_TO_Y(noteRenderInfo.beam_to_level);
                 
                 const int y_diff = (noteRenderInfo.stem_type == STEM_UP ? 55 : -55);
                 
+                const int beam_to_x = getStemX(noteRenderInfo.beam_to_tick, noteRenderInfo.stem_type);
+                
                 for(int n=0; n<noteRenderInfo.flag_amount; n++)
                 {
+                    
+                    
                     wxPoint points[] =
                     {
                         wxPoint(x1, y1),
-                        wxPoint(noteRenderInfo.beam_to_x, y2),
-                        wxPoint(noteRenderInfo.beam_to_x, y2+20),
+                        wxPoint(beam_to_x, y2),
+                        wxPoint(beam_to_x, y2+20),
                         wxPoint(x1, y1+20)
                     };
                     dc.DrawPolygon(4, points);
