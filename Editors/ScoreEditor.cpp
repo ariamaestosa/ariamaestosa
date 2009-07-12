@@ -526,6 +526,29 @@ void ScoreEditor::setNoteSign(const int sign, const int noteID)
 
 #define LEVEL_TO_Y( lvl ) (y_step * lvl + getEditorYStart() - getYScrollInPixels()-2)
 
+namespace EditorStemParams
+{
+    int stem_up_x_offset = 9;
+    float stem_up_y_offset = 0.4;
+    int stem_down_x_offset = 1;
+    float stem_down_y_offset = 0.8;
+
+    int getStemX(const int tick, const STEM stem_type)
+    {
+        RelativeXCoord relX(tick, MIDI);
+        const int noteX = relX.getRelativeTo(WINDOW);
+        
+        if     (stem_type == STEM_UP)   return (noteX + stem_up_x_offset);
+        else if(stem_type == STEM_DOWN) return (noteX + stem_down_x_offset);
+        else return -1;
+    }
+    int getStemX(const NoteRenderInfo& info)
+    {
+        return getStemX(info.tick, info.stem_type);
+    }
+}
+using namespace EditorStemParams;
+    
 // where 'renderInfo' is a 'NoteRenderInfo' object of current note.
 // 'vector' is where all visible notes will are added, to be analysed after
 void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
@@ -674,8 +697,8 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
 
         if(renderInfo.stem_type == STEM_UP or renderInfo.stem_type == STEM_DOWN)
         {
-           AriaRender::line( analyser->getStemX(renderInfo), LEVEL_TO_Y(analyser->getStemFrom(renderInfo)),
-                             analyser->getStemX(renderInfo), LEVEL_TO_Y(analyser->getStemTo(renderInfo))   );
+           AriaRender::line( getStemX(renderInfo), LEVEL_TO_Y(analyser->getStemFrom(renderInfo)),
+                             getStemX(renderInfo), LEVEL_TO_Y(analyser->getStemTo(renderInfo))   );
         }
 
 
@@ -731,8 +754,8 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
     {
         AriaRender::color(0,0,0);
         AriaRender::lineWidth(2);
-
-        const int x1 = analyser->getStemX(renderInfo);
+        
+        const int x1 = getStemX(renderInfo);
         int y1       = LEVEL_TO_Y(analyser->getStemTo(renderInfo));
         int y2       = LEVEL_TO_Y(renderInfo.beam_to_level);
 
@@ -741,7 +764,7 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
         AriaRender::lineSmooth(true);
         for(int n=0; n<renderInfo.flag_amount; n++)
         {
-            AriaRender::line(x1, y1, renderInfo.beam_to_x, y2);
+            AriaRender::line(x1, y1, getStemX(renderInfo.beam_to_tick, renderInfo.stem_type), y2);
             y1 += y_diff;
             y2 += y_diff;
         }

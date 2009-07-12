@@ -113,7 +113,7 @@ public:
     bool beam_show_above, beam;
     // if beam is true, the renderer will draw a beam between the end of this note's stem and the
     // location specified by these variables.
-    int beam_to_x;
+    int beam_to_tick;
     float beam_to_level;
     float stem_y_level; // if != -1, the renderer will use this y as stem end instead of calculating it itself
 
@@ -168,7 +168,6 @@ public:
                       const float stem_height = -1,
                       const float min_stem_height = -1);
 
-    int getStemX(NoteRenderInfo& note);
     float getStemFrom(NoteRenderInfo& note);
     float getStemTo(NoteRenderInfo& note);
 
