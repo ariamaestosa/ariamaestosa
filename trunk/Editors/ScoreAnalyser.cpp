@@ -431,15 +431,7 @@ void recursivelyAnalyzeSilence(void (*renderSilenceCallback)(const int, const in
         const int end_measure = getMeasureData()->measureAtTick(tick+tick_length-1);
         const int beat = getMeasureData()->beatLengthInTicks();
         
-        //{
-        //    LayoutElement* temp = g_printable->getElementForMeasure(measure);
-        //    if(temp != NULL and (temp->getType() == REPEATED_RIFF or temp->getType() == SINGLE_REPEATED_MEASURE))
-        //        return; //don't render silences in repetions measure!
-        //}
-        
         if(tick_length<2) return;
-        
-        // FIXME - merge common parts with the one in ScoreEditor
         
         // check if silence spawns over more than one measure
         if(measure != end_measure)
