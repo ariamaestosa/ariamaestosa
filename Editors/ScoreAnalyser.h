@@ -132,10 +132,6 @@ class ScoreAnalyser
     ScoreEditor* editor;
     int stemPivot;
 
-    int stem_up_x_offset;
-    float stem_up_y_offset;
-    int stem_down_x_offset;
-    float stem_down_y_offset;
     float stem_height;
     float min_stem_height;
 public:
@@ -148,7 +144,6 @@ public:
     void setStemDrawInfo( const float stem_height = -1,
                          const float min_stem_height = -1);
 
-    float getStemFrom(NoteRenderInfo& note);
     float getStemTo(NoteRenderInfo& note);
 
     // you're done rendering the current frame, prepare to render the next

@@ -349,10 +349,6 @@ ScoreAnalyser::ScoreAnalyser(ScoreEditor* parent, int stemPivot)
     ScoreAnalyser::editor = parent;
     ScoreAnalyser::stemPivot = stemPivot;
 
-    stem_up_x_offset = 9;
-    stem_up_y_offset = 0.4;
-    stem_down_x_offset = 1;
-    stem_down_y_offset = 0.8;
     stem_height = 5.2;
     min_stem_height = 4.5;
 }
@@ -371,18 +367,11 @@ void ScoreAnalyser::clearAndPrepare()
 {
     noteRenderInfo.clear();
 }
-float ScoreAnalyser::getStemFrom(NoteRenderInfo& note)
-{
-    const int stem_base_lvl = note.getStemOriginLevel();
-    if     (note.stem_type == STEM_UP)   return (stem_base_lvl + stem_up_y_offset);
-    else if(note.stem_type == STEM_DOWN) return (stem_base_lvl + stem_down_y_offset);
-    else return -1;
-}
 float ScoreAnalyser::getStemTo(NoteRenderInfo& note)
 {
     if(note.stem_y_level != -1) return note.stem_y_level;
-    else if(note.stem_type == STEM_UP)   return getStemFrom(note) - stem_height;
-    else if(note.stem_type == STEM_DOWN) return getStemFrom(note) + stem_height;
+    else if(note.stem_type == STEM_UP)   return note.getStemOriginLevel() - stem_height;
+    else if(note.stem_type == STEM_DOWN) return note.getStemOriginLevel() + stem_height;
     else{ assert(false); return -1; }
 }
     
@@ -718,8 +707,8 @@ void ScoreAnalyser::findAndMergeChords()
                 summary.min_chord_level = min_level;
                 summary.max_chord_level = max_level;
                 summary.stem_y_level = (stem_up ?
-                                        getStemFrom( noteRenderInfo[minid] ) - stem_height :
-                                        getStemFrom( noteRenderInfo[maxid] ) + stem_height);
+                                        noteRenderInfo[minid].getStemOriginLevel() - stem_height :
+                                        noteRenderInfo[maxid].getStemOriginLevel() + stem_height);
                 summary.flag_amount = flag_amount;
                 summary.triplet = triplet;
                 summary.draw_stem = true;
