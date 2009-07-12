@@ -724,11 +724,26 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
     }
 
     // triplet
-    if (renderInfo.drag_triplet_sign and renderInfo.triplet_arc_x_start != -1)
+    if (renderInfo.drag_triplet_sign and renderInfo.triplet_arc_tick_start != -1)
     {
-        const int center_x = (renderInfo.triplet_arc_x_end == -1 ? renderInfo.triplet_arc_x_start : (renderInfo.triplet_arc_x_start + renderInfo.triplet_arc_x_end)/2);
-        const int radius_x = (renderInfo.triplet_arc_x_end == -1 or  renderInfo.triplet_arc_x_end == renderInfo.triplet_arc_x_start ?
-                              10 : (renderInfo.triplet_arc_x_end - renderInfo.triplet_arc_x_start)/2);
+        int triplet_arc_x_start = -1;
+        int triplet_arc_x_end = -1;
+        
+        if (renderInfo.triplet_arc_tick_start != -1)
+        {
+             RelativeXCoord relXStart(renderInfo.triplet_arc_tick_start, MIDI);
+             triplet_arc_x_start = relXStart.getRelativeTo(WINDOW) + 8;
+        }
+        if (renderInfo.triplet_arc_tick_end != -1)
+        {
+            RelativeXCoord relXEnd(renderInfo.triplet_arc_tick_end, MIDI);
+            triplet_arc_x_end = relXEnd.getRelativeTo(WINDOW) + 8;
+        }
+        
+
+        const int center_x = (triplet_arc_x_end == -1 ? triplet_arc_x_start : (triplet_arc_x_start + triplet_arc_x_end)/2);
+        const int radius_x = (triplet_arc_x_end == -1 or  triplet_arc_x_end == triplet_arc_x_start ?
+                              10 : (triplet_arc_x_end - triplet_arc_x_start)/2);
 
         AriaRender::color(0,0,0);
         AriaRender::arc(center_x, LEVEL_TO_Y(renderInfo.triplet_arc_level) + (renderInfo.triplet_show_above ? 0 : 10), radius_x, 10, renderInfo.triplet_show_above);
