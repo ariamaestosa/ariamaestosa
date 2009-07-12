@@ -176,6 +176,9 @@ def sys_command(command):
 def compile_Aria(which_os):
 
     env = Environment()
+    
+    env.Decider('MD5-timestamp')
+    
     env.Append(PATH = os.environ['PATH'])
 
     if 'CXX' in os.environ:
