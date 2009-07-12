@@ -24,6 +24,8 @@ namespace AriaMaestosa
     class ScoreData : public EditorData
         {
         public:
+            LEAK_CHECK();
+            
             virtual ~ScoreData() {}
             
             int middle_c_level, from_note, to_note;
@@ -395,7 +397,6 @@ namespace AriaMaestosa
 #pragma mark ScorePrintable (EditorPrintable common interface)
 #endif
     
-    
     ScorePrintable::ScorePrintable(Track* track) : EditorPrintable()
     {
         // std::cout << " *** setting global g_printable" << std::endl;
@@ -415,6 +416,38 @@ namespace AriaMaestosa
                 abs(scoreData->extra_lines_above_g_score) +
                 abs(scoreData->extra_lines_under_f_score);
 
+    }
+    
+    void ScorePrintable::addUsedTicks(const MeasureTrackReference& trackRef,
+                                      std::map< int /* tick */, float /* position */ >& ticks_relative_position)
+    {
+        const int first_note = trackRef.firstNote;
+        const int last_note = trackRef.lastNote;
+        
+        Track* track = trackRef.track;
+        ScoreEditor* scoreEditor = track->graphics->scoreEditor;
+        
+        ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
+        converter->updateConversionData();
+        converter->resetAccidentalsForNewRender();
+        
+        PitchSign note_sign;
+        
+        if(first_note == -1 or last_note == -1) return; // empty measure
+        
+        for(int n=first_note; n<=last_note; n++)
+        {
+            const int tick = track->getNoteStartInMidiTicks(n);
+
+            converter->noteToLevel(track->getNote(n), &note_sign);
+            if (note_sign != NONE)
+            {
+                std::cout << "note " << n << " will need more space\n";
+                ticks_relative_position[ tick-1 ] = -1; // FIXME : ugly hack to leave more space before note
+            }
+            
+            ticks_relative_position[ tick ] = -1; // will be set later
+        }
     }
     
     void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc)

@@ -5,6 +5,8 @@
 #include "Midi/Sequence.h"
 #include "Midi/MeasureData.h"
 #include "Editors/GuitarEditor.h"
+#include "Printing/ScorePrint.h"
+#include "Printing/TabPrint.h"
 #include "AriaCore.h"
 
 #include <iostream>
@@ -462,22 +464,23 @@ void PrintLayoutManager::calculateRelativeLengths()
                 
                 std::vector<int> all_ticks_vector;
                 
-                // build a list of all ticks
+                // Build a list of all ticks
                 MeasureToExport& meas = measures[layoutElements[n].measure];
                 std::map< int /* tick */, float /* position */ >& ticks_relative_position = meas.ticks_relative_position;
                 
                 const int trackAmount = meas.trackRef.size();
                 for(int i=0; i<trackAmount; i++)
                 {
-                    const int first_note = meas.trackRef[i].firstNote;
-                    const int last_note = meas.trackRef[i].lastNote;
-                    
-                    if(first_note == -1 or last_note == -1) continue; // empty measure
-                    
-                    for(int n=first_note; n<=last_note; n++)
+                    // TODO : also count silences, they need some space too
+
+                    const int mode = meas.trackRef[i].track->graphics->editorMode;
+                    if (mode == SCORE)
                     {
-                        const int tick = meas.trackRef[i].track->getNoteStartInMidiTicks(n);
-                        ticks_relative_position[ tick ] = -1; // will be set later
+                        ScorePrintable::addUsedTicks(meas.trackRef[i], ticks_relative_position);
+                    }
+                    else if (mode == GUITAR)
+                    {
+                        TablaturePrintable::addUsedTicks(meas.trackRef[i], ticks_relative_position);
                     }
                 }
                 
@@ -512,8 +515,6 @@ void PrintLayoutManager::calculateRelativeLengths()
                     ticks_relative_position[ all_ticks_vector[i] ] = (float)i/all_ticks_amount;
                 }
                 
-                // TODO : also count silences, they need some space too
-                // TODO : ask ScoreEditor to know if some notes require more space because they have accidentals
                 layoutElements[n].width_in_units = all_ticks_amount;
                 std::cout << "***** unit width = " << layoutElements[n].width_in_units << std::endl;
             }
