@@ -218,6 +218,11 @@ namespace AriaMaestosa
         const int x = x_converter->tickToX(tick);
         if(x < 0) return; // this part of score is not printed (e.g. is in a repetition)
     
+        //{ TODO : use again
+        //    LayoutElement* temp = g_printable->getElementForMeasure(measure);
+        //    if(temp != NULL and (temp->getType() == REPEATED_RIFF or temp->getType() == SINGLE_REPEATED_MEASURE))
+        //        return; //don't render silences in repetions measure!
+        //}
         
         global_dc->SetBrush( *wxBLACK_BRUSH );
         
