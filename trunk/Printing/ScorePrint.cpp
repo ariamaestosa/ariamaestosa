@@ -50,7 +50,7 @@ namespace AriaMaestosa
      * An instance of this will be given to the score analyser. Having a separate x-coord-converter
      * allows it to do conversions between units without becoming context-dependent.
      */
-    class PrintXConverter : public TickToXConverter
+    class PrintXConverter
         {
             ScorePrintable* parent;
         public:
@@ -600,12 +600,12 @@ namespace AriaMaestosa
         // ---- Build score analyzers
         if(scoreData->g_clef)
         {
-            scoreData->g_clef_analyser = new ScoreAnalyser(scoreEditor, new PrintXConverter(this), scoreData->middle_c_level-5);
+            scoreData->g_clef_analyser = new ScoreAnalyser(scoreEditor, scoreData->middle_c_level-5);
             scoreData->g_clef_analyser->setStemPivot(scoreData->middle_c_level-5);
         }
         if(scoreData->f_clef)
         {
-            scoreData->f_clef_analyser = new ScoreAnalyser(scoreEditor, new PrintXConverter(this), scoreData->middle_c_level-5);
+            scoreData->f_clef_analyser = new ScoreAnalyser(scoreEditor, scoreData->middle_c_level-5);
             scoreData->f_clef_analyser->setStemPivot(scoreData->middle_c_level+6);
         }
 
@@ -687,9 +687,7 @@ namespace AriaMaestosa
         stem_up_y_offset = 0;
         stem_down_x_offset = -headRadius + 4;
         stem_down_y_offset = 0;
-        
-        analyser.setStemDrawInfo( stem_up_x_offset, stem_up_y_offset, stem_down_x_offset, stem_down_y_offset );
-        
+                
 #define LEVEL_TO_Y( lvl ) y0 + 1 + lineHeight*0.5*(lvl - min_level)
                 
         

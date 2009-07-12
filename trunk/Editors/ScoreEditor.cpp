@@ -403,19 +403,6 @@ int ScoreMidiConverter::getMidiNoteForLevelAndSign(const unsigned int level, int
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MyXConverter : public TickToXConverter
-{
-public:
-    LEAK_CHECK();
-
-    ~MyXConverter(){}
-    int tickToX(const int tick)
-    {
-        RelativeXCoord relX(tick, MIDI);
-        return relX.getRelativeTo(WINDOW);
-    }
-};
-
 ScoreEditor::ScoreEditor(Track* track) : Editor(track)
 {
     g_clef = true;
@@ -429,8 +416,8 @@ ScoreEditor::ScoreEditor(Track* track) : Editor(track)
 
     converter->updateConversionData();
 
-    g_clef_analyser = new ScoreAnalyser(this, new MyXConverter(), converter->getScoreCenterCLevel()-5);
-    f_clef_analyser = new ScoreAnalyser(this, new MyXConverter(), converter->getScoreCenterCLevel()+6);
+    g_clef_analyser = new ScoreAnalyser(this, converter->getScoreCenterCLevel()-5);
+    f_clef_analyser = new ScoreAnalyser(this, converter->getScoreCenterCLevel()+6);
 
     setYStep( y_step );
 
