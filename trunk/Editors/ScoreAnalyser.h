@@ -183,9 +183,9 @@ public:
     // set the level below which the stem is up, and above which it is down
     void setStemPivot(const int level);
 
-    void renderSilences( void (*renderSilenceCallback)(const int, const int, const int),
-                         const int first_visible_measure, const int last_visible_measure,
-                         const int silences_y );
+    void ScoreAnalyser::renderSilences( void (*renderSilenceCallback)(const int, const int, const int, const bool, const bool, const int, const int),
+                                       const int first_visible_measure, const int last_visible_measure,
+                                       const int silences_y);
 protected:
     // internal methods performing different steps in score analysis
     void putInTimeOrder();
