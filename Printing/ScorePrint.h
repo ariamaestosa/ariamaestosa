@@ -39,6 +39,8 @@ public:
     ScorePrintable(Track* track_arg);
     virtual ~ScorePrintable();
 
+    static void addUsedTicks(const MeasureTrackReference& trackRef, std::map< int /* tick */, float /* position */ >&);
+    
     void drawLine(LayoutLine& line, wxDC& dc);
     int calculateHeight(LayoutLine& line);
     };
