@@ -420,7 +420,96 @@ float ScoreAnalyser::getStemTo(NoteRenderInfo& note)
     else if(note.stem_type == STEM_DOWN) return getStemFrom(note) + stem_height;
     else{ assert(false); return -1; }
 }
-void ScoreAnalyser::renderSilences( void (*renderSilenceCallback)(const int, const int, const int),
+    
+void recursivelyAnalyzeSilence(void (*renderSilenceCallback)(const int, const int, const int, const bool, const bool, const int, const int),
+                               const int tick, const int tick_length, const int silences_y)
+    {
+        
+        if(tick_length<2) return;
+        
+        const int measure = getMeasureData()->measureAtTick(tick);
+        const int end_measure = getMeasureData()->measureAtTick(tick+tick_length-1);
+        const int beat = getMeasureData()->beatLengthInTicks();
+        
+        //{
+        //    LayoutElement* temp = g_printable->getElementForMeasure(measure);
+        //    if(temp != NULL and (temp->getType() == REPEATED_RIFF or temp->getType() == SINGLE_REPEATED_MEASURE))
+        //        return; //don't render silences in repetions measure!
+        //}
+        
+        if(tick_length<2) return;
+        
+        // FIXME - merge common parts with the one in ScoreEditor
+        
+        // check if silence spawns over more than one measure
+        if(measure != end_measure)
+        {
+            // we need to plit it in two
+            const int split_tick = getMeasureData()->firstTickInMeasure(end_measure);
+            
+            // Check split is valid before attempting.
+            if(split_tick-tick>0 and tick_length-(split_tick-tick)>0)
+            {
+                recursivelyAnalyzeSilence(renderSilenceCallback, tick, split_tick-tick, silences_y);
+                recursivelyAnalyzeSilence(renderSilenceCallback, split_tick, tick_length-(split_tick-tick), silences_y);
+                return;
+            }
+        }
+        
+        if(tick < 0) return; // FIXME - find why it happens
+        // assertExpr(tick,>,-1);
+        
+        bool dotted = false, triplet = false;
+        int type = -1;
+        
+        int dot_delta_x = 0, dot_delta_y = 0;
+        
+        const float relativeLength = tick_length / (float)(getMeasureData()->beatLengthInTicks()*4);
+        
+        const int tick_in_measure_start = (tick) - getMeasureData()->firstTickInMeasure( getMeasureData()->measureAtTick(tick) );
+        const int remaining = beat - (tick_in_measure_start % beat);
+        const bool starts_on_beat = aboutEqual(remaining,0) or aboutEqual(remaining,beat);
+        
+        if( aboutEqual(relativeLength, 1.0) ) type = 1;
+        else if (aboutEqual(relativeLength, 3.0/2.0) and starts_on_beat){ type = 1; dotted = true; dot_delta_x = 5; dot_delta_y = 2;}
+        else if (aboutEqual(relativeLength, 1.0/2.0)) type = 2;
+        else if (aboutEqual(relativeLength, 3.0/4.0) and starts_on_beat){ type = 2; dotted = true; dot_delta_x = 5; dot_delta_y = 2;}
+        else if (aboutEqual(relativeLength, 1.0/4.0)) type = 4;
+        else if (aboutEqual(relativeLength, 1.0/3.0)){ type = 2; triplet = true; }
+        else if (aboutEqual(relativeLength, 3.0/8.0) and starts_on_beat){ type = 4; dotted = true; dot_delta_x = -3; dot_delta_y = 10; }
+        else if (aboutEqual(relativeLength, 1.0/8.0)) type = 8;
+        else if (aboutEqual(relativeLength, 1.0/6.0)){ type = 4; triplet = true; }
+        else if (aboutEqual(relativeLength, 3.0/16.0) and starts_on_beat){ type = 8; dotted = true; }
+        else if (aboutEqual(relativeLength, 1.0/16.0)) type = 16;
+        else if (aboutEqual(relativeLength, 1.0/12.0)){ triplet = true; type = 8; }
+        else if(relativeLength < 1.0/16.0){ return; }
+        else
+        {
+            // silence is of unknown duration. split it in a serie of silences.
+            
+            // start by reaching the next beat if not already done
+            if(!starts_on_beat and !aboutEqual(remaining,tick_length))
+            {
+                recursivelyAnalyzeSilence(renderSilenceCallback, tick, remaining, silences_y);
+                recursivelyAnalyzeSilence(renderSilenceCallback, tick+remaining, tick_length - remaining, silences_y);
+                return;
+            }
+            
+            // split in two smaller halves. render using a simple recursion.
+            float closestShorterDuration = 1;
+            while(closestShorterDuration >= relativeLength) closestShorterDuration /= 2.0;
+            
+            const int firstLength = closestShorterDuration*(float)(getMeasureData()->beatLengthInTicks()*4);
+            
+            recursivelyAnalyzeSilence(renderSilenceCallback, tick, firstLength, silences_y);
+            recursivelyAnalyzeSilence(renderSilenceCallback, tick + firstLength, tick_length - firstLength, silences_y);
+            return;
+        }
+        
+        renderSilenceCallback(tick, type, silences_y, triplet, dotted, dot_delta_x, dot_delta_y);
+    }
+    
+void ScoreAnalyser::renderSilences( void (*renderSilenceCallback)(const int, const int, const int, const bool, const bool, const int, const int),
                                     const int first_visible_measure, const int last_visible_measure,
                                     const int silences_y)
 {
@@ -430,7 +519,7 @@ void ScoreAnalyser::renderSilences( void (*renderSilenceCallback)(const int, con
     const int visible_measure_amount = last_visible_measure-first_visible_measure+1;
     bool measure_empty[visible_measure_amount+1];
     for(int i=0; i<=visible_measure_amount; i++) measure_empty[i] = true;
-
+        
     const int visibleNoteAmount = noteRenderInfo.size();
     if(visibleNoteAmount>0)
     {
@@ -477,7 +566,7 @@ void ScoreAnalyser::renderSilences( void (*renderSilenceCallback)(const int, con
                     const int silence_length = getMeasureData()->lastTickInMeasure(last_measure_id)-last_note_end;
                     if(silence_length < 0) continue;
                    // std::cout << "completing silence at measure " << (1+last_measure_id) << ", len=" << silence_length/getMeasureData()->beatLengthInTicks() << std::endl;
-                    renderSilenceCallback(last_note_end, silence_length, silences_y);
+                    recursivelyAnalyzeSilence(renderSilenceCallback, last_note_end, silence_length, silences_y);
 
                 }
                 // if note is not at the very beginning of the new measure, and it's the first note of
@@ -485,7 +574,7 @@ void ScoreAnalyser::renderSilences( void (*renderSilenceCallback)(const int, con
                 if(!aboutEqual(noteRenderInfo[i].tick, getMeasureData()->firstTickInMeasure(measure) ))
                 {
                     const int silence_length = noteRenderInfo[i].tick - getMeasureData()->firstTickInMeasure(measure);
-                    renderSilenceCallback(getMeasureData()->firstTickInMeasure(measure), silence_length, silences_y);
+                    recursivelyAnalyzeSilence(renderSilenceCallback, getMeasureData()->firstTickInMeasure(measure), silence_length, silences_y);
                 }
 
                 if(last_measure!=-1)
@@ -509,7 +598,7 @@ void ScoreAnalyser::renderSilences( void (*renderSilenceCallback)(const int, con
             if( previous_note_end != -1 and !aboutEqual(previous_note_end, current_begin_tick) and
                 (current_begin_tick-previous_note_end)>0 /*and previous_note_end >= last_note_end*/)
             {
-                renderSilenceCallback(previous_note_end, current_begin_tick-previous_note_end, silences_y);
+                recursivelyAnalyzeSilence(renderSilenceCallback, previous_note_end, current_begin_tick-previous_note_end, silences_y);
             }
 
             previous_note_end = noteRenderInfo[i].tick + noteRenderInfo[i].tick_length;
@@ -530,7 +619,7 @@ void ScoreAnalyser::renderSilences( void (*renderSilenceCallback)(const int, con
         if(!aboutEqual(last_note_end, last_measure_end ) and last_note_end>-1)
         {
             const int silence_length = last_measure_end-last_note_end;
-            renderSilenceCallback(last_note_end, silence_length, silences_y);
+            recursivelyAnalyzeSilence(renderSilenceCallback, last_note_end, silence_length, silences_y);
         }
 
 
@@ -541,8 +630,9 @@ void ScoreAnalyser::renderSilences( void (*renderSilenceCallback)(const int, con
     {
         if(measure_empty[i])
         {
-           renderSilenceCallback(getMeasureData()->firstTickInMeasure(first_visible_measure+i),
-                                 getMeasureData()->measureLengthInTicks(first_visible_measure+i), silences_y);
+           recursivelyAnalyzeSilence(renderSilenceCallback,
+                                     getMeasureData()->firstTickInMeasure(first_visible_measure+i),
+                                     getMeasureData()->measureLengthInTicks(first_visible_measure+i), silences_y);
         }
     }
 }

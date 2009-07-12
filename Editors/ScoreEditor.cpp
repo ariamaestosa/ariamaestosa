@@ -750,78 +750,13 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
 }
 
 
-void renderSilence(const int tick, const int tick_length, const int silences_y)
+void renderSilence(const int tick, const int type, const int silences_y, const bool triplet, const bool dotted,
+                   const int dot_delta_x, const int dot_delta_y)
 {
-    const int beat = getMeasureData()->beatLengthInTicks();
-
-    if(tick_length<2) return;
-
-    // check if silence spawns over more than one measure
-    const int end_measure = getMeasureData()->measureAtTick(tick+tick_length-1);
-    if(getMeasureData()->measureAtTick(tick) != end_measure)
-    {
-        // we need to plit it in two
-        const int split_tick = getMeasureData()->firstTickInMeasure(end_measure);
-
-        // Check split is valid before attempting.
-        if(split_tick-tick>0 and tick_length-(split_tick-tick)>0)
-        {
-            renderSilence(tick, split_tick-tick, silences_y);
-            renderSilence(split_tick, tick_length-(split_tick-tick), silences_y);
-            return;
-        }
-    }
-
     assertExpr(tick,>,-1);
     RelativeXCoord relX(tick, MIDI);
     const int x = relX.getRelativeTo(WINDOW) + 5;
-    bool dotted = false, triplet = false;
-    int type = -1;
-
-    int dot_delta_x = 0, dot_delta_y = 0;
-
-    const float relativeLength = tick_length / (float)(getMeasureData()->beatLengthInTicks()*4);
-
-    const int tick_in_measure_start = (tick) - getMeasureData()->firstTickInMeasure( getMeasureData()->measureAtTick(tick) );
-    const int remaining = beat - (tick_in_measure_start % beat);
-    const bool starts_on_beat = aboutEqual(remaining,0) or aboutEqual(remaining,beat);
-
-    if( aboutEqual(relativeLength, 1.0) ) type = 1;
-    else if (aboutEqual(relativeLength, 3.0/2.0) and starts_on_beat){ type = 1; dotted = true; dot_delta_x = 5; dot_delta_y = 2;}
-    else if (aboutEqual(relativeLength, 1.0/2.0)) type = 2;
-    else if (aboutEqual(relativeLength, 3.0/4.0) and starts_on_beat){ type = 2; dotted = true; dot_delta_x = 5; dot_delta_y = 2;}
-    else if (aboutEqual(relativeLength, 1.0/4.0)) type = 4;
-    else if (aboutEqual(relativeLength, 1.0/3.0)){ type = 2; triplet = true; }
-    else if (aboutEqual(relativeLength, 3.0/8.0) and starts_on_beat){ type = 4; dotted = true; dot_delta_x = -3; dot_delta_y = 10; }
-    else if (aboutEqual(relativeLength, 1.0/8.0)) type = 8;
-    else if (aboutEqual(relativeLength, 1.0/6.0)){ type = 4; triplet = true; }
-    else if (aboutEqual(relativeLength, 3.0/16.0) and starts_on_beat){ type = 8; dotted = true; }
-    else if (aboutEqual(relativeLength, 1.0/16.0)) type = 16;
-    else if (aboutEqual(relativeLength, 1.0/12.0)){ triplet = true; type = 8; }
-    else if(relativeLength < 1.0/16.0){ return; }
-    else
-    {
-        // silence is of unknown duration. split it in a serie of silences.
-
-        // start by reaching the next beat if not already done
-        if(!starts_on_beat and !aboutEqual(remaining,tick_length))
-        {
-            renderSilence(tick, remaining, silences_y);
-            renderSilence(tick+remaining, tick_length - remaining, silences_y);
-            return;
-        }
-
-        // split in two smaller halves. render using a simple recursion.
-        float closestShorterDuration = 1;
-        while(closestShorterDuration >= relativeLength) closestShorterDuration /= 2.0;
-
-        const int firstLength = closestShorterDuration*(float)(getMeasureData()->beatLengthInTicks()*4);
-
-        renderSilence(tick, firstLength, silences_y);
-        renderSilence(tick+firstLength, tick_length - firstLength, silences_y);
-        return;
-    }
-
+    
     if( type == 1 )
     {
         AriaRender::primitives();
