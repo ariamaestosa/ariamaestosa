@@ -97,7 +97,7 @@ public:
     void renderTimeSignatureChange(LayoutElement* el, const int y0, const int y1);
     
     virtual void earlySetup() {}
-    virtual void addUsedTicks(const MeasureTrackReference& trackRef, std::map< int /* tick */, float /* position */ >&) { }
+    virtual void addUsedTicks(const MeasureToExport& measure, const MeasureTrackReference& trackRef, std::map< int /* tick */, float /* position */ >&) { }
 };
     
 class AriaPrintable

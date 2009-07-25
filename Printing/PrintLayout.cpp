@@ -481,7 +481,7 @@ void PrintLayoutManager::calculateRelativeLengths()
                     EditorPrintable* editorPrintable = parent->getEditorPrintableFor( meas.trackRef[i].track );
                     assert( editorPrintable != NULL );
                     
-                    editorPrintable->addUsedTicks(meas.trackRef[i], ticks_relative_position);
+                    editorPrintable->addUsedTicks(meas, meas.trackRef[i], ticks_relative_position);
                 }
                 
                 std::map<int,float>::iterator it;
