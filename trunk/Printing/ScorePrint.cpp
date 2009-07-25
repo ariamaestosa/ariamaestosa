@@ -991,84 +991,97 @@ namespace AriaMaestosa
         const int fromTick = getMeasureData()->firstTickInMeasure( line.getFirstMeasure() );
         const int toTick = getMeasureData()->lastTickInMeasure( line.getLastMeasure() );
         
-        // ---- draw notes heads
         {
-        const int noteAmount = analyser.noteRenderInfo.size();
-        for(int i=0; i<noteAmount; i++)
-        {
-            if (analyser.noteRenderInfo[i].tick < fromTick) continue;
-            if (analyser.noteRenderInfo[i].tick >= toTick) break;
-
-            std::cout << "Drawing note at " << analyser.noteRenderInfo[i].tick << " - beat " <<  analyser.noteRenderInfo[i].tick/960 << std::endl;         
-            NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
-                            
-            const int noteX = x_converter->tickToX(noteRenderInfo.tick);
-            
-            dc.SetPen(  wxPen( wxColour(125,125,125), 8 ) );
-            
-            // draw small lines above score if needed
-            if(noteRenderInfo.level < first_score_level-1)
-            {
-                for(int lvl=first_score_level-2; lvl>noteRenderInfo.level+noteRenderInfo.level%2-2; lvl -= 2)
-                {
-                    const int y = LEVEL_TO_Y(lvl);
-                    dc.DrawLine(noteX, y, noteX+200, y);
-                }
-            }
-            
-            // draw small lines below score if needed
-            if(noteRenderInfo.level > last_score_level+1)
-            {
-                for(int lvl=last_score_level+2; lvl<noteRenderInfo.level-noteRenderInfo.level%2+2; lvl += 2)
-                {
-                    const int y = LEVEL_TO_Y(lvl);
-                    dc.DrawLine(noteX, y, noteX+200, y);
-                }
-            }
-            
-            // draw head
-            const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
-            wxPoint headLocation( noteX + note_x_shift,
-                                 notey-(headRadius-5)/2.0); // FIXME....
-            
-            if(noteRenderInfo.instant_hit)
-            {
-                dc.DrawText(wxT("X"), headLocation.x - 36, headLocation.y);
-            }
-            else
-            {
-                dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
-                dc.SetBrush( *wxBLACK_BRUSH );
-                const int cx = headLocation.x;
-                const int cy = headLocation.y;
-                wxPoint points[25];
-                for(int n=0; n<25; n++)
-                {
-                    // FIXME - instead of always substracting to radius, just make it smaller...
-                    const float angle = n/25.0*6.283185f /* 2*PI */;
-                    points[n] = wxPoint( cx + (headRadius-5)*cos(angle),
-                                         cy + headRadius/2 + (headRadius - 14)*sin(angle) - headRadius*(-0.5f + fabsf( (n-12.5f)/12.5f ))/2.0f );
-                }
-
-                if(noteRenderInfo.hollow_head) dc.DrawSpline(25, points);
-                else dc.DrawPolygon(25, points, -3);
+            const int noteAmount = analyser.noteRenderInfo.size();
                 
-            }
-            noteRenderInfo.setY(notey+headRadius/2.0);
-            
-            // draw dot if note is dotted
-            if(noteRenderInfo.dotted)
+            // ---- Draw small lines above/below score
+            for(int i=0; i<noteAmount; i++)
             {
-                wxPoint headLocation( noteX + note_x_shift + headRadius*2 + 20, notey+10 );
-                dc.DrawEllipse( headLocation, wxSize(10,10) );
-            }
+                if (analyser.noteRenderInfo[i].tick < fromTick) continue;
+                if (analyser.noteRenderInfo[i].tick >= toTick) break;
+                
+                NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
+                
+                const int noteX = x_converter->tickToX(noteRenderInfo.tick);
+                
+                dc.SetPen(  wxPen( wxColour(125,125,125), 8 ) );
+                
+                // draw small lines above score if needed
+                if(noteRenderInfo.level < first_score_level-1)
+                {
+                    for(int lvl=first_score_level-2; lvl>noteRenderInfo.level+noteRenderInfo.level%2-2; lvl -= 2)
+                    {
+                        const int y = LEVEL_TO_Y(lvl);
+                        dc.DrawLine(noteX, y, noteX+135, y);
+                    }
+                }
+                
+                // draw small lines below score if needed
+                if(noteRenderInfo.level > last_score_level+1)
+                {
+                    for(int lvl=last_score_level+2; lvl<noteRenderInfo.level-noteRenderInfo.level%2+2; lvl += 2)
+                    {
+                        const int y = LEVEL_TO_Y(lvl);
+                        dc.DrawLine(noteX, y, noteX+135, y);
+                    }
+                }
+            } // end scope
             
-            // draw sharpness sign if relevant
-            if(noteRenderInfo.sign == SHARP)        renderSharp  ( dc, noteX, noteRenderInfo.getY() - 40  );
-            else if(noteRenderInfo.sign == FLAT)    renderFlat   ( dc, noteX, noteRenderInfo.getY() - 40  );
-            else if(noteRenderInfo.sign == NATURAL) renderNatural( dc, noteX, noteRenderInfo.getY() - 50  );
-            
-        } // next note
+            // ---- draw notes heads
+            for(int i=0; i<noteAmount; i++)
+            {
+                if (analyser.noteRenderInfo[i].tick < fromTick) continue;
+                if (analyser.noteRenderInfo[i].tick >= toTick) break;
+
+                std::cout << "Drawing note at " << analyser.noteRenderInfo[i].tick << " - beat " <<  analyser.noteRenderInfo[i].tick/960 << std::endl;         
+                NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
+                                
+                const int noteX = x_converter->tickToX(noteRenderInfo.tick);
+                
+                
+                // draw head
+                const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
+                wxPoint headLocation( noteX + note_x_shift,
+                                     notey-(headRadius-5)/2.0); // FIXME....
+                
+                if(noteRenderInfo.instant_hit)
+                {
+                    dc.DrawText(wxT("X"), headLocation.x - 36, headLocation.y);
+                }
+                else
+                {
+                    dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
+                    dc.SetBrush( *wxBLACK_BRUSH );
+                    const int cx = headLocation.x;
+                    const int cy = headLocation.y;
+                    wxPoint points[25];
+                    for(int n=0; n<25; n++)
+                    {
+                        // FIXME - instead of always substracting to radius, just make it smaller...
+                        const float angle = n/25.0*6.283185f /* 2*PI */;
+                        points[n] = wxPoint( cx + (headRadius-5)*cos(angle),
+                                             cy + headRadius/2 + (headRadius - 14)*sin(angle) - headRadius*(-0.5f + fabsf( (n-12.5f)/12.5f ))/2.0f );
+                    }
+
+                    if(noteRenderInfo.hollow_head) dc.DrawSpline(25, points);
+                    else dc.DrawPolygon(25, points, -3);
+                    
+                }
+                noteRenderInfo.setY(notey+headRadius/2.0);
+                
+                // draw dot if note is dotted
+                if(noteRenderInfo.dotted)
+                {
+                    wxPoint headLocation( noteX + note_x_shift + headRadius*2 + 20, notey+10 );
+                    dc.DrawEllipse( headLocation, wxSize(10,10) );
+                }
+                
+                // draw sharpness sign if relevant
+                if(noteRenderInfo.sign == SHARP)        renderSharp  ( dc, noteX, noteRenderInfo.getY() - 40  );
+                else if(noteRenderInfo.sign == FLAT)    renderFlat   ( dc, noteX, noteRenderInfo.getY() - 40  );
+                else if(noteRenderInfo.sign == NATURAL) renderNatural( dc, noteX, noteRenderInfo.getY() - 50  );
+                
+            } // next note
         } // end scope
 
         // ------------------ second part : intelligent drawing of the rest -----------------
