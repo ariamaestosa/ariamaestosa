@@ -604,7 +604,7 @@ int EditorPrintable::tickToX(const int tick)
             const int elem_x_end = currentLine->layoutElements[n].getXTo();
             const int elem_w = elem_x_end - elem_x_start;
             
-            std::cout << "tickToX found tick " << tick << std::endl;
+            //std::cout << "tickToX found tick " << tick << std::endl;
             
             float nratio;
             
@@ -623,12 +623,14 @@ int EditorPrintable::tickToX(const int tick)
             }
             
             assertExpr(elem_w, >, 0);
-                        
+                
+            /*
             std::cout << "    ratio = " << nratio << " elem_w=" << elem_w << " elem_x_start=" << elem_x_start << 
                 " --> " << nratio << "*(" << elem_w << "-" << renderInfo.pixel_width_of_an_unit << ")*0.7+" << elem_x_start << " ---> " <<
                 (nratio * (elem_w-renderInfo.pixel_width_of_an_unit*0.7) + elem_x_start) << " ---> " <<
                 (int)round(nratio * (elem_w-renderInfo.pixel_width_of_an_unit*0.7) + elem_x_start) << std::endl;
-
+            */
+            
             return (int)round(nratio * (elem_w-renderInfo.pixel_width_of_an_unit*0.7) + elem_x_start);
         }
         

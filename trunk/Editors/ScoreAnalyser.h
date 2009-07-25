@@ -141,6 +141,8 @@ public:
 
     ScoreAnalyser(ScoreEditor* parent, int stemPivot);
 
+    ScoreAnalyser* getSubset(const int fromTick, const int toTick);
+    
     void setStemDrawInfo( const float stem_height = -1,
                          const float min_stem_height = -1);
 

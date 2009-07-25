@@ -1068,6 +1068,47 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
     noteRenderInfo.push_back(renderInfo);
 }
 
+ScoreAnalyser* ScoreAnalyser::getSubset(const int fromTick, const int toTick)
+{
+    ScoreAnalyser* out = new ScoreAnalyser(*this);
+    
+    std::cout << "getting subset out of " << (int)(out->noteRenderInfo.size()) << " elements\n";
+    
+    /*
+    std::vector<NoteRenderInfo>::iterator the_iterator;
+    the_iterator = out->noteRenderInfo.begin();
+    while( the_iterator != out->noteRenderInfo.end() )
+    {
+        NoteRenderInfo& nri = *the_iterator;
+        std::cout << "nri.tick = " << nri.tick << std::endl;
+        
+        if (nri.tick < fromTick or nri.tick >= toTick)
+        {
+            std::cout << "erasing element\n";
+            out->noteRenderInfo.erase(the_iterator++);
+            std::cout << "left elements count = " <<  (int)(out->noteRenderInfo.size())  << "\n";
+        }
+        else
+        {
+            ++the_iterator;
+        }
+    }
+     */
+
+    
+    for (int n=0; n<out->noteRenderInfo.size(); n++)
+    {
+        if (out->noteRenderInfo[n].tick < fromTick or out->noteRenderInfo[n].tick >= toTick)
+        {
+            out->noteRenderInfo.erase(out->noteRenderInfo.begin() +  n);
+            n--;
+            if (n<-1) n=-1;
+        }
+    }
+    
+    return out;
+}
+
 #if 0
 #pragma mark -
 #endif
