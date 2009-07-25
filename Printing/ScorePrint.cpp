@@ -1042,7 +1042,7 @@ namespace AriaMaestosa
                 // draw head
                 const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
                 wxPoint headLocation( noteX + note_x_shift,
-                                     notey-(headRadius-5)/2.0); // FIXME....
+                                     notey-(headRadius-5)/2.0);
                 
                 if(noteRenderInfo.instant_hit)
                 {
@@ -1086,15 +1086,15 @@ namespace AriaMaestosa
 
         // ------------------ second part : intelligent drawing of the rest -----------------
         // analyse notes to know how to build the score
-        analyser.analyseNoteInfo();
+        OwnerPtr<ScoreAnalyser> lineAnalyser;
+        lineAnalyser = analyser.getSubset(fromTick, toTick);
+        lineAnalyser->analyseNoteInfo();
         
         // now that score was analysed, draw the remaining note bits
-        const int noteAmount = analyser.noteRenderInfo.size();
+        const int noteAmount = lineAnalyser->noteRenderInfo.size();
         for(int i=0; i<noteAmount; i++)
         {
-            NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
-            if (analyser.noteRenderInfo[i].tick < fromTick) continue;
-            if (analyser.noteRenderInfo[i].tick >= toTick) break;
+            NoteRenderInfo& noteRenderInfo = lineAnalyser->noteRenderInfo[i];
             
             dc.SetPen(  wxPen( wxColour(0,0,0), 15 ) );
             
