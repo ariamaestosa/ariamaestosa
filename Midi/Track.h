@@ -168,7 +168,9 @@ public:
 
     void selectNote(const int id, const bool selected, bool ignoreModifiers=false);
 
-    // get info on notes
+    /**
+      * get info on notes
+      */
     int getNoteAmount() const;
     int getNoteStartInPixels(const int id) const;
     int getNoteEndInPixels(const int id) const;
@@ -177,7 +179,17 @@ public:
     int getNotePitchID(const int id) const;
     bool isNoteSelected(const int id) const;
     int getNoteVolume(const int id) const;
-    Note* getNote(const int id); // use only if methods above can't do what you want
+    Note* getNote(const int id); // use only if methods above can't do what you want!
+
+    /**
+      * Returns the first note in the given range, or -1 if there is none
+      */
+    int findFirstNoteInRange(const int fromTick, const int toTick) const;
+    
+    /**
+     * Returns the last note in the given range, or -1 if there is none
+     */
+    int findLastNoteInRange(const int fromTick, const int toTick) const;
 
     void playNote(const int id, const bool noteChange=false);
 

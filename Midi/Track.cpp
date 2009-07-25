@@ -578,6 +578,30 @@ int Track::getNoteFret(const int id)
 
     return notes[id].getFret();
 }
+    
+int Track::findFirstNoteInRange(const int fromTick, const int toTick) const
+{
+    const int noteAmount = notes.size();
+    
+    for (int n=0; n<noteAmount; n++)
+    {
+        if (notes[n].startTick >= fromTick && notes[n].startTick < toTick) return n;
+        if (notes[n].startTick >= toTick) return -1;
+    }
+    return -1;
+}
+    
+int Track::findLastNoteInRange(const int fromTick, const int toTick) const
+{
+    const int noteAmount = notes.size();
+    
+    for (int n=noteAmount-1; n>-1; n--)
+    {
+        if (notes[n].startTick >= fromTick && notes[n].startTick < toTick) return n;
+        if (notes[n].startTick < fromTick) return -1;
+    }
+    return -1;
+}
 
 // returns the amount of ALL types of controller, not only of specified type
 // the only goal of id is to determine whether the app is searching for a control event or for a tempo event

@@ -26,21 +26,33 @@
 
 namespace AriaMaestosa
 {
+    class ScoreAnalyser;
     
 class ScorePrintable : public EditorPrintable
 {
     void gatherScoreInfo(LayoutLine& line);
-    void gatherNotesAndBasicSetup(LayoutLine& line);
+    //void gatherNotesAndBasicSetup(LayoutLine& line);
+    
+    // should eventually replace at least part of the two above
+    void generateScoreInfo();
+    
     void analyseAndDrawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine& line, wxDC& dc,
                    const int extra_lines_above, const int extra_lines_under,
                    const int x0, const int y0, const int x1, const int y1, bool show_measure_number);
     
+    bool g_clef, f_clef;
+    int middle_c_level;
+    OwnerPtr<ScoreAnalyser> g_clef_analyser;
+    OwnerPtr<ScoreAnalyser> f_clef_analyser;
+
 public:
     ScorePrintable(Track* track_arg);
     virtual ~ScorePrintable();
 
-    static void addUsedTicks(const MeasureTrackReference& trackRef, std::map< int /* tick */, float /* position */ >&);
+    void addUsedTicks(const MeasureTrackReference& trackRef, std::map< int /* tick */, float /* position */ >&);
     
+    void earlySetup();
+
     void drawLine(LayoutLine& line, wxDC& dc);
     int calculateHeight(LayoutLine& line);
     };
