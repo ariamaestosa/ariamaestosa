@@ -59,8 +59,11 @@ namespace AriaMaestosa
         
         // iterate through layout elements
         LayoutElement* currentElement;
-        while((currentElement = continueWithNextElement()) and (currentElement != NULL))
+        
+        const int elementAmount = getElementCount();
+        for(int el=0; el<elementAmount; el++)
         {
+            currentElement = continueWithNextElement(el);
             std::cout << "Tablature : starting new layout element. Type = " << currentElement->getType() << "\n";
             
             drawVerticalDivider(currentElement, renderInfo.y0, renderInfo.y1);

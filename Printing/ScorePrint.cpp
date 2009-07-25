@@ -429,11 +429,15 @@ namespace AriaMaestosa
         
         
         
-        // iterate through layout elements... FIXME : needed?
+        // iterate through layout elements (this also inits them)
+        // FIXME : not too clean to init them at this point
         LayoutElement* currentElement;
         std::cout << "\nLayout elements X coords :\n";
-        while((currentElement = continueWithNextElement()) and (currentElement != NULL))
+        
+        const int elementAmount = getElementCount();
+        for(int el=0; el<elementAmount; el++)
         {
+            currentElement = continueWithNextElement(el);
             std::cout << "    Layout element from x=" << currentElement->getXFrom() << " to x=" << currentElement->getXTo() << std::endl;
         }//next element
         std::cout << std::endl;
