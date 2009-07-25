@@ -631,7 +631,7 @@ int EditorPrintable::tickToX(const int tick)
                 (int)round(nratio * (elem_w-renderInfo.pixel_width_of_an_unit*0.7) + elem_x_start) << std::endl;
             */
             
-            return (int)round(nratio * (elem_w-renderInfo.pixel_width_of_an_unit*0.7) + elem_x_start);
+            return (int)round(nratio * elem_w + elem_x_start);
         }
         
         // given tick is not in a visible measure

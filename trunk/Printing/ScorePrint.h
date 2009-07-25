@@ -30,7 +30,7 @@ namespace AriaMaestosa
     
 class ScorePrintable : public EditorPrintable
 {
-    void gatherScoreInfo(LayoutLine& line);
+    void gatherVerticalSizingInfo(LayoutLine& line);
     //void gatherNotesAndBasicSetup(LayoutLine& line);
     
     // should eventually replace at least part of the two above
@@ -45,11 +45,14 @@ class ScorePrintable : public EditorPrintable
     OwnerPtr<ScoreAnalyser> g_clef_analyser;
     OwnerPtr<ScoreAnalyser> f_clef_analyser;
 
+    std::vector<int> silences_ticks;
+
+    
 public:
     ScorePrintable(Track* track_arg);
     virtual ~ScorePrintable();
 
-    void addUsedTicks(const MeasureTrackReference& trackRef, std::map< int /* tick */, float /* position */ >&);
+    void addUsedTicks(const MeasureToExport& measure, const MeasureTrackReference& trackRef, std::map< int /* tick */, float /* position */ >&);
     
     void earlySetup();
 

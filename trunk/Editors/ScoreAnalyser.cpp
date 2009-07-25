@@ -1096,7 +1096,7 @@ ScoreAnalyser* ScoreAnalyser::getSubset(const int fromTick, const int toTick)
      */
 
     
-    for (int n=0; n<out->noteRenderInfo.size(); n++)
+    for (int n=0; n<(int)out->noteRenderInfo.size(); n++)
     {
         if (out->noteRenderInfo[n].tick < fromTick or out->noteRenderInfo[n].tick >= toTick)
         {

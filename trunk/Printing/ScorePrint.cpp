@@ -211,6 +211,13 @@ namespace AriaMaestosa
     // FIXME find cleaner way
     int global_line_height=5;
     
+    std::vector<int> g_silences_ticks;
+    
+    void gatherSilenceCallback(const int tick, const int type, const int silences_y, const bool triplet, const bool dotted, const int dot_delta_x, const int dot_delta_y)
+    {
+        g_silences_ticks.push_back(tick);
+    }
+    
     void renderSilenceCallback(const int tick, const int type, const int silences_y, const bool triplet, const bool dotted, const int dot_delta_x, const int dot_delta_y)
     {
         assert( global_dc != NULL);
@@ -335,7 +342,7 @@ namespace AriaMaestosa
       
     int ScorePrintable::calculateHeight(LayoutLine& line)
     {
-        gatherScoreInfo(line);
+        gatherVerticalSizingInfo(line);
         
         ScoreData* scoreData = dynamic_cast<ScoreData*>(line.editor_data.raw_ptr);
         assert(scoreData != NULL);
@@ -346,7 +353,7 @@ namespace AriaMaestosa
 
     }
     
-    void ScorePrintable::addUsedTicks(const MeasureTrackReference& trackRef,
+    void ScorePrintable::addUsedTicks(const MeasureToExport& measure, const MeasureTrackReference& trackRef,
                                       std::map< int /* tick */, float /* position */ >& ticks_relative_position)
     {
         const int first_note = trackRef.firstNote;
@@ -377,6 +384,19 @@ namespace AriaMaestosa
             }
             
             ticks_relative_position[ tick ] = -1; // will be set later
+        }
+        
+        
+        const int fromTick = measure.firstTick;
+        const int toTick = measure.lastTick;
+
+        const int silenceAmount = silences_ticks.size();
+        for (int n=0; n<silenceAmount; n++)
+        {
+            if (silences_ticks[n] < fromTick or silences_ticks[n] > toTick) continue;
+            std::cout << "Adding [silence] tick " << silences_ticks[n] << " to list" << std::endl;
+
+            ticks_relative_position[ silences_ticks[n] ] = -1; // will be set later
         }
     }
     
@@ -604,61 +624,23 @@ namespace AriaMaestosa
             
         }//next element
         
-        /*
-        scoreData->middle_c_level = converter->getScoreCenterCLevel(); //converter->getMiddleCLevel();
-        
-        const int g_clef_from = scoreData->middle_c_level-10;
-        const int g_clef_to   = scoreData->middle_c_level-2;
-        const int f_clef_from = scoreData->middle_c_level+2;
-        const int f_clef_to   = scoreData->middle_c_level+10;
-        
-        g_clef = scoreEditor->isGClefEnabled();
-        f_clef = scoreEditor->isFClefEnabled();
-        
-        
-        scoreData->extra_lines_above_g_score = 0;
-        scoreData->extra_lines_under_g_score = 0;
-        scoreData->extra_lines_above_f_score = 0;
-        scoreData->extra_lines_under_f_score = 0;
-        if(g_clef and not f_clef)
+        // ---- Silences
+        g_silences_ticks.clear();
+        if(f_clef)
         {
-            if(smallest_level!=-1 and smallest_level < g_clef_from)  scoreData->extra_lines_above_g_score = (g_clef_from - smallest_level)/2;
-            if(biggest_level!=-1 and biggest_level > g_clef_to) scoreData->extra_lines_under_g_score = (g_clef_to - biggest_level)/2;
+            f_clef_analyser->renderSilences( &gatherSilenceCallback, 0, measureAmount-1, -1 /* y not important at this point */ );
         }
-        else if(f_clef and not g_clef)
+        if(g_clef)
         {
-            if(smallest_level!=-1 and smallest_level < f_clef_from) scoreData->extra_lines_above_f_score = (f_clef_from - smallest_level)/2;
-            if(biggest_level!=-1 and biggest_level > f_clef_to) scoreData->extra_lines_under_f_score = (f_clef_to - biggest_level)/2;
+            g_clef_analyser->renderSilences( &gatherSilenceCallback, 0, measureAmount-1, -1 /* y not important at this point */ );
         }
-        else if(f_clef and g_clef)
-        {
-            if(smallest_level!=-1 and smallest_level < g_clef_from) scoreData->extra_lines_above_g_score = (g_clef_from - smallest_level)/2;
-            if(biggest_level!=-1 and biggest_level > f_clef_to) scoreData->extra_lines_under_f_score = (f_clef_to - biggest_level)/2;
-        }
+        this->silences_ticks = g_silences_ticks;
+        g_silences_ticks.clear();
         
-        std::cout << "extra_lines_above_g_score = " << scoreData->extra_lines_above_g_score <<
-        " extra_lines_under_g_score = " << scoreData->extra_lines_under_g_score <<
-        " extra_lines_above_f_score = " << scoreData->extra_lines_above_f_score <<
-        " extra_lines_under_f_score = " << scoreData->extra_lines_under_f_score << std::endl;
         
-        // Split space between both scores (one may need more than the other)
-        // I use a total of 0.8 to leave a 0.2 free space between both scores.
-        scoreData->first_clef_proportion = 0.4;
-        scoreData->second_clef_proportion = 0.4;
-        
-        if(g_clef and f_clef and
-           scoreData->extra_lines_above_g_score + scoreData->extra_lines_under_f_score != 0)
-        {
-            // where 0.8 is used to leave a 0.2 margin between both scores. 5 is the amount of lines needed for the regular score.
-            // 10 is the amount of lines needed for both regular scores
-            const float total_height = abs(scoreData->extra_lines_above_g_score) + abs(scoreData->extra_lines_under_f_score) + 10.0;
-            scoreData->first_clef_proportion = 0.8 * (abs(scoreData->extra_lines_above_g_score)+5.0) / total_height;
-            scoreData->second_clef_proportion = 0.8 * (abs(scoreData->extra_lines_under_f_score)+5.0) / total_height;
-        }
-     */
     }
     
-    void ScorePrintable::gatherScoreInfo(LayoutLine& line)
+    void ScorePrintable::gatherVerticalSizingInfo(LayoutLine& line)
     {
         if(line.editor_data != NULL) return; // already set
         
@@ -788,12 +770,12 @@ namespace AriaMaestosa
     {
         std::cout << "Score early setup\n";
         generateScoreInfo();
-        //gatherScoreInfo(line);
+        //gatherVerticalSizingInfo(line);
         //gatherNotesAndBasicSetup(line);
     }
     
     /**
-     * Goes a bit further that 'gatherScoreInfo' : builds analyzers objects and gathers notes. Does
+     * Goes a bit further that 'gatherVerticalSizingInfo' : builds analyzers objects and gathers notes. Does
      * not perform any actual analysis with the ScoreAnalyser(s)
      */
     /*
@@ -1033,7 +1015,7 @@ namespace AriaMaestosa
                 if (analyser.noteRenderInfo[i].tick < fromTick) continue;
                 if (analyser.noteRenderInfo[i].tick >= toTick) break;
 
-                std::cout << "Drawing note at " << analyser.noteRenderInfo[i].tick << " - beat " <<  analyser.noteRenderInfo[i].tick/960 << std::endl;         
+                //std::cout << "Drawing note at " << analyser.noteRenderInfo[i].tick << " - beat " <<  analyser.noteRenderInfo[i].tick/960 << std::endl;         
                 NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
                                 
                 const int noteX = x_converter->tickToX(noteRenderInfo.tick);
@@ -1218,6 +1200,7 @@ namespace AriaMaestosa
         
         global_dc = &dc;
         
+        // ---- Silences
         if(f_clef)
         {
             const int silences_y = LEVEL_TO_Y(middle_c_level + 4);

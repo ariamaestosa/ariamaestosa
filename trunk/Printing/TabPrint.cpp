@@ -170,7 +170,7 @@ namespace AriaMaestosa
         std::cout << "Tablature : done\n";
     }
     
-    void TablaturePrintable::addUsedTicks(const MeasureTrackReference& trackRef,
+    void TablaturePrintable::addUsedTicks(const MeasureToExport& measure, const MeasureTrackReference& trackRef,
                                           std::map< int /* tick */, float /* position */ >& ticks_relative_position)
     {
         const int first_note = trackRef.firstNote;
