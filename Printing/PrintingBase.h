@@ -61,6 +61,7 @@ namespace AriaMaestosa
 class EditorPrintable
 {
 protected:
+    // FIXME : remove 'currentLine' state?
     LayoutLine* currentLine;
     
     Track* track;

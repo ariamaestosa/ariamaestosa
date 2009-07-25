@@ -443,7 +443,7 @@ void EditorPrintable::setLineYCoords(const int y0, const int y1)
     currentLine->getTrackRenderInfo().y1 = y1;
 }
 
-    /*
+/*
 int EditorPrintable::getCurrentElementXStart()
 {
     return currentLine->x0 + (int)round(currentLine->xloc*pixel_width_of_an_unit) - pixel_width_of_an_unit;
@@ -471,6 +471,7 @@ void EditorPrintable::drawVerticalDivider(LayoutElement* el, const int y0, const
     dc->SetPen(  wxPen( wxColour(0,0,0), 10 ) );
     dc->DrawLine( elem_x_start, y0, elem_x_start, y1);
 }
+    
 void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0, const int y1)
 {
     wxString num   = wxString::Format( wxT("%i"), el->num   );

@@ -1080,6 +1080,8 @@ namespace AriaMaestosa
         for(int i=0; i<noteAmount; i++)
         {
             NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
+            if (analyser.noteRenderInfo[i].tick < fromTick) continue;
+            if (analyser.noteRenderInfo[i].tick >= toTick) break;
             
             dc.SetPen(  wxPen( wxColour(0,0,0), 15 ) );
             
