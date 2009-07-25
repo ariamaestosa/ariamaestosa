@@ -146,6 +146,7 @@ namespace AriaMaestosa
         int x0, y0, x1, y1;
         bool show_measure_number;
         float pixel_width_of_an_unit;
+        int layoutElementsAmount;
     };
     
     /*

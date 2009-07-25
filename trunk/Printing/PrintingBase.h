@@ -61,12 +61,10 @@ namespace AriaMaestosa
 class EditorPrintable
 {
 protected:
-    // keeps some info on the track currently being printed
-    int currentLayoutElement;
     LayoutLine* currentLine;
-    int layoutElementsAmount;
-    wxDC* dc;
+    
     Track* track;
+    wxDC* dc;
 public:
     EditorPrintable(Track* track);
     virtual ~EditorPrintable();
@@ -89,7 +87,8 @@ public:
     void setLineCoords(LayoutLine& line, TrackRenderInfo& track, int x0, const int y0, const int x1, const int y1, bool show_measure_number);
 
    // int getCurrentElementXStart();
-    LayoutElement* continueWithNextElement();
+    const int getElementCount() const;
+    LayoutElement* continueWithNextElement(const int currentLayoutElement);
     LayoutElement* getElementForMeasure(const int measureID);
     int getNotePrintX(int noteID);
     int tickToX(const int tick);

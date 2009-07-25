@@ -393,8 +393,6 @@ void EditorPrintable::setCurrentDC(wxDC* dc)
 void EditorPrintable::setCurrentTrack(LayoutLine* line)
 {
     EditorPrintable::currentLine = line;
-    EditorPrintable::currentLayoutElement = 0;
-    EditorPrintable::layoutElementsAmount = line->layoutElements.size();
 }
 
 void EditorPrintable::setLineCoords(LayoutLine& line, TrackRenderInfo& track,  int x0, const int y0, const int x1, const int y1, bool show_measure_number)
@@ -413,12 +411,12 @@ void EditorPrintable::setLineCoords(LayoutLine& line, TrackRenderInfo& track,  i
     track.pixel_width_of_an_unit = (float)(x1 - x0) / (float)(line.width_in_units+2);
     std::cout << "Line has " << line.width_in_units << " units. pixel_width_of_an_unit=" << track.pixel_width_of_an_unit << "\n";
     
-    layoutElementsAmount = line.layoutElements.size();
+    track.layoutElementsAmount = line.layoutElements.size();
 
     int xloc = 0;
     
     // init coords of each layout element
-    for(currentLayoutElement=0; currentLayoutElement<layoutElementsAmount; currentLayoutElement++)
+    for(int currentLayoutElement=0; currentLayoutElement<track.layoutElementsAmount; currentLayoutElement++)
     {
         if(currentLayoutElement == 0) xloc = 1;
         else if(currentLayoutElement > 0) xloc += line.layoutElements[currentLayoutElement-1].width_in_units;
@@ -435,8 +433,6 @@ void EditorPrintable::setLineCoords(LayoutLine& line, TrackRenderInfo& track,  i
     // for last
     line.layoutElements[line.layoutElements.size()-1].setXTo( x1 );
     
-    currentLayoutElement = -1;
-
     assertExpr(line.width_in_units,>,0);
     assertExpr(track.pixel_width_of_an_unit,>,0);
 }
@@ -492,13 +488,17 @@ void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0,
     
     dc->SetFont(oldfont);    
 }
-    
-LayoutElement* EditorPrintable::continueWithNextElement()
-{
-    //std::cout << "---- layout element is now " << currentLayoutElement << std::endl;
-    currentLayoutElement ++;
 
-    if(!(currentLayoutElement<layoutElementsAmount))
+const int EditorPrintable::getElementCount() const
+{
+    return currentLine->getTrackRenderInfo().layoutElementsAmount;
+}
+    
+LayoutElement* EditorPrintable::continueWithNextElement(const int currentLayoutElement)
+{
+    TrackRenderInfo& renderInfo = currentLine->getTrackRenderInfo();
+
+    if(!(currentLayoutElement < renderInfo.layoutElementsAmount))
     {
         //std::cout << "---- returning NULL because we have a total of " << layoutElementsAmount << " elements\n";
         return NULL;
@@ -509,8 +509,6 @@ LayoutElement* EditorPrintable::continueWithNextElement()
     const int elem_x_start = currentLine->layoutElements[currentLayoutElement].getXFrom();
 
     dc->SetTextForeground( wxColour(0,0,255) );
-
-    TrackRenderInfo& renderInfo = currentLine->getTrackRenderInfo();
     
     // ****** empty measure
     if(layoutElements[currentLayoutElement].getType() == EMPTY_MEASURE)
@@ -589,8 +587,10 @@ int EditorPrintable::getNotePrintX(int noteID)
 }
 int EditorPrintable::tickToX(const int tick)
 {
+    TrackRenderInfo& renderInfo = currentLine->getTrackRenderInfo();
+
     // find in which measure this tick belongs
-    for(int n=0; n<layoutElementsAmount; n++)
+    for(int n=0; n<renderInfo.layoutElementsAmount; n++)
     {
         MeasureToExport& meas = currentLine->getMeasureForElement(n);
         if(meas.id == -1) continue; // nullMeasure, ignore
@@ -622,9 +622,7 @@ int EditorPrintable::tickToX(const int tick)
             }
             
             assertExpr(elem_w, >, 0);
-            
-            TrackRenderInfo& renderInfo = currentLine->getTrackRenderInfo();
-            
+                        
             std::cout << "    ratio = " << nratio << " elem_w=" << elem_w << " elem_x_start=" << elem_x_start << 
                 " --> " << nratio << "*(" << elem_w << "-" << renderInfo.pixel_width_of_an_unit << ")*0.7+" << elem_x_start << " ---> " <<
                 (nratio * (elem_w-renderInfo.pixel_width_of_an_unit*0.7) + elem_x_start) << " ---> " <<
@@ -642,7 +640,7 @@ int EditorPrintable::tickToX(const int tick)
          * FIXME - it's not necessarly a tie
          * FIXME - ties aand line warping need better handling
          */
-        if(n==layoutElementsAmount-1 and tick >= lastTick)
+        if(n==renderInfo.layoutElementsAmount-1 and tick >= lastTick)
         {
             return currentLine->layoutElements[n].getXTo() + 10;
         }
