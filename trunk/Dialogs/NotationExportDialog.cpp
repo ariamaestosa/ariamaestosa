@@ -266,9 +266,17 @@ void completeExport(bool accepted)
 
 
     }
+    
+    std::cout << "********************************************************\n";
+    std::cout << "******************* CALCULATE LAYOUT *******************\n";
+    std::cout << "********************************************************\n\n";
 
     notationPrint.calculateLayout( checkRepetitions_bool );
 
+    std::cout << "\n********************************************************\n";
+    std::cout << "********************* PRINT RESULT *********************\n";
+    std::cout << "********************************************************\n\n";
+    
     wxPrinterError result = (wxPrinterError)printResult(&notationPrint);
     if(result == wxPRINTER_ERROR)
     {

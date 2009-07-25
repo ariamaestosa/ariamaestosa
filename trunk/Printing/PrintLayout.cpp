@@ -123,6 +123,7 @@ bool MeasureToExport::findConsecutiveRepetition(ptr_vector<MeasureToExport>& mea
 
 void PrintLayoutManager::generateMeasures(ptr_vector<Track, REF>& tracks)
 {
+    std::cout << "\n====\ngenerateMeasures\n====\n";
     const int trackAmount = tracks.size();
     const int measureAmount = getMeasureData()->getMeasureAmount();
 
@@ -177,6 +178,8 @@ void PrintLayoutManager::findSimilarMeasures()
     
 void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
 {
+    std::cout << "\n====\ncreateLayoutElements\n====\n";
+    
     const int measureAmount = getMeasureData()->getMeasureAmount();
 
     int previous_num = -1, previous_denom = -1;
@@ -184,7 +187,7 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
     for(int measure=0; measure<measureAmount; measure++)
     {
 #ifdef _verbose
-        std::cout << (measure+1) << ":" << std::endl;
+        std::cout << "Generating layout element for measure " << (measure+1) << std::endl;
 #endif
         int firstMeasureThatRepeats, lastMeasureThatRepeats, firstRepeatedMeasure, lastRepeatedMeasure; // used when finding repetitions
 
@@ -206,7 +209,7 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
         if(measures[measure].shortestDuration==-1)
         {
 #ifdef _verbose
-            std::cout << "measure " << (measure+1) << " is empty\n";
+            std::cout << "    measure " << (measure+1) << " is empty\n";
 #endif
             layoutElements.push_back( LayoutElement(EMPTY_MEASURE, measure) );
             layoutElements[layoutElements.size()-1].width_in_units = 2;
@@ -262,7 +265,7 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
                 if(amountOfTimes < getRepetitionMinimalLength())
                 {
 #ifdef _verbose
-                    std::cout << "play many times refused, measures " << (measure+1) << " to " << (measure+amountOfTimes+1) << " are normal" << std::endl;
+                    std::cout << "    play many times refused, measures " << (measure+1) << " to " << (measure+amountOfTimes+1) << " are normal" << std::endl;
 #endif
                     // not enough repetitions, add as regular measures
                     for(int i=0; i<amountOfTimes; i++)
@@ -287,7 +290,7 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
                         amountOfTimes++; // if measure was already displayed... there were e.g. 3 additional repetitions, but we want to show x4
                     }
 #ifdef _verbose
-                    std::cout << "measure " << (measure+1) << " is played " << amountOfTimes << " times. all are the same as " << (measures[measure].firstSimilarMeasure+1) << std::endl;
+                    std::cout << "    measure " << (measure+1) << " is played " << amountOfTimes << " times. all are the same as " << (measures[measure].firstSimilarMeasure+1) << std::endl;
 #endif
                     LayoutElement element(PLAY_MANY_TIMES);
                     element.amountOfTimes = amountOfTimes;
@@ -309,7 +312,7 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
                 if(amount+1 >= getRepetitionMinimalLength())
                 {
 #ifdef _verbose
-                    std::cout << "repetition from " << (firstMeasureThatRepeats+1) << " to " <<
+                    std::cout << "    repetition from " << (firstMeasureThatRepeats+1) << " to " <<
                     (lastMeasureThatRepeats+1) << "(" << (firstRepeatedMeasure+1) << ", " <<
                     (lastRepeatedMeasure+1) << ")"  << std::endl;
 #endif
@@ -329,7 +332,7 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
                     // repetition is not long enough, use normal measures
                 {
 #ifdef _verbose
-                    std::cout << "repetition refused because " << (amount+1) << " < " << getRepetitionMinimalLength() << " measures " << (measure+1) << " to " << (measure+getRepetitionMinimalLength()+1) << " are normal" << std::endl;
+                    std::cout << "    repetition refused because " << (amount+1) << " < " << getRepetitionMinimalLength() << " measures " << (measure+1) << " to " << (measure+getRepetitionMinimalLength()+1) << " are normal" << std::endl;
 #endif
                     for(int iter=0; iter<getRepetitionMinimalLength(); iter++)
                     {
@@ -341,7 +344,7 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
             else
             {
 #ifdef _verbose
-                std::cout << "measure " << (measure+1) << " looks like a repetition but treated as normal" << std::endl;
+                std::cout << "    measure " << (measure+1) << " looks like a repetition but treated as normal" << std::endl;
 #endif
                 // despite looking like a repetition, user settings are set to treat it as a normal measure
                 layoutElements.push_back( LayoutElement(SINGLE_MEASURE, measure) );
@@ -352,7 +355,7 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
             // ------ normal measure -----
         {
 #ifdef _verbose
-            std::cout << "measure " << (measure+1) << " is normal" << std::endl;
+            std::cout << "    measure " << (measure+1) << " is normal" << std::endl;
 #endif
             layoutElements.push_back( LayoutElement(SINGLE_MEASURE, measure) );
         }
@@ -371,6 +374,7 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
 void PrintLayoutManager::layTracksInPage(LayoutPage& page, const int text_height, const float track_area_height, const int level_y_amount,
                                          const int pageHeight, const int x0, const int y0, const int x1)
 {
+    std::cout << "\n====\nlayTracksInPage\n====\n";
     
     // ---- Lay out tracks
     float y_from = y0 + text_height*3;
@@ -416,6 +420,8 @@ void PrintLayoutManager::layTracksInPage(LayoutPage& page, const int text_height
     
 void PrintLayoutManager::calculateRelativeLengths()
 {
+    std::cout << "\n====\ncalculateRelativeLengths\n====\n";
+
     // calculate approximative width of each element
     const int ticksPerBeat = getCurrentSequence()->ticksPerBeat();
     const int layoutElementsAmount = layoutElements.size();
@@ -472,16 +478,10 @@ void PrintLayoutManager::calculateRelativeLengths()
                 for(int i=0; i<trackAmount; i++)
                 {
                     // TODO : also count silences, they need some space too
-
-                    const int mode = meas.trackRef[i].track->graphics->editorMode;
-                    if (mode == SCORE)
-                    {
-                        ScorePrintable::addUsedTicks(meas.trackRef[i], ticks_relative_position);
-                    }
-                    else if (mode == GUITAR)
-                    {
-                        TablaturePrintable::addUsedTicks(meas.trackRef[i], ticks_relative_position);
-                    }
+                    EditorPrintable* editorPrintable = parent->getEditorPrintableFor( meas.trackRef[i].track );
+                    assert( editorPrintable != NULL );
+                    
+                    editorPrintable->addUsedTicks(meas.trackRef[i], ticks_relative_position);
                 }
                 
                 std::map<int,float>::iterator it;
@@ -516,7 +516,7 @@ void PrintLayoutManager::calculateRelativeLengths()
                 }
                 
                 layoutElements[n].width_in_units = all_ticks_amount;
-                std::cout << "***** unit width = " << layoutElements[n].width_in_units << std::endl;
+                std::cout << "Layout element " << n << " is " << layoutElements[n].width_in_units << " unit(s) wide" << std::endl;
             }
         }
         else if(layoutElements[n].getType() == REPEATED_RIFF)
@@ -533,6 +533,8 @@ void PrintLayoutManager::calculateRelativeLengths()
  */
 void PrintLayoutManager::layInLinesAndPages()
 {
+    std::cout << "\n====\nlayInLinesAndPages\n====\n";
+    
     const int layoutElementsAmount = layoutElements.size();
 
     int current_width = 0;
@@ -672,13 +674,21 @@ PrintLayoutManager::PrintLayoutManager(AriaPrintable* parent,
 
 /** main function called from other classes */
 void PrintLayoutManager::calculateLayoutElements
-                            (ptr_vector<Track, REF>& track,
+                            (ptr_vector<Track, REF>& tracks,
                              const bool checkRepetitions_bool)
 {
-    generateMeasures(track);
+    generateMeasures(tracks);
 
     // search for repeated measures if necessary
     if(checkRepetitions_bool) findSimilarMeasures();
+    
+    const int trackAmount = tracks.size();
+    for(int i=0; i<trackAmount; i++)
+    {
+        EditorPrintable* editorPrintable = parent->getEditorPrintableFor( tracks.get(i) );
+        assert( editorPrintable != NULL );
+        editorPrintable->earlySetup();
+    }
     
     createLayoutElements(checkRepetitions_bool);
     calculateRelativeLengths();

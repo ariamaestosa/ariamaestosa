@@ -109,6 +109,8 @@ namespace AriaMaestosa
     class LayoutElement
         {
             LayoutElementType type;
+            
+            int x, x2;
         public:
             LayoutElement(LayoutElementType type_arg, int measure_arg = -1);
     
@@ -127,9 +129,10 @@ namespace AriaMaestosa
             //float zoom;
             int width_in_units;
             
-            // filled by EditorPrintable::continueWithNextElement() as the X position is calculated in
-            // case location is needed later (for instance, if more than one rendering pass)
-            int x, x2;
+            void setXFrom(const int x) { this->x = x; };
+            void setXTo(const int x) { this->x2 = x; };
+            const int getXFrom() const { return x; }
+            const int getXTo() const { return x2; }
         };
     
     class EditorData
@@ -142,6 +145,7 @@ namespace AriaMaestosa
     {
         int x0, y0, x1, y1;
         bool show_measure_number;
+        float pixel_width_of_an_unit;
     };
     
     /*

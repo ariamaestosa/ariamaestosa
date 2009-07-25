@@ -38,7 +38,7 @@ public:
 
     bool OnPrintPage(int pageNum)
     {
-        std::cout << "\n\n*****\nprinting page " << pageNum << std::endl;
+        std::cout << "\n============\nprinting page " << pageNum << "\n==============" << std::endl;
 
         wxDC* ptr = GetDC();
         if(ptr==NULL or !ptr->IsOk()){ std::cerr << "DC is not Ok, interrupting printing" << std::endl; return false; }
@@ -112,7 +112,10 @@ public:
 
     bool OnBeginDocument(int startPage, int endPage)
     {
+        std::cout << "\n\n=============================\n";
         std::cout << "beginning to print document, from page " << startPage << " to " << endPage << std::endl;
+        std::cout << "=============================\n\n";
+
         return wxPrintout::OnBeginDocument(startPage, endPage);
     }
 
@@ -213,6 +216,7 @@ bool AriaPrintable::addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */)
     track_amount = tracks.size();
     return true;
 }
+    
 void AriaPrintable::calculateLayout(bool checkRepetitions_bool)
 {
     layout = new PrintLayoutManager(this, layoutLines /* out */, layoutPages /* out */, measures /* out */);
@@ -244,6 +248,19 @@ int AriaPrintable::getPageAmount()
     return layoutPages.size();
 }
 
+EditorPrintable* AriaPrintable::getEditorPrintableFor(Track* track)
+{
+    const int amount = editorPrintables.size();
+    for (int n=0; n<amount; n++)
+    {
+        if (editorPrintables[n].getTrack() == track)
+        {
+            return editorPrintables.get(n);
+        }
+    }
+    return NULL;
+}
+                
 void AriaPrintable::printPage(const int pageNum, wxDC& dc,
                               const int x0, const int y0,
                               const int x1, const int y1,
@@ -254,8 +271,8 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
 
     const int lineAmount = page.last_line - page.first_line + 1;
 
-    std::cout << "printing page " << pageNum << ", which has " << lineAmount << " lines" << std::endl;
-
+    std::cout << "page has " << lineAmount << " lines" << std::endl;
+    
     int level_y_amount = 4;
     for(int n=page.first_line; n <= page.last_line; n++)
     {
@@ -340,7 +357,7 @@ void AriaPrintable::printLine(LayoutLine& line, wxDC& dc)
         dc.DrawLine( line.x1-3, my0, line.x1-3, my1); // right-side line
     }
     
-    std::cout << "======== Printing Line (contains " << line.layoutElements.size() << " layout elements)" << std::endl;
+    std::cout << "\n======== Printing Line (contains " << line.layoutElements.size() << " layout elements) ========" << std::endl;
     
     // ---- Do the actual track drawing
     for(int n=0; n<trackAmount; n++)
@@ -348,7 +365,7 @@ void AriaPrintable::printLine(LayoutLine& line, wxDC& dc)
         // skip empty tracks
         if(line.height_percent[n] == 0) continue;
         
-        std::cout << "==== printing track " << n << std::endl;
+        std::cout << "==== Printing track " << n << " ====" << std::endl;
         line.setCurrentTrack(n);
         EditorPrintable* editorPrintable = editorPrintables.get(line.getCurrentTrack());
         editorPrintable->setCurrentTrack(&line);
@@ -361,10 +378,13 @@ void AriaPrintable::printLine(LayoutLine& line, wxDC& dc)
 #pragma mark -
 #endif
 
-// do not call, override in children
-EditorPrintable::EditorPrintable(){}
+EditorPrintable::EditorPrintable(Track* track)
+{
+    this->track = track;
+}
+    
 EditorPrintable::~EditorPrintable(){}
-
+   
 void EditorPrintable::setCurrentDC(wxDC* dc)
 {
     EditorPrintable::dc = dc;
@@ -389,8 +409,10 @@ void EditorPrintable::setLineCoords(LayoutLine& line, TrackRenderInfo& track,  i
     std::cout << "coords for current track " << line.getCurrentTrack() << " : " << x0 << ", " << y0 << ", " << x1 << ", " << y1 << std::endl;
     
     // 2 spaces allocated for left area of the line
-    pixel_width_of_an_unit = (float)(x1 - x0) / (float)(line.width_in_units+2);
-
+    std::cout << "\n====\nsetLineCoords\n====\n";
+    track.pixel_width_of_an_unit = (float)(x1 - x0) / (float)(line.width_in_units+2);
+    std::cout << "Line has " << line.width_in_units << " units. pixel_width_of_an_unit=" << track.pixel_width_of_an_unit << "\n";
+    
     layoutElementsAmount = line.layoutElements.size();
 
     int xloc = 0;
@@ -401,18 +423,22 @@ void EditorPrintable::setLineCoords(LayoutLine& line, TrackRenderInfo& track,  i
         if(currentLayoutElement == 0) xloc = 1;
         else if(currentLayoutElement > 0) xloc += line.layoutElements[currentLayoutElement-1].width_in_units;
         
-        line.layoutElements[currentLayoutElement].x  = x0 + (int)round(xloc*pixel_width_of_an_unit) - pixel_width_of_an_unit;
+        std::cout << "Setting coords of element " << currentLayoutElement << " of current line. xfrom = " <<
+        x0 + (int)round(xloc*track.pixel_width_of_an_unit) - track.pixel_width_of_an_unit << "\n";
+        line.layoutElements[currentLayoutElement].setXFrom(x0 + (int)round(xloc*track.pixel_width_of_an_unit) - track.pixel_width_of_an_unit);
 
         if(currentLayoutElement > 0)
-            line.layoutElements[currentLayoutElement-1].x2 =  line.layoutElements[currentLayoutElement].x;
+        {
+            line.layoutElements[currentLayoutElement-1].setXTo( line.layoutElements[currentLayoutElement].getXFrom() );
+        }
     }
     // for last
-    line.layoutElements[line.layoutElements.size()-1].x2 = x1; // FIXME - fix naming conventions... in track it's x1, in element it's x2
+    line.layoutElements[line.layoutElements.size()-1].setXTo( x1 );
     
     currentLayoutElement = -1;
 
     assertExpr(line.width_in_units,>,0);
-    assertExpr(pixel_width_of_an_unit,>,0);
+    assertExpr(track.pixel_width_of_an_unit,>,0);
 }
     
 void EditorPrintable::setLineYCoords(const int y0, const int y1)
@@ -443,7 +469,7 @@ void EditorPrintable::drawVerticalDivider(LayoutElement* el, const int y0, const
 {
     if(el->getType() == TIME_SIGNATURE) return;
     
-    const int elem_x_start = el->x; // currentLine->layoutElements[elemenentID].x
+    const int elem_x_start = el->getXFrom();
 
     // draw vertical line that starts measure
     dc->SetPen(  wxPen( wxColour(0,0,0), 10 ) );
@@ -459,7 +485,7 @@ void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0,
     dc->SetTextForeground( wxColour(0,0,0) );
     
     wxSize text_size = dc->GetTextExtent(denom);
-    const int text_x = el->x2 - text_size.GetWidth() - 20;
+    const int text_x = el->getXTo() - text_size.GetWidth() - 20;
     
     dc->DrawText(num,   text_x, y0 + 10);
     dc->DrawText(denom, text_x, y0 + (y1 - y0)/2 + 10  );
@@ -480,7 +506,7 @@ LayoutElement* EditorPrintable::continueWithNextElement()
 
     std::vector<LayoutElement>& layoutElements = currentLine->layoutElements;
 
-    const int elem_x_start = currentLine->layoutElements[currentLayoutElement].x;
+    const int elem_x_start = currentLine->layoutElements[currentLayoutElement].getXFrom();
 
     dc->SetTextForeground( wxColour(0,0,255) );
 
@@ -520,7 +546,7 @@ LayoutElement* EditorPrintable::continueWithNextElement()
             to_wxString(layoutElements[currentLayoutElement].lastMeasureToRepeat+1);
         }
 
-        dc->DrawText( message, elem_x_start + pixel_width_of_an_unit/2,
+        dc->DrawText( message, elem_x_start + renderInfo.pixel_width_of_an_unit/2,
                      (renderInfo.y0 + renderInfo.y1)/2 - getCurrentPrintable()->text_height_half );
     }
     // ****** play again
@@ -528,7 +554,7 @@ LayoutElement* EditorPrintable::continueWithNextElement()
     {
         wxString label(wxT("X"));
         label << layoutElements[currentLayoutElement].amountOfTimes;
-        dc->DrawText( label, elem_x_start + pixel_width_of_an_unit/2,
+        dc->DrawText( label, elem_x_start + renderInfo.pixel_width_of_an_unit/2,
                      (renderInfo.y0 + renderInfo.y1)/2 - getCurrentPrintable()->text_height_half );
     }
     // ****** normal measure
@@ -545,7 +571,7 @@ LayoutElement* EditorPrintable::continueWithNextElement()
             measureLabel << meas_id;
 
             dc->DrawText( measureLabel,
-                          elem_x_start - ( meas_id > 9 ? pixel_width_of_an_unit/4 : pixel_width_of_an_unit/5 ),
+                          elem_x_start - ( meas_id > 9 ? renderInfo.pixel_width_of_an_unit/4 : renderInfo.pixel_width_of_an_unit/5 ),
                           renderInfo.y0 - getCurrentPrintable()->text_height*1.4 );
         }
 
@@ -573,9 +599,11 @@ int EditorPrintable::tickToX(const int tick)
 
         if(tick >= firstTick and tick < lastTick)
         {
-            const int elem_x_start = currentLine->layoutElements[n].x;
-            const int elem_x_end = currentLine->layoutElements[n].x2;
+            const int elem_x_start = currentLine->layoutElements[n].getXFrom();
+            const int elem_x_end = currentLine->layoutElements[n].getXTo();
             const int elem_w = elem_x_end - elem_x_start;
+            
+            std::cout << "tickToX found tick " << tick << std::endl;
             
             float nratio;
             
@@ -595,7 +623,14 @@ int EditorPrintable::tickToX(const int tick)
             
             assertExpr(elem_w, >, 0);
             
-            return (int)round(nratio * (elem_w-pixel_width_of_an_unit*0.7) + elem_x_start);
+            TrackRenderInfo& renderInfo = currentLine->getTrackRenderInfo();
+            
+            std::cout << "    ratio = " << nratio << " elem_w=" << elem_w << " elem_x_start=" << elem_x_start << 
+                " --> " << nratio << "*(" << elem_w << "-" << renderInfo.pixel_width_of_an_unit << ")*0.7+" << elem_x_start << " ---> " <<
+                (nratio * (elem_w-renderInfo.pixel_width_of_an_unit*0.7) + elem_x_start) << " ---> " <<
+                (int)round(nratio * (elem_w-renderInfo.pixel_width_of_an_unit*0.7) + elem_x_start) << std::endl;
+
+            return (int)round(nratio * (elem_w-renderInfo.pixel_width_of_an_unit*0.7) + elem_x_start);
         }
         
         // given tick is not in a visible measure
@@ -609,7 +644,7 @@ int EditorPrintable::tickToX(const int tick)
          */
         if(n==layoutElementsAmount-1 and tick >= lastTick)
         {
-            return currentLine->layoutElements[n].x2 + 10;
+            return currentLine->layoutElements[n].getXTo() + 10;
         }
     }
     

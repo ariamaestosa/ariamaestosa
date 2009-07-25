@@ -17,7 +17,7 @@ namespace AriaMaestosa
 {
     
     
-    TablaturePrintable::TablaturePrintable(Track* track) : EditorPrintable()
+    TablaturePrintable::TablaturePrintable(Track* track) : EditorPrintable(track)
     {
         // FIXME  - will that work if printing e.g. a bass track + a guitar track,
         // both with different string counts?
@@ -76,16 +76,16 @@ namespace AriaMaestosa
                 const int h4 = (renderInfo.y1 - renderInfo.y0)/3 - 2;    
                 const int textY = renderInfo.y0;
                 
-                dc.DrawText( wxT("T") , currentElement->x+20, textY);
-                dc.DrawText( wxT("A") , currentElement->x+20, textY + h4  );
-                dc.DrawText( wxT("B") , currentElement->x+20, textY + h4*2 );
+                dc.DrawText( wxT("T") , currentElement->getXFrom()+20, textY);
+                dc.DrawText( wxT("A") , currentElement->getXFrom()+20, textY + h4  );
+                dc.DrawText( wxT("B") , currentElement->getXFrom()+20, textY + h4*2 );
                 
                 //dc.SetFont( wxFont(50, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
                 dc.SetFont(oldfont);
                 wxSize textSize2 = dc.GetTextExtent( wxT("T") );
                 
                 // draw tuning
-                const int tuning_x = currentElement->x+140;
+                const int tuning_x = currentElement->getXFrom()+140;
                 for(int n=0; n<string_amount; n++)
                 {
                     const int note   = editor->tuning[n]%12;
@@ -152,7 +152,7 @@ namespace AriaMaestosa
                 
                 // substract from width to leave some space on the right (coordinate is from the left of the text string so we need extra space on the right)
                 // if fret number is greater than 9, the string will have two characters so we need to recenter it a bit more
-                const int drawX = getNotePrintX(i) + (fret > 9 ? pixel_width_of_an_unit/4 : pixel_width_of_an_unit/2);
+                const int drawX = getNotePrintX(i) + (fret > 9 ? renderInfo.pixel_width_of_an_unit/4 : renderInfo.pixel_width_of_an_unit/2);
                 const int drawY = renderInfo.y0 + stringHeight*string - textSize3.y/2;
                 wxString label = to_wxString(fret);
                 

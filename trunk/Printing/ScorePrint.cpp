@@ -28,8 +28,8 @@ namespace AriaMaestosa
             
             virtual ~ScoreData() {}
             
-            int middle_c_level, from_note, to_note;
-            bool g_clef, f_clef;
+            //int middle_c_level, from_note, to_note;
+            //bool g_clef, f_clef;
             int extra_lines_above_g_score;
             int extra_lines_under_g_score;
             int extra_lines_above_f_score;
@@ -37,8 +37,8 @@ namespace AriaMaestosa
             float first_clef_proportion ;
             float second_clef_proportion;
             
-            OwnerPtr<ScoreAnalyser> g_clef_analyser;
-            OwnerPtr<ScoreAnalyser> f_clef_analyser;
+            //OwnerPtr<ScoreAnalyser> g_clef_analyser;
+            //OwnerPtr<ScoreAnalyser> f_clef_analyser;
         };
 
 #if 0
@@ -325,7 +325,7 @@ namespace AriaMaestosa
 #pragma mark ScorePrintable (EditorPrintable common interface)
 #endif
     
-    ScorePrintable::ScorePrintable(Track* track) : EditorPrintable()
+    ScorePrintable::ScorePrintable(Track* track) : EditorPrintable(track)
     {
         // std::cout << " *** setting global g_printable" << std::endl;
         g_printable = this;
@@ -340,7 +340,7 @@ namespace AriaMaestosa
         ScoreData* scoreData = dynamic_cast<ScoreData*>(line.editor_data.raw_ptr);
         assert(scoreData != NULL);
         
-        return (scoreData->g_clef ? 5 : 0) + (scoreData->f_clef ? 5 : 0) + 
+        return (g_clef ? 5 : 0) + (f_clef ? 5 : 0) + 
                 abs(scoreData->extra_lines_above_g_score) +
                 abs(scoreData->extra_lines_under_f_score);
 
@@ -367,6 +367,8 @@ namespace AriaMaestosa
         {
             const int tick = track->getNoteStartInMidiTicks(n);
 
+            std::cout << "Adding tick " << tick << " to list" << std::endl;
+            
             converter->noteToLevel(track->getNote(n), &note_sign);
             if (note_sign != NONE)
             {
@@ -391,13 +393,13 @@ namespace AriaMaestosa
         x_converter = new PrintXConverter(this);
         
         // gather score info
-        gatherNotesAndBasicSetup(line);
+        //gatherNotesAndBasicSetup(line);
         ScoreData* scoreData = dynamic_cast<ScoreData*>(line.editor_data.raw_ptr);
         
         // since height is used to determine where to put repetitions/notes/etc.
         // only pass the height of the first score if there's 2, so stuff don't appear between both scores
         setLineYCoords(renderInfo.y0,
-                       ( scoreData->f_clef and scoreData->g_clef ?
+                       ( f_clef and g_clef ?
                         renderInfo.y0 + (renderInfo.y1 - renderInfo.y0)*scoreData->first_clef_proportion :
                         renderInfo.y1 ));
         
@@ -406,17 +408,17 @@ namespace AriaMaestosa
         int g_clef_y_from=-1, g_clef_y_to=-1;
         int f_clef_y_from=-1, f_clef_y_to=-1;
         
-        if(scoreData->g_clef and not scoreData->f_clef)
+        if(g_clef and not f_clef)
         {
             g_clef_y_from = renderInfo.y0;
             g_clef_y_to = renderInfo.y1;
         }
-        else if(scoreData->f_clef and not scoreData->g_clef)
+        else if(f_clef and not g_clef)
         {
             f_clef_y_from = renderInfo.y0;
             f_clef_y_to = renderInfo.y1;
         }
-        else if(scoreData->f_clef and scoreData->g_clef)
+        else if(f_clef and g_clef)
         {
             g_clef_y_from = renderInfo.y0;
             g_clef_y_to = renderInfo.y0 + (int)round((renderInfo.y1 - renderInfo.y0)*scoreData->first_clef_proportion);
@@ -429,26 +431,29 @@ namespace AriaMaestosa
         
         // iterate through layout elements... FIXME : needed?
         LayoutElement* currentElement;
+        std::cout << "\nLayout elements X coords :\n";
         while((currentElement = continueWithNextElement()) and (currentElement != NULL))
         {
+            std::cout << "    Layout element from x=" << currentElement->getXFrom() << " to x=" << currentElement->getXTo() << std::endl;
         }//next element
+        std::cout << std::endl;
         
         g_printable = this;
         
-        if(scoreData->g_clef)
+        if(g_clef)
         {
-            analyseAndDrawScore(false /*G*/, *(scoreData->g_clef_analyser), line, dc,
+            analyseAndDrawScore(false /*G*/, *g_clef_analyser, line, dc,
                       abs(scoreData->extra_lines_above_g_score), abs(scoreData->extra_lines_under_g_score),
                       renderInfo.x0, g_clef_y_from, renderInfo.x1, g_clef_y_to,
                       renderInfo.show_measure_number);
         }
         
-        if(scoreData->f_clef)
+        if(f_clef)
         {
-            analyseAndDrawScore(true /*F*/, *(scoreData->f_clef_analyser), line, dc,
+            analyseAndDrawScore(true /*F*/, *f_clef_analyser, line, dc,
                       abs(scoreData->extra_lines_above_f_score), abs(scoreData->extra_lines_under_f_score),
                       renderInfo.x0, f_clef_y_from, renderInfo.x1, f_clef_y_to,
-                      (scoreData->g_clef ? false : renderInfo.show_measure_number) /* if we have both keys don't show twice */);
+                      (g_clef ? false : renderInfo.show_measure_number) /* if we have both keys don't show twice */);
         }
         
         delete x_converter;
@@ -460,6 +465,194 @@ namespace AriaMaestosa
 #pragma mark -
 #pragma mark ScorePrintable (private utils)
 #endif
+    
+    class PerMeasureInfo
+    {
+    public:
+        int highest_pitch;
+        int lowest_pitch;
+        int smallest_level;
+        int biggest_level;
+        int first_note;
+        int last_note;
+        
+        PerMeasureInfo()
+        {
+            highest_pitch = -1;
+            lowest_pitch = -1;
+            smallest_level = -1;
+            biggest_level = -1;
+            first_note = -1;
+            last_note = -1;
+        }
+    };
+    std::map< int /* measure ID */, PerMeasureInfo > perMeasureInfo;
+    
+    void ScorePrintable::generateScoreInfo()
+    {
+        ScoreEditor* scoreEditor = track->graphics->scoreEditor;
+        ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
+        
+        MeasureData* measures = getMeasureData();
+        const int measureAmount = measures->getMeasureAmount();
+        
+        for (int m=0; m<measureAmount; m++)
+        {
+            // find highest and lowest note we need to render in each measure
+            int highest_pitch = -1, lowest_pitch = -1;
+            int biggest_level = -1, smallest_level = -1;
+            
+            const int from_tick = measures->firstTickInMeasure(m);
+            const int to_tick = measures->lastTickInMeasure(m);
+
+            const int firstNote = track->findFirstNoteInRange( from_tick, to_tick );
+            const int lastNote = track->findLastNoteInRange( from_tick, to_tick );
+
+            //std::cout << "Measure " << m << " : reading notes " << firstNote << " to " << lastNote << std::endl;
+            
+            for(int n=firstNote; n<=lastNote; n++)
+            {
+                if(n == -1) break; // will happen if line is empty
+                const int pitch = track->getNotePitchID(n);
+                const int level = converter->noteToLevel(track->getNote(n));
+                if(pitch < highest_pitch || highest_pitch == -1)
+                {
+                    highest_pitch = pitch;
+                    smallest_level = level;
+                }
+                if(pitch > lowest_pitch  ||  lowest_pitch == -1)
+                {
+                    lowest_pitch  = pitch;
+                    biggest_level  = level;
+                }
+            }
+            
+            PerMeasureInfo info;
+            info.highest_pitch = highest_pitch;
+            info.highest_pitch = highest_pitch;
+            info.lowest_pitch = lowest_pitch;
+            info.biggest_level = biggest_level;
+            info.first_note = firstNote;
+            info.last_note = lastNote;
+            perMeasureInfo[m] = info;
+        } // end for all measures
+            
+        const int middle_c_level = converter->getScoreCenterCLevel(); //converter->getMiddleCLevel();
+        
+
+        g_clef = scoreEditor->isGClefEnabled();
+        f_clef = scoreEditor->isFClefEnabled();
+        
+        // ---- Build score analyzers
+        if(g_clef)
+        {
+            g_clef_analyser = new ScoreAnalyser(scoreEditor, middle_c_level-5);
+            g_clef_analyser->setStemPivot(middle_c_level-5);
+        }
+        if(f_clef)
+        {
+            f_clef_analyser = new ScoreAnalyser(scoreEditor, middle_c_level-5);
+            f_clef_analyser->setStemPivot(middle_c_level+6);
+        }
+        
+        converter->updateConversionData();
+        converter->resetAccidentalsForNewRender();
+        
+        // iterate through measures to collect notes in the vector
+        // so ScoreAnalyser can prepare the score
+        for(int m=0; m<measureAmount; m++)
+        {
+            PerMeasureInfo& measInfo = perMeasureInfo[m];
+            const int firstNote = measInfo.first_note;
+            const int lastNote = measInfo.last_note;
+            
+            if(firstNote == -1 or lastNote == -1) continue; // empty measure
+            
+            for(int n=firstNote; n<=lastNote; n++)
+            {
+                PitchSign note_sign;
+                const int noteLevel = converter->noteToLevel(track->getNote(n), &note_sign);
+                
+                if(noteLevel == -1) continue;
+                const int noteLength = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
+                const int tick = track->getNoteStartInMidiTicks(n);
+                
+                NoteRenderInfo currentNote(tick, noteLevel, noteLength, note_sign,
+                                           track->isNoteSelected(n), track->getNotePitchID(n));
+                
+                // add note to either G clef score or F clef score
+                if(g_clef and not f_clef)
+                {
+                    g_clef_analyser->addToVector(currentNote, false);
+                }
+                else if(f_clef and not g_clef)
+                {
+                    f_clef_analyser->addToVector(currentNote, false);
+                }
+                else if(f_clef and g_clef)
+                {
+                    if(noteLevel < middle_c_level)
+                        g_clef_analyser->addToVector(currentNote, false);
+                    else
+                        f_clef_analyser->addToVector(currentNote, false);
+                }
+            }
+            
+        }//next element
+        
+        /*
+        scoreData->middle_c_level = converter->getScoreCenterCLevel(); //converter->getMiddleCLevel();
+        
+        const int g_clef_from = scoreData->middle_c_level-10;
+        const int g_clef_to   = scoreData->middle_c_level-2;
+        const int f_clef_from = scoreData->middle_c_level+2;
+        const int f_clef_to   = scoreData->middle_c_level+10;
+        
+        g_clef = scoreEditor->isGClefEnabled();
+        f_clef = scoreEditor->isFClefEnabled();
+        
+        
+        scoreData->extra_lines_above_g_score = 0;
+        scoreData->extra_lines_under_g_score = 0;
+        scoreData->extra_lines_above_f_score = 0;
+        scoreData->extra_lines_under_f_score = 0;
+        if(g_clef and not f_clef)
+        {
+            if(smallest_level!=-1 and smallest_level < g_clef_from)  scoreData->extra_lines_above_g_score = (g_clef_from - smallest_level)/2;
+            if(biggest_level!=-1 and biggest_level > g_clef_to) scoreData->extra_lines_under_g_score = (g_clef_to - biggest_level)/2;
+        }
+        else if(f_clef and not g_clef)
+        {
+            if(smallest_level!=-1 and smallest_level < f_clef_from) scoreData->extra_lines_above_f_score = (f_clef_from - smallest_level)/2;
+            if(biggest_level!=-1 and biggest_level > f_clef_to) scoreData->extra_lines_under_f_score = (f_clef_to - biggest_level)/2;
+        }
+        else if(f_clef and g_clef)
+        {
+            if(smallest_level!=-1 and smallest_level < g_clef_from) scoreData->extra_lines_above_g_score = (g_clef_from - smallest_level)/2;
+            if(biggest_level!=-1 and biggest_level > f_clef_to) scoreData->extra_lines_under_f_score = (f_clef_to - biggest_level)/2;
+        }
+        
+        std::cout << "extra_lines_above_g_score = " << scoreData->extra_lines_above_g_score <<
+        " extra_lines_under_g_score = " << scoreData->extra_lines_under_g_score <<
+        " extra_lines_above_f_score = " << scoreData->extra_lines_above_f_score <<
+        " extra_lines_under_f_score = " << scoreData->extra_lines_under_f_score << std::endl;
+        
+        // Split space between both scores (one may need more than the other)
+        // I use a total of 0.8 to leave a 0.2 free space between both scores.
+        scoreData->first_clef_proportion = 0.4;
+        scoreData->second_clef_proportion = 0.4;
+        
+        if(g_clef and f_clef and
+           scoreData->extra_lines_above_g_score + scoreData->extra_lines_under_f_score != 0)
+        {
+            // where 0.8 is used to leave a 0.2 margin between both scores. 5 is the amount of lines needed for the regular score.
+            // 10 is the amount of lines needed for both regular scores
+            const float total_height = abs(scoreData->extra_lines_above_g_score) + abs(scoreData->extra_lines_under_f_score) + 10.0;
+            scoreData->first_clef_proportion = 0.8 * (abs(scoreData->extra_lines_above_g_score)+5.0) / total_height;
+            scoreData->second_clef_proportion = 0.8 * (abs(scoreData->extra_lines_under_f_score)+5.0) / total_height;
+        }
+     */
+    }
     
     void ScorePrintable::gatherScoreInfo(LayoutLine& line)
     {
@@ -475,56 +668,63 @@ namespace AriaMaestosa
         ScoreEditor* scoreEditor = track->graphics->scoreEditor;
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         
-        scoreData->from_note = line.getFirstNote();
-        scoreData->to_note   = line.getLastNote();
+        const int fromMeasure = line.getFirstMeasure();
+        const int lastMeasure = line.getLastMeasure();
+
+        //scoreData->from_note = line.getFirstNote();
+        //scoreData->to_note   = line.getLastNote();
         
-        // find highest and lowest note we need to render
         int highest_pitch = -1, lowest_pitch = -1;
         int biggest_level = -1, smallest_level = -1;
-        std::cout << "line : reading notes " << scoreData->from_note << " to " << scoreData->to_note << std::endl;
-        for(int n=scoreData->from_note; n<=scoreData->to_note; n++)
+        
+        for (int m=fromMeasure; m<=lastMeasure; m++)
         {
-            if(n == -1) break; // will happen if line is empty
-            const int pitch = track->getNotePitchID(n);
-            const int level = converter->noteToLevel(track->getNote(n));
-            if(pitch < highest_pitch || highest_pitch == -1)
+            PerMeasureInfo& info = perMeasureInfo[m];
+            
+            if (info.highest_pitch < highest_pitch or highest_pitch == -1)
             {
-                highest_pitch = pitch;
-                smallest_level = level;
+                highest_pitch = info.highest_pitch;
             }
-            if(pitch > lowest_pitch  ||  lowest_pitch == -1)
+            if (info.lowest_pitch > lowest_pitch or lowest_pitch == -1)
             {
-                lowest_pitch  = pitch;
-                biggest_level  = level;
+                lowest_pitch = info.lowest_pitch;
+            } 
+            if (info.biggest_level < biggest_level or biggest_level == -1)
+            {
+                biggest_level = info.biggest_level;
+            }
+            if (info.smallest_level < smallest_level or smallest_level == -1)
+            {
+                smallest_level = info.smallest_level;
             }
         }
+
+        middle_c_level = converter->getScoreCenterCLevel(); //converter->getMiddleCLevel();
         
-        scoreData->middle_c_level = converter->getScoreCenterCLevel(); //converter->getMiddleCLevel();
+        const int g_clef_from = middle_c_level-10;
+        const int g_clef_to   = middle_c_level-2;
+        const int f_clef_from = middle_c_level+2;
+        const int f_clef_to   = middle_c_level+10;
         
-        const int g_clef_from = scoreData->middle_c_level-10;
-        const int g_clef_to   = scoreData->middle_c_level-2;
-        const int f_clef_from = scoreData->middle_c_level+2;
-        const int f_clef_to   = scoreData->middle_c_level+10;
-        
-        scoreData->g_clef = scoreEditor->isGClefEnabled();
-        scoreData->f_clef = scoreEditor->isFClefEnabled();
+        g_clef = scoreEditor->isGClefEnabled();
+        f_clef = scoreEditor->isFClefEnabled();
         
         
         scoreData->extra_lines_above_g_score = 0;
         scoreData->extra_lines_under_g_score = 0;
         scoreData->extra_lines_above_f_score = 0;
         scoreData->extra_lines_under_f_score = 0;
-        if(scoreData->g_clef and not scoreData->f_clef)
+        if(g_clef and not f_clef)
         {
             if(smallest_level!=-1 and smallest_level < g_clef_from)  scoreData->extra_lines_above_g_score = (g_clef_from - smallest_level)/2;
             if(biggest_level!=-1 and biggest_level > g_clef_to) scoreData->extra_lines_under_g_score = (g_clef_to - biggest_level)/2;
         }
-        else if(scoreData->f_clef and not scoreData->g_clef)
+        else if(f_clef and not g_clef)
         {
             if(smallest_level!=-1 and smallest_level < f_clef_from) scoreData->extra_lines_above_f_score = (f_clef_from - smallest_level)/2;
             if(biggest_level!=-1 and biggest_level > f_clef_to) scoreData->extra_lines_under_f_score = (f_clef_to - biggest_level)/2;
         }
-        else if(scoreData->f_clef and scoreData->g_clef)
+        else if(f_clef and g_clef)
         {
             if(smallest_level!=-1 and smallest_level < g_clef_from) scoreData->extra_lines_above_g_score = (g_clef_from - smallest_level)/2;
             if(biggest_level!=-1 and biggest_level > f_clef_to) scoreData->extra_lines_under_f_score = (f_clef_to - biggest_level)/2;
@@ -540,7 +740,7 @@ namespace AriaMaestosa
         scoreData->first_clef_proportion = 0.4;
         scoreData->second_clef_proportion = 0.4;
         
-        if(scoreData->g_clef and scoreData->f_clef and
+        if(g_clef and f_clef and
            scoreData->extra_lines_above_g_score + scoreData->extra_lines_under_f_score != 0 /* unnecessary if nothing under/over scores*/)
         {
             /*  where 0.8 is used to leave a 0.2 margin between both scores. 5 is the amount of lines needed for the regular score.
@@ -580,10 +780,19 @@ namespace AriaMaestosa
     using namespace PrintStemParams;
     
     
+    void ScorePrintable::earlySetup()
+    {
+        std::cout << "Score early setup\n";
+        generateScoreInfo();
+        //gatherScoreInfo(line);
+        //gatherNotesAndBasicSetup(line);
+    }
+    
     /**
      * Goes a bit further that 'gatherScoreInfo' : builds analyzers objects and gathers notes. Does
      * not perform any actual analysis with the ScoreAnalyser(s)
      */
+    /*
     void ScorePrintable::gatherNotesAndBasicSetup(LayoutLine& line)
     {
         LayoutLine* previousLine = currentLine;
@@ -598,15 +807,15 @@ namespace AriaMaestosa
         
 
         // ---- Build score analyzers
-        if(scoreData->g_clef)
+        if(g_clef)
         {
-            scoreData->g_clef_analyser = new ScoreAnalyser(scoreEditor, scoreData->middle_c_level-5);
-            scoreData->g_clef_analyser->setStemPivot(scoreData->middle_c_level-5);
+            g_clef_analyser = new ScoreAnalyser(scoreEditor, scoreData->middle_c_level-5);
+            g_clef_analyser->setStemPivot(scoreData->middle_c_level-5);
         }
-        if(scoreData->f_clef)
+        if(f_clef)
         {
-            scoreData->f_clef_analyser = new ScoreAnalyser(scoreEditor, scoreData->middle_c_level-5);
-            scoreData->f_clef_analyser->setStemPivot(scoreData->middle_c_level+6);
+            f_clef_analyser = new ScoreAnalyser(scoreEditor, scoreData->middle_c_level-5);
+            f_clef_analyser->setStemPivot(scoreData->middle_c_level+6);
         }
 
         converter->updateConversionData();
@@ -643,20 +852,20 @@ namespace AriaMaestosa
                                            track->isNoteSelected(n), track->getNotePitchID(n));
                 
                 // add note to either G clef score or F clef score
-                if(scoreData->g_clef and not scoreData->f_clef)
+                if(g_clef and not f_clef)
                 {
-                    scoreData->g_clef_analyser->addToVector(currentNote, false);
+                    g_clef_analyser->addToVector(currentNote, false);
                 }
-                else if(scoreData->f_clef and not scoreData->g_clef)
+                else if(f_clef and not g_clef)
                 {
-                    scoreData->f_clef_analyser->addToVector(currentNote, false);
+                    f_clef_analyser->addToVector(currentNote, false);
                 }
-                else if(scoreData->f_clef and scoreData->g_clef)
+                else if(f_clef and g_clef)
                 {
                     if(noteLevel < scoreData->middle_c_level)
-                        scoreData->g_clef_analyser->addToVector(currentNote, false);
+                        g_clef_analyser->addToVector(currentNote, false);
                     else
-                        scoreData->f_clef_analyser->addToVector(currentNote, false);
+                        f_clef_analyser->addToVector(currentNote, false);
                 }
             }
             
@@ -665,7 +874,7 @@ namespace AriaMaestosa
         // FIXME : ugly mechanism to retain the same currentLine
         currentLine = previousLine;
     }
-    
+    */
     
     void ScorePrintable::analyseAndDrawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine& line, wxDC& dc,
                                    const int extra_lines_above, const int extra_lines_under,
@@ -722,10 +931,10 @@ namespace AriaMaestosa
         // ---- line header if any
         if(line.layoutElements[0].getType() == LINE_HEADER)
         {
-            if(!f_clef) renderGClef(dc, line.layoutElements[0].x,
+            if(!f_clef) renderGClef(dc, line.layoutElements[0].getXFrom(),
                                     LEVEL_TO_Y(last_score_level)+10,
                                     LEVEL_TO_Y(last_score_level-4)-5);
-            else renderFClef(dc, line.layoutElements[0].x,
+            else renderFClef(dc, line.layoutElements[0].getXFrom(),
                              LEVEL_TO_Y(first_score_level),
                              LEVEL_TO_Y(first_score_level+3));
             
@@ -740,19 +949,19 @@ namespace AriaMaestosa
             
             if(sharps > 0 or flats > 0)
             {
-                int x_space_per_symbol = (line.layoutElements[0].x2 - line.layoutElements[0].x
+                int x_space_per_symbol = (line.layoutElements[0].getXTo() - line.layoutElements[0].getXFrom()
                                           - 300 - 50 /* some additional space */) / std::max(sharps, flats);
                 if(x_space_per_symbol > 50) x_space_per_symbol = 50;
                 
                 for(int n=0; n<sharps; n++)
                 {
                     const int level = first_score_level + (f_clef ? 1 : -1) + sharp_sign_lvl[n];
-                    renderSharp( dc, line.layoutElements[0].x+300+n*x_space_per_symbol, LEVEL_TO_Y(level) );
+                    renderSharp( dc, line.layoutElements[0].getXFrom()+300+n*x_space_per_symbol, LEVEL_TO_Y(level) );
                 }
                 for(int n=0; n<flats; n++)
                 {
                     const int level = first_score_level + (f_clef ? 3 : 1) + flat_sign_lvl[n];
-                    renderFlat( dc, line.layoutElements[0].x+300+n*x_space_per_symbol, LEVEL_TO_Y(level) );
+                    renderFlat( dc, line.layoutElements[0].getXFrom()+300+n*x_space_per_symbol, LEVEL_TO_Y(level) );
                 }
             }
             
@@ -762,95 +971,102 @@ namespace AriaMaestosa
             {
                 dc.SetTextForeground( wxColour(0,0,0) );
                 const int y = LEVEL_TO_Y(first_score_level - 3);
-                dc.DrawText(wxT("8va"), line.layoutElements[0].x+200, y);
+                dc.DrawText(wxT("8va"), line.layoutElements[0].getXFrom()+200, y);
             }
             else if(octave_shift < 0)
             {
                 dc.SetTextForeground( wxColour(0,0,0) );
                 const int y = LEVEL_TO_Y(last_score_level);
-                dc.DrawText(wxT("8vb"), line.layoutElements[0].x+200, y);
+                dc.DrawText(wxT("8vb"), line.layoutElements[0].getXFrom()+200, y);
             }
         }
         
         // ------------------ first part : basic unintelligent drawing -----------------
         // for all parts of score notes that can be rendered without using the ScoreAnalyser.
         
-        // ---- draw notes heads
-        { // we scope this because info like 'noteAmount' are bound to change just after
-            const int noteAmount = analyser.noteRenderInfo.size();
-            for(int i=0; i<noteAmount; i++)
-            {
-                NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
-                                
-                const int noteX = x_converter->tickToX(noteRenderInfo.tick);
-                
-                dc.SetPen(  wxPen( wxColour(125,125,125), 8 ) );
-                
-                // draw small lines above score if needed
-                if(noteRenderInfo.level < first_score_level-1)
-                {
-                    for(int lvl=first_score_level-2; lvl>noteRenderInfo.level+noteRenderInfo.level%2-2; lvl -= 2)
-                    {
-                        const int y = LEVEL_TO_Y(lvl);
-                        dc.DrawLine(noteX, y, noteX+200, y);
-                    }
-                }
-                
-                // draw small lines below score if needed
-                if(noteRenderInfo.level > last_score_level+1)
-                {
-                    for(int lvl=last_score_level+2; lvl<noteRenderInfo.level-noteRenderInfo.level%2+2; lvl += 2)
-                    {
-                        const int y = LEVEL_TO_Y(lvl);
-                        dc.DrawLine(noteX, y, noteX+200, y);
-                    }
-                }
-                
-                // draw head
-                const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
-                wxPoint headLocation( noteX + note_x_shift,
-                                     notey-(headRadius-5)/2.0); // FIXME....
-                
-                if(noteRenderInfo.instant_hit)
-                {
-                    dc.DrawText(wxT("X"), headLocation.x - 36, headLocation.y);
-                }
-                else
-                {
-                    dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
-                    dc.SetBrush( *wxBLACK_BRUSH );
-                    const int cx = headLocation.x;
-                    const int cy = headLocation.y;
-                    wxPoint points[25];
-                    for(int n=0; n<25; n++)
-                    {
-                        // FIXME - instead of always substracting to radius, just make it smaller...
-                        const float angle = n/25.0*6.283185f /* 2*PI */;
-                        points[n] = wxPoint( cx + (headRadius-5)*cos(angle),
-                                             cy + headRadius/2 + (headRadius - 14)*sin(angle) - headRadius*(-0.5f + fabsf( (n-12.5f)/12.5f ))/2.0f );
-                    }
-
-                    if(noteRenderInfo.hollow_head) dc.DrawSpline(25, points);
-                    else dc.DrawPolygon(25, points, -3);
-                    
-                }
-                noteRenderInfo.setY(notey+headRadius/2.0);
-                
-                // draw dot if note is dotted
-                if(noteRenderInfo.dotted)
-                {
-                    wxPoint headLocation( noteX + note_x_shift + headRadius*2 + 20, notey+10 );
-                    dc.DrawEllipse( headLocation, wxSize(10,10) );
-                }
-                
-                // draw sharpness sign if relevant
-                if(noteRenderInfo.sign == SHARP)        renderSharp  ( dc, noteX, noteRenderInfo.getY() - 40  );
-                else if(noteRenderInfo.sign == FLAT)    renderFlat   ( dc, noteX, noteRenderInfo.getY() - 40  );
-                else if(noteRenderInfo.sign == NATURAL) renderNatural( dc, noteX, noteRenderInfo.getY() - 50  );
-                
-            } // next note
-        }// end scope
+        const int fromTick = getMeasureData()->firstTickInMeasure( line.getFirstMeasure() );
+        const int toTick = getMeasureData()->lastTickInMeasure( line.getLastMeasure() );
         
+        // ---- draw notes heads
+        {
+        const int noteAmount = analyser.noteRenderInfo.size();
+        for(int i=0; i<noteAmount; i++)
+        {
+            if (analyser.noteRenderInfo[i].tick < fromTick) continue;
+            if (analyser.noteRenderInfo[i].tick >= toTick) break;
+
+            std::cout << "Drawing note at " << analyser.noteRenderInfo[i].tick << " - beat " <<  analyser.noteRenderInfo[i].tick/960 << std::endl;         
+            NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
+                            
+            const int noteX = x_converter->tickToX(noteRenderInfo.tick);
+            
+            dc.SetPen(  wxPen( wxColour(125,125,125), 8 ) );
+            
+            // draw small lines above score if needed
+            if(noteRenderInfo.level < first_score_level-1)
+            {
+                for(int lvl=first_score_level-2; lvl>noteRenderInfo.level+noteRenderInfo.level%2-2; lvl -= 2)
+                {
+                    const int y = LEVEL_TO_Y(lvl);
+                    dc.DrawLine(noteX, y, noteX+200, y);
+                }
+            }
+            
+            // draw small lines below score if needed
+            if(noteRenderInfo.level > last_score_level+1)
+            {
+                for(int lvl=last_score_level+2; lvl<noteRenderInfo.level-noteRenderInfo.level%2+2; lvl += 2)
+                {
+                    const int y = LEVEL_TO_Y(lvl);
+                    dc.DrawLine(noteX, y, noteX+200, y);
+                }
+            }
+            
+            // draw head
+            const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
+            wxPoint headLocation( noteX + note_x_shift,
+                                 notey-(headRadius-5)/2.0); // FIXME....
+            
+            if(noteRenderInfo.instant_hit)
+            {
+                dc.DrawText(wxT("X"), headLocation.x - 36, headLocation.y);
+            }
+            else
+            {
+                dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
+                dc.SetBrush( *wxBLACK_BRUSH );
+                const int cx = headLocation.x;
+                const int cy = headLocation.y;
+                wxPoint points[25];
+                for(int n=0; n<25; n++)
+                {
+                    // FIXME - instead of always substracting to radius, just make it smaller...
+                    const float angle = n/25.0*6.283185f /* 2*PI */;
+                    points[n] = wxPoint( cx + (headRadius-5)*cos(angle),
+                                         cy + headRadius/2 + (headRadius - 14)*sin(angle) - headRadius*(-0.5f + fabsf( (n-12.5f)/12.5f ))/2.0f );
+                }
+
+                if(noteRenderInfo.hollow_head) dc.DrawSpline(25, points);
+                else dc.DrawPolygon(25, points, -3);
+                
+            }
+            noteRenderInfo.setY(notey+headRadius/2.0);
+            
+            // draw dot if note is dotted
+            if(noteRenderInfo.dotted)
+            {
+                wxPoint headLocation( noteX + note_x_shift + headRadius*2 + 20, notey+10 );
+                dc.DrawEllipse( headLocation, wxSize(10,10) );
+            }
+            
+            // draw sharpness sign if relevant
+            if(noteRenderInfo.sign == SHARP)        renderSharp  ( dc, noteX, noteRenderInfo.getY() - 40  );
+            else if(noteRenderInfo.sign == FLAT)    renderFlat   ( dc, noteX, noteRenderInfo.getY() - 40  );
+            else if(noteRenderInfo.sign == NATURAL) renderNatural( dc, noteX, noteRenderInfo.getY() - 50  );
+            
+        } // next note
+        } // end scope
+
         // ------------------ second part : intelligent drawing of the rest -----------------
         // analyse notes to know how to build the score
         analyser.analyseNoteInfo();

@@ -66,9 +66,9 @@ protected:
     LayoutLine* currentLine;
     int layoutElementsAmount;
     wxDC* dc;
-    float pixel_width_of_an_unit;
+    Track* track;
 public:
-    EditorPrintable();
+    EditorPrintable(Track* track);
     virtual ~EditorPrintable();
         
     /** Called by the print code when it's time to render a line. This will be handled in the appropriate subclass.
@@ -78,6 +78,8 @@ public:
     /** Called by the layout code to know the relative height of this line
     */
     virtual int calculateHeight(LayoutLine& line) = 0;
+    
+    Track* getTrack() const { return track; }
     
     void setCurrentTrack(LayoutLine* line);
     
@@ -93,6 +95,9 @@ public:
     int tickToX(const int tick);
     void drawVerticalDivider(LayoutElement* el, const int y0, const int y1);
     void renderTimeSignatureChange(LayoutElement* el, const int y0, const int y1);
+    
+    virtual void earlySetup() {}
+    virtual void addUsedTicks(const MeasureTrackReference& trackRef, std::map< int /* tick */, float /* position */ >&) { }
 };
     
 class AriaPrintable
@@ -128,11 +133,14 @@ public:
     bool addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */);
     void calculateLayout(bool checkRepetitions_bool);
     
+    EditorPrintable* getEditorPrintableFor(Track* track);
+
     virtual ~AriaPrintable();
     wxString getTitle();
     int getPageAmount();
     void printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const int w, const int h);
     void printLine(LayoutLine& line, wxDC& dc);
+    
 };
 
 AriaPrintable* getCurrentPrintable();
