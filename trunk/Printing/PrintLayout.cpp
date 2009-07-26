@@ -609,6 +609,7 @@ void PrintLayoutManager::setLineCoords(LayoutLine& line, const int x0, const int
 {
     const int trackAmount = line.getTrackAmount();
     
+    // std::cout << "Line given coords " << x0 << ", " << y0 << " to " << x1 << ", " << y1 << std::endl;
     
     line.x0 = x0;
     line.y0 = y0;
@@ -635,9 +636,7 @@ void PrintLayoutManager::setLineCoords(LayoutLine& line, const int x0, const int
     
     float current_y = my0;
     for(int n=0; n<trackAmount; n++)
-    {
-        std::cout << "%%%% setting track coords " << n << std::endl;
-        
+    {        
         line.setCurrentTrack(n);
         EditorPrintable* editorPrintable = parent->editorPrintables.get(line.getCurrentTrack());
         
@@ -646,6 +645,7 @@ void PrintLayoutManager::setLineCoords(LayoutLine& line, const int x0, const int
         
         // determine how much vertical space is allocated for this track
         const float track_height = (height - margin_below - margin_above) * line.height_percent[n]/100.0f;
+        std::cout << "track_height=" << track_height << " (margin_below=" << margin_below << " margin_above=" << margin_above << ")\n";
         
         const float position = (float)n / trackAmount;
         const float space_above_line = space_between_tracks*position;
@@ -655,6 +655,11 @@ void PrintLayoutManager::setLineCoords(LayoutLine& line, const int x0, const int
                                        x0, current_y + space_above_line,
                                        x1, current_y + track_height - space_below_line,
                                        n==0);
+        
+        std::cout << "%%%% setting track coords " << n  << " : " << x0 << ", " << (current_y + space_above_line) << " to " <<
+                    x1 << ", "<< (current_y + track_height - space_below_line) << " ( space_above_line=" << space_above_line <<
+                    " space_below_line=" << space_below_line << ")" <<  std::endl;
+
         
         current_y += track_height;
     }

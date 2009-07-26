@@ -17,6 +17,7 @@
 #include "AriaCore.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Track.h"
+#include "Printing/EditorPrintable.h"
 #include "Printing/PrintingBase.h"
 
 namespace AriaMaestosa

@@ -57,49 +57,8 @@
 namespace AriaMaestosa
 {
     class Track;
-    
-class EditorPrintable
-{
-protected:
-    // FIXME : remove 'currentLine' state?
-    LayoutLine* currentLine;
-    
-    Track* track;
-    wxDC* dc;
-public:
-    EditorPrintable(Track* track);
-    virtual ~EditorPrintable();
+    class EditorPrintable;
         
-    /** Called by the print code when it's time to render a line. This will be handled in the appropriate subclass.
-    */
-    virtual void drawLine(LayoutLine& line, wxDC& dc) = 0;
-
-    /** Called by the layout code to know the relative height of this line
-    */
-    virtual int calculateHeight(LayoutLine& line) = 0;
-    
-    Track* getTrack() const { return track; }
-    
-    void setCurrentTrack(LayoutLine* line);
-    
-    void setLineYCoords(const int y0, const int y1);
-    void setCurrentDC(wxDC* dc);
-    
-    void setLineCoords(LayoutLine& line, TrackRenderInfo& track, int x0, const int y0, const int x1, const int y1, bool show_measure_number);
-
-   // int getCurrentElementXStart();
-    const int getElementCount() const;
-    LayoutElement* continueWithNextElement(const int currentLayoutElement);
-    LayoutElement* getElementForMeasure(const int measureID);
-    int getNotePrintX(int noteID);
-    int tickToX(const int tick);
-    void drawVerticalDivider(LayoutElement* el, const int y0, const int y1);
-    void renderTimeSignatureChange(LayoutElement* el, const int y0, const int y1);
-    
-    virtual void earlySetup() {}
-    virtual void addUsedTicks(const MeasureToExport& measure, const MeasureTrackReference& trackRef, std::map< int /* tick */, float /* position */ >&) { }
-};
-    
 class AriaPrintable
 {
     friend class AriaMaestosa::LayoutLine;

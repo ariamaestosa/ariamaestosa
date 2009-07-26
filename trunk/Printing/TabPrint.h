@@ -20,7 +20,7 @@
 
 #include <wx/file.h>
 #include "Config.h"
-#include "Printing/PrintingBase.h"
+#include "Printing/EditorPrintable.h"
 #include "Printing/PrintLayout.h"
 
 namespace AriaMaestosa
