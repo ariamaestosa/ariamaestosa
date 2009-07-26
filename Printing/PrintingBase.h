@@ -54,7 +54,7 @@
  them appropriately.
  
  */
-const bool PRINT_LAYOUT_HINTS = false;
+const bool PRINT_LAYOUT_HINTS = true;
 
 namespace AriaMaestosa
 {

@@ -203,7 +203,7 @@ namespace AriaMaestosa
         // check if empty
         if(from_note == -1 || to_note == -1)
             return 0;
-        
+
         return string_amount;
     }  
     

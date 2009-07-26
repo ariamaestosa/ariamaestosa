@@ -250,6 +250,7 @@ int EditorPrintable::tickToX(const int tick)
         
         if(tick >= firstTick and tick < lastTick)
         {
+            //std::cout << tick << " is within bounds " << firstTick << " - " << lastTick << std::endl;
             const int elem_x_start = currentLine->layoutElements[n].getXFrom();
             const int elem_x_end = currentLine->layoutElements[n].getXTo();
             const int elem_w = elem_x_end - elem_x_start;
@@ -268,6 +269,8 @@ int EditorPrintable::tickToX(const int tick)
             }
             else
             {
+                //assert(meas.ticks_relative_position[tick].relativePosition != -1);
+                
                 // In non-linear mode, use ratio that was computed previously
                 nratio = meas.ticks_relative_position[tick].relativePosition;
             }
@@ -281,12 +284,18 @@ int EditorPrintable::tickToX(const int tick)
              (int)round(nratio * (elem_w-renderInfo.pixel_width_of_an_unit*0.7) + elem_x_start) << std::endl;
              */
             
+            std::cout << "tickToX Returning " << (int)round(nratio * elem_w + elem_x_start) << " from normal path for " << tick << 
+            " (nratio=" << nratio << ")\n";
             return (int)round(nratio * elem_w + elem_x_start);
         }
-        
-        // given tick is not in a visible measure
-        if(tick < firstTick) return -1;
-        
+        else 
+        // given tick is before the current line
+        if(tick < firstTick) 
+        {
+            std::cout << "tickToX Returning -1 A\n";
+            return -1;
+        }
+        else
         /* the tick we were given is not on the current line, but on the next.
          * this probably means there is a tie from a note on one line to a note
          * on another line. Return a X at the very right of the page.
@@ -295,10 +304,13 @@ int EditorPrintable::tickToX(const int tick)
          */
         if(n==renderInfo.layoutElementsAmount-1 and tick >= lastTick)
         {
+            std::cout << "tickToX Returning -" <<  (currentLine->layoutElements[n].getXTo() + 10) << " B\n";
+
             return currentLine->layoutElements[n].getXTo() + 10;
         }
     }
     
+    std::cout << "tickToX Returning -1 C\n";
     return -1;
     //return currentLine->layoutElements[layoutElementsAmount-1].x2 + 10;
 }
