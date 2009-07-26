@@ -29,7 +29,7 @@ namespace AriaMaestosa
     class Track;
     class AriaPrintable;
 
-    static const int max_line_width_in_units = 60;
+    static const int max_line_width_in_units = 50;
     static const int maxLinesInPage = 10;
 
 int getRepetitionMinimalLength();
@@ -46,17 +46,19 @@ void setRepetitionMinimalLength(const int newvalue);
         float relativePosition;
         int proportion;
         
+        // don't construct this struct directly, let std::map create them as needed
         TickPosInfo()
         {
             TickPosInfo::relativePosition = -1; // will be set later
             TickPosInfo::proportion = 1;
         }
         
-        TickPosInfo(int proportion)
+        void setProportion(int proportion)
         {
-            TickPosInfo::relativePosition = -1; // will be set later
-            TickPosInfo::proportion = proportion;
+            // many notes may be on same tick. always keep largest proportion.
+            this->proportion = std::max(this->proportion, proportion);
         }
+        
     };
 
 class PrintLayoutManager
