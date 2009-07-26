@@ -28,7 +28,8 @@
 namespace AriaMaestosa
 {
     class ScoreAnalyser;
-    
+    const int headRadius = 36; //(int)round(lineHeight*0.8);
+
 class ScorePrintable : public EditorPrintable
 {
     void gatherVerticalSizingInfo(LayoutLine& line);
@@ -47,13 +48,12 @@ class ScorePrintable : public EditorPrintable
     OwnerPtr<ScoreAnalyser> f_clef_analyser;
 
     std::vector<int> silences_ticks;
-
     
 public:
     ScorePrintable(Track* track_arg);
     virtual ~ScorePrintable();
 
-    void addUsedTicks(const MeasureToExport& measure, const MeasureTrackReference& trackRef, std::map< int /* tick */, float /* position */ >&);
+    void addUsedTicks(const MeasureToExport& measure, const MeasureTrackReference& trackRef, std::map<int /* tick */,TickPosInfo>&);
     
     void earlySetup();
 

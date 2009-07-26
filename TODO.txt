@@ -43,7 +43,8 @@ NOTE: sorry, this is very raw :)
     - red images
     - X notes not printed right
     ? allow setting font size, number of lines per page, zoom, etc...
-    * non-linear printing : leave room for silences
+    * non-linear printing
+        * leave room for silences in tab mode too (and draw them?)
     * semi-linear printing (longer notes have a somewhat larger space, but not fully linear)
  - printing : skip series of empty measures ?
 

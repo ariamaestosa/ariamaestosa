@@ -179,7 +179,7 @@ namespace AriaMaestosa
     }
     
     void TablaturePrintable::addUsedTicks(const MeasureToExport& measure, const MeasureTrackReference& trackRef,
-                                          std::map< int /* tick */, float /* position */ >& ticks_relative_position)
+                                          std::map<int /* tick */,TickPosInfo>& ticks_relative_position)
     {
         const int first_note = trackRef.firstNote;
         const int last_note = trackRef.lastNote;
@@ -191,7 +191,7 @@ namespace AriaMaestosa
         for(int n=first_note; n<=last_note; n++)
         {
             const int tick = track->getNoteStartInMidiTicks(n);
-            ticks_relative_position[ tick ] = -1; // will be set later
+            ticks_relative_position[ tick ] = TickPosInfo(1);
         }
     }
     

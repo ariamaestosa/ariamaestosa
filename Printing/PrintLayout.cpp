@@ -479,19 +479,18 @@ void PrintLayoutManager::calculateRelativeLengths()
                 
                 // Build a list of all ticks
                 MeasureToExport& meas = measures[layoutElements[n].measure];
-                std::map< int /* tick */, float /* position */ >& ticks_relative_position = meas.ticks_relative_position;
+                std::map< int /* tick */, TickPosInfo >& ticks_relative_position = meas.ticks_relative_position;
                 
                 const int trackAmount = meas.trackRef.size();
                 for(int i=0; i<trackAmount; i++)
                 {
-                    // TODO : also count silences, they need some space too
                     EditorPrintable* editorPrintable = parent->getEditorPrintableFor( meas.trackRef[i].track );
                     assert( editorPrintable != NULL );
                     
                     editorPrintable->addUsedTicks(meas, meas.trackRef[i], ticks_relative_position);
                 }
                 
-                std::map<int,float>::iterator it;
+                std::map<int,TickPosInfo>::iterator it;
                 for ( it=ticks_relative_position.begin() ; it != ticks_relative_position.end(); it++ )
                 {
                     // building the full list from 'map' prevents duplicates
@@ -519,9 +518,19 @@ void PrintLayoutManager::calculateRelativeLengths()
                 } while(changed);
                 
                 // associate a relative position to each note
+                // start by setting them as ints (since proportions are ints), renormalize from 0 to 1 after
+                int intRelativePosition = 0;
                 for(int i=0; i<all_ticks_amount; i++)
                 {
-                    ticks_relative_position[ all_ticks_vector[i] ] = (float)i/all_ticks_amount;
+                    ticks_relative_position[ all_ticks_vector[i] ].relativePosition = (float)intRelativePosition;
+                    intRelativePosition += ticks_relative_position[ all_ticks_vector[i] ].proportion;
+                }
+                for(int i=0; i<all_ticks_amount; i++)
+                {
+                    TickPosInfo& tickPosInfo = ticks_relative_position[ all_ticks_vector[i] ];
+                    tickPosInfo.relativePosition = tickPosInfo.relativePosition / intRelativePosition;
+                    // intRelativePosition now contains the total size of the measure,so we can use
+                    // it to renormalize from 0 to 1
                 }
                 
                 layoutElements[n].width_in_units = all_ticks_amount;
@@ -534,7 +543,7 @@ void PrintLayoutManager::calculateRelativeLengths()
         }
 
         //std::cout << "$$ setting charwidth for element " << n << " : " << layoutElements[n].width_in_units << std::endl;
-    }
+    } // end for elements
 }
 
 /**

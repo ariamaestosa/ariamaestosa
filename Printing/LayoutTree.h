@@ -20,12 +20,11 @@
 #include <map>
 #include "ptr_vector.h"
 
-#include "Printing/LayoutTree.h"
-
 namespace AriaMaestosa
 {
     class Track;
     class AriaPrintable;
+    struct TickPosInfo;
     
     /*
      A description of a measure to print. If we print more than one track at once,
@@ -48,7 +47,7 @@ namespace AriaMaestosa
             MeasureToExport(const int measID);
             
             // for non-linear printing
-            std::map< int /* tick */, float /* position */ > ticks_relative_position;
+            std::map< int /* tick */, TickPosInfo > ticks_relative_position;
             
             // Finds the notes correcsponding to this measure
             // in the given track and keep the reference.

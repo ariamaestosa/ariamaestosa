@@ -97,7 +97,7 @@ ScoreMidiConverter::ScoreMidiConverter()
     for(int n=0; n<7; n++) scoreNotesSharpness[n] = NATURAL;
 
     accidentals =  false;
-    for(int n=0; n<7; n++) accidentalScoreNotesSharpness[n] = -1; // FIXME - why -1 and not NONE?
+    for(int n=0; n<7; n++) accidentalScoreNotesSharpness[n] = -1; // FIXME - why -1 and not PITCH_SIGN_NONE?
     accidentalsMeasure = -1;
 
     going_in_sharps = false;
@@ -132,14 +132,14 @@ bool ScoreMidiConverter::goingInFlats()
 {
     return going_in_flats;
 }
-// what sign should appear next to the key for this note? (FLAT, SHARP or NONE)
+// what sign should appear next to the key for this note? (FLAT, SHARP or PITCH_SIGN_NONE)
 PitchSign ScoreMidiConverter::getKeySigSharpnessSignForLevel(const unsigned int level)
 {
     assertExpr(level,<,73);
     
     PitchSign value = scoreNotesSharpness[ levelToNote7(level) ];
     
-    if(value == NATURAL) return NONE;
+    if(value == NATURAL) return PITCH_SIGN_NONE;
     else return value;
 }
 
@@ -156,7 +156,7 @@ int ScoreMidiConverter::getScoreCenterCLevel()
 }
 
 /*
-// with the current key, what sign must be shown next to note if we want it to have given pitch? (FLAT, SHARP, NATURAL or NONE)
+// with the current key, what sign must be shown next to note if we want it to have given pitch? (FLAT, SHARP, NATURAL or PITCH_SIGN_NONE)
 int ScoreMidiConverter::getSharpnessSignForMidiNote(const unsigned int note)
 {
     return showSignNextToNote[ note ];
@@ -186,7 +186,7 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, PitchSign* sign)
     const int level = midiNoteToLevel[note];
     const NoteToLevelType current_type = midiNoteToLevel_type[note];
 
-    PitchSign answer_sign = NONE;
+    PitchSign answer_sign = PITCH_SIGN_NONE;
     int answer_level = -1;
 
     if(current_type == SHARP_OR_FLAT)
@@ -221,7 +221,7 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, PitchSign* sign)
     }
     else if(current_type == DIRECT_ON_LEVEL)
     {
-        if(sign!=NULL) answer_sign = NONE;
+        if(sign!=NULL) answer_sign = PITCH_SIGN_NONE;
         answer_level = level;
     }
     else answer_level = -1; // nothing found
@@ -247,10 +247,10 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, PitchSign* sign)
                 if(current_accidental != -1)
                 {
                     // the current note continues using the same accidental, no change
-                    if(current_accidental == answer_sign) answer_sign = NONE;
+                    if(current_accidental == answer_sign) answer_sign = PITCH_SIGN_NONE;
                     // the current note does NOT continue using the same accidental, display another sign
                     else if(current_accidental != answer_sign and
-                            (answer_sign == NATURAL or answer_sign == NONE))
+                            (answer_sign == NATURAL or answer_sign == PITCH_SIGN_NONE))
                     {
                         const int accidentalType = accidentalScoreNotesSharpness[ levelToNote7(answer_level) ];
                         // we left the original key by adding a sharp of flat,
@@ -263,14 +263,14 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, PitchSign* sign)
                         // we left the key by using a natural accidental on a key
                         // flat/sharp, and now we're coming back on the original key
                         // so show again the original sign
-                        else if(accidentalType == NATURAL /*and answer_sign == NONE*/)
+                        else if(accidentalType == NATURAL /*and answer_sign == PITCH_SIGN_NONE*/)
                         {
                             answer_sign = getKeySigSharpnessSignForLevel( answer_level );
                         }
-                        else if(accidentalType == NONE)
+                        else if(accidentalType == PITCH_SIGN_NONE)
                         {
                             // FIXME - not sure this is appropriate
-                            std::cout << "WARNING: accidentalType == NONE :(" << std::endl;
+                            std::cout << "WARNING: accidentalType == PITCH_SIGN_NONE :(" << std::endl;
                             answer_sign = NATURAL;
                         }
                     }
@@ -280,7 +280,7 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, PitchSign* sign)
         }
 
         // set accidentals
-        if(answer_sign != NONE)
+        if(answer_sign != PITCH_SIGN_NONE)
         {
             accidentals = true;
             const int measure = getMeasureData()->measureAtTick(noteObj->startTick);
@@ -389,7 +389,7 @@ int ScoreMidiConverter::getMidiNoteForLevelAndSign(const unsigned int level, int
 {
     if(level < 0 or level > 73) return -1;
 
-    if(sharpness == NONE) return levelToNote(level);
+    if(sharpness == PITCH_SIGN_NONE) return levelToNote(level);
     else if(sharpness == NATURAL) return levelToNaturalNote[level];
     else if(sharpness == SHARP) return levelToNaturalNote[level]-1;
     else if(sharpness == FLAT) return levelToNaturalNote[level]+1;

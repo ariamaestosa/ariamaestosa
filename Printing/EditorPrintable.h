@@ -18,6 +18,7 @@
 #define _editor_printable_h_
 
 #include <map>
+#include "Printing/PrintLayout.h"
 
 class wxDC;
 
@@ -70,7 +71,7 @@ class EditorPrintable
         void renderTimeSignatureChange(LayoutElement* el, const int y0, const int y1);
         
         virtual void earlySetup() {}
-        virtual void addUsedTicks(const MeasureToExport& measure, const MeasureTrackReference& trackRef, std::map< int /* tick */, float /* position */ >&) { }
+        virtual void addUsedTicks(const MeasureToExport& measure, const MeasureTrackReference& trackRef, std::map< int /* tick */, TickPosInfo >&) { }
     };
 }
 
