@@ -239,15 +239,17 @@ namespace AriaMaestosa
         if( type == 1 )
         {
             global_dc->SetPen(  *wxTRANSPARENT_PEN  );
+            silence_radius = 40;
+            
             // FIXME - remove hardcoded values
-            silence_radius = 60;
             global_dc->DrawRectangle(x+40, silences_y, silence_radius*2, (int)round(global_line_height/2));
             silence_center = x+40+silence_radius;
         }
         else if( type == 2 )
         {
-            silence_radius = 60;
+            silence_radius = 40;
             global_dc->SetPen(  *wxTRANSPARENT_PEN  );
+            
             // FIXME - hardcoded values
             global_dc->DrawRectangle(x+40, (int)round(silences_y+global_line_height/2), silence_radius*2, (int)round(global_line_height/2.0));
             silence_center = x+40+silence_radius;
@@ -374,17 +376,17 @@ namespace AriaMaestosa
         {
             const int tick = track->getNoteStartInMidiTicks(n);
 
-            std::cout << "Adding tick " << tick << " to list" << std::endl;
+            //std::cout << "Adding tick " << tick << " to list" << std::endl;
             
             converter->noteToLevel(track->getNote(n), &note_sign);
             if (note_sign != PITCH_SIGN_NONE)
             {
                 // if there's an accidental sign to show, allocate a bigger space for this note
-                ticks_relative_position[ tick ] = TickPosInfo(2);
+                ticks_relative_position[ tick ].setProportion(2);
             }
             else
             {
-                ticks_relative_position[ tick ] = TickPosInfo(1);
+                ticks_relative_position[ tick ].setProportion(1);
             }
         }
         
@@ -395,10 +397,10 @@ namespace AriaMaestosa
         const int silenceAmount = silences_ticks.size();
         for (int n=0; n<silenceAmount; n++)
         {
-            if (silences_ticks[n] < fromTick or silences_ticks[n] > toTick) continue;
-            std::cout << "Adding [silence] tick " << silences_ticks[n] << " to list" << std::endl;
+            if (silences_ticks[n] < fromTick or silences_ticks[n] >= toTick) continue;
+            //std::cout << "Adding [silence] tick " << silences_ticks[n] << " to list" << std::endl;
 
-            ticks_relative_position[ silences_ticks[n]] = TickPosInfo(1);
+            ticks_relative_position[ silences_ticks[n]].setProportion(1);
         }
     }
     

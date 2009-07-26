@@ -434,6 +434,8 @@ void PrintLayoutManager::calculateRelativeLengths()
     const int layoutElementsAmount = layoutElements.size();
     for(int n=0; n<layoutElementsAmount; n++)
     {
+        std::cout << "= layout element " << n << " =\n";
+        
         float zoom = 1;
         //layoutElements[n].zoom = 1;
 
@@ -497,7 +499,7 @@ void PrintLayoutManager::calculateRelativeLengths()
                     all_ticks_vector.push_back( (*it).first );
                 }
                 // also add last tick, so that the last note is not placed on the measure's end
-                all_ticks_vector.push_back( meas.lastTick );
+                //all_ticks_vector.push_back( meas.lastTick );
                 
                 // order the vector
                 const int all_ticks_amount = all_ticks_vector.size();
@@ -528,7 +530,15 @@ void PrintLayoutManager::calculateRelativeLengths()
                 for(int i=0; i<all_ticks_amount; i++)
                 {
                     TickPosInfo& tickPosInfo = ticks_relative_position[ all_ticks_vector[i] ];
-                    tickPosInfo.relativePosition = tickPosInfo.relativePosition / intRelativePosition;
+                    
+                    //std::cout << "note relativePosition = " << 
+                    //" (" << tickPosInfo.relativePosition << "/" << intRelativePosition << ") = ";
+                    
+                    // I multiply by 0.9 to avoid notes being too close to the next bar
+                    // FIXME : don't hardcode
+                    tickPosInfo.relativePosition = tickPosInfo.relativePosition / intRelativePosition * 0.9;
+                    
+                    std::cout << tickPosInfo.relativePosition << std::endl;
                     // intRelativePosition now contains the total size of the measure,so we can use
                     // it to renormalize from 0 to 1
                 }

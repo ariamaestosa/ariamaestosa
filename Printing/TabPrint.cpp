@@ -191,7 +191,7 @@ namespace AriaMaestosa
         for(int n=first_note; n<=last_note; n++)
         {
             const int tick = track->getNoteStartInMidiTicks(n);
-            ticks_relative_position[ tick ] = TickPosInfo(1);
+            ticks_relative_position[ tick ].setProportion(1);
         }
     }
     
