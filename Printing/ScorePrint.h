@@ -20,9 +20,10 @@
 
 #include <wx/file.h>
 #include "Config.h"
+#include "Editors/ScoreEditor.h"
+#include "Printing/EditorPrintable.h"
 #include "Printing/PrintingBase.h"
 #include "Printing/PrintLayout.h"
-#include "Editors/ScoreEditor.h"
 
 namespace AriaMaestosa
 {

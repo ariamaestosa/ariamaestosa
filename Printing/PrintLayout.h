@@ -29,7 +29,7 @@ namespace AriaMaestosa
     class Track;
     class AriaPrintable;
 
-    static const int max_line_width_in_units = 70;
+    static const int max_line_width_in_units = 60;
     static const int maxLinesInPage = 10;
 
 int getRepetitionMinimalLength();
