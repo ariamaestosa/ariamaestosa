@@ -358,8 +358,12 @@ namespace AriaMaestosa
     void ScorePrintable::addUsedTicks(const MeasureToExport& measure, const MeasureTrackReference& trackRef,
                                       std::map<int /* tick */,TickPosInfo>& ticks_relative_position)
     {
-        const int first_note = trackRef.firstNote;
-        const int last_note = trackRef.lastNote;
+
+        // FIXME : if a measure contains no note on its own, but only the end of the previous one, this method
+        // will never be called for this measure, and the tick position won't be set
+        
+        const int fromTick = measure.firstTick;
+        const int toTick = measure.lastTick;
         
         Track* track = trackRef.track;
         ScoreEditor* scoreEditor = track->graphics->scoreEditor;
@@ -367,32 +371,51 @@ namespace AriaMaestosa
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         converter->updateConversionData();
         converter->resetAccidentalsForNewRender();
-        
-        PitchSign note_sign;
-        
-        if(first_note == -1 or last_note == -1) return; // empty measure
-        
-        for(int n=first_note; n<=last_note; n++)
+                
+        if (f_clef)
         {
-            const int tick = track->getNoteStartInMidiTicks(n);
+            const int noteAmount = f_clef_analyser->noteRenderInfo.size();
+            for(int n=0; n<noteAmount; n++)
+            {
+                const int tick = f_clef_analyser->noteRenderInfo[n].tick;
+                if (tick < fromTick or tick >= toTick) continue;
 
-            //std::cout << "Adding tick " << tick << " to list" << std::endl;
-            
-            converter->noteToLevel(track->getNote(n), &note_sign);
-            if (note_sign != PITCH_SIGN_NONE)
-            {
-                // if there's an accidental sign to show, allocate a bigger space for this note
-                ticks_relative_position[ tick ].setProportion(2);
-            }
-            else
-            {
-                ticks_relative_position[ tick ].setProportion(1);
+                std::cout << "Adding tick " << tick << " to list" << std::endl;
+                
+                if (f_clef_analyser->noteRenderInfo[n].sign != PITCH_SIGN_NONE)
+                {
+                    // if there's an accidental sign to show, allocate a bigger space for this note
+                    ticks_relative_position[ tick ].setProportion(2);
+                }
+                else
+                {
+                    ticks_relative_position[ tick ].setProportion(1);
+                }
             }
         }
+        if (g_clef)
+        {
+            const int noteAmount = g_clef_analyser->noteRenderInfo.size();
+            for(int n=0; n<noteAmount; n++)
+            {
+                const int tick = g_clef_analyser->noteRenderInfo[n].tick;
+                if (tick < fromTick or tick >= toTick) continue;
+                
+                std::cout << "Adding tick " << tick << " to list" << std::endl;
+                
+                if (g_clef_analyser->noteRenderInfo[n].sign != PITCH_SIGN_NONE)
+                {
+                    // if there's an accidental sign to show, allocate a bigger space for this note
+                    ticks_relative_position[ tick ].setProportion(2);
+                }
+                else
+                {
+                    ticks_relative_position[ tick ].setProportion(1);
+                }
+            }
+        }
+
         
-        
-        const int fromTick = measure.firstTick;
-        const int toTick = measure.lastTick;
 
         const int silenceAmount = silences_ticks.size();
         for (int n=0; n<silenceAmount; n++)
@@ -640,6 +663,34 @@ namespace AriaMaestosa
             }
             
         }//next element
+   
+        /*
+        if(f_clef)
+        {
+            const int amount = f_clef_analyser->noteRenderInfo.size();
+            int tick = -1;
+            for(int n=0; n<amount; n++)
+            {
+                const int newTick = f_clef_analyser->noteRenderInfo[n].tick;
+                
+                if (newTick < tick)
+                {
+                    std::cout << "[F noteRenderInfo] ticks not in order!! " << tick << " then " << newTick << "\n";
+                }
+                f_clef_analyser->noteRenderInfo[n].tick = tick;
+                
+                //std::cout << "[F noteRenderInfo] " << f_clef_analyser->noteRenderInfo[n].tick << std::endl;
+            }
+        }
+        if(g_clef)
+        {
+            const int amount = g_clef_analyser->noteRenderInfo.size();
+            for(int n=0; n<amount; n++)
+            {
+                std::cout << "[G noteRenderInfo] " << g_clef_analyser->noteRenderInfo[n].tick << std::endl;
+            }
+        }
+         */
         
         // ---- Silences
         g_silences_ticks.clear();
@@ -787,10 +838,7 @@ namespace AriaMaestosa
     
     void ScorePrintable::earlySetup()
     {
-        std::cout << "Score early setup\n";
         generateScoreInfo();
-        //gatherVerticalSizingInfo(line);
-        //gatherNotesAndBasicSetup(line);
     }
     
     /**
@@ -1140,8 +1188,10 @@ namespace AriaMaestosa
                 const int base_y = LEVEL_TO_Y( noteRenderInfo.getStemOriginLevel() ) + (show_above ? - 30 : 60);
                 
                 const int noteX = x_converter->tickToX(noteRenderInfo.tick);
+                std::cout << "tied to tick " << noteRenderInfo.getTiedToTick() << " from " << noteRenderInfo.tick << std::endl;
                 const int tiedToPixel = x_converter->tickToX(noteRenderInfo.getTiedToTick());
-                
+                std::cout << "tied to pixel " << tiedToPixel << " from " << getStemX(noteRenderInfo) << std::endl;
+
                 const int center_x = (tiedToPixel + noteX)/2 + headRadius*2;
                 const int radius_x = abs(tiedToPixel - noteX)/2;
                 renderArc(dc, center_x, base_y, radius_x, show_above ? -50 : 50);

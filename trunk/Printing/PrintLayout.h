@@ -49,7 +49,7 @@ void setRepetitionMinimalLength(const int newvalue);
         // don't construct this struct directly, let std::map create them as needed
         TickPosInfo()
         {
-            TickPosInfo::relativePosition = -1; // will be set later
+            TickPosInfo::relativePosition = 0; // will be set later
             TickPosInfo::proportion = 1;
         }
         
