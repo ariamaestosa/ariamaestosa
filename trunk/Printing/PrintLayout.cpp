@@ -371,15 +371,18 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
   * \param level_y_amount    Height of the track in levels
   * \param track_area_height Height of the track in print units
   */
-void PrintLayoutManager::layTracksInPage(LayoutPage& page, const int text_height, const float track_area_height, const int level_y_amount,
+void PrintLayoutManager::placeTracksInPage(LayoutPage& page, const int text_height, const float track_area_height, const int level_y_amount,
                                          const int pageHeight, const int x0, const int y0, const int x1)
 {
-    std::cout << "\n====\nlayTracksInPage\n====\n";
+    std::cout << "\n========\nplaceTracksInPage\n========\n";
     
     // ---- Lay out tracks
     float y_from = y0 + text_height*3;
     for(int l=page.first_line; l<=page.last_line; l++)
     {
+        std::cout << "\n====\nLine " << l << "\n====\n";
+
+    
         //std::cout << "layoutLines[l].level_height = " << layoutLines[l].level_height << " track_area_height=" << track_area_height
         //          << " total_height=" << total_height << std::endl;
         
@@ -388,6 +391,7 @@ void PrintLayoutManager::layTracksInPage(LayoutPage& page, const int text_height
         
         float used_height = height;
         
+
         // track too high, will look weird... shrink a bit
         while(used_height/(float)layoutLines[l].level_height > 115)
         {
@@ -396,21 +400,24 @@ void PrintLayoutManager::layTracksInPage(LayoutPage& page, const int text_height
         
         // shrink total height when track is way too large (if page contains only a few tracks)
         if(height > pageHeight/5 && height > used_height*1.3) height = used_height*1.3;  
+
         
         float used_y_from = y_from;
         
         // center vertically in available space  if more space than needed
         if(used_height < height) used_y_from += (height - used_height)/2;
         
+        //std::cout << "```` used_y_from=" << used_y_from << std::endl;
+
         // split margin above and below depending on position within page
         const int line_amount = page.last_line - page.first_line;
         const float position = line_amount == 0 ? 0 : (float)(l - page.first_line) / line_amount;
         int margin_above = 250*position;
         int margin_below = 250*(1-position);
         
-        //std::cout << "height=" << height << " used_height=" << used_height << " used_y_from=" << used_y_from << " margin_above=" << margin_above << " margin_below=" << margin_below << std::endl;
+        std::cout << "height=" << height << " used_height=" << used_height << " used_y_from=" << used_y_from << " margin_above=" << margin_above << " margin_below=" << margin_below << std::endl;
         
-        this->setLineCoords(layoutLines[l], x0, used_y_from, x1, used_y_from+used_height, margin_below, margin_above);
+        this->divideLineAmongTracks(layoutLines[l], x0, used_y_from, x1, used_y_from+used_height, margin_below, margin_above);
         
         y_from += height;
         //std::cout << "yfrom is now " << y_from << std::endl;
@@ -490,6 +497,8 @@ void PrintLayoutManager::calculateRelativeLengths()
                     // building the full list from 'map' prevents duplicates
                     all_ticks_vector.push_back( (*it).first );
                 }
+                // also add last tick, so that the last note is not placed on the measure's end
+                all_ticks_vector.push_back( meas.lastTick );
                 
                 // order the vector
                 const int all_ticks_amount = all_ticks_vector.size();
@@ -604,12 +613,13 @@ void PrintLayoutManager::layInLinesAndPages()
     layoutPages[current_page].last_line = currentLine;
 }
 
-void PrintLayoutManager::setLineCoords(LayoutLine& line, const int x0, const int y0, const int x1, const int y1,
+void PrintLayoutManager::divideLineAmongTracks(LayoutLine& line, const int x0, const int y0, const int x1, const int y1,
                                   int margin_below, int margin_above)
 {
     const int trackAmount = line.getTrackAmount();
     
-    // std::cout << "Line given coords " << x0 << ", " << y0 << " to " << x1 << ", " << y1 << std::endl;
+    std::cout << "Line given coords " << x0 << ", " << y0 << " to " << x1 << ", " << y1 << std::endl;
+    std::cout << "==divideLineAmongTracks==\n";
     
     line.x0 = x0;
     line.y0 = y0;
@@ -624,8 +634,9 @@ void PrintLayoutManager::setLineCoords(LayoutLine& line, const int x0, const int
     if(height < 0.0001) return; // empty line. TODO : todo - draw empty bars to show there's something?
     
     // make sure margins are within acceptable bounds
-    if(margin_below > height) margin_below = height/5;
-    if(margin_above > height) margin_above = height/5;
+    if(margin_below > height/2) margin_below = height/5;
+    if(margin_above > height/2) margin_above = height/5;
+    
     
     const int my0 = y0 + margin_above;
     
@@ -651,7 +662,7 @@ void PrintLayoutManager::setLineCoords(LayoutLine& line, const int x0, const int
         const float space_above_line = space_between_tracks*position;
         const float space_below_line = space_between_tracks*(1-position);
         
-        editorPrintable->setLineCoords(line, line.getTrackRenderInfo(),
+        editorPrintable->placeTrackAndElementsWithinCoords(line, line.getTrackRenderInfo(),
                                        x0, current_y + space_above_line,
                                        x1, current_y + track_height - space_below_line,
                                        n==0);

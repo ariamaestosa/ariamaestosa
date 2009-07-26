@@ -410,6 +410,9 @@ namespace AriaMaestosa
         assertExpr(renderInfo.y1,<,50000);
         setCurrentDC(&dc);
         
+        
+        std::cout << "ScorePrintable size : " << renderInfo.x0 << ", " << renderInfo.y0 << " to " << renderInfo.x1 << ", " << renderInfo.y1 << std::endl;
+        
         x_converter = new PrintXConverter(this);
         
         // gather score info
@@ -418,10 +421,10 @@ namespace AriaMaestosa
         
         // since height is used to determine where to put repetitions/notes/etc.
         // only pass the height of the first score if there's 2, so stuff don't appear between both scores
-        setLineYCoords(renderInfo.y0,
-                       ( f_clef and g_clef ?
-                        renderInfo.y0 + (renderInfo.y1 - renderInfo.y0)*scoreData->first_clef_proportion :
-                        renderInfo.y1 ));
+        //setLineYCoords(renderInfo.y0,
+        //               ( f_clef and g_clef ?
+        //                renderInfo.y0 + (renderInfo.y1 - renderInfo.y0)*scoreData->first_clef_proportion :
+        //                renderInfo.y1 ));
         
         // if we have only one clef, give it the full space.
         // if we have two, split the space between both
@@ -482,6 +485,16 @@ namespace AriaMaestosa
         
         delete x_converter;
         x_converter = NULL;
+        
+        // ---- Debug guides
+        if (PRINT_LAYOUT_HINTS)
+        {
+            dc.SetPen( wxPen(*wxBLUE, 7) );
+            dc.DrawLine(renderInfo.x0, renderInfo.y0, renderInfo.x1, renderInfo.y0);
+            dc.DrawLine(renderInfo.x0, renderInfo.y1, renderInfo.x1, renderInfo.y1);
+            dc.DrawLine(renderInfo.x0, renderInfo.y0, renderInfo.x0, renderInfo.y1);
+            dc.DrawLine(renderInfo.x1, renderInfo.y0, renderInfo.x1, renderInfo.y1);
+        }
     }
 
     

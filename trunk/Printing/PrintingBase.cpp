@@ -176,6 +176,8 @@ AriaPrintable* getCurrentPrintable()
     return currentPrintable;
 }
 
+// -----------------------------------------------------------------------------------------------------------------------
+
 AriaPrintable::AriaPrintable(Sequence* parent)
 {
     sequence = parent;
@@ -190,7 +192,8 @@ AriaPrintable::~AriaPrintable()
 {
     currentPrintable = NULL;
 }
-
+    
+// -----------------------------------------------------------------------------------------------------------------------
 bool AriaPrintable::addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */)
 {
     if(mode == GUITAR)
@@ -217,11 +220,14 @@ bool AriaPrintable::addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */)
     return true;
 }
     
+// -----------------------------------------------------------------------------------------------------------------------
 void AriaPrintable::calculateLayout(bool checkRepetitions_bool)
 {
     layout = new PrintLayoutManager(this, layoutLines /* out */, layoutPages /* out */, measures /* out */);
     layout->calculateLayoutElements(tracks, checkRepetitions_bool);
 }
+    
+// -----------------------------------------------------------------------------------------------------------------------
 wxString AriaPrintable::getTitle()
 {
     wxString song_title = sequence->suggestTitle();
@@ -242,12 +248,14 @@ wxString AriaPrintable::getTitle()
     std::cout << "Title = " << final_title.mb_str() << std::endl;
     return final_title;
 }
-
+    
+// -----------------------------------------------------------------------------------------------------------------------
 int AriaPrintable::getPageAmount()
 {
     return layoutPages.size();
 }
-
+    
+// -----------------------------------------------------------------------------------------------------------------------
 EditorPrintable* AriaPrintable::getEditorPrintableFor(Track* track)
 {
     const int amount = editorPrintables.size();
@@ -260,7 +268,8 @@ EditorPrintable* AriaPrintable::getEditorPrintableFor(Track* track)
     }
     return NULL;
 }
-                
+    
+// -----------------------------------------------------------------------------------------------------------------------
 void AriaPrintable::printPage(const int pageNum, wxDC& dc,
                               const int x0, const int y0,
                               const int x1, const int y1,
@@ -281,6 +290,31 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
 
     dc.SetBackground(*wxWHITE_BRUSH);
     dc.Clear();
+    
+    // ---- Debug guides
+    if (PRINT_LAYOUT_HINTS)
+    {
+        //dc.SetPen( wxPen(*wxRED, 25) );
+        //dc.DrawLine(x0, y0, x1, y0);
+        //dc.DrawLine(x0, y1, x1, y1);
+        //dc.DrawLine(x0, y0, x0, y1);
+        //dc.DrawLine(x1, y0, x1, y1);
+
+        dc.SetPen( wxPen(*wxLIGHT_GREY, 7) );
+        dc.SetFont( wxFont(45,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD) );
+        dc.SetTextForeground( wxColour(175, 175, 175) );
+        
+        for(int x=x0; x<x1; x += 250)
+        {
+            dc.DrawLine(x, y0, x, y1);
+            dc.DrawText( wxString::Format(wxT("%i"), x), x, y0 - 75 );
+        }
+        for(int y=y0; y<y1; y += 250)
+        {
+            dc.DrawLine(x0, y, x1, y);
+            dc.DrawText( wxString::Format(wxT("%i"), y), x0 - 150, y );
+        }
+    }
     
     // ---- Draw title / page number
     wxString label = getTitle();
@@ -323,7 +357,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     const float track_area_height = (float)h - (float)text_height*3.0f + (pageNum == 1 ? 100 : 0);
 
     // ---- Give each track an area on the page
-    layout->layTracksInPage(page, text_height, track_area_height, level_y_amount, h, x0, y0, x1);
+    layout->placeTracksInPage(page, text_height, track_area_height, level_y_amount, h, x0, y0, x1);
     
     // ---- Draw the tracks
     const wxFont regularFont = wxFont(75, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
@@ -338,7 +372,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     
 
 }
-
+// -----------------------------------------------------------------------------------------------------------------------
 void AriaPrintable::printLine(LayoutLine& line, wxDC& dc)
 {    
     const int trackAmount = line.getTrackAmount();
@@ -357,7 +391,18 @@ void AriaPrintable::printLine(LayoutLine& line, wxDC& dc)
         dc.DrawLine( line.x1-3, my0, line.x1-3, my1); // right-side line
     }
     
-    std::cout << "\n======== Printing Line (contains " << line.layoutElements.size() << " layout elements) ========" << std::endl;
+    std::cout << "\n======== Printing Line (contains " << line.layoutElements.size() << " layout elements) from y=" <<
+                 my0 << " to " << my1 << " ========" << std::endl;
+    
+    // ---- Debug guides
+    if (PRINT_LAYOUT_HINTS)
+    {
+        dc.SetPen( wxPen(*wxGREEN, 15) );
+        dc.DrawLine(line.x0, my0, line.x1, my0);
+        dc.DrawLine(line.x0, my1, line.x1, my1);
+        dc.DrawLine(line.x0, my0, line.x0, my1);
+        dc.DrawLine(line.x1, my0, line.x1, my1);
+    }
     
     // ---- Do the actual track drawing
     for(int n=0; n<trackAmount; n++)
@@ -367,6 +412,10 @@ void AriaPrintable::printLine(LayoutLine& line, wxDC& dc)
         
         std::cout << "==== Printing track " << n << " ====" << std::endl;
         line.setCurrentTrack(n);
+        
+        TrackRenderInfo& sizing = line.getTrackRenderInfo();
+        std::cout << "Coords : " << sizing.x0 << ", " << sizing.y0 << " to " << sizing.x1 << ", " << sizing.y1 << std::endl;
+        
         EditorPrintable* editorPrintable = editorPrintables.get(line.getCurrentTrack());
         editorPrintable->setCurrentTrack(&line);
         editorPrintable->drawLine(line, dc);

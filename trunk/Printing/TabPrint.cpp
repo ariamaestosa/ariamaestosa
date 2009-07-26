@@ -166,8 +166,16 @@ namespace AriaMaestosa
             
             dc.SetFont(oldfont);
         }//next element 
-        
-        std::cout << "Tablature : done\n";
+                
+        // ---- Debug guides
+        if (PRINT_LAYOUT_HINTS)
+        {
+            dc.SetPen( wxPen(*wxBLUE, 7) );
+            dc.DrawLine(renderInfo.x0, renderInfo.y0, renderInfo.x1, renderInfo.y0);
+            dc.DrawLine(renderInfo.x0, renderInfo.y1, renderInfo.x1, renderInfo.y1);
+            dc.DrawLine(renderInfo.x0, renderInfo.y0, renderInfo.x0, renderInfo.y1);
+            dc.DrawLine(renderInfo.x1, renderInfo.y0, renderInfo.x1, renderInfo.y1);
+        }
     }
     
     void TablaturePrintable::addUsedTicks(const MeasureToExport& measure, const MeasureTrackReference& trackRef,

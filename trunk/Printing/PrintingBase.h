@@ -54,6 +54,8 @@
  them appropriately.
  
  */
+const bool PRINT_LAYOUT_HINTS = false;
+
 namespace AriaMaestosa
 {
     class Track;

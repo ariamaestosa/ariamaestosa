@@ -58,7 +58,7 @@ class EditorPrintable
         void setLineYCoords(const int y0, const int y1);
         void setCurrentDC(wxDC* dc);
         
-        void setLineCoords(LayoutLine& line, TrackRenderInfo& track, int x0, const int y0, const int x1, const int y1, bool show_measure_number);
+        void placeTrackAndElementsWithinCoords(LayoutLine& line, TrackRenderInfo& track, int x0, const int y0, const int x1, const int y1, bool show_measure_number);
         
         // int getCurrentElementXStart();
         const int getElementCount() const;
