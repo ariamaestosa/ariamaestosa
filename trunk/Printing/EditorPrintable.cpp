@@ -269,7 +269,7 @@ int EditorPrintable::tickToX(const int tick)
             else
             {
                 // In non-linear mode, use ratio that was computed previously
-                nratio = meas.ticks_relative_position[tick];
+                nratio = meas.ticks_relative_position[tick].relativePosition;
             }
             
             assertExpr(elem_w, >, 0);

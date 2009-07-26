@@ -354,7 +354,7 @@ namespace AriaMaestosa
     }
     
     void ScorePrintable::addUsedTicks(const MeasureToExport& measure, const MeasureTrackReference& trackRef,
-                                      std::map< int /* tick */, float /* position */ >& ticks_relative_position)
+                                      std::map<int /* tick */,TickPosInfo>& ticks_relative_position)
     {
         const int first_note = trackRef.firstNote;
         const int last_note = trackRef.lastNote;
@@ -377,13 +377,15 @@ namespace AriaMaestosa
             std::cout << "Adding tick " << tick << " to list" << std::endl;
             
             converter->noteToLevel(track->getNote(n), &note_sign);
-            if (note_sign != NONE)
+            if (note_sign != PITCH_SIGN_NONE)
             {
-                //std::cout << "note " << n << " will need more space\n";
-                ticks_relative_position[ tick-1 ] = -1; // FIXME : ugly hack to leave more space before note
+                // if there's an accidental sign to show, allocate a bigger space for this note
+                ticks_relative_position[ tick ] = TickPosInfo(2);
             }
-            
-            ticks_relative_position[ tick ] = -1; // will be set later
+            else
+            {
+                ticks_relative_position[ tick ] = TickPosInfo(1);
+            }
         }
         
         
@@ -396,7 +398,7 @@ namespace AriaMaestosa
             if (silences_ticks[n] < fromTick or silences_ticks[n] > toTick) continue;
             std::cout << "Adding [silence] tick " << silences_ticks[n] << " to list" << std::endl;
 
-            ticks_relative_position[ silences_ticks[n] ] = -1; // will be set later
+            ticks_relative_position[ silences_ticks[n]] = TickPosInfo(1);
         }
     }
     
@@ -763,17 +765,19 @@ namespace AriaMaestosa
         float stem_down_y_offset;
         int note_x_shift = 0;
         
-        const int getStemX(const int tick, const STEM stem_type)
+        const int getStemX(const int tick, const PitchSign sign, const STEM stem_type)
         {
             const int noteX = x_converter->tickToX(tick);
             
-            if     (stem_type == STEM_UP)   return (noteX + stem_up_x_offset + note_x_shift);
-            else if(stem_type == STEM_DOWN) return (noteX + stem_down_x_offset + note_x_shift);
+            const int accidentalShift = sign == PITCH_SIGN_NONE ? 0 : headRadius*1.85;
+            
+            if     (stem_type == STEM_UP)   return (noteX + stem_up_x_offset + note_x_shift + accidentalShift);
+            else if(stem_type == STEM_DOWN) return (noteX + stem_down_x_offset + note_x_shift + accidentalShift);
             else return -1;
         }
         const int getStemX(const NoteRenderInfo& noteRenderInfo)
         {
-            return getStemX(noteRenderInfo.tick, noteRenderInfo.stem_type);
+            return getStemX(noteRenderInfo.tick, noteRenderInfo.sign, noteRenderInfo.stem_type);
         }
     }
     using namespace PrintStemParams;
@@ -887,7 +891,6 @@ namespace AriaMaestosa
         const int first_score_level = middle_c_level + (f_clef? 2 : -10);
         const int last_score_level = first_score_level + 8;
         const int min_level =  first_score_level - extra_lines_above*2;
-        const int headRadius = 36; //(int)round(lineHeight*0.8);
 
         note_x_shift = headRadius + 36; // shift by a 'headRadius', since note will be drawn centered on its X and not left-aligned
         
@@ -1030,13 +1033,14 @@ namespace AriaMaestosa
 
                 //std::cout << "Drawing note at " << analyser.noteRenderInfo[i].tick << " - beat " <<  analyser.noteRenderInfo[i].tick/960 << std::endl;         
                 NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
-                                
+
                 const int noteX = x_converter->tickToX(noteRenderInfo.tick);
                 
-                
+                const int accidentalShift = noteRenderInfo.sign == PITCH_SIGN_NONE ? 0 : headRadius*1.85;
+    
                 // draw head
                 const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
-                wxPoint headLocation( noteX + note_x_shift,
+                wxPoint headLocation( noteX + note_x_shift + accidentalShift,
                                      notey-(headRadius-5)/2.0);
                 
                 if(noteRenderInfo.instant_hit)
@@ -1067,14 +1071,14 @@ namespace AriaMaestosa
                 // draw dot if note is dotted
                 if(noteRenderInfo.dotted)
                 {
-                    wxPoint headLocation( noteX + note_x_shift + headRadius*2 + 20, notey+10 );
+                    wxPoint headLocation( noteX + note_x_shift + accidentalShift + headRadius*2 + 20, notey+10 );
                     dc.DrawEllipse( headLocation, wxSize(10,10) );
                 }
                 
                 // draw sharpness sign if relevant
-                if(noteRenderInfo.sign == SHARP)        renderSharp  ( dc, noteX, noteRenderInfo.getY() - 40  );
-                else if(noteRenderInfo.sign == FLAT)    renderFlat   ( dc, noteX, noteRenderInfo.getY() - 40  );
-                else if(noteRenderInfo.sign == NATURAL) renderNatural( dc, noteX, noteRenderInfo.getY() - 50  );
+                if(noteRenderInfo.sign == SHARP)        renderSharp  ( dc, noteX + accidentalShift, noteRenderInfo.getY() - 40  );
+                else if(noteRenderInfo.sign == FLAT)    renderFlat   ( dc, noteX + accidentalShift, noteRenderInfo.getY() - 40  );
+                else if(noteRenderInfo.sign == NATURAL) renderNatural( dc, noteX + accidentalShift, noteRenderInfo.getY() - 50  );
                 
             } // next note
         } // end scope
@@ -1153,7 +1157,7 @@ namespace AriaMaestosa
                 
                 const int y_diff = (noteRenderInfo.stem_type == STEM_UP ? 55 : -55);
                 
-                const int beam_to_x = getStemX(noteRenderInfo.beam_to_tick, noteRenderInfo.stem_type) + 2;
+                const int beam_to_x = getStemX(noteRenderInfo.beam_to_tick, PITCH_SIGN_NONE, noteRenderInfo.stem_type) + 2;
                 
                 for(int n=0; n<noteRenderInfo.flag_amount; n++)
                 {

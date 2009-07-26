@@ -35,6 +35,29 @@ namespace AriaMaestosa
 int getRepetitionMinimalLength();
 void setRepetitionMinimalLength(const int newvalue);
 
+    /**
+      * For non-linear printing.
+      * Each tick where there is a note/silence/something else is marked with this structure.
+      * The 'proportion' argument allows giving more space for a specific tick, e.g. if there's
+      * something that takes more space to draw there.
+      */
+    struct TickPosInfo
+    {
+        float relativePosition;
+        int proportion;
+        
+        TickPosInfo()
+        {
+            TickPosInfo::relativePosition = -1; // will be set later
+            TickPosInfo::proportion = 1;
+        }
+        
+        TickPosInfo(int proportion)
+        {
+            TickPosInfo::relativePosition = -1; // will be set later
+            TickPosInfo::proportion = proportion;
+        }
+    };
 
 class PrintLayoutManager
 {
