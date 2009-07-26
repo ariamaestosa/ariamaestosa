@@ -56,7 +56,7 @@ class PrintLayoutManager
     
     void findSimilarMeasures();
     
-    void setLineCoords(LayoutLine& line, const int x0, const int y0, const int x1, const int y1,
+    void divideLineAmongTracks(LayoutLine& line, const int x0, const int y0, const int x1, const int y1,
                        int margin_below, int margin_above);
     
 public:
@@ -65,7 +65,7 @@ public:
                        std::vector<LayoutPage>& layoutPages  /* out */,
                        ptr_vector<MeasureToExport>& mesaures /* out */);
     
-    void layTracksInPage(LayoutPage& page, const int text_height, const float track_area_height, const int level_y_amount,
+    void placeTracksInPage(LayoutPage& page, const int text_height, const float track_area_height, const int level_y_amount,
                          const int pageHeight, const int x0, const int y0, const int x1);
     
     void calculateLayoutElements(ptr_vector<Track, REF>& track, const bool checkRepetitions_bool);

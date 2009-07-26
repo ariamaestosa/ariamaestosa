@@ -42,33 +42,36 @@ void EditorPrintable::setCurrentTrack(LayoutLine* line)
     EditorPrintable::currentLine = line;
 }
 
-void EditorPrintable::setLineCoords(LayoutLine& line, TrackRenderInfo& track,  int x0, const int y0, const int x1, const int y1, bool show_measure_number)
+void EditorPrintable::placeTrackAndElementsWithinCoords(LayoutLine& line, TrackRenderInfo& track,  int x0, const int y0, const int x1, const int y1, bool show_measure_number)
 {
+    std::cout << "= placeTrackAndElementsWithinCoords =\n";
+
+    
     track.x0 = x0;
     track.x1 = x1;
     track.y0 = y0;
     track.y1 = y1;
+    
     track.show_measure_number = show_measure_number;
     
     if(&line.getTrackRenderInfo() != &track) std::cerr << "TrackRenderInfo is not the right one!!!!!!!!!\n";
-    std::cout << "coords for current track " << line.getCurrentTrack() << " : " << x0 << ", " << y0 << ", " << x1 << ", " << y1 << std::endl;
+    std::cout << "coords for track " << line.getCurrentTrack() << " : " << x0 << ", " << y0 << ", " << x1 << ", " << y1 << std::endl;
     
     // 2 spaces allocated for left area of the line
-    std::cout << "\n====\nsetLineCoords\n====\n";
     track.pixel_width_of_an_unit = (float)(x1 - x0) / (float)(line.width_in_units+2);
-    std::cout << "Line has " << line.width_in_units << " units. pixel_width_of_an_unit=" << track.pixel_width_of_an_unit << "\n";
+    std::cout << "    Line has " << line.width_in_units << " units. pixel_width_of_an_unit=" << track.pixel_width_of_an_unit << "\n";
     
     track.layoutElementsAmount = line.layoutElements.size();
     
     int xloc = 0;
-    
+        
     // init coords of each layout element
     for(int currentLayoutElement=0; currentLayoutElement<track.layoutElementsAmount; currentLayoutElement++)
     {
         if(currentLayoutElement == 0) xloc = 1;
         else if(currentLayoutElement > 0) xloc += line.layoutElements[currentLayoutElement-1].width_in_units;
         
-        std::cout << "Setting coords of element " << currentLayoutElement << " of current line. xfrom = " <<
+        std::cout << "    - Setting coords of element " << currentLayoutElement << " of current line. xfrom = " <<
         x0 + (int)round(xloc*track.pixel_width_of_an_unit) - track.pixel_width_of_an_unit << "\n";
         line.layoutElements[currentLayoutElement].setXFrom(x0 + (int)round(xloc*track.pixel_width_of_an_unit) - track.pixel_width_of_an_unit);
         
