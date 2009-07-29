@@ -660,9 +660,16 @@ void PrintLayoutManager::divideLineAmongTracks(LayoutLine& line, const int x0, c
     const int my0 = y0 + margin_above;
     
     // ---- Determine tracks positions and sizes
-    // FIXME : this is layout, should go in PrintLayout.cpp
+    
+    int nonEmptyTrackAmount = 0; // empty tracks must not be counted
+    for(int n=0; n<trackAmount; n++)
+    {        
+        if(line.height_percent[n] > 0) nonEmptyTrackAmount++;
+    }
+    
+    // FIXME : this is layout, should go in PrintLayout.cpp ?
     // space between individual tracks
-    const int space_between_tracks = 150;
+    const int space_between_tracks = nonEmptyTrackAmount > 1 ? 150 : 0;
     
     float current_y = my0;
     for(int n=0; n<trackAmount; n++)
@@ -675,11 +682,12 @@ void PrintLayoutManager::divideLineAmongTracks(LayoutLine& line, const int x0, c
         
         // determine how much vertical space is allocated for this track
         const float track_height = (height - margin_below - margin_above) * line.height_percent[n]/100.0f;
-        std::cout << "track_height=" << track_height << " (margin_below=" << margin_below << " margin_above=" << margin_above << ")\n";
+        std::cout << "track_height=" << track_height << " (margin_below=" << margin_below << " margin_above=" << margin_above <<
+                     "space_between_tracks=" << space_between_tracks << ")\n";
         
-        const float position = (float)n / trackAmount;
+        const float position = (float)n / (float)trackAmount;
         const float space_above_line = space_between_tracks*position;
-        const float space_below_line = space_between_tracks*(1-position);
+        const float space_below_line = space_between_tracks*(1.0-position);
         
         editorPrintable->placeTrackAndElementsWithinCoords(line, line.getTrackRenderInfo(),
                                        x0, current_y + space_above_line,
@@ -688,7 +696,7 @@ void PrintLayoutManager::divideLineAmongTracks(LayoutLine& line, const int x0, c
         
         std::cout << "%%%% setting track coords " << n  << " : " << x0 << ", " << (current_y + space_above_line) << " to " <<
                     x1 << ", "<< (current_y + track_height - space_below_line) << " ( space_above_line=" << space_above_line <<
-                    " space_below_line=" << space_below_line << ")" <<  std::endl;
+                    " space_below_line=" << space_below_line << " track_height=" << track_height << ")" <<  std::endl;
 
         
         current_y += track_height;
