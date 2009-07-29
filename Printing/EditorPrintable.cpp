@@ -46,6 +46,10 @@ void EditorPrintable::placeTrackAndElementsWithinCoords(LayoutLine& line, TrackR
 {
     std::cout << "= placeTrackAndElementsWithinCoords =\n";
 
+    assertExpr(x0, >=, 0);
+    assertExpr(x1, >=, 0);
+    assertExpr(y0, >=, 0);
+    assertExpr(y1, >=, 0);
     
     track.x0 = x0;
     track.x1 = x1;
@@ -87,11 +91,6 @@ void EditorPrintable::placeTrackAndElementsWithinCoords(LayoutLine& line, TrackR
     assertExpr(track.pixel_width_of_an_unit,>,0);
 }
 
-void EditorPrintable::setLineYCoords(const int y0, const int y1)
-{
-    currentLine->getTrackRenderInfo().y0 = y0;
-    currentLine->getTrackRenderInfo().y1 = y1;
-}
 
 /*
  int EditorPrintable::getCurrentElementXStart()

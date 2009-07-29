@@ -686,7 +686,9 @@ void PrintLayoutManager::divideLineAmongTracks(LayoutLine& line, const int x0, c
         std::cout << "track_height=" << track_height << " (margin_below=" << margin_below << " margin_above=" << margin_above <<
                      "space_between_tracks=" << space_between_tracks << ")\n";
         
-        const float position = (float)nonEmptyID / (float)(nonEmptyTrackAmount-1);
+        const float position =
+            nonEmptyTrackAmount-1 == 0 ? 0.0f : // avoid division by zero
+            (float)nonEmptyID / (float)(nonEmptyTrackAmount-1);
         const float space_above_line = space_between_tracks*position;
         const float space_below_line = space_between_tracks*(1.0-position);
         
