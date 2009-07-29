@@ -349,6 +349,14 @@ namespace AriaMaestosa
         ScoreData* scoreData = dynamic_cast<ScoreData*>(line.editor_data.raw_ptr);
         assert(scoreData != NULL);
         
+        const int from_note = line.getFirstNote();
+        const int to_note   = line.getLastNote();
+        
+        // check if empty
+        // FIXME : if a note starts in the previous line and ends in this one, it won't be detected
+        if(from_note == -1 || to_note == -1)
+            return 0;
+        
         return (g_clef ? 5 : 0) + (f_clef ? 5 : 0) + 
                 abs(scoreData->extra_lines_above_g_score) +
                 abs(scoreData->extra_lines_under_f_score);
