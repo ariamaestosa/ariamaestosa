@@ -284,15 +284,15 @@ int EditorPrintable::tickToX(const int tick)
              (int)round(nratio * (elem_w-renderInfo.pixel_width_of_an_unit*0.7) + elem_x_start) << std::endl;
              */
             
-            std::cout << "tickToX Returning " << (int)round(nratio * elem_w + elem_x_start) << " from normal path for " << tick << 
-            " (nratio=" << nratio << ")\n";
+            //std::cout << "tickToX Returning " << (int)round(nratio * elem_w + elem_x_start) << " from normal path for " << tick << 
+            //" (nratio=" << nratio << ")\n";
             return (int)round(nratio * elem_w + elem_x_start);
         }
         else 
         // given tick is before the current line
         if(tick < firstTick) 
         {
-            std::cout << "tickToX Returning -1 A\n";
+            //std::cout << "tickToX Returning -1 A\n";
             return -1;
         }
         else
@@ -304,13 +304,13 @@ int EditorPrintable::tickToX(const int tick)
          */
         if(n==renderInfo.layoutElementsAmount-1 and tick >= lastTick)
         {
-            std::cout << "tickToX Returning -" <<  (currentLine->layoutElements[n].getXTo() + 10) << " B\n";
+            //std::cout << "tickToX Returning -" <<  (currentLine->layoutElements[n].getXTo() + 10) << " B\n";
 
             return currentLine->layoutElements[n].getXTo() + 10;
         }
     }
     
-    std::cout << "tickToX Returning -1 C\n";
+    //std::cout << "tickToX Returning -1 C\n";
     return -1;
     //return currentLine->layoutElements[layoutElementsAmount-1].x2 + 10;
 }
