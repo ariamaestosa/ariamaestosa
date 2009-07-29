@@ -1282,13 +1282,13 @@ namespace AriaMaestosa
         {
             const int silences_y = LEVEL_TO_Y(middle_c_level + 4);
             global_line_height = lineHeight;
-            analyser.renderSilences( &renderSilenceCallback, first_measure, last_measure, silences_y );
+            lineAnalyser->renderSilences( &renderSilenceCallback, first_measure, last_measure, silences_y );
         }
         else
         {
             const int silences_y = LEVEL_TO_Y(middle_c_level - 8);
             global_line_height = lineHeight;
-            analyser.renderSilences( &renderSilenceCallback, first_measure, last_measure, silences_y );
+            lineAnalyser->renderSilences( &renderSilenceCallback, first_measure, last_measure, silences_y );
         }
         
     }
