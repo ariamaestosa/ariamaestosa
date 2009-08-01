@@ -1241,8 +1241,8 @@ namespace AriaMaestosa
                 int y2       = LEVEL_TO_Y(noteRenderInfo.beam_to_level);
                 
                 const int y_diff = (noteRenderInfo.stem_type == STEM_UP ? 55 : -55);
-                
-                const int beam_to_x = getStemX(noteRenderInfo.beam_to_tick, PITCH_SIGN_NONE, noteRenderInfo.stem_type) + 2;
+                                
+                const int beam_to_x = getStemX(noteRenderInfo.beam_to_tick, noteRenderInfo.beam_to_sign, noteRenderInfo.stem_type) + 2;
                 
                 for(int n=0; n<noteRenderInfo.flag_amount; n++)
                 {

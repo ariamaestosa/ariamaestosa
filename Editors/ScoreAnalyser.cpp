@@ -153,6 +153,7 @@ public:
 
         // set initial beam info in note
         noteRenderInfo[first_id].beam_to_tick  = noteRenderInfo[last_id].tick;
+        noteRenderInfo[first_id].beam_to_sign  = noteRenderInfo[last_id].sign;
         noteRenderInfo[first_id].beam_to_level = analyser->getStemTo(noteRenderInfo[last_id]);
         noteRenderInfo[first_id].stem_y_level  = analyser->getStemTo(noteRenderInfo[first_id]);
 
