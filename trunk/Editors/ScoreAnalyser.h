@@ -124,6 +124,8 @@ public:
     void setY(const int newY);
 };
 
+typedef void(*RenderSilenceCallback)(const int, const int, const int, const int, const bool, const bool, const int, const int);
+    
 class BeamGroup;
 class ScoreAnalyser
 {
@@ -159,7 +161,7 @@ public:
     // set the level below which the stem is up, and above which it is down
     void setStemPivot(const int level);
 
-    void ScoreAnalyser::renderSilences( void (*renderSilenceCallback)(const int, const int, const int, const bool, const bool, const int, const int),
+    void ScoreAnalyser::renderSilences(RenderSilenceCallback renderSilenceCallback,
                                        const int first_visible_measure, const int last_visible_measure,
                                        const int silences_y);
 protected:

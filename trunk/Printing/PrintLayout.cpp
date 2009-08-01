@@ -445,107 +445,79 @@ void PrintLayoutManager::calculateRelativeLengths()
 
         if(layoutElements[n].getType() == SINGLE_MEASURE)
         {
-            if(getCurrentPrintable()->linearPrinting)
+            // ---- for non-linear printing mode
+            
+            // determine a list of all ticks on which a note starts.
+            // then we can determine where within this measure should this note be drawn
+            
+            std::vector<int> all_ticks_vector;
+            
+            // Build a list of all ticks
+            MeasureToExport& meas = measures[layoutElements[n].measure];
+            std::map< int /* tick */, TickPosInfo >& ticks_relative_position = meas.ticks_relative_position;
+            
+            const int trackAmount = meas.trackRef.size();
+            for(int i=0; i<trackAmount; i++)
             {
-                // ---- for linear printing mode
-                const int divider = (int)(
-                                          getMeasureData()->getTimeSigNumerator(layoutElements[n].measure) * (float)ticksPerBeat /
-                                                                                (float)measures[layoutElements[n].measure].shortestDuration
-                                          );
-
-                // if notes are very long, zoom a bit because we don't want a too short measure
-                //if( divider <= 2 ) layoutElements[n].zoom = 2;
-                //if( divider <= 1 ) layoutElements[n].zoom = 4;
-
-                // for very short notes, zoom a bit too otherwise they'll all be stuck toghether
-                if( divider >= 16 ) zoom = 2;
-
-                const float tick_length = (float)(measures[layoutElements[n].measure].lastTick -
-                                                  measures[layoutElements[n].measure].firstTick);
-                //const float beat_length = tick_length/getMeasureData()->beatLengthInTicks();
-                const int num = getMeasureData()->getTimeSigNumerator(layoutElements[n].measure);
-                const int denom = getMeasureData()->getTimeSigDenominator(layoutElements[n].measure);
+                EditorPrintable* editorPrintable = parent->getEditorPrintableFor( meas.trackRef[i].track );
+                assert( editorPrintable != NULL );
                 
-                layoutElements[n].width_in_units = (int)round(
-                    tick_length / (float)measures[layoutElements[n].measure].shortestDuration * num / denom
-                    )*zoom + 2;
+                editorPrintable->addUsedTicks(meas, meas.trackRef[i], ticks_relative_position);
             }
-            else
+            
+            std::map<int,TickPosInfo>::iterator it;
+            for ( it=ticks_relative_position.begin() ; it != ticks_relative_position.end(); it++ )
             {
-                // ---- for non-linear printing mode
-                
-                // determine a list of all ticks on which a note starts.
-                // then we can determine where within this measure should this note be drawn
-                
-                std::vector<int> all_ticks_vector;
-                
-                // Build a list of all ticks
-                MeasureToExport& meas = measures[layoutElements[n].measure];
-                std::map< int /* tick */, TickPosInfo >& ticks_relative_position = meas.ticks_relative_position;
-                
-                const int trackAmount = meas.trackRef.size();
-                for(int i=0; i<trackAmount; i++)
+                // building the full list from 'map' prevents duplicates
+                all_ticks_vector.push_back( (*it).first );
+            }
+            // also add last tick, so that the last note is not placed on the measure's end
+            //all_ticks_vector.push_back( meas.lastTick );
+            
+            // order the vector
+            const int all_ticks_amount = all_ticks_vector.size();
+            bool changed = false; // bubble sort - FIXME : use something better
+            do
+            {
+                changed = false;
+                for(int i=0; i<all_ticks_amount-1; i++)
                 {
-                    EditorPrintable* editorPrintable = parent->getEditorPrintableFor( meas.trackRef[i].track );
-                    assert( editorPrintable != NULL );
-                    
-                    editorPrintable->addUsedTicks(meas, meas.trackRef[i], ticks_relative_position);
-                }
-                
-                std::map<int,TickPosInfo>::iterator it;
-                for ( it=ticks_relative_position.begin() ; it != ticks_relative_position.end(); it++ )
-                {
-                    // building the full list from 'map' prevents duplicates
-                    all_ticks_vector.push_back( (*it).first );
-                }
-                // also add last tick, so that the last note is not placed on the measure's end
-                //all_ticks_vector.push_back( meas.lastTick );
-                
-                // order the vector
-                const int all_ticks_amount = all_ticks_vector.size();
-                bool changed = false; // bubble sort - FIXME : use something better
-                do
-                {
-                    changed = false;
-                    for(int i=0; i<all_ticks_amount-1; i++)
+                    if(all_ticks_vector[i] > all_ticks_vector[i+1])
                     {
-                        if(all_ticks_vector[i] > all_ticks_vector[i+1])
-                        {
-                            int tmp = all_ticks_vector[i];
-                            all_ticks_vector[i] = all_ticks_vector[i+1];
-                            all_ticks_vector[i+1] = tmp;
-                            changed = true;
-                        }
+                        int tmp = all_ticks_vector[i];
+                        all_ticks_vector[i] = all_ticks_vector[i+1];
+                        all_ticks_vector[i+1] = tmp;
+                        changed = true;
                     }
-                } while(changed);
-                
-                // associate a relative position to each note
-                // start by setting them as ints (since proportions are ints), renormalize from 0 to 1 after
-                int intRelativePosition = 0;
-                for(int i=0; i<all_ticks_amount; i++)
-                {
-                    ticks_relative_position[ all_ticks_vector[i] ].relativePosition = (float)intRelativePosition;
-                    intRelativePosition += ticks_relative_position[ all_ticks_vector[i] ].proportion;
                 }
-                for(int i=0; i<all_ticks_amount; i++)
-                {
-                    TickPosInfo& tickPosInfo = ticks_relative_position[ all_ticks_vector[i] ];
-                    
-                    //std::cout << "note relativePosition = " << 
-                    //" (" << tickPosInfo.relativePosition << "/" << intRelativePosition << ") = ";
-                    
-                    // I multiply by 0.9 to avoid notes being too close to the next bar
-                    // FIXME : don't hardcode
-                    tickPosInfo.relativePosition = tickPosInfo.relativePosition / intRelativePosition * 0.9;
-                    
-                    std::cout << tickPosInfo.relativePosition << std::endl;
-                    // intRelativePosition now contains the total size of the measure,so we can use
-                    // it to renormalize from 0 to 1
-                }
-                
-                layoutElements[n].width_in_units = all_ticks_amount;
-                std::cout << "Layout element " << n << " is " << layoutElements[n].width_in_units << " unit(s) wide" << std::endl;
+            } while(changed);
+            
+            // associate a relative position to each note
+            // start by setting them as ints (since proportions are ints), renormalize from 0 to 1 after
+            int intRelativePosition = 0;
+            for(int i=0; i<all_ticks_amount; i++)
+            {
+                ticks_relative_position[ all_ticks_vector[i] ].relativePosition = (float)intRelativePosition;
+                intRelativePosition += ticks_relative_position[ all_ticks_vector[i] ].proportion;
             }
+            for(int i=0; i<all_ticks_amount; i++)
+            {
+                TickPosInfo& tickPosInfo = ticks_relative_position[ all_ticks_vector[i] ];
+                
+                //std::cout << "note relativePosition = " << 
+                //" (" << tickPosInfo.relativePosition << "/" << intRelativePosition << ") = ";
+                
+                // I multiply by 0.9 to avoid notes being too close to the next bar
+                // FIXME : don't hardcode
+                tickPosInfo.relativePosition = tickPosInfo.relativePosition / intRelativePosition * 0.9;
+                
+                std::cout << tickPosInfo.relativePosition << std::endl;
+                // intRelativePosition now contains the total size of the measure,so we can use
+                // it to renormalize from 0 to 1
+            }
+            
+            layoutElements[n].width_in_units = all_ticks_amount;
+            std::cout << "Layout element " << n << " is " << layoutElements[n].width_in_units << " unit(s) wide" << std::endl;
         }
         else if(layoutElements[n].getType() == REPEATED_RIFF)
         {
