@@ -256,35 +256,10 @@ int EditorPrintable::tickToX(const int tick)
             
             //std::cout << "tickToX found tick " << tick << std::endl;
             
-            float nratio;
-            
-            if(getCurrentPrintable()->linearPrinting)
-            {
-                /*
-                 * note position ranges from 0 (at the very beginning of the layout element)
-                 * to 1 (at the very end of the layout element)
-                 */
-                nratio = ((float)(tick - firstTick) / (float)(lastTick - firstTick));
-            }
-            else
-            {
-                //assert(meas.ticks_relative_position[tick].relativePosition != -1);
-                
-                // In non-linear mode, use ratio that was computed previously
-                nratio = meas.ticks_relative_position[tick].relativePosition;
-            }
+            float nratio = meas.ticks_relative_position[tick].relativePosition;
             
             assertExpr(elem_w, >, 0);
             
-            /*
-             std::cout << "    ratio = " << nratio << " elem_w=" << elem_w << " elem_x_start=" << elem_x_start << 
-             " --> " << nratio << "*(" << elem_w << "-" << renderInfo.pixel_width_of_an_unit << ")*0.7+" << elem_x_start << " ---> " <<
-             (nratio * (elem_w-renderInfo.pixel_width_of_an_unit*0.7) + elem_x_start) << " ---> " <<
-             (int)round(nratio * (elem_w-renderInfo.pixel_width_of_an_unit*0.7) + elem_x_start) << std::endl;
-             */
-            
-            //std::cout << "tickToX Returning " << (int)round(nratio * elem_w + elem_x_start) << " from normal path for " << tick << 
-            //" (nratio=" << nratio << ")\n";
             return (int)round(nratio * elem_w + elem_x_start);
         }
         else 
@@ -309,9 +284,65 @@ int EditorPrintable::tickToX(const int tick)
         }
     }
     
-    //std::cout << "tickToX Returning -1 C\n";
     return -1;
-    //return currentLine->layoutElements[layoutElementsAmount-1].x2 + 10;
+}
+
+/**
+  * tickToX returns the beginning of the area allocated to a tick; this method returns its end.
+  */
+int EditorPrintable::tickToXLimit(const int tick)
+{
+    int closest = getClosestTickFrom(tick+1);
+    if (closest == -1) return -1;
+    
+    return tickToX(closest);
+}
+    
+/**
+  * This method exists because in multi-track prints, one track may request more ticks (and thus more space) than
+  * the other. When rendering, the other can thus call this to know the extent of its free size and center things
+  * instead of leaving holes (but for this they must have silence information). returns -1 if nothing was found.
+  */
+int EditorPrintable::getClosestTickFrom(const int tick)
+{
+    //std::cout << "getClosestXFromTick " << tick << std::endl;
+    TrackRenderInfo& renderInfo = currentLine->getTrackRenderInfo();
+    
+    // find in which measure this tick belongs
+    for(int n=0; n<renderInfo.layoutElementsAmount; n++)
+    {
+        MeasureToExport& meas = currentLine->getMeasureForElement(n);
+        if(meas.id == -1) continue; // nullMeasure, ignore
+        const int firstTick = meas.firstTick;
+        const int lastTick  = meas.lastTick;
+        //std::cout << "checkingWithinMeasure {" << firstTick << ", " << lastTick << "}\n";
+        
+        int closestTick = -1;
+        
+        if(tick >= firstTick and tick < lastTick)
+        {
+            
+            std::map<int, TickPosInfo>::iterator iter;
+            for( iter = meas.ticks_relative_position.begin(); iter != meas.ticks_relative_position.end(); ++iter )
+            {
+                const int thisTick = iter->first;
+                //std::cout << "    checking tick " << thisTick << std::endl;
+                if (thisTick >= tick and (thisTick < closestTick or closestTick == -1))
+                {
+                    closestTick = thisTick;
+                    //std::cout << "    closestTick = " << closestTick << std::endl;
+                }
+            } // end for
+            if (closestTick == -1) closestTick = lastTick;
+            
+            //std::cout << "FINAL closestTick = " << closestTick << std::endl;
+            return closestTick;
+        }
+    } // end for
+    
+    //std::cerr << "Couldn't find any measure containing this tick\n";
+    
+    return -1;
 }
 
 }

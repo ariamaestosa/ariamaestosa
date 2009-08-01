@@ -186,7 +186,6 @@ AriaPrintable::AriaPrintable(Sequence* parent)
     is_score_editor_used = false;
     track_amount = 0;
     max_signs_in_keysig = 0;
-    linearPrinting = false; // TODO : make configurable
 }
 AriaPrintable::~AriaPrintable()
 {

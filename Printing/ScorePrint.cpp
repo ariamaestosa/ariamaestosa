@@ -65,6 +65,17 @@ namespace AriaMaestosa
             {
                 return parent->tickToX(tick);
             }
+            int getXTo(const int tick)
+            {
+                const int out = parent->tickToXLimit(tick);
+                std::cout << "out : " << tick << " --> " << out << std::endl;
+                assert(out != -1);
+                return out;
+            }
+            int getClosestXFromTick(const int tick)
+            {
+                return tickToX(parent->getClosestTickFrom(tick));
+            }
         };
     
     // global (FIXME)
@@ -213,19 +224,31 @@ namespace AriaMaestosa
     
     std::vector<int> g_silences_ticks;
     
-    void gatherSilenceCallback(const int tick, const int type, const int silences_y, const bool triplet, const bool dotted, const int dot_delta_x, const int dot_delta_y)
+    void gatherSilenceCallback(const int duration, const int tick, const int type, const int silences_y, const bool triplet, const bool dotted, const int dot_delta_x, const int dot_delta_y)
     {
         g_silences_ticks.push_back(tick);
     }
     
-    void renderSilenceCallback(const int tick, const int type, const int silences_y, const bool triplet, const bool dotted, const int dot_delta_x, const int dot_delta_y)
+    void renderSilenceCallback(const int duration, const int tick, const int type, const int silences_y, const bool triplet,
+                               const bool dotted, const int dot_delta_x, const int dot_delta_y)
     {
         assert( global_dc != NULL);
         
         const int x = x_converter->tickToX(tick);
         if(x < 0) return; // this part of score is not printed (e.g. is in a repetition)
     
-        //{ TODO : use again
+        // In case we got more space than the bare minimum because of another track, use it!
+        const int x_to = std::max(x_converter->getXTo(tick), x_converter->getClosestXFromTick(tick+duration));
+        assert(x_to != -1);
+        
+        const int x_center = (x + x_to)/2;
+        
+        // debug draw
+        //static int silenceShift = 0;
+        //silenceShift += 5;
+        //global_dc->DrawLine(x, silences_y + silenceShift % 25, x_to, silences_y + silenceShift % 25);
+                
+        //{ TODO : use again when repetition is properly back in
         //    LayoutElement* temp = g_printable->getElementForMeasure(measure);
         //    if(temp != NULL and (temp->getType() == REPEATED_RIFF or temp->getType() == SINGLE_REPEATED_MEASURE))
         //        return; //don't render silences in repetions measure!
@@ -242,8 +265,8 @@ namespace AriaMaestosa
             silence_radius = 40;
             
             // FIXME - remove hardcoded values
-            global_dc->DrawRectangle(x+40, silences_y, silence_radius*2, (int)round(global_line_height/2));
-            silence_center = x+40+silence_radius;
+            global_dc->DrawRectangle(x + 40, silences_y, silence_radius*2, (int)round(global_line_height/2));
+            silence_center = x + 40 + silence_radius;
         }
         else if( type == 2 )
         {
@@ -251,8 +274,9 @@ namespace AriaMaestosa
             global_dc->SetPen(  *wxTRANSPARENT_PEN  );
             
             // FIXME - hardcoded values
-            global_dc->DrawRectangle(x+40, (int)round(silences_y+global_line_height/2), silence_radius*2, (int)round(global_line_height/2.0));
-            silence_center = x+40+silence_radius;
+            global_dc->DrawRectangle(x + 40, (int)round(silences_y+global_line_height/2),
+                                     silence_radius*2, (int)round(global_line_height/2.0));
+            silence_center = x + 40 + silence_radius;
         }
         else if( type == 4 )
         {
@@ -260,10 +284,10 @@ namespace AriaMaestosa
             const float scale = 6.5f;
             static wxBitmap silenceBigger = wxBitmap(silence.ConvertToImage().Scale(silence.GetWidth()*scale, silence.GetHeight()*scale));
             
-            global_dc->DrawBitmap( silenceBigger, x+25, silences_y-15 );
-            
             silence_radius = silenceBigger.GetWidth()/2;
-            silence_center = x + 25 + silence_radius;
+            global_dc->DrawBitmap( silenceBigger, x_center - silence_radius, silences_y );
+            
+            silence_center = x_center;
         }
         else if( type == 8 )
         {
@@ -271,13 +295,14 @@ namespace AriaMaestosa
             const float scale = 6.5f;
             static wxBitmap silenceBigger = wxBitmap(silence.ConvertToImage().Scale(silence.GetWidth()*scale, silence.GetHeight()*scale));
             
-            global_dc->DrawBitmap( silenceBigger, x+50, silences_y-15 );
-            
             silence_radius = silenceBigger.GetWidth()/2;
-            silence_center = x + 50 + silence_radius;
+            global_dc->DrawBitmap( silenceBigger, x_center - silence_radius, silences_y + 20);
+            
+            silence_center = x_center;
         }
         else if( type == 16 )
         {
+            // TODO : use x_center
             global_dc->SetPen(  wxPen( wxColour(0,0,0), 8 ) );
             const int mx = x + 50;
             const int y = silences_y + 80;

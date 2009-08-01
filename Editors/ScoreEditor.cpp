@@ -794,7 +794,7 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
 }
 
 
-void renderSilence(const int tick, const int type, const int silences_y, const bool triplet, const bool dotted,
+void renderSilence(const int duration, const int tick, const int type, const int silences_y, const bool triplet, const bool dotted,
                    const int dot_delta_x, const int dot_delta_y)
 {
     assertExpr(tick,>,-1);

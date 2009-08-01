@@ -375,7 +375,7 @@ float ScoreAnalyser::getStemTo(NoteRenderInfo& note)
     else{ assert(false); return -1; }
 }
     
-void recursivelyAnalyzeSilence(void (*renderSilenceCallback)(const int, const int, const int, const bool, const bool, const int, const int),
+void recursivelyAnalyzeSilence(void (*renderSilenceCallback)(const int, const int, const int, const int, const bool, const bool, const int, const int),
                                const int tick, const int tick_length, const int silences_y)
     {
         
@@ -452,10 +452,10 @@ void recursivelyAnalyzeSilence(void (*renderSilenceCallback)(const int, const in
             return;
         }
         
-        renderSilenceCallback(tick, type, silences_y, triplet, dotted, dot_delta_x, dot_delta_y);
+        renderSilenceCallback(tick_length, tick, type, silences_y, triplet, dotted, dot_delta_x, dot_delta_y);
     }
     
-void ScoreAnalyser::renderSilences( void (*renderSilenceCallback)(const int, const int, const int, const bool, const bool, const int, const int),
+void ScoreAnalyser::renderSilences( RenderSilenceCallback renderSilenceCallback,
                                     const int first_visible_measure, const int last_visible_measure,
                                     const int silences_y)
 {

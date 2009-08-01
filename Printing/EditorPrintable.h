@@ -66,6 +66,9 @@ class EditorPrintable
         LayoutElement* getElementForMeasure(const int measureID);
         int getNotePrintX(int noteID);
         int tickToX(const int tick);
+        int getClosestTickFrom(const int tick);
+        int tickToXLimit(const int tick);
+
         void drawVerticalDivider(LayoutElement* el, const int y0, const int y1);
         void renderTimeSignatureChange(LayoutElement* el, const int y0, const int y1);
         
