@@ -493,12 +493,12 @@ void PrintLayoutManager::calculateRelativeLengths()
             } while(changed);
             
             // associate a relative position to each note
-            // start by setting them as ints (since proportions are ints), renormalize from 0 to 1 after
-            int intRelativePosition = 0;
+            // start by total, renormalize from 0 to 1 after
+            float totalRelativePosition = 0;
             for(int i=0; i<all_ticks_amount; i++)
             {
-                ticks_relative_position[ all_ticks_vector[i] ].relativePosition = (float)intRelativePosition;
-                intRelativePosition += ticks_relative_position[ all_ticks_vector[i] ].proportion;
+                ticks_relative_position[ all_ticks_vector[i] ].relativePosition = totalRelativePosition;
+                totalRelativePosition += ticks_relative_position[ all_ticks_vector[i] ].proportion;
             }
             for(int i=0; i<all_ticks_amount; i++)
             {
@@ -509,7 +509,7 @@ void PrintLayoutManager::calculateRelativeLengths()
                 
                 // I multiply by 0.9 to avoid notes being too close to the next bar
                 // FIXME : don't hardcode
-                tickPosInfo.relativePosition = tickPosInfo.relativePosition / intRelativePosition * 0.9;
+                tickPosInfo.relativePosition = tickPosInfo.relativePosition / totalRelativePosition * 0.9;
                 
                 std::cout << tickPosInfo.relativePosition << std::endl;
                 // intRelativePosition now contains the total size of the measure,so we can use

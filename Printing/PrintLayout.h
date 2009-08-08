@@ -44,7 +44,7 @@ void setRepetitionMinimalLength(const int newvalue);
     struct TickPosInfo
     {
         float relativePosition;
-        int proportion;
+        float proportion;
         
         // don't construct this struct directly, let std::map create them as needed
         TickPosInfo()
@@ -53,9 +53,10 @@ void setRepetitionMinimalLength(const int newvalue);
             TickPosInfo::proportion = 1;
         }
         
-        void setProportion(int proportion)
+        void setProportion(float proportion)
         {
-            // many notes may be on same tick. always keep largest proportion.
+            // keep max (not optimal in all situations)
+            // TODO : fix this sketchy method. Use full note ranging mapping instead),
             this->proportion = std::max(this->proportion, proportion);
         }
         
