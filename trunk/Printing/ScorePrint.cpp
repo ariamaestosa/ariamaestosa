@@ -392,10 +392,6 @@ namespace AriaMaestosa
     void ScorePrintable::addUsedTicks(const MeasureToExport& measure, const MeasureTrackReference& trackRef,
                                       std::map<int /* tick */,TickPosInfo>& ticks_relative_position)
     {
-
-        // FIXME : if a measure contains no note on its own, but only the end of the previous one, this method
-        // will never be called for this measure, and the tick position won't be set
-        
         const int fromTick = measure.firstTick;
         const int toTick = measure.lastTick;
         
@@ -411,6 +407,20 @@ namespace AriaMaestosa
         if (f_clef)
         {
             const int noteAmount = f_clef_analyser->noteRenderInfo.size();
+            
+            // find shortest note
+            int shortest = -1;
+            for(int n=0; n<noteAmount; n++)
+            {
+                const int tick = f_clef_analyser->noteRenderInfo[n].tick;
+                if (tick < fromTick or tick >= toTick) continue;
+                
+                if (f_clef_analyser->noteRenderInfo[n].tick_length < shortest or shortest == -1)
+                {
+                    shortest = f_clef_analyser->noteRenderInfo[n].tick_length;
+                }
+            }
+            
             for(int n=0; n<noteAmount; n++)
             {
                 const int tick = f_clef_analyser->noteRenderInfo[n].tick;
@@ -418,20 +428,38 @@ namespace AriaMaestosa
 
                 std::cout << "    Adding tick " << tick << " to list" << std::endl;
                 
+                // wider notes should be given a bit more space.
+                float ratioToShortest = (float)f_clef_analyser->noteRenderInfo[n].tick_length / (float)shortest;
+                float additionalWidth = log( ratioToShortest ) / log( 2 );
+
                 if (f_clef_analyser->noteRenderInfo[n].sign != PITCH_SIGN_NONE)
                 {
                     // if there's an accidental sign to show, allocate a bigger space for this note
-                    ticks_relative_position[ tick ].setProportion(2);
+                    ticks_relative_position[ tick ].setProportion(2 + additionalWidth);
                 }
                 else
                 {
-                    ticks_relative_position[ tick ].setProportion(1);
+                    ticks_relative_position[ tick ].setProportion(1 + additionalWidth);
                 }
             }
         }
         if (g_clef)
         {
             const int noteAmount = g_clef_analyser->noteRenderInfo.size();
+            
+            // find shortest note
+            int shortest = -1;
+            for(int n=0; n<noteAmount; n++)
+            {
+                const int tick = g_clef_analyser->noteRenderInfo[n].tick;
+                if (tick < fromTick or tick >= toTick) continue;
+                
+                if (g_clef_analyser->noteRenderInfo[n].tick_length < shortest or shortest == -1)
+                {
+                    shortest = g_clef_analyser->noteRenderInfo[n].tick_length;
+                }
+            }
+            
             for(int n=0; n<noteAmount; n++)
             {
                 const int tick = g_clef_analyser->noteRenderInfo[n].tick;
@@ -439,14 +467,18 @@ namespace AriaMaestosa
                 
                 std::cout << "    Adding tick " << tick << " to list" << std::endl;
                 
+                // wider notes should be given a bit more space.
+                float ratioToShortest = (float)g_clef_analyser->noteRenderInfo[n].tick_length / (float)shortest;
+                float additionalWidth = log( ratioToShortest ) / log( 2 );
+                
                 if (g_clef_analyser->noteRenderInfo[n].sign != PITCH_SIGN_NONE)
                 {
                     // if there's an accidental sign to show, allocate a bigger space for this note
-                    ticks_relative_position[ tick ].setProportion(2);
+                    ticks_relative_position[ tick ].setProportion(2 + additionalWidth);
                 }
                 else
                 {
-                    ticks_relative_position[ tick ].setProportion(1);
+                    ticks_relative_position[ tick ].setProportion(1 + additionalWidth);
                 }
             }
         }
@@ -1171,7 +1203,7 @@ namespace AriaMaestosa
                 // draw dot if note is dotted
                 if(noteRenderInfo.dotted)
                 {
-                    wxPoint headLocation( noteX + note_x_shift + accidentalShift + headRadius*2 + 20, notey+10 );
+                    wxPoint headLocation( noteX + note_x_shift + accidentalShift + headRadius*2, notey+10 );
                     dc.DrawEllipse( headLocation, wxSize(10,10) );
                 }
                 

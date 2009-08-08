@@ -188,10 +188,28 @@ namespace AriaMaestosa
         
         if(first_note == -1 or last_note == -1) return; // empty measure
         
+        // find shortest note
+        int shortest = -1;
+        
+        for(int n=first_note; n<=last_note; n++)
+        {
+            int noteLen = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
+
+            if (noteLen < shortest or shortest == -1) shortest = noteLen;
+        }
+        
+
         for(int n=first_note; n<=last_note; n++)
         {
             const int tick = track->getNoteStartInMidiTicks(n);
-            ticks_relative_position[ tick ].setProportion(1);
+            
+            int noteLen = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
+            
+            // wider notes should be given a bit more space.
+            float ratioToShortest = (float)noteLen / (float)shortest;
+            float additionalWidth = log( ratioToShortest ) / log( 2 );
+            
+            ticks_relative_position[ tick ].setProportion(1 + additionalWidth);
         }
     }
     
