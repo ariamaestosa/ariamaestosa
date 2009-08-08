@@ -439,11 +439,11 @@ void PrintLayoutManager::calculateRelativeLengths()
         float zoom = 1;
         //layoutElements[n].zoom = 1;
 
-        if(layoutElements[n].getType() == EMPTY_MEASURE) continue; // was already calculated
+        //if(layoutElements[n].getType() == EMPTY_MEASURE) continue; // was already calculated
 
         layoutElements[n].width_in_units = 2;
 
-        if(layoutElements[n].getType() == SINGLE_MEASURE)
+        if(layoutElements[n].getType() == SINGLE_MEASURE || layoutElements[n].getType() == EMPTY_MEASURE)
         {
             // ---- for non-linear printing mode
             
