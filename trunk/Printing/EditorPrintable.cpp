@@ -256,6 +256,11 @@ int EditorPrintable::tickToX(const int tick)
             
             //std::cout << "tickToX found tick " << tick << std::endl;
             
+            if (meas.ticks_relative_position.find(tick) == meas.ticks_relative_position.end())
+            {
+                std::cout << "\n/!\\ tickToX didn't find X for tick " << tick << " in measure " << (meas.id+1) << "\n\n";
+            }
+            
             float nratio = meas.ticks_relative_position[tick].relativePosition;
             
             assertExpr(elem_w, >, 0);
