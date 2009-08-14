@@ -37,8 +37,8 @@ public:
 
     void addUsedTicks(const MeasureToExport& measure, const MeasureTrackReference& trackRef, std::map<int /* tick */,TickPosInfo>&);
 
-    void drawLine(LayoutLine& line, wxDC& dc);
-    int calculateHeight(LayoutLine& line);
+    void drawLine(const int trackID, TrackRenderInfo& track, Track* track, LayoutLine& line, wxDC& dc);
+    int calculateHeight(const int trackID, TrackRenderInfo& track, LayoutLine& line);
     
 };
 

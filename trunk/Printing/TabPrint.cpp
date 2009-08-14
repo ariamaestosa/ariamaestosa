@@ -29,18 +29,15 @@ namespace AriaMaestosa
     {
     }
     
-    void TablaturePrintable::drawLine(LayoutLine& line, wxDC& dc)
+    void TablaturePrintable::drawLine(const int trackID, TrackRenderInfo& renderInfo, Track* track, LayoutLine& line, wxDC& dc)
     {
-        TrackRenderInfo& renderInfo = line.getTrackRenderInfo();
         assertExpr(renderInfo.y0,>,0);
         assertExpr(renderInfo.y1,>,0);
         assertExpr(renderInfo.y0,<,50000);
         assertExpr(renderInfo.y1,<,50000);
         
         wxFont oldfont = dc.GetFont();
-        
-        Track* track = line.getTrack();
-        
+                
         std::cout << "Tablature : starting new line\n";
         
         
@@ -60,10 +57,10 @@ namespace AriaMaestosa
         // iterate through layout elements
         LayoutElement* currentElement;
         
-        const int elementAmount = getElementCount();
+        const int elementAmount = line.getElementCount(trackID);
         for(int el=0; el<elementAmount; el++)
         {
-            currentElement = continueWithNextElement(el);
+            currentElement = continueWithNextElement(trackID, line, el);
             std::cout << "Tablature : starting new layout element. Type = " << currentElement->getType() << "\n";
             
             drawVerticalDivider(currentElement, renderInfo.y0, renderInfo.y1);
@@ -132,8 +129,8 @@ namespace AriaMaestosa
             }
             
             // for layout elements containing notes, render them
-            const int firstNote = line.getFirstNoteInElement(currentElement);
-            const int lastNote = line.getLastNoteInElement(currentElement);
+            const int firstNote = line.getFirstNoteInElement(trackID, currentElement);
+            const int lastNote = line.getLastNoteInElement(trackID, currentElement);
             
             if(firstNote == -1 || lastNote == -1)
             {
@@ -155,7 +152,7 @@ namespace AriaMaestosa
                 
                 // substract from width to leave some space on the right (coordinate is from the left of the text string so we need extra space on the right)
                 // if fret number is greater than 9, the string will have two characters so we need to recenter it a bit more
-                const int drawX = getNotePrintX(i) + (fret > 9 ? renderInfo.pixel_width_of_an_unit/4 : renderInfo.pixel_width_of_an_unit/2);
+                const int drawX = getNotePrintX(trackID, line, i) + (fret > 9 ? renderInfo.pixel_width_of_an_unit/4 : renderInfo.pixel_width_of_an_unit/2);
                 const int drawY = renderInfo.y0 + stringHeight*string - textSize3.y/2;
                 wxString label = to_wxString(fret);
                 
@@ -213,10 +210,10 @@ namespace AriaMaestosa
         }
     }
     
-    int TablaturePrintable::calculateHeight(LayoutLine& line)
+    int TablaturePrintable::calculateHeight(const int trackID, TrackRenderInfo& track, LayoutLine& line)
     {
-        const int from_note = line.getFirstNote();
-        const int to_note   = line.getLastNote();
+        const int from_note = line.getFirstNote(trackID);
+        const int to_note   = line.getLastNote(trackID);
         
         // check if empty
         if(from_note == -1 || to_note == -1)

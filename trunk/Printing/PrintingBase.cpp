@@ -410,14 +410,13 @@ void AriaPrintable::printLine(LayoutLine& line, wxDC& dc)
         if(line.height_percent[n] == 0) continue;
         
         std::cout << "==== Printing track " << n << " ====" << std::endl;
-        line.setCurrentTrack(n);
         
-        TrackRenderInfo& sizing = line.getTrackRenderInfo();
+        TrackRenderInfo& sizing = line.getTrackRenderInfo(n);
+        Track* track = line.getTrack(n);
         std::cout << "Coords : " << sizing.x0 << ", " << sizing.y0 << " to " << sizing.x1 << ", " << sizing.y1 << std::endl;
         
-        EditorPrintable* editorPrintable = editorPrintables.get(line.getCurrentTrack());
-        editorPrintable->setCurrentTrack(&line);
-        editorPrintable->drawLine(line, dc);
+        EditorPrintable* editorPrintable = editorPrintables.get(n);
+        editorPrintable->drawLine(n, sizing, track, line, dc);
     }
 }
     

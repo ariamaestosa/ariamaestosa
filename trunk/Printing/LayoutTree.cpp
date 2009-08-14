@@ -237,45 +237,45 @@ LayoutElement::LayoutElement(LayoutElementType type_arg, int measure_arg)
 LayoutLine::LayoutLine(AriaPrintable* parent)
 {
     printable = parent;
-    currentTrack = 0;
     last_of_page = false;
     
     editor_data = NULL;
     
     while((int)trackRenderInfo.size() < parent->track_amount)
+    {
         trackRenderInfo.push_back(TrackRenderInfo());
+    }
 }
 
 int LayoutLine::getTrackAmount() const
 {
     return printable->tracks.size();
 }
-void LayoutLine::setCurrentTrack(const int n)
+
+Track* LayoutLine::getTrack(const int trackID) const
 {
-    currentTrack = n;
+    assertExpr(trackID,>=,0);
+    assertExpr(trackID,<,printable->tracks.size());
+    return printable->tracks.get(trackID);
 }
-Track* LayoutLine::getTrack() const
+int LayoutLine::getFirstNoteInElement(const int trackID, const int layoutElementID)
 {
-    assertExpr(currentTrack,>=,0);
-    assertExpr(currentTrack,<,printable->tracks.size());
-    return printable->tracks.get(currentTrack);
+    return getMeasureForElement(layoutElementID).trackRef[trackID].firstNote;
 }
-int LayoutLine::getFirstNoteInElement(const int layoutElementID)
+int LayoutLine::getLastNoteInElement(const int trackID, const int layoutElementID)
 {
-    return getMeasureForElement(layoutElementID).trackRef[currentTrack].firstNote;
+    std::cout << "last note in element " << layoutElementID << " of track " << trackID << " is " <<
+                getMeasureForElement(layoutElementID).trackRef[trackID].lastNote << " from measure " <<
+                getMeasureForElement(layoutElementID).id << std::endl;
+    return getMeasureForElement(layoutElementID).trackRef[trackID].lastNote;
 }
-int LayoutLine::getLastNoteInElement(const int layoutElementID)
+int LayoutLine::getFirstNoteInElement(const int trackID, LayoutElement* layoutElement)
 {
-    std::cout << "last note in element " << layoutElementID << " of track " << currentTrack << " is " << getMeasureForElement(layoutElementID).trackRef[currentTrack].lastNote << " from measure " << getMeasureForElement(layoutElementID).id << std::endl;
-    return getMeasureForElement(layoutElementID).trackRef[currentTrack].lastNote;
+    return getMeasureForElement(layoutElement).trackRef[trackID].firstNote;
 }
-int LayoutLine::getFirstNoteInElement(LayoutElement* layoutElement)
+int LayoutLine::getLastNoteInElement(const int trackID, LayoutElement* layoutElement)
 {
-    return getMeasureForElement(layoutElement).trackRef[currentTrack].firstNote;
-}
-int LayoutLine::getLastNoteInElement(LayoutElement* layoutElement)
-{
-    return getMeasureForElement(layoutElement).trackRef[currentTrack].lastNote;
+    return getMeasureForElement(layoutElement).trackRef[trackID].lastNote;
 }
 
 MeasureToExport& LayoutLine::getMeasureForElement(const int layoutElementID) const
@@ -289,11 +289,11 @@ MeasureToExport& LayoutLine::getMeasureForElement(LayoutElement* layoutElement)
     return printable->measures[layoutElement->measure];
 }
     
-TrackRenderInfo& LayoutLine::getTrackRenderInfo()
+TrackRenderInfo& LayoutLine::getTrackRenderInfo(const int trackID)
 {
-    assertExpr(currentTrack,>=,0);
-    assertExpr(currentTrack,<,(int)trackRenderInfo.size());
-    return trackRenderInfo[currentTrack];
+    assertExpr(trackID,>=,0);
+    assertExpr(trackID,<,(int)trackRenderInfo.size());
+    return trackRenderInfo[trackID];
 }
 
 int LayoutLine::getLastMeasure() const
@@ -313,10 +313,10 @@ int LayoutLine::getFirstMeasure() const
     }
     return -1;
 }
-int LayoutLine::getLastNote() const
+int LayoutLine::getLastNote(const int trackID) const
 {
     const int track_amount = getTrackAmount();
-    const Track* t = getTrack();
+    const Track* t = getTrack(trackID);
     
     const int elements = layoutElements.size();
     for(int el=elements-1; el>=0; el--)
@@ -335,14 +335,14 @@ int LayoutLine::getLastNote() const
     return -1; // empty line
 }
 
-int LayoutLine::getFirstNote() const
+int LayoutLine::getFirstNote(const int trackID) const
 {
     //const int measure = getFirstMeasure();
     // const int from_tick = getMeasureData()->firstTickInMeasure(measure);
     
     const int track_amount = getTrackAmount();
     
-    const Track* t = getTrack();
+    const Track* t = getTrack(trackID);
     
     const int elements = layoutElements.size();
     for(int el=0; el<elements; el++)
@@ -370,8 +370,7 @@ int LayoutLine::calculateHeight()
     const int trackAmount = getTrackAmount();
     for(int n=0; n<trackAmount; n++)
     {
-        setCurrentTrack(n);
-        const int this_height = printable->editorPrintables.get(currentTrack)->calculateHeight(*this);
+        const int this_height = printable->editorPrintables.get(n)->calculateHeight(n, trackRenderInfo[n], *this);
         heights.push_back(this_height);
         level_height += this_height;
         std::cout << this_height << "-high" << std::endl;
