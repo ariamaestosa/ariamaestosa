@@ -384,8 +384,10 @@ namespace AriaMaestosa
             return 0;
         
         return (g_clef ? 5 : 0) + (f_clef ? 5 : 0) + 
+                abs(scoreData->extra_lines_under_g_score) +
                 abs(scoreData->extra_lines_above_g_score) +
-                abs(scoreData->extra_lines_under_f_score);
+                abs(scoreData->extra_lines_under_f_score) +
+                abs(scoreData->extra_lines_above_f_score);
 
     }
     
@@ -666,6 +668,7 @@ namespace AriaMaestosa
             info.highest_pitch = highest_pitch;
             info.lowest_pitch = lowest_pitch;
             info.biggest_level = biggest_level;
+            info.smallest_level = smallest_level;
             info.first_note = firstNote;
             info.last_note = lastNote;
             perMeasureInfo[m] = info;
@@ -806,7 +809,7 @@ namespace AriaMaestosa
         for (int m=fromMeasure; m<=lastMeasure; m++)
         {
             PerMeasureInfo& info = perMeasureInfo[m];
-            
+                        
             if (info.highest_pitch < highest_pitch or highest_pitch == -1)
             {
                 highest_pitch = info.highest_pitch;
@@ -815,7 +818,7 @@ namespace AriaMaestosa
             {
                 lowest_pitch = info.lowest_pitch;
             } 
-            if (info.biggest_level < biggest_level or biggest_level == -1)
+            if (info.biggest_level > biggest_level or biggest_level == -1)
             {
                 biggest_level = info.biggest_level;
             }
@@ -852,6 +855,7 @@ namespace AriaMaestosa
         }
         else if(f_clef and g_clef)
         {
+            std::cout << "smallest_level=" << smallest_level << " biggest_level=" << biggest_level << std::endl;
             if(smallest_level!=-1 and smallest_level < g_clef_from) scoreData->extra_lines_above_g_score = (g_clef_from - smallest_level)/2;
             if(biggest_level!=-1 and biggest_level > f_clef_to) scoreData->extra_lines_under_f_score = (f_clef_to - biggest_level)/2;
         }
