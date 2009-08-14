@@ -140,12 +140,18 @@ namespace AriaMaestosa
             virtual ~EditorData() {}
         };
     
-    struct TrackRenderInfo
+    class TrackRenderInfo
     {
+    public:
         int x0, y0, x1, y1;
         bool show_measure_number;
         float pixel_width_of_an_unit;
         int layoutElementsAmount;
+        
+        // editors can put data of their own there.
+        OwnerPtr<EditorData> editor_data;
+        
+        TrackRenderInfo() { }
     };
     
     /*
@@ -157,7 +163,7 @@ namespace AriaMaestosa
         {
             friend class AriaPrintable;
             
-            std::vector<TrackRenderInfo> trackRenderInfo;
+            ptr_vector<TrackRenderInfo> trackRenderInfo;
             
             AriaPrintable* printable;
             
@@ -174,9 +180,6 @@ namespace AriaMaestosa
             int margin_below, margin_above;
             
             LayoutLine(AriaPrintable* parent);
-
-            // editors can put data of their own there.
-            OwnerPtr<EditorData> editor_data;
             
             // FIXME : ugly to have to pass trackID everywhere, wrap that in a track object of some kind
             const int getElementCount(const int trackID) const   { return trackRenderInfo[trackID].layoutElementsAmount; }

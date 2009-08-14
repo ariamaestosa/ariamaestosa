@@ -381,7 +381,7 @@ namespace AriaMaestosa
     {
         gatherVerticalSizingInfo(track, line);
         
-        ScoreData* scoreData = dynamic_cast<ScoreData*>(line.editor_data.raw_ptr);
+        ScoreData* scoreData = dynamic_cast<ScoreData*>(track.editor_data.raw_ptr);
         assert(scoreData != NULL);
         
         const int from_note = line.getFirstNote(trackID);
@@ -532,7 +532,7 @@ namespace AriaMaestosa
         
         // gather score info
         //gatherNotesAndBasicSetup(line);
-        ScoreData* scoreData = dynamic_cast<ScoreData*>(line.editor_data.raw_ptr);
+        ScoreData* scoreData = dynamic_cast<ScoreData*>(renderInfo.editor_data.raw_ptr);
         
         // since height is used to determine where to put repetitions/notes/etc.
         // only pass the height of the first score if there's 2, so stuff don't appear between both scores
@@ -802,7 +802,7 @@ namespace AriaMaestosa
     void ScorePrintable::gatherVerticalSizingInfo(TrackRenderInfo& renderInfo, LayoutLine& line)
     {
         ScoreData* scoreData = new ScoreData();
-        line.editor_data = scoreData;
+        renderInfo.editor_data = scoreData;
         
         ScoreEditor* scoreEditor = track->graphics->scoreEditor;
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
@@ -818,7 +818,6 @@ namespace AriaMaestosa
         
         for (int m=fromMeasure; m<=lastMeasure; m++)
         {
-            // FIXME : this editor may handle many tracks, don't keep this globally!!!
             PerMeasureInfo& info = perMeasureInfo[m];
                         
             if (info.highest_pitch < highest_pitch or highest_pitch == -1)
@@ -849,7 +848,7 @@ namespace AriaMaestosa
         g_clef = scoreEditor->isGClefEnabled();
         f_clef = scoreEditor->isFClefEnabled();
         
-        
+        // FIXME : this printable may handle multiple tracks, don't keep this info globally for the entire line!!!
         scoreData->extra_lines_above_g_score = 0;
         scoreData->extra_lines_under_g_score = 0;
         scoreData->extra_lines_above_f_score = 0;
