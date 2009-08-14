@@ -239,11 +239,9 @@ LayoutLine::LayoutLine(AriaPrintable* parent)
     printable = parent;
     last_of_page = false;
     
-    editor_data = NULL;
-    
     while((int)trackRenderInfo.size() < parent->track_amount)
     {
-        trackRenderInfo.push_back(TrackRenderInfo());
+        trackRenderInfo.push_back(new TrackRenderInfo());
     }
 }
 
