@@ -53,6 +53,8 @@ namespace AriaMaestosa
     class PrintXConverter
         {
             ScorePrintable* parent;
+            LayoutLine* line;
+            int trackID;
         public:
             LEAK_CHECK();
             
@@ -61,25 +63,32 @@ namespace AriaMaestosa
                 PrintXConverter::parent = parent;
             }
             ~PrintXConverter(){}
+            
+            void setLine(LayoutLine* line, const int trackID)
+            {
+                this->line = line;
+                this->trackID = trackID;
+            }
+            
             int tickToX(const int tick)
             {
-                return parent->tickToX(tick);
+                return parent->tickToX(trackID, *line, tick);
             }
             int getXTo(const int tick)
             {
-                const int out = parent->tickToXLimit(tick);
+                const int out = parent->tickToXLimit(trackID, *line, tick);
                 std::cout << "out : " << tick << " --> " << out << std::endl;
                 assert(out != -1);
                 return out;
             }
             int getClosestXFromTick(const int tick)
             {
-                return tickToX(parent->getClosestTickFrom(tick));
+                return tickToX(parent->getClosestTickFrom(trackID, *line, tick));
             }
         };
     
     // global (FIXME)
-    PrintXConverter* x_converter = NULL;
+    PrintXConverter* x_converter;
     
 #if 0
 #pragma mark -
@@ -368,20 +377,28 @@ namespace AriaMaestosa
     ScorePrintable::~ScorePrintable() { }
     
       
-    int ScorePrintable::calculateHeight(LayoutLine& line)
+    int ScorePrintable::calculateHeight(const int trackID, TrackRenderInfo& track, LayoutLine& line)
     {
-        gatherVerticalSizingInfo(line);
+        gatherVerticalSizingInfo(track, line);
         
         ScoreData* scoreData = dynamic_cast<ScoreData*>(line.editor_data.raw_ptr);
         assert(scoreData != NULL);
         
-        const int from_note = line.getFirstNote();
-        const int to_note   = line.getLastNote();
+        const int from_note = line.getFirstNote(trackID);
+        const int to_note   = line.getLastNote(trackID);
         
         // check if empty
         // FIXME : if a note starts in the previous line and ends in this one, it won't be detected
         if(from_note == -1 || to_note == -1)
             return 0;
+        
+#define PRINT_VAR( foo ) #foo << " = " << (foo) << "; "
+        
+        std::cout <<
+            PRINT_VAR(scoreData->extra_lines_under_g_score) <<
+            PRINT_VAR(scoreData->extra_lines_above_g_score) <<
+            PRINT_VAR(scoreData->extra_lines_under_f_score) <<
+            PRINT_VAR(scoreData->extra_lines_above_f_score) << std::endl;
         
         return (g_clef ? 5 : 0) + (f_clef ? 5 : 0) + 
                 abs(scoreData->extra_lines_under_g_score) +
@@ -499,10 +516,8 @@ namespace AriaMaestosa
         std::cout << "}\n";
     }
     
-    void ScorePrintable::drawLine(LayoutLine& line, wxDC& dc)
+    void ScorePrintable::drawLine(const int trackID, TrackRenderInfo& renderInfo, Track* track, LayoutLine& line, wxDC& dc)
     {
-        TrackRenderInfo& renderInfo = line.getTrackRenderInfo();
-        
         assertExpr(renderInfo.y0,>,0);
         assertExpr(renderInfo.y1,>,0);
         assertExpr(renderInfo.y0,<,50000);
@@ -513,6 +528,7 @@ namespace AriaMaestosa
         std::cout << "ScorePrintable size : " << renderInfo.x0 << ", " << renderInfo.y0 << " to " << renderInfo.x1 << ", " << renderInfo.y1 << std::endl;
         
         x_converter = new PrintXConverter(this);
+        x_converter->setLine(&line, trackID);
         
         // gather score info
         //gatherNotesAndBasicSetup(line);
@@ -556,10 +572,10 @@ namespace AriaMaestosa
         LayoutElement* currentElement;
         std::cout << "\nLayout elements X coords :\n";
         
-        const int elementAmount = getElementCount();
+        const int elementAmount = line.getElementCount(trackID);
         for(int el=0; el<elementAmount; el++)
         {
-            currentElement = continueWithNextElement(el);
+            currentElement = continueWithNextElement(trackID, line, el);
             std::cout << "    Layout element from x=" << currentElement->getXFrom() << " to x=" << currentElement->getXTo() << std::endl;
         }//next element
         std::cout << std::endl;
@@ -568,7 +584,7 @@ namespace AriaMaestosa
         
         if(g_clef)
         {
-            analyseAndDrawScore(false /*G*/, *g_clef_analyser, line, dc,
+            analyseAndDrawScore(false /*G*/, *g_clef_analyser, line, track, dc,
                       abs(scoreData->extra_lines_above_g_score), abs(scoreData->extra_lines_under_g_score),
                       renderInfo.x0, g_clef_y_from, renderInfo.x1, g_clef_y_to,
                       renderInfo.show_measure_number);
@@ -576,7 +592,7 @@ namespace AriaMaestosa
         
         if(f_clef)
         {
-            analyseAndDrawScore(true /*F*/, *f_clef_analyser, line, dc,
+            analyseAndDrawScore(true /*F*/, *f_clef_analyser, line, track, dc,
                       abs(scoreData->extra_lines_above_f_score), abs(scoreData->extra_lines_under_f_score),
                       renderInfo.x0, f_clef_y_from, renderInfo.x1, f_clef_y_to,
                       (g_clef ? false : renderInfo.show_measure_number) /* if we have both keys don't show twice */);
@@ -783,17 +799,11 @@ namespace AriaMaestosa
         
     }
     
-    void ScorePrintable::gatherVerticalSizingInfo(LayoutLine& line)
+    void ScorePrintable::gatherVerticalSizingInfo(TrackRenderInfo& renderInfo, LayoutLine& line)
     {
-        if(line.editor_data != NULL) return; // already set
-        
-        LayoutLine* previousLine = currentLine;
-        currentLine = &line;
-        
         ScoreData* scoreData = new ScoreData();
         line.editor_data = scoreData;
         
-        Track* track = line.getTrack();
         ScoreEditor* scoreEditor = track->graphics->scoreEditor;
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         
@@ -808,6 +818,7 @@ namespace AriaMaestosa
         
         for (int m=fromMeasure; m<=lastMeasure; m++)
         {
+            // FIXME : this editor may handle many tracks, don't keep this globally!!!
             PerMeasureInfo& info = perMeasureInfo[m];
                         
             if (info.highest_pitch < highest_pitch or highest_pitch == -1)
@@ -879,10 +890,6 @@ namespace AriaMaestosa
             scoreData->first_clef_proportion = 0.8 * (abs(scoreData->extra_lines_above_g_score)+5.0) / total_height;
             scoreData->second_clef_proportion = 0.8 * (abs(scoreData->extra_lines_under_f_score)+5.0) / total_height;
         }
-
-        
-        // restore previous current lien (FIXME not too pretty)
-        currentLine = previousLine;
 
     }
     
@@ -1005,14 +1012,13 @@ namespace AriaMaestosa
     }
     */
     
-    void ScorePrintable::analyseAndDrawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine& line, wxDC& dc,
-                                   const int extra_lines_above, const int extra_lines_under,
+    void ScorePrintable::analyseAndDrawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine& line, Track* track,
+                                   wxDC& dc, const int extra_lines_above, const int extra_lines_under,
                                    const int x0, const int y0, const int x1, const int y1,
                                    bool show_measure_number)
     {
         std::cout << "\n    analyseAndDrawScore " << (f_clef ? "F" : "G") << "\n\n";
         
-        Track* track = line.getTrack();
         ScoreEditor* scoreEditor = track->graphics->scoreEditor;
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         const int middle_c_level = converter->getScoreCenterCLevel();

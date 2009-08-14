@@ -647,8 +647,7 @@ void PrintLayoutManager::divideLineAmongTracks(LayoutLine& line, const int x0, c
     int nonEmptyID = 0;
     for(int n=0; n<trackAmount; n++)
     {        
-        line.setCurrentTrack(n);
-        EditorPrintable* editorPrintable = parent->editorPrintables.get(line.getCurrentTrack());
+        EditorPrintable* editorPrintable = parent->editorPrintables.get(n);
         
         // skip empty tracks
         if(line.height_percent[n] == 0) continue;
@@ -664,7 +663,7 @@ void PrintLayoutManager::divideLineAmongTracks(LayoutLine& line, const int x0, c
         const float space_above_line = space_between_tracks*position;
         const float space_below_line = space_between_tracks*(1.0-position);
         
-        editorPrintable->placeTrackAndElementsWithinCoords(line, line.getTrackRenderInfo(),
+        editorPrintable->placeTrackAndElementsWithinCoords(n, line, line.getTrackRenderInfo(n),
                                        x0, current_y + space_above_line,
                                        x1, current_y + track_height - space_below_line,
                                        n==0);

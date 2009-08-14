@@ -157,7 +157,6 @@ namespace AriaMaestosa
         {
             friend class AriaPrintable;
             
-            int currentTrack;
             std::vector<TrackRenderInfo> trackRenderInfo;
             
             AriaPrintable* printable;
@@ -179,21 +178,24 @@ namespace AriaMaestosa
             // editors can put data of their own there.
             OwnerPtr<EditorData> editor_data;
             
-            TrackRenderInfo& getTrackRenderInfo();
-            
+            // FIXME : ugly to have to pass trackID everywhere, wrap that in a track object of some kind
+            const int getElementCount(const int trackID) const   { return trackRenderInfo[trackID].layoutElementsAmount; }
+
             int width_in_units;
             int level_height;
             
             bool last_of_page;
             
             int getTrackAmount() const;
-            void setCurrentTrack(const int n);
-            int getCurrentTrack() const { return currentTrack; }
-            Track* getTrack() const;
-            int getFirstNoteInElement(const int layoutElementID);
-            int getLastNoteInElement(const int layoutElementID);
-            int getFirstNoteInElement(LayoutElement* layoutElement);
-            int getLastNoteInElement(LayoutElement* layoutElement);
+            // FIXME : ugly to have to pass trackID everywhere, wrap that in a track object of some kind
+            TrackRenderInfo& getTrackRenderInfo(const int id);
+            Track* getTrack(const int id) const;
+            
+            // FIXME : ugly to have to pass trackID everywhere, wrap that in a track object of some kind
+            int getFirstNoteInElement(const int trackID, const int layoutElementID);
+            int getLastNoteInElement(const int trackID, const int layoutElementID);
+            int getFirstNoteInElement(const int trackID, LayoutElement* layoutElement);
+            int getLastNoteInElement(const int trackID, LayoutElement* layoutElement);
             
             //void printYourself(wxDC& dc, const int x0, const int y0, const int x1, const int y1, int margin_below, int margin_above);
             int calculateHeight();
@@ -204,8 +206,9 @@ namespace AriaMaestosa
             int getLastMeasure() const;
             int getFirstMeasure() const;
             
-            int getLastNote() const;
-            int getFirstNote() const;
+            // FIXME : ugly to have to pass trackID everywhere, wrap that in a track object of some kind
+            int getLastNote(const int trackID) const;
+            int getFirstNote(const int trackID) const;
             
             std::vector<LayoutElement> layoutElements;
         };

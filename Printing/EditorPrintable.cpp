@@ -37,12 +37,7 @@ void EditorPrintable::setCurrentDC(wxDC* dc)
     EditorPrintable::dc = dc;
 }
 
-void EditorPrintable::setCurrentTrack(LayoutLine* line)
-{
-    EditorPrintable::currentLine = line;
-}
-
-void EditorPrintable::placeTrackAndElementsWithinCoords(LayoutLine& line, TrackRenderInfo& track,  int x0, const int y0, const int x1, const int y1, bool show_measure_number)
+void EditorPrintable::placeTrackAndElementsWithinCoords(const int trackID, LayoutLine& line, TrackRenderInfo& track,  int x0, const int y0, const int x1, const int y1, bool show_measure_number)
 {
     std::cout << "= placeTrackAndElementsWithinCoords =\n";
 
@@ -58,8 +53,8 @@ void EditorPrintable::placeTrackAndElementsWithinCoords(LayoutLine& line, TrackR
     
     track.show_measure_number = show_measure_number;
     
-    if(&line.getTrackRenderInfo() != &track) std::cerr << "TrackRenderInfo is not the right one!!!!!!!!!\n";
-    std::cout << "coords for track " << line.getCurrentTrack() << " : " << x0 << ", " << y0 << ", " << x1 << ", " << y1 << std::endl;
+    if(&line.getTrackRenderInfo(trackID) != &track) std::cerr << "TrackRenderInfo is not the right one!!!!!!!!!\n";
+    std::cout << "coords for track " << line.getTrack(trackID) << " : " << x0 << ", " << y0 << ", " << x1 << ", " << y1 << std::endl;
     
     // 2 spaces allocated for left area of the line
     track.pixel_width_of_an_unit = (float)(x1 - x0) / (float)(line.width_in_units+2);
@@ -97,8 +92,8 @@ void EditorPrintable::placeTrackAndElementsWithinCoords(LayoutLine& line, TrackR
  {
  return currentLine->x0 + (int)round(currentLine->xloc*pixel_width_of_an_unit) - pixel_width_of_an_unit;
  }*/
-
-LayoutElement* EditorPrintable::getElementForMeasure(const int measureID)
+/*
+LayoutElement* EditorPrintable::getElementForMeasure(const int trackID, const int measureID)
 {
     assert(currentLine != NULL);
     std::vector<LayoutElement>& layoutElements = currentLine->layoutElements;
@@ -108,7 +103,7 @@ LayoutElement* EditorPrintable::getElementForMeasure(const int measureID)
         if(layoutElements[n].measure == measureID) return &layoutElements[n];
     }
     return NULL;
-}
+}*/
 
 void EditorPrintable::drawVerticalDivider(LayoutElement* el, const int y0, const int y1)
 {
@@ -139,14 +134,10 @@ void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0,
     dc->SetFont(oldfont);    
 }
 
-const int EditorPrintable::getElementCount() const
+    // FIXME : unclean to pass trackID and LayoutLine as argument!
+LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, LayoutLine& layoutLine, const int currentLayoutElement)
 {
-    return currentLine->getTrackRenderInfo().layoutElementsAmount;
-}
-
-LayoutElement* EditorPrintable::continueWithNextElement(const int currentLayoutElement)
-{
-    TrackRenderInfo& renderInfo = currentLine->getTrackRenderInfo();
+    TrackRenderInfo& renderInfo = layoutLine.getTrackRenderInfo(trackID);
     
     if(!(currentLayoutElement < renderInfo.layoutElementsAmount))
     {
@@ -154,9 +145,9 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int currentLayoutE
         return NULL;
     }
     
-    std::vector<LayoutElement>& layoutElements = currentLine->layoutElements;
+    std::vector<LayoutElement>& layoutElements = layoutLine.layoutElements;
     
-    const int elem_x_start = currentLine->layoutElements[currentLayoutElement].getXFrom();
+    const int elem_x_start = layoutLine.layoutElements[currentLayoutElement].getXFrom();
     
     dc->SetTextForeground( wxColour(0,0,255) );
     
@@ -185,7 +176,7 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int currentLayoutE
         wxString message;
         if(layoutElements[currentLayoutElement].getType() == SINGLE_REPEATED_MEASURE)
         {
-            message = to_wxString(currentLine->getMeasureForElement(currentLayoutElement).firstSimilarMeasure+1);
+            message = to_wxString(layoutLine.getMeasureForElement(currentLayoutElement).firstSimilarMeasure+1);
         }
         else if(layoutElements[currentLayoutElement].getType() == REPEATED_RIFF)
         {
@@ -213,7 +204,7 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int currentLayoutE
         // draw measure ID
         if(renderInfo.show_measure_number)
         {
-            const int meas_id = currentLine->getMeasureForElement(currentLayoutElement).id+1;
+            const int meas_id = layoutLine.getMeasureForElement(currentLayoutElement).id+1;
             
             wxString measureLabel;
             measureLabel << meas_id;
@@ -231,18 +222,18 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int currentLayoutE
 }
 
 
-int EditorPrintable::getNotePrintX(int noteID)
+int EditorPrintable::getNotePrintX(const int trackID, LayoutLine& line, int noteID)
 {
-    return tickToX( currentLine->getTrack()->getNoteStartInMidiTicks(noteID) );
+    return tickToX( trackID, line, line.getTrack(trackID)->getNoteStartInMidiTicks(noteID) );
 }
-int EditorPrintable::tickToX(const int tick)
+int EditorPrintable::tickToX(const int trackID, LayoutLine& line, const int tick)
 {
-    TrackRenderInfo& renderInfo = currentLine->getTrackRenderInfo();
+    TrackRenderInfo& renderInfo = line.getTrackRenderInfo(trackID);
     
     // find in which measure this tick belongs
     for(int n=0; n<renderInfo.layoutElementsAmount; n++)
     {
-        MeasureToExport& meas = currentLine->getMeasureForElement(n);
+        MeasureToExport& meas = line.getMeasureForElement(n);
         if(meas.id == -1) continue; // nullMeasure, ignore
         const int firstTick = meas.firstTick;
         const int lastTick  = meas.lastTick;
@@ -250,8 +241,8 @@ int EditorPrintable::tickToX(const int tick)
         if(tick >= firstTick and tick < lastTick)
         {
             //std::cout << tick << " is within bounds " << firstTick << " - " << lastTick << std::endl;
-            const int elem_x_start = currentLine->layoutElements[n].getXFrom();
-            const int elem_x_end = currentLine->layoutElements[n].getXTo();
+            const int elem_x_start = line.layoutElements[n].getXFrom();
+            const int elem_x_end = line.layoutElements[n].getXTo();
             const int elem_w = elem_x_end - elem_x_start;
             
             //std::cout << "tickToX found tick " << tick << std::endl;
@@ -285,7 +276,7 @@ int EditorPrintable::tickToX(const int tick)
         {
             //std::cout << "tickToX Returning -" <<  (currentLine->layoutElements[n].getXTo() + 10) << " B\n";
 
-            return currentLine->layoutElements[n].getXTo() + 10;
+            return line.layoutElements[n].getXTo() + 10;
         }
     }
     
@@ -295,12 +286,12 @@ int EditorPrintable::tickToX(const int tick)
 /**
   * tickToX returns the beginning of the area allocated to a tick; this method returns its end.
   */
-int EditorPrintable::tickToXLimit(const int tick)
+int EditorPrintable::tickToXLimit(const int trackID, LayoutLine& line, const int tick)
 {
-    int closest = getClosestTickFrom(tick+1);
+    int closest = getClosestTickFrom(trackID, line, tick+1);
     if (closest == -1) return -1;
     
-    return tickToX(closest);
+    return tickToX(trackID, line, closest);
 }
     
 /**
@@ -308,15 +299,15 @@ int EditorPrintable::tickToXLimit(const int tick)
   * the other. When rendering, the other can thus call this to know the extent of its free size and center things
   * instead of leaving holes (but for this they must have silence information). returns -1 if nothing was found.
   */
-int EditorPrintable::getClosestTickFrom(const int tick)
+int EditorPrintable::getClosestTickFrom(const int trackID, LayoutLine& line,const int tick)
 {
     //std::cout << "getClosestXFromTick " << tick << std::endl;
-    TrackRenderInfo& renderInfo = currentLine->getTrackRenderInfo();
+    TrackRenderInfo& renderInfo = line.getTrackRenderInfo(trackID);
     
     // find in which measure this tick belongs
     for(int n=0; n<renderInfo.layoutElementsAmount; n++)
     {
-        MeasureToExport& meas = currentLine->getMeasureForElement(n);
+        MeasureToExport& meas = line.getMeasureForElement(n);
         if(meas.id == -1) continue; // nullMeasure, ignore
         const int firstTick = meas.firstTick;
         const int lastTick  = meas.lastTick;

@@ -35,9 +35,6 @@ class Track;
 class EditorPrintable
     {
     protected:
-        // FIXME : remove 'currentLine' state?
-        LayoutLine* currentLine;
-        
         Track* track;
         wxDC* dc;
     public:
@@ -46,11 +43,11 @@ class EditorPrintable
         
         /** Called by the print code when it's time to render a line. This will be handled in the appropriate subclass.
          */
-        virtual void drawLine(LayoutLine& line, wxDC& dc) = 0;
+        virtual void drawLine(const int trackID, TrackRenderInfo& track, Track* track, LayoutLine& line, wxDC& dc) = 0;
         
         /** Called by the layout code to know the relative height of this line
          */
-        virtual int calculateHeight(LayoutLine& line) = 0;
+        virtual int calculateHeight(const int trackID, TrackRenderInfo& track, LayoutLine& line) = 0;
         
         Track* getTrack() const { return track; }
         
@@ -58,16 +55,16 @@ class EditorPrintable
         
         void setCurrentDC(wxDC* dc);
         
-        void placeTrackAndElementsWithinCoords(LayoutLine& line, TrackRenderInfo& track, int x0, const int y0, const int x1, const int y1, bool show_measure_number);
+        void placeTrackAndElementsWithinCoords(const int trackID, LayoutLine& line, TrackRenderInfo& track,
+                                               int x0, const int y0, const int x1, const int y1, bool show_measure_number);
         
         // int getCurrentElementXStart();
-        const int getElementCount() const;
-        LayoutElement* continueWithNextElement(const int currentLayoutElement);
-        LayoutElement* getElementForMeasure(const int measureID);
-        int getNotePrintX(int noteID);
-        int tickToX(const int tick);
-        int getClosestTickFrom(const int tick);
-        int tickToXLimit(const int tick);
+        LayoutElement* continueWithNextElement(const int trackID, LayoutLine& layoutLine, const int currentLayoutElement);
+        //LayoutElement* getElementForMeasure(const int measureID);
+        int getNotePrintX(const int trackID, LayoutLine& line, int noteID);
+        int tickToX(const int trackID, LayoutLine& line, const int tick);
+        int getClosestTickFrom(const int trackID, LayoutLine& line, const int tick);
+        int tickToXLimit(const int trackID, LayoutLine& line, const int tick);
 
         void drawVerticalDivider(LayoutElement* el, const int y0, const int y1);
         void renderTimeSignatureChange(LayoutElement* el, const int y0, const int y1);
