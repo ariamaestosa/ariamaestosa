@@ -7,6 +7,8 @@
 #include "Editors/GuitarEditor.h"
 #include "Printing/ScorePrint.h"
 #include "Printing/TabPrint.h"
+#include "Printing/PrintLayoutMeasure.h"
+#include "Printing/PrintLayoutLine.h"
 #include "AriaCore.h"
 
 #include <iostream>

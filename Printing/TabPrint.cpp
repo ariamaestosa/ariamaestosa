@@ -12,6 +12,8 @@
 #include "Printing/TabPrint.h"
 #include "Printing/PrintingBase.h"
 #include "Printing/PrintLayout.h"
+#include "Printing/PrintLayoutMeasure.h"
+#include "Printing/PrintLayoutLine.h"
 
 namespace AriaMaestosa
 {
@@ -29,7 +31,7 @@ namespace AriaMaestosa
     {
     }
     
-    void TablaturePrintable::drawLine(const int trackID, TrackRenderInfo& renderInfo, Track* track, LayoutLine& line, wxDC& dc)
+    void TablaturePrintable::drawLine(const int trackID, LineTrackRef& renderInfo, LayoutLine& line, wxDC& dc)
     {
         assertExpr(renderInfo.y0,>,0);
         assertExpr(renderInfo.y1,>,0);
@@ -145,8 +147,8 @@ namespace AriaMaestosa
             
             for(int i=firstNote; i<=lastNote; i++)
             {
-                const int string = track->getNoteString(i);
-                const int fret = track->getNoteFret(i);
+                const int string = renderInfo.track->getNoteString(i);
+                const int fret = renderInfo.track->getNoteFret(i);
                 
                 if(fret < 0)  dc.SetTextForeground( wxColour(255,0,0) );
                 
@@ -210,7 +212,7 @@ namespace AriaMaestosa
         }
     }
     
-    int TablaturePrintable::calculateHeight(const int trackID, TrackRenderInfo& renderInfo, Track* track, LayoutLine& line)
+    int TablaturePrintable::calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line)
     {
         const int from_note = line.getFirstNote(trackID);
         const int to_note   = line.getLastNote(trackID);
