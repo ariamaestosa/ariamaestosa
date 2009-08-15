@@ -368,7 +368,7 @@ int LayoutLine::calculateHeight()
     const int trackAmount = getTrackAmount();
     for(int n=0; n<trackAmount; n++)
     {
-        const int this_height = printable->editorPrintables.get(n)->calculateHeight(n, trackRenderInfo[n], *this);
+        const int this_height = printable->editorPrintables.get(n)->calculateHeight(n, trackRenderInfo[n], getTrack(n), *this);
         heights.push_back(this_height);
         level_height += this_height;
         std::cout << this_height << "-high" << std::endl;

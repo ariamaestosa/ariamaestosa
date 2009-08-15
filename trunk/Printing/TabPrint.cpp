@@ -17,7 +17,7 @@ namespace AriaMaestosa
 {
     
     
-    TablaturePrintable::TablaturePrintable(Track* track) : EditorPrintable(track)
+    TablaturePrintable::TablaturePrintable(Track* track) : EditorPrintable()
     {
         // FIXME  - will that work if printing e.g. a bass track + a guitar track,
         // both with different string counts?
@@ -210,7 +210,7 @@ namespace AriaMaestosa
         }
     }
     
-    int TablaturePrintable::calculateHeight(const int trackID, TrackRenderInfo& track, LayoutLine& line)
+    int TablaturePrintable::calculateHeight(const int trackID, TrackRenderInfo& renderInfo, Track* track, LayoutLine& line)
     {
         const int from_note = line.getFirstNote(trackID);
         const int to_note   = line.getLastNote(trackID);

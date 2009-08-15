@@ -25,9 +25,8 @@
 namespace AriaMaestosa
 {
 
-EditorPrintable::EditorPrintable(Track* track)
+EditorPrintable::EditorPrintable()
 {
-    this->track = track;
 }
 
 EditorPrintable::~EditorPrintable(){}

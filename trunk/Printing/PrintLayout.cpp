@@ -459,7 +459,7 @@ void PrintLayoutManager::calculateRelativeLengths()
             const int trackAmount = meas.trackRef.size();
             for(int i=0; i<trackAmount; i++)
             {
-                EditorPrintable* editorPrintable = parent->getEditorPrintableFor( meas.trackRef[i].track );
+                EditorPrintable* editorPrintable = parent->getEditorPrintable( i );
                 assert( editorPrintable != NULL );
                 
                 editorPrintable->addUsedTicks(meas, meas.trackRef[i], ticks_relative_position);
@@ -703,9 +703,9 @@ void PrintLayoutManager::calculateLayoutElements
     const int trackAmount = tracks.size();
     for(int i=0; i<trackAmount; i++)
     {
-        EditorPrintable* editorPrintable = parent->getEditorPrintableFor( tracks.get(i) );
+        EditorPrintable* editorPrintable = parent->getEditorPrintable( i );
         assert( editorPrintable != NULL );
-        editorPrintable->earlySetup();
+        editorPrintable->earlySetup( i, tracks.get(i) );
     }
     
     createLayoutElements(checkRepetitions_bool);

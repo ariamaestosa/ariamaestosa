@@ -44,6 +44,9 @@
 
 #include "LeakCheck.h"
 
+#define PRINT_VAR( foo ) #foo << " = " << (foo) << "; "
+
+
 template<typename T>
 class OwnerPtr
 {

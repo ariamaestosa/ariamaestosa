@@ -32,11 +32,7 @@ namespace AriaMaestosa
 
 class ScorePrintable : public EditorPrintable
 {
-    void gatherVerticalSizingInfo(TrackRenderInfo& track, LayoutLine& line);
-    //void gatherNotesAndBasicSetup(LayoutLine& line);
-    
-    // should eventually replace at least part of the two above
-    void generateScoreInfo();
+    void gatherVerticalSizingInfo(const int trackID, TrackRenderInfo& track, Track* track, LayoutLine& line);
     
     void analyseAndDrawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine& line, Track* track, wxDC& dc,
                    const int extra_lines_above, const int extra_lines_under,
@@ -50,15 +46,15 @@ class ScorePrintable : public EditorPrintable
     std::vector<int> silences_ticks;
     
 public:
-    ScorePrintable(Track* track_arg);
+    ScorePrintable();
     virtual ~ScorePrintable();
 
     void addUsedTicks(const MeasureToExport& measure, const MeasureTrackReference& trackRef, std::map<int /* tick */,TickPosInfo>&);
     
-    void earlySetup();
+    void earlySetup(const int trackID, Track* track);
 
     void drawLine(const int trackID, TrackRenderInfo& track, Track* track, LayoutLine& line, wxDC& dc);
-    int calculateHeight(const int trackID, TrackRenderInfo& track, LayoutLine& line);
+    int calculateHeight(const int trackID, TrackRenderInfo& renderInfo, Track* track, LayoutLine& line);
     };
 
 }

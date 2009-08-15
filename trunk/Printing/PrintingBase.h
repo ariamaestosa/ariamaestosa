@@ -93,7 +93,7 @@ public:
     bool addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */);
     void calculateLayout(bool checkRepetitions_bool);
     
-    EditorPrintable* getEditorPrintableFor(Track* track);
+    EditorPrintable* getEditorPrintable(const int trackID);
 
     virtual ~AriaPrintable();
     wxString getTitle();
