@@ -35,10 +35,9 @@ class Track;
 class EditorPrintable
     {
     protected:
-        Track* track;
         wxDC* dc;
     public:
-        EditorPrintable(Track* track);
+        EditorPrintable();
         virtual ~EditorPrintable();
         
         /** Called by the print code when it's time to render a line. This will be handled in the appropriate subclass.
@@ -47,10 +46,8 @@ class EditorPrintable
         
         /** Called by the layout code to know the relative height of this line
          */
-        virtual int calculateHeight(const int trackID, TrackRenderInfo& track, LayoutLine& line) = 0;
-        
-        Track* getTrack() const { return track; }
-        
+        virtual int calculateHeight(const int trackID, TrackRenderInfo& renderInfo, Track* track, LayoutLine& line) = 0;
+                
         void setCurrentTrack(LayoutLine* line);
         
         void setCurrentDC(wxDC* dc);
@@ -69,7 +66,7 @@ class EditorPrintable
         void drawVerticalDivider(LayoutElement* el, const int y0, const int y1);
         void renderTimeSignatureChange(LayoutElement* el, const int y0, const int y1);
         
-        virtual void earlySetup() {}
+        virtual void earlySetup(const int trackID, Track* track) {}
         virtual void addUsedTicks(const MeasureToExport& measure, const MeasureTrackReference& trackRef, std::map< int /* tick */, TickPosInfo >&) { }
     };
 }

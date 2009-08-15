@@ -21,9 +21,30 @@ namespace AriaMaestosa
 #pragma mark ScoreData
 #endif
     
-    class ScoreData : public EditorData
+    class PerMeasureInfo
         {
         public:
+            int highest_pitch;
+            int lowest_pitch;
+            int smallest_level;
+            int biggest_level;
+            int first_note;
+            int last_note;
+            
+            PerMeasureInfo()
+            {
+                highest_pitch = -1;
+                lowest_pitch = -1;
+                smallest_level = -1;
+                biggest_level = -1;
+                first_note = -1;
+                last_note = -1;
+            }
+        };
+    
+    class ScoreData : public EditorData
+        {
+        public:            
             LEAK_CHECK();
             
             virtual ~ScoreData() {}
@@ -40,6 +61,9 @@ namespace AriaMaestosa
             //OwnerPtr<ScoreAnalyser> g_clef_analyser;
             //OwnerPtr<ScoreAnalyser> f_clef_analyser;
         };
+    
+    // FIXME : find cleaner way to keep info per-track
+    std::map< int /* trackID*5000 measure ID */, PerMeasureInfo > perMeasureInfo;
 
 #if 0
 #pragma mark -
@@ -369,7 +393,7 @@ namespace AriaMaestosa
 #pragma mark ScorePrintable (EditorPrintable common interface)
 #endif
     
-    ScorePrintable::ScorePrintable(Track* track) : EditorPrintable(track)
+    ScorePrintable::ScorePrintable() : EditorPrintable()
     {
         // std::cout << " *** setting global g_printable" << std::endl;
         g_printable = this;
@@ -377,11 +401,11 @@ namespace AriaMaestosa
     ScorePrintable::~ScorePrintable() { }
     
       
-    int ScorePrintable::calculateHeight(const int trackID, TrackRenderInfo& track, LayoutLine& line)
+    int ScorePrintable::calculateHeight(const int trackID, TrackRenderInfo& renderInfo, Track* track, LayoutLine& line)
     {
-        gatherVerticalSizingInfo(track, line);
+        gatherVerticalSizingInfo(trackID, renderInfo, track, line);
         
-        ScoreData* scoreData = dynamic_cast<ScoreData*>(track.editor_data.raw_ptr);
+        ScoreData* scoreData = dynamic_cast<ScoreData*>(renderInfo.editor_data.raw_ptr);
         assert(scoreData != NULL);
         
         const int from_note = line.getFirstNote(trackID);
@@ -391,9 +415,7 @@ namespace AriaMaestosa
         // FIXME : if a note starts in the previous line and ends in this one, it won't be detected
         if(from_note == -1 || to_note == -1)
             return 0;
-        
-#define PRINT_VAR( foo ) #foo << " = " << (foo) << "; "
-        
+                
         std::cout <<
             PRINT_VAR(scoreData->extra_lines_under_g_score) <<
             PRINT_VAR(scoreData->extra_lines_above_g_score) <<
@@ -618,188 +640,8 @@ namespace AriaMaestosa
 #pragma mark ScorePrintable (private utils)
 #endif
     
-    class PerMeasureInfo
-    {
-    public:
-        int highest_pitch;
-        int lowest_pitch;
-        int smallest_level;
-        int biggest_level;
-        int first_note;
-        int last_note;
-        
-        PerMeasureInfo()
-        {
-            highest_pitch = -1;
-            lowest_pitch = -1;
-            smallest_level = -1;
-            biggest_level = -1;
-            first_note = -1;
-            last_note = -1;
-        }
-    };
-    std::map< int /* measure ID */, PerMeasureInfo > perMeasureInfo;
-    
-    void ScorePrintable::generateScoreInfo()
-    {
-        ScoreEditor* scoreEditor = track->graphics->scoreEditor;
-        ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
-        
-        MeasureData* measures = getMeasureData();
-        const int measureAmount = measures->getMeasureAmount();
-        
-        for (int m=0; m<measureAmount; m++)
-        {
-            // find highest and lowest note we need to render in each measure
-            int highest_pitch = -1, lowest_pitch = -1;
-            int biggest_level = -1, smallest_level = -1;
-            
-            const int from_tick = measures->firstTickInMeasure(m);
-            const int to_tick = measures->lastTickInMeasure(m);
 
-            const int firstNote = track->findFirstNoteInRange( from_tick, to_tick );
-            const int lastNote = track->findLastNoteInRange( from_tick, to_tick );
-
-            //std::cout << "Measure " << m << " : reading notes " << firstNote << " to " << lastNote << std::endl;
-            
-            for(int n=firstNote; n<=lastNote; n++)
-            {
-                if(n == -1) break; // will happen if line is empty
-                const int pitch = track->getNotePitchID(n);
-                const int level = converter->noteToLevel(track->getNote(n));
-                if(pitch < highest_pitch || highest_pitch == -1)
-                {
-                    highest_pitch = pitch;
-                    smallest_level = level;
-                }
-                if(pitch > lowest_pitch  ||  lowest_pitch == -1)
-                {
-                    lowest_pitch  = pitch;
-                    biggest_level  = level;
-                }
-            }
-            
-            PerMeasureInfo info;
-            info.highest_pitch = highest_pitch;
-            info.highest_pitch = highest_pitch;
-            info.lowest_pitch = lowest_pitch;
-            info.biggest_level = biggest_level;
-            info.smallest_level = smallest_level;
-            info.first_note = firstNote;
-            info.last_note = lastNote;
-            perMeasureInfo[m] = info;
-        } // end for all measures
-            
-        const int middle_c_level = converter->getScoreCenterCLevel(); //converter->getMiddleCLevel();
-        
-
-        g_clef = scoreEditor->isGClefEnabled();
-        f_clef = scoreEditor->isFClefEnabled();
-        
-        // ---- Build score analyzers
-        if(g_clef)
-        {
-            g_clef_analyser = new ScoreAnalyser(scoreEditor, middle_c_level-5);
-            g_clef_analyser->setStemPivot(middle_c_level-5);
-        }
-        if(f_clef)
-        {
-            f_clef_analyser = new ScoreAnalyser(scoreEditor, middle_c_level-5);
-            f_clef_analyser->setStemPivot(middle_c_level+6);
-        }
-        
-        converter->updateConversionData();
-        converter->resetAccidentalsForNewRender();
-        
-        // iterate through measures to collect notes in the vector
-        // so ScoreAnalyser can prepare the score
-        std::cout << " == gathering note list ==\n";
-        for(int m=0; m<measureAmount; m++)
-        {
-            PerMeasureInfo& measInfo = perMeasureInfo[m];
-            const int firstNote = measInfo.first_note;
-            const int lastNote = measInfo.last_note;
-            
-            if(firstNote == -1 or lastNote == -1) continue; // empty measure
-            
-            for(int n=firstNote; n<=lastNote; n++)
-            {
-                PitchSign note_sign;
-                const int noteLevel = converter->noteToLevel(track->getNote(n), &note_sign);
-                
-                if(noteLevel == -1) continue;
-                const int noteLength = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
-                const int tick = track->getNoteStartInMidiTicks(n);
-                
-                NoteRenderInfo currentNote(tick, noteLevel, noteLength, note_sign,
-                                           track->isNoteSelected(n), track->getNotePitchID(n));
-                
-                // add note to either G clef score or F clef score
-                if(g_clef and not f_clef)
-                {
-                    g_clef_analyser->addToVector(currentNote, false);
-                }
-                else if(f_clef and not g_clef)
-                {
-                    f_clef_analyser->addToVector(currentNote, false);
-                }
-                else if(f_clef and g_clef)
-                {
-                    if(noteLevel < middle_c_level)
-                        g_clef_analyser->addToVector(currentNote, false);
-                    else
-                        f_clef_analyser->addToVector(currentNote, false);
-                }
-            }
-            
-        }//next element
-   
-        /*
-        if(f_clef)
-        {
-            const int amount = f_clef_analyser->noteRenderInfo.size();
-            int tick = -1;
-            for(int n=0; n<amount; n++)
-            {
-                const int newTick = f_clef_analyser->noteRenderInfo[n].tick;
-                
-                if (newTick < tick)
-                {
-                    std::cout << "[F noteRenderInfo] ticks not in order!! " << tick << " then " << newTick << "\n";
-                }
-                f_clef_analyser->noteRenderInfo[n].tick = tick;
-                
-                //std::cout << "[F noteRenderInfo] " << f_clef_analyser->noteRenderInfo[n].tick << std::endl;
-            }
-        }
-        if(g_clef)
-        {
-            const int amount = g_clef_analyser->noteRenderInfo.size();
-            for(int n=0; n<amount; n++)
-            {
-                std::cout << "[G noteRenderInfo] " << g_clef_analyser->noteRenderInfo[n].tick << std::endl;
-            }
-        }
-         */
-        
-        // ---- Silences
-        std::cout << " == gathering silence list ==\n";
-        g_silences_ticks.clear();
-        if(f_clef)
-        {
-            f_clef_analyser->renderSilences( &gatherSilenceCallback, 0, measureAmount-1, -1 /* y not important at this point */ );
-        }
-        if(g_clef)
-        {
-            g_clef_analyser->renderSilences( &gatherSilenceCallback, 0, measureAmount-1, -1 /* y not important at this point */ );
-        }
-        this->silences_ticks = g_silences_ticks;
-        g_silences_ticks.clear();
-        
-        
-    }
-    
-    void ScorePrintable::gatherVerticalSizingInfo(TrackRenderInfo& renderInfo, LayoutLine& line)
+    void ScorePrintable::gatherVerticalSizingInfo(const int trackID, TrackRenderInfo& renderInfo, Track* track, LayoutLine& line)
     {
         ScoreData* scoreData = new ScoreData();
         renderInfo.editor_data = scoreData;
@@ -818,7 +660,8 @@ namespace AriaMaestosa
         
         for (int m=fromMeasure; m<=lastMeasure; m++)
         {
-            PerMeasureInfo& info = perMeasureInfo[m];
+            //  FIXME : this also needs to be per-track
+            PerMeasureInfo& info = perMeasureInfo[trackID*5000+m];
                         
             if (info.highest_pitch < highest_pitch or highest_pitch == -1)
             {
@@ -840,40 +683,44 @@ namespace AriaMaestosa
 
         middle_c_level = converter->getScoreCenterCLevel(); //converter->getMiddleCLevel();
         
-        const int g_clef_from = middle_c_level-10;
-        const int g_clef_to   = middle_c_level-2;
-        const int f_clef_from = middle_c_level+2;
-        const int f_clef_to   = middle_c_level+10;
+        const int g_clef_from_level = middle_c_level-10;
+        const int g_clef_to_level   = middle_c_level-2;
+        const int f_clef_from_level = middle_c_level+2;
+        const int f_clef_to_level   = middle_c_level+10;
         
         g_clef = scoreEditor->isGClefEnabled();
         f_clef = scoreEditor->isFClefEnabled();
         
-        // FIXME : this printable may handle multiple tracks, don't keep this info globally for the entire line!!!
         scoreData->extra_lines_above_g_score = 0;
         scoreData->extra_lines_under_g_score = 0;
         scoreData->extra_lines_above_f_score = 0;
         scoreData->extra_lines_under_f_score = 0;
         if(g_clef and not f_clef)
         {
-            if(smallest_level!=-1 and smallest_level < g_clef_from)  scoreData->extra_lines_above_g_score = (g_clef_from - smallest_level)/2;
-            if(biggest_level!=-1 and biggest_level > g_clef_to) scoreData->extra_lines_under_g_score = (g_clef_to - biggest_level)/2;
+            std::cout << "G: " << PRINT_VAR(smallest_level) << PRINT_VAR(biggest_level) << PRINT_VAR(g_clef_from_level) << PRINT_VAR(g_clef_to_level) << std::endl;
+
+            if(smallest_level!=-1 and smallest_level < g_clef_from_level)  scoreData->extra_lines_above_g_score = (g_clef_from_level - smallest_level)/2;
+            if(biggest_level!=-1 and biggest_level > g_clef_to_level) scoreData->extra_lines_under_g_score = (g_clef_to_level - biggest_level)/2;
         }
         else if(f_clef and not g_clef)
         {
-            if(smallest_level!=-1 and smallest_level < f_clef_from) scoreData->extra_lines_above_f_score = (f_clef_from - smallest_level)/2;
-            if(biggest_level!=-1 and biggest_level > f_clef_to) scoreData->extra_lines_under_f_score = (f_clef_to - biggest_level)/2;
+            std::cout << "F: " << PRINT_VAR(smallest_level) << PRINT_VAR(biggest_level) << PRINT_VAR(f_clef_from_level) << PRINT_VAR(f_clef_to_level) << std::endl;
+            if(smallest_level!=-1 and smallest_level < f_clef_from_level) scoreData->extra_lines_above_f_score = (f_clef_from_level - smallest_level)/2;
+            if(biggest_level!=-1 and biggest_level > f_clef_to_level) scoreData->extra_lines_under_f_score = (f_clef_to_level - biggest_level)/2;
         }
         else if(f_clef and g_clef)
         {
-            std::cout << "smallest_level=" << smallest_level << " biggest_level=" << biggest_level << std::endl;
-            if(smallest_level!=-1 and smallest_level < g_clef_from) scoreData->extra_lines_above_g_score = (g_clef_from - smallest_level)/2;
-            if(biggest_level!=-1 and biggest_level > f_clef_to) scoreData->extra_lines_under_f_score = (f_clef_to - biggest_level)/2;
+            std::cout << "F: " << PRINT_VAR(smallest_level) << PRINT_VAR(biggest_level) << PRINT_VAR(f_clef_from_level) << PRINT_VAR(f_clef_to_level) << std::endl;
+            std::cout << "G: " << PRINT_VAR(smallest_level) << PRINT_VAR(biggest_level) << PRINT_VAR(g_clef_from_level) << PRINT_VAR(g_clef_to_level) << std::endl;
+
+            if(smallest_level!=-1 and smallest_level < g_clef_from_level) scoreData->extra_lines_above_g_score = (g_clef_from_level - smallest_level)/2;
+            if(biggest_level!=-1 and biggest_level > f_clef_to_level) scoreData->extra_lines_under_f_score = (f_clef_to_level - biggest_level)/2;
         }
         
-        std::cout << "extra_lines_above_g_score = " << scoreData->extra_lines_above_g_score <<
-            " extra_lines_under_g_score = " << scoreData->extra_lines_under_g_score <<
-            " extra_lines_above_f_score = " << scoreData->extra_lines_above_f_score <<
-            " extra_lines_under_f_score = " << scoreData->extra_lines_under_f_score << std::endl;
+        std::cout << PRINT_VAR(scoreData->extra_lines_above_g_score) <<
+                     PRINT_VAR(scoreData->extra_lines_under_g_score) <<
+                     PRINT_VAR(scoreData->extra_lines_above_f_score) <<
+                     PRINT_VAR(scoreData->extra_lines_under_f_score) << std::endl;
         
         // Split space between both scores (one may need more than the other)
         // I use a total of 0.8 to leave a 0.2 free space between both scores.
@@ -918,9 +765,163 @@ namespace AriaMaestosa
     using namespace PrintStemParams;
     
     
-    void ScorePrintable::earlySetup()
+    void ScorePrintable::earlySetup(const int trackID, Track* track)
     {
-        generateScoreInfo();
+        ScoreEditor* scoreEditor = track->graphics->scoreEditor;
+        ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
+        
+        MeasureData* measures = getMeasureData();
+        const int measureAmount = measures->getMeasureAmount();
+        
+        for (int m=0; m<measureAmount; m++)
+        {
+            // find highest and lowest note we need to render in each measure
+            int highest_pitch = -1, lowest_pitch = -1;
+            int biggest_level = -1, smallest_level = -1;
+            
+            const int from_tick = measures->firstTickInMeasure(m);
+            const int to_tick = measures->lastTickInMeasure(m);
+            
+            const int firstNote = track->findFirstNoteInRange( from_tick, to_tick );
+            const int lastNote = track->findLastNoteInRange( from_tick, to_tick );
+            
+            //std::cout << "Measure " << m << " : reading notes " << firstNote << " to " << lastNote << std::endl;
+            
+            for(int n=firstNote; n<=lastNote; n++)
+            {
+                if(n == -1) break; // will happen if line is empty
+                const int pitch = track->getNotePitchID(n);
+                const int level = converter->noteToLevel(track->getNote(n));
+                if(pitch < highest_pitch || highest_pitch == -1)
+                {
+                    highest_pitch = pitch;
+                    smallest_level = level;
+                }
+                if(pitch > lowest_pitch  ||  lowest_pitch == -1)
+                {
+                    lowest_pitch  = pitch;
+                    biggest_level  = level;
+                }
+            }
+            
+            PerMeasureInfo info;
+            info.highest_pitch = highest_pitch;
+            info.highest_pitch = highest_pitch;
+            info.lowest_pitch = lowest_pitch;
+            info.biggest_level = biggest_level;
+            info.smallest_level = smallest_level;
+            info.first_note = firstNote;
+            info.last_note = lastNote;
+            perMeasureInfo[trackID*5000+m] = info;
+        } // end for all measures
+        
+        const int middle_c_level = converter->getScoreCenterCLevel(); //converter->getMiddleCLevel();
+        
+        
+        g_clef = scoreEditor->isGClefEnabled();
+        f_clef = scoreEditor->isFClefEnabled();
+        
+        // ---- Build score analyzers
+        if(g_clef)
+        {
+            g_clef_analyser = new ScoreAnalyser(scoreEditor, middle_c_level-5);
+            g_clef_analyser->setStemPivot(middle_c_level-5);
+        }
+        if(f_clef)
+        {
+            f_clef_analyser = new ScoreAnalyser(scoreEditor, middle_c_level-5);
+            f_clef_analyser->setStemPivot(middle_c_level+6);
+        }
+        
+        converter->updateConversionData();
+        converter->resetAccidentalsForNewRender();
+        
+        // iterate through measures to collect notes in the vector
+        // so ScoreAnalyser can prepare the score
+        std::cout << " == gathering note list ==\n";
+        for(int m=0; m<measureAmount; m++)
+        {
+            PerMeasureInfo& measInfo = perMeasureInfo[trackID*5000+m];
+            const int firstNote = measInfo.first_note;
+            const int lastNote = measInfo.last_note;
+            
+            if(firstNote == -1 or lastNote == -1) continue; // empty measure
+            
+            for(int n=firstNote; n<=lastNote; n++)
+            {
+                PitchSign note_sign;
+                const int noteLevel = converter->noteToLevel(track->getNote(n), &note_sign);
+                
+                if(noteLevel == -1) continue;
+                const int noteLength = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
+                const int tick = track->getNoteStartInMidiTicks(n);
+                
+                NoteRenderInfo currentNote(tick, noteLevel, noteLength, note_sign,
+                                           track->isNoteSelected(n), track->getNotePitchID(n));
+                
+                // add note to either G clef score or F clef score
+                if(g_clef and not f_clef)
+                {
+                    g_clef_analyser->addToVector(currentNote, false);
+                }
+                else if(f_clef and not g_clef)
+                {
+                    f_clef_analyser->addToVector(currentNote, false);
+                }
+                else if(f_clef and g_clef)
+                {
+                    if(noteLevel < middle_c_level)
+                        g_clef_analyser->addToVector(currentNote, false);
+                    else
+                        f_clef_analyser->addToVector(currentNote, false);
+                }
+            }
+            
+        }//next element
+        
+        /*
+         if(f_clef)
+         {
+         const int amount = f_clef_analyser->noteRenderInfo.size();
+         int tick = -1;
+         for(int n=0; n<amount; n++)
+         {
+         const int newTick = f_clef_analyser->noteRenderInfo[n].tick;
+         
+         if (newTick < tick)
+         {
+         std::cout << "[F noteRenderInfo] ticks not in order!! " << tick << " then " << newTick << "\n";
+         }
+         f_clef_analyser->noteRenderInfo[n].tick = tick;
+         
+         //std::cout << "[F noteRenderInfo] " << f_clef_analyser->noteRenderInfo[n].tick << std::endl;
+         }
+         }
+         if(g_clef)
+         {
+         const int amount = g_clef_analyser->noteRenderInfo.size();
+         for(int n=0; n<amount; n++)
+         {
+         std::cout << "[G noteRenderInfo] " << g_clef_analyser->noteRenderInfo[n].tick << std::endl;
+         }
+         }
+         */
+        
+        // ---- Silences
+        std::cout << " == gathering silence list ==\n";
+        g_silences_ticks.clear();
+        if(f_clef)
+        {
+            f_clef_analyser->renderSilences( &gatherSilenceCallback, 0, measureAmount-1, -1 /* y not important at this point */ );
+        }
+        if(g_clef)
+        {
+            g_clef_analyser->renderSilences( &gatherSilenceCallback, 0, measureAmount-1, -1 /* y not important at this point */ );
+        }
+        this->silences_ticks = g_silences_ticks;
+        g_silences_ticks.clear();
+        
+        
     }
     
     /**
@@ -1047,6 +1048,9 @@ namespace AriaMaestosa
         {
             const int y = LEVEL_TO_Y(lvl);
             dc.DrawLine(x0, y, x1, y);
+            
+            // DEBUG
+            // dc.DrawText( wxString::Format(wxT("%i"), lvl), x0 - 120, y - 35 );
         }
         
         // ---- render vertical dividers and time signature changes

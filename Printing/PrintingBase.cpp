@@ -202,7 +202,7 @@ bool AriaPrintable::addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */)
     }
     else if(mode == SCORE)
     {
-        editorPrintables.push_back(new ScorePrintable(track));
+        editorPrintables.push_back(new ScorePrintable());
         is_score_editor_used = true;
         
         max_signs_in_keysig = std::max( max_signs_in_keysig,
@@ -255,17 +255,9 @@ int AriaPrintable::getPageAmount()
 }
     
 // -----------------------------------------------------------------------------------------------------------------------
-EditorPrintable* AriaPrintable::getEditorPrintableFor(Track* track)
+EditorPrintable* AriaPrintable::getEditorPrintable(const int trackID)
 {
-    const int amount = editorPrintables.size();
-    for (int n=0; n<amount; n++)
-    {
-        if (editorPrintables[n].getTrack() == track)
-        {
-            return editorPrintables.get(n);
-        }
-    }
-    return NULL;
+     return editorPrintables.get(trackID);
 }
     
 // -----------------------------------------------------------------------------------------------------------------------
