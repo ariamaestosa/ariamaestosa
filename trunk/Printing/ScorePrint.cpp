@@ -13,6 +13,8 @@
 #include "Printing/ScorePrint.h"
 #include "Printing/PrintingBase.h"
 #include "Printing/PrintLayout.h"
+#include "Printing/PrintLayoutMeasure.h"
+#include "Printing/PrintLayoutLine.h"
 
 namespace AriaMaestosa
 {
@@ -401,9 +403,9 @@ namespace AriaMaestosa
     ScorePrintable::~ScorePrintable() { }
     
       
-    int ScorePrintable::calculateHeight(const int trackID, TrackRenderInfo& renderInfo, Track* track, LayoutLine& line)
+    int ScorePrintable::calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line)
     {
-        gatherVerticalSizingInfo(trackID, renderInfo, track, line);
+        gatherVerticalSizingInfo(trackID, renderInfo, line);
         
         ScoreData* scoreData = dynamic_cast<ScoreData*>(renderInfo.editor_data.raw_ptr);
         assert(scoreData != NULL);
@@ -538,7 +540,7 @@ namespace AriaMaestosa
         std::cout << "}\n";
     }
     
-    void ScorePrintable::drawLine(const int trackID, TrackRenderInfo& renderInfo, Track* track, LayoutLine& line, wxDC& dc)
+    void ScorePrintable::drawLine(const int trackID, LineTrackRef& renderInfo, LayoutLine& line, wxDC& dc)
     {
         assertExpr(renderInfo.y0,>,0);
         assertExpr(renderInfo.y1,>,0);
@@ -606,7 +608,7 @@ namespace AriaMaestosa
         
         if(g_clef)
         {
-            analyseAndDrawScore(false /*G*/, *g_clef_analyser, line, track, dc,
+            analyseAndDrawScore(false /*G*/, *g_clef_analyser, line, renderInfo.track, dc,
                       abs(scoreData->extra_lines_above_g_score), abs(scoreData->extra_lines_under_g_score),
                       renderInfo.x0, g_clef_y_from, renderInfo.x1, g_clef_y_to,
                       renderInfo.show_measure_number);
@@ -614,7 +616,7 @@ namespace AriaMaestosa
         
         if(f_clef)
         {
-            analyseAndDrawScore(true /*F*/, *f_clef_analyser, line, track, dc,
+            analyseAndDrawScore(true /*F*/, *f_clef_analyser, line, renderInfo.track, dc,
                       abs(scoreData->extra_lines_above_f_score), abs(scoreData->extra_lines_under_f_score),
                       renderInfo.x0, f_clef_y_from, renderInfo.x1, f_clef_y_to,
                       (g_clef ? false : renderInfo.show_measure_number) /* if we have both keys don't show twice */);
@@ -641,11 +643,12 @@ namespace AriaMaestosa
 #endif
     
 
-    void ScorePrintable::gatherVerticalSizingInfo(const int trackID, TrackRenderInfo& renderInfo, Track* track, LayoutLine& line)
+    void ScorePrintable::gatherVerticalSizingInfo(const int trackID, LineTrackRef& renderInfo, LayoutLine& line)
     {
         ScoreData* scoreData = new ScoreData();
         renderInfo.editor_data = scoreData;
         
+        Track* track = renderInfo.track;
         ScoreEditor* scoreEditor = track->graphics->scoreEditor;
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         

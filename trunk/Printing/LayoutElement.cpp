@@ -14,34 +14,24 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-
-#ifndef _tablature_out_
-#define _tablature_out_
-
-#include <wx/file.h>
-#include "Config.h"
+#include "AriaCore.h"
 #include "Printing/EditorPrintable.h"
-#include "Printing/PrintLayout.h"
+#include "Printing/PrintingBase.h"
 
 namespace AriaMaestosa
 {
-    class GuitarEditor;
-    
-class TablaturePrintable : public EditorPrintable
+// used to determine the order of what appears in the file.
+// the order is found first before writing anything because that allows more flexibility
+LayoutElement::LayoutElement(LayoutElementType type_arg, int measure_arg)
 {
-    int string_amount;
-    GuitarEditor* editor;
-public:
-    TablaturePrintable(Track* track_arg);
-    virtual ~TablaturePrintable();
+    type = type_arg;
+    measure = measure_arg;
+        
+    x = -1;
+    x2 = -1;
+}
 
-    void addUsedTicks(const MeasureToExport& measure, const MeasureTrackReference& trackRef, std::map<int /* tick */,TickPosInfo>&);
 
-    void drawLine(const int trackID, LineTrackRef& track, LayoutLine& line, wxDC& dc);
-    int calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line);
-    
-};
 
 }
 
-#endif

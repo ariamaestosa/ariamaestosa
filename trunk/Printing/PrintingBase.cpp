@@ -1,6 +1,7 @@
 #include "AriaCore.h"
 
 #include "Printing/PrintingBase.h"
+#include "Printing/PrintLayoutLine.h"
 #include "Printing/TabPrint.h"
 #include "Printing/ScorePrint.h"
 
@@ -403,12 +404,11 @@ void AriaPrintable::printLine(LayoutLine& line, wxDC& dc)
         
         std::cout << "==== Printing track " << n << " ====" << std::endl;
         
-        TrackRenderInfo& sizing = line.getTrackRenderInfo(n);
-        Track* track = line.getTrack(n);
+        LineTrackRef& sizing = line.getTrackRenderInfo(n);
         std::cout << "Coords : " << sizing.x0 << ", " << sizing.y0 << " to " << sizing.x1 << ", " << sizing.y1 << std::endl;
         
         EditorPrintable* editorPrintable = editorPrintables.get(n);
-        editorPrintable->drawLine(n, sizing, track, line, dc);
+        editorPrintable->drawLine(n, sizing, line, dc);
     }
 }
     

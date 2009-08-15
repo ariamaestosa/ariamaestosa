@@ -13,17 +13,17 @@
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-#include "LayoutTree.h"
+
 #include "AriaCore.h"
+#include "PrintLayoutMeasure.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Track.h"
-#include "Printing/EditorPrintable.h"
-#include "Printing/PrintingBase.h"
 
 namespace AriaMaestosa
 {
+    
 const MeasureToExport nullMeasure(-1);
-
+    
 MeasureToExport::MeasureToExport(const int measID)
 {
     shortestDuration = -1;
@@ -215,179 +215,4 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
     return lastNote + ( measure_empty ? 0 : 1);
 }
 
-#if 0
-#pragma mark -
-#endif
-
-// used to determine the order of what appears in the file.
-// the order is found first before writing anything because that allows more flexibility
-LayoutElement::LayoutElement(LayoutElementType type_arg, int measure_arg)
-{
-    type = type_arg;
-    measure = measure_arg;
-        
-    x = -1;
-    x2 = -1;
 }
-
-#if 0
-#pragma mark -
-#endif
-
-LayoutLine::LayoutLine(AriaPrintable* parent)
-{
-    printable = parent;
-    last_of_page = false;
-    
-    while((int)trackRenderInfo.size() < parent->track_amount)
-    {
-        trackRenderInfo.push_back(new TrackRenderInfo());
-    }
-}
-
-int LayoutLine::getTrackAmount() const
-{
-    return printable->tracks.size();
-}
-
-Track* LayoutLine::getTrack(const int trackID) const
-{
-    assertExpr(trackID,>=,0);
-    assertExpr(trackID,<,printable->tracks.size());
-    return printable->tracks.get(trackID);
-}
-int LayoutLine::getFirstNoteInElement(const int trackID, const int layoutElementID)
-{
-    return getMeasureForElement(layoutElementID).trackRef[trackID].firstNote;
-}
-int LayoutLine::getLastNoteInElement(const int trackID, const int layoutElementID)
-{
-    std::cout << "last note in element " << layoutElementID << " of track " << trackID << " is " <<
-                getMeasureForElement(layoutElementID).trackRef[trackID].lastNote << " from measure " <<
-                getMeasureForElement(layoutElementID).id << std::endl;
-    return getMeasureForElement(layoutElementID).trackRef[trackID].lastNote;
-}
-int LayoutLine::getFirstNoteInElement(const int trackID, LayoutElement* layoutElement)
-{
-    return getMeasureForElement(layoutElement).trackRef[trackID].firstNote;
-}
-int LayoutLine::getLastNoteInElement(const int trackID, LayoutElement* layoutElement)
-{
-    return getMeasureForElement(layoutElement).trackRef[trackID].lastNote;
-}
-
-MeasureToExport& LayoutLine::getMeasureForElement(const int layoutElementID) const
-{
-    const int measID = layoutElements[layoutElementID].measure;
-    if(measID == -1) return (MeasureToExport&)nullMeasure;
-    return printable->measures[measID];
-}
-MeasureToExport& LayoutLine::getMeasureForElement(LayoutElement* layoutElement)
-{
-    return printable->measures[layoutElement->measure];
-}
-    
-TrackRenderInfo& LayoutLine::getTrackRenderInfo(const int trackID)
-{
-    assertExpr(trackID,>=,0);
-    assertExpr(trackID,<,(int)trackRenderInfo.size());
-    return trackRenderInfo[trackID];
-}
-
-int LayoutLine::getLastMeasure() const
-{
-    for(int n=layoutElements.size()-1; n>=0; n--)
-    {
-        if( layoutElements[n].measure != -1) return layoutElements[n].measure;
-    }
-    return -1;
-}
-int LayoutLine::getFirstMeasure() const
-{
-    const int amount = layoutElements.size();
-    for(int n=0; n<amount; n++)
-    {
-        if( layoutElements[n].measure != -1) return layoutElements[n].measure;
-    }
-    return -1;
-}
-int LayoutLine::getLastNote(const int trackID) const
-{
-    const int track_amount = getTrackAmount();
-    const Track* t = getTrack(trackID);
-    
-    const int elements = layoutElements.size();
-    for(int el=elements-1; el>=0; el--)
-    { // start searching from last measure in this line
-        MeasureToExport& current_meas = getMeasureForElement(el);
-        for(int i=0; i<track_amount; i++)
-        {
-            if(current_meas.trackRef.size() > 0 && // FIXME - find why it's sometimes 0
-               current_meas.trackRef[i].track == t &&
-               current_meas.trackRef[i].lastNote != -1)
-            {
-                return current_meas.trackRef[i].lastNote;
-            }
-        }
-    }
-    return -1; // empty line
-}
-
-int LayoutLine::getFirstNote(const int trackID) const
-{
-    //const int measure = getFirstMeasure();
-    // const int from_tick = getMeasureData()->firstTickInMeasure(measure);
-    
-    const int track_amount = getTrackAmount();
-    
-    const Track* t = getTrack(trackID);
-    
-    const int elements = layoutElements.size();
-    for(int el=0; el<elements; el++)
-    { // start searching from first measure in this line
-        MeasureToExport& current_meas = getMeasureForElement(el);
-        for(int i=0; i<track_amount; i++)
-        {
-            if(current_meas.trackRef.size() > 0 && // FIXME - find why it's sometimes empty
-               current_meas.trackRef[i].track == t &&
-               current_meas.trackRef[i].firstNote != -1)
-                return current_meas.trackRef[i].firstNote;
-        }
-    }
-    return -1; // empty line
-    
-}
-int LayoutLine::calculateHeight()
-{
-    level_height = 0;
-    
-    std::vector<int> heights;
-    
-    /* calculate the total height of this line (which many include multiple tracks */
-    std::cout << "---- line ----" << std::endl;
-    const int trackAmount = getTrackAmount();
-    for(int n=0; n<trackAmount; n++)
-    {
-        const int this_height = printable->editorPrintables.get(n)->calculateHeight(n, trackRenderInfo[n], getTrack(n), *this);
-        heights.push_back(this_height);
-        level_height += this_height;
-        std::cout << this_height << "-high" << std::endl;
-    }
-    
-    /* distribute the vertical space between tracks (some track need more vertical space than others) */
-    for(int n=0; n<trackAmount; n++)
-    {
-        height_percent.push_back( (int)round( (float)heights[n] * 100.0f / (float)level_height ) );
-        std::cout << height_percent[n] << "%" << std::endl;
-    }
-    
-    // if we're the last of the page, we need less space cause we don't
-    // need to leave empty space under
-    if(last_of_page) level_height -= 13;
-    
-    return level_height;
-}
-
-
-}
-

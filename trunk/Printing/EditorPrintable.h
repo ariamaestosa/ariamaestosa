@@ -27,7 +27,7 @@ namespace AriaMaestosa
 
 class LayoutLine;
 class LayoutElement;
-class TrackRenderInfo;
+class LineTrackRef;
 class MeasureToExport;
 class MeasureTrackReference;
 class Track;
@@ -42,17 +42,17 @@ class EditorPrintable
         
         /** Called by the print code when it's time to render a line. This will be handled in the appropriate subclass.
          */
-        virtual void drawLine(const int trackID, TrackRenderInfo& track, Track* track, LayoutLine& line, wxDC& dc) = 0;
+        virtual void drawLine(const int trackID, LineTrackRef& track, LayoutLine& line, wxDC& dc) = 0;
         
         /** Called by the layout code to know the relative height of this line
          */
-        virtual int calculateHeight(const int trackID, TrackRenderInfo& renderInfo, Track* track, LayoutLine& line) = 0;
+        virtual int calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line) = 0;
                 
         void setCurrentTrack(LayoutLine* line);
         
         void setCurrentDC(wxDC* dc);
         
-        void placeTrackAndElementsWithinCoords(const int trackID, LayoutLine& line, TrackRenderInfo& track,
+        void placeTrackAndElementsWithinCoords(const int trackID, LayoutLine& line, LineTrackRef& track,
                                                int x0, const int y0, const int x1, const int y1, bool show_measure_number);
         
         // int getCurrentElementXStart();

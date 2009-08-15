@@ -32,7 +32,7 @@ namespace AriaMaestosa
 
 class ScorePrintable : public EditorPrintable
 {
-    void gatherVerticalSizingInfo(const int trackID, TrackRenderInfo& track, Track* track, LayoutLine& line);
+    void gatherVerticalSizingInfo(const int trackID, LineTrackRef& track, LayoutLine& line);
     
     void analyseAndDrawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine& line, Track* track, wxDC& dc,
                    const int extra_lines_above, const int extra_lines_under,
@@ -53,8 +53,8 @@ public:
     
     void earlySetup(const int trackID, Track* track);
 
-    void drawLine(const int trackID, TrackRenderInfo& track, Track* track, LayoutLine& line, wxDC& dc);
-    int calculateHeight(const int trackID, TrackRenderInfo& renderInfo, Track* track, LayoutLine& line);
+    void drawLine(const int trackID, LineTrackRef& track, LayoutLine& line, wxDC& dc);
+    int calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line);
     };
 
 }
