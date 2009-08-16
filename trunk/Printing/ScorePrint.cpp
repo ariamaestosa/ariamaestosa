@@ -403,15 +403,15 @@ namespace AriaMaestosa
     ScorePrintable::~ScorePrintable() { }
     
       
-    int ScorePrintable::calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line)
+    int ScorePrintable::calculateHeight(const int trackID, LineTrackRef& lineTrack, LayoutLine& line)
     {
-        gatherVerticalSizingInfo(trackID, renderInfo, line);
+        gatherVerticalSizingInfo(trackID, lineTrack, line);
         
-        ScoreData* scoreData = dynamic_cast<ScoreData*>(renderInfo.editor_data.raw_ptr);
+        ScoreData* scoreData = dynamic_cast<ScoreData*>(lineTrack.editor_data.raw_ptr);
         assert(scoreData != NULL);
         
-        const int from_note = line.getFirstNote(trackID);
-        const int to_note   = line.getLastNote(trackID);
+        const int from_note = lineTrack.getFirstNote();
+        const int to_note   = lineTrack.getLastNote();
         
         // check if empty
         // FIXME : if a note starts in the previous line and ends in this one, it won't be detected
@@ -540,30 +540,30 @@ namespace AriaMaestosa
         std::cout << "}\n";
     }
     
-    void ScorePrintable::drawLine(const int trackID, LineTrackRef& renderInfo, LayoutLine& line, wxDC& dc)
+    void ScorePrintable::drawLine(const int trackID, LineTrackRef& lineTrack, LayoutLine& line, wxDC& dc)
     {
-        assertExpr(renderInfo.y0,>,0);
-        assertExpr(renderInfo.y1,>,0);
-        assertExpr(renderInfo.y0,<,50000);
-        assertExpr(renderInfo.y1,<,50000);
+        assertExpr(lineTrack.y0,>,0);
+        assertExpr(lineTrack.y1,>,0);
+        assertExpr(lineTrack.y0,<,50000);
+        assertExpr(lineTrack.y1,<,50000);
         setCurrentDC(&dc);
         
         
-        std::cout << "ScorePrintable size : " << renderInfo.x0 << ", " << renderInfo.y0 << " to " << renderInfo.x1 << ", " << renderInfo.y1 << std::endl;
+        std::cout << "ScorePrintable size : " << lineTrack.x0 << ", " << lineTrack.y0 << " to " << lineTrack.x1 << ", " << lineTrack.y1 << std::endl;
         
         x_converter = new PrintXConverter(this);
         x_converter->setLine(&line, trackID);
         
         // gather score info
         //gatherNotesAndBasicSetup(line);
-        ScoreData* scoreData = dynamic_cast<ScoreData*>(renderInfo.editor_data.raw_ptr);
+        ScoreData* scoreData = dynamic_cast<ScoreData*>(lineTrack.editor_data.raw_ptr);
         
         // since height is used to determine where to put repetitions/notes/etc.
         // only pass the height of the first score if there's 2, so stuff don't appear between both scores
-        //setLineYCoords(renderInfo.y0,
+        //setLineYCoords(lineTrack.y0,
         //               ( f_clef and g_clef ?
-        //                renderInfo.y0 + (renderInfo.y1 - renderInfo.y0)*scoreData->first_clef_proportion :
-        //                renderInfo.y1 ));
+        //                lineTrack.y0 + (lineTrack.y1 - lineTrack.y0)*scoreData->first_clef_proportion :
+        //                lineTrack.y1 ));
         
         // if we have only one clef, give it the full space.
         // if we have two, split the space between both
@@ -572,20 +572,20 @@ namespace AriaMaestosa
         
         if(g_clef and not f_clef)
         {
-            g_clef_y_from = renderInfo.y0;
-            g_clef_y_to = renderInfo.y1;
+            g_clef_y_from = lineTrack.y0;
+            g_clef_y_to = lineTrack.y1;
         }
         else if(f_clef and not g_clef)
         {
-            f_clef_y_from = renderInfo.y0;
-            f_clef_y_to = renderInfo.y1;
+            f_clef_y_from = lineTrack.y0;
+            f_clef_y_to = lineTrack.y1;
         }
         else if(f_clef and g_clef)
         {
-            g_clef_y_from = renderInfo.y0;
-            g_clef_y_to = renderInfo.y0 + (int)round((renderInfo.y1 - renderInfo.y0)*scoreData->first_clef_proportion);
-            f_clef_y_from = renderInfo.y0 + (int)round((renderInfo.y1 - renderInfo.y0)*(1-scoreData->second_clef_proportion));
-            f_clef_y_to = renderInfo.y1;
+            g_clef_y_from = lineTrack.y0;
+            g_clef_y_to = lineTrack.y0 + (int)round((lineTrack.y1 - lineTrack.y0)*scoreData->first_clef_proportion);
+            f_clef_y_from = lineTrack.y0 + (int)round((lineTrack.y1 - lineTrack.y0)*(1-scoreData->second_clef_proportion));
+            f_clef_y_to = lineTrack.y1;
         }
         else { assert(false); }
         
@@ -608,18 +608,18 @@ namespace AriaMaestosa
         
         if(g_clef)
         {
-            analyseAndDrawScore(false /*G*/, *g_clef_analyser, line, renderInfo.track, dc,
+            analyseAndDrawScore(false /*G*/, *g_clef_analyser, line, lineTrack.track, dc,
                       abs(scoreData->extra_lines_above_g_score), abs(scoreData->extra_lines_under_g_score),
-                      renderInfo.x0, g_clef_y_from, renderInfo.x1, g_clef_y_to,
-                      renderInfo.show_measure_number);
+                      lineTrack.x0, g_clef_y_from, lineTrack.x1, g_clef_y_to,
+                      lineTrack.show_measure_number);
         }
         
         if(f_clef)
         {
-            analyseAndDrawScore(true /*F*/, *f_clef_analyser, line, renderInfo.track, dc,
+            analyseAndDrawScore(true /*F*/, *f_clef_analyser, line, lineTrack.track, dc,
                       abs(scoreData->extra_lines_above_f_score), abs(scoreData->extra_lines_under_f_score),
-                      renderInfo.x0, f_clef_y_from, renderInfo.x1, f_clef_y_to,
-                      (g_clef ? false : renderInfo.show_measure_number) /* if we have both keys don't show twice */);
+                      lineTrack.x0, f_clef_y_from, lineTrack.x1, f_clef_y_to,
+                      (g_clef ? false : lineTrack.show_measure_number) /* if we have both keys don't show twice */);
         }
         
         delete x_converter;
@@ -629,10 +629,10 @@ namespace AriaMaestosa
         if (PRINT_LAYOUT_HINTS)
         {
             dc.SetPen( wxPen(*wxBLUE, 7) );
-            dc.DrawLine(renderInfo.x0, renderInfo.y0, renderInfo.x1, renderInfo.y0);
-            dc.DrawLine(renderInfo.x0, renderInfo.y1, renderInfo.x1, renderInfo.y1);
-            dc.DrawLine(renderInfo.x0, renderInfo.y0, renderInfo.x0, renderInfo.y1);
-            dc.DrawLine(renderInfo.x1, renderInfo.y0, renderInfo.x1, renderInfo.y1);
+            dc.DrawLine(lineTrack.x0, lineTrack.y0, lineTrack.x1, lineTrack.y0);
+            dc.DrawLine(lineTrack.x0, lineTrack.y1, lineTrack.x1, lineTrack.y1);
+            dc.DrawLine(lineTrack.x0, lineTrack.y0, lineTrack.x0, lineTrack.y1);
+            dc.DrawLine(lineTrack.x1, lineTrack.y0, lineTrack.x1, lineTrack.y1);
         }
     }
 
@@ -643,12 +643,12 @@ namespace AriaMaestosa
 #endif
     
 
-    void ScorePrintable::gatherVerticalSizingInfo(const int trackID, LineTrackRef& renderInfo, LayoutLine& line)
+    void ScorePrintable::gatherVerticalSizingInfo(const int trackID, LineTrackRef& lineTrack, LayoutLine& line)
     {
         ScoreData* scoreData = new ScoreData();
-        renderInfo.editor_data = scoreData;
+        lineTrack.editor_data = scoreData;
         
-        Track* track = renderInfo.track;
+        Track* track = lineTrack.track;
         ScoreEditor* scoreEditor = track->graphics->scoreEditor;
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         
