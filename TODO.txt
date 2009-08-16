@@ -48,7 +48,7 @@ NOTE: sorry, this is very raw :)
     * semi-linear printing (longer notes have a somewhat larger space, but not fully linear)
  - show silences in tabs too
  - printing : skip series of empty measures ?
- - very short song (a few measures) : nothing printed
+ - very short song (a few measures) : nothing printed [can't reproduce anymore]
 
  * hear note/drum by clicking on its name in left part
  
