@@ -432,13 +432,17 @@ namespace AriaMaestosa
 
     }
     
+#define VERBOSE 0
+    
     void ScorePrintable::addUsedTicks(const MeasureToExport& measure, const MeasureTrackReference& trackRef,
                                       std::map<int /* tick */,TickPosInfo>& ticks_relative_position)
     {
         const int fromTick = measure.firstTick;
         const int toTick = measure.lastTick;
         
+#if VERBOSE
         std::cout << "\naddingTicks(measure " << (measure.id+1) << ", from " << fromTick << ", to " << toTick << "\n{\n";
+#endif
         
         Track* track = trackRef.track;
         ScoreEditor* scoreEditor = track->graphics->scoreEditor;
@@ -469,7 +473,9 @@ namespace AriaMaestosa
                 const int tick = f_clef_analyser->noteRenderInfo[n].tick;
                 if (tick < fromTick or tick >= toTick) continue;
 
+#if VERBOSE
                 std::cout << "    Adding tick " << tick << " to list" << std::endl;
+#endif
                 
                 // wider notes should be given a bit more space.
                 float ratioToShortest = (float)f_clef_analyser->noteRenderInfo[n].tick_length / (float)shortest;
@@ -508,7 +514,9 @@ namespace AriaMaestosa
                 const int tick = g_clef_analyser->noteRenderInfo[n].tick;
                 if (tick < fromTick or tick >= toTick) continue;
                 
+#if VERBOSE
                 std::cout << "    Adding tick " << tick << " to list" << std::endl;
+#endif
                 
                 // wider notes should be given a bit more space.
                 float ratioToShortest = (float)g_clef_analyser->noteRenderInfo[n].tick_length / (float)shortest;
@@ -532,12 +540,17 @@ namespace AriaMaestosa
         for (int n=0; n<silenceAmount; n++)
         {
             if (silences_ticks[n] < fromTick or silences_ticks[n] >= toTick) continue;
+            
+#if VERBOSE
             std::cout << "    Adding [silence] tick " << silences_ticks[n] << " to list" << std::endl;
-
+#endif
+            
             ticks_relative_position[ silences_ticks[n]].setProportion(1);
         }
         
+#if VERBOSE
         std::cout << "}\n";
+#endif
     }
     
     void ScorePrintable::drawLine(const int trackID, LineTrackRef& lineTrack, LayoutLine& line, wxDC& dc)
