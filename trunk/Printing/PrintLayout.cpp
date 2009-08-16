@@ -122,7 +122,16 @@ bool MeasureToExport::findConsecutiveRepetition(ptr_vector<MeasureToExport>& mea
 #pragma mark -
 #endif
 
+PrintLayoutManager::PrintLayoutManager(AriaPrintable* parent,
+                                       ptr_vector<LayoutLine>& layoutLines_a /* out */,
+                                       std::vector<LayoutPage>& layoutPages_a /* out */,
+                                       ptr_vector<MeasureToExport>& measures_a /* out */) :
+layoutLines(layoutLines_a), layoutPages(layoutPages_a), measures(measures_a)
+{
+    this->parent = parent;
+}
 
+    
 void PrintLayoutManager::generateMeasures(ptr_vector<Track, REF>& tracks)
 {
     std::cout << "\n====\ngenerateMeasures\n====\n";
@@ -395,7 +404,7 @@ void PrintLayoutManager::placeTracksInPage(LayoutPage& page, const int text_heig
         
 
         // track too high, will look weird... shrink a bit
-        while(used_height/(float)layoutLines[l].level_height > 115)
+        while(used_height/(float)layoutLines[l].level_height > 100)
         {
             used_height *= 0.95;
         }
@@ -680,16 +689,6 @@ void PrintLayoutManager::divideLineAmongTracks(LayoutLine& line, const int x0, c
     }
     
     
-}
-
-    
-PrintLayoutManager::PrintLayoutManager(AriaPrintable* parent,
-                                       ptr_vector<LayoutLine>& layoutLines_a /* out */,
-                                       std::vector<LayoutPage>& layoutPages_a /* out */,
-                                       ptr_vector<MeasureToExport>& measures_a /* out */) :
-                                       layoutLines(layoutLines_a), layoutPages(layoutPages_a), measures(measures_a)
-{
-    this->parent = parent;
 }
 
 /** main function called from other classes */
