@@ -5,6 +5,7 @@
 - improved look of printed note heads
 - improved look of printed tabs
 - improved printing of triplets and ties
+- printing is now non-linear
 - fixed vertical centering of tracks + fixed assertion failure
 - hide empty lines when printing
 - improved silence printing
