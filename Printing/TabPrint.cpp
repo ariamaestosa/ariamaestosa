@@ -212,10 +212,10 @@ namespace AriaMaestosa
         }
     }
     
-    int TablaturePrintable::calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line)
+    int TablaturePrintable::calculateHeight(const int trackID, LineTrackRef& lineTrack, LayoutLine& line)
     {
-        const int from_note = line.getFirstNote(trackID);
-        const int to_note   = line.getLastNote(trackID);
+        const int from_note = lineTrack.getFirstNote();
+        const int to_note   = lineTrack.getLastNote();
         
         // check if empty
         if(from_note == -1 || to_note == -1)

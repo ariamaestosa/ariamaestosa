@@ -39,6 +39,8 @@ class EditorData
  */
 class LineTrackRef
     {
+        LayoutLine* parent;
+        int trackID;
     public:
         int x0, y0, x1, y1;
         bool show_measure_number;
@@ -50,7 +52,14 @@ class LineTrackRef
         
         Track* track;
         
-        LineTrackRef() { }
+        LineTrackRef(LayoutLine* parent, int trackID) { this->parent = parent; this->trackID = trackID; }
+        int getLastNote() const;
+        int getFirstNote() const;
+        
+        int getFirstNoteInElement(const int layoutElementID);
+        int getLastNoteInElement(const int layoutElementID);
+        int getFirstNoteInElement(LayoutElement* layoutElement);
+        int getLastNoteInElement(LayoutElement* layoutElement);
     };
 
 /*
@@ -80,7 +89,7 @@ class LayoutLine
         
         LayoutLine(AriaPrintable* parent);
         
-        // FIXME : ugly to have to pass trackID everywhere, wrap that in a track object of some kind
+        // FIXME : is this really dependent on trackID?? I thought layout elements were the same for everyone
         const int getElementCount(const int trackID) const   { return trackRenderInfo[trackID].layoutElementsAmount; }
         
         int width_in_units;
@@ -89,16 +98,13 @@ class LayoutLine
         bool last_of_page;
         
         int getTrackAmount() const;
-        // FIXME : ugly to have to pass trackID everywhere, wrap that in a track object of some kind
         LineTrackRef& getTrackRenderInfo(const int id);
         
-        // FIXME : ugly to have to pass trackID everywhere, wrap that in a track object of some kind
         int getFirstNoteInElement(const int trackID, const int layoutElementID);
         int getLastNoteInElement(const int trackID, const int layoutElementID);
         int getFirstNoteInElement(const int trackID, LayoutElement* layoutElement);
         int getLastNoteInElement(const int trackID, LayoutElement* layoutElement);
         
-        //void printYourself(wxDC& dc, const int x0, const int y0, const int x1, const int y1, int margin_below, int margin_above);
         int calculateHeight();
         
         MeasureToExport& getMeasureForElement(const int layoutElementID) const;
@@ -106,11 +112,7 @@ class LayoutLine
         
         int getLastMeasure() const;
         int getFirstMeasure() const;
-        
-        // FIXME : ugly to have to pass trackID everywhere, wrap that in a track object of some kind
-        int getLastNote(const int trackID) const;
-        int getFirstNote(const int trackID) const;
-        
+
         std::vector<LayoutElement> layoutElements;
     };
 
