@@ -668,11 +668,17 @@ void PrintLayoutManager::divideLineAmongTracks(LayoutLine& line, const int x0, c
         std::cout << "track_height=" << track_height << " (margin_below=" << margin_below << " margin_above=" << margin_above <<
                      "space_between_tracks=" << space_between_tracks << ")\n";
         
+        // margin space above and below each track are given by simple formula 'space_between_tracks*position' where
+        // position ranges from 0 to 1. However, this formula doesn't make the space between 2 tracks equal to
+        // 'space_between_tracks' in all cases (especially depending on track amount), so the following correction
+        // needs to be applied (FIXME : can it be harder to understand what i'm doing here...)
+        const float adjustMarginRatio = (float)(nonEmptyTrackAmount-1) / (float)(nonEmptyTrackAmount);
+        
         const float position =
             nonEmptyTrackAmount-1 == 0 ? 0.0f : // avoid division by zero
             (float)nonEmptyID / (float)(nonEmptyTrackAmount-1);
-        const float space_above_line = space_between_tracks*position;
-        const float space_below_line = space_between_tracks*(1.0-position);
+        const float space_above_line = space_between_tracks*position*adjustMarginRatio;
+        const float space_below_line = space_between_tracks*(1.0-position)*adjustMarginRatio;
         
         editorPrintable->placeTrackAndElementsWithinCoords(n, line, line.getTrackRenderInfo(n),
                                        x0, current_y + space_above_line,
