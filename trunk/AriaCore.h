@@ -114,6 +114,14 @@ namespace DisplayFrame
     void updateVerticalScrollbar();
 }
 
+class Singleton
+{
+public:
+    Singleton();
+    virtual ~Singleton();
+    static void deleteAll();
+};
+
 }
 
 #endif

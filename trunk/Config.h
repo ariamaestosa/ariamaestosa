@@ -51,31 +51,35 @@ template<typename T>
 class OwnerPtr
 {
 public:
+    bool owner;
     T* raw_ptr;
     
     OwnerPtr()
     {
         raw_ptr = NULL;
+        owner = true;
     }
     OwnerPtr(OwnerPtr& copyCtor)
     {
         this->raw_ptr = copyCtor.raw_ptr;
         copyCtor.raw_ptr; // prevent the oldder instance from deleting the pointer
+        owner = true;
     }
     
     OwnerPtr(T* obj)
     {
         raw_ptr = obj;
+        owner = true;
     }
     
     ~OwnerPtr()
     {
-        delete raw_ptr;
+        if (owner) delete raw_ptr;
     }
     
     OwnerPtr& operator=(T* ptr)
     {
-        delete raw_ptr;
+        if (owner) delete raw_ptr;
         raw_ptr = ptr;
         return *this;
     }

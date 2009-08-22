@@ -32,14 +32,13 @@ class GraphicalTrack; // forward
 
 class ControllerChoice : public wxMenu
 {
-    GraphicalTrack* parent;
     int controllerID;
     AriaRenderString controller_label;
 
 public:
     LEAK_CHECK();
 
-    ControllerChoice(GraphicalTrack* parent);
+    ControllerChoice();
     ~ControllerChoice();
 
     int getControllerID();
