@@ -1496,7 +1496,7 @@ void ScoreEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_c
 }
 
 
-int ScoreEditor::getYStep(){ return y_step; }
-int ScoreEditor::getHalfNoteHeight(){ return head_radius; }
+//int ScoreEditor::getYStep(){ return y_step; }
+// int ScoreEditor::getHalfNoteHeight(){ return head_radius; }
 
 }

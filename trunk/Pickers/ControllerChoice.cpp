@@ -309,11 +309,13 @@ void ControllerChoice::menuSelected(wxCommandEvent& evt)
     Display::render();
 }
 
+    /*
 void ControllerChoice::setControllerID(int id)
 {
     controllerID = id;
 }
-
+*/ 
+    
 int ControllerChoice::getControllerID()
 {
     return controllerID;

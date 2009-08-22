@@ -42,7 +42,7 @@ public:
     ~ControllerChoice();
 
     int getControllerID();
-    void setControllerID(int id);
+    // void setControllerID(int id);
     void renderControllerName(const int x, const int y);
     bool isOnOffController(const int id) const;
 

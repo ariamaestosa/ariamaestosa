@@ -146,8 +146,8 @@ public:
 
     ScoreAnalyser* getSubset(const int fromTick, const int toTick);
     
-    void setStemDrawInfo( const float stem_height = -1,
-                         const float min_stem_height = -1);
+    //void setStemDrawInfo( const float stem_height = -1,
+    //                     const float min_stem_height = -1);
 
     float getStemTo(NoteRenderInfo& note);
 
