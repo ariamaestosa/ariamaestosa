@@ -49,7 +49,7 @@ ptr_vector()
 
 ~ptr_vector()
 {
-    if(type == HOLD) clearAndDeleteAll();
+    if (type == HOLD) clearAndDeleteAll();
 }
 
 void push_back(TYPE* t)
@@ -84,7 +84,7 @@ void markToBeDeleted(const int ID) // object is removed from vector and deleted
     assertExpr(ID,>,-1);
     assertExpr((unsigned int)ID,<,contentsVector.size());
 
-    delete ( TYPE *) contentsVector[ID];
+    delete contentsVector[ID];
 
     contentsVector[ID] = 0;
 
@@ -112,12 +112,12 @@ void removeMarked()
     for(int n=0; n<size; n++)
     {
 
-        if( contentsVector[n] == 0 )
+        if ( contentsVector[n] == 0 )
         {
             contentsVector.erase(contentsVector.begin()+n);
             size = contentsVector.size();
             n -= 2;
-            if(n < -1) n=-1;
+            if (n < -1) n=-1;
         }
     }//next
 
@@ -142,7 +142,7 @@ void erase(const int ID)
     assertExpr(ID,>,-1);
     assertExpr((unsigned int)ID,<,contentsVector.size());
 
-    delete ( TYPE *) contentsVector[ID];
+    delete contentsVector[ID];
 
     contentsVector.erase(contentsVector.begin()+ID);
 }
@@ -197,7 +197,7 @@ void remove(TYPE* obj)
     {
 
         TYPE * pointer = contentsVector[n];
-        if(pointer == obj)
+        if (pointer == obj)
         {
             contentsVector.erase(contentsVector.begin()+n);
             return;

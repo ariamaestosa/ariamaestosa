@@ -39,14 +39,14 @@ namespace AriaMaestosa
 
         const int type = track->graphics->controllerEditor->getCurrentControllerType();
 
-        if(type != 201 /*tempo*/)
+        if (type != 201 /*tempo*/)
         {
             while( (current_event = relocator.getNextControlEvent()) and current_event != NULL)
             {
                 const int controlEventsAmount = track->controlEvents.size();
                 for(int n=0; n<controlEventsAmount; n++)
                 {
-                    if(track->controlEvents.get(n) == current_event)
+                    if (track->controlEvents.get(n) == current_event)
                     {
                         track->controlEvents.erase(n);
                         break;
@@ -62,7 +62,7 @@ namespace AriaMaestosa
                 const int tempoEventsAmount = track->sequence->tempoEvents.size();
                 for(int n=0; n<tempoEventsAmount; n++)
                 {
-                    if(track->sequence->tempoEvents.get(n) == current_event)
+                    if (track->sequence->tempoEvents.get(n) == current_event)
                     {
                         track->sequence->tempoEvents.erase(n);
                         break;
@@ -73,7 +73,7 @@ namespace AriaMaestosa
 
         // add back any control event that was removed
         const int controlAmount = removedControlEvents.size();
-        if(controlAmount > 0)
+        if (controlAmount > 0)
         {
 
             for(int n=0; n<controlAmount; n++)
@@ -116,7 +116,7 @@ namespace AriaMaestosa
         ptr_vector<ControllerEvent>* vector;
 
         // tempo events
-        if(controller==201) vector = &track->sequence->tempoEvents;
+        if (controller==201) vector = &track->sequence->tempoEvents;
         // controller and pitch bend events
         else vector = &track->controlEvents;
 
@@ -128,7 +128,7 @@ namespace AriaMaestosa
         */
 
         // track is empty, events can be added without any further checking
-        if(vector->size()==0)
+        if (vector->size()==0)
         {
 
             int previous_value = value1;
@@ -144,7 +144,7 @@ namespace AriaMaestosa
                       value1 + (value2-value1)*((float)tick / (float)(x2-x1))
                       );
 
-                if(newvalue == previous_value )continue;
+                if (newvalue == previous_value )continue;
 
                 addOneEvent( new ControllerEvent(track->sequence, controller, x1+tick, newvalue), vector, addedAmount );
                 addedAmount++;
@@ -157,21 +157,21 @@ namespace AriaMaestosa
         for(int n=0; n<vector->size(); n++)
         {
             // we reached end of track, we may now stop
-            if( n>=vector->size() ) break;
+            if ( n>=vector->size() ) break;
 
             // we've not yet reached the area where stuff must be erase. Go forward.
-            if( (*vector)[n].getTick()<x1 ) continue;
+            if ( (*vector)[n].getTick()<x1 ) continue;
 
             // events there are after the area we will add events to, so they are not to be erased and we may stop.
-            if( (*vector)[n].getTick()>x2 ) break;
+            if ( (*vector)[n].getTick()>x2 ) break;
 
             // all types of controllers go in the same vector.
             // we only want to remove those of the current type
-            if( (*vector)[n].getController()==controller)
+            if ( (*vector)[n].getController()==controller)
             {
                 removedControlEvents.push_back( vector->get(n) );
                 vector->remove(n);
-                n-=2; if(n<0) n=-1;
+                n-=2; if (n<0) n=-1;
             }
 
         }
@@ -184,9 +184,9 @@ namespace AriaMaestosa
         {
             const int eventAmount=vector->size();
 
-            if(eventAmount == 0) addAfterAll = true;
-            else if((*vector)[0].getTick() > x2){ event_i = 0; }
-            else if((*vector)[eventAmount-1].getTick() < x1){ addAfterAll=true; }
+            if (eventAmount == 0) addAfterAll = true;
+            else if ((*vector)[0].getTick() > x2){ event_i = 0; }
+            else if ((*vector)[eventAmount-1].getTick() < x1){ addAfterAll=true; }
             else
             {
                 while( (*vector)[event_i].getTick() <= x1 and event_i+1 < eventAmount ) { event_i++; }
@@ -203,16 +203,16 @@ namespace AriaMaestosa
                   );
 
             // don't add useless controller events (two consecutive events with same value)
-            if(newvalue == previous_value ) continue;
+            if (newvalue == previous_value ) continue;
 
-            if(addAfterAll) pushBackOneEvent( new ControllerEvent(track->sequence, controller, x1+tick, newvalue), vector );
+            if (addAfterAll) pushBackOneEvent( new ControllerEvent(track->sequence, controller, x1+tick, newvalue), vector );
             else
             {
                 bool  notAtEnd = true;
                 while( (*vector)[event_i].getTick() <= (x1+tick) and notAtEnd)
                 {
                     event_i++;
-                    if(!(event_i < vector->size()))
+                    if (!(event_i < vector->size()))
                     {
                         addAfterAll=true; // we reached end. append remaining events to end
                         tick--;
@@ -221,7 +221,7 @@ namespace AriaMaestosa
                     }
 
                 }
-                if(notAtEnd)
+                if (notAtEnd)
                 {
                     addOneEvent( new ControllerEvent(track->sequence, controller, x1+tick, newvalue), vector,  event_i );
                     event_i++;

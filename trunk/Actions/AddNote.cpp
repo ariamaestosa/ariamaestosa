@@ -37,7 +37,7 @@ namespace Action
             const int noteAmount = track->getNoteAmount();
             for(int n=0; n<noteAmount; n++)
             {
-                if(track->getNote(n) == current_note)
+                if (track->getNote(n) == current_note)
                 {
                     track->removeNote(n);
                     break;
@@ -51,12 +51,12 @@ namespace Action
 
 
         Note* tmp_note;
-        if(string==-1) tmp_note = new Note(track->graphics, pitchID, startTick, endTick, volume);
+        if (string==-1) tmp_note = new Note(track->graphics, pitchID, startTick, endTick, volume);
         else tmp_note = new Note(track->graphics, pitchID, startTick, endTick, volume, string, 0);
 
         const bool success = track->addNote( tmp_note );
 
-        if(success)
+        if (success)
         {
             // select last added note
             track->selectNote(ALL_NOTES, false, true); // select last added note

@@ -77,7 +77,7 @@ bool ControllerEvent::readFromFile(irr::io::IrrXMLReader* xml)
 {
 
     const char* type = xml->getAttributeValue("type");
-    if(type!=NULL) controller=atoi(type);
+    if (type!=NULL) controller=atoi(type);
     else
     {
         controller = 0;
@@ -86,7 +86,7 @@ bool ControllerEvent::readFromFile(irr::io::IrrXMLReader* xml)
     }
 
     const char* tick_c = xml->getAttributeValue("tick");
-    if(tick_c!=NULL) tick = atoi(tick_c);
+    if (tick_c!=NULL) tick = atoi(tick_c);
     else
     {
         tick = 0;
@@ -95,7 +95,7 @@ bool ControllerEvent::readFromFile(irr::io::IrrXMLReader* xml)
     }
 
     const char* value_c = xml->getAttributeValue("value");
-    if(value_c!=NULL) value = atoi(value_c);
+    if (value_c!=NULL) value = atoi(value_c);
     else
     {
         value = 0;

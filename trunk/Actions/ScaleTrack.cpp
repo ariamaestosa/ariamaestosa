@@ -46,7 +46,7 @@ namespace AriaMaestosa
         for(int n=0; n<noteAmount; n++)
         {
 
-            if(selectionOnly and !track->notes[n].isSelected()) continue; // skip unselected notes if we only want to affect selection
+            if (selectionOnly and !track->notes[n].isSelected()) continue; // skip unselected notes if we only want to affect selection
 
             note_start.push_back( track->notes[n].startTick );
             note_end.push_back( track->notes[n].endTick );

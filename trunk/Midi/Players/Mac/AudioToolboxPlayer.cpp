@@ -70,15 +70,15 @@ void AudioToolboxMidiPlayer::play()
 void AudioToolboxMidiPlayer::stop()
 {
 
-    if( !playing ) return;
+    if ( !playing ) return;
 
     if (MusicPlayerStop(musicPlayer) != noErr)
         std::cout << "MusicPlayerStop failed" << std::endl;
 
-    if(DisposeMusicPlayer(musicPlayer) != noErr)
+    if (DisposeMusicPlayer(musicPlayer) != noErr)
         std::cout << "********* DisposeMusicPlayer failed" << std::endl;
 
-    if(DisposeMusicSequence(musicSequence) != noErr)
+    if (DisposeMusicSequence(musicSequence) != noErr)
         std::cout << "********* DisposeMusicSequence failed" << std::endl;
 
     if (NewMusicPlayer(&musicPlayer) != noErr)

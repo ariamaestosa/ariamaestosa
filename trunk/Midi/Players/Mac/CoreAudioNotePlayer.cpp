@@ -135,12 +135,12 @@ StopNoteTimer* stopNoteTimer = NULL;
      m.SetTime( 0 );
      m.SetControlChange( channel, 0, 0 );
 
-     if( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; exit(1); }
+     if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; exit(1); }
 
      m.SetTime( 0 );
      m.SetControlChange( channel, 32, 0 );
 
-     if( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; exit(1); }
+     if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; exit(1); }
  }
 
  // set instrument
@@ -156,7 +156,7 @@ StopNoteTimer* stopNoteTimer = NULL;
      m.SetTime( 0 );
      m.SetControlChange( channel, 7, 127 );
 
-     if( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; exit(1); }
+     if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; exit(1); }
  }
 
  */
@@ -197,7 +197,7 @@ home:
 
 void free()
 {
-    if(stopNoteTimer != NULL)
+    if (stopNoteTimer != NULL)
     {
         delete stopNoteTimer;
         stopNoteTimer = NULL;
@@ -217,7 +217,7 @@ int lastChannel;
 void playNote(int pitchID, int volume, int duration, int channel, int instrument)
 {
 
-    if(playing) stopNote();
+    if (playing) stopNote();
 
     OSStatus result;
     UInt32 noteOnCommand =     kMidiMessage_NoteOn << 4 | channel;
@@ -241,7 +241,7 @@ home:
 
 void stopNote()
 {
-    if(!playing) return;
+    if (!playing) return;
 
     OSStatus result;
     UInt32 noteOnCommand =     kMidiMessage_NoteOn << 4 | lastChannel;

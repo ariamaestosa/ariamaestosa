@@ -56,11 +56,11 @@ void buildLanguageList()
 
 void initLanguageSupport()
 {
-    if(languages.size() == 0) buildLanguageList();
+    if (languages.size() == 0) buildLanguageList();
 
     // read language from preferences
     language_aria_id = Core::getPrefsValue("lang");
-    if(language_aria_id == -1)
+    if (language_aria_id == -1)
     {
         // couldn't read from prefs, use default
         language_aria_id = 0;
@@ -77,16 +77,16 @@ void initLanguageSupport()
     bool language_known = false;
     for(int i=0; i<lang_amount; i++)
     {
-        if(language_wx_id == languages[i].wxlangcode)
+        if (language_wx_id == languages[i].wxlangcode)
         {
             std::cout << "language : " << languages[i].langname.mb_str() << std::endl;
             language_known = true;
         }
     }
-    if(!language_known) std::cout << "Warning, the language code stored in preferences is unknown to Aria" << std::endl;
+    if (!language_known) std::cout << "Warning, the language code stored in preferences is unknown to Aria" << std::endl;
 
     // load language if possible, fall back to english otherwise
-    if(wxLocale::IsAvailable(language_wx_id))
+    if (wxLocale::IsAvailable(language_wx_id))
     {
         locale = new wxLocale( language_wx_id, wxLOCALE_CONV_ENCODING );
 
@@ -101,7 +101,7 @@ void initLanguageSupport()
 
         locale->AddCatalog(wxT("aria_maestosa"));
 
-        if(! locale->IsOk() )
+        if (! locale->IsOk() )
         {
             std::cout << "selected language is wrong" << std::endl;
             delete locale;
@@ -127,7 +127,7 @@ void initLanguageSupport()
  */
 wxArrayString getLanguageList()
 {
-    if(languages.size() == 0) buildLanguageList();
+    if (languages.size() == 0) buildLanguageList();
 
     wxArrayString list;
 

@@ -51,26 +51,26 @@ wxRenderPane::~wxRenderPane()
 void wxRenderPane::resized(wxSizeEvent& evt)
 {
     wxPanel::OnSize(evt);
-    if(getMainFrame()->getSequenceAmount()>0) DisplayFrame::updateVerticalScrollbar();
+    if (getMainFrame()->getSequenceAmount()>0) DisplayFrame::updateVerticalScrollbar();
 }
 
 int wxRenderPane::getWidth()
 {
 
-    if(Display::isVisible()) return GetSize().x;
+    if (Display::isVisible()) return GetSize().x;
     else return 795; // default value
 }
 
 int wxRenderPane::getHeight()
 {
     // FIXME - is it really necessary to check if it's visible?
-    if(Display::isVisible()) return GetSize().y;
+    if (Display::isVisible()) return GetSize().y;
     else return 550; // approximately default
 }
 
 bool wxRenderPane::prepareFrame()
 {
-    if(!GetParent()->IsShown()) return false; 
+    if (!GetParent()->IsShown()) return false; 
     return true;
 }
 

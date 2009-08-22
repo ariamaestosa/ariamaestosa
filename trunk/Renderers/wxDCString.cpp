@@ -21,6 +21,9 @@ namespace AriaMaestosa
     {
         consolidated = false;
         max_width = -1;
+        warp = false;
+        w = -1;
+        h = -1;
     }
     
     
@@ -30,6 +33,8 @@ namespace AriaMaestosa
         consolidated = false;
         max_width = -1;
         warp = false;
+        w = -1;
+        h = -1;
     }
     
     wxDCString::~wxDCString()
@@ -50,9 +55,9 @@ namespace AriaMaestosa
     
     void wxDCString::bind()
     {
-        if(not consolidated)
+        if (not consolidated)
         {
-            if(font.IsOk()) Display::renderDC->SetFont(font);
+            if (font.IsOk()) Display::renderDC->SetFont(font);
             else Display::renderDC->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
             
             Display::renderDC->GetTextExtent(*this, &w, &h);
@@ -63,6 +68,8 @@ namespace AriaMaestosa
     
     int wxDCString::getWidth()
     {
+        assertExpr(w, >=, 0);
+        assertExpr(w, <, 90000);
         return w;
     }
     void wxDCString::scale(float f)
@@ -74,18 +81,21 @@ namespace AriaMaestosa
     
     void wxDCString::render(const int x, const int y)
     {
-        if(not consolidated) bind();
+        if (not consolidated) bind();
             
-        if(font.IsOk()) Display::renderDC->SetFont(font);
+        assertExpr(h, >=, 0);
+        assertExpr(h, <, 90000);
+        
+        if (font.IsOk()) Display::renderDC->SetFont(font);
         else Display::renderDC->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
 
-        if(max_width != -1 and getWidth()>max_width)
+        if (max_width != -1 and getWidth()>max_width)
         {
-            if(not warp)
+            if (not warp)
             {
                 wxString shortened = *this;
                 
-                while(Display::renderDC->GetTextExtent(shortened).GetWidth() > max_width)
+                while (Display::renderDC->GetTextExtent(shortened).GetWidth() > max_width)
                 {
                     shortened = shortened.Truncate(shortened.size()-1);
                 }
@@ -127,14 +137,16 @@ namespace AriaMaestosa
     wxDCNumberRenderer::wxDCNumberRenderer()
     {
         consolidated = false;
+        w = -1;
+        h = -1;
     }
     wxDCNumberRenderer::~wxDCNumberRenderer(){}
     
     void wxDCNumberRenderer::bind()
     {
-        if(not consolidated)
+        if (not consolidated)
         {
-            //if(font.IsOk()) Display::renderDC->SetFont(font);
+            //if (font.IsOk()) Display::renderDC->SetFont(font);
            // else
             Display::renderDC->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
             
@@ -146,7 +158,10 @@ namespace AriaMaestosa
     
     void wxDCNumberRenderer::renderNumber(wxString s, int x, int y)
     {
-        //if(font.IsOk()) Display::renderDC->SetFont(font);
+        assertExpr(h, >, -1);
+        assertExpr(h, <, 90000);
+
+        //if (font.IsOk()) Display::renderDC->SetFont(font);
         //else
         Display::renderDC->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
         
@@ -193,9 +208,9 @@ namespace AriaMaestosa
     
     void wxDCStringArray::bind()
     {
-        if(not consolidated)
+        if (not consolidated)
         {
-            if(not font.IsOk()) return;
+            if (not font.IsOk()) return;
             
             const int amount = strings.size();
             for(int n=0; n<amount; n++)

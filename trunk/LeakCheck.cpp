@@ -60,7 +60,7 @@ void checkForLeaks()
 
     std::cout << "checking for leaks... " << std::endl;
 
-    if(obj.size()>0)
+    if (obj.size()>0)
     {
         std::cout << "leaks detected!!" << std::endl;
         std::cout << "\n\n* * * * WARNING * * * * WARNING * * * * MEMORY LEAK! * * * *\n" << std::endl;

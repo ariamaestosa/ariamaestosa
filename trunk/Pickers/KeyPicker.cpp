@@ -102,9 +102,9 @@ KeyPicker::KeyPicker() : wxMenu()
 void KeyPicker::setParent(Track* parent_arg)
 {
     parent = parent_arg->graphics;
-    if(parent->editorMode == KEYBOARD)
+    if (parent->editorMode == KEYBOARD)
     {
-        if(score_items_added)
+        if (score_items_added)
         {
             Remove(musical_checkbox);
             Remove(linear_checkbox);
@@ -123,9 +123,9 @@ void KeyPicker::setParent(Track* parent_arg)
         octave_below->Enable(false);
          */
     }
-    else if(parent->editorMode == SCORE)
+    else if (parent->editorMode == SCORE)
     {
-        if(not score_items_added)
+        if (not score_items_added)
         {
             Prepend(octave_below);
             Prepend(octave_above);
@@ -166,27 +166,27 @@ void KeyPicker::setParent(Track* parent_arg)
     key_flats_7->Check(false);
     const int sharps = parent->scoreEditor->getKeySharpsAmount();
     const int flats = parent->scoreEditor->getKeyFlatsAmount();
-    if(sharps==0 and flats==0)
+    if (sharps==0 and flats==0)
         key_c->Check(true);
-    else if(sharps > flats)
+    else if (sharps > flats)
     {
-        if(sharps == 1) key_sharps_1->Check(true);
-        else if(sharps == 2) key_sharps_2->Check(true);
-        else if(sharps == 3) key_sharps_3->Check(true);
-        else if(sharps == 4) key_sharps_4->Check(true);
-        else if(sharps == 5) key_sharps_5->Check(true);
-        else if(sharps == 6) key_sharps_6->Check(true);
-        else if(sharps == 7) key_sharps_7->Check(true);
+        if (sharps == 1) key_sharps_1->Check(true);
+        else if (sharps == 2) key_sharps_2->Check(true);
+        else if (sharps == 3) key_sharps_3->Check(true);
+        else if (sharps == 4) key_sharps_4->Check(true);
+        else if (sharps == 5) key_sharps_5->Check(true);
+        else if (sharps == 6) key_sharps_6->Check(true);
+        else if (sharps == 7) key_sharps_7->Check(true);
     }
     else
     {
-        if(flats == 1) key_flats_1->Check(true);
-        else if(flats == 2) key_flats_2->Check(true);
-        else if(flats == 3) key_flats_3->Check(true);
-        else if(flats == 4) key_flats_4->Check(true);
-        else if(flats == 5) key_flats_5->Check(true);
-        else if(flats == 6) key_flats_6->Check(true);
-        else if(flats == 7) key_flats_7->Check(true);
+        if (flats == 1) key_flats_1->Check(true);
+        else if (flats == 2) key_flats_2->Check(true);
+        else if (flats == 3) key_flats_3->Check(true);
+        else if (flats == 4) key_flats_4->Check(true);
+        else if (flats == 5) key_flats_5->Check(true);
+        else if (flats == 6) key_flats_6->Check(true);
+        else if (flats == 7) key_flats_7->Check(true);
     }
 }
 
@@ -201,12 +201,12 @@ void KeyPicker::setChecks( bool musicalNotationEnabled, bool linearNotationEnabl
     fclef            -> Check(f_clef);
     gclef            -> Check(g_clef);
 
-    if(octave_shift == -1)
+    if (octave_shift == -1)
     {
         octave_above -> Check(false);
         octave_below -> Check(true);
     }
-    else if(octave_shift == 1)
+    else if (octave_shift == 1)
     {
         octave_above -> Check(true);
         octave_below -> Check(false);
@@ -222,66 +222,66 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
 {
     const int id = evt.GetId();
 
-    if( id < 0 or id > ID_AMOUNT ) return;
+    if ( id < 0 or id > ID_AMOUNT ) return;
 
-    if( id == MUSICAL_NOTATION )
+    if ( id == MUSICAL_NOTATION )
     {
         parent -> scoreEditor -> enableMusicalNotation( musical_checkbox->IsChecked() );
 
         // don't allow disabling both
-        if(not musical_checkbox->IsChecked() and not linear_checkbox->IsChecked())
+        if (not musical_checkbox->IsChecked() and not linear_checkbox->IsChecked())
             parent -> scoreEditor -> enableLinearNotation( true );
     }
-    else if( id == LINEAR_NOTATION )
+    else if ( id == LINEAR_NOTATION )
     {
         parent -> scoreEditor -> enableLinearNotation( linear_checkbox->IsChecked() );
 
         // don't allow disabling both
-        if(not musical_checkbox->IsChecked() and not linear_checkbox->IsChecked())
+        if (not musical_checkbox->IsChecked() and not linear_checkbox->IsChecked())
             parent -> scoreEditor -> enableMusicalNotation( true );
     }
-    else if( id == F_CLEF )
+    else if ( id == F_CLEF )
     {
         parent -> scoreEditor -> enableFClef( fclef->IsChecked() );
 
         // don't allow disabling both
-        if(not gclef->IsChecked() and not fclef->IsChecked())
+        if (not gclef->IsChecked() and not fclef->IsChecked())
             parent -> scoreEditor -> enableGClef( true );
     }
-    else if( id == G_CLEF )
+    else if ( id == G_CLEF )
     {
         parent -> scoreEditor -> enableGClef( gclef->IsChecked() );
 
         // don't allow disabling both
-        if(not gclef->IsChecked() and not fclef->IsChecked())
+        if (not gclef->IsChecked() and not fclef->IsChecked())
             parent -> scoreEditor -> enableFClef( true );
     }
-    else if( id == OCTAVE_ABOVE )
+    else if ( id == OCTAVE_ABOVE )
     {
         octave_below -> Check(false);
         parent -> scoreEditor -> getScoreMidiConverter() -> setOctaveShift( octave_above->IsChecked() ? 1 : 0 );
     }
-    else if( id == OCTAVE_BELOW )
+    else if ( id == OCTAVE_BELOW )
     {
         octave_above -> Check(false);
         parent -> scoreEditor -> getScoreMidiConverter() -> setOctaveShift( octave_below->IsChecked() ? -1 : 0 );
     }
-    else if( id == KEY_C_AM )
+    else if ( id == KEY_C_AM )
     {
         parent -> scoreEditor    -> loadKey(NATURAL, 0);
         parent -> keyboardEditor -> loadKey(NATURAL, 0);
     }
-    else if( id >= KEY_SHARPS_1 and id <= KEY_SHARPS_7 )
+    else if ( id >= KEY_SHARPS_1 and id <= KEY_SHARPS_7 )
     {
         parent -> scoreEditor    -> loadKey(SHARP, id-KEY_SHARPS_1+1 );
         parent -> keyboardEditor -> loadKey(SHARP, id-KEY_SHARPS_1+1) ;
     }
-    else if( id >= KEY_FLATS_1 and id <= KEY_FLATS_7 )
+    else if ( id >= KEY_FLATS_1 and id <= KEY_FLATS_7 )
     {
         parent -> scoreEditor    -> loadKey( FLAT, id-KEY_FLATS_1+1 );
         parent -> keyboardEditor -> loadKey( FLAT, id-KEY_FLATS_1+1 );
     }
-    else if( id == KEY_GUESS )
+    else if ( id == KEY_GUESS )
     {
         int note_12_occurance[12];
         for(int n=0; n<12; n++)
@@ -293,8 +293,8 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
         {
             const int pitch = parent->track->getNotePitchID(n);
             int r = 11-pitch%12;
-            if(r < 0)  r+=12;
-            if(r > 11) r-=12;
+            if (r < 0)  r+=12;
+            if (r > 11) r-=12;
             //std::cout << "r=" << r << std::endl;
             note_12_occurance[r] += 1;
         }
@@ -302,7 +302,7 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
         // find max value, will make it easier to compare values
         //int max = 0;
         //for(int n=0; n<12; n++)
-        //    if(note_12_occurance[n] > max) max = note_12_occurance[n];
+        //    if (note_12_occurance[n] > max) max = note_12_occurance[n];
         // print values for debug purposes
         //for(int n=0; n<12; n++)
         //    std::cout << (note_12_occurance[n] * 100 / max) << std::endl;
@@ -336,9 +336,9 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
         int best_candidate = -1;
         for(int n=0; n<12; n++)
         {
-            if(best_candidate==-1 or key_test[n]>key_test[best_candidate]) best_candidate = n;
+            if (best_candidate==-1 or key_test[n]>key_test[best_candidate]) best_candidate = n;
         }
-        if(best_candidate==-1) return;
+        if (best_candidate==-1) return;
         
         PitchSign sign = NATURAL;
         int amount = 0;

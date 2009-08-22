@@ -84,7 +84,7 @@ private:
 IrrXMLReader* createIrrXMLReader(const char* filename)
 {
 	CFileReadCallBack* file = new CFileReadCallBack(filename);
-	if(file->getSize() == 0) return NULL;
+	if (file->getSize() == 0) return NULL;
 	return new CXMLReaderImpl<char, IXMLBase>(file); 
 }
 

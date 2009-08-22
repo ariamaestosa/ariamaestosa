@@ -55,7 +55,7 @@ void GLPane::resized(wxSizeEvent& evt)
     Refresh();
 
     // FIXME - can it really happen that no sequence is open?
-    if(getMainFrame()->getSequenceAmount()>0) DisplayFrame::updateVerticalScrollbar();
+    if (getMainFrame()->getSequenceAmount()>0) DisplayFrame::updateVerticalScrollbar();
 }
 
 
@@ -132,20 +132,20 @@ void GLPane::initOpenGLFor2D()
 int GLPane::getWidth()
 {
 
-    if(Display::isVisible()) return GetSize().x;
+    if (Display::isVisible()) return GetSize().x;
     else return 795; // default value
 }
 
 int GLPane::getHeight()
 {
     // FIXME - is it really necessary to check if it's visible?
-    if(Display::isVisible()) return GetSize().y;
+    if (Display::isVisible()) return GetSize().y;
     else return 550; // approximately default
 }
 
 bool GLPane::prepareFrame()
 {
-    if(!GetParent()->IsShown()) return false;
+    if (!GetParent()->IsShown()) return false;
     wxGLCanvas::SetCurrent();
     return true;
 }

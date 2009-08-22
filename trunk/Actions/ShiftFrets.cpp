@@ -42,23 +42,23 @@ namespace AriaMaestosa
         assert(noteid != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
 
         // only accept to do this in guitar mode
-        if(track->graphics->editorMode != GUITAR)  return;
+        if (track->graphics->editorMode != GUITAR)  return;
 
         // concerns all selected notes
-        if(noteid==SELECTED_NOTES)
+        if (noteid==SELECTED_NOTES)
         {
 
             bool played = false;
             const int amount_n = track->notes.size();
             for(int n=0; n<amount_n; n++)
             {
-                if(!track->notes[n].isSelected()) continue;
+                if (!track->notes[n].isSelected()) continue;
 
                 frets.push_back( track->notes[n].getFret() );
                 track->notes[n].shiftFret(amount);
                 relocator.rememberNote( track->notes[n] );
 
-                if(!played)
+                if (!played)
                 {
                     track->notes[n].play(true);
                     played = true;

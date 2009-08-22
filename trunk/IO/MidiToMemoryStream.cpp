@@ -38,9 +38,9 @@ MidiToMemoryStream::MidiToMemoryStream() : MIDIFileWriteStream()
 long MidiToMemoryStream::Seek( const long pos_add, const int whence )
 {
 
-    if(whence == SEEK_SET) pos = pos_add; // i think this one is the only once used
-    else if(whence == SEEK_CUR) pos += pos_add;
-    else if(whence == SEEK_END) pos = length-2;
+    if (whence == SEEK_SET) pos = pos_add; // i think this one is the only once used
+    else if (whence == SEEK_CUR) pos += pos_add;
+    else if (whence == SEEK_END) pos = length-2;
 
     return 0;
 }
@@ -48,7 +48,7 @@ long MidiToMemoryStream::Seek( const long pos_add, const int whence )
 int MidiToMemoryStream::WriteChar( const int c )
 {
 
-    if(pos==length)
+    if (pos==length)
     {
         data.push_back(c);
         length++;

@@ -65,7 +65,7 @@ wxString extract_filename(wxString filepath)
 
 wxString extract_path(wxString str)
 {
-    if(str.GetChar(str.Length()) == '/') return str.BeforeLast('/').BeforeLast('/');
+    if (str.GetChar(str.Length()) == '/') return str.BeforeLast('/').BeforeLast('/');
     else return str.BeforeLast('/');
 }
 
@@ -83,7 +83,7 @@ wxString fromCString(char* chars)
 long atoi_u(wxString s)
 {
     long value;
-    if(s.ToLong(&value)) return value;
+    if (s.ToLong(&value)) return value;
     else
     {
         std::cerr << "WARNING: Could not parse number " << s.mb_str() << std::endl;
@@ -101,7 +101,7 @@ wxString showFileDialog(wxString message, wxString defaultDir,
     wxString path = dialog->GetPath();
     dialog->Hide();
     dialog->Destroy();
-    if(answer != wxID_OK) return wxT("");
+    if (answer != wxID_OK) return wxT("");
 
     return path;
 }
@@ -112,7 +112,7 @@ wxString getResourcePrefix()
 
         static bool app_in_place = wxFileExists( extract_path(wxStandardPaths::Get().GetExecutablePath())  + wxT("/Resources/collapse.jpg") );
 
-        if(app_in_place)
+        if (app_in_place)
             return extract_path( wxStandardPaths::Get().GetExecutablePath() ) + wxT("/Resources/");
         else
             return wxStandardPaths::Get().GetResourcesDir() + wxT("/");

@@ -66,7 +66,7 @@ namespace AriaMaestosa
         graphics->createEditors();
 
         channel = 0;
-        if( sequence->getChannelManagementType() == CHANNEL_MANUAL )
+        if ( sequence->getChannelManagementType() == CHANNEL_MANUAL )
         {
             // if in manual channel management mode, we need to give it a proper channel
             // the following array will store what channels are currently taken
@@ -82,14 +82,14 @@ namespace AriaMaestosa
             }
             for(int i=0; i<16; i++)
             {
-                if(i==9) continue; // don't use channel 9, it's for drums
+                if (i==9) continue; // don't use channel 9, it's for drums
                 // use first not-yet-used channel
-                if(not channel_taken[i])
+                if (not channel_taken[i])
                 {
                     channel = i;
                     break;
                 }
-                else if(i == 15)
+                else if (i == 15)
                 {
                     // we reached the end and still haven't found any...
                     // FIXME - the given instrument might be wrong
@@ -133,7 +133,7 @@ Track::~Track()
     for(int n=0; n<trackAmount; n++)
     {
         Track* track = seq->getTrack(n);
-        if(track != this) track->trackDeleted(this);
+        if (track != this) track->trackDeleted(this);
     }
 }
 
@@ -161,7 +161,7 @@ void Track::trackDeleted(Track* track)
 bool Track::addNote(Note* note, bool check_for_overlapping_notes)
 {
     // if we're importing, just push it to the end, we know they're in time order
-    if(sequence->importing)
+    if (sequence->importing)
     {
         notes.push_back(note);
         noteOff.push_back(note); // dont forget to reorder note off vector after importing
@@ -177,14 +177,14 @@ bool Track::addNote(Note* note, bool check_for_overlapping_notes)
     {
         // check for overlapping notes
         // the only time where this is not checked is when pasting, because it is then logical that notes are pasted on top of their originals
-        if(check_for_overlapping_notes and notes[n].startTick == note->startTick and notes[n].pitchID == note->pitchID and
+        if (check_for_overlapping_notes and notes[n].startTick == note->startTick and notes[n].pitchID == note->pitchID and
            (graphics->editorMode!=GUITAR or notes[n].getString()==note->getString()) /*in guitar mode string must also match to be considered overlapping*/ )
         {
             std::cout << "overlapping notes: rejected" << std::endl;
             return false;
         }
 
-        if(notes[n].startTick > note->startTick)
+        if (notes[n].startTick > note->startTick)
         {
 
             notes.add(note, n);
@@ -195,7 +195,7 @@ bool Track::addNote(Note* note, bool check_for_overlapping_notes)
 
     }//next
 
-    if(!noteAdded)
+    if (!noteAdded)
     {
         // add note at the end, or if the track does not yet contain any note
         // (both cases in which the for loop either won't find a location for the note, or won't iterate at all)
@@ -210,7 +210,7 @@ bool Track::addNote(Note* note, bool check_for_overlapping_notes)
     const int noteOffAmount = noteOff.size();
     for(int n=0; n<noteOffAmount; n++)
     {
-        if(noteOff[n].endTick > note->endTick)
+        if (noteOff[n].endTick > note->endTick)
         {
             noteOff.add(note, n);
             noteAdded = true;
@@ -218,7 +218,7 @@ bool Track::addNote(Note* note, bool check_for_overlapping_notes)
         }//endif
     }//next
 
-    if(!noteAdded)
+    if (!noteAdded)
     {
         // add note at the end, or if the track does not yet contain any note
         // (both cases in which the for loop either won't find a location for the note, or won't iterate at all)
@@ -236,16 +236,16 @@ void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
 {
     ptr_vector<ControllerEvent>* vector;
 
-    if(previousValue != NULL) *previousValue = -1;
+    if (previousValue != NULL) *previousValue = -1;
 
     // tempo events
-    if(evt->getController()==201) vector = &sequence->tempoEvents;
+    if (evt->getController()==201) vector = &sequence->tempoEvents;
     // controller and pitch bend events
     else vector = &controlEvents;
 
     // don't bother checking order if we're importing, we know its in time order and all
     // FIXME - what about 'addController_import' ??
-    if(sequence->importing)
+    if (sequence->importing)
     {
         vector->push_back( evt );
         return;
@@ -257,18 +257,18 @@ void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
     const int eventAmount=vector->size();
     for(int n=0; n<eventAmount; n++)
     {
-        if( (*vector)[n].getTick() == evt->getTick())
+        if ( (*vector)[n].getTick() == evt->getTick())
         {
             // if there is already an even of same type at same time, remove it first
-            if((*vector)[n].getController() == evt->getController() )
+            if ((*vector)[n].getController() == evt->getController() )
             {
-                if(previousValue != NULL) *previousValue = (*vector)[n].getValue();
+                if (previousValue != NULL) *previousValue = (*vector)[n].getValue();
                 vector->erase(n);
             }
             vector->add( evt, n );
             return;
         }
-        else if( (*vector)[n].getTick() > evt->getTick() )
+        else if ( (*vector)[n].getTick() > evt->getTick() )
         {
             vector->add( evt, n );
             return;
@@ -308,7 +308,7 @@ void Track::setNoteEnd_import(const int tick, const int noteID)
     notes[noteID].setEnd(tick);
 
     // FIXME - why on earth do i check whether we are importing in a method bearing the name "import" ??
-    if(!sequence->importing) reorderNoteOffVector();
+    if (!sequence->importing) reorderNoteOffVector();
 }
 
 void Track::removeNote(const int id)
@@ -318,7 +318,7 @@ void Track::removeNote(const int id)
     const int namount = noteOff.size();
     for(int i=0; i<namount; i++)
     {
-        if(&noteOff[i] == &notes[id])
+        if (&noteOff[i] == &notes[id])
         {
             noteOff.remove(i);
             break;
@@ -340,13 +340,13 @@ void Track::markNoteToBeRemoved(const int id)
 
     for(int i=0; i<namount; i++)
     {
-        if(noteOff.get(i) == note)
+        if (noteOff.get(i) == note)
         {
             noteOff.markToBeRemoved(i);
             break;
         }
 #ifdef _MORE_DEBUG_CHECKS
-        if(i+1 == namount) std::cout << "WARNING could not find note off event corresponding to note on event" << std::endl;
+        if (i+1 == namount) std::cout << "WARNING could not find note off event corresponding to note on event" << std::endl;
 #endif
     }
 
@@ -361,7 +361,7 @@ void Track::removeMarkedNotes()
     noteOff.removeMarked();
 
 #ifdef _MORE_DEBUG_CHECKS
-    if(notes.size() != noteOff.size())
+    if (notes.size() != noteOff.size())
     {
         std::cout << "WARNING note on and off events differ in amount in Track::removeMarkedNotes()" << std::endl;
         std::cout << notes.size() << " notes and " << noteOff.size() << " note offs" << std::endl;
@@ -378,7 +378,7 @@ void Track::reorderNoteVector()
     const int noteAmount = notes.size();
 
 #ifdef _MORE_DEBUG_CHECKS
-    if(notes.size() != noteOff.size())
+    if (notes.size() != noteOff.size())
     {
         std::cout << "WARNING note on and off events differ in amount" << std::endl;
         std::cout << notes.size() << " notes and " << noteOff.size() << " note offs" << std::endl;
@@ -392,16 +392,16 @@ void Track::reorderNoteVector()
 
         assertExpr(n+1,<,notes.size());
 /*
-        if(n > max_n)
+        if (n > max_n)
         {
             max_n = n;
             std::cout << " #" << n  << "/" << noteAmount << std::endl;
         }
         */
-        if(notes[n].startTick > notes[n+1].startTick)
+        if (notes[n].startTick > notes[n+1].startTick)
         {
             notes.swap(n, n+1);
-            if(n>2) n-= 2;
+            if (n>2) n-= 2;
             else n=-1;
         }
     }//next
@@ -416,7 +416,7 @@ void Track::reorderNoteOffVector()
     // FIXME - innefficient implementation
     const int noteAmount = noteOff.size();
 #ifdef _MORE_DEBUG_CHECKS
-    if(notes.size() != noteOff.size()) std::cout << "WARNING note on and off events differ in amount" << std::endl;
+    if (notes.size() != noteOff.size()) std::cout << "WARNING note on and off events differ in amount" << std::endl;
 #endif
 
     for(int n=0; n<noteAmount-1; n++)
@@ -428,10 +428,10 @@ void Track::reorderNoteOffVector()
         assert(noteOff.get(n) != 0);
         assert(noteOff.get(n+1) != 0);
 
-        if(noteOff[n].endTick > noteOff[n+1].endTick)
+        if (noteOff[n].endTick > noteOff[n+1].endTick)
         {
             noteOff.swap(n, n+1);
-            if(n>2) n-= 2;
+            if (n>2) n-= 2;
             else n=-1;
         }//end if
     }//next
@@ -449,10 +449,10 @@ void Track::reorderControlVector()
 
         assertExpr(n+1,<,ctrlAmount);
 
-        if(controlEvents[n].getTick() > controlEvents[n+1].getTick())
+        if (controlEvents[n].getTick() > controlEvents[n+1].getTick())
         {
             controlEvents.swap(n, n+1);
-            if(n>2) n-= 2;
+            if (n>2) n-= 2;
             else n=0;
         }
     }//next
@@ -485,7 +485,7 @@ void Track::checkControlEventsOrder()
     int ptick = -1;
     for(int n=0; n<controlEvents.size(); n++)
     {
-        if(ptick != -1 and controlEvents[n].getTick() < ptick)
+        if (ptick != -1 and controlEvents[n].getTick() < ptick)
         {
             std::cout << "\n\n*** Error: control events in wrong order " << ptick << " then " << controlEvents[n].getTick() << std::endl;
         }
@@ -562,8 +562,8 @@ int Track::getNoteString(const int id)
     assertExpr(id,>=,0);
     assertExpr(id,<,notes.size());
 
-    //if(notes[id].tuning == NULL) notes[id].setTuning(&graphics->guitarEditor->tuning); // make sure the note knows the tuning
-    if(notes[id].getString() == -1) notes[id].findStringAndFretFromNote();
+    //if (notes[id].tuning == NULL) notes[id].setTuning(&graphics->guitarEditor->tuning); // make sure the note knows the tuning
+    if (notes[id].getString() == -1) notes[id].findStringAndFretFromNote();
 
     return notes[id].getString();
 }
@@ -573,8 +573,8 @@ int Track::getNoteFret(const int id)
     assertExpr(id,>=,0);
     assertExpr(id,<,notes.size());
 
-    //if(notes[id].tuning == NULL) notes[id].setTuning(&graphics->guitarEditor->tuning); // make sure the note knows the tuning
-    if(notes[id].getFret() == -1) notes[id].findStringAndFretFromNote();
+    //if (notes[id].tuning == NULL) notes[id].setTuning(&graphics->guitarEditor->tuning); // make sure the note knows the tuning
+    if (notes[id].getFret() == -1) notes[id].findStringAndFretFromNote();
 
     return notes[id].getFret();
 }
@@ -607,20 +607,20 @@ int Track::findLastNoteInRange(const int fromTick, const int toTick) const
 // the only goal of id is to determine whether the app is searching for a control event or for a tempo event
 int Track::getControllerEventAmount(const int controllerTypeID) const
 {
-    if(controllerTypeID==201 /*tempo*/) return sequence->tempoEvents.size();
+    if (controllerTypeID==201 /*tempo*/) return sequence->tempoEvents.size();
     return controlEvents.size();
 }
 
 ControllerEvent* Track::getControllerEvent(const int id, const int controllerTypeID)
 {
     assertExpr(id,>=,0);
-    if(controllerTypeID==201 /*tempo*/){
+    if (controllerTypeID==201 /*tempo*/){
         assertExpr(id,<,sequence->tempoEvents.size());
     } else {
         assertExpr(id,<,controlEvents.size());
     }
 
-    if(controllerTypeID==201 /*tempo*/) return &sequence->tempoEvents[id];
+    if (controllerTypeID==201 /*tempo*/) return &sequence->tempoEvents[id];
     return &controlEvents[id];
 }
 
@@ -632,14 +632,14 @@ ControllerEvent* Track::getControllerEvent(const int id, const int controllerTyp
 int Track::getFirstNoteTick(bool selectionOnly) const
 {
 
-    if(!selectionOnly) return notes[0].startTick;
+    if (!selectionOnly) return notes[0].startTick;
 
     const int noteAmount = notes.size();
     int tick = -1;
 
     for(int n=0; n<noteAmount; n++)
     {
-        if( notes[n].isSelected() ) return notes[n].startTick;
+        if ( notes[n].isSelected() ) return notes[n].startTick;
     }//next
 
     return tick;
@@ -649,7 +649,7 @@ int Track::getFirstNoteTick(bool selectionOnly) const
 /* returns the last tick in the track */
 int Track::getDuration() const
 {
-    if(noteOff.size() < 1) return 0;
+    if (noteOff.size() < 1) return 0;
 
     return noteOff[noteOff.size()-1].endTick;
 }
@@ -660,22 +660,22 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
     assert(id != SELECTED_NOTES); // not supported in this function
 
 
-    if(!Display::isSelectMorePressed() and !Display:: isSelectLessPressed()) ignoreModifiers=true; // if no modifier is pressed, don't do any special checks
+    if (!Display::isSelectMorePressed() and !Display:: isSelectLessPressed()) ignoreModifiers=true; // if no modifier is pressed, don't do any special checks
 
     // ----------------------------- select/deselect all notes ----------------------------
-    if(id==ALL_NOTES)
+    if (id==ALL_NOTES)
     {
         // if this is a 'select none' command, unselect any selected measures in the top bar
-        if(selected == FALSE) getMeasureData()->unselect();
+        if (selected == FALSE) getMeasureData()->unselect();
 
-        if(graphics->editorMode == CONTROLLER)
+        if (graphics->editorMode == CONTROLLER)
         { // controller editor must be handled differently
             graphics->controllerEditor->selectAll( selected );
         }
         else
         {
 
-            if(ignoreModifiers)
+            if (ignoreModifiers)
             {
                 for(int n=0; n<notes.size(); n++)
                 {
@@ -693,13 +693,13 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
         assertExpr(id,<,notes.size());
 
         // if we ignore +/- key modifiers, just set the value right away
-        if(ignoreModifiers) notes[id].setSelected(selected);
+        if (ignoreModifiers) notes[id].setSelected(selected);
         else
         { // otherwise, check key modifiers and set value accordingly
-            if(selected)
+            if (selected)
             {
-                if(Display::isSelectMorePressed()) notes[id].setSelected(true);
-                else if(Display:: isSelectLessPressed()) notes[id].setSelected( !selected );
+                if (Display::isSelectMorePressed()) notes[id].setSelected(true);
+                else if (Display:: isSelectLessPressed()) notes[id].setSelected( !selected );
             }
         }//end if
 
@@ -736,7 +736,7 @@ void Track::setId(const int id)
 
 void Track::setName(wxString name)
 {
-    if(name.Trim().IsEmpty()) Track::name.set( wxString( _("Untitled") ) );
+    if (name.Trim().IsEmpty()) Track::name.set( wxString( _("Untitled") ) );
     else Track::name.set(name);
 }
 AriaRenderString& Track::getName()
@@ -758,7 +758,7 @@ int Track::getChannel()
     // always 9 for drum tracks
     //const bool manual_mode = sequence->getChannelManagementType() == CHANNEL_MANUAL;
 
-    if(graphics->editorMode == DRUM) return 9;
+    if (graphics->editorMode == DRUM) return 9;
     else return channel;
 
 }
@@ -776,14 +776,14 @@ void Track::setInstrument(int i, bool recursive)
     instrument_name.set(Core::getInstrumentPicker()->getInstrumentName( instrument ));
     
     // if we're in manual channel management mode, change all tracks of the same channel to have the same instrument
-    if(sequence->getChannelManagementType() == CHANNEL_MANUAL and not recursive)
+    if (sequence->getChannelManagementType() == CHANNEL_MANUAL and not recursive)
     {
         const int trackAmount = sequence->getTrackAmount();
         for(int n=0; n<trackAmount; n++)
         {
             Track* track = sequence->getTrack(n);
-            if(track == this) continue; // track must not evaluate itself...
-            if( track->getChannel() == channel )
+            if (track == this) continue; // track must not evaluate itself...
+            if ( track->getChannel() == channel )
             {
                 track->setInstrument(i,true);
             }
@@ -819,14 +819,14 @@ void Track::setDrumKit(int i, bool recursive)
     drumKit = i;
 
     // if we're in manual channel management mode, change all tracks of the same channel to have the same instrument
-    if(sequence->getChannelManagementType() == CHANNEL_MANUAL and not recursive)
+    if (sequence->getChannelManagementType() == CHANNEL_MANUAL and not recursive)
     {
 
         const int trackAmount = sequence->getTrackAmount();
         for(int n=0; n<trackAmount; n++)
         {
             Track* track = sequence->getTrack(n);
-            if(track == this) continue; // track must not evaluate itself...
+            if (track == this) continue; // track must not evaluate itself...
             track->setDrumKit(i,true);
         }//next
     }//endif
@@ -852,11 +852,11 @@ void Track::playNote(const int id, const bool noteChange)
 // returns smallest values, ignoring -1, a being prioritary to b (returns -1 for none, 0 for a, 1 for b)
 int getActiveMin(int a, int b)
 {
-    if(a==-1 and b==-1) return -1;
-    if(a==-1) return 1;//b
-    if(b==-1) return 0;//a
+    if (a==-1 and b==-1) return -1;
+    if (a==-1) return 1;//b
+    if (b==-1) return 0;//a
 
-    if(a <= b) return 0;//a
+    if (a <= b) return 0;//a
     else return 1;//b
 }
 
@@ -869,16 +869,16 @@ int getActiveMin(int a, int b, int c)
     const int result1 = getActiveMin(b,c);
 
     int passnumber;
-    if(result1==0) passnumber = b;
-    else if(result1==1) passnumber = c;
-    else if(result1==-1) passnumber =-1;
+    if (result1==0) passnumber = b;
+    else if (result1==1) passnumber = c;
+    else if (result1==-1) passnumber =-1;
 
     const int result2 = getActiveMin( a, passnumber );
 
-    if(result2==0) return 0;
+    if (result2==0) return 0;
     else
     {
-        if(result1==-1) return -1;
+        if (result1==-1) return -1;
         return result1+1;
     }
 
@@ -899,15 +899,15 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     // ignore track if it's muted
     // (but for some reason drum track can't be completely omitted)
     // if we only play selection, ignore mute and play anyway
-    if(graphics->muted and graphics->editorMode != DRUM and !selectionOnly)
+    if (graphics->muted and graphics->editorMode != DRUM and !selectionOnly)
         return -1;
 
     // if in manual mode, use the user-specified channel ID and not the stock one
     const bool manual_mode = sequence->getChannelManagementType() == CHANNEL_MANUAL;
-    if(manual_mode) track_ID = getChannel();
+    if (manual_mode) track_ID = getChannel();
 
     // drum tracks
-    if(graphics->editorMode == DRUM) track_ID = 9;
+    if (graphics->editorMode == DRUM) track_ID = 9;
 
     //std::cout << "channel = " << track_ID << std::endl;
 
@@ -915,21 +915,21 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     int firstNoteStartTick = -1;
     int selectedNoteAmount=0;
 
-    if(selectionOnly)
+    if (selectionOnly)
     {
 
         const int noteAmount=notes.size();
         for(int n=0; n<noteAmount; n++)
         {
-            if(notes[n].isSelected())
+            if (notes[n].isSelected())
             {
-                if(notes[n].startTick < firstNoteStartTick or firstNoteStartTick==-1) firstNoteStartTick = notes[n].startTick;
+                if (notes[n].startTick < firstNoteStartTick or firstNoteStartTick==-1) firstNoteStartTick = notes[n].startTick;
                 selectedNoteAmount++;
             }
         }
 
-        if(firstNoteStartTick == -1) return -1; // error, no note was found.
-        if(selectedNoteAmount == 0) return -1; // error, no note was found.
+        if (firstNoteStartTick == -1) return -1; // error, no note was found.
+        if (selectedNoteAmount == 0) return -1; // error, no note was found.
 
     }
     else
@@ -945,12 +945,12 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         m.SetTime( 0 );
         m.SetControlChange( track_ID, 0, 0 );
 
-        if( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; assert(0); }
+        if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; assert(0); }
 
         m.SetTime( 0 );
         m.SetControlChange( track_ID, 32, 0 );
 
-        if( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; assert(0); }
+        if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; assert(0); }
     }
 
     // set instrument
@@ -959,10 +959,10 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
         m.SetTime( 0 );
 
-        if(graphics->editorMode == DRUM) m.SetProgramChange( track_ID, drumKit );
+        if (graphics->editorMode == DRUM) m.SetProgramChange( track_ID, drumKit );
         else m.SetProgramChange( track_ID, instrument );
 
-        if( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding instrument at track beginning!" << std::endl; }
+        if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding instrument at track beginning!" << std::endl; }
     }
 
     // set track name
@@ -977,7 +977,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
         m.CopySysEx( &sysex );
         m.SetTime( 0 );
-        if( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; assert(0); }
+        if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; assert(0); }
     }
 
     // set maximum volume
@@ -987,7 +987,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         m.SetTime( 0 );
         m.SetControlChange( track_ID, 7, 127 );
 
-        if( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; assert(false); }
+        if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; assert(false); }
     }
 
     // ----------------------------------- add events in order --------------------------
@@ -1014,7 +1014,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     int last_event_tick=0;
 
     // if muted and drums, return now
-    if(graphics->muted and graphics->editorMode == DRUM and !selectionOnly) return -1;
+    if (graphics->muted and graphics->editorMode == DRUM and !selectionOnly) return -1;
 
     //std::cout << "-------------------- TRACK -------------" << std::endl;
 
@@ -1022,7 +1022,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     {
 
         // if we only want to play what's selected, skip unselected notes
-        if(selectionOnly)
+        if (selectionOnly)
         {
             while(note_on_id < noteOnAmount and !notes[note_on_id].isSelected()) note_on_id++;
             while(note_off_id < noteOffAmount and !noteOff[note_off_id].isSelected()) note_off_id++;
@@ -1036,59 +1036,59 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
         const int activeMin = getActiveMin( tick_off, tick_control, tick_on );
 
-        if(activeMin==-1) break; // all events have been added
+        if (activeMin==-1) break; // all events have been added
 
         jdkmidi::MIDITimedBigMessage m;
 
         //  ------------------------ add note on event ------------------------
-        if(activeMin == 2)
+        if (activeMin == 2)
         {
 
             const int time=notes[note_on_id].startTick - firstNoteStartTick;
-            if(!(time < 0))
+            if (!(time < 0))
             {
 
                 m.SetTime( time );
 
 
-                if(graphics->editorMode == DRUM) m.SetNoteOn( track_ID, notes[note_on_id].pitchID, notes[note_on_id].volume );
+                if (graphics->editorMode == DRUM) m.SetNoteOn( track_ID, notes[note_on_id].pitchID, notes[note_on_id].volume );
                 else m.SetNoteOn( track_ID, 131-notes[note_on_id].pitchID, notes[note_on_id].volume );
 
                 // find track end
-                if(notes[note_on_id].endTick > last_event_tick) last_event_tick = notes[note_on_id].endTick;
+                if (notes[note_on_id].endTick > last_event_tick) last_event_tick = notes[note_on_id].endTick;
 
-                if( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding midi event!" << std::endl; }
+                if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding midi event!" << std::endl; }
             }
 
             note_on_id++;
         }
         //  ------------------------ add note off event ------------------------
-        else if(activeMin == 0)
+        else if (activeMin == 0)
         {
 
             const int time=noteOff[note_off_id].endTick - firstNoteStartTick;
-            if(!(time < 0))
+            if (!(time < 0))
             {
 
                 m.SetTime( time );
 
-                if(graphics->editorMode == DRUM) m.SetNoteOff( track_ID, noteOff[note_off_id].pitchID, 0 );
+                if (graphics->editorMode == DRUM) m.SetNoteOff( track_ID, noteOff[note_off_id].pitchID, 0 );
                 else m.SetNoteOff( track_ID, 131-noteOff[note_off_id].pitchID, 0 );
 
                 // find track end
-                if(time > last_event_tick) last_event_tick = time;
+                if (time > last_event_tick) last_event_tick = time;
 
-                if( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding midi event!" << std::endl; }
+                if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding midi event!" << std::endl; }
             }
             note_off_id++;
         }
         //  ------------------------ add control change event ------------------------
-        else if(activeMin == 1)
+        else if (activeMin == 1)
         {
             const int controllerID = controlEvents[control_evt_id].getController();
 
             // pitch bend
-            if(controllerID==200)
+            if (controllerID==200)
             {
 
 
@@ -1097,9 +1097,9 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                 // controller changes happens before the area we play
                 // but perhaps it still is affecting the area we want to play - check for that.
                 bool addControlEvent = true;
-                if(time < 0)
+                if (time < 0)
                 {
-                    if(control_evt_id+1 < controllerAmount)
+                    if (control_evt_id+1 < controllerAmount)
                     {
                         addControlEvent = false;
                         int checkEventID = control_evt_id+1;
@@ -1107,7 +1107,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                         while(true)
                         {
 
-                            if((controlEvents[checkEventID].getTick() - firstNoteStartTick)<1  and
+                            if ((controlEvents[checkEventID].getTick() - firstNoteStartTick)<1  and
                                controlEvents[checkEventID].getController() == controllerID)
                             {
                                 // the current event has no effect, there is another one later, disregard it.
@@ -1115,7 +1115,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                                 break;
                             }
 
-                            if((controlEvents[checkEventID].getTick() - firstNoteStartTick)>0  and
+                            if ((controlEvents[checkEventID].getTick() - firstNoteStartTick)>0  and
                                controlEvents[checkEventID].getController() == controllerID)
                             {
                                 // there is another event, but it's later so current event is still relevant.
@@ -1125,7 +1125,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                             }
 
                             checkEventID++;
-                            if( ! (checkEventID < controllerAmount ) )
+                            if ( ! (checkEventID < controllerAmount ) )
                             {
                                 // we reaached the end, there are no other events of the same type
                                 // this one still affects playback of the area that we're playing.
@@ -1147,7 +1147,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                     addControlEvent = true;
                 }
 
-                if(addControlEvent)
+                if (addControlEvent)
                 {
 
                     m.SetTime( time );
@@ -1156,13 +1156,13 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                     // ((value * 127) - 8191) ?
                     int pitchBendVal = (127-controlEvents[control_evt_id].getValue())*128-128*128;
 
-                    if(pitchBendVal > 0) pitchBendVal-=8192;
-                    else if(pitchBendVal < 0) pitchBendVal +=8192;
+                    if (pitchBendVal > 0) pitchBendVal-=8192;
+                    else if (pitchBendVal < 0) pitchBendVal +=8192;
 
                     m.SetPitchBend( track_ID,
                                     pitchBendVal );
 
-                    if( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding midi event!" << std::endl; }
+                    if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding midi event!" << std::endl; }
                 }
                 control_evt_id++;
 
@@ -1177,9 +1177,9 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                 // controller changes happens before the area we play
                 // but perhaps it still is affecting the area we want to play - check for that.
                 bool addControlEvent = true;
-                if(time < 0)
+                if (time < 0)
                 {
-                    if(control_evt_id+1 < controllerAmount)
+                    if (control_evt_id+1 < controllerAmount)
                     {
                         addControlEvent = false;
                         int checkEventID = control_evt_id+1;
@@ -1187,7 +1187,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                         while(true)
                         {
 
-                            if((controlEvents[checkEventID].getTick() - firstNoteStartTick)<1  and
+                            if ((controlEvents[checkEventID].getTick() - firstNoteStartTick)<1  and
                                controlEvents[checkEventID].getController() == controllerID)
                             {
                                 // the current event has no effect, there is another one later, disregard it.
@@ -1195,7 +1195,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                                 break;
                             }
 
-                            if((controlEvents[checkEventID].getTick() - firstNoteStartTick)>0  and
+                            if ((controlEvents[checkEventID].getTick() - firstNoteStartTick)>0  and
                                controlEvents[checkEventID].getController() == controllerID)
                             {
                                 // there is another event, but it's later so current event is still relevant.
@@ -1205,7 +1205,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                             }
 
                             checkEventID++;
-                            if( ! (checkEventID < controllerAmount ) )
+                            if ( ! (checkEventID < controllerAmount ) )
                             {
                                 // we reaached the end, there are no other events of the same type
                                 // this one still affects playback of the area that we're playing.
@@ -1227,7 +1227,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                     addControlEvent = true;
                 }
 
-                if(addControlEvent)
+                if (addControlEvent)
                 {
                     m.SetTime( time );
 
@@ -1235,7 +1235,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                                         controllerID,
                                         127-controlEvents[control_evt_id].getValue() );
 
-                    if( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding midi event!" << std::endl; }
+                    if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding midi event!" << std::endl; }
                 }
 
                 control_evt_id++;
@@ -1247,7 +1247,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     }//wend
 
 
-    if(selectionOnly) startTick = firstNoteStartTick;
+    if (selectionOnly) startTick = firstNoteStartTick;
     return last_event_tick - firstNoteStartTick;
 
 
@@ -1256,7 +1256,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 void Track::copy()
 {
 
-    if(graphics->editorMode == CONTROLLER)
+    if (graphics->editorMode == CONTROLLER)
     {
         wxBell();
         return; // no copy/paste in controller mode
@@ -1269,17 +1269,17 @@ void Track::copy()
     // place all selected notes into clipboard
     for(int n=0; n<notes.size(); n++)
     {
-        if(!notes[n].isSelected()) continue;
+        if (!notes[n].isSelected()) continue;
 
         Note* tmp=new Note(notes[n]);
         Clipboard::add(tmp);
 
         // if in guitar mode, make sure string/fret and note match
-        if(graphics->editorMode == GUITAR) Clipboard::getNote( Clipboard::getSize()-1 )->checkIfStringAndFretMatchNote(false);
+        if (graphics->editorMode == GUITAR) Clipboard::getNote( Clipboard::getSize()-1 )->checkIfStringAndFretMatchNote(false);
         else Clipboard::getNote( Clipboard::getSize()-1 )->checkIfStringAndFretMatchNote(true);
 
         // find tickOfFirstSelectedNote of the first note
-        if(notes[n].startTick < tickOfFirstSelectedNote or tickOfFirstSelectedNote==-1) tickOfFirstSelectedNote=notes[n].startTick;
+        if (notes[n].startTick < tickOfFirstSelectedNote or tickOfFirstSelectedNote==-1) tickOfFirstSelectedNote=notes[n].startTick;
 
     }//next
 
@@ -1347,17 +1347,17 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                 {
 
                     const char* name = xml->getAttributeValue("name");
-                    if(name!=NULL) setName( fromCString((char*)name) );
+                    if (name!=NULL) setName( fromCString((char*)name) );
                     else
                     {
                         std::cout << "Missing info from file: track name" << std::endl;
                         setName( wxString(_("Untitled")) );
                     }
                     const char* channel_c = xml->getAttributeValue("channel");
-                    if(channel_c!=NULL)
+                    if (channel_c!=NULL)
                     {
                         int loaded_channel = atoi(channel_c);
-                        if(loaded_channel >=-0 and loaded_channel<16)
+                        if (loaded_channel >=-0 and loaded_channel<16)
                             channel = loaded_channel;
                         else
                             std::cerr << "Invalid channel : " << loaded_channel << std::endl;
@@ -1370,18 +1370,18 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                 }
                 else if (!strcmp("editor", xml->getNodeName()))
                 {
-                    if(! graphics->readFromFile(xml) )
+                    if (! graphics->readFromFile(xml) )
                         return false;
                 }
                 else if (!strcmp("magneticgrid", xml->getNodeName()))
                 {
-                    if(! graphics->readFromFile(xml) )
+                    if (! graphics->readFromFile(xml) )
                         return false;
                 }
                 else if (!strcmp("instrument", xml->getNodeName()))
                 {
                     const char* id = xml->getAttributeValue("id");
-                    if(id != NULL) setInstrument( atoi(id) );
+                    if (id != NULL) setInstrument( atoi(id) );
                     else
                     {
                         std::cout << "Missing info from file: instrument ID" << std::endl;
@@ -1391,7 +1391,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                 else if (!strcmp("drumkit", xml->getNodeName()))
                 {
                     const char* id = xml->getAttributeValue("id");
-                    if(id != NULL) setDrumKit( atoi(id) );
+                    if (id != NULL) setDrumKit( atoi(id) );
                     else
                     {
                         std::cout << "Missing info from file: drum ID" << std::endl;
@@ -1399,18 +1399,18 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                 }
                 else if (!strcmp("guitartuning", xml->getNodeName()))
                 {
-                    if(! graphics->readFromFile(xml) )
+                    if (! graphics->readFromFile(xml) )
                         return false;
                 }
                 else if (!strcmp("key", xml->getNodeName()))
                 {
-                    if(! graphics->readFromFile(xml) )
+                    if (! graphics->readFromFile(xml) )
                         return false;
                 }
                 else if (!strcmp("note", xml->getNodeName()))
                 {
                     Note* temp = new Note(graphics);
-                    if(! temp->readFromFile(xml) )
+                    if (! temp->readFromFile(xml) )
                     {
                         std::cout << "A note was discarded because it is invalid" << std::endl;
                         delete temp;
@@ -1424,7 +1424,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                 {
 
                     ControllerEvent* temp = new ControllerEvent(sequence, 0, 0, 0);
-                    if( !temp->readFromFile(xml) )
+                    if ( !temp->readFromFile(xml) )
                     {
                         // thre was an error when trying to load control event
                         std::cout << "A controller event was discarded because it is invalid" << std::endl;

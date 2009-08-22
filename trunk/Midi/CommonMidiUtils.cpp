@@ -120,7 +120,7 @@ bool exportMidiFile(Sequence* sequence, wxString filepath)
                                                  );
 
         // write the output file
-        if( !writer2.Write( numTracks, sequence->ticksPerBeat() ) )
+        if ( !writer2.Write( numTracks, sequence->ticksPerBeat() ) )
         {
             fprintf( stderr, "Error writing midi file\n");
             return false;
@@ -136,9 +136,9 @@ void addTimeSigFromVector(int n, int amount, MeasureData* measureData, jdkmidi::
 {
     jdkmidi::MIDITimedBigMessage m;
     int tick_time = measureData->getTimeSig(n).tick - substract_ticks < 0;
-    if(tick_time)
+    if (tick_time)
     {
-        if( (n+1<amount and measureData->getTimeSig(n+1).tick > substract_ticks) or n+1==amount)
+        if ( (n+1<amount and measureData->getTimeSig(n+1).tick > substract_ticks) or n+1==amount)
             tick_time = 0; // we need to consider event because it's the last and will affect future measures
         else
             return; // event does not affect anything not in played measures, ignore it
@@ -149,7 +149,7 @@ void addTimeSigFromVector(int n, int amount, MeasureData* measureData, jdkmidi::
     float denom = (float)log(measureData->getTimeSig(n).denom)/(float)log(2);
     m.SetTimeSig( measureData->getTimeSig(n).num, (int)denom );
 
-    if( !tracks.GetTrack(0)->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl;  return; }
+    if ( !tracks.GetTrack(0)->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl;  return; }
 }
 
 void addTempoEventFromSequenceVector(int n, int amount, Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, int substract_ticks)
@@ -158,9 +158,9 @@ void addTempoEventFromSequenceVector(int n, int amount, Sequence* sequence, jdkm
 
     int tempo_time = sequence->tempoEvents[n].getTick() - substract_ticks;
 
-    if(tempo_time < 0)
+    if (tempo_time < 0)
     {
-        if( (n+1<amount and sequence->tempoEvents[n+1].getTick() > substract_ticks) or n+1==amount)
+        if ( (n+1<amount and sequence->tempoEvents[n+1].getTick() > substract_ticks) or n+1==amount)
             tempo_time = 0; // we need to consider event because it's the last and will affect future measures
         else
             return; // event does not affect anything not in played measures, ignore it
@@ -172,7 +172,7 @@ void addTempoEventFromSequenceVector(int n, int amount, Sequence* sequence, jdkm
                   // tempo is stored as bpm * 32, giving 1/32 bpm resolution
                   );
 
-    if( !tracks.GetTrack(0)->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl;  return; }
+    if ( !tracks.GetTrack(0)->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl;  return; }
 }
 
 
@@ -187,7 +187,7 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
 
         tracks.SetClksPerBeat( sequence->ticksPerBeat() );
 
-        if(selectionOnly)
+        if (selectionOnly)
         {
             //  ---------------------------- add events to tracks --------------------
             trackLength = sequence->getCurrentTrack()->addMidiEvents( tracks.GetTrack(sequence->getCurrentTrackID()+1),
@@ -198,7 +198,7 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
 
             substract_ticks = *startTick;
 
-            if(trackLength == -1) return -1; // nothing to play in track (empty track - play nothing)
+            if (trackLength == -1) return -1; // nothing to play in track (empty track - play nothing)
             *songLengthInTicks = trackLength + sequence->ticksPerBeat()*2;
 
         }
@@ -217,15 +217,15 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
                 trackLength = sequence->getTrack(n)->addMidiEvents( tracks.GetTrack(n+1), (drum_track ? 9 : channel),
                                                                     sequence->measureData->getFirstMeasure(), false, trackFirstNote );
 
-                if( (trackFirstNote<(*startTick) and trackFirstNote != -1) or (*startTick)==-1) (*startTick) = trackFirstNote;
+                if ( (trackFirstNote<(*startTick) and trackFirstNote != -1) or (*startTick)==-1) (*startTick) = trackFirstNote;
 
 
-                if(trackLength == -1) continue; // nothing to play in track (empty track - skip it)
-                if(trackLength > *songLengthInTicks) *songLengthInTicks=trackLength;
+                if (trackLength == -1) continue; // nothing to play in track (empty track - skip it)
+                if (trackLength > *songLengthInTicks) *songLengthInTicks=trackLength;
 
-                if(not drum_track)
+                if (not drum_track)
                 {
-                    if(channel > 15 and sequence->getChannelManagementType() == CHANNEL_AUTO)
+                    if (channel > 15 and sequence->getChannelManagementType() == CHANNEL_AUTO)
                     {
                         wxMessageBox(_("WARNING: this song has too many\nchannels, expect unpredictable output"));
                         channel = 0;
@@ -239,7 +239,7 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
         }
 
 
-        if(*songLengthInTicks < 1) return -1; // nothing to play at all (empty song - play nothing)
+        if (*songLengthInTicks < 1) return -1; // nothing to play at all (empty song - play nothing)
         *numTracks = sequence->getTrackAmount()+1;
 
         // --------------------------------- default tempo --------------------
@@ -248,13 +248,13 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
         m.SetTime( 0 );
         m.SetTempo32( sequence->getTempo() * 32 ); // tempo stored as bpm * 32, giving 1/32 bpm resolution
 
-        if( !tracks.GetTrack(0)->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl;  return false; }
+        if ( !tracks.GetTrack(0)->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl;  return false; }
 
-        if(!playing)
+        if (!playing)
         {
             // --------------------------------- copyright and song name ---------------------------------
             // copyright
-            if(sequence->getCopyright().size()>0)
+            if (sequence->getCopyright().size()>0)
             {
 
                 jdkmidi::MIDITimedBigMessage m;
@@ -271,13 +271,13 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
 
                 m.SetTime( 0 );
 
-                if( !tracks.GetTrack(0)->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; return false; }
+                if ( !tracks.GetTrack(0)->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; return false; }
 
 
             }
 
             // song name
-            if(sequence->getInternalName().size()>0)
+            if (sequence->getInternalName().size()>0)
             {
 
                 jdkmidi::MIDITimedBigMessage m;
@@ -291,7 +291,7 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
 
                 m.CopySysEx( &sysex );
                 m.SetTime( 0 );
-                if( !tracks.GetTrack(0)->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; assert(0); }
+                if ( !tracks.GetTrack(0)->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; assert(0); }
             }
 
         }// end if not playing
@@ -301,9 +301,9 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
         // CoreAudio chokes on time sig changes... easy hack, just ignore them when playing back
         // it's also quicker because time sig events are not heard in any way so no reason to waste time adding them when playing
         // FIXME find real problem
-        if(!playing)
+        if (!playing)
         {
-            if( getMeasureData()->isMeasureLengthConstant() )
+            if ( getMeasureData()->isMeasureLengthConstant() )
             {
                 // time signature
                 jdkmidi::MIDITimedBigMessage m;
@@ -312,7 +312,7 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
                 float denom = (float)log(getMeasureData()->getTimeSigDenominator())/(float)log(2);
                 m.SetTimeSig( getMeasureData()->getTimeSigNumerator(), (int)denom );
 
-                if( !tracks.GetTrack(0)->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl;  return false; }
+                if ( !tracks.GetTrack(0)->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl;  return false; }
 
                 // add tempo changes straight away, there's nothing else in track 0 so time order is not a problem
                 const int amount = sequence->tempoEvents.size();
@@ -336,18 +336,18 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
                     const int timesig_tick = (timesig_id < timesig_amount ? measureData->getTimeSig(timesig_id).tick : -1);
                     const int tempo_tick = (tempo_id < tempo_amount ? sequence->tempoEvents[tempo_id].getTick() : -1);
 
-                    if(timesig_tick==-1 and tempo_tick==-1) break; // all events added, done
-                    else if(timesig_tick==-1)
+                    if (timesig_tick==-1 and tempo_tick==-1) break; // all events added, done
+                    else if (timesig_tick==-1)
                     {
                         addTempoEventFromSequenceVector(tempo_id, tempo_amount, sequence, tracks, substract_ticks);
                         tempo_id++;
                     }
-                    else if(tempo_tick==-1)
+                    else if (tempo_tick==-1)
                     {
                         addTimeSigFromVector(timesig_id, timesig_amount, measureData, tracks, substract_ticks);
                         timesig_id++;
                     }
-                    else if(tempo_tick > timesig_tick)
+                    else if (tempo_tick > timesig_tick)
                     {
                         addTimeSigFromVector(timesig_id, timesig_amount, measureData, tracks, substract_ticks);
                         timesig_id++;
@@ -386,7 +386,7 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
 
             for(int n=0; n<sequence->getTrackAmount(); n++)
             {
-                if( !tracks.GetTrack(n+1)->PutEvent( m ) ) { std::cout << "Error adding midi event!" << std::endl; }
+                if ( !tracks.GetTrack(n+1)->PutEvent( m ) ) { std::cout << "Error adding midi event!" << std::endl; }
             }//next
         }
 
@@ -411,7 +411,7 @@ void allocAsMidiBytes(Sequence* sequence, bool selectionOnly, /*out*/int* songle
                                             );
 
     // write the output data
-    if( !writer.Write( numTracks, sequence->ticksPerBeat() ) )
+    if ( !writer.Write( numTracks, sequence->ticksPerBeat() ) )
     {
         fprintf( stderr, "Error writing midi file\n");
         return;

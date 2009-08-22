@@ -69,7 +69,7 @@ void NoteRelocator::prepareToRelocate()
 }
 Note* NoteRelocator::getNextNote()
 {
-    if(id >= noteamount_in_relocator) return NULL;
+    if (id >= noteamount_in_relocator) return NULL;
 
     id++;
     return notes.get(id-1);
@@ -102,7 +102,7 @@ void ControlEventRelocator::prepareToRelocate()
 }
 ControllerEvent* ControlEventRelocator::getNextControlEvent()
 {
-    if(id >= amount_in_relocator) return NULL;
+    if (id >= amount_in_relocator) return NULL;
 
     id++;
     return events.get(id-1);

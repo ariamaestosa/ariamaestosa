@@ -32,7 +32,7 @@ namespace AriaMaestosa
 RelativeXCoord* nullOne = NULL;
 RelativeXCoord& RelativeXCoord_empty()
 {
-    if(nullOne == NULL) nullOne = new RelativeXCoord(-1,WINDOW);
+    if (nullOne == NULL) nullOne = new RelativeXCoord(-1,WINDOW);
     return *nullOne;
 }
 
@@ -56,15 +56,15 @@ void RelativeXCoord::setValue(int i, RelativeType relativeTo)
     relativeToWindow=-1;
     relativeToMidi=-1;
 
-    if(relativeTo == WINDOW)
+    if (relativeTo == WINDOW)
     {
         relativeToWindow = i;
     }
-    else if(relativeTo == MIDI)
+    else if (relativeTo == MIDI)
     {
         relativeToMidi = i;
     }
-    else if(relativeTo == EDITOR)
+    else if (relativeTo == EDITOR)
     {
         // use relative to frame or midi ticks when setting the value of a coord
         std::cout << "COORD SET RELATIVE TO EDITOR!!! That will probably fail as it is deprecated" << std::endl;
@@ -94,11 +94,11 @@ void RelativeXCoord::convertTo(RelativeType relativeTo)
 
         case EDITOR:
 
-                if(relativeToWindow != -1)
+                if (relativeToWindow != -1)
                 {
                     relativeToEditor = relativeToWindow - getEditorsXStart();
                 }
-                else if(relativeToMidi != -1)
+                else if (relativeToMidi != -1)
                 {
                     relativeToEditor = ( int )( relativeToMidi * sequence->getZoom() ) - sequence->getXScrollInPixels();
                 }
@@ -113,9 +113,9 @@ void RelativeXCoord::convertTo(RelativeType relativeTo)
 
         case WINDOW:
 
-            if(relativeToWindow==-1)
+            if (relativeToWindow==-1)
             {
-                    if(relativeToMidi != -1)
+                    if (relativeToMidi != -1)
                     {
                         relativeToWindow = ( int )( relativeToMidi * sequence->getZoom() ) - sequence->getXScrollInPixels() + getEditorsXStart();
                     }
@@ -132,10 +132,10 @@ void RelativeXCoord::convertTo(RelativeType relativeTo)
 
         case MIDI:
 
-            if(relativeToMidi == -1)
+            if (relativeToMidi == -1)
             {
 
-                    if(relativeToWindow != -1)
+                    if (relativeToWindow != -1)
                     {
                         relativeToMidi = (int)( ( relativeToWindow - getEditorsXStart() ) / sequence->getZoom() ) + sequence->getXScrollInMidiTicks();
                     }
@@ -163,11 +163,11 @@ int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
         case EDITOR:
 
 
-                if(relativeToWindow != -1)
+                if (relativeToWindow != -1)
                 {
                     relativeToEditor = relativeToWindow - getEditorsXStart();
                 }
-                else if(relativeToMidi != -1)
+                else if (relativeToMidi != -1)
                 {
                     relativeToEditor = ( int )( relativeToMidi * getCurrentSequence()->getZoom() ) - getCurrentSequence()->getXScrollInPixels();
                 }
@@ -183,10 +183,10 @@ int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
 
         case WINDOW:
 
-            if(relativeToWindow!=-1) return relativeToWindow;
+            if (relativeToWindow!=-1) return relativeToWindow;
             else
             {
-                    if(relativeToMidi != -1)
+                    if (relativeToMidi != -1)
                     {
                         return ( int )( relativeToMidi * sequence->getZoom() ) - sequence->getXScrollInPixels() + getEditorsXStart();
                     }
@@ -202,11 +202,11 @@ int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
         case MIDI:
 
 
-            if(relativeToMidi != -1) return relativeToMidi;
+            if (relativeToMidi != -1) return relativeToMidi;
             else
             {
 
-                    if(relativeToWindow != -1)
+                    if (relativeToWindow != -1)
                     {
                         return (int)( (relativeToWindow - getEditorsXStart()) / sequence->getZoom() ) + sequence->getXScrollInMidiTicks();
                     }

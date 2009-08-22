@@ -51,7 +51,7 @@ namespace AriaMaestosa {
 
     void freeVolumeSlider()
     {
-        if(sliderframe != NULL)
+        if (sliderframe != NULL)
         {
             sliderframe->Destroy();
             sliderframe = NULL;
@@ -61,7 +61,7 @@ namespace AriaMaestosa {
 
     void showVolumeSlider(int x, int y, int noteID, Track* track)
     {
-        if(sliderframe == NULL) sliderframe = new VolumeSlider();
+        if (sliderframe == NULL) sliderframe = new VolumeSlider();
         sliderframe->show(x,y,noteID, track);
     }
 
@@ -104,7 +104,7 @@ namespace AriaMaestosa {
     {
         // show the volume picking dialog
 
-        if(track == NULL) return;
+        if (track == NULL) return;
 
         VolumeSlider::currentTrack=track;
         VolumeSlider::noteID=noteID;
@@ -121,12 +121,12 @@ namespace AriaMaestosa {
     void VolumeSlider::volumeSlideChanged(wxScrollEvent& evt)
     {
 
-        if(currentTrack == NULL) return;
+        if (currentTrack == NULL) return;
 
-        if(noteID!=-1)
+        if (noteID!=-1)
         {
 
-            if(currentTrack->isNoteSelected(noteID))
+            if (currentTrack->isNoteSelected(noteID))
                 currentTrack->action( new Action::SetNoteVolume(slider->GetValue(), SELECTED_NOTES) );
             else
                 currentTrack->action( new Action::SetNoteVolume(slider->GetValue(), noteID) );
@@ -152,7 +152,7 @@ namespace AriaMaestosa {
     void VolumeSlider::enterPressed(wxCommandEvent& evt)
     {
 
-        if(!valueText->GetValue().IsNumber())
+        if (!valueText->GetValue().IsNumber())
         {
             wxBell();
             const int newValue = slider->GetValue();
@@ -161,14 +161,14 @@ namespace AriaMaestosa {
         }
 
         const int newValue = atoi_u(valueText->GetValue());
-        if(newValue<0)
+        if (newValue<0)
         {
             wxBell();
             valueText->SetValue(wxT("0"));
             return;
         }
 
-        if(newValue>127)
+        if (newValue>127)
         {
             wxBell();
             valueText->SetValue(wxT("127"));
@@ -178,7 +178,7 @@ namespace AriaMaestosa {
         assert(noteID!=-1);
         assert(currentTrack!=NULL);
 
-        if(currentTrack->isNoteSelected(noteID))
+        if (currentTrack->isNoteSelected(noteID))
             currentTrack->action( new Action::SetNoteVolume(newValue, SELECTED_NOTES) );
         else
             currentTrack->action( new Action::SetNoteVolume(newValue, noteID) );
@@ -199,11 +199,11 @@ namespace AriaMaestosa {
 
     void VolumeSlider::keyPress(wxKeyEvent& evt)
     {
-        if(evt.GetKeyCode()==WXK_ESCAPE || evt.GetKeyCode()==WXK_CANCEL || evt.GetKeyCode()==WXK_DELETE)
+        if (evt.GetKeyCode()==WXK_ESCAPE || evt.GetKeyCode()==WXK_CANCEL || evt.GetKeyCode()==WXK_DELETE)
         {
             closeWindow();
         }
-        else if(evt.GetKeyCode() == WXK_RETURN)
+        else if (evt.GetKeyCode() == WXK_RETURN)
         {
             wxCommandEvent dummyEvt;
             enterPressed(dummyEvt);

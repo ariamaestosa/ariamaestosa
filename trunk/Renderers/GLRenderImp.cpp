@@ -98,7 +98,7 @@ void lineWidth(const int n)
 
 void lineSmooth(const bool enabled)
 {
-    if(enabled) glEnable (GL_LINE_SMOOTH);
+    if (enabled) glEnable (GL_LINE_SMOOTH);
     else glDisable (GL_LINE_SMOOTH);
 }
 

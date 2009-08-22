@@ -110,7 +110,7 @@ void loadImages()
 void unloadImages()
 {
 
-    if(!images_loaded) return;
+    if (!images_loaded) return;
     images_loaded = false;
 
     delete sbArrowImg;

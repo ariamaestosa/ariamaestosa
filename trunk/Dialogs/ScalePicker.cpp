@@ -183,7 +183,7 @@ namespace AriaMaestosa {
 
                 wxString factor_str = textInput->GetValue();
 
-                if(!factor_str.IsNumber()){
+                if (!factor_str.IsNumber()){
                     wxBell();
                     return;
                 }
@@ -240,13 +240,13 @@ namespace AriaMaestosa {
         void pickScale(Sequence* seq)
         {
 
-            if(frame==NULL) frame=new ScalePickerFrame(seq);
+            if (frame==NULL) frame=new ScalePickerFrame(seq);
             frame->show();
 
         }
         void free()
         {
-            if(frame!=NULL)
+            if (frame!=NULL)
             {
                 frame->Destroy();
                 frame = NULL;

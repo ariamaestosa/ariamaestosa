@@ -195,11 +195,11 @@ void MainFrame::initMenuBar()
     settingsMenu->QUICK_ADD_MENU( wxID_PREFERENCES,   _("Preferences"), MainFrame::menuEvent_preferences );
 
     const int playValue = Core::getPrefsValue("playDuringEdit");
-    if(playValue == PLAY_ON_CHANGE)
+    if (playValue == PLAY_ON_CHANGE)
         playDuringEdits_onchange->Check();
-    else if(playValue == PLAY_ALWAYS)
+    else if (playValue == PLAY_ALWAYS)
         playDuringEdits_always->Check();
-    else if(playValue == PLAY_NEVER)
+    else if (playValue == PLAY_NEVER)
         playDuringEdits_never->Check();
     else{ assert(false); }
 
@@ -254,7 +254,7 @@ void MainFrame::menuEvent_exportNotation(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_save(wxCommandEvent& evt)
 {
-    if(getCurrentSequence()->filepath.IsEmpty()) menuEvent_saveas(evt);
+    if (getCurrentSequence()->filepath.IsEmpty()) menuEvent_saveas(evt);
     else saveAriaFile(getCurrentSequence(), getCurrentSequence()->filepath);
 }
 
@@ -265,11 +265,11 @@ void MainFrame::menuEvent_saveas(wxCommandEvent& evt)
     wxString givenPath = showFileDialog( _("Select destination file"), wxT(""), suggestedName,
                                                      wxT("Aria Maestosa file|*.aria"), true /*save*/);
 
-    if(!givenPath.IsEmpty())
+    if (!givenPath.IsEmpty())
     {
 
 
-        if( wxFileExists(givenPath) )
+        if ( wxFileExists(givenPath) )
         {
             int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
                                         wxYES_NO, this);
@@ -307,10 +307,10 @@ void MainFrame::menuEvent_exportmidi(wxCommandEvent& evt)
     wxString midiFilePath = showFileDialog( _("Select destination file"), wxT(""),
                                             suggestedName, _("Midi file|*.mid"), true /*save*/);
 
-    if(midiFilePath.IsEmpty()) return;
+    if (midiFilePath.IsEmpty()) return;
 
     // if file already exists, ask for overwriting
-    if( wxFileExists(midiFilePath) )
+    if ( wxFileExists(midiFilePath) )
     {
         int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
                                     wxYES_NO, this);
@@ -320,7 +320,7 @@ void MainFrame::menuEvent_exportmidi(wxCommandEvent& evt)
     // write data to file
     const bool success = PlatformMidiManager::exportMidiFile( getCurrentSequence(), midiFilePath );
 
-    if(!success)
+    if (!success)
     {
         wxMessageBox( _("Sorry, failed to export midi file."));
     }
@@ -339,10 +339,10 @@ void MainFrame::menuEvent_exportSampledAudio(wxCommandEvent& evt)
                                               suggestedName,
                                               wildcard, true /*save*/);
 
-    if(audioFilePath.IsEmpty()) return;
+    if (audioFilePath.IsEmpty()) return;
 
     // if file already exists, ask for overwriting
-    if( wxFileExists(audioFilePath) )
+    if ( wxFileExists(audioFilePath) )
     {
         int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
                                     wxYES_NO, this);
@@ -370,7 +370,7 @@ void MainFrame::menuEvent_quit(wxCommandEvent& evt)
     // close all open sequences
     while(getSequenceAmount()>0)
     {
-        if( !closeSequence() )
+        if ( !closeSequence() )
         {
             // user canceled, don't quit
             return;
@@ -507,7 +507,7 @@ void MainFrame::menuEvent_automaticChannelModeSelected(wxCommandEvent& evt)
 
     Sequence* sequence = getCurrentSequence();
     // we were in manual mode... we will need to merge tracks while switching modes. ask user first
-    if( sequence->getChannelManagementType() == CHANNEL_MANUAL )
+    if ( sequence->getChannelManagementType() == CHANNEL_MANUAL )
     {
         int answer = wxMessageBox(  _("If multiple tracks play on the same channel, they will be merged.\nThis cannot be undone.\n\nDo you really want to continue?"),
                                     _("Confirm"),
@@ -525,9 +525,9 @@ void MainFrame::menuEvent_automaticChannelModeSelected(wxCommandEvent& evt)
         {
             for(int j=0; j<sequence->getTrackAmount(); j++)
             {
-                if(i == j) continue; //don't compare a track with itself
+                if (i == j) continue; //don't compare a track with itself
 
-                if(sequence->getTrack(i)->getChannel() == sequence->getTrack(j)->getChannel())
+                if (sequence->getTrack(i)->getChannel() == sequence->getTrack(j)->getChannel())
                 {
                     sequence->getTrack(i)->mergeTrackIn( sequence->getTrack(j) );
                     sequence->deleteTrack(j);
@@ -558,14 +558,14 @@ void MainFrame::menuEvent_manualChannelModeSelected(wxCommandEvent& evt)
 
     Sequence* sequence = getCurrentSequence();
     // we were in auto mode... we will need to set channels
-    if( sequence->getChannelManagementType() == CHANNEL_AUTO)
+    if ( sequence->getChannelManagementType() == CHANNEL_AUTO)
     {
         int channel = 0;
         // iterrate through tarcks, give each one a channel
         for(int i=0; i<sequence->getTrackAmount(); i++)
         {
             //if this is a drum track, give channel 9
-            if(sequence->getTrack(i)->graphics->editorMode == DRUM)
+            if (sequence->getTrack(i)->graphics->editorMode == DRUM)
             {
                 sequence->getTrack(i)->setChannel(9);
             }
@@ -574,7 +574,7 @@ void MainFrame::menuEvent_manualChannelModeSelected(wxCommandEvent& evt)
             {
                 sequence->getTrack(i)->setChannel(channel);
                 channel++;
-                if(channel==9) channel++;
+                if (channel==9) channel++;
             }
         }
     }
@@ -628,7 +628,7 @@ void MainFrame::menuEvent_manual(wxCommandEvent& evt)
 #ifdef __WXMAC__
     new ManualView(this, path_to_docs);
 #else
-    if(!wxFileExists( path_to_docs ) or !wxLaunchDefaultBrowser( wxT("file://") + path_to_docs ))
+    if (!wxFileExists( path_to_docs ) or !wxLaunchDefaultBrowser( wxT("file://") + path_to_docs ))
     {
         wxMessageBox(wxT("Sorry, opening docs failed\n(") + path_to_docs + wxT(" does not appear to exist).\nTry ariamaestosa.sourceforge.net instead."));
     }
@@ -643,12 +643,12 @@ void MainFrame::updateMenuBarToSequence()
     Sequence* sequence = getCurrentSequence();
     ChannelManagementType channelMode = sequence->getChannelManagementType();
 
-    if(channelMode == CHANNEL_AUTO)
+    if (channelMode == CHANNEL_AUTO)
     {
         channelManagement_automatic->Check(true);
         channelManagement_manual->Check(false);
     }
-    else if(channelMode == CHANNEL_MANUAL)
+    else if (channelMode == CHANNEL_MANUAL)
     {
         channelManagement_automatic->Check(false);
         channelManagement_manual->Check(true);

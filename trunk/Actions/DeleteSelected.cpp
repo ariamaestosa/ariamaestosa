@@ -31,7 +31,7 @@ namespace AriaMaestosa
         const int noteAmount = removedNotes.size();
         const int controlAmount = removedControlEvents.size();
 
-        if(noteAmount > 0)
+        if (noteAmount > 0)
         {
 
             for(int n=0; n<noteAmount; n++)
@@ -42,7 +42,7 @@ namespace AriaMaestosa
             removedNotes.clearWithoutDeleting();
 
         }
-        else if(controlAmount > 0)
+        else if (controlAmount > 0)
         {
 
             for(int n=0; n<controlAmount; n++)
@@ -58,24 +58,24 @@ namespace AriaMaestosa
     {
         assert(track != NULL);
 
-        if(track->graphics->editorMode == CONTROLLER)
+        if (track->graphics->editorMode == CONTROLLER)
         {
 
             const int from = track->graphics->controllerEditor->getSelectionBegin();
             const int to = track->graphics->controllerEditor->getSelectionEnd();
             const int type = track->graphics->controllerEditor->getCurrentControllerType();
 
-            if(type != 201 /*tempo*/)
+            if (type != 201 /*tempo*/)
             {
                 // remove controller events
                 for(int n=0; n<track->controlEvents.size(); n++)
                 {
 
-                    if(track->controlEvents[n].getController() != type) continue; // in another controller
+                    if (track->controlEvents[n].getController() != type) continue; // in another controller
 
                     const int tick = track->controlEvents[n].getTick();
 
-                    if(tick<from or tick>to) continue; // this event is not concerned by selection
+                    if (tick<from or tick>to) continue; // this event is not concerned by selection
 
                     removedControlEvents.push_back( track->controlEvents.get(n) );
                     track->controlEvents.remove(n);
@@ -92,7 +92,7 @@ namespace AriaMaestosa
 
                     const int tick = track->sequence->tempoEvents[n].getTick();
 
-                    if(tick<from or tick>to) continue; // this event is not concerned by selection
+                    if (tick<from or tick>to) continue; // this event is not concerned by selection
 
                     removedControlEvents.push_back( track->sequence->tempoEvents.get(n) );
                     track->sequence->tempoEvents.markToBeRemoved(n);
@@ -107,12 +107,12 @@ namespace AriaMaestosa
 
             for(int n=0; n<track->notes.size(); n++)
             {
-                if(!track->notes[n].isSelected()) continue;
+                if (!track->notes[n].isSelected()) continue;
 
                 // also delete corresponding note off event
                 for(int i=0; i<track->noteOff.size(); i++)
                 {
-                    if(&track->noteOff[i] == &track->notes[n])
+                    if (&track->noteOff[i] == &track->notes[n])
                     {
                         track->noteOff.remove(i);
                         break;

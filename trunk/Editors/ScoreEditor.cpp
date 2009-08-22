@@ -64,21 +64,21 @@ int findNotePitch(int note_7, PitchSign sharpness)
 {
     int note=0;
 
-    if(note_7==0) note+=2; // A
-    else if(note_7==1) note+=0; // B
-    else if(note_7==2) note+=11; // C
-    else if(note_7==3) note+=9; // D
-    else if(note_7==4) note+=7; // E
-    else if(note_7==5) note+=6; // F
-    else if(note_7==6) note+=4; // G
+    if (note_7==0) note+=2; // A
+    else if (note_7==1) note+=0; // B
+    else if (note_7==2) note+=11; // C
+    else if (note_7==3) note+=9; // D
+    else if (note_7==4) note+=7; // E
+    else if (note_7==5) note+=6; // F
+    else if (note_7==6) note+=4; // G
     else
     {
         std::cerr << "Invalid note: " << note_7 << std::endl;
         return 0;
     }
 
-    if(sharpness==SHARP) note-=1;
-    else if(sharpness==FLAT) note+=1;
+    if (sharpness==SHARP) note-=1;
+    else if (sharpness==FLAT) note+=1;
 
     return note;
 }
@@ -110,12 +110,12 @@ void ScoreMidiConverter::setNoteSharpness(NOTES note, PitchSign sharpness)
 
     scoreNotesSharpness[note] = sharpness;
 
-    if(sharpness == SHARP)
+    if (sharpness == SHARP)
     {
         going_in_sharps = true;
         going_in_flats = false;
     }
-    else if(sharpness == FLAT)
+    else if (sharpness == FLAT)
     {
         going_in_sharps = false;
         going_in_flats = true;
@@ -139,7 +139,7 @@ PitchSign ScoreMidiConverter::getKeySigSharpnessSignForLevel(const unsigned int 
     
     PitchSign value = scoreNotesSharpness[ levelToNote7(level) ];
     
-    if(value == NATURAL) return PITCH_SIGN_NONE;
+    if (value == NATURAL) return PITCH_SIGN_NONE;
     else return value;
 }
 
@@ -149,8 +149,8 @@ void ScoreMidiConverter::setOctaveShift(int octaves)   { octave_shift = octaves;
 int ScoreMidiConverter::getOctaveShift(){ return octave_shift; }
 int ScoreMidiConverter::getScoreCenterCLevel()
 {
-    if(octave_shift == 1) return ottavaAltaCLevel;
-    else if(octave_shift == -1) return ottavaBassaCLevel;
+    if (octave_shift == 1) return ottavaAltaCLevel;
+    else if (octave_shift == -1) return ottavaBassaCLevel;
 
     return middleCLevel;
 }
@@ -166,7 +166,7 @@ int ScoreMidiConverter::getSharpnessSignForMidiNote(const unsigned int note)
 // returns what note is at given level
 int ScoreMidiConverter::levelToNote(const int level)
 {
-    if(level<0 or level>=73) return -1;
+    if (level<0 or level>=73) return -1;
     return levelToMidiNote[level];
 }
 
@@ -181,7 +181,7 @@ void ScoreMidiConverter::resetAccidentalsForNewRender()
 int ScoreMidiConverter::noteToLevel(Note* noteObj, PitchSign* sign)
 {
     const int note = noteObj->pitchID;
-    if(note>=128 or note<0) return -1;
+    if (note>=128 or note<0) return -1;
 
     const int level = midiNoteToLevel[note];
     const NoteToLevelType current_type = midiNoteToLevel_type[note];
@@ -189,52 +189,52 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, PitchSign* sign)
     PitchSign answer_sign = PITCH_SIGN_NONE;
     int answer_level = -1;
 
-    if(current_type == SHARP_OR_FLAT)
+    if (current_type == SHARP_OR_FLAT)
     {
         // decide whether to use a flat or a sharp to display this note
         // first check if there's a user-specified sign. otherwise pick default (quite arbitrarly)
         bool useFlats = false;
-        if(noteObj->preferred_accidental_sign != -1)
+        if (noteObj->preferred_accidental_sign != -1)
         {
-            if(noteObj->preferred_accidental_sign == SHARP) useFlats = false;
-            else if(noteObj->preferred_accidental_sign == FLAT) useFlats = true;
+            if (noteObj->preferred_accidental_sign == SHARP) useFlats = false;
+            else if (noteObj->preferred_accidental_sign == FLAT) useFlats = true;
         }
         else
             useFlats = goingInFlats();
 
-        if(useFlats and (note-1)>0)
+        if (useFlats and (note-1)>0)
         {
-            if(sign!=NULL) answer_sign = FLAT;
+            if (sign!=NULL) answer_sign = FLAT;
             answer_level = midiNoteToLevel[note-1];
         }
-        else if(note < 127)
+        else if (note < 127)
         {
-            if(sign!=NULL) answer_sign = SHARP;
+            if (sign!=NULL) answer_sign = SHARP;
             answer_level = midiNoteToLevel[note+1];
         }
         else answer_level = -1; // nothing found
     }
-    else if(current_type == NATURAL_ON_LEVEL)
+    else if (current_type == NATURAL_ON_LEVEL)
     {
-        if(sign!=NULL) answer_sign = NATURAL;
+        if (sign!=NULL) answer_sign = NATURAL;
         answer_level = level;
     }
-    else if(current_type == DIRECT_ON_LEVEL)
+    else if (current_type == DIRECT_ON_LEVEL)
     {
-        if(sign!=NULL) answer_sign = PITCH_SIGN_NONE;
+        if (sign!=NULL) answer_sign = PITCH_SIGN_NONE;
         answer_level = level;
     }
     else answer_level = -1; // nothing found
 
     // accidentals
-    if(sign!=NULL)
+    if (sign!=NULL)
     {
-        if(accidentals)
+        if (accidentals)
         {
             const int measure = getMeasureData()->measureAtTick(noteObj->startTick);
 
             // when going to another measure, reset accidentals
-            if(measure != accidentalsMeasure)
+            if (measure != accidentalsMeasure)
             {
                 accidentals =  false;
                 for(int n=0; n<7; n++) accidentalScoreNotesSharpness[n] = -1;
@@ -244,30 +244,30 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, PitchSign* sign)
             {
                 // we are not going in another measure, apply accidental to current note
                 const int current_accidental = accidentalScoreNotesSharpness[ levelToNote7(answer_level) ];
-                if(current_accidental != -1)
+                if (current_accidental != -1)
                 {
                     // the current note continues using the same accidental, no change
-                    if(current_accidental == answer_sign) answer_sign = PITCH_SIGN_NONE;
+                    if (current_accidental == answer_sign) answer_sign = PITCH_SIGN_NONE;
                     // the current note does NOT continue using the same accidental, display another sign
-                    else if(current_accidental != answer_sign and
+                    else if (current_accidental != answer_sign and
                             (answer_sign == NATURAL or answer_sign == PITCH_SIGN_NONE))
                     {
                         const int accidentalType = accidentalScoreNotesSharpness[ levelToNote7(answer_level) ];
                         // we left the original key by adding a sharp of flat,
                         // and now we come back to the original key. show a
                         // natural sign
-                        if(accidentalType == FLAT or accidentalType == SHARP)
+                        if (accidentalType == FLAT or accidentalType == SHARP)
                         {
                             answer_sign = NATURAL;
                         }
                         // we left the key by using a natural accidental on a key
                         // flat/sharp, and now we're coming back on the original key
                         // so show again the original sign
-                        else if(accidentalType == NATURAL /*and answer_sign == PITCH_SIGN_NONE*/)
+                        else if (accidentalType == NATURAL /*and answer_sign == PITCH_SIGN_NONE*/)
                         {
                             answer_sign = getKeySigSharpnessSignForLevel( answer_level );
                         }
-                        else if(accidentalType == PITCH_SIGN_NONE)
+                        else if (accidentalType == PITCH_SIGN_NONE)
                         {
                             // FIXME - not sure this is appropriate
                             std::cout << "WARNING: accidentalType == PITCH_SIGN_NONE :(" << std::endl;
@@ -280,7 +280,7 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, PitchSign* sign)
         }
 
         // set accidentals
-        if(answer_sign != PITCH_SIGN_NONE)
+        if (answer_sign != PITCH_SIGN_NONE)
         {
             accidentals = true;
             const int measure = getMeasureData()->measureAtTick(noteObj->startTick);
@@ -289,7 +289,7 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, PitchSign* sign)
             accidentalScoreNotesSharpness[ levelToNote7(answer_level) ] = answer_sign;
 
             // remove accidental if no more needed
-            if((scoreNotesSharpness[ levelToNote7(answer_level) ] == NATURAL and answer_sign == NATURAL) or
+            if ((scoreNotesSharpness[ levelToNote7(answer_level) ] == NATURAL and answer_sign == NATURAL) or
                scoreNotesSharpness[ levelToNote7(answer_level) ] == answer_sign)
             {
                 accidentalScoreNotesSharpness[ levelToNote7(answer_level) ] = -1;
@@ -297,7 +297,7 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, PitchSign* sign)
         }
     }
 
-    if(sign!=NULL) *sign = answer_sign;
+    if (sign!=NULL) *sign = answer_sign;
     return answer_level;
 }
 
@@ -305,8 +305,8 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, PitchSign* sign)
 int ScoreMidiConverter::levelToNote7(const unsigned int level)
 {
     int r = 7-level%7;
-    if(r < 0) r+=7;
-    if(r > 6) r-=7;
+    if (r < 0) r+=7;
+    if (r > 6) r-=7;
     return r;
 }
 
@@ -329,8 +329,8 @@ void ScoreMidiConverter::updateConversionData()
     ottavaBassaCLevel = -1;
 
     int middleCNote128 = 71;
-    if( scoreNotesSharpness[C] == SHARP ) middleCNote128 -= 1;
-    else if( scoreNotesSharpness[C] == FLAT ) middleCNote128 += 1;
+    if ( scoreNotesSharpness[C] == SHARP ) middleCNote128 -= 1;
+    else if ( scoreNotesSharpness[C] == FLAT ) middleCNote128 += 1;
 
     const int ottavaAltaCNote128 = middleCNote128 - 12;
     const int ottavaBassaCNote128 = middleCNote128 + 12;
@@ -350,12 +350,12 @@ void ScoreMidiConverter::updateConversionData()
         midiNoteToLevel_type[ levelToMidiNote[n] ] = DIRECT_ON_LEVEL;
 
         // find middle C
-        if( levelToMidiNote[n] == middleCNote128 ) middleCLevel = n; // set on which line is middle C
-        if( levelToMidiNote[n] == ottavaAltaCNote128 ) ottavaAltaCLevel = n;
-        if( levelToMidiNote[n] == ottavaBassaCNote128 ) ottavaBassaCLevel = n;
+        if ( levelToMidiNote[n] == middleCNote128 ) middleCLevel = n; // set on which line is middle C
+        if ( levelToMidiNote[n] == ottavaAltaCNote128 ) ottavaAltaCLevel = n;
+        if ( levelToMidiNote[n] == ottavaBassaCNote128 ) ottavaBassaCLevel = n;
 
         // if note is flat or sharp, also find what this line would be with a natural sign
-        if(sharpness != NATURAL)
+        if (sharpness != NATURAL)
         {
             const int natural_note_on_this_line = findNotePitch( note_7, NATURAL ) + octave*12;
 
@@ -364,7 +364,7 @@ void ScoreMidiConverter::updateConversionData()
 
             // only use natural signs if this note cannot be displayed without natural sign on another line
             // in wich case 'midiNoteToLevel' will have been set (or will be overwritten later)
-            if(midiNoteToLevel[ natural_note_on_this_line ] == -1)
+            if (midiNoteToLevel[ natural_note_on_this_line ] == -1)
             {
                 midiNoteToLevel[ natural_note_on_this_line ] = n;
                 midiNoteToLevel_type[ natural_note_on_this_line ] = NATURAL_ON_LEVEL;
@@ -377,9 +377,9 @@ void ScoreMidiConverter::updateConversionData()
         }
 
         note_7 --;
-        if(note_7 == 1) octave++;
+        if (note_7 == 1) octave++;
 
-        if(note_7 < 0)
+        if (note_7 < 0)
             note_7 = 6;
     }
 
@@ -387,12 +387,12 @@ void ScoreMidiConverter::updateConversionData()
 
 int ScoreMidiConverter::getMidiNoteForLevelAndSign(const unsigned int level, int sharpness)
 {
-    if(level < 0 or level > 73) return -1;
+    if (level < 0 or level > 73) return -1;
 
-    if(sharpness == PITCH_SIGN_NONE) return levelToNote(level);
-    else if(sharpness == NATURAL) return levelToNaturalNote[level];
-    else if(sharpness == SHARP) return levelToNaturalNote[level]-1;
-    else if(sharpness == FLAT) return levelToNaturalNote[level]+1;
+    if (sharpness == PITCH_SIGN_NONE) return levelToNote(level);
+    else if (sharpness == NATURAL) return levelToNaturalNote[level];
+    else if (sharpness == SHARP) return levelToNaturalNote[level]-1;
+    else if (sharpness == FLAT) return levelToNaturalNote[level]+1;
     else return -1; // shouldn't happen
 }
 
@@ -458,7 +458,7 @@ void ScoreEditor::loadKey(const PitchSign sharpness_symbol, const int symbol_amo
     key_flats_amnt = 0;
     key_sharps_amnt = 0;
 
-    if(sharpness_symbol == SHARP)
+    if (sharpness_symbol == SHARP)
     {
         key_sharps_amnt = symbol_amount;
 
@@ -467,7 +467,7 @@ void ScoreEditor::loadKey(const PitchSign sharpness_symbol, const int symbol_amo
             converter->setNoteSharpness( sharp_order[n], sharpness_symbol);
         }
     }
-    else if(sharpness_symbol == FLAT)
+    else if (sharpness_symbol == FLAT)
     {
         key_flats_amnt = symbol_amount;
 
@@ -494,7 +494,7 @@ void ScoreEditor::setNoteSign(const int sign, const int noteID)
     const int noteLevel = converter->noteToLevel(track->getNote(noteID));
 
     const int new_pitch = converter->getMidiNoteForLevelAndSign(noteLevel, sign);
-    if(new_pitch == -1)
+    if (new_pitch == -1)
     {
         wxBell();
         return;
@@ -503,7 +503,7 @@ void ScoreEditor::setNoteSign(const int sign, const int noteID)
     Note* note = track->getNote(noteID);
     note->pitchID = new_pitch;
 
-    if(sign != NATURAL) note->preferred_accidental_sign = sign;
+    if (sign != NATURAL) note->preferred_accidental_sign = sign;
 
 }
 
@@ -526,7 +526,7 @@ namespace EditorStemParams
         const int noteX = relX.getRelativeTo(WINDOW);
         
         if     (stem_type == STEM_UP)   return (noteX + stem_up_x_offset);
-        else if(stem_type == STEM_DOWN) return (noteX + stem_down_x_offset);
+        else if (stem_type == STEM_DOWN) return (noteX + stem_down_x_offset);
         else return -1;
     }
     int getStemX(const NoteRenderInfo& info)
@@ -548,7 +548,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
 
     // note head
     /*
-    if(renderInfo.unknown_duration)
+    if (renderInfo.unknown_duration)
     {
         AriaRender::primitives();
         AriaRender::character('?', renderInfo.x, renderInfo.y + 3);
@@ -559,7 +559,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     RelativeXCoord relX(renderInfo.tick, MIDI);
     const int noteX = relX.getRelativeTo(WINDOW);
     
-    if(renderInfo.instant_hit)
+    if (renderInfo.instant_hit)
     {
         AriaRender::primitives();
         AriaRender::color(0,0,0);
@@ -570,10 +570,10 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
         AriaRender::line(noteX-5, renderInfo.getY() + 7,
                          noteX+5, renderInfo.getY() - 7);
     }
-    else if(renderInfo.hollow_head)
+    else if (renderInfo.hollow_head)
     {
         AriaRender::images();
-        if(renderInfo.selected)
+        if (renderInfo.selected)
             AriaRender::setImageState(AriaRender::STATE_SELECTED_NOTE);
         else
             AriaRender::setImageState(AriaRender::STATE_NOTE);
@@ -583,7 +583,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     else
     {
         AriaRender::images();
-        if(renderInfo.selected)
+        if (renderInfo.selected)
             AriaRender::setImageState(AriaRender::STATE_SELECTED_NOTE);
         else
             AriaRender::setImageState(AriaRender::STATE_NOTE);
@@ -600,15 +600,15 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
 
     // set min and max level where small line is not needed
     int score_from_level = 0;
-    if(g_clef) score_from_level = middle_c_level - 10;
-    else if(f_clef) score_from_level = middle_c_level + 2;
+    if (g_clef) score_from_level = middle_c_level - 10;
+    else if (f_clef) score_from_level = middle_c_level + 2;
 
     int score_to_level = 999;
-    if(f_clef) score_to_level = middle_c_level + 11;
-    else if(g_clef) score_to_level = middle_c_level - 1;
+    if (f_clef) score_to_level = middle_c_level + 11;
+    else if (g_clef) score_to_level = middle_c_level - 1;
 
     // draw small lines above score if needed
-    if(renderInfo.level < score_from_level)
+    if (renderInfo.level < score_from_level)
     {
         for(int lvl=score_from_level+1; lvl>renderInfo.level+renderInfo.level%2; lvl -= 2)
         {
@@ -618,7 +618,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     }
 
     // draw small lines below score if needed
-    if(renderInfo.level > score_to_level)
+    if (renderInfo.level > score_to_level)
     {
         for(int lvl=score_to_level; lvl<=renderInfo.level-renderInfo.level%2+2; lvl += 2)
         {
@@ -628,7 +628,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     }
 
     // draw small lines between both scores if needed
-    if(g_clef and f_clef and renderInfo.level == middle_c_level)
+    if (g_clef and f_clef and renderInfo.level == middle_c_level)
     {
         const int lvly = getEditorYStart() + y_step*(middle_c_level+1) - head_radius - getYScrollInPixels() + 2;
         AriaRender::line(noteX-5, lvly, noteX+15, lvly);
@@ -637,13 +637,13 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     AriaRender::lineWidth(2);
 
     // dotted
-    if(renderInfo.dotted)
+    if (renderInfo.dotted)
     {
         AriaRender::color(1,1,1);
         AriaRender::pointSize(5);
         AriaRender::point(noteX + 14, renderInfo.getY() + 5);
 
-        if(renderInfo.selected) AriaRender::color(1,0,0);
+        if (renderInfo.selected) AriaRender::color(1,0,0);
         else AriaRender::color(0,0,0);
         AriaRender::pointSize(3);
 
@@ -651,21 +651,21 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     }
 
     // sharpness sign
-    if(renderInfo.sign == SHARP)
+    if (renderInfo.sign == SHARP)
     {
         AriaRender::images();
         sharpSign->move(noteX - 5, renderInfo.getY() + head_radius);
         sharpSign->render();
         AriaRender::primitives();
     }
-    else if(renderInfo.sign == FLAT)
+    else if (renderInfo.sign == FLAT)
     {
         AriaRender::images();
         flatSign->move(noteX - 5, renderInfo.getY() + head_radius);
         flatSign->render();
         AriaRender::primitives();
     }
-    else if(renderInfo.sign == NATURAL)
+    else if (renderInfo.sign == NATURAL)
     {
         AriaRender::images();
         naturalSign->move(noteX - 5, renderInfo.getY() + head_radius);
@@ -677,19 +677,19 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
 void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* analyser)
 {
     AriaRender::primitives();
-    if(renderInfo.selected)
+    if (renderInfo.selected)
         AriaRender::color(1,0,0);
     else
         AriaRender::color(0,0,0);
 
     // stem
-    if(renderInfo.draw_stem)
+    if (renderInfo.draw_stem)
     {
 
-        if(renderInfo.stem_type == STEM_UP or renderInfo.stem_type == STEM_DOWN)
+        if (renderInfo.stem_type == STEM_UP or renderInfo.stem_type == STEM_DOWN)
         {
             int stem_from_y = LEVEL_TO_Y(renderInfo.getStemOriginLevel());
-            if(renderInfo.stem_type == STEM_DOWN) stem_from_y += 6;
+            if (renderInfo.stem_type == STEM_DOWN) stem_from_y += 6;
             
             AriaRender::line( getStemX(renderInfo), stem_from_y,
                               getStemX(renderInfo), LEVEL_TO_Y(analyser->getStemTo(renderInfo))   );
@@ -697,7 +697,7 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
 
 
         // flags
-        if(renderInfo.flag_amount>0 and not renderInfo.beam)
+        if (renderInfo.flag_amount>0 and not renderInfo.beam)
         {
             static const int stem_height = noteFlag->image->height;
             const int stem_end = LEVEL_TO_Y(analyser->getStemTo(renderInfo));
@@ -749,7 +749,7 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
 
     
     // tie
-    if(renderInfo.getTiedToTick() != -1)
+    if (renderInfo.getTiedToTick() != -1)
     {
     
         const float center_tick = (renderInfo.getTiedToTick() + renderInfo.tick)/2.0;
@@ -771,7 +771,7 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
     }
 
     // beam
-    if(renderInfo.beam)
+    if (renderInfo.beam)
     {
         AriaRender::color(0,0,0);
         AriaRender::lineWidth(2);
@@ -801,31 +801,31 @@ void renderSilence(const int duration, const int tick, const int type, const int
     RelativeXCoord relX(tick, MIDI);
     const int x = relX.getRelativeTo(WINDOW) + 5;
     
-    if( type == 1 )
+    if ( type == 1 )
     {
         AriaRender::primitives();
         AriaRender::color(0,0,0);
         AriaRender::rect(x,silences_y, x+15, silences_y+y_step);
     }
-    else if( type == 2 )
+    else if ( type == 2 )
     {
         AriaRender::primitives();
         AriaRender::color(0,0,0);
         AriaRender::rect(x, silences_y+y_step, x+15, silences_y+y_step*2);
     }
-    else if( type == 4 )
+    else if ( type == 4 )
     {
         AriaRender::images();
         silence4->move(x, silences_y);
         silence4->render();
     }
-    else if( type == 8 )
+    else if ( type == 8 )
     {
         AriaRender::images();
         silence8->move(x-3, silences_y);
         silence8->render();
     }
-    else if( type == 16 )
+    else if ( type == 16 )
     {
         AriaRender::images();
         silence8->move(x-7, silences_y+3);
@@ -837,7 +837,7 @@ void renderSilence(const int duration, const int tick, const int type, const int
     AriaRender::primitives();
 
     // dotted
-    if(dotted)
+    if (dotted)
     {
         AriaRender::color(1,1,1);
         AriaRender::pointSize(5);
@@ -849,7 +849,7 @@ void renderSilence(const int duration, const int tick, const int type, const int
     }
 
     // triplet
-    if(triplet)
+    if (triplet)
     {
         AriaRender::arc(x+5, silences_y + 25, 10, 10, false);
 
@@ -866,9 +866,9 @@ void renderSilence(const int duration, const int tick, const int type, const int
 void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
                          RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {
-    if(head_radius == -1) head_radius = noteOpen->getImageHeight()/2;
+    if (head_radius == -1) head_radius = noteOpen->getImageHeight()/2;
 
-    if(!ImageProvider::imagesLoaded()) return;
+    if (!ImageProvider::imagesLoaded()) return;
     const int yscroll = getYScrollInPixels();
 
     AriaRender::beginScissors(10, getEditorYStart(), width-15, 20+height);
@@ -882,11 +882,11 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
     g_clef_analyser->clearAndPrepare();
     f_clef_analyser->clearAndPrepare();
 
-    if(g_clef)
+    if (g_clef)
         drawVerticalMeasureLines(getEditorYStart() + (middle_c_level-2)*y_step + y_step/2 - yscroll,
                                  getEditorYStart() + (middle_c_level-10)*y_step + y_step/2 - yscroll);
 
-    if(f_clef)
+    if (f_clef)
         drawVerticalMeasureLines(getEditorYStart() + (middle_c_level+2)*y_step + y_step/2 - yscroll,
                                  getEditorYStart() + (middle_c_level+10)*y_step + y_step/2 - yscroll);
 
@@ -899,7 +899,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
     const int first_x_to_consider = getMeasureData()->firstPixelInMeasure( getMeasureData()->measureAtPixel(0) ) + 1;
     const int last_x_to_consider = getMeasureData()->lastPixelInMeasure( getMeasureData()->measureAtPixel(width+15) );
 
-    if(musicalNotationEnabled) converter->resetAccidentalsForNewRender();
+    if (musicalNotationEnabled) converter->resetAccidentalsForNewRender();
 
     // render pass 1. draw linear notation if relevant, gather information and do initial rendering for musical notation
     for(int n=0; n<noteAmount; n++)
@@ -907,7 +907,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
         PitchSign note_sign;
         const int noteLevel = converter->noteToLevel(track->getNote(n), &note_sign);
 
-        if(noteLevel == -1) continue;
+        if (noteLevel == -1) continue;
         const int noteLength = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
         const int tick = track->getNoteStartInMidiTicks(n);
 
@@ -915,20 +915,20 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
         const int x2=track->getNoteEndInPixels(n) - sequence->getXScrollInPixels() + getEditorsXStart();
 
         // don't consider notes that won't be visible
-        if(x2 < first_x_to_consider) continue;
-        if(x1 > last_x_to_consider) break;
+        if (x2 < first_x_to_consider) continue;
+        if (x1 > last_x_to_consider) break;
 
-        if(linearNotationEnabled)
+        if (linearNotationEnabled)
         {
-            if(musicalNotationEnabled) x1 += 8;
+            if (musicalNotationEnabled) x1 += 8;
 
-            if(x1 < x2) // when notes are too short to be visible, don't draw them
+            if (x1 < x2) // when notes are too short to be visible, don't draw them
             {
                 float volume=track->getNoteVolume(n)/127.0;
 
                 // draw the quad with black border that is visible in linear notation mode
                 AriaRender::primitives();
-                if(track->isNoteSelected(n) and focus)
+                if (track->isNoteSelected(n) and focus)
                     AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
                 else
                     AriaRender::color((1-volume*0.7), (1-volume*0.7), 1);
@@ -936,7 +936,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
                 const int y1 = noteLevel*y_step+1 + getEditorYStart() - getYScrollInPixels()-1;
                 const int y2 = (noteLevel+1)*y_step + getEditorYStart() - getYScrollInPixels()-1;
 
-                if(musicalNotationEnabled)
+                if (musicalNotationEnabled)
                     AriaRender::bordered_rect_no_start(x1+1, y1, x2-1, y2);
                 else
                     AriaRender::bordered_rect(x1+1, y1, x2-1, y2);
@@ -946,21 +946,21 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
             // when musical notation is disabled, we need to render the sharpness sign here
             // (when it's activated, it's done by the note drawing code. When note drawing code
             // is disabled, we need to do it ourselves).
-            if(not musicalNotationEnabled)
+            if (not musicalNotationEnabled)
             {
                 AriaRender::images();
 
-                if(note_sign == SHARP)
+                if (note_sign == SHARP)
                 {
                     sharpSign->move(x1 - 5, noteLevel*y_step+1 + getEditorYStart() - getYScrollInPixels());
                     sharpSign->render();
                 }
-                else if(note_sign == FLAT)
+                else if (note_sign == FLAT)
                 {
                     flatSign->move(x1 - 5,  noteLevel*y_step+1 + getEditorYStart() - getYScrollInPixels());
                     flatSign->render();
                 }
-                else if(note_sign == NATURAL)
+                else if (note_sign == NATURAL)
                 {
                     naturalSign->move(x1 - 5,  noteLevel*y_step+1 + getEditorYStart() - getYScrollInPixels());
                     naturalSign->render();
@@ -970,23 +970,23 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
             }
         }// end if linear
 
-        if(musicalNotationEnabled)
+        if (musicalNotationEnabled)
         {
             // build visible notes vector with initial info in it
             NoteRenderInfo currentNote(tick, noteLevel, noteLength, note_sign,
                                      track->isNoteSelected(n), track->getNotePitchID(n));
 
             // add note to either G clef score or F clef score
-            if(g_clef and not f_clef)
+            if (g_clef and not f_clef)
                 g_clef_analyser->addToVector(currentNote, false);
-            else if(f_clef and not g_clef)
+            else if (f_clef and not g_clef)
                 f_clef_analyser->addToVector(currentNote, false);
-            else if(f_clef and g_clef)
+            else if (f_clef and g_clef)
             {
                 const int middleC = converter->getScoreCenterCLevel();
-                if(noteLevel < middleC)
+                if (noteLevel < middleC)
                     g_clef_analyser->addToVector(currentNote, false);
-                else if(noteLevel > middleC)
+                else if (noteLevel > middleC)
                     f_clef_analyser->addToVector(currentNote, false);
                 else
                 {
@@ -994,13 +994,13 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
                     // guess on which clef to put this note
                     // we'll check nearby notes in case it can help us'
                     int check_note = -1;
-                    if(n>0) check_note=n-1;
-                    else if(n+1<noteAmount) check_note = n+1;
+                    if (n>0) check_note=n-1;
+                    else if (n+1<noteAmount) check_note = n+1;
 
-                    if(check_note != -1)
+                    if (check_note != -1)
                     {
                         const int checkNoteLevel = converter->noteToLevel(track->getNote(check_note), NULL);
-                        if(checkNoteLevel > middleC)
+                        if (checkNoteLevel > middleC)
                             f_clef_analyser->addToVector(currentNote, false);
                         else
                             g_clef_analyser->addToVector(currentNote, false);
@@ -1014,15 +1014,15 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
 
     // render musical notation if enabled
-    if(musicalNotationEnabled)
+    if (musicalNotationEnabled)
     {
-        if(g_clef)
+        if (g_clef)
         {
             const int silences_y = getEditorYStart() + y_step*(converter->getScoreCenterCLevel()-8) - getYScrollInPixels() + 1;
             renderScore(g_clef_analyser, silences_y);
         }
 
-        if(f_clef)
+        if (f_clef)
         {
             const int silences_y = getEditorYStart() + y_step*(converter->getScoreCenterCLevel()+4) - getYScrollInPixels() + 1;
             renderScore(f_clef_analyser, silences_y);
@@ -1035,10 +1035,10 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     AriaRender::primitives();
 
-    if(!clickedOnNote and mouse_is_in_editor)
+    if (!clickedOnNote and mouse_is_in_editor)
     {
         // selection
-        if(selecting)
+        if (selecting)
         {
             AriaRender::color(0, 0, 0);
             AriaRender::hollow_rect(mousex_initial.getRelativeTo(WINDOW), mousey_initial,
@@ -1062,7 +1062,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
                        sequence->getXScrollInMidiTicks())*sequence->getZoom()
                       );
 
-            if(!(preview_x1<0 || preview_x2<0) and preview_x2>preview_x1)
+            if (!(preview_x1<0 || preview_x2<0) and preview_x2>preview_x1)
             {
 
                 const int y_base = ((mousey_initial - getEditorYStart() + getYScrollInPixels())/y_step)*y_step;
@@ -1080,7 +1080,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     // ------------------------- move note (preview) -----------------------
     AriaRender::primitives();
-    if(clickedOnNote)
+    if (clickedOnNote)
     {
         AriaRender::color(1, 0.85, 0, 0.5);
 
@@ -1091,7 +1091,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
         const int y_step_move = (int)round( (float)y_difference/ (float)y_step );
 
         // move a single note
-        if(lastClickedNote!=-1)
+        if (lastClickedNote!=-1)
         {
             int x1=track->getNoteStartInPixels(lastClickedNote) - sequence->getXScrollInPixels() + getEditorsXStart();
             const int x2=track->getNoteEndInPixels(lastClickedNote) - sequence->getXScrollInPixels() + getEditorsXStart();
@@ -1108,7 +1108,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
             for(int n=0; n<track->getNoteAmount(); n++)
             {
-                if(!track->isNoteSelected(n)) continue;
+                if (!track->isNoteSelected(n)) continue;
 
                 int x1=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels() + getEditorsXStart();
                 const int x2=track->getNoteEndInPixels(n) - sequence->getXScrollInPixels() + getEditorsXStart();
@@ -1126,7 +1126,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
 
     // --------------------------- grey left part -----------------------------
-    if(!focus) AriaRender::color(0.4, 0.4, 0.4);
+    if (!focus) AriaRender::color(0.4, 0.4, 0.4);
     else AriaRender::color(0.8, 0.8, 0.8);
 
     AriaRender::rect(0, getEditorYStart(),
@@ -1136,7 +1136,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     AriaRender::color(0,0,0);
 
-    if(g_clef)
+    if (g_clef)
     {
         AriaRender::primitives();
 
@@ -1153,12 +1153,12 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
         int max_level_with_signs = -1;
         int min_level_with_signs = -1;
 
-        if(converter->goingInSharps())
+        if (converter->goingInSharps())
         {
             min_level_with_signs = middle_c_level - 11;
             max_level_with_signs = middle_c_level - 4;
         }
-        else if(converter->goingInFlats())
+        else if (converter->goingInFlats())
         {
             min_level_with_signs = middle_c_level - 9;
             max_level_with_signs = middle_c_level - 2;
@@ -1171,12 +1171,12 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
             const int liney = getEditorYStart() + n*y_step + y_step/2 - yscroll;
             const PitchSign sharpness = converter->getKeySigSharpnessSignForLevel(n);
 
-            if(sharpness == SHARP)
+            if (sharpness == SHARP)
             {
                 sharpSign->move( 48 + sharp_sign_x[ converter->levelToNote7(n) ], liney-1 );
                 sharpSign->render();
             }
-            else if(sharpness == FLAT)
+            else if (sharpness == FLAT)
             {
                 flatSign->move( 48 + flat_sign_x[ converter->levelToNote7(n) ], liney );
                 flatSign->render();
@@ -1184,7 +1184,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
         }
     }
 
-    if(f_clef)
+    if (f_clef)
     {
         AriaRender::primitives();
         AriaRender::color(0,0,0);
@@ -1202,12 +1202,12 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
         int max_level_with_signs = -1;
         int min_level_with_signs = -1;
 
-        if(converter->goingInSharps())
+        if (converter->goingInSharps())
         {
             min_level_with_signs = middle_c_level + 3;
             max_level_with_signs = middle_c_level + 10;
         }
-        else if(converter->goingInFlats())
+        else if (converter->goingInFlats())
         {
             min_level_with_signs = middle_c_level + 5;
             max_level_with_signs = middle_c_level + 12;
@@ -1219,11 +1219,11 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
         {
             const int liney = getEditorYStart() + n*y_step + y_step/2 - yscroll;
             const int sharpness = converter->getKeySigSharpnessSignForLevel(n);
-            if(sharpness == SHARP)
+            if (sharpness == SHARP)
             {
                 sharpSign->move( 48 + sharp_sign_x[ converter->levelToNote7(n) ], liney-1 ); sharpSign->render();
             }
-            else if(sharpness == FLAT)
+            else if (sharpness == FLAT)
             {
                 flatSign->move( 48 + flat_sign_x[ converter->levelToNote7(n) ], liney ); flatSign->render();
             }
@@ -1232,7 +1232,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     // --------------------------- clefs -------------------------
     AriaRender::images();
-    if(g_clef)
+    if (g_clef)
     {
         const int clef_y = getEditorYStart() + (middle_c_level-6)*y_step -  yscroll + 5;
         clefG_drawable->move(getEditorsXStart() - 55, clef_y);
@@ -1240,11 +1240,11 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
         /*
         AriaRender::color(0, 0, 0);
         AriaRender::primitives();
-        if(converter->getOctaveShift() == -1) AriaRender::text("8", getEditorsXStart() - 30, clef_y-10 );
-        else if(converter->getOctaveShift() == 1) AriaRender::text("8", getEditorsXStart() - 30, clef_y );
+        if (converter->getOctaveShift() == -1) AriaRender::text("8", getEditorsXStart() - 30, clef_y-10 );
+        else if (converter->getOctaveShift() == 1) AriaRender::text("8", getEditorsXStart() - 30, clef_y );
          */
     }
-    if(f_clef)
+    if (f_clef)
     {
         const int clef_y = getEditorYStart() + (middle_c_level+4)*y_step -  yscroll + 5;
         clefF_drawable->move(getEditorsXStart() - 65, clef_y);
@@ -1252,13 +1252,13 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
         /*
         AriaRender::color(0, 0, 0);
         AriaRender::primitives();
-        if(converter->getOctaveShift() == -1) AriaRender::text("8", getEditorsXStart() - 30, clef_y-10 );
-        else if(converter->getOctaveShift() == 1) AriaRender::text("8", getEditorsXStart() - 30, clef_y+10 );
+        if (converter->getOctaveShift() == -1) AriaRender::text("8", getEditorsXStart() - 30, clef_y-10 );
+        else if (converter->getOctaveShift() == 1) AriaRender::text("8", getEditorsXStart() - 30, clef_y+10 );
          */
     }
 
     // ---------------------------- scrollbar -----------------------
-    if(!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
+    if (!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
     else AriaRender::setImageState(AriaRender::STATE_NORMAL);
 
     renderScrollbar();
@@ -1318,7 +1318,7 @@ void ScoreEditor::TrackPropertiesDialog(RelativeXCoord mousex_current, int mouse
 void ScoreEditor::mouseDown(RelativeXCoord x, const int y)
 {
     // user clicked on left bar to change tuning
-    if(x.getRelativeTo(EDITOR)<-20 and x.getRelativeTo(WINDOW)>15 and y>getEditorYStart())
+    if (x.getRelativeTo(EDITOR)<-20 and x.getRelativeTo(WINDOW)>15 and y>getEditorYStart())
     {
         KeyPicker* picker = Core::getKeyPicker();
         picker->setParent(track);
@@ -1360,7 +1360,7 @@ void ScoreEditor::rightClick(RelativeXCoord x, int y)
 int ScoreEditor::getYScrollInPixels()
 {
     // check if visible area is large enough to display everything
-    if(73*y_step <= height)
+    if (73*y_step <= height)
     {
         useVerticalScrollbar(false);
         return 0;
@@ -1384,32 +1384,32 @@ NoteSearchResult ScoreEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 
         //const int notePitch = track->getNotePitchID(n);
         const int noteLevel = converter->noteToLevel(track->getNote(n));
-        if(noteLevel == -1) continue;
+        if (noteLevel == -1) continue;
         const int note_y = getEditorYStart() + y_step*noteLevel - head_radius - getYScrollInPixels() + 2;
         const int note_x = getEditorsXStart() + track->getNoteStartInPixels(n)  - sequence->getXScrollInPixels();
         const int note_x2 = getEditorsXStart() + track->getNoteEndInPixels(n)  - sequence->getXScrollInPixels();
 
-        if(linearNotationEnabled)
+        if (linearNotationEnabled)
         {
-            if( mx<note_x2 and mx>note_x and y < note_y+11 and y > note_y)
+            if ( mx<note_x2 and mx>note_x and y < note_y+11 and y > note_y)
             {
                 noteID = n;
 
-                if(track->isNoteSelected(n) and !Display:: isSelectLessPressed())
+                if (track->isNoteSelected(n) and !Display:: isSelectLessPressed())
                     // clicked on a selected note
                     return FOUND_SELECTED_NOTE;
                 else
                     return FOUND_NOTE;
             }
         }
-        else if(musicalNotationEnabled)
+        else if (musicalNotationEnabled)
         {
 
-            if( mx<note_x+11 and mx>note_x and y < note_y+11 and y > note_y+2)
+            if ( mx<note_x+11 and mx>note_x and y < note_y+11 and y > note_y+2)
             {
                 noteID = n;
 
-                if(track->isNoteSelected(n) and !Display:: isSelectLessPressed())
+                if (track->isNoteSelected(n) and !Display:: isSelectLessPressed())
                     // clicked on a selected note
                     return FOUND_SELECTED_NOTE;
                 else
@@ -1434,23 +1434,23 @@ void ScoreEditor::noteClicked(const int id)
 void ScoreEditor::addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY)
 {
     const int level = (mouseY - getEditorYStart() + getYScrollInPixels())/y_step;
-    if(level<0 or level>=73) return;
+    if (level<0 or level>=73) return;
     const int note = converter->levelToNote(level);
-    if(note == -1) return;
+    if (note == -1) return;
 
     track->action( new Action::AddNote(note, snapped_start_tick, snapped_end_tick, default_volume ) );
 }
 
 void ScoreEditor::moveNote(Note& note, const int relativeX, const int relativeY)
 {
-        if(note.startTick+relativeX < 0) return; // refuse to move before song start
+        if (note.startTick+relativeX < 0) return; // refuse to move before song start
 
         note.startTick += relativeX;
         note.endTick   += relativeX;
 
-        if(relativeY==0) return;
+        if (relativeY==0) return;
         /*
-        if(Display::isSelectMorePressed() or Display::isCtrlDown())
+        if (Display::isSelectMorePressed() or Display::isCtrlDown())
         {
             note.pitchID += relativeY;
         }
@@ -1459,7 +1459,7 @@ void ScoreEditor::moveNote(Note& note, const int relativeX, const int relativeY)
             */
             int noteLevel = converter->noteToLevel(&note);
             noteLevel += relativeY;
-            if(noteLevel > 0 and noteLevel < 73) // reject illegal notes
+            if (noteLevel > 0 and noteLevel < 73) // reject illegal notes
                 note.pitchID = converter->levelToNote(noteLevel);
             /*
         }
@@ -1477,11 +1477,11 @@ void ScoreEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_c
     {
         //const int notePitch = track->getNotePitchID(n);
         const int noteLevel = converter->noteToLevel(track->getNote(n));
-        if(noteLevel == -1) continue;
+        if (noteLevel == -1) continue;
         const int note_y = getEditorYStart() + y_step*noteLevel - head_radius - getYScrollInPixels() + 2;
         const int note_x = getEditorsXStart() + track->getNoteStartInPixels(n)  - sequence->getXScrollInPixels();
 
-        if( std::min(mxc, mxi)<note_x and std::max(mxc,mxi)>note_x and
+        if ( std::min(mxc, mxi)<note_x and std::max(mxc,mxi)>note_x and
             std::min(mousey_current, mousey_initial) < note_y and
             std::max(mousey_current, mousey_initial) > note_y)
         {

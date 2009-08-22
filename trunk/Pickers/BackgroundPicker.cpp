@@ -50,11 +50,11 @@ public:
         active = new wxCheckBox(this, 200, wxT(" "));
         sizer->Add(active, 0, wxALL, 5);
 
-        if(!enabled or editorMode==DRUM)  active->Enable(false);
-        else if(activated) active->SetValue(true);
+        if (!enabled or editorMode==DRUM)  active->Enable(false);
+        else if (activated) active->SetValue(true);
 
         wxString instrumentname;
-        if(editorMode == DRUM) instrumentname = Core::getDrumPicker()->getDrumName( track->getDrumKit() );
+        if (editorMode == DRUM) instrumentname = Core::getDrumPicker()->getDrumName( track->getDrumKit() );
         else instrumentname = Core::getInstrumentPicker()->getInstrumentName( track->getInstrument() );
 
         sizer->Add( new wxStaticText(this, wxID_ANY, to_wxString(trackID) + wxT(" : ") + track->getName() + wxT(" (") + instrumentname + wxT(")")) , 1, wxALL, 5);
@@ -100,6 +100,8 @@ public:
     {
         TrackPropertiesDialog::parent = parent;
 
+        modalid = -1;
+        
         sizer = new wxBoxSizer(wxVERTICAL);
 
         wxPanel* properties_panel = new wxPanel(this);
@@ -119,10 +121,10 @@ public:
         {
             Track* track = getCurrentSequence()->getTrack(n);
             bool enabled = true;
-            if(track == parent) enabled = false; // can't be background of itself
+            if (track == parent) enabled = false; // can't be background of itself
 
             bool activated = false;
-            if(editor->hasAsBackground(track)) activated = true;
+            if (editor->hasAsBackground(track)) activated = true;
 
             BackgroundChoicePanel* bcp = new BackgroundChoicePanel(properties_panel, n, track, activated, enabled);
             bg_subsizer->Add(bcp, 0, wxALL, 5);
@@ -200,7 +202,7 @@ public:
     {
         Editor* editor = parent->graphics->getCurrentEditor();
         const int value = atoi_u(volume_text->GetValue());
-        if(value >=0 and value < 128) editor->setDefaultVolume( value );
+        if (value >=0 and value < 128) editor->setDefaultVolume( value );
         else wxBell();
 
         const int amount = choicePanels.size();
@@ -210,12 +212,14 @@ public:
 
         for(int n=0; n<amount; n++)
         {
-            if(choicePanels[n].isChecked())
+            if (choicePanels[n].isChecked())
             {
                 editor->addBackgroundTrack( seq->getTrack(n) );
                 std::cout << "Adding track " << n << " as background to track " << std::endl;
             }
         }
+        
+        assertExpr(modalid, !=, -1);
 
         wxDialog::EndModal(modalid);
         Display::render();
@@ -224,7 +228,7 @@ public:
     void volumeSlideChanging(wxScrollEvent& evt)
     {
         const int value = volume_slider->GetValue();
-        if(value >=0 and value < 128) volume_text->SetValue( to_wxString(value) );
+        if (value >=0 and value < 128) volume_text->SetValue( to_wxString(value) );
     }
 
     void volumeTextChanged(wxCommandEvent& evt)

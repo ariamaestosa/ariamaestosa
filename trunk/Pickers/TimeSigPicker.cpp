@@ -75,7 +75,7 @@ using namespace TimeSigPickerNames;
 
 void freeTimeSigPicker()
 {
-    if(timesigpicker_frame != NULL)
+    if (timesigpicker_frame != NULL)
     {
         timesigpicker_frame->Destroy();
         timesigpicker_frame = NULL;
@@ -85,7 +85,7 @@ void freeTimeSigPicker()
 
 void showTimeSigPicker(const int x, const int y, const int num, const int denom)
 {
-    if(timesigpicker_frame == NULL) timesigpicker_frame = new TimeSigPicker();
+    if (timesigpicker_frame == NULL) timesigpicker_frame = new TimeSigPicker();
     timesigpicker_frame->show(x, y, num, denom);
 }
 
@@ -136,7 +136,7 @@ TimeSigPicker::TimeSigPicker() : wxFrame(getMainFrame(), 0,  _("Key Signature"),
 
 void TimeSigPicker::closed(wxCloseEvent& evt)
 {
-    if(IsShown())
+    if (IsShown())
     {
         wxCommandEvent event( wxEVT_DESTROY_TIMESIG_PICKER, 100000 );
         getMainFrame()->GetEventHandler()->AddPendingEvent( event );
@@ -147,7 +147,7 @@ void TimeSigPicker::closed(wxCloseEvent& evt)
 void TimeSigPicker::onFocus(wxFocusEvent& evt)
 {
     wxTextCtrl* ctrl = dynamic_cast<wxTextCtrl*>(FindFocus());
-    if(ctrl != NULL)
+    if (ctrl != NULL)
     {
       ctrl->SetFocus();
       ctrl->SetSelection(-1, -1);
@@ -173,7 +173,7 @@ void TimeSigPicker::enterPressed(wxCommandEvent& evt)
     int top = atoi_u( valueTextNum->GetValue() );
     int bottom = atoi_u( valueTextDenom->GetValue() );
 
-    if(bottom < 1 or top<1 or bottom>32 or top>32 or
+    if (bottom < 1 or top<1 or bottom>32 or top>32 or
       not valueTextNum->GetValue().IsNumber() or not valueTextDenom->GetValue().IsNumber())
     {
         wxBell();
@@ -181,7 +181,7 @@ void TimeSigPicker::enterPressed(wxCommandEvent& evt)
     }
 
     float denom_check = (float)log(bottom)/(float)log(2);
-    if( (int)denom_check != (float)denom_check )
+    if ( (int)denom_check != (float)denom_check )
     {
         wxBell();
         //I18N: - when setting a wrong time signature
@@ -193,7 +193,7 @@ void TimeSigPicker::enterPressed(wxCommandEvent& evt)
     getMainFrame()->changeShownTimeSig( top, bottom );
 
     // check if user changed measure mode
-    if(variable->IsChecked() != getMeasureData()->isExpandedMode())
+    if (variable->IsChecked() != getMeasureData()->isExpandedMode())
     {
         getCurrentSequence()->measureData->setExpandedMode( variable->IsChecked() );
         getMainFrame()->updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
@@ -215,11 +215,11 @@ void TimeSigPicker::closeWindow()
 
 void TimeSigPicker::keyPress(wxKeyEvent& evt)
 {
-    if(evt.GetKeyCode()==WXK_ESCAPE || evt.GetKeyCode()==WXK_CANCEL || evt.GetKeyCode()==WXK_DELETE)
+    if (evt.GetKeyCode()==WXK_ESCAPE || evt.GetKeyCode()==WXK_CANCEL || evt.GetKeyCode()==WXK_DELETE)
     {
         closeWindow();
     }
-    else if(evt.GetKeyCode() == WXK_RETURN)
+    else if (evt.GetKeyCode() == WXK_RETURN)
     {
         wxCommandEvent dummyEvt;
         enterPressed(dummyEvt);

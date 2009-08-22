@@ -221,105 +221,105 @@ void DrumEditor::useCustomDrumSet()
 
     drums.clear();
 
-    if(inuse[36] or inuse[35] or inuse[38] or inuse[40] or inuse[37])
+    if (inuse[36] or inuse[35] or inuse[38] or inuse[40] or inuse[37])
     {
         drums.push_back( DrumInfo(88, true) ); // Drumkit
-        if(inuse[36]) drums.push_back( DrumInfo(36)); // "Bass drum 1"
-        if(inuse[35]) drums.push_back( DrumInfo(35)); // "Bass drum 2"
-        if(inuse[38]) drums.push_back( DrumInfo(38)); // "Snare"
-        if(inuse[40]) drums.push_back( DrumInfo(40)); // "Snare 2"
-        if(inuse[37]) drums.push_back( DrumInfo(37)); // "Stick"
+        if (inuse[36]) drums.push_back( DrumInfo(36)); // "Bass drum 1"
+        if (inuse[35]) drums.push_back( DrumInfo(35)); // "Bass drum 2"
+        if (inuse[38]) drums.push_back( DrumInfo(38)); // "Snare"
+        if (inuse[40]) drums.push_back( DrumInfo(40)); // "Snare 2"
+        if (inuse[37]) drums.push_back( DrumInfo(37)); // "Stick"
     }
 
-    if(inuse[42] or inuse[46] or inuse[44])
+    if (inuse[42] or inuse[46] or inuse[44])
     {
         drums.push_back( DrumInfo(89, true) ); // Hi-hat
-        if(inuse[42]) drums.push_back( DrumInfo(42)); // "Closed hi-hat"
-        if(inuse[46]) drums.push_back( DrumInfo(46)); // "Open hi-hat"
-        if(inuse[44]) drums.push_back( DrumInfo(44)); // "Pedal hi-hat"
+        if (inuse[42]) drums.push_back( DrumInfo(42)); // "Closed hi-hat"
+        if (inuse[46]) drums.push_back( DrumInfo(46)); // "Open hi-hat"
+        if (inuse[44]) drums.push_back( DrumInfo(44)); // "Pedal hi-hat"
     }
 
-    if(inuse[49] or inuse[57] or inuse[55] or inuse[52] or inuse[51] or inuse[59] or inuse[53])
+    if (inuse[49] or inuse[57] or inuse[55] or inuse[52] or inuse[51] or inuse[59] or inuse[53])
     {
         drums.push_back( DrumInfo(89, true) ); // Cymbal
-        if(inuse[49]) drums.push_back( DrumInfo(49)); // "Crash"
-        if(inuse[57]) drums.push_back( DrumInfo(57)); // "Crash 2"
-        if(inuse[55]) drums.push_back( DrumInfo(55)); // "Splash"
-        if(inuse[52]) drums.push_back( DrumInfo(52)); // "Chinese"
-        if(inuse[51]) drums.push_back( DrumInfo(51)); // "Ride"
-        if(inuse[59]) drums.push_back( DrumInfo(59)); // "Ride 2"
-        if(inuse[53]) drums.push_back( DrumInfo(53)); // "Ride bell"
+        if (inuse[49]) drums.push_back( DrumInfo(49)); // "Crash"
+        if (inuse[57]) drums.push_back( DrumInfo(57)); // "Crash 2"
+        if (inuse[55]) drums.push_back( DrumInfo(55)); // "Splash"
+        if (inuse[52]) drums.push_back( DrumInfo(52)); // "Chinese"
+        if (inuse[51]) drums.push_back( DrumInfo(51)); // "Ride"
+        if (inuse[59]) drums.push_back( DrumInfo(59)); // "Ride 2"
+        if (inuse[53]) drums.push_back( DrumInfo(53)); // "Ride bell"
     }
 
-    if(inuse[41] or inuse[43] or inuse[45] or inuse[47] or inuse[48] or inuse[50])
+    if (inuse[41] or inuse[43] or inuse[45] or inuse[47] or inuse[48] or inuse[50])
     {
         drums.push_back( DrumInfo(90, true) ); // Toms
-        if(inuse[41]) drums.push_back( DrumInfo(41)); // "Tom 1"
-        if(inuse[43]) drums.push_back( DrumInfo(43)); // "Tom 2"
-        if(inuse[45]) drums.push_back( DrumInfo(45)); // "Tom 3"
-        if(inuse[47]) drums.push_back( DrumInfo(47)); // "Tom 4"
-        if(inuse[48]) drums.push_back( DrumInfo(48)); // "Tom 5"
-        if(inuse[50]) drums.push_back( DrumInfo(50)); // "Tom 6"
+        if (inuse[41]) drums.push_back( DrumInfo(41)); // "Tom 1"
+        if (inuse[43]) drums.push_back( DrumInfo(43)); // "Tom 2"
+        if (inuse[45]) drums.push_back( DrumInfo(45)); // "Tom 3"
+        if (inuse[47]) drums.push_back( DrumInfo(47)); // "Tom 4"
+        if (inuse[48]) drums.push_back( DrumInfo(48)); // "Tom 5"
+        if (inuse[50]) drums.push_back( DrumInfo(50)); // "Tom 6"
     }
 
-    if(inuse[76] or inuse[77] or inuse[69] or inuse[67] or inuse[68] or inuse[58] or inuse[62] or inuse[63] or inuse[64])
+    if (inuse[76] or inuse[77] or inuse[69] or inuse[67] or inuse[68] or inuse[58] or inuse[62] or inuse[63] or inuse[64])
     {
         drums.push_back( DrumInfo(91, true) ); // African
-        if(inuse[76]) drums.push_back( DrumInfo(76)); // "Hi wood block"
-        if(inuse[77]) drums.push_back( DrumInfo(77)); // "Lo wood block"
-        if(inuse[69]) drums.push_back( DrumInfo(69)); // "Cabasa"
-        if(inuse[67]) drums.push_back( DrumInfo(67)); // "High agogo"
-        if(inuse[68]) drums.push_back( DrumInfo(68)); // "Low agogo"
-        if(inuse[58]) drums.push_back( DrumInfo(58)); // "Vibraslap"
-        if(inuse[62]) drums.push_back( DrumInfo(62)); // "Mute hi conga"
-        if(inuse[63]) drums.push_back( DrumInfo(63)); // "Open hi conga"
-        if(inuse[64]) drums.push_back( DrumInfo(64)); // "Low conga"
+        if (inuse[76]) drums.push_back( DrumInfo(76)); // "Hi wood block"
+        if (inuse[77]) drums.push_back( DrumInfo(77)); // "Lo wood block"
+        if (inuse[69]) drums.push_back( DrumInfo(69)); // "Cabasa"
+        if (inuse[67]) drums.push_back( DrumInfo(67)); // "High agogo"
+        if (inuse[68]) drums.push_back( DrumInfo(68)); // "Low agogo"
+        if (inuse[58]) drums.push_back( DrumInfo(58)); // "Vibraslap"
+        if (inuse[62]) drums.push_back( DrumInfo(62)); // "Mute hi conga"
+        if (inuse[63]) drums.push_back( DrumInfo(63)); // "Open hi conga"
+        if (inuse[64]) drums.push_back( DrumInfo(64)); // "Low conga"
     }
 
-    if(inuse[73] or inuse[74] or inuse[75] or inuse[78] or inuse[79] or inuse[70] or inuse[56] or inuse[60] or inuse[61] or inuse[85] or inuse[86] or inuse[87])
+    if (inuse[73] or inuse[74] or inuse[75] or inuse[78] or inuse[79] or inuse[70] or inuse[56] or inuse[60] or inuse[61] or inuse[85] or inuse[86] or inuse[87])
     {
         drums.push_back( DrumInfo(92, true) ); // Latin
-        if(inuse[73]) drums.push_back( DrumInfo(73)); // "Short guiro"
-        if(inuse[74]) drums.push_back( DrumInfo(74)); // "Long guiro"
-        if(inuse[75]) drums.push_back( DrumInfo(75)); // "Claves"
-        if(inuse[78]) drums.push_back( DrumInfo(78)); // "Mute cuica"
-        if(inuse[79]) drums.push_back( DrumInfo(79)); // "Open cuica"
-        if(inuse[70]) drums.push_back( DrumInfo(70)); // "Maracas"
-        if(inuse[56]) drums.push_back( DrumInfo(56)); // "Cowbell"
-        if(inuse[60]) drums.push_back( DrumInfo(60)); // "Hi bongo"
-        if(inuse[61]) drums.push_back( DrumInfo(61)); // "Low bongo"
-        if(inuse[85]) drums.push_back( DrumInfo(85)); // "Castanets"
-        if(inuse[86]) drums.push_back( DrumInfo(86)); // "Mute surdo"
-        if(inuse[87]) drums.push_back( DrumInfo(87)); // "Open surdo"
+        if (inuse[73]) drums.push_back( DrumInfo(73)); // "Short guiro"
+        if (inuse[74]) drums.push_back( DrumInfo(74)); // "Long guiro"
+        if (inuse[75]) drums.push_back( DrumInfo(75)); // "Claves"
+        if (inuse[78]) drums.push_back( DrumInfo(78)); // "Mute cuica"
+        if (inuse[79]) drums.push_back( DrumInfo(79)); // "Open cuica"
+        if (inuse[70]) drums.push_back( DrumInfo(70)); // "Maracas"
+        if (inuse[56]) drums.push_back( DrumInfo(56)); // "Cowbell"
+        if (inuse[60]) drums.push_back( DrumInfo(60)); // "Hi bongo"
+        if (inuse[61]) drums.push_back( DrumInfo(61)); // "Low bongo"
+        if (inuse[85]) drums.push_back( DrumInfo(85)); // "Castanets"
+        if (inuse[86]) drums.push_back( DrumInfo(86)); // "Mute surdo"
+        if (inuse[87]) drums.push_back( DrumInfo(87)); // "Open surdo"
     }
 
-    if(inuse[54] or inuse[65] or inuse[66] or inuse[71] or inuse[72] or inuse[80] or inuse[81] or inuse[82] or inuse[83] or inuse[84] or inuse[31])
+    if (inuse[54] or inuse[65] or inuse[66] or inuse[71] or inuse[72] or inuse[80] or inuse[81] or inuse[82] or inuse[83] or inuse[84] or inuse[31])
     {
         drums.push_back( DrumInfo(93, true) ); // Others
-        if(inuse[54]) drums.push_back( DrumInfo(54)); // "Tambourine"
-        if(inuse[65]) drums.push_back( DrumInfo(65)); // "High timbale"
-        if(inuse[66]) drums.push_back( DrumInfo(66)); // "Low timbale"
-        if(inuse[71]) drums.push_back( DrumInfo(71)); // "Short whistle"
-        if(inuse[72]) drums.push_back( DrumInfo(72)); // "Long whistle"
-        if(inuse[80]) drums.push_back( DrumInfo(80)); // "Mute triangle"
-        if(inuse[81]) drums.push_back( DrumInfo(81)); // "Open triangle"
-        if(inuse[82]) drums.push_back( DrumInfo(82)); // "Shaker"
-        if(inuse[83]) drums.push_back( DrumInfo(83)); // "Jingle Bell"
-        if(inuse[84]) drums.push_back( DrumInfo(84)); // "Bell Tree"
-        if(inuse[31]) drums.push_back( DrumInfo(31)); // "Stick"
+        if (inuse[54]) drums.push_back( DrumInfo(54)); // "Tambourine"
+        if (inuse[65]) drums.push_back( DrumInfo(65)); // "High timbale"
+        if (inuse[66]) drums.push_back( DrumInfo(66)); // "Low timbale"
+        if (inuse[71]) drums.push_back( DrumInfo(71)); // "Short whistle"
+        if (inuse[72]) drums.push_back( DrumInfo(72)); // "Long whistle"
+        if (inuse[80]) drums.push_back( DrumInfo(80)); // "Mute triangle"
+        if (inuse[81]) drums.push_back( DrumInfo(81)); // "Open triangle"
+        if (inuse[82]) drums.push_back( DrumInfo(82)); // "Shaker"
+        if (inuse[83]) drums.push_back( DrumInfo(83)); // "Jingle Bell"
+        if (inuse[84]) drums.push_back( DrumInfo(84)); // "Bell Tree"
+        if (inuse[31]) drums.push_back( DrumInfo(31)); // "Stick"
     }
 
-    if(inuse[34] or inuse[33] or inuse[32] or inuse[30] or inuse[29] or inuse[28] or inuse[27] or inuse[39])
+    if (inuse[34] or inuse[33] or inuse[32] or inuse[30] or inuse[29] or inuse[28] or inuse[27] or inuse[39])
     {
         drums.push_back( DrumInfo(94, true) ); // Sound effects
-        if(inuse[34]) drums.push_back( DrumInfo(34)); // "Metro bell"
-        if(inuse[33]) drums.push_back( DrumInfo(33)); // "Metro"
-        if(inuse[32]) drums.push_back( DrumInfo(32)); // "Square"
-        if(inuse[30]) drums.push_back( DrumInfo(30)); // "Pull"
-        if(inuse[29]) drums.push_back( DrumInfo(29)); // "Push"
-        if(inuse[28]) drums.push_back( DrumInfo(28)); // "Slap"
-        if(inuse[27]) drums.push_back( DrumInfo(27)); // "High Q"
-        if(inuse[39]) drums.push_back( DrumInfo(39)); // "Clap"
+        if (inuse[34]) drums.push_back( DrumInfo(34)); // "Metro bell"
+        if (inuse[33]) drums.push_back( DrumInfo(33)); // "Metro"
+        if (inuse[32]) drums.push_back( DrumInfo(32)); // "Square"
+        if (inuse[30]) drums.push_back( DrumInfo(30)); // "Pull"
+        if (inuse[29]) drums.push_back( DrumInfo(29)); // "Push"
+        if (inuse[28]) drums.push_back( DrumInfo(28)); // "Slap"
+        if (inuse[27]) drums.push_back( DrumInfo(27)); // "High Q"
+        if (inuse[39]) drums.push_back( DrumInfo(39)); // "Clap"
     }
 
     // prepare midiKeyToVectorID
@@ -437,16 +437,16 @@ NoteSearchResult DrumEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
         assert(track->getNotePitchID(n)<128);
 
         const int drumIDInVector= midiKeyToVectorID[ track->getNotePitchID(n) ];
-        if(drumIDInVector == -1) continue;
+        if (drumIDInVector == -1) continue;
 
         const int drumy=getYForDrum(drumIDInVector);
 
-        if(x.getRelativeTo(EDITOR)>drumx-1 and x.getRelativeTo(EDITOR)<drumx+5 and y>drumy and y<drumy+y_step)
+        if (x.getRelativeTo(EDITOR)>drumx-1 and x.getRelativeTo(EDITOR)<drumx+5 and y>drumy and y<drumy+y_step)
         {
 
             noteID = n;
 
-            if(track->isNoteSelected(n) and !Display:: isSelectLessPressed())
+            if (track->isNoteSelected(n) and !Display:: isSelectLessPressed())
             {
                 // clicked on a selected note
                 return FOUND_SELECTED_NOTE;
@@ -473,23 +473,23 @@ void DrumEditor::addNote(const int snappedX, const int mouseY)
 {
     const int drumID = getDrumAtY(mouseY); // FIXME - double checks? something very similar is also checked in MouseDown
 
-    if(drumID < 0) return;
-    if(drumID > (int)drums.size()-1) return;
+    if (drumID < 0) return;
+    if (drumID > (int)drums.size()-1) return;
 
     const int note = drums[ drumID ].midiKey;
-    if(note == -1 || drums[ drumID ].section) return;
+    if (note == -1 || drums[ drumID ].section) return;
 
     track->action( new Action::AddNote(note, snappedX, snappedX+sequence->ticksPerBeat()/32+1, default_volume ) );
 }
 
 void DrumEditor::moveNote(Note& note, const int relativeX, const int relativeY)
 {
-    if(note.startTick+relativeX < 0) return; // refuse to move before song start
+    if (note.startTick+relativeX < 0) return; // refuse to move before song start
 
     note.startTick += relativeX;
     note.endTick   += relativeX;
 
-    if(relativeY==0) return;
+    if (relativeY==0) return;
 
     /*
      *  Since the drums are not in midi order on screen, the procedure to move drums up or down is to:
@@ -503,10 +503,10 @@ void DrumEditor::moveNote(Note& note, const int relativeX, const int relativeY)
 
     // find where on screen this particular drum is drawn (their screen position is not in the same order as the midi order)
     int newVectorLoc = midiKeyToVectorID[note.pitchID];
-    if(newVectorLoc == -1) return;
+    if (newVectorLoc == -1) return;
 
     // move to the new location (in screen order)
-    if(newVectorLoc + relativeY < 0 or
+    if (newVectorLoc + relativeY < 0 or
        newVectorLoc + relativeY > (int)drums.size()-1 ) return; // discard moves that would result in an out-of-bound note
 
     newVectorLoc += relativeY;
@@ -517,13 +517,13 @@ void DrumEditor::moveNote(Note& note, const int relativeX, const int relativeY)
         newVectorLoc+=(relativeY/abs(relativeY)); // keep the same sign, but only move 1 step at a time from now on
 
         // discard moves that would result in an out-of-bound note
-        if(newVectorLoc < 0 or newVectorLoc > (int)drums.size()-1 )
+        if (newVectorLoc < 0 or newVectorLoc > (int)drums.size()-1 )
             return;
     }
 
     // find the midi key at the new location
     const int new_pitchID = drums[newVectorLoc].midiKey;
-    if(new_pitchID < 0 or new_pitchID > 127)
+    if (new_pitchID < 0 or new_pitchID > 127)
         return; // invalid location - discard
 
     note.pitchID = new_pitchID;
@@ -539,11 +539,11 @@ void DrumEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_cu
         assert(track->getNotePitchID(n)<128);
 
         const int drumIDInVector= midiKeyToVectorID[ track->getNotePitchID(n) ];
-        if(drumIDInVector == -1) continue;
+        if (drumIDInVector == -1) continue;
 
         const int drumy=getYForDrum(drumIDInVector) + 5;
 
-        if(drumx>std::min(mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR)) and
+        if (drumx>std::min(mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR)) and
            drumx<std::max(mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR)) and
            drumy > std::min(mousey_current, mousey_initial) and
            drumy < std::max(mousey_current, mousey_initial))
@@ -561,7 +561,7 @@ void DrumEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_cu
 int DrumEditor::getYScrollInPixels()
 {
     // check if visible area is large enough to display everything
-    if((int)(drums.size()*y_step) < height)
+    if ((int)(drums.size()*y_step) < height)
     {
         useVerticalScrollbar(false);
         return 0;
@@ -582,12 +582,12 @@ void DrumEditor::mouseDown(RelativeXCoord x, const int y)
 
     const int drumID = getDrumAtY(y);
 
-    if(drumID >= 0 and drumID < (int)drums.size())
+    if (drumID >= 0 and drumID < (int)drums.size())
     {
-        if(drums[ drumID ].section)
+        if (drums[ drumID ].section)
         {
             // user clicked on a section. if click is on the triangle, expand/collapse it. otherwise, it just selects nothing.
-            if(x.getRelativeTo(EDITOR) < 25 and x.getRelativeTo(EDITOR) > 0)
+            if (x.getRelativeTo(EDITOR) < 25 and x.getRelativeTo(EDITOR) > 0)
             {
                 drums[ drumID ].sectionExpanded = !drums[ drumID ].sectionExpanded;
                 return;
@@ -612,16 +612,16 @@ void DrumEditor::mouseUp(RelativeXCoord mousex_current, const int mousey_current
     Editor::mouseUp(mousex_current, mousey_current, mousex_initial, mousey_initial);
 
     // ------------------- toggle "only show used drums" widget -----------------
-    if(mousex_current.getRelativeTo(WINDOW) > getEditorsXStart()-77 and
+    if (mousex_current.getRelativeTo(WINDOW) > getEditorsXStart()-77 and
        mousex_current.getRelativeTo(WINDOW) < getEditorsXStart()-67 and
        mousey_current - getYScrollInPixels() > getEditorYStart()+1 and
        mousey_current - getYScrollInPixels() < getEditorYStart()+10)
     {
-        if(track->getNoteAmount()<1) return;
+        if (track->getNoteAmount()<1) return;
 
         showUsedDrumsOnly = !showUsedDrumsOnly;
 
-        if(showUsedDrumsOnly) useCustomDrumSet();
+        if (showUsedDrumsOnly) useCustomDrumSet();
         else useDefaultDrumSet();
         Display::render();
     }
@@ -651,7 +651,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
     for(int drumID=0; drumID<drumAmount+1; drumID++)
     {
         const int y = getEditorYStart() + drumID*y_step - getYScrollInPixels();
-        if(y<getEditorYStart() or y>getYEnd()) continue;
+        if (y<getEditorYStart() or y>getYEnd()) continue;
 
         AriaRender::line(getEditorsXStart(), y, getXEnd(), y);
 
@@ -665,18 +665,18 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         const int drumx=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels() + getEditorsXStart();
 
         // don't draw notes that won't visible
-        if(drumx<0) continue;
-        if(drumx>width) break;
+        if (drumx<0) continue;
+        if (drumx>width) break;
 
         assert(track->getNotePitchID(n)>=0);
         assert(track->getNotePitchID(n)<128);
 
         const int drumIDInVector= midiKeyToVectorID[ track->getNotePitchID(n) ];
-        if(drumIDInVector == -1) continue;
+        if (drumIDInVector == -1) continue;
 
         const float volume=track->getNoteVolume(n)/127.0;
 
-        if(track->isNoteSelected(n) and focus) AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
+        if (track->isNoteSelected(n) and focus) AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
         else AriaRender::color((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
 
         const int drumy=getYForDrum(drumIDInVector);
@@ -688,10 +688,10 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
 
     // ------------------------- mouse drag (preview) ------------------------
-    if(!clickedOnNote and mouse_is_in_editor)
+    if (!clickedOnNote and mouse_is_in_editor)
     {
         // selection
-        if(selecting)
+        if (selecting)
         {
             AriaRender::color(0,0,0);
             AriaRender::hollow_rect(mousex_initial.getRelativeTo(WINDOW), mousey_initial,
@@ -700,7 +700,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
     } // end if !clickedOnNote
 
     // ------------------------- move note (preview) -----------------------
-    if(clickedOnNote)
+    if (clickedOnNote)
     {
 
         AriaRender::color(1, 0.85, 0, 0.5);
@@ -712,12 +712,12 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         const int y_steps_to_move = (int)round(y_difference/ (float)y_step );
 
         // move a single note
-        if(lastClickedNote != -1)
+        if (lastClickedNote != -1)
         {
             const int drumx=track->getNoteStartInPixels(lastClickedNote) - sequence->getXScrollInPixels() + getEditorsXStart();
 
             const int drumIDInVector= midiKeyToVectorID[ track->getNotePitchID(lastClickedNote) ];
-            if(drumIDInVector != -1)
+            if (drumIDInVector != -1)
             {
 
                 const int drumy=getYForDrum(drumIDInVector);
@@ -734,7 +734,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
             for(int n=0; n<noteAmount; n++)
             {
-                if(!track->isNoteSelected(n)) continue;
+                if (!track->isNoteSelected(n)) continue;
 
                 const int drumx=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels() + getEditorsXStart();
 
@@ -742,7 +742,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
                 assert(track->getNotePitchID(n)<128);
 
                 const int drumIDInVector= midiKeyToVectorID[ track->getNotePitchID(n) ];
-                if(drumIDInVector == -1) continue;
+                if (drumIDInVector == -1) continue;
 
                 const int drumy=getYForDrum(drumIDInVector);
 
@@ -762,7 +762,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
     // -----------------------------------------------------------------
 
     // grey background
-    if(!focus) AriaRender::color(0.4, 0.4, 0.4);
+    if (!focus) AriaRender::color(0.4, 0.4, 0.4);
     else AriaRender::color(0.8, 0.8, 0.8);
 
     AriaRender::rect(0, getEditorYStart(),
@@ -776,13 +776,13 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         drumY++;
 
         const int y = getEditorYStart() + drumY*y_step - getYScrollInPixels();
-        if(y<getEditorYStart()-10 or y>getYEnd()) continue;
+        if (y<getEditorYStart()-10 or y>getYEnd()) continue;
 
         // only show used drums widget
-        if(drumY==0)
+        if (drumY==0)
         {
             AriaRender::color(0,0,0);
-            if(showUsedDrumsOnly)
+            if (showUsedDrumsOnly)
             {
                 AriaRender::triangle(getEditorsXStart()-73, y+2,
                                      getEditorsXStart()-73, y+8,
@@ -800,7 +800,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         AriaRender::images();
         drum_names_renderer.bind();
 
-        if(drums[drumID].section) // section header
+        if (drums[drumID].section) // section header
         {
             AriaRender::primitives();
             AriaRender::color(0,0,0);
@@ -809,7 +809,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
             AriaRender::color(1,1,1);
 
-            if(!drums[drumID].sectionExpanded) // expand/collapse widget of section header
+            if (!drums[drumID].sectionExpanded) // expand/collapse widget of section header
             {
                 AriaRender::triangle( getEditorsXStart()+7, y+2,
                                      getEditorsXStart()+7, y+8,
@@ -840,7 +840,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
         // if section is collapsed, skip all its elements
         assertExpr(drumID,<,(int)drums.size());
-        if(!drums[drumID].sectionExpanded)
+        if (!drums[drumID].sectionExpanded)
         {
             drumID++;
             while(!drums[drumID++].section){ assertExpr(drumID,<,(int)drums.size()); }
@@ -853,7 +853,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
     // Scrollbar
     // -----------------------------------------------------------------
 
-    if(!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
+    if (!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
     else AriaRender::setImageState(AriaRender::STATE_NORMAL);
 
     renderScrollbar();
@@ -874,11 +874,11 @@ int DrumEditor::getDrumAtY(const int given_y)
         const int y = getEditorYStart() + drumY*y_step - getYScrollInPixels();
 
         // check if given y is in the area drum drumID
-        if( given_y > y and given_y < y+y_step)  return drumID;
+        if ( given_y > y and given_y < y+y_step)  return drumID;
 
         // if section is collapsed, skip all its elements
         assertExpr(drumID,<,drums.size());
-        if(!drums[drumID].sectionExpanded)
+        if (!drums[drumID].sectionExpanded)
         {
             drumID++;
             while(!drums[drumID++].section){ assertExpr(drumID,<,drums.size()); }
@@ -901,14 +901,14 @@ int DrumEditor::getYForDrum(const int given_drumID)
 
         const int y = getEditorYStart() + drumY*y_step - getYScrollInPixels();
 
-        if( (int)given_drumID == (int)drumID)
+        if ( (int)given_drumID == (int)drumID)
         {
             return y;
         }
 
         // if section is collapsed, skip all its elements
         assertExpr(drumID,<,drums.size());
-        if(!drums[drumID].sectionExpanded)
+        if (!drums[drumID].sectionExpanded)
         {
             drumID++;
             while(!drums[drumID++].section){ assertExpr(drumID,<,drums.size()); }

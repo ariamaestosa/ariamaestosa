@@ -41,22 +41,22 @@ namespace Action
     {
         assert(track != NULL);
 
-        if(track->graphics->editorMode == DRUM) return;
+        if (track->graphics->editorMode == DRUM) return;
 
         assert(noteID != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
 
-        if(noteID==SELECTED_NOTES)
+        if (noteID==SELECTED_NOTES)
         {
 
             bool played=false;
             for(int n=0; n<track->notes.size(); n++)
             {
-                if(!track->notes[n].isSelected()) continue;
+                if (!track->notes[n].isSelected()) continue;
 
                 track->notes[n].resize(relativeWidth);
                 relocator.rememberNote(track->notes[n]);
 
-                if(!played)
+                if (!played)
                 {
                     track->notes[n].play(false);
                     played = true;
