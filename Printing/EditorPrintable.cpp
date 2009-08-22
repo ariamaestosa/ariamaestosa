@@ -233,7 +233,7 @@ int EditorPrintable::tickToX(const int trackID, LayoutLine& line, const int tick
     // find in which measure this tick belongs
     for(int n=0; n<renderInfo.layoutElementsAmount; n++)
     {
-        MeasureToExport& meas = line.getMeasureForElement(n);
+        PrintLayoutMeasure& meas = line.getMeasureForElement(n);
         if (meas.id == -1) continue; // nullMeasure, ignore
         const int firstTick = meas.firstTick;
         const int lastTick  = meas.lastTick;
@@ -307,7 +307,7 @@ int EditorPrintable::getClosestTickFrom(const int trackID, LayoutLine& line,cons
     // find in which measure this tick belongs
     for(int n=0; n<renderInfo.layoutElementsAmount; n++)
     {
-        MeasureToExport& meas = line.getMeasureForElement(n);
+        PrintLayoutMeasure& meas = line.getMeasureForElement(n);
         if (meas.id == -1) continue; // nullMeasure, ignore
         const int firstTick = meas.firstTick;
         const int lastTick  = meas.lastTick;

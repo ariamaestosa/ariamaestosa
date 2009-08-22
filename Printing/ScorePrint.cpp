@@ -430,7 +430,7 @@ namespace AriaMaestosa
     
 #define VERBOSE 0
     
-    void ScorePrintable::addUsedTicks(const MeasureToExport& measure, const MeasureTrackReference& trackRef,
+    void ScorePrintable::addUsedTicks(const PrintLayoutMeasure& measure, const MeasureTrackReference& trackRef,
                                       std::map<int /* tick */,TickPosInfo>& ticks_relative_position)
     {
         const int fromTick = measure.firstTick;

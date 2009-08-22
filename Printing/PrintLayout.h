@@ -32,7 +32,7 @@ namespace AriaMaestosa
     class Track;
     class AriaPrintable;
     class LayoutLine;
-    class MeasureToExport;
+    class PrintLayoutMeasure;
     
     static const int max_line_width_in_units = 50;
     static const int maxLinesInPage = 10;
@@ -81,7 +81,7 @@ namespace AriaMaestosa
             // referencing vectors from AriaPrintable
             ptr_vector<LayoutLine>& layoutLines;
             std::vector<LayoutPage>& layoutPages;
-            ptr_vector<MeasureToExport>& measures;
+            ptr_vector<PrintLayoutMeasure>& measures;
             
             std::vector<LayoutElement> layoutElements;
             
@@ -90,7 +90,6 @@ namespace AriaMaestosa
             void calculateRelativeLengths();
             
             void createLayoutElements(bool checkRepetitions_bool);
-            void generateMeasures(ptr_vector<Track, REF>& tracks);
             
             void findSimilarMeasures();
             
@@ -101,12 +100,17 @@ namespace AriaMaestosa
             PrintLayoutManager(AriaPrintable* parent,
                                ptr_vector<LayoutLine>& layoutLines  /* out */,
                                std::vector<LayoutPage>& layoutPages  /* out */,
-                               ptr_vector<MeasureToExport>& mesaures /* out */);
+                               ptr_vector<PrintLayoutMeasure>& mesaures /* out */);
             
-            void placeTracksInPage(LayoutPage& page, const int text_height, const float track_area_height, const int level_y_amount,
-                                   const int pageHeight, const int x0, const int y0, const int x1);
+            void generateMeasures(ptr_vector<Track, REF>& tracks);
+
             
             void calculateLayoutElements(ptr_vector<Track, REF>& track, const bool checkRepetitions_bool);
+
+            
+            void placeLinesInPage(LayoutPage& page, const int text_height, const float track_area_height, const int level_y_amount,
+                                   const int pageHeight, const int x0, const int y0, const int x1);
+            
         };
     
 }

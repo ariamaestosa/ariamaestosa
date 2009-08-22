@@ -25,16 +25,16 @@
 namespace AriaMaestosa
 {
 
-class MeasureToExport;
+class PrintLayoutMeasure;
     
-extern const MeasureToExport nullMeasure;
+extern const PrintLayoutMeasure nullMeasure;
 
 class Track;
 
 /*
  A description of a measure to print. If we print more than one track at once,
  each measure will hold multiple 'MeasureTrackReference' instances.
- A 'MeasureTrackReference' "ties" a MeasureToExport to a Track object,
+ A 'MeasureTrackReference' "ties" a PrintLayoutMeasure to a Track object,
  by keeping a pointer to it and holding the range of notes in that track
  that belong to this measure.
  */
@@ -46,10 +46,10 @@ class MeasureTrackReference
         int firstNote, lastNote;
     };
 
-class MeasureToExport
+class PrintLayoutMeasure
     {
     public:
-        MeasureToExport(const int measID);
+        PrintLayoutMeasure(const int measID);
         
         // for non-linear printing
         std::map< int /* tick */, TickPosInfo > ticks_relative_position;
@@ -87,11 +87,11 @@ class MeasureToExport
         // FIXME - doesn't really belong here, should be a layout element
         bool cutApart;
         
-        bool calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure);
+        bool calculateIfMeasureIsSameAs(PrintLayoutMeasure& checkMeasure);
         
         // if a repetition is found, it is stored in the variables and returns true,
         // otherwise returns false
-        bool findConsecutiveRepetition(ptr_vector<MeasureToExport>& measures, const int measureAmount,
+        bool findConsecutiveRepetition(ptr_vector<PrintLayoutMeasure>& measures, const int measureAmount,
                                        int& firstMeasureThatRepeats /*out*/, int& lastMeasureThatRepeats /*out*/,
                                        int& firstMeasureRepeated /*out*/, int& lastMeasureRepeated /*out*/);
     };

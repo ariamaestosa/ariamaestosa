@@ -35,7 +35,7 @@ void setRepetitionMinimalLength(const int newvalue)
 
 // if a repetition is found, it is stored in the variables and returns true,
 // otherwise returns false
-bool MeasureToExport::findConsecutiveRepetition(ptr_vector<MeasureToExport>& measures, const int measureAmount,
+bool PrintLayoutMeasure::findConsecutiveRepetition(ptr_vector<PrintLayoutMeasure>& measures, const int measureAmount,
                                                 int& firstMeasureThatRepeats /*out*/, int& lastMeasureThatRepeats /*out*/,
                                                 int& firstMeasureRepeated /*out*/, int& lastMeasureRepeated /*out*/)
 {
@@ -125,7 +125,7 @@ bool MeasureToExport::findConsecutiveRepetition(ptr_vector<MeasureToExport>& mea
 PrintLayoutManager::PrintLayoutManager(AriaPrintable* parent,
                                        ptr_vector<LayoutLine>& layoutLines_a /* out */,
                                        std::vector<LayoutPage>& layoutPages_a /* out */,
-                                       ptr_vector<MeasureToExport>& measures_a /* out */) :
+                                       ptr_vector<PrintLayoutMeasure>& measures_a /* out */) :
 layoutLines(layoutLines_a), layoutPages(layoutPages_a), measures(measures_a)
 {
     this->parent = parent;
@@ -146,7 +146,7 @@ void PrintLayoutManager::generateMeasures(ptr_vector<Track, REF>& tracks)
         // add measures
         for(int measure=0; measure<measureAmount; measure++)
         {
-             measures.push_back( new MeasureToExport(measure) );
+             measures.push_back( new PrintLayoutMeasure(measure) );
         }
 
         int note=0;
@@ -383,7 +383,7 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
   * \param level_y_amount    Height of the track in levels
   * \param track_area_height Height of the track in print units
   */
-void PrintLayoutManager::placeTracksInPage(LayoutPage& page, const int text_height, const float track_area_height, const int level_y_amount,
+void PrintLayoutManager::placeLinesInPage(LayoutPage& page, const int text_height, const float track_area_height, const int level_y_amount,
                                          const int pageHeight, const int x0, const int y0, const int x1)
 {
     std::cout << "\n========\nplaceTracksInPage\n========\n";
@@ -404,7 +404,7 @@ void PrintLayoutManager::placeTracksInPage(LayoutPage& page, const int text_heig
         float used_height = height;
         
 
-        // track too high, will look weird... shrink a bit
+        // line too high, will look weird... shrink a bit
         while(used_height/(float)layoutLines[l].level_height > 100)
         {
             used_height *= 0.95;
@@ -465,7 +465,7 @@ void PrintLayoutManager::calculateRelativeLengths()
             std::vector<int> all_ticks_vector;
             
             // Build a list of all ticks
-            MeasureToExport& meas = measures[layoutElements[n].measure];
+            PrintLayoutMeasure& meas = measures[layoutElements[n].measure];
             std::map< int /* tick */, TickPosInfo >& ticks_relative_position = meas.ticks_relative_position;
             
             const int trackAmount = meas.trackRef.size();
@@ -698,13 +698,11 @@ void PrintLayoutManager::divideLineAmongTracks(LayoutLine& line, const int x0, c
     
 }
 
-/** main function called from other classes */
+/** main function called from other classes. measures must have been geenrated. */
 void PrintLayoutManager::calculateLayoutElements
                             (ptr_vector<Track, REF>& tracks,
                              const bool checkRepetitions_bool)
 {
-    generateMeasures(tracks);
-
     // search for repeated measures if necessary
     if (checkRepetitions_bool) findSimilarMeasures();
     

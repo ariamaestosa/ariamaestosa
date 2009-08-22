@@ -107,8 +107,8 @@ class LayoutLine
         
         int calculateHeight();
         
-        MeasureToExport& getMeasureForElement(const int layoutElementID) const;
-        MeasureToExport& getMeasureForElement(LayoutElement* layoutElement);
+        PrintLayoutMeasure& getMeasureForElement(const int layoutElementID) const;
+        PrintLayoutMeasure& getMeasureForElement(LayoutElement* layoutElement);
         
         int getLastMeasure() const;
         int getFirstMeasure() const;
