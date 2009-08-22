@@ -258,13 +258,13 @@ void text_with_bounds(wxString* string, const int x, const int y, const int max_
     Display::renderDC -> SetFont( *wxNORMAL_FONT );
     Display::renderDC -> DrawText( message, x, y + FONTSHIFT );
 }
-*/
+
 void small_text(const char* string, const int x, const int y)
 {
     Display::renderDC -> SetFont( *wxSMALL_FONT );
     Display::renderDC -> DrawText( fromCString(string), x, y + FONTSHIFT);
 }
-        /*
+
 void character(const char character, const int x, const int y)
 {
     wxString text;

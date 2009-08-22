@@ -352,6 +352,7 @@ ScoreAnalyser::ScoreAnalyser(ScoreEditor* parent, int stemPivot)
     stem_height = 5.2;
     min_stem_height = 4.5;
 }
+    /*
 void ScoreAnalyser::setStemDrawInfo(
                   const float stem_height,
                   const float min_stem_height)
@@ -359,6 +360,7 @@ void ScoreAnalyser::setStemDrawInfo(
     if (stem_height != -1) ScoreAnalyser::stem_height = stem_height;
     if (min_stem_height != -1) ScoreAnalyser::min_stem_height = min_stem_height;
 }
+     */
 void ScoreAnalyser::setStemPivot(const int level)
 {
     stemPivot = level;

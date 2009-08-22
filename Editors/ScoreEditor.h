@@ -154,8 +154,8 @@ const unsigned short int flat_sign_x[] = { 3*sign_dist, 1*sign_dist, 6*sign_dist
         // called from 'SetAccidentalSign' Action
         void setNoteSign(const int sign, const int noteID);
 
-        int getYStep();
-        int getHalfNoteHeight();
+        // int getYStep();
+        // int getHalfNoteHeight();
 
         ~ScoreEditor();
     };

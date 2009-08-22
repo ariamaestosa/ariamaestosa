@@ -70,38 +70,6 @@ void GLPane::swapBuffers()
     wxGLCanvas::SwapBuffers();
 }
 
-void GLPane::initOpenGLFor3D()
-{
-    /*
-     *  Inits the OpenGL viewport for drawing in 3D
-     */
-
-    //glShadeModel(GL_SMOOTH);    // Enable Smooth Shading
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Black Background
-    glClearDepth(1.0f);    // Depth Buffer Setup
-    glEnable(GL_DEPTH_TEST); // Enables Depth Testing
-    glDepthFunc(GL_LEQUAL); // The Type Of Depth Testing To Do
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-
-    glEnable(GL_TEXTURE_2D);   // textures
-    glEnable(GL_COLOR_MATERIAL);
-    //glEnable(GL_AUTO_NORMAL);
-    //glEnable(GL_VERTEX_ARRAY);
-    //glEnable(GL_TEXTURE_COORD_ARRAY);
-    //glEnable(GL_CULL_FACE);
-    //glEnable(GL_ALPHA_TEST);
-
-    glViewport(0, 0, 640, 480);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
-    // 3D
-    gluPerspective(45 /*view angle*/, 640.0/480.0, 0.1 /*clip close*/, 200 /*clip far*/);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-}
-
 void GLPane::initOpenGLFor2D()
 {
 

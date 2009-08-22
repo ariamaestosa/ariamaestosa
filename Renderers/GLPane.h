@@ -49,7 +49,6 @@ public:
     // OpenGL stuff
     void setCurrent();
     void swapBuffers();
-    void initOpenGLFor3D();
     void initOpenGLFor2D();
 
     bool prepareFrame();
