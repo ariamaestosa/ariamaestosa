@@ -164,34 +164,48 @@ static const wxString g_controller_names[] =
 };
     // 32-63 (0x20-0x3F)     LSB for controllers 0-31
 
-static AriaRenderArray label_renderer;
-    
-ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu()
+class LabelSingleton : public AriaRenderArray, public Singleton
 {
-    if (label_renderer.getStringAmount() == 0)
+public:
+    LabelSingleton() : AriaRenderArray(), Singleton()
+    {
+    }
+    
+    virtual ~LabelSingleton()
+    {
+    }
+    
+    LEAK_CHECK();
+};
+    
+static LabelSingleton* label_renderer = new LabelSingleton();
+    
+ControllerChoice::ControllerChoice() : wxMenu()
+{
+    if (label_renderer->getStringAmount() == 0)
     {
         //I18N: - in controller, when a controller can only be on/off
-        label_renderer.addString( _("On") );
+        label_renderer->addString( _("On") );
         //I18N: - in controller, when a controller can only be on/off
-        label_renderer.addString(_("Off"));
+        label_renderer->addString(_("Off"));
         //I18N: - in controller, for a controller with min/max range
-        label_renderer.addString(_("Min"));
+        label_renderer->addString(_("Min"));
         //I18N: - in controller, for a controller with min/max range
-        label_renderer.addString(_("Max"));
+        label_renderer->addString(_("Max"));
         //I18N: - when setting pan in controller
-        label_renderer.addString(_("Left"));
+        label_renderer->addString(_("Left"));
         //I18N: - when setting pan in controller
-        label_renderer.addString(_("Right"));
+        label_renderer->addString(_("Right"));
 
         
-        label_renderer.addString(wxT("+2"));
-        label_renderer.addString(wxT("-2"));
+        label_renderer->addString(wxT("+2"));
+        label_renderer->addString(wxT("-2"));
     }
 #ifdef __WXMAC__
-    label_renderer.setFont( wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+    label_renderer->setFont( wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
     controller_label.setFont( wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
 #else
-    label_renderer.setFont( wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+    label_renderer->setFont( wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
     controller_label.setFont( wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
 #endif
 
@@ -199,9 +213,9 @@ ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu()
     controller_label.setMaxWidth(75, true);
     controller_label.set(g_controller_names[controllerID]);
     
-    Append( 7 , g_controller_names[7 ] ); // Volume // fine:39
+    Append( 7 ,  g_controller_names[7  ] ); // Volume // fine:39
     Append( 10 , g_controller_names[10 ] ); // Pan // fine:42
-    Append( 1 , g_controller_names[1 ] ); // Modulation // fine:33
+    Append( 1 ,  g_controller_names[1  ] ); // Modulation // fine:33
     Append( 91 , g_controller_names[91 ] ); // Reverb
     Append( 64 , g_controller_names[64 ] ); // Sustain
 
@@ -213,9 +227,9 @@ ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu()
 
     AppendSeparator();
 
-    Append( 2 , g_controller_names[2 ] ); // Breath
-    Append( 4 , g_controller_names[4 ] ); // Foot
-    Append( 8 , g_controller_names[8 ] ); // Balance
+    Append( 2  , g_controller_names[2 ] ); // Breath
+    Append( 4  , g_controller_names[4 ] ); // Foot
+    Append( 8  , g_controller_names[8 ] ); // Balance
     Append( 11 , g_controller_names[11 ] ); // Expression
     Append( 92 , g_controller_names[92 ] ); // Tremolo
     Append( 93 , g_controller_names[93 ] ); // Chorus
@@ -242,7 +256,7 @@ ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu()
 
     misc_menu->AppendSeparator();
     misc_menu->Append( 65 , g_controller_names[65 ] ); // Portamento
-    misc_menu->Append( 5 , g_controller_names[5 ] ); // Portamento Time // fine:37
+    misc_menu->Append( 5  , g_controller_names[5 ] ); // Portamento Time // fine:37
     misc_menu->Append( 84 , g_controller_names[84 ] ); // Portamento Control
     misc_menu->AppendSeparator();
     misc_menu->Append( 76 , g_controller_names[76 ] ); // Vibrato Rate
@@ -268,7 +282,6 @@ ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu()
     misc_menu->Append( 82 , g_controller_names[82 ] ); // General Purpose 7
     misc_menu->Append( 83 , g_controller_names[83 ] ); // General Purpose 8
 */
-    ControllerChoice::parent = parent;
 
     Connect(0,202, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ControllerChoice::menuSelected));
     misc_menu->Connect(0,202, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ControllerChoice::menuSelected), NULL, this);
@@ -332,25 +345,25 @@ bool ControllerChoice::isOnOffController(const int id) const
 
 void ControllerChoice::renderTopLabel(const int x, const int y)
 {
-    label_renderer.bind();
+    label_renderer->bind();
 
     // pan
-    if (controllerID== 10 or controllerID== 42)
-        label_renderer.get(5).render(x, y);
+    if (controllerID == 10 or controllerID == 42)
+        label_renderer->get(5).render(x, y);
 
     // pitch bend
-    else if (controllerID==200)
-        label_renderer.get(6).render(x, y);
+    else if (controllerID == 200)
+        label_renderer->get(6).render(x, y);
 
     // on/offs
     else if ( isOnOffController(controllerID) )
-        label_renderer.get(0).render(x, y);
+        label_renderer->get(0).render(x, y);
 
     // tempo
     else if (controllerID == 201) AriaRender::renderNumber( wxT("400"), x, y );
 
     else
-        label_renderer.get(3).render(x, y);
+        label_renderer->get(3).render(x, y);
 }
 
 /*
@@ -359,25 +372,25 @@ void ControllerChoice::renderTopLabel(const int x, const int y)
 
 void ControllerChoice::renderBottomLabel(const int x, const int y)
 {
-    label_renderer.bind();
+    label_renderer->bind();
     
     // pan
     if (controllerID== 10 or controllerID== 42)
-        label_renderer.get(4).render(x, y);
+        label_renderer->get(4).render(x, y);
 
     // pitch bend
     else if (controllerID==200)
-        label_renderer.get(7).render(x, y);
+        label_renderer->get(7).render(x, y);
 
     // on/offs
     else if ( isOnOffController(controllerID) )
-        label_renderer.get(1).render(x, y);
+        label_renderer->get(1).render(x, y);
 
     // tempo
     else if (controllerID == 201)  AriaRender::renderNumber( wxT("20"), x, y );
 
     else
-        label_renderer.get(2).render(x, y);
+        label_renderer->get(2).render(x, y);
 }
 
 }

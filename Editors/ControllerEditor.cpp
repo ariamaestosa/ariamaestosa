@@ -39,7 +39,6 @@ namespace AriaMaestosa {
 
 ControllerEditor::ControllerEditor(Track* track) : Editor(track)
 {
-
     mouse_is_in_editor=false;
 
     selection_begin = -1;
@@ -47,8 +46,7 @@ ControllerEditor::ControllerEditor(Track* track) : Editor(track)
 
     hasBeenResizing = false;
 
-    // FIXME - create only one for all
-    controllerChoice = new ControllerChoice(track->graphics);
+    controllerChoice = new ControllerChoice();
 }
 
 int ControllerEditor::getCurrentControllerType()

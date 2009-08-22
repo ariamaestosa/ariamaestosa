@@ -19,6 +19,13 @@
 
 #ifdef _MORE_DEBUG_CHECKS
 
+#define GET_STACK_TRACE 0
+
+#ifdef __WXMAC__
+#include <Availability.h>
+#include <execinfo.h>
+#endif
+
 #include "ptr_vector.h"
 
 #include "LeakCheck.h"
@@ -48,11 +55,36 @@ void removeObj(MyObject* myObj)
 MyObject::MyObject(AbstractLeakCheck* obj)
 {
     this->obj = obj;
+    
+#if (GET_STACK_TRACE == 1) && defined(MAC_OS_X_VERSION_10_5)
+
+    const int maxsize = 32;
+    void* callstack[maxsize];
+    stackSize = backtrace(callstack, maxsize);
+
+    stack = backtrace_symbols(callstack, stackSize);
+#else
+    stack = NULL;
+#endif
+    
 }
 
 void MyObject::print()
 {
     obj->print();
+    
+    if (stack == NULL)
+    {
+        printf("    (No stack information available)\n");
+    }
+    else
+    {
+        for (int i = 0; i < stackSize; ++i)
+        {
+            printf("    %s\n", stack[i]);
+        }
+    }
+    
 }
 
 void checkForLeaks()

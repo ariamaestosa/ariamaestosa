@@ -15,8 +15,33 @@ namespace AriaMaestosa
 
     MainPane* mainPane = NULL;
 
-
-
+    ptr_vector<Singleton>* g_singletons = NULL;
+    void addToSingletonList(Singleton* newone)
+    {
+        if (g_singletons == NULL) g_singletons = new ptr_vector<Singleton>();
+        
+        assert (g_singletons != NULL);
+        g_singletons->push_back(newone);
+    }
+    void cleanSingletons()
+    {
+        assert (g_singletons != NULL);
+        g_singletons->clearAndDeleteAll();
+        delete g_singletons;
+    }
+    
+    Singleton::Singleton()
+    {
+        addToSingletonList(this);
+    }
+    Singleton::~Singleton()
+    {
+    }
+    void Singleton::deleteAll()
+    {
+        cleanSingletons();
+    }
+    
 namespace Core
 {
 

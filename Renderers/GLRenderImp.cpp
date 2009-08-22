@@ -233,8 +233,22 @@ void quad(const int x1, const int y1,
 
 }
 
+class NumberRendererSingleton : public wxGLNumberRenderer, public Singleton
+{
+public:
+    NumberRendererSingleton() : wxGLNumberRenderer(), Singleton()
+    {
+    }
     
-wxGLNumberRenderer my_number_renderer;
+    virtual ~NumberRendererSingleton()
+    {
+    }
+    
+    LEAK_CHECK();
+};
+
+static NumberRendererSingleton* my_number_renderer = new NumberRendererSingleton();
+
     
 void renderNumber(const int number, const int x, const int y)
 {
@@ -246,8 +260,8 @@ void renderNumber(const float number, const int x, const int y)
 }
 void renderNumber(const wxString number, const int x, const int y)
 {
-    my_number_renderer.bind();
-    my_number_renderer.renderNumber(number, x, y);
+    my_number_renderer->bind();
+    my_number_renderer->renderNumber(number, x, y);
 }
     
 void beginScissors(const int x, const int y, const int width, const int height)

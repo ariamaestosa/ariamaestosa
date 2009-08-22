@@ -245,6 +245,7 @@ MainFrame::~MainFrame()
     PlatformMidiManager::freeMidiPlayer();
     CopyrightWindow::free();
     Clipboard::clear();
+    Singleton::deleteAll();
 }
 
 void MainFrame::init()

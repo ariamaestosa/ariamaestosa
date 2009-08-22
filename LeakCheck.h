@@ -14,6 +14,8 @@ class AbstractLeakCheck;
     
 class MyObject
 {
+    char** stack;
+    int stackSize;
 public:
     //std::string file;
     //int line;

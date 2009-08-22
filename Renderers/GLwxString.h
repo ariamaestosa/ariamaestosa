@@ -15,8 +15,30 @@
 namespace AriaMaestosa
 {
     
-class TextTexture;
-
+    class wxGLString;
+    class wxGLStringArray;
+    class wxGLStringNumber;
+    
+class TextTexture
+{
+    friend class wxGLString;
+    friend class wxGLStringArray;
+    friend class wxGLStringNumber;
+private:
+    GLuint* ID;
+protected:
+    
+    GLuint* getID();
+    
+    TextTexture();
+    TextTexture(wxBitmap& bmp);
+    void load(wxImage* img);
+public:
+    LEAK_CHECK();
+    
+    ~TextTexture();
+};
+    
 /** base class for renderable elements. You won't create this one directly,
 but may use its public members from wxGLString since it inherits from TextGLDrawable.
 This class will be useful if you wish to apply effects to the text like rotation or
@@ -30,7 +52,7 @@ protected:
 
     int x,y, angle;
     float xscale, yscale;
-    TextTexture* image;
+    OwnerPtr<TextTexture> image;
     bool xflip, yflip;
 
     int y_offset;
@@ -43,9 +65,10 @@ protected:
     
     TextGLDrawable(TextTexture* image=(TextTexture*)0);
     void render();
-    void setImage(TextTexture* image);
+    void setImage(TextTexture* image, bool giveUpOwnership=false);
     void move(int x, int y);
 public:
+    
     LEAK_CHECK();
     
     virtual ~TextGLDrawable() {}
@@ -90,7 +113,6 @@ my_message.render(x, y);
 class wxGLString : public wxString, public TextGLDrawable
 {
 protected:
-    TextTexture* img;
     wxFont font;
 
     int warp_after;
@@ -168,8 +190,6 @@ public:
     void renderNumber(int i, int x, int y);
     /** render this number at coordinates (x,y). Must be called after bind(). */
     void renderNumber(float f, int x, int y);
-    
-    LEAK_CHECK();
 };
 
 typedef wxGLNumberRenderer AriaRenderNumber;
@@ -196,8 +216,8 @@ my_messages.get(2).render( x, y + 50 );
 */
 class wxGLStringArray
 {
-    std::vector<wxGLString> strings;
-    TextTexture* img;
+    ptr_vector<wxGLString, HOLD> strings;
+    OwnerPtr<TextTexture> img;
     wxFont font;
     bool consolidated;
 public:

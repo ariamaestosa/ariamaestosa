@@ -18,9 +18,8 @@ namespace AriaMaestosa
 
 GLuint* loadImage(wxImage* img)
 {
-
-	GLuint* ID=new GLuint[1];
-	glGenTextures( 1, &ID[0] );
+	GLuint* ID = new GLuint[1];
+	glGenTextures( 1, ID );
 
 	glBindTexture( GL_TEXTURE_2D, *ID );
 
@@ -73,29 +72,6 @@ GLuint* loadImage(wxImage* img)
 
 }
 
-
-class TextTexture
-{
-    friend class wxGLString;
-    friend class wxGLStringArray;
-    friend class wxGLStringNumber;
-private:
-    GLuint* ID;
-protected:
-
-    GLuint* getID();
-
-    TextTexture();
-    TextTexture(wxBitmap& bmp);
-    void load(wxImage* img);
-public:
-    LEAK_CHECK();
-
-
-    ~TextTexture();
-
-};
-
 #if 0
 #pragma mark -
 #pragma mark TextGLDrawable implementation
@@ -121,8 +97,8 @@ TextGLDrawable::TextGLDrawable(TextTexture* image_arg)
     w = -1;
     h = -1;
 
-    if (image_arg!=NULL) setImage(image_arg);
-    else image=NULL;
+    if (image_arg != NULL) setImage(image_arg);
+    else image = NULL;
 
     tex_coord_x1 = 0;
     tex_coord_y1 = 1;
@@ -159,9 +135,14 @@ void TextGLDrawable::scale(float k)
     TextGLDrawable::yscale=k;
 }
 
-void TextGLDrawable::setImage(TextTexture* image)
+void TextGLDrawable::setImage(TextTexture* image, bool giveUpOwnership)
 {
-    TextGLDrawable::image=image;
+    TextGLDrawable::image = image;
+    
+    if (giveUpOwnership)
+    {
+        TextGLDrawable::image.owner = false;
+    }
 }
 
 void TextGLDrawable::rotate(int angle)
@@ -171,7 +152,7 @@ void TextGLDrawable::rotate(int angle)
 
 void TextGLDrawable::render()
 {
-    assert(image!=NULL);
+    assert(image != NULL);
 
     assertExpr(w, >, 0);
     assertExpr(h, >, 0);
@@ -228,7 +209,6 @@ void TextGLDrawable::render()
     glPopMatrix();
 }
 
-
 #if 0
 #pragma mark -
 #pragma mark TextTexture implementation
@@ -246,7 +226,7 @@ TextTexture::TextTexture(wxBitmap& bmp)
 }
 void TextTexture::load(wxImage* img)
 {
-    ID=loadImage(img);
+    ID = loadImage(img);
 }
 
 GLuint* TextTexture::getID()
@@ -258,6 +238,7 @@ GLuint* TextTexture::getID()
 TextTexture::~TextTexture()
 {
     glDeleteTextures (1, ID);
+    delete[] ID;
 }
 
 
@@ -268,13 +249,11 @@ TextTexture::~TextTexture()
 
 wxGLString::wxGLString() : wxString(wxT("")), TextGLDrawable()
 {
-    img = NULL;
     consolidated = false;
     warp_after = -1;
 }
 wxGLString::wxGLString(wxString message) : wxString(message), TextGLDrawable()
 {
-    img = NULL;
     consolidated = false;
     warp_after = -1;
 }
@@ -287,8 +266,8 @@ void wxGLString::set(const wxString& string)
 void wxGLString::bind()
 {
     if (not consolidated) consolidate(Display::renderDC);
-
-    glBindTexture(GL_TEXTURE_2D, img->getID()[0] );
+    
+    glBindTexture(GL_TEXTURE_2D, image->getID()[0] );
 }
 void wxGLString::calculateSize(wxDC* dc, const bool ignore_font /* when from array */)
 {
@@ -348,8 +327,7 @@ void wxGLString::consolidate(wxDC* dc)
         else
             temp_dc.DrawText(*this, 0, 0);
     }
-    delete img;
-    img = new TextTexture(bmp);
+    TextTexture* img = new TextTexture(bmp);
 
     bmp.SaveFile(wxT("/tmp/test.png"), wxBITMAP_TYPE_PNG);
     
@@ -363,6 +341,7 @@ void wxGLString::consolidate(wxDC* dc)
 
     consolidated = true;
 }
+    
 void wxGLString::consolidateFromArray(wxDC* dc, int x, int y)
 {
     dc->DrawText(*this, x, y);
@@ -393,7 +372,6 @@ void wxGLString::setMaxWidth(const int w, const bool warp /*false: truncate. tru
  
 wxGLString::~wxGLString()
 {
-    delete img;
 }
 
 
@@ -516,11 +494,11 @@ wxGLStringArray::wxGLStringArray(const wxString strings_arg[], int amount)
     consolidated = false;
 
     for(int n=0; n<amount; n++)
-        strings.push_back( wxGLString(strings_arg[n]) );
+        strings.push_back( new wxGLString(strings_arg[n]) );
 }
+    
 wxGLStringArray::~wxGLStringArray()
 {
-    delete img;
 }
 
 wxGLString& wxGLStringArray::get(const int id)
@@ -535,7 +513,7 @@ void wxGLStringArray::bind()
 }
 void wxGLStringArray::addString(wxString string)
 {
-    strings.push_back( wxGLString(string) );
+    strings.push_back( new wxGLString(string) );
 }
 void wxGLStringArray::setFont(wxFont font)
 {
@@ -606,11 +584,13 @@ void wxGLStringArray::consolidate(wxDC* dc)
             }
         }
     }
-    delete img;
+
     img = new TextTexture(bmp);
 
     for(int n=0; n<amount; n++)
-        strings[n].setImage(img);
+    {
+        strings[n].setImage(img, true);
+    }
 
     consolidated = true;
 }
