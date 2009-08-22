@@ -225,6 +225,7 @@ bool AriaPrintable::addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */)
 void AriaPrintable::calculateLayout(bool checkRepetitions_bool)
 {
     layout = new PrintLayoutManager(this, layoutLines /* out */, layoutPages /* out */, measures /* out */);
+    layout->generateMeasures(tracks);
     layout->calculateLayoutElements(tracks, checkRepetitions_bool);
 }
     
@@ -350,7 +351,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     const float track_area_height = (float)h - (float)text_height*3.0f + (pageNum == 1 ? 100 : 0);
 
     // ---- Give each track an area on the page
-    layout->placeTracksInPage(page, text_height, track_area_height, level_y_amount, h, x0, y0, x1);
+    layout->placeLinesInPage(page, text_height, track_area_height, level_y_amount, h, x0, y0, x1);
     
     // ---- Draw the tracks
     const wxFont regularFont = wxFont(75, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);

@@ -31,7 +31,7 @@ namespace AriaMaestosa
         
         for(int el=elements-1; el>=0; el--)
         { // start searching from last measure in this line
-            MeasureToExport& current_meas = parent->getMeasureForElement(el);
+            PrintLayoutMeasure& current_meas = parent->getMeasureForElement(el);
             for(int i=0; i<track_amount; i++)
             {
                 if (current_meas.trackRef.size() > 0 && // FIXME - find why it's sometimes 0
@@ -55,7 +55,7 @@ namespace AriaMaestosa
         
         for(int el=0; el<elements; el++)
         { // start searching from first measure in this line
-            MeasureToExport& current_meas = parent->getMeasureForElement(el);
+            PrintLayoutMeasure& current_meas = parent->getMeasureForElement(el);
             for(int i=0; i<track_amount; i++)
             {
                 if (current_meas.trackRef.size() > 0 && // FIXME - find why it's sometimes empty
@@ -130,13 +130,13 @@ namespace AriaMaestosa
         return getMeasureForElement(layoutElement).trackRef[trackID].lastNote;
     }
     
-    MeasureToExport& LayoutLine::getMeasureForElement(const int layoutElementID) const
+    PrintLayoutMeasure& LayoutLine::getMeasureForElement(const int layoutElementID) const
     {
         const int measID = layoutElements[layoutElementID].measure;
-        if (measID == -1) return (MeasureToExport&)nullMeasure;
+        if (measID == -1) return (PrintLayoutMeasure&)nullMeasure;
         return printable->measures[measID];
     }
-    MeasureToExport& LayoutLine::getMeasureForElement(LayoutElement* layoutElement)
+    PrintLayoutMeasure& LayoutLine::getMeasureForElement(LayoutElement* layoutElement)
     {
         return printable->measures[layoutElement->measure];
     }
@@ -165,6 +165,7 @@ namespace AriaMaestosa
         }
         return -1;
     }
+    
     int LayoutLine::calculateHeight()
     {
         level_height = 0;

@@ -49,7 +49,7 @@ public:
     ScorePrintable();
     virtual ~ScorePrintable();
 
-    void addUsedTicks(const MeasureToExport& measure, const MeasureTrackReference& trackRef, std::map<int /* tick */,TickPosInfo>&);
+    void addUsedTicks(const PrintLayoutMeasure& measure, const MeasureTrackReference& trackRef, std::map<int /* tick */,TickPosInfo>&);
     
     void earlySetup(const int trackID, Track* track);
 

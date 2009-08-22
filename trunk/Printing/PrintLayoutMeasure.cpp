@@ -22,9 +22,9 @@
 namespace AriaMaestosa
 {
     
-const MeasureToExport nullMeasure(-1);
+const PrintLayoutMeasure nullMeasure(-1);
     
-MeasureToExport::MeasureToExport(const int measID)
+PrintLayoutMeasure::PrintLayoutMeasure(const int measID)
 {
     shortestDuration = -1;
     firstSimilarMeasure = -1;
@@ -38,7 +38,7 @@ MeasureToExport::MeasureToExport(const int measID)
     }
 }
 
-bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
+bool PrintLayoutMeasure::calculateIfMeasureIsSameAs(PrintLayoutMeasure& checkMeasure)
 {
     
     const int trackRefAmount = trackRef.size();
@@ -140,7 +140,7 @@ bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
     return true;
 }
 
-int MeasureToExport::addTrackReference(const int firstNote, Track* track)
+int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
 {
     const int noteAmount = track->getNoteAmount();
     

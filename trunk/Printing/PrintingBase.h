@@ -68,7 +68,7 @@ protected:
 
     std::vector<LayoutPage> layoutPages;
     ptr_vector<LayoutLine> layoutLines;
-    ptr_vector<MeasureToExport> measures;
+    ptr_vector<PrintLayoutMeasure> measures;
     
     OwnerPtr<PrintLayoutManager> layout;
     
