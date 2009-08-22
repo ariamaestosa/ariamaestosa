@@ -39,24 +39,24 @@ namespace AriaMaestosa
     {
         assert(track != NULL);
 
-        if(track->graphics->editorMode != SCORE) return;
+        if (track->graphics->editorMode != SCORE) return;
 
         assert(noteid != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implemented)
 
         // concerns all selected notes
-        if(noteid==SELECTED_NOTES)
+        if (noteid==SELECTED_NOTES)
         {
 
             bool played = false;
             const int amount_n = track->notes.size();
             for(int n=0; n<amount_n; n++)
             {
-                if(!track->notes[n].isSelected()) continue;
+                if (!track->notes[n].isSelected()) continue;
 
                 track->notes[n].pitchID += deltaY;
                 relocator.rememberNote( track->notes[n] );
 
-                if(!played)
+                if (!played)
                 {
                     track->notes[n].play(true);
                     played = true;

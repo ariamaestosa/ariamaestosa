@@ -53,7 +53,7 @@ void EditorPrintable::placeTrackAndElementsWithinCoords(const int trackID, Layou
     
     track.show_measure_number = show_measure_number;
     
-    if(&line.getTrackRenderInfo(trackID) != &track) std::cerr << "LineTrackRef is not the right one!!!!!!!!!\n";
+    if (&line.getTrackRenderInfo(trackID) != &track) std::cerr << "LineTrackRef is not the right one!!!!!!!!!\n";
     // std::cout << "coords for track " << line.getTrack(trackID) << " : " << x0 << ", " << y0 << ", " << x1 << ", " << y1 << std::endl;
     
     // 2 spaces allocated for left area of the line
@@ -67,14 +67,14 @@ void EditorPrintable::placeTrackAndElementsWithinCoords(const int trackID, Layou
     // init coords of each layout element
     for(int currentLayoutElement=0; currentLayoutElement<track.layoutElementsAmount; currentLayoutElement++)
     {
-        if(currentLayoutElement == 0) xloc = 1;
-        else if(currentLayoutElement > 0) xloc += line.layoutElements[currentLayoutElement-1].width_in_units;
+        if (currentLayoutElement == 0) xloc = 1;
+        else if (currentLayoutElement > 0) xloc += line.layoutElements[currentLayoutElement-1].width_in_units;
         
         std::cout << "    - Setting coords of element " << currentLayoutElement << " of current line. xfrom = " <<
         x0 + (int)round(xloc*track.pixel_width_of_an_unit) - track.pixel_width_of_an_unit << "\n";
         line.layoutElements[currentLayoutElement].setXFrom(x0 + (int)round(xloc*track.pixel_width_of_an_unit) - track.pixel_width_of_an_unit);
         
-        if(currentLayoutElement > 0)
+        if (currentLayoutElement > 0)
         {
             line.layoutElements[currentLayoutElement-1].setXTo( line.layoutElements[currentLayoutElement].getXFrom() );
         }
@@ -100,14 +100,14 @@ LayoutElement* EditorPrintable::getElementForMeasure(const int trackID, const in
     const int amount = layoutElements.size();
     for(int n=0; n<amount; n++)
     {
-        if(layoutElements[n].measure == measureID) return &layoutElements[n];
+        if (layoutElements[n].measure == measureID) return &layoutElements[n];
     }
     return NULL;
 }*/
 
 void EditorPrintable::drawVerticalDivider(LayoutElement* el, const int y0, const int y1)
 {
-    if(el->getType() == TIME_SIGNATURE) return;
+    if (el->getType() == TIME_SIGNATURE) return;
     
     const int elem_x_start = el->getXFrom();
     
@@ -139,7 +139,7 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
 {
     LineTrackRef& renderInfo = layoutLine.getTrackRenderInfo(trackID);
     
-    if(!(currentLayoutElement < renderInfo.layoutElementsAmount))
+    if (!(currentLayoutElement < renderInfo.layoutElementsAmount))
     {
         //std::cout << "---- returning NULL because we have a total of " << layoutElementsAmount << " elements\n";
         return NULL;
@@ -152,20 +152,20 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
     dc->SetTextForeground( wxColour(0,0,255) );
     
     // ****** empty measure
-    if(layoutElements[currentLayoutElement].getType() == EMPTY_MEASURE)
+    if (layoutElements[currentLayoutElement].getType() == EMPTY_MEASURE)
     {
     }
     // ****** time signature change
-    else if(layoutElements[currentLayoutElement].getType() == TIME_SIGNATURE)
+    else if (layoutElements[currentLayoutElement].getType() == TIME_SIGNATURE)
     {
     }
     // ****** repetitions
-    else if(layoutElements[currentLayoutElement].getType() == SINGLE_REPEATED_MEASURE or
+    else if (layoutElements[currentLayoutElement].getType() == SINGLE_REPEATED_MEASURE or
             layoutElements[currentLayoutElement].getType() == REPEATED_RIFF)
     {
         // FIXME - why do I cut apart the measure and not the layout element?
         /*
-         if(measures[layoutElements[n].measure].cutApart)
+         if (measures[layoutElements[n].measure].cutApart)
          {
          // TODO...
          //dc.SetPen(  wxPen( wxColour(0,0,0), 4 ) );
@@ -174,11 +174,11 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
          */
         
         wxString message;
-        if(layoutElements[currentLayoutElement].getType() == SINGLE_REPEATED_MEASURE)
+        if (layoutElements[currentLayoutElement].getType() == SINGLE_REPEATED_MEASURE)
         {
             message = to_wxString(layoutLine.getMeasureForElement(currentLayoutElement).firstSimilarMeasure+1);
         }
-        else if(layoutElements[currentLayoutElement].getType() == REPEATED_RIFF)
+        else if (layoutElements[currentLayoutElement].getType() == REPEATED_RIFF)
         {
             message =    to_wxString(layoutElements[currentLayoutElement].firstMeasureToRepeat+1) +
             wxT(" - ") +
@@ -189,7 +189,7 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
                      (renderInfo.y0 + renderInfo.y1)/2 - getCurrentPrintable()->text_height_half );
     }
     // ****** play again
-    else if(layoutElements[currentLayoutElement].getType() == PLAY_MANY_TIMES)
+    else if (layoutElements[currentLayoutElement].getType() == PLAY_MANY_TIMES)
     {
         wxString label(wxT("X"));
         label << layoutElements[currentLayoutElement].amountOfTimes;
@@ -197,12 +197,12 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
                      (renderInfo.y0 + renderInfo.y1)/2 - getCurrentPrintable()->text_height_half );
     }
     // ****** normal measure
-    else if(layoutElements[currentLayoutElement].getType() == SINGLE_MEASURE)
+    else if (layoutElements[currentLayoutElement].getType() == SINGLE_MEASURE)
     {
         //std::cout << "---- element is normal\n";
         
         // draw measure ID
-        if(renderInfo.show_measure_number)
+        if (renderInfo.show_measure_number)
         {
             const int meas_id = layoutLine.getMeasureForElement(currentLayoutElement).id+1;
             
@@ -234,11 +234,11 @@ int EditorPrintable::tickToX(const int trackID, LayoutLine& line, const int tick
     for(int n=0; n<renderInfo.layoutElementsAmount; n++)
     {
         MeasureToExport& meas = line.getMeasureForElement(n);
-        if(meas.id == -1) continue; // nullMeasure, ignore
+        if (meas.id == -1) continue; // nullMeasure, ignore
         const int firstTick = meas.firstTick;
         const int lastTick  = meas.lastTick;
         
-        if(tick >= firstTick and tick < lastTick)
+        if (tick >= firstTick and tick < lastTick)
         {
             //std::cout << tick << " is within bounds " << firstTick << " - " << lastTick << std::endl;
             const int elem_x_start = line.layoutElements[n].getXFrom();
@@ -260,7 +260,7 @@ int EditorPrintable::tickToX(const int trackID, LayoutLine& line, const int tick
         }
         else 
         // given tick is before the current line
-        if(tick < firstTick) 
+        if (tick < firstTick) 
         {
             //std::cout << "tickToX Returning -1 A\n";
             return -1;
@@ -272,7 +272,7 @@ int EditorPrintable::tickToX(const int trackID, LayoutLine& line, const int tick
          * FIXME - it's not necessarly a tie
          * FIXME - ties aand line warping need better handling
          */
-        if(n==renderInfo.layoutElementsAmount-1 and tick >= lastTick)
+        if (n==renderInfo.layoutElementsAmount-1 and tick >= lastTick)
         {
             //std::cout << "tickToX Returning -" <<  (currentLine->layoutElements[n].getXTo() + 10) << " B\n";
 
@@ -308,14 +308,14 @@ int EditorPrintable::getClosestTickFrom(const int trackID, LayoutLine& line,cons
     for(int n=0; n<renderInfo.layoutElementsAmount; n++)
     {
         MeasureToExport& meas = line.getMeasureForElement(n);
-        if(meas.id == -1) continue; // nullMeasure, ignore
+        if (meas.id == -1) continue; // nullMeasure, ignore
         const int firstTick = meas.firstTick;
         const int lastTick  = meas.lastTick;
         //std::cout << "checkingWithinMeasure {" << firstTick << ", " << lastTick << "}\n";
         
         int closestTick = -1;
         
-        if(tick >= firstTick and tick < lastTick)
+        if (tick >= firstTick and tick < lastTick)
         {
             
             std::map<int, TickPosInfo>::iterator iter;

@@ -50,13 +50,13 @@ wxConfig* prefs;
 
 void wxWidgetApp::activateRenderLoop(bool on)
 {
-    if(on and !render_loop_on)
+    if (on and !render_loop_on)
     {
         Connect( wxID_ANY, wxEVT_IDLE, wxIdleEventHandler(wxWidgetApp::onIdle) );
         render_loop_on = true;
     }
 
-    else if(!on and render_loop_on)
+    else if (!on and render_loop_on)
     {
         Disconnect( wxEVT_IDLE, wxIdleEventHandler(wxWidgetApp::onIdle) );
         render_loop_on = false;
@@ -65,7 +65,7 @@ void wxWidgetApp::activateRenderLoop(bool on)
 
 void wxWidgetApp::onIdle(wxIdleEvent& evt)
 {
-    if(render_loop_on)
+    if (render_loop_on)
     {
         frame->mainPane->playbackRenderLoop();
         evt.RequestMore();
@@ -75,7 +75,7 @@ void wxWidgetApp::onIdle(wxIdleEvent& evt)
 void wxWidgetApp::onActivate(wxActivateEvent& evt)
 {
     #ifdef __WXMAC__
-    if(evt.GetActive())
+    if (evt.GetActive())
     {
         frame->Raise();
     }
@@ -116,11 +116,11 @@ int wxWidgetApp::OnExit()
 void wxWidgetApp::MacOpenFile(const wxString &fileName)
 {
 
-    if(fileName.EndsWith(wxT("aria")))
+    if (fileName.EndsWith(wxT("aria")))
     {
         frame->loadAriaFile( fileName );
     }
-    else if(fileName.EndsWith(wxT("mid")) or fileName.EndsWith(wxT("midi")))
+    else if (fileName.EndsWith(wxT("mid")) or fileName.EndsWith(wxT("midi")))
     {
         frame->loadMidiFile( fileName );
     }

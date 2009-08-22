@@ -44,7 +44,7 @@ void Image::load(wxString path)
     }
 
     path = getResourcePrefix() + path;
-    if(!image.LoadFile(path))
+    if (!image.LoadFile(path))
     {
         wxMessageBox( wxT("Failed to load ") + path );
         exit(1);
@@ -58,7 +58,7 @@ Image::~Image()
 {
     for(int n=0; n<AriaRender::STATE_AMOUNT; n++)
     {
-        if(states[n] != NULL)
+        if (states[n] != NULL)
         {
             delete states[n];
             delete states_bmp[n];
@@ -68,8 +68,8 @@ Image::~Image()
 
 wxImage* Image::getImageForState(AriaRender::ImageState s)
 {
-    if(s == AriaRender::STATE_NORMAL) return &image;
-    if(states[s] != NULL) return states[s];
+    if (s == AriaRender::STATE_NORMAL) return &image;
+    if (states[s] != NULL) return states[s];
 
     states[s] = new wxImage( image );
 
@@ -111,7 +111,7 @@ wxImage* Image::getImageForState(AriaRender::ImageState s)
     const unsigned int pixelcount = image.GetHeight() * image.GetWidth();
     unsigned char* data = states[s]->GetData();
 
-    if(mode == MODE_MULTIPLY)
+    if (mode == MODE_MULTIPLY)
     {
         for(unsigned int i=0; i<pixelcount; i++)
         {
@@ -121,7 +121,7 @@ wxImage* Image::getImageForState(AriaRender::ImageState s)
             data += 3;
         }
     }
-    else if(mode == MODE_FADE_TO)
+    else if (mode == MODE_FADE_TO)
     {
         for(unsigned int i=0; i<pixelcount; i++)
         {
@@ -147,9 +147,9 @@ wxImage* Image::getImageForState(AriaRender::ImageState s)
 
 wxBitmap* Image::getBitmapForState(AriaRender::ImageState s)
 {
-    if(s == AriaRender::STATE_NORMAL) return bitmap;
+    if (s == AriaRender::STATE_NORMAL) return bitmap;
 
-    if(states_bmp[s] == NULL) getImageForState(s);
+    if (states_bmp[s] == NULL) getImageForState(s);
     return states_bmp[s];
 }
 

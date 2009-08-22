@@ -39,7 +39,7 @@ namespace AriaMaestosa
             const int noteAmount = track->getNoteAmount();
             for(int n=0; n<noteAmount; n++)
             {
-                if(track->getNote(n) == current_note)
+                if (track->getNote(n) == current_note)
                 {
                     track->removeNote(n);
                     break;
@@ -52,19 +52,19 @@ namespace AriaMaestosa
     {
         assert(track != NULL);
 
-        if(track->graphics->editorMode == CONTROLLER)
+        if (track->graphics->editorMode == CONTROLLER)
         {
             wxBell();
             return; // no copy/paste in controller mode
         }
-        if(Clipboard::getSize() == 0) return; // nothing copied
+        if (Clipboard::getSize() == 0) return; // nothing copied
 
         const int copied_beat_length = Clipboard::getBeatLength();
         const int seq_beat_length = track->sequence->ticksPerBeat();
         float scale_pasted_notes = 1;
         bool need_to_scale_pasted_notes = false;
 
-        if(copied_beat_length != seq_beat_length)
+        if (copied_beat_length != seq_beat_length)
         {
             scale_pasted_notes = (float)seq_beat_length / (float)copied_beat_length;
             need_to_scale_pasted_notes = true;
@@ -76,13 +76,13 @@ namespace AriaMaestosa
         // If we're pasting at the mouse cursor, it is necessary to know that so that the first note is next to the cursor.
         // However, if we're pasting in the first measure, we don't want this info since we want the track->notes to keep their location within the measure.
         int beginning=-1;
-        if(!atMouse) beginning=0;
+        if (!atMouse) beginning=0;
 
         // unselected previously selected track->notes
         for(int n=0; n<track->notes.size(); n++) track->notes[n].setSelected(false);
 
         // find where track->notes begin if necessary
-        if(atMouse)
+        if (atMouse)
             beginning = Clipboard::getNote(0)->startTick;
 
         int shift=0;
@@ -97,7 +97,7 @@ namespace AriaMaestosa
         /*
          * Calculate 'shift' (i.e. X position of pasted notes)
          */
-        if( atMouse and
+        if ( atMouse and
             trackMouseLoc_y > track->graphics->getCurrentEditor()->getEditorYStart() and
             trackMouseLoc_y < track->graphics->getCurrentEditor()->getYEnd() and
             trackMouseLoc_x > getEditorsXStart())
@@ -108,7 +108,7 @@ namespace AriaMaestosa
             shift=track->graphics->getCurrentEditor()->snapMidiTickToGrid( mx.getRelativeTo(MIDI) );
 
         }
-        else if(!atMouse and track->sequence->x_scroll_upon_copying == track->sequence->getXScrollInPixels() )
+        else if (!atMouse and track->sequence->x_scroll_upon_copying == track->sequence->getXScrollInPixels() )
         {
 
             /*
@@ -125,13 +125,13 @@ namespace AriaMaestosa
             Note& tmp = *Clipboard::getNote(0);
 
             // before visible area
-            if((tmp.startTick + tmp.endTick)/2 + shift < track->sequence->getXScrollInMidiTicks())
+            if ((tmp.startTick + tmp.endTick)/2 + shift < track->sequence->getXScrollInMidiTicks())
                 goto regular_paste;
 
             // after visible area
             RelativeXCoord screen_width( Display::getWidth(), WINDOW );
 
-            if((tmp.startTick + tmp.endTick)/2 + shift > screen_width.getRelativeTo(MIDI) )
+            if ((tmp.startTick + tmp.endTick)/2 + shift > screen_width.getRelativeTo(MIDI) )
                 goto regular_paste;
 
         }
@@ -145,7 +145,7 @@ regular_paste: // FIXME - find better way than goto
 
             // if not "paste at mouse", find first visible measure
             int measure = getMeasureData()->measureAtTick(track->sequence->getXScrollInMidiTicks())-1;
-            if(measure < 0) measure = 0;
+            if (measure < 0) measure = 0;
             const int lastMeasureStart = getMeasureData()->firstTickInMeasure( measure );
             shift = track->graphics->keyboardEditor->snapMidiTickToGrid(lastMeasureStart);
 
@@ -167,19 +167,19 @@ regular_paste: // FIXME - find better way than goto
         {
             Note* tmp=new Note( *(Clipboard::getNote(n)) );
 
-            if(need_to_scale_pasted_notes)
+            if (need_to_scale_pasted_notes)
             {
                 tmp->startTick *= scale_pasted_notes;
                 tmp->endTick *= scale_pasted_notes;
             }
 
             track->graphics->getCurrentEditor()->moveNote(*tmp, shift , 0);
-            if(atMouse) track->graphics->getCurrentEditor()->moveNote(*tmp, -beginning , 0);
+            if (atMouse) track->graphics->getCurrentEditor()->moveNote(*tmp, -beginning , 0);
 
             tmp->setParent( track->graphics );
             tmp->setSelected(true);
 
-            if(track->graphics->editorMode == GUITAR) tmp->checkIfStringAndFretMatchNote(true);
+            if (track->graphics->editorMode == GUITAR) tmp->checkIfStringAndFretMatchNote(true);
 
             track->addNote( tmp, false );
             relocator.rememberNote( *tmp );

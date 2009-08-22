@@ -50,7 +50,7 @@ namespace AriaMaestosa
         assert(track != NULL);
 
         GuitarEditor* editor = track->graphics->guitarEditor;
-        if(editor == NULL) return; // before editor is created, probably setting initial tuning. FIXME - find cleaner way
+        if (editor == NULL) return; // before editor is created, probably setting initial tuning. FIXME - find cleaner way
         previous_tuning = editor->previous_tuning;
 
         const int amount_n = track->notes.size();

@@ -31,7 +31,7 @@ MeasureToExport::MeasureToExport(const int measID)
     cutApart = false;
     id = measID;
     
-    if(measID != -1)
+    if (measID != -1)
     {
         firstTick = getMeasureData()->firstTickInMeasure( measID );
         lastTick = getMeasureData()->lastTickInMeasure( measID );
@@ -57,7 +57,7 @@ bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
         Track* track = trackRef[tref].track;
         
         // if these 2 measures don't even have the same number of notes, they're definitely not the same
-        if( (his_last_note - his_first_note + 1) != (my_last_note - my_first_note + 1) )
+        if ( (his_last_note - his_first_note + 1) != (my_last_note - my_first_note + 1) )
         {
             return false;
         }
@@ -67,11 +67,11 @@ bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
         total_note_amount += noteAmount;
         
         // don't count empty measures as repetitions 
-        if(noteAmount<1)
+        if (noteAmount<1)
         {
             // when comparing a multiple-track line, don't stop on empty measures, for other tracks may not be empty
             // for multi-track lines, variable 'total_note_amount' will be checked at the end to verify measure is not empty
-            if(trackRefAmount>1) continue;
+            if (trackRefAmount>1) continue;
             return false;
         }
         
@@ -93,10 +93,10 @@ bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
         {
             for(int checkNote_other=0; checkNote_other<=noteAmount; checkNote_other++)
             {
-                if(noteMatched_other[checkNote_other]) continue; // this note was already matched
+                if (noteMatched_other[checkNote_other]) continue; // this note was already matched
                 
                 // check start tick matches
-                if(track->getNoteStartInMidiTicks(his_first_note + checkNote_other) - checkMeasure.firstTick !=
+                if (track->getNoteStartInMidiTicks(his_first_note + checkNote_other) - checkMeasure.firstTick !=
                    track->getNoteStartInMidiTicks(my_first_note + checkNote_this) - firstTick)
                 {
                     // they dont match, check the next one
@@ -104,7 +104,7 @@ bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
                 }
                 
                 // check end tick matches
-                if(track->getNoteEndInMidiTicks(his_first_note + checkNote_other) - checkMeasure.firstTick !=
+                if (track->getNoteEndInMidiTicks(his_first_note + checkNote_other) - checkMeasure.firstTick !=
                    track->getNoteEndInMidiTicks(my_first_note + checkNote_this) - firstTick)
                 {
                     // they dont match, check the next one
@@ -112,7 +112,7 @@ bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
                 }
                 
                 // check pitch matches
-                if(track->getNotePitchID(his_first_note + checkNote_other) !=
+                if (track->getNotePitchID(his_first_note + checkNote_other) !=
                    track->getNotePitchID(my_first_note + checkNote_this))
                 {
                     // they dont match, check the next one
@@ -126,7 +126,7 @@ bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
             }//next note
             
             // we couldn't find a note in the other measure that matches this one
-            if(noteMatched_this[checkNote_this] == false)
+            if (noteMatched_this[checkNote_this] == false)
             {
                 // std::cout << "  not the same cause couldn't find a note in the other measure that matches this one\n";
                 return false;
@@ -136,7 +136,7 @@ bool MeasureToExport::calculateIfMeasureIsSameAs(MeasureToExport& checkMeasure)
         
     } // next track reference
     
-    if(total_note_amount == 0) return false; // don't count empty measures as repeitions
+    if (total_note_amount == 0) return false; // don't count empty measures as repeitions
     return true;
 }
 
@@ -148,7 +148,7 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
     newTrackRef->track = track;
     
     // if firstNote is -1, it means all notes were processed. just add the track ref without searching for notes
-    if(firstNote == -1)
+    if (firstNote == -1)
     {
         newTrackRef->firstNote = -1;
         newTrackRef->lastNote = -1;
@@ -158,7 +158,7 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
     
     // first note in measure
     newTrackRef->firstNote = firstNote;
-    if(firstNote >= noteAmount) newTrackRef->firstNote = noteAmount-1;
+    if (firstNote >= noteAmount) newTrackRef->firstNote = noteAmount-1;
     
     // find what the first, last and shortest note in current measure
     int lastNote = firstNote;
@@ -171,13 +171,13 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
         const int end_tick = track->getNoteEndInMidiTicks(note);
         const int currentNoteDuration = end_tick - start_tick;
         
-        if(currentNoteDuration <= 0)  continue; // skip malformed notes if any
+        if (currentNoteDuration <= 0)  continue; // skip malformed notes if any
         
         // stop when we're at next measure
-        if( start_tick >= lastTick ) break;
+        if ( start_tick >= lastTick ) break;
         
         // find last note - if many notes end at the same time, keep the one that started last
-        if(start_tick > last_note_start || end_tick > last_note_start ||
+        if (start_tick > last_note_start || end_tick > last_note_start ||
            (end_tick == last_note_end && start_tick >= last_note_start)
            )
         {
@@ -189,13 +189,13 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
         
         // store duration if it's the shortest yet (but ignore dead/instant-hit notes)
         const float relativeLength = (end_tick - start_tick) / (float)(getMeasureData()->beatLengthInTicks()*4);
-        if( relativeLength < 1.0/32.0 ) continue;
-        if( currentNoteDuration < shortestDuration or shortestDuration==-1) shortestDuration = currentNoteDuration;
+        if ( relativeLength < 1.0/32.0 ) continue;
+        if ( currentNoteDuration < shortestDuration or shortestDuration==-1) shortestDuration = currentNoteDuration;
     }
     assertExpr(lastNote,>,-1);
     assertExpr(lastNote,<,noteAmount);
     
-    if(measure_empty)
+    if (measure_empty)
     {
         newTrackRef->firstNote = -1;
         newTrackRef->lastNote = -1;
@@ -208,7 +208,7 @@ int MeasureToExport::addTrackReference(const int firstNote, Track* track)
     trackRef.push_back( newTrackRef );
     
     // check if all notes were used
-    if(lastNote == noteAmount-1) return -1;
+    if (lastNote == noteAmount-1) return -1;
     
     // if this measure is empty, return the same note as the one given in input (i.e. it was not used)
     // if this measure is not empty, add 1 so next measure will start from the next

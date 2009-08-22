@@ -89,6 +89,7 @@ protected:
     TextTexture(wxBitmap& bmp);
     void load(wxImage* img);
 public:
+    LEAK_CHECK();
 
 
     ~TextTexture();
@@ -116,8 +117,11 @@ TextGLDrawable::TextGLDrawable(TextTexture* image_arg)
     
     xflip=false;
     yflip=false;
+    
+    w = -1;
+    h = -1;
 
-    if(image_arg!=NULL) setImage(image_arg);
+    if (image_arg!=NULL) setImage(image_arg);
     else image=NULL;
 
     tex_coord_x1 = 0;
@@ -169,13 +173,17 @@ void TextGLDrawable::render()
 {
     assert(image!=NULL);
 
+    assertExpr(w, >, 0);
+    assertExpr(h, >, 0);
+    assertExpr(w, <, 90000);
+    assertExpr(h, <, 90000);
     glPushMatrix();
     glTranslatef(x*10,(y-h-y_offset)*10,0);
     
-    if(xscale!=1 || yscale!=1) glScalef(xscale, yscale, 1);
-    if(angle!=0) glRotatef(angle, 0,0,1);
+    if (xscale!=1 || yscale!=1) glScalef(xscale, yscale, 1);
+    if (angle!=0) glRotatef(angle, 0,0,1);
 
-    if(max_width != -1 and getWidth()>max_width)
+    if (max_width != -1 and getWidth()>max_width)
     {
         const float ratio = (float)max_width/(float)getWidth();
         glBegin(GL_QUADS);
@@ -228,6 +236,7 @@ void TextGLDrawable::render()
 
 TextTexture::TextTexture()
 {
+    ID = NULL;
 }
 
 TextTexture::TextTexture(wxBitmap& bmp)
@@ -242,6 +251,7 @@ void TextTexture::load(wxImage* img)
 
 GLuint* TextTexture::getID()
 {
+    assert(ID != NULL);
     return ID;
 }
 
@@ -276,15 +286,15 @@ void wxGLString::set(const wxString& string)
 
 void wxGLString::bind()
 {
-    if(not consolidated) consolidate(Display::renderDC);
+    if (not consolidated) consolidate(Display::renderDC);
 
     glBindTexture(GL_TEXTURE_2D, img->getID()[0] );
 }
 void wxGLString::calculateSize(wxDC* dc, const bool ignore_font /* when from array */)
 {
-    if(!ignore_font)
+    if (!ignore_font)
     {
-        if(font.IsOk()) dc->SetFont(font);
+        if (font.IsOk()) dc->SetFont(font);
         else dc->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
     }
 
@@ -298,7 +308,7 @@ void wxGLString::consolidate(wxDC* dc)
 
     bool multi_line = false;
     int single_line_height = 0;
-    if(warp_after != -1 and w > warp_after)
+    if (warp_after != -1 and w > warp_after)
     {
         Replace(wxT(" "),wxT("\n"));
         Replace(wxT("/"),wxT("/\n"));
@@ -320,10 +330,10 @@ void wxGLString::consolidate(wxDC* dc)
         temp_dc.SetBrush(*wxWHITE_BRUSH);
         temp_dc.Clear();
 
-        if(font.IsOk()) temp_dc.SetFont(font);
+        if (font.IsOk()) temp_dc.SetFont(font);
         else temp_dc.SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
 
-        if(multi_line)
+        if (multi_line)
         {
             int y = 0;
             wxStringTokenizer tkz(*this, wxT("\n"));
@@ -338,7 +348,7 @@ void wxGLString::consolidate(wxDC* dc)
         else
             temp_dc.DrawText(*this, 0, 0);
     }
-    if(img != NULL) delete img;
+    delete img;
     img = new TextTexture(bmp);
 
     bmp.SaveFile(wxT("/tmp/test.png"), wxBITMAP_TYPE_PNG);
@@ -373,7 +383,7 @@ void wxGLString::render(const int x, const int y)
 void wxGLString::setMaxWidth(const int w, const bool warp /*false: truncate. true: warp.*/)
 {
    // std::cout << "wxGLString::setMaxWidth " << w << ", " << warp << std::endl;
-    if(not warp)
+    if (not warp)
         TextGLDrawable::setMaxWidth(w);
     else
     {
@@ -383,7 +393,7 @@ void wxGLString::setMaxWidth(const int w, const bool warp /*false: truncate. tru
  
 wxGLString::~wxGLString()
 {
-    if(img != NULL) delete img;
+    delete img;
 }
 
 
@@ -398,6 +408,7 @@ wxGLNumberRenderer::wxGLNumberRenderer() : wxGLString( wxT("0 1 2 3 4 5 6 7 8 9 
 #ifdef __WXGTK__
     setFont( wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, /*wxFONTWEIGHT_BOLD*/ wxFONTWEIGHT_NORMAL) );
 #endif
+    space_w = -1;
 }
 wxGLNumberRenderer::~wxGLNumberRenderer()
 {
@@ -408,7 +419,7 @@ void wxGLNumberRenderer::consolidate(wxDC* dc)
 {
     wxGLString::consolidate(dc);
 
-    if(font.IsOk()) dc->SetFont(font);
+    if (font.IsOk()) dc->SetFont(font);
     else dc->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
 
     number_location[0] = 0;
@@ -442,6 +453,9 @@ void wxGLNumberRenderer::renderNumber(float f, int x, int y)
 }
 void wxGLNumberRenderer::renderNumber(wxString s, int x, int y)
 {
+    assertExpr(space_w, >=, 0);
+    assertExpr(space_w, <, 90000);
+    
     const int full_string_w = TextGLDrawable::texw;
 
     const int char_amount = s.Length();
@@ -506,7 +520,7 @@ wxGLStringArray::wxGLStringArray(const wxString strings_arg[], int amount)
 }
 wxGLStringArray::~wxGLStringArray()
 {
-    if(img != NULL) delete img;
+    delete img;
 }
 
 wxGLString& wxGLStringArray::get(const int id)
@@ -515,7 +529,7 @@ wxGLString& wxGLStringArray::get(const int id)
 }
 void wxGLStringArray::bind()
 {
-    if(not consolidated) consolidate(Display::renderDC);
+    if (not consolidated) consolidate(Display::renderDC);
 
     glBindTexture(GL_TEXTURE_2D, img->getID()[0] );
 }
@@ -532,7 +546,7 @@ void wxGLStringArray::consolidate(wxDC* dc)
 {
     int x=0, y=0;
 
-    if(font.IsOk()) dc->SetFont(font);
+    if (font.IsOk()) dc->SetFont(font);
     else dc->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
 
     // find how much space we need
@@ -541,11 +555,11 @@ void wxGLStringArray::consolidate(wxDC* dc)
     const int amount = strings.size();
     for(int n=0; n<amount; n++)
     {
-        if(strings[n].IsEmpty()) continue;
+        if (strings[n].IsEmpty()) continue;
         
         strings[n].calculateSize(dc, true);
         y += strings[n].h;
-        if(strings[n].w > longest_string) longest_string = strings[n].w;
+        if (strings[n].w > longest_string) longest_string = strings[n].w;
     }//next
 
     const int average_string_height = y / amount;
@@ -571,12 +585,12 @@ void wxGLStringArray::consolidate(wxDC* dc)
 
         y = 0;
         x = 0;
-        if(font.IsOk()) temp_dc.SetFont(font);
+        if (font.IsOk()) temp_dc.SetFont(font);
         else temp_dc.SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
 
         for(int n=0; n<amount; n++)
         {
-            if(strings[n].IsEmpty()) continue;
+            if (strings[n].IsEmpty()) continue;
             strings[n].consolidateFromArray(&temp_dc, x, y);
 
             strings[n].tex_coord_x1 = (float)x/(float)power_of_2_w;
@@ -585,14 +599,14 @@ void wxGLStringArray::consolidate(wxDC* dc)
             strings[n].tex_coord_y2 = 1.0 - (float)(y+strings[n].h)/(float)power_of_2_h;
 
             y += strings[n].h;
-            if(y > power_of_2_h - average_string_height*2) // check if we need to switch to next column
+            if (y > power_of_2_h - average_string_height*2) // check if we need to switch to next column
             {
                 y = 0;
                 x += longest_string;
             }
         }
     }
-    if(img != NULL) delete img;
+    delete img;
     img = new TextTexture(bmp);
 
     for(int n=0; n<amount; n++)

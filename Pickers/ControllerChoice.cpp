@@ -168,7 +168,7 @@ static AriaRenderArray label_renderer;
     
 ControllerChoice::ControllerChoice(GraphicalTrack* parent) : wxMenu()
 {
-    if(label_renderer.getStringAmount() == 0)
+    if (label_renderer.getStringAmount() == 0)
     {
         //I18N: - in controller, when a controller can only be on/off
         label_renderer.addString( _("On") );
@@ -283,9 +283,9 @@ void ControllerChoice::menuSelected(wxCommandEvent& evt)
     controllerID=evt.GetId();
     
     // special cases (non-controllers)
-    if(controllerID==200)
+    if (controllerID==200)
         controller_label.set(g_controller_names[30]);
-    else if(controllerID == 201)
+    else if (controllerID == 201)
         controller_label.set(g_controller_names[31]);
     else
         controller_label.set(g_controller_names[controllerID]);
@@ -317,7 +317,7 @@ void ControllerChoice::renderControllerName(const int x, const int y)
 
 bool ControllerChoice::isOnOffController(const int id) const
 {
-    if(controllerID== 66 or controllerID== 67 or
+    if (controllerID== 66 or controllerID== 67 or
        controllerID== 68 or controllerID== 69 or
        controllerID== 64 or controllerID== 65 )
         return true;
@@ -335,19 +335,19 @@ void ControllerChoice::renderTopLabel(const int x, const int y)
     label_renderer.bind();
 
     // pan
-    if(controllerID== 10 or controllerID== 42)
+    if (controllerID== 10 or controllerID== 42)
         label_renderer.get(5).render(x, y);
 
     // pitch bend
-    else if(controllerID==200)
+    else if (controllerID==200)
         label_renderer.get(6).render(x, y);
 
     // on/offs
-    else if( isOnOffController(controllerID) )
+    else if ( isOnOffController(controllerID) )
         label_renderer.get(0).render(x, y);
 
     // tempo
-    else if(controllerID == 201) AriaRender::renderNumber( wxT("400"), x, y );
+    else if (controllerID == 201) AriaRender::renderNumber( wxT("400"), x, y );
 
     else
         label_renderer.get(3).render(x, y);
@@ -362,19 +362,19 @@ void ControllerChoice::renderBottomLabel(const int x, const int y)
     label_renderer.bind();
     
     // pan
-    if(controllerID== 10 or controllerID== 42)
+    if (controllerID== 10 or controllerID== 42)
         label_renderer.get(4).render(x, y);
 
     // pitch bend
-    else if(controllerID==200)
+    else if (controllerID==200)
         label_renderer.get(7).render(x, y);
 
     // on/offs
-    else if( isOnOffController(controllerID) )
+    else if ( isOnOffController(controllerID) )
         label_renderer.get(1).render(x, y);
 
     // tempo
-    else if(controllerID == 201)  AriaRender::renderNumber( wxT("20"), x, y );
+    else if (controllerID == 201)  AriaRender::renderNumber( wxT("20"), x, y );
 
     else
         label_renderer.get(2).render(x, y);

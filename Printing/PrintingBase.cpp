@@ -22,7 +22,6 @@ class QuickPrint : public wxPrintout
 {
     wxPageSetupDialogData page_setup;
     int orient;
-    int max_x, max_y;
     int pageAmount;
 
     static const int brush_size = 15;
@@ -42,7 +41,7 @@ public:
         std::cout << "\n============\nprinting page " << pageNum << "\n==============" << std::endl;
 
         wxDC* ptr = GetDC();
-        if(ptr==NULL or !ptr->IsOk()){ std::cerr << "DC is not Ok, interrupting printing" << std::endl; return false; }
+        if (ptr==NULL or !ptr->IsOk()){ std::cerr << "DC is not Ok, interrupting printing" << std::endl; return false; }
         wxDC& dc = *ptr;
 
 
@@ -72,11 +71,11 @@ public:
         //page_setup.SetMarginTopLeft(wxPoint(16, 16));
         //page_setup.SetMarginBottomRight(wxPoint(16, 16));
 
-        if(showPageSetupDialog)
+        if (showPageSetupDialog)
         {
             // let user change default values if he wishes to
             wxPageSetupDialog dialog( NULL,  &page_setup );
-            if(dialog.ShowModal()==wxID_OK)
+            if (dialog.ShowModal()==wxID_OK)
             {
                 page_setup = dialog.GetPageSetupData();
                 orient = page_setup.GetPrintData().GetOrientation();
@@ -96,8 +95,10 @@ public:
         // set-up coordinate system however we want
         // we'll use it when drawing
 
+        int max_x, max_y;
+        
         // here i'm using arbitrary an size, use whatever you wish
-        if(orient == wxPORTRAIT)
+        if (orient == wxPORTRAIT)
         {
             max_x = 6800;
             max_y = 8800;
@@ -130,7 +131,7 @@ public:
     }
     bool HasPage(int pageNum)
     {
-        if(pageNum >= 1 and pageNum <= pageAmount)
+        if (pageNum >= 1 and pageNum <= pageAmount)
             return true;
         else
             return false;
@@ -151,7 +152,7 @@ int printResult(AriaPrintable* printable)
     QuickPrint myprint( printable );
     wxPrinter printer;
 
-    if(!myprint.preparePrint()) return false;
+    if (!myprint.preparePrint()) return false;
     //const bool success =
     printer.Print(NULL, &myprint, true /* show dialog */);
 
@@ -161,7 +162,7 @@ int printResult(AriaPrintable* printable)
 
     return wxPrinter::GetLastError();
 
-    //if(!success) return false;
+    //if (!success) return false;
     //return true;
 }
 
@@ -196,12 +197,12 @@ AriaPrintable::~AriaPrintable()
 // -----------------------------------------------------------------------------------------------------------------------
 bool AriaPrintable::addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */)
 {
-    if(mode == GUITAR)
+    if (mode == GUITAR)
     {
         editorPrintables.push_back(new TablaturePrintable(track));
         is_guitar_editor_used = true;
     }
-    else if(mode == SCORE)
+    else if (mode == SCORE)
     {
         editorPrintables.push_back(new ScorePrintable());
         is_score_editor_used = true;
@@ -232,18 +233,18 @@ wxString AriaPrintable::getTitle()
 {
     wxString song_title = sequence->suggestTitle();
     wxString track_title;
-    if(tracks.size()==1) tracks[0].getName();
+    if (tracks.size()==1) tracks[0].getName();
 
     wxString final_title;
 
     // give song title
-    if(song_title.IsSameAs(_("Untitled")))
+    if (song_title.IsSameAs(_("Untitled")))
         final_title = _("Aria Maestosa song");
     else
         final_title = song_title;
 
     // give track name, if any
-    if(!track_title.IsSameAs(_("Untitled")) and track_title.Length()>0) final_title += (wxT(", ") + track_title);
+    if (!track_title.IsSameAs(_("Untitled")) and track_title.Length()>0) final_title += (wxT(", ") + track_title);
 
     std::cout << "Title = " << final_title.mb_str() << std::endl;
     return final_title;
@@ -313,7 +314,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
 
     int title_x = x0;
 
-    if(pageNum == 1)
+    if (pageNum == 1)
     {
         // on page one make title big and centered
         dc.SetFont( wxFont(130,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD) );
@@ -373,7 +374,7 @@ void AriaPrintable::printLine(LayoutLine& line, wxDC& dc)
     const int my0 = line.y0 + line.margin_above;
     const int my1 = line.y0 + (line.y1 - line.y0) - line.margin_below;
     
-    if(trackAmount>1)
+    if (trackAmount>1)
     {
         dc.SetPen(  wxPen( wxColour(150,150,150), 25 ) );
         dc.DrawLine( line.x0-3, my0, line.x0-3, my1); // vertical line
@@ -400,7 +401,7 @@ void AriaPrintable::printLine(LayoutLine& line, wxDC& dc)
     for(int n=0; n<trackAmount; n++)
     {
         // skip empty tracks
-        if(line.height_percent[n] == 0) continue;
+        if (line.height_percent[n] == 0) continue;
         
         std::cout << "==== Printing track " << n << " ====" << std::endl;
         

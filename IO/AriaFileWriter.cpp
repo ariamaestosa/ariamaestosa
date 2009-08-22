@@ -30,12 +30,12 @@ void saveAriaFile(Sequence* sequence, wxString filepath)
     // it until we know the new file was successfully saved
     wxString temp_name = filepath + wxT("~");
     const bool overriding_file = wxFileExists(filepath);
-    if(overriding_file) wxRenameFile( filepath, temp_name, false );
+    if (overriding_file) wxRenameFile( filepath, temp_name, false );
 
     wxFileOutputStream file( filepath );
     sequence->saveToFile(file);
 
-    if(overriding_file) wxRemoveFile( temp_name );
+    if (overriding_file) wxRemoveFile( temp_name );
 }
 
 bool loadAriaFile(Sequence* sequence, wxString filepath)
@@ -45,7 +45,7 @@ bool loadAriaFile(Sequence* sequence, wxString filepath)
 
     irr::io::IrrXMLReader* xml = irr::io::createIrrXMLReader( (char*)output.data() );
 
-    if(! sequence->readFromFile(xml) )
+    if (! sequence->readFromFile(xml) )
     {
         std::cout << "LOADING SEQUENCE FAILED" << std::endl;
         delete xml;

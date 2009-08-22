@@ -42,20 +42,20 @@ namespace AriaMaestosa {
 
         // the first time, check resources are there
         static bool is_first_time = true;
-        if(is_first_time)
+        if (is_first_time)
         {
             is_first_time = false;
-            if(!wxFileExists(getResourcePrefix()  + path))
+            if (!wxFileExists(getResourcePrefix()  + path))
             {
                 wxMessageBox( _("Failed to load resource image") );
                 assert(false);
             }
         }
 
-        wxImage* img=new wxImage( getResourcePrefix()  + path );
+        wxImage* img = new wxImage( getResourcePrefix()  + path );
 
-        (*imageWidth)=img->GetWidth();
-        (*imageHeight)=img->GetHeight();
+        (*imageWidth) = img->GetWidth();
+        (*imageHeight) = img->GetHeight();
 
         glPixelStorei(GL_UNPACK_ALIGNMENT,   1   );
 
@@ -63,7 +63,7 @@ namespace AriaMaestosa {
         float power_of_two_that_gives_correct_height=std::log((float)(*imageHeight))/std::log(2.0);
 
         // check if image bounds are a power of two
-        if( (int)power_of_two_that_gives_correct_width == power_of_two_that_gives_correct_width and
+        if ( (int)power_of_two_that_gives_correct_width == power_of_two_that_gives_correct_width and
             (int)power_of_two_that_gives_correct_height == power_of_two_that_gives_correct_height)
         {
 
@@ -92,8 +92,8 @@ namespace AriaMaestosa {
             int newWidth=(int)std::pow( 2.0, (int)(std::ceil(power_of_two_that_gives_correct_width)) );
             int newHeight=(int)std::pow( 2.0, (int)(std::ceil(power_of_two_that_gives_correct_height)) );
 
-            GLubyte    *bitmapData=img->GetData();
-            GLubyte        *alphaData=img->GetAlpha();
+            GLubyte    *bitmapData = img->GetData();
+            GLubyte    *alphaData = img->GetAlpha();
             GLubyte    *imageData;
 
             int old_bytesPerPixel = 3;
@@ -109,7 +109,7 @@ namespace AriaMaestosa {
                 for(int x=0; x<newWidth; x++)
                 {
 
-                    if( x<(*imageWidth) && y<(*imageHeight) ){
+                    if ( x<(*imageWidth) && y<(*imageHeight) ){
                         assertExpr( (x+y*newWidth)*bytesPerPixel+ (bytesPerPixel-1), <, imageSize);
 
                         imageData[(x+y*newWidth)*bytesPerPixel+0]=
@@ -121,7 +121,7 @@ namespace AriaMaestosa {
                         imageData[(x+y*newWidth)*bytesPerPixel+2]=
                             bitmapData[( x+(rev_val-y)*(*imageWidth))*old_bytesPerPixel + 2];
 
-                        if(bytesPerPixel==4) imageData[(x+y*newWidth)*bytesPerPixel+3]=
+                        if (bytesPerPixel==4) imageData[(x+y*newWidth)*bytesPerPixel+3]=
                             alphaData[ x+(rev_val-y)*(*imageWidth) ];
 
                     }
@@ -132,7 +132,7 @@ namespace AriaMaestosa {
                         imageData[(x+y*newWidth)*bytesPerPixel+0] = 0;
                         imageData[(x+y*newWidth)*bytesPerPixel+1] = 0;
                         imageData[(x+y*newWidth)*bytesPerPixel+2] = 0;
-                        if(bytesPerPixel==4) imageData[(x+y*newWidth)*bytesPerPixel+3] = 0;
+                        if (bytesPerPixel==4) imageData[(x+y*newWidth)*bytesPerPixel+3] = 0;
                     }
 
                 }//next
@@ -160,6 +160,8 @@ namespace AriaMaestosa {
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
+        delete img;
+        
         return ID;
 
     }

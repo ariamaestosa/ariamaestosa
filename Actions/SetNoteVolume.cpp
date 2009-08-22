@@ -40,19 +40,19 @@ namespace AriaMaestosa
     {
         assert(track != NULL);
 
-        if(noteID == SELECTED_NOTES)
+        if (noteID == SELECTED_NOTES)
         {
 
             bool played = false;
             const int noteAmount = track->notes.size();
             for(int n=0; n<noteAmount; n++)
             {
-                if(track->notes[n].isSelected())
+                if (track->notes[n].isSelected())
                 {
                     volumes.push_back( track->notes[n].volume  );
                     track->notes[n].setVolume( volume );
                     relocator.rememberNote(track->notes[n]);
-                    if(!played)
+                    if (!played)
                     {
                         track->notes[n].play(true);
                         played = true;

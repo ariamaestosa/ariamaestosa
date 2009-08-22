@@ -76,6 +76,10 @@ public:
         m_user_name = user_name;
         m_type = type;
         m_value = default_value;
+        
+        m_combo = NULL;
+        m_checkbox = NULL;
+        m_number = NULL;
     }
     void addChoice(wxString choice)
     {
@@ -149,7 +153,7 @@ PreferencesData::PreferencesData()
     for(int i=0; i<settingAmount; i++)
     {
         // see if this value is defined in file
-        if(prefs->Read( g_settings[i].m_name, &value) )
+        if (prefs->Read( g_settings[i].m_name, &value) )
         {
             g_settings[i].m_value = value;
         }
@@ -175,7 +179,7 @@ long PreferencesData::getValue(wxString entryName)
     const int settingAmount = g_settings.size();
     for(int i=0; i<settingAmount; i++)
     {
-        if( g_settings[i].m_name == entryName )
+        if ( g_settings[i].m_name == entryName )
         {
             //std::cout << g_settings[i].m_value << std::endl;
             return g_settings[i].m_value;
@@ -204,7 +208,7 @@ PreferencesDialog::PreferencesDialog(MainFrame* parent, PreferencesData* data) :
     const int settingAmount = g_settings.size();
     for(int i=0; i<settingAmount; i++)
     {
-        if( g_settings[i].m_type == SETTING_ENUM )
+        if ( g_settings[i].m_type == SETTING_ENUM )
         {
             QuickBoxLayout box(this, vert_sizer);
             //I18N: - in preferences window
@@ -213,12 +217,12 @@ PreferencesDialog::PreferencesDialog(MainFrame* parent, PreferencesData* data) :
             g_settings[i].m_combo = new wxChoice(box.pane, 1, wxDefaultPosition, wxDefaultSize,  g_settings[i].m_choices );
             box.add(g_settings[i].m_combo);
         }
-        else if( g_settings[i].m_type == SETTING_BOOL )
+        else if ( g_settings[i].m_type == SETTING_BOOL )
         {
             g_settings[i].m_checkbox = new wxCheckBox(this, wxID_ANY, g_settings[i].m_user_name, wxDefaultPosition, wxDefaultSize );
             vert_sizer->Add( g_settings[i].m_checkbox, 0, wxALL, 10 );
         }
-        else if( g_settings[i].m_type == SETTING_INT )
+        else if ( g_settings[i].m_type == SETTING_INT )
         {
             QuickBoxLayout box(this, vert_sizer);
             //I18N: - in preferences window
@@ -262,15 +266,16 @@ void PreferencesDialog::updateWidgetsFromValues()
     // ---- update view to reflect values
     for(int i=0; i<settingAmount; i++)
     {
-        if( g_settings[i].m_type == SETTING_ENUM )
+        // FIXME : instead of switching over type, use polymorphism so that each parameter can handle itself
+        if ( g_settings[i].m_type == SETTING_ENUM )
         {
             g_settings[i].m_combo->Select(g_settings[i].m_value);
         }
-        else if( g_settings[i].m_type == SETTING_BOOL )
+        else if ( g_settings[i].m_type == SETTING_BOOL )
         {
             g_settings[i].m_checkbox->SetValue(g_settings[i].m_value);
         }
-        else if( g_settings[i].m_type == SETTING_INT )
+        else if ( g_settings[i].m_type == SETTING_INT )
         {
             g_settings[i].m_number->SetValue(g_settings[i].m_value);
         }
@@ -289,15 +294,15 @@ void PreferencesDialog::updateValuesFromWidgets()
     const int settingAmount = g_settings.size();
     for(int i=0; i<settingAmount; i++)
     {
-        if( g_settings[i].m_type == SETTING_ENUM )
+        if ( g_settings[i].m_type == SETTING_ENUM )
         {
             g_settings[i].m_value = g_settings[i].m_combo->GetSelection();
         }
-        else if( g_settings[i].m_type == SETTING_BOOL )
+        else if ( g_settings[i].m_type == SETTING_BOOL )
         {
             g_settings[i].m_value = g_settings[i].m_checkbox->GetValue();
         }
-        else if( g_settings[i].m_type == SETTING_INT )
+        else if ( g_settings[i].m_type == SETTING_INT )
         {
             g_settings[i].m_value = g_settings[i].m_number->GetValue();
         }

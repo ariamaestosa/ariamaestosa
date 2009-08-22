@@ -41,37 +41,36 @@ public:
         BeamGroup::first_id = first_id;
         BeamGroup::last_id = last_id;
         BeamGroup::analyser = analyser;
+        BeamGroup::min_level = 999;
+        BeamGroup::max_level = -999;
     }
     void calculateLevel(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreMidiConverter* converter)
     {
-        min_level = 999;
-        max_level = -999;
-
         for(int i=first_id;i<=last_id; i++)
         {
-            if(noteRenderInfo[i].chord)
+            if (noteRenderInfo[i].chord)
             {
-                if(noteRenderInfo[i].min_chord_level < min_level) min_level = noteRenderInfo[i].min_chord_level;
-                if(noteRenderInfo[i].max_chord_level > max_level) max_level = noteRenderInfo[i].max_chord_level;
+                if (noteRenderInfo[i].min_chord_level < min_level) min_level = noteRenderInfo[i].min_chord_level;
+                if (noteRenderInfo[i].max_chord_level > max_level) max_level = noteRenderInfo[i].max_chord_level;
             }
             else
             {
                 const int level = noteRenderInfo[i].level;
-                if(level < min_level) min_level = level;
-                if(level > max_level) max_level = level;
+                if (level < min_level) min_level = level;
+                if (level > max_level) max_level = level;
             }
         }
 
         // if nothing found (most likely meaning we only have one triplet note alone) use values from the first
-        if(min_level == 999)  min_level = noteRenderInfo[first_id].level;
-        if(max_level == -999) max_level = noteRenderInfo[first_id].level;
+        if (min_level == 999)  min_level = noteRenderInfo[first_id].level;
+        if (max_level == -999) max_level = noteRenderInfo[first_id].level;
 
         mid_level = (int)round( (min_level + max_level)/2.0 );
     }
 
     void doBeam(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* editor)
     {
-        if(last_id == first_id) return; // note alone, no beaming to perform
+        if (last_id == first_id) return; // note alone, no beaming to perform
 
         ScoreMidiConverter* converter = editor->getScoreMidiConverter();
         //const int y_step = editor->getYStep();
@@ -85,21 +84,21 @@ public:
         int max_amount_of_notes_beamed_toghether = 4;
 
         // FIXME - not always right
-        if(num == 3 and denom == 4) max_amount_of_notes_beamed_toghether = 2 * (int)(std::pow(2.0,flag_amount-1));
-        else if((num == 6 and denom == 4) or (num == 6 and denom == 8)) max_amount_of_notes_beamed_toghether = 3 * (int)(std::pow(2.0,flag_amount-1));
+        if (num == 3 and denom == 4) max_amount_of_notes_beamed_toghether = 2 * (int)(std::pow(2.0,flag_amount-1));
+        else if ((num == 6 and denom == 4) or (num == 6 and denom == 8)) max_amount_of_notes_beamed_toghether = 3 * (int)(std::pow(2.0,flag_amount-1));
         else max_amount_of_notes_beamed_toghether = num * (int)(std::pow(2.0,flag_amount-1));
-        if(noteRenderInfo[first_id].triplet) max_amount_of_notes_beamed_toghether=3;
+        if (noteRenderInfo[first_id].triplet) max_amount_of_notes_beamed_toghether=3;
 
         const int beamable_note_amount = last_id - first_id + 1;
 
         // if max_amount_of_notes_beamed_toghether is an even number, don't accept an odd number of grouped notes
         const int base_unit = (max_amount_of_notes_beamed_toghether % 2 == 0 ? 2 : 1);
-        if(beamable_note_amount <= max_amount_of_notes_beamed_toghether and beamable_note_amount % base_unit != 0)
+        if (beamable_note_amount <= max_amount_of_notes_beamed_toghether and beamable_note_amount % base_unit != 0)
         {
             max_amount_of_notes_beamed_toghether = base_unit;
         }
 
-        if(beamable_note_amount > max_amount_of_notes_beamed_toghether)
+        if (beamable_note_amount > max_amount_of_notes_beamed_toghether)
         {
             // amount is not acceptable, split
 
@@ -111,14 +110,14 @@ public:
             int split_at_id = -1;
             for(int n=first_id+1; n<=last_id; n++)
             {
-                if( (noteRenderInfo[n].tick - first_tick_in_measure) % group_len == 0 )
+                if ( (noteRenderInfo[n].tick - first_tick_in_measure) % group_len == 0 )
                 {
                     split_at_id = n;
                     break;
                 }
             }
 
-            if(split_at_id == -1)
+            if (split_at_id == -1)
             {
                 // dumb split
                 BeamGroup first_half(analyser, first_id, first_id + max_amount_of_notes_beamed_toghether - 1);
@@ -160,18 +159,18 @@ public:
         // check if the stem is too inclined, fix it if necessary
         const float height_diff = fabsf( noteRenderInfo[first_id].beam_to_level - noteRenderInfo[first_id].stem_y_level );
 
-        if( height_diff > 3 )
+        if ( height_diff > 3 )
         {
             const float height_shift = height_diff - 3;
             const bool end_on_higher_level = (noteRenderInfo[first_id].beam_to_level > noteRenderInfo[first_id].stem_y_level );
-            if(noteRenderInfo[first_id].beam_show_above)
+            if (noteRenderInfo[first_id].beam_show_above)
             {
-                if(end_on_higher_level) noteRenderInfo[first_id].beam_to_level -= height_shift;
+                if (end_on_higher_level) noteRenderInfo[first_id].beam_to_level -= height_shift;
                 else noteRenderInfo[first_id].stem_y_level -= height_shift;
             }
             else
             {
-                if(end_on_higher_level) noteRenderInfo[first_id].stem_y_level += height_shift;
+                if (end_on_higher_level) noteRenderInfo[first_id].stem_y_level += height_shift;
                 else noteRenderInfo[first_id].beam_to_level += height_shift;
             }
         }
@@ -190,7 +189,7 @@ public:
                 // give correct stem height (so it doesn't end above or below beam line)
                 // rel_pos will be 0 for first note of a beamed serie, and 1 for the last one
                 const float rel_pos = (float)(noteRenderInfo[j].tick - from_tick) / (float)(to_tick - from_tick);
-                if(j != first_id)
+                if (j != first_id)
                 {
                     noteRenderInfo[j].stem_y_level = (float)from_level + (float)(to_level - from_level) * rel_pos;
                 }
@@ -207,17 +206,17 @@ public:
                     (noteRenderInfo[first_id].beam_show_above and diff>0) or
                     ((not noteRenderInfo[first_id].beam_show_above) and diff<0);
 
-                if( too_short or on_wrong_side_of_beam )
+                if ( too_short or on_wrong_side_of_beam )
                 {
                     // we've got a problem here. this stem is too short and will look weird
                     // we'll adjust the height of the beam and try again
                     // (the order of the tests here is important; if the beam is on the wrong
                     // side of the beam AND too short, only the first should should happen)
                     float beam_shift = 0;
-                    if(on_wrong_side_of_beam) beam_shift = analyser->min_stem_height + fabsf(diff);
-                    else if(too_short) beam_shift = analyser->min_stem_height - stemheight;
+                    if (on_wrong_side_of_beam) beam_shift = analyser->min_stem_height + fabsf(diff);
+                    else if (too_short) beam_shift = analyser->min_stem_height - stemheight;
 
-                    if(noteRenderInfo[first_id].beam_show_above)
+                    if (noteRenderInfo[first_id].beam_show_above)
                     {
                         noteRenderInfo[first_id].beam_to_level -= beam_shift;
                         noteRenderInfo[first_id].stem_y_level  -= beam_shift;
@@ -231,9 +230,9 @@ public:
                     break;
                 }
 
-                if(j != first_id) noteRenderInfo[j].flag_amount = 0;
+                if (j != first_id) noteRenderInfo[j].flag_amount = 0;
             }
-            if(not need_to_start_again) break; // we're done, no need to loop again
+            if (not need_to_start_again) break; // we're done, no need to loop again
         }
     }
 };
@@ -289,7 +288,7 @@ void NoteRenderInfo::tieWith(NoteRenderInfo& renderInfo)
 {
     tied_with_tick = renderInfo.tick;
 
-    if(stem_type == STEM_NONE) tie_up = renderInfo.stem_type;
+    if (stem_type == STEM_NONE) tie_up = renderInfo.stem_type;
     else tie_up = stem_type;
 }
 void NoteRenderInfo::tieWith(const int tick)
@@ -318,12 +317,12 @@ void NoteRenderInfo::setTriplet()
 
 int NoteRenderInfo::getBaseLevel()
 {
-    if(chord) return (stem_type == STEM_UP ? min_chord_level : max_chord_level);
+    if (chord) return (stem_type == STEM_UP ? min_chord_level : max_chord_level);
     else return level;
 }
 int NoteRenderInfo::getStemOriginLevel()
 {
-    if(chord) return (stem_type == STEM_UP ? max_chord_level : min_chord_level);
+    if (chord) return (stem_type == STEM_UP ? max_chord_level : min_chord_level);
     else return level;
 }
 
@@ -357,8 +356,8 @@ void ScoreAnalyser::setStemDrawInfo(
                   const float stem_height,
                   const float min_stem_height)
 {
-    if(stem_height != -1) ScoreAnalyser::stem_height = stem_height;
-    if(min_stem_height != -1) ScoreAnalyser::min_stem_height = min_stem_height;
+    if (stem_height != -1) ScoreAnalyser::stem_height = stem_height;
+    if (min_stem_height != -1) ScoreAnalyser::min_stem_height = min_stem_height;
 }
 void ScoreAnalyser::setStemPivot(const int level)
 {
@@ -370,9 +369,9 @@ void ScoreAnalyser::clearAndPrepare()
 }
 float ScoreAnalyser::getStemTo(NoteRenderInfo& note)
 {
-    if(note.stem_y_level != -1) return note.stem_y_level;
-    else if(note.stem_type == STEM_UP)   return note.getStemOriginLevel() - stem_height;
-    else if(note.stem_type == STEM_DOWN) return note.getStemOriginLevel() + stem_height;
+    if (note.stem_y_level != -1) return note.stem_y_level;
+    else if (note.stem_type == STEM_UP)   return note.getStemOriginLevel() - stem_height;
+    else if (note.stem_type == STEM_DOWN) return note.getStemOriginLevel() + stem_height;
     else{ assert(false); return -1; }
 }
     
@@ -380,22 +379,22 @@ void recursivelyAnalyzeSilence(void (*renderSilenceCallback)(const int, const in
                                const int tick, const int tick_length, const int silences_y)
     {
         
-        if(tick_length<2) return;
+        if (tick_length<2) return;
         
         const int measure = getMeasureData()->measureAtTick(tick);
         const int end_measure = getMeasureData()->measureAtTick(tick+tick_length-1);
         const int beat = getMeasureData()->beatLengthInTicks();
         
-        if(tick_length<2) return;
+        if (tick_length<2) return;
         
         // check if silence spawns over more than one measure
-        if(measure != end_measure)
+        if (measure != end_measure)
         {
             // we need to plit it in two
             const int split_tick = getMeasureData()->firstTickInMeasure(end_measure);
             
             // Check split is valid before attempting.
-            if(split_tick-tick>0 and tick_length-(split_tick-tick)>0)
+            if (split_tick-tick>0 and tick_length-(split_tick-tick)>0)
             {
                 recursivelyAnalyzeSilence(renderSilenceCallback, tick, split_tick-tick, silences_y);
                 recursivelyAnalyzeSilence(renderSilenceCallback, split_tick, tick_length-(split_tick-tick), silences_y);
@@ -403,7 +402,7 @@ void recursivelyAnalyzeSilence(void (*renderSilenceCallback)(const int, const in
             }
         }
         
-        if(tick < 0) return; // FIXME - find why it happens
+        if (tick < 0) return; // FIXME - find why it happens
         // assertExpr(tick,>,-1);
         
         bool dotted = false, triplet = false;
@@ -417,7 +416,7 @@ void recursivelyAnalyzeSilence(void (*renderSilenceCallback)(const int, const in
         const int remaining = beat - (tick_in_measure_start % beat);
         const bool starts_on_beat = aboutEqual(remaining,0) or aboutEqual(remaining,beat);
         
-        if( aboutEqual(relativeLength, 1.0) ) type = 1;
+        if ( aboutEqual(relativeLength, 1.0) ) type = 1;
         else if (aboutEqual(relativeLength, 3.0/2.0) and starts_on_beat){ type = 1; dotted = true; dot_delta_x = 5; dot_delta_y = 2;}
         else if (aboutEqual(relativeLength, 1.0/2.0)) type = 2;
         else if (aboutEqual(relativeLength, 3.0/4.0) and starts_on_beat){ type = 2; dotted = true; dot_delta_x = 5; dot_delta_y = 2;}
@@ -429,13 +428,13 @@ void recursivelyAnalyzeSilence(void (*renderSilenceCallback)(const int, const in
         else if (aboutEqual(relativeLength, 3.0/16.0) and starts_on_beat){ type = 8; dotted = true; }
         else if (aboutEqual(relativeLength, 1.0/16.0)) type = 16;
         else if (aboutEqual(relativeLength, 1.0/12.0)){ triplet = true; type = 8; }
-        else if(relativeLength < 1.0/16.0){ return; }
+        else if (relativeLength < 1.0/16.0){ return; }
         else
         {
             // silence is of unknown duration. split it in a serie of silences.
             
             // start by reaching the next beat if not already done
-            if(!starts_on_beat and !aboutEqual(remaining,tick_length))
+            if (!starts_on_beat and !aboutEqual(remaining,tick_length))
             {
                 recursivelyAnalyzeSilence(renderSilenceCallback, tick, remaining, silences_y);
                 recursivelyAnalyzeSilence(renderSilenceCallback, tick+remaining, tick_length - remaining, silences_y);
@@ -468,7 +467,7 @@ void ScoreAnalyser::renderSilences( RenderSilenceCallback renderSilenceCallback,
     for(int i=0; i<=visible_measure_amount; i++) measure_empty[i] = true;
         
     const int visibleNoteAmount = noteRenderInfo.size();
-    if(visibleNoteAmount>0)
+    if (visibleNoteAmount>0)
     {
         // by comparing the ending of the previous note to the beginning of the current note,
         // we can know if there is a silence. If multiple notes play at the same time,
@@ -503,28 +502,28 @@ void ScoreAnalyser::renderSilences( RenderSilenceCallback renderSilenceCallback,
             assertExpr(last_measure,<,99999);
 
             // we switched to another measure
-            if(measure>last_measure)
+            if (measure>last_measure)
             {
                 // if the last note of previous measure does not finish at the end of the measure,
                 // we need to add a silence at the end of it
-                if(last_measure != -1 and !aboutEqual(last_note_end, getMeasureData()->firstTickInMeasure(measure) ))
+                if (last_measure != -1 and !aboutEqual(last_note_end, getMeasureData()->firstTickInMeasure(measure) ))
                 {
                     const int last_measure_id = getMeasureData()->measureAtTick(last_note_end-1);
                     const int silence_length = getMeasureData()->lastTickInMeasure(last_measure_id)-last_note_end;
-                    if(silence_length < 0) continue;
+                    if (silence_length < 0) continue;
                    // std::cout << "completing silence at measure " << (1+last_measure_id) << ", len=" << silence_length/getMeasureData()->beatLengthInTicks() << std::endl;
                     recursivelyAnalyzeSilence(renderSilenceCallback, last_note_end, silence_length, silences_y);
 
                 }
                 // if note is not at the very beginning of the new measure, and it's the first note of
                 // the measure, we need to add a silence before it
-                if(!aboutEqual(noteRenderInfo[i].tick, getMeasureData()->firstTickInMeasure(measure) ))
+                if (!aboutEqual(noteRenderInfo[i].tick, getMeasureData()->firstTickInMeasure(measure) ))
                 {
                     const int silence_length = noteRenderInfo[i].tick - getMeasureData()->firstTickInMeasure(measure);
                     recursivelyAnalyzeSilence(renderSilenceCallback, getMeasureData()->firstTickInMeasure(measure), silence_length, silences_y);
                 }
 
-                if(last_measure!=-1)
+                if (last_measure!=-1)
                 {
                     previous_note_end = -1; // we switched to another measure, reset and start again
                     last_note_end = -1;
@@ -534,15 +533,15 @@ void ScoreAnalyser::renderSilences( RenderSilenceCallback renderSilenceCallback,
             last_measure = measure;
 
             // remember that this measure was not empty (only if it fits somewhere in the 'measure_empty' array)
-            if( (int)(measure-first_visible_measure) >= 0 and (int)(measure-first_visible_measure) < (int)(visible_measure_amount+1))
+            if ( (int)(measure-first_visible_measure) >= 0 and (int)(measure-first_visible_measure) < (int)(visible_measure_amount+1))
             {
-                if((int)(measure-first_visible_measure) >= (int)visible_measure_amount) break; // we're too far
+                if ((int)(measure-first_visible_measure) >= (int)visible_measure_amount) break; // we're too far
                 measure_empty[measure-first_visible_measure] = false;
             }
 
             // silences between two notes
             const int current_begin_tick = noteRenderInfo[i].tick;
-            if( previous_note_end != -1 and !aboutEqual(previous_note_end, current_begin_tick) and
+            if ( previous_note_end != -1 and !aboutEqual(previous_note_end, current_begin_tick) and
                 (current_begin_tick-previous_note_end)>0 /*and previous_note_end >= last_note_end*/)
             {
                 recursivelyAnalyzeSilence(renderSilenceCallback, previous_note_end, current_begin_tick-previous_note_end, silences_y);
@@ -557,13 +556,13 @@ void ScoreAnalyser::renderSilences( RenderSilenceCallback renderSilenceCallback,
                 previous_note_end = std::max(previous_note_end, noteRenderInfo[i].tick + noteRenderInfo[i].tick_length);
             }
 
-            if(previous_note_end > last_note_end) last_note_end = previous_note_end;
+            if (previous_note_end > last_note_end) last_note_end = previous_note_end;
         }//next visible note
 
         // check for silence after last note
         const int lastNoteMeasure = getMeasureData()->measureAtTick(noteRenderInfo[visibleNoteAmount-1].tick);
         const unsigned int last_measure_end = getMeasureData()->lastTickInMeasure(lastNoteMeasure);
-        if(!aboutEqual(last_note_end, last_measure_end ) and last_note_end>-1)
+        if (!aboutEqual(last_note_end, last_measure_end ) and last_note_end>-1)
         {
             const int silence_length = last_measure_end-last_note_end;
             recursivelyAnalyzeSilence(renderSilenceCallback, last_note_end, silence_length, silences_y);
@@ -575,7 +574,7 @@ void ScoreAnalyser::renderSilences( RenderSilenceCallback renderSilenceCallback,
     // draw silences in empty measures
     for(int i=0; i<visible_measure_amount; i++)
     {
-        if(measure_empty[i])
+        if (measure_empty[i])
         {
            recursivelyAnalyzeSilence(renderSilenceCallback,
                                      getMeasureData()->firstTickInMeasure(first_visible_measure+i),
@@ -601,14 +600,14 @@ void ScoreAnalyser::putInTimeOrder()
 
         // put in time order
         // making sure notes without stem come before notes with a stem
-        if( noteRenderInfo[i].tick < noteRenderInfo[i-1].tick or
+        if ( noteRenderInfo[i].tick < noteRenderInfo[i-1].tick or
            ( noteRenderInfo[i].tick == noteRenderInfo[i-1].tick and noteRenderInfo[i-1].stem_type != STEM_NONE and noteRenderInfo[i].stem_type == STEM_NONE)
            )
         {
             NoteRenderInfo tmp = noteRenderInfo[i-1];
             noteRenderInfo[i-1] = noteRenderInfo[i];
             noteRenderInfo[i] = tmp;
-            i -= 2; if(i<0) i=0;
+            i -= 2; if (i<0) i=0;
         }
     }
 
@@ -640,57 +639,57 @@ void ScoreAnalyser::findAndMergeChords()
         // first note of that bunch (the ID of the last will be "i" when we get to it)
         first_note_of_chord = i;
 
-        if(noteRenderInfo[i].stem_type == STEM_NONE) continue;
+        if (noteRenderInfo[i].stem_type == STEM_NONE) continue;
 
         while(true) // FIXME - it should be checked whether there is a chord BEFORE entering the while loop. same for others
         {
             // find next note's tick if there's one
-            if(i+1<(int)noteRenderInfo.size())
+            if (i+1<(int)noteRenderInfo.size())
             {
                 start_tick_of_next_note = noteRenderInfo[i+1].tick;
             }else start_tick_of_next_note=-1;
 
             // we've processed all notes, exit the loop
-            if(!(i<(int)noteRenderInfo.size())) break;
+            if (!(i<(int)noteRenderInfo.size())) break;
 
             // check if we're in a chord (i.e. many notes that play at the same time). also check they have stems :
             // for instance wholes have no stems and thus there is no special processing to do on them.
-            if(start_tick_of_next_note != -1 and aboutEqual_tick(start_tick_of_next_note, noteRenderInfo[i].tick) and noteRenderInfo[i+1].stem_type != STEM_NONE);
+            if (start_tick_of_next_note != -1 and aboutEqual_tick(start_tick_of_next_note, noteRenderInfo[i].tick) and noteRenderInfo[i+1].stem_type != STEM_NONE);
             else
             {
                 //after this one, it stops. mark this as the last so it will finalize stuff.
                 last_of_a_serie = true;
-                if(first_note_of_chord == i){ break; } //not a bunch of concurrent notes, just a note alone
+                if (first_note_of_chord == i){ break; } //not a bunch of concurrent notes, just a note alone
             }
 
             // gather info on notes of the chord, for instance their y location (level) and their duration
             const int level = noteRenderInfo[i].level;
-            if(level < min_level){ min_level = level; minid = i; }
-            if(level > max_level){ max_level = level; maxid = i; }
+            if (level < min_level){ min_level = level; minid = i; }
+            if (level > max_level){ max_level = level; maxid = i; }
 
             const int len = noteRenderInfo[i].tick_length;
-            if(len < smallest_duration or smallest_duration==99999)
+            if (len < smallest_duration or smallest_duration==99999)
                 smallest_duration = len;
 
-            if(noteRenderInfo[i].flag_amount > flag_amount)
+            if (noteRenderInfo[i].flag_amount > flag_amount)
                 flag_amount = noteRenderInfo[i].flag_amount;
 
-            if(noteRenderInfo[i].triplet) triplet = true;
+            if (noteRenderInfo[i].triplet) triplet = true;
 
             // remove this note's stem. we only need on stem per chord.
             // the right stem will be set on last iterated note of the chord (see below)
             noteRenderInfo[i].draw_stem = false;
 
             // the note of this iteration is the end of a chord, so it's time to complete chord information
-            if(last_of_a_serie)
+            if (last_of_a_serie)
             {
-                if(maxid == minid) break;
-                if(first_note_of_chord == i) break;
+                if (maxid == minid) break;
+                if (first_note_of_chord == i) break;
 
                 // determine average note level to know if we put stems above or below
                 // if nothing found use values from the first
-                if(min_level == 999)  min_level = noteRenderInfo[first_note_of_chord].level;
-                if(max_level == -999) max_level = noteRenderInfo[first_note_of_chord].level;
+                if (min_level == 999)  min_level = noteRenderInfo[first_note_of_chord].level;
+                if (max_level == -999) max_level = noteRenderInfo[first_note_of_chord].level;
                 const int mid_level = (int)round( (min_level + max_level)/2.0 );
 
                 const bool stem_up = mid_level >= stemPivot+2;
@@ -725,7 +724,7 @@ void ScoreAnalyser::findAndMergeChords()
                 assertExpr(i,<,(int)noteRenderInfo.size());
                 noteRenderInfo.erase( noteRenderInfo.begin()+first_note_of_chord, noteRenderInfo.begin()+i );
                 i = first_note_of_chord-2;
-                if(i<0) i=0;
+                if (i<0) i=0;
 
                 break;
             }//end if
@@ -756,61 +755,61 @@ void ScoreAnalyser::processTriplets()
         // check for consecutive notes
         while(true)
         {
-            if(i+1<visibleNoteAmount)
+            if (i+1<visibleNoteAmount)
             {
                 start_tick_of_next_note = noteRenderInfo[i+1].tick;
             }
 
-            if(!(i<visibleNoteAmount)) break;
+            if (!(i<visibleNoteAmount)) break;
 
             // if notes are consecutive
-            if(start_tick_of_next_note != -1 and aboutEqual_tick(start_tick_of_next_note, noteRenderInfo[i].tick+noteRenderInfo[i].tick_length));
+            if (start_tick_of_next_note != -1 and aboutEqual_tick(start_tick_of_next_note, noteRenderInfo[i].tick+noteRenderInfo[i].tick_length));
             else
             {
                 //notes are no more consecutive. it is likely a special action will be performed at the end of a serie
                 last_of_a_serie = true;
             }
-            if(!noteRenderInfo[i+1].triplet or i-first_triplet>=2) last_of_a_serie = true;
+            if (!noteRenderInfo[i+1].triplet or i-first_triplet>=2) last_of_a_serie = true;
 
             // do not cross measures
-            if(i+1<visibleNoteAmount)
+            if (i+1<visibleNoteAmount)
             {
                 measure = noteRenderInfo[i+1].measureBegin;
-                if(measure != previous_measure) last_of_a_serie = true;
+                if (measure != previous_measure) last_of_a_serie = true;
                 previous_measure = measure;
             }
 
-            if(noteRenderInfo[i].chord)
+            if (noteRenderInfo[i].chord)
             {
-                if(noteRenderInfo[i].min_chord_level < min_level) min_level = noteRenderInfo[i].min_chord_level;
-                if(noteRenderInfo[i].max_chord_level > max_level) max_level = noteRenderInfo[i].max_chord_level;
+                if (noteRenderInfo[i].min_chord_level < min_level) min_level = noteRenderInfo[i].min_chord_level;
+                if (noteRenderInfo[i].max_chord_level > max_level) max_level = noteRenderInfo[i].max_chord_level;
             }
             else
             {
                 const int level = noteRenderInfo[i].level;
-                if(level < min_level) min_level = level;
-                if(level > max_level) max_level = level;
+                if (level < min_level) min_level = level;
+                if (level > max_level) max_level = level;
             }
 
             // --------- triplet ---------
             is_triplet = noteRenderInfo[i].triplet;
-            if(is_triplet and first_triplet==-1) first_triplet = i;
+            if (is_triplet and first_triplet==-1) first_triplet = i;
 
             // this note is a triplet, but not the next, so time to do display the triplets sign
             // also triggered if we've had 3 triplet notes in a row, because triplets come by groups of 3...
-            if( last_of_a_serie )
+            if ( last_of_a_serie )
             {
-                if(is_triplet)
+                if (is_triplet)
                 {
                     // if nothing found (most likely meaning we only have one triplet note alone) use values from the first
-                    if(min_level == 999)  min_level = noteRenderInfo[first_triplet].level;
-                    if(max_level == -999) max_level = noteRenderInfo[first_triplet].level;
+                    if (min_level == 999)  min_level = noteRenderInfo[first_triplet].level;
+                    if (max_level == -999) max_level = noteRenderInfo[first_triplet].level;
 
                     int mid_level = (int)round( (min_level + max_level)/2.0 );
 
                     noteRenderInfo[first_triplet].triplet_show_above = (mid_level < stemPivot);
 
-                    if(i != first_triplet) // if not a triplet note alone, but a 'serie' of triplets
+                    if (i != first_triplet) // if not a triplet note alone, but a 'serie' of triplets
                     {
                         // fix all note stems so they all point in the same direction
                         for(int j=first_triplet; j<=i; j++)
@@ -825,7 +824,7 @@ void ScoreAnalyser::processTriplets()
                         noteRenderInfo[first_triplet].triplet_show_above = (noteRenderInfo[first_triplet].stem_type == STEM_DOWN);
                     }
 
-                    if(noteRenderInfo[first_triplet].triplet_show_above)
+                    if (noteRenderInfo[first_triplet].triplet_show_above)
                     {
                         noteRenderInfo[first_triplet].triplet_arc_level = min_level;
                     }
@@ -845,7 +844,7 @@ void ScoreAnalyser::processTriplets()
                 max_level = -999;
             }
 
-            if(last_of_a_serie) break;
+            if (last_of_a_serie) break;
             else i++;
 
         }//wend
@@ -878,15 +877,15 @@ void ScoreAnalyser::processNoteBeam()
         // check for consecutive notes
         while(true)
         {
-            if(i+1<visibleNoteAmount)
+            if (i+1<visibleNoteAmount)
             {
                 start_tick_of_next_note = noteRenderInfo[i+1].tick;
             }
 
-            if(!(i<visibleNoteAmount)) break;
+            if (!(i<visibleNoteAmount)) break;
 
             // if notes are consecutive and of same length
-            if(start_tick_of_next_note != -1 and
+            if (start_tick_of_next_note != -1 and
                aboutEqual_tick(start_tick_of_next_note, noteRenderInfo[i].tick+noteRenderInfo[i].tick_length) and
                noteRenderInfo[i+1].flag_amount == flag_amount and flag_amount > 0 and
                noteRenderInfo[i+1].triplet == noteRenderInfo[i].triplet);
@@ -897,17 +896,17 @@ void ScoreAnalyser::processNoteBeam()
             }
 
             // do not cross measures
-            if(i+1<visibleNoteAmount)
+            if (i+1<visibleNoteAmount)
             {
                 measure = noteRenderInfo[i+1].measureBegin;
-                if(measure != previous_measure) last_of_a_serie = true;
+                if (measure != previous_measure) last_of_a_serie = true;
                 previous_measure = measure;
             }
 
             // it's the last of a serie, perform actions
-            if( last_of_a_serie)
+            if ( last_of_a_serie)
             {
-                if(i>first_of_serie)
+                if (i>first_of_serie)
                 {
                     BeamGroup beam(this, first_of_serie, i);
                     beam.doBeam(noteRenderInfo, editor);
@@ -944,7 +943,7 @@ void ScoreAnalyser::analyseNoteInfo()
 void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursion )
 {
     // check if note lasts more than one measure. If so we need to divide it in 2.
-    if(renderInfo.measureEnd > renderInfo.measureBegin) // note in longer than mesaure, need to divide it in 2
+    if (renderInfo.measureEnd > renderInfo.measureBegin) // note in longer than mesaure, need to divide it in 2
     {
         const int firstEnd = getMeasureData()->lastTickInMeasure(renderInfo.measureBegin);
         const int firstLength = firstEnd - renderInfo.tick;
@@ -955,10 +954,10 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
         // (remember, note may be split in more than 2 if one of the 2 initial halves has a rare length)
 
         int initial_id = -1;
-        if(!recursion) initial_id = noteRenderInfo.size();
+        if (!recursion) initial_id = noteRenderInfo.size();
 
-        if(aboutEqual(firstLength, 0)) return;
-        if(aboutEqual(secondLength, 0)) return;
+        if (aboutEqual(firstLength, 0)) return;
+        if (aboutEqual(secondLength, 0)) return;
         
         NoteRenderInfo part1(renderInfo.tick, renderInfo.level, firstLength, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
         addToVector(part1, true);
@@ -966,7 +965,7 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
                              renderInfo.level, secondLength, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
         addToVector(part2, true);
 
-        if(!recursion)
+        if (!recursion)
         {
             // done splitting, now iterate through all notes that
             // were added in this recusrion and tie them
@@ -983,7 +982,7 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
     const float relativeLength = renderInfo.tick_length / (float)(getMeasureData()->beatLengthInTicks()*4);
 
     renderInfo.stem_type = (renderInfo.level >= stemPivot ? STEM_UP : STEM_DOWN);
-    if(relativeLength>=1) renderInfo.stem_type=STEM_NONE; // whole notes have no stem
+    if (relativeLength>=1) renderInfo.stem_type=STEM_NONE; // whole notes have no stem
     renderInfo.hollow_head = false;
 
     const int beat = getMeasureData()->beatLengthInTicks();
@@ -991,20 +990,20 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
     const int remaining = beat - (tick_in_measure_start % beat);
     const bool starts_on_beat = aboutEqual(remaining,0) or aboutEqual(remaining,beat);
 
-    if( aboutEqual(relativeLength, 1.0) ){ renderInfo.hollow_head = true; renderInfo.stem_type=STEM_NONE; }
-    else if( aboutEqual(relativeLength, 1.0/2.0) ){ renderInfo.hollow_head = true; } // 1/2
-    else if( aboutEqual(relativeLength, 1.0/3.0) ){ renderInfo.setTriplet(); renderInfo.hollow_head = true; } // triplet 1/2
-    else if( aboutEqual(relativeLength, 1.0/4.0) ); // 1/4
-    else if( aboutEqual(relativeLength, 1.0/8.0) ) renderInfo.flag_amount = 1; // 1/8
-    else if( aboutEqual(relativeLength, 1.0/6.0) ){ renderInfo.setTriplet(); } // triplet 1/4
-    else if( aboutEqual(relativeLength, 1.0/16.0) ) renderInfo.flag_amount = 2; // 1/16
-    else if( aboutEqual(relativeLength, 1.0/12.0) ){ renderInfo.setTriplet(); renderInfo.flag_amount = 1; } // triplet 1/8
-    else if( aboutEqual(relativeLength, 1.0/32.0) ) renderInfo.flag_amount = 3; // 1/32
-    else if( aboutEqual(relativeLength, 1.0/24.0) ) { renderInfo.setTriplet(); renderInfo.flag_amount = 2; } // triplet 1/16
-    else if( aboutEqual(relativeLength, 3.0/4.0) and starts_on_beat){ renderInfo.dotted = true; renderInfo.hollow_head=true; } // dotted 1/2
-    else if( aboutEqual(relativeLength, 3.0/8.0) and starts_on_beat ) renderInfo.dotted = true; // dotted 1/4
-    else if( aboutEqual(relativeLength, 3.0/2.0) and starts_on_beat ){ renderInfo.dotted = true; renderInfo.hollow_head=true; } // dotted whole
-    else if( relativeLength < 1.0/32.0 )
+    if ( aboutEqual(relativeLength, 1.0) ){ renderInfo.hollow_head = true; renderInfo.stem_type=STEM_NONE; }
+    else if ( aboutEqual(relativeLength, 1.0/2.0) ){ renderInfo.hollow_head = true; } // 1/2
+    else if ( aboutEqual(relativeLength, 1.0/3.0) ){ renderInfo.setTriplet(); renderInfo.hollow_head = true; } // triplet 1/2
+    else if ( aboutEqual(relativeLength, 1.0/4.0) ); // 1/4
+    else if ( aboutEqual(relativeLength, 1.0/8.0) ) renderInfo.flag_amount = 1; // 1/8
+    else if ( aboutEqual(relativeLength, 1.0/6.0) ){ renderInfo.setTriplet(); } // triplet 1/4
+    else if ( aboutEqual(relativeLength, 1.0/16.0) ) renderInfo.flag_amount = 2; // 1/16
+    else if ( aboutEqual(relativeLength, 1.0/12.0) ){ renderInfo.setTriplet(); renderInfo.flag_amount = 1; } // triplet 1/8
+    else if ( aboutEqual(relativeLength, 1.0/32.0) ) renderInfo.flag_amount = 3; // 1/32
+    else if ( aboutEqual(relativeLength, 1.0/24.0) ) { renderInfo.setTriplet(); renderInfo.flag_amount = 2; } // triplet 1/16
+    else if ( aboutEqual(relativeLength, 3.0/4.0) and starts_on_beat){ renderInfo.dotted = true; renderInfo.hollow_head=true; } // dotted 1/2
+    else if ( aboutEqual(relativeLength, 3.0/8.0) and starts_on_beat ) renderInfo.dotted = true; // dotted 1/4
+    else if ( aboutEqual(relativeLength, 3.0/2.0) and starts_on_beat ){ renderInfo.dotted = true; renderInfo.hollow_head=true; } // dotted whole
+    else if ( relativeLength < 1.0/32.0 )
     {
         renderInfo.instant_hit = true;
     }
@@ -1016,7 +1015,7 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
         int firstLength_tick;
 
         // start by reaching the next beat if not already done
-        if(!starts_on_beat and !aboutEqual(remaining, renderInfo.tick_length))
+        if (!starts_on_beat and !aboutEqual(remaining, renderInfo.tick_length))
         {
             firstLength_tick = remaining;
         }
@@ -1034,7 +1033,7 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
 
         int initial_id = -1;
 
-        if(!recursion)
+        if (!recursion)
         {
             initial_id = noteRenderInfo.size();
         }
@@ -1045,7 +1044,7 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
                              renderInfo.tick_length-firstLength_tick, renderInfo.sign, renderInfo.selected, renderInfo.pitch);
         addToVector(part2, true);
 
-        if(!recursion)
+        if (!recursion)
         {
             // done splitting, now iterate through all notes that
             // were added in this recusrion and tie them
@@ -1059,7 +1058,7 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
         return;
     }
 
-    if(renderInfo.triplet)
+    if (renderInfo.triplet)
     {
         renderInfo.triplet_arc_tick_start = renderInfo.tick;
         renderInfo.triplet_arc_level = renderInfo.level;
@@ -1122,8 +1121,8 @@ ScoreAnalyser* ScoreAnalyser::getSubset(const int fromTick, const int toTick)
 bool aboutEqual(const float float1, const float float2)
 {
     float diff = float1 - float2;
-    if(diff < 0) diff = -diff;
-    if(diff < 1.0/64.0) return true;
+    if (diff < 0) diff = -diff;
+    if (diff < 1.0/64.0) return true;
     else return false;
 }
 bool aboutEqual_tick(const int int1, const int int2)

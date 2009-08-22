@@ -34,7 +34,7 @@ namespace AriaMaestosa
             MeasureToExport& current_meas = parent->getMeasureForElement(el);
             for(int i=0; i<track_amount; i++)
             {
-                if(current_meas.trackRef.size() > 0 && // FIXME - find why it's sometimes 0
+                if (current_meas.trackRef.size() > 0 && // FIXME - find why it's sometimes 0
                    current_meas.trackRef[i].track == track &&
                    current_meas.trackRef[i].lastNote != -1)
                 {
@@ -58,7 +58,7 @@ namespace AriaMaestosa
             MeasureToExport& current_meas = parent->getMeasureForElement(el);
             for(int i=0; i<track_amount; i++)
             {
-                if(current_meas.trackRef.size() > 0 && // FIXME - find why it's sometimes empty
+                if (current_meas.trackRef.size() > 0 && // FIXME - find why it's sometimes empty
                    current_meas.trackRef[i].track == track &&
                    current_meas.trackRef[i].firstNote != -1)
                     return current_meas.trackRef[i].firstNote;
@@ -133,7 +133,7 @@ namespace AriaMaestosa
     MeasureToExport& LayoutLine::getMeasureForElement(const int layoutElementID) const
     {
         const int measID = layoutElements[layoutElementID].measure;
-        if(measID == -1) return (MeasureToExport&)nullMeasure;
+        if (measID == -1) return (MeasureToExport&)nullMeasure;
         return printable->measures[measID];
     }
     MeasureToExport& LayoutLine::getMeasureForElement(LayoutElement* layoutElement)
@@ -152,7 +152,7 @@ namespace AriaMaestosa
     {
         for(int n=layoutElements.size()-1; n>=0; n--)
         {
-            if( layoutElements[n].measure != -1) return layoutElements[n].measure;
+            if ( layoutElements[n].measure != -1) return layoutElements[n].measure;
         }
         return -1;
     }
@@ -161,7 +161,7 @@ namespace AriaMaestosa
         const int amount = layoutElements.size();
         for(int n=0; n<amount; n++)
         {
-            if( layoutElements[n].measure != -1) return layoutElements[n].measure;
+            if ( layoutElements[n].measure != -1) return layoutElements[n].measure;
         }
         return -1;
     }
@@ -191,7 +191,7 @@ namespace AriaMaestosa
         
         // if we're the last of the page, we need less space cause we don't
         // need to leave empty space under
-        if(last_of_page) level_height -= 13;
+        if (last_of_page) level_height -= 13;
         
         return level_height;
     }

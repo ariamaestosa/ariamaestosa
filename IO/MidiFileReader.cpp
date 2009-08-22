@@ -62,7 +62,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
     jdkmidi::MIDIFileRead reader( &rs, &track_loader );
 
     // load the midifile into the multitrack object
-    if( !reader.Parse() )
+    if ( !reader.Parse() )
     {
         std::cout << "Error: could not parse midi file" << std::endl;
         return false;
@@ -89,7 +89,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
     int real_track_amount=0;
     for(int trackID=0; trackID<trackAmount; trackID++)
     {
-        if(jdksequence.GetTrack( trackID )->GetNumEvents() == 0){} // empty track...
+        if (jdksequence.GetTrack( trackID )->GetNumEvents() == 0){} // empty track...
         else real_track_amount++;
     }
 
@@ -117,7 +117,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 
         const int eventAmount = track->GetNumEvents();
 
-        if(eventAmount == 0) continue;
+        if (eventAmount == 0) continue;
         realTrackID ++;
         Track* ariaTrack = sequence->getTrack(realTrackID);
 
@@ -134,15 +134,15 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 
             const int tick = event->GetTime();
 
-            if(tick < lastEventTick_inTrack) need_reorder = true;
+            if (tick < lastEventTick_inTrack) need_reorder = true;
             else{ lastEventTick_inTrack = tick; }
 
             const int channel = event->GetChannel();
-            if(channel != last_channel and last_channel != -1 and not event->IsMetaEvent() and
+            if (channel != last_channel and last_channel != -1 and not event->IsMetaEvent() and
                not event->IsTextEvent() and not event->IsTempo() and
                not event->IsSystemMessage() and not event->IsSysEx())
             {
-                if(event->IsNoteOn())
+                if (event->IsNoteOn())
                 {
                     std::cout << "WARNING : This midi file has tracks that play on multiple channels. this is not supported." << std::endl;
                     ariaTrack->setChannel(channel);
@@ -151,7 +151,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 
             }
 
-            if(last_channel == -1 and not event->IsMetaEvent() and
+            if (last_channel == -1 and not event->IsMetaEvent() and
                not event->IsTextEvent() and not event->IsTempo() and
                not event->IsSystemMessage() and not event->IsSysEx())
             {
@@ -160,7 +160,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
             }
 
             // ----------------------------------- note on -------------------------------------
-            if( event->IsNoteOn() )
+            if ( event->IsNoteOn() )
             {
 
                 const int note = ((channel == 9) ? event->GetNote() : 131 - event->GetNote());
@@ -174,9 +174,9 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                 continue;
             }
             // ----------------------------------- note off -------------------------------------
-            else if( event->IsNoteOff() )
+            else if ( event->IsNoteOff() )
             {
-                if(channel == 9) continue; // drum notes have no durations so dont care about this event
+                if (channel == 9) continue; // drum notes have no durations so dont care about this event
                 const int note = (131 - event->GetNote());
 
                 // a note off event was found, find to which note on event it corresponds
@@ -184,7 +184,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                 for(int n=ariaTrack->getNoteAmount()-1; n>-1; n--)
                 {
 
-                    if(ariaTrack->getNotePitchID(n) == note and
+                    if (ariaTrack->getNotePitchID(n) == note and
                        ariaTrack->getNoteEndInMidiTicks(n)==ariaTrack->getNoteStartInMidiTicks(n)+drum_note_duration )
                     {
                         ariaTrack->setNoteEnd_import( tick, n );
@@ -195,7 +195,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                     }//end if
 
 
-                    if(n==0)
+                    if (n==0)
                     {
                         std::cout << "Failed to link note off to a corresponding note on event. (ignoring it)" << " // tick: " << tick << ", note: " << note << ", channel: " << channel << std::endl;
                     }
@@ -204,12 +204,12 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                 continue;
             }
             // ----------------------------------- control change -------------------------------------
-            else if( event->IsControlChange() )
+            else if ( event->IsControlChange() )
             {
                 const int controllerID = event->GetController();
                 const int value = 127-event->GetControllerValue();
 
-                if(controllerID > 31 and controllerID < 64)
+                if (controllerID > 31 and controllerID < 64)
                 {
                     // LSB... not supported by Aria ATM
                     std::cout << "WARNING: This midi files contains LSB controller data. Aria does not support fine control changes and will discard this info." << std::endl;
@@ -217,7 +217,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                 }
 
 
-                if(controllerID == 3 or controllerID == 6 or controllerID == 9 or (controllerID > 19 and controllerID < 32) or
+                if (controllerID == 3 or controllerID == 6 or controllerID == 9 or (controllerID > 19 and controllerID < 32) or
                    controllerID == 79 or (controllerID > 84 and controllerID < 91)
                    or (controllerID > 95 and controllerID < 200 and controllerID!=127 /*stereo mode*/))
                 {
@@ -230,40 +230,40 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                 continue;
             }
             // ----------------------------------- pitch bend -------------------------------------
-            else if( event->IsPitchBend() )
+            else if ( event->IsPitchBend() )
             {
 
                 int pitchBendVal = event->GetBenderValue();
 
                 int value = (int)round( (pitchBendVal+8064.0)*128.0/16128.0 );
-                if(value>127) value=127;
-                if(value<0) value=0;
+                if (value>127) value=127;
+                if (value<0) value=0;
 
                 ariaTrack->addController_import(tick, 127-value, 200);
 
                 continue;
             }
             // ----------------------------------- program chnage -------------------------------------
-            else if( event->IsProgramChange() )
+            else if ( event->IsProgramChange() )
             {
 
                 const int instrument = event->GetPGValue();
 
-                //if(channel == 9)  sequence->getTrack(channel)->graphics->drumEditor->drumKit->setDrumID(instrument);
+                //if (channel == 9)  sequence->getTrack(channel)->graphics->drumEditor->drumKit->setDrumID(instrument);
                 //else              sequence->getTrack(channel)->graphics->keyboardEditor->instrument->setInstrumentID(instrument);
 
-                if(channel == 9)  ariaTrack->setDrumKit(instrument, true);
+                if (channel == 9)  ariaTrack->setDrumKit(instrument, true);
                 else              ariaTrack->setInstrument(instrument, true);
 
                 continue;
             }
             // ----------------------------------- tempo -------------------------------------
-            else if( event->IsTempo() )
+            else if ( event->IsTempo() )
             {
 
                 const int tempo = event->GetTempo32()/32;
 
-                if(firstTempoEvent)
+                if (firstTempoEvent)
                 {
                     sequence->setTempo(tempo);
 
@@ -284,12 +284,12 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                 }
                 // ----------------------------------- time key/sig and beat marker -------------------------------------
             }
-            else if( event->IsTimeSig() )
+            else if ( event->IsTimeSig() )
             {
                 getMeasureData()->addTimeSigChange_import( tick, (int)event->GetTimeSigNumerator(), (int)event->GetTimeSigDenominator() );
                 continue;
             }
-            else if( event->IsKeySig() )
+            else if ( event->IsKeySig() )
             {
                 /*
                  This meta event is used to specify the key (number of sharps or flats) and scale (major or minor) of a sequence.
@@ -301,12 +301,12 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 
                 for(int trackn=0; trackn<real_track_amount; trackn++)
                 {
-                    if(amount > 0)
+                    if (amount > 0)
                     {
                         sequence->getTrack(trackn)->graphics->scoreEditor->loadKey(SHARP, amount);
                         sequence->getTrack(trackn)->graphics->keyboardEditor->loadKey(SHARP, amount);
                     }
-                    else if(amount < 0)
+                    else if (amount < 0)
                     {
                         sequence->getTrack(trackn)->graphics->scoreEditor->loadKey(FLAT, -amount);
                         sequence->getTrack(trackn)->graphics->keyboardEditor->loadKey(FLAT, -amount);
@@ -316,16 +316,16 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 
             }
             /*
-            else if( event->IsBeatMarker() )
+            else if ( event->IsBeatMarker() )
             {
                 //std::cout << "Beat marker: " << (int)event->GetByte1() << " " << (int)event->GetByte2() << " " << (int)event->GetByte3() << ", type=" << (int)event->GetType() << std::endl;
             }
              */
-            else  if( event->IsTextEvent() ) // ----------------------------------- track name / text events -------------------------------------
+            else  if ( event->IsTextEvent() ) // ----------------------------------- track name / text events -------------------------------------
             {
 
                 // sequence/track name
-                if((int)event->GetByte1() == 3)
+                if ((int)event->GetByte1() == 3)
                 {
 
                     const int length = event->GetSysEx()->GetLength(); // get name length
@@ -338,10 +338,10 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                     //std::cout << "s/t name: " << name << std::endl;
 
                     trackName = fromCString(name);
-                    //if(trackName.Length() == 0) trackName = _("Untitled");
+                    //if (trackName.Length() == 0) trackName = _("Untitled");
                     continue;
                 }
-                else if((int)event->GetByte1() == 2) // copyright
+                else if ((int)event->GetByte1() == 2) // copyright
                 {
 
                     const int length = event->GetSysEx()->GetLength(); // get copyright length
@@ -355,17 +355,17 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                     continue;
                 }
                 /*
-                else if((int)event->GetByte1() == 4) // instrument name
+                else if ((int)event->GetByte1() == 4) // instrument name
                 {
                     const char* text = (char*) event->GetSysEx()->GetBuf();
                     std::cout << "instrument name : " << text << " (ignored)"<< std::endl;
                 }
-                else if((int)event->GetByte1() == 5) // lyrics
+                else if ((int)event->GetByte1() == 5) // lyrics
                 {
                     const char* text = (char*) event->GetSysEx()->GetBuf();
                     std::cout << "lyrics : " << text << " (ignored)"<< std::endl;
                 }
-                else if((int)event->GetByte1() == 1) // comments
+                else if ((int)event->GetByte1() == 1) // comments
                 {
                     const char* text = (char*) event->GetSysEx()->GetBuf();
                     std::cout << "comment : " << text << " (ignored)"<< std::endl;
@@ -381,37 +381,37 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
             //else{ std::cout << "ignored event" << std::endl; }
 
             /*
-            else if( event->IsSystemMessage() )
+            else if ( event->IsSystemMessage() )
             {
                 std::cout << "System Message: " << (int)event->GetByte1() << " " << (int)event->GetByte2() << " " << (int)event->GetByte3() << " " << (int)event->GetType() << std::endl;
             }
-            else if( event->IsSysEx() )
+            else if ( event->IsSysEx() )
             {
                 std::cout << "Sysex: " << (int)event->GetByte1() << " " << (int)event->GetByte2() << " " << (int)event->GetByte3() << " " << (int)event->GetType() << std::endl;
             }
-            else if( event->IsMetaEvent() )
+            else if ( event->IsMetaEvent() )
             {
                 std::cout << "Meta Event: " << (int)event->GetByte1() << " " << (int)event->GetByte2() << " " << (int)event->GetByte3() << ", type= " << (int)event->GetType();
 
-                if((int)event->GetByte1() == 0) std::cout << "---> sequence number" << std::endl;
-                if((int)event->GetByte1() == 1) std::cout << "---> text" << std::endl;
-                if((int)event->GetByte1() == 2) std::cout << "---> copyright" << std::endl;
-                if((int)event->GetByte1() == 3) std::cout << "---> track name" << std::endl;
-                if((int)event->GetByte1() == 4) std::cout << "---> instrument name" << std::endl;
-                if((int)event->GetByte1() == 5) std::cout << "---> lyrics name" << std::endl;
-                if((int)event->GetByte1() == 6) std::cout << "---> marker" << std::endl;
-                if((int)event->GetByte1() == 7) std::cout << "---> cue point" << std::endl;
+                if ((int)event->GetByte1() == 0) std::cout << "---> sequence number" << std::endl;
+                if ((int)event->GetByte1() == 1) std::cout << "---> text" << std::endl;
+                if ((int)event->GetByte1() == 2) std::cout << "---> copyright" << std::endl;
+                if ((int)event->GetByte1() == 3) std::cout << "---> track name" << std::endl;
+                if ((int)event->GetByte1() == 4) std::cout << "---> instrument name" << std::endl;
+                if ((int)event->GetByte1() == 5) std::cout << "---> lyrics name" << std::endl;
+                if ((int)event->GetByte1() == 6) std::cout << "---> marker" << std::endl;
+                if ((int)event->GetByte1() == 7) std::cout << "---> cue point" << std::endl;
 
-                if((int)event->GetByte1() == 32) std::cout << "---> prefix" << std::endl;
+                if ((int)event->GetByte1() == 32) std::cout << "---> prefix" << std::endl;
 
-                if((int)event->GetByte1() == 47) std::cout << "---> end of track" << std::endl;
+                if ((int)event->GetByte1() == 47) std::cout << "---> end of track" << std::endl;
 
-                if((int)event->GetByte1() == 81) std::cout << "---> tempo" << std::endl;
+                if ((int)event->GetByte1() == 81) std::cout << "---> tempo" << std::endl;
 
-                if((int)event->GetByte1() == 84) std::cout << "---> SMPTE" << std::endl;
-                if((int)event->GetByte1() == 88) std::cout << "---> Time signature" << std::endl;
+                if ((int)event->GetByte1() == 84) std::cout << "---> SMPTE" << std::endl;
+                if ((int)event->GetByte1() == 88) std::cout << "---> Time signature" << std::endl;
 
-                if((int)event->GetByte1() == 240) std::cout << "---> Sys Ex" << std::endl;
+                if ((int)event->GetByte1() == 240) std::cout << "---> Sys Ex" << std::endl;
 
             }
             else
@@ -423,20 +423,20 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 
         //std::cout << "name is " << toCString(trackName) << "  last_channel=" << last_channel << " trackID=" << trackID << std::endl;
 
-        if(last_channel != -1)
+        if (last_channel != -1)
         {
-            if(trackName.Length() == 0) trackName = _("Untitled");
+            if (trackName.Length() == 0) trackName = _("Untitled");
             ariaTrack->setName(trackName);
         }
 
-        if(trackID == 0)
+        if (trackID == 0)
         {
             sequence->setInternalName( trackName );
         }
 
-        if(ariaTrack->getChannel()==9) ariaTrack->graphics->setEditorMode(DRUM);
+        if (ariaTrack->getChannel()==9) ariaTrack->graphics->setEditorMode(DRUM);
 
-        if(need_reorder)
+        if (need_reorder)
         {
             std::cout << "* midi file is wrong, it will be necessary to reorder midi events" << std::endl;
             ariaTrack->reorderNoteVector();
@@ -445,13 +445,13 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
         ariaTrack->reorderNoteOffVector();
 
 
-        if(lastEventTick_inTrack > lastEventTick) lastEventTick = lastEventTick_inTrack;
+        if (lastEventTick_inTrack > lastEventTick) lastEventTick = lastEventTick_inTrack;
     }//next track
 
     // erase empty tracks
     for(int n=0; n<sequence->getTrackAmount(); n++)
     {
-        if(sequence->getTrack(n)->getNoteAmount() == 0)
+        if (sequence->getTrack(n)->getNoteAmount() == 0)
         {
             sequence->deleteTrack(n);
             n=-1; // track order changed, start again
@@ -465,20 +465,20 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
     {
         for(int j=0; j<trackAmount_inAriaSeq; j++)
         {
-            if(n != j and sequence->getTrack(n)->getChannel() == sequence->getTrack(j)->getChannel())
+            if (n != j and sequence->getTrack(n)->getChannel() == sequence->getTrack(j)->getChannel())
             {
                 // 2 tracks share the same channel... we're not in "one-track-once-channel" mode
                 one_track_one_channel = false;
 
                 // check whether the 2 tracks have the same instrument.
                 // if not, use the one that is not 1 (since 1 is default value)
-                if(sequence->getTrack(n)->getChannel() != 9)
+                if (sequence->getTrack(n)->getChannel() != 9)
                 {
                     // check that their instruments are different (ignore drum tracks)
-                    if(sequence->getTrack(n)->getInstrument() != sequence->getTrack(j)->getInstrument() and sequence->getTrack(j)->getChannel() != 9)
+                    if (sequence->getTrack(n)->getInstrument() != sequence->getTrack(j)->getInstrument() and sequence->getTrack(j)->getChannel() != 9)
                     {
-                        if(sequence->getTrack(n)->getInstrument() == 1) sequence->getTrack(n)->setInstrument( sequence->getTrack(j)->getInstrument() );
-                        else if(sequence->getTrack(j)->getInstrument() == 1) sequence->getTrack(j)->setInstrument( sequence->getTrack(n)->getInstrument() );
+                        if (sequence->getTrack(n)->getInstrument() == 1) sequence->getTrack(n)->setInstrument( sequence->getTrack(j)->getInstrument() );
+                        else if (sequence->getTrack(j)->getInstrument() == 1) sequence->getTrack(j)->setInstrument( sequence->getTrack(n)->getInstrument() );
                         else
                         {
                             std::cout << "multiple program changes are not supported by Aria, sorry." << std::endl;
@@ -489,10 +489,10 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                 else
                 {
                     // same but in case of drum track
-                    if(sequence->getTrack(n)->getDrumKit() != sequence->getTrack(j)->getDrumKit() and sequence->getTrack(j)->getChannel() == 9)
+                    if (sequence->getTrack(n)->getDrumKit() != sequence->getTrack(j)->getDrumKit() and sequence->getTrack(j)->getChannel() == 9)
                     {
-                        if(sequence->getTrack(n)->getDrumKit() == 1) sequence->getTrack(n)->setDrumKit( sequence->getTrack(j)->getDrumKit() );
-                        else if(sequence->getTrack(j)->getDrumKit() == 1) sequence->getTrack(j)->setDrumKit( sequence->getTrack(n)->getDrumKit() );
+                        if (sequence->getTrack(n)->getDrumKit() == 1) sequence->getTrack(n)->setDrumKit( sequence->getTrack(j)->getDrumKit() );
+                        else if (sequence->getTrack(j)->getDrumKit() == 1) sequence->getTrack(j)->setDrumKit( sequence->getTrack(n)->getDrumKit() );
                         else
                         {
                             std::cout << "multiple program changes (drums) are not supported by Aria, sorry." << std::endl;
@@ -504,7 +504,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
         }//next j
     }//next n
 
-    if(one_track_one_channel)
+    if (one_track_one_channel)
         getCurrentSequence()->setChannelManagementType(CHANNEL_AUTO);
 
     getMeasureData()->afterImporting();
@@ -517,7 +517,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 
     std::cout << "song length = " << getMeasureData()->measureAtTick(lastEventTick) << "measures, last_event_tick=" << lastEventTick << std::endl;
 
-    if(measureAmount_i < 10) measureAmount_i=10;
+    if (measureAmount_i < 10) measureAmount_i=10;
 
     getMainFrame()->changeMeasureAmount( measureAmount_i );
     sequence->measureData->setMeasureAmount( measureAmount_i );
@@ -530,7 +530,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
     sequence->importing = false;
 
     getMainFrame()->updateMenuBarToSequence();
-    if(!getMeasureData()->isMeasureLengthConstant()) getMeasureData()->updateMeasureInfo();
+    if (!getMeasureData()->isMeasureLengthConstant()) getMeasureData()->updateMeasureInfo();
     return true;
 
 }

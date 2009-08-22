@@ -51,12 +51,12 @@ namespace Action
             for(int n2=0; n2<noteAmount; n2++)
             {
 
-                if(n1 == n2) continue; // don't compare a note with itself
-                if(track->notes.isMarked(n1)) continue; // skip notes already removed
-                if(track->notes.isMarked(n2)) continue; // skip notes already removed
+                if (n1 == n2) continue; // don't compare a note with itself
+                if (track->notes.isMarked(n1)) continue; // skip notes already removed
+                if (track->notes.isMarked(n2)) continue; // skip notes already removed
 
                 // both notes have the same pitch, they are candidates for overlapping
-                if(track->notes[n1].pitchID == track->notes[n2].pitchID)
+                if (track->notes[n1].pitchID == track->notes[n2].pitchID)
                 {
                     const int from = std::min(track->notes[n1].startTick, track->notes[n2].startTick);
                     const int to = std::max(track->notes[n1].endTick, track->notes[n2].endTick);
@@ -66,7 +66,7 @@ namespace Action
 
                     // if difference between beginning of first note and ending of second note is smaller than their lengths, then the notes overlap
                     // if they both begin at the same tick they also overlap
-                    if( (to - from < length) or (to - from == 0) )
+                    if ( (to - from < length) or (to - from == 0) )
                     {
                         removedNotes.push_back(&track->notes[n1]);
                         track->markNoteToBeRemoved(n1);

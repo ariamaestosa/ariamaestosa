@@ -59,9 +59,8 @@ class NotationSetup : public wxFrame
 
     wxBoxSizer* boxSizer;
 
-    wxTextCtrl* lineWidthCtrl;
-
-    wxCheckBox* repMinWidth;
+    // wxTextCtrl* lineWidthCtrl;
+    // wxCheckBox* repMinWidth;
 
 
 public:
@@ -214,15 +213,15 @@ void exportNotation(Track* t)
 // after dialog is shown and user clicked 'OK' this is called to complete the export
 void completeExport(bool accepted)
 {
-    if(!accepted) return;
-   // if(currentSequence == NULL) currentSequence = currentTrack->sequence;
+    if (!accepted) return;
+   // if (currentSequence == NULL) currentSequence = currentTrack->sequence;
 
     AriaPrintable notationPrint(currentSequence);
 
     // check if we print everything or just one track
-    if(only_selected_track_bool)
+    if (only_selected_track_bool)
     {
-        if(not notationPrint.addTrack(
+        if (not notationPrint.addTrack(
                                       getCurrentSequence()->getCurrentTrack(),
                                       getCurrentSequence()->getCurrentTrack()->graphics->editorMode ))
         {
@@ -245,13 +244,13 @@ void completeExport(bool accepted)
             Track* track = currentSequence->getTrack(n);
 
             // ignore disabled or hidden tracks
-            if(track->graphics->muted     or
+            if (track->graphics->muted     or
                track->graphics->collapsed or
                track->graphics->docked) continue;
 
             std::cout << "Generating notation for track " << n << " : " << track->getName().mb_str() << std::endl;
 
-            if(not notationPrint.addTrack( track, track->graphics->editorMode ))
+            if (not notationPrint.addTrack( track, track->graphics->editorMode ))
             {
                 wxString track_name = track->getName();
 
@@ -278,7 +277,7 @@ void completeExport(bool accepted)
     std::cout << "********************************************************\n\n";
     
     wxPrinterError result = (wxPrinterError)printResult(&notationPrint);
-    if(result == wxPRINTER_ERROR)
+    if (result == wxPRINTER_ERROR)
     {
         std::cerr << "error while printing" << std::endl;
         wxMessageBox( _("An error occured during printing.") );

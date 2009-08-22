@@ -103,7 +103,7 @@ void color(const float r, const float g, const float b)
     gc = (unsigned char)(g*255);
     bc = (unsigned char)(b*255);
 
-    if(mode_primitives)
+    if (mode_primitives)
     {
         ac = 255;
         updatePen();
@@ -121,7 +121,7 @@ void color(const float r, const float g, const float b, const float a)
     bc = (unsigned char)(b*255);
     ac = (unsigned char)(a*255);
 
-    if(mode_primitives)
+    if (mode_primitives)
     {
         updatePen();
         updateBrush();
@@ -148,7 +148,7 @@ void lineSmooth(const bool enabled)
 
 void point(const int x, const int y)
 {
-    if(pointSize_i == 1) Display::renderDC -> DrawPoint( x, y );
+    if (pointSize_i == 1) Display::renderDC -> DrawPoint( x, y );
     else
     {
         disablePen();
@@ -243,14 +243,14 @@ void text_with_bounds(wxString* string, const int x, const int y, const int max_
     {
         int twidth, theight;
         Display::renderDC -> GetTextExtent( message, &twidth, &theight );
-        if(x + twidth < max_x) break;
+        if (x + twidth < max_x) break;
         else
         {
             shortened = true;
             message = message.Mid( 0, message.Length()-2 );
         }
     }
-    if(shortened)
+    if (shortened)
     {
         message.Append( wxT("...") );
     }

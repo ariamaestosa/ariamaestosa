@@ -177,14 +177,14 @@ CustomNoteSelectDialog::CustomNoteSelectDialog() : wxDialog(NULL, wxID_ANY,
 void CustomNoteSelectDialog::onFocus(wxFocusEvent& evt)
 {
     wxTextCtrl* ctrl = dynamic_cast<wxTextCtrl*>(FindFocus());
-    if(ctrl != NULL) ctrl->SetSelection(-1, -1);
+    if (ctrl != NULL) ctrl->SetSelection(-1, -1);
 }
 
 void CustomNoteSelectDialog::show(Track* currentTrack)
 {
     CustomNoteSelectDialog::currentTrack = currentTrack;
 
-    if(currentTrack->graphics->editorMode == GUITAR)
+    if (currentTrack->graphics->editorMode == GUITAR)
     {
         cb_string->Enable(true);
         cb_fret->Enable(true);
@@ -200,7 +200,7 @@ void CustomNoteSelectDialog::show(Track* currentTrack)
 void CustomNoteSelectDialog::keyPress(wxKeyEvent& evt)
 {
 
-    if(evt.GetKeyCode() == WXK_RETURN)
+    if (evt.GetKeyCode() == WXK_RETURN)
     {
         wxCommandEvent unused;
         okClicked(unused);
@@ -225,7 +225,7 @@ void CustomNoteSelectDialog::okClicked(wxCommandEvent& evt)
     long to_measure_value;
     long volume_tolerance_value;
 
-    if(
+    if (
        not from_measure_c.ToLong(&from_measure_value) or
        not to_measure_c.ToLong(&to_measure_value) or
        not volume_tolerance_c.ToLong(&volume_tolerance_value)
@@ -250,7 +250,7 @@ void CustomNoteSelectDialog::okClicked(wxCommandEvent& evt)
     const int noteAmount = currentTrack->getNoteAmount();
     for(int n=0; n<noteAmount; n++)
     {
-        if(currentTrack->isNoteSelected(n)) referenceNoteAmount++;
+        if (currentTrack->isNoteSelected(n)) referenceNoteAmount++;
     }
 
     int referencePitches[referenceNoteAmount];
@@ -262,7 +262,7 @@ void CustomNoteSelectDialog::okClicked(wxCommandEvent& evt)
     int currentID=0;
     for(int n=0; n<noteAmount; n++)
     {
-        if(currentTrack->isNoteSelected(n))
+        if (currentTrack->isNoteSelected(n))
         {
             referencePitches[currentID] = currentTrack->getNotePitchID(n);
             referenceVolumes[currentID] = currentTrack->getNoteVolume(n);
@@ -280,85 +280,85 @@ void CustomNoteSelectDialog::okClicked(wxCommandEvent& evt)
     {
 
         // test for pitch, if pitch checkbox was checked
-        if(pitch)
+        if (pitch)
         {
             bool passTest = false;
 
             const int test_value = currentTrack->getNotePitchID(n);
             for(int i=0; i<referenceNoteAmount; i++)
             {
-                if(test_value == referencePitches[i]) passTest=true;
+                if (test_value == referencePitches[i]) passTest=true;
             }
 
-            if(!passTest) continue;
+            if (!passTest) continue;
         }
 
         // test for string, if string checkbox was checked
-        if(string)
+        if (string)
         {
             bool passTest = false;
 
             const int test_value = currentTrack->getNoteString(n);
             for(int i=0; i<referenceNoteAmount; i++)
             {
-                if(test_value == referenceStrings[i]) passTest=true;
+                if (test_value == referenceStrings[i]) passTest=true;
             }
 
-            if(!passTest) continue;
+            if (!passTest) continue;
         }
 
         // test for fret, if fret checkbox was checked
-        if(fret)
+        if (fret)
         {
             bool passTest = false;
 
             const int test_value = currentTrack->getNoteFret(n);
             for(int i=0; i<referenceNoteAmount; i++){
-                if(test_value == referenceFrets[i]) passTest=true;
+                if (test_value == referenceFrets[i]) passTest=true;
             }
 
-            if(!passTest) continue;
+            if (!passTest) continue;
         }
 
         // test for volume, if volume checkbox was checked
-        if(volume)
+        if (volume)
         {
             bool passTest = false;
 
             const int test_value = currentTrack->getNoteVolume(n);
             for(int i=0; i<referenceNoteAmount; i++)
             {
-                if( abs(test_value - referenceVolumes[i]) <= volume_tolerance_value ) passTest=true;
+                if ( abs(test_value - referenceVolumes[i]) <= volume_tolerance_value ) passTest=true;
             }
 
-            if(!passTest) continue;
+            if (!passTest) continue;
         }
 
         // test for duration, if duration checkbox was checked
-        if(duration)
+        if (duration)
         {
             bool passTest = false;
 
             const int test_value = currentTrack->getNoteEndInMidiTicks(n) - currentTrack->getNoteStartInMidiTicks(n);
             for(int i=0; i<referenceNoteAmount; i++)
             {
-                if( abs(test_value - referenceDurations[i]) <= duration_tolerance_value ) passTest=true;
+                if ( abs(test_value - referenceDurations[i]) <= duration_tolerance_value ) passTest=true;
             }
 
-            if(!passTest) continue;
+            if (!passTest) continue;
         }
 
         // test for measure, if measure checkbox was checked
-        if(measure)
+        if (measure)
         {
             bool passTest = false;
 
             // find in which measure the note is
             const int test_value = getMeasureData()->measureAtTick( currentTrack->getNoteStartInMidiTicks(n) );
 
-            if(test_value >= from_measure_value-1 and test_value <= to_measure_value-1) passTest=true;
+            if (test_value >= from_measure_value-1 and test_value <= to_measure_value-1) passTest=true;
 
-            if(!passTest) continue;
+            if (!passTest) continue;
         }
 
         // if the flow reaches this part, it's because all checked tests succeeded. Select the note.

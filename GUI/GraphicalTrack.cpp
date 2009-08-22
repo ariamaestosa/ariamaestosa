@@ -85,7 +85,7 @@ public:
 
     void render()
     {
-        if(hidden) return;
+        if (hidden) return;
         comboBorderDrawable->move(x, y+7);
         comboBorderDrawable->setFlip(false, false);
         comboBorderDrawable->render();
@@ -108,7 +108,7 @@ public:
 
     void render()
     {
-        if(hidden) return;
+        if (hidden) return;
         comboBorderDrawable->move(x, y+7);
         comboBorderDrawable->setFlip(false, false);
         comboBorderDrawable->render();
@@ -151,14 +151,14 @@ public:
 
     void render()
     {
-        if(hidden) return;
+        if (hidden) return;
 
-        if(state != AriaRender::STATE_NORMAL)
+        if (state != AriaRender::STATE_NORMAL)
             AriaRender::setImageState(state);
-        else if(not enabled)
+        else if (not enabled)
             AriaRender::setImageState(AriaRender::STATE_DISABLED);
 
-        if(centerX and drawable->image->width < width)
+        if (centerX and drawable->image->width < width)
         {
             const int ajust = (width - drawable->image->width)/2;
             drawable->move(x + drawable->hotspotX + ajust, y+y_offset);
@@ -191,7 +191,7 @@ public:
     }
     void layout()
     {
-        if(PARENT::hidden) return;
+        if (PARENT::hidden) return;
         PARENT::width = 22;
         int currentX = PARENT::x + 11;
 
@@ -213,7 +213,7 @@ public:
 
     void render()
     {
-        if(PARENT::hidden) return;
+        if (PARENT::hidden) return;
 
         // render background
         PARENT::render();
@@ -274,7 +274,7 @@ public:
         const int lamount = widgetsLeft.size();
         for(int n=0; n<lamount; n++)
         {
-            if(!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
+            if (!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
             else AriaRender::setImageState(AriaRender::STATE_NORMAL);
 
             widgetsLeft.get(n)->render();
@@ -283,7 +283,7 @@ public:
         const int ramount = widgetsRight.size();
         for(int n=0; n<ramount; n++)
         {
-            if(!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
+            if (!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
             else AriaRender::setImageState(AriaRender::STATE_NORMAL);
 
             widgetsRight.get(n)->render();
@@ -393,7 +393,7 @@ void GraphicalTrack::createEditors()
 
 bool GraphicalTrack::mouseWheelMoved(int mx, int my, int value)
 {
-    if(my>from_y and my<to_y)
+    if (my>from_y and my<to_y)
     {
 
         getCurrentEditor()->scroll( value / 75.0 );
@@ -416,44 +416,44 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 
     lastMouseY = mousey;
 
-    if(mousey>from_y and mousey<to_y)
+    if (mousey>from_y and mousey<to_y)
     {
 
         sequence->setCurrentTrack(track);
 
         // resize drag
-        if(mousey>to_y-15 and mousey<to_y-5)
+        if (mousey>to_y-15 and mousey<to_y-5)
         {
             dragging_resize = true;
             return false;
         }
 
         // if track is not collapsed, let the editor handle the mouse event too
-        if(!collapsed) getCurrentEditor()->mouseDown(mousex, mousey);
+        if (!collapsed) getCurrentEditor()->mouseDown(mousex, mousey);
 
-        if(!ImageProvider::imagesLoaded()) return true;
+        if (!ImageProvider::imagesLoaded()) return true;
         assert(collapseDrawable->image!=NULL);
         assert(muteDrawable->image!=NULL);
 
         const int winX = mousex.getRelativeTo(WINDOW);
         // collapse
-        if( collapseButton->clickIsOnThisWidget(winX, mousey) )
+        if ( collapseButton->clickIsOnThisWidget(winX, mousey) )
         {
             collapsed = !collapsed;
             DisplayFrame::updateVerticalScrollbar();
         }
 
         // maximize button
-        if( dockToolBar->getItem(0).clickIsOnThisWidget(winX, mousey) )
+        if ( dockToolBar->getItem(0).clickIsOnThisWidget(winX, mousey) )
         {
-            if(not getCurrentSequence()->maximize_track_mode)
+            if (not getCurrentSequence()->maximize_track_mode)
             {
                 // switch on maximize mode
                 const int track_amount = getCurrentSequence()->getTrackAmount();
                 for(int n=0; n<track_amount; n++)
                 {
                     Track* track = getCurrentSequence()->getTrack(n);
-                    if(track->graphics == this)
+                    if (track->graphics == this)
                     {
                         maximizeHeight();
                         continue;
@@ -471,7 +471,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                 for(int n=0; n<track_amount; n++)
                 {
                     Track* track = getCurrentSequence()->getTrack(n);
-                    if(track->graphics->docked) track->graphics->dock(false);
+                    if (track->graphics->docked) track->graphics->dock(false);
                     track->graphics->maximizeHeight(false);
                 }
                 DisplayFrame::updateVerticalScrollbar();
@@ -479,10 +479,10 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
             }
         }
         // dock button
-        else if( dockToolBar->getItem(1).clickIsOnThisWidget(winX, mousey) )
+        else if ( dockToolBar->getItem(1).clickIsOnThisWidget(winX, mousey) )
         {
             // This button is disabled in maximized mode
-            if(not getCurrentSequence()->maximize_track_mode)
+            if (not getCurrentSequence()->maximize_track_mode)
             {
                 dock();
                 DisplayFrame::updateVerticalScrollbar();
@@ -490,48 +490,48 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         }
 
         // mute
-        if( muteButton->clickIsOnThisWidget(winX, mousey) )
+        if ( muteButton->clickIsOnThisWidget(winX, mousey) )
         {
             muted = !muted;
             DisplayFrame::updateVerticalScrollbar();
         }
 
         // track name
-        if( trackName->clickIsOnThisWidget(winX, mousey) )
+        if ( trackName->clickIsOnThisWidget(winX, mousey) )
         {
             wxString msg=wxGetTextFromUser( _("Choose a new track title."), wxT("Aria Maestosa"), track->getName() );
-            if(msg.Length()>0) track->setName( msg );
+            if (msg.Length()>0) track->setName( msg );
             Display::render();
         }
 
         // grid
-        if( gridCombo->clickIsOnThisWidget(winX, mousey) )
+        if ( gridCombo->clickIsOnThisWidget(winX, mousey) )
         {
             wxCommandEvent fake_event;
 
-            if( gridCombo->getItem(0).clickIsOnThisWidget(winX, mousey) )
+            if ( gridCombo->getItem(0).clickIsOnThisWidget(winX, mousey) )
                 grid->grid1selected(fake_event);
-            else if( gridCombo->getItem(1).clickIsOnThisWidget(winX, mousey) )
+            else if ( gridCombo->getItem(1).clickIsOnThisWidget(winX, mousey) )
                 grid->grid2selected(fake_event);
-            else if( gridCombo->getItem(2).clickIsOnThisWidget(winX, mousey) )
+            else if ( gridCombo->getItem(2).clickIsOnThisWidget(winX, mousey) )
                 grid->grid4selected(fake_event);
-            else if( gridCombo->getItem(3).clickIsOnThisWidget(winX, mousey) )
+            else if ( gridCombo->getItem(3).clickIsOnThisWidget(winX, mousey) )
                 grid->grid8selected(fake_event);
-            else if( gridCombo->getItem(4).clickIsOnThisWidget(winX, mousey) )
+            else if ( gridCombo->getItem(4).clickIsOnThisWidget(winX, mousey) )
                 grid->grid16selected(fake_event);
-            else if( gridCombo->getItem(5).clickIsOnThisWidget(winX, mousey) )
+            else if ( gridCombo->getItem(5).clickIsOnThisWidget(winX, mousey) )
                 grid->grid32selected(fake_event);
-            else if( gridCombo->getItem(6).clickIsOnThisWidget(winX, mousey) )
+            else if ( gridCombo->getItem(6).clickIsOnThisWidget(winX, mousey) )
                 grid->toggleTriplet();
-            else if( winX > gridCombo->getItem(5).getX() + 16)
+            else if ( winX > gridCombo->getItem(5).getX() + 16)
                 Display::popupMenu(grid, gridCombo->getX()+5, from_y+30);
         }
 
 
         // instrument
-        if( instrumentName->clickIsOnThisWidget(winX, mousey) )
+        if ( instrumentName->clickIsOnThisWidget(winX, mousey) )
         {
-            if(editorMode==DRUM)
+            if (editorMode==DRUM)
             {
                 Core::getDrumPicker()->setParent(track);
                 Display::popupMenu((wxMenu*)(Core::getDrumPicker()), Display::getWidth() - 175, from_y+30);
@@ -544,10 +544,10 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         }
 
         // channel
-        if(sequence->getChannelManagementType() == CHANNEL_MANUAL)
+        if (sequence->getChannelManagementType() == CHANNEL_MANUAL)
         {
 
-            if( channelButton->clickIsOnThisWidget(winX, mousey) )
+            if ( channelButton->clickIsOnThisWidget(winX, mousey) )
             {
                 const int channel = wxGetNumberFromUser( _("Enter the ID of the channel this track should play in"),
                                                          wxT(""),
@@ -555,7 +555,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                                                          track->getChannel(),
                                                          0,
                                                          15 );
-                if(channel>=0 and channel<=15)
+                if (channel>=0 and channel<=15)
                 {
                     track->setChannel(channel);
 
@@ -563,7 +563,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                     const int trackAmount = sequence->getTrackAmount();
                     for(int n=0; n<trackAmount; n++) // find another track that has same channel and use the same instrument
                     {
-                        if( sequence->getTrack(n)->getChannel() == channel )
+                        if ( sequence->getTrack(n)->getChannel() == channel )
                         {
                             track->setInstrument(sequence->getTrack(n)->getInstrument(), true);
                             break;
@@ -576,50 +576,50 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         }
 
 
-        if(mousey > from_y+10 and mousey < from_y+40)
+        if (mousey > from_y+10 and mousey < from_y+40)
         {
             // modes
-            if(winX > scoreButton->getX() and winX < scoreButton->getX()+30)
+            if (winX > scoreButton->getX() and winX < scoreButton->getX()+30)
             {
                 editorMode=SCORE;
             }
             else
-            if(winX > pianoButton->getX() and winX < pianoButton->getX()+30)
+            if (winX > pianoButton->getX() and winX < pianoButton->getX()+30)
             {
                 // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
-                if(editorMode == DRUM and sequence->getChannelManagementType() == CHANNEL_MANUAL) track->setChannel(0);
+                if (editorMode == DRUM and sequence->getChannelManagementType() == CHANNEL_MANUAL) track->setChannel(0);
 
                 editorMode=KEYBOARD;
             }
-            else if(winX > tabButton->getX() and winX < tabButton->getX()+30)
+            else if (winX > tabButton->getX() and winX < tabButton->getX()+30)
             {
                 // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
-                if(editorMode == DRUM and sequence->getChannelManagementType() == CHANNEL_MANUAL) track->setChannel(0);
+                if (editorMode == DRUM and sequence->getChannelManagementType() == CHANNEL_MANUAL) track->setChannel(0);
 
                 editorMode=GUITAR;
                 track->prepareNotesForGuitarEditor();
             }
-            else if(winX > drumButton->getX() and winX < drumButton->getX()+30)
+            else if (winX > drumButton->getX() and winX < drumButton->getX()+30)
             {
                 // in midi, drums go to channel 9 (10 if you start from one)
-                if(sequence->getChannelManagementType() == CHANNEL_MANUAL) track->setChannel(9);
+                if (sequence->getChannelManagementType() == CHANNEL_MANUAL) track->setChannel(9);
 
                 editorMode=DRUM;
             }
-            else if(winX > ctrlButton->getX() and winX < ctrlButton->getX()+30)
+            else if (winX > ctrlButton->getX() and winX < ctrlButton->getX()+30)
             {
                 editorMode=CONTROLLER;
             }
         }
 
-        if(editorMode==SCORE and mousey > from_y+15 and mousey < from_y+30)
+        if (editorMode==SCORE and mousey > from_y+15 and mousey < from_y+30)
         {
             // sharp/flat signs
-            if( sharpFlatPicker->getItem(0).clickIsOnThisWidget(winX, mousey) )
+            if ( sharpFlatPicker->getItem(0).clickIsOnThisWidget(winX, mousey) )
                 track->action( new Action::SetAccidentalSign(SHARP) );
-            else if( sharpFlatPicker->getItem(1).clickIsOnThisWidget(winX, mousey) )
+            else if ( sharpFlatPicker->getItem(1).clickIsOnThisWidget(winX, mousey) )
                 track->action( new Action::SetAccidentalSign(FLAT) );
-            else if( sharpFlatPicker->getItem(2).clickIsOnThisWidget(winX, mousey) )
+            else if ( sharpFlatPicker->getItem(2).clickIsOnThisWidget(winX, mousey) )
                 track->action( new Action::SetAccidentalSign(NATURAL) );
         }
 
@@ -633,7 +633,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 
 bool GraphicalTrack::processRightMouseClick(RelativeXCoord x, int y)
 {
-    if(y>from_y and y<to_y)
+    if (y>from_y and y<to_y)
     {
         getCurrentEditor()->rightClick(x,y);
         return false;
@@ -649,10 +649,10 @@ void GraphicalTrack::processMouseRelease()
 {
     //std::cout << "mouse up GraphicalTrack" << std::endl;
 
-    if(!dragging_resize) getCurrentEditor()->mouseUp(Display::getMouseX_current(), Display:: getMouseY_current(),
+    if (!dragging_resize) getCurrentEditor()->mouseUp(Display::getMouseX_current(), Display:: getMouseY_current(),
                                                      Display::getMouseX_initial(), Display:: getMouseY_initial());
 
-    if(dragging_resize)
+    if (dragging_resize)
     {
         dragging_resize=false;
         DisplayFrame::updateVerticalScrollbar();
@@ -667,7 +667,7 @@ void GraphicalTrack::processMouseExited(RelativeXCoord x_now, int y_now, Relativ
 bool GraphicalTrack::processMouseDrag(RelativeXCoord x, int y)
 {
 
-    if((y>from_y and y<to_y) || dragging_resize)
+    if ((y>from_y and y<to_y) || dragging_resize)
     {
 
         /*
@@ -679,23 +679,23 @@ bool GraphicalTrack::processMouseDrag(RelativeXCoord x, int y)
          */
 
         int barHeight=EXPANDED_BAR_HEIGHT;
-        if(collapsed) barHeight=COLLAPSED_BAR_HEIGHT;
+        if (collapsed) barHeight=COLLAPSED_BAR_HEIGHT;
 
-        if(!dragging_resize) getCurrentEditor()->mouseDrag(x, y, Display::getMouseX_initial(), Display:: getMouseY_initial());
+        if (!dragging_resize) getCurrentEditor()->mouseDrag(x, y, Display::getMouseX_initial(), Display:: getMouseY_initial());
 
         // resize drag
-        if(dragging_resize)
+        if (dragging_resize)
         {
 
-            if(height==35)
+            if (height==35)
             { // if it has reached minimal size, wait until mouse comes back over before resizing again
-                if(y>to_y-15 and y<to_y-5 and (y-lastMouseY)>0 ) height+=(y-lastMouseY);
+                if (y>to_y-15 and y<to_y-5 and (y-lastMouseY)>0 ) height+=(y-lastMouseY);
 
             }
             else
             { // resize the track and check if it's not too small
                 height+=(y-lastMouseY);
-                if(height<35) height=35; //minimum size
+                if (height<35) height=35; //minimum size
             }
             DisplayFrame::updateVerticalScrollbar();
 
@@ -723,19 +723,19 @@ void GraphicalTrack::setHeight(const int height)
 }
 void GraphicalTrack::maximizeHeight(bool maximize)
 {
-    if(maximize)
+    if (maximize)
     {
         setHeight(Display::getHeight() - getCurrentSequence()->dockHeight -
                   (getMeasureData()->isExpandedMode() ? 150 : 130)  ); // FIXME - don't hardcode values
     }
     else
     {
-        if(height > 200) height = 200;
+        if (height > 200) height = 200;
     }
 }
 void GraphicalTrack::dock(const bool dock)
 {
-    if(dock)
+    if (dock)
     {
         docked = true;
         getCurrentSequence()->addToDock( this );
@@ -750,9 +750,9 @@ void GraphicalTrack::dock(const bool dock)
 int GraphicalTrack::getTotalHeight()
 {
 
-    if(docked) return 0;
+    if (docked) return 0;
 
-    if(collapsed)
+    if (collapsed)
     {
         return 45; // COLLAPSED_BAR_HEIGHT
     }
@@ -775,9 +775,9 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     const bool channel_mode = sequence->getChannelManagementType() == CHANNEL_MANUAL;
 
     int barHeight=EXPANDED_BAR_HEIGHT;
-    if(closed) barHeight=COLLAPSED_BAR_HEIGHT;
+    if (closed) barHeight=COLLAPSED_BAR_HEIGHT;
 
-    if(!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
+    if (!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
     else AriaRender::setImageState(AriaRender::STATE_NORMAL);
 
     AriaRender::images();
@@ -820,7 +820,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     // center
     AriaRender::primitives();
 
-    if(!focus) AriaRender::color(0.31/2, 0.31/2, 0.31/2);
+    if (!focus) AriaRender::color(0.31/2, 0.31/2, 0.31/2);
     else AriaRender::color(0.31, 0.31, 0.31);
 
     AriaRender::rect(x+ 30, y+20, x+ Display::getWidth() - 5 /* margin*/ - 20 /*right round cornerDrawable*/, y+20+barHeight);
@@ -828,11 +828,11 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
 
     // --------------------------------------------------
 
-    if(closed)
+    if (closed)
     {
          AriaRender::images();
 
-        if(!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
+        if (!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
         else AriaRender::setImageState(AriaRender::STATE_NORMAL);
 
         // bottom left corner
@@ -858,7 +858,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     else
     {
         // white area
-        if(editorMode != KEYBOARD) // keyboard editor draws its own backgound, so no need to draw it twice // FIXME no more true
+        if (editorMode != KEYBOARD) // keyboard editor draws its own backgound, so no need to draw it twice // FIXME no more true
         {
             AriaRender::primitives();
             AriaRender::color(1, 1, 1);
@@ -868,10 +868,10 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     }//end if
 
     // ------------------ prepare to draw components ------------------
-    if(collapsed) collapseButton->drawable->setImage( expandImg );
+    if (collapsed) collapseButton->drawable->setImage( expandImg );
     else collapseButton->drawable->setImage( collapseImg );
 
-    if(muted) muteButton->drawable->setImage( muteOnImg );
+    if (muted) muteButton->drawable->setImage( muteOnImg );
     else muteButton->drawable->setImage( muteOffImg );
 
     scoreButton -> enable( editorMode == SCORE      and focus );
@@ -933,10 +933,10 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     AriaRender::primitives();
     AriaRender::color(0,0,0);
     AriaRender::hollow_rect(grid_selection_x, y+15, grid_selection_x+16, y+30);
-    if(grid->isTriplet()) AriaRender::hollow_rect(mgrid_triplet->x, y+15, mgrid_triplet->x+16, y+30);
+    if (grid->isTriplet()) AriaRender::hollow_rect(mgrid_triplet->x, y+15, mgrid_triplet->x+16, y+30);
 
     // mark maximize mode as on if relevant
-    if(getCurrentSequence()->maximize_track_mode)
+    if (getCurrentSequence()->maximize_track_mode)
     {
         const int rectx = dockToolBar->getItem(0).getX();
         AriaRender::hollow_rect(rectx, y+13, rectx+16, y+29);
@@ -946,7 +946,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     AriaRender::images();
     AriaRender::color(0,0,0);
     
-    if(editorMode == DRUM) 
+    if (editorMode == DRUM) 
         Core::getDrumPicker()->renderDrumKitName( track->getDrumKit(), instrumentName->getX()+11 ,y+30);
     else
     {
@@ -958,14 +958,14 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     AriaRender::images();
     
     // draw channel number
-    if(channel_mode)
+    if (channel_mode)
     {
         wxString channelName = to_wxString(track->getChannel());
 
         AriaRender::color(0,0,0);
         
         const int char_amount_in_channel_name = channelName.size();
-        if(char_amount_in_channel_name == 1) AriaRender::renderNumber(channelName, channelButton->getX()+10, y+28);
+        if (char_amount_in_channel_name == 1) AriaRender::renderNumber(channelName, channelButton->getX()+10, y+28);
         else AriaRender::renderNumber(channelName, channelButton->getX()+7, y+28);
     }
 
@@ -974,10 +974,10 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
 int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
 {
 
-    if(!ImageProvider::imagesLoaded()) return 0;
+    if (!ImageProvider::imagesLoaded()) return 0;
 
     // docked tracks are not drawn
-    if(docked)
+    if (docked)
     {
         from_y=-1;
         to_y=-1;
@@ -985,23 +985,23 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
     }
 
     int barHeight=EXPANDED_BAR_HEIGHT;
-    if(collapsed) barHeight=COLLAPSED_BAR_HEIGHT;
+    if (collapsed) barHeight=COLLAPSED_BAR_HEIGHT;
 
     from_y=y;
 
-    if(collapsed) to_y = from_y + 45;
+    if (collapsed) to_y = from_y + 45;
     else to_y = y+barHeight+50+height;
 
     // tell the editor about its new location
     getCurrentEditor()->updatePosition(from_y, to_y, Display::getWidth(), height, barHeight);
 
     // don't waste time drawing it if out of bounds
-    if(to_y < 0) return to_y;
-    if(from_y > Display::getHeight()) return to_y;
+    if (to_y < 0) return to_y;
+    if (from_y > Display::getHeight()) return to_y;
 
     renderHeader(0, y, collapsed, focus);
 
-    if(!collapsed)
+    if (!collapsed)
     {
         // --------------------------------------------------
         // render editor
@@ -1014,7 +1014,7 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
 
         AriaRender::primitives();
 
-        if( currentTick!=-1 and not Display::leftArrow() and not Display::rightArrow())
+        if ( currentTick!=-1 and not Display::leftArrow() and not Display::rightArrow())
         {
             AriaRender::color(0.8, 0, 0);
 
@@ -1032,7 +1032,7 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
         // --------------------------------------------------
         // render track borders
 
-        if(!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
+        if (!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
         else AriaRender::setImageState(AriaRender::STATE_NORMAL);
 
         // bottom left corner
@@ -1079,11 +1079,11 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
 
 Editor* GraphicalTrack::getCurrentEditor()
 {
-    if(editorMode==KEYBOARD) return keyboardEditor;
-    else if(editorMode==GUITAR) return guitarEditor;
-    else if(editorMode==DRUM) return drumEditor;
-    else if(editorMode==CONTROLLER) return controllerEditor;
-    else if(editorMode==SCORE) return scoreEditor;
+    if (editorMode==KEYBOARD) return keyboardEditor;
+    else if (editorMode==GUITAR) return guitarEditor;
+    else if (editorMode==DRUM) return drumEditor;
+    else if (editorMode==CONTROLLER) return controllerEditor;
+    else if (editorMode==SCORE) return scoreEditor;
     else
     {
         std::cout << "No such editor!" << std::endl;
@@ -1141,7 +1141,7 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
     {
 
         const char* mode_c = xml->getAttributeValue("mode");
-        if( mode_c != NULL ) editorMode = atoi( mode_c );
+        if ( mode_c != NULL ) editorMode = atoi( mode_c );
         else
         {
             editorMode = KEYBOARD;
@@ -1149,7 +1149,7 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
         }
 
         const char* height_c = xml->getAttributeValue("height");
-        if( height_c != NULL ) height = atoi( height_c );
+        if ( height_c != NULL ) height = atoi( height_c );
         else
         {
             std::cout << "Missing info from file: track height" << std::endl;
@@ -1157,10 +1157,10 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
         }
 
         const char* collapsed_c = xml->getAttributeValue("collapsed");
-        if( collapsed_c != NULL )
+        if ( collapsed_c != NULL )
         {
-            if(!strcmp(collapsed_c, "true")) collapsed = true;
-            else if(!strcmp(collapsed_c, "false")) collapsed = false;
+            if (!strcmp(collapsed_c, "true")) collapsed = true;
+            else if (!strcmp(collapsed_c, "false")) collapsed = false;
             else
             {
                 std::cout << "Unknown keyword for attribute 'collapsed' in track: " << collapsed_c << std::endl;
@@ -1174,10 +1174,10 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
         }
 
         const char* muted_c = xml->getAttributeValue("muted");
-        if( muted_c != NULL )
+        if ( muted_c != NULL )
         {
-            if(!strcmp(muted_c, "true")) muted = true;
-            else if(!strcmp(muted_c, "false")) muted = false;
+            if (!strcmp(muted_c, "true")) muted = true;
+            else if (!strcmp(muted_c, "false")) muted = false;
             else
             {
                 muted = false;
@@ -1191,10 +1191,10 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
         }
 
         const char* g_clef_c = xml->getAttributeValue("g_clef");
-        if( g_clef_c != NULL )
+        if ( g_clef_c != NULL )
         {
-            if(!strcmp(g_clef_c, "true")) scoreEditor->enableGClef(true);
-            else if(!strcmp(g_clef_c, "false")) scoreEditor->enableGClef(false);
+            if (!strcmp(g_clef_c, "true")) scoreEditor->enableGClef(true);
+            else if (!strcmp(g_clef_c, "false")) scoreEditor->enableGClef(false);
             else
             {
                 std::cout << "Unknown keyword for attribute 'g_clef' in track: " << g_clef_c << std::endl;
@@ -1202,10 +1202,10 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
 
         }
         const char* f_clef_c = xml->getAttributeValue("f_clef");
-        if( f_clef_c != NULL )
+        if ( f_clef_c != NULL )
         {
-            if(!strcmp(f_clef_c, "true")) scoreEditor->enableFClef(true);
-            else if(!strcmp(f_clef_c, "false")) scoreEditor->enableFClef(false);
+            if (!strcmp(f_clef_c, "true")) scoreEditor->enableFClef(true);
+            else if (!strcmp(f_clef_c, "false")) scoreEditor->enableFClef(false);
             else
             {
                 std::cout << "Unknown keyword for attribute 'f_clef' in track: " << f_clef_c << std::endl;
@@ -1213,17 +1213,17 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
 
         }
         const char* octave_shift_c = xml->getAttributeValue("octave_shift");
-        if( octave_shift_c != NULL )
+        if ( octave_shift_c != NULL )
         {
             int new_value = atoi( octave_shift_c );
-            if(new_value != 0) scoreEditor->getScoreMidiConverter()->setOctaveShift(new_value);
+            if (new_value != 0) scoreEditor->getScoreMidiConverter()->setOctaveShift(new_value);
         }
 
     }
     else if (!strcmp("magneticgrid", xml->getNodeName()))
     {
 
-        if(! grid->readFromFile(xml) )
+        if (! grid->readFromFile(xml) )
             return false;
 
     }
@@ -1234,15 +1234,15 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
         char* sharps_c = (char*)xml->getAttributeValue("sharps");
 
         int sharps = 0, flats = 0;
-        if(flats_c == NULL and sharps_c == NULL);
+        if (flats_c == NULL and sharps_c == NULL);
         else
         {
-            if(flats_c != NULL) flats = atoi(flats_c);
-            if(sharps_c != NULL) sharps = atoi(sharps_c);
+            if (flats_c != NULL) flats = atoi(flats_c);
+            if (sharps_c != NULL) sharps = atoi(sharps_c);
 
             //std::cout << "sharps = " << sharps << " flats = " << flats << std::endl;
 
-            if(sharps > flats)
+            if (sharps > flats)
             {
                 scoreEditor->loadKey(SHARP, sharps);
                 keyboardEditor->loadKey(SHARP, sharps);
@@ -1272,7 +1272,7 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
             string_v = (char*)xml->getAttributeValue( tmp.mb_str() );
         }
 
-        if(guitarEditor->tuning.size() < 3)
+        if (guitarEditor->tuning.size() < 3)
         {
             std::cout << "FATAL ERROR: Invalid tuning!! only " << guitarEditor->tuning.size() << " strings found" << std::endl;
             return false;

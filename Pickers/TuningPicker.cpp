@@ -37,13 +37,13 @@ namespace AriaMaestosa {
 {
         int note=(10-octave)*12;
 
-        if(noteLetter=='B') note+=0;
-        else if(noteLetter=='A') note+=2;
-        else if(noteLetter=='G') note+=4;
-        else if(noteLetter=='F') note+=6;
-        else if(noteLetter=='E') note+=7;
-        else if(noteLetter=='D') note+=9;
-        else if(noteLetter=='C') note+=11;
+        if (noteLetter=='B') note+=0;
+        else if (noteLetter=='A') note+=2;
+        else if (noteLetter=='G') note+=4;
+        else if (noteLetter=='F') note+=6;
+        else if (noteLetter=='E') note+=7;
+        else if (noteLetter=='D') note+=9;
+        else if (noteLetter=='C') note+=11;
         else{
             wxBell();
             //wxMessageBox( wxString("Invalid note: ") + wxString(noteLetter));
@@ -51,9 +51,9 @@ namespace AriaMaestosa {
             return 0;
         }
 
-        if(flatSharpSign==' ');
-        else if(flatSharpSign=='#') note-=1;
-        else if(flatSharpSign=='b') note+=1;
+        if (flatSharpSign==' ');
+        else if (flatSharpSign=='#') note-=1;
+        else if (flatSharpSign=='b') note+=1;
         else{
             wxBell();
             //wxMessageBox( wxString("Error (expected #, b or nothing at all) : ") + wxString(flatSharpSign));
@@ -83,7 +83,7 @@ public:
     {
 
         // enter default value
-        if(value!=-1)
+        if (value!=-1)
         {
 
             const int octave=10 - (value/12);
@@ -251,7 +251,8 @@ public:
         buttonsizer->Add(cancel_btn, 0, wxALL, 5);
 
         buttonPane->SetSizer(buttonsizer);
-
+        parent = NULL;
+        
         SetAutoLayout(true);
         SetSizer(sizer);
         sizer->Layout();
@@ -265,12 +266,13 @@ public:
 
     void show()
     {
-
+        assert(parent != NULL);
+        
         // enter default values
         for(int n=0; n<10; n++)
         {
             int value = -1;
-            if(n<(int)parent->tuning.size()) value = parent->tuning[n];
+            if (n<(int)parent->tuning.size()) value = parent->tuning[n];
 
             strings[n]->enterDefaultValue(value);
         }
@@ -294,7 +296,7 @@ public:
         // set new tuning
         for(int n=0; n<10; n++)
         {
-            if( strings[n]->active->IsChecked() )
+            if ( strings[n]->active->IsChecked() )
             {
                 wxString note = strings[n]->note_choice->GetStringSelection();
                 wxString sign = strings[n]->sign_choice->GetStringSelection();

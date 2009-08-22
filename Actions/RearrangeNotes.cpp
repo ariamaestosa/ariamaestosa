@@ -53,7 +53,7 @@ void RearrangeNotes::perform()
         candidates.push_back(n);
 
         // found 2 consecutive notes with same tick - check if there are more
-        if(n<noteAmount-1 and track->getNoteStartInPixels(n+1)==x1)
+        if (n<noteAmount-1 and track->getNoteStartInPixels(n+1)==x1)
         {
             n++;
             while(n<noteAmount and track->getNoteStartInPixels(n)==x1)
@@ -64,7 +64,7 @@ void RearrangeNotes::perform()
             n--;
         }
 
-        if(candidates.size()>1)
+        if (candidates.size()>1)
         { // we found many notes with the same tick
 
             const int size = candidates.size();
@@ -73,9 +73,9 @@ void RearrangeNotes::perform()
             bool selected = false;
             for(int i=0; i<size; i++)
             {
-                if(track->isNoteSelected( candidates[i] )) selected=true;
+                if (track->isNoteSelected( candidates[i] )) selected=true;
             }
-            if(!selected) continue;
+            if (!selected) continue;
 
             // check if more than one are on the same string (if they overlap)
             bool need_to_reorder=false;
@@ -85,9 +85,9 @@ void RearrangeNotes::perform()
                 for(int b=0; b<size; b++)
                 {
 
-                    if(a != b) continue;
+                    if (a != b) continue;
 
-                    if(track->getNoteString(candidates[a])==track->getNoteString(candidates[b]) /*overlapping notes*/
+                    if (track->getNoteString(candidates[a])==track->getNoteString(candidates[b]) /*overlapping notes*/
                         or  /*split powerchord*/
                         (abs(track->getNotePitchID(candidates[b])-track->getNotePitchID(candidates[b]))==7
                          and abs(track->getNoteString(candidates[a])-track->getNoteString(candidates[b]))>1)
@@ -101,14 +101,14 @@ void RearrangeNotes::perform()
                 }//next
             }//next
 
-            if(need_to_reorder)
+            if (need_to_reorder)
             {
 
                 // order in pitch order (lowest to highest)
                 for(int i=0; i<size-1; i++)
                 {
 
-                    if(track->getNotePitchID(candidates[i]) < track->getNotePitchID(candidates[i+1]))
+                    if (track->getNotePitchID(candidates[i]) < track->getNotePitchID(candidates[i+1]))
                     {
 
                         int tmp = candidates[i+1];
@@ -125,7 +125,7 @@ void RearrangeNotes::perform()
                 // shift first note down if possible (if necessary)
                 const int fstr = track->getNoteString(candidates[0])-(size-1); // calculate where highest note would end up this way
 
-                if( fstr < 0)
+                if ( fstr < 0)
                 { // if highest note wouldn't fit in available space, shift down all notes as many times as needed
                     for(int n=0; n<abs(fstr); n++)
                     {

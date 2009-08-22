@@ -53,7 +53,7 @@ Drawable::Drawable(Image* image_arg)
 
     delete_image = false;
 
-    if(image_arg!=NULL) setImage(image_arg);
+    if (image_arg!=NULL) setImage(image_arg);
     else image=NULL;
 }
 
@@ -78,7 +78,7 @@ Drawable::Drawable(wxString imagePath)
 
 Drawable::~Drawable()
 {
-    if(delete_image) delete image;
+    if (delete_image) delete image;
 }
 
 void Drawable::setFlip(bool x, bool y)
@@ -123,25 +123,25 @@ void Drawable::rotate(int angle)
 
 void Drawable::render()
 {
-    if(xflip or yflip or xscale != 1 or yscale != 1 or angle!=0)
+    if (xflip or yflip or xscale != 1 or yscale != 1 or angle!=0)
     {
         int hotspotX_mod = hotspotX;
         int hotspotY_mod = hotspotY;
 
         wxImage modimage = image->getBitmapForState(g_state)->ConvertToImage();
 
-        if(xflip) modimage = modimage.Mirror();
-        if(yflip) modimage = modimage.Mirror(false);
+        if (xflip) modimage = modimage.Mirror();
+        if (yflip) modimage = modimage.Mirror(false);
 
-        if(angle == 90)
+        if (angle == 90)
         {
             modimage = modimage.Rotate90();
-            if(!xflip) hotspotX_mod = hotspotX + image->width;
+            if (!xflip) hotspotX_mod = hotspotX + image->width;
             else hotspotX_mod = hotspotX - image->width;
             //hotspotY_mod = hotspotY - image->height;
         }
 
-        if(xscale != 1 or yscale != 1)
+        if (xscale != 1 or yscale != 1)
             modimage.Rescale( (int)(image->width * xscale),
                               (int)(image->height * yscale) );
 

@@ -15,8 +15,8 @@ class AbstractLeakCheck;
 class MyObject
 {
 public:
-    std::string file;
-    int line;
+    //std::string file;
+    //int line;
     AbstractLeakCheck* obj;
     
     MyObject(AbstractLeakCheck* obj);

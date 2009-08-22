@@ -48,7 +48,7 @@ void SetAccidentalSign::perform()
     const int noteAmount=track->getNoteAmount();
     for(int n=0; n<noteAmount; n++)
     {
-        if(!track->isNoteSelected(n)) continue;
+        if (!track->isNoteSelected(n)) continue;
 
         original_signs.push_back( track->notes[n].preferred_accidental_sign );
         pitch.push_back(  track->notes[n].pitchID );
@@ -56,7 +56,7 @@ void SetAccidentalSign::perform()
         track->graphics->scoreEditor->setNoteSign(sign, n);
         relocator.rememberNote( track->notes[n] );
 
-        if(!played)
+        if (!played)
         {
             track->notes[n].play(true);
             played = true;

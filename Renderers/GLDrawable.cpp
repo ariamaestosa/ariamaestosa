@@ -49,7 +49,7 @@ Drawable::Drawable(Image* image_arg)
 
     delete_image = false;
 
-    if(image_arg!=NULL) setImage(image_arg);
+    if (image_arg!=NULL) setImage(image_arg);
     else image=NULL;
 }
 
@@ -74,7 +74,7 @@ Drawable::Drawable(wxString imagePath)
 
 Drawable::~Drawable()
 {
-    if(delete_image) delete image;
+    if (delete_image) delete image;
 }
 
 void Drawable::setFlip(bool x, bool y)
@@ -125,13 +125,13 @@ void Drawable::render()
 
     glTranslatef(x*10.0, y*10.0, 0);
 
-    if(xscale!=1 || yscale!=1)
+    if (xscale!=1 || yscale!=1)
     {
         glScalef(xscale, yscale, 1);
     }
 
      // unused
-    if(angle!=0)
+    if (angle!=0)
     {
         glRotatef(angle, 0,0,1);
     }
@@ -139,7 +139,7 @@ void Drawable::render()
     bool do_yflip = yflip;
     // hack, textureHeight made smaller than zero when image was power of two.
     // in these cases, the image will be upside down so we need to flip it
-    if(image->textureHeight < 0) do_yflip = !yflip;
+    if (image->textureHeight < 0) do_yflip = !yflip;
 
     glBindTexture(GL_TEXTURE_2D, image->getID()[0] );
 

@@ -63,7 +63,7 @@ public:
 
         // gauge
         progress = new wxGauge( this, wxID_ANY, 100/*, wxDefaultPosition, wxSize(200, 15)*/ );
-        if(progress_known) progress->SetValue(0);
+        if (progress_known) progress->SetValue(0);
         else
         {
             pulseNotifier.start();
@@ -105,7 +105,7 @@ public:
 
     void hide()
     {
-        if(progress_known) pulseNotifier.Stop();
+        if (progress_known) pulseNotifier.Stop();
         wxDialog::Hide();
     }
 
@@ -141,7 +141,7 @@ PulseNotifier::PulseNotifier() : wxTimer()
 
 void PulseNotifier::Notify()
 {
-    if(WaitWindow::waitWindow != NULL) WaitWindow::waitWindow->pulse();
+    if (WaitWindow::waitWindow != NULL) WaitWindow::waitWindow->pulse();
 }
 
 void PulseNotifier::start()

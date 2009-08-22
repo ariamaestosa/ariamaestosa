@@ -41,13 +41,13 @@ bool MeasureToExport::findConsecutiveRepetition(ptr_vector<MeasureToExport>& mea
 {
     
     // check if it works with first measure occurence of similar measures
-    if(id+1<measureAmount and measures[id+1].firstSimilarMeasure == measures[id].firstSimilarMeasure+1 )
+    if (id+1<measureAmount and measures[id+1].firstSimilarMeasure == measures[id].firstSimilarMeasure+1 )
     {
         int amount = 0;
         
         for(int iter=1; iter<measureAmount; iter++)
         {
-            if(id+iter<measureAmount and measures[id+iter].firstSimilarMeasure == measures[id].firstSimilarMeasure+iter )
+            if (id+iter<measureAmount and measures[id+iter].firstSimilarMeasure == measures[id].firstSimilarMeasure+iter )
             {
                 amount++;
             }
@@ -71,7 +71,7 @@ bool MeasureToExport::findConsecutiveRepetition(ptr_vector<MeasureToExport>& mea
         {
             const int checkFromMeasure = measures[ first_measure ].similarMeasuresFoundLater[laterOccurence];
             //std::cout << "        < lvl 2, testing measure " << checkFromMeasure << std::endl;
-            //if(checkFromMeasure+1<id and measures[checkFromMeasure+1].firstSimilarMeasure ==
+            //if (checkFromMeasure+1<id and measures[checkFromMeasure+1].firstSimilarMeasure ==
             //   measures[checkFromMeasure].firstSimilarMeasure+1 )
             //{
             int amount = 0;
@@ -80,12 +80,12 @@ bool MeasureToExport::findConsecutiveRepetition(ptr_vector<MeasureToExport>& mea
             
             for(int iter=0; iter</*id-checkFromMeasure*/measureAmount; iter++)
             {
-                if(not(checkFromMeasure+iter<id and
+                if (not(checkFromMeasure+iter<id and
                        checkFromMeasure+iter<measureAmount and id+iter<measureAmount)) continue;
                 
                 // check if they are identical
                 
-                if( // they are identical because they both are repetitions of the same one
+                if ( // they are identical because they both are repetitions of the same one
                    (measures[checkFromMeasure+iter].firstSimilarMeasure == measures[id+iter].firstSimilarMeasure and
                     measures[checkFromMeasure+iter].firstSimilarMeasure != -1)
                    or
@@ -103,7 +103,7 @@ bool MeasureToExport::findConsecutiveRepetition(ptr_vector<MeasureToExport>& mea
                 }
             }//next
             //std::cout << "        > amount=" << amount << std::endl;
-            if(amount<repetitionMinimalLength) continue;
+            if (amount<repetitionMinimalLength) continue;
             //std::cout << "measure " << id+1  << " is a level 2 repetition" << std::endl;
             firstMeasureThatRepeats = id;
             lastMeasureThatRepeats = id + amount-1;
@@ -177,7 +177,7 @@ void PrintLayoutManager::findSimilarMeasures()
             const bool isSameAs = measures[measure].calculateIfMeasureIsSameAs(measures[checkMeasure]);
             //std::cout << "measure " << (measure+1) << " is same as " << (checkMeasure+1) << " ? " << isSameAs << std::endl;
             
-            if(!isSameAs) continue;
+            if (!isSameAs) continue;
             measures[measure].firstSimilarMeasure = checkMeasure;
             measures[checkMeasure].similarMeasuresFoundLater.push_back(measure);
             break;
@@ -200,9 +200,8 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
 #ifdef _verbose
         std::cout << "Generating layout element for measure " << (measure+1) << std::endl;
 #endif
-        int firstMeasureThatRepeats, lastMeasureThatRepeats, firstRepeatedMeasure, lastRepeatedMeasure; // used when finding repetitions
 
-        if(getMeasureData()->getTimeSigDenominator(measure) != previous_denom ||
+        if (getMeasureData()->getTimeSigDenominator(measure) != previous_denom ||
            getMeasureData()->getTimeSigNumerator(measure) != previous_num)
         {
             // add time signature element
@@ -217,7 +216,7 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
         }
 
         // ----- empty measure -----
-        if(measures[measure].shortestDuration==-1)
+        if (measures[measure].shortestDuration==-1)
         {
 #ifdef _verbose
             std::cout << "    measure " << (measure+1) << " is empty\n";
@@ -235,7 +234,7 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
                 const int noteAmount = track->getNoteAmount();
                 for(int n=0; n<noteAmount; n++)
                 {
-                    if(track->getNoteStartInMidiTicks(n) < measures[measure].firstTick and
+                    if (track->getNoteStartInMidiTicks(n) < measures[measure].firstTick and
                        track->getNoteEndInMidiTicks(n)  > measures[measure].firstTick)
                     {
                         layoutElements[layoutElements.size()-1].width_in_units = 5;
@@ -246,24 +245,26 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
             }// next track ref
         }// end if empty measure
         // repetition
-        else if(checkRepetitions_bool and measures[measure].firstSimilarMeasure!=-1)
+        else if (checkRepetitions_bool and measures[measure].firstSimilarMeasure!=-1)
         {
 
-            if(getRepetitionMinimalLength()<2)
+            if (getRepetitionMinimalLength()<2)
             {
                 LayoutElement element(SINGLE_REPEATED_MEASURE, measure);
                 layoutElements.push_back( element );
                 continue;
             }
 
+            int firstMeasureThatRepeats, lastMeasureThatRepeats, firstRepeatedMeasure, lastRepeatedMeasure; // used when finding repetitions
+
             // -------- play same measure multiple times --------
             // check if next measure is the same as current measure
-            if(measure+1<measureAmount and measures[measure+1].firstSimilarMeasure == measures[measure].firstSimilarMeasure )
+            if (measure+1<measureAmount and measures[measure+1].firstSimilarMeasure == measures[measure].firstSimilarMeasure )
             {
                 int amountOfTimes = 1;
                 for(int iter=1; iter<measureAmount; iter++)
                 {
-                    if(measure+iter<measureAmount and measures[measure+iter].firstSimilarMeasure == measures[measure].firstSimilarMeasure )
+                    if (measure+iter<measureAmount and measures[measure+iter].firstSimilarMeasure == measures[measure].firstSimilarMeasure )
                     {
                         amountOfTimes++;
                     }
@@ -273,7 +274,7 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
                     }
                 }//next
 
-                if(amountOfTimes < getRepetitionMinimalLength())
+                if (amountOfTimes < getRepetitionMinimalLength())
                 {
 #ifdef _verbose
                     std::cout << "    play many times refused, measures " << (measure+1) << " to " << (measure+amountOfTimes+1) << " are normal" << std::endl;
@@ -289,7 +290,7 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
                 else
                 {
                     // check if we need to display the repetition first before adding play many times
-                    if(measures[measure].firstSimilarMeasure != -1 and measures[measure].firstSimilarMeasure != measure-1)
+                    if (measures[measure].firstSimilarMeasure != -1 and measures[measure].firstSimilarMeasure != measure-1)
                         // we don't need to if measure was not a repeptition, in which case it is already there
                         // we need neither if it is the measure just before
                     {
@@ -306,7 +307,7 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
                     LayoutElement element(PLAY_MANY_TIMES);
                     element.amountOfTimes = amountOfTimes;
                     measures[measure].cutApart = true;
-                    if(measures[measure].firstSimilarMeasure == measure-1) measure = measure + amountOfTimes-2;
+                    if (measures[measure].firstSimilarMeasure == measure-1) measure = measure + amountOfTimes-2;
                     else measure = measure + amountOfTimes-1;
                     layoutElements.push_back( element );
                 }
@@ -315,12 +316,12 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
 
             // ------- repeat a riff --------
             // check if next measure is a reptition, and check this repetition is the next one compared to the current repeated measure
-            else if( measures[measure].findConsecutiveRepetition(measures, measureAmount, firstMeasureThatRepeats, lastMeasureThatRepeats,
+            else if ( measures[measure].findConsecutiveRepetition(measures, measureAmount, firstMeasureThatRepeats, lastMeasureThatRepeats,
                                                                  firstRepeatedMeasure, lastRepeatedMeasure) )
             {
 
                 const int amount = lastMeasureThatRepeats - firstMeasureThatRepeats;
-                if(amount+1 >= getRepetitionMinimalLength())
+                if (amount+1 >= getRepetitionMinimalLength())
                 {
 #ifdef _verbose
                     std::cout << "    repetition from " << (firstMeasureThatRepeats+1) << " to " <<
@@ -410,13 +411,13 @@ void PrintLayoutManager::placeTracksInPage(LayoutPage& page, const int text_heig
         }
         
         // shrink total height when track is way too large (if page contains only a few tracks)
-        if(height > pageHeight/5 && height > used_height*1.3) height = used_height*1.3;  
+        if (height > pageHeight/5 && height > used_height*1.3) height = used_height*1.3;  
 
         
         float used_y_from = y_from;
         
         // center vertically in available space  if more space than needed
-        if(used_height < height) used_y_from += (height - used_height)/2;
+        if (used_height < height) used_y_from += (height - used_height)/2;
         
         //std::cout << "```` used_y_from=" << used_y_from << std::endl;
 
@@ -450,11 +451,11 @@ void PrintLayoutManager::calculateRelativeLengths()
         float zoom = 1;
         //layoutElements[n].zoom = 1;
 
-        //if(layoutElements[n].getType() == EMPTY_MEASURE) continue; // was already calculated
+        //if (layoutElements[n].getType() == EMPTY_MEASURE) continue; // was already calculated
 
         layoutElements[n].width_in_units = 2;
 
-        if(layoutElements[n].getType() == SINGLE_MEASURE || layoutElements[n].getType() == EMPTY_MEASURE)
+        if (layoutElements[n].getType() == SINGLE_MEASURE || layoutElements[n].getType() == EMPTY_MEASURE)
         {
             // ---- for non-linear printing mode
             
@@ -493,7 +494,7 @@ void PrintLayoutManager::calculateRelativeLengths()
                 changed = false;
                 for(int i=0; i<all_ticks_amount-1; i++)
                 {
-                    if(all_ticks_vector[i] > all_ticks_vector[i+1])
+                    if (all_ticks_vector[i] > all_ticks_vector[i+1])
                     {
                         int tmp = all_ticks_vector[i];
                         all_ticks_vector[i] = all_ticks_vector[i+1];
@@ -530,7 +531,7 @@ void PrintLayoutManager::calculateRelativeLengths()
             layoutElements[n].width_in_units = all_ticks_amount;
             std::cout << "Layout element " << n << " is " << layoutElements[n].width_in_units << " unit(s) wide" << std::endl;
         }
-        else if(layoutElements[n].getType() == REPEATED_RIFF)
+        else if (layoutElements[n].getType() == REPEATED_RIFF)
         {
             layoutElements[n].width_in_units = 5;
         }
@@ -563,7 +564,7 @@ void PrintLayoutManager::layInLinesAndPages()
     
     int header_width = 2;
     
-    if(getCurrentPrintable()->is_score_editor_used)
+    if (getCurrentPrintable()->is_score_editor_used)
     {
         // FIXME : this needs to be in pixels/print units, not my note-relative units.
         header_width = (int)round(3.0 + getCurrentPrintable()->max_signs_in_keysig*4.0/7.0); // 4/7 is an empirical ratio
@@ -577,7 +578,7 @@ void PrintLayoutManager::layInLinesAndPages()
     // elements on the current one
     for(int n=0; n<layoutElementsAmount; n++)
     {
-        if(current_width + layoutElements[n].width_in_units > max_line_width_in_units)
+        if (current_width + layoutElements[n].width_in_units > max_line_width_in_units)
         {
             // too much stuff on current line, switch to another line
             layoutLines[currentLine].width_in_units = current_width;
@@ -586,7 +587,7 @@ void PrintLayoutManager::layInLinesAndPages()
             current_height += line_height;
 
             // too much lines on current page, switch to a new page
-            if(current_height > MAX_LEVELS_ON_PAGE)
+            if (current_height > MAX_LEVELS_ON_PAGE)
             {
                 layoutPages[current_page].last_line = currentLine;
                 current_height = line_height;
@@ -633,11 +634,11 @@ void PrintLayoutManager::divideLineAmongTracks(LayoutLine& line, const int x0, c
     // ---- empty space around whole line
     const float height = (float)(y1 - y0);// - ( trackAmount>1 and not last_of_page ? 100 : 0 );
     
-    if(height < 0.0001) return; // empty line. TODO : todo - draw empty bars to show there's something?
+    if (height < 0.0001) return; // empty line. TODO : todo - draw empty bars to show there's something?
     
     // make sure margins are within acceptable bounds
-    if(margin_below > height/2) margin_below = height/5;
-    if(margin_above > height/2) margin_above = height/5;
+    if (margin_below > height/2) margin_below = height/5;
+    if (margin_above > height/2) margin_above = height/5;
     
     
     const int my0 = y0 + margin_above;
@@ -647,7 +648,7 @@ void PrintLayoutManager::divideLineAmongTracks(LayoutLine& line, const int x0, c
     int nonEmptyTrackAmount = 0; // empty tracks must not be counted
     for(int n=0; n<trackAmount; n++)
     {        
-        if(line.height_percent[n] > 0) nonEmptyTrackAmount++;
+        if (line.height_percent[n] > 0) nonEmptyTrackAmount++;
     }
     
     // FIXME : this is layout, should go in PrintLayout.cpp ?
@@ -661,7 +662,7 @@ void PrintLayoutManager::divideLineAmongTracks(LayoutLine& line, const int x0, c
         EditorPrintable* editorPrintable = parent->editorPrintables.get(n);
         
         // skip empty tracks
-        if(line.height_percent[n] == 0) continue;
+        if (line.height_percent[n] == 0) continue;
         
         // determine how much vertical space is allocated for this track
         const float track_height = (height - margin_below - margin_above) * line.height_percent[n]/100.0f;
@@ -705,7 +706,7 @@ void PrintLayoutManager::calculateLayoutElements
     generateMeasures(tracks);
 
     // search for repeated measures if necessary
-    if(checkRepetitions_bool) findSimilarMeasures();
+    if (checkRepetitions_bool) findSimilarMeasures();
     
     const int trackAmount = tracks.size();
     for(int i=0; i<trackAmount; i++)

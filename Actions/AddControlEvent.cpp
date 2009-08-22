@@ -31,17 +31,17 @@ namespace AriaMaestosa
 
         const int type = track->graphics->controllerEditor->getCurrentControllerType();
 
-        if(type != 201 /*tempo*/)
+        if (type != 201 /*tempo*/)
         {
             const int controlEventsAmount = track->controlEvents.size();
             for(int n=0; n<controlEventsAmount; n++)
             {
 
-                if(track->controlEvents[n].getTick() == x and
+                if (track->controlEvents[n].getTick() == x and
                    track->controlEvents[n].getController() == controller)
                 {
                     // if event was added where there was no event before
-                    if(removedEventValue == -1)
+                    if (removedEventValue == -1)
                     {
                         track->controlEvents.erase(n);
                         break;
@@ -60,11 +60,11 @@ namespace AriaMaestosa
             for(int n=0; n<tempoEventsAmount; n++)
             {
 
-                if(track->sequence->tempoEvents[n].getTick() == x and
+                if (track->sequence->tempoEvents[n].getTick() == x and
                    track->sequence->tempoEvents[n].getController() == controller)
                 {
                     // if event was added where there was no event before
-                    if(removedEventValue == -1)
+                    if (removedEventValue == -1)
                     {
                         track->sequence->tempoEvents.erase(n);
                         break;

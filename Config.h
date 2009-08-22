@@ -31,8 +31,8 @@
 #include "IO/IOUtils.h"
 
 #undef assert
-#define assert(expr) if(! (expr)){assertFailed( wxT("Assert failed: ") + wxString( #expr , wxConvUTF8 ) + wxT("\n@ ") + extract_filename( fromCString(__FILE__) ) + wxT(": ") + to_wxString(__LINE__));}
-#define assertExpr(v1,sign,v2) if(!((v1) sign (v2))){ std::cout << "assert failed values : " << v1 << #sign << v2 << std::endl; assertFailed( wxT("Assert failed: ") + wxString( #v1, wxConvUTF8 ) + wxString( #sign , wxConvUTF8 ) + fromCString( #v2 ) + wxT("\n@ ") + extract_filename(fromCString(__FILE__)) + wxT(": ") + to_wxString(__LINE__) ); }
+#define assert(expr) if (! (expr)){assertFailed( wxT("Assert failed: ") + wxString( #expr , wxConvUTF8 ) + wxT("\n@ ") + extract_filename( fromCString(__FILE__) ) + wxT(": ") + to_wxString(__LINE__));}
+#define assertExpr(v1,sign,v2) if (!((v1) sign (v2))){ std::cout << "assert failed values : " << v1 << #sign << v2 << std::endl; assertFailed( wxT("Assert failed: ") + wxString( #v1, wxConvUTF8 ) + wxString( #sign , wxConvUTF8 ) + fromCString( #v2 ) + wxT("\n@ ") + extract_filename(fromCString(__FILE__)) + wxT(": ") + to_wxString(__LINE__) ); }
 
 #else
 
@@ -75,8 +75,7 @@ public:
     
     OwnerPtr& operator=(T* ptr)
     {
-        if(raw_ptr != NULL) delete raw_ptr;
-        
+        delete raw_ptr;
         raw_ptr = ptr;
         return *this;
     }
@@ -114,7 +113,7 @@ public:
     
     WxOwnerPtr& operator=(T* ptr)
     {
-        if(raw_ptr != NULL) raw_ptr->Destroy();
+        if (raw_ptr != NULL) raw_ptr->Destroy();
         
         raw_ptr = ptr;
         return *this;

@@ -67,7 +67,7 @@ namespace AriaMaestosa
             
             drawVerticalDivider(currentElement, renderInfo.y0, renderInfo.y1);
             
-            if(currentElement->getType() == LINE_HEADER)
+            if (currentElement->getType() == LINE_HEADER)
             {
                 std::cout << "Tablature : it's a header\n";
                 
@@ -112,7 +112,7 @@ namespace AriaMaestosa
                 
                 continue;
             }
-            if(currentElement->getType() == TIME_SIGNATURE)
+            if (currentElement->getType() == TIME_SIGNATURE)
             {
                 std::cout << "Tablature : it's a time sig\n";
                 
@@ -120,13 +120,13 @@ namespace AriaMaestosa
                 continue;
             }
             
-            if(currentElement->getType() != SINGLE_MEASURE)
+            if (currentElement->getType() != SINGLE_MEASURE)
             {
                 std::cout << "Tablature : it's something else we won't draw : ";
-                if(currentElement->getType() == SINGLE_REPEATED_MEASURE) std::cout << "SINGLE_REPEATED_MEASURE\n";
-                if(currentElement->getType() == EMPTY_MEASURE) std::cout << "EMPTY_MEASURE\n";
-                if(currentElement->getType() == REPEATED_RIFF) std::cout << "REPEATED_RIFF\n";
-                if(currentElement->getType() == PLAY_MANY_TIMES) std::cout << "PLAY_MANY_TIMES\n";
+                if (currentElement->getType() == SINGLE_REPEATED_MEASURE) std::cout << "SINGLE_REPEATED_MEASURE\n";
+                if (currentElement->getType() == EMPTY_MEASURE) std::cout << "EMPTY_MEASURE\n";
+                if (currentElement->getType() == REPEATED_RIFF) std::cout << "REPEATED_RIFF\n";
+                if (currentElement->getType() == PLAY_MANY_TIMES) std::cout << "PLAY_MANY_TIMES\n";
                 continue;
             }
             
@@ -134,7 +134,7 @@ namespace AriaMaestosa
             const int firstNote = line.getFirstNoteInElement(trackID, currentElement);
             const int lastNote = line.getLastNoteInElement(trackID, currentElement);
             
-            if(firstNote == -1 || lastNote == -1)
+            if (firstNote == -1 || lastNote == -1)
             {
                 std::cout << "Tablature : it's an empty measure\n";
                 continue; // empty measure
@@ -150,7 +150,7 @@ namespace AriaMaestosa
                 const int string = renderInfo.track->getNoteString(i);
                 const int fret = renderInfo.track->getNoteFret(i);
                 
-                if(fret < 0)  dc.SetTextForeground( wxColour(255,0,0) );
+                if (fret < 0)  dc.SetTextForeground( wxColour(255,0,0) );
                 
                 // substract from width to leave some space on the right (coordinate is from the left of the text string so we need extra space on the right)
                 // if fret number is greater than 9, the string will have two characters so we need to recenter it a bit more
@@ -160,7 +160,7 @@ namespace AriaMaestosa
                 
                 dc.DrawText( label, drawX, drawY );
                 
-                if(fret < 0)  dc.SetTextForeground( wxColour(0,0,0) );
+                if (fret < 0)  dc.SetTextForeground( wxColour(0,0,0) );
             }
             
             dc.SetFont(oldfont);
@@ -185,7 +185,7 @@ namespace AriaMaestosa
         
         Track* track = trackRef.track;
         
-        if(first_note == -1 or last_note == -1) return; // empty measure
+        if (first_note == -1 or last_note == -1) return; // empty measure
         
         // find shortest note
         int shortest = -1;
@@ -218,7 +218,7 @@ namespace AriaMaestosa
         const int to_note   = lineTrack.getLastNote();
         
         // check if empty
-        if(from_note == -1 || to_note == -1)
+        if (from_note == -1 || to_note == -1)
             return 0;
 
         return string_amount;

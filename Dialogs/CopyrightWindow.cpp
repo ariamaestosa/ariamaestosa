@@ -89,7 +89,7 @@ public:
         for(int n=0; n<track_amount; n++)
         {
             const int duration = seq->getTrack(n)->getDuration();
-            if(duration > last_tick) last_tick = duration;
+            if (duration > last_tick) last_tick = duration;
         }
         
         std::vector<int> tempos;
@@ -97,7 +97,7 @@ public:
         
         const int tempo_events_amount = seq->tempoEvents.size();
         //std::cout << "tempo_events_amount = " << tempo_events_amount << std::endl;
-        if(tempo_events_amount < 1 or (tempo_events_amount==1 and seq->tempoEvents[0].getTick()==0) )
+        if (tempo_events_amount < 1 or (tempo_events_amount==1 and seq->tempoEvents[0].getTick()==0) )
         {
             tempos.push_back(seq->getTempo());
             duration.push_back(last_tick);

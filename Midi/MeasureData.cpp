@@ -74,7 +74,7 @@ MeasureData::~MeasureData()
 void MeasureData::setExpandedMode(bool arg_expanded)
 {
     //when turning it off, ask for a confirmation because all events will be lost
-    if(this->expandedMode and not arg_expanded)
+    if (this->expandedMode and not arg_expanded)
     {
         const int answer = wxMessageBox(_("Are you sure you want to go back to having a single time signature? Any time sig events you may have added will be lost. This cannot be undone."),
                                         _("Confirm"), wxYES_NO);
@@ -134,13 +134,13 @@ bool MeasureData::isMeasureLengthConstant()
 
 float MeasureData::measureLengthInPixels(int measure)
 {
-    if(measure==-1) measure=0; // no parameter passed, use measure 0 settings
+    if (measure==-1) measure=0; // no parameter passed, use measure 0 settings
     return (float)measureLengthInTicks(measure) * (float)getCurrentSequence()->getZoom();
 }
 
 int MeasureData::measureLengthInTicks(int measure)
 {
-    if(measure==-1) measure=0; // no parameter passed, use measure 0 settings
+    if (measure==-1) measure=0; // no parameter passed, use measure 0 settings
     Sequence* sequence = getCurrentSequence();
 
     const int num = getTimeSigNumerator(measure), denom=getTimeSigDenominator(measure);
@@ -170,7 +170,7 @@ float MeasureData::defaultMeasureLengthInPixels()
 // FIXME- unsure where that belongs
 void MeasureData::unselect()
 {
-    if(!somethingSelected) return;
+    if (!somethingSelected) return;
     somethingSelected = false;
 
     const int measureAmount = measureInfo.size();
@@ -192,9 +192,9 @@ int MeasureData::measureAtPixel(int pixel)
     const float x1 = 90 - getCurrentSequence()->getXScrollInPixels();
     pixel -= (int)x1;
 
-    if(isMeasureLengthConstant())
+    if (isMeasureLengthConstant())
     {
-        if(pixel < 0) pixel = 0;
+        if (pixel < 0) pixel = 0;
         // length of a measure
         const float xstep = measureLengthInPixels();
 
@@ -203,13 +203,13 @@ int MeasureData::measureAtPixel(int pixel)
     else
     {
 
-        if(pixel < 0) return 0;
+        if (pixel < 0) return 0;
 
         const int amount = measureInfo.size();
         for(int n=0; n<amount; n++)
         {
-            if(n==amount-1) return amount-1; // we hit end, return the last
-            if( measureInfo[n].pixel <= pixel and measureInfo[n+1].pixel > pixel ) return n;
+            if (n==amount-1) return amount-1; // we hit end, return the last
+            if ( measureInfo[n].pixel <= pixel and measureInfo[n+1].pixel > pixel ) return n;
         }
 
         return 0;
@@ -218,7 +218,7 @@ int MeasureData::measureAtPixel(int pixel)
 
 int MeasureData::measureAtTick(int tick)
 {
-    if(isMeasureLengthConstant())
+    if (isMeasureLengthConstant())
     {
         const float step = measureLengthInTicks();
 
@@ -227,13 +227,13 @@ int MeasureData::measureAtTick(int tick)
     }
     else
     {
-        if(tick <0) tick = 0;
+        if (tick <0) tick = 0;
 
         // iterate through measures till we find the one at the given tick
         const int amount = measureInfo.size();
         for(int n=0; n<amount-1; n++)
         {
-            if( measureInfo[n].tick <= tick and measureInfo[n+1].tick > tick ) return n;
+            if ( measureInfo[n].tick <= tick and measureInfo[n+1].tick > tick ) return n;
         }
 
         // didnt find any... current song length is not long enough
@@ -257,7 +257,7 @@ int MeasureData::measureDivisionAt(int pixel)
     const float x1 = 90 - getCurrentSequence()->getXScrollInPixels();
 
 
-    if(isMeasureLengthConstant())
+    if (isMeasureLengthConstant())
     {
         const float xstep = measureLengthInPixels();
 
@@ -270,7 +270,7 @@ int MeasureData::measureDivisionAt(int pixel)
         for(int n=0; n<measureAmount; n++)
         {
             //std::cout << "checking measur " << n << " : is " << pixel << " between " << measureInfo[n].pixel-measureInfo[n].widthInPixels/2 << " and " << measureInfo[n].endPixel-measureInfo[n].widthInPixels/2 << std::endl;
-            if(pixel >= measureInfo[n].pixel-measureInfo[n].widthInPixels/2 and pixel<measureInfo[n].endPixel-measureInfo[n].widthInPixels/2)
+            if (pixel >= measureInfo[n].pixel-measureInfo[n].widthInPixels/2 and pixel<measureInfo[n].endPixel-measureInfo[n].widthInPixels/2)
             {
                 return n;
             }
@@ -285,9 +285,9 @@ int MeasureData::measureAtPixel(int pixel)
     const float x1 = 90 - getCurrentSequence()->getXScrollInPixels();
     pixel -= (int)x1;
 
-    if(isMeasureLengthConstant())
+    if (isMeasureLengthConstant())
     {
-        if(pixel < 0) pixel = 0;
+        if (pixel < 0) pixel = 0;
         // length of a measure
         const float xstep = measureLengthInPixels();
 
@@ -296,13 +296,13 @@ int MeasureData::measureAtPixel(int pixel)
     else
     {
 
-        if(pixel < 0) return 0;
+        if (pixel < 0) return 0;
 
         const int amount = measureInfo.size();
         for(int n=0; n<amount; n++)
         {
-            if(n==amount-1) return amount-1; // we hit end, return the last
-            if( measureInfo[n].pixel <= pixel and measureInfo[n+1].pixel > pixel ) return n;
+            if (n==amount-1) return amount-1; // we hit end, return the last
+            if ( measureInfo[n].pixel <= pixel and measureInfo[n+1].pixel > pixel ) return n;
         }
 
         return 0;
@@ -311,7 +311,7 @@ int MeasureData::measureAtPixel(int pixel)
 */
 int MeasureData::firstPixelInMeasure(int id)
 {
-    if(isMeasureLengthConstant())
+    if (isMeasureLengthConstant())
     {
         return (int)(
                      id * measureLengthInTicks() * getCurrentSequence()->getZoom() -
@@ -327,7 +327,7 @@ int MeasureData::firstPixelInMeasure(int id)
 
 int MeasureData::lastPixelInMeasure(int id)
 {
-    if(isMeasureLengthConstant())
+    if (isMeasureLengthConstant())
     {
         return (int)(
                      (id+1) * measureLengthInTicks() * getCurrentSequence()->getZoom() -
@@ -344,16 +344,16 @@ int MeasureData::lastPixelInMeasure(int id)
 
 int MeasureData::firstTickInMeasure(int id)
 {
-    if(isMeasureLengthConstant())
+    if (isMeasureLengthConstant())
     {
         return id * measureLengthInTicks();
     }
     else
     {
         // allow going a little past 'official' song end
-        if(id >= (int)measureInfo.size())
+        if (id >= (int)measureInfo.size())
         {
-            if(id > (int)measureInfo.size()+50){ assert(false); } // but not too far, to detect corrupt values
+            if (id > (int)measureInfo.size()+50){ assert(false); } // but not too far, to detect corrupt values
             
             return measureInfo[measureInfo.size()-1].endTick;
         }
@@ -364,16 +364,16 @@ int MeasureData::firstTickInMeasure(int id)
 }
 int MeasureData::lastTickInMeasure(int id)
 {
-    if(isMeasureLengthConstant())
+    if (isMeasureLengthConstant())
     {
         return (id+1) * measureLengthInTicks();
     }
     else
     {
         // allow going a little past 'official' song end
-        if(id >= (int)measureInfo.size())
+        if (id >= (int)measureInfo.size())
         {
-            if(id > (int)measureInfo.size()+50){ assert(false); } // but not too far, to detect corrupt values
+            if (id > (int)measureInfo.size()+50){ assert(false); } // but not too far, to detect corrupt values
             
             return measureInfo[measureInfo.size()-1].endTick;
         }
@@ -400,13 +400,13 @@ void MeasureData::selectTimeSig(const int id)
 
 int MeasureData::getTimeSigNumerator(int measure)
 {
-    if(measure != -1)
+    if (measure != -1)
     {
         measure+=1;
         const int timeSigChangeAmount = timeSigChanges.size();
         for(int n=0; n<timeSigChangeAmount; n++)
         {
-            if( timeSigChanges[n].measure >= measure ) return timeSigChanges[n-1].num;
+            if ( timeSigChanges[n].measure >= measure ) return timeSigChanges[n-1].num;
         }
         return timeSigChanges[timeSigChangeAmount-1].num;
     }
@@ -415,14 +415,14 @@ int MeasureData::getTimeSigNumerator(int measure)
 int MeasureData::getTimeSigDenominator(int measure)
 {
 
-    if(measure != -1)
+    if (measure != -1)
     {
         measure+=1;
 
         const int timeSigChangeAmount = timeSigChanges.size();
         for(int n=0; n<timeSigChangeAmount; n++)
         {
-            if( timeSigChanges[n].measure >= measure ) return timeSigChanges[n-1].denom;
+            if ( timeSigChanges[n].measure >= measure ) return timeSigChanges[n-1].denom;
         }
         return timeSigChanges[timeSigChangeAmount-1].denom;
     }
@@ -460,7 +460,7 @@ TimeSigChange& MeasureData::getTimeSig(int id)
 void MeasureData::eraseTimeSig(int id)
 {
     timeSigChanges.erase( id );
-    if(selectedTimeSig == id)
+    if (selectedTimeSig == id)
     {
         selectedTimeSig = 0;
         getMainFrame()->changeShownTimeSig( timeSigChanges[0].num, timeSigChanges[0].denom );
@@ -472,7 +472,7 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
     const int timeSig_amount_minus_one = timeSigChanges.size()-1;
 
     // if there are no events, just add it. otherwise, add in time order.
-    if(timeSigChanges.size() == 0)
+    if (timeSigChanges.size() == 0)
     {
         timeSigChanges.push_back( new TimeSigChange(measure, num, denom) );
     }
@@ -481,11 +481,11 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
 
         for(int n=0; n<(int)timeSigChanges.size(); n++) // iterate through time sig events, until an iteration does something with the event
         {
-            if( timeSigChanges[n].measure == measure)
+            if ( timeSigChanges[n].measure == measure)
             {
                 // a time sig event already exists at this location
                 // if we're not importing, select it
-                if(!getCurrentSequence()->importing)
+                if (!getCurrentSequence()->importing)
                 {
                     selectedTimeSig = n;
                     getMainFrame()->changeShownTimeSig( timeSigChanges[selectedTimeSig].num, timeSigChanges[selectedTimeSig].denom );
@@ -504,9 +504,9 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
             }
             // we checked enough events so that we are past the point where the click occured.
             // we know there is no event already existing at the clicked measure.
-            if( timeSigChanges[n].measure > measure )
+            if ( timeSigChanges[n].measure > measure )
             {
-                if(num==-1 or denom==-1)
+                if (num==-1 or denom==-1)
                     timeSigChanges.add( new TimeSigChange(measure, timeSigChanges[n].num, timeSigChanges[n].denom), n );
                 else
                     timeSigChanges.add( new TimeSigChange(measure, num, denom), n );
@@ -515,19 +515,19 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
 
                 getMainFrame()->changeShownTimeSig( timeSigChanges[n].num, timeSigChanges[n].denom );
 
-                if(!getCurrentSequence()->importing)
+                if (!getCurrentSequence()->importing)
                 {
                     wxPoint pt = wxGetMousePosition();
                     showTimeSigPicker( pt.x, pt.y, timeSigChanges[n].num, timeSigChanges[n].denom );
-                    if(!getCurrentSequence()->importing) updateMeasureInfo();
+                    if (!getCurrentSequence()->importing) updateMeasureInfo();
                 }
                 
                 break;
             }
-            else if( n==timeSig_amount_minus_one )
+            else if ( n==timeSig_amount_minus_one )
             {
 
-                if(num==-1 or denom==-1)
+                if (num==-1 or denom==-1)
                     timeSigChanges.add( new TimeSigChange(measure, timeSigChanges[n].num, timeSigChanges[n].denom), n+1 );
                 else
                     timeSigChanges.add( new TimeSigChange(measure, num, denom), n+1 );
@@ -536,11 +536,11 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
 
                 getMainFrame()->changeShownTimeSig( timeSigChanges[n+1].num, timeSigChanges[n+1].denom );
 
-                if(!getCurrentSequence()->importing)
+                if (!getCurrentSequence()->importing)
                 {
                     wxPoint pt = wxGetMousePosition();
                     showTimeSigPicker( pt.x, pt.y, timeSigChanges[n].num, timeSigChanges[n].denom );
-                    if(!getCurrentSequence()->importing) updateMeasureInfo();
+                    if (!getCurrentSequence()->importing) updateMeasureInfo();
                 }
                 break;
             }
@@ -573,7 +573,7 @@ void MeasureData::updateVector(int newSize)
     while((int)measureInfo.size() < newSize) measureInfo.push_back( MeasureInfo() );
     while((int)measureInfo.size() > newSize) measureInfo.erase( measureInfo.begin()+measureInfo.size()-1 );
 
-    if(!isMeasureLengthConstant() or expandedMode) updateMeasureInfo();
+    if (!isMeasureLengthConstant() or expandedMode) updateMeasureInfo();
 }
 
 /*
@@ -596,7 +596,7 @@ void MeasureData::updateMeasureInfo()
     for(int n=0; n<amount; n++)
     {
         // check if time sig changes on this measure
-        if(timg_sig_event != (int)timeSigChanges.size()-1 and timeSigChanges[timg_sig_event+1].measure == n)
+        if (timg_sig_event != (int)timeSigChanges.size()-1 and timeSigChanges[timg_sig_event+1].measure == n)
         {
             timg_sig_event++;
             timeSigChanges[timg_sig_event].tick = (int)round( tick );
@@ -604,7 +604,7 @@ void MeasureData::updateMeasureInfo()
         }
 
         // set end location of previous measure
-        if(n>0)
+        if (n>0)
         {
             measureInfo[n-1].endTick = (int)round( tick );
             measureInfo[n-1].endPixel = (int)round( tick * zoom );
@@ -660,11 +660,11 @@ void MeasureData::addTimeSigChange_import(int tick, int num, int denom)
 {
     int measure;
 
-    if(tick == 0)
+    if (tick == 0)
     {
         measure = 0;
 
-        if(timeSigChanges.size() == 0)
+        if (timeSigChanges.size() == 0)
         {
             timeSigChanges.push_back( new TimeSigChange(0,4,4) );
             timeSigChanges[0].tick = 0;
@@ -672,7 +672,7 @@ void MeasureData::addTimeSigChange_import(int tick, int num, int denom)
         }
 
         // when an event already exists at the beginning, don't add another one, just modify it
-        if(timeSigChanges[0].tick == 0)
+        if (timeSigChanges[0].tick == 0)
         {
             timeSigChanges[0].num = num;
             timeSigChanges[0].denom = denom;
@@ -708,7 +708,7 @@ void MeasureData::addTimeSigChange_import(int tick, int num, int denom)
 
 void MeasureData::afterImporting()
 {
-    if(timeSigChanges.size()>1)
+    if (timeSigChanges.size()>1)
     {
         expandedMode = true;
     }
@@ -716,7 +716,7 @@ void MeasureData::afterImporting()
     {
         expandedMode = false;
     }
-    if(!isMeasureLengthConstant()) updateMeasureInfo();
+    if (!isMeasureLengthConstant()) updateMeasureInfo();
 }
 
 #if 0
@@ -726,7 +726,7 @@ void MeasureData::afterImporting()
 
 int MeasureData::getTotalTickAmount()
 {
-    if(isMeasureLengthConstant())
+    if (isMeasureLengthConstant())
     {
         return (int)( measureAmount * measureLengthInTicks() );
     }
@@ -738,7 +738,7 @@ int MeasureData::getTotalTickAmount()
 
 int MeasureData::getTotalPixelAmount()
 {
-    if(isMeasureLengthConstant())
+    if (isMeasureLengthConstant())
     {
         return (int)( measureAmount * measureLengthInTicks() * getCurrentSequence()->getZoom() );
     }
@@ -773,23 +773,23 @@ bool MeasureData::readFromFile(irr::io::IrrXMLReader* xml)
     {
 
         const char* firstMeasure_c = xml->getAttributeValue("firstMeasure");
-        if( firstMeasure_c != NULL ) setFirstMeasure( atoi( firstMeasure_c ) );
+        if ( firstMeasure_c != NULL ) setFirstMeasure( atoi( firstMeasure_c ) );
         else
         {
             std::cerr << "Missing info from file: first measure" << std::endl;
             setFirstMeasure( 0 );
         }
 
-        if(getFirstMeasure() < 0)
+        if (getFirstMeasure() < 0)
         {
             std::cerr << "Wrong first measure: " << getFirstMeasure() << std::endl;
             setFirstMeasure( 0 );
         }
 
         const char* denom = xml->getAttributeValue("denom");
-        if( denom != NULL )
+        if ( denom != NULL )
         {
-            if(timeSigChanges.size()==0)
+            if (timeSigChanges.size()==0)
             {
                 timeSigChanges.push_back(new TimeSigChange(0,4,4) ); // add an event if one is not already there
                 timeSigChanges[0].tick = 0;
@@ -797,7 +797,7 @@ bool MeasureData::readFromFile(irr::io::IrrXMLReader* xml)
             }
             timeSigChanges[0].denom = atoi( denom );
 
-            if(timeSigChanges[0].denom < 0 or timeSigChanges[0].denom>64)
+            if (timeSigChanges[0].denom < 0 or timeSigChanges[0].denom>64)
             {
                 std::cerr << "Wrong measureBar->getTimeSigDenominator(): " << timeSigChanges[0].denom << std::endl;
                 timeSigChanges[0].denom = 4;
@@ -805,9 +805,9 @@ bool MeasureData::readFromFile(irr::io::IrrXMLReader* xml)
         }
 
         const char* num = xml->getAttributeValue("num");
-        if( num != NULL )
+        if ( num != NULL )
         {
-            if(timeSigChanges.size()==0)
+            if (timeSigChanges.size()==0)
             {
                 timeSigChanges.push_back(new TimeSigChange(0,4,4)); // add an event if one is not already there
                 timeSigChanges[0].tick = 0;
@@ -815,7 +815,7 @@ bool MeasureData::readFromFile(irr::io::IrrXMLReader* xml)
             }
             timeSigChanges[0].num = atoi( num );
 
-            if(timeSigChanges[0].num < 0 or timeSigChanges[0].num>64)
+            if (timeSigChanges[0].num < 0 or timeSigChanges[0].num>64)
             {
                 std::cerr << "Wrong timeSigChanges[0].num: " << timeSigChanges[0].num << std::endl;
                 timeSigChanges[0].num = 4;
@@ -830,21 +830,21 @@ bool MeasureData::readFromFile(irr::io::IrrXMLReader* xml)
         int num=-1, denom=-1, meas=-1;
 
         const char* num_c = xml->getAttributeValue("num");
-        if( num_c != NULL ) num = atoi( num_c );
+        if ( num_c != NULL ) num = atoi( num_c );
         else
         {
             std::cerr << "Missing info from file: measure numerator" << std::endl;
             return true; // dont halt program but just ignore event
         }
         const char* denom_c = xml->getAttributeValue("denom");
-        if( denom_c != NULL ) denom = atoi( denom_c );
+        if ( denom_c != NULL ) denom = atoi( denom_c );
         else
         {
             std::cerr << "Missing info from file: measure denominator" << std::endl;
             return true;  // dont halt program but just ignore event
         }
         const char* meas_c = xml->getAttributeValue("measure");
-        if( meas_c != NULL ) meas = atoi( meas_c );
+        if ( meas_c != NULL ) meas = atoi( meas_c );
         else
         {
             std::cerr << "Missing info from file: time sig location" << std::endl;
@@ -852,7 +852,7 @@ bool MeasureData::readFromFile(irr::io::IrrXMLReader* xml)
         }
 
         addTimeSigChange(meas, num, denom);
-        if(timeSigChanges.size()>1)
+        if (timeSigChanges.size()>1)
         {
             expandedMode = true;
         }
@@ -867,7 +867,7 @@ void MeasureData::saveToFile(wxFileOutputStream& fileout)
               wxString( wxT(" firstMeasure=\"") ) + to_wxString(getMeasureData()->getFirstMeasure()),
               fileout);
 
-    if(isMeasureLengthConstant())
+    if (isMeasureLengthConstant())
     {
         writeData(wxT("\" denom=\"") + to_wxString(getTimeSigDenominator()) +
                   wxT("\" num=\"") + to_wxString(getTimeSigNumerator()) +

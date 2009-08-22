@@ -54,7 +54,7 @@ void qtkit_setData(char* data_bytes, int bytes_length)
     
     
         
-    if(err != nil)
+    if (err != nil)
 	{
         printf("error:\n-->%s\n-->%s\n",
                [[err localizedDescription] UTF8String],
@@ -74,7 +74,7 @@ void qtkit_play()
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
     
 /*
-    if(movie == nil)
+    if (movie == nil)
 	{
 		printf("Movie is nil!\n");
 		return;
@@ -102,7 +102,7 @@ bool qtkit_exportToAiff(const char* filename)
 	//NSString* nsstring_filepath = [NSString stringWithCString:"/Users/mathieu/Desktop/caut.aiff"];
     NSString* nsstring_filepath = [NSString stringWithCString:filename encoding:NSUTF8StringEncoding ];
     [nsstring_filepath retain];
-	if(nsstring_filepath == nil)
+	if (nsstring_filepath == nil)
 	{
 		printf("path could not be converted to NSString, aborting\n");
 		return false;
@@ -133,7 +133,7 @@ void qtkit_stop()
 float qtkit_getCurrentTime()
 {
     
-    if(!playing)
+    if (!playing)
         return -1;
     
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
@@ -146,7 +146,7 @@ float qtkit_getCurrentTime()
     long hi = timeRec.value.hi;
     long lo = timeRec.value.lo;
     
-    if(hi!=0){
+    if (hi!=0){
         std::cout << "ERROR: too long" << std::endl;   
     }
     

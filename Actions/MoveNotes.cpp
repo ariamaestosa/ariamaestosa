@@ -34,13 +34,13 @@ void MoveNotes::undo()
         int n = 0;
         while( (current_note = relocator.getNextNote()) and current_note != NULL)
         {
-            if( move_mode == SCORE_VERTICAL or move_mode == DRUMS_VERTICAL )
+            if ( move_mode == SCORE_VERTICAL or move_mode == DRUMS_VERTICAL )
             {
                 current_note->pitchID = undo_pitch[n];
                 track->graphics->getCurrentEditor()->moveNote(*current_note, -relativeX, 0);
                 n++;
             }
-            else if( move_mode == GUITAR_VERTICAL )
+            else if ( move_mode == GUITAR_VERTICAL )
             {
                 current_note->fret = undo_fret[n];
                 current_note->string = undo_string[n];
@@ -59,14 +59,14 @@ void MoveNotes::perform()
     assert(track != NULL);
 
     mode = track->graphics->editorMode;
-    if(mode == SCORE and relativeY != 0) move_mode = SCORE_VERTICAL;
-    else if(mode == GUITAR and relativeY != 0) move_mode = GUITAR_VERTICAL;
-    else if(mode == DRUM and relativeY != 0) move_mode = DRUMS_VERTICAL;
+    if (mode == SCORE and relativeY != 0) move_mode = SCORE_VERTICAL;
+    else if (mode == GUITAR and relativeY != 0) move_mode = GUITAR_VERTICAL;
+    else if (mode == DRUM and relativeY != 0) move_mode = DRUMS_VERTICAL;
 
     // perform action
     assert(noteID != ALL_NOTES); // not supported in this function (not needed)
 
-    if(noteID==SELECTED_NOTES)
+    if (noteID==SELECTED_NOTES)
     {
 
         bool played = false;
@@ -74,13 +74,13 @@ void MoveNotes::perform()
         const int noteAmount=track->notes.size();
         for(int n=0; n<noteAmount; n++)
         {
-            if(!track->notes[n].isSelected()) continue;
+            if (!track->notes[n].isSelected()) continue;
 
             doMoveOneNote(n);
 
-            if(!played)
+            if (!played)
             {
-                if(relativeY != 0) track->notes[n].play(true);
+                if (relativeY != 0) track->notes[n].play(true);
                 else track->notes[n].play(false);
                 played = true;
             }
@@ -94,9 +94,9 @@ void MoveNotes::perform()
 
         doMoveOneNote(noteID);
 
-        if(relativeX != 0)
+        if (relativeX != 0)
         {
-            if(relativeY != 0) track->notes[noteID].play(true);
+            if (relativeY != 0) track->notes[noteID].play(true);
             else track->notes[noteID].play(false);
         }
     }
@@ -115,8 +115,8 @@ void MoveNotes::doMoveOneNote(const int noteid)
          of the editor. When this happens, some notes moves while others don't. So the amount of steps isn't enough,
          we need to track the moves for all notes individually.
      */
-    if( move_mode == SCORE_VERTICAL or move_mode == DRUMS_VERTICAL ) undo_pitch.push_back( track->notes[noteid].pitchID );
-    else if( move_mode == GUITAR_VERTICAL )
+    if ( move_mode == SCORE_VERTICAL or move_mode == DRUMS_VERTICAL ) undo_pitch.push_back( track->notes[noteid].pitchID );
+    else if ( move_mode == GUITAR_VERTICAL )
     {
         undo_fret.push_back( track->notes[noteid].fret );
         undo_string.push_back( track->notes[noteid].string );

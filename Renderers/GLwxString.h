@@ -2,6 +2,7 @@
 #ifndef _glstring_
 #define _glstring_
 
+#include "Config.h"
 #ifdef __WXMAC__
 #include "OpenGL/gl.h"
 #else
@@ -45,6 +46,9 @@ protected:
     void setImage(TextTexture* image);
     void move(int x, int y);
 public:
+    LEAK_CHECK();
+    
+    virtual ~TextGLDrawable() {}
 
     /** allows you to flip the rendering vertically and/or horizontally */
     void setFlip(bool x, bool y);
@@ -76,7 +80,7 @@ Use example :
 
 wxGLString my_message(wxT("Hello World"));
 ...
-if(first_render)
+if (first_render)
     my_message.consolidate(&dc);
 
 glColor3f(0,0,0); // black text
@@ -97,7 +101,7 @@ protected:
 
     void calculateSize(wxDC* dc, const bool ignore_font=false /* when from array */);
     void consolidateFromArray(wxDC* dc, int x, int y);
-public:
+public:    
     /** constructs an empty GLString. Set string later with operator=. */
     wxGLString();
     /** constructs a GLstring with 'message' as contents. */
@@ -138,7 +142,7 @@ Use example :
 
 wxGLNumberRenderer glnumbers;
 ...
-if(first_render)
+if (first_render)
     glnumbers.consolidate();
 
 glColor3f(0,0,0); // black numbers
@@ -164,6 +168,8 @@ public:
     void renderNumber(int i, int x, int y);
     /** render this number at coordinates (x,y). Must be called after bind(). */
     void renderNumber(float f, int x, int y);
+    
+    LEAK_CHECK();
 };
 
 typedef wxGLNumberRenderer AriaRenderNumber;
@@ -179,7 +185,7 @@ my_messages.addString("wxMac");
 my_messages.addString("wxGTK");
 my_messages.addString("wxMSW");
 ...
-if(first_render)
+if (first_render)
     my_messages.consolidate(&dc);
 
 glColor3f(0,0,0); // black text
@@ -222,6 +228,8 @@ public:
      setting up strings, font and color (if necessary), and before rendering.
      The wxDC argument is only used to calculate text extents and will not be rendered on.  */
     void consolidate(wxDC* dc);
+    
+    LEAK_CHECK();
 };
 
 typedef wxGLStringArray AriaRenderArray;

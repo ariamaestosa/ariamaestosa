@@ -97,7 +97,7 @@ namespace PlatformMidiManager {
 
     bool playSequence(Sequence* sequence, /*out*/ int* startTick)
     {
-        if(playing) return false; //already playing
+        if (playing) return false; //already playing
 
         PlatformMidiManager::sequence = sequence;
 
@@ -118,7 +118,7 @@ namespace PlatformMidiManager {
     bool playSelected(Sequence* sequence, /*out*/ int* startTick)
     {
 
-        if(playing) return false; //already playing
+        if (playing) return false; //already playing
 
         PlatformMidiManager::sequence = sequence;
 
@@ -128,7 +128,7 @@ namespace PlatformMidiManager {
 
         allocAsMidiBytes(sequence, true, &songLengthInTicks, startTick, &data, &datalength, true);
 
-        if(songLengthInTicks < 1)
+        if (songLengthInTicks < 1)
         {
             std::cout << "song is empty" << std::endl;
             free(data);
@@ -185,7 +185,7 @@ namespace PlatformMidiManager {
         qtkit_setData(data, length);
         bool success = qtkit_exportToAiff( export_audio_filepath.mb_str() );
 
-        if(!success)
+        if (!success)
         {
             // FIXME - give visual message. warning this is a thread.
             std::cerr << "EXPORTING FAILED" << std::endl;
@@ -210,11 +210,11 @@ namespace PlatformMidiManager {
 
     int getCurrentTick()
     {
-        if( use_qtkit )
+        if ( use_qtkit )
         {
             const float time = qtkit_getCurrentTime();
 
-            if(time == -1) return -1; // not playing
+            if (time == -1) return -1; // not playing
 
             return (int)(
                          time * sequence->getTempo()/60.0 * (float)sequence->ticksPerBeat()
@@ -230,7 +230,7 @@ namespace PlatformMidiManager {
         int currentTick = getCurrentTick();
 
         // song ends
-        if(currentTick >= stored_songLength-1 or currentTick == -1)
+        if (currentTick >= stored_songLength-1 or currentTick == -1)
         {
             Core::songHasFinishedPlaying();
             currentTick=-1;
@@ -248,10 +248,10 @@ namespace PlatformMidiManager {
         CoreAudioNotePlayer::stopNote();
 
         // if length==8, this is just the empty song to load QT. (when the app opens, Quicktime is triggered with an empty song to make it load)
-        if( length==8 or sequence->tempoEvents.size()==0 ) use_qtkit=true;
+        if ( length==8 or sequence->tempoEvents.size()==0 ) use_qtkit=true;
         else use_qtkit=false;
 
-        if( use_qtkit )
+        if ( use_qtkit )
         {
             qtkit_setData(bytes, length);
             qtkit_play();
@@ -267,7 +267,7 @@ namespace PlatformMidiManager {
 
     void playNote(int noteNum, int volume, int duration, int channel, int instrument)
     {
-        if(playing) return;
+        if (playing) return;
         CoreAudioNotePlayer::playNote( noteNum, volume, duration, channel, instrument );
     }
 
@@ -283,7 +283,7 @@ namespace PlatformMidiManager {
 
     void stop()
     {
-        if( use_qtkit ) qtkit_stop();
+        if ( use_qtkit ) qtkit_stop();
         else audioToolboxMidiPlayer->stop();
 
         playing = false;

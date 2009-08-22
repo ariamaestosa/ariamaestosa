@@ -56,13 +56,13 @@ Note::~Note()
 
 int Note::getString()
 {
-    if(string==-1) findStringAndFretFromNote();
+    if (string==-1) findStringAndFretFromNote();
     return string;
 }
 
 int Note::getFret()
 {
-    if(fret==-1) findStringAndFretFromNote();
+    if (fret==-1) findStringAndFretFromNote();
     return fret;
 }
 
@@ -84,15 +84,15 @@ void Note::setStringAndFret(int string_arg, int fret_arg)
 void Note::checkIfStringAndFretMatchNote(const bool fixStringAndFret)
 {
     // if note is placed on a string that doesn't exist (anymore)
-    if(fixStringAndFret and string > (int)gtrack->guitarEditor->tuning.size()-1)
+    if (fixStringAndFret and string > (int)gtrack->guitarEditor->tuning.size()-1)
     {
         findStringAndFretFromNote();
     }
 
 
-    if(string==-1 || fret==-1 || pitchID != gtrack->guitarEditor->tuning[string]-fret)
+    if (string==-1 || fret==-1 || pitchID != gtrack->guitarEditor->tuning[string]-fret)
     {
-        if(fixStringAndFret) findStringAndFretFromNote();
+        if (fixStringAndFret) findStringAndFretFromNote();
         else findNoteFromStringAndFret();
     }
 
@@ -110,7 +110,7 @@ void Note::setParent(GraphicalTrack* parent)
 void Note::shiftFret(const int amount)
 {
 
-    if(fret+amount < 0)
+    if (fret+amount < 0)
     {
         pitchID -= amount;
         findStringAndFretFromNote();
@@ -119,8 +119,8 @@ void Note::shiftFret(const int amount)
     {
         // if the note would be out of bounds after applying this change, do not apply it.
         // An exception is granted if the current fret is under 0 and the user is trying to 'fix' this by making the fret number higher.
-        if( (fret+amount>35) and not(fret < 0 and amount > 0) ) return;
-        // if( (fret+amount < 0 or fret+amount>35) and not(fret < 0 and amount > 0) ) return;
+        if ( (fret+amount>35) and not(fret < 0 and amount > 0) ) return;
+        // if ( (fret+amount < 0 or fret+amount>35) and not(fret < 0 and amount > 0) ) return;
 
         fret += amount;
         findNoteFromStringAndFret();
@@ -131,10 +131,10 @@ void Note::shiftString(const int amount)
 {
 
     // don't perform if result would be invalid
-    if(string + amount < 0) return;
-    if(string + amount > (int)gtrack->guitarEditor->tuning.size()-1) return;
-    if((gtrack->guitarEditor->tuning)[string+amount] - pitchID < 0) return;
-    if((gtrack->guitarEditor->tuning)[string+amount] - pitchID > 35) return;
+    if (string + amount < 0) return;
+    if (string + amount > (int)gtrack->guitarEditor->tuning.size()-1) return;
+    if ((gtrack->guitarEditor->tuning)[string+amount] - pitchID < 0) return;
+    if ((gtrack->guitarEditor->tuning)[string+amount] - pitchID > 35) return;
 
     string += amount;
     fret = (gtrack->guitarEditor->tuning)[string] - pitchID;
@@ -148,7 +148,7 @@ void Note::findStringAndFretFromNote()
     int nearest=-1;
     int distance=1000;
 
-    if(pitchID > (gtrack->guitarEditor->tuning)[ gtrack->guitarEditor->tuning.size()-1] )
+    if (pitchID > (gtrack->guitarEditor->tuning)[ gtrack->guitarEditor->tuning.size()-1] )
     {
         // note is too low to appear on this tab, will have a negative fret number
         string = gtrack->guitarEditor->tuning.size()-1;
@@ -160,16 +160,16 @@ void Note::findStringAndFretFromNote()
     {
 
         // exact match (note can be played on a string at fret 0)
-        if( (gtrack->guitarEditor->tuning)[n] == pitchID)
+        if ( (gtrack->guitarEditor->tuning)[n] == pitchID)
         {
             string=n;
             fret=0;
             return;
         }
 
-        if( (gtrack->guitarEditor->tuning)[n] > pitchID)
+        if ( (gtrack->guitarEditor->tuning)[n] > pitchID)
         {
-            if((gtrack->guitarEditor->tuning)[n] - pitchID < distance)
+            if ((gtrack->guitarEditor->tuning)[n] - pitchID < distance)
             {
                 nearest=n;
                 distance=(gtrack->guitarEditor->tuning)[n] - pitchID;
@@ -204,7 +204,7 @@ void Note::setVolume(const int vol)
 
 void Note::resize(const int ticks)
 {
-    if(endTick+ticks <= startTick) return; // refuse to shrink note so much that it disappears
+    if (endTick+ticks <= startTick) return; // refuse to shrink note so much that it disappears
 
     endTick+=ticks;
 }
@@ -224,11 +224,11 @@ void Note::saveToFile(wxFileOutputStream& fileout)
     writeData( wxT("\" end=\"") + to_wxString(endTick), fileout );
     writeData( wxT("\" volume=\"") + to_wxString(volume), fileout );
 
-    if(fret != -1) writeData( wxT("\" fret=\"") + to_wxString(fret), fileout );
-    if(string != -1) writeData( wxT("\" string=\"") + to_wxString(string), fileout );
-    if(selected) writeData( wxT("\" selected=\"") + wxString( selected?wxT("true"):wxT("false")), fileout );
+    if (fret != -1) writeData( wxT("\" fret=\"") + to_wxString(fret), fileout );
+    if (string != -1) writeData( wxT("\" string=\"") + to_wxString(string), fileout );
+    if (selected) writeData( wxT("\" selected=\"") + wxString( selected?wxT("true"):wxT("false")), fileout );
 
-    if(preferred_accidental_sign != -1) writeData( wxT("\" accidentalsign=\"") + to_wxString(preferred_accidental_sign), fileout );
+    if (preferred_accidental_sign != -1) writeData( wxT("\" accidentalsign=\"") + to_wxString(preferred_accidental_sign), fileout );
 
     writeData( wxT("\"/>\n"), fileout );
 
@@ -238,7 +238,7 @@ bool Note::readFromFile(irr::io::IrrXMLReader* xml)
 {
 
     const char* pitch_c = xml->getAttributeValue("pitch");
-    if(pitch_c!=NULL) pitchID = atoi( pitch_c );
+    if (pitch_c!=NULL) pitchID = atoi( pitch_c );
     else
     {
         pitchID = 60;
@@ -247,7 +247,7 @@ bool Note::readFromFile(irr::io::IrrXMLReader* xml)
     }
 
     const char* start_c = xml->getAttributeValue("start");
-    if(start_c!=NULL) startTick = atoi(start_c);
+    if (start_c!=NULL) startTick = atoi(start_c);
     else
     {
         startTick = 0;
@@ -256,7 +256,7 @@ bool Note::readFromFile(irr::io::IrrXMLReader* xml)
     }
 
     const char* end_c = xml->getAttributeValue("end");
-    if(end_c!=NULL) endTick = atoi(end_c);
+    if (end_c!=NULL) endTick = atoi(end_c);
     else
     {
         endTick = 0;
@@ -265,25 +265,25 @@ bool Note::readFromFile(irr::io::IrrXMLReader* xml)
     }
 
     const char* volume_c = xml->getAttributeValue("volume");
-    if(volume_c!=NULL) volume = atoi(volume_c);
+    if (volume_c!=NULL) volume = atoi(volume_c);
     else volume = 80;
 
     const char* accsign_c = xml->getAttributeValue("accidentalsign");
-    if(accsign_c != NULL) preferred_accidental_sign = atoi(accsign_c);
+    if (accsign_c != NULL) preferred_accidental_sign = atoi(accsign_c);
 
     const char* fret_c = xml->getAttributeValue("fret");
-    if(fret_c!=NULL) fret = atoi(fret_c);
+    if (fret_c!=NULL) fret = atoi(fret_c);
     else fret = -1;
 
     const char* string_c = xml->getAttributeValue("string");
-    if(string_c!=NULL) string = atoi(string_c);
+    if (string_c!=NULL) string = atoi(string_c);
     else string = -1;
 
     const char* selected_c = xml->getAttributeValue("selected");
-    if(selected_c != NULL)
+    if (selected_c != NULL)
     {
-        if( !strcmp(selected_c, "true") ) selected = true;
-        else if( !strcmp(selected_c, "false") ) selected = false;
+        if ( !strcmp(selected_c, "true") ) selected = true;
+        else if ( !strcmp(selected_c, "false") ) selected = false;
         else
         {
             std::cout << "Unknown keyword for attribute 'selected' in note: " << selected_c << std::endl;
@@ -305,16 +305,16 @@ bool Note::readFromFile(irr::io::IrrXMLReader* xml)
 void Note::play(bool change)
 {
 
-    if(gtrack->sequence->importing) return;
+    if (gtrack->sequence->importing) return;
 
     const int play = Core::playDuringEdit();
 
-    if(play == PLAY_NEVER) return;
-    if(play == PLAY_ON_CHANGE and !change) return;
+    if (play == PLAY_NEVER) return;
+    if (play == PLAY_ON_CHANGE and !change) return;
 
     int durationMilli = (endTick-startTick)*60*1000 / ( gtrack->sequence->getTempo() * gtrack->sequence->ticksPerBeat() );
 
-    if(gtrack->editorMode == DRUM) PlatformMidiManager::playNote( pitchID, volume, durationMilli, 9, gtrack->track->getDrumKit() );
+    if (gtrack->editorMode == DRUM) PlatformMidiManager::playNote( pitchID, volume, durationMilli, 9, gtrack->track->getDrumKit() );
     else PlatformMidiManager::playNote( 131-pitchID, volume, durationMilli, 0, gtrack->track->getInstrument() );
 
 }
