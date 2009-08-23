@@ -17,7 +17,7 @@ namespace AriaMaestosa
         bool timerStarted;
 
         public:
-        LEAK_CHECK(MidiContext);
+        LEAK_CHECK();
 
         MidiDevice* device;
 
@@ -50,7 +50,7 @@ namespace AriaMaestosa
     {
         MidiContext* midiContext;
     public:
-        LEAK_CHECK(MidiDevice);
+        LEAK_CHECK();
         snd_seq_addr_t address;
         int client, port;
         wxString name;
