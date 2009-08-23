@@ -126,7 +126,7 @@ public:
 };
 
 typedef void(*RenderSilenceCallback)(const int, const int, const int, const int, const bool, const bool, const int, const int);
-    
+
 class BeamGroup;
 class ScoreAnalyser
 {
@@ -145,7 +145,7 @@ public:
     ScoreAnalyser(ScoreEditor* parent, int stemPivot);
 
     ScoreAnalyser* getSubset(const int fromTick, const int toTick);
-    
+
     //void setStemDrawInfo( const float stem_height = -1,
     //                     const float min_stem_height = -1);
 
@@ -162,7 +162,7 @@ public:
     // set the level below which the stem is up, and above which it is down
     void setStemPivot(const int level);
 
-    void ScoreAnalyser::renderSilences(RenderSilenceCallback renderSilenceCallback,
+    void renderSilences(RenderSilenceCallback renderSilenceCallback,
                                        const int first_visible_measure, const int last_visible_measure,
                                        const int silences_y);
 protected:
