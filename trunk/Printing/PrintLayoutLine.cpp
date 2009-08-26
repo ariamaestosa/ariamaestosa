@@ -19,11 +19,14 @@
 #include "Printing/PrintLayoutLine.h"
 #include "Printing/LayoutElement.h"
 #include "Printing/PrintLayoutMeasure.h"
+#include "Printing/PrintableSequence.h"
 
 namespace AriaMaestosa
 {
 #pragma mark LineTrackRef
     
+    // -------------------------------------------------------------------------------------------
+
     int LineTrackRef::getLastNote() const
     {
         const int elements = parent->layoutElements.size();
@@ -44,6 +47,8 @@ namespace AriaMaestosa
         }
         return -1; // empty line
     }
+    
+    // -------------------------------------------------------------------------------------------
     
     int LineTrackRef::getFirstNote() const
     {
@@ -67,10 +72,16 @@ namespace AriaMaestosa
         return -1; // empty line
         
     }
+    
+    // -------------------------------------------------------------------------------------------
+    
     int LineTrackRef::getFirstNoteInElement(const int layoutElementID)
     {
         return parent->getMeasureForElement(layoutElementID).trackRef[trackID].firstNote;
     }
+    
+    // -------------------------------------------------------------------------------------------
+    
     int LineTrackRef::getLastNoteInElement(const int layoutElementID)
     {
         std::cout << "last note in element " << layoutElementID << " of track " << trackID << " is " <<
@@ -78,22 +89,32 @@ namespace AriaMaestosa
         parent->getMeasureForElement(layoutElementID).id << std::endl;
         return parent->getMeasureForElement(layoutElementID).trackRef[trackID].lastNote;
     }
+    
+    // -------------------------------------------------------------------------------------------
+    
     int LineTrackRef::getFirstNoteInElement(LayoutElement* layoutElement)
     {
         return parent->getMeasureForElement(layoutElement).trackRef[trackID].firstNote;
     }
+    
+    // -------------------------------------------------------------------------------------------
+    
     int LineTrackRef::getLastNoteInElement(LayoutElement* layoutElement)
     {
         return parent->getMeasureForElement(layoutElement).trackRef[trackID].lastNote;
     }
     
-    
+// -------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------
 #pragma mark -
 #pragma mark LayoutLine
-    
-    LayoutLine::LayoutLine(AriaPrintable* parent)
+// -------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------
+
+    LayoutLine::LayoutLine(PrintableSequence* parent, ptr_vector<PrintLayoutMeasure, REF>& measures)
     {
-        printable = parent;
+        this->printable = parent;
+        this->measures = measures;
         last_of_page = false;
         
         for (int trackID=0; trackID<parent->track_amount; trackID++)
@@ -105,15 +126,22 @@ namespace AriaMaestosa
         }
     }
     
+    // -------------------------------------------------------------------------------------------
+    
     int LayoutLine::getTrackAmount() const
     {
         return printable->tracks.size();
     }
     
+    // -------------------------------------------------------------------------------------------
+    
     int LayoutLine::getFirstNoteInElement(const int trackID, const int layoutElementID)
     {
         return getMeasureForElement(layoutElementID).trackRef[trackID].firstNote;
     }
+    
+    // -------------------------------------------------------------------------------------------
+    
     int LayoutLine::getLastNoteInElement(const int trackID, const int layoutElementID)
     {
         std::cout << "last note in element " << layoutElementID << " of track " << trackID << " is " <<
@@ -121,25 +149,38 @@ namespace AriaMaestosa
         getMeasureForElement(layoutElementID).id << std::endl;
         return getMeasureForElement(layoutElementID).trackRef[trackID].lastNote;
     }
+    
+    // -------------------------------------------------------------------------------------------
+    
     int LayoutLine::getFirstNoteInElement(const int trackID, LayoutElement* layoutElement)
     {
         return getMeasureForElement(layoutElement).trackRef[trackID].firstNote;
     }
+    
+    // -------------------------------------------------------------------------------------------
+    
     int LayoutLine::getLastNoteInElement(const int trackID, LayoutElement* layoutElement)
     {
         return getMeasureForElement(layoutElement).trackRef[trackID].lastNote;
     }
     
+    // -------------------------------------------------------------------------------------------
+    
     PrintLayoutMeasure& LayoutLine::getMeasureForElement(const int layoutElementID) const
     {
         const int measID = layoutElements[layoutElementID].measure;
         if (measID == -1) return (PrintLayoutMeasure&)nullMeasure;
-        return printable->measures[measID];
+        return measures.getRef(measID);
     }
+    
+    // -------------------------------------------------------------------------------------------
+    
     PrintLayoutMeasure& LayoutLine::getMeasureForElement(LayoutElement* layoutElement)
     {
-        return printable->measures[layoutElement->measure];
+        return measures[layoutElement->measure];
     }
+    
+    // -------------------------------------------------------------------------------------------
     
     LineTrackRef& LayoutLine::getTrackRenderInfo(const int trackID)
     {
@@ -147,6 +188,8 @@ namespace AriaMaestosa
         assertExpr(trackID,<,(int)trackRenderInfo.size());
         return trackRenderInfo[trackID];
     }
+    
+    // -------------------------------------------------------------------------------------------
     
     int LayoutLine::getLastMeasure() const
     {
@@ -156,6 +199,9 @@ namespace AriaMaestosa
         }
         return -1;
     }
+    
+    // -------------------------------------------------------------------------------------------
+    
     int LayoutLine::getFirstMeasure() const
     {
         const int amount = layoutElements.size();
@@ -165,6 +211,8 @@ namespace AriaMaestosa
         }
         return -1;
     }
+    
+    // -------------------------------------------------------------------------------------------
     
     int LayoutLine::calculateHeight()
     {

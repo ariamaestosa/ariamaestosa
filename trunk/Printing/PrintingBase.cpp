@@ -2,6 +2,7 @@
 
 #include "Printing/PrintingBase.h"
 #include "Printing/PrintLayoutLine.h"
+#include "Printing/PrintableSequence.h"
 #include "Printing/TabPrint.h"
 #include "Printing/ScorePrint.h"
 
@@ -26,13 +27,13 @@ class QuickPrint : public wxPrintout
 
     static const int brush_size = 15;
 
-    AriaPrintable* printable;
+    AriaPrintable* printCallBack;
 
 public:
-    QuickPrint(AriaPrintable* printable) : wxPrintout( printable->getTitle() )
+    QuickPrint(PrintableSequence* printableSequence, AriaPrintable* printCallBack) : wxPrintout( printableSequence->getTitle() )
     {
-        QuickPrint::printable = printable;
-        pageAmount =  printable->getPageAmount();
+        QuickPrint::printCallBack = printCallBack;
+        pageAmount =  printableSequence->getPageAmount();
         orient = wxPORTRAIT;
     }
 
@@ -55,7 +56,7 @@ public:
         const int y1 = y0 + height;
 
         std::cout << "printable area : (" << x0 << ", " << y0 << ") to (" << x1 << ", " << y1 << ")" << std::endl;
-        printable->printPage(pageNum, dc, x0, y0, x1, y1, width, height);
+        printCallBack->printPage(pageNum, dc, x0, y0, x1, y1, width, height);
 
         return true;
     }
@@ -142,14 +143,16 @@ public:
     }
 };
 
-int printResult(AriaPrintable* printable)
+int AriaPrintable::print()
 {
+    assert( MAGIC_NUMBER_OK() );
+    
 #ifdef __WXMAC__
     // change window title so any generated PDF is given the right name
-    getMainFrame()->SetTitle(printable->getTitle());
+    getMainFrame()->SetTitle(seq->getTitle());
 #endif
 
-    QuickPrint myprint( printable );
+    QuickPrint myprint( seq, this );
     wxPrinter printer;
 
     if (!myprint.preparePrint()) return false;
@@ -180,106 +183,35 @@ AriaPrintable* getCurrentPrintable()
 
 // -----------------------------------------------------------------------------------------------------------------------
 
-AriaPrintable::AriaPrintable(Sequence* parent)
+AriaPrintable::AriaPrintable(PrintableSequence* seq)
 {
-    sequence = parent;
     currentPrintable = this;
-    is_guitar_editor_used = false;
-    is_score_editor_used = false;
-    track_amount = 0;
-    max_signs_in_keysig = 0;
+    AriaPrintable::seq = seq;
+    INIT_MAGIC_NUMBER();
 }
 AriaPrintable::~AriaPrintable()
 {
     currentPrintable = NULL;
 }
-    
-// -----------------------------------------------------------------------------------------------------------------------
-bool AriaPrintable::addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */)
-{
-    if (mode == GUITAR)
-    {
-        editorPrintables.push_back(new TablaturePrintable(track));
-        is_guitar_editor_used = true;
-    }
-    else if (mode == SCORE)
-    {
-        editorPrintables.push_back(new ScorePrintable());
-        is_score_editor_used = true;
-        
-        max_signs_in_keysig = std::max( max_signs_in_keysig,
-                                       std::max(track->graphics->getCurrentEditor()->getKeySharpsAmount(),
-                                                track->graphics->getCurrentEditor()->getKeyFlatsAmount()) );
-    }
-    else
-    {
-        std::cerr << "AriaPrintable::addTrack : mode " << mode << " not supported for printing" << std::endl;
-        return false;
-    }
-    tracks.push_back(track);
-    track_amount = tracks.size();
-    return true;
-}
-    
-// -----------------------------------------------------------------------------------------------------------------------
-void AriaPrintable::calculateLayout(bool checkRepetitions_bool)
-{
-    layout = new PrintLayoutManager(this, layoutLines /* out */, layoutPages /* out */, measures /* out */);
-    layout->generateMeasures(tracks);
-    layout->calculateLayoutElements(tracks, checkRepetitions_bool);
-}
-    
-// -----------------------------------------------------------------------------------------------------------------------
-wxString AriaPrintable::getTitle()
-{
-    wxString song_title = sequence->suggestTitle();
-    wxString track_title;
-    if (tracks.size()==1) tracks[0].getName();
 
-    wxString final_title;
-
-    // give song title
-    if (song_title.IsSameAs(_("Untitled")))
-        final_title = _("Aria Maestosa song");
-    else
-        final_title = song_title;
-
-    // give track name, if any
-    if (!track_title.IsSameAs(_("Untitled")) and track_title.Length()>0) final_title += (wxT(", ") + track_title);
-
-    std::cout << "Title = " << final_title.mb_str() << std::endl;
-    return final_title;
-}
-    
-// -----------------------------------------------------------------------------------------------------------------------
-int AriaPrintable::getPageAmount()
-{
-    return layoutPages.size();
-}
-    
-// -----------------------------------------------------------------------------------------------------------------------
-EditorPrintable* AriaPrintable::getEditorPrintable(const int trackID)
-{
-     return editorPrintables.get(trackID);
-}
-    
 // -----------------------------------------------------------------------------------------------------------------------
 void AriaPrintable::printPage(const int pageNum, wxDC& dc,
                               const int x0, const int y0,
                               const int x1, const int y1,
                               const int w, const int h)
 {    
-    assertExpr(pageNum-1,<,(int)layoutPages.size());
-    LayoutPage& page = layoutPages[pageNum-1];
+    assert( MAGIC_NUMBER_OK() );
+    LayoutPage& page = seq->getPage(pageNum-1);
 
-    const int lineAmount = page.last_line - page.first_line + 1;
+    const int lineAmount = page.getLineCount();
+    // const int lineAmount = page.last_line - page.first_line + 1;
 
     std::cout << "page has " << lineAmount << " lines" << std::endl;
     
     int level_y_amount = 4;
-    for(int n=page.first_line; n <= page.last_line; n++)
+    for(int n=0; n < lineAmount; n++)
     {
-        level_y_amount += layoutLines[n].level_height;
+        level_y_amount += page.getLine(n).level_height;
     }
 
     dc.SetBackground(*wxWHITE_BRUSH);
@@ -311,7 +243,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     }
     
     // ---- Draw title / page number
-    wxString label = getTitle();
+    wxString label = seq->getTitle();
 
     int title_x = x0;
 
@@ -351,15 +283,15 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     const float track_area_height = (float)h - (float)text_height*3.0f + (pageNum == 1 ? 100 : 0);
 
     // ---- Give each track an area on the page
-    layout->placeLinesInPage(page, text_height, track_area_height, level_y_amount, h, x0, y0, x1);
+    this->placeLinesInPage(page, text_height, track_area_height, level_y_amount, h, x0, y0, x1);
     
     // ---- Draw the tracks
     const wxFont regularFont = wxFont(75, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 
-    for(int l=page.first_line; l<=page.last_line; l++)
+    for(int l=0; l<lineAmount; l++)
     {
         dc.SetFont( regularFont );
-        printLine(layoutLines[l], dc);
+        printLine(page.getLine(l), dc);
     }
 
 
@@ -369,6 +301,8 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
 // -----------------------------------------------------------------------------------------------------------------------
 void AriaPrintable::printLine(LayoutLine& line, wxDC& dc)
 {    
+    assert( MAGIC_NUMBER_OK() );
+    
     const int trackAmount = line.getTrackAmount();
     
     // ---- Draw vertical line to show these lines belong toghether
@@ -409,12 +343,159 @@ void AriaPrintable::printLine(LayoutLine& line, wxDC& dc)
         LineTrackRef& sizing = line.getTrackRenderInfo(n);
         std::cout << "Coords : " << sizing.x0 << ", " << sizing.y0 << " to " << sizing.x1 << ", " << sizing.y1 << std::endl;
         
-        EditorPrintable* editorPrintable = editorPrintables.get(n);
+        EditorPrintable* editorPrintable = seq->getEditorPrintable(n);
         editorPrintable->drawLine(n, sizing, line, dc);
     }
 }
     
 
+    /**
+     * \param text_height       Height of the title header (for page 1), height of the bottom page # text (for other pages)
+     * \param level_y_amount    Height of the track in levels
+     * \param track_area_height Height of the track in print units
+     */
+    void AriaPrintable::placeLinesInPage(LayoutPage& page, const int text_height, const float track_area_height, const int level_y_amount,
+                                              const int pageHeight, const int x0, const int y0, const int x1)
+    {
+        assert( MAGIC_NUMBER_OK() );
+        std::cout << "\n========\nplaceTracksInPage\n========\n";
+        
+        // ---- Lay out tracks
+        float y_from = y0 + text_height*3;
+        
+        const int lineAmount = page.getLineCount();
+        for(int l=0; l<lineAmount; l++)
+        {
+            std::cout << "\n====\nLine " << l << "\n====\n";
+            
+            
+            //std::cout << "layoutLines[l].level_height = " << layoutLines[l].level_height << " track_area_height=" << track_area_height
+            //          << " total_height=" << total_height << std::endl;
+            
+            // give a height proportional to its part of the total height
+            float height = (track_area_height/level_y_amount) * page.getLine(l).level_height;
+            
+            float used_height = height;
+            
+            
+            LayoutLine& line = page.getLine(l);
+            
+            // line too high, will look weird... shrink a bit
+            while (used_height/(float)line.level_height > 100)
+            {
+                used_height *= 0.95;
+            }
+            
+            // shrink total height when track is way too large (if page contains only a few tracks)
+            if (height > pageHeight/5 && height > used_height*1.3) height = used_height*1.3;  
+            
+            
+            float used_y_from = y_from;
+            
+            // center vertically in available space  if more space than needed
+            if (used_height < height) used_y_from += (height - used_height)/2;
+            
+            //std::cout << "```` used_y_from=" << used_y_from << std::endl;
+            
+            // split margin above and below depending on position within page
+            const int line_amount = page.getLineCount();
+            const float position = line_amount == 0 ? 0 : float(l) / line_amount;
+            int margin_above = 250*position;
+            int margin_below = 250*(1-position);
+            
+            std::cout << "height=" << height << " used_height=" << used_height << " used_y_from=" << used_y_from << " margin_above=" << margin_above << " margin_below=" << margin_below << std::endl;
+            
+            this->divideLineAmongTracks(line, x0, used_y_from, x1, used_y_from+used_height, margin_below, margin_above);
+            
+            y_from += height;
+            //std::cout << "yfrom is now " << y_from << std::endl;
+        }
+        
+    }
+    
 
-
+    void AriaPrintable::divideLineAmongTracks(LayoutLine& line, const int x0, const int y0, const int x1, const int y1,
+                                                   int margin_below, int margin_above)
+    {
+        assert( MAGIC_NUMBER_OK() );
+        
+        const int trackAmount = line.getTrackAmount();
+        
+        std::cout << "Line given coords " << x0 << ", " << y0 << " to " << x1 << ", " << y1 << std::endl;
+        std::cout << "==divideLineAmongTracks==\n";
+        
+        line.x0 = x0;
+        line.y0 = y0;
+        line.x1 = x1;
+        line.y1 = y1;
+        line.margin_below = margin_below;
+        line.margin_above = margin_above;
+        
+        // ---- empty space around whole line
+        const float height = (float)(y1 - y0);// - ( trackAmount>1 and not last_of_page ? 100 : 0 );
+        
+        if (height < 0.0001) return; // empty line. TODO : todo - draw empty bars to show there's something?
+        
+        // make sure margins are within acceptable bounds
+        if (margin_below > height/2) margin_below = height/5;
+        if (margin_above > height/2) margin_above = height/5;
+        
+        
+        const int my0 = y0 + margin_above;
+        
+        // ---- Determine tracks positions and sizes
+        
+        int nonEmptyTrackAmount = 0; // empty tracks must not be counted
+        for(int n=0; n<trackAmount; n++)
+        {        
+            if (line.height_percent[n] > 0) nonEmptyTrackAmount++;
+        }
+        
+        // FIXME : this is layout, should go in PrintLayout.cpp ?
+        // space between individual tracks
+        const int space_between_tracks = nonEmptyTrackAmount > 1 ? 150 : 0;
+        
+        float current_y = my0;
+        int nonEmptyID = 0;
+        for(int n=0; n<trackAmount; n++)
+        {        
+            EditorPrintable* editorPrintable = seq->getEditorPrintable(n);
+            
+            // skip empty tracks
+            if (line.height_percent[n] == 0) continue;
+            
+            // determine how much vertical space is allocated for this track
+            const float track_height = (height - margin_below - margin_above) * line.height_percent[n]/100.0f;
+            std::cout << "track_height=" << track_height << " (margin_below=" << margin_below << " margin_above=" << margin_above <<
+            "space_between_tracks=" << space_between_tracks << ")\n";
+            
+            // margin space above and below each track are given by simple formula 'space_between_tracks*position' where
+            // position ranges from 0 to 1. However, this formula doesn't make the space between 2 tracks equal to
+            // 'space_between_tracks' in all cases (especially depending on track amount), so the following correction
+            // needs to be applied (FIXME : can it be harder to understand what i'm doing here...)
+            const float adjustMarginRatio = (float)(nonEmptyTrackAmount-1) / (float)(nonEmptyTrackAmount);
+            
+            const float position =
+            nonEmptyTrackAmount-1 == 0 ? 0.0f : // avoid division by zero
+            (float)nonEmptyID / (float)(nonEmptyTrackAmount-1);
+            const float space_above_line = space_between_tracks*position*adjustMarginRatio;
+            const float space_below_line = space_between_tracks*(1.0-position)*adjustMarginRatio;
+            
+            editorPrintable->placeTrackAndElementsWithinCoords(n, line, line.getTrackRenderInfo(n),
+                                                               x0, current_y + space_above_line,
+                                                               x1, current_y + track_height - space_below_line,
+                                                               n==0);
+            
+            std::cout << "%%%% setting track coords " << n  << " : " << x0 << ", " << (current_y + space_above_line) << " to " <<
+            x1 << ", "<< (current_y + track_height - space_below_line) << " ( space_above_line=" << space_above_line <<
+            " space_below_line=" << space_below_line << " track_height=" << track_height << ")" <<  std::endl;
+            
+            
+            current_y += track_height;
+            nonEmptyID++;
+        }
+        
+        
+    }
+    
 }

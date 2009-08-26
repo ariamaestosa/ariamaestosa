@@ -23,6 +23,7 @@
 #include "ptr_vector.h"
 #include "wx/wx.h"
 
+#include "Printing/PrintLayoutLine.h"
 #include "Printing/LayoutElement.h"
 #include "Printing/PrintLayoutMeasure.h"
 
@@ -30,8 +31,7 @@
 namespace AriaMaestosa
 {
     class Track;
-    class AriaPrintable;
-    class LayoutLine;
+    class PrintableSequence;
     class PrintLayoutMeasure;
     
     static const int max_line_width_in_units = 50;
@@ -42,8 +42,28 @@ namespace AriaMaestosa
     
     struct LayoutPage
     {
-        int first_line;
-        int last_line;
+        DECLARE_MAGIC_NUMBER();
+        
+        ptr_vector<LayoutLine> layoutLines;    
+        
+        LayoutPage()
+        {
+            INIT_MAGIC_NUMBER();
+        }
+
+        const int getLineCount() const
+        {
+            assert( MAGIC_NUMBER_OK() );
+            return layoutLines.size();
+        }
+        
+        LayoutLine& getLine(const int lineID)
+        {
+            assert( MAGIC_NUMBER_OK() );
+            assert( MAGIC_NUMBER_OK_FOR(&layoutLines) );
+
+            return layoutLines[lineID];
+        }
     };
     
     
@@ -76,13 +96,12 @@ namespace AriaMaestosa
     
     class PrintLayoutManager
         {
-            AriaPrintable* parent;
+            PrintableSequence* sequence;
             
-            // referencing vectors from AriaPrintable
-            ptr_vector<LayoutLine>& layoutLines;
-            std::vector<LayoutPage>& layoutPages;
-            ptr_vector<PrintLayoutMeasure>& measures;
-            
+            // referencing vectors from PrintableSequence (FIXME: no two objects should reference these vectors)
+            ptr_vector<LayoutPage>& layoutPages;
+
+            ptr_vector<PrintLayoutMeasure> measures; 
             std::vector<LayoutElement> layoutElements;
             
             void layInLinesAndPages();
@@ -93,24 +112,15 @@ namespace AriaMaestosa
             
             void findSimilarMeasures();
             
-            void divideLineAmongTracks(LayoutLine& line, const int x0, const int y0, const int x1, const int y1,
-                                       int margin_below, int margin_above);
             
         public:
-            PrintLayoutManager(AriaPrintable* parent,
-                               ptr_vector<LayoutLine>& layoutLines  /* out */,
-                               std::vector<LayoutPage>& layoutPages  /* out */,
-                               ptr_vector<PrintLayoutMeasure>& mesaures /* out */);
+            PrintLayoutManager(PrintableSequence* parent,
+                               ptr_vector<LayoutPage>& layoutPages  /* out */);
             
             void generateMeasures(ptr_vector<Track, REF>& tracks);
 
             
             void calculateLayoutElements(ptr_vector<Track, REF>& track, const bool checkRepetitions_bool);
-
-            
-            void placeLinesInPage(LayoutPage& page, const int text_height, const float track_area_height, const int level_y_amount,
-                                   const int pageHeight, const int x0, const int y0, const int x1);
-            
         };
     
 }

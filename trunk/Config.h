@@ -34,11 +34,21 @@
 #define assert(expr) if (! (expr)){assertFailed( wxT("Assert failed: ") + wxString( #expr , wxConvUTF8 ) + wxT("\n@ ") + extract_filename( fromCString(__FILE__) ) + wxT(": ") + to_wxString(__LINE__));}
 #define assertExpr(v1,sign,v2) if (!((v1) sign (v2))){ std::cout << "assert failed values : " << v1 << #sign << v2 << std::endl; assertFailed( wxT("Assert failed: ") + wxString( #v1, wxConvUTF8 ) + wxString( #sign , wxConvUTF8 ) + fromCString( #v2 ) + wxT("\n@ ") + extract_filename(fromCString(__FILE__)) + wxT(": ") + to_wxString(__LINE__) ); }
 
+#define DECLARE_MAGIC_NUMBER() int ariadebug_magic_number
+#define INIT_MAGIC_NUMBER() this->ariadebug_magic_number = 0x13248675
+#define MAGIC_NUMBER_OK() (this->ariadebug_magic_number == 0x13248675)
+#define MAGIC_NUMBER_OK_FOR(whom) ((whom)->ariadebug_magic_number == 0x13248675)
+
 #else
 
 #undef assert
 #define assert(expr)
 #define assertExpr(v1,sign,v2)
+
+#define DECLARE_MAGIC_NUMBER()
+#define INIT_MAGIC_NUMBER()
+#define MAGIC_NUMBER_OK() true
+#define MAGIC_NUMBER_OK_FOR(whom) true
 
 #endif
 
