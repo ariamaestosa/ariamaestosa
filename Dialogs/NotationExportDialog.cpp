@@ -16,6 +16,7 @@
 #include "IO/IOUtils.h"
 #include "Printing/TabPrint.h"
 #include "Printing/PrintingBase.h"
+#include "Printing/PrintableSequence.h"
 #include "Dialogs/NotationExportDialog.h"
 
 namespace AriaMaestosa
@@ -216,7 +217,7 @@ void completeExport(bool accepted)
     if (!accepted) return;
    // if (currentSequence == NULL) currentSequence = currentTrack->sequence;
 
-    AriaPrintable notationPrint(currentSequence);
+    PrintableSequence notationPrint(currentSequence);
 
     // check if we print everything or just one track
     if (only_selected_track_bool)
@@ -276,7 +277,9 @@ void completeExport(bool accepted)
     std::cout << "********************* PRINT RESULT *********************\n";
     std::cout << "********************************************************\n\n";
     
-    wxPrinterError result = (wxPrinterError)printResult(&notationPrint);
+    AriaPrintable printer( &notationPrint );
+    
+    wxPrinterError result = (wxPrinterError)printer.print();
     if (result == wxPRINTER_ERROR)
     {
         std::cerr << "error while printing" << std::endl;

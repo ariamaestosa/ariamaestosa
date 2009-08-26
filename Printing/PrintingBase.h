@@ -58,54 +58,45 @@ const bool PRINT_LAYOUT_HINTS = false;
 
 namespace AriaMaestosa
 {
-    class Track;
-    class EditorPrintable;
-        
+    class PrintableSequence;    
+    
 class AriaPrintable
 {
+    DECLARE_MAGIC_NUMBER();
+    
     friend class AriaMaestosa::LayoutLine;
-protected:
 
-    std::vector<LayoutPage> layoutPages;
-    ptr_vector<LayoutLine> layoutLines;
-    ptr_vector<PrintLayoutMeasure> measures;
+    PrintableSequence* seq;
     
-    OwnerPtr<PrintLayoutManager> layout;
+    void placeLinesInPage(LayoutPage& page, const int text_height, const float track_area_height, const int level_y_amount,
+                          const int pageHeight, const int x0, const int y0, const int x1);
+    void divideLineAmongTracks(LayoutLine& line, const int x0, const int y0, const int x1, const int y1,
+                               int margin_below, int margin_above);
     
-    Sequence* sequence;
 public:
     // ---------------------------------------
     // global info for printables, read-only
     // FIXME - find cleaner way
     int text_height;
     int text_height_half;
-    
-    ptr_vector<Track, REF> tracks;
-    ptr_vector<EditorPrintable> editorPrintables;
-    
-    bool is_guitar_editor_used;
-    bool is_score_editor_used;
-    int track_amount;
-    int max_signs_in_keysig; // the max number of sharp/flats we'll need to display at header (useful to allocate proper size)
     // ---------------------------------------
     
-    AriaPrintable(Sequence* parent);
-    bool addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */);
-    void calculateLayout(bool checkRepetitions_bool);
+    /**
+      * 'seq' remains owned by the caller, AriaPrintable will not delete it. Caller must not delete 'seq' before
+      * AriaPrintable is deleted too.
+      */
+    AriaPrintable(PrintableSequence* seq);
     
-    EditorPrintable* getEditorPrintable(const int trackID);
-
     virtual ~AriaPrintable();
-    wxString getTitle();
-    int getPageAmount();
+
     void printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const int w, const int h);
     void printLine(LayoutLine& line, wxDC& dc);
     
+    int print();
 };
 
 AriaPrintable* getCurrentPrintable();
 
-int printResult(AriaPrintable* printable);
     
 }
 

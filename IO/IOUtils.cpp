@@ -42,7 +42,6 @@ wxString to_wxString(float f)
 void assertFailed(wxString message)
 {
     std::cerr << message.mb_str() << std::endl;
-    wxMessageBox( message );
 
 #ifdef _MORE_DEBUG_CHECKS
     // trigger debugger
@@ -50,6 +49,7 @@ void assertFailed(wxString message)
     bug1 = 5 / bug1;
 #endif
 
+    wxMessageBox( message );
     exit(1);
 }
 

@@ -53,21 +53,33 @@ static const wxString g_note_names[] =
     wxT("C#"), //10
     wxT("C"),  //11
 };
-    
+
+class GuitarNoteNamesSingleton;
+static GuitarNoteNamesSingleton* note_names_render = NULL;
 class GuitarNoteNamesSingleton : public AriaRenderArray, public Singleton
 {
-public:
     GuitarNoteNamesSingleton() : AriaRenderArray(g_note_names, 12), Singleton()
     {
     }
+public:
+
     
     virtual ~GuitarNoteNamesSingleton()
     {
     }
     
+    static GuitarNoteNamesSingleton* instance()
+    {
+        if (note_names_render == NULL)
+        {
+            note_names_render = new GuitarNoteNamesSingleton();
+        }
+        return note_names_render;
+    }
+    
     LEAK_CHECK();
 };
-static GuitarNoteNamesSingleton* g_note_names_render = new GuitarNoteNamesSingleton();
+
 
 GuitarEditor::GuitarEditor(Track* track) : Editor(track)
 {
@@ -78,7 +90,7 @@ GuitarEditor::GuitarEditor(Track* track) : Editor(track)
     lastClickedNote=-1;
 
 #ifdef __WXGTK__
-    g_note_names_render->setFont( wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, /*wxFONTWEIGHT_BOLD*/ wxFONTWEIGHT_NORMAL) );
+    GuitarNoteNamesSingleton::instance()->setFont( wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, /*wxFONTWEIGHT_BOLD*/ wxFONTWEIGHT_NORMAL) );
 #endif
 
     // let the tuning picker set-up the tuning of this guitar editor
@@ -311,11 +323,11 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current, Rel
         const int octave=tuning[n]/12;
         const int note=tuning[n]%12;
 
-        g_note_names_render->bind();
+        GuitarNoteNamesSingleton::instance()->bind();
         if (note == 1 or note == 3 or note == 5 or note == 8 or note == 10)
-            g_note_names_render->get(note).render(text_x-6, text_y );
+            GuitarNoteNamesSingleton::instance()->get(note).render(text_x-6, text_y );
         else
-            g_note_names_render->get(note).render(text_x, text_y );
+            GuitarNoteNamesSingleton::instance()->get(note).render(text_x, text_y );
         AriaRender::renderNumber( 10-octave, text_x+8, text_y );
 
     }//next
