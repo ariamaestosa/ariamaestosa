@@ -111,7 +111,7 @@ def main_Aria_func():
     elif 'install' in COMMAND_LINE_TARGETS:
         # install
         if which_os == "linux":
-            compile_Aria(build_type, which_os)
+            compile_Aria(which_os)
         elif which_os == "macosx":
             install_Aria_mac()
         else:
