@@ -54,6 +54,8 @@ NOTE: sorry, this is very raw :)
  
  * copy entire measures through measure bar
  
+ + when creating a new sequence, switch to it
+ 
  + make more features accessible graphically (as opposed to keyboard-only)
  + add new tools, that allow adding notes without dragging (and resizing without keyboard, and selecting, and...?) ?
  - elements you get from clicking on the left area should appear in the main menubar too
