@@ -46,7 +46,7 @@ void Image::load(wxString path)
     path = getResourcePrefix() + path;
     if (!image.LoadFile(path))
     {
-        wxMessageBox( wxT("Failed to load ") + path );
+        wxMessageBox( _("Failed to load ") + path );
         exit(1);
     }
     width = image.GetWidth();
