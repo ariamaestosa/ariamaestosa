@@ -1,4 +1,5 @@
 /*
+ *  Copyright (C) 1999-2003 -------
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License version 2 as
@@ -9,7 +10,6 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
- *  Core by Alexis Archambault
  */
 
 // everything here must be added/changed/checked, that's just a placeholder to help anyone willing to help
@@ -22,30 +22,10 @@
 #include "IO/MidiToMemoryStream.h"
 #include "IO/IOUtils.h"
 #include "Dialogs/WaitWindow.h"
-#include "Midi/Players/Sequencer.h"
 
 #include "wx/wx.h"
 #include "wx/utils.h"
 #include "wx/process.h"
-
-// macro to pack a MIDI short message
-#define MAKEMIDISHORTMSG(cStatus, cChannel, cData1, cData2)            \
-    cStatus | cChannel | (((UINT)cData1) << 8) | (((DWORD)cData2) << 16)
-
-
-#define ROUND(x) (int) ((x)+0.5)
-
-
-// MIDI Status Bytes for Channel Voice Messages
-#define MIDI_NOTE_OFF           0x80
-#define MIDI_NOTE_ON            0x90
-#define MIDI_POLY_PRESSURE      0xA0
-#define MIDI_CONTROL_CHANGE     0xB0
-#define MIDI_PROGRAM_CHANGE     0xC0
-#define MIDI_CHANNEL_PRESSURE   0xD0
-#define MIDI_AFTERTOUCH         0xD0  // synonym for channel pressure
-#define MIDI_PITCH_WHEEL        0xE0
-
 
 namespace AriaMaestosa
 {
@@ -55,14 +35,11 @@ namespace AriaMaestosa
         int songLengthInTicks = -1;
         bool playing = false;
         int current_tick = -1;
-		HMIDIOUT m_hOutMidiDevice = 0;
-		bool m_bOutOpen = false;
 
 
-		// all sound off, reset all controllers, reset pitch bend, etc.
         void cleanup_after_playback()
         {
-        	midiOutReset(m_hOutMidiDevice);
+            // all sound off, reset all controllers, reset pitch bend, etc.
         }
 
         class SequencerThread : public wxThread
@@ -135,7 +112,6 @@ namespace AriaMaestosa
 
         bool playSequence(Sequence* sequence, /*out*/int* startTick)
         {
-        	return play(sequence, startTick, false);
             /*
              * see 'playSelected' below, it's essentially the same, just
              * replace 'true' with 'false' where it says 'selection only'
@@ -143,7 +119,35 @@ namespace AriaMaestosa
         }
         bool playSelected(Sequence* sequence, /*out*/int* startTick)
         {
-        	return play(sequence, startTick, true);
+            if(playing) return false; // already playing
+            playing = true;
+            current_tick = 0;
+
+            // stop any preview note currently playing
+            stopNote();
+
+            /*
+             * Here there are a few ways to go.
+             *
+             * PATH 1 : Let helper functions generate midi bytes, and feed them
+             *          to a native sequencer API that can read midi bytes
+             */
+            char* data;
+            int datalength = -1;
+            makeMidiBytes(sequence, true /* selection only */, &songLengthInTicks, startTick, &data, &datalength, true);
+
+            // add some breath time at the end so that last note is not cut too sharply
+            // 'makeMidiBytes' adds some silence at the end so no need to worry about possible problems
+            songLengthInTicks += sequence->ticksPerBeat();
+
+            /*
+             * PATH 2 : Use the generic Aria/jdkmidi sequencer, then native functions below
+             *          are used and only need to do direct output when called, no native sequencer invovled
+             */
+
+            SequencerThread* seqthread = new SequencerThread(true /* selection only */, sequence);
+            seqthread->go(startTick);
+
         }
         bool isPlaying()
         {
@@ -178,8 +182,7 @@ namespace AriaMaestosa
         // get current tick, either from native API or from a variable you keep around and update from the playback thread
         int trackPlaybackProgression()
         {
-        	//@todo AAR
-            //current_tick = getTickFromNativeAPI();
+            current_tick = getTickFromNativeAPI();
             if(current_tick > songLengthInTicks || current_tick == -1)
             {
                 // song is over
@@ -195,100 +198,22 @@ namespace AriaMaestosa
             return current_tick;
         }
 
-
-		void enumerateDevices()
-		{
-			UINT i;
-			DWORD wRtn;
-			int midi_num_outputs;
-			LPMIDIOUTCAPS midi_out_caps;
-
-			midi_num_outputs = midiOutGetNumDevs();
-			midi_out_caps = (LPMIDIOUTCAPS)malloc(sizeof(MIDIOUTCAPS)*midi_num_outputs);
-
-			if (midi_out_caps != NULL)
-			{
-				::wxLogDebug(wxT("Manufacturer ID | Product ID | Driver Version | Name"));
-
-				for (i = 0; i < midi_num_outputs; i++)
-				{
-					wRtn = midiOutGetDevCaps(i, (LPMIDIOUTCAPS) & midi_out_caps[i],
-											 sizeof(MIDIOUTCAPS));
-					if (wRtn == MMSYSERR_NOERROR)
-					{
-						// see http://msdn.microsoft.com/en-us/library/dd798467%28VS.85%29.aspx
-						::wxLogDebug(wxT("%u | %u | %u | %s"), midi_out_caps[i].wMid, midi_out_caps[i].wPid,
-										midi_out_caps[i].vDriverVersion,midi_out_caps[i].szPname);
-					}
-				}
-			}
-
-			free (midi_out_caps);
-		}
-
-
         // called when app opens
         void initMidiPlayer()
         {
-
-			if( !m_bOutOpen )
-			{
-				enumerateDevices();
-
-				// To access Midi Yoke Output, simply put its number instead of MIDI_MAPPER
-			  int e = ::midiOutOpen(
-				&m_hOutMidiDevice,
-				MIDI_MAPPER,
-				0,
-				0,
-				CALLBACK_NULL
-				);
-
-			  if( e!=0 )
-			  {
-				return;
-			  }
-			  m_bOutOpen=true;
-			}
-			return;
         }
 
         // called when app closes
         void freeMidiPlayer()
         {
-			if (m_bOutOpen)
-			{
-			  ::midiOutClose( m_hOutMidiDevice );
-			  m_bOutOpen=false;
-			}
-
         }
 
         // play/stop a single preview note (no sequencing is to be done, only direct output)
         void playNote(int noteNum, int volume, int duration, int channel, int instrument)
         {
-			DWORD dwMsg;
-
-			dwMsg = MAKEMIDISHORTMSG(MIDI_PROGRAM_CHANGE, channel, instrument, 0);
-			::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
-
-			// @todo AAR : handle duration
-        	dwMsg = MAKEMIDISHORTMSG(MIDI_NOTE_ON, channel, noteNum, volume);
-			::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
         }
-
         void stopNote()
         {
-			 DWORD dwMsg;
-
-			/*
-        	// 0 velocity turns note off
-        	dwMsg = MAKEMIDISHORTMSG(MIDI_NOTE_ON, channel, note, 0);
-			::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
-			*/
-
-			// too hardcore
-			midiOutReset(m_hOutMidiDevice);
         }
 
         // ----------------------------------------------------------------------
@@ -298,50 +223,22 @@ namespace AriaMaestosa
         // if you're going to use the generic sequencer/timer, implement those to send events to native API
         void seq_note_on(const int note, const int volume, const int channel)
         {
-			DWORD dwMsg;
-
-        	dwMsg = MAKEMIDISHORTMSG(MIDI_NOTE_ON, channel, note, volume);
-			::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
         }
-
 
         void seq_note_off(const int note, const int channel)
         {
-        	 DWORD dwMsg;
-
-        	// 0 velocity turns note off
-        	dwMsg = MAKEMIDISHORTMSG(MIDI_NOTE_ON, channel, note, 0);
-			::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
         }
 
         void seq_prog_change(const int instrument, const int channel)
         {
-			DWORD dwMsg;
-
-        	dwMsg = MAKEMIDISHORTMSG(MIDI_PROGRAM_CHANGE, channel, instrument, 0);
-			::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
         }
 
         void seq_controlchange(const int controller, const int value, const int channel)
         {
-        	DWORD dwMsg;
-
-        	dwMsg = MAKEMIDISHORTMSG(MIDI_CONTROL_CHANGE, channel, controller, value);
-			::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
         }
 
         void seq_pitch_bend(const int value, const int channel)
         {
-			DWORD dwMsg;
-
-			int temp = ROUND(0x2000 * ((double)value + 1));
-			if (temp > 0x3fff) temp = 0x3fff; // 14 bits maximum
-			if (temp < 0) temp = 0;
-			int c1 = temp & 0x7F; // low 7 bits
-			int c2 = temp >> 7;   // high 7 bits
-
-        	dwMsg = MAKEMIDISHORTMSG(MIDI_PITCH_WHEEL, channel, c1, c2);
-			::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
         }
 
         // called repeatedly by the generic sequencer to tell
@@ -364,41 +261,6 @@ namespace AriaMaestosa
         bool seq_must_continue()
         {
             return playing;
-        }
-
-        bool play(Sequence* sequence, /*out*/int* startTick, bool selectionOnly)
-        {
-            if (playing) return false; // already playing
-            playing = true;
-            current_tick = 0;
-
-            // stop any preview note currently playing
-            stopNote();
-
-            /*
-             * Here there are a few ways to go.
-             *
-             * PATH 1 : Let helper functions generate midi bytes, and feed them
-             *          to a native sequencer API that can read midi bytes
-             */
-            char* data;
-            int datalength = -1;
-
-			//AAR : replaced makeMidiBytes by allocAsMidiBytes
-            //makeMidiBytes(sequence, true /* selection only */, &songLengthInTicks, startTick, &data, &datalength, true);
-			allocAsMidiBytes(sequence, selectionOnly, &songLengthInTicks, startTick, &data, &datalength, true);
-
-            // add some breath time at the end so that last note is not cut too sharply
-            // 'makeMidiBytes' adds some silence at the end so no need to worry about possible problems
-            songLengthInTicks += sequence->ticksPerBeat();
-
-            /*
-             * PATH 2 : Use the generic Aria/jdkmidi sequencer, then native functions below
-             *          are used and only need to do direct output when called, no native sequencer invovled
-             */
-
-            SequencerThread* seqthread = new SequencerThread(selectionOnly, sequence);
-            seqthread->go(startTick);
         }
 
     }
