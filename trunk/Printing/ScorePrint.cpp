@@ -1,7 +1,8 @@
 
-#include <wx/wx.h>
-#include <wx/sizer.h>
-#include <wx/file.h>
+#include "wx/wx.h"
+#include "wx/sizer.h"
+#include "wx/file.h"
+#include "wx/filename.h"
 
 #include "Midi/Sequence.h"
 #include "AriaCore.h"
@@ -161,7 +162,7 @@ namespace AriaMaestosa
     }
     void renderGClef(wxDC& dc, const int x, const float score_bottom, const float b_line_y)
     {
-        static wxBitmap gclef( getResourcePrefix() + wxT("/score/keyG.png"), wxBITMAP_TYPE_PNG );
+        static wxBitmap gclef( getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("keyG.png"), wxBITMAP_TYPE_PNG );
         
         const int b_on_image = 30;
         const int bottom_on_image = 49;
@@ -214,7 +215,7 @@ namespace AriaMaestosa
     
     void renderFClef(wxDC& dc, const int x, const float score_top, const float e_line_y)
     {
-        static wxBitmap fclef( getResourcePrefix() + wxT("/score/Fkey.png"), wxBITMAP_TYPE_PNG );
+        static wxBitmap fclef( getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("Fkey.png"), wxBITMAP_TYPE_PNG );
         
         const int e_on_image = 15;
         const float scale = (float)(e_line_y - score_top) / (float)e_on_image;
@@ -312,7 +313,7 @@ namespace AriaMaestosa
         }
         else if ( type == 4 )
         {
-            static wxBitmap silence( getResourcePrefix() + wxT("/score/silence4.png"), wxBITMAP_TYPE_PNG );
+            static wxBitmap silence( getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("silence4.png"), wxBITMAP_TYPE_PNG );
             const float scale = 6.5f;
             static wxBitmap silenceBigger = wxBitmap(silence.ConvertToImage().Scale(silence.GetWidth()*scale, silence.GetHeight()*scale));
             
@@ -323,7 +324,7 @@ namespace AriaMaestosa
         }
         else if ( type == 8 )
         {
-            static wxBitmap silence( getResourcePrefix() + wxT("/score/silence8.png"), wxBITMAP_TYPE_PNG );
+            static wxBitmap silence( getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("silence8.png"), wxBITMAP_TYPE_PNG );
             const float scale = 6.5f;
             static wxBitmap silenceBigger = wxBitmap(silence.ConvertToImage().Scale(silence.GetWidth()*scale, silence.GetHeight()*scale));
             

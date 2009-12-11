@@ -28,6 +28,8 @@ wxLocale* locale;
 static long language_aria_id = 0;
 static long language_wx_id = wxLANGUAGE_DEFAULT;
 
+const char* WINDOWS_LANG_DIR = "Languages";
+    
 class AriaLanguage
 {
 public:
@@ -90,14 +92,16 @@ void initLanguageSupport()
     {
         locale = new wxLocale( language_wx_id, wxLOCALE_CONV_ENCODING );
 
-        #ifdef __WXGTK__
+#if defined(__WXGTK__)
         // add locale search paths
         locale->AddCatalogLookupPathPrefix(wxT("/usr"));
         locale->AddCatalogLookupPathPrefix(wxT("/usr/local"));
         wxStandardPaths* paths = (wxStandardPaths*) &wxStandardPaths::Get();
         wxString prefix = paths->GetInstallPrefix();
         locale->AddCatalogLookupPathPrefix( prefix );
-        #endif
+#elif defined(__WXMSW__)
+        locale->AddCatalogLookupPathPrefix(getResourcePrefix() + WINDOWS_LANG_DIR); 
+#endif
 
         locale->AddCatalog(wxT("aria_maestosa"));
 
