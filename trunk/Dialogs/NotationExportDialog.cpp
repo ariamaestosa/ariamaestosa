@@ -69,8 +69,8 @@ public:
     LEAK_CHECK();
 
     NotationSetup() : wxFrame(NULL, wxID_ANY,
-                                           //I18N: - title of the notation-export dialog
-                                           _("Export to musical notation"),
+                                           //I18N: - title of the notation-print dialog
+                                           _("Print musical notation"),
                                            wxPoint(200,200), wxSize(200,400), wxCAPTION | wxSTAY_ON_TOP)
     {
 
