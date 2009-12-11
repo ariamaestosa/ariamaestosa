@@ -60,6 +60,7 @@
 #ifdef __WXMAC__
 #include "wx/html/webkit.h"
 #endif
+#include "wx/filename.h"
 
 namespace AriaMaestosa {
 
@@ -623,8 +624,8 @@ public:
 
 void MainFrame::menuEvent_manual(wxCommandEvent& evt)
 {
-    wxString path_to_docs =  getResourcePrefix() + wxT("Documentation/index.html");
-
+    wxString path_to_docs =  getResourcePrefix() + wxT("Documentation") + wxFileName::GetPathSeparators() + wxT("index.html");
+    
 #ifdef __WXMAC__
     new ManualView(this, path_to_docs);
 #else

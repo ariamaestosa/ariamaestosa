@@ -55,6 +55,9 @@ NOTE: sorry, this is very raw :)
  * copy entire measures through measure bar
  
  + when creating a new sequence, switch to it
+ + when using 'close button', close whole app, not one sequence. each sequence needs its own close button
+ + contextual menu on right-click (copy, paste, track props, ...)
+ + Include sample files along Aria?
  
  + make more features accessible graphically (as opposed to keyboard-only)
  + add new tools, that allow adding notes without dragging (and resizing without keyboard, and selecting, and...?) ?
