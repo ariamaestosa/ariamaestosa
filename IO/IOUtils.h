@@ -37,6 +37,8 @@ wxString extract_path(wxString str);
 wxString showFileDialog(wxString message, wxString defaultDir,
                         wxString filename, wxString wildcard, bool save);
 
+/** Returns the path to the directory where resource files are located. The returned path
+    always contains a trailing '/', i.e. you can do getResourcePrefix() + "somefile.png" */
 wxString getResourcePrefix();
 
 long atoi_u(wxString s);
