@@ -629,7 +629,7 @@ void MainFrame::menuEvent_manual(wxCommandEvent& evt)
 #ifdef __WXMAC__
     new ManualView(this, path_to_docs);
 #else
-    if (!wxFileExists( path_to_docs ) or !wxLaunchDefaultBrowser( wxT("file://") + path_to_docs ))
+    if (!wxFileExists( path_to_docs ) or !wxLaunchDefaultBrowser( wxT("file:") + wxFileName::GetPathSeparators() + wxFileName::GetPathSeparators() + path_to_docs ))
     {
         wxMessageBox(wxT("Sorry, opening docs failed\n(") + path_to_docs + wxT(" does not appear to exist).\nTry ariamaestosa.sourceforge.net instead."));
     }
