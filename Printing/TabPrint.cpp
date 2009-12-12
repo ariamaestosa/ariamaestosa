@@ -145,7 +145,7 @@ namespace AriaMaestosa
             
             std::cout << "Tablature : drawing notes " << firstNote << " to " << lastNote << std::endl;
             
-            for(int i=firstNote; i<=lastNote; i++)
+            for (int i=firstNote; i<=lastNote; i++)
             {
                 const int string = renderInfo.track->getNoteString(i);
                 const int fret = renderInfo.track->getNoteFret(i);
@@ -154,7 +154,7 @@ namespace AriaMaestosa
                 
                 // substract from width to leave some space on the right (coordinate is from the left of the text string so we need extra space on the right)
                 // if fret number is greater than 9, the string will have two characters so we need to recenter it a bit more
-                const int drawX = getNotePrintX(trackID, line, i) + (fret > 9 ? renderInfo.pixel_width_of_an_unit/4 : renderInfo.pixel_width_of_an_unit/2);
+                const int drawX = getNotePrintX(trackID, line, i).from + (fret > 9 ? renderInfo.pixel_width_of_an_unit/4 : renderInfo.pixel_width_of_an_unit/2);
                 const int drawY = renderInfo.y0 + stringHeight*string - textSize3.y/2;
                 wxString label = to_wxString(fret);
                 

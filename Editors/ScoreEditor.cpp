@@ -540,8 +540,6 @@ using namespace EditorStemParams;
 // 'vector' is where all visible notes will are added, to be analysed after
 void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
 {
-
-
     AriaRender::lineWidth(2);
 
     renderInfo.setY( LEVEL_TO_Y(renderInfo.level) - head_radius + 4 );

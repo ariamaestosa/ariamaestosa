@@ -93,10 +93,11 @@ namespace AriaMaestosa
             }
             ~PrintXConverter(){}
             
-            int tickToX(const int tick)
+            Range<int> tickToX(const int tick)
             {
                 return parent->tickToX(trackID, *line, tick);
             }
+            /*
             int getXTo(const int tick)
             {
                 const int out = parent->tickToXLimit(trackID, *line, tick);
@@ -108,6 +109,7 @@ namespace AriaMaestosa
             {
                 return tickToX(parent->getClosestTickFrom(trackID, *line, tick));
             }
+             */
         };
     
     // global (FIXME)
@@ -121,6 +123,8 @@ namespace AriaMaestosa
     /*
      * A few drawing routines
      */
+    // -------------------------------------------------------------------------------------------
+    /** Renders a 'sharp' symbol at the given coordinates */
     void renderSharp(wxDC& dc, const int x, const int y)
     {
         dc.SetPen(  wxPen( wxColour(0,0,0), 6 ) );
@@ -133,6 +137,9 @@ namespace AriaMaestosa
         dc.DrawLine( x-20/2, y-30/2, x-20/2, y+60/2 );
         dc.DrawLine( x+20/2, y-40/2, x+20/2, y+50/2 );
     }
+    
+    // -------------------------------------------------------------------------------------------
+    /** Renders a 'flat' symbol at the given coordinates */
     void renderFlat(wxDC& dc, const int x, const int y)
     {
         dc.SetPen(  wxPen( wxColour(0,0,0), 6 ) );
@@ -148,6 +155,9 @@ namespace AriaMaestosa
         };
         dc.DrawSpline(6, points);
     }
+    
+    // -------------------------------------------------------------------------------------------
+    /** Renders a 'natural' symbol at the given coordinates */
     void renderNatural(wxDC& dc, const int x, const int y)
     {
         dc.SetPen(  wxPen( wxColour(0,0,0), 6 ) );
@@ -160,6 +170,9 @@ namespace AriaMaestosa
         dc.DrawLine( x-30/2, y+40/2, x-30/2, y-60/2 );
         dc.DrawLine( x+30/2, y-20/2, x+30/2, y+80/2 );
     }
+    
+    // -------------------------------------------------------------------------------------------
+    /** Renders a 'G clef' sign at the the given coordinates */
     void renderGClef(wxDC& dc, const int x, const float score_bottom, const float b_line_y)
     {
         static wxBitmap gclef( getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("keyG.png"), wxBITMAP_TYPE_PNG );
@@ -213,6 +226,8 @@ namespace AriaMaestosa
          */
     }
     
+    // -------------------------------------------------------------------------------------------
+    /** Renders a 'F clef' sign at the the given coordinates */
     void renderFClef(wxDC& dc, const int x, const float score_top, const float e_line_y)
     {
         static wxBitmap fclef( getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("Fkey.png"), wxBITMAP_TYPE_PNG );
@@ -225,6 +240,8 @@ namespace AriaMaestosa
         dc.DrawBitmap(scaled, x, score_top, true);
     }
     
+    // -------------------------------------------------------------------------------------------
+    /** Renders an arc (half an ellipse) at the given coordinates */
     void renderArc(wxDC& dc, const int center_x, const int center_y,
                    const int radius_x, const int radius_y)
     {
@@ -245,6 +262,8 @@ namespace AriaMaestosa
         dc.DrawSpline(11, points);
     }
     
+    // -------------------------------------------------------------------------------------------
+
     // leave a pointer to the dc for the callback
     // FIXME find cleaner way
     wxDC* global_dc = NULL;
@@ -256,25 +275,26 @@ namespace AriaMaestosa
     
     std::vector<int> g_silences_ticks;
     
+    // -------------------------------------------------------------------------------------------
+    
     void gatherSilenceCallback(const int duration, const int tick, const int type, const int silences_y, const bool triplet, const bool dotted, const int dot_delta_x, const int dot_delta_y)
     {
         g_silences_ticks.push_back(tick);
-        std::cout << "silence at " << tick << " (beat " << (tick/960.0f) << ")\n";
+        std::cout << "gatherSilenceCallback : silence at " << tick << " (beat " << (tick/960.0f) << ")\n";
     }
+    
+    // -------------------------------------------------------------------------------------------
     
     void renderSilenceCallback(const int duration, const int tick, const int type, const int silences_y, const bool triplet,
                                const bool dotted, const int dot_delta_x, const int dot_delta_y)
     {
         assert( global_dc != NULL);
         
-        const int x = x_converter->tickToX(tick);
-        if (x < 0) return; // this part of score is not printed (e.g. is in a repetition)
-    
-        // In case we got more space than the bare minimum because of another track, use it!
-        const int x_to = std::max(x_converter->getXTo(tick), x_converter->getClosestXFromTick(tick+duration));
-        assert(x_to != -1);
+        const Range<int> x = x_converter->tickToX(tick);
+        if (x.from < 0) return; // this part of score is not printed (e.g. is in a repetition)
+        assert(x.to != -1);
         
-        const int x_center = (x + x_to)/2;
+        const int x_center = (x.from + x.to)/2;
         
         // debug draw
         //static int silenceShift = 0;
@@ -298,8 +318,8 @@ namespace AriaMaestosa
             silence_radius = 40;
             
             // FIXME - remove hardcoded values
-            global_dc->DrawRectangle(x + 40, silences_y, silence_radius*2, (int)round(global_line_height/2));
-            silence_center = x + 40 + silence_radius;
+            global_dc->DrawRectangle(x.from + 40, silences_y, silence_radius*2, (int)round(global_line_height/2));
+            silence_center = x.from + 40 + silence_radius;
         }
         else if ( type == 2 )
         {
@@ -307,9 +327,9 @@ namespace AriaMaestosa
             global_dc->SetPen(  *wxTRANSPARENT_PEN  );
             
             // FIXME - hardcoded values
-            global_dc->DrawRectangle(x + 40, (int)round(silences_y+global_line_height/2),
+            global_dc->DrawRectangle(x.from + 40, (int)round(silences_y+global_line_height/2),
                                      silence_radius*2, (int)round(global_line_height/2.0));
-            silence_center = x + 40 + silence_radius;
+            silence_center = x.from + 40 + silence_radius;
         }
         else if ( type == 4 )
         {
@@ -337,7 +357,7 @@ namespace AriaMaestosa
         {
             // TODO : use x_center
             global_dc->SetPen(  wxPen( wxColour(0,0,0), 8 ) );
-            const int mx = x + 50;
+            const int mx = x.from + 50;
             const int y = silences_y + 80;
             wxPoint points[] =
             {
@@ -392,13 +412,21 @@ namespace AriaMaestosa
 #pragma mark ScorePrintable (EditorPrintable common interface)
 #endif
     
+    // -------------------------------------------------------------------------------------------
+    
     ScorePrintable::ScorePrintable() : EditorPrintable()
     {
         // std::cout << " *** setting global g_printable" << std::endl;
         g_printable = this;
     }
-    ScorePrintable::~ScorePrintable() { }
     
+    // -------------------------------------------------------------------------------------------
+    
+    ScorePrintable::~ScorePrintable()
+    {
+    }
+    
+    // -------------------------------------------------------------------------------------------
       
     int ScorePrintable::calculateHeight(const int trackID, LineTrackRef& lineTrack, LayoutLine& line)
     {
@@ -429,6 +457,7 @@ namespace AriaMaestosa
 
     }
     
+    // -------------------------------------------------------------------------------------------
 #define VERBOSE 0
     
     void ScorePrintable::addUsedTicks(const PrintLayoutMeasure& measure, const MeasureTrackReference& trackRef,
@@ -506,7 +535,7 @@ namespace AriaMaestosa
                 }
             }
             
-            for(int n=0; n<noteAmount; n++)
+            for (int n=0; n<noteAmount; n++)
             {
                 const int tick = g_clef_analyser->noteRenderInfo[n].tick;
                 if (tick < fromTick or tick >= toTick) continue;
@@ -549,6 +578,8 @@ namespace AriaMaestosa
         std::cout << "}\n";
 #endif
     }
+    
+    // -------------------------------------------------------------------------------------------
     
     void ScorePrintable::drawLine(const int trackID, LineTrackRef& lineTrack, LayoutLine& line, wxDC& dc)
     {
@@ -645,6 +676,8 @@ namespace AriaMaestosa
         }
     }
 
+    // -------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------------
     
 #if 0
 #pragma mark -
@@ -751,6 +784,8 @@ namespace AriaMaestosa
 
     }
     
+    // -------------------------------------------------------------------------------------------
+    
     namespace PrintStemParams
     {
         int stem_up_x_offset;
@@ -761,12 +796,12 @@ namespace AriaMaestosa
         
         const int getStemX(const int tick, const PitchSign sign, const STEM stem_type)
         {
-            const int noteX = x_converter->tickToX(tick);
+            const Range<int> noteX = x_converter->tickToX(tick);
             
-            const int accidentalShift = sign == PITCH_SIGN_NONE ? 0 : headRadius*1.85;
+            //const int accidentalShift = sign == PITCH_SIGN_NONE ? 0 : headRadius*1.85;
             
-            if     (stem_type == STEM_UP)   return (noteX + stem_up_x_offset + note_x_shift + accidentalShift);
-            else if (stem_type == STEM_DOWN) return (noteX + stem_down_x_offset + note_x_shift + accidentalShift);
+            if      (stem_type == STEM_UP)   return (noteX.to + stem_up_x_offset  );
+            else if (stem_type == STEM_DOWN) return (noteX.to + stem_down_x_offset);
             else return -1;
         }
         const int getStemX(const NoteRenderInfo& noteRenderInfo)
@@ -776,6 +811,7 @@ namespace AriaMaestosa
     }
     using namespace PrintStemParams;
     
+    // -------------------------------------------------------------------------------------------
     
     void ScorePrintable::earlySetup(const int trackID, Track* track)
     {
@@ -936,93 +972,7 @@ namespace AriaMaestosa
         
     }
     
-    /**
-     * Goes a bit further that 'gatherVerticalSizingInfo' : builds analyzers objects and gathers notes. Does
-     * not perform any actual analysis with the ScoreAnalyser(s)
-     */
-    /*
-    void ScorePrintable::gatherNotesAndBasicSetup(LayoutLine& line)
-    {
-        LayoutLine* previousLine = currentLine;
-        currentLine = &line;
-        
-        ScoreData* scoreData = dynamic_cast<ScoreData*>(line.editor_data.raw_ptr);
-        assert(scoreData != NULL);
-        
-        Track* track = line.getTrack();
-        ScoreEditor* scoreEditor = track->graphics->scoreEditor;
-        ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
-        
-
-        // ---- Build score analyzers
-        if (g_clef)
-        {
-            g_clef_analyser = new ScoreAnalyser(scoreEditor, scoreData->middle_c_level-5);
-            g_clef_analyser->setStemPivot(scoreData->middle_c_level-5);
-        }
-        if (f_clef)
-        {
-            f_clef_analyser = new ScoreAnalyser(scoreEditor, scoreData->middle_c_level-5);
-            f_clef_analyser->setStemPivot(scoreData->middle_c_level+6);
-        }
-
-        converter->updateConversionData();
-        converter->resetAccidentalsForNewRender();
-        
-        // iterate through layout elements to collect notes in the vector
-        // so ScoreAnalyser can prepare the score
-        LayoutElement* currentElement;
-        std::vector<LayoutElement>& layoutElements = line.layoutElements;
-        const int amount = layoutElements.size();
-        for(int el=0; el<amount; el++)
-        {
-            currentElement = &layoutElements[el];
-            
-            // we're collecting notes here... types other than regular measures
-            // don't contain notes and thus don't interest us
-            if (currentElement->getType() != SINGLE_MEASURE) continue;
-            
-            const int firstNote = line.getFirstNoteInElement(currentElement);
-            const int lastNote = line.getLastNoteInElement(currentElement);
-            
-            if (firstNote == -1 or lastNote == -1) continue; // empty measure
-            
-            for(int n=firstNote; n<=lastNote; n++)
-            {
-                PitchSign note_sign;
-                const int noteLevel = converter->noteToLevel(track->getNote(n), &note_sign);
-                
-                if (noteLevel == -1) continue;
-                const int noteLength = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
-                const int tick = track->getNoteStartInMidiTicks(n);
-                
-                NoteRenderInfo currentNote(tick, noteLevel, noteLength, note_sign,
-                                           track->isNoteSelected(n), track->getNotePitchID(n));
-                
-                // add note to either G clef score or F clef score
-                if (g_clef and not f_clef)
-                {
-                    g_clef_analyser->addToVector(currentNote, false);
-                }
-                else if (f_clef and not g_clef)
-                {
-                    f_clef_analyser->addToVector(currentNote, false);
-                }
-                else if (f_clef and g_clef)
-                {
-                    if (noteLevel < scoreData->middle_c_level)
-                        g_clef_analyser->addToVector(currentNote, false);
-                    else
-                        f_clef_analyser->addToVector(currentNote, false);
-                }
-            }
-            
-        }//next element
-
-        // FIXME : ugly mechanism to retain the same currentLine
-        currentLine = previousLine;
-    }
-    */
+    // -------------------------------------------------------------------------------------------
     
     void ScorePrintable::analyseAndDrawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine& line, Track* track,
                                    wxDC& dc, const int extra_lines_above, const int extra_lines_under,
@@ -1038,11 +988,17 @@ namespace AriaMaestosa
         const int last_score_level = first_score_level + 8;
         const int min_level =  first_score_level - extra_lines_above*2;
 
-        note_x_shift = headRadius + 36; // shift by a 'headRadius', since note will be drawn centered on its X and not left-aligned
+        note_x_shift = headRadius; // shift to LEFT by a 'headRadius', since note will be drawn from the right of its area
+                                   // and its center is the origin of the drawing
+        						   // e.g. Drawing area of a note :
+          						   // |     |
+                                   // |     |  <-- stem at the right
+                                   // |  ( )|
+        						   //     ^ origin of the note here, in its center. so substract a radius from the right
         
-        stem_up_x_offset = headRadius - 10;
+        stem_up_x_offset = -10; // since note is right-aligned, keep the stem at the right. go 10 towards the note to "blend" in it.
         stem_up_y_offset = 0;
-        stem_down_x_offset = -headRadius + 4;
+        stem_down_x_offset = -headRadius*2 + 4; // since note is right-aligned. go 4 towards the note to "blend" in it.
         stem_down_y_offset = 0;
                 
 #define LEVEL_TO_Y( lvl ) y0 + 1 + lineHeight*0.5*(lvl - min_level)
@@ -1056,7 +1012,7 @@ namespace AriaMaestosa
         const int lineAmount = 5 + extra_lines_above + extra_lines_under;
         const float lineHeight = (float)(y1 - y0) / (float)(lineAmount-1);
         
-        for(int lvl=first_score_level; lvl<=last_score_level; lvl+=2)
+        for (int lvl=first_score_level; lvl<=last_score_level; lvl+=2)
         {
             const int y = LEVEL_TO_Y(lvl);
             dc.DrawLine(x0, y, x1, y);
@@ -1072,7 +1028,7 @@ namespace AriaMaestosa
         const int measure_dividers_to_y = LEVEL_TO_Y(last_score_level);
         
         const int elamount = line.layoutElements.size();
-        for(int n=0; n<elamount; n++)
+        for (int n=0; n<elamount; n++)
         {
             drawVerticalDivider(&line.layoutElements[n], measure_dividers_from_y, measure_dividers_to_y);
             
@@ -1093,7 +1049,7 @@ namespace AriaMaestosa
                              LEVEL_TO_Y(first_score_level),
                              LEVEL_TO_Y(first_score_level+3));
             
-            // key
+            // render key signature next to staff
             // on which level to put the signs (0 is the level of the highest sign when all are shown)
             const unsigned short int sharp_sign_lvl[] = { 1, 4, 0, 3, 6, 2, 5 };
             const unsigned short int flat_sign_lvl[] = { 3, 0, 4, 1, 5, 2, 6 };
@@ -1108,12 +1064,12 @@ namespace AriaMaestosa
                                           - 300 - 50 /* some additional space */) / std::max(sharps, flats);
                 if (x_space_per_symbol > 50) x_space_per_symbol = 50;
                 
-                for(int n=0; n<sharps; n++)
+                for (int n=0; n<sharps; n++)
                 {
                     const int level = first_score_level + (f_clef ? 1 : -1) + sharp_sign_lvl[n];
                     renderSharp( dc, line.layoutElements[0].getXFrom()+300+n*x_space_per_symbol, LEVEL_TO_Y(level) );
                 }
-                for(int n=0; n<flats; n++)
+                for (int n=0; n<flats; n++)
                 {
                     const int level = first_score_level + (f_clef ? 3 : 1) + flat_sign_lvl[n];
                     renderFlat( dc, line.layoutElements[0].getXFrom()+300+n*x_space_per_symbol, LEVEL_TO_Y(level) );
@@ -1157,33 +1113,33 @@ namespace AriaMaestosa
                 // draw small lines above score if needed
                 if (noteRenderInfo.level < first_score_level-1)
                 {
-                    const int noteX = x_converter->tickToX(noteRenderInfo.tick);
+                    const Range<int> noteX = x_converter->tickToX(noteRenderInfo.tick);
                     dc.SetPen(  wxPen( wxColour(125,125,125), 8 ) );
                     
                     for(int lvl=first_score_level-2; lvl>noteRenderInfo.level+noteRenderInfo.level%2-2; lvl -= 2)
                     {
                         const int y = LEVEL_TO_Y(lvl);
-                        dc.DrawLine(noteX, y, noteX+135, y);
+                        dc.DrawLine(noteX.from, y, noteX.from+135, y);
                     }
                 }
                 
                 // draw small lines below score if needed
                 if (noteRenderInfo.level > last_score_level+1)
                 {
-                    const int noteX = x_converter->tickToX(noteRenderInfo.tick);
+                    const Range<int> noteX = x_converter->tickToX(noteRenderInfo.tick);
                     dc.SetPen(  wxPen( wxColour(125,125,125), 8 ) );
                     
                     for(int lvl=last_score_level+2; lvl<noteRenderInfo.level-noteRenderInfo.level%2+2; lvl += 2)
                     {
                         const int y = LEVEL_TO_Y(lvl);
-                        dc.DrawLine(noteX, y, noteX+135, y);
+                        dc.DrawLine(noteX.from, y, noteX.from+135, y);
                     }
                 }
             } // end scope
             
             // ---- draw notes heads
             std::cout << " == rendering note heads ==\n";
-            for(int i=0; i<noteAmount; i++)
+            for (int i=0; i<noteAmount; i++)
             {
                 if (analyser.noteRenderInfo[i].tick < fromTick) continue;
                 if (analyser.noteRenderInfo[i].tick >= toTick) break;
@@ -1191,14 +1147,15 @@ namespace AriaMaestosa
                 //std::cout << "Drawing note at " << analyser.noteRenderInfo[i].tick << " - beat " <<  analyser.noteRenderInfo[i].tick/960 << std::endl;         
                 NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
 
-                const int noteX = x_converter->tickToX(noteRenderInfo.tick);
-                
+                const Range<int> noteX = x_converter->tickToX(noteRenderInfo.tick);
+
+                // Amount by which to shift the executable sign, from 'noteX'
                 const int accidentalShift = noteRenderInfo.sign == PITCH_SIGN_NONE ? 0 : headRadius*1.85;
     
                 // draw head
                 const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
-                wxPoint headLocation( noteX + note_x_shift + accidentalShift,
-                                     notey-(headRadius-5)/2.0);
+                wxPoint headLocation( noteX.to - note_x_shift, // this is the center of the note
+                                      notey-(headRadius-5)/2.0);
                 
                 if (noteRenderInfo.instant_hit)
                 {
@@ -1211,7 +1168,7 @@ namespace AriaMaestosa
                     const int cx = headLocation.x;
                     const int cy = headLocation.y;
                     wxPoint points[25];
-                    for(int n=0; n<25; n++)
+                    for (int n=0; n<25; n++)
                     {
                         // FIXME - instead of always substracting to radius, just make it smaller...
                         const float angle = n/25.0*6.283185f /* 2*PI */;
@@ -1228,14 +1185,14 @@ namespace AriaMaestosa
                 // draw dot if note is dotted
                 if (noteRenderInfo.dotted)
                 {
-                    wxPoint headLocation( noteX + note_x_shift + accidentalShift + headRadius*2, notey+10 );
+                    wxPoint headLocation( headLocation.x + headRadius*2, notey+10 );
                     dc.DrawEllipse( headLocation, wxSize(10,10) );
                 }
                 
                 // draw sharpness sign if relevant
-                if (noteRenderInfo.sign == SHARP)        renderSharp  ( dc, noteX + accidentalShift, noteRenderInfo.getY() - 40  );
-                else if (noteRenderInfo.sign == FLAT)    renderFlat   ( dc, noteX + accidentalShift, noteRenderInfo.getY() - 40  );
-                else if (noteRenderInfo.sign == NATURAL) renderNatural( dc, noteX + accidentalShift, noteRenderInfo.getY() - 50  );
+                if (noteRenderInfo.sign == SHARP)        renderSharp  ( dc, noteX.from + accidentalShift, noteRenderInfo.getY() - 15  );
+                else if (noteRenderInfo.sign == FLAT)    renderFlat   ( dc, noteX.from + accidentalShift, noteRenderInfo.getY() - 15  );
+                else if (noteRenderInfo.sign == NATURAL) renderNatural( dc, noteX.from + accidentalShift, noteRenderInfo.getY() - 20  );
                 
             } // next note
         } // end scope
@@ -1250,7 +1207,7 @@ namespace AriaMaestosa
         std::cout << " == rendering note ornaments ==\n";
         // now that score was analysed, draw the remaining note bits
         const int noteAmount = lineAnalyser->noteRenderInfo.size();
-        for(int i=0; i<noteAmount; i++)
+        for (int i=0; i<noteAmount; i++)
         {
             NoteRenderInfo& noteRenderInfo = lineAnalyser->noteRenderInfo[i];
             
@@ -1259,8 +1216,9 @@ namespace AriaMaestosa
             // draw stem
             if (noteRenderInfo.stem_type != STEM_NONE)
             {                
-                dc.DrawLine( getStemX(noteRenderInfo), LEVEL_TO_Y(noteRenderInfo.getStemOriginLevel()),
-                             getStemX(noteRenderInfo), LEVEL_TO_Y(analyser.getStemTo(noteRenderInfo)) + 10    );
+                const int stem_x = getStemX(noteRenderInfo);
+                dc.DrawLine( stem_x, LEVEL_TO_Y(noteRenderInfo.getStemOriginLevel()),
+                             stem_x, LEVEL_TO_Y(analyser.getStemTo(noteRenderInfo)) + 10    );
             }
             
             // draw flags
@@ -1296,13 +1254,13 @@ namespace AriaMaestosa
                 const bool show_above = noteRenderInfo.isTieUp();
                 const int base_y = LEVEL_TO_Y( noteRenderInfo.getStemOriginLevel() ) + (show_above ? - 30 : 60);
                 
-                const int noteX = x_converter->tickToX(noteRenderInfo.tick);
+                const Range<int> noteX = x_converter->tickToX(noteRenderInfo.tick);
                 std::cout << "tied to tick " << noteRenderInfo.getTiedToTick() << " from " << noteRenderInfo.tick << std::endl;
-                const int tiedToPixel = x_converter->tickToX(noteRenderInfo.getTiedToTick());
+                const int tiedToPixel = x_converter->tickToX(noteRenderInfo.getTiedToTick()).from;
                 std::cout << "tied to pixel " << tiedToPixel << " from " << getStemX(noteRenderInfo) << std::endl;
 
-                const int center_x = (tiedToPixel + noteX)/2 + headRadius*2;
-                const int radius_x = abs(tiedToPixel - noteX)/2;
+                const int center_x = (tiedToPixel + noteX.from)/2 + headRadius*2;
+                const int radius_x = abs(tiedToPixel - noteX.from)/2;
                 renderArc(dc, center_x, base_y, radius_x, show_above ? -50 : 50);
             }
             
@@ -1346,12 +1304,12 @@ namespace AriaMaestosa
                 dc.SetPen( tiePen );
                 dc.SetBrush( *wxTRANSPARENT_BRUSH );
                 
-                int triplet_arc_x_start = x_converter->tickToX(noteRenderInfo.triplet_arc_tick_start);
+                int triplet_arc_x_start = x_converter->tickToX(noteRenderInfo.triplet_arc_tick_start).from;
                 int triplet_arc_x_end = -1;
                 
                 if (noteRenderInfo.triplet_arc_tick_end != -1)
                 {
-                    triplet_arc_x_end = x_converter->tickToX(noteRenderInfo.triplet_arc_tick_end);
+                    triplet_arc_x_end = x_converter->tickToX(noteRenderInfo.triplet_arc_tick_end).from;
                 }
                 
                 const int center_x = (triplet_arc_x_end == -1 ?
@@ -1394,5 +1352,5 @@ namespace AriaMaestosa
         }
         
     }
-    
+    // -------------------------------------------------------------------------------------------
 }
