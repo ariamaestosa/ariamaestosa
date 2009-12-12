@@ -50,6 +50,8 @@ class Track;
     {
     protected:
         wxDC* dc;
+        int getClosestTickFrom(const int trackID, LayoutLine& line, const int tick);
+
     public:
         EditorPrintable();
         virtual ~EditorPrintable();
@@ -75,8 +77,6 @@ class Track;
         Range<int> getNotePrintX(const int trackID, LayoutLine& line, int noteID);
         Range<int> tickToX(const int trackID, LayoutLine& line, const int tick);
         //int tickToXLimit(const int trackID, LayoutLine& line, const int tick);
-
-        int getClosestTickFrom(const int trackID, LayoutLine& line, const int tick);
 
         void drawVerticalDivider(LayoutElement* el, const int y0, const int y1);
         void renderTimeSignatureChange(LayoutElement* el, const int y0, const int y1);
