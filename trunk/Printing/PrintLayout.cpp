@@ -458,6 +458,7 @@ void PrintLayoutManager::calculateRelativeLengths()
                 totalRelativePosition += ticks_relative_position[ all_ticks_vector[i] ].proportion;
                 ticks_relative_position[ all_ticks_vector[i] ].relativeEndPosition = totalRelativePosition;
             }
+            totalRelativePosition += 1.0f; // leave 1 space worth of empty space at the end
             for (int i=0; i<all_ticks_amount; i++)
             {
                 TickPosInfo& tickPosInfo = ticks_relative_position[ all_ticks_vector[i] ];
@@ -465,9 +466,8 @@ void PrintLayoutManager::calculateRelativeLengths()
                 //std::cout << "note relativePosition = " << 
                 //" (" << tickPosInfo.relativePosition << "/" << intRelativePosition << ") = ";
                 
-                // I multiply by 0.9 to avoid notes being too close to the next bar (FIXME : don't hardcode)
-                tickPosInfo.relativePosition = tickPosInfo.relativePosition / totalRelativePosition * 0.9;
-                tickPosInfo.relativeEndPosition = tickPosInfo.relativeEndPosition / totalRelativePosition * 0.9;
+                tickPosInfo.relativePosition = tickPosInfo.relativePosition / totalRelativePosition;
+                tickPosInfo.relativeEndPosition = tickPosInfo.relativeEndPosition / totalRelativePosition;
 
                 std::cout << "tickPosInfo.relativePosition = " << tickPosInfo.relativePosition << " to " <<
                 			tickPosInfo.relativeEndPosition << std::endl;

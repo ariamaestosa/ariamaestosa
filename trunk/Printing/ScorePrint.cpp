@@ -277,7 +277,8 @@ namespace AriaMaestosa
     
     // -------------------------------------------------------------------------------------------
     
-    void gatherSilenceCallback(const int duration, const int tick, const int type, const int silences_y, const bool triplet, const bool dotted, const int dot_delta_x, const int dot_delta_y)
+    void gatherSilenceCallback(const int duration, const int tick, const int type, const int silences_y, const bool triplet,
+                               const bool dotted, const int dot_delta_x, const int dot_delta_y)
     {
         g_silences_ticks.push_back(tick);
         std::cout << "gatherSilenceCallback : silence at " << tick << " (beat " << (tick/960.0f) << ")\n";
