@@ -254,10 +254,10 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
     {
         PrintLayoutMeasure& meas = line.getMeasureForElement(n);
         if (meas.id == -1) continue; // nullMeasure, ignore
-        const int firstTick = meas.firstTick;
-        const int lastTick  = meas.lastTick;
+        const int firstTickInMeasure = meas.firstTick;
+        const int lastTickInMeasure  = meas.lastTick;
         
-        if (tick >= firstTick and tick < lastTick)
+        if (tick >= firstTickInMeasure and tick < lastTickInMeasure)
         {
             //std::cout << tick << " is within bounds " << firstTick << " - " << lastTick << std::endl;
             const int elem_x_start = line.layoutElements[n].getXFrom();
@@ -272,7 +272,18 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
             }
             
             float nratio_from = meas.ticks_relative_position[tick].relativePosition;
-            float nratio_to = meas.ticks_relative_position[tick].relativeEndPosition;
+            float nratio_to;
+            
+            const int nextTickInThisTrack = getClosestTickFrom(trackID, line, tick+1);
+            //std::cout << "nextTickInThisTrack = " << nextTickInThisTrack << std::endl;
+			if (nextTickInThisTrack != -1 && nextTickInThisTrack < lastTickInMeasure)
+            {
+                nratio_to = meas.ticks_relative_position[nextTickInThisTrack].relativePosition;
+            }
+            else
+            {
+                nratio_to = meas.ticks_relative_position[tick].relativeEndPosition;
+            }
             
             assertExpr(elem_w, >, 0);
             
@@ -280,7 +291,7 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
         }
         else 
         // given tick is before the current line
-        if (tick < firstTick) 
+        if (tick < firstTickInMeasure) 
         {
             //std::cout << "tickToX Returning -1 A\n";
             return Range<int>(-1, -1);
@@ -291,7 +302,7 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
          * FIXME - it's not necessarly a tie
          * FIXME - ties aand line warping need better handling
          */
-        else if (n==renderInfo.layoutElementsAmount-1 and tick >= lastTick)
+        else if (n==renderInfo.layoutElementsAmount-1 and tick >= lastTickInMeasure)
         {
             //std::cout << "tickToX Returning -" <<  (currentLine->layoutElements[n].getXTo() + 10) << " B\n";
 
@@ -323,6 +334,9 @@ int EditorPrintable::tickToXLimit(const int trackID, LayoutLine& line, const int
   * This method exists because in multi-track prints, one track may request more ticks (and thus more space) than
   * the other. When rendering, the other can thus call this to know the extent of its free size and center things
   * instead of leaving holes (but for this they must have silence information). returns -1 if nothing was found.
+  *
+  * FIXME: this doesn't work for the purpose highlighted above... 'ticks_relative_position', which is used below,
+  * contains the ticks for all tracks...
   */
 int EditorPrintable::getClosestTickFrom(const int trackID, LayoutLine& line,const int tick)
 {
@@ -330,7 +344,7 @@ int EditorPrintable::getClosestTickFrom(const int trackID, LayoutLine& line,cons
     LineTrackRef& renderInfo = line.getTrackRenderInfo(trackID);
     
     // find in which measure this tick belongs
-    for(int n=0; n<renderInfo.layoutElementsAmount; n++)
+    for (int n=0; n<renderInfo.layoutElementsAmount; n++)
     {
         PrintLayoutMeasure& meas = line.getMeasureForElement(n);
         if (meas.id == -1) continue; // nullMeasure, ignore

@@ -339,7 +339,12 @@ namespace AriaMaestosa
             static wxBitmap silenceBigger = wxBitmap(silence.ConvertToImage().Scale(silence.GetWidth()*scale, silence.GetHeight()*scale));
             
             silence_radius = silenceBigger.GetWidth()/2;
-            global_dc->DrawBitmap( silenceBigger, x_center - silence_radius, silences_y );
+            global_dc->DrawBitmap( silenceBigger, x.to - silence_radius*2, silences_y );
+            
+            // <debug>
+            //global_dc->SetPen(  wxPen( wxColour(255,0,0), 8 ) );
+            //global_dc->DrawLine( x.from, silences_y, x.to, silences_y);
+            // </debug>
             
             silence_center = x_center;
         }
@@ -350,7 +355,12 @@ namespace AriaMaestosa
             static wxBitmap silenceBigger = wxBitmap(silence.ConvertToImage().Scale(silence.GetWidth()*scale, silence.GetHeight()*scale));
             
             silence_radius = silenceBigger.GetWidth()/2;
-            global_dc->DrawBitmap( silenceBigger, x_center - silence_radius, silences_y + 20);
+            global_dc->DrawBitmap( silenceBigger, x.to - silence_radius*2, silences_y + 20);
+            
+            // <debug>
+            //global_dc->SetPen(  wxPen( wxColour(255,0,0), 8 ) );
+            //global_dc->DrawLine( x.from, silences_y, x.to, silences_y);
+            // </debug>
             
             silence_center = x_center;
         }
@@ -358,7 +368,8 @@ namespace AriaMaestosa
         {
             // TODO : use x_center
             global_dc->SetPen(  wxPen( wxColour(0,0,0), 8 ) );
-            const int mx = x.from + 50;
+            silence_radius = 25;
+            const int mx = x.to - silence_radius*2;
             const int y = silences_y + 80;
             wxPoint points[] =
             {
@@ -379,7 +390,6 @@ namespace AriaMaestosa
             global_dc->DrawCircle(mx+25, y-50, 6);
             
             silence_center = mx + 50/2;
-            silence_radius = 25;
         }
         
         // dotted
@@ -1120,7 +1130,7 @@ namespace AriaMaestosa
                     for(int lvl=first_score_level-2; lvl>noteRenderInfo.level+noteRenderInfo.level%2-2; lvl -= 2)
                     {
                         const int y = LEVEL_TO_Y(lvl);
-                        dc.DrawLine(noteX.from, y, noteX.from+135, y);
+                        dc.DrawLine(noteX.from+headRadius, y, noteX.to+headRadius, y);
                     }
                 }
                 
@@ -1133,7 +1143,7 @@ namespace AriaMaestosa
                     for(int lvl=last_score_level+2; lvl<noteRenderInfo.level-noteRenderInfo.level%2+2; lvl += 2)
                     {
                         const int y = LEVEL_TO_Y(lvl);
-                        dc.DrawLine(noteX.from, y, noteX.from+135, y);
+                        dc.DrawLine(noteX.from+headRadius, y, noteX.to+headRadius, y);
                     }
                 }
             } // end scope

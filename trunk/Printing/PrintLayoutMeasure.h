@@ -24,73 +24,76 @@
 
 namespace AriaMaestosa
 {
+    class PrintLayoutMeasure;
+    class Track;
 
-class PrintLayoutMeasure;
-    
-extern const PrintLayoutMeasure nullMeasure;
+    extern const PrintLayoutMeasure nullMeasure;
 
-class Track;
 
-/*
- A description of a measure to print. If we print more than one track at once,
- each measure will hold multiple 'MeasureTrackReference' instances.
- A 'MeasureTrackReference' "ties" a PrintLayoutMeasure to a Track object,
- by keeping a pointer to it and holding the range of notes in that track
- that belong to this measure.
- */
-
-class MeasureTrackReference
+    /**
+      * A description of a measure to print. If we print more than one track at once,
+      * each measure will hold multiple 'MeasureTrackReference' instances.
+      * A 'MeasureTrackReference' "ties" a PrintLayoutMeasure to a Track object,
+      * by keeping a pointer to it and holding the range of notes in that track
+      * that belong to this measure.
+      */
+    class MeasureTrackReference
     {
     public:
         Track* track;
         int firstNote, lastNote;
     };
 
-class PrintLayoutMeasure
+    class PrintLayoutMeasure
     {
     public:
         PrintLayoutMeasure(const int measID);
         
-        // for non-linear printing
+        /** for non-linear printing */
         std::map< int /* tick */, TickPosInfo > ticks_relative_position;
         
-        // Finds the notes correcsponding to this measure
-        // in the given track and keep the reference.
-        // Returns the ID of the last note in this measure
+        /** Finds the notes correcsponding to this measure
+          * in the given track and keep the reference.
+          * Returns the ID of the last note in this measure
+          */
         int addTrackReference(const int firstNote, Track* track);
         
-        // used when we print more than one track
-        // each track we print will have one entry here
-        // for each printed measure
+        /** used when we print more than one track each track we print will have one entry here
+          * for each printed measure
+          */
         ptr_vector<MeasureTrackReference> trackRef;
         
-        // first and last tick in this measure
+        /** first and last tick in this measure */
         int firstTick, lastTick;
-        
-        // if this measure is later repeated and is not a repetition of a previous measure,
-        // contains ID of all later measures similar to this one
-        std::vector<int> similarMeasuresFoundLater;
-        
-        // if this measure is a repetition of a previous measure, contains the ID of which one
-        int firstSimilarMeasure;
-        
-        // shortest note in the measure (will be used to
-        // determine "zoom" on measure. e.g. a measure with very
-        // short notes takes more room).
+
+        /** shortest note in the measure (will be used to determine "zoom" on measure. e.g. a measure with very
+          * short notes takes more room).
+          */
         int shortestDuration;
         
-        // ID of the measure
+        /** ID of the measure */
         int id;
         
-        // true if measure needs to be apart from others
-        // mostly used with repetitions (e.g. x4) to tell where the repetition starts
-        // FIXME - doesn't really belong here, should be a layout element
-        bool cutApart;
+        // -------- Experimental : automatic repetition detection --------      
+        /** if this measure is later repeated and is not a repetition of a previous measure,
+         * contains ID of all later measures similar to this one
+         */
+        std::vector<int> similarMeasuresFoundLater;
+        
+        /** if this measure is a repetition of a previous measure, contains the ID of which one */
+        int firstSimilarMeasure;
+        
+        
+        /** true if measure needs to be apart from others
+          * mostly used with repetitions (e.g. x4) to tell where the repetition starts
+          */
+        bool cutApart; // FIXME - doesn't really belong here, should be a layout element
         
         bool calculateIfMeasureIsSameAs(PrintLayoutMeasure& checkMeasure);
         
-        // if a repetition is found, it is stored in the variables and returns true,
-        // otherwise returns false
+        /** if a repetition is found, it is stored in the variables and returns true,
+          * otherwise returns false
+          */
         bool findConsecutiveRepetition(ptr_vector<PrintLayoutMeasure>& measures, const int measureAmount,
                                        int& firstMeasureThatRepeats /*out*/, int& lastMeasureThatRepeats /*out*/,
                                        int& firstMeasureRepeated /*out*/, int& lastMeasureRepeated /*out*/);
