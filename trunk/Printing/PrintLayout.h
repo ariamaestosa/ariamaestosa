@@ -76,6 +76,7 @@ namespace AriaMaestosa
     struct TickPosInfo
     {
         float relativePosition;
+        float relativeEndPosition;
         float proportion;
         
         // don't construct this struct directly, let std::map create them as needed

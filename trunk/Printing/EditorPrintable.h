@@ -32,7 +32,21 @@ class PrintLayoutMeasure;
 class MeasureTrackReference;
 class Track;
     
-class EditorPrintable
+    template<typename T>
+    class Range
+    {
+    public:
+        T from;
+        T to;
+        
+        Range(T from, T to)
+        {
+            Range::from = from;
+            Range::to = to;
+        }
+    };
+    
+    class EditorPrintable
     {
     protected:
         wxDC* dc;
@@ -58,10 +72,11 @@ class EditorPrintable
         // int getCurrentElementXStart();
         LayoutElement* continueWithNextElement(const int trackID, LayoutLine& layoutLine, const int currentLayoutElement);
         //LayoutElement* getElementForMeasure(const int measureID);
-        int getNotePrintX(const int trackID, LayoutLine& line, int noteID);
-        int tickToX(const int trackID, LayoutLine& line, const int tick);
+        Range<int> getNotePrintX(const int trackID, LayoutLine& line, int noteID);
+        Range<int> tickToX(const int trackID, LayoutLine& line, const int tick);
+        //int tickToXLimit(const int trackID, LayoutLine& line, const int tick);
+
         int getClosestTickFrom(const int trackID, LayoutLine& line, const int tick);
-        int tickToXLimit(const int trackID, LayoutLine& line, const int tick);
 
         void drawVerticalDivider(LayoutElement* el, const int y0, const int y1);
         void renderTimeSignatureChange(LayoutElement* el, const int y0, const int y1);

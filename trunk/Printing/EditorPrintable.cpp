@@ -25,18 +25,27 @@
 
 namespace AriaMaestosa
 {
-
+    
+// -------------------------------------------------------------------------------------------
+    
 EditorPrintable::EditorPrintable()
 {
 }
 
-EditorPrintable::~EditorPrintable(){}
+// -------------------------------------------------------------------------------------------
+EditorPrintable::~EditorPrintable()
+{
+}
 
+// -------------------------------------------------------------------------------------------
+    
 void EditorPrintable::setCurrentDC(wxDC* dc)
 {
     EditorPrintable::dc = dc;
 }
 
+// -------------------------------------------------------------------------------------------
+    
 void EditorPrintable::placeTrackAndElementsWithinCoords(const int trackID, LayoutLine& line, LineTrackRef& track,  int x0, const int y0, const int x1, const int y1, bool show_measure_number)
 {
     std::cout << "= placeTrackAndElementsWithinCoords =\n";
@@ -105,6 +114,8 @@ LayoutElement* EditorPrintable::getElementForMeasure(const int trackID, const in
     return NULL;
 }*/
 
+// -------------------------------------------------------------------------------------------
+    
 void EditorPrintable::drawVerticalDivider(LayoutElement* el, const int y0, const int y1)
 {
     if (el->getType() == TIME_SIGNATURE) return;
@@ -116,6 +127,8 @@ void EditorPrintable::drawVerticalDivider(LayoutElement* el, const int y0, const
     dc->DrawLine( elem_x_start, y0, elem_x_start, y1);
 }
 
+// -------------------------------------------------------------------------------------------
+    
 void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0, const int y1)
 {
     wxString num   = wxString::Format( wxT("%i"), el->num   );
@@ -134,7 +147,9 @@ void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0,
     dc->SetFont(oldfont);    
 }
 
-    // FIXME : unclean to pass trackID and LayoutLine as argument!
+// -------------------------------------------------------------------------------------------
+    
+// FIXME : unclean to pass trackID and LayoutLine as argument!
 LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, LayoutLine& layoutLine, const int currentLayoutElement)
 {
     LineTrackRef& renderInfo = layoutLine.getTrackRenderInfo(trackID);
@@ -221,17 +236,21 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
     return &layoutElements[currentLayoutElement];
 }
 
-
-int EditorPrintable::getNotePrintX(const int trackID, LayoutLine& line, int noteID)
+// -------------------------------------------------------------------------------------------
+    
+Range<int> EditorPrintable::getNotePrintX(const int trackID, LayoutLine& line, int noteID)
 {
     return tickToX( trackID, line, line.getTrackRenderInfo(trackID).track->getNoteStartInMidiTicks(noteID) );
 }
-int EditorPrintable::tickToX(const int trackID, LayoutLine& line, const int tick)
+    
+// -------------------------------------------------------------------------------------------
+    
+Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const int tick)
 {
     LineTrackRef& renderInfo = line.getTrackRenderInfo(trackID);
     
     // find in which measure this tick belongs
-    for(int n=0; n<renderInfo.layoutElementsAmount; n++)
+    for (int n=0; n<renderInfo.layoutElementsAmount; n++)
     {
         PrintLayoutMeasure& meas = line.getMeasureForElement(n);
         if (meas.id == -1) continue; // nullMeasure, ignore
@@ -252,40 +271,43 @@ int EditorPrintable::tickToX(const int trackID, LayoutLine& line, const int tick
                 std::cout << "\n/!\\ tickToX didn't find X for tick " << tick << " in measure " << (meas.id+1) << "\n\n";
             }
             
-            float nratio = meas.ticks_relative_position[tick].relativePosition;
+            float nratio_from = meas.ticks_relative_position[tick].relativePosition;
+            float nratio_to = meas.ticks_relative_position[tick].relativeEndPosition;
             
             assertExpr(elem_w, >, 0);
             
-            return (int)round(nratio * elem_w + elem_x_start);
+            return Range<int>((int)round(nratio_from * elem_w + elem_x_start), (int)round(nratio_to * elem_w + elem_x_start));
         }
         else 
         // given tick is before the current line
         if (tick < firstTick) 
         {
             //std::cout << "tickToX Returning -1 A\n";
-            return -1;
+            return Range<int>(-1, -1);
         }
-        else
         /* the tick we were given is not on the current line, but on the next.
          * this probably means there is a tie from a note on one line to a note
          * on another line. Return a X at the very right of the page.
          * FIXME - it's not necessarly a tie
          * FIXME - ties aand line warping need better handling
          */
-        if (n==renderInfo.layoutElementsAmount-1 and tick >= lastTick)
+        else if (n==renderInfo.layoutElementsAmount-1 and tick >= lastTick)
         {
             //std::cout << "tickToX Returning -" <<  (currentLine->layoutElements[n].getXTo() + 10) << " B\n";
 
-            return line.layoutElements[n].getXTo() + 10;
+            return Range<int>(line.layoutElements[n].getXTo() + 10, line.layoutElements[n].getXTo() + 10);
         }
     }
     
-    return -1;
+    return Range<int>(-1, -1);
 }
 
+// -------------------------------------------------------------------------------------------
+    
 /**
   * tickToX returns the beginning of the area allocated to a tick; this method returns its end.
   */
+    /*
 int EditorPrintable::tickToXLimit(const int trackID, LayoutLine& line, const int tick)
 {
     int closest = getClosestTickFrom(trackID, line, tick+1);
@@ -293,6 +315,9 @@ int EditorPrintable::tickToXLimit(const int trackID, LayoutLine& line, const int
     
     return tickToX(trackID, line, closest);
 }
+     */
+    
+// -------------------------------------------------------------------------------------------
     
 /**
   * This method exists because in multi-track prints, one track may request more ticks (and thus more space) than
@@ -340,5 +365,7 @@ int EditorPrintable::getClosestTickFrom(const int trackID, LayoutLine& line,cons
     
     return -1;
 }
-
+    
+// -------------------------------------------------------------------------------------------
+    
 }

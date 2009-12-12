@@ -25,17 +25,25 @@ const int MAX_LEVELS_ON_PAGE = 74;
 
 int repetitionMinimalLength = 2;
 
+// -------------------------------------------------------------------------------------------
+    
 int getRepetitionMinimalLength()
 {
     return repetitionMinimalLength;
 }
+    
+// -------------------------------------------------------------------------------------------
+    
 void setRepetitionMinimalLength(const int newvalue)
 {
     repetitionMinimalLength = newvalue;
 }
 
+// -------------------------------------------------------------------------------------------
+    
 // if a repetition is found, it is stored in the variables and returns true,
 // otherwise returns false
+    // FIXME: Why is this 'PrintLayoutMeasure' thing here...
 bool PrintLayoutMeasure::findConsecutiveRepetition(ptr_vector<PrintLayoutMeasure>& measures, const int measureAmount,
                                                 int& firstMeasureThatRepeats /*out*/, int& lastMeasureThatRepeats /*out*/,
                                                 int& firstMeasureRepeated /*out*/, int& lastMeasureRepeated /*out*/)
@@ -119,6 +127,8 @@ bool PrintLayoutMeasure::findConsecutiveRepetition(ptr_vector<PrintLayoutMeasure
     }
 }
     
+// -------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #endif
@@ -128,7 +138,8 @@ PrintLayoutManager::PrintLayoutManager(PrintableSequence* sequence,
 {
     this->sequence = sequence;
 }
-
+    
+// -------------------------------------------------------------------------------------------
     
 void PrintLayoutManager::generateMeasures(ptr_vector<Track, REF>& tracks)
 {
@@ -161,6 +172,8 @@ void PrintLayoutManager::generateMeasures(ptr_vector<Track, REF>& tracks)
     } // next track
 }
 
+// -------------------------------------------------------------------------------------------
+    
 void PrintLayoutManager::findSimilarMeasures()
 {
     const int measureAmount = getMeasureData()->getMeasureAmount();
@@ -182,7 +195,9 @@ void PrintLayoutManager::findSimilarMeasures()
         }//next
     }//next
 }
-
+    
+// -------------------------------------------------------------------------------------------
+    
 #define _verbose 1
     
 void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
@@ -373,21 +388,17 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
     }//next measure
 }
 
+// -------------------------------------------------------------------------------------------
+    
 void PrintLayoutManager::calculateRelativeLengths()
 {
     std::cout << "\n====\ncalculateRelativeLengths\n====\n";
 
     // calculate approximative width of each element
-    // const int ticksPerBeat = getCurrentSequence()->ticksPerBeat();
     const int layoutElementsAmount = layoutElements.size();
     for(int n=0; n<layoutElementsAmount; n++)
     {
         std::cout << "= layout element " << n << " =\n";
-        
-        // float zoom = 1;
-        //layoutElements[n].zoom = 1;
-
-        //if (layoutElements[n].getType() == EMPTY_MEASURE) continue; // was already calculated
 
         layoutElements[n].width_in_units = 2;
 
@@ -405,7 +416,7 @@ void PrintLayoutManager::calculateRelativeLengths()
             std::map< int /* tick */, TickPosInfo >& ticks_relative_position = meas.ticks_relative_position;
             
             const int trackAmount = meas.trackRef.size();
-            for(int i=0; i<trackAmount; i++)
+            for (int i=0; i<trackAmount; i++)
             {
                 EditorPrintable* editorPrintable = sequence->getEditorPrintable( i );
                 assert( editorPrintable != NULL );
@@ -419,16 +430,14 @@ void PrintLayoutManager::calculateRelativeLengths()
                 // building the full list from 'map' prevents duplicates
                 all_ticks_vector.push_back( (*it).first );
             }
-            // also add last tick, so that the last note is not placed on the measure's end
-            //all_ticks_vector.push_back( meas.lastTick );
             
             // order the vector
             const int all_ticks_amount = all_ticks_vector.size();
-            bool changed = false; // bubble sort - FIXME : use something better
+            bool changed; // crappy bubble sort - FIXME : use something better
             do
             {
                 changed = false;
-                for(int i=0; i<all_ticks_amount-1; i++)
+                for (int i=0; i<all_ticks_amount-1; i++)
                 {
                     if (all_ticks_vector[i] > all_ticks_vector[i+1])
                     {
@@ -438,30 +447,30 @@ void PrintLayoutManager::calculateRelativeLengths()
                         changed = true;
                     }
                 }
-            } while(changed);
+            } while (changed);
             
             // associate a relative position to each note
             // start by total, renormalize from 0 to 1 after
             float totalRelativePosition = 0;
-            for(int i=0; i<all_ticks_amount; i++)
+            for (int i=0; i<all_ticks_amount; i++)
             {
                 ticks_relative_position[ all_ticks_vector[i] ].relativePosition = totalRelativePosition;
                 totalRelativePosition += ticks_relative_position[ all_ticks_vector[i] ].proportion;
+                ticks_relative_position[ all_ticks_vector[i] ].relativeEndPosition = totalRelativePosition;
             }
-            for(int i=0; i<all_ticks_amount; i++)
+            for (int i=0; i<all_ticks_amount; i++)
             {
                 TickPosInfo& tickPosInfo = ticks_relative_position[ all_ticks_vector[i] ];
                 
                 //std::cout << "note relativePosition = " << 
                 //" (" << tickPosInfo.relativePosition << "/" << intRelativePosition << ") = ";
                 
-                // I multiply by 0.9 to avoid notes being too close to the next bar
-                // FIXME : don't hardcode
+                // I multiply by 0.9 to avoid notes being too close to the next bar (FIXME : don't hardcode)
                 tickPosInfo.relativePosition = tickPosInfo.relativePosition / totalRelativePosition * 0.9;
-                
-                std::cout << tickPosInfo.relativePosition << std::endl;
-                // intRelativePosition now contains the total size of the measure,so we can use
-                // it to renormalize from 0 to 1
+                tickPosInfo.relativeEndPosition = tickPosInfo.relativeEndPosition / totalRelativePosition * 0.9;
+
+                std::cout << "tickPosInfo.relativePosition = " << tickPosInfo.relativePosition << " to " <<
+                			tickPosInfo.relativeEndPosition << std::endl;
             }
             
             layoutElements[n].width_in_units = all_ticks_amount;
@@ -476,6 +485,8 @@ void PrintLayoutManager::calculateRelativeLengths()
     } // end for elements
 }
 
+// -------------------------------------------------------------------------------------------
+    
 /**
  * Builds the Page/Line layout tree from the full list of layout elements
  */
@@ -548,7 +559,8 @@ void PrintLayoutManager::layInLinesAndPages()
     layoutPages[current_page].layoutLines[currentLine].calculateHeight();
 }
 
-
+// -------------------------------------------------------------------------------------------
+    
 /** main function called from other classes. measures must have been geenrated. */
 void PrintLayoutManager::calculateLayoutElements
                             (ptr_vector<Track, REF>& tracks,
@@ -570,7 +582,6 @@ void PrintLayoutManager::calculateLayoutElements
     layInLinesAndPages();
 }
 
-
-
+// -------------------------------------------------------------------------------------------
 
 }

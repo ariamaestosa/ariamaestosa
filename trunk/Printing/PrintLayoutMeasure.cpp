@@ -24,6 +24,8 @@ namespace AriaMaestosa
     
 const PrintLayoutMeasure nullMeasure(-1);
     
+// -------------------------------------------------------------------------------------------
+    
 PrintLayoutMeasure::PrintLayoutMeasure(const int measID)
 {
     shortestDuration = -1;
@@ -38,6 +40,8 @@ PrintLayoutMeasure::PrintLayoutMeasure(const int measID)
     }
 }
 
+// -------------------------------------------------------------------------------------------
+    
 bool PrintLayoutMeasure::calculateIfMeasureIsSameAs(PrintLayoutMeasure& checkMeasure)
 {
     
@@ -139,7 +143,9 @@ bool PrintLayoutMeasure::calculateIfMeasureIsSameAs(PrintLayoutMeasure& checkMea
     if (total_note_amount == 0) return false; // don't count empty measures as repeitions
     return true;
 }
-
+    
+// -------------------------------------------------------------------------------------------
+    
 int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
 {
     const int noteAmount = track->getNoteAmount();
@@ -214,5 +220,7 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
     // if this measure is not empty, add 1 so next measure will start from the next
     return lastNote + ( measure_empty ? 0 : 1);
 }
-
+    
+// -------------------------------------------------------------------------------------------
+    
 }
