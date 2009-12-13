@@ -396,7 +396,7 @@ void PrintLayoutManager::calculateRelativeLengths()
 
     // calculate approximative width of each element
     const int layoutElementsAmount = layoutElements.size();
-    for(int n=0; n<layoutElementsAmount; n++)
+    for (int n=0; n<layoutElementsAmount; n++)
     {
         std::cout << "= layout element " << n << " =\n";
 
@@ -421,13 +421,13 @@ void PrintLayoutManager::calculateRelativeLengths()
                 EditorPrintable* editorPrintable = sequence->getEditorPrintable( i );
                 assert( editorPrintable != NULL );
                 
-                editorPrintable->addUsedTicks(meas, meas.trackRef[i], ticks_relative_position);
+                editorPrintable->addUsedTicks(meas, i, meas.trackRef[i], ticks_relative_position);
             }
             
+            // building the full list from 'map' prevents duplicates
             std::map<int,TickPosInfo>::iterator it;
-            for ( it=ticks_relative_position.begin() ; it != ticks_relative_position.end(); it++ )
+            for (it=ticks_relative_position.begin() ; it != ticks_relative_position.end(); it++)
             {
-                // building the full list from 'map' prevents duplicates
                 all_ticks_vector.push_back( (*it).first );
             }
             

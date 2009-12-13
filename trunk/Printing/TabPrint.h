@@ -35,7 +35,7 @@ public:
     TablaturePrintable(Track* track_arg);
     virtual ~TablaturePrintable();
 
-    void addUsedTicks(const PrintLayoutMeasure& measure, const MeasureTrackReference& trackRef, std::map<int /* tick */,TickPosInfo>&);
+    void addUsedTicks(const PrintLayoutMeasure& measure, const int trackID, const MeasureTrackReference& trackRef, std::map<int /* tick */,TickPosInfo>&);
 
     void drawLine(const int trackID, LineTrackRef& track, LayoutLine& line, wxDC& dc);
     int calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line);

@@ -339,14 +339,15 @@ namespace AriaMaestosa
             static wxBitmap silenceBigger = wxBitmap(silence.ConvertToImage().Scale(silence.GetWidth()*scale, silence.GetHeight()*scale));
             
             silence_radius = silenceBigger.GetWidth()/2;
-            global_dc->DrawBitmap( silenceBigger, x.to - silence_radius*2, silences_y );
+            // take the average of 'center-aligned' and 'right-aligned'
+            silence_center = (x_center + (x.to - silence_radius))/2;
+            global_dc->DrawBitmap( silenceBigger, silence_center - silence_radius, silences_y );
             
             // <debug>
             //global_dc->SetPen(  wxPen( wxColour(255,0,0), 8 ) );
             //global_dc->DrawLine( x.from, silences_y, x.to, silences_y);
             // </debug>
             
-            silence_center = x_center;
         }
         else if ( type == 8 )
         {
@@ -355,14 +356,14 @@ namespace AriaMaestosa
             static wxBitmap silenceBigger = wxBitmap(silence.ConvertToImage().Scale(silence.GetWidth()*scale, silence.GetHeight()*scale));
             
             silence_radius = silenceBigger.GetWidth()/2;
-            global_dc->DrawBitmap( silenceBigger, x.to - silence_radius*2, silences_y + 20);
+            // take the average of 'center-aligned' and 'right-aligned'
+            silence_center = (x_center + (x.to - silence_radius))/2;
+            global_dc->DrawBitmap( silenceBigger, silence_center - silence_radius, silences_y + 20);
             
             // <debug>
             //global_dc->SetPen(  wxPen( wxColour(255,0,0), 8 ) );
             //global_dc->DrawLine( x.from, silences_y, x.to, silences_y);
             // </debug>
-            
-            silence_center = x_center;
         }
         else if ( type == 16 )
         {
@@ -471,7 +472,7 @@ namespace AriaMaestosa
     // -------------------------------------------------------------------------------------------
 #define VERBOSE 0
     
-    void ScorePrintable::addUsedTicks(const PrintLayoutMeasure& measure, const MeasureTrackReference& trackRef,
+    void ScorePrintable::addUsedTicks(const PrintLayoutMeasure& measure, const int trackID, const MeasureTrackReference& trackRef,
                                       std::map<int /* tick */,TickPosInfo>& ticks_relative_position)
     {
         const int fromTick = measure.firstTick;
@@ -521,11 +522,11 @@ namespace AriaMaestosa
                 if (f_clef_analyser->noteRenderInfo[n].sign != PITCH_SIGN_NONE)
                 {
                     // if there's an accidental sign to show, allocate a bigger space for this note
-                    ticks_relative_position[ tick ].setProportion(3 + additionalWidth);
+                    ticks_relative_position[ tick ].setProportion(3 + additionalWidth, trackID);
                 }
                 else
                 {
-                    ticks_relative_position[ tick ].setProportion(2 + additionalWidth);
+                    ticks_relative_position[ tick ].setProportion(2 + additionalWidth, trackID);
                 }
             }
         }
@@ -562,11 +563,11 @@ namespace AriaMaestosa
                 if (g_clef_analyser->noteRenderInfo[n].sign != PITCH_SIGN_NONE)
                 {
                     // if there's an accidental sign to show, allocate a bigger space for this note
-                    ticks_relative_position[ tick ].setProportion(3 + additionalWidth);
+                    ticks_relative_position[ tick ].setProportion(3 + additionalWidth, trackID);
                 }
                 else
                 {
-                    ticks_relative_position[ tick ].setProportion(2 + additionalWidth);
+                    ticks_relative_position[ tick ].setProportion(2 + additionalWidth, trackID);
                 }
             }
         }
@@ -582,7 +583,7 @@ namespace AriaMaestosa
             std::cout << "    Adding [silence] tick " << silences_ticks[n] << " to list" << std::endl;
 #endif
             
-            ticks_relative_position[ silences_ticks[n]].setProportion(2);
+            ticks_relative_position[ silences_ticks[n]].setProportion(2, trackID);
         }
         
 #if VERBOSE
