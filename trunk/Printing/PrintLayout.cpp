@@ -21,7 +21,7 @@
 namespace AriaMaestosa
 {
 const int MAX_LEVELS_ON_PAGE = 74;
-    
+const int MIN_UNIT_WIDTH = 3;
 
 int repetitionMinimalLength = 2;
 
@@ -474,6 +474,7 @@ void PrintLayoutManager::calculateRelativeLengths()
             }
             
             layoutElements[n].width_in_units = all_ticks_amount;
+            if (layoutElements[n].width_in_units < MIN_UNIT_WIDTH) layoutElements[n].width_in_units = MIN_UNIT_WIDTH;
             std::cout << "Layout element " << n << " is " << layoutElements[n].width_in_units << " unit(s) wide" << std::endl;
         }
         else if (layoutElements[n].getType() == REPEATED_RIFF)
@@ -524,7 +525,7 @@ void PrintLayoutManager::layInLinesAndPages()
     
     // add layout elements one by one, switching to the next line when there's too many
     // elements on the current one
-    for(int n=0; n<layoutElementsAmount; n++)
+    for (int n=0; n<layoutElementsAmount; n++)
     {
         if (current_width + layoutElements[n].width_in_units > max_line_width_in_units)
         {
