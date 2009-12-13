@@ -142,8 +142,12 @@ void Drawable::render()
         }
 
         if (xscale != 1 or yscale != 1)
-            modimage.Rescale( (int)(image->width * xscale),
-                              (int)(image->height * yscale) );
+        {
+            const int new_w = (int)(image->width * xscale);
+            const int new_h = (int)(image->height * yscale);
+            if (new_w == 0 or new_h == 0) return;
+            modimage.Rescale( new_w, new_h );
+        }
 
         wxBitmap modbitmap(modimage);
         Display::renderDC -> DrawBitmap( modbitmap, x - hotspotX_mod, y - hotspotY_mod);
