@@ -79,18 +79,37 @@ namespace AriaMaestosa
         float relativeEndPosition;
         float proportion;
         
+        /** Keeps in which track this tick is actually used */
+        wxUint64 tracks;
+        
         // don't construct this struct directly, let std::map create them as needed
         TickPosInfo()
         {
             TickPosInfo::relativePosition = 0; // will be set later
             TickPosInfo::proportion = 1;
+            TickPosInfo::tracks = 0;
         }
         
-        void setProportion(float proportion)
+        /** Adds information about a tick (how big the symbol there is, in which track, etc.) */
+        void setProportion(float proportion, int fromTrackID)
         {
+            assertExpr(fromTrackID,>=,0);
+            assertExpr(fromTrackID,<,64);
+            tracks |= (wxUint64(0x1) << fromTrackID);
+            
+            //std::cout << "Adding tick from track " << fromTrackID << ", bitmask = " << std::hex << tracks << std::endl;
+            
             // keep max (not optimal in all situations)
             // TODO : fix this sketchy method. Use full note ranging mapping instead),
             this->proportion = std::max(this->proportion, proportion);
+        }
+        
+        /** Returns whether this tick appears in a specific track. */
+        bool appearsInTrack(int trackID)
+        {
+            assertExpr(trackID,>=,0);
+            assertExpr(trackID,<,64);
+            return ((tracks >> trackID) & 0x1) != 0;
         }
         
     };

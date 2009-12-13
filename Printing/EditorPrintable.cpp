@@ -275,7 +275,7 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
             float nratio_to;
             
             const int nextTickInThisTrack = getClosestTickFrom(trackID, line, tick+1);
-            //std::cout << "nextTickInThisTrack = " << nextTickInThisTrack << std::endl;
+            //std::cout << "searching for coords of " << (tick / 960) << " in track " << trackID << "; nextTickInThisTrack = " << nextTickInThisTrack << " (beat " << (nextTickInThisTrack / 960) << ")" << std::endl;
 			if (nextTickInThisTrack != -1 && nextTickInThisTrack < lastTickInMeasure)
             {
                 nratio_to = meas.ticks_relative_position[nextTickInThisTrack].relativePosition;
@@ -338,9 +338,9 @@ int EditorPrintable::tickToXLimit(const int trackID, LayoutLine& line, const int
   * FIXME: this doesn't work for the purpose highlighted above... 'ticks_relative_position', which is used below,
   * contains the ticks for all tracks...
   */
-int EditorPrintable::getClosestTickFrom(const int trackID, LayoutLine& line,const int tick)
+int EditorPrintable::getClosestTickFrom(const int trackID, LayoutLine& line, const int tick)
 {
-    //std::cout << "getClosestXFromTick " << tick << std::endl;
+    //std::cout << "    getClosestXFromTick " << tick << std::endl;
     LineTrackRef& renderInfo = line.getTrackRenderInfo(trackID);
     
     // find in which measure this tick belongs
@@ -350,7 +350,7 @@ int EditorPrintable::getClosestTickFrom(const int trackID, LayoutLine& line,cons
         if (meas.id == -1) continue; // nullMeasure, ignore
         const int firstTick = meas.firstTick;
         const int lastTick  = meas.lastTick;
-        //std::cout << "checkingWithinMeasure {" << firstTick << ", " << lastTick << "}\n";
+        //std::cout << "        checkingWithinMeasure {" << firstTick << ", " << lastTick << "}\n";
         
         int closestTick = -1;
         
@@ -358,14 +358,17 @@ int EditorPrintable::getClosestTickFrom(const int trackID, LayoutLine& line,cons
         {
             
             std::map<int, TickPosInfo>::iterator iter;
-            for( iter = meas.ticks_relative_position.begin(); iter != meas.ticks_relative_position.end(); ++iter )
+            for (iter = meas.ticks_relative_position.begin(); iter != meas.ticks_relative_position.end(); ++iter)
             {
+                //std::cout << "        checking tick " << iter->first << " (beat " << (iter->first/960) << "; is it in track " << trackID << " ? answer=" << iter->second.appearsInTrack(trackID) << std::endl;
+                if (!iter->second.appearsInTrack(trackID)) continue;
+
                 const int thisTick = iter->first;
-                //std::cout << "    checking tick " << thisTick << std::endl;
+                                
                 if (thisTick >= tick and (thisTick < closestTick or closestTick == -1))
                 {
                     closestTick = thisTick;
-                    //std::cout << "    closestTick = " << closestTick << std::endl;
+                    //std::cout << "        ** closestTick = " << closestTick << std::endl;
                 }
             } // end for
             if (closestTick == -1) closestTick = lastTick;

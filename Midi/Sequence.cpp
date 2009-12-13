@@ -255,23 +255,21 @@ ChannelManagementType Sequence::getChannelManagementType()
     return channelManagement;
 }
 
-/*
- * Get various information about resolution.
- * Ticks per beat is the number of time units in a quarter note.
- * Ticks per measure returns how many ticks there would be in a whole measure considering the beat resolution and the measure time signature.
+/**
+ * \return Ticks per beat (the number of time units in a quarter note.)
  */
+int Sequence::ticksPerBeat()
+{
+    return beatResolution;
+}
 
-int Sequence::ticksPerBeat(){        return beatResolution;        }
-/*
- int Sequence::ticksPerMeasure()
- {
-     return (int)(
-                  beatResolution * measureBar->getTimeSigNumerator() * (4.0/measureBar->getTimeSigDenominator())
-                  );
-
- }
+/**
+ * \param res Ticks per beat (the number of time units in a quarter note.)
  */
-void Sequence::setTicksPerBeat(int res){        beatResolution = res;        }
+void Sequence::setTicksPerBeat(int res)
+{
+    beatResolution = res;
+}
 
 
 // ------------------------------------------- actions and undo ----------------------------------------

@@ -177,7 +177,7 @@ namespace AriaMaestosa
         }
     }
     
-    void TablaturePrintable::addUsedTicks(const PrintLayoutMeasure& measure, const MeasureTrackReference& trackRef,
+    void TablaturePrintable::addUsedTicks(const PrintLayoutMeasure& measure,  const int trackID, const MeasureTrackReference& trackRef,
                                           std::map<int /* tick */,TickPosInfo>& ticks_relative_position)
     {
         const int first_note = trackRef.firstNote;
@@ -208,7 +208,7 @@ namespace AriaMaestosa
             float ratioToShortest = (float)noteLen / (float)shortest;
             float additionalWidth = log( ratioToShortest ) / log( 2 );
             
-            ticks_relative_position[ tick ].setProportion(2 + additionalWidth);
+            ticks_relative_position[ tick ].setProportion(2 + additionalWidth, trackID);
         }
     }
     

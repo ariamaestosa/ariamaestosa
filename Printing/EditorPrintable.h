@@ -82,7 +82,7 @@ class Track;
         void renderTimeSignatureChange(LayoutElement* el, const int y0, const int y1);
         
         virtual void earlySetup(const int trackID, Track* track) {}
-        virtual void addUsedTicks(const PrintLayoutMeasure& measure, const MeasureTrackReference& trackRef, std::map< int /* tick */, TickPosInfo >&) { }
+        virtual void addUsedTicks(const PrintLayoutMeasure& measure, const int trackID, const MeasureTrackReference& trackRef, std::map< int /* tick */, TickPosInfo >&) { }
     };
 }
 
