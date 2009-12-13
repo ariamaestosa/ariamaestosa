@@ -190,7 +190,7 @@ namespace AriaMaestosa
         // find shortest note
         int shortest = -1;
         
-        for(int n=first_note; n<=last_note; n++)
+        for (int n=first_note; n<=last_note; n++)
         {
             int noteLen = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
 
@@ -198,7 +198,7 @@ namespace AriaMaestosa
         }
         
 
-        for(int n=first_note; n<=last_note; n++)
+        for (int n=first_note; n<=last_note; n++)
         {
             const int tick = track->getNoteStartInMidiTicks(n);
             
@@ -208,7 +208,7 @@ namespace AriaMaestosa
             float ratioToShortest = (float)noteLen / (float)shortest;
             float additionalWidth = log( ratioToShortest ) / log( 2 );
             
-            ticks_relative_position[ tick ].setProportion(1 + additionalWidth);
+            ticks_relative_position[ tick ].setProportion(2 + additionalWidth);
         }
     }
     

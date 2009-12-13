@@ -494,7 +494,7 @@ namespace AriaMaestosa
             
             // find shortest note
             int shortest = -1;
-            for(int n=0; n<noteAmount; n++)
+            for (int n=0; n<noteAmount; n++)
             {
                 const int tick = f_clef_analyser->noteRenderInfo[n].tick;
                 if (tick < fromTick or tick >= toTick) continue;
@@ -505,7 +505,7 @@ namespace AriaMaestosa
                 }
             }
             
-            for(int n=0; n<noteAmount; n++)
+            for (int n=0; n<noteAmount; n++)
             {
                 const int tick = f_clef_analyser->noteRenderInfo[n].tick;
                 if (tick < fromTick or tick >= toTick) continue;
@@ -521,11 +521,11 @@ namespace AriaMaestosa
                 if (f_clef_analyser->noteRenderInfo[n].sign != PITCH_SIGN_NONE)
                 {
                     // if there's an accidental sign to show, allocate a bigger space for this note
-                    ticks_relative_position[ tick ].setProportion(2 + additionalWidth);
+                    ticks_relative_position[ tick ].setProportion(3 + additionalWidth);
                 }
                 else
                 {
-                    ticks_relative_position[ tick ].setProportion(1 + additionalWidth);
+                    ticks_relative_position[ tick ].setProportion(2 + additionalWidth);
                 }
             }
         }
@@ -562,11 +562,11 @@ namespace AriaMaestosa
                 if (g_clef_analyser->noteRenderInfo[n].sign != PITCH_SIGN_NONE)
                 {
                     // if there's an accidental sign to show, allocate a bigger space for this note
-                    ticks_relative_position[ tick ].setProportion(2 + additionalWidth);
+                    ticks_relative_position[ tick ].setProportion(3 + additionalWidth);
                 }
                 else
                 {
-                    ticks_relative_position[ tick ].setProportion(1 + additionalWidth);
+                    ticks_relative_position[ tick ].setProportion(2 + additionalWidth);
                 }
             }
         }
@@ -582,7 +582,7 @@ namespace AriaMaestosa
             std::cout << "    Adding [silence] tick " << silences_ticks[n] << " to list" << std::endl;
 #endif
             
-            ticks_relative_position[ silences_ticks[n]].setProportion(1);
+            ticks_relative_position[ silences_ticks[n]].setProportion(2);
         }
         
 #if VERBOSE
