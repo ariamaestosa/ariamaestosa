@@ -204,6 +204,10 @@ public:
     void loadAriaFile(wxString path);
     void loadMidiFile(wxString path);
 
+#ifdef __WXMSW__
+    void onDropFile(wxDropFilesEvent& event);
+#endif
+    
     // scrollbars
     void updateVerticalScrollbar();
     void updateHorizontalScrollbar(int thumbPos=-1);

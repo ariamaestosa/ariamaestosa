@@ -225,13 +225,18 @@ END_EVENT_TABLE()
 MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(100,100), wxSize(900,600), ARIA_WINDOW_FLAGS )
 {
     toolbar = new CustomToolBar(this);
+    
 #ifdef __WXMAC__
-ProcessSerialNumber PSN;
-GetCurrentProcess(&PSN);
-TransformProcessType(&PSN,kProcessTransformToForegroundApplication);
+    ProcessSerialNumber PSN;
+    GetCurrentProcess(&PSN);
+    TransformProcessType(&PSN,kProcessTransformToForegroundApplication);
 #endif
 
-
+#ifdef __WXMSW__
+    // Windows only
+    DragAcceptFiles(true);
+#endif
+    
 #ifndef NO_WX_TOOLBAR
     SetToolBar(toolbar);
 #endif
@@ -391,7 +396,12 @@ void MainFrame::init()
 
     Show();
     Maximize(true);
-
+    
+#ifdef __WXMSW__
+    // Drag files
+    Connect(wxID_ANY, wxEVT_DROP_FILES, wxDropFilesEventHandler(MainFrame::onDropFile),NULL, this);
+#endif
+    
     // create pickers
     tuningPicker        =  new TuningPicker();
     keyPicker           =  new KeyPicker();
@@ -418,6 +428,26 @@ void MainFrame::on_close(wxCloseEvent& evt)
 {
     closeSequence();
 }
+
+#ifdef __WXMSW__
+void MainFrame::onDropFile(wxDropFilesEvent& event)
+{
+    int i;
+    wxString fileName;
+    for (i=0 ; i<event.GetNumberOfFiles() ;i++)
+    {
+        fileName = event.m_files[i];
+        if (fileName.EndsWith(wxT("aria")))
+        {
+            loadAriaFile(fileName);
+        }
+        else if (fileName.EndsWith(wxT("mid")) or fileName.EndsWith(wxT("midi")))
+        {
+            loadMidiFile(fileName);
+        }
+    }
+}
+#endif
 
 // ------------------------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------- PLAY/STOP --------------------------------------------------------
@@ -919,6 +949,7 @@ void MainFrame::updateVerticalScrollbar()
 // ------------------------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
+#pragma mark Sequences
 #endif
 
 /*
@@ -1019,9 +1050,10 @@ void MainFrame::setCurrentSequence(int n)
 
 #if 0
 #pragma mark -
+#pragma mark I/O
 #endif
 
-/*
+/**
  * Opens the .aria file in filepath, reads it and prepares the editor to display and edit it.
  */
 
@@ -1066,10 +1098,10 @@ void MainFrame::loadAriaFile(wxString filePath)
 
 }
 
-/*
+/**
  * Opens the .mid file in filepath, reads it and prepares the editor to display and edit it.
  */
-
+// FIXME - it sounds very dubious that this task goes in MainFrame
 void MainFrame::loadMidiFile(wxString midiFilePath)
 {
 
@@ -1110,10 +1142,10 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
 
 #if 0
 #pragma mark -
+#pragma mark various events and notifications
 #endif
-// various events and notifications
 
-// event sent by the MusicPlayer to notify that it has stopped playing because the song is over.
+/** event sent by the MusicPlayer to notify that it has stopped playing because the song is over. */
 void MainFrame::songHasFinishedPlaying()
 {
     toolsExitPlaybackMode();
