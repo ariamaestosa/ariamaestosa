@@ -60,13 +60,16 @@ void writeData(wxString data, wxFileOutputStream& fileout)
 
 wxString extract_filename(wxString filepath)
 {
-    return filepath.AfterLast('/');
+    return filepath.AfterLast(wxFileName::GetPathSeparator());
 }
 
 wxString extract_path(wxString str)
 {
-    if (str.GetChar(str.Length()) == '/') return str.BeforeLast('/').BeforeLast('/');
-    else return str.BeforeLast('/');
+    if (str.GetChar(str.Length()) == wxFileName::GetPathSeparator())
+    {
+        return str.BeforeLast(wxFileName::GetPathSeparator()).BeforeLast(wxFileName::GetPathSeparator());
+    }
+    else return str.BeforeLast(wxFileName::GetPathSeparator());
 }
 
 

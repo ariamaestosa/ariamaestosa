@@ -50,17 +50,26 @@ NOTE: sorry, this is very raw :)
  - printing : skip series of empty measures ?
  - very short song (a few measures) : nothing printed [can't reproduce anymore]
 
- * hear note/drum by clicking on its name in left part
- 
+ ** hear note/drum by clicking on its name in left part
+ ** add new tools, that allow adding notes without dragging (and resizing without keyboard, and selecting, and...?) ?
+
  * copy entire measures through measure bar
+ 
+ * tabs : Chemin complet en tooltip. Mettre un bouton de fermeture
+ 
+ + resize note with drag-and-drop
  
  + when creating a new sequence, switch to it
  + when using 'close button', close whole app, not one sequence. each sequence needs its own close button
  + contextual menu on right-click (copy, paste, track props, ...)
  + Include sample files along Aria?
  
+ + Pouvoir commencer à jouer le morceau pas forcement au début ni le terminer forcément à la fin
+   (sans passer par une sélection puis espace) : système de 2 curseurs à placer en haut (and add *loop*)
+ 
+ + Afficher un chronomètre qui s'incrémente lorsque le morceau est joué
+ 
  + make more features accessible graphically (as opposed to keyboard-only)
- + add new tools, that allow adding notes without dragging (and resizing without keyboard, and selecting, and...?) ?
  - elements you get from clicking on the left area should appear in the main menubar too
 
  - allow shift-clicking in measure bar to select more measures
