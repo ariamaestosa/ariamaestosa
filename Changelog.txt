@@ -2,6 +2,7 @@
 - More printing improvements
 - Clicking on a note on the piano at the left of the keyboard editor now plays the note
 - Clicking on a note on the staff at the left of the score editor now plays the note
+- Clicking on an entry in the table at the left of the drum editor now plays the sound
 
 1.2b7
 - fixed bug when loading file that used a magnetic grid size from drop-down menu and not visible on the widget
