@@ -522,10 +522,12 @@ namespace AriaMaestosa
                 if (f_clef_analyser->noteRenderInfo[n].sign != PITCH_SIGN_NONE)
                 {
                     // if there's an accidental sign to show, allocate a bigger space for this note
+                    // these proportion numbers have been determined experimentally
                     ticks_relative_position[ tick ].setProportion(3 + additionalWidth, trackID);
                 }
                 else
                 {
+                    // these proportion numbers have been determined experimentally
                     ticks_relative_position[ tick ].setProportion(2 + additionalWidth, trackID);
                 }
             }
@@ -563,10 +565,12 @@ namespace AriaMaestosa
                 if (g_clef_analyser->noteRenderInfo[n].sign != PITCH_SIGN_NONE)
                 {
                     // if there's an accidental sign to show, allocate a bigger space for this note
+                    // these proportion numbers have been determined experimentally
                     ticks_relative_position[ tick ].setProportion(3 + additionalWidth, trackID);
                 }
                 else
                 {
+                    // these proportion numbers have been determined experimentally
                     ticks_relative_position[ tick ].setProportion(2 + additionalWidth, trackID);
                 }
             }
@@ -583,7 +587,7 @@ namespace AriaMaestosa
             std::cout << "    Adding [silence] tick " << silences_ticks[n] << " to list" << std::endl;
 #endif
             
-            ticks_relative_position[ silences_ticks[n]].setProportion(2, trackID);
+            ticks_relative_position[ silences_ticks[n]].setProportion(3, trackID);
         }
         
 #if VERBOSE
