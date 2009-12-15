@@ -35,6 +35,7 @@ class KeyboardEditor : public Editor
 
     // contains wich notes appear as gray on the keyboard editor (by default, in C key, it is the sharp ones)
     bool note_greyed_out[12];
+    int getNoteAtY(const int y);
 
 public:
     KeyboardEditor(Track* data);

@@ -1,3 +1,7 @@
+1.2b8
+- More printing improvements
+- Clicking on a note on the piano at the left of the score editor now plays the note
+
 1.2b7
 - fixed bug when loading file that used a magnetic grid size from drop-down menu and not visible on the widget
 - fixed drawing dead notes (X)
