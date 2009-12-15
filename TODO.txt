@@ -52,7 +52,8 @@ NOTE: sorry, this is very raw :)
 
  ** hear note/drum by clicking on its name in left part
  ** add new tools, that allow adding notes without dragging (and resizing without keyboard, and selecting, and...?) ?
-
+ ** Keyboard editor : show current key in left area
+ 
  * copy entire measures through measure bar
  
  * tabs : Chemin complet en tooltip. Mettre un bouton de fermeture

@@ -14,22 +14,21 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-
-
+#include "Actions/EditAction.h"
+#include "Actions/AddNote.h"
+#include "Dialogs/Preferences.h"
 #include "Editors/ScoreEditor.h"
 #include "Editors/ScoreAnalyser.h"
 #include "Editors/RelativeXCoord.h"
+#include "GUI/ImageProvider.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
+#include "Midi/MeasureData.h"
+#include "Midi/Players/PlatformMidiManager.h"
 #include "Pickers/KeyPicker.h"
-#include "GUI/ImageProvider.h"
 #include "Renderers/Drawable.h"
 #include "Renderers/ImageBase.h"
-#include "Midi/MeasureData.h"
 #include "Renderers/RenderAPI.h"
-#include "Dialogs/Preferences.h"
-#include "Actions/EditAction.h"
-#include "Actions/AddNote.h"
 
 #include "AriaCore.h"
 
@@ -1316,7 +1315,7 @@ void ScoreEditor::TrackPropertiesDialog(RelativeXCoord mousex_current, int mouse
 void ScoreEditor::mouseDown(RelativeXCoord x, const int y)
 {
     // user clicked on left bar to change tuning
-    if (x.getRelativeTo(EDITOR)<-20 and x.getRelativeTo(WINDOW)>15 and y>getEditorYStart())
+    if (x.getRelativeTo(EDITOR)<-30 and x.getRelativeTo(WINDOW)>15 and y>getEditorYStart())
     {
         KeyPicker* picker = Core::getKeyPicker();
         picker->setParent(track);
@@ -1324,7 +1323,15 @@ void ScoreEditor::mouseDown(RelativeXCoord x, const int y)
         Display::popupMenu( picker,x.getRelativeTo(WINDOW),y);
         return;
     }
-
+    // user clicked on a note on the staff
+    else if (x.getRelativeTo(EDITOR)<0 and x.getRelativeTo(EDITOR)>-30 and y>getEditorYStart())
+    {
+        const int level = getLevelAtY(y-y_step/2);
+        const int pitchID = converter->levelToNote(level);
+        if (pitchID != -1) PlatformMidiManager::playNote( 131-pitchID, default_volume, 500 /* duration */, 0, track->getInstrument() );
+        return;
+    }
+    
     Editor::mouseDown(x, y);
 
 }
@@ -1431,7 +1438,7 @@ void ScoreEditor::noteClicked(const int id)
 
 void ScoreEditor::addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY)
 {
-    const int level = (mouseY - getEditorYStart() + getYScrollInPixels())/y_step;
+    const int level = getLevelAtY(mouseY);
     if (level<0 or level>=73) return;
     const int note = converter->levelToNote(level);
     if (note == -1) return;

@@ -87,6 +87,10 @@ protected:
     ptr_vector<Track, REF> backgroundTracks;
 
     unsigned short default_volume;
+    
+    /** Considering the vertical step, the current scrolling, etc. returns the vertical level coord from a y coord */
+    int getLevelAtY(const int y);
+
 public:
     LEAK_CHECK();
 

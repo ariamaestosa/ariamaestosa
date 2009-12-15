@@ -632,6 +632,11 @@ void Editor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_curren
                                RelativeXCoord& mousex_initial, int mousey_initial) { std::cerr << "ERROR base class method called" << std::endl; }
 void Editor::moveNote(Note& note, const int x_steps_to_move, const int y_steps_to_move) { std::cerr << "ERROR base class method called" << std::endl; }
 
+int Editor::getLevelAtY(const int y)
+{
+    return (y - getEditorYStart() + getYScrollInPixels())/ystep;
+}
+    
 void Editor::makeMoveNoteEvent(const int relativeX, const int relativeY, const int noteID)
 {
         // move a single note
