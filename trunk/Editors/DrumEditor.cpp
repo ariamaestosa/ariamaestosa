@@ -856,8 +856,12 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         if (!drums[drumID].sectionExpanded)
         {
             drumID++;
-            while(!drums[drumID++].section){ assertExpr(drumID,<,(int)drums.size()); }
-            drumID=drumID-2;
+            while (!drums[drumID].section && drumID < drumAmount)
+            {
+                drumID++;
+            }
+            if (drumID >= drumAmount) break;
+            drumID--;
             continue;
         }//end if section collapsed
     }//next drum
