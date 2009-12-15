@@ -27,6 +27,7 @@
 #include "GUI/ImageProvider.h"
 #include "Editors/KeyboardEditor.h"
 #include "Editors/RelativeXCoord.h"
+#include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 #include "Pickers/MagneticGrid.h"
@@ -75,17 +76,25 @@ KeyboardEditor::~KeyboardEditor()
 void KeyboardEditor::mouseDown(RelativeXCoord x, const int y)
 {
     // user clicked on left bar to change tuning
-    if (x.getRelativeTo(EDITOR)<-20 and x.getRelativeTo(WINDOW)>15 and y>getEditorYStart())
+    if (x.getRelativeTo(EDITOR)<-30 and x.getRelativeTo(WINDOW)>15 and y>getEditorYStart())
     {
         KeyPicker* picker = Core::getKeyPicker();
         picker->setParent(track);
         Display::popupMenu(picker, x.getRelativeTo(WINDOW), y);
         return;
     }
-
+    // user clicked on a keyboard key
+    else if (x.getRelativeTo(EDITOR)<0 and x.getRelativeTo(EDITOR)>-30 and y>getEditorYStart())
+    {
+        const int pitchID = getNoteAtY(y);
+        PlatformMidiManager::playNote( 131-pitchID, default_volume, 500, 0, track->getInstrument() );
+        return;
+    }
+    
     Editor::mouseDown(x, y);
 }
 
+    
 // ****************************************************************************************************************************************************
 // ****************************************************    EDITOR METHODS      ************************************************************************
 // ****************************************************************************************************************************************************
@@ -93,7 +102,7 @@ void KeyboardEditor::mouseDown(RelativeXCoord x, const int y)
 
 void KeyboardEditor::addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY)
 {
-    const int note = (mouseY - getEditorYStart() + getYScrollInPixels())/y_step;
+    const int note = getNoteAtY(mouseY);
     track->action( new Action::AddNote(note, snapped_start_tick, snapped_end_tick, default_volume ) );
 }
 
@@ -160,7 +169,12 @@ void KeyboardEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mouse
     }//next
 
 }
-
+    
+int KeyboardEditor::getNoteAtY(const int y)
+{
+    return (y - getEditorYStart() + getYScrollInPixels())/y_step;
+}
+    
 int KeyboardEditor::getYScrollInPixels()
 {
     return (int)(   sb_position*(120*11-height-20)   );
