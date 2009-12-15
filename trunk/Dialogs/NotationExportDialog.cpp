@@ -74,15 +74,16 @@ public:
                                            wxPoint(200,200), wxSize(200,400), wxCAPTION | wxSTAY_ON_TOP)
     {
 
+        wxPanel* parent_panel = new wxPanel(this);
+        
+        boxSizer = new wxBoxSizer(wxVERTICAL);
 
-        boxSizer=new wxBoxSizer(wxVERTICAL);
-
         //I18N: - in notation export dialog. user can choose to print 'Current track' or 'Visible/enabled tracks'
-        wxStaticBoxSizer* subsizer = new wxStaticBoxSizer(wxVERTICAL, this, _("Print..."));
+        wxStaticBoxSizer* subsizer = new wxStaticBoxSizer(wxVERTICAL, parent_panel, _("Print..."));
         //I18N: - in notation export dialog. user can choose to print 'Current track' or 'Visible/enabled tracks'
-        current_track = new wxRadioButton(this, wxID_ANY, _("Current track") , wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
+        current_track = new wxRadioButton(parent_panel, wxID_ANY, _("Current track") , wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
         //I18N: - in notation export dialog. user can choose to print 'Current track' or 'Visible/enabled tracks'
-        visible_tracks = new wxRadioButton(this, wxID_ANY, _("Visible/enabled tracks"));
+        visible_tracks = new wxRadioButton(parent_panel, wxID_ANY, _("Visible/enabled tracks"));
 
         subsizer->Add(current_track, 1, wxALL, 5); current_track->SetValue(true);
         subsizer->Add(visible_tracks, 1, wxALL, 5);
@@ -90,7 +91,7 @@ public:
 
         // "Show repeated measures only once" checkbox
         //I18N: - in notation export dialog
-        detectRepetitions=new wxCheckBox(this, wxID_ANY,  _("Automatically detect repeated measures (experimental!)"));
+        detectRepetitions=new wxCheckBox(parent_panel, wxID_ANY,  _("Automatically detect repeated measures (experimental!)"));
         detectRepetitions->SetValue(false);
         boxSizer->Add(detectRepetitions, 0, wxALL, 5);
 
@@ -129,7 +130,7 @@ public:
 
         // OK-Cancel buttons
         {
-            buttonPanel = new wxPanel(this);
+            buttonPanel = new wxPanel(parent_panel);
             boxSizer->Add(buttonPanel, 0, wxALL, 0);
 
             wxBoxSizer* subsizer = new wxBoxSizer(wxHORIZONTAL);
@@ -146,11 +147,11 @@ public:
             subsizer->Layout();
         }
 
-        SetAutoLayout(true);
-        SetSizer(boxSizer);
+        parent_panel->SetSizer(boxSizer);
         boxSizer->Layout();
-        boxSizer->SetSizeHints(this);
-
+        boxSizer->SetSizeHints(parent_panel);
+        Fit();
+        
         Center();
         Show();
 
