@@ -32,6 +32,9 @@
 
 namespace AriaMaestosa {
 
+// TODO: expose this feature somehow
+bool add_with_single_click = false;
+    
 Editor::Editor(Track* track)
 {
     ystep = 10;
@@ -419,7 +422,7 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                 int snapped_end=snapMidiTickToGrid(mousex_current.getRelativeTo(MIDI) );
 
                 // reject empty/malformed notes, add on success
-                if (useInstantNotes_bool)
+                if (useInstantNotes_bool) // for drums
                 {
                     if (snapped_end<0)
                     {
@@ -430,12 +433,20 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                 }
                 else
                 {
-                    if (snapped_start == snapped_end or snapped_start>snapped_end or snapped_start<0)
+                    if (add_with_single_click and snapped_start == snapped_end) // click without moving
+                    {
+                        addNote( snapped_start, snapped_start + sequence->ticksPerBeat()*4 / graphicalTrack->grid->divider,
+                                 mousey_initial );
+                    }
+                    else if (snapped_start == snapped_end or snapped_start>snapped_end or snapped_start<0)
                     {
                         track->selectNote(ALL_NOTES, false);
                         goto end_of_func;
                     }
-                    addNote( snapped_start, snapped_end, mousey_initial );
+                    else
+                    {
+                        addNote( snapped_start, snapped_end, mousey_initial );
+                    }
                 }
 
             }
