@@ -77,17 +77,17 @@ namespace AriaMaestosa
     {
         float relativePosition;
         float relativeEndPosition;
-        float proportion;
+        std::map<int /* track ID */, float /* proportion */> proportions;
         
         /** Keeps in which track this tick is actually used */
-        wxUint64 tracks;
+        //wxUint64 tracks;
         
         // don't construct this struct directly, let std::map create them as needed
         TickPosInfo()
         {
             TickPosInfo::relativePosition = 0; // will be set later
-            TickPosInfo::proportion = 1;
-            TickPosInfo::tracks = 0;
+            //TickPosInfo::proportion = 1;
+            //TickPosInfo::tracks = 0;
         }
         
         /** Adds information about a tick (how big the symbol there is, in which track, etc.) */
@@ -95,13 +95,16 @@ namespace AriaMaestosa
         {
             assertExpr(fromTrackID,>=,0);
             assertExpr(fromTrackID,<,64);
-            tracks |= (wxUint64(0x1) << fromTrackID);
             
-            //std::cout << "Adding tick from track " << fromTrackID << ", bitmask = " << std::hex << tracks << std::endl;
-            
-            // keep max (not optimal in all situations)
-            // TODO : fix this sketchy method. Use full note ranging mapping instead),
-            this->proportion = std::max(this->proportion, proportion);
+            const bool alreadyInThere = proportions.find(fromTrackID) != proportions.end();
+            if (alreadyInThere)
+            {
+                proportions[fromTrackID] = std::max(proportions[fromTrackID], proportion);
+            }
+            else
+            {
+                proportions[fromTrackID] = proportion;
+            }
         }
         
         /** Returns whether this tick appears in a specific track. */
@@ -109,7 +112,7 @@ namespace AriaMaestosa
         {
             assertExpr(trackID,>=,0);
             assertExpr(trackID,<,64);
-            return ((tracks >> trackID) & 0x1) != 0;
+            return proportions.find(trackID) != proportions.end();
         }
         
     };
