@@ -86,7 +86,7 @@ void KeyboardEditor::mouseDown(RelativeXCoord x, const int y)
     // user clicked on a keyboard key
     else if (x.getRelativeTo(EDITOR)<0 and x.getRelativeTo(EDITOR)>-30 and y>getEditorYStart())
     {
-        const int pitchID = getNoteAtY(y);
+        const int pitchID = getLevelAtY(y);
         PlatformMidiManager::playNote( 131-pitchID, default_volume, 500, 0, track->getInstrument() );
         return;
     }
@@ -102,7 +102,7 @@ void KeyboardEditor::mouseDown(RelativeXCoord x, const int y)
 
 void KeyboardEditor::addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY)
 {
-    const int note = getNoteAtY(mouseY);
+    const int note = getLevelAtY(mouseY);
     track->action( new Action::AddNote(note, snapped_start_tick, snapped_end_tick, default_volume ) );
 }
 
@@ -168,11 +168,6 @@ void KeyboardEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mouse
         }
     }//next
 
-}
-    
-int KeyboardEditor::getNoteAtY(const int y)
-{
-    return (y - getEditorYStart() + getYScrollInPixels())/y_step;
 }
     
 int KeyboardEditor::getYScrollInPixels()
