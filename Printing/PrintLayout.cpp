@@ -455,7 +455,14 @@ void PrintLayoutManager::calculateRelativeLengths()
             for (int i=0; i<all_ticks_amount; i++)
             {
                 ticks_relative_position[ all_ticks_vector[i] ].relativePosition = totalRelativePosition;
-                totalRelativePosition += ticks_relative_position[ all_ticks_vector[i] ].proportion;
+                float prop = 0;
+                std::map<int, float>::iterator iter;
+                std::map<int, float>& currmap = ticks_relative_position[ all_ticks_vector[i] ].proportions;
+                for (iter = currmap.begin(); iter != currmap.end(); ++iter)
+                {
+                    prop = std::max(prop, iter->second);
+                }
+                totalRelativePosition += prop;
                 ticks_relative_position[ all_ticks_vector[i] ].relativeEndPosition = totalRelativePosition;
             }
             totalRelativePosition += 1.0f; // leave 1 space worth of empty space at the end
