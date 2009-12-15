@@ -21,17 +21,18 @@
 #include "Actions/EditAction.h"
 #include "Actions/AddNote.h"
 #include "Actions/MoveNotes.h"
-
-#include "GUI/GraphicalTrack.h"
-#include "Renderers/RenderAPI.h"
-#include "Renderers/Drawable.h"
-#include "GUI/ImageProvider.h"
-#include "Midi/Track.h"
-#include "Midi/Sequence.h"
 #include "Editors/DrumEditor.h"
 #include "Editors/RelativeXCoord.h"
+#include "GUI/GraphicalTrack.h"
+#include "GUI/ImageProvider.h"
+#include "Midi/Players/PlatformMidiManager.h"
+#include "Midi/Track.h"
+#include "Midi/Sequence.h"
 #include "Pickers/DrumChoice.h"
 #include "Pickers/MagneticGrid.h"
+#include "Renderers/RenderAPI.h"
+#include "Renderers/Drawable.h"
+
 #include "AriaCore.h"
 
 namespace AriaMaestosa {
@@ -584,7 +585,16 @@ void DrumEditor::mouseDown(RelativeXCoord x, const int y)
 
     if (drumID >= 0 and drumID < (int)drums.size())
     {
-        if (drums[ drumID ].section)
+        // click in the left area
+        if (x.getRelativeTo(EDITOR) < 0 and x.getRelativeTo(WINDOW) > 0)
+        {
+            const int note = drums[ drumID ].midiKey;
+            if (note == -1 || drums[ drumID ].section) return;
+
+            PlatformMidiManager::playNote( note, default_volume, 500 /* duration */, 9, track->getDrumKit() );
+        }    
+        // click on section
+        else if (drums[ drumID ].section)
         {
             // user clicked on a section. if click is on the triangle, expand/collapse it. otherwise, it just selects nothing.
             if (x.getRelativeTo(EDITOR) < 25 and x.getRelativeTo(EDITOR) > 0)
@@ -592,8 +602,11 @@ void DrumEditor::mouseDown(RelativeXCoord x, const int y)
                 drums[ drumID ].sectionExpanded = !drums[ drumID ].sectionExpanded;
                 return;
             }
-            else // select none
+            // select none
+            else
+            {
                 track->selectNote(ALL_NOTES, false, true);
+            }
         }// end if section
     }
     else
