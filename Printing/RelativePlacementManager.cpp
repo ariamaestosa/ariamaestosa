@@ -319,18 +319,18 @@ void RelativePlacementManager::calculateRelativePlacement()
             currSym.fromUnit = n;
             
             const int nextTickInTrack = getNextTickInTrack(currTick.tick, currSym.trackID);
-            const int nextTick = getNextTick(currTick.tick);
+            const int nextTickInAnyTrack = getNextTick(currTick.tick);
 
             // 2 cases : either the needed space for this symbol is implicitely granted by symbols
             // on other lines (see above), either it's not
-            if (currSym.endTick <= nextTickInTrack and currSym.endTick > nextTick)
+            if (currSym.endTick <= nextTickInTrack and currSym.endTick >= nextTickInAnyTrack)
             {
                 currSym.neededAdditionalProportion = 0.0f;
             }
             else
             {
                 // space is not implicitely granted, we need to give more space manually
-                const int whats_missing = std::max(0, currSym.endTick - nextTick);
+                const int whats_missing = std::max(0, currSym.endTick - nextTickInAnyTrack);
                 
                 float ratioToShortest = (float)whats_missing / (float)shortestSymbolLength;
                 if (ratioToShortest > 0)
