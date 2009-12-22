@@ -20,6 +20,7 @@
 #define _PRINT_LAYOUT_MEASURE_H_
 
 #include "Printing/PrintLayout.h"
+#include "Printing/RelativePlacementManager.h"
 #include <map>
 
 namespace AriaMaestosa
@@ -49,8 +50,7 @@ namespace AriaMaestosa
     public:
         PrintLayoutMeasure(const int measID);
         
-        /** for non-linear printing */
-        std::map< int /* tick */, TickPosInfo > ticks_relative_position;
+        RelativePlacementManager ticks_placement_manager;
         
         /** Finds the notes correcsponding to this measure
           * in the given track and keep the reference.

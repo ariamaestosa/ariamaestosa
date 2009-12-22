@@ -350,9 +350,9 @@ void AriaPrintable::printLine(LayoutLine& line, wxDC& dc)
     
 
     /**
-     * \param text_height       Height of the title header (for page 1), height of the bottom page # text (for other pages)
-     * \param level_y_amount    Height of the track in levels
-     * \param track_area_height Height of the track in print units
+     * @param text_height       Height of the title header (for page 1), height of the bottom page # text (for other pages)
+     * @param level_y_amount    Height of the track in levels
+     * @param track_area_height Height of the track in print units
      */
     void AriaPrintable::placeLinesInPage(LayoutPage& page, const int text_height, const float track_area_height, const int level_y_amount,
                                               const int pageHeight, const int x0, const int y0, const int x1)

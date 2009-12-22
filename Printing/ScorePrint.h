@@ -24,6 +24,7 @@
 #include "Printing/EditorPrintable.h"
 #include "Printing/PrintingBase.h"
 #include "Printing/PrintLayout.h"
+#include "Printing/RelativePlacementManager.h"
 
 namespace AriaMaestosa
 {
@@ -43,13 +44,13 @@ class ScorePrintable : public EditorPrintable
     OwnerPtr<ScoreAnalyser> g_clef_analyser;
     OwnerPtr<ScoreAnalyser> f_clef_analyser;
 
-    std::vector<int> silences_ticks;
+     std::vector< Range<int> > silences_ticks;
     
 public:
     ScorePrintable();
     virtual ~ScorePrintable();
 
-    void addUsedTicks(const PrintLayoutMeasure& measure, const int trackID, const MeasureTrackReference& trackRef, std::map<int /* tick */,TickPosInfo>&);
+    void addUsedTicks(const PrintLayoutMeasure& measure, const int trackID, const MeasureTrackReference& trackRef, RelativePlacementManager& ticks);
     
     void earlySetup(const int trackID, Track* track);
 

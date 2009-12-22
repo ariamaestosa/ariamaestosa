@@ -22,6 +22,7 @@
 #include "Config.h"
 #include "Printing/EditorPrintable.h"
 #include "Printing/PrintLayout.h"
+#include "Printing/RelativePlacementManager.h"
 
 namespace AriaMaestosa
 {
@@ -35,7 +36,8 @@ public:
     TablaturePrintable(Track* track_arg);
     virtual ~TablaturePrintable();
 
-    void addUsedTicks(const PrintLayoutMeasure& measure, const int trackID, const MeasureTrackReference& trackRef, std::map<int /* tick */,TickPosInfo>&);
+    void addUsedTicks(const PrintLayoutMeasure& measure, const int trackID,
+                      const MeasureTrackReference& trackRef, RelativePlacementManager& ticks);
 
     void drawLine(const int trackID, LineTrackRef& track, LayoutLine& line, wxDC& dc);
     int calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line);
