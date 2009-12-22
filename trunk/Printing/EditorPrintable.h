@@ -18,7 +18,9 @@
 #define _editor_printable_h_
 
 #include <map>
+#include "Range.h"
 #include "Printing/PrintLayout.h"
+#include "Printing/RelativePlacementManager.h"
 
 class wxDC;
 
@@ -32,25 +34,11 @@ class PrintLayoutMeasure;
 class MeasureTrackReference;
 class Track;
     
-    template<typename T>
-    class Range
-    {
-    public:
-        T from;
-        T to;
-        
-        Range(T from, T to)
-        {
-            Range::from = from;
-            Range::to = to;
-        }
-    };
-    
     class EditorPrintable
     {
     protected:
         wxDC* dc;
-        int getClosestTickFrom(const int trackID, LayoutLine& line, const int tick);
+        //int getClosestTickFrom(const int trackID, LayoutLine& line, const int tick);
 
     public:
         EditorPrintable();
@@ -82,7 +70,8 @@ class Track;
         void renderTimeSignatureChange(LayoutElement* el, const int y0, const int y1);
         
         virtual void earlySetup(const int trackID, Track* track) {}
-        virtual void addUsedTicks(const PrintLayoutMeasure& measure, const int trackID, const MeasureTrackReference& trackRef, std::map< int /* tick */, TickPosInfo >&) { }
+        virtual void addUsedTicks(const PrintLayoutMeasure& measure, const int trackID,
+                                  const MeasureTrackReference& trackRef, RelativePlacementManager& ticks) = 0;
     };
 }
 

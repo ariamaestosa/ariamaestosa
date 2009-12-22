@@ -26,7 +26,8 @@ const PrintLayoutMeasure nullMeasure(-1);
     
 // -------------------------------------------------------------------------------------------
     
-PrintLayoutMeasure::PrintLayoutMeasure(const int measID)
+PrintLayoutMeasure::PrintLayoutMeasure(const int measID) :
+    ticks_placement_manager(measID == -1 ? 0 : getMeasureData()->lastTickInMeasure( measID ))
 {
     shortestDuration = -1;
     firstSimilarMeasure = -1;

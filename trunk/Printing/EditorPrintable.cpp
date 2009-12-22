@@ -266,28 +266,17 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
             
             //std::cout << "tickToX found tick " << tick << std::endl;
             
-            if (meas.ticks_relative_position.find(tick) == meas.ticks_relative_position.end())
-            {
-                std::cout << "\n/!\\ tickToX didn't find X for tick " << tick << " in measure " << (meas.id+1) << "\n\n";
-            }
+            Range<float> relative_pos = meas.ticks_placement_manager.getSymbolRelativeArea( tick );
             
-            float nratio_from = meas.ticks_relative_position[tick].relativePosition;
-            float nratio_to;
-            
-            const int nextTickInThisTrack = getClosestTickFrom(trackID, line, tick+1);
-            //std::cout << "searching for coords of " << (tick / 960) << " in track " << trackID << "; nextTickInThisTrack = " << nextTickInThisTrack << " (beat " << (nextTickInThisTrack / 960) << ")" << std::endl;
-			if (nextTickInThisTrack != -1 && nextTickInThisTrack < lastTickInMeasure)
-            {
-                nratio_to = meas.ticks_relative_position[nextTickInThisTrack].relativePosition;
-            }
-            else
-            {
-                nratio_to = meas.ticks_relative_position[tick].relativeEndPosition;
-            }
+            //if (meas.ticks_relative_position.find(tick) == meas.ticks_relative_position.end())
+            //{
+            //    std::cout << "\n/!\\ tickToX didn't find X for tick " << tick << " in measure " << (meas.id+1) << "\n\n";
+            //}
             
             assertExpr(elem_w, >, 0);
             
-            return Range<int>((int)round(nratio_from * elem_w + elem_x_start), (int)round(nratio_to * elem_w + elem_x_start));
+            return Range<int>((int)round(relative_pos.from * elem_w + elem_x_start),
+                              (int)round(relative_pos.to   * elem_w + elem_x_start));
         }
         else 
         // given tick is before the current line
@@ -338,6 +327,7 @@ int EditorPrintable::tickToXLimit(const int trackID, LayoutLine& line, const int
   * FIXME: this doesn't work for the purpose highlighted above... 'ticks_relative_position', which is used below,
   * contains the ticks for all tracks...
   */
+/*
 int EditorPrintable::getClosestTickFrom(const int trackID, LayoutLine& line, const int tick)
 {
     //std::cout << "    getClosestXFromTick " << tick << std::endl;
@@ -382,7 +372,7 @@ int EditorPrintable::getClosestTickFrom(const int trackID, LayoutLine& line, con
     
     return -1;
 }
-    
+    */
 // -------------------------------------------------------------------------------------------
     
 }

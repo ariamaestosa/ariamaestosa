@@ -256,7 +256,7 @@ ChannelManagementType Sequence::getChannelManagementType()
 }
 
 /**
- * \return Ticks per beat (the number of time units in a quarter note.)
+ * @return Ticks per beat (the number of time units in a quarter note.)
  */
 int Sequence::ticksPerBeat()
 {
@@ -264,7 +264,7 @@ int Sequence::ticksPerBeat()
 }
 
 /**
- * \param res Ticks per beat (the number of time units in a quarter note.)
+ * @param res Ticks per beat (the number of time units in a quarter note.)
  */
 void Sequence::setTicksPerBeat(int res)
 {

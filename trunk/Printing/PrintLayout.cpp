@@ -403,17 +403,15 @@ void PrintLayoutManager::calculateRelativeLengths()
         layoutElements[n].width_in_units = 2;
 
         if (layoutElements[n].getType() == SINGLE_MEASURE || layoutElements[n].getType() == EMPTY_MEASURE)
-        {
-            // ---- for non-linear printing mode
-            
+        {            
             // determine a list of all ticks on which a note starts.
             // then we can determine where within this measure should this note be drawn
             
             std::vector<int> all_ticks_vector;
             
-            // Build a list of all ticks
+            // Ask all editors to add their symbols to the list
             PrintLayoutMeasure& meas = measures[layoutElements[n].measure];
-            std::map< int /* tick */, TickPosInfo >& ticks_relative_position = meas.ticks_relative_position;
+            RelativePlacementManager& ticks_relative_position = meas.ticks_placement_manager;
             
             const int trackAmount = meas.trackRef.size();
             for (int i=0; i<trackAmount; i++)
@@ -424,65 +422,16 @@ void PrintLayoutManager::calculateRelativeLengths()
                 editorPrintable->addUsedTicks(meas, i, meas.trackRef[i], ticks_relative_position);
             }
             
-            // building the full list from 'map' prevents duplicates
-            std::map<int,TickPosInfo>::iterator it;
-            for (it=ticks_relative_position.begin() ; it != ticks_relative_position.end(); it++)
+            ticks_relative_position.calculateRelativePlacement();
+            
+            layoutElements[n].width_in_units = ticks_relative_position.getUnitCount();
+            if (layoutElements[n].width_in_units < MIN_UNIT_WIDTH)
             {
-                all_ticks_vector.push_back( (*it).first );
+                layoutElements[n].width_in_units = MIN_UNIT_WIDTH;
             }
             
-            // order the vector
-            const int all_ticks_amount = all_ticks_vector.size();
-            bool changed; // crappy bubble sort - FIXME : use something better
-            do
-            {
-                changed = false;
-                for (int i=0; i<all_ticks_amount-1; i++)
-                {
-                    if (all_ticks_vector[i] > all_ticks_vector[i+1])
-                    {
-                        int tmp = all_ticks_vector[i];
-                        all_ticks_vector[i] = all_ticks_vector[i+1];
-                        all_ticks_vector[i+1] = tmp;
-                        changed = true;
-                    }
-                }
-            } while (changed);
-            
-            // associate a relative position to each note
-            // start by total, renormalize from 0 to 1 after
-            float totalRelativePosition = 0;
-            for (int i=0; i<all_ticks_amount; i++)
-            {
-                ticks_relative_position[ all_ticks_vector[i] ].relativePosition = totalRelativePosition;
-                float prop = 0;
-                std::map<int, float>::iterator iter;
-                std::map<int, float>& currmap = ticks_relative_position[ all_ticks_vector[i] ].proportions;
-                for (iter = currmap.begin(); iter != currmap.end(); ++iter)
-                {
-                    prop = std::max(prop, iter->second);
-                }
-                totalRelativePosition += prop;
-                ticks_relative_position[ all_ticks_vector[i] ].relativeEndPosition = totalRelativePosition;
-            }
-            totalRelativePosition += 1.0f; // leave 1 space worth of empty space at the end
-            for (int i=0; i<all_ticks_amount; i++)
-            {
-                TickPosInfo& tickPosInfo = ticks_relative_position[ all_ticks_vector[i] ];
-                
-                //std::cout << "note relativePosition = " << 
-                //" (" << tickPosInfo.relativePosition << "/" << intRelativePosition << ") = ";
-                
-                tickPosInfo.relativePosition = tickPosInfo.relativePosition / totalRelativePosition;
-                tickPosInfo.relativeEndPosition = tickPosInfo.relativeEndPosition / totalRelativePosition;
-
-                std::cout << "tickPosInfo.relativePosition = " << tickPosInfo.relativePosition << " to " <<
-                			tickPosInfo.relativeEndPosition << std::endl;
-            }
-            
-            layoutElements[n].width_in_units = all_ticks_amount;
-            if (layoutElements[n].width_in_units < MIN_UNIT_WIDTH) layoutElements[n].width_in_units = MIN_UNIT_WIDTH;
-            std::cout << "Layout element " << n << " is " << layoutElements[n].width_in_units << " unit(s) wide" << std::endl;
+            std::cout << "Layout element " << n << " is " << layoutElements[n].width_in_units
+                      << " unit(s) wide" << std::endl;
         }
         else if (layoutElements[n].getType() == REPEATED_RIFF)
         {

@@ -177,8 +177,9 @@ namespace AriaMaestosa
         }
     }
     
-    void TablaturePrintable::addUsedTicks(const PrintLayoutMeasure& measure,  const int trackID, const MeasureTrackReference& trackRef,
-                                          std::map<int /* tick */,TickPosInfo>& ticks_relative_position)
+    void TablaturePrintable::addUsedTicks(const PrintLayoutMeasure& measure,  const int trackID,
+                                          const MeasureTrackReference& trackRef,
+                                          RelativePlacementManager& ticks_relative_position)
     {
         const int first_note = trackRef.firstNote;
         const int last_note = trackRef.lastNote;
@@ -201,14 +202,15 @@ namespace AriaMaestosa
         for (int n=first_note; n<=last_note; n++)
         {
             const int tick = track->getNoteStartInMidiTicks(n);
-            
+            const int tickTo = track->getNoteEndInMidiTicks(n);
+
             int noteLen = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
             
             // wider notes should be given a bit more space.
             float ratioToShortest = (float)noteLen / (float)shortest;
             float additionalWidth = log( ratioToShortest ) / log( 2 );
             
-            ticks_relative_position[ tick ].setProportion(2 + additionalWidth, trackID);
+            ticks_relative_position.addSymbol( tick, tickTo, 2 + additionalWidth, trackID );
         }
     }
     

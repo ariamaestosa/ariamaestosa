@@ -273,14 +273,14 @@ namespace AriaMaestosa
     // FIXME find cleaner way
     int global_line_height=5;
     
-    std::vector<int> g_silences_ticks;
+    std::vector< Range<int> > g_silences_ticks;
     
     // -------------------------------------------------------------------------------------------
     
     void gatherSilenceCallback(const int duration, const int tick, const int type, const int silences_y, const bool triplet,
                                const bool dotted, const int dot_delta_x, const int dot_delta_y)
     {
-        g_silences_ticks.push_back(tick);
+        g_silences_ticks.push_back( Range<int>(tick, tick + duration) );
         std::cout << "gatherSilenceCallback : silence at " << tick << " (beat " << (tick/960.0f) << ")\n";
     }
     
@@ -473,13 +473,13 @@ namespace AriaMaestosa
 #define VERBOSE 0
     
     void ScorePrintable::addUsedTicks(const PrintLayoutMeasure& measure, const int trackID, const MeasureTrackReference& trackRef,
-                                      std::map<int /* tick */,TickPosInfo>& ticks_relative_position)
+                                      RelativePlacementManager& ticks_relative_position)
     {
-        const int fromTick = measure.firstTick;
-        const int toTick = measure.lastTick;
+        const int measureFromTick = measure.firstTick;
+        const int measureToTick = measure.lastTick;
         
 #if VERBOSE
-        std::cout << "\naddingTicks(measure " << (measure.id+1) << ", from " << fromTick << ", to " << toTick << "\n{\n";
+        std::cout << "\naddingTicks(measure " << (measure.id+1) << ", from " << measureFromTick << ", to " << measureToTick << "\n{\n";
 #endif
         
         Track* track = trackRef.track;
@@ -498,7 +498,7 @@ namespace AriaMaestosa
             for (int n=0; n<noteAmount; n++)
             {
                 const int tick = f_clef_analyser->noteRenderInfo[n].tick;
-                if (tick < fromTick or tick >= toTick) continue;
+                if (tick < measureFromTick or tick >= measureToTick) continue;
                 
                 if (f_clef_analyser->noteRenderInfo[n].tick_length < shortest or shortest == -1)
                 {
@@ -509,7 +509,9 @@ namespace AriaMaestosa
             for (int n=0; n<noteAmount; n++)
             {
                 const int tick = f_clef_analyser->noteRenderInfo[n].tick;
-                if (tick < fromTick or tick >= toTick) continue;
+                if (tick < measureFromTick or tick >= measureToTick) continue;
+
+                const int tickTo = tick + f_clef_analyser->noteRenderInfo[n].tick_length;
 
 #if VERBOSE
                 std::cout << "    Adding tick " << tick << " to list" << std::endl;
@@ -523,12 +525,12 @@ namespace AriaMaestosa
                 {
                     // if there's an accidental sign to show, allocate a bigger space for this note
                     // these proportion numbers have been determined experimentally
-                    ticks_relative_position[ tick ].setProportion(3 + additionalWidth, trackID);
+                    ticks_relative_position.addSymbol( tick, tickTo, 3 + additionalWidth, trackID );
                 }
                 else
                 {
                     // these proportion numbers have been determined experimentally
-                    ticks_relative_position[ tick ].setProportion(2 + additionalWidth, trackID);
+                    ticks_relative_position.addSymbol( tick, tickTo, 2 + additionalWidth, trackID );
                 }
             }
         }
@@ -541,7 +543,7 @@ namespace AriaMaestosa
             for(int n=0; n<noteAmount; n++)
             {
                 const int tick = g_clef_analyser->noteRenderInfo[n].tick;
-                if (tick < fromTick or tick >= toTick) continue;
+                if (tick < measureFromTick or tick >= measureToTick) continue;
                 
                 if (g_clef_analyser->noteRenderInfo[n].tick_length < shortest or shortest == -1)
                 {
@@ -552,8 +554,10 @@ namespace AriaMaestosa
             for (int n=0; n<noteAmount; n++)
             {
                 const int tick = g_clef_analyser->noteRenderInfo[n].tick;
-                if (tick < fromTick or tick >= toTick) continue;
+                if (tick < measureFromTick or tick >= measureToTick) continue;
                 
+                const int tickTo = tick + g_clef_analyser->noteRenderInfo[n].tick_length;
+
 #if VERBOSE
                 std::cout << "    Adding tick " << tick << " to list" << std::endl;
 #endif
@@ -566,12 +570,12 @@ namespace AriaMaestosa
                 {
                     // if there's an accidental sign to show, allocate a bigger space for this note
                     // these proportion numbers have been determined experimentally
-                    ticks_relative_position[ tick ].setProportion(3 + additionalWidth, trackID);
+                    ticks_relative_position.addSymbol( tick, tickTo, 3 + additionalWidth, trackID );
                 }
                 else
                 {
                     // these proportion numbers have been determined experimentally
-                    ticks_relative_position[ tick ].setProportion(2 + additionalWidth, trackID);
+                    ticks_relative_position.addSymbol( tick, tickTo, 2 + additionalWidth, trackID );
                 }
             }
         }
@@ -581,13 +585,14 @@ namespace AriaMaestosa
         const int silenceAmount = silences_ticks.size();
         for (int n=0; n<silenceAmount; n++)
         {
-            if (silences_ticks[n] < fromTick or silences_ticks[n] >= toTick) continue;
+            if (silences_ticks[n].from < measureFromTick or silences_ticks[n].from >= measureToTick) continue;
             
 #if VERBOSE
             std::cout << "    Adding [silence] tick " << silences_ticks[n] << " to list" << std::endl;
 #endif
             
-            ticks_relative_position[ silences_ticks[n]].setProportion(3, trackID);
+            ticks_relative_position.addSymbol( silences_ticks[n].from, silences_ticks[n].to, 3, trackID );
+
         }
         
 #if VERBOSE
