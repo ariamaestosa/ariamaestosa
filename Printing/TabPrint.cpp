@@ -40,7 +40,7 @@ namespace AriaMaestosa
         
         wxFont oldfont = dc.GetFont();
                 
-        std::cout << "Tablature : starting new line\n";
+        //std::cout << "Tablature : starting new line\n";
         
         
         // draw tab background (guitar strings)
@@ -63,13 +63,13 @@ namespace AriaMaestosa
         for(int el=0; el<elementAmount; el++)
         {
             currentElement = continueWithNextElement(trackID, line, el);
-            std::cout << "Tablature : starting new layout element. Type = " << currentElement->getType() << "\n";
+            //std::cout << "Tablature : starting new layout element. Type = " << currentElement->getType() << "\n";
             
             drawVerticalDivider(currentElement, renderInfo.y0, renderInfo.y1);
             
             if (currentElement->getType() == LINE_HEADER)
             {
-                std::cout << "Tablature : it's a header\n";
+                //std::cout << "Tablature : it's a header\n";
                 
                 dc.SetFont( wxFont(100,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD) );
                 dc.SetTextForeground( wxColour(0,0,0) );
@@ -114,7 +114,7 @@ namespace AriaMaestosa
             }
             if (currentElement->getType() == TIME_SIGNATURE)
             {
-                std::cout << "Tablature : it's a time sig\n";
+                //std::cout << "Tablature : it's a time sig\n";
                 
                 EditorPrintable::renderTimeSignatureChange(currentElement, renderInfo.y0, renderInfo.y1);
                 continue;
@@ -122,11 +122,13 @@ namespace AriaMaestosa
             
             if (currentElement->getType() != SINGLE_MEASURE)
             {
+                /*
                 std::cout << "Tablature : it's something else we won't draw : ";
                 if (currentElement->getType() == SINGLE_REPEATED_MEASURE) std::cout << "SINGLE_REPEATED_MEASURE\n";
                 if (currentElement->getType() == EMPTY_MEASURE) std::cout << "EMPTY_MEASURE\n";
                 if (currentElement->getType() == REPEATED_RIFF) std::cout << "REPEATED_RIFF\n";
                 if (currentElement->getType() == PLAY_MANY_TIMES) std::cout << "PLAY_MANY_TIMES\n";
+                 */
                 continue;
             }
             
@@ -136,14 +138,14 @@ namespace AriaMaestosa
             
             if (firstNote == -1 || lastNote == -1)
             {
-                std::cout << "Tablature : it's an empty measure\n";
+                //std::cout << "Tablature : it's an empty measure\n";
                 continue; // empty measure
             }
             
             dc.SetFont( wxFont(75, wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD) );
             wxSize textSize3 = dc.GetTextExtent( wxT("X") );
             
-            std::cout << "Tablature : drawing notes " << firstNote << " to " << lastNote << std::endl;
+            //std::cout << "Tablature : drawing notes " << firstNote << " to " << lastNote << std::endl;
             
             for (int i=firstNote; i<=lastNote; i++)
             {
@@ -154,7 +156,8 @@ namespace AriaMaestosa
                 
                 // substract from width to leave some space on the right (coordinate is from the left of the text string so we need extra space on the right)
                 // if fret number is greater than 9, the string will have two characters so we need to recenter it a bit more
-                const int drawX = getNotePrintX(trackID, line, i).from + (fret > 9 ? renderInfo.pixel_width_of_an_unit/4 : renderInfo.pixel_width_of_an_unit/2);
+                //const int drawX = getNotePrintX(trackID, line, i).from + (fret > 9 ? renderInfo.pixel_width_of_an_unit/4 : renderInfo.pixel_width_of_an_unit/2);
+                const int drawX = getNotePrintX(trackID, line, i).to - (fret > 9 ? textSize3.x*2 : textSize3.x);
                 const int drawY = renderInfo.y0 + stringHeight*string - textSize3.y/2;
                 wxString label = to_wxString(fret);
                 
@@ -204,7 +207,7 @@ namespace AriaMaestosa
             const int tick = track->getNoteStartInMidiTicks(n);
             const int tickTo = track->getNoteEndInMidiTicks(n);
 
-            int noteLen = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
+            //int noteLen = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
             
             ticks_relative_position.addSymbol( tick, tickTo, 2, trackID );
         }
