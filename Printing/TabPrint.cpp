@@ -209,7 +209,7 @@ namespace AriaMaestosa
 
             //int noteLen = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
             
-            ticks_relative_position.addSymbol( tick, tickTo, 2, trackID );
+            ticks_relative_position.addSymbol( tick, tickTo, 1, trackID );
         }
     }
     

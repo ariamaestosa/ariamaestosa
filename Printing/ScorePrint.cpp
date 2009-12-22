@@ -521,12 +521,12 @@ namespace AriaMaestosa
                 {
                     // if there's an accidental sign to show, allocate a bigger space for this note
                     // these proportion numbers have been determined experimentally
-                    ticks_relative_position.addSymbol( tick, tickTo, 3, trackID );
+                    ticks_relative_position.addSymbol( tick, tickTo, 2, trackID );
                 }
                 else
                 {
                     // these proportion numbers have been determined experimentally
-                    ticks_relative_position.addSymbol( tick, tickTo, 2, trackID );
+                    ticks_relative_position.addSymbol( tick, tickTo, 1, trackID );
                 }
             }
         }
@@ -563,12 +563,12 @@ namespace AriaMaestosa
                 {
                     // if there's an accidental sign to show, allocate a bigger space for this note
                     // these proportion numbers have been determined experimentally
-                    ticks_relative_position.addSymbol( tick, tickTo, 3, trackID );
+                    ticks_relative_position.addSymbol( tick, tickTo, 2, trackID );
                 }
                 else
                 {
                     // these proportion numbers have been determined experimentally
-                    ticks_relative_position.addSymbol( tick, tickTo, 2, trackID );
+                    ticks_relative_position.addSymbol( tick, tickTo, 1, trackID );
                 }
             }
         }
@@ -584,7 +584,7 @@ namespace AriaMaestosa
             std::cout << "    Adding [silence] tick " << silences_ticks[n] << " to list" << std::endl;
 #endif
             
-            ticks_relative_position.addSymbol( silences_ticks[n].from, silences_ticks[n].to, 3, trackID );
+            ticks_relative_position.addSymbol( silences_ticks[n].from, silences_ticks[n].to, 2, trackID );
 
         }
         

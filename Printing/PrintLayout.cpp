@@ -22,6 +22,8 @@ namespace AriaMaestosa
 {
 const int MAX_LEVELS_ON_PAGE = 74;
 const int MIN_UNIT_WIDTH = 3;
+const int MAX_LINE_WIDTH_IN_UNITS = 45;
+const int MAX_LINES_IN_PAGE = 10;
 
 int repetitionMinimalLength = 2;
 
@@ -483,7 +485,7 @@ void PrintLayoutManager::layInLinesAndPages()
     // elements on the current one
     for (int n=0; n<layoutElementsAmount; n++)
     {
-        if (current_width + layoutElements[n].width_in_units > max_line_width_in_units)
+        if (current_width + layoutElements[n].width_in_units > MAX_LINE_WIDTH_IN_UNITS)
         {
             // too much stuff on current line, switch to another line
             layoutPages[current_page].layoutLines[currentLine].width_in_units = current_width;
