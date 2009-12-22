@@ -34,9 +34,6 @@ namespace AriaMaestosa
     class PrintableSequence;
     class PrintLayoutMeasure;
     
-    static const int max_line_width_in_units = 50;
-    static const int maxLinesInPage = 10;
-    
     int getRepetitionMinimalLength();
     void setRepetitionMinimalLength(const int newvalue);
     
