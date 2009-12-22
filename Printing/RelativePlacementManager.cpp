@@ -269,7 +269,7 @@ int RelativePlacementManager::findShortestSymbolLength() const
 void RelativePlacementManager::addSymbol(int tickFrom, int tickTo, float symbolProportion, int trackID)
 {
     assert (tickFrom < m_end_of_measure_tick);
-    assert (tickTo <= m_end_of_measure_tick);
+    //assert (tickTo <= m_end_of_measure_tick);
     
     const int interestingTickID = getInterestingTick( tickFrom, 0, m_all_interesting_ticks.size()-1 );
     assert( interestingTickID >= 0 );
