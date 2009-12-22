@@ -517,20 +517,16 @@ namespace AriaMaestosa
                 std::cout << "    Adding tick " << tick << " to list" << std::endl;
 #endif
                 
-                // wider notes should be given a bit more space.
-                float ratioToShortest = (float)f_clef_analyser->noteRenderInfo[n].tick_length / (float)shortest;
-                float additionalWidth = log( ratioToShortest ) / log( 2 );
-
                 if (f_clef_analyser->noteRenderInfo[n].sign != PITCH_SIGN_NONE)
                 {
                     // if there's an accidental sign to show, allocate a bigger space for this note
                     // these proportion numbers have been determined experimentally
-                    ticks_relative_position.addSymbol( tick, tickTo, 3 + additionalWidth, trackID );
+                    ticks_relative_position.addSymbol( tick, tickTo, 3, trackID );
                 }
                 else
                 {
                     // these proportion numbers have been determined experimentally
-                    ticks_relative_position.addSymbol( tick, tickTo, 2 + additionalWidth, trackID );
+                    ticks_relative_position.addSymbol( tick, tickTo, 2, trackID );
                 }
             }
         }
@@ -562,20 +558,17 @@ namespace AriaMaestosa
                 std::cout << "    Adding tick " << tick << " to list" << std::endl;
 #endif
                 
-                // wider notes should be given a bit more space.
-                float ratioToShortest = (float)g_clef_analyser->noteRenderInfo[n].tick_length / (float)shortest;
-                float additionalWidth = log( ratioToShortest ) / log( 2 );
                 
                 if (g_clef_analyser->noteRenderInfo[n].sign != PITCH_SIGN_NONE)
                 {
                     // if there's an accidental sign to show, allocate a bigger space for this note
                     // these proportion numbers have been determined experimentally
-                    ticks_relative_position.addSymbol( tick, tickTo, 3 + additionalWidth, trackID );
+                    ticks_relative_position.addSymbol( tick, tickTo, 3, trackID );
                 }
                 else
                 {
                     // these proportion numbers have been determined experimentally
-                    ticks_relative_position.addSymbol( tick, tickTo, 2 + additionalWidth, trackID );
+                    ticks_relative_position.addSymbol( tick, tickTo, 2, trackID );
                 }
             }
         }

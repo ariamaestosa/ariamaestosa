@@ -206,11 +206,7 @@ namespace AriaMaestosa
 
             int noteLen = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
             
-            // wider notes should be given a bit more space.
-            float ratioToShortest = (float)noteLen / (float)shortest;
-            float additionalWidth = log( ratioToShortest ) / log( 2 );
-            
-            ticks_relative_position.addSymbol( tick, tickTo, 2 + additionalWidth, trackID );
+            ticks_relative_position.addSymbol( tick, tickTo, 2, trackID );
         }
     }
     
