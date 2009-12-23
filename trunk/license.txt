@@ -1,12 +1,15 @@
-Aria Maestosa is released under GNu GPL (full text found below) EXCEPT:
+Aria Maestosa is released under GNU GPL (full text found below) EXCEPT:
 
 * the AriaMaestosa source tree includes third-party
 librairies/applications : libjdkmidi, irrXML, scons.
 They are released under their own license.
+
 * dock.png, maximize.png, mute_off.png, mute_on.png, pause.ong, play.png, stop.png
-and images from the documentation depicting these icons
 are taken from the tango icon set and are released under the
 Creative Commons Attribution-ShareAlike 2.5 License (http://creativecommons.org)
+
+* tool1.png and tool2.png incoportate Oxygen icons, and are thus released un
+  the LGPL license, and credits go to the Oxygen team.
 
 ______________________________________________________________________
 

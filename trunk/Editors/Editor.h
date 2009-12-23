@@ -55,6 +55,12 @@ enum NOTES
     B,C,D,E,F,G
 };
 
+enum EditTool
+{
+    EDIT_TOOL_PENCIL,
+    EDIT_TOOL_ADD
+};
+    
 class Editor
 {
     bool verticalScrolling; // is user is dragging the scroll thumb
@@ -97,6 +103,9 @@ public:
     Editor(Track* track);
     virtual ~Editor();
 
+    static EditTool getCurrentTool();
+    static void setEditTool(EditTool tool);
+    
     Track* track;
     Sequence* sequence;
     GraphicalTrack* graphicalTrack;

@@ -73,6 +73,7 @@ enum IDs
     ZOOM,
     LENGTH,
     BEGINNING,
+    TOOL_BUTTON,
 
     SCROLLBAR_H,
     SCROLLBAR_V,
@@ -130,6 +131,12 @@ EVT_SPINCTRL(ZOOM, MainFrame::zoomChanged)
 
 EVT_TEXT(LENGTH, MainFrame::songLengthTextChanged)
 EVT_TEXT(ZOOM, MainFrame::zoomTextChanged)
+    
+#ifdef NO_WX_TOOLBAR
+    EVT_BUTTON(TOOL_BUTTON, MainFrame::toolButtonClicked)
+#else
+    EVT_TOOL(TOOL_BUTTON, MainFrame::toolButtonClicked)
+#endif
 
 EVT_COMMAND  (100000, wxEVT_DESTROY_VOLUME_SLIDER, MainFrame::evt_freeVolumeSlider)
 EVT_COMMAND  (100000, wxEVT_DESTROY_TIMESIG_PICKER, MainFrame::evt_freeTimeSigPicker)
@@ -338,6 +345,13 @@ void MainFrame::init()
 
     displayZoom->SetRange(25,500);
     toolbar->add(displayZoom, _("Zoom"));
+    
+    toolbar->AddSeparator();
+    
+    tool1Bitmap.LoadFile( getResourcePrefix()  + wxT("tool1.png") , wxBITMAP_TYPE_PNG);
+    tool2Bitmap.LoadFile( getResourcePrefix()  + wxT("tool2.png") , wxBITMAP_TYPE_PNG);
+    toolbar->AddTool(TOOL_BUTTON, _("Tool"), tool1Bitmap);
+    
     toolbar->realize();
 
     // -------------------------- RenderPane ----------------------------
@@ -737,6 +751,39 @@ void MainFrame::zoomTextChanged(wxCommandEvent& evt)
 
 }
 
+void MainFrame::toolButtonClicked(wxCommandEvent& evt)
+{
+    std::cout << "toolButtonClicked\n";
+    /*
+    wxToolBarToolBase* ctrl = toolbar->FindById(TOOL_BUTTON);
+    if (ctrl == NULL)
+    {
+        std::cerr << "Tool is null :(\n";
+    }
+    else
+    {
+        wxPoint pos = ctrl->GetPosition();
+        std::cout << "Tool pos : " << pos.x << ", " << pos.y << std::endl;
+    }*/
+    
+    EditTool currTool = Editor::getCurrentTool();
+    if (currTool == EDIT_TOOL_PENCIL)
+    {
+        toolbar->SetToolNormalBitmap(TOOL_BUTTON, tool2Bitmap);
+        Editor::setEditTool(EDIT_TOOL_ADD);
+    }
+    else if (currTool == EDIT_TOOL_ADD)
+    {
+        toolbar->SetToolNormalBitmap(TOOL_BUTTON, tool1Bitmap);
+        Editor::setEditTool(EDIT_TOOL_PENCIL);
+    }
+    else
+    {
+        assert (false);
+    }
+    
+}
+    
 void MainFrame::enterPressedInTopBar(wxCommandEvent& evt)
 {
     // give keyboard focus back to main pane

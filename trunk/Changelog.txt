@@ -1,4 +1,5 @@
 1.2b8
+- You can now choose between two tools : the "classic" on from older versions, and a new one that adds without dragging
 - More printing improvements
 - Clicking on a note on the piano at the left of the keyboard editor now plays the note
 - Clicking on a note on the staff at the left of the score editor now plays the note
