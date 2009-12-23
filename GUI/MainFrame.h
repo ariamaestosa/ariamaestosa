@@ -97,6 +97,8 @@ class MainFrame : public wxFrame
 
     wxBitmap playBitmap;
     wxBitmap pauseBitmap;
+    wxBitmap tool1Bitmap;
+    wxBitmap tool2Bitmap;
 
     wxMenuItem* followPlaybackMenuItem;
 
@@ -141,6 +143,7 @@ public:
     void songLengthTextChanged(wxCommandEvent& evt);
     void zoomTextChanged(wxCommandEvent& evt);
     void timeSigClicked(wxCommandEvent& evt);
+    void toolButtonClicked(wxCommandEvent& evt);
     //void measureDenomChanged(wxCommandEvent& evt);
     void firstMeasureChanged(wxCommandEvent& evt);
     void changeMeasureAmount(int i, bool throwEvent=true);

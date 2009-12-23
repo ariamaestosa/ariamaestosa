@@ -30,11 +30,23 @@
 #include "Renderers/Drawable.h"
 #include "IO/IOUtils.h"
 
-namespace AriaMaestosa {
+namespace AriaMaestosa
+{
+    EditTool g_current_edit_tool = EDIT_TOOL_PENCIL;
+}
 
-// TODO: expose this feature somehow
-bool add_with_single_click = false;
-    
+using namespace AriaMaestosa;
+
+EditTool Editor::getCurrentTool()
+{
+    return g_current_edit_tool;
+}
+
+void Editor::setEditTool(EditTool tool)
+{
+    g_current_edit_tool = tool;
+}
+
 Editor::Editor(Track* track)
 {
     ystep = 10;
@@ -433,7 +445,7 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                 }
                 else
                 {
-                    if (add_with_single_click and snapped_start == snapped_end) // click without moving
+                    if (g_current_edit_tool == EDIT_TOOL_ADD and snapped_start == snapped_end) // click without moving
                     {
                         addNote( snapped_start, snapped_start + sequence->ticksPerBeat()*4 / graphicalTrack->grid->divider,
                                  mousey_initial );
@@ -677,12 +689,15 @@ void Editor::updatePosition(int from_y, int to_y, int width, int height, int bar
     Editor::barHeight = barHeight;
 }
 
-const int getEditorsXStart()         {    return 90;                                }
+namespace AriaMaestosa
+{
+    const int getEditorsXStart()       {    return 90;                               }
+}
 const int Editor::getXEnd()            {    return width - 5;                        } // FIXME - adapt to include vertical scrollbar
-const int Editor::getTrackYStart()    {    return from_y;                            }
-const int Editor::getEditorYStart()    {    return from_y+barHeight+20;                }
-const int Editor::getYEnd()            {    return to_y - 10;                       }
-const int Editor::getWidth()        {    return width;                            }
+const int Editor::getTrackYStart()     {    return from_y;                           }
+const int Editor::getEditorYStart()    {    return from_y+barHeight+20;              }
+const int Editor::getYEnd()            {    return to_y - 10;                        }
+const int Editor::getWidth()           {    return width;                            }
 
 int Editor::getYScrollInPixels()
 {
@@ -729,7 +744,5 @@ int Editor::snapMidiTickToGrid_ceil(int tick)
                                      (float)(sequence->ticksPerBeat()*4 / graphicalTrack->grid->divider))
                                 *(sequence->ticksPerBeat()*4 / graphicalTrack->grid->divider)
                                 );
-
-}
 
 }

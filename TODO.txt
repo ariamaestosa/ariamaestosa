@@ -53,7 +53,6 @@ NOTE: sorry, this is very raw :)
  - hiding empty lines should be configurable
  - score print : time sig changes : no bar should appear adter time sig change
 
- ** add new tools, that allow adding notes without dragging (and resizing without keyboard, and selecting, and...?) ?
  ** Keyboard editor : show current key in left area
  
  * copy entire measures through measure bar
