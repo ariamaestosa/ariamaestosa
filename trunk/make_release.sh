@@ -11,8 +11,10 @@ echo "making packgage for version $VERSION"
 
 USE_WX_CONFIG="/Developer/libs/wxMac-2.8.9/universal-build/wx-config"
 OUTPUT="$HOME/Desktop/aria-build/"
-ADDITIONAL_BUILD_FLAGS="-isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.3.9 -Wfatal-errors"
-ADDITIONAL_LINK_FLAGS="-isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.3.9"
+ADDITIONAL_BUILD_FLAGS="-isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.4 -Wfatal-errors"
+ADDITIONAL_LINK_FLAGS="-isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.4"
+export CC="gcc-4.0"
+export CXX="g++-4.0"
 
 #--------- copy repository -----
 rm -rf $OUTPUT
@@ -33,11 +35,15 @@ cd $OUTPUT/build
 # ------ build mac binaries -----
 cd libjdkmidi
 ./configure
-sed 's/CXXFLAGS=/CXXFLAGS=-isysroot \/Developer\/SDKs\/MacOSX10.4u.sdk -mmacosx-version-min=10.3.9 -arch ppc -arch i386/' < GNUMakefile > GNUMakefile1
-sed 's/LDFLAGS=/LDFLAGS=-isysroot \/Developer\/SDKs\/MacOSX10.4u.sdk -mmacosx-version-min=10.3.9 -arch ppc -arch i386/' < GNUMakefile1 > GNUMakefile2
+sed 's/CXXFLAGS=/CXXFLAGS=-isysroot \/Developer\/SDKs\/MacOSX10.4u.sdk -mmacosx-version-min=10.4 -arch ppc -arch i386/' < GNUMakefile > GNUMakefile1
+sed 's/LDFLAGS=/LDFLAGS=-isysroot \/Developer\/SDKs\/MacOSX10.4u.sdk -mmacosx-version-min=10.4 -arch ppc -arch i386/' < GNUMakefile1 > GNUMakefile2
+sed 's/CXX=g++/CXX=g++-4.0/' < GNUMakefile2 > GNUMakefile3
+sed 's/CC=gcc/CC=gcc-4.0/' < GNUMakefile3 > GNUMakefile4
+rm GNUMakefile3
+rm GNUMakefile2
 rm GNUMakefile1
 rm GNUMakefile
-mv GNUMakefile2 GNUMakefile
+mv GNUMakefile4 GNUMakefile
 make -f GNUMakefile clean
 make -f GNUMakefile all
 cd ..
