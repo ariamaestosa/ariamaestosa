@@ -53,12 +53,14 @@ NOTE: sorry, this is very raw :)
  - hiding empty lines should be configurable
  - score print : time sig changes : no bar should appear adter time sig change
 
- ** Keyboard editor : show current key in left area
+ * Keyboard editor : show current key in left area
  
  * copy entire measures through measure bar
  
- * tabs : Chemin complet en tooltip. Mettre un bouton de fermeture
-  + when using 'close button', close whole app, not one sequence. each sequence needs its own close button
+ * tabs
+  + show full file path in tooltip?
+  + add a close button to each item
+  + when using the frame's 'close button', close whole app, not one sequence. each sequence needs its own close button
 
  + resize note with drag-and-drop
  
@@ -101,6 +103,8 @@ NOTE: sorry, this is very raw :)
  - change volume relatively on a bunch of notes
  - select notes and all similar menu items should be disabled in controller mode
 
+ + support MIDI 2.0 wide pitch bend
+
  UNSURE/MINOR:
  - setting sharp/flat sign manually sometimes doesn't work (when it's possible to display the note on a level with no sign)
  - key is not saved to midi files (the problem is that in midi key is global, in Aria it is local)
@@ -113,9 +117,8 @@ NOTE: sorry, this is very raw :)
  - draw correctly short tablature notes [don't repeat number when it's the same for several consecutive short notes?]
  - deal with multiple channels per track
  - fullscreen?
- - resize notes by dragging
  - when hitting space during a selection, finish selection before playing
- - clicking outside volume picker should close it
+ - clicking outside volume picker should close it (use wxPopupTransientWindow ?)
  - fix overlapping notes that don't have the same start tick
  - the first click, that activates a track, should not deselect
  - score editor should be able to display notes with more than 2 flags (unusure... those with 2 are already so small and barely visible)
