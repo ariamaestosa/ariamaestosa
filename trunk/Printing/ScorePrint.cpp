@@ -409,7 +409,7 @@ namespace AriaMaestosa
             
             const int radius_x = 50;
             
-            const int base_y = silences_y + 100;
+            const int base_y = silences_y + 150;
             
             static wxSize triplet_3_size = global_dc->GetTextExtent(wxT("3"));
             
@@ -1268,13 +1268,17 @@ namespace AriaMaestosa
                 const bool show_above = noteRenderInfo.isTieUp();
                 const int base_y = LEVEL_TO_Y( noteRenderInfo.getStemOriginLevel() ) + (show_above ? - 30 : 60);
                 
-                const Range<int> noteX = x_converter->tickToX(noteRenderInfo.tick);
-                std::cout << "tied to tick " << noteRenderInfo.getTiedToTick() << " from " << noteRenderInfo.tick << std::endl;
-                const int tiedToPixel = x_converter->tickToX(noteRenderInfo.getTiedToTick()).from;
-                std::cout << "tied to pixel " << tiedToPixel << " from " << getStemX(noteRenderInfo) << std::endl;
+                const Range<int> noteLoc = x_converter->tickToX(noteRenderInfo.tick);
+                const int tiedXStart = noteLoc.to - headRadius;
+                
+                //std::cout << "tied to tick " << noteRenderInfo.getTiedToTick() << " from " << noteRenderInfo.tick << std::endl;
+                const Range<int> tiedToSymbolLocation = x_converter->tickToX(noteRenderInfo.getTiedToTick());
 
-                const int center_x = (tiedToPixel + noteX.from)/2 + headRadius*2;
-                const int radius_x = abs(tiedToPixel - noteX.from)/2;
+                const int tiedToPixel = (tiedToSymbolLocation.from + tiedToSymbolLocation.to)/2;
+                //std::cout << "tied to pixel " << tiedToPixel << " from " << getStemX(noteRenderInfo) << std::endl;
+
+                const int center_x = (tiedToPixel + tiedXStart)/2;
+                const int radius_x = abs(tiedToPixel - tiedXStart)/2;
                 renderArc(dc, center_x, base_y, radius_x, show_above ? -50 : 50);
             }
             
@@ -1318,25 +1322,28 @@ namespace AriaMaestosa
                 dc.SetPen( tiePen );
                 dc.SetBrush( *wxTRANSPARENT_BRUSH );
                 
-                int triplet_arc_x_start = x_converter->tickToX(noteRenderInfo.triplet_arc_tick_start).from;
+                int triplet_arc_x_start = x_converter->tickToX(noteRenderInfo.triplet_arc_tick_start).to - headRadius;
                 int triplet_arc_x_end = -1;
                 
                 if (noteRenderInfo.triplet_arc_tick_end != -1)
                 {
-                    triplet_arc_x_end = x_converter->tickToX(noteRenderInfo.triplet_arc_tick_end).from;
+                    const Range<int> arcEndSymbolLocation = x_converter->tickToX(noteRenderInfo.triplet_arc_tick_end);
+                    
+                    triplet_arc_x_end = arcEndSymbolLocation.to - headRadius;
                 }
                 
                 const int center_x = (triplet_arc_x_end == -1 ?
                                       triplet_arc_x_start :
-                                      (triplet_arc_x_start + triplet_arc_x_end)/2) + headRadius;
+                                      (triplet_arc_x_start + triplet_arc_x_end)/2);
                 const int radius_x = (triplet_arc_x_end == -1 or  triplet_arc_x_end == triplet_arc_x_start ?
                                       100 : (triplet_arc_x_end - triplet_arc_x_start)/2);
                 
                 const int base_y = LEVEL_TO_Y(noteRenderInfo.triplet_arc_level) + (noteRenderInfo.triplet_show_above ? -80 : 90);
                 
-                renderArc(dc, center_x + headRadius*1.2, base_y, radius_x, noteRenderInfo.triplet_show_above ? -80 : 80);
+                renderArc(dc, center_x, base_y, radius_x, noteRenderInfo.triplet_show_above ? -80 : 80);
                 dc.SetTextForeground( wxColour(0,0,0) );
-                dc.DrawText( wxT("3"), center_x + headRadius/2, base_y + (noteRenderInfo.triplet_show_above ? -75 : -20) );
+                // FIXME: use font size instead of hardcoded constant
+                dc.DrawText( wxT("3"), center_x - 25, base_y + (noteRenderInfo.triplet_show_above ? -75 : -20) );
             }
             
             
