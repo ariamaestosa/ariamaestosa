@@ -714,14 +714,15 @@ namespace AriaMaestosa
         //scoreData->from_note = line.getFirstNote();
         //scoreData->to_note   = line.getLastNote();
         
-        int highest_pitch = -1, lowest_pitch = -1;
+        //int highest_pitch = -1, lowest_pitch = -1;
         int biggest_level = -1, smallest_level = -1;
         
         for (int m=fromMeasure; m<=lastMeasure; m++)
         {
-            //  FIXME : this also needs to be per-track
+            //  FIXME : see other fixme above, this * 500 + m trick is stupid and ugly
             PerMeasureInfo& info = perMeasureInfo[trackID*5000+m];
                         
+            /*
             if (info.highest_pitch < highest_pitch or highest_pitch == -1)
             {
                 highest_pitch = info.highest_pitch;
@@ -729,7 +730,7 @@ namespace AriaMaestosa
             if (info.lowest_pitch > lowest_pitch or lowest_pitch == -1)
             {
                 lowest_pitch = info.lowest_pitch;
-            } 
+            } */
             if (info.biggest_level > biggest_level or biggest_level == -1)
             {
                 biggest_level = info.biggest_level;
@@ -867,7 +868,6 @@ namespace AriaMaestosa
             }
             
             PerMeasureInfo info;
-            info.highest_pitch = highest_pitch;
             info.highest_pitch = highest_pitch;
             info.lowest_pitch = lowest_pitch;
             info.biggest_level = biggest_level;
@@ -1269,7 +1269,7 @@ namespace AriaMaestosa
                 const int base_y = LEVEL_TO_Y( noteRenderInfo.getStemOriginLevel() ) + (show_above ? - 30 : 60);
                 
                 const Range<int> noteLoc = x_converter->tickToX(noteRenderInfo.tick);
-                const int tiedXStart = noteLoc.to - headRadius;
+                const int tiedXStart = (noteLoc.from + noteLoc.to)/2;
                 
                 //std::cout << "tied to tick " << noteRenderInfo.getTiedToTick() << " from " << noteRenderInfo.tick << std::endl;
                 const Range<int> tiedToSymbolLocation = x_converter->tickToX(noteRenderInfo.getTiedToTick());
