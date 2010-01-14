@@ -27,21 +27,21 @@ namespace AriaMaestosa
     class PrintLayoutMeasure;
     class PrintableSequence;
     
-/**
- * Editor-specific data (each editor can override this class and set their data through it in each
- * 'LineTrackRef'.
- */
-class EditorData
+    /**
+     * Editor-specific data (each editor can override this class and set their data through it in each
+     * 'LineTrackRef'.
+     */
+    class EditorData
     {
     public:
         virtual ~EditorData() {}
     };
     
-
-/**
- * represents the reference to a track within a single 'LayoutLine' obejct.
- */
-class LineTrackRef
+    
+    /**
+     * represents the reference to a track within a single 'LayoutLine' obejct.
+     */
+    class LineTrackRef
     {
         LayoutLine* parent;
         int trackID;
@@ -65,13 +65,13 @@ class LineTrackRef
         int getFirstNoteInElement(LayoutElement* layoutElement);
         int getLastNoteInElement(LayoutElement* layoutElement);
     };
-
-/*
- A line on a notation to print. Can contain more than one track.
- Essentially holds some 'LayoutElement' objects (the ones that fit
- on this line)
- */
-class LayoutLine
+    
+    /*
+     A line on a notation to print. Can contain more than one track.
+     Essentially holds some 'LayoutElement' objects (the ones that fit
+     on this line)
+     */
+    class LayoutLine
     {
         friend class AriaPrintable;
         
@@ -117,10 +117,10 @@ class LayoutLine
         
         int getLastMeasure() const;
         int getFirstMeasure() const;
-
+        
         std::vector<LayoutElement> layoutElements;
     };
-
-}
     
+}
+
 #endif

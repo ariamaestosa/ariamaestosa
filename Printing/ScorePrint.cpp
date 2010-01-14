@@ -25,45 +25,45 @@ namespace AriaMaestosa
 #endif
     
     class PerMeasureInfo
+    {
+    public:
+        int highest_pitch;
+        int lowest_pitch;
+        int smallest_level;
+        int biggest_level;
+        int first_note;
+        int last_note;
+        
+        PerMeasureInfo()
         {
-        public:
-            int highest_pitch;
-            int lowest_pitch;
-            int smallest_level;
-            int biggest_level;
-            int first_note;
-            int last_note;
-            
-            PerMeasureInfo()
-            {
-                highest_pitch = -1;
-                lowest_pitch = -1;
-                smallest_level = -1;
-                biggest_level = -1;
-                first_note = -1;
-                last_note = -1;
-            }
-        };
+            highest_pitch = -1;
+            lowest_pitch = -1;
+            smallest_level = -1;
+            biggest_level = -1;
+            first_note = -1;
+            last_note = -1;
+        }
+    };
     
     class ScoreData : public EditorData
-        {
-        public:            
-            LEAK_CHECK();
-            
-            virtual ~ScoreData() {}
-            
-            //int middle_c_level, from_note, to_note;
-            //bool g_clef, f_clef;
-            int extra_lines_above_g_score;
-            int extra_lines_under_g_score;
-            int extra_lines_above_f_score;
-            int extra_lines_under_f_score;
-            float first_clef_proportion ;
-            float second_clef_proportion;
-            
-            //OwnerPtr<ScoreAnalyser> g_clef_analyser;
-            //OwnerPtr<ScoreAnalyser> f_clef_analyser;
-        };
+    {
+    public:            
+        LEAK_CHECK();
+        
+        virtual ~ScoreData() {}
+        
+        //int middle_c_level, from_note, to_note;
+        //bool g_clef, f_clef;
+        int extra_lines_above_g_score;
+        int extra_lines_under_g_score;
+        int extra_lines_above_f_score;
+        int extra_lines_under_f_score;
+        float first_clef_proportion ;
+        float second_clef_proportion;
+        
+        //OwnerPtr<ScoreAnalyser> g_clef_analyser;
+        //OwnerPtr<ScoreAnalyser> f_clef_analyser;
+    };
     
     // FIXME : find cleaner way to keep info per-track
     std::map< int /* trackID*5000 measure ID */, PerMeasureInfo > perMeasureInfo;
@@ -940,34 +940,6 @@ namespace AriaMaestosa
             }
             
         }//next element
-        
-        /*
-         if (f_clef)
-         {
-         const int amount = f_clef_analyser->noteRenderInfo.size();
-         int tick = -1;
-         for(int n=0; n<amount; n++)
-         {
-         const int newTick = f_clef_analyser->noteRenderInfo[n].tick;
-         
-         if (newTick < tick)
-         {
-         std::cout << "[F noteRenderInfo] ticks not in order!! " << tick << " then " << newTick << "\n";
-         }
-         f_clef_analyser->noteRenderInfo[n].tick = tick;
-         
-         //std::cout << "[F noteRenderInfo] " << f_clef_analyser->noteRenderInfo[n].tick << std::endl;
-         }
-         }
-         if (g_clef)
-         {
-         const int amount = g_clef_analyser->noteRenderInfo.size();
-         for(int n=0; n<amount; n++)
-         {
-         std::cout << "[G noteRenderInfo] " << g_clef_analyser->noteRenderInfo[n].tick << std::endl;
-         }
-         }
-         */
         
         // ---- Silences
         std::cout << " == gathering silence list ==\n";

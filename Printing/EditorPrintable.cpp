@@ -46,6 +46,7 @@ void EditorPrintable::setCurrentDC(wxDC* dc)
 
 // -------------------------------------------------------------------------------------------
     
+// FIXME: does this maybe go in layout files?
 void EditorPrintable::placeTrackAndElementsWithinCoords(const int trackID, LayoutLine& line, LineTrackRef& track,  int x0, const int y0, const int x1, const int y1, bool show_measure_number)
 {
     std::cout << "= placeTrackAndElementsWithinCoords =\n";
@@ -71,17 +72,29 @@ void EditorPrintable::placeTrackAndElementsWithinCoords(const int trackID, Layou
     
     track.layoutElementsAmount = line.layoutElements.size();
     
-    int xloc = 0;
-        
+    // find total amount of units
+    int totalUnitCount = 0;
+    for (int currentLayoutElement=0; currentLayoutElement<track.layoutElementsAmount; currentLayoutElement++)
+    {
+        totalUnitCount += line.layoutElements[currentLayoutElement].width_in_units;
+    }
+    int pixel_width_of_an_unit = (x1 - x0) / totalUnitCount;
+            
     // init coords of each layout element
-    for(int currentLayoutElement=0; currentLayoutElement<track.layoutElementsAmount; currentLayoutElement++)
+    int xloc = 0;
+
+    for (int currentLayoutElement=0; currentLayoutElement<track.layoutElementsAmount; currentLayoutElement++)
     {
         if (currentLayoutElement == 0) xloc = 1;
         else if (currentLayoutElement > 0) xloc += line.layoutElements[currentLayoutElement-1].width_in_units;
         
-        std::cout << "    - Setting coords of element " << currentLayoutElement << " of current line. xfrom = " <<
-        x0 + (int)round(xloc*track.pixel_width_of_an_unit) - track.pixel_width_of_an_unit << "\n";
-        line.layoutElements[currentLayoutElement].setXFrom(x0 + (int)round(xloc*track.pixel_width_of_an_unit) - track.pixel_width_of_an_unit);
+        std::cout << "    - Setting coords of element " << currentLayoutElement << " of current line. xfrom = "
+                  << x0 + (int)round(xloc*track.pixel_width_of_an_unit) - pixel_width_of_an_unit << "\n";
+        
+        line.layoutElements[currentLayoutElement].setXFrom(  x0 +
+                                                             (int)round(xloc * pixel_width_of_an_unit) -
+                                                             track.pixel_width_of_an_unit
+                                                           );
         
         if (currentLayoutElement > 0)
         {
