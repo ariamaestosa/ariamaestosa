@@ -288,8 +288,15 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
             
             assertExpr(elem_w, >, 0);
             
-            return Range<int>((int)round(relative_pos.from * elem_w + elem_x_start),
-                              (int)round(relative_pos.to   * elem_w + elem_x_start));
+            const int from = (int)round(relative_pos.from * elem_w + elem_x_start);
+            int to = (int)round(relative_pos.to   * elem_w + elem_x_start);
+            
+            // FIXME: arbitrary max length for now
+            // FIXME: ideally, when one symbol is given too much space, the max size reached detection should
+            //        be detected earlier in order to allow other symbols on the line to use the available space
+            if ((to - from) > 175) to = from + 175;
+            
+            return Range<int>(from, to);
         }
         else 
         // given tick is before the current line
