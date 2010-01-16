@@ -110,6 +110,8 @@ class Sequence {
     void addToDock(GraphicalTrack* track);
     void removeFromDock(GraphicalTrack* track);
 
+    void pushYScroll(int delta) { y_scroll += delta; }
+    
     void spacePressed();
     void renderTracks(int currentTick, RelativeXCoord mousex, int mousey, int mousey_initial, int from_y);
 

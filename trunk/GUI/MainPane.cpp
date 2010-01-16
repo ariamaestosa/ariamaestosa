@@ -240,10 +240,12 @@ bool MainPane::do_render()
 
     // if too many tabs for all to be visible, make them smaller
     tab_width = 145;
-    if ( seqamount*(tab_width+16+16) > Display::getWidth() )
+    if (seqamount*(tab_width+16+16) > Display::getWidth())
+    {
         tab_width = Display::getWidth() / seqamount - 32;
+    }
 
-    for(int n=0; n<seqamount; n++)
+    for (int n=0; n<seqamount; n++)
     {
         AriaRender::images();
 

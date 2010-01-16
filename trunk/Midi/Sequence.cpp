@@ -344,18 +344,17 @@ void Sequence::loadUndoMemory()
 #if 0
 #pragma mark -
 #endif
-// FIXME - -this class shouldn't do  both graphics and data
+// FIXME - this class shouldn't do both rendering and data handling
 void Sequence::renderTracks(int currentTick, RelativeXCoord mousex, int mousey, int mousey_initial, int from_y)
 {
-
     const int draggedTrack = Display::getDraggedTrackID();
 
     // draw tracks normally
-    if (draggedTrack==-1)
+    if (draggedTrack == -1)
     {
         reorderYScroll=0;
 
-        int y=from_y - y_scroll;
+        int y = from_y - y_scroll;
         const int trackAmount = tracks.size();
         for(int n=0; n<trackAmount; n++)
         {
