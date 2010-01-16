@@ -62,31 +62,37 @@
 #include <ApplicationServices/ApplicationServices.h>
 #endif
 
-namespace AriaMaestosa {
+using namespace AriaMaestosa;
 
-
-enum IDs
+namespace AriaMaestosa
 {
-    PLAY_CLICKED,
-    STOP_CLICKED,
-    TEMPO,
-    ZOOM,
-    LENGTH,
-    BEGINNING,
-    TOOL_BUTTON,
+    enum IDs
+    {
+        PLAY_CLICKED,
+        STOP_CLICKED,
+        TEMPO,
+        ZOOM,
+        LENGTH,
+        BEGINNING,
+        TOOL_BUTTON,
+        
+        SCROLLBAR_H,
+        SCROLLBAR_V,
+        
+        TIME_SIGNATURE
+    };
 
-    SCROLLBAR_H,
-    SCROLLBAR_V,
 
-    TIME_SIGNATURE
-};
+    // events useful if you need to show a progress bar from another thread
+    DEFINE_EVENT_TYPE(wxEVT_SHOW_WAIT_WINDOW)
+    DEFINE_EVENT_TYPE(wxEVT_UPDATE_WAIT_WINDOW)
+    DEFINE_EVENT_TYPE(wxEVT_HIDE_WAIT_WINDOW)
+    
+}
 
 
-// events useful if you need to show a
-// progress bar from another thread
-DEFINE_EVENT_TYPE(wxEVT_SHOW_WAIT_WINDOW)
-DEFINE_EVENT_TYPE(wxEVT_UPDATE_WAIT_WINDOW)
-DEFINE_EVENT_TYPE(wxEVT_HIDE_WAIT_WINDOW)
+// --------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------
 
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
 
@@ -131,11 +137,11 @@ EVT_SPINCTRL(ZOOM, MainFrame::zoomChanged)
 
 EVT_TEXT(LENGTH, MainFrame::songLengthTextChanged)
 EVT_TEXT(ZOOM, MainFrame::zoomTextChanged)
-    
+
 #ifdef NO_WX_TOOLBAR
-    EVT_BUTTON(TOOL_BUTTON, MainFrame::toolButtonClicked)
+EVT_BUTTON(TOOL_BUTTON, MainFrame::toolButtonClicked)
 #else
-    EVT_TOOL(TOOL_BUTTON, MainFrame::toolButtonClicked)
+EVT_TOOL(TOOL_BUTTON, MainFrame::toolButtonClicked)
 #endif
 
 EVT_COMMAND  (100000, wxEVT_DESTROY_VOLUME_SLIDER, MainFrame::evt_freeVolumeSlider)
@@ -149,83 +155,88 @@ EVT_COMMAND  (100003, wxEVT_HIDE_WAIT_WINDOW, MainFrame::evt_hideWaitWindow)
 
 END_EVENT_TABLE()
 
+// --------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------
+
+
 #ifndef NO_WX_TOOLBAR
 
-    CustomToolBar::CustomToolBar(wxWindow* parent) : wxToolBar(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_TEXT | wxTB_HORIZONTAL | wxNO_BORDER)
-    {
-    }
+CustomToolBar::CustomToolBar(wxWindow* parent) : wxToolBar(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_TEXT | wxTB_HORIZONTAL | wxNO_BORDER)
+{
+}
 
-    void CustomToolBar::add(wxControl* ctrl, wxString label)
-    {
-    #if wxMAJOR_VERSION >= 3
-        // wxWidgets 3 supports labels under components in toolbar.
-        AddControl(ctrl, label);
-    #else
-        AddControl(ctrl);
-    #endif
-
-    #ifdef __WXMAC__
-        if (not label.IsEmpty())
-        {
-            // work around wxMac limitation (labels under controls in toolbar don't seem to work)
-            // will work only if wx was patched with the supplied patch....
-            wxToolBarToolBase* tool = (wxToolBarToolBase*)FindById(ctrl->GetId());
-            if (tool != NULL) tool->SetLabel(label);
-            else std::cerr << "Failed to set label : " << label.mb_str() << std::endl;
-        }
-    #endif
-    }
-    void CustomToolBar::realize()
-    {
-        Realize();
-        /*
-            wxToolBarTool* tool = (wxToolBarTool*)FindById(TIME_SIGNATURE);
-            HIToolbarItemRef ref = tool->m_toolbarItemRef;
-            HIToolbarItemSetLabel( ref , CFSTR("Time Sig") );
-         */
-    }
+void CustomToolBar::add(wxControl* ctrl, wxString label)
+{
+#if wxMAJOR_VERSION >= 3
+    // wxWidgets 3 supports labels under components in toolbar.
+    AddControl(ctrl, label);
 #else
-    // my generic toolbar
-    CustomToolBar::CustomToolBar(wxWindow* parent) : wxPanel(parent, wxID_ANY)
+    AddControl(ctrl);
+#endif
+    
+#ifdef __WXMAC__
+    if (not label.IsEmpty())
     {
-        toolbarSizer=new wxFlexGridSizer(2, 6, 1, 15);
-        this->SetSizer(toolbarSizer);
-    }
-
-    void CustomToolBar::AddTool(const int id, wxString label, wxBitmap& bmp)
-    {
-        wxBitmapButton* btn = new wxBitmapButton(this, id, bmp);
-        toolbarSizer->Add(btn, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
-        labels.push_back(label);
-    }
-
-    void CustomToolBar::add(wxControl* ctrl, wxString label)
-    {
-        toolbarSizer->Add(ctrl, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
-        labels.push_back(label);
-    }
-    void CustomToolBar::realize()
-    {
-        const int label_amount = labels.size();
-        toolbarSizer->SetCols( label_amount );
-
-        for(int n=0; n<label_amount; n++)
-        {
-            toolbarSizer->Add(new wxStaticText(this, wxID_ANY,  labels[n]), 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
-        }
-    }
-    void CustomToolBar::SetToolNormalBitmap(const int id, wxBitmap& bmp)
-    {
-        wxWindow* win = wxWindow::FindWindowById( id, this );
-        wxBitmapButton* btn = dynamic_cast<wxBitmapButton*>(win);
-        if (btn != NULL) btn->SetBitmapLabel(bmp);
-    }
-    void CustomToolBar::EnableTool(const int id, const bool enabled)
-    {
-        wxWindow* win = wxWindow::FindWindowById( id, this );
-        if ( win != NULL ) win->Enable(enabled);
+        // work around wxMac limitation (labels under controls in toolbar don't seem to work)
+        // will work only if wx was patched with the supplied patch....
+        wxToolBarToolBase* tool = (wxToolBarToolBase*)FindById(ctrl->GetId());
+        if (tool != NULL) tool->SetLabel(label);
+        else std::cerr << "Failed to set label : " << label.mb_str() << std::endl;
     }
 #endif
+}
+void CustomToolBar::realize()
+{
+    Realize();
+    /*
+     wxToolBarTool* tool = (wxToolBarTool*)FindById(TIME_SIGNATURE);
+     HIToolbarItemRef ref = tool->m_toolbarItemRef;
+     HIToolbarItemSetLabel( ref , CFSTR("Time Sig") );
+     */
+}
+#else
+// my generic toolbar
+CustomToolBar::CustomToolBar(wxWindow* parent) : wxPanel(parent, wxID_ANY)
+{
+    toolbarSizer=new wxFlexGridSizer(2, 6, 1, 15);
+    this->SetSizer(toolbarSizer);
+}
+
+void CustomToolBar::AddTool(const int id, wxString label, wxBitmap& bmp)
+{
+    wxBitmapButton* btn = new wxBitmapButton(this, id, bmp);
+    toolbarSizer->Add(btn, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+    labels.push_back(label);
+}
+
+void CustomToolBar::add(wxControl* ctrl, wxString label)
+{
+    toolbarSizer->Add(ctrl, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+    labels.push_back(label);
+}
+void CustomToolBar::realize()
+{
+    const int label_amount = labels.size();
+    toolbarSizer->SetCols( label_amount );
+    
+    for(int n=0; n<label_amount; n++)
+    {
+        toolbarSizer->Add(new wxStaticText(this, wxID_ANY,  labels[n]), 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
+    }
+}
+void CustomToolBar::SetToolNormalBitmap(const int id, wxBitmap& bmp)
+{
+    wxWindow* win = wxWindow::FindWindowById( id, this );
+    wxBitmapButton* btn = dynamic_cast<wxBitmapButton*>(win);
+    if (btn != NULL) btn->SetBitmapLabel(bmp);
+}
+void CustomToolBar::EnableTool(const int id, const bool enabled)
+{
+    wxWindow* win = wxWindow::FindWindowById( id, this );
+    if ( win != NULL ) win->Enable(enabled);
+}
+#endif
+
 
     
 // --------------------------------------------------------------------------------------------------------
@@ -459,6 +470,7 @@ void MainFrame::on_close(wxCloseEvent& evt)
 }
 
 // --------------------------------------------------------------------------------------------------------
+
     
 #ifdef __WXMSW__
 void MainFrame::onDropFile(wxDropFilesEvent& event)
@@ -480,9 +492,9 @@ void MainFrame::onDropFile(wxDropFilesEvent& event)
 }
 #endif
 
-// ------------------------------------------------------------------------------------------------------------------------
-// ----------------------------------------------------- PLAY/STOP --------------------------------------------------------
-// ------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------- PLAY/STOP ----------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #pragma mark Play/Stop
@@ -509,11 +521,8 @@ void MainFrame::playClicked(wxCommandEvent& evt)
 
     mainPane->setPlaybackStartTick( startTick );
 
-    if (startTick == -1 or !success)
-        mainPane->exitPlayLoop();
-    else
-        mainPane->enterPlayLoop();
-
+    if (startTick == -1 or !success)    mainPane->exitPlayLoop();
+    else                                mainPane->enterPlayLoop();
 }
     
 // --------------------------------------------------------------------------------------------------------
@@ -561,9 +570,9 @@ void MainFrame::toolsExitPlaybackMode()
 }
 
 
-// ------------------------------------------------------------------------------------------------------------------------
-// ---------------------------------------------------- TOP BAR -----------------------------------------------------------
-// ------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------ TOP BAR -------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------
 
 #if 0
 #pragma mark -
@@ -603,8 +612,6 @@ void MainFrame::updateTopBarAndScrollbarsForSequence(Sequence* seq)
     updateVerticalScrollbar();
 
     changingValues=false;
-
-
 }
     
 // --------------------------------------------------------------------------------------------------------
@@ -834,9 +841,7 @@ void MainFrame::enterPressedInTopBar(wxCommandEvent& evt)
 }
 
 // --------------------------------------------------------------------------------------------------------
-/**
- * Called whenever the user edits the text field containing song length.
- */
+
 void MainFrame::songLengthChanged(wxSpinEvent& evt)
 {
 
@@ -854,18 +859,14 @@ void MainFrame::songLengthChanged(wxSpinEvent& evt)
 
 }
 
-// ------------------------------------------------------------------------------------------------------------------------
-// ------------------------------------------------ SCROLLBARS ------------------------------------------------------------
-// ------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------
+// -------------------------------------------- SCROLLBARS --------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #pragma mark Scrollbars
 #endif
 
-/**
- * User scrolled horizontally by dragging.
- * Just make sure to update the display to the new values.
- */
 void MainFrame::horizontalScrolling(wxScrollEvent& evt)
 {
 
@@ -880,11 +881,7 @@ void MainFrame::horizontalScrolling(wxScrollEvent& evt)
 }
     
 // --------------------------------------------------------------------------------------------------------
-/**
- * User scrolled horizontally by clicking oin the arrows.
- * We need to ensure it scrolls of one whole measure (cause scrolling pixel by pixel horizontally would be too slow)
- * We by the way need to make sure it doesn't get out of bounds, in which case we need to put the scrollbar back into correct position.
- */
+
 void MainFrame::horizontalScrolling_arrows(wxScrollEvent& evt)
 {
 
@@ -923,10 +920,7 @@ void MainFrame::horizontalScrolling_arrows(wxScrollEvent& evt)
 }
 
 // --------------------------------------------------------------------------------------------------------
-/**
- * User scrolled vertically by dragging.
- * Just make sure to update the display to the new values.
- */
+
 void MainFrame::verticalScrolling(wxScrollEvent& evt)
 {
     getCurrentSequence()->setYScroll( verticalScrollbar->GetThumbPosition() );
@@ -934,10 +928,7 @@ void MainFrame::verticalScrolling(wxScrollEvent& evt)
 }
 
 // --------------------------------------------------------------------------------------------------------
-/**
- * User scrolled vertically by clicking on the arrows.
- * Just make sure to update the display to the new values.
- */
+
 void MainFrame::verticalScrolling_arrows(wxScrollEvent& evt)
 {
     getCurrentSequence()->setYScroll( verticalScrollbar->GetThumbPosition() );
@@ -945,9 +936,7 @@ void MainFrame::verticalScrolling_arrows(wxScrollEvent& evt)
 }
 
 // --------------------------------------------------------------------------------------------------------
-/**
- * Called to update the horizontal scrollbar, usually because song length has changed.
- */
+
 void MainFrame::updateHorizontalScrollbar(int thumbPos)
 {
 
@@ -1034,34 +1023,30 @@ void MainFrame::updateVerticalScrollbar()
     }
 }
 
-// ------------------------------------------------------------------------------------------------------------------------
-// ----------------------------------------------------- SEQUENCES --------------------------------------------------------
-// ------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------- SEQUENCES ----------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #pragma mark Sequences
 #endif
 
-/*
- * Add a new sequence. There can be multiple sequences if user opens or creates multiple files at the same time.
- */
+
 void MainFrame::addSequence()
 {
     sequences.push_back(new Sequence());
     Display::render();
 }
 
-/*
- * Returns the amount of open sequences. There can be multiple sequences if user opens or creates  multiple files at the same time.
- */
+// ----------------------------------------------------------------------------------------------------------------
+
 int MainFrame::getSequenceAmount()
 {
     return sequences.size();
 }
 
-/*
- * Close the sequence currently being active. There can be multiple sequences if user opens or creates  multiple files at the same time.
- */
+// ----------------------------------------------------------------------------------------------------------------
+    
 bool MainFrame::closeSequence(int id_arg) // -1 means current
 {
 
@@ -1098,9 +1083,7 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
 
 }
 
-/*
- * Returns the sequence currently being active. There can be multiple sequences if user opens or creates  multiple files at the same time.
- */
+// ----------------------------------------------------------------------------------------------------------------
 
 Sequence* MainFrame::getCurrentSequence()
 {
@@ -1110,6 +1093,8 @@ Sequence* MainFrame::getCurrentSequence()
     return &sequences[currentSequence];
 }
 
+// ----------------------------------------------------------------------------------------------------------------
+
 Sequence* MainFrame::getSequence(int n)
 {
     assertExpr(n,>=,0);
@@ -1118,10 +1103,14 @@ Sequence* MainFrame::getSequence(int n)
     return &sequences[n];
 }
 
+// ----------------------------------------------------------------------------------------------------------------
+
 int MainFrame::getCurrentSequenceID()
 {
     return currentSequence;
 }
+    
+// ----------------------------------------------------------------------------------------------------------------
 
 void MainFrame::setCurrentSequence(int n)
 {
@@ -1134,24 +1123,20 @@ void MainFrame::setCurrentSequence(int n)
 }
 
 
-// ------------------------------------------------------------------------------------------------------------------------
-// ---------------------------------------------------------- I/O ---------------------------------------------------------
-// ------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------ I/O -----------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------
 
 #if 0
 #pragma mark -
 #pragma mark I/O
 #endif
 
-/**
- * Opens the .aria file in filepath, reads it and prepares the editor to display and edit it.
- */
 
 // FIXME - it sounds very dubious that this task goes in MainFrame
 
 void MainFrame::loadAriaFile(wxString filePath)
 {
-
     if (filePath.IsEmpty()) return;
 
     const int old_currentSequence = currentSequence;
@@ -1185,12 +1170,10 @@ void MainFrame::loadAriaFile(wxString filePath)
     else updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
 
     Display::render();
-
 }
 
-/**
- * Opens the .mid file in filepath, reads it and prepares the editor to display and edit it.
- */
+// ----------------------------------------------------------------------------------------------------------------
+
 // FIXME - it sounds very dubious that this task goes in MainFrame
 void MainFrame::loadMidiFile(wxString midiFilePath)
 {
@@ -1224,11 +1207,11 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
     if (PlatformMidiManager::isPlaying()) setCurrentSequence(old_currentSequence);
 
     Display::render();
-
 }
 
 
-
+// ----------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------
 
 #if 0
 #pragma mark -
@@ -1242,26 +1225,38 @@ void MainFrame::songHasFinishedPlaying()
     Display::render();
 }
 
+// ----------------------------------------------------------------------------------------------------------------
+
 void MainFrame::evt_freeVolumeSlider( wxCommandEvent& evt )
 {
     freeVolumeSlider();
 }
+    
+// ----------------------------------------------------------------------------------------------------------------
+
 void MainFrame::evt_freeTimeSigPicker( wxCommandEvent& evt )
 {
     freeTimeSigPicker();
 }
 
+// ----------------------------------------------------------------------------------------------------------------
+
 void MainFrame::evt_showWaitWindow(wxCommandEvent& evt)
 {
     WaitWindow::show( evt.GetString(), evt.GetInt() );
 }
+    
+// ----------------------------------------------------------------------------------------------------------------
+
 void MainFrame::evt_updateWaitWindow(wxCommandEvent& evt)
 {
     WaitWindow::setProgress( evt.GetInt() );
 }
+    
+// ----------------------------------------------------------------------------------------------------------------
+
 void MainFrame::evt_hideWaitWindow(wxCommandEvent& evt)
 {
     WaitWindow::hide();
 }
 
-}
