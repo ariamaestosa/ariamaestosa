@@ -226,6 +226,8 @@ void MainFrame::disableMenusForPlayback(const bool disable)
     fileMenu->Enable(MENU_FILE_IMPORT_MIDI, on);
     fileMenu->Enable(MENU_FILE_EXPORT_MIDI, on);
     fileMenu->Enable(MENU_FILE_EXPORT_SAMPLED_AUDIO, on);
+    fileMenu->Enable(MENU_FILE_EXPORT_NOTATION, on);
+    fileMenu->Enable(MENU_FILE_COPYRIGHT, on);
     fileMenu->Enable(wxID_EXIT, on);
 }
 
