@@ -570,10 +570,8 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     else if (renderInfo.hollow_head)
     {
         AriaRender::images();
-        if (renderInfo.selected)
-            AriaRender::setImageState(AriaRender::STATE_SELECTED_NOTE);
-        else
-            AriaRender::setImageState(AriaRender::STATE_NOTE);
+        if (renderInfo.selected)    AriaRender::setImageState(AriaRender::STATE_SELECTED_NOTE);
+        else                        AriaRender::setImageState(AriaRender::STATE_NOTE);
         noteOpen->move(noteX, renderInfo.getY());
         noteOpen->render();
     }
