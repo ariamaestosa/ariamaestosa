@@ -80,23 +80,35 @@ public:
     bool dragging_resize;
 
     int editorMode;
+    
+    /** Y coord on the current display where this track starts (this is updated on each rendering).
+      * Worth -1 when track is docked. */
     int from_y;
+    
+    /** Y coord on the current display where this track ends (this is updated on each rendering).
+      * Worth -1 when track is docked. */
     int to_y;
+    
+    /** Whether this track was collapsed with the triangle widget so that only its header is seen */
     bool collapsed;
+    
+    /** Whether this track has been muted so that it's not heard on playback. */
     bool muted;
+    
+    /** Whether this track was "docked", i.e. minimized so that not even its header is visible */
     bool docked;
 
     Sequence* sequence;
     Track* track;
 
-    OwnerPtr< MagneticGrid>  grid ;
+    OwnerPtr<MagneticGrid>  grid ;
 
     // editors
-    OwnerPtr< KeyboardEditor>    keyboardEditor   ;
-    OwnerPtr< GuitarEditor>      guitarEditor     ;
-    OwnerPtr< DrumEditor>        drumEditor       ;
-    OwnerPtr< ControllerEditor>  controllerEditor ;
-    OwnerPtr< ScoreEditor>       scoreEditor      ;
+    OwnerPtr<KeyboardEditor>    keyboardEditor   ;
+    OwnerPtr<GuitarEditor>      guitarEditor     ;
+    OwnerPtr<DrumEditor>        drumEditor       ;
+    OwnerPtr<ControllerEditor>  controllerEditor ;
+    OwnerPtr<ScoreEditor>       scoreEditor      ;
     // ----------------------------------------
 
     GraphicalTrack(Track* track, Sequence* parent);
@@ -113,13 +125,30 @@ public:
     void maximizeHeight(bool maximize=true);
     
     void setEditorMode(int mode);
-    void createEditors(); // call when you're sure Track, Sequence and GraphicalTrack are set-up properly
+    
+    /**
+      * @precondition Track, Sequence and GraphicalTrack must be initialized properly upon calling this
+      */
+    void createEditors();
+    
     Editor* getCurrentEditor();
 
     void dock(const bool dock=true);
     
     bool mouseWheelMoved(int x, int y, int value);
+    
+    /**
+     * Callback for mouse down events. The click may or may not be within this particular track; it's partly
+     * the job of this method to determine whether the click belongs to itself.
+     * 
+     * @param x The x coordinate where the mouse click occurred
+     * @param y The y coordinate where the mouse click occurred
+     *
+     * @return true: the event does not belong to this track and so the program should continue searching to
+     *         whom the event belongs. false: the event belongs to this track and was processed
+     */
     bool processMouseClick(RelativeXCoord x, int y);
+    
     bool processRightMouseClick(RelativeXCoord x, int y);
     bool processMouseDrag(RelativeXCoord x, int y);
     void processMouseRelease();
