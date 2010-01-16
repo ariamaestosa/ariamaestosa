@@ -43,6 +43,7 @@ NOTE: sorry, this is very raw :)
 * score print :
     * red images
       - relative sizing of notes (shorter notes appear shorter, etc.) is not 100% polished
+      - accidentals : extra space allocated for them needs polish, sometimes it's too much, sometimes not enough, etc.
       - empty area at the beginning of a measure is relative and not absolute (can thus be too big)
       [ok?] dotted silences don't receive enough space, or are drawn too much to the right
       - vertical spacing between tracks needs to adapt depending on stuff near the top and bottom of scores
@@ -55,7 +56,6 @@ NOTE: sorry, this is very raw :)
       - the left part of the score is, where the key is given, can be much too large (this is because the size
         is given in relatiev units, not in pixels, so i can't go below the number of units that work with the
         smallest possible unit size)
-      - accidentals : extra space allocated for them needs polish, sometimes it's too much, sometimes not enough, etc.
     - X notes not printed right
     ? allow setting font size, number of lines per page, zoom, etc...
     * non-linear printing
