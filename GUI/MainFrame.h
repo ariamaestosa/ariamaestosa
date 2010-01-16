@@ -138,6 +138,8 @@ public:
 
     // top bar controls updated
     void tempoChanged(wxCommandEvent& evt);
+    
+    /** Called whenever the user edits the text field containing song length. */
     void songLengthChanged(wxSpinEvent& evt);
     void zoomChanged(wxSpinEvent& evt);
     void songLengthTextChanged(wxCommandEvent& evt);
@@ -195,35 +197,76 @@ public:
 
     void updateMenuBarToSequence();
 
-    // playback
+    // ---- playback
     void songHasFinishedPlaying();
     void toolsEnterPlaybackMode();
     void toolsExitPlaybackMode();
     void playClicked(wxCommandEvent& evt);
     void stopClicked(wxCommandEvent& evt);
 
-    // i/o
+    // ---- I/O
     void updateTopBarAndScrollbarsForSequence(Sequence* seq);
+    
+    /** Opens the .aria file in filepath, reads it and prepares the editor to display and edit it. */
     void loadAriaFile(wxString path);
+    
+    /** Opens the .mid file in filepath, reads it and prepares the editor to display and edit it. */
     void loadMidiFile(wxString path);
 
 #ifdef __WXMSW__
     void onDropFile(wxDropFilesEvent& event);
 #endif
     
-    // scrollbars
+    // ---- scrollbars
     void updateVerticalScrollbar();
+    
+    /** Called to update the horizontal scrollbar, usually because song length has changed. */
     void updateHorizontalScrollbar(int thumbPos=-1);
+    
+    /**
+     * User scrolled horizontally by dragging.
+     * Just make sure to update the display to the new values.
+     */
     void horizontalScrolling(wxScrollEvent& evt);
+    
+    /**
+     * User scrolled vertically by dragging.
+     * Just make sure to update the display to the new values.
+     */
     void verticalScrolling(wxScrollEvent& evt);
+    
+    /**
+     * User scrolled horizontally by clicking oin the arrows.
+     * We need to ensure it scrolls of one whole measure (cause scrolling pixel by pixel horizontally would be
+     * too slow) We by the way need to make sure it doesn't get out of bounds, in which case we need to put the
+     * scrollbar back into correct position.
+     */
     void horizontalScrolling_arrows(wxScrollEvent& evt);
+    
+    /**
+     * User scrolled vertically by clicking on the arrows.
+     * Just make sure to update the display to the new values.
+     */
     void verticalScrolling_arrows(wxScrollEvent& evt);
 
-    // sequences
+    // ---- sequences
+    
+    /** Add a new sequence. There can be multiple sequences if user opens or creates multiple files. */
     void addSequence();
+    
+    /** Returns the amount of open sequences (files). */
     int getSequenceAmount();
-    bool closeSequence(int id=-1); // -1 means current sequence
+    
+    /**
+      * Close an open sequence.
+      *
+      * @param id  ID of the sequence to close, from 0 to sequence amount -1 (or -1 to mean "current sequence")
+      */
+    bool closeSequence(int id = -1);
+    
+    /** Returns the sequence (file) currently being active. */
     Sequence* getCurrentSequence();
+    
     Sequence* getSequence(int n);
     int getCurrentSequenceID();
     void setCurrentSequence(int n);
