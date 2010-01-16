@@ -19,28 +19,43 @@ NOTE: sorry, this is very raw :)
  - notation printing and export (WIP)
  - guitar pro import
  - midi keyboard support
- - mod support/better synths support (fluidsynth?)
- - new control editor
+ - show more than one editor at once for the same track
+ * new control editor
 		- precise values
         - special mode for on/off controllers (e.g. sustain)
-		- points and curves, splines
+		- points and curves, splines (how to handle imported midis?)
 		- make portamento more usable
 		- copy/paste
 		- many controller effects would gain from being accessible somewhere else than in control editor
             - tying control events to notes
             - copy control events along notes
+            - (how to handle imported midis?)
 		- should appear under current editor. it's always useful to see the notes when applying effects
         - support fine values
-        - support wide pitch-bend
+        - support wide pitch-bend (MIDI 2.0)
  - non-linear/riff-based song editing (e.g. to repeat chorus you don't need to keep multiple copies of it)
  - multiple program changes
+ - mod support/better synths support (fluidsynth?)
  - changes to song should be heard if done while playing
- - show more than one editor at once for the same track
 
 ************************* NEW FEATURES TO ADD: *************************
 
 * score print :
-    - red images
+    * red images
+      - relative sizing of notes (shorter notes appear shorter, etc.) is not 100% polished
+      - empty area at the beginning of a measure is relative and not absolute (can thus be too big)
+      [ok?] dotted silences don't receive enough space, or are drawn too much to the right
+      - vertical spacing between tracks needs to adapt depending on stuff near the top and bottom of scores
+        (triplet symbols, stems, G clef top and bottom, etc...)
+      - 1/32 silences need a proper image
+      - when a track first appears, we need its clef, key, etc. (maybe even once a page). Right now it's only
+        given if the said track starts playing at measure 1  (or in the first line)
+      - tab tuning : letters overlap a bit
+      - vertically close notes overlap
+      - the left part of the score is, where the key is given, can be much too large (this is because the size
+        is given in relatiev units, not in pixels, so i can't go below the number of units that work with the
+        smallest possible unit size)
+      - accidentals : extra space allocated for them needs polish, sometimes it's too much, sometimes not enough, etc.
     - X notes not printed right
     ? allow setting font size, number of lines per page, zoom, etc...
     * non-linear printing
@@ -57,9 +72,10 @@ NOTE: sorry, this is very raw :)
  
  * copy entire measures through measure bar
  
- * tabs
-  + show full file path in tooltip?
+ * show full file path of file in tab tooltip?
 
+ * show which files have unsaved changes
+ 
  + resize note with drag-and-drop
  
  + contextual menu on right-click (copy, paste, track props, ...)
@@ -99,8 +115,6 @@ NOTE: sorry, this is very raw :)
 
  - change volume relatively on a bunch of notes
  - select notes and all similar menu items should be disabled in controller mode
-
- + support MIDI 2.0 wide pitch bend
 
  UNSURE/MINOR:
  - setting sharp/flat sign manually sometimes doesn't work (when it's possible to display the note on a level with no sign)
