@@ -23,86 +23,87 @@
 #define IMG_DEC extern
 #endif
 
-namespace AriaMaestosa {
+namespace AriaMaestosa
+{
 
-class Drawable;
-class Image;
+    class Drawable;
+    class Image;
 
-// note display
-IMG_DEC Drawable* noteTrackDrawable;
+    // note display
+    IMG_DEC Drawable* noteTrackDrawable;
 
-// scrollbar
-IMG_DEC Image* sbArrowImg;
-IMG_DEC Image* sbArrowDownImg;
-IMG_DEC Drawable* sbArrowDrawable;
-IMG_DEC Drawable* sbBackgDrawable;
-IMG_DEC Drawable* sbThumbDrawable;
+    // scrollbar
+    IMG_DEC Image* sbArrowImg;
+    IMG_DEC Image* sbArrowDownImg;
+    IMG_DEC Drawable* sbArrowDrawable;
+    IMG_DEC Drawable* sbBackgDrawable;
+    IMG_DEC Drawable* sbThumbDrawable;
 
-// track UI
-IMG_DEC Drawable* cornerDrawable;
-IMG_DEC Drawable* borderDrawable;
-IMG_DEC Drawable* whiteCornerDrawable;
-IMG_DEC Drawable* whiteBorderDrawable;
+    // track UI
+    IMG_DEC Drawable* cornerDrawable;
+    IMG_DEC Drawable* borderDrawable;
+    IMG_DEC Drawable* whiteCornerDrawable;
+    IMG_DEC Drawable* whiteBorderDrawable;
 
-// collapse
-IMG_DEC Image* collapseImg;
-IMG_DEC Image* expandImg;
+    // collapse
+    IMG_DEC Image* collapseImg;
+    IMG_DEC Image* expandImg;
 
-IMG_DEC Drawable* collapseDrawable;
+    IMG_DEC Drawable* collapseDrawable;
 
-// dock
-IMG_DEC Drawable* dockTrackDrawable;
-IMG_DEC Drawable* maximizeTrackDrawable;
-    
-// mute
-IMG_DEC Image* muteOnImg;
-IMG_DEC Image* muteOffImg;
+    // dock
+    IMG_DEC Drawable* dockTrackDrawable;
+    IMG_DEC Drawable* maximizeTrackDrawable;
+        
+    // mute
+    IMG_DEC Image* muteOnImg;
+    IMG_DEC Image* muteOffImg;
 
-IMG_DEC Drawable* muteDrawable;
+    IMG_DEC Drawable* muteDrawable;
 
-// combo box
-IMG_DEC Drawable* comboBorderDrawable;
-IMG_DEC Drawable* comboBodyDrawable;
-IMG_DEC Drawable* comboSelectDrawable;
+    // combo box
+    IMG_DEC Drawable* comboBorderDrawable;
+    IMG_DEC Drawable* comboBodyDrawable;
+    IMG_DEC Drawable* comboSelectDrawable;
 
-// Editor modes
-IMG_DEC Drawable* guitar_view;
-IMG_DEC Drawable* keyboard_view;
-IMG_DEC Drawable* score_view;
-IMG_DEC Drawable* drum_view;
-IMG_DEC Drawable* controller_view;
+    // Editor modes
+    IMG_DEC Drawable* guitar_view;
+    IMG_DEC Drawable* keyboard_view;
+    IMG_DEC Drawable* score_view;
+    IMG_DEC Drawable* drum_view;
+    IMG_DEC Drawable* controller_view;
 
-// document tabs
-IMG_DEC Drawable* tabBorderDrawable;
-IMG_DEC Drawable* tabDrawable;
+    // document tabs
+    IMG_DEC Drawable* tabBorderDrawable;
+    IMG_DEC Drawable* tabDrawable;
+    IMG_DEC Drawable* tabCloseDrawable;
 
-// score
-IMG_DEC Drawable* clefG_drawable;
-IMG_DEC Drawable* clefF_drawable;
-IMG_DEC Drawable* noteClosed;
-IMG_DEC Drawable* noteOpen;
-IMG_DEC Drawable* noteFlag;
-IMG_DEC Drawable* sharpSign;
-IMG_DEC Drawable* flatSign;
-IMG_DEC Drawable* naturalSign;
-IMG_DEC Drawable* silence4;
-IMG_DEC Drawable* silence8;
+    // score
+    IMG_DEC Drawable* clefG_drawable;
+    IMG_DEC Drawable* clefF_drawable;
+    IMG_DEC Drawable* noteClosed;
+    IMG_DEC Drawable* noteOpen;
+    IMG_DEC Drawable* noteFlag;
+    IMG_DEC Drawable* sharpSign;
+    IMG_DEC Drawable* flatSign;
+    IMG_DEC Drawable* naturalSign;
+    IMG_DEC Drawable* silence4;
+    IMG_DEC Drawable* silence8;
 
-IMG_DEC Drawable* mgrid_1;
-IMG_DEC Drawable* mgrid_2;
-IMG_DEC Drawable* mgrid_4;
-IMG_DEC Drawable* mgrid_8;
-IMG_DEC Drawable* mgrid_16;
-IMG_DEC Drawable* mgrid_32;
-IMG_DEC Drawable* mgrid_triplet;
+    IMG_DEC Drawable* mgrid_1;
+    IMG_DEC Drawable* mgrid_2;
+    IMG_DEC Drawable* mgrid_4;
+    IMG_DEC Drawable* mgrid_8;
+    IMG_DEC Drawable* mgrid_16;
+    IMG_DEC Drawable* mgrid_32;
+    IMG_DEC Drawable* mgrid_triplet;
 
-namespace ImageProvider {
-
-    void loadImages();
-    void unloadImages();
-    bool imagesLoaded();
-}
-
+    namespace ImageProvider
+    {
+        void loadImages();
+        void unloadImages();
+        bool imagesLoaded();
+    }
 
 }
 

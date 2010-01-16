@@ -466,7 +466,9 @@ void MainFrame::init()
     
 void MainFrame::on_close(wxCloseEvent& evt)
 {
-    closeSequence();
+    wxCommandEvent dummy;
+    menuEvent_quit(dummy);
+    //closeSequence();
 }
 
 // --------------------------------------------------------------------------------------------------------
