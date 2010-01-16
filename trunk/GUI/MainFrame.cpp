@@ -1034,7 +1034,8 @@ void MainFrame::updateVerticalScrollbar()
 
 void MainFrame::addSequence()
 {
-    sequences.push_back(new Sequence());
+    sequences.push_back( new Sequence() );
+    setCurrentSequence( sequences.size() - 1 );
     Display::render();
 }
 

@@ -64,7 +64,6 @@ NOTE: sorry, this is very raw :)
 
  + resize note with drag-and-drop
  
- + when creating a new sequence, switch to it
  + contextual menu on right-click (copy, paste, track props, ...)
  + Include sample files along Aria?
  
