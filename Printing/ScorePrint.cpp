@@ -340,7 +340,11 @@ namespace AriaMaestosa
             
             silence_radius = silenceBigger.GetWidth()/2;
             // take the average of 'center-aligned' and 'right-aligned'
-            silence_center = (x_center + (x.to - silence_radius))/2;
+            
+            // for dotted silences, place them much closer to the left area, to leave room at the right for the dot
+            if (dotted) silence_center = (x.from + silence_radius*2);
+            else        silence_center = (x_center + (x.to - silence_radius))/2;
+            
             global_dc->DrawBitmap( silenceBigger, silence_center - silence_radius, silences_y );
             
             // <debug>
