@@ -1107,9 +1107,9 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
         // --------------------------------------------------
         // render editor
         getCurrentEditor()->render(Display::getMouseX_current(),
-                                   Display:: getMouseY_current(),
+                                   Display::getMouseY_current(),
                                    Display::getMouseX_initial(),
-                                   Display:: getMouseY_initial(), focus);
+                                   Display::getMouseY_initial(), focus);
         // --------------------------------------------------
         // render playback progress line
         
@@ -1128,16 +1128,17 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
                              x_coord, getCurrentEditor()->getYEnd());
             
         }
-        AriaRender::images();
         
         // --------------------------------------------------
         // render track borders
         
+        AriaRender::images();
+        
         if (!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
-        else AriaRender::setImageState(AriaRender::STATE_NORMAL);
+        else        AriaRender::setImageState(AriaRender::STATE_NORMAL);
         
         // bottom left corner
-        whiteCornerDrawable->move(10,y+20+barHeight+height);
+        whiteCornerDrawable->move(10, y+20+barHeight+height);
         whiteCornerDrawable->setFlip(false, false);
         whiteCornerDrawable->render();
         
@@ -1149,7 +1150,8 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
         whiteBorderDrawable->render();
         
         // bottom right corner
-        whiteCornerDrawable->move(Display::getWidth() - 5 /* margin*/ - 20 /*left round cornerDrawable*/, y+20+barHeight+height);
+        whiteCornerDrawable->move(Display::getWidth() - 5 /* margin*/ - 20 /*left round cornerDrawable*/,
+                                  y + 20 + barHeight + height);
         whiteCornerDrawable->setFlip(true, false);
         whiteCornerDrawable->render();
         

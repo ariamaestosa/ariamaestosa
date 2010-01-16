@@ -71,27 +71,28 @@ void loadImages()
     comboSelectDrawable = new Drawable( wxT("combo_select.png"));
 
     // document tabs
-    tabDrawable = new Drawable( wxT("tab_body.png"));
-    tabBorderDrawable = new Drawable( wxT("tab_side.png"));
+    tabDrawable = new Drawable( wxT("tab_body.png") );
+    tabBorderDrawable = new Drawable( wxT("tab_side.png") );
+    tabCloseDrawable = new Drawable( wxT("close.png") );
 
     // score
     clefG_drawable = new Drawable(wxT("score/keyG.png"));
-    clefG_drawable -> setHotspot( 15, 33 );
+    clefG_drawable->setHotspot( 15, 33 );
 
     clefF_drawable = new Drawable(wxT("score/FKey.png"));
-    clefF_drawable -> setHotspot( 7, 13 );
+    clefF_drawable->setHotspot( 7, 13 );
 
     noteClosed = new Drawable(wxT("score/noteclosed.png"));
     noteOpen = new Drawable(wxT("score/noteopen.png"));
     noteFlag = new Drawable(wxT("score/notetail.png"));
     sharpSign = new Drawable(wxT("score/sharp.png"));
-    sharpSign -> setHotspot( sharpSign->getImageWidth()/2, sharpSign->getImageHeight()/2 );
+    sharpSign->setHotspot( sharpSign->getImageWidth()/2, sharpSign->getImageHeight()/2 );
 
     naturalSign = new Drawable(wxT("score/natural.png"));
-    naturalSign -> setHotspot( naturalSign->getImageWidth()/2, naturalSign->getImageHeight()/2 );
+    naturalSign->setHotspot( naturalSign->getImageWidth()/2, naturalSign->getImageHeight()/2 );
 
     flatSign = new Drawable(wxT("score/flat.png"));
-    flatSign -> setHotspot( 2, 12 );
+    flatSign->setHotspot( 2, 12 );
 
     silence4 = new Drawable(wxT("score/silence4.png"));
     silence8 = new Drawable(wxT("score/silence8.png"));
@@ -130,6 +131,7 @@ void unloadImages()
 
     delete tabDrawable;
     delete tabBorderDrawable;
+    delete tabCloseDrawable;
 
     delete cornerDrawable;
     delete borderDrawable;

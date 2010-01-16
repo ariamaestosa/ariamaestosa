@@ -47,12 +47,22 @@ enum ClickArea
     
 class MainPane : public RenderPane
 {
+    /** To send events repeatedly when the mouse is held down */
     OwnerPtr<MouseDownTimer>  mouseDownTimer;
 
+    /** Gives information about the location of the mouse in a drag */
     RelativeXCoord mousex_initial;
+    
+    /** Gives information about the location of the mouse in a drag */
     int mousey_initial;
+    
+    /** Gives information about the location of the mouse in a drag */
     RelativeXCoord mousex_current;
+    
+    /** Gives information about the location of the mouse in a drag */
     int mousey_current;
+    
+    /** Gives information about the location of the mouse in a drag */
     bool isMouseDown_bool;
 
     int currentTick;
@@ -75,6 +85,9 @@ class MainPane : public RenderPane
     int click_in_track;
     
     bool do_render();
+    
+    /** Whether the mouse cursor is currently hovering the tab bar */
+    bool m_mouse_hovering_tabs;
 
 public:
     LEAK_CHECK();
@@ -139,10 +152,19 @@ public:
     /** events will be sent regularly to this method when user holds down mouse */
     void mouseHeldDown();
     
+    /** Gives information about the location of the mouse in a drag */
     bool isMouseDown();
+    
+    /** Gives information about the location of the mouse in a drag */
     RelativeXCoord getMouseX_current();
+    
+    /** Gives information about the location of the mouse in a drag */
     int getMouseY_current();
+    
+    /** Gives information about the location of the mouse in a drag */
     RelativeXCoord getMouseX_initial();
+    
+    /** Gives information about the location of the mouse in a drag */
     int getMouseY_initial();
 
     bool isSelectMorePressed();

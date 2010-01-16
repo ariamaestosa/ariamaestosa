@@ -59,8 +59,6 @@ NOTE: sorry, this is very raw :)
  
  * tabs
   + show full file path in tooltip?
-  + add a close button to each item
-  + when using the frame's 'close button', close whole app, not one sequence. each sequence needs its own close button
 
  + resize note with drag-and-drop
  

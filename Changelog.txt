@@ -1,3 +1,7 @@
+1.2b9
+- Printing Improvements
+- Each tab now has its own close button
+
 1.2b8
 - You can now choose between two tools : the "classic" on from older versions, and a new one that adds without dragging
 - More printing improvements

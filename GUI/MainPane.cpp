@@ -82,18 +82,22 @@ END_EVENT_TABLE()
 
 namespace AriaMaestosa
 {
-    const int tabBarY = 0;
-    const int measureBarY = 20;
-    int tab_width=145;
+    const int TAB_BAR_Y      = 0;
+    const int MEASURE_BAR_Y  = 20;
+    const int TAB_SIDE_WIDTH = 16;
+    const int CLOSE_BUTTON_SPACE_FROM_RIGHT = 8;
+
+    int tab_width = 145;
     
-    // when this is set to 'true', the app will wait for a new click to be begun to process any mouse events (i.e. current click/drag is not valid anymore)
-    bool invalidateMouseEvents=false;
+    /** when this is set to 'true', the app will wait for a new click to be begun to process any mouse events
+      * (i.e. current click/drag is not valid anymore)
+      */
+    bool invalidateMouseEvents = false;
     
     // ==========================================================================================
     // ==========================================================================================
     class MouseDownTimer : public wxTimer
     {
-        
         MainPane* main_pane;
         
     public:
@@ -129,22 +133,23 @@ namespace AriaMaestosa
 
 MainPane::MainPane(MainFrame* mainframe, int* args) : RenderPane(mainframe, args)
 {
-    currentTick=-1;
+    currentTick = -1;
     draggingTrack = -1;
-    isVisible=false;
-    isMouseDown_bool=false;
+    isVisible = false;
+    isMouseDown_bool = false;
+    m_mouse_hovering_tabs = false;
 
     mousex_initial.setValue(0,MIDI);
     mousey_initial = 0;
     mousex_current.setValue(0,WINDOW);
     mousey_current = 0;
 
-    leftArrow=false;
-    rightArrow=false;
+    leftArrow  = false;
+    rightArrow = false;
 
     mouseDownTimer = new MouseDownTimer(this);
 
-    scrollToPlaybackPosition=false;
+    scrollToPlaybackPosition = false;
     playbackStartTick=0; // tells from where the red line should start when playing back
 }
 
@@ -231,18 +236,18 @@ bool MainPane::do_render()
 
     AriaRender::primitives();
     AriaRender::color(1, 1, 0.9);
-    AriaRender::rect(0, tabBarY, getWidth(), tabBarY+20);
+    AriaRender::rect(0, TAB_BAR_Y, getWidth(), TAB_BAR_Y+20);
 
     // draw tab
     int start_at_x = 0;
     const int seqamount = getMainFrame()->getSequenceAmount();
     const int currentSeqID = getMainFrame()->getCurrentSequenceID();
-
+    
     // if too many tabs for all to be visible, make them smaller
     tab_width = 145;
-    if (seqamount*(tab_width+16+16) > Display::getWidth())
+    if (seqamount*(TAB_SIDE_WIDTH+tab_width+TAB_SIDE_WIDTH) > Display::getWidth())
     {
-        tab_width = Display::getWidth() / seqamount - 32;
+        tab_width = Display::getWidth() / seqamount - TAB_SIDE_WIDTH*2;
     }
 
     for (int n=0; n<seqamount; n++)
@@ -252,42 +257,62 @@ bool MainPane::do_render()
         if (currentSeqID == n)
         {
             AriaRender::setImageState(AriaRender::STATE_NORMAL);
-            tabBorderDrawable->move(start_at_x, tabBarY);
+            tabBorderDrawable->move(start_at_x, TAB_BAR_Y);
             tabBorderDrawable->setFlip(false, false);
             tabBorderDrawable->render();
 
-            tabDrawable->move(start_at_x+16, tabBarY);
+            tabDrawable->move(start_at_x+TAB_SIDE_WIDTH, TAB_BAR_Y);
             tabDrawable->scale(tab_width/2.0, 1);
             tabDrawable->render();
 
-            tabBorderDrawable->move(start_at_x+16+tab_width, tabBarY);
+            tabBorderDrawable->move(start_at_x+TAB_SIDE_WIDTH+tab_width, TAB_BAR_Y);
             tabBorderDrawable->setFlip(true, false);
             tabBorderDrawable->render();
+            
+            if (m_mouse_hovering_tabs)
+            {
+                // draw close button
+                tabCloseDrawable->move(start_at_x + tab_width + TAB_SIDE_WIDTH*2 -
+                                       tabCloseDrawable->getImageWidth() - CLOSE_BUTTON_SPACE_FROM_RIGHT,
+                                       TAB_BAR_Y + 5);
+                tabCloseDrawable->render();
+            }
         }
         else
         {
             AriaRender::setImageState(AriaRender::STATE_UNSELECTED_TAB);
 
-            tabBorderDrawable->move(start_at_x, tabBarY+3);
+            tabBorderDrawable->move(start_at_x, TAB_BAR_Y+3);
             tabBorderDrawable->setFlip(false, false);
             tabBorderDrawable->render();
 
-            tabDrawable->move(start_at_x+16, tabBarY+3);
+            tabDrawable->move(start_at_x+TAB_SIDE_WIDTH, TAB_BAR_Y+3);
             tabDrawable->scale(tab_width/2.0, 1);
             tabDrawable->render();
 
-            tabBorderDrawable->move(start_at_x+16+tab_width, tabBarY+3);
+            tabBorderDrawable->move(start_at_x+TAB_SIDE_WIDTH+tab_width, TAB_BAR_Y+3);
             tabBorderDrawable->setFlip(true, false);
             tabBorderDrawable->render();
+            
+            if (m_mouse_hovering_tabs)
+            {
+                wxPoint mouse = this->ScreenToClient(wxGetMousePosition());
+                if (mouse.x > start_at_x and mouse.x < start_at_x + TAB_SIDE_WIDTH + tab_width + TAB_SIDE_WIDTH)
+                {
+                    // draw close button
+                    tabCloseDrawable->move(start_at_x + tab_width + TAB_SIDE_WIDTH*2 -
+                                           tabCloseDrawable->getImageWidth() - CLOSE_BUTTON_SPACE_FROM_RIGHT,
+                                           TAB_BAR_Y + 6);
+                    tabCloseDrawable->render();
+                }
+            }
         }
 
         AriaRender::images();
 
         // draw tab name
-        if (currentSeqID == n)
-            AriaRender::color(0,0,0);
-        else
-            AriaRender::color(0.4, 0.4, 0.4);
+        if (currentSeqID == n)  AriaRender::color(0,0,0);
+        else                    AriaRender::color(0.4, 0.4, 0.4);
 
         AriaRenderString& seq_name = getMainFrame()->getSequence(n)->sequenceFileName;
         seq_name.bind();
@@ -296,14 +321,14 @@ bool MainPane::do_render()
         // FIXME - find better way than scaling. add back '...'
         //if (seq_name.getWidth() > tab_width+12) seq_name.scale( (float)(tab_width+12)/seq_name.getWidth() );
         //else seq_name.scale(1.0f);
-        seq_name.render( start_at_x+10, tabBarY+21);
+        seq_name.render( start_at_x+10, TAB_BAR_Y+21);
 
-        start_at_x += tab_width+16+16;
+        start_at_x += TAB_SIDE_WIDTH+tab_width+TAB_SIDE_WIDTH;
     }//next
 
     // -------------------------- draw measure top bar -------------------------
 
-    getMeasureData()->graphics->render(measureBarY);
+    getMeasureData()->graphics->render(MEASURE_BAR_Y);
 
     // -------------------------- draw dock -------------------------
     AriaRender::primitives();
@@ -373,10 +398,10 @@ bool MainPane::do_render()
             leftArrow=true;
             rightArrow=false;
 
-            AriaRender::line(25, measureBarY + 10, 10, measureBarY + 10);
-            AriaRender::triangle(5, measureBarY + 10,
-                                 15, measureBarY + 5,
-                                 15, measureBarY + 15);
+            AriaRender::line(25, MEASURE_BAR_Y + 10, 10, MEASURE_BAR_Y + 10);
+            AriaRender::triangle(5, MEASURE_BAR_Y + 10,
+                                 15, MEASURE_BAR_Y + 5,
+                                 15, MEASURE_BAR_Y + 15);
         }
         else if (tick.getRelativeTo(WINDOW) > XEnd ) // current tick is after the visible area
         {
@@ -384,12 +409,12 @@ bool MainPane::do_render()
             leftArrow=false;
             rightArrow=true;
 
-            AriaRender::line(XEnd - 15 - 25, measureBarY + 10,
-                             XEnd - 15 - 10, measureBarY + 10);
+            AriaRender::line(XEnd - 15 - 25, MEASURE_BAR_Y + 10,
+                             XEnd - 15 - 10, MEASURE_BAR_Y + 10);
 
-            AriaRender::triangle(XEnd - 15 - 5, measureBarY + 10,
-                                 XEnd - 15 - 15, measureBarY + 5,
-                                 XEnd - 15 - 15, measureBarY + 15);
+            AriaRender::triangle(XEnd - 15 - 5, MEASURE_BAR_Y + 10,
+                                 XEnd - 15 - 15, MEASURE_BAR_Y + 5,
+                                 XEnd - 15 - 15, MEASURE_BAR_Y + 15);
         }
         else // current tick is inside the visible area
         {
@@ -398,8 +423,8 @@ bool MainPane::do_render()
             rightArrow=false;
 
             // red line in measure bar
-            AriaRender::line(tick.getRelativeTo(WINDOW), measureBarY + 1,
-                             tick.getRelativeTo(WINDOW), measureBarY + 20);
+            AriaRender::line(tick.getRelativeTo(WINDOW), MEASURE_BAR_Y + 1,
+                             tick.getRelativeTo(WINDOW), MEASURE_BAR_Y + 20);
         }
 
         AriaRender::lineWidth(1);
@@ -449,12 +474,10 @@ bool MainPane::isSelectLessPressed(){ return wxGetKeyState(WXK_ALT); }
 bool MainPane::isCtrlDown(){ return wxGetKeyState(WXK_CONTROL); }
 bool MainPane::isMouseDown(){ return isMouseDown_bool; }
 
-/*
- * Gives information about the location of the mouse in a drag
- */
-RelativeXCoord MainPane::getMouseX_current()    {    return mousex_current;    }
+
+RelativeXCoord MainPane::getMouseX_current()     {    return mousex_current;    }
 int MainPane::getMouseY_current()                {    return mousey_current;    }
-RelativeXCoord MainPane::getMouseX_initial()    {    return mousex_initial;    }
+RelativeXCoord MainPane::getMouseX_initial()     {    return mousex_initial;    }
 int MainPane::getMouseY_initial()                {    return mousey_initial;    }
 
 // --------------------------------------------------------------------------------------------------
@@ -462,7 +485,7 @@ void MainPane::mouseHeldDown()
 {
     // check click is within track area
     if (mousey_current < getHeight()-getCurrentSequence()->dockHeight and
-       mousey_current > measureBarY+getMeasureData()->graphics->getMeasureBarHeight())
+       mousey_current > MEASURE_BAR_Y+getMeasureData()->graphics->getMeasureBarHeight())
     {
 
         // dispatch event to sequence
@@ -483,7 +506,7 @@ void MainPane::rightClick(wxMouseEvent& event)
     // check click is not on dock before passing event to tracks
     // dispatch event to all tracks (stop when either of them uses it)
     if (event.GetY() < getHeight()-getCurrentSequence()->dockHeight and
-       event.GetY() > measureBarY+measureBarHeight)
+       event.GetY() > MEASURE_BAR_Y+measureBarHeight)
     {
         for(int n=0; n<getCurrentSequence()->getTrackAmount(); n++)
         {
@@ -496,9 +519,9 @@ void MainPane::rightClick(wxMouseEvent& event)
     }
 
     // ---- click is in measure bar
-    if (event.GetY() > measureBarY and event.GetY() < measureBarY+measureBarHeight)
+    if (event.GetY() > MEASURE_BAR_Y and event.GetY() < MEASURE_BAR_Y+measureBarHeight)
     {
-        getMeasureData()->graphics->rightClick(event.GetX(), event.GetY() - measureBarY);
+        getMeasureData()->graphics->rightClick(event.GetX(), event.GetY() - MEASURE_BAR_Y);
     }
 
     Display::render();
@@ -525,7 +548,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
     // ----------------------------------- click is in track area ----------------------------
     // check click is within track area
     if (mousey_current < getHeight()-getCurrentSequence()->dockHeight and
-       event.GetY() > measureBarY+measureBarHeight)
+       event.GetY() > MEASURE_BAR_Y+measureBarHeight)
     {
         click_area = CLICK_TRACK;
 
@@ -597,32 +620,41 @@ void MainPane::mouseDown(wxMouseEvent& event)
      }//end if user is clicking on the dock
 
     // ----------------------------------- click is in tab bar ----------------------------
-    if (!PlatformMidiManager::isPlaying() and event.GetY() > tabBarY and event.GetY() < tabBarY+20)
+    if (!PlatformMidiManager::isPlaying() and event.GetY() > TAB_BAR_Y and event.GetY() < TAB_BAR_Y+20)
     {
         click_area = CLICK_TAB_BAR;
 
         int start_at_x = 0;
-        for(int n=0; n<getMainFrame()->getSequenceAmount(); n++)
+        for (int n=0; n<getMainFrame()->getSequenceAmount(); n++)
         {
-
-            start_at_x += tab_width+16+16;
+            start_at_x += TAB_SIDE_WIDTH + tab_width + TAB_SIDE_WIDTH;
             if (event.GetX() < start_at_x)
             {
-                //getMeasureData()->unselect();
-                getMainFrame()->setCurrentSequence(n);
-                return;
+                if (event.GetX() > start_at_x - tabCloseDrawable->getImageWidth() - CLOSE_BUTTON_SPACE_FROM_RIGHT and
+                    event.GetX() < start_at_x - CLOSE_BUTTON_SPACE_FROM_RIGHT)
+                {
+                    // click is on close button
+                    getMainFrame()->closeSequence();
+                    return;
+                }
+                else
+                {
+                    // click is on tab body
+                    getMainFrame()->setCurrentSequence(n);
+                    return;
+                }
             }
         }//next
     }//end if
 
     // ----------------------------------- click is in measure bar ----------------------------
-    if (event.GetY() > measureBarY and event.GetY() < measureBarY+measureBarHeight)
+    if (event.GetY() > MEASURE_BAR_Y and event.GetY() < MEASURE_BAR_Y+measureBarHeight)
     {
         click_area = CLICK_MEASURE_BAR;
 
         if ( ! (currentTick!=-1 and (leftArrow or rightArrow)) ) // ignore when playing
         {
-            getMeasureData()->graphics->mouseDown(mousex_current.getRelativeTo(WINDOW), mousey_current - measureBarY);
+            getMeasureData()->graphics->mouseDown(mousex_current.getRelativeTo(WINDOW), mousey_current - MEASURE_BAR_Y);
         }
 
     }
@@ -657,14 +689,35 @@ void MainPane::mouseMoved(wxMouseEvent& event)
             // ----------------------------------- click is in measure bar ----------------------------
             if (click_area == CLICK_MEASURE_BAR)
             {
-                getMeasureData()->graphics->mouseDrag(mousex_current.getRelativeTo(WINDOW), mousey_current - measureBarY,
-                                           mousex_initial.getRelativeTo(WINDOW), mousey_initial - measureBarY);
+                getMeasureData()->graphics->mouseDrag(mousex_current.getRelativeTo(WINDOW), mousey_current - MEASURE_BAR_Y,
+                                           mousex_initial.getRelativeTo(WINDOW), mousey_initial - MEASURE_BAR_Y);
             }
         }
 
         Display::render();
 
     }//end if dragging
+    else
+    {
+        const bool mouse_hovering_tabs =  (event.GetY() > TAB_BAR_Y and event.GetY() < TAB_BAR_Y+20);
+
+        if (mouse_hovering_tabs and not m_mouse_hovering_tabs)
+        {
+            m_mouse_hovering_tabs = true;
+            Display::render();
+            return;
+        }
+        else if (m_mouse_hovering_tabs and not mouse_hovering_tabs)
+        {
+            m_mouse_hovering_tabs = false;
+            Display::render();
+            return;
+        }
+        if (m_mouse_hovering_tabs)
+        {
+            Display::render();
+        }
+    }
 
 }
 
@@ -683,6 +736,12 @@ void MainPane::mouseLeftWindow(wxMouseEvent& event)
                            mousex_initial, mousey_initial);
 
         invalidateMouseEvents = true; // ignore all mouse events until a new click/drag is begun
+    }
+    
+    if (m_mouse_hovering_tabs)
+    {
+        m_mouse_hovering_tabs = false;
+        Display::render();
     }
 }
 
@@ -722,8 +781,8 @@ void MainPane::mouseReleased(wxMouseEvent& event)
         // measure selection
         if ( ! (currentTick!=-1 and (leftArrow or rightArrow)) ) // ignore when playing
         {
-            getMeasureData()->graphics->mouseUp(mousex_current.getRelativeTo(WINDOW), mousey_current - measureBarY,
-                                                mousex_initial.getRelativeTo(WINDOW), mousey_initial - measureBarY);
+            getMeasureData()->graphics->mouseUp(mousex_current.getRelativeTo(WINDOW), mousey_current - MEASURE_BAR_Y,
+                                                mousex_initial.getRelativeTo(WINDOW), mousey_initial - MEASURE_BAR_Y);
         }
     }
     else if (click_area == CLICK_TRACK and click_in_track != -1)
@@ -963,7 +1022,7 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
 
     // check click is within track area
     if (my < getHeight()-getCurrentSequence()->dockHeight and
-       mx > measureBarY+measureBarHeight)
+       mx > MEASURE_BAR_Y+measureBarHeight)
     {
 
         // dispatch event to all tracks (stop when either of them uses it)
