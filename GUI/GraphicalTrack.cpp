@@ -31,6 +31,8 @@
 #include "Renderers/Drawable.h"
 #include "Renderers/ImageBase.h"
 #include "GUI/ImageProvider.h"
+#include "GUI/MainFrame.h"
+#include "GUI/MainPane.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 #include "Midi/MeasureData.h"
@@ -714,7 +716,7 @@ bool GraphicalTrack::processMouseDrag(RelativeXCoord x, int y)
         {
             getCurrentEditor()->mouseDrag(x, y,
                                           Display::getMouseX_initial(),
-                                          Display:: getMouseY_initial());
+                                          Display::getMouseY_initial());
         }
 
         // resize drag
@@ -737,10 +739,15 @@ bool GraphicalTrack::processMouseDrag(RelativeXCoord x, int y)
             DisplayFrame::updateVerticalScrollbar();
 
             /*
-            if (y_from + height > Display::getHeight()-20)
+            if (from_y + barHeight + 50 + height > Display::getHeight()-20) // FIXME: the "barHeight + 50 + height" is duplicated code.
             {
-                
-            }*/
+                //std::cout << "!!!!!!\n";
+                getCurrentSequence()->pushYScroll(y - lastMouseY);
+                getMainFrame()->mainPane->WarpPointer(Display::getMouseX_initial().getRelativeTo(WINDOW),
+                                                      Display::getMouseY_initial());
+            }
+             */
+
         }
 
         lastMouseY = y;
