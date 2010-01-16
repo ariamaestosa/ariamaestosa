@@ -53,8 +53,7 @@
 
 #include "Config.h"
 
-
-namespace AriaMaestosa {
+using namespace AriaMaestosa;
 
 #ifdef RENDERER_OPENGL
 BEGIN_EVENT_TABLE(MainPane, wxGLCanvas)
@@ -81,43 +80,47 @@ EVT_PAINT(MainPane::paintEvent)
 
 END_EVENT_TABLE()
 
-const int tabBarY = 0;
-const int measureBarY = 20;
-int tab_width=145;
-
-// when this is set to 'true', the app will wait for a new click to be begun to process any mouse events (i.e. current click/drag is not valid anymore)
-bool invalidateMouseEvents=false;
-
-// ==========================================================================================
-// ==========================================================================================
-class MouseDownTimer : public wxTimer
+namespace AriaMaestosa
 {
-
-    MainPane* main_pane;
-
-public:
-
-    MouseDownTimer(MainPane* parent) : wxTimer()
+    const int tabBarY = 0;
+    const int measureBarY = 20;
+    int tab_width=145;
+    
+    // when this is set to 'true', the app will wait for a new click to be begun to process any mouse events (i.e. current click/drag is not valid anymore)
+    bool invalidateMouseEvents=false;
+    
+    // ==========================================================================================
+    // ==========================================================================================
+    class MouseDownTimer : public wxTimer
     {
-        main_pane = parent;
-    }
-
-    void Notify()
-    {
-        if (!main_pane->isMouseDown())
+        
+        MainPane* main_pane;
+        
+    public:
+        
+        MouseDownTimer(MainPane* parent) : wxTimer()
         {
-            Stop();
-            return;
+            main_pane = parent;
         }
-        main_pane->mouseHeldDown();
+        
+        void Notify()
+        {
+            if (!main_pane->isMouseDown())
+            {
+                Stop();
+                return;
+            }
+            main_pane->mouseHeldDown();
+            
+        }
+        
+        void start()
+        {
+            Start(10);
+        }
+    };
+}
 
-    }
-
-    void start()
-    {
-        Start(10);
-    }
-};
 // ==========================================================================================
 // ==========================================================================================
 #if 0
@@ -160,8 +163,10 @@ void MainPane::isNowVisible()
     isVisible=true;
 }
 
+// --------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
+#pragma mark Rendering
 #endif
 
 void MainPane::paintEvent(wxPaintEvent& evt)
@@ -169,6 +174,8 @@ void MainPane::paintEvent(wxPaintEvent& evt)
     render(true);
 }
 
+// --------------------------------------------------------------------------------------------------
+    
 void MainPane::render(const bool paintEvent)
 {
     if (!prepareFrame()) return;
@@ -203,6 +210,8 @@ void MainPane::render(const bool paintEvent)
     }
 
 }
+
+// --------------------------------------------------------------------------------------------------
 
 bool MainPane::do_render()
 {
@@ -404,8 +413,10 @@ bool MainPane::do_render()
 
 }
 
+// --------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
+#pragma mark Pop-ups events
 #endif
 
 /*
@@ -415,21 +426,24 @@ void MainPane::instrumentPopupSelected(wxCommandEvent& evt)
 {
     Core::getInstrumentPicker()->menuSelected( evt );
 }
+// --------------------------------------------------------------------------------------------------
+
 void MainPane::drumPopupSelected(wxCommandEvent& evt)
 {
     Core::getDrumPicker()->menuSelected( evt );
 }
-
+    
+// --------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
+#pragma mark Input
 #endif
 
-/*
+/**
  * Are key modifiers down on the keyboard?
  */
 bool MainPane::isSelectMorePressed(){ return wxGetKeyState(WXK_SHIFT); }
 bool MainPane::isSelectLessPressed(){ return wxGetKeyState(WXK_ALT); }
-
 bool MainPane::isCtrlDown(){ return wxGetKeyState(WXK_CONTROL); }
 bool MainPane::isMouseDown(){ return isMouseDown_bool; }
 
@@ -441,16 +455,9 @@ int MainPane::getMouseY_current()                {    return mousey_current;    
 RelativeXCoord MainPane::getMouseX_initial()    {    return mousex_initial;    }
 int MainPane::getMouseY_initial()                {    return mousey_initial;    }
 
-
-/*
- * Events will be sent regularly to this method when user holds down mouse
- */
-
+// --------------------------------------------------------------------------------------------------
 void MainPane::mouseHeldDown()
 {
-
-    // ----------------------------------- click is in track area ----------------------------
-
     // check click is within track area
     if (mousey_current < getHeight()-getCurrentSequence()->dockHeight and
        mousey_current > measureBarY+getMeasureData()->graphics->getMeasureBarHeight())
@@ -461,12 +468,9 @@ void MainPane::mouseHeldDown()
                                                        mousex_initial, mousey_initial);
 
     }// end if not on dock
-
 }
 
-/*
- * Event sent whenever user right-clicks on OpenGL pane where everything is drawn.
- */
+// --------------------------------------------------------------------------------------------------
 
 void MainPane::rightClick(wxMouseEvent& event)
 {
@@ -489,7 +493,7 @@ void MainPane::rightClick(wxMouseEvent& event)
         }
     }
 
-    // ----------------------------------- click is in measure bar ----------------------------
+    // ---- click is in measure bar
     if (event.GetY() > measureBarY and event.GetY() < measureBarY+measureBarHeight)
     {
         getMeasureData()->graphics->rightClick(event.GetX(), event.GetY() - measureBarY);
@@ -498,9 +502,8 @@ void MainPane::rightClick(wxMouseEvent& event)
     Display::render();
 }
 
-/*
- * Event sent whenever user clicks on OpenGL pane where everything is drawn.
- */
+// --------------------------------------------------------------------------------------------------
+
 void MainPane::mouseDown(wxMouseEvent& event)
 {
     invalidateMouseEvents = false;
@@ -516,6 +519,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
     isMouseDown_bool=true;
 
     int measureBarHeight = getMeasureData()->graphics->getMeasureBarHeight();
+    
     // ----------------------------------- click is in track area ----------------------------
     // check click is within track area
     if (mousey_current < getHeight()-getCurrentSequence()->dockHeight and
@@ -628,12 +632,8 @@ void MainPane::mouseDown(wxMouseEvent& event)
 
 }
 
-
-/*
- * Event sent whenever user drags mouse on OpenGL pane where everything is drawn.
- */
-
-
+// --------------------------------------------------------------------------------------------------
+    
 void MainPane::mouseMoved(wxMouseEvent& event)
 {
     if (invalidateMouseEvents) return;
@@ -666,6 +666,8 @@ void MainPane::mouseMoved(wxMouseEvent& event)
 
 }
 
+// --------------------------------------------------------------------------------------------------
+
 void MainPane::mouseLeftWindow(wxMouseEvent& event)
 {
     // if we are dragging, notify current track that mouse has left the window
@@ -682,6 +684,8 @@ void MainPane::mouseLeftWindow(wxMouseEvent& event)
     }
 }
 
+// --------------------------------------------------------------------------------------------------
+
 void MainPane::mouseReleased(wxMouseEvent& event)
 {
 
@@ -696,7 +700,7 @@ void MainPane::mouseReleased(wxMouseEvent& event)
         draggingTrack=-1;
     }//end if
 
-    // ----------------------------------- click is in measure bar ----------------------------
+    // ---- click is in measure bar
     if (click_area == CLICK_MEASURE_BAR)
     {
         // check if user is clicking on red arrow that scrolls to current playback location
@@ -729,9 +733,13 @@ void MainPane::mouseReleased(wxMouseEvent& event)
     Display::render();
 }
 
+// --------------------------------------------------------------------------------------------------
+
 void MainPane::keyReleased(wxKeyEvent& evt)
 {
 }
+
+// --------------------------------------------------------------------------------------------------
 
 void MainPane::keyPressed(wxKeyEvent& evt)
 {
@@ -941,6 +949,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
     }//end if command down
 }
 
+// --------------------------------------------------------------------------------------------------
 
 void MainPane::mouseWheelMoved(wxMouseEvent& event)
 {
@@ -950,7 +959,6 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
 
     const int measureBarHeight = getMeasureData()->graphics->getMeasureBarHeight();
 
-    // ----------------------------------- click is in track area ----------------------------
     // check click is within track area
     if (my < getHeight()-getCurrentSequence()->dockHeight and
        mx > measureBarY+measureBarHeight)
@@ -965,7 +973,7 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
     }// end if not on dock
 }
 
-
+// --------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #endif
@@ -976,8 +984,10 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
 int MainPane::getDraggedTrackID()                {    return draggingTrack;    }
 
 
+// --------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
+#pragma mark Playback Loop
 #endif
 
 void MainPane::enterPlayLoop()
@@ -988,6 +998,9 @@ void MainPane::enterPlayLoop()
     lastTick = -1;
     Core::activateRenderLoop(true);
 }
+    
+// --------------------------------------------------------------------------------------------------
+
 void MainPane::exitPlayLoop()
 {
     PlatformMidiManager::stop();
@@ -997,14 +1010,15 @@ void MainPane::exitPlayLoop()
     Display::render();
 }
 
+// --------------------------------------------------------------------------------------------------
+
 void MainPane::setPlaybackStartTick(int newValue)
 {
     playbackStartTick = newValue;
 }
 
-/*
- *  This method is called repeatedly during playback
- */
+// --------------------------------------------------------------------------------------------------
+
 void MainPane::playbackRenderLoop()
 {
         const int currentTick = PlatformMidiManager::trackPlaybackProgression();
@@ -1086,25 +1100,32 @@ void MainPane::playbackRenderLoop()
         wxMilliSleep(10);
 }
 
-// sets a flag that will be picked by the playback loop
-void MainPane::scrollNowToPlaybackPosition(){        scrollToPlaybackPosition=true;        }
+// --------------------------------------------------------------------------------------------------
 
-/*
- * This is called when the song us playing. MainPane needs to know the current tick because when it renders
- * it needs to know where to draw the red line that follows playback.
- */
+void MainPane::scrollNowToPlaybackPosition()
+{
+    // set a flag that will be picked by the playback loop
+    scrollToPlaybackPosition = true;
+}
+
+// --------------------------------------------------------------------------------------------------
 
 void MainPane::setCurrentTick(int currentTick)
 {
     MainPane::currentTick = currentTick;
 }
+    
+// --------------------------------------------------------------------------------------------------
+
 int MainPane::getCurrentTick() const
 {
     return currentTick;
 }
 
+// --------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
+#pragma mark Serialization
 #endif
 
 void MainPane::saveToFile(wxFileOutputStream& fileout)
@@ -1112,4 +1133,3 @@ void MainPane::saveToFile(wxFileOutputStream& fileout)
     getCurrentSequence()->saveToFile(fileout);
 }
 
-}

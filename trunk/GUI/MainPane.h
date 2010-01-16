@@ -56,7 +56,9 @@ class MainPane : public RenderPane
     bool isMouseDown_bool;
 
     int currentTick;
-    int draggingTrack; // which track the user is dragging (in a track reordering process), or -1 if none
+    
+    /** which track the user is dragging (in a track reordering process), or -1 if none */
+    int draggingTrack;
 
     std::vector<int> positionsInDock;
 
@@ -68,8 +70,12 @@ class MainPane : public RenderPane
     bool scrollToPlaybackPosition;
 
     ClickArea click_area;
-    int click_in_track; // if click_area == CLICK_TRACK, contains the ID of the track
     
+    /** if click_area == CLICK_TRACK, contains the ID of the track */
+    int click_in_track;
+    
+    bool do_render();
+
 public:
     LEAK_CHECK();
 
@@ -78,39 +84,61 @@ public:
 
     // --------------------- read-only --------------------
 
-    bool isVisible; // is frame shown
+    /** is frame shown */
+    bool isVisible;
+    
     bool leftArrow;
     bool rightArrow;
 
     // -----------------------------------------------------
-
-
     // render loop
+    
     void enterPlayLoop();
+    
+    /** This method is called repeatedly during playback */
     void playbackRenderLoop();
+    
     void setPlaybackStartTick(int newValue);
+    
+    /** This is called when the song us playing. MainPane needs to know the current tick because when it renders
+      * it needs to know where to draw the red line that follows playback. */
     void setCurrentTick(int currentTick=-1);
-    int getCurrentTick() const;
+    
+    int  getCurrentTick() const;
     void exitPlayLoop();
     void scrollNowToPlaybackPosition();
 
     int getDraggedTrackID();
 
-    void isNowVisible(); // called when frame is made visible
+    /** called when frame is made visible */
+    void isNowVisible();
 
-    // events
+    // ---- events
+    
+    /** Event sent whenever user drags mouse on OpenGL pane where everything is drawn. */
     void mouseMoved(wxMouseEvent& event);
+    
+    /** Event sent whenever user clicks on OpenGL pane where everything is drawn. */
     void mouseDown(wxMouseEvent& event);
+    
     void mouseWheelMoved(wxMouseEvent& event);
+    
     void mouseReleased(wxMouseEvent& event);
+    
+    /** Event sent whenever user right-clicks on OpenGL pane where everything is drawn. */
     void rightClick(wxMouseEvent& event);
+    
     void mouseLeftWindow(wxMouseEvent& event);
-    void mouseHeldDown(); // events will be sent regularly to this method when user holds down mouse
+    
     void keyPressed(wxKeyEvent& event);
     void keyReleased(wxKeyEvent& event);
+    
     void instrumentPopupSelected(wxCommandEvent& evt);
     void drumPopupSelected(wxCommandEvent& evt);
 
+    /** events will be sent regularly to this method when user holds down mouse */
+    void mouseHeldDown();
+    
     bool isMouseDown();
     RelativeXCoord getMouseX_current();
     int getMouseY_current();
@@ -121,12 +149,11 @@ public:
     bool isSelectLessPressed();
     bool isCtrlDown();
 
-    bool do_render();
-
+    // ---- rendering
     void render(const bool paintEvent = false);
     void paintEvent(wxPaintEvent& evt);
 
-    // serialization
+    // ---- serialization
     void saveToFile(wxFileOutputStream& fileout);
 
     DECLARE_EVENT_TABLE()
