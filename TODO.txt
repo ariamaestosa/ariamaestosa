@@ -48,7 +48,7 @@ NOTE: sorry, this is very raw :)
       [ok?] dotted silences don't receive enough space, or are drawn too much to the right
       - vertical spacing between tracks needs to adapt depending on stuff near the top and bottom of scores
         (triplet symbols, stems, G clef top and bottom, etc...)
-      - 1/32 silences need a proper image
+      - 1/16 silences need a proper image
       - when a track first appears, we need its clef, key, etc. (maybe even once a page). Right now it's only
         given if the said track starts playing at measure 1  (or in the first line)
       - tab tuning : letters overlap a bit
