@@ -29,7 +29,6 @@
 namespace AriaMaestosa
 {
     class ScoreAnalyser;
-    const int headRadius = 36; //(int)round(lineHeight*0.8);
 
 class ScorePrintable : public EditorPrintable
 {

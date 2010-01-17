@@ -19,6 +19,18 @@
 
 namespace AriaMaestosa
 {
+    /** Width of 1/1 and 1/2 silences */
+    const int RECTANGULAR_SILENCE_SIZE = 40;
+    
+    /** How much margin space to leave at the left of 1/1 and 1/2 silences*/
+    const int RECTANGULAR_SILENCE_LEFT_MARGIN = 40;
+    
+    /** Size of a note's head */
+    const int HEAD_RADIUS = 36;
+
+    /** Width of the "natural" accidental symbol */
+    const int NATURAL_SIGN_WIDTH = 30;
+    
 #if 0
 #pragma mark -
 #pragma mark ScoreData
@@ -73,44 +85,44 @@ namespace AriaMaestosa
 #pragma mark PrintXConverter
 #endif
     
-    /*
+    /**
      * An instance of this will be given to the score analyser. Having a separate x-coord-converter
      * allows it to do conversions between units without becoming context-dependent.
      */
     class PrintXConverter
+    {
+        ScorePrintable* parent;
+        LayoutLine* line;
+        int trackID;
+    public:
+        LEAK_CHECK();
+        
+        PrintXConverter(ScorePrintable* parent, LayoutLine* line, const int trackID)
         {
-            ScorePrintable* parent;
-            LayoutLine* line;
-            int trackID;
-        public:
-            LEAK_CHECK();
-            
-            PrintXConverter(ScorePrintable* parent, LayoutLine* line, const int trackID)
-            {
-                PrintXConverter::parent = parent;
-                PrintXConverter::line = line;
-                PrintXConverter::trackID = trackID;
-            }
-            ~PrintXConverter(){}
-            
-            Range<int> tickToX(const int tick)
-            {
-                return parent->tickToX(trackID, *line, tick);
-            }
-            /*
-            int getXTo(const int tick)
-            {
-                const int out = parent->tickToXLimit(trackID, *line, tick);
-                std::cout << "out : " << tick << " --> " << out << std::endl;
-                assert(out != -1);
-                return out;
-            }
-            int getClosestXFromTick(const int tick)
-            {
-                return tickToX(parent->getClosestTickFrom(trackID, *line, tick));
-            }
-             */
-        };
+            PrintXConverter::parent = parent;
+            PrintXConverter::line = line;
+            PrintXConverter::trackID = trackID;
+        }
+        ~PrintXConverter(){}
+        
+        Range<int> tickToX(const int tick)
+        {
+            return parent->tickToX(trackID, *line, tick);
+        }
+        /*
+         int getXTo(const int tick)
+         {
+         const int out = parent->tickToXLimit(trackID, *line, tick);
+         std::cout << "out : " << tick << " --> " << out << std::endl;
+         assert(out != -1);
+         return out;
+         }
+         int getClosestXFromTick(const int tick)
+         {
+         return tickToX(parent->getClosestTickFrom(trackID, *line, tick));
+         }
+         */
+    };
     
     // global (FIXME)
     PrintXConverter* x_converter;
@@ -163,12 +175,12 @@ namespace AriaMaestosa
         dc.SetPen(  wxPen( wxColour(0,0,0), 6 ) );
         
         // horizontal lines
-        dc.DrawLine( x-30/2, y,      x+30/2, y-20/2 );
-        dc.DrawLine( x-30/2, y+40/2, x+30/2, y+20/2 );
+        dc.DrawLine( x-NATURAL_SIGN_WIDTH/2, y,      x+NATURAL_SIGN_WIDTH/2, y-20/2 );
+        dc.DrawLine( x-NATURAL_SIGN_WIDTH/2, y+40/2, x+NATURAL_SIGN_WIDTH/2, y+20/2 );
         
         // vertical lines
-        dc.DrawLine( x-30/2, y+40/2, x-30/2, y-60/2 );
-        dc.DrawLine( x+30/2, y-20/2, x+30/2, y+80/2 );
+        dc.DrawLine( x-NATURAL_SIGN_WIDTH/2, y+40/2, x-NATURAL_SIGN_WIDTH/2, y-60/2 );
+        dc.DrawLine( x+NATURAL_SIGN_WIDTH/2, y-20/2, x+NATURAL_SIGN_WIDTH/2, y+80/2 );
     }
     
     // -------------------------------------------------------------------------------------------
@@ -316,21 +328,24 @@ namespace AriaMaestosa
         if ( type == 1 )
         {
             global_dc->SetPen(  *wxTRANSPARENT_PEN  );
-            silence_radius = 40;
+            silence_radius = RECTANGULAR_SILENCE_SIZE/2;
             
-            // FIXME - remove hardcoded values
-            global_dc->DrawRectangle(x.from + 40, silences_y, silence_radius*2, (int)round(global_line_height/2));
-            silence_center = x.from + 40 + silence_radius;
+            global_dc->DrawRectangle(/* x */ x.from + RECTANGULAR_SILENCE_LEFT_MARGIN,
+                                     /* y */ silences_y,
+                                     /* w */ RECTANGULAR_SILENCE_SIZE,
+                                     /* h */ (int)round(global_line_height/2));
+            silence_center = x.from + RECTANGULAR_SILENCE_LEFT_MARGIN + silence_radius;
         }
         else if ( type == 2 )
         {
-            silence_radius = 40;
+            silence_radius = RECTANGULAR_SILENCE_SIZE/2;
             global_dc->SetPen(  *wxTRANSPARENT_PEN  );
             
-            // FIXME - hardcoded values
-            global_dc->DrawRectangle(x.from + 40, (int)round(silences_y+global_line_height/2),
-                                     silence_radius*2, (int)round(global_line_height/2.0));
-            silence_center = x.from + 40 + silence_radius;
+            global_dc->DrawRectangle(/* x */ x.from + RECTANGULAR_SILENCE_LEFT_MARGIN,
+                                     /* y */ (int)round(silences_y + global_line_height/2),
+                                     /* w */ RECTANGULAR_SILENCE_SIZE,
+                                     /* h */ (int)round(global_line_height/2.0));
+            silence_center = x.from + RECTANGULAR_SILENCE_LEFT_MARGIN + silence_radius;
         }
         else if ( type == 4 )
         {
@@ -978,7 +993,7 @@ namespace AriaMaestosa
         const int last_score_level = first_score_level + 8;
         const int min_level =  first_score_level - extra_lines_above*2;
 
-        note_x_shift = headRadius; // shift to LEFT by a 'headRadius', since note will be drawn from the right of its area
+        note_x_shift = HEAD_RADIUS;// shift to LEFT by a 'headRadius', since note will be drawn from the right of its area
                                    // and its center is the origin of the drawing
         						   // e.g. Drawing area of a note :
           						   // |     |
@@ -988,15 +1003,13 @@ namespace AriaMaestosa
         
         stem_up_x_offset = -10; // since note is right-aligned, keep the stem at the right. go 10 towards the note to "blend" in it.
         stem_up_y_offset = 0;
-        stem_down_x_offset = -headRadius*2 + 4; // since note is right-aligned. go 4 towards the note to "blend" in it.
+        stem_down_x_offset = -HEAD_RADIUS*2 + 4; // since note is right-aligned. go 4 towards the note to "blend" in it.
         stem_down_y_offset = 0;
                 
 #define LEVEL_TO_Y( lvl ) y0 + 1 + lineHeight*0.5*(lvl - min_level)
                 
         
-        // ------------------ preliminary part : backgrounds -----------------
-
-        // ---- draw score background (horizontal lines)
+        // ------------ draw score background (horizontal lines) ------------
         std::cout << " == rendering score background ==\n";
         dc.SetPen(  wxPen( wxColour(125,125,125), 7 ) );
         const int lineAmount = 5 + extra_lines_above + extra_lines_under;
@@ -1011,7 +1024,7 @@ namespace AriaMaestosa
             // dc.DrawText( wxString::Format(wxT("%i"), lvl), x0 - 120, y - 35 );
         }
         
-        // ---- render vertical dividers and time signature changes
+        // ------------ render vertical dividers and time signature changes ---------
         std::cout << " == rendering vertical dividers & time sig changes ==\n";
         
         const int measure_dividers_from_y = LEVEL_TO_Y(first_score_level);
@@ -1028,30 +1041,37 @@ namespace AriaMaestosa
             }
         }
         
-        // ---- line header if any
+        // ------------ line header if any ------------
         if (line.layoutElements[0].getType() == LINE_HEADER)
         {
             std::cout << " == rendering line header ==\n";
-            if (!f_clef) renderGClef(dc, line.layoutElements[0].getXFrom(),
-                                    LEVEL_TO_Y(last_score_level)+10,
-                                    LEVEL_TO_Y(last_score_level-4)-5);
-            else renderFClef(dc, line.layoutElements[0].getXFrom(),
-                             LEVEL_TO_Y(first_score_level),
-                             LEVEL_TO_Y(first_score_level+3));
+            if (!f_clef)
+            {
+                renderGClef(dc, line.layoutElements[0].getXFrom(),
+                            LEVEL_TO_Y(last_score_level)+10,
+                            LEVEL_TO_Y(last_score_level-4)-5);
+            }
+            else
+            {
+                renderFClef(dc, line.layoutElements[0].getXFrom(),
+                            LEVEL_TO_Y(first_score_level),
+                            LEVEL_TO_Y(first_score_level+3));
+            }
             
             // render key signature next to staff
             // on which level to put the signs (0 is the level of the highest sign when all are shown)
             const unsigned short int sharp_sign_lvl[] = { 1, 4, 0, 3, 6, 2, 5 };
-            const unsigned short int flat_sign_lvl[] = { 3, 0, 4, 1, 5, 2, 6 };
+            const unsigned short int flat_sign_lvl[]  = { 3, 0, 4, 1, 5, 2, 6 };
             
             const int sharps = track->graphics->getCurrentEditor()->getKeySharpsAmount();
-            const int flats = track->graphics->getCurrentEditor()->getKeyFlatsAmount();
+            const int flats  = track->graphics->getCurrentEditor()->getKeyFlatsAmount();
             assertExpr(line.layoutElements.size(),>=,0);
             
             if (sharps > 0 or flats > 0)
             {
-                int x_space_per_symbol = (line.layoutElements[0].getXTo() - line.layoutElements[0].getXFrom()
-                                          - 300 - 50 /* some additional space */) / std::max(sharps, flats);
+                // FIXME: remove hardcoded values
+                int x_space_per_symbol = (line.layoutElements[0].getXTo() - line.layoutElements[0].getXFrom() -
+                                          300 - 50 /* some additional space */) / std::max(sharps, flats);
                 if (x_space_per_symbol > 50) x_space_per_symbol = 50;
                 
                 for (int n=0; n<sharps; n++)
@@ -1109,7 +1129,7 @@ namespace AriaMaestosa
                     for(int lvl=first_score_level-2; lvl>noteRenderInfo.level+noteRenderInfo.level%2-2; lvl -= 2)
                     {
                         const int y = LEVEL_TO_Y(lvl);
-                        dc.DrawLine(noteX.from+headRadius, y, noteX.to+headRadius, y);
+                        dc.DrawLine(noteX.from+HEAD_RADIUS, y, noteX.to+HEAD_RADIUS, y);
                     }
                 }
                 
@@ -1122,7 +1142,7 @@ namespace AriaMaestosa
                     for(int lvl=last_score_level+2; lvl<noteRenderInfo.level-noteRenderInfo.level%2+2; lvl += 2)
                     {
                         const int y = LEVEL_TO_Y(lvl);
-                        dc.DrawLine(noteX.from+headRadius, y, noteX.to+headRadius, y);
+                        dc.DrawLine(noteX.from+HEAD_RADIUS, y, noteX.to+HEAD_RADIUS, y);
                     }
                 }
             } // end scope
@@ -1139,13 +1159,14 @@ namespace AriaMaestosa
 
                 const Range<int> noteX = x_converter->tickToX(noteRenderInfo.tick);
 
-                // Amount by which to shift the executable sign, from 'noteX'
-                const int accidentalShift = noteRenderInfo.sign == PITCH_SIGN_NONE ? 0 : headRadius*1.85;
+                // Amount by which to shift the accidental sign, from 'noteX'
+                // FIXME: what is that??
+                const int accidentalShift = noteRenderInfo.sign == PITCH_SIGN_NONE ? 0 : HEAD_RADIUS*1.85;
     
                 // draw head
                 const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
                 wxPoint headLocation( noteX.to - note_x_shift, // this is the center of the note
-                                      notey-(headRadius-5)/2.0);
+                                      notey-(HEAD_RADIUS-5)/2.0);
                 
                 if (noteRenderInfo.instant_hit)
                 {
@@ -1162,20 +1183,20 @@ namespace AriaMaestosa
                     {
                         // FIXME - instead of always substracting to radius, just make it smaller...
                         const float angle = n/25.0*6.283185f /* 2*PI */;
-                        points[n] = wxPoint( cx + (headRadius-5)*cos(angle),
-                                             cy + headRadius/2 + (headRadius - 14)*sin(angle) - headRadius*(-0.5f + fabsf( (n-12.5f)/12.5f ))/2.0f );
+                        points[n] = wxPoint( cx + (HEAD_RADIUS-5)*cos(angle),
+                                             cy + HEAD_RADIUS/2 + (HEAD_RADIUS - 14)*sin(angle) - HEAD_RADIUS*(-0.5f + fabsf( (n-12.5f)/12.5f ))/2.0f );
                     }
 
                     if (noteRenderInfo.hollow_head) dc.DrawSpline(25, points);
                     else dc.DrawPolygon(25, points, -3);
                     
                 }
-                noteRenderInfo.setY(notey+headRadius/2.0);
+                noteRenderInfo.setY(notey+HEAD_RADIUS/2.0);
                 
                 // draw dot if note is dotted
                 if (noteRenderInfo.dotted)
                 {
-                    wxPoint headLocation( headLocation.x + headRadius*2, notey+10 );
+                    wxPoint headLocation( headLocation.x + HEAD_RADIUS*2, notey+10 );
                     dc.DrawEllipse( headLocation, wxSize(10,10) );
                 }
                 
@@ -1298,14 +1319,14 @@ namespace AriaMaestosa
                 dc.SetPen( tiePen );
                 dc.SetBrush( *wxTRANSPARENT_BRUSH );
                 
-                int triplet_arc_x_start = x_converter->tickToX(noteRenderInfo.triplet_arc_tick_start).to - headRadius;
+                int triplet_arc_x_start = x_converter->tickToX(noteRenderInfo.triplet_arc_tick_start).to - HEAD_RADIUS;
                 int triplet_arc_x_end = -1;
                 
                 if (noteRenderInfo.triplet_arc_tick_end != -1)
                 {
                     const Range<int> arcEndSymbolLocation = x_converter->tickToX(noteRenderInfo.triplet_arc_tick_end);
                     
-                    triplet_arc_x_end = arcEndSymbolLocation.to - headRadius;
+                    triplet_arc_x_end = arcEndSymbolLocation.to - HEAD_RADIUS;
                 }
                 
                 const int center_x = (triplet_arc_x_end == -1 ?
