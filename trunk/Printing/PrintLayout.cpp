@@ -17,28 +17,32 @@
 #include <cmath>
 #include <map>
 
+using namespace AriaMaestosa;
 
 namespace AriaMaestosa
 {
-const int MAX_LEVELS_ON_PAGE = 74;
-const int MIN_UNIT_WIDTH = 3;
-const int MAX_LINE_WIDTH_IN_UNITS = 45;
-const int MAX_LINES_IN_PAGE = 10;
-
-int repetitionMinimalLength = 2;
-
-// -------------------------------------------------------------------------------------------
+    const int MAX_LEVELS_ON_PAGE = 74;
+    //const int MIN_UNIT_WIDTH = 3;
+    const int MAX_LINE_WIDTH_IN_PRINT_UNITS = 6000; // FIXME: get from printer settings, don't hardcode
+    const int MAX_LINES_IN_PAGE = 10;
+    const int LAYOUT_ELEMENT_MIN_WIDTH = 300;
+    const int TIME_SIG_LAYOUT_ELEMENT_WIDTH = 100;
     
-int getRepetitionMinimalLength()
-{
-    return repetitionMinimalLength;
-}
+    int repetitionMinimalLength = 2;
     
-// -------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------------
     
-void setRepetitionMinimalLength(const int newvalue)
-{
-    repetitionMinimalLength = newvalue;
+    int getRepetitionMinimalLength()
+    {
+        return repetitionMinimalLength;
+    }
+    
+    // -------------------------------------------------------------------------------------------
+    
+    void setRepetitionMinimalLength(const int newvalue)
+    {
+        repetitionMinimalLength = newvalue;
+    }
 }
 
 // -------------------------------------------------------------------------------------------
@@ -217,11 +221,11 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
 #endif
 
         if (getMeasureData()->getTimeSigDenominator(measure) != previous_denom ||
-           getMeasureData()->getTimeSigNumerator(measure) != previous_num)
+            getMeasureData()->getTimeSigNumerator(measure)   != previous_num)
         {
             // add time signature element
             LayoutElement el2(LayoutElement(TIME_SIGNATURE, -1));
-            el2.width_in_units = 1;
+            el2.width_in_print_units = TIME_SIG_LAYOUT_ELEMENT_WIDTH;
             el2.num = getMeasureData()->getTimeSigNumerator(measure);
             el2.denom = getMeasureData()->getTimeSigDenominator(measure);
             
@@ -237,22 +241,22 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
             std::cout << "    measure " << (measure+1) << " is empty\n";
 #endif
             layoutElements.push_back( LayoutElement(EMPTY_MEASURE, measure) );
-            layoutElements[layoutElements.size()-1].width_in_units = 2;
+            layoutElements[layoutElements.size()-1].width_in_print_units = LAYOUT_ELEMENT_MIN_WIDTH;
 
             // check that measure is really empty; it's possible that it contains
             // the end of a note that started in the previous measure.
-            // if this is the case, we need to make the measure broader than the default 2 units
+            // if this is the case, we need to make the measure broader than the default size
             const int track_ref_amount = measures[measure].trackRef.size();
-            for(int t=0; t<track_ref_amount; t++)
+            for (int t=0; t<track_ref_amount; t++)
             {
                 Track* track = measures[measure].trackRef[t].track;
                 const int noteAmount = track->getNoteAmount();
-                for(int n=0; n<noteAmount; n++)
+                for (int n=0; n<noteAmount; n++)
                 {
                     if (track->getNoteStartInMidiTicks(n) < measures[measure].firstTick and
-                       track->getNoteEndInMidiTicks(n)  > measures[measure].firstTick)
+                        track->getNoteEndInMidiTicks(n)  > measures[measure].firstTick)
                     {
-                        layoutElements[layoutElements.size()-1].width_in_units = 5;
+                        layoutElements[layoutElements.size()-1].width_in_print_units = LAYOUT_ELEMENT_MIN_WIDTH*2;
                         t = 99; // quick hack to totally abort both loops
                         break;
                     }
@@ -402,7 +406,7 @@ void PrintLayoutManager::calculateRelativeLengths()
     {
         std::cout << "= layout element " << n << " =\n";
 
-        layoutElements[n].width_in_units = 2;
+        layoutElements[n].width_in_print_units = LAYOUT_ELEMENT_MIN_WIDTH;
 
         if (layoutElements[n].getType() == SINGLE_MEASURE || layoutElements[n].getType() == EMPTY_MEASURE)
         {            
@@ -426,18 +430,26 @@ void PrintLayoutManager::calculateRelativeLengths()
             
             ticks_relative_position.calculateRelativePlacement();
             
+            /*
             layoutElements[n].width_in_units = ticks_relative_position.getUnitCount();
             if (layoutElements[n].width_in_units < MIN_UNIT_WIDTH)
             {
                 layoutElements[n].width_in_units = MIN_UNIT_WIDTH;
+            }*/
+            
+            layoutElements[n].width_in_print_units = ticks_relative_position.getWidth();
+
+            if (layoutElements[n].width_in_print_units < LAYOUT_ELEMENT_MIN_WIDTH)
+            {
+                layoutElements[n].width_in_print_units = LAYOUT_ELEMENT_MIN_WIDTH;
             }
             
-            std::cout << "Layout element " << n << " is " << layoutElements[n].width_in_units
+            std::cout << "++++ Layout element " << n << " is " << layoutElements[n].width_in_print_units
                       << " unit(s) wide" << std::endl;
         }
         else if (layoutElements[n].getType() == REPEATED_RIFF)
         {
-            layoutElements[n].width_in_units = 5;
+            layoutElements[n].width_in_print_units = LAYOUT_ELEMENT_MIN_WIDTH;
         }
 
         //std::cout << "$$ setting charwidth for element " << n << " : " << layoutElements[n].width_in_units << std::endl;
@@ -469,15 +481,16 @@ void PrintLayoutManager::layInLinesAndPages()
     // add line header
     LayoutElement el(LayoutElement(LINE_HEADER, -1));
     
-    int header_width = 2;
+    int header_width = 250; // width of clef (FIXME: set more precisely)
     
     if (sequence->is_score_editor_used)
     {
-        // FIXME : this needs to be in pixels/print units, not my note-relative units.
-        header_width = (int)round(3.0 + sequence->max_signs_in_keysig*4.0/7.0); // 4/7 is an empirical ratio
+        // 50 being the max size of an accidental (FIXME: don't hardcode)
+        header_width += sequence->max_signs_in_keysig*50;
     }
     
-    el.width_in_units = header_width;
+    el.width_in_print_units = header_width;
+    
     current_width += header_width;
     layoutPages[current_page].layoutLines[currentLine].layoutElements.push_back( el );
     
@@ -485,10 +498,12 @@ void PrintLayoutManager::layInLinesAndPages()
     // elements on the current one
     for (int n=0; n<layoutElementsAmount; n++)
     {
-        if (current_width + layoutElements[n].width_in_units > MAX_LINE_WIDTH_IN_UNITS)
+        
+        if (current_width + layoutElements[n].width_in_print_units + MARGIN_AT_MEASURE_BEGINNING >
+            MAX_LINE_WIDTH_IN_PRINT_UNITS)
         {
             // too much stuff on current line, switch to another line
-            layoutPages[current_page].layoutLines[currentLine].width_in_units = current_width;
+            //layoutPages[current_page].layoutLines[currentLine].width_in_units = current_width;
             current_width = 0;
             const int line_height = layoutPages[current_page].layoutLines[currentLine].calculateHeight();
             current_height += line_height;
@@ -510,11 +525,13 @@ void PrintLayoutManager::layInLinesAndPages()
             currentLine = layoutPages[current_page].layoutLines.size()-1;
         }
         assertExpr(currentLine,<,(int)layoutPages[current_page].layoutLines.size());
+        
         layoutPages[current_page].layoutLines[currentLine].layoutElements.push_back(layoutElements[n]);
-        current_width += layoutElements[n].width_in_units;
+        
+        current_width += layoutElements[n].width_in_print_units + MARGIN_AT_MEASURE_BEGINNING;
     }
     // for last line processed
-    layoutPages[current_page].layoutLines[currentLine].width_in_units = current_width;
+    //layoutPages[current_page].layoutLines[currentLine].width_in_units = current_width;
     layoutPages[current_page].layoutLines[currentLine].calculateHeight();
 }
 
@@ -543,4 +560,4 @@ void PrintLayoutManager::calculateLayoutElements
 
 // -------------------------------------------------------------------------------------------
 
-}
+

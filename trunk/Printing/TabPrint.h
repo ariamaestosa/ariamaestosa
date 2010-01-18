@@ -28,22 +28,24 @@ namespace AriaMaestosa
 {
     class GuitarEditor;
     
-class TablaturePrintable : public EditorPrintable
-{
-    int string_amount;
-    GuitarEditor* editor;
-public:
-    TablaturePrintable(Track* track_arg);
-    virtual ~TablaturePrintable();
-
-    void addUsedTicks(const PrintLayoutMeasure& measure, const int trackID,
-                      const MeasureTrackReference& trackRef, RelativePlacementManager& ticks);
-
-    void drawLine(const int trackID, LineTrackRef& track, LayoutLine& line, wxDC& dc);
-    int calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line);
+    /** Specialization to print tablatures */
+    class TablaturePrintable : public EditorPrintable
+    {
+        int string_amount;
+        GuitarEditor* editor;
+        
+    public:
+        TablaturePrintable(Track* track_arg);
+        virtual ~TablaturePrintable();
+        
+        void addUsedTicks(const PrintLayoutMeasure& measure, const int trackID,
+                          const MeasureTrackReference& trackRef, RelativePlacementManager& ticks);
+        
+        void drawLine(const int trackID, LineTrackRef& track, LayoutLine& line, wxDC& dc);
+        int calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line);
+        
+    };
     
-};
-
 }
 
 #endif

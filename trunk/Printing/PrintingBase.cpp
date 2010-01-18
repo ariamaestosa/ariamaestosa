@@ -271,10 +271,12 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     
     wxCoord txw, txh, descent, externalLeading;
     dc.GetTextExtent(label, &txw, &txh, &descent, &externalLeading);
+    
     text_height = txh;
     text_height_half = (int)round((float)text_height / 2.0);
     
-    
+    character_width =  dc.GetTextExtent(wxT("X")).GetWidth();
+
     /*
      the equivalent of 3 times "text_height" will not be printed with notation.
      --> space for title at the top, and some space under it

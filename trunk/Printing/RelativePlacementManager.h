@@ -26,7 +26,7 @@ class RelativePlacementManager
     
     struct Symbol
     {
-        float proportion;
+        int widthInPrintUnits;
         int trackID;
         int endTick;
         
@@ -35,10 +35,10 @@ class RelativePlacementManager
         int fromUnit;
         float neededAdditionalProportion;
         
-        Symbol (const int tick_to, const float proportion, const int trackID)
+        Symbol (const int tick_to, const int widthInPrintUnits, const int trackID)
         {
             Symbol::endTick = tick_to;
-            Symbol::proportion = proportion;
+            Symbol::widthInPrintUnits = widthInPrintUnits;
             Symbol::trackID = trackID;
             
             // To be set later
@@ -54,7 +54,7 @@ class RelativePlacementManager
         
         /** unset intially, is set later during calculations.
           * represents the total proportion this unit needs to receive */
-        float proportion;
+        int size;
         
         /** unset intially, is set later during calculations.
          * represents the position of this tick, from 0 to 1 */
@@ -128,12 +128,10 @@ public:
      *                         (by "area of relevance", I mean the ticks that this note/silence
      *                          covers, independently of the size of the symbol itself)
      * @param tickTo           The tick where the added symbol's "area of relevance" end
-     * @param symbolProportion How big this symbol is, relative to other (here we are
-     *                         only talking of the size of the graphical symbol, not the
-     *                         duration of the note it represents)
+     * @param symbolWidth      How big this symbol (is in print units)
      * @param trackID          ID of the track in which this symbol is
      */
-    void addSymbol(int tickFrom, int tickTo, float symbolProportion, int trackID);
+    void addSymbol(int tickFrom, int tickTo, int symbolWidth, int trackID);
     
     /**
      * Calculates the relative placement of all added symbols.
@@ -146,7 +144,13 @@ public:
      * @precondition           To be called after all symbols have been added
      * @return                 The number of units (number of distinct ticks on which symbols are place)
      */
-    int getUnitCount() const;
+    //int getUnitCount() const;
+    
+    /**
+     * @precondition           To be called after all symbols have been added
+     * @return                 The number of print units this measure needs to be allocated
+     */
+    int getWidth() const;
     
     /**
      * Getter to get the results of the calculation

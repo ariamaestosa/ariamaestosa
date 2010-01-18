@@ -12,6 +12,7 @@
 #endif
 
 using namespace AriaMaestosa;
+const int SIDE_MARGIN_WIDTH = 60;
 
 // ----------------------------------------------------------------------------------------------------------------
 
@@ -191,22 +192,22 @@ UNIT_TEST( RelativePlacementManager_TestFindingNextTick )
      
     // add 1
     test.getInterestingTick( 1, 0, test.m_all_interesting_ticks.size()-1 );
-    test.addSymbol(1 /* from */, 3 /* to */, 1.0f, 0 /* track ID */);
-    test.addSymbol(1 /* from */, 5 /* to */, 1.0f, 1 /* track ID */);
+    test.addSymbol(1 /* from */, 3 /* to */, 1 /* symbol size */, 0 /* track ID */);
+    test.addSymbol(1 /* from */, 5 /* to */, 1 /* symbol size */, 1 /* track ID */);
     
     // add 3
     test.getInterestingTick( 3, 0, test.m_all_interesting_ticks.size()-1 );
-    test.addSymbol(3 /* from */, 5 /* to */, 1.0f, 0 /* track ID */);
-    test.addSymbol(3 /* from */, 5 /* to */, 1.0f, 0 /* track ID */);
+    test.addSymbol(3 /* from */, 5 /* to */, 1 /* symbol size */, 0 /* track ID */);
+    test.addSymbol(3 /* from */, 5 /* to */, 1 /* symbol size */, 0 /* track ID */);
 
     // add 5
     test.getInterestingTick( 5, 0, test.m_all_interesting_ticks.size()-1 );
-    test.addSymbol(5 /* from */, 7 /* to */, 1.0f, 0 /* track ID */);
-    test.addSymbol(5 /* from */, 9 /* to */, 1.0f, 1 /* track ID */);
+    test.addSymbol(5 /* from */, 7 /* to */, 1 /* symbol size */, 0 /* track ID */);
+    test.addSymbol(5 /* from */, 9 /* to */, 1 /* symbol size */, 1 /* track ID */);
 
     // add 7
     test.getInterestingTick( 7, 0, test.m_all_interesting_ticks.size()-1 );
-    test.addSymbol(7 /* from */, 9 /* to */, 1.0f, 0 /* track ID */);
+    test.addSymbol(7 /* from */, 9 /* to */, 1 /* symbol size */, 0 /* track ID */);
 
     // add 9
     test.getInterestingTick( 9, 0, test.m_all_interesting_ticks.size()-1 );
@@ -266,8 +267,9 @@ int RelativePlacementManager::findShortestSymbolLength() const
 #endif
 
 
-void RelativePlacementManager::addSymbol(int tickFrom, int tickTo, float symbolProportion, int trackID)
+void RelativePlacementManager::addSymbol(int tickFrom, int tickTo, int symbolWidth, int trackID)
 {
+    std::cout << "++++ addSymbol " << symbolWidth << "; tick " << tickFrom << " track " << trackID << std::endl;
     assert (tickFrom < m_end_of_measure_tick);
     //assert (tickTo <= m_end_of_measure_tick);
     
@@ -277,7 +279,7 @@ void RelativePlacementManager::addSymbol(int tickFrom, int tickTo, float symbolP
     assert( m_all_interesting_ticks[interestingTickID].tick == tickFrom );
     
     m_all_interesting_ticks[interestingTickID].all_symbols_on_that_tick.push_back(
-                        Symbol(tickTo, symbolProportion, trackID) );
+                        Symbol(tickTo, symbolWidth, trackID) );
 }
 
 // ----------------------------------------------------------------------------------------------------------------
@@ -302,16 +304,18 @@ void RelativePlacementManager::calculateRelativePlacement()
     assert(shortestSymbolLength != -1);
     
     const int tickAmount = m_all_interesting_ticks.size();
-    float totalRelativePosition = 0.0f;
+    int totalAbsolutePosition = 0;
 
     for (int n=0; n<tickAmount; n++)
     {
         InterestingTick& currTick = m_all_interesting_ticks[n];
         
-        float global_proportion_for_tick = 0.0f;
+        int global_width_for_tick = 0;
         
         const int symbolAmount = currTick.all_symbols_on_that_tick.size();
         assertExpr(symbolAmount, >, 0);
+        
+        std::cout << "    {\n";
         for (int sym=0; sym<symbolAmount; sym++)
         {
             Symbol& currSym = currTick.all_symbols_on_that_tick[sym];
@@ -335,7 +339,7 @@ void RelativePlacementManager::calculateRelativePlacement()
                 float ratioToShortest = (float)whats_missing / (float)shortestSymbolLength;
                 if (ratioToShortest > 0)
                 {
-                    currSym.neededAdditionalProportion = std::log( ratioToShortest ) / std::log( 2 );
+                    currSym.neededAdditionalProportion = (float)std::log( ratioToShortest ) / (float)std::log( 2 );
                 }
                 else
                 {
@@ -343,40 +347,42 @@ void RelativePlacementManager::calculateRelativePlacement()
                 }
             }
             
-            std::cout << "    currSym.proportion + currSym.neededAdditionalProportion = " << currSym.proportion << " + " << currSym.neededAdditionalProportion << std::endl; 
-            
+            const int symbolWidth = (int)round(currSym.widthInPrintUnits * (1.0f + currSym.neededAdditionalProportion));
+                                    
             // determine the largest needed proportion for each tick
-            global_proportion_for_tick = std::max( global_proportion_for_tick,
-                                                   currSym.proportion + currSym.neededAdditionalProportion );
+            global_width_for_tick = std::max( global_width_for_tick, symbolWidth);
+            
+            std::cout << "      symbolWidth=" << symbolWidth << "; global_width_for_tick=" << global_width_for_tick << std::endl;
+
         } // end for each symbol
+        std::cout << "    }\n";
         
-        currTick.proportion = global_proportion_for_tick;
+        currTick.size = global_width_for_tick;
         
-        // set start position of current unit (without caring yet for value to be inr ange [0, 1])
-        currTick.position = totalRelativePosition;
+        // set start position of current unit (without caring yet for value to be in range [0, 1])
+        currTick.position = totalAbsolutePosition;
         
-        // set end position of previous unit (without caring yet for value to be inr ange [0, 1])
-        if (n>0) m_all_interesting_ticks[n-1].endPosition = totalRelativePosition;
+        // set end position of previous unit (without caring yet for value to be in range [0, 1])
+        if (n>0) m_all_interesting_ticks[n-1].endPosition = totalAbsolutePosition;
         
-        assertExpr( global_proportion_for_tick, >, 0 );
+        assertExpr( global_width_for_tick, >, 0 );
         
         // increment current position
-        totalRelativePosition += global_proportion_for_tick;
+        totalAbsolutePosition += global_width_for_tick;
     }
     
     // for last
-    m_all_interesting_ticks[m_all_interesting_ticks.size()-1].endPosition = totalRelativePosition;
+    m_all_interesting_ticks[m_all_interesting_ticks.size()-1].endPosition = totalAbsolutePosition;
     
-    totalRelativePosition += 1.0f; // leave 1 space worth of empty space at the end
+    totalAbsolutePosition += SIDE_MARGIN_WIDTH; // leave empty at the end
     
-    // "normalize" positions and sizes (divide them to be in range [0, 1]
+    // "normalize" positions (divide to be in range [0, 1])
     for (int n=0; n<tickAmount; n++)
     {
         InterestingTick& currTick = m_all_interesting_ticks[n];
         
-
-        currTick.position    = currTick.position/ totalRelativePosition;
-        currTick.endPosition = currTick.endPosition / totalRelativePosition;
+        currTick.position    = currTick.position    / totalAbsolutePosition;
+        currTick.endPosition = currTick.endPosition / totalAbsolutePosition;
         
         std::cout << "m_all_interesting_ticks[" << n << "].position = " << currTick.position << " to " << currTick.endPosition << std::endl;
         
@@ -415,9 +421,30 @@ Range<float> RelativePlacementManager::getSymbolRelativeArea(int tick)
 
 // ----------------------------------------------------------------------------------------------------------------
 
+/*
 int RelativePlacementManager::getUnitCount() const
 {
     return m_all_interesting_ticks.size();
+}*/
+
+// ----------------------------------------------------------------------------------------------------------------
+
+int RelativePlacementManager::getWidth() const
+{
+    int totalSize = 0;
+    
+    std::cout << "RelativePlacementManager::getWidth()\n{\n";
+    
+    const int amount = m_all_interesting_ticks.size();
+    for (int n=0; n<amount; n++)
+    {
+        std::cout << "    " << m_all_interesting_ticks[n].size << std::endl;
+        totalSize += m_all_interesting_ticks[n].size;
+    }
+    
+    std::cout << "}\n";
+    
+    return totalSize;
 }
 
 
