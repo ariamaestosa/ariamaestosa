@@ -168,7 +168,7 @@ void TablaturePrintable::drawLine(const int trackID, LineTrackRef& renderInfo, L
             
             continue;
         }
-        if (currentElement->getType() == TIME_SIGNATURE)
+        if (currentElement->getType() == TIME_SIGNATURE_EL)
         {
             //std::cout << "Tablature : it's a time sig\n";
             

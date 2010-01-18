@@ -1045,7 +1045,7 @@ namespace AriaMaestosa
         {
             drawVerticalDivider(&line.layoutElements[n], measure_dividers_from_y, measure_dividers_to_y);
             
-            if (line.layoutElements[n].getType() == TIME_SIGNATURE)
+            if (line.layoutElements[n].getType() == TIME_SIGNATURE_EL)
             {
                 EditorPrintable::renderTimeSignatureChange(&line.layoutElements[n], LEVEL_TO_Y(first_score_level), LEVEL_TO_Y(last_score_level));
             }
@@ -1054,16 +1054,18 @@ namespace AriaMaestosa
         // ------------ line header if any ------------
         if (line.layoutElements[0].getType() == LINE_HEADER)
         {
+            LayoutElement& headElement = line.layoutElements[0];
+            
             std::cout << " == rendering line header ==\n";
             if (!f_clef)
             {
-                renderGClef(dc, line.layoutElements[0].getXFrom(),
+                renderGClef(dc, headElement.getXFrom(),
                             LEVEL_TO_Y(last_score_level)+10,
                             LEVEL_TO_Y(last_score_level-4)-5);
             }
             else
             {
-                renderFClef(dc, line.layoutElements[0].getXFrom(),
+                renderFClef(dc, headElement.getXFrom(),
                             LEVEL_TO_Y(first_score_level),
                             LEVEL_TO_Y(first_score_level+3));
             }
@@ -1080,19 +1082,26 @@ namespace AriaMaestosa
             if (sharps > 0 or flats > 0)
             {
                 // FIXME: remove hardcoded values
-                int x_space_per_symbol = (line.layoutElements[0].getXTo() - line.layoutElements[0].getXFrom() -
-                                          300 - 50 /* some additional space */) / std::max(sharps, flats);
-                if (x_space_per_symbol > 50) x_space_per_symbol = 50;
+                const int SPACE_FOR_CLEF = 300;
+                const int MAX_ACCIDENTAL_SIZE = 50;
+                
+                int x_space_per_symbol = (headElement.getXTo() - headElement.getXFrom() -
+                                          SPACE_FOR_CLEF - 50 /* some additional space */) / std::max(sharps, flats);
+                if (x_space_per_symbol > MAX_ACCIDENTAL_SIZE) x_space_per_symbol = MAX_ACCIDENTAL_SIZE;
                 
                 for (int n=0; n<sharps; n++)
                 {
                     const int level = first_score_level + (f_clef ? 1 : -1) + sharp_sign_lvl[n];
-                    renderSharp( dc, line.layoutElements[0].getXFrom()+300+n*x_space_per_symbol, LEVEL_TO_Y(level) );
+                    renderSharp( dc,
+                                 headElement.getXFrom() + SPACE_FOR_CLEF + n*x_space_per_symbol + MAX_ACCIDENTAL_SIZE/2,
+                                 LEVEL_TO_Y(level) );
                 }
                 for (int n=0; n<flats; n++)
                 {
                     const int level = first_score_level + (f_clef ? 3 : 1) + flat_sign_lvl[n];
-                    renderFlat( dc, line.layoutElements[0].getXFrom()+300+n*x_space_per_symbol, LEVEL_TO_Y(level) );
+                    renderFlat( dc,
+                                headElement.getXFrom() + SPACE_FOR_CLEF + n*x_space_per_symbol + MAX_ACCIDENTAL_SIZE/2,
+                                LEVEL_TO_Y(level) );
                 }
             }
             
