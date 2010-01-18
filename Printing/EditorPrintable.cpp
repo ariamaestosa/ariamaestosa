@@ -145,7 +145,7 @@ LayoutElement* EditorPrintable::getElementForMeasure(const int trackID, const in
     
 void EditorPrintable::drawVerticalDivider(LayoutElement* el, const int y0, const int y1)
 {
-    if (el->getType() == TIME_SIGNATURE) return;
+    if (el->getType() == TIME_SIGNATURE_EL) return;
     
     const int elem_x_start = el->getXFrom();
     
@@ -198,7 +198,7 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
     {
     }
     // ****** time signature change
-    else if (layoutElements[currentLayoutElement].getType() == TIME_SIGNATURE)
+    else if (layoutElements[currentLayoutElement].getType() == TIME_SIGNATURE_EL)
     {
     }
     // ****** repetitions

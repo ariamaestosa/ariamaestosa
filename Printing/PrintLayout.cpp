@@ -26,8 +26,8 @@ namespace AriaMaestosa
     const int MAX_LINE_WIDTH_IN_PRINT_UNITS = 6000; // FIXME: get from printer settings, don't hardcode
     const int MAX_LINES_IN_PAGE = 10;
     const int LAYOUT_ELEMENT_MIN_WIDTH = 300;
-    const int TIME_SIG_LAYOUT_ELEMENT_WIDTH = 100;
-    
+    const int TIME_SIG_LAYOUT_ELEMENT_WIDTH = 75;
+    const int HEADER_WIDTH = 250; // width of clef (FIXME: set more precisely)
     int repetitionMinimalLength = 2;
     
     // -------------------------------------------------------------------------------------------
@@ -214,7 +214,7 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
 
     int previous_num = -1, previous_denom = -1;
     
-    for(int measure=0; measure<measureAmount; measure++)
+    for (int measure=0; measure<measureAmount; measure++)
     {
 #ifdef _verbose
         std::cout << "Generating layout element for measure " << (measure+1) << std::endl;
@@ -224,7 +224,7 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
             getMeasureData()->getTimeSigNumerator(measure)   != previous_num)
         {
             // add time signature element
-            LayoutElement el2(LayoutElement(TIME_SIGNATURE, -1));
+            LayoutElement el2(LayoutElement(TIME_SIGNATURE_EL, -1));
             el2.width_in_print_units = TIME_SIG_LAYOUT_ELEMENT_WIDTH;
             el2.num = getMeasureData()->getTimeSigNumerator(measure);
             el2.denom = getMeasureData()->getTimeSigDenominator(measure);
@@ -406,10 +406,12 @@ void PrintLayoutManager::calculateRelativeLengths()
     {
         std::cout << "= layout element " << n << " =\n";
 
-        layoutElements[n].width_in_print_units = LAYOUT_ELEMENT_MIN_WIDTH;
+        //layoutElements[n].width_in_print_units = LAYOUT_ELEMENT_MIN_WIDTH;
 
         if (layoutElements[n].getType() == SINGLE_MEASURE || layoutElements[n].getType() == EMPTY_MEASURE)
-        {            
+        {     
+            layoutElements[n].width_in_print_units = LAYOUT_ELEMENT_MIN_WIDTH;
+            
             // determine a list of all ticks on which a note starts.
             // then we can determine where within this measure should this note be drawn
             
@@ -481,7 +483,7 @@ void PrintLayoutManager::layInLinesAndPages()
     // add line header
     LayoutElement el(LayoutElement(LINE_HEADER, -1));
     
-    int header_width = 250; // width of clef (FIXME: set more precisely)
+    int header_width = HEADER_WIDTH;
     
     if (sequence->is_score_editor_used)
     {
