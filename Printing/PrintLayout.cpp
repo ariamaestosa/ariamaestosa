@@ -538,9 +538,7 @@ void PrintLayoutManager::layInLinesAndPages()
 // -------------------------------------------------------------------------------------------
     
 /** main function called from other classes. measures must have been geenrated. */
-void PrintLayoutManager::calculateLayoutElements
-                            (ptr_vector<Track, REF>& tracks,
-                             const bool checkRepetitions_bool)
+void PrintLayoutManager::calculateLayoutElements (ptr_vector<Track, REF>& tracks, const bool checkRepetitions_bool)
 {
     // search for repeated measures if necessary
     if (checkRepetitions_bool) findSimilarMeasures();
