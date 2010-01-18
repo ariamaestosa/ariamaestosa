@@ -20,7 +20,7 @@
 namespace AriaMaestosa
 {
     /** Width of 1/1 and 1/2 silences */
-    const int RECTANGULAR_SILENCE_SIZE = 40;
+    const int RECTANGULAR_SILENCE_SIZE = 80;
     
     /** How much margin space to leave at the left of 1/1 and 1/2 silences*/
     const int RECTANGULAR_SILENCE_LEFT_MARGIN = 40;
@@ -31,6 +31,12 @@ namespace AriaMaestosa
     /** Width of the "natural" accidental symbol */
     const int NATURAL_SIGN_WIDTH = 30;
     
+    /** Used to determine how much space to leave for accidentals (FIXME: use finer support) */
+    const int MAX_ACCIDENTAL_SIZE = 50;
+    
+    /** how much extra is allocated at the left and right of note heads */
+    const int NOTE_HEAD_MARGIN = 60;
+     
 #if 0
 #pragma mark -
 #pragma mark ScoreData
@@ -285,14 +291,14 @@ namespace AriaMaestosa
     // FIXME find cleaner way
     int global_line_height=5;
     
-    std::vector< Range<int> > g_silences_ticks;
+    std::vector< SilenceInfo > g_silences_ticks;
     
     // -------------------------------------------------------------------------------------------
     
     void gatherSilenceCallback(const int duration, const int tick, const int type, const int silences_y, const bool triplet,
                                const bool dotted, const int dot_delta_x, const int dot_delta_y)
     {
-        g_silences_ticks.push_back( Range<int>(tick, tick + duration) );
+        g_silences_ticks.push_back( SilenceInfo(tick, tick + duration, type, dotted, dot_delta_x) );
         std::cout << "gatherSilenceCallback : silence at " << tick << " (beat " << (tick/960.0f) << ")\n";
     }
     
@@ -375,8 +381,10 @@ namespace AriaMaestosa
             static wxBitmap silenceBigger = wxBitmap(silence.ConvertToImage().Scale(silence.GetWidth()*scale, silence.GetHeight()*scale));
             
             silence_radius = silenceBigger.GetWidth()/2;
-            // take the average of 'center-aligned' and 'right-aligned'
-            silence_center = (x_center + (x.to - silence_radius))/2;
+            
+            if (dotted) silence_center = (x.to - silence_radius - 30);
+            else        silence_center = (x.to - silence_radius);
+            
             global_dc->DrawBitmap( silenceBigger, silence_center - silence_radius, silences_y + 20);
             
             // <debug>
@@ -507,104 +515,106 @@ namespace AriaMaestosa
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         converter->updateConversionData();
         converter->resetAccidentalsForNewRender();
-
-        if (f_clef)
+        
+        // ---- notes
+        for (int clef=0; clef<2; clef++)
         {
-            const int noteAmount = f_clef_analyser->noteRenderInfo.size();
-            
-            // find shortest note
-            int shortest = -1;
-            for (int n=0; n<noteAmount; n++)
+            ScoreAnalyser* current_analyser;
+            if (clef == 0)
             {
-                const int tick = f_clef_analyser->noteRenderInfo[n].tick;
-                if (tick < measureFromTick or tick >= measureToTick) continue;
-                
-                if (f_clef_analyser->noteRenderInfo[n].tick_length < shortest or shortest == -1)
-                {
-                    shortest = f_clef_analyser->noteRenderInfo[n].tick_length;
-                }
+                if (g_clef) current_analyser = g_clef_analyser;
+                else        continue;
             }
-            
-            for (int n=0; n<noteAmount; n++)
+            else if (clef == 1)
             {
-                const int tick = f_clef_analyser->noteRenderInfo[n].tick;
-                if (tick < measureFromTick or tick >= measureToTick) continue;
-
-                const int tickTo = tick + f_clef_analyser->noteRenderInfo[n].tick_length;
-
-#if VERBOSE
-                std::cout << "    Adding tick " << tick << " to list" << std::endl;
-#endif
-                
-                if (f_clef_analyser->noteRenderInfo[n].sign != PITCH_SIGN_NONE)
-                {
-                    // if there's an accidental sign to show, allocate a bigger space for this note
-                    // these proportion numbers have been determined experimentally
-                    ticks_relative_position.addSymbol( tick, tickTo, 2, trackID );
-                }
-                else
-                {
-                    // these proportion numbers have been determined experimentally
-                    ticks_relative_position.addSymbol( tick, tickTo, 1, trackID );
-                }
+                if (f_clef) current_analyser = f_clef_analyser;
+                else        continue;
             }
-        }
-        if (g_clef)
-        {
-            const int noteAmount = g_clef_analyser->noteRenderInfo.size();
+            else
+            {
+                assert(false);
+                break;
+            }
+            assert( current_analyser != NULL );
+            
+            const int noteAmount = current_analyser->noteRenderInfo.size();
             
             // find shortest note
             int shortest = -1;
             for(int n=0; n<noteAmount; n++)
             {
-                const int tick = g_clef_analyser->noteRenderInfo[n].tick;
+                const int tick = current_analyser->noteRenderInfo[n].tick;
                 if (tick < measureFromTick or tick >= measureToTick) continue;
                 
-                if (g_clef_analyser->noteRenderInfo[n].tick_length < shortest or shortest == -1)
+                if (current_analyser->noteRenderInfo[n].tick_length < shortest or shortest == -1)
                 {
-                    shortest = g_clef_analyser->noteRenderInfo[n].tick_length;
+                    shortest = current_analyser->noteRenderInfo[n].tick_length;
                 }
             }
             
             for (int n=0; n<noteAmount; n++)
             {
-                const int tick = g_clef_analyser->noteRenderInfo[n].tick;
+                const int tick = current_analyser->noteRenderInfo[n].tick;
                 if (tick < measureFromTick or tick >= measureToTick) continue;
                 
-                const int tickTo = tick + g_clef_analyser->noteRenderInfo[n].tick_length;
+                const int tickTo = tick + current_analyser->noteRenderInfo[n].tick_length;
 
 #if VERBOSE
                 std::cout << "    Adding tick " << tick << " to list" << std::endl;
 #endif
                 
-                
-                if (g_clef_analyser->noteRenderInfo[n].sign != PITCH_SIGN_NONE)
+                if (current_analyser->noteRenderInfo[n].sign != PITCH_SIGN_NONE)
                 {
                     // if there's an accidental sign to show, allocate a bigger space for this note
-                    // these proportion numbers have been determined experimentally
-                    ticks_relative_position.addSymbol( tick, tickTo, 2, trackID );
+                    ticks_relative_position.addSymbol( tick, tickTo,
+                                                       HEAD_RADIUS*2 + MAX_ACCIDENTAL_SIZE + NOTE_HEAD_MARGIN,
+                                                       trackID );
                 }
                 else
                 {
                     // these proportion numbers have been determined experimentally
-                    ticks_relative_position.addSymbol( tick, tickTo, 1, trackID );
+                    ticks_relative_position.addSymbol( tick, tickTo, HEAD_RADIUS*2 + NOTE_HEAD_MARGIN, trackID );
                 }
             }
-        }
+        } // end for each clef
 
-        
-
+        // ---- silences
         const int silenceAmount = silences_ticks.size();
         for (int n=0; n<silenceAmount; n++)
         {
-            if (silences_ticks[n].from < measureFromTick or silences_ticks[n].from >= measureToTick) continue;
+            if (silences_ticks[n].m_tick_range.from < measureFromTick or
+                silences_ticks[n].m_tick_range.from >= measureToTick)
+            {
+                continue;
+            }
             
 #if VERBOSE
             std::cout << "    Adding [silence] tick " << silences_ticks[n] << " to list" << std::endl;
 #endif
             
-            ticks_relative_position.addSymbol( silences_ticks[n].from, silences_ticks[n].to, 2, trackID );
-
+            int neededSize = 0;
+            
+            switch (silences_ticks[n].m_type)
+            {
+                case 1:
+                case 2:
+                    neededSize = RECTANGULAR_SILENCE_SIZE + RECTANGULAR_SILENCE_LEFT_MARGIN;
+                    break;
+                case 4:
+                case 8:
+                case 16:
+                    neededSize = 110; // FIXME: when using vector silence symbols, fix this to not use a hardcoded value
+                    break;
+                default:
+                    std::cerr << "WARNING, unknown silence type : " << silences_ticks[n].m_type << std::endl;
+                    neededSize = 20;
+            }
+            
+            if (silences_ticks[n].m_dotted) neededSize += 40; // a bit approximative for now
+            
+            ticks_relative_position.addSymbol( silences_ticks[n].m_tick_range.from,
+                                               silences_ticks[n].m_tick_range.to,
+                                               neededSize, trackID );
         }
         
 #if VERBOSE

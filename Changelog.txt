@@ -1,5 +1,7 @@
 1.2b9
 - Printing Improvements
+    - Symbols are now given an absolute minimum size, which fixes several printing glitches
+    - Various tweaks
 - Each tab now has its own close button
 
 1.2b8

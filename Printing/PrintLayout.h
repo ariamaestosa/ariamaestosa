@@ -30,6 +30,8 @@
 
 namespace AriaMaestosa
 {
+    const int MARGIN_AT_MEASURE_BEGINNING = 50;
+    
     class Track;
     class PrintableSequence;
     class PrintLayoutMeasure;
@@ -115,33 +117,33 @@ namespace AriaMaestosa
     };
     
     class PrintLayoutManager
-        {
-            PrintableSequence* sequence;
-            
-            // referencing vectors from PrintableSequence (FIXME: no two objects should reference these vectors)
-            ptr_vector<LayoutPage>& layoutPages;
-
-            ptr_vector<PrintLayoutMeasure> measures; 
-            std::vector<LayoutElement> layoutElements;
-            
-            void layInLinesAndPages();
-            
-            void calculateRelativeLengths();
-            
-            void createLayoutElements(bool checkRepetitions_bool);
-            
-            void findSimilarMeasures();
-            
-            
-        public:
-            PrintLayoutManager(PrintableSequence* parent,
-                               ptr_vector<LayoutPage>& layoutPages  /* out */);
-            
-            void generateMeasures(ptr_vector<Track, REF>& tracks);
-
-            
-            void calculateLayoutElements(ptr_vector<Track, REF>& track, const bool checkRepetitions_bool);
-        };
+    {
+        PrintableSequence* sequence;
+        
+        // referencing vectors from PrintableSequence (FIXME: no two objects should reference these vectors)
+        ptr_vector<LayoutPage>& layoutPages;
+        
+        ptr_vector<PrintLayoutMeasure> measures; 
+        std::vector<LayoutElement> layoutElements;
+        
+        void layInLinesAndPages();
+        
+        void calculateRelativeLengths();
+        
+        void createLayoutElements(bool checkRepetitions_bool);
+        
+        void findSimilarMeasures();
+        
+        
+    public:
+        PrintLayoutManager(PrintableSequence* parent,
+                           ptr_vector<LayoutPage>& layoutPages  /* out */);
+        
+        void generateMeasures(ptr_vector<Track, REF>& tracks);
+        
+        
+        void calculateLayoutElements(ptr_vector<Track, REF>& track, const bool checkRepetitions_bool);
+    };
     
 }
 

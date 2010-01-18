@@ -57,12 +57,12 @@ namespace AriaMaestosa
             int amountOfTimes; // used for 'play many times' events
             
             //float zoom;
-            int width_in_units;
+            int width_in_print_units;
             
             void setXFrom(const int x) { this->x = x; };
             void setXTo(const int x) { this->x2 = x; };
             const int getXFrom() const { return x; }
-            const int getXTo() const { return x2; }
+            const int getXTo()   const { return x2; }
         };
     
       

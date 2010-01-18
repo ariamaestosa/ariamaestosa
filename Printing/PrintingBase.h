@@ -79,6 +79,7 @@ public:
     // FIXME - find cleaner way
     int text_height;
     int text_height_half;
+    int character_width;
     // ---------------------------------------
     
     /**

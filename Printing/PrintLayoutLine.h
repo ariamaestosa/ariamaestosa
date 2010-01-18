@@ -48,7 +48,7 @@ namespace AriaMaestosa
     public:
         int x0, y0, x1, y1;
         bool show_measure_number;
-        float pixel_width_of_an_unit;
+        //float pixel_width_of_an_unit;
         int layoutElementsAmount;
         
         // editors can put data of their own there.
@@ -97,7 +97,7 @@ namespace AriaMaestosa
         // FIXME : is this really dependent on trackID?? I thought layout elements were the same for everyone
         const int getElementCount(const int trackID) const   { return trackRenderInfo[trackID].layoutElementsAmount; }
         
-        int width_in_units;
+        //int width_in_units;
         int level_height;
         
         bool last_of_page;

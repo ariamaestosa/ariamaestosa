@@ -67,34 +67,49 @@ void EditorPrintable::placeTrackAndElementsWithinCoords(const int trackID, Layou
     // std::cout << "coords for track " << line.getTrack(trackID) << " : " << x0 << ", " << y0 << ", " << x1 << ", " << y1 << std::endl;
     
     // 2 spaces allocated for left area of the line
-    track.pixel_width_of_an_unit = (float)(x1 - x0) / (float)(line.width_in_units+2);
-    std::cout << "    Line has " << line.width_in_units << " units. pixel_width_of_an_unit=" << track.pixel_width_of_an_unit << "\n";
+    //track.pixel_width_of_an_unit = (float)(x1 - x0) / (float)(line.width_in_units+2);
+    //std::cout << "    Line has " << line.width_in_units << " units. pixel_width_of_an_unit=" << track.pixel_width_of_an_unit << "\n";
     
     track.layoutElementsAmount = line.layoutElements.size();
     
     // find total amount of units
+    /*
     int totalUnitCount = 0;
     for (int currentLayoutElement=0; currentLayoutElement<track.layoutElementsAmount; currentLayoutElement++)
     {
         totalUnitCount += line.layoutElements[currentLayoutElement].width_in_units;
     }
     int pixel_width_of_an_unit = (x1 - x0) / totalUnitCount;
-            
+    */
+    
+    // find total needed width (just in case we have more, then we can spread things a bit!)
+    int totalNeededWidth = 0;
+    for (int currentLayoutElement=0; currentLayoutElement<track.layoutElementsAmount; currentLayoutElement++)
+    {
+        totalNeededWidth += line.layoutElements[currentLayoutElement].width_in_print_units;
+        totalNeededWidth += MARGIN_AT_MEASURE_BEGINNING;
+    }
+     
+    const int availableWidth = (x1 - x0);
+    assertExpr(totalNeededWidth, <=, availableWidth);
+    
+    const float zoom = (float)availableWidth / (float)totalNeededWidth;
+    
     // init coords of each layout element
     int xloc = 0;
 
     for (int currentLayoutElement=0; currentLayoutElement<track.layoutElementsAmount; currentLayoutElement++)
     {
-        if (currentLayoutElement == 0) xloc = 1;
-        else if (currentLayoutElement > 0) xloc += line.layoutElements[currentLayoutElement-1].width_in_units;
+        if (currentLayoutElement  > 0)
+        {
+            // The margin at the end is provided by the RelativePlacementManager IIRC (FIXME: ugly)
+            xloc += line.layoutElements[currentLayoutElement-1].width_in_print_units*zoom + MARGIN_AT_MEASURE_BEGINNING;
+        }
         
-        std::cout << "    - Setting coords of element " << currentLayoutElement << " of current line. xfrom = "
-                  << x0 + (int)round(xloc*track.pixel_width_of_an_unit) - pixel_width_of_an_unit << "\n";
+        std::cout << "    - Setting coords of element " << currentLayoutElement
+                  << " of current line. xfrom = " << x0 + xloc << "\n";
         
-        line.layoutElements[currentLayoutElement].setXFrom(  x0 +
-                                                             (int)round(xloc * pixel_width_of_an_unit) -
-                                                             track.pixel_width_of_an_unit
-                                                           );
+        line.layoutElements[currentLayoutElement].setXFrom( x0 + xloc );
         
         if (currentLayoutElement > 0)
         {
@@ -104,8 +119,7 @@ void EditorPrintable::placeTrackAndElementsWithinCoords(const int trackID, Layou
     // for last
     line.layoutElements[line.layoutElements.size()-1].setXTo( x1 );
     
-    assertExpr(line.width_in_units,>,0);
-    assertExpr(track.pixel_width_of_an_unit,>,0);
+    //assertExpr(line.width_in_units,>,0);
 }
 
 
@@ -213,7 +227,7 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
             to_wxString(layoutElements[currentLayoutElement].lastMeasureToRepeat+1);
         }
         
-        dc->DrawText( message, elem_x_start + renderInfo.pixel_width_of_an_unit/2,
+        dc->DrawText( message, elem_x_start,
                      (renderInfo.y0 + renderInfo.y1)/2 - getCurrentPrintable()->text_height_half );
     }
     // ****** play again
@@ -221,7 +235,7 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
     {
         wxString label(wxT("X"));
         label << layoutElements[currentLayoutElement].amountOfTimes;
-        dc->DrawText( label, elem_x_start + renderInfo.pixel_width_of_an_unit/2,
+        dc->DrawText( label, elem_x_start,
                      (renderInfo.y0 + renderInfo.y1)/2 - getCurrentPrintable()->text_height_half );
     }
     // ****** normal measure
@@ -238,10 +252,9 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
             measureLabel << meas_id;
             
             dc->DrawText( measureLabel,
-                         elem_x_start - ( meas_id > 9 ? renderInfo.pixel_width_of_an_unit/4 : renderInfo.pixel_width_of_an_unit/5 ),
-                         renderInfo.y0 - getCurrentPrintable()->text_height*1.4 );
+                          elem_x_start - ( meas_id > 9 ? getCurrentPrintable()->character_width : getCurrentPrintable()->character_width/2 ),
+                          renderInfo.y0 - getCurrentPrintable()->text_height*1.4 );
         }
-        
         dc->SetTextForeground( wxColour(0,0,0) );
     }
     
@@ -309,7 +322,7 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
          * this probably means there is a tie from a note on one line to a note
          * on another line. Return a X at the very right of the page.
          * FIXME - it's not necessarly a tie
-         * FIXME - ties aand line warping need better handling
+         * FIXME - ties and line warping need better handling
          */
         else if (n==renderInfo.layoutElementsAmount-1 and tick >= lastTickInMeasure)
         {
