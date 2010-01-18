@@ -1013,7 +1013,7 @@ namespace AriaMaestosa
         
         stem_up_x_offset = -10; // since note is right-aligned, keep the stem at the right. go 10 towards the note to "blend" in it.
         stem_up_y_offset = 0;
-        stem_down_x_offset = -HEAD_RADIUS*2 + 4; // since note is right-aligned. go 4 towards the note to "blend" in it.
+        stem_down_x_offset = -HEAD_RADIUS*2 + 3; // since note is right-aligned. go 4 towards the note to "blend" in it.
         stem_down_y_offset = 0;
                 
 #define LEVEL_TO_Y( lvl ) y0 + 1 + lineHeight*0.5*(lvl - min_level)
@@ -1180,7 +1180,7 @@ namespace AriaMaestosa
 
                 // Amount by which to shift the accidental sign, from 'noteX'
                 // FIXME: what is that??
-                const int accidentalShift = noteRenderInfo.sign == PITCH_SIGN_NONE ? 0 : HEAD_RADIUS*1.85;
+                const int accidentalShift = (noteRenderInfo.sign == PITCH_SIGN_NONE ? 0 : HEAD_RADIUS*1.85);
     
                 // draw head
                 const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
@@ -1195,7 +1195,7 @@ namespace AriaMaestosa
                 {
                     dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
                     dc.SetBrush( *wxBLACK_BRUSH );
-                    const int cx = headLocation.x;
+                    const int cx = headLocation.x + (noteRenderInfo.hollow_head ? -2 : 0); // FIXME: the -2 is a hack for the head to blend in the stem
                     const int cy = headLocation.y;
                     wxPoint points[25];
                     for (int n=0; n<25; n++)
@@ -1207,7 +1207,7 @@ namespace AriaMaestosa
                     }
 
                     if (noteRenderInfo.hollow_head) dc.DrawSpline(25, points);
-                    else dc.DrawPolygon(25, points, -3);
+                    else                            dc.DrawPolygon(25, points, -3);
                     
                 }
                 noteRenderInfo.setY(notey+HEAD_RADIUS/2.0);
