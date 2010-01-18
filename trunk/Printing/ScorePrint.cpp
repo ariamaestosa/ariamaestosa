@@ -32,10 +32,10 @@ namespace AriaMaestosa
     const int NATURAL_SIGN_WIDTH = 30;
     
     /** Used to determine how much space to leave for accidentals (FIXME: use finer support) */
-    const int MAX_ACCIDENTAL_SIZE = 50;
+    const int MAX_ACCIDENTAL_SIZE = 80;
     
     /** how much extra is allocated at the left and right of note heads */
-    const int NOTE_HEAD_MARGIN = 60;
+    const int NOTE_HEAD_MARGIN = 44;
      
 #if 0
 #pragma mark -
