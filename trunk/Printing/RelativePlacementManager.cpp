@@ -248,9 +248,10 @@ int RelativePlacementManager::findShortestSymbolLength() const
         for (int sym=0; sym<symbolAmount; sym++)
         {
             const Symbol& currSym = currTick.all_symbols_on_that_tick[sym];
-            if (currSym.endTick - currTick.tick > shortest or shortest == -1)
+            const int newAttempt = currSym.endTick - currTick.tick;
+            if (newAttempt < shortest or shortest == -1)
             {
-                shortest = currSym.endTick - currTick.tick;
+                shortest = newAttempt;
             }
         }
     }
@@ -322,31 +323,41 @@ void RelativePlacementManager::calculateRelativePlacement()
             
             currSym.fromUnit = n;
             
-            const int nextTickInTrack = getNextTickInTrack(currTick.tick, currSym.trackID);
+            //const int nextTickInTrack = getNextTickInTrack(currTick.tick, currSym.trackID);
             const int nextTickInAnyTrack = getNextTick(currTick.tick);
 
             // 2 cases : either the needed space for this symbol is implicitely granted by symbols
             // on other lines (see above), either it's not
-            if (currSym.endTick <= nextTickInTrack and currSym.endTick >= nextTickInAnyTrack)
+            if (/*currSym.endTick <= nextTickInTrack and*/ currSym.endTick > nextTickInAnyTrack)
             {
                 currSym.neededAdditionalProportion = 0.0f;
             }
             else
             {
                 // space is not implicitely granted, we need to give more space manually
-                const int whats_missing = std::max(0, currSym.endTick - nextTickInAnyTrack);
+                //const int whats_missing = std::max(0, currSym.endTick - nextTickInAnyTrack);
+                //float ratioToShortest = (float)whats_missing / (float)shortestSymbolLength;
                 
-                float ratioToShortest = (float)whats_missing / (float)shortestSymbolLength;
-                if (ratioToShortest > 0)
+                const int length = currSym.endTick - currTick.tick;
+                float ratioToShortest = (float)length / (float)shortestSymbolLength;
+                
+                // if the ratio is smaller than 1, then we don't have the right "shortest"...
+                assertExpr(ratioToShortest, >=, 1.0);
+                
+                if (ratioToShortest >= 1)
                 {
-                    currSym.neededAdditionalProportion = (float)std::log( ratioToShortest ) / (float)std::log( 2 );
+                    // gros logaritmically (the 0.6 factor is empirical - FIXME)
+                    currSym.neededAdditionalProportion = (float)std::log( ratioToShortest ) / (float)std::log( 2 )*0.6f;
+                    //std::cout << "ratioToShortest=" << ratioToShortest << ", neededAdditionalProportion=" << currSym.neededAdditionalProportion << std::endl;
                 }
-                else
+                else // no additionnal needed space
                 {
                     currSym.neededAdditionalProportion = 0.0f;
                 }
+                std::cout << "ratioToShortest=" << ratioToShortest << ", neededAdditionalProportion=" << currSym.neededAdditionalProportion << std::endl;
+
             }
-            
+
             const int symbolWidth = (int)round(currSym.widthInPrintUnits * (1.0f + currSym.neededAdditionalProportion));
                                     
             // determine the largest needed proportion for each tick
