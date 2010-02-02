@@ -18,10 +18,8 @@
 #include "Printing/EditorPrintable.h"
 #include "Printing/PrintingBase.h"
 
-namespace AriaMaestosa
-{
-// used to determine the order of what appears in the file.
-// the order is found first before writing anything because that allows more flexibility
+using namespace AriaMaestosa;
+
 LayoutElement::LayoutElement(LayoutElementType type_arg, int measure_arg)
 {
     type = type_arg;
@@ -29,9 +27,6 @@ LayoutElement::LayoutElement(LayoutElementType type_arg, int measure_arg)
         
     x = -1;
     x2 = -1;
-}
-
-
-
+    render_end_bar = false;
 }
 
