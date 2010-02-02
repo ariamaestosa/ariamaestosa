@@ -66,7 +66,7 @@ class Track;
         Range<int> tickToX(const int trackID, LayoutLine& line, const int tick);
         //int tickToXLimit(const int trackID, LayoutLine& line, const int tick);
 
-        void drawVerticalDivider(LayoutElement* el, const int y0, const int y1);
+        void drawVerticalDivider(LayoutElement* el, const int y0, const int y1, const bool atEnd=false);
         void renderTimeSignatureChange(LayoutElement* el, const int y0, const int y1);
         
         virtual void earlySetup(const int trackID, Track* track) {}

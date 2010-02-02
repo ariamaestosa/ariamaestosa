@@ -42,7 +42,6 @@ NOTE: sorry, this is very raw :)
 
 * score print :
     * red images
-      - relative sizing of notes (shorter notes appear shorter, etc.) is not 100% polished
       - vertical spacing between tracks needs to adapt depending on stuff near the top and bottom of scores
         (triplet symbols, stems, G clef top and bottom, etc...)
       - 1/16 silences need a proper image
@@ -51,22 +50,18 @@ NOTE: sorry, this is very raw :)
       - vertically close notes overlap
     - X notes not printed right
     ? allow setting font size, number of lines per page, zoom, etc...
-    * non-linear printing
-        * leave room for silences in tab mode too (and draw them?)
     * long-term : in multi-track printing, some tracks need to be visually more tightly bound toghether (like tab and its score)
  - show silences in tabs too
  - printing : skip series of empty measures ?
  - very short song (a few measures) : nothing printed [can't reproduce anymore]
- - when hiding empty lines during printing, if a track doesn't appear at the top of the page, you never see its key and clef
  - hiding empty lines should be configurable
- - score print : time sig changes : no bar should appear adter time sig change
+ - score print : time sig changes : no bar should appear after time sig change
 
  * Keyboard editor : show current key in left area
+ * In score and tab editors, show more clearly where you can click to hear the note
  
  * copy entire measures through measure bar
  
- * show full file path of file in tab tooltip?
-
  * show which files have unsaved changes
  
  + resize note with drag-and-drop
@@ -108,6 +103,7 @@ NOTE: sorry, this is very raw :)
 
  - change volume relatively on a bunch of notes
  - select notes and all similar menu items should be disabled in controller mode
+ - show full file path of file in tab tooltip?
 
  UNSURE/MINOR:
  - setting sharp/flat sign manually sometimes doesn't work (when it's possible to display the note on a level with no sign)

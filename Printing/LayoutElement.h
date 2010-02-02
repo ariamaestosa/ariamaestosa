@@ -24,8 +24,10 @@ namespace AriaMaestosa
     class AriaPrintable;
     struct TickPosInfo;
         
-    // used to determine the order of what appears in the file.
-    // the order is found first before writing anything because that allows more flexibility
+    /**
+      * used to determine the order of what appears in the file.
+      * the order is found first before writing anything because that allows more flexibility
+      */
     enum LayoutElementType
     {
         SINGLE_MEASURE,
@@ -36,34 +38,40 @@ namespace AriaMaestosa
         LINE_HEADER, // like the clef and key (on a score) or the word TAB and the tuning (for tabs)
         TIME_SIGNATURE_EL
     };
-    class LayoutElement
-        {
-            LayoutElementType type;
-            
-            int x, x2;
-        public:
-            LayoutElement(LayoutElementType type_arg, int measure_arg = -1);
     
-            LayoutElementType getType() const { return type; }
-            
-            int measure;
-            
-            // used in many-measure repetitions. the first 2 ones are the measures that repeat, the last 2 ones the measures being repeated
-            int firstMeasure, lastMeasure, firstMeasureToRepeat, lastMeasureToRepeat;
-            
-            // used for time sig elements
-            int num, denom;
-            
-            int amountOfTimes; // used for 'play many times' events
-            
-            //float zoom;
-            int width_in_print_units;
-            
-            void setXFrom(const int x) { this->x = x; };
-            void setXTo(const int x) { this->x2 = x; };
-            const int getXFrom() const { return x; }
-            const int getXTo()   const { return x2; }
-        };
+    class LayoutElement
+    {
+        LayoutElementType type;
+        
+        int x, x2;
+    public:
+        LayoutElement(LayoutElementType type_arg, int measure_arg = -1);
+
+        LayoutElementType getType() const { return type; }
+        
+        int measure;
+        
+        /** Most Layout Elements don't draw their end vertical line, since the next element generally
+          * draws a line at its beginning. But for special cases you can use this */
+        bool render_end_bar;
+        
+        int width_in_print_units;
+        
+        /** used for time sig elements */
+        int num, denom;
+        
+        // used in many-measure repetitions. the first 2 ones are the measures that repeat, the last 2 ones the measures being repeated
+        int firstMeasure, lastMeasure, firstMeasureToRepeat, lastMeasureToRepeat;
+        
+        int amountOfTimes; // used for 'play many times' events
+        
+        
+        
+        void setXFrom(const int x) { this->x = x; };
+        void setXTo  (const int x) { this->x2 = x; };
+        const int getXFrom() const { return x; }
+        const int getXTo()   const { return x2; }
+    };
     
       
 }

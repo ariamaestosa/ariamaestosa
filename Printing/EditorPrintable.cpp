@@ -93,7 +93,8 @@ void EditorPrintable::placeTrackAndElementsWithinCoords(const int trackID, Layou
     const int availableWidth = (x1 - x0);
     assertExpr(totalNeededWidth, <=, availableWidth);
     
-    const float zoom = (float)availableWidth / (float)totalNeededWidth;
+    float zoom = (float)availableWidth / (float)totalNeededWidth;
+    if (zoom > 1.5f) zoom = 1.5f; // prevent zooming too much, will look weird
     
     // init coords of each layout element
     int xloc = 0;
@@ -117,7 +118,14 @@ void EditorPrintable::placeTrackAndElementsWithinCoords(const int trackID, Layou
         }
     }
     // for last
-    line.layoutElements[line.layoutElements.size()-1].setXTo( x1 );
+    xloc += line.layoutElements[line.layoutElements.size()-1].width_in_print_units*zoom + MARGIN_AT_MEASURE_BEGINNING;
+    line.layoutElements[line.layoutElements.size()-1].setXTo( x0 + xloc );
+    
+    // check if there is space left between the last element and the end of the line.
+    if (x0 + xloc < x1 - 100 )
+    {
+        line.layoutElements[line.layoutElements.size()-1].render_end_bar = true;
+    }
     
     //assertExpr(line.width_in_units,>,0);
 }
@@ -143,11 +151,11 @@ LayoutElement* EditorPrintable::getElementForMeasure(const int trackID, const in
 
 // -------------------------------------------------------------------------------------------
     
-void EditorPrintable::drawVerticalDivider(LayoutElement* el, const int y0, const int y1)
+void EditorPrintable::drawVerticalDivider(LayoutElement* el, const int y0, const int y1, const bool atEnd)
 {
     if (el->getType() == TIME_SIGNATURE_EL) return;
     
-    const int elem_x_start = el->getXFrom();
+    const int elem_x_start = (atEnd ? el->getXTo() : el->getXFrom());
     
     // draw vertical line that starts measure
     dc->SetPen(  wxPen( wxColour(0,0,0), 10 ) );
@@ -190,7 +198,7 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
     std::vector<LayoutElement>& layoutElements = layoutLine.layoutElements;
     
     const int elem_x_start = layoutLine.layoutElements[currentLayoutElement].getXFrom();
-    
+
     dc->SetTextForeground( wxColour(0,0,255) );
     
     // ****** empty measure
@@ -256,6 +264,11 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
                           renderInfo.y0 - getCurrentPrintable()->text_height*1.4 );
         }
         dc->SetTextForeground( wxColour(0,0,0) );
+    }
+    
+    if (layoutElements[currentLayoutElement].render_end_bar)
+    {
+        drawVerticalDivider(&layoutElements[currentLayoutElement], renderInfo.y0, renderInfo.y1, true /* at end */);
     }
     
     //std::cout << "---- Returning element " << currentLayoutElement << " which is " << &layoutElements[currentLayoutElement] << std::endl;
