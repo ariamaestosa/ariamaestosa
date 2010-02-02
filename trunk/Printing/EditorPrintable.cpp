@@ -122,7 +122,7 @@ void EditorPrintable::placeTrackAndElementsWithinCoords(const int trackID, Layou
     line.layoutElements[line.layoutElements.size()-1].setXTo( x0 + xloc );
     
     // check if there is space left between the last element and the end of the line.
-    if (x0 + xloc < x1 - 100 )
+    if (x0 + xloc < x1 - 300 )
     {
         line.layoutElements[line.layoutElements.size()-1].render_end_bar = true;
     }
