@@ -1,4 +1,4 @@
-#include "Printing/PrintLayout.h"
+#include "Printing/PrintLayoutAbstract.h"
 #include "Printing/PrintingBase.h"
 
 #include "Midi/Track.h"
@@ -45,93 +45,6 @@ namespace AriaMaestosa
     }
 }
 
-// -------------------------------------------------------------------------------------------
-    
-// if a repetition is found, it is stored in the variables and returns true,
-// otherwise returns false
-    // FIXME: Why is this 'PrintLayoutMeasure' thing here...
-bool PrintLayoutMeasure::findConsecutiveRepetition(ptr_vector<PrintLayoutMeasure>& measures, const int measureAmount,
-                                                int& firstMeasureThatRepeats /*out*/, int& lastMeasureThatRepeats /*out*/,
-                                                int& firstMeasureRepeated /*out*/, int& lastMeasureRepeated /*out*/)
-{
-    
-    // check if it works with first measure occurence of similar measures
-    if (id+1<measureAmount and measures[id+1].firstSimilarMeasure == measures[id].firstSimilarMeasure+1 )
-    {
-        int amount = 0;
-        
-        for(int iter=1; iter<measureAmount; iter++)
-        {
-            if (id+iter<measureAmount and measures[id+iter].firstSimilarMeasure == measures[id].firstSimilarMeasure+iter )
-            {
-                amount++;
-            }
-            else
-            {
-                break;
-            }
-        }//next
-        firstMeasureThatRepeats = id;
-        lastMeasureThatRepeats = id + amount;
-        firstMeasureRepeated = measures[id].firstSimilarMeasure;
-        lastMeasureRepeated = measures[id].firstSimilarMeasure + amount;
-        return true;
-    }
-    // check if it works with a later occurence of a similar measure
-    else
-    {
-        const int first_measure =  measures[id].firstSimilarMeasure;
-        const int amount = measures[ first_measure ].similarMeasuresFoundLater.size();
-        for(int laterOccurence=0; laterOccurence<amount; laterOccurence++)
-        {
-            const int checkFromMeasure = measures[ first_measure ].similarMeasuresFoundLater[laterOccurence];
-            //std::cout << "        < lvl 2, testing measure " << checkFromMeasure << std::endl;
-            //if (checkFromMeasure+1<id and measures[checkFromMeasure+1].firstSimilarMeasure ==
-            //   measures[checkFromMeasure].firstSimilarMeasure+1 )
-            //{
-            int amount = 0;
-            
-            // check if there is a consecutive repetition with measures from this area
-            
-            for(int iter=0; iter</*id-checkFromMeasure*/measureAmount; iter++)
-            {
-                if (not(checkFromMeasure+iter<id and
-                       checkFromMeasure+iter<measureAmount and id+iter<measureAmount)) continue;
-                
-                // check if they are identical
-                
-                if ( // they are identical because they both are repetitions of the same one
-                   (measures[checkFromMeasure+iter].firstSimilarMeasure == measures[id+iter].firstSimilarMeasure and
-                    measures[checkFromMeasure+iter].firstSimilarMeasure != -1)
-                   or
-                   // they are identical because the second is a repetition of the first
-                   (checkFromMeasure+iter == measures[id+iter].firstSimilarMeasure)
-                   )
-                {
-                    //std::cout << "            //" << (checkFromMeasure+iter+1) << " is same as " << (id+iter+1) << std::endl;
-                    amount++;
-                }
-                else
-                {
-                    //std::cout << "            //but " << (checkFromMeasure+iter+1) << " is NOT same as " << (id+iter+1) << " (" << measures[checkFromMeasure+iter].firstSimilarMeasure+1 << " != " << measures[id+iter].firstSimilarMeasure+1 << ")" << std::endl;
-                    break;
-                }
-            }//next
-            //std::cout << "        > amount=" << amount << std::endl;
-            if (amount<repetitionMinimalLength) continue;
-            //std::cout << "measure " << id+1  << " is a level 2 repetition" << std::endl;
-            firstMeasureThatRepeats = id;
-            lastMeasureThatRepeats = id + amount-1;
-            firstMeasureRepeated = checkFromMeasure;
-            lastMeasureRepeated = checkFromMeasure + amount-1;
-            return true;
-            //}
-        }//next
-        
-        // if we get there, it never works
-        return false;
-    }
-}
     
 // -------------------------------------------------------------------------------------------
 // -------------------------------------------------------------------------------------------
@@ -139,7 +52,7 @@ bool PrintLayoutMeasure::findConsecutiveRepetition(ptr_vector<PrintLayoutMeasure
 #pragma mark -
 #endif
 
-PrintLayoutManager::PrintLayoutManager(PrintableSequence* sequence,
+PrintLayoutAbstract::PrintLayoutAbstract(PrintableSequence* sequence,
                                        ptr_vector<LayoutPage>& layoutPages_a /* out */) : layoutPages(layoutPages_a)
 {
     this->sequence = sequence;
@@ -147,7 +60,7 @@ PrintLayoutManager::PrintLayoutManager(PrintableSequence* sequence,
     
 // -------------------------------------------------------------------------------------------
     
-void PrintLayoutManager::generateMeasures(ptr_vector<Track, REF>& tracks)
+void PrintLayoutAbstract::generateMeasures(ptr_vector<Track, REF>& tracks)
 {
     std::cout << "\n====\ngenerateMeasures\n====\n";
     const int trackAmount = tracks.size();
@@ -180,7 +93,7 @@ void PrintLayoutManager::generateMeasures(ptr_vector<Track, REF>& tracks)
 
 // -------------------------------------------------------------------------------------------
     
-void PrintLayoutManager::findSimilarMeasures()
+void PrintLayoutAbstract::findSimilarMeasures()
 {
     const int measureAmount = getMeasureData()->getMeasureAmount();
 
@@ -206,7 +119,7 @@ void PrintLayoutManager::findSimilarMeasures()
     
 #define _verbose 1
     
-void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
+void PrintLayoutAbstract::createLayoutElements(bool checkRepetitions_bool)
 {
     std::cout << "\n====\ncreateLayoutElements\n====\n";
     
@@ -396,7 +309,7 @@ void PrintLayoutManager::createLayoutElements(bool checkRepetitions_bool)
 
 // -------------------------------------------------------------------------------------------
     
-void PrintLayoutManager::calculateRelativeLengths()
+void PrintLayoutAbstract::calculateRelativeLengths()
 {
     std::cout << "\n====\ncalculateRelativeLengths\n====\n";
 
@@ -463,7 +376,7 @@ void PrintLayoutManager::calculateRelativeLengths()
 /**
  * Builds the Page/Line layout tree from the full list of layout elements
  */
-void PrintLayoutManager::layInLinesAndPages()
+void PrintLayoutAbstract::layInLinesAndPages()
 {
     std::cout << "\n====\nlayInLinesAndPages\n====\n";
     
@@ -540,7 +453,7 @@ void PrintLayoutManager::layInLinesAndPages()
 // -------------------------------------------------------------------------------------------
     
 /** main function called from other classes. measures must have been geenrated. */
-void PrintLayoutManager::calculateLayoutElements (ptr_vector<Track, REF>& tracks, const bool checkRepetitions_bool)
+void PrintLayoutAbstract::calculateLayoutElements (ptr_vector<Track, REF>& tracks, const bool checkRepetitions_bool)
 {
     // search for repeated measures if necessary
     if (checkRepetitions_bool) findSimilarMeasures();

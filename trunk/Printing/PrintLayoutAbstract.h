@@ -116,7 +116,7 @@ namespace AriaMaestosa
         
     };
     
-    class PrintLayoutManager
+    class PrintLayoutAbstract
     {
         PrintableSequence* sequence;
         
@@ -136,7 +136,7 @@ namespace AriaMaestosa
         
         
     public:
-        PrintLayoutManager(PrintableSequence* parent,
+        PrintLayoutAbstract(PrintableSequence* parent,
                            ptr_vector<LayoutPage>& layoutPages  /* out */);
         
         void generateMeasures(ptr_vector<Track, REF>& tracks);

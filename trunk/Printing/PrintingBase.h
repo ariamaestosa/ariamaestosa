@@ -19,7 +19,7 @@
 #define _print_base_h_
 
 #include <vector>
-#include "Printing/PrintLayout.h"
+#include "Printing/PrintLayoutAbstract.h"
 #include "wx/wx.h"
 
 /*
@@ -60,44 +60,38 @@ namespace AriaMaestosa
 {
     class PrintableSequence;    
     
-class AriaPrintable
-{
-    DECLARE_MAGIC_NUMBER();
-    
-    friend class AriaMaestosa::LayoutLine;
+    class AriaPrintable
+    {
+        DECLARE_MAGIC_NUMBER();
+        
+        friend class AriaMaestosa::LayoutLine;
+        
+        PrintableSequence* seq;
 
-    PrintableSequence* seq;
+    public:
+        // ---------------------------------------
+        // global info for printables, read-only
+        // FIXME - find cleaner way
+        int text_height;
+        int text_height_half;
+        int character_width;
+        // ---------------------------------------
+        
+        /**
+         * 'seq' remains owned by the caller, AriaPrintable will not delete it. Caller must not delete 'seq' before
+         * AriaPrintable is deleted too.
+         */
+        AriaPrintable(PrintableSequence* seq);
+        
+        virtual ~AriaPrintable();
+        
+        void printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const int w, const int h);
+        
+        int print();
+    };
     
-    void placeLinesInPage(LayoutPage& page, const int text_height, const float track_area_height, const int level_y_amount,
-                          const int pageHeight, const int x0, const int y0, const int x1);
-    void divideLineAmongTracks(LayoutLine& line, const int x0, const int y0, const int x1, const int y1,
-                               int margin_below, int margin_above);
+    AriaPrintable* getCurrentPrintable();
     
-public:
-    // ---------------------------------------
-    // global info for printables, read-only
-    // FIXME - find cleaner way
-    int text_height;
-    int text_height_half;
-    int character_width;
-    // ---------------------------------------
-    
-    /**
-      * 'seq' remains owned by the caller, AriaPrintable will not delete it. Caller must not delete 'seq' before
-      * AriaPrintable is deleted too.
-      */
-    AriaPrintable(PrintableSequence* seq);
-    
-    virtual ~AriaPrintable();
-
-    void printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const int w, const int h);
-    void printLine(LayoutLine& line, wxDC& dc);
-    
-    int print();
-};
-
-AriaPrintable* getCurrentPrintable();
-
     
 }
 

@@ -4,7 +4,8 @@
 #define __PRINTABLE_SEQUENCE_H__
 
 
-#include "Printing/PrintLayout.h"
+#include "Printing/PrintLayoutAbstract.h"
+#include "Printing/PrintLayoutNumeric.h"
 #include "Printing/PrintLayoutLine.h"
 
 namespace AriaMaestosa
@@ -16,10 +17,13 @@ namespace AriaMaestosa
     {
         ptr_vector<LayoutPage> layoutPages;
         
-        OwnerPtr<PrintLayoutManager> layout;
+        OwnerPtr<PrintLayoutAbstract> m_abstract_layout_manager;
+        OwnerPtr<PrintLayoutNumeric> m_numeric_layout_manager;
         
         Sequence* sequence;
         
+        void printLine(LayoutLine& line, wxDC& dc);
+
     public:
         bool is_guitar_editor_used;
         bool is_score_editor_used;
@@ -43,6 +47,9 @@ namespace AriaMaestosa
         int getPageAmount();
         LayoutPage& getPage(const int id);
         
+        void printLinesInArea(wxDC& dc, LayoutPage& page, const int text_height, const float track_area_height,
+                              const int level_y_amount, const int pageHeight,
+                              const int x0, const int y0, const int x1);
     };
     
 }

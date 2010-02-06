@@ -19,7 +19,7 @@
 
 #include <map>
 #include "Range.h"
-#include "Printing/PrintLayout.h"
+#include "Printing/PrintLayoutAbstract.h"
 #include "Printing/RelativePlacementManager.h"
 
 class wxDC;
@@ -27,12 +27,12 @@ class wxDC;
 namespace AriaMaestosa
 {
 
-class LayoutLine;
-class LayoutElement;
-class LineTrackRef;
-class PrintLayoutMeasure;
-class MeasureTrackReference;
-class Track;
+    class LayoutLine;
+    class LayoutElement;
+    class LineTrackRef;
+    class PrintLayoutMeasure;
+    class MeasureTrackReference;
+    class Track;
     
     class EditorPrintable
     {
@@ -55,10 +55,7 @@ class Track;
         void setCurrentTrack(LayoutLine* line);
         
         void setCurrentDC(wxDC* dc);
-        
-        void placeTrackAndElementsWithinCoords(const int trackID, LayoutLine& line, LineTrackRef& track,
-                                               int x0, const int y0, const int x1, const int y1, bool show_measure_number);
-        
+
         // int getCurrentElementXStart();
         LayoutElement* continueWithNextElement(const int trackID, LayoutLine& layoutLine, const int currentLayoutElement);
         //LayoutElement* getElementForMeasure(const int measureID);

@@ -21,7 +21,7 @@
 #include <wx/file.h>
 #include "Config.h"
 #include "Printing/EditorPrintable.h"
-#include "Printing/PrintLayout.h"
+#include "Printing/PrintLayoutAbstract.h"
 #include "Printing/RelativePlacementManager.h"
 
 namespace AriaMaestosa
