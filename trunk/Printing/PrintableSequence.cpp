@@ -56,7 +56,7 @@ void PrintableSequence::calculateLayout(bool checkRepetitions)
     m_abstract_layout_manager->calculateLayoutElements(tracks, checkRepetitions);
     
     // prepare it for when we're ready to print
-    m_numeric_layout_manager = new PrintLayoutNumeric(this);
+    m_numeric_layout_manager = new PrintLayoutNumeric();
 }
 
 // -----------------------------------------------------------------------------------------------------------------------

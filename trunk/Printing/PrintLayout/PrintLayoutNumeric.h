@@ -31,9 +31,6 @@ namespace AriaMaestosa
      */
     class PrintLayoutNumeric
     {
-        /** Reference to the parent sequence */
-        PrintableSequence* m_sequence;
-        
         /** Internal method called by 'divideLineAmongTracks'. Takes care of setting the coords
           * in the passed 'LineTrackRef'. Called once per track. */
         void placeTrackWithinCoords(const int trackID, LayoutLine& line, LineTrackRef& track,
@@ -57,7 +54,7 @@ namespace AriaMaestosa
         
     public:
         
-        PrintLayoutNumeric(PrintableSequence* sequence);
+        PrintLayoutNumeric();
         
         
         /**
