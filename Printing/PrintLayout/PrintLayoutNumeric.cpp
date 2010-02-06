@@ -23,9 +23,8 @@ using namespace AriaMaestosa;
 
 // -----------------------------------------------------------------------------------------------------------------
 
-PrintLayoutNumeric::PrintLayoutNumeric(PrintableSequence* sequence)
+PrintLayoutNumeric::PrintLayoutNumeric()
 {
-    m_sequence = sequence;
 }
 
 // -----------------------------------------------------------------------------------------------------------------
