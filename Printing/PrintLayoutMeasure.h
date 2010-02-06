@@ -19,7 +19,7 @@
 #ifndef _PRINT_LAYOUT_MEASURE_H_
 #define _PRINT_LAYOUT_MEASURE_H_
 
-#include "Printing/PrintLayout.h"
+#include "Printing/PrintLayoutAbstract.h"
 #include "Printing/RelativePlacementManager.h"
 #include <map>
 
