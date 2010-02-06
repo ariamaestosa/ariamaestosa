@@ -53,13 +53,12 @@ namespace AriaMaestosa
         ptr_vector<LayoutPage>& layoutPages;
         
         ptr_vector<PrintLayoutMeasure> measures; 
-        std::vector<LayoutElement> layoutElements;
         
-        void layInLinesAndPages();
+        void layInLinesAndPages(std::vector<LayoutElement>& layoutElements);
         
-        void calculateRelativeLengths();
+        void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements);
         
-        void createLayoutElements(bool checkRepetitions_bool);
+        void createLayoutElements(std::vector<LayoutElement>& layoutElements, bool checkRepetitions_bool);
         
         void findSimilarMeasures();
         
