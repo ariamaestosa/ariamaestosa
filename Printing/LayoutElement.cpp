@@ -15,8 +15,8 @@
  */
 
 #include "AriaCore.h"
-#include "Printing/EditorPrintable.h"
-#include "Printing/PrintingBase.h"
+#include "Printing/AriaPrintable.h"
+#include "Printing/AriaPrintable.h"
 
 using namespace AriaMaestosa;
 

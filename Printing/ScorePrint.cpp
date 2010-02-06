@@ -27,7 +27,7 @@
 #include "Editors/ScoreAnalyser.h"
 #include "IO/IOUtils.h"
 #include "Printing/ScorePrint.h"
-#include "Printing/PrintingBase.h"
+#include "Printing/AriaPrintable.h"
 #include "Printing/PrintLayoutAbstract.h"
 #include "Printing/PrintLayoutMeasure.h"
 #include "Printing/PrintLayoutLine.h"
