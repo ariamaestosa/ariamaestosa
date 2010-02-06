@@ -23,8 +23,7 @@
 #include "Printing/PrintLayout/PrintLayoutMeasure.h"
 #include "Printing/PrintLayout/PrintLayoutLine.h"
 
-namespace AriaMaestosa
-{
+using namespace AriaMaestosa;
     
 // -------------------------------------------------------------------------------------------
     
@@ -33,6 +32,7 @@ EditorPrintable::EditorPrintable()
 }
 
 // -------------------------------------------------------------------------------------------
+
 EditorPrintable::~EditorPrintable()
 {
 }
@@ -43,27 +43,6 @@ void EditorPrintable::setCurrentDC(wxDC* dc)
 {
     EditorPrintable::dc = dc;
 }
-
-// -------------------------------------------------------------------------------------------
-
-
-/*
- int EditorPrintable::getCurrentElementXStart()
- {
- return currentLine->x0 + (int)round(currentLine->xloc*pixel_width_of_an_unit) - pixel_width_of_an_unit;
- }*/
-/*
-LayoutElement* EditorPrintable::getElementForMeasure(const int trackID, const int measureID)
-{
-    assert(currentLine != NULL);
-    std::vector<LayoutElement>& layoutElements = currentLine->layoutElements;
-    const int amount = layoutElements.size();
-    for(int n=0; n<amount; n++)
-    {
-        if (layoutElements[n].measure == measureID) return &layoutElements[n];
-    }
-    return NULL;
-}*/
 
 // -------------------------------------------------------------------------------------------
     
@@ -103,7 +82,7 @@ void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0,
 // FIXME : unclean to pass trackID and LayoutLine as argument!
 LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, LayoutLine& layoutLine, const int currentLayoutElement)
 {
-    LineTrackRef& renderInfo = layoutLine.getTrackRenderInfo(trackID);
+    LineTrackRef& renderInfo = layoutLine.getLineTrackRef(trackID);
     
     if (!(currentLayoutElement < renderInfo.layoutElementsAmount))
     {
@@ -187,7 +166,6 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
         drawVerticalDivider(&currElem, renderInfo.y0, renderInfo.y1, true /* at end */);
     }
     
-    //std::cout << "---- Returning element " << currentLayoutElement << " which is " << &layoutElements[currentLayoutElement] << std::endl;
     return &currElem;
 }
 
@@ -195,14 +173,14 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
     
 Range<int> EditorPrintable::getNotePrintX(const int trackID, LayoutLine& line, int noteID)
 {
-    return tickToX( trackID, line, line.getTrackRenderInfo(trackID).track->getNoteStartInMidiTicks(noteID) );
+    return tickToX( trackID, line, line.getLineTrackRef(trackID).track->getNoteStartInMidiTicks(noteID) );
 }
     
 // -------------------------------------------------------------------------------------------
     
 Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const int tick)
 {
-    LineTrackRef& renderInfo = line.getTrackRenderInfo(trackID);
+    LineTrackRef& renderInfo = line.getLineTrackRef(trackID);
     
     // find in which measure this tick belongs
     for (int n=0; n<renderInfo.layoutElementsAmount; n++)
@@ -265,5 +243,3 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
 }
     
 // -------------------------------------------------------------------------------------------
-    
-}

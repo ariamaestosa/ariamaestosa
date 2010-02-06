@@ -47,17 +47,26 @@ namespace AriaMaestosa
       */
     class PrintLayoutAbstract
     {
+        /** Reference to the parent sequence */
         PrintableSequence* sequence;
         
-        // referencing vectors from PrintableSequence (FIXME: no two objects should reference these vectors)
+        /** referencing vectors from PrintableSequence (FIXME? no two objects should reference these vectors) */
         ptr_vector<LayoutPage>& layoutPages;
         
         ptr_vector<PrintLayoutMeasure> measures; 
         
+        /** creates LayoutPage and LayoutLine objects, add the created layout elements to their corresponding line */
         void layInLinesAndPages(std::vector<LayoutElement>& layoutElements);
         
+        /** The main goal of this method is to set the 'width_in_print_units' member of each LayoutElement */
         void calculateRelativeLengths(std::vector<LayoutElement>& layoutElements);
         
+        /**
+          * Populates the 'layoutElements' vector with elements that represent the current sequence.
+          *
+          * @param[out] layoutElements   The vector that will be filled with LayoutElement objects
+          * @param checkRepetitions_bool Whether to attempt to automatically detect repeated song parts
+          */
         void createLayoutElements(std::vector<LayoutElement>& layoutElements, bool checkRepetitions_bool);
         
         void findSimilarMeasures();

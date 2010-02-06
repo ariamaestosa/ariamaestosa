@@ -113,7 +113,7 @@ namespace AriaMaestosa
         bool last_of_page;
         
         int getTrackAmount() const;
-        LineTrackRef& getTrackRenderInfo(const int id);
+        LineTrackRef& getLineTrackRef(const int id);
         
         int getLayoutElementCount() const { return layoutElements.size(); }
         LayoutElement& getLayoutElement(const int id) { return layoutElements[id]; }

@@ -31,22 +31,39 @@ namespace AriaMaestosa
      */
     class PrintLayoutNumeric
     {
+        /** Reference to the parent sequence */
         PrintableSequence* m_sequence;
+        
+        /** Internal method called by 'divideLineAmongTracks'. Takes care of setting the coords
+          * in the passed 'LineTrackRef', then sets the coords of the layout elements. */
+        void placeTrackAndElementsWithinCoords(const int trackID, LayoutLine& line, LineTrackRef& track,
+                                               int x0, const int y0, const int x1, const int y1, bool show_measure_number);
+        
+        /**
+         * Internal method called by 'placeLinesInPage'.
+         * A single line of measures might contain more than one track, stacked in a vertical fashion.
+         * This method receives the space that was allocated for the full line as argument;
+         * it first sets the coord of this line. Then it splits the available vertical space between
+         * the various tracks that form it, and set the coords of the LineTrackRef referring to each
+         * track in this line.
+         */
+        void divideLineAmongTracks(LayoutLine& line, const int x0, const int y0, const int x1,
+                                   const int y1, int margin_below, int margin_above);
         
     public:
         
         PrintLayoutNumeric(PrintableSequence* sequence);
         
-        void placeTrackAndElementsWithinCoords(const int trackID, LayoutLine& line, LineTrackRef& track,
-                                               int x0, const int y0, const int x1, const int y1, bool show_measure_number);
-        
-        void divideLineAmongTracks(LayoutLine& line, const int x0, const int y0, const int x1,
-                                   const int y1, int margin_below, int margin_above);
         
         /**
-         * @param text_height       Height of the title header (for page 1), height of the bottom page # text (for other pages)
-         * @param level_y_amount    Height of the track in levels
-         * @param track_area_height Height of the track in print units
+         * Main method to use this class. Given a LayoutPage, calculates the actual print coordinates of the
+         * lines and elements within this page. The output is achieved by setting previously not set values
+         * in the layout classes (FIXME: that's ugly!!)
+         *
+         * @param text_height       Height of the title header (for page 1),
+         *                          height of the bottom page # text (for other pages) [FIXME: ugly to have 2 meanings!]
+         * @param level_y_amount    Height of the track in levels [FIXME: which track?? this works on a page!!]
+         * @param track_area_height Height of the track in print units [FIXME: which track?? this works on a page!!]
          */
         void placeLinesInPage(LayoutPage& page, const int text_height, const float track_area_height,
                               const int level_y_amount, const int pageHeight,

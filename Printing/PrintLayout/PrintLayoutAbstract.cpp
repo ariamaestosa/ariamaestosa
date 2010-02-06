@@ -66,9 +66,8 @@ void PrintLayoutAbstract::generateMeasures(ptr_vector<Track, REF>& tracks)
     const int trackAmount = tracks.size();
     const int measureAmount = getMeasureData()->getMeasureAmount();
 
-    for(int tr=0; tr<trackAmount; tr++)
+    for (int tr=0; tr<trackAmount; tr++)
     {
-
         Track* track = tracks.get(tr);
 
         // add measures
@@ -79,7 +78,7 @@ void PrintLayoutAbstract::generateMeasures(ptr_vector<Track, REF>& tracks)
 
         int note=0;
         // give them track references
-        for(int measure=0; measure<measureAmount; measure++)
+        for (int measure=0; measure<measureAmount; measure++)
         {
             assertExpr(measure,<,measures.size());
             
@@ -321,7 +320,7 @@ void PrintLayoutAbstract::calculateRelativeLengths(std::vector<LayoutElement>& l
 
         //layoutElements[n].width_in_print_units = LAYOUT_ELEMENT_MIN_WIDTH;
 
-        if (layoutElements[n].getType() == SINGLE_MEASURE || layoutElements[n].getType() == EMPTY_MEASURE)
+        if (layoutElements[n].getType() == SINGLE_MEASURE or layoutElements[n].getType() == EMPTY_MEASURE)
         {     
             layoutElements[n].width_in_print_units = LAYOUT_ELEMENT_MIN_WIDTH;
             
@@ -401,6 +400,7 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     if (sequence->is_score_editor_used)
     {
         // 50 being the max size of an accidental (FIXME: don't hardcode)
+        // FIXME: some numeric widths are used here, in the abstract layout manager
         header_width += sequence->max_signs_in_keysig*50;
     }
     
@@ -418,7 +418,6 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
             MAX_LINE_WIDTH_IN_PRINT_UNITS)
         {
             // too much stuff on current line, switch to another line
-            //layoutPages[current_page].layoutLines[currentLine].width_in_units = current_width;
             current_width = 0;
             const int line_height = layoutPages[current_page].layoutLines[currentLine].calculateHeight();
             current_height += line_height;
@@ -432,9 +431,6 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
                 current_page++;
             }
 
-            //std::cout << "*&^*&^*&^%$%$#@#@!! current_height = " << current_height << std::endl;
-
-            //currentLine++;
             ptr_vector<PrintLayoutMeasure, REF> refview = measures.getWeakView();
             layoutPages[current_page].layoutLines.push_back( new LayoutLine(sequence, refview) );
             currentLine = layoutPages[current_page].layoutLines.size()-1;
@@ -445,8 +441,8 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
         
         current_width += layoutElements[n].width_in_print_units + MARGIN_AT_MEASURE_BEGINNING;
     }
+    
     // for last line processed
-    //layoutPages[current_page].layoutLines[currentLine].width_in_units = current_width;
     layoutPages[current_page].layoutLines[currentLine].calculateHeight();
 }
 
