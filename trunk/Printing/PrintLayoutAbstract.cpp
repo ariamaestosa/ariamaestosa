@@ -1,5 +1,5 @@
 #include "Printing/PrintLayoutAbstract.h"
-#include "Printing/PrintingBase.h"
+#include "Printing/AriaPrintable.h"
 
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"

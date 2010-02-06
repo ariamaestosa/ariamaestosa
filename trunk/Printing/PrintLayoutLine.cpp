@@ -14,8 +14,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include "Printing/AriaPrintable.h"
 #include "Printing/EditorPrintable.h"
-#include "Printing/PrintingBase.h"
 #include "Printing/PrintLayoutLine.h"
 #include "Printing/LayoutElement.h"
 #include "Printing/PrintLayoutMeasure.h"

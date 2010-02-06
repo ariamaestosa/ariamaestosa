@@ -19,7 +19,7 @@
 
 #include "Midi/Track.h"
 #include "Printing/EditorPrintable.h"
-#include "Printing/PrintingBase.h"
+#include "Printing/AriaPrintable.h"
 #include "Printing/PrintLayoutMeasure.h"
 #include "Printing/PrintLayoutLine.h"
 

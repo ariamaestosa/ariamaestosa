@@ -1,6 +1,6 @@
 
 #include "Printing/PrintableSequence.h"
-#include "Printing/PrintingBase.h"
+#include "Printing/AriaPrintable.h"
 #include "Printing/PrintLayoutLine.h"
 #include "Printing/TabPrint.h"
 #include "Printing/ScorePrint.h"

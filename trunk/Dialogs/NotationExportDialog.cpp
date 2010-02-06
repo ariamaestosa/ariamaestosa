@@ -15,7 +15,7 @@
 #include "Editors/GuitarEditor.h"
 #include "IO/IOUtils.h"
 #include "Printing/TabPrint.h"
-#include "Printing/PrintingBase.h"
+#include "Printing/AriaPrintable.h"
 #include "Printing/PrintableSequence.h"
 #include "Dialogs/NotationExportDialog.h"
 

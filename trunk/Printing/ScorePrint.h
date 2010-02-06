@@ -21,8 +21,8 @@
 #include <wx/file.h>
 #include "Config.h"
 #include "Editors/ScoreEditor.h"
+#include "Printing/AriaPrintable.h"
 #include "Printing/EditorPrintable.h"
-#include "Printing/PrintingBase.h"
 #include "Printing/PrintLayoutAbstract.h"
 #include "Printing/RelativePlacementManager.h"
 
