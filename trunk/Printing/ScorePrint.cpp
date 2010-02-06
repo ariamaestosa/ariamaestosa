@@ -274,10 +274,17 @@ namespace AriaMaestosa
             wxPoint(center_x + radius_x*cos(1.8), center_y + radius_y*sin(1.8)),
             wxPoint(center_x + radius_x*cos(2.1), center_y + radius_y*sin(2.1)),
             wxPoint(center_x + radius_x*cos(2.4), center_y + radius_y*sin(2.4)),
-            wxPoint(center_x + radius_x*cos(2.7), center_y + radius_y*sin(2.7)),
+            wxPoint(center_x +  radius_x*cos(2.7), center_y + radius_y*sin(2.7)),
             wxPoint(center_x + radius_x*cos(3.0), center_y + radius_y*sin(3.0)),
         };
         dc.DrawSpline(11, points);
+        
+#ifdef DEBUG_TIES
+        dc.SetPen(*wxRED_PEN);
+        dc.DrawRectangle( points[0].x - 20, points[0].y - 20, 40, 40);
+        dc.SetPen(*wxGREEN_PEN);
+        dc.DrawRectangle( points[10].x - 20, points[10].y - 20, 40, 40);
+#endif
     }
     
     // -------------------------------------------------------------------------------------------
@@ -1290,7 +1297,7 @@ namespace AriaMaestosa
                 //std::cout << "tied to tick " << noteRenderInfo.getTiedToTick() << " from " << noteRenderInfo.tick << std::endl;
                 const Range<int> tiedToSymbolLocation = x_converter->tickToX(noteRenderInfo.getTiedToTick());
 
-                const int tiedToPixel = (tiedToSymbolLocation.from + tiedToSymbolLocation.to)/2;
+                const int tiedToPixel = tiedToSymbolLocation.to;
                 //std::cout << "tied to pixel " << tiedToPixel << " from " << getStemX(noteRenderInfo) << std::endl;
 
                 const int center_x = (tiedToPixel + tiedXStart)/2;
