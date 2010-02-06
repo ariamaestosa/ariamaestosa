@@ -55,9 +55,8 @@ void PrintableSequence::calculateLayout(bool checkRepetitions)
     m_abstract_layout_manager->generateMeasures(tracks);
     m_abstract_layout_manager->calculateLayoutElements(tracks, checkRepetitions);
     
-    // FIXME: use it!!
+    // prepare it for when we're ready to print
     m_numeric_layout_manager = new PrintLayoutNumeric(this);
-
 }
 
 // -----------------------------------------------------------------------------------------------------------------------
@@ -128,7 +127,7 @@ void PrintableSequence::printLine(LayoutLine& line, wxDC& dc)
         
         std::cout << "==== Printing track " << n << " ====" << std::endl;
         
-        LineTrackRef& sizing = line.getTrackRenderInfo(n);
+        LineTrackRef& sizing = line.getLineTrackRef(n);
         std::cout << "Coords : " << sizing.x0 << ", " << sizing.y0 << " to " << sizing.x1 << ", " << sizing.y1 << std::endl;
         
         EditorPrintable* editorPrintable = this->getEditorPrintable(n);

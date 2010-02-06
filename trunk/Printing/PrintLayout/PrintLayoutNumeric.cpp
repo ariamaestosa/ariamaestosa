@@ -30,6 +30,8 @@ PrintLayoutNumeric::PrintLayoutNumeric(PrintableSequence* sequence)
 
 // -----------------------------------------------------------------------------------------------------------------
 
+// FIXME: this sets the coords of each layout element of a LayoutLine, but is called for every LineTrackRef!
+// Does this mean that layout elements coords are calculated multiple times when there's more than one track?
 void PrintLayoutNumeric::placeTrackAndElementsWithinCoords(const int trackID, LayoutLine& line, LineTrackRef& track,
                                                         int x0, const int y0, const int x1, const int y1, bool show_measure_number)
 {
@@ -47,7 +49,7 @@ void PrintLayoutNumeric::placeTrackAndElementsWithinCoords(const int trackID, La
     
     track.show_measure_number = show_measure_number;
     
-    if (&line.getTrackRenderInfo(trackID) != &track) std::cerr << "LineTrackRef is not the right one!!!!!!!!!\n";
+    if (&line.getLineTrackRef(trackID) != &track) std::cerr << "LineTrackRef is not the right one!!!!!!!!!\n";
     // std::cout << "coords for track " << line.getTrack(trackID) << " : " << x0 << ", " << y0 << ", " << x1 << ", " << y1 << std::endl;
     
     // 2 spaces allocated for left area of the line
@@ -157,7 +159,7 @@ void PrintLayoutNumeric::divideLineAmongTracks(LayoutLine& line, const int x0, c
     
     float current_y = my0;
     int nonEmptyID = 0;
-    for(int n=0; n<trackAmount; n++)
+    for (int n=0; n<trackAmount; n++)
     {        
         //EditorPrintable* editorPrintable = m_sequence->getEditorPrintable(n);
         
@@ -166,8 +168,8 @@ void PrintLayoutNumeric::divideLineAmongTracks(LayoutLine& line, const int x0, c
         
         // determine how much vertical space is allocated for this track
         const float track_height = (height - margin_below - margin_above) * line.height_percent[n]/100.0f;
-        std::cout << "track_height=" << track_height << " (margin_below=" << margin_below << " margin_above=" << margin_above <<
-        "space_between_tracks=" << space_between_tracks << ")\n";
+        std::cout << "track_height=" << track_height << " (margin_below=" << margin_below << " margin_above=" << margin_above
+                  << "space_between_tracks=" << space_between_tracks << ")\n";
         
         // margin space above and below each track are given by simple formula 'space_between_tracks*position' where
         // position ranges from 0 to 1. However, this formula doesn't make the space between 2 tracks equal to
@@ -181,14 +183,15 @@ void PrintLayoutNumeric::divideLineAmongTracks(LayoutLine& line, const int x0, c
         const float space_above_line = space_between_tracks*position*adjustMarginRatio;
         const float space_below_line = space_between_tracks*(1.0-position)*adjustMarginRatio;
         
-        placeTrackAndElementsWithinCoords(n, line, line.getTrackRenderInfo(n),
+        placeTrackAndElementsWithinCoords(n, line, line.getLineTrackRef(n),
                                           x0, current_y + space_above_line,
                                           x1, current_y + track_height - space_below_line,
                                           n==0);
         
-        std::cout << "%%%% setting track coords " << n  << " : " << x0 << ", " << (current_y + space_above_line) << " to " <<
-        x1 << ", "<< (current_y + track_height - space_below_line) << " ( space_above_line=" << space_above_line <<
-        " space_below_line=" << space_below_line << " track_height=" << track_height << ")" <<  std::endl;
+        std::cout << "%%%% setting track coords " << n  << " : " << x0 << ", " << (current_y + space_above_line)
+            << " to "  << x1 << ", "<< (current_y + track_height - space_below_line)
+            << " ( space_above_line=" << space_above_line << " space_below_line=" << space_below_line
+            << " track_height=" << track_height << ")" <<  std::endl;
         
         
         current_y += track_height;

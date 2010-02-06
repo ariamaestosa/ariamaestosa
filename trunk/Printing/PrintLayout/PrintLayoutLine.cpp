@@ -182,7 +182,7 @@ PrintLayoutMeasure& LayoutLine::getMeasureForElement(LayoutElement* layoutElemen
 
 // -------------------------------------------------------------------------------------------
 
-LineTrackRef& LayoutLine::getTrackRenderInfo(const int trackID)
+LineTrackRef& LayoutLine::getLineTrackRef(const int trackID)
 {
     assertExpr(trackID,>=,0);
     assertExpr(trackID,<,(int)trackRenderInfo.size());
