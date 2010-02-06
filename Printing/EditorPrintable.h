@@ -40,6 +40,16 @@ namespace AriaMaestosa
         wxDC* dc;
         //int getClosestTickFrom(const int trackID, LayoutLine& line, const int tick);
 
+        /**
+          * Draws a vertical divider line
+          * @param el     The layout element that will be used to determine at which x to draw the line.
+          * @param y0     The y at which the divider starts
+          * @param y1     The y at which the divider ends
+          * @param atEnd  By default the line is drawn at the beginning of the element; pass true here
+          *               to draw the line at the end of the element instead.
+          */
+        void drawVerticalDivider(LayoutElement* el, const int y0, const int y1, const bool atEnd=false);
+
     public:
         EditorPrintable();
         virtual ~EditorPrintable();
@@ -56,14 +66,20 @@ namespace AriaMaestosa
         
         void setCurrentDC(wxDC* dc);
 
-        // int getCurrentElementXStart();
+        /** To be called in a loop when rendering the elements. Returns the next element to render.
+          * First draws parts of elements it knows about, then lets the specialized EditorPrintable
+          * derivated class handle the specific bits this base class does not know about.
+          */
         LayoutElement* continueWithNextElement(const int trackID, LayoutLine& layoutLine, const int currentLayoutElement);
-        //LayoutElement* getElementForMeasure(const int measureID);
-        Range<int> getNotePrintX(const int trackID, LayoutLine& line, int noteID);
-        Range<int> tickToX(const int trackID, LayoutLine& line, const int tick);
-        //int tickToXLimit(const int trackID, LayoutLine& line, const int tick);
 
-        void drawVerticalDivider(LayoutElement* el, const int y0, const int y1, const bool atEnd=false);
+        /** Returns the print area reserved for a specific note (by note ID) */
+        Range<int> getNotePrintX(const int trackID, LayoutLine& line, int noteID);
+        
+        /** Returns the print area reserved for a specific note/silence/symbol (by tick).
+          * @precondition The tick must be known already to the RelativePlacementManager;
+          * otherwise (-1,-1) may be returned. */
+        Range<int> tickToX(const int trackID, LayoutLine& line, const int tick);
+
         void renderTimeSignatureChange(LayoutElement* el, const int y0, const int y1);
         
         virtual void earlySetup(const int trackID, Track* track) {}
