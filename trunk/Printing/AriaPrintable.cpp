@@ -53,11 +53,9 @@ namespace AriaMaestosa
             const int y0 = bounds.y;
             const int width = bounds.width;
             const int height = bounds.height;
-            const int x1 = x0 + width;
-            const int y1 = y0 + height;
             
-            std::cout << "printable area : (" << x0 << ", " << y0 << ") to (" << x1 << ", " << y1 << ")" << std::endl;
-            printCallBack->printPage(pageNum, dc, x0, y0, x1, y1, width, height);
+            std::cout << "printable area : (" << x0 << ", " << y0 << ") to (" << (x0 + width) << ", " << (y0 + height) << ")" << std::endl;
+            printCallBack->printPage(pageNum, dc, x0, y0, width, height);
             
             return true;
         }
@@ -210,10 +208,13 @@ AriaPrintable::~AriaPrintable()
 
 void AriaPrintable::printPage(const int pageNum, wxDC& dc,
                               const int x0, const int y0,
-                              const int x1, const int y1,
                               const int w, const int h)
 {    
     assert( MAGIC_NUMBER_OK() );
+    
+    const int x1 = x0 + w;
+    const int y1 = y0 + h;
+    
     LayoutPage& page = seq->getPage(pageNum-1);
 
     const int lineAmount = page.getLineCount();
@@ -221,6 +222,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
 
     std::cout << "page has " << lineAmount << " lines" << std::endl;
     
+    // FIXME: what is this 4 ?
     int level_y_amount = 4;
     for(int n=0; n < lineAmount; n++)
     {
@@ -290,14 +292,15 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     
     character_width =  dc.GetTextExtent(wxT("X")).GetWidth();
 
-    /*
-     the equivalent of 3 times "text_height" will not be printed with notation.
-     --> space for title at the top, and some space under it
-     If it's the first page, leave more space because the title there is bigger. FIXME - compute proper size
-     */
-    const float track_area_height = (float)h - (float)text_height*3.0f + (pageNum == 1 ? 100 : 0);
 
-    seq->printLinesInArea(dc, page, text_height, track_area_height, level_y_amount, h, x0, y0, x1);
+    // the equivalent of 3 times "text_height" will not be printed with notation.
+    // --> space for title at the top, and some space under it
+    // FIXME: compute proper size so that big title room is not wasted on other pages.
+    //        Also, for title, don't rely on * 3 the small font, calculate with  the actual font.
+    const float notation_area_h  = (float)h - (float)text_height*3.0f;
+    const float notation_area_y0 = y0 + (float)text_height*3.0f;
+    
+    seq->printLinesInArea(dc, page, notation_area_y0, notation_area_h, level_y_amount, h, x0, x1);
     
 }
     

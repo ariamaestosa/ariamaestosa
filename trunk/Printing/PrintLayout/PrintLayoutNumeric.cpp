@@ -206,15 +206,13 @@ void PrintLayoutNumeric::divideLineAmongTracks(LayoutLine& line, const int x0, c
 
 // -----------------------------------------------------------------------------------------------------------------
 
-void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, const int text_height, const float track_area_height,
-                                          const int level_y_amount, const int pageHeight,
-                                          const int x0, const int y0, const int x1)
+void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, float notation_area_y_from,
+                                          const float notation_area_h, const int level_y_amount, const int pageHeight,
+                                          const int x0, const int x1)
 {
     std::cout << "\n========\nplaceTracksInPage\n========\n";
     
     // ---- Lay out tracks
-    float y_from = y0 + text_height*3;
-    
     const int lineAmount = page.getLineCount();
     for(int l=0; l<lineAmount; l++)
     {
@@ -225,7 +223,7 @@ void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, const int text_heigh
         //          << " total_height=" << total_height << std::endl;
         
         // give a height proportional to its part of the total height
-        float height = (track_area_height/level_y_amount) * page.getLine(l).level_height;
+        float height = (notation_area_h/level_y_amount) * page.getLine(l).level_height;
         
         float used_height = height;
         
@@ -242,7 +240,7 @@ void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, const int text_heigh
         if (height > pageHeight/5 && height > used_height*1.3) height = used_height*1.3;  
         
         
-        float used_y_from = y_from;
+        float used_y_from = notation_area_y_from;
         
         // center vertically in available space  if more space than needed
         if (used_height < height) used_y_from += (height - used_height)/2;
@@ -259,7 +257,7 @@ void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, const int text_heigh
         
         this->divideLineAmongTracks(line, x0, used_y_from, x1, used_y_from+used_height, margin_below, margin_above);
         
-        y_from += height;
+        notation_area_y_from += height;
         //std::cout << "yfrom is now " << y_from << std::endl;
     }
     

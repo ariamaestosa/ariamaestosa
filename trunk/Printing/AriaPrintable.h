@@ -53,7 +53,17 @@ namespace AriaMaestosa
         
         virtual ~AriaPrintable();
         
-        void printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int x1, const int y1, const int w, const int h);
+        /**
+          * Called when it is time to print a page.
+          *
+          * @param pageNum      ID of the page we want to print
+          * @param dc           The wxDC onto which stuff to print is to be rendered
+          * @param x0           x origin coordinate from which drawing can occur
+          * @param y0           y origin coordinate from which drawing can occur
+          * @param w            Width of the printable area
+          * @param h            Height of the printable area
+          */
+        void printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int w, const int h);
         
         int print();
     };

@@ -68,12 +68,14 @@ EditorPrintable* PrintableSequence::getEditorPrintable(const int trackID)
 
 // -----------------------------------------------------------------------------------------------------------------------
 
-void PrintableSequence::printLinesInArea(wxDC& dc, LayoutPage& page, const int text_height,
-                                         const float track_area_height, const int level_y_amount,
-                                         const int pageHeight, const int x0, const int y0, const int x1)
+void PrintableSequence::printLinesInArea(wxDC& dc, LayoutPage& page, 
+                                         const float notation_area_y0, const float notation_area_h,
+                                         const int level_y_amount, const int pageHeight,
+                                         const int x0, const int x1)
 {
     // ---- Give each track an area on the page
-    m_numeric_layout_manager->placeLinesInPage(page, text_height, track_area_height, level_y_amount, pageHeight, x0, y0, x1);
+    m_numeric_layout_manager->placeLinesInPage(page, notation_area_y0, notation_area_h,
+                                               level_y_amount, pageHeight, x0, x1);
     
     // ---- Draw the tracks
     const wxFont regularFont = wxFont(75, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
