@@ -407,7 +407,7 @@ void PrintLayoutAbstract::layInLinesAndPages()
     el.width_in_print_units = header_width;
     
     current_width += header_width;
-    layoutPages[current_page].layoutLines[currentLine].layoutElements.push_back( el );
+    layoutPages[current_page].layoutLines[currentLine].addLayoutElement( el );
     
     // add layout elements one by one, switching to the next line when there's too many
     // elements on the current one
@@ -441,7 +441,7 @@ void PrintLayoutAbstract::layInLinesAndPages()
         }
         assertExpr(currentLine,<,(int)layoutPages[current_page].layoutLines.size());
         
-        layoutPages[current_page].layoutLines[currentLine].layoutElements.push_back(layoutElements[n]);
+        layoutPages[current_page].layoutLines[currentLine].addLayoutElement(layoutElements[n]);
         
         current_width += layoutElements[n].width_in_print_units + MARGIN_AT_MEASURE_BEGINNING;
     }

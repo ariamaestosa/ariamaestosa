@@ -29,7 +29,7 @@ using namespace AriaMaestosa;
 
 int LineTrackRef::getLastNote() const
 {
-    const int elements = parent->layoutElements.size();
+    const int elements = parent->getLayoutElementCount();
     const int track_amount = parent->getTrackAmount();
     
     for(int el=elements-1; el>=0; el--)
@@ -56,7 +56,7 @@ int LineTrackRef::getFirstNote() const
     // const int from_tick = getMeasureData()->firstTickInMeasure(measure);
     
     const int track_amount = parent->getTrackAmount();
-    const int elements = parent->layoutElements.size();
+    const int elements = parent->getLayoutElementCount();
     
     for(int el=0; el<elements; el++)
     { // start searching from first measure in this line
