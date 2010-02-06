@@ -270,7 +270,7 @@ void PrintLayoutAbstract::createLayoutElements(bool checkRepetitions_bool)
                     element.firstMeasureToRepeat = firstRepeatedMeasure;
                     element.lastMeasureToRepeat = lastRepeatedMeasure;
                     measure = lastMeasureThatRepeats;//measure + amount;
-                        layoutElements.push_back( element );
+                    layoutElements.push_back( element );
                 }
                 else
                     // repetition is not long enough, use normal measures
@@ -278,7 +278,7 @@ void PrintLayoutAbstract::createLayoutElements(bool checkRepetitions_bool)
 #ifdef _verbose
                     std::cout << "    repetition refused because " << (amount+1) << " < " << getRepetitionMinimalLength() << " measures " << (measure+1) << " to " << (measure+getRepetitionMinimalLength()+1) << " are normal" << std::endl;
 #endif
-                    for(int iter=0; iter<getRepetitionMinimalLength(); iter++)
+                    for (int iter=0; iter<getRepetitionMinimalLength(); iter++)
                     {
                         layoutElements.push_back( LayoutElement(SINGLE_MEASURE, measure+iter) );
                     }
