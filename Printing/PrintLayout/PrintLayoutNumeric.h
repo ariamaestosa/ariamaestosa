@@ -65,14 +65,18 @@ namespace AriaMaestosa
          * lines and elements within this page. The output is achieved by setting previously not set values
          * in the layout classes (FIXME: that's ugly!!)
          *
-         * @param text_height       Height of the title header (for page 1),
-         *                          height of the bottom page # text (for other pages) [FIXME: ugly to have 2 meanings!]
-         * @param level_y_amount    Height of the track in levels [FIXME: which track?? this works on a page!!]
-         * @param track_area_height Height of the track in print units [FIXME: which track?? this works on a page!!]
+         * @param page                Page for which to calculate and set absolute print coord
+         * @param notation_area_y0    Y coordinate at which the actual notation can start being drawn (excluding header)
+         * @param notation_area_h     Height in print units of the area that is for notation
+         *                            (without the header/footer, etc.)
+         * @param level_y_amount      Total height of the tracks in levels (vertical units)
+         * @param x0                  The minimum x coordinate at which printing can occur
+         * @param x1                  The maximum x coordinate at which printing can occur
          */
-        void placeLinesInPage(LayoutPage& page, const int text_height, const float track_area_height,
+        void placeLinesInPage(LayoutPage& page,
+                              float notation_area_y0, const float notation_area_h,
                               const int level_y_amount, const int pageHeight,
-                              const int x0, const int y0, const int x1);
+                              const int x0, const int x1);
     };
     
 }
