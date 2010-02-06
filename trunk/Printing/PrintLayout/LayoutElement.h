@@ -22,7 +22,6 @@ namespace AriaMaestosa
 {
     class Track;
     class AriaPrintable;
-    struct TickPosInfo;
         
     /**
       * used to determine the order of what appears in the file.

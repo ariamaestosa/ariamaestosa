@@ -1,7 +1,7 @@
 #include "AriaCore.h"
 
 #include "Printing/AriaPrintable.h"
-#include "Printing/PrintLayoutLine.h"
+#include "Printing/PrintLayout/PrintLayoutLine.h"
 #include "Printing/PrintableSequence.h"
 #include "Printing/TabPrint.h"
 #include "Printing/ScorePrint.h"

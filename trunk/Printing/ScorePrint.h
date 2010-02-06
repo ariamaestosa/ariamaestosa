@@ -23,8 +23,8 @@
 #include "Editors/ScoreEditor.h"
 #include "Printing/AriaPrintable.h"
 #include "Printing/EditorPrintable.h"
-#include "Printing/PrintLayoutAbstract.h"
-#include "Printing/RelativePlacementManager.h"
+#include "Printing/PrintLayout/PrintLayoutAbstract.h"
+#include "Printing/PrintLayout/RelativePlacementManager.h"
 
 namespace AriaMaestosa
 {

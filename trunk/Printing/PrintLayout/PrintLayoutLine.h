@@ -27,16 +27,6 @@ namespace AriaMaestosa
     class PrintLayoutMeasure;
     class PrintableSequence;
     
-    /**
-     * Editor-specific data (each editor can override this class and set their data through it in each
-     * 'LineTrackRef'.
-     */
-    class EditorData
-    {
-    public:
-        virtual ~EditorData() {}
-    };
-    
     
     /**
      * represents the reference to a track within a single 'LayoutLine' obejct.
@@ -46,14 +36,27 @@ namespace AriaMaestosa
         LayoutLine* parent;
         int trackID;
     public:
-        int x0, y0, x1, y1;
-        bool show_measure_number;
-        //float pixel_width_of_an_unit;
-        int layoutElementsAmount;
         
-        // editors can put data of their own there.
+        /**
+         * Editor-specific data (each editor can override this class and set their data through it in each
+         * 'LineTrackRef'.
+         */
+        class EditorData
+        {
+        public:
+            virtual ~EditorData() {}
+        };
+    
+        /** editors can put data of their own there. */
         OwnerPtr<EditorData> editor_data;
         
+        /** Coordinates of that line, in print units. Will not be set initially. */
+        int x0, y0, x1, y1;
+        
+        int layoutElementsAmount;
+        
+        bool show_measure_number;
+
         Track* track;
         
         LineTrackRef(LayoutLine* parent, int trackID) { this->parent = parent; this->trackID = trackID; }

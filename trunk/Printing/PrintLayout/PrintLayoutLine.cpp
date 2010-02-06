@@ -16,9 +16,9 @@
 
 #include "Printing/AriaPrintable.h"
 #include "Printing/EditorPrintable.h"
-#include "Printing/PrintLayoutLine.h"
-#include "Printing/LayoutElement.h"
-#include "Printing/PrintLayoutMeasure.h"
+#include "Printing/PrintLayout/PrintLayoutLine.h"
+#include "Printing/PrintLayout/LayoutElement.h"
+#include "Printing/PrintLayout/PrintLayoutMeasure.h"
 #include "Printing/PrintableSequence.h"
 
 namespace AriaMaestosa
