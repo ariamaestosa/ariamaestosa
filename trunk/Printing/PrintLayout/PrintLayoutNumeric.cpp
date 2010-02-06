@@ -30,10 +30,9 @@ PrintLayoutNumeric::PrintLayoutNumeric(PrintableSequence* sequence)
 
 // -----------------------------------------------------------------------------------------------------------------
 
-// FIXME: this sets the coords of each layout element of a LayoutLine, but is called for every LineTrackRef!
-// Does this mean that layout elements coords are calculated multiple times when there's more than one track?
-void PrintLayoutNumeric::placeTrackAndElementsWithinCoords(const int trackID, LayoutLine& line, LineTrackRef& track,
-                                                        int x0, const int y0, const int x1, const int y1, bool show_measure_number)
+void PrintLayoutNumeric::placeTrackWithinCoords(const int trackID, LayoutLine& line, LineTrackRef& track,
+                                                int x0, const int y0, const int x1, const int y1,
+                                                bool show_measure_number)
 {
     std::cout << "= placeTrackAndElementsWithinCoords =\n";
     
@@ -47,30 +46,20 @@ void PrintLayoutNumeric::placeTrackAndElementsWithinCoords(const int trackID, La
     track.y0 = y0;
     track.y1 = y1;
     
+    // Why is this set per-track? AFAIK measure numbers are shown per-line, not per-track!!
     track.show_measure_number = show_measure_number;
     
     if (&line.getLineTrackRef(trackID) != &track) std::cerr << "LineTrackRef is not the right one!!!!!!!!!\n";
-    // std::cout << "coords for track " << line.getTrack(trackID) << " : " << x0 << ", " << y0 << ", " << x1 << ", " << y1 << std::endl;
-    
-    // 2 spaces allocated for left area of the line
-    //track.pixel_width_of_an_unit = (float)(x1 - x0) / (float)(line.width_in_units+2);
-    //std::cout << "    Line has " << line.width_in_units << " units. pixel_width_of_an_unit=" << track.pixel_width_of_an_unit << "\n";
-    
-    track.layoutElementsAmount = line.getLayoutElementCount();
-    
-    // find total amount of units
-    /*
-     int totalUnitCount = 0;
-     for (int currentLayoutElement=0; currentLayoutElement<track.layoutElementsAmount; currentLayoutElement++)
-     {
-     totalUnitCount += line.layoutElements[currentLayoutElement].width_in_units;
-     }
-     int pixel_width_of_an_unit = (x1 - x0) / totalUnitCount;
-     */
-    
+}
+
+// -----------------------------------------------------------------------------------------------------------------
+
+void PrintLayoutNumeric::placeElementsWithinCoords(LayoutLine& line, int x0, const int x1)
+{
+    // ---- find total amount of units
     // find total needed width (just in case we have more, then we can spread things a bit!)
     int totalNeededWidth = 0;
-    for (int currentLayoutElement=0; currentLayoutElement<track.layoutElementsAmount; currentLayoutElement++)
+    for (int currentLayoutElement=0; currentLayoutElement<line.getLayoutElementCount(); currentLayoutElement++)
     {
         totalNeededWidth += line.getLayoutElement(currentLayoutElement).width_in_print_units;
         totalNeededWidth += MARGIN_AT_MEASURE_BEGINNING;
@@ -82,10 +71,10 @@ void PrintLayoutNumeric::placeTrackAndElementsWithinCoords(const int trackID, La
     float zoom = (float)availableWidth / (float)totalNeededWidth;
     if (zoom > 1.5f) zoom = 1.5f; // prevent zooming too much, will look weird
     
-    // init coords of each layout element
+    // ---- init coords of each layout element
     int xloc = 0;
     
-    for (int currentLayoutElement=0; currentLayoutElement<track.layoutElementsAmount; currentLayoutElement++)
+    for (int currentLayoutElement=0; currentLayoutElement<line.getLayoutElementCount(); currentLayoutElement++)
     {
         if (currentLayoutElement  > 0)
         {
@@ -94,7 +83,7 @@ void PrintLayoutNumeric::placeTrackAndElementsWithinCoords(const int trackID, La
         }
         
         std::cout << "    - Setting coords of element " << currentLayoutElement
-        << " of current line. xfrom = " << x0 + xloc << "\n";
+                  << " of current line. xfrom = " << x0 + xloc << "\n";
         
         line.getLayoutElement(currentLayoutElement).setXFrom( x0 + xloc );
         
@@ -183,10 +172,23 @@ void PrintLayoutNumeric::divideLineAmongTracks(LayoutLine& line, const int x0, c
         const float space_above_line = space_between_tracks*position*adjustMarginRatio;
         const float space_below_line = space_between_tracks*(1.0-position)*adjustMarginRatio;
         
+        /*
         placeTrackAndElementsWithinCoords(n, line, line.getLineTrackRef(n),
                                           x0, current_y + space_above_line,
                                           x1, current_y + track_height - space_below_line,
                                           n==0);
+        */
+        
+        placeTrackWithinCoords(n, line, line.getLineTrackRef(n),
+                               x0, current_y + space_above_line,
+                               x1, current_y + track_height - space_below_line,
+                               n==0);
+        
+        /*
+        void placeTrackWithinCoords(const int trackID, LayoutLine& line, LineTrackRef& track,
+                                    int x0, const int y0, const int x1, const int y1,
+                                    bool show_measure_number);
+         */
         
         std::cout << "%%%% setting track coords " << n  << " : " << x0 << ", " << (current_y + space_above_line)
             << " to "  << x1 << ", "<< (current_y + track_height - space_below_line)
@@ -198,6 +200,7 @@ void PrintLayoutNumeric::divideLineAmongTracks(LayoutLine& line, const int x0, c
         nonEmptyID++;
     }
     
+    placeElementsWithinCoords(line, x0, x1);
     
 }
 

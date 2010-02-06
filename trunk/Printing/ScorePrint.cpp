@@ -701,8 +701,8 @@ namespace AriaMaestosa
         LayoutElement* currentElement;
         std::cout << "\nLayout elements X coords :\n";
         
-        const int elementAmount = line.getElementCount(trackID);
-        for(int el=0; el<elementAmount; el++)
+        const int elementAmount = line.getLayoutElementCount();
+        for (int el=0; el<elementAmount; el++)
         {
             currentElement = continueWithNextElement(trackID, line, el);
             std::cout << "    Layout element from x=" << currentElement->getXFrom() << " to x=" << currentElement->getXTo() << std::endl;

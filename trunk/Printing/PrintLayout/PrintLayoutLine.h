@@ -53,7 +53,7 @@ namespace AriaMaestosa
         /** Coordinates of that line, in print units. Will not be set initially. */
         int x0, y0, x1, y1;
         
-        int layoutElementsAmount;
+        //int layoutElementsAmount;
         
         bool show_measure_number;
 
@@ -103,9 +103,6 @@ namespace AriaMaestosa
         int margin_below, margin_above;
         
         LayoutLine(PrintableSequence* parent, ptr_vector<PrintLayoutMeasure, REF>& measures);
-        
-        // FIXME : is this really dependent on trackID?? I thought layout elements were the same for everyone
-        const int getElementCount(const int trackID) const   { return trackRenderInfo[trackID].layoutElementsAmount; }
         
         //int width_in_units;
         int level_height;

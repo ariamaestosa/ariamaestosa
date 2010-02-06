@@ -119,7 +119,7 @@ void TablaturePrintable::drawLine(const int trackID, LineTrackRef& renderInfo, L
     
     const float stringHeight = (float)(renderInfo.y1 - renderInfo.y0) / (float)(string_amount-1);
     
-    for(int s=0; s<string_amount; s++)
+    for (int s=0; s<string_amount; s++)
     {
         const int y = (int)round(renderInfo.y0 + stringHeight*s);
         dc.DrawLine(renderInfo.x0, y, renderInfo.x1, y);
@@ -130,8 +130,8 @@ void TablaturePrintable::drawLine(const int trackID, LineTrackRef& renderInfo, L
     // iterate through layout elements
     LayoutElement* currentElement;
     
-    const int elementAmount = line.getElementCount(trackID);
-    for(int el=0; el<elementAmount; el++)
+    const int elementAmount = line.getLayoutElementCount();
+    for (int el=0; el<elementAmount; el++)
     {
         currentElement = continueWithNextElement(trackID, line, el);
         //std::cout << "Tablature : starting new layout element. Type = " << currentElement->getType() << "\n";
