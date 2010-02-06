@@ -1062,21 +1062,21 @@ namespace AriaMaestosa
         const int measure_dividers_from_y = LEVEL_TO_Y(first_score_level);
         const int measure_dividers_to_y = LEVEL_TO_Y(last_score_level);
         
-        const int elamount = line.layoutElements.size();
+        const int elamount = line.getLayoutElementCount();
         for (int n=0; n<elamount; n++)
         {
-            drawVerticalDivider(&line.layoutElements[n], measure_dividers_from_y, measure_dividers_to_y);
+            drawVerticalDivider(&line.getLayoutElement(n), measure_dividers_from_y, measure_dividers_to_y);
             
-            if (line.layoutElements[n].getType() == TIME_SIGNATURE_EL)
+            if (line.getLayoutElement(n).getType() == TIME_SIGNATURE_EL)
             {
-                EditorPrintable::renderTimeSignatureChange(&line.layoutElements[n], LEVEL_TO_Y(first_score_level), LEVEL_TO_Y(last_score_level));
+                EditorPrintable::renderTimeSignatureChange(&line.getLayoutElement(n), LEVEL_TO_Y(first_score_level), LEVEL_TO_Y(last_score_level));
             }
         }
         
         // ------------ line header if any ------------
-        if (line.layoutElements[0].getType() == LINE_HEADER)
+        if (line.getLayoutElement(0).getType() == LINE_HEADER)
         {
-            LayoutElement& headElement = line.layoutElements[0];
+            LayoutElement& headElement = line.getLayoutElement(0);
             
             std::cout << " == rendering line header ==\n";
             if (!f_clef)
@@ -1099,7 +1099,7 @@ namespace AriaMaestosa
             
             const int sharps = track->graphics->getCurrentEditor()->getKeySharpsAmount();
             const int flats  = track->graphics->getCurrentEditor()->getKeyFlatsAmount();
-            assertExpr(line.layoutElements.size(),>=,0);
+            assertExpr(line.getLayoutElementCount(),>=,0);
             
             if (sharps > 0 or flats > 0)
             {
@@ -1133,13 +1133,13 @@ namespace AriaMaestosa
             {
                 dc.SetTextForeground( wxColour(0,0,0) );
                 const int y = LEVEL_TO_Y(first_score_level - 3);
-                dc.DrawText(wxT("8va"), line.layoutElements[0].getXFrom()+200, y);
+                dc.DrawText(wxT("8va"), line.getLayoutElement(0).getXFrom()+200, y);
             }
             else if (octave_shift < 0)
             {
                 dc.SetTextForeground( wxColour(0,0,0) );
                 const int y = LEVEL_TO_Y(last_score_level);
-                dc.DrawText(wxT("8vb"), line.layoutElements[0].getXFrom()+200, y);
+                dc.DrawText(wxT("8vb"), line.getLayoutElement(0).getXFrom()+200, y);
             }
         }
         

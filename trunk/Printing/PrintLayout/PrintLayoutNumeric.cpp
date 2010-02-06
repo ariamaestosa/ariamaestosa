@@ -54,7 +54,7 @@ void PrintLayoutNumeric::placeTrackAndElementsWithinCoords(const int trackID, La
     //track.pixel_width_of_an_unit = (float)(x1 - x0) / (float)(line.width_in_units+2);
     //std::cout << "    Line has " << line.width_in_units << " units. pixel_width_of_an_unit=" << track.pixel_width_of_an_unit << "\n";
     
-    track.layoutElementsAmount = line.layoutElements.size();
+    track.layoutElementsAmount = line.getLayoutElementCount();
     
     // find total amount of units
     /*
@@ -70,7 +70,7 @@ void PrintLayoutNumeric::placeTrackAndElementsWithinCoords(const int trackID, La
     int totalNeededWidth = 0;
     for (int currentLayoutElement=0; currentLayoutElement<track.layoutElementsAmount; currentLayoutElement++)
     {
-        totalNeededWidth += line.layoutElements[currentLayoutElement].width_in_print_units;
+        totalNeededWidth += line.getLayoutElement(currentLayoutElement).width_in_print_units;
         totalNeededWidth += MARGIN_AT_MEASURE_BEGINNING;
     }
     
@@ -88,27 +88,27 @@ void PrintLayoutNumeric::placeTrackAndElementsWithinCoords(const int trackID, La
         if (currentLayoutElement  > 0)
         {
             // The margin at the end is provided by the RelativePlacementManager IIRC (FIXME: ugly)
-            xloc += line.layoutElements[currentLayoutElement-1].width_in_print_units*zoom + MARGIN_AT_MEASURE_BEGINNING;
+            xloc += line.getLayoutElement(currentLayoutElement-1).width_in_print_units*zoom + MARGIN_AT_MEASURE_BEGINNING;
         }
         
         std::cout << "    - Setting coords of element " << currentLayoutElement
         << " of current line. xfrom = " << x0 + xloc << "\n";
         
-        line.layoutElements[currentLayoutElement].setXFrom( x0 + xloc );
+        line.getLayoutElement(currentLayoutElement).setXFrom( x0 + xloc );
         
         if (currentLayoutElement > 0)
         {
-            line.layoutElements[currentLayoutElement-1].setXTo( line.layoutElements[currentLayoutElement].getXFrom() );
+            line.getLayoutElement(currentLayoutElement-1).setXTo( line.getLayoutElement(currentLayoutElement).getXFrom() );
         }
     }
     // for last
-    xloc += line.layoutElements[line.layoutElements.size()-1].width_in_print_units*zoom + MARGIN_AT_MEASURE_BEGINNING;
-    line.layoutElements[line.layoutElements.size()-1].setXTo( x0 + xloc );
+    xloc += line.getLayoutElement(line.getLayoutElementCount()-1).width_in_print_units*zoom + MARGIN_AT_MEASURE_BEGINNING;
+    line.getLayoutElement(line.getLayoutElementCount()-1).setXTo( x0 + xloc );
     
     // check if there is space left between the last element and the end of the line.
     if (x0 + xloc < x1 - 300 )
     {
-        line.layoutElements[line.layoutElements.size()-1].render_end_bar = true;
+        line.getLayoutElement(line.getLayoutElementCount()-1).render_end_bar = true;
     }
     
     //assertExpr(line.width_in_units,>,0);

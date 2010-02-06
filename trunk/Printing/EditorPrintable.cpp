@@ -111,23 +111,23 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
         return NULL;
     }
     
-    std::vector<LayoutElement>& layoutElements = layoutLine.layoutElements;
+    //std::vector<LayoutElement>& layoutElements = layoutLine.layoutElements;
     
-    const int elem_x_start = layoutLine.layoutElements[currentLayoutElement].getXFrom();
-
+    LayoutElement& currElem = layoutLine.getLayoutElement(currentLayoutElement);
+    const int elem_x_start = currElem.getXFrom();
+    
     dc->SetTextForeground( wxColour(0,0,255) );
     
     // ****** empty measure
-    if (layoutElements[currentLayoutElement].getType() == EMPTY_MEASURE)
+    if (currElem.getType() == EMPTY_MEASURE)
     {
     }
     // ****** time signature change
-    else if (layoutElements[currentLayoutElement].getType() == TIME_SIGNATURE_EL)
+    else if (currElem.getType() == TIME_SIGNATURE_EL)
     {
     }
     // ****** repetitions
-    else if (layoutElements[currentLayoutElement].getType() == SINGLE_REPEATED_MEASURE or
-            layoutElements[currentLayoutElement].getType() == REPEATED_RIFF)
+    else if (currElem.getType() == SINGLE_REPEATED_MEASURE or currElem.getType() == REPEATED_RIFF)
     {
         // FIXME - why do I cut apart the measure and not the layout element?
         /*
@@ -140,30 +140,30 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
          */
         
         wxString message;
-        if (layoutElements[currentLayoutElement].getType() == SINGLE_REPEATED_MEASURE)
+        if (currElem.getType() == SINGLE_REPEATED_MEASURE)
         {
             message = to_wxString(layoutLine.getMeasureForElement(currentLayoutElement).firstSimilarMeasure+1);
         }
-        else if (layoutElements[currentLayoutElement].getType() == REPEATED_RIFF)
+        else if (currElem.getType() == REPEATED_RIFF)
         {
-            message =    to_wxString(layoutElements[currentLayoutElement].firstMeasureToRepeat+1) +
+            message = to_wxString(currElem.firstMeasureToRepeat+1) +
             wxT(" - ") +
-            to_wxString(layoutElements[currentLayoutElement].lastMeasureToRepeat+1);
+            to_wxString(currElem.lastMeasureToRepeat+1);
         }
         
         dc->DrawText( message, elem_x_start,
                      (renderInfo.y0 + renderInfo.y1)/2 - getCurrentPrintable()->text_height_half );
     }
     // ****** play again
-    else if (layoutElements[currentLayoutElement].getType() == PLAY_MANY_TIMES)
+    else if (currElem.getType() == PLAY_MANY_TIMES)
     {
         wxString label(wxT("X"));
-        label << layoutElements[currentLayoutElement].amountOfTimes;
+        label << currElem.amountOfTimes;
         dc->DrawText( label, elem_x_start,
                      (renderInfo.y0 + renderInfo.y1)/2 - getCurrentPrintable()->text_height_half );
     }
     // ****** normal measure
-    else if (layoutElements[currentLayoutElement].getType() == SINGLE_MEASURE)
+    else if (currElem.getType() == SINGLE_MEASURE)
     {
         //std::cout << "---- element is normal\n";
         
@@ -182,13 +182,13 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
         dc->SetTextForeground( wxColour(0,0,0) );
     }
     
-    if (layoutElements[currentLayoutElement].render_end_bar)
+    if (currElem.render_end_bar)
     {
-        drawVerticalDivider(&layoutElements[currentLayoutElement], renderInfo.y0, renderInfo.y1, true /* at end */);
+        drawVerticalDivider(&currElem, renderInfo.y0, renderInfo.y1, true /* at end */);
     }
     
     //std::cout << "---- Returning element " << currentLayoutElement << " which is " << &layoutElements[currentLayoutElement] << std::endl;
-    return &layoutElements[currentLayoutElement];
+    return &currElem;
 }
 
 // -------------------------------------------------------------------------------------------
@@ -215,8 +215,8 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
         if (tick >= firstTickInMeasure and tick < lastTickInMeasure)
         {
             //std::cout << tick << " is within bounds " << firstTick << " - " << lastTick << std::endl;
-            const int elem_x_start = line.layoutElements[n].getXFrom();
-            const int elem_x_end = line.layoutElements[n].getXTo();
+            const int elem_x_start = line.getLayoutElement(n).getXFrom();
+            const int elem_x_end = line.getLayoutElement(n).getXTo();
             const int elem_w = elem_x_end - elem_x_start;
             
             //std::cout << "tickToX found tick " << tick << std::endl;
@@ -257,7 +257,7 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
         {
             //std::cout << "tickToX Returning -" <<  (currentLine->layoutElements[n].getXTo() + 10) << " B\n";
 
-            return Range<int>(line.layoutElements[n].getXTo() + 10, line.layoutElements[n].getXTo() + 10);
+            return Range<int>(line.getLayoutElement(n).getXTo() + 10, line.getLayoutElement(n).getXTo() + 10);
         }
     }
     

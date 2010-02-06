@@ -107,7 +107,7 @@ void PrintableSequence::printLine(LayoutLine& line, wxDC& dc)
         dc.DrawLine( line.x1-3, my0, line.x1-3, my1); // right-side line
     }
     
-    std::cout << "\n======== Printing Line (contains " << line.layoutElements.size() << " layout elements) from y=" <<
+    std::cout << "\n======== Printing Line (contains " << line.getLayoutElementCount() << " layout elements) from y=" <<
     my0 << " to " << my1 << " ========" << std::endl;
     
     // ---- Debug guides
