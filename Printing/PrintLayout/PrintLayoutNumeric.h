@@ -35,9 +35,14 @@ namespace AriaMaestosa
         PrintableSequence* m_sequence;
         
         /** Internal method called by 'divideLineAmongTracks'. Takes care of setting the coords
-          * in the passed 'LineTrackRef', then sets the coords of the layout elements. */
-        void placeTrackAndElementsWithinCoords(const int trackID, LayoutLine& line, LineTrackRef& track,
-                                               int x0, const int y0, const int x1, const int y1, bool show_measure_number);
+          * in the passed 'LineTrackRef'. Called once per track. */
+        void placeTrackWithinCoords(const int trackID, LayoutLine& line, LineTrackRef& track,
+                                    int x0, const int y0, const int x1, const int y1,
+                                    bool show_measure_number);
+        
+        /** Internal method called by 'divideLineAmongTracks'. Takes care of setting the coords
+          * of each layourt element of the line. Called once for the whole line. */
+        void placeElementsWithinCoords(LayoutLine& line, int x0, const int x1);
         
         /**
          * Internal method called by 'placeLinesInPage'.

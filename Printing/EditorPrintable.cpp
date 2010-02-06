@@ -84,7 +84,7 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
 {
     LineTrackRef& renderInfo = layoutLine.getLineTrackRef(trackID);
     
-    if (!(currentLayoutElement < renderInfo.layoutElementsAmount))
+    if (!(currentLayoutElement < layoutLine.getLayoutElementCount()))
     {
         //std::cout << "---- returning NULL because we have a total of " << layoutElementsAmount << " elements\n";
         return NULL;
@@ -180,10 +180,10 @@ Range<int> EditorPrintable::getNotePrintX(const int trackID, LayoutLine& line, i
     
 Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const int tick)
 {
-    LineTrackRef& renderInfo = line.getLineTrackRef(trackID);
+    //LineTrackRef& renderInfo = line.getLineTrackRef(trackID);
     
     // find in which measure this tick belongs
-    for (int n=0; n<renderInfo.layoutElementsAmount; n++)
+    for (int n=0; n<line.getLayoutElementCount(); n++)
     {
         PrintLayoutMeasure& meas = line.getMeasureForElement(n);
         if (meas.id == -1) continue; // nullMeasure, ignore
@@ -231,7 +231,7 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
          * FIXME - it's not necessarly a tie
          * FIXME - ties and line warping need better handling
          */
-        else if (n==renderInfo.layoutElementsAmount-1 and tick >= lastTickInMeasure)
+        else if (n==line.getLayoutElementCount()-1 and tick >= lastTickInMeasure)
         {
             //std::cout << "tickToX Returning -" <<  (currentLine->layoutElements[n].getXTo() + 10) << " B\n";
 
