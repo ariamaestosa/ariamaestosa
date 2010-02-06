@@ -19,7 +19,7 @@
 #define _print_base_h_
 
 #include <vector>
-#include "Printing/PrintLayoutAbstract.h"
+#include "Printing/PrintLayout/PrintLayoutAbstract.h"
 #include "wx/wx.h"
 
 const bool PRINT_LAYOUT_HINTS = false;

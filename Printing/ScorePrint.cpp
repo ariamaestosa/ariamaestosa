@@ -28,9 +28,9 @@
 #include "IO/IOUtils.h"
 #include "Printing/ScorePrint.h"
 #include "Printing/AriaPrintable.h"
-#include "Printing/PrintLayoutAbstract.h"
-#include "Printing/PrintLayoutMeasure.h"
-#include "Printing/PrintLayoutLine.h"
+#include "Printing/PrintLayout/PrintLayoutAbstract.h"
+#include "Printing/PrintLayout/PrintLayoutMeasure.h"
+#include "Printing/PrintLayout/PrintLayoutLine.h"
 
 namespace AriaMaestosa
 {
@@ -78,7 +78,7 @@ namespace AriaMaestosa
         }
     };
     
-    class ScoreData : public EditorData
+    class ScoreData : public LineTrackRef::EditorData
     {
     public:            
         LEAK_CHECK();

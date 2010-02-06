@@ -19,8 +19,8 @@
 #ifndef _PRINT_LAYOUT_MEASURE_H_
 #define _PRINT_LAYOUT_MEASURE_H_
 
-#include "Printing/PrintLayoutAbstract.h"
-#include "Printing/RelativePlacementManager.h"
+#include "Printing/PrintLayout/PrintLayoutAbstract.h"
+#include "Printing/PrintLayout/RelativePlacementManager.h"
 #include <map>
 
 namespace AriaMaestosa

@@ -4,9 +4,9 @@
 #define __PRINTABLE_SEQUENCE_H__
 
 
-#include "Printing/PrintLayoutAbstract.h"
-#include "Printing/PrintLayoutNumeric.h"
-#include "Printing/PrintLayoutLine.h"
+#include "Printing/PrintLayout/PrintLayoutAbstract.h"
+#include "Printing/PrintLayout/PrintLayoutNumeric.h"
+#include "Printing/PrintLayout/PrintLayoutLine.h"
 
 namespace AriaMaestosa
 {

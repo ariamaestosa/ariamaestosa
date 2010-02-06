@@ -20,8 +20,8 @@
 #include "Midi/Track.h"
 #include "Printing/EditorPrintable.h"
 #include "Printing/AriaPrintable.h"
-#include "Printing/PrintLayoutMeasure.h"
-#include "Printing/PrintLayoutLine.h"
+#include "Printing/PrintLayout/PrintLayoutMeasure.h"
+#include "Printing/PrintLayout/PrintLayoutLine.h"
 
 namespace AriaMaestosa
 {
@@ -263,78 +263,7 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
     
     return Range<int>(-1, -1);
 }
-
-// -------------------------------------------------------------------------------------------
     
-/**
-  * tickToX returns the beginning of the area allocated to a tick; this method returns its end.
-  */
-    /*
-int EditorPrintable::tickToXLimit(const int trackID, LayoutLine& line, const int tick)
-{
-    int closest = getClosestTickFrom(trackID, line, tick+1);
-    if (closest == -1) return -1;
-    
-    return tickToX(trackID, line, closest);
-}
-     */
-    
-// -------------------------------------------------------------------------------------------
-    
-/**
-  * This method exists because in multi-track prints, one track may request more ticks (and thus more space) than
-  * the other. When rendering, the other can thus call this to know the extent of its free size and center things
-  * instead of leaving holes (but for this they must have silence information). returns -1 if nothing was found.
-  *
-  * FIXME: this doesn't work for the purpose highlighted above... 'ticks_relative_position', which is used below,
-  * contains the ticks for all tracks...
-  */
-/*
-int EditorPrintable::getClosestTickFrom(const int trackID, LayoutLine& line, const int tick)
-{
-    //std::cout << "    getClosestXFromTick " << tick << std::endl;
-    LineTrackRef& renderInfo = line.getTrackRenderInfo(trackID);
-    
-    // find in which measure this tick belongs
-    for (int n=0; n<renderInfo.layoutElementsAmount; n++)
-    {
-        PrintLayoutMeasure& meas = line.getMeasureForElement(n);
-        if (meas.id == -1) continue; // nullMeasure, ignore
-        const int firstTick = meas.firstTick;
-        const int lastTick  = meas.lastTick;
-        //std::cout << "        checkingWithinMeasure {" << firstTick << ", " << lastTick << "}\n";
-        
-        int closestTick = -1;
-        
-        if (tick >= firstTick and tick < lastTick)
-        {
-            
-            std::map<int, TickPosInfo>::iterator iter;
-            for (iter = meas.ticks_relative_position.begin(); iter != meas.ticks_relative_position.end(); ++iter)
-            {
-                //std::cout << "        checking tick " << iter->first << " (beat " << (iter->first/960) << "; is it in track " << trackID << " ? answer=" << iter->second.appearsInTrack(trackID) << std::endl;
-                if (!iter->second.appearsInTrack(trackID)) continue;
-
-                const int thisTick = iter->first;
-                                
-                if (thisTick >= tick and (thisTick < closestTick or closestTick == -1))
-                {
-                    closestTick = thisTick;
-                    //std::cout << "        ** closestTick = " << closestTick << std::endl;
-                }
-            } // end for
-            if (closestTick == -1) closestTick = lastTick;
-            
-            //std::cout << "FINAL closestTick = " << closestTick << std::endl;
-            return closestTick;
-        }
-    } // end for
-    
-    //std::cerr << "Couldn't find any measure containing this tick\n";
-    
-    return -1;
-}
-    */
 // -------------------------------------------------------------------------------------------
     
 }

@@ -1,4 +1,4 @@
-#include "Printing/PrintLayoutAbstract.h"
+#include "Printing/PrintLayout/PrintLayoutAbstract.h"
 #include "Printing/AriaPrintable.h"
 
 #include "Midi/Track.h"
@@ -7,9 +7,9 @@
 #include "Editors/GuitarEditor.h"
 #include "Printing/ScorePrint.h"
 #include "Printing/TabPrint.h"
-#include "Printing/PrintLayoutMeasure.h"
+#include "Printing/PrintLayout/PrintLayoutMeasure.h"
 #include "Printing/PrintableSequence.h"
-#include "Printing/PrintLayoutLine.h"
+#include "Printing/PrintLayout/PrintLayoutLine.h"
 #include "AriaCore.h"
 
 #include <iostream>

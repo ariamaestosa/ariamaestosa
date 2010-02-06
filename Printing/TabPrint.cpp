@@ -26,9 +26,9 @@
 #include "IO/IOUtils.h"
 #include "Printing/TabPrint.h"
 #include "Printing/AriaPrintable.h"
-#include "Printing/PrintLayoutAbstract.h"
-#include "Printing/PrintLayoutMeasure.h"
-#include "Printing/PrintLayoutLine.h"
+#include "Printing/PrintLayout/PrintLayoutAbstract.h"
+#include "Printing/PrintLayout/PrintLayoutMeasure.h"
+#include "Printing/PrintLayout/PrintLayoutLine.h"
 
 using namespace AriaMaestosa;
  

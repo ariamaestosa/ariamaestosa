@@ -19,8 +19,8 @@
 
 #include <map>
 #include "Range.h"
-#include "Printing/PrintLayoutAbstract.h"
-#include "Printing/RelativePlacementManager.h"
+#include "Printing/PrintLayout/PrintLayoutAbstract.h"
+#include "Printing/PrintLayout/RelativePlacementManager.h"
 
 class wxDC;
 
