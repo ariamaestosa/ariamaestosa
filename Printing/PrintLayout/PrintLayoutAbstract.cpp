@@ -119,7 +119,7 @@ void PrintLayoutAbstract::findSimilarMeasures()
     
 #define _verbose 1
     
-void PrintLayoutAbstract::createLayoutElements(bool checkRepetitions_bool)
+void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layoutElements, bool checkRepetitions_bool)
 {
     std::cout << "\n====\ncreateLayoutElements\n====\n";
     
@@ -309,7 +309,7 @@ void PrintLayoutAbstract::createLayoutElements(bool checkRepetitions_bool)
 
 // -------------------------------------------------------------------------------------------
     
-void PrintLayoutAbstract::calculateRelativeLengths()
+void PrintLayoutAbstract::calculateRelativeLengths(std::vector<LayoutElement>& layoutElements)
 {
     std::cout << "\n====\ncalculateRelativeLengths\n====\n";
 
@@ -376,7 +376,7 @@ void PrintLayoutAbstract::calculateRelativeLengths()
 /**
  * Builds the Page/Line layout tree from the full list of layout elements
  */
-void PrintLayoutAbstract::layInLinesAndPages()
+void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutElements)
 {
     std::cout << "\n====\nlayInLinesAndPages\n====\n";
     
@@ -455,6 +455,8 @@ void PrintLayoutAbstract::layInLinesAndPages()
 /** main function called from other classes. measures must have been geenrated. */
 void PrintLayoutAbstract::calculateLayoutElements (ptr_vector<Track, REF>& tracks, const bool checkRepetitions_bool)
 {
+    std::vector<LayoutElement> layoutElements;
+    
     // search for repeated measures if necessary
     if (checkRepetitions_bool) findSimilarMeasures();
     
@@ -466,9 +468,11 @@ void PrintLayoutAbstract::calculateLayoutElements (ptr_vector<Track, REF>& track
         editorPrintable->earlySetup( i, tracks.get(i) );
     }
     
-    createLayoutElements(checkRepetitions_bool);
-    calculateRelativeLengths();
-    layInLinesAndPages();
+    createLayoutElements(layoutElements, checkRepetitions_bool);
+    calculateRelativeLengths(layoutElements);
+    
+    // this will also move the layoutElements to their corresponding LayoutLine object
+    layInLinesAndPages(layoutElements);
 }
 
 // -------------------------------------------------------------------------------------------
