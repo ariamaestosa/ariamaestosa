@@ -77,7 +77,6 @@ public:
         return note_names_render;
     }
     
-    LEAK_CHECK();
 };
 
 

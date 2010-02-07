@@ -174,8 +174,6 @@ public:
     virtual ~LabelSingleton()
     {
     }
-    
-    LEAK_CHECK();
 };
     
 static LabelSingleton* label_renderer = new LabelSingleton();
