@@ -234,7 +234,7 @@ void quad(const int x1, const int y1,
 }
 
 class NumberRendererSingleton : public wxGLNumberRenderer, public Singleton
-{
+{    
 public:
     NumberRendererSingleton() : wxGLNumberRenderer(), Singleton()
     {
@@ -243,10 +243,7 @@ public:
     virtual ~NumberRendererSingleton()
     {
     }
-    
-    LEAK_CHECK();
 };
-
 static NumberRendererSingleton* my_number_renderer = new NumberRendererSingleton();
 
     
