@@ -80,7 +80,7 @@ GuitarEditor::GuitarEditor(Track* track) : Editor(track)
     lastClickedNote=-1;
 
 #ifdef __WXGTK__
-    GuitarNoteNamesSingleton::get()->setFont( wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, /*wxFONTWEIGHT_BOLD*/ wxFONTWEIGHT_NORMAL) );
+    GuitarNoteNamesSingleton::getInstance()->setFont( wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, /*wxFONTWEIGHT_BOLD*/ wxFONTWEIGHT_NORMAL) );
 #endif
 
     // let the tuning picker set-up the tuning of this guitar editor
