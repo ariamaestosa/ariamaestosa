@@ -6,6 +6,7 @@
 
 #include "wx/wx.h"
 #include <vector>
+#include "Singleton.h"
 
 namespace AriaMaestosa
 {
@@ -59,7 +60,7 @@ public:
 typedef wxDCString AriaRenderString;
 
 
-class wxDCNumberRenderer
+class wxDCNumberRenderer : public Singleton<wxDCNumberRenderer>
 {
     bool consolidated;
     int w, h;

@@ -51,8 +51,6 @@ unsigned char ac = 255;
 int lineWidth_i = 1;
 int pointSize_i = 1;
 
-wxDCNumberRenderer my_number_renderer;
-
 void renderNumber(const int number, const int x, const int y)
 {
     renderNumber( to_wxString(number), x, y );
@@ -63,8 +61,9 @@ void renderNumber(const float number, const int x, const int y)
 }
 void renderNumber(const wxString number, const int x, const int y)
 {
-    my_number_renderer.bind();
-    my_number_renderer.renderNumber(number, x, y);
+    wxDCNumberRenderer* renderer = wxDCNumberRenderer::getInstance();
+    renderer->bind();
+    renderer->renderNumber(number, x, y);
 }
 
     
