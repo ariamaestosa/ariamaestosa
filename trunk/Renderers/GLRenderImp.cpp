@@ -18,9 +18,10 @@
 
 #include "Config.h"
 #include "AriaCore.h"
-#include "wx/wx.h"
+#include "Singleton.h"
 #include "Renderers/RenderAPI.h"
 
+#include "wx/wx.h"
 
 #include "OpenGL.h"
 #include <cmath>
@@ -233,10 +234,10 @@ void quad(const int x1, const int y1,
 
 }
 
-class NumberRendererSingleton : public wxGLNumberRenderer, public Singleton
-{    
+class NumberRendererSingleton : public wxGLNumberRenderer, public Singleton<NumberRendererSingleton>
+{   
 public:
-    NumberRendererSingleton() : wxGLNumberRenderer(), Singleton()
+    NumberRendererSingleton() : wxGLNumberRenderer()
     {
     }
     
@@ -244,8 +245,6 @@ public:
     {
     }
 };
-static NumberRendererSingleton* my_number_renderer = new NumberRendererSingleton();
-
     
 void renderNumber(const int number, const int x, const int y)
 {
@@ -257,8 +256,9 @@ void renderNumber(const float number, const int x, const int y)
 }
 void renderNumber(const wxString number, const int x, const int y)
 {
-    my_number_renderer->bind();
-    my_number_renderer->renderNumber(number, x, y);
+    NumberRendererSingleton* singleton = NumberRendererSingleton::getInstance();
+    singleton->bind();
+    singleton->renderNumber(number, x, y);
 }
     
 void beginScissors(const int x, const int y, const int width, const int height)

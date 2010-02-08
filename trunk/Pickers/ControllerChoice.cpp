@@ -26,6 +26,7 @@
 
 #include "Config.h"
 #include "AriaCore.h"
+#include "Singleton.h"
 
 namespace AriaMaestosa {
 
@@ -164,10 +165,10 @@ static const wxString g_controller_names[] =
 };
     // 32-63 (0x20-0x3F)     LSB for controllers 0-31
 
-class LabelSingleton : public AriaRenderArray, public Singleton
+class LabelSingleton : public AriaRenderArray, public Singleton<LabelSingleton>
 {
 public:
-    LabelSingleton() : AriaRenderArray(), Singleton()
+    LabelSingleton() : AriaRenderArray()
     {
     }
     
@@ -175,11 +176,10 @@ public:
     {
     }
 };
-    
-static LabelSingleton* label_renderer = new LabelSingleton();
-    
+        
 ControllerChoice::ControllerChoice() : wxMenu()
 {
+    LabelSingleton* label_renderer = LabelSingleton::getInstance();
     if (label_renderer->getStringAmount() == 0)
     {
         //I18N: - in controller, when a controller can only be on/off
@@ -345,25 +345,22 @@ bool ControllerChoice::isOnOffController(const int id) const
 
 void ControllerChoice::renderTopLabel(const int x, const int y)
 {
+    LabelSingleton* label_renderer = LabelSingleton::getInstance();
     label_renderer->bind();
 
     // pan
-    if (controllerID == 10 or controllerID == 42)
-        label_renderer->get(5).render(x, y);
+    if (controllerID == 10 or controllerID == 42) label_renderer->get(5).render(x, y);
 
     // pitch bend
-    else if (controllerID == 200)
-        label_renderer->get(6).render(x, y);
+    else if (controllerID == 200)                 label_renderer->get(6).render(x, y);
 
     // on/offs
-    else if ( isOnOffController(controllerID) )
-        label_renderer->get(0).render(x, y);
+    else if ( isOnOffController(controllerID) )   label_renderer->get(0).render(x, y);
 
     // tempo
-    else if (controllerID == 201) AriaRender::renderNumber( wxT("400"), x, y );
+    else if (controllerID == 201)                 AriaRender::renderNumber( wxT("400"), x, y );
 
-    else
-        label_renderer->get(3).render(x, y);
+    else                                          label_renderer->get(3).render(x, y);
 }
 
 /*
@@ -372,25 +369,22 @@ void ControllerChoice::renderTopLabel(const int x, const int y)
 
 void ControllerChoice::renderBottomLabel(const int x, const int y)
 {
+    LabelSingleton* label_renderer = LabelSingleton::getInstance();
     label_renderer->bind();
     
     // pan
-    if (controllerID== 10 or controllerID== 42)
-        label_renderer->get(4).render(x, y);
+    if (controllerID== 10 or controllerID== 42) label_renderer->get(4).render(x, y);
 
     // pitch bend
-    else if (controllerID==200)
-        label_renderer->get(7).render(x, y);
+    else if (controllerID==200)                 label_renderer->get(7).render(x, y);
 
     // on/offs
-    else if ( isOnOffController(controllerID) )
-        label_renderer->get(1).render(x, y);
+    else if ( isOnOffController(controllerID) ) label_renderer->get(1).render(x, y);
 
     // tempo
-    else if (controllerID == 201)  AriaRender::renderNumber( wxT("20"), x, y );
+    else if (controllerID == 201)               AriaRender::renderNumber( wxT("20"), x, y );
 
-    else
-        label_renderer->get(2).render(x, y);
+    else                                        label_renderer->get(2).render(x, y);
 }
 
 }

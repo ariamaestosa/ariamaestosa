@@ -55,6 +55,7 @@
 #include "IO/MidiFileReader.h"
 
 #include "Clipboard.h"
+#include "Singleton.h"
 #include "main.h"
 #include <iostream>
 
@@ -281,7 +282,7 @@ MainFrame::~MainFrame()
     PlatformMidiManager::freeMidiPlayer();
     CopyrightWindow::free();
     Clipboard::clear();
-    Singleton::deleteAll();
+    SingletonBase::deleteAll();
 }
 
 // --------------------------------------------------------------------------------------------------------
