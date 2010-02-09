@@ -227,14 +227,14 @@ ControllerChoice::ControllerChoice() : wxMenu()
     // In the midi specs, pitch bend is not a controller. However, i found it just made sense to place it among controllers, so i assigned it arbitrary ID 200.
     Append( 200 , wxT("Pitch Bend") ); // Pitch Bend
 
-    // Tempo bend is not a controller but for now it goes there
+    // Tempo bend is not a controller but for now it goes there (FIXME?)
     Append( 201 , wxT("Tempo (global)") ); // Tempo (global)
 
     AppendSeparator();
 
-    Append( 2  , g_controller_names[2 ] ); // Breath
-    Append( 4  , g_controller_names[4 ] ); // Foot
-    Append( 8  , g_controller_names[8 ] ); // Balance
+    Append( 2  , g_controller_names[2  ] ); // Breath
+    Append( 4  , g_controller_names[4  ] ); // Foot
+    Append( 8  , g_controller_names[8  ] ); // Balance
     Append( 11 , g_controller_names[11 ] ); // Expression
     Append( 92 , g_controller_names[92 ] ); // Tremolo
     Append( 93 , g_controller_names[93 ] ); // Chorus
@@ -261,7 +261,7 @@ ControllerChoice::ControllerChoice() : wxMenu()
 
     misc_menu->AppendSeparator();
     misc_menu->Append( 65 , g_controller_names[65 ] ); // Portamento
-    misc_menu->Append( 5  , g_controller_names[5 ] ); // Portamento Time // fine:37
+    misc_menu->Append( 5  , g_controller_names[5  ] ); // Portamento Time // fine:37
     misc_menu->Append( 84 , g_controller_names[84 ] ); // Portamento Control
     misc_menu->AppendSeparator();
     misc_menu->Append( 76 , g_controller_names[76 ] ); // Vibrato Rate
@@ -286,7 +286,7 @@ ControllerChoice::ControllerChoice() : wxMenu()
     misc_menu->Append( 81 , g_controller_names[81 ] ); // General Purpose 6
     misc_menu->Append( 82 , g_controller_names[82 ] ); // General Purpose 7
     misc_menu->Append( 83 , g_controller_names[83 ] ); // General Purpose 8
-*/
+     */
 
     Connect(0,202, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ControllerChoice::menuSelected));
     misc_menu->Connect(0,202, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ControllerChoice::menuSelected), NULL, this);
@@ -305,12 +305,9 @@ void ControllerChoice::menuSelected(wxCommandEvent& evt)
     controllerID=evt.GetId();
     
     // special cases (non-controllers)
-    if (controllerID==200)
-        controller_label.set(g_controller_names[30]);
-    else if (controllerID == 201)
-        controller_label.set(g_controller_names[31]);
-    else
-        controller_label.set(g_controller_names[controllerID]);
+    if      (controllerID == 200)   controller_label.set(g_controller_names[30]);
+    else if (controllerID == 201)   controller_label.set(g_controller_names[31]);
+    else                            controller_label.set(g_controller_names[controllerID]);
     
     assertExpr(controllerID,<,205);
     assertExpr(controllerID,>=,0);
@@ -337,12 +334,15 @@ void ControllerChoice::renderControllerName(const int x, const int y)
 
 // -----------------------------------------------------------------------------------------------------------
 
+/** Returns whether a specific controller is of on/off type, rather than taking values ranging from min to max */
 bool ControllerChoice::isOnOffController(const int id) const
 {
-    if (controllerID== 66 or controllerID== 67 or
-       controllerID== 68 or controllerID== 69 or
-       controllerID== 64 or controllerID== 65 )
+    if (controllerID == 66 or controllerID == 67 or
+        controllerID == 68 or controllerID == 69 or
+        controllerID == 64 or controllerID == 65 )
+    {
         return true;
+    }
 
     return false;
 }
