@@ -54,23 +54,23 @@ namespace AriaMaestosa
         wxT("C#"), //10
         wxT("C"),  //11
     };
+
+    class GuitarNoteNamesSingleton : public AriaRenderArray, public Singleton<GuitarNoteNamesSingleton>
+    {
+        friend class Singleton<GuitarNoteNamesSingleton>;
+        GuitarNoteNamesSingleton() : AriaRenderArray(g_note_names, 12)
+        {
+        }
+    public:
+
+        
+        virtual ~GuitarNoteNamesSingleton()
+        {
+        }
+    };
+    DEFINE_SINGLETON( GuitarNoteNamesSingleton );
 }
 using namespace AriaMaestosa;
-
-class GuitarNoteNamesSingleton : public AriaRenderArray, public Singleton<GuitarNoteNamesSingleton>
-{
-    friend class Singleton<GuitarNoteNamesSingleton>;
-    GuitarNoteNamesSingleton() : AriaRenderArray(g_note_names, 12)
-    {
-    }
-public:
-
-    
-    virtual ~GuitarNoteNamesSingleton()
-    {
-    }
-};
-DEFINE_SINGLETON( GuitarNoteNamesSingleton );
 
 
 // ---------------------------------------------------------------------------------------------------------

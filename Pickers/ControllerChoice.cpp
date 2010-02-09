@@ -28,7 +28,8 @@
 #include "AriaCore.h"
 #include "Singleton.h"
 
-namespace AriaMaestosa {
+namespace AriaMaestosa
+{
 
 static const wxString g_controller_names[] =
 {
@@ -178,6 +179,11 @@ public:
 };
     DEFINE_SINGLETON( LabelSingleton );
      
+}
+using namespace AriaMaestosa;
+
+// -----------------------------------------------------------------------------------------------------------
+
 ControllerChoice::ControllerChoice() : wxMenu()
 {
     LabelSingleton* label_renderer = LabelSingleton::getInstance();
@@ -286,9 +292,13 @@ ControllerChoice::ControllerChoice() : wxMenu()
     misc_menu->Connect(0,202, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ControllerChoice::menuSelected), NULL, this);
 }
 
+// -----------------------------------------------------------------------------------------------------------
+
 ControllerChoice::~ControllerChoice()
 {
 }
+
+// -----------------------------------------------------------------------------------------------------------
 
 void ControllerChoice::menuSelected(wxCommandEvent& evt)
 {
@@ -307,18 +317,15 @@ void ControllerChoice::menuSelected(wxCommandEvent& evt)
 
     Display::render();
 }
-
-    /*
-void ControllerChoice::setControllerID(int id)
-{
-    controllerID = id;
-}
-*/ 
     
+// -----------------------------------------------------------------------------------------------------------
+
 int ControllerChoice::getControllerID()
 {
     return controllerID;
 }
+
+// -----------------------------------------------------------------------------------------------------------
 
 void ControllerChoice::renderControllerName(const int x, const int y)
 {
@@ -328,6 +335,7 @@ void ControllerChoice::renderControllerName(const int x, const int y)
     return;
 }
 
+// -----------------------------------------------------------------------------------------------------------
 
 bool ControllerChoice::isOnOffController(const int id) const
 {
@@ -339,11 +347,11 @@ bool ControllerChoice::isOnOffController(const int id) const
     return false;
 }
 
+// -----------------------------------------------------------------------------------------------------------
 
-/*
+/**
  * Which label should appear at the top of controller editor for current Controller?
  */
-
 void ControllerChoice::renderTopLabel(const int x, const int y)
 {
     LabelSingleton* label_renderer = LabelSingleton::getInstance();
@@ -364,10 +372,11 @@ void ControllerChoice::renderTopLabel(const int x, const int y)
     else                                          label_renderer->get(3).render(x, y);
 }
 
-/*
+// -----------------------------------------------------------------------------------------------------------
+
+/**
  * Which label should appear at the bottom of controller editor for current Controller?
  */
-
 void ControllerChoice::renderBottomLabel(const int x, const int y)
 {
     LabelSingleton* label_renderer = LabelSingleton::getInstance();
@@ -388,4 +397,4 @@ void ControllerChoice::renderBottomLabel(const int x, const int y)
     else                                        label_renderer->get(2).render(x, y);
 }
 
-}
+
