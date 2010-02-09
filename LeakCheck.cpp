@@ -19,7 +19,7 @@
 
 #ifdef _MORE_DEBUG_CHECKS
 
-#define GET_STACK_TRACE 0
+#define GET_STACK_TRACE 1
 
 #ifdef __WXMAC__
 #include <Availability.h>

@@ -27,6 +27,11 @@ namespace AriaMaestosa
     public:
         /** Call before quitting to delete all singletons */
         static void deleteAll();
+        
+        virtual ~SingletonBase() {}
+        
+        /** to force GCC to create a vtable for this class */
+        virtual void createAVTableYouStupidCompiler() {}
     };
     
     void addToSingletonList(SingletonBase* newone);
