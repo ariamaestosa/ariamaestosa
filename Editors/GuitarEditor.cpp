@@ -33,28 +33,29 @@
 
 #include "Editors/RelativeXCoord.h"
 
-namespace AriaMaestosa {
-
-const int first_string_position = 17;
-const int y_step = 10;
+namespace AriaMaestosa
+{
+    const int first_string_position = 17;
+    const int y_step = 10;
 
     // FIXME - what about flats?
-static const wxString g_note_names[] =
-{
-    wxT("B"),  // 0
-    wxT("A#"), // 1
-    wxT("A"),  // 2
-    wxT("G#"), // 3
-    wxT("G"),  // 4
-    wxT("F#"), //5
-    wxT("F"),  //6
-    wxT("E"),  //7
-    wxT("D#"), //8
-    wxT("D"),  //9
-    wxT("C#"), //10
-    wxT("C"),  //11
-};
-
+    static const wxString g_note_names[] =
+    {
+        wxT("B"),  // 0
+        wxT("A#"), // 1
+        wxT("A"),  // 2
+        wxT("G#"), // 3
+        wxT("G"),  // 4
+        wxT("F#"), //5
+        wxT("F"),  //6
+        wxT("E"),  //7
+        wxT("D#"), //8
+        wxT("D"),  //9
+        wxT("C#"), //10
+        wxT("C"),  //11
+    };
+}
+using namespace AriaMaestosa;
 
 class GuitarNoteNamesSingleton : public AriaRenderArray, public Singleton<GuitarNoteNamesSingleton>
 {
@@ -69,7 +70,10 @@ public:
     {
     }
 };
+DEFINE_SINGLETON( GuitarNoteNamesSingleton );
 
+
+// ---------------------------------------------------------------------------------------------------------
 
 GuitarEditor::GuitarEditor(Track* track) : Editor(track)
 {
@@ -91,14 +95,17 @@ GuitarEditor::GuitarEditor(Track* track) : Editor(track)
     Editor::useVerticalScrollbar(false);
 }
 
+// ---------------------------------------------------------------------------------------------------------
+
 GuitarEditor::~GuitarEditor()
 {
 }
 
-/*
+// ---------------------------------------------------------------------------------------------------------
+
+/**
  * This is called when user changes the tuning. This tells the editor to change notes so that they match the new settings.
  */
-
 void GuitarEditor::tuningUpdated(const bool user_triggered)
 {
     if (user_triggered)
@@ -113,12 +120,17 @@ void GuitarEditor::tuningUpdated(const bool user_triggered)
     }
 }
 
+// ---------------------------------------------------------------------------------------------------------
+
 void GuitarEditor::render()
 {
     render( RelativeXCoord_empty(), -1, RelativeXCoord_empty(), -1, true );
 }
 
-void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current, RelativeXCoord mousex_initial, int mousey_initial, bool focus)
+// ---------------------------------------------------------------------------------------------------------
+
+void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
+                          RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {
 
     if (!ImageProvider::imagesLoaded()) return;
@@ -333,6 +345,8 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current, Rel
 
 }
 
+// ---------------------------------------------------------------------------------------------------------
+
 void GuitarEditor::mouseDown(RelativeXCoord x, const int y)
 {
     // user clicked on left bar to change tuning
@@ -345,6 +359,8 @@ void GuitarEditor::mouseDown(RelativeXCoord x, const int y)
 
     Editor::mouseDown(x, y);
 }
+
+// ---------------------------------------------------------------------------------------------------------
 
 void GuitarEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current, RelativeXCoord& mousex_initial, int mousey_initial)
 {
@@ -370,6 +386,8 @@ void GuitarEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_
     }//next
 }
 
+// ---------------------------------------------------------------------------------------------------------
+
 void GuitarEditor::moveNote(Note& note, const int relativeX, const int relativeY)
 {
     if (note.startTick+relativeX < 0) return; // refuse to move before song start
@@ -384,6 +402,7 @@ void GuitarEditor::moveNote(Note& note, const int relativeX, const int relativeY
     note.findNoteFromStringAndFret();
 }
 
+// ---------------------------------------------------------------------------------------------------------
 
 NoteSearchResult GuitarEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 {
@@ -420,12 +439,17 @@ NoteSearchResult GuitarEditor::noteAt(RelativeXCoord x, const int y, int& noteID
 
     return FOUND_NOTHING;
 }
+
+// ---------------------------------------------------------------------------------------------------------
+
 void GuitarEditor::noteClicked(const int id)
 {
     track->selectNote(ALL_NOTES, false);
     track->selectNote(id, true);
     track->playNote(id);
 }
+// ---------------------------------------------------------------------------------------------------------
+
 void GuitarEditor::addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY)
 {
     int string = (int)round( (float)(mouseY - getEditorYStart() - first_string_position) / (float)y_step );
@@ -434,7 +458,4 @@ void GuitarEditor::addNote(const int snapped_start_tick, const int snapped_end_t
     if (string>=(int)tuning.size()) return; //invalid note, don't add it
 
     track->action( new Action::AddNote(tuning[string], snapped_start_tick, snapped_end_tick, default_volume, string ) );
-}
-
-
 }

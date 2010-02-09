@@ -245,7 +245,8 @@ public:
     {
     }
 };
-    
+    DEFINE_SINGLETON( NumberRendererSingleton );
+ 
 void renderNumber(const int number, const int x, const int y)
 {
     renderNumber( to_wxString(number), x, y );

@@ -176,7 +176,8 @@ public:
     {
     }
 };
-        
+    DEFINE_SINGLETON( LabelSingleton );
+     
 ControllerChoice::ControllerChoice() : wxMenu()
 {
     LabelSingleton* label_renderer = LabelSingleton::getInstance();

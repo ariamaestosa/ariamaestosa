@@ -24,30 +24,35 @@ namespace AriaMaestosa
 {
     class SingletonBase
     {
-    public:        
+    public:
+        /** Call before quitting to delete all singletons */
         static void deleteAll();
     };
     
     void addToSingletonList(SingletonBase* newone);
 
+    
     template<typename T>
     class Singleton : public SingletonBase
     {
     public:
+        static T* m_instance;
+        
         Singleton() { addToSingletonList(this); }
         virtual ~Singleton() {}
         
         static T* getInstance()
         {
-            static T* instance = NULL;
-            
-            if (instance == NULL)
-            {
-                instance = new T();
-            }
-            return instance;
+            if (m_instance == NULL) m_instance = new T();
+            return m_instance;
         }
     };
+    
+    /** The class declaration itself generally will appear in a header file; the single instance
+      * itself, however, cannot be declared in a header since it must be unique no matter how often
+      * it is included. So use this macro to actually create the single instance - in a .cpp file. */
+    #define DEFINE_SINGLETON( T ) template<> T* Singleton<T>::m_instance = NULL;
+
     
 }
 
