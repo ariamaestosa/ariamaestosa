@@ -134,6 +134,8 @@ namespace AriaMaestosa
 #pragma mark wxDCNumberRenderer
 #endif
     
+    DEFINE_SINGLETON( wxDCNumberRenderer );
+    
     wxDCNumberRenderer::wxDCNumberRenderer()
     {
         consolidated = false;
