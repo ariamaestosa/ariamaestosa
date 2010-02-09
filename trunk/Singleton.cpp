@@ -17,6 +17,7 @@ namespace AriaMaestosa
         assert (g_singletons != NULL);
         g_singletons->clearAndDeleteAll();
         delete g_singletons;
+        g_singletons = NULL;
     }
     
     void SingletonBase::deleteAll()
