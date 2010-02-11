@@ -90,8 +90,11 @@ public:
         progress->Pulse();
     }
 
+    /** sets the progress, between 0 and 100. Value is clipped if out of bounds */
     void setProgress(int val)
     {
+        if      (val < 0)   val = 0;
+        else if (val > 100) val = 100;
         progress->SetValue( val );
         Update();
     }
