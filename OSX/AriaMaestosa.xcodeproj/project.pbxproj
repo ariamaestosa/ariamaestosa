@@ -1286,9 +1286,8 @@
 				950B3EE81125DE18006C9AF1 /* fr.lproj */,
 				950B3EEB1125DE18006C9AF1 /* it.lproj */,
 			);
-			name = "mac-i18n";
-			path = "../mac-i18n";
-			sourceTree = SOURCE_ROOT;
+			path = "mac-i18n";
+			sourceTree = "<group>";
 		};
 		95711B2F1125D92700104BF5 /* Resources */ = {
 			isa = PBXGroup;

@@ -135,10 +135,12 @@ def main_Aria_func():
 def install_Aria_mac():
     sys_command("mkdir -p ./AriaMaestosa.app/Contents/MacOS")
     sys_command("cp ./Aria ./AriaMaestosa.app/Contents/MacOS/Aria\ Maestosa")
-    sys_command("cp ./release.plist ./AriaMaestosa.app/Contents/info.plist")
+    sys_command("cp ./OSX/release.plist ./AriaMaestosa.app/Contents/info.plist")
     sys_command("cp -r ./Resources ./AriaMaestosa.app/Contents/")
-    sys_command("cp -r ./mac-i18n/. ./AriaMaestosa.app/Contents/Resources/.")
-    
+    sys_command("cp -r ./OSX/mac-i18n/. ./AriaMaestosa.app/Contents/Resources/.")
+    sys_command("cp -r ./OSX/*.icns ./AriaMaestosa.app/Contents/Resources/.")
+    sys_command("touch ./AriaMaestosa.app")
+
     print "*** Cleaning up..."
     os.system("cd ./AriaMaestosa.app && find . -name \".svn\" -exec rm -rf '{}' \;")
     
@@ -241,7 +243,7 @@ def compile_Aria(which_os):
         sys.exit(0)
         
     # init common library and header search paths
-    env.Append(CPPPATH = ['wxAdditions','.','./libjdkmidi/include'])
+    env.Append(CPPPATH = ['./Src','.','./libjdkmidi/include'])
     env.Append(LIBPATH = ['.','./libjdkmidi/tmp/build/lib','./libjdkmidi/tmp-target/build/lib'])
     env.Append(LIBS = ['libjdkmidi'])
 
@@ -272,8 +274,8 @@ def compile_Aria(which_os):
 
         print "*** Adding mac source files and libraries"
         env.Append(CCFLAGS=['-D_MAC_QUICKTIME_COREAUDIO'])
-        sources = sources + ['Midi/Players/Mac/QTKitPlayer.mm']
-        env.Append(CPPPATH=['Midi/Players/Mac'])
+        sources = sources + ['Src/Midi/Players/Mac/QTKitPlayer.mm']
+        env.Append(CPPPATH=['Src/Midi/Players/Mac'])
     
         env.Append(LINKFLAGS = ['-framework','QTKit','-framework', 'Quicktime','-framework','CoreAudio',
         '-framework','AudioToolbox','-framework','AudioUnit','-framework','AppKit',
