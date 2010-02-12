@@ -21,6 +21,10 @@ Help("""
             renderer=[opengl/wxwidgets]
             CXXFLAGS="custom build flags"
             LDFLAGS="custom link flags"
+             
+        Furthermore, the CXX environment variable is read if it exists, allowing
+        you to choose which g++ executable you wish to use.
+        The PATH environment variable is also considered.
                 
         % scons install
             Installs Aria, auto-detects system (run as root if necessary)

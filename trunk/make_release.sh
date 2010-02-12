@@ -7,6 +7,11 @@
 #    % export VERSION="1.2b3"
 #    % ./make_release.sh
 
+if [ -z $VERSION ]; then
+    echo "ERROR, please specify a VERSION env variable!!"
+    exit 1
+fi
+
 echo "making packgage for version $VERSION"
 
 USE_WX_CONFIG="/Developer/libs/wxMac-2.8.9/universal-build/wx-config"
