@@ -1,5 +1,6 @@
 import sys
 import os
+import platform
 
 Help("""
       Usage:
@@ -13,6 +14,10 @@ Help("""
                 specify build type
             WXCONFIG=/path/to/wx-config
                 build using a specified wx-config
+            compiler_arch=[32bit/64bit]
+                specify whether the compiler will build as 32 bits or 64 bits
+                (does _not_ add flags to cross-compile, only selects the right lib dirs)
+                * currently only has an effect on Linux.
             renderer=[opengl/wxwidgets]
             CXXFLAGS="custom build flags"
             LDFLAGS="custom link flags"
@@ -205,6 +210,14 @@ def compile_Aria(which_os):
     elif renderer == 'wxwidgets':
         env.Append(CCFLAGS=['-DRENDERER_WXWIDGETS'])
 
+    # Check architecture
+    compiler_arch = ARGUMENTS.get('compiler_arch', platform.architecture(env['CXX']))[0]
+    if compiler_arch != '32bit' and compiler_arch != '64bit':
+        print 'Invalid architecture : ', compiler_arch, '; assuming 32bit'
+        compiler_arch = '32bit'
+        
+    print ">> Architecture : " + compiler_arch
+    
     # add wxWidgets flags
     # check if user defined his own WXCONFIG, else use defaults
     WXCONFIG = ARGUMENTS.get('WXCONFIG', 'wx-config')
@@ -273,9 +286,15 @@ def compile_Aria(which_os):
         env.Append(CCFLAGS=['-DwxUSE_GLCANVAS=1','-D_ALSA'])
         
         env.Append(CPPPATH = ['/usr/include'])
-        env.Append(LINKFLAGS = ['-Wl,--rpath,/usr/local/lib/'])
-        env.Append(LIBPATH = ['usr/local/lib/','usr/lib/', '/opt/gnome/lib'])
         
+        if compiler_arch == '32bit':
+            env.Append(LINKFLAGS = ['-Wl,--rpath,/usr/local/lib/'])
+            env.Append(LIBPATH = ['usr/local/lib/','usr/lib/', '/opt/gnome/lib'])
+        elif compiler_arch == '64bit':
+            env.Append(LINKFLAGS = ['-Wl,--rpath,/usr/local/lib64/'])
+            env.Append(LIBPATH = ['usr/local/lib64/','usr/lib64/'])
+            env.Append(CCFLAGS=['-D__X86_64__'])
+            
         if renderer == 'opengl':
             env.Append(LIBS = ['GL', 'GLU'])
             
