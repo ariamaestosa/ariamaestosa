@@ -1,0 +1,2156 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4E1DA4F50B3D85C5008BE3E4 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E1DA4F30B3D85C5008BE3E4 /* AudioToolbox.framework */; };
+		4E1DA4F60B3D85C5008BE3E4 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E1DA4F40B3D85C5008BE3E4 /* AudioUnit.framework */; };
+		4E65A3030B4C3DEC0096E9C0 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E65A3020B4C3DEC0096E9C0 /* IOKit.framework */; };
+		4E65A46F0B4C3E250096E9C0 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E65A46E0B4C3E250096E9C0 /* Cocoa.framework */; };
+		950B3B4A1125DBCF006C9AF1 /* CXMLReaderImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 950B3B421125DBCF006C9AF1 /* CXMLReaderImpl.h */; };
+		950B3B4B1125DBCF006C9AF1 /* fast_atof.h in Headers */ = {isa = PBXBuildFile; fileRef = 950B3B431125DBCF006C9AF1 /* fast_atof.h */; };
+		950B3B4C1125DBCF006C9AF1 /* heapsort.h in Headers */ = {isa = PBXBuildFile; fileRef = 950B3B441125DBCF006C9AF1 /* heapsort.h */; };
+		950B3B4D1125DBCF006C9AF1 /* irrArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 950B3B451125DBCF006C9AF1 /* irrArray.h */; };
+		950B3B4E1125DBCF006C9AF1 /* irrString.h in Headers */ = {isa = PBXBuildFile; fileRef = 950B3B461125DBCF006C9AF1 /* irrString.h */; };
+		950B3B4F1125DBCF006C9AF1 /* irrTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 950B3B471125DBCF006C9AF1 /* irrTypes.h */; };
+		950B3B501125DBCF006C9AF1 /* irrXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 950B3B481125DBCF006C9AF1 /* irrXML.cpp */; };
+		950B3B511125DBCF006C9AF1 /* irrXML.h in Headers */ = {isa = PBXBuildFile; fileRef = 950B3B491125DBCF006C9AF1 /* irrXML.h */; };
+		950B3B521125DBCF006C9AF1 /* CXMLReaderImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 950B3B421125DBCF006C9AF1 /* CXMLReaderImpl.h */; };
+		950B3B531125DBCF006C9AF1 /* fast_atof.h in Headers */ = {isa = PBXBuildFile; fileRef = 950B3B431125DBCF006C9AF1 /* fast_atof.h */; };
+		950B3B541125DBCF006C9AF1 /* heapsort.h in Headers */ = {isa = PBXBuildFile; fileRef = 950B3B441125DBCF006C9AF1 /* heapsort.h */; };
+		950B3B551125DBCF006C9AF1 /* irrArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 950B3B451125DBCF006C9AF1 /* irrArray.h */; };
+		950B3B561125DBCF006C9AF1 /* irrString.h in Headers */ = {isa = PBXBuildFile; fileRef = 950B3B461125DBCF006C9AF1 /* irrString.h */; };
+		950B3B571125DBCF006C9AF1 /* irrTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 950B3B471125DBCF006C9AF1 /* irrTypes.h */; };
+		950B3B581125DBCF006C9AF1 /* irrXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 950B3B481125DBCF006C9AF1 /* irrXML.cpp */; };
+		950B3B591125DBCF006C9AF1 /* irrXML.h in Headers */ = {isa = PBXBuildFile; fileRef = 950B3B491125DBCF006C9AF1 /* irrXML.h */; };
+		950B3E701125DD10006C9AF1 /* Documentation in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711B941125D94900104BF5 /* Documentation */; };
+		950B3E711125DD10006C9AF1 /* score in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BC81125D94900104BF5 /* score */; };
+		950B3E751125DD10006C9AF1 /* collapse.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711B8D1125D94900104BF5 /* collapse.jpg */; };
+		950B3E761125DD10006C9AF1 /* border.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711B8B1125D94900104BF5 /* border.jpg */; };
+		950B3E771125DD10006C9AF1 /* score_view.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BDB1125D94900104BF5 /* score_view.jpg */; };
+		950B3E781125DD10006C9AF1 /* corner.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711B921125D94900104BF5 /* corner.jpg */; };
+		950B3E791125DD10006C9AF1 /* guitar_view.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BBC1125D94900104BF5 /* guitar_view.jpg */; };
+		950B3E7A1125DD10006C9AF1 /* keyboard_view.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BBD1125D94900104BF5 /* keyboard_view.jpg */; };
+		950B3E7B1125DD10006C9AF1 /* controller_view.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711B911125D94900104BF5 /* controller_view.jpg */; };
+		950B3E7C1125DD10006C9AF1 /* expand.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BBB1125D94900104BF5 /* expand.jpg */; };
+		950B3E7D1125DD10006C9AF1 /* title.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BDF1125D94900104BF5 /* title.jpg */; };
+		950B3E7E1125DD10006C9AF1 /* combo_side.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711B901125D94900104BF5 /* combo_side.png */; };
+		950B3E7F1125DD10006C9AF1 /* tool2.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BE11125D94900104BF5 /* tool2.png */; };
+		950B3E801125DD10006C9AF1 /* play.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BC31125D94900104BF5 /* play.png */; };
+		950B3E811125DD10006C9AF1 /* notetrack.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BC11125D94900104BF5 /* notetrack.png */; };
+		950B3E821125DD10006C9AF1 /* white_corner.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BE41125D94900104BF5 /* white_corner.png */; };
+		950B3E831125DD10006C9AF1 /* mute_off.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BBF1125D94900104BF5 /* mute_off.png */; };
+		950B3E841125DD10006C9AF1 /* pause.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BC21125D94900104BF5 /* pause.png */; };
+		950B3E851125DD10006C9AF1 /* dock.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711B931125D94900104BF5 /* dock.png */; };
+		950B3E861125DD10006C9AF1 /* sb_arrow.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BC51125D94900104BF5 /* sb_arrow.png */; };
+		950B3E871125DD10006C9AF1 /* drum_view.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BBA1125D94900104BF5 /* drum_view.png */; };
+		950B3E881125DD10006C9AF1 /* tool1.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BE01125D94900104BF5 /* tool1.png */; };
+		950B3E891125DD10006C9AF1 /* maximize.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BBE1125D94900104BF5 /* maximize.png */; };
+		950B3E8A1125DD10006C9AF1 /* mute_on.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BC01125D94900104BF5 /* mute_on.png */; };
+		950B3E8B1125DD10006C9AF1 /* sb_arrow_sel.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BC41125D94900104BF5 /* sb_arrow_sel.png */; };
+		950B3E8C1125DD10006C9AF1 /* close.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711B8C1125D94900104BF5 /* close.png */; };
+		950B3E8D1125DD10006C9AF1 /* tab_side.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BDE1125D94900104BF5 /* tab_side.png */; };
+		950B3E8E1125DD10006C9AF1 /* stop.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BDC1125D94900104BF5 /* stop.png */; };
+		950B3E8F1125DD10006C9AF1 /* tab_body.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BDD1125D94900104BF5 /* tab_body.png */; };
+		950B3E901125DD10006C9AF1 /* sb_backg.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BC61125D94900104BF5 /* sb_backg.png */; };
+		950B3E911125DD10006C9AF1 /* combo_body.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711B8E1125D94900104BF5 /* combo_body.png */; };
+		950B3E921125DD10006C9AF1 /* combo_select.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711B8F1125D94900104BF5 /* combo_select.png */; };
+		950B3E931125DD10006C9AF1 /* white_border.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BE31125D94900104BF5 /* white_border.png */; };
+		950B3E941125DD10006C9AF1 /* sb_thumb.tga in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BC71125D94900104BF5 /* sb_thumb.tga */; };
+		950B3EA71125DD64006C9AF1 /* border.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711B8B1125D94900104BF5 /* border.jpg */; };
+		950B3EA81125DD64006C9AF1 /* close.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711B8C1125D94900104BF5 /* close.png */; };
+		950B3EA91125DD64006C9AF1 /* collapse.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711B8D1125D94900104BF5 /* collapse.jpg */; };
+		950B3EAA1125DD64006C9AF1 /* combo_body.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711B8E1125D94900104BF5 /* combo_body.png */; };
+		950B3EAB1125DD64006C9AF1 /* combo_select.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711B8F1125D94900104BF5 /* combo_select.png */; };
+		950B3EAC1125DD64006C9AF1 /* combo_side.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711B901125D94900104BF5 /* combo_side.png */; };
+		950B3EAD1125DD64006C9AF1 /* controller_view.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711B911125D94900104BF5 /* controller_view.jpg */; };
+		950B3EAE1125DD64006C9AF1 /* corner.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711B921125D94900104BF5 /* corner.jpg */; };
+		950B3EB01125DD64006C9AF1 /* dock.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711B931125D94900104BF5 /* dock.png */; };
+		950B3EB11125DD64006C9AF1 /* Documentation in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711B941125D94900104BF5 /* Documentation */; };
+		950B3EB21125DD64006C9AF1 /* drum_view.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BBA1125D94900104BF5 /* drum_view.png */; };
+		950B3EB41125DD64006C9AF1 /* expand.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BBB1125D94900104BF5 /* expand.jpg */; };
+		950B3EB61125DD64006C9AF1 /* guitar_view.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BBC1125D94900104BF5 /* guitar_view.jpg */; };
+		950B3EB81125DD64006C9AF1 /* keyboard_view.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BBD1125D94900104BF5 /* keyboard_view.jpg */; };
+		950B3EB91125DD64006C9AF1 /* maximize.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BBE1125D94900104BF5 /* maximize.png */; };
+		950B3EBA1125DD64006C9AF1 /* mute_off.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BBF1125D94900104BF5 /* mute_off.png */; };
+		950B3EBB1125DD64006C9AF1 /* mute_on.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BC01125D94900104BF5 /* mute_on.png */; };
+		950B3EBC1125DD64006C9AF1 /* notetrack.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BC11125D94900104BF5 /* notetrack.png */; };
+		950B3EBD1125DD64006C9AF1 /* pause.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BC21125D94900104BF5 /* pause.png */; };
+		950B3EBE1125DD64006C9AF1 /* play.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BC31125D94900104BF5 /* play.png */; };
+		950B3EBF1125DD64006C9AF1 /* sb_arrow.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BC51125D94900104BF5 /* sb_arrow.png */; };
+		950B3EC01125DD64006C9AF1 /* sb_arrow_sel.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BC41125D94900104BF5 /* sb_arrow_sel.png */; };
+		950B3EC11125DD64006C9AF1 /* sb_backg.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BC61125D94900104BF5 /* sb_backg.png */; };
+		950B3EC21125DD64006C9AF1 /* sb_thumb.tga in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BC71125D94900104BF5 /* sb_thumb.tga */; };
+		950B3EC31125DD64006C9AF1 /* score in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BC81125D94900104BF5 /* score */; };
+		950B3EC41125DD64006C9AF1 /* score_view.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BDB1125D94900104BF5 /* score_view.jpg */; };
+		950B3EC51125DD64006C9AF1 /* stop.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BDC1125D94900104BF5 /* stop.png */; };
+		950B3EC61125DD64006C9AF1 /* tab_body.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BDD1125D94900104BF5 /* tab_body.png */; };
+		950B3EC71125DD64006C9AF1 /* tab_side.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BDE1125D94900104BF5 /* tab_side.png */; };
+		950B3EC81125DD64006C9AF1 /* title.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BDF1125D94900104BF5 /* title.jpg */; };
+		950B3EC91125DD64006C9AF1 /* tool1.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BE01125D94900104BF5 /* tool1.png */; };
+		950B3ECA1125DD64006C9AF1 /* tool2.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BE11125D94900104BF5 /* tool2.png */; };
+		950B3ECC1125DD64006C9AF1 /* white_border.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BE31125D94900104BF5 /* white_border.png */; };
+		950B3ECD1125DD64006C9AF1 /* white_corner.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95711BE41125D94900104BF5 /* white_corner.png */; };
+		950B3EF01125DE41006C9AF1 /* violin.icns in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EE11125DDF1006C9AF1 /* violin.icns */; };
+		950B3EF11125DE41006C9AF1 /* aria_file.icns in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EEE1125DE2F006C9AF1 /* aria_file.icns */; };
+		950B3EF21125DE41006C9AF1 /* aria_midi_file.icns in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EEF1125DE2F006C9AF1 /* aria_midi_file.icns */; };
+		950B3EF31125DE46006C9AF1 /* violin.icns in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EE11125DDF1006C9AF1 /* violin.icns */; };
+		950B3EF41125DE46006C9AF1 /* aria_file.icns in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EEE1125DE2F006C9AF1 /* aria_file.icns */; };
+		950B3EF51125DE46006C9AF1 /* aria_midi_file.icns in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EEF1125DE2F006C9AF1 /* aria_midi_file.icns */; };
+		950B3EF81125DE59006C9AF1 /* fr.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EE81125DE18006C9AF1 /* fr.lproj */; };
+		950B3EF91125DE59006C9AF1 /* en.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EE61125DE18006C9AF1 /* en.lproj */; };
+		950B3EFA1125DE59006C9AF1 /* de.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EE31125DE18006C9AF1 /* de.lproj */; };
+		950B3EFB1125DE59006C9AF1 /* it.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EEB1125DE18006C9AF1 /* it.lproj */; };
+		950B3EFC1125DE60006C9AF1 /* fr.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EE81125DE18006C9AF1 /* fr.lproj */; };
+		950B3EFD1125DE60006C9AF1 /* en.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EE61125DE18006C9AF1 /* en.lproj */; };
+		950B3EFE1125DE60006C9AF1 /* de.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EE31125DE18006C9AF1 /* de.lproj */; };
+		950B3EFF1125DE60006C9AF1 /* it.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EEB1125DE18006C9AF1 /* it.lproj */; };
+		9568DE8010D54FE30089AAAF /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF9D1CB609ABE21F00CAF7A6 /* Carbon.framework */; };
+		9568DE8110D54FE30089AAAF /* System.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF9D1D5009ABE22B00CAF7A6 /* System.framework */; };
+		9568DE8210D54FE30089AAAF /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF85576109BDE24C00D9D1BC /* OpenGL.framework */; };
+		9568DE8310D54FE30089AAAF /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFA04BCE09BF399C0079DEB2 /* QuickTime.framework */; };
+		9568DE8410D54FE30089AAAF /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFA04C1209BF39C60079DEB2 /* AGL.framework */; };
+		9568DE8510D54FE30089AAAF /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF104F6B0B21E1900079A1B7 /* QTKit.framework */; };
+		9568DE8610D54FE30089AAAF /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E1DA4F30B3D85C5008BE3E4 /* AudioToolbox.framework */; };
+		9568DE8710D54FE30089AAAF /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E1DA4F40B3D85C5008BE3E4 /* AudioUnit.framework */; };
+		9568DE8810D54FE30089AAAF /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E65A3020B4C3DEC0096E9C0 /* IOKit.framework */; };
+		9568DE8910D54FE30089AAAF /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E65A46E0B4C3E250096E9C0 /* Cocoa.framework */; };
+		957119961125D8D300104BF5 /* AddControlEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118BE1125D8D200104BF5 /* AddControlEvent.cpp */; };
+		957119971125D8D300104BF5 /* AddControlEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118BF1125D8D200104BF5 /* AddControlEvent.h */; };
+		957119981125D8D300104BF5 /* AddControllerSlide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118C01125D8D200104BF5 /* AddControllerSlide.cpp */; };
+		957119991125D8D300104BF5 /* AddControllerSlide.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118C11125D8D200104BF5 /* AddControllerSlide.h */; };
+		9571199A1125D8D300104BF5 /* AddNote.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118C21125D8D200104BF5 /* AddNote.cpp */; };
+		9571199B1125D8D300104BF5 /* AddNote.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118C31125D8D200104BF5 /* AddNote.h */; };
+		9571199C1125D8D300104BF5 /* DeleteSelected.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118C41125D8D200104BF5 /* DeleteSelected.cpp */; };
+		9571199D1125D8D300104BF5 /* DeleteSelected.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118C51125D8D200104BF5 /* DeleteSelected.h */; };
+		9571199E1125D8D300104BF5 /* EditAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118C61125D8D200104BF5 /* EditAction.cpp */; };
+		9571199F1125D8D300104BF5 /* EditAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118C71125D8D200104BF5 /* EditAction.h */; };
+		957119A01125D8D300104BF5 /* InsertEmptyMeasures.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118C81125D8D200104BF5 /* InsertEmptyMeasures.cpp */; };
+		957119A11125D8D300104BF5 /* InsertEmptyMeasures.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118C91125D8D200104BF5 /* InsertEmptyMeasures.h */; };
+		957119A21125D8D300104BF5 /* MoveNotes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118CA1125D8D200104BF5 /* MoveNotes.cpp */; };
+		957119A31125D8D300104BF5 /* MoveNotes.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118CB1125D8D200104BF5 /* MoveNotes.h */; };
+		957119A41125D8D300104BF5 /* NumberPressed.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118CC1125D8D200104BF5 /* NumberPressed.cpp */; };
+		957119A51125D8D300104BF5 /* NumberPressed.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118CD1125D8D200104BF5 /* NumberPressed.h */; };
+		957119A61125D8D300104BF5 /* Paste.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118CE1125D8D200104BF5 /* Paste.cpp */; };
+		957119A71125D8D300104BF5 /* Paste.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118CF1125D8D200104BF5 /* Paste.h */; };
+		957119A81125D8D300104BF5 /* RearrangeNotes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118D01125D8D200104BF5 /* RearrangeNotes.cpp */; };
+		957119A91125D8D300104BF5 /* RearrangeNotes.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118D11125D8D200104BF5 /* RearrangeNotes.h */; };
+		957119AA1125D8D300104BF5 /* RemoveMeasures.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118D21125D8D200104BF5 /* RemoveMeasures.cpp */; };
+		957119AB1125D8D300104BF5 /* RemoveMeasures.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118D31125D8D200104BF5 /* RemoveMeasures.h */; };
+		957119AC1125D8D300104BF5 /* RemoveOverlapping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118D41125D8D200104BF5 /* RemoveOverlapping.cpp */; };
+		957119AD1125D8D300104BF5 /* RemoveOverlapping.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118D51125D8D200104BF5 /* RemoveOverlapping.h */; };
+		957119AE1125D8D300104BF5 /* ResizeNotes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118D61125D8D200104BF5 /* ResizeNotes.cpp */; };
+		957119AF1125D8D300104BF5 /* ResizeNotes.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118D71125D8D200104BF5 /* ResizeNotes.h */; };
+		957119B01125D8D300104BF5 /* ScaleSong.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118D81125D8D200104BF5 /* ScaleSong.cpp */; };
+		957119B11125D8D300104BF5 /* ScaleSong.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118D91125D8D200104BF5 /* ScaleSong.h */; };
+		957119B21125D8D300104BF5 /* ScaleTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118DA1125D8D200104BF5 /* ScaleTrack.cpp */; };
+		957119B31125D8D300104BF5 /* ScaleTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118DB1125D8D200104BF5 /* ScaleTrack.h */; };
+		957119B41125D8D300104BF5 /* SetAccidentalSign.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118DC1125D8D200104BF5 /* SetAccidentalSign.cpp */; };
+		957119B51125D8D300104BF5 /* SetAccidentalSign.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118DD1125D8D200104BF5 /* SetAccidentalSign.h */; };
+		957119B61125D8D300104BF5 /* SetNoteVolume.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118DE1125D8D200104BF5 /* SetNoteVolume.cpp */; };
+		957119B71125D8D300104BF5 /* SetNoteVolume.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118DF1125D8D200104BF5 /* SetNoteVolume.h */; };
+		957119B81125D8D300104BF5 /* ShiftBySemiTone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118E01125D8D200104BF5 /* ShiftBySemiTone.cpp */; };
+		957119B91125D8D300104BF5 /* ShiftBySemiTone.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118E11125D8D200104BF5 /* ShiftBySemiTone.h */; };
+		957119BA1125D8D300104BF5 /* ShiftFrets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118E21125D8D200104BF5 /* ShiftFrets.cpp */; };
+		957119BB1125D8D300104BF5 /* ShiftFrets.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118E31125D8D200104BF5 /* ShiftFrets.h */; };
+		957119BC1125D8D300104BF5 /* ShiftString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118E41125D8D200104BF5 /* ShiftString.cpp */; };
+		957119BD1125D8D300104BF5 /* ShiftString.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118E51125D8D200104BF5 /* ShiftString.h */; };
+		957119BE1125D8D300104BF5 /* SnapNotesToGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118E61125D8D200104BF5 /* SnapNotesToGrid.cpp */; };
+		957119BF1125D8D300104BF5 /* SnapNotesToGrid.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118E71125D8D200104BF5 /* SnapNotesToGrid.h */; };
+		957119C01125D8D300104BF5 /* UpdateGuitarTuning.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118E81125D8D200104BF5 /* UpdateGuitarTuning.cpp */; };
+		957119C11125D8D300104BF5 /* UpdateGuitarTuning.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118E91125D8D200104BF5 /* UpdateGuitarTuning.h */; };
+		957119C21125D8D300104BF5 /* AriaCore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118EA1125D8D200104BF5 /* AriaCore.cpp */; };
+		957119C31125D8D300104BF5 /* AriaCore.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118EB1125D8D200104BF5 /* AriaCore.h */; };
+		957119C41125D8D300104BF5 /* Clipboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118EC1125D8D200104BF5 /* Clipboard.cpp */; };
+		957119C51125D8D300104BF5 /* Clipboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118ED1125D8D200104BF5 /* Clipboard.h */; };
+		957119C61125D8D300104BF5 /* Config.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118EE1125D8D200104BF5 /* Config.h */; };
+		957119C71125D8D300104BF5 /* About.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F01125D8D200104BF5 /* About.cpp */; };
+		957119C81125D8D300104BF5 /* About.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F11125D8D200104BF5 /* About.h */; };
+		957119C91125D8D300104BF5 /* CopyrightWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F21125D8D200104BF5 /* CopyrightWindow.cpp */; };
+		957119CA1125D8D300104BF5 /* CopyrightWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F31125D8D200104BF5 /* CopyrightWindow.h */; };
+		957119CB1125D8D300104BF5 /* CustomNoteSelectDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F41125D8D200104BF5 /* CustomNoteSelectDialog.cpp */; };
+		957119CC1125D8D300104BF5 /* CustomNoteSelectDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F51125D8D200104BF5 /* CustomNoteSelectDialog.h */; };
+		957119CD1125D8D300104BF5 /* NotationExportDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F61125D8D200104BF5 /* NotationExportDialog.cpp */; };
+		957119CE1125D8D300104BF5 /* NotationExportDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F71125D8D200104BF5 /* NotationExportDialog.h */; };
+		957119CF1125D8D300104BF5 /* Preferences.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F81125D8D200104BF5 /* Preferences.cpp */; };
+		957119D01125D8D300104BF5 /* Preferences.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F91125D8D200104BF5 /* Preferences.h */; };
+		957119D11125D8D300104BF5 /* ScalePicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118FA1125D8D200104BF5 /* ScalePicker.cpp */; };
+		957119D21125D8D300104BF5 /* ScalePicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118FB1125D8D200104BF5 /* ScalePicker.h */; };
+		957119D31125D8D300104BF5 /* WaitWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118FC1125D8D200104BF5 /* WaitWindow.cpp */; };
+		957119D41125D8D300104BF5 /* WaitWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118FD1125D8D200104BF5 /* WaitWindow.h */; };
+		957119D51125D8D300104BF5 /* ControllerEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118FF1125D8D200104BF5 /* ControllerEditor.cpp */; };
+		957119D61125D8D300104BF5 /* ControllerEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119001125D8D200104BF5 /* ControllerEditor.h */; };
+		957119D71125D8D300104BF5 /* DrumEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119011125D8D200104BF5 /* DrumEditor.cpp */; };
+		957119D81125D8D300104BF5 /* DrumEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119021125D8D200104BF5 /* DrumEditor.h */; };
+		957119D91125D8D300104BF5 /* Editor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119031125D8D200104BF5 /* Editor.cpp */; };
+		957119DA1125D8D300104BF5 /* Editor.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119041125D8D200104BF5 /* Editor.h */; };
+		957119DB1125D8D300104BF5 /* GuitarEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119051125D8D200104BF5 /* GuitarEditor.cpp */; };
+		957119DC1125D8D300104BF5 /* GuitarEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119061125D8D200104BF5 /* GuitarEditor.h */; };
+		957119DD1125D8D300104BF5 /* KeyboardEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119071125D8D200104BF5 /* KeyboardEditor.cpp */; };
+		957119DE1125D8D300104BF5 /* KeyboardEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119081125D8D200104BF5 /* KeyboardEditor.h */; };
+		957119DF1125D8D300104BF5 /* RelativeXCoord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119091125D8D200104BF5 /* RelativeXCoord.cpp */; };
+		957119E01125D8D300104BF5 /* RelativeXCoord.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571190A1125D8D200104BF5 /* RelativeXCoord.h */; };
+		957119E11125D8D300104BF5 /* ScoreAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571190B1125D8D200104BF5 /* ScoreAnalyser.cpp */; };
+		957119E21125D8D300104BF5 /* ScoreAnalyser.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571190C1125D8D200104BF5 /* ScoreAnalyser.h */; };
+		957119E31125D8D300104BF5 /* ScoreEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571190D1125D8D200104BF5 /* ScoreEditor.cpp */; };
+		957119E41125D8D300104BF5 /* ScoreEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571190E1125D8D200104BF5 /* ScoreEditor.h */; };
+		957119E51125D8D300104BF5 /* GraphicalTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119101125D8D200104BF5 /* GraphicalTrack.cpp */; };
+		957119E61125D8D300104BF5 /* GraphicalTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119111125D8D200104BF5 /* GraphicalTrack.h */; };
+		957119E71125D8D300104BF5 /* ImageProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119121125D8D200104BF5 /* ImageProvider.cpp */; };
+		957119E81125D8D300104BF5 /* ImageProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119131125D8D200104BF5 /* ImageProvider.h */; };
+		957119E91125D8D300104BF5 /* MainFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119141125D8D200104BF5 /* MainFrame.cpp */; };
+		957119EA1125D8D300104BF5 /* MainFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119151125D8D200104BF5 /* MainFrame.h */; };
+		957119EB1125D8D300104BF5 /* MainFrameMenuBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119161125D8D200104BF5 /* MainFrameMenuBar.cpp */; };
+		957119EC1125D8D300104BF5 /* MainPane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119171125D8D200104BF5 /* MainPane.cpp */; };
+		957119ED1125D8D300104BF5 /* MainPane.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119181125D8D200104BF5 /* MainPane.h */; };
+		957119EE1125D8D300104BF5 /* MeasureBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119191125D8D200104BF5 /* MeasureBar.cpp */; };
+		957119EF1125D8D300104BF5 /* MeasureBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571191A1125D8D200104BF5 /* MeasureBar.h */; };
+		957119F01125D8D300104BF5 /* AriaFileWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571191C1125D8D200104BF5 /* AriaFileWriter.cpp */; };
+		957119F11125D8D300104BF5 /* AriaFileWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571191D1125D8D200104BF5 /* AriaFileWriter.h */; };
+		957119F21125D8D300104BF5 /* IOUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571191E1125D8D200104BF5 /* IOUtils.cpp */; };
+		957119F31125D8D300104BF5 /* IOUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571191F1125D8D200104BF5 /* IOUtils.h */; };
+		957119F41125D8D300104BF5 /* MidiFileReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119201125D8D200104BF5 /* MidiFileReader.cpp */; };
+		957119F51125D8D300104BF5 /* MidiFileReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119211125D8D200104BF5 /* MidiFileReader.h */; };
+		957119F61125D8D300104BF5 /* MidiToMemoryStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119221125D8D200104BF5 /* MidiToMemoryStream.cpp */; };
+		957119F71125D8D300104BF5 /* MidiToMemoryStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119231125D8D200104BF5 /* MidiToMemoryStream.h */; };
+		957119F81125D8D300104BF5 /* languages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119241125D8D200104BF5 /* languages.cpp */; };
+		957119F91125D8D300104BF5 /* languages.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119251125D8D200104BF5 /* languages.h */; };
+		957119FA1125D8D300104BF5 /* LeakCheck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119261125D8D200104BF5 /* LeakCheck.cpp */; };
+		957119FB1125D8D300104BF5 /* LeakCheck.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119271125D8D200104BF5 /* LeakCheck.h */; };
+		957119FC1125D8D300104BF5 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119281125D8D200104BF5 /* main.cpp */; };
+		957119FD1125D8D300104BF5 /* main.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119291125D8D200104BF5 /* main.h */; };
+		957119FE1125D8D300104BF5 /* CommonMidiUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571192B1125D8D200104BF5 /* CommonMidiUtils.cpp */; };
+		957119FF1125D8D300104BF5 /* CommonMidiUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571192C1125D8D200104BF5 /* CommonMidiUtils.h */; };
+		95711A001125D8D300104BF5 /* ControllerEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571192D1125D8D200104BF5 /* ControllerEvent.cpp */; };
+		95711A011125D8D300104BF5 /* ControllerEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571192E1125D8D200104BF5 /* ControllerEvent.h */; };
+		95711A021125D8D300104BF5 /* MeasureData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571192F1125D8D200104BF5 /* MeasureData.cpp */; };
+		95711A031125D8D300104BF5 /* MeasureData.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119301125D8D200104BF5 /* MeasureData.h */; };
+		95711A041125D8D300104BF5 /* Note.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119311125D8D200104BF5 /* Note.cpp */; };
+		95711A051125D8D300104BF5 /* Note.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119321125D8D200104BF5 /* Note.h */; };
+		95711A061125D8D300104BF5 /* AlsaNotePlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119351125D8D200104BF5 /* AlsaNotePlayer.cpp */; };
+		95711A071125D8D300104BF5 /* AlsaNotePlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119361125D8D200104BF5 /* AlsaNotePlayer.h */; };
+		95711A081125D8D300104BF5 /* AlsaPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119371125D8D200104BF5 /* AlsaPlayer.cpp */; };
+		95711A091125D8D300104BF5 /* AlsaPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119381125D8D200104BF5 /* AlsaPort.cpp */; };
+		95711A0A1125D8D300104BF5 /* AlsaPort.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119391125D8D200104BF5 /* AlsaPort.h */; };
+		95711A0B1125D8D300104BF5 /* WinPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571193B1125D8D200104BF5 /* WinPlayer.cpp */; };
+		95711A0C1125D8D300104BF5 /* AudioToolboxPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571193D1125D8D200104BF5 /* AudioToolboxPlayer.cpp */; };
+		95711A0D1125D8D300104BF5 /* AudioToolboxPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571193E1125D8D200104BF5 /* AudioToolboxPlayer.h */; };
+		95711A0E1125D8D300104BF5 /* CoreAudioNotePlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571193F1125D8D200104BF5 /* CoreAudioNotePlayer.cpp */; };
+		95711A0F1125D8D300104BF5 /* CoreAudioNotePlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119401125D8D200104BF5 /* CoreAudioNotePlayer.h */; };
+		95711A101125D8D300104BF5 /* MacPlayerInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119411125D8D200104BF5 /* MacPlayerInterface.cpp */; };
+		95711A111125D8D300104BF5 /* QTKitPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119421125D8D200104BF5 /* QTKitPlayer.h */; };
+		95711A121125D8D300104BF5 /* QTKitPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 957119431125D8D200104BF5 /* QTKitPlayer.mm */; };
+		95711A131125D8D300104BF5 /* PlatformMidiManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119441125D8D200104BF5 /* PlatformMidiManager.h */; };
+		95711A141125D8D300104BF5 /* Sequencer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119451125D8D200104BF5 /* Sequencer.cpp */; };
+		95711A151125D8D300104BF5 /* Sequencer.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119461125D8D200104BF5 /* Sequencer.h */; };
+		95711A161125D8D300104BF5 /* WinPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119481125D8D200104BF5 /* WinPlayer.cpp */; };
+		95711A171125D8D300104BF5 /* Sequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119491125D8D200104BF5 /* Sequence.cpp */; };
+		95711A181125D8D300104BF5 /* Sequence.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571194A1125D8D200104BF5 /* Sequence.h */; };
+		95711A191125D8D300104BF5 /* TimeSigChange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571194B1125D8D200104BF5 /* TimeSigChange.cpp */; };
+		95711A1A1125D8D300104BF5 /* TimeSigChange.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571194C1125D8D200104BF5 /* TimeSigChange.h */; };
+		95711A1B1125D8D300104BF5 /* Track.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571194D1125D8D200104BF5 /* Track.cpp */; };
+		95711A1C1125D8D300104BF5 /* Track.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571194E1125D8D200104BF5 /* Track.h */; };
+		95711A1D1125D8D300104BF5 /* OpenGL.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571194F1125D8D200104BF5 /* OpenGL.h */; };
+		95711A1E1125D8D300104BF5 /* BackgroundPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119511125D8D200104BF5 /* BackgroundPicker.cpp */; };
+		95711A1F1125D8D300104BF5 /* BackgroundPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119521125D8D200104BF5 /* BackgroundPicker.h */; };
+		95711A201125D8D300104BF5 /* ControllerChoice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119531125D8D200104BF5 /* ControllerChoice.cpp */; };
+		95711A211125D8D300104BF5 /* ControllerChoice.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119541125D8D200104BF5 /* ControllerChoice.h */; };
+		95711A221125D8D300104BF5 /* DrumChoice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119551125D8D200104BF5 /* DrumChoice.cpp */; };
+		95711A231125D8D300104BF5 /* DrumChoice.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119561125D8D200104BF5 /* DrumChoice.h */; };
+		95711A241125D8D300104BF5 /* InstrumentChoice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119571125D8D200104BF5 /* InstrumentChoice.cpp */; };
+		95711A251125D8D300104BF5 /* InstrumentChoice.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119581125D8D200104BF5 /* InstrumentChoice.h */; };
+		95711A261125D8D300104BF5 /* KeyPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119591125D8D200104BF5 /* KeyPicker.cpp */; };
+		95711A271125D8D300104BF5 /* KeyPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571195A1125D8D200104BF5 /* KeyPicker.h */; };
+		95711A281125D8D300104BF5 /* MagneticGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571195B1125D8D200104BF5 /* MagneticGrid.cpp */; };
+		95711A291125D8D300104BF5 /* MagneticGrid.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571195C1125D8D200104BF5 /* MagneticGrid.h */; };
+		95711A2A1125D8D300104BF5 /* TimeSigPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571195D1125D8D200104BF5 /* TimeSigPicker.cpp */; };
+		95711A2B1125D8D300104BF5 /* TimeSigPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571195E1125D8D200104BF5 /* TimeSigPicker.h */; };
+		95711A2C1125D8D300104BF5 /* TuningPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571195F1125D8D200104BF5 /* TuningPicker.cpp */; };
+		95711A2D1125D8D300104BF5 /* TuningPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119601125D8D200104BF5 /* TuningPicker.h */; };
+		95711A2E1125D8D300104BF5 /* VolumeSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119611125D8D200104BF5 /* VolumeSlider.cpp */; };
+		95711A2F1125D8D300104BF5 /* VolumeSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119621125D8D200104BF5 /* VolumeSlider.h */; };
+		95711A301125D8D300104BF5 /* AriaPrintable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119641125D8D300104BF5 /* AriaPrintable.cpp */; };
+		95711A311125D8D300104BF5 /* AriaPrintable.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119651125D8D300104BF5 /* AriaPrintable.h */; };
+		95711A321125D8D300104BF5 /* EditorPrintable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119661125D8D300104BF5 /* EditorPrintable.cpp */; };
+		95711A331125D8D300104BF5 /* EditorPrintable.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119671125D8D300104BF5 /* EditorPrintable.h */; };
+		95711A341125D8D300104BF5 /* PrintableSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119681125D8D300104BF5 /* PrintableSequence.cpp */; };
+		95711A351125D8D300104BF5 /* PrintableSequence.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119691125D8D300104BF5 /* PrintableSequence.h */; };
+		95711A361125D8D300104BF5 /* LayoutElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571196B1125D8D300104BF5 /* LayoutElement.cpp */; };
+		95711A371125D8D300104BF5 /* LayoutElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571196C1125D8D300104BF5 /* LayoutElement.h */; };
+		95711A381125D8D300104BF5 /* LayoutPage.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571196D1125D8D300104BF5 /* LayoutPage.h */; };
+		95711A391125D8D300104BF5 /* PrintLayoutAbstract.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571196E1125D8D300104BF5 /* PrintLayoutAbstract.cpp */; };
+		95711A3A1125D8D300104BF5 /* PrintLayoutAbstract.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571196F1125D8D300104BF5 /* PrintLayoutAbstract.h */; };
+		95711A3B1125D8D300104BF5 /* PrintLayoutLine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119701125D8D300104BF5 /* PrintLayoutLine.cpp */; };
+		95711A3C1125D8D300104BF5 /* PrintLayoutLine.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119711125D8D300104BF5 /* PrintLayoutLine.h */; };
+		95711A3D1125D8D300104BF5 /* PrintLayoutMeasure.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119721125D8D300104BF5 /* PrintLayoutMeasure.cpp */; };
+		95711A3E1125D8D300104BF5 /* PrintLayoutMeasure.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119731125D8D300104BF5 /* PrintLayoutMeasure.h */; };
+		95711A3F1125D8D300104BF5 /* PrintLayoutNumeric.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119741125D8D300104BF5 /* PrintLayoutNumeric.cpp */; };
+		95711A401125D8D300104BF5 /* PrintLayoutNumeric.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119751125D8D300104BF5 /* PrintLayoutNumeric.h */; };
+		95711A411125D8D300104BF5 /* RelativePlacementManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119761125D8D300104BF5 /* RelativePlacementManager.cpp */; };
+		95711A421125D8D300104BF5 /* RelativePlacementManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119771125D8D300104BF5 /* RelativePlacementManager.h */; };
+		95711A431125D8D300104BF5 /* ScorePrint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119781125D8D300104BF5 /* ScorePrint.cpp */; };
+		95711A441125D8D300104BF5 /* ScorePrint.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119791125D8D300104BF5 /* ScorePrint.h */; };
+		95711A451125D8D300104BF5 /* TabPrint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571197A1125D8D300104BF5 /* TabPrint.cpp */; };
+		95711A461125D8D300104BF5 /* TabPrint.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571197B1125D8D300104BF5 /* TabPrint.h */; };
+		95711A471125D8D300104BF5 /* ptr_vector.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571197C1125D8D300104BF5 /* ptr_vector.h */; };
+		95711A481125D8D300104BF5 /* Range.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571197D1125D8D300104BF5 /* Range.h */; };
+		95711A491125D8D300104BF5 /* Drawable.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571197F1125D8D300104BF5 /* Drawable.h */; };
+		95711A4A1125D8D300104BF5 /* GLDrawable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119801125D8D300104BF5 /* GLDrawable.cpp */; };
+		95711A4B1125D8D300104BF5 /* GLImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119811125D8D300104BF5 /* GLImage.cpp */; };
+		95711A4C1125D8D300104BF5 /* GLImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119821125D8D300104BF5 /* GLImage.h */; };
+		95711A4D1125D8D300104BF5 /* GLPane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119831125D8D300104BF5 /* GLPane.cpp */; };
+		95711A4E1125D8D300104BF5 /* GLPane.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119841125D8D300104BF5 /* GLPane.h */; };
+		95711A4F1125D8D300104BF5 /* GLRenderImp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119851125D8D300104BF5 /* GLRenderImp.cpp */; };
+		95711A501125D8D300104BF5 /* GLwxString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119861125D8D300104BF5 /* GLwxString.cpp */; };
+		95711A511125D8D300104BF5 /* GLwxString.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119871125D8D300104BF5 /* GLwxString.h */; };
+		95711A521125D8D300104BF5 /* ImageBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119881125D8D300104BF5 /* ImageBase.h */; };
+		95711A531125D8D300104BF5 /* RenderAPI.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119891125D8D300104BF5 /* RenderAPI.h */; };
+		95711A541125D8D300104BF5 /* wxDCString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571198A1125D8D300104BF5 /* wxDCString.cpp */; };
+		95711A551125D8D300104BF5 /* wxDCString.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571198B1125D8D300104BF5 /* wxDCString.h */; };
+		95711A561125D8D300104BF5 /* wxDrawable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571198C1125D8D300104BF5 /* wxDrawable.cpp */; };
+		95711A571125D8D300104BF5 /* wxImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571198D1125D8D300104BF5 /* wxImage.cpp */; };
+		95711A581125D8D300104BF5 /* wxImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571198E1125D8D300104BF5 /* wxImage.h */; };
+		95711A591125D8D300104BF5 /* wxRenderImp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571198F1125D8D300104BF5 /* wxRenderImp.cpp */; };
+		95711A5A1125D8D300104BF5 /* wxRenderPane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119901125D8D300104BF5 /* wxRenderPane.cpp */; };
+		95711A5B1125D8D300104BF5 /* wxRenderPane.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119911125D8D300104BF5 /* wxRenderPane.h */; };
+		95711A5C1125D8D300104BF5 /* Singleton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119921125D8D300104BF5 /* Singleton.cpp */; };
+		95711A5D1125D8D300104BF5 /* Singleton.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119931125D8D300104BF5 /* Singleton.h */; };
+		95711A5E1125D8D300104BF5 /* unit_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119941125D8D300104BF5 /* unit_test.cpp */; };
+		95711A5F1125D8D300104BF5 /* unit_test.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119951125D8D300104BF5 /* unit_test.h */; };
+		95711A601125D8D300104BF5 /* AddControlEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118BE1125D8D200104BF5 /* AddControlEvent.cpp */; };
+		95711A611125D8D300104BF5 /* AddControlEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118BF1125D8D200104BF5 /* AddControlEvent.h */; };
+		95711A621125D8D300104BF5 /* AddControllerSlide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118C01125D8D200104BF5 /* AddControllerSlide.cpp */; };
+		95711A631125D8D300104BF5 /* AddControllerSlide.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118C11125D8D200104BF5 /* AddControllerSlide.h */; };
+		95711A641125D8D300104BF5 /* AddNote.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118C21125D8D200104BF5 /* AddNote.cpp */; };
+		95711A651125D8D300104BF5 /* AddNote.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118C31125D8D200104BF5 /* AddNote.h */; };
+		95711A661125D8D300104BF5 /* DeleteSelected.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118C41125D8D200104BF5 /* DeleteSelected.cpp */; };
+		95711A671125D8D300104BF5 /* DeleteSelected.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118C51125D8D200104BF5 /* DeleteSelected.h */; };
+		95711A681125D8D300104BF5 /* EditAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118C61125D8D200104BF5 /* EditAction.cpp */; };
+		95711A691125D8D300104BF5 /* EditAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118C71125D8D200104BF5 /* EditAction.h */; };
+		95711A6A1125D8D300104BF5 /* InsertEmptyMeasures.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118C81125D8D200104BF5 /* InsertEmptyMeasures.cpp */; };
+		95711A6B1125D8D300104BF5 /* InsertEmptyMeasures.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118C91125D8D200104BF5 /* InsertEmptyMeasures.h */; };
+		95711A6C1125D8D300104BF5 /* MoveNotes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118CA1125D8D200104BF5 /* MoveNotes.cpp */; };
+		95711A6D1125D8D300104BF5 /* MoveNotes.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118CB1125D8D200104BF5 /* MoveNotes.h */; };
+		95711A6E1125D8D300104BF5 /* NumberPressed.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118CC1125D8D200104BF5 /* NumberPressed.cpp */; };
+		95711A6F1125D8D300104BF5 /* NumberPressed.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118CD1125D8D200104BF5 /* NumberPressed.h */; };
+		95711A701125D8D300104BF5 /* Paste.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118CE1125D8D200104BF5 /* Paste.cpp */; };
+		95711A711125D8D300104BF5 /* Paste.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118CF1125D8D200104BF5 /* Paste.h */; };
+		95711A721125D8D300104BF5 /* RearrangeNotes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118D01125D8D200104BF5 /* RearrangeNotes.cpp */; };
+		95711A731125D8D300104BF5 /* RearrangeNotes.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118D11125D8D200104BF5 /* RearrangeNotes.h */; };
+		95711A741125D8D300104BF5 /* RemoveMeasures.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118D21125D8D200104BF5 /* RemoveMeasures.cpp */; };
+		95711A751125D8D300104BF5 /* RemoveMeasures.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118D31125D8D200104BF5 /* RemoveMeasures.h */; };
+		95711A761125D8D300104BF5 /* RemoveOverlapping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118D41125D8D200104BF5 /* RemoveOverlapping.cpp */; };
+		95711A771125D8D300104BF5 /* RemoveOverlapping.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118D51125D8D200104BF5 /* RemoveOverlapping.h */; };
+		95711A781125D8D300104BF5 /* ResizeNotes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118D61125D8D200104BF5 /* ResizeNotes.cpp */; };
+		95711A791125D8D300104BF5 /* ResizeNotes.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118D71125D8D200104BF5 /* ResizeNotes.h */; };
+		95711A7A1125D8D300104BF5 /* ScaleSong.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118D81125D8D200104BF5 /* ScaleSong.cpp */; };
+		95711A7B1125D8D300104BF5 /* ScaleSong.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118D91125D8D200104BF5 /* ScaleSong.h */; };
+		95711A7C1125D8D300104BF5 /* ScaleTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118DA1125D8D200104BF5 /* ScaleTrack.cpp */; };
+		95711A7D1125D8D300104BF5 /* ScaleTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118DB1125D8D200104BF5 /* ScaleTrack.h */; };
+		95711A7E1125D8D300104BF5 /* SetAccidentalSign.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118DC1125D8D200104BF5 /* SetAccidentalSign.cpp */; };
+		95711A7F1125D8D300104BF5 /* SetAccidentalSign.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118DD1125D8D200104BF5 /* SetAccidentalSign.h */; };
+		95711A801125D8D300104BF5 /* SetNoteVolume.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118DE1125D8D200104BF5 /* SetNoteVolume.cpp */; };
+		95711A811125D8D300104BF5 /* SetNoteVolume.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118DF1125D8D200104BF5 /* SetNoteVolume.h */; };
+		95711A821125D8D300104BF5 /* ShiftBySemiTone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118E01125D8D200104BF5 /* ShiftBySemiTone.cpp */; };
+		95711A831125D8D300104BF5 /* ShiftBySemiTone.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118E11125D8D200104BF5 /* ShiftBySemiTone.h */; };
+		95711A841125D8D300104BF5 /* ShiftFrets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118E21125D8D200104BF5 /* ShiftFrets.cpp */; };
+		95711A851125D8D300104BF5 /* ShiftFrets.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118E31125D8D200104BF5 /* ShiftFrets.h */; };
+		95711A861125D8D300104BF5 /* ShiftString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118E41125D8D200104BF5 /* ShiftString.cpp */; };
+		95711A871125D8D300104BF5 /* ShiftString.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118E51125D8D200104BF5 /* ShiftString.h */; };
+		95711A881125D8D300104BF5 /* SnapNotesToGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118E61125D8D200104BF5 /* SnapNotesToGrid.cpp */; };
+		95711A891125D8D300104BF5 /* SnapNotesToGrid.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118E71125D8D200104BF5 /* SnapNotesToGrid.h */; };
+		95711A8A1125D8D300104BF5 /* UpdateGuitarTuning.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118E81125D8D200104BF5 /* UpdateGuitarTuning.cpp */; };
+		95711A8B1125D8D300104BF5 /* UpdateGuitarTuning.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118E91125D8D200104BF5 /* UpdateGuitarTuning.h */; };
+		95711A8C1125D8D300104BF5 /* AriaCore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118EA1125D8D200104BF5 /* AriaCore.cpp */; };
+		95711A8D1125D8D300104BF5 /* AriaCore.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118EB1125D8D200104BF5 /* AriaCore.h */; };
+		95711A8E1125D8D300104BF5 /* Clipboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118EC1125D8D200104BF5 /* Clipboard.cpp */; };
+		95711A8F1125D8D300104BF5 /* Clipboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118ED1125D8D200104BF5 /* Clipboard.h */; };
+		95711A901125D8D300104BF5 /* Config.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118EE1125D8D200104BF5 /* Config.h */; };
+		95711A911125D8D300104BF5 /* About.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F01125D8D200104BF5 /* About.cpp */; };
+		95711A921125D8D300104BF5 /* About.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F11125D8D200104BF5 /* About.h */; };
+		95711A931125D8D300104BF5 /* CopyrightWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F21125D8D200104BF5 /* CopyrightWindow.cpp */; };
+		95711A941125D8D300104BF5 /* CopyrightWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F31125D8D200104BF5 /* CopyrightWindow.h */; };
+		95711A951125D8D300104BF5 /* CustomNoteSelectDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F41125D8D200104BF5 /* CustomNoteSelectDialog.cpp */; };
+		95711A961125D8D300104BF5 /* CustomNoteSelectDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F51125D8D200104BF5 /* CustomNoteSelectDialog.h */; };
+		95711A971125D8D300104BF5 /* NotationExportDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F61125D8D200104BF5 /* NotationExportDialog.cpp */; };
+		95711A981125D8D300104BF5 /* NotationExportDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F71125D8D200104BF5 /* NotationExportDialog.h */; };
+		95711A991125D8D300104BF5 /* Preferences.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F81125D8D200104BF5 /* Preferences.cpp */; };
+		95711A9A1125D8D300104BF5 /* Preferences.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F91125D8D200104BF5 /* Preferences.h */; };
+		95711A9B1125D8D300104BF5 /* ScalePicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118FA1125D8D200104BF5 /* ScalePicker.cpp */; };
+		95711A9C1125D8D300104BF5 /* ScalePicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118FB1125D8D200104BF5 /* ScalePicker.h */; };
+		95711A9D1125D8D300104BF5 /* WaitWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118FC1125D8D200104BF5 /* WaitWindow.cpp */; };
+		95711A9E1125D8D300104BF5 /* WaitWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118FD1125D8D200104BF5 /* WaitWindow.h */; };
+		95711A9F1125D8D300104BF5 /* ControllerEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118FF1125D8D200104BF5 /* ControllerEditor.cpp */; };
+		95711AA01125D8D300104BF5 /* ControllerEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119001125D8D200104BF5 /* ControllerEditor.h */; };
+		95711AA11125D8D300104BF5 /* DrumEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119011125D8D200104BF5 /* DrumEditor.cpp */; };
+		95711AA21125D8D300104BF5 /* DrumEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119021125D8D200104BF5 /* DrumEditor.h */; };
+		95711AA31125D8D300104BF5 /* Editor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119031125D8D200104BF5 /* Editor.cpp */; };
+		95711AA41125D8D300104BF5 /* Editor.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119041125D8D200104BF5 /* Editor.h */; };
+		95711AA51125D8D300104BF5 /* GuitarEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119051125D8D200104BF5 /* GuitarEditor.cpp */; };
+		95711AA61125D8D300104BF5 /* GuitarEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119061125D8D200104BF5 /* GuitarEditor.h */; };
+		95711AA71125D8D300104BF5 /* KeyboardEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119071125D8D200104BF5 /* KeyboardEditor.cpp */; };
+		95711AA81125D8D300104BF5 /* KeyboardEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119081125D8D200104BF5 /* KeyboardEditor.h */; };
+		95711AA91125D8D300104BF5 /* RelativeXCoord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119091125D8D200104BF5 /* RelativeXCoord.cpp */; };
+		95711AAA1125D8D300104BF5 /* RelativeXCoord.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571190A1125D8D200104BF5 /* RelativeXCoord.h */; };
+		95711AAB1125D8D300104BF5 /* ScoreAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571190B1125D8D200104BF5 /* ScoreAnalyser.cpp */; };
+		95711AAC1125D8D300104BF5 /* ScoreAnalyser.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571190C1125D8D200104BF5 /* ScoreAnalyser.h */; };
+		95711AAD1125D8D300104BF5 /* ScoreEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571190D1125D8D200104BF5 /* ScoreEditor.cpp */; };
+		95711AAE1125D8D300104BF5 /* ScoreEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571190E1125D8D200104BF5 /* ScoreEditor.h */; };
+		95711AAF1125D8D300104BF5 /* GraphicalTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119101125D8D200104BF5 /* GraphicalTrack.cpp */; };
+		95711AB01125D8D300104BF5 /* GraphicalTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119111125D8D200104BF5 /* GraphicalTrack.h */; };
+		95711AB11125D8D300104BF5 /* ImageProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119121125D8D200104BF5 /* ImageProvider.cpp */; };
+		95711AB21125D8D300104BF5 /* ImageProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119131125D8D200104BF5 /* ImageProvider.h */; };
+		95711AB31125D8D300104BF5 /* MainFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119141125D8D200104BF5 /* MainFrame.cpp */; };
+		95711AB41125D8D300104BF5 /* MainFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119151125D8D200104BF5 /* MainFrame.h */; };
+		95711AB51125D8D300104BF5 /* MainFrameMenuBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119161125D8D200104BF5 /* MainFrameMenuBar.cpp */; };
+		95711AB61125D8D300104BF5 /* MainPane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119171125D8D200104BF5 /* MainPane.cpp */; };
+		95711AB71125D8D300104BF5 /* MainPane.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119181125D8D200104BF5 /* MainPane.h */; };
+		95711AB81125D8D300104BF5 /* MeasureBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119191125D8D200104BF5 /* MeasureBar.cpp */; };
+		95711AB91125D8D300104BF5 /* MeasureBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571191A1125D8D200104BF5 /* MeasureBar.h */; };
+		95711ABA1125D8D300104BF5 /* AriaFileWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571191C1125D8D200104BF5 /* AriaFileWriter.cpp */; };
+		95711ABB1125D8D300104BF5 /* AriaFileWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571191D1125D8D200104BF5 /* AriaFileWriter.h */; };
+		95711ABC1125D8D300104BF5 /* IOUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571191E1125D8D200104BF5 /* IOUtils.cpp */; };
+		95711ABD1125D8D300104BF5 /* IOUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571191F1125D8D200104BF5 /* IOUtils.h */; };
+		95711ABE1125D8D300104BF5 /* MidiFileReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119201125D8D200104BF5 /* MidiFileReader.cpp */; };
+		95711ABF1125D8D300104BF5 /* MidiFileReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119211125D8D200104BF5 /* MidiFileReader.h */; };
+		95711AC01125D8D300104BF5 /* MidiToMemoryStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119221125D8D200104BF5 /* MidiToMemoryStream.cpp */; };
+		95711AC11125D8D300104BF5 /* MidiToMemoryStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119231125D8D200104BF5 /* MidiToMemoryStream.h */; };
+		95711AC21125D8D300104BF5 /* languages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119241125D8D200104BF5 /* languages.cpp */; };
+		95711AC31125D8D300104BF5 /* languages.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119251125D8D200104BF5 /* languages.h */; };
+		95711AC41125D8D300104BF5 /* LeakCheck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119261125D8D200104BF5 /* LeakCheck.cpp */; };
+		95711AC51125D8D300104BF5 /* LeakCheck.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119271125D8D200104BF5 /* LeakCheck.h */; };
+		95711AC61125D8D300104BF5 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119281125D8D200104BF5 /* main.cpp */; };
+		95711AC71125D8D300104BF5 /* main.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119291125D8D200104BF5 /* main.h */; };
+		95711AC81125D8D300104BF5 /* CommonMidiUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571192B1125D8D200104BF5 /* CommonMidiUtils.cpp */; };
+		95711AC91125D8D300104BF5 /* CommonMidiUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571192C1125D8D200104BF5 /* CommonMidiUtils.h */; };
+		95711ACA1125D8D300104BF5 /* ControllerEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571192D1125D8D200104BF5 /* ControllerEvent.cpp */; };
+		95711ACB1125D8D300104BF5 /* ControllerEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571192E1125D8D200104BF5 /* ControllerEvent.h */; };
+		95711ACC1125D8D300104BF5 /* MeasureData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571192F1125D8D200104BF5 /* MeasureData.cpp */; };
+		95711ACD1125D8D300104BF5 /* MeasureData.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119301125D8D200104BF5 /* MeasureData.h */; };
+		95711ACE1125D8D300104BF5 /* Note.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119311125D8D200104BF5 /* Note.cpp */; };
+		95711ACF1125D8D300104BF5 /* Note.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119321125D8D200104BF5 /* Note.h */; };
+		95711AD01125D8D300104BF5 /* AlsaNotePlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119351125D8D200104BF5 /* AlsaNotePlayer.cpp */; };
+		95711AD11125D8D300104BF5 /* AlsaNotePlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119361125D8D200104BF5 /* AlsaNotePlayer.h */; };
+		95711AD21125D8D300104BF5 /* AlsaPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119371125D8D200104BF5 /* AlsaPlayer.cpp */; };
+		95711AD31125D8D300104BF5 /* AlsaPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119381125D8D200104BF5 /* AlsaPort.cpp */; };
+		95711AD41125D8D300104BF5 /* AlsaPort.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119391125D8D200104BF5 /* AlsaPort.h */; };
+		95711AD51125D8D300104BF5 /* WinPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571193B1125D8D200104BF5 /* WinPlayer.cpp */; };
+		95711AD61125D8D300104BF5 /* AudioToolboxPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571193D1125D8D200104BF5 /* AudioToolboxPlayer.cpp */; };
+		95711AD71125D8D300104BF5 /* AudioToolboxPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571193E1125D8D200104BF5 /* AudioToolboxPlayer.h */; };
+		95711AD81125D8D300104BF5 /* CoreAudioNotePlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571193F1125D8D200104BF5 /* CoreAudioNotePlayer.cpp */; };
+		95711AD91125D8D300104BF5 /* CoreAudioNotePlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119401125D8D200104BF5 /* CoreAudioNotePlayer.h */; };
+		95711ADA1125D8D300104BF5 /* MacPlayerInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119411125D8D200104BF5 /* MacPlayerInterface.cpp */; };
+		95711ADB1125D8D300104BF5 /* QTKitPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119421125D8D200104BF5 /* QTKitPlayer.h */; };
+		95711ADC1125D8D300104BF5 /* QTKitPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 957119431125D8D200104BF5 /* QTKitPlayer.mm */; };
+		95711ADD1125D8D300104BF5 /* PlatformMidiManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119441125D8D200104BF5 /* PlatformMidiManager.h */; };
+		95711ADE1125D8D300104BF5 /* Sequencer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119451125D8D200104BF5 /* Sequencer.cpp */; };
+		95711ADF1125D8D300104BF5 /* Sequencer.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119461125D8D200104BF5 /* Sequencer.h */; };
+		95711AE01125D8D300104BF5 /* WinPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119481125D8D200104BF5 /* WinPlayer.cpp */; };
+		95711AE11125D8D300104BF5 /* Sequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119491125D8D200104BF5 /* Sequence.cpp */; };
+		95711AE21125D8D300104BF5 /* Sequence.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571194A1125D8D200104BF5 /* Sequence.h */; };
+		95711AE31125D8D300104BF5 /* TimeSigChange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571194B1125D8D200104BF5 /* TimeSigChange.cpp */; };
+		95711AE41125D8D300104BF5 /* TimeSigChange.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571194C1125D8D200104BF5 /* TimeSigChange.h */; };
+		95711AE51125D8D300104BF5 /* Track.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571194D1125D8D200104BF5 /* Track.cpp */; };
+		95711AE61125D8D300104BF5 /* Track.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571194E1125D8D200104BF5 /* Track.h */; };
+		95711AE71125D8D300104BF5 /* OpenGL.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571194F1125D8D200104BF5 /* OpenGL.h */; };
+		95711AE81125D8D300104BF5 /* BackgroundPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119511125D8D200104BF5 /* BackgroundPicker.cpp */; };
+		95711AE91125D8D300104BF5 /* BackgroundPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119521125D8D200104BF5 /* BackgroundPicker.h */; };
+		95711AEA1125D8D300104BF5 /* ControllerChoice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119531125D8D200104BF5 /* ControllerChoice.cpp */; };
+		95711AEB1125D8D300104BF5 /* ControllerChoice.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119541125D8D200104BF5 /* ControllerChoice.h */; };
+		95711AEC1125D8D300104BF5 /* DrumChoice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119551125D8D200104BF5 /* DrumChoice.cpp */; };
+		95711AED1125D8D300104BF5 /* DrumChoice.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119561125D8D200104BF5 /* DrumChoice.h */; };
+		95711AEE1125D8D300104BF5 /* InstrumentChoice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119571125D8D200104BF5 /* InstrumentChoice.cpp */; };
+		95711AEF1125D8D300104BF5 /* InstrumentChoice.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119581125D8D200104BF5 /* InstrumentChoice.h */; };
+		95711AF01125D8D300104BF5 /* KeyPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119591125D8D200104BF5 /* KeyPicker.cpp */; };
+		95711AF11125D8D300104BF5 /* KeyPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571195A1125D8D200104BF5 /* KeyPicker.h */; };
+		95711AF21125D8D300104BF5 /* MagneticGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571195B1125D8D200104BF5 /* MagneticGrid.cpp */; };
+		95711AF31125D8D300104BF5 /* MagneticGrid.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571195C1125D8D200104BF5 /* MagneticGrid.h */; };
+		95711AF41125D8D300104BF5 /* TimeSigPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571195D1125D8D200104BF5 /* TimeSigPicker.cpp */; };
+		95711AF51125D8D300104BF5 /* TimeSigPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571195E1125D8D200104BF5 /* TimeSigPicker.h */; };
+		95711AF61125D8D300104BF5 /* TuningPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571195F1125D8D200104BF5 /* TuningPicker.cpp */; };
+		95711AF71125D8D300104BF5 /* TuningPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119601125D8D200104BF5 /* TuningPicker.h */; };
+		95711AF81125D8D300104BF5 /* VolumeSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119611125D8D200104BF5 /* VolumeSlider.cpp */; };
+		95711AF91125D8D300104BF5 /* VolumeSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119621125D8D200104BF5 /* VolumeSlider.h */; };
+		95711AFA1125D8D300104BF5 /* AriaPrintable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119641125D8D300104BF5 /* AriaPrintable.cpp */; };
+		95711AFB1125D8D300104BF5 /* AriaPrintable.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119651125D8D300104BF5 /* AriaPrintable.h */; };
+		95711AFC1125D8D300104BF5 /* EditorPrintable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119661125D8D300104BF5 /* EditorPrintable.cpp */; };
+		95711AFD1125D8D300104BF5 /* EditorPrintable.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119671125D8D300104BF5 /* EditorPrintable.h */; };
+		95711AFE1125D8D300104BF5 /* PrintableSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119681125D8D300104BF5 /* PrintableSequence.cpp */; };
+		95711AFF1125D8D300104BF5 /* PrintableSequence.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119691125D8D300104BF5 /* PrintableSequence.h */; };
+		95711B001125D8D300104BF5 /* LayoutElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571196B1125D8D300104BF5 /* LayoutElement.cpp */; };
+		95711B011125D8D300104BF5 /* LayoutElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571196C1125D8D300104BF5 /* LayoutElement.h */; };
+		95711B021125D8D300104BF5 /* LayoutPage.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571196D1125D8D300104BF5 /* LayoutPage.h */; };
+		95711B031125D8D300104BF5 /* PrintLayoutAbstract.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571196E1125D8D300104BF5 /* PrintLayoutAbstract.cpp */; };
+		95711B041125D8D300104BF5 /* PrintLayoutAbstract.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571196F1125D8D300104BF5 /* PrintLayoutAbstract.h */; };
+		95711B051125D8D300104BF5 /* PrintLayoutLine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119701125D8D300104BF5 /* PrintLayoutLine.cpp */; };
+		95711B061125D8D300104BF5 /* PrintLayoutLine.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119711125D8D300104BF5 /* PrintLayoutLine.h */; };
+		95711B071125D8D300104BF5 /* PrintLayoutMeasure.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119721125D8D300104BF5 /* PrintLayoutMeasure.cpp */; };
+		95711B081125D8D300104BF5 /* PrintLayoutMeasure.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119731125D8D300104BF5 /* PrintLayoutMeasure.h */; };
+		95711B091125D8D300104BF5 /* PrintLayoutNumeric.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119741125D8D300104BF5 /* PrintLayoutNumeric.cpp */; };
+		95711B0A1125D8D300104BF5 /* PrintLayoutNumeric.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119751125D8D300104BF5 /* PrintLayoutNumeric.h */; };
+		95711B0B1125D8D300104BF5 /* RelativePlacementManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119761125D8D300104BF5 /* RelativePlacementManager.cpp */; };
+		95711B0C1125D8D300104BF5 /* RelativePlacementManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119771125D8D300104BF5 /* RelativePlacementManager.h */; };
+		95711B0D1125D8D300104BF5 /* ScorePrint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119781125D8D300104BF5 /* ScorePrint.cpp */; };
+		95711B0E1125D8D300104BF5 /* ScorePrint.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119791125D8D300104BF5 /* ScorePrint.h */; };
+		95711B0F1125D8D300104BF5 /* TabPrint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571197A1125D8D300104BF5 /* TabPrint.cpp */; };
+		95711B101125D8D300104BF5 /* TabPrint.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571197B1125D8D300104BF5 /* TabPrint.h */; };
+		95711B111125D8D300104BF5 /* ptr_vector.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571197C1125D8D300104BF5 /* ptr_vector.h */; };
+		95711B121125D8D300104BF5 /* Range.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571197D1125D8D300104BF5 /* Range.h */; };
+		95711B131125D8D300104BF5 /* Drawable.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571197F1125D8D300104BF5 /* Drawable.h */; };
+		95711B141125D8D300104BF5 /* GLDrawable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119801125D8D300104BF5 /* GLDrawable.cpp */; };
+		95711B151125D8D300104BF5 /* GLImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119811125D8D300104BF5 /* GLImage.cpp */; };
+		95711B161125D8D300104BF5 /* GLImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119821125D8D300104BF5 /* GLImage.h */; };
+		95711B171125D8D300104BF5 /* GLPane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119831125D8D300104BF5 /* GLPane.cpp */; };
+		95711B181125D8D300104BF5 /* GLPane.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119841125D8D300104BF5 /* GLPane.h */; };
+		95711B191125D8D300104BF5 /* GLRenderImp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119851125D8D300104BF5 /* GLRenderImp.cpp */; };
+		95711B1A1125D8D300104BF5 /* GLwxString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119861125D8D300104BF5 /* GLwxString.cpp */; };
+		95711B1B1125D8D300104BF5 /* GLwxString.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119871125D8D300104BF5 /* GLwxString.h */; };
+		95711B1C1125D8D300104BF5 /* ImageBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119881125D8D300104BF5 /* ImageBase.h */; };
+		95711B1D1125D8D300104BF5 /* RenderAPI.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119891125D8D300104BF5 /* RenderAPI.h */; };
+		95711B1E1125D8D300104BF5 /* wxDCString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571198A1125D8D300104BF5 /* wxDCString.cpp */; };
+		95711B1F1125D8D300104BF5 /* wxDCString.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571198B1125D8D300104BF5 /* wxDCString.h */; };
+		95711B201125D8D300104BF5 /* wxDrawable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571198C1125D8D300104BF5 /* wxDrawable.cpp */; };
+		95711B211125D8D300104BF5 /* wxImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571198D1125D8D300104BF5 /* wxImage.cpp */; };
+		95711B221125D8D300104BF5 /* wxImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571198E1125D8D300104BF5 /* wxImage.h */; };
+		95711B231125D8D300104BF5 /* wxRenderImp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571198F1125D8D300104BF5 /* wxRenderImp.cpp */; };
+		95711B241125D8D300104BF5 /* wxRenderPane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119901125D8D300104BF5 /* wxRenderPane.cpp */; };
+		95711B251125D8D300104BF5 /* wxRenderPane.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119911125D8D300104BF5 /* wxRenderPane.h */; };
+		95711B261125D8D300104BF5 /* Singleton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119921125D8D300104BF5 /* Singleton.cpp */; };
+		95711B271125D8D300104BF5 /* Singleton.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119931125D8D300104BF5 /* Singleton.h */; };
+		95711B281125D8D300104BF5 /* unit_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119941125D8D300104BF5 /* unit_test.cpp */; };
+		95711B291125D8D300104BF5 /* unit_test.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119951125D8D300104BF5 /* unit_test.h */; };
+		EF104F6C0B21E1900079A1B7 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF104F6B0B21E1900079A1B7 /* QTKit.framework */; };
+		EF85576209BDE24C00D9D1BC /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF85576109BDE24C00D9D1BC /* OpenGL.framework */; };
+		EF9D1CB709ABE21F00CAF7A6 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF9D1CB609ABE21F00CAF7A6 /* Carbon.framework */; };
+		EF9D1D5109ABE22B00CAF7A6 /* System.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF9D1D5009ABE22B00CAF7A6 /* System.framework */; };
+		EFA04BCF09BF399C0079DEB2 /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFA04BCE09BF399C0079DEB2 /* QuickTime.framework */; };
+		EFA04C1309BF39C60079DEB2 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFA04C1209BF39C60079DEB2 /* AGL.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		950B3E951125DD2E006C9AF1 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				950B3EFC1125DE60006C9AF1 /* fr.lproj in CopyFiles */,
+				950B3EFD1125DE60006C9AF1 /* en.lproj in CopyFiles */,
+				950B3EFE1125DE60006C9AF1 /* de.lproj in CopyFiles */,
+				950B3EFF1125DE60006C9AF1 /* it.lproj in CopyFiles */,
+				950B3EF01125DE41006C9AF1 /* violin.icns in CopyFiles */,
+				950B3EF11125DE41006C9AF1 /* aria_file.icns in CopyFiles */,
+				950B3EF21125DE41006C9AF1 /* aria_midi_file.icns in CopyFiles */,
+				950B3E701125DD10006C9AF1 /* Documentation in CopyFiles */,
+				950B3E711125DD10006C9AF1 /* score in CopyFiles */,
+				950B3E751125DD10006C9AF1 /* collapse.jpg in CopyFiles */,
+				950B3E761125DD10006C9AF1 /* border.jpg in CopyFiles */,
+				950B3E771125DD10006C9AF1 /* score_view.jpg in CopyFiles */,
+				950B3E781125DD10006C9AF1 /* corner.jpg in CopyFiles */,
+				950B3E791125DD10006C9AF1 /* guitar_view.jpg in CopyFiles */,
+				950B3E7A1125DD10006C9AF1 /* keyboard_view.jpg in CopyFiles */,
+				950B3E7B1125DD10006C9AF1 /* controller_view.jpg in CopyFiles */,
+				950B3E7C1125DD10006C9AF1 /* expand.jpg in CopyFiles */,
+				950B3E7D1125DD10006C9AF1 /* title.jpg in CopyFiles */,
+				950B3E7E1125DD10006C9AF1 /* combo_side.png in CopyFiles */,
+				950B3E7F1125DD10006C9AF1 /* tool2.png in CopyFiles */,
+				950B3E801125DD10006C9AF1 /* play.png in CopyFiles */,
+				950B3E811125DD10006C9AF1 /* notetrack.png in CopyFiles */,
+				950B3E821125DD10006C9AF1 /* white_corner.png in CopyFiles */,
+				950B3E831125DD10006C9AF1 /* mute_off.png in CopyFiles */,
+				950B3E841125DD10006C9AF1 /* pause.png in CopyFiles */,
+				950B3E851125DD10006C9AF1 /* dock.png in CopyFiles */,
+				950B3E861125DD10006C9AF1 /* sb_arrow.png in CopyFiles */,
+				950B3E871125DD10006C9AF1 /* drum_view.png in CopyFiles */,
+				950B3E881125DD10006C9AF1 /* tool1.png in CopyFiles */,
+				950B3E891125DD10006C9AF1 /* maximize.png in CopyFiles */,
+				950B3E8A1125DD10006C9AF1 /* mute_on.png in CopyFiles */,
+				950B3E8B1125DD10006C9AF1 /* sb_arrow_sel.png in CopyFiles */,
+				950B3E8C1125DD10006C9AF1 /* close.png in CopyFiles */,
+				950B3E8D1125DD10006C9AF1 /* tab_side.png in CopyFiles */,
+				950B3E8E1125DD10006C9AF1 /* stop.png in CopyFiles */,
+				950B3E8F1125DD10006C9AF1 /* tab_body.png in CopyFiles */,
+				950B3E901125DD10006C9AF1 /* sb_backg.png in CopyFiles */,
+				950B3E911125DD10006C9AF1 /* combo_body.png in CopyFiles */,
+				950B3E921125DD10006C9AF1 /* combo_select.png in CopyFiles */,
+				950B3E931125DD10006C9AF1 /* white_border.png in CopyFiles */,
+				950B3E941125DD10006C9AF1 /* sb_thumb.tga in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9568DDFE10D54FE30089AAAF /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				950B3EF81125DE59006C9AF1 /* fr.lproj in CopyFiles */,
+				950B3EF91125DE59006C9AF1 /* en.lproj in CopyFiles */,
+				950B3EFA1125DE59006C9AF1 /* de.lproj in CopyFiles */,
+				950B3EFB1125DE59006C9AF1 /* it.lproj in CopyFiles */,
+				950B3EF31125DE46006C9AF1 /* violin.icns in CopyFiles */,
+				950B3EF41125DE46006C9AF1 /* aria_file.icns in CopyFiles */,
+				950B3EF51125DE46006C9AF1 /* aria_midi_file.icns in CopyFiles */,
+				950B3EA71125DD64006C9AF1 /* border.jpg in CopyFiles */,
+				950B3EA81125DD64006C9AF1 /* close.png in CopyFiles */,
+				950B3EA91125DD64006C9AF1 /* collapse.jpg in CopyFiles */,
+				950B3EAA1125DD64006C9AF1 /* combo_body.png in CopyFiles */,
+				950B3EAB1125DD64006C9AF1 /* combo_select.png in CopyFiles */,
+				950B3EAC1125DD64006C9AF1 /* combo_side.png in CopyFiles */,
+				950B3EAD1125DD64006C9AF1 /* controller_view.jpg in CopyFiles */,
+				950B3EAE1125DD64006C9AF1 /* corner.jpg in CopyFiles */,
+				950B3EB01125DD64006C9AF1 /* dock.png in CopyFiles */,
+				950B3EB11125DD64006C9AF1 /* Documentation in CopyFiles */,
+				950B3EB21125DD64006C9AF1 /* drum_view.png in CopyFiles */,
+				950B3EB41125DD64006C9AF1 /* expand.jpg in CopyFiles */,
+				950B3EB61125DD64006C9AF1 /* guitar_view.jpg in CopyFiles */,
+				950B3EB81125DD64006C9AF1 /* keyboard_view.jpg in CopyFiles */,
+				950B3EB91125DD64006C9AF1 /* maximize.png in CopyFiles */,
+				950B3EBA1125DD64006C9AF1 /* mute_off.png in CopyFiles */,
+				950B3EBB1125DD64006C9AF1 /* mute_on.png in CopyFiles */,
+				950B3EBC1125DD64006C9AF1 /* notetrack.png in CopyFiles */,
+				950B3EBD1125DD64006C9AF1 /* pause.png in CopyFiles */,
+				950B3EBE1125DD64006C9AF1 /* play.png in CopyFiles */,
+				950B3EBF1125DD64006C9AF1 /* sb_arrow.png in CopyFiles */,
+				950B3EC01125DD64006C9AF1 /* sb_arrow_sel.png in CopyFiles */,
+				950B3EC11125DD64006C9AF1 /* sb_backg.png in CopyFiles */,
+				950B3EC21125DD64006C9AF1 /* sb_thumb.tga in CopyFiles */,
+				950B3EC31125DD64006C9AF1 /* score in CopyFiles */,
+				950B3EC41125DD64006C9AF1 /* score_view.jpg in CopyFiles */,
+				950B3EC51125DD64006C9AF1 /* stop.png in CopyFiles */,
+				950B3EC61125DD64006C9AF1 /* tab_body.png in CopyFiles */,
+				950B3EC71125DD64006C9AF1 /* tab_side.png in CopyFiles */,
+				950B3EC81125DD64006C9AF1 /* title.jpg in CopyFiles */,
+				950B3EC91125DD64006C9AF1 /* tool1.png in CopyFiles */,
+				950B3ECA1125DD64006C9AF1 /* tool2.png in CopyFiles */,
+				950B3ECC1125DD64006C9AF1 /* white_border.png in CopyFiles */,
+				950B3ECD1125DD64006C9AF1 /* white_corner.png in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		4E1DA4F30B3D85C5008BE3E4 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
+		4E1DA4F40B3D85C5008BE3E4 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = /System/Library/Frameworks/AudioUnit.framework; sourceTree = "<absolute>"; };
+		4E65A3020B4C3DEC0096E9C0 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = /System/Library/Frameworks/IOKit.framework; sourceTree = "<absolute>"; };
+		4E65A46E0B4C3E250096E9C0 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		950B3B421125DBCF006C9AF1 /* CXMLReaderImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CXMLReaderImpl.h; path = ../irrXML/CXMLReaderImpl.h; sourceTree = SOURCE_ROOT; };
+		950B3B431125DBCF006C9AF1 /* fast_atof.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fast_atof.h; path = ../irrXML/fast_atof.h; sourceTree = SOURCE_ROOT; };
+		950B3B441125DBCF006C9AF1 /* heapsort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = heapsort.h; path = ../irrXML/heapsort.h; sourceTree = SOURCE_ROOT; };
+		950B3B451125DBCF006C9AF1 /* irrArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = irrArray.h; path = ../irrXML/irrArray.h; sourceTree = SOURCE_ROOT; };
+		950B3B461125DBCF006C9AF1 /* irrString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = irrString.h; path = ../irrXML/irrString.h; sourceTree = SOURCE_ROOT; };
+		950B3B471125DBCF006C9AF1 /* irrTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = irrTypes.h; path = ../irrXML/irrTypes.h; sourceTree = SOURCE_ROOT; };
+		950B3B481125DBCF006C9AF1 /* irrXML.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = irrXML.cpp; path = ../irrXML/irrXML.cpp; sourceTree = SOURCE_ROOT; };
+		950B3B491125DBCF006C9AF1 /* irrXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = irrXML.h; path = ../irrXML/irrXML.h; sourceTree = SOURCE_ROOT; };
+		950B3EDF1125DDEB006C9AF1 /* devel - noGL.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "devel - noGL.plist"; path = "../OSX/devel - noGL.plist"; sourceTree = SOURCE_ROOT; };
+		950B3EE01125DDEB006C9AF1 /* devel.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = devel.plist; path = ../OSX/devel.plist; sourceTree = SOURCE_ROOT; };
+		950B3EE11125DDF1006C9AF1 /* violin.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = violin.icns; path = ../OSX/violin.icns; sourceTree = SOURCE_ROOT; };
+		950B3EE21125DDF9006C9AF1 /* release.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = release.plist; path = ../OSX/release.plist; sourceTree = SOURCE_ROOT; };
+		950B3EE31125DE18006C9AF1 /* de.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = de.lproj; path = "../OSX/mac-i18n/de.lproj"; sourceTree = SOURCE_ROOT; };
+		950B3EE61125DE18006C9AF1 /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = en.lproj; path = "../OSX/mac-i18n/en.lproj"; sourceTree = SOURCE_ROOT; };
+		950B3EE81125DE18006C9AF1 /* fr.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = fr.lproj; path = "../OSX/mac-i18n/fr.lproj"; sourceTree = SOURCE_ROOT; };
+		950B3EEB1125DE18006C9AF1 /* it.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = it.lproj; path = "../OSX/mac-i18n/it.lproj"; sourceTree = SOURCE_ROOT; };
+		950B3EEE1125DE2F006C9AF1 /* aria_file.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = aria_file.icns; path = ../OSX/aria_file.icns; sourceTree = SOURCE_ROOT; };
+		950B3EEF1125DE2F006C9AF1 /* aria_midi_file.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = aria_midi_file.icns; path = ../OSX/aria_midi_file.icns; sourceTree = SOURCE_ROOT; };
+		9568DC6310D54CA50089AAAF /* DebugConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugConfig.xcconfig; sourceTree = SOURCE_ROOT; };
+		9568DC6810D54DC70089AAAF /* ReleaseConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReleaseConfig.xcconfig; sourceTree = SOURCE_ROOT; };
+		9568DD6310D54E340089AAAF /* DebugConfigNoGL.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugConfigNoGL.xcconfig; sourceTree = SOURCE_ROOT; };
+		9568DD6410D54E340089AAAF /* ReleaseConfigNoGL.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReleaseConfigNoGL.xcconfig; sourceTree = SOURCE_ROOT; };
+		9568DE8D10D54FE30089AAAF /* Aria Maestosa (no GL).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Aria Maestosa (no GL).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		957118BE1125D8D200104BF5 /* AddControlEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AddControlEvent.cpp; path = ../Src/Actions/AddControlEvent.cpp; sourceTree = SOURCE_ROOT; };
+		957118BF1125D8D200104BF5 /* AddControlEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddControlEvent.h; path = ../Src/Actions/AddControlEvent.h; sourceTree = SOURCE_ROOT; };
+		957118C01125D8D200104BF5 /* AddControllerSlide.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AddControllerSlide.cpp; path = ../Src/Actions/AddControllerSlide.cpp; sourceTree = SOURCE_ROOT; };
+		957118C11125D8D200104BF5 /* AddControllerSlide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddControllerSlide.h; path = ../Src/Actions/AddControllerSlide.h; sourceTree = SOURCE_ROOT; };
+		957118C21125D8D200104BF5 /* AddNote.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AddNote.cpp; path = ../Src/Actions/AddNote.cpp; sourceTree = SOURCE_ROOT; };
+		957118C31125D8D200104BF5 /* AddNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddNote.h; path = ../Src/Actions/AddNote.h; sourceTree = SOURCE_ROOT; };
+		957118C41125D8D200104BF5 /* DeleteSelected.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DeleteSelected.cpp; path = ../Src/Actions/DeleteSelected.cpp; sourceTree = SOURCE_ROOT; };
+		957118C51125D8D200104BF5 /* DeleteSelected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DeleteSelected.h; path = ../Src/Actions/DeleteSelected.h; sourceTree = SOURCE_ROOT; };
+		957118C61125D8D200104BF5 /* EditAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EditAction.cpp; path = ../Src/Actions/EditAction.cpp; sourceTree = SOURCE_ROOT; };
+		957118C71125D8D200104BF5 /* EditAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditAction.h; path = ../Src/Actions/EditAction.h; sourceTree = SOURCE_ROOT; };
+		957118C81125D8D200104BF5 /* InsertEmptyMeasures.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InsertEmptyMeasures.cpp; path = ../Src/Actions/InsertEmptyMeasures.cpp; sourceTree = SOURCE_ROOT; };
+		957118C91125D8D200104BF5 /* InsertEmptyMeasures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InsertEmptyMeasures.h; path = ../Src/Actions/InsertEmptyMeasures.h; sourceTree = SOURCE_ROOT; };
+		957118CA1125D8D200104BF5 /* MoveNotes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MoveNotes.cpp; path = ../Src/Actions/MoveNotes.cpp; sourceTree = SOURCE_ROOT; };
+		957118CB1125D8D200104BF5 /* MoveNotes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MoveNotes.h; path = ../Src/Actions/MoveNotes.h; sourceTree = SOURCE_ROOT; };
+		957118CC1125D8D200104BF5 /* NumberPressed.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NumberPressed.cpp; path = ../Src/Actions/NumberPressed.cpp; sourceTree = SOURCE_ROOT; };
+		957118CD1125D8D200104BF5 /* NumberPressed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NumberPressed.h; path = ../Src/Actions/NumberPressed.h; sourceTree = SOURCE_ROOT; };
+		957118CE1125D8D200104BF5 /* Paste.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Paste.cpp; path = ../Src/Actions/Paste.cpp; sourceTree = SOURCE_ROOT; };
+		957118CF1125D8D200104BF5 /* Paste.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Paste.h; path = ../Src/Actions/Paste.h; sourceTree = SOURCE_ROOT; };
+		957118D01125D8D200104BF5 /* RearrangeNotes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RearrangeNotes.cpp; path = ../Src/Actions/RearrangeNotes.cpp; sourceTree = SOURCE_ROOT; };
+		957118D11125D8D200104BF5 /* RearrangeNotes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RearrangeNotes.h; path = ../Src/Actions/RearrangeNotes.h; sourceTree = SOURCE_ROOT; };
+		957118D21125D8D200104BF5 /* RemoveMeasures.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RemoveMeasures.cpp; path = ../Src/Actions/RemoveMeasures.cpp; sourceTree = SOURCE_ROOT; };
+		957118D31125D8D200104BF5 /* RemoveMeasures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoveMeasures.h; path = ../Src/Actions/RemoveMeasures.h; sourceTree = SOURCE_ROOT; };
+		957118D41125D8D200104BF5 /* RemoveOverlapping.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RemoveOverlapping.cpp; path = ../Src/Actions/RemoveOverlapping.cpp; sourceTree = SOURCE_ROOT; };
+		957118D51125D8D200104BF5 /* RemoveOverlapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoveOverlapping.h; path = ../Src/Actions/RemoveOverlapping.h; sourceTree = SOURCE_ROOT; };
+		957118D61125D8D200104BF5 /* ResizeNotes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ResizeNotes.cpp; path = ../Src/Actions/ResizeNotes.cpp; sourceTree = SOURCE_ROOT; };
+		957118D71125D8D200104BF5 /* ResizeNotes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ResizeNotes.h; path = ../Src/Actions/ResizeNotes.h; sourceTree = SOURCE_ROOT; };
+		957118D81125D8D200104BF5 /* ScaleSong.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScaleSong.cpp; path = ../Src/Actions/ScaleSong.cpp; sourceTree = SOURCE_ROOT; };
+		957118D91125D8D200104BF5 /* ScaleSong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScaleSong.h; path = ../Src/Actions/ScaleSong.h; sourceTree = SOURCE_ROOT; };
+		957118DA1125D8D200104BF5 /* ScaleTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScaleTrack.cpp; path = ../Src/Actions/ScaleTrack.cpp; sourceTree = SOURCE_ROOT; };
+		957118DB1125D8D200104BF5 /* ScaleTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScaleTrack.h; path = ../Src/Actions/ScaleTrack.h; sourceTree = SOURCE_ROOT; };
+		957118DC1125D8D200104BF5 /* SetAccidentalSign.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SetAccidentalSign.cpp; path = ../Src/Actions/SetAccidentalSign.cpp; sourceTree = SOURCE_ROOT; };
+		957118DD1125D8D200104BF5 /* SetAccidentalSign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SetAccidentalSign.h; path = ../Src/Actions/SetAccidentalSign.h; sourceTree = SOURCE_ROOT; };
+		957118DE1125D8D200104BF5 /* SetNoteVolume.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SetNoteVolume.cpp; path = ../Src/Actions/SetNoteVolume.cpp; sourceTree = SOURCE_ROOT; };
+		957118DF1125D8D200104BF5 /* SetNoteVolume.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SetNoteVolume.h; path = ../Src/Actions/SetNoteVolume.h; sourceTree = SOURCE_ROOT; };
+		957118E01125D8D200104BF5 /* ShiftBySemiTone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ShiftBySemiTone.cpp; path = ../Src/Actions/ShiftBySemiTone.cpp; sourceTree = SOURCE_ROOT; };
+		957118E11125D8D200104BF5 /* ShiftBySemiTone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShiftBySemiTone.h; path = ../Src/Actions/ShiftBySemiTone.h; sourceTree = SOURCE_ROOT; };
+		957118E21125D8D200104BF5 /* ShiftFrets.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ShiftFrets.cpp; path = ../Src/Actions/ShiftFrets.cpp; sourceTree = SOURCE_ROOT; };
+		957118E31125D8D200104BF5 /* ShiftFrets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShiftFrets.h; path = ../Src/Actions/ShiftFrets.h; sourceTree = SOURCE_ROOT; };
+		957118E41125D8D200104BF5 /* ShiftString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ShiftString.cpp; path = ../Src/Actions/ShiftString.cpp; sourceTree = SOURCE_ROOT; };
+		957118E51125D8D200104BF5 /* ShiftString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShiftString.h; path = ../Src/Actions/ShiftString.h; sourceTree = SOURCE_ROOT; };
+		957118E61125D8D200104BF5 /* SnapNotesToGrid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SnapNotesToGrid.cpp; path = ../Src/Actions/SnapNotesToGrid.cpp; sourceTree = SOURCE_ROOT; };
+		957118E71125D8D200104BF5 /* SnapNotesToGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SnapNotesToGrid.h; path = ../Src/Actions/SnapNotesToGrid.h; sourceTree = SOURCE_ROOT; };
+		957118E81125D8D200104BF5 /* UpdateGuitarTuning.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UpdateGuitarTuning.cpp; path = ../Src/Actions/UpdateGuitarTuning.cpp; sourceTree = SOURCE_ROOT; };
+		957118E91125D8D200104BF5 /* UpdateGuitarTuning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UpdateGuitarTuning.h; path = ../Src/Actions/UpdateGuitarTuning.h; sourceTree = SOURCE_ROOT; };
+		957118EA1125D8D200104BF5 /* AriaCore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AriaCore.cpp; path = ../Src/AriaCore.cpp; sourceTree = SOURCE_ROOT; };
+		957118EB1125D8D200104BF5 /* AriaCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AriaCore.h; path = ../Src/AriaCore.h; sourceTree = SOURCE_ROOT; };
+		957118EC1125D8D200104BF5 /* Clipboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Clipboard.cpp; path = ../Src/Clipboard.cpp; sourceTree = SOURCE_ROOT; };
+		957118ED1125D8D200104BF5 /* Clipboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Clipboard.h; path = ../Src/Clipboard.h; sourceTree = SOURCE_ROOT; };
+		957118EE1125D8D200104BF5 /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Config.h; path = ../Src/Config.h; sourceTree = SOURCE_ROOT; };
+		957118F01125D8D200104BF5 /* About.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = About.cpp; path = ../Src/Dialogs/About.cpp; sourceTree = SOURCE_ROOT; };
+		957118F11125D8D200104BF5 /* About.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = About.h; path = ../Src/Dialogs/About.h; sourceTree = SOURCE_ROOT; };
+		957118F21125D8D200104BF5 /* CopyrightWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CopyrightWindow.cpp; path = ../Src/Dialogs/CopyrightWindow.cpp; sourceTree = SOURCE_ROOT; };
+		957118F31125D8D200104BF5 /* CopyrightWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CopyrightWindow.h; path = ../Src/Dialogs/CopyrightWindow.h; sourceTree = SOURCE_ROOT; };
+		957118F41125D8D200104BF5 /* CustomNoteSelectDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CustomNoteSelectDialog.cpp; path = ../Src/Dialogs/CustomNoteSelectDialog.cpp; sourceTree = SOURCE_ROOT; };
+		957118F51125D8D200104BF5 /* CustomNoteSelectDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomNoteSelectDialog.h; path = ../Src/Dialogs/CustomNoteSelectDialog.h; sourceTree = SOURCE_ROOT; };
+		957118F61125D8D200104BF5 /* NotationExportDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NotationExportDialog.cpp; path = ../Src/Dialogs/NotationExportDialog.cpp; sourceTree = SOURCE_ROOT; };
+		957118F71125D8D200104BF5 /* NotationExportDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NotationExportDialog.h; path = ../Src/Dialogs/NotationExportDialog.h; sourceTree = SOURCE_ROOT; };
+		957118F81125D8D200104BF5 /* Preferences.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Preferences.cpp; path = ../Src/Dialogs/Preferences.cpp; sourceTree = SOURCE_ROOT; };
+		957118F91125D8D200104BF5 /* Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Preferences.h; path = ../Src/Dialogs/Preferences.h; sourceTree = SOURCE_ROOT; };
+		957118FA1125D8D200104BF5 /* ScalePicker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScalePicker.cpp; path = ../Src/Dialogs/ScalePicker.cpp; sourceTree = SOURCE_ROOT; };
+		957118FB1125D8D200104BF5 /* ScalePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScalePicker.h; path = ../Src/Dialogs/ScalePicker.h; sourceTree = SOURCE_ROOT; };
+		957118FC1125D8D200104BF5 /* WaitWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WaitWindow.cpp; path = ../Src/Dialogs/WaitWindow.cpp; sourceTree = SOURCE_ROOT; };
+		957118FD1125D8D200104BF5 /* WaitWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WaitWindow.h; path = ../Src/Dialogs/WaitWindow.h; sourceTree = SOURCE_ROOT; };
+		957118FF1125D8D200104BF5 /* ControllerEditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ControllerEditor.cpp; path = ../Src/Editors/ControllerEditor.cpp; sourceTree = SOURCE_ROOT; };
+		957119001125D8D200104BF5 /* ControllerEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ControllerEditor.h; path = ../Src/Editors/ControllerEditor.h; sourceTree = SOURCE_ROOT; };
+		957119011125D8D200104BF5 /* DrumEditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DrumEditor.cpp; path = ../Src/Editors/DrumEditor.cpp; sourceTree = SOURCE_ROOT; };
+		957119021125D8D200104BF5 /* DrumEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DrumEditor.h; path = ../Src/Editors/DrumEditor.h; sourceTree = SOURCE_ROOT; };
+		957119031125D8D200104BF5 /* Editor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Editor.cpp; path = ../Src/Editors/Editor.cpp; sourceTree = SOURCE_ROOT; };
+		957119041125D8D200104BF5 /* Editor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Editor.h; path = ../Src/Editors/Editor.h; sourceTree = SOURCE_ROOT; };
+		957119051125D8D200104BF5 /* GuitarEditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GuitarEditor.cpp; path = ../Src/Editors/GuitarEditor.cpp; sourceTree = SOURCE_ROOT; };
+		957119061125D8D200104BF5 /* GuitarEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GuitarEditor.h; path = ../Src/Editors/GuitarEditor.h; sourceTree = SOURCE_ROOT; };
+		957119071125D8D200104BF5 /* KeyboardEditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KeyboardEditor.cpp; path = ../Src/Editors/KeyboardEditor.cpp; sourceTree = SOURCE_ROOT; };
+		957119081125D8D200104BF5 /* KeyboardEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeyboardEditor.h; path = ../Src/Editors/KeyboardEditor.h; sourceTree = SOURCE_ROOT; };
+		957119091125D8D200104BF5 /* RelativeXCoord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RelativeXCoord.cpp; path = ../Src/Editors/RelativeXCoord.cpp; sourceTree = SOURCE_ROOT; };
+		9571190A1125D8D200104BF5 /* RelativeXCoord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RelativeXCoord.h; path = ../Src/Editors/RelativeXCoord.h; sourceTree = SOURCE_ROOT; };
+		9571190B1125D8D200104BF5 /* ScoreAnalyser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreAnalyser.cpp; path = ../Src/Editors/ScoreAnalyser.cpp; sourceTree = SOURCE_ROOT; };
+		9571190C1125D8D200104BF5 /* ScoreAnalyser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreAnalyser.h; path = ../Src/Editors/ScoreAnalyser.h; sourceTree = SOURCE_ROOT; };
+		9571190D1125D8D200104BF5 /* ScoreEditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreEditor.cpp; path = ../Src/Editors/ScoreEditor.cpp; sourceTree = SOURCE_ROOT; };
+		9571190E1125D8D200104BF5 /* ScoreEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreEditor.h; path = ../Src/Editors/ScoreEditor.h; sourceTree = SOURCE_ROOT; };
+		957119101125D8D200104BF5 /* GraphicalTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GraphicalTrack.cpp; path = ../Src/GUI/GraphicalTrack.cpp; sourceTree = SOURCE_ROOT; };
+		957119111125D8D200104BF5 /* GraphicalTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GraphicalTrack.h; path = ../Src/GUI/GraphicalTrack.h; sourceTree = SOURCE_ROOT; };
+		957119121125D8D200104BF5 /* ImageProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ImageProvider.cpp; path = ../Src/GUI/ImageProvider.cpp; sourceTree = SOURCE_ROOT; };
+		957119131125D8D200104BF5 /* ImageProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageProvider.h; path = ../Src/GUI/ImageProvider.h; sourceTree = SOURCE_ROOT; };
+		957119141125D8D200104BF5 /* MainFrame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MainFrame.cpp; path = ../Src/GUI/MainFrame.cpp; sourceTree = SOURCE_ROOT; };
+		957119151125D8D200104BF5 /* MainFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainFrame.h; path = ../Src/GUI/MainFrame.h; sourceTree = SOURCE_ROOT; };
+		957119161125D8D200104BF5 /* MainFrameMenuBar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MainFrameMenuBar.cpp; path = ../Src/GUI/MainFrameMenuBar.cpp; sourceTree = SOURCE_ROOT; };
+		957119171125D8D200104BF5 /* MainPane.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MainPane.cpp; path = ../Src/GUI/MainPane.cpp; sourceTree = SOURCE_ROOT; };
+		957119181125D8D200104BF5 /* MainPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainPane.h; path = ../Src/GUI/MainPane.h; sourceTree = SOURCE_ROOT; };
+		957119191125D8D200104BF5 /* MeasureBar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MeasureBar.cpp; path = ../Src/GUI/MeasureBar.cpp; sourceTree = SOURCE_ROOT; };
+		9571191A1125D8D200104BF5 /* MeasureBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeasureBar.h; path = ../Src/GUI/MeasureBar.h; sourceTree = SOURCE_ROOT; };
+		9571191C1125D8D200104BF5 /* AriaFileWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AriaFileWriter.cpp; path = ../Src/IO/AriaFileWriter.cpp; sourceTree = SOURCE_ROOT; };
+		9571191D1125D8D200104BF5 /* AriaFileWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AriaFileWriter.h; path = ../Src/IO/AriaFileWriter.h; sourceTree = SOURCE_ROOT; };
+		9571191E1125D8D200104BF5 /* IOUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = IOUtils.cpp; path = ../Src/IO/IOUtils.cpp; sourceTree = SOURCE_ROOT; };
+		9571191F1125D8D200104BF5 /* IOUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOUtils.h; path = ../Src/IO/IOUtils.h; sourceTree = SOURCE_ROOT; };
+		957119201125D8D200104BF5 /* MidiFileReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MidiFileReader.cpp; path = ../Src/IO/MidiFileReader.cpp; sourceTree = SOURCE_ROOT; };
+		957119211125D8D200104BF5 /* MidiFileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MidiFileReader.h; path = ../Src/IO/MidiFileReader.h; sourceTree = SOURCE_ROOT; };
+		957119221125D8D200104BF5 /* MidiToMemoryStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MidiToMemoryStream.cpp; path = ../Src/IO/MidiToMemoryStream.cpp; sourceTree = SOURCE_ROOT; };
+		957119231125D8D200104BF5 /* MidiToMemoryStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MidiToMemoryStream.h; path = ../Src/IO/MidiToMemoryStream.h; sourceTree = SOURCE_ROOT; };
+		957119241125D8D200104BF5 /* languages.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = languages.cpp; path = ../Src/languages.cpp; sourceTree = SOURCE_ROOT; };
+		957119251125D8D200104BF5 /* languages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = languages.h; path = ../Src/languages.h; sourceTree = SOURCE_ROOT; };
+		957119261125D8D200104BF5 /* LeakCheck.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LeakCheck.cpp; path = ../Src/LeakCheck.cpp; sourceTree = SOURCE_ROOT; };
+		957119271125D8D200104BF5 /* LeakCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LeakCheck.h; path = ../Src/LeakCheck.h; sourceTree = SOURCE_ROOT; };
+		957119281125D8D200104BF5 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../Src/main.cpp; sourceTree = SOURCE_ROOT; };
+		957119291125D8D200104BF5 /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = main.h; path = ../Src/main.h; sourceTree = SOURCE_ROOT; };
+		9571192B1125D8D200104BF5 /* CommonMidiUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CommonMidiUtils.cpp; path = ../Src/Midi/CommonMidiUtils.cpp; sourceTree = SOURCE_ROOT; };
+		9571192C1125D8D200104BF5 /* CommonMidiUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommonMidiUtils.h; path = ../Src/Midi/CommonMidiUtils.h; sourceTree = SOURCE_ROOT; };
+		9571192D1125D8D200104BF5 /* ControllerEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ControllerEvent.cpp; path = ../Src/Midi/ControllerEvent.cpp; sourceTree = SOURCE_ROOT; };
+		9571192E1125D8D200104BF5 /* ControllerEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ControllerEvent.h; path = ../Src/Midi/ControllerEvent.h; sourceTree = SOURCE_ROOT; };
+		9571192F1125D8D200104BF5 /* MeasureData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MeasureData.cpp; path = ../Src/Midi/MeasureData.cpp; sourceTree = SOURCE_ROOT; };
+		957119301125D8D200104BF5 /* MeasureData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeasureData.h; path = ../Src/Midi/MeasureData.h; sourceTree = SOURCE_ROOT; };
+		957119311125D8D200104BF5 /* Note.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Note.cpp; path = ../Src/Midi/Note.cpp; sourceTree = SOURCE_ROOT; };
+		957119321125D8D200104BF5 /* Note.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Note.h; path = ../Src/Midi/Note.h; sourceTree = SOURCE_ROOT; };
+		957119351125D8D200104BF5 /* AlsaNotePlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AlsaNotePlayer.cpp; path = ../Src/Midi/Players/Alsa/AlsaNotePlayer.cpp; sourceTree = SOURCE_ROOT; };
+		957119361125D8D200104BF5 /* AlsaNotePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlsaNotePlayer.h; path = ../Src/Midi/Players/Alsa/AlsaNotePlayer.h; sourceTree = SOURCE_ROOT; };
+		957119371125D8D200104BF5 /* AlsaPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AlsaPlayer.cpp; path = ../Src/Midi/Players/Alsa/AlsaPlayer.cpp; sourceTree = SOURCE_ROOT; };
+		957119381125D8D200104BF5 /* AlsaPort.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AlsaPort.cpp; path = ../Src/Midi/Players/Alsa/AlsaPort.cpp; sourceTree = SOURCE_ROOT; };
+		957119391125D8D200104BF5 /* AlsaPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlsaPort.h; path = ../Src/Midi/Players/Alsa/AlsaPort.h; sourceTree = SOURCE_ROOT; };
+		9571193B1125D8D200104BF5 /* WinPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WinPlayer.cpp; path = ../Src/Midi/Players/Example/WinPlayer.cpp; sourceTree = SOURCE_ROOT; };
+		9571193D1125D8D200104BF5 /* AudioToolboxPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AudioToolboxPlayer.cpp; path = ../Src/Midi/Players/Mac/AudioToolboxPlayer.cpp; sourceTree = SOURCE_ROOT; };
+		9571193E1125D8D200104BF5 /* AudioToolboxPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioToolboxPlayer.h; path = ../Src/Midi/Players/Mac/AudioToolboxPlayer.h; sourceTree = SOURCE_ROOT; };
+		9571193F1125D8D200104BF5 /* CoreAudioNotePlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CoreAudioNotePlayer.cpp; path = ../Src/Midi/Players/Mac/CoreAudioNotePlayer.cpp; sourceTree = SOURCE_ROOT; };
+		957119401125D8D200104BF5 /* CoreAudioNotePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreAudioNotePlayer.h; path = ../Src/Midi/Players/Mac/CoreAudioNotePlayer.h; sourceTree = SOURCE_ROOT; };
+		957119411125D8D200104BF5 /* MacPlayerInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MacPlayerInterface.cpp; path = ../Src/Midi/Players/Mac/MacPlayerInterface.cpp; sourceTree = SOURCE_ROOT; };
+		957119421125D8D200104BF5 /* QTKitPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QTKitPlayer.h; path = ../Src/Midi/Players/Mac/QTKitPlayer.h; sourceTree = SOURCE_ROOT; };
+		957119431125D8D200104BF5 /* QTKitPlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = QTKitPlayer.mm; path = ../Src/Midi/Players/Mac/QTKitPlayer.mm; sourceTree = SOURCE_ROOT; };
+		957119441125D8D200104BF5 /* PlatformMidiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlatformMidiManager.h; path = ../Src/Midi/Players/PlatformMidiManager.h; sourceTree = SOURCE_ROOT; };
+		957119451125D8D200104BF5 /* Sequencer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Sequencer.cpp; path = ../Src/Midi/Players/Sequencer.cpp; sourceTree = SOURCE_ROOT; };
+		957119461125D8D200104BF5 /* Sequencer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sequencer.h; path = ../Src/Midi/Players/Sequencer.h; sourceTree = SOURCE_ROOT; };
+		957119481125D8D200104BF5 /* WinPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WinPlayer.cpp; path = ../Src/Midi/Players/Win/WinPlayer.cpp; sourceTree = SOURCE_ROOT; };
+		957119491125D8D200104BF5 /* Sequence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Sequence.cpp; path = ../Src/Midi/Sequence.cpp; sourceTree = SOURCE_ROOT; };
+		9571194A1125D8D200104BF5 /* Sequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sequence.h; path = ../Src/Midi/Sequence.h; sourceTree = SOURCE_ROOT; };
+		9571194B1125D8D200104BF5 /* TimeSigChange.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TimeSigChange.cpp; path = ../Src/Midi/TimeSigChange.cpp; sourceTree = SOURCE_ROOT; };
+		9571194C1125D8D200104BF5 /* TimeSigChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimeSigChange.h; path = ../Src/Midi/TimeSigChange.h; sourceTree = SOURCE_ROOT; };
+		9571194D1125D8D200104BF5 /* Track.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Track.cpp; path = ../Src/Midi/Track.cpp; sourceTree = SOURCE_ROOT; };
+		9571194E1125D8D200104BF5 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Track.h; path = ../Src/Midi/Track.h; sourceTree = SOURCE_ROOT; };
+		9571194F1125D8D200104BF5 /* OpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OpenGL.h; path = ../Src/OpenGL.h; sourceTree = SOURCE_ROOT; };
+		957119511125D8D200104BF5 /* BackgroundPicker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BackgroundPicker.cpp; path = ../Src/Pickers/BackgroundPicker.cpp; sourceTree = SOURCE_ROOT; };
+		957119521125D8D200104BF5 /* BackgroundPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BackgroundPicker.h; path = ../Src/Pickers/BackgroundPicker.h; sourceTree = SOURCE_ROOT; };
+		957119531125D8D200104BF5 /* ControllerChoice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ControllerChoice.cpp; path = ../Src/Pickers/ControllerChoice.cpp; sourceTree = SOURCE_ROOT; };
+		957119541125D8D200104BF5 /* ControllerChoice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ControllerChoice.h; path = ../Src/Pickers/ControllerChoice.h; sourceTree = SOURCE_ROOT; };
+		957119551125D8D200104BF5 /* DrumChoice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DrumChoice.cpp; path = ../Src/Pickers/DrumChoice.cpp; sourceTree = SOURCE_ROOT; };
+		957119561125D8D200104BF5 /* DrumChoice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DrumChoice.h; path = ../Src/Pickers/DrumChoice.h; sourceTree = SOURCE_ROOT; };
+		957119571125D8D200104BF5 /* InstrumentChoice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InstrumentChoice.cpp; path = ../Src/Pickers/InstrumentChoice.cpp; sourceTree = SOURCE_ROOT; };
+		957119581125D8D200104BF5 /* InstrumentChoice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InstrumentChoice.h; path = ../Src/Pickers/InstrumentChoice.h; sourceTree = SOURCE_ROOT; };
+		957119591125D8D200104BF5 /* KeyPicker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KeyPicker.cpp; path = ../Src/Pickers/KeyPicker.cpp; sourceTree = SOURCE_ROOT; };
+		9571195A1125D8D200104BF5 /* KeyPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeyPicker.h; path = ../Src/Pickers/KeyPicker.h; sourceTree = SOURCE_ROOT; };
+		9571195B1125D8D200104BF5 /* MagneticGrid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MagneticGrid.cpp; path = ../Src/Pickers/MagneticGrid.cpp; sourceTree = SOURCE_ROOT; };
+		9571195C1125D8D200104BF5 /* MagneticGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MagneticGrid.h; path = ../Src/Pickers/MagneticGrid.h; sourceTree = SOURCE_ROOT; };
+		9571195D1125D8D200104BF5 /* TimeSigPicker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TimeSigPicker.cpp; path = ../Src/Pickers/TimeSigPicker.cpp; sourceTree = SOURCE_ROOT; };
+		9571195E1125D8D200104BF5 /* TimeSigPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimeSigPicker.h; path = ../Src/Pickers/TimeSigPicker.h; sourceTree = SOURCE_ROOT; };
+		9571195F1125D8D200104BF5 /* TuningPicker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TuningPicker.cpp; path = ../Src/Pickers/TuningPicker.cpp; sourceTree = SOURCE_ROOT; };
+		957119601125D8D200104BF5 /* TuningPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TuningPicker.h; path = ../Src/Pickers/TuningPicker.h; sourceTree = SOURCE_ROOT; };
+		957119611125D8D200104BF5 /* VolumeSlider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VolumeSlider.cpp; path = ../Src/Pickers/VolumeSlider.cpp; sourceTree = SOURCE_ROOT; };
+		957119621125D8D200104BF5 /* VolumeSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VolumeSlider.h; path = ../Src/Pickers/VolumeSlider.h; sourceTree = SOURCE_ROOT; };
+		957119641125D8D300104BF5 /* AriaPrintable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AriaPrintable.cpp; path = ../Src/Printing/AriaPrintable.cpp; sourceTree = SOURCE_ROOT; };
+		957119651125D8D300104BF5 /* AriaPrintable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AriaPrintable.h; path = ../Src/Printing/AriaPrintable.h; sourceTree = SOURCE_ROOT; };
+		957119661125D8D300104BF5 /* EditorPrintable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EditorPrintable.cpp; path = ../Src/Printing/EditorPrintable.cpp; sourceTree = SOURCE_ROOT; };
+		957119671125D8D300104BF5 /* EditorPrintable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditorPrintable.h; path = ../Src/Printing/EditorPrintable.h; sourceTree = SOURCE_ROOT; };
+		957119681125D8D300104BF5 /* PrintableSequence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrintableSequence.cpp; path = ../Src/Printing/PrintableSequence.cpp; sourceTree = SOURCE_ROOT; };
+		957119691125D8D300104BF5 /* PrintableSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrintableSequence.h; path = ../Src/Printing/PrintableSequence.h; sourceTree = SOURCE_ROOT; };
+		9571196B1125D8D300104BF5 /* LayoutElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LayoutElement.cpp; path = ../Src/Printing/PrintLayout/LayoutElement.cpp; sourceTree = SOURCE_ROOT; };
+		9571196C1125D8D300104BF5 /* LayoutElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LayoutElement.h; path = ../Src/Printing/PrintLayout/LayoutElement.h; sourceTree = SOURCE_ROOT; };
+		9571196D1125D8D300104BF5 /* LayoutPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LayoutPage.h; path = ../Src/Printing/PrintLayout/LayoutPage.h; sourceTree = SOURCE_ROOT; };
+		9571196E1125D8D300104BF5 /* PrintLayoutAbstract.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrintLayoutAbstract.cpp; path = ../Src/Printing/PrintLayout/PrintLayoutAbstract.cpp; sourceTree = SOURCE_ROOT; };
+		9571196F1125D8D300104BF5 /* PrintLayoutAbstract.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrintLayoutAbstract.h; path = ../Src/Printing/PrintLayout/PrintLayoutAbstract.h; sourceTree = SOURCE_ROOT; };
+		957119701125D8D300104BF5 /* PrintLayoutLine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrintLayoutLine.cpp; path = ../Src/Printing/PrintLayout/PrintLayoutLine.cpp; sourceTree = SOURCE_ROOT; };
+		957119711125D8D300104BF5 /* PrintLayoutLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrintLayoutLine.h; path = ../Src/Printing/PrintLayout/PrintLayoutLine.h; sourceTree = SOURCE_ROOT; };
+		957119721125D8D300104BF5 /* PrintLayoutMeasure.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrintLayoutMeasure.cpp; path = ../Src/Printing/PrintLayout/PrintLayoutMeasure.cpp; sourceTree = SOURCE_ROOT; };
+		957119731125D8D300104BF5 /* PrintLayoutMeasure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrintLayoutMeasure.h; path = ../Src/Printing/PrintLayout/PrintLayoutMeasure.h; sourceTree = SOURCE_ROOT; };
+		957119741125D8D300104BF5 /* PrintLayoutNumeric.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrintLayoutNumeric.cpp; path = ../Src/Printing/PrintLayout/PrintLayoutNumeric.cpp; sourceTree = SOURCE_ROOT; };
+		957119751125D8D300104BF5 /* PrintLayoutNumeric.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrintLayoutNumeric.h; path = ../Src/Printing/PrintLayout/PrintLayoutNumeric.h; sourceTree = SOURCE_ROOT; };
+		957119761125D8D300104BF5 /* RelativePlacementManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RelativePlacementManager.cpp; path = ../Src/Printing/PrintLayout/RelativePlacementManager.cpp; sourceTree = SOURCE_ROOT; };
+		957119771125D8D300104BF5 /* RelativePlacementManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RelativePlacementManager.h; path = ../Src/Printing/PrintLayout/RelativePlacementManager.h; sourceTree = SOURCE_ROOT; };
+		957119781125D8D300104BF5 /* ScorePrint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScorePrint.cpp; path = ../Src/Printing/ScorePrint.cpp; sourceTree = SOURCE_ROOT; };
+		957119791125D8D300104BF5 /* ScorePrint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScorePrint.h; path = ../Src/Printing/ScorePrint.h; sourceTree = SOURCE_ROOT; };
+		9571197A1125D8D300104BF5 /* TabPrint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TabPrint.cpp; path = ../Src/Printing/TabPrint.cpp; sourceTree = SOURCE_ROOT; };
+		9571197B1125D8D300104BF5 /* TabPrint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TabPrint.h; path = ../Src/Printing/TabPrint.h; sourceTree = SOURCE_ROOT; };
+		9571197C1125D8D300104BF5 /* ptr_vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ptr_vector.h; path = ../Src/ptr_vector.h; sourceTree = SOURCE_ROOT; };
+		9571197D1125D8D300104BF5 /* Range.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Range.h; path = ../Src/Range.h; sourceTree = SOURCE_ROOT; };
+		9571197F1125D8D300104BF5 /* Drawable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Drawable.h; path = ../Src/Renderers/Drawable.h; sourceTree = SOURCE_ROOT; };
+		957119801125D8D300104BF5 /* GLDrawable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GLDrawable.cpp; path = ../Src/Renderers/GLDrawable.cpp; sourceTree = SOURCE_ROOT; };
+		957119811125D8D300104BF5 /* GLImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GLImage.cpp; path = ../Src/Renderers/GLImage.cpp; sourceTree = SOURCE_ROOT; };
+		957119821125D8D300104BF5 /* GLImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLImage.h; path = ../Src/Renderers/GLImage.h; sourceTree = SOURCE_ROOT; };
+		957119831125D8D300104BF5 /* GLPane.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GLPane.cpp; path = ../Src/Renderers/GLPane.cpp; sourceTree = SOURCE_ROOT; };
+		957119841125D8D300104BF5 /* GLPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLPane.h; path = ../Src/Renderers/GLPane.h; sourceTree = SOURCE_ROOT; };
+		957119851125D8D300104BF5 /* GLRenderImp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GLRenderImp.cpp; path = ../Src/Renderers/GLRenderImp.cpp; sourceTree = SOURCE_ROOT; };
+		957119861125D8D300104BF5 /* GLwxString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GLwxString.cpp; path = ../Src/Renderers/GLwxString.cpp; sourceTree = SOURCE_ROOT; };
+		957119871125D8D300104BF5 /* GLwxString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLwxString.h; path = ../Src/Renderers/GLwxString.h; sourceTree = SOURCE_ROOT; };
+		957119881125D8D300104BF5 /* ImageBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageBase.h; path = ../Src/Renderers/ImageBase.h; sourceTree = SOURCE_ROOT; };
+		957119891125D8D300104BF5 /* RenderAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RenderAPI.h; path = ../Src/Renderers/RenderAPI.h; sourceTree = SOURCE_ROOT; };
+		9571198A1125D8D300104BF5 /* wxDCString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wxDCString.cpp; path = ../Src/Renderers/wxDCString.cpp; sourceTree = SOURCE_ROOT; };
+		9571198B1125D8D300104BF5 /* wxDCString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wxDCString.h; path = ../Src/Renderers/wxDCString.h; sourceTree = SOURCE_ROOT; };
+		9571198C1125D8D300104BF5 /* wxDrawable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wxDrawable.cpp; path = ../Src/Renderers/wxDrawable.cpp; sourceTree = SOURCE_ROOT; };
+		9571198D1125D8D300104BF5 /* wxImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wxImage.cpp; path = ../Src/Renderers/wxImage.cpp; sourceTree = SOURCE_ROOT; };
+		9571198E1125D8D300104BF5 /* wxImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wxImage.h; path = ../Src/Renderers/wxImage.h; sourceTree = SOURCE_ROOT; };
+		9571198F1125D8D300104BF5 /* wxRenderImp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wxRenderImp.cpp; path = ../Src/Renderers/wxRenderImp.cpp; sourceTree = SOURCE_ROOT; };
+		957119901125D8D300104BF5 /* wxRenderPane.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wxRenderPane.cpp; path = ../Src/Renderers/wxRenderPane.cpp; sourceTree = SOURCE_ROOT; };
+		957119911125D8D300104BF5 /* wxRenderPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wxRenderPane.h; path = ../Src/Renderers/wxRenderPane.h; sourceTree = SOURCE_ROOT; };
+		957119921125D8D300104BF5 /* Singleton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Singleton.cpp; path = ../Src/Singleton.cpp; sourceTree = SOURCE_ROOT; };
+		957119931125D8D300104BF5 /* Singleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Singleton.h; path = ../Src/Singleton.h; sourceTree = SOURCE_ROOT; };
+		957119941125D8D300104BF5 /* unit_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = unit_test.cpp; path = ../Src/unit_test.cpp; sourceTree = SOURCE_ROOT; };
+		957119951125D8D300104BF5 /* unit_test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = unit_test.h; path = ../Src/unit_test.h; sourceTree = SOURCE_ROOT; };
+		95711B8B1125D94900104BF5 /* border.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = border.jpg; path = ../Resources/border.jpg; sourceTree = SOURCE_ROOT; };
+		95711B8C1125D94900104BF5 /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = close.png; path = ../Resources/close.png; sourceTree = SOURCE_ROOT; };
+		95711B8D1125D94900104BF5 /* collapse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = collapse.jpg; path = ../Resources/collapse.jpg; sourceTree = SOURCE_ROOT; };
+		95711B8E1125D94900104BF5 /* combo_body.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = combo_body.png; path = ../Resources/combo_body.png; sourceTree = SOURCE_ROOT; };
+		95711B8F1125D94900104BF5 /* combo_select.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = combo_select.png; path = ../Resources/combo_select.png; sourceTree = SOURCE_ROOT; };
+		95711B901125D94900104BF5 /* combo_side.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = combo_side.png; path = ../Resources/combo_side.png; sourceTree = SOURCE_ROOT; };
+		95711B911125D94900104BF5 /* controller_view.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = controller_view.jpg; path = ../Resources/controller_view.jpg; sourceTree = SOURCE_ROOT; };
+		95711B921125D94900104BF5 /* corner.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = corner.jpg; path = ../Resources/corner.jpg; sourceTree = SOURCE_ROOT; };
+		95711B931125D94900104BF5 /* dock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = dock.png; path = ../Resources/dock.png; sourceTree = SOURCE_ROOT; };
+		95711B941125D94900104BF5 /* Documentation */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Documentation; path = ../Resources/Documentation; sourceTree = SOURCE_ROOT; };
+		95711BBA1125D94900104BF5 /* drum_view.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = drum_view.png; path = ../Resources/drum_view.png; sourceTree = SOURCE_ROOT; };
+		95711BBB1125D94900104BF5 /* expand.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = expand.jpg; path = ../Resources/expand.jpg; sourceTree = SOURCE_ROOT; };
+		95711BBC1125D94900104BF5 /* guitar_view.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = guitar_view.jpg; path = ../Resources/guitar_view.jpg; sourceTree = SOURCE_ROOT; };
+		95711BBD1125D94900104BF5 /* keyboard_view.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = keyboard_view.jpg; path = ../Resources/keyboard_view.jpg; sourceTree = SOURCE_ROOT; };
+		95711BBE1125D94900104BF5 /* maximize.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = maximize.png; path = ../Resources/maximize.png; sourceTree = SOURCE_ROOT; };
+		95711BBF1125D94900104BF5 /* mute_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mute_off.png; path = ../Resources/mute_off.png; sourceTree = SOURCE_ROOT; };
+		95711BC01125D94900104BF5 /* mute_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mute_on.png; path = ../Resources/mute_on.png; sourceTree = SOURCE_ROOT; };
+		95711BC11125D94900104BF5 /* notetrack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = notetrack.png; path = ../Resources/notetrack.png; sourceTree = SOURCE_ROOT; };
+		95711BC21125D94900104BF5 /* pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pause.png; path = ../Resources/pause.png; sourceTree = SOURCE_ROOT; };
+		95711BC31125D94900104BF5 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = play.png; path = ../Resources/play.png; sourceTree = SOURCE_ROOT; };
+		95711BC41125D94900104BF5 /* sb_arrow_sel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sb_arrow_sel.png; path = ../Resources/sb_arrow_sel.png; sourceTree = SOURCE_ROOT; };
+		95711BC51125D94900104BF5 /* sb_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sb_arrow.png; path = ../Resources/sb_arrow.png; sourceTree = SOURCE_ROOT; };
+		95711BC61125D94900104BF5 /* sb_backg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sb_backg.png; path = ../Resources/sb_backg.png; sourceTree = SOURCE_ROOT; };
+		95711BC71125D94900104BF5 /* sb_thumb.tga */ = {isa = PBXFileReference; lastKnownFileType = file; name = sb_thumb.tga; path = ../Resources/sb_thumb.tga; sourceTree = SOURCE_ROOT; };
+		95711BC81125D94900104BF5 /* score */ = {isa = PBXFileReference; lastKnownFileType = folder; name = score; path = ../Resources/score; sourceTree = SOURCE_ROOT; };
+		95711BDB1125D94900104BF5 /* score_view.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = score_view.jpg; path = ../Resources/score_view.jpg; sourceTree = SOURCE_ROOT; };
+		95711BDC1125D94900104BF5 /* stop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = stop.png; path = ../Resources/stop.png; sourceTree = SOURCE_ROOT; };
+		95711BDD1125D94900104BF5 /* tab_body.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tab_body.png; path = ../Resources/tab_body.png; sourceTree = SOURCE_ROOT; };
+		95711BDE1125D94900104BF5 /* tab_side.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tab_side.png; path = ../Resources/tab_side.png; sourceTree = SOURCE_ROOT; };
+		95711BDF1125D94900104BF5 /* title.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = title.jpg; path = ../Resources/title.jpg; sourceTree = SOURCE_ROOT; };
+		95711BE01125D94900104BF5 /* tool1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tool1.png; path = ../Resources/tool1.png; sourceTree = SOURCE_ROOT; };
+		95711BE11125D94900104BF5 /* tool2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tool2.png; path = ../Resources/tool2.png; sourceTree = SOURCE_ROOT; };
+		95711BE31125D94900104BF5 /* white_border.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = white_border.png; path = ../Resources/white_border.png; sourceTree = SOURCE_ROOT; };
+		95711BE41125D94900104BF5 /* white_corner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = white_corner.png; path = ../Resources/white_corner.png; sourceTree = SOURCE_ROOT; };
+		EF104F6B0B21E1900079A1B7 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
+		EF85576109BDE24C00D9D1BC /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
+		EF9D1BFF09ABE02100CAF7A6 /* Aria Maestosa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Aria Maestosa.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EF9D1CB609ABE21F00CAF7A6 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+		EF9D1D5009ABE22B00CAF7A6 /* System.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = System.framework; path = /System/Library/Frameworks/System.framework; sourceTree = "<absolute>"; };
+		EFA04BCE09BF399C0079DEB2 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
+		EFA04C1209BF39C60079DEB2 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9568DE7F10D54FE30089AAAF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9568DE8010D54FE30089AAAF /* Carbon.framework in Frameworks */,
+				9568DE8110D54FE30089AAAF /* System.framework in Frameworks */,
+				9568DE8210D54FE30089AAAF /* OpenGL.framework in Frameworks */,
+				9568DE8310D54FE30089AAAF /* QuickTime.framework in Frameworks */,
+				9568DE8410D54FE30089AAAF /* AGL.framework in Frameworks */,
+				9568DE8510D54FE30089AAAF /* QTKit.framework in Frameworks */,
+				9568DE8610D54FE30089AAAF /* AudioToolbox.framework in Frameworks */,
+				9568DE8710D54FE30089AAAF /* AudioUnit.framework in Frameworks */,
+				9568DE8810D54FE30089AAAF /* IOKit.framework in Frameworks */,
+				9568DE8910D54FE30089AAAF /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EF9D1BFD09ABE02100CAF7A6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EF9D1CB709ABE21F00CAF7A6 /* Carbon.framework in Frameworks */,
+				EF9D1D5109ABE22B00CAF7A6 /* System.framework in Frameworks */,
+				EF85576209BDE24C00D9D1BC /* OpenGL.framework in Frameworks */,
+				EFA04BCF09BF399C0079DEB2 /* QuickTime.framework in Frameworks */,
+				EFA04C1309BF39C60079DEB2 /* AGL.framework in Frameworks */,
+				EF104F6C0B21E1900079A1B7 /* QTKit.framework in Frameworks */,
+				4E1DA4F50B3D85C5008BE3E4 /* AudioToolbox.framework in Frameworks */,
+				4E1DA4F60B3D85C5008BE3E4 /* AudioUnit.framework in Frameworks */,
+				4E65A3030B4C3DEC0096E9C0 /* IOKit.framework in Frameworks */,
+				4E65A46F0B4C3E250096E9C0 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		950B3B411125DBCF006C9AF1 /* irrXML */ = {
+			isa = PBXGroup;
+			children = (
+				950B3B421125DBCF006C9AF1 /* CXMLReaderImpl.h */,
+				950B3B431125DBCF006C9AF1 /* fast_atof.h */,
+				950B3B441125DBCF006C9AF1 /* heapsort.h */,
+				950B3B451125DBCF006C9AF1 /* irrArray.h */,
+				950B3B461125DBCF006C9AF1 /* irrString.h */,
+				950B3B471125DBCF006C9AF1 /* irrTypes.h */,
+				950B3B481125DBCF006C9AF1 /* irrXML.cpp */,
+				950B3B491125DBCF006C9AF1 /* irrXML.h */,
+			);
+			name = irrXML;
+			path = ../irrXML;
+			sourceTree = SOURCE_ROOT;
+		};
+		950B3E6E1125DCBB006C9AF1 /* --------------------- */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "---------------------";
+			sourceTree = "<group>";
+		};
+		957118BD1125D8D200104BF5 /* Actions */ = {
+			isa = PBXGroup;
+			children = (
+				957118BE1125D8D200104BF5 /* AddControlEvent.cpp */,
+				957118BF1125D8D200104BF5 /* AddControlEvent.h */,
+				957118C01125D8D200104BF5 /* AddControllerSlide.cpp */,
+				957118C11125D8D200104BF5 /* AddControllerSlide.h */,
+				957118C21125D8D200104BF5 /* AddNote.cpp */,
+				957118C31125D8D200104BF5 /* AddNote.h */,
+				957118C41125D8D200104BF5 /* DeleteSelected.cpp */,
+				957118C51125D8D200104BF5 /* DeleteSelected.h */,
+				957118C61125D8D200104BF5 /* EditAction.cpp */,
+				957118C71125D8D200104BF5 /* EditAction.h */,
+				957118C81125D8D200104BF5 /* InsertEmptyMeasures.cpp */,
+				957118C91125D8D200104BF5 /* InsertEmptyMeasures.h */,
+				957118CA1125D8D200104BF5 /* MoveNotes.cpp */,
+				957118CB1125D8D200104BF5 /* MoveNotes.h */,
+				957118CC1125D8D200104BF5 /* NumberPressed.cpp */,
+				957118CD1125D8D200104BF5 /* NumberPressed.h */,
+				957118CE1125D8D200104BF5 /* Paste.cpp */,
+				957118CF1125D8D200104BF5 /* Paste.h */,
+				957118D01125D8D200104BF5 /* RearrangeNotes.cpp */,
+				957118D11125D8D200104BF5 /* RearrangeNotes.h */,
+				957118D21125D8D200104BF5 /* RemoveMeasures.cpp */,
+				957118D31125D8D200104BF5 /* RemoveMeasures.h */,
+				957118D41125D8D200104BF5 /* RemoveOverlapping.cpp */,
+				957118D51125D8D200104BF5 /* RemoveOverlapping.h */,
+				957118D61125D8D200104BF5 /* ResizeNotes.cpp */,
+				957118D71125D8D200104BF5 /* ResizeNotes.h */,
+				957118D81125D8D200104BF5 /* ScaleSong.cpp */,
+				957118D91125D8D200104BF5 /* ScaleSong.h */,
+				957118DA1125D8D200104BF5 /* ScaleTrack.cpp */,
+				957118DB1125D8D200104BF5 /* ScaleTrack.h */,
+				957118DC1125D8D200104BF5 /* SetAccidentalSign.cpp */,
+				957118DD1125D8D200104BF5 /* SetAccidentalSign.h */,
+				957118DE1125D8D200104BF5 /* SetNoteVolume.cpp */,
+				957118DF1125D8D200104BF5 /* SetNoteVolume.h */,
+				957118E01125D8D200104BF5 /* ShiftBySemiTone.cpp */,
+				957118E11125D8D200104BF5 /* ShiftBySemiTone.h */,
+				957118E21125D8D200104BF5 /* ShiftFrets.cpp */,
+				957118E31125D8D200104BF5 /* ShiftFrets.h */,
+				957118E41125D8D200104BF5 /* ShiftString.cpp */,
+				957118E51125D8D200104BF5 /* ShiftString.h */,
+				957118E61125D8D200104BF5 /* SnapNotesToGrid.cpp */,
+				957118E71125D8D200104BF5 /* SnapNotesToGrid.h */,
+				957118E81125D8D200104BF5 /* UpdateGuitarTuning.cpp */,
+				957118E91125D8D200104BF5 /* UpdateGuitarTuning.h */,
+			);
+			name = Actions;
+			path = ../Src/Actions;
+			sourceTree = SOURCE_ROOT;
+		};
+		957118EF1125D8D200104BF5 /* Dialogs */ = {
+			isa = PBXGroup;
+			children = (
+				957118F01125D8D200104BF5 /* About.cpp */,
+				957118F11125D8D200104BF5 /* About.h */,
+				957118F21125D8D200104BF5 /* CopyrightWindow.cpp */,
+				957118F31125D8D200104BF5 /* CopyrightWindow.h */,
+				957118F41125D8D200104BF5 /* CustomNoteSelectDialog.cpp */,
+				957118F51125D8D200104BF5 /* CustomNoteSelectDialog.h */,
+				957118F61125D8D200104BF5 /* NotationExportDialog.cpp */,
+				957118F71125D8D200104BF5 /* NotationExportDialog.h */,
+				957118F81125D8D200104BF5 /* Preferences.cpp */,
+				957118F91125D8D200104BF5 /* Preferences.h */,
+				957118FA1125D8D200104BF5 /* ScalePicker.cpp */,
+				957118FB1125D8D200104BF5 /* ScalePicker.h */,
+				957118FC1125D8D200104BF5 /* WaitWindow.cpp */,
+				957118FD1125D8D200104BF5 /* WaitWindow.h */,
+			);
+			name = Dialogs;
+			path = ../Src/Dialogs;
+			sourceTree = SOURCE_ROOT;
+		};
+		957118FE1125D8D200104BF5 /* Editors */ = {
+			isa = PBXGroup;
+			children = (
+				957118FF1125D8D200104BF5 /* ControllerEditor.cpp */,
+				957119001125D8D200104BF5 /* ControllerEditor.h */,
+				957119011125D8D200104BF5 /* DrumEditor.cpp */,
+				957119021125D8D200104BF5 /* DrumEditor.h */,
+				957119031125D8D200104BF5 /* Editor.cpp */,
+				957119041125D8D200104BF5 /* Editor.h */,
+				957119051125D8D200104BF5 /* GuitarEditor.cpp */,
+				957119061125D8D200104BF5 /* GuitarEditor.h */,
+				957119071125D8D200104BF5 /* KeyboardEditor.cpp */,
+				957119081125D8D200104BF5 /* KeyboardEditor.h */,
+				957119091125D8D200104BF5 /* RelativeXCoord.cpp */,
+				9571190A1125D8D200104BF5 /* RelativeXCoord.h */,
+				9571190B1125D8D200104BF5 /* ScoreAnalyser.cpp */,
+				9571190C1125D8D200104BF5 /* ScoreAnalyser.h */,
+				9571190D1125D8D200104BF5 /* ScoreEditor.cpp */,
+				9571190E1125D8D200104BF5 /* ScoreEditor.h */,
+			);
+			name = Editors;
+			path = ../Src/Editors;
+			sourceTree = SOURCE_ROOT;
+		};
+		9571190F1125D8D200104BF5 /* GUI */ = {
+			isa = PBXGroup;
+			children = (
+				957119101125D8D200104BF5 /* GraphicalTrack.cpp */,
+				957119111125D8D200104BF5 /* GraphicalTrack.h */,
+				957119121125D8D200104BF5 /* ImageProvider.cpp */,
+				957119131125D8D200104BF5 /* ImageProvider.h */,
+				957119141125D8D200104BF5 /* MainFrame.cpp */,
+				957119151125D8D200104BF5 /* MainFrame.h */,
+				957119161125D8D200104BF5 /* MainFrameMenuBar.cpp */,
+				957119171125D8D200104BF5 /* MainPane.cpp */,
+				957119181125D8D200104BF5 /* MainPane.h */,
+				957119191125D8D200104BF5 /* MeasureBar.cpp */,
+				9571191A1125D8D200104BF5 /* MeasureBar.h */,
+			);
+			name = GUI;
+			path = ../Src/GUI;
+			sourceTree = SOURCE_ROOT;
+		};
+		9571191B1125D8D200104BF5 /* IO */ = {
+			isa = PBXGroup;
+			children = (
+				9571191C1125D8D200104BF5 /* AriaFileWriter.cpp */,
+				9571191D1125D8D200104BF5 /* AriaFileWriter.h */,
+				9571191E1125D8D200104BF5 /* IOUtils.cpp */,
+				9571191F1125D8D200104BF5 /* IOUtils.h */,
+				957119201125D8D200104BF5 /* MidiFileReader.cpp */,
+				957119211125D8D200104BF5 /* MidiFileReader.h */,
+				957119221125D8D200104BF5 /* MidiToMemoryStream.cpp */,
+				957119231125D8D200104BF5 /* MidiToMemoryStream.h */,
+			);
+			name = IO;
+			path = ../Src/IO;
+			sourceTree = SOURCE_ROOT;
+		};
+		9571192A1125D8D200104BF5 /* Midi */ = {
+			isa = PBXGroup;
+			children = (
+				9571192B1125D8D200104BF5 /* CommonMidiUtils.cpp */,
+				9571192C1125D8D200104BF5 /* CommonMidiUtils.h */,
+				9571192D1125D8D200104BF5 /* ControllerEvent.cpp */,
+				9571192E1125D8D200104BF5 /* ControllerEvent.h */,
+				9571192F1125D8D200104BF5 /* MeasureData.cpp */,
+				957119301125D8D200104BF5 /* MeasureData.h */,
+				957119311125D8D200104BF5 /* Note.cpp */,
+				957119321125D8D200104BF5 /* Note.h */,
+				957119331125D8D200104BF5 /* Players */,
+				957119491125D8D200104BF5 /* Sequence.cpp */,
+				9571194A1125D8D200104BF5 /* Sequence.h */,
+				9571194B1125D8D200104BF5 /* TimeSigChange.cpp */,
+				9571194C1125D8D200104BF5 /* TimeSigChange.h */,
+				9571194D1125D8D200104BF5 /* Track.cpp */,
+				9571194E1125D8D200104BF5 /* Track.h */,
+			);
+			name = Midi;
+			path = ../Src/Midi;
+			sourceTree = SOURCE_ROOT;
+		};
+		957119331125D8D200104BF5 /* Players */ = {
+			isa = PBXGroup;
+			children = (
+				957119341125D8D200104BF5 /* Alsa */,
+				9571193A1125D8D200104BF5 /* Example */,
+				9571193C1125D8D200104BF5 /* Mac */,
+				957119441125D8D200104BF5 /* PlatformMidiManager.h */,
+				957119451125D8D200104BF5 /* Sequencer.cpp */,
+				957119461125D8D200104BF5 /* Sequencer.h */,
+				957119471125D8D200104BF5 /* Win */,
+			);
+			name = Players;
+			path = ../Src/Midi/Players;
+			sourceTree = SOURCE_ROOT;
+		};
+		957119341125D8D200104BF5 /* Alsa */ = {
+			isa = PBXGroup;
+			children = (
+				957119351125D8D200104BF5 /* AlsaNotePlayer.cpp */,
+				957119361125D8D200104BF5 /* AlsaNotePlayer.h */,
+				957119371125D8D200104BF5 /* AlsaPlayer.cpp */,
+				957119381125D8D200104BF5 /* AlsaPort.cpp */,
+				957119391125D8D200104BF5 /* AlsaPort.h */,
+			);
+			name = Alsa;
+			path = ../Src/Midi/Players/Alsa;
+			sourceTree = SOURCE_ROOT;
+		};
+		9571193A1125D8D200104BF5 /* Example */ = {
+			isa = PBXGroup;
+			children = (
+				9571193B1125D8D200104BF5 /* WinPlayer.cpp */,
+			);
+			name = Example;
+			path = ../Src/Midi/Players/Example;
+			sourceTree = SOURCE_ROOT;
+		};
+		9571193C1125D8D200104BF5 /* Mac */ = {
+			isa = PBXGroup;
+			children = (
+				9571193D1125D8D200104BF5 /* AudioToolboxPlayer.cpp */,
+				9571193E1125D8D200104BF5 /* AudioToolboxPlayer.h */,
+				9571193F1125D8D200104BF5 /* CoreAudioNotePlayer.cpp */,
+				957119401125D8D200104BF5 /* CoreAudioNotePlayer.h */,
+				957119411125D8D200104BF5 /* MacPlayerInterface.cpp */,
+				957119421125D8D200104BF5 /* QTKitPlayer.h */,
+				957119431125D8D200104BF5 /* QTKitPlayer.mm */,
+			);
+			name = Mac;
+			path = ../Src/Midi/Players/Mac;
+			sourceTree = SOURCE_ROOT;
+		};
+		957119471125D8D200104BF5 /* Win */ = {
+			isa = PBXGroup;
+			children = (
+				957119481125D8D200104BF5 /* WinPlayer.cpp */,
+			);
+			name = Win;
+			path = ../Src/Midi/Players/Win;
+			sourceTree = SOURCE_ROOT;
+		};
+		957119501125D8D200104BF5 /* Pickers */ = {
+			isa = PBXGroup;
+			children = (
+				957119511125D8D200104BF5 /* BackgroundPicker.cpp */,
+				957119521125D8D200104BF5 /* BackgroundPicker.h */,
+				957119531125D8D200104BF5 /* ControllerChoice.cpp */,
+				957119541125D8D200104BF5 /* ControllerChoice.h */,
+				957119551125D8D200104BF5 /* DrumChoice.cpp */,
+				957119561125D8D200104BF5 /* DrumChoice.h */,
+				957119571125D8D200104BF5 /* InstrumentChoice.cpp */,
+				957119581125D8D200104BF5 /* InstrumentChoice.h */,
+				957119591125D8D200104BF5 /* KeyPicker.cpp */,
+				9571195A1125D8D200104BF5 /* KeyPicker.h */,
+				9571195B1125D8D200104BF5 /* MagneticGrid.cpp */,
+				9571195C1125D8D200104BF5 /* MagneticGrid.h */,
+				9571195D1125D8D200104BF5 /* TimeSigPicker.cpp */,
+				9571195E1125D8D200104BF5 /* TimeSigPicker.h */,
+				9571195F1125D8D200104BF5 /* TuningPicker.cpp */,
+				957119601125D8D200104BF5 /* TuningPicker.h */,
+				957119611125D8D200104BF5 /* VolumeSlider.cpp */,
+				957119621125D8D200104BF5 /* VolumeSlider.h */,
+			);
+			name = Pickers;
+			path = ../Src/Pickers;
+			sourceTree = SOURCE_ROOT;
+		};
+		957119631125D8D300104BF5 /* Printing */ = {
+			isa = PBXGroup;
+			children = (
+				957119641125D8D300104BF5 /* AriaPrintable.cpp */,
+				957119651125D8D300104BF5 /* AriaPrintable.h */,
+				957119661125D8D300104BF5 /* EditorPrintable.cpp */,
+				957119671125D8D300104BF5 /* EditorPrintable.h */,
+				957119681125D8D300104BF5 /* PrintableSequence.cpp */,
+				957119691125D8D300104BF5 /* PrintableSequence.h */,
+				9571196A1125D8D300104BF5 /* PrintLayout */,
+				957119781125D8D300104BF5 /* ScorePrint.cpp */,
+				957119791125D8D300104BF5 /* ScorePrint.h */,
+				9571197A1125D8D300104BF5 /* TabPrint.cpp */,
+				9571197B1125D8D300104BF5 /* TabPrint.h */,
+			);
+			name = Printing;
+			path = ../Src/Printing;
+			sourceTree = SOURCE_ROOT;
+		};
+		9571196A1125D8D300104BF5 /* PrintLayout */ = {
+			isa = PBXGroup;
+			children = (
+				9571196B1125D8D300104BF5 /* LayoutElement.cpp */,
+				9571196C1125D8D300104BF5 /* LayoutElement.h */,
+				9571196D1125D8D300104BF5 /* LayoutPage.h */,
+				9571196E1125D8D300104BF5 /* PrintLayoutAbstract.cpp */,
+				9571196F1125D8D300104BF5 /* PrintLayoutAbstract.h */,
+				957119701125D8D300104BF5 /* PrintLayoutLine.cpp */,
+				957119711125D8D300104BF5 /* PrintLayoutLine.h */,
+				957119721125D8D300104BF5 /* PrintLayoutMeasure.cpp */,
+				957119731125D8D300104BF5 /* PrintLayoutMeasure.h */,
+				957119741125D8D300104BF5 /* PrintLayoutNumeric.cpp */,
+				957119751125D8D300104BF5 /* PrintLayoutNumeric.h */,
+				957119761125D8D300104BF5 /* RelativePlacementManager.cpp */,
+				957119771125D8D300104BF5 /* RelativePlacementManager.h */,
+			);
+			name = PrintLayout;
+			path = ../Src/Printing/PrintLayout;
+			sourceTree = SOURCE_ROOT;
+		};
+		9571197E1125D8D300104BF5 /* Renderers */ = {
+			isa = PBXGroup;
+			children = (
+				9571197F1125D8D300104BF5 /* Drawable.h */,
+				957119801125D8D300104BF5 /* GLDrawable.cpp */,
+				957119811125D8D300104BF5 /* GLImage.cpp */,
+				957119821125D8D300104BF5 /* GLImage.h */,
+				957119831125D8D300104BF5 /* GLPane.cpp */,
+				957119841125D8D300104BF5 /* GLPane.h */,
+				957119851125D8D300104BF5 /* GLRenderImp.cpp */,
+				957119861125D8D300104BF5 /* GLwxString.cpp */,
+				957119871125D8D300104BF5 /* GLwxString.h */,
+				957119881125D8D300104BF5 /* ImageBase.h */,
+				957119891125D8D300104BF5 /* RenderAPI.h */,
+				9571198A1125D8D300104BF5 /* wxDCString.cpp */,
+				9571198B1125D8D300104BF5 /* wxDCString.h */,
+				9571198C1125D8D300104BF5 /* wxDrawable.cpp */,
+				9571198D1125D8D300104BF5 /* wxImage.cpp */,
+				9571198E1125D8D300104BF5 /* wxImage.h */,
+				9571198F1125D8D300104BF5 /* wxRenderImp.cpp */,
+				957119901125D8D300104BF5 /* wxRenderPane.cpp */,
+				957119911125D8D300104BF5 /* wxRenderPane.h */,
+			);
+			name = Renderers;
+			path = ../Src/Renderers;
+			sourceTree = SOURCE_ROOT;
+		};
+		95711B2A1125D91500104BF5 /* mac-i18n */ = {
+			isa = PBXGroup;
+			children = (
+				950B3EE31125DE18006C9AF1 /* de.lproj */,
+				950B3EE61125DE18006C9AF1 /* en.lproj */,
+				950B3EE81125DE18006C9AF1 /* fr.lproj */,
+				950B3EEB1125DE18006C9AF1 /* it.lproj */,
+			);
+			name = "mac-i18n";
+			path = "../mac-i18n";
+			sourceTree = SOURCE_ROOT;
+		};
+		95711B2F1125D92700104BF5 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				95711B8B1125D94900104BF5 /* border.jpg */,
+				95711B8C1125D94900104BF5 /* close.png */,
+				95711B8D1125D94900104BF5 /* collapse.jpg */,
+				95711B8E1125D94900104BF5 /* combo_body.png */,
+				95711B8F1125D94900104BF5 /* combo_select.png */,
+				95711B901125D94900104BF5 /* combo_side.png */,
+				95711B911125D94900104BF5 /* controller_view.jpg */,
+				95711B921125D94900104BF5 /* corner.jpg */,
+				95711B931125D94900104BF5 /* dock.png */,
+				95711B941125D94900104BF5 /* Documentation */,
+				95711BBA1125D94900104BF5 /* drum_view.png */,
+				95711BBB1125D94900104BF5 /* expand.jpg */,
+				95711BBC1125D94900104BF5 /* guitar_view.jpg */,
+				95711BBD1125D94900104BF5 /* keyboard_view.jpg */,
+				95711BBE1125D94900104BF5 /* maximize.png */,
+				95711BBF1125D94900104BF5 /* mute_off.png */,
+				95711BC01125D94900104BF5 /* mute_on.png */,
+				95711BC11125D94900104BF5 /* notetrack.png */,
+				95711BC21125D94900104BF5 /* pause.png */,
+				95711BC31125D94900104BF5 /* play.png */,
+				95711BC41125D94900104BF5 /* sb_arrow_sel.png */,
+				95711BC51125D94900104BF5 /* sb_arrow.png */,
+				95711BC61125D94900104BF5 /* sb_backg.png */,
+				95711BC71125D94900104BF5 /* sb_thumb.tga */,
+				95711BC81125D94900104BF5 /* score */,
+				95711BDB1125D94900104BF5 /* score_view.jpg */,
+				95711BDC1125D94900104BF5 /* stop.png */,
+				95711BDD1125D94900104BF5 /* tab_body.png */,
+				95711BDE1125D94900104BF5 /* tab_side.png */,
+				95711BDF1125D94900104BF5 /* title.jpg */,
+				95711BE01125D94900104BF5 /* tool1.png */,
+				95711BE11125D94900104BF5 /* tool2.png */,
+				95711BE31125D94900104BF5 /* white_border.png */,
+				95711BE41125D94900104BF5 /* white_corner.png */,
+			);
+			name = Resources;
+			path = ../Resources;
+			sourceTree = SOURCE_ROOT;
+		};
+		EF9D1BEE09ABE00400CAF7A6 = {
+			isa = PBXGroup;
+			children = (
+				9568DC6310D54CA50089AAAF /* DebugConfig.xcconfig */,
+				9568DC6810D54DC70089AAAF /* ReleaseConfig.xcconfig */,
+				9568DD6310D54E340089AAAF /* DebugConfigNoGL.xcconfig */,
+				9568DD6410D54E340089AAAF /* ReleaseConfigNoGL.xcconfig */,
+				950B3EDF1125DDEB006C9AF1 /* devel - noGL.plist */,
+				950B3EE01125DDEB006C9AF1 /* devel.plist */,
+				950B3EE21125DDF9006C9AF1 /* release.plist */,
+				950B3EE11125DDF1006C9AF1 /* violin.icns */,
+				950B3EEE1125DE2F006C9AF1 /* aria_file.icns */,
+				950B3EEF1125DE2F006C9AF1 /* aria_midi_file.icns */,
+				957118EA1125D8D200104BF5 /* AriaCore.cpp */,
+				957118EB1125D8D200104BF5 /* AriaCore.h */,
+				957118EC1125D8D200104BF5 /* Clipboard.cpp */,
+				957118ED1125D8D200104BF5 /* Clipboard.h */,
+				957118EE1125D8D200104BF5 /* Config.h */,
+				957119241125D8D200104BF5 /* languages.cpp */,
+				957119251125D8D200104BF5 /* languages.h */,
+				957119261125D8D200104BF5 /* LeakCheck.cpp */,
+				957119271125D8D200104BF5 /* LeakCheck.h */,
+				957119281125D8D200104BF5 /* main.cpp */,
+				957119291125D8D200104BF5 /* main.h */,
+				9571194F1125D8D200104BF5 /* OpenGL.h */,
+				9571197C1125D8D300104BF5 /* ptr_vector.h */,
+				9571197D1125D8D300104BF5 /* Range.h */,
+				957119921125D8D300104BF5 /* Singleton.cpp */,
+				957119931125D8D300104BF5 /* Singleton.h */,
+				957119941125D8D300104BF5 /* unit_test.cpp */,
+				957119951125D8D300104BF5 /* unit_test.h */,
+				957118BD1125D8D200104BF5 /* Actions */,
+				957118EF1125D8D200104BF5 /* Dialogs */,
+				957118FE1125D8D200104BF5 /* Editors */,
+				9571190F1125D8D200104BF5 /* GUI */,
+				9571191B1125D8D200104BF5 /* IO */,
+				9571192A1125D8D200104BF5 /* Midi */,
+				957119501125D8D200104BF5 /* Pickers */,
+				957119631125D8D300104BF5 /* Printing */,
+				9571197E1125D8D300104BF5 /* Renderers */,
+				950B3E6E1125DCBB006C9AF1 /* --------------------- */,
+				95711B2A1125D91500104BF5 /* mac-i18n */,
+				95711B2F1125D92700104BF5 /* Resources */,
+				950B3B411125DBCF006C9AF1 /* irrXML */,
+				EFA04C2009BF39DF0079DEB2 /* Frameworks */,
+				EF9D1C0009ABE02100CAF7A6 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EF9D1C0009ABE02100CAF7A6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EF9D1BFF09ABE02100CAF7A6 /* Aria Maestosa.app */,
+				9568DE8D10D54FE30089AAAF /* Aria Maestosa (no GL).app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EFA04C2009BF39DF0079DEB2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4E65A46E0B4C3E250096E9C0 /* Cocoa.framework */,
+				4E65A3020B4C3DEC0096E9C0 /* IOKit.framework */,
+				4E1DA4F30B3D85C5008BE3E4 /* AudioToolbox.framework */,
+				4E1DA4F40B3D85C5008BE3E4 /* AudioUnit.framework */,
+				EF104F6B0B21E1900079A1B7 /* QTKit.framework */,
+				EFA04C1209BF39C60079DEB2 /* AGL.framework */,
+				EFA04BCE09BF399C0079DEB2 /* QuickTime.framework */,
+				EF85576109BDE24C00D9D1BC /* OpenGL.framework */,
+				EF9D1D5009ABE22B00CAF7A6 /* System.framework */,
+				EF9D1CB609ABE21F00CAF7A6 /* Carbon.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		9568DD9A10D54FE30089AAAF /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				95711A611125D8D300104BF5 /* AddControlEvent.h in Headers */,
+				95711A631125D8D300104BF5 /* AddControllerSlide.h in Headers */,
+				95711A651125D8D300104BF5 /* AddNote.h in Headers */,
+				95711A671125D8D300104BF5 /* DeleteSelected.h in Headers */,
+				95711A691125D8D300104BF5 /* EditAction.h in Headers */,
+				95711A6B1125D8D300104BF5 /* InsertEmptyMeasures.h in Headers */,
+				95711A6D1125D8D300104BF5 /* MoveNotes.h in Headers */,
+				95711A6F1125D8D300104BF5 /* NumberPressed.h in Headers */,
+				95711A711125D8D300104BF5 /* Paste.h in Headers */,
+				95711A731125D8D300104BF5 /* RearrangeNotes.h in Headers */,
+				95711A751125D8D300104BF5 /* RemoveMeasures.h in Headers */,
+				95711A771125D8D300104BF5 /* RemoveOverlapping.h in Headers */,
+				95711A791125D8D300104BF5 /* ResizeNotes.h in Headers */,
+				95711A7B1125D8D300104BF5 /* ScaleSong.h in Headers */,
+				95711A7D1125D8D300104BF5 /* ScaleTrack.h in Headers */,
+				95711A7F1125D8D300104BF5 /* SetAccidentalSign.h in Headers */,
+				95711A811125D8D300104BF5 /* SetNoteVolume.h in Headers */,
+				95711A831125D8D300104BF5 /* ShiftBySemiTone.h in Headers */,
+				95711A851125D8D300104BF5 /* ShiftFrets.h in Headers */,
+				95711A871125D8D300104BF5 /* ShiftString.h in Headers */,
+				95711A891125D8D300104BF5 /* SnapNotesToGrid.h in Headers */,
+				95711A8B1125D8D300104BF5 /* UpdateGuitarTuning.h in Headers */,
+				95711A8D1125D8D300104BF5 /* AriaCore.h in Headers */,
+				95711A8F1125D8D300104BF5 /* Clipboard.h in Headers */,
+				95711A901125D8D300104BF5 /* Config.h in Headers */,
+				95711A921125D8D300104BF5 /* About.h in Headers */,
+				95711A941125D8D300104BF5 /* CopyrightWindow.h in Headers */,
+				95711A961125D8D300104BF5 /* CustomNoteSelectDialog.h in Headers */,
+				95711A981125D8D300104BF5 /* NotationExportDialog.h in Headers */,
+				95711A9A1125D8D300104BF5 /* Preferences.h in Headers */,
+				95711A9C1125D8D300104BF5 /* ScalePicker.h in Headers */,
+				95711A9E1125D8D300104BF5 /* WaitWindow.h in Headers */,
+				95711AA01125D8D300104BF5 /* ControllerEditor.h in Headers */,
+				95711AA21125D8D300104BF5 /* DrumEditor.h in Headers */,
+				95711AA41125D8D300104BF5 /* Editor.h in Headers */,
+				95711AA61125D8D300104BF5 /* GuitarEditor.h in Headers */,
+				95711AA81125D8D300104BF5 /* KeyboardEditor.h in Headers */,
+				95711AAA1125D8D300104BF5 /* RelativeXCoord.h in Headers */,
+				95711AAC1125D8D300104BF5 /* ScoreAnalyser.h in Headers */,
+				95711AAE1125D8D300104BF5 /* ScoreEditor.h in Headers */,
+				95711AB01125D8D300104BF5 /* GraphicalTrack.h in Headers */,
+				95711AB21125D8D300104BF5 /* ImageProvider.h in Headers */,
+				95711AB41125D8D300104BF5 /* MainFrame.h in Headers */,
+				95711AB71125D8D300104BF5 /* MainPane.h in Headers */,
+				95711AB91125D8D300104BF5 /* MeasureBar.h in Headers */,
+				95711ABB1125D8D300104BF5 /* AriaFileWriter.h in Headers */,
+				95711ABD1125D8D300104BF5 /* IOUtils.h in Headers */,
+				95711ABF1125D8D300104BF5 /* MidiFileReader.h in Headers */,
+				95711AC11125D8D300104BF5 /* MidiToMemoryStream.h in Headers */,
+				95711AC31125D8D300104BF5 /* languages.h in Headers */,
+				95711AC51125D8D300104BF5 /* LeakCheck.h in Headers */,
+				95711AC71125D8D300104BF5 /* main.h in Headers */,
+				95711AC91125D8D300104BF5 /* CommonMidiUtils.h in Headers */,
+				95711ACB1125D8D300104BF5 /* ControllerEvent.h in Headers */,
+				95711ACD1125D8D300104BF5 /* MeasureData.h in Headers */,
+				95711ACF1125D8D300104BF5 /* Note.h in Headers */,
+				95711AD11125D8D300104BF5 /* AlsaNotePlayer.h in Headers */,
+				95711AD41125D8D300104BF5 /* AlsaPort.h in Headers */,
+				95711AD71125D8D300104BF5 /* AudioToolboxPlayer.h in Headers */,
+				95711AD91125D8D300104BF5 /* CoreAudioNotePlayer.h in Headers */,
+				95711ADB1125D8D300104BF5 /* QTKitPlayer.h in Headers */,
+				95711ADD1125D8D300104BF5 /* PlatformMidiManager.h in Headers */,
+				95711ADF1125D8D300104BF5 /* Sequencer.h in Headers */,
+				95711AE21125D8D300104BF5 /* Sequence.h in Headers */,
+				95711AE41125D8D300104BF5 /* TimeSigChange.h in Headers */,
+				95711AE61125D8D300104BF5 /* Track.h in Headers */,
+				95711AE71125D8D300104BF5 /* OpenGL.h in Headers */,
+				95711AE91125D8D300104BF5 /* BackgroundPicker.h in Headers */,
+				95711AEB1125D8D300104BF5 /* ControllerChoice.h in Headers */,
+				95711AED1125D8D300104BF5 /* DrumChoice.h in Headers */,
+				95711AEF1125D8D300104BF5 /* InstrumentChoice.h in Headers */,
+				95711AF11125D8D300104BF5 /* KeyPicker.h in Headers */,
+				95711AF31125D8D300104BF5 /* MagneticGrid.h in Headers */,
+				95711AF51125D8D300104BF5 /* TimeSigPicker.h in Headers */,
+				95711AF71125D8D300104BF5 /* TuningPicker.h in Headers */,
+				95711AF91125D8D300104BF5 /* VolumeSlider.h in Headers */,
+				95711AFB1125D8D300104BF5 /* AriaPrintable.h in Headers */,
+				95711AFD1125D8D300104BF5 /* EditorPrintable.h in Headers */,
+				95711AFF1125D8D300104BF5 /* PrintableSequence.h in Headers */,
+				95711B011125D8D300104BF5 /* LayoutElement.h in Headers */,
+				95711B021125D8D300104BF5 /* LayoutPage.h in Headers */,
+				95711B041125D8D300104BF5 /* PrintLayoutAbstract.h in Headers */,
+				95711B061125D8D300104BF5 /* PrintLayoutLine.h in Headers */,
+				95711B081125D8D300104BF5 /* PrintLayoutMeasure.h in Headers */,
+				95711B0A1125D8D300104BF5 /* PrintLayoutNumeric.h in Headers */,
+				95711B0C1125D8D300104BF5 /* RelativePlacementManager.h in Headers */,
+				95711B0E1125D8D300104BF5 /* ScorePrint.h in Headers */,
+				95711B101125D8D300104BF5 /* TabPrint.h in Headers */,
+				95711B111125D8D300104BF5 /* ptr_vector.h in Headers */,
+				95711B121125D8D300104BF5 /* Range.h in Headers */,
+				95711B131125D8D300104BF5 /* Drawable.h in Headers */,
+				95711B161125D8D300104BF5 /* GLImage.h in Headers */,
+				95711B181125D8D300104BF5 /* GLPane.h in Headers */,
+				95711B1B1125D8D300104BF5 /* GLwxString.h in Headers */,
+				95711B1C1125D8D300104BF5 /* ImageBase.h in Headers */,
+				95711B1D1125D8D300104BF5 /* RenderAPI.h in Headers */,
+				95711B1F1125D8D300104BF5 /* wxDCString.h in Headers */,
+				95711B221125D8D300104BF5 /* wxImage.h in Headers */,
+				95711B251125D8D300104BF5 /* wxRenderPane.h in Headers */,
+				95711B271125D8D300104BF5 /* Singleton.h in Headers */,
+				95711B291125D8D300104BF5 /* unit_test.h in Headers */,
+				950B3B521125DBCF006C9AF1 /* CXMLReaderImpl.h in Headers */,
+				950B3B531125DBCF006C9AF1 /* fast_atof.h in Headers */,
+				950B3B541125DBCF006C9AF1 /* heapsort.h in Headers */,
+				950B3B551125DBCF006C9AF1 /* irrArray.h in Headers */,
+				950B3B561125DBCF006C9AF1 /* irrString.h in Headers */,
+				950B3B571125DBCF006C9AF1 /* irrTypes.h in Headers */,
+				950B3B591125DBCF006C9AF1 /* irrXML.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EF9D1BF909ABE02100CAF7A6 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				957119971125D8D300104BF5 /* AddControlEvent.h in Headers */,
+				957119991125D8D300104BF5 /* AddControllerSlide.h in Headers */,
+				9571199B1125D8D300104BF5 /* AddNote.h in Headers */,
+				9571199D1125D8D300104BF5 /* DeleteSelected.h in Headers */,
+				9571199F1125D8D300104BF5 /* EditAction.h in Headers */,
+				957119A11125D8D300104BF5 /* InsertEmptyMeasures.h in Headers */,
+				957119A31125D8D300104BF5 /* MoveNotes.h in Headers */,
+				957119A51125D8D300104BF5 /* NumberPressed.h in Headers */,
+				957119A71125D8D300104BF5 /* Paste.h in Headers */,
+				957119A91125D8D300104BF5 /* RearrangeNotes.h in Headers */,
+				957119AB1125D8D300104BF5 /* RemoveMeasures.h in Headers */,
+				957119AD1125D8D300104BF5 /* RemoveOverlapping.h in Headers */,
+				957119AF1125D8D300104BF5 /* ResizeNotes.h in Headers */,
+				957119B11125D8D300104BF5 /* ScaleSong.h in Headers */,
+				957119B31125D8D300104BF5 /* ScaleTrack.h in Headers */,
+				957119B51125D8D300104BF5 /* SetAccidentalSign.h in Headers */,
+				957119B71125D8D300104BF5 /* SetNoteVolume.h in Headers */,
+				957119B91125D8D300104BF5 /* ShiftBySemiTone.h in Headers */,
+				957119BB1125D8D300104BF5 /* ShiftFrets.h in Headers */,
+				957119BD1125D8D300104BF5 /* ShiftString.h in Headers */,
+				957119BF1125D8D300104BF5 /* SnapNotesToGrid.h in Headers */,
+				957119C11125D8D300104BF5 /* UpdateGuitarTuning.h in Headers */,
+				957119C31125D8D300104BF5 /* AriaCore.h in Headers */,
+				957119C51125D8D300104BF5 /* Clipboard.h in Headers */,
+				957119C61125D8D300104BF5 /* Config.h in Headers */,
+				957119C81125D8D300104BF5 /* About.h in Headers */,
+				957119CA1125D8D300104BF5 /* CopyrightWindow.h in Headers */,
+				957119CC1125D8D300104BF5 /* CustomNoteSelectDialog.h in Headers */,
+				957119CE1125D8D300104BF5 /* NotationExportDialog.h in Headers */,
+				957119D01125D8D300104BF5 /* Preferences.h in Headers */,
+				957119D21125D8D300104BF5 /* ScalePicker.h in Headers */,
+				957119D41125D8D300104BF5 /* WaitWindow.h in Headers */,
+				957119D61125D8D300104BF5 /* ControllerEditor.h in Headers */,
+				957119D81125D8D300104BF5 /* DrumEditor.h in Headers */,
+				957119DA1125D8D300104BF5 /* Editor.h in Headers */,
+				957119DC1125D8D300104BF5 /* GuitarEditor.h in Headers */,
+				957119DE1125D8D300104BF5 /* KeyboardEditor.h in Headers */,
+				957119E01125D8D300104BF5 /* RelativeXCoord.h in Headers */,
+				957119E21125D8D300104BF5 /* ScoreAnalyser.h in Headers */,
+				957119E41125D8D300104BF5 /* ScoreEditor.h in Headers */,
+				957119E61125D8D300104BF5 /* GraphicalTrack.h in Headers */,
+				957119E81125D8D300104BF5 /* ImageProvider.h in Headers */,
+				957119EA1125D8D300104BF5 /* MainFrame.h in Headers */,
+				957119ED1125D8D300104BF5 /* MainPane.h in Headers */,
+				957119EF1125D8D300104BF5 /* MeasureBar.h in Headers */,
+				957119F11125D8D300104BF5 /* AriaFileWriter.h in Headers */,
+				957119F31125D8D300104BF5 /* IOUtils.h in Headers */,
+				957119F51125D8D300104BF5 /* MidiFileReader.h in Headers */,
+				957119F71125D8D300104BF5 /* MidiToMemoryStream.h in Headers */,
+				957119F91125D8D300104BF5 /* languages.h in Headers */,
+				957119FB1125D8D300104BF5 /* LeakCheck.h in Headers */,
+				957119FD1125D8D300104BF5 /* main.h in Headers */,
+				957119FF1125D8D300104BF5 /* CommonMidiUtils.h in Headers */,
+				95711A011125D8D300104BF5 /* ControllerEvent.h in Headers */,
+				95711A031125D8D300104BF5 /* MeasureData.h in Headers */,
+				95711A051125D8D300104BF5 /* Note.h in Headers */,
+				95711A071125D8D300104BF5 /* AlsaNotePlayer.h in Headers */,
+				95711A0A1125D8D300104BF5 /* AlsaPort.h in Headers */,
+				95711A0D1125D8D300104BF5 /* AudioToolboxPlayer.h in Headers */,
+				95711A0F1125D8D300104BF5 /* CoreAudioNotePlayer.h in Headers */,
+				95711A111125D8D300104BF5 /* QTKitPlayer.h in Headers */,
+				95711A131125D8D300104BF5 /* PlatformMidiManager.h in Headers */,
+				95711A151125D8D300104BF5 /* Sequencer.h in Headers */,
+				95711A181125D8D300104BF5 /* Sequence.h in Headers */,
+				95711A1A1125D8D300104BF5 /* TimeSigChange.h in Headers */,
+				95711A1C1125D8D300104BF5 /* Track.h in Headers */,
+				95711A1D1125D8D300104BF5 /* OpenGL.h in Headers */,
+				95711A1F1125D8D300104BF5 /* BackgroundPicker.h in Headers */,
+				95711A211125D8D300104BF5 /* ControllerChoice.h in Headers */,
+				95711A231125D8D300104BF5 /* DrumChoice.h in Headers */,
+				95711A251125D8D300104BF5 /* InstrumentChoice.h in Headers */,
+				95711A271125D8D300104BF5 /* KeyPicker.h in Headers */,
+				95711A291125D8D300104BF5 /* MagneticGrid.h in Headers */,
+				95711A2B1125D8D300104BF5 /* TimeSigPicker.h in Headers */,
+				95711A2D1125D8D300104BF5 /* TuningPicker.h in Headers */,
+				95711A2F1125D8D300104BF5 /* VolumeSlider.h in Headers */,
+				95711A311125D8D300104BF5 /* AriaPrintable.h in Headers */,
+				95711A331125D8D300104BF5 /* EditorPrintable.h in Headers */,
+				95711A351125D8D300104BF5 /* PrintableSequence.h in Headers */,
+				95711A371125D8D300104BF5 /* LayoutElement.h in Headers */,
+				95711A381125D8D300104BF5 /* LayoutPage.h in Headers */,
+				95711A3A1125D8D300104BF5 /* PrintLayoutAbstract.h in Headers */,
+				95711A3C1125D8D300104BF5 /* PrintLayoutLine.h in Headers */,
+				95711A3E1125D8D300104BF5 /* PrintLayoutMeasure.h in Headers */,
+				95711A401125D8D300104BF5 /* PrintLayoutNumeric.h in Headers */,
+				95711A421125D8D300104BF5 /* RelativePlacementManager.h in Headers */,
+				95711A441125D8D300104BF5 /* ScorePrint.h in Headers */,
+				95711A461125D8D300104BF5 /* TabPrint.h in Headers */,
+				95711A471125D8D300104BF5 /* ptr_vector.h in Headers */,
+				95711A481125D8D300104BF5 /* Range.h in Headers */,
+				95711A491125D8D300104BF5 /* Drawable.h in Headers */,
+				95711A4C1125D8D300104BF5 /* GLImage.h in Headers */,
+				95711A4E1125D8D300104BF5 /* GLPane.h in Headers */,
+				95711A511125D8D300104BF5 /* GLwxString.h in Headers */,
+				95711A521125D8D300104BF5 /* ImageBase.h in Headers */,
+				95711A531125D8D300104BF5 /* RenderAPI.h in Headers */,
+				95711A551125D8D300104BF5 /* wxDCString.h in Headers */,
+				95711A581125D8D300104BF5 /* wxImage.h in Headers */,
+				95711A5B1125D8D300104BF5 /* wxRenderPane.h in Headers */,
+				95711A5D1125D8D300104BF5 /* Singleton.h in Headers */,
+				95711A5F1125D8D300104BF5 /* unit_test.h in Headers */,
+				950B3B4A1125DBCF006C9AF1 /* CXMLReaderImpl.h in Headers */,
+				950B3B4B1125DBCF006C9AF1 /* fast_atof.h in Headers */,
+				950B3B4C1125DBCF006C9AF1 /* heapsort.h in Headers */,
+				950B3B4D1125DBCF006C9AF1 /* irrArray.h in Headers */,
+				950B3B4E1125DBCF006C9AF1 /* irrString.h in Headers */,
+				950B3B4F1125DBCF006C9AF1 /* irrTypes.h in Headers */,
+				950B3B511125DBCF006C9AF1 /* irrXML.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		9568DD9910D54FE30089AAAF /* Aria (no OpenGL) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9568DE8A10D54FE30089AAAF /* Build configuration list for PBXNativeTarget "Aria (no OpenGL)" */;
+			buildPhases = (
+				9568DD9A10D54FE30089AAAF /* Headers */,
+				9568DDFE10D54FE30089AAAF /* CopyFiles */,
+				9568DE2110D54FE30089AAAF /* Sources */,
+				9568DE7E10D54FE30089AAAF /* Rez */,
+				9568DE7F10D54FE30089AAAF /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Aria (no OpenGL)";
+			productName = notebook;
+			productReference = 9568DE8D10D54FE30089AAAF /* Aria Maestosa (no GL).app */;
+			productType = "com.apple.product-type.application";
+		};
+		EF9D1BFE09ABE02100CAF7A6 /* Aria */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EF49C6690AC4A6240054F45D /* Build configuration list for PBXNativeTarget "Aria" */;
+			buildPhases = (
+				EF9D1BF909ABE02100CAF7A6 /* Headers */,
+				EF9D1BFB09ABE02100CAF7A6 /* Sources */,
+				EF9D1BFD09ABE02100CAF7A6 /* Frameworks */,
+				950B3E951125DD2E006C9AF1 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Aria;
+			productName = notebook;
+			productReference = EF9D1BFF09ABE02100CAF7A6 /* Aria Maestosa.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EF9D1BF209ABE00400CAF7A6 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = EF49C66D0AC4A6240054F45D /* Build configuration list for PBXProject "AriaMaestosa" */;
+			compatibilityVersion = "Xcode 2.4";
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+				fr,
+				de,
+				it,
+			);
+			mainGroup = EF9D1BEE09ABE00400CAF7A6;
+			productRefGroup = EF9D1C0009ABE02100CAF7A6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EF9D1BFE09ABE02100CAF7A6 /* Aria */,
+				9568DD9910D54FE30089AAAF /* Aria (no OpenGL) */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXRezBuildPhase section */
+		9568DE7E10D54FE30089AAAF /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXRezBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9568DE2110D54FE30089AAAF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				95711A601125D8D300104BF5 /* AddControlEvent.cpp in Sources */,
+				95711A621125D8D300104BF5 /* AddControllerSlide.cpp in Sources */,
+				95711A641125D8D300104BF5 /* AddNote.cpp in Sources */,
+				95711A661125D8D300104BF5 /* DeleteSelected.cpp in Sources */,
+				95711A681125D8D300104BF5 /* EditAction.cpp in Sources */,
+				95711A6A1125D8D300104BF5 /* InsertEmptyMeasures.cpp in Sources */,
+				95711A6C1125D8D300104BF5 /* MoveNotes.cpp in Sources */,
+				95711A6E1125D8D300104BF5 /* NumberPressed.cpp in Sources */,
+				95711A701125D8D300104BF5 /* Paste.cpp in Sources */,
+				95711A721125D8D300104BF5 /* RearrangeNotes.cpp in Sources */,
+				95711A741125D8D300104BF5 /* RemoveMeasures.cpp in Sources */,
+				95711A761125D8D300104BF5 /* RemoveOverlapping.cpp in Sources */,
+				95711A781125D8D300104BF5 /* ResizeNotes.cpp in Sources */,
+				95711A7A1125D8D300104BF5 /* ScaleSong.cpp in Sources */,
+				95711A7C1125D8D300104BF5 /* ScaleTrack.cpp in Sources */,
+				95711A7E1125D8D300104BF5 /* SetAccidentalSign.cpp in Sources */,
+				95711A801125D8D300104BF5 /* SetNoteVolume.cpp in Sources */,
+				95711A821125D8D300104BF5 /* ShiftBySemiTone.cpp in Sources */,
+				95711A841125D8D300104BF5 /* ShiftFrets.cpp in Sources */,
+				95711A861125D8D300104BF5 /* ShiftString.cpp in Sources */,
+				95711A881125D8D300104BF5 /* SnapNotesToGrid.cpp in Sources */,
+				95711A8A1125D8D300104BF5 /* UpdateGuitarTuning.cpp in Sources */,
+				95711A8C1125D8D300104BF5 /* AriaCore.cpp in Sources */,
+				95711A8E1125D8D300104BF5 /* Clipboard.cpp in Sources */,
+				95711A911125D8D300104BF5 /* About.cpp in Sources */,
+				95711A931125D8D300104BF5 /* CopyrightWindow.cpp in Sources */,
+				95711A951125D8D300104BF5 /* CustomNoteSelectDialog.cpp in Sources */,
+				95711A971125D8D300104BF5 /* NotationExportDialog.cpp in Sources */,
+				95711A991125D8D300104BF5 /* Preferences.cpp in Sources */,
+				95711A9B1125D8D300104BF5 /* ScalePicker.cpp in Sources */,
+				95711A9D1125D8D300104BF5 /* WaitWindow.cpp in Sources */,
+				95711A9F1125D8D300104BF5 /* ControllerEditor.cpp in Sources */,
+				95711AA11125D8D300104BF5 /* DrumEditor.cpp in Sources */,
+				95711AA31125D8D300104BF5 /* Editor.cpp in Sources */,
+				95711AA51125D8D300104BF5 /* GuitarEditor.cpp in Sources */,
+				95711AA71125D8D300104BF5 /* KeyboardEditor.cpp in Sources */,
+				95711AA91125D8D300104BF5 /* RelativeXCoord.cpp in Sources */,
+				95711AAB1125D8D300104BF5 /* ScoreAnalyser.cpp in Sources */,
+				95711AAD1125D8D300104BF5 /* ScoreEditor.cpp in Sources */,
+				95711AAF1125D8D300104BF5 /* GraphicalTrack.cpp in Sources */,
+				95711AB11125D8D300104BF5 /* ImageProvider.cpp in Sources */,
+				95711AB31125D8D300104BF5 /* MainFrame.cpp in Sources */,
+				95711AB51125D8D300104BF5 /* MainFrameMenuBar.cpp in Sources */,
+				95711AB61125D8D300104BF5 /* MainPane.cpp in Sources */,
+				95711AB81125D8D300104BF5 /* MeasureBar.cpp in Sources */,
+				95711ABA1125D8D300104BF5 /* AriaFileWriter.cpp in Sources */,
+				95711ABC1125D8D300104BF5 /* IOUtils.cpp in Sources */,
+				95711ABE1125D8D300104BF5 /* MidiFileReader.cpp in Sources */,
+				95711AC01125D8D300104BF5 /* MidiToMemoryStream.cpp in Sources */,
+				95711AC21125D8D300104BF5 /* languages.cpp in Sources */,
+				95711AC41125D8D300104BF5 /* LeakCheck.cpp in Sources */,
+				95711AC61125D8D300104BF5 /* main.cpp in Sources */,
+				95711AC81125D8D300104BF5 /* CommonMidiUtils.cpp in Sources */,
+				95711ACA1125D8D300104BF5 /* ControllerEvent.cpp in Sources */,
+				95711ACC1125D8D300104BF5 /* MeasureData.cpp in Sources */,
+				95711ACE1125D8D300104BF5 /* Note.cpp in Sources */,
+				95711AD01125D8D300104BF5 /* AlsaNotePlayer.cpp in Sources */,
+				95711AD21125D8D300104BF5 /* AlsaPlayer.cpp in Sources */,
+				95711AD31125D8D300104BF5 /* AlsaPort.cpp in Sources */,
+				95711AD51125D8D300104BF5 /* WinPlayer.cpp in Sources */,
+				95711AD61125D8D300104BF5 /* AudioToolboxPlayer.cpp in Sources */,
+				95711AD81125D8D300104BF5 /* CoreAudioNotePlayer.cpp in Sources */,
+				95711ADA1125D8D300104BF5 /* MacPlayerInterface.cpp in Sources */,
+				95711ADC1125D8D300104BF5 /* QTKitPlayer.mm in Sources */,
+				95711ADE1125D8D300104BF5 /* Sequencer.cpp in Sources */,
+				95711AE01125D8D300104BF5 /* WinPlayer.cpp in Sources */,
+				95711AE11125D8D300104BF5 /* Sequence.cpp in Sources */,
+				95711AE31125D8D300104BF5 /* TimeSigChange.cpp in Sources */,
+				95711AE51125D8D300104BF5 /* Track.cpp in Sources */,
+				95711AE81125D8D300104BF5 /* BackgroundPicker.cpp in Sources */,
+				95711AEA1125D8D300104BF5 /* ControllerChoice.cpp in Sources */,
+				95711AEC1125D8D300104BF5 /* DrumChoice.cpp in Sources */,
+				95711AEE1125D8D300104BF5 /* InstrumentChoice.cpp in Sources */,
+				95711AF01125D8D300104BF5 /* KeyPicker.cpp in Sources */,
+				95711AF21125D8D300104BF5 /* MagneticGrid.cpp in Sources */,
+				95711AF41125D8D300104BF5 /* TimeSigPicker.cpp in Sources */,
+				95711AF61125D8D300104BF5 /* TuningPicker.cpp in Sources */,
+				95711AF81125D8D300104BF5 /* VolumeSlider.cpp in Sources */,
+				95711AFA1125D8D300104BF5 /* AriaPrintable.cpp in Sources */,
+				95711AFC1125D8D300104BF5 /* EditorPrintable.cpp in Sources */,
+				95711AFE1125D8D300104BF5 /* PrintableSequence.cpp in Sources */,
+				95711B001125D8D300104BF5 /* LayoutElement.cpp in Sources */,
+				95711B031125D8D300104BF5 /* PrintLayoutAbstract.cpp in Sources */,
+				95711B051125D8D300104BF5 /* PrintLayoutLine.cpp in Sources */,
+				95711B071125D8D300104BF5 /* PrintLayoutMeasure.cpp in Sources */,
+				95711B091125D8D300104BF5 /* PrintLayoutNumeric.cpp in Sources */,
+				95711B0B1125D8D300104BF5 /* RelativePlacementManager.cpp in Sources */,
+				95711B0D1125D8D300104BF5 /* ScorePrint.cpp in Sources */,
+				95711B0F1125D8D300104BF5 /* TabPrint.cpp in Sources */,
+				95711B141125D8D300104BF5 /* GLDrawable.cpp in Sources */,
+				95711B151125D8D300104BF5 /* GLImage.cpp in Sources */,
+				95711B171125D8D300104BF5 /* GLPane.cpp in Sources */,
+				95711B191125D8D300104BF5 /* GLRenderImp.cpp in Sources */,
+				95711B1A1125D8D300104BF5 /* GLwxString.cpp in Sources */,
+				95711B1E1125D8D300104BF5 /* wxDCString.cpp in Sources */,
+				95711B201125D8D300104BF5 /* wxDrawable.cpp in Sources */,
+				95711B211125D8D300104BF5 /* wxImage.cpp in Sources */,
+				95711B231125D8D300104BF5 /* wxRenderImp.cpp in Sources */,
+				95711B241125D8D300104BF5 /* wxRenderPane.cpp in Sources */,
+				95711B261125D8D300104BF5 /* Singleton.cpp in Sources */,
+				95711B281125D8D300104BF5 /* unit_test.cpp in Sources */,
+				950B3B581125DBCF006C9AF1 /* irrXML.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EF9D1BFB09ABE02100CAF7A6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				957119961125D8D300104BF5 /* AddControlEvent.cpp in Sources */,
+				957119981125D8D300104BF5 /* AddControllerSlide.cpp in Sources */,
+				9571199A1125D8D300104BF5 /* AddNote.cpp in Sources */,
+				9571199C1125D8D300104BF5 /* DeleteSelected.cpp in Sources */,
+				9571199E1125D8D300104BF5 /* EditAction.cpp in Sources */,
+				957119A01125D8D300104BF5 /* InsertEmptyMeasures.cpp in Sources */,
+				957119A21125D8D300104BF5 /* MoveNotes.cpp in Sources */,
+				957119A41125D8D300104BF5 /* NumberPressed.cpp in Sources */,
+				957119A61125D8D300104BF5 /* Paste.cpp in Sources */,
+				957119A81125D8D300104BF5 /* RearrangeNotes.cpp in Sources */,
+				957119AA1125D8D300104BF5 /* RemoveMeasures.cpp in Sources */,
+				957119AC1125D8D300104BF5 /* RemoveOverlapping.cpp in Sources */,
+				957119AE1125D8D300104BF5 /* ResizeNotes.cpp in Sources */,
+				957119B01125D8D300104BF5 /* ScaleSong.cpp in Sources */,
+				957119B21125D8D300104BF5 /* ScaleTrack.cpp in Sources */,
+				957119B41125D8D300104BF5 /* SetAccidentalSign.cpp in Sources */,
+				957119B61125D8D300104BF5 /* SetNoteVolume.cpp in Sources */,
+				957119B81125D8D300104BF5 /* ShiftBySemiTone.cpp in Sources */,
+				957119BA1125D8D300104BF5 /* ShiftFrets.cpp in Sources */,
+				957119BC1125D8D300104BF5 /* ShiftString.cpp in Sources */,
+				957119BE1125D8D300104BF5 /* SnapNotesToGrid.cpp in Sources */,
+				957119C01125D8D300104BF5 /* UpdateGuitarTuning.cpp in Sources */,
+				957119C21125D8D300104BF5 /* AriaCore.cpp in Sources */,
+				957119C41125D8D300104BF5 /* Clipboard.cpp in Sources */,
+				957119C71125D8D300104BF5 /* About.cpp in Sources */,
+				957119C91125D8D300104BF5 /* CopyrightWindow.cpp in Sources */,
+				957119CB1125D8D300104BF5 /* CustomNoteSelectDialog.cpp in Sources */,
+				957119CD1125D8D300104BF5 /* NotationExportDialog.cpp in Sources */,
+				957119CF1125D8D300104BF5 /* Preferences.cpp in Sources */,
+				957119D11125D8D300104BF5 /* ScalePicker.cpp in Sources */,
+				957119D31125D8D300104BF5 /* WaitWindow.cpp in Sources */,
+				957119D51125D8D300104BF5 /* ControllerEditor.cpp in Sources */,
+				957119D71125D8D300104BF5 /* DrumEditor.cpp in Sources */,
+				957119D91125D8D300104BF5 /* Editor.cpp in Sources */,
+				957119DB1125D8D300104BF5 /* GuitarEditor.cpp in Sources */,
+				957119DD1125D8D300104BF5 /* KeyboardEditor.cpp in Sources */,
+				957119DF1125D8D300104BF5 /* RelativeXCoord.cpp in Sources */,
+				957119E11125D8D300104BF5 /* ScoreAnalyser.cpp in Sources */,
+				957119E31125D8D300104BF5 /* ScoreEditor.cpp in Sources */,
+				957119E51125D8D300104BF5 /* GraphicalTrack.cpp in Sources */,
+				957119E71125D8D300104BF5 /* ImageProvider.cpp in Sources */,
+				957119E91125D8D300104BF5 /* MainFrame.cpp in Sources */,
+				957119EB1125D8D300104BF5 /* MainFrameMenuBar.cpp in Sources */,
+				957119EC1125D8D300104BF5 /* MainPane.cpp in Sources */,
+				957119EE1125D8D300104BF5 /* MeasureBar.cpp in Sources */,
+				957119F01125D8D300104BF5 /* AriaFileWriter.cpp in Sources */,
+				957119F21125D8D300104BF5 /* IOUtils.cpp in Sources */,
+				957119F41125D8D300104BF5 /* MidiFileReader.cpp in Sources */,
+				957119F61125D8D300104BF5 /* MidiToMemoryStream.cpp in Sources */,
+				957119F81125D8D300104BF5 /* languages.cpp in Sources */,
+				957119FA1125D8D300104BF5 /* LeakCheck.cpp in Sources */,
+				957119FC1125D8D300104BF5 /* main.cpp in Sources */,
+				957119FE1125D8D300104BF5 /* CommonMidiUtils.cpp in Sources */,
+				95711A001125D8D300104BF5 /* ControllerEvent.cpp in Sources */,
+				95711A021125D8D300104BF5 /* MeasureData.cpp in Sources */,
+				95711A041125D8D300104BF5 /* Note.cpp in Sources */,
+				95711A061125D8D300104BF5 /* AlsaNotePlayer.cpp in Sources */,
+				95711A081125D8D300104BF5 /* AlsaPlayer.cpp in Sources */,
+				95711A091125D8D300104BF5 /* AlsaPort.cpp in Sources */,
+				95711A0B1125D8D300104BF5 /* WinPlayer.cpp in Sources */,
+				95711A0C1125D8D300104BF5 /* AudioToolboxPlayer.cpp in Sources */,
+				95711A0E1125D8D300104BF5 /* CoreAudioNotePlayer.cpp in Sources */,
+				95711A101125D8D300104BF5 /* MacPlayerInterface.cpp in Sources */,
+				95711A121125D8D300104BF5 /* QTKitPlayer.mm in Sources */,
+				95711A141125D8D300104BF5 /* Sequencer.cpp in Sources */,
+				95711A161125D8D300104BF5 /* WinPlayer.cpp in Sources */,
+				95711A171125D8D300104BF5 /* Sequence.cpp in Sources */,
+				95711A191125D8D300104BF5 /* TimeSigChange.cpp in Sources */,
+				95711A1B1125D8D300104BF5 /* Track.cpp in Sources */,
+				95711A1E1125D8D300104BF5 /* BackgroundPicker.cpp in Sources */,
+				95711A201125D8D300104BF5 /* ControllerChoice.cpp in Sources */,
+				95711A221125D8D300104BF5 /* DrumChoice.cpp in Sources */,
+				95711A241125D8D300104BF5 /* InstrumentChoice.cpp in Sources */,
+				95711A261125D8D300104BF5 /* KeyPicker.cpp in Sources */,
+				95711A281125D8D300104BF5 /* MagneticGrid.cpp in Sources */,
+				95711A2A1125D8D300104BF5 /* TimeSigPicker.cpp in Sources */,
+				95711A2C1125D8D300104BF5 /* TuningPicker.cpp in Sources */,
+				95711A2E1125D8D300104BF5 /* VolumeSlider.cpp in Sources */,
+				95711A301125D8D300104BF5 /* AriaPrintable.cpp in Sources */,
+				95711A321125D8D300104BF5 /* EditorPrintable.cpp in Sources */,
+				95711A341125D8D300104BF5 /* PrintableSequence.cpp in Sources */,
+				95711A361125D8D300104BF5 /* LayoutElement.cpp in Sources */,
+				95711A391125D8D300104BF5 /* PrintLayoutAbstract.cpp in Sources */,
+				95711A3B1125D8D300104BF5 /* PrintLayoutLine.cpp in Sources */,
+				95711A3D1125D8D300104BF5 /* PrintLayoutMeasure.cpp in Sources */,
+				95711A3F1125D8D300104BF5 /* PrintLayoutNumeric.cpp in Sources */,
+				95711A411125D8D300104BF5 /* RelativePlacementManager.cpp in Sources */,
+				95711A431125D8D300104BF5 /* ScorePrint.cpp in Sources */,
+				95711A451125D8D300104BF5 /* TabPrint.cpp in Sources */,
+				95711A4A1125D8D300104BF5 /* GLDrawable.cpp in Sources */,
+				95711A4B1125D8D300104BF5 /* GLImage.cpp in Sources */,
+				95711A4D1125D8D300104BF5 /* GLPane.cpp in Sources */,
+				95711A4F1125D8D300104BF5 /* GLRenderImp.cpp in Sources */,
+				95711A501125D8D300104BF5 /* GLwxString.cpp in Sources */,
+				95711A541125D8D300104BF5 /* wxDCString.cpp in Sources */,
+				95711A561125D8D300104BF5 /* wxDrawable.cpp in Sources */,
+				95711A571125D8D300104BF5 /* wxImage.cpp in Sources */,
+				95711A591125D8D300104BF5 /* wxRenderImp.cpp in Sources */,
+				95711A5A1125D8D300104BF5 /* wxRenderPane.cpp in Sources */,
+				95711A5C1125D8D300104BF5 /* Singleton.cpp in Sources */,
+				95711A5E1125D8D300104BF5 /* unit_test.cpp in Sources */,
+				950B3B501125DBCF006C9AF1 /* irrXML.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		9568DE8B10D54FE30089AAAF /* Development */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9568DD6310D54E340089AAAF /* DebugConfigNoGL.xcconfig */;
+			buildSettings = {
+				ARCHS = i386;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS)";
+				GCC_DEBUGGING_SYMBOLS = full;
+				GCC_ENABLE_SYMBOL_SEPARATION = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = "devel - noGL.plist";
+				INSTALL_PATH = "$(USER_APPS_DIR)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../libjdkmidi/tmp-target/build/lib\"";
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
+				PRODUCT_NAME = "Aria Maestosa (no GL)";
+				REZ_EXECUTABLE = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				SECTORDER_FLAGS = "";
+				UNSTRIPPED_PRODUCT = YES;
+				WARNING_CFLAGS = "-Wmost";
+			};
+			name = Development;
+		};
+		9568DE8C10D54FE30089AAAF /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9568DD6410D54E340089AAAF /* ReleaseConfigNoGL.xcconfig */;
+			buildSettings = {
+				ARCHS = i386;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
+				COPY_PHASE_STRIP = YES;
+				DEAD_CODE_STRIPPING = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS)";
+				GCC_DEBUGGING_SYMBOLS = default;
+				GCC_ENABLE_SYMBOL_SEPARATION = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = "devel - noGL.plist";
+				INSTALL_PATH = "$(USER_APPS_DIR)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../libjdkmidi/tmp-target/build/lib\"";
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
+				PRODUCT_NAME = "Aria Maestosa (no GL)";
+				REZ_EXECUTABLE = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				SECTORDER_FLAGS = "";
+				UNSTRIPPED_PRODUCT = YES;
+				WARNING_CFLAGS = "-Wmost";
+			};
+			name = Deployment;
+		};
+		EF49C66A0AC4A6240054F45D /* Development */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9568DC6310D54CA50089AAAF /* DebugConfig.xcconfig */;
+			buildSettings = {
+				ARCHS = i386;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS)";
+				GCC_DEBUGGING_SYMBOLS = full;
+				GCC_ENABLE_SYMBOL_SEPARATION = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = devel.plist;
+				INSTALL_PATH = "$(USER_APPS_DIR)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../libjdkmidi/tmp-target/build/lib\"";
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
+				PRODUCT_NAME = "Aria Maestosa";
+				REZ_EXECUTABLE = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				SECTORDER_FLAGS = "";
+				UNSTRIPPED_PRODUCT = YES;
+				WARNING_CFLAGS = "-Wmost";
+			};
+			name = Development;
+		};
+		EF49C66B0AC4A6240054F45D /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9568DC6810D54DC70089AAAF /* ReleaseConfig.xcconfig */;
+			buildSettings = {
+				ARCHS = i386;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
+				COPY_PHASE_STRIP = YES;
+				DEAD_CODE_STRIPPING = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS)";
+				GCC_DEBUGGING_SYMBOLS = default;
+				GCC_ENABLE_SYMBOL_SEPARATION = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = release.plist;
+				INSTALL_PATH = "$(USER_APPS_DIR)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../libjdkmidi/tmp-target/build/lib\"";
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
+				PRODUCT_NAME = "Aria Maestosa";
+				REZ_EXECUTABLE = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				SECTORDER_FLAGS = "";
+				UNSTRIPPED_PRODUCT = YES;
+				WARNING_CFLAGS = "-Wmost";
+			};
+			name = Deployment;
+		};
+		EF49C66E0AC4A6240054F45D /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Development;
+		};
+		EF49C66F0AC4A6240054F45D /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Deployment;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9568DE8A10D54FE30089AAAF /* Build configuration list for PBXNativeTarget "Aria (no OpenGL)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9568DE8B10D54FE30089AAAF /* Development */,
+				9568DE8C10D54FE30089AAAF /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+		EF49C6690AC4A6240054F45D /* Build configuration list for PBXNativeTarget "Aria" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EF49C66A0AC4A6240054F45D /* Development */,
+				EF49C66B0AC4A6240054F45D /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+		EF49C66D0AC4A6240054F45D /* Build configuration list for PBXProject "AriaMaestosa" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EF49C66E0AC4A6240054F45D /* Development */,
+				EF49C66F0AC4A6240054F45D /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EF9D1BF209ABE00400CAF7A6 /* Project object */;
+}

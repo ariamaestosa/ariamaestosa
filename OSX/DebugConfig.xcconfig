@@ -1,0 +1,7 @@
+// Xcode build configuration
+
+HEADER_SEARCH_PATHS = ../libjdkmidi/include $(SRCROOT)/../ $(SRCROOT)/../Src
+OTHER_CFLAGS = -D_MAC_QUICKTIME_COREAUDIO $(WXCONFIG_BUILDFLAGS) -DRENDERER_OPENGL -D_MORE_DEBUG_CHECKS=1
+
+OTHER_LDFLAGS = $(WXCONFIG_LINKFLAGS) /Developer/libs/libjdkmidi/libjdkmidi.a -lwx_macu_gl-2.8
+//LIBRARY_SEARCH_PATHS = /usr/local/lib /usr/lib
