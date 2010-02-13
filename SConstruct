@@ -289,7 +289,10 @@ def compile_Aria(which_os):
     
         print "*** Adding Alsa libraries and defines"
         
-        env.Append(CCFLAGS=['-DwxUSE_GLCANVAS=1','-D_ALSA'])
+        if renderer == 'opengl':
+            env.Append(CCFLAGS=['-DwxUSE_GLCANVAS=1'])
+        
+        env.Append(CCFLAGS=['-D_ALSA'])
         
         env.Append(CPPPATH = ['/usr/include'])
         
