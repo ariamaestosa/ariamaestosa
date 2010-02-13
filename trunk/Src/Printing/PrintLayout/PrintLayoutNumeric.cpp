@@ -22,6 +22,13 @@
 using namespace AriaMaestosa;
 
 const int LINE_MAX_LEVEL_HEIGHT = 75;
+const float ELEMENT_MAX_ZOOM = 1.5f;
+
+//FIXME: those two seem a little redundant
+const int SPACE_BETWEEN_TRACKS = 150;
+const int MARGIN_AROUND_LINE = 250;
+
+const float MAX_HEIGHT_COMPARED_TO_USED_HEIGHT = 1.3f;
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -70,7 +77,7 @@ void PrintLayoutNumeric::placeElementsWithinCoords(LayoutLine& line, int x0, con
     assertExpr(totalNeededWidth, <=, availableWidth);
     
     float zoom = (float)availableWidth / (float)totalNeededWidth;
-    if (zoom > 1.5f) zoom = 1.5f; // prevent zooming too much, will look weird
+    if (zoom > ELEMENT_MAX_ZOOM) zoom = ELEMENT_MAX_ZOOM; // prevent zooming too much, will look weird
     
     // ---- init coords of each layout element
     int xloc = 0;
@@ -143,9 +150,8 @@ void PrintLayoutNumeric::divideLineAmongTracks(LayoutLine& line, const int x0, c
         if (line.height_percent[n] > 0) nonEmptyTrackAmount++;
     }
     
-    // FIXME : this is layout, should go in PrintLayout.cpp ?
     // space between individual tracks
-    const int space_between_tracks = nonEmptyTrackAmount > 1 ? 150 : 0;
+    const int space_between_tracks = nonEmptyTrackAmount > 1 ? SPACE_BETWEEN_TRACKS : 0;
     
     float current_y = my0;
     int nonEmptyID = 0;
@@ -167,35 +173,22 @@ void PrintLayoutNumeric::divideLineAmongTracks(LayoutLine& line, const int x0, c
         // needs to be applied (FIXME : can it be harder to understand what i'm doing here...)
         const float adjustMarginRatio = (float)(nonEmptyTrackAmount-1) / (float)(nonEmptyTrackAmount);
         
-        const float position =
-        nonEmptyTrackAmount-1 == 0 ? 0.0f : // avoid division by zero
-        (float)nonEmptyID / (float)(nonEmptyTrackAmount-1);
+        const float position = (nonEmptyTrackAmount-1 == 0 ?
+                                0.0f : // avoid division by zero
+                                (float)nonEmptyID / (float)(nonEmptyTrackAmount-1));
         const float space_above_line = space_between_tracks*position*adjustMarginRatio;
         const float space_below_line = space_between_tracks*(1.0-position)*adjustMarginRatio;
         
-        /*
-        placeTrackAndElementsWithinCoords(n, line, line.getLineTrackRef(n),
-                                          x0, current_y + space_above_line,
-                                          x1, current_y + track_height - space_below_line,
-                                          n==0);
-        */
-        
+
         placeTrackWithinCoords(n, line, line.getLineTrackRef(n),
                                x0, current_y + space_above_line,
                                x1, current_y + track_height - space_below_line,
                                n==0);
         
-        /*
-        void placeTrackWithinCoords(const int trackID, LayoutLine& line, LineTrackRef& track,
-                                    int x0, const int y0, const int x1, const int y1,
-                                    bool show_measure_number);
-         */
-        
         std::cout << "%%%% setting track coords " << n  << " : " << x0 << ", " << (current_y + space_above_line)
             << " to "  << x1 << ", "<< (current_y + track_height - space_below_line)
             << " ( space_above_line=" << space_above_line << " space_below_line=" << space_below_line
             << " track_height=" << track_height << ")" <<  std::endl;
-        
         
         current_y += track_height;
         nonEmptyID++;
@@ -238,7 +231,10 @@ void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, float notation_area_
         }
         
         // shrink total height when track is way too large (if page contains only a few tracks)
-        if (height > pageHeight/5 && height > used_height*1.3) height = used_height*1.3;  
+        if (height > pageHeight/5 && height > used_height*MAX_HEIGHT_COMPARED_TO_USED_HEIGHT)
+        {
+            height = used_height*MAX_HEIGHT_COMPARED_TO_USED_HEIGHT;  
+        }
         
         
         float used_y_from = notation_area_y_from;
@@ -250,11 +246,13 @@ void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, float notation_area_
         
         // split margin above and below depending on position within page
         const int line_amount = page.getLineCount();
-        const float position = line_amount == 0 ? 0 : float(l) / line_amount;
-        int margin_above = 250*position;
-        int margin_below = 250*(1-position);
+        const float position = (line_amount == 0 ? 0 : float(l) / line_amount);
+        int margin_above = MARGIN_AROUND_LINE*position;
+        int margin_below = MARGIN_AROUND_LINE*(1-position);
         
-        std::cout << "height=" << height << " used_height=" << used_height << " used_y_from=" << used_y_from << " margin_above=" << margin_above << " margin_below=" << margin_below << std::endl;
+        std::cout << "height=" << height << " used_height=" << used_height
+                  << " used_y_from=" << used_y_from << " margin_above=" << margin_above
+                  << " margin_below=" << margin_below << std::endl;
         
         this->divideLineAmongTracks(line, x0, used_y_from, x1, used_y_from+used_height, margin_below, margin_above);
         
