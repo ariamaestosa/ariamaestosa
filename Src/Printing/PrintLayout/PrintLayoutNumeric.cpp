@@ -21,6 +21,8 @@
 
 using namespace AriaMaestosa;
 
+const int LINE_MAX_LEVEL_HEIGHT = 75;
+
 // -----------------------------------------------------------------------------------------------------------------
 
 PrintLayoutNumeric::PrintLayoutNumeric()
@@ -230,7 +232,7 @@ void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, float notation_area_
         LayoutLine& line = page.getLine(l);
         
         // line too high, will look weird... shrink a bit
-        while (used_height/(float)line.level_height > 100)
+        while (used_height/(float)line.level_height > LINE_MAX_LEVEL_HEIGHT)
         {
             used_height *= 0.95;
         }
