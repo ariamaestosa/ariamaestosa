@@ -132,6 +132,7 @@ namespace AriaMaestosa
         LEAK_CHECK();
         
         // ------------- read-only -------------
+        // FIXME: it should be the graphics that refer to the data, not the data holding the graphics!
         OwnerPtr<GraphicalTrack>  graphics;
         Sequence* sequence;
         int trackUniqueID;
