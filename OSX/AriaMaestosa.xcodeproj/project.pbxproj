@@ -898,6 +898,8 @@
 		95711BE11125D94900104BF5 /* tool2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tool2.png; path = ../Resources/tool2.png; sourceTree = SOURCE_ROOT; };
 		95711BE31125D94900104BF5 /* white_border.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = white_border.png; path = ../Resources/white_border.png; sourceTree = SOURCE_ROOT; };
 		95711BE41125D94900104BF5 /* white_corner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = white_corner.png; path = ../Resources/white_corner.png; sourceTree = SOURCE_ROOT; };
+		957C860F1127013D006AC7D3 /* Changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Changelog.txt; path = ../Changelog.txt; sourceTree = SOURCE_ROOT; };
+		957C861011270142006AC7D3 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = ../TODO.txt; sourceTree = SOURCE_ROOT; };
 		EF104F6B0B21E1900079A1B7 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		EF85576109BDE24C00D9D1BC /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		EF9D1BFF09ABE02100CAF7A6 /* Aria Maestosa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Aria Maestosa.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1334,6 +1336,8 @@
 		EF9D1BEE09ABE00400CAF7A6 = {
 			isa = PBXGroup;
 			children = (
+				957C860F1127013D006AC7D3 /* Changelog.txt */,
+				957C861011270142006AC7D3 /* TODO.txt */,
 				9568DC6310D54CA50089AAAF /* DebugConfig.xcconfig */,
 				9568DC6810D54DC70089AAAF /* ReleaseConfig.xcconfig */,
 				9568DD6310D54E340089AAAF /* DebugConfigNoGL.xcconfig */,
