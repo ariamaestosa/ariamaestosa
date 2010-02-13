@@ -71,9 +71,6 @@ Editor::Editor(Track* track)
     lastClickedNote=-1;
     useInstantNotes_bool = false;
 
-    key_sharps_amnt = 0;
-    key_flats_amnt = 0;
-
     default_volume = 80;
 }
 
@@ -83,9 +80,6 @@ Editor::~Editor()
 
 int Editor::getDefaultVolume() const { return default_volume; }
 void Editor::setDefaultVolume(const int v) { default_volume = v; }
-    
-int Editor::getKeySharpsAmount() const { return key_sharps_amnt; }
-int Editor::getKeyFlatsAmount() const { return key_flats_amnt; }
 
 void Editor::useInstantNotes(bool enabled)
 {

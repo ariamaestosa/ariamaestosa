@@ -82,10 +82,6 @@ protected:
     bool selecting;
     int ystep;
 
-    // FIXME : what does this do here? Musical information belongs in 'Track'
-    int key_sharps_amnt;
-    int key_flats_amnt;
-
     bool mouse_is_in_editor;
     int lastClickedNote; // contains the ID of the latest clicked note, or -1 to mean "selected notes"
     bool clickedOnNote;
@@ -125,10 +121,6 @@ public:
     // default volume
     int getDefaultVolume() const;
     void setDefaultVolume(const int v);
-
-    // get info about key
-    int getKeySharpsAmount() const;
-    int getKeyFlatsAmount() const;
 
     // ------------------------------------------------------------------------------------------------------
     // utility methods that children may call as needed

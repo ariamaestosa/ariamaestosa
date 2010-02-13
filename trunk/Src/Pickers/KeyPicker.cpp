@@ -164,10 +164,14 @@ void KeyPicker::setParent(Track* parent_arg)
     key_flats_5->Check(false);
     key_flats_6->Check(false);
     key_flats_7->Check(false);
-    const int sharps = parent->scoreEditor->getKeySharpsAmount();
-    const int flats = parent->scoreEditor->getKeyFlatsAmount();
+    
+    const int sharps = parent_arg->getKeySharpsAmount();
+    const int flats  = parent_arg->getKeyFlatsAmount();
+    
     if (sharps==0 and flats==0)
+    {
         key_c->Check(true);
+    }
     else if (sharps > flats)
     {
         if (sharps == 1) key_sharps_1->Check(true);

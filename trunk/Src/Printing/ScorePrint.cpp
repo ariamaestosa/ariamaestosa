@@ -1097,8 +1097,8 @@ namespace AriaMaestosa
             const unsigned short int sharp_sign_lvl[] = { 1, 4, 0, 3, 6, 2, 5 };
             const unsigned short int flat_sign_lvl[]  = { 3, 0, 4, 1, 5, 2, 6 };
             
-            const int sharps = track->graphics->getCurrentEditor()->getKeySharpsAmount();
-            const int flats  = track->graphics->getCurrentEditor()->getKeyFlatsAmount();
+            const int sharps = track->getKeySharpsAmount();
+            const int flats  = track->getKeyFlatsAmount();
             assertExpr(line.getLayoutElementCount(),>=,0);
             
             if (sharps > 0 or flats > 0)

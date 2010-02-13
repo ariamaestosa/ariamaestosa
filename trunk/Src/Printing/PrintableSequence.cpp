@@ -35,8 +35,8 @@ bool PrintableSequence::addTrack(Track* track, int mode /* GUITAR, SCORE, etc. *
         is_score_editor_used = true;
         
         max_signs_in_keysig = std::max( max_signs_in_keysig,
-                                       std::max(track->graphics->getCurrentEditor()->getKeySharpsAmount(),
-                                                track->graphics->getCurrentEditor()->getKeyFlatsAmount()) );
+                                       std::max(track->getKeySharpsAmount(),
+                                                track->getKeyFlatsAmount()) );
     }
     else
     {

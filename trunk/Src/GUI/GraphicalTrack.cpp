@@ -1207,8 +1207,8 @@ void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
     writeData( wxT("<instrument id=\"") + to_wxString( track->getInstrument() ) + wxT("\"/>\n"), fileout);
     writeData( wxT("<drumkit id=\"") + to_wxString( track->getDrumKit() ) + wxT("\"/>\n"), fileout);
 
-    writeData( wxT("<key sharps=\"") + to_wxString( scoreEditor->getKeySharpsAmount() ) +
-               wxT("\" flats=\"") + to_wxString( scoreEditor->getKeyFlatsAmount() ) +
+    writeData( wxT("<key sharps=\"") + to_wxString( track->getKeySharpsAmount() ) +
+               wxT("\" flats=\"")    + to_wxString( track->getKeyFlatsAmount() ) +
                + wxT("\"/>\n"), fileout);
 
     // guitar tuning
