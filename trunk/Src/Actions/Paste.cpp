@@ -79,12 +79,13 @@ namespace AriaMaestosa
         if (!atMouse) beginning=0;
 
         // unselected previously selected track->notes
-        for(int n=0; n<track->notes.size(); n++) track->notes[n].setSelected(false);
+        for (int n=0; n<track->notes.size(); n++) track->notes[n].setSelected(false);
 
         // find where track->notes begin if necessary
         if (atMouse)
+        {
             beginning = Clipboard::getNote(0)->startTick;
-
+        }
         int shift=0;
 
         // if "paste at mouse", use its location to know where to paste track->notes
