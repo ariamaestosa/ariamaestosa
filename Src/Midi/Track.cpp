@@ -43,87 +43,79 @@
 
 #include "wx/utils.h"
 
-namespace AriaMaestosa
-{
+using namespace AriaMaestosa;
 
-    Track::Track(MainFrame* parent, Sequence* sequence)
-    {
-        name.set( wxString( _("Untitled") ) );
-        name.setMaxWidth(120);
-        
-        // FIXME - find out why fonts are so different on mac and linux
+// -------------------------------------------------------------------------------------------------------
+
+Track::Track(MainFrame* parent, Sequence* sequence)
+{
+    
+    key_sharps_amnt = 0;
+    key_flats_amnt  = 0;
+    
+    name.set( wxString( _("Untitled") ) );
+    name.setMaxWidth(120);
+    
+    //FIXME: find out why fonts are so different on mac and linux
 #ifdef __WXMAC__
-        name.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+    name.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
 #else
-        name.setFont( wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+    name.setFont( wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
 #endif
 
-        Track::frame=parent;
+    Track::frame=parent;
 
-        Track::sequence = sequence;
+    Track::sequence = sequence;
 
-        graphics = new GraphicalTrack(this, sequence);
-        graphics->createEditors();
+    graphics = new GraphicalTrack(this, sequence);
+    graphics->createEditors();
 
-        channel = 0;
-        if ( sequence->getChannelManagementType() == CHANNEL_MANUAL )
+    channel = 0;
+    if ( sequence->getChannelManagementType() == CHANNEL_MANUAL )
+    {
+        // if in manual channel management mode, we need to give it a proper channel
+        // the following array will store what channels are currently taken
+        bool channel_taken[16];
+        for(int i=0; i<16; i++) channel_taken[i] = false;
+
+        const int track_amount = sequence->getTrackAmount();
+        for(int i=0; i<track_amount; i++)
         {
-            // if in manual channel management mode, we need to give it a proper channel
-            // the following array will store what channels are currently taken
-            bool channel_taken[16];
-            for(int i=0; i<16; i++) channel_taken[i] = false;
-
-            const int track_amount = sequence->getTrackAmount();
-            for(int i=0; i<track_amount; i++)
+            assertExpr(sequence->getTrack(i)->getChannel(),>=,0);
+            assertExpr(sequence->getTrack(i)->getChannel(),<,16);
+            channel_taken[sequence->getTrack(i)->getChannel()] = true;
+        }
+        for(int i=0; i<16; i++)
+        {
+            if (i==9) continue; // don't use channel 9, it's for drums
+            // use first not-yet-used channel
+            if (not channel_taken[i])
             {
-                assertExpr(sequence->getTrack(i)->getChannel(),>=,0);
-                assertExpr(sequence->getTrack(i)->getChannel(),<,16);
-                channel_taken[sequence->getTrack(i)->getChannel()] = true;
+                channel = i;
+                break;
             }
-            for(int i=0; i<16; i++)
+            else if (i == 15)
             {
-                if (i==9) continue; // don't use channel 9, it's for drums
-                // use first not-yet-used channel
-                if (not channel_taken[i])
-                {
-                    channel = i;
-                    break;
-                }
-                else if (i == 15)
-                {
-                    // we reached the end and still haven't found any...
-                    // FIXME - the given instrument might be wrong
-                }
+                // we reached the end and still haven't found any...
+                // FIXME - the given instrument might be wrong
             }
         }
-
-
-        instrument = 0;
-        drumKit = 0;
-
-        instrument_name.set(Core::getInstrumentPicker()->getInstrumentName( instrument ));
-#ifdef __WXMAC__
-        instrument_name.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-#else
-        instrument_name.setFont( wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-#endif
-        
     }
 
-/*
- * This is the method called for performing any action that can be undone.
- * A EditAction object is used to describe the task, and it also knows how to revert it.
- * The EditAction objects are kept in a stack in Sequence in order to offer multiple undo levels.
- *
- * Track::action does actions that affect only this Track. Also see Sequence::action.
- */
 
-void Track::action( Action::SingleTrackAction* action)
-{
-    action->setParentTrack(this);
-    sequence->addToUndoStack( action );
-    action->perform();
+    instrument = 0;
+    drumKit = 0;
+
+    instrument_name.set(Core::getInstrumentPicker()->getInstrumentName( instrument ));
+#ifdef __WXMAC__
+    instrument_name.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+#else
+    instrument_name.setFont( wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+#endif
+    
 }
+
+// -------------------------------------------------------------------------------------------------------
 
 Track::~Track()
 {
@@ -137,8 +129,8 @@ Track::~Track()
     }
 }
 
-// when one track will be removed, all others are notified so they can remove any
-// link to that track they could have (like background)
+// -------------------------------------------------------------------------------------------------------
+
 void Track::trackDeleted(Track* track)
 {
     graphics->keyboardEditor->trackDeleted(track);
@@ -152,9 +144,23 @@ void Track::trackDeleted(Track* track)
     */
 }
 
-// ------------------- add/remove notes --------------------
+// -------------------------------------------------------------------------------------------------------
+
+void Track::action( Action::SingleTrackAction* action)
+{
+    action->setParentTrack(this);
+    sequence->addToUndoStack( action );
+    action->perform();
+}
+
+
+// =======================================================================================================
+// ======================================= Add/Remove Notes ==============================================
+// =======================================================================================================
+
 #if 0
 #pragma mark -
+#pragma mark Add/Remove Notes
 #endif
 
 
@@ -230,8 +236,9 @@ bool Track::addNote(Note* note, bool check_for_overlapping_notes)
 
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 // FIXME - find nicer solution than this pointer to an int...
-// here previousValue returns the old value there was, if any, before this new event replaces it.
 void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
 {
     ptr_vector<ControllerEvent>* vector;
@@ -279,22 +286,21 @@ void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
     vector->push_back( evt );
 }
 
-/*
- * A midi controller, added from reading a file.
- * If we're reading the even from file, we can add it right away without further checks
- * because we know events won't overlap and are in time order.
- */
+// -------------------------------------------------------------------------------------------------------
 
 void Track::addController_import(const int x, const int value, const int controller)
 {
     controlEvents.push_back(new ControllerEvent(sequence, controller, x, value) );
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 bool Track::addNote_import(const int pitchID, const int startTick, const int endTick, const int volume, const int string)
 {
     return addNote( new Note(graphics, pitchID, startTick, endTick, volume, string) );
-    //return addNote(pitchID, startTick, endTick, volume, string);
 }
+
+// -------------------------------------------------------------------------------------------------------
 
 void Track::setNoteEnd_import(const int tick, const int noteID)
 {
@@ -310,6 +316,8 @@ void Track::setNoteEnd_import(const int tick, const int noteID)
     // FIXME - why on earth do i check whether we are importing in a method bearing the name "import" ??
     if (!sequence->importing) reorderNoteOffVector();
 }
+
+// -------------------------------------------------------------------------------------------------------
 
 void Track::removeNote(const int id)
 {
@@ -328,6 +336,8 @@ void Track::removeNote(const int id)
     notes.erase(id);
 
 }
+
+// -------------------------------------------------------------------------------------------------------
 
 void Track::markNoteToBeRemoved(const int id)
 {
@@ -352,6 +362,9 @@ void Track::markNoteToBeRemoved(const int id)
 
     notes.markToBeRemoved(id);
 }
+
+// -------------------------------------------------------------------------------------------------------
+
 void Track::removeMarkedNotes()
 {
 
@@ -369,9 +382,8 @@ void Track::removeMarkedNotes()
 #endif
 }
 
-/*
- * Make sure all notes in note on vector are in time order.
- */
+// -------------------------------------------------------------------------------------------------------
+
 void Track::reorderNoteVector()
 {
     // FIXME - innefficient implementation
@@ -385,19 +397,11 @@ void Track::reorderNoteVector()
     }
 #endif
 
-    //int max_n = 0;
-
     for(int n=0; n<noteAmount-1; n++)
     {
 
         assertExpr(n+1,<,notes.size());
-/*
-        if (n > max_n)
-        {
-            max_n = n;
-            std::cout << " #" << n  << "/" << noteAmount << std::endl;
-        }
-        */
+
         if (notes[n].startTick > notes[n+1].startTick)
         {
             notes.swap(n, n+1);
@@ -408,9 +412,8 @@ void Track::reorderNoteVector()
 
 }
 
-/*
- * Make sure all notes in note off vector are in time order.
- */
+// -------------------------------------------------------------------------------------------------------
+
 void Track::reorderNoteOffVector()
 {
     // FIXME - innefficient implementation
@@ -438,6 +441,8 @@ void Track::reorderNoteOffVector()
 
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 void Track::reorderControlVector()
 {
     // FIXME - innefficient implementation
@@ -459,6 +464,8 @@ void Track::reorderControlVector()
 
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 void Track::mergeTrackIn(Track* track)
 {
     const int noteAmount = track->notes.size();
@@ -479,6 +486,8 @@ void Track::mergeTrackIn(Track* track)
 
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 // FIXME - debug function, remove
 void Track::checkControlEventsOrder()
 {
@@ -493,11 +502,13 @@ void Track::checkControlEventsOrder()
     }
 }
 
-
-// ------------------------------------- notes -------------------------------------
+// =======================================================================================================
+// ============================================== Notes ==================================================
+// =======================================================================================================
 
 #if 0
 #pragma mark -
+#pragma mark Notes
 #endif
 
 Note* Track::getNote(const int id)
@@ -505,6 +516,8 @@ Note* Track::getNote(const int id)
     assertExpr(id,<,notes.size());
     return notes.get(id);
 }
+
+// -------------------------------------------------------------------------------------------------------
 
 int Track::getNoteStartInPixels(const int id) const
 {
@@ -514,6 +527,8 @@ int Track::getNoteStartInPixels(const int id) const
     return (int)round( notes[id].startTick * sequence->getZoom() );
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 int Track::getNoteEndInPixels(const int id) const
 {
     assertExpr(id,>=,0);
@@ -521,6 +536,8 @@ int Track::getNoteEndInPixels(const int id) const
 
     return (int)round( notes[id].endTick * sequence->getZoom() );
 }
+
+// -------------------------------------------------------------------------------------------------------
 
 int Track::getNoteStartInMidiTicks(const int id) const
 {
@@ -530,6 +547,8 @@ int Track::getNoteStartInMidiTicks(const int id) const
     return notes[id].startTick;
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 int Track::getNoteEndInMidiTicks(const int id) const
 {
     assertExpr(id,>=,0);
@@ -538,6 +557,8 @@ int Track::getNoteEndInMidiTicks(const int id) const
     return notes[id].endTick;
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 int Track::getNotePitchID(const int id) const
 {
     assertExpr(id,>=,0);
@@ -545,10 +566,14 @@ int Track::getNotePitchID(const int id) const
     return notes[id].pitchID;
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 int Track::getNoteAmount() const
 {
     return notes.size();
 }
+
+// -------------------------------------------------------------------------------------------------------
 
 int Track::getNoteVolume(const int id) const
 {
@@ -556,6 +581,8 @@ int Track::getNoteVolume(const int id) const
     assertExpr(id,<,notes.size());
     return notes[id].volume;
 }
+
+// -------------------------------------------------------------------------------------------------------
 
 int Track::getNoteString(const int id)
 {
@@ -568,6 +595,8 @@ int Track::getNoteString(const int id)
     return notes[id].getString();
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 int Track::getNoteFret(const int id)
 {
     assertExpr(id,>=,0);
@@ -578,6 +607,8 @@ int Track::getNoteFret(const int id)
 
     return notes[id].getFret();
 }
+
+// -------------------------------------------------------------------------------------------------------
     
 int Track::findFirstNoteInRange(const int fromTick, const int toTick) const
 {
@@ -591,6 +622,8 @@ int Track::findFirstNoteInRange(const int fromTick, const int toTick) const
     return -1;
 }
     
+// -------------------------------------------------------------------------------------------------------
+
 int Track::findLastNoteInRange(const int fromTick, const int toTick) const
 {
     const int noteAmount = notes.size();
@@ -603,13 +636,15 @@ int Track::findLastNoteInRange(const int fromTick, const int toTick) const
     return -1;
 }
 
-// returns the amount of ALL types of controller, not only of specified type
-// the only goal of id is to determine whether the app is searching for a control event or for a tempo event
+// -------------------------------------------------------------------------------------------------------
+
 int Track::getControllerEventAmount(const int controllerTypeID) const
 {
     if (controllerTypeID==201 /*tempo*/) return sequence->tempoEvents.size();
     return controlEvents.size();
 }
+
+// -------------------------------------------------------------------------------------------------------
 
 ControllerEvent* Track::getControllerEvent(const int id, const int controllerTypeID)
 {
@@ -624,10 +659,7 @@ ControllerEvent* Track::getControllerEvent(const int id, const int controllerTyp
     return &controlEvents[id];
 }
 
-/*
- * The tick where the first note of the track starts playing.
- * Used mostly when scaling relative to track
- */
+// -------------------------------------------------------------------------------------------------------
 
 int Track::getFirstNoteTick(bool selectionOnly) const
 {
@@ -646,13 +678,7 @@ int Track::getFirstNoteTick(bool selectionOnly) const
 
 }
 
-/* returns the last tick in the track */
-int Track::getDuration() const
-{
-    if (noteOff.size() < 1) return 0;
-
-    return noteOff[noteOff.size()-1].endTick;
-}
+// -------------------------------------------------------------------------------------------------------
 
 void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
 {
@@ -662,7 +688,7 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
 
     if (!Display::isSelectMorePressed() and !Display:: isSelectLessPressed()) ignoreModifiers=true; // if no modifier is pressed, don't do any special checks
 
-    // ----------------------------- select/deselect all notes ----------------------------
+    // ---- select/deselect all notes
     if (id==ALL_NOTES)
     {
         // if this is a 'select none' command, unselect any selected measures in the top bar
@@ -686,7 +712,7 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
         }// end if
 
     }
-    else  // ----------------------------- select/deselect one specific note ----------------------------
+    else  // ---- select/deselect one specific note
     {
 
         assertExpr(id,>=,0);
@@ -706,6 +732,8 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
     }//end if
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 bool Track::isNoteSelected(const int id) const
 {
     assertExpr(id,>=,0);
@@ -713,6 +741,7 @@ bool Track::isNoteSelected(const int id) const
     return notes[id].isSelected();
 }
 
+// -------------------------------------------------------------------------------------------------------
 
 void Track::prepareNotesForGuitarEditor()
 {
@@ -724,35 +753,92 @@ void Track::prepareNotesForGuitarEditor()
 
 }
 
-// --------------------- get/set ---------------------
+// -------------------------------------------------------------------------------------------------------
+
+void Track::copy()
+{
+    
+    if (graphics->editorMode == CONTROLLER)
+    {
+        wxBell();
+        return; // no copy/paste in controller mode
+    }
+    
+    Clipboard::clear();
+    Clipboard::setBeatLength(sequence->ticksPerBeat());
+    
+    int tickOfFirstSelectedNote=-1;
+    // place all selected notes into clipboard
+    for(int n=0; n<notes.size(); n++)
+    {
+        if (!notes[n].isSelected()) continue;
+        
+        Note* tmp=new Note(notes[n]);
+        Clipboard::add(tmp);
+        
+        // if in guitar mode, make sure string/fret and note match
+        if (graphics->editorMode == GUITAR) Clipboard::getNote( Clipboard::getSize()-1 )->checkIfStringAndFretMatchNote(false);
+        else Clipboard::getNote( Clipboard::getSize()-1 )->checkIfStringAndFretMatchNote(true);
+        
+        // find tickOfFirstSelectedNote of the first note
+        if (notes[n].startTick < tickOfFirstSelectedNote or tickOfFirstSelectedNote==-1) tickOfFirstSelectedNote=notes[n].startTick;
+        
+    }//next
+    
+    // remove all empty measures before notes, so that they appear in the current measure when pasting
+    const int lastMeasureStart = getMeasureData()->firstTickInMeasure( getMeasureData()->measureAtTick(tickOfFirstSelectedNote) );
+    
+    const int clipboard_size = Clipboard::getSize();
+    for(int n=0; n<clipboard_size; n++)
+    {
+        //Clipboard::getNote(n)->move( -lastMeasureStart, 0, graphics->editorMode);
+        graphics->getCurrentEditor()->moveNote(*Clipboard::getNote(n), -lastMeasureStart, 0);
+    }
+    
+    sequence->notes_shift_when_no_scrolling = lastMeasureStart;
+}
+
+
+// =======================================================================================================
+// ============================================ Get/Set ==================================================
+// =======================================================================================================
+
 #if 0
 #pragma mark -
+#pragma mark Get/Set Other Stuff
 #endif
+
+// -------------------------------------------------------------------------------------------------------
 
 void Track::setId(const int id)
 {
     trackid = id;
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 void Track::setName(wxString name)
 {
     if (name.Trim().IsEmpty()) Track::name.set( wxString( _("Untitled") ) );
     else Track::name.set(name);
 }
+
+// -------------------------------------------------------------------------------------------------------
+
 AriaRenderString& Track::getName()
 {
     return name;
 }
 
+// -------------------------------------------------------------------------------------------------------
 
 int Track::getGridDivider()
 {
     return graphics->grid->divider;
 }
 
+// -------------------------------------------------------------------------------------------------------
 
-
-// only used in manual channel mode
 int Track::getChannel()
 {
     // always 9 for drum tracks
@@ -762,20 +848,24 @@ int Track::getChannel()
     else return channel;
 
 }
+
+// -------------------------------------------------------------------------------------------------------
+
 void Track::setChannel(int i)
 {
     channel = i;
 }
 
 
-// ------------------------------------- instrument -------------------------------------
+// -------------------------------------------------------------------------------------------------------
 
 void Track::setInstrument(int i, bool recursive)
 {
     instrument = i;
     instrument_name.set(Core::getInstrumentPicker()->getInstrumentName( instrument ));
     
-    // if we're in manual channel management mode, change all tracks of the same channel to have the same instrument
+    // if we're in manual channel management mode, change all tracks of the same channel
+    // to have the same instrument
     if (sequence->getChannelManagementType() == CHANNEL_MANUAL and not recursive)
     {
         const int trackAmount = sequence->getTrackAmount();
@@ -790,31 +880,30 @@ void Track::setInstrument(int i, bool recursive)
         }//next
     }//endif
 }
+
+// -------------------------------------------------------------------------------------------------------
+
 int Track::getInstrument()
 {
     return instrument;
 }
 
-// recursive is set to true when 'setDrumKit' when the function was called by itself
-// it tells not to do any more recursion
+// -------------------------------------------------------------------------------------------------------
+
 void Track::setDrumKit(int i, bool recursive)
 {
 
     // check id validity
-    if (i == 0 ) ; //Standard
-    else if (i == 8 ) ; //Room kit
-    else if (i == 16 ) ; //Power kit
-    else if (i == 24 ) ; //Electronic
-    else if (i == 25 ) ; //Analog
-    else if (i == 32 ) ; //Jazz
-    else if (i == 40 ) ; //Brush
-    else if (i == 48 ) ; //Orchestral
-    else if (i == 56 ) ; //Special Effects
-    else
-    {
-        // invalid drum kit ID
-        return;
-    }
+    if      (i == 0 )  ; // Standard
+    else if (i == 8 )  ; // Room kit
+    else if (i == 16) ; // Power kit
+    else if (i == 24) ; // Electronic
+    else if (i == 25) ; // Analog
+    else if (i == 32) ; // Jazz
+    else if (i == 40) ; // Brush
+    else if (i == 48) ; // Orchestral
+    else if (i == 56) ; // Special Effects
+    else return;         // invalid drum kit ID
 
     drumKit = i;
 
@@ -831,14 +920,50 @@ void Track::setDrumKit(int i, bool recursive)
         }//next
     }//endif
 }
+
+// -------------------------------------------------------------------------------------------------------
+
 int Track::getDrumKit()
 {
     return drumKit;
 }
 
-// ------------------------------------- midi playback / IO -------------------------------------
+// -------------------------------------------------------------------------------------------------------
+
+int Track::getDuration() const
+{
+    if (noteOff.size() < 1) return 0;
+    
+    return noteOff[noteOff.size()-1].endTick;
+}
+
+// -------------------------------------------------------------------------------------------------------
+
+void Track::setKey(const int symbolAmount, const PitchSign symbol)
+{
+    if (symbol == SHARP)
+    {
+        key_sharps_amnt = symbolAmount;
+        key_flats_amnt  = 0;
+    }
+    else if (symbol == FLAT)
+    {
+        key_sharps_amnt = 0;
+        key_flats_amnt  = symbolAmount;
+    }
+    else
+    {
+        std::cerr << "Bogus call to Track::setKey! Symbol must be SHARP or FLAT\n";
+        assert(false);
+    }
+}
+
+// =======================================================================================================
+// ========================================== Midi playback / IO =========================================
+// =======================================================================================================
 #if 0
 #pragma mark -
+#pragma mark Playback/IO
 #endif
 
 void Track::playNote(const int id, const bool noteChange)
@@ -849,7 +974,9 @@ void Track::playNote(const int id, const bool noteChange)
     notes[id].play(noteChange);
 }
 
-// returns smallest values, ignoring -1, a being prioritary to b (returns -1 for none, 0 for a, 1 for b)
+// -------------------------------------------------------------------------------------------------------
+
+/** @return Smallest values, ignoring -1, a being prioritary to b (returns -1 for none, 0 for a, 1 for b) */
 int getActiveMin(int a, int b)
 {
     if (a==-1 and b==-1) return -1;
@@ -860,9 +987,13 @@ int getActiveMin(int a, int b)
     else return 1;//b
 }
 
-// returns smallest values, -1 being considered as 'no value'
-// if some are euqal, 'a' is prioritary to 'b', and 'b' prioritary to 'c'
-// (returns -1 for none, 0 for a, 1 for b, 2 for c)
+// -------------------------------------------------------------------------------------------------------
+
+/**
+  * @return Smallest values, -1 being considered as 'no value'
+  *         if some are equal, 'a' is prioritary to 'b', and 'b' prioritary to 'c'
+  *         (returns -1 for none, 0 for a, 1 for b, 2 for c)
+  */
 int getActiveMin(int a, int b, int c)
 {
 
@@ -884,10 +1015,7 @@ int getActiveMin(int a, int b, int c)
 
 }
 
-
-/*
- * Add Midi Events to JDKMidi track object
- */
+// -------------------------------------------------------------------------------------------------------
 
 int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                          int track_ID, /* in manual channel mode, this argument is NOT considered */
@@ -1253,53 +1381,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
 }
 
-void Track::copy()
-{
-
-    if (graphics->editorMode == CONTROLLER)
-    {
-        wxBell();
-        return; // no copy/paste in controller mode
-    }
-
-    Clipboard::clear();
-    Clipboard::setBeatLength(sequence->ticksPerBeat());
-
-    int tickOfFirstSelectedNote=-1;
-    // place all selected notes into clipboard
-    for(int n=0; n<notes.size(); n++)
-    {
-        if (!notes[n].isSelected()) continue;
-
-        Note* tmp=new Note(notes[n]);
-        Clipboard::add(tmp);
-
-        // if in guitar mode, make sure string/fret and note match
-        if (graphics->editorMode == GUITAR) Clipboard::getNote( Clipboard::getSize()-1 )->checkIfStringAndFretMatchNote(false);
-        else Clipboard::getNote( Clipboard::getSize()-1 )->checkIfStringAndFretMatchNote(true);
-
-        // find tickOfFirstSelectedNote of the first note
-        if (notes[n].startTick < tickOfFirstSelectedNote or tickOfFirstSelectedNote==-1) tickOfFirstSelectedNote=notes[n].startTick;
-
-    }//next
-
-    // remove all empty measures before notes, so that they appear in the current measure when pasting
-    const int lastMeasureStart = getMeasureData()->firstTickInMeasure( getMeasureData()->measureAtTick(tickOfFirstSelectedNote) );
-
-    const int clipboard_size = Clipboard::getSize();
-    for(int n=0; n<clipboard_size; n++)
-    {
-        //Clipboard::getNote(n)->move( -lastMeasureStart, 0, graphics->editorMode);
-        graphics->getCurrentEditor()->moveNote(*Clipboard::getNote(n), -lastMeasureStart, 0);
-    }
-
-    sequence->notes_shift_when_no_scrolling = lastMeasureStart;
-}
-
-
-// -----------------------------------------------------------------------------------------------------
-// ------------------------------------------- SAVE/LOAD -----------------------------------------------
-// -----------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------
 
 void Track::saveToFile(wxFileOutputStream& fileout)
 {
@@ -1324,6 +1406,8 @@ void Track::saveToFile(wxFileOutputStream& fileout)
 
 
 }
+
+// -------------------------------------------------------------------------------------------------------
 
 bool Track::readFromFile(irr::io::IrrXMLReader* xml)
 {
@@ -1454,7 +1538,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
             default:break;
         }//end switch
 
-    }while(xml && xml->read());
+    } while(xml && xml->read());
 
     reorderNoteOffVector();
 
@@ -1462,5 +1546,3 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
 
 }
 
-
-}

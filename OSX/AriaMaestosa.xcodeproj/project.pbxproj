@@ -1106,6 +1106,7 @@
 		9571192A1125D8D200104BF5 /* Midi */ = {
 			isa = PBXGroup;
 			children = (
+				957119331125D8D200104BF5 /* Players */,
 				9571192B1125D8D200104BF5 /* CommonMidiUtils.cpp */,
 				9571192C1125D8D200104BF5 /* CommonMidiUtils.h */,
 				9571192D1125D8D200104BF5 /* ControllerEvent.cpp */,
@@ -1114,7 +1115,6 @@
 				957119301125D8D200104BF5 /* MeasureData.h */,
 				957119311125D8D200104BF5 /* Note.cpp */,
 				957119321125D8D200104BF5 /* Note.h */,
-				957119331125D8D200104BF5 /* Players */,
 				957119491125D8D200104BF5 /* Sequence.cpp */,
 				9571194A1125D8D200104BF5 /* Sequence.h */,
 				9571194B1125D8D200104BF5 /* TimeSigChange.cpp */,

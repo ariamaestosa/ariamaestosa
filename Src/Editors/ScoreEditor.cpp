@@ -454,12 +454,9 @@ void ScoreEditor::loadKey(const PitchSign sharpness_symbol, const int symbol_amo
     converter->setNoteSharpness(F, NATURAL);
     converter->setNoteSharpness(G, NATURAL);
 
-    key_flats_amnt = 0;
-    key_sharps_amnt = 0;
-
     if (sharpness_symbol == SHARP)
     {
-        key_sharps_amnt = symbol_amount;
+        track->setKey(symbol_amount, SHARP);
 
         for(int n=A; n<symbol_amount; n++)
         {
@@ -468,7 +465,7 @@ void ScoreEditor::loadKey(const PitchSign sharpness_symbol, const int symbol_amo
     }
     else if (sharpness_symbol == FLAT)
     {
-        key_flats_amnt = symbol_amount;
+        track->setKey(symbol_amount, FLAT);
 
         for(int n=A; n<symbol_amount; n++)
         {
