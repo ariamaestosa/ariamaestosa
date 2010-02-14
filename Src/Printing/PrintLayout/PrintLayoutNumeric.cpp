@@ -254,7 +254,7 @@ void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, float notation_area_
         LayoutLine& line = page.getLine(l);
         
         // line too high, will look weird... shrink a bit
-        //FIXME: this method of taking inter-track measures is a little unclean...
+        //FIXME: this method of taking inter-track measures into account is a little unclean...
         const int lineLevelheight = line.level_height + std::max(0, line.getTrackAmount() - 1)*(SPACE_BETWEEN_TRACKS/MAX_LEVEL_HEIGHT);
         while (used_height/(float)lineLevelheight > MAX_LEVEL_HEIGHT)
         {
