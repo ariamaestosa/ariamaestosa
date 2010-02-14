@@ -850,8 +850,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
 
     // perform editor-specific event filtering
 
-    // FIXME - belongs to the editor, probably
-    // FIXME - move all editor stuff to editor files
+    // FIXME - belongs to the editor, probably (move all editor stuff to editor files)
     // FIXME - too many renders there, maybe even actions do render
 
     const int current_editor = getCurrentSequence()->getCurrentTrack()->graphics->editorMode;

@@ -378,8 +378,7 @@ void ScoreMidiConverter::updateConversionData()
         note_7 --;
         if (note_7 == 1) octave++;
 
-        if (note_7 < 0)
-            note_7 = 6;
+        if (note_7 < 0)  note_7 = 6;
     }
 
 }

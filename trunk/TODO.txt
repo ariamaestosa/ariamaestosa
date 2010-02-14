@@ -64,6 +64,8 @@ NOTE: sorry, this is very raw :)
  
  * show which files have unsaved changes
  
+ + find dialog should have options greyed out if brought up with no selected note
+ 
  + resize note with drag-and-drop
  
  - when closing last tab, show a "welcome screen" instead of exiting?

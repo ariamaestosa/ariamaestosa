@@ -432,9 +432,9 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     }
 
     // ---------------------------- scrollbar -----------------------
-    // FIXME - instead implement ernderScrollbar(focus)...
+    // FIXME - instead implement renderScrollbar(focus)...
     if (!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
-    else AriaRender::setImageState(AriaRender::STATE_NORMAL);
+    else        AriaRender::setImageState(AriaRender::STATE_NORMAL);
 
     renderScrollbar();
 
