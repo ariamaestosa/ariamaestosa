@@ -122,7 +122,7 @@ public:
     
     ~WxOwnerPtr()
     {
-        raw_ptr->Destroy();
+        if (raw_ptr != NULL) raw_ptr->Destroy();
     }
     
     WxOwnerPtr& operator=(T* ptr)

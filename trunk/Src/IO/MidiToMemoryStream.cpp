@@ -20,13 +20,7 @@
 #include <fstream>
 #include <sys/stat.h>
 
-/*
- * libjdkmidi by default can only save midi bytes to a file.
- * So i wrote this "fake stream" that captures the bytes and stores them in memory rather than to a file.
- * This is a quick'n'dirty hack that should probably be reconsidered, even though it doesn't seem to cause major performance issues. (FIXME)
- */
-
-namespace AriaMaestosa {
+using namespace AriaMaestosa;
 
 MidiToMemoryStream::MidiToMemoryStream() : MIDIFileWriteStream()
 {
@@ -80,4 +74,4 @@ MidiToMemoryStream::~MidiToMemoryStream()
 {
 }
 
-}
+

@@ -396,6 +396,8 @@ void MainFrame::menuEvent_copy(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_customNoteSelect(wxCommandEvent& evt)
 {
+    if (customNoteSelectDialog.raw_ptr == NULL) customNoteSelectDialog = new CustomNoteSelectDialog();
+
     customNoteSelectDialog->show( getCurrentSequence()->getCurrentTrack() );
 }
 
@@ -598,6 +600,7 @@ void MainFrame::menuEvent_expandedMeasuresSelected(wxCommandEvent& evt)
 // help
 void MainFrame::menuEvent_about(wxCommandEvent& evt)
 {
+    if (aboutDialog.raw_ptr == NULL) aboutDialog = new AboutDialog();
     aboutDialog->show();
 }
 

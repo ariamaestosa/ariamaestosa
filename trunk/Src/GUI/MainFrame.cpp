@@ -449,16 +449,13 @@ void MainFrame::init()
     instrument_picker   =  new InstrumentChoice();
     drumKit_picker      =  new DrumChoice();
 
-    // create dialogs (FIXME - don't create until requested by user)
-    aboutDialog             =  new AboutDialog();
-    customNoteSelectDialog  =  new CustomNoteSelectDialog();
-
     ImageProvider::loadImages();
     mainPane->isNowVisible();
 
     //ImageProvider::loadImages();
 
 #ifdef _show_dialog_on_startup
+    if (aboutDialog.raw_ptr == NULL) aboutDialog = new AboutDialog();
     aboutDialog->show();
 #endif
 }
