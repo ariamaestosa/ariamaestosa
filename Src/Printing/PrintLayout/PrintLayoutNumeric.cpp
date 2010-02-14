@@ -254,15 +254,16 @@ void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, float notation_area_
         LayoutLine& line = page.getLine(l);
         
         // line too high, will look weird... shrink a bit
-        //FIXME: 'level_height' does not include the space between tracks, so when printing
-        //       multiple tracks the overall allocated size may be too small
-        while (used_height/(float)line.level_height > MAX_LEVEL_HEIGHT)
+        //FIXME: this method of taking inter-track measures is a little unclean...
+        const int lineLevelheight = line.level_height + std::max(0, line.getTrackAmount() - 1)*(SPACE_BETWEEN_TRACKS/MAX_LEVEL_HEIGHT);
+        while (used_height/(float)lineLevelheight > MAX_LEVEL_HEIGHT)
         {
             used_height *= 0.95;
         }
         
         // shrink total height when track is way too large (if page contains only a few tracks)
-        if (heightAvailableForThisLine > pageHeight/5 && heightAvailableForThisLine > used_height*MAX_HEIGHT_COMPARED_TO_USED_HEIGHT)
+        if (heightAvailableForThisLine > pageHeight/5 and
+            heightAvailableForThisLine > used_height*MAX_HEIGHT_COMPARED_TO_USED_HEIGHT)
         {
             heightAvailableForThisLine = used_height*MAX_HEIGHT_COMPARED_TO_USED_HEIGHT;  
         }
