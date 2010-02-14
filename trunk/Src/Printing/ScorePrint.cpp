@@ -525,6 +525,8 @@ namespace AriaMaestosa
         // if we have both scores, add the margin between them to the required space.
         if (g_clef and f_clef)
         {
+            //FIXME: it's not too clear whether needed additional space should be returned
+            //       as a function of levels??
             total = total + MARGIN_PROPORTION_BETWEEN_CLEFS*total;
         }
         
