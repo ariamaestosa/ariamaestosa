@@ -68,16 +68,27 @@ class Sequence {
 
     LEAK_CHECK();
 
-    // this object is to be modified by MainFrame, to remember where to save this sequence
+    //FIXME: remove read-write public members!
+    /** this object is to be modified by MainFrame, to remember where to save this sequence */
     wxString filepath;
 
-    // these variables are to be modified by tracks
-    int x_scroll_upon_copying; // will store the horizontal scrolling when copying, and upon pasting behaviour will depend if x_scroll has changed since copy
-    int notes_shift_when_no_scrolling; // if no scrolling is done, this value will be used to determine where to place notes
+    // ---- these variables are to be modified by tracks
+    
+    /** will store the horizontal scrolling when copying, and upon pasting behaviour will depend if
+      * x_scroll has changed since copy
+      */
+    int x_scroll_upon_copying;
+    
+    /** if no scrolling is done, this value will be used to determine where to place notes */
+    int notes_shift_when_no_scrolling;
+    
     bool maximize_track_mode;
     
     // ------------ read-only -------------
-    bool importing; // set to true when importing - indicates the sequence will have frequent changes and not compute too much until it's over
+    /** set to true when importing - indicates the sequence will have frequent changes and not compute
+      * too much until it's over
+      */
+    bool importing;
 
     // set this flag true to follow playback
     bool follow_playback;
@@ -93,12 +104,26 @@ class Sequence {
     ptr_vector<ControllerEvent> tempoEvents;
     // ------------------------------------
 
-    // perform an action that affects multiple tracks (see also Track::action)
+    /*
+     * @brief perform an action that affects multiple tracks
+     *
+     * This is the method called for performing any action that can be undone.
+     * A EditAction object is used to describe the task, and it also knows how to revert it.
+     * The EditAction objects are kept in a stack in Sequence in order to offer multiple undo levels.
+     *
+     * Sequence::action does actions that affect all tracks. Also see Track::action.
+     */
     void action( Action::MultiTrackAction* action );
 
+    /** you do not need to call this yourself, Track::action and Sequence::action do. */
     void addToUndoStack( Action::EditAction* action );
+    
     void undo();
+    
+    /** forbid undo, drop all undo information kept in memory. */
     void clearUndoStack();
+    
+    /** @return is there something to undo? */
     bool somethingToUndo();
 
     Sequence();
@@ -107,6 +132,7 @@ class Sequence {
     wxString suggestFileName();
     wxString suggestTitle();
 
+    /** Hide a track by sending it to the 'dock' */
     void addToDock(GraphicalTrack* track);
     void removeFromDock(GraphicalTrack* track);
 
@@ -115,18 +141,25 @@ class Sequence {
     void spacePressed();
     void renderTracks(int currentTick, RelativeXCoord mousex, int mousey, int mousey_initial, int from_y);
 
-    void reorderTracks(); // called when mouse is released after having dragged a track.
+    /**
+     * @brief called when mouse is released after having dragged a track.
+     *
+     * Called when a user has finished dragging the track to reorder it.
+     * Where the track ends was calculated while drawing the preview - all this methods needs to do is
+     * remove the track from its curren location and move it to its new location.
+     */    
+    void reorderTracks();
 
-    // called repeatedly when mouse is held down
+    /** called repeatedly when mouse is held down */
     void mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
                        RelativeXCoord mousex_initial, int mousey_initial);
 
-    // do we need to start a timer that will frequently send mouse held down events?
+    /** do we need to start a timer that will frequently send mouse held down events? */
     bool areMouseHeldDownEventsNeeded();
 
     // tracks
-    int getTrackAmount();
-    int getCurrentTrackID();
+    int getTrackAmount() const;
+    int getCurrentTrackID() const;
     Track* getTrack(int ID);
     Track* getCurrentTrack();
     void setCurrentTrackID(int ID);
@@ -134,31 +167,43 @@ class Sequence {
     void addTrack();
     void deleteTrack();
     void deleteTrack(int ID);
+    
+    /** Called before loading, prepares empty tracks */    
     void prepareEmptyTracksForLoading(int amount);
 
-    int getTotalHeight();
-    void setTempo(int tempo);
-    int getTempo();
+    
+    /**
+     * @return the number of pixels it takes to draw all tracks, vertically.
+     *         This is used mostly by the code managing the vertical scrollbar.
+     */    
+    int   getTotalHeight() const;
+    
+    void  setTempo(int tempo);
+    int   getTempo() const;
 
-    int getZoomInPercent();
-    float getZoom();
-    void setZoom(int percent);
+    int   getZoomInPercent() const;
+    float getZoom() const;
+    void  setZoom(int percent);
 
-    void setXScrollInMidiTicks(int value);
-    void setXScrollInPixels(int value);
-    int getXScrollInMidiTicks();
-    int getXScrollInPixels();
+    void  setXScrollInMidiTicks(int value);
+    void  setXScrollInPixels(int value);
+    int   getXScrollInMidiTicks();
+    int   getXScrollInPixels();
 
-    void setYScroll(int value);
-    int getYScroll();
+    void  setYScroll(int value);
+    int   getYScroll();
 
-    void addTempoEvent( ControllerEvent* evt );
-    void addTempoEvent_import( ControllerEvent* evt );
+    void  addTempoEvent( ControllerEvent* evt );
+    
+    /** adds a tempo event. used during importing - then we know events are in time order
+      * so no time is wasted verifying that
+      */
+    void  addTempoEvent_import( ControllerEvent* evt );
 
-    void setChannelManagementType(ChannelManagementType m);
-    ChannelManagementType getChannelManagementType();
+    void  setChannelManagementType(ChannelManagementType m);
+    ChannelManagementType getChannelManagementType() const;
 
-    // called reacting to the user selecting "snap notes to grid" from the edit menu
+    /** called reacting to the user selecting "snap notes to grid" from the edit menu */
     void snapNotesToGrid();
 
     void setCopyright( wxString copyright );
@@ -178,11 +223,22 @@ class Sequence {
     void selectAll();
     void selectNone();
 
-    int ticksPerBeat();
+    /**
+     * @return Ticks per beat (the number of time units in a quarter note.)
+     */
+    int ticksPerBeat() const;
+    
+    /**
+     * @param res Ticks per beat (the number of time units in a quarter note.)
+     */
     void setTicksPerBeat(int res);
 
-    // serialization
+    // ---- serialization
+    
+    /** Called when saving <Sequence> ... </Sequence> in .aria file */
     void saveToFile(wxFileOutputStream& fileout);
+    
+    /** Called when reading <sequence> ... </sequence> in .aria file */
     bool readFromFile(irr::io::IrrXMLReader* xml);
 
 };

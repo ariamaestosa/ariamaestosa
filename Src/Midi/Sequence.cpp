@@ -47,8 +47,9 @@ const float current_file_version = 1.0;
 
 #include "irrXML/irrXML.h"
 
-namespace AriaMaestosa {
+using namespace AriaMaestosa;
 
+// ----------------------------------------------------------------------------------------------------------
 
 Sequence::Sequence()
 {
@@ -92,15 +93,21 @@ Sequence::Sequence()
     measureData = new MeasureData();
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 Sequence::~Sequence()
 {
     std::cout << "cleaning up sequence " << suggestTitle().mb_str() << "..." << std::endl;
 }
 
 
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+
 #if 0
 #pragma mark -
 #endif
+
 wxString Sequence::suggestTitle()
 {
     if (!getInternalName().IsEmpty())
@@ -140,50 +147,46 @@ wxString Sequence::suggestFileName()
     }
 }
 
-// ------------------------------------------- text info ----------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// ------------------------------------------------- Text Info ----------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
+#pragma mark Text Info
 #endif
+
 void Sequence::setCopyright( wxString copyright )
 {
     Sequence::copyright = copyright;
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 wxString Sequence::getCopyright()
 {
     return copyright;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void Sequence::setInternalName(wxString name)
 {
     internal_sequenceName = name;
 }
+// ----------------------------------------------------------------------------------------------------------
+
 wxString Sequence::getInternalName()
 {
     return internal_sequenceName;
 }
 
-// ------------------------------------------- grid ----------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// ------------------------------------------------ Scrolling -----------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+
 #if 0
 #pragma mark -
-#endif
-/*
- * When user selects 'snap notes to grid' from menu. Simply disptaches the event to the appropriate track.
- */
-
-void Sequence::snapNotesToGrid()
-{
-    assert(currentTrack>=0);
-    assert(currentTrack<tracks.size());
-
-    tracks[ currentTrack ].action( new Action::SnapNotesToGrid() );
-
-    Display::render();
-}
-
-// ------------------------------------------- scrolling ----------------------------------------
-#if 0
-#pragma mark -
+#pragma mark Scrolling
 #endif
 
 int Sequence::getYScroll()
@@ -191,20 +194,29 @@ int Sequence::getYScroll()
     return y_scroll;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 int Sequence::getXScrollInMidiTicks()
 {
     return (int)( x_scroll_in_pixels/zoom );
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 int Sequence::getXScrollInPixels()
 {
     return x_scroll_in_pixels;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void Sequence::setXScrollInMidiTicks(int value)
 {
     x_scroll_in_pixels = (int)( value * zoom );
 }
+
+// ----------------------------------------------------------------------------------------------------------
+
 void Sequence::setXScrollInPixels(int value)
 {
     x_scroll_in_pixels = value;
@@ -219,24 +231,35 @@ void Sequence::setXScrollInPixels(int value)
     Display::render();
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void Sequence::setYScroll(int value)
 {
     y_scroll = value;
 }
 
-// ------------------------------------------- setup ----------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// --------------------------------------------- Getters/Setters --------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+
 #if 0
 #pragma mark -
+#pragma mark Getters/Setters/Actions
 #endif
-float Sequence::getZoom()
+
+float Sequence::getZoom() const
 {
     return zoom;
 }
 
-int Sequence::getZoomInPercent()
+// ----------------------------------------------------------------------------------------------------------
+
+int Sequence::getZoomInPercent() const
 {
     return zoom_percent;
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void Sequence::setZoom(int zoom)
 {
@@ -246,43 +269,163 @@ void Sequence::setZoom(int zoom)
 
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void Sequence::setChannelManagementType(ChannelManagementType type)
 {
     channelManagement = type;
 }
-ChannelManagementType Sequence::getChannelManagementType()
+
+// ----------------------------------------------------------------------------------------------------------
+
+ChannelManagementType Sequence::getChannelManagementType() const
 {
     return channelManagement;
 }
 
-/**
- * @return Ticks per beat (the number of time units in a quarter note.)
- */
-int Sequence::ticksPerBeat()
+// ----------------------------------------------------------------------------------------------------------
+
+int Sequence::ticksPerBeat() const
 {
     return beatResolution;
 }
 
-/**
- * @param res Ticks per beat (the number of time units in a quarter note.)
- */
+// ----------------------------------------------------------------------------------------------------------
+
 void Sequence::setTicksPerBeat(int res)
 {
     beatResolution = res;
 }
 
+// ----------------------------------------------------------------------------------------------------------
 
-// ------------------------------------------- actions and undo ----------------------------------------
+int Sequence::getTotalHeight() const
+{
+    
+    int totalHeight=0;
+    
+    for(int n=0; n<tracks.size(); n++)
+    {
+        totalHeight += tracks[n].graphics->getTotalHeight() + 10;
+    }
+    
+    if (getMeasureData()->isExpandedMode()) totalHeight += 20;
+    
+    return totalHeight;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void Sequence::scale(float factor,
+                     bool rel_first_note, bool rel_begin, // relative to what (only one must be true)
+                     bool affect_selection, bool affect_track, bool affect_song // scale what (only one must be true)
+                     )
+{
+    assert(affect_selection xor affect_track xor affect_song);
+    
+    int relative_to = -1;
+    
+    // selection
+    if (affect_selection)
+    {
+        
+        if (rel_first_note) relative_to = tracks[currentTrack].getFirstNoteTick(true);
+        else if (rel_begin) relative_to=0;
+        
+        tracks[currentTrack].action( new Action::ScaleTrack(factor, relative_to, true) );
+    }
+    
+    // track
+    else if (affect_track)
+    {
+        
+        if (rel_first_note) relative_to = tracks[currentTrack].getFirstNoteTick();
+        else if (rel_begin) relative_to=0;
+        
+        tracks[currentTrack].action( new Action::ScaleTrack(factor, relative_to, false) );
+    }
+    
+    // song
+    else if (affect_song)
+    {
+        
+        if (rel_first_note)
+        {
+            
+            // find first tick in all tracks [i.e. find the first tick of all tracks and keep the samllest]
+            int song_first_tick = -1;
+            for(int n=0; n<tracks.size(); n++)
+            {
+                
+                const int track_first_tick = relative_to = tracks[n].getFirstNoteTick();
+                if (track_first_tick<song_first_tick or song_first_tick==-1) song_first_tick = track_first_tick;
+            }//next
+            
+            relative_to = song_first_tick;
+        }
+        else if (rel_begin) relative_to=0;
+        
+        // scale all tracks
+        action( new Action::ScaleSong(factor, relative_to) );
+        
+    }
+    
+    Display::render();
+    
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void Sequence::setTempo(int tmp)
+{
+    tempo = tmp;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+int Sequence::getTempo() const
+{
+    return tempo;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void Sequence::addTempoEvent( ControllerEvent* evt )
+{
+    // add to any track, they will redirect tempo events to the right one.
+    // FIXME - not too elegant
+    tracks[0].addControlEvent( evt );
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void Sequence::addTempoEvent_import( ControllerEvent* evt )
+{
+    tempoEvents.push_back(evt);
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+//FIXME: dubious this goes here
+void Sequence::snapNotesToGrid()
+{
+    assert(currentTrack>=0);
+    assert(currentTrack<tracks.size());
+    
+    tracks[ currentTrack ].action( new Action::SnapNotesToGrid() );
+    
+    Display::render();
+}
+
+
+// ----------------------------------------------------------------------------------------------------------
+// -------------------------------------------- Actions and Undo --------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
+#pragma mark Actions and Undo
 #endif
-/*
- * This is the method called for performing any action that can be undone.
- * A EditAction object is used to describe the task, and it also knows how to revert it.
- * The EditAction objects are kept in a stack in Sequence in order to offer multiple undo levels.
- *
- * Sequence::action does actions that affect all tracks. Also see Track::action.
- */
+
 
 void Sequence::action( Action::MultiTrackAction* action)
 {
@@ -291,7 +434,8 @@ void Sequence::action( Action::MultiTrackAction* action)
     action->perform();
 }
 
-// you do not need to call this yourself, Track::action and Sequence::action do.
+// ----------------------------------------------------------------------------------------------------------
+
 void Sequence::addToUndoStack( Action::EditAction* action )
 {
     undoStack.push_back(action);
@@ -299,6 +443,9 @@ void Sequence::addToUndoStack( Action::EditAction* action )
     // remove old actions from undo stack, to not take memory uselessly
     if (undoStack.size()>8) undoStack.erase(0);
 }
+
+// ----------------------------------------------------------------------------------------------------------
+
 void Sequence::undo()
 {
     if (undoStack.size() < 1)
@@ -315,34 +462,26 @@ void Sequence::undo()
     Display::render();
 }
 
-// forbid undo, drop all undo information kept in memory.
+// ----------------------------------------------------------------------------------------------------------
+
 void Sequence::clearUndoStack()
 {
     undoStack.clearAndDeleteAll();
 }
 
-// is there something to undo?
+// ----------------------------------------------------------------------------------------------------------
+
 bool Sequence::somethingToUndo()
 {
     return undoStack.size() > 0;
 }
 
-/*
- * Called just before doing any operation that modifies notes.
- * Tells the appropriate track to do a copy of current state, to be able to restore it if user wanted to.
- */
-/*
-void Sequence::loadUndoMemory()
-{
-    if (!somethingDoneToUndo) return;
-    tracks[lastModifiedTrack].loadUndoMemory();
-    Display::render();
-}
-*/
-
-// ------------------------------------------- render ----------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// ------------------------------------------------ Render --------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
+#pragma mark Render
 #endif
 // FIXME - this class shouldn't do both rendering and data handling
 void Sequence::renderTracks(int currentTick, RelativeXCoord mousex, int mousey, int mousey_initial, int from_y)
@@ -423,12 +562,14 @@ void Sequence::renderTracks(int currentTick, RelativeXCoord mousex, int mousey, 
 }
 
 
+// ----------------------------------------------------------------------------------------------------------
+// ------------------------------------------------ Mouse Rvents --------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
-// ------------------------------------------- mouse events ----------------------------------------
-
-/*
- * do we need to start a timer that will frequently send mouse held down events?
- */
+#if 0
+#pragma mark -
+#pragma mark Mouse Events
+#endif
 
 bool Sequence::areMouseHeldDownEventsNeeded()
 {
@@ -455,11 +596,10 @@ bool Sequence::areMouseHeldDownEventsNeeded()
      */
 }
 
-/*
- *  Called repeatedly when mouse is held down
- */
+// ----------------------------------------------------------------------------------------------------------
 
-void Sequence::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current, RelativeXCoord mousex_initial, int mousey_initial)
+void Sequence::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
+                             RelativeXCoord mousex_initial, int mousey_initial)
 {
     // FIXME - dragging tracks has nothing to do in the display
     const int draggedTrack = Display::getDraggedTrackID();
@@ -481,33 +621,14 @@ void Sequence::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current, 
 }
 
 
-
-// ------------------------------------------- info ----------------------------------------
-
-/*
- * Returns the number of pixels it takes to draw all tracks, vertically.
- * This is used mostly by the code managing the vertical scrollbar.
- */
-
-int Sequence::getTotalHeight()
-{
-
-    int totalHeight=0;
-
-    for(int n=0; n<tracks.size(); n++)
-    {
-        totalHeight += tracks[n].graphics->getTotalHeight() + 10;
-    }
-
-    if (getMeasureData()->isExpandedMode()) totalHeight += 20;
-
-    return totalHeight;
-}
-
-// ------------------------------------------- tracks ----------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------- Tracks ---------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
+#pragma mark Tracks
 #endif
+
 void Sequence::addTrack()
 {
     if (currentTrack>=0 and currentTrack<tracks.size())
@@ -517,6 +638,8 @@ void Sequence::addTrack()
 
     Display::render();
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void Sequence::deleteTrack()
 {
@@ -529,6 +652,8 @@ void Sequence::deleteTrack()
     Display::render();
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void Sequence::deleteTrack(int ID)
 {
     assertExpr(ID,>=,0);
@@ -539,11 +664,7 @@ void Sequence::deleteTrack(int ID)
     while(currentTrack>tracks.size()-1) currentTrack -= 1;
 }
 
-/*
- * Called when a user has finished dragging the track to reorder it.
- * Where the track ends was calculated while drawing the preview - all this methods needs to do is
- * remove the track from its curren location and move it to its new location.
- */
+// ----------------------------------------------------------------------------------------------------------
 
 void Sequence::reorderTracks()
 {
@@ -567,26 +688,35 @@ void Sequence::reorderTracks()
     if (! (currentTrack<tracks.size()) ) currentTrack=0;
 }
 
+// ----------------------------------------------------------------------------------------------------------
 
 Track* Sequence::getCurrentTrack()
 {
     return &tracks[currentTrack];
 }
 
-int Sequence::getTrackAmount()
+// ----------------------------------------------------------------------------------------------------------
+
+int Sequence::getTrackAmount() const
 {
     return tracks.size();
 }
 
-int Sequence::getCurrentTrackID()
+// ----------------------------------------------------------------------------------------------------------
+
+int Sequence::getCurrentTrackID() const
 {
     return currentTrack;
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void Sequence::setCurrentTrackID(int ID)
 {
     currentTrack = ID;
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 Track* Sequence::getTrack(int ID)
 {
@@ -595,6 +725,8 @@ Track* Sequence::getTrack(int ID)
 
     return &tracks[ID];
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void Sequence::setCurrentTrack(Track* track)
 {
@@ -612,9 +744,7 @@ void Sequence::setCurrentTrack(Track* track)
 
 }
 
-/*
- * Hide a track by sending it to the 'dock'
- */
+// ----------------------------------------------------------------------------------------------------------
 
 void Sequence::addToDock(GraphicalTrack* track)
 {
@@ -626,6 +756,8 @@ void Sequence::addToDock(GraphicalTrack* track)
 
     DisplayFrame::updateVerticalScrollbar();
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void Sequence::removeFromDock(GraphicalTrack* track)
 {
@@ -643,10 +775,15 @@ void Sequence::removeFromDock(GraphicalTrack* track)
 
 }
 
-// ------------------------------------------- playback ----------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------- Playback -------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+
 #if 0
 #pragma mark -
+#pragma mark Playback
 #endif
+
 void Sequence::spacePressed()
 {
 
@@ -685,7 +822,14 @@ void Sequence::spacePressed()
 
 }
 
-// ------------------------------------------- copy/paste ----------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------- Copy/Paste -----------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+
+#if 0
+#pragma mark -
+#pragma mark Copy/Paste
+#endif
 
 void Sequence::copy()
 {
@@ -693,11 +837,15 @@ void Sequence::copy()
     x_scroll_upon_copying = x_scroll_in_pixels;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void Sequence::paste()
 {
     tracks[currentTrack].action( new Action::Paste(false) );
     Display::render();
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void Sequence::pasteAtMouse()
 {
@@ -705,7 +853,14 @@ void Sequence::pasteAtMouse()
     Display::render();
 }
 
-// ------------------------------------------- selection ----------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// --------------------------------------------- Selection --------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+
+#if 0
+#pragma mark -
+#pragma mark Selection
+#endif
 
 void Sequence::selectAll()
 {
@@ -713,105 +868,22 @@ void Sequence::selectAll()
     Display::render();
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void Sequence::selectNone()
 {
     tracks[currentTrack].selectNote(ALL_NOTES, false, true);
     Display::render();
 }
 
-// ------------------------------------------- scale ----------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// ------------------------------------------------ I/O -----------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
-void Sequence::scale(
-                     float factor,
-                     bool rel_first_note, bool rel_begin, // relative to what (only one must be true)
-                     bool affect_selection, bool affect_track, bool affect_song // scale what (only one must be true)
-                     )
-{
-
-
-    int relative_to = -1;
-
-    // selection
-    if (affect_selection)
-    {
-
-        if (rel_first_note) relative_to = tracks[currentTrack].getFirstNoteTick(true);
-        else if (rel_begin) relative_to=0;
-
-        tracks[currentTrack].action( new Action::ScaleTrack(factor, relative_to, true) );
-    }
-
-    // track
-    else if (affect_track)
-    {
-
-        if (rel_first_note) relative_to = tracks[currentTrack].getFirstNoteTick();
-        else if (rel_begin) relative_to=0;
-
-        tracks[currentTrack].action( new Action::ScaleTrack(factor, relative_to, false) );
-    }
-
-    // song
-    else if (affect_song)
-    {
-
-        if (rel_first_note)
-        {
-
-            // find first tick in all tracks [i.e. find the first tick of all tracks and keep the samllest]
-            int song_first_tick = -1;
-            for(int n=0; n<tracks.size(); n++)
-            {
-
-                const int track_first_tick = relative_to = tracks[n].getFirstNoteTick();
-                if (track_first_tick<song_first_tick or song_first_tick==-1) song_first_tick = track_first_tick;
-            }//next
-
-            relative_to = song_first_tick;
-        }
-        else if (rel_begin) relative_to=0;
-
-        // scale all tracks
-        action( new Action::ScaleSong(factor, relative_to) );
-
-    }
-
-    Display::render();
-
-}
-
-// ------------------------------------------- tempo ----------------------------------------
-
-void Sequence::setTempo(int tmp)
-{
-    tempo = tmp;
-}
-
-int Sequence::getTempo()
-{
-    return tempo;
-}
-
-
-void Sequence::addTempoEvent( ControllerEvent* evt )
-{
-    // add to any track, they will redirect tempo events to the right one.
-    // FIXME - not too elegant
-    tracks[0].addControlEvent( evt );
-}
-// adds a tempo event. used during importing - then we know events are in time order so no time is wasted verifying that
-void Sequence::addTempoEvent_import( ControllerEvent* evt )
-{
-    tempoEvents.push_back(evt);
-}
-
-// ------------------------------------------- i/o ----------------------------------------
 #if 0
 #pragma mark -
+#pragma mark I/O
 #endif
-/*
- * Called before loading, prepares empty tracks
- */
 
 void Sequence::prepareEmptyTracksForLoading(int amount)
 {
@@ -819,9 +891,7 @@ void Sequence::prepareEmptyTracksForLoading(int amount)
     for(int n=0; n<amount; n++) tracks.push_back( new Track(getMainFrame(), this) );
 }
 
-/*
- * Called when saving <Sequence> ... </Sequence> in .aria file
- */
+// ----------------------------------------------------------------------------------------------------------
 
 void Sequence::saveToFile(wxFileOutputStream& fileout)
 {
@@ -868,9 +938,7 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
     clearUndoStack();
 }
 
-/*
- * Called when reading <sequence> ... </sequence> in .aria file
- */
+// ----------------------------------------------------------------------------------------------------------
 
 bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
 {
@@ -1127,4 +1195,3 @@ over:
 
 }
 
-}

@@ -737,17 +737,6 @@ bool GraphicalTrack::processMouseDrag(RelativeXCoord x, int y)
             }
             
             DisplayFrame::updateVerticalScrollbar();
-
-            /*
-            if (from_y + barHeight + 50 + height > Display::getHeight()-20) // FIXME: the "barHeight + 50 + height" is duplicated code.
-            {
-                //std::cout << "!!!!!!\n";
-                getCurrentSequence()->pushYScroll(y - lastMouseY);
-                getMainFrame()->mainPane->WarpPointer(Display::getMouseX_initial().getRelativeTo(WINDOW),
-                                                      Display::getMouseY_initial());
-            }
-             */
-
         }
 
         lastMouseY = y;
