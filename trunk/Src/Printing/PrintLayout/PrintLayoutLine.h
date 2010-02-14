@@ -72,6 +72,15 @@ namespace AriaMaestosa
     };
     
     /**
+      * Contains absolute coords of where to print a line, with absolute coords
+      */
+    struct LineCoords
+    {
+        int x0, y0, x1, y1;
+        int margin_below, margin_above;
+    };
+    
+    /**
       * A line on a notation to print. Can contain more than one track.
       * Essentially holds some 'LayoutElement' objects (the ones that fit
       * on this line)
@@ -99,12 +108,10 @@ namespace AriaMaestosa
             layoutElements.push_back( newElem );
         }
         
-        // Misc info about the coords of this track
-        //FIXME: this probably should not go here. Firstly, it's not clear when the
-        //       variables are set and when they're not; secondly, this class should
-        //       contain only abstract layout data, if I am to follow my design
-        int x0, y0, x1, y1;
-        int margin_below, margin_above;
+        /** Initially NULL; will be set when PrintLayoutNumeric actually calculates the coords
+          * of this track
+          */
+        OwnerPtr<LineCoords> m_line_coords;
         
         LayoutLine(PrintableSequence* parent, ptr_vector<PrintLayoutMeasure, REF>& measures);
         
