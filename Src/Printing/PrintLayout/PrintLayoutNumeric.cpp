@@ -153,12 +153,13 @@ void PrintLayoutNumeric::divideLineAmongTracks(LayoutLine& line, const int x0, c
     std::cout << "Line given coords " << x0 << ", " << y0 << " to " << x1 << ", " << y1 << std::endl;
     std::cout << "==divideLineAmongTracks==\n";
     
-    line.x0 = x0;
-    line.y0 = y0;
-    line.x1 = x1;
-    line.y1 = y1;
-    line.margin_below = margin_below;
-    line.margin_above = margin_above;
+    line.m_line_coords = new LineCoords();
+    line.m_line_coords->x0 = x0;
+    line.m_line_coords->y0 = y0;
+    line.m_line_coords->x1 = x1;
+    line.m_line_coords->y1 = y1;
+    line.m_line_coords->margin_below = margin_below;
+    line.m_line_coords->margin_above = margin_above;
     
     // ---- empty space around whole line
     const float heightAvailableForThisLine = (float)(y1 - y0);// - ( trackAmount>1 and not last_of_page ? 100 : 0 );

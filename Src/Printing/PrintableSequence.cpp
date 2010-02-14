@@ -94,18 +94,21 @@ void PrintableSequence::printLine(LayoutLine& line, wxDC& dc)
 {        
     const int trackAmount = line.getTrackAmount();
     
+    const LineCoords* lineCoords = line.m_line_coords;
+    assert(lineCoords != NULL);
+    
     // ---- Draw vertical line to show these lines belong toghether
-    const int my0 = line.y0 + line.margin_above;
-    const int my1 = line.y0 + (line.y1 - line.y0) - line.margin_below;
+    const int my0 = lineCoords->y0 + lineCoords->margin_above;
+    const int my1 = lineCoords->y0 + (lineCoords->y1 - lineCoords->y0) - lineCoords->margin_below;
     
     if (trackAmount>1)
     {
         dc.SetPen(  wxPen( wxColour(150,150,150), 25 ) );
-        dc.DrawLine( line.x0-3, my0, line.x0-3, my1); // vertical line
-        dc.DrawLine( line.x0-3, my0, line.x0-3+30, my0-50); // top thingy
-        dc.DrawLine( line.x0-3, my1, line.x0-3+30, my1+50); // bottom thingy
+        dc.DrawLine( lineCoords->x0-3, my0, lineCoords->x0-3, my1); // vertical line
+        dc.DrawLine( lineCoords->x0-3, my0, lineCoords->x0-3+30, my0-50); // top thingy
+        dc.DrawLine( lineCoords->x0-3, my1, lineCoords->x0-3+30, my1+50); // bottom thingy
         
-        dc.DrawLine( line.x1-3, my0, line.x1-3, my1); // right-side line
+        dc.DrawLine( lineCoords->x1-3, my0, lineCoords->x1-3, my1); // right-side line
     }
     
     std::cout << "\n======== Printing Line (contains " << line.getLayoutElementCount() << " layout elements) from y=" <<
@@ -115,10 +118,10 @@ void PrintableSequence::printLine(LayoutLine& line, wxDC& dc)
     if (PRINT_LAYOUT_HINTS)
     {
         dc.SetPen( wxPen(*wxGREEN, 15) );
-        dc.DrawLine(line.x0, my0, line.x1, my0);
-        dc.DrawLine(line.x0, my1, line.x1, my1);
-        dc.DrawLine(line.x0, my0, line.x0, my1);
-        dc.DrawLine(line.x1, my0, line.x1, my1);
+        dc.DrawLine(lineCoords->x0, my0, lineCoords->x1, my0);
+        dc.DrawLine(lineCoords->x0, my1, lineCoords->x1, my1);
+        dc.DrawLine(lineCoords->x0, my0, lineCoords->x0, my1);
+        dc.DrawLine(lineCoords->x1, my0, lineCoords->x1, my1);
     }
     
     // ---- Do the actual track drawing
