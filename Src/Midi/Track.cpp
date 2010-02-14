@@ -57,6 +57,7 @@ Track::Track(MainFrame* parent, Sequence* sequence)
     name.setMaxWidth(120);
     
     //FIXME: find out why fonts are so different on mac and linux
+    //FIXME: what does this do in the data class, and not in the graphics class?
 #ifdef __WXMAC__
     name.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
 #else
@@ -251,7 +252,7 @@ void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
     else vector = &controlEvents;
 
     // don't bother checking order if we're importing, we know its in time order and all
-    // FIXME - what about 'addController_import' ??
+    // FIXME - what about 'addControlEvent_import' ??
     if (sequence->importing)
     {
         vector->push_back( evt );
@@ -288,8 +289,9 @@ void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
 
 // -------------------------------------------------------------------------------------------------------
 
-void Track::addController_import(const int x, const int value, const int controller)
+void Track::addControlEvent_import(const int x, const int value, const int controller)
 {
+    assert(sequence->importing); // not to be used when not importing
     controlEvents.push_back(new ControllerEvent(sequence, controller, x, value) );
 }
 
@@ -297,6 +299,7 @@ void Track::addController_import(const int x, const int value, const int control
 
 bool Track::addNote_import(const int pitchID, const int startTick, const int endTick, const int volume, const int string)
 {
+    assert(sequence->importing); // not to be used when not importing
     return addNote( new Note(graphics, pitchID, startTick, endTick, volume, string) );
 }
 
@@ -304,7 +307,7 @@ bool Track::addNote_import(const int pitchID, const int startTick, const int end
 
 void Track::setNoteEnd_import(const int tick, const int noteID)
 {
-
+    assert(sequence->importing); // not to be used when not importing
     assert(noteID != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
     assert(noteID != SELECTED_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
 
@@ -312,9 +315,6 @@ void Track::setNoteEnd_import(const int tick, const int noteID)
     assertExpr(noteID,>=,0);
 
     notes[noteID].setEnd(tick);
-
-    // FIXME - why on earth do i check whether we are importing in a method bearing the name "import" ??
-    if (!sequence->importing) reorderNoteOffVector();
 }
 
 // -------------------------------------------------------------------------------------------------------
