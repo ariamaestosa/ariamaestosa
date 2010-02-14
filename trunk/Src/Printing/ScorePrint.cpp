@@ -55,7 +55,7 @@ namespace AriaMaestosa
     const int LINES_IN_A_SCORE = 5;
     
     /** Out of 1.0 (100%), how much of the height is reserved for the space between G and F clefs
-      * (when both are present)
+      * (when both are present) FIXME: this should probably be an absolute margin, not a relative proportion?
       */
     const float MARGIN_PROPORTION_BETWEEN_CLEFS = 0.2f;
     
@@ -516,11 +516,19 @@ namespace AriaMaestosa
             PRINT_VAR(scoreData->extra_lines_under_f_score) <<
             PRINT_VAR(scoreData->extra_lines_above_f_score) << std::endl;
         
-        return (g_clef ? 5 : 0) + (f_clef ? 5 : 0) + 
+        int total = (g_clef ? 5 : 0) + (f_clef ? 5 : 0) + 
                 abs(scoreData->extra_lines_under_g_score) +
                 abs(scoreData->extra_lines_above_g_score) +
                 abs(scoreData->extra_lines_under_f_score) +
                 abs(scoreData->extra_lines_above_f_score);
+        
+        // if we have both scores, add the margin between them to the required space.
+        if (g_clef and f_clef)
+        {
+            total = total + MARGIN_PROPORTION_BETWEEN_CLEFS*total;
+        }
+        
+        return total;
 
     }
     
