@@ -121,7 +121,20 @@ public:
     int getBaseLevel();
     int getStemOriginLevel();
 
-    const int getY() const;
+    /**
+      * In an attempt t be view-independant, ScoreAnalyser tries to store Y locations as levels
+      * and never as direct coordinates. However, to avoid the overhead of converting frequently
+      * from level to coordinate, the renderer is given the option to store the Y coordinate
+      * inside the noteRenderInfo.
+      */
+    const int getY() const { return y; }
+    
+    /**
+      * In an attempt t be view-independant, ScoreAnalyser tries to store Y locations as levels
+      * and never as direct coordinates. However, to avoid the overhead of converting frequently
+      * from level to coordinate, the renderer is given the option to store the Y coordinate
+      * inside the noteRenderInfo.
+      */
     void setY(const int newY);
 };
 
@@ -144,22 +157,29 @@ public:
 
     ScoreAnalyser(ScoreEditor* parent, int stemPivot);
 
+    /**
+      * Returns a new ScoreAnalyser, that contains a subset of the current one.
+      * The returned pointer must be freed.
+      */
     ScoreAnalyser* getSubset(const int fromTick, const int toTick);
-
-    //void setStemDrawInfo( const float stem_height = -1,
-    //                     const float min_stem_height = -1);
 
     float getStemTo(NoteRenderInfo& note);
 
-    // you're done rendering the current frame, prepare to render the next
+    /** call when you're done rendering the current frame, to prepare to render the next */
     void clearAndPrepare();
 
     void addToVector( NoteRenderInfo& renderInfo, const bool recursion );
 
-    // the main function of ScoreAnalyser, where everything starts
+    /**
+      * @brief the main function of ScoreAnalyser, where everything start
+      * 
+      * This function takes a vector containing information about visible notes.
+      * Its job is to analyse them and fill missing data in the contained objects
+      * so that they can be rendered correctly on a score.
+      */
     void analyseNoteInfo();
 
-    // set the level below which the stem is up, and above which it is down
+    /** set the level below which the stem is up, and above which it is down */
     void setStemPivot(const int level);
 
     void renderSilences(RenderSilenceCallback renderSilenceCallback,
@@ -167,6 +187,11 @@ public:
                                        const int silences_y);
 protected:
     // internal methods performing different steps in score analysis
+    
+    /**
+      * Puts notes in time order.
+      * Notes that have no stems go last so that they don't disturb note grouping in chords.
+      */
     void putInTimeOrder();
     void findAndMergeChords();
     void processTriplets();

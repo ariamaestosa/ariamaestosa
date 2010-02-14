@@ -755,13 +755,6 @@ namespace AriaMaestosa
     }
 
     // -------------------------------------------------------------------------------------------
-    // -------------------------------------------------------------------------------------------
-    
-#if 0
-#pragma mark -
-#pragma mark ScorePrintable (private utils)
-#endif
-    
 
     void ScorePrintable::gatherVerticalSizingInfo(const int trackID, LineTrackRef& lineTrack, LayoutLine& line)
     {
@@ -993,7 +986,7 @@ namespace AriaMaestosa
         // iterate through measures to collect notes in the vector
         // so ScoreAnalyser can prepare the score
         std::cout << " == gathering note list ==\n";
-        for(int m=0; m<measureAmount; m++)
+        for (int m=0; m<measureAmount; m++)
         {
             PerMeasureInfo& measInfo = perMeasureInfo[trackID*5000+m];
             const int firstNote = measInfo.first_note;
@@ -1001,7 +994,7 @@ namespace AriaMaestosa
             
             if (firstNote == -1 or lastNote == -1) continue; // empty measure
             
-            for(int n=firstNote; n<=lastNote; n++)
+            for (int n=firstNote; n<=lastNote; n++)
             {
                 PitchSign note_sign;
                 const int noteLevel = converter->noteToLevel(track->getNote(n), &note_sign);
@@ -1025,9 +1018,13 @@ namespace AriaMaestosa
                 else if (f_clef and g_clef)
                 {
                     if (noteLevel < middle_c_level)
+                    {
                         g_clef_analyser->addToVector(currentNote, false);
+                    }
                     else
+                    {
                         f_clef_analyser->addToVector(currentNote, false);
+                    }
                 }
             }
             
@@ -1038,11 +1035,13 @@ namespace AriaMaestosa
         g_silences_ticks.clear();
         if (f_clef)
         {
-            f_clef_analyser->renderSilences( &gatherSilenceCallback, 0, measureAmount-1, -1 /* y not important at this point */ );
+            f_clef_analyser->renderSilences( &gatherSilenceCallback, 0, measureAmount-1,
+                                             -1 /* y not important at this point */ );
         }
         if (g_clef)
         {
-            g_clef_analyser->renderSilences( &gatherSilenceCallback, 0, measureAmount-1, -1 /* y not important at this point */ );
+            g_clef_analyser->renderSilences( &gatherSilenceCallback, 0, measureAmount-1,
+                                             -1 /* y not important at this point */ );
         }
         this->silences_ticks = g_silences_ticks;
         g_silences_ticks.clear();
