@@ -1216,13 +1216,13 @@
 		957119631125D8D300104BF5 /* Printing */ = {
 			isa = PBXGroup;
 			children = (
+				9571196A1125D8D300104BF5 /* PrintLayout */,
 				957119641125D8D300104BF5 /* AriaPrintable.cpp */,
 				957119651125D8D300104BF5 /* AriaPrintable.h */,
 				957119661125D8D300104BF5 /* EditorPrintable.cpp */,
 				957119671125D8D300104BF5 /* EditorPrintable.h */,
 				957119681125D8D300104BF5 /* PrintableSequence.cpp */,
 				957119691125D8D300104BF5 /* PrintableSequence.h */,
-				9571196A1125D8D300104BF5 /* PrintLayout */,
 				957119781125D8D300104BF5 /* ScorePrint.cpp */,
 				957119791125D8D300104BF5 /* ScorePrint.h */,
 				9571197A1125D8D300104BF5 /* TabPrint.cpp */,

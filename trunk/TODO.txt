@@ -66,6 +66,8 @@ NOTE: sorry, this is very raw :)
  
  + resize note with drag-and-drop
  
+ - when closing last tab, show a "welcome screen" instead of exiting?
+ 
  + contextual menu on right-click (copy, paste, track props, ...)
  + Include sample files along Aria?
  

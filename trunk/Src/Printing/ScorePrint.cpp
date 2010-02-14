@@ -52,6 +52,13 @@ namespace AriaMaestosa
     /** how much extra is allocated at the left and right of note heads */
     const int NOTE_HEAD_MARGIN = 44;
      
+    const int LINES_IN_A_SCORE = 5;
+    
+    /** Out of 1.0 (100%), how much of the height is reserved for the space between G and F clefs
+      * (when both are present)
+      */
+    const float MARGIN_PROPORTION_BETWEEN_CLEFS = 0.2f;
+    
 #if 0
 #pragma mark -
 #pragma mark ScoreData
@@ -501,8 +508,7 @@ namespace AriaMaestosa
         
         // check if empty
         // FIXME : if a note starts in the previous line and ends in this one, it won't be detected
-        if (from_note == -1 || to_note == -1)
-            return 0;
+        if (from_note == -1 || to_note == -1) return 0;
                 
         std::cout <<
             PRINT_VAR(scoreData->extra_lines_under_g_score) <<
@@ -655,20 +661,12 @@ namespace AriaMaestosa
         setCurrentDC(&dc);
         
         
-        std::cout << "ScorePrintable size : " << lineTrack.x0 << ", " << lineTrack.y0 << " to " << lineTrack.x1 << ", " << lineTrack.y1 << std::endl;
+        std::cout << "ScorePrintable size : " << lineTrack.x0 << ", " << lineTrack.y0 << " to "
+                  << lineTrack.x1 << ", " << lineTrack.y1 << std::endl;
         
         x_converter = new PrintXConverter(this, &line, trackID);
         
-        // gather score info
-        //gatherNotesAndBasicSetup(line);
         ScoreData* scoreData = dynamic_cast<ScoreData*>(lineTrack.editor_data.raw_ptr);
-        
-        // since height is used to determine where to put repetitions/notes/etc.
-        // only pass the height of the first score if there's 2, so stuff don't appear between both scores
-        //setLineYCoords(lineTrack.y0,
-        //               ( f_clef and g_clef ?
-        //                lineTrack.y0 + (lineTrack.y1 - lineTrack.y0)*scoreData->first_clef_proportion :
-        //                lineTrack.y1 ));
         
         // if we have only one clef, give it the full space.
         // if we have two, split the space between both
@@ -808,24 +806,47 @@ namespace AriaMaestosa
         scoreData->extra_lines_under_f_score = 0;
         if (g_clef and not f_clef)
         {
-            std::cout << "G: " << PRINT_VAR(smallest_level) << PRINT_VAR(biggest_level) << PRINT_VAR(g_clef_from_level) << PRINT_VAR(g_clef_to_level) << std::endl;
+            //std::cout << "G: " << PRINT_VAR(smallest_level) << PRINT_VAR(biggest_level)
+            //                   << PRINT_VAR(g_clef_from_level) << PRINT_VAR(g_clef_to_level) << std::endl;
 
-            if (smallest_level!=-1 and smallest_level < g_clef_from_level)  scoreData->extra_lines_above_g_score = (g_clef_from_level - smallest_level)/2;
-            if (biggest_level!=-1 and biggest_level > g_clef_to_level) scoreData->extra_lines_under_g_score = (g_clef_to_level - biggest_level)/2;
+            if (smallest_level!=-1 and smallest_level < g_clef_from_level)
+            {
+                scoreData->extra_lines_above_g_score = (g_clef_from_level - smallest_level)/2;
+            }
+            if (biggest_level!=-1 and biggest_level > g_clef_to_level)
+            {
+                scoreData->extra_lines_under_g_score = (g_clef_to_level - biggest_level)/2;
+            }
         }
         else if (f_clef and not g_clef)
         {
-            std::cout << "F: " << PRINT_VAR(smallest_level) << PRINT_VAR(biggest_level) << PRINT_VAR(f_clef_from_level) << PRINT_VAR(f_clef_to_level) << std::endl;
-            if (smallest_level!=-1 and smallest_level < f_clef_from_level) scoreData->extra_lines_above_f_score = (f_clef_from_level - smallest_level)/2;
-            if (biggest_level!=-1 and biggest_level > f_clef_to_level) scoreData->extra_lines_under_f_score = (f_clef_to_level - biggest_level)/2;
+            //std::cout << "F: " << PRINT_VAR(smallest_level) << PRINT_VAR(biggest_level)
+            //                   << PRINT_VAR(f_clef_from_level) << PRINT_VAR(f_clef_to_level) << std::endl;
+            
+            if (smallest_level!=-1 and smallest_level < f_clef_from_level)
+            {
+                scoreData->extra_lines_above_f_score = (f_clef_from_level - smallest_level)/2;
+            }
+            if (biggest_level!=-1 and biggest_level > f_clef_to_level)
+            {
+                scoreData->extra_lines_under_f_score = (f_clef_to_level - biggest_level)/2;
+            }
         }
         else if (f_clef and g_clef)
         {
-            std::cout << "F: " << PRINT_VAR(smallest_level) << PRINT_VAR(biggest_level) << PRINT_VAR(f_clef_from_level) << PRINT_VAR(f_clef_to_level) << std::endl;
-            std::cout << "G: " << PRINT_VAR(smallest_level) << PRINT_VAR(biggest_level) << PRINT_VAR(g_clef_from_level) << PRINT_VAR(g_clef_to_level) << std::endl;
+            //std::cout << "F: " << PRINT_VAR(smallest_level) << PRINT_VAR(biggest_level)
+            //                   << PRINT_VAR(f_clef_from_level) << PRINT_VAR(f_clef_to_level) << std::endl;
+            //std::cout << "G: " << PRINT_VAR(smallest_level) << PRINT_VAR(biggest_level)
+            //                   << PRINT_VAR(g_clef_from_level) << PRINT_VAR(g_clef_to_level) << std::endl;
 
-            if (smallest_level!=-1 and smallest_level < g_clef_from_level) scoreData->extra_lines_above_g_score = (g_clef_from_level - smallest_level)/2;
-            if (biggest_level!=-1 and biggest_level > f_clef_to_level) scoreData->extra_lines_under_f_score = (f_clef_to_level - biggest_level)/2;
+            if (smallest_level!=-1 and smallest_level < g_clef_from_level)
+            {
+                scoreData->extra_lines_above_g_score = (g_clef_from_level - smallest_level)/2;
+            }
+            if (biggest_level!=-1 and biggest_level > f_clef_to_level)
+            {
+                scoreData->extra_lines_under_f_score = (f_clef_to_level - biggest_level)/2;
+            }
         }
         
         std::cout << PRINT_VAR(scoreData->extra_lines_above_g_score) <<
@@ -834,18 +855,23 @@ namespace AriaMaestosa
                      PRINT_VAR(scoreData->extra_lines_under_f_score) << std::endl;
         
         // Split space between both scores (one may need more than the other)
-        // I use a total of 0.8 to leave a 0.2 free space between both scores.
-        scoreData->first_clef_proportion = 0.4;
-        scoreData->second_clef_proportion = 0.4;
+        scoreData->first_clef_proportion  = (1.0f - MARGIN_PROPORTION_BETWEEN_CLEFS) / 2.0f;
+        scoreData->second_clef_proportion = (1.0f - MARGIN_PROPORTION_BETWEEN_CLEFS) / 2.0f;
         
         if (g_clef and f_clef and
            scoreData->extra_lines_above_g_score + scoreData->extra_lines_under_f_score != 0 /* unnecessary if nothing under/over scores*/)
         {
-            /*  where 0.8 is used to leave a 0.2 margin between both scores. 5 is the amount of lines needed for the regular score.
-             10 is the amount of lines needed for both regular scores */
-            const float total_height = abs(scoreData->extra_lines_above_g_score) + abs(scoreData->extra_lines_under_f_score) + 10.0;
-            scoreData->first_clef_proportion = 0.8 * (abs(scoreData->extra_lines_above_g_score)+5.0) / total_height;
-            scoreData->second_clef_proportion = 0.8 * (abs(scoreData->extra_lines_under_f_score)+5.0) / total_height;
+            const int total_G_level_count = abs(scoreData->extra_lines_above_g_score) + LINES_IN_A_SCORE;
+            const int total_F_level_count = abs(scoreData->extra_lines_under_f_score) + LINES_IN_A_SCORE;
+
+            const float total_height = total_G_level_count + total_F_level_count;
+            
+            // the forumla used below is :
+            // given prop. = available space (minus margin) x fraction of the total lines that are in this clef
+            scoreData->first_clef_proportion  = (1.0f - MARGIN_PROPORTION_BETWEEN_CLEFS) *
+                    (float)(total_G_level_count) / (float)total_height;
+            scoreData->second_clef_proportion = (1.0f - MARGIN_PROPORTION_BETWEEN_CLEFS) *
+                    (float)(total_F_level_count) / (float)total_height;
         }
 
     }
