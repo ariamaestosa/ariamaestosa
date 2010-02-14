@@ -174,7 +174,7 @@ namespace AriaMaestosa
          * because we know events won't overlap and are in time order. (i.e. this exists, as opposed to
          * the regular add method, for performance reasons)
          */
-        void addController_import(const int x, const int value, const int controller);
+        void addControlEvent_import(const int x, const int value, const int controller);
         
         // FIXME - debug function, remove
         void checkControlEventsOrder();

@@ -46,7 +46,7 @@ namespace AriaMaestosa {
 
 bool loadMidiFile(Sequence* sequence, wxString filepath)
 {
-    
+    // raise import flag
     sequence->importing = true;
 
     // the stream used to read the input file
@@ -97,7 +97,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
     
      // ----------------------------------- for each track -------------------------------------
     int realTrackID=-1;
-    for(int trackID=0; trackID<trackAmount; trackID++)
+    for (int trackID=0; trackID<trackAmount; trackID++)
     {
 
         track = jdksequence.GetTrack( trackID );
@@ -225,7 +225,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                     continue;
                 }
 
-                ariaTrack->addController_import(tick, value, controllerID);
+                ariaTrack->addControlEvent_import(tick, value, controllerID);
 
                 continue;
             }
@@ -239,7 +239,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                 if (value>127) value=127;
                 if (value<0) value=0;
 
-                ariaTrack->addController_import(tick, 127-value, 200);
+                ariaTrack->addControlEvent_import(tick, 127-value, 200);
 
                 continue;
             }
