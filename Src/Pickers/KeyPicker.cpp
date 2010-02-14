@@ -146,9 +146,6 @@ void KeyPicker::setParent(Track* parent_arg)
         */
     }
 
-    // FIXME - all code confusingly assumes score editor and keyboard editor always use the same key
-    // but still store the key in both.
-    // decide whether they do - if they don't then split the code. if they do, put the common code in a single place
     key_c->Check(false);
     key_sharps_1->Check(false);
     key_sharps_2->Check(false);
