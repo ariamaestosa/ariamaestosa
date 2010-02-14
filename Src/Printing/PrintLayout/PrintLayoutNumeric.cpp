@@ -254,8 +254,8 @@ void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, float notation_area_
         LayoutLine& line = page.getLine(l);
         
         // line too high, will look weird... shrink a bit
-        //FIXME: 'level_height' does not include the space between G and F clefs, so when printing
-        //       both clefs the overall allocated size may be too small
+        //FIXME: 'level_height' does not include the space between tracks, so when printing
+        //       multiple tracks the overall allocated size may be too small
         while (used_height/(float)line.level_height > MAX_LEVEL_HEIGHT)
         {
             used_height *= 0.95;
