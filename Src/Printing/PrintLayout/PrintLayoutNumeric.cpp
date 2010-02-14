@@ -79,10 +79,11 @@ void PrintLayoutNumeric::placeTrackWithinCoords(const int trackID, LayoutLine& l
     assertExpr(y0, >=, 0);
     assertExpr(y1, >=, 0);
     
-    track.x0 = x0;
-    track.x1 = x1;
-    track.y0 = y0;
-    track.y1 = y1;
+    track.m_track_coords = new TrackCoords();
+    track.m_track_coords->x0 = x0;
+    track.m_track_coords->x1 = x1;
+    track.m_track_coords->y0 = y0;
+    track.m_track_coords->y1 = y1;
     
     // Why is this set per-track? AFAIK measure numbers are shown per-line, not per-track!!
     track.show_measure_number = show_measure_number;

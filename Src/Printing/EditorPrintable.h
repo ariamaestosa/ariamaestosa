@@ -54,9 +54,11 @@ namespace AriaMaestosa
         EditorPrintable();
         virtual ~EditorPrintable();
         
-        /** Called by the print code when it's time to render a line. This will be handled in the appropriate subclass.
+        /** 
+          * Called by the print code when it's time to render one track.
+          * This will be handled in the appropriate subclass.
          */
-        virtual void drawLine(const int trackID, LineTrackRef& track, LayoutLine& line, wxDC& dc) = 0;
+        virtual void drawTrack(const int trackID, LineTrackRef& track, LayoutLine& line, wxDC& dc) = 0;
         
         /** Called by the layout code to know the relative height of this line
          */

@@ -27,12 +27,16 @@ namespace AriaMaestosa
     class PrintLayoutMeasure;
     class PrintableSequence;
     
+    /** Contains the absolute coords part of a LineTrackRef */
+    struct TrackCoords
+    {
+        /** Coordinates of that track, in print units. Will not be set initially. */
+        int x0, y0, x1, y1;
+    };
     
     /**
      * Represents the reference to a track within a single 'LayoutLine' obejct.
      */
-    //FIXME: this class contains both abstract data and absolute coords. To better fit the design
-    //       it might be a good idea to split the drawing from the data (or rename the class)
     class LineTrackRef
     {
         LayoutLine* parent;
@@ -52,10 +56,9 @@ namespace AriaMaestosa
         /** editors can put data of their own there. */
         OwnerPtr<EditorData> editor_data;
         
-        /** Coordinates of that line, in print units. Will not be set initially. */
-        int x0, y0, x1, y1;
-        
-        //int layoutElementsAmount;
+        /** Coordinates of that track, in print units. Will not be set initially.
+          * Will be set by the PrintLayoutNumeric when layout is finalized. */
+        OwnerPtr<TrackCoords> m_track_coords;
         
         bool show_measure_number;
 

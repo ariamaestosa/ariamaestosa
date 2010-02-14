@@ -82,7 +82,9 @@ void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0,
 // FIXME : unclean to pass trackID and LayoutLine as argument!
 LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, LayoutLine& layoutLine, const int currentLayoutElement)
 {
-    LineTrackRef& renderInfo = layoutLine.getLineTrackRef(trackID);
+    LineTrackRef& lineTrackRef = layoutLine.getLineTrackRef(trackID);
+    TrackCoords* trackCoords = lineTrackRef.m_track_coords;
+    assert(trackCoords != NULL);
     
     if (!(currentLayoutElement < layoutLine.getLayoutElementCount()))
     {
@@ -131,7 +133,7 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
         }
         
         dc->DrawText( message, elem_x_start,
-                     (renderInfo.y0 + renderInfo.y1)/2 - getCurrentPrintable()->text_height_half );
+                     (trackCoords->y0 + trackCoords->y1)/2 - getCurrentPrintable()->text_height_half );
     }
     // ****** play again
     else if (currElem.getType() == PLAY_MANY_TIMES)
@@ -139,7 +141,7 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
         wxString label(wxT("X"));
         label << currElem.amountOfTimes;
         dc->DrawText( label, elem_x_start,
-                     (renderInfo.y0 + renderInfo.y1)/2 - getCurrentPrintable()->text_height_half );
+                     (trackCoords->y0 + trackCoords->y1)/2 - getCurrentPrintable()->text_height_half );
     }
     // ****** normal measure
     else if (currElem.getType() == SINGLE_MEASURE)
@@ -147,7 +149,7 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
         //std::cout << "---- element is normal\n";
         
         // draw measure ID
-        if (renderInfo.show_measure_number)
+        if (lineTrackRef.show_measure_number)
         {
             const int meas_id = layoutLine.getMeasureForElement(currentLayoutElement).id+1;
             
@@ -156,14 +158,14 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
             
             dc->DrawText( measureLabel,
                           elem_x_start - ( meas_id > 9 ? getCurrentPrintable()->character_width : getCurrentPrintable()->character_width/2 ),
-                          renderInfo.y0 - getCurrentPrintable()->text_height*1.4 );
+                          trackCoords->y0 - getCurrentPrintable()->text_height*1.4 );
         }
         dc->SetTextForeground( wxColour(0,0,0) );
     }
     
     if (currElem.render_end_bar)
     {
-        drawVerticalDivider(&currElem, renderInfo.y0, renderInfo.y1, true /* at end */);
+        drawVerticalDivider(&currElem, trackCoords->y0, trackCoords->y1, true /* at end */);
     }
     
     return &currElem;

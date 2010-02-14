@@ -133,10 +133,14 @@ void PrintableSequence::printLine(LayoutLine& line, wxDC& dc)
         std::cout << "==== Printing track " << n << " ====" << std::endl;
         
         LineTrackRef& sizing = line.getLineTrackRef(n);
-        std::cout << "Coords : " << sizing.x0 << ", " << sizing.y0 << " to " << sizing.x1 << ", " << sizing.y1 << std::endl;
+        TrackCoords* trackCoords = sizing.m_track_coords;
+        assert(trackCoords != NULL);
+        
+        std::cout << "Coords : " << trackCoords->x0 << ", " << trackCoords->y0 << " to "
+                  << trackCoords->x1 << ", " << trackCoords->y1 << std::endl;
         
         EditorPrintable* editorPrintable = this->getEditorPrintable(n);
-        editorPrintable->drawLine(n, sizing, line, dc);
+        editorPrintable->drawTrack(n, sizing, line, dc);
     }
 }
     
