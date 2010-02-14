@@ -111,7 +111,6 @@ bool exportMidiFile(Sequence* sequence, wxString filepath)
         int length = -1, start = -1, numTracks = -1;
         makeJDKMidiSequence(sequence, tracks, false, &length, &start, &numTracks, false);
 
-        // FIXME - I removed strcpy, but not sure it works anymore...
         jdkmidi::MIDIFileWriteStreamFileName file_stream( (const char*)filepath.mb_str(wxConvUTF8) );
 
         jdkmidi::MIDIFileWriteMultiTrack writer2(
