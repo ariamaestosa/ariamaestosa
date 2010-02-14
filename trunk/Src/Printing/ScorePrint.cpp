@@ -662,43 +662,48 @@ namespace AriaMaestosa
     
     // -------------------------------------------------------------------------------------------
     
-    void ScorePrintable::drawLine(const int trackID, LineTrackRef& lineTrack, LayoutLine& line, wxDC& dc)
+    void ScorePrintable::drawTrack(const int trackID, LineTrackRef& currentTrack, LayoutLine& currentLine, wxDC& dc)
     {
-        assertExpr(lineTrack.y0,>,0);
-        assertExpr(lineTrack.y1,>,0);
-        assertExpr(lineTrack.y0,<,50000);
-        assertExpr(lineTrack.y1,<,50000);
+        TrackCoords* trackCoords = currentTrack.m_track_coords;
+        assert(trackCoords != NULL);
+        
+        assertExpr(trackCoords->y0,>,0);
+        assertExpr(trackCoords->y1,>,0);
+        assertExpr(trackCoords->y0,<,50000);
+        assertExpr(trackCoords->y1,<,50000);
         setCurrentDC(&dc);
         
         
-        std::cout << "ScorePrintable size : " << lineTrack.x0 << ", " << lineTrack.y0 << " to "
-                  << lineTrack.x1 << ", " << lineTrack.y1 << std::endl;
+        std::cout << "ScorePrintable size : " << trackCoords->x0 << ", " << trackCoords->y0 << " to "
+                  << trackCoords->x1 << ", " << trackCoords->y1 << std::endl;
         
-        x_converter = new PrintXConverter(this, &line, trackID);
+        x_converter = new PrintXConverter(this, &currentLine, trackID);
         
-        ScoreData* scoreData = dynamic_cast<ScoreData*>(lineTrack.editor_data.raw_ptr);
+        ScoreData* scoreData = dynamic_cast<ScoreData*>(currentTrack.editor_data.raw_ptr);
         
         // if we have only one clef, give it the full space.
         // if we have two, split the space between both
-        int g_clef_y_from=-1, g_clef_y_to=-1;
-        int f_clef_y_from=-1, f_clef_y_to=-1;
+        int g_clef_y_from = -1, g_clef_y_to = -1;
+        int f_clef_y_from = -1, f_clef_y_to = -1;
         
         if (g_clef and not f_clef)
         {
-            g_clef_y_from = lineTrack.y0;
-            g_clef_y_to = lineTrack.y1;
+            g_clef_y_from = trackCoords->y0;
+            g_clef_y_to   = trackCoords->y1;
         }
         else if (f_clef and not g_clef)
         {
-            f_clef_y_from = lineTrack.y0;
-            f_clef_y_to = lineTrack.y1;
+            f_clef_y_from = trackCoords->y0;
+            f_clef_y_to   = trackCoords->y1;
         }
         else if (f_clef and g_clef)
         {
-            g_clef_y_from = lineTrack.y0;
-            g_clef_y_to = lineTrack.y0 + (int)round((lineTrack.y1 - lineTrack.y0)*scoreData->first_clef_proportion);
-            f_clef_y_from = lineTrack.y0 + (int)round((lineTrack.y1 - lineTrack.y0)*(1-scoreData->second_clef_proportion));
-            f_clef_y_to = lineTrack.y1;
+            g_clef_y_from = trackCoords->y0;
+            g_clef_y_to   = trackCoords->y0 +
+                            (int)round((trackCoords->y1 - trackCoords->y0)*scoreData->first_clef_proportion);
+            f_clef_y_from = trackCoords->y0 +
+                            (int)round((trackCoords->y1 - trackCoords->y0)*(1-scoreData->second_clef_proportion));
+            f_clef_y_to   = trackCoords->y1;
         }
         else { assert(false); }
         
@@ -709,10 +714,10 @@ namespace AriaMaestosa
         LayoutElement* currentElement;
         std::cout << "\nLayout elements X coords :\n";
         
-        const int elementAmount = line.getLayoutElementCount();
+        const int elementAmount = currentLine.getLayoutElementCount();
         for (int el=0; el<elementAmount; el++)
         {
-            currentElement = continueWithNextElement(trackID, line, el);
+            currentElement = continueWithNextElement(trackID, currentLine, el);
             std::cout << "    Layout element from x=" << currentElement->getXFrom() << " to x=" << currentElement->getXTo() << std::endl;
         }//next element
         std::cout << std::endl;
@@ -721,18 +726,18 @@ namespace AriaMaestosa
         
         if (g_clef)
         {
-            analyseAndDrawScore(false /*G*/, *g_clef_analyser, line, lineTrack.track, dc,
+            analyseAndDrawScore(false /*G*/, *g_clef_analyser, currentLine, currentTrack.track, dc,
                       abs(scoreData->extra_lines_above_g_score), abs(scoreData->extra_lines_under_g_score),
-                      lineTrack.x0, g_clef_y_from, lineTrack.x1, g_clef_y_to,
-                      lineTrack.show_measure_number);
+                      trackCoords->x0, g_clef_y_from, trackCoords->x1, g_clef_y_to,
+                      currentTrack.show_measure_number);
         }
         
         if (f_clef)
         {
-            analyseAndDrawScore(true /*F*/, *f_clef_analyser, line, lineTrack.track, dc,
+            analyseAndDrawScore(true /*F*/, *f_clef_analyser, currentLine, currentTrack.track, dc,
                       abs(scoreData->extra_lines_above_f_score), abs(scoreData->extra_lines_under_f_score),
-                      lineTrack.x0, f_clef_y_from, lineTrack.x1, f_clef_y_to,
-                      (g_clef ? false : lineTrack.show_measure_number) /* if we have both keys don't show twice */);
+                      trackCoords->x0, f_clef_y_from, trackCoords->x1, f_clef_y_to,
+                      (g_clef ? false : currentTrack.show_measure_number) /* if we have both keys don't show twice */);
         }
         
         delete x_converter;
@@ -742,10 +747,10 @@ namespace AriaMaestosa
         if (PRINT_LAYOUT_HINTS)
         {
             dc.SetPen( wxPen(*wxBLUE, 7) );
-            dc.DrawLine(lineTrack.x0, lineTrack.y0, lineTrack.x1, lineTrack.y0);
-            dc.DrawLine(lineTrack.x0, lineTrack.y1, lineTrack.x1, lineTrack.y1);
-            dc.DrawLine(lineTrack.x0, lineTrack.y0, lineTrack.x0, lineTrack.y1);
-            dc.DrawLine(lineTrack.x1, lineTrack.y0, lineTrack.x1, lineTrack.y1);
+            dc.DrawLine(trackCoords->x0, trackCoords->y0, trackCoords->x1, trackCoords->y0);
+            dc.DrawLine(trackCoords->x0, trackCoords->y1, trackCoords->x1, trackCoords->y1);
+            dc.DrawLine(trackCoords->x0, trackCoords->y0, trackCoords->x0, trackCoords->y1);
+            dc.DrawLine(trackCoords->x1, trackCoords->y0, trackCoords->x1, trackCoords->y1);
         }
     }
 

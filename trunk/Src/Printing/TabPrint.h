@@ -38,11 +38,15 @@ namespace AriaMaestosa
         TablaturePrintable(Track* track_arg);
         virtual ~TablaturePrintable();
         
-        void addUsedTicks(const PrintLayoutMeasure& measure, const int trackID,
-                          const MeasureTrackReference& trackRef, RelativePlacementManager& ticks);
+        /** Implement method from EditorPrintable */
+        virtual void addUsedTicks(const PrintLayoutMeasure& measure, const int trackID,
+                                  const MeasureTrackReference& trackRef, RelativePlacementManager& ticks);
         
-        void drawLine(const int trackID, LineTrackRef& track, LayoutLine& line, wxDC& dc);
-        int calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line);
+        /** Implement method from EditorPrintable */
+        virtual void drawTrack(const int trackID, LineTrackRef& track, LayoutLine& line, wxDC& dc);
+        
+        /** Implement method from EditorPrintable */
+        virtual int calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line);
         
     };
     
