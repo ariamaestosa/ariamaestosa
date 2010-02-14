@@ -961,11 +961,13 @@ void ScoreAnalyser::findAndMergeChords()
 
 // -----------------------------------------------------------------------------------------------------------
 
+const bool VERBOSE_ABOUT_TRIPLETS = false;
+
 void ScoreAnalyser::processTriplets()
 {
     const int visibleNoteAmount = noteRenderInfo.size();
 
-    for(int i=0; i<visibleNoteAmount; i++)
+    for (int i=0; i<visibleNoteAmount; i++)
     {
         int start_tick_of_next_note = -1;
 
@@ -978,30 +980,57 @@ void ScoreAnalyser::processTriplets()
         int measure = noteRenderInfo[i].measureBegin;
         int previous_measure = measure;
 
+        if (VERBOSE_ABOUT_TRIPLETS) std::cout << "(3) ---- Measure " << (measure+1) << " ----\n";
+        
         // check for consecutive notes
-        while(true)
+        while (true)
         {
+            if (VERBOSE_ABOUT_TRIPLETS) std::cout << "(3) Looking at note #" << i << std::endl;
+            
+            // ---- search for consecutive notes
             if (i+1<visibleNoteAmount)
             {
                 start_tick_of_next_note = noteRenderInfo[i+1].tick;
             }
 
-            if (!(i<visibleNoteAmount)) break;
+            if (not (i<visibleNoteAmount)) break;
 
             // if notes are consecutive
-            if (start_tick_of_next_note != -1 and aboutEqual_tick(start_tick_of_next_note, noteRenderInfo[i].tick+noteRenderInfo[i].tick_length));
+            if (start_tick_of_next_note != -1 and
+                aboutEqual_tick(start_tick_of_next_note,
+                                noteRenderInfo[i].tick+noteRenderInfo[i].tick_length))
+            {
+                if (VERBOSE_ABOUT_TRIPLETS) std::cout << "(3)    consecutive\n";
+            }
             else
             {
-                //notes are no more consecutive. it is likely a special action will be performed at the end of a serie
+                // notes are no more consecutive. it is likely a special action will be performed at the end of a serie
+                last_of_a_serie = true;
+                if (VERBOSE_ABOUT_TRIPLETS) std::cout << "(3) } // serie ends here :  NOT (no more) consecutive\n";
+            }
+            if ((not noteRenderInfo[i+1].triplet) or (i-first_triplet >= 2 and first_triplet != -1) )
+            {
+                if (VERBOSE_ABOUT_TRIPLETS)
+                {
+                    std::cout << "(3) } // serie ends here : "
+                              << (!noteRenderInfo[i+1].triplet ? "next is no triplet " : "")
+                              << ((i-first_triplet>=2 and first_triplet != -1) ? "We've had 3 in a row. " : "")
+                              << "\n";
+                }
+                
                 last_of_a_serie = true;
             }
-            if (!noteRenderInfo[i+1].triplet or i-first_triplet>=2) last_of_a_serie = true;
 
             // do not cross measures
             if (i+1<visibleNoteAmount)
             {
                 measure = noteRenderInfo[i+1].measureBegin;
-                if (measure != previous_measure) last_of_a_serie = true;
+                if (measure != previous_measure)
+                {
+                    if (VERBOSE_ABOUT_TRIPLETS) std::cout << "(3) } // serie ends here : crossing a measure bar\n";
+
+                    last_of_a_serie = true;
+                }
                 previous_measure = measure;
             }
 
@@ -1017,16 +1046,22 @@ void ScoreAnalyser::processTriplets()
                 if (level > max_level) max_level = level;
             }
 
-            // --------- triplet ---------
+            // ---- ... and triplet notes
             is_triplet = noteRenderInfo[i].triplet;
-            if (is_triplet and first_triplet==-1) first_triplet = i;
+            if (is_triplet and first_triplet==-1)
+            {
+                if (VERBOSE_ABOUT_TRIPLETS) std::cout << "(3) { // starting triplet serie\n";
+                first_triplet = i;
+            }
 
             // this note is a triplet, but not the next, so time to do display the triplets sign
             // also triggered if we've had 3 triplet notes in a row, because triplets come by groups of 3...
-            if ( last_of_a_serie )
+            if (last_of_a_serie)
             {
                 if (is_triplet)
                 {
+                    if (VERBOSE_ABOUT_TRIPLETS) std::cout << "(3) == Binding triplet [" << first_triplet << " .. " << i << "] ==\n";
+                    
                     // if nothing found (most likely meaning we only have one triplet note alone) use values from the first
                     if (min_level == 999)  min_level = noteRenderInfo[first_triplet].level;
                     if (max_level == -999) max_level = noteRenderInfo[first_triplet].level;
