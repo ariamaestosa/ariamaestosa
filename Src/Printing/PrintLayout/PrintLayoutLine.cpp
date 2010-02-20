@@ -32,11 +32,11 @@ int LineTrackRef::getLastNote() const
     const int elements = parent->getLayoutElementCount();
     const int track_amount = parent->getTrackAmount();
     
-    for(int el=elements-1; el>=0; el--)
+    for (int el=elements-1; el>=0; el--)
     { // start searching from last measure in this line
         
-        PrintLayoutMeasure& current_meas = parent->getMeasureForElement(el);
-        for(int i=0; i<track_amount; i++)
+        const PrintLayoutMeasure& current_meas = parent->getMeasureForElement(el);
+        for (int i=0; i<track_amount; i++)
         {
             if (current_meas.getTrackRefAmount() > 0 && // FIXME - find why it's sometimes 0
                 current_meas.getTrackRef(i).getConstTrack() == track &&
@@ -60,10 +60,10 @@ int LineTrackRef::getFirstNote() const
     const int track_amount = parent->getTrackAmount();
     const int elements = parent->getLayoutElementCount();
     
-    for(int el=0; el<elements; el++)
+    for (int el=0; el<elements; el++)
     { // start searching from first measure in this line
-        PrintLayoutMeasure& current_meas = parent->getMeasureForElement(el);
-        for(int i=0; i<track_amount; i++)
+        const PrintLayoutMeasure& current_meas = parent->getMeasureForElement(el);
+        for (int i=0; i<track_amount; i++)
         {
             if (current_meas.getTrackRefAmount() > 0 && // FIXME - find why it's sometimes empty
                 current_meas.getTrackRef(i).getConstTrack() == track &&
@@ -138,14 +138,14 @@ int LayoutLine::getTrackAmount() const
 
 // -------------------------------------------------------------------------------------------
 
-int LayoutLine::getFirstNoteInElement(const int trackID, const int layoutElementID)
+int LayoutLine::getFirstNoteInElement(const int trackID, const int layoutElementID) const
 {
     return getMeasureForElement(layoutElementID).getTrackRef(trackID).getFirstNote();
 }
 
 // -------------------------------------------------------------------------------------------
 
-int LayoutLine::getLastNoteInElement(const int trackID, const int layoutElementID)
+int LayoutLine::getLastNoteInElement(const int trackID, const int layoutElementID) const
 {
     std::cout << "last note in element " << layoutElementID << " of track " << trackID << " is "
               << getMeasureForElement(layoutElementID).getTrackRef(trackID).getLastNote()
@@ -156,21 +156,21 @@ int LayoutLine::getLastNoteInElement(const int trackID, const int layoutElementI
 
 // -------------------------------------------------------------------------------------------
 
-int LayoutLine::getFirstNoteInElement(const int trackID, LayoutElement* layoutElement)
+int LayoutLine::getFirstNoteInElement(const int trackID, const LayoutElement* layoutElement) const
 {
     return getMeasureForElement(layoutElement).getTrackRef(trackID).getFirstNote();
 }
 
 // -------------------------------------------------------------------------------------------
 
-int LayoutLine::getLastNoteInElement(const int trackID, LayoutElement* layoutElement)
+int LayoutLine::getLastNoteInElement(const int trackID, const LayoutElement* layoutElement) const
 {
     return getMeasureForElement(layoutElement).getTrackRef(trackID).getLastNote();
 }
 
 // -------------------------------------------------------------------------------------------
 
-PrintLayoutMeasure& LayoutLine::getMeasureForElement(const int layoutElementID) const
+const PrintLayoutMeasure& LayoutLine::getMeasureForElement(const int layoutElementID) const
 {
     const int measID = m_layout_elements[layoutElementID].measure;
     if (measID == -1) return (PrintLayoutMeasure&)NULL_MEASURE;
@@ -179,7 +179,7 @@ PrintLayoutMeasure& LayoutLine::getMeasureForElement(const int layoutElementID) 
 
 // -------------------------------------------------------------------------------------------
 
-PrintLayoutMeasure& LayoutLine::getMeasureForElement(LayoutElement* layoutElement)
+const PrintLayoutMeasure& LayoutLine::getMeasureForElement(const LayoutElement* layoutElement) const
 {
     return m_measures[layoutElement->measure];
 }

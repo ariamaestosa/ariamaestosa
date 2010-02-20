@@ -187,7 +187,7 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
     // find in which measure this tick belongs
     for (int n=0; n<line.getLayoutElementCount(); n++)
     {
-        PrintLayoutMeasure& meas = line.getMeasureForElement(n);
+        const PrintLayoutMeasure& meas = line.getMeasureForElement(n);
         if (meas == NULL_MEASURE) continue;
         const int firstTickInMeasure = meas.getFirstTick();
         const int lastTickInMeasure  = meas.getLastTick();
