@@ -150,6 +150,8 @@ bool PrintLayoutMeasure::calculateIfMeasureIsSameAs(PrintLayoutMeasure& checkMea
     
 int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
 {
+    std::cout << "PrintLayoutMeasure::addTrackReference in measure " << (m_measure_id + 1) << "\n";
+    
     const int noteAmount = track->getNoteAmount();
     
     //MeasureTrackReference* newTrackRef = new MeasureTrackReference();
@@ -159,6 +161,7 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
     if (firstNote == -1)
     {
         m_track_refs.push_back( new MeasureTrackReference(track, -1, -1) );
+        std::cout << "    --> Received input -1, assuming empty\n";
         return -1;
     }
     
@@ -182,7 +185,7 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
         // stop when we're at next measure
         if (start_tick >= m_last_tick) break;
         
-        // find last note - if many notes end at the same time, keep the one that started last
+        // find last note (if many notes end at the same time, keep the one that started last)
         if (start_tick > last_note_start || end_tick > last_note_start ||
             (end_tick == last_note_end && start_tick >= last_note_start))
         {
@@ -206,19 +209,27 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
     
     if (measure_empty)
     {
+        std::cout << "    --> empty\n";
         m_track_refs.push_back( new MeasureTrackReference(track, -1, -1) );
     }
     else
     {
+        std::cout << "    m_shortest_duration --> " << m_shortest_duration << "\n";
         m_track_refs.push_back( new MeasureTrackReference(track, effectiveFirstNote, lastNote) );
     }
     
     
-    // check if all notes were used
-    if (lastNote == noteAmount-1) return -1;
+    // check if all notes were used (but check 'measure_empty' first, firstNote and lastNote can
+    // exist but be out of the bounds of this measure
+    if (not measure_empty and lastNote == noteAmount-1)
+    {
+        std::cout << "    --> returning -1 because all notes were covered\n";
+        return -1;
+    }
     
     // if this measure is empty, return the same note as the one given in input (i.e. it was not used)
     // if this measure is not empty, add 1 so next measure will start from the next
+    std::cout << "    -> returning " << lastNote << " + " << (measure_empty ? 0 : 1) << "\n";
     return lastNote + (measure_empty ? 0 : 1);
 }
     
