@@ -63,13 +63,21 @@ namespace AriaMaestosa
         /** first and last tick in this measure */
         int m_first_tick, m_last_tick;
         
-        /** shortest note in the measure (will be used to determine "zoom" on measure. e.g. a measure with very
-         * short notes takes more room).
+        /**
+         * Shortest note in the measure. This value is worth -1 when nothing was added to the measure;
+         * it is updated on every  call to addTrackReference.
+         * FIXME: when is this used? there's no getter... I think something else recalculates this
+         *        somewhere else.....
          */
         int m_shortest_duration;
         
         /** ID of the measure */
         int m_measure_id;
+        
+        /** used when we print more than one track each track we print will have one entry here
+         *  for each printed measure
+         */
+        ptr_vector<MeasureTrackReference> m_track_refs;
         
     public:
         
@@ -77,25 +85,30 @@ namespace AriaMaestosa
         
         RelativePlacementManager ticks_placement_manager;
         
-        /** Finds the notes correcsponding to this measure
+        /** 
+          * Finds the notes correcsponding to this measure
           * in the given track and keep the reference.
-          * Returns the ID of the last note in this measure
+          *
+          * @return the ID of the next note to process (i.e. the first after this measure)
+          *         or -1 if none
           */
-        int addTrackReference(const int firstNote, Track* track);
+        int  addTrackReference(const int firstNote, Track* track);
         
         int  getFirstTick() const { return m_first_tick;              }
         int  getLastTick () const { return m_last_tick;               }
 
         bool isEmpty     () const { return m_shortest_duration == -1; }
         
+        int  getTrackRefAmount() const { return m_track_refs.size(); }
+        
+        const MeasureTrackReference& getTrackRef(const int id) const { return m_track_refs[id]; }
+        
+        /**
+          * @return  The ID of the measure, from 0 to the amount of measures in the sequence - 1
+          */
         int  getMeasureID() const { return m_measure_id;              }
         
         bool operator==  (const PrintLayoutMeasure& meas) const { return meas.m_measure_id == m_measure_id; }
-        
-        /** used when we print more than one track each track we print will have one entry here
-          * for each printed measure
-          */
-        ptr_vector<MeasureTrackReference> trackRef;
         
         // -------- Experimental : automatic repetition detection --------      
         /** if this measure is later repeated and is not a repetition of a previous measure,
