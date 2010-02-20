@@ -328,7 +328,7 @@ namespace AriaMaestosa
                                const bool dotted, const int dot_delta_x, const int dot_delta_y)
     {
         g_silences_ticks.push_back( SilenceInfo(tick, tick + duration, type, dotted, dot_delta_x) );
-        std::cout << "gatherSilenceCallback : silence at " << tick << " (beat " << (tick/960.0f) << ")\n";
+        //std::cout << "gatherSilenceCallback : silence at " << tick << " (beat " << (tick/960.0f) << ")\n";
     }
     
     // -------------------------------------------------------------------------------------------
@@ -992,9 +992,9 @@ namespace AriaMaestosa
         MeasureData* measures = getMeasureData();
         const int measureAmount = measures->getMeasureAmount();
         
+        // ---- find highest and lowest note we need to render in each measure
         for (int m=0; m<measureAmount; m++)
         {
-            // find highest and lowest note we need to render in each measure
             int highest_pitch = -1, lowest_pitch = -1;
             int biggest_level = -1, smallest_level = -1;
             
@@ -1002,13 +1002,14 @@ namespace AriaMaestosa
             const int to_tick = measures->lastTickInMeasure(m);
             
             const int firstNote = track->findFirstNoteInRange( from_tick, to_tick );
-            const int lastNote = track->findLastNoteInRange( from_tick, to_tick );
+            const int lastNote  = track->findLastNoteInRange ( from_tick, to_tick );
             
             //std::cout << "Measure " << m << " : reading notes " << firstNote << " to " << lastNote << std::endl;
             
             for (int n=firstNote; n<=lastNote; n++)
             {
                 if (n == -1) break; // will happen if line is empty
+                
                 const int pitch = track->getNotePitchID(n);
                 const int level = converter->noteToLevel(track->getNote(n));
                 if (pitch < highest_pitch || highest_pitch == -1)
@@ -1054,8 +1055,9 @@ namespace AriaMaestosa
         converter->updateConversionData();
         converter->resetAccidentalsForNewRender();
         
-        // iterate through measures to collect notes in the vector
-        // so ScoreAnalyser can prepare the score
+        // --- collect notes in the vector
+        // by iterating through measures so ScoreAnalyser can prepare the score
+        
         std::cout << " == gathering note list ==\n";
         for (int m=0; m<measureAmount; m++)
         {
@@ -1080,21 +1082,25 @@ namespace AriaMaestosa
                 // add note to either G clef score or F clef score
                 if (g_clef and not f_clef)
                 {
-                    g_clef_analyser->addToVector(currentNote, false);
+                    //std::cout << "   G clef : Adding note at beat " << tick/960 << "\n";
+                    g_clef_analyser->addToVector(currentNote);
                 }
                 else if (f_clef and not g_clef)
                 {
-                    f_clef_analyser->addToVector(currentNote, false);
+                    //std::cout << "   F clef : Adding note at beat " << tick/960 << "\n";
+                    f_clef_analyser->addToVector(currentNote);
                 }
                 else if (f_clef and g_clef)
                 {
                     if (noteLevel < middle_c_level)
                     {
-                        g_clef_analyser->addToVector(currentNote, false);
+                        //std::cout << "   G clef : Adding note at beat " << tick/960 << "\n";
+                        g_clef_analyser->addToVector(currentNote);
                     }
                     else
                     {
-                        f_clef_analyser->addToVector(currentNote, false);
+                        //std::cout << "   F clef : Adding note at beat " << tick/960 << "\n";
+                        f_clef_analyser->addToVector(currentNote);
                     }
                 }
             }
@@ -1102,7 +1108,7 @@ namespace AriaMaestosa
         }//next element
         
         // ---- Silences
-        std::cout << " == gathering silence list ==\n";
+        std::cout << " == gathering silences ==\n";
         g_silences_ticks.clear();
         if (f_clef)
         {
@@ -1130,6 +1136,20 @@ namespace AriaMaestosa
         std::cout << "==========================\n    analyseAndDrawScore " << (f_clef ? "F" : "G")
                   << "\n==========================\n\n";
         
+        analyser.putInTimeOrder();
+        
+        /*
+        {
+            std::cout << "analyser contents {\n";
+            const int noteAmount = analyser.noteRenderInfo.size();
+            for (int i=0; i<noteAmount; i++)
+            {
+                NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
+                std::cout << "    Note at beat " << noteRenderInfo.tick / 960 << "\n";
+            }
+            std::cout << "}\n";
+        }
+        */
         ScoreEditor* scoreEditor = track->graphics->scoreEditor;
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         const int middle_c_level = converter->getScoreCenterCLevel();
@@ -1182,7 +1202,7 @@ namespace AriaMaestosa
             dc.DrawLine(x0, y, x1, y);
         }
         dc.SetPen(  wxPen( wxColour(125,125,125), 7 ) );
-         */
+        */
         
         // ------------ render vertical dividers and time signature changes ---------
         std::cout << " == rendering vertical dividers & time sig changes ==\n";

@@ -969,16 +969,24 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
             // add note to either G clef score or F clef score
             if (g_clef and not f_clef)
-                g_clef_analyser->addToVector(currentNote, false);
+            {
+                g_clef_analyser->addToVector(currentNote);
+            }
             else if (f_clef and not g_clef)
-                f_clef_analyser->addToVector(currentNote, false);
+            {
+                f_clef_analyser->addToVector(currentNote);
+            }
             else if (f_clef and g_clef)
             {
                 const int middleC = converter->getScoreCenterCLevel();
                 if (noteLevel < middleC)
-                    g_clef_analyser->addToVector(currentNote, false);
+                {
+                    g_clef_analyser->addToVector(currentNote);
+                }
                 else if (noteLevel > middleC)
-                    f_clef_analyser->addToVector(currentNote, false);
+                {
+                    f_clef_analyser->addToVector(currentNote);
+                }
                 else
                 {
                     // note is exactly on middle C... do our best to
@@ -991,13 +999,14 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
                     if (check_note != -1)
                     {
                         const int checkNoteLevel = converter->noteToLevel(track->getNote(check_note), NULL);
-                        if (checkNoteLevel > middleC)
-                            f_clef_analyser->addToVector(currentNote, false);
-                        else
-                            g_clef_analyser->addToVector(currentNote, false);
+                        if (checkNoteLevel > middleC)  f_clef_analyser->addToVector(currentNote);
+                        else                           g_clef_analyser->addToVector(currentNote);
                     }
                     else
-                        g_clef_analyser->addToVector(currentNote, false);
+                    {
+                        g_clef_analyser->addToVector(currentNote);
+                    }
+                    
                 } // end if note on middle C
             } // end if both G and F clefs
         } // end if musical notation enabled

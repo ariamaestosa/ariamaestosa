@@ -214,7 +214,7 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
     }
     else
     {
-        std::cout << "    m_shortest_duration --> " << m_shortest_duration << "\n";
+        std::cout << "    --> m_shortest_duration = " << m_shortest_duration << "\n";
         m_track_refs.push_back( new MeasureTrackReference(track, effectiveFirstNote, lastNote) );
     }
     

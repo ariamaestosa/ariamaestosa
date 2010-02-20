@@ -173,6 +173,9 @@ class ScoreAnalyser
 
     float stem_height;
     float min_stem_height;
+    
+    void addToVector( NoteRenderInfo& renderInfo, const bool recursion );
+
 public:
     LEAK_CHECK();
 
@@ -191,7 +194,8 @@ public:
     /** call when you're done rendering the current frame, to prepare to render the next */
     void clearAndPrepare();
 
-    void addToVector( NoteRenderInfo& renderInfo, const bool recursion );
+    /** Add a note to the score analyser. */
+    void addToVector( NoteRenderInfo& renderInfo );
 
     /**
       * @brief the main function of ScoreAnalyser, where everything start
@@ -199,23 +203,31 @@ public:
       * This function takes a vector containing information about visible notes.
       * Its job is to analyse them and fill missing data in the contained objects
       * so that they can be rendered correctly on a score.
+      *
+      * Note that note heads are assumed to be already rendered at this point; this
+      * will set up stems, beams, triplet signs, etc... but might very well remove
+      * some note heads, especially in chords (FIXME?)
       */
     void analyseNoteInfo();
 
     /** set the level below which the stem is up, and above which it is down */
     void setStemPivot(const int level);
 
+    /**
+     * Puts notes in time order.
+     * Notes that have no stems go last so that they don't disturb note grouping in chords.
+     * Note that the 'analyseNoteInfo' method will automatically call this; so this method
+     * might be useful only if you want to iterate through the NoteRenderInfo objects of
+     * the analyser before calling 'analyseNoteInfo'.
+     */
+    void putInTimeOrder();
+    
     void renderSilences(RenderSilenceCallback renderSilenceCallback,
                                        const int first_visible_measure, const int last_visible_measure,
                                        const int silences_y);
 protected:
     // internal methods performing different steps in score analysis
     
-    /**
-      * Puts notes in time order.
-      * Notes that have no stems go last so that they don't disturb note grouping in chords.
-      */
-    void putInTimeOrder();
     void findAndMergeChords();
     void processTriplets();
     void processNoteBeam();
