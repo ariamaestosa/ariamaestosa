@@ -47,20 +47,20 @@ PrintLayoutMeasure::PrintLayoutMeasure(const int measID) :
 bool PrintLayoutMeasure::calculateIfMeasureIsSameAs(PrintLayoutMeasure& checkMeasure)
 {
     
-    const int trackRefAmount = trackRef.size();
+    const int trackRefAmount = m_track_refs.size();
     int total_note_amount = 0;
     
     for (int tref=0; tref<trackRefAmount; tref++)
     {
-        const int my_first_note  = trackRef[tref].getFirstNote();
-        const int my_last_note   = trackRef[tref].getLastNote();
-        const int his_first_note = checkMeasure.trackRef[tref].getFirstNote();
-        const int his_last_note  = checkMeasure.trackRef[tref].getLastNote();
+        const int my_first_note  = m_track_refs[tref].getFirstNote();
+        const int my_last_note   = m_track_refs[tref].getLastNote();
+        const int his_first_note = checkMeasure.m_track_refs[tref].getFirstNote();
+        const int his_last_note  = checkMeasure.m_track_refs[tref].getLastNote();
         
-        assert( trackRef.size() == checkMeasure.trackRef.size() );
-        assertExpr( tref,<,(int)trackRef.size() );
-        assert( trackRef[tref].getTrack() == checkMeasure.trackRef[tref].getTrack() );
-        Track* track = trackRef[tref].getTrack();
+        assert( m_track_refs.size() == checkMeasure.m_track_refs.size() );
+        assertExpr( tref,<,(int)m_track_refs.size() );
+        assert( m_track_refs[tref].getTrack() == checkMeasure.m_track_refs[tref].getTrack() );
+        Track* track = m_track_refs[tref].getTrack();
         
         // if these 2 measures don't even have the same number of notes, they're definitely not the same
         if ( (his_last_note - his_first_note + 1) != (my_last_note - my_first_note + 1) )
@@ -158,7 +158,7 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
     // if firstNote is -1, it means all notes were processed. just add the track ref without searching for notes
     if (firstNote == -1)
     {
-        trackRef.push_back( new MeasureTrackReference(track, -1, -1) );
+        m_track_refs.push_back( new MeasureTrackReference(track, -1, -1) );
         return -1;
     }
     
@@ -173,31 +173,30 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
     bool measure_empty = true;
     for (int note = effectiveFirstNote; note<noteAmount; note++)
     {
-        const int start_tick = track->getNoteStartInMidiTicks(note);
-        const int end_tick = track->getNoteEndInMidiTicks(note);
+        const int start_tick          = track->getNoteStartInMidiTicks(note);
+        const int end_tick            = track->getNoteEndInMidiTicks(note);
         const int currentNoteDuration = end_tick - start_tick;
         
         if (currentNoteDuration <= 0)  continue; // skip malformed notes if any
         
         // stop when we're at next measure
-        if ( start_tick >= m_last_tick ) break;
+        if (start_tick >= m_last_tick) break;
         
         // find last note - if many notes end at the same time, keep the one that started last
         if (start_tick > last_note_start || end_tick > last_note_start ||
-           (end_tick == last_note_end && start_tick >= last_note_start)
-           )
+            (end_tick == last_note_end && start_tick >= last_note_start))
         {
-            lastNote = note;
-            last_note_end = end_tick;
+            lastNote        = note;
+            last_note_end   = end_tick;
             last_note_start = start_tick;
-            measure_empty = false;
+            measure_empty   = false;
         }
         
         // store duration if it's the shortest yet (but ignore dead/instant-hit notes)
         const float relativeLength = (end_tick - start_tick) / (float)(getMeasureData()->beatLengthInTicks()*4);
-        if ( relativeLength < 1.0/32.0 ) continue;
+        if (relativeLength < 1.0/32.0) continue;
         
-        if ( currentNoteDuration < m_shortest_duration or m_shortest_duration == -1)
+        if (currentNoteDuration < m_shortest_duration or m_shortest_duration == -1)
         {
             m_shortest_duration = currentNoteDuration;
         }
@@ -207,11 +206,11 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
     
     if (measure_empty)
     {
-        trackRef.push_back( new MeasureTrackReference(track, -1, -1) );
+        m_track_refs.push_back( new MeasureTrackReference(track, -1, -1) );
     }
     else
     {
-        trackRef.push_back( new MeasureTrackReference(track, effectiveFirstNote, lastNote) );
+        m_track_refs.push_back( new MeasureTrackReference(track, effectiveFirstNote, lastNote) );
     }
     
     
@@ -220,7 +219,7 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
     
     // if this measure is empty, return the same note as the one given in input (i.e. it was not used)
     // if this measure is not empty, add 1 so next measure will start from the next
-    return lastNote + ( measure_empty ? 0 : 1);
+    return lastNote + (measure_empty ? 0 : 1);
 }
     
 // -------------------------------------------------------------------------------------------

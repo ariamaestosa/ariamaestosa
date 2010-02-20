@@ -38,11 +38,11 @@ int LineTrackRef::getLastNote() const
         PrintLayoutMeasure& current_meas = parent->getMeasureForElement(el);
         for(int i=0; i<track_amount; i++)
         {
-            if (current_meas.trackRef.size() > 0 && // FIXME - find why it's sometimes 0
-               current_meas.trackRef[i].getTrack() == track &&
-               current_meas.trackRef[i].getLastNote() != -1)
+            if (current_meas.getTrackRefAmount() > 0 && // FIXME - find why it's sometimes 0
+                current_meas.getTrackRef(i).getConstTrack() == track &&
+               current_meas.getTrackRef(i).getLastNote() != -1)
             {
-                return current_meas.trackRef[i].getLastNote();
+                return current_meas.getTrackRef(i).getLastNote();
             }
         }
         
@@ -65,11 +65,11 @@ int LineTrackRef::getFirstNote() const
         PrintLayoutMeasure& current_meas = parent->getMeasureForElement(el);
         for(int i=0; i<track_amount; i++)
         {
-            if (current_meas.trackRef.size() > 0 && // FIXME - find why it's sometimes empty
-                current_meas.trackRef[i].getTrack() == track &&
-                current_meas.trackRef[i].getFirstNote() != -1)
+            if (current_meas.getTrackRefAmount() > 0 && // FIXME - find why it's sometimes empty
+                current_meas.getTrackRef(i).getConstTrack() == track &&
+                current_meas.getTrackRef(i).getFirstNote() != -1)
             {
-                return current_meas.trackRef[i].getFirstNote();
+                return current_meas.getTrackRef(i).getFirstNote();
             }
         }
     }
@@ -81,7 +81,7 @@ int LineTrackRef::getFirstNote() const
 
 int LineTrackRef::getFirstNoteInElement(const int layoutElementID)
 {
-    return parent->getMeasureForElement(layoutElementID).trackRef[trackID].getFirstNote();
+    return parent->getMeasureForElement(layoutElementID).getTrackRef(trackID).getFirstNote();
 }
 
 // -------------------------------------------------------------------------------------------
@@ -89,24 +89,24 @@ int LineTrackRef::getFirstNoteInElement(const int layoutElementID)
 int LineTrackRef::getLastNoteInElement(const int layoutElementID)
 {
     std::cout << "last note in element " << layoutElementID << " of track " << trackID << " is "
-        << parent->getMeasureForElement(layoutElementID).trackRef[trackID].getLastNote()
+        << parent->getMeasureForElement(layoutElementID).getTrackRef(trackID).getLastNote()
         << " from measure " << parent->getMeasureForElement(layoutElementID).getMeasureID() << std::endl;
     
-    return parent->getMeasureForElement(layoutElementID).trackRef[trackID].getLastNote();
+    return parent->getMeasureForElement(layoutElementID).getTrackRef(trackID).getLastNote();
 }
 
 // -------------------------------------------------------------------------------------------
 
 int LineTrackRef::getFirstNoteInElement(LayoutElement* layoutElement)
 {
-    return parent->getMeasureForElement(layoutElement).trackRef[trackID].getFirstNote();
+    return parent->getMeasureForElement(layoutElement).getTrackRef(trackID).getFirstNote();
 }
 
 // -------------------------------------------------------------------------------------------
 
 int LineTrackRef::getLastNoteInElement(LayoutElement* layoutElement)
 {
-    return parent->getMeasureForElement(layoutElement).trackRef[trackID].getLastNote();
+    return parent->getMeasureForElement(layoutElement).getTrackRef(trackID).getLastNote();
 }
 
 // -------------------------------------------------------------------------------------------
@@ -140,7 +140,7 @@ int LayoutLine::getTrackAmount() const
 
 int LayoutLine::getFirstNoteInElement(const int trackID, const int layoutElementID)
 {
-    return getMeasureForElement(layoutElementID).trackRef[trackID].getFirstNote();
+    return getMeasureForElement(layoutElementID).getTrackRef(trackID).getFirstNote();
 }
 
 // -------------------------------------------------------------------------------------------
@@ -148,24 +148,24 @@ int LayoutLine::getFirstNoteInElement(const int trackID, const int layoutElement
 int LayoutLine::getLastNoteInElement(const int trackID, const int layoutElementID)
 {
     std::cout << "last note in element " << layoutElementID << " of track " << trackID << " is "
-              << getMeasureForElement(layoutElementID).trackRef[trackID].getLastNote()
+              << getMeasureForElement(layoutElementID).getTrackRef(trackID).getLastNote()
               << " from measure " << getMeasureForElement(layoutElementID).getMeasureID() << std::endl;
     
-    return getMeasureForElement(layoutElementID).trackRef[trackID].getLastNote();
+    return getMeasureForElement(layoutElementID).getTrackRef(trackID).getLastNote();
 }
 
 // -------------------------------------------------------------------------------------------
 
 int LayoutLine::getFirstNoteInElement(const int trackID, LayoutElement* layoutElement)
 {
-    return getMeasureForElement(layoutElement).trackRef[trackID].getFirstNote();
+    return getMeasureForElement(layoutElement).getTrackRef(trackID).getFirstNote();
 }
 
 // -------------------------------------------------------------------------------------------
 
 int LayoutLine::getLastNoteInElement(const int trackID, LayoutElement* layoutElement)
 {
-    return getMeasureForElement(layoutElement).trackRef[trackID].getLastNote();
+    return getMeasureForElement(layoutElement).getTrackRef(trackID).getLastNote();
 }
 
 // -------------------------------------------------------------------------------------------

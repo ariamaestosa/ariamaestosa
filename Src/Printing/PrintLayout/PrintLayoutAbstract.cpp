@@ -158,10 +158,10 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
             // check that measure is really empty; it's possible that it contains
             // the end of a note that started in the previous measure.
             // if this is the case, we need to make the measure broader than the default size
-            const int track_ref_amount = measures[measure].trackRef.size();
+            const int track_ref_amount = measures[measure].getTrackRefAmount();
             for (int t=0; t<track_ref_amount; t++)
             {
-                Track* track = measures[measure].trackRef[t].getTrack();
+                const Track* track = measures[measure].getTrackRef(t).getConstTrack();
                 const int noteAmount = track->getNoteAmount();
                 for (int n=0; n<noteAmount; n++)
                 {
@@ -333,13 +333,13 @@ void PrintLayoutAbstract::calculateRelativeLengths(std::vector<LayoutElement>& l
             PrintLayoutMeasure& meas = measures[layoutElements[n].measure];
             RelativePlacementManager& ticks_relative_position = meas.ticks_placement_manager;
             
-            const int trackAmount = meas.trackRef.size();
+            const int trackAmount = meas.getTrackRefAmount();
             for (int i=0; i<trackAmount; i++)
             {
                 EditorPrintable* editorPrintable = sequence->getEditorPrintable( i );
                 assert( editorPrintable != NULL );
                 
-                editorPrintable->addUsedTicks(meas, i, meas.trackRef[i], ticks_relative_position);
+                editorPrintable->addUsedTicks(meas, i, meas.getTrackRef(i), ticks_relative_position);
             }
             
             ticks_relative_position.calculateRelativePlacement();
