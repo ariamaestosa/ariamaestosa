@@ -765,13 +765,10 @@ namespace AriaMaestosa
         ScoreEditor* scoreEditor = track->graphics->scoreEditor;
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         
+        // ---- Determine the y level of the highest and the lowest note
         const int fromMeasure = line.getFirstMeasure();
         const int lastMeasure = line.getLastMeasure();
 
-        //scoreData->from_note = line.getFirstNote();
-        //scoreData->to_note   = line.getLastNote();
-        
-        //int highest_pitch = -1, lowest_pitch = -1;
         int biggest_level = -1, smallest_level = -1;
         
         for (int m=fromMeasure; m<=lastMeasure; m++)
@@ -779,15 +776,6 @@ namespace AriaMaestosa
             //  FIXME : see other fixme above, this * 500 + m trick is stupid and ugly
             PerMeasureInfo& info = perMeasureInfo[trackID*5000+m];
                         
-            /*
-            if (info.highest_pitch < highest_pitch or highest_pitch == -1)
-            {
-                highest_pitch = info.highest_pitch;
-            }
-            if (info.lowest_pitch > lowest_pitch or lowest_pitch == -1)
-            {
-                lowest_pitch = info.lowest_pitch;
-            } */
             if (info.biggest_level > biggest_level or biggest_level == -1)
             {
                 biggest_level = info.biggest_level;
@@ -798,6 +786,7 @@ namespace AriaMaestosa
             }
         }
 
+        // ---- get some values useful for later
         middle_c_level = converter->getScoreCenterCLevel(); //converter->getMiddleCLevel();
         
         const int g_clef_from_level = middle_c_level-10;
@@ -808,10 +797,91 @@ namespace AriaMaestosa
         g_clef = scoreEditor->isGClefEnabled();
         f_clef = scoreEditor->isFClefEnabled();
         
+        const int fromTick = getMeasureData()->firstTickInMeasure( line.getFirstMeasure() );
+        const int toTick   = getMeasureData()->lastTickInMeasure ( line.getLastMeasure() );
+
+        // ---- check if some signs (stems, triplet signs, etc.) go out of bounds
+        for (int n=0; n<2; n++) // 0 is G clef, 1 is F clef
+        {
+            if (n == 0 and not g_clef) continue;
+            if (n == 1 and not f_clef) continue;
+            
+            // analyse notes. this analysis will be used to determine is some things go out of the track
+            // verticall, and will be thrown away after [FIXME] (it will be analysed again when it's time to render)
+            ScoreAnalyser* analyser = NULL;
+            if      (n == 0) analyser = g_clef_analyser;
+            else if (n == 1) analyser = f_clef_analyser;
+            else             assert(false);
+            
+            assert(analyser != NULL);
+
+            OwnerPtr<ScoreAnalyser> lineAnalyser;
+            lineAnalyser = analyser->getSubset(fromTick, toTick);
+            lineAnalyser->analyseNoteInfo();
+            
+            const int noteAmount = lineAnalyser->noteRenderInfo.size();
+            for (int i=0; i<noteAmount; i++)
+            {
+                NoteRenderInfo& noteRenderInfo = lineAnalyser->noteRenderInfo[i];
+                
+                // --- stem
+                if (noteRenderInfo.draw_stem and noteRenderInfo.stem_type != STEM_NONE)
+                {
+                    const float stem_y_level = analyser->getStemTo(noteRenderInfo);
+                    
+                    if (stem_y_level < smallest_level or smallest_level == -1)
+                    {
+                        smallest_level = stem_y_level;
+                    }
+                    if (stem_y_level > biggest_level)
+                    {
+                        biggest_level  = stem_y_level;
+                    }
+                }
+                
+                // ---- triplet
+                if (noteRenderInfo.draw_triplet_sign)
+                {
+                    //FIXME: remove these magic constants
+                    const int triplet_level = noteRenderInfo.triplet_arc_level +
+                                              (noteRenderInfo.triplet_show_above ? -6 : 4);
+                    
+                    if (triplet_level < smallest_level or smallest_level == -1)
+                    {
+                        smallest_level = triplet_level;
+                    }
+                    if (triplet_level > biggest_level)
+                    {
+                        biggest_level  = triplet_level;
+                    }
+                }
+                
+                // ---- beams
+                if (noteRenderInfo.beam)
+                {
+                    const float to_level = noteRenderInfo.beam_to_level;
+                    
+                    if (to_level < smallest_level or smallest_level == -1)
+                    {
+                        smallest_level = to_level;
+                    }
+                    if (to_level > biggest_level)
+                    {
+                        biggest_level  = to_level;
+                    }
+                }
+                
+                //TODO: also handle overlapping clefs (e.g. 2 G clefs)
+                
+            }
+        }
+        
+        // ---- Assign the values
         scoreData->extra_lines_above_g_score = 0;
         scoreData->extra_lines_under_g_score = 0;
         scoreData->extra_lines_above_f_score = 0;
         scoreData->extra_lines_under_f_score = 0;
+        
         if (g_clef and not f_clef)
         {
             //std::cout << "G: " << PRINT_VAR(smallest_level) << PRINT_VAR(biggest_level)
@@ -935,7 +1005,7 @@ namespace AriaMaestosa
             
             //std::cout << "Measure " << m << " : reading notes " << firstNote << " to " << lastNote << std::endl;
             
-            for(int n=firstNote; n<=lastNote; n++)
+            for (int n=firstNote; n<=lastNote; n++)
             {
                 if (n == -1) break; // will happen if line is empty
                 const int pitch = track->getNotePitchID(n);
@@ -1096,6 +1166,22 @@ namespace AriaMaestosa
             // dc.DrawText( wxString::Format(wxT("%i"), lvl), x0 - 120, y - 35 );
         }
         
+        /*
+        //DEBUG
+        dc.SetPen(  wxPen( wxColour(255,0,0), 7 ) );
+        for (int lvl=first_score_level-extra_lines_above*2; lvl<first_score_level; lvl+=2)
+        {
+            const int y = LEVEL_TO_Y(lvl);
+            dc.DrawLine(x0, y, x1, y);
+        }
+        for (int lvl=last_score_level+extra_lines_under*2; lvl>last_score_level; lvl-=2)
+        {
+            const int y = LEVEL_TO_Y(lvl);
+            dc.DrawLine(x0, y, x1, y);
+        }
+        dc.SetPen(  wxPen( wxColour(125,125,125), 7 ) );
+         */
+        
         // ------------ render vertical dividers and time signature changes ---------
         std::cout << " == rendering vertical dividers & time sig changes ==\n";
         
@@ -1187,14 +1273,14 @@ namespace AriaMaestosa
         // for all parts of score notes that can be rendered without using the ScoreAnalyser.
         
         const int fromTick = getMeasureData()->firstTickInMeasure( line.getFirstMeasure() );
-        const int toTick = getMeasureData()->lastTickInMeasure( line.getLastMeasure() );
+        const int toTick   = getMeasureData()->lastTickInMeasure ( line.getLastMeasure () );
         
         {
             const int noteAmount = analyser.noteRenderInfo.size();
                 
             // ---- Draw small lines above/below score
             std::cout << " == rendering lines for notes out of score ==\n";
-            for(int i=0; i<noteAmount; i++)
+            for (int i=0; i<noteAmount; i++)
             {
                 if (analyser.noteRenderInfo[i].tick < fromTick) continue;
                 if (analyser.noteRenderInfo[i].tick >= toTick) break;
@@ -1291,6 +1377,7 @@ namespace AriaMaestosa
 
         // ------------------ second part : intelligent drawing of the rest -----------------
         std::cout << " == analyzing score ==\n";
+        
         // analyse notes to know how to build the score
         OwnerPtr<ScoreAnalyser> lineAnalyser;
         lineAnalyser = analyser.getSubset(fromTick, toTick);
@@ -1394,7 +1481,7 @@ namespace AriaMaestosa
             }
             
             // triplet
-            if (noteRenderInfo.drag_triplet_sign and noteRenderInfo.triplet_arc_tick_start != -1)
+            if (noteRenderInfo.draw_triplet_sign and noteRenderInfo.triplet_arc_tick_start != -1)
             {
                 wxPen tiePen( wxColour(0,0,0), 10 ) ;
                 dc.SetPen( tiePen );
