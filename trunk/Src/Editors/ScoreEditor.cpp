@@ -709,7 +709,7 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
     }
 
     // triplet
-    if (renderInfo.drag_triplet_sign and renderInfo.triplet_arc_tick_start != -1)
+    if (renderInfo.draw_triplet_sign and renderInfo.triplet_arc_tick_start != -1)
     {
         int triplet_arc_x_start = -1;
         int triplet_arc_x_end = -1;

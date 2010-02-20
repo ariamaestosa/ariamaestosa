@@ -275,7 +275,7 @@ NoteRenderInfo::NoteRenderInfo(int tick, int level, int tick_length, PitchSign s
     triplet_show_above = false;
     triplet_arc_tick_start = -1;
     triplet_arc_tick_end = -1;
-    drag_triplet_sign = false;
+    draw_triplet_sign = false;
 
     beam_show_above = false;
     beam_to_tick = -1;
@@ -336,7 +336,7 @@ bool NoteRenderInfo::isTieUp()
 void NoteRenderInfo::setTriplet()
 {
     triplet = true;
-    drag_triplet_sign = true;
+    draw_triplet_sign = true;
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -1076,7 +1076,7 @@ void ScoreAnalyser::processTriplets()
                         for(int j=first_triplet; j<=i; j++)
                         {
                             //noteRenderInfo[j].stem_type = ( noteRenderInfo[first_triplet].triplet_show_above ? STEM_DOWN : STEM_UP );
-                            noteRenderInfo[j].drag_triplet_sign = false;
+                            noteRenderInfo[j].draw_triplet_sign = false;
                         }
                     }
                     else
@@ -1094,7 +1094,7 @@ void ScoreAnalyser::processTriplets()
                         noteRenderInfo[first_triplet].triplet_arc_level = max_level;
                     }
 
-                    noteRenderInfo[first_triplet].drag_triplet_sign = true;
+                    noteRenderInfo[first_triplet].draw_triplet_sign = true;
                     // noteRenderInfo[first_triplet].triplet = true;
                     noteRenderInfo[first_triplet].triplet_arc_tick_end = noteRenderInfo[i].tick;
                 }

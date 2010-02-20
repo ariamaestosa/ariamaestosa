@@ -30,24 +30,25 @@
 
 #include <vector>
 
-namespace AriaMaestosa {
+namespace AriaMaestosa
+{
 
 enum STEM
 {
     STEM_UP,
     STEM_DOWN,
-    STEM_BEAM,
     STEM_NONE
 };
 
-/*
- *  Contains info about a single visible. A vector of these objects is created inthe first rendering pass.
+/**
+ *  Contains info about a single visible note. A vector of these objects is created inthe first rendering pass.
  *  This vector contains one of these for each visible note. This vector is then analysed and used in the
  *  next rendering passes. The object starts with a few info fields, passed in the constructors, and builds/tweaks
  *  the others as needed in the next passes. The vector is destroyed and recreated with each render.
  *
  *  A few utility methods will ease setting some variables, but they are usually changed directly from code.
  */
+    // FIXME: make less of these public!
 class NoteRenderInfo
 {
     // used to display ties (display a tie between this note and specified tick). a value of -1 means no tie.
@@ -56,46 +57,63 @@ class NoteRenderInfo
 
     int y;
 public:
-    // for very short notes, e.g. drum notes. Note will appear as a X.
+    /** for very short notes, e.g. drum notes. Note will appear as a X. */
     bool instant_hit;
 
-    // if note has a dot
+    /** if note has a dot */
     bool dotted;
 
-    // chord
+    /** Whether this "note" is a chord */
     bool chord;
-    // since a chord contains many notes, keep info about the highest and lowest note of the chord
+    
+    /** Since a chord contains many notes, keep info about the highest and lowest note of the chord
+      * Only valid if 'chord' is true. */
     int min_chord_level, max_chord_level;
 
-    // a 1/4 will have none, a 1/8 has 1, a 1/16 has 2, etc.
+    /** Number of flags on note stem. e.g. a 1/4 will have none, a 1/8 has 1, a 1/16 has 2, etc. */
     int flag_amount;
 
+    /** Whether this note has a hollow head (like 1/1 and 1/2 figures) or a "black" (filled) head */
     bool hollow_head;
 
+    /** Whether this note is selected in the score editor */
     bool selected;
 
-    // is stem up, down? or is there no stem?
+    /** is stem up, down? or is there no stem? */
     STEM stem_type;
 
-    // sould we draw the stem?
-    // FIXME - doesn't that override stem_type == STEM_NONE ???
+    /** Whether to draw the stem. FIXME : stem_type == STEM_NONE can already carry this info!! */
     bool draw_stem;
 
-    // location and duration of note
+    /** location and duration of note */
     int tick, tick_length;
+    
+    /** vertical position of the note, in abstract level units */
     int level;
+    
+    /** pitch ID of the note */
     int pitch;
 
-    // measure where the note begins and ends
+    /** measure where the note begins and ends */
     int measureBegin, measureEnd;
 
-    // sharp, flat, natural, none
+    /** which alteration sigh to use, if any (sharp, flat, natural or none) */
     PitchSign sign;
 
-    // triplets
-    bool triplet_show_above, triplet, drag_triplet_sign;
-    int triplet_arc_tick_start, triplet_arc_tick_end, triplet_arc_level; // where to display the "triplet arc" than contains a "3"
+    /** Whether this note has a triplet duration */
+    bool triplet;
+    
+    /** Whether this particular note is responsible to draw a "triplet arc" with a 3 in it
+      * (this is a separate options because many notes (e.g. 3) can share the same triplet arc)
+      */
+    bool draw_triplet_sign;
+    
+    /** where to display the "triplet arc" than contains a "3" */
+    int triplet_arc_tick_start, triplet_arc_tick_end, triplet_arc_level;
 
+    /** Whether the "triplet arc" is rendered above or below its Y base coordinate */
+    bool triplet_show_above;
+    
     // beams
     // FIXME - is beam_show_above really necessary, since it's always the same direction as stem_type?
     bool beam_show_above, beam;
@@ -104,7 +122,12 @@ public:
     int beam_to_tick;
     PitchSign beam_to_sign; // sign of the note we beam to. (used for printing where it's not linear)
     float beam_to_level;
-    float stem_y_level; // if != -1, the renderer will use this y as stem end instead of calculating it itself
+    
+    /**
+      * If != -1, the renderer will use this y as stem end instead of calculating it itself.
+      * Use ScoreAnalyser::getStemTo for a higher-level getter
+      */
+    float stem_y_level;
 
 
     NoteRenderInfo(int tick, int level, int tick_length, PitchSign sign, const bool selected, int pitch);
