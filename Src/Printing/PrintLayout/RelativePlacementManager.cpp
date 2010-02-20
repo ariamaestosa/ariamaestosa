@@ -346,7 +346,7 @@ void RelativePlacementManager::calculateRelativePlacement()
     //  Track 2 |ø===|====|====|====|        |ø=======|ø========|   space is not granted by the other track)
     
     const int shortestSymbolLength = findShortestSymbolLength();
-    assert(shortestSymbolLength != -1);
+    assert(shortestSymbolLength > 0);
     
     const int tickAmount = m_all_interesting_ticks.size();
     int totalAbsolutePosition = 0;
@@ -381,6 +381,8 @@ void RelativePlacementManager::calculateRelativePlacement()
                 // space is not implicitely granted, we need to give more space manually
                 //const int whats_missing = std::max(0, currSym.endTick - nextTickInAnyTrack);
                 //float ratioToShortest = (float)whats_missing / (float)shortestSymbolLength;
+                
+                assertExpr(shortestSymbolLength, >=, 0);
                 
                 const int length = currSym.endTick - currTick.tick;
                 float ratioToShortest = (float)length / (float)shortestSymbolLength;

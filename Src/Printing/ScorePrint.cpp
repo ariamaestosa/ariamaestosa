@@ -1208,7 +1208,7 @@ namespace AriaMaestosa
         std::cout << " == rendering vertical dividers & time sig changes ==\n";
         
         const int measure_dividers_from_y = LEVEL_TO_Y(first_score_level);
-        const int measure_dividers_to_y = LEVEL_TO_Y(last_score_level);
+        const int measure_dividers_to_y   = LEVEL_TO_Y(last_score_level);
         
         const int elamount = line.getLayoutElementCount();
         for (int n=0; n<elamount; n++)
@@ -1217,7 +1217,9 @@ namespace AriaMaestosa
             
             if (line.getLayoutElement(n).getType() == TIME_SIGNATURE_EL)
             {
-                EditorPrintable::renderTimeSignatureChange(&line.getLayoutElement(n), LEVEL_TO_Y(first_score_level), LEVEL_TO_Y(last_score_level));
+                EditorPrintable::renderTimeSignatureChange(&line.getLayoutElement(n),
+                                                           LEVEL_TO_Y(first_score_level),
+                                                           LEVEL_TO_Y(last_score_level));
             }
         }
         
