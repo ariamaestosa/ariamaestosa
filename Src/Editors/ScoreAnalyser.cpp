@@ -381,6 +381,13 @@ ScoreAnalyser::ScoreAnalyser(ScoreEditor* parent, int stemPivot)
 
 // -----------------------------------------------------------------------------------------------------------
 
+void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo )
+{
+    addToVector( renderInfo, false );
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
 void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursion )
 {
     // check if note lasts more than one measure. If so we need to divide it in 2.
