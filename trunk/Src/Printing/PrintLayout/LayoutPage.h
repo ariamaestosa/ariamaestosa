@@ -26,10 +26,11 @@ namespace AriaMaestosa
     
     class LayoutPage
     {
+        ptr_vector<LayoutLine> m_layout_lines;    
+
     public:
         DECLARE_MAGIC_NUMBER();
         
-        ptr_vector<LayoutLine> layoutLines;    
         
         LayoutPage()
         {
@@ -39,16 +40,26 @@ namespace AriaMaestosa
         const int getLineCount() const
         {
             assert( MAGIC_NUMBER_OK() );
-            return layoutLines.size();
+
+            return m_layout_lines.size();
         }
         
         LayoutLine& getLine(const int lineID)
         {
             assert( MAGIC_NUMBER_OK() );
-            assert( MAGIC_NUMBER_OK_FOR(&layoutLines) );
+            assert( MAGIC_NUMBER_OK_FOR(&m_layout_lines) );
 
-            return layoutLines[lineID];
+            return m_layout_lines[lineID];
         }
+        
+        void addLine( LayoutLine* line )
+        {
+            assert( MAGIC_NUMBER_OK() );
+            assert( MAGIC_NUMBER_OK_FOR(&m_layout_lines) );
+            
+            m_layout_lines.push_back(line);
+        }
+
     };
 }
     

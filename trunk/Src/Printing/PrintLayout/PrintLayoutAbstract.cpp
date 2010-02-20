@@ -389,7 +389,7 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     layoutPages.push_back( new LayoutPage() );
 
     ptr_vector<PrintLayoutMeasure, REF> measures_ref = measures.getWeakView();
-    layoutPages[current_page].layoutLines.push_back( new LayoutLine(sequence, measures_ref) );
+    layoutPages[current_page].addLine( new LayoutLine(sequence, measures_ref) );
     int currentLine = 0;
 
     // add line header
@@ -407,7 +407,7 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     el.width_in_print_units = header_width;
     
     current_width += header_width;
-    layoutPages[current_page].layoutLines[currentLine].addLayoutElement( el );
+    layoutPages[current_page].getLine(currentLine).addLayoutElement( el );
     
     // add layout elements one by one, switching to the next line when there's too many
     // elements on the current one
@@ -419,7 +419,7 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
         {
             // too much stuff on current line, switch to another line
             current_width = 0;
-            const int line_height = layoutPages[current_page].layoutLines[currentLine].calculateHeight();
+            const int line_height = layoutPages[current_page].getLine(currentLine).calculateHeight();
             current_height += line_height;
 
             // too much lines on current page, switch to a new page
@@ -427,23 +427,23 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
             {
                 current_height = line_height;
                 layoutPages.push_back( new LayoutPage() );
-                layoutPages[current_page].layoutLines[currentLine].m_last_of_page = true;
+                layoutPages[current_page].getLine(currentLine).m_last_of_page = true;
                 current_page++;
             }
 
             ptr_vector<PrintLayoutMeasure, REF> refview = measures.getWeakView();
-            layoutPages[current_page].layoutLines.push_back( new LayoutLine(sequence, refview) );
-            currentLine = layoutPages[current_page].layoutLines.size()-1;
+            layoutPages[current_page].addLine( new LayoutLine(sequence, refview) );
+            currentLine = layoutPages[current_page].getLineCount()-1;
         }
-        assertExpr(currentLine,<,(int)layoutPages[current_page].layoutLines.size());
+        assertExpr(currentLine,<,(int)layoutPages[current_page].getLineCount());
         
-        layoutPages[current_page].layoutLines[currentLine].addLayoutElement(layoutElements[n]);
+        layoutPages[current_page].getLine(currentLine).addLayoutElement(layoutElements[n]);
         
         current_width += layoutElements[n].width_in_print_units + MARGIN_AT_MEASURE_BEGINNING;
     }
     
     // for last line processed
-    layoutPages[current_page].layoutLines[currentLine].calculateHeight();
+    layoutPages[current_page].getLine(currentLine).calculateHeight();
 }
 
 // -------------------------------------------------------------------------------------------
