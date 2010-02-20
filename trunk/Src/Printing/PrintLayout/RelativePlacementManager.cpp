@@ -59,6 +59,35 @@ int RelativePlacementManager::getInterestingTick(const int tick, const int id_fr
     }
 }
 
+// ----------------------------------------------------------------------------------------------------------------
+
+int RelativePlacementManager::getInterestingTickNoAdd(const int tick, const int id_from, const int id_to) const
+{
+    if (id_to < id_from)
+    {
+        return -1;
+    }
+    else
+    {
+        // perform binary search to find the interesting tick
+        const int pivot_id = (id_from + id_to)/2;
+        const int pivot_tick = m_all_interesting_ticks[pivot_id].tick;
+        
+        if (tick == pivot_tick)
+        {
+            return pivot_id;
+        }
+        else if (tick < pivot_tick)
+        {
+            return getInterestingTickNoAdd(tick, id_from, pivot_id - 1);
+        }
+        else //if (tick > pivot_tick) // [implicit]
+        {
+            return getInterestingTickNoAdd(tick, pivot_id + 1, id_to);
+        }
+    }
+}
+
 UNIT_TEST( RelativePlacementManager_TestAddingAndFindingInterestingTicks )
 {
     //throw std::logic_error("C'est normal que ça échoue!!");
@@ -423,13 +452,13 @@ void RelativePlacementManager::calculateRelativePlacement()
 
 // ----------------------------------------------------------------------------------------------------------------
 
-Range<float> RelativePlacementManager::getSymbolRelativeArea(int tick)
+Range<float> RelativePlacementManager::getSymbolRelativeArea(int tick) const
 {    
-    int id = getInterestingTick( tick, 0, m_all_interesting_ticks.size()-1 );
+    int id = getInterestingTickNoAdd( tick, 0, m_all_interesting_ticks.size()-1 );
     assert(id >= 0);
     assert(id < (int)m_all_interesting_ticks.size());
     
-    InterestingTick& currTick = m_all_interesting_ticks[id];
+    const InterestingTick& currTick = m_all_interesting_ticks[id];
     return Range<float>(currTick.position, currTick.endPosition);
     
     /*

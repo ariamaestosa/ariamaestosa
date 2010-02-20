@@ -128,17 +128,17 @@ namespace AriaMaestosa
         int getLayoutElementCount() const { return m_layout_elements.size(); }
         LayoutElement& getLayoutElement(const int id) { return m_layout_elements[id]; }
         
-        int getFirstNoteInElement(const int trackID, const int layoutElementID);
-        int getLastNoteInElement (const int trackID, const int layoutElementID);
-        int getFirstNoteInElement(const int trackID, LayoutElement* layoutElement);
-        int getLastNoteInElement (const int trackID, LayoutElement* layoutElement);
+        int getFirstNoteInElement(const int trackID, const int layoutElementID) const;
+        int getLastNoteInElement (const int trackID, const int layoutElementID) const;
+        int getFirstNoteInElement(const int trackID, const LayoutElement* layoutElement) const;
+        int getLastNoteInElement (const int trackID, const LayoutElement* layoutElement) const;
         
         int calculateHeight();
         
-        PrintLayoutMeasure& getMeasureForElement(const int layoutElementID) const;
-        PrintLayoutMeasure& getMeasureForElement(LayoutElement* layoutElement);
+        const PrintLayoutMeasure& getMeasureForElement(const int layoutElementID) const;
+        const PrintLayoutMeasure& getMeasureForElement(const LayoutElement* layoutElement) const;
         
-        int getLastMeasure() const;
+        int getLastMeasure()  const;
         int getFirstMeasure() const;
     };
     

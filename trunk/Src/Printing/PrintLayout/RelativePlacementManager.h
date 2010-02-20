@@ -104,10 +104,22 @@ class RelativePlacementManager
       *
       * @postcondition  If no 'InterestingTick' object exists for that tick, one is created. The vector remains ordered.
       *
-      * @return         The id of the associated interesting tick within the 
+      * @return         The id of the associated interesting tick
       */
     int getInterestingTick(const int tick, const int id_from, const int id_to);
     
+    /**
+     * @param tick     The midi tick for which we want to find the associated 'InterestingTick' object
+     * @param id_from  ID of the element of the 'm_all_interesting_ticks' vector at which to start searching
+     * @param id_to    ID of the element of the 'm_all_interesting_ticks' vector at which to search ends
+     *
+     * precondition    All interesting ticks must have been created prior to call this, as this variant will
+     *                 NOT insert a new tick of none exists yet.
+     *
+     * @return         The id of the associated interesting tick, or -1 if none
+     */
+    int getInterestingTickNoAdd(const int tick, const int id_from, const int id_to) const;
+
     /**
       * @return          Length (in ticks) of the shortest symbol in this measure
       */
@@ -177,7 +189,7 @@ public:
      * @return                 The calculated area (in proportion, 0 being leftmost and 1 rightmost)
      *                         of a tick within a specific track.
      */
-    Range<float> getSymbolRelativeArea(int tick);
+    Range<float> getSymbolRelativeArea(int tick) const;
 };
 
 }
