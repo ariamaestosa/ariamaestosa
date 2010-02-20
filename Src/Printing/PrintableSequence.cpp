@@ -128,7 +128,7 @@ void PrintableSequence::printLine(LayoutLine& line, wxDC& dc)
     for (int n=0; n<trackAmount; n++)
     {
         // skip empty tracks
-        if (line.height_percent[n] == 0) continue;
+        if (line.m_height_percent[n] == 0) continue;
         
         std::cout << "==== Printing track " << n << " ====" << std::endl;
         

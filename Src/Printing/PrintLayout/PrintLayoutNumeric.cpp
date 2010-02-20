@@ -177,9 +177,9 @@ void PrintLayoutNumeric::divideLineAmongTracks(LayoutLine& line, const int x0, c
     // ---- Determine tracks positions and sizes
     
     int nonEmptyTrackAmount = 0; // empty tracks must not be counted
-    for(int n=0; n<trackAmount; n++)
+    for (int n=0; n<trackAmount; n++)
     {        
-        if (line.height_percent[n] > 0) nonEmptyTrackAmount++;
+        if (line.m_height_percent[n] > 0) nonEmptyTrackAmount++;
     }
     
     // space between individual tracks
@@ -192,10 +192,12 @@ void PrintLayoutNumeric::divideLineAmongTracks(LayoutLine& line, const int x0, c
         //EditorPrintable* editorPrintable = m_sequence->getEditorPrintable(n);
         
         // skip empty tracks
-        if (line.height_percent[n] == 0) continue;
+        if (line.m_height_percent[n] == 0) continue;
         
         // determine how much vertical space is allocated for this track
-        const float track_height = (heightAvailableForThisLine - margin_below - margin_above) * line.height_percent[n]/100.0f;
+        const float track_height = (heightAvailableForThisLine - margin_below - margin_above) *
+                                    line.m_height_percent[n]/100.0f;
+        
         std::cout << "track_height=" << track_height << " (margin_below=" << margin_below << " margin_above=" << margin_above
                   << "space_between_tracks=" << space_between_tracks << ")\n";
         
@@ -248,7 +250,7 @@ void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, float notation_area_
         //          << " total_height=" << total_height << std::endl;
         
         // allocate a height proportional to this line's fraction of the total height
-        float heightAvailableForThisLine = (notation_area_h/level_y_amount) * page.getLine(l).level_height;
+        float heightAvailableForThisLine = (notation_area_h/level_y_amount) * page.getLine(l).m_level_height;
         
         float used_height = heightAvailableForThisLine;
         
@@ -257,7 +259,8 @@ void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, float notation_area_
         
         // line too high, will look weird... shrink a bit
         //FIXME: this method of taking inter-track measures into account is a little unclean...
-        const int lineLevelheight = line.level_height + std::max(0, line.getTrackAmount() - 1)*(SPACE_BETWEEN_TRACKS/MAX_LEVEL_HEIGHT);
+        const int lineLevelheight = line.m_level_height +
+                                    std::max(0, line.getTrackAmount() - 1)*(SPACE_BETWEEN_TRACKS/MAX_LEVEL_HEIGHT);
         while (used_height/(float)lineLevelheight > MAX_LEVEL_HEIGHT)
         {
             used_height *= 0.95;

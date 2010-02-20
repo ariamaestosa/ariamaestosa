@@ -54,10 +54,10 @@ void TablaturePrintable::addUsedTicks(const PrintLayoutMeasure& measure,  const 
                                       const MeasureTrackReference& trackRef,
                                       RelativePlacementManager& ticks_relative_position)
 {
-    const int first_note = trackRef.firstNote;
-    const int last_note  = trackRef.lastNote;
+    const int first_note = trackRef.getFirstNote();
+    const int last_note  = trackRef.getLastNote();
     
-    Track* track = trackRef.track;
+    const Track* track = trackRef.getConstTrack();
     
     if (first_note == -1 or last_note == -1) return; // empty measure
     
@@ -79,7 +79,7 @@ void TablaturePrintable::addUsedTicks(const PrintLayoutMeasure& measure,  const 
     {
         const int tick   = track->getNoteStartInMidiTicks(n);
         const int tickTo = track->getNoteEndInMidiTicks(n);
-        const int fret   = track->getNoteFret(n);
+        const int fret   = track->getNoteFretConst(n);
         
         //int noteLen = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
         

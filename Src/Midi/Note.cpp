@@ -65,7 +65,7 @@ int Note::getFret()
     if (fret==-1) findStringAndFretFromNote();
     return fret;
 }
-
+    
 void Note::setFret(int i)
 {
     fret=i;
