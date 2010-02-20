@@ -80,7 +80,8 @@ public:
     void findStringAndFretFromNote();
     void findNoteFromStringAndFret();
     void checkIfStringAndFretMatchNote(const bool fixStringAndFret);
-
+    int getFretConst() const { return fret; }
+    
     void play(bool change);
 
     // serialization

@@ -151,7 +151,7 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
         // draw measure ID
         if (lineTrackRef.show_measure_number)
         {
-            const int meas_id = layoutLine.getMeasureForElement(currentLayoutElement).id+1;
+            const int meas_id = layoutLine.getMeasureForElement(currentLayoutElement).getMeasureID() + 1;
             
             wxString measureLabel;
             measureLabel << meas_id;
@@ -188,9 +188,9 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
     for (int n=0; n<line.getLayoutElementCount(); n++)
     {
         PrintLayoutMeasure& meas = line.getMeasureForElement(n);
-        if (meas.id == -1) continue; // nullMeasure, ignore
-        const int firstTickInMeasure = meas.firstTick;
-        const int lastTickInMeasure  = meas.lastTick;
+        if (meas == NULL_MEASURE) continue;
+        const int firstTickInMeasure = meas.getFirstTick();
+        const int lastTickInMeasure  = meas.getLastTick();
         
         if (tick >= firstTickInMeasure and tick < lastTickInMeasure)
         {

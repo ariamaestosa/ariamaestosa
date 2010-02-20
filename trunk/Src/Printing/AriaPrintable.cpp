@@ -226,7 +226,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     int level_y_amount = 4;
     for(int n=0; n < lineAmount; n++)
     {
-        level_y_amount += page.getLine(n).level_height;
+        level_y_amount += page.getLine(n).m_level_height;
     }
 
     dc.SetBackground(*wxWHITE_BRUSH);

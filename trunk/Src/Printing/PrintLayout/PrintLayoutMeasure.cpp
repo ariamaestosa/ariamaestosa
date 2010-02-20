@@ -21,7 +21,7 @@
 
 namespace AriaMaestosa
 {
-    const PrintLayoutMeasure nullMeasure(-1);
+    const PrintLayoutMeasure NULL_MEASURE(-1);
 }
 
 using namespace AriaMaestosa;
@@ -30,15 +30,15 @@ using namespace AriaMaestosa;
 PrintLayoutMeasure::PrintLayoutMeasure(const int measID) :
     ticks_placement_manager(measID == -1 ? 0 : getMeasureData()->lastTickInMeasure( measID ))
 {
-    shortestDuration = -1;
+    m_shortest_duration = -1;
     firstSimilarMeasure = -1;
     cutApart = false;
-    id = measID;
+    m_measure_id = measID;
     
     if (measID != -1)
     {
-        firstTick = getMeasureData()->firstTickInMeasure( measID );
-        lastTick = getMeasureData()->lastTickInMeasure( measID );
+        m_first_tick = getMeasureData()->firstTickInMeasure( measID );
+        m_last_tick  = getMeasureData()->lastTickInMeasure( measID );
     }
 }
 
@@ -52,15 +52,15 @@ bool PrintLayoutMeasure::calculateIfMeasureIsSameAs(PrintLayoutMeasure& checkMea
     
     for (int tref=0; tref<trackRefAmount; tref++)
     {
-        const int my_first_note = trackRef[tref].firstNote;
-        const int my_last_note = trackRef[tref].lastNote;
-        const int his_first_note = checkMeasure.trackRef[tref].firstNote;
-        const int his_last_note = checkMeasure.trackRef[tref].lastNote;
+        const int my_first_note  = trackRef[tref].getFirstNote();
+        const int my_last_note   = trackRef[tref].getLastNote();
+        const int his_first_note = checkMeasure.trackRef[tref].getFirstNote();
+        const int his_last_note  = checkMeasure.trackRef[tref].getLastNote();
         
         assert( trackRef.size() == checkMeasure.trackRef.size() );
         assertExpr( tref,<,(int)trackRef.size() );
-        assert( trackRef[tref].track == checkMeasure.trackRef[tref].track );
-        Track* track = trackRef[tref].track;
+        assert( trackRef[tref].getTrack() == checkMeasure.trackRef[tref].getTrack() );
+        Track* track = trackRef[tref].getTrack();
         
         // if these 2 measures don't even have the same number of notes, they're definitely not the same
         if ( (his_last_note - his_first_note + 1) != (my_last_note - my_first_note + 1) )
@@ -102,16 +102,16 @@ bool PrintLayoutMeasure::calculateIfMeasureIsSameAs(PrintLayoutMeasure& checkMea
                 if (noteMatched_other[checkNote_other]) continue; // this note was already matched
                 
                 // check start tick matches
-                if (track->getNoteStartInMidiTicks(his_first_note + checkNote_other) - checkMeasure.firstTick !=
-                   track->getNoteStartInMidiTicks(my_first_note + checkNote_this) - firstTick)
+                if (track->getNoteStartInMidiTicks(his_first_note + checkNote_other) - checkMeasure.getFirstTick() !=
+                   track->getNoteStartInMidiTicks(my_first_note + checkNote_this) - getFirstTick())
                 {
                     // they dont match, check the next one
                     continue;
                 }
                 
                 // check end tick matches
-                if (track->getNoteEndInMidiTicks(his_first_note + checkNote_other) - checkMeasure.firstTick !=
-                   track->getNoteEndInMidiTicks(my_first_note + checkNote_this) - firstTick)
+                if (track->getNoteEndInMidiTicks(his_first_note + checkNote_other) - checkMeasure.getFirstTick() !=
+                   track->getNoteEndInMidiTicks(my_first_note + checkNote_this) - getFirstTick())
                 {
                     // they dont match, check the next one
                     continue;
@@ -152,28 +152,26 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
 {
     const int noteAmount = track->getNoteAmount();
     
-    MeasureTrackReference* newTrackRef = new MeasureTrackReference();
-    newTrackRef->track = track;
+    //MeasureTrackReference* newTrackRef = new MeasureTrackReference();
+    //newTrackRef->track = track;
     
     // if firstNote is -1, it means all notes were processed. just add the track ref without searching for notes
     if (firstNote == -1)
     {
-        newTrackRef->firstNote = -1;
-        newTrackRef->lastNote = -1;
-        trackRef.push_back( newTrackRef );
+        trackRef.push_back( new MeasureTrackReference(track, -1, -1) );
         return -1;
     }
     
-    // first note in measure
-    newTrackRef->firstNote = firstNote;
-    if (firstNote >= noteAmount) newTrackRef->firstNote = noteAmount-1;
+    // FIXME: why is this necessary?
+    int effectiveFirstNote = firstNote;
+    if (effectiveFirstNote >= noteAmount) effectiveFirstNote = noteAmount-1;
     
     // find what the first, last and shortest note in current measure
-    int lastNote = firstNote;
+    int lastNote = effectiveFirstNote;
     int last_note_end = -1, last_note_start = -1;
     
     bool measure_empty = true;
-    for(int note=newTrackRef->firstNote; note<noteAmount; note++)
+    for (int note = effectiveFirstNote; note<noteAmount; note++)
     {
         const int start_tick = track->getNoteStartInMidiTicks(note);
         const int end_tick = track->getNoteEndInMidiTicks(note);
@@ -182,7 +180,7 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
         if (currentNoteDuration <= 0)  continue; // skip malformed notes if any
         
         // stop when we're at next measure
-        if ( start_tick >= lastTick ) break;
+        if ( start_tick >= m_last_tick ) break;
         
         // find last note - if many notes end at the same time, keep the one that started last
         if (start_tick > last_note_start || end_tick > last_note_start ||
@@ -198,22 +196,24 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
         // store duration if it's the shortest yet (but ignore dead/instant-hit notes)
         const float relativeLength = (end_tick - start_tick) / (float)(getMeasureData()->beatLengthInTicks()*4);
         if ( relativeLength < 1.0/32.0 ) continue;
-        if ( currentNoteDuration < shortestDuration or shortestDuration==-1) shortestDuration = currentNoteDuration;
+        
+        if ( currentNoteDuration < m_shortest_duration or m_shortest_duration == -1)
+        {
+            m_shortest_duration = currentNoteDuration;
+        }
     }
     assertExpr(lastNote,>,-1);
     assertExpr(lastNote,<,noteAmount);
     
     if (measure_empty)
     {
-        newTrackRef->firstNote = -1;
-        newTrackRef->lastNote = -1;
+        trackRef.push_back( new MeasureTrackReference(track, -1, -1) );
     }
-    else newTrackRef->lastNote = lastNote; // ID of the last note in this measure
+    else
+    {
+        trackRef.push_back( new MeasureTrackReference(track, effectiveFirstNote, lastNote) );
+    }
     
-    //std::cout << "measure " << id << " empty=" << measure_empty << " from=" << newTrackRef->firstNote << " to=" << newTrackRef->lastNote << std::endl;
-    
-    // std::cout << "--- measure " << (id+1) << " ranges from note  "<< newTrackRef->firstNote << " to " << newTrackRef->lastNote << std::endl;
-    trackRef.push_back( newTrackRef );
     
     // check if all notes were used
     if (lastNote == noteAmount-1) return -1;
@@ -231,13 +231,15 @@ bool PrintLayoutMeasure::findConsecutiveRepetition(ptr_vector<PrintLayoutMeasure
 {
     
     // check if it works with first measure occurence of similar measures
-    if (id+1<measureAmount and measures[id+1].firstSimilarMeasure == measures[id].firstSimilarMeasure+1 )
+    if (m_measure_id+1<measureAmount and
+        measures[m_measure_id+1].firstSimilarMeasure == measures[m_measure_id].firstSimilarMeasure+1 )
     {
         int amount = 0;
         
         for(int iter=1; iter<measureAmount; iter++)
         {
-            if (id+iter<measureAmount and measures[id+iter].firstSimilarMeasure == measures[id].firstSimilarMeasure+iter )
+            if (m_measure_id+iter<measureAmount and
+                measures[m_measure_id+iter].firstSimilarMeasure == measures[m_measure_id].firstSimilarMeasure+iter )
             {
                 amount++;
             }
@@ -246,16 +248,17 @@ bool PrintLayoutMeasure::findConsecutiveRepetition(ptr_vector<PrintLayoutMeasure
                 break;
             }
         }//next
-        firstMeasureThatRepeats = id;
-        lastMeasureThatRepeats = id + amount;
-        firstMeasureRepeated = measures[id].firstSimilarMeasure;
-        lastMeasureRepeated = measures[id].firstSimilarMeasure + amount;
+        
+        firstMeasureThatRepeats = m_measure_id;
+        lastMeasureThatRepeats  = m_measure_id + amount;
+        firstMeasureRepeated    = measures[m_measure_id].firstSimilarMeasure;
+        lastMeasureRepeated     = measures[m_measure_id].firstSimilarMeasure + amount;
         return true;
     }
     // check if it works with a later occurence of a similar measure
     else
     {
-        const int first_measure =  measures[id].firstSimilarMeasure;
+        const int first_measure =  measures[m_measure_id].firstSimilarMeasure;
         const int amount = measures[ first_measure ].similarMeasuresFoundLater.size();
         for(int laterOccurence=0; laterOccurence<amount; laterOccurence++)
         {
@@ -270,17 +273,17 @@ bool PrintLayoutMeasure::findConsecutiveRepetition(ptr_vector<PrintLayoutMeasure
             
             for(int iter=0; iter</*id-checkFromMeasure*/measureAmount; iter++)
             {
-                if (not(checkFromMeasure+iter<id and
-                        checkFromMeasure+iter<measureAmount and id+iter<measureAmount)) continue;
+                if (not(checkFromMeasure+iter < m_measure_id and
+                        checkFromMeasure+iter < measureAmount and m_measure_id+iter < measureAmount)) continue;
                 
                 // check if they are identical
                 
                 if ( // they are identical because they both are repetitions of the same one
-                    (measures[checkFromMeasure+iter].firstSimilarMeasure == measures[id+iter].firstSimilarMeasure and
+                    (measures[checkFromMeasure+iter].firstSimilarMeasure == measures[m_measure_id+iter].firstSimilarMeasure and
                      measures[checkFromMeasure+iter].firstSimilarMeasure != -1)
                     or
                     // they are identical because the second is a repetition of the first
-                    (checkFromMeasure+iter == measures[id+iter].firstSimilarMeasure)
+                    (checkFromMeasure+iter == measures[m_measure_id+iter].firstSimilarMeasure)
                     )
                 {
                     //std::cout << "            //" << (checkFromMeasure+iter+1) << " is same as " << (id+iter+1) << std::endl;
@@ -293,13 +296,16 @@ bool PrintLayoutMeasure::findConsecutiveRepetition(ptr_vector<PrintLayoutMeasure
                 }
             }//next
              //std::cout << "        > amount=" << amount << std::endl;
+            
             if (amount < getRepetitionMinimalLength()) continue;
             //std::cout << "measure " << id+1  << " is a level 2 repetition" << std::endl;
-            firstMeasureThatRepeats = id;
-            lastMeasureThatRepeats = id + amount-1;
-            firstMeasureRepeated = checkFromMeasure;
-            lastMeasureRepeated = checkFromMeasure + amount-1;
+            
+            firstMeasureThatRepeats = m_measure_id;
+            lastMeasureThatRepeats  = m_measure_id + amount-1;
+            firstMeasureRepeated    = checkFromMeasure;
+            lastMeasureRepeated     = checkFromMeasure + amount-1;
             return true;
+            
             //}
         }//next
         

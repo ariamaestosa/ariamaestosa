@@ -227,7 +227,31 @@ namespace AriaMaestosa
         void removeMarkedNotes();
         
         int getNoteString(const int id); // for guitar editor
-        int getNoteFret(const int id); // for guitar editor
+        
+        /** 
+         * @param id ID of the note to get the fret number of
+         * @return   The fret number of a specified note.
+         *
+         * For guitar editor. Regular 'getNoteFret' method might decide to calculate
+         * the fret on the fly if it wasn't already available (will happen e.g. when
+         * switching from keyboard editor to guitar editor). However, if you know that
+         * the fret is already calculated (e.g. when printing) and need constness, you
+         * can use 'getNoteFretConst'.
+         */
+        int getNoteFret(const int id);
+        
+        /** 
+          * @param id ID of the note to get the fret number of
+          * @return   The fret number of a specified note.
+          *
+          * For guitar editor. Regular 'getNoteFret' method might decide to calculate
+          * the fret on the fly if it wasn't already available (will happen e.g. when
+          * switching from keyboard editor to guitar editor). However, if you know that
+          * the fret is already calculated (e.g. when printing) and need constness, you
+          * can use 'getNoteFretConst'.
+          */
+        int getNoteFretConst(const int id) const; 
+
         void prepareNotesForGuitarEditor();
         
         /**

@@ -147,7 +147,7 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
         }
 
         // ----- empty measure -----
-        if (measures[measure].shortestDuration==-1)
+        if (measures[measure].isEmpty())
         {
 #ifdef _verbose
             std::cout << "    measure " << (measure+1) << " is empty\n";
@@ -161,12 +161,12 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
             const int track_ref_amount = measures[measure].trackRef.size();
             for (int t=0; t<track_ref_amount; t++)
             {
-                Track* track = measures[measure].trackRef[t].track;
+                Track* track = measures[measure].trackRef[t].getTrack();
                 const int noteAmount = track->getNoteAmount();
                 for (int n=0; n<noteAmount; n++)
                 {
-                    if (track->getNoteStartInMidiTicks(n) < measures[measure].firstTick and
-                        track->getNoteEndInMidiTicks(n)  > measures[measure].firstTick)
+                    if (track->getNoteStartInMidiTicks(n) < measures[measure].getFirstTick() and
+                        track->getNoteEndInMidiTicks(n)   > measures[measure].getFirstTick())
                     {
                         layoutElements[layoutElements.size()-1].width_in_print_units = LAYOUT_ELEMENT_MIN_WIDTH*2;
                         t = 99; // quick hack to totally abort both loops
@@ -427,7 +427,7 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
             {
                 current_height = line_height;
                 layoutPages.push_back( new LayoutPage() );
-                layoutPages[current_page].layoutLines[currentLine].last_of_page = true;
+                layoutPages[current_page].layoutLines[currentLine].m_last_of_page = true;
                 current_page++;
             }
 

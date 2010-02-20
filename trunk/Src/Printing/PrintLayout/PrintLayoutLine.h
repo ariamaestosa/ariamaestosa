@@ -92,23 +92,23 @@ namespace AriaMaestosa
     {
         friend class AriaPrintable;
         
-        ptr_vector<LineTrackRef> trackRenderInfo;
-        ptr_vector<PrintLayoutMeasure, REF> measures;
+        ptr_vector<LineTrackRef> m_track_render_info;
+        ptr_vector<PrintLayoutMeasure, REF> m_measures;
         
-        PrintableSequence* printable;
+        PrintableSequence* m_printable;
         
-        std::vector<LayoutElement> layoutElements;
+        std::vector<LayoutElement> m_layout_elements;
 
     public:
         /** used to store what percentage of this line's height this track should take.
           * e.g. a score with F+G clefs will need more space than a 4-string bass tab
           * so vertical space must not be divided equally
           */
-        std::vector<short int> height_percent;
+        std::vector<short int> m_height_percent;
         
         void addLayoutElement( const LayoutElement& newElem )
         {
-            layoutElements.push_back( newElem );
+            m_layout_elements.push_back( newElem );
         }
         
         /** Initially NULL; will be set when PrintLayoutNumeric actually calculates the coords
@@ -118,20 +118,20 @@ namespace AriaMaestosa
         
         LayoutLine(PrintableSequence* parent, ptr_vector<PrintLayoutMeasure, REF>& measures);
         
-        int level_height;
+        int m_level_height;
         
-        bool last_of_page;
+        bool m_last_of_page;
         
         int getTrackAmount() const;
         LineTrackRef& getLineTrackRef(const int id);
         
-        int getLayoutElementCount() const { return layoutElements.size(); }
-        LayoutElement& getLayoutElement(const int id) { return layoutElements[id]; }
+        int getLayoutElementCount() const { return m_layout_elements.size(); }
+        LayoutElement& getLayoutElement(const int id) { return m_layout_elements[id]; }
         
         int getFirstNoteInElement(const int trackID, const int layoutElementID);
-        int getLastNoteInElement(const int trackID, const int layoutElementID);
+        int getLastNoteInElement (const int trackID, const int layoutElementID);
         int getFirstNoteInElement(const int trackID, LayoutElement* layoutElement);
-        int getLastNoteInElement(const int trackID, LayoutElement* layoutElement);
+        int getLastNoteInElement (const int trackID, LayoutElement* layoutElement);
         
         int calculateHeight();
         

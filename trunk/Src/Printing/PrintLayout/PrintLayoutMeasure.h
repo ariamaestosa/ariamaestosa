@@ -28,7 +28,7 @@ namespace AriaMaestosa
     class PrintLayoutMeasure;
     class Track;
 
-    extern const PrintLayoutMeasure nullMeasure;
+    extern const PrintLayoutMeasure NULL_MEASURE;
 
 
     /**
@@ -40,14 +40,39 @@ namespace AriaMaestosa
       */
     class MeasureTrackReference
     {
+        Track* m_track;
+        int m_first_note, m_last_note;
     public:
-        Track* track;
-        int firstNote, lastNote;
+        
+        MeasureTrackReference (Track* parent, const int firstNote, const int lastNote)
+        {
+            m_track      = parent;
+            m_first_note = firstNote;
+            m_last_note  = lastNote;
+        }
+                                                                        
+        const Track* getConstTrack() const { return m_track;      }
+        Track*       getTrack()            { return m_track;      }
+        int          getFirstNote() const  { return m_first_note; }
+        int          getLastNote()  const  { return m_last_note;  }
+
     };
 
     class PrintLayoutMeasure
     {
+        /** first and last tick in this measure */
+        int m_first_tick, m_last_tick;
+        
+        /** shortest note in the measure (will be used to determine "zoom" on measure. e.g. a measure with very
+         * short notes takes more room).
+         */
+        int m_shortest_duration;
+        
+        /** ID of the measure */
+        int m_measure_id;
+        
     public:
+        
         PrintLayoutMeasure(const int measID);
         
         RelativePlacementManager ticks_placement_manager;
@@ -58,21 +83,19 @@ namespace AriaMaestosa
           */
         int addTrackReference(const int firstNote, Track* track);
         
+        int  getFirstTick() const { return m_first_tick;              }
+        int  getLastTick () const { return m_last_tick;               }
+
+        bool isEmpty     () const { return m_shortest_duration == -1; }
+        
+        int  getMeasureID() const { return m_measure_id;              }
+        
+        bool operator==  (const PrintLayoutMeasure& meas) const { return meas.m_measure_id == m_measure_id; }
+        
         /** used when we print more than one track each track we print will have one entry here
           * for each printed measure
           */
         ptr_vector<MeasureTrackReference> trackRef;
-        
-        /** first and last tick in this measure */
-        int firstTick, lastTick;
-
-        /** shortest note in the measure (will be used to determine "zoom" on measure. e.g. a measure with very
-          * short notes takes more room).
-          */
-        int shortestDuration;
-        
-        /** ID of the measure */
-        int id;
         
         // -------- Experimental : automatic repetition detection --------      
         /** if this measure is later repeated and is not a repetition of a previous measure,

@@ -537,17 +537,18 @@ namespace AriaMaestosa
     // -------------------------------------------------------------------------------------------
 #define VERBOSE 0
     
-    void ScorePrintable::addUsedTicks(const PrintLayoutMeasure& measure, const int trackID, const MeasureTrackReference& trackRef,
+    void ScorePrintable::addUsedTicks(const PrintLayoutMeasure& measure, const int trackID,
+                                      const MeasureTrackReference& trackRef,
                                       RelativePlacementManager& ticks_relative_position)
     {
-        const int measureFromTick = measure.firstTick;
-        const int measureToTick = measure.lastTick;
+        const int measureFromTick = measure.getFirstTick();
+        const int measureToTick   = measure.getLastTick();
         
 #if VERBOSE
         std::cout << "\naddingTicks(measure " << (measure.id+1) << ", from " << measureFromTick << ", to " << measureToTick << "\n{\n";
 #endif
         
-        Track* track = trackRef.track;
+        const Track* track = trackRef.getConstTrack();
         ScoreEditor* scoreEditor = track->graphics->scoreEditor;
         
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
@@ -1126,7 +1127,8 @@ namespace AriaMaestosa
                                    const int x0, const int y0, const int x1, const int y1,
                                    bool show_measure_number)
     {
-        std::cout << "\n    analyseAndDrawScore " << (f_clef ? "F" : "G") << "\n\n";
+        std::cout << "==========================\n    analyseAndDrawScore " << (f_clef ? "F" : "G")
+                  << "\n==========================\n\n";
         
         ScoreEditor* scoreEditor = track->graphics->scoreEditor;
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
@@ -1318,10 +1320,17 @@ namespace AriaMaestosa
             std::cout << " == rendering note heads ==\n";
             for (int i=0; i<noteAmount; i++)
             {
+                std::cout << "Checking note at " << analyser.noteRenderInfo[i].tick
+                          << " - beat " <<  analyser.noteRenderInfo[i].tick/960
+                          << " in measure " << analyser.noteRenderInfo[i].measureBegin+1 << std::endl;
+                
                 if (analyser.noteRenderInfo[i].tick < fromTick) continue;
-                if (analyser.noteRenderInfo[i].tick >= toTick) break;
+                if (analyser.noteRenderInfo[i].tick >= toTick)  break;
 
-                //std::cout << "Drawing note at " << analyser.noteRenderInfo[i].tick << " - beat " <<  analyser.noteRenderInfo[i].tick/960 << std::endl;         
+                std::cout << "    Drawing note at " << analyser.noteRenderInfo[i].tick
+                          << " - beat " <<  analyser.noteRenderInfo[i].tick/960
+                          << " in measure " << analyser.noteRenderInfo[i].measureBegin+1 << std::endl; 
+                
                 NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
 
                 const Range<int> noteX = x_converter->tickToX(noteRenderInfo.tick);

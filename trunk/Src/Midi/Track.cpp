@@ -603,10 +603,23 @@ int Track::getNoteFret(const int id)
     assertExpr(id,<,notes.size());
 
     //if (notes[id].tuning == NULL) notes[id].setTuning(&graphics->guitarEditor->tuning); // make sure the note knows the tuning
+    
+    //FIXME: I think Note::getFret also does this check, so we're duplicating it here...
     if (notes[id].getFret() == -1) notes[id].findStringAndFretFromNote();
 
     return notes[id].getFret();
 }
+
+// -------------------------------------------------------------------------------------------------------
+
+int Track::getNoteFretConst(const int id) const
+{
+    assertExpr(id,>=,0);
+    assertExpr(id,<,notes.size());
+    
+    return notes[id].getFretConst();
+}
+
 
 // -------------------------------------------------------------------------------------------------------
     

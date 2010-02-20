@@ -34,16 +34,18 @@ int LineTrackRef::getLastNote() const
     
     for(int el=elements-1; el>=0; el--)
     { // start searching from last measure in this line
+        
         PrintLayoutMeasure& current_meas = parent->getMeasureForElement(el);
         for(int i=0; i<track_amount; i++)
         {
             if (current_meas.trackRef.size() > 0 && // FIXME - find why it's sometimes 0
-               current_meas.trackRef[i].track == track &&
-               current_meas.trackRef[i].lastNote != -1)
+               current_meas.trackRef[i].getTrack() == track &&
+               current_meas.trackRef[i].getLastNote() != -1)
             {
-                return current_meas.trackRef[i].lastNote;
+                return current_meas.trackRef[i].getLastNote();
             }
         }
+        
     }
     return -1; // empty line
 }
@@ -64,9 +66,11 @@ int LineTrackRef::getFirstNote() const
         for(int i=0; i<track_amount; i++)
         {
             if (current_meas.trackRef.size() > 0 && // FIXME - find why it's sometimes empty
-               current_meas.trackRef[i].track == track &&
-               current_meas.trackRef[i].firstNote != -1)
-                return current_meas.trackRef[i].firstNote;
+                current_meas.trackRef[i].getTrack() == track &&
+                current_meas.trackRef[i].getFirstNote() != -1)
+            {
+                return current_meas.trackRef[i].getFirstNote();
+            }
         }
     }
     return -1; // empty line
@@ -77,52 +81,51 @@ int LineTrackRef::getFirstNote() const
 
 int LineTrackRef::getFirstNoteInElement(const int layoutElementID)
 {
-    return parent->getMeasureForElement(layoutElementID).trackRef[trackID].firstNote;
+    return parent->getMeasureForElement(layoutElementID).trackRef[trackID].getFirstNote();
 }
 
 // -------------------------------------------------------------------------------------------
 
 int LineTrackRef::getLastNoteInElement(const int layoutElementID)
 {
-    std::cout << "last note in element " << layoutElementID << " of track " << trackID << " is " <<
-    parent->getMeasureForElement(layoutElementID).trackRef[trackID].lastNote << " from measure " <<
-    parent->getMeasureForElement(layoutElementID).id << std::endl;
-    return parent->getMeasureForElement(layoutElementID).trackRef[trackID].lastNote;
+    std::cout << "last note in element " << layoutElementID << " of track " << trackID << " is "
+        << parent->getMeasureForElement(layoutElementID).trackRef[trackID].getLastNote()
+        << " from measure " << parent->getMeasureForElement(layoutElementID).getMeasureID() << std::endl;
+    
+    return parent->getMeasureForElement(layoutElementID).trackRef[trackID].getLastNote();
 }
 
 // -------------------------------------------------------------------------------------------
 
 int LineTrackRef::getFirstNoteInElement(LayoutElement* layoutElement)
 {
-    return parent->getMeasureForElement(layoutElement).trackRef[trackID].firstNote;
+    return parent->getMeasureForElement(layoutElement).trackRef[trackID].getFirstNote();
 }
 
 // -------------------------------------------------------------------------------------------
 
 int LineTrackRef::getLastNoteInElement(LayoutElement* layoutElement)
 {
-    return parent->getMeasureForElement(layoutElement).trackRef[trackID].lastNote;
+    return parent->getMeasureForElement(layoutElement).trackRef[trackID].getLastNote();
 }
 
 // -------------------------------------------------------------------------------------------
 // -------------------------------------------------------------------------------------------
 #pragma mark -
 #pragma mark LayoutLine
-// -------------------------------------------------------------------------------------------
-// -------------------------------------------------------------------------------------------
 
 LayoutLine::LayoutLine(PrintableSequence* parent, ptr_vector<PrintLayoutMeasure, REF>& measures)
 {
-    this->printable = parent;
-    this->measures = measures;
-    last_of_page = false;
+    m_printable = parent;
+    m_measures = measures;
+    m_last_of_page = false;
     
     for (int trackID=0; trackID<parent->track_amount; trackID++)
     {
         LineTrackRef* newTrack = new LineTrackRef(this, trackID);
-        newTrack->track = printable->tracks.get(trackID);
+        newTrack->track = m_printable->tracks.get(trackID);
         
-        trackRenderInfo.push_back(newTrack);
+        m_track_render_info.push_back(newTrack);
     }
 }
 
@@ -130,54 +133,55 @@ LayoutLine::LayoutLine(PrintableSequence* parent, ptr_vector<PrintLayoutMeasure,
 
 int LayoutLine::getTrackAmount() const
 {
-    return printable->tracks.size();
+    return m_printable->tracks.size();
 }
 
 // -------------------------------------------------------------------------------------------
 
 int LayoutLine::getFirstNoteInElement(const int trackID, const int layoutElementID)
 {
-    return getMeasureForElement(layoutElementID).trackRef[trackID].firstNote;
+    return getMeasureForElement(layoutElementID).trackRef[trackID].getFirstNote();
 }
 
 // -------------------------------------------------------------------------------------------
 
 int LayoutLine::getLastNoteInElement(const int trackID, const int layoutElementID)
 {
-    std::cout << "last note in element " << layoutElementID << " of track " << trackID << " is " <<
-    getMeasureForElement(layoutElementID).trackRef[trackID].lastNote << " from measure " <<
-    getMeasureForElement(layoutElementID).id << std::endl;
-    return getMeasureForElement(layoutElementID).trackRef[trackID].lastNote;
+    std::cout << "last note in element " << layoutElementID << " of track " << trackID << " is "
+              << getMeasureForElement(layoutElementID).trackRef[trackID].getLastNote()
+              << " from measure " << getMeasureForElement(layoutElementID).getMeasureID() << std::endl;
+    
+    return getMeasureForElement(layoutElementID).trackRef[trackID].getLastNote();
 }
 
 // -------------------------------------------------------------------------------------------
 
 int LayoutLine::getFirstNoteInElement(const int trackID, LayoutElement* layoutElement)
 {
-    return getMeasureForElement(layoutElement).trackRef[trackID].firstNote;
+    return getMeasureForElement(layoutElement).trackRef[trackID].getFirstNote();
 }
 
 // -------------------------------------------------------------------------------------------
 
 int LayoutLine::getLastNoteInElement(const int trackID, LayoutElement* layoutElement)
 {
-    return getMeasureForElement(layoutElement).trackRef[trackID].lastNote;
+    return getMeasureForElement(layoutElement).trackRef[trackID].getLastNote();
 }
 
 // -------------------------------------------------------------------------------------------
 
 PrintLayoutMeasure& LayoutLine::getMeasureForElement(const int layoutElementID) const
 {
-    const int measID = layoutElements[layoutElementID].measure;
-    if (measID == -1) return (PrintLayoutMeasure&)nullMeasure;
-    return measures.getRef(measID);
+    const int measID = m_layout_elements[layoutElementID].measure;
+    if (measID == -1) return (PrintLayoutMeasure&)NULL_MEASURE;
+    return m_measures.getRef(measID);
 }
 
 // -------------------------------------------------------------------------------------------
 
 PrintLayoutMeasure& LayoutLine::getMeasureForElement(LayoutElement* layoutElement)
 {
-    return measures[layoutElement->measure];
+    return m_measures[layoutElement->measure];
 }
 
 // -------------------------------------------------------------------------------------------
@@ -185,17 +189,17 @@ PrintLayoutMeasure& LayoutLine::getMeasureForElement(LayoutElement* layoutElemen
 LineTrackRef& LayoutLine::getLineTrackRef(const int trackID)
 {
     assertExpr(trackID,>=,0);
-    assertExpr(trackID,<,(int)trackRenderInfo.size());
-    return trackRenderInfo[trackID];
+    assertExpr(trackID,<,(int)m_track_render_info.size());
+    return m_track_render_info[trackID];
 }
 
 // -------------------------------------------------------------------------------------------
 
 int LayoutLine::getLastMeasure() const
 {
-    for(int n=layoutElements.size()-1; n>=0; n--)
+    for (int n=m_layout_elements.size()-1; n>=0; n--)
     {
-        if ( layoutElements[n].measure != -1) return layoutElements[n].measure;
+        if ( m_layout_elements[n].measure != -1) return m_layout_elements[n].measure;
     }
     return -1;
 }
@@ -204,10 +208,10 @@ int LayoutLine::getLastMeasure() const
 
 int LayoutLine::getFirstMeasure() const
 {
-    const int amount = layoutElements.size();
-    for(int n=0; n<amount; n++)
+    const int amount = m_layout_elements.size();
+    for (int n=0; n<amount; n++)
     {
-        if ( layoutElements[n].measure != -1) return layoutElements[n].measure;
+        if ( m_layout_elements[n].measure != -1) return m_layout_elements[n].measure;
     }
     return -1;
 }
@@ -216,32 +220,32 @@ int LayoutLine::getFirstMeasure() const
 
 int LayoutLine::calculateHeight()
 {
-    level_height = 0;
+    m_level_height = 0;
     
     std::vector<int> heights;
     
     /* calculate the total height of this line (which many include multiple tracks */
     std::cout << "---- line ----" << std::endl;
     const int trackAmount = getTrackAmount();
-    for(int n=0; n<trackAmount; n++)
+    for (int n=0; n<trackAmount; n++)
     {
-        const int this_height = printable->editorPrintables.get(n)->calculateHeight(n, trackRenderInfo[n], *this);
+        const int this_height = m_printable->editorPrintables.get(n)->calculateHeight(n, m_track_render_info[n], *this);
         heights.push_back(this_height);
-        level_height += this_height;
+        m_level_height += this_height;
         std::cout << this_height << "-high" << std::endl;
     }
     
     /* distribute the vertical space between tracks (some track need more vertical space than others) */
-    for(int n=0; n<trackAmount; n++)
+    for (int n=0; n<trackAmount; n++)
     {
-        height_percent.push_back( (int)round( (float)heights[n] * 100.0f / (float)level_height ) );
-        std::cout << height_percent[n] << "%" << std::endl;
+        m_height_percent.push_back( (int)round( (float)heights[n] * 100.0f / (float)m_level_height ) );
+        std::cout << m_height_percent[n] << "%" << std::endl;
     }
     
     // if we're the last of the page, we need less space cause we don't
     // need to leave empty space under
-    if (last_of_page) level_height -= 13;
+    if (m_last_of_page) m_level_height -= 13;
     
-    return level_height;
+    return m_level_height;
 }
     
