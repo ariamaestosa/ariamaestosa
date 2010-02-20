@@ -1,7 +1,8 @@
 1.2b9
 - Printing Improvements
     - Symbols are now given an absolute minimum size, which fixes several printing glitches
-    - Various fixes and tweaks
+    - Better vertical space allocation, so now tracks will no more overlap vertically
+    - Various other improvements, fixes and tweaks
     - Intensive code cleanup and documentation
 - Each tab now has its own close button
 - More code cleanup
