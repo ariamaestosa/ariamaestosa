@@ -43,7 +43,11 @@ namespace AriaMaestosa
             std::cout << "\n============\nprinting page " << pageNum << "\n==============" << std::endl;
             
             wxDC* ptr = GetDC();
-            if (ptr==NULL or !ptr->IsOk()){ std::cerr << "DC is not Ok, interrupting printing" << std::endl; return false; }
+            if (ptr==NULL or !ptr->IsOk())
+            {
+                std::cerr << "DC is not Ok, interrupting printing" << std::endl;
+                return false;
+            }
             wxDC& dc = *ptr;
             
             
@@ -54,7 +58,9 @@ namespace AriaMaestosa
             const int width = bounds.width;
             const int height = bounds.height;
             
-            std::cout << "printable area : (" << x0 << ", " << y0 << ") to (" << (x0 + width) << ", " << (y0 + height) << ")" << std::endl;
+            std::cout << "printable area : (" << x0 << ", " << y0 << ") to ("
+                      << (x0 + width) << ", " << (y0 + height) << ")" << std::endl;
+            
             printCallBack->printPage(pageNum, dc, x0, y0, width, height);
             
             return true;
@@ -129,12 +135,11 @@ namespace AriaMaestosa
             *pageSelFrom = 1;
             *pageSelTo = pageAmount;
         }
+        
         bool HasPage(int pageNum)
         {
-            if (pageNum >= 1 and pageNum <= pageAmount)
-                return true;
-            else
-                return false;
+            if (pageNum >= 1 and pageNum <= pageAmount) return true;
+            else                                        return false;
         }
         
         void OnEndPrinting()
@@ -144,7 +149,7 @@ namespace AriaMaestosa
     
 }
 
-// -----------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
 
 int AriaPrintable::print()
 {
@@ -172,8 +177,8 @@ int AriaPrintable::print()
     //return true;
 }
 
-// -----------------------------------------------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
 
 #if 0
 #pragma mark -
@@ -190,7 +195,7 @@ namespace AriaMaestosa
     }
 }
 
-// -----------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
 
 AriaPrintable::AriaPrintable(PrintableSequence* seq)
 {
@@ -199,12 +204,14 @@ AriaPrintable::AriaPrintable(PrintableSequence* seq)
     INIT_MAGIC_NUMBER();
 }
 
+// -----------------------------------------------------------------------------------------------------------------
+
 AriaPrintable::~AriaPrintable()
 {
     currentPrintable = NULL;
 }
 
-// -----------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
 
 void AriaPrintable::printPage(const int pageNum, wxDC& dc,
                               const int x0, const int y0,
@@ -304,6 +311,6 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     
 }
     
-// -----------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
 
  
