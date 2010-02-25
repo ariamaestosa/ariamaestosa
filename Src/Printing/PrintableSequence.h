@@ -41,10 +41,11 @@ namespace AriaMaestosa
         /** the max number of sharp/flats we'll need to display at header (useful to allocate proper size) */
         int m_max_signs_in_keysig;
 
+        /** A list of all tracks added to be printed. This is vector is parallel to 'm_editor_printables'. */
+        ptr_vector<Track, REF> m_tracks;        
+
     public:
-        
-        ptr_vector<Track, REF> tracks;        
-        
+                
         /**
           * Constructor. Creates an empty printable sequence with the given parent.
           * Initially contains no track. Call 'addTrack' to add tracks to this print job.
@@ -101,17 +102,24 @@ namespace AriaMaestosa
           * @precondition only meaningful if called after all tracks have been added through 'addTrack'
           * @return whether at least one track with guitar view was added
           */
-        bool isGuitarEditorUsed()  const { return m_is_guitar_editor_used; }
+        bool isGuitarEditorUsed () const { return m_is_guitar_editor_used; }
         
         /**
           * @precondition only meaningful if called after all tracks have been added through 'addTrack'
           * @return whether at least one track with score view was added
           */
-        bool isScoreEditorUsed ()  const { return m_is_score_editor_used;  }
+        bool isScoreEditorUsed  () const { return m_is_score_editor_used;  }
         
         /** @return the number of tracks added through 'addTrack' */
-        const int getTrackAmount() const { return tracks.size();           }
+        const int getTrackAmount() const { return m_tracks.size();         }
         
+        /**
+          * Get access to the tracks added for printing. This method returns the tracks added through 'addTrack'.
+          * @param id   ID of the track to get. Must be in range [0 .. getTrackAmount() - 1]
+          * @return     The track
+          */
+        const Track* getTrack(const int id) const { return m_tracks.getConst(id); }
+
         /**
           * Call when it is time to print all lines of a page.
           *

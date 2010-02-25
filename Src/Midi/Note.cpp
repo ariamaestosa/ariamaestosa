@@ -26,8 +26,7 @@
 
 #include <iostream>
 
-namespace AriaMaestosa
-{
+using namespace AriaMaestosa;
 
 Note::Note(GraphicalTrack* parent,
            const int pitchID_arg,
@@ -50,9 +49,14 @@ Note::Note(GraphicalTrack* parent,
 
     preferred_accidental_sign = -1;
 }
+
+// ----------------------------------------------------------------------------------------------------------
+
 Note::~Note()
 {
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 int Note::getString()
 {
@@ -60,17 +64,23 @@ int Note::getString()
     return string;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 int Note::getFret()
 {
     if (fret==-1) findStringAndFretFromNote();
     return fret;
 }
     
+// ----------------------------------------------------------------------------------------------------------
+
 void Note::setFret(int i)
 {
     fret=i;
     findNoteFromStringAndFret();
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void Note::setStringAndFret(int string_arg, int fret_arg)
 {
@@ -79,7 +89,7 @@ void Note::setStringAndFret(int string_arg, int fret_arg)
     findNoteFromStringAndFret();
 }
 
-
+// ----------------------------------------------------------------------------------------------------------
 
 void Note::checkIfStringAndFretMatchNote(const bool fixStringAndFret)
 {
@@ -98,15 +108,18 @@ void Note::checkIfStringAndFretMatchNote(const bool fixStringAndFret)
 
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void Note::setParent(GraphicalTrack* parent)
 {
     gtrack = parent;
 }
 
-/*
- * In guitar editor, changes the number on the fret of a note, by the way changing its pitch. This is mostly called when user hits ctrl + arrows.
- */
-
+// ----------------------------------------------------------------------------------------------------------
+/**
+  * In guitar editor, changes the number on the fret of a note, by the way changing its pitch.
+  * This is mostly called when user hits ctrl + arrows.
+  */
 void Note::shiftFret(const int amount)
 {
 
@@ -127,6 +140,8 @@ void Note::shiftFret(const int amount)
     }
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void Note::shiftString(const int amount)
 {
 
@@ -140,6 +155,8 @@ void Note::shiftString(const int amount)
     fret = (gtrack->guitarEditor->tuning)[string] - pitchID;
 
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void Note::findStringAndFretFromNote()
 {
@@ -156,7 +173,7 @@ void Note::findStringAndFretFromNote()
         return;
     }
 
-    for(int n=0; n<(int)gtrack->guitarEditor->tuning.size(); n++)
+    for (int n=0; n<(int)gtrack->guitarEditor->tuning.size(); n++)
     {
 
         // exact match (note can be played on a string at fret 0)
@@ -182,25 +199,35 @@ void Note::findStringAndFretFromNote()
 
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void Note::findNoteFromStringAndFret()
 {
     pitchID = (gtrack->guitarEditor->tuning)[string] - fret;
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void Note::setSelected(const bool selected)
 {
     Note::selected = selected;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 bool Note::isSelected() const
 {
     return selected;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void Note::setVolume(const int vol)
 {
     volume=vol;
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void Note::resize(const int ticks)
 {
@@ -209,6 +236,8 @@ void Note::resize(const int ticks)
     endTick+=ticks;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void Note::setEnd(const int ticks)
 {
     assertExpr(ticks,>=,0);
@@ -216,7 +245,14 @@ void Note::setEnd(const int ticks)
     endTick = ticks;
 }
 
-// serialization
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+
+#if 0
+#pragma mark -
+#pragma mark Serialization
+#endif
+
 void Note::saveToFile(wxFileOutputStream& fileout)
 {
     writeData( wxT("<note pitch=\"") + to_wxString(pitchID), fileout );
@@ -233,6 +269,8 @@ void Note::saveToFile(wxFileOutputStream& fileout)
     writeData( wxT("\"/>\n"), fileout );
 
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 bool Note::readFromFile(irr::io::IrrXMLReader* xml)
 {
@@ -297,10 +335,7 @@ bool Note::readFromFile(irr::io::IrrXMLReader* xml)
     return true;
 }
 
-/*
- * Requests that note be played.
- * Change will be true if the sound of the note has been changed. This, with user settings, will determine if it is needed to play note or not.
- */
+// ----------------------------------------------------------------------------------------------------------
 
 void Note::play(bool change)
 {
@@ -319,4 +354,4 @@ void Note::play(bool change)
 
 }
 
-}
+

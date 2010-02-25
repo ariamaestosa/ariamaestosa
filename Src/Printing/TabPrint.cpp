@@ -215,8 +215,8 @@ void TablaturePrintable::drawTrack(const int trackID, LineTrackRef& currentTrack
         
         for (int i=firstNote; i<=lastNote; i++)
         {
-            const int string = currentTrack.track->getNoteString(i);
-            const int fret = currentTrack.track->getNoteFret(i);
+            const int string = currentTrack.m_track->getNoteStringConst(i);
+            const int fret   = currentTrack.m_track->getNoteFretConst(i);
             
             if (fret < 0)  dc.SetTextForeground( wxColour(255,0,0) );
             

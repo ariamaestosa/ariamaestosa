@@ -39,8 +39,8 @@ int LineTrackRef::getLastNote() const
         for (int i=0; i<track_amount; i++)
         {
             if (current_meas.getTrackRefAmount() > 0 && // FIXME - find why it's sometimes 0
-                current_meas.getTrackRef(i).getConstTrack() == track &&
-               current_meas.getTrackRef(i).getLastNote() != -1)
+                current_meas.getTrackRef(i).getConstTrack() == m_track &&
+                current_meas.getTrackRef(i).getLastNote() != -1)
             {
                 return current_meas.getTrackRef(i).getLastNote();
             }
@@ -66,7 +66,7 @@ int LineTrackRef::getFirstNote() const
         for (int i=0; i<track_amount; i++)
         {
             if (current_meas.getTrackRefAmount() > 0 && // FIXME - find why it's sometimes empty
-                current_meas.getTrackRef(i).getConstTrack() == track &&
+                current_meas.getTrackRef(i).getConstTrack() == m_track &&
                 current_meas.getTrackRef(i).getFirstNote() != -1)
             {
                 return current_meas.getTrackRef(i).getFirstNote();
@@ -123,8 +123,7 @@ LayoutLine::LayoutLine(PrintableSequence* parent, ptr_vector<PrintLayoutMeasure,
     const int trackAmount = parent->getTrackAmount();
     for (int trackID=0; trackID<trackAmount; trackID++)
     {
-        LineTrackRef* newTrack = new LineTrackRef(this, trackID);
-        newTrack->track = m_printable->tracks.get(trackID);
+        LineTrackRef* newTrack = new LineTrackRef(this, trackID, m_printable->getTrack(trackID));
         
         m_track_render_info.push_back(newTrack);
     }
@@ -134,7 +133,7 @@ LayoutLine::LayoutLine(PrintableSequence* parent, ptr_vector<PrintLayoutMeasure,
 
 int LayoutLine::getTrackAmount() const
 {
-    return m_printable->tracks.size();
+    return m_printable->getTrackAmount();
 }
 
 // -------------------------------------------------------------------------------------------

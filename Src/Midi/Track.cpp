@@ -595,6 +595,7 @@ int Track::getNoteString(const int id)
     return notes[id].getString();
 }
 
+
 // -------------------------------------------------------------------------------------------------------
 
 int Track::getNoteFret(const int id)
@@ -608,6 +609,16 @@ int Track::getNoteFret(const int id)
     if (notes[id].getFret() == -1) notes[id].findStringAndFretFromNote();
 
     return notes[id].getFret();
+}
+
+// -------------------------------------------------------------------------------------------------------
+
+int Track::getNoteStringConst(const int id) const
+{
+    assertExpr(id,>=,0);
+    assertExpr(id,<,notes.size());
+    
+    return notes[id].getStringConst();
 }
 
 // -------------------------------------------------------------------------------------------------------

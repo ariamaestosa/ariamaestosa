@@ -80,8 +80,13 @@ public:
     void findStringAndFretFromNote();
     void findNoteFromStringAndFret();
     void checkIfStringAndFretMatchNote(const bool fixStringAndFret);
-    int getFretConst() const { return fret; }
-    
+    int getFretConst  () const { return fret; }
+    int getStringConst() const { return string; }
+
+    /**
+     * Requests that note be played.
+     * Change will be true if the sound of the note has been changed. This, with user settings, will determine if it is needed to play note or not.
+     */
     void play(bool change);
 
     // serialization

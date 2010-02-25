@@ -150,6 +150,15 @@ public:
 
         return contentsVector[ID];
     }
+    const TYPE* getConst(const int ID) const
+    {
+        assert( MAGIC_NUMBER_OK() );
+        assertExpr(ID,>,-1);
+        assertExpr((unsigned int)ID,<,contentsVector.size());
+        
+        return contentsVector[ID];
+    }
+    
     TYPE& getRef(const int ID) const
     {
         assert( MAGIC_NUMBER_OK() );

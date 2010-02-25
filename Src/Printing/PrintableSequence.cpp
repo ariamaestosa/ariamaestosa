@@ -48,8 +48,7 @@ bool PrintableSequence::addTrack(Track* track, EditorType mode)
         std::cerr << "PrintableSequence::addTrack : mode " << mode << " not supported for printing" << std::endl;
         return false;
     }
-    tracks.push_back(track);
-    //track_amount = tracks.size();
+    m_tracks.push_back(track);
     return true;
 }
 
@@ -58,8 +57,8 @@ bool PrintableSequence::addTrack(Track* track, EditorType mode)
 void PrintableSequence::calculateLayout(bool checkRepetitions)
 {
     m_abstract_layout_manager = new PrintLayoutAbstract(this, layoutPages /* out */);
-    m_abstract_layout_manager->generateMeasures(tracks);
-    m_abstract_layout_manager->calculateLayoutElements(tracks, checkRepetitions);
+    m_abstract_layout_manager->generateMeasures(m_tracks);
+    m_abstract_layout_manager->calculateLayoutElements(m_tracks, checkRepetitions);
     
     // prepare it for when we're ready to print
     m_numeric_layout_manager = new PrintLayoutNumeric();
@@ -161,7 +160,9 @@ wxString PrintableSequence::getTitle() const
 {
     wxString song_title = m_sequence->suggestTitle();
     wxString track_title;
-    if (tracks.size()==1) tracks[0].getName();
+    
+    //FIXME: what's that line for??
+    if (m_tracks.size()==1) m_tracks[0].getName();
     
     wxString final_title;
     
