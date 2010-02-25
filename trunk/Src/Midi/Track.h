@@ -228,11 +228,33 @@ namespace AriaMaestosa
         void markNoteToBeRemoved(const int id);
         void removeMarkedNotes();
         
-        int getNoteString(const int id); // for guitar editor
+        /** 
+         * @param id ID of the note to get the string of
+         * @return   The string number of the specified note.
+         *
+         * For guitar editor. Regular 'getNoteString' method might decide to calculate
+         * the string on the fly if it wasn't already available (will happen e.g. when
+         * switching from keyboard editor to guitar editor). However, if you know that
+         * the string is already calculated (e.g. when printing) and need constness, you
+         * can use 'getNoteStringConst'.
+         */
+        int getNoteString(const int id);
         
         /** 
+         * @param id ID of the note to get the string of
+         * @return   The string number of the specified note.
+         *
+         * For guitar editor. Regular 'getNoteString' method might decide to calculate
+         * the string on the fly if it wasn't already available (will happen e.g. when
+         * switching from keyboard editor to guitar editor). However, if you know that
+         * the string is already calculated (e.g. when printing) and need constness, you
+         * can use 'getNoteStringConst'.
+         */
+        int getNoteStringConst(const int id) const;
+
+        /** 
          * @param id ID of the note to get the fret number of
-         * @return   The fret number of a specified note.
+         * @return   The fret number of the specified note.
          *
          * For guitar editor. Regular 'getNoteFret' method might decide to calculate
          * the fret on the fly if it wasn't already available (will happen e.g. when
@@ -244,7 +266,7 @@ namespace AriaMaestosa
         
         /** 
           * @param id ID of the note to get the fret number of
-          * @return   The fret number of a specified note.
+          * @return   The fret number of the specified note.
           *
           * For guitar editor. Regular 'getNoteFret' method might decide to calculate
           * the fret on the fly if it wasn't already available (will happen e.g. when

@@ -727,7 +727,7 @@ namespace AriaMaestosa
         
         if (g_clef)
         {
-            analyseAndDrawScore(false /*G*/, *g_clef_analyser, currentLine, currentTrack.track, dc,
+            analyseAndDrawScore(false /*G*/, *g_clef_analyser, currentLine, currentTrack.m_track, dc,
                       abs(scoreData->extra_lines_above_g_score), abs(scoreData->extra_lines_under_g_score),
                       trackCoords->x0, g_clef_y_from, trackCoords->x1, g_clef_y_to,
                       currentTrack.show_measure_number);
@@ -735,7 +735,7 @@ namespace AriaMaestosa
         
         if (f_clef)
         {
-            analyseAndDrawScore(true /*F*/, *f_clef_analyser, currentLine, currentTrack.track, dc,
+            analyseAndDrawScore(true /*F*/, *f_clef_analyser, currentLine, currentTrack.m_track, dc,
                       abs(scoreData->extra_lines_above_f_score), abs(scoreData->extra_lines_under_f_score),
                       trackCoords->x0, f_clef_y_from, trackCoords->x1, f_clef_y_to,
                       (g_clef ? false : currentTrack.show_measure_number) /* if we have both keys don't show twice */);
@@ -762,7 +762,7 @@ namespace AriaMaestosa
         ScoreData* scoreData = new ScoreData();
         lineTrack.editor_data = scoreData;
         
-        Track* track = lineTrack.track;
+        const Track* track = lineTrack.m_track;
         ScoreEditor* scoreEditor = track->graphics->scoreEditor;
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         
@@ -1128,10 +1128,11 @@ namespace AriaMaestosa
     
     // -------------------------------------------------------------------------------------------
     
-    void ScorePrintable::analyseAndDrawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine& line, Track* track,
-                                   wxDC& dc, const int extra_lines_above, const int extra_lines_under,
-                                   const int x0, const int y0, const int x1, const int y1,
-                                   bool show_measure_number)
+    void ScorePrintable::analyseAndDrawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine& line,
+                                             const Track* track, wxDC& dc,
+                                             const int extra_lines_above, const int extra_lines_under,
+                                             const int x0, const int y0, const int x1, const int y1,
+                                             bool show_measure_number)
     {
         std::cout << "==========================\n    analyseAndDrawScore " << (f_clef ? "F" : "G")
                   << "\n==========================\n\n";

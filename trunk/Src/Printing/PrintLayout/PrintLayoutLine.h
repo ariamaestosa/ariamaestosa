@@ -62,9 +62,13 @@ namespace AriaMaestosa
         
         bool show_measure_number;
 
-        Track* track;
+        const Track* m_track;
         
-        LineTrackRef(LayoutLine* parent, int trackID) { this->parent = parent; this->trackID = trackID; }
+        LineTrackRef(LayoutLine* parent, int trackID, const Track* track) : m_track(track)
+        {
+            this->parent = parent;
+            this->trackID = trackID;
+        }
         int getLastNote() const;
         int getFirstNote() const;
         

@@ -50,8 +50,8 @@ namespace AriaMaestosa
     {
         void gatherVerticalSizingInfo(const int trackID, LineTrackRef& track, LayoutLine& line);
         
-        void analyseAndDrawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine& line, Track* track, wxDC& dc,
-                                 const int extra_lines_above, const int extra_lines_under,
+        void analyseAndDrawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine& line, const Track* track,
+                                 wxDC& dc, const int extra_lines_above, const int extra_lines_under,
                                  const int x0, const int y0, const int x1, const int y1, bool show_measure_number);
         
         bool g_clef, f_clef;

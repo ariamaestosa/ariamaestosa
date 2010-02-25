@@ -175,7 +175,7 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
     
 Range<int> EditorPrintable::getNotePrintX(const int trackID, LayoutLine& line, int noteID)
 {
-    return tickToX( trackID, line, line.getLineTrackRef(trackID).track->getNoteStartInMidiTicks(noteID) );
+    return tickToX( trackID, line, line.getLineTrackRef(trackID).m_track->getNoteStartInMidiTicks(noteID) );
 }
     
 // -------------------------------------------------------------------------------------------
