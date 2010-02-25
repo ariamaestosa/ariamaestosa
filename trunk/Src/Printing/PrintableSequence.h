@@ -23,10 +23,14 @@ namespace AriaMaestosa
         Sequence* sequence;
         
         void printLine(LayoutLine& line, wxDC& dc);
+        
+        /** Whether at least one track with guitar view was added */
+        bool m_is_guitar_editor_used;
+        
+        /** Whether at least one track with score view was added */
+        bool m_is_score_editor_used;
 
     public:
-        bool is_guitar_editor_used;
-        bool is_score_editor_used;
         int track_amount;
         int max_signs_in_keysig; // the max number of sharp/flats we'll need to display at header (useful to allocate proper size)
         
@@ -46,6 +50,12 @@ namespace AriaMaestosa
         
         int getPageAmount();
         LayoutPage& getPage(const int id);
+        
+        /**  @return whether at least one track with guitar view was added */
+        bool isGuitarEditorUsed() const { return m_is_guitar_editor_used; }
+        
+        /**  @return whether at least one track with score view was added */
+        bool isScoreEditorUsed () const { return m_is_score_editor_used;  }
         
         /**
           * Called when it is time to print all lines of a page.

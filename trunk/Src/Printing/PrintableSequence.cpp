@@ -16,8 +16,8 @@ PrintableSequence::PrintableSequence(Sequence* parent)
 {
     sequence = parent;
     track_amount = 0;
-    is_guitar_editor_used = false;
-    is_score_editor_used = false;
+    m_is_guitar_editor_used = false;
+    m_is_score_editor_used = false;
     max_signs_in_keysig = 0;
 }
 
@@ -27,12 +27,12 @@ bool PrintableSequence::addTrack(Track* track, int mode /* GUITAR, SCORE, etc. *
     if (mode == GUITAR)
     {
         editorPrintables.push_back(new TablaturePrintable(track));
-        is_guitar_editor_used = true;
+        m_is_guitar_editor_used = true;
     }
     else if (mode == SCORE)
     {
         editorPrintables.push_back(new ScorePrintable());
-        is_score_editor_used = true;
+        m_is_score_editor_used = true;
         
         max_signs_in_keysig = std::max( max_signs_in_keysig,
                                        std::max(track->getKeySharpsAmount(),

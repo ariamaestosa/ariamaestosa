@@ -372,9 +372,6 @@ void PrintLayoutAbstract::calculateRelativeLengths(std::vector<LayoutElement>& l
 
 // -------------------------------------------------------------------------------------------
     
-/**
- * Builds the Page/Line layout tree from the full list of layout elements
- */
 void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutElements)
 {
     std::cout << "\n====\nlayInLinesAndPages\n====\n";
@@ -397,7 +394,7 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     
     int header_width = HEADER_WIDTH;
     
-    if (sequence->is_score_editor_used)
+    if (sequence->isScoreEditorUsed())
     {
         // 50 being the max size of an accidental (FIXME: don't hardcode)
         // FIXME: some numeric widths are used here, in the abstract layout manager
@@ -448,7 +445,6 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
 
 // -------------------------------------------------------------------------------------------
     
-/** main function called from other classes. measures must have been geenrated. */
 void PrintLayoutAbstract::calculateLayoutElements (ptr_vector<Track, REF>& tracks, const bool checkRepetitions_bool)
 {
     std::vector<LayoutElement> layoutElements;
