@@ -31,13 +31,13 @@ namespace AriaMaestosa
      */
     class PrintLayoutNumeric
     {
-        /** Internal method called by 'divideLineAmongTracks'. Takes care of setting the coords
+        /** Internal method called by 'setLineCoordsAndDivideItsSpace'. Takes care of setting the coords
           * in the passed 'LineTrackRef'. Called once per track. */
         void placeTrackWithinCoords(const int trackID, LayoutLine& line, LineTrackRef& track,
                                     int x0, const int y0, const int x1, const int y1,
                                     bool show_measure_number);
         
-        /** Internal method called by 'divideLineAmongTracks'. Takes care of setting the coords
+        /** Internal method called by 'setLineCoordsAndDivideItsSpace'. Takes care of setting the coords
           * of each layourt element of the line. Called once for the whole line. */
         void placeElementsWithinCoords(LayoutLine& line, int x0, const int x1);
         
@@ -49,7 +49,7 @@ namespace AriaMaestosa
          * the various tracks that form it, and set the coords of the LineTrackRef referring to each
          * track in this line.
          */
-        void divideLineAmongTracks(LayoutLine& line, const int x0, const int y0, const int x1,
+        void setLineCoordsAndDivideItsSpace(LayoutLine& line, const int x0, const int y0, const int x1,
                                    const int y1, int margin_below, int margin_above);
         
     public:

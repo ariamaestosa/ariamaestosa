@@ -146,21 +146,19 @@ void PrintLayoutNumeric::placeElementsWithinCoords(LayoutLine& line, int x0, con
 
 // -----------------------------------------------------------------------------------------------------------------
 
-void PrintLayoutNumeric::divideLineAmongTracks(LayoutLine& line, const int x0, const int y0, const int x1,
+void PrintLayoutNumeric::setLineCoordsAndDivideItsSpace(LayoutLine& line, const int x0, const int y0, const int x1,
                                                const int y1, int margin_below, int margin_above)
 {
     const int trackAmount = line.getTrackAmount();
     
     std::cout << "Line given coords " << x0 << ", " << y0 << " to " << x1 << ", " << y1 << std::endl;
-    std::cout << "==divideLineAmongTracks==\n";
+    std::cout << "==setLineCoordsAndDivideItsSpace==\n";
     
     line.m_line_coords = new LineCoords();
     line.m_line_coords->x0 = x0;
     line.m_line_coords->y0 = y0;
     line.m_line_coords->x1 = x1;
     line.m_line_coords->y1 = y1;
-    line.m_line_coords->margin_below = margin_below;
-    line.m_line_coords->margin_above = margin_above;
     
     // ---- empty space around whole line
     const float heightAvailableForThisLine = (float)(y1 - y0);// - ( trackAmount>1 and not last_of_page ? 100 : 0 );
@@ -171,6 +169,8 @@ void PrintLayoutNumeric::divideLineAmongTracks(LayoutLine& line, const int x0, c
     if (margin_below > heightAvailableForThisLine/2) margin_below = heightAvailableForThisLine/5;
     if (margin_above > heightAvailableForThisLine/2) margin_above = heightAvailableForThisLine/5;
     
+    line.m_line_coords->margin_below = margin_below;
+    line.m_line_coords->margin_above = margin_above;
     
     const int my0 = y0 + margin_above;
     
@@ -291,7 +291,7 @@ void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, float notation_area_
                   << " used_y_from=" << used_y_from << " margin_above=" << margin_above
                   << " margin_below=" << margin_below << std::endl;
         
-        this->divideLineAmongTracks(line, x0, used_y_from, x1, used_y_from+used_height, margin_below, margin_above);
+        this->setLineCoordsAndDivideItsSpace(line, x0, used_y_from, x1, used_y_from+used_height, margin_below, margin_above);
         
         notation_area_y_from += heightAvailableForThisLine;
         //std::cout << "yfrom is now " << y_from << std::endl;
