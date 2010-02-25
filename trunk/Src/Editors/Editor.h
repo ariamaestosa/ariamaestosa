@@ -33,14 +33,26 @@ class InstrumentChoice;
 
 enum NoteSearchResult
 {
-FOUND_NOTE,
-FOUND_SELECTED_NOTE,
-FOUND_NOTHING
+    FOUND_NOTE,
+    FOUND_SELECTED_NOTE,
+    FOUND_NOTHING
 };
 
-// can have 2 uses : describing note and describing visual sign
-// e.g. F# will be described as SHARP as note, but if you put it in a score where all Fs are #, its visible sign will be PITCH_SIGN_NONE
-// When describing a note's sign, use either NATURAL or PITCH_SIGN_NONE. When describing a note's pitch, PITCH_SIGN_NONE is not to be used
+enum EditorType
+{
+    KEYBOARD   = 0,
+    SCORE      = 1,
+    GUITAR     = 2,
+    DRUM       = 3,
+    CONTROLLER = 4
+};
+    
+/**
+  * can have 2 uses : describing note and describing visual sign
+  * e.g. F# will be described as SHARP as note, but if you put it in a score where all Fs are #,
+  * its visible sign will be PITCH_SIGN_NONE. When describing a note's sign, use either NATURAL or
+  * PITCH_SIGN_NONE. When describing a note's pitch, PITCH_SIGN_NONE is not to be used
+  */
 enum PitchSign
 {
     SHARP = 0,

@@ -842,7 +842,7 @@ Editor* GraphicalTrack::getCurrentEditor()
 
 // --------------------------------------------------------------------------------------------------
 
-void GraphicalTrack::setEditorMode(int mode)
+void GraphicalTrack::setEditorMode(EditorType mode)
 {
     editorMode = mode;
 }
@@ -982,7 +982,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     // draw track name
     AriaRender::images();
     AriaRender::color(0,0,0);
-    AriaRenderString& track_name = track->getName();
+    AriaRenderString& track_name = track->getNameRenderer();
     track_name.bind();
     track_name.render(trackName->getX()+11, y+30);
     
@@ -1220,7 +1220,7 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
     {
 
         const char* mode_c = xml->getAttributeValue("mode");
-        if ( mode_c != NULL ) editorMode = atoi( mode_c );
+        if ( mode_c != NULL ) editorMode = (EditorType)atoi( mode_c );
         else
         {
             editorMode = KEYBOARD;

@@ -120,7 +120,8 @@ LayoutLine::LayoutLine(PrintableSequence* parent, ptr_vector<PrintLayoutMeasure,
     m_measures = measures;
     m_last_of_page = false;
     
-    for (int trackID=0; trackID<parent->track_amount; trackID++)
+    const int trackAmount = parent->getTrackAmount();
+    for (int trackID=0; trackID<trackAmount; trackID++)
     {
         LineTrackRef* newTrack = new LineTrackRef(this, trackID);
         newTrack->track = m_printable->tracks.get(trackID);
@@ -229,7 +230,7 @@ int LayoutLine::calculateHeight()
     const int trackAmount = getTrackAmount();
     for (int n=0; n<trackAmount; n++)
     {
-        const int this_height = m_printable->editorPrintables.get(n)->calculateHeight(n, m_track_render_info[n], *this);
+        const int this_height = m_printable->getEditorPrintable(n)->calculateHeight(n, m_track_render_info[n], *this);
         heights.push_back(this_height);
         m_level_height += this_height;
         std::cout << this_height << "-high" << std::endl;
