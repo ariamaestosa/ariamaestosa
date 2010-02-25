@@ -63,9 +63,11 @@ namespace AriaMaestosa
         /** Called by the layout code to know the relative height of this line
          */
         virtual int calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line) = 0;
-                
-        void setCurrentTrack(LayoutLine* line);
-        
+                        
+        /**
+          * call early in the callback to draw a track. All base class methods doing rendering
+          * will use the passed DC to perform the rendering (FIXME: that's quite ugly)
+          */
         void setCurrentDC(wxDC* dc);
 
         /** To be called in a loop when rendering the elements. Returns the next element to render.
