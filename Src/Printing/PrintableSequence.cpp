@@ -9,32 +9,37 @@
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
 
-namespace AriaMaestosa
-{
+using namespace AriaMaestosa;
 
 PrintableSequence::PrintableSequence(Sequence* parent)
 {
-    sequence = parent;
-    track_amount = 0;
+    m_sequence = parent;
+    //track_amount = 0;
     m_is_guitar_editor_used = false;
     m_is_score_editor_used = false;
-    max_signs_in_keysig = 0;
+    m_max_signs_in_keysig = 0;
+    m_layout_calculated = false;
+    m_numeric_layout_manager = NULL;
 }
 
-// -----------------------------------------------------------------------------------------------------------------------
-bool PrintableSequence::addTrack(Track* track, int mode /* GUITAR, SCORE, etc. */)
+// -----------------------------------------------------------------------------------------------------------------
+
+bool PrintableSequence::addTrack(Track* track, EditorType mode)
 {
+    assert(track->sequence == m_sequence);
+    assert(not m_layout_calculated);
+    
     if (mode == GUITAR)
     {
-        editorPrintables.push_back(new TablaturePrintable(track));
+        m_editor_printables.push_back(new TablaturePrintable(track));
         m_is_guitar_editor_used = true;
     }
     else if (mode == SCORE)
     {
-        editorPrintables.push_back(new ScorePrintable());
+        m_editor_printables.push_back(new ScorePrintable());
         m_is_score_editor_used = true;
         
-        max_signs_in_keysig = std::max( max_signs_in_keysig,
+        m_max_signs_in_keysig = std::max( m_max_signs_in_keysig,
                                        std::max(track->getKeySharpsAmount(),
                                                 track->getKeyFlatsAmount()) );
     }
@@ -44,11 +49,12 @@ bool PrintableSequence::addTrack(Track* track, int mode /* GUITAR, SCORE, etc. *
         return false;
     }
     tracks.push_back(track);
-    track_amount = tracks.size();
+    //track_amount = tracks.size();
     return true;
 }
 
-// -----------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
+
 void PrintableSequence::calculateLayout(bool checkRepetitions)
 {
     m_abstract_layout_manager = new PrintLayoutAbstract(this, layoutPages /* out */);
@@ -57,22 +63,27 @@ void PrintableSequence::calculateLayout(bool checkRepetitions)
     
     // prepare it for when we're ready to print
     m_numeric_layout_manager = new PrintLayoutNumeric();
+    
+    m_layout_calculated = true;
 }
 
-// -----------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
 
 EditorPrintable* PrintableSequence::getEditorPrintable(const int trackID)
 {
-    return editorPrintables.get(trackID);
+    return m_editor_printables.get(trackID);
 }
 
-// -----------------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------------------------
 
 void PrintableSequence::printLinesInArea(wxDC& dc, LayoutPage& page, 
                                          const float notation_area_y0, const float notation_area_h,
                                          const int level_y_amount, const int pageHeight,
                                          const int x0, const int x1)
 {
+    assert(m_layout_calculated);
+    assert(m_numeric_layout_manager != NULL);
+    
     // ---- Give each track an area on the page
     m_numeric_layout_manager->placeLinesInPage(page, notation_area_y0, notation_area_h,
                                                level_y_amount, pageHeight, x0, x1);
@@ -88,7 +99,7 @@ void PrintableSequence::printLinesInArea(wxDC& dc, LayoutPage& page,
     }
 }
 
-// -----------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
 
 void PrintableSequence::printLine(LayoutLine& line, wxDC& dc)
 {        
@@ -111,8 +122,8 @@ void PrintableSequence::printLine(LayoutLine& line, wxDC& dc)
         dc.DrawLine( lineCoords->x1-3, my0, lineCoords->x1-3, my1); // right-side line
     }
     
-    std::cout << "\n======== Printing Line (contains " << line.getLayoutElementCount() << " layout elements) from y=" <<
-    my0 << " to " << my1 << " ========" << std::endl;
+    std::cout << "\n======== Printing Line (contains " << line.getLayoutElementCount()
+              << " layout elements) from y=" << my0 << " to " << my1 << " ========" << std::endl;
     
     // ---- Debug guides
     if (PRINT_LAYOUT_HINTS)
@@ -144,35 +155,39 @@ void PrintableSequence::printLine(LayoutLine& line, wxDC& dc)
     }
 }
     
-// -----------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
 
-wxString PrintableSequence::getTitle()
+wxString PrintableSequence::getTitle() const
 {
-    wxString song_title = sequence->suggestTitle();
+    wxString song_title = m_sequence->suggestTitle();
     wxString track_title;
     if (tracks.size()==1) tracks[0].getName();
     
     wxString final_title;
     
     // give song title
-    if (song_title.IsSameAs(_("Untitled")))
-        final_title = _("Aria Maestosa song");
-    else
-        final_title = song_title;
+    if (song_title.IsSameAs(_("Untitled"))) final_title = _("Aria Maestosa song");
+    else                                    final_title = song_title;
     
     // give track name, if any
-    if (!track_title.IsSameAs(_("Untitled")) and track_title.Length()>0) final_title += (wxT(", ") + track_title);
+    if (!track_title.IsSameAs(_("Untitled")) and track_title.Length()>0)
+    {
+        final_title += (wxT(", ") + track_title);
+    }
     
     std::cout << "Title = " << final_title.mb_str() << std::endl;
     return final_title;
 }
 
-// -----------------------------------------------------------------------------------------------------------------------
-int PrintableSequence::getPageAmount()
+// -----------------------------------------------------------------------------------------------------------------
+
+int PrintableSequence::getPageAmount() const
 {
     return layoutPages.size();
 }
-// -----------------------------------------------------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------------------------------------------
+
 LayoutPage& PrintableSequence::getPage(const int id)
 {
     assertExpr(id, >=, 0);
@@ -185,4 +200,3 @@ LayoutPage& PrintableSequence::getPage(const int id)
     return out;
 }
     
-}

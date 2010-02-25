@@ -120,7 +120,7 @@ namespace AriaMaestosa
         ptr_vector<ControllerEvent> controlEvents;
         int trackid;
         
-        AriaRenderString name;
+        AriaRenderString m_name;
         
         int channel; // only used if in channel mode
         int instrument, drumKit;
@@ -182,7 +182,9 @@ namespace AriaMaestosa
         int getGridDivider();
         
         void setName(wxString name);
-        AriaRenderString& getName();
+        
+        AriaRenderString& getNameRenderer();
+        const wxString&   getName() const { return m_name; }
         
         void selectNote(const int id, const bool selected, bool ignoreModifiers=false);
         

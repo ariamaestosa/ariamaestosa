@@ -53,15 +53,15 @@ Track::Track(MainFrame* parent, Sequence* sequence)
     key_sharps_amnt = 0;
     key_flats_amnt  = 0;
     
-    name.set( wxString( _("Untitled") ) );
-    name.setMaxWidth(120);
+    m_name.set( wxString( _("Untitled") ) );
+    m_name.setMaxWidth(120);
     
     //FIXME: find out why fonts are so different on mac and linux
     //FIXME: what does this do in the data class, and not in the graphics class?
 #ifdef __WXMAC__
-    name.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+    m_name.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
 #else
-    name.setFont( wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+    m_name.setFont( wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
 #endif
 
     Track::frame=parent;
@@ -832,15 +832,15 @@ void Track::setId(const int id)
 
 void Track::setName(wxString name)
 {
-    if (name.Trim().IsEmpty()) Track::name.set( wxString( _("Untitled") ) );
-    else Track::name.set(name);
+    if (name.Trim().IsEmpty()) m_name.set( wxString( _("Untitled") ) );
+    else                       m_name.set(name);
 }
 
 // -------------------------------------------------------------------------------------------------------
 
-AriaRenderString& Track::getName()
+AriaRenderString& Track::getNameRenderer()
 {
-    return name;
+    return m_name;
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -1114,7 +1114,8 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         m.SetByte1( 3 );
 
         // FIXME - I removed strcpy, but not sure it works anymore...
-        jdkmidi::MIDISystemExclusive sysex( (unsigned char*)(const char*)name.mb_str(wxConvUTF8), name.size()+1, name.size()+1, false);
+        jdkmidi::MIDISystemExclusive sysex( (unsigned char*)(const char*)m_name.mb_str(wxConvUTF8),
+                                           m_name.size()+1, m_name.size()+1, false);
 
         m.CopySysEx( &sysex );
         m.SetTime( 0 );
@@ -1135,7 +1136,8 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     /*
      * The way this section works:
      *
-     * there are currently 3 possible source of events in a track (apart those above, like instrument and track name): note on, note off, controller change.
+     * there are currently 3 possible source of events in a track (apart those above, like instrument and
+     * track name): note on, note off, controller change.
      * each type of event is stored in its own vector, in time order.
      * the variables below store the current event (i.e. the first event that hasn't yet been added)
      * the section loops, and with it each iteration it checks the current tick of the 3 current events,
@@ -1401,7 +1403,7 @@ void Track::saveToFile(wxFileOutputStream& fileout)
     reorderNoteVector();
     reorderNoteOffVector();
 
-    writeData(wxT("\n<track name=\"") + name +
+    writeData(wxT("\n<track name=\"") + m_name +
               wxT("\" channel=\"") + to_wxString(channel) +
               wxT("\">\n"), fileout );
 
@@ -1444,7 +1446,10 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                 {
 
                     const char* name = xml->getAttributeValue("name");
-                    if (name!=NULL) setName( fromCString((char*)name) );
+                    if (name!=NULL)
+                    {
+                        setName( fromCString((char*)name) );
+                    }
                     else
                     {
                         std::cout << "Missing info from file: track name" << std::endl;

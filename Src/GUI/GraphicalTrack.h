@@ -23,8 +23,10 @@
 #include "irrXML/irrXML.h"
 
 #include "Config.h"
+#include "Editors/Editor.h"
 
-namespace AriaMaestosa {
+namespace AriaMaestosa
+{
 
 class Track;
 class MagneticGrid;
@@ -34,15 +36,6 @@ class GuitarEditor;
 class DrumEditor;
 class ScoreEditor;
 class RelativeXCoord;
-class Editor;
-
-enum {
-    KEYBOARD,
-    SCORE,
-    GUITAR,
-    DRUM,
-    CONTROLLER
-};
 
 // lightweight components
 class BlankField;
@@ -79,7 +72,7 @@ public:
     // ----------- read-only fields -----------
     bool dragging_resize;
 
-    int editorMode;
+    EditorType editorMode;
     
     /** Y coord on the current display where this track starts (this is updated on each rendering).
       * Worth -1 when track is docked. */
@@ -124,7 +117,7 @@ public:
     void setHeight(const int height);
     void maximizeHeight(bool maximize=true);
     
-    void setEditorMode(int mode);
+    void setEditorMode(EditorType mode);
     
     /**
       * @precondition Track, Sequence and GraphicalTrack must be initialized properly upon calling this

@@ -398,7 +398,7 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     {
         // 50 being the max size of an accidental (FIXME: don't hardcode)
         // FIXME: some numeric widths are used here, in the abstract layout manager
-        header_width += sequence->max_signs_in_keysig*50;
+        header_width += sequence->getMaxKeySignatureSignCount()*50;
     }
     
     el.width_in_print_units = header_width;
