@@ -82,7 +82,7 @@ namespace AriaMaestosa
         
         void generateMeasures(ptr_vector<Track, REF>& tracks);
         
-        /** main function called from other classes. measures must have been geenrated. */
+        /** main function called from other classes. measures must have been generated. */
         void calculateLayoutElements(ptr_vector<Track, REF>& track, const bool checkRepetitions_bool);
     };
     
