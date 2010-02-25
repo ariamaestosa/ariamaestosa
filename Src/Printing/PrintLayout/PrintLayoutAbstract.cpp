@@ -50,45 +50,8 @@ namespace AriaMaestosa
 // -------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
+#pragma mark private
 #endif
-
-PrintLayoutAbstract::PrintLayoutAbstract(PrintableSequence* sequence,
-                                       ptr_vector<LayoutPage>& layoutPages_a /* out */) : layoutPages(layoutPages_a)
-{
-    this->sequence = sequence;
-}
-    
-// -------------------------------------------------------------------------------------------
-    
-void PrintLayoutAbstract::generateMeasures(ptr_vector<Track, REF>& tracks)
-{
-    std::cout << "\n====\ngenerateMeasures\n====\n";
-    const int trackAmount = tracks.size();
-    const int measureAmount = getMeasureData()->getMeasureAmount();
-
-    for (int tr=0; tr<trackAmount; tr++)
-    {
-        Track* track = tracks.get(tr);
-
-        // add measures
-        for(int measure=0; measure<measureAmount; measure++)
-        {
-             measures.push_back( new PrintLayoutMeasure(measure) );
-        }
-
-        int note=0;
-        // give them track references
-        for (int measure=0; measure<measureAmount; measure++)
-        {
-            assertExpr(measure,<,measures.size());
-            
-            note = measures[measure].addTrackReference(note, track);
-            
-            //std::cout << "meas% " << (measures[measure].trackRef[0].track->getName().mb_str()) << std::endl;
-
-        } // next measure
-    } // next track
-}
 
 // -------------------------------------------------------------------------------------------
     
@@ -443,10 +406,57 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     layoutPages[current_page].getLine(currentLine).calculateHeight();
 }
 
-// -------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------
+
+#if 0
+#pragma mark -
+#pragma mark public
+#endif
+
+PrintLayoutAbstract::PrintLayoutAbstract(PrintableSequence* sequence,
+                                         ptr_vector<LayoutPage>& layoutPages_a /* out */) : layoutPages(layoutPages_a)
+{
+    this->sequence = sequence;
+}
+
+// -------------------------------------------------------------------------------------------------------------
+
+void PrintLayoutAbstract::generateMeasures(ptr_vector<Track, REF>& tracks)
+{
+    std::cout << "\n====\ngenerateMeasures\n====\n";
+    const int trackAmount = tracks.size();
+    const int measureAmount = getMeasureData()->getMeasureAmount();
+    
+    for (int tr=0; tr<trackAmount; tr++)
+    {
+        Track* track = tracks.get(tr);
+        
+        // add measures
+        for (int measure=0; measure<measureAmount; measure++)
+        {
+            measures.push_back( new PrintLayoutMeasure(measure) );
+        }
+        
+        int note=0;
+        // give them track references
+        for (int measure=0; measure<measureAmount; measure++)
+        {
+            assertExpr(measure,<,measures.size());
+            
+            note = measures[measure].addTrackReference(note, track);
+            
+            //std::cout << "meas% " << (measures[measure].trackRef[0].track->getName().mb_str()) << std::endl;
+            
+        } // next measure
+    } // next track
+}
+
+// -------------------------------------------------------------------------------------------------------------
     
 void PrintLayoutAbstract::calculateLayoutElements (ptr_vector<Track, REF>& tracks, const bool checkRepetitions_bool)
 {
+    assert(measures.size() > 0); // generating measures must have been done first
     std::vector<LayoutElement> layoutElements;
     
     // search for repeated measures if necessary

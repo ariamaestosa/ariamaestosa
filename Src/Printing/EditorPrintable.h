@@ -84,9 +84,22 @@ namespace AriaMaestosa
           * otherwise (-1,-1) may be returned. */
         Range<int> tickToX(const int trackID, LayoutLine& line, const int tick);
 
+        /** Render utility; renders time signature numbers in the coords of the passed layout element,
+          * at the given y coords */
         void renderTimeSignatureChange(LayoutElement* el, const int y0, const int y1);
         
+        /** This method is called for each track of this editor very early in the layout process.
+          * If this class needs to do some early setup to prepare the data for following calls,
+          * this is the place to do so.
+          */
         virtual void earlySetup(const int trackID, Track* track) {}
+        
+        /**
+          * Classes deriving from EditorPrintable must implemented this method. It will be
+          * called by the layout routines for each routine and each track handled by this editor.
+          * The implemention must add information about where it needs to display symbols to
+          * the RelativePlacementManager.
+          */ 
         virtual void addUsedTicks(const PrintLayoutMeasure& measure, const int trackID,
                                   const MeasureTrackReference& trackRef, RelativePlacementManager& ticks) = 0;
     };
