@@ -55,7 +55,11 @@ namespace AriaMaestosa
         
         ptr_vector<PrintLayoutMeasure> measures; 
         
-        /** creates LayoutPage and LayoutLine objects, add the created layout elements to their corresponding line */
+
+        /**
+          * @brief Builds the Page/Line layout tree from the full list of layout elements
+          * Creates LayoutPage and LayoutLine objects, add the created layout elements to their corresponding line
+          */
         void layInLinesAndPages(std::vector<LayoutElement>& layoutElements);
         
         /** The main goal of this method is to set the 'width_in_print_units' member of each LayoutElement */
@@ -78,7 +82,7 @@ namespace AriaMaestosa
         
         void generateMeasures(ptr_vector<Track, REF>& tracks);
         
-        
+        /** main function called from other classes. measures must have been geenrated. */
         void calculateLayoutElements(ptr_vector<Track, REF>& track, const bool checkRepetitions_bool);
     };
     
