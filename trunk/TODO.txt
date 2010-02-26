@@ -125,16 +125,6 @@ NOTE: sorry, this is very raw :)
  - score editor should be able to display notes with more than 2 flags (unusure... those with 2 are already so small and barely visible)
 
  ************************* BUGS: *************************
- 
-assert(shortestSymbolLength != -1); failed
---> When printing guitar only
-#5	0x0014ade8 in AriaMaestosa::RelativePlacementManager::calculateRelativePlacement at RelativePlacementManager.cpp:305
-#6	0x0011231b in AriaMaestosa::PrintLayoutManager::calculateRelativeLengths at PrintLayout.cpp:433
-#7	0x00113c53 in AriaMaestosa::PrintLayoutManager::calculateLayoutElements at PrintLayout.cpp:557
-#8	0x00149347 in AriaMaestosa::PrintableSequence::calculateLayout at PrintableSequence.cpp:56
-#9	0x001032f8 in AriaMaestosa::completeExport at NotationExportDialog.cpp:275
-#10	0x00105872 in AriaMaestosa::NotationSetup::okClicked at NotationExportDialog.cpp:175
-
 
 * i18n might have been broken by preferences updates... verify
  

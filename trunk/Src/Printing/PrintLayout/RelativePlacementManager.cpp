@@ -284,6 +284,7 @@ int RelativePlacementManager::findShortestSymbolLength() const
     int shortest = -1;
     
     const int tickAmount = m_all_interesting_ticks.size();
+
     for (int n=0; n<tickAmount; n++)
     {
         const InterestingTick& currTick = m_all_interesting_ticks[n];
@@ -345,10 +346,13 @@ void RelativePlacementManager::calculateRelativePlacement()
     //  Track 1 |ø===|ø===|ø===|ø===|   But  |ø=======|ø===|ø===|  (first note must be larger, since its extra
     //  Track 2 |ø===|====|====|====|        |ø=======|ø========|   space is not granted by the other track)
     
+    const int tickAmount = m_all_interesting_ticks.size();
+
+    if (tickAmount == 0) return;
+
     const int shortestSymbolLength = findShortestSymbolLength();
     assert(shortestSymbolLength > 0);
     
-    const int tickAmount = m_all_interesting_ticks.size();
     int totalAbsolutePosition = 0;
 
     for (int n=0; n<tickAmount; n++)
@@ -430,7 +434,7 @@ void RelativePlacementManager::calculateRelativePlacement()
     
     // for last
     m_all_interesting_ticks[m_all_interesting_ticks.size()-1].endPosition = totalAbsolutePosition;
-    
+
     totalAbsolutePosition += SIDE_MARGIN_WIDTH; // leave empty at the end
     
     // "normalize" positions (divide to be in range [0, 1])
