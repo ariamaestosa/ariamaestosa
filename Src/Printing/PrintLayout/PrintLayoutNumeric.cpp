@@ -168,7 +168,7 @@ void PrintLayoutNumeric::setLineCoordsAndDivideItsSpace(LayoutLine& line, const 
     // make sure margins are within acceptable bounds
     if (margin_below > heightAvailableForThisLine/2) margin_below = heightAvailableForThisLine/5;
     if (margin_above > heightAvailableForThisLine/2) margin_above = heightAvailableForThisLine/5;
-    
+
     line.m_line_coords->margin_below = margin_below;
     line.m_line_coords->margin_above = margin_above;
     
@@ -181,7 +181,7 @@ void PrintLayoutNumeric::setLineCoordsAndDivideItsSpace(LayoutLine& line, const 
     {        
         if (line.m_height_percent[n] > 0) nonEmptyTrackAmount++;
     }
-    
+        
     // space between individual tracks
     const int space_between_tracks = (nonEmptyTrackAmount > 1 ? SPACE_BETWEEN_TRACKS : 0);
     
@@ -210,8 +210,10 @@ void PrintLayoutNumeric::setLineCoordsAndDivideItsSpace(LayoutLine& line, const 
         const float position = (nonEmptyTrackAmount-1 == 0 ?
                                 0.0f : // avoid division by zero
                                 (float)nonEmptyID / (float)(nonEmptyTrackAmount-1));
-        const float space_above_track = space_between_tracks*position*adjustMarginRatio;
-        const float space_below_track = space_between_tracks*(1.0-position)*adjustMarginRatio;
+        const float space_above_track = (nonEmptyTrackAmount > 1 ?
+                                         space_between_tracks*position*adjustMarginRatio : 0);
+        const float space_below_track = (nonEmptyTrackAmount > 1 ?
+                                         space_between_tracks*(1.0-position)*adjustMarginRatio : 0);
         
 
         placeTrackWithinCoords(n, line, line.getLineTrackRef(n),
@@ -282,16 +284,24 @@ void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, float notation_area_
         //std::cout << "```` used_y_from=" << used_y_from << std::endl;
         
         // split margin above and below depending on position within page
-        const int line_amount = page.getLineCount();
-        const float position = (line_amount == 0 ? 0 : float(l) / line_amount);
+        const float position = float(l) / lineAmount;
         int margin_above = MARGIN_AROUND_LINE*position;
         int margin_below = MARGIN_AROUND_LINE*(1-position);
+        
+        // when tehre's only one track, leave much less amrgin (FIXME: find a cleaner way!!)
+        const int trackAmount = line.getTrackAmount();
+        if (trackAmount == 1)
+        {
+            margin_above = margin_above/2;
+            margin_below = margin_below/2;
+        }
         
         std::cout << "height=" << heightAvailableForThisLine << " used_height=" << used_height
                   << " used_y_from=" << used_y_from << " margin_above=" << margin_above
                   << " margin_below=" << margin_below << std::endl;
         
-        this->setLineCoordsAndDivideItsSpace(line, x0, used_y_from, x1, used_y_from+used_height, margin_below, margin_above);
+        this->setLineCoordsAndDivideItsSpace(line, x0, used_y_from, x1, used_y_from+used_height,
+                                             margin_below, margin_above);
         
         notation_area_y_from += heightAvailableForThisLine;
         //std::cout << "yfrom is now " << y_from << std::endl;

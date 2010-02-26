@@ -11,6 +11,8 @@
 
 using namespace AriaMaestosa;
 
+#define DEBUG_DRAW 0
+
 PrintableSequence::PrintableSequence(Sequence* parent)
 {
     m_sequence = parent;
@@ -107,6 +109,14 @@ void PrintableSequence::printLine(LayoutLine& line, wxDC& dc)
     const LineCoords* lineCoords = line.m_line_coords;
     assert(lineCoords != NULL);
     
+#if DEBUG_DRAW
+    dc.SetPen(  wxPen( wxColour(255,0,0), 25 ) );
+    dc.DrawLine( lineCoords->x0, lineCoords->y0, lineCoords->x0, lineCoords->y1);
+    dc.DrawLine( lineCoords->x1, lineCoords->y0, lineCoords->x1, lineCoords->y1);
+    dc.DrawLine( lineCoords->x0, lineCoords->y0, lineCoords->x1, lineCoords->y0);
+    dc.DrawLine( lineCoords->x0, lineCoords->y1, lineCoords->x1, lineCoords->y1);
+#endif
+    
     // ---- Draw vertical line to show these lines belong toghether
     const int my0 = lineCoords->y0 + lineCoords->margin_above;
     const int my1 = lineCoords->y0 + (lineCoords->y1 - lineCoords->y0) - lineCoords->margin_below;
@@ -148,6 +158,14 @@ void PrintableSequence::printLine(LayoutLine& line, wxDC& dc)
         
         std::cout << "Coords : " << trackCoords->x0 << ", " << trackCoords->y0 << " to "
                   << trackCoords->x1 << ", " << trackCoords->y1 << std::endl;
+        
+#if DEBUG_DRAW
+        dc.SetPen(  wxPen( wxColour(0,255,0), 12 ) );
+        dc.DrawLine( trackCoords->x0, trackCoords->y0, trackCoords->x0, trackCoords->y1);
+        dc.DrawLine( trackCoords->x1, trackCoords->y0, trackCoords->x1, trackCoords->y1);
+        dc.DrawLine( trackCoords->x0, trackCoords->y0, trackCoords->x1, trackCoords->y0);
+        dc.DrawLine( trackCoords->x0, trackCoords->y1, trackCoords->x1, trackCoords->y1);
+#endif
         
         EditorPrintable* editorPrintable = this->getEditorPrintable(n);
         editorPrintable->drawTrack(n, sizing, line, dc);
