@@ -1059,6 +1059,11 @@ void ScoreAnalyser::processTriplets()
             {
                 if (VERBOSE_ABOUT_TRIPLETS) std::cout << "(3) { // starting triplet serie\n";
                 first_triplet = i;
+                
+                // since it's the first note in this triplet series, it's both the min and max
+                const int level = noteRenderInfo[i].level;
+                min_level = level;
+                max_level = level;
             }
 
             // this note is a triplet, but not the next, so time to do display the triplets sign
@@ -1069,7 +1074,8 @@ void ScoreAnalyser::processTriplets()
                 {
                     if (VERBOSE_ABOUT_TRIPLETS) std::cout << "(3) == Binding triplet [" << first_triplet << " .. " << i << "] ==\n";
                     
-                    // if nothing found (most likely meaning we only have one triplet note alone) use values from the first
+                    // if nothing found (most likely meaning we only have one triplet note alone)
+                    // use values from the first then.
                     if (min_level == 999)  min_level = noteRenderInfo[first_triplet].level;
                     if (max_level == -999) max_level = noteRenderInfo[first_triplet].level;
 
@@ -1080,7 +1086,7 @@ void ScoreAnalyser::processTriplets()
                     if (i != first_triplet) // if not a triplet note alone, but a 'serie' of triplets
                     {
                         // fix all note stems so they all point in the same direction
-                        for(int j=first_triplet; j<=i; j++)
+                        for (int j=first_triplet; j<=i; j++)
                         {
                             //noteRenderInfo[j].stem_type = ( noteRenderInfo[first_triplet].triplet_show_above ? STEM_DOWN : STEM_UP );
                             noteRenderInfo[j].draw_triplet_sign = false;
