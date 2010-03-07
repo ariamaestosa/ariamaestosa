@@ -18,6 +18,7 @@
 
 #include "AriaCore.h"
 
+#include "Actions/AddTrack.h"
 #include "Actions/EditAction.h"
 #include "Actions/RemoveOverlapping.h"
 
@@ -516,7 +517,8 @@ void MainFrame::menuEvent_removeOverlapping(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_addTrack(wxCommandEvent& evt)
 {
-    getCurrentSequence()->addTrack();
+    //getCurrentSequence()->addTrack();
+    getCurrentSequence()->action( new Action::AddTrack(getCurrentSequence()) );
     updateVerticalScrollbar();
 }
 

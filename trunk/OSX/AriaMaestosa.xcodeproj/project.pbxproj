@@ -523,6 +523,10 @@
 		95711B271125D8D300104BF5 /* Singleton.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119931125D8D300104BF5 /* Singleton.h */; };
 		95711B281125D8D300104BF5 /* unit_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119941125D8D300104BF5 /* unit_test.cpp */; };
 		95711B291125D8D300104BF5 /* unit_test.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119951125D8D300104BF5 /* unit_test.h */; };
+		959FD68B1144493C00F22579 /* AddTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959FD6891144493C00F22579 /* AddTrack.cpp */; };
+		959FD68C1144493C00F22579 /* AddTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959FD68A1144493C00F22579 /* AddTrack.h */; };
+		959FD68D1144493C00F22579 /* AddTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959FD6891144493C00F22579 /* AddTrack.cpp */; };
+		959FD68E1144493C00F22579 /* AddTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959FD68A1144493C00F22579 /* AddTrack.h */; };
 		EF104F6C0B21E1900079A1B7 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF104F6B0B21E1900079A1B7 /* QTKit.framework */; };
 		EF85576209BDE24C00D9D1BC /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF85576109BDE24C00D9D1BC /* OpenGL.framework */; };
 		EF9D1CB709ABE21F00CAF7A6 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF9D1CB609ABE21F00CAF7A6 /* Carbon.framework */; };
@@ -900,6 +904,8 @@
 		95711BE41125D94900104BF5 /* white_corner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = white_corner.png; path = ../Resources/white_corner.png; sourceTree = SOURCE_ROOT; };
 		957C860F1127013D006AC7D3 /* Changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Changelog.txt; path = ../Changelog.txt; sourceTree = SOURCE_ROOT; };
 		957C861011270142006AC7D3 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = ../TODO.txt; sourceTree = SOURCE_ROOT; };
+		959FD6891144493C00F22579 /* AddTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AddTrack.cpp; path = ../Src/Actions/AddTrack.cpp; sourceTree = SOURCE_ROOT; };
+		959FD68A1144493C00F22579 /* AddTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddTrack.h; path = ../Src/Actions/AddTrack.h; sourceTree = SOURCE_ROOT; };
 		EF104F6B0B21E1900079A1B7 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		EF85576109BDE24C00D9D1BC /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		EF9D1BFF09ABE02100CAF7A6 /* Aria Maestosa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Aria Maestosa.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -979,6 +985,8 @@
 				957118C11125D8D200104BF5 /* AddControllerSlide.h */,
 				957118C21125D8D200104BF5 /* AddNote.cpp */,
 				957118C31125D8D200104BF5 /* AddNote.h */,
+				959FD6891144493C00F22579 /* AddTrack.cpp */,
+				959FD68A1144493C00F22579 /* AddTrack.h */,
 				957118C41125D8D200104BF5 /* DeleteSelected.cpp */,
 				957118C51125D8D200104BF5 /* DeleteSelected.h */,
 				957118C61125D8D200104BF5 /* EditAction.cpp */,
@@ -1525,6 +1533,7 @@
 				950B3B561125DBCF006C9AF1 /* irrString.h in Headers */,
 				950B3B571125DBCF006C9AF1 /* irrTypes.h in Headers */,
 				950B3B591125DBCF006C9AF1 /* irrXML.h in Headers */,
+				959FD68E1144493C00F22579 /* AddTrack.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1640,6 +1649,7 @@
 				950B3B4E1125DBCF006C9AF1 /* irrString.h in Headers */,
 				950B3B4F1125DBCF006C9AF1 /* irrTypes.h in Headers */,
 				950B3B511125DBCF006C9AF1 /* irrXML.h in Headers */,
+				959FD68C1144493C00F22579 /* AddTrack.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1828,6 +1838,7 @@
 				95711B261125D8D300104BF5 /* Singleton.cpp in Sources */,
 				95711B281125D8D300104BF5 /* unit_test.cpp in Sources */,
 				950B3B581125DBCF006C9AF1 /* irrXML.cpp in Sources */,
+				959FD68D1144493C00F22579 /* AddTrack.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1937,6 +1948,7 @@
 				95711A5C1125D8D300104BF5 /* Singleton.cpp in Sources */,
 				95711A5E1125D8D300104BF5 /* unit_test.cpp in Sources */,
 				950B3B501125DBCF006C9AF1 /* irrXML.cpp in Sources */,
+				959FD68B1144493C00F22579 /* AddTrack.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
