@@ -653,15 +653,25 @@ Track* Sequence::addTrack()
 
 // ----------------------------------------------------------------------------------------------------------
 
-void Sequence::deleteTrack()
+void Sequence::addTrack(Track* track)
 {
-    if (currentTrack<0 or currentTrack>tracks.size()-1) return;
+    tracks.push_back(track);
+    Display::render();
+}
 
-    tracks.erase( currentTrack );
+// ----------------------------------------------------------------------------------------------------------
 
-    while(currentTrack>tracks.size()-1) currentTrack -= 1;
+Track* Sequence::removeSelectedTrack()
+{
+    Track* removedTrack = tracks.get(currentTrack);
+    if (currentTrack<0 or currentTrack>tracks.size()-1) return NULL;
+
+    tracks.remove( currentTrack );
+
+    while (currentTrack > tracks.size()-1) currentTrack -= 1;
 
     Display::render();
+    return removedTrack;
 }
 
 // ----------------------------------------------------------------------------------------------------------
