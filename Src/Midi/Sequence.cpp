@@ -629,14 +629,26 @@ void Sequence::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 #pragma mark Tracks
 #endif
 
-void Sequence::addTrack()
+Track* Sequence::addTrack()
 {
+    Track* result = NULL;
+    
     if (currentTrack>=0 and currentTrack<tracks.size())
-        tracks.add(new Track(getMainFrame(), this), currentTrack+1); // add new track below active one
+    {
+        // add new track below active one
+        result = new Track(getMainFrame(), this);
+        tracks.add(result, currentTrack+1);
+    }
     else
-        tracks.push_back(new Track(getMainFrame(), this));
-
+    {
+        result = new Track(getMainFrame(), this);
+        tracks.push_back(result);
+    }
+    assert(result != NULL);
+    
     Display::render();
+    
+    return result;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -661,6 +673,15 @@ void Sequence::deleteTrack(int ID)
 
     tracks.erase( ID );
 
+    while(currentTrack>tracks.size()-1) currentTrack -= 1;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void Sequence::deleteTrack(Track* track)
+{
+    tracks.erase( track );
+    
     while(currentTrack>tracks.size()-1) currentTrack -= 1;
 }
 
@@ -888,7 +909,10 @@ void Sequence::selectNone()
 void Sequence::prepareEmptyTracksForLoading(int amount)
 {
     tracks.clearAndDeleteAll();
-    for(int n=0; n<amount; n++) tracks.push_back( new Track(getMainFrame(), this) );
+    for (int n=0; n<amount; n++)
+    {
+        tracks.push_back( new Track(getMainFrame(), this) );
+    }
 }
 
 // ----------------------------------------------------------------------------------------------------------

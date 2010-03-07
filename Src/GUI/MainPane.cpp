@@ -157,10 +157,9 @@ MainPane::~MainPane()
 {
 }
 
-/*
+/**
  * Called when frame has just been made visible. Does things that can't be done without display.
  */
-
 void MainPane::isNowVisible()
 {
     getMainFrame()->addSequence();
