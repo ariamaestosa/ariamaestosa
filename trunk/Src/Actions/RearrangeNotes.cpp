@@ -20,8 +20,15 @@
 #include "Midi/Sequence.h"
 #include "AriaCore.h"
 
-namespace AriaMaestosa {
-namespace Action {
+using namespace AriaMaestosa::Action;
+
+RearrangeNotes::RearrangeNotes() : SingleTrackAction( _("rearrange notes") )
+{
+}
+
+RearrangeNotes::~RearrangeNotes()
+{
+}
 
 void RearrangeNotes::undo()
 {
@@ -165,12 +172,5 @@ void RearrangeNotes::perform()
     Core::setImporting(false);
 }
 
-RearrangeNotes::~RearrangeNotes()
-{
-}
-RearrangeNotes::RearrangeNotes()
-{
-}
 
-}
-}
+

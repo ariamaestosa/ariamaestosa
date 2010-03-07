@@ -527,6 +527,10 @@
 		959FD68C1144493C00F22579 /* AddTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959FD68A1144493C00F22579 /* AddTrack.h */; };
 		959FD68D1144493C00F22579 /* AddTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959FD6891144493C00F22579 /* AddTrack.cpp */; };
 		959FD68E1144493C00F22579 /* AddTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959FD68A1144493C00F22579 /* AddTrack.h */; };
+		959FD6BF114451A400F22579 /* DeleteTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959FD6BD114451A400F22579 /* DeleteTrack.cpp */; };
+		959FD6C0114451A400F22579 /* DeleteTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959FD6BE114451A400F22579 /* DeleteTrack.h */; };
+		959FD6C1114451A400F22579 /* DeleteTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959FD6BD114451A400F22579 /* DeleteTrack.cpp */; };
+		959FD6C2114451A400F22579 /* DeleteTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959FD6BE114451A400F22579 /* DeleteTrack.h */; };
 		EF104F6C0B21E1900079A1B7 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF104F6B0B21E1900079A1B7 /* QTKit.framework */; };
 		EF85576209BDE24C00D9D1BC /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF85576109BDE24C00D9D1BC /* OpenGL.framework */; };
 		EF9D1CB709ABE21F00CAF7A6 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF9D1CB609ABE21F00CAF7A6 /* Carbon.framework */; };
@@ -906,6 +910,8 @@
 		957C861011270142006AC7D3 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = ../TODO.txt; sourceTree = SOURCE_ROOT; };
 		959FD6891144493C00F22579 /* AddTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AddTrack.cpp; path = ../Src/Actions/AddTrack.cpp; sourceTree = SOURCE_ROOT; };
 		959FD68A1144493C00F22579 /* AddTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddTrack.h; path = ../Src/Actions/AddTrack.h; sourceTree = SOURCE_ROOT; };
+		959FD6BD114451A400F22579 /* DeleteTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DeleteTrack.cpp; path = ../Src/Actions/DeleteTrack.cpp; sourceTree = SOURCE_ROOT; };
+		959FD6BE114451A400F22579 /* DeleteTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DeleteTrack.h; path = ../Src/Actions/DeleteTrack.h; sourceTree = SOURCE_ROOT; };
 		EF104F6B0B21E1900079A1B7 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		EF85576109BDE24C00D9D1BC /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		EF9D1BFF09ABE02100CAF7A6 /* Aria Maestosa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Aria Maestosa.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -989,6 +995,8 @@
 				959FD68A1144493C00F22579 /* AddTrack.h */,
 				957118C41125D8D200104BF5 /* DeleteSelected.cpp */,
 				957118C51125D8D200104BF5 /* DeleteSelected.h */,
+				959FD6BD114451A400F22579 /* DeleteTrack.cpp */,
+				959FD6BE114451A400F22579 /* DeleteTrack.h */,
 				957118C61125D8D200104BF5 /* EditAction.cpp */,
 				957118C71125D8D200104BF5 /* EditAction.h */,
 				957118C81125D8D200104BF5 /* InsertEmptyMeasures.cpp */,
@@ -1534,6 +1542,7 @@
 				950B3B571125DBCF006C9AF1 /* irrTypes.h in Headers */,
 				950B3B591125DBCF006C9AF1 /* irrXML.h in Headers */,
 				959FD68E1144493C00F22579 /* AddTrack.h in Headers */,
+				959FD6C2114451A400F22579 /* DeleteTrack.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1650,6 +1659,7 @@
 				950B3B4F1125DBCF006C9AF1 /* irrTypes.h in Headers */,
 				950B3B511125DBCF006C9AF1 /* irrXML.h in Headers */,
 				959FD68C1144493C00F22579 /* AddTrack.h in Headers */,
+				959FD6C0114451A400F22579 /* DeleteTrack.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1839,6 +1849,7 @@
 				95711B281125D8D300104BF5 /* unit_test.cpp in Sources */,
 				950B3B581125DBCF006C9AF1 /* irrXML.cpp in Sources */,
 				959FD68D1144493C00F22579 /* AddTrack.cpp in Sources */,
+				959FD6C1114451A400F22579 /* DeleteTrack.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1949,6 +1960,7 @@
 				95711A5E1125D8D300104BF5 /* unit_test.cpp in Sources */,
 				950B3B501125DBCF006C9AF1 /* irrXML.cpp in Sources */,
 				959FD68B1144493C00F22579 /* AddTrack.cpp in Sources */,
+				959FD6BF114451A400F22579 /* DeleteTrack.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

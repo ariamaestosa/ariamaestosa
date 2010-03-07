@@ -20,10 +20,21 @@
 #include "GUI/GraphicalTrack.h"
 #include "Editors/Editor.h"
 
-namespace AriaMaestosa
+using namespace AriaMaestosa::Action;
+
+MoveNotes::MoveNotes(const int relativeX, const int relativeY, const int noteID) :
+    SingleTrackAction( _("move note(s)") )
 {
-namespace Action
+    MoveNotes::relativeX = relativeX;
+    MoveNotes::relativeY = relativeY;
+    MoveNotes::noteID = noteID;
+
+    move_mode = DELTA;
+}
+
+MoveNotes::~MoveNotes()
 {
+}
 
 void MoveNotes::undo()
 {
@@ -126,15 +137,5 @@ void MoveNotes::doMoveOneNote(const int noteid)
     relocator.rememberNote( track->notes[noteid] );
 }
 
-MoveNotes::MoveNotes(const int relativeX, const int relativeY, const int noteID)
-{
-    MoveNotes::relativeX = relativeX;
-    MoveNotes::relativeY = relativeY;
-    MoveNotes::noteID = noteID;
 
-    move_mode = DELTA;
-}
-MoveNotes::~MoveNotes() {}
 
-}
-}

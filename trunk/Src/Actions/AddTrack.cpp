@@ -24,7 +24,7 @@ using namespace AriaMaestosa::Action;
 
 // --------------------------------------------------------------------------------------------------------
 
-AddTrack::AddTrack(Sequence* seq)
+AddTrack::AddTrack(Sequence* seq) : MultiTrackAction( _("add track") )
 {
     m_added_track     = NULL;
     m_parent_sequence = seq;

@@ -432,6 +432,8 @@ void Sequence::action( Action::MultiTrackAction* action)
     addToUndoStack( action );
     action->setParentSequence(this);
     action->perform();
+    
+    getMainFrame()->updateUndoMenuLabel();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -442,6 +444,8 @@ void Sequence::addToUndoStack( Action::EditAction* action )
 
     // remove old actions from undo stack, to not take memory uselessly
     if (undoStack.size()>8) undoStack.erase(0);
+    
+    getMainFrame()->updateUndoMenuLabel();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -460,6 +464,17 @@ void Sequence::undo()
     undoStack.erase( undoStack.size() - 1 );
 
     Display::render();
+    getMainFrame()->updateUndoMenuLabel();
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+wxString Sequence::getTopActionName() const
+{
+    if (undoStack.size() == 0) return wxEmptyString;
+    
+    const Action::EditAction* lasAction = undoStack.getConst( undoStack.size() - 1 );
+    return lasAction->getName();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -467,6 +482,7 @@ void Sequence::undo()
 void Sequence::clearUndoStack()
 {
     undoStack.clearAndDeleteAll();
+    getMainFrame()->updateUndoMenuLabel();
 }
 
 // ----------------------------------------------------------------------------------------------------------

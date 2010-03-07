@@ -139,6 +139,8 @@ public:
     // top bar controls updated
     void tempoChanged(wxCommandEvent& evt);
     
+    void updateUndoMenuLabel();
+    
     /** Called whenever the user edits the text field containing song length. */
     void songLengthChanged(wxSpinEvent& evt);
     void zoomChanged(wxSpinEvent& evt);

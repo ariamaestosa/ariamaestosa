@@ -40,6 +40,8 @@ NOTE: sorry, this is very raw :)
 
 ************************* NEW FEATURES TO ADD: *************************
 
+* Test Actions with Unit tests
+
 * score print :
     * red images
       - 1/32 silences need a proper image
@@ -126,9 +128,7 @@ NOTE: sorry, this is very raw :)
 
  ************************* BUGS: *************************
 
-** Undoing "delete track" is not possible; but the edit menu still tells you that you can undo!!
-   Also, the 'delete track' dialog does not make it explicit the action cannot be undone.
-
+* Undoing "delete track" places it back at the bottom, not where it was
 * i18n might have been broken by preferences updates... verify
  
 * score editor at wrong octave
