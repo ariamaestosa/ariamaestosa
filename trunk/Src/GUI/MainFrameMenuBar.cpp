@@ -19,6 +19,7 @@
 #include "AriaCore.h"
 
 #include "Actions/AddTrack.h"
+#include "Actions/DeleteTrack.h"
 #include "Actions/EditAction.h"
 #include "Actions/RemoveOverlapping.h"
 
@@ -532,7 +533,8 @@ void MainFrame::menuEvent_deleteTrack(wxCommandEvent& evt)
 
     if (answer == wxYES)
     {
-        getCurrentSequence()->deleteTrack();
+        getCurrentSequence()->action( new Action::DeleteTrack( getCurrentSequence() ) );
+        //getCurrentSequence()->deleteTrack();
         updateVerticalScrollbar();
     }
 

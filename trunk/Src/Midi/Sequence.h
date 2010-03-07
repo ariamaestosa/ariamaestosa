@@ -177,8 +177,16 @@ namespace AriaMaestosa
           */
         Track* addTrack();
         
-        /** Deletes the currently selected track. */
-        void deleteTrack();
+        /** Add an existing track to the sequence.
+          * Does NOT add an action in the action/undo stack. So if the user requested to add
+          * a track, use the corresponding Action instead.
+          */
+        void addTrack(Track* track);
+        
+        /** Removes (but does not delete) the currently selected track.
+          * @return the removed track
+           */
+        Track* removeSelectedTrack();
         
         /** Deletes a track
           * @param ID ID of the track to delete (in range [0 .. getTrackAmount()-1])
