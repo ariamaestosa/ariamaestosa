@@ -1037,6 +1037,7 @@ void MainFrame::addSequence()
     sequences.push_back( new Sequence() );
     setCurrentSequence( sequences.size() - 1 );
     Display::render();
+    getMainFrame()->updateUndoMenuLabel();
 }
 
 // ----------------------------------------------------------------------------------------------------------------
