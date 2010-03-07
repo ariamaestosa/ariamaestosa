@@ -3,12 +3,12 @@
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
-
+ 
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
-
+ 
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -21,18 +21,20 @@
 #include "GUI/GraphicalTrack.h"
 #include <vector>
 
-namespace AriaMaestosa
+using namespace AriaMaestosa;
+using namespace AriaMaestosa::Action;
+
+SingleTrackAction::SingleTrackAction(wxString name) : EditAction(name)
 {
+}
 
-namespace Action
+MultiTrackAction::MultiTrackAction(wxString name) : EditAction(name)
 {
+}
 
-    SingleTrackAction::SingleTrackAction() : EditAction() {}
-    MultiTrackAction::MultiTrackAction() : EditAction() {}
-
-EditAction::EditAction()
+EditAction::EditAction(wxString name) : m_name(name)
 {
-
+    
 }
 void SingleTrackAction::setParentTrack(Track* parent)
 {
@@ -54,7 +56,6 @@ EditAction::~EditAction() {}
 void EditAction::perform() { std::cout << "EditAction::perform called, this shouldn't happen" << std::endl; }
 void EditAction::undo() { std::cout << "EditAction::uno called, this shouldn't happen" << std::endl; }
 
-}
 
 void NoteRelocator::setParent(Track* t)
 {
@@ -70,7 +71,7 @@ void NoteRelocator::prepareToRelocate()
 Note* NoteRelocator::getNextNote()
 {
     if (id >= noteamount_in_relocator) return NULL;
-
+    
     id++;
     return notes.get(id-1);
 }
@@ -103,7 +104,7 @@ void ControlEventRelocator::prepareToRelocate()
 ControllerEvent* ControlEventRelocator::getNextControlEvent()
 {
     if (id >= amount_in_relocator) return NULL;
-
+    
     id++;
     return events.get(id-1);
 }
@@ -115,5 +116,3 @@ ControlEventRelocator::~ControlEventRelocator()
 {
 }
 
-
-}

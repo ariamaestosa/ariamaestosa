@@ -19,18 +19,25 @@
 #include "Midi/Track.h"
 #include "GUI/GraphicalTrack.h"
 
-namespace AriaMaestosa
+using namespace AriaMaestosa::Action;
+
+NumberPressed::NumberPressed(const int number) : SingleTrackAction( _("change note fret") )
 {
-namespace Action
+    NumberPressed::number = number;
+}
+
+NumberPressed::~NumberPressed()
 {
+}
 
 void NumberPressed::undo()
 {
-        relocator.setParent(track);
-        relocator.prepareToRelocate();
-        Note* note = relocator.getNextNote();
-        note->setFret(previousNumber);
+    relocator.setParent(track);
+    relocator.prepareToRelocate();
+    Note* note = relocator.getNextNote();
+    note->setFret(previousNumber);
 }
+
 void NumberPressed::perform()
 {
     assert(track != NULL);
@@ -39,7 +46,8 @@ void NumberPressed::perform()
 
     bool played = false;
     const int amount_n = track->notes.size();
-    for(int n=0; n<amount_n; n++)
+    
+    for (int n=0; n<amount_n; n++)
     {
         if (!track->notes[n].isSelected()) continue;
 
@@ -54,10 +62,5 @@ void NumberPressed::perform()
         return;
     }//next
 }
-NumberPressed::NumberPressed(const int number)
-{
-    NumberPressed::number = number;
-}
-NumberPressed::~NumberPressed() {}
-}
-}
+
+

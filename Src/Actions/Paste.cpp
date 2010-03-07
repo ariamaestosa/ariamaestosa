@@ -29,7 +29,7 @@ using namespace AriaMaestosa::Action;
 
 // -------------------------------------------------------------------------------------------------------------
 
-Paste::Paste(const bool atMouse)
+Paste::Paste(const bool atMouse) : SingleTrackAction( _("paste") )
 {
     Paste::atMouse = atMouse;
 }

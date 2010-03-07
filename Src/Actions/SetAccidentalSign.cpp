@@ -21,10 +21,16 @@
 #include "Editors/Editor.h"
 #include "Editors/ScoreEditor.h"
 
-namespace AriaMaestosa
+using namespace AriaMaestosa::Action;
+
+SetAccidentalSign::SetAccidentalSign(const int sign) : SingleTrackAction( _("accidental change") )
 {
-namespace Action
+    SetAccidentalSign::sign = sign;
+}
+
+SetAccidentalSign::~SetAccidentalSign()
 {
+}
 
 void SetAccidentalSign::undo()
 {
@@ -40,6 +46,7 @@ void SetAccidentalSign::undo()
             n++;
         }
 }
+
 void SetAccidentalSign::perform()
 {
 
@@ -64,11 +71,6 @@ void SetAccidentalSign::perform()
     }//next
 
 }
-SetAccidentalSign::SetAccidentalSign(const int sign)
-{
-    SetAccidentalSign::sign = sign;
-}
-SetAccidentalSign::~SetAccidentalSign() {}
 
-}
-}
+
+

@@ -123,7 +123,11 @@ namespace AriaMaestosa
         /** you do not need to call this yourself, Track::action and Sequence::action do. */
         void addToUndoStack( Action::EditAction* action );
         
+        /** undo the Action at the top of the undo stack */
         void undo();
+        
+        /** @return the name of the Action at the top of the undo stack */
+        wxString getTopActionName() const;
         
         /** forbid undo, drop all undo information kept in memory. */
         void clearUndoStack();

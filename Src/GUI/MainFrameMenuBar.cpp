@@ -256,6 +256,26 @@ void MainFrame::updateMenuBarToSequence()
 }
 
 // -----------------------------------------------------------------------------------------------------------
+
+void MainFrame::updateUndoMenuLabel()
+{
+    wxString undo_what = getCurrentSequence()->getTopActionName();
+    
+    if (undo_what.size() > 0)
+    {
+        wxString label =  _("Undo %s\tCtrl-Z");
+        label.Replace(wxT("%s"),undo_what );
+        GetMenuBar()->SetLabel( MENU_EDIT_UNDO, label );
+        GetMenuBar()->Enable( MENU_EDIT_UNDO, true );
+    }
+    else
+    {
+        GetMenuBar()->SetLabel( MENU_EDIT_UNDO, _("Can't Undo\tCtrl-Z") );
+        GetMenuBar()->Enable( MENU_EDIT_UNDO, false );
+    }
+}
+
+// -----------------------------------------------------------------------------------------------------------
 // ------------------------------------------ FILE MENU EVENTS -----------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
 
