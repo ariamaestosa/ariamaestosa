@@ -1,6 +1,8 @@
 1.2b10
 - Adding and removing tracks no more confuse the undo system
 - The "undo" menu is now chattier about what is next to undo
+- Fixed bug with key selection (when going back to C)
+- Code cleanup and general improvements
 
 1.2b9
 - Printing Improvements
