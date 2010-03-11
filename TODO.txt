@@ -131,7 +131,7 @@ NOTE: sorry, this is very raw :)
 
 * Undoing "delete track" places it back at the bottom, not where it was
 * i18n might have been broken by preferences updates... verify
- 
+
 * score editor at wrong octave
  
 * red selection color in score editor should dim when switching to another track

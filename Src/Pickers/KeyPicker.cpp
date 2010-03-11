@@ -269,24 +269,29 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
     }
     else if ( id == KEY_C_AM )
     {
+        // the score editor will call Track::setKey (FIXME: ugly)
         parent -> scoreEditor    -> loadKey(NATURAL, 0);
         parent -> keyboardEditor -> loadKey(NATURAL, 0);
     }
     else if ( id >= KEY_SHARPS_1 and id <= KEY_SHARPS_7 )
     {
+        // the score editor will call Track::setKey (FIXME: ugly)
         parent -> scoreEditor    -> loadKey(SHARP, id-KEY_SHARPS_1+1 );
         parent -> keyboardEditor -> loadKey(SHARP, id-KEY_SHARPS_1+1) ;
     }
     else if ( id >= KEY_FLATS_1 and id <= KEY_FLATS_7 )
     {
+        // the score editor will call Track::setKey (FIXME: ugly)
         parent -> scoreEditor    -> loadKey( FLAT, id-KEY_FLATS_1+1 );
         parent -> keyboardEditor -> loadKey( FLAT, id-KEY_FLATS_1+1 );
     }
     else if ( id == KEY_GUESS )
     {
         int note_12_occurance[12];
-        for(int n=0; n<12; n++)
+        for (int n=0; n<12; n++)
+        {
             note_12_occurance[n] = 0;
+        }
         
         // count how many A's, how many B's, etc., we have in this track
         const int noteAmount = parent->track->getNoteAmount();
@@ -312,7 +317,7 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
         // and grade them ( smaller = less alike, bigger = much alike )
         // here we only test major keys; a minor one will get the same key sig
         int key_test[12];
-        for(int n=0; n<12; n++)
+        for (int n=0; n<12; n++)
         {
             key_test[n] = 0; // reset before starting
             
@@ -335,7 +340,7 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
         }
         
         int best_candidate = -1;
-        for(int n=0; n<12; n++)
+        for (int n=0; n<12; n++)
         {
             if (best_candidate==-1 or key_test[n]>key_test[best_candidate]) best_candidate = n;
         }
@@ -343,7 +348,7 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
         
         PitchSign sign = NATURAL;
         int amount = 0;
-        switch(best_candidate)
+        switch (best_candidate)
         {
             case 0: //C
                 break;

@@ -500,6 +500,10 @@ void ScoreEditor::loadKey(const PitchSign sharpness_symbol, const int symbol_amo
             converter->setNoteSharpness(flat_order[n], sharpness_symbol);
         }
     }
+    else
+    {
+        track->setKey(0, SHARP);
+    }
 
     converter->updateConversionData();
     g_clef_analyser->setStemPivot(converter->getScoreCenterCLevel()-5);
