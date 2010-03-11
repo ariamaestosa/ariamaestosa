@@ -215,12 +215,11 @@ void MeasureBar::render(int measureBarY_arg)
 
     const bool measureLengthConstant = data->isMeasureLengthConstant();
 
-    const float x_initial = getEditorsXStart() - getCurrentSequence()->getXScrollInPixels();
+    const float x_initial = Editor::getEditorXStart() - getCurrentSequence()->getXScrollInPixels();
     const float x_step = data->measureLengthInPixels();
 
-    for(float n=x_initial; n<Display::getWidth();
-        (measureLengthConstant ? n+=x_step : n += data->measureLengthInPixels(measureID-1) )
-        )
+    for (float n=x_initial; n<Display::getWidth();
+        (measureLengthConstant ? n+=x_step : n += data->measureLengthInPixels(measureID-1)) )
     {
         measureID++;
         if (measureID > data->measureAmount) break;

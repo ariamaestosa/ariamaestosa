@@ -111,13 +111,13 @@ void Paste::perform()
 
     Display::screenToClient(mouseLoc.x, mouseLoc.y, &trackMouseLoc_x, &trackMouseLoc_y);
 
-    /*
-     * Calculate 'shift' (i.e. X position of pasted notes)
-     */
-    if ( atMouse and
-        trackMouseLoc_y > track->graphics->getCurrentEditor()->getEditorYStart() and
-        trackMouseLoc_y < track->graphics->getCurrentEditor()->getYEnd() and
-        trackMouseLoc_x > getEditorsXStart())
+    Editor* editor = track->graphics->getCurrentEditor();
+    
+    // Calculate 'shift' (i.e. X position of pasted notes)
+    if (atMouse and
+        trackMouseLoc_y > editor->getEditorYStart() and
+        trackMouseLoc_y < editor->getYEnd() and
+        trackMouseLoc_x > Editor::getEditorXStart())
     {
 
         RelativeXCoord mx(trackMouseLoc_x, WINDOW);
@@ -125,7 +125,7 @@ void Paste::perform()
         shift=track->graphics->getCurrentEditor()->snapMidiTickToGrid( mx.getRelativeTo(MIDI) );
 
     }
-    else if (!atMouse and track->sequence->x_scroll_upon_copying == track->sequence->getXScrollInPixels() )
+    else if (not atMouse and track->sequence->x_scroll_upon_copying == track->sequence->getXScrollInPixels() )
     {
 
         /*
@@ -143,13 +143,17 @@ void Paste::perform()
 
         // before visible area
         if ((tmp.startTick + tmp.endTick)/2 + shift < track->sequence->getXScrollInMidiTicks())
+        {
             goto regular_paste;
+        }
 
         // after visible area
         RelativeXCoord screen_width( Display::getWidth(), WINDOW );
 
         if ((tmp.startTick + tmp.endTick)/2 + shift > screen_width.getRelativeTo(MIDI) )
+        {
             goto regular_paste;
+        }
 
     }
     else
