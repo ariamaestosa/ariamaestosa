@@ -38,7 +38,8 @@ namespace AriaMaestosa
     const int first_string_position = 17;
     const int y_step = 10;
 
-    // FIXME - what about flats?
+    //FIXME: what about flats?
+    //FIXME: remove duplicated code, use Note12 from Editor.h
     static const wxString g_note_names[] =
     {
         wxT("B"),  // 0
