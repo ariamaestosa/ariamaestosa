@@ -21,90 +21,99 @@
 #include "Editors/KeyboardEditor.h"
 #include "IO/IOUtils.h"
 
-namespace AriaMaestosa {
+using namespace AriaMaestosa;
 
 ControllerEvent::ControllerEvent(Sequence* sequence, unsigned short controller, int tick, unsigned short value)
 {
-
-
-    ControllerEvent::controller=controller;
-    ControllerEvent::tick=tick;
-    ControllerEvent::value=value;
-    ControllerEvent::sequence=sequence;
+    m_controller = controller;
+    m_tick       = tick;
+    m_value      = value;
+    m_sequence   = sequence;
 }
 
-unsigned short ControllerEvent::getController()
-{
-    return controller;
-}
-
-int ControllerEvent::getTick()
-{
-    return tick;
-}
+// ------------------------------------------------------------------------------------------------------------
 
 void ControllerEvent::setTick(int i)
 {
-    tick = i;
+    m_tick = i;
 }
 
-unsigned short ControllerEvent::getValue()
+// ------------------------------------------------------------------------------------------------------------
+
+void ControllerEvent::setValue(unsigned short value)
 {
-    return value;
+    m_value = value;
 }
-void ControllerEvent::setValue(unsigned short value_arg)
-{
-    value = value_arg;
-}
+
+// ------------------------------------------------------------------------------------------------------------
 
 int ControllerEvent::getPositionInPixels()
 {
     return (int)(
-                 tick*sequence->getZoom() + getEditorsXStart()
+                 m_tick*m_sequence->getZoom() + Editor::getEditorXStart()
                  );
 }
+
+// ------------------------------------------------------------------------------------------------------------
+// ----------------------------------------    SERIALIZATION    -----------------------------------------------
+// ------------------------------------------------------------------------------------------------------------
+#if 0
+#pragma mark -
+#pragma mark Serialization
+#endif
 
 void ControllerEvent::saveToFile(wxFileOutputStream& fileout)
 {
 
-    writeData( wxT("<controlevent type=\"") + to_wxString(controller), fileout );
-    writeData( wxT("\" tick=\"") + to_wxString(tick), fileout );
-    writeData( wxT("\" value=\"") + to_wxString(value) + wxT("\"/>\n"), fileout );
+    writeData( wxT("<controlevent type=\"") + to_wxString(m_controller)           , fileout );
+    writeData( wxT("\" tick=\"")            + to_wxString(m_tick)                 , fileout );
+    writeData( wxT("\" value=\"")           + to_wxString(m_value) + wxT("\"/>\n"), fileout );
 
 }
 
+// ------------------------------------------------------------------------------------------------------------
+
 bool ControllerEvent::readFromFile(irr::io::IrrXMLReader* xml)
 {
-
+    // ---- read "type"
     const char* type = xml->getAttributeValue("type");
-    if (type!=NULL) controller=atoi(type);
+    if (type != NULL)
+    {
+        m_controller = atoi(type);
+    }
     else
     {
-        controller = 0;
+        m_controller = 0;
         std::cout << "Missing info from file: controller type" << std::endl;
         return false;
     }
 
+    // ---- read "tick"
     const char* tick_c = xml->getAttributeValue("tick");
-    if (tick_c!=NULL) tick = atoi(tick_c);
+    if (tick_c != NULL)
+    {
+        m_tick = atoi(tick_c);
+    }
     else
     {
-        tick = 0;
+        m_tick = 0;
         std::cout << "Missing info from file: controller tick" << std::endl;
         return false;
     }
 
+    // ---- read "value"
     const char* value_c = xml->getAttributeValue("value");
-    if (value_c!=NULL) value = atoi(value_c);
+    if (value_c != NULL)
+    {
+        m_value = atoi(value_c);
+    }
     else
     {
-        value = 0;
+        m_value = 0;
         std::cout << "Missing info from file: controller value" << std::endl;
         return false;
     }
 
     return true;
-
 }
 
-}

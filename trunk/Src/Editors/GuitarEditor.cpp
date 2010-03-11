@@ -150,9 +150,9 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
     // ------------------------------- draw strings -------------------------------
     AriaRender::color(0,0,0);
 
-    for(unsigned int n=0; n<tuning.size(); n++)
+    for (unsigned int n=0; n<tuning.size(); n++)
     {
-        AriaRender::line( getEditorsXStart(), getEditorYStart() + first_string_position + n*y_step,
+        AriaRender::line( Editor::getEditorXStart(), getEditorYStart() + first_string_position + n*y_step,
                           getXEnd(), getEditorYStart() + first_string_position + n*y_step);
     }
 
@@ -160,7 +160,7 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     // ---------------------- draw notes ----------------------------
     const int noteAmount = track->getNoteAmount();
-    for(int n=0; n<noteAmount; n++)
+    for (int n=0; n<noteAmount; n++)
     {
         int x1=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
         int x2=track->getNoteEndInPixels(n) - sequence->getXScrollInPixels();
@@ -179,8 +179,8 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
         if (track->isNoteSelected(n) and focus) AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
         else AriaRender::color((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
 
-        AriaRender::bordered_rect_no_start(x1+getEditorsXStart(), getEditorYStart()+first_string_position+string*y_step-2,
-                                           x2-1+getEditorsXStart(), getEditorYStart()+first_string_position+string*y_step+2);
+        AriaRender::bordered_rect_no_start(x1+Editor::getEditorXStart(), getEditorYStart()+first_string_position+string*y_step-2,
+                                           x2-1+Editor::getEditorXStart(), getEditorYStart()+first_string_position+string*y_step+2);
 
         // fret number
         if (track->isNoteSelected(n)  and focus) AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
@@ -188,17 +188,17 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
         if (fret < 10)
         {
-            AriaRender::quad(x1+getEditorsXStart()-1, getEditorYStart()+first_string_position+string*y_step-8,
-                             x1+getEditorsXStart()-1, getEditorYStart()+first_string_position+string*y_step,
-                             x1+14+getEditorsXStart(), getEditorYStart()+first_string_position+string*y_step,
-                             x1+9+getEditorsXStart(), getEditorYStart()+first_string_position+string*y_step-8);
+            AriaRender::quad(x1+Editor::getEditorXStart()-1, getEditorYStart()+first_string_position+string*y_step-8,
+                             x1+Editor::getEditorXStart()-1, getEditorYStart()+first_string_position+string*y_step,
+                             x1+14+Editor::getEditorXStart(), getEditorYStart()+first_string_position+string*y_step,
+                             x1+9+Editor::getEditorXStart(), getEditorYStart()+first_string_position+string*y_step-8);
         }
         else
         {
-            AriaRender::quad(x1+getEditorsXStart()-1, getEditorYStart()+first_string_position+string*y_step-8,
-                             x1+getEditorsXStart()-1, getEditorYStart()+first_string_position+string*y_step,
-                             x1+18+getEditorsXStart(), getEditorYStart()+first_string_position+string*y_step,
-                             x1+13+getEditorsXStart(), getEditorYStart()+first_string_position+string*y_step-8);
+            AriaRender::quad(x1+Editor::getEditorXStart()-1, getEditorYStart()+first_string_position+string*y_step-8,
+                             x1+Editor::getEditorXStart()-1, getEditorYStart()+first_string_position+string*y_step,
+                             x1+18+Editor::getEditorXStart(), getEditorYStart()+first_string_position+string*y_step,
+                             x1+13+Editor::getEditorXStart(), getEditorYStart()+first_string_position+string*y_step-8);
         }
         
         AriaRender::images();
@@ -207,9 +207,9 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
         else AriaRender::color(0, 0, 0);
 
         // draw twice to make it more visible...
-        AriaRender::renderNumber(fret, x1+getEditorsXStart(),
+        AriaRender::renderNumber(fret, x1+Editor::getEditorXStart(),
                                  getEditorYStart() + first_string_position + string*y_step + 3);
-        AriaRender::renderNumber(fret, x1+getEditorsXStart(),
+        AriaRender::renderNumber(fret, x1+Editor::getEditorXStart(),
                                  getEditorYStart() + first_string_position + string*y_step + 3);
         
     }//next
@@ -248,8 +248,8 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
             if (!(preview_x1<0 || preview_x2<0 || string<0 || (unsigned int)string>tuning.size()-1) and preview_x2>preview_x1)
             {
-                AriaRender::rect(preview_x1+getEditorsXStart(), string*y_step + getEditorYStart() + first_string_position - 5,
-                                 preview_x2+getEditorsXStart(), (string+1)*y_step + getEditorYStart() + first_string_position - 5);
+                AriaRender::rect(preview_x1+Editor::getEditorXStart(), string*y_step + getEditorYStart() + first_string_position - 5,
+                                 preview_x2+Editor::getEditorXStart(), (string+1)*y_step + getEditorYStart() + first_string_position - 5);
             }
 
         }// end if selection or addition
@@ -275,26 +275,26 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
             const int x2=track->getNoteEndInPixels(lastClickedNote) - sequence->getXScrollInPixels();
             const int string=track->getNoteString(lastClickedNote);
 
-            AriaRender::rect(x1+x_steps_to_move+getEditorsXStart(),
+            AriaRender::rect(x1+x_steps_to_move+Editor::getEditorXStart(),
                              string*y_step + getEditorYStart() + first_string_position - 5 + y_steps_to_move*y_step,
-                             x2-1+x_steps_to_move+getEditorsXStart(),
+                             x2-1+x_steps_to_move+Editor::getEditorXStart(),
                              string*y_step + getEditorYStart() + first_string_position - 5 + (y_steps_to_move+1)*y_step);
         }
         else
         {
             // move a bunch of notes
 
-            for(int n=0; n<track->getNoteAmount(); n++)
+            for (int n=0; n<track->getNoteAmount(); n++)
             {
-                if (!track->isNoteSelected(n)) continue;
+                if (not track->isNoteSelected(n)) continue;
 
-                const int x1=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
-                const int x2=track->getNoteEndInPixels(n) - sequence->getXScrollInPixels();
-                const int string=track->getNoteString(n);
+                const int x1     = track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
+                const int x2     = track->getNoteEndInPixels(n) - sequence->getXScrollInPixels();
+                const int string = track->getNoteString(n);
 
-                AriaRender::rect(x1+x_steps_to_move+getEditorsXStart(),
+                AriaRender::rect(x1+x_steps_to_move+Editor::getEditorXStart(),
                                  string*y_step + getEditorYStart() + first_string_position - 5 + y_steps_to_move*y_step,
-                                 x2-1+x_steps_to_move+getEditorsXStart(),
+                                 x2-1+x_steps_to_move+Editor::getEditorXStart(),
                                  string*y_step + getEditorYStart() + first_string_position - 5 + (y_steps_to_move+1)*y_step);
             }//next
 
@@ -311,13 +311,13 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
     else AriaRender::color(0.8, 0.8, 0.8);
 
     AriaRender::rect( 0, getEditorYStart(),
-                      getEditorsXStart()-3, getYEnd());
+                      Editor::getEditorXStart()-3, getYEnd());
 
     // string names
     AriaRender::images();
     AriaRender::color(0,0,0);
 
-    int text_x = getEditorsXStart()-23;
+    int text_x = Editor::getEditorXStart()-23;
     for(int n=0; n<string_amount; n++)
     {
         const int text_y = getEditorYStart() + 21 + n*y_step;

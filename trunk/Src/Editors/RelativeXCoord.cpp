@@ -96,7 +96,7 @@ void RelativeXCoord::convertTo(RelativeType relativeTo)
 
                 if (relativeToWindow != -1)
                 {
-                    relativeToEditor = relativeToWindow - getEditorsXStart();
+                    relativeToEditor = relativeToWindow - Editor::getEditorXStart();
                 }
                 else if (relativeToMidi != -1)
                 {
@@ -117,7 +117,7 @@ void RelativeXCoord::convertTo(RelativeType relativeTo)
             {
                     if (relativeToMidi != -1)
                     {
-                        relativeToWindow = ( int )( relativeToMidi * sequence->getZoom() ) - sequence->getXScrollInPixels() + getEditorsXStart();
+                        relativeToWindow = ( int )( relativeToMidi * sequence->getZoom() ) - sequence->getXScrollInPixels() + Editor::getEditorXStart();
                     }
                     else
                     {
@@ -137,7 +137,7 @@ void RelativeXCoord::convertTo(RelativeType relativeTo)
 
                     if (relativeToWindow != -1)
                     {
-                        relativeToMidi = (int)( ( relativeToWindow - getEditorsXStart() ) / sequence->getZoom() ) + sequence->getXScrollInMidiTicks();
+                        relativeToMidi = (int)( ( relativeToWindow - Editor::getEditorXStart() ) / sequence->getZoom() ) + sequence->getXScrollInMidiTicks();
                     }
                     else
                     {
@@ -165,7 +165,7 @@ int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
 
                 if (relativeToWindow != -1)
                 {
-                    relativeToEditor = relativeToWindow - getEditorsXStart();
+                    relativeToEditor = relativeToWindow - Editor::getEditorXStart();
                 }
                 else if (relativeToMidi != -1)
                 {
@@ -183,12 +183,16 @@ int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
 
         case WINDOW:
 
-            if (relativeToWindow!=-1) return relativeToWindow;
+            if (relativeToWindow!=-1)
+            {
+                return relativeToWindow;
+            }
             else
             {
                     if (relativeToMidi != -1)
                     {
-                        return ( int )( relativeToMidi * sequence->getZoom() ) - sequence->getXScrollInPixels() + getEditorsXStart();
+                        return int(relativeToMidi * sequence->getZoom()) -
+                               sequence->getXScrollInPixels() + Editor::getEditorXStart();
                     }
                     else
                     {
@@ -208,7 +212,7 @@ int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
 
                     if (relativeToWindow != -1)
                     {
-                        return (int)( (relativeToWindow - getEditorsXStart()) / sequence->getZoom() ) + sequence->getXScrollInMidiTicks();
+                        return (int)( (relativeToWindow - Editor::getEditorXStart()) / sequence->getZoom() ) + sequence->getXScrollInMidiTicks();
                     }
                     else
                     {

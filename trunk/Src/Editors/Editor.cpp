@@ -37,15 +37,7 @@ namespace AriaMaestosa
 
 using namespace AriaMaestosa;
 
-EditTool Editor::getCurrentTool()
-{
-    return g_current_edit_tool;
-}
-
-void Editor::setEditTool(EditTool tool)
-{
-    g_current_edit_tool = tool;
-}
+// ------------------------------------------------------------------------------------------------------------
 
 Editor::Editor(Track* track)
 {
@@ -74,25 +66,46 @@ Editor::Editor(Track* track)
     default_volume = 80;
 }
 
+// ------------------------------------------------------------------------------------------------------------
+
 Editor::~Editor()
 {
 }
 
-int Editor::getDefaultVolume() const { return default_volume; }
-void Editor::setDefaultVolume(const int v) { default_volume = v; }
+// ------------------------------------------------------------------------------------------------------------
+
+int Editor::getDefaultVolume() const
+{
+    return default_volume;
+}
+
+// ------------------------------------------------------------------------------------------------------------
+
+void Editor::setDefaultVolume(const int v)
+{
+    default_volume = v;
+}
+
+// ------------------------------------------------------------------------------------------------------------
 
 void Editor::useInstantNotes(bool enabled)
 {
     useInstantNotes_bool = enabled;
 }
+
+// ------------------------------------------------------------------------------------------------------------
+
 void Editor::useVerticalScrollbar(const bool useScrollbar)
 {
     Editor::useVerticalScrollbar_bool = useScrollbar;
 }
 
-// -------------------------------------- render --------------------------------------
+// ------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------ render ----------------------------------------------------
+// ------------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
+#pragma mark Render
 #endif
 
 void Editor::render()
@@ -100,26 +113,31 @@ void Editor::render()
     render( RelativeXCoord_empty(), -1, RelativeXCoord_empty(), -1, true );
 }
 
+// ------------------------------------------------------------------------------------------------------------
+
 void Editor::render(RelativeXCoord mousex_current, int mousey_current,
                     RelativeXCoord mousex_initial, int mousey_initial, const bool focus)
 {
 }
 
+// ------------------------------------------------------------------------------------------------------------
 
 void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
 {
 
     AriaRender::primitives();
     AriaRender::lineWidth(1);
-    const int start_x = getMeasureData()->firstPixelInMeasure( getMeasureData()->measureAtPixel( getEditorsXStart() ) );
+    const int start_x = getMeasureData()->firstPixelInMeasure(
+            getMeasureData()->measureAtPixel( Editor::getEditorXStart() ) );
 
     MeasureData* measureBar = getMeasureData();
     const int measureAmount = measureBar->getMeasureAmount();
-    const float beatLength = measureBar->beatLengthInPixels();
-    float mx=start_x, new_mx;
-    const int measureID = measureBar->measureAtPixel(getEditorsXStart());
+    const float beatLength  = measureBar->beatLengthInPixels();
+    float mx                = start_x;
+    const int measureID     = measureBar->measureAtPixel( Editor::getEditorXStart() );
+    float new_mx;
 
-    for(int m=measureID; m<measureAmount; m+=1)
+    for (int m=measureID; m<measureAmount; m+=1)
     {
         new_mx = measureBar->firstPixelInMeasure(m);
 
@@ -153,6 +171,8 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
     }//end if
 
 }
+
+// ------------------------------------------------------------------------------------------------------------
 
 void Editor::renderScrollbar()
 {
@@ -231,20 +251,29 @@ void Editor::renderScrollbar()
 
 }
 
-
-// -------------------------------------- background --------------------------------------
+// ------------------------------------------------------------------------------------------------------------
+// ----------------------------------------- background handling  ---------------------------------------------
+// ------------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
+#pragma mark Background view handling
 #endif
+
+// ------------------------------------------------------------------------------------------------------------
 
 void Editor::clearBackgroundTracks()
 {
     backgroundTracks.clearWithoutDeleting();
 }
+
+// ------------------------------------------------------------------------------------------------------------
+
 void Editor::addBackgroundTrack(Track* track)
 {
     backgroundTracks.push_back(track);
 }
+
+// ------------------------------------------------------------------------------------------------------------
 
 bool Editor::hasAsBackground(Track* track)
 {
@@ -257,7 +286,9 @@ bool Editor::hasAsBackground(Track* track)
     return false;
 }
 
-// on track deletion, we need to check if this one is being used and remove references to it if so
+// ------------------------------------------------------------------------------------------------------------
+
+/** on track deletion, we need to check if this one is being used and remove references to it if so */
 void Editor::trackDeleted(Track* track)
 {
     //Sequence* seq = getCurrentSequence();
@@ -274,10 +305,12 @@ void Editor::trackDeleted(Track* track)
     backgroundTracks.removeMarked();
 }
 
-
-// -------------------------------------- mouse events --------------------------------------
+// ------------------------------------------------------------------------------------------------------------
+// ------------------------------------------- mouse events ---------------------------------------------------
+// ------------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
+#pragma mark Mouse Events
 #endif
 
 void Editor::mouseDown(RelativeXCoord x, int y)
@@ -351,6 +384,8 @@ void Editor::mouseDown(RelativeXCoord x, int y)
     selecting = false;
 }
 
+// ------------------------------------------------------------------------------------------------------------
+
 void Editor::mouseDrag(RelativeXCoord mousex_current, int mousey_current,
                        RelativeXCoord mousex_initial, int mousey_initial)
 {
@@ -389,6 +424,8 @@ void Editor::mouseDrag(RelativeXCoord mousex_current, int mousey_current,
     // if selection becomes thin again, come back in note add mode
     if (selecting and abs(mousey_current-mousey_initial)<ystep) selecting = false;
 }
+
+// ------------------------------------------------------------------------------------------------------------
 
 void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                      RelativeXCoord mousex_initial, int mousey_initial)
@@ -489,6 +526,8 @@ end_of_func:
 
 }
 
+// ------------------------------------------------------------------------------------------------------------
+
 void Editor::TrackPropertiesDialog(RelativeXCoord mousex_current, int mousey_current,
                          RelativeXCoord mousex_initial, int mousey_initial)
 {
@@ -498,6 +537,8 @@ void Editor::TrackPropertiesDialog(RelativeXCoord mousex_current, int mousey_cur
 
     Display::render();
 }
+
+// ------------------------------------------------------------------------------------------------------------
 
 /*
  * Is it necessary to send frequent mouse held down events?
@@ -523,6 +564,9 @@ void Editor::TrackPropertiesDialog(RelativeXCoord mousex_current, int mousey_cur
      return false;
  }
  */
+
+// ------------------------------------------------------------------------------------------------------------
+
 void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
                            RelativeXCoord mousex_initial, int mousey_initial)
 {
@@ -541,11 +585,13 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
             Display::render();
             return;
         }
-        else if (mousex_current.getRelativeTo(WINDOW) < getEditorsXStart()+20)
+        else if (mousex_current.getRelativeTo(WINDOW) < Editor::getEditorXStart()+20)
             // scroll backwards
         {
-            getCurrentSequence()->setXScrollInPixels( getCurrentSequence()->getXScrollInPixels()-
-                                                      (getEditorsXStart()+20-mousex_current.getRelativeTo(WINDOW))/4 );
+            const int new_scroll_value = getCurrentSequence()->getXScrollInPixels() -
+                    (Editor::getEditorXStart() + 20 - mousex_current.getRelativeTo(WINDOW))/4;
+            
+            getCurrentSequence()->setXScrollInPixels( new_scroll_value );
             DisplayFrame::updateHorizontalScrollbar();
             Display::render();
             return;
@@ -622,6 +668,8 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 
 }
 
+// ------------------------------------------------------------------------------------------------------------
+
 void Editor::rightClick(RelativeXCoord x, int y)
 {
     int noteID;
@@ -636,24 +684,50 @@ void Editor::rightClick(RelativeXCoord x, int y)
 
 }
 
-// -------------------------------------- note stuff to be implemented by children --------------------------------------
+// ------------------------------------------------------------------------------------------------------------
+// ------------------------------- note stuff to be implemented by children -----------------------------------
+// ------------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
+#pragma mark To be implemented in children
 #endif
 
-NoteSearchResult Editor::noteAt(RelativeXCoord x, const int y, int& noteID) { std::cerr << "ERROR base class method called" << std::endl; return FOUND_NOTHING; }
-void Editor::noteClicked(const int id) { std::cerr << "ERROR base class method called" << std::endl; }
-void Editor::addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY) { std::cerr << "ERROR base class method called" << std::endl; }
-void Editor::addNote(const int snappedX, const int mouseY) { std::cerr << "ERROR base class method called" << std::endl; }
+//FIXME: should these be pure virtual?
+NoteSearchResult Editor::noteAt(RelativeXCoord x, const int y, int& noteID)
+{
+    std::cerr << "ERROR base class method called" << std::endl;
+    return FOUND_NOTHING;
+}
+void Editor::noteClicked(const int id)
+{
+    std::cerr << "ERROR base class method called" << std::endl;
+}
+void Editor::addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY)
+{ 
+    std::cerr << "ERROR base class method called" << std::endl;
+}
+void Editor::addNote(const int snappedX, const int mouseY)
+{
+    std::cerr << "ERROR base class method called" << std::endl;
+}
 void Editor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current,
-                               RelativeXCoord& mousex_initial, int mousey_initial) { std::cerr << "ERROR base class method called" << std::endl; }
-void Editor::moveNote(Note& note, const int x_steps_to_move, const int y_steps_to_move) { std::cerr << "ERROR base class method called" << std::endl; }
+                               RelativeXCoord& mousex_initial, int mousey_initial)
+{
+    std::cerr << "ERROR base class method called" << std::endl;
+}
+void Editor::moveNote(Note& note, const int x_steps_to_move, const int y_steps_to_move)
+{ 
+    std::cerr << "ERROR base class method called" << std::endl;
+}
 
+// ------------------------------------------------------------------------------------------------------------
 int Editor::getLevelAtY(const int y)
 {
     return (y - getEditorYStart() + getYScrollInPixels())/ystep;
 }
     
+// ------------------------------------------------------------------------------------------------------------
+
 void Editor::makeMoveNoteEvent(const int relativeX, const int relativeY, const int noteID)
 {
         // move a single note
@@ -664,14 +738,19 @@ void Editor::makeMoveNoteEvent(const int relativeX, const int relativeY, const i
             track->action( new Action::MoveNotes(relativeX, relativeY, SELECTED_NOTES) );
 }
 
+// ------------------------------------------------------------------------------------------------------------
+
 void Editor::setYStep(const int ystep)
 {
     Editor::ystep = ystep;
 }
 
-// -------------------------------------- size info --------------------------------------
+// ------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------ size info -------------------------------------------------
+// ------------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
+#pragma mark Size Info
 #endif
 
 void Editor::updatePosition(int from_y, int to_y, int width, int height, int barHeight)
@@ -683,15 +762,22 @@ void Editor::updatePosition(int from_y, int to_y, int width, int height, int bar
     Editor::barHeight = barHeight;
 }
 
-namespace AriaMaestosa
-{
-    const int getEditorsXStart()       {    return 90;                               }
-}
-const int Editor::getXEnd()            {    return width - 5;                        } // FIXME - adapt to include vertical scrollbar
-const int Editor::getTrackYStart()     {    return from_y;                           }
-const int Editor::getEditorYStart()    {    return from_y+barHeight+20;              }
-const int Editor::getYEnd()            {    return to_y - 10;                        }
-const int Editor::getWidth()           {    return width;                            }
+// ------------------------------------------------------------------------------------------------------------
+
+const int Editor::getEditorXStart()       {    return 90;                               }
+const int Editor::getXEnd()         const {    return width - 5;                        } // FIXME - adapt to include vertical scrollbar
+const int Editor::getTrackYStart()  const {    return from_y;                           }
+const int Editor::getEditorYStart() const {    return from_y+barHeight+20;              }
+const int Editor::getYEnd()         const {    return to_y - 10;                        }
+const int Editor::getWidth()        const {    return width;                            }
+
+// ------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------- Scrolling ---------------------------------------------------
+// ------------------------------------------------------------------------------------------------------------
+#if 0
+#pragma mark -
+#pragma mark Scrolling
+#endif
 
 int Editor::getYScrollInPixels()
 {
@@ -702,12 +788,22 @@ int Editor::getYScrollInPixels()
     return -1;
 }
 
+// ------------------------------------------------------------------------------------------------------------
+
 void Editor::scroll(float amount)
 {
     sb_position -= amount;
     if (sb_position<0) sb_position=0;
     else if (sb_position>1) sb_position=1;
 }
+
+// ------------------------------------------------------------------------------------------------------------
+// -------------------------------------------- Utils/actions  ------------------------------------------------
+// ------------------------------------------------------------------------------------------------------------
+#if 0
+#pragma mark -
+#pragma mark Utils/actions
+#endif
 
 int Editor::snapMidiTickToGrid(int tick)
 {
@@ -725,6 +821,8 @@ int Editor::snapMidiTickToGrid(int tick)
 
 }
 
+// ------------------------------------------------------------------------------------------------------------
+
 int Editor::snapMidiTickToGrid_ceil(int tick)
 {
     int origin_tick = 0;
@@ -740,3 +838,53 @@ int Editor::snapMidiTickToGrid_ceil(int tick)
                                 );
 
 }
+
+// ------------------------------------------------------------------------------------------------------------
+
+int Editor::findNotePitch(NoteName note_7, PitchSign sharpness, const int octave)
+{
+    int note = 0;
+    
+    if      (note_7 == 0) note += 2;  // A
+    else if (note_7 == 1) note += 0;  // B
+    else if (note_7 == 2) note += 11; // C
+    else if (note_7 == 3) note += 9;  // D
+    else if (note_7 == 4) note += 7;  // E
+    else if (note_7 == 5) note += 6;  // F
+    else if (note_7 == 6) note += 4;  // G
+    else
+    {
+        std::cerr << "Invalid note: " << note_7 << std::endl;
+        return 0;
+    }
+    
+    if      (sharpness == SHARP) note -= 1;
+    else if (sharpness == FLAT)  note += 1;
+    
+    //FIXME: add sanity checks for 'octave'
+    return note + octave*12;
+}
+
+// ------------------------------------------------------------------------------------------------------------
+// ----------------------------------------- Edit tool management ---------------------------------------------
+// ------------------------------------------------------------------------------------------------------------
+
+#if 0
+#pragma mark -
+#pragma mark Edit tool management
+#endif
+
+EditTool Editor::getCurrentTool()
+{
+    return g_current_edit_tool;
+}
+
+// ------------------------------------------------------------------------------------------------------------
+
+void Editor::setEditTool(EditTool tool)
+{
+    g_current_edit_tool = tool;
+}
+
+// ------------------------------------------------------------------------------------------------------------
+

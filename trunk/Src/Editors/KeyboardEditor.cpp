@@ -39,39 +39,52 @@
 
 
 
-namespace AriaMaestosa {
+using namespace AriaMaestosa;
 
-const int y_step = 10;
+namespace AriaMaestosa
+{
+    const int Y_STEP_HEIGHT = 10;
+}
 
-// ***********************************************************************************************************************************************************
-// **********************************************************    CONSTRUCTOR      ****************************************************************************
-// ***********************************************************************************************************************************************************
+// ************************************************************************************************************
+// *********************************************    CTOR/DTOR      ********************************************
+// ************************************************************************************************************
+#if 0
+#pragma mark Ctor/dtor
+#endif
 
 KeyboardEditor::KeyboardEditor(Track* track) : Editor(track)
 {
-    note_greyed_out[0] = false;
-    note_greyed_out[1] = true;
-    note_greyed_out[2] = false;
-    note_greyed_out[3] = false;
-    note_greyed_out[4] = true;
-    note_greyed_out[5] = false;
-    note_greyed_out[6] = true;
-    note_greyed_out[7] = false;
-    note_greyed_out[8] = false;
-    note_greyed_out[9] = true;
-    note_greyed_out[10] = false;
-    note_greyed_out[11] = true;
+    m_note_greyed_out[0]  = false;
+    m_note_greyed_out[1]  = true;
+    m_note_greyed_out[2]  = false;
+    m_note_greyed_out[3]  = false;
+    m_note_greyed_out[4]  = true;
+    m_note_greyed_out[5]  = false;
+    m_note_greyed_out[6]  = true;
+    m_note_greyed_out[7]  = false;
+    m_note_greyed_out[8]  = false;
+    m_note_greyed_out[9]  = true;
+    m_note_greyed_out[10] = false;
+    m_note_greyed_out[11] = true;
     sb_position=0.5;
 }
+
+// -----------------------------------------------------------------------------------------------------------
 
 KeyboardEditor::~KeyboardEditor()
 {
 
 }
 
-// ****************************************************************************************************************************************************
-// *********************************************************    EVENTS      ***************************************************************************
-// ****************************************************************************************************************************************************
+// **********************************************************************************************************
+// ****************************************    EVENTS      **************************************************
+// **********************************************************************************************************
+
+#if 0
+#pragma mark -
+#pragma mark Events
+#endif
 
 void KeyboardEditor::mouseDown(RelativeXCoord x, const int y)
 {
@@ -95,9 +108,13 @@ void KeyboardEditor::mouseDown(RelativeXCoord x, const int y)
 }
 
     
-// ****************************************************************************************************************************************************
-// ****************************************************    EDITOR METHODS      ************************************************************************
-// ****************************************************************************************************************************************************
+// ***********************************************************************************************************
+// ******************************************    EDITOR METHODS      *****************************************
+// ***********************************************************************************************************
+#if 0
+#pragma mark -
+#pragma mark Editor methods
+#endif
 
 
 void KeyboardEditor::addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY)
@@ -106,12 +123,16 @@ void KeyboardEditor::addNote(const int snapped_start_tick, const int snapped_end
     track->action( new Action::AddNote(note, snapped_start_tick, snapped_end_tick, default_volume ) );
 }
 
+// -----------------------------------------------------------------------------------------------------------
+    
 void KeyboardEditor::noteClicked(const int id)
 {
     track->selectNote(ALL_NOTES, false);
     track->selectNote(id, true);
     track->playNote(id);
 }
+
+// -----------------------------------------------------------------------------------------------------------
 
 NoteSearchResult KeyboardEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 {
@@ -122,7 +143,7 @@ NoteSearchResult KeyboardEditor::noteAt(RelativeXCoord x, const int y, int& note
     {
         const int x1=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
         const int x2=track->getNoteEndInPixels(n) - sequence->getXScrollInPixels();
-        const int y1=track->getNotePitchID(n)*y_step + getEditorYStart() - getYScrollInPixels();
+        const int y1=track->getNotePitchID(n)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels();
 
         if (x_edit > x1 and x_edit < x2 and y > y1 and y < y1+12)
         {
@@ -145,6 +166,8 @@ NoteSearchResult KeyboardEditor::noteAt(RelativeXCoord x, const int y, int& note
     return FOUND_NOTHING;
 }
 
+// -----------------------------------------------------------------------------------------------------------
+
 void KeyboardEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current,
                                        RelativeXCoord& mousex_initial, int mousey_initial)
 {
@@ -157,8 +180,8 @@ void KeyboardEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mouse
 
         if ( x1>std::min( mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR) ) + sequence->getXScrollInPixels() and
             x2<std::max( mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR) ) + sequence->getXScrollInPixels() and
-            from_note*y_step+getEditorYStart()-getYScrollInPixels() > std::min(mousey_current, mousey_initial) and
-            from_note*y_step+getEditorYStart()-getYScrollInPixels() < std::max(mousey_current, mousey_initial) )
+            from_note*Y_STEP_HEIGHT+getEditorYStart()-getYScrollInPixels() > std::min(mousey_current, mousey_initial) and
+            from_note*Y_STEP_HEIGHT+getEditorYStart()-getYScrollInPixels() < std::max(mousey_current, mousey_initial) )
         {
 
             track->selectNote(n, true);
@@ -169,31 +192,42 @@ void KeyboardEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mouse
     }//next
 
 }
+
+// -----------------------------------------------------------------------------------------------------------
     
 int KeyboardEditor::getYScrollInPixels()
 {
     return (int)(   sb_position*(120*11-height-20)   );
 }
 
+// -----------------------------------------------------------------------------------------------------------
+
 void KeyboardEditor::moveNote(Note& note, const int relativeX, const int relativeY)
 {
-    if (note.startTick+relativeX < 0) return; // refuse to move before song start
-    if (note.pitchID+relativeY < 0) return; // reject moves that would make illegal notes
-    if (note.pitchID+relativeY >= 128) return;
+    if (note.startTick+relativeX < 0)    return; // refuse to move before song start
+    if (note.pitchID+relativeY   < 0)    return; // reject moves that would make illegal notes
+    if (note.pitchID+relativeY   >= 128) return;
 
     note.startTick += relativeX;
     note.endTick   += relativeX;
     note.pitchID   += relativeY;
 }
 
-// ***********************************************************************************************************************************************************
-// ************************************************************    RENDER      *******************************************************************************
-// ***********************************************************************************************************************************************************
+// ************************************************************************************************************
+// ****************************************    RENDER      ****************************************************
+// ************************************************************************************************************
+
+#if 0
+#pragma mark -
+#pragma mark Render
+#endif
 
 void KeyboardEditor::render()
 {
     render( RelativeXCoord_empty(), -1, RelativeXCoord_empty(), -1, true );
 }
+
+// -----------------------------------------------------------------------------------------------------------
 
 void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
                             RelativeXCoord mousex_initial, int mousey_initial, bool focus)
@@ -205,11 +239,11 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     // ------------------ draw lined background ----------------
 
-    int levelid = getYScrollInPixels()/y_step;
+    int levelid = getYScrollInPixels()/Y_STEP_HEIGHT;
     const int yscroll = getYScrollInPixels();
     const int y1 = getEditorYStart();
-    const int last_note = ( yscroll + getYEnd() - getEditorYStart() )/y_step;
-    const int x1 = getEditorsXStart();
+    const int last_note = ( yscroll + getYEnd() - getEditorYStart() )/Y_STEP_HEIGHT;
+    const int x1 = getEditorXStart();
     const int x2 = getXEnd();
 
     // white background
@@ -219,19 +253,19 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     // horizontal lines
     AriaRender::color(0.94, 0.94, 0.94, 1);
-    while(levelid < last_note)
+    while (levelid < last_note)
     {
         const int note12 = 11 - ((levelid - 3) % 12);
-        if (note_greyed_out[note12] or
+        if (m_note_greyed_out[note12] or
            levelid>131 or levelid<4 /* out of midi range notes... there's a few at the top and bottom -  FIXME - don't show them at all */)
         {
-            AriaRender::rect(x1, y1 + levelid*y_step - yscroll+1,
-                             x2, y1 + (levelid+1)*y_step - yscroll+1);
+            AriaRender::rect(x1, y1 + levelid*Y_STEP_HEIGHT - yscroll+1,
+                             x2, y1 + (levelid+1)*Y_STEP_HEIGHT - yscroll+1);
         }
         else
         {
-            AriaRender::line(x1, y1 + (levelid+1)*y_step - yscroll+1,
-                             x2, y1 + (levelid+1)*y_step - yscroll+1);
+            AriaRender::line(x1, y1 + (levelid+1)*Y_STEP_HEIGHT - yscroll+1,
+                             x2, y1 + (levelid+1)*Y_STEP_HEIGHT - yscroll+1);
         }
 
         levelid++;
@@ -276,8 +310,8 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
                 const int y=track->getNotePitchID(n);
 
 
-                AriaRender::rect(x1+getEditorsXStart(), y*y_step+1 + getEditorYStart() - getYScrollInPixels(),
-                                          x2+getEditorsXStart()-1, (y+1)*y_step + getEditorYStart() - getYScrollInPixels());
+                AriaRender::rect(x1+getEditorXStart(), y*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels(),
+                                          x2+getEditorXStart()-1, (y+1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels());
             }
 
         }
@@ -285,24 +319,32 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     // ---------------------- draw notes ----------------------------
     const int noteAmount = track->getNoteAmount();
-    for(int n=0; n<noteAmount; n++)
+    for (int n=0; n<noteAmount; n++)
     {
 
-        int x1=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
-        int x2=track->getNoteEndInPixels(n) - sequence->getXScrollInPixels();
+        int x1 = track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
+        int x2 = track->getNoteEndInPixels(n) - sequence->getXScrollInPixels();
 
         // don't draw notes that won't be visible
-        if (x2<0) continue;
-        if (x1>width) break;
+        if (x2 < 0)     continue;
+        if (x1 > width) break;
 
-        int y=track->getNotePitchID(n);
-        float volume=track->getNoteVolume(n)/127.0;
+        int   y     = track->getNotePitchID(n);
+        float volume = track->getNoteVolume(n)/127.0;
 
-        if (track->isNoteSelected(n) and focus) AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
-        else AriaRender::color((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
+        if (track->isNoteSelected(n) and focus)
+        {
+            AriaRender::color((1-volume)*1,   (1-(volume/2))*1, 0);
+        }
+        else
+        {
+            AriaRender::color((1-volume)*0.9, (1-volume)*0.9,  (1-volume)*0.9);
+        }
 
-        AriaRender::bordered_rect(x1+getEditorsXStart()+1, y*y_step+1 + getEditorYStart() - getYScrollInPixels(),
-                                  x2+getEditorsXStart()-1, (y+1)*y_step + getEditorYStart() - getYScrollInPixels());
+        AriaRender::bordered_rect(x1+getEditorXStart()+1,
+                                  y*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels(),
+                                  x2+getEditorXStart()-1,
+                                  (y+1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels());
     }
 
 
@@ -312,7 +354,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     if (!focus) AriaRender::color(0.4, 0.4, 0.4);
     else AriaRender::color(0.8, 0.8, 0.8);
 
-    AriaRender::rect(0, getEditorYStart(), getEditorsXStart()-25,  getYEnd());
+    AriaRender::rect(0, getEditorYStart(), getEditorXStart()-25,  getYEnd());
 
     for(int g_octaveID=0; g_octaveID<11; g_octaveID++)
     {
@@ -324,7 +366,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             if (!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
             else AriaRender::setImageState(AriaRender::STATE_NORMAL);
 
-            noteTrackDrawable->move(getEditorsXStart()-noteTrackDrawable->getImageWidth(), from_y+barHeight+20 + g_octave_y);
+            noteTrackDrawable->move(getEditorXStart()-noteTrackDrawable->getImageWidth(), from_y+barHeight+20 + g_octave_y);
             noteTrackDrawable->render();
 
             AriaRender::primitives();
@@ -332,7 +374,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
             // FIXME - all those from_y+barHeight+20 stuff needs to be cleaned up for good
             AriaRender::line(0, from_y+barHeight+20 + g_octave_y+1,
-                             getEditorsXStart()-25, from_y+barHeight+20 + g_octave_y+1);
+                             getEditorXStart()-25, from_y+barHeight+20 + g_octave_y+1);
 
             // octave number
             AriaRender::images();
@@ -377,10 +419,10 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
             if (!(preview_x1<0 or preview_x2<0) and preview_x2>preview_x1)
             {
-                AriaRender::rect(preview_x1+getEditorsXStart(),
-                                 ((mousey_initial - getEditorYStart() + getYScrollInPixels())/y_step)*y_step + getEditorYStart() - getYScrollInPixels(),
-                                 preview_x2+getEditorsXStart(),
-                                 ((mousey_initial - getEditorYStart() + getYScrollInPixels())/y_step)*y_step+y_step + getEditorYStart() - getYScrollInPixels());
+                AriaRender::rect(preview_x1+getEditorXStart(),
+                                 ((mousey_initial - getEditorYStart() + getYScrollInPixels())/Y_STEP_HEIGHT)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels(),
+                                 preview_x2+getEditorXStart(),
+                                 ((mousey_initial - getEditorYStart() + getYScrollInPixels())/Y_STEP_HEIGHT)*Y_STEP_HEIGHT+Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels());
             }
 
         }// end if selection or addition
@@ -395,7 +437,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
         int y_difference = mousey_current - mousey_initial;
 
         const int x_step_move = (int)( snapMidiTickToGrid(x_difference) * sequence->getZoom() );
-        const int y_step_move = (int)round( (float)y_difference/ (float)y_step );
+        const int y_step_move = (int)round( (float)y_difference/ (float)Y_STEP_HEIGHT );
 
         // move a single note
         if (lastClickedNote!=-1)
@@ -404,10 +446,10 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             int x2=track->getNoteEndInPixels(lastClickedNote) - sequence->getXScrollInPixels();
             int y=track->getNotePitchID(lastClickedNote);
 
-            AriaRender::rect(x1+x_step_move+getEditorsXStart(),
-                             (y+y_step_move)*y_step+1 + getEditorYStart() - getYScrollInPixels(),
-                             x2-1+x_step_move+getEditorsXStart(),
-                             (y+y_step_move+1)*y_step + getEditorYStart() - getYScrollInPixels());
+            AriaRender::rect(x1+x_step_move+getEditorXStart(),
+                             (y+y_step_move)*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels(),
+                             x2-1+x_step_move+getEditorXStart(),
+                             (y+y_step_move+1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels());
         }
         else
         {
@@ -421,10 +463,10 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
                 int x2=track->getNoteEndInPixels(n) - sequence->getXScrollInPixels();
                 int y=track->getNotePitchID(n);
 
-                AriaRender::rect(x1+x_step_move+getEditorsXStart(),
-                                 (y+y_step_move)*y_step+1 + getEditorYStart() - getYScrollInPixels(),
-                                 x2-1+x_step_move+getEditorsXStart(),
-                                 (y+y_step_move+1)*y_step + getEditorYStart() - getYScrollInPixels());
+                AriaRender::rect(x1+x_step_move+getEditorXStart(),
+                                 (y+y_step_move)*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels(),
+                                 x2-1+x_step_move+getEditorXStart(),
+                                 (y+y_step_move+1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels());
             }//next
 
         }
@@ -443,7 +485,14 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
 }
 
+// ************************************************************************************************************
+// ****************************************    SPECIFIC      **************************************************
+// ************************************************************************************************************
 
+#if 0
+#pragma mark -
+#pragma mark Keyroll-specific
+#endif
 
 void KeyboardEditor::loadKey(const PitchSign sharpness_symbol, const int symbol_amount)
 {
@@ -496,20 +545,19 @@ void KeyboardEditor::loadKey(const PitchSign sharpness_symbol, const int symbol_
     int n = major_note12 + 7;
     if (n > 11) n -= 12;
 
-    note_greyed_out[n] = false; NEXT;
-    note_greyed_out[n] = true; NEXT;
-    note_greyed_out[n] = false; NEXT;
-    note_greyed_out[n] = false; NEXT;
-    note_greyed_out[n] = true; NEXT;
-    note_greyed_out[n] = false; NEXT;
-    note_greyed_out[n] = true; NEXT;
-    note_greyed_out[n] = false; NEXT;
-    note_greyed_out[n] = false; NEXT;
-    note_greyed_out[n] = true; NEXT;
-    note_greyed_out[n] = false; NEXT;
-    note_greyed_out[n] = true;
+    m_note_greyed_out[n] = false; NEXT;
+    m_note_greyed_out[n] = true;  NEXT;
+    m_note_greyed_out[n] = false; NEXT;
+    m_note_greyed_out[n] = false; NEXT;
+    m_note_greyed_out[n] = true;  NEXT;
+    m_note_greyed_out[n] = false; NEXT;
+    m_note_greyed_out[n] = true;  NEXT;
+    m_note_greyed_out[n] = false; NEXT;
+    m_note_greyed_out[n] = false; NEXT;
+    m_note_greyed_out[n] = true;  NEXT;
+    m_note_greyed_out[n] = false; NEXT;
+    m_note_greyed_out[n] = true;
 #undef NEXT
 
 }
 
-}

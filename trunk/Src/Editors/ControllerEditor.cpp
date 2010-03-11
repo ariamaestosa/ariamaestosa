@@ -90,7 +90,7 @@ void ControllerEditor::renderEvents()
         if (previous_location - scroll > getXEnd()) // if events are no more visible, stop drawing
             return;
 
-        if (xloc - scroll > getEditorsXStart())
+        if (xloc - scroll > Editor::getEditorXStart())
         {
             if (previous_location!=-1 and previous_value!=-1)
             {
@@ -170,8 +170,8 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     AriaRender::images();
     AriaRender::color(0.5, 0.5, 0.5);
 
-    controllerChoice->renderTopLabel(getEditorsXStart()+5 , area_from_y + 13);
-    controllerChoice->renderBottomLabel(getEditorsXStart()+5 , area_to_y);
+    controllerChoice->renderTopLabel(Editor::getEditorXStart()+5 , area_from_y + 13);
+    controllerChoice->renderBottomLabel(Editor::getEditorXStart()+5 , area_to_y);
     
     AriaRender::primitives();
     
@@ -202,9 +202,9 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
             if (tick1 < 0) tick1 = 0;
 
             AriaRender::line(( tick1 - sequence->getXScrollInMidiTicks())
-                             *sequence->getZoom()+getEditorsXStart(), mousey_initial,
+                             *sequence->getZoom()+Editor::getEditorXStart(), mousey_initial,
                              ( tick2 - sequence->getXScrollInMidiTicks())
-                             *sequence->getZoom()+getEditorsXStart(), mousey_current);
+                             *sequence->getZoom()+Editor::getEditorXStart(), mousey_current);
         }
     }
     AriaRender::lineWidth(1);
@@ -218,7 +218,7 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     else AriaRender::color(0.8, 0.8, 0.8);
 
     AriaRender::rect( 0, getEditorYStart(),
-                      getEditorsXStart(), getYEnd());
+                      Editor::getEditorXStart(), getYEnd());
 
     // controller name
     AriaRender::images();
@@ -252,7 +252,7 @@ void ControllerEditor::mouseDown(RelativeXCoord x, const int y)
     if (mouse_is_in_editor and Display::isSelectMorePressed())
         selecting = true;
 
-    if ( x.getRelativeTo(WINDOW)<getEditorsXStart() and y>getEditorYStart() and !track->graphics->collapsed )
+    if ( x.getRelativeTo(WINDOW)<Editor::getEditorXStart() and y>getEditorYStart() and !track->graphics->collapsed )
         Display::popupMenu(controllerChoice,x.getRelativeTo(WINDOW),y+15);
 
 }
@@ -308,7 +308,7 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
             // ------------------------ add controller events ---------------------
 
             // if mouse is out of bounds
-            if (mousex_initial.getRelativeTo(WINDOW) < getEditorsXStart()) return;
+            if (mousex_initial.getRelativeTo(WINDOW) < Editor::getEditorXStart()) return;
 
 
             if (mousey_initial<area_from_y) return;

@@ -43,6 +43,7 @@ NOTE: sorry, this is very raw :)
 * Test Actions with Unit tests
 
 * score print :
+    * Allow printing on different paper sizes (A4, etc...)
     * red images
       - 1/32 silences need a proper image
       - when a track first appears, we need its clef, key, etc. (maybe even once a page). Right now it's only
