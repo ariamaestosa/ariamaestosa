@@ -845,13 +845,13 @@ int Editor::findNotePitch(NoteName note_7, PitchSign sharpness, const int octave
 {
     int note = 0;
     
-    if      (note_7 == 0) note += 2;  // A
-    else if (note_7 == 1) note += 0;  // B
-    else if (note_7 == 2) note += 11; // C
-    else if (note_7 == 3) note += 9;  // D
-    else if (note_7 == 4) note += 7;  // E
-    else if (note_7 == 5) note += 6;  // F
-    else if (note_7 == 6) note += 4;  // G
+    if      (note_7 == A) note += 2;  // A
+    else if (note_7 == B) note += 0;  // B
+    else if (note_7 == C) note += 11; // C
+    else if (note_7 == D) note += 9;  // D
+    else if (note_7 == E) note += 7;  // E
+    else if (note_7 == F) note += 6;  // F
+    else if (note_7 == G) note += 4;  // G
     else
     {
         std::cerr << "Invalid note: " << note_7 << std::endl;
