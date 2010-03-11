@@ -98,6 +98,22 @@ namespace AriaMaestosa
     const Note12 NOTE_12_E_FLAT = NOTE_12_D_SHARP;
     const Note12 NOTE_12_G_FLAT = NOTE_12_F_SHARP;
     
+    static const wxString NOTE_12_NAME[] =
+    {
+        wxT("A"),
+        wxT("A#"),
+        wxT("B"),
+        wxT("C"),
+        wxT("C#"),
+        wxT("D"),
+        wxT("D#"),
+        wxT("E"),
+        wxT("F"),
+        wxT("F#"),
+        wxT("G"),
+        wxT("G#")
+    };
+    
     /** List of tools that can be used during edition */
     enum EditTool
     {

@@ -42,11 +42,17 @@ namespace AriaMaestosa
                 
                 wxBoxSizer* within_scrollpane_sizer = new wxBoxSizer(wxVERTICAL);
             
+                Note12 note;
+                int    octave;
+                
                 for (int pitch=4; pitch<=131; pitch++)
                 {
-                    wxCheckBox* cb = new wxCheckBox(scrollpane, wxID_ANY,
-                                                    wxString::Format(wxT("Note %i"), 131-pitch));
-                    within_scrollpane_sizer->Add(cb, 0, wxALL, 3);
+                    if (Editor::findNoteName(pitch, &note, &octave))
+                    {
+                        wxString label = NOTE_12_NAME[note] + wxT(" ") + wxString::Format(wxT("%i"), octave);
+                        wxCheckBox* cb = new wxCheckBox(scrollpane, wxID_ANY, label);
+                        within_scrollpane_sizer->Add(cb, 0, wxALL, 3);
+                    }
                 }
             
                 scrollpane->SetSizer(within_scrollpane_sizer);
