@@ -870,8 +870,8 @@ int Editor::findNotePitch(Note7 note_7, PitchSign sharpness, const int octave)
 bool Editor::findNoteName(const int pitchID, Note12* note_12, int* octave)
 {
     //TODO: this function would be excellent to test through unit tests
-    assert(pitchID >= 4);
-    assert(pitchID < 131);
+    if (pitchID < 4)   return false;
+    if (pitchID > 131) return false;
     *octave = pitchID/12;
     
     const int remainder = pitchID - (*octave) * 12;

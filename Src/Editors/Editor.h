@@ -92,6 +92,11 @@ namespace AriaMaestosa
         NOTE_12_G       = 10,
         NOTE_12_G_SHARP = 11
     };
+    const Note12 NOTE_12_A_FLAT = NOTE_12_G_SHARP;
+    const Note12 NOTE_12_B_FLAT = NOTE_12_A_SHARP;
+    const Note12 NOTE_12_D_FLAT = NOTE_12_C_SHARP;
+    const Note12 NOTE_12_E_FLAT = NOTE_12_D_SHARP;
+    const Note12 NOTE_12_G_FLAT = NOTE_12_F_SHARP;
     
     /** List of tools that can be used during edition */
     enum EditTool
@@ -284,6 +289,21 @@ namespace AriaMaestosa
           */ 
         static bool findNoteName(const int pitchID, Note12* note_12, int* octave);
 
+        /** Converts a Note7 to its Note12 counterpart */
+        static Note12 note7ToNote12(Note7 note7)
+        {
+            static const Note12 note7_to_note12[] =
+            {
+                NOTE_12_A,
+                NOTE_12_B,
+                NOTE_12_C,
+                NOTE_12_D,
+                NOTE_12_E,
+                NOTE_12_F,
+                NOTE_12_G
+            };
+            return note7_to_note12[note7];
+        }
     };
 }
 
