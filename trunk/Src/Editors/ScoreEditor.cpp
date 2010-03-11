@@ -87,7 +87,7 @@ ScoreMidiConverter::ScoreMidiConverter()
 
 // ------------------------------------------------------------------------------------------------------------
 
-void ScoreMidiConverter::setNoteSharpness(NoteName note, PitchSign sharpness)
+void ScoreMidiConverter::setNoteSharpness(Note7 note, PitchSign sharpness)
 {
 
     scoreNotesSharpness[note] = sharpness;
@@ -203,11 +203,13 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, PitchSign* sign)
         bool useFlats = false;
         if (noteObj->preferred_accidental_sign != -1)
         {
-            if (noteObj->preferred_accidental_sign == SHARP) useFlats = false;
-            else if (noteObj->preferred_accidental_sign == FLAT) useFlats = true;
+            if      (noteObj->preferred_accidental_sign == SHARP) useFlats = false;
+            else if (noteObj->preferred_accidental_sign == FLAT)  useFlats = true;
         }
         else
+        {
             useFlats = goingInFlats();
+        }
 
         if (useFlats and (note-1)>0)
         {
@@ -219,22 +221,28 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, PitchSign* sign)
             if (sign!=NULL) answer_sign = SHARP;
             answer_level = midiNoteToLevel[note+1];
         }
-        else answer_level = -1; // nothing found
+        else
+        {
+            answer_level = -1; // nothing found
+        }
     }
     else if (current_type == NATURAL_ON_LEVEL)
     {
-        if (sign!=NULL) answer_sign = NATURAL;
+        if (sign != NULL) answer_sign = NATURAL;
         answer_level = level;
     }
     else if (current_type == DIRECT_ON_LEVEL)
     {
-        if (sign!=NULL) answer_sign = PITCH_SIGN_NONE;
+        if (sign != NULL) answer_sign = PITCH_SIGN_NONE;
         answer_level = level;
     }
-    else answer_level = -1; // nothing found
+    else
+    {
+        answer_level = -1; // nothing found
+    }
 
     // accidentals
-    if (sign!=NULL)
+    if (sign != NULL)
     {
         if (accidentals)
         {
@@ -244,7 +252,10 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, PitchSign* sign)
             if (measure != accidentalsMeasure)
             {
                 accidentals =  false;
-                for(int n=0; n<7; n++) accidentalScoreNotesSharpness[n] = -1;
+                for (int n=0; n<7; n++)
+                {
+                    accidentalScoreNotesSharpness[n] = -1;
+                }
                 accidentalsMeasure = measure;
             }
             else
@@ -348,7 +359,7 @@ void ScoreMidiConverter::updateConversionData()
     const int ottavaBassaCNote128 = middleCNote128 + 12;
 
     // do levelToMidiNote first
-    NoteName note_7 = A;
+    Note7 note_7 = A;
     int octave = 0;
     
     for (int n=0; n<73; n++)
@@ -390,7 +401,7 @@ void ScoreMidiConverter::updateConversionData()
             levelToNaturalNote[n] = levelToMidiNote[n];
         }
 
-        note_7 = NoteName( int(note_7) - 1 );
+        note_7 = Note7( int(note_7) - 1 );
         if (note_7 == B) octave++;   // we went below C
         if (note_7 < A)  note_7 = G; // handle warp-around
     }
@@ -465,8 +476,8 @@ bool ScoreEditor::isGClefEnabled() const { return g_clef; }
 bool ScoreEditor::isFClefEnabled() const { return f_clef; }
 
 /** order in wich signs of the key signature appear */
-const NoteName sharp_order[] = { F, C, G, D, A, E, B };
-const NoteName flat_order[]  = { B, E, A, D, G, C, F };
+const Note7 sharp_order[] = { F, C, G, D, A, E, B };
+const Note7 flat_order[]  = { B, E, A, D, G, C, F };
 
 // ------------------------------------------------------------------------------------------------------------
 

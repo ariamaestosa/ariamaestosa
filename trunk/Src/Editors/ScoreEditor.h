@@ -71,7 +71,7 @@ namespace AriaMaestosa
     {
         /** 
           * indicates which notes on the staff are sharp/flat/natural,
-          * where the array index is an element of the NoteName enum declared in ScoreEditor.h
+          * where the array index is an element of the Note7 enum declared in ScoreEditor.h
           */
         PitchSign scoreNotesSharpness[7];
         bool going_in_sharps;
@@ -99,7 +99,7 @@ namespace AriaMaestosa
         LEAK_CHECK();
         
         ScoreMidiConverter();
-        void setNoteSharpness(NoteName note, PitchSign sharpness);
+        void setNoteSharpness(Note7 note, PitchSign sharpness);
         bool goingInSharps();
         bool goingInFlats();
         int  getMiddleCLevel();
