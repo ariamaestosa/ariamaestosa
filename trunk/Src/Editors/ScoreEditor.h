@@ -100,18 +100,39 @@ namespace AriaMaestosa
         
         ScoreMidiConverter();
         void setNoteSharpness(Note7 note, PitchSign sharpness);
+        
+        /** @return are we using a key that will make flat signs appear next to the clef? */
         bool goingInSharps();
+        
+        /** @return are we using a key that will make sharp signs appear next to the clef? */
         bool goingInFlats();
+        
         int  getMiddleCLevel();
         int  getScoreCenterCLevel();
         int  getOctaveShift();
         
+        /** @return what sign should appear next to the key for this note? (FLAT, SHARP or PITCH_SIGN_NONE) */
         PitchSign getKeySigSharpnessSignForLevel(const unsigned int level);
-        // int getSharpnessSignForMidiNote(const unsigned int note);
+        
         int getMidiNoteForLevelAndSign(const unsigned int level, int sharpness);
+        
+        /** @return what note is at given level */
         int levelToNote(const int level);
-        int noteToLevel(Note* noteObj, PitchSign* sign=NULL);
+        
+        /**
+          * @param noteObj   the note object for which we want to know the level
+          * @param[out] sign whether this note must appear sharp/flat/natural on this level
+          * @return          on what level the given note will appear, and with what sign
+          *                  or -1 on error
+          */
+        int noteToLevel(const Note* noteObj, PitchSign* sign=NULL);
+        
+        /** what is the name of the note played on this level? */
         int levelToNote7(const unsigned int level);
+        
+        /** called when key has changed, rebuilds conversion tables and other
+         * data needed for all conversions and information requests this class provides
+         */
         void updateConversionData();
         
         void setOctaveShift(int octaves);
@@ -137,11 +158,18 @@ namespace AriaMaestosa
         void enableFClef(bool enabled);
         void enableGClef(bool enabled);
         
+        /** get info about clefs
+          * @return whether the G clef is enabled in this score */
         bool isGClefEnabled() const;
+        
+        /** get info about clefs
+          * @return whether the F clef is enabled in this score */
         bool isFClefEnabled() const;
         
         void enableMusicalNotation(const bool enabled);
         void enableLinearNotation(const bool enabled);
+        
+        /** parameters are e.g. 5 sharps, 3 flats, etc. */
         void loadKey(const PitchSign sharpness_symbol, const int symbol_amount);
         
         void render(RelativeXCoord mousex_current, int mousey_current,
@@ -171,7 +199,7 @@ namespace AriaMaestosa
         void moveNote(Note& note, const int x_steps_to_move, const int y_steps_to_move);
         void selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current, RelativeXCoord& mousex_initial, int mousey_initial);
         
-        // called from 'SetAccidentalSign' Action
+        /** user clicked on a sign in the track's header (called from 'SetAccidentalSign' Action) */
         void setNoteSign(const int sign, const int noteID);
         
         // int getYStep();

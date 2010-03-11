@@ -63,17 +63,20 @@ namespace AriaMaestosa
         PITCH_SIGN_NONE = 3
     };
     
+    /** enum to denotate a note's name (A, B, C, ...) regardless of any accidental it may have */
     enum Note7
     {
-        A = 0,
-        B = 1,
-        C = 2,
-        D = 3,
-        E = 4,
-        F = 5,
-        G = 6
+        NOTE_7_A = 0,
+        NOTE_7_B = 1,
+        NOTE_7_C = 2,
+        NOTE_7_D = 3,
+        NOTE_7_E = 4,
+        NOTE_7_F = 5,
+        NOTE_7_G = 6
     };
     
+    /** enum to denotate a note's name (A, B, C, ...) INCLUDING of any accidental it may have.
+      * What interests us here is the pitch, so we consider A# is the same as Bb. */
     enum Note12
     {
         NOTE_12_A       = 0,
@@ -90,24 +93,42 @@ namespace AriaMaestosa
         NOTE_12_G_SHARP = 11
     };
     
+    /** List of tools that can be used during edition */
     enum EditTool
     {
         EDIT_TOOL_PENCIL,
         EDIT_TOOL_ADD
     };
     
+    /** The common base class for all editors. Manages several common tasks and provides
+      * the interface for event callbacks
+      */
     class Editor
     {
-        bool verticalScrolling; // is user is dragging the scroll thumb
-        int lastDragY; // the Y position of the mouse during last drag event (to see how much mouse has moved between 2 events)
-        
     protected:
-        bool useVerticalScrollbar_bool;
-        bool useInstantNotes_bool; // true if notes have no duration (e.g. drums). false by default
         
-        float sb_position; // scrollbar position, 0 meaning at top and 1 at bottom
-        bool scroll_up_arrow_pressed, scroll_down_arrow_pressed; // is the user holding down the arrows at the top and bottom of the scrollbar
-        bool click_on_scrollbar; // if user is clicking on the scrollbar
+        /** is user is dragging the scroll thumb? */
+        bool verticalScrolling; 
+        
+        /** the Y position of the mouse during last drag event (to see how much mouse has
+          * moved between 2 events)
+          */
+        int lastDragY;    
+    
+        /** Whether this particular editor wants a vertical scrollbar */
+        bool useVerticalScrollbar_bool;
+        
+        /** true if notes have no duration (e.g. drums). false by default */
+        bool useInstantNotes_bool; 
+        
+        /** scrollbar position, 0 meaning at top and 1 at bottom */
+        float sb_position; 
+        
+        /** is the user holding down the arrows at the top and bottom of the scrollbar? */
+        bool scroll_up_arrow_pressed, scroll_down_arrow_pressed; 
+        
+        /** true if user is clicking on the scrollbar */
+        bool click_on_scrollbar;
         
         int from_y;
         int to_y;

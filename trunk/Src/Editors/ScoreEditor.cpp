@@ -106,7 +106,6 @@ void ScoreMidiConverter::setNoteSharpness(Note7 note, PitchSign sharpness)
 
 // ------------------------------------------------------------------------------------------------------------
 
-/** @return are we using a key that will make flat signs appear next to the clef? */
 bool ScoreMidiConverter::goingInSharps()
 {
     return going_in_sharps;
@@ -114,7 +113,6 @@ bool ScoreMidiConverter::goingInSharps()
 
 // ------------------------------------------------------------------------------------------------------------
 
-/** @return are we using a key that will make sharp signs appear next to the clef? */
 bool ScoreMidiConverter::goingInFlats()
 {
     return going_in_flats;
@@ -122,7 +120,6 @@ bool ScoreMidiConverter::goingInFlats()
 
 // ------------------------------------------------------------------------------------------------------------
 
-/** @return what sign should appear next to the key for this note? (FLAT, SHARP or PITCH_SIGN_NONE) */
 PitchSign ScoreMidiConverter::getKeySigSharpnessSignForLevel(const unsigned int level)
 {
     assertExpr(level,<,73);
@@ -166,7 +163,6 @@ int ScoreMidiConverter::getScoreCenterCLevel()
 
 // ------------------------------------------------------------------------------------------------------------
 
-/** @return what note is at given level */
 int ScoreMidiConverter::levelToNote(const int level)
 {
     if (level<0 or level>=73) return -1;
@@ -184,8 +180,7 @@ void ScoreMidiConverter::resetAccidentalsForNewRender()
 
 // ------------------------------------------------------------------------------------------------------------
 
-/** @return on what level the given note will appear, and with what sign */
-int ScoreMidiConverter::noteToLevel(Note* noteObj, PitchSign* sign)
+int ScoreMidiConverter::noteToLevel(const Note* noteObj, PitchSign* sign)
 {
     const int note = noteObj->pitchID;
     if (note>=128 or note<0) return -1;
@@ -320,8 +315,7 @@ int ScoreMidiConverter::noteToLevel(Note* noteObj, PitchSign* sign)
 }
 
 // ------------------------------------------------------------------------------------------------------------
-
-/** what is the name of the note played on this level? */
+//TODO: actually return a Note7 variable
 int ScoreMidiConverter::levelToNote7(const unsigned int level)
 {
     int r = 7-level%7;
@@ -332,9 +326,6 @@ int ScoreMidiConverter::levelToNote7(const unsigned int level)
 
 // ------------------------------------------------------------------------------------------------------------
 
-/** called when key has changed, rebuilds conversion tables and other
-  * data needed for all conversions and information requests this class provides
-  */
 void ScoreMidiConverter::updateConversionData()
 {
 
@@ -352,14 +343,14 @@ void ScoreMidiConverter::updateConversionData()
     ottavaBassaCLevel = -1;
 
     int middleCNote128 = 71;
-    if ( scoreNotesSharpness[C] == SHARP ) middleCNote128 -= 1;
-    else if ( scoreNotesSharpness[C] == FLAT ) middleCNote128 += 1;
+    if      ( scoreNotesSharpness[NOTE_7_C] == SHARP ) middleCNote128 -= 1;
+    else if ( scoreNotesSharpness[NOTE_7_C] == FLAT )  middleCNote128 += 1;
 
     const int ottavaAltaCNote128 = middleCNote128 - 12;
     const int ottavaBassaCNote128 = middleCNote128 + 12;
 
     // do levelToMidiNote first
-    Note7 note_7 = A;
+    Note7 note_7 = NOTE_7_A;
     int octave = 0;
     
     for (int n=0; n<73; n++)
@@ -402,8 +393,8 @@ void ScoreMidiConverter::updateConversionData()
         }
 
         note_7 = Note7( int(note_7) - 1 );
-        if (note_7 == B) octave++;   // we went below C
-        if (note_7 < A)  note_7 = G; // handle warp-around
+        if (note_7 == NOTE_7_B) octave++;           // we went below C
+        if (note_7 < NOTE_7_A)  note_7 = NOTE_7_G;  // handle warp-around
     }
 
 }
@@ -471,44 +462,42 @@ void ScoreEditor::enableGClef(bool enabled)     { g_clef = enabled;       }
 void ScoreEditor::enableMusicalNotation(const bool enabled) { musicalNotationEnabled = enabled; }
 void ScoreEditor::enableLinearNotation(const bool enabled)  { linearNotationEnabled = enabled; }
 
-/** get info about clefs */
 bool ScoreEditor::isGClefEnabled() const { return g_clef; }
 bool ScoreEditor::isFClefEnabled() const { return f_clef; }
 
 /** order in wich signs of the key signature appear */
-const Note7 sharp_order[] = { F, C, G, D, A, E, B };
-const Note7 flat_order[]  = { B, E, A, D, G, C, F };
+const Note7 sharp_order[] = { NOTE_7_F, NOTE_7_C, NOTE_7_G, NOTE_7_D, NOTE_7_A, NOTE_7_E, NOTE_7_B };
+const Note7 flat_order[]  = { NOTE_7_B, NOTE_7_E, NOTE_7_A, NOTE_7_D, NOTE_7_G, NOTE_7_C, NOTE_7_F };
 
 // ------------------------------------------------------------------------------------------------------------
 
-/** parameters are e.g. 5 sharps, 3 flats, etc. */
 void ScoreEditor::loadKey(const PitchSign sharpness_symbol, const int symbol_amount)
 {
     // reset key signature before beginning
-    converter->setNoteSharpness(A, NATURAL);
-    converter->setNoteSharpness(B, NATURAL);
-    converter->setNoteSharpness(C, NATURAL);
-    converter->setNoteSharpness(D, NATURAL);
-    converter->setNoteSharpness(E, NATURAL);
-    converter->setNoteSharpness(F, NATURAL);
-    converter->setNoteSharpness(G, NATURAL);
+    converter->setNoteSharpness(NOTE_7_A, NATURAL);
+    converter->setNoteSharpness(NOTE_7_B, NATURAL);
+    converter->setNoteSharpness(NOTE_7_C, NATURAL);
+    converter->setNoteSharpness(NOTE_7_D, NATURAL);
+    converter->setNoteSharpness(NOTE_7_E, NATURAL);
+    converter->setNoteSharpness(NOTE_7_F, NATURAL);
+    converter->setNoteSharpness(NOTE_7_G, NATURAL);
 
     if (sharpness_symbol == SHARP)
     {
         track->setKey(symbol_amount, SHARP);
 
-        for(int n=A; n<symbol_amount; n++)
+        for (int n=NOTE_7_A; n<symbol_amount; n++)
         {
-            converter->setNoteSharpness( sharp_order[n], sharpness_symbol);
+            converter->setNoteSharpness(sharp_order[n], sharpness_symbol);
         }
     }
     else if (sharpness_symbol == FLAT)
     {
         track->setKey(symbol_amount, FLAT);
 
-        for(int n=A; n<symbol_amount; n++)
+        for (int n=NOTE_7_A; n<symbol_amount; n++)
         {
-            converter->setNoteSharpness( flat_order[n], sharpness_symbol);
+            converter->setNoteSharpness(flat_order[n], sharpness_symbol);
         }
     }
 
@@ -526,7 +515,6 @@ ScoreMidiConverter* ScoreEditor::getScoreMidiConverter()
 
 // ------------------------------------------------------------------------------------------------------------
 
-/** user clicked on a sign in the track's header */
 void ScoreEditor::setNoteSign(const int sign, const int noteID)
 {
 
@@ -580,7 +568,6 @@ using namespace EditorStemParams;
 // ------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------
 
-/** @param renderInfo    a 'NoteRenderInfo' object of current note. */
 void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
 {
     AriaRender::lineWidth(2);

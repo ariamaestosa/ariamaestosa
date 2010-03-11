@@ -512,32 +512,32 @@ void KeyboardEditor::loadKey(const PitchSign sharpness_symbol, const int symbol_
 
     if (symbol_amount == 0 or sharpness_symbol == NATURAL)
     {
-        major_note12 = note7_to_note12[C];
+        major_note12 = note7_to_note12[NOTE_7_C];
     }
     else if (sharpness_symbol == SHARP)
     {
-        switch(symbol_amount)
+        switch (symbol_amount)
         {
-            case 1: major_note12 = note7_to_note12[G]; break;
-            case 2: major_note12 = note7_to_note12[D]; break;
-            case 3: major_note12 = note7_to_note12[A]; break;
-            case 4: major_note12 = note7_to_note12[E]; break;
-            case 5: major_note12 = note7_to_note12[B]; break;
-            case 6: major_note12 = note7_to_note12[F]+1; /* F# */break;
-            case 7: major_note12 = note7_to_note12[C]+1; /* C# */ break;
+            case 1: major_note12 = note7_to_note12[NOTE_7_G]; break;
+            case 2: major_note12 = note7_to_note12[NOTE_7_D]; break;
+            case 3: major_note12 = note7_to_note12[NOTE_7_A]; break;
+            case 4: major_note12 = note7_to_note12[NOTE_7_E]; break;
+            case 5: major_note12 = note7_to_note12[NOTE_7_B]; break;
+            case 6: major_note12 = note7_to_note12[NOTE_7_F]+1; /* F# */break;
+            case 7: major_note12 = note7_to_note12[NOTE_7_C]+1; /* C# */ break;
         }
     }
     else if (sharpness_symbol == FLAT)
     {
         switch(symbol_amount)
         {
-            case 1: major_note12 = note7_to_note12[F]; break;
-            case 2: major_note12 = note7_to_note12[B]-1; /* Bb */ break;
-            case 3: major_note12 = note7_to_note12[E]-1; /* Eb */ break;
-            case 4: major_note12 = note7_to_note12[A]-1 + 12; /* Ab */ break;
-            case 5: major_note12 = note7_to_note12[D]-1; /* Db */ break;
-            case 6: major_note12 = note7_to_note12[G]-1; /* Gb */ break;
-            case 7: major_note12 = note7_to_note12[C]-1; /* Cb */break;
+            case 1: major_note12 = note7_to_note12[NOTE_7_F]; break;
+            case 2: major_note12 = note7_to_note12[NOTE_7_B]-1; /* Bb */ break;
+            case 3: major_note12 = note7_to_note12[NOTE_7_E]-1; /* Eb */ break;
+            case 4: major_note12 = note7_to_note12[NOTE_7_A]-1 + 12; /* Ab */ break;
+            case 5: major_note12 = note7_to_note12[NOTE_7_D]-1; /* Db */ break;
+            case 6: major_note12 = note7_to_note12[NOTE_7_G]-1; /* Gb */ break;
+            case 7: major_note12 = note7_to_note12[NOTE_7_C]-1; /* Cb */break;
         }
     }
 

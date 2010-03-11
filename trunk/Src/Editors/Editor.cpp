@@ -845,13 +845,13 @@ int Editor::findNotePitch(Note7 note_7, PitchSign sharpness, const int octave)
 {
     int note = 0;
     
-    if      (note_7 == A) note += 2;
-    else if (note_7 == B) note += 0;
-    else if (note_7 == C) note += 11;
-    else if (note_7 == D) note += 9;
-    else if (note_7 == E) note += 7;
-    else if (note_7 == F) note += 6;
-    else if (note_7 == G) note += 4;
+    if      (note_7 == NOTE_7_A) note += 2;
+    else if (note_7 == NOTE_7_B) note += 0;
+    else if (note_7 == NOTE_7_C) note += 11;
+    else if (note_7 == NOTE_7_D) note += 9;
+    else if (note_7 == NOTE_7_E) note += 7;
+    else if (note_7 == NOTE_7_F) note += 6;
+    else if (note_7 == NOTE_7_G) note += 4;
     else
     {
         std::cerr << "Invalid note: " << note_7 << std::endl;
@@ -880,51 +880,51 @@ bool Editor::findNoteName(const int pitchID, Note12* note_12, int* octave)
     {
         case 0:
             *note_12 = NOTE_12_B;
-            assert( findNotePitch(B, NATURAL, *octave) == pitchID );
+            assert( findNotePitch(NOTE_7_B, NATURAL, *octave) == pitchID );
             return true;
         case 1:
             *note_12 = NOTE_12_A_SHARP;
-            assert( findNotePitch(A, SHARP, *octave) == pitchID );
+            assert( findNotePitch(NOTE_7_A, SHARP, *octave) == pitchID );
             return true;
         case 2:
             *note_12 = NOTE_12_A;
-            assert( findNotePitch(A, NATURAL, *octave) == pitchID );
+            assert( findNotePitch(NOTE_7_A, NATURAL, *octave) == pitchID );
             return true;
         case 3:
             *note_12 = NOTE_12_G_SHARP;
-            assert( findNotePitch(G, SHARP, *octave) == pitchID );
+            assert( findNotePitch(NOTE_7_G, SHARP, *octave) == pitchID );
             return true;
         case 4:
             *note_12 = NOTE_12_G;
-            assert( findNotePitch(G, NATURAL, *octave) == pitchID );
+            assert( findNotePitch(NOTE_7_G, NATURAL, *octave) == pitchID );
             return true;
         case 5:
             *note_12 = NOTE_12_F_SHARP;
-            assert( findNotePitch(F, SHARP, *octave) == pitchID );
+            assert( findNotePitch(NOTE_7_F, SHARP, *octave) == pitchID );
             return true;
         case 6:
             *note_12 = NOTE_12_F;
-            assert( findNotePitch(F, NATURAL, *octave) == pitchID );
+            assert( findNotePitch(NOTE_7_F, NATURAL, *octave) == pitchID );
             return true;
         case 7:
             *note_12 = NOTE_12_E;
-            assert( findNotePitch(E, NATURAL, *octave) == pitchID );
+            assert( findNotePitch(NOTE_7_E, NATURAL, *octave) == pitchID );
             return true;
         case 8:
             *note_12 = NOTE_12_D_SHARP;
-            assert( findNotePitch(D, SHARP, *octave) == pitchID );
+            assert( findNotePitch(NOTE_7_D, SHARP, *octave) == pitchID );
             return true;
         case 9:
             *note_12 = NOTE_12_D;
-            assert( findNotePitch(D, NATURAL, *octave) == pitchID );
+            assert( findNotePitch(NOTE_7_D, NATURAL, *octave) == pitchID );
             return true;
         case 10:
             *note_12 = NOTE_12_C_SHARP;
-            assert( findNotePitch(C, SHARP, *octave) == pitchID );
+            assert( findNotePitch(NOTE_7_C, SHARP, *octave) == pitchID );
             return true;
         case 11:
             *note_12 = NOTE_12_C;
-            assert( findNotePitch(C, NATURAL, *octave) == pitchID );
+            assert( findNotePitch(NOTE_7_C, NATURAL, *octave) == pitchID );
             return true;
         default:
             return false;
