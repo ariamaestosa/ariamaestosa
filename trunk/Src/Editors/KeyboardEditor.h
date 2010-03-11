@@ -33,10 +33,12 @@ namespace AriaMaestosa
     
     class KeyboardEditor : public Editor
     {
+        static const int Y_STEP_HEIGHT = 10;
+
         /** contains wich notes appear as gray on the keyboard editor (by default, in C key, it is
           * the sharp ones)
           */
-        bool m_note_greyed_out[12];
+        bool m_note_greyed_out[131];
                 
     public:
         KeyboardEditor(Track* data);
@@ -48,7 +50,8 @@ namespace AriaMaestosa
         void render(RelativeXCoord mousex_current, int mousey_current,
                     RelativeXCoord mousex_initial, int mousey_initial, bool focus=false);
         
-        void selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current, RelativeXCoord& mousex_initial, int mousey_initial);
+        void selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current,
+                               RelativeXCoord& mousex_initial, int mousey_initial);
         
         int getYScrollInPixels();
         
@@ -58,6 +61,12 @@ namespace AriaMaestosa
         void moveNote(Note& note, const int relativeX, const int relativeY);
         
         void loadKey(const PitchSign sharpness_symbol, const int symbol_amount);
+        
+        int levelToY(const int level)
+        {
+            return level*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels();
+        }
+        
     };
 }
 

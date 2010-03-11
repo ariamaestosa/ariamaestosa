@@ -41,10 +41,6 @@
 
 using namespace AriaMaestosa;
 
-namespace AriaMaestosa
-{
-    const int Y_STEP_HEIGHT = 10;
-}
 
 // ************************************************************************************************************
 // *********************************************    CTOR/DTOR      ********************************************
@@ -55,19 +51,8 @@ namespace AriaMaestosa
 
 KeyboardEditor::KeyboardEditor(Track* track) : Editor(track)
 {
-    m_note_greyed_out[0]  = false;
-    m_note_greyed_out[1]  = true;
-    m_note_greyed_out[2]  = false;
-    m_note_greyed_out[3]  = false;
-    m_note_greyed_out[4]  = true;
-    m_note_greyed_out[5]  = false;
-    m_note_greyed_out[6]  = true;
-    m_note_greyed_out[7]  = false;
-    m_note_greyed_out[8]  = false;
-    m_note_greyed_out[9]  = true;
-    m_note_greyed_out[10] = false;
-    m_note_greyed_out[11] = true;
-    sb_position=0.5;
+    loadKey(SHARP, 0);
+    sb_position = 0.5;
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -255,17 +240,18 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     AriaRender::color(0.94, 0.94, 0.94, 1);
     while (levelid < last_note)
     {
-        const int note12 = 11 - ((levelid - 3) % 12);
-        if (m_note_greyed_out[note12] or
-           levelid>131 or levelid<4 /* out of midi range notes... there's a few at the top and bottom -  FIXME - don't show them at all */)
+        //const int note12 = 11 - ((levelid - 3) % 12);
+        const int pitchID = levelid; //FIXME: fix this conflation of level and pitch ID. it's handy in keyboard
+                                     // editor, but a pain everywhere else...
+        if (m_note_greyed_out[pitchID])
         {
-            AriaRender::rect(x1, y1 + levelid*Y_STEP_HEIGHT - yscroll+1,
-                             x2, y1 + (levelid+1)*Y_STEP_HEIGHT - yscroll+1);
+            AriaRender::rect(x1, levelToY(levelid),
+                             x2, levelToY(levelid+1));
         }
         else
         {
-            AriaRender::line(x1, y1 + (levelid+1)*Y_STEP_HEIGHT - yscroll+1,
-                             x2, y1 + (levelid+1)*Y_STEP_HEIGHT - yscroll+1);
+            AriaRender::line(x1, levelToY(levelid+1),
+                             x2, levelToY(levelid+1));
         }
 
         levelid++;
@@ -279,8 +265,9 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     {
         const int amount = backgroundTracks.size();
         int color = 0;
+        
         // iterate through all tracks that need to be rendered as background
-        for(int bgtrack=0; bgtrack<amount; bgtrack++)
+        for (int bgtrack=0; bgtrack<amount; bgtrack++)
         {
             Track* track = backgroundTracks.get(bgtrack);
             const int noteAmount = track->getNoteAmount();
@@ -289,29 +276,28 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             switch(color)
             {
                 case 0: AriaRender::color(1, 0.85, 0, 0.5); break;
-                case 1: AriaRender::color(0, 1, 0, 0.5); break;
+                case 1: AriaRender::color(0, 1, 0, 0.5);    break;
                 case 2: AriaRender::color(1, 0, 0.85, 0.5); break;
-                case 3: AriaRender::color(1, 0, 0, 0.5); break;
+                case 3: AriaRender::color(1, 0, 0, 0.5);    break;
                 case 4: AriaRender::color(0, 0.85, 1, 0.5); break;
             }
             color++; if (color>4) color = 0;
 
             // render the notes
-            for(int n=0; n<noteAmount; n++)
+            for (int n=0; n<noteAmount; n++)
             {
 
                 int x1=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
-                int x2=track->getNoteEndInPixels(n) - sequence->getXScrollInPixels();
+                int x2=track->getNoteEndInPixels(n)   - sequence->getXScrollInPixels();
 
                 // don't draw notes that won't be visible
-                if (x2<0) continue;
-                if (x1>width) break;
+                if (x2 < 0)     continue;
+                if (x1 > width) break;
 
-                const int y=track->getNotePitchID(n);
+                const int pitch = track->getNotePitchID(n);
 
-
-                AriaRender::rect(x1+getEditorXStart(), y*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels(),
-                                          x2+getEditorXStart()-1, (y+1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels());
+                AriaRender::rect(x1+getEditorXStart(),   levelToY(pitch),
+                                 x2+getEditorXStart()-1, levelToY(pitch+1));
             }
 
         }
@@ -323,7 +309,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     {
 
         int x1 = track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
-        int x2 = track->getNoteEndInPixels(n) - sequence->getXScrollInPixels();
+        int x2 = track->getNoteEndInPixels(n)   - sequence->getXScrollInPixels();
 
         // don't draw notes that won't be visible
         if (x2 < 0)     continue;
@@ -341,22 +327,20 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             AriaRender::color((1-volume)*0.9, (1-volume)*0.9,  (1-volume)*0.9);
         }
 
-        AriaRender::bordered_rect(x1+getEditorXStart()+1,
-                                  y*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels(),
-                                  x2+getEditorXStart()-1,
-                                  (y+1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels());
+        AriaRender::bordered_rect(x1+getEditorXStart()+1, levelToY(y),
+                                  x2+getEditorXStart()-1, levelToY(y+1));
     }
 
 
     // ------------------ draw keyboard ----------------
 
     // grey background
-    if (!focus) AriaRender::color(0.4, 0.4, 0.4);
-    else AriaRender::color(0.8, 0.8, 0.8);
+    if (not focus) AriaRender::color(0.4, 0.4, 0.4);
+    else           AriaRender::color(0.8, 0.8, 0.8);
 
     AriaRender::rect(0, getEditorYStart(), getEditorXStart()-25,  getYEnd());
 
-    for(int g_octaveID=0; g_octaveID<11; g_octaveID++)
+    for (int g_octaveID=0; g_octaveID<11; g_octaveID++)
     {
         int g_octave_y=g_octaveID*120-getYScrollInPixels();
         if (g_octave_y>-120 and g_octave_y<height+20)
@@ -366,7 +350,8 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             if (!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
             else AriaRender::setImageState(AriaRender::STATE_NORMAL);
 
-            noteTrackDrawable->move(getEditorXStart()-noteTrackDrawable->getImageWidth(), from_y+barHeight+20 + g_octave_y);
+            noteTrackDrawable->move(getEditorXStart()-noteTrackDrawable->getImageWidth(),
+                                    from_y+barHeight+20 + g_octave_y);
             noteTrackDrawable->render();
 
             AriaRender::primitives();
@@ -496,68 +481,81 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
 void KeyboardEditor::loadKey(const PitchSign sharpness_symbol, const int symbol_amount)
 {
-    static const int note7_to_note12[] = {
-        /* A */ 0,
-        /* B */ 2,
-        /* C */ 3,
-        /* D */ 5,
-        /* E */ 7,
-        /* F */ 8,
-        /* G */ 10};
 
+    /*
+     static bool findNoteName(const int pitchID, Note12* note_12, int* octave);
+     */
+    
     // if key is e.g. G Major, "major_note" will be set to note12 equivalent of G.
     // to load a minor key, it's just set to the major one that has same sharps and flats
     // to ease the process
-    int major_note12 = 0;
+    Note12 major_note12 = NOTE_12_C;
 
     if (symbol_amount == 0 or sharpness_symbol == NATURAL)
     {
-        major_note12 = note7_to_note12[NOTE_7_C];
+        major_note12 = NOTE_12_C;
     }
     else if (sharpness_symbol == SHARP)
     {
         switch (symbol_amount)
         {
-            case 1: major_note12 = note7_to_note12[NOTE_7_G]; break;
-            case 2: major_note12 = note7_to_note12[NOTE_7_D]; break;
-            case 3: major_note12 = note7_to_note12[NOTE_7_A]; break;
-            case 4: major_note12 = note7_to_note12[NOTE_7_E]; break;
-            case 5: major_note12 = note7_to_note12[NOTE_7_B]; break;
-            case 6: major_note12 = note7_to_note12[NOTE_7_F]+1; /* F# */break;
-            case 7: major_note12 = note7_to_note12[NOTE_7_C]+1; /* C# */ break;
+            case 1: major_note12 = NOTE_12_G;       break;
+            case 2: major_note12 = NOTE_12_D;       break;
+            case 3: major_note12 = NOTE_12_A;       break;
+            case 4: major_note12 = NOTE_12_E;       break;
+            case 5: major_note12 = NOTE_12_B;       break;
+            case 6: major_note12 = NOTE_12_F_SHARP; break;
+            case 7: major_note12 = NOTE_12_C_SHARP; break;
         }
     }
     else if (sharpness_symbol == FLAT)
     {
         switch(symbol_amount)
         {
-            case 1: major_note12 = note7_to_note12[NOTE_7_F]; break;
-            case 2: major_note12 = note7_to_note12[NOTE_7_B]-1; /* Bb */ break;
-            case 3: major_note12 = note7_to_note12[NOTE_7_E]-1; /* Eb */ break;
-            case 4: major_note12 = note7_to_note12[NOTE_7_A]-1 + 12; /* Ab */ break;
-            case 5: major_note12 = note7_to_note12[NOTE_7_D]-1; /* Db */ break;
-            case 6: major_note12 = note7_to_note12[NOTE_7_G]-1; /* Gb */ break;
-            case 7: major_note12 = note7_to_note12[NOTE_7_C]-1; /* Cb */break;
+            case 1: major_note12 = NOTE_12_F;      break;
+            case 2: major_note12 = NOTE_12_B_FLAT; break;
+            case 3: major_note12 = NOTE_12_E_FLAT; break;
+            case 4: major_note12 = NOTE_12_A_FLAT; break;
+            case 5: major_note12 = NOTE_12_D_FLAT; break;
+            case 6: major_note12 = NOTE_12_G_FLAT; break;
+            case 7: major_note12 = NOTE_12_B;      break; // C flat
         }
     }
 
+    bool note_12_greyed_out[12];
+    
 #define NEXT n--; if (n<0) n+=12
-    int n = major_note12 + 7;
+    int n = int(major_note12) + 7;
     if (n > 11) n -= 12;
 
-    m_note_greyed_out[n] = false; NEXT;
-    m_note_greyed_out[n] = true;  NEXT;
-    m_note_greyed_out[n] = false; NEXT;
-    m_note_greyed_out[n] = false; NEXT;
-    m_note_greyed_out[n] = true;  NEXT;
-    m_note_greyed_out[n] = false; NEXT;
-    m_note_greyed_out[n] = true;  NEXT;
-    m_note_greyed_out[n] = false; NEXT;
-    m_note_greyed_out[n] = false; NEXT;
-    m_note_greyed_out[n] = true;  NEXT;
-    m_note_greyed_out[n] = false; NEXT;
-    m_note_greyed_out[n] = true;
+    note_12_greyed_out[n] = false; NEXT;
+    note_12_greyed_out[n] = true;  NEXT;
+    note_12_greyed_out[n] = false; NEXT;
+    note_12_greyed_out[n] = false; NEXT;
+    note_12_greyed_out[n] = true;  NEXT;
+    note_12_greyed_out[n] = false; NEXT;
+    note_12_greyed_out[n] = true;  NEXT;
+    note_12_greyed_out[n] = false; NEXT;
+    note_12_greyed_out[n] = false; NEXT;
+    note_12_greyed_out[n] = true;  NEXT;
+    note_12_greyed_out[n] = false; NEXT;
+    note_12_greyed_out[n] = true;
 #undef NEXT
 
+    Note12 noteName;
+    int octave;
+    
+    for (int n=0; n<131; n++)
+    {
+        if (findNoteName(n, &noteName, &octave))
+        {
+            m_note_greyed_out[n] = note_12_greyed_out[noteName];
+        }
+        else
+        {
+            m_note_greyed_out[n] = true;
+        }
+    }
+    
 }
 
