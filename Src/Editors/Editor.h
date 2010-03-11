@@ -21,6 +21,7 @@
 #include "Config.h"
 #include "ptr_vector.h"
 
+#include "Editors/Editor.h"
 #include "Editors/RelativeXCoord.h"
 
 namespace AriaMaestosa
@@ -62,7 +63,7 @@ namespace AriaMaestosa
         PITCH_SIGN_NONE = 3
     };
     
-    enum NoteName
+    enum Note7
     {
         A = 0,
         B = 1,
@@ -71,6 +72,22 @@ namespace AriaMaestosa
         E = 4,
         F = 5,
         G = 6
+    };
+    
+    enum Note12
+    {
+        NOTE_12_A       = 0,
+        NOTE_12_A_SHARP = 1,
+        NOTE_12_B       = 2,
+        NOTE_12_C       = 3,
+        NOTE_12_C_SHARP = 4,
+        NOTE_12_D       = 5,
+        NOTE_12_D_SHARP = 6,
+        NOTE_12_E       = 7,
+        NOTE_12_F       = 8,
+        NOTE_12_F_SHARP = 9,
+        NOTE_12_G       = 10,
+        NOTE_12_G_SHARP = 11
     };
     
     enum EditTool
@@ -229,12 +246,22 @@ namespace AriaMaestosa
         const int getYEnd() const;
         const int getWidth() const;
         
-        //const NoteName pitchToNoteName
+        //const Note7 pitchToNoteName
         
         /**
           * Returns the pitch ID of a note from its name, sharpness sign and octave
           */
-        static int findNotePitch(NoteName note_7, PitchSign sharpness, const int octave);
+        static int findNotePitch(Note7 note_7, PitchSign sharpness, const int octave);
+
+        /**
+          * Finds a nome name (A, A#, B, etc..) and octave from its pitch ID
+          * @param pitchID      pitch for which you want to find the note name/octave
+          * @param[out] note_12 The name of the note at this pitch (A, A#, B, etc...)
+          * @param[out] octave  The octave at which this note is
+          * @return             Whether conversion was successful. If a problem occurred,
+          *                     returns false and out parameters should not be read.
+          */ 
+        static bool findNoteName(const int pitchID, Note12* note_12, int* octave);
 
     };
 }
