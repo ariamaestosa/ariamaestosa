@@ -1505,6 +1505,10 @@ void Track::saveToFile(wxFileOutputStream& fileout)
               wxT("\" channel=\"") + to_wxString(m_channel) +
               wxT("\">\n"), fileout );
 
+    writeData(wxT("<key sharps=\"") + to_wxString( getKeySharpsAmount() ) +
+              wxT("\" flats=\"")    + to_wxString( getKeyFlatsAmount () ) +
+              wxT("\"/>\n"), fileout);
+    
     graphics->saveToFile(fileout);
 
     // notes
@@ -1543,7 +1547,6 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                 break;
             case irr::io::EXN_ELEMENT:
             {
-
                 if (!strcmp("track", xml->getNodeName()))
                 {
 
@@ -1615,8 +1618,21 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                 }
                 else if (!strcmp("key", xml->getNodeName()))
                 {
-                    if (! graphics->readFromFile(xml) )
-                        return false;
+                    //std::cout << "Found 'key'!" << std::endl;
+                    char* flats_c  = (char*)xml->getAttributeValue("flats");
+                    char* sharps_c = (char*)xml->getAttributeValue("sharps");
+                    
+                    int sharps = 0, flats = 0;
+                    if (flats_c != NULL or sharps_c != NULL)
+                    {
+                        if (flats_c != NULL)  flats = atoi(flats_c);
+                        if (sharps_c != NULL) sharps = atoi(sharps_c);
+                        //std::cout << "sharps = " << sharps << " flats = " << flats << std::endl;
+                        
+                        if (sharps > flats) setKey(sharps, SHARP);
+                        else                setKey(flats, FLAT);
+                    }
+                    
                 }
                 else if (!strcmp("note", xml->getNodeName()))
                 {

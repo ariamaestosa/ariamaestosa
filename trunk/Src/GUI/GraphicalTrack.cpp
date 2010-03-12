@@ -1215,11 +1215,6 @@ void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
     writeData( wxT("<instrument id=\"") + to_wxString( track->getInstrument() ) + wxT("\"/>\n"), fileout);
     writeData( wxT("<drumkit id=\"") + to_wxString( track->getDrumKit() ) + wxT("\"/>\n"), fileout);
 
-    //FIXME: doesn't belong here!!
-    writeData( wxT("<key sharps=\"") + to_wxString( track->getKeySharpsAmount() ) +
-               wxT("\" flats=\"")    + to_wxString( track->getKeyFlatsAmount() ) +
-               + wxT("\"/>\n"), fileout);
-
     // guitar tuning
     writeData( wxT("<guitartuning "), fileout);
     for(unsigned int n=0; n<guitarEditor->tuning.size(); n++)
@@ -1324,38 +1319,6 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
 
         if (! grid->readFromFile(xml) )
             return false;
-
-    }
-    else if (!strcmp("key", xml->getNodeName()))
-    {
-        //std::cout << "Found 'key'!" << std::endl;
-        char* flats_c = (char*)xml->getAttributeValue("flats");
-        char* sharps_c = (char*)xml->getAttributeValue("sharps");
-
-        int sharps = 0, flats = 0;
-        if (flats_c == NULL and sharps_c == NULL)
-        {
-        }
-        else
-        {
-            if (flats_c != NULL)  flats = atoi(flats_c);
-            if (sharps_c != NULL) sharps = atoi(sharps_c);
-
-            //std::cout << "sharps = " << sharps << " flats = " << flats << std::endl;
-
-            if (sharps > flats)
-            {
-                track->setKey(sharps, SHARP);
-                //scoreEditor->onKeyChange(SHARP, sharps);
-                //keyboardEditor->onKeyChange(SHARP, sharps);
-            }
-            else
-            {
-                track->setKey(flats, FLAT);
-                //scoreEditor->onKeyChange(FLAT, flats);
-                //keyboardEditor->onKeyChange(FLAT, flats);
-            }
-        }
 
     }
     else if (!strcmp("guitartuning", xml->getNodeName()))
