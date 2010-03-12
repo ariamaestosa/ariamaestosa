@@ -128,6 +128,11 @@ namespace AriaMaestosa
         int key_sharps_amnt;
         int key_flats_amnt;
         
+        /** contains wich notes appear as gray on the keyboard editor (by default, in C key, it is
+         * the sharp ones)
+         */
+        bool m_key_notes[131];
+        
     public:
         LEAK_CHECK();
         
@@ -339,10 +344,15 @@ namespace AriaMaestosa
         
         void copy();
         
+        /** @return an array of bools, for each note (one entry per pitch ID), that indicates
+         *         which notes are part of the current key */
+        const bool* getKeyNotes() const { return m_key_notes; }
+    
         /**
          * Add Midi Events to JDKMidi track object
          */
-        int addMidiEvents(jdkmidi::MIDITrack* track, int channel, int firstMeasure, bool selectionOnly, int& startTick); // returns length
+        int addMidiEvents(jdkmidi::MIDITrack* track, int channel, int firstMeasure,
+                          bool selectionOnly, int& startTick); // returns length
         
         // serialization
         void saveToFile(wxFileOutputStream& fileout);

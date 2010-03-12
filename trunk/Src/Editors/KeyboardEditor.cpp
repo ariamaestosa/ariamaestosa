@@ -51,7 +51,6 @@ using namespace AriaMaestosa;
 
 KeyboardEditor::KeyboardEditor(Track* track) : Editor(track)
 {
-    onKeyChange(0, NATURAL); // init key data
     sb_position = 0.5;
 }
 
@@ -226,11 +225,13 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     int levelid = getYScrollInPixels()/Y_STEP_HEIGHT;
     const int yscroll = getYScrollInPixels();
-    const int y1 = getEditorYStart();
+    //const int y1 = getEditorYStart();
     const int last_note = ( yscroll + getYEnd() - getEditorYStart() )/Y_STEP_HEIGHT;
     const int x1 = getEditorXStart();
     const int x2 = getXEnd();
 
+    const bool* key_notes = track->getKeyNotes();
+    
     // white background
     AriaRender::primitives();
     AriaRender::color(1,1,1);
@@ -243,7 +244,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
         //const int note12 = 11 - ((levelid - 3) % 12);
         const int pitchID = levelid; //FIXME: fix this conflation of level and pitch ID. it's handy in keyboard
                                      // editor, but a pain everywhere else...
-        if (not m_key_notes[pitchID])
+        if (not key_notes[pitchID])
         {
             AriaRender::rect(x1, levelToY(levelid),
                              x2, levelToY(levelid+1));
@@ -470,92 +471,6 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
 }
 
-// ************************************************************************************************************
-// ****************************************    SPECIFIC      **************************************************
-// ************************************************************************************************************
 
-#if 0
-#pragma mark -
-#pragma mark Keyroll-specific
-#endif
 
-void KeyboardEditor::onKeyChange(const int symbol_amount, const PitchSign sharpness_symbol)
-{
-
-    /*
-     static bool findNoteName(const int pitchID, Note12* note_12, int* octave);
-     */
-    
-    // if key is e.g. G Major, "major_note" will be set to note12 equivalent of G.
-    // to load a minor key, it's just set to the major one that has same sharps and flats
-    // to ease the process
-    Note12 major_note12 = NOTE_12_C;
-
-    if (symbol_amount == 0 or sharpness_symbol == NATURAL)
-    {
-        major_note12 = NOTE_12_C;
-    }
-    else if (sharpness_symbol == SHARP)
-    {
-        switch (symbol_amount)
-        {
-            case 1: major_note12 = NOTE_12_G;       break;
-            case 2: major_note12 = NOTE_12_D;       break;
-            case 3: major_note12 = NOTE_12_A;       break;
-            case 4: major_note12 = NOTE_12_E;       break;
-            case 5: major_note12 = NOTE_12_B;       break;
-            case 6: major_note12 = NOTE_12_F_SHARP; break;
-            case 7: major_note12 = NOTE_12_C_SHARP; break;
-        }
-    }
-    else if (sharpness_symbol == FLAT)
-    {
-        switch(symbol_amount)
-        {
-            case 1: major_note12 = NOTE_12_F;      break;
-            case 2: major_note12 = NOTE_12_B_FLAT; break;
-            case 3: major_note12 = NOTE_12_E_FLAT; break;
-            case 4: major_note12 = NOTE_12_A_FLAT; break;
-            case 5: major_note12 = NOTE_12_D_FLAT; break;
-            case 6: major_note12 = NOTE_12_G_FLAT; break;
-            case 7: major_note12 = NOTE_12_B;      break; // C flat
-        }
-    }
-
-    bool note_12_greyed_out[12];
-    
-#define NEXT n--; if (n<0) n+=12
-    int n = int(major_note12) + 7;
-    if (n > 11) n -= 12;
-
-    note_12_greyed_out[n] = false; NEXT;
-    note_12_greyed_out[n] = true;  NEXT;
-    note_12_greyed_out[n] = false; NEXT;
-    note_12_greyed_out[n] = false; NEXT;
-    note_12_greyed_out[n] = true;  NEXT;
-    note_12_greyed_out[n] = false; NEXT;
-    note_12_greyed_out[n] = true;  NEXT;
-    note_12_greyed_out[n] = false; NEXT;
-    note_12_greyed_out[n] = false; NEXT;
-    note_12_greyed_out[n] = true;  NEXT;
-    note_12_greyed_out[n] = false; NEXT;
-    note_12_greyed_out[n] = true;
-#undef NEXT
-
-    Note12 noteName;
-    int octave;
-    
-    for (int n=0; n<131; n++)
-    {
-        if (findNoteName(n, &noteName, &octave))
-        {
-            m_key_notes[n] = not note_12_greyed_out[noteName];
-        }
-        else
-        {
-            m_key_notes[n] = false;
-        }
-    }
-    
-}
 

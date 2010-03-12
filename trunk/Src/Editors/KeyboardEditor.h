@@ -34,11 +34,6 @@ namespace AriaMaestosa
     class KeyboardEditor : public Editor
     {
         static const int Y_STEP_HEIGHT = 10;
-
-        /** contains wich notes appear as gray on the keyboard editor (by default, in C key, it is
-          * the sharp ones)
-          */
-        bool m_key_notes[131];
                 
     public:
         KeyboardEditor(Track* data);
@@ -60,17 +55,10 @@ namespace AriaMaestosa
         void addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY);
         void moveNote(Note& note, const int relativeX, const int relativeY);
         
-        /** Called when key changes */
-        virtual void onKeyChange(const int symbol_amount, const PitchSign sharpness_symbol);
-        
         int levelToY(const int level)
         {
             return level*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels();
         }
-        
-        /** @return an array of bools, for each note (one entry per pitch ID), that indicates
-          *         which notes are part of the current key */
-        const bool* getKeyNotes() const { return m_key_notes; }
         
     };
 }
