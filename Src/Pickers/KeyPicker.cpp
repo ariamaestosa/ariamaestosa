@@ -29,11 +29,11 @@ namespace AriaMaestosa
         wxCheckBox* m_check_boxes[132];
     public:
         
-        CustomKeyDialog(wxWindow* parent, GraphicalTrack* track) : 
+        CustomKeyDialog(wxWindow* parent, GraphicalTrack* gtrack) : 
         wxDialog(parent, wxID_ANY, _("Custom Key Editor"), wxDefaultPosition,
                  wxSize(800,600), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
         {
-            const bool* curr_key_notes = track->keyboardEditor->getKeyNotes();
+            const bool* curr_key_notes = gtrack->track->getKeyNotes();
             
             wxPanel* pane = new wxPanel(this);
             

@@ -49,9 +49,8 @@ using namespace AriaMaestosa;
 
 Track::Track(MainFrame* parent, Sequence* sequence)
 {
-    
-    key_sharps_amnt = 0;
-    key_flats_amnt  = 0;
+    // init key data
+    setKey(0, NATURAL);
     
     m_name.set( wxString( _("Untitled") ) );
     m_name.setMaxWidth(120);
@@ -80,13 +79,13 @@ Track::Track(MainFrame* parent, Sequence* sequence)
         for(int i=0; i<16; i++) channel_taken[i] = false;
 
         const int track_amount = sequence->getTrackAmount();
-        for(int i=0; i<track_amount; i++)
+        for (int i=0; i<track_amount; i++)
         {
             assertExpr(sequence->getTrack(i)->getChannel(),>=,0);
             assertExpr(sequence->getTrack(i)->getChannel(),<,16);
             channel_taken[sequence->getTrack(i)->getChannel()] = true;
         }
-        for(int i=0; i<16; i++)
+        for (int i=0; i<16; i++)
         {
             if (i==9) continue; // don't use channel 9, it's for drums
             // use first not-yet-used channel
@@ -965,6 +964,7 @@ int Track::getDuration() const
 
 void Track::setKey(const int symbolAmount, const PitchSign symbol)
 {
+    // ---- update "key_sharps_amnt" and "key_flats_amnt" members
     if (symbol == SHARP)
     {
         key_sharps_amnt = symbolAmount;
@@ -985,7 +985,82 @@ void Track::setKey(const int symbolAmount, const PitchSign symbol)
         std::cerr << "Bogus call to Track::setKey! Symbol must be SHARP or FLAT\n";
         assert(false);
     }
-    graphics->onKeyChange(symbolAmount, symbol);
+    
+    // ---- update 'm_key_notes' array
+    // if key is e.g. G Major, "major_note" will be set to note12 equivalent of G.
+    // to load a minor key, it's just set to the major one that has same sharps and flats
+    // to ease the process
+    Note12 major_note12 = NOTE_12_C;
+    
+    if (symbolAmount == 0 or symbol == NATURAL)
+    {
+        major_note12 = NOTE_12_C;
+    }
+    else if (symbol == SHARP)
+    {
+        switch (symbolAmount)
+        {
+            case 1: major_note12 = NOTE_12_G;       break;
+            case 2: major_note12 = NOTE_12_D;       break;
+            case 3: major_note12 = NOTE_12_A;       break;
+            case 4: major_note12 = NOTE_12_E;       break;
+            case 5: major_note12 = NOTE_12_B;       break;
+            case 6: major_note12 = NOTE_12_F_SHARP; break;
+            case 7: major_note12 = NOTE_12_C_SHARP; break;
+        }
+    }
+    else if (symbol == FLAT)
+    {
+        switch(symbolAmount)
+        {
+            case 1: major_note12 = NOTE_12_F;      break;
+            case 2: major_note12 = NOTE_12_B_FLAT; break;
+            case 3: major_note12 = NOTE_12_E_FLAT; break;
+            case 4: major_note12 = NOTE_12_A_FLAT; break;
+            case 5: major_note12 = NOTE_12_D_FLAT; break;
+            case 6: major_note12 = NOTE_12_G_FLAT; break;
+            case 7: major_note12 = NOTE_12_B;      break; // C flat
+        }
+    }
+    
+    bool note_12_greyed_out[12];
+    
+#define NEXT n--; if (n<0) n+=12
+    int n = int(major_note12) + 7;
+    if (n > 11) n -= 12;
+    
+    note_12_greyed_out[n] = false; NEXT;
+    note_12_greyed_out[n] = true;  NEXT;
+    note_12_greyed_out[n] = false; NEXT;
+    note_12_greyed_out[n] = false; NEXT;
+    note_12_greyed_out[n] = true;  NEXT;
+    note_12_greyed_out[n] = false; NEXT;
+    note_12_greyed_out[n] = true;  NEXT;
+    note_12_greyed_out[n] = false; NEXT;
+    note_12_greyed_out[n] = false; NEXT;
+    note_12_greyed_out[n] = true;  NEXT;
+    note_12_greyed_out[n] = false; NEXT;
+    note_12_greyed_out[n] = true;
+#undef NEXT
+    
+    Note12 noteName;
+    int octave;
+    
+    for (int n=0; n<131; n++)
+    {
+        if (Editor::findNoteName(n, &noteName, &octave))
+        {
+            m_key_notes[n] = not note_12_greyed_out[noteName];
+        }
+        else
+        {
+            m_key_notes[n] = false;
+        }
+    }
+
+    // ---- notify graphical track (and editors)
+    //FIXME: do not call this while editors are still null
+    if (graphics != NULL) graphics->onKeyChange(symbolAmount, symbol);
 }
 
 // =======================================================================================================
