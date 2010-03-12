@@ -102,6 +102,7 @@ public:
     OwnerPtr<DrumEditor>        drumEditor       ;
     OwnerPtr<ControllerEditor>  controllerEditor ;
     OwnerPtr<ScoreEditor>       scoreEditor      ;
+    ptr_vector<Editor, REF>     m_all_editors;
     // ----------------------------------------
 
     GraphicalTrack(Track* track, Sequence* parent);
@@ -148,6 +149,9 @@ public:
     void processMouseExited(RelativeXCoord x_now, int y_now,
                             RelativeXCoord x_initial, int y_initial);
 
+    /** Called when a track's key changes */
+    void onKeyChange(const int symbolAmount, const PitchSign symbol);
+    
     // serialization
     void saveToFile(wxFileOutputStream& fileout);
     bool readFromFile(irr::io::IrrXMLReader* xml);

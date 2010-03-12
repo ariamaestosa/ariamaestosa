@@ -303,13 +303,15 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                 {
                     if (amount > 0)
                     {
-                        sequence->getTrack(trackn)->graphics->scoreEditor->loadKey(SHARP, amount);
-                        sequence->getTrack(trackn)->graphics->keyboardEditor->loadKey(SHARP, amount);
+                        sequence->getTrack(trackn)->setKey(amount, SHARP);
+                        //sequence->getTrack(trackn)->graphics->scoreEditor->loadKey(SHARP, amount);
+                        //sequence->getTrack(trackn)->graphics->keyboardEditor->loadKey(SHARP, amount);
                     }
                     else if (amount < 0)
                     {
-                        sequence->getTrack(trackn)->graphics->scoreEditor->loadKey(FLAT, -amount);
-                        sequence->getTrack(trackn)->graphics->keyboardEditor->loadKey(FLAT, -amount);
+                        sequence->getTrack(trackn)->setKey(-amount,FLAT);
+                        //sequence->getTrack(trackn)->graphics->scoreEditor->loadKey(FLAT, -amount);
+                        //sequence->getTrack(trackn)->graphics->keyboardEditor->loadKey(FLAT, -amount);
                     }
                 }
                 // FIXME - does midi allow a different key for each track?

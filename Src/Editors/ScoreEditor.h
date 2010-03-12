@@ -169,8 +169,8 @@ namespace AriaMaestosa
         void enableMusicalNotation(const bool enabled);
         void enableLinearNotation(const bool enabled);
         
-        /** parameters are e.g. 5 sharps, 3 flats, etc. */
-        void loadKey(const PitchSign sharpness_symbol, const int symbol_amount);
+        /** Called when user changes key. parameters are e.g. 5 sharps, 3 flats, etc. */
+        virtual void onKeyChange(const int symbol_amount, const PitchSign sharpness_symbol);
         
         void render(RelativeXCoord mousex_current, int mousey_current,
                     RelativeXCoord mousex_initial, int mousey_initial, bool focus=false);

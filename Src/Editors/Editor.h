@@ -236,6 +236,9 @@ namespace AriaMaestosa
           */
         void setYStep(const int height);
         
+        /** override to be notified of key change events */
+        virtual void onKeyChange(const int symbol_amount, const PitchSign sharpness_symbol){}
+        
         // ------------------------------------------------------------------------------------------------------
         // methods that provide basic Editor functionnality like scrollbars, selection, horizontal mouse drag,
         // note move, etc. children may override them if they need different functionality

@@ -51,7 +51,7 @@ using namespace AriaMaestosa;
 
 KeyboardEditor::KeyboardEditor(Track* track) : Editor(track)
 {
-    loadKey(SHARP, 0);
+    onKeyChange(0, NATURAL); // init key data
     sb_position = 0.5;
 }
 
@@ -479,7 +479,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 #pragma mark Keyroll-specific
 #endif
 
-void KeyboardEditor::loadKey(const PitchSign sharpness_symbol, const int symbol_amount)
+void KeyboardEditor::onKeyChange(const int symbol_amount, const PitchSign sharpness_symbol)
 {
 
     /*
