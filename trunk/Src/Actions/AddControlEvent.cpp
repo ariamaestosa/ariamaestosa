@@ -44,23 +44,23 @@ void AddControlEvent::undo()
     
     if (type != 201 /*tempo*/)
     {
-        const int controlEventsAmount = track->controlEvents.size();
+        const int controlEventsAmount = track->m_control_events.size();
         for(int n=0; n<controlEventsAmount; n++)
         {
             
-            if (track->controlEvents[n].getTick() == x and
-                track->controlEvents[n].getController() == controller)
+            if (track->m_control_events[n].getTick() == x and
+                track->m_control_events[n].getController() == controller)
             {
                 // if event was added where there was no event before
                 if (removedEventValue == -1)
                 {
-                    track->controlEvents.erase(n);
+                    track->m_control_events.erase(n);
                     break;
                 }
                 else
                     // if event replaced an event that existed before
                 {
-                    track->controlEvents[n].setValue( removedEventValue );
+                    track->m_control_events[n].setValue( removedEventValue );
                 }
             }//endif
         }//next

@@ -47,7 +47,7 @@ void AddControllerSlide::undo()
     relocator.prepareToRelocate();
     
     //std::cout << "will undo control slide" << std::endl;
-    // std::cout << "track->controlEvents.size() = " << track->controlEvents.size() << std::endl;
+    // std::cout << "track->m_control_events.size() = " << track->m_control_events.size() << std::endl;
     
     const int type = track->graphics->controllerEditor->getCurrentControllerType();
     
@@ -55,12 +55,12 @@ void AddControllerSlide::undo()
     {
         while( (current_event = relocator.getNextControlEvent()) and current_event != NULL)
         {
-            const int controlEventsAmount = track->controlEvents.size();
+            const int controlEventsAmount = track->m_control_events.size();
             for(int n=0; n<controlEventsAmount; n++)
             {
-                if (track->controlEvents.get(n) == current_event)
+                if (track->m_control_events.get(n) == current_event)
                 {
-                    track->controlEvents.erase(n);
+                    track->m_control_events.erase(n);
                     break;
                 }//endif
             }//next
@@ -130,13 +130,13 @@ void AddControllerSlide::perform()
     // tempo events
     if (controller==201) vector = &track->sequence->tempoEvents;
     // controller and pitch bend events
-    else vector = &track->controlEvents;
+    else vector = &track->m_control_events;
     
     /*
      std::cout << "************************************************" << std::endl;
      std::cout << "before starting" << std::endl;
-     for(int ixc=0; ixc<track->controlEvents.size(); ixc++)
-     std::cout << ((float)track->controlEvents[ixc].getTick()/(float)getMeasureData()->beatLengthInTicks()) << std::endl;
+     for(int ixc=0; ixc<track->m_control_events.size(); ixc++)
+     std::cout << ((float)track->m_control_events[ixc].getTick()/(float)getMeasureData()->beatLengthInTicks()) << std::endl;
      */
     
     // track is empty, events can be added without any further checking
@@ -246,8 +246,8 @@ void AddControllerSlide::perform()
     /*
      std::cout << "-------------" << std::endl;
      std::cout << "we added new events" << std::endl;
-     for(int ixc=0; ixc<track->controlEvents.size(); ixc++)
-     std::cout << ((float)track->controlEvents[ixc].getTick()/(float)getMeasureData()->beatLengthInTicks()) << std::endl;
+     for(int ixc=0; ixc<track->m_control_events.size(); ixc++)
+     std::cout << ((float)track->m_control_events[ixc].getTick()/(float)getMeasureData()->beatLengthInTicks()) << std::endl;
      */
     
 #ifdef _MORE_DEBUG_CHECKS

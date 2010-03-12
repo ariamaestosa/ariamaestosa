@@ -120,41 +120,41 @@ void RemoveMeasures::perform()
         removedBits->track = track;
         
         // ------------------------ erase/move notes ------------------------
-        const int amount_n = track->notes.size();
+        const int amount_n = track->m_notes.size();
         for(int n=0; n<amount_n; n++)
         {
             // note is an area that is removed. remove it.
-            if (track->notes[n].startTick > from_tick and track->notes[n].startTick < to_tick)
+            if (track->m_notes[n].startTick > from_tick and track->m_notes[n].startTick < to_tick)
             {
-                removedBits->removedNotes.push_back(track->notes.get(n));
+                removedBits->removedNotes.push_back(track->m_notes.get(n));
                 track->markNoteToBeRemoved(n);
             }
             // note is in after the removed area. move it back by necessary amound
-            else if (removedBits->track->notes[n].startTick >= to_tick)
+            else if (removedBits->track->m_notes[n].startTick >= to_tick)
             {
-                track->notes[n].startTick -= amountInTicks;
-                track->notes[n].endTick -= amountInTicks;
+                track->m_notes[n].startTick -= amountInTicks;
+                track->m_notes[n].endTick -= amountInTicks;
             }
         }
         track->removeMarkedNotes();
         
         // ------------------------ erase/move control events ------------------------
-        const int c_amount = track->controlEvents.size();
+        const int c_amount = track->m_control_events.size();
         for(int n=0; n<c_amount; n++)
         {
             // delete all controller events located in the area to be deleted
-            if (track->controlEvents[n].getTick() > from_tick and track->controlEvents[n].getTick() < to_tick)
+            if (track->m_control_events[n].getTick() > from_tick and track->m_control_events[n].getTick() < to_tick)
             {
-                removedBits->removedControlEvents.push_back( track->controlEvents.get(n) );
-                track->controlEvents.markToBeRemoved(n);
+                removedBits->removedControlEvents.push_back( track->m_control_events.get(n) );
+                track->m_control_events.markToBeRemoved(n);
             }
             // move all controller events that are after given start tick by the necessary amount
-            else if (track->controlEvents[n].getTick() >= to_tick)
+            else if (track->m_control_events[n].getTick() >= to_tick)
             {
-                removedBits->track->controlEvents[n].setTick( track->controlEvents[n].getTick() - amountInTicks );
+                removedBits->track->m_control_events[n].setTick( track->m_control_events[n].getTick() - amountInTicks );
             }
         }
-        track->controlEvents.removeMarked();
+        track->m_control_events.removeMarked();
         track->reorderNoteVector();
         track->reorderNoteOffVector();
         

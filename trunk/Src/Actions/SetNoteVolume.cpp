@@ -53,17 +53,17 @@ void SetNoteVolume::perform()
     {
         
         bool played = false;
-        const int noteAmount = track->notes.size();
+        const int noteAmount = track->m_notes.size();
         for(int n=0; n<noteAmount; n++)
         {
-            if (track->notes[n].isSelected())
+            if (track->m_notes[n].isSelected())
             {
-                volumes.push_back( track->notes[n].volume  );
-                track->notes[n].setVolume( volume );
-                relocator.rememberNote(track->notes[n]);
+                volumes.push_back( track->m_notes[n].volume  );
+                track->m_notes[n].setVolume( volume );
+                relocator.rememberNote(track->m_notes[n]);
                 if (!played)
                 {
-                    track->notes[n].play(true);
+                    track->m_notes[n].play(true);
                     played = true;
                 }
             }
@@ -75,13 +75,13 @@ void SetNoteVolume::perform()
         // single note
         
         assertExpr(noteID,>=,0);
-        assertExpr(noteID,<,track->notes.size());
+        assertExpr(noteID,<,track->m_notes.size());
         
         // if user changed the volume of a note that is not selected, change the volume of this note only
-        volumes.push_back( track->notes[noteID].volume  );
-        track->notes[noteID].setVolume( volume );
-        relocator.rememberNote(track->notes[noteID]);
-        track->notes[noteID].play(true);
+        volumes.push_back( track->m_notes[noteID].volume  );
+        track->m_notes[noteID].setVolume( volume );
+        relocator.rememberNote(track->m_notes[noteID]);
+        track->m_notes[noteID].play(true);
     }
     
 }

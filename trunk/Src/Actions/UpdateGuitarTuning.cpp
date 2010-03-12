@@ -45,10 +45,10 @@ void UpdateGuitarTuning::undo()
         n++;
     }
     
-    const int amount_n = track->notes.size();
+    const int amount_n = track->m_notes.size();
     for(int n=0; n<amount_n; n++)
     {
-        track->notes[n].checkIfStringAndFretMatchNote(true);
+        track->m_notes[n].checkIfStringAndFretMatchNote(true);
     }//next
 }
 
@@ -60,15 +60,15 @@ void UpdateGuitarTuning::perform()
     if (editor == NULL) return; // before editor is created, probably setting initial tuning. FIXME - find cleaner way
     previous_tuning = editor->previous_tuning;
     
-    const int amount_n = track->notes.size();
+    const int amount_n = track->m_notes.size();
     for(int n=0; n<amount_n; n++)
     {
-        frets.push_back( track->notes[n].getFret() );
-        strings.push_back( track->notes[n].getString() );
+        frets.push_back( track->m_notes[n].getFret() );
+        strings.push_back( track->m_notes[n].getString() );
         
-        track->notes[n].checkIfStringAndFretMatchNote(true);
+        track->m_notes[n].checkIfStringAndFretMatchNote(true);
         
-        relocator.rememberNote( track->notes[n] );
+        relocator.rememberNote( track->m_notes[n] );
     }//next
     
 }

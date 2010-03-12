@@ -114,19 +114,28 @@ namespace AriaMaestosa
         friend class Action::SetAccidentalSign;
         friend class Action::ShiftBySemiTone;
         
-        MainFrame* frame;
-        ptr_vector<Note> notes;
-        ptr_vector<Note, REF> noteOff;
-        ptr_vector<ControllerEvent> controlEvents;
-        int trackid;
+        MainFrame* m_parent_frame;
         
+        /** Holds all notes contained in this track, sorted in time order (of note start) */
+        ptr_vector<Note> m_notes;
+        
+        /** Same contents as 'm_notes', but sorted according to the end of the notes */
+        ptr_vector<Note, REF> m_note_off;
+        
+        /** Holds all controller events from this track */
+        ptr_vector<ControllerEvent> m_control_events;
+        
+        int m_track_id;
+        
+        /** Name of the track, and also object that can render it */
         AriaRenderString m_name;
         
-        int channel; // only used if in channel mode
-        int instrument, drumKit;
+        /** only used if in channel mode */
+        int m_channel;
+        int m_instrument, m_drum_kit;
         
-        int key_sharps_amnt;
-        int key_flats_amnt;
+        int m_key_sharps_amnt;
+        int m_key_flats_amnt;
         
         /** contains wich notes appear as gray on the keyboard editor (by default, in C key, it is
          * the sharp ones)
@@ -194,10 +203,10 @@ namespace AriaMaestosa
         void selectNote(const int id, const bool selected, bool ignoreModifiers=false);
         
         /** @return the number of sharp symbols in this track's key (or 0 if the key uses flats) */
-        int getKeySharpsAmount() const { return key_sharps_amnt; }
+        int getKeySharpsAmount() const { return m_key_sharps_amnt; }
         
         /** @return the number of flat symbols in this track's key (or 0 if the key uses sharps) */
-        int getKeyFlatsAmount()  const { return key_flats_amnt;  }
+        int getKeyFlatsAmount()  const { return m_key_flats_amnt;  }
         
         /**
           * Sets the key of this track
@@ -340,7 +349,8 @@ namespace AriaMaestosa
          */
         void setDrumKit(int i, bool recursive=false);
         
-        int getDrumKit();
+        /** @return the selected drum kit (if this track is not a drum track, this value is ignored */
+        int  getDrumKit() const { return m_drum_kit; }
         
         void copy();
         

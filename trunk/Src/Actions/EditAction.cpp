@@ -65,7 +65,7 @@ void NoteRelocator::setParent(Track* t)
 void NoteRelocator::prepareToRelocate()
 {
     id = 0;
-    noteamount_in_track = track->notes.size();
+    noteamount_in_track = track->m_notes.size();
     noteamount_in_relocator = notes.size();
 }
 Note* NoteRelocator::getNextNote()
@@ -98,7 +98,7 @@ void ControlEventRelocator::setParent(Track* t)
 void ControlEventRelocator::prepareToRelocate()
 {
     id = 0;
-    amount_in_track = track->controlEvents.size();
+    amount_in_track = track->m_control_events.size();
     amount_in_relocator = events.size();
 }
 ControllerEvent* ControlEventRelocator::getNextControlEvent()

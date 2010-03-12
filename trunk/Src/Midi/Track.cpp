@@ -63,14 +63,14 @@ Track::Track(MainFrame* parent, Sequence* sequence)
     m_name.setFont( wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
 #endif
 
-    Track::frame=parent;
+    m_parent_frame = parent;
 
     Track::sequence = sequence;
 
     graphics = new GraphicalTrack(this, sequence);
     graphics->createEditors();
 
-    channel = 0;
+    m_channel = 0;
     if ( sequence->getChannelManagementType() == CHANNEL_MANUAL )
     {
         // if in manual channel management mode, we need to give it a proper channel
@@ -91,7 +91,7 @@ Track::Track(MainFrame* parent, Sequence* sequence)
             // use first not-yet-used channel
             if (not channel_taken[i])
             {
-                channel = i;
+                m_channel = i;
                 break;
             }
             else if (i == 15)
@@ -103,14 +103,14 @@ Track::Track(MainFrame* parent, Sequence* sequence)
     }
 
 
-    instrument = 0;
-    drumKit = 0;
+    m_instrument = 0;
+    m_drum_kit   = 0;
 
-    instrument_name.set(Core::getInstrumentPicker()->getInstrumentName( instrument ));
+    instrument_name.set(Core::getInstrumentPicker()->getInstrumentName( m_instrument ));
 #ifdef __WXMAC__
     instrument_name.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
 #else
-    instrument_name.setFont( wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+    instrument_name.setFont( wxFont(9,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
 #endif
     
 }
@@ -169,8 +169,8 @@ bool Track::addNote(Note* note, bool check_for_overlapping_notes)
     // if we're importing, just push it to the end, we know they're in time order
     if (sequence->importing)
     {
-        notes.push_back(note);
-        noteOff.push_back(note); // dont forget to reorder note off vector after importing
+        m_notes.push_back(note);
+        m_note_off.push_back(note); // dont forget to reorder note off vector after importing
         return true;
     }
 
@@ -178,22 +178,22 @@ bool Track::addNote(Note* note, bool check_for_overlapping_notes)
 
     //------------------------ place note on -----------------------
     // iterate through notes to place them in order
-    const int noteAmount = notes.size();
+    const int noteAmount = m_notes.size();
     for(int n=0; n<noteAmount; n++)
     {
         // check for overlapping notes
         // the only time where this is not checked is when pasting, because it is then logical that notes are pasted on top of their originals
-        if (check_for_overlapping_notes and notes[n].startTick == note->startTick and notes[n].pitchID == note->pitchID and
-           (graphics->editorMode!=GUITAR or notes[n].getString()==note->getString()) /*in guitar mode string must also match to be considered overlapping*/ )
+        if (check_for_overlapping_notes and m_notes[n].startTick == note->startTick and m_notes[n].pitchID == note->pitchID and
+           (graphics->editorMode!=GUITAR or m_notes[n].getString()==note->getString()) /*in guitar mode string must also match to be considered overlapping*/ )
         {
             std::cout << "overlapping notes: rejected" << std::endl;
             return false;
         }
 
-        if (notes[n].startTick > note->startTick)
+        if (m_notes[n].startTick > note->startTick)
         {
 
-            notes.add(note, n);
+            m_notes.add(note, n);
             noteAdded=true;
             break;
         }//endif
@@ -205,7 +205,7 @@ bool Track::addNote(Note* note, bool check_for_overlapping_notes)
     {
         // add note at the end, or if the track does not yet contain any note
         // (both cases in which the for loop either won't find a location for the note, or won't iterate at all)
-        notes.push_back(note);
+        m_notes.push_back(note);
     }
 
     //------------------------ place note off -----------------------
@@ -213,12 +213,12 @@ bool Track::addNote(Note* note, bool check_for_overlapping_notes)
 
     noteAdded = false;
 
-    const int noteOffAmount = noteOff.size();
+    const int noteOffAmount = m_note_off.size();
     for(int n=0; n<noteOffAmount; n++)
     {
-        if (noteOff[n].endTick > note->endTick)
+        if (m_note_off[n].endTick > note->endTick)
         {
-            noteOff.add(note, n);
+            m_note_off.add(note, n);
             noteAdded = true;
             break;
         }//endif
@@ -228,7 +228,7 @@ bool Track::addNote(Note* note, bool check_for_overlapping_notes)
     {
         // add note at the end, or if the track does not yet contain any note
         // (both cases in which the for loop either won't find a location for the note, or won't iterate at all)
-        noteOff.push_back(note);
+        m_note_off.push_back(note);
     }
 
 
@@ -248,7 +248,7 @@ void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
     // tempo events
     if (evt->getController()==201) vector = &sequence->tempoEvents;
     // controller and pitch bend events
-    else vector = &controlEvents;
+    else vector = &m_control_events;
 
     // don't bother checking order if we're importing, we know its in time order and all
     // FIXME - what about 'addControlEvent_import' ??
@@ -291,7 +291,7 @@ void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
 void Track::addControlEvent_import(const int x, const int value, const int controller)
 {
     assert(sequence->importing); // not to be used when not importing
-    controlEvents.push_back(new ControllerEvent(sequence, controller, x, value) );
+    m_control_events.push_back(new ControllerEvent(sequence, controller, x, value) );
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -310,10 +310,10 @@ void Track::setNoteEnd_import(const int tick, const int noteID)
     assert(noteID != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
     assert(noteID != SELECTED_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
 
-    assertExpr(noteID,<,notes.size());
+    assertExpr(noteID,<,m_notes.size());
     assertExpr(noteID,>=,0);
 
-    notes[noteID].setEnd(tick);
+    m_notes[noteID].setEnd(tick);
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -322,17 +322,17 @@ void Track::removeNote(const int id)
 {
 
     // also delete corresponding note off event
-    const int namount = noteOff.size();
+    const int namount = m_note_off.size();
     for(int i=0; i<namount; i++)
     {
-        if (&noteOff[i] == &notes[id])
+        if (&m_note_off[i] == &m_notes[id])
         {
-            noteOff.remove(i);
+            m_note_off.remove(i);
             break;
         }
     }
 
-    notes.erase(id);
+    m_notes.erase(id);
 
 }
 
@@ -341,17 +341,17 @@ void Track::removeNote(const int id)
 void Track::markNoteToBeRemoved(const int id)
 {
     assertExpr(id,>=,0);
-    assertExpr(id,<,notes.size());
+    assertExpr(id,<,m_notes.size());
 
     // also delete corresponding note off event
-    const int namount = noteOff.size();
-    Note* note = notes.get(id);
+    const int namount = m_note_off.size();
+    Note* note = m_notes.get(id);
 
     for(int i=0; i<namount; i++)
     {
-        if (noteOff.get(i) == note)
+        if (m_note_off.get(i) == note)
         {
-            noteOff.markToBeRemoved(i);
+            m_note_off.markToBeRemoved(i);
             break;
         }
 #ifdef _MORE_DEBUG_CHECKS
@@ -359,7 +359,7 @@ void Track::markNoteToBeRemoved(const int id)
 #endif
     }
 
-    notes.markToBeRemoved(id);
+    m_notes.markToBeRemoved(id);
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -369,14 +369,14 @@ void Track::removeMarkedNotes()
 
     //std::cout << "removing marked" << std::endl;
 
-    notes.removeMarked();
-    noteOff.removeMarked();
+    m_notes.removeMarked();
+    m_note_off.removeMarked();
 
 #ifdef _MORE_DEBUG_CHECKS
-    if (notes.size() != noteOff.size())
+    if (m_notes.size() != m_note_off.size())
     {
         std::cout << "WARNING note on and off events differ in amount in Track::removeMarkedNotes()" << std::endl;
-        std::cout << notes.size() << " notes and " << noteOff.size() << " note offs" << std::endl;
+        std::cout << m_notes.size() << " m_notes and " << m_note_off.size() << " note offs" << std::endl;
     }
 #endif
 }
@@ -386,24 +386,24 @@ void Track::removeMarkedNotes()
 void Track::reorderNoteVector()
 {
     // FIXME - innefficient implementation
-    const int noteAmount = notes.size();
+    const int noteAmount = m_notes.size();
 
 #ifdef _MORE_DEBUG_CHECKS
-    if (notes.size() != noteOff.size())
+    if (m_notes.size() != m_note_off.size())
     {
         std::cout << "WARNING note on and off events differ in amount" << std::endl;
-        std::cout << notes.size() << " notes and " << noteOff.size() << " note offs" << std::endl;
+        std::cout << m_notes.size() << " notes and " << m_note_off.size() << " note offs" << std::endl;
     }
 #endif
 
     for(int n=0; n<noteAmount-1; n++)
     {
 
-        assertExpr(n+1,<,notes.size());
+        assertExpr(n+1,<,m_notes.size());
 
-        if (notes[n].startTick > notes[n+1].startTick)
+        if (m_notes[n].startTick > m_notes[n+1].startTick)
         {
-            notes.swap(n, n+1);
+            m_notes.swap(n, n+1);
             if (n>2) n-= 2;
             else n=-1;
         }
@@ -416,23 +416,23 @@ void Track::reorderNoteVector()
 void Track::reorderNoteOffVector()
 {
     // FIXME - innefficient implementation
-    const int noteAmount = noteOff.size();
+    const int noteAmount = m_note_off.size();
 #ifdef _MORE_DEBUG_CHECKS
-    if (notes.size() != noteOff.size()) std::cout << "WARNING note on and off events differ in amount" << std::endl;
+    if (m_notes.size() != m_note_off.size()) std::cout << "WARNING note on and off events differ in amount" << std::endl;
 #endif
 
     for(int n=0; n<noteAmount-1; n++)
     {
 
-        assertExpr(n+1,<,noteOff.size());
-        assert(noteOff.get(n) != NULL);
-        assert(noteOff.get(n+1) != NULL);
-        assert(noteOff.get(n) != 0);
-        assert(noteOff.get(n+1) != 0);
+        assertExpr(n+1,<,m_note_off.size());
+        assert(m_note_off.get(n) != NULL);
+        assert(m_note_off.get(n+1) != NULL);
+        assert(m_note_off.get(n) != 0);
+        assert(m_note_off.get(n+1) != 0);
 
-        if (noteOff[n].endTick > noteOff[n+1].endTick)
+        if (m_note_off[n].endTick > m_note_off[n+1].endTick)
         {
-            noteOff.swap(n, n+1);
+            m_note_off.swap(n, n+1);
             if (n>2) n-= 2;
             else n=-1;
         }//end if
@@ -446,16 +446,16 @@ void Track::reorderControlVector()
 {
     // FIXME - innefficient implementation
     // FIXME - if bugs in controller editor are fixed that method shouldn't even be necessary
-    const int ctrlAmount = controlEvents.size();
+    const int ctrlAmount = m_control_events.size();
 
     for(int n=0; n<ctrlAmount-1; n++)
     {
 
         assertExpr(n+1,<,ctrlAmount);
 
-        if (controlEvents[n].getTick() > controlEvents[n+1].getTick())
+        if (m_control_events[n].getTick() > m_control_events[n+1].getTick())
         {
-            controlEvents.swap(n, n+1);
+            m_control_events.swap(n, n+1);
             if (n>2) n-= 2;
             else n=0;
         }
@@ -467,19 +467,19 @@ void Track::reorderControlVector()
 
 void Track::mergeTrackIn(Track* track)
 {
-    const int noteAmount = track->notes.size();
+    const int noteAmount = track->m_notes.size();
     for(int n=0; n<noteAmount; n++)
     {
-        Note* a = new Note(track->notes[n]);
+        Note* a = new Note(track->m_notes[n]);
         addNote(a, false);
     }
 
-    const int controllerAmount = track->controlEvents.size();
+    const int controllerAmount = track->m_control_events.size();
     for(int n=0; n<controllerAmount; n++)
     {
-        addControlEvent( new ControllerEvent(sequence, track->controlEvents[n].getController(),
-                                             track->controlEvents[n].getTick(),
-                                             track->controlEvents[n].getValue()) );
+        addControlEvent( new ControllerEvent(sequence, track->m_control_events[n].getController(),
+                                             track->m_control_events[n].getTick(),
+                                             track->m_control_events[n].getValue()) );
 
     }
 
@@ -491,13 +491,13 @@ void Track::mergeTrackIn(Track* track)
 void Track::checkControlEventsOrder()
 {
     int ptick = -1;
-    for(int n=0; n<controlEvents.size(); n++)
+    for(int n=0; n<m_control_events.size(); n++)
     {
-        if (ptick != -1 and controlEvents[n].getTick() < ptick)
+        if (ptick != -1 and m_control_events[n].getTick() < ptick)
         {
-            std::cout << "\n\n*** Error: control events in wrong order " << ptick << " then " << controlEvents[n].getTick() << std::endl;
+            std::cout << "\n\n*** Error: control events in wrong order " << ptick << " then " << m_control_events[n].getTick() << std::endl;
         }
-        ptick = controlEvents[n].getTick();
+        ptick = m_control_events[n].getTick();
     }
 }
 
@@ -512,8 +512,8 @@ void Track::checkControlEventsOrder()
 
 Note* Track::getNote(const int id)
 {
-    assertExpr(id,<,notes.size());
-    return notes.get(id);
+    assertExpr(id,<,m_notes.size());
+    return m_notes.get(id);
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -521,9 +521,9 @@ Note* Track::getNote(const int id)
 int Track::getNoteStartInPixels(const int id) const
 {
     assertExpr(id,>=,0);
-    assertExpr(id,<,notes.size());
+    assertExpr(id,<,m_notes.size());
 
-    return (int)round( notes[id].startTick * sequence->getZoom() );
+    return (int)round( m_notes[id].startTick * sequence->getZoom() );
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -531,9 +531,9 @@ int Track::getNoteStartInPixels(const int id) const
 int Track::getNoteEndInPixels(const int id) const
 {
     assertExpr(id,>=,0);
-    assertExpr(id,<,notes.size());
+    assertExpr(id,<,m_notes.size());
 
-    return (int)round( notes[id].endTick * sequence->getZoom() );
+    return (int)round( m_notes[id].endTick * sequence->getZoom() );
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -541,9 +541,9 @@ int Track::getNoteEndInPixels(const int id) const
 int Track::getNoteStartInMidiTicks(const int id) const
 {
     assertExpr(id,>=,0);
-    assertExpr(id,<,notes.size());
+    assertExpr(id,<,m_notes.size());
 
-    return notes[id].startTick;
+    return m_notes[id].startTick;
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -551,9 +551,9 @@ int Track::getNoteStartInMidiTicks(const int id) const
 int Track::getNoteEndInMidiTicks(const int id) const
 {
     assertExpr(id,>=,0);
-    assertExpr(id,<,notes.size());
+    assertExpr(id,<,m_notes.size());
 
-    return notes[id].endTick;
+    return m_notes[id].endTick;
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -561,15 +561,15 @@ int Track::getNoteEndInMidiTicks(const int id) const
 int Track::getNotePitchID(const int id) const
 {
     assertExpr(id,>=,0);
-    assertExpr(id,<,notes.size());
-    return notes[id].pitchID;
+    assertExpr(id,<,m_notes.size());
+    return m_notes[id].pitchID;
 }
 
 // -------------------------------------------------------------------------------------------------------
 
 int Track::getNoteAmount() const
 {
-    return notes.size();
+    return m_notes.size();
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -577,8 +577,8 @@ int Track::getNoteAmount() const
 int Track::getNoteVolume(const int id) const
 {
     assertExpr(id,>=,0);
-    assertExpr(id,<,notes.size());
-    return notes[id].volume;
+    assertExpr(id,<,m_notes.size());
+    return m_notes[id].volume;
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -586,12 +586,12 @@ int Track::getNoteVolume(const int id) const
 int Track::getNoteString(const int id)
 {
     assertExpr(id,>=,0);
-    assertExpr(id,<,notes.size());
+    assertExpr(id,<,m_notes.size());
 
-    //if (notes[id].tuning == NULL) notes[id].setTuning(&graphics->guitarEditor->tuning); // make sure the note knows the tuning
-    if (notes[id].getString() == -1) notes[id].findStringAndFretFromNote();
+    //if (m_notes[id].tuning == NULL) m_notes[id].setTuning(&graphics->guitarEditor->tuning); // make sure the note knows the tuning
+    if (m_notes[id].getString() == -1) m_notes[id].findStringAndFretFromNote();
 
-    return notes[id].getString();
+    return m_notes[id].getString();
 }
 
 
@@ -600,14 +600,14 @@ int Track::getNoteString(const int id)
 int Track::getNoteFret(const int id)
 {
     assertExpr(id,>=,0);
-    assertExpr(id,<,notes.size());
+    assertExpr(id,<,m_notes.size());
 
-    //if (notes[id].tuning == NULL) notes[id].setTuning(&graphics->guitarEditor->tuning); // make sure the note knows the tuning
+    //if (m_notes[id].tuning == NULL) m_notes[id].setTuning(&graphics->guitarEditor->tuning); // make sure the note knows the tuning
     
     //FIXME: I think Note::getFret also does this check, so we're duplicating it here...
-    if (notes[id].getFret() == -1) notes[id].findStringAndFretFromNote();
+    if (m_notes[id].getFret() == -1) m_notes[id].findStringAndFretFromNote();
 
-    return notes[id].getFret();
+    return m_notes[id].getFret();
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -615,9 +615,9 @@ int Track::getNoteFret(const int id)
 int Track::getNoteStringConst(const int id) const
 {
     assertExpr(id,>=,0);
-    assertExpr(id,<,notes.size());
+    assertExpr(id,<,m_notes.size());
     
-    return notes[id].getStringConst();
+    return m_notes[id].getStringConst();
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -625,9 +625,9 @@ int Track::getNoteStringConst(const int id) const
 int Track::getNoteFretConst(const int id) const
 {
     assertExpr(id,>=,0);
-    assertExpr(id,<,notes.size());
+    assertExpr(id,<,m_notes.size());
     
-    return notes[id].getFretConst();
+    return m_notes[id].getFretConst();
 }
 
 
@@ -635,12 +635,12 @@ int Track::getNoteFretConst(const int id) const
     
 int Track::findFirstNoteInRange(const int fromTick, const int toTick) const
 {
-    const int noteAmount = notes.size();
+    const int noteAmount = m_notes.size();
     
     for (int n=0; n<noteAmount; n++)
     {
-        if (notes[n].startTick >= fromTick && notes[n].startTick < toTick) return n;
-        if (notes[n].startTick >= toTick) return -1;
+        if (m_notes[n].startTick >= fromTick && m_notes[n].startTick < toTick) return n;
+        if (m_notes[n].startTick >= toTick) return -1;
     }
     return -1;
 }
@@ -649,12 +649,12 @@ int Track::findFirstNoteInRange(const int fromTick, const int toTick) const
 
 int Track::findLastNoteInRange(const int fromTick, const int toTick) const
 {
-    const int noteAmount = notes.size();
+    const int noteAmount = m_notes.size();
     
     for (int n=noteAmount-1; n>-1; n--)
     {
-        if (notes[n].startTick >= fromTick && notes[n].startTick < toTick) return n;
-        if (notes[n].startTick < fromTick) return -1;
+        if (m_notes[n].startTick >= fromTick && m_notes[n].startTick < toTick) return n;
+        if (m_notes[n].startTick < fromTick) return -1;
     }
     return -1;
 }
@@ -664,7 +664,7 @@ int Track::findLastNoteInRange(const int fromTick, const int toTick) const
 int Track::getControllerEventAmount(const int controllerTypeID) const
 {
     if (controllerTypeID==201 /*tempo*/) return sequence->tempoEvents.size();
-    return controlEvents.size();
+    return m_control_events.size();
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -675,11 +675,11 @@ ControllerEvent* Track::getControllerEvent(const int id, const int controllerTyp
     if (controllerTypeID==201 /*tempo*/){
         assertExpr(id,<,sequence->tempoEvents.size());
     } else {
-        assertExpr(id,<,controlEvents.size());
+        assertExpr(id,<,m_control_events.size());
     }
 
     if (controllerTypeID==201 /*tempo*/) return &sequence->tempoEvents[id];
-    return &controlEvents[id];
+    return &m_control_events[id];
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -687,14 +687,14 @@ ControllerEvent* Track::getControllerEvent(const int id, const int controllerTyp
 int Track::getFirstNoteTick(bool selectionOnly) const
 {
 
-    if (!selectionOnly) return notes[0].startTick;
+    if (!selectionOnly) return m_notes[0].startTick;
 
-    const int noteAmount = notes.size();
+    const int noteAmount = m_notes.size();
     int tick = -1;
 
     for(int n=0; n<noteAmount; n++)
     {
-        if ( notes[n].isSelected() ) return notes[n].startTick;
+        if ( m_notes[n].isSelected() ) return m_notes[n].startTick;
     }//next
 
     return tick;
@@ -712,7 +712,7 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
     if (!Display::isSelectMorePressed() and !Display:: isSelectLessPressed()) ignoreModifiers=true; // if no modifier is pressed, don't do any special checks
 
     // ---- select/deselect all notes
-    if (id==ALL_NOTES)
+    if (id == ALL_NOTES)
     {
         // if this is a 'select none' command, unselect any selected measures in the top bar
         if (selected == FALSE) getMeasureData()->unselect();
@@ -726,9 +726,9 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
 
             if (ignoreModifiers)
             {
-                for(int n=0; n<notes.size(); n++)
+                for (int n=0; n<m_notes.size(); n++)
                 {
-                    notes[n].setSelected(selected);
+                    m_notes[n].setSelected(selected);
                 }//next
             }//end if
 
@@ -739,16 +739,16 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
     {
 
         assertExpr(id,>=,0);
-        assertExpr(id,<,notes.size());
+        assertExpr(id,<,m_notes.size());
 
         // if we ignore +/- key modifiers, just set the value right away
-        if (ignoreModifiers) notes[id].setSelected(selected);
+        if (ignoreModifiers) m_notes[id].setSelected(selected);
         else
         { // otherwise, check key modifiers and set value accordingly
             if (selected)
             {
-                if (Display::isSelectMorePressed()) notes[id].setSelected(true);
-                else if (Display:: isSelectLessPressed()) notes[id].setSelected( !selected );
+                if (Display::isSelectMorePressed()) m_notes[id].setSelected(true);
+                else if (Display:: isSelectLessPressed()) m_notes[id].setSelected( !selected );
             }
         }//end if
 
@@ -760,8 +760,8 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
 bool Track::isNoteSelected(const int id) const
 {
     assertExpr(id,>=,0);
-    assertExpr(id,<,notes.size());
-    return notes[id].isSelected();
+    assertExpr(id,<,m_notes.size());
+    return m_notes[id].isSelected();
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -769,9 +769,9 @@ bool Track::isNoteSelected(const int id) const
 void Track::prepareNotesForGuitarEditor()
 {
 
-    for(int n=0; n<notes.size(); n++)
+    for(int n=0; n<m_notes.size(); n++)
     {
-        notes[n].checkIfStringAndFretMatchNote(true);
+        m_notes[n].checkIfStringAndFretMatchNote(true);
     }
 
 }
@@ -792,11 +792,11 @@ void Track::copy()
     
     int tickOfFirstSelectedNote=-1;
     // place all selected notes into clipboard
-    for(int n=0; n<notes.size(); n++)
+    for (int n=0; n<m_notes.size(); n++)
     {
-        if (!notes[n].isSelected()) continue;
+        if (!m_notes[n].isSelected()) continue;
         
-        Note* tmp=new Note(notes[n]);
+        Note* tmp=new Note(m_notes[n]);
         Clipboard::add(tmp);
         
         // if in guitar mode, make sure string/fret and note match
@@ -804,7 +804,10 @@ void Track::copy()
         else Clipboard::getNote( Clipboard::getSize()-1 )->checkIfStringAndFretMatchNote(true);
         
         // find tickOfFirstSelectedNote of the first note
-        if (notes[n].startTick < tickOfFirstSelectedNote or tickOfFirstSelectedNote==-1) tickOfFirstSelectedNote=notes[n].startTick;
+        if (m_notes[n].startTick < tickOfFirstSelectedNote or tickOfFirstSelectedNote==-1)
+        {
+            tickOfFirstSelectedNote=m_notes[n].startTick;
+        }
         
     }//next
     
@@ -835,7 +838,7 @@ void Track::copy()
 
 void Track::setId(const int id)
 {
-    trackid = id;
+    m_track_id = id;
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -868,7 +871,7 @@ int Track::getChannel()
     //const bool manual_mode = sequence->getChannelManagementType() == CHANNEL_MANUAL;
 
     if (graphics->editorMode == DRUM) return 9;
-    else return channel;
+    else                              return m_channel;
 
 }
 
@@ -876,7 +879,7 @@ int Track::getChannel()
 
 void Track::setChannel(int i)
 {
-    channel = i;
+    m_channel = i;
 }
 
 
@@ -884,8 +887,8 @@ void Track::setChannel(int i)
 
 void Track::setInstrument(int i, bool recursive)
 {
-    instrument = i;
-    instrument_name.set(Core::getInstrumentPicker()->getInstrumentName( instrument ));
+    m_instrument = i;
+    instrument_name.set(Core::getInstrumentPicker()->getInstrumentName( m_instrument ));
     
     // if we're in manual channel management mode, change all tracks of the same channel
     // to have the same instrument
@@ -896,7 +899,7 @@ void Track::setInstrument(int i, bool recursive)
         {
             Track* track = sequence->getTrack(n);
             if (track == this) continue; // track must not evaluate itself...
-            if ( track->getChannel() == channel )
+            if ( track->getChannel() == m_channel )
             {
                 track->setInstrument(i,true);
             }
@@ -908,7 +911,7 @@ void Track::setInstrument(int i, bool recursive)
 
 int Track::getInstrument()
 {
-    return instrument;
+    return m_instrument;
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -928,7 +931,7 @@ void Track::setDrumKit(int i, bool recursive)
     else if (i == 56) ; // Special Effects
     else return;         // invalid drum kit ID
 
-    drumKit = i;
+    m_drum_kit = i;
 
     // if we're in manual channel management mode, change all tracks of the same channel to have the same instrument
     if (sequence->getChannelManagementType() == CHANNEL_MANUAL and not recursive)
@@ -946,18 +949,11 @@ void Track::setDrumKit(int i, bool recursive)
 
 // -------------------------------------------------------------------------------------------------------
 
-int Track::getDrumKit()
-{
-    return drumKit;
-}
-
-// -------------------------------------------------------------------------------------------------------
-
 int Track::getDuration() const
 {
-    if (noteOff.size() < 1) return 0;
+    if (m_note_off.size() < 1) return 0;
     
-    return noteOff[noteOff.size()-1].endTick;
+    return m_note_off[m_note_off.size()-1].endTick;
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -967,18 +963,18 @@ void Track::setKey(const int symbolAmount, const PitchSign symbol)
     // ---- update "key_sharps_amnt" and "key_flats_amnt" members
     if (symbol == SHARP)
     {
-        key_sharps_amnt = symbolAmount;
-        key_flats_amnt  = 0;
+        m_key_sharps_amnt = symbolAmount;
+        m_key_flats_amnt  = 0;
     }
     else if (symbol == FLAT)
     {
-        key_sharps_amnt = 0;
-        key_flats_amnt  = symbolAmount;
+        m_key_sharps_amnt = 0;
+        m_key_flats_amnt  = symbolAmount;
     }
     else if (symbol == NATURAL and symbolAmount == 0)
     {
-        key_sharps_amnt = 0;
-        key_flats_amnt  = 0;
+        m_key_sharps_amnt = 0;
+        m_key_flats_amnt  = 0;
     }
     else
     {
@@ -1073,10 +1069,10 @@ void Track::setKey(const int symbolAmount, const PitchSign symbol)
 
 void Track::playNote(const int id, const bool noteChange)
 {
-    assertExpr(id,<,notes.size());
+    assertExpr(id,<,m_notes.size());
     assertExpr(id,>=,0);
 
-    notes[id].play(noteChange);
+    m_notes[id].play(noteChange);
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -1144,19 +1140,23 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
     //std::cout << "channel = " << track_ID << std::endl;
 
-    // when previewing selected notes (start by finding the note that plays first, to start playing at the right place and note from the beginning)
+    // when previewing selected notes (start by finding the note that plays first, to start playing at
+    // the right place and note from the beginning)
     int firstNoteStartTick = -1;
     int selectedNoteAmount=0;
 
     if (selectionOnly)
     {
 
-        const int noteAmount=notes.size();
-        for(int n=0; n<noteAmount; n++)
+        const int noteAmount = m_notes.size();
+        for (int n=0; n<noteAmount; n++)
         {
-            if (notes[n].isSelected())
+            if (m_notes[n].isSelected())
             {
-                if (notes[n].startTick < firstNoteStartTick or firstNoteStartTick==-1) firstNoteStartTick = notes[n].startTick;
+                if (m_notes[n].startTick < firstNoteStartTick or firstNoteStartTick==-1)
+                {
+                    firstNoteStartTick = m_notes[n].startTick;
+                }
                 selectedNoteAmount++;
             }
         }
@@ -1192,8 +1192,8 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
         m.SetTime( 0 );
 
-        if (graphics->editorMode == DRUM) m.SetProgramChange( track_ID, drumKit );
-        else m.SetProgramChange( track_ID, instrument );
+        if (graphics->editorMode == DRUM) m.SetProgramChange( track_ID, m_drum_kit );
+        else                              m.SetProgramChange( track_ID, m_instrument );
 
         if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding instrument at track beginning!" << std::endl; }
     }
@@ -1237,16 +1237,16 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
      *
      */
 
-    int note_on_id = 0;
-    int note_off_id = 0;
+    int note_on_id     = 0;
+    int note_off_id    = 0;
     int control_evt_id = 0;
 
-    const int noteOnAmount = notes.size();
-    const int noteOffAmount = noteOff.size();
-    const int controllerAmount = controlEvents.size();
+    const int noteOnAmount     = m_notes.size();
+    const int noteOffAmount    = m_note_off.size();
+    const int controllerAmount = m_control_events.size();
 
     // find track end
-    int last_event_tick=0;
+    int last_event_tick = 0;
 
     // if muted and drums, return now
     if (graphics->muted and graphics->editorMode == DRUM and !selectionOnly) return -1;
@@ -1259,15 +1259,15 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         // if we only want to play what's selected, skip unselected notes
         if (selectionOnly)
         {
-            while(note_on_id < noteOnAmount and !notes[note_on_id].isSelected()) note_on_id++;
-            while(note_off_id < noteOffAmount and !noteOff[note_off_id].isSelected()) note_off_id++;
+            while(note_on_id < noteOnAmount   and !m_notes[note_on_id].isSelected())     note_on_id++;
+            while(note_off_id < noteOffAmount and !m_note_off[note_off_id].isSelected()) note_off_id++;
         }
 
-        const int tick_on      = (note_on_id < noteOnAmount)     ?   notes[note_on_id].startTick - firstNoteStartTick      :  -1;
-        const int tick_off     = (note_off_id < noteOffAmount)   ?   noteOff[note_off_id].endTick - firstNoteStartTick     :  -1;
+        const int tick_on      = (note_on_id < noteOnAmount)     ?   m_notes[note_on_id].startTick - firstNoteStartTick      :  -1;
+        const int tick_off     = (note_off_id < noteOffAmount)   ?   m_note_off[note_off_id].endTick - firstNoteStartTick     :  -1;
 
         // ignore control events when only playing selection
-        const int tick_control = (control_evt_id < controllerAmount and !selectionOnly)  ?   controlEvents[control_evt_id].getTick() - firstNoteStartTick : -1;
+        const int tick_control = (control_evt_id < controllerAmount and !selectionOnly)  ?   m_control_events[control_evt_id].getTick() - firstNoteStartTick : -1;
 
         const int activeMin = getActiveMin( tick_off, tick_control, tick_on );
 
@@ -1279,18 +1279,18 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         if (activeMin == 2)
         {
 
-            const int time=notes[note_on_id].startTick - firstNoteStartTick;
+            const int time = m_notes[note_on_id].startTick - firstNoteStartTick;
             if (!(time < 0))
             {
 
                 m.SetTime( time );
 
 
-                if (graphics->editorMode == DRUM) m.SetNoteOn( track_ID, notes[note_on_id].pitchID, notes[note_on_id].volume );
-                else m.SetNoteOn( track_ID, 131-notes[note_on_id].pitchID, notes[note_on_id].volume );
+                if (graphics->editorMode == DRUM) m.SetNoteOn( track_ID, m_notes[note_on_id].pitchID, m_notes[note_on_id].volume );
+                else m.SetNoteOn( track_ID, 131-m_notes[note_on_id].pitchID, m_notes[note_on_id].volume );
 
                 // find track end
-                if (notes[note_on_id].endTick > last_event_tick) last_event_tick = notes[note_on_id].endTick;
+                if (m_notes[note_on_id].endTick > last_event_tick) last_event_tick = m_notes[note_on_id].endTick;
 
                 if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding midi event!" << std::endl; }
             }
@@ -1301,14 +1301,14 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         else if (activeMin == 0)
         {
 
-            const int time=noteOff[note_off_id].endTick - firstNoteStartTick;
+            const int time=m_note_off[note_off_id].endTick - firstNoteStartTick;
             if (!(time < 0))
             {
 
                 m.SetTime( time );
 
-                if (graphics->editorMode == DRUM) m.SetNoteOff( track_ID, noteOff[note_off_id].pitchID, 0 );
-                else m.SetNoteOff( track_ID, 131-noteOff[note_off_id].pitchID, 0 );
+                if (graphics->editorMode == DRUM) m.SetNoteOff( track_ID, m_note_off[note_off_id].pitchID, 0 );
+                else m.SetNoteOff( track_ID, 131-m_note_off[note_off_id].pitchID, 0 );
 
                 // find track end
                 if (time > last_event_tick) last_event_tick = time;
@@ -1320,14 +1320,14 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         //  ------------------------ add control change event ------------------------
         else if (activeMin == 1)
         {
-            const int controllerID = controlEvents[control_evt_id].getController();
+            const int controllerID = m_control_events[control_evt_id].getController();
 
             // pitch bend
             if (controllerID==200)
             {
 
 
-                int time=controlEvents[control_evt_id].getTick() - firstNoteStartTick;
+                int time=m_control_events[control_evt_id].getTick() - firstNoteStartTick;
 
                 // controller changes happens before the area we play
                 // but perhaps it still is affecting the area we want to play - check for that.
@@ -1342,16 +1342,16 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                         while(true)
                         {
 
-                            if ((controlEvents[checkEventID].getTick() - firstNoteStartTick)<1  and
-                               controlEvents[checkEventID].getController() == controllerID)
+                            if ((m_control_events[checkEventID].getTick() - firstNoteStartTick)<1  and
+                               m_control_events[checkEventID].getController() == controllerID)
                             {
                                 // the current event has no effect, there is another one later, disregard it.
                                 addControlEvent = false;
                                 break;
                             }
 
-                            if ((controlEvents[checkEventID].getTick() - firstNoteStartTick)>0  and
-                               controlEvents[checkEventID].getController() == controllerID)
+                            if ((m_control_events[checkEventID].getTick() - firstNoteStartTick)>0  and
+                               m_control_events[checkEventID].getController() == controllerID)
                             {
                                 // there is another event, but it's later so current event is still relevant.
                                 addControlEvent = true;
@@ -1389,7 +1389,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
                     // FIXME
                     // ((value * 127) - 8191) ?
-                    int pitchBendVal = (127-controlEvents[control_evt_id].getValue())*128-128*128;
+                    int pitchBendVal = (127-m_control_events[control_evt_id].getValue())*128-128*128;
 
                     if (pitchBendVal > 0) pitchBendVal-=8192;
                     else if (pitchBendVal < 0) pitchBendVal +=8192;
@@ -1407,7 +1407,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
             {
 
 
-                int time=controlEvents[control_evt_id].getTick() - firstNoteStartTick;
+                int time=m_control_events[control_evt_id].getTick() - firstNoteStartTick;
 
                 // controller changes happens before the area we play
                 // but perhaps it still is affecting the area we want to play - check for that.
@@ -1422,16 +1422,16 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                         while(true)
                         {
 
-                            if ((controlEvents[checkEventID].getTick() - firstNoteStartTick)<1  and
-                               controlEvents[checkEventID].getController() == controllerID)
+                            if ((m_control_events[checkEventID].getTick() - firstNoteStartTick)<1  and
+                               m_control_events[checkEventID].getController() == controllerID)
                             {
                                 // the current event has no effect, there is another one later, disregard it.
                                 addControlEvent = false;
                                 break;
                             }
 
-                            if ((controlEvents[checkEventID].getTick() - firstNoteStartTick)>0  and
-                               controlEvents[checkEventID].getController() == controllerID)
+                            if ((m_control_events[checkEventID].getTick() - firstNoteStartTick)>0  and
+                               m_control_events[checkEventID].getController() == controllerID)
                             {
                                 // there is another event, but it's later so current event is still relevant.
                                 addControlEvent = true;
@@ -1468,7 +1468,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
                     m.SetControlChange( track_ID,
                                         controllerID,
-                                        127-controlEvents[control_evt_id].getValue() );
+                                        127-m_control_events[control_evt_id].getValue() );
 
                     if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding midi event!" << std::endl; }
                 }
@@ -1496,19 +1496,23 @@ void Track::saveToFile(wxFileOutputStream& fileout)
     reorderNoteOffVector();
 
     writeData(wxT("\n<track name=\"") + m_name +
-              wxT("\" channel=\"") + to_wxString(channel) +
+              wxT("\" channel=\"") + to_wxString(m_channel) +
               wxT("\">\n"), fileout );
 
     graphics->saveToFile(fileout);
 
     // notes
-    for(int n=0; n<notes.size(); n++)
-        notes[n].saveToFile(fileout);
-
+    for (int n=0; n<m_notes.size(); n++)
+    {
+        m_notes[n].saveToFile(fileout);
+    }
+    
     // controller changes
-    for(int n=0; n<controlEvents.size(); n++)
-        controlEvents[n].saveToFile(fileout);
-
+    for (int n=0; n<m_control_events.size(); n++)
+    {
+        m_control_events[n].saveToFile(fileout);
+    }
+    
     writeData(wxT("</track>\n\n"), fileout );
 
 
@@ -1519,9 +1523,9 @@ void Track::saveToFile(wxFileOutputStream& fileout)
 bool Track::readFromFile(irr::io::IrrXMLReader* xml)
 {
 
-    notes.clearAndDeleteAll();
-    noteOff.clearWithoutDeleting(); // have already been deleted by previous command
-    controlEvents.clearAndDeleteAll();
+    m_notes.clearAndDeleteAll();
+    m_note_off.clearWithoutDeleting(); // have already been deleted by previous command
+    m_control_events.clearAndDeleteAll();
 
     // parse XML file
     do
@@ -1552,9 +1556,13 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                     {
                         int loaded_channel = atoi(channel_c);
                         if (loaded_channel >=-0 and loaded_channel<16)
-                            channel = loaded_channel;
+                        {
+                            m_channel = loaded_channel;
+                        }
                         else
+                        {
                             std::cerr << "Invalid channel : " << loaded_channel << std::endl;
+                        }
                     }
                     else
                     {
@@ -1575,11 +1583,14 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                 else if (!strcmp("instrument", xml->getNodeName()))
                 {
                     const char* id = xml->getAttributeValue("id");
-                    if (id != NULL) setInstrument( atoi(id) );
+                    if (id != NULL)
+                    {
+                        setInstrument( atoi(id) );
+                    }
                     else
                     {
                         std::cout << "Missing info from file: instrument ID" << std::endl;
-                        instrument = 0;
+                        m_instrument = 0;
                     }
                 }
                 else if (!strcmp("drumkit", xml->getNodeName()))
@@ -1627,7 +1638,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                     else
                     {
                         // controller successfully loaded, add to controllers vector
-                        controlEvents.push_back( temp );
+                        m_control_events.push_back( temp );
                     }
                 }
 

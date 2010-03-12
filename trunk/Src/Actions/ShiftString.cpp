@@ -60,21 +60,21 @@ void ShiftString::perform()
     {
         
         bool played=false;
-        const int amount_n = track->notes.size();
+        const int amount_n = track->m_notes.size();
         for(int n=0; n<amount_n; n++)
         {
-            if (!track->notes[n].isSelected()) continue;
+            if (!track->m_notes[n].isSelected()) continue;
             
-            frets.push_back( track->notes[n].getFret() );
-            strings.push_back( track->notes[n].getString() );
+            frets.push_back( track->m_notes[n].getFret() );
+            strings.push_back( track->m_notes[n].getString() );
             
-            track->notes[n].shiftString(amount);
+            track->m_notes[n].shiftString(amount);
             
-            relocator.rememberNote( track->notes[n] );
+            relocator.rememberNote( track->m_notes[n] );
             
             if (!played)
             {
-                track->notes[n].play(false);
+                track->m_notes[n].play(false);
                 played = true;
             }
         }//next
@@ -83,13 +83,13 @@ void ShiftString::perform()
     else
     {
         assertExpr(noteid,>=,0);
-        assertExpr(noteid,<,track->notes.size());
+        assertExpr(noteid,<,track->m_notes.size());
         
-        frets.push_back( track->notes[noteid].getFret() );
-        strings.push_back( track->notes[noteid].getString() );
-        track->notes[noteid].shiftString(amount);
-        relocator.rememberNote( track->notes[noteid] );
-        track->notes[noteid].play(false);
+        frets.push_back( track->m_notes[noteid].getFret() );
+        strings.push_back( track->m_notes[noteid].getString() );
+        track->m_notes[noteid].shiftString(amount);
+        relocator.rememberNote( track->m_notes[noteid] );
+        track->m_notes[noteid].play(false);
     }
     
 }

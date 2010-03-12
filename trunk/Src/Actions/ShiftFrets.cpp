@@ -58,18 +58,18 @@ void ShiftFrets::perform()
     {
         
         bool played = false;
-        const int amount_n = track->notes.size();
+        const int amount_n = track->m_notes.size();
         for(int n=0; n<amount_n; n++)
         {
-            if (!track->notes[n].isSelected()) continue;
+            if (!track->m_notes[n].isSelected()) continue;
             
-            frets.push_back( track->notes[n].getFret() );
-            track->notes[n].shiftFret(amount);
-            relocator.rememberNote( track->notes[n] );
+            frets.push_back( track->m_notes[n].getFret() );
+            track->m_notes[n].shiftFret(amount);
+            relocator.rememberNote( track->m_notes[n] );
             
             if (!played)
             {
-                track->notes[n].play(true);
+                track->m_notes[n].play(true);
                 played = true;
             }
         }//next
@@ -80,13 +80,13 @@ void ShiftFrets::perform()
     {
         // warning : not yet used so not tested
         assertExpr(noteid,>=,0);
-        assertExpr(noteid,<,track->notes.size());
+        assertExpr(noteid,<,track->m_notes.size());
         
-        frets.push_back( track->notes[noteid].getFret() );
-        track->notes[noteid].shiftFret(amount);
-        relocator.rememberNote( track->notes[noteid] );
+        frets.push_back( track->m_notes[noteid].getFret() );
+        track->m_notes[noteid].shiftFret(amount);
+        relocator.rememberNote( track->m_notes[noteid] );
         
-        track->notes[noteid].play(true);
+        track->m_notes[noteid].play(true);
     }
     
 }
