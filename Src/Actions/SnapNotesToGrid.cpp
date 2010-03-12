@@ -52,26 +52,26 @@ void SnapNotesToGrid::perform()
     
     assert(track != NULL);
     
-    const int n_amount = track->notes.size();
+    const int n_amount = track->m_notes.size();
     for(int n=0; n<n_amount; n++)
     {
-        if (!track->notes[n].isSelected()) continue;
+        if (!track->m_notes[n].isSelected()) continue;
         
-        note_start.push_back( track->notes[n].startTick );
-        note_end.push_back( track->notes[n].endTick );
+        note_start.push_back( track->m_notes[n].startTick );
+        note_end.push_back( track->m_notes[n].endTick );
         
-        track->notes[n].startTick = track->graphics->getCurrentEditor()->snapMidiTickToGrid( track->notes[n].startTick );
+        track->m_notes[n].startTick = track->graphics->getCurrentEditor()->snapMidiTickToGrid( track->m_notes[n].startTick );
         
-        int end_tick = track->graphics->getCurrentEditor()->snapMidiTickToGrid( track->notes[n].endTick );
-        if ( track->notes[n].startTick == end_tick )
+        int end_tick = track->graphics->getCurrentEditor()->snapMidiTickToGrid( track->m_notes[n].endTick );
+        if ( track->m_notes[n].startTick == end_tick )
         {
             // note was collapsed, not good.
             // use the 'ceil' variant of snapTickToGrid instead
-            end_tick = track->graphics->getCurrentEditor()->snapMidiTickToGrid_ceil( track->notes[n].endTick );
+            end_tick = track->graphics->getCurrentEditor()->snapMidiTickToGrid_ceil( track->m_notes[n].endTick );
         }
         
-        track->notes[n].endTick = end_tick;
-        relocator.rememberNote(track->notes[n]);
+        track->m_notes[n].endTick = end_tick;
+        relocator.rememberNote(track->m_notes[n]);
     }
     
     

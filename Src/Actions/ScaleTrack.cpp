@@ -51,23 +51,23 @@ void ScaleTrack::perform()
 {
     assert(track != NULL);
     
-    const int noteAmount=track->notes.size();
+    const int noteAmount=track->m_notes.size();
     
     for(int n=0; n<noteAmount; n++)
     {
         
-        if (selectionOnly and !track->notes[n].isSelected()) continue; // skip unselected notes if we only want to affect selection
+        if (selectionOnly and !track->m_notes[n].isSelected()) continue; // skip unselected notes if we only want to affect selection
         
-        note_start.push_back( track->notes[n].startTick );
-        note_end.push_back( track->notes[n].endTick );
+        note_start.push_back( track->m_notes[n].startTick );
+        note_end.push_back( track->m_notes[n].endTick );
         
-        track->notes[n].startTick = (int)(
-                                          (track->notes[n].startTick-relative_to)*factor + relative_to
+        track->m_notes[n].startTick = (int)(
+                                          (track->m_notes[n].startTick-relative_to)*factor + relative_to
                                           );
-        track->notes[n].endTick = (int)(
-                                        (track->notes[n].endTick-relative_to)*factor + relative_to
+        track->m_notes[n].endTick = (int)(
+                                        (track->m_notes[n].endTick-relative_to)*factor + relative_to
                                         );
-        relocator.rememberNote(track->notes[n]);
+        relocator.rememberNote(track->m_notes[n]);
         
     }//next
     

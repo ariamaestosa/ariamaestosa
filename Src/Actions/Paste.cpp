@@ -90,21 +90,21 @@ void Paste::perform()
 
     // used to find when the first note is played.
     // If we're pasting at the mouse cursor, it is necessary to know that so that the first note is next to the cursor.
-    // However, if we're pasting in the first measure, we don't want this info since we want the track->notes to keep their location within the measure.
+    // However, if we're pasting in the first measure, we don't want this info since we want the track->m_notes to keep their location within the measure.
     int beginning=-1;
     if (!atMouse) beginning=0;
 
-    // unselected previously selected track->notes
-    for (int n=0; n<track->notes.size(); n++) track->notes[n].setSelected(false);
+    // unselected previously selected track->m_notes
+    for (int n=0; n<track->m_notes.size(); n++) track->m_notes[n].setSelected(false);
 
-    // find where track->notes begin if necessary
+    // find where track->m_notes begin if necessary
     if (atMouse)
     {
         beginning = Clipboard::getNote(0)->startTick;
     }
     int shift=0;
 
-    // if "paste at mouse", use its location to know where to paste track->notes
+    // if "paste at mouse", use its location to know where to paste track->m_notes
     wxPoint mouseLoc=wxGetMousePosition();
 
     int trackMouseLoc_x, trackMouseLoc_y;
@@ -130,10 +130,10 @@ void Paste::perform()
 
         /*
          * scrolling has not changed since copy (i.e. user probably hit 'copy' and 'paste' consecutively)
-         * in this case, we want the track->notes to be pasted exactly where they were copied
-         * so we just overwrite the shift variable to make track->notes paste where they were copied.
-         * after this, check if all track->notes will be visible when pasting like this. If not, fall back to regular pasting method
-         * that will take care of finding track->notes an appropriate location to be pasted onto.
+         * in this case, we want the track->m_notes to be pasted exactly where they were copied
+         * so we just overwrite the shift variable to make track->m_notes paste where they were copied.
+         * after this, check if all track->m_notes will be visible when pasting like this. If not, fall back to regular pasting method
+         * that will take care of finding track->m_notes an appropriate location to be pasted onto.
          */
         shift = track->sequence->notes_shift_when_no_scrolling;
 
@@ -170,7 +170,7 @@ regular_paste: // FIXME - find better way than goto
         const int lastMeasureStart = getMeasureData()->firstTickInMeasure( measure );
         shift = track->graphics->keyboardEditor->snapMidiTickToGrid(lastMeasureStart);
 
-        // find if all track->notes will be visible in the location just calculated,
+        // find if all track->m_notes will be visible in the location just calculated,
         // otherwise move them one more measure ahead (if measure is half-visible because of scrolling)
         Note& first_note = *(Clipboard::getNote(0));
 

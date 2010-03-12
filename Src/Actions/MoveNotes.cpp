@@ -82,17 +82,17 @@ void MoveNotes::perform()
 
         bool played = false;
 
-        const int noteAmount=track->notes.size();
+        const int noteAmount=track->m_notes.size();
         for(int n=0; n<noteAmount; n++)
         {
-            if (!track->notes[n].isSelected()) continue;
+            if (!track->m_notes[n].isSelected()) continue;
 
             doMoveOneNote(n);
 
             if (!played)
             {
-                if (relativeY != 0) track->notes[n].play(true);
-                else track->notes[n].play(false);
+                if (relativeY != 0) track->m_notes[n].play(true);
+                else track->m_notes[n].play(false);
                 played = true;
             }
         }//next
@@ -101,14 +101,14 @@ void MoveNotes::perform()
     {
         // move a single note
         assertExpr(noteID,>=,0);
-        assertExpr(noteID,<,track->notes.size());
+        assertExpr(noteID,<,track->m_notes.size());
 
         doMoveOneNote(noteID);
 
         if (relativeX != 0)
         {
-            if (relativeY != 0) track->notes[noteID].play(true);
-            else track->notes[noteID].play(false);
+            if (relativeY != 0) track->m_notes[noteID].play(true);
+            else track->m_notes[noteID].play(false);
         }
     }
 
@@ -126,15 +126,15 @@ void MoveNotes::doMoveOneNote(const int noteid)
          of the editor. When this happens, some notes moves while others don't. So the amount of steps isn't enough,
          we need to track the moves for all notes individually.
      */
-    if ( move_mode == SCORE_VERTICAL or move_mode == DRUMS_VERTICAL ) undo_pitch.push_back( track->notes[noteid].pitchID );
+    if ( move_mode == SCORE_VERTICAL or move_mode == DRUMS_VERTICAL ) undo_pitch.push_back( track->m_notes[noteid].pitchID );
     else if ( move_mode == GUITAR_VERTICAL )
     {
-        undo_fret.push_back( track->notes[noteid].fret );
-        undo_string.push_back( track->notes[noteid].string );
+        undo_fret.push_back( track->m_notes[noteid].fret );
+        undo_string.push_back( track->m_notes[noteid].string );
     }
 
-    track->graphics->getCurrentEditor()->moveNote(track->notes[noteid], relativeX, relativeY);
-    relocator.rememberNote( track->notes[noteid] );
+    track->graphics->getCurrentEditor()->moveNote(track->m_notes[noteid], relativeX, relativeY);
+    relocator.rememberNote( track->m_notes[noteid] );
 }
 
 

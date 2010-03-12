@@ -57,17 +57,17 @@ void ShiftBySemiTone::perform()
     {
         
         bool played = false;
-        const int amount_n = track->notes.size();
+        const int amount_n = track->m_notes.size();
         for(int n=0; n<amount_n; n++)
         {
-            if (!track->notes[n].isSelected()) continue;
+            if (!track->m_notes[n].isSelected()) continue;
             
-            track->notes[n].pitchID += deltaY;
-            relocator.rememberNote( track->notes[n] );
+            track->m_notes[n].pitchID += deltaY;
+            relocator.rememberNote( track->m_notes[n] );
             
             if (!played)
             {
-                track->notes[n].play(true);
+                track->m_notes[n].play(true);
                 played = true;
             }
         }//next
@@ -78,12 +78,12 @@ void ShiftBySemiTone::perform()
     {
         // warning : not yet used so not tested
         assertExpr(noteid,>=,0);
-        assertExpr(noteid,<,track->notes.size());
+        assertExpr(noteid,<,track->m_notes.size());
         
-        track->notes[noteid].pitchID += deltaY;
-        relocator.rememberNote( track->notes[noteid] );
+        track->m_notes[noteid].pitchID += deltaY;
+        relocator.rememberNote( track->m_notes[noteid] );
         
-        track->notes[noteid].play(true);
+        track->m_notes[noteid].play(true);
     }
     
 }

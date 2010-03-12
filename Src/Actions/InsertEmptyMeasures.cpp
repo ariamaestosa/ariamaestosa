@@ -67,22 +67,22 @@ void InsertEmptyMeasures::perform()
         Track* track = sequence->getTrack(t);
         
         // ----------------- move note events -----------------
-        const int noteAmount = track->notes.size();
+        const int noteAmount = track->m_notes.size();
         for(int n=0; n<noteAmount; n++)
         {
-            if (track->notes[n].startTick > afterTick)
+            if (track->m_notes[n].startTick > afterTick)
             {
-                track->notes[n].startTick += amountInTicks;
-                track->notes[n].endTick += amountInTicks;
+                track->m_notes[n].startTick += amountInTicks;
+                track->m_notes[n].endTick += amountInTicks;
             }
         }
         // ----------------- move control events -----------------
-        const int controlAmount = track->controlEvents.size();
+        const int controlAmount = track->m_control_events.size();
         for(int n=0; n<controlAmount; n++)
         {
-            if (track->controlEvents[n].getTick() > afterTick)
+            if (track->m_control_events[n].getTick() > afterTick)
             {
-                track->controlEvents[n].setTick( track->controlEvents[n].getTick() + amountInTicks );
+                track->m_control_events[n].setTick( track->m_control_events[n].getTick() + amountInTicks );
             }
         }
         

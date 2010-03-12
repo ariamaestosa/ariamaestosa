@@ -57,15 +57,15 @@ void SetAccidentalSign::perform()
     {
         if (!track->isNoteSelected(n)) continue;
 
-        original_signs.push_back( track->notes[n].preferred_accidental_sign );
-        pitch.push_back(  track->notes[n].pitchID );
+        original_signs.push_back( track->m_notes[n].preferred_accidental_sign );
+        pitch.push_back(  track->m_notes[n].pitchID );
 
         track->graphics->scoreEditor->setNoteSign(sign, n);
-        relocator.rememberNote( track->notes[n] );
+        relocator.rememberNote( track->m_notes[n] );
 
         if (!played)
         {
-            track->notes[n].play(true);
+            track->m_notes[n].play(true);
             played = true;
         }
     }//next

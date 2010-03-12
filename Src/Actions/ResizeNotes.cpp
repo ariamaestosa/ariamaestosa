@@ -57,16 +57,16 @@ void ResizeNotes::perform()
     {
         
         bool played=false;
-        for(int n=0; n<track->notes.size(); n++)
+        for(int n=0; n<track->m_notes.size(); n++)
         {
-            if (!track->notes[n].isSelected()) continue;
+            if (!track->m_notes[n].isSelected()) continue;
             
-            track->notes[n].resize(relativeWidth);
-            relocator.rememberNote(track->notes[n]);
+            track->m_notes[n].resize(relativeWidth);
+            relocator.rememberNote(track->m_notes[n]);
             
             if (!played)
             {
-                track->notes[n].play(false);
+                track->m_notes[n].play(false);
                 played = true;
             }
         }//next
@@ -75,12 +75,12 @@ void ResizeNotes::perform()
     else
     {
         
-        assertExpr(noteID,<,track->notes.size());
+        assertExpr(noteID,<,track->m_notes.size());
         assertExpr(noteID,>=,0);
         
-        track->notes[noteID].resize(relativeWidth);
-        track->notes[noteID].play(false);
-        relocator.rememberNote(track->notes[noteID]);
+        track->m_notes[noteID].resize(relativeWidth);
+        track->m_notes[noteID].play(false);
+        relocator.rememberNote(track->m_notes[noteID]);
     }
     
     track->reorderNoteOffVector();

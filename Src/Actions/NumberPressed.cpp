@@ -45,18 +45,18 @@ void NumberPressed::perform()
     if (track->graphics->editorMode != GUITAR) return;
 
     bool played = false;
-    const int amount_n = track->notes.size();
+    const int amount_n = track->m_notes.size();
     
     for (int n=0; n<amount_n; n++)
     {
-        if (!track->notes[n].isSelected()) continue;
+        if (!track->m_notes[n].isSelected()) continue;
 
-        previousNumber = track->notes[n].getFret();
-        track->notes[n].setFret(number);
-        relocator.rememberNote( track->notes[n] );
+        previousNumber = track->m_notes[n].getFret();
+        track->m_notes[n].setFret(number);
+        relocator.rememberNote( track->m_notes[n] );
         if (!played)
         {
-            track->notes[n].play(true);
+            track->m_notes[n].play(true);
             played = true;
         }
         return;

@@ -74,17 +74,17 @@ void DeleteSelected::perform()
         if (type != 201 /*tempo*/)
         {
             // remove controller events
-            for(int n=0; n<track->controlEvents.size(); n++)
+            for(int n=0; n<track->m_control_events.size(); n++)
             {
                 
-                if (track->controlEvents[n].getController() != type) continue; // in another controller
+                if (track->m_control_events[n].getController() != type) continue; // in another controller
                 
-                const int tick = track->controlEvents[n].getTick();
+                const int tick = track->m_control_events[n].getTick();
                 
                 if (tick<from or tick>to) continue; // this event is not concerned by selection
                 
-                removedControlEvents.push_back( track->controlEvents.get(n) );
-                track->controlEvents.remove(n);
+                removedControlEvents.push_back( track->m_control_events.get(n) );
+                track->m_control_events.remove(n);
                 n--;
             }//next
             
@@ -111,23 +111,23 @@ void DeleteSelected::perform()
     else
     {
         
-        for(int n=0; n<track->notes.size(); n++)
+        for(int n=0; n<track->m_notes.size(); n++)
         {
-            if (!track->notes[n].isSelected()) continue;
+            if (!track->m_notes[n].isSelected()) continue;
             
             // also delete corresponding note off event
-            for(int i=0; i<track->noteOff.size(); i++)
+            for(int i=0; i<track->m_note_off.size(); i++)
             {
-                if (&track->noteOff[i] == &track->notes[n])
+                if (&track->m_note_off[i] == &track->m_notes[n])
                 {
-                    track->noteOff.remove(i);
+                    track->m_note_off.remove(i);
                     break;
                 }
             }
             
             //notes.erase(n);
-            removedNotes.push_back( track->notes.get(n) );
-            track->notes.remove(n);
+            removedNotes.push_back( track->m_notes.get(n) );
+            track->m_notes.remove(n);
             
             n--;
         }//next
