@@ -243,7 +243,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
         //const int note12 = 11 - ((levelid - 3) % 12);
         const int pitchID = levelid; //FIXME: fix this conflation of level and pitch ID. it's handy in keyboard
                                      // editor, but a pain everywhere else...
-        if (m_note_greyed_out[pitchID])
+        if (not m_key_notes[pitchID])
         {
             AriaRender::rect(x1, levelToY(levelid),
                              x2, levelToY(levelid+1));
@@ -549,11 +549,11 @@ void KeyboardEditor::loadKey(const PitchSign sharpness_symbol, const int symbol_
     {
         if (findNoteName(n, &noteName, &octave))
         {
-            m_note_greyed_out[n] = note_12_greyed_out[noteName];
+            m_key_notes[n] = not note_12_greyed_out[noteName];
         }
         else
         {
-            m_note_greyed_out[n] = true;
+            m_key_notes[n] = false;
         }
     }
     

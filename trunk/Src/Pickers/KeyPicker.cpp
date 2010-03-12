@@ -26,12 +26,15 @@ namespace AriaMaestosa
     
     class CustomKeyDialog : public wxDialog
     {
+        wxCheckBox* m_check_boxes[132];
     public:
         
-        CustomKeyDialog(wxWindow* parent) : wxDialog(parent, wxID_ANY, _("Custom Key Editor"),
-                                                     wxDefaultPosition, wxSize(800,600),
-                                                     wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
+        CustomKeyDialog(wxWindow* parent, GraphicalTrack* track) : 
+                wxDialog(parent, wxID_ANY, _("Custom Key Editor"), wxDefaultPosition,
+                         wxSize(800,600), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
         {
+            const bool* curr_key_notes = track->keyboardEditor->getKeyNotes();
+            
             wxPanel* pane = new wxPanel(this);
             
             wxBoxSizer* over_sizer = new wxBoxSizer(wxVERTICAL);
@@ -51,7 +54,11 @@ namespace AriaMaestosa
                     {
                         wxString label = NOTE_12_NAME[note] + wxT(" ") + wxString::Format(wxT("%i"), octave);
                         wxCheckBox* cb = new wxCheckBox(scrollpane, wxID_ANY, label);
+                        cb->SetValue( curr_key_notes[pitch] );
+                        
                         within_scrollpane_sizer->Add(cb, 0, wxALL, 3);
+                        
+                        m_check_boxes[pitch] = cb;
                     }
                 }
             
@@ -71,9 +78,9 @@ namespace AriaMaestosa
                 wxButton* cancel_btn = new wxButton(buttonsPane, wxID_CANCEL, _("Cancel"));
             
                 wxBoxSizer* btn_sizer = new wxBoxSizer(wxHORIZONTAL);
-                btn_sizer->Add(ok_btn, 0, wxALL, 2);
-                btn_sizer->Add(cancel_btn, 0, wxALL, 2);
                 btn_sizer->AddStretchSpacer();
+                btn_sizer->Add(cancel_btn, 0, wxALL, 5);
+                btn_sizer->Add(ok_btn, 0, wxALL, 5);
                 buttonsPane->SetSizer(btn_sizer);
                 
                 ok_btn->SetDefault();
@@ -86,6 +93,17 @@ namespace AriaMaestosa
         }
         void onOK(wxCommandEvent& evt)
         {
+            bool custom_key[132];
+            custom_key[0] = false;
+            custom_key[1] = false;
+            custom_key[2] = false;
+            custom_key[3] = false;
+            for (int pitch=4; pitch<=131; pitch++)
+            {
+                custom_key[pitch] = m_check_boxes[pitch]->GetValue();
+                std::cout << "Note " << pitch << " : " << custom_key[pitch] << std::endl;
+            }
+            
             //TODO
             EndModal( GetReturnCode() );
         }
@@ -201,14 +219,6 @@ namespace AriaMaestosa
                 Remove(octave_below);
                 score_items_added = false;
             }
-            /*
-             musical_checkbox->Enable(false);
-             linear_checkbox->Enable(false);
-             fclef->Enable(false);
-             gclef->Enable(false);
-             octave_above->Enable(false);
-             octave_below->Enable(false);
-             */
         }
         else if (parent->editorMode == SCORE)
         {
@@ -223,14 +233,6 @@ namespace AriaMaestosa
                 Prepend(musical_checkbox);
                 score_items_added = true;
             }
-            /*
-             musical_checkbox->Enable(true);
-             linear_checkbox->Enable(true);
-             fclef->Enable(true);
-             gclef->Enable(true);
-             octave_above->Enable(true);
-             octave_below->Enable(true);
-             */
         }
         
         key_c->Check(false);
@@ -374,7 +376,7 @@ namespace AriaMaestosa
         }
         else if ( id == KEY_CUSTOM )
         {
-            CustomKeyDialog dialog( (wxFrame*)getMainFrame() );
+            CustomKeyDialog dialog( (wxFrame*)getMainFrame(), parent );
             dialog.ShowModal();
         }
         else if ( id == KEY_GUESS )

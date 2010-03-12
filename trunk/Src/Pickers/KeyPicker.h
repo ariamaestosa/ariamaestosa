@@ -20,7 +20,8 @@
 #include "wx/wx.h"
 #include "Config.h"
 
-namespace AriaMaestosa {
+namespace AriaMaestosa
+{
 
     class GraphicalTrack; // forward
 

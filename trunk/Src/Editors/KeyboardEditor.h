@@ -38,7 +38,7 @@ namespace AriaMaestosa
         /** contains wich notes appear as gray on the keyboard editor (by default, in C key, it is
           * the sharp ones)
           */
-        bool m_note_greyed_out[131];
+        bool m_key_notes[131];
                 
     public:
         KeyboardEditor(Track* data);
@@ -66,6 +66,10 @@ namespace AriaMaestosa
         {
             return level*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels();
         }
+        
+        /** @return an array of bools, for each note (one entry per pitch ID), that indicates
+          *         which notes are part of the current key */
+        const bool* getKeyNotes() const { return m_key_notes; }
         
     };
 }
