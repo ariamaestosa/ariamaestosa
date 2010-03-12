@@ -975,11 +975,17 @@ void Track::setKey(const int symbolAmount, const PitchSign symbol)
         key_sharps_amnt = 0;
         key_flats_amnt  = symbolAmount;
     }
+    else if (symbol == NATURAL and symbolAmount == 0)
+    {
+        key_sharps_amnt = 0;
+        key_flats_amnt  = 0;
+    }
     else
     {
         std::cerr << "Bogus call to Track::setKey! Symbol must be SHARP or FLAT\n";
         assert(false);
     }
+    graphics->onKeyChange(symbolAmount, symbol);
 }
 
 // =======================================================================================================

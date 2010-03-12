@@ -403,11 +403,20 @@ GraphicalTrack::~GraphicalTrack()
     
 void GraphicalTrack::createEditors()
 {
-     keyboardEditor     = new KeyboardEditor(track);
-     guitarEditor       = new GuitarEditor(track);
-     drumEditor         = new DrumEditor(track);
-     controllerEditor   = new ControllerEditor(track);
-     scoreEditor        = new ScoreEditor(track);
+    keyboardEditor     = new KeyboardEditor(track);
+    m_all_editors.push_back(keyboardEditor);
+    
+    guitarEditor       = new GuitarEditor(track);
+    m_all_editors.push_back(guitarEditor);
+
+    drumEditor         = new DrumEditor(track);
+    m_all_editors.push_back(drumEditor);
+
+    controllerEditor   = new ControllerEditor(track);
+    m_all_editors.push_back(controllerEditor);
+
+    scoreEditor        = new ScoreEditor(track);
+    m_all_editors.push_back(scoreEditor);
 }
 
 // --------------------------------------------------------------------------------------------------
@@ -746,6 +755,16 @@ bool GraphicalTrack::processMouseDrag(RelativeXCoord x, int y)
     else
     {
         return true;
+    }
+}
+
+// --------------------------------------------------------------------------------------------------
+
+void GraphicalTrack::onKeyChange(const int symbolAmount, const PitchSign symbol)
+{
+    for (int n=0; n<m_all_editors.size(); n++)
+    {
+        m_all_editors[n].onKeyChange(symbolAmount, symbol);
     }
 }
 
@@ -1313,23 +1332,27 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
         char* sharps_c = (char*)xml->getAttributeValue("sharps");
 
         int sharps = 0, flats = 0;
-        if (flats_c == NULL and sharps_c == NULL);
+        if (flats_c == NULL and sharps_c == NULL)
+        {
+        }
         else
         {
-            if (flats_c != NULL) flats = atoi(flats_c);
+            if (flats_c != NULL)  flats = atoi(flats_c);
             if (sharps_c != NULL) sharps = atoi(sharps_c);
 
             //std::cout << "sharps = " << sharps << " flats = " << flats << std::endl;
 
             if (sharps > flats)
             {
-                scoreEditor->loadKey(SHARP, sharps);
-                keyboardEditor->loadKey(SHARP, sharps);
+                track->setKey(sharps, SHARP);
+                //scoreEditor->onKeyChange(SHARP, sharps);
+                //keyboardEditor->onKeyChange(SHARP, sharps);
             }
             else
             {
-                scoreEditor->loadKey(FLAT, flats);
-                keyboardEditor->loadKey(FLAT, flats);
+                track->setKey(flats, FLAT);
+                //scoreEditor->onKeyChange(FLAT, flats);
+                //keyboardEditor->onKeyChange(FLAT, flats);
             }
         }
 

@@ -60,7 +60,8 @@ namespace AriaMaestosa
         void addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY);
         void moveNote(Note& note, const int relativeX, const int relativeY);
         
-        void loadKey(const PitchSign sharpness_symbol, const int symbol_amount);
+        /** Called when key changes */
+        virtual void onKeyChange(const int symbol_amount, const PitchSign sharpness_symbol);
         
         int levelToY(const int level)
         {
