@@ -281,17 +281,19 @@ wxPrinterError AriaPrintable::print()
     m_printer_manager->setPrintableSequence(seq);
     
     wxPrinter printer;
-    if (not printer.Print(NULL, m_printer_manager, true /* show dialog */))
-    {
-        std::cerr << "The Print method returned false\n";
-        return wxPRINTER_ERROR;
-    }
+    const bool success = printer.Print(NULL, m_printer_manager, true /* show dialog */);
 
 #ifdef __WXMAC__
     getMainFrame()->SetTitle(wxT("Aria Maestosa"));
 #endif
 
-    return wxPrinter::GetLastError();
+    wxPrinterError output = wxPrinter::GetLastError();
+    
+    // for some obscure reason, when cancelling, it doesn't return wxPRINTER_CANCELLED,
+    // so work around thism manually
+    if (not success and output == wxPRINTER_NO_ERROR) output = wxPRINTER_CANCELLED;
+    
+    return output;
 }
 
 // -------------------------------------------------------------------------------------------------------------
