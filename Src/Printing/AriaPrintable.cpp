@@ -290,7 +290,7 @@ wxPrinterError AriaPrintable::print()
     wxPrinterError output = wxPrinter::GetLastError();
     
     // for some obscure reason, when cancelling, it doesn't return wxPRINTER_CANCELLED,
-    // so work around thism manually
+    // so work around this manually
     if (not success and output == wxPRINTER_NO_ERROR) output = wxPRINTER_CANCELLED;
     
     return output;
