@@ -344,8 +344,8 @@ namespace AriaMaestosa
         {
             WaitWindow::hide();
 
-            std::cerr << "error while printing : " << __FILE__ << ":" << __LINE__ << std::endl;
-            wxMessageBox( _("An error occured during printing.") );
+            std::cerr << "error while performing page setup : " << __FILE__ << ":" << __LINE__ << std::endl;
+            wxMessageBox( _("An error occurred during printing.") );
             return;
         }
         
@@ -365,7 +365,7 @@ namespace AriaMaestosa
         if (result == wxPRINTER_ERROR)
         {
             std::cerr << "error while printing : " << __FILE__ << ":" << __LINE__ << std::endl;
-            wxMessageBox( _("An error occured during printing.") );
+            wxMessageBox( _("An error occurred during printing.") );
         }
         else if (result == wxPRINTER_CANCELLED)
         {
