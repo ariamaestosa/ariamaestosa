@@ -15,8 +15,8 @@
  */
 
 
-#ifndef _NotationExportDialog_
-#define _NotationExportDialog_
+#ifndef _PrintSetupDialog_
+#define _PrintSetupDialog_
 
 
 namespace AriaMaestosa
@@ -24,7 +24,7 @@ namespace AriaMaestosa
     class Sequence;
     class Track;
 
-    void exportNotation(Sequence* sequence);
+    void showPrintSetupDialog(Sequence* sequence);
     //void exportNotation(Track* t);
 }
 

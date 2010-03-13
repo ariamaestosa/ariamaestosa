@@ -15,11 +15,11 @@
  */
 
 #include "Actions/RearrangeNotes.h"
+#include "Dialogs/CustomNoteSelectDialog.h"
 #include "Pickers/TuningPicker.h"
 #include "Editors/GuitarEditor.h"
 #include "Midi/Sequence.h"
 #include "IO/IOUtils.h"
-#include "Dialogs/NotationExportDialog.h"
 
 #include "wx/tokenzr.h"
 

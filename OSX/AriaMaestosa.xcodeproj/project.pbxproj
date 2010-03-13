@@ -174,8 +174,6 @@
 		957119CA1125D8D300104BF5 /* CopyrightWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F31125D8D200104BF5 /* CopyrightWindow.h */; };
 		957119CB1125D8D300104BF5 /* CustomNoteSelectDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F41125D8D200104BF5 /* CustomNoteSelectDialog.cpp */; };
 		957119CC1125D8D300104BF5 /* CustomNoteSelectDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F51125D8D200104BF5 /* CustomNoteSelectDialog.h */; };
-		957119CD1125D8D300104BF5 /* NotationExportDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F61125D8D200104BF5 /* NotationExportDialog.cpp */; };
-		957119CE1125D8D300104BF5 /* NotationExportDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F71125D8D200104BF5 /* NotationExportDialog.h */; };
 		957119CF1125D8D300104BF5 /* Preferences.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F81125D8D200104BF5 /* Preferences.cpp */; };
 		957119D01125D8D300104BF5 /* Preferences.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F91125D8D200104BF5 /* Preferences.h */; };
 		957119D11125D8D300104BF5 /* ScalePicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118FA1125D8D200104BF5 /* ScalePicker.cpp */; };
@@ -376,8 +374,6 @@
 		95711A941125D8D300104BF5 /* CopyrightWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F31125D8D200104BF5 /* CopyrightWindow.h */; };
 		95711A951125D8D300104BF5 /* CustomNoteSelectDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F41125D8D200104BF5 /* CustomNoteSelectDialog.cpp */; };
 		95711A961125D8D300104BF5 /* CustomNoteSelectDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F51125D8D200104BF5 /* CustomNoteSelectDialog.h */; };
-		95711A971125D8D300104BF5 /* NotationExportDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F61125D8D200104BF5 /* NotationExportDialog.cpp */; };
-		95711A981125D8D300104BF5 /* NotationExportDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F71125D8D200104BF5 /* NotationExportDialog.h */; };
 		95711A991125D8D300104BF5 /* Preferences.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F81125D8D200104BF5 /* Preferences.cpp */; };
 		95711A9A1125D8D300104BF5 /* Preferences.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F91125D8D200104BF5 /* Preferences.h */; };
 		95711A9B1125D8D300104BF5 /* ScalePicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118FA1125D8D200104BF5 /* ScalePicker.cpp */; };
@@ -531,6 +527,10 @@
 		959FD6C0114451A400F22579 /* DeleteTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959FD6BE114451A400F22579 /* DeleteTrack.h */; };
 		959FD6C1114451A400F22579 /* DeleteTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959FD6BD114451A400F22579 /* DeleteTrack.cpp */; };
 		959FD6C2114451A400F22579 /* DeleteTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959FD6BE114451A400F22579 /* DeleteTrack.h */; };
+		95B90464114ADF23007F4778 /* PrintSetupDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95B90462114ADF23007F4778 /* PrintSetupDialog.cpp */; };
+		95B90465114ADF23007F4778 /* PrintSetupDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 95B90463114ADF23007F4778 /* PrintSetupDialog.h */; };
+		95B90466114ADF23007F4778 /* PrintSetupDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95B90462114ADF23007F4778 /* PrintSetupDialog.cpp */; };
+		95B90467114ADF23007F4778 /* PrintSetupDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 95B90463114ADF23007F4778 /* PrintSetupDialog.h */; };
 		EF104F6C0B21E1900079A1B7 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF104F6B0B21E1900079A1B7 /* QTKit.framework */; };
 		EF85576209BDE24C00D9D1BC /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF85576109BDE24C00D9D1BC /* OpenGL.framework */; };
 		EF9D1CB709ABE21F00CAF7A6 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF9D1CB609ABE21F00CAF7A6 /* Carbon.framework */; };
@@ -725,8 +725,6 @@
 		957118F31125D8D200104BF5 /* CopyrightWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CopyrightWindow.h; path = ../Src/Dialogs/CopyrightWindow.h; sourceTree = SOURCE_ROOT; };
 		957118F41125D8D200104BF5 /* CustomNoteSelectDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CustomNoteSelectDialog.cpp; path = ../Src/Dialogs/CustomNoteSelectDialog.cpp; sourceTree = SOURCE_ROOT; };
 		957118F51125D8D200104BF5 /* CustomNoteSelectDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomNoteSelectDialog.h; path = ../Src/Dialogs/CustomNoteSelectDialog.h; sourceTree = SOURCE_ROOT; };
-		957118F61125D8D200104BF5 /* NotationExportDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NotationExportDialog.cpp; path = ../Src/Dialogs/NotationExportDialog.cpp; sourceTree = SOURCE_ROOT; };
-		957118F71125D8D200104BF5 /* NotationExportDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NotationExportDialog.h; path = ../Src/Dialogs/NotationExportDialog.h; sourceTree = SOURCE_ROOT; };
 		957118F81125D8D200104BF5 /* Preferences.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Preferences.cpp; path = ../Src/Dialogs/Preferences.cpp; sourceTree = SOURCE_ROOT; };
 		957118F91125D8D200104BF5 /* Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Preferences.h; path = ../Src/Dialogs/Preferences.h; sourceTree = SOURCE_ROOT; };
 		957118FA1125D8D200104BF5 /* ScalePicker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScalePicker.cpp; path = ../Src/Dialogs/ScalePicker.cpp; sourceTree = SOURCE_ROOT; };
@@ -912,6 +910,8 @@
 		959FD68A1144493C00F22579 /* AddTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddTrack.h; path = ../Src/Actions/AddTrack.h; sourceTree = SOURCE_ROOT; };
 		959FD6BD114451A400F22579 /* DeleteTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DeleteTrack.cpp; path = ../Src/Actions/DeleteTrack.cpp; sourceTree = SOURCE_ROOT; };
 		959FD6BE114451A400F22579 /* DeleteTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DeleteTrack.h; path = ../Src/Actions/DeleteTrack.h; sourceTree = SOURCE_ROOT; };
+		95B90462114ADF23007F4778 /* PrintSetupDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrintSetupDialog.cpp; path = ../Src/Dialogs/PrintSetupDialog.cpp; sourceTree = SOURCE_ROOT; };
+		95B90463114ADF23007F4778 /* PrintSetupDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrintSetupDialog.h; path = ../Src/Dialogs/PrintSetupDialog.h; sourceTree = SOURCE_ROOT; };
 		EF104F6B0B21E1900079A1B7 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		EF85576109BDE24C00D9D1BC /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		EF9D1BFF09ABE02100CAF7A6 /* Aria Maestosa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Aria Maestosa.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1047,10 +1047,10 @@
 				957118F31125D8D200104BF5 /* CopyrightWindow.h */,
 				957118F41125D8D200104BF5 /* CustomNoteSelectDialog.cpp */,
 				957118F51125D8D200104BF5 /* CustomNoteSelectDialog.h */,
-				957118F61125D8D200104BF5 /* NotationExportDialog.cpp */,
-				957118F71125D8D200104BF5 /* NotationExportDialog.h */,
 				957118F81125D8D200104BF5 /* Preferences.cpp */,
 				957118F91125D8D200104BF5 /* Preferences.h */,
+				95B90462114ADF23007F4778 /* PrintSetupDialog.cpp */,
+				95B90463114ADF23007F4778 /* PrintSetupDialog.h */,
 				957118FA1125D8D200104BF5 /* ScalePicker.cpp */,
 				957118FB1125D8D200104BF5 /* ScalePicker.h */,
 				957118FC1125D8D200104BF5 /* WaitWindow.cpp */,
@@ -1461,7 +1461,6 @@
 				95711A921125D8D300104BF5 /* About.h in Headers */,
 				95711A941125D8D300104BF5 /* CopyrightWindow.h in Headers */,
 				95711A961125D8D300104BF5 /* CustomNoteSelectDialog.h in Headers */,
-				95711A981125D8D300104BF5 /* NotationExportDialog.h in Headers */,
 				95711A9A1125D8D300104BF5 /* Preferences.h in Headers */,
 				95711A9C1125D8D300104BF5 /* ScalePicker.h in Headers */,
 				95711A9E1125D8D300104BF5 /* WaitWindow.h in Headers */,
@@ -1543,6 +1542,7 @@
 				950B3B591125DBCF006C9AF1 /* irrXML.h in Headers */,
 				959FD68E1144493C00F22579 /* AddTrack.h in Headers */,
 				959FD6C2114451A400F22579 /* DeleteTrack.h in Headers */,
+				95B90467114ADF23007F4778 /* PrintSetupDialog.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1578,7 +1578,6 @@
 				957119C81125D8D300104BF5 /* About.h in Headers */,
 				957119CA1125D8D300104BF5 /* CopyrightWindow.h in Headers */,
 				957119CC1125D8D300104BF5 /* CustomNoteSelectDialog.h in Headers */,
-				957119CE1125D8D300104BF5 /* NotationExportDialog.h in Headers */,
 				957119D01125D8D300104BF5 /* Preferences.h in Headers */,
 				957119D21125D8D300104BF5 /* ScalePicker.h in Headers */,
 				957119D41125D8D300104BF5 /* WaitWindow.h in Headers */,
@@ -1660,6 +1659,7 @@
 				950B3B511125DBCF006C9AF1 /* irrXML.h in Headers */,
 				959FD68C1144493C00F22579 /* AddTrack.h in Headers */,
 				959FD6C0114451A400F22579 /* DeleteTrack.h in Headers */,
+				95B90465114ADF23007F4778 /* PrintSetupDialog.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1773,7 +1773,6 @@
 				95711A911125D8D300104BF5 /* About.cpp in Sources */,
 				95711A931125D8D300104BF5 /* CopyrightWindow.cpp in Sources */,
 				95711A951125D8D300104BF5 /* CustomNoteSelectDialog.cpp in Sources */,
-				95711A971125D8D300104BF5 /* NotationExportDialog.cpp in Sources */,
 				95711A991125D8D300104BF5 /* Preferences.cpp in Sources */,
 				95711A9B1125D8D300104BF5 /* ScalePicker.cpp in Sources */,
 				95711A9D1125D8D300104BF5 /* WaitWindow.cpp in Sources */,
@@ -1850,6 +1849,7 @@
 				950B3B581125DBCF006C9AF1 /* irrXML.cpp in Sources */,
 				959FD68D1144493C00F22579 /* AddTrack.cpp in Sources */,
 				959FD6C1114451A400F22579 /* DeleteTrack.cpp in Sources */,
+				95B90466114ADF23007F4778 /* PrintSetupDialog.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1884,7 +1884,6 @@
 				957119C71125D8D300104BF5 /* About.cpp in Sources */,
 				957119C91125D8D300104BF5 /* CopyrightWindow.cpp in Sources */,
 				957119CB1125D8D300104BF5 /* CustomNoteSelectDialog.cpp in Sources */,
-				957119CD1125D8D300104BF5 /* NotationExportDialog.cpp in Sources */,
 				957119CF1125D8D300104BF5 /* Preferences.cpp in Sources */,
 				957119D11125D8D300104BF5 /* ScalePicker.cpp in Sources */,
 				957119D31125D8D300104BF5 /* WaitWindow.cpp in Sources */,
@@ -1961,6 +1960,7 @@
 				950B3B501125DBCF006C9AF1 /* irrXML.cpp in Sources */,
 				959FD68B1144493C00F22579 /* AddTrack.cpp in Sources */,
 				959FD6BF114451A400F22579 /* DeleteTrack.cpp in Sources */,
+				95B90464114ADF23007F4778 /* PrintSetupDialog.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
