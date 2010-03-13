@@ -281,6 +281,8 @@ namespace AriaMaestosa
         virtual void makeMoveNoteEvent(const int relativeX, const int relativeY, const int lastClickedNote);
         virtual void moveNote(Note& note, const int relativeX, const int relativeY);
         
+        virtual wxString getName() const = 0;
+        
         // ------------------------------------------------------------------------------------------------------
         // methods that provide general information common to all editors
         // ------------------------------------------------------------------------------------------------------

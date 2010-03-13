@@ -38,6 +38,7 @@ public:
     std::vector<int> previous_tuning; // for undo purposes
     
     GuitarEditor(Track* track);
+    ~GuitarEditor();
 
     void render();
     void render(RelativeXCoord mousex_current, int mousey_current,
@@ -55,7 +56,7 @@ public:
     void addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY);
     void moveNote(Note& note, const int relativeX, const int relativeY);
 
-    ~GuitarEditor();
+    virtual wxString getName() const { return _("Tablature Editor"); }
 };
 
 }

@@ -153,6 +153,8 @@ namespace AriaMaestosa
         
     public:
         ScoreEditor(Track* track);
+        ~ScoreEditor();
+
         ScoreMidiConverter* getScoreMidiConverter();
         
         void enableFClef(bool enabled);
@@ -202,10 +204,9 @@ namespace AriaMaestosa
         /** user clicked on a sign in the track's header (called from 'SetAccidentalSign' Action) */
         void setNoteSign(const int sign, const int noteID);
         
-        // int getYStep();
-        // int getHalfNoteHeight();
         
-        ~ScoreEditor();
+        virtual wxString getName() const { return _("Score Editor"); }
+
     };
     
 }
