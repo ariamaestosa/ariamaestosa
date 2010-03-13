@@ -150,6 +150,34 @@ namespace AriaMaestosa
 }
 
 // -----------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
+
+#if 0
+#pragma mark -
+#pragma mark AriaPrintable
+#endif
+
+
+AriaPrintable* AriaPrintable::m_current_printable = NULL;
+
+// -----------------------------------------------------------------------------------------------------------------
+
+AriaPrintable::AriaPrintable(PrintableSequence* seq)
+{
+    assert(m_current_printable == NULL);
+    m_current_printable = this;
+    AriaPrintable::seq = seq;
+    INIT_MAGIC_NUMBER();
+}
+
+// -----------------------------------------------------------------------------------------------------------------
+
+AriaPrintable::~AriaPrintable()
+{
+    m_current_printable = NULL;
+}
+
+// -----------------------------------------------------------------------------------------------------------------
 
 int AriaPrintable::print()
 {
@@ -178,37 +206,11 @@ int AriaPrintable::print()
 }
 
 // -----------------------------------------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------------------------------
 
-#if 0
-#pragma mark -
-#endif
-
-namespace AriaMaestosa
+AriaPrintable* AriaPrintable::getCurrentPrintable()
 {
-    AriaPrintable* currentPrintable = NULL;
-    
-    AriaPrintable* getCurrentPrintable()
-    {
-        assert(currentPrintable != NULL);
-        return currentPrintable;
-    }
-}
-
-// -----------------------------------------------------------------------------------------------------------------
-
-AriaPrintable::AriaPrintable(PrintableSequence* seq)
-{
-    currentPrintable = this;
-    AriaPrintable::seq = seq;
-    INIT_MAGIC_NUMBER();
-}
-
-// -----------------------------------------------------------------------------------------------------------------
-
-AriaPrintable::~AriaPrintable()
-{
-    currentPrintable = NULL;
+    assert(m_current_printable != NULL);
+    return m_current_printable;
 }
 
 // -----------------------------------------------------------------------------------------------------------------
