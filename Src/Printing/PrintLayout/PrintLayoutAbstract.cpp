@@ -20,14 +20,18 @@
 using namespace AriaMaestosa;
 
 namespace AriaMaestosa
-{
-    const int MAX_LEVELS_ON_PAGE = 74;
-    //const int MIN_UNIT_WIDTH = 3;
+{    
+    const int MIN_LEVEL_HEIGHT = 118;               //!< Determined empirically. Used to determine when
+                                                    // it's time to switch to another page
+    
+    //const int MAX_LINES_IN_PAGE = 10;               // FIXME: get from printer settings, don't hardcode
+
     const int MAX_LINE_WIDTH_IN_PRINT_UNITS = 6000; // FIXME: get from printer settings, don't hardcode
-    const int MAX_LINES_IN_PAGE = 10;
+    
     const int LAYOUT_ELEMENT_MIN_WIDTH = 300;
     const int TIME_SIG_LAYOUT_ELEMENT_WIDTH = 75;
     const int HEADER_WIDTH = 250; // width of clef (FIXME: set more precisely)
+    
     int repetitionMinimalLength = 2;
     
     // -------------------------------------------------------------------------------------------
@@ -339,6 +343,8 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
 {
     std::cout << "\n====\nlayInLinesAndPages\n====\n";
     
+    const int maxLevelsOnPage = AriaPrintable::getCurrentPrintable()->getUnitHeight() / MIN_LEVEL_HEIGHT;
+    
     const int layoutElementsAmount = layoutElements.size();
 
     int current_width = 0;
@@ -383,7 +389,7 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
             current_height += line_height;
 
             // too much lines on current page, switch to a new page
-            if (current_height > MAX_LEVELS_ON_PAGE)
+            if (current_height > maxLevelsOnPage)
             {
                 current_height = line_height;
                 layoutPages.push_back( new LayoutPage() );
