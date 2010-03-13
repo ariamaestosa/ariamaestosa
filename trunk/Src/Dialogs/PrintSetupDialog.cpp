@@ -23,14 +23,12 @@ namespace AriaMaestosa
 {
     
     
-    void completeExport(bool accepted);
-    void exportTablature(Track* t, wxFile* file);
+    void doPrint(std::vector<Track*> what_to_export);
     
     bool ignoreMuted_bool = false;
     bool ignoreHidden_bool = false;
     bool checkRepetitions_bool = false;
     
-    bool only_selected_track_bool = false;
     int lineWidth;
     Sequence* currentSequence;
 
@@ -57,6 +55,8 @@ namespace AriaMaestosa
         
         wxBoxSizer* boxSizer;
         
+        wxCheckListBox* m_track_choice;
+        
         // wxTextCtrl* lineWidthCtrl;
         // wxCheckBox* repMinWidth;
         
@@ -77,23 +77,30 @@ namespace AriaMaestosa
             
             //I18N: - in print setup dialog. 
             wxStaticBoxSizer* subsizer = new wxStaticBoxSizer(wxVERTICAL, parent_panel, _("Print..."));
-            //I18N: - in print setup dialog. 
-            current_track = new wxRadioButton(parent_panel, wxID_ANY, _("Current track only") , wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
-            //I18N: - in print setup dialog. 
-            visible_tracks = new wxRadioButton(parent_panel, wxID_ANY, _("This list of tracks"));
             
-            wxCheckListBox* track_choice = new wxCheckListBox(parent_panel, wxID_ANY);
+            //I18N: - in print setup dialog. 
+            current_track = new wxRadioButton(parent_panel, wxNewId(), _("Current track only") , wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
+            current_track->Connect( current_track->GetId(), wxEVT_COMMAND_RADIOBUTTON_SELECTED,
+                                    wxCommandEventHandler(NotationSetup::onSelectCurrentTrackOnly), NULL, this );
+            
+            //I18N: - in print setup dialog. 
+            visible_tracks = new wxRadioButton(parent_panel, wxNewId(), _("This list of tracks"));
+            visible_tracks->Connect( visible_tracks->GetId(), wxEVT_COMMAND_RADIOBUTTON_SELECTED,
+                                     wxCommandEventHandler(NotationSetup::onSelectTrackList), NULL, this );
+            
+            m_track_choice = new wxCheckListBox(parent_panel, wxID_ANY);
             const int track_amount = currentSequence->getTrackAmount();
             for (int n=0; n<track_amount; n++)
             {
                 Track* track = currentSequence->getTrack(n);
-                const int id = track_choice->Append( track->getName() );
-                track_choice->Check(id, not (track->graphics->collapsed or track->graphics->muted or track->graphics->docked));
+                const int id = m_track_choice->Append( track->getName() );
+                m_track_choice->Check(id, not (track->graphics->collapsed or track->graphics->muted or track->graphics->docked));
             }
-            
+            m_track_choice->Enable(false);
+
             subsizer->Add(current_track, 0, wxALL, 5); current_track->SetValue(true);
             subsizer->Add(visible_tracks, 0, wxALL, 5);
-            subsizer->Add(track_choice, 1, wxALL | wxEXPAND, 5);
+            subsizer->Add(m_track_choice, 1, wxALL | wxEXPAND, 5);
             
             boxSizer->Add(subsizer, 1, wxALL | wxEXPAND, 5);
             
@@ -139,17 +146,19 @@ namespace AriaMaestosa
             // OK-Cancel buttons
             {
                 buttonPanel = new wxPanel(parent_panel);
-                boxSizer->Add(buttonPanel, 0, wxALL, 0);
+                boxSizer->Add(buttonPanel, 0, wxALL | wxEXPAND, 5);
                 
                 wxBoxSizer* subsizer = new wxBoxSizer(wxHORIZONTAL);
                 
-                okButton=new wxButton(buttonPanel, wxID_OK, _("OK"));
+                okButton = new wxButton(buttonPanel, wxID_OK, _("OK"));
                 okButton->SetDefault();
-                subsizer->Add(okButton, 0, wxALL, 15);
                 
-                cancelButton=new wxButton(buttonPanel, wxID_CANCEL,  _("Cancel"));
-                subsizer->Add(cancelButton, 0, wxALL, 15);
+                cancelButton = new wxButton(buttonPanel, wxID_CANCEL,  _("Cancel"));
                 
+                subsizer->AddStretchSpacer();
+                subsizer->Add(cancelButton, 0, wxALL, 7);
+                subsizer->Add(okButton,     0, wxALL, 7);
+
                 buttonPanel->SetSizer(subsizer);
                 buttonPanel->SetAutoLayout(true);
                 subsizer->Layout();
@@ -165,22 +174,53 @@ namespace AriaMaestosa
             
         }
         
+        void onSelectCurrentTrackOnly(wxCommandEvent& evt)
+        {
+            m_track_choice->Enable(false);
+            m_track_choice->Refresh();
+        }
+        
+        void onSelectTrackList(wxCommandEvent& evt)
+        {
+            m_track_choice->Enable(true);
+            m_track_choice->Refresh();
+        }
+        
         void cancelClicked(wxCommandEvent& evt)
         {
             Hide();
             Destroy();
-            completeExport(false);
         }
         
         void okClicked(wxCommandEvent& evt)
         {
-            only_selected_track_bool = current_track->GetValue();
+            std::vector<Track*> what_to_print;
+            if (current_track->GetValue())  // only print selected track
+            {
+                what_to_print.push_back( currentSequence->getCurrentTrack() );
+            }
+            else                            // print all selected from list
+            {
+                const int track_amount = currentSequence->getTrackAmount();
+                for (int n=0; n<track_amount; n++)
+                {
+                    if (m_track_choice->IsChecked(n))
+                    {
+                        what_to_print.push_back( currentSequence->getTrack(n) );
+                    }
+                }
+            }
+            
             checkRepetitions_bool = detectRepetitions->IsChecked();
             //lineWidth = atoi_u( lineWidthCtrl->GetValue() );
             //repetitionsOf2Measures = repMinWidth->IsChecked();
+            
+            // terminate the dialog
             Hide();
             Destroy();
-            completeExport(true);
+            
+            // continue with the printing sequence
+            doPrint(what_to_print);
         }
         
         DECLARE_EVENT_TABLE();
@@ -220,21 +260,15 @@ namespace AriaMaestosa
     // ----------------------------------------------------------------------------------------------------
     
     // after dialog is shown and user clicked 'OK' this is called to complete the export
-    void completeExport(bool accepted)
-    {
-        if (!accepted) return;
-        // if (currentSequence == NULL) currentSequence = currentTrack->sequence;
-        
+    void doPrint(std::vector<Track*> what_to_print)
+    {        
         PrintableSequence notationPrint(currentSequence);
         
-        // check if we print everything or just one track
-        if (only_selected_track_bool)
+        for (unsigned int n=0; n<what_to_print.size(); n++)
         {
-            if (not notationPrint.addTrack(
-                                           getCurrentSequence()->getCurrentTrack(),
-                                           getCurrentSequence()->getCurrentTrack()->graphics->editorMode ))
+            if (not notationPrint.addTrack( what_to_print[n], what_to_print[n]->graphics->editorMode ))
             {
-                wxString track_name = getCurrentSequence()->getCurrentTrack()->getName();
+                wxString track_name = what_to_print[n]->getName();
                 
                 //I18N: - %s is the name of the track
                 wxString message = _("Track '%s' could not be printed, since its current\nview (editor) does not support printing.");
@@ -243,38 +277,7 @@ namespace AriaMaestosa
                 return;
             }
         }
-        else
-        {
-            // iterate through all the the tracks of the sequence, only consider those that are visible and not muted
-            
-            const int track_amount = getCurrentSequence()->getTrackAmount();
-            for (int n=0; n<track_amount; n++)
-            {
-                Track* track = currentSequence->getTrack(n);
                 
-                // ignore disabled or hidden tracks
-                if (track->graphics->muted     or
-                    track->graphics->collapsed or
-                    track->graphics->docked) continue;
-                
-                std::cout << "Generating notation for track " << n << " : " << track->getName().mb_str() << std::endl;
-                
-                if (not notationPrint.addTrack( track, track->graphics->editorMode ))
-                {
-                    wxString track_name = track->getName();
-                    
-                    //I18N: - %s is the name of the track
-                    wxString message = _("Track '%s' could not be printed, since its current\nview (editor) does not support printing.");
-                    message.Replace(wxT("%s"), track_name); // wxString::Format crashes, so I need to use this stupid workaround
-                    wxMessageBox( message );
-                    return;
-                }
-                
-            }// next track
-            
-            
-        }
-        
         std::cout << "********************************************************\n";
         std::cout << "******************* CALCULATE LAYOUT *******************\n";
         std::cout << "********************************************************\n\n";
