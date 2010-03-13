@@ -1,6 +1,7 @@
 #include "Printing/PrintLayout/PrintLayoutAbstract.h"
 #include "Printing/AriaPrintable.h"
 
+#include "Dialogs/WaitWindow.h"
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
 #include "Midi/MeasureData.h"
@@ -95,6 +96,8 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
     
     for (int measure=0; measure<measureAmount; measure++)
     {
+        WaitWindow::setProgress( 25 + measure*25/measureAmount );
+
 #ifdef _verbose
         std::cout << "Generating layout element for measure " << (measure+1) << std::endl;
 #endif
@@ -283,6 +286,8 @@ void PrintLayoutAbstract::calculateRelativeLengths(std::vector<LayoutElement>& l
     const int layoutElementsAmount = layoutElements.size();
     for (int n=0; n<layoutElementsAmount; n++)
     {
+        WaitWindow::setProgress( 50 + n*25/layoutElementsAmount );
+
         std::cout << "= layout element " << n << " =\n";
 
         //layoutElements[n].width_in_print_units = LAYOUT_ELEMENT_MIN_WIDTH;
@@ -379,7 +384,8 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     // elements on the current one
     for (int n=0; n<layoutElementsAmount; n++)
     {
-        
+        WaitWindow::setProgress( 75 + n*25/layoutElementsAmount );
+
         if (current_width + layoutElements[n].width_in_print_units + MARGIN_AT_MEASURE_BEGINNING >
             MAX_LINE_WIDTH_IN_PRINT_UNITS)
         {
@@ -455,6 +461,9 @@ void PrintLayoutAbstract::generateMeasures(ptr_vector<Track, REF>& tracks)
             //std::cout << "meas% " << (measures[measure].trackRef[0].track->getName().mb_str()) << std::endl;
             
         } // next measure
+        
+        WaitWindow::setProgress( tr*25/trackAmount );
+
     } // next track
 }
 
@@ -469,7 +478,7 @@ void PrintLayoutAbstract::calculateLayoutElements (ptr_vector<Track, REF>& track
     if (checkRepetitions_bool) findSimilarMeasures();
     
     const int trackAmount = tracks.size();
-    for(int i=0; i<trackAmount; i++)
+    for (int i=0; i<trackAmount; i++)
     {
         EditorPrintable* editorPrintable = sequence->getEditorPrintable( i );
         assert( editorPrintable != NULL );

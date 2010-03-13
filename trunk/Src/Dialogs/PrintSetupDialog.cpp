@@ -11,6 +11,7 @@
 
 #include "AriaCore.h"
 #include "Dialogs/PrintSetupDialog.h"
+#include "Dialogs/WaitWindow.h"
 #include "Editors/GuitarEditor.h"
 #include "GUI/GraphicalTrack.h"
 #include "IO/IOUtils.h"
@@ -315,6 +316,8 @@ namespace AriaMaestosa
     // after dialog is shown and user clicked 'OK' this is called to complete the export
     void doPrint(std::vector<Track*> what_to_print)
     {        
+        WaitWindow::show(_("Calculating print layout...") );
+
         OwnerPtr<PrintableSequence> notationPrint;
         notationPrint = new PrintableSequence(currentSequence);
         
@@ -322,6 +325,8 @@ namespace AriaMaestosa
         {
             if (not notationPrint->addTrack( what_to_print[n], what_to_print[n]->graphics->editorMode ))
             {
+                WaitWindow::hide();
+
                 wxString track_name = what_to_print[n]->getName();
                 
                 //I18N: - %s is the name of the track
@@ -337,6 +342,8 @@ namespace AriaMaestosa
         
         if (not success)
         {
+            WaitWindow::hide();
+
             std::cerr << "error while printing : " << __FILE__ << ":" << __LINE__ << std::endl;
             wxMessageBox( _("An error occured during printing.") );
             return;
@@ -352,6 +359,8 @@ namespace AriaMaestosa
         std::cout << "********************* PRINT RESULT *********************\n";
         std::cout << "********************************************************\n\n";
         
+        WaitWindow::hide();
+
         wxPrinterError result = printer.print();
         if (result == wxPRINTER_ERROR)
         {
@@ -362,8 +371,7 @@ namespace AriaMaestosa
         {
             std::cerr << "Printing was cancelled\n";
         }
-        
+
     }
-    
     
 }
