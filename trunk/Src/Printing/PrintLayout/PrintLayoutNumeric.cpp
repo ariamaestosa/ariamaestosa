@@ -237,8 +237,8 @@ void PrintLayoutNumeric::setLineCoordsAndDivideItsSpace(LayoutLine& line, const 
 // -----------------------------------------------------------------------------------------------------------------
 
 void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, float notation_area_y_from,
-                                          const float notation_area_h, const int level_y_amount, const int pageHeight,
-                                          const int x0, const int x1)
+                                          const float notation_area_h, const int level_y_amount,
+                                          const int pageHeight, const int x0, const int x1)
 {
     assert(notation_area_y_from >= 0);
     assert(notation_area_h > 0);

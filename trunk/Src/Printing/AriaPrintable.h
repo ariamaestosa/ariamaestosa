@@ -39,6 +39,10 @@ namespace AriaMaestosa
 
         PrintableSequence* seq;
 
+        wxFont m_normal_font;
+        wxFont m_title_font;
+        wxFont m_subtitle_font;
+        
         /** This is set by QuickPrint during its setup */
         int m_unit_width, m_unit_height;
         
@@ -59,14 +63,17 @@ namespace AriaMaestosa
         
         QuickPrint* m_printer_manager;
         
+        int m_font_height;
+        int m_font_height_half;
+        int m_character_width;
+        
+        int m_title_font_height;
+        int m_subtitle_font_height;
+
+        int m_usable_area_height_page_1;
+        int m_usable_area_height;
+        
     public:
-        // ---------------------------------------
-        // global info for printables, read-only
-        // FIXME - find cleaner way
-        int text_height;
-        int text_height_half;
-        int character_width;
-        // ---------------------------------------
         
         /**
          * Construct this object BEFORE calling 'calculateLayout' in the prntable sequence, since the printable
@@ -106,6 +113,17 @@ namespace AriaMaestosa
           */
         static AriaPrintable* getCurrentPrintable();
 
+        int getCharacterHeight    () const { return m_font_height;      }
+        int getCharacterHalfHeight() const { return m_font_height_half; }
+        int getCharacterWidth     () const { return m_character_width;  }
+        
+
+        int getUsableAreaHeight(const int pageNumber) const
+        {
+            assert(pageNumber >= 1);
+            assert(m_usable_area_height_page_1 != -1 and m_usable_area_height != -1);
+            return (pageNumber == 1 ? m_usable_area_height_page_1 : m_usable_area_height);
+        }
     };
         
     

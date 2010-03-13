@@ -20,6 +20,8 @@ using namespace AriaMaestosa;
 namespace AriaMaestosa
 {
     
+    const int MARGIN_UNDER_PAGE_HEADER = 200;
+
     class QuickPrint : public wxPrintout
     {
         AriaPrintable*        m_print_callback;
@@ -55,7 +57,8 @@ namespace AriaMaestosa
         
         /** 
           * Perform print setup (paper size, orientation, etc...), with our without dialog.
-          * @postcondition sets m_unit_width and m_unit_height in AriaPrintable
+          * @postcondition sets m_unit_width and m_unit_height in AriaPrintable, as well
+          *                as usable_area_y* (FIXME: ugly design)
           */
         bool performPageSetup(const bool showPageSetupDialog=false)
         {
@@ -111,6 +114,18 @@ namespace AriaMaestosa
             assert(m_print_callback->m_unit_width  > 0);
             assert(m_print_callback->m_unit_height > 0);
             
+            
+            const int height = m_print_callback->m_unit_height;
+            
+            //std::cout << PRINT_VAR(height) << " - " << PRINT_VAR(m_print_callback->m_title_font_height)
+            //          << " - " <<  PRINT_VAR(MARGIN_UNDER_PAGE_HEADER) << std::endl;
+            //std::cout << PRINT_VAR(height) << " - " << PRINT_VAR(m_print_callback->m_subtitle_font_height)
+            //          << " - " <<  PRINT_VAR(MARGIN_UNDER_PAGE_HEADER) << std::endl;
+            m_print_callback->m_usable_area_height_page_1 = height - m_print_callback->m_title_font_height - MARGIN_UNDER_PAGE_HEADER;
+            m_print_callback->m_usable_area_height        = height - m_print_callback->m_subtitle_font_height - MARGIN_UNDER_PAGE_HEADER;
+            
+            assert(m_print_callback->m_usable_area_height_page_1 > 0);
+            assert(m_print_callback->m_usable_area_height > 0);
             return true;
         }
         
@@ -232,7 +247,10 @@ namespace AriaMaestosa
 AriaPrintable* AriaPrintable::m_current_printable = NULL;
 
 
-AriaPrintable::AriaPrintable(PrintableSequence* seq, bool* success)
+AriaPrintable::AriaPrintable(PrintableSequence* seq, bool* success) :
+    m_normal_font   (75,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL),
+    m_title_font    (130, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD  ),
+    m_subtitle_font (90,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL)
 {
     INIT_MAGIC_NUMBER();
     assert(m_current_printable == NULL);
@@ -240,6 +258,46 @@ AriaPrintable::AriaPrintable(PrintableSequence* seq, bool* success)
     m_current_printable = this;
     m_unit_width        = -1;
     m_unit_height       = -1;
+    
+    // ---- Get fonts size
+    m_font_height       = -1;
+    m_font_height_half  = -1;
+    m_character_width   = -1;
+    
+    // wx only allows getting font size with a DC or a window... so I need to create
+    // a dummy one (FIXME)
+    wxBitmap dummyBmp(5,5);
+    wxMemoryDC dummy(dummyBmp);
+    assert(dummy.IsOk());
+    dummy.SetFont( m_normal_font );
+    wxCoord txw = -1, txh = -1, descent = -1, externalLeading = -1;
+    dummy.GetTextExtent(wxT("X"), &txw, &txh, &descent, &externalLeading);
+    
+    m_font_height      = txh;
+    m_font_height_half = (int)round((float)m_font_height / 2.0);
+    m_character_width  =  txw;
+    assert(m_font_height     > 0);
+    assert(m_character_width > 0);
+    
+    txw = -1; txh = -1; descent = -1; externalLeading = -1;
+    dummy.SetFont( m_title_font );
+    dummy.GetTextExtent(wxT("X"), &txw, &txh, &descent, &externalLeading);
+    
+    m_title_font_height = txh;
+    assert(m_title_font_height > 0);
+
+    txw = -1; txh = -1; descent = -1; externalLeading = -1;
+    dummy.SetFont( m_subtitle_font );
+    dummy.GetTextExtent(wxT("X"), &txw, &txh, &descent, &externalLeading);
+    
+    m_subtitle_font_height= txh;
+    assert(m_subtitle_font_height > 0);
+    
+    // --------------------
+    
+    // those are not known yet
+    m_usable_area_height_page_1 = -1;
+    m_usable_area_height        = -1;
     
     AriaPrintable::seq  = seq;
     assert(not seq->isLayoutCalculated());
@@ -367,7 +425,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     if (pageNum == 1)
     {
         // on page one make title big and centered
-        dc.SetFont( wxFont(130,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD) );
+        dc.SetFont( m_title_font );
         wxCoord txw, txh, descent, externalLeading;
         dc.GetTextExtent(label, &txw, &txh, &descent, &externalLeading);
         title_x = (x0+x1)/2 - txw/2;
@@ -377,33 +435,22 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
         // on other pages, repeat the title in small font, not centered, with page number
         label += wxT(", page ");
         label << pageNum;
-        dc.SetFont( wxFont(90,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL) );
+        dc.SetFont( m_subtitle_font );
     }
     
     dc.SetTextForeground( wxColour(0,0,0) );
     dc.DrawText( label, title_x, y0 );
     
-    // ---- Set font we will use and get info about it
-    dc.SetFont( wxFont(75,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL) );
+    dc.SetFont( m_normal_font );
     
-    wxCoord txw, txh, descent, externalLeading;
-    dc.GetTextExtent(label, &txw, &txh, &descent, &externalLeading);
-    
-    text_height = txh;
-    text_height_half = (int)round((float)text_height / 2.0);
-    
-    character_width =  dc.GetTextExtent(wxT("X")).GetWidth();
+    // get usable area (some area at the top is reserved to the title) 
+    const float notation_area_h  = getUsableAreaHeight(pageNum);
+    const float notation_area_y0 = y0 + MARGIN_UNDER_PAGE_HEADER +
+                                   (pageNum == 1 ? m_title_font_height : m_subtitle_font_height);
 
-
-    // the equivalent of 3 times "text_height" will not be printed with notation.
-    // --> space for title at the top, and some space under it
-    // FIXME: compute proper size so that big title room is not wasted on other pages.
-    //        Also, for title, don't rely on * 3 the small font, calculate with  the actual font.
-    const float notation_area_h  = (float)h - (float)text_height*3.0f;
-    const float notation_area_y0 = y0 + (float)text_height*3.0f;
-    
     assert(notation_area_h > 0);
     assert(h > 0);
+    
     
     seq->printLinesInArea(dc, page, notation_area_y0, notation_area_h, level_y_amount, h, x0, x1);
     
