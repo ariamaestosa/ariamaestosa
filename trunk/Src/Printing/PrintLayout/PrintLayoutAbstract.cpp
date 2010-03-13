@@ -22,16 +22,17 @@ using namespace AriaMaestosa;
 
 namespace AriaMaestosa
 {    
-    const int MIN_LEVEL_HEIGHT = 118;               //!< Determined empirically. Used to determine when
-                                                    // it's time to switch to another page
-    
-    //const int MAX_LINES_IN_PAGE = 10;               // FIXME: get from printer settings, don't hardcode
+    /** Determined empirically. Used to determine when it's time to switch to another page */
+    const int MIN_LEVEL_HEIGHT = 118; //FIXME: print layout numeric declares const int MAX_LEVEL_HEIGHT = 75...
 
-    const int MAX_LINE_WIDTH_IN_PRINT_UNITS = 6000; // FIXME: get from printer settings, don't hardcode
-    
+    /** Minimal width of any element, in print units, to avoid elements that are too small and look funny */
     const int LAYOUT_ELEMENT_MIN_WIDTH = 300;
+    
+    /** Width, in print units, of a time signature (e.g. 4/4) element */
     const int TIME_SIG_LAYOUT_ELEMENT_WIDTH = 75;
-    const int HEADER_WIDTH = 250; // width of clef (FIXME: set more precisely)
+    
+    /** width of a G or F clef symbol on the staff (FIXME: set more precisely) */
+    const int CLEF_WIDTH = 250;
     
     int repetitionMinimalLength = 2;
     
@@ -349,7 +350,8 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     std::cout << "\n====\nlayInLinesAndPages\n====\n";
     
     const int maxLevelsOnPage = AriaPrintable::getCurrentPrintable()->getUnitHeight() / MIN_LEVEL_HEIGHT;
-    
+    //FIXME: remove magic constant '600' (which is the margin)
+    const int maxLineWidthInPrintUnits = AriaPrintable::getCurrentPrintable()->getUnitWidth() - 600;     
     const int layoutElementsAmount = layoutElements.size();
 
     int current_width = 0;
@@ -366,7 +368,7 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     // add line header
     LayoutElement el(LayoutElement(LINE_HEADER, -1));
     
-    int header_width = HEADER_WIDTH;
+    int header_width = CLEF_WIDTH;
     
     if (sequence->isScoreEditorUsed())
     {
@@ -387,7 +389,7 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
         WaitWindow::setProgress( 75 + n*25/layoutElementsAmount );
 
         if (current_width + layoutElements[n].width_in_print_units + MARGIN_AT_MEASURE_BEGINNING >
-            MAX_LINE_WIDTH_IN_PRINT_UNITS)
+            maxLineWidthInPrintUnits)
         {
             // too much stuff on current line, switch to another line
             current_width = 0;
