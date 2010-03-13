@@ -31,6 +31,7 @@ namespace AriaMaestosa
         /** Whether at least one track with score view was added */
         bool m_is_score_editor_used;
 
+        /** Whether 'calculateLayout' was called on this object */
         bool m_layout_calculated;
         
         /** Holds one EditorPrintable derivate for each track added to this printing job */
@@ -139,6 +140,9 @@ namespace AriaMaestosa
         void printLinesInArea(wxDC& dc, LayoutPage& page, const float notation_area_y0, const float notation_area_h,
                               const int level_y_amount, const int pageHeight,
                               const int x0, const int x1);
+        
+        /** @return whether 'calculteLayout' was called on this object */
+        bool isLayoutCalculated() const { return m_layout_calculated; }
     };
     
 }

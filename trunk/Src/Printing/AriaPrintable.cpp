@@ -23,20 +23,26 @@ namespace AriaMaestosa
     class QuickPrint : public wxPrintout
     {
         wxPageSetupDialogData m_page_setup;
-        int m_orient;
-        int m_page_amount;
+        int                   m_orient;
+        int                   m_page_amount;
+        wxPaperSize           m_paper_id;
         
         static const int m_brush_size = 15;
         
         AriaPrintable* m_print_callback;
         
     public:
-        QuickPrint(PrintableSequence* printableSequence, AriaPrintable* printCallBack) :
-            wxPrintout( printableSequence->getTitle() )
+        QuickPrint(wxString title, AriaPrintable* printCallBack) : wxPrintout( title )
         {
             m_print_callback = printCallBack;
-            m_page_amount    =  printableSequence->getPageAmount();
+            m_page_amount    = -1; // unknown yet
             m_orient         = wxPORTRAIT;
+            m_paper_id       = wxPAPER_LETTER; //TODO: remember user's favorite paper
+        }
+        
+        void setPrintableSequence(PrintableSequence* printableSequence)
+        {
+            m_page_amount    = printableSequence->getPageAmount();
         }
         
         bool OnPrintPage(int pageNum)
@@ -61,17 +67,20 @@ namespace AriaMaestosa
             
             std::cout << "printable area : (" << x0 << ", " << y0 << ") to ("
                       << (x0 + width) << ", " << (y0 + height) << ")" << std::endl;
+            assert( width  > 0 );
+            assert( height > 0 );
             
             m_print_callback->printPage(pageNum, dc, x0, y0, width, height);
             
             return true;
         }
         
-        bool preparePrint(const bool showPageSetupDialog=false)
+        bool performPageSetup(const bool showPageSetupDialog=false)
         {
             wxPrintData printdata;
             printdata.SetPrintMode( wxPRINT_MODE_PRINTER );
             printdata.SetOrientation( m_orient ); // wxPORTRAIT, wxLANDSCAPE
+            printdata.SetPaperId( m_paper_id );
             printdata.SetNoCopies(1);
             
             m_page_setup = wxPageSetupDialogData(printdata);
@@ -93,30 +102,46 @@ namespace AriaMaestosa
                     return false;
                 }
             }
-            return true;
             
+            assert(m_page_setup.GetPaperId() != wxPAPER_NONE);
+            
+            // ---- set-up coordinate system however we want
+            // we'll use it when drawing
+            wxSize paperSize = m_page_setup.GetPaperSize();
+            const int large_side = std::max(paperSize.GetWidth(), paperSize.GetHeight());
+            const int small_side = std::min(paperSize.GetWidth(), paperSize.GetHeight());
+            
+            assert(large_side > 0);
+            assert(small_side > 0);
+            
+            // here, the 31.5 factor was determined empirically
+            if (m_orient == wxPORTRAIT)
+            {
+                m_print_callback->m_unit_width  = (int)(small_side*31.5f);
+                m_print_callback->m_unit_height = (int)(large_side*31.5f);
+            }
+            else
+            {
+                m_print_callback->m_unit_width  = (int)(large_side*31.5f);
+                m_print_callback->m_unit_height = (int)(small_side*31.5f);
+            }
+            
+            assert(m_print_callback->m_unit_width  > 0);
+            assert(m_print_callback->m_unit_height > 0);
+            
+            return true;
         }
         
         void OnBeginPrinting()
         {
-            // set-up coordinate system however we want
-            // we'll use it when drawing
+            std::cout << "---- ON BEGIN PRINTING ----\n" << m_print_callback->m_unit_width << "x" << m_print_callback->m_unit_height << "\n";
             
-            int max_x, max_y;
+            // setup coordinate system
+            assert(m_print_callback->m_unit_width  > 0);
+            assert(m_print_callback->m_unit_height > 0);
             
-            // here i'm using arbitrary an size, use whatever you wish
-            if (m_orient == wxPORTRAIT)
-            {
-                max_x = 6800;
-                max_y = 8800;
-            }
-            else
-            {
-                max_x = 8800;
-                max_y = 6800;
-            }
-            
-            FitThisSizeToPageMargins(wxSize(max_x, max_y), m_page_setup);
+            FitThisSizeToPageMargins(wxSize(m_print_callback->m_unit_width, m_print_callback->m_unit_height),
+                                     m_page_setup);
         }
         
         bool OnBeginDocument(int startPage, int endPage)
@@ -130,6 +155,8 @@ namespace AriaMaestosa
         
         void GetPageInfo(int *minPage, int *maxPage, int *pageSelFrom, int *pageSelTo)
         {
+            assert(m_page_amount > 0);
+            
             *minPage = 1;
             *maxPage = m_page_amount;
             
@@ -139,6 +166,8 @@ namespace AriaMaestosa
         
         bool HasPage(int pageNum)
         {
+            assert(m_page_amount > 0);
+            
             if (pageNum >= 1 and pageNum <= m_page_amount) return true;
             else                                           return false;
         }
@@ -150,9 +179,8 @@ namespace AriaMaestosa
     
 }
 
-// -----------------------------------------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------------------------------
-
+// -------------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #pragma mark AriaPrintable
@@ -163,50 +191,69 @@ AriaPrintable* AriaPrintable::m_current_printable = NULL;
 
 // -----------------------------------------------------------------------------------------------------------------
 
-AriaPrintable::AriaPrintable(PrintableSequence* seq)
+AriaPrintable::AriaPrintable(PrintableSequence* seq, bool* success)
 {
-    assert(m_current_printable == NULL);
-    m_current_printable = this;
-    AriaPrintable::seq = seq;
     INIT_MAGIC_NUMBER();
+    assert(m_current_printable == NULL);
+    
+    m_current_printable = this;
+    m_unit_width        = -1;
+    m_unit_height       = -1;
+    
+    AriaPrintable::seq  = seq;
+    assert(not seq->isLayoutCalculated());
+    
+    m_printer_manager = new QuickPrint( seq->getTitle(), this );
+    if (not m_printer_manager->performPageSetup())
+    {
+        std::cerr << "Preparing the QUickPrint object failed!\n";
+        *success = false;
+    }
+    else
+    {
+        *success = true;
+    }
 }
 
-// -----------------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------
 
 AriaPrintable::~AriaPrintable()
 {
     m_current_printable = NULL;
+    delete m_printer_manager;
 }
 
-// -----------------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------
 
-int AriaPrintable::print()
+wxPrinterError AriaPrintable::print()
 {
     assert( MAGIC_NUMBER_OK() );
     
+    assert(seq->isLayoutCalculated());
+
 #ifdef __WXMAC__
     // change window title so any generated PDF is given the right name
     getMainFrame()->SetTitle(seq->getTitle());
 #endif
 
-    QuickPrint myprint( seq, this );
+    assert(m_printer_manager != NULL);
+    m_printer_manager->setPrintableSequence(seq);
+    
     wxPrinter printer;
-
-    if (!myprint.preparePrint()) return false;
-    //const bool success =
-    printer.Print(NULL, &myprint, true /* show dialog */);
+    if (not printer.Print(NULL, m_printer_manager, true /* show dialog */))
+    {
+        std::cerr << "The Print method returned false\n";
+        return wxPRINTER_ERROR;
+    }
 
 #ifdef __WXMAC__
     getMainFrame()->SetTitle(wxT("Aria Maestosa"));
 #endif
 
     return wxPrinter::GetLastError();
-
-    //if (!success) return false;
-    //return true;
 }
 
-// -----------------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------
 
 AriaPrintable* AriaPrintable::getCurrentPrintable()
 {
@@ -214,13 +261,15 @@ AriaPrintable* AriaPrintable::getCurrentPrintable()
     return m_current_printable;
 }
 
-// -----------------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------
 
 void AriaPrintable::printPage(const int pageNum, wxDC& dc,
                               const int x0, const int y0,
                               const int w, const int h)
 {    
     assert( MAGIC_NUMBER_OK() );
+    assert( w > 0 );
+    assert( h > 0 );
     
     const int x1 = x0 + w;
     const int y1 = y0 + h;
@@ -310,10 +359,12 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     const float notation_area_h  = (float)h - (float)text_height*3.0f;
     const float notation_area_y0 = y0 + (float)text_height*3.0f;
     
+    assert(notation_area_h > 0);
+    assert(h > 0);
+    
     seq->printLinesInArea(dc, page, notation_area_y0, notation_area_h, level_y_amount, h, x0, x1);
     
 }
     
-// -----------------------------------------------------------------------------------------------------------------
-
+// -------------------------------------------------------------------------------------------------------------
  

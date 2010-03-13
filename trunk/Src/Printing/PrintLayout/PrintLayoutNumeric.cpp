@@ -72,7 +72,7 @@ void PrintLayoutNumeric::placeTrackWithinCoords(const int trackID, LayoutLine& l
                                                 int x0, const int y0, const int x1, const int y1,
                                                 bool show_measure_number)
 {
-    std::cout << "= placeTrackAndElementsWithinCoords =\n";
+    std::cout << "= placeTrackWithinCoords =\n";
     
     assertExpr(x0, >=, 0);
     assertExpr(x1, >=, 0);
@@ -240,6 +240,10 @@ void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, float notation_area_
                                           const float notation_area_h, const int level_y_amount, const int pageHeight,
                                           const int x0, const int x1)
 {
+    assert(notation_area_y_from >= 0);
+    assert(notation_area_h > 0);
+    assert(pageHeight > 0);
+    
     std::cout << "\n========\nplaceTracksInPage\n========\n";
     
     // ---- Lay out tracks
@@ -295,6 +299,8 @@ void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, float notation_area_
             margin_above = margin_above/2;
             margin_below = margin_below/2;
         }
+        assert(heightAvailableForThisLine > 0);
+        assert(used_height > 0);
         
         std::cout << "height=" << heightAvailableForThisLine << " used_height=" << used_height
                   << " used_y_from=" << used_y_from << " margin_above=" << margin_above

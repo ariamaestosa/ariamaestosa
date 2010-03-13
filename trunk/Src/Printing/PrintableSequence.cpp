@@ -85,6 +85,9 @@ void PrintableSequence::printLinesInArea(wxDC& dc, LayoutPage& page,
     assert(m_layout_calculated);
     assert(m_numeric_layout_manager != NULL);
     
+    assert(notation_area_h > 0);
+    assert(pageHeight > 0);
+    
     // ---- Give each track an area on the page
     m_numeric_layout_manager->placeLinesInPage(page, notation_area_y0, notation_area_h,
                                                level_y_amount, pageHeight, x0, x1);

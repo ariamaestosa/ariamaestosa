@@ -315,11 +315,12 @@ namespace AriaMaestosa
     // after dialog is shown and user clicked 'OK' this is called to complete the export
     void doPrint(std::vector<Track*> what_to_print)
     {        
-        PrintableSequence notationPrint(currentSequence);
+        OwnerPtr<PrintableSequence> notationPrint;
+        notationPrint = new PrintableSequence(currentSequence);
         
         for (unsigned int n=0; n<what_to_print.size(); n++)
         {
-            if (not notationPrint.addTrack( what_to_print[n], what_to_print[n]->graphics->editorMode ))
+            if (not notationPrint->addTrack( what_to_print[n], what_to_print[n]->graphics->editorMode ))
             {
                 wxString track_name = what_to_print[n]->getName();
                 
@@ -330,24 +331,36 @@ namespace AriaMaestosa
                 return;
             }
         }
-                
+    
+        bool success = false;
+        AriaPrintable printer( notationPrint, &success );
+        
+        if (not success)
+        {
+            std::cerr << "error while printing : " << __FILE__ << ":" << __LINE__ << std::endl;
+            wxMessageBox( _("An error occured during printing.") );
+            return;
+        }
+        
         std::cout << "********************************************************\n";
         std::cout << "******************* CALCULATE LAYOUT *******************\n";
         std::cout << "********************************************************\n\n";
         
-        notationPrint.calculateLayout( checkRepetitions_bool );
+        notationPrint->calculateLayout( checkRepetitions_bool );
         
         std::cout << "\n********************************************************\n";
         std::cout << "********************* PRINT RESULT *********************\n";
         std::cout << "********************************************************\n\n";
         
-        AriaPrintable printer( &notationPrint );
-        
-        wxPrinterError result = (wxPrinterError)printer.print();
+        wxPrinterError result = printer.print();
         if (result == wxPRINTER_ERROR)
         {
-            std::cerr << "error while printing" << std::endl;
+            std::cerr << "error while printing : " << __FILE__ << ":" << __LINE__ << std::endl;
             wxMessageBox( _("An error occured during printing.") );
+        }
+        else if (result == wxPRINTER_CANCELLED)
+        {
+            std::cerr << "Printing was cancelled\n";
         }
         
     }
