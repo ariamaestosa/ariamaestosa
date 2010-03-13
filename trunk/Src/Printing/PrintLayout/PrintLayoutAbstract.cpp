@@ -23,7 +23,10 @@ using namespace AriaMaestosa;
 namespace AriaMaestosa
 {    
     /** Determined empirically. Used to determine when it's time to switch to another page */
-    const int MIN_LEVEL_HEIGHT = 118; //FIXME: print layout numeric declares const int MAX_LEVEL_HEIGHT = 75...
+    //FIXME: print layout numeric declares const int MAX_LEVEL_HEIGHT = 75... probably because
+    //       print layout numeric takes margins into accunt, while this one does not consider
+    //       margins (which is quite a bad idea, BTW)
+    const int MIN_LEVEL_HEIGHT = 118;
 
     /** Minimal width of any element, in print units, to avoid elements that are too small and look funny */
     const int LAYOUT_ELEMENT_MIN_WIDTH = 300;
