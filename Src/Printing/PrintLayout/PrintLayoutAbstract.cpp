@@ -23,10 +23,9 @@ using namespace AriaMaestosa;
 namespace AriaMaestosa
 {    
     /** Determined empirically. Used to determine when it's time to switch to another page */
-    //FIXME: print layout numeric declares const int MAX_LEVEL_HEIGHT = 75... probably because
-    //       print layout numeric takes margins into accunt, while this one does not consider
-    //       margins (which is quite a bad idea, BTW)
-    const int MIN_LEVEL_HEIGHT = 118;
+    //This number is bigger than the max level height in print layout numeric, because values
+    // here are checked AFTER a track is already added to the page... FIXME!
+    const int MIN_LEVEL_HEIGHT = 80;
 
     /** Minimal width of any element, in print units, to avoid elements that are too small and look funny */
     const int LAYOUT_ELEMENT_MIN_WIDTH = 300;
@@ -352,7 +351,19 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
 {
     std::cout << "\n====\nlayInLinesAndPages\n====\n";
     
-    const int maxLevelsOnPage = AriaPrintable::getCurrentPrintable()->getUnitHeight() / MIN_LEVEL_HEIGHT;
+    const int usableAreaHeightPage1 = AriaPrintable::getCurrentPrintable()->getUsableAreaHeight(1);
+    const int usableAreaHeightOtherPages = AriaPrintable::getCurrentPrintable()->getUsableAreaHeight(2);
+
+    assert(usableAreaHeightPage1 > 0);
+    assert(usableAreaHeightOtherPages > 0);
+    
+    const int maxLevelsOnPage1      = usableAreaHeightPage1 / MIN_LEVEL_HEIGHT;
+    const int maxLevelsOnOtherPages = usableAreaHeightOtherPages / MIN_LEVEL_HEIGHT;
+
+    assert(maxLevelsOnPage1 > 0);
+    assert(maxLevelsOnOtherPages > 0);
+    std::cout << "maxLevelsOnPage0=" << maxLevelsOnPage1 << " maxLevelsOnOtherPages=" << maxLevelsOnOtherPages << std::endl;
+    
     //FIXME: remove magic constant '600' (which is the margin)
     const int maxLineWidthInPrintUnits = AriaPrintable::getCurrentPrintable()->getUnitWidth() - 600;     
     const int layoutElementsAmount = layoutElements.size();
@@ -400,7 +411,7 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
             current_height += line_height;
 
             // too much lines on current page, switch to a new page
-            if (current_height > maxLevelsOnPage)
+            if (current_height > (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages))
             {
                 current_height = line_height;
                 layoutPages.push_back( new LayoutPage() );

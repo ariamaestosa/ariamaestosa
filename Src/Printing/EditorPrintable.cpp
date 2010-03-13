@@ -133,7 +133,7 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
         }
         
         dc->DrawText( message, elem_x_start,
-                     (trackCoords->y0 + trackCoords->y1)/2 - AriaPrintable::getCurrentPrintable()->text_height_half );
+                     (trackCoords->y0 + trackCoords->y1)/2 - AriaPrintable::getCurrentPrintable()->getCharacterHalfHeight() );
     }
     // ****** play again
     else if (currElem.getType() == PLAY_MANY_TIMES)
@@ -141,7 +141,7 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
         wxString label(wxT("X"));
         label << currElem.amountOfTimes;
         dc->DrawText( label, elem_x_start,
-                     (trackCoords->y0 + trackCoords->y1)/2 - AriaPrintable::getCurrentPrintable()->text_height_half );
+                     (trackCoords->y0 + trackCoords->y1)/2 - AriaPrintable::getCurrentPrintable()->getCharacterHalfHeight() );
     }
     // ****** normal measure
     else if (currElem.getType() == SINGLE_MEASURE)
@@ -158,9 +158,9 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
             
             dc->DrawText( measureLabel,
                           elem_x_start - ( meas_id > 9 ?
-                                          AriaPrintable::getCurrentPrintable()->character_width :
-                                          AriaPrintable::getCurrentPrintable()->character_width/2 ),
-                          trackCoords->y0 - AriaPrintable::getCurrentPrintable()->text_height*1.4 );
+                                           AriaPrintable::getCurrentPrintable()->getCharacterWidth() :
+                                           AriaPrintable::getCurrentPrintable()->getCharacterWidth()/2 ),
+                          trackCoords->y0 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()*1.4 );
         }
         dc->SetTextForeground( wxColour(0,0,0) );
     }
