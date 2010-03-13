@@ -22,20 +22,21 @@ namespace AriaMaestosa
     
     class QuickPrint : public wxPrintout
     {
-        wxPageSetupDialogData page_setup;
-        int orient;
-        int pageAmount;
+        wxPageSetupDialogData m_page_setup;
+        int m_orient;
+        int m_page_amount;
         
-        static const int brush_size = 15;
+        static const int m_brush_size = 15;
         
-        AriaPrintable* printCallBack;
+        AriaPrintable* m_print_callback;
         
     public:
-        QuickPrint(PrintableSequence* printableSequence, AriaPrintable* printCallBack) : wxPrintout( printableSequence->getTitle() )
+        QuickPrint(PrintableSequence* printableSequence, AriaPrintable* printCallBack) :
+            wxPrintout( printableSequence->getTitle() )
         {
-            QuickPrint::printCallBack = printCallBack;
-            pageAmount =  printableSequence->getPageAmount();
-            orient = wxPORTRAIT;
+            m_print_callback = printCallBack;
+            m_page_amount    =  printableSequence->getPageAmount();
+            m_orient         = wxPORTRAIT;
         }
         
         bool OnPrintPage(int pageNum)
@@ -43,7 +44,7 @@ namespace AriaMaestosa
             std::cout << "\n============\nprinting page " << pageNum << "\n==============" << std::endl;
             
             wxDC* ptr = GetDC();
-            if (ptr==NULL or !ptr->IsOk())
+            if (ptr == NULL or not ptr->IsOk())
             {
                 std::cerr << "DC is not Ok, interrupting printing" << std::endl;
                 return false;
@@ -53,15 +54,15 @@ namespace AriaMaestosa
             
             wxRect bounds = GetLogicalPageRect();
             
-            const int x0 = bounds.x;
-            const int y0 = bounds.y;
-            const int width = bounds.width;
+            const int x0     = bounds.x;
+            const int y0     = bounds.y;
+            const int width  = bounds.width;
             const int height = bounds.height;
             
             std::cout << "printable area : (" << x0 << ", " << y0 << ") to ("
                       << (x0 + width) << ", " << (y0 + height) << ")" << std::endl;
             
-            printCallBack->printPage(pageNum, dc, x0, y0, width, height);
+            m_print_callback->printPage(pageNum, dc, x0, y0, width, height);
             
             return true;
         }
@@ -70,21 +71,21 @@ namespace AriaMaestosa
         {
             wxPrintData printdata;
             printdata.SetPrintMode( wxPRINT_MODE_PRINTER );
-            printdata.SetOrientation( orient ); // wxPORTRAIT, wxLANDSCAPE
+            printdata.SetOrientation( m_orient ); // wxPORTRAIT, wxLANDSCAPE
             printdata.SetNoCopies(1);
             
-            page_setup = wxPageSetupDialogData(printdata);
+            m_page_setup = wxPageSetupDialogData(printdata);
             //page_setup.SetMarginTopLeft(wxPoint(16, 16));
             //page_setup.SetMarginBottomRight(wxPoint(16, 16));
             
             if (showPageSetupDialog)
             {
                 // let user change default values if he wishes to
-                wxPageSetupDialog dialog( NULL,  &page_setup );
+                wxPageSetupDialog dialog( NULL,  &m_page_setup );
                 if (dialog.ShowModal()==wxID_OK)
                 {
-                    page_setup = dialog.GetPageSetupData();
-                    orient = page_setup.GetPrintData().GetOrientation();
+                    m_page_setup = dialog.GetPageSetupData();
+                    m_orient     = m_page_setup.GetPrintData().GetOrientation();
                 }
                 else
                 {
@@ -104,7 +105,7 @@ namespace AriaMaestosa
             int max_x, max_y;
             
             // here i'm using arbitrary an size, use whatever you wish
-            if (orient == wxPORTRAIT)
+            if (m_orient == wxPORTRAIT)
             {
                 max_x = 6800;
                 max_y = 8800;
@@ -115,7 +116,7 @@ namespace AriaMaestosa
                 max_y = 6800;
             }
             
-            FitThisSizeToPageMargins(wxSize(max_x, max_y), page_setup);
+            FitThisSizeToPageMargins(wxSize(max_x, max_y), m_page_setup);
         }
         
         bool OnBeginDocument(int startPage, int endPage)
@@ -130,16 +131,16 @@ namespace AriaMaestosa
         void GetPageInfo(int *minPage, int *maxPage, int *pageSelFrom, int *pageSelTo)
         {
             *minPage = 1;
-            *maxPage = pageAmount;
+            *maxPage = m_page_amount;
             
             *pageSelFrom = 1;
-            *pageSelTo = pageAmount;
+            *pageSelTo   = m_page_amount;
         }
         
         bool HasPage(int pageNum)
         {
-            if (pageNum >= 1 and pageNum <= pageAmount) return true;
-            else                                        return false;
+            if (pageNum >= 1 and pageNum <= m_page_amount) return true;
+            else                                           return false;
         }
         
         void OnEndPrinting()
