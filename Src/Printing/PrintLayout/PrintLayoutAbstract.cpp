@@ -23,9 +23,7 @@ using namespace AriaMaestosa;
 namespace AriaMaestosa
 {    
     /** Determined empirically. Used to determine when it's time to switch to another page */
-    //This number is bigger than the max level height in print layout numeric, because values
-    // here are checked AFTER a track is already added to the page... FIXME!
-    const int MIN_LEVEL_HEIGHT = 80;
+    const int MIN_LEVEL_HEIGHT = 75;
 
     /** Minimal width of any element, in print units, to avoid elements that are too small and look funny */
     const int LAYOUT_ELEMENT_MIN_WIDTH = 300;
@@ -410,17 +408,26 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
             const int line_height = layoutPages[current_page].getLine(currentLine).calculateHeight();
             current_height += line_height;
 
+            // whether to move a line from last page to the new page
+            bool transplantLine = false;
+            
             // too much lines on current page, switch to a new page
             const int maxLevelHeight = (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages);
             if (current_height > maxLevelHeight)
             {
-                //current_height = line_height;
-                current_height = 0;
+                transplantLine = true;
+                current_height = line_height;
+                //current_height = 0;
                 layoutPages.push_back( new LayoutPage() );
                 layoutPages[current_page].getLine(currentLine).m_last_of_page = true;
                 current_page++;
             }
 
+            if (transplantLine)
+            {
+                layoutPages[current_page-1].moveYourLastLineTo(layoutPages[current_page]);
+            }
+            
             ptr_vector<PrintLayoutMeasure, REF> refview = measures.getWeakView();
             layoutPages[current_page].addLine( new LayoutLine(sequence, refview) );
             currentLine = layoutPages[current_page].getLineCount()-1;

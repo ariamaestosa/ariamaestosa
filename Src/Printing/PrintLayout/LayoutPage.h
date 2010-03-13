@@ -59,6 +59,15 @@ namespace AriaMaestosa
             
             m_layout_lines.push_back(line);
         }
+        
+        void moveYourLastLineTo( LayoutPage& otherPage )
+        {
+            assert( &otherPage != this );
+            
+            LayoutLine* lastLine = m_layout_lines.get(m_layout_lines.size()-1);
+            otherPage.addLine( lastLine );
+            m_layout_lines.remove(m_layout_lines.size()-1);
+        }
 
     };
 }
