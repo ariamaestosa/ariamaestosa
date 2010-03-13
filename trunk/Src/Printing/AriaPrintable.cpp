@@ -22,16 +22,27 @@ namespace AriaMaestosa
     
     class QuickPrint : public wxPrintout
     {
+        AriaPrintable*        m_print_callback;
         wxPageSetupDialogData m_page_setup;
+        wxPaperSize           m_paper_id;
         int                   m_orient;
         int                   m_page_amount;
-        wxPaperSize           m_paper_id;
         
-        static const int m_brush_size = 15;
+        static const int      m_brush_size = 15;
         
-        AriaPrintable* m_print_callback;
         
     public:
+ 
+#if 0
+#pragma mark -
+#pragma mark QuickPrint : public interface
+#endif
+        
+        // -----------------------------------------------------------------------------------------------------
+        
+        /** basic constructor. call early, as this constructor does not do anything beyond
+          * some basic initialisation.
+          */
         QuickPrint(wxString title, AriaPrintable* printCallBack) : wxPrintout( title )
         {
             m_print_callback = printCallBack;
@@ -40,41 +51,12 @@ namespace AriaMaestosa
             m_paper_id       = wxPAPER_LETTER; //TODO: remember user's favorite paper
         }
         
-        void setPrintableSequence(PrintableSequence* printableSequence)
-        {
-            m_page_amount    = printableSequence->getPageAmount();
-        }
+        // -----------------------------------------------------------------------------------------------------
         
-        bool OnPrintPage(int pageNum)
-        {
-            std::cout << "\n============\nprinting page " << pageNum << "\n==============" << std::endl;
-            
-            wxDC* ptr = GetDC();
-            if (ptr == NULL or not ptr->IsOk())
-            {
-                std::cerr << "DC is not Ok, interrupting printing" << std::endl;
-                return false;
-            }
-            wxDC& dc = *ptr;
-            
-            
-            wxRect bounds = GetLogicalPageRect();
-            
-            const int x0     = bounds.x;
-            const int y0     = bounds.y;
-            const int width  = bounds.width;
-            const int height = bounds.height;
-            
-            std::cout << "printable area : (" << x0 << ", " << y0 << ") to ("
-                      << (x0 + width) << ", " << (y0 + height) << ")" << std::endl;
-            assert( width  > 0 );
-            assert( height > 0 );
-            
-            m_print_callback->printPage(pageNum, dc, x0, y0, width, height);
-            
-            return true;
-        }
-        
+        /** 
+          * Perform print setup (paper size, orientation, etc...), with our without dialog.
+          * @postcondition sets m_unit_width and m_unit_height in AriaPrintable
+          */
         bool performPageSetup(const bool showPageSetupDialog=false)
         {
             wxPrintData printdata;
@@ -132,9 +114,60 @@ namespace AriaMaestosa
             return true;
         }
         
+        // -----------------------------------------------------------------------------------------------------
+        
+        /** Call AFTER the PrintableSequence had its layout calculated.
+          * Call BEFORE trying to actually print this wxPrintout.
+          */
+        void setPrintableSequence(PrintableSequence* printableSequence)
+        {
+            assert(printableSequence->isLayoutCalculated());
+            m_page_amount    = printableSequence->getPageAmount();
+        }
+        
+        // -----------------------------------------------------------------------------------------------------
+        // -----------------------------------------------------------------------------------------------------
+#if 0
+#pragma mark -
+#pragma mark QuickPrint : callbacks from wxPrintout
+#endif
+        
+        bool OnPrintPage(int pageNum)
+        {
+            std::cout << "\n============\nprinting page " << pageNum << "\n==============" << std::endl;
+            
+            wxDC* ptr = GetDC();
+            if (ptr == NULL or not ptr->IsOk())
+            {
+                std::cerr << "DC is not Ok, interrupting printing" << std::endl;
+                return false;
+            }
+            wxDC& dc = *ptr;
+            
+            
+            wxRect bounds = GetLogicalPageRect();
+            
+            const int x0     = bounds.x;
+            const int y0     = bounds.y;
+            const int width  = bounds.width;
+            const int height = bounds.height;
+            
+            std::cout << "printable area : (" << x0 << ", " << y0 << ") to ("
+            << (x0 + width) << ", " << (y0 + height) << ")" << std::endl;
+            assert( width  > 0 );
+            assert( height > 0 );
+            
+            m_print_callback->printPage(pageNum, dc, x0, y0, width, height);
+            
+            return true;
+        }
+        
+        // -----------------------------------------------------------------------------------------------------
+        
         void OnBeginPrinting()
         {
-            std::cout << "---- ON BEGIN PRINTING ----\n" << m_print_callback->m_unit_width << "x" << m_print_callback->m_unit_height << "\n";
+            std::cout << "---- ON BEGIN PRINTING ----\n" << m_print_callback->m_unit_width << "x"
+                      << m_print_callback->m_unit_height << "\n";
             
             // setup coordinate system
             assert(m_print_callback->m_unit_width  > 0);
@@ -144,14 +177,19 @@ namespace AriaMaestosa
                                      m_page_setup);
         }
         
+        // -----------------------------------------------------------------------------------------------------
+        
         bool OnBeginDocument(int startPage, int endPage)
         {
             std::cout << "\n\n=============================\n";
-            std::cout << "beginning to print document, from page " << startPage << " to " << endPage << std::endl;
+            std::cout << "beginning to print document, from page " << startPage << " to "
+                      << endPage << std::endl;
             std::cout << "=============================\n\n";
             
             return wxPrintout::OnBeginDocument(startPage, endPage);
         }
+        
+        // -----------------------------------------------------------------------------------------------------
         
         void GetPageInfo(int *minPage, int *maxPage, int *pageSelFrom, int *pageSelTo)
         {
@@ -164,6 +202,8 @@ namespace AriaMaestosa
             *pageSelTo   = m_page_amount;
         }
         
+        // -----------------------------------------------------------------------------------------------------
+        
         bool HasPage(int pageNum)
         {
             assert(m_page_amount > 0);
@@ -171,6 +211,8 @@ namespace AriaMaestosa
             if (pageNum >= 1 and pageNum <= m_page_amount) return true;
             else                                           return false;
         }
+        
+        // -----------------------------------------------------------------------------------------------------
         
         void OnEndPrinting()
         {
@@ -189,7 +231,6 @@ namespace AriaMaestosa
 
 AriaPrintable* AriaPrintable::m_current_printable = NULL;
 
-// -----------------------------------------------------------------------------------------------------------------
 
 AriaPrintable::AriaPrintable(PrintableSequence* seq, bool* success)
 {
