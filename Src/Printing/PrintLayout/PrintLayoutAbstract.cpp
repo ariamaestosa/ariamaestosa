@@ -411,9 +411,11 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
             current_height += line_height;
 
             // too much lines on current page, switch to a new page
-            if (current_height > (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages))
+            const int maxLevelHeight = (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages);
+            if (current_height > maxLevelHeight)
             {
-                current_height = line_height;
+                //current_height = line_height;
+                current_height = 0;
                 layoutPages.push_back( new LayoutPage() );
                 layoutPages[current_page].getLine(currentLine).m_last_of_page = true;
                 current_page++;

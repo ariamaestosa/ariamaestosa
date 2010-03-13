@@ -1,7 +1,10 @@
 1.2b10
-- Improved printing dialog
-- Show progress dialog while calculating print layout
-- In printing code, removed absolute constants and repalced them to be relative to page size
+- Printing
+    - Improved printing dialog
+    - Show progress dialog while calculating print layout
+    - In printing code, removed absolute constants and repalced them to be relative to page size
+    - Printing : fixed bugs that caused pages > 1 to have less contents than first page
+    - Misc tweaks and fixes
 - Adding and removing tracks no more confuse the undo system
 - The "undo" menu is now chattier about what is next to undo
 - Fixed bug with key selection (when going back to C)
