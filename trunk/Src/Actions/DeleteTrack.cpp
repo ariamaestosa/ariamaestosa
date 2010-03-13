@@ -24,7 +24,9 @@ using namespace AriaMaestosa::Action;
 
 // --------------------------------------------------------------------------------------------------------
 
-DeleteTrack::DeleteTrack(Sequence* seq) : MultiTrackAction( _("delete track") )
+DeleteTrack::DeleteTrack(Sequence* seq) :
+    //I18N: (undoable) action name
+    MultiTrackAction( _("delete track") )
 {
     m_removed_track   = NULL;
     m_parent_sequence = seq;

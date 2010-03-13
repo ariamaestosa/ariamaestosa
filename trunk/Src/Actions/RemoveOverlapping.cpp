@@ -24,7 +24,9 @@
 using namespace AriaMaestosa::Action;
 
 
-RemoveOverlapping::RemoveOverlapping() : SingleTrackAction( _("remove overlapping notes") )
+RemoveOverlapping::RemoveOverlapping() :
+    //I18N: (undoable) action name
+    SingleTrackAction( _("remove overlapping notes") )
 {
 }
 

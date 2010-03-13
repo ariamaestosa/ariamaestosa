@@ -22,7 +22,9 @@
 
 using namespace AriaMaestosa::Action;
 
-UpdateGuitarTuning::UpdateGuitarTuning() : SingleTrackAction( _("change guitar tuning") )
+UpdateGuitarTuning::UpdateGuitarTuning() :
+    //I18N: (undoable) action name
+    SingleTrackAction( _("change guitar tuning") )
 {
 }
 

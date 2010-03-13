@@ -28,7 +28,9 @@
 
 using namespace AriaMaestosa::Action;
 
-RemoveMeasures::RemoveMeasures(int from_measure, int to_measure) : MultiTrackAction( _("remove measure(s)") )
+RemoveMeasures::RemoveMeasures(int from_measure, int to_measure) :
+    //I18N: (undoable) action name
+    MultiTrackAction( _("remove measure(s)") )
 {
     RemoveMeasures::from_measure = from_measure;
     RemoveMeasures::to_measure = to_measure;

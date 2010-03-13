@@ -25,7 +25,9 @@
 using namespace AriaMaestosa::Action;
 
 AddNote::AddNote(const int pitchID, const int startTick, const int endTick,
-                 const int volume, const int string) : SingleTrackAction( _("add note") )
+                 const int volume, const int string) :
+    //I18N: (undoable) action name
+    SingleTrackAction( _("add note") )
 {
     AddNote::pitchID = pitchID;
     AddNote::startTick = startTick;

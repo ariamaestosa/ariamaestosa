@@ -25,6 +25,7 @@
 using namespace AriaMaestosa::Action;
 
 AddControlEvent::AddControlEvent(const int x, const int value, const int controller) :
+    //I18N: (undoable) action name
     SingleTrackAction( _("add control event") )
 {
     AddControlEvent::x = x;

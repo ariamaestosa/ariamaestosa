@@ -21,7 +21,9 @@
 
 using namespace AriaMaestosa::Action;
 
-ShiftBySemiTone::ShiftBySemiTone(const int deltaY, const int noteid) : SingleTrackAction( _("change pitch") )
+ShiftBySemiTone::ShiftBySemiTone(const int deltaY, const int noteid) :
+    //I18N: (undoable) action name
+    SingleTrackAction( _("change pitch") )
 {
     ShiftBySemiTone::deltaY = deltaY;
     ShiftBySemiTone::noteid = noteid;

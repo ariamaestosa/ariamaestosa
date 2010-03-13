@@ -21,7 +21,9 @@
 
 using namespace AriaMaestosa::Action;
 
-NumberPressed::NumberPressed(const int number) : SingleTrackAction( _("change note fret") )
+NumberPressed::NumberPressed(const int number) :
+    //I18N: (undoable) action name
+    SingleTrackAction( _("change note fret") )
 {
     NumberPressed::number = number;
 }

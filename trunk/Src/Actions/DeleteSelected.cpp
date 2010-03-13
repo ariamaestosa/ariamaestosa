@@ -24,7 +24,9 @@
 
 using namespace AriaMaestosa::Action;
 
-DeleteSelected::DeleteSelected() : SingleTrackAction( _("delete note(s)") )
+DeleteSelected::DeleteSelected() :
+    //I18N: (undoable) action name
+    SingleTrackAction( _("delete note(s)") )
 {
 }
 

@@ -20,7 +20,9 @@
 
 using namespace AriaMaestosa::Action;
 
-ScaleTrack::ScaleTrack(float factor, int relative_to, bool selectionOnly) : SingleTrackAction( _("scale note(s)") )
+ScaleTrack::ScaleTrack(float factor, int relative_to, bool selectionOnly) :
+    //I18N: (undoable) action name
+    SingleTrackAction( _("scale note(s)") )
 {
     ScaleTrack::factor = factor;
     ScaleTrack::relative_to = relative_to;

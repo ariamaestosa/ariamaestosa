@@ -27,7 +27,9 @@
 using namespace AriaMaestosa::Action;
 
 AddControllerSlide::AddControllerSlide(const int x1, const int value1, const int x2, const int value2,
-                                       const int controller) : SingleTrackAction( _("add control slide") )
+                                       const int controller) :
+    //I18N: (undoable) action name
+    SingleTrackAction( _("add control slide") )
 {
     AddControllerSlide::x1 = x1;
     AddControllerSlide::value1 = value1;

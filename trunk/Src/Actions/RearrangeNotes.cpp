@@ -22,7 +22,9 @@
 
 using namespace AriaMaestosa::Action;
 
-RearrangeNotes::RearrangeNotes() : SingleTrackAction( _("rearrange notes") )
+RearrangeNotes::RearrangeNotes() :
+    //I18N: (undoable) action name
+    SingleTrackAction( _("rearrange notes") )
 {
 }
 
