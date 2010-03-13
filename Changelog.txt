@@ -1,5 +1,6 @@
 1.2b10
 - Improved printing dialog
+- Show progress dialog while calculating print layout
 - Adding and removing tracks no more confuse the undo system
 - The "undo" menu is now chattier about what is next to undo
 - Fixed bug with key selection (when going back to C)
