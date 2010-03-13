@@ -26,7 +26,9 @@ using namespace AriaMaestosa::Action;
 
 // --------------------------------------------------------------------------------------------------------
 
-InsertEmptyMeasures::InsertEmptyMeasures(int measureID, int amount) : MultiTrackAction( _("insert measures") )
+InsertEmptyMeasures::InsertEmptyMeasures(int measureID, int amount) :
+    //I18N: (undoable) action name
+    MultiTrackAction( _("insert measures") )
 {
     InsertEmptyMeasures::measureID = measureID;
     InsertEmptyMeasures::amount = amount;

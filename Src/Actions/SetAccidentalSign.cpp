@@ -23,7 +23,9 @@
 
 using namespace AriaMaestosa::Action;
 
-SetAccidentalSign::SetAccidentalSign(const int sign) : SingleTrackAction( _("accidental change") )
+SetAccidentalSign::SetAccidentalSign(const int sign) :
+    //I18N: (undoable) action name
+    SingleTrackAction( _("accidental change") )
 {
     SetAccidentalSign::sign = sign;
 }

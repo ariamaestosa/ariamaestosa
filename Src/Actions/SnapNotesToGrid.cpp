@@ -22,7 +22,9 @@
 
 using namespace AriaMaestosa::Action;
 
-SnapNotesToGrid::SnapNotesToGrid() : SingleTrackAction( _("snap notes to grid") )
+SnapNotesToGrid::SnapNotesToGrid() :
+    //I18N: (undoable) action name
+    SingleTrackAction( _("snap notes to grid") )
 {
 }
 

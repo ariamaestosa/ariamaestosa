@@ -20,7 +20,9 @@
 
 using namespace AriaMaestosa::Action;
 
-SetNoteVolume::SetNoteVolume(const int volume, const int noteID) : SingleTrackAction( _("change note(s) volume") )
+SetNoteVolume::SetNoteVolume(const int volume, const int noteID) :
+    //I18N: (undoable) action name
+    SingleTrackAction( _("change note(s) volume") )
 {
     SetNoteVolume::volume = volume;
     SetNoteVolume::noteID = noteID;

@@ -21,7 +21,9 @@
 
 using namespace AriaMaestosa::Action;
 
-ShiftFrets::ShiftFrets(const int amount, const int noteid) : SingleTrackAction( _("change note fret") )
+ShiftFrets::ShiftFrets(const int amount, const int noteid) :
+    //I18N: (undoable) action name
+    SingleTrackAction( _("change note fret") )
 {
     ShiftFrets::amount = amount;
     ShiftFrets::noteid = noteid;

@@ -22,7 +22,9 @@
 
 using namespace AriaMaestosa::Action;
 
-ResizeNotes::ResizeNotes(const int relativeWidth, const int noteID) : SingleTrackAction( _("resize note(s)") )
+ResizeNotes::ResizeNotes(const int relativeWidth, const int noteID) :
+    //I18N: (undoable) action name
+    SingleTrackAction( _("resize note(s)") )
 {
     ResizeNotes::relativeWidth = relativeWidth;
     ResizeNotes::noteID = noteID;

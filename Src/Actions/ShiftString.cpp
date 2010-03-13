@@ -21,7 +21,9 @@
 
 using namespace AriaMaestosa::Action;
 
-ShiftString::ShiftString(const int amount, const int noteid) : SingleTrackAction( _("string change") )
+ShiftString::ShiftString(const int amount, const int noteid) :
+    //I18N: (undoable) action name
+    SingleTrackAction( _("string change") )
 {
     ShiftString::amount = amount;
     ShiftString::noteid = noteid;

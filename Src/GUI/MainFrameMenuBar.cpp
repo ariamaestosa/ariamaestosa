@@ -120,11 +120,17 @@ void MainFrame::initMenuBar()
 
     // File menu
     fileMenu = new wxMenu();
+    //I18N: name of a menu
     menuBar->Append(fileMenu,  _("File") );
+    //I18N: menu item in the "file" menu
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_NEW, _("New\tCtrl-N"), MainFrame::menuEvent_new );
+    //I18N: menu item in the "file" menu
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_OPEN, _("Open\tCtrl-O"), MainFrame::menuEvent_open );
+    //I18N: menu item in the "file" menu
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_SAVE, _("Save\tCtrl-S"), MainFrame::menuEvent_save );
+    //I18N: menu item in the "file" menu
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_SAVE_AS, _("Save As\tCtrl-Shift-S"), MainFrame::menuEvent_saveas );
+    //I18N: menu item in the "file" menu
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_CLOSE, _("Close\tCtrl-W"), MainFrame::menuEvent_close );
 
     fileMenu->AppendSeparator();
@@ -132,36 +138,52 @@ void MainFrame::initMenuBar()
     //fileMenu->AppendSeparator();
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_NOTATION, wxString(_("Print musical notation"))+wxT("\tCtrl-P"), MainFrame::menuEvent_exportNotation );
     fileMenu->AppendSeparator();
+    //I18N: menu item in the "file" menu
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_IMPORT_MIDI, _("Import Midi File"), MainFrame::menuEvent_importmidi );
+    //I18N: menu item in the "file" menu
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_MIDI, _("Export to Midi"), MainFrame::menuEvent_exportmidi );
+    //I18N: menu item in the "file" menu
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_SAMPLED_AUDIO, _("Export to Audio"), MainFrame::menuEvent_exportSampledAudio );
-
+    //I18N: menu item in the "file" menu
     fileMenu -> QUICK_ADD_MENU ( wxID_EXIT, _("Quit\tCtrl-Q"), MainFrame::menuEvent_quit );
 
 
     // Edit menu
     editMenu = new wxMenu();
+    //I18N: name of a menu
     menuBar->Append(editMenu,  _("Edit"));
 
+    //I18N: menu item in the "edit" menu
     editMenu -> QUICK_ADD_MENU ( MENU_EDIT_UNDO, _("Undo\tCtrl-Z"), MainFrame::menuEvent_undo );
     editMenu->AppendSeparator();
+    //I18N: menu item in the "edit" menu
     editMenu -> QUICK_ADD_MENU ( MENU_EDIT_COPY, _("Copy\tCtrl-C"), MainFrame::menuEvent_copy );
+    //I18N: menu item in the "edit" menu
     editMenu -> QUICK_ADD_MENU ( MENU_EDIT_PASTE, _("Paste\tCtrl-V"), MainFrame::menuEvent_paste );
+    //I18N: menu item in the "edit" menu
     editMenu -> QUICK_ADD_MENU ( MENU_EDIT_PASTE_AT_CURSOR, _("Paste at cursor\tCtrl-Shift-V"), MainFrame::menuEvent_pasteAtMouse );
     editMenu->AppendSeparator(); // ----- selection
+    //I18N: menu item in the "edit" menu
     editMenu -> QUICK_ADD_MENU ( MENU_EDIT_SELECT_ALL, _("Select All\tCtrl-A"), MainFrame::menuEvent_selectAll );
+    //I18N: menu item in the "edit" menu
     editMenu -> QUICK_ADD_MENU ( MENU_EDIT_SELECT_NONE, _("Select None\tCtrl-Shift-A"), MainFrame::menuEvent_selectNone );
+    //I18N: menu item in the "edit" menu
     editMenu -> QUICK_ADD_MENU ( MENU_EDIT_SELECT_CUSTOM, _("Select Notes...\tCtrl-F"), MainFrame::menuEvent_customNoteSelect );
     editMenu->AppendSeparator(); // ----- actions
+    //I18N: menu item in the "edit" menu
     editMenu -> QUICK_ADD_MENU ( MENU_EDIT_SNAP_TO_GRID, _("Snap Notes to Grid"), MainFrame::menuEvent_snapToGrid );
+    //I18N: menu item in the "edit" menu
     editMenu -> QUICK_ADD_MENU ( MENU_EDIT_SCALE, _("Scale"), MainFrame::menuEvent_scale );
+    //I18N: menu item in the "edit" menu
     editMenu -> QUICK_ADD_MENU ( MENU_EDIT_REMOVE_OVERLAPPING, _("Remove Overlapping Notes"), MainFrame::menuEvent_removeOverlapping );
 
 
     // Tracks menu
     trackMenu = new wxMenu();
     menuBar->Append(trackMenu,  _("Tracks"));
+    //I18N: menu item in the "track" menu
     trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_ADD, wxString(_("Add Track"))+wxT("\tCtrl-Shift-N"), MainFrame::menuEvent_addTrack );
+    //I18N: menu item in the "track" menu
     trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_REMOVE, wxString(_("Delete Track"))+wxT("\tCtrl-DEL"), MainFrame::menuEvent_deleteTrack );
     trackMenu->AppendSeparator();
     //I18N: - in the track menu, allows choosing the properties of a track

@@ -23,7 +23,9 @@
 using namespace AriaMaestosa::Action;
 
 
-ScaleSong::ScaleSong(float factor, int relative_to) : MultiTrackAction( _("scale song") )
+ScaleSong::ScaleSong(float factor, int relative_to) :
+    //I18N: (undoable) action name
+    MultiTrackAction( _("scale song") )
 {
     ScaleSong::factor = factor;
     ScaleSong::relative_to = relative_to;

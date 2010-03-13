@@ -29,7 +29,9 @@ using namespace AriaMaestosa::Action;
 
 // -------------------------------------------------------------------------------------------------------------
 
-Paste::Paste(const bool atMouse) : SingleTrackAction( _("paste") )
+Paste::Paste(const bool atMouse) :
+    //I18N: (undoable) action name
+    SingleTrackAction( _("paste") )
 {
     Paste::atMouse = atMouse;
 }
