@@ -41,7 +41,7 @@
 #include "Dialogs/CopyrightWindow.h"
 #include "Dialogs/Preferences.h"
 #include "Dialogs/About.h"
-#include "Dialogs/NotationExportDialog.h"
+#include "Dialogs/CustomNoteSelectDialog.h"
 
 #include "Pickers/InstrumentChoice.h"
 #include "Pickers/DrumChoice.h"

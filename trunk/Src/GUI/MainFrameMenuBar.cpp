@@ -36,13 +36,13 @@
 
 #include "GUI/ImageProvider.h"
 
-#include "Dialogs/CustomNoteSelectDialog.h"
-#include "Dialogs/WaitWindow.h"
-#include "Dialogs/ScalePicker.h"
-#include "Dialogs/CopyrightWindow.h"
-#include "Dialogs/Preferences.h"
 #include "Dialogs/About.h"
-#include "Dialogs/NotationExportDialog.h"
+#include "Dialogs/CopyrightWindow.h"
+#include "Dialogs/CustomNoteSelectDialog.h"
+#include "Dialogs/Preferences.h"
+#include "Dialogs/PrintSetupDialog.h"
+#include "Dialogs/ScalePicker.h"
+#include "Dialogs/WaitWindow.h"
 
 #include "Pickers/InstrumentChoice.h"
 #include "Pickers/DrumChoice.h"
@@ -302,7 +302,7 @@ void MainFrame::menuEvent_close(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_exportNotation(wxCommandEvent& evt)
 {
-    exportNotation( getCurrentSequence() );
+    showPrintSetupDialog( getCurrentSequence() );
 }
 
 // -----------------------------------------------------------------------------------------------------------

@@ -274,13 +274,13 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             const int noteAmount = track->getNoteAmount();
 
             // pick a color
-            switch(color)
+            switch (color)
             {
-                case 0: AriaRender::color(1, 0.85, 0, 0.5); break;
-                case 1: AriaRender::color(0, 1, 0, 0.5);    break;
-                case 2: AriaRender::color(1, 0, 0.85, 0.5); break;
-                case 3: AriaRender::color(1, 0, 0, 0.5);    break;
-                case 4: AriaRender::color(0, 0.85, 1, 0.5); break;
+                case 0: AriaRender::color(1, 0.85, 0,    0.5); break;
+                case 1: AriaRender::color(0, 1,    0,    0.5);    break;
+                case 2: AriaRender::color(1, 0,    0.85, 0.5); break;
+                case 3: AriaRender::color(1, 0,    0,    0.5);    break;
+                case 4: AriaRender::color(0, 0.85, 1,    0.5); break;
             }
             color++; if (color>4) color = 0;
 
@@ -349,9 +349,10 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             AriaRender::images();
 
             if (!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
-            else AriaRender::setImageState(AriaRender::STATE_NORMAL);
+            else        AriaRender::setImageState(AriaRender::STATE_NORMAL);
 
-            noteTrackDrawable->move(getEditorXStart()-noteTrackDrawable->getImageWidth(),
+            const int keyboard_image_x = getEditorXStart()-noteTrackDrawable->getImageWidth();
+            noteTrackDrawable->move(keyboard_image_x,
                                     from_y+barHeight+20 + g_octave_y);
             noteTrackDrawable->render();
 
@@ -359,8 +360,8 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             AriaRender::color(0,0,0);
 
             // FIXME - all those from_y+barHeight+20 stuff needs to be cleaned up for good
-            AriaRender::line(0, from_y+barHeight+20 + g_octave_y+1,
-                             getEditorXStart()-25, from_y+barHeight+20 + g_octave_y+1);
+            AriaRender::line(0,                from_y+barHeight+20 + g_octave_y,
+                             keyboard_image_x, from_y+barHeight+20 + g_octave_y);
 
             // octave number
             AriaRender::images();
