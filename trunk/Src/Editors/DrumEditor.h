@@ -86,6 +86,8 @@ public:
     void moveNote(Note& note, const int relativeX, const int relativeY);
 
     int getYScrollInPixels();
+    
+    virtual wxString getName() const { return _("Drum Editor"); }
 };
 
 }

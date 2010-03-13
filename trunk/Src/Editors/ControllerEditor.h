@@ -46,6 +46,7 @@ class ControllerEditor : public Editor
 public:
 
     ControllerEditor(Track* track);
+    ~ControllerEditor();
 
     void render();
     void render(RelativeXCoord mousex_current, int mousey_current,
@@ -73,7 +74,8 @@ public:
 
     int getYScrollInPixels();
 
-    ~ControllerEditor();
+    
+    virtual wxString getName() const { return _("Controller Editor"); }
 };
 
 }

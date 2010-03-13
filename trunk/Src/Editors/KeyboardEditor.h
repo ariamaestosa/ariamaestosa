@@ -60,6 +60,8 @@ namespace AriaMaestosa
             return level*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels();
         }
         
+        virtual wxString getName() const { return _("Keyboard Editor"); }
+        
     };
 }
 

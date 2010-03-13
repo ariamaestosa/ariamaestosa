@@ -4,6 +4,7 @@
 #include <wx/file.h>
 #include <wx/radiobut.h>
 #include <wx/print.h>
+//#include <wx/listctrl.h>
 
 #include "Config.h"
 #include "AriaCore.h"
@@ -39,7 +40,7 @@ namespace AriaMaestosa
     // ------------------------------------------- setup dialog -------------------------------------------
     // ----------------------------------------------------------------------------------------------------
     
-    class NotationSetup : public wxFrame
+    class PrintSetupDialog : public wxFrame
     {
         //wxCheckBox* ignoreHidden;
         //wxCheckBox* ignoreMuted;
@@ -56,6 +57,7 @@ namespace AriaMaestosa
         wxBoxSizer* boxSizer;
         
         wxCheckListBox* m_track_choice;
+        //wxListCtrl* m_track_choice;
         
         // wxTextCtrl* lineWidthCtrl;
         // wxCheckBox* repMinWidth;
@@ -65,7 +67,7 @@ namespace AriaMaestosa
         
         LEAK_CHECK();
         
-        NotationSetup() : wxFrame(NULL, wxID_ANY,
+        PrintSetupDialog() : wxFrame(NULL, wxID_ANY,
                                   //I18N: - title of the notation-print dialog
                                   _("Print musical notation"),
                                   wxPoint(200,200), wxSize(200,400), wxCAPTION | wxSTAY_ON_TOP)
@@ -81,23 +83,74 @@ namespace AriaMaestosa
             //I18N: - in print setup dialog. 
             current_track = new wxRadioButton(parent_panel, wxNewId(), _("Current track only") , wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
             current_track->Connect( current_track->GetId(), wxEVT_COMMAND_RADIOBUTTON_SELECTED,
-                                    wxCommandEventHandler(NotationSetup::onSelectCurrentTrackOnly), NULL, this );
+                                    wxCommandEventHandler(PrintSetupDialog::onSelectCurrentTrackOnly), NULL, this );
             
             //I18N: - in print setup dialog. 
             visible_tracks = new wxRadioButton(parent_panel, wxNewId(), _("This list of tracks"));
             visible_tracks->Connect( visible_tracks->GetId(), wxEVT_COMMAND_RADIOBUTTON_SELECTED,
-                                     wxCommandEventHandler(NotationSetup::onSelectTrackList), NULL, this );
+                                     wxCommandEventHandler(PrintSetupDialog::onSelectTrackList), NULL, this );
             
             m_track_choice = new wxCheckListBox(parent_panel, wxID_ANY);
             const int track_amount = currentSequence->getTrackAmount();
             for (int n=0; n<track_amount; n++)
             {
                 Track* track = currentSequence->getTrack(n);
-                const int id = m_track_choice->Append( track->getName() );
+                const int id = m_track_choice->Append( track->getName() + wxT(" (") +
+                                                       track->graphics->getCurrentEditor()->getName() +
+                                                       wxT(")") );
                 m_track_choice->Check(id, not (track->graphics->collapsed or track->graphics->muted or track->graphics->docked));
             }
             m_track_choice->Enable(false);
-
+            
+            /*
+            m_track_choice = new wxListCtrl(parent_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT);
+            
+            wxListItem col0;
+            col0.SetId(0);
+            //I18N: In the print dialog, name of the column containing the checkboxes where you choose if one track is printed
+            col0.SetText( _("Print") );
+            col0.SetWidth(50);
+            m_track_choice->InsertColumn(0, col0);
+            
+            wxListItem col1;
+            col1.SetId(1);
+            col1.SetText( _("Track Name") );
+            m_track_choice->InsertColumn(1, col1);
+            
+            wxListItem col2;
+            col2.SetId(2);
+            //I18N: In print dialog, will be score, tablature, etc...
+            col2.SetText( _("Notation Type") );
+            m_track_choice->InsertColumn(2, col2);
+            
+            
+            const int track_amount = currentSequence->getTrackAmount();
+            for (int n=0; n<track_amount; n++)
+            {
+                Track* track = currentSequence->getTrack(n);
+                
+                wxListItem item;
+                item.SetId(n);
+                item.SetText( track->getName() );
+                
+                m_track_choice->InsertItem( item );
+                
+                if (track->graphics->collapsed or track->graphics->muted or track->graphics->docked)
+                {
+                    m_track_choice->SetItem(n, 0, wxT("[ ]"));
+                }
+                else
+                {
+                    m_track_choice->SetItem(n, 0, wxT("[√]"));
+                }
+                m_track_choice->SetItem(n, 1, track->getName());
+                m_track_choice->SetItem(n, 2, track->graphics->getCurrentEditor()->getName());
+                
+                //m_track_choice->Check(id, not (track->graphics->collapsed or track->graphics->muted or track->graphics->docked));
+            }
+            m_track_choice->Enable(false);
+            */
+            
             subsizer->Add(current_track, 0, wxALL, 5); current_track->SetValue(true);
             subsizer->Add(visible_tracks, 0, wxALL, 5);
             subsizer->Add(m_track_choice, 1, wxALL | wxEXPAND, 5);
@@ -227,14 +280,14 @@ namespace AriaMaestosa
         
     };
     
-    BEGIN_EVENT_TABLE(NotationSetup, wxFrame)
+    BEGIN_EVENT_TABLE(PrintSetupDialog, wxFrame)
     
-    EVT_BUTTON(wxID_OK, NotationSetup::okClicked)
-    EVT_BUTTON(wxID_CANCEL, NotationSetup::cancelClicked)
+    EVT_BUTTON(wxID_OK, PrintSetupDialog::okClicked)
+    EVT_BUTTON(wxID_CANCEL, PrintSetupDialog::cancelClicked)
     
     END_EVENT_TABLE()
     
-    static NotationSetup* setup;
+    static PrintSetupDialog* setup;
     
     // ----------------------------------------------------------------------------------------------------
     // ------------------------------------- first function called ----------------------------------------
@@ -245,14 +298,14 @@ namespace AriaMaestosa
     {
         currentSequence = sequence;
         //currentTrack = NULL;
-        setup = new NotationSetup();
+        setup = new PrintSetupDialog();
     }
     /*
      void exportNotation(Track* t)
      {
      currentTrack = t;
      currentSequence = NULL;
-     setup = new NotationSetup();
+     setup = new PrintSetupDialog();
      }
      */
     // ----------------------------------------------------------------------------------------------------
