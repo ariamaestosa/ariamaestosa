@@ -36,6 +36,8 @@ namespace AriaMaestosa
         
         PrintableSequence* seq;
 
+        static AriaPrintable* m_current_printable;
+        
     public:
         // ---------------------------------------
         // global info for printables, read-only
@@ -66,10 +68,10 @@ namespace AriaMaestosa
         void printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int w, const int h);
         
         int print();
+        
+        static AriaPrintable* getCurrentPrintable();
     };
-    
-    AriaPrintable* getCurrentPrintable();
-    
+        
     
 }
 
