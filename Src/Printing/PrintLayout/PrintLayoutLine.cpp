@@ -224,7 +224,7 @@ int LayoutLine::calculateHeight()
     
     std::vector<int> heights;
     
-    /* calculate the total height of this line (which many include multiple tracks */
+    /* calculate the total height of this line (which many include multiple tracks) */
     std::cout << "---- line ----" << std::endl;
     const int trackAmount = getTrackAmount();
     for (int n=0; n<trackAmount; n++)
