@@ -137,6 +137,7 @@ namespace AriaMaestosa
         int getFirstNoteInElement(const int trackID, const LayoutElement* layoutElement) const;
         int getLastNoteInElement (const int trackID, const LayoutElement* layoutElement) const;
         
+        /** @returns the number of levels that make this track (vertically) */
         int calculateHeight();
         
         const PrintLayoutMeasure& getMeasureForElement(const int layoutElementID) const;

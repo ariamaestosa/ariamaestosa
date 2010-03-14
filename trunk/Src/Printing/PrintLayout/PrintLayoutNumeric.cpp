@@ -87,7 +87,7 @@ void PrintLayoutNumeric::placeTrackWithinCoords(const int trackID, LayoutLine& l
     
     // Why is this set per-track? AFAIK measure numbers are shown per-line, not per-track!!
     track.show_measure_number = show_measure_number;
-    
+        
     if (&line.getLineTrackRef(trackID) != &track) std::cerr << "LineTrackRef is not the right one!!!!!!!!!\n";
 }
 
@@ -159,9 +159,9 @@ void PrintLayoutNumeric::setLineCoordsAndDivideItsSpace(LayoutLine& line, const 
     line.m_line_coords->y0 = y0;
     line.m_line_coords->x1 = x1;
     line.m_line_coords->y1 = y1;
-    
+        
     // ---- empty space around whole line
-    const float heightAvailableForThisLine = (float)(y1 - y0);// - ( trackAmount>1 and not last_of_page ? 100 : 0 );
+    const float heightAvailableForThisLine = (float)(y1 - y0);
     
     if (heightAvailableForThisLine < 0.0001) return; // empty line. TODO : todo - draw empty bars to show there's something?
     
@@ -172,6 +172,9 @@ void PrintLayoutNumeric::setLineCoordsAndDivideItsSpace(LayoutLine& line, const 
     line.m_line_coords->margin_below = margin_below;
     line.m_line_coords->margin_above = margin_above;
     
+    //FIXME; don't hardcode 70 here, have a formal minimal value
+    //assertExpr((heightAvailableForThisLine - margin_below - margin_above)/line.calculateHeight(), >=, 70);
+
     const int my0 = y0 + margin_above;
     
     // ---- Determine tracks positions and sizes

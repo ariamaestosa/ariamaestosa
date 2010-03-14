@@ -407,26 +407,21 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
             current_width = 0;
             const int line_height = layoutPages[current_page].getLine(currentLine).calculateHeight();
             current_height += line_height;
-
-            // whether to move a line from last page to the new page
-            bool transplantLine = false;
             
-            // too much lines on current page, switch to a new page
+            std::cout << PRINT_VAR(current_height) << "\n";
+            
+            // too many lines on current page, switch to a new page
             const int maxLevelHeight = (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages);
             if (current_height > maxLevelHeight)
             {
-                transplantLine = true;
                 current_height = line_height;
-                //current_height = 0;
                 layoutPages.push_back( new LayoutPage() );
                 layoutPages[current_page].getLine(currentLine).m_last_of_page = true;
                 current_page++;
-            }
-
-            if (transplantLine)
-            {
                 layoutPages[current_page-1].moveYourLastLineTo(layoutPages[current_page]);
             }
+            
+            assert(current_height <= (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages));
             
             ptr_vector<PrintLayoutMeasure, REF> refview = measures.getWeakView();
             layoutPages[current_page].addLine( new LayoutLine(sequence, refview) );
@@ -439,8 +434,38 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
         current_width += layoutElements[n].width_in_print_units + MARGIN_AT_MEASURE_BEGINNING;
     }
     
-    // for last line processed
-    layoutPages[current_page].getLine(currentLine).calculateHeight();
+    // for last line processed (FIXME: copy-and-paste is ugly)
+    current_height += layoutPages[current_page].getLine(currentLine).calculateHeight();
+    
+    const int maxLevelHeight = (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages);
+    if (current_height > maxLevelHeight)
+    {
+        layoutPages.push_back( new LayoutPage() );
+        layoutPages[current_page].getLine(currentLine).m_last_of_page = true;
+        current_page++;
+        layoutPages[current_page-1].moveYourLastLineTo(layoutPages[current_page]);
+    }
+    
+#ifndef NDEBUG
+    for (int p=0; p<layoutPages.size(); p++)
+    {
+        std::cout << "(( PAGE " << (p+1) << "))\n";
+        const int maxh = (p == 0 ? maxLevelsOnPage1 : maxLevelsOnOtherPages);
+        std::cout << "MAXIMUM height for this page : " << maxh << std::endl;
+
+        LayoutPage& page = layoutPages[p];
+        
+        int total = 0;
+        const int lineCount = page.getLineCount();
+        for (int t=0; t<lineCount; t++)
+        {
+            total += page.getLine(t).m_level_height;
+            std::cout << "        " << page.getLine(t).m_level_height << "\n";
+        }
+        std::cout << "    ------------\n        " << total << "\n\n";
+        assert(total <= maxh);
+    }
+#endif
 }
 
 // -------------------------------------------------------------------------------------------------------------
