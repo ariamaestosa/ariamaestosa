@@ -17,9 +17,6 @@ public:
     static void showMenu();
 };
 
-#endif
-
-#ifndef UNIT_TEST
 #define UNIT_TEST( NAME ) class NAME : public UnitTestCase { public: NAME(const char* name) : UnitTestCase(name){} void run(); }; \
                           NAME unit_test_##NAME = NAME( #NAME ); void NAME::run()
 
