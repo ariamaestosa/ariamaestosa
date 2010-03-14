@@ -13,7 +13,8 @@ public:
     ~UnitTestCase();
     virtual void run() = 0;
     
-    static void runAll();
+    const std::string& getName() const { return m_name; }
+    static void showMenu();
 };
 
 #endif
