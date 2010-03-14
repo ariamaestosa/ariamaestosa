@@ -28,30 +28,52 @@ UnitTestCase::~UnitTestCase()
     if (TestCaseList::all_test_cases->size() == 0) delete TestCaseList::all_test_cases;
 }
 
-void UnitTestCase::runAll()
+void runTest(UnitTestCase* test)
 {
-    std::cout << "=====================" << std::endl;
-    std::cout << "Running " << TestCaseList::all_test_cases->size() << " Unit Tests" << std::endl;
-    std::cout << "=====================" << std::endl;
+    std::cout << "Running test case " << test->getName() << "... ";
+    std::cout.flush();
+    
+    bool passed = true;
+    
+    try
+    {
+        test->run();
+    }
+    catch (const std::exception& ex)
+    {
+        passed = false;
+        std::cout << "FAILED : " << ex.what() << std::endl;
+    }
+    
+    if (passed) std::cout << "passed" << std::endl;    
+}
 
+void UnitTestCase::showMenu()
+{
+    std::cout << "==== UNIT TESTS ===\n";
+    std::cout << "Make a choice : \n";
+    std::cout << " (0) Run all\n";
     for (unsigned int n=0; n<TestCaseList::all_test_cases->size(); n++)
     {
-        std::cout << "Running test case " << (*TestCaseList::all_test_cases)[n]->m_name << "... ";
-        std::cout.flush();
-        
-        bool passed = true;
-        
-        try
+        std::cout << " (" << (n+1) << ") " << (*TestCaseList::all_test_cases)[n]->m_name << "\n";
+    }
+    
+    std::cout << "\n> ";
+    fflush(stdout);
+    
+    int choice;
+    std::cin >> choice;
+    
+    if (choice == 0)
+    {
+        for (unsigned int n=0; n<TestCaseList::all_test_cases->size(); n++)
         {
-            (*TestCaseList::all_test_cases)[n]->run();
+            runTest( (*TestCaseList::all_test_cases)[n] );
         }
-        catch (const std::exception& ex)
-        {
-            passed = false;
-            std::cout << "FAILED : " << ex.what() << std::endl;
-        }
-        
-        if (passed) std::cout << "passed" << std::endl;
+    }
+    else
+    {
+        runTest( (*TestCaseList::all_test_cases)[choice - 1] ); 
     }
 }
 

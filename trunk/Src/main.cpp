@@ -28,16 +28,17 @@
 #include "Dialogs/Preferences.h"
 #include "IO/IOUtils.h"
 #include "languages.h"
+#include "unit_test.h"
 
 #include <iostream>
 
 #include "Config.h"
-
 #include "main.h"
 
 IMPLEMENT_APP(AriaMaestosa::wxWidgetApp)
 
-namespace AriaMaestosa {
+namespace AriaMaestosa
+{
 
 bool render_loop_on = false;
 
@@ -84,6 +85,15 @@ void wxWidgetApp::onActivate(wxActivateEvent& evt)
 
 bool wxWidgetApp::OnInit()
 {
+    for (int n=0; n<argc; n++)
+    {
+        if (wxString(argv[n]) == wxT("--utest"))
+        {
+            UnitTestCase::showMenu();
+            exit(0);
+        }
+    }
+    
     frame = NULL;
     // prefs = (wxConfig*) wxConfig::Get();
 
