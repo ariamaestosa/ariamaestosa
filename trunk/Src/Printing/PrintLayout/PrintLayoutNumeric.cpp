@@ -295,7 +295,7 @@ void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, float notation_area_
         int margin_above = MARGIN_AROUND_LINE*position;
         int margin_below = MARGIN_AROUND_LINE*(1-position);
         
-        // when tehre's only one track, leave much less amrgin (FIXME: find a cleaner way!!)
+        // when there's only one track, leave much less margin (FIXME: find a cleaner way!!)
         const int trackAmount = line.getTrackAmount();
         if (trackAmount == 1)
         {
