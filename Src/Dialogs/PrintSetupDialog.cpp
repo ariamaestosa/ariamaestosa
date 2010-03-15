@@ -38,6 +38,9 @@ namespace AriaMaestosa
         wxCheckListBox* m_track_choice;
         //wxListCtrl* m_track_choice;
         
+        OwnerPtr<PrintableSequence> m_printable_sequence;
+        OwnerPtr<AriaPrintable>     m_printable;
+        
     public:
         
         LEAK_CHECK();
@@ -45,11 +48,24 @@ namespace AriaMaestosa
         PrintSetupDialog(Sequence* sequence) : wxFrame(NULL, wxID_ANY,
                                   //I18N: - title of the notation-print dialog
                                   _("Print musical notation"),
-                                  wxPoint(200,200), wxSize(200,400), wxCAPTION | wxSTAY_ON_TOP)
+                                  wxPoint(200,200), wxSize(500, 400), wxCAPTION | wxSTAY_ON_TOP)
         {
-            m_detect_repetitions = false;
+            m_printable_sequence = new PrintableSequence(sequence);
             m_current_sequence = sequence;
-   
+            m_detect_repetitions = false;
+
+            bool success = false;
+            m_printable = new AriaPrintable( m_printable_sequence, &success );
+            
+            if (not success)
+            {                
+                std::cerr << "error while performing page setup : " << __FILE__ << ":" << __LINE__ << std::endl;
+                wxMessageBox( _("An error occurred while preparing to print.") );
+                return;
+            }
+            
+            // --- Setup dialog
+            SetMinSize( wxSize(500, 400) );
             wxPanel* parent_panel = new wxPanel(this);
             
             wxBoxSizer* boxSizer = new wxBoxSizer(wxVERTICAL);
@@ -164,7 +180,6 @@ namespace AriaMaestosa
             parent_panel->SetSizer(boxSizer);
             boxSizer->Layout();
             boxSizer->SetSizeHints(parent_panel);
-            Fit();
             
             Center();
             Show();
@@ -223,12 +238,9 @@ namespace AriaMaestosa
         {        
             WaitWindow::show(_("Calculating print layout...") );
             
-            OwnerPtr<PrintableSequence> notationPrint;
-            notationPrint = new PrintableSequence(m_current_sequence);
-            
             for (unsigned int n=0; n<what_to_print.size(); n++)
             {
-                if (not notationPrint->addTrack( what_to_print[n], what_to_print[n]->graphics->editorMode ))
+                if (not m_printable_sequence->addTrack( what_to_print[n], what_to_print[n]->graphics->editorMode ))
                 {
                     WaitWindow::hide();
                     
@@ -242,23 +254,11 @@ namespace AriaMaestosa
                 }
             }
             
-            bool success = false;
-            AriaPrintable printer( notationPrint, &success );
-            
-            if (not success)
-            {
-                WaitWindow::hide();
-                
-                std::cerr << "error while performing page setup : " << __FILE__ << ":" << __LINE__ << std::endl;
-                wxMessageBox( _("An error occurred during printing.") );
-                return;
-            }
-            
             std::cout << "********************************************************\n";
             std::cout << "******************* CALCULATE LAYOUT *******************\n";
             std::cout << "********************************************************\n\n";
             
-            notationPrint->calculateLayout( m_detect_repetitions );
+            m_printable_sequence->calculateLayout( m_detect_repetitions );
             
             std::cout << "\n********************************************************\n";
             std::cout << "********************* PRINT RESULT *********************\n";
@@ -266,7 +266,7 @@ namespace AriaMaestosa
             
             WaitWindow::hide();
             
-            wxPrinterError result = printer.print();
+            wxPrinterError result = m_printable->print();
             if (result == wxPRINTER_ERROR)
             {
                 std::cerr << "error while printing : " << __FILE__ << ":" << __LINE__ << std::endl;
