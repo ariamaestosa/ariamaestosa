@@ -131,6 +131,9 @@ namespace AriaMaestosa
         /** @return a human-readable summary of the current page setup */
         wxString getPageSetupSummary() const;
         
+        /** show the page setup dialog, so that the user can edit the page setup settings */
+        void showPageSetupDialog();
+        
         /** 
           * @return the height of the area that is usable for actual notation printing
           *         (excluding margins, headers, etc...) in print units
