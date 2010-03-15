@@ -1343,17 +1343,19 @@ namespace AriaMaestosa
             std::cout << " == rendering note heads ==\n";
             for (int i=0; i<noteAmount; i++)
             {
+                /*
                 std::cout << "Checking note at " << analyser.noteRenderInfo[i].tick
                           << " - beat " <<  analyser.noteRenderInfo[i].tick/960
                           << " in measure " << analyser.noteRenderInfo[i].measureBegin+1 << std::endl;
-                
+                */
                 if (analyser.noteRenderInfo[i].tick < fromTick) continue;
                 if (analyser.noteRenderInfo[i].tick >= toTick)  break;
 
+                /*
                 std::cout << "    Drawing note at " << analyser.noteRenderInfo[i].tick
                           << " - beat " <<  analyser.noteRenderInfo[i].tick/960
                           << " in measure " << analyser.noteRenderInfo[i].measureBegin+1 << std::endl; 
-                
+                */
                 NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
 
                 const Range<int> noteX = x_converter->tickToX(noteRenderInfo.tick);
