@@ -50,7 +50,7 @@ namespace AriaMaestosa
         PrintSetupDialog(Sequence* sequence) : wxFrame(NULL, wxID_ANY,
                                   //I18N: - title of the notation-print dialog
                                   _("Print musical notation"),
-                                  wxPoint(200,200), wxSize(500, 400), wxCAPTION | wxSTAY_ON_TOP)
+                                  wxPoint(200,200), wxSize(500, 400), wxCAPTION | wxFRAME_FLOAT_ON_PARENT)
         {
             m_printable_sequence = new PrintableSequence(sequence);
             m_current_sequence = sequence;
@@ -212,7 +212,8 @@ namespace AriaMaestosa
         
         void onEditPageSetupClicked(wxCommandEvent& evt)
         {
-            //TODO
+            m_printable->showPageSetupDialog();
+            m_page_setup_summary->SetLabel(m_printable->getPageSetupSummary());
         }
         
         void onSelectCurrentTrackOnly(wxCommandEvent& evt)

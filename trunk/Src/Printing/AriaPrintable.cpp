@@ -341,6 +341,13 @@ AriaPrintable::~AriaPrintable()
 
 // -------------------------------------------------------------------------------------------------------------
 
+void AriaPrintable::showPageSetupDialog()
+{
+    m_printer_manager->performPageSetup(true);
+}
+
+// -------------------------------------------------------------------------------------------------------------
+
 wxString AriaPrintable::getPageSetupSummary() const
 {
     assert(m_printer_manager != NULL);
