@@ -165,7 +165,12 @@ namespace AriaMaestosa
                 m_page_setup_summary = new wxStaticText(parent_panel, wxID_ANY, m_printable->getPageSetupSummary());
                 pageSetupSizer->Add( m_page_setup_summary, 1, wxEXPAND | wxTOP | wxBOTTOM, 5 );                
                 
-                boxSizer->Add(pageSetupSizer, 0, wxALL | wxEXPAND, 5);
+                wxButton* pageSetupButton = new wxButton(parent_panel, wxNewId(), _("Edit Page Setup"));
+                pageSetupSizer->Add( pageSetupButton, 0, wxTOP | wxBOTTOM, 5 );                
+                pageSetupButton->Connect(pageSetupButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED,
+                                         wxCommandEventHandler(PrintSetupDialog::onEditPageSetupClicked), NULL, this);
+                
+                boxSizer->Add(pageSetupSizer,  0, wxALL | wxEXPAND, 5);
             }
             
             // OK-Cancel buttons
@@ -187,15 +192,27 @@ namespace AriaMaestosa
                 buttonPanel->SetSizer(subsizer);
                 buttonPanel->SetAutoLayout(true);
                 subsizer->Layout();
+                
+                Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED,
+                                         wxCommandEventHandler(PrintSetupDialog::onOkClicked), NULL, this);
+                Connect(wxID_CANCEL, wxEVT_COMMAND_BUTTON_CLICKED,
+                                         wxCommandEventHandler(PrintSetupDialog::onCancelClicked), NULL, this);
+                
             }
             
             parent_panel->SetSizer(boxSizer);
             boxSizer->Layout();
             boxSizer->SetSizeHints(parent_panel);
             
+            Fit();
             Center();
             Show();
             
+        }
+        
+        void onEditPageSetupClicked(wxCommandEvent& evt)
+        {
+            //TODO
         }
         
         void onSelectCurrentTrackOnly(wxCommandEvent& evt)
@@ -211,14 +228,14 @@ namespace AriaMaestosa
         }
         
         /**  called when the 'cancel' button is clicked, or 'escape' is pressed */
-        void cancelClicked(wxCommandEvent& evt)
+        void onCancelClicked(wxCommandEvent& evt)
         {
             Hide();
             Destroy();
         }
         
         /** when the 'ok' button is clicked */
-        void okClicked(wxCommandEvent& evt)
+        void onOkClicked(wxCommandEvent& evt)
         {
             std::vector<Track*> what_to_print;
             if (m_current_track_radiobtn->GetValue())  // only print selected track
@@ -293,16 +310,8 @@ namespace AriaMaestosa
             
         }        
         
-        DECLARE_EVENT_TABLE();
         
     };
-    
-    BEGIN_EVENT_TABLE(PrintSetupDialog, wxFrame)
-    
-    EVT_BUTTON(wxID_OK, PrintSetupDialog::okClicked)
-    EVT_BUTTON(wxID_CANCEL, PrintSetupDialog::cancelClicked)
-    
-    END_EVENT_TABLE()
         
     // ----------------------------------------------------------------------------------------------------
     // ------------------------------------- first function called ----------------------------------------
