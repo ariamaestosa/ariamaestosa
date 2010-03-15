@@ -26,35 +26,17 @@ namespace AriaMaestosa
     
     class PrintSetupDialog : public wxFrame
     {
-        //wxCheckBox* ignoreHidden;
-        //wxCheckBox* ignoreMuted;
-        
         Sequence* m_current_sequence;
 
-        bool ignoreMuted_bool;
-        bool ignoreHidden_bool;
-        bool checkRepetitions_bool;
-        int lineWidth;
-        //bool repetitionsOf2Measures = false;
-        //int repetitionWidth;
+        bool m_detect_repetitions;
         
-        wxRadioButton* current_track;
-        wxRadioButton* visible_tracks;
+        wxRadioButton* m_current_track_radiobtn;
+        wxRadioButton* m_visible_tracks_radiobtn;
         
-        wxCheckBox* detectRepetitions;
-        
-        wxPanel* buttonPanel;
-        wxButton* okButton;
-        wxButton* cancelButton;
-        
-        wxBoxSizer* boxSizer;
+        //wxCheckBox* m_detect_repetitions_checkbox; 
         
         wxCheckListBox* m_track_choice;
         //wxListCtrl* m_track_choice;
-        
-        // wxTextCtrl* lineWidthCtrl;
-        // wxCheckBox* repMinWidth;
-        
         
     public:
         
@@ -65,27 +47,24 @@ namespace AriaMaestosa
                                   _("Print musical notation"),
                                   wxPoint(200,200), wxSize(200,400), wxCAPTION | wxSTAY_ON_TOP)
         {
-            
-            ignoreMuted_bool = false;
-            ignoreHidden_bool = false;
-            checkRepetitions_bool = false;
+            m_detect_repetitions = false;
             m_current_sequence = sequence;
    
             wxPanel* parent_panel = new wxPanel(this);
             
-            boxSizer = new wxBoxSizer(wxVERTICAL);
+            wxBoxSizer* boxSizer = new wxBoxSizer(wxVERTICAL);
             
             //I18N: - in print setup dialog. 
             wxStaticBoxSizer* subsizer = new wxStaticBoxSizer(wxVERTICAL, parent_panel, _("Print..."));
             
             //I18N: - in print setup dialog. 
-            current_track = new wxRadioButton(parent_panel, wxNewId(), _("Current track only") , wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
-            current_track->Connect( current_track->GetId(), wxEVT_COMMAND_RADIOBUTTON_SELECTED,
+            m_current_track_radiobtn = new wxRadioButton(parent_panel, wxNewId(), _("Current track only") , wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
+            m_current_track_radiobtn->Connect( m_current_track_radiobtn->GetId(), wxEVT_COMMAND_RADIOBUTTON_SELECTED,
                                     wxCommandEventHandler(PrintSetupDialog::onSelectCurrentTrackOnly), NULL, this );
             
             //I18N: - in print setup dialog. 
-            visible_tracks = new wxRadioButton(parent_panel, wxNewId(), _("This list of tracks"));
-            visible_tracks->Connect( visible_tracks->GetId(), wxEVT_COMMAND_RADIOBUTTON_SELECTED,
+            m_visible_tracks_radiobtn = new wxRadioButton(parent_panel, wxNewId(), _("This list of tracks"));
+            m_visible_tracks_radiobtn->Connect( m_visible_tracks_radiobtn->GetId(), wxEVT_COMMAND_RADIOBUTTON_SELECTED,
                                      wxCommandEventHandler(PrintSetupDialog::onSelectTrackList), NULL, this );
             
             m_track_choice = new wxCheckListBox(parent_panel, wxID_ANY);
@@ -149,62 +128,29 @@ namespace AriaMaestosa
             m_track_choice->Enable(false);
             */
             
-            subsizer->Add(current_track, 0, wxALL, 5); current_track->SetValue(true);
-            subsizer->Add(visible_tracks, 0, wxALL, 5);
+            subsizer->Add(m_current_track_radiobtn, 0, wxALL, 5); m_current_track_radiobtn->SetValue(true);
+            subsizer->Add(m_visible_tracks_radiobtn, 0, wxALL, 5);
             subsizer->Add(m_track_choice, 1, wxALL | wxEXPAND, 5);
             
             boxSizer->Add(subsizer, 1, wxALL | wxEXPAND, 5);
             
             // "Show repeated measures only once" checkbox
             //I18N: - in notation export dialog
-            detectRepetitions=new wxCheckBox(parent_panel, wxID_ANY,  _("Automatically detect repeated measures (experimental!)"));
-            detectRepetitions->SetValue(false);
-            boxSizer->Add(detectRepetitions, 0, wxALL, 5);
-            
-            /*
-             wxSize textCtrlSize(wxDefaultSize); textCtrlSize.SetWidth(55);
-             
-             repMinWidth=new wxCheckBox(this, wxID_ANY,  _("Repetitions must be at least 2 measures long"));
-             repMinWidth->SetValue(true);
-             boxSizer->Add(repMinWidth, 1, wxALL, 5);
-             */
-            /*
-             // repetition minimal width
-             {
-             wxBoxSizer* subsizer = new wxBoxSizer(wxHORIZONTAL);
-             boxSizer->Add(subsizer);
-             
-             subsizer->Add(new wxStaticText(this, wxID_ANY,  _("Repetitions must be at least")), 1, wxALL, 5);
-             repMinWidth = new wxTextCtrl(this, wxID_ANY, wxT("2"), wxDefaultPosition, textCtrlSize);
-             subsizer->Add(repMinWidth, 0, wxALL, 5);
-             subsizer->Add(new wxStaticText(this, wxID_ANY,  _("measures long.")), 1, wxALL, 5);
-             }
-             */
-            
-            // Line width
-            /*
-             {
-             wxBoxSizer* subsizer = new wxBoxSizer(wxHORIZONTAL);
-             boxSizer->Add(subsizer);
-             
-             subsizer->Add(new wxStaticText(this, wxID_ANY,  _("Maximal number of characters per line")), 1, wxALL, 5);
-             
-             lineWidthCtrl = new wxTextCtrl(this, wxID_ANY, wxT("100"), wxDefaultPosition, textCtrlSize);
-             subsizer->Add(lineWidthCtrl, 0, wxALL, 5);
-             
-             }*/
+            //m_detect_repetitions_checkbox = new wxCheckBox(parent_panel, wxID_ANY,  _("Automatically detect repeated measures (experimental!)"));
+            //m_detect_repetitions_checkbox->SetValue(false);
+            //boxSizer->Add(m_detect_repetitions_checkbox, 0, wxALL, 5);
             
             // OK-Cancel buttons
             {
-                buttonPanel = new wxPanel(parent_panel);
+                wxPanel* buttonPanel = new wxPanel(parent_panel);
                 boxSizer->Add(buttonPanel, 0, wxALL | wxEXPAND, 5);
                 
                 wxBoxSizer* subsizer = new wxBoxSizer(wxHORIZONTAL);
                 
-                okButton = new wxButton(buttonPanel, wxID_OK, _("OK"));
+                wxButton* okButton = new wxButton(buttonPanel, wxID_OK, _("OK"));
                 okButton->SetDefault();
                 
-                cancelButton = new wxButton(buttonPanel, wxID_CANCEL,  _("Cancel"));
+                wxButton* cancelButton = new wxButton(buttonPanel, wxID_CANCEL,  _("Cancel"));
                 
                 subsizer->AddStretchSpacer();
                 subsizer->Add(cancelButton, 0, wxALL, 7);
@@ -246,7 +192,7 @@ namespace AriaMaestosa
         void okClicked(wxCommandEvent& evt)
         {
             std::vector<Track*> what_to_print;
-            if (current_track->GetValue())  // only print selected track
+            if (m_current_track_radiobtn->GetValue())  // only print selected track
             {
                 what_to_print.push_back( m_current_sequence->getCurrentTrack() );
             }
@@ -262,9 +208,7 @@ namespace AriaMaestosa
                 }
             }
             
-            checkRepetitions_bool = detectRepetitions->IsChecked();
-            //lineWidth = atoi_u( lineWidthCtrl->GetValue() );
-            //repetitionsOf2Measures = repMinWidth->IsChecked();
+            m_detect_repetitions = false; //m_detect_repetitions_checkbox->IsChecked();
             
             // terminate the dialog
             Hide();
@@ -314,7 +258,7 @@ namespace AriaMaestosa
             std::cout << "******************* CALCULATE LAYOUT *******************\n";
             std::cout << "********************************************************\n\n";
             
-            notationPrint->calculateLayout( checkRepetitions_bool );
+            notationPrint->calculateLayout( m_detect_repetitions );
             
             std::cout << "\n********************************************************\n";
             std::cout << "********************* PRINT RESULT *********************\n";
