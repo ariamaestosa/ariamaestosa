@@ -24,27 +24,19 @@
 namespace AriaMaestosa
 {
     
-    
-    void doPrint(std::vector<Track*> what_to_export);
-    
-    bool ignoreMuted_bool = false;
-    bool ignoreHidden_bool = false;
-    bool checkRepetitions_bool = false;
-    
-    int lineWidth;
-    Sequence* currentSequence;
-
-    //bool repetitionsOf2Measures = false;
-    //int repetitionWidth;
-    
-    // ----------------------------------------------------------------------------------------------------
-    // ------------------------------------------- setup dialog -------------------------------------------
-    // ----------------------------------------------------------------------------------------------------
-    
     class PrintSetupDialog : public wxFrame
     {
         //wxCheckBox* ignoreHidden;
         //wxCheckBox* ignoreMuted;
+        
+        Sequence* m_current_sequence;
+
+        bool ignoreMuted_bool;
+        bool ignoreHidden_bool;
+        bool checkRepetitions_bool;
+        int lineWidth;
+        //bool repetitionsOf2Measures = false;
+        //int repetitionWidth;
         
         wxRadioButton* current_track;
         wxRadioButton* visible_tracks;
@@ -68,12 +60,17 @@ namespace AriaMaestosa
         
         LEAK_CHECK();
         
-        PrintSetupDialog() : wxFrame(NULL, wxID_ANY,
+        PrintSetupDialog(Sequence* sequence) : wxFrame(NULL, wxID_ANY,
                                   //I18N: - title of the notation-print dialog
                                   _("Print musical notation"),
                                   wxPoint(200,200), wxSize(200,400), wxCAPTION | wxSTAY_ON_TOP)
         {
             
+            ignoreMuted_bool = false;
+            ignoreHidden_bool = false;
+            checkRepetitions_bool = false;
+            m_current_sequence = sequence;
+   
             wxPanel* parent_panel = new wxPanel(this);
             
             boxSizer = new wxBoxSizer(wxVERTICAL);
@@ -92,10 +89,10 @@ namespace AriaMaestosa
                                      wxCommandEventHandler(PrintSetupDialog::onSelectTrackList), NULL, this );
             
             m_track_choice = new wxCheckListBox(parent_panel, wxID_ANY);
-            const int track_amount = currentSequence->getTrackAmount();
+            const int track_amount = m_current_sequence->getTrackAmount();
             for (int n=0; n<track_amount; n++)
             {
-                Track* track = currentSequence->getTrack(n);
+                Track* track = m_current_sequence->getTrack(n);
                 const int id = m_track_choice->Append( track->getName() + wxT(" (") +
                                                        track->graphics->getCurrentEditor()->getName() +
                                                        wxT(")") );
@@ -125,10 +122,10 @@ namespace AriaMaestosa
             m_track_choice->InsertColumn(2, col2);
             
             
-            const int track_amount = currentSequence->getTrackAmount();
+            const int track_amount = m_current_sequence->getTrackAmount();
             for (int n=0; n<track_amount; n++)
             {
-                Track* track = currentSequence->getTrack(n);
+                Track* track = m_current_sequence->getTrack(n);
                 
                 wxListItem item;
                 item.SetId(n);
@@ -251,16 +248,16 @@ namespace AriaMaestosa
             std::vector<Track*> what_to_print;
             if (current_track->GetValue())  // only print selected track
             {
-                what_to_print.push_back( currentSequence->getCurrentTrack() );
+                what_to_print.push_back( m_current_sequence->getCurrentTrack() );
             }
             else                            // print all selected from list
             {
-                const int track_amount = currentSequence->getTrackAmount();
+                const int track_amount = m_current_sequence->getTrackAmount();
                 for (int n=0; n<track_amount; n++)
                 {
                     if (m_track_choice->IsChecked(n))
                     {
-                        what_to_print.push_back( currentSequence->getTrack(n) );
+                        what_to_print.push_back( m_current_sequence->getTrack(n) );
                     }
                 }
             }
@@ -277,6 +274,67 @@ namespace AriaMaestosa
             doPrint(what_to_print);
         }
         
+        // after dialog is shown and user clicked 'OK' this is called to complete the export
+        void doPrint(std::vector<Track*> what_to_print)
+        {        
+            WaitWindow::show(_("Calculating print layout...") );
+            
+            OwnerPtr<PrintableSequence> notationPrint;
+            notationPrint = new PrintableSequence(m_current_sequence);
+            
+            for (unsigned int n=0; n<what_to_print.size(); n++)
+            {
+                if (not notationPrint->addTrack( what_to_print[n], what_to_print[n]->graphics->editorMode ))
+                {
+                    WaitWindow::hide();
+                    
+                    wxString track_name = what_to_print[n]->getName();
+                    
+                    //I18N: - %s is the name of the track
+                    wxString message = _("Track '%s' could not be printed, since its current\nview (editor) does not support printing.");
+                    message.Replace(wxT("%s"), track_name); // wxString::Format crashes, so I need to use this stupid workaround
+                    wxMessageBox( message );
+                    return;
+                }
+            }
+            
+            bool success = false;
+            AriaPrintable printer( notationPrint, &success );
+            
+            if (not success)
+            {
+                WaitWindow::hide();
+                
+                std::cerr << "error while performing page setup : " << __FILE__ << ":" << __LINE__ << std::endl;
+                wxMessageBox( _("An error occurred during printing.") );
+                return;
+            }
+            
+            std::cout << "********************************************************\n";
+            std::cout << "******************* CALCULATE LAYOUT *******************\n";
+            std::cout << "********************************************************\n\n";
+            
+            notationPrint->calculateLayout( checkRepetitions_bool );
+            
+            std::cout << "\n********************************************************\n";
+            std::cout << "********************* PRINT RESULT *********************\n";
+            std::cout << "********************************************************\n\n";
+            
+            WaitWindow::hide();
+            
+            wxPrinterError result = printer.print();
+            if (result == wxPRINTER_ERROR)
+            {
+                std::cerr << "error while printing : " << __FILE__ << ":" << __LINE__ << std::endl;
+                wxMessageBox( _("An error occurred during printing.") );
+            }
+            else if (result == wxPRINTER_CANCELLED)
+            {
+                std::cerr << "Printing was cancelled\n";
+            }
+            
+        }        
+        
         DECLARE_EVENT_TABLE();
         
     };
@@ -287,9 +345,7 @@ namespace AriaMaestosa
     EVT_BUTTON(wxID_CANCEL, PrintSetupDialog::cancelClicked)
     
     END_EVENT_TABLE()
-    
-    static PrintSetupDialog* setup;
-    
+        
     // ----------------------------------------------------------------------------------------------------
     // ------------------------------------- first function called ----------------------------------------
     // ----------------------------------------------------------------------------------------------------
@@ -297,81 +353,7 @@ namespace AriaMaestosa
     // user wants to export to notation - remember what is the sequence, then show set-up dialog
     void showPrintSetupDialog(Sequence* sequence)
     {
-        currentSequence = sequence;
-        //currentTrack = NULL;
-        setup = new PrintSetupDialog();
+        new PrintSetupDialog(sequence);
     }
-    /*
-     void exportNotation(Track* t)
-     {
-     currentTrack = t;
-     currentSequence = NULL;
-     setup = new PrintSetupDialog();
-     }
-     */
-    // ----------------------------------------------------------------------------------------------------
-    // ---------------------------------------- main writing func -----------------------------------------
-    // ----------------------------------------------------------------------------------------------------
-    
-    // after dialog is shown and user clicked 'OK' this is called to complete the export
-    void doPrint(std::vector<Track*> what_to_print)
-    {        
-        WaitWindow::show(_("Calculating print layout...") );
 
-        OwnerPtr<PrintableSequence> notationPrint;
-        notationPrint = new PrintableSequence(currentSequence);
-        
-        for (unsigned int n=0; n<what_to_print.size(); n++)
-        {
-            if (not notationPrint->addTrack( what_to_print[n], what_to_print[n]->graphics->editorMode ))
-            {
-                WaitWindow::hide();
-
-                wxString track_name = what_to_print[n]->getName();
-                
-                //I18N: - %s is the name of the track
-                wxString message = _("Track '%s' could not be printed, since its current\nview (editor) does not support printing.");
-                message.Replace(wxT("%s"), track_name); // wxString::Format crashes, so I need to use this stupid workaround
-                wxMessageBox( message );
-                return;
-            }
-        }
-    
-        bool success = false;
-        AriaPrintable printer( notationPrint, &success );
-        
-        if (not success)
-        {
-            WaitWindow::hide();
-
-            std::cerr << "error while performing page setup : " << __FILE__ << ":" << __LINE__ << std::endl;
-            wxMessageBox( _("An error occurred during printing.") );
-            return;
-        }
-        
-        std::cout << "********************************************************\n";
-        std::cout << "******************* CALCULATE LAYOUT *******************\n";
-        std::cout << "********************************************************\n\n";
-        
-        notationPrint->calculateLayout( checkRepetitions_bool );
-        
-        std::cout << "\n********************************************************\n";
-        std::cout << "********************* PRINT RESULT *********************\n";
-        std::cout << "********************************************************\n\n";
-        
-        WaitWindow::hide();
-
-        wxPrinterError result = printer.print();
-        if (result == wxPRINTER_ERROR)
-        {
-            std::cerr << "error while printing : " << __FILE__ << ":" << __LINE__ << std::endl;
-            wxMessageBox( _("An error occurred during printing.") );
-        }
-        else if (result == wxPRINTER_CANCELLED)
-        {
-            std::cerr << "Printing was cancelled\n";
-        }
-
-    }
-    
 }
