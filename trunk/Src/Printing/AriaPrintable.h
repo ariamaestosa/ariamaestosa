@@ -115,11 +115,26 @@ namespace AriaMaestosa
           */
         static AriaPrintable* getCurrentPrintable();
 
+        /** @return the height (in print units) of the font used for printing notation itelf */
         int getCharacterHeight    () const { return m_font_height;      }
+        
+        /** @return half the height (in print units) of the font used for printing notation itelf */
         int getCharacterHalfHeight() const { return m_font_height_half; }
+        
+        /** 
+          * @return approximate width (in print units) of one character of the font used for
+          *         printing notation itelf
+          */
         int getCharacterWidth     () const { return m_character_width;  }
         
 
+        /** @return a human-readable summary of the current page setup */
+        wxString getPageSetupSummary() const;
+        
+        /** 
+          * @return the height of the area that is usable for actual notation printing
+          *         (excluding margins, headers, etc...) in print units
+          */
         int getUsableAreaHeight(const int pageNumber) const
         {
             assert(pageNumber >= 1);
