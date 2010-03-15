@@ -52,6 +52,7 @@ NOTE: sorry, this is very raw :)
       retain the same options as previously when invoking the page setup dialog more than once.
     * Page setup dialogs on OS X does not allow setting margins.
       Add a separate dialog for that (wxMacPageMarginsDialog) ?
+    * Don't force US Letter as the default page size, european users will hate me...
     ? allow setting font size, number of lines per page, zoom, etc...
     * long-term : in multi-track printing, some tracks need to be visually more tightly bound toghether (like tab and its score)
  - show silences in tabs too
@@ -59,6 +60,17 @@ NOTE: sorry, this is very raw :)
  - very short song (a few measures) : nothing printed [can't reproduce anymore]
  - hiding empty lines should be configurable
  - score print : time sig changes : no bar should appear after time sig change
+
+ Assert failure : heightAvailableForThisLine > 0 (heightAvailableForThisLine is 0)
+        #1	0x0014595a in AriaMaestosa::PrintLayoutNumeric::placeLinesInPage at PrintLayoutNumeric.cpp:305
+        #2	0x0012c372 in AriaMaestosa::PrintableSequence::printLinesInArea at PrintableSequence.cpp:93
+        #3	0x0011ebea in AriaMaestosa::AriaPrintable::printPage at AriaPrintable.cpp:500
+        #4	0x00127f46 in AriaMaestosa::QuickPrint::OnPrintPage at AriaPrintable.cpp:204
+        #5	0x001cc37e in wxMacPrinter::Print at stattext.h:24
+        #6	0x0025cb0a in wxPrinter::Print at control.h:41
+        #7	0x0011f561 in AriaMaestosa::AriaPrintable::print at AriaPrintable.cpp:387
+        occurred when printing a single chord
+
 
  * Keyboard editor : show current key in left area
  * In score and tab editors, show more clearly where you can click to hear the note
