@@ -60,6 +60,12 @@ NOTE: sorry, this is very raw :)
  * Keyboard editor : show current key in left area
  * In score and tab editors, show more clearly where you can click to hear the note
  
+ * Custom Key editor :
+    - make it actually work
+    - save to .aria file and load back
+    - save presets
+    - add 'select all', 'select none'
+ 
  * copy entire measures through measure bar
  
  * show which files have unsaved changes

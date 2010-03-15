@@ -35,6 +35,8 @@ namespace AriaMaestosa
         
     public:
  
+        LEAK_CHECK();
+
 #if 0
 #pragma mark -
 #pragma mark QuickPrint : public interface
@@ -305,7 +307,7 @@ AriaPrintable::AriaPrintable(PrintableSequence* seq, bool* success) :
     m_printer_manager = new QuickPrint( seq->getTitle(), this );
     if (not m_printer_manager->performPageSetup())
     {
-        std::cerr << "Preparing the QUickPrint object failed!\n";
+        std::cerr << "Default page setup failed!\n";
         *success = false;
     }
     else

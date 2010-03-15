@@ -75,6 +75,8 @@ namespace AriaMaestosa
         
     public:
         
+        LEAK_CHECK();
+        
         /**
          * Construct this object BEFORE calling 'calculateLayout' in the prntable sequence, since the printable
          * sequence may need some info from the Ariaprintable (FIXME: confusing design)
