@@ -65,6 +65,9 @@ namespace AriaMaestosa
           */
         bool performPageSetup(const bool showPageSetupDialog=false)
         {
+            std::cout << "Showing PAGE SETUP dialog with paper " << wxThePrintPaperDatabase->ConvertIdToName( m_paper_id ).mb_str() << "\n";
+            
+            
             wxPrintData printdata;
             printdata.SetPrintMode( wxPRINT_MODE_PRINTER );
             printdata.SetOrientation( m_orient ); // wxPORTRAIT, wxLANDSCAPE
@@ -82,6 +85,7 @@ namespace AriaMaestosa
                 if (dialog.ShowModal()==wxID_OK)
                 {
                     m_page_setup = dialog.GetPageSetupData();
+                    m_paper_id   = m_page_setup.GetPaperId();
                     m_orient     = m_page_setup.GetPrintData().GetOrientation();
                 }
                 else
@@ -91,6 +95,7 @@ namespace AriaMaestosa
                 }
             }
             
+            assert(m_paper_id != wxPAPER_NONE);
             assert(m_page_setup.GetPaperId() != wxPAPER_NONE);
             
             // ---- set-up coordinate system however we want
@@ -130,6 +135,13 @@ namespace AriaMaestosa
             assert(m_print_callback->m_usable_area_height_page_1 > 0);
             assert(m_print_callback->m_usable_area_height > 0);
             return true;
+        }
+        
+        // -----------------------------------------------------------------------------------------------------
+
+        wxPrintData getPrintData()
+        {
+            return m_page_setup.GetPrintData();
         }
         
         // -----------------------------------------------------------------------------------------------------
@@ -370,7 +382,8 @@ wxPrinterError AriaPrintable::print()
     assert(m_printer_manager != NULL);
     m_printer_manager->setPrintableSequence(seq);
     
-    wxPrinter printer;
+    wxPrintDialogData data(m_printer_manager->getPrintData());
+    wxPrinter printer(&data);
     const bool success = printer.Print(NULL, m_printer_manager, true /* show dialog */);
 
 #ifdef __WXMAC__
