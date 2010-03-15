@@ -150,7 +150,9 @@ bool PrintLayoutMeasure::calculateIfMeasureIsSameAs(PrintLayoutMeasure& checkMea
     
 int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
 {
+#if PLM_CHATTY
     std::cout << "PrintLayoutMeasure::addTrackReference in measure " << (m_measure_id + 1) << "\n";
+#endif
     
     const int noteAmount = track->getNoteAmount();
     
@@ -161,7 +163,9 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
     if (firstNote == -1)
     {
         m_track_refs.push_back( new MeasureTrackReference(track, -1, -1) );
+#if PLM_CHATTY
         std::cout << "    --> Received input -1, assuming empty\n";
+#endif
         return -1;
     }
     
@@ -209,12 +213,16 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
     
     if (measure_empty)
     {
+#if PLM_CHATTY
         std::cout << "    --> empty\n";
+#endif
         m_track_refs.push_back( new MeasureTrackReference(track, -1, -1) );
     }
     else
     {
+#if PLM_CHATTY
         std::cout << "    --> m_shortest_duration = " << m_shortest_duration << "\n";
+#endif
         m_track_refs.push_back( new MeasureTrackReference(track, effectiveFirstNote, lastNote) );
     }
     
@@ -223,13 +231,17 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
     // exist but be out of the bounds of this measure
     if (not measure_empty and lastNote == noteAmount-1)
     {
+#if PLM_CHATTY
         std::cout << "    --> returning -1 because all notes were covered\n";
+#endif
         return -1;
     }
     
     // if this measure is empty, return the same note as the one given in input (i.e. it was not used)
     // if this measure is not empty, add 1 so next measure will start from the next
+#if PLM_CHATTY
     std::cout << "    -> returning " << lastNote << " + " << (measure_empty ? 0 : 1) << "\n";
+#endif
     return lastNote + (measure_empty ? 0 : 1);
 }
     
