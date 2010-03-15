@@ -1,6 +1,7 @@
 1.2b10
 - Printing
     - Improved printing dialog
+    - Give access to page setup dialog
     - Show progress dialog while calculating print layout
     - In printing code, removed absolute constants and repalced them to be relative to page size
     - Printing : fixed bugs that caused pages > 1 to have less contents than first page
