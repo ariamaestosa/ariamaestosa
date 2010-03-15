@@ -26,6 +26,9 @@
 #pragma mark Private
 #endif
 
+
+#define RPM_CHATTY 0
+
 using namespace AriaMaestosa;
 const int SIDE_MARGIN_WIDTH = 60;
 
@@ -315,7 +318,10 @@ int RelativePlacementManager::findShortestSymbolLength() const
 
 void RelativePlacementManager::addSymbol(int tickFrom, int tickTo, int symbolWidth, int trackID)
 {
+#if RPM_CHATTY
     std::cout << "++++ addSymbol " << symbolWidth << "; tick " << tickFrom << " track " << trackID << std::endl;
+#endif
+    
     assert (tickFrom < m_end_of_measure_tick);
     //assert (tickTo <= m_end_of_measure_tick);
     
@@ -364,7 +370,9 @@ void RelativePlacementManager::calculateRelativePlacement()
         const int symbolAmount = currTick.all_symbols_on_that_tick.size();
         assertExpr(symbolAmount, >, 0);
         
+#if RPM_CHATTY
         std::cout << "    {\n";
+#endif
         for (int sym=0; sym<symbolAmount; sym++)
         {
             Symbol& currSym = currTick.all_symbols_on_that_tick[sym];
@@ -404,8 +412,9 @@ void RelativePlacementManager::calculateRelativePlacement()
                 {
                     currSym.neededAdditionalProportion = 0.0f;
                 }
+#if RPM_CHATTY
                 std::cout << "ratioToShortest=" << ratioToShortest << ", neededAdditionalProportion=" << currSym.neededAdditionalProportion << std::endl;
-
+#endif
             }
 
             const int symbolWidth = (int)round(currSym.widthInPrintUnits * (1.0f + currSym.neededAdditionalProportion));
@@ -413,10 +422,15 @@ void RelativePlacementManager::calculateRelativePlacement()
             // determine the largest needed proportion for each tick
             global_width_for_tick = std::max( global_width_for_tick, symbolWidth);
             
+#if RPM_CHATTY
             std::cout << "      symbolWidth=" << symbolWidth << "; global_width_for_tick=" << global_width_for_tick << std::endl;
-
+#endif
+            
         } // end for each symbol
+        
+#if RPM_CHATTY
         std::cout << "    }\n";
+#endif
         
         currTick.size = global_width_for_tick;
         
@@ -445,7 +459,9 @@ void RelativePlacementManager::calculateRelativePlacement()
         currTick.position    = currTick.position    / totalAbsolutePosition;
         currTick.endPosition = currTick.endPosition / totalAbsolutePosition;
         
+#if RPM_CHATTY
         std::cout << "m_all_interesting_ticks[" << n << "].position = " << currTick.position << " to " << currTick.endPosition << std::endl;
+#endif
         
         assertExpr(currTick.position, >=, 0.0f);
         assertExpr(currTick.position, <=, 1.0f);
@@ -494,16 +510,22 @@ int RelativePlacementManager::getWidth() const
 {
     int totalSize = 0;
     
+#if RPM_CHATTY
     std::cout << "RelativePlacementManager::getWidth()\n{\n";
+#endif
     
     const int amount = m_all_interesting_ticks.size();
     for (int n=0; n<amount; n++)
     {
+#if RPM_CHATTY
         std::cout << "    " << m_all_interesting_ticks[n].size << std::endl;
+#endif
         totalSize += m_all_interesting_ticks[n].size;
     }
     
+#if RPM_CHATTY
     std::cout << "}\n";
+#endif
     
     return totalSize;
 }
