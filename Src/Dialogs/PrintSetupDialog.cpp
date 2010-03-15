@@ -38,6 +38,8 @@ namespace AriaMaestosa
         wxCheckListBox* m_track_choice;
         //wxListCtrl* m_track_choice;
         
+        wxStaticText* m_page_setup_summary;
+        
         OwnerPtr<PrintableSequence> m_printable_sequence;
         OwnerPtr<AriaPrintable>     m_printable;
         
@@ -156,6 +158,16 @@ namespace AriaMaestosa
             //m_detect_repetitions_checkbox->SetValue(false);
             //boxSizer->Add(m_detect_repetitions_checkbox, 0, wxALL, 5);
             
+            // Page setup summary
+            {
+                wxStaticBoxSizer* pageSetupSizer = new wxStaticBoxSizer(wxHORIZONTAL, parent_panel, _("Page Setup"));
+                
+                m_page_setup_summary = new wxStaticText(parent_panel, wxID_ANY, m_printable->getPageSetupSummary());
+                pageSetupSizer->Add( m_page_setup_summary, 1, wxEXPAND | wxTOP | wxBOTTOM, 5 );                
+                
+                boxSizer->Add(pageSetupSizer, 0, wxALL | wxEXPAND, 5);
+            }
+            
             // OK-Cancel buttons
             {
                 wxPanel* buttonPanel = new wxPanel(parent_panel);
@@ -198,12 +210,14 @@ namespace AriaMaestosa
             m_track_choice->Refresh();
         }
         
+        /**  called when the 'cancel' button is clicked, or 'escape' is pressed */
         void cancelClicked(wxCommandEvent& evt)
         {
             Hide();
             Destroy();
         }
         
+        /** when the 'ok' button is clicked */
         void okClicked(wxCommandEvent& evt)
         {
             std::vector<Track*> what_to_print;
@@ -233,7 +247,7 @@ namespace AriaMaestosa
             doPrint(what_to_print);
         }
         
-        // after dialog is shown and user clicked 'OK' this is called to complete the export
+        /** after dialog is shown, and user clicked 'OK', this is called to launch the actual printing */
         void doPrint(std::vector<Track*> what_to_print)
         {        
             WaitWindow::show(_("Calculating print layout...") );

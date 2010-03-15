@@ -11,6 +11,7 @@
 #include "Midi/Sequence.h"
 
 #include "wx/wx.h"
+#include "wx/paper.h"
 #include "wx/print.h"
 #include "wx/printdlg.h"
 #include <iostream>
@@ -129,6 +130,20 @@ namespace AriaMaestosa
             assert(m_print_callback->m_usable_area_height_page_1 > 0);
             assert(m_print_callback->m_usable_area_height > 0);
             return true;
+        }
+        
+        // -----------------------------------------------------------------------------------------------------
+
+        /**
+          * @return a string that summarises the current page setup information
+          */
+        wxString getPageSetupSummary() const
+        {
+            // printdata.SetOrientation( m_orient ); // wxPORTRAIT, wxLANDSCAPE
+            // printdata.SetPaperId( m_paper_id );
+            return wxThePrintPaperDatabase->ConvertIdToName( m_paper_id ) + wxT(", ") +
+                   //I18N: for printing (page orientation)
+                   (m_orient == wxPORTRAIT ? _("Portrait") : _("Landscape"));
         }
         
         // -----------------------------------------------------------------------------------------------------
@@ -322,6 +337,14 @@ AriaPrintable::~AriaPrintable()
 {
     m_current_printable = NULL;
     delete m_printer_manager;
+}
+
+// -------------------------------------------------------------------------------------------------------------
+
+wxString AriaPrintable::getPageSetupSummary() const
+{
+    assert(m_printer_manager != NULL);
+    return m_printer_manager->getPageSetupSummary();
 }
 
 // -------------------------------------------------------------------------------------------------------------
