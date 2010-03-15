@@ -50,6 +50,8 @@ NOTE: sorry, this is very raw :)
     - X notes not printed right
     * Page setup options do not all stick on wxMac 2.8. Updating to 2.9 or patching will be necessary to
       retain the same options as previously when invoking the page setup dialog more than once.
+    * Page setup dialogs on OS X does not allow setting margins.
+      Add a separate dialog for that (wxMacPageMarginsDialog) ?
     ? allow setting font size, number of lines per page, zoom, etc...
     * long-term : in multi-track printing, some tracks need to be visually more tightly bound toghether (like tab and its score)
  - show silences in tabs too
