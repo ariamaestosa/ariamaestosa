@@ -244,6 +244,8 @@ int LayoutLine::calculateHeight()
     
     // if we're the last of the page, we need less space cause we don't
     // need to leave empty space under
+    //FIXME: I don't believe margins should be handled at this level. LayoutLine should return the height
+    //       of the line, period.
     if (m_last_of_page) m_level_height -= 13;
     
     return m_level_height;

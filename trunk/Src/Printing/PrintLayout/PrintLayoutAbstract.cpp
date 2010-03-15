@@ -65,10 +65,10 @@ void PrintLayoutAbstract::findSimilarMeasures()
 {
     const int measureAmount = getMeasureData()->getMeasureAmount();
 
-    for(int measure=0; measure<measureAmount; measure++)
+    for (int measure=0; measure<measureAmount; measure++)
     {
         // check current measure against all previous measures to see if it is not a repetition
-        for(int checkMeasure=0; checkMeasure<measure; checkMeasure++)
+        for (int checkMeasure=0; checkMeasure<measure; checkMeasure++)
         {
             assertExpr(measure,<,(int)measures.size());
             assertExpr(checkMeasure,<,(int)measures.size());
@@ -355,6 +355,8 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     assert(usableAreaHeightPage1 > 0);
     assert(usableAreaHeightOtherPages > 0);
     
+    //FIXME: margins between lines are not considered, so min size is bound not to be respected...
+    //FIXME: I think margins between the various lines of one track are not accounted for either
     const int maxLevelsOnPage1      = usableAreaHeightPage1 / MIN_LEVEL_HEIGHT;
     const int maxLevelsOnOtherPages = usableAreaHeightOtherPages / MIN_LEVEL_HEIGHT;
 
