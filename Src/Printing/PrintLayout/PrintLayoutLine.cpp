@@ -126,7 +126,7 @@ LayoutLine::LayoutLine(PrintableSequence* parent, ptr_vector<PrintLayoutMeasure,
     const int trackAmount = parent->getTrackAmount();
     for (int trackID=0; trackID<trackAmount; trackID++)
     {
-        LineTrackRef* newTrack = new LineTrackRef(this, trackID, m_printable->getTrack(trackID));
+        LineTrackRef* newTrack = new LineTrackRef(this, trackID, m_printable->getTrack(trackID), trackID==0);
         
         m_track_render_info.push_back(newTrack);
     }
@@ -185,15 +185,6 @@ const PrintLayoutMeasure& LayoutLine::getMeasureForElement(const int layoutEleme
 const PrintLayoutMeasure& LayoutLine::getMeasureForElement(const LayoutElement* layoutElement) const
 {
     return m_measures[layoutElement->measure];
-}
-
-// -------------------------------------------------------------------------------------------
-
-LineTrackRef& LayoutLine::getLineTrackRef(const int trackID)
-{
-    assertExpr(trackID,>=,0);
-    assertExpr(trackID,<,(int)m_track_render_info.size());
-    return m_track_render_info[trackID];
 }
 
 // -------------------------------------------------------------------------------------------

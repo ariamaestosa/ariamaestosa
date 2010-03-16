@@ -47,8 +47,17 @@ namespace AriaMaestosa
         LayoutLine* m_parent;
         int m_track_id;
         
+        /** y "from" coordinate in relative units (levels) */
         int m_level_from;
+        
+        /** y "to" coordinate in relative units (levels) */
         int m_level_to;
+        
+        /** whether to show measure numbers on top of this particular track. used to show them
+          * only once when there are multiple tracks in a line.
+          */
+        bool m_show_measure_number;
+
         
     public:
         
@@ -80,16 +89,15 @@ namespace AriaMaestosa
           * Will be set by the PrintLayoutNumeric when layout is finalized. */
         OwnerPtr<TrackCoords> m_track_coords;
         
-        bool show_measure_number;
-
         const Track* m_track;
         
-        LineTrackRef(LayoutLine* parent, int trackID, const Track* track) : m_track(track)
+        LineTrackRef(LayoutLine* parent, int trackID, const Track* track, bool show_measure_number) : m_track(track)
         {
-            m_parent      = parent;
-            m_track_id    = trackID;
-            m_level_from  = -1;
-            m_level_to    = -1;
+            m_parent              = parent;
+            m_track_id            = trackID;
+            m_level_from          = -1;
+            m_level_to            = -1;
+            m_show_measure_number = show_measure_number;
         }
         int getLastNote() const;
         int getFirstNote() const;
@@ -99,6 +107,7 @@ namespace AriaMaestosa
         int getFirstNoteInElement(LayoutElement* layoutElement);
         int getLastNoteInElement(LayoutElement* layoutElement);
         
+        /** @return whether this track reference (on this line) is empty (contains no note or symbol) */
         bool empty() const
         {
             assert(m_level_from != -1);
@@ -106,12 +115,21 @@ namespace AriaMaestosa
 
             return m_level_to <= m_level_from;
         }
+        
+        /** @return the height, in abstract units (levels), that this track requires to properly
+          *         display everything it contains
+          */
         int getLevelHeight() const
         {
             assert(m_level_from != -1);
             assert(m_level_to != -1);
             
             return m_level_to - m_level_from;
+        }
+        
+        bool showMeasureNumber() const
+        {
+            return m_show_measure_number;
         }
     };
     
@@ -165,7 +183,12 @@ namespace AriaMaestosa
         }
         
         int getTrackAmount() const;
-        LineTrackRef& getLineTrackRef(const int id);
+        const LineTrackRef& getLineTrackRef(const int trackID) const
+        {
+            assertExpr(trackID,>=,0);
+            assertExpr(trackID,<,(int)m_track_render_info.size());
+            return m_track_render_info[trackID];
+        }
         
         int getLayoutElementCount() const { return m_layout_elements.size(); }
         LayoutElement& getLayoutElement(const int id) { return m_layout_elements[id]; }
@@ -201,6 +224,18 @@ namespace AriaMaestosa
         void setLevelTo(const int levelTo)
         {
             m_level_to = levelTo;
+        }
+        
+        /**
+          * Sets the coord of a track contained within this line.
+          * @param trackID  ID of the track to set coords for, in range [0 .. getTrackAmount()-1]
+          * @param coords   The object that contains the coords of the tracks. Must have been
+          *                 created with 'new'. This call takes ownership of the object, no need
+          *                 to delete it after.
+          */
+        void setTrackCoords(const int trackID, TrackCoords* coords)
+        {
+            m_track_render_info[trackID].m_track_coords = coords;
         }
     };
     

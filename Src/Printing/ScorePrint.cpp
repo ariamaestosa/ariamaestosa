@@ -663,9 +663,9 @@ namespace AriaMaestosa
     
     // -------------------------------------------------------------------------------------------
     
-    void ScorePrintable::drawTrack(const int trackID, LineTrackRef& currentTrack, LayoutLine& currentLine, wxDC& dc)
+    void ScorePrintable::drawTrack(const int trackID, const LineTrackRef& currentTrack, LayoutLine& currentLine, wxDC& dc)
     {
-        TrackCoords* trackCoords = currentTrack.m_track_coords;
+        const TrackCoords* trackCoords = currentTrack.m_track_coords.raw_ptr;
         assert(trackCoords != NULL);
         
         assertExpr(trackCoords->y0,>,0);
@@ -730,7 +730,7 @@ namespace AriaMaestosa
             analyseAndDrawScore(false /*G*/, *g_clef_analyser, currentLine, currentTrack.m_track, dc,
                       abs(scoreData->extra_lines_above_g_score), abs(scoreData->extra_lines_under_g_score),
                       trackCoords->x0, g_clef_y_from, trackCoords->x1, g_clef_y_to,
-                      currentTrack.show_measure_number);
+                      currentTrack.showMeasureNumber());
         }
         
         if (f_clef)
@@ -738,7 +738,7 @@ namespace AriaMaestosa
             analyseAndDrawScore(true /*F*/, *f_clef_analyser, currentLine, currentTrack.m_track, dc,
                       abs(scoreData->extra_lines_above_f_score), abs(scoreData->extra_lines_under_f_score),
                       trackCoords->x0, f_clef_y_from, trackCoords->x1, f_clef_y_to,
-                      (g_clef ? false : currentTrack.show_measure_number) /* if we have both keys don't show twice */);
+                      (g_clef ? false : currentTrack.showMeasureNumber()) /* if we have both keys don't show twice */);
         }
         
         delete x_converter;
