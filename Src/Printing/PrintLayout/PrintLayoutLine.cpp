@@ -119,7 +119,6 @@ LayoutLine::LayoutLine(PrintableSequence* parent, ptr_vector<PrintLayoutMeasure,
     m_level_height = -1;
     m_printable = parent;
     m_measures = measures;
-    m_last_of_page = false;
     
     m_level_from = -1;
     m_level_to = -1;
