@@ -140,18 +140,16 @@ namespace AriaMaestosa
         
         std::vector<LayoutElement> m_layout_elements;
 
-        //FIXME: find better way than 'friend'
-        friend class PrintLayoutAbstract;
-        
+        //FIXME: find a better way than using "-1" to mean these values are not set
+        //       (having the object in a half-constructed at any point state is ugly anyway)
         int m_level_from;
         int m_level_to;
         
     public:
         
+        //FIXME: make private
         int m_level_height;
-        
-        bool m_last_of_page;
-        
+                
         
         /** Initially NULL; will be set when PrintLayoutNumeric actually calculates the coords
           * of this track
@@ -195,6 +193,14 @@ namespace AriaMaestosa
         {
             assert(m_level_to != -1);
             return m_level_to;
+        }
+        void setLevelFrom(const int levelFrom)
+        {
+            m_level_from = levelFrom;
+        }
+        void setLevelTo(const int levelTo)
+        {
+            m_level_to = levelTo;
         }
     };
     
