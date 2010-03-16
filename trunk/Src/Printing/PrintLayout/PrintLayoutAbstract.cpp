@@ -23,7 +23,7 @@ using namespace AriaMaestosa;
 namespace AriaMaestosa
 {    
     /** Determined empirically. Used to determine when it's time to switch to another page */
-    const int MIN_LEVEL_HEIGHT = 75;
+    const int MIN_LEVEL_HEIGHT = 60; //FIXME: PrintLayoutAbstract is not abstract at all, deals with absolute coords...
 
     /** Minimal width of any element, in print units, to avoid elements that are too small and look funny */
     const int LAYOUT_ELEMENT_MIN_WIDTH = 300;
@@ -33,7 +33,7 @@ namespace AriaMaestosa
     
     /** width of a G or F clef symbol on the staff (FIXME: set more precisely) */
     const int CLEF_WIDTH = 250;
-    
+        
     int repetitionMinimalLength = 2;
     
     // -------------------------------------------------------------------------------------------
@@ -395,6 +395,7 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     
     current_width += header_width;
     layoutPages[current_page].getLine(currentLine).addLayoutElement( el );
+    layoutPages[current_page].getLine(currentLine).m_level_from = current_height;
     
     // add layout elements one by one, switching to the next line when there's too many
     // elements on the current one
@@ -410,14 +411,20 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
             const int line_height = layoutPages[current_page].getLine(currentLine).calculateHeight();
             current_height += line_height;
             
+            layoutPages[current_page].getLine(currentLine).m_level_to = current_height;
+            current_height += INTER_LINE_MARGIN_LEVELS;
+
             std::cout << PRINT_VAR(current_height) << "\n";
             
             // too many lines on current page, switch to a new page
             const int maxLevelHeight = (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages);
             if (current_height > maxLevelHeight)
             {
-                current_height = line_height;
+                std::cout << "Creating page " << (layoutPages.size()+1) << "\n";
+                current_height = line_height + INTER_LINE_MARGIN_LEVELS;
                 layoutPages.push_back( new LayoutPage() );
+                layoutPages[current_page].getLine(currentLine).m_level_to -= layoutPages[current_page].getLine(currentLine).m_level_from;
+                layoutPages[current_page].getLine(currentLine).m_level_from = 0;
                 layoutPages[current_page].getLine(currentLine).m_last_of_page = true;
                 current_page++;
                 layoutPages[current_page-1].moveYourLastLineTo(layoutPages[current_page]);
@@ -428,6 +435,9 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
             ptr_vector<PrintLayoutMeasure, REF> refview = measures.getWeakView();
             layoutPages[current_page].addLine( new LayoutLine(sequence, refview) );
             currentLine = layoutPages[current_page].getLineCount()-1;
+            
+            layoutPages[current_page].getLine(currentLine).m_level_from = current_height;
+            std::cout << "    Creating line " << currentLine << " with level from = " << current_height << "\n";
         }
         assertExpr(currentLine,<,(int)layoutPages[current_page].getLineCount());
         
@@ -437,21 +447,34 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     }
     
     // for last line processed (FIXME: copy-and-paste is ugly)
-    current_height += layoutPages[current_page].getLine(currentLine).calculateHeight();
+    const int line_height = layoutPages[current_page].getLine(currentLine).calculateHeight();
+    current_height += line_height;
+    layoutPages[current_page].getLine(currentLine).m_level_to = current_height;
+    current_height += INTER_LINE_MARGIN_LEVELS;
     
+    std::cout << PRINT_VAR(current_height) << "\n";
+    
+    // too many lines on current page, switch to a new page
     const int maxLevelHeight = (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages);
     if (current_height > maxLevelHeight)
     {
+        std::cout << "Creating page " << (layoutPages.size()+1) << "\n";
+        current_height = line_height + INTER_LINE_MARGIN_LEVELS;
         layoutPages.push_back( new LayoutPage() );
+        layoutPages[current_page].getLine(currentLine).m_level_to -= layoutPages[current_page].getLine(currentLine).m_level_from;
+        layoutPages[current_page].getLine(currentLine).m_level_from = 0;
         layoutPages[current_page].getLine(currentLine).m_last_of_page = true;
         current_page++;
         layoutPages[current_page-1].moveYourLastLineTo(layoutPages[current_page]);
     }
     
+    assert(current_height <= (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages));
+    
+    
 #ifndef NDEBUG
     for (int p=0; p<layoutPages.size(); p++)
     {
-        std::cout << "(( PAGE " << (p+1) << "))\n";
+        std::cout << "(( PAGE " << (p+1) << " ))\n";
         const int maxh = (p == 0 ? maxLevelsOnPage1 : maxLevelsOnOtherPages);
         std::cout << "MAXIMUM height for this page : " << maxh << std::endl;
 
@@ -461,8 +484,17 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
         const int lineCount = page.getLineCount();
         for (int t=0; t<lineCount; t++)
         {
-            total += page.getLine(t).m_level_height;
-            std::cout << "        " << page.getLine(t).m_level_height << "\n";
+            total += page.getLine(t).m_level_height + INTER_LINE_MARGIN_LEVELS;
+            std::cout << "        " << page.getLine(t).m_level_height
+                      << " : " << page.getLine(t).m_level_from << " to " << page.getLine(t).m_level_to << "\n";
+            std::cout << "        " << INTER_LINE_MARGIN_LEVELS << " (margin)\n";
+            
+            assertExpr( page.getLine(t).m_level_from,  >, -1 );
+            
+            assert( page.getLine(t).m_level_to   != -1 );
+            assertExpr( page.getLine(t).m_level_to,   <=, maxh );
+            
+            assertExpr( page.getLine(t).m_level_to, >, page.getLine(t).m_level_from );
         }
         std::cout << "    ------------\n        " << total << "\n\n";
         assert(total <= maxh);

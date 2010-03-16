@@ -79,18 +79,18 @@ EditorPrintable* PrintableSequence::getEditorPrintable(const int trackID)
 
 void PrintableSequence::printLinesInArea(wxDC& dc, LayoutPage& page, 
                                          const float notation_area_y0, const float notation_area_h,
-                                         const int level_y_amount, const int pageHeight,
-                                         const int x0, const int x1)
+                                         const int pageHeight, const int x0, const int x1)
 {
     assert(m_layout_calculated);
     assert(m_numeric_layout_manager != NULL);
     
     assert(notation_area_h > 0);
     assert(pageHeight > 0);
-    
+    //assertExpr(notation_area_y0 + notation_area_h, <=, pageHeight);
+
     // ---- Give each track an area on the page
     m_numeric_layout_manager->placeLinesInPage(page, notation_area_y0, notation_area_h,
-                                               level_y_amount, pageHeight, x0, x1);
+                                               pageHeight, x0, x1);
     
     // ---- Draw the tracks
     const wxFont regularFont = wxFont(75, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
@@ -151,7 +151,7 @@ void PrintableSequence::printLine(LayoutLine& line, wxDC& dc)
     for (int n=0; n<trackAmount; n++)
     {
         // skip empty tracks
-        if (line.m_height_percent[n] == 0) continue;
+        if (line.getLineTrackRef(n).empty()) continue;
         
         std::cout << "==== Printing track " << n << " ====" << std::endl;
         

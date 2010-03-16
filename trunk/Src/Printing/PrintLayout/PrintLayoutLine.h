@@ -21,6 +21,8 @@
 
 namespace AriaMaestosa
 {
+    const int INTER_TRACK_MARGIN_LEVELS = 3;
+
     class Track;
     class LayoutElement;
     class LayoutLine;
@@ -39,9 +41,27 @@ namespace AriaMaestosa
      */
     class LineTrackRef
     {
-        LayoutLine* parent;
-        int trackID;
+        //FIXME: find better way than 'friend'
+        friend class LayoutLine;
+        
+        LayoutLine* m_parent;
+        int m_track_id;
+        
+        int m_level_from;
+        int m_level_to;
+        
     public:
+        
+        int getLevelFrom() const
+        {
+            assert(m_level_from != -1);
+            return m_level_from;
+        }
+        int getLevelTo() const
+        {
+            assert(m_level_to != -1);
+            return m_level_to;
+        }
         
         /**
          * Editor-specific data (each editor can override this class and set their data through it in each
@@ -66,8 +86,10 @@ namespace AriaMaestosa
         
         LineTrackRef(LayoutLine* parent, int trackID, const Track* track) : m_track(track)
         {
-            this->parent = parent;
-            this->trackID = trackID;
+            m_parent      = parent;
+            m_track_id    = trackID;
+            m_level_from  = -1;
+            m_level_to    = -1;
         }
         int getLastNote() const;
         int getFirstNote() const;
@@ -76,6 +98,21 @@ namespace AriaMaestosa
         int getLastNoteInElement(const int layoutElementID);
         int getFirstNoteInElement(LayoutElement* layoutElement);
         int getLastNoteInElement(LayoutElement* layoutElement);
+        
+        bool empty() const
+        {
+            assert(m_level_from != -1);
+            assert(m_level_to != -1);
+
+            return m_level_to <= m_level_from;
+        }
+        int getLevelHeight() const
+        {
+            assert(m_level_from != -1);
+            assert(m_level_to != -1);
+            
+            return m_level_to - m_level_from;
+        }
     };
     
     /**
@@ -103,17 +140,18 @@ namespace AriaMaestosa
         
         std::vector<LayoutElement> m_layout_elements;
 
-    public:
-        /** used to store what percentage of this line's height this track should take.
-          * e.g. a score with F+G clefs will need more space than a 4-string bass tab
-          * so vertical space must not be divided equally
-          */
-        std::vector<short int> m_height_percent;
+        //FIXME: find better way than 'friend'
+        friend class PrintLayoutAbstract;
         
-        void addLayoutElement( const LayoutElement& newElem )
-        {
-            m_layout_elements.push_back( newElem );
-        }
+        int m_level_from;
+        int m_level_to;
+        
+    public:
+        
+        int m_level_height;
+        
+        bool m_last_of_page;
+        
         
         /** Initially NULL; will be set when PrintLayoutNumeric actually calculates the coords
           * of this track
@@ -121,10 +159,12 @@ namespace AriaMaestosa
         OwnerPtr<LineCoords> m_line_coords;
         
         LayoutLine(PrintableSequence* parent, ptr_vector<PrintLayoutMeasure, REF>& measures);
+
         
-        int m_level_height;
-        
-        bool m_last_of_page;
+        void addLayoutElement( const LayoutElement& newElem )
+        {
+            m_layout_elements.push_back( newElem );
+        }
         
         int getTrackAmount() const;
         LineTrackRef& getLineTrackRef(const int id);
@@ -137,7 +177,7 @@ namespace AriaMaestosa
         int getFirstNoteInElement(const int trackID, const LayoutElement* layoutElement) const;
         int getLastNoteInElement (const int trackID, const LayoutElement* layoutElement) const;
         
-        /** @returns the number of levels that make this track (vertically) */
+        /** @returns the number of levels that make this line (vertically) INCLUDING required margin space */
         int calculateHeight();
         
         const PrintLayoutMeasure& getMeasureForElement(const int layoutElementID) const;
@@ -145,6 +185,17 @@ namespace AriaMaestosa
         
         int getLastMeasure()  const;
         int getFirstMeasure() const;
+        
+        int getLevelFrom() const
+        {
+            assert(m_level_from != -1);
+            return m_level_from;
+        }
+        int getLevelTo() const
+        {
+            assert(m_level_to != -1);
+            return m_level_to;
+        }
     };
     
 }

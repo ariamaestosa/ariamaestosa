@@ -53,10 +53,8 @@ namespace AriaMaestosa
          * @param dc           The wxDC onto which stuff to print is to be rendered
          * @param x0           x origin coordinate from which drawing can occur
          * @param y0           y origin coordinate from which drawing can occur
-         * @param w            Width of the printable area
-         * @param h            Height of the printable area
          */
-        void printPage(const int pageNum, wxDC& dc, const int x0, const int y0, const int w, const int h);
+        void printPage(const int pageNum, wxDC& dc, const int x0, const int y0);
         
         /** There can only be one instance at a time. Holds the current instance, or NULL if there is none */
         static AriaPrintable* m_current_printable;

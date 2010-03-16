@@ -25,7 +25,7 @@ using namespace AriaMaestosa;
   * The maximum height (in print units) a level can have. Having a maximum prevents vertical
   * stretching when there are few items in a page, because it would look ugly.
   */
-const int MAX_LEVEL_HEIGHT = 75;
+const int MAX_LEVEL_HEIGHT = 72;
 
 /**
   * Elements may be horizontally enlarged (zoomed in) when there is more room than strictly
@@ -78,6 +78,7 @@ void PrintLayoutNumeric::placeTrackWithinCoords(const int trackID, LayoutLine& l
     assertExpr(x1, >=, 0);
     assertExpr(y0, >=, 0);
     assertExpr(y1, >=, 0);
+    assertExpr(y1, >, y0);
     
     track.m_track_coords = new TrackCoords();
     track.m_track_coords->x0 = x0;
@@ -146,8 +147,8 @@ void PrintLayoutNumeric::placeElementsWithinCoords(LayoutLine& line, int x0, con
 
 // -----------------------------------------------------------------------------------------------------------------
 
-void PrintLayoutNumeric::setLineCoordsAndDivideItsSpace(LayoutLine& line, const int x0, const int y0, const int x1,
-                                               const int y1, int margin_below, int margin_above)
+void PrintLayoutNumeric::setLineCoordsAndDivideItsSpace(LayoutLine& line, const int x0, const int y0,
+                                                        const int x1, const int y1)
 {
     const int trackAmount = line.getTrackAmount();
     
@@ -163,74 +164,44 @@ void PrintLayoutNumeric::setLineCoordsAndDivideItsSpace(LayoutLine& line, const 
     // ---- empty space around whole line
     const float heightAvailableForThisLine = (float)(y1 - y0);
     
-    if (heightAvailableForThisLine < 0.0001) return; // empty line. TODO : todo - draw empty bars to show there's something?
+    if (heightAvailableForThisLine < 0.0001) return; // empty line. TODO: draw empty bars to show there's something?
     
-    // make sure margins are within acceptable bounds
-    if (margin_below > heightAvailableForThisLine/2) margin_below = heightAvailableForThisLine/5;
-    if (margin_above > heightAvailableForThisLine/2) margin_above = heightAvailableForThisLine/5;
-
-    line.m_line_coords->margin_below = margin_below;
-    line.m_line_coords->margin_above = margin_above;
+    const int levelHeight = std::min(int(heightAvailableForThisLine/line.m_level_height), MAX_LEVEL_HEIGHT);
+    std::cout << "Level height within line : " << levelHeight << "\n";
     
     //FIXME; don't hardcode 70 here, have a formal minimal value
     //assertExpr((heightAvailableForThisLine - margin_below - margin_above)/line.calculateHeight(), >=, 70);
-
-    const int my0 = y0 + margin_above;
     
     // ---- Determine tracks positions and sizes
     
-    int nonEmptyTrackAmount = 0; // empty tracks must not be counted
-    for (int n=0; n<trackAmount; n++)
-    {        
-        if (line.m_height_percent[n] > 0) nonEmptyTrackAmount++;
-    }
+    //int nonEmptyTrackAmount = 0; // empty tracks must not be counted
+    //for (int n=0; n<trackAmount; n++)
+    //{        
+    //    if (not line.getLineTrackRef(n).empty()) nonEmptyTrackAmount++;
+    //}
         
     // space between individual tracks
-    const int space_between_tracks = (nonEmptyTrackAmount > 1 ? SPACE_BETWEEN_TRACKS : 0);
+    //const int space_between_tracks = (nonEmptyTrackAmount > 1 ? SPACE_BETWEEN_TRACKS : 0);
     
-    float current_y = my0;
-    int nonEmptyID = 0;
     for (int n=0; n<trackAmount; n++)
-    {        
-        //EditorPrintable* editorPrintable = m_sequence->getEditorPrintable(n);
-        
+    {               
         // skip empty tracks
-        if (line.m_height_percent[n] == 0) continue;
+        if (line.getLineTrackRef(n).empty()) continue;
         
         // determine how much vertical space is allocated for this track
-        const float track_height = (heightAvailableForThisLine - margin_below - margin_above) *
-                                    line.m_height_percent[n]/100.0f;
+        //const float track_height = heightAvailableForThisLine * line.m_height_percent[n]/100.0f;
+        //const int trackLevelHeight = line.getLineTrackRef(n).getLevelHeight();
         
-        std::cout << "track_height=" << track_height << " (margin_below=" << margin_below << " margin_above=" << margin_above
-                  << "space_between_tracks=" << space_between_tracks << ")\n";
-        
-        // margin space above and below each track are given by simple formula 'space_between_tracks*position' where
-        // position ranges from 0 to 1. However, this formula doesn't make the space between 2 tracks equal to
-        // 'space_between_tracks' in all cases (especially depending on track amount), so the following correction
-        // needs to be applied (FIXME : can it be harder to understand what i'm doing here...)
-        const float adjustMarginRatio = (float)(nonEmptyTrackAmount-1) / (float)(nonEmptyTrackAmount);
-        
-        const float position = (nonEmptyTrackAmount-1 == 0 ?
-                                0.0f : // avoid division by zero
-                                (float)nonEmptyID / (float)(nonEmptyTrackAmount-1));
-        const float space_above_track = (nonEmptyTrackAmount > 1 ?
-                                         space_between_tracks*position*adjustMarginRatio : 0);
-        const float space_below_track = (nonEmptyTrackAmount > 1 ?
-                                         space_between_tracks*(1.0-position)*adjustMarginRatio : 0);
-        
+        const int levelFrom = line.getLineTrackRef(n).getLevelFrom();
+        const int levelTo   = line.getLineTrackRef(n).getLevelTo();
 
         placeTrackWithinCoords(n, line, line.getLineTrackRef(n),
-                               x0, current_y + space_above_track,
-                               x1, current_y + track_height - space_below_track,
+                               x0, y0 + levelFrom*levelHeight,
+                               x1, y0 + levelTo*levelHeight,
                                n==0);
         
-        std::cout << "%%%% setting track coords " << n  << " : " << x0 << ", " << (current_y + space_above_track)
-            << " to "  << x1 << ", "<< (current_y + track_height - space_below_track)
-            << " ( space_above_track=" << space_above_track << " space_below_track=" << space_below_track
-            << " track_height=" << track_height << ")" <<  std::endl;
-        
-        current_y += track_height;
-        nonEmptyID++;
+        std::cout << "Track " << n << " in y [" << y0 + line.getLineTrackRef(n).getLevelFrom()*levelHeight
+                  << " .. " << y0 + line.getLineTrackRef(n).getLevelTo()*levelHeight << "]\n";
     }
     
     placeElementsWithinCoords(line, x0, x1);
@@ -240,80 +211,42 @@ void PrintLayoutNumeric::setLineCoordsAndDivideItsSpace(LayoutLine& line, const 
 // -----------------------------------------------------------------------------------------------------------------
 
 void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, float notation_area_y_from,
-                                          const float notation_area_h, const int level_y_amount,
+                                          const float notation_area_h,
                                           const int pageHeight, const int x0, const int x1)
 {
     assert(notation_area_y_from >= 0);
     assert(notation_area_h > 0);
     assert(pageHeight > 0);
     
-    std::cout << "\n========\nplaceTracksInPage\n========\n";
-    
-    // ---- Lay out tracks
     const int lineAmount = page.getLineCount();
+
+    const int level_y_amount = page.getLine(lineAmount-1).getLevelTo();
+    
+    std::cout << "\n========\nplaceTracksInPage\n========\n";
+    std::cout << level_y_amount << " levels within " << notation_area_h << " units (vertically)\n";
+    
+    const float levelHeight = std::min(notation_area_h/(float)level_y_amount, (float)MAX_LEVEL_HEIGHT);
+    std::cout << "level height = " << levelHeight << "\n";
+    
+    // ---- Lay out lines
     for (int l=0; l<lineAmount; l++)
     {
         std::cout << "\n====\nLine " << l << "\n====\n";
         
-        //std::cout << "layoutLines[l].level_height = " << layoutLines[l].level_height << " track_area_height=" << track_area_height
-        //          << " total_height=" << total_height << std::endl;
-        
-        // allocate a height proportional to this line's fraction of the total height
-        float heightAvailableForThisLine = (notation_area_h/level_y_amount) * page.getLine(l).m_level_height;
-        
-        float used_height = heightAvailableForThisLine;
-        
-        
         LayoutLine& line = page.getLine(l);
         
-        // line too high, will look weird... shrink a bit
-        //FIXME: this method of taking inter-track measures into account is a little unclean...
-        const int lineLevelheight = line.m_level_height +
-                                    std::max(0, line.getTrackAmount() - 1)*(SPACE_BETWEEN_TRACKS/MAX_LEVEL_HEIGHT);
-        while (used_height/(float)lineLevelheight > MAX_LEVEL_HEIGHT)
-        {
-            used_height *= 0.95;
-        }
+        const int y_from = notation_area_y_from + line.getLevelFrom()*levelHeight;
+        const int y_to   = notation_area_y_from + line.getLevelTo()*levelHeight;
         
-        // shrink total height when track is way too large (if page contains only a few tracks)
-        if (heightAvailableForThisLine > pageHeight/5 and
-            heightAvailableForThisLine > used_height*MAX_HEIGHT_COMPARED_TO_USED_HEIGHT)
-        {
-            heightAvailableForThisLine = used_height*MAX_HEIGHT_COMPARED_TO_USED_HEIGHT;  
-        }
+        assertExpr(line.getLevelTo(), <=, level_y_amount);
+        assertExpr(y_from, >, 0);
+        assertExpr(y_from, <, pageHeight);
+        assertExpr(y_to,   >, y_from);
+        //TODO: uncomment
+        //assertExpr(y_to,   <, pageHeight);
         
-        
-        float used_y_from = notation_area_y_from;
-        
-        // center vertically in available space  if more space than needed
-        if (used_height < heightAvailableForThisLine) used_y_from += (heightAvailableForThisLine - used_height)/2;
-        
-        //std::cout << "```` used_y_from=" << used_y_from << std::endl;
-        
-        // split margin above and below depending on position within page
-        const float position = float(l) / lineAmount;
-        int margin_above = MARGIN_AROUND_LINE*position;
-        int margin_below = MARGIN_AROUND_LINE*(1-position);
-        
-        // when there's only one track, leave much less margin (FIXME: find a cleaner way!!)
-        const int trackAmount = line.getTrackAmount();
-        if (trackAmount == 1)
-        {
-            margin_above = margin_above/2;
-            margin_below = margin_below/2;
-        }
-        assert(heightAvailableForThisLine > 0);
-        assert(used_height > 0);
-        
-        std::cout << "height=" << heightAvailableForThisLine << " used_height=" << used_height
-                  << " used_y_from=" << used_y_from << " margin_above=" << margin_above
-                  << " margin_below=" << margin_below << std::endl;
-        
-        this->setLineCoordsAndDivideItsSpace(line, x0, used_y_from, x1, used_y_from+used_height,
-                                             margin_below, margin_above);
-        
-        notation_area_y_from += heightAvailableForThisLine;
-        //std::cout << "yfrom is now " << y_from << std::endl;
+        this->setLineCoordsAndDivideItsSpace(line, x0, y_from,
+                                                   x1, y_to);
     }
     
 }

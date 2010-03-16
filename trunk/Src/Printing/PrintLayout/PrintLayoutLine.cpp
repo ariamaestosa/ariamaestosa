@@ -29,13 +29,13 @@ using namespace AriaMaestosa;
 
 int LineTrackRef::getLastNote() const
 {
-    const int elements = parent->getLayoutElementCount();
-    const int track_amount = parent->getTrackAmount();
+    const int elements = m_parent->getLayoutElementCount();
+    const int track_amount = m_parent->getTrackAmount();
     
     for (int el=elements-1; el>=0; el--)
     { // start searching from last measure in this line
         
-        const PrintLayoutMeasure& current_meas = parent->getMeasureForElement(el);
+        const PrintLayoutMeasure& current_meas = m_parent->getMeasureForElement(el);
         for (int i=0; i<track_amount; i++)
         {
             if (current_meas.getTrackRefAmount() > 0 && // FIXME - find why it's sometimes 0
@@ -57,12 +57,12 @@ int LineTrackRef::getFirstNote() const
     //const int measure = getFirstMeasure();
     // const int from_tick = getMeasureData()->firstTickInMeasure(measure);
     
-    const int track_amount = parent->getTrackAmount();
-    const int elements = parent->getLayoutElementCount();
+    const int track_amount = m_parent->getTrackAmount();
+    const int elements = m_parent->getLayoutElementCount();
     
     for (int el=0; el<elements; el++)
     { // start searching from first measure in this line
-        const PrintLayoutMeasure& current_meas = parent->getMeasureForElement(el);
+        const PrintLayoutMeasure& current_meas = m_parent->getMeasureForElement(el);
         for (int i=0; i<track_amount; i++)
         {
             if (current_meas.getTrackRefAmount() > 0 && // FIXME - find why it's sometimes empty
@@ -81,32 +81,32 @@ int LineTrackRef::getFirstNote() const
 
 int LineTrackRef::getFirstNoteInElement(const int layoutElementID)
 {
-    return parent->getMeasureForElement(layoutElementID).getTrackRef(trackID).getFirstNote();
+    return m_parent->getMeasureForElement(layoutElementID).getTrackRef(m_track_id).getFirstNote();
 }
 
 // -------------------------------------------------------------------------------------------
 
 int LineTrackRef::getLastNoteInElement(const int layoutElementID)
 {
-    std::cout << "last note in element " << layoutElementID << " of track " << trackID << " is "
-        << parent->getMeasureForElement(layoutElementID).getTrackRef(trackID).getLastNote()
-        << " from measure " << parent->getMeasureForElement(layoutElementID).getMeasureID() << std::endl;
+    std::cout << "last note in element " << layoutElementID << " of track " << m_track_id << " is "
+        << m_parent->getMeasureForElement(layoutElementID).getTrackRef(m_track_id).getLastNote()
+        << " from measure " << m_parent->getMeasureForElement(layoutElementID).getMeasureID() << std::endl;
     
-    return parent->getMeasureForElement(layoutElementID).getTrackRef(trackID).getLastNote();
+    return m_parent->getMeasureForElement(layoutElementID).getTrackRef(m_track_id).getLastNote();
 }
 
 // -------------------------------------------------------------------------------------------
 
 int LineTrackRef::getFirstNoteInElement(LayoutElement* layoutElement)
 {
-    return parent->getMeasureForElement(layoutElement).getTrackRef(trackID).getFirstNote();
+    return m_parent->getMeasureForElement(layoutElement).getTrackRef(m_track_id).getFirstNote();
 }
 
 // -------------------------------------------------------------------------------------------
 
 int LineTrackRef::getLastNoteInElement(LayoutElement* layoutElement)
 {
-    return parent->getMeasureForElement(layoutElement).getTrackRef(trackID).getLastNote();
+    return m_parent->getMeasureForElement(layoutElement).getTrackRef(m_track_id).getLastNote();
 }
 
 // -------------------------------------------------------------------------------------------
@@ -116,9 +116,13 @@ int LineTrackRef::getLastNoteInElement(LayoutElement* layoutElement)
 
 LayoutLine::LayoutLine(PrintableSequence* parent, ptr_vector<PrintLayoutMeasure, REF>& measures)
 {
+    m_level_height = -1;
     m_printable = parent;
     m_measures = measures;
     m_last_of_page = false;
+    
+    m_level_from = -1;
+    m_level_to = -1;
     
     const int trackAmount = parent->getTrackAmount();
     for (int trackID=0; trackID<trackAmount; trackID++)
@@ -224,30 +228,30 @@ int LayoutLine::calculateHeight()
     
     std::vector<int> heights;
     
-    /* calculate the total height of this line (which many include multiple tracks) */
-    std::cout << "---- line ----" << std::endl;
+    // calculate the total height of this line (i.e. sum of heaight of tracks within the line)
+    //std::cout << "---- line ----" << std::endl;
     const int trackAmount = getTrackAmount();
     for (int n=0; n<trackAmount; n++)
     {
         const int this_height = m_printable->getEditorPrintable(n)->calculateHeight(n, m_track_render_info[n], *this);
         heights.push_back(this_height);
+        
+        m_track_render_info[n].m_level_from = m_level_height;
         m_level_height += this_height;
-        std::cout << this_height << "-high" << std::endl;
+        m_track_render_info[n].m_level_to = m_level_height;
+        
+        // add space between tracks
+        if (n < trackAmount-1) m_level_height += INTER_TRACK_MARGIN_LEVELS;
     }
     
-    /* distribute the vertical space between tracks (some track need more vertical space than others) */
+    /*
+    // distribute the vertical space between tracks (some track need more vertical space than others)
     for (int n=0; n<trackAmount; n++)
     {
         m_height_percent.push_back( (int)round( (float)heights[n] * 100.0f / (float)m_level_height ) );
-        std::cout << m_height_percent[n] << "%" << std::endl;
+        //std::cout << m_height_percent[n] << "%" << std::endl;
     }
-    
-    // if we're the last of the page, we need less space cause we don't
-    // need to leave empty space under
-    //FIXME: I don't believe margins should be handled at this level. LayoutLine should return the height
-    //       of the line, period.
-    if (m_last_of_page) m_level_height -= 13;
-    
+    */
     return m_level_height;
 }
     
