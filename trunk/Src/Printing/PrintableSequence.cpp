@@ -155,8 +155,8 @@ void PrintableSequence::printLine(LayoutLine& line, wxDC& dc)
         
         std::cout << "==== Printing track " << n << " ====" << std::endl;
         
-        LineTrackRef& sizing = line.getLineTrackRef(n);
-        TrackCoords* trackCoords = sizing.m_track_coords;
+        const LineTrackRef& sizing = line.getLineTrackRef(n);
+        const TrackCoords* trackCoords = sizing.m_track_coords.raw_ptr;
         assert(trackCoords != NULL);
         
         std::cout << "Coords : " << trackCoords->x0 << ", " << trackCoords->y0 << " to "

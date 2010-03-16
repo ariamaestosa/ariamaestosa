@@ -68,9 +68,8 @@ PrintLayoutNumeric::PrintLayoutNumeric()
 
 // -----------------------------------------------------------------------------------------------------------------
 
-void PrintLayoutNumeric::placeTrackWithinCoords(const int trackID, LayoutLine& line, LineTrackRef& track,
-                                                int x0, const int y0, const int x1, const int y1,
-                                                bool show_measure_number)
+void PrintLayoutNumeric::placeTrackWithinCoords(const int trackID, LayoutLine& line,
+                                                int x0, const int y0, const int x1, const int y1)
 {
     std::cout << "= placeTrackWithinCoords =\n";
     
@@ -80,16 +79,12 @@ void PrintLayoutNumeric::placeTrackWithinCoords(const int trackID, LayoutLine& l
     assertExpr(y1, >=, 0);
     assertExpr(y1, >, y0);
     
-    track.m_track_coords = new TrackCoords();
-    track.m_track_coords->x0 = x0;
-    track.m_track_coords->x1 = x1;
-    track.m_track_coords->y0 = y0;
-    track.m_track_coords->y1 = y1;
-    
-    // Why is this set per-track? AFAIK measure numbers are shown per-line, not per-track!!
-    track.show_measure_number = show_measure_number;
-        
-    if (&line.getLineTrackRef(trackID) != &track) std::cerr << "LineTrackRef is not the right one!!!!!!!!!\n";
+    TrackCoords* trackCoords = new TrackCoords();
+    trackCoords->x0 = x0;
+    trackCoords->x1 = x1;
+    trackCoords->y0 = y0;
+    trackCoords->y1 = y1;
+    line.setTrackCoords(trackID, trackCoords);
 }
 
 // -----------------------------------------------------------------------------------------------------------------
@@ -195,10 +190,9 @@ void PrintLayoutNumeric::setLineCoordsAndDivideItsSpace(LayoutLine& line, const 
         const int levelFrom = line.getLineTrackRef(n).getLevelFrom();
         const int levelTo   = line.getLineTrackRef(n).getLevelTo();
 
-        placeTrackWithinCoords(n, line, line.getLineTrackRef(n),
+        placeTrackWithinCoords(n, line,
                                x0, y0 + levelFrom*levelHeight,
-                               x1, y0 + levelTo*levelHeight,
-                               n==0);
+                               x1, y0 + levelTo*levelHeight);
         
         std::cout << "Track " << n << " in y [" << y0 + line.getLineTrackRef(n).getLevelFrom()*levelHeight
                   << " .. " << y0 + line.getLineTrackRef(n).getLevelTo()*levelHeight << "]\n";

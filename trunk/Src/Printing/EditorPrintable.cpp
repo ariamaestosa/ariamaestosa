@@ -82,8 +82,8 @@ void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0,
 // FIXME : unclean to pass trackID and LayoutLine as argument!
 LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, LayoutLine& layoutLine, const int currentLayoutElement)
 {
-    LineTrackRef& lineTrackRef = layoutLine.getLineTrackRef(trackID);
-    TrackCoords* trackCoords = lineTrackRef.m_track_coords;
+    const LineTrackRef& lineTrackRef = layoutLine.getLineTrackRef(trackID);
+    const TrackCoords* trackCoords = lineTrackRef.m_track_coords.raw_ptr;
     assert(trackCoords != NULL);
     
     if (!(currentLayoutElement < layoutLine.getLayoutElementCount()))
@@ -149,7 +149,7 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
         //std::cout << "---- element is normal\n";
         
         // draw measure ID
-        if (lineTrackRef.show_measure_number)
+        if (lineTrackRef.showMeasureNumber())
         {
             const int meas_id = layoutLine.getMeasureForElement(currentLayoutElement).getMeasureID() + 1;
             

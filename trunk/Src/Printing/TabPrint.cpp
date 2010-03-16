@@ -102,9 +102,9 @@ int TablaturePrintable::calculateHeight(const int trackID, LineTrackRef& lineTra
 
 // ------------------------------------------------------------------------------------------------------------
 
-void TablaturePrintable::drawTrack(const int trackID, LineTrackRef& currentTrack, LayoutLine& currentLine, wxDC& dc)
+void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& currentTrack, LayoutLine& currentLine, wxDC& dc)
 {
-    TrackCoords* trackCoords = currentTrack.m_track_coords;
+    const TrackCoords* trackCoords = currentTrack.m_track_coords.raw_ptr;
     assert(trackCoords != NULL);
     
     assertExpr(trackCoords->y0,>,0);
