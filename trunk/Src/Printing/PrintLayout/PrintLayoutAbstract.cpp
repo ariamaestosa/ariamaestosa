@@ -441,14 +441,12 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
         current_width += layoutElements[n].width_in_print_units + MARGIN_AT_MEASURE_BEGINNING;
     }
     
-    // for last line processed (FIXME: copy-and-paste is ugly)
+    // ---- for last line processed (FIXME: copy-and-paste is ugly)
     const int line_height = currentLine->calculateHeight();
     current_height += line_height;
     currentLine->m_level_to = current_height;
     current_height += INTER_LINE_MARGIN_LEVELS;
-    
-    std::cout << PRINT_VAR(current_height) << "\n";
-    
+        
     // too many lines on current page, switch to a new page
     const int maxLevelHeight = (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages);
     if (current_height > maxLevelHeight)
@@ -461,6 +459,7 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
         current_page++;
         layoutPages[current_page-1].moveYourLastLineTo(layoutPages[current_page]);
     }
+    // -------------------
     
     assert(current_height <= (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages));
     
