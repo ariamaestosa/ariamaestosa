@@ -130,7 +130,6 @@ namespace AriaMaestosa
           *                            (excluding header/etc...)
           * @param notation_area_h     Height of the area that is actually printable with notation
           *                            (excluding headers, footers, etc...)
-          * @param level_y_amount      The total count of levels (vertical units) on this page
           * @param pageHeight          Full height of the page
           * @param x0                  The minimum x coordinate at which printing can occur
           * @param x1                  The maximum x coordinate at which printing can occur
@@ -138,8 +137,7 @@ namespace AriaMaestosa
           * @precondition              'calculateLayout' must have been called first.
           */
         void printLinesInArea(wxDC& dc, LayoutPage& page, const float notation_area_y0, const float notation_area_h,
-                              const int level_y_amount, const int pageHeight,
-                              const int x0, const int x1);
+                              const int pageHeight, const int x0, const int x1);
         
         /** @return whether 'calculteLayout' was called on this object */
         bool isLayoutCalculated() const { return m_layout_calculated; }

@@ -49,8 +49,8 @@ namespace AriaMaestosa
          * the various tracks that form it, and set the coords of the LineTrackRef referring to each
          * track in this line.
          */
-        void setLineCoordsAndDivideItsSpace(LayoutLine& line, const int x0, const int y0, const int x1,
-                                   const int y1, int margin_below, int margin_above);
+        void setLineCoordsAndDivideItsSpace(LayoutLine& line, const int x0, const int y0,
+                                            const int x1, const int y1);
         
     public:
         
@@ -66,14 +66,12 @@ namespace AriaMaestosa
          * @param notation_area_y0    Y coordinate at which the actual notation can start being drawn (excluding header)
          * @param notation_area_h     Height in print units of the area that is for notation
          *                            (without the header/footer, etc.)
-         * @param level_y_amount      Total height of the tracks in levels (vertical units)
          * @param x0                  The minimum x coordinate at which printing can occur
          * @param x1                  The maximum x coordinate at which printing can occur
          */
         void placeLinesInPage(LayoutPage& page,
                               float notation_area_y0, const float notation_area_h,
-                              const int level_y_amount, const int pageHeight,
-                              const int x0, const int x1);
+                              const int pageHeight, const int x0, const int x1);
     };
     
 }

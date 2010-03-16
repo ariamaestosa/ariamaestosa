@@ -98,11 +98,14 @@ namespace AriaMaestosa
             assert(m_paper_id != wxPAPER_NONE);
             assert(m_page_setup.GetPaperId() != wxPAPER_NONE);
             
+            wxPoint marginTopLeft     = m_page_setup.GetMarginTopLeft();
+            wxPoint marginBottomRight = m_page_setup.GetMarginBottomRight();
+
             // ---- set-up coordinate system however we want
             // we'll use it when drawing
             wxSize paperSize = m_page_setup.GetPaperSize();
-            const int large_side = std::max(paperSize.GetWidth(), paperSize.GetHeight());
-            const int small_side = std::min(paperSize.GetWidth(), paperSize.GetHeight());
+            int large_side = std::max(paperSize.GetWidth(), paperSize.GetHeight());
+            int small_side = std::min(paperSize.GetWidth(), paperSize.GetHeight());
             
             assert(large_side > 0);
             assert(small_side > 0);
@@ -131,6 +134,8 @@ namespace AriaMaestosa
             //          << " - " <<  PRINT_VAR(MARGIN_UNDER_PAGE_HEADER) << std::endl;
             m_print_callback->m_usable_area_height_page_1 = height - m_print_callback->m_title_font_height - MARGIN_UNDER_PAGE_HEADER;
             m_print_callback->m_usable_area_height        = height - m_print_callback->m_subtitle_font_height - MARGIN_UNDER_PAGE_HEADER;
+            
+            std::cout << "Calculating 'm_usable_area_height' with height=" << height << "\n";
             
             assert(m_print_callback->m_usable_area_height_page_1 > 0);
             assert(m_print_callback->m_usable_area_height > 0);
@@ -193,15 +198,28 @@ namespace AriaMaestosa
             
             const int x0     = bounds.x;
             const int y0     = bounds.y;
-            const int width  = bounds.width;
-            const int height = bounds.height;
+            //const int width  = bounds.width;
+            //const int height = bounds.height;
             
             std::cout << "printable area : (" << x0 << ", " << y0 << ") to ("
-            << (x0 + width) << ", " << (y0 + height) << ")" << std::endl;
-            assert( width  > 0 );
-            assert( height > 0 );
+                      << (x0 + bounds.width) << ", " << (y0 + bounds.height) << ")" << std::endl;
             
-            m_print_callback->printPage(pageNum, dc, x0, y0, width, height);
+            assertExpr(bounds.width,  >, 0);
+            assertExpr(bounds.height, >, 0);
+            
+            //FIXME: this is a workaround
+            if (bounds.width  != m_print_callback->m_unit_width or
+                bounds.height != m_print_callback->m_unit_height)
+            {
+                std::cerr << "WTF!!! Wx didn't give me the size I asked for!!\n";
+                m_print_callback->m_unit_width  = bounds.width;
+                m_print_callback->m_unit_height = bounds.height;
+            }
+            
+            assertExpr(bounds.width,  ==, m_print_callback->m_unit_width  );
+            assertExpr(bounds.height, ==, m_print_callback->m_unit_height );
+
+            m_print_callback->printPage(pageNum, dc, x0, y0);
             
             return true;
         }
@@ -410,10 +428,13 @@ AriaPrintable* AriaPrintable::getCurrentPrintable()
 // -------------------------------------------------------------------------------------------------------------
 
 void AriaPrintable::printPage(const int pageNum, wxDC& dc,
-                              const int x0, const int y0,
-                              const int w, const int h)
+                              const int x0, const int y0)
 {    
     assert( MAGIC_NUMBER_OK() );
+
+    const int w = m_unit_width;
+    const int h = m_unit_height;
+    
     assert( w > 0 );
     assert( h > 0 );
     
@@ -427,13 +448,6 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
 
     std::cout << "page has " << lineAmount << " lines" << std::endl;
     
-    // FIXME: what is this 4 ?
-    int level_y_amount = 4;
-    for(int n=0; n < lineAmount; n++)
-    {
-        level_y_amount += page.getLine(n).m_level_height;
-    }
-
     dc.SetBackground(*wxWHITE_BRUSH);
     dc.Clear();
     
@@ -496,8 +510,9 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     assert(notation_area_h > 0);
     assert(h > 0);
     
-    
-    seq->printLinesInArea(dc, page, notation_area_y0, notation_area_h, level_y_amount, h, x0, x1);
+    assertExpr(notation_area_y0 + notation_area_h, <=, y1);
+
+    seq->printLinesInArea(dc, page, notation_area_y0, notation_area_h, h, x0, x1);
     
 }
     
