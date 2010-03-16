@@ -241,7 +241,9 @@ void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, float notation_area_
         assertExpr(line.getLevelTo(), <=, level_y_amount);
         assertExpr(y_from, >, 0);
         assertExpr(y_from, <, pageHeight);
-        assertExpr(y_to,   >, y_from);
+        
+        //FIXME: handle empty lines
+        assertExpr(y_to,   >=, y_from);
         //TODO: uncomment
         //assertExpr(y_to,   <, pageHeight);
         
