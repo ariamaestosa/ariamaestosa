@@ -225,33 +225,25 @@ int LayoutLine::getFirstMeasure() const
 int LayoutLine::calculateHeight()
 {
     m_level_height = 0;
-    
-    std::vector<int> heights;
-    
-    // calculate the total height of this line (i.e. sum of heaight of tracks within the line)
-    //std::cout << "---- line ----" << std::endl;
+        
+    // calculate the total height of this line (i.e. sum of heights of tracks within the line
+    // PLUS empty space between the tracks) FIXME: shouldn't that go in PrintLayoutAbstract ?
     const int trackAmount = getTrackAmount();
     for (int n=0; n<trackAmount; n++)
     {
         const int this_height = m_printable->getEditorPrintable(n)->calculateHeight(n, m_track_render_info[n], *this);
-        heights.push_back(this_height);
+        
+        // add space between tracks
+        if (this_height > 0 and n > 0)
+        {
+            m_level_height += INTER_TRACK_MARGIN_LEVELS;
+        }
         
         m_track_render_info[n].m_level_from = m_level_height;
         m_level_height += this_height;
         m_track_render_info[n].m_level_to = m_level_height;
-        
-        // add space between tracks
-        if (n < trackAmount-1) m_level_height += INTER_TRACK_MARGIN_LEVELS;
     }
     
-    /*
-    // distribute the vertical space between tracks (some track need more vertical space than others)
-    for (int n=0; n<trackAmount; n++)
-    {
-        m_height_percent.push_back( (int)round( (float)heights[n] * 100.0f / (float)m_level_height ) );
-        //std::cout << m_height_percent[n] << "%" << std::endl;
-    }
-    */
     return m_level_height;
 }
     
