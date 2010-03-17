@@ -83,6 +83,7 @@ namespace AriaMaestosa
         
         PrintLayoutMeasure(const int measID);
         
+        //FIXME: make private
         RelativePlacementManager ticks_placement_manager;
         
         /** 
