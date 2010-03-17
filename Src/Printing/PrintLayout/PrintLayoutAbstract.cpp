@@ -90,7 +90,7 @@ void PrintLayoutAbstract::generateMeasures(ptr_vector<Track, REF>& tracks)
             
         } // next measure
         
-        WaitWindow::setProgress( tr*25/trackAmount );
+        WaitWindow::setProgress( tr*10/trackAmount );
         
     } // next track
 }
@@ -161,8 +161,11 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
     
     for (int measure=0; measure<measureAmount; measure++)
     {
-        WaitWindow::setProgress( 25 + measure*25/measureAmount );
-
+        if ((measure & 3) == 0) // only update progress one element out of 4
+        {
+            WaitWindow::setProgress( 10 + measure*25/measureAmount );
+        }
+        
 #ifdef _verbose
         std::cout << "Generating layout element for measure " << (measure+1) << std::endl;
 #endif
@@ -351,8 +354,11 @@ void PrintLayoutAbstract::calculateRelativeLengths(std::vector<LayoutElement>& l
     const int layoutElementsAmount = layoutElements.size();
     for (int n=0; n<layoutElementsAmount; n++)
     {
-        WaitWindow::setProgress( 50 + n*25/layoutElementsAmount );
-
+        if ((n & 3) == 0) // only update progress one element out of 4
+        {
+            WaitWindow::setProgress( 35 + n*25/layoutElementsAmount );
+        }
+        
         std::cout << "= layout element " << n << " =\n";
 
         //layoutElements[n].width_in_print_units = LAYOUT_ELEMENT_MIN_WIDTH;
@@ -497,7 +503,10 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     // elements on the current one
     for (int n=0; n<layoutElementsAmount; n++)
     {
-        WaitWindow::setProgress( 75 + n*25/layoutElementsAmount );
+        if ((n & 3) == 0) // only update progress one element out of 4
+        {
+            WaitWindow::setProgress( 60 + n*40/layoutElementsAmount );
+        }
 
         const int nextWidth = current_width + layoutElements[n].width_in_print_units +
                               MARGIN_AT_MEASURE_BEGINNING;
