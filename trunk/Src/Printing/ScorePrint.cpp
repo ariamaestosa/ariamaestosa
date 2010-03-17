@@ -663,7 +663,8 @@ namespace AriaMaestosa
     
     // -------------------------------------------------------------------------------------------
     
-    void ScorePrintable::drawTrack(const int trackID, const LineTrackRef& currentTrack, LayoutLine& currentLine, wxDC& dc)
+    void ScorePrintable::drawTrack(const int trackID, const LineTrackRef& currentTrack,
+                                   LayoutLine& currentLine, wxDC& dc)
     {
         const TrackCoords* trackCoords = currentTrack.m_track_coords.raw_ptr;
         assert(trackCoords != NULL);
@@ -706,7 +707,10 @@ namespace AriaMaestosa
                             (int)round((trackCoords->y1 - trackCoords->y0)*(1-scoreData->second_clef_proportion));
             f_clef_y_to   = trackCoords->y1;
         }
-        else { assert(false); }
+        else
+        {
+            assert(false);
+        }
         
         
         
@@ -727,18 +731,20 @@ namespace AriaMaestosa
         
         if (g_clef)
         {
-            analyseAndDrawScore(false /*G*/, *g_clef_analyser, currentLine, currentTrack.m_track, dc,
-                      abs(scoreData->extra_lines_above_g_score), abs(scoreData->extra_lines_under_g_score),
-                      trackCoords->x0, g_clef_y_from, trackCoords->x1, g_clef_y_to,
-                      currentTrack.showMeasureNumber());
+            analyseAndDrawScore(false /*G*/, *g_clef_analyser, currentLine, currentTrack.m_track,
+                                dc, abs(scoreData->extra_lines_above_g_score),
+                                abs(scoreData->extra_lines_under_g_score),
+                                trackCoords->x0, g_clef_y_from, trackCoords->x1, g_clef_y_to,
+                                currentTrack.showMeasureNumber());
         }
         
         if (f_clef)
         {
-            analyseAndDrawScore(true /*F*/, *f_clef_analyser, currentLine, currentTrack.m_track, dc,
-                      abs(scoreData->extra_lines_above_f_score), abs(scoreData->extra_lines_under_f_score),
-                      trackCoords->x0, f_clef_y_from, trackCoords->x1, f_clef_y_to,
-                      (g_clef ? false : currentTrack.showMeasureNumber()) /* if we have both keys don't show twice */);
+            analyseAndDrawScore(true /*F*/, *f_clef_analyser, currentLine, currentTrack.m_track,
+                                dc, abs(scoreData->extra_lines_above_f_score),
+                                abs(scoreData->extra_lines_under_f_score),
+                                trackCoords->x0, f_clef_y_from, trackCoords->x1, f_clef_y_to,
+                                (g_clef ? false : currentTrack.showMeasureNumber()) /* if we have both keys don't show twice */);
         }
         
         delete x_converter;
@@ -1211,6 +1217,10 @@ namespace AriaMaestosa
         const int measure_dividers_from_y = LEVEL_TO_Y(first_score_level);
         const int measure_dividers_to_y   = LEVEL_TO_Y(last_score_level);
         
+        // draw end of line vertical line
+        drawVerticalDivider(x1, measure_dividers_from_y, measure_dividers_to_y);
+
+
         const int elamount = line.getLayoutElementCount();
         for (int n=0; n<elamount; n++)
         {
