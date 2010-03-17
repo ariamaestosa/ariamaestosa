@@ -308,7 +308,6 @@ AriaPrintable::AriaPrintable(PrintableSequence* seq, bool* success) :
     
     // ---- Get fonts size
     m_font_height       = -1;
-    m_font_height_half  = -1;
     m_character_width   = -1;
     
     // wx only allows getting font size with a DC or a window... so I need to create
@@ -321,7 +320,6 @@ AriaPrintable::AriaPrintable(PrintableSequence* seq, bool* success) :
     dummy.GetTextExtent(wxT("X"), &txw, &txh, &descent, &externalLeading);
     
     m_font_height      = txh;
-    m_font_height_half = (int)round((float)m_font_height / 2.0);
     m_character_width  =  txw;
     assert(m_font_height     > 0);
     assert(m_character_width > 0);
@@ -346,10 +344,10 @@ AriaPrintable::AriaPrintable(PrintableSequence* seq, bool* success) :
     m_usable_area_height_page_1 = -1;
     m_usable_area_height        = -1;
     
-    AriaPrintable::seq  = seq;
-    assert(not seq->isLayoutCalculated());
+    m_seq  = seq;
+    assert(not m_seq->isLayoutCalculated());
     
-    m_printer_manager = new QuickPrint( seq->getTitle(), this );
+    m_printer_manager = new QuickPrint( m_seq->getTitle(), this );
     if (not m_printer_manager->performPageSetup())
     {
         std::cerr << "Default page setup failed!\n";
@@ -366,7 +364,6 @@ AriaPrintable::AriaPrintable(PrintableSequence* seq, bool* success) :
 AriaPrintable::~AriaPrintable()
 {
     m_current_printable = NULL;
-    delete m_printer_manager;
 }
 
 // -------------------------------------------------------------------------------------------------------------
@@ -380,7 +377,7 @@ void AriaPrintable::showPageSetupDialog()
 
 wxString AriaPrintable::getPageSetupSummary() const
 {
-    assert(m_printer_manager != NULL);
+    assert(m_printer_manager.raw_ptr != NULL);
     return m_printer_manager->getPageSetupSummary();
 }
 
@@ -390,15 +387,15 @@ wxPrinterError AriaPrintable::print()
 {
     assert( MAGIC_NUMBER_OK() );
     
-    assert(seq->isLayoutCalculated());
+    assert(m_seq->isLayoutCalculated());
 
 #ifdef __WXMAC__
     // change window title so any generated PDF is given the right name
-    getMainFrame()->SetTitle(seq->getTitle());
+    getMainFrame()->SetTitle(m_seq->getTitle());
 #endif
 
     assert(m_printer_manager != NULL);
-    m_printer_manager->setPrintableSequence(seq);
+    m_printer_manager->setPrintableSequence(m_seq);
     
     wxPrintDialogData data(m_printer_manager->getPrintData());
     wxPrinter printer(&data);
@@ -441,7 +438,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     const int x1 = x0 + w;
     const int y1 = y0 + h;
     
-    LayoutPage& page = seq->getPage(pageNum-1);
+    LayoutPage& page = m_seq->getPage(pageNum-1);
 
     const int lineAmount = page.getLineCount();
     // const int lineAmount = page.last_line - page.first_line + 1;
@@ -477,7 +474,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     }
     
     // ---- Draw title / page number
-    wxString label = seq->getTitle();
+    wxString label = m_seq->getTitle();
 
     int title_x = x0;
 
@@ -512,7 +509,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     
     assertExpr(notation_area_y0 + notation_area_h, <=, y1);
 
-    seq->printLinesInArea(dc, page, notation_area_y0, notation_area_h, h, x0, x1);
+    m_seq->printLinesInArea(dc, page, notation_area_y0, notation_area_h, h, x0, x1);
     
 }
     
