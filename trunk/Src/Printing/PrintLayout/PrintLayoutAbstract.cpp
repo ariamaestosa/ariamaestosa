@@ -344,7 +344,34 @@ void PrintLayoutAbstract::calculateRelativeLengths(std::vector<LayoutElement>& l
 }
 
 // -------------------------------------------------------------------------------------------
+
+void PrintLayoutAbstract::terminateLine(LayoutLine* currentLine, const int maxLevelHeight,
+                                        int& current_height, int& current_page)
+{
+    const int line_height = currentLine->calculateHeight();
+    current_height += line_height;
     
+    currentLine->setLevelTo(current_height);
+    current_height += INTER_LINE_MARGIN_LEVELS;
+    
+    // too many lines on current page, switch to a new page
+    if (current_height > maxLevelHeight)
+    {
+        current_height = line_height + INTER_LINE_MARGIN_LEVELS;
+        m_layout_page.push_back( new LayoutPage() );
+        
+        // set line abstract y coordinates
+        const int previousFrom = currentLine->getLevelFrom();
+        const int previousTo   = currentLine->getLevelTo();
+        currentLine->setLevelTo(previousTo - previousFrom);
+        currentLine->setLevelFrom(0);
+        
+        // move
+        current_page++;
+        m_layout_page[current_page-1].moveYourLastLineTo(m_layout_page[current_page]);
+    }    
+}
+
 void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutElements)
 {
     std::cout << "\n====\nlayInLinesAndPages\n====\n";
@@ -371,12 +398,12 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
 
     int current_page = 0;
     
-    layoutPages.push_back( new LayoutPage() );
+    m_layout_page.push_back( new LayoutPage() );
 
     ptr_vector<PrintLayoutMeasure, REF> measures_ref = measures.getWeakView();
     
     LayoutLine* currentLine = new LayoutLine(sequence, measures_ref);
-    layoutPages[current_page].addLine( currentLine );
+    m_layout_page[current_page].addLine( currentLine );
 
     // add line header
     LayoutElement el(LayoutElement(LINE_HEADER, -1));
@@ -402,40 +429,22 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     {
         WaitWindow::setProgress( 75 + n*25/layoutElementsAmount );
 
-        if (current_width + layoutElements[n].width_in_print_units + MARGIN_AT_MEASURE_BEGINNING >
-            maxLineWidthInPrintUnits)
+        const int nextWidth = current_width + layoutElements[n].width_in_print_units + MARGIN_AT_MEASURE_BEGINNING;
+        if (nextWidth > maxLineWidthInPrintUnits)
         {
             // too much stuff on current line, switch to another line
             current_width = 0;
-            const int line_height = currentLine->calculateHeight();
-            current_height += line_height;
             
-            currentLine->setLevelTo(current_height);
-            current_height += INTER_LINE_MARGIN_LEVELS;
-            
-            // too many lines on current page, switch to a new page
+            // terminate current line
             const int maxLevelHeight = (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages);
-            if (current_height > maxLevelHeight)
-            {
-                current_height = line_height + INTER_LINE_MARGIN_LEVELS;
-                layoutPages.push_back( new LayoutPage() );
-                
-                // set line abstract y coordinates
-                const int previousFrom = currentLine->getLevelFrom();
-                const int previousTo   = currentLine->getLevelTo();
-                currentLine->setLevelTo(previousTo - previousFrom);
-                currentLine->setLevelFrom(0);
-                                
-                // move
-                current_page++;
-                layoutPages[current_page-1].moveYourLastLineTo(layoutPages[current_page]);
-            }
+            terminateLine( currentLine, maxLevelHeight, current_height, current_page );
             
             assert(current_height <= (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages));
             
+            // begin new line
             ptr_vector<PrintLayoutMeasure, REF> refview = measures.getWeakView();
             currentLine = new LayoutLine(sequence, refview);
-            layoutPages[current_page].addLine( currentLine );
+            m_layout_page[current_page].addLine( currentLine );
             
             currentLine->setLevelFrom(current_height);
         }        
@@ -444,40 +453,22 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
         current_width += layoutElements[n].width_in_print_units + MARGIN_AT_MEASURE_BEGINNING;
     }
     
-    // ---- for last line processed (FIXME: copy-and-paste is ugly)
-    const int line_height = currentLine->calculateHeight();
-    current_height += line_height;
-    currentLine->setLevelTo(current_height);
-    current_height += INTER_LINE_MARGIN_LEVELS;
-        
-    // too many lines on current page, switch to a new page
+    // ---- for last line processed
     const int maxLevelHeight = (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages);
-    if (current_height > maxLevelHeight)
-    {
-        current_height = line_height + INTER_LINE_MARGIN_LEVELS;
-        layoutPages.push_back( new LayoutPage() );
-
-        const int previousFrom = currentLine->getLevelFrom();
-        const int previousTo   = currentLine->getLevelTo();
-        currentLine->setLevelTo(previousTo - previousFrom);
-        currentLine->setLevelFrom(0);
-        
-        current_page++;
-        layoutPages[current_page-1].moveYourLastLineTo(layoutPages[current_page]);
-    }
-    // -------------------
+    terminateLine( currentLine, maxLevelHeight, current_height, current_page );
     
     assert(current_height <= (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages));
     
     
 #ifndef NDEBUG
-    for (int p=0; p<layoutPages.size(); p++)
+    // ---- DEBUG: print computed values and perform sanity checks
+    for (int p=0; p<m_layout_page.size(); p++)
     {
         std::cout << "(( PAGE " << (p+1) << " ))\n";
         const int maxh = (p == 0 ? maxLevelsOnPage1 : maxLevelsOnOtherPages);
         std::cout << "MAXIMUM height for this page : " << maxh << std::endl;
 
-        LayoutPage& page = layoutPages[p];
+        LayoutPage& page = m_layout_page[p];
         
         int total = 0;
         const int lineCount = page.getLineCount();
@@ -510,7 +501,7 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
 #endif
 
 PrintLayoutAbstract::PrintLayoutAbstract(PrintableSequence* sequence,
-                                         ptr_vector<LayoutPage>& layoutPages_a /* out */) : layoutPages(layoutPages_a)
+                                         ptr_vector<LayoutPage>& layoutPages_a /* out */) : m_layout_page(layoutPages_a)
 {
     this->sequence = sequence;
 }
