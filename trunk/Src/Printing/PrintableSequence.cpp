@@ -58,9 +58,8 @@ bool PrintableSequence::addTrack(Track* track, EditorType mode)
 
 void PrintableSequence::calculateLayout(bool checkRepetitions)
 {
-    m_abstract_layout_manager = new PrintLayoutAbstract(this, layoutPages /* out */);
-    m_abstract_layout_manager->generateMeasures(m_tracks);
-    m_abstract_layout_manager->calculateLayoutElements(m_tracks, checkRepetitions);
+    m_abstract_layout_manager = new PrintLayoutAbstract(this);
+    m_abstract_layout_manager->addLayoutInformation(m_tracks, layoutPages /* out */, checkRepetitions);
     
     // prepare it for when we're ready to print
     m_numeric_layout_manager = new PrintLayoutNumeric();

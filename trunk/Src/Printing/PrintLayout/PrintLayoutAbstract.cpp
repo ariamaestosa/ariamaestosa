@@ -52,14 +52,77 @@ namespace AriaMaestosa
 }
 
     
-// -------------------------------------------------------------------------------------------
-// -------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #pragma mark private
 #endif
 
-// -------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------
+
+void PrintLayoutAbstract::generateMeasures(ptr_vector<Track, REF>& tracks)
+{
+    std::cout << "\n====\ngenerateMeasures\n====\n";
+    const int trackAmount = tracks.size();
+    const int measureAmount = getMeasureData()->getMeasureAmount();
+    
+    for (int tr=0; tr<trackAmount; tr++)
+    {
+        Track* track = tracks.get(tr);
+        
+        // add m_measures
+        for (int measure=0; measure<measureAmount; measure++)
+        {
+            m_measures.push_back( new PrintLayoutMeasure(measure) );
+        }
+        
+        int note=0;
+        
+        // give them track references
+        for (int measure=0; measure<measureAmount; measure++)
+        {
+            assertExpr(measure,<,m_measures.size());
+            
+            note = m_measures[measure].addTrackReference(note, track);
+            
+            //std::cout << "meas% " << (m_measures[measure].trackRef[0].track->getName().mb_str()) << std::endl;
+            
+        } // next measure
+        
+        WaitWindow::setProgress( tr*25/trackAmount );
+        
+    } // next track
+}
+
+// -----------------------------------------------------------------------------------------------------
+
+void PrintLayoutAbstract::calculateLayoutElements (ptr_vector<Track, REF>& tracks,
+                                                   ptr_vector<LayoutPage>& layoutPages,
+                                                   const bool checkRepetitions_bool)
+{
+    assert(m_measures.size() > 0); // generating m_measures must have been done first
+    std::vector<LayoutElement> layoutElements;
+    
+    // search for repeated m_measures if necessary
+    if (checkRepetitions_bool) findSimilarMeasures();
+    
+    const int trackAmount = tracks.size();
+    for (int i=0; i<trackAmount; i++)
+    {
+        EditorPrintable* editorPrintable = m_sequence->getEditorPrintable( i );
+        assert( editorPrintable != NULL );
+        editorPrintable->earlySetup( i, tracks.get(i) );
+    }
+    
+    createLayoutElements(layoutElements, checkRepetitions_bool);
+    calculateRelativeLengths(layoutElements);
+    
+    // this will also move the layoutElements to their corresponding LayoutLine object
+    layInLinesAndPages(layoutElements, layoutPages);
+}
+
+// -----------------------------------------------------------------------------------------------------
     
 void PrintLayoutAbstract::findSimilarMeasures()
 {
@@ -67,27 +130,28 @@ void PrintLayoutAbstract::findSimilarMeasures()
 
     for (int measure=0; measure<measureAmount; measure++)
     {
-        // check current measure against all previous measures to see if it is not a repetition
+        // check current measure against all previous m_measures to see if it is not a repetition
         for (int checkMeasure=0; checkMeasure<measure; checkMeasure++)
         {
-            assertExpr(measure,<,(int)measures.size());
-            assertExpr(checkMeasure,<,(int)measures.size());
-            const bool isSameAs = measures[measure].calculateIfMeasureIsSameAs(measures[checkMeasure]);
+            assertExpr(measure,<,(int)m_measures.size());
+            assertExpr(checkMeasure,<,(int)m_measures.size());
+            const bool isSameAs = m_measures[measure].calculateIfMeasureIsSameAs(m_measures[checkMeasure]);
             //std::cout << "measure " << (measure+1) << " is same as " << (checkMeasure+1) << " ? " << isSameAs << std::endl;
             
             if (!isSameAs) continue;
-            measures[measure].firstSimilarMeasure = checkMeasure;
-            measures[checkMeasure].similarMeasuresFoundLater.push_back(measure);
+            m_measures[measure].firstSimilarMeasure = checkMeasure;
+            m_measures[checkMeasure].similarMeasuresFoundLater.push_back(measure);
             break;
         }//next
     }//next
 }
     
-// -------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------
     
 #define _verbose 1
     
-void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layoutElements, bool checkRepetitions_bool)
+void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layoutElements,
+                                               bool checkRepetitions_bool)
 {
     std::cout << "\n====\ncreateLayoutElements\n====\n";
     
@@ -118,7 +182,7 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
         }
 
         // ----- empty measure -----
-        if (measures[measure].isEmpty())
+        if (m_measures[measure].isEmpty())
         {
 #ifdef _verbose
             std::cout << "    measure " << (measure+1) << " is empty\n";
@@ -129,15 +193,15 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
             // check that measure is really empty; it's possible that it contains
             // the end of a note that started in the previous measure.
             // if this is the case, we need to make the measure broader than the default size
-            const int track_ref_amount = measures[measure].getTrackRefAmount();
+            const int track_ref_amount = m_measures[measure].getTrackRefAmount();
             for (int t=0; t<track_ref_amount; t++)
             {
-                const Track* track = measures[measure].getTrackRef(t).getConstTrack();
+                const Track* track = m_measures[measure].getTrackRef(t).getConstTrack();
                 const int noteAmount = track->getNoteAmount();
                 for (int n=0; n<noteAmount; n++)
                 {
-                    if (track->getNoteStartInMidiTicks(n) < measures[measure].getFirstTick() and
-                        track->getNoteEndInMidiTicks(n)   > measures[measure].getFirstTick())
+                    if (track->getNoteStartInMidiTicks(n) < m_measures[measure].getFirstTick() and
+                        track->getNoteEndInMidiTicks(n)   > m_measures[measure].getFirstTick())
                     {
                         layoutElements[layoutElements.size()-1].width_in_print_units = LAYOUT_ELEMENT_MIN_WIDTH*2;
                         t = 99; // quick hack to totally abort both loops
@@ -147,7 +211,7 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
             }// next track ref
         }// end if empty measure
         // repetition
-        else if (checkRepetitions_bool and measures[measure].firstSimilarMeasure!=-1)
+        else if (checkRepetitions_bool and m_measures[measure].firstSimilarMeasure!=-1)
         {
 
             if (getRepetitionMinimalLength()<2)
@@ -161,12 +225,12 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
 
             // -------- play same measure multiple times --------
             // check if next measure is the same as current measure
-            if (measure+1<measureAmount and measures[measure+1].firstSimilarMeasure == measures[measure].firstSimilarMeasure )
+            if (measure+1<measureAmount and m_measures[measure+1].firstSimilarMeasure == m_measures[measure].firstSimilarMeasure )
             {
                 int amountOfTimes = 1;
                 for(int iter=1; iter<measureAmount; iter++)
                 {
-                    if (measure+iter<measureAmount and measures[measure+iter].firstSimilarMeasure == measures[measure].firstSimilarMeasure )
+                    if (measure+iter<measureAmount and m_measures[measure+iter].firstSimilarMeasure == m_measures[measure].firstSimilarMeasure )
                     {
                         amountOfTimes++;
                     }
@@ -179,9 +243,9 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
                 if (amountOfTimes < getRepetitionMinimalLength())
                 {
 #ifdef _verbose
-                    std::cout << "    play many times refused, measures " << (measure+1) << " to " << (measure+amountOfTimes+1) << " are normal" << std::endl;
+                    std::cout << "    play many times refused, m_measures " << (measure+1) << " to " << (measure+amountOfTimes+1) << " are normal" << std::endl;
 #endif
-                    // not enough repetitions, add as regular measures
+                    // not enough repetitions, add as regular m_measures
                     for(int i=0; i<amountOfTimes; i++)
                     {
                         layoutElements.push_back( LayoutElement(SINGLE_MEASURE, measure) );
@@ -192,7 +256,7 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
                 else
                 {
                     // check if we need to display the repetition first before adding play many times
-                    if (measures[measure].firstSimilarMeasure != -1 and measures[measure].firstSimilarMeasure != measure-1)
+                    if (m_measures[measure].firstSimilarMeasure != -1 and m_measures[measure].firstSimilarMeasure != measure-1)
                         // we don't need to if measure was not a repeptition, in which case it is already there
                         // we need neither if it is the measure just before
                     {
@@ -204,12 +268,12 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
                         amountOfTimes++; // if measure was already displayed... there were e.g. 3 additional repetitions, but we want to show x4
                     }
 #ifdef _verbose
-                    std::cout << "    measure " << (measure+1) << " is played " << amountOfTimes << " times. all are the same as " << (measures[measure].firstSimilarMeasure+1) << std::endl;
+                    std::cout << "    measure " << (measure+1) << " is played " << amountOfTimes << " times. all are the same as " << (m_measures[measure].firstSimilarMeasure+1) << std::endl;
 #endif
                     LayoutElement element(PLAY_MANY_TIMES);
                     element.amountOfTimes = amountOfTimes;
-                    measures[measure].cutApart = true;
-                    if (measures[measure].firstSimilarMeasure == measure-1) measure = measure + amountOfTimes-2;
+                    m_measures[measure].cutApart = true;
+                    if (m_measures[measure].firstSimilarMeasure == measure-1) measure = measure + amountOfTimes-2;
                     else measure = measure + amountOfTimes-1;
                     layoutElements.push_back( element );
                 }
@@ -218,7 +282,7 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
 
             // ------- repeat a riff --------
             // check if next measure is a reptition, and check this repetition is the next one compared to the current repeated measure
-            else if ( measures[measure].findConsecutiveRepetition(measures, measureAmount, firstMeasureThatRepeats, lastMeasureThatRepeats,
+            else if ( m_measures[measure].findConsecutiveRepetition(m_measures, measureAmount, firstMeasureThatRepeats, lastMeasureThatRepeats,
                                                                  firstRepeatedMeasure, lastRepeatedMeasure) )
             {
 
@@ -231,7 +295,7 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
                     (lastRepeatedMeasure+1) << ")"  << std::endl;
 #endif
 
-                    //measures[firstMeasureThatRepeats].cutApart = true;
+                    //m_measures[firstMeasureThatRepeats].cutApart = true;
 
                     LayoutElement element(REPEATED_RIFF);
                     element.firstMeasure = firstMeasureThatRepeats;
@@ -243,10 +307,10 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
                     layoutElements.push_back( element );
                 }
                 else
-                    // repetition is not long enough, use normal measures
+                    // repetition is not long enough, use normal m_measures
                 {
 #ifdef _verbose
-                    std::cout << "    repetition refused because " << (amount+1) << " < " << getRepetitionMinimalLength() << " measures " << (measure+1) << " to " << (measure+getRepetitionMinimalLength()+1) << " are normal" << std::endl;
+                    std::cout << "    repetition refused because " << (amount+1) << " < " << getRepetitionMinimalLength() << " m_measures " << (measure+1) << " to " << (measure+getRepetitionMinimalLength()+1) << " are normal" << std::endl;
 #endif
                     for (int iter=0; iter<getRepetitionMinimalLength(); iter++)
                     {
@@ -277,7 +341,7 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
     }//next measure
 }
 
-// -------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------
     
 void PrintLayoutAbstract::calculateRelativeLengths(std::vector<LayoutElement>& layoutElements)
 {
@@ -303,13 +367,13 @@ void PrintLayoutAbstract::calculateRelativeLengths(std::vector<LayoutElement>& l
             std::vector<int> all_ticks_vector;
             
             // Ask all editors to add their symbols to the list
-            PrintLayoutMeasure& meas = measures[layoutElements[n].measure];
+            PrintLayoutMeasure& meas = m_measures[layoutElements[n].measure];
             RelativePlacementManager& ticks_relative_position = meas.ticks_placement_manager;
             
             const int trackAmount = meas.getTrackRefAmount();
             for (int i=0; i<trackAmount; i++)
             {
-                EditorPrintable* editorPrintable = sequence->getEditorPrintable( i );
+                EditorPrintable* editorPrintable = m_sequence->getEditorPrintable( i );
                 assert( editorPrintable != NULL );
                 
                 editorPrintable->addUsedTicks(meas, i, meas.getTrackRef(i), ticks_relative_position);
@@ -343,9 +407,10 @@ void PrintLayoutAbstract::calculateRelativeLengths(std::vector<LayoutElement>& l
     } // end for elements
 }
 
-// -------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------
 
-void PrintLayoutAbstract::terminateLine(LayoutLine* currentLine, const int maxLevelHeight,
+void PrintLayoutAbstract::terminateLine(LayoutLine* currentLine, ptr_vector<LayoutPage>& layoutPages,
+                                        const int maxLevelHeight,
                                         int& current_height, int& current_page)
 {
     const int line_height = currentLine->calculateHeight();
@@ -358,7 +423,7 @@ void PrintLayoutAbstract::terminateLine(LayoutLine* currentLine, const int maxLe
     if (current_height > maxLevelHeight)
     {
         current_height = line_height + INTER_LINE_MARGIN_LEVELS;
-        m_layout_page.push_back( new LayoutPage() );
+        layoutPages.push_back( new LayoutPage() );
         
         // set line abstract y coordinates
         const int previousFrom = currentLine->getLevelFrom();
@@ -368,11 +433,14 @@ void PrintLayoutAbstract::terminateLine(LayoutLine* currentLine, const int maxLe
         
         // move
         current_page++;
-        m_layout_page[current_page-1].moveYourLastLineTo(m_layout_page[current_page]);
+        layoutPages[current_page-1].moveYourLastLineTo(layoutPages[current_page]);
     }    
 }
 
-void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutElements)
+// -----------------------------------------------------------------------------------------------------
+
+void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutElements,
+                                             ptr_vector<LayoutPage>& layoutPages)
 {
     std::cout << "\n====\nlayInLinesAndPages\n====\n";
     
@@ -387,7 +455,8 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
 
     assert(maxLevelsOnPage1 > 0);
     assert(maxLevelsOnOtherPages > 0);
-    std::cout << "maxLevelsOnPage0=" << maxLevelsOnPage1 << " maxLevelsOnOtherPages=" << maxLevelsOnOtherPages << std::endl;
+    std::cout << " maxLevelsOnPage0="      << maxLevelsOnPage1
+              << " maxLevelsOnOtherPages=" << maxLevelsOnOtherPages << std::endl;
     
     //FIXME: remove magic constant '600' (which is the margin)
     const int maxLineWidthInPrintUnits = AriaPrintable::getCurrentPrintable()->getUnitWidth() - 600;     
@@ -398,23 +467,24 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
 
     int current_page = 0;
     
-    m_layout_page.push_back( new LayoutPage() );
+    layoutPages.push_back( new LayoutPage() );
 
-    ptr_vector<PrintLayoutMeasure, REF> measures_ref = measures.getWeakView();
+    ptr_vector<PrintLayoutMeasure, REF> measures_ref = m_measures.getWeakView();
     
-    LayoutLine* currentLine = new LayoutLine(sequence, measures_ref);
-    m_layout_page[current_page].addLine( currentLine );
+    LayoutLine* currentLine = new LayoutLine(m_sequence, measures_ref);
+    layoutPages[current_page].addLine( currentLine );
 
     // add line header
     LayoutElement el(LayoutElement(LINE_HEADER, -1));
     
     int header_width = CLEF_WIDTH;
     
-    if (sequence->isScoreEditorUsed())
+    //FIXME: let the score editor report the size it wants
+    if (m_sequence->isScoreEditorUsed())
     {
         // 50 being the max size of an accidental (FIXME: don't hardcode)
         // FIXME: some numeric widths are used here, in the abstract layout manager
-        header_width += sequence->getMaxKeySignatureSignCount()*50;
+        header_width += m_sequence->getMaxKeySignatureSignCount()*50;
     }
     
     el.width_in_print_units = header_width;
@@ -429,7 +499,9 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     {
         WaitWindow::setProgress( 75 + n*25/layoutElementsAmount );
 
-        const int nextWidth = current_width + layoutElements[n].width_in_print_units + MARGIN_AT_MEASURE_BEGINNING;
+        const int nextWidth = current_width + layoutElements[n].width_in_print_units +
+                              MARGIN_AT_MEASURE_BEGINNING;
+        
         if (nextWidth > maxLineWidthInPrintUnits)
         {
             // too much stuff on current line, switch to another line
@@ -437,14 +509,14 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
             
             // terminate current line
             const int maxLevelHeight = (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages);
-            terminateLine( currentLine, maxLevelHeight, current_height, current_page );
+            terminateLine( currentLine, layoutPages, maxLevelHeight, current_height, current_page );
             
             assert(current_height <= (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages));
             
             // begin new line
-            ptr_vector<PrintLayoutMeasure, REF> refview = measures.getWeakView();
-            currentLine = new LayoutLine(sequence, refview);
-            m_layout_page[current_page].addLine( currentLine );
+            ptr_vector<PrintLayoutMeasure, REF> refview = m_measures.getWeakView();
+            currentLine = new LayoutLine(m_sequence, refview);
+            layoutPages[current_page].addLine( currentLine );
             
             currentLine->setLevelFrom(current_height);
         }        
@@ -455,20 +527,20 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     
     // ---- for last line processed
     const int maxLevelHeight = (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages);
-    terminateLine( currentLine, maxLevelHeight, current_height, current_page );
+    terminateLine( currentLine, layoutPages, maxLevelHeight, current_height, current_page );
     
     assert(current_height <= (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages));
     
     
 #ifndef NDEBUG
     // ---- DEBUG: print computed values and perform sanity checks
-    for (int p=0; p<m_layout_page.size(); p++)
+    for (int p=0; p<layoutPages.size(); p++)
     {
         std::cout << "(( PAGE " << (p+1) << " ))\n";
         const int maxh = (p == 0 ? maxLevelsOnPage1 : maxLevelsOnOtherPages);
         std::cout << "MAXIMUM height for this page : " << maxh << std::endl;
 
-        LayoutPage& page = m_layout_page[p];
+        LayoutPage& page = layoutPages[p];
         
         int total = 0;
         const int lineCount = page.getLineCount();
@@ -476,7 +548,8 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
         {
             total += page.getLine(t).m_level_height + INTER_LINE_MARGIN_LEVELS;
             std::cout << "        " << page.getLine(t).m_level_height
-                      << " : " << page.getLine(t).getLevelFrom() << " to " << page.getLine(t).getLevelTo() << "\n";
+                      << " : " << page.getLine(t).getLevelFrom() << " to "
+                      << page.getLine(t).getLevelTo() << "\n";
             std::cout << "        " << INTER_LINE_MARGIN_LEVELS << " (margin)\n";
             
             assertExpr( page.getLine(t).getLevelFrom(),  >, -1 );
@@ -492,80 +565,29 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
 #endif
 }
 
-// -------------------------------------------------------------------------------------------------------------
-// -------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------
 
 #if 0
 #pragma mark -
 #pragma mark public
 #endif
 
-PrintLayoutAbstract::PrintLayoutAbstract(PrintableSequence* sequence,
-                                         ptr_vector<LayoutPage>& layoutPages_a /* out */) : m_layout_page(layoutPages_a)
+PrintLayoutAbstract::PrintLayoutAbstract(PrintableSequence* sequence)
 {
-    this->sequence = sequence;
+    m_sequence = sequence;
 }
 
-// -------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------
 
-void PrintLayoutAbstract::generateMeasures(ptr_vector<Track, REF>& tracks)
-{
-    std::cout << "\n====\ngenerateMeasures\n====\n";
-    const int trackAmount = tracks.size();
-    const int measureAmount = getMeasureData()->getMeasureAmount();
-    
-    for (int tr=0; tr<trackAmount; tr++)
-    {
-        Track* track = tracks.get(tr);
-        
-        // add measures
-        for (int measure=0; measure<measureAmount; measure++)
-        {
-            measures.push_back( new PrintLayoutMeasure(measure) );
-        }
-        
-        int note=0;
-        // give them track references
-        for (int measure=0; measure<measureAmount; measure++)
-        {
-            assertExpr(measure,<,measures.size());
-            
-            note = measures[measure].addTrackReference(note, track);
-            
-            //std::cout << "meas% " << (measures[measure].trackRef[0].track->getName().mb_str()) << std::endl;
-            
-        } // next measure
-        
-        WaitWindow::setProgress( tr*25/trackAmount );
-
-    } // next track
+void PrintLayoutAbstract::addLayoutInformation(ptr_vector<Track, REF>& tracks,
+                                               ptr_vector<LayoutPage>& layoutPages,
+                                               const bool checkRepetitions_bool)
+{    
+    generateMeasures(tracks);
+    calculateLayoutElements(tracks, layoutPages, checkRepetitions_bool);
 }
 
-// -------------------------------------------------------------------------------------------------------------
-    
-void PrintLayoutAbstract::calculateLayoutElements (ptr_vector<Track, REF>& tracks, const bool checkRepetitions_bool)
-{
-    assert(measures.size() > 0); // generating measures must have been done first
-    std::vector<LayoutElement> layoutElements;
-    
-    // search for repeated measures if necessary
-    if (checkRepetitions_bool) findSimilarMeasures();
-    
-    const int trackAmount = tracks.size();
-    for (int i=0; i<trackAmount; i++)
-    {
-        EditorPrintable* editorPrintable = sequence->getEditorPrintable( i );
-        assert( editorPrintable != NULL );
-        editorPrintable->earlySetup( i, tracks.get(i) );
-    }
-    
-    createLayoutElements(layoutElements, checkRepetitions_bool);
-    calculateRelativeLengths(layoutElements);
-    
-    // this will also move the layoutElements to their corresponding LayoutLine object
-    layInLinesAndPages(layoutElements);
-}
-
-// -------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------
 
 
