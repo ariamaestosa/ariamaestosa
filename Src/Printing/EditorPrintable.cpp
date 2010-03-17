@@ -133,7 +133,7 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
         }
         
         dc->DrawText( message, elem_x_start,
-                     (trackCoords->y0 + trackCoords->y1)/2 - AriaPrintable::getCurrentPrintable()->getCharacterHalfHeight() );
+                     (trackCoords->y0 + trackCoords->y1)/2 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()/2 );
     }
     // ****** play again
     else if (currElem.getType() == PLAY_MANY_TIMES)
@@ -141,7 +141,7 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
         wxString label(wxT("X"));
         label << currElem.amountOfTimes;
         dc->DrawText( label, elem_x_start,
-                     (trackCoords->y0 + trackCoords->y1)/2 - AriaPrintable::getCurrentPrintable()->getCharacterHalfHeight() );
+                     (trackCoords->y0 + trackCoords->y1)/2 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()/2 );
     }
     // ****** normal measure
     else if (currElem.getType() == SINGLE_MEASURE)

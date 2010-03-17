@@ -37,7 +37,7 @@ namespace AriaMaestosa
         friend class AriaMaestosa::LayoutLine;
         friend class AriaMaestosa::QuickPrint;
 
-        PrintableSequence* seq;
+        PrintableSequence* m_seq;
 
         wxFont m_normal_font;
         wxFont m_title_font;
@@ -45,6 +45,31 @@ namespace AriaMaestosa
         
         /** This is set by QuickPrint during its setup */
         int m_unit_width, m_unit_height;
+        
+        /** There can only be one instance at a time. Holds the current instance, or NULL if there is none */
+        static AriaPrintable* m_current_printable;
+        
+        /** The QuickPrint object used to wrap some of the wx printing framework (FIXME: clean this) */
+        OwnerPtr<QuickPrint> m_printer_manager;
+        
+        /** height of font used for measure numbers, tablature fret numbers, etc... */
+        int m_font_height;
+        
+        /** "avreage" width of one character of font used for measure numbers,
+          * tablature fret numbers, etc...
+          */
+        int m_character_width;
+        
+        /** height of font used for titles and captions (i.e. the bigger font) */
+        int m_title_font_height;
+        
+        /** height of font used for second-level titles and captions (i.e. bigger than normal but
+          * smaller than title font)
+          */
+        int m_subtitle_font_height;
+
+        int m_usable_area_height_page_1;
+        int m_usable_area_height;
         
         /**
          * Called (by QuickPrint) when it is time to print a page.
@@ -55,21 +80,6 @@ namespace AriaMaestosa
          * @param y0           y origin coordinate from which drawing can occur
          */
         void printPage(const int pageNum, wxDC& dc, const int x0, const int y0);
-        
-        /** There can only be one instance at a time. Holds the current instance, or NULL if there is none */
-        static AriaPrintable* m_current_printable;
-        
-        QuickPrint* m_printer_manager;
-        
-        int m_font_height;
-        int m_font_height_half;
-        int m_character_width;
-        
-        int m_title_font_height;
-        int m_subtitle_font_height;
-
-        int m_usable_area_height_page_1;
-        int m_usable_area_height;
         
     public:
         
@@ -115,10 +125,7 @@ namespace AriaMaestosa
 
         /** @return the height (in print units) of the font used for printing notation itelf */
         int getCharacterHeight    () const { return m_font_height;      }
-        
-        /** @return half the height (in print units) of the font used for printing notation itelf */
-        int getCharacterHalfHeight() const { return m_font_height_half; }
-        
+
         /** 
           * @return approximate width (in print units) of one character of the font used for
           *         printing notation itelf
