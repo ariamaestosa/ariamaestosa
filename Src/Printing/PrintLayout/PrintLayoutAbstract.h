@@ -52,7 +52,7 @@ namespace AriaMaestosa
         PrintableSequence* sequence;
         
         /** referencing vectors from PrintableSequence (FIXME? no two objects should reference these vectors) */
-        ptr_vector<LayoutPage>& layoutPages;
+        ptr_vector<LayoutPage>& m_layout_page;
         
         ptr_vector<PrintLayoutMeasure> measures; 
         
@@ -76,10 +76,13 @@ namespace AriaMaestosa
         
         void findSimilarMeasures();
         
-        
+        /** utility method invoked by 'layInLinesAndPages' when a line is complete */
+        void terminateLine(LayoutLine* line, const int maxLevelHeight,
+                           int& current_height, int& current_page);
+
     public:
         PrintLayoutAbstract(PrintableSequence* parent,
-                           ptr_vector<LayoutPage>& layoutPages  /* out */);
+                           ptr_vector<LayoutPage>& m_layout_page  /* out */);
         
         void generateMeasures(ptr_vector<Track, REF>& tracks);
         
