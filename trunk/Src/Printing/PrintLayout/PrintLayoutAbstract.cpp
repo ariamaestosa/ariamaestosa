@@ -355,8 +355,6 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     assert(usableAreaHeightPage1 > 0);
     assert(usableAreaHeightOtherPages > 0);
     
-    //FIXME: margins between lines are not considered, so min size is bound not to be respected...
-    //FIXME: I think margins between the various lines of one track are not accounted for either
     const int maxLevelsOnPage1      = usableAreaHeightPage1 / MIN_LEVEL_HEIGHT;
     const int maxLevelsOnOtherPages = usableAreaHeightOtherPages / MIN_LEVEL_HEIGHT;
 
