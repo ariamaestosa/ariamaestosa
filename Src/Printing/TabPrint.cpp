@@ -102,7 +102,8 @@ int TablaturePrintable::calculateHeight(const int trackID, LineTrackRef& lineTra
 
 // ------------------------------------------------------------------------------------------------------------
 
-void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& currentTrack, LayoutLine& currentLine, wxDC& dc)
+void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& currentTrack,
+                                   LayoutLine& currentLine, wxDC& dc)
 {
     const TrackCoords* trackCoords = currentTrack.m_track_coords.raw_ptr;
     assert(trackCoords != NULL);
@@ -129,6 +130,10 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
     
     // iterate through layout elements
     LayoutElement* currentElement;
+    
+    // draw end of line vertical line
+    drawVerticalDivider(trackCoords->x1, trackCoords->y0, trackCoords->y1);
+
     
     const int elementAmount = currentLine.getLayoutElementCount();
     for (int el=0; el<elementAmount; el++)

@@ -50,6 +50,14 @@ namespace AriaMaestosa
           */
         void drawVerticalDivider(LayoutElement* el, const int y0, const int y1, const bool atEnd=false);
 
+        /**
+          * Draws a vertical divider line
+          * @param x      The x coord where to draw the line.
+          * @param y0     The y at which the divider starts
+          * @param y1     The y at which the divider ends
+          */
+        void drawVerticalDivider(const int x, const int y0, const int y1);
+
     public:
         EditorPrintable();
         virtual ~EditorPrintable();

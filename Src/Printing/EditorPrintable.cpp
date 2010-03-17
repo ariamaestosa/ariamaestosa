@@ -58,6 +58,15 @@ void EditorPrintable::drawVerticalDivider(LayoutElement* el, const int y0, const
 }
 
 // -------------------------------------------------------------------------------------------
+
+void EditorPrintable::drawVerticalDivider(const int x, const int y0, const int y1)
+{
+    // draw vertical line that starts measure
+    dc->SetPen(  wxPen( wxColour(0,0,0), 10 ) );
+    dc->DrawLine( x, y0, x, y1);
+}
+
+// -------------------------------------------------------------------------------------------
     
 void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0, const int y1)
 {
@@ -165,10 +174,17 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
         dc->SetTextForeground( wxColour(0,0,0) );
     }
     
+    //FIXME: this can't go here, because this subclass doesn't have the information about
+    //       which parts of the allocated area need the line (depending on editor type,
+    //       it's not necessarily the full vertical range)
     if (currElem.render_end_bar)
     {
         drawVerticalDivider(&currElem, trackCoords->y0, trackCoords->y1, true /* at end */);
     }
+    
+    
+    // close line with vertical bar
+    //drawVerticalDivider(trackCoords->x1, trackCoords->y0, trackCoords->y1);
     
     return &currElem;
 }
