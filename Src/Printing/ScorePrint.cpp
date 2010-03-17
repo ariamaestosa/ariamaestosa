@@ -54,6 +54,9 @@ namespace AriaMaestosa
      
     const int LINES_IN_A_SCORE = 5;
     
+    /** size of the dot, for dotted notes */
+    const int DOT_SIZE = 14;
+    
     /** Out of 1.0 (100%), how much of the height is reserved for the space between G and F clefs
       * (when both are present) FIXME: this should probably be an absolute margin, not a relative proportion?
       */
@@ -452,8 +455,10 @@ namespace AriaMaestosa
         // dotted
         if (dotted)
         {
-            wxPoint headLocation( silence_center + silence_radius + 20, silences_y+30 );
-            global_dc->DrawEllipse( headLocation, wxSize(15,15) );
+            global_dc->SetPen(  wxPen( wxColour(0,0,0), 12 ) );
+            global_dc->SetBrush( *wxBLACK_BRUSH );
+            wxPoint headLocation( silence_center + silence_radius + DOT_SIZE*2, silences_y+30 );
+            global_dc->DrawEllipse( headLocation, wxSize(DOT_SIZE, DOT_SIZE) );
         }
         
         // triplet
@@ -1350,6 +1355,10 @@ namespace AriaMaestosa
             } // end scope
             
             // ---- draw notes heads
+            
+            dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
+            dc.SetBrush( *wxBLACK_BRUSH );
+            
             std::cout << " == rendering note heads ==\n";
             for (int i=0; i<noteAmount; i++)
             {
@@ -1376,17 +1385,18 @@ namespace AriaMaestosa
     
                 // draw head
                 const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
+                
+                /** This coord is the CENTER of the note's head */
                 wxPoint headLocation( noteX.to - note_x_shift, // this is the center of the note
                                       notey-(HEAD_RADIUS-5)/2.0);
                 
                 if (noteRenderInfo.instant_hit)
                 {
+                    //FIXME: don't hardcode 36
                     dc.DrawText(wxT("X"), headLocation.x - 36, headLocation.y);
                 }
                 else
                 {
-                    dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
-                    dc.SetBrush( *wxBLACK_BRUSH );
                     const int cx = headLocation.x + (noteRenderInfo.hollow_head ? -2 : 0); // FIXME: the -2 is a hack for the head to blend in the stem
                     const int cy = headLocation.y;
                     wxPoint points[25];
@@ -1407,14 +1417,18 @@ namespace AriaMaestosa
                 // draw dot if note is dotted
                 if (noteRenderInfo.dotted)
                 {
-                    wxPoint headLocation( headLocation.x + HEAD_RADIUS*2, notey+10 );
-                    dc.DrawEllipse( headLocation, wxSize(10,10) );
+                    wxPoint headLocation( headLocation.x + HEAD_RADIUS, notey+10 );
+                    dc.DrawEllipse( headLocation /* top left corner */, wxSize(DOT_SIZE, DOT_SIZE) );
                 }
                 
                 // draw sharpness sign if relevant
-                if (noteRenderInfo.sign == SHARP)        renderSharp  ( dc, noteX.from + accidentalShift, noteRenderInfo.getY() - 15  );
+                if      (noteRenderInfo.sign == SHARP)   renderSharp  ( dc, noteX.from + accidentalShift, noteRenderInfo.getY() - 15  );
                 else if (noteRenderInfo.sign == FLAT)    renderFlat   ( dc, noteX.from + accidentalShift, noteRenderInfo.getY() - 15  );
                 else if (noteRenderInfo.sign == NATURAL) renderNatural( dc, noteX.from + accidentalShift, noteRenderInfo.getY() - 20  );
+                
+                // set pen/brush back, accidental routines might have changed them
+                dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
+                dc.SetBrush( *wxBLACK_BRUSH );
                 
             } // next note
         } // end scope
