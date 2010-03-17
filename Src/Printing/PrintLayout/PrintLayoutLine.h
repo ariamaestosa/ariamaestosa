@@ -163,11 +163,11 @@ namespace AriaMaestosa
         int m_level_from;
         int m_level_to;
         
+        /** Height of the line in abstract vertical units (levels). Value is -1 when not set yet */
+        int m_level_height;
+        
     public:
         
-        //FIXME: make private
-        int m_level_height;
-                
         
         /** Initially NULL; will be set when PrintLayoutNumeric actually calculates the coords
           * of this track
@@ -198,8 +198,21 @@ namespace AriaMaestosa
         int getFirstNoteInElement(const int trackID, const LayoutElement* layoutElement) const;
         int getLastNoteInElement (const int trackID, const LayoutElement* layoutElement) const;
         
-        /** @returns the number of levels that make this line (vertically) INCLUDING required margin space */
+        /** @return the number of levels that make this line (vertically) INCLUDING required margin space */
         int calculateHeight();
+        
+        /** 
+          * The rationale for this method is that it's faster than 'calculateHeight' since it
+          * simply returns the cached value.
+          *
+          * @return the value that was determined by a previous call to 'calculateHeight'.
+          * @precondition 'calculateHeight' must have been called first
+          */
+        int getCalculatedHeight() const
+        {
+            assert(m_level_height != -1);
+            return m_level_height;
+        }
         
         const PrintLayoutMeasure& getMeasureForElement(const int layoutElementID) const;
         const PrintLayoutMeasure& getMeasureForElement(const LayoutElement* layoutElement) const;

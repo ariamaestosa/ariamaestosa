@@ -546,8 +546,8 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
         const int lineCount = page.getLineCount();
         for (int t=0; t<lineCount; t++)
         {
-            total += page.getLine(t).m_level_height + INTER_LINE_MARGIN_LEVELS;
-            std::cout << "        " << page.getLine(t).m_level_height
+            total += page.getLine(t).getCalculatedHeight() + INTER_LINE_MARGIN_LEVELS;
+            std::cout << "        " << page.getLine(t).getCalculatedHeight()
                       << " : " << page.getLine(t).getLevelFrom() << " to "
                       << page.getLine(t).getLevelTo() << "\n";
             std::cout << "        " << INTER_LINE_MARGIN_LEVELS << " (margin)\n";

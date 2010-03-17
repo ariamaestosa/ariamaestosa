@@ -161,8 +161,8 @@ void PrintLayoutNumeric::setLineCoordsAndDivideItsSpace(LayoutLine& line, const 
     
     if (heightAvailableForThisLine < 0.0001) return; // empty line. TODO: draw empty bars to show there's something?
     
-    const int levelHeight = std::min(int(heightAvailableForThisLine/line.m_level_height), MAX_LEVEL_HEIGHT);
-    std::cout << "Level height within line : " << levelHeight << "\n";
+    const int levelHeight = std::min(int(heightAvailableForThisLine/line.getCalculatedHeight()), MAX_LEVEL_HEIGHT);
+    //std::cout << "Level height within line : " << levelHeight << "\n";
     
     //FIXME; don't hardcode 70 here, have a formal minimal value
     //assertExpr((heightAvailableForThisLine - margin_below - margin_above)/line.calculateHeight(), >=, 70);
