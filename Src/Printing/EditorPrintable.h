@@ -40,6 +40,9 @@ namespace AriaMaestosa
     /** How much margin space to leave at the left of 1/1 and 1/2 silences*/
     const int RECTANGULAR_SILENCE_LEFT_MARGIN = 40;
     
+    /** size of the dot, for dotted notes */
+    const int DOT_SIZE = 14;
+    
     class EditorPrintable
     {
     protected:
@@ -63,7 +66,11 @@ namespace AriaMaestosa
           * @param y1     The y at which the divider ends
           */
         void drawVerticalDivider(const int x, const int y0, const int y1);
-
+        
+        /** Utility function : renders an arc (half an ellipse) at the given coordinates */
+        static void renderArc(wxDC& dc, const int center_x, const int center_y,
+                              const int radius_x, const int radius_y);
+        
     public:
         EditorPrintable();
         virtual ~EditorPrintable();
@@ -117,6 +124,9 @@ namespace AriaMaestosa
         virtual void addUsedTicks(const PrintLayoutMeasure& measure, const int trackID,
                                   const MeasureTrackReference& trackRef, RelativePlacementManager& ticks) = 0;
         
+        /** utility method subclasses can call to render a silence at a given location */
+        void drawSilence(wxDC* dc, const Range<int> x, const int y, const int level_height,
+                         const int type, const bool triplet, const bool dotted);
     };
 }
 
