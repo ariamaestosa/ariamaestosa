@@ -3,8 +3,9 @@
     - Improved printing dialog
     - Give access to page setup dialog
     - Show progress dialog while calculating print layout
+    - Improved layout code, which result in vast improvements when printing tablatures without scores
     - In printing code, removed absolute constants and repalced them to be relative to page size
-    - Printing : fixed bugs that caused pages > 1 to have less contents than first page
+    - Fixed bugs that caused pages > 1 to have less contents than first page
     - Silences are now also printed in tablature mode; makes them easier to follow
     - Misc tweaks and fixes
 - Adding and removing tracks no more confuse the undo system

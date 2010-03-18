@@ -41,6 +41,8 @@ class RelativePlacementManager
     /** Last tick of the measure (A RelativePlacementManager object represents a single measure) */
     int m_end_of_measure_tick;
     
+    int m_total_needed_size;
+    
     struct Symbol
     {
         int widthInPrintUnits;
@@ -150,6 +152,7 @@ public:
     RelativePlacementManager(const int end_of_measure_tick)
     {
         m_end_of_measure_tick = end_of_measure_tick;
+        m_total_needed_size   = 0;
     }
     
     /**
@@ -185,7 +188,10 @@ public:
      * @precondition           To be called after all symbols have been added
      * @return                 The number of print units this measure needs to be allocated
      */
-    int getWidth() const;
+    int getWidth() const
+    {
+        return m_total_needed_size;
+    }
     
     /**
      * Getter to get the results of the calculation

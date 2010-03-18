@@ -431,7 +431,7 @@ namespace AriaMaestosa
                 
                 if (current_analyser->noteRenderInfo[n].sign != PITCH_SIGN_NONE)
                 {
-                    // if there's an accidental sign to show, allocate a bigger space for this note
+                    // if there's an accidental sign to show, allocate a bigger space for this note (FIXME)
                     ticks_relative_position.addSymbol( tick, tickTo,
                                                        HEAD_RADIUS*2 + MAX_ACCIDENTAL_SIZE + NOTE_HEAD_MARGIN,
                                                        trackID );
@@ -1163,6 +1163,11 @@ namespace AriaMaestosa
 
                 const Range<int> noteX = x_converter->tickToX(noteRenderInfo.tick);
 
+                // make sure we were given the requested size (TODO: fix and uncomment)
+                //assertExpr(noteX.to - noteX.from, >=, HEAD_RADIUS*2 +
+                //           (noteRenderInfo.sign == PITCH_SIGN_NONE ? 0 : MAX_ACCIDENTAL_SIZE) +
+                //            NOTE_HEAD_MARGIN);
+                
                 // Amount by which to shift the accidental sign, from 'noteX'
                 // FIXME: what is that??
                 const int accidentalShift = (noteRenderInfo.sign == PITCH_SIGN_NONE ? 0 : HEAD_RADIUS*1.85);

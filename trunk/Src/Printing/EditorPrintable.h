@@ -98,8 +98,11 @@ namespace AriaMaestosa
         LayoutElement* continueWithNextElement(const int trackID, LayoutLine& layoutLine, const int currentLayoutElement);
 
         /** Returns the print area reserved for a specific note (by note ID) */
-        Range<int> getNotePrintX(const int trackID, LayoutLine& line, int noteID);
+        //Range<int> getNoteAreaX(const int trackID, LayoutLine& line, int noteID);
         
+        /** Returns the print area reserved for a specific note's symbol (by note ID) */
+        Range<int> getNoteSymbolX(const int trackID, LayoutLine& line, int noteID);
+
         /** Returns the print area reserved for a specific note/silence/symbol (by tick).
           * @precondition The tick must be known already to the RelativePlacementManager;
           * otherwise (-1,-1) may be returned. */

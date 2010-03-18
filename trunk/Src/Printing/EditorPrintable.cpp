@@ -192,11 +192,19 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
 
 // -------------------------------------------------------------------------------------------
     
-Range<int> EditorPrintable::getNotePrintX(const int trackID, LayoutLine& line, int noteID)
-{
-    return tickToX( trackID, line, line.getLineTrackRef(trackID).m_track->getNoteStartInMidiTicks(noteID) );
-}
+//Range<int> EditorPrintable::getNoteAreaX(const int trackID, LayoutLine& line, int noteID)
+//{
+//    return tickToX( trackID, line, line.getLineTrackRef(trackID).m_track->getNoteStartInMidiTicks(noteID) );
+//}
     
+// -------------------------------------------------------------------------------------------
+
+Range<int> EditorPrintable::getNoteSymbolX(const int trackID, LayoutLine& line, int noteID)
+{
+    return tickToX(trackID, line,
+                   line.getLineTrackRef(trackID).m_track->getNoteStartInMidiTicks(noteID));
+}
+
 // -------------------------------------------------------------------------------------------
     
 Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const int tick)
