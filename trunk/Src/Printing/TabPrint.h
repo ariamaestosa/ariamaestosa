@@ -20,6 +20,7 @@
 
 #include <wx/file.h>
 #include "Config.h"
+#include "Editors/SilenceAnalyser.h"
 #include "Printing/EditorPrintable.h"
 #include "Printing/PrintLayout/PrintLayoutAbstract.h"
 #include "Printing/PrintLayout/RelativePlacementManager.h"
@@ -33,6 +34,8 @@ namespace AriaMaestosa
     {
         int string_amount;
         GuitarEditor* editor;
+        
+        std::vector<SilenceAnalyser::SilenceInfo> m_silences;
         
     public:
         TablaturePrintable(Track* track_arg);
@@ -48,6 +51,8 @@ namespace AriaMaestosa
         /** Implement method from EditorPrintable */
         virtual int calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line);
         
+        /** Implement method from EditorPrintable */
+        virtual void earlySetup(const int trackID, Track* track);
     };
     
 }

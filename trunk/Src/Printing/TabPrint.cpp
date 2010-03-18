@@ -49,6 +49,63 @@ TablaturePrintable::~TablaturePrintable()
 }
 
 // ------------------------------------------------------------------------------------------------------------
+
+/** Implement method from EditorPrintable */
+void TablaturePrintable::earlySetup(const int trackID, Track* track)
+{
+    class TabSilenceProxy : public SilenceAnalyser::INoteSource
+    {
+        Track* m_track;
+    public:
+        
+        TabSilenceProxy(Track* track)
+        {
+            m_track = track;
+        }
+        
+        /** @return the number of notes that can be obtained through this interface */
+        virtual int getNoteCount() const
+        {
+            return m_track->getNoteAmount();
+        }
+        
+        /**
+         * @param noteID ID of the note you want info on, must be in range [0 .. getNoteCount()-1]
+         * @return       the ID of the measure in which 'noteID' starts
+         */
+        virtual int getBeginMeasure(const int noteID) const
+        {
+            return getMeasureData()->measureAtTick( m_track->getNoteStartInMidiTicks(noteID) );
+        }
+        
+        /**
+         * @param noteID ID of the note you want info on, must be in range [0 .. getNoteCount()-1]
+         * @return       the tick at which 'noteID' starts
+         */
+        virtual int  getStartTick(const int noteID) const
+        {
+            return m_track->getNoteStartInMidiTicks(noteID);
+        }
+        
+        /**
+         * @param noteID ID of the note you want info on, must be in range [0 .. getNoteCount()-1]
+         * @return       the tick at which 'noteID' ends
+         */
+        virtual int getEndTick(const int noteID) const
+        {
+            return m_track->getNoteEndInMidiTicks(noteID);
+        }
+    };
+    
+    TabSilenceProxy* adapter = new TabSilenceProxy(track);
+    m_silences =  SilenceAnalyser::findSilences( adapter,
+                                                 0 /* first measure */,
+                                                 getMeasureData()->getMeasureAmount()-1 /* last measure */,
+                                                 -1 /* y not important at this point */ );
+    delete adapter;
+}
+
+// ------------------------------------------------------------------------------------------------------------
     
 void TablaturePrintable::addUsedTicks(const PrintLayoutMeasure& measure,  const int trackID,
                                       const MeasureTrackReference& trackRef,
@@ -56,6 +113,8 @@ void TablaturePrintable::addUsedTicks(const PrintLayoutMeasure& measure,  const 
 {
     const int first_note = trackRef.getFirstNote();
     const int last_note  = trackRef.getLastNote();
+    const int firstTickInMeasure = measure.getFirstTick();
+    const int lastTickInMeasure  = measure.getLastTick();
     
     const Track* track = trackRef.getConstTrack();
     
@@ -75,6 +134,7 @@ void TablaturePrintable::addUsedTicks(const PrintLayoutMeasure& measure,  const 
     const int characterWidth = 60;
     // wxSize textSize2 = dc.GetTextExtent( wxT("T") );
     
+    // ---- notes
     for (int n=first_note; n<=last_note; n++)
     {
         const int tick   = track->getNoteStartInMidiTicks(n);
@@ -85,6 +145,10 @@ void TablaturePrintable::addUsedTicks(const PrintLayoutMeasure& measure,  const 
         
         ticks_relative_position.addSymbol( tick, tickTo, (fret > 9 ? characterWidth*2 : characterWidth), trackID );
     }
+    
+    // ---- silences
+    EditorPrintable::addSilencesFromVector(m_silences, ticks_relative_position, trackID,
+                                           firstTickInMeasure, lastTickInMeasure);
 }
 
 // ------------------------------------------------------------------------------------------------------------
