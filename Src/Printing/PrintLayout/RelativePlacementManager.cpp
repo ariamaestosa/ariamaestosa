@@ -366,11 +366,11 @@ void RelativePlacementManager::addSilenceSymbols(const std::vector< SilenceAnaly
             case 4:
             case 8:
             case 16:
-                neededSize = 110; // FIXME: when using vector silence symbols, fix this to not use a hardcoded value
+                neededSize = 90; // FIXME: when using vector silence symbols, fix this to not use a hardcoded value
                 break;
             default:
                 std::cerr << "WARNING, unknown silence type : " << silences_ticks[n].m_type << std::endl;
-                neededSize = 20;
+                neededSize = 90;
         }
         
         if (silences_ticks[n].m_dotted) neededSize += 40; // a bit approximative for now
