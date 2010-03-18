@@ -524,7 +524,13 @@ void RelativePlacementManager::calculateRelativePlacement()
 Range<float> RelativePlacementManager::getSymbolRelativeArea(int tick) const
 {    
     int id = getInterestingTickNoAdd( tick, 0, m_all_interesting_ticks.size()-1 );
-    assert(id >= 0);
+    
+    if (id == -1)
+    {
+        std::cerr << "WARNING: RelativePlacementManager::getSymbolRelativeArea could not find tick " << tick << "\n";
+        return Range<float>(0, 0);
+    }
+    
     assert(id < (int)m_all_interesting_ticks.size());
     
     const InterestingTick& currTick = m_all_interesting_ticks[id];
