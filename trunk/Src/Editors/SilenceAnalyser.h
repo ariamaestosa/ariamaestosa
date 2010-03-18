@@ -17,9 +17,14 @@
 #ifndef _SILENCE_ANALYSER_H_
 #define _SILENCE_ANALYSER_H_
 
+#include "Range.h"
+#include <vector>
 
 namespace AriaMaestosa
 {
+    /**
+      * Contains the necessary to determine (score) silences from a bunch of notes
+      */
     namespace SilenceAnalyser
     {
     
@@ -29,6 +34,44 @@ namespace AriaMaestosa
                                              const bool dotted, const int dot_delta_x,
                                              const int dot_delta_y);
 
+        /** Describes a silence */
+        class SilenceInfo
+        {
+        public:
+            /** tick from and to */
+            Range<int> m_tick_range;
+            
+            /** type of silence, where 1/m_type is the "human" name (e.g. m_type == 4 means a 1/4 silence) */
+            int m_type;
+            
+            /** Y coordinate at which the silence is */
+            int m_silences_y;
+            
+            /** whether this silence is dotted */
+            bool m_dotted;
+            
+            /** whether this silence is of triplet duration (and thus needs a "3" sign under it) */
+            bool m_triplet;
+            
+            /** relative coordinates of dot; set to fit the silence, depending on its size */
+            int m_dot_delta_x, m_dot_delta_y; //FIXME: this doesn't go there
+            
+            SilenceInfo(int tickFrom, int tickTo, int type, const int silences_y, bool triplet,
+                        bool dotted, int dot_delta_x, int dot_delta_y) : m_tick_range(tickFrom, tickTo)
+            {
+                m_type        = type;
+                m_triplet     = triplet;
+                m_silences_y  = silences_y;
+                m_dotted      = dotted;
+                m_dot_delta_x = dot_delta_x;
+                m_dot_delta_y = dot_delta_y;
+            }
+        };
+        
+        /** 
+          * Interface that the silence analyser uses for its operations. Each module that
+          * wishes to perform silence analysis must create a class that implements this protocol.
+          */
         class INoteSource
         {
         public:
@@ -55,9 +98,15 @@ namespace AriaMaestosa
             virtual int  getEndTick(const int noteID) const = 0;
         };
         
+        /** finds all silences, and invokes a passed callback function for each of them */
         void findSilences(RenderSilenceCallback renderSilenceCallback, INoteSource* noteSource,
                             const int first_visible_measure, const int last_visible_measure,
                             const int silences_y);
+        
+        /** variant of the above, but instead of using a function callback it justs returns a vector */
+        std::vector<SilenceInfo> findSilences(INoteSource* noteSource,
+                                              const int first_visible_measure, const int last_visible_measure,
+                                              const int silences_y);
         
     }
 

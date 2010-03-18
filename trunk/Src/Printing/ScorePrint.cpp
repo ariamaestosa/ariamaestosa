@@ -323,17 +323,6 @@ namespace AriaMaestosa
     // FIXME find cleaner way
     int global_line_height=5;
     
-    std::vector< SilenceInfo > g_silences_ticks;
-    
-    // -------------------------------------------------------------------------------------------
-    
-    void gatherSilenceCallback(const int duration, const int tick, const int type, const int silences_y, const bool triplet,
-                               const bool dotted, const int dot_delta_x, const int dot_delta_y)
-    {
-        g_silences_ticks.push_back( SilenceInfo(tick, tick + duration, type, dotted, dot_delta_x) );
-        //std::cout << "gatherSilenceCallback : silence at " << tick << " (beat " << (tick/960.0f) << ")\n";
-    }
-    
     // -------------------------------------------------------------------------------------------
     
     void renderSilenceCallback(const int duration, const int tick, const int type, const int silences_y, const bool triplet,
@@ -623,22 +612,22 @@ namespace AriaMaestosa
         } // end for each clef
 
         // ---- silences
-        const int silenceAmount = silences_ticks.size();
+        const int silenceAmount = m_silences_ticks.size();
         for (int n=0; n<silenceAmount; n++)
         {
-            if (silences_ticks[n].m_tick_range.from < measureFromTick or
-                silences_ticks[n].m_tick_range.from >= measureToTick)
+            if (m_silences_ticks[n].m_tick_range.from < measureFromTick or
+                m_silences_ticks[n].m_tick_range.from >= measureToTick)
             {
                 continue;
             }
             
 #if VERBOSE
-            std::cout << "    Adding [silence] tick " << silences_ticks[n] << " to list" << std::endl;
+            std::cout << "    Adding [silence] tick " << m_silences_ticks[n] << " to list" << std::endl;
 #endif
             
             int neededSize = 0;
             
-            switch (silences_ticks[n].m_type)
+            switch (m_silences_ticks[n].m_type)
             {
                 case 1:
                 case 2:
@@ -650,14 +639,14 @@ namespace AriaMaestosa
                     neededSize = 110; // FIXME: when using vector silence symbols, fix this to not use a hardcoded value
                     break;
                 default:
-                    std::cerr << "WARNING, unknown silence type : " << silences_ticks[n].m_type << std::endl;
+                    std::cerr << "WARNING, unknown silence type : " << m_silences_ticks[n].m_type << std::endl;
                     neededSize = 20;
             }
             
-            if (silences_ticks[n].m_dotted) neededSize += 40; // a bit approximative for now
+            if (m_silences_ticks[n].m_dotted) neededSize += 40; // a bit approximative for now
             
-            ticks_relative_position.addSymbol( silences_ticks[n].m_tick_range.from,
-                                               silences_ticks[n].m_tick_range.to,
+            ticks_relative_position.addSymbol( m_silences_ticks[n].m_tick_range.from,
+                                               m_silences_ticks[n].m_tick_range.to,
                                                neededSize, trackID );
         }
         
@@ -1120,19 +1109,16 @@ namespace AriaMaestosa
         
         // ---- Silences
         std::cout << " == gathering silences ==\n";
-        g_silences_ticks.clear();
         if (f_clef)
         {
-            SilenceAnalyser::findSilences( &gatherSilenceCallback, f_clef_analyser, 0, measureAmount-1,
-                            -1 /* y not important at this point */ );
+            m_silences_ticks = SilenceAnalyser::findSilences( f_clef_analyser, 0, measureAmount-1,
+                                                             -1 /* y not important at this point */ );
         }
         if (g_clef)
         {
-            SilenceAnalyser::findSilences( &gatherSilenceCallback, g_clef_analyser, 0, measureAmount-1,
-                            -1 /* y not important at this point */ );
+            m_silences_ticks = SilenceAnalyser::findSilences( g_clef_analyser, 0, measureAmount-1,
+                                                            -1 /* y not important at this point */ );
         }
-        this->silences_ticks = g_silences_ticks;
-        g_silences_ticks.clear();
         
         
     }
@@ -1582,6 +1568,7 @@ namespace AriaMaestosa
         
         global_dc = &dc;
         
+        //FIXME: we already have collected all silence info in a vector... don't call the SilenceAnalyser again!
         if (f_clef)
         {
             const int silences_y = LEVEL_TO_Y(middle_c_level + 4);
