@@ -606,8 +606,8 @@ namespace AriaMaestosa
         } // end for each clef
 
         // ---- silences
-        EditorPrintable::addSilencesFromVector(m_silences_ticks, ticks_relative_position, trackID,
-                                               measureFromTick, measureToTick);
+        ticks_relative_position.addSilenceSymbols(m_silences_ticks, trackID,
+                                                  measureFromTick, measureToTick);
         
 #if VERBOSE
         std::cout << "}\n";

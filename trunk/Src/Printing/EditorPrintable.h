@@ -19,7 +19,6 @@
 
 #include <map>
 #include "Range.h"
-#include "Editors/SilenceAnalyser.h"
 #include "Printing/PrintLayout/PrintLayoutAbstract.h"
 #include "Printing/PrintLayout/RelativePlacementManager.h"
 
@@ -118,9 +117,6 @@ namespace AriaMaestosa
         virtual void addUsedTicks(const PrintLayoutMeasure& measure, const int trackID,
                                   const MeasureTrackReference& trackRef, RelativePlacementManager& ticks) = 0;
         
-        static void addSilencesFromVector(const std::vector< SilenceAnalyser::SilenceInfo >& m_silences_ticks,
-                                          RelativePlacementManager& ticks_relative_position, const int trackID,
-                                          const int firstTickInMeasure, const int lastTickInMeasure);
     };
 }
 

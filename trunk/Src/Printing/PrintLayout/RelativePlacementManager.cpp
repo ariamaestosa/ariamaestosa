@@ -22,6 +22,8 @@
 #include <cmath>
 #include <cassert>
 
+#include "Printing/EditorPrintable.h"
+
 #if 0
 #pragma mark Private
 #endif
@@ -332,6 +334,51 @@ void RelativePlacementManager::addSymbol(int tickFrom, int tickTo, int symbolWid
     
     m_all_interesting_ticks[interestingTickID].all_symbols_on_that_tick.push_back(
                         Symbol(tickTo, symbolWidth, trackID) );
+}
+
+// ----------------------------------------------------------------------------------------------------------------
+
+void RelativePlacementManager::addSilenceSymbols(const std::vector< SilenceAnalyser::SilenceInfo >& silences_ticks,
+                                             const int trackID, const int firstTickInMeasure, const int lastTickInMeasure)
+{
+    // ---- silences
+    const int silenceAmount = silences_ticks.size();
+    for (int n=0; n<silenceAmount; n++)
+    {
+        if (silences_ticks[n].m_tick_range.from < firstTickInMeasure or
+            silences_ticks[n].m_tick_range.from >= lastTickInMeasure)
+        {
+            continue;
+        }
+        
+#if VERBOSE
+        std::cout << "    Adding [silence] tick " << silences_ticks[n] << " to list" << std::endl;
+#endif
+        
+        int neededSize = 0;
+        
+        switch (silences_ticks[n].m_type)
+        {
+            case 1:
+            case 2:
+                neededSize = RECTANGULAR_SILENCE_SIZE + RECTANGULAR_SILENCE_LEFT_MARGIN;
+                break;
+            case 4:
+            case 8:
+            case 16:
+                neededSize = 110; // FIXME: when using vector silence symbols, fix this to not use a hardcoded value
+                break;
+            default:
+                std::cerr << "WARNING, unknown silence type : " << silences_ticks[n].m_type << std::endl;
+                neededSize = 20;
+        }
+        
+        if (silences_ticks[n].m_dotted) neededSize += 40; // a bit approximative for now
+        
+        addSymbol( silences_ticks[n].m_tick_range.from,
+                   silences_ticks[n].m_tick_range.to,
+                   neededSize, trackID );
+    }    
 }
 
 // ----------------------------------------------------------------------------------------------------------------
