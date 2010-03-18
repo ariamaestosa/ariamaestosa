@@ -333,7 +333,7 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
         
         //std::cout << "TAB editor : silence @ " << tick << " (" << tick/960 << ")" << std::endl;
         
-        if (tick >= fromTick and tick <= toTick)
+        if (tick >= fromTick and tick < toTick)
         {
             drawSilence(&dc, tickToX(trackID, currentLine, tick), silencesY, stringHeight,
                         m_silences[n].m_type, m_silences[n].m_triplet, m_silences[n].m_dotted);
