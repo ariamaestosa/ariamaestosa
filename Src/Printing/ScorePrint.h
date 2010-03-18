@@ -21,6 +21,7 @@
 #include <wx/file.h>
 #include "Config.h"
 #include "Editors/ScoreEditor.h"
+#include "Editors/SilenceAnalyser.h"
 #include "Printing/AriaPrintable.h"
 #include "Printing/EditorPrintable.h"
 #include "Printing/PrintLayout/PrintLayoutAbstract.h"
@@ -29,21 +30,6 @@
 namespace AriaMaestosa
 {
     class ScoreAnalyser;
-
-    /** For internal use by ScorePrintable . Describes a silence to drawn on the score. */
-    class SilenceInfo
-    {
-    public:
-        Range<int> m_tick_range;
-        int m_type;
-        bool m_dotted;
-        int m_dot_delta_x;
-        
-        SilenceInfo(int tickFrom, int tickTo, int type, bool dotted, int dot_delta_x) :
-        m_tick_range(tickFrom, tickTo), m_type(type), m_dotted(dotted), m_dot_delta_x(dot_delta_x)
-        {
-        }
-    };
 
     /** Specialization to print scores */
     class ScorePrintable : public EditorPrintable
@@ -59,7 +45,7 @@ namespace AriaMaestosa
         OwnerPtr<ScoreAnalyser> g_clef_analyser;
         OwnerPtr<ScoreAnalyser> f_clef_analyser;
         
-        std::vector< SilenceInfo > silences_ticks;
+        std::vector< SilenceAnalyser::SilenceInfo > m_silences_ticks;
         
     public:
         ScorePrintable();

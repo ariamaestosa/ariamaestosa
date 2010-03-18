@@ -239,6 +239,30 @@ namespace AriaMaestosa
             }
         } // end function
         
+        // ------------------------------------------------------------------------------------------------
+
+        std::vector<SilenceInfo> g_silences_ticks;
+
+        void gatherSilenceCallback(const int duration, const int tick, const int type, const int silences_y,
+                                   const bool triplet,  const bool dotted,
+                                   const int dot_delta_x, const int dot_delta_y)
+        {
+            g_silences_ticks.push_back( SilenceInfo(tick, tick + duration, type, silences_y,
+                                                    triplet, dotted, dot_delta_x, dot_delta_y) );
+        }
+        
+        // ------------------------------------------------------------------------------------------------
+
+        std::vector<SilenceInfo> findSilences(INoteSource* noteSource,
+                                              const int first_visible_measure, const int last_visible_measure,
+                                              const int silences_y)
+        {
+            g_silences_ticks.clear();
+            findSilences(&gatherSilenceCallback, noteSource, first_visible_measure,
+                         last_visible_measure, silences_y);
+            return g_silences_ticks;
+        }
+        
     } // end namespace SilenceAnalyser
 } // end namespace AriaMaestosa
 
