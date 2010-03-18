@@ -109,6 +109,10 @@
 		950B3EFD1125DE60006C9AF1 /* en.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EE61125DE18006C9AF1 /* en.lproj */; };
 		950B3EFE1125DE60006C9AF1 /* de.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EE31125DE18006C9AF1 /* de.lproj */; };
 		950B3EFF1125DE60006C9AF1 /* it.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EEB1125DE18006C9AF1 /* it.lproj */; };
+		951F5F6611519F2E00722304 /* SilenceAnalyser.h in Headers */ = {isa = PBXBuildFile; fileRef = 951F5F6411519F2E00722304 /* SilenceAnalyser.h */; };
+		951F5F6711519F2F00722304 /* SilenceAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 951F5F6511519F2E00722304 /* SilenceAnalyser.cpp */; };
+		951F5F6811519F2F00722304 /* SilenceAnalyser.h in Headers */ = {isa = PBXBuildFile; fileRef = 951F5F6411519F2E00722304 /* SilenceAnalyser.h */; };
+		951F5F6911519F2F00722304 /* SilenceAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 951F5F6511519F2E00722304 /* SilenceAnalyser.cpp */; };
 		9568DE8010D54FE30089AAAF /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF9D1CB609ABE21F00CAF7A6 /* Carbon.framework */; };
 		9568DE8110D54FE30089AAAF /* System.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF9D1D5009ABE22B00CAF7A6 /* System.framework */; };
 		9568DE8210D54FE30089AAAF /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF85576109BDE24C00D9D1BC /* OpenGL.framework */; };
@@ -665,6 +669,8 @@
 		950B3EEB1125DE18006C9AF1 /* it.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = it.lproj; path = "../OSX/mac-i18n/it.lproj"; sourceTree = SOURCE_ROOT; };
 		950B3EEE1125DE2F006C9AF1 /* aria_file.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = aria_file.icns; path = ../OSX/aria_file.icns; sourceTree = SOURCE_ROOT; };
 		950B3EEF1125DE2F006C9AF1 /* aria_midi_file.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = aria_midi_file.icns; path = ../OSX/aria_midi_file.icns; sourceTree = SOURCE_ROOT; };
+		951F5F6411519F2E00722304 /* SilenceAnalyser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SilenceAnalyser.h; sourceTree = "<group>"; };
+		951F5F6511519F2E00722304 /* SilenceAnalyser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SilenceAnalyser.cpp; sourceTree = "<group>"; };
 		9568DC6310D54CA50089AAAF /* DebugConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugConfig.xcconfig; sourceTree = SOURCE_ROOT; };
 		9568DC6810D54DC70089AAAF /* ReleaseConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReleaseConfig.xcconfig; sourceTree = SOURCE_ROOT; };
 		9568DD6310D54E340089AAAF /* DebugConfigNoGL.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugConfigNoGL.xcconfig; sourceTree = SOURCE_ROOT; };
@@ -1079,6 +1085,8 @@
 				9571190C1125D8D200104BF5 /* ScoreAnalyser.h */,
 				9571190D1125D8D200104BF5 /* ScoreEditor.cpp */,
 				9571190E1125D8D200104BF5 /* ScoreEditor.h */,
+				951F5F6511519F2E00722304 /* SilenceAnalyser.cpp */,
+				951F5F6411519F2E00722304 /* SilenceAnalyser.h */,
 			);
 			name = Editors;
 			path = ../Src/Editors;
@@ -1543,6 +1551,7 @@
 				959FD68E1144493C00F22579 /* AddTrack.h in Headers */,
 				959FD6C2114451A400F22579 /* DeleteTrack.h in Headers */,
 				95B90467114ADF23007F4778 /* PrintSetupDialog.h in Headers */,
+				951F5F6611519F2E00722304 /* SilenceAnalyser.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1660,6 +1669,7 @@
 				959FD68C1144493C00F22579 /* AddTrack.h in Headers */,
 				959FD6C0114451A400F22579 /* DeleteTrack.h in Headers */,
 				95B90465114ADF23007F4778 /* PrintSetupDialog.h in Headers */,
+				951F5F6811519F2F00722304 /* SilenceAnalyser.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1850,6 +1860,7 @@
 				959FD68D1144493C00F22579 /* AddTrack.cpp in Sources */,
 				959FD6C1114451A400F22579 /* DeleteTrack.cpp in Sources */,
 				95B90466114ADF23007F4778 /* PrintSetupDialog.cpp in Sources */,
+				951F5F6711519F2F00722304 /* SilenceAnalyser.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1961,6 +1972,7 @@
 				959FD68B1144493C00F22579 /* AddTrack.cpp in Sources */,
 				959FD6BF114451A400F22579 /* DeleteTrack.cpp in Sources */,
 				95B90464114ADF23007F4778 /* PrintSetupDialog.cpp in Sources */,
+				951F5F6911519F2F00722304 /* SilenceAnalyser.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

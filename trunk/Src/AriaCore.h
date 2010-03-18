@@ -112,6 +112,22 @@ namespace AriaMaestosa
         void updateVerticalScrollbar();
     }
     
+    
+    /**
+     * @return whether two values are approximately equal. this is because there is no midi
+     * standard for note length and i have seen some midis use note lengths slightly different
+     * from those Aria uses. This is why i check for approximate lengths, otherwise the score
+     * view may end up messed up when you import a midi made in another editor
+     */
+    bool aboutEqual(const float float1, const float float2);
+    
+    /**
+     * @return whether two values are approximately equal. this is because there is no midi
+     * standard for note length and i have seen some midis use note lengths slightly different
+     * from those Aria uses. This is why i check for approximate lengths, otherwise the score
+     * view may end up messed up when you import a midi made in another editor
+     */
+    bool aboutEqual_tick(const int int1, const int int2);
 }
 
 #endif
