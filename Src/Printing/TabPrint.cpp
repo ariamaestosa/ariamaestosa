@@ -147,8 +147,8 @@ void TablaturePrintable::addUsedTicks(const PrintLayoutMeasure& measure,  const 
     }
     
     // ---- silences
-    EditorPrintable::addSilencesFromVector(m_silences, ticks_relative_position, trackID,
-                                           firstTickInMeasure, lastTickInMeasure);
+    ticks_relative_position.addSilenceSymbols(m_silences, trackID,
+                                              firstTickInMeasure, lastTickInMeasure);
 }
 
 // ------------------------------------------------------------------------------------------------------------

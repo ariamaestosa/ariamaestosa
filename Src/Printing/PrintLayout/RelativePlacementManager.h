@@ -19,6 +19,7 @@
 
 #include <vector>
 #include "Range.h"
+#include "Editors/SilenceAnalyser.h"
 
 // For unit tests
 class RelativePlacementManager_TestAddingAndFindingInterestingTicks;
@@ -160,6 +161,12 @@ public:
      * @param trackID          ID of the track in which this symbol is
      */
     void addSymbol(int tickFrom, int tickTo, int symbolWidth, int trackID);
+    
+    /**
+      * Utility that lets you add many symbols at once for silences
+      */
+    void addSilenceSymbols(const std::vector< SilenceAnalyser::SilenceInfo >& silences_ticks,
+                           const int trackID, const int firstTickInMeasure, const int lastTickInMeasure);
     
     /**
      * Calculates the relative placement of all added symbols.

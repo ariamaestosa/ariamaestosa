@@ -137,7 +137,7 @@ namespace AriaMaestosa
                 {
 #ifdef _MORE_DEBUG_CHECKS
                     iters++;
-                    assertExpr(iters,<,1000);
+                    assertExpr(iters,<,100000);
 #endif                
                     const int measure = noteSource->getBeginMeasure(i);
                     assertExpr(measure,>=,0);
