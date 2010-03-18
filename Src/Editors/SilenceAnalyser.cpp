@@ -129,22 +129,11 @@ namespace AriaMaestosa
                 
                 int last_measure = -1;
                 
-#ifdef _MORE_DEBUG_CHECKS
-                int iters = 0;
-#endif
-                
                 for (int i=0; i<visibleNoteAmount; i++)
-                {
-#ifdef _MORE_DEBUG_CHECKS
-                    iters++;
-                    assertExpr(iters,<,100000);
-#endif                
+                {       
                     const int measure = noteSource->getBeginMeasure(i);
-                    assertExpr(measure,>=,0);
-                    assertExpr(measure,<,99999);
-                    
+                    assertExpr(measure,>=,0);                    
                     assertExpr(last_measure,>=,-1);
-                    assertExpr(last_measure,<,99999);
                     
                     // we switched to another measure
                     if (measure>last_measure)
