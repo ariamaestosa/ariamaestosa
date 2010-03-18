@@ -19,6 +19,7 @@
 
 #include <map>
 #include "Range.h"
+#include "Editors/SilenceAnalyser.h"
 #include "Printing/PrintLayout/PrintLayoutAbstract.h"
 #include "Printing/PrintLayout/RelativePlacementManager.h"
 
@@ -33,6 +34,12 @@ namespace AriaMaestosa
     class PrintLayoutMeasure;
     class MeasureTrackReference;
     class Track;
+    
+    /** Width of 1/1 and 1/2 silences */
+    const int RECTANGULAR_SILENCE_SIZE = 80;
+    
+    /** How much margin space to leave at the left of 1/1 and 1/2 silences*/
+    const int RECTANGULAR_SILENCE_LEFT_MARGIN = 40;
     
     class EditorPrintable
     {
@@ -110,6 +117,10 @@ namespace AriaMaestosa
           */ 
         virtual void addUsedTicks(const PrintLayoutMeasure& measure, const int trackID,
                                   const MeasureTrackReference& trackRef, RelativePlacementManager& ticks) = 0;
+        
+        static void addSilencesFromVector(const std::vector< SilenceAnalyser::SilenceInfo >& m_silences_ticks,
+                                          RelativePlacementManager& ticks_relative_position, const int trackID,
+                                          const int firstTickInMeasure, const int lastTickInMeasure);
     };
 }
 

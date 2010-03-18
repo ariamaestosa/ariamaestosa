@@ -34,12 +34,6 @@
 
 namespace AriaMaestosa
 {
-    /** Width of 1/1 and 1/2 silences */
-    const int RECTANGULAR_SILENCE_SIZE = 80;
-    
-    /** How much margin space to leave at the left of 1/1 and 1/2 silences*/
-    const int RECTANGULAR_SILENCE_LEFT_MARGIN = 40;
-    
     /** Size of a note's head */
     const int HEAD_RADIUS = 36;
 
@@ -612,43 +606,8 @@ namespace AriaMaestosa
         } // end for each clef
 
         // ---- silences
-        const int silenceAmount = m_silences_ticks.size();
-        for (int n=0; n<silenceAmount; n++)
-        {
-            if (m_silences_ticks[n].m_tick_range.from < measureFromTick or
-                m_silences_ticks[n].m_tick_range.from >= measureToTick)
-            {
-                continue;
-            }
-            
-#if VERBOSE
-            std::cout << "    Adding [silence] tick " << m_silences_ticks[n] << " to list" << std::endl;
-#endif
-            
-            int neededSize = 0;
-            
-            switch (m_silences_ticks[n].m_type)
-            {
-                case 1:
-                case 2:
-                    neededSize = RECTANGULAR_SILENCE_SIZE + RECTANGULAR_SILENCE_LEFT_MARGIN;
-                    break;
-                case 4:
-                case 8:
-                case 16:
-                    neededSize = 110; // FIXME: when using vector silence symbols, fix this to not use a hardcoded value
-                    break;
-                default:
-                    std::cerr << "WARNING, unknown silence type : " << m_silences_ticks[n].m_type << std::endl;
-                    neededSize = 20;
-            }
-            
-            if (m_silences_ticks[n].m_dotted) neededSize += 40; // a bit approximative for now
-            
-            ticks_relative_position.addSymbol( m_silences_ticks[n].m_tick_range.from,
-                                               m_silences_ticks[n].m_tick_range.to,
-                                               neededSize, trackID );
-        }
+        EditorPrintable::addSilencesFromVector(m_silences_ticks, ticks_relative_position, trackID,
+                                               measureFromTick, measureToTick);
         
 #if VERBOSE
         std::cout << "}\n";
