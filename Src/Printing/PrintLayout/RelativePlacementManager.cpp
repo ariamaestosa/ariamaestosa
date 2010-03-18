@@ -406,13 +406,18 @@ void RelativePlacementManager::calculateRelativePlacement()
     const int shortestSymbolLength = findShortestSymbolLength();
     assert(shortestSymbolLength > 0);
     
-    int totalAbsolutePosition = 0;
+    m_total_needed_size = 0;
 
     for (int n=0; n<tickAmount; n++)
     {
         InterestingTick& currTick = m_all_interesting_ticks[n];
         
-        int global_width_for_tick = 0;
+        // --------------------------------------------------------------------------------
+        // Find how much space we need on that tick to fit all symbols
+        // (i.e. find the biggest symbol)
+        
+        int spaceNeededToFitAllSymbols = 0;
+        int spaceNeededAfterSymbolForProportions = 0;
         
         const int symbolAmount = currTick.all_symbols_on_that_tick.size();
         assertExpr(symbolAmount, >, 0);
@@ -451,26 +456,33 @@ void RelativePlacementManager::calculateRelativePlacement()
                 
                 if (ratioToShortest >= 1)
                 {
-                    // gros logaritmically (the 0.6 factor is empirical - FIXME)
-                    currSym.neededAdditionalProportion = (float)std::log( ratioToShortest ) / (float)std::log( 2 )*0.6f;
-                    //std::cout << "ratioToShortest=" << ratioToShortest << ", neededAdditionalProportion=" << currSym.neededAdditionalProportion << std::endl;
+                    // grow logaritmically (the factor is empirical - FIXME)
+                    currSym.neededAdditionalProportion = (float)std::log( ratioToShortest ) /
+                                                            (float)std::log( 2 ) * 90.0f;
+                    assertExpr( currSym.neededAdditionalProportion, >=, 0.0f );
+                    //std::cout << "currSym.neededAdditionalProportion = " << currSym.neededAdditionalProportion << "\n";
                 }
                 else // no additionnal needed space
                 {
                     currSym.neededAdditionalProportion = 0.0f;
                 }
 #if RPM_CHATTY
-                std::cout << "ratioToShortest=" << ratioToShortest << ", neededAdditionalProportion=" << currSym.neededAdditionalProportion << std::endl;
+                std::cout << "ratioToShortest=" << ratioToShortest
+                          << ", neededAdditionalProportion="
+                          << currSym.neededAdditionalProportion << std::endl;
 #endif
             }
-
-            const int symbolWidth = (int)round(currSym.widthInPrintUnits * (1.0f + currSym.neededAdditionalProportion));
-                                    
+            
             // determine the largest needed proportion for each tick
-            global_width_for_tick = std::max( global_width_for_tick, symbolWidth);
+            spaceNeededToFitAllSymbols = std::max( spaceNeededToFitAllSymbols, currSym.widthInPrintUnits );
+            
+            spaceNeededAfterSymbolForProportions = std::max( spaceNeededAfterSymbolForProportions,
+                                                             (int)round(currSym.neededAdditionalProportion) );
             
 #if RPM_CHATTY
-            std::cout << "      symbolWidth=" << symbolWidth << "; global_width_for_tick=" << global_width_for_tick << std::endl;
+            std::cout << "      symbolWidth=" << symbolWidth
+                      << "; spaceNeededToFitAllSymbols=" << spaceNeededToFitAllSymbols 
+                      << "; spaceNeededAfterSymbolForProportions=" << spaceNeededAfterSymbolForProportions <<std::endl;
 #endif
             
         } // end for each symbol
@@ -479,35 +491,41 @@ void RelativePlacementManager::calculateRelativePlacement()
         std::cout << "    }\n";
 #endif
         
-        currTick.size = global_width_for_tick;
+        currTick.size = spaceNeededToFitAllSymbols;
+        
+        // --------------------------------------------------------------------------------
+        // Set coordinatess
         
         // set start position of current unit (without caring yet for value to be in range [0, 1])
-        currTick.position = totalAbsolutePosition;
-        
+        currTick.position    = m_total_needed_size;
+        currTick.endPosition = m_total_needed_size + spaceNeededToFitAllSymbols;
+
         // set end position of previous unit (without caring yet for value to be in range [0, 1])
-        if (n>0) m_all_interesting_ticks[n-1].endPosition = totalAbsolutePosition;
+        //if (n>0) m_all_interesting_ticks[n-1].endPosition = totalAbsolutePosition;
         
-        assertExpr( global_width_for_tick, >, 0 );
+        assertExpr( spaceNeededToFitAllSymbols, >, 0 );
         
         // increment current position
-        totalAbsolutePosition += global_width_for_tick;
+        m_total_needed_size += spaceNeededToFitAllSymbols + spaceNeededAfterSymbolForProportions;
     }
     
     // for last
-    m_all_interesting_ticks[m_all_interesting_ticks.size()-1].endPosition = totalAbsolutePosition;
+    //m_all_interesting_ticks[m_all_interesting_ticks.size()-1].endPosition = totalAbsolutePosition;
 
-    totalAbsolutePosition += SIDE_MARGIN_WIDTH; // leave empty at the end
+    m_total_needed_size += SIDE_MARGIN_WIDTH; // leave empty at the end
     
+    // ------------------------------------------------------------------------------------
     // "normalize" positions (divide to be in range [0, 1])
     for (int n=0; n<tickAmount; n++)
     {
         InterestingTick& currTick = m_all_interesting_ticks[n];
         
-        currTick.position    = currTick.position    / totalAbsolutePosition;
-        currTick.endPosition = currTick.endPosition / totalAbsolutePosition;
+        currTick.position    = currTick.position    / m_total_needed_size;
+        currTick.endPosition = currTick.endPosition / m_total_needed_size;
         
 #if RPM_CHATTY
-        std::cout << "m_all_interesting_ticks[" << n << "].position = " << currTick.position << " to " << currTick.endPosition << std::endl;
+        std::cout << "m_all_interesting_ticks[" << n << "].position = "
+                  << currTick.position << " to " << currTick.endPosition << std::endl;
 #endif
         
         assertExpr(currTick.position, >=, 0.0f);
@@ -535,52 +553,7 @@ Range<float> RelativePlacementManager::getSymbolRelativeArea(int tick) const
     
     const InterestingTick& currTick = m_all_interesting_ticks[id];
     return Range<float>(currTick.position, currTick.endPosition);
-    
-    /*
-    const int symbolAmount = currTick.all_symbols_on_that_tick.size();
-    for (int sym=0; sym<symbolAmount; sym++)
-    {
-        Symbol& currSym = currTick.all_symbols_on_that_tick[sym];
-
-        if (currSym.trackID == trackID and currSym.endTick == endTick)
-        {
-            
-        }
-    }*/
 }
 
 // ----------------------------------------------------------------------------------------------------------------
-
-/*
-int RelativePlacementManager::getUnitCount() const
-{
-    return m_all_interesting_ticks.size();
-}*/
-
-// ----------------------------------------------------------------------------------------------------------------
-
-int RelativePlacementManager::getWidth() const
-{
-    int totalSize = 0;
-    
-#if RPM_CHATTY
-    std::cout << "RelativePlacementManager::getWidth()\n{\n";
-#endif
-    
-    const int amount = m_all_interesting_ticks.size();
-    for (int n=0; n<amount; n++)
-    {
-#if RPM_CHATTY
-        std::cout << "    " << m_all_interesting_ticks[n].size << std::endl;
-#endif
-        totalSize += m_all_interesting_ticks[n].size;
-    }
-    
-#if RPM_CHATTY
-    std::cout << "}\n";
-#endif
-    
-    return totalSize;
-}
-
 

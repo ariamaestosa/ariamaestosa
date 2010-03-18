@@ -145,7 +145,8 @@ void TablaturePrintable::addUsedTicks(const PrintLayoutMeasure& measure,  const 
             
             //int noteLen = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
             
-            ticks_relative_position.addSymbol( tick, tickTo, (fret > 9 ? characterWidth*2 : characterWidth), trackID );
+            ticks_relative_position.addSymbol( tick, tickTo,
+                                              (fret > 9 ? characterWidth*2 : characterWidth), trackID );
         }
     }
     
@@ -303,13 +304,18 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
             // substract from width to leave some space on the right (coordinate is from the left of the text string so we need extra space on the right)
             // if fret number is greater than 9, the string will have two characters so we need to recenter it a bit more
             //const int drawX = getNotePrintX(trackID, line, i).from + (fret > 9 ? renderInfo.pixel_width_of_an_unit/4 : renderInfo.pixel_width_of_an_unit/2);
-            const int drawX = getNotePrintX(trackID, currentLine, i).to - (fret > 9 ? textSize3.x*2 : textSize3.x);
+            const int drawX = getNoteSymbolX(trackID, currentLine, i).to - (fret > 9 ? textSize3.x*2 : textSize3.x);
             const int drawY = trackCoords->y0 + stringHeight*string - textSize3.y/2;
             wxString label = to_wxString(fret);
             
             dc.DrawText( label, drawX, drawY );
             
             if (fret < 0)  dc.SetTextForeground( wxColour(0,0,0) );
+                        
+            //DEBUG
+            //Range<int> symbolArea = getNoteSymbolX(trackID, currentLine, i);
+            //dc.SetPen( wxPen(wxColour(255,0,0), 15) );
+            //dc.DrawLine( symbolArea.from, drawY, symbolArea.to, drawY );
         }
         
         dc.SetFont(oldfont);
@@ -331,6 +337,11 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
         {
             drawSilence(&dc, tickToX(trackID, currentLine, tick), silencesY, stringHeight,
                         m_silences[n].m_type, m_silences[n].m_triplet, m_silences[n].m_dotted);
+            
+            //DEBUG
+            //Range<int> symbolArea = tickToX(trackID, currentLine, tick);
+            //dc.SetPen( wxPen(wxColour(0,255,0), 15) );
+            //dc.DrawLine( symbolArea.from, silencesY, symbolArea.to, silencesY );
         }
     }
     
