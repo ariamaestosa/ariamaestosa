@@ -294,17 +294,10 @@ namespace AriaMaestosa
         assert( global_dc != NULL);
         
         const Range<int> x = x_converter->tickToX(tick);
+        
+        //FIXME: don't rely on from_tick being negative!! what's that crap
         if (x.from < 0) return; // this part of score is not printed (e.g. is in a repetition)
         assert(x.to != -1);
-        
-        //int y = silences_y;
-        
-        //if (type == 2)
-        //{
-        //    y = (int)round(silences_y + g_line_height/2);
-        //}
-        
-        
         
         g_printable->drawSilence(global_dc, x, silences_y, g_line_height, type, triplet, dotted);
     }
