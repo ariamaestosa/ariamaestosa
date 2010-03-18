@@ -118,34 +118,45 @@ void TablaturePrintable::addUsedTicks(const PrintLayoutMeasure& measure,  const 
     
     const Track* track = trackRef.getConstTrack();
     
-    if (first_note == -1 or last_note == -1) return; // empty measure
+    const bool empty_measure = (first_note == -1 or last_note == -1);
     
-    // find shortest note
-    int shortest = -1;
-    
-    for (int n=first_note; n<=last_note; n++)
+    if (not empty_measure)
     {
-        int noteLen = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
+        // find shortest note
+        int shortest = -1;
+        
+        for (int n=first_note; n<=last_note; n++)
+        {
+            int noteLen = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
 
-        if (noteLen < shortest or shortest == -1) shortest = noteLen;
-    }
+            if (noteLen < shortest or shortest == -1) shortest = noteLen;
+        }
+            
+        // FIXME: get this dynamically fron the font, don't hardcode it
+        const int characterWidth = 60;
+        // wxSize textSize2 = dc.GetTextExtent( wxT("T") );
         
-    // FIXME: get this dynamically fron the font, don't hardcode it
-    const int characterWidth = 60;
-    // wxSize textSize2 = dc.GetTextExtent( wxT("T") );
+        // ---- notes
+        for (int n=first_note; n<=last_note; n++)
+        {
+            const int tick   = track->getNoteStartInMidiTicks(n);
+            const int tickTo = track->getNoteEndInMidiTicks(n);
+            const int fret   = track->getNoteFretConst(n);
+            
+            //int noteLen = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
+            
+            ticks_relative_position.addSymbol( tick, tickTo, (fret > 9 ? characterWidth*2 : characterWidth), trackID );
+        }
+    }
     
-    // ---- notes
-    for (int n=first_note; n<=last_note; n++)
+    /*
+    std::cout << "--------\n";
+    for (int n=0; n<m_silences.size(); n++)
     {
-        const int tick   = track->getNoteStartInMidiTicks(n);
-        const int tickTo = track->getNoteEndInMidiTicks(n);
-        const int fret   = track->getNoteFretConst(n);
-        
-        //int noteLen = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
-        
-        ticks_relative_position.addSymbol( tick, tickTo, (fret > 9 ? characterWidth*2 : characterWidth), trackID );
+        std::cout << "TAB editor has silence tick " << m_silences[n].m_tick_range.from << "\n";
     }
-    
+    std::cout << "--------\n";
+     */
     // ---- silences
     ticks_relative_position.addSilenceSymbols(m_silences, trackID,
                                               firstTickInMeasure, lastTickInMeasure);
@@ -227,7 +238,7 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
             {
                 const int note   = editor->tuning[n]%12;
                 wxString label;
-                switch(note)
+                switch(note) //TODO: there is now a method to do this IIRC
                 {
                     case 0:  label = wxT("B");  break;
                     case 1:  label = wxT("A#"); break;
@@ -303,6 +314,25 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
         
         dc.SetFont(oldfont);
     }//next element 
+    
+    // ---- Silences
+    const int fromTick = getMeasureData()->firstTickInMeasure(currentLine.getFirstMeasure());
+    const int toTick   = getMeasureData()->lastTickInMeasure(currentLine.getLastMeasure());
+
+    const int silencesY = trackCoords->y0 + stringHeight; // second string
+    const int silenceAmount = m_silences.size();
+    for (int n=0; n<silenceAmount; n++)
+    {
+        const int tick = m_silences[n].m_tick_range.from;
+        
+        //std::cout << "TAB editor : silence @ " << tick << " (" << tick/960 << ")" << std::endl;
+        
+        if (tick >= fromTick and tick <= toTick)
+        {
+            drawSilence(&dc, tickToX(trackID, currentLine, tick), silencesY, stringHeight,
+                        m_silences[n].m_type, m_silences[n].m_triplet, m_silences[n].m_dotted);
+        }
+    }
     
     // ---- Debug guides
     if (PRINT_LAYOUT_HINTS)

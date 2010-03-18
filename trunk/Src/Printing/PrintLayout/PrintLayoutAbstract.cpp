@@ -377,6 +377,9 @@ void PrintLayoutAbstract::calculateRelativeLengths(std::vector<LayoutElement>& l
             RelativePlacementManager& ticks_relative_position = meas.ticks_placement_manager;
             
             const int trackAmount = meas.getTrackRefAmount();
+            
+            std::cout << "  -> collecting ticks from " << trackAmount << " tracks\n";
+
             for (int i=0; i<trackAmount; i++)
             {
                 EditorPrintable* editorPrintable = m_sequence->getEditorPrintable( i );
@@ -401,7 +404,7 @@ void PrintLayoutAbstract::calculateRelativeLengths(std::vector<LayoutElement>& l
                 layoutElements[n].width_in_print_units = LAYOUT_ELEMENT_MIN_WIDTH;
             }
             
-            std::cout << "++++ Layout element " << n << " is " << layoutElements[n].width_in_print_units
+            std::cout << "  -> Layout element " << n << " is " << layoutElements[n].width_in_print_units
                       << " unit(s) wide" << std::endl;
         }
         else if (layoutElements[n].getType() == REPEATED_RIFF)
