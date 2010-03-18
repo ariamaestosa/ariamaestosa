@@ -1123,13 +1123,13 @@ namespace AriaMaestosa
         g_silences_ticks.clear();
         if (f_clef)
         {
-            f_clef_analyser->renderSilences( &gatherSilenceCallback, 0, measureAmount-1,
-                                             -1 /* y not important at this point */ );
+            SilenceAnalyser::findSilences( &gatherSilenceCallback, f_clef_analyser, 0, measureAmount-1,
+                            -1 /* y not important at this point */ );
         }
         if (g_clef)
         {
-            g_clef_analyser->renderSilences( &gatherSilenceCallback, 0, measureAmount-1,
-                                             -1 /* y not important at this point */ );
+            SilenceAnalyser::findSilences( &gatherSilenceCallback, g_clef_analyser, 0, measureAmount-1,
+                            -1 /* y not important at this point */ );
         }
         this->silences_ticks = g_silences_ticks;
         g_silences_ticks.clear();
@@ -1586,13 +1586,13 @@ namespace AriaMaestosa
         {
             const int silences_y = LEVEL_TO_Y(middle_c_level + 4);
             global_line_height = lineHeight;
-            lineAnalyser->renderSilences( &renderSilenceCallback, first_measure, last_measure, silences_y );
+            SilenceAnalyser::findSilences( &renderSilenceCallback, lineAnalyser, first_measure, last_measure, silences_y );
         }
         else
         {
             const int silences_y = LEVEL_TO_Y(middle_c_level - 8);
             global_line_height = lineHeight;
-            lineAnalyser->renderSilences( &renderSilenceCallback, first_measure, last_measure, silences_y );
+            SilenceAnalyser::findSilences( &renderSilenceCallback, lineAnalyser, first_measure, last_measure, silences_y );
         }
         
     }

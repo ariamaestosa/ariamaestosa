@@ -3,6 +3,7 @@
 #include "GUI/MainFrame.h"
 #include "GUI/MainPane.h"
 #include "Dialogs/Preferences.h"
+#include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Pickers/TuningPicker.h"
 #include "Pickers/KeyPicker.h"
@@ -207,4 +208,17 @@ namespace AriaMaestosa
     } // end DisplayFrame namespace
     
     
+    bool aboutEqual(const float float1, const float float2)
+    {
+        float diff = float1 - float2;
+        if (diff < 0)        diff = -diff;
+        
+        if (diff < 1.0/64.0) return true;
+        else                 return false;
+    }
+
+    bool aboutEqual_tick(const int int1, const int int2)
+    {
+        return abs(int1 - int2) < getMeasureData()->beatLengthInTicks()/16;
+    }
 }

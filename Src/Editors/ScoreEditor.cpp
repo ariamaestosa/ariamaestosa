@@ -1315,7 +1315,8 @@ void ScoreEditor::renderScore(ScoreAnalyser* analyser, const int silences_y)
     // render silences
     const unsigned int first_visible_measure = getMeasureData()->measureAtPixel( Editor::getEditorXStart() );
     const unsigned int last_visible_measure = getMeasureData()->measureAtPixel( getXEnd() );
-    analyser->renderSilences( &renderSilence, first_visible_measure, last_visible_measure, silences_y );
+    
+    SilenceAnalyser::findSilences( &renderSilence, analyser, first_visible_measure, last_visible_measure, silences_y );
 
     // ------------------------- second note rendering pass -------------------
 
