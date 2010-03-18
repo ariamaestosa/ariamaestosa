@@ -16,6 +16,7 @@
 
 #include <iostream>
 #include "wx/wx.h"
+#include "wx/filename.h"
 
 #include "Midi/Track.h"
 #include "Printing/EditorPrintable.h"
@@ -264,3 +265,172 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
     
 // -------------------------------------------------------------------------------------------
 
+void EditorPrintable::renderArc(wxDC& dc, const int center_x, const int center_y,
+                                const int radius_x, const int radius_y)
+{
+    wxPoint points[] =
+    {
+        wxPoint(center_x + radius_x*cos(0.1), center_y + radius_y*sin(0.1)),
+        wxPoint(center_x + radius_x*cos(0.3), center_y + radius_y*sin(0.3)),
+        wxPoint(center_x + radius_x*cos(0.6), center_y + radius_y*sin(0.6)),
+        wxPoint(center_x + radius_x*cos(0.9), center_y + radius_y*sin(0.9)),
+        wxPoint(center_x + radius_x*cos(1.2), center_y + radius_y*sin(1.2)),
+        wxPoint(center_x + radius_x*cos(1.5), center_y + radius_y*sin(1.5)),
+        wxPoint(center_x + radius_x*cos(1.8), center_y + radius_y*sin(1.8)),
+        wxPoint(center_x + radius_x*cos(2.1), center_y + radius_y*sin(2.1)),
+        wxPoint(center_x + radius_x*cos(2.4), center_y + radius_y*sin(2.4)),
+        wxPoint(center_x +  radius_x*cos(2.7), center_y + radius_y*sin(2.7)),
+        wxPoint(center_x + radius_x*cos(3.0), center_y + radius_y*sin(3.0)),
+    };
+    dc.DrawSpline(11, points);
+    
+#ifdef DEBUG_TIES
+    dc.SetPen(*wxRED_PEN);
+    dc.DrawRectangle( points[0].x - 20, points[0].y - 20, 40, 40);
+    dc.SetPen(*wxGREEN_PEN);
+    dc.DrawRectangle( points[10].x - 20, points[10].y - 20, 40, 40);
+#endif
+}
+
+// -------------------------------------------------------------------------------------------
+
+void EditorPrintable::drawSilence(wxDC* dc, const Range<int> x, const int y, const int levelHeight,
+                                  const int type, const bool triplet, const bool dotted)
+{
+    const int x_center = (x.from + x.to)/2;
+    
+    // debug draw
+    //static int silenceShift = 0;
+    //silenceShift += 5;
+    //global_dc->DrawLine(x, silences_y + silenceShift % 25, x_to, silences_y + silenceShift % 25);
+    
+    //{ TODO : use again when repetition is properly back in
+    //    LayoutElement* temp = g_printable->getElementForMeasure(measure);
+    //    if (temp != NULL and (temp->getType() == REPEATED_RIFF or temp->getType() == SINGLE_REPEATED_MEASURE))
+    //        return; //don't render silences in repetions measure!
+    //}
+    
+    dc->SetBrush( *wxBLACK_BRUSH );
+    
+    int silence_center = -1;
+    int silence_radius = -1;
+    
+    if ( type == 1 )
+    {
+        dc->SetPen(  *wxTRANSPARENT_PEN  );
+        silence_radius = RECTANGULAR_SILENCE_SIZE/2;
+        
+        dc->DrawRectangle(/* x */ x.from + RECTANGULAR_SILENCE_LEFT_MARGIN,
+                                 /* y */ y,
+                                 /* w */ RECTANGULAR_SILENCE_SIZE,
+                                 /* h */ (int)round(levelHeight/2.2f));
+        silence_center = x.from + RECTANGULAR_SILENCE_LEFT_MARGIN + silence_radius;
+    }
+    else if ( type == 2 )
+    {
+        silence_radius = RECTANGULAR_SILENCE_SIZE/2;
+        dc->SetPen(  *wxTRANSPARENT_PEN  );
+        
+        const int h = (int)round(levelHeight/2.2f);
+        
+        dc->DrawRectangle(/* x */ x.from + RECTANGULAR_SILENCE_LEFT_MARGIN,
+                                 /* y */ y + levelHeight - h ,
+                                 /* w */ RECTANGULAR_SILENCE_SIZE,
+                                 /* h */ h);
+        silence_center = x.from + RECTANGULAR_SILENCE_LEFT_MARGIN + silence_radius;
+    }
+    else if ( type == 4 )
+    {
+        static wxBitmap silence( getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("silence4.png"), wxBITMAP_TYPE_PNG );
+        const float scale = 6.5f;
+        static wxBitmap silenceBigger = wxBitmap(silence.ConvertToImage().Scale(silence.GetWidth()*scale, silence.GetHeight()*scale));
+        
+        silence_radius = silenceBigger.GetWidth()/2;
+        // take the average of 'center-aligned' and 'right-aligned'
+        
+        // for dotted silences, place them much closer to the left area, to leave room at the right for the dot
+        if (dotted) silence_center = (x.from + silence_radius*2);
+        else        silence_center = (x_center + (x.to - silence_radius))/2;
+        
+        dc->DrawBitmap( silenceBigger, silence_center - silence_radius, y );
+        
+        // <debug>
+        //global_dc->SetPen(  wxPen( wxColour(255,0,0), 8 ) );
+        //global_dc->DrawLine( x.from, silences_y, x.to, silences_y);
+        // </debug>
+        
+    }
+    else if ( type == 8 )
+    {
+        static wxBitmap silence( getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("silence8.png"), wxBITMAP_TYPE_PNG );
+        const float scale = 6.5f;
+        static wxBitmap silenceBigger = wxBitmap(silence.ConvertToImage().Scale(silence.GetWidth()*scale, silence.GetHeight()*scale));
+        
+        silence_radius = silenceBigger.GetWidth()/2;
+        
+        if (dotted) silence_center = (x.to - silence_radius - 30);
+        else        silence_center = (x.to - silence_radius);
+        
+        dc->DrawBitmap( silenceBigger, silence_center - silence_radius, y + 20);
+        
+        // <debug>
+        //global_dc->SetPen(  wxPen( wxColour(255,0,0), 8 ) );
+        //global_dc->DrawLine( x.from, silences_y, x.to, silences_y);
+        // </debug>
+    }
+    else if ( type == 16 )
+    {
+        // TODO : use x_center
+        dc->SetPen(  wxPen( wxColour(0,0,0), 8 ) );
+        silence_radius = 25;
+        const int mx = x.to - silence_radius*2;
+        const int y = y + 80;
+        wxPoint points[] =
+        {
+            wxPoint(mx,     y+50),
+            wxPoint(mx+25,  y),
+            wxPoint(mx,     y),
+        };
+        dc->DrawSpline(3, points);
+        wxPoint points2[] =
+        {
+            wxPoint(mx+20,  y+5),
+            wxPoint(mx+50,  y-50),
+            wxPoint(mx+25,  y-50),
+        };
+        dc->DrawSpline(3, points2);
+        
+        dc->DrawCircle(mx, y, 6);
+        dc->DrawCircle(mx+25, y-50, 6);
+        
+        silence_center = mx + 50/2;
+    }
+    
+    // dotted
+    if (dotted)
+    {
+        dc->SetPen(  wxPen( wxColour(0,0,0), 12 ) );
+        dc->SetBrush( *wxBLACK_BRUSH );
+        wxPoint headLocation( silence_center + silence_radius + DOT_SIZE*2, y+30 );
+        dc->DrawEllipse( headLocation, wxSize(DOT_SIZE, DOT_SIZE) );
+    }
+    
+    // triplet
+    if (triplet)
+    {
+        wxPen tiePen( wxColour(0,0,0), 10 ) ;
+        dc->SetPen( tiePen );
+        dc->SetBrush( *wxTRANSPARENT_BRUSH );
+        
+        const int radius_x = 50;
+        
+        const int base_y = y + 150;
+        
+        static wxSize triplet_3_size = dc->GetTextExtent(wxT("3"));
+        
+        renderArc(*dc, silence_center - 9, base_y, radius_x, 80);
+        dc->SetTextForeground( wxColour(0,0,0) );
+        dc->DrawText( wxT("3"), silence_center - triplet_3_size.GetWidth()/3 - 11, base_y-20 );
+    }
+    
+}

@@ -48,9 +48,6 @@ namespace AriaMaestosa
      
     const int LINES_IN_A_SCORE = 5;
     
-    /** size of the dot, for dotted notes */
-    const int DOT_SIZE = 14;
-    
     /** Out of 1.0 (100%), how much of the height is reserved for the space between G and F clefs
       * (when both are present) FIXME: this should probably be an absolute margin, not a relative proportion?
       */
@@ -278,35 +275,6 @@ namespace AriaMaestosa
     }
     
     // -------------------------------------------------------------------------------------------
-    /** Renders an arc (half an ellipse) at the given coordinates */
-    void renderArc(wxDC& dc, const int center_x, const int center_y,
-                   const int radius_x, const int radius_y)
-    {
-        wxPoint points[] =
-        {
-            wxPoint(center_x + radius_x*cos(0.1), center_y + radius_y*sin(0.1)),
-            wxPoint(center_x + radius_x*cos(0.3), center_y + radius_y*sin(0.3)),
-            wxPoint(center_x + radius_x*cos(0.6), center_y + radius_y*sin(0.6)),
-            wxPoint(center_x + radius_x*cos(0.9), center_y + radius_y*sin(0.9)),
-            wxPoint(center_x + radius_x*cos(1.2), center_y + radius_y*sin(1.2)),
-            wxPoint(center_x + radius_x*cos(1.5), center_y + radius_y*sin(1.5)),
-            wxPoint(center_x + radius_x*cos(1.8), center_y + radius_y*sin(1.8)),
-            wxPoint(center_x + radius_x*cos(2.1), center_y + radius_y*sin(2.1)),
-            wxPoint(center_x + radius_x*cos(2.4), center_y + radius_y*sin(2.4)),
-            wxPoint(center_x +  radius_x*cos(2.7), center_y + radius_y*sin(2.7)),
-            wxPoint(center_x + radius_x*cos(3.0), center_y + radius_y*sin(3.0)),
-        };
-        dc.DrawSpline(11, points);
-        
-#ifdef DEBUG_TIES
-        dc.SetPen(*wxRED_PEN);
-        dc.DrawRectangle( points[0].x - 20, points[0].y - 20, 40, 40);
-        dc.SetPen(*wxGREEN_PEN);
-        dc.DrawRectangle( points[10].x - 20, points[10].y - 20, 40, 40);
-#endif
-    }
-    
-    // -------------------------------------------------------------------------------------------
 
     // leave a pointer to the dc for the callback
     // FIXME find cleaner way
@@ -315,12 +283,13 @@ namespace AriaMaestosa
     
     // leave height of lines for the renderSilence callback
     // FIXME find cleaner way
-    int global_line_height=5;
+    int g_line_height=5;
     
     // -------------------------------------------------------------------------------------------
     
-    void renderSilenceCallback(const int duration, const int tick, const int type, const int silences_y, const bool triplet,
-                               const bool dotted, const int dot_delta_x, const int dot_delta_y)
+    void renderSilenceCallback(const int duration, const int tick, const int type, const int silences_y,
+                               const bool triplet, const bool dotted, const int dot_delta_x,
+                               const int dot_delta_y)
     {
         assert( global_dc != NULL);
         
@@ -328,139 +297,16 @@ namespace AriaMaestosa
         if (x.from < 0) return; // this part of score is not printed (e.g. is in a repetition)
         assert(x.to != -1);
         
-        const int x_center = (x.from + x.to)/2;
+        //int y = silences_y;
         
-        // debug draw
-        //static int silenceShift = 0;
-        //silenceShift += 5;
-        //global_dc->DrawLine(x, silences_y + silenceShift % 25, x_to, silences_y + silenceShift % 25);
-                
-        //{ TODO : use again when repetition is properly back in
-        //    LayoutElement* temp = g_printable->getElementForMeasure(measure);
-        //    if (temp != NULL and (temp->getType() == REPEATED_RIFF or temp->getType() == SINGLE_REPEATED_MEASURE))
-        //        return; //don't render silences in repetions measure!
+        //if (type == 2)
+        //{
+        //    y = (int)round(silences_y + g_line_height/2);
         //}
         
-        global_dc->SetBrush( *wxBLACK_BRUSH );
         
-        int silence_center = -1;
-        int silence_radius = -1;
         
-        if ( type == 1 )
-        {
-            global_dc->SetPen(  *wxTRANSPARENT_PEN  );
-            silence_radius = RECTANGULAR_SILENCE_SIZE/2;
-            
-            global_dc->DrawRectangle(/* x */ x.from + RECTANGULAR_SILENCE_LEFT_MARGIN,
-                                     /* y */ silences_y,
-                                     /* w */ RECTANGULAR_SILENCE_SIZE,
-                                     /* h */ (int)round(global_line_height/2));
-            silence_center = x.from + RECTANGULAR_SILENCE_LEFT_MARGIN + silence_radius;
-        }
-        else if ( type == 2 )
-        {
-            silence_radius = RECTANGULAR_SILENCE_SIZE/2;
-            global_dc->SetPen(  *wxTRANSPARENT_PEN  );
-            
-            global_dc->DrawRectangle(/* x */ x.from + RECTANGULAR_SILENCE_LEFT_MARGIN,
-                                     /* y */ (int)round(silences_y + global_line_height/2),
-                                     /* w */ RECTANGULAR_SILENCE_SIZE,
-                                     /* h */ (int)round(global_line_height/2.0));
-            silence_center = x.from + RECTANGULAR_SILENCE_LEFT_MARGIN + silence_radius;
-        }
-        else if ( type == 4 )
-        {
-            static wxBitmap silence( getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("silence4.png"), wxBITMAP_TYPE_PNG );
-            const float scale = 6.5f;
-            static wxBitmap silenceBigger = wxBitmap(silence.ConvertToImage().Scale(silence.GetWidth()*scale, silence.GetHeight()*scale));
-            
-            silence_radius = silenceBigger.GetWidth()/2;
-            // take the average of 'center-aligned' and 'right-aligned'
-            
-            // for dotted silences, place them much closer to the left area, to leave room at the right for the dot
-            if (dotted) silence_center = (x.from + silence_radius*2);
-            else        silence_center = (x_center + (x.to - silence_radius))/2;
-            
-            global_dc->DrawBitmap( silenceBigger, silence_center - silence_radius, silences_y );
-            
-            // <debug>
-            //global_dc->SetPen(  wxPen( wxColour(255,0,0), 8 ) );
-            //global_dc->DrawLine( x.from, silences_y, x.to, silences_y);
-            // </debug>
-            
-        }
-        else if ( type == 8 )
-        {
-            static wxBitmap silence( getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("silence8.png"), wxBITMAP_TYPE_PNG );
-            const float scale = 6.5f;
-            static wxBitmap silenceBigger = wxBitmap(silence.ConvertToImage().Scale(silence.GetWidth()*scale, silence.GetHeight()*scale));
-            
-            silence_radius = silenceBigger.GetWidth()/2;
-            
-            if (dotted) silence_center = (x.to - silence_radius - 30);
-            else        silence_center = (x.to - silence_radius);
-            
-            global_dc->DrawBitmap( silenceBigger, silence_center - silence_radius, silences_y + 20);
-            
-            // <debug>
-            //global_dc->SetPen(  wxPen( wxColour(255,0,0), 8 ) );
-            //global_dc->DrawLine( x.from, silences_y, x.to, silences_y);
-            // </debug>
-        }
-        else if ( type == 16 )
-        {
-            // TODO : use x_center
-            global_dc->SetPen(  wxPen( wxColour(0,0,0), 8 ) );
-            silence_radius = 25;
-            const int mx = x.to - silence_radius*2;
-            const int y = silences_y + 80;
-            wxPoint points[] =
-            {
-                wxPoint(mx,     y+50),
-                wxPoint(mx+25,  y),
-                wxPoint(mx,     y),
-            };
-            global_dc->DrawSpline(3, points);
-            wxPoint points2[] =
-            {
-                wxPoint(mx+20,  y+5),
-                wxPoint(mx+50,  y-50),
-                wxPoint(mx+25,  y-50),
-            };
-            global_dc->DrawSpline(3, points2);
-            
-            global_dc->DrawCircle(mx, y, 6);
-            global_dc->DrawCircle(mx+25, y-50, 6);
-            
-            silence_center = mx + 50/2;
-        }
-        
-        // dotted
-        if (dotted)
-        {
-            global_dc->SetPen(  wxPen( wxColour(0,0,0), 12 ) );
-            global_dc->SetBrush( *wxBLACK_BRUSH );
-            wxPoint headLocation( silence_center + silence_radius + DOT_SIZE*2, silences_y+30 );
-            global_dc->DrawEllipse( headLocation, wxSize(DOT_SIZE, DOT_SIZE) );
-        }
-        
-        // triplet
-        if (triplet)
-        {
-            wxPen tiePen( wxColour(0,0,0), 10 ) ;
-            global_dc->SetPen( tiePen );
-            global_dc->SetBrush( *wxTRANSPARENT_BRUSH );
-            
-            const int radius_x = 50;
-            
-            const int base_y = silences_y + 150;
-            
-            static wxSize triplet_3_size = global_dc->GetTextExtent(wxT("3"));
-            
-            renderArc(*global_dc, silence_center - 9, base_y, radius_x, 80);
-            global_dc->SetTextForeground( wxColour(0,0,0) );
-            global_dc->DrawText( wxT("3"), silence_center - triplet_3_size.GetWidth()/3 - 11, base_y-20 );
-        }
+        g_printable->drawSilence(global_dc, x, silences_y, g_line_height, type, triplet, dotted);
     }
     
 #if 0
@@ -1531,13 +1377,13 @@ namespace AriaMaestosa
         if (f_clef)
         {
             const int silences_y = LEVEL_TO_Y(middle_c_level + 4);
-            global_line_height = lineHeight;
+            g_line_height = lineHeight;
             SilenceAnalyser::findSilences( &renderSilenceCallback, lineAnalyser, first_measure, last_measure, silences_y );
         }
         else
         {
             const int silences_y = LEVEL_TO_Y(middle_c_level - 8);
-            global_line_height = lineHeight;
+            g_line_height = lineHeight;
             SilenceAnalyser::findSilences( &renderSilenceCallback, lineAnalyser, first_measure, last_measure, silences_y );
         }
         
