@@ -109,10 +109,6 @@
 		950B3EFD1125DE60006C9AF1 /* en.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EE61125DE18006C9AF1 /* en.lproj */; };
 		950B3EFE1125DE60006C9AF1 /* de.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EE31125DE18006C9AF1 /* de.lproj */; };
 		950B3EFF1125DE60006C9AF1 /* it.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EEB1125DE18006C9AF1 /* it.lproj */; };
-		951F5F6611519F2E00722304 /* SilenceAnalyser.h in Headers */ = {isa = PBXBuildFile; fileRef = 951F5F6411519F2E00722304 /* SilenceAnalyser.h */; };
-		951F5F6711519F2F00722304 /* SilenceAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 951F5F6511519F2E00722304 /* SilenceAnalyser.cpp */; };
-		951F5F6811519F2F00722304 /* SilenceAnalyser.h in Headers */ = {isa = PBXBuildFile; fileRef = 951F5F6411519F2E00722304 /* SilenceAnalyser.h */; };
-		951F5F6911519F2F00722304 /* SilenceAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 951F5F6511519F2E00722304 /* SilenceAnalyser.cpp */; };
 		9568DE8010D54FE30089AAAF /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF9D1CB609ABE21F00CAF7A6 /* Carbon.framework */; };
 		9568DE8110D54FE30089AAAF /* System.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF9D1D5009ABE22B00CAF7A6 /* System.framework */; };
 		9568DE8210D54FE30089AAAF /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF85576109BDE24C00D9D1BC /* OpenGL.framework */; };
@@ -196,8 +192,6 @@
 		957119DE1125D8D300104BF5 /* KeyboardEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119081125D8D200104BF5 /* KeyboardEditor.h */; };
 		957119DF1125D8D300104BF5 /* RelativeXCoord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119091125D8D200104BF5 /* RelativeXCoord.cpp */; };
 		957119E01125D8D300104BF5 /* RelativeXCoord.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571190A1125D8D200104BF5 /* RelativeXCoord.h */; };
-		957119E11125D8D300104BF5 /* ScoreAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571190B1125D8D200104BF5 /* ScoreAnalyser.cpp */; };
-		957119E21125D8D300104BF5 /* ScoreAnalyser.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571190C1125D8D200104BF5 /* ScoreAnalyser.h */; };
 		957119E31125D8D300104BF5 /* ScoreEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571190D1125D8D200104BF5 /* ScoreEditor.cpp */; };
 		957119E41125D8D300104BF5 /* ScoreEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571190E1125D8D200104BF5 /* ScoreEditor.h */; };
 		957119E51125D8D300104BF5 /* GraphicalTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119101125D8D200104BF5 /* GraphicalTrack.cpp */; };
@@ -396,8 +390,6 @@
 		95711AA81125D8D300104BF5 /* KeyboardEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119081125D8D200104BF5 /* KeyboardEditor.h */; };
 		95711AA91125D8D300104BF5 /* RelativeXCoord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119091125D8D200104BF5 /* RelativeXCoord.cpp */; };
 		95711AAA1125D8D300104BF5 /* RelativeXCoord.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571190A1125D8D200104BF5 /* RelativeXCoord.h */; };
-		95711AAB1125D8D300104BF5 /* ScoreAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571190B1125D8D200104BF5 /* ScoreAnalyser.cpp */; };
-		95711AAC1125D8D300104BF5 /* ScoreAnalyser.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571190C1125D8D200104BF5 /* ScoreAnalyser.h */; };
 		95711AAD1125D8D300104BF5 /* ScoreEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571190D1125D8D200104BF5 /* ScoreEditor.cpp */; };
 		95711AAE1125D8D300104BF5 /* ScoreEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571190E1125D8D200104BF5 /* ScoreEditor.h */; };
 		95711AAF1125D8D300104BF5 /* GraphicalTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119101125D8D200104BF5 /* GraphicalTrack.cpp */; };
@@ -523,6 +515,14 @@
 		95711B271125D8D300104BF5 /* Singleton.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119931125D8D300104BF5 /* Singleton.h */; };
 		95711B281125D8D300104BF5 /* unit_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119941125D8D300104BF5 /* unit_test.cpp */; };
 		95711B291125D8D300104BF5 /* unit_test.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119951125D8D300104BF5 /* unit_test.h */; };
+		959693381153E612001E321B /* ScoreAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959693341153E612001E321B /* ScoreAnalyser.cpp */; };
+		959693391153E612001E321B /* ScoreAnalyser.h in Headers */ = {isa = PBXBuildFile; fileRef = 959693351153E612001E321B /* ScoreAnalyser.h */; };
+		9596933A1153E612001E321B /* SilenceAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959693361153E612001E321B /* SilenceAnalyser.cpp */; };
+		9596933B1153E612001E321B /* SilenceAnalyser.h in Headers */ = {isa = PBXBuildFile; fileRef = 959693371153E612001E321B /* SilenceAnalyser.h */; };
+		9596933C1153E612001E321B /* ScoreAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959693341153E612001E321B /* ScoreAnalyser.cpp */; };
+		9596933D1153E612001E321B /* ScoreAnalyser.h in Headers */ = {isa = PBXBuildFile; fileRef = 959693351153E612001E321B /* ScoreAnalyser.h */; };
+		9596933E1153E612001E321B /* SilenceAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959693361153E612001E321B /* SilenceAnalyser.cpp */; };
+		9596933F1153E612001E321B /* SilenceAnalyser.h in Headers */ = {isa = PBXBuildFile; fileRef = 959693371153E612001E321B /* SilenceAnalyser.h */; };
 		959FD68B1144493C00F22579 /* AddTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959FD6891144493C00F22579 /* AddTrack.cpp */; };
 		959FD68C1144493C00F22579 /* AddTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959FD68A1144493C00F22579 /* AddTrack.h */; };
 		959FD68D1144493C00F22579 /* AddTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959FD6891144493C00F22579 /* AddTrack.cpp */; };
@@ -669,8 +669,6 @@
 		950B3EEB1125DE18006C9AF1 /* it.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = it.lproj; path = "../OSX/mac-i18n/it.lproj"; sourceTree = SOURCE_ROOT; };
 		950B3EEE1125DE2F006C9AF1 /* aria_file.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = aria_file.icns; path = ../OSX/aria_file.icns; sourceTree = SOURCE_ROOT; };
 		950B3EEF1125DE2F006C9AF1 /* aria_midi_file.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = aria_midi_file.icns; path = ../OSX/aria_midi_file.icns; sourceTree = SOURCE_ROOT; };
-		951F5F6411519F2E00722304 /* SilenceAnalyser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SilenceAnalyser.h; sourceTree = "<group>"; };
-		951F5F6511519F2E00722304 /* SilenceAnalyser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SilenceAnalyser.cpp; sourceTree = "<group>"; };
 		9568DC6310D54CA50089AAAF /* DebugConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugConfig.xcconfig; sourceTree = SOURCE_ROOT; };
 		9568DC6810D54DC70089AAAF /* ReleaseConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReleaseConfig.xcconfig; sourceTree = SOURCE_ROOT; };
 		9568DD6310D54E340089AAAF /* DebugConfigNoGL.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugConfigNoGL.xcconfig; sourceTree = SOURCE_ROOT; };
@@ -749,8 +747,6 @@
 		957119081125D8D200104BF5 /* KeyboardEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeyboardEditor.h; path = ../Src/Editors/KeyboardEditor.h; sourceTree = SOURCE_ROOT; };
 		957119091125D8D200104BF5 /* RelativeXCoord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RelativeXCoord.cpp; path = ../Src/Editors/RelativeXCoord.cpp; sourceTree = SOURCE_ROOT; };
 		9571190A1125D8D200104BF5 /* RelativeXCoord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RelativeXCoord.h; path = ../Src/Editors/RelativeXCoord.h; sourceTree = SOURCE_ROOT; };
-		9571190B1125D8D200104BF5 /* ScoreAnalyser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreAnalyser.cpp; path = ../Src/Editors/ScoreAnalyser.cpp; sourceTree = SOURCE_ROOT; };
-		9571190C1125D8D200104BF5 /* ScoreAnalyser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreAnalyser.h; path = ../Src/Editors/ScoreAnalyser.h; sourceTree = SOURCE_ROOT; };
 		9571190D1125D8D200104BF5 /* ScoreEditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreEditor.cpp; path = ../Src/Editors/ScoreEditor.cpp; sourceTree = SOURCE_ROOT; };
 		9571190E1125D8D200104BF5 /* ScoreEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreEditor.h; path = ../Src/Editors/ScoreEditor.h; sourceTree = SOURCE_ROOT; };
 		957119101125D8D200104BF5 /* GraphicalTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GraphicalTrack.cpp; path = ../Src/GUI/GraphicalTrack.cpp; sourceTree = SOURCE_ROOT; };
@@ -912,6 +908,10 @@
 		95711BE41125D94900104BF5 /* white_corner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = white_corner.png; path = ../Resources/white_corner.png; sourceTree = SOURCE_ROOT; };
 		957C860F1127013D006AC7D3 /* Changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Changelog.txt; path = ../Changelog.txt; sourceTree = SOURCE_ROOT; };
 		957C861011270142006AC7D3 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = ../TODO.txt; sourceTree = SOURCE_ROOT; };
+		959693341153E612001E321B /* ScoreAnalyser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreAnalyser.cpp; path = ../Src/Analysers/ScoreAnalyser.cpp; sourceTree = SOURCE_ROOT; };
+		959693351153E612001E321B /* ScoreAnalyser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreAnalyser.h; path = ../Src/Analysers/ScoreAnalyser.h; sourceTree = SOURCE_ROOT; };
+		959693361153E612001E321B /* SilenceAnalyser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SilenceAnalyser.cpp; path = ../Src/Analysers/SilenceAnalyser.cpp; sourceTree = SOURCE_ROOT; };
+		959693371153E612001E321B /* SilenceAnalyser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SilenceAnalyser.h; path = ../Src/Analysers/SilenceAnalyser.h; sourceTree = SOURCE_ROOT; };
 		959FD6891144493C00F22579 /* AddTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AddTrack.cpp; path = ../Src/Actions/AddTrack.cpp; sourceTree = SOURCE_ROOT; };
 		959FD68A1144493C00F22579 /* AddTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddTrack.h; path = ../Src/Actions/AddTrack.h; sourceTree = SOURCE_ROOT; };
 		959FD6BD114451A400F22579 /* DeleteTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DeleteTrack.cpp; path = ../Src/Actions/DeleteTrack.cpp; sourceTree = SOURCE_ROOT; };
@@ -1081,12 +1081,8 @@
 				957119081125D8D200104BF5 /* KeyboardEditor.h */,
 				957119091125D8D200104BF5 /* RelativeXCoord.cpp */,
 				9571190A1125D8D200104BF5 /* RelativeXCoord.h */,
-				9571190B1125D8D200104BF5 /* ScoreAnalyser.cpp */,
-				9571190C1125D8D200104BF5 /* ScoreAnalyser.h */,
 				9571190D1125D8D200104BF5 /* ScoreEditor.cpp */,
 				9571190E1125D8D200104BF5 /* ScoreEditor.h */,
-				951F5F6511519F2E00722304 /* SilenceAnalyser.cpp */,
-				951F5F6411519F2E00722304 /* SilenceAnalyser.h */,
 			);
 			name = Editors;
 			path = ../Src/Editors;
@@ -1357,6 +1353,18 @@
 			path = ../Resources;
 			sourceTree = SOURCE_ROOT;
 		};
+		959693331153E612001E321B /* Analysers */ = {
+			isa = PBXGroup;
+			children = (
+				959693341153E612001E321B /* ScoreAnalyser.cpp */,
+				959693351153E612001E321B /* ScoreAnalyser.h */,
+				959693361153E612001E321B /* SilenceAnalyser.cpp */,
+				959693371153E612001E321B /* SilenceAnalyser.h */,
+			);
+			name = Analysers;
+			path = ../Src/Analysers;
+			sourceTree = SOURCE_ROOT;
+		};
 		EF9D1BEE09ABE00400CAF7A6 = {
 			isa = PBXGroup;
 			children = (
@@ -1391,6 +1399,7 @@
 				957119941125D8D300104BF5 /* unit_test.cpp */,
 				957119951125D8D300104BF5 /* unit_test.h */,
 				957118BD1125D8D200104BF5 /* Actions */,
+				959693331153E612001E321B /* Analysers */,
 				957118EF1125D8D200104BF5 /* Dialogs */,
 				957118FE1125D8D200104BF5 /* Editors */,
 				9571190F1125D8D200104BF5 /* GUI */,
@@ -1478,7 +1487,6 @@
 				95711AA61125D8D300104BF5 /* GuitarEditor.h in Headers */,
 				95711AA81125D8D300104BF5 /* KeyboardEditor.h in Headers */,
 				95711AAA1125D8D300104BF5 /* RelativeXCoord.h in Headers */,
-				95711AAC1125D8D300104BF5 /* ScoreAnalyser.h in Headers */,
 				95711AAE1125D8D300104BF5 /* ScoreEditor.h in Headers */,
 				95711AB01125D8D300104BF5 /* GraphicalTrack.h in Headers */,
 				95711AB21125D8D300104BF5 /* ImageProvider.h in Headers */,
@@ -1551,7 +1559,8 @@
 				959FD68E1144493C00F22579 /* AddTrack.h in Headers */,
 				959FD6C2114451A400F22579 /* DeleteTrack.h in Headers */,
 				95B90467114ADF23007F4778 /* PrintSetupDialog.h in Headers */,
-				951F5F6611519F2E00722304 /* SilenceAnalyser.h in Headers */,
+				959693391153E612001E321B /* ScoreAnalyser.h in Headers */,
+				9596933B1153E612001E321B /* SilenceAnalyser.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1596,7 +1605,6 @@
 				957119DC1125D8D300104BF5 /* GuitarEditor.h in Headers */,
 				957119DE1125D8D300104BF5 /* KeyboardEditor.h in Headers */,
 				957119E01125D8D300104BF5 /* RelativeXCoord.h in Headers */,
-				957119E21125D8D300104BF5 /* ScoreAnalyser.h in Headers */,
 				957119E41125D8D300104BF5 /* ScoreEditor.h in Headers */,
 				957119E61125D8D300104BF5 /* GraphicalTrack.h in Headers */,
 				957119E81125D8D300104BF5 /* ImageProvider.h in Headers */,
@@ -1669,7 +1677,8 @@
 				959FD68C1144493C00F22579 /* AddTrack.h in Headers */,
 				959FD6C0114451A400F22579 /* DeleteTrack.h in Headers */,
 				95B90465114ADF23007F4778 /* PrintSetupDialog.h in Headers */,
-				951F5F6811519F2F00722304 /* SilenceAnalyser.h in Headers */,
+				9596933D1153E612001E321B /* ScoreAnalyser.h in Headers */,
+				9596933F1153E612001E321B /* SilenceAnalyser.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1792,7 +1801,6 @@
 				95711AA51125D8D300104BF5 /* GuitarEditor.cpp in Sources */,
 				95711AA71125D8D300104BF5 /* KeyboardEditor.cpp in Sources */,
 				95711AA91125D8D300104BF5 /* RelativeXCoord.cpp in Sources */,
-				95711AAB1125D8D300104BF5 /* ScoreAnalyser.cpp in Sources */,
 				95711AAD1125D8D300104BF5 /* ScoreEditor.cpp in Sources */,
 				95711AAF1125D8D300104BF5 /* GraphicalTrack.cpp in Sources */,
 				95711AB11125D8D300104BF5 /* ImageProvider.cpp in Sources */,
@@ -1860,7 +1868,8 @@
 				959FD68D1144493C00F22579 /* AddTrack.cpp in Sources */,
 				959FD6C1114451A400F22579 /* DeleteTrack.cpp in Sources */,
 				95B90466114ADF23007F4778 /* PrintSetupDialog.cpp in Sources */,
-				951F5F6711519F2F00722304 /* SilenceAnalyser.cpp in Sources */,
+				959693381153E612001E321B /* ScoreAnalyser.cpp in Sources */,
+				9596933A1153E612001E321B /* SilenceAnalyser.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1904,7 +1913,6 @@
 				957119DB1125D8D300104BF5 /* GuitarEditor.cpp in Sources */,
 				957119DD1125D8D300104BF5 /* KeyboardEditor.cpp in Sources */,
 				957119DF1125D8D300104BF5 /* RelativeXCoord.cpp in Sources */,
-				957119E11125D8D300104BF5 /* ScoreAnalyser.cpp in Sources */,
 				957119E31125D8D300104BF5 /* ScoreEditor.cpp in Sources */,
 				957119E51125D8D300104BF5 /* GraphicalTrack.cpp in Sources */,
 				957119E71125D8D300104BF5 /* ImageProvider.cpp in Sources */,
@@ -1972,7 +1980,8 @@
 				959FD68B1144493C00F22579 /* AddTrack.cpp in Sources */,
 				959FD6BF114451A400F22579 /* DeleteTrack.cpp in Sources */,
 				95B90464114ADF23007F4778 /* PrintSetupDialog.cpp in Sources */,
-				951F5F6911519F2F00722304 /* SilenceAnalyser.cpp in Sources */,
+				9596933C1153E612001E321B /* ScoreAnalyser.cpp in Sources */,
+				9596933E1153E612001E321B /* SilenceAnalyser.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

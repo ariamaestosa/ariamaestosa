@@ -19,7 +19,7 @@
 
 #include <vector>
 #include "Range.h"
-#include "Editors/SilenceAnalyser.h"
+#include "Analysers/SilenceAnalyser.h"
 
 // For unit tests
 class RelativePlacementManager_TestAddingAndFindingInterestingTicks;

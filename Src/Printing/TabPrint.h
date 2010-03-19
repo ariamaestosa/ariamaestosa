@@ -20,7 +20,7 @@
 
 #include <wx/file.h>
 #include "Config.h"
-#include "Editors/SilenceAnalyser.h"
+#include "Analysers/SilenceAnalyser.h"
 #include "Printing/EditorPrintable.h"
 #include "Printing/PrintLayout/PrintLayoutAbstract.h"
 #include "Printing/PrintLayout/RelativePlacementManager.h"
