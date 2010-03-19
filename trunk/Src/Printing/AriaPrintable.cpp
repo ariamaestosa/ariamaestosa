@@ -31,6 +31,11 @@ namespace AriaMaestosa
         int                   m_orient;
         int                   m_page_amount;
         
+        int                   m_left_margin;
+        int                   m_top_margin;
+        int                   m_right_margin;
+        int                   m_bottom_margin;
+                                                
         static const int      m_brush_size = 15;
         
         
@@ -54,6 +59,11 @@ namespace AriaMaestosa
             m_page_amount    = -1; // unknown yet
             m_orient         = wxPORTRAIT;
             m_paper_id       = wxPAPER_LETTER; //TODO: remember user's favorite paper
+            
+            m_left_margin    = 16; // TODO: remember user's choice
+            m_top_margin     = 16;
+            m_right_margin   = 16;
+            m_bottom_margin  = 16;
         }
         
         // -----------------------------------------------------------------------------------------------------
@@ -75,8 +85,9 @@ namespace AriaMaestosa
             printdata.SetNoCopies(1);
             
             m_page_setup = wxPageSetupDialogData(printdata);
-            //page_setup.SetMarginTopLeft(wxPoint(16, 16));
-            //page_setup.SetMarginBottomRight(wxPoint(16, 16));
+            //FIXME: uncomment if I can get it to work
+            //m_page_setup.SetMarginTopLeft(wxPoint(m_left_margin, m_top_margin));
+            //m_page_setup.SetMarginBottomRight(wxPoint(m_right_margin, m_bottom_margin));
             
             if (showPageSetupDialog)
             {
@@ -84,9 +95,13 @@ namespace AriaMaestosa
                 wxPageSetupDialog dialog( NULL,  &m_page_setup );
                 if (dialog.ShowModal()==wxID_OK)
                 {
-                    m_page_setup = dialog.GetPageSetupData();
-                    m_paper_id   = m_page_setup.GetPaperId();
-                    m_orient     = m_page_setup.GetPrintData().GetOrientation();
+                    m_page_setup     = dialog.GetPageSetupData();
+                    m_paper_id       = m_page_setup.GetPaperId();
+                    m_orient         = m_page_setup.GetPrintData().GetOrientation();
+                    m_left_margin    = m_page_setup.GetMarginTopLeft().x;
+                    m_top_margin     = m_page_setup.GetMarginTopLeft().y;
+                    m_right_margin   = m_page_setup.GetMarginBottomRight().x;
+                    m_bottom_margin  = m_page_setup.GetMarginBottomRight().y;
                 }
                 else
                 {
@@ -111,7 +126,7 @@ namespace AriaMaestosa
             assert(small_side > 0);
             
             // here, the 31.5 factor was determined empirically
-            if (m_orient == wxPORTRAIT)
+            if (m_orient == wxPORTRAIT) // FIXME: http://trac.wxwidgets.org/ticket/3647 sounds relevant
             {
                 m_print_callback->m_unit_width  = (int)(small_side*31.5f);
                 m_print_callback->m_unit_height = (int)(large_side*31.5f);
@@ -204,6 +219,8 @@ namespace AriaMaestosa
             std::cout << "printable area : (" << x0 << ", " << y0 << ") to ("
                       << (x0 + bounds.width) << ", " << (y0 + bounds.height) << ")" << std::endl;
             
+            assertExpr(x0,            >, 0);
+            assertExpr(y0,            >, 0);
             assertExpr(bounds.width,  >, 0);
             assertExpr(bounds.height, >, 0);
             
@@ -428,6 +445,8 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
                               const int x0, const int y0)
 {    
     assert( MAGIC_NUMBER_OK() );
+    assertExpr(x0, >, 0);
+    assertExpr(y0, >, 0);
 
     const int w = m_unit_width;
     const int h = m_unit_height;
