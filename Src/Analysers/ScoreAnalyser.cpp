@@ -70,6 +70,8 @@ public:
 
     void doBeam(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* editor)
     {
+        assert( editor != NULL );
+        
         if (last_id == first_id) return; // note alone, no beaming to perform
 
         ScoreMidiConverter* converter = editor->getScoreMidiConverter();
@@ -370,7 +372,7 @@ void NoteRenderInfo::setY(const int newY)
 #pragma mark Score Analyser (public)
 #endif
 
-ScoreAnalyser::ScoreAnalyser(ScoreEditor* parent, int stemPivot)
+ScoreAnalyser::ScoreAnalyser(Editor* parent, int stemPivot)
 {
     ScoreAnalyser::editor = parent;
     ScoreAnalyser::stemPivot = stemPivot;
@@ -972,7 +974,7 @@ void ScoreAnalyser::processNoteBeam()
                 if (i>first_of_serie)
                 {
                     BeamGroup beam(this, first_of_serie, i);
-                    beam.doBeam(noteRenderInfo, editor);
+                    beam.doBeam(noteRenderInfo, dynamic_cast<ScoreEditor*>(editor));
                 }
 
                 // reset
