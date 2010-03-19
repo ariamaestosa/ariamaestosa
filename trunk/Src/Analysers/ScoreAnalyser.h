@@ -30,7 +30,7 @@
 
 #include <vector>
 
-#include "Editors/SilenceAnalyser.h"
+#include "Analysers/SilenceAnalyser.h"
 
 namespace AriaMaestosa
 {

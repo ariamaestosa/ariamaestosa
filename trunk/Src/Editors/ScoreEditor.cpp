@@ -18,7 +18,7 @@
 #include "Actions/AddNote.h"
 #include "Dialogs/Preferences.h"
 #include "Editors/ScoreEditor.h"
-#include "Editors/ScoreAnalyser.h"
+#include "Analysers/ScoreAnalyser.h"
 #include "Editors/RelativeXCoord.h"
 #include "GUI/ImageProvider.h"
 #include "Midi/Sequence.h"

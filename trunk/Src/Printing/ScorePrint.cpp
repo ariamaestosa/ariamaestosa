@@ -24,7 +24,7 @@
 
 #include "Midi/MeasureData.h"
 #include "Editors/ScoreEditor.h"
-#include "Editors/ScoreAnalyser.h"
+#include "Analysers/ScoreAnalyser.h"
 #include "IO/IOUtils.h"
 #include "Printing/ScorePrint.h"
 #include "Printing/AriaPrintable.h"
