@@ -47,7 +47,7 @@ NOTE: sorry, this is very raw :)
       - 1/32 silences need a proper image
       - when a track first appears, we need its clef, key, etc. (maybe even once a page). Right now it's only
         given if the said track starts playing at measure 1  (or in the first line)
-    - X notes not printed right
+    * X notes not printed right
     * Printing a score where empty *lines* (not tracks) will occur is not handled 100% well
     * Page setup options do not all stick on wxMac 2.8. Updating to 2.9 or patching will be necessary to
       retain the same options as previously when invoking the page setup dialog more than once.
@@ -56,7 +56,6 @@ NOTE: sorry, this is very raw :)
     * Don't force US Letter as the default page size, european users will hate me...
     ? allow setting font size, number of lines per page, zoom, etc...
     * long-term : in multi-track printing, some tracks need to be visually more tightly bound toghether (like tab and its score)
- - show silences in tabs too
  - printing : skip series of empty measures ?
  - very short song (a few measures) : nothing printed [can't reproduce anymore]
  - hiding empty lines should be configurable
