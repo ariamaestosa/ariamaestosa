@@ -171,7 +171,7 @@ namespace AriaMaestosa
     {
         friend class BeamGroup;
         
-        ScoreEditor* editor;
+        Editor* editor;
         int stemPivot;
         
         float stem_height;
@@ -184,7 +184,7 @@ namespace AriaMaestosa
         
         std::vector<NoteRenderInfo> noteRenderInfo;
         
-        ScoreAnalyser(ScoreEditor* parent, int stemPivot);
+        ScoreAnalyser(Editor* parent, int stemPivot);
         
         /**
          * Returns a new ScoreAnalyser, that contains a subset of the current one.

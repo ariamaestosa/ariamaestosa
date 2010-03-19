@@ -21,6 +21,7 @@
 #include "Midi/Sequence.h"
 #include "AriaCore.h"
 
+#include "Analysers/ScoreAnalyser.h"
 #include "Midi/MeasureData.h"
 #include "Editors/GuitarEditor.h"
 #include "IO/IOUtils.h"
@@ -53,20 +54,38 @@ TablaturePrintable::~TablaturePrintable()
 /** Implement method from EditorPrintable */
 void TablaturePrintable::earlySetup(const int trackID, Track* track)
 {
+    ScoreAnalyser analyser(editor, -1);
+    const int trackAmount = track->getNoteAmount();
+    for (int n=0; n<trackAmount; n++)
+    {
+        PitchSign note_sign;
+        const int noteLevel = 0;
+        
+        if (noteLevel == -1) continue;
+        const int noteLength = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
+        const int tick       = track->getNoteStartInMidiTicks(n);
+        
+        NoteRenderInfo currentNote(tick, noteLevel, noteLength, note_sign,
+                                   track->isNoteSelected(n), track->getNotePitchID(n));
+        
+        analyser.addToVector(currentNote);
+    }
+    analyser.putInTimeOrder();
+    
     class TabSilenceProxy : public SilenceAnalyser::INoteSource
     {
-        Track* m_track;
+        ScoreAnalyser* m_analyser;
     public:
         
-        TabSilenceProxy(Track* track)
+        TabSilenceProxy(ScoreAnalyser* analyser)
         {
-            m_track = track;
+            m_analyser = analyser;
         }
         
         /** @return the number of notes that can be obtained through this interface */
         virtual int getNoteCount() const
         {
-            return m_track->getNoteAmount();
+            return m_analyser->noteRenderInfo.size();
         }
         
         /**
@@ -75,7 +94,7 @@ void TablaturePrintable::earlySetup(const int trackID, Track* track)
          */
         virtual int getBeginMeasure(const int noteID) const
         {
-            return getMeasureData()->measureAtTick( m_track->getNoteStartInMidiTicks(noteID) );
+            return getMeasureData()->measureAtTick( m_analyser->noteRenderInfo[noteID].tick );
         }
         
         /**
@@ -84,7 +103,7 @@ void TablaturePrintable::earlySetup(const int trackID, Track* track)
          */
         virtual int  getStartTick(const int noteID) const
         {
-            return m_track->getNoteStartInMidiTicks(noteID);
+            return m_analyser->noteRenderInfo[noteID].tick;
         }
         
         /**
@@ -93,11 +112,11 @@ void TablaturePrintable::earlySetup(const int trackID, Track* track)
          */
         virtual int getEndTick(const int noteID) const
         {
-            return m_track->getNoteEndInMidiTicks(noteID);
+            return m_analyser->noteRenderInfo[noteID].tick + m_analyser->noteRenderInfo[noteID].tick_length;
         }
     };
     
-    TabSilenceProxy* adapter = new TabSilenceProxy(track);
+    TabSilenceProxy* adapter = new TabSilenceProxy(&analyser);
     m_silences =  SilenceAnalyser::findSilences( adapter,
                                                  0 /* first measure */,
                                                  getMeasureData()->getMeasureAmount()-1 /* last measure */,
