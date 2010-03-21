@@ -392,24 +392,30 @@ void EditorPrintable::drawSilence(wxDC* dc, const Range<int> x, const int y, con
         dc->SetPen(  wxPen( wxColour(0,0,0), 8 ) );
         silence_radius = 25;
         const int mx = x.to - silence_radius*2;
-        const int y = y + 80;
+        const int sy = y + 80;
+        
+        assertExpr(mx, >, -5000);
+        assertExpr(sy, >, -5000);
+
+        std::cout << "1/16th : x=" << mx << ", y=" << sy << "\n";
+        
         wxPoint points[] =
         {
-            wxPoint(mx,     y+50),
-            wxPoint(mx+25,  y),
-            wxPoint(mx,     y),
+            wxPoint(mx,     sy+50),
+            wxPoint(mx+25,  sy),
+            wxPoint(mx,     sy),
         };
         dc->DrawSpline(3, points);
         wxPoint points2[] =
         {
-            wxPoint(mx+20,  y+5),
-            wxPoint(mx+50,  y-50),
-            wxPoint(mx+25,  y-50),
+            wxPoint(mx+20,  sy+5),
+            wxPoint(mx+50,  sy-50),
+            wxPoint(mx+25,  sy-50),
         };
         dc->DrawSpline(3, points2);
         
-        dc->DrawCircle(mx, y, 6);
-        dc->DrawCircle(mx+25, y-50, 6);
+        dc->DrawCircle(mx,    sy, 6);
+        dc->DrawCircle(mx+25, sy-50, 6);
         
         silence_center = mx + 50/2;
     }
