@@ -56,7 +56,7 @@ TablaturePrintable::~TablaturePrintable()
 /** Implement method from EditorPrintable */
 void TablaturePrintable::earlySetup(const int trackID, Track* track)
 {
-    ScoreAnalyser analyser(editor, -1);
+    m_analyser = new ScoreAnalyser(editor, -1);
     const int trackAmount = track->getNoteAmount();
     for (int n=0; n<trackAmount; n++)
     {
@@ -70,9 +70,9 @@ void TablaturePrintable::earlySetup(const int trackID, Track* track)
         NoteRenderInfo currentNote(tick, noteLevel, noteLength, note_sign,
                                    track->isNoteSelected(n), track->getNotePitchID(n));
         
-        analyser.addToVector(currentNote);
+        m_analyser->addToVector(currentNote);
     }
-    analyser.putInTimeOrder();
+    m_analyser->putInTimeOrder();
     
     class TabSilenceProxy : public SilenceAnalyser::INoteSource
     {
@@ -118,7 +118,7 @@ void TablaturePrintable::earlySetup(const int trackID, Track* track)
         }
     };
     
-    TabSilenceProxy* adapter = new TabSilenceProxy(&analyser);
+    TabSilenceProxy* adapter = new TabSilenceProxy(m_analyser);
     m_silences =  SilenceAnalyser::findSilences( adapter,
                                                  0 /* first measure */,
                                                  getMeasureData()->getMeasureAmount()-1 /* last measure */,
@@ -132,17 +132,18 @@ void TablaturePrintable::addUsedTicks(const PrintLayoutMeasure& measure,  const 
                                       const MeasureTrackReference& trackRef,
                                       RelativePlacementManager& ticks_relative_position)
 {
-    const int first_note = trackRef.getFirstNote();
-    const int last_note  = trackRef.getLastNote();
+    //const int first_note = trackRef.getFirstNote();
+    //const int last_note  = trackRef.getLastNote();
     const int firstTickInMeasure = measure.getFirstTick();
     const int lastTickInMeasure  = measure.getLastTick();
     
-    const Track* track = trackRef.getConstTrack();
+    //const Track* track = trackRef.getConstTrack();
     
-    const bool empty_measure = (first_note == -1 or last_note == -1);
+    //const bool empty_measure = (first_note == -1 or last_note == -1);
     
-    if (not empty_measure)
+    //if (not empty_measure)
     {
+        /*
         // find shortest note
         int shortest = -1;
         
@@ -152,12 +153,29 @@ void TablaturePrintable::addUsedTicks(const PrintLayoutMeasure& measure,  const 
 
             if (noteLen < shortest or shortest == -1) shortest = noteLen;
         }
+         */
             
         // FIXME: get this dynamically fron the font, don't hardcode it
-        const int characterWidth = AriaPrintable::getCurrentPrintable()->getCharacterWidth() + CHAR_MARGIN;
+        const int characterWidth = AriaPrintable::getCurrentPrintable()->getCharacterWidth();
         // wxSize textSize2 = dc.GetTextExtent( wxT("T") );
         
         // ---- notes
+        const int noteAmount = m_analyser->getNoteCount();
+        for (int n=0; n<noteAmount; n++)
+        {
+            const int tick   = m_analyser->getStartTick(n);
+            
+            if (tick < firstTickInMeasure or tick >= lastTickInMeasure) continue;
+            
+            const int tickTo = m_analyser->getEndTick(n);
+            //const int fret   = m_analyser->getNoteFretConst(n);
+
+            //ticks_relative_position.addSymbol( tick, tickTo,
+            //                                  (fret > 9 ? characterWidth*2 + CHAR_MARGIN : characterWidth + CHAR_MARGIN), trackID );
+            ticks_relative_position.addSymbol( tick, tickTo, characterWidth*2 + CHAR_MARGIN, trackID );
+        }
+        
+        /*
         for (int n=first_note; n<=last_note; n++)
         {
             const int tick   = track->getNoteStartInMidiTicks(n);
@@ -169,6 +187,7 @@ void TablaturePrintable::addUsedTicks(const PrintLayoutMeasure& measure,  const 
             ticks_relative_position.addSymbol( tick, tickTo,
                                               (fret > 9 ? characterWidth*2 : characterWidth), trackID );
         }
+         */
     }
     
     /*
