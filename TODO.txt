@@ -65,6 +65,8 @@ NOTE: sorry, this is very raw :)
  * Keyboard editor : show current key in left area
  * In score and tab editors, show more clearly where you can click to hear the note
  
+ * Allow 8va to be applied to only some parts of track
+ 
  * Custom Key editor :
     - make it actually work
     - save to .aria file and load back

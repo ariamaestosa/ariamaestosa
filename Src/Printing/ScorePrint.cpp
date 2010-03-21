@@ -1013,13 +1013,20 @@ namespace AriaMaestosa
         const int elamount = line.getLayoutElementCount();
         for (int n=0; n<elamount; n++)
         {
+            LayoutElement& currElem = line.getLayoutElement(n);
+            
             drawVerticalDivider(&line.getLayoutElement(n), measure_dividers_from_y, measure_dividers_to_y);
             
-            if (line.getLayoutElement(n).getType() == TIME_SIGNATURE_EL)
+            if (currElem.getType() == TIME_SIGNATURE_EL)
             {
-                EditorPrintable::renderTimeSignatureChange(&line.getLayoutElement(n),
+                EditorPrintable::renderTimeSignatureChange(&currElem,
                                                            LEVEL_TO_Y(first_score_level),
                                                            LEVEL_TO_Y(last_score_level));
+            }
+            //FIXME: it's maybe unclean to require derivated classes to check this member
+            if (currElem.render_end_bar)
+            {
+                drawVerticalDivider(&currElem, measure_dividers_from_y, measure_dividers_to_y, true /* at end */);
             }
         }
         
