@@ -33,6 +33,8 @@
 
 using namespace AriaMaestosa;
  
+const int CHAR_MARGIN = 35;
+
 // ------------------------------------------------------------------------------------------------------------
 
 TablaturePrintable::TablaturePrintable(Track* track) : EditorPrintable()
@@ -152,7 +154,7 @@ void TablaturePrintable::addUsedTicks(const PrintLayoutMeasure& measure,  const 
         }
             
         // FIXME: get this dynamically fron the font, don't hardcode it
-        const int characterWidth = 60;
+        const int characterWidth = AriaPrintable::getCurrentPrintable()->getCharacterWidth() + CHAR_MARGIN;
         // wxSize textSize2 = dc.GetTextExtent( wxT("T") );
         
         // ---- notes
