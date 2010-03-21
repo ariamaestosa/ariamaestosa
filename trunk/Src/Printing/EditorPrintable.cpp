@@ -89,7 +89,8 @@ void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0,
 
 // -------------------------------------------------------------------------------------------
     
-// FIXME : unclean to pass trackID and LayoutLine as argument!
+// FIXME: this method gotta go, it's a weird mixture of everything (data, rendering, etc...)
+//        and ScorePrint pretty much ignores it, just calls in repeatedly to get it out of the way...
 LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, LayoutLine& layoutLine, const int currentLayoutElement)
 {
     const LineTrackRef& lineTrackRef = layoutLine.getLineTrackRef(trackID);
@@ -175,18 +176,7 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
         dc->SetTextForeground( wxColour(0,0,0) );
     }
     
-    //FIXME: this can't go here, because this subclass doesn't have the information about
-    //       which parts of the allocated area need the line (depending on editor type,
-    //       it's not necessarily the full vertical range)
-    if (currElem.render_end_bar)
-    {
-        drawVerticalDivider(&currElem, trackCoords->y0, trackCoords->y1, true /* at end */);
-    }
-    
-    
-    // close line with vertical bar
-    //drawVerticalDivider(trackCoords->x1, trackCoords->y0, trackCoords->y1);
-    
+
     return &currElem;
 }
 

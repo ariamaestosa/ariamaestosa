@@ -258,6 +258,10 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
         
         drawVerticalDivider(currentElement, trackCoords->y0, trackCoords->y1);
         
+        if (currentElement->render_end_bar)
+        {
+            drawVerticalDivider(currentElement, trackCoords->y0, trackCoords->y1, true /* at end */);
+        }
         if (currentElement->getType() == LINE_HEADER)
         {            
             dc.SetFont( wxFont(100,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD) );
