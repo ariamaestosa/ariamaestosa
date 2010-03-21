@@ -28,6 +28,7 @@
 namespace AriaMaestosa
 {
     class GuitarEditor;
+    class ScoreAnalyser;
     
     /** Specialization to print tablatures */
     class TablaturePrintable : public EditorPrintable
@@ -36,6 +37,8 @@ namespace AriaMaestosa
         GuitarEditor* editor;
         
         std::vector<SilenceAnalyser::SilenceInfo> m_silences;
+        
+        OwnerPtr<ScoreAnalyser> m_analyser;
         
     public:
         TablaturePrintable(Track* track_arg);
