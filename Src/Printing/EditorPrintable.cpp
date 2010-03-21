@@ -91,7 +91,8 @@ void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0,
     
 // FIXME: this method gotta go, it's a weird mixture of everything (data, rendering, etc...)
 //        and ScorePrint pretty much ignores it, just calls in repeatedly to get it out of the way...
-LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, LayoutLine& layoutLine, const int currentLayoutElement)
+LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, LayoutLine& layoutLine,
+                                                        const int currentLayoutElement)
 {
     const LineTrackRef& lineTrackRef = layoutLine.getLineTrackRef(trackID);
     const TrackCoords* trackCoords = lineTrackRef.m_track_coords.raw_ptr;
@@ -99,7 +100,8 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
     
     if (!(currentLayoutElement < layoutLine.getLayoutElementCount()))
     {
-        //std::cout << "---- returning NULL because we have a total of " << layoutElementsAmount << " elements\n";
+        //std::cout << "---- returning NULL because we have a total of " << layoutElementsAmount
+        //          << " elements\n";
         return NULL;
     }
     

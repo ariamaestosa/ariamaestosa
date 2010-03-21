@@ -128,7 +128,7 @@ LayoutLine::LayoutLine(PrintableSequence* parent, ptr_vector<PrintLayoutMeasure,
     {
         LineTrackRef* newTrack = new LineTrackRef(this, trackID, m_printable->getTrack(trackID), trackID==0);
         
-        m_track_render_info.push_back(newTrack);
+        m_tracks.push_back(newTrack);
     }
 }
 
@@ -221,7 +221,7 @@ int LayoutLine::calculateHeight()
     const int trackAmount = getTrackAmount();
     for (int n=0; n<trackAmount; n++)
     {
-        const int this_height = m_printable->getEditorPrintable(n)->calculateHeight(n, m_track_render_info[n], *this);
+        const int this_height = m_printable->getEditorPrintable(n)->calculateHeight(n, m_tracks[n], *this);
         
         // add space between tracks
         if (this_height > 0 and n > 0)
@@ -229,9 +229,9 @@ int LayoutLine::calculateHeight()
             m_level_height += INTER_TRACK_MARGIN_LEVELS;
         }
         
-        m_track_render_info[n].m_level_from = m_level_height;
-        m_level_height += this_height;
-        m_track_render_info[n].m_level_to = m_level_height;
+        m_tracks[n].m_level_from  = m_level_height;
+        m_level_height           += this_height;
+        m_tracks[n].m_level_to    = m_level_height;
     }
     
     return m_level_height;
