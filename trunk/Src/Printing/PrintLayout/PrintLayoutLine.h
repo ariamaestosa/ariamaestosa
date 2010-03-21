@@ -151,7 +151,7 @@ namespace AriaMaestosa
     {
         friend class AriaPrintable;
         
-        ptr_vector<LineTrackRef> m_track_render_info;
+        ptr_vector<LineTrackRef> m_tracks;
         ptr_vector<PrintLayoutMeasure, REF> m_measures;
         
         PrintableSequence* m_printable;
@@ -186,8 +186,8 @@ namespace AriaMaestosa
         const LineTrackRef& getLineTrackRef(const int trackID) const
         {
             assertExpr(trackID,>=,0);
-            assertExpr(trackID,<,(int)m_track_render_info.size());
-            return m_track_render_info[trackID];
+            assertExpr(trackID,<,(int)m_tracks.size());
+            return m_tracks[trackID];
         }
         
         int getLayoutElementCount() const { return m_layout_elements.size(); }
@@ -248,7 +248,7 @@ namespace AriaMaestosa
           */
         void setTrackCoords(const int trackID, TrackCoords* coords)
         {
-            m_track_render_info[trackID].m_track_coords = coords;
+            m_tracks[trackID].m_track_coords = coords;
         }
     };
     
