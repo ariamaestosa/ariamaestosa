@@ -20,6 +20,7 @@
 
 #include <vector>
 #include "Printing/PrintLayout/PrintLayoutAbstract.h"
+#include "Printing/wxEasyPrintWrapper.h"
 #include "wx/wx.h"
 #include "wx/print.h"
 
@@ -28,14 +29,13 @@ const bool PRINT_LAYOUT_HINTS = false;
 namespace AriaMaestosa
 {
     class PrintableSequence;    
-    class QuickPrint;
     
     class AriaPrintable
     {
         DECLARE_MAGIC_NUMBER();
         
         friend class AriaMaestosa::LayoutLine;
-        friend class AriaMaestosa::QuickPrint;
+        friend class AriaMaestosa::wxEasyPrintWrapper;
 
         PrintableSequence* m_seq;
 
@@ -43,14 +43,11 @@ namespace AriaMaestosa
         wxFont m_title_font;
         wxFont m_subtitle_font;
         
-        /** This is set by QuickPrint during its setup */
-        int m_unit_width, m_unit_height;
-        
         /** There can only be one instance at a time. Holds the current instance, or NULL if there is none */
         static AriaPrintable* m_current_printable;
         
-        /** The QuickPrint object used to wrap some of the wx printing framework (FIXME: clean this) */
-        OwnerPtr<QuickPrint> m_printer_manager;
+        /** The object used to wrap some of the wx printing framework */
+        OwnerPtr<wxEasyPrintWrapper> m_printer_manager;
         
         /** height of font used for measure numbers, tablature fret numbers, etc... */
         int m_font_height;
@@ -72,14 +69,16 @@ namespace AriaMaestosa
         int m_usable_area_height;
         
         /**
-         * Called (by QuickPrint) when it is time to print a page.
+         * Called (by wxEasyPrintWrapper) when it is time to print a page.
          *
          * @param pageNum      ID of the page we want to print
          * @param dc           The wxDC onto which stuff to print is to be rendered
          * @param x0           x origin coordinate from which drawing can occur
          * @param y0           y origin coordinate from which drawing can occur
          */
-        void printPage(const int pageNum, wxDC& dc, const int x0, const int y0);
+        void printPage(const int pageNum, wxDC& dc,
+                       const int x0, const int y0,
+                       const int x1, const int y1);
         
     public:
         
@@ -109,13 +108,13 @@ namespace AriaMaestosa
           * @return the number of units used horizontally in the coordinate system set-up for
           * the kind of paper that is selected.
           */
-        int getUnitWidth () const { assert(m_unit_width != -1); return m_unit_width;  }
+        int getUnitWidth () const { return m_printer_manager->getUnitWidth();  }
         
         /** 
           * @return the number of units used vertically in the coordinate system set-up for
           * the kind of paper that is selected.
           */
-        int getUnitHeight() const { assert(m_unit_height != -1); return m_unit_height; }
+        int getUnitHeight() const { return m_printer_manager->getUnitHeight(); }
         
         /** 
           * There can only be one object of type AriaPrintable at any given time.

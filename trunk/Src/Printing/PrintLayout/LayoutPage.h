@@ -34,7 +34,7 @@ namespace AriaMaestosa
         
         LayoutPage()
         {
-            INIT_MAGIC_NUMBER();
+            ;
         }
 
         const int getLineCount() const

@@ -146,8 +146,6 @@ void PrintLayoutNumeric::setLineCoordsAndDivideItsSpace(LayoutLine& line, const 
                                                         const int x1, const int y1)
 {
     const int trackAmount = line.getTrackAmount();
-    assertExpr(x0, >, 0);
-    assertExpr(y0, >, 0);
 
     std::cout << "Line given coords " << x0 << ", " << y0 << " to " << x1 << ", " << y1 << std::endl;
     std::cout << "==setLineCoordsAndDivideItsSpace==\n";
@@ -213,7 +211,6 @@ void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, float notation_area_
     assert(notation_area_y_from >= 0);
     assert(notation_area_h > 0);
     assert(pageHeight > 0);
-    assertExpr(x0, >, 0);
     
     const int lineAmount = page.getLineCount();
 

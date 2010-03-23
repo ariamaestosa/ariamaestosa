@@ -726,10 +726,10 @@ namespace AriaMaestosa
             }
         }
         
-        std::cout << PRINT_VAR(scoreData->extra_lines_above_g_score) <<
-                     PRINT_VAR(scoreData->extra_lines_under_g_score) <<
-                     PRINT_VAR(scoreData->extra_lines_above_f_score) <<
-                     PRINT_VAR(scoreData->extra_lines_under_f_score) << std::endl;
+        //std::cout << PRINT_VAR(scoreData->extra_lines_above_g_score) <<
+        //             PRINT_VAR(scoreData->extra_lines_under_g_score) <<
+        //             PRINT_VAR(scoreData->extra_lines_above_f_score) <<
+        //             PRINT_VAR(scoreData->extra_lines_under_f_score) << std::endl;
         
         // Split space between both scores (one may need more than the other)
         scoreData->first_clef_proportion  = (1.0f - MARGIN_PROPORTION_BETWEEN_CLEFS) / 2.0f;
