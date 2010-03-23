@@ -596,7 +596,10 @@ void PrintLayoutAbstract::addLayoutInformation(ptr_vector<Track, REF>& tracks,
                                                ptr_vector<LayoutPage>& layoutPages,
                                                const bool checkRepetitions_bool)
 {    
+    assert( MAGIC_NUMBER_OK_FOR(&tracks) );
+
     generateMeasures(tracks);
+    
     calculateLayoutElements(tracks, layoutPages, checkRepetitions_bool);
 }
 

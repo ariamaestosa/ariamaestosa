@@ -58,6 +58,8 @@ bool PrintableSequence::addTrack(Track* track, EditorType mode)
 
 void PrintableSequence::calculateLayout(bool checkRepetitions)
 {
+    assert( MAGIC_NUMBER_OK_FOR(&m_tracks) );
+    
     m_abstract_layout_manager = new PrintLayoutAbstract(this);
     m_abstract_layout_manager->addLayoutInformation(m_tracks, layoutPages /* out */, checkRepetitions);
     
@@ -85,7 +87,6 @@ void PrintableSequence::printLinesInArea(wxDC& dc, LayoutPage& page,
     
     assert(notation_area_h > 0);
     assert(pageHeight > 0);
-    assertExpr(x0, >, 0);
     //assertExpr(notation_area_y0 + notation_area_h, <=, pageHeight);
 
     // ---- Give each track an area on the page

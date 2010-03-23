@@ -172,6 +172,7 @@ namespace AriaMaestosa
         
     public:
         LEAK_CHECK();
+        DECLARE_MAGIC_NUMBER();
         
         Editor(Track* track);
         virtual ~Editor();

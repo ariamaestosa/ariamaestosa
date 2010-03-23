@@ -18,290 +18,7 @@
 
 using namespace AriaMaestosa;
 
-namespace AriaMaestosa
-{
-    
-    const int MARGIN_UNDER_PAGE_HEADER = 200;
 
-    class QuickPrint : public wxPrintout
-    {
-        AriaPrintable*        m_print_callback;
-        wxPageSetupDialogData m_page_setup;
-        wxPaperSize           m_paper_id;
-        int                   m_orient;
-        int                   m_page_amount;
-        
-        int                   m_left_margin;
-        int                   m_top_margin;
-        int                   m_right_margin;
-        int                   m_bottom_margin;
-                                                
-        static const int      m_brush_size = 15;
-        
-        
-    public:
- 
-        LEAK_CHECK();
-
-#if 0
-#pragma mark -
-#pragma mark QuickPrint : public interface
-#endif
-        
-        // -----------------------------------------------------------------------------------------------------
-        
-        /** basic constructor. call early, as this constructor does not do anything beyond
-          * some basic initialisation.
-          */
-        QuickPrint(wxString title, AriaPrintable* printCallBack) : wxPrintout( title )
-        {
-            m_print_callback = printCallBack;
-            m_page_amount    = -1; // unknown yet
-            m_orient         = wxPORTRAIT;
-            m_paper_id       = wxPAPER_LETTER; //TODO: remember user's favorite paper
-            
-            m_left_margin    = 16; // TODO: remember user's choice
-            m_top_margin     = 16;
-            m_right_margin   = 16;
-            m_bottom_margin  = 16;
-        }
-        
-        // -----------------------------------------------------------------------------------------------------
-        
-        /** 
-          * Perform print setup (paper size, orientation, etc...), with our without dialog.
-          * @postcondition sets m_unit_width and m_unit_height in AriaPrintable, as well
-          *                as usable_area_y* (FIXME: ugly design)
-          */
-        bool performPageSetup(const bool showPageSetupDialog=false)
-        {
-            std::cout << "Showing PAGE SETUP dialog with paper " << wxThePrintPaperDatabase->ConvertIdToName( m_paper_id ).mb_str() << "\n";
-            
-            
-            wxPrintData printdata;
-            printdata.SetPrintMode( wxPRINT_MODE_PRINTER );
-            printdata.SetOrientation( m_orient ); // wxPORTRAIT, wxLANDSCAPE
-            printdata.SetPaperId( m_paper_id );
-            printdata.SetNoCopies(1);
-            
-            m_page_setup = wxPageSetupDialogData(printdata);
-            //FIXME: uncomment if I can get it to work
-            //m_page_setup.SetMarginTopLeft(wxPoint(m_left_margin, m_top_margin));
-            //m_page_setup.SetMarginBottomRight(wxPoint(m_right_margin, m_bottom_margin));
-            
-            if (showPageSetupDialog)
-            {
-                // let user change default values if he wishes to
-                wxPageSetupDialog dialog( NULL,  &m_page_setup );
-                if (dialog.ShowModal()==wxID_OK)
-                {
-                    m_page_setup     = dialog.GetPageSetupData();
-                    m_paper_id       = m_page_setup.GetPaperId();
-                    m_orient         = m_page_setup.GetPrintData().GetOrientation();
-                    m_left_margin    = m_page_setup.GetMarginTopLeft().x;
-                    m_top_margin     = m_page_setup.GetMarginTopLeft().y;
-                    m_right_margin   = m_page_setup.GetMarginBottomRight().x;
-                    m_bottom_margin  = m_page_setup.GetMarginBottomRight().y;
-                }
-                else
-                {
-                    std::cout << "user canceled at page setup dialog" << std::endl;
-                    return false;
-                }
-            }
-            
-            assert(m_paper_id != wxPAPER_NONE);
-            assert(m_page_setup.GetPaperId() != wxPAPER_NONE);
-            
-            wxPoint marginTopLeft     = m_page_setup.GetMarginTopLeft();
-            wxPoint marginBottomRight = m_page_setup.GetMarginBottomRight();
-
-            // ---- set-up coordinate system however we want
-            // we'll use it when drawing
-            wxSize paperSize = m_page_setup.GetPaperSize();
-            int large_side = std::max(paperSize.GetWidth(), paperSize.GetHeight());
-            int small_side = std::min(paperSize.GetWidth(), paperSize.GetHeight());
-            
-            assert(large_side > 0);
-            assert(small_side > 0);
-            
-            // here, the 31.5 factor was determined empirically
-            if (m_orient == wxPORTRAIT) // FIXME: http://trac.wxwidgets.org/ticket/3647 sounds relevant
-            {
-                m_print_callback->m_unit_width  = (int)(small_side*31.5f);
-                m_print_callback->m_unit_height = (int)(large_side*31.5f);
-            }
-            else
-            {
-                m_print_callback->m_unit_width  = (int)(large_side*31.5f);
-                m_print_callback->m_unit_height = (int)(small_side*31.5f);
-            }
-            
-            assert(m_print_callback->m_unit_width  > 0);
-            assert(m_print_callback->m_unit_height > 0);
-            
-            
-            const int height = m_print_callback->m_unit_height;
-            
-            //std::cout << PRINT_VAR(height) << " - " << PRINT_VAR(m_print_callback->m_title_font_height)
-            //          << " - " <<  PRINT_VAR(MARGIN_UNDER_PAGE_HEADER) << std::endl;
-            //std::cout << PRINT_VAR(height) << " - " << PRINT_VAR(m_print_callback->m_subtitle_font_height)
-            //          << " - " <<  PRINT_VAR(MARGIN_UNDER_PAGE_HEADER) << std::endl;
-            m_print_callback->m_usable_area_height_page_1 = height - m_print_callback->m_title_font_height - MARGIN_UNDER_PAGE_HEADER;
-            m_print_callback->m_usable_area_height        = height - m_print_callback->m_subtitle_font_height - MARGIN_UNDER_PAGE_HEADER;
-            
-            std::cout << "Calculating 'm_usable_area_height' with height=" << height << "\n";
-            
-            assert(m_print_callback->m_usable_area_height_page_1 > 0);
-            assert(m_print_callback->m_usable_area_height > 0);
-            return true;
-        }
-        
-        // -----------------------------------------------------------------------------------------------------
-
-        wxPrintData getPrintData()
-        {
-            return m_page_setup.GetPrintData();
-        }
-        
-        // -----------------------------------------------------------------------------------------------------
-
-        /**
-          * @return a string that summarises the current page setup information
-          */
-        wxString getPageSetupSummary() const
-        {
-            // printdata.SetOrientation( m_orient ); // wxPORTRAIT, wxLANDSCAPE
-            // printdata.SetPaperId( m_paper_id );
-            return wxThePrintPaperDatabase->ConvertIdToName( m_paper_id ) + wxT(", ") +
-                   //I18N: for printing (page orientation)
-                   (m_orient == wxPORTRAIT ? _("Portrait") : _("Landscape"));
-        }
-        
-        // -----------------------------------------------------------------------------------------------------
-        
-        /** Call AFTER the PrintableSequence had its layout calculated.
-          * Call BEFORE trying to actually print this wxPrintout.
-          */
-        void setPrintableSequence(PrintableSequence* printableSequence)
-        {
-            assert(printableSequence->isLayoutCalculated());
-            m_page_amount    = printableSequence->getPageAmount();
-        }
-        
-        // -----------------------------------------------------------------------------------------------------
-        // -----------------------------------------------------------------------------------------------------
-#if 0
-#pragma mark -
-#pragma mark QuickPrint : callbacks from wxPrintout
-#endif
-        
-        bool OnPrintPage(int pageNum)
-        {
-            std::cout << "\n============\nprinting page " << pageNum << "\n==============" << std::endl;
-            
-            wxDC* ptr = GetDC();
-            if (ptr == NULL or not ptr->IsOk())
-            {
-                std::cerr << "DC is not Ok, interrupting printing" << std::endl;
-                return false;
-            }
-            wxDC& dc = *ptr;
-            
-            
-            wxRect bounds = GetLogicalPageRect();
-            
-            const int x0     = bounds.x;
-            const int y0     = bounds.y;
-            //const int width  = bounds.width;
-            //const int height = bounds.height;
-            
-            std::cout << "printable area : (" << x0 << ", " << y0 << ") to ("
-                      << (x0 + bounds.width) << ", " << (y0 + bounds.height) << ")" << std::endl;
-            
-            assertExpr(x0,            >, 0);
-            assertExpr(y0,            >, 0);
-            assertExpr(bounds.width,  >, 0);
-            assertExpr(bounds.height, >, 0);
-            
-            //FIXME: this is a workaround
-            if (bounds.width  != m_print_callback->m_unit_width or
-                bounds.height != m_print_callback->m_unit_height)
-            {
-                std::cerr << "WTF!!! Wx didn't give me the size I asked for!!\n";
-                m_print_callback->m_unit_width  = bounds.width;
-                m_print_callback->m_unit_height = bounds.height;
-            }
-            
-            assertExpr(bounds.width,  ==, m_print_callback->m_unit_width  );
-            assertExpr(bounds.height, ==, m_print_callback->m_unit_height );
-
-            m_print_callback->printPage(pageNum, dc, x0, y0);
-            
-            return true;
-        }
-        
-        // -----------------------------------------------------------------------------------------------------
-        
-        void OnBeginPrinting()
-        {
-            std::cout << "---- ON BEGIN PRINTING ----\n" << m_print_callback->m_unit_width << "x"
-                      << m_print_callback->m_unit_height << "\n";
-            
-            // setup coordinate system
-            assert(m_print_callback->m_unit_width  > 0);
-            assert(m_print_callback->m_unit_height > 0);
-            
-            FitThisSizeToPageMargins(wxSize(m_print_callback->m_unit_width, m_print_callback->m_unit_height),
-                                     m_page_setup);
-        }
-        
-        // -----------------------------------------------------------------------------------------------------
-        
-        bool OnBeginDocument(int startPage, int endPage)
-        {
-            std::cout << "\n\n=============================\n";
-            std::cout << "beginning to print document, from page " << startPage << " to "
-                      << endPage << std::endl;
-            std::cout << "=============================\n\n";
-            
-            return wxPrintout::OnBeginDocument(startPage, endPage);
-        }
-        
-        // -----------------------------------------------------------------------------------------------------
-        
-        void GetPageInfo(int *minPage, int *maxPage, int *pageSelFrom, int *pageSelTo)
-        {
-            assert(m_page_amount > 0);
-            
-            *minPage = 1;
-            *maxPage = m_page_amount;
-            
-            *pageSelFrom = 1;
-            *pageSelTo   = m_page_amount;
-        }
-        
-        // -----------------------------------------------------------------------------------------------------
-        
-        bool HasPage(int pageNum)
-        {
-            assert(m_page_amount > 0);
-            
-            if (pageNum >= 1 and pageNum <= m_page_amount) return true;
-            else                                           return false;
-        }
-        
-        // -----------------------------------------------------------------------------------------------------
-        
-        void OnEndPrinting()
-        {
-        }
-    };
-    
-}
-
-// -------------------------------------------------------------------------------------------------------------
-// -------------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #pragma mark AriaPrintable
@@ -316,13 +33,11 @@ AriaPrintable::AriaPrintable(PrintableSequence* seq, bool* success) :
     m_title_font    (130, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD  ),
     m_subtitle_font (90,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL)
 {
-    INIT_MAGIC_NUMBER();
+    ;
     assert(m_current_printable == NULL);
     
     m_current_printable = this;
-    m_unit_width        = -1;
-    m_unit_height       = -1;
-    
+
     // ---- Get fonts size
     m_font_height       = -1;
     m_character_width   = -1;
@@ -364,7 +79,7 @@ AriaPrintable::AriaPrintable(PrintableSequence* seq, bool* success) :
     m_seq  = seq;
     assert(not m_seq->isLayoutCalculated());
     
-    m_printer_manager = new QuickPrint( m_seq->getTitle(), this );
+    m_printer_manager = new wxEasyPrintWrapper( m_seq->getTitle(), this, 315.0f );
     if (not m_printer_manager->performPageSetup())
     {
         std::cerr << "Default page setup failed!\n";
@@ -442,21 +157,15 @@ AriaPrintable* AriaPrintable::getCurrentPrintable()
 // -------------------------------------------------------------------------------------------------------------
 
 void AriaPrintable::printPage(const int pageNum, wxDC& dc,
-                              const int x0, const int y0)
+                              const int x0, const int y0, const int x1, const int y1)
 {    
     assert( MAGIC_NUMBER_OK() );
-    assertExpr(x0, >, 0);
-    assertExpr(y0, >, 0);
 
-    const int w = m_unit_width;
-    const int h = m_unit_height;
+    assert( x1 - x0 > 0 );
+    assert( y1 - y0 > 0 );
     
-    assert( w > 0 );
-    assert( h > 0 );
-    
-    const int x1 = x0 + w;
-    const int y1 = y0 + h;
-    
+    const int h = y1 - y0;
+
     LayoutPage& page = m_seq->getPage(pageNum-1);
 
     const int lineAmount = page.getLineCount();

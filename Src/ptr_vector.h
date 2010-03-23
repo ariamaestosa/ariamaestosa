@@ -45,7 +45,7 @@ namespace AriaMaestosa
         
         ptr_vector()
         {
-            INIT_MAGIC_NUMBER();
+            ;
         }
         
         ~ptr_vector()

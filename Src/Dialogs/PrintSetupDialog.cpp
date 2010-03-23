@@ -24,6 +24,56 @@
 namespace AriaMaestosa
 {
     
+    /** after dialog is shown, and user clicked 'OK', this is called to launch the actual printing */
+    void doPrint(std::vector<Track*> what_to_print, AriaPrintable* printable,
+                 PrintableSequence* printable_sequence, bool detect_repetitions)
+    {        
+        WaitWindow::show(_("Calculating print layout...") );
+        
+        for (unsigned int n=0; n<what_to_print.size(); n++)
+        {
+            if (not printable_sequence->addTrack( what_to_print[n], what_to_print[n]->graphics->editorMode ))
+            {
+                WaitWindow::hide();
+                
+                wxString track_name = what_to_print[n]->getName();
+                
+                //I18N: - %s is the name of the track
+                wxString message = _("Track '%s' could not be printed, since its current\nview (editor) does not support printing.");
+                message.Replace(wxT("%s"), track_name); // wxString::Format crashes, so I need to use this stupid workaround
+                wxMessageBox( message );
+                return;
+            }
+        }
+        
+        std::cout << "********************************************************\n";
+        std::cout << "******************* CALCULATE LAYOUT *******************\n";
+        std::cout << "********************************************************\n\n";
+        
+        printable_sequence->calculateLayout( detect_repetitions );
+        
+        std::cout << "\n********************************************************\n";
+        std::cout << "********************* PRINT RESULT *********************\n";
+        std::cout << "********************************************************\n\n";
+        
+        WaitWindow::hide();
+        
+        wxPrinterError result = printable->print();
+        if (result == wxPRINTER_ERROR)
+        {
+            std::cerr << "error while printing : " << __FILE__ << ":" << __LINE__ << std::endl;
+            wxMessageBox( _("An error occurred during printing.") );
+        }
+        else if (result == wxPRINTER_CANCELLED)
+        {
+            std::cerr << "Printing was cancelled\n";
+        }
+        
+        delete printable;
+        delete printable_sequence;
+    }        
+
+    
     class PrintSetupDialog : public wxFrame
     {
         Sequence* m_current_sequence;
@@ -40,8 +90,8 @@ namespace AriaMaestosa
         
         wxStaticText* m_page_setup_summary;
         
-        OwnerPtr<PrintableSequence> m_printable_sequence;
-        OwnerPtr<AriaPrintable>     m_printable;
+        PrintableSequence* m_printable_sequence;
+        AriaPrintable*     m_printable;
         
     public:
         
@@ -231,6 +281,9 @@ namespace AriaMaestosa
         /**  called when the 'cancel' button is clicked, or 'escape' is pressed */
         void onCancelClicked(wxCommandEvent& evt)
         {
+            delete m_printable;
+            delete m_printable_sequence;
+            
             Hide();
             Destroy();
         }
@@ -262,54 +315,8 @@ namespace AriaMaestosa
             Destroy();
             
             // continue with the printing sequence
-            doPrint(what_to_print);
+            doPrint(what_to_print, m_printable, m_printable_sequence, m_detect_repetitions);
         }
-        
-        /** after dialog is shown, and user clicked 'OK', this is called to launch the actual printing */
-        void doPrint(std::vector<Track*> what_to_print)
-        {        
-            WaitWindow::show(_("Calculating print layout...") );
-            
-            for (unsigned int n=0; n<what_to_print.size(); n++)
-            {
-                if (not m_printable_sequence->addTrack( what_to_print[n], what_to_print[n]->graphics->editorMode ))
-                {
-                    WaitWindow::hide();
-                    
-                    wxString track_name = what_to_print[n]->getName();
-                    
-                    //I18N: - %s is the name of the track
-                    wxString message = _("Track '%s' could not be printed, since its current\nview (editor) does not support printing.");
-                    message.Replace(wxT("%s"), track_name); // wxString::Format crashes, so I need to use this stupid workaround
-                    wxMessageBox( message );
-                    return;
-                }
-            }
-            
-            std::cout << "********************************************************\n";
-            std::cout << "******************* CALCULATE LAYOUT *******************\n";
-            std::cout << "********************************************************\n\n";
-            
-            m_printable_sequence->calculateLayout( m_detect_repetitions );
-            
-            std::cout << "\n********************************************************\n";
-            std::cout << "********************* PRINT RESULT *********************\n";
-            std::cout << "********************************************************\n\n";
-            
-            WaitWindow::hide();
-            
-            wxPrinterError result = m_printable->print();
-            if (result == wxPRINTER_ERROR)
-            {
-                std::cerr << "error while printing : " << __FILE__ << ":" << __LINE__ << std::endl;
-                wxMessageBox( _("An error occurred during printing.") );
-            }
-            else if (result == wxPRINTER_CANCELLED)
-            {
-                std::cerr << "Printing was cancelled\n";
-            }
-            
-        }        
         
         
     };
