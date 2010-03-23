@@ -80,6 +80,11 @@ namespace AriaMaestosa
                        const int x0, const int y0,
                        const int x1, const int y1);
         
+        /** Called after page setup is first configured OR is later changed; calculates
+          * 'm_usable_area_height' members, for use by 'getUsableAreaHeight'
+          */
+        void findUsableHeight();
+        
     public:
         
         LEAK_CHECK();

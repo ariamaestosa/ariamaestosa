@@ -87,6 +87,7 @@ AriaPrintable::AriaPrintable(PrintableSequence* seq, bool* success) :
     }
     else
     {
+        findUsableHeight();
         *success = true;
     }
 }
@@ -103,6 +104,21 @@ AriaPrintable::~AriaPrintable()
 void AriaPrintable::showPageSetupDialog()
 {
     m_printer_manager->performPageSetup(true);
+    findUsableHeight();
+}
+
+// -------------------------------------------------------------------------------------------------------------
+
+void AriaPrintable::findUsableHeight()
+{
+    const int height = getUnitHeight();
+    m_usable_area_height_page_1 = height - m_title_font_height - MARGIN_UNDER_PAGE_HEADER;
+    m_usable_area_height        = height - m_subtitle_font_height - MARGIN_UNDER_PAGE_HEADER;
+    
+    std::cout << "Calculating 'm_usable_area_height' with height=" << height << "\n";
+    
+    assert(m_usable_area_height_page_1 > 0);
+    assert(m_usable_area_height > 0);
 }
 
 // -------------------------------------------------------------------------------------------------------------
