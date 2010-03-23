@@ -30,6 +30,8 @@ namespace AriaMaestosa
     {        
         WaitWindow::show(_("Calculating print layout...") );
         
+        bool state_ok = true;
+        
         for (unsigned int n=0; n<what_to_print.size(); n++)
         {
             if (not printable_sequence->addTrack( what_to_print[n], what_to_print[n]->graphics->editorMode ))
@@ -42,33 +44,38 @@ namespace AriaMaestosa
                 wxString message = _("Track '%s' could not be printed, since its current\nview (editor) does not support printing.");
                 message.Replace(wxT("%s"), track_name); // wxString::Format crashes, so I need to use this stupid workaround
                 wxMessageBox( message );
-                return;
+                
+                state_ok = false;
+                break;
             }
         }
         
-        std::cout << "********************************************************\n";
-        std::cout << "******************* CALCULATE LAYOUT *******************\n";
-        std::cout << "********************************************************\n\n";
-        
-        printable_sequence->calculateLayout( detect_repetitions );
-        
-        std::cout << "\n********************************************************\n";
-        std::cout << "********************* PRINT RESULT *********************\n";
-        std::cout << "********************************************************\n\n";
-        
-        WaitWindow::hide();
-        
-        wxPrinterError result = printable->print();
-        if (result == wxPRINTER_ERROR)
+        if (state_ok)
         {
-            std::cerr << "error while printing : " << __FILE__ << ":" << __LINE__ << std::endl;
-            wxMessageBox( _("An error occurred during printing.") );
+            std::cout << "********************************************************\n";
+            std::cout << "******************* CALCULATE LAYOUT *******************\n";
+            std::cout << "********************************************************\n\n";
+            
+            printable_sequence->calculateLayout( detect_repetitions );
+            
+            std::cout << "\n********************************************************\n";
+            std::cout << "********************* PRINT RESULT *********************\n";
+            std::cout << "********************************************************\n\n";
+            
+            WaitWindow::hide();
+            
+            wxPrinterError result = printable->print();
+            if (result == wxPRINTER_ERROR)
+            {
+                std::cerr << "error while printing : " << __FILE__ << ":" << __LINE__ << std::endl;
+                wxMessageBox( _("An error occurred during printing.") );
+            }
+            else if (result == wxPRINTER_CANCELLED)
+            {
+                std::cerr << "Printing was cancelled\n";
+            }
         }
-        else if (result == wxPRINTER_CANCELLED)
-        {
-            std::cerr << "Printing was cancelled\n";
-        }
-        
+                
         delete printable;
         delete printable_sequence;
     }        
@@ -212,13 +219,33 @@ namespace AriaMaestosa
             {
                 wxStaticBoxSizer* pageSetupSizer = new wxStaticBoxSizer(wxHORIZONTAL, parent_panel, _("Page Setup"));
                 
+                
                 m_page_setup_summary = new wxStaticText(parent_panel, wxID_ANY, m_printable->getPageSetupSummary());
                 pageSetupSizer->Add( m_page_setup_summary, 1, wxEXPAND | wxTOP | wxBOTTOM, 5 );                
-                
-                wxButton* pageSetupButton = new wxButton(parent_panel, wxNewId(), _("Edit Page Setup"));
-                pageSetupSizer->Add( pageSetupButton, 0, wxTOP | wxBOTTOM, 5 );                
-                pageSetupButton->Connect(pageSetupButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED,
-                                         wxCommandEventHandler(PrintSetupDialog::onEditPageSetupClicked), NULL, this);
+                    
+                {
+                    wxPanel* buttonsPanel = new wxPanel(parent_panel);
+                    wxBoxSizer* buttonsSizer = new wxBoxSizer(wxVERTICAL);
+                    
+                    
+                    wxButton* pageSetupButton = new wxButton(buttonsPanel, wxNewId(), _("Edit Page Setup"));
+                    buttonsSizer->Add(pageSetupButton, 0, wxEXPAND | wxTOP | wxBOTTOM, 5 );
+                    pageSetupButton->Connect(pageSetupButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED,
+                                             wxCommandEventHandler(PrintSetupDialog::onEditPageSetupClicked),
+                                             NULL, this);
+                    
+#ifdef __WXMAC__ 
+                    // the mac page setup dialog does not allow editing margins
+                    wxButton* marginsButton = new wxButton(buttonsPanel, wxNewId(), _("Margins"));
+                    buttonsSizer->Add(marginsButton, 0, wxEXPAND | wxTOP | wxBOTTOM, 5 );
+                    marginsButton->Connect(marginsButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED,
+                                           wxCommandEventHandler(PrintSetupDialog::onMacEditMargins),
+                                           NULL, this);
+#endif
+                    
+                    buttonsPanel->SetSizer( buttonsSizer );
+                    pageSetupSizer->Add( buttonsPanel, 0, wxLEFT | wxRIGHT, 5 );   
+                }
                 
                 boxSizer->Add(pageSetupSizer,  0, wxALL | wxEXPAND, 5);
             }
@@ -265,6 +292,16 @@ namespace AriaMaestosa
             m_printable->showPageSetupDialog();
             m_page_setup_summary->SetLabel(m_printable->getPageSetupSummary());
         }
+        
+#ifdef __WXMAC__
+        void onMacEditMargins(wxCommandEvent& evt)
+        {
+            Hide();
+            m_printable->macEditMargins(this);
+            Show();
+            m_page_setup_summary->SetLabel(m_printable->getPageSetupSummary());
+        }
+#endif
         
         void onSelectCurrentTrackOnly(wxCommandEvent& evt)
         {

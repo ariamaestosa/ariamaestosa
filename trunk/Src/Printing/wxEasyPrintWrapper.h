@@ -52,6 +52,8 @@ namespace AriaMaestosa
         /** Resolution (number of DC units per centimeter) */
         float                 m_units_per_cm;
         
+        void updateCoordinateSystem();
+
     public:
         
         LEAK_CHECK();
@@ -91,6 +93,13 @@ namespace AriaMaestosa
          */
         bool performPageSetup(const bool showPageSetupDialog=false);
 
+#ifdef __WXMAC__
+        /**
+          * Because the native page setup dialog on mac does not allow editing margins
+          */
+        void macEditMargins(wxWindow* parentFrame);
+#endif
+        
         wxPrintData getPrintData();  
         
         /**
@@ -103,7 +112,7 @@ namespace AriaMaestosa
           * Call BEFORE trying to actually print this wxPrintout.
           */
         void setPrintableSequence(PrintableSequence* printableSequence);
-        
+                
         // ---- callbacks from wxPrintout
         virtual void OnBeginPrinting();
         virtual bool OnBeginDocument(int startPage, int endPage);

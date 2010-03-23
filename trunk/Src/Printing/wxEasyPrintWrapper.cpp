@@ -6,6 +6,16 @@
 #include "wx/paper.h"
 #include "wx/printdlg.h"
 
+#ifdef __WXMAC__
+
+#if wxMAJOR_VERSION > 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION == 9)
+#include "wx/osx/printdlg.h"
+#else
+#include "wx/mac/carbon/printdlg.h"
+#endif
+
+#endif
+
 using namespace AriaMaestosa;
 
 
@@ -48,10 +58,6 @@ bool wxEasyPrintWrapper::performPageSetup(const bool showPageSetupDialog)
     printdata.SetPaperId( m_paper_id );
     printdata.SetNoCopies(1);
     
-    std::cout << "BEFORE: " << PRINT_VAR(m_left_margin)  << PRINT_VAR(m_top_margin)
-              << PRINT_VAR(m_right_margin) << PRINT_VAR(m_bottom_margin) << std::endl;
-    std::cout << "       paper size : " << m_page_setup.GetPaperSize().GetWidth() << ", " << m_page_setup.GetPaperSize().GetHeight() << "\n";
-    
     m_page_setup = wxPageSetupDialogData(printdata);
     m_page_setup.SetMarginTopLeft(wxPoint(m_left_margin, m_top_margin));
     m_page_setup.SetMarginBottomRight(wxPoint(m_right_margin, m_bottom_margin));
@@ -79,14 +85,15 @@ bool wxEasyPrintWrapper::performPageSetup(const bool showPageSetupDialog)
     
     assert(m_paper_id != wxPAPER_NONE);
     assert(m_page_setup.GetPaperId() != wxPAPER_NONE);
-    
-    std::cout << "AFTER: " << PRINT_VAR(m_left_margin)  << PRINT_VAR(m_top_margin)
-              << PRINT_VAR(m_right_margin) << PRINT_VAR(m_bottom_margin) << std::endl;
-    std::cout << "       paper size : " << m_page_setup.GetPaperSize().GetWidth() << ", " << m_page_setup.GetPaperSize().GetHeight() << "\n";
 
-    //wxPoint marginTopLeft     = m_page_setup.GetMarginTopLeft();
-    //wxPoint marginBottomRight = m_page_setup.GetMarginBottomRight();
-    
+    updateCoordinateSystem();
+    return true;
+}
+
+// -----------------------------------------------------------------------------------------------------
+
+void wxEasyPrintWrapper::updateCoordinateSystem()
+{
     // ---- set-up coordinate system however we want
     // we'll use it when drawing
     wxSize paperSize = m_page_setup.GetPaperSize();                           // in millimeters
@@ -150,9 +157,27 @@ bool wxEasyPrintWrapper::performPageSetup(const bool showPageSetupDialog)
     //          << " - " <<  PRINT_VAR(MARGIN_UNDER_PAGE_HEADER) << std::endl;
     //std::cout << PRINT_VAR(height) << " - " << PRINT_VAR(m_print_callback->m_subtitle_font_height)
     //          << " - " <<  PRINT_VAR(MARGIN_UNDER_PAGE_HEADER) << std::endl;
-
-    return true;
 }
+
+// -----------------------------------------------------------------------------------------------------
+
+#ifdef __WXMAC__
+
+void wxEasyPrintWrapper::macEditMargins(wxWindow* parentFrame)
+{
+    wxMacPageMarginsDialog dlg(NULL, &m_page_setup);
+    dlg.ShowModal();
+    
+    m_page_setup     = dlg.GetPageSetupDialogData();
+    m_left_margin    = m_page_setup.GetMarginTopLeft().x;
+    m_top_margin     = m_page_setup.GetMarginTopLeft().y;
+    m_right_margin   = m_page_setup.GetMarginBottomRight().x;
+    m_bottom_margin  = m_page_setup.GetMarginBottomRight().y;
+    
+    updateCoordinateSystem();
+}
+
+#endif
 
 // -----------------------------------------------------------------------------------------------------
 
