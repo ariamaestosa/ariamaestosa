@@ -692,20 +692,22 @@ Track* Sequence::removeSelectedTrack()
 
 // ----------------------------------------------------------------------------------------------------------
 
-void Sequence::deleteTrack(int ID)
+void Sequence::deleteTrack(int id)
 {
-    assertExpr(ID,>=,0);
-    assertExpr(ID,<,tracks.size());
+    assertExpr(id,>=,0);
+    assertExpr(id,<,tracks.size());
 
-    tracks.erase( ID );
+    tracks[id].notifyOthersIWillBeRemoved();
+    tracks.erase( id );
 
-    while(currentTrack>tracks.size()-1) currentTrack -= 1;
+    while (currentTrack>tracks.size()-1) currentTrack -= 1;
 }
 
 // ----------------------------------------------------------------------------------------------------------
 
 void Sequence::deleteTrack(Track* track)
 {
+    track->notifyOthersIWillBeRemoved();
     tracks.erase( track );
     
     while(currentTrack>tracks.size()-1) currentTrack -= 1;
