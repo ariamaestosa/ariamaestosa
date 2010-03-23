@@ -364,6 +364,13 @@ namespace AriaMaestosa
         int addMidiEvents(jdkmidi::MIDITrack* track, int channel, int firstMeasure,
                           bool selectionOnly, int& startTick); // returns length
         
+        /**
+          * Call this method before deleting a track, so that it can tell others it's going to
+          * be gone. Cannot be called from constructor since it would then cause problems when
+          * deleting the entire sequence.
+          */
+        void notifyOthersIWillBeRemoved();
+
         // serialization
         void saveToFile(wxFileOutputStream& fileout);
         bool readFromFile(irr::io::IrrXMLReader* xml);

@@ -233,10 +233,10 @@ def compile_Aria(which_os):
 
     # check build type and init build flags
     if build_type == "debug":
-        env.Append(CCFLAGS=['-g','-D_MORE_DEBUG_CHECKS','-D_CHECK_FOR_LEAKS','-Wfatal-errors'])
+        env.Append(CCFLAGS=['-g','-D_MORE_DEBUG_CHECKS','-D_CHECK_FOR_LEAKS','-Wfatal-errors','-DDEBUG=1'])
         
     elif build_type == "release":
-        env.Append(CCFLAGS=['-O3'])
+        env.Append(CCFLAGS=['-O3','-DNDEBUG=1'])
     
     else:
         print 'Unknown build type, cannot continue'

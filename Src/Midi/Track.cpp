@@ -119,6 +119,12 @@ Track::Track(MainFrame* parent, Sequence* sequence)
 
 Track::~Track()
 {
+}
+
+// -------------------------------------------------------------------------------------------------------
+
+void Track::notifyOthersIWillBeRemoved()
+{
     // notify other tracks
     Sequence* seq = getCurrentSequence();
     const int trackAmount = seq->getTrackAmount();
