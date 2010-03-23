@@ -20,7 +20,7 @@
 
 #include "Editors/Editor.h"
 
-#include "Config.h"
+#include "Utils.h"
 
 #include "Editors/RelativeXCoord.h"
 

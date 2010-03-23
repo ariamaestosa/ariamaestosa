@@ -14,7 +14,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "Config.h"
+#include "Utils.h"
 
 #include "wx/wx.h"
 #include "wx/numdlg.h"
@@ -192,9 +192,11 @@ void MeasureBar::render(int measureBarY_arg)
     measureBarY = measureBarY_arg;
 
     // if measure amount changed and MeasureBar is out of sync with its current number of measures, fix it
-    if ((int)data->measureInfo.size() != data->measureAmount)
-        data->updateVector(data->measureAmount);
-
+    if ((int)data->measureInfo.size() != data->m_measure_amount)
+    {
+        data->updateVector(data->m_measure_amount);
+    }
+    
     const int height = (data->expandedMode ? 40 : 20);
     AriaRender::primitives();
     AriaRender::color(1, 1, 0.9);
@@ -222,7 +224,7 @@ void MeasureBar::render(int measureBarY_arg)
         (measureLengthConstant ? n+=x_step : n += data->measureLengthInPixels(measureID-1)) )
     {
         measureID++;
-        if (measureID > data->measureAmount) break;
+        if (measureID > data->m_measure_amount) break;
 
         // if measure is selected, draw in blue
         if ( data->measureInfo[measureID-1].selected )

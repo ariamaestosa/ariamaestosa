@@ -19,7 +19,7 @@
 #define _ariacore_
 
 #include "Editors/RelativeXCoord.h"
-#include "Config.h"
+#include "Utils.h"
 
 class wxMenu;
 class wxDC;

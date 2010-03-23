@@ -19,7 +19,7 @@
 #define _score_out_
 
 #include <wx/file.h>
-#include "Config.h"
+#include "Utils.h"
 #include "Editors/ScoreEditor.h"
 #include "Analysers/SilenceAnalyser.h"
 #include "Printing/AriaPrintable.h"

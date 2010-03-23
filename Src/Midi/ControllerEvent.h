@@ -19,7 +19,7 @@
 
 #include "wx/wfstream.h"
 
-#include "Config.h"
+#include "Utils.h"
 #include "irrXML/irrXML.h"
 
 namespace AriaMaestosa

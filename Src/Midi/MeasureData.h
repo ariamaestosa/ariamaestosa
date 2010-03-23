@@ -25,7 +25,7 @@
  */
 
 #include "ptr_vector.h"
-#include "Config.h"
+#include "Utils.h"
 #include "Editors/RelativeXCoord.h"
 #include "Midi/TimeSigChange.h"
 #include "irrXML/irrXML.h"
@@ -56,7 +56,7 @@ class MeasureData
     // contains one item for each measure in the sequence
     std::vector<MeasureInfo> measureInfo;
 
-    int measureAmount;
+    int m_measure_amount;
     int firstMeasure;
 
     bool expandedMode;
@@ -76,23 +76,24 @@ public:
 
     OwnerPtr<MeasureBar>  graphics;
 
-    MeasureData();
+    MeasureData(int measureAmount);
     ~MeasureData();
 
     void setExpandedMode(bool expanded);
-    bool isExpandedMode();
+    
+    bool isExpandedMode() const { return expandedMode; }
 
     int getTotalTickAmount();
     int getTotalPixelAmount();
     bool isMeasureLengthConstant();
 
     void setMeasureAmount(int measureAmount);
-    int getMeasureAmount();
-
+    int getMeasureAmount() const { return m_measure_amount; }
+    
     float defaultMeasureLengthInPixels();
     int defaultMeasureLengthInTicks();
 
-    int getFirstMeasure();
+    int getFirstMeasure() const { return firstMeasure; }
     void setFirstMeasure(int firstMeasureID);
 
     int measureAtPixel(int pixel);
@@ -104,12 +105,17 @@ public:
     float beatLengthInPixels();
     int beatLengthInTicks();
 
-    // get time sig num/denom, either for a specific mesure, either the default value (no argument)
-    int getTimeSigNumerator(int measure=-1);
-    int getTimeSigDenominator(int measure=-1);
+    /** get time sig num, either for a specific mesure, either the default value (no argument) */
+    int getTimeSigNumerator(int measure=-1) const;
+    
+    /** get time sig denom, either for a specific mesure, either the default value (no argument) */
+    int getTimeSigDenominator(int measure=-1) const;
 
+    /**
+      * Called either when user changes the numbers on the top bar, either when importing a song
+      */
     void setTimeSig(int num, int denom);
-    int getTimeSigAmount();
+    int getTimeSigAmount() const { return timeSigChanges.size(); }
     TimeSigChange& getTimeSig(int id);
 
     void addTimeSigChange(int measure, int num, int denom);
@@ -124,12 +130,22 @@ public:
     int lastTickInMeasure(int id);
     int lastPixelInMeasure(int id);
 
+    /**
+     * Time Signatures have changed, update and recalculate information about location of measures
+     * and events.
+     */
     void updateMeasureInfo();
+    
+    /**
+     * Change the number of items in the selected vector sothat it contains the same amount of elements
+     * as the number of measures.
+     */
     void updateVector(int newSize);
 
     void beforeImporting();
     void afterImporting();
-    // used only while loading midi files, because midi files don't store in which measure it is. dont use for other uses.
+    
+    /** used only while loading midi files */
     void addTimeSigChange_import(int tick, int num, int denom);
 
     bool readFromFile(irr::io::IrrXMLReader* xml);

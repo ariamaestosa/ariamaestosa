@@ -18,7 +18,7 @@
 #ifndef _editor_
 #define _editor_
 
-#include "Config.h"
+#include "Utils.h"
 #include "ptr_vector.h"
 
 #include "Editors/Editor.h"

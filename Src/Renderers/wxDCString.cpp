@@ -1,7 +1,7 @@
 #ifdef RENDERER_WXWIDGETS
 
 #include "wxDCString.h"
-#include "Config.h"
+#include "Utils.h"
 
 #include "wx/wx.h"
 #include "wx/tokenzr.h"

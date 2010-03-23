@@ -17,7 +17,7 @@
 #ifndef _miditomemorystream_
 #define _miditomemorystream_
 
-#include "Config.h"
+#include "Utils.h"
 #include <sstream>
 #include <vector>
 #include "jdkmidi/filewrite.h"

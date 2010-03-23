@@ -51,7 +51,7 @@
 
 #include "wx/dcbuffer.h"
 
-#include "Config.h"
+#include "Utils.h"
 
 using namespace AriaMaestosa;
 

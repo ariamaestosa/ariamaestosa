@@ -19,7 +19,7 @@
 #ifndef _wximage_
 #define _wximage_
 
-#include "Config.h"
+#include "Utils.h"
 #include "Renderers/ImageBase.h"
 #include "wx/wx.h"
 

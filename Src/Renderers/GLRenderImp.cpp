@@ -16,7 +16,7 @@
 
 #ifdef RENDERER_OPENGL
 
-#include "Config.h"
+#include "Utils.h"
 #include "AriaCore.h"
 #include "Singleton.h"
 #include "Renderers/RenderAPI.h"

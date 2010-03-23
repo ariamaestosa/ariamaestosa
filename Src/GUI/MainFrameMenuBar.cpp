@@ -55,7 +55,7 @@
 #include "IO/AriaFileWriter.h"
 #include "IO/MidiFileReader.h"
 
-#include "Config.h"
+#include "Utils.h"
 #include <iostream>
 #include "main.h"
 

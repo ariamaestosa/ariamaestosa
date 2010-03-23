@@ -21,7 +21,7 @@
 #include "wx/wfstream.h"
 #include "Renderers/RenderAPI.h"
 
-#include "Config.h"
+#include "Utils.h"
 #include "irrXML/irrXML.h"
 
 namespace AriaMaestosa {

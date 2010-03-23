@@ -20,7 +20,7 @@
 #define _audiotoolboxplayer_
 
 #include <AudioToolbox/AudioToolbox.h>
-#include "Config.h"
+#include "Utils.h"
 
 namespace AriaMaestosa
 {

@@ -18,7 +18,7 @@
 #define _note_h_
 
 #include <vector>
-#include "Config.h"
+#include "Utils.h"
 
 #include "wx/wfstream.h"
 

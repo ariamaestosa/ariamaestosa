@@ -20,7 +20,7 @@
 #define _about_dlg
 
 #include "wx/wx.h"
-#include "Config.h"
+#include "Utils.h"
 
 namespace AriaMaestosa {
 

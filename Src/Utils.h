@@ -19,9 +19,6 @@
 
 #include "IO/IOUtils.h"
 
-// values
-#define DEFAULT_SONG_LENGTH 12
-
 // -------------------- my assert stuff -----------------
 #include <iostream>
 

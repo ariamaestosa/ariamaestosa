@@ -19,7 +19,7 @@
 #define _tablature_out_
 
 #include <wx/file.h>
-#include "Config.h"
+#include "Utils.h"
 #include "Analysers/SilenceAnalyser.h"
 #include "Printing/EditorPrintable.h"
 #include "Printing/PrintLayout/PrintLayoutAbstract.h"

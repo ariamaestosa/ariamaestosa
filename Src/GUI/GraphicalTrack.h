@@ -22,7 +22,7 @@
 
 #include "irrXML/irrXML.h"
 
-#include "Config.h"
+#include "Utils.h"
 #include "Editors/Editor.h"
 
 namespace AriaMaestosa

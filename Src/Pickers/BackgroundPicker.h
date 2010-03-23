@@ -18,7 +18,7 @@
 #define _bg_picker_
 
 #include "wx/wx.h"
-#include "Config.h"
+#include "Utils.h"
 
 namespace AriaMaestosa {
     class Track;

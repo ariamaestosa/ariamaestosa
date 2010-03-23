@@ -1,7 +1,7 @@
 #ifdef RENDERER_OPENGL
 
 #include "GLwxString.h"
-#include "Config.h"
+#include "Utils.h"
 
 #ifdef __WXMAC__
 #include "OpenGL/gl.h"

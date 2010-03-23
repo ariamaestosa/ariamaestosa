@@ -171,7 +171,6 @@
 		957119C31125D8D300104BF5 /* AriaCore.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118EB1125D8D200104BF5 /* AriaCore.h */; };
 		957119C41125D8D300104BF5 /* Clipboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118EC1125D8D200104BF5 /* Clipboard.cpp */; };
 		957119C51125D8D300104BF5 /* Clipboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118ED1125D8D200104BF5 /* Clipboard.h */; };
-		957119C61125D8D300104BF5 /* Config.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118EE1125D8D200104BF5 /* Config.h */; };
 		957119C71125D8D300104BF5 /* About.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F01125D8D200104BF5 /* About.cpp */; };
 		957119C81125D8D300104BF5 /* About.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F11125D8D200104BF5 /* About.h */; };
 		957119C91125D8D300104BF5 /* CopyrightWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F21125D8D200104BF5 /* CopyrightWindow.cpp */; };
@@ -369,7 +368,6 @@
 		95711A8D1125D8D300104BF5 /* AriaCore.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118EB1125D8D200104BF5 /* AriaCore.h */; };
 		95711A8E1125D8D300104BF5 /* Clipboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118EC1125D8D200104BF5 /* Clipboard.cpp */; };
 		95711A8F1125D8D300104BF5 /* Clipboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118ED1125D8D200104BF5 /* Clipboard.h */; };
-		95711A901125D8D300104BF5 /* Config.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118EE1125D8D200104BF5 /* Config.h */; };
 		95711A911125D8D300104BF5 /* About.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F01125D8D200104BF5 /* About.cpp */; };
 		95711A921125D8D300104BF5 /* About.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F11125D8D200104BF5 /* About.h */; };
 		95711A931125D8D300104BF5 /* CopyrightWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F21125D8D200104BF5 /* CopyrightWindow.cpp */; };
@@ -539,6 +537,8 @@
 		95B90465114ADF23007F4778 /* PrintSetupDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 95B90463114ADF23007F4778 /* PrintSetupDialog.h */; };
 		95B90466114ADF23007F4778 /* PrintSetupDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95B90462114ADF23007F4778 /* PrintSetupDialog.cpp */; };
 		95B90467114ADF23007F4778 /* PrintSetupDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 95B90463114ADF23007F4778 /* PrintSetupDialog.h */; };
+		95C283751159481C007B8CF7 /* Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 95C283741159481C007B8CF7 /* Utils.h */; };
+		95C283761159481C007B8CF7 /* Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 95C283741159481C007B8CF7 /* Utils.h */; };
 		EF104F6C0B21E1900079A1B7 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF104F6B0B21E1900079A1B7 /* QTKit.framework */; };
 		EF85576209BDE24C00D9D1BC /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF85576109BDE24C00D9D1BC /* OpenGL.framework */; };
 		EF9D1CB709ABE21F00CAF7A6 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF9D1CB609ABE21F00CAF7A6 /* Carbon.framework */; };
@@ -728,7 +728,6 @@
 		957118EB1125D8D200104BF5 /* AriaCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AriaCore.h; path = ../Src/AriaCore.h; sourceTree = SOURCE_ROOT; };
 		957118EC1125D8D200104BF5 /* Clipboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Clipboard.cpp; path = ../Src/Clipboard.cpp; sourceTree = SOURCE_ROOT; };
 		957118ED1125D8D200104BF5 /* Clipboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Clipboard.h; path = ../Src/Clipboard.h; sourceTree = SOURCE_ROOT; };
-		957118EE1125D8D200104BF5 /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Config.h; path = ../Src/Config.h; sourceTree = SOURCE_ROOT; };
 		957118F01125D8D200104BF5 /* About.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = About.cpp; path = ../Src/Dialogs/About.cpp; sourceTree = SOURCE_ROOT; };
 		957118F11125D8D200104BF5 /* About.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = About.h; path = ../Src/Dialogs/About.h; sourceTree = SOURCE_ROOT; };
 		957118F21125D8D200104BF5 /* CopyrightWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CopyrightWindow.cpp; path = ../Src/Dialogs/CopyrightWindow.cpp; sourceTree = SOURCE_ROOT; };
@@ -924,6 +923,7 @@
 		959FD6BE114451A400F22579 /* DeleteTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DeleteTrack.h; path = ../Src/Actions/DeleteTrack.h; sourceTree = SOURCE_ROOT; };
 		95B90462114ADF23007F4778 /* PrintSetupDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrintSetupDialog.cpp; path = ../Src/Dialogs/PrintSetupDialog.cpp; sourceTree = SOURCE_ROOT; };
 		95B90463114ADF23007F4778 /* PrintSetupDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrintSetupDialog.h; path = ../Src/Dialogs/PrintSetupDialog.h; sourceTree = SOURCE_ROOT; };
+		95C283741159481C007B8CF7 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utils.h; path = ../Src/Utils.h; sourceTree = SOURCE_ROOT; };
 		EF104F6B0B21E1900079A1B7 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		EF85576109BDE24C00D9D1BC /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		EF9D1BFF09ABE02100CAF7A6 /* Aria Maestosa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Aria Maestosa.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1392,7 +1392,6 @@
 				957118EB1125D8D200104BF5 /* AriaCore.h */,
 				957118EC1125D8D200104BF5 /* Clipboard.cpp */,
 				957118ED1125D8D200104BF5 /* Clipboard.h */,
-				957118EE1125D8D200104BF5 /* Config.h */,
 				957119241125D8D200104BF5 /* languages.cpp */,
 				957119251125D8D200104BF5 /* languages.h */,
 				957119261125D8D200104BF5 /* LeakCheck.cpp */,
@@ -1406,6 +1405,7 @@
 				957119931125D8D300104BF5 /* Singleton.h */,
 				957119941125D8D300104BF5 /* unit_test.cpp */,
 				957119951125D8D300104BF5 /* unit_test.h */,
+				95C283741159481C007B8CF7 /* Utils.h */,
 				957118BD1125D8D200104BF5 /* Actions */,
 				959693331153E612001E321B /* Analysers */,
 				957118EF1125D8D200104BF5 /* Dialogs */,
@@ -1482,7 +1482,6 @@
 				95711A8B1125D8D300104BF5 /* UpdateGuitarTuning.h in Headers */,
 				95711A8D1125D8D300104BF5 /* AriaCore.h in Headers */,
 				95711A8F1125D8D300104BF5 /* Clipboard.h in Headers */,
-				95711A901125D8D300104BF5 /* Config.h in Headers */,
 				95711A921125D8D300104BF5 /* About.h in Headers */,
 				95711A941125D8D300104BF5 /* CopyrightWindow.h in Headers */,
 				95711A961125D8D300104BF5 /* CustomNoteSelectDialog.h in Headers */,
@@ -1570,6 +1569,7 @@
 				959693391153E612001E321B /* ScoreAnalyser.h in Headers */,
 				9596933B1153E612001E321B /* SilenceAnalyser.h in Headers */,
 				9544D68511582D5300E0A3BD /* wxEasyPrintWrapper.h in Headers */,
+				95C283751159481C007B8CF7 /* Utils.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1601,7 +1601,6 @@
 				957119C11125D8D300104BF5 /* UpdateGuitarTuning.h in Headers */,
 				957119C31125D8D300104BF5 /* AriaCore.h in Headers */,
 				957119C51125D8D300104BF5 /* Clipboard.h in Headers */,
-				957119C61125D8D300104BF5 /* Config.h in Headers */,
 				957119C81125D8D300104BF5 /* About.h in Headers */,
 				957119CA1125D8D300104BF5 /* CopyrightWindow.h in Headers */,
 				957119CC1125D8D300104BF5 /* CustomNoteSelectDialog.h in Headers */,
@@ -1689,6 +1688,7 @@
 				9596933D1153E612001E321B /* ScoreAnalyser.h in Headers */,
 				9596933F1153E612001E321B /* SilenceAnalyser.h in Headers */,
 				9544D68711582D5300E0A3BD /* wxEasyPrintWrapper.h in Headers */,
+				95C283761159481C007B8CF7 /* Utils.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

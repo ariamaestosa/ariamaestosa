@@ -21,7 +21,7 @@
 #include "wx/slider.h"
 #include "wx/event.h"
 
-#include "Config.h"
+#include "Utils.h"
 
 namespace AriaMaestosa {
 

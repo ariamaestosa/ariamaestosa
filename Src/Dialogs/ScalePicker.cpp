@@ -19,7 +19,7 @@
 #include "Dialogs/ScalePicker.h"
 #include "Midi/Sequence.h"
 
-#include "Config.h"
+#include "Utils.h"
 
 #include <iostream>
 

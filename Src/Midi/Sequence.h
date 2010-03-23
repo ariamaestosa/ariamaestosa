@@ -22,14 +22,14 @@
 
 #include "irrXML/irrXML.h"
 
-#include "Config.h"
+#include "Utils.h"
 #include "ptr_vector.h"
 #include "GUI/GraphicalTrack.h"
 #include "Midi/Track.h"
 #include "Editors/RelativeXCoord.h"
 #include "Renderers/RenderAPI.h"
 
-#include "Config.h"
+#include "Utils.h"
 #include "AriaCore.h"
 
 #include <string>
@@ -41,6 +41,8 @@ namespace AriaMaestosa
     class ControllerEvent;
     class MeasureBar;
 
+    const int DEFAULT_SONG_LENGTH = 12;
+    
     class Sequence
     {
 
