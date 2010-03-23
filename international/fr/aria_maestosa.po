@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-13 12:50-0500\n"
-"PO-Revision-Date: 2010-03-13 12:51-0500\n"
+"POT-Creation-Date: 2010-03-23 08:53-0400\n"
+"PO-Revision-Date: 2010-03-23 09:00-0500\n"
 "Last-Translator: Marianne Gagnon (Auria) <auria.mg@gmail.com>\n"
 "Language-Team: French <traduc@traduc.org>\n"
 "MIME-Version: 1.0\n"
@@ -107,9 +107,13 @@ msgstr "Toujours"
 msgid "Amount: "
 msgstr "Quantité: "
 
-#: Src/Dialogs/PrintSetupDialog.cpp:350
-msgid "An error occured during printing."
+#: Src/Dialogs/PrintSetupDialog.cpp:65
+msgid "An error occurred during printing."
 msgstr "Une erreur est survenue durant l'impression."
+
+#: Src/Dialogs/PrintSetupDialog.cpp:115
+msgid "An error occurred while preparing to print."
+msgstr "Une erreur est survenue en préparant l'impression."
 
 #: Src/Midi/MeasureData.cpp:79
 msgid "Are you sure you want to go back to having a single time signature? Any time sig events you may have added will be lost. This cannot be undone."
@@ -119,7 +123,7 @@ msgstr "Désirez-vous vraiment éliminer tous les changements de mesure ajoutés
 msgid "Aria Maestosa file|*.aria"
 msgstr "Document Aria Maestosa|*.aria"
 
-#: Src/Printing/PrintableSequence.cpp:188
+#: Src/Printing/PrintableSequence.cpp:192
 msgid "Aria Maestosa song"
 msgstr "Séquence Aria Maestosa"
 
@@ -127,11 +131,6 @@ msgstr "Séquence Aria Maestosa"
 #: Src/GUI/MainFrameMenuBar.cpp:204
 msgid "Automatic"
 msgstr "Automatique"
-
-#. I18N: - in notation export dialog
-#: Src/Dialogs/PrintSetupDialog.cpp:162
-msgid "Automatically detect repeated measures (experimental!)"
-msgstr "Automatiquement détecter les répétitions (expérimental!)"
 
 #: Src/Dialogs/Preferences.cpp:136
 msgid "Automatically launch TiMidity and pick a port"
@@ -141,12 +140,16 @@ msgstr "Automatiquement lancer TiMidity et choisir un port"
 msgid "Both Musical and Linear"
 msgstr "Notation linéaire et musicale"
 
+#: Src/Dialogs/PrintSetupDialog.cpp:31
+msgid "Calculating print layout..."
+msgstr "Disposition des pistes sur la page..."
+
 #: Src/GUI/MainFrameMenuBar.cpp:295
 msgid "Can't Undo\tCtrl-Z"
 msgstr "Rien à annuler\tCtrl-Z"
 
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:162
-#: Src/Dialogs/PrintSetupDialog.cpp:209
+#: Src/Dialogs/PrintSetupDialog.cpp:236
 #: Src/Dialogs/ScalePicker.cpp:142
 #: Src/Pickers/BackgroundPicker.cpp:172
 #: Src/Pickers/KeyPicker.cpp:78
@@ -211,7 +214,7 @@ msgid "Copyright and song info"
 msgstr "Copyright et information"
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:84
+#: Src/Dialogs/PrintSetupDialog.cpp:129
 msgid "Current track only"
 msgstr "La piste active seulement"
 
@@ -265,6 +268,10 @@ msgstr "Durée"
 #: Src/GUI/MainFrameMenuBar.cpp:154
 msgid "Edit"
 msgstr "Edition"
+
+#: Src/Dialogs/PrintSetupDialog.cpp:218
+msgid "Edit Page Setup"
+msgstr "Modifier la mise en page"
 
 #: Src/GUI/GraphicalTrack.cpp:586
 msgid "Enter the ID of the channel this track should play in"
@@ -354,6 +361,10 @@ msgstr "Insérer des mesures"
 msgid "Keyboard Editor"
 msgstr "Éditeur de clavier"
 
+#: Src/Printing/wxEasyPrintWrapper.cpp:172
+msgid "Landscape"
+msgstr "Paysage"
+
 #. I18N: - when setting pan in controller
 #: Src/Pickers/ControllerChoice.cpp:201
 msgid "Left"
@@ -375,6 +386,16 @@ msgstr "Notation linéaire"
 #: Src/GUI/MainFrameMenuBar.cpp:760
 msgid "Manual"
 msgstr "Manuel"
+
+#. I18N: for printing (page setup)
+#: Src/Printing/wxEasyPrintWrapper.cpp:174
+#, c-format
+msgid ""
+"Margins :\tleft = %i mm, right = %i mm,\n"
+"\t\t\ttop = %i mm, bottom = %i mm"
+msgstr ""
+"Marges :\tgauche = %i mm, droite = %i mm,\n"
+"\t\t\thaut = %i mm, bas = %i mm"
 
 #. I18N: - in controller, for a controller with min/max range
 #: Src/Pickers/ControllerChoice.cpp:199
@@ -419,7 +440,7 @@ msgid "No midi port found, no sound will be available."
 msgstr "Aucun port midi n'a été trouvé, aucun son ne pourra être joué"
 
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:157
-#: Src/Dialogs/PrintSetupDialog.cpp:206
+#: Src/Dialogs/PrintSetupDialog.cpp:233
 #: Src/Dialogs/ScalePicker.cpp:146
 #: Src/Pickers/KeyPicker.cpp:77
 #: Src/Pickers/TimeSigPicker.cpp:107
@@ -457,6 +478,14 @@ msgstr "Sur un changement de son"
 #: Src/GUI/MainFrameMenuBar.cpp:128
 msgid "Open\tCtrl-O"
 msgstr "Ouvrir\tCtrl-O"
+
+#: Src/Dialogs/PrintSetupDialog.cpp:213
+msgid "Page Setup"
+msgstr "Mise en page"
+
+#: Src/Printing/wxEasyPrintWrapper.cpp:170
+msgid "Paper :"
+msgstr "Papier :"
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:162
@@ -505,6 +534,11 @@ msgstr "Veuillez patienter, ouverture en cours..."
 msgid "Please wait..."
 msgstr "Veuillez patienter..."
 
+#. I18N: for printing (page orientation)
+#: Src/Printing/wxEasyPrintWrapper.cpp:172
+msgid "Portrait"
+msgstr "Portrait"
+
 #. I18N: - title of the preferences dialog
 #: Src/Dialogs/Preferences.cpp:200
 #: Src/GUI/MainFrameMenuBar.cpp:221
@@ -512,13 +546,13 @@ msgid "Preferences"
 msgstr "Préférences"
 
 #. I18N: - title of the notation-print dialog
-#: Src/Dialogs/PrintSetupDialog.cpp:72
+#: Src/Dialogs/PrintSetupDialog.cpp:102
 #: Src/GUI/MainFrameMenuBar.cpp:139
 msgid "Print musical notation"
 msgstr "Imprimer en notation"
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:81
+#: Src/Dialogs/PrintSetupDialog.cpp:126
 msgid "Print..."
 msgstr "Imprimer..."
 
@@ -690,7 +724,7 @@ msgid "The selected ALSA device could not be opened."
 msgstr "Cette machine ALSA n'a pu être ouverte"
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:89
+#: Src/Dialogs/PrintSetupDialog.cpp:134
 msgid "This list of tracks"
 msgstr "Cette liste de pistes"
 
@@ -700,14 +734,14 @@ msgstr "Mesure"
 
 #: Src/Pickers/TimeSigPicker.cpp:92
 msgid "Time Signature"
-msgstr ""
+msgstr "Signature Rythmique"
 
 #: Src/GUI/MainFrame.cpp:380
 msgid "Tool"
 msgstr "Outil"
 
 #. I18N: - %s is the name of the track
-#: Src/Dialogs/PrintSetupDialog.cpp:327
+#: Src/Dialogs/PrintSetupDialog.cpp:42
 #, c-format
 msgid ""
 "Track '%s' could not be printed, since its current\n"
@@ -738,7 +772,7 @@ msgstr "Annuler\tCtrl-Z"
 msgid "Undo %s\tCtrl-Z"
 msgstr "Annuler '%s'\tCtrl-Z"
 
-#: Src/main.cpp:129
+#: Src/main.cpp:139
 msgid "Unknown file type: "
 msgstr "Type de fichier inconnu: "
 
@@ -747,10 +781,10 @@ msgstr "Type de fichier inconnu: "
 #: Src/Midi/Sequence.cpp:127
 #: Src/Midi/Sequence.cpp:146
 #: Src/Midi/Track.cpp:55
-#: Src/Midi/Track.cpp:848
-#: Src/Midi/Track.cpp:1561
-#: Src/Printing/PrintableSequence.cpp:188
+#: Src/Midi/Track.cpp:854
+#: Src/Midi/Track.cpp:1567
 #: Src/Printing/PrintableSequence.cpp:192
+#: Src/Printing/PrintableSequence.cpp:196
 msgid "Untitled"
 msgstr "Sans titre"
 
@@ -773,7 +807,7 @@ msgstr ""
 msgid "WAV file"
 msgstr "Fichier WAV"
 
-#: Src/Midi/Sequence.cpp:1036
+#: Src/Midi/Sequence.cpp:1038
 msgid ""
 "Warning : you are opening a file saved with a version of\n"
 "Aria Maestosa more recent than the version you currently have.\n"
@@ -978,26 +1012,39 @@ msgstr "version %s"
 msgid "volume"
 msgstr "volume"
 
+#~ msgid "Automatically detect repeated measures (experimental!)"
+#~ msgstr "Automatiquement détecter les répétitions (expérimental!)"
+
 #~ msgid "Export to musical notation"
 #~ msgstr "Exporter notation musicale"
+
 #~ msgid "Language"
 #~ msgstr "Langue"
+
 #~ msgid "No midi port available, aborting."
 #~ msgstr "Aucun port midi disponible, impossible de continuer"
+
 #~ msgid "Visible/enabled tracks"
 #~ msgstr "Les pistes visibles et actives"
+
 #~ msgid "Show repeated measures (e.g. chorus) only once"
 #~ msgstr "Exporter les mesures répétées (ex. refrain) une fois seulement"
+
 #~ msgid "Wrong controller ID"
 #~ msgstr "Controlleur inconnu"
+
 #~ msgid "Background"
 #~ msgstr "Arrière-plan"
+
 #~ msgid "Ignore hidden tracks"
 #~ msgstr "Ignorer les pistes non visibles"
+
 #~ msgid "Ignore muted tracks"
 #~ msgstr "Ignorer les pistes sans son"
+
 #~ msgid "Print as tablature"
 #~ msgstr "Imprimer en tablature"
+
 #~ msgid ""
 #~ "\n"
 #~ "\n"
@@ -1010,14 +1057,17 @@ msgstr "volume"
 #~ "Remerciements à:\n"
 #~ "\n"
 #~ "\tErgonis Software et"
+
 #~ msgid "Measure: "
 #~ msgstr "Mesure: "
+
 #~ msgid "Invalid file name. (Sorry, accentuated characters are not supported)"
 #~ msgstr ""
 #~ "Nom de fichier invalide (Désolé, les charactères accentués ne sont pas "
 #~ "supportés)"
+
 #~ msgid "Maximal number of characters per line"
 #~ msgstr "Nombre maximal de caractères par ligne"
+
 #~ msgid "Repetitions must be at least 2 measures long"
 #~ msgstr "Les répétitions doivent être longues d'au moins 2 mesures"
-

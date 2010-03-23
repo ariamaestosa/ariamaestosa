@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-13 12:50-0500\n"
+"POT-Creation-Date: 2010-03-23 08:53-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -94,8 +94,12 @@ msgstr ""
 msgid "Amount: "
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:350
-msgid "An error occured during printing."
+#: Src/Dialogs/PrintSetupDialog.cpp:65
+msgid "An error occurred during printing."
+msgstr ""
+
+#: Src/Dialogs/PrintSetupDialog.cpp:115
+msgid "An error occurred while preparing to print."
 msgstr ""
 
 #: Src/Midi/MeasureData.cpp:79
@@ -108,18 +112,13 @@ msgstr ""
 msgid "Aria Maestosa file|*.aria"
 msgstr ""
 
-#: Src/Printing/PrintableSequence.cpp:188
+#: Src/Printing/PrintableSequence.cpp:192
 msgid "Aria Maestosa song"
 msgstr ""
 
 #. I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
 #: Src/GUI/MainFrameMenuBar.cpp:204
 msgid "Automatic"
-msgstr ""
-
-#. I18N: - in notation export dialog
-#: Src/Dialogs/PrintSetupDialog.cpp:162
-msgid "Automatically detect repeated measures (experimental!)"
 msgstr ""
 
 #: Src/Dialogs/Preferences.cpp:136
@@ -130,12 +129,16 @@ msgstr ""
 msgid "Both Musical and Linear"
 msgstr ""
 
+#: Src/Dialogs/PrintSetupDialog.cpp:31
+msgid "Calculating print layout..."
+msgstr ""
+
 #: Src/GUI/MainFrameMenuBar.cpp:295
 msgid "Can't Undo\tCtrl-Z"
 msgstr ""
 
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:162
-#: Src/Dialogs/PrintSetupDialog.cpp:209 Src/Dialogs/ScalePicker.cpp:142
+#: Src/Dialogs/PrintSetupDialog.cpp:236 Src/Dialogs/ScalePicker.cpp:142
 #: Src/Pickers/BackgroundPicker.cpp:172 Src/Pickers/KeyPicker.cpp:78
 #: Src/Pickers/TuningPicker.cpp:250
 msgid "Cancel"
@@ -197,7 +200,7 @@ msgid "Copyright and song info"
 msgstr ""
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:84
+#: Src/Dialogs/PrintSetupDialog.cpp:129
 msgid "Current track only"
 msgstr ""
 
@@ -250,6 +253,10 @@ msgstr ""
 #. I18N: name of a menu
 #: Src/GUI/MainFrameMenuBar.cpp:154
 msgid "Edit"
+msgstr ""
+
+#: Src/Dialogs/PrintSetupDialog.cpp:218
+msgid "Edit Page Setup"
 msgstr ""
 
 #: Src/GUI/GraphicalTrack.cpp:586
@@ -336,6 +343,10 @@ msgstr ""
 msgid "Keyboard Editor"
 msgstr ""
 
+#: Src/Printing/wxEasyPrintWrapper.cpp:172
+msgid "Landscape"
+msgstr ""
+
 #. I18N: - when setting pan in controller
 #: Src/Pickers/ControllerChoice.cpp:201
 msgid "Left"
@@ -355,6 +366,14 @@ msgstr ""
 #: Src/GUI/MainFrameMenuBar.cpp:207 Src/GUI/MainFrameMenuBar.cpp:234
 #: Src/GUI/MainFrameMenuBar.cpp:760
 msgid "Manual"
+msgstr ""
+
+#. I18N: for printing (page setup)
+#: Src/Printing/wxEasyPrintWrapper.cpp:174
+#, c-format
+msgid ""
+"Margins :\tleft = %i mm, right = %i mm,\n"
+"\t\t\ttop = %i mm, bottom = %i mm"
 msgstr ""
 
 #. I18N: - in controller, for a controller with min/max range
@@ -399,7 +418,7 @@ msgid "No midi port found, no sound will be available."
 msgstr ""
 
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:157
-#: Src/Dialogs/PrintSetupDialog.cpp:206 Src/Dialogs/ScalePicker.cpp:146
+#: Src/Dialogs/PrintSetupDialog.cpp:233 Src/Dialogs/ScalePicker.cpp:146
 #: Src/Pickers/KeyPicker.cpp:77 Src/Pickers/TimeSigPicker.cpp:107
 #: Src/Pickers/TuningPicker.cpp:246
 msgid "OK"
@@ -433,6 +452,14 @@ msgstr ""
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:128
 msgid "Open\tCtrl-O"
+msgstr ""
+
+#: Src/Dialogs/PrintSetupDialog.cpp:213
+msgid "Page Setup"
+msgstr ""
+
+#: Src/Printing/wxEasyPrintWrapper.cpp:170
+msgid "Paper :"
 msgstr ""
 
 #. I18N: menu item in the "edit" menu
@@ -478,18 +505,23 @@ msgstr ""
 msgid "Please wait..."
 msgstr ""
 
+#. I18N: for printing (page orientation)
+#: Src/Printing/wxEasyPrintWrapper.cpp:172
+msgid "Portrait"
+msgstr ""
+
 #. I18N: - title of the preferences dialog
 #: Src/Dialogs/Preferences.cpp:200 Src/GUI/MainFrameMenuBar.cpp:221
 msgid "Preferences"
 msgstr ""
 
 #. I18N: - title of the notation-print dialog
-#: Src/Dialogs/PrintSetupDialog.cpp:72 Src/GUI/MainFrameMenuBar.cpp:139
+#: Src/Dialogs/PrintSetupDialog.cpp:102 Src/GUI/MainFrameMenuBar.cpp:139
 msgid "Print musical notation"
 msgstr ""
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:81
+#: Src/Dialogs/PrintSetupDialog.cpp:126
 msgid "Print..."
 msgstr ""
 
@@ -657,7 +689,7 @@ msgid "The selected ALSA device could not be opened."
 msgstr ""
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:89
+#: Src/Dialogs/PrintSetupDialog.cpp:134
 msgid "This list of tracks"
 msgstr ""
 
@@ -674,7 +706,7 @@ msgid "Tool"
 msgstr ""
 
 #. I18N: - %s is the name of the track
-#: Src/Dialogs/PrintSetupDialog.cpp:327
+#: Src/Dialogs/PrintSetupDialog.cpp:42
 #, c-format
 msgid ""
 "Track '%s' could not be printed, since its current\n"
@@ -703,15 +735,15 @@ msgstr ""
 msgid "Undo %s\tCtrl-Z"
 msgstr ""
 
-#: Src/main.cpp:129
+#: Src/main.cpp:139
 msgid "Unknown file type: "
 msgstr ""
 
 #: Src/IO/MidiFileReader.cpp:430 Src/Midi/Sequence.cpp:80
 #: Src/Midi/Sequence.cpp:127 Src/Midi/Sequence.cpp:146 Src/Midi/Track.cpp:55
-#: Src/Midi/Track.cpp:848 Src/Midi/Track.cpp:1561
-#: Src/Printing/PrintableSequence.cpp:188
+#: Src/Midi/Track.cpp:854 Src/Midi/Track.cpp:1567
 #: Src/Printing/PrintableSequence.cpp:192
+#: Src/Printing/PrintableSequence.cpp:196
 msgid "Untitled"
 msgstr ""
 
@@ -732,7 +764,7 @@ msgstr ""
 msgid "WAV file"
 msgstr ""
 
-#: Src/Midi/Sequence.cpp:1036
+#: Src/Midi/Sequence.cpp:1038
 msgid ""
 "Warning : you are opening a file saved with a version of\n"
 "Aria Maestosa more recent than the version you currently have.\n"
