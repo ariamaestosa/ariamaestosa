@@ -167,9 +167,12 @@ wxString wxEasyPrintWrapper::getPageSetupSummary() const
 {
     // printdata.SetOrientation( m_orient ); // wxPORTRAIT, wxLANDSCAPE
     // printdata.SetPaperId( m_paper_id );
-    return wxThePrintPaperDatabase->ConvertIdToName( m_paper_id ) + wxT(", ") +
-    //I18N: for printing (page orientation)
-    (m_orient == wxPORTRAIT ? _("Portrait") : _("Landscape"));
+    return _("Paper :") + wxT("\t\t") + wxThePrintPaperDatabase->ConvertIdToName( m_paper_id ) + wxT(", ") +
+           //I18N: for printing (page orientation)
+           (m_orient == wxPORTRAIT ? _("Portrait") : _("Landscape")) + wxT("\n") +
+           //I18N: for printing (page setup)
+           wxString::Format(_("Margins :\tleft = %i mm, right = %i mm,\n\t\t\ttop = %i mm, bottom = %i mm"),
+                            m_left_margin, m_right_margin, m_top_margin, m_bottom_margin);
 }
 
 // -----------------------------------------------------------------------------------------------------
