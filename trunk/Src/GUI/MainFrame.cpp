@@ -322,6 +322,7 @@ void MainFrame::init()
     wxSize tinyTextCtrlSize(wxDefaultSize);
     tinyTextCtrlSize.SetWidth(25);
 
+    //TODO: init lazily
     preferences = new PreferencesDialog(this, wxGetApp().prefs);
 
     // -------------------------- Top Pane ----------------------------

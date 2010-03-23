@@ -19,21 +19,14 @@
 #define _preferences_
 
 #include "wx/wx.h"
+#include "PreferencesData.h"
 #include "Utils.h"
 
-namespace AriaMaestosa {
+namespace AriaMaestosa
+{
 
     class MainFrame;
-
-    class PreferencesData
-    {
-        void fillSettingsVector();
-    public:
-        PreferencesData();
-        void saveFromValues();
-
-        long getValue(wxString entryName);
-    };
+    class SettingWidget;
 
     class PreferencesDialog : public wxDialog
     {
@@ -41,16 +34,13 @@ namespace AriaMaestosa {
         int modalCode;
 
         wxBoxSizer* vert_sizer;
-        //wxStaticText* lang_label;
-
-        //wxChoice* lang_combo;
-        //wxChoice* scoreview_combo;
-        //wxChoice* play_combo;
-        //wxCheckBox* follow_playback_checkbox;
 
         wxButton* ok_btn;
 
         MainFrame* parent;
+        
+        ptr_vector<SettingWidget> m_setting_widgets;
+        
     public:
         LEAK_CHECK();
 
@@ -65,7 +55,10 @@ namespace AriaMaestosa {
         //void scoreViewSelected(wxCommandEvent& evt);
 
         void updateValuesFromWidgets();
+        
+        /** update view to reflect values */
         void updateWidgetsFromValues();
+        
         void saveFromValues();
 
         long getValue(wxString entryName);
