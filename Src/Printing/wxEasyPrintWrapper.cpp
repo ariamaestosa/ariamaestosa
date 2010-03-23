@@ -1,6 +1,5 @@
 #include "AriaCore.h"
 
-#include "Printing/AriaPrintable.h"
 #include "Printing/PrintableSequence.h"
 #include "Printing/wxEasyPrintWrapper.h"
 #include "wx/paper.h"
@@ -27,7 +26,7 @@ using namespace AriaMaestosa;
 // -----------------------------------------------------------------------------------------------------
 
 
-wxEasyPrintWrapper::wxEasyPrintWrapper(wxString title, AriaPrintable* printCallBack, float units_per_cm) : wxPrintout( title )
+wxEasyPrintWrapper::wxEasyPrintWrapper(wxString title, IPrintCallback* printCallBack, float units_per_cm) : wxPrintout( title )
 {
     m_print_callback = printCallBack;
     m_page_amount    = -1; // unknown yet

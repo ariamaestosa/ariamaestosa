@@ -30,7 +30,7 @@ namespace AriaMaestosa
 {
     class PrintableSequence;    
     
-    class AriaPrintable
+    class AriaPrintable : public IPrintCallback
     {
         DECLARE_MAGIC_NUMBER();
         
@@ -67,18 +67,6 @@ namespace AriaMaestosa
 
         int m_usable_area_height_page_1;
         int m_usable_area_height;
-        
-        /**
-         * Called (by wxEasyPrintWrapper) when it is time to print a page.
-         *
-         * @param pageNum      ID of the page we want to print
-         * @param dc           The wxDC onto which stuff to print is to be rendered
-         * @param x0           x origin coordinate from which drawing can occur
-         * @param y0           y origin coordinate from which drawing can occur
-         */
-        void printPage(const int pageNum, wxDC& dc,
-                       const int x0, const int y0,
-                       const int x1, const int y1);
         
         /** Called after page setup is first configured OR is later changed; calculates
           * 'm_usable_area_height' members, for use by 'getUsableAreaHeight'
@@ -160,6 +148,19 @@ namespace AriaMaestosa
             assert(m_usable_area_height_page_1 != -1 and m_usable_area_height != -1);
             return (pageNumber == 1 ? m_usable_area_height_page_1 : m_usable_area_height);
         }
+        
+        /**
+         * Called (by wxEasyPrintWrapper) when it is time to print a page.
+         *
+         * @param pageNum      ID of the page we want to print
+         * @param dc           The wxDC onto which stuff to print is to be rendered
+         * @param x0           x origin coordinate from which drawing can occur
+         * @param y0           y origin coordinate from which drawing can occur
+         */
+        virtual void printPage(const int pageNum, wxDC& dc,
+                               const int x0, const int y0,
+                               const int x1, const int y1);
+        
     };
         
     
