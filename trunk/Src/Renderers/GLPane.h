@@ -16,7 +16,7 @@
 
 #ifdef RENDERER_OPENGL
 
-#include "Config.h"
+#include "Utils.h"
 
 #ifndef _glpane_
 #define _glpane_

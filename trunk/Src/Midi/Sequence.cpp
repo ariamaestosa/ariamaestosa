@@ -21,7 +21,7 @@
 
 const float current_file_version = 1.0;
 
-#include "Config.h"
+#include "Utils.h"
 #include "AriaCore.h"
 
 #include "Actions/EditAction.h"
@@ -90,7 +90,7 @@ Sequence::Sequence()
     copyright = wxT("");
 
     channelManagement = CHANNEL_AUTO;
-    measureData = new MeasureData();
+    measureData = new MeasureData(DEFAULT_SONG_LENGTH);
 }
 
 // ----------------------------------------------------------------------------------------------------------

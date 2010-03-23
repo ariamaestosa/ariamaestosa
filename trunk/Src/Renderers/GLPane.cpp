@@ -16,7 +16,7 @@
 
 #ifdef RENDERER_OPENGL
 
-#include "Config.h"
+#include "Utils.h"
 
 #include "Renderers/GLPane.h"
 #include "AriaCore.h"

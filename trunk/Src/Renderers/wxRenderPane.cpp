@@ -15,7 +15,7 @@
  */
 
 #ifdef RENDERER_WXWIDGETS
-#include "Config.h"
+#include "Utils.h"
 
 #include "Renderers/wxRenderPane.h"
 #include "AriaCore.h"
@@ -27,7 +27,7 @@
 #include <cmath>
 
 #include "GUI/MainFrame.h"
-#include "Config.h"
+#include "Utils.h"
 
 namespace AriaMaestosa {
 

@@ -17,7 +17,7 @@
 #include "AriaCore.h"
 #include "Midi/Note.h"
 #include "GUI/GraphicalTrack.h"
-#include "Config.h"
+#include "Utils.h"
 #include "IO/IOUtils.h"
 #include "Pickers/MagneticGrid.h"
 #include "Midi/Players/PlatformMidiManager.h"

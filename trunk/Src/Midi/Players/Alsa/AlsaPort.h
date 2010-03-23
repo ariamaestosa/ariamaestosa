@@ -1,7 +1,7 @@
 #ifndef _alsaport_
 #define _alsaport_
 
-#include "Config.h"
+#include "Utils.h"
 #include <alsa/asoundlib.h>
 #include <vector>
 #include "glib.h"

@@ -22,7 +22,7 @@
 // since my code is deprecated
 
 #ifdef _MAC_QUICKTIME_COREAUDIO
-#include "Config.h"
+#include "Utils.h"
 
 #include "Midi/Players/Mac/CoreAudioNotePlayer.h"
 

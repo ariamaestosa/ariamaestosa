@@ -22,7 +22,7 @@
 #include "Actions/SetNoteVolume.h"
 
 #include <iostream>
-#include "Config.h"
+#include "Utils.h"
 #include "AriaCore.h"
 
 namespace AriaMaestosa {

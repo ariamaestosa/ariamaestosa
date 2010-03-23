@@ -1,7 +1,7 @@
 #ifndef _leak_check_
 #define _leak_check_
 
-#include "Config.h"
+#include "Utils.h"
 #include "ptr_vector.h"
 
 #ifdef _MORE_DEBUG_CHECKS

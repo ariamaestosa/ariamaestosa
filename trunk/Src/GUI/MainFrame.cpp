@@ -15,7 +15,7 @@
  */
 
 #include "AriaCore.h"
-#include "Config.h"
+#include "Utils.h"
 #include "languages.h"
 
 #include "Actions/EditAction.h"

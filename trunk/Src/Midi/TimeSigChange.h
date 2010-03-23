@@ -17,7 +17,7 @@
 #ifndef _keysigchange_
 #define _keysigchange_
 
-#include "Config.h"
+#include "Utils.h"
 
 namespace AriaMaestosa {
 

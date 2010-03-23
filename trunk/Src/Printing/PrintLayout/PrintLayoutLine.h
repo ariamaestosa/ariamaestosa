@@ -17,7 +17,7 @@
 #ifndef _PRINT_LAYOUT_LINE_H_
 #define _PRINT_LAYOUT_LINE_H_
 
-#include "Config.h"
+#include "Utils.h"
 
 namespace AriaMaestosa
 {

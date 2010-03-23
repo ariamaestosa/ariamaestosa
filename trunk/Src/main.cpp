@@ -32,7 +32,7 @@
 
 #include <iostream>
 
-#include "Config.h"
+#include "Utils.h"
 #include "main.h"
 
 IMPLEMENT_APP(AriaMaestosa::wxWidgetApp)

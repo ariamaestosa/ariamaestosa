@@ -16,7 +16,7 @@
 
 #ifdef RENDERER_WXWIDGETS
 
-#include "Config.h"
+#include "Utils.h"
 #include "AriaCore.h"
 #include "wx/wx.h"
 #include "Renderers/RenderAPI.h"

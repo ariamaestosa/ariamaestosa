@@ -17,7 +17,7 @@
 #ifndef _editaction_h_
 #define _editaction_h_
 
-#include "Config.h"
+#include "Utils.h"
 #include "ptr_vector.h"
 #include <vector>
 #include "Midi/Note.h"

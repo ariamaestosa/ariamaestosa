@@ -18,7 +18,7 @@
 
 #include "Renderers/Drawable.h"
 #include "Renderers/ImageBase.h"
-#include "Config.h"
+#include "Utils.h"
 #include <iostream>
 
 #include "OpenGL.h"

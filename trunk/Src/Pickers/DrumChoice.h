@@ -21,7 +21,7 @@
 #include "wx/wx.h"
 #include "wx/wfstream.h"
 
-#include "Config.h"
+#include "Utils.h"
 #include "irrXML/irrXML.h"
 #include "Renderers/RenderAPI.h"
 

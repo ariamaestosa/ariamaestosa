@@ -22,7 +22,7 @@
 #include "wx/image.h"
 #include "wx/spinctrl.h"
 
-#include "Config.h"
+#include "Utils.h"
 #include "AriaCore.h"
 #include "ptr_vector.h"
 

@@ -23,7 +23,7 @@
 
 #include "irrXML/irrXML.h"
 #include "Renderers/RenderAPI.h"
-#include "Config.h"
+#include "Utils.h"
 
 namespace AriaMaestosa {
 

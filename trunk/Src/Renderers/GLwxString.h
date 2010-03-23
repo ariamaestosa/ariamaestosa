@@ -2,7 +2,7 @@
 #ifndef _glstring_
 #define _glstring_
 
-#include "Config.h"
+#include "Utils.h"
 #ifdef __WXMAC__
 #include "OpenGL/gl.h"
 #else

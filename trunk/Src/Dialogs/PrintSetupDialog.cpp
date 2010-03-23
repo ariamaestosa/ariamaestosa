@@ -6,7 +6,7 @@
 #include <wx/print.h>
 //#include <wx/listctrl.h>
 
-#include "Config.h"
+#include "Utils.h"
 #include "AriaCore.h"
 
 #include "AriaCore.h"

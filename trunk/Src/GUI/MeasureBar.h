@@ -25,7 +25,7 @@
  */
 
 #include "ptr_vector.h"
-#include "Config.h"
+#include "Utils.h"
 #include "Editors/RelativeXCoord.h"
 #include "Midi/TimeSigChange.h"
 #include "irrXML/irrXML.h"

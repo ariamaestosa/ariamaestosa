@@ -19,7 +19,7 @@
 #define _preferences_
 
 #include "wx/wx.h"
-#include "Config.h"
+#include "Utils.h"
 
 namespace AriaMaestosa {
 

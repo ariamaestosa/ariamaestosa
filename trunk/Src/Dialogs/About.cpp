@@ -14,7 +14,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "Config.h"
+#include "Utils.h"
 #include "Dialogs/About.h"
 
 #include "wx/utils.h"

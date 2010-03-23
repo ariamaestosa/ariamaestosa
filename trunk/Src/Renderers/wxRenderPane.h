@@ -15,7 +15,7 @@
  */
 
 #ifdef RENDERER_WXWIDGETS
-#include "Config.h"
+#include "Utils.h"
 
 #ifndef _wxrender_
 #define _wxrender_

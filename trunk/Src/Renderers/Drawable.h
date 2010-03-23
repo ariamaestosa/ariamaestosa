@@ -17,7 +17,7 @@
 #ifndef _drawable_h_
 #define _drawable_h_
 
-#include "Config.h"
+#include "Utils.h"
 #include "Renderers/RenderAPI.h"
 
 namespace AriaMaestosa {

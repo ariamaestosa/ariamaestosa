@@ -21,7 +21,7 @@
 
 #include "Renderers/ImageBase.h"
 #include <iostream>
-#include "Config.h"
+#include "Utils.h"
 
 namespace AriaMaestosa {
 

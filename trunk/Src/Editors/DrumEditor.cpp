@@ -16,7 +16,7 @@
 
 
 #include <cmath>
-#include "Config.h"
+#include "Utils.h"
 
 #include "Actions/EditAction.h"
 #include "Actions/AddNote.h"

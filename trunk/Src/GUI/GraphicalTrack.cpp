@@ -21,7 +21,7 @@
 #include <iostream>
 #include <wx/numdlg.h>
 
-#include "Config.h"
+#include "Utils.h"
 
 #include "AriaCore.h"
 #include "Actions/SetAccidentalSign.h"

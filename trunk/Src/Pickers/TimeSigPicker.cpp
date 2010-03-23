@@ -18,7 +18,7 @@
 #include "GUI/MainFrame.h"
 
 #include <iostream>
-#include "Config.h"
+#include "Utils.h"
 #include "AriaCore.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"

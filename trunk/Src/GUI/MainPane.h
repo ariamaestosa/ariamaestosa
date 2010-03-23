@@ -17,7 +17,7 @@
 #ifndef _mainpane_
 #define _mainpane_
 
-#include "Config.h"
+#include "Utils.h"
 #include "Editors/RelativeXCoord.h"
 
 #ifdef RENDERER_OPENGL

@@ -19,7 +19,7 @@
 #ifndef _glimage_
 #define _glimage_
 
-#include "Config.h"
+#include "Utils.h"
 #include "Renderers/ImageBase.h"
 #include "OpenGL.h"
 
