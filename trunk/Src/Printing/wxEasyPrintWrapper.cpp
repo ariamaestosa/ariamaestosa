@@ -146,20 +146,11 @@ bool wxEasyPrintWrapper::performPageSetup(const bool showPageSetupDialog)
     assert(m_unit_width  > 0);
     assert(m_unit_height > 0);
     
-    
-    const int height = m_unit_height;
-    
     //std::cout << PRINT_VAR(height) << " - " << PRINT_VAR(m_print_callback->m_title_font_height)
     //          << " - " <<  PRINT_VAR(MARGIN_UNDER_PAGE_HEADER) << std::endl;
     //std::cout << PRINT_VAR(height) << " - " << PRINT_VAR(m_print_callback->m_subtitle_font_height)
     //          << " - " <<  PRINT_VAR(MARGIN_UNDER_PAGE_HEADER) << std::endl;
-    m_print_callback->m_usable_area_height_page_1 = height - m_print_callback->m_title_font_height - MARGIN_UNDER_PAGE_HEADER;
-    m_print_callback->m_usable_area_height        = height - m_print_callback->m_subtitle_font_height - MARGIN_UNDER_PAGE_HEADER;
-    
-    std::cout << "Calculating 'm_usable_area_height' with height=" << height << "\n";
-    
-    assert(m_print_callback->m_usable_area_height_page_1 > 0);
-    assert(m_print_callback->m_usable_area_height > 0);
+
     return true;
 }
 
