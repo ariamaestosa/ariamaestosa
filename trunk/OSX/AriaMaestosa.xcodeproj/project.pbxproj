@@ -109,6 +109,10 @@
 		950B3EFD1125DE60006C9AF1 /* en.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EE61125DE18006C9AF1 /* en.lproj */; };
 		950B3EFE1125DE60006C9AF1 /* de.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EE31125DE18006C9AF1 /* de.lproj */; };
 		950B3EFF1125DE60006C9AF1 /* it.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EEB1125DE18006C9AF1 /* it.lproj */; };
+		9544D68411582D5300E0A3BD /* wxEasyPrintWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9544D68211582D5300E0A3BD /* wxEasyPrintWrapper.cpp */; };
+		9544D68511582D5300E0A3BD /* wxEasyPrintWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 9544D68311582D5300E0A3BD /* wxEasyPrintWrapper.h */; };
+		9544D68611582D5300E0A3BD /* wxEasyPrintWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9544D68211582D5300E0A3BD /* wxEasyPrintWrapper.cpp */; };
+		9544D68711582D5300E0A3BD /* wxEasyPrintWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 9544D68311582D5300E0A3BD /* wxEasyPrintWrapper.h */; };
 		9568DE8010D54FE30089AAAF /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF9D1CB609ABE21F00CAF7A6 /* Carbon.framework */; };
 		9568DE8110D54FE30089AAAF /* System.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF9D1D5009ABE22B00CAF7A6 /* System.framework */; };
 		9568DE8210D54FE30089AAAF /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF85576109BDE24C00D9D1BC /* OpenGL.framework */; };
@@ -669,6 +673,8 @@
 		950B3EEB1125DE18006C9AF1 /* it.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = it.lproj; path = "../OSX/mac-i18n/it.lproj"; sourceTree = SOURCE_ROOT; };
 		950B3EEE1125DE2F006C9AF1 /* aria_file.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = aria_file.icns; path = ../OSX/aria_file.icns; sourceTree = SOURCE_ROOT; };
 		950B3EEF1125DE2F006C9AF1 /* aria_midi_file.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = aria_midi_file.icns; path = ../OSX/aria_midi_file.icns; sourceTree = SOURCE_ROOT; };
+		9544D68211582D5300E0A3BD /* wxEasyPrintWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wxEasyPrintWrapper.cpp; path = ../Src/Printing/wxEasyPrintWrapper.cpp; sourceTree = SOURCE_ROOT; };
+		9544D68311582D5300E0A3BD /* wxEasyPrintWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wxEasyPrintWrapper.h; path = ../Src/Printing/wxEasyPrintWrapper.h; sourceTree = SOURCE_ROOT; };
 		9568DC6310D54CA50089AAAF /* DebugConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugConfig.xcconfig; sourceTree = SOURCE_ROOT; };
 		9568DC6810D54DC70089AAAF /* ReleaseConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReleaseConfig.xcconfig; sourceTree = SOURCE_ROOT; };
 		9568DD6310D54E340089AAAF /* DebugConfigNoGL.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugConfigNoGL.xcconfig; sourceTree = SOURCE_ROOT; };
@@ -1247,6 +1253,8 @@
 				957119791125D8D300104BF5 /* ScorePrint.h */,
 				9571197A1125D8D300104BF5 /* TabPrint.cpp */,
 				9571197B1125D8D300104BF5 /* TabPrint.h */,
+				9544D68211582D5300E0A3BD /* wxEasyPrintWrapper.cpp */,
+				9544D68311582D5300E0A3BD /* wxEasyPrintWrapper.h */,
 			);
 			name = Printing;
 			path = ../Src/Printing;
@@ -1561,6 +1569,7 @@
 				95B90467114ADF23007F4778 /* PrintSetupDialog.h in Headers */,
 				959693391153E612001E321B /* ScoreAnalyser.h in Headers */,
 				9596933B1153E612001E321B /* SilenceAnalyser.h in Headers */,
+				9544D68511582D5300E0A3BD /* wxEasyPrintWrapper.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1679,6 +1688,7 @@
 				95B90465114ADF23007F4778 /* PrintSetupDialog.h in Headers */,
 				9596933D1153E612001E321B /* ScoreAnalyser.h in Headers */,
 				9596933F1153E612001E321B /* SilenceAnalyser.h in Headers */,
+				9544D68711582D5300E0A3BD /* wxEasyPrintWrapper.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1870,6 +1880,7 @@
 				95B90466114ADF23007F4778 /* PrintSetupDialog.cpp in Sources */,
 				959693381153E612001E321B /* ScoreAnalyser.cpp in Sources */,
 				9596933A1153E612001E321B /* SilenceAnalyser.cpp in Sources */,
+				9544D68411582D5300E0A3BD /* wxEasyPrintWrapper.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1982,6 +1993,7 @@
 				95B90464114ADF23007F4778 /* PrintSetupDialog.cpp in Sources */,
 				9596933C1153E612001E321B /* ScoreAnalyser.cpp in Sources */,
 				9596933E1153E612001E321B /* SilenceAnalyser.cpp in Sources */,
+				9544D68611582D5300E0A3BD /* wxEasyPrintWrapper.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
