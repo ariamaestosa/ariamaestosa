@@ -26,9 +26,26 @@ namespace AriaMaestosa
 {
     const int MARGIN_UNDER_PAGE_HEADER = 200;
             
+    class IPrintCallback
+    {
+    public:
+        /**
+         * Called (by wxEasyPrintWrapper) when it is time to print a page.
+         *
+         * @param pageNum      ID of the page we want to print
+         * @param dc           The wxDC onto which stuff to print is to be rendered
+         * @param x0           x origin coordinate from which drawing can occur
+         * @param y0           y origin coordinate from which drawing can occur
+         */
+        virtual void printPage(const int pageNum, wxDC& dc,
+                               const int x0, const int y0,
+                               const int x1, const int y1) = 0;
+        
+    };
+    
     class wxEasyPrintWrapper : public wxPrintout
     {
-        AriaPrintable*        m_print_callback;
+        IPrintCallback*       m_print_callback;
         wxPageSetupDialogData m_page_setup;
         wxPaperSize           m_paper_id;
         int                   m_orient;
@@ -64,7 +81,7 @@ namespace AriaMaestosa
           * some basic initialisation.
           * @param units_per_cm  wanted resolution (number of DC units per centimeter)
           */
-        wxEasyPrintWrapper(wxString title, AriaPrintable* printCallBack, float units_per_cm);
+        wxEasyPrintWrapper(wxString title, IPrintCallback* printCallBack, float units_per_cm);
         
         /** 
          * @return the number of units horizontally on the printable area of the paper
