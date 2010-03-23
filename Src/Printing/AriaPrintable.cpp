@@ -109,6 +109,18 @@ void AriaPrintable::showPageSetupDialog()
 
 // -------------------------------------------------------------------------------------------------------------
 
+#ifdef __WXMAC__
+
+void AriaPrintable::macEditMargins(wxWindow* parentFrame)
+{
+    m_printer_manager->macEditMargins(parentFrame);
+    findUsableHeight();
+}
+
+#endif
+
+// -------------------------------------------------------------------------------------------------------------
+
 void AriaPrintable::findUsableHeight()
 {
     const int height = getUnitHeight();

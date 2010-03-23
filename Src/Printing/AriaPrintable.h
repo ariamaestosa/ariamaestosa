@@ -143,6 +143,13 @@ namespace AriaMaestosa
         /** show the page setup dialog, so that the user can edit the page setup settings */
         void showPageSetupDialog();
         
+#ifdef __WXMAC__
+        /**
+         * Because the native page setup dialog on mac does not allow editing margins
+         */
+        void macEditMargins(wxWindow* parentFrame);
+#endif
+        
         /** 
           * @return the height of the area that is usable for actual notation printing
           *         (excluding margins, headers, etc...) in print units
