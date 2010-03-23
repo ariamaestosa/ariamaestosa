@@ -32,11 +32,22 @@ namespace AriaMaestosa
         SETTING_INT
     };
     
-    extern const char* SETTING_ID_FOLLOW_PLAYBACK  ;
-    extern const char* SETTING_ID_SCORE_VIEW       ;
-    extern const char* SETTING_ID_PLAY_DURING_EDIT ;
-    extern const char* SETTING_ID_LANGUAGE         ;
-    extern const char* SETTING_ID_LAUNCH_TIMIDITY  ;
+#ifdef DEFINE_SETTING_NAMES
+#define EXTERN
+#define DEFAULT(X) = X
+#else
+#define EXTERN extern
+#define DEFAULT(X)
+#endif
+    
+    EXTERN const char* SETTING_ID_FOLLOW_PLAYBACK  DEFAULT("followPlayback");
+    EXTERN const char* SETTING_ID_SCORE_VIEW       DEFAULT("scoreview");
+    EXTERN const char* SETTING_ID_PLAY_DURING_EDIT DEFAULT("playDuringEdit");
+    EXTERN const char* SETTING_ID_LANGUAGE         DEFAULT("lang");
+    EXTERN const char* SETTING_ID_LAUNCH_TIMIDITY  DEFAULT("launchTimidity");
+    
+#undef EXTERN
+#undef DEFAULT
     
     class Setting
     {
