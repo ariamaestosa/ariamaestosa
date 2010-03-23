@@ -22,6 +22,8 @@
 
 using namespace AriaMaestosa; 
 
+// ----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------
 
 #if 0
 #pragma mark Setting
@@ -35,15 +37,22 @@ Setting::Setting(wxString name, wxString user_name, SettingType type, int defaul
     m_value = default_value;
 }
 
+// ----------------------------------------------------------------------------------------------------
+
 void Setting::addChoice(wxString choice)
 {
     m_choices.Add(choice);
 }
 
+// ----------------------------------------------------------------------------------------------------
+
 void Setting::setChoices(wxArrayString choices)
 {
     m_choices = choices;
 }
+
+// ----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------
 
 #if 0
 #pragma mark -
@@ -52,7 +61,29 @@ void Setting::setChoices(wxArrayString choices)
 
 DEFINE_SINGLETON(AriaMaestosa::PreferencesData);
 
-// ---- define all settings
+PreferencesData::PreferencesData()
+{
+    fillSettingsVector();
+    
+    // --- read values from file
+    wxConfig* prefs = (wxConfig*) wxConfig::Get();
+    
+    long value;
+    
+    // for each setting
+    const int settingAmount = m_settings.size();
+    for(int i=0; i<settingAmount; i++)
+    {
+        // see if this value is defined in file
+        if (prefs->Read( m_settings[i].m_name, &value) )
+        {
+            m_settings[i].m_value = value;
+        }
+    }
+}
+
+// ----------------------------------------------------------------------------------------------------
+
 void PreferencesData::fillSettingsVector()
 {
     // ---- language
@@ -97,28 +128,9 @@ void PreferencesData::fillSettingsVector()
 #endif
 }
 
-PreferencesData::PreferencesData()
-{
-    fillSettingsVector();
-    
-    // --- read values from file
-    wxConfig* prefs = (wxConfig*) wxConfig::Get();
-    
-    long value;
-    
-    // for each setting
-    const int settingAmount = m_settings.size();
-    for(int i=0; i<settingAmount; i++)
-    {
-        // see if this value is defined in file
-        if (prefs->Read( m_settings[i].m_name, &value) )
-        {
-            m_settings[i].m_value = value;
-        }
-    }
-}
+// ----------------------------------------------------------------------------------------------------
 
-void PreferencesData::saveFromValues()
+void PreferencesData::save()
 {
     wxConfig* prefs = (wxConfig*) wxConfig::Get();
     
@@ -130,6 +142,8 @@ void PreferencesData::saveFromValues()
     
     prefs->Flush();
 }
+
+// ----------------------------------------------------------------------------------------------------
 
 long PreferencesData::getValue(wxString entryName)
 {
@@ -146,3 +160,6 @@ long PreferencesData::getValue(wxString entryName)
     std::cout << "prefs value not found : " << entryName.mb_str() << std::endl;
     return -1;
 }
+
+// ----------------------------------------------------------------------------------------------------
+

@@ -59,11 +59,12 @@ namespace AriaMaestosa
         PreferencesData();
 
     public:
-        
-        void saveFromValues();
-        
+                
         long getValue(wxString entryName);
         
+        /** write config file */
+        void save();
+
         ptr_vector<Setting>& getSettings() { return m_settings; }
     };
     
