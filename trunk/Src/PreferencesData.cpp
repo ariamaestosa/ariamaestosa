@@ -22,6 +22,15 @@
 
 using namespace AriaMaestosa; 
 
+namespace AriaMaestosa
+{
+    const char* SETTING_ID_FOLLOW_PLAYBACK  = "followPlayback";
+    const char* SETTING_ID_SCORE_VIEW       = "scoreview";
+    const char* SETTING_ID_PLAY_DURING_EDIT = "playDuringEdit";
+    const char* SETTING_ID_LANGUAGE         = "lang";
+    const char* SETTING_ID_LAUNCH_TIMIDITY  = "launchTimidity";
+}
+
 // ----------------------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------
 
@@ -29,12 +38,14 @@ using namespace AriaMaestosa;
 #pragma mark Setting
 #endif
 
-Setting::Setting(wxString name, wxString user_name, SettingType type, int default_value)
+Setting::Setting(wxString name, wxString user_name, SettingType type,
+                 bool visibleInPreferences, int default_value)
 {
-    m_name = name;
-    m_user_name = user_name;
-    m_type = type;
-    m_value = default_value;
+    m_name                   = name;
+    m_user_name              = user_name;
+    m_type                   = type;
+    m_value                  = default_value;
+    m_visible_in_preferences = visibleInPreferences;
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -87,27 +98,30 @@ PreferencesData::PreferencesData()
 void PreferencesData::fillSettingsVector()
 {
     // ---- language
-    Setting* languages = new Setting(wxT("lang"), wxT("Language"), SETTING_ENUM, getDefaultLanguageAriaID() );
+    Setting* languages = new Setting(fromCString(SETTING_ID_LANGUAGE), wxT("Language"), SETTING_ENUM, true,
+                                     getDefaultLanguageAriaID() );
     languages->setChoices( getLanguageList() );
     m_settings.push_back( languages );
     
     // ---- play during edit
-    Setting* play = new Setting(wxT("playDuringEdit"), _("Play during edit (default value)"), SETTING_ENUM, 1 );
+    Setting* play = new Setting(fromCString(SETTING_ID_PLAY_DURING_EDIT), _("Play during edit (default value)"),
+                                SETTING_ENUM, true, 1 );
     play->addChoice(_("Always"));        // PLAY_ALWAYS = 0,
     play->addChoice(_("On note change"));// PLAY_ON_CHANGE = 1,
     play->addChoice(_("Never"));         // PLAY_NEVER = 2
     m_settings.push_back( play );
     
     // ---- score view
-    Setting* scoreview = new Setting(wxT("scoreview"), _("Default Score View"), SETTING_ENUM, 0 );
+    Setting* scoreview = new Setting(fromCString(SETTING_ID_SCORE_VIEW), _("Default Score View"),
+                                     SETTING_ENUM, true, 0 );
     scoreview->addChoice(_("Both Musical and Linear"));
     scoreview->addChoice(_("Musical Only"));
     scoreview->addChoice(_("Linear Only"));
     m_settings.push_back( scoreview );
     
     // ---- follow playback
-    Setting* followp = new Setting(wxT("followPlayback"), _("Follow playback by default"),
-                                   SETTING_BOOL, 0 );
+    Setting* followp = new Setting(fromCString(SETTING_ID_FOLLOW_PLAYBACK), _("Follow playback by default"),
+                                   SETTING_BOOL, true, 0 );
     m_settings.push_back( followp );
     
 #ifdef __WXGTK__
@@ -121,7 +135,7 @@ void PreferencesData::fillSettingsVector()
      Setting alsaPort(wxT("alsaPort"), _("Alsa Port"), SETTING_INT, 0 );
      m_settings.push_back( alsaPort );
      */
-    Setting* launchTim = new Setting(wxT("launchTimidity"),
+    Setting* launchTim = new Setting(fromCString(SETTING_ID_LAUNCH_TIMIDITY),
                                      _("Automatically launch TiMidity and pick a port"),
                                      SETTING_BOOL, 1 );
     m_settings->push_back( launchTim );

@@ -20,6 +20,8 @@
 #include "Singleton.h"
 #include "ptr_vector.h"
 
+#include "wx/wx.h"
+
 namespace AriaMaestosa
 {
     
@@ -30,6 +32,12 @@ namespace AriaMaestosa
         SETTING_INT
     };
     
+    extern const char* SETTING_ID_FOLLOW_PLAYBACK  ;
+    extern const char* SETTING_ID_SCORE_VIEW       ;
+    extern const char* SETTING_ID_PLAY_DURING_EDIT ;
+    extern const char* SETTING_ID_LANGUAGE         ;
+    extern const char* SETTING_ID_LAUNCH_TIMIDITY  ;
+    
     class Setting
     {
     public:
@@ -39,9 +47,10 @@ namespace AriaMaestosa
         wxArrayString m_choices;
         SettingType   m_type;
         int           m_value;
+        bool          m_visible_in_preferences;
         
-        
-        Setting(wxString name, wxString user_name, SettingType type, int default_value = 0);
+        Setting(wxString name, wxString user_name, SettingType type, bool visibleInPreferences,
+                int default_value = 0);
         void addChoice(wxString choice);
         void setChoices(wxArrayString choices);
     };

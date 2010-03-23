@@ -144,6 +144,8 @@ wxDialog(parent, wxID_ANY,
     const int settingAmount = settings.size();
     for (int i=0; i<settingAmount; i++)
     {
+        if (not settings[i].m_visible_in_preferences) continue;
+        
         SettingWidget* w = new SettingWidget(settings.get(i));
         m_setting_widgets.push_back(w);
         
