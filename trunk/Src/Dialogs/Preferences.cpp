@@ -218,7 +218,7 @@ void PreferencesDialog::show()
 void PreferencesDialog::okClicked(wxCommandEvent& evt)
 {
     updateValuesFromWidgets();
-    data->saveFromValues();
+    data->save();
     wxDialog::EndModal(modalCode);
 }
 
