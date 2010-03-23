@@ -14,22 +14,15 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#define DEFINE_SETTING_NAMES        // X-macros
 #include "PreferencesData.h"
+#undef DEFINE_SETTING_NAMES
 
 #include "languages.h"
 #include <wx/config.h>
 
 
 using namespace AriaMaestosa; 
-
-namespace AriaMaestosa
-{
-    const char* SETTING_ID_FOLLOW_PLAYBACK  = "followPlayback";
-    const char* SETTING_ID_SCORE_VIEW       = "scoreview";
-    const char* SETTING_ID_PLAY_DURING_EDIT = "playDuringEdit";
-    const char* SETTING_ID_LANGUAGE         = "lang";
-    const char* SETTING_ID_LAUNCH_TIMIDITY  = "launchTimidity";
-}
 
 // ----------------------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------
