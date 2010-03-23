@@ -26,9 +26,9 @@ wxEasyPrintWrapper::wxEasyPrintWrapper(wxString title, AriaPrintable* printCallB
     
     m_units_per_cm   = units_per_cm;
     
-    m_left_margin    = 14; // TODO: remember user's choice
-    m_top_margin     = 14;
-    m_right_margin   = 14;
+    m_left_margin    = 12; // TODO: remember user's choice
+    m_top_margin     = 12;
+    m_right_margin   = 12;
     m_bottom_margin  = 16;
     
     m_unit_width     = -1.0f;
