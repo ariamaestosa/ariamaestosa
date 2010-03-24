@@ -150,6 +150,11 @@ void PreferencesData::fillSettingsVector()
     Setting* marginBottom = new Setting(fromCString(SETTING_ID_MARGIN_BOTTOM), wxT(""),
                                       SETTING_INT, false, 16 );
     m_settings.push_back( marginBottom );
+    
+    
+    Setting* paperType = new Setting(fromCString(SETTING_ID_PAPER_TYPE), wxT(""),
+                                     SETTING_INT, false, wxPAPER_LETTER ); //FIXME: hope wx enum values don't change...
+    m_settings.push_back( paperType );
 }
 
 // ----------------------------------------------------------------------------------------------------

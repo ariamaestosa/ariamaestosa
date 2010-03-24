@@ -51,6 +51,8 @@ namespace AriaMaestosa
     EXTERN const char* SETTING_ID_MARGIN_TOP       DEFAULT("marginTop");
     EXTERN const char* SETTING_ID_MARGIN_BOTTOM    DEFAULT("marginBottom");
 
+    EXTERN const char* SETTING_ID_PAPER_TYPE       DEFAULT("paperType");
+    
 #undef EXTERN
 #undef DEFAULT
     
