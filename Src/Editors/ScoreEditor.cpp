@@ -536,7 +536,7 @@ void ScoreEditor::setNoteSign(const int sign, const int noteID)
 #pragma mark -
 #endif
 
-#define LEVEL_TO_Y( lvl ) (Y_STEP_HEIGHT * lvl + getEditorYStart() - getYScrollInPixels()-2)
+#define LEVEL_TO_Y( lvl ) (Y_STEP_HEIGHT * (lvl) + getEditorYStart() - getYScrollInPixels()-2)
 
 namespace EditorStemParams
 {

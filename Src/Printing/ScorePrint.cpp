@@ -764,9 +764,9 @@ namespace AriaMaestosa
     namespace PrintStemParams
     {
         int stem_up_x_offset;
-        float stem_up_y_offset;
+        //float stem_up_y_offset;
         int stem_down_x_offset;
-        float stem_down_y_offset;
+        //float stem_down_y_offset;
         int note_x_shift = 0;
         
         const int getStemX(const int tick, const PitchSign sign, const STEM stem_type)
@@ -936,7 +936,9 @@ namespace AriaMaestosa
                                              bool show_measure_number, const int grandStaffCenterY)
     {
         const bool f_clef = (clefType == F_CLEF_ALONE or clefType == F_CLEF_FROM_GRAND_STAFF);
-
+        const int fromTick = getMeasureData()->firstTickInMeasure( line.getFirstMeasure() );
+        const int toTick   = getMeasureData()->lastTickInMeasure ( line.getLastMeasure () );
+        
         std::cout << "==========================\n    analyseAndDrawScore " << (f_clef ? "F" : "G")
                   << "\n==========================\n\n";
         
@@ -970,12 +972,31 @@ namespace AriaMaestosa
                                    // |  ( )|
         						   //     ^ origin of the note here, in its center. so substract a radius from the right
         
-        stem_up_x_offset = -10; // since note is right-aligned, keep the stem at the right. go 10 towards the note to "blend" in it.
-        stem_up_y_offset = 0;
-        stem_down_x_offset = -HEAD_RADIUS*2 + 3; // since note is right-aligned. go 4 towards the note to "blend" in it.
-        stem_down_y_offset = 0;
-                
-#define LEVEL_TO_Y( lvl ) y0 + 1 + lineHeight*0.5*(lvl - min_level)
+        // FIXME: for some reason, line doesn't draw the same way on 2.8 and 2.9
+        //        see http://trac.wxwidgets.org/ticket/11853
+#if defined(__WXMAC__) && wxMAJOR_VERSION == 2 && wxMINOR_VERSION<=8
+        // since note is right-aligned, keep the stem at the right. go 10 towards the note to "blend" in it.
+        stem_up_x_offset = -10;
+        
+        // since note is right-aligned. go towards the note to "blend" in it.
+        stem_down_x_offset = -HEAD_RADIUS*2 + 3;
+        
+        //stem_up_y_offset = 0;
+        //stem_down_y_offset = 0;
+#else
+        // since note is right-aligned, keep the stem at the right. go 10 towards the note to "blend" in it.
+        stem_up_x_offset = -15;
+        
+        // since note is right-aligned.
+        stem_down_x_offset = -HEAD_RADIUS*2 - 2;
+        
+        //stem_up_y_offset = 0;
+        //stem_down_y_offset = 4;
+#endif
+        
+
+
+#define LEVEL_TO_Y( lvl ) (y0 + 1 + lineHeight*0.5*((lvl) - min_level))
                 
         
         // ------------ draw score background (horizontal lines) ------------
@@ -989,18 +1010,36 @@ namespace AriaMaestosa
             const int y = LEVEL_TO_Y(lvl);
             dc.DrawLine(x0, y, x1, y);
             
+            //std::cout << "LEVEL_TO_Y(" << lvl << ") = " << y << std::endl;
+
+            
             // DEBUG
             // dc.DrawText( wxString::Format(wxT("%i"), lvl), x0 - 120, y - 35 );
+            // dc.DrawText( wxString::Format(wxT("%i"), y), x0 - 120, y - 35 );
         }
         
         /*
         //DEBUG
+         
+        // lines on score
+        dc.SetPen(  wxPen( wxColour(255,0,0), 1 ) );
+        for (int lvl=first_score_level; lvl<=last_score_level; lvl+=2)
+        {
+            const int y = LEVEL_TO_Y(lvl);
+            dc.DrawLine(x0, y, x1, y);
+            
+            std::cout << "(1) Level " << lvl << " has Y " << y << "\n";
+        }
+        
+        // lines above score
         dc.SetPen(  wxPen( wxColour(255,0,0), 7 ) );
         for (int lvl=first_score_level-extra_lines_above*2; lvl<first_score_level; lvl+=2)
         {
             const int y = LEVEL_TO_Y(lvl);
             dc.DrawLine(x0, y, x1, y);
         }
+         
+         // lines blow score
         for (int lvl=last_score_level+extra_lines_under*2; lvl>last_score_level; lvl-=2)
         {
             const int y = LEVEL_TO_Y(lvl);
@@ -1013,6 +1052,42 @@ namespace AriaMaestosa
         std::cout << " == rendering vertical dividers & time sig changes ==\n";
         
         //         const bool fclef = (clefType == F_CLEF_ALONE or clefType == F_CLEF_FROM_GRAND_STAFF);
+
+        /*
+        //DEBUG
+        {
+            const int noteAmount = analyser.noteRenderInfo.size();
+            
+            // ---- Draw small lines above/below score
+            std::cout << " == rendering lines for notes out of score ==\n";
+            for (int i=0; i<noteAmount; i++)
+            {
+                if (analyser.noteRenderInfo[i].tick < fromTick) continue;
+                if (analyser.noteRenderInfo[i].tick >= toTick) break;
+                
+                NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
+                
+                // DEBUG
+                const Range<int> noteX = x_converter->tickToX(noteRenderInfo.tick);
+                dc.SetPen(  wxPen( wxColour(0,0,255), 2 ) );
+                
+                int lvl = round(LEVEL_TO_Y(noteRenderInfo.getBaseLevel()-1));
+                std::cout << "(2) Level " << noteRenderInfo.getBaseLevel()-1 << " has Y " << lvl << "\n";
+
+                dc.DrawLine( noteX.from, lvl, noteX.to, lvl );
+                
+                lvl = round(LEVEL_TO_Y(noteRenderInfo.getBaseLevel()+1));
+                std::cout << "(2) Level " << noteRenderInfo.getBaseLevel()+1 << " has Y " << lvl << "\n";
+
+                dc.DrawLine( noteX.from, lvl, noteX.to, lvl );
+
+                dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
+                dc.SetBrush( *wxBLACK_BRUSH );
+                // END DEBUG
+            }
+        }
+        //END DEBUG
+        */
 
         
         int measure_dividers_from_y = LEVEL_TO_Y(first_score_level);
@@ -1124,8 +1199,6 @@ namespace AriaMaestosa
         // ------------------ first part : basic unintelligent drawing -----------------
         // for all parts of score notes that can be rendered without using the ScoreAnalyser.
         
-        const int fromTick = getMeasureData()->firstTickInMeasure( line.getFirstMeasure() );
-        const int toTick   = getMeasureData()->lastTickInMeasure ( line.getLastMeasure () );
         
         {
             const int noteAmount = analyser.noteRenderInfo.size();
@@ -1145,7 +1218,7 @@ namespace AriaMaestosa
                     const Range<int> noteX = x_converter->tickToX(noteRenderInfo.tick);
                     dc.SetPen(  wxPen( wxColour(125,125,125), 8 ) );
                     
-                    for(int lvl=first_score_level-2; lvl>noteRenderInfo.level+noteRenderInfo.level%2-2; lvl -= 2)
+                    for (int lvl=first_score_level-2; lvl>noteRenderInfo.level+noteRenderInfo.level%2-2; lvl -= 2)
                     {
                         const int y = LEVEL_TO_Y(lvl);
                         dc.DrawLine(noteX.from+HEAD_RADIUS, y, noteX.to+HEAD_RADIUS, y);
@@ -1158,7 +1231,7 @@ namespace AriaMaestosa
                     const Range<int> noteX = x_converter->tickToX(noteRenderInfo.tick);
                     dc.SetPen(  wxPen( wxColour(125,125,125), 8 ) );
                     
-                    for(int lvl=last_score_level+2; lvl<noteRenderInfo.level-noteRenderInfo.level%2+2; lvl += 2)
+                    for (int lvl=last_score_level+2; lvl<noteRenderInfo.level-noteRenderInfo.level%2+2; lvl += 2)
                     {
                         const int y = LEVEL_TO_Y(lvl);
                         dc.DrawLine(noteX.from+HEAD_RADIUS, y, noteX.to+HEAD_RADIUS, y);
@@ -1190,7 +1263,7 @@ namespace AriaMaestosa
                 NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
 
                 const Range<int> noteX = x_converter->tickToX(noteRenderInfo.tick);
-
+                
                 // make sure we were given the requested size (TODO: fix and uncomment)
                 //assertExpr(noteX.to - noteX.from, >=, HEAD_RADIUS*2 +
                 //           (noteRenderInfo.sign == PITCH_SIGN_NONE ? 0 : MAX_ACCIDENTAL_SIZE) +
@@ -1204,8 +1277,8 @@ namespace AriaMaestosa
                 const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
                 
                 /** This coord is the CENTER of the note's head */
-                wxPoint headLocation( noteX.to - note_x_shift, // this is the center of the note
-                                      notey-(HEAD_RADIUS-5)/2.0);
+                wxPoint headLocation( noteX.to - note_x_shift,
+                                      notey                    );
                 
                 if (noteRenderInfo.instant_hit)
                 {
@@ -1222,14 +1295,14 @@ namespace AriaMaestosa
                         // FIXME - instead of always substracting to radius, just make it smaller...
                         const float angle = n/25.0*6.283185f /* 2*PI */;
                         points[n] = wxPoint( cx + (HEAD_RADIUS-5)*cos(angle),
-                                             cy + HEAD_RADIUS/2 + (HEAD_RADIUS - 14)*sin(angle) - HEAD_RADIUS*(-0.5f + fabsf( (n-12.5f)/12.5f ))/2.0f );
+                                             cy + (HEAD_RADIUS - 14)*sin(angle) - HEAD_RADIUS*(-0.5f + fabsf( (n-12.5f)/12.5f ))/2.0f );
                     }
 
                     if (noteRenderInfo.hollow_head) dc.DrawSpline(25, points);
                     else                            dc.DrawPolygon(25, points, -3);
                     
                 }
-                noteRenderInfo.setY(notey+HEAD_RADIUS/2.0);
+                noteRenderInfo.setY(notey+HEAD_RADIUS/2.0); // FIXME: why +HEAD_RADIUS/2.0 ?
                 
                 // draw dot if note is dotted
                 if (noteRenderInfo.dotted)
@@ -1238,10 +1311,37 @@ namespace AriaMaestosa
                     dc.DrawEllipse( headLocation /* top left corner */, wxSize(DOT_SIZE, DOT_SIZE) );
                 }
                 
+                /*
+                // ---- DEBUG
+                // ---- {
+                dc.SetPen(  wxPen( wxColour(255,0,0), 2 ) );
+                dc.DrawLine( headLocation.x - 10, headLocation.y, headLocation.x + 10, headLocation.y );
+                const int lvlAbove = round(LEVEL_TO_Y(noteRenderInfo.getBaseLevel()-1));
+                //const int lvlAt    = round(LEVEL_TO_Y(noteRenderInfo.getBaseLevel()));
+                const int lvlBelow = round(LEVEL_TO_Y(noteRenderInfo.getBaseLevel()+1));
+                
+                std::cout << "(2) LEVEL_TO_Y(" << (noteRenderInfo.getBaseLevel()-1) << ") = " << lvlAbove << std::endl;
+                std::cout << "(2) LEVEL_TO_Y(" << (noteRenderInfo.getBaseLevel()+1) << ") = " << lvlBelow << std::endl;
+
+                
+                dc.SetPen(  wxPen( wxColour(0,255,0), 2 ) );
+                dc.DrawLine( headLocation.x - 10, lvlAbove, headLocation.x + 10, lvlAbove );
+                //dc.DrawLine( headLocation.x - 10, lvlAt, headLocation.x + 10, lvlAt );
+                dc.DrawLine( headLocation.x - 10, lvlBelow, headLocation.x + 10, lvlBelow );
+
+                wxFont saved = dc.GetFont();
+                dc.SetFont( wxFont(15, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_ITALIC ,wxFONTWEIGHT_NORMAL) );
+                dc.DrawText( wxString::Format(wxT("%i"), lvlAbove), headLocation.x - 50, lvlAbove );
+                dc.DrawText( wxString::Format(wxT("%i"), lvlBelow), headLocation.x - 50, lvlBelow );
+                dc.SetFont(saved);
+                
                 // draw sharpness sign if relevant
                 if      (noteRenderInfo.sign == SHARP)   renderSharp  ( dc, noteX.from + accidentalShift, noteRenderInfo.getY() - 15  );
                 else if (noteRenderInfo.sign == FLAT)    renderFlat   ( dc, noteX.from + accidentalShift, noteRenderInfo.getY() - 15  );
                 else if (noteRenderInfo.sign == NATURAL) renderNatural( dc, noteX.from + accidentalShift, noteRenderInfo.getY() - 20  );
+                
+                // ---- }
+                */
                 
                 // set pen/brush back, accidental routines might have changed them
                 dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
