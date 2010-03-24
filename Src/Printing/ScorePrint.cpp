@@ -343,14 +343,14 @@ namespace AriaMaestosa
             PRINT_VAR(scoreData->extra_lines_under_f_score) <<
             PRINT_VAR(scoreData->extra_lines_above_f_score) << std::endl;
         
-        int total = (g_clef ? 5 : 0) + (f_clef ? 5 : 0) + 
+        int total = (m_g_clef ? 5 : 0) + (m_f_clef ? 5 : 0) + 
                 abs(scoreData->extra_lines_under_g_score) +
                 abs(scoreData->extra_lines_above_g_score) +
                 abs(scoreData->extra_lines_under_f_score) +
                 abs(scoreData->extra_lines_above_f_score);
         
         // if we have both scores, add the margin between them to the required space.
-        if (g_clef and f_clef)
+        if (m_g_clef and m_f_clef)
         {
             //FIXME: it's not too clear whether needed additional space should be returned
             //       as a function of levels??
@@ -388,13 +388,13 @@ namespace AriaMaestosa
             ScoreAnalyser* current_analyser;
             if (clef == 0)
             {
-                if (g_clef) current_analyser = g_clef_analyser;
-                else        continue;
+                if (m_g_clef) current_analyser = g_clef_analyser;
+                else          continue;
             }
             else if (clef == 1)
             {
-                if (f_clef) current_analyser = f_clef_analyser;
-                else        continue;
+                if (m_f_clef) current_analyser = f_clef_analyser;
+                else          continue;
             }
             else
             {
@@ -480,17 +480,17 @@ namespace AriaMaestosa
         int g_clef_y_from = -1, g_clef_y_to = -1;
         int f_clef_y_from = -1, f_clef_y_to = -1;
         
-        if (g_clef and not f_clef)
+        if (m_g_clef and not m_f_clef)
         {
             g_clef_y_from = trackCoords->y0;
             g_clef_y_to   = trackCoords->y1;
         }
-        else if (f_clef and not g_clef)
+        else if (m_f_clef and not m_g_clef)
         {
             f_clef_y_from = trackCoords->y0;
             f_clef_y_to   = trackCoords->y1;
         }
-        else if (f_clef and g_clef)
+        else if (m_f_clef and m_g_clef)
         {
             g_clef_y_from = trackCoords->y0;
             g_clef_y_to   = trackCoords->y0 +
@@ -521,22 +521,28 @@ namespace AriaMaestosa
         
         g_printable = this;
         
-        if (g_clef)
+        const int grandStaffCenterY = (m_g_clef and m_f_clef ? (g_clef_y_to + f_clef_y_from)/2 : -1);
+        
+        if (m_g_clef)
         {
-            analyseAndDrawScore(false /*G*/, *g_clef_analyser, currentLine, currentTrack.m_track,
+            ClefRenderType clef = (m_f_clef ? G_CLEF_FROM_GRAND_STAFF : G_CLEF_ALONE);
+            analyseAndDrawScore(clef, *g_clef_analyser, currentLine, currentTrack.m_track,
                                 dc, abs(scoreData->extra_lines_above_g_score),
                                 abs(scoreData->extra_lines_under_g_score),
                                 trackCoords->x0, g_clef_y_from, trackCoords->x1, g_clef_y_to,
-                                currentTrack.showMeasureNumber());
+                                currentTrack.showMeasureNumber(), grandStaffCenterY);
         }
         
-        if (f_clef)
+        if (m_f_clef)
         {
-            analyseAndDrawScore(true /*F*/, *f_clef_analyser, currentLine, currentTrack.m_track,
+            ClefRenderType clef = (m_g_clef ? F_CLEF_FROM_GRAND_STAFF : F_CLEF_ALONE);
+
+            analyseAndDrawScore(clef, *f_clef_analyser, currentLine, currentTrack.m_track,
                                 dc, abs(scoreData->extra_lines_above_f_score),
                                 abs(scoreData->extra_lines_under_f_score),
                                 trackCoords->x0, f_clef_y_from, trackCoords->x1, f_clef_y_to,
-                                (g_clef ? false : currentTrack.showMeasureNumber()) /* if we have both keys don't show twice */);
+                                (m_g_clef ? false : currentTrack.showMeasureNumber()) /* if we have both keys don't show twice */,
+                                grandStaffCenterY);
         }
         
         delete x_converter;
@@ -593,8 +599,8 @@ namespace AriaMaestosa
         const int f_clef_from_level = middle_c_level+2;
         const int f_clef_to_level   = middle_c_level+10;
         
-        g_clef = scoreEditor->isGClefEnabled();
-        f_clef = scoreEditor->isFClefEnabled();
+        m_g_clef = scoreEditor->isGClefEnabled();
+        m_f_clef = scoreEditor->isFClefEnabled();
         
         const int fromTick = getMeasureData()->firstTickInMeasure( line.getFirstMeasure() );
         const int toTick   = getMeasureData()->lastTickInMeasure ( line.getLastMeasure() );
@@ -602,8 +608,8 @@ namespace AriaMaestosa
         // ---- check if some signs (stems, triplet signs, etc.) go out of bounds
         for (int n=0; n<2; n++) // 0 is G clef, 1 is F clef
         {
-            if (n == 0 and not g_clef) continue;
-            if (n == 1 and not f_clef) continue;
+            if (n == 0 and not m_g_clef) continue;
+            if (n == 1 and not m_f_clef) continue;
             
             // analyse notes. this analysis will be used to determine is some things go out of the track
             // verticall, and will be thrown away after [FIXME] (it will be analysed again when it's time to render)
@@ -681,7 +687,7 @@ namespace AriaMaestosa
         scoreData->extra_lines_above_f_score = 0;
         scoreData->extra_lines_under_f_score = 0;
         
-        if (g_clef and not f_clef)
+        if (m_g_clef and not m_f_clef)
         {
             //std::cout << "G: " << PRINT_VAR(smallest_level) << PRINT_VAR(biggest_level)
             //                   << PRINT_VAR(g_clef_from_level) << PRINT_VAR(g_clef_to_level) << std::endl;
@@ -695,7 +701,7 @@ namespace AriaMaestosa
                 scoreData->extra_lines_under_g_score = (g_clef_to_level - biggest_level)/2;
             }
         }
-        else if (f_clef and not g_clef)
+        else if (m_f_clef and not m_g_clef)
         {
             //std::cout << "F: " << PRINT_VAR(smallest_level) << PRINT_VAR(biggest_level)
             //                   << PRINT_VAR(f_clef_from_level) << PRINT_VAR(f_clef_to_level) << std::endl;
@@ -709,7 +715,7 @@ namespace AriaMaestosa
                 scoreData->extra_lines_under_f_score = (f_clef_to_level - biggest_level)/2;
             }
         }
-        else if (f_clef and g_clef)
+        else if (m_f_clef and m_g_clef)
         {
             //std::cout << "F: " << PRINT_VAR(smallest_level) << PRINT_VAR(biggest_level)
             //                   << PRINT_VAR(f_clef_from_level) << PRINT_VAR(f_clef_to_level) << std::endl;
@@ -735,7 +741,7 @@ namespace AriaMaestosa
         scoreData->first_clef_proportion  = (1.0f - MARGIN_PROPORTION_BETWEEN_CLEFS) / 2.0f;
         scoreData->second_clef_proportion = (1.0f - MARGIN_PROPORTION_BETWEEN_CLEFS) / 2.0f;
         
-        if (g_clef and f_clef and
+        if (m_g_clef and m_f_clef and
            scoreData->extra_lines_above_g_score + scoreData->extra_lines_under_f_score != 0 /* unnecessary if nothing under/over scores*/)
         {
             const int total_G_level_count = abs(scoreData->extra_lines_above_g_score) + LINES_IN_A_SCORE;
@@ -835,16 +841,16 @@ namespace AriaMaestosa
         const int middle_c_level = converter->getScoreCenterCLevel(); //converter->getMiddleCLevel();
         
         
-        g_clef = scoreEditor->isGClefEnabled();
-        f_clef = scoreEditor->isFClefEnabled();
+        m_g_clef = scoreEditor->isGClefEnabled();
+        m_f_clef = scoreEditor->isFClefEnabled();
         
         // ---- Build score analyzers
-        if (g_clef)
+        if (m_g_clef)
         {
             g_clef_analyser = new ScoreAnalyser(scoreEditor, middle_c_level-5);
             g_clef_analyser->setStemPivot(middle_c_level-5);
         }
-        if (f_clef)
+        if (m_f_clef)
         {
             f_clef_analyser = new ScoreAnalyser(scoreEditor, middle_c_level-5);
             f_clef_analyser->setStemPivot(middle_c_level+6);
@@ -878,17 +884,17 @@ namespace AriaMaestosa
                                            track->isNoteSelected(n), track->getNotePitchID(n));
                 
                 // add note to either G clef score or F clef score
-                if (g_clef and not f_clef)
+                if (m_g_clef and not m_f_clef)
                 {
                     //std::cout << "   G clef : Adding note at beat " << tick/960 << "\n";
                     g_clef_analyser->addToVector(currentNote);
                 }
-                else if (f_clef and not g_clef)
+                else if (m_f_clef and not m_g_clef)
                 {
                     //std::cout << "   F clef : Adding note at beat " << tick/960 << "\n";
                     f_clef_analyser->addToVector(currentNote);
                 }
-                else if (f_clef and g_clef)
+                else if (m_f_clef and m_g_clef)
                 {
                     if (noteLevel < middle_c_level)
                     {
@@ -907,12 +913,12 @@ namespace AriaMaestosa
         
         // ---- Silences
         std::cout << " == gathering silences ==\n";
-        if (f_clef)
+        if (m_f_clef)
         {
             m_silences_ticks = SilenceAnalyser::findSilences( f_clef_analyser, 0, measureAmount-1,
                                                              -1 /* y not important at this point */ );
         }
-        if (g_clef)
+        if (m_g_clef)
         {
             m_silences_ticks = SilenceAnalyser::findSilences( g_clef_analyser, 0, measureAmount-1,
                                                             -1 /* y not important at this point */ );
@@ -923,14 +929,17 @@ namespace AriaMaestosa
     
     // -------------------------------------------------------------------------------------------
     
-    void ScorePrintable::analyseAndDrawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine& line,
+    void ScorePrintable::analyseAndDrawScore(ClefRenderType clefType, ScoreAnalyser& analyser, LayoutLine& line,
                                              const Track* track, wxDC& dc,
                                              const int extra_lines_above, const int extra_lines_under,
                                              const int x0, const int y0, const int x1, const int y1,
-                                             bool show_measure_number)
+                                             bool show_measure_number, const int grandStaffCenterY)
     {
+        const bool f_clef = (clefType == F_CLEF_ALONE or clefType == F_CLEF_FROM_GRAND_STAFF);
+
         std::cout << "==========================\n    analyseAndDrawScore " << (f_clef ? "F" : "G")
                   << "\n==========================\n\n";
+        
         
         analyser.putInTimeOrder();
         
@@ -1003,8 +1012,20 @@ namespace AriaMaestosa
         // ------------ render vertical dividers and time signature changes ---------
         std::cout << " == rendering vertical dividers & time sig changes ==\n";
         
-        const int measure_dividers_from_y = LEVEL_TO_Y(first_score_level);
-        const int measure_dividers_to_y   = LEVEL_TO_Y(last_score_level);
+        //         const bool fclef = (clefType == F_CLEF_ALONE or clefType == F_CLEF_FROM_GRAND_STAFF);
+
+        
+        int measure_dividers_from_y = LEVEL_TO_Y(first_score_level);
+        int measure_dividers_to_y   = LEVEL_TO_Y(last_score_level);
+        
+        if (clefType == F_CLEF_FROM_GRAND_STAFF)
+        {
+            measure_dividers_from_y = grandStaffCenterY;
+        }
+        else if (clefType == G_CLEF_FROM_GRAND_STAFF)
+        {
+            measure_dividers_to_y = grandStaffCenterY;
+        }
         
         // draw end of line vertical line
         drawVerticalDivider(x1, measure_dividers_from_y, measure_dividers_to_y);

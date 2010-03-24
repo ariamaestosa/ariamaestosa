@@ -36,11 +36,20 @@ namespace AriaMaestosa
     {
         void gatherVerticalSizingInfo(const int trackID, LineTrackRef& track, LayoutLine& line);
         
-        void analyseAndDrawScore(bool f_clef, ScoreAnalyser& analyser, LayoutLine& line, const Track* track,
-                                 wxDC& dc, const int extra_lines_above, const int extra_lines_under,
-                                 const int x0, const int y0, const int x1, const int y1, bool show_measure_number);
+        enum ClefRenderType
+        {
+            G_CLEF_ALONE,
+            F_CLEF_ALONE,
+            G_CLEF_FROM_GRAND_STAFF,
+            F_CLEF_FROM_GRAND_STAFF
+        };
         
-        bool g_clef, f_clef;
+        void analyseAndDrawScore(ClefRenderType clefType, ScoreAnalyser& analyser, LayoutLine& line, const Track* track,
+                                 wxDC& dc, const int extra_lines_above, const int extra_lines_under,
+                                 const int x0, const int y0, const int x1, const int y1,
+                                 bool show_measure_number, const int grandStaffCenterY);
+        
+        bool m_g_clef, m_f_clef;
         int middle_c_level;
         OwnerPtr<ScoreAnalyser> g_clef_analyser;
         OwnerPtr<ScoreAnalyser> f_clef_analyser;
