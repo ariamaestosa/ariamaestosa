@@ -1,5 +1,6 @@
 #include "AriaCore.h"
 
+#include "PreferencesData.h"
 #include "Printing/PrintableSequence.h"
 #include "Printing/wxEasyPrintWrapper.h"
 #include "wx/paper.h"
@@ -35,10 +36,11 @@ wxEasyPrintWrapper::wxEasyPrintWrapper(wxString title, IPrintCallback* printCall
     
     m_units_per_cm   = units_per_cm;
     
-    m_left_margin    = 12; // TODO: remember user's choice
-    m_top_margin     = 12;
-    m_right_margin   = 12;
-    m_bottom_margin  = 16;
+    PreferencesData* prefs = PreferencesData::getInstance();
+    m_left_margin    = prefs->getValue(SETTING_ID_MARGIN_LEFT);
+    m_top_margin     = prefs->getValue(SETTING_ID_MARGIN_TOP);
+    m_right_margin   = prefs->getValue(SETTING_ID_MARGIN_RIGHT);
+    m_bottom_margin  = prefs->getValue(SETTING_ID_MARGIN_BOTTOM);
     
     m_unit_width     = -1.0f;
     m_unit_height    = -1.0f;
@@ -70,10 +72,8 @@ bool wxEasyPrintWrapper::performPageSetup(const bool showPageSetupDialog)
             m_page_setup     = dialog.GetPageSetupData();
             m_paper_id       = m_page_setup.GetPaperId();
             m_orient         = m_page_setup.GetPrintData().GetOrientation();
-            m_left_margin    = m_page_setup.GetMarginTopLeft().x;
-            m_top_margin     = m_page_setup.GetMarginTopLeft().y;
-            m_right_margin   = m_page_setup.GetMarginBottomRight().x;
-            m_bottom_margin  = m_page_setup.GetMarginBottomRight().y;
+            
+            updateMarginMembers();
         }
         else
         {
@@ -168,15 +168,30 @@ void wxEasyPrintWrapper::macEditMargins(wxWindow* parentFrame)
     dlg.ShowModal();
     
     m_page_setup     = dlg.GetPageSetupDialogData();
+
+    updateMarginMembers();
+    updateCoordinateSystem();
+}
+
+#endif
+
+// -----------------------------------------------------------------------------------------------------
+
+void wxEasyPrintWrapper::updateMarginMembers()
+{
     m_left_margin    = m_page_setup.GetMarginTopLeft().x;
     m_top_margin     = m_page_setup.GetMarginTopLeft().y;
     m_right_margin   = m_page_setup.GetMarginBottomRight().x;
     m_bottom_margin  = m_page_setup.GetMarginBottomRight().y;
     
-    updateCoordinateSystem();
+    PreferencesData* prefs = PreferencesData::getInstance();
+    
+    prefs->setValue(SETTING_ID_MARGIN_LEFT,   m_left_margin);
+    prefs->setValue(SETTING_ID_MARGIN_TOP,    m_top_margin);
+    prefs->setValue(SETTING_ID_MARGIN_RIGHT,  m_right_margin);
+    prefs->setValue(SETTING_ID_MARGIN_BOTTOM, m_bottom_margin);
+    prefs->save();
 }
-
-#endif
 
 // -----------------------------------------------------------------------------------------------------
 

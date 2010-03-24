@@ -71,6 +71,8 @@ namespace AriaMaestosa
         
         void updateCoordinateSystem();
 
+        void updateMarginMembers();
+        
     public:
         
         LEAK_CHECK();
