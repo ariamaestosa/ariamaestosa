@@ -135,7 +135,7 @@ namespace AriaMaestosa
         /**
          * Because the native page setup dialog on mac does not allow editing margins
          */
-        void macEditMargins(wxWindow* parentFrame);
+        void macEditMargins(wxFrame* parentFrame);
 #endif
         
         /** 
