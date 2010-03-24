@@ -53,7 +53,6 @@ NOTE: sorry, this is very raw :)
     - X notes not printed right (nor handled correctly in score editor anyway)
  - printing : skip series of empty measures (replacing hiding of empty lines)
  - print tempo (and tempo changes)
- - time sig changes : no bar should appear after time sig change
  - use double bar at the end of the song
 
  * Keyboard editor : show current key in left area
