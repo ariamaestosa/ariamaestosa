@@ -46,6 +46,11 @@ namespace AriaMaestosa
     EXTERN const char* SETTING_ID_LANGUAGE         DEFAULT("lang");
     EXTERN const char* SETTING_ID_LAUNCH_TIMIDITY  DEFAULT("launchTimidity");
     
+    EXTERN const char* SETTING_ID_MARGIN_LEFT      DEFAULT("marginLeft");
+    EXTERN const char* SETTING_ID_MARGIN_RIGHT     DEFAULT("marginRight");
+    EXTERN const char* SETTING_ID_MARGIN_TOP       DEFAULT("marginTop");
+    EXTERN const char* SETTING_ID_MARGIN_BOTTOM    DEFAULT("marginBottom");
+
 #undef EXTERN
 #undef DEFAULT
     
@@ -80,7 +85,9 @@ namespace AriaMaestosa
 
     public:
                 
-        long getValue(wxString entryName);
+        long getValue(wxString entryName) const;
+        
+        void setValue(wxString entryName, long newValue);
         
         /** write config file */
         void save();

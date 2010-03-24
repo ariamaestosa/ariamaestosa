@@ -130,9 +130,26 @@ void PreferencesData::fillSettingsVector()
      */
     Setting* launchTim = new Setting(fromCString(SETTING_ID_LAUNCH_TIMIDITY),
                                      _("Automatically launch TiMidity and pick a port"),
-                                     SETTING_BOOL, 1 );
-    m_settings->push_back( launchTim );
+                                     SETTING_BOOL, false, 1 );
+    m_settings.push_back( launchTim );
 #endif
+    
+    // ---- printing
+    Setting* marginLeft = new Setting(fromCString(SETTING_ID_MARGIN_LEFT), wxT(""),
+                                      SETTING_INT, false, 12 );
+    m_settings.push_back( marginLeft );
+    
+    Setting* marginRight = new Setting(fromCString(SETTING_ID_MARGIN_RIGHT), wxT(""),
+                                      SETTING_INT, false, 12 );
+    m_settings.push_back( marginRight );
+    
+    Setting* marginTop = new Setting(fromCString(SETTING_ID_MARGIN_TOP), wxT(""),
+                                      SETTING_INT, false, 12 );
+    m_settings.push_back( marginTop );
+    
+    Setting* marginBottom = new Setting(fromCString(SETTING_ID_MARGIN_BOTTOM), wxT(""),
+                                      SETTING_INT, false, 16 );
+    m_settings.push_back( marginBottom );
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -152,11 +169,11 @@ void PreferencesData::save()
 
 // ----------------------------------------------------------------------------------------------------
 
-long PreferencesData::getValue(wxString entryName)
+long PreferencesData::getValue(wxString entryName) const
 {
     
     const int settingAmount = m_settings.size();
-    for(int i=0; i<settingAmount; i++)
+    for (int i=0; i<settingAmount; i++)
     {
         if ( m_settings[i].m_name == entryName )
         {
@@ -170,3 +187,18 @@ long PreferencesData::getValue(wxString entryName)
 
 // ----------------------------------------------------------------------------------------------------
 
+void PreferencesData::setValue(wxString entryName, long newValue)
+{
+    const int settingAmount = m_settings.size();
+    for (int i=0; i<settingAmount; i++)
+    {
+        if ( m_settings[i].m_name == entryName )
+        {
+            m_settings[i].m_value = newValue;
+            return;
+        }
+    }
+    assert(false);
+}
+
+// ----------------------------------------------------------------------------------------------------
