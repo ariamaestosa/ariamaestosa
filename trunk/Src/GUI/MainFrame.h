@@ -67,6 +67,7 @@ class CustomToolBar : public wxPanel
     void AddTool(const int id, wxString label, wxBitmap& bmp);
     void SetToolNormalBitmap(const int id, wxBitmap& bmp);
     void EnableTool(const int id, const bool enabled);
+    void AddStretchableSpace();
 #endif
     CustomToolBar(wxWindow* parent);
     void add(wxControl* ctrl, wxString label=wxEmptyString);

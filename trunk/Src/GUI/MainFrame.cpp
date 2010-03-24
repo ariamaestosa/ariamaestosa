@@ -210,6 +210,11 @@ void CustomToolBar::AddTool(const int id, wxString label, wxBitmap& bmp)
     labels.push_back(label);
 }
 
+void CustomToolBar::AddStretchableSpace()
+{
+    toolbarSizer->AddStretchSpacer();
+}
+
 void CustomToolBar::add(wxControl* ctrl, wxString label)
 {
     toolbarSizer->Add(ctrl, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
@@ -325,7 +330,7 @@ void MainFrame::init()
     //TODO: init lazily
     preferences = new PreferencesDialog(this, wxGetApp().prefs);
 
-    // -------------------------- Top Pane ----------------------------
+    // -------------------------- Toolbar ----------------------------
 #ifdef NO_WX_TOOLBAR
     borderSizer->Add(toolbar, 0, wxALIGN_CENTER_VERTICAL | wxALL, 2);
     borderSizer->AddSpacer(10);
@@ -374,7 +379,12 @@ void MainFrame::init()
     displayZoom->SetRange(25,500);
     toolbar->add(displayZoom, _("Zoom"));
     
+    // seems broken for now
+//#if defined(NO_WX_TOOLBAR) || wxMAJOR_VERSION > 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION == 9)
+//    toolbar->AddStretchableSpace();
+//#else
     toolbar->AddSeparator();
+//#endif
     
     tool1Bitmap.LoadFile( getResourcePrefix()  + wxT("tool1.png") , wxBITMAP_TYPE_PNG);
     tool2Bitmap.LoadFile( getResourcePrefix()  + wxT("tool2.png") , wxBITMAP_TYPE_PNG);
