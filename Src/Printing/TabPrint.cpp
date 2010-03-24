@@ -258,7 +258,7 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
         
         drawVerticalDivider(currentElement, trackCoords->y0, trackCoords->y1);
         
-        if (currentElement->render_end_bar)
+        if (currentElement->m_render_end_bar)
         {
             drawVerticalDivider(currentElement, trackCoords->y0, trackCoords->y1, true /* at end */);
         }

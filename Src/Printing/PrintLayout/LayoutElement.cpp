@@ -27,6 +27,7 @@ LayoutElement::LayoutElement(LayoutElementType type_arg, int measure_arg)
         
     x = -1;
     x2 = -1;
-    render_end_bar = false;
+    m_render_end_bar   = false;
+    m_render_start_bar = true;
 }
 

@@ -49,8 +49,11 @@ void EditorPrintable::setCurrentDC(wxDC* dc)
     
 void EditorPrintable::drawVerticalDivider(LayoutElement* el, const int y0, const int y1, const bool atEnd)
 {
-    if (el->getType() == TIME_SIGNATURE_EL) return;
+    //if (el->getType() == TIME_SIGNATURE_EL) return;
     
+    if (not el->m_render_start_bar and not atEnd) return;
+    if (not el->m_render_end_bar and atEnd)       return;
+
     const int elem_x_start = (atEnd ? el->getXTo() : el->getXFrom());
     
     // draw vertical line that starts measure

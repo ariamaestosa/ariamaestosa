@@ -159,6 +159,8 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
 
     int previous_num = -1, previous_denom = -1;
     
+    bool noStartLine = false;
+    
     for (int measure=0; measure<measureAmount; measure++)
     {
         if ((measure & 3) == 0) // only update progress one element out of 4
@@ -170,6 +172,8 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
         std::cout << "Generating layout element for measure " << (measure+1) << std::endl;
 #endif
 
+        noStartLine = false;
+        
         if (getMeasureData()->getTimeSigDenominator(measure) != previous_denom ||
             getMeasureData()->getTimeSigNumerator(measure)   != previous_num)
         {
@@ -182,6 +186,7 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
             previous_num = el2.num;
             previous_denom = el2.denom;
             layoutElements.push_back( el2 );
+            noStartLine = true;
         }
 
         // ----- empty measure -----
@@ -192,7 +197,7 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
 #endif
             layoutElements.push_back( LayoutElement(EMPTY_MEASURE, measure) );
             layoutElements[layoutElements.size()-1].width_in_print_units = LAYOUT_ELEMENT_MIN_WIDTH;
-
+            
             // check that measure is really empty; it's possible that it contains
             // the end of a note that started in the previous measure.
             // if this is the case, we need to make the measure broader than the default size
@@ -340,6 +345,8 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
 #endif
             layoutElements.push_back( LayoutElement(SINGLE_MEASURE, measure) );
         }
+        
+        if (noStartLine) layoutElements[layoutElements.size()-1].m_render_start_bar = false;
 
     }//next measure
 }
