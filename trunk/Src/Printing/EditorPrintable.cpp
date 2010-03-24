@@ -380,6 +380,21 @@ void EditorPrintable::drawSilence(wxDC* dc, const Range<int> x, const int y, con
     }
     else if ( type == 16 )
     {
+        static wxBitmap silence( getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("silence8.png"), wxBITMAP_TYPE_PNG );
+        const float scale = 6.5f;
+        static wxBitmap silenceBigger = wxBitmap(silence.ConvertToImage().Scale(silence.GetWidth()*scale,
+                                                                                silence.GetHeight()*scale));
+        
+        silence_radius = silenceBigger.GetWidth()/2;
+        
+        if (dotted) silence_center = (x.to - silence_radius - 30);
+        else        silence_center = (x.to - silence_radius);
+        
+        dc->DrawBitmap( silenceBigger, silence_center - silence_radius, y + 20);
+        dc->DrawBitmap( silenceBigger, silence_center - 10, y - 40);
+
+        
+        /*
         // TODO : use x_center
         dc->SetPen(  wxPen( wxColour(0,0,0), 8 ) );
         silence_radius = 25;
@@ -410,6 +425,7 @@ void EditorPrintable::drawSilence(wxDC* dc, const Range<int> x, const int y, con
         dc->DrawCircle(mx+25, sy-50, 6);
         
         silence_center = mx + 50/2;
+         */
     }
     
     // dotted
