@@ -49,7 +49,6 @@ NOTE: sorry, this is very raw :)
         given if the said track starts playing at measure 1  (or in the first line)
     * X notes not printed right
     * Printing a score where empty *lines* (not tracks) will occur is not handled 100% well
-    * Don't force US Letter as the default page size, european users will hate me...
     * remember user's margins choice either
     * long-term : in multi-track printing, some tracks need to be visually more tightly bound toghether (like tab and its score)
     ? allow setting font size, number of lines per page, zoom, etc...

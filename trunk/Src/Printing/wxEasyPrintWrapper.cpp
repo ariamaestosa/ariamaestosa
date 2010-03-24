@@ -29,14 +29,21 @@ using namespace AriaMaestosa;
 
 wxEasyPrintWrapper::wxEasyPrintWrapper(wxString title, IPrintCallback* printCallBack, float units_per_cm) : wxPrintout( title )
 {
+    PreferencesData* prefs = PreferencesData::getInstance();
+
     m_print_callback = printCallBack;
     m_page_amount    = -1; // unknown yet
     m_orient         = wxPORTRAIT;
-    m_paper_id       = wxPAPER_LETTER; //TODO: remember user's favorite paper
+    
+    long paperTypeInt = prefs->getValue(SETTING_ID_PAPER_TYPE);
+    
+    // wxPAPER_PENV_10_ROTATED is currently the last of the enum (FIXME)
+    wxPaperSize paperType = (paperTypeInt > wxPAPER_NONE and paperTypeInt <= wxPAPER_PENV_10_ROTATED ?
+                             (wxPaperSize)paperTypeInt : wxPAPER_LETTER);
+    m_paper_id       = paperType;
     
     m_units_per_cm   = units_per_cm;
     
-    PreferencesData* prefs = PreferencesData::getInstance();
     m_left_margin    = prefs->getValue(SETTING_ID_MARGIN_LEFT);
     m_top_margin     = prefs->getValue(SETTING_ID_MARGIN_TOP);
     m_right_margin   = prefs->getValue(SETTING_ID_MARGIN_RIGHT);
@@ -72,6 +79,10 @@ bool wxEasyPrintWrapper::performPageSetup(const bool showPageSetupDialog)
             m_page_setup     = dialog.GetPageSetupData();
             m_paper_id       = m_page_setup.GetPaperId();
             m_orient         = m_page_setup.GetPrintData().GetOrientation();
+            
+            PreferencesData* prefs = PreferencesData::getInstance();
+            prefs->setValue(SETTING_ID_PAPER_TYPE, m_paper_id);
+            // the call below will perform the save() (FIXME don't rely on this)
             
             updateMarginMembers();
         }
