@@ -52,7 +52,9 @@ namespace AriaMaestosa
         
         /** Most Layout Elements don't draw their end vertical line, since the next element generally
           * draws a line at its beginning. But for special cases you can use this */
-        bool render_end_bar;
+        bool m_render_end_bar;
+        
+        bool m_render_start_bar;
         
         int width_in_print_units;
         

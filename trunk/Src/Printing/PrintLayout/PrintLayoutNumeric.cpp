@@ -134,7 +134,7 @@ void PrintLayoutNumeric::placeElementsWithinCoords(LayoutLine& line, int x0, con
     // check if there is space left between the last element and the end of the line.
     if (x0 + xloc < x1 - 300 )
     {
-        line.getLayoutElement(line.getLayoutElementCount()-1).render_end_bar = true;
+        line.getLayoutElement(line.getLayoutElementCount()-1).m_render_end_bar = true;
     }
     
     //assertExpr(line.width_in_units,>,0);

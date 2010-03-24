@@ -51,11 +51,10 @@ NOTE: sorry, this is very raw :)
     * long-term : in multi-track printing, some tracks need to be visually more tightly bound toghether (like tab and its score)
     ? allow setting font size, number of lines per page, zoom, etc...
     - X notes not printed right (nor handled correctly in score editor anyway)
- - printing : skip series of empty measures ?
- - very short song (a few measures) : nothing printed [can't reproduce anymore]
- - hiding empty lines should be configurable
- - score print : time sig changes : no bar should appear after time sig change
-
+ - printing : skip series of empty measures (replacing hiding of empty lines)
+ - print tempo (and tempo changes)
+ - time sig changes : no bar should appear after time sig change
+ - use double bar at the end of the song
 
  * Keyboard editor : show current key in left area
  * In score and tab editors, show more clearly where you can click to hear the note
