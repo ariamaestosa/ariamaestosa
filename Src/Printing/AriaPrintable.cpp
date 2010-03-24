@@ -111,7 +111,7 @@ void AriaPrintable::showPageSetupDialog()
 
 #ifdef __WXMAC__
 
-void AriaPrintable::macEditMargins(wxWindow* parentFrame)
+void AriaPrintable::macEditMargins(wxFrame* parentFrame)
 {
     m_printer_manager->macEditMargins(parentFrame);
     findUsableHeight();

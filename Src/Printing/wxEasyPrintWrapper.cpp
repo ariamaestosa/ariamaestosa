@@ -162,9 +162,9 @@ void wxEasyPrintWrapper::updateCoordinateSystem()
 
 #ifdef __WXMAC__
 
-void wxEasyPrintWrapper::macEditMargins(wxWindow* parentFrame)
+void wxEasyPrintWrapper::macEditMargins(wxFrame* parentFrame)
 {
-    wxMacPageMarginsDialog dlg(NULL, &m_page_setup);
+    wxMacPageMarginsDialog dlg(parentFrame, &m_page_setup);
     dlg.ShowModal();
     
     m_page_setup     = dlg.GetPageSetupDialogData();
