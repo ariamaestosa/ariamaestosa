@@ -254,7 +254,8 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
     const int elementAmount = currentLine.getLayoutElementCount();
     for (int el=0; el<elementAmount; el++)
     {
-        currentElement = continueWithNextElement(trackID, currentLine, el);
+        currentElement = &currentLine.getLayoutElement(el);
+        drawElementBase(*currentElement, currentLine, currentTrack, trackCoords);
         
         drawVerticalDivider(currentElement, trackCoords->y0, trackCoords->y1);
         

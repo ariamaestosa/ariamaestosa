@@ -506,21 +506,16 @@ namespace AriaMaestosa
         
         
         
-        // iterate through layout elements (this also inits them)
-        // FIXME : not too clean to init them at this point
-        LayoutElement* currentElement;
-        std::cout << "\nLayout elements X coords :\n";
-        
+        // draw base        
         const int elementAmount = currentLine.getLayoutElementCount();
         for (int el=0; el<elementAmount; el++)
         {
-            currentElement = continueWithNextElement(trackID, currentLine, el);
-            std::cout << "    Layout element from x=" << currentElement->getXFrom() << " to x=" << currentElement->getXTo() << std::endl;
-        }//next element
-        std::cout << std::endl;
+            drawElementBase(currentLine.getLayoutElement(el), currentLine, currentTrack, trackCoords);
+        }
         
         g_printable = this;
         
+        // draw scores
         const int grandStaffCenterY = (m_g_clef and m_f_clef ? (g_clef_y_to + f_clef_y_from)/2 : -1);
         
         if (m_g_clef)

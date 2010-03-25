@@ -91,12 +91,6 @@ namespace AriaMaestosa
           */
         void setCurrentDC(wxDC* dc);
 
-        /** To be called in a loop when rendering the elements. Returns the next element to render.
-          * First draws parts of elements it knows about, then lets the specialized EditorPrintable
-          * derivated class handle the specific bits this base class does not know about.
-          */
-        LayoutElement* continueWithNextElement(const int trackID, LayoutLine& layoutLine, const int currentLayoutElement);
-
         /** Returns the print area reserved for a specific note (by note ID) */
         //Range<int> getNoteAreaX(const int trackID, LayoutLine& line, int noteID);
         
@@ -130,6 +124,11 @@ namespace AriaMaestosa
         /** utility method subclasses can call to render a silence at a given location */
         void drawSilence(wxDC* dc, const Range<int> x, const int y, const int level_height,
                          const int type, const bool triplet, const bool dotted);
+        
+        /** draw some basic stuff common to all editors for the given layout element */
+        void drawElementBase(LayoutElement& currElem, const LayoutLine& layoutLine,
+                             const LineTrackRef& lineTrackRef, const TrackCoords* trackCoords);
+
     };
 }
 
