@@ -91,40 +91,14 @@ void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0,
 }
 
 // -------------------------------------------------------------------------------------------
-    
-// FIXME: this method gotta go, it's a weird mixture of everything (data, rendering, etc...)
-//        and ScorePrint pretty much ignores it, just calls in repeatedly to get it out of the way...
-LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, LayoutLine& layoutLine,
-                                                        const int currentLayoutElement)
+
+void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine& layoutLine,
+                                      const LineTrackRef& lineTrackRef, const TrackCoords* trackCoords)
 {
-    const LineTrackRef& lineTrackRef = layoutLine.getLineTrackRef(trackID);
-    const TrackCoords* trackCoords = lineTrackRef.m_track_coords.raw_ptr;
-    assert(trackCoords != NULL);
-    
-    if (!(currentLayoutElement < layoutLine.getLayoutElementCount()))
-    {
-        //std::cout << "---- returning NULL because we have a total of " << layoutElementsAmount
-        //          << " elements\n";
-        return NULL;
-    }
-    
-    //std::vector<LayoutElement>& layoutElements = layoutLine.layoutElements;
-    
-    LayoutElement& currElem = layoutLine.getLayoutElement(currentLayoutElement);
     const int elem_x_start = currElem.getXFrom();
     
-    dc->SetTextForeground( wxColour(0,0,255) );
-    
-    // ****** empty measure
-    if (currElem.getType() == EMPTY_MEASURE)
-    {
-    }
-    // ****** time signature change
-    else if (currElem.getType() == TIME_SIGNATURE_EL)
-    {
-    }
     // ****** repetitions
-    else if (currElem.getType() == SINGLE_REPEATED_MEASURE or currElem.getType() == REPEATED_RIFF)
+    if (currElem.getType() == SINGLE_REPEATED_MEASURE or currElem.getType() == REPEATED_RIFF)
     {
         // FIXME - why do I cut apart the measure and not the layout element?
         /*
@@ -139,7 +113,7 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
         wxString message;
         if (currElem.getType() == SINGLE_REPEATED_MEASURE)
         {
-            message = to_wxString(layoutLine.getMeasureForElement(currentLayoutElement).firstSimilarMeasure+1);
+            message = to_wxString(layoutLine.getMeasureForElement(&currElem).firstSimilarMeasure+1);
         }
         else if (currElem.getType() == REPEATED_RIFF)
         {
@@ -148,6 +122,7 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
             to_wxString(currElem.lastMeasureToRepeat+1);
         }
         
+        dc->SetTextForeground( wxColour(0,0,255) );
         dc->DrawText( message, elem_x_start,
                      (trackCoords->y0 + trackCoords->y1)/2 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()/2 );
     }
@@ -156,6 +131,8 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
     {
         wxString label(wxT("X"));
         label << currElem.amountOfTimes;
+        
+        dc->SetTextForeground( wxColour(0,0,255) );
         dc->DrawText( label, elem_x_start,
                      (trackCoords->y0 + trackCoords->y1)/2 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()/2 );
     }
@@ -164,25 +141,25 @@ LayoutElement* EditorPrintable::continueWithNextElement(const int trackID, Layou
     {
         //std::cout << "---- element is normal\n";
         
+        dc->SetTextForeground( wxColour(0,0,255) );
+
         // draw measure ID
         if (lineTrackRef.showMeasureNumber())
         {
-            const int meas_id = layoutLine.getMeasureForElement(currentLayoutElement).getMeasureID() + 1;
+            const int meas_id = layoutLine.getMeasureForElement(&currElem).getMeasureID() + 1;
             
             wxString measureLabel;
             measureLabel << meas_id;
             
             dc->DrawText( measureLabel,
-                          elem_x_start - ( meas_id > 9 ?
-                                           AriaPrintable::getCurrentPrintable()->getCharacterWidth() :
-                                           AriaPrintable::getCurrentPrintable()->getCharacterWidth()/2 ),
-                          trackCoords->y0 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()*1.4 );
+                         elem_x_start - ( meas_id > 9 ?
+                                         AriaPrintable::getCurrentPrintable()->getCharacterWidth() :
+                                         AriaPrintable::getCurrentPrintable()->getCharacterWidth()/2 ),
+                         trackCoords->y0 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()*1.4 );
         }
         dc->SetTextForeground( wxColour(0,0,0) );
     }
     
-
-    return &currElem;
 }
 
 // -------------------------------------------------------------------------------------------
