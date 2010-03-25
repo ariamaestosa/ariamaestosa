@@ -93,7 +93,8 @@ void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0,
 // -------------------------------------------------------------------------------------------
 
 void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine& layoutLine,
-                                      const LineTrackRef& lineTrackRef, const TrackCoords* trackCoords)
+                                      const LineTrackRef& lineTrackRef, const TrackCoords* trackCoords,
+                                      const bool drawMeasureNumbers)
 {
     const int elem_x_start = currElem.getXFrom();
     
@@ -144,7 +145,7 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
         dc->SetTextForeground( wxColour(0,0,255) );
 
         // draw measure ID
-        if (lineTrackRef.showMeasureNumber())
+        if (drawMeasureNumbers)
         {
             const int meas_id = layoutLine.getMeasureForElement(&currElem).getMeasureID() + 1;
             
