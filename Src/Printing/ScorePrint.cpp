@@ -456,7 +456,7 @@ namespace AriaMaestosa
     // -------------------------------------------------------------------------------------------
     
     void ScorePrintable::drawTrack(const int trackID, const LineTrackRef& currentTrack,
-                                   LayoutLine& currentLine, wxDC& dc)
+                                   LayoutLine& currentLine, wxDC& dc, const bool drawMeasureNumbers)
     {
         const TrackCoords* trackCoords = currentTrack.m_track_coords.raw_ptr;
         assert(trackCoords != NULL);
@@ -510,7 +510,8 @@ namespace AriaMaestosa
         const int elementAmount = currentLine.getLayoutElementCount();
         for (int el=0; el<elementAmount; el++)
         {
-            drawElementBase(currentLine.getLayoutElement(el), currentLine, currentTrack, trackCoords);
+            drawElementBase(currentLine.getLayoutElement(el), currentLine, currentTrack,
+                            trackCoords, drawMeasureNumbers);
         }
         
         g_printable = this;
@@ -525,7 +526,7 @@ namespace AriaMaestosa
                                 dc, abs(scoreData->extra_lines_above_g_score),
                                 abs(scoreData->extra_lines_under_g_score),
                                 trackCoords->x0, g_clef_y_from, trackCoords->x1, g_clef_y_to,
-                                currentTrack.showMeasureNumber(), grandStaffCenterY);
+                                drawMeasureNumbers, grandStaffCenterY);
         }
         
         if (m_f_clef)
@@ -536,7 +537,7 @@ namespace AriaMaestosa
                                 dc, abs(scoreData->extra_lines_above_f_score),
                                 abs(scoreData->extra_lines_under_f_score),
                                 trackCoords->x0, f_clef_y_from, trackCoords->x1, f_clef_y_to,
-                                (m_g_clef ? false : currentTrack.showMeasureNumber()) /* if we have both keys don't show twice */,
+                                (m_g_clef ? false : drawMeasureNumbers) /* if we have both keys don't show twice */,
                                 grandStaffCenterY);
         }
         

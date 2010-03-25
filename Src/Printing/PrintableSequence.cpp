@@ -149,6 +149,7 @@ void PrintableSequence::printLine(LayoutLine& line, wxDC& dc)
     }
     
     // ---- Do the actual track drawing
+    bool first = true;
     for (int n=0; n<trackAmount; n++)
     {
         // skip empty tracks
@@ -172,7 +173,8 @@ void PrintableSequence::printLine(LayoutLine& line, wxDC& dc)
 #endif
         
         EditorPrintable* editorPrintable = this->getEditorPrintable(n);
-        editorPrintable->drawTrack(n, sizing, line, dc);
+        editorPrintable->drawTrack(n, sizing, line, dc, first);
+        first = false;
     }
 }
     

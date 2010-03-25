@@ -53,12 +53,6 @@ namespace AriaMaestosa
         /** y "to" coordinate in relative units (levels) */
         int m_level_to;
         
-        /** whether to show measure numbers on top of this particular track. used to show them
-          * only once when there are multiple tracks in a line.
-          */
-        bool m_show_measure_number;
-
-        
     public:
         
         int getLevelFrom() const
@@ -91,13 +85,12 @@ namespace AriaMaestosa
         
         const Track* m_track;
         
-        LineTrackRef(LayoutLine* parent, int trackID, const Track* track, bool show_measure_number) : m_track(track)
+        LineTrackRef(LayoutLine* parent, int trackID, const Track* track) : m_track(track)
         {
             m_parent              = parent;
             m_track_id            = trackID;
             m_level_from          = -1;
             m_level_to            = -1;
-            m_show_measure_number = show_measure_number;
         }
         int getLastNote() const;
         int getFirstNote() const;
@@ -126,11 +119,7 @@ namespace AriaMaestosa
             
             return m_level_to - m_level_from;
         }
-        
-        bool showMeasureNumber() const
-        {
-            return m_show_measure_number;
-        }
+
     };
     
     /**

@@ -79,7 +79,8 @@ namespace AriaMaestosa
           * Called by the print code when it's time to render one track.
           * This will be handled in the appropriate subclass.
          */
-        virtual void drawTrack(const int trackID, const LineTrackRef& track, LayoutLine& line, wxDC& dc) = 0;
+        virtual void drawTrack(const int trackID, const LineTrackRef& track, LayoutLine& line,
+                               wxDC& dc, const bool drawMeasureNumbers) = 0;
         
         /** Called by the layout code to know the relative height of this line
          */
@@ -127,7 +128,8 @@ namespace AriaMaestosa
         
         /** draw some basic stuff common to all editors for the given layout element */
         void drawElementBase(LayoutElement& currElem, const LayoutLine& layoutLine,
-                             const LineTrackRef& lineTrackRef, const TrackCoords* trackCoords);
+                             const LineTrackRef& lineTrackRef, const TrackCoords* trackCoords,
+                             const bool drawMeasureNumbers);
 
     };
 }

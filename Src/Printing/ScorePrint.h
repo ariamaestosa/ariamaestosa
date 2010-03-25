@@ -67,7 +67,8 @@ namespace AriaMaestosa
         virtual void earlySetup(const int trackID, Track* track);
         
         /** Implement method from EditorPrintable */
-        virtual void drawTrack(const int trackID, const LineTrackRef& track, LayoutLine& line, wxDC& dc);
+        virtual void drawTrack(const int trackID, const LineTrackRef& track, LayoutLine& line,
+                               wxDC& dc, const bool drawMeasureNumbers);
         
         /** Implement method from EditorPrintable */
         virtual int calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line);
