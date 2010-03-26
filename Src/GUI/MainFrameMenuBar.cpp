@@ -460,7 +460,7 @@ void MainFrame::menuEvent_quit(wxCommandEvent& evt)
     // close all open sequences
     while (getSequenceAmount()>0)
     {
-        if ( !closeSequence() )
+        if ( not closeSequence() )
         {
             // user canceled, don't quit
             return;

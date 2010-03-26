@@ -1071,11 +1071,22 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
 
     if (sequences[id].somethingToUndo())
     {
-        int answer = wxMessageBox(  _("Changes will be lost if you close the sequence. Do you really want to continue?"),
-                                    _("Confirm"),
-                                   wxYES_NO, this);
-        if (answer != wxYES) return false;
+        wxString message = _("You have unsaved changes in sequence '%s'. Do you want to save them before proceeding?");
+        message.Replace(wxT("%s"), sequences[id].sequenceFileName, false);
 
+        int answer = wxMessageBox(  _("Selecting 'Yes' will save your document before closing") +
+                                    wxT("\n") + _("Selecting 'No' will discard unsaved changes") +
+                                    wxT("\n") + _("Selecting 'Cancel' will cancel exiting the application"),
+                                  message,
+                                   wxYES_NO | wxCANCEL, this);
+        
+        if (answer == wxCANCEL) return false;
+
+        if (answer == wxYES)
+        {
+            wxCommandEvent dummy;
+            menuEvent_save(dummy);
+        }
     }
 
     sequences.erase( id );

@@ -16,6 +16,7 @@
 - The "undo" menu is now chattier about what is next to undo
 - Fixed bug with key selection (when going back to C)
 - Code cleanup and general improvements/fixes
+- Improved dialog shown when quitting and there are unsaved changes (now offer to save them)
 - Started adding support for custom keys (hidden for now)
 
 1.2b9
