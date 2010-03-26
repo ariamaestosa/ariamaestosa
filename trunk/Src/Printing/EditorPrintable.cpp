@@ -144,8 +144,8 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
         dc->SetPen( *wxBLACK_PEN );
         dc->SetBrush( *wxBLACK_BRUSH );
         
-        const int rect_x_from = elem_x_start + 25;
-        const int rect_x_to   = elem_x_end   - 25;
+        const int rect_x_from = elem_x_start + 45;
+        const int rect_x_to   = elem_x_end   - 45;
 
         dc->DrawRectangle( rect_x_from, y - 15, (rect_x_to - rect_x_from), 30 );
         
