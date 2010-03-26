@@ -45,78 +45,78 @@ NOTE: sorry, this is very raw :)
 * score print :
     * red images
     * Printing a score where empty *lines* (not tracks) will occur is not handled 100% well
-    * long-term : in multi-track printing, some tracks need to be visually more tightly bound toghether (like tab and its score)
     - X notes not printed right (nor handled correctly in score editor anyway)
- * empty tracks are auto hidden. unfortunately, since tracks are not labelled, you don't know which tracks are
-   visible and which aren't...
- * when a track first appears, we need its clef, key, etc. (maybe even once a page). Right now it's only
-   given if the said track starts playing on the first line
- * print tempo (and tempo changes)
- - printing : remove hiding of empty lines?
- - use double bar at the end of the song
- ? allow setting font size, number of lines per page, zoom, etc...
+* empty tracks are auto hidden. unfortunately, since tracks are not labelled, you don't know which tracks are
+  visible and which aren't...
+* when a track first appears, we need its clef, key, etc. (maybe even once a page). Right now it's only
+  given if the said track starts playing on the first line
+* print tempo (and tempo changes)
+- printing : remove hiding of empty lines?
+- use double bar at the end of the song
+- long-term : in multi-track printing, some tracks need to be visually more tightly bound toghether (like tab and its score)
+? allow setting font size, number of lines per page, zoom, etc...
 
- * Keyboard editor : show current key in left area
- * In score and tab editors, show more clearly where you can click to hear the note
+* Keyboard editor : show current key in left area
+* In score and tab editors, show more clearly where you can click to hear the note
  
- * Allow 8va to be applied to only some parts of track
+* Allow 8va to be applied to only some parts of track
  
- * Custom Key editor :
+* Custom Key editor :
     - make it actually work
     - save to .aria file and load back
     - save presets
     - add 'select all', 'select none'
  
- * copy entire measures through measure bar
+* copy entire measures through measure bar
  
- * show which files have unsaved changes
+* show which files have unsaved changes
  
- + find dialog should have options greyed out if brought up with no selected note
++ find dialog should have options greyed out if brought up with no selected note
  
- + resize note with drag-and-drop
++ resize note with drag-and-drop
  
- - when closing last tab, show a "welcome screen" instead of exiting?
+- when closing last tab, show a "welcome screen" instead of exiting?
  
- + contextual menu on right-click (copy, paste, track props, ...)
- + Include sample files along Aria?
++ contextual menu on right-click (copy, paste, track props, ...)
++ Include sample files along Aria?
  
- + Pouvoir commencer à jouer le morceau pas forcement au début ni le terminer forcément à la fin
-   (sans passer par une sélection puis espace) : système de 2 curseurs à placer en haut (and add *loop*)
++ Pouvoir commencer à jouer le morceau pas forcement au début ni le terminer forcément à la fin
+  (sans passer par une sélection puis espace) : système de 2 curseurs à placer en haut (and add *loop*)
  
- + Afficher un chronomètre qui s'incrémente lorsque le morceau est joué
- + Gestion de la molette, par exemple ainsi : molette = déplacement vertical ; molette + shift : déplacement horizontal ; molette + ctrl : zoom
++ Afficher un chronomètre qui s'incrémente lorsque le morceau est joué
++ Gestion de la molette, par exemple ainsi : molette = déplacement vertical ; molette + shift : déplacement horizontal ; molette + ctrl : zoom
 
 
- + make more features accessible graphically (as opposed to keyboard-only)
- - elements you get from clicking on the left area should appear in the main menubar too
++ make more features accessible graphically (as opposed to keyboard-only)
+- elements you get from clicking on the left area should appear in the main menubar too
 
- - allow shift-clicking in measure bar to select more measures
+- allow shift-clicking in measure bar to select more measures
 
- - .aria files don't remember whether drums are minimized
- - .aria files don't remember docked tracks
- - background choices are not saved to .aria files
+- .aria files don't remember whether drums are minimized
+- .aria files don't remember docked tracks
+- background choices are not saved to .aria files
 
- - song length should automatically grow when pasting goes past the end of the song
- - when changing measure length in a song that already has midi events in it, song length becomes wrong compared to midi events
+- song length should automatically grow when pasting goes past the end of the song
+- when changing measure length in a song that already has midi events in it, song length becomes wrong compared to midi events
  
- - when scaling entire song, scale control events and time sig changes too
+- when scaling entire song, scale control events and time sig changes too
 
- + linux : export to wav when not using timidity?
- + linux : offer to launch timidity deamon if it's not running
- + linux : proper ALSA port selection (in preferences?)
++ linux : export to wav when not using timidity?
++ linux : offer to launch timidity deamon if it's not running
++ linux : proper ALSA port selection (in preferences?)
 
- - change whole track pitch/volume
+- change whole track pitch/volume
 
- + reordering tracks should be nicer
++ reordering tracks should be nicer
 
- - shift-click on a selected notes unselects it
- - cursor should change when hitting key modifiers (at least a select icon when hitting shift in control editor)
+- shift-click on a selected notes unselects it
+- cursor should change when hitting key modifiers (at least a select icon when hitting shift in control editor)
 
- - change volume relatively on a bunch of notes
- - select notes and all similar menu items should be disabled in controller mode
- - show full file path of file in tab tooltip?
+- change volume relatively on a bunch of notes
+- select notes and all similar menu items should be disabled in controller mode
+- show full file path of file in tab tooltip?
 
- UNSURE/MINOR:
+UNSURE/MINOR:
  - setting sharp/flat sign manually sometimes doesn't work (when it's possible to display the note on a level with no sign)
  - key is not saved to midi files (the problem is that in midi key is global, in Aria it is local)
  - render a bit less often + probably too many paint events (duplicate ones at times) track and remove them
@@ -134,10 +134,9 @@ NOTE: sorry, this is very raw :)
  - the first click, that activates a track, should not deselect
  - score editor should be able to display notes with more than 2 flags (unusure... those with 2 are already so small and barely visible)
 
- ************************* BUGS: *************************
+************************* BUGS: *************************
 
 * Undoing "delete track" places it back at the bottom, not where it was
-* i18n might have been broken by preferences updates... verify
 
 * score editor at wrong octave
  
