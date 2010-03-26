@@ -299,6 +299,13 @@ int RelativePlacementManager::findShortestSymbolLength() const
         {
             const Symbol& currSym = currTick.all_symbols_on_that_tick[sym];
             const int newAttempt = currSym.endTick - currTick.tick;
+            
+            if (newAttempt <= 0)
+            {
+                std::cerr << "Warning, RelativePlacementManager::findShortestSymbolLength() found a note of length " << newAttempt << ", that's kinda weird!\n"; 
+                continue;
+            }
+            
             if (newAttempt < shortest or shortest == -1)
             {
                 shortest = newAttempt;
@@ -449,6 +456,15 @@ void RelativePlacementManager::calculateRelativePlacement()
                 assertExpr(shortestSymbolLength, >=, 0);
                 
                 const int length = currSym.endTick - currTick.tick;
+                if (length <= 0)
+                {
+                    std::cerr << "Warning, RelativePlacementManager::calculateRelativePlacement() found a "
+                              << " note of length " << (currSym.endTick - currTick.tick)
+                              << ", which is kinda weird!\n";
+                    currSym.neededAdditionalProportion = 0.0f;
+                    continue;
+                }
+                
                 float ratioToShortest = (float)length / (float)shortestSymbolLength;
                 
                 // if the ratio is smaller than 1, then we don't have the right "shortest"...
