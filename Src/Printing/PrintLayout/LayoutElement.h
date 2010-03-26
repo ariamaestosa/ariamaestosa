@@ -32,6 +32,7 @@ namespace AriaMaestosa
         SINGLE_MEASURE,
         SINGLE_REPEATED_MEASURE,
         EMPTY_MEASURE,
+        GATHERED_REST,
         REPEATED_RIFF,
         PLAY_MANY_TIMES,
         LINE_HEADER, // like the clef and key (on a score) or the word TAB and the tuning (for tabs)
@@ -61,10 +62,14 @@ namespace AriaMaestosa
         /** used for time sig elements */
         int num, denom;
         
-        // used in many-measure repetitions. the first 2 ones are the measures that repeat, the last 2 ones the measures being repeated
-        int firstMeasure, lastMeasure, firstMeasureToRepeat, lastMeasureToRepeat;
+        /** used in many-measure repetitions : the measures that repeat */
+        int firstMeasure, lastMeasure;
         
-        int amountOfTimes; // used for 'play many times' events
+        /** used in many-measure repetitions : the measures being repeated */
+        int firstMeasureToRepeat, lastMeasureToRepeat;
+        
+        /** used for 'play many times' events, or gathered rests */
+        int amountOfTimes;
         
         
         
