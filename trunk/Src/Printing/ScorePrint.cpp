@@ -504,16 +504,6 @@ namespace AriaMaestosa
             assert(false);
         }
         
-        
-        
-        // draw base        
-        const int elementAmount = currentLine.getLayoutElementCount();
-        for (int el=0; el<elementAmount; el++)
-        {
-            drawElementBase(currentLine.getLayoutElement(el), currentLine, currentTrack,
-                            trackCoords, drawMeasureNumbers);
-        }
-        
         g_printable = this;
         
         // draw scores
@@ -1098,7 +1088,7 @@ namespace AriaMaestosa
             measure_dividers_to_y = grandStaffCenterY;
         }
         
-        // draw end of line vertical line
+        // ---- draw end of line vertical line
         drawVerticalDivider(x1, measure_dividers_from_y, measure_dividers_to_y);
 
 
@@ -1190,6 +1180,13 @@ namespace AriaMaestosa
                 const int y = LEVEL_TO_Y(last_score_level);
                 dc.DrawText(wxT("8vb"), line.getLayoutElement(0).getXFrom()+200, y);
             }
+        }
+        
+        // ---- draw base  
+        for (int el=0; el<elamount; el++)
+        {
+            drawElementBase(line.getLayoutElement(el), line,
+                            show_measure_number, measure_dividers_from_y, measure_dividers_to_y);
         }
         
         // ------------------ first part : basic unintelligent drawing -----------------

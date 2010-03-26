@@ -34,6 +34,8 @@ namespace AriaMaestosa
     /** width of a G or F clef symbol on the staff (FIXME: set more precisely) */
     const int CLEF_WIDTH = 250;
         
+    const int MIN_NUMBER_OF_EMPTY_MEASURES_TO_COLLPASE = 4;
+    
     int repetitionMinimalLength = 2;
     
     // -------------------------------------------------------------------------------------------
@@ -189,8 +191,26 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
             noStartLine = true;
         }
 
+        int emptyMeasureCount = 0;
+        for (int n=measure; n<measureAmount; n++)
+        {
+            if (m_measures[n].isEmpty()) emptyMeasureCount++;
+            else                         break;
+        }
+        
+        // ---- many empty measures ----
+        if (emptyMeasureCount >= MIN_NUMBER_OF_EMPTY_MEASURES_TO_COLLPASE)
+        {
+            //TODO
+            layoutElements.push_back( LayoutElement(GATHERED_REST, measure) );
+            const int id = layoutElements.size()-1;
+            layoutElements[id].width_in_print_units = LAYOUT_ELEMENT_MIN_WIDTH;
+            layoutElements[id].amountOfTimes = emptyMeasureCount;
+            measure += emptyMeasureCount - 1;
+        }
+        
         // ----- empty measure -----
-        if (m_measures[measure].isEmpty())
+        else if (m_measures[measure].isEmpty())
         {
 #ifdef _verbose
             std::cout << "    measure " << (measure+1) << " is empty\n";
@@ -201,6 +221,7 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
             // check that measure is really empty; it's possible that it contains
             // the end of a note that started in the previous measure.
             // if this is the case, we need to make the measure broader than the default size
+            //FIXME: I think the relative placement manager handles the above now, so this code could go
             const int track_ref_amount = m_measures[measure].getTrackRefAmount();
             for (int t=0; t<track_ref_amount; t++)
             {
@@ -579,7 +600,7 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
             assertExpr( page.getLine(t).getLevelTo(), >=, page.getLine(t).getLevelFrom() );
         }
         std::cout << "    ------------\n        " << total << "\n\n";
-        assert(total <= maxh);
+        //assert(total <= maxh);
     }
 #endif
 }

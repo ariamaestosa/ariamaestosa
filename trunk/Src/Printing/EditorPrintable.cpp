@@ -93,8 +93,7 @@ void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0,
 // -------------------------------------------------------------------------------------------
 
 void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine& layoutLine,
-                                      const LineTrackRef& lineTrackRef, const TrackCoords* trackCoords,
-                                      const bool drawMeasureNumbers)
+                                      const bool drawMeasureNumbers, const int y0, const int y1)
 {
     const int elem_x_start = currElem.getXFrom();
     
@@ -125,7 +124,34 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
         
         dc->SetTextForeground( wxColour(0,0,255) );
         dc->DrawText( message, elem_x_start,
-                     (trackCoords->y0 + trackCoords->y1)/2 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()/2 );
+                     (y0 + y1)/2 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()/2 );
+    }
+    // ****** gathered rest
+    else if (currElem.getType() == GATHERED_REST)
+    {
+        //TODO
+        
+        const int elem_x_end = currElem.getXTo();
+        const int y          = (y0 + y1)/2;
+        
+        wxString label;
+        label << currElem.amountOfTimes;
+
+        dc->SetTextForeground( wxColour(0,0,0) );
+        dc->DrawText( label, (elem_x_start + elem_x_end)/2 - AriaPrintable::getCurrentPrintable()->getCharacterWidth()*label.size()/2,
+                     y - AriaPrintable::getCurrentPrintable()->getCharacterHeight()*1.5 );
+        
+        dc->SetPen( *wxBLACK_PEN );
+        dc->SetBrush( *wxBLACK_BRUSH );
+        
+        const int rect_x_from = elem_x_start + 25;
+        const int rect_x_to   = elem_x_end   - 25;
+
+        dc->DrawRectangle( rect_x_from, y - 15, (rect_x_to - rect_x_from), 30 );
+        
+        dc->SetPen( wxPen(wxColor(0,0,0), 12) );
+        dc->DrawLine( rect_x_from, y - 25, rect_x_from, y + 25 );
+        dc->DrawLine( rect_x_to  , y - 25, rect_x_to  , y + 25 );
     }
     // ****** play again
     else if (currElem.getType() == PLAY_MANY_TIMES)
@@ -135,7 +161,7 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
         
         dc->SetTextForeground( wxColour(0,0,255) );
         dc->DrawText( label, elem_x_start,
-                     (trackCoords->y0 + trackCoords->y1)/2 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()/2 );
+                     (y0 + y1)/2 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()/2 );
     }
     // ****** normal measure
     else if (currElem.getType() == SINGLE_MEASURE)
@@ -156,7 +182,7 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
                          elem_x_start - ( meas_id > 9 ?
                                          AriaPrintable::getCurrentPrintable()->getCharacterWidth() :
                                          AriaPrintable::getCurrentPrintable()->getCharacterWidth()/2 ),
-                         trackCoords->y0 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()*1.4 );
+                         y0 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()*1.4 );
         }
         dc->SetTextForeground( wxColour(0,0,0) );
     }
@@ -187,8 +213,16 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
     // find in which measure this tick belongs
     for (int n=0; n<line.getLayoutElementCount(); n++)
     {
+        const LayoutElement& el = line.getLayoutElement(n);
+        if (el.getType() == GATHERED_REST or el.getType() == REPEATED_RIFF or
+            el.getType() == SINGLE_REPEATED_MEASURE or el.getType() == PLAY_MANY_TIMES)
+        {
+            continue;
+        }
+        
         const PrintLayoutMeasure& meas = line.getMeasureForElement(n);
         if (meas == NULL_MEASURE) continue;
+        
         const int firstTickInMeasure = meas.getFirstTick();
         const int lastTickInMeasure  = meas.getLastTick();
         

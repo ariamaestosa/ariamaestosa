@@ -128,8 +128,7 @@ namespace AriaMaestosa
         
         /** draw some basic stuff common to all editors for the given layout element */
         void drawElementBase(LayoutElement& currElem, const LayoutLine& layoutLine,
-                             const LineTrackRef& lineTrackRef, const TrackCoords* trackCoords,
-                             const bool drawMeasureNumbers);
+                             const bool drawMeasureNumbers, const int y0, const int y1);
 
     };
 }
