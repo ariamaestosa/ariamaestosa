@@ -380,7 +380,10 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
         
         if (tick >= fromTick and tick < toTick)
         {
-            drawSilence(&dc, tickToX(trackID, currentLine, tick), silencesY, stringHeight,
+            Range<int> silenceX = tickToX(trackID, currentLine, tick);
+            if (silenceX.from == -1 or silenceX.to == -1) continue;
+            
+            drawSilence(&dc, silenceX, silencesY, stringHeight,
                         m_silences[n].m_type, m_silences[n].m_triplet, m_silences[n].m_dotted);
             
             //DEBUG
