@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-23 08:53-0400\n"
-"PO-Revision-Date: 2010-03-23 09:00-0500\n"
+"POT-Creation-Date: 2010-03-25 21:58-0400\n"
+"PO-Revision-Date: 2010-03-25 22:00-0500\n"
 "Last-Translator: Marianne Gagnon (Auria) <auria.mg@gmail.com>\n"
 "Language-Team: French <traduc@traduc.org>\n"
 "MIME-Version: 1.0\n"
@@ -98,8 +98,8 @@ msgid "Add Track"
 msgstr "Ajouter une piste"
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-#: Src/Dialogs/Preferences.cpp:109
 #: Src/GUI/MainFrameMenuBar.cpp:215
+#: Src/PreferencesData.cpp:102
 msgid "Always"
 msgstr "Toujours"
 
@@ -107,15 +107,15 @@ msgstr "Toujours"
 msgid "Amount: "
 msgstr "Quantité: "
 
-#: Src/Dialogs/PrintSetupDialog.cpp:65
+#: Src/Dialogs/PrintSetupDialog.cpp:71
 msgid "An error occurred during printing."
 msgstr "Une erreur est survenue durant l'impression."
 
-#: Src/Dialogs/PrintSetupDialog.cpp:115
+#: Src/Dialogs/PrintSetupDialog.cpp:122
 msgid "An error occurred while preparing to print."
 msgstr "Une erreur est survenue en préparant l'impression."
 
-#: Src/Midi/MeasureData.cpp:79
+#: Src/Midi/MeasureData.cpp:82
 msgid "Are you sure you want to go back to having a single time signature? Any time sig events you may have added will be lost. This cannot be undone."
 msgstr "Désirez-vous vraiment éliminer tous les changements de mesure ajoutés? Cette opération ne peut pas être annulée une fois effectuée."
 
@@ -123,7 +123,7 @@ msgstr "Désirez-vous vraiment éliminer tous les changements de mesure ajoutés
 msgid "Aria Maestosa file|*.aria"
 msgstr "Document Aria Maestosa|*.aria"
 
-#: Src/Printing/PrintableSequence.cpp:192
+#: Src/Printing/PrintableSequence.cpp:194
 msgid "Aria Maestosa song"
 msgstr "Séquence Aria Maestosa"
 
@@ -132,11 +132,11 @@ msgstr "Séquence Aria Maestosa"
 msgid "Automatic"
 msgstr "Automatique"
 
-#: Src/Dialogs/Preferences.cpp:136
+#: Src/PreferencesData.cpp:132
 msgid "Automatically launch TiMidity and pick a port"
 msgstr "Automatiquement lancer TiMidity et choisir un port"
 
-#: Src/Dialogs/Preferences.cpp:116
+#: Src/PreferencesData.cpp:110
 msgid "Both Musical and Linear"
 msgstr "Notation linéaire et musicale"
 
@@ -149,7 +149,7 @@ msgid "Can't Undo\tCtrl-Z"
 msgstr "Rien à annuler\tCtrl-Z"
 
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:162
-#: Src/Dialogs/PrintSetupDialog.cpp:236
+#: Src/Dialogs/PrintSetupDialog.cpp:263
 #: Src/Dialogs/ScalePicker.cpp:142
 #: Src/Pickers/BackgroundPicker.cpp:172
 #: Src/Pickers/KeyPicker.cpp:78
@@ -157,12 +157,8 @@ msgstr "Rien à annuler\tCtrl-Z"
 msgid "Cancel"
 msgstr "Annuler"
 
-#: Src/GUI/MainFrame.cpp:1063
-msgid "Changes will be lost if you close the sequence. Do you really want to continue?"
-msgstr "Les modifications seront perdues si vous fermez la séquence. Voulez-vous réellement continuer?"
-
 #. I18N: - in the preferences dialog
-#: Src/Dialogs/Preferences.cpp:247
+#: Src/Dialogs/Preferences.cpp:196
 msgid "Changes will take effect next time you open the app."
 msgstr "Les modifications prendront effet à la prochaine ouverture du logiciel."
 
@@ -184,13 +180,12 @@ msgstr "Entrez le nom de la piste."
 msgid "Close\tCtrl-W"
 msgstr "Fermer\tCtrl-W"
 
-#: Src/GUI/MainFrame.cpp:1064
 #: Src/GUI/MainFrameMenuBar.cpp:353
 #: Src/GUI/MainFrameMenuBar.cpp:399
 #: Src/GUI/MainFrameMenuBar.cpp:433
 #: Src/GUI/MainFrameMenuBar.cpp:573
 #: Src/GUI/MainFrameMenuBar.cpp:653
-#: Src/Midi/MeasureData.cpp:80
+#: Src/Midi/MeasureData.cpp:83
 msgid "Confirm"
 msgstr "Veuillez confirmer"
 
@@ -214,7 +209,7 @@ msgid "Copyright and song info"
 msgstr "Copyright et information"
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:129
+#: Src/Dialogs/PrintSetupDialog.cpp:136
 msgid "Current track only"
 msgstr "La piste active seulement"
 
@@ -226,7 +221,7 @@ msgstr "Tonalité personnalisée"
 msgid "Custom Tuning Editor"
 msgstr "Accordeur de guitare"
 
-#: Src/Dialogs/Preferences.cpp:115
+#: Src/PreferencesData.cpp:108
 msgid "Default Score View"
 msgstr "Affichage par défaut des partitions"
 
@@ -260,7 +255,7 @@ msgstr "Voulez-vous vraiment supprimer ce changement de mesure?"
 msgid "Drum Editor"
 msgstr "Éditeur de percussions"
 
-#: Src/GUI/MainFrame.cpp:352
+#: Src/GUI/MainFrame.cpp:358
 msgid "Duration"
 msgstr "Durée"
 
@@ -269,7 +264,7 @@ msgstr "Durée"
 msgid "Edit"
 msgstr "Edition"
 
-#: Src/Dialogs/PrintSetupDialog.cpp:218
+#: Src/Dialogs/PrintSetupDialog.cpp:231
 msgid "Edit Page Setup"
 msgstr "Modifier la mise en page"
 
@@ -316,7 +311,7 @@ msgstr "Fichier"
 msgid "Follow Playback"
 msgstr "Suivre la lecture"
 
-#: Src/Dialogs/Preferences.cpp:122
+#: Src/PreferencesData.cpp:116
 msgid "Follow playback by default"
 msgstr "Suivre le curseur de lecture par défaut"
 
@@ -361,7 +356,7 @@ msgstr "Insérer des mesures"
 msgid "Keyboard Editor"
 msgstr "Éditeur de clavier"
 
-#: Src/Printing/wxEasyPrintWrapper.cpp:172
+#: Src/Printing/wxEasyPrintWrapper.cpp:222
 msgid "Landscape"
 msgstr "Paysage"
 
@@ -375,7 +370,7 @@ msgstr "Gauche"
 msgid "Linear Notation"
 msgstr "Notation linéaire"
 
-#: Src/Dialogs/Preferences.cpp:118
+#: Src/PreferencesData.cpp:112
 msgid "Linear Only"
 msgstr "Notation linéaire"
 
@@ -387,8 +382,12 @@ msgstr "Notation linéaire"
 msgid "Manual"
 msgstr "Manuel"
 
+#: Src/Dialogs/PrintSetupDialog.cpp:239
+msgid "Margins"
+msgstr "Marges"
+
 #. I18N: for printing (page setup)
-#: Src/Printing/wxEasyPrintWrapper.cpp:174
+#: Src/Printing/wxEasyPrintWrapper.cpp:224
 #, c-format
 msgid ""
 "Margins :\tleft = %i mm, right = %i mm,\n"
@@ -415,7 +414,7 @@ msgstr "Fichiers Midi|*.mid;*.midi"
 msgid "Min"
 msgstr "Min"
 
-#: Src/Dialogs/Preferences.cpp:117
+#: Src/PreferencesData.cpp:111
 msgid "Musical Only"
 msgstr "Notation musicale"
 
@@ -425,8 +424,8 @@ msgid "Musical notation"
 msgstr "Notation musicale"
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-#: Src/Dialogs/Preferences.cpp:111
 #: Src/GUI/MainFrameMenuBar.cpp:219
+#: Src/PreferencesData.cpp:104
 msgid "Never"
 msgstr "Jamais"
 
@@ -440,7 +439,7 @@ msgid "No midi port found, no sound will be available."
 msgstr "Aucun port midi n'a été trouvé, aucun son ne pourra être joué"
 
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:157
-#: Src/Dialogs/PrintSetupDialog.cpp:233
+#: Src/Dialogs/PrintSetupDialog.cpp:260
 #: Src/Dialogs/ScalePicker.cpp:146
 #: Src/Pickers/KeyPicker.cpp:77
 #: Src/Pickers/TimeSigPicker.cpp:107
@@ -469,8 +468,8 @@ msgid "On"
 msgstr "Actif"
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-#: Src/Dialogs/Preferences.cpp:110
 #: Src/GUI/MainFrameMenuBar.cpp:217
+#: Src/PreferencesData.cpp:103
 msgid "On note change"
 msgstr "Sur un changement de son"
 
@@ -479,11 +478,11 @@ msgstr "Sur un changement de son"
 msgid "Open\tCtrl-O"
 msgstr "Ouvrir\tCtrl-O"
 
-#: Src/Dialogs/PrintSetupDialog.cpp:213
+#: Src/Dialogs/PrintSetupDialog.cpp:220
 msgid "Page Setup"
 msgstr "Mise en page"
 
-#: Src/Printing/wxEasyPrintWrapper.cpp:170
+#: Src/Printing/wxEasyPrintWrapper.cpp:220
 msgid "Paper :"
 msgstr "Papier :"
 
@@ -497,7 +496,7 @@ msgstr "Coller\tCtrl-V"
 msgid "Paste at cursor\tCtrl-Shift-V"
 msgstr "Coller au curseur\tCtrl-Shift-V"
 
-#: Src/GUI/MainFrame.cpp:335
+#: Src/GUI/MainFrame.cpp:341
 msgid "Play"
 msgstr "Jouer"
 
@@ -506,11 +505,11 @@ msgstr "Jouer"
 msgid "Play during edit"
 msgstr "Jouer durant l'édition"
 
-#: Src/Dialogs/Preferences.cpp:108
+#: Src/PreferencesData.cpp:100
 msgid "Play during edit (default value)"
 msgstr "Jouer durant l'édition (valeur par défaut)"
 
-#: Src/GUI/MainFrame.cpp:1150
+#: Src/GUI/MainFrame.cpp:1172
 msgid "Please wait while .aria file is loading."
 msgstr "Veuillez patienter, ouverture en cours..."
 
@@ -526,7 +525,7 @@ msgstr ""
 "Dépendemment de la taille du fichier,\n"
 "cela peut prendre plusieurs minutes."
 
-#: Src/GUI/MainFrame.cpp:1190
+#: Src/GUI/MainFrame.cpp:1212
 msgid "Please wait while midi file is loading."
 msgstr "Veuillez patienter, ouverture en cours..."
 
@@ -535,24 +534,24 @@ msgid "Please wait..."
 msgstr "Veuillez patienter..."
 
 #. I18N: for printing (page orientation)
-#: Src/Printing/wxEasyPrintWrapper.cpp:172
+#: Src/Printing/wxEasyPrintWrapper.cpp:222
 msgid "Portrait"
 msgstr "Portrait"
 
 #. I18N: - title of the preferences dialog
-#: Src/Dialogs/Preferences.cpp:200
+#: Src/Dialogs/Preferences.cpp:135
 #: Src/GUI/MainFrameMenuBar.cpp:221
 msgid "Preferences"
 msgstr "Préférences"
 
 #. I18N: - title of the notation-print dialog
-#: Src/Dialogs/PrintSetupDialog.cpp:102
+#: Src/Dialogs/PrintSetupDialog.cpp:109
 #: Src/GUI/MainFrameMenuBar.cpp:139
 msgid "Print musical notation"
 msgstr "Imprimer en notation"
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:126
+#: Src/Dialogs/PrintSetupDialog.cpp:133
 msgid "Print..."
 msgstr "Imprimer..."
 
@@ -662,6 +661,18 @@ msgstr "Sélection avec critères"
 msgid "Select which notes should be part of the custom key"
 msgstr "Sélectionnez quelles notes font partie de la tonalité personnalisée"
 
+#: Src/GUI/MainFrame.cpp:1079
+msgid "Selecting 'Cancel' will cancel exiting the application"
+msgstr "Choisir 'Annuler'  laissera l'application ouverte"
+
+#: Src/GUI/MainFrame.cpp:1078
+msgid "Selecting 'No' will discard unsaved changes"
+msgstr "'Non' fermera sans sauvegarder les changements"
+
+#: Src/GUI/MainFrame.cpp:1077
+msgid "Selecting 'Yes' will save your document before closing"
+msgstr "'Oui' sauvegardera vos modifications avant de quitter"
+
 #: Src/GUI/MainFrameMenuBar.cpp:194
 msgid "Settings"
 msgstr "Options"
@@ -689,19 +700,19 @@ msgstr "Nom de la chanson"
 msgid "Sorry, failed to export midi file."
 msgstr "Désolé, le fichier midi n'a pas pu être sauvegardé."
 
-#: Src/GUI/MainFrame.cpp:1156
+#: Src/GUI/MainFrame.cpp:1178
 msgid "Sorry, loading .aria file failed."
 msgstr "Désolé, le fichier n'a pas pu être ouvert."
 
-#: Src/GUI/MainFrame.cpp:1196
+#: Src/GUI/MainFrame.cpp:1218
 msgid "Sorry, loading midi file failed."
 msgstr "Désolé, le fichier midi n'a pas pu être ouvert."
 
-#: Src/GUI/MainFrame.cpp:363
+#: Src/GUI/MainFrame.cpp:369
 msgid "Start"
 msgstr "Début"
 
-#: Src/GUI/MainFrame.cpp:339
+#: Src/GUI/MainFrame.cpp:345
 msgid "Stop"
 msgstr "Stop"
 
@@ -709,7 +720,7 @@ msgstr "Stop"
 msgid "Tablature Editor"
 msgstr "Éditeur de tablature"
 
-#: Src/GUI/MainFrame.cpp:355
+#: Src/GUI/MainFrame.cpp:361
 msgid "Tempo"
 msgstr "Tempo"
 
@@ -724,11 +735,11 @@ msgid "The selected ALSA device could not be opened."
 msgstr "Cette machine ALSA n'a pu être ouverte"
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:134
+#: Src/Dialogs/PrintSetupDialog.cpp:141
 msgid "This list of tracks"
 msgstr "Cette liste de pistes"
 
-#: Src/GUI/MainFrame.cpp:358
+#: Src/GUI/MainFrame.cpp:364
 msgid "Time Sig"
 msgstr "Mesure"
 
@@ -736,12 +747,12 @@ msgstr "Mesure"
 msgid "Time Signature"
 msgstr "Signature Rythmique"
 
-#: Src/GUI/MainFrame.cpp:380
+#: Src/GUI/MainFrame.cpp:391
 msgid "Tool"
 msgstr "Outil"
 
 #. I18N: - %s is the name of the track
-#: Src/Dialogs/PrintSetupDialog.cpp:42
+#: Src/Dialogs/PrintSetupDialog.cpp:44
 #, c-format
 msgid ""
 "Track '%s' could not be printed, since its current\n"
@@ -783,8 +794,8 @@ msgstr "Type de fichier inconnu: "
 #: Src/Midi/Track.cpp:55
 #: Src/Midi/Track.cpp:854
 #: Src/Midi/Track.cpp:1567
-#: Src/Printing/PrintableSequence.cpp:192
-#: Src/Printing/PrintableSequence.cpp:196
+#: Src/Printing/PrintableSequence.cpp:194
+#: Src/Printing/PrintableSequence.cpp:198
 msgid "Untitled"
 msgstr "Sans titre"
 
@@ -821,7 +832,12 @@ msgstr ""
 msgid "You can't remove the first time signature change."
 msgstr "Vous ne pouvez pas supprimer les premiers chiffres indicateurs"
 
-#: Src/GUI/MainFrame.cpp:374
+#: Src/GUI/MainFrame.cpp:1074
+#, c-format
+msgid "You have unsaved changes in sequence '%s'. Do you want to save them before proceeding?"
+msgstr "Vous avez des changements non sauvegardés à la séquence '%s'. Voulez-vous les sauvegarder avant de continuer?"
+
+#: Src/GUI/MainFrame.cpp:380
 msgid "Zoom"
 msgstr "Zoom"
 
@@ -1011,6 +1027,13 @@ msgstr "version %s"
 #: Src/Pickers/VolumeSlider.cpp:68
 msgid "volume"
 msgstr "volume"
+
+#~ msgid ""
+#~ "Changes will be lost if you close the sequence. Do you really want to "
+#~ "continue?"
+#~ msgstr ""
+#~ "Les modifications seront perdues si vous fermez la séquence. Voulez-vous "
+#~ "réellement continuer?"
 
 #~ msgid "Automatically detect repeated measures (experimental!)"
 #~ msgstr "Automatiquement détecter les répétitions (expérimental!)"
