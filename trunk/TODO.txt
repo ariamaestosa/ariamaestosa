@@ -44,16 +44,17 @@ NOTE: sorry, this is very raw :)
 
 * score print :
     * red images
-      - when a track first appears, we need its clef, key, etc. (maybe even once a page). Right now it's only
-        given if the said track starts playing at measure 1  (or in the first line)
     * Printing a score where empty *lines* (not tracks) will occur is not handled 100% well
-    * remember user's margins choice either
     * long-term : in multi-track printing, some tracks need to be visually more tightly bound toghether (like tab and its score)
-    ? allow setting font size, number of lines per page, zoom, etc...
     - X notes not printed right (nor handled correctly in score editor anyway)
+ * empty tracks are auto hidden. unfortunately, since tracks are not labelled, you don't know which tracks are
+   visible and which aren't...
+ * when a track first appears, we need its clef, key, etc. (maybe even once a page). Right now it's only
+   given if the said track starts playing on the first line
+ * print tempo (and tempo changes)
  - printing : remove hiding of empty lines?
- - print tempo (and tempo changes)
  - use double bar at the end of the song
+ ? allow setting font size, number of lines per page, zoom, etc...
 
  * Keyboard editor : show current key in left area
  * In score and tab editors, show more clearly where you can click to hear the note
