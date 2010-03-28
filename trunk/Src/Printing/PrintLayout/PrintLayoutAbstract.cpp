@@ -518,8 +518,7 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     std::cout << " maxLevelsOnPage0="      << maxLevelsOnPage1
               << " maxLevelsOnOtherPages=" << maxLevelsOnOtherPages << std::endl;
     
-    //FIXME: remove magic constant '600' (which is the margin)
-    const int maxLineWidthInPrintUnits = AriaPrintable::getCurrentPrintable()->getUnitWidth() - 600;     
+    const int maxLineWidthInPrintUnits = AriaPrintable::getCurrentPrintable()->getUnitWidth();     
     const int layoutElementsAmount = layoutElements.size();
 
     int current_width = 0;
