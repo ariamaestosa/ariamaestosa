@@ -36,6 +36,9 @@ namespace AriaMaestosa
         
     const int MIN_NUMBER_OF_EMPTY_MEASURES_TO_COLLPASE = 4;
     
+    /** Whether to show a line ehader (clef+key, tab tuning, etc...) on every line */
+    const bool HEADER_ON_EVERY_LINE = false;
+    
     int repetitionMinimalLength = 2;
     
     // -------------------------------------------------------------------------------------------
@@ -476,6 +479,26 @@ void PrintLayoutAbstract::terminateLine(LayoutLine* currentLine, ptr_vector<Layo
 
 // -----------------------------------------------------------------------------------------------------
 
+LayoutElement PrintLayoutAbstract::generateLineHeaderElement() const
+{
+    LayoutElement el(LINE_HEADER, -1);
+    
+    int header_width = CLEF_WIDTH;
+    
+    //FIXME: let the score editor report the size it wants
+    if (m_sequence->isScoreEditorUsed())
+    {
+        // 50 being the max size of an accidental (FIXME: don't hardcode)
+        // FIXME: some numeric widths are used here, in the abstract layout manager
+        header_width += m_sequence->getMaxKeySignatureSignCount()*50;
+    }
+    
+    el.width_in_print_units = header_width;
+    return el;
+}
+
+// -----------------------------------------------------------------------------------------------------
+
 void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutElements,
                                              ptr_vector<LayoutPage>& layoutPages)
 {
@@ -512,22 +535,10 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     layoutPages[current_page].addLine( currentLine );
 
     // add line header
-    LayoutElement el(LINE_HEADER, -1);
-    
-    int header_width = CLEF_WIDTH;
-    
-    //FIXME: let the score editor report the size it wants
-    if (m_sequence->isScoreEditorUsed())
-    {
-        // 50 being the max size of an accidental (FIXME: don't hardcode)
-        // FIXME: some numeric widths are used here, in the abstract layout manager
-        header_width += m_sequence->getMaxKeySignatureSignCount()*50;
-    }
-    
-    el.width_in_print_units = header_width;
-    
-    current_width += header_width;
+    LayoutElement el = generateLineHeaderElement();
+    current_width += el.width_in_print_units;
     currentLine->addLayoutElement( el );
+    
     currentLine->setLevelFrom(current_height);
     
     // add layout elements one by one, switching to the next line when there's too many
@@ -557,6 +568,14 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
             ptr_vector<PrintLayoutMeasure, REF> refview = m_measures.getWeakView();
             currentLine = new LayoutLine(m_sequence, refview);
             layoutPages[current_page].addLine( currentLine );
+            
+            if (HEADER_ON_EVERY_LINE)
+            {
+                // add line header
+                LayoutElement el = generateLineHeaderElement();
+                current_width += el.width_in_print_units;
+                currentLine->addLayoutElement( el );
+            }
             
             currentLine->setLevelFrom(current_height);
         }        

@@ -94,6 +94,11 @@ namespace AriaMaestosa
                                      ptr_vector<LayoutPage>& layoutPages,
                                      const bool checkRepetitions_bool);
         
+        /**
+          * Small factory function to generate line ehader elements
+          */
+        LayoutElement generateLineHeaderElement() const;
+
     public:
         /**
           * Constructs a PrintLayoutAbstract object that can lay a given sequence within pages
