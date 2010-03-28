@@ -17,9 +17,12 @@
 #ifndef _track_h_
 #define _track_h_
 
-#include "irrXML/irrXML.h"
-
-#include "wx/wfstream.h"
+class wxFileOutputStream;
+// forward
+namespace irr { namespace io {
+    class IXMLBase;
+    template<class char_type, class super_class> class IIrrXMLReader;
+    typedef IIrrXMLReader<char, IXMLBase> IrrXMLReader; } }
 
 #include "jdkmidi/world.h"
 #include "jdkmidi/track.h"

@@ -21,6 +21,8 @@
 #include "Editors/KeyboardEditor.h"
 #include "IO/IOUtils.h"
 
+#include "irrXML/irrXML.h"
+
 using namespace AriaMaestosa;
 
 ControllerEvent::ControllerEvent(Sequence* sequence, unsigned short controller, int tick, unsigned short value)

@@ -24,6 +24,8 @@
 #include "Midi/Sequence.h"
 #include "Editors/GuitarEditor.h"
 
+#include "irrXML/irrXML.h"
+
 #include <iostream>
 
 using namespace AriaMaestosa;

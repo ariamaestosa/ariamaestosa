@@ -14,12 +14,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-/*
- * This is a midi Sequence, or a "file". Each tab in the tab bar represents one Sequence instance.
- * It contains general information and a vector of tracks.
- */
-
-const float current_file_version = 1.0;
+/** Version of the .aria file format. */
+const float CURRENT_FILE_VERSION = 1.0;
 
 #include "Utils.h"
 #include "AriaCore.h"
@@ -127,6 +123,9 @@ wxString Sequence::suggestTitle()
         return  wxString( _("Untitled") );
     }
 }
+
+// ----------------------------------------------------------------------------------------------------------
+
 wxString Sequence::suggestFileName()
 {
     if (!filepath.IsEmpty())
@@ -955,7 +954,7 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
               wxT("\" currentTrack=\"") + to_wxString(currentTrack) +
               wxT("\" beatResolution=\"") + to_wxString(beatResolution) +
               wxT("\" internalName=\"") + internal_sequenceName +
-              wxT("\" fileFormatVersion=\"") + to_wxString(current_file_version) +
+              wxT("\" fileFormatVersion=\"") + to_wxString(CURRENT_FILE_VERSION) +
               wxT("\" channelManagement=\"") + (getChannelManagementType() == CHANNEL_AUTO ? wxT("auto") : wxT("manual")) +
               wxT("\">\n\n"), fileout );
 
@@ -1033,7 +1032,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                     if (fileFormatVersion != NULL)
                     {
                         fileversion = atoi( (char*)fileFormatVersion );
-                        if (fileversion > current_file_version )
+                        if (fileversion > CURRENT_FILE_VERSION )
                         {
                             wxMessageBox( _("Warning : you are opening a file saved with a version of\nAria Maestosa more recent than the version you currently have.\nIt may not open correctly.") );
                         }

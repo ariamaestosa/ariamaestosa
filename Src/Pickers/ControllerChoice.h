@@ -18,10 +18,8 @@
 #ifndef _controllerchoice_
 #define _controllerchoice_
 
-#include "wx/wx.h"
-#include "wx/wfstream.h"
+#include "wx/menu.h"
 
-#include "irrXML/irrXML.h"
 #include "Renderers/RenderAPI.h"
 #include "Utils.h"
 

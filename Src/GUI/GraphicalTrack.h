@@ -17,12 +17,16 @@
 #ifndef _graphical_track_
 #define _graphical_track_
 
-#include "irrXML/irrXML.h"
 
 #include "Utils.h"
 #include "Editors/Editor.h"
 
 class wxFileOutputStream;
+// forward
+namespace irr { namespace io {
+    class IXMLBase;
+    template<class char_type, class super_class> class IIrrXMLReader;
+    typedef IIrrXMLReader<char, IXMLBase> IrrXMLReader; } }
 
 namespace AriaMaestosa
 {

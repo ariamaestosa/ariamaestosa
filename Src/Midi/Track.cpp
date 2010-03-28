@@ -42,6 +42,7 @@
 #include <iostream>
 
 #include "wx/utils.h"
+#include "irrXML/irrXML.h"
 
 using namespace AriaMaestosa;
 

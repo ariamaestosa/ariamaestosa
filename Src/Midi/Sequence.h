@@ -18,10 +18,13 @@
 #define _sequence_
 
 #include "wx/string.h"
-//#include "wx/wfstream.h"
-class wxFileOutputStream;
 
-#include "irrXML/irrXML.h"
+class wxFileOutputStream;
+// forward
+namespace irr { namespace io {
+    class IXMLBase;
+    template<class char_type, class super_class> class IIrrXMLReader;
+    typedef IIrrXMLReader<char, IXMLBase> IrrXMLReader; } }
 
 #include "Utils.h"
 #include "ptr_vector.h"
@@ -44,6 +47,10 @@ namespace AriaMaestosa
 
     const int DEFAULT_SONG_LENGTH = 12;
     
+    /**
+      * This is a midi Sequence, or a "file". Each tab in the tab bar represents one Sequence instance.
+      * It contains general information and a vector of tracks.
+      */
     class Sequence
     {
 

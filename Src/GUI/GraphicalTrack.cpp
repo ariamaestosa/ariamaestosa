@@ -48,6 +48,8 @@
 #include "Renderers/RenderAPI.h"
 #include "IO/IOUtils.h"
 
+#include "irrXML/irrXML.h"
+
 using namespace AriaMaestosa;
 
 namespace AriaMaestosa
