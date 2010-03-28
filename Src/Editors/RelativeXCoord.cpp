@@ -73,7 +73,7 @@ void RelativeXCoord::setValue(int i, RelativeType relativeTo)
     else
     {
         std::cout << "!! RelativeXCoord ERROR - needs one of 3 (A)" << std::endl;
-        assert(0);
+        ASSERT(0);
     }
 
 }
@@ -105,7 +105,7 @@ void RelativeXCoord::convertTo(RelativeType relativeTo)
                 else
                 {
                     std::cout << "!! RelativeXCoord ERROR - needs one of 3 (B)" << std::endl;
-                    assert(0);
+                    ASSERT(0);
                 }
             relativeToWindow = -1;
             relativeToMidi = -1;
@@ -122,7 +122,7 @@ void RelativeXCoord::convertTo(RelativeType relativeTo)
                     else
                     {
                         std::cout << "!! RelativeXCoord ERROR - needs one of 3 (C)" << std::endl;
-                        assert(0);
+                        ASSERT(0);
                     }
             }
             relativeToMidi = -1;
@@ -142,7 +142,7 @@ void RelativeXCoord::convertTo(RelativeType relativeTo)
                     else
                     {
                         std::cout << "!! RelativeXCoord ERROR - needs one of 3 (D)" << std::endl;
-                        assert(0);
+                        ASSERT(0);
                     }
 
             }
@@ -175,7 +175,7 @@ int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
                 {
                     std::cout << "!! RelativeXCoord ERROR - needs one of 3 (E)" << std::endl;
                     return -1;
-                    //assert(0);
+                    //ASSERT(0);
                 }
 
             return relativeToEditor;
@@ -198,7 +198,7 @@ int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
                     {
                         std::cout << "!! RelativeXCoord ERROR - needs one of 3 (F)" << std::endl;
                         return -1;
-                        //assert(0);
+                        //ASSERT(0);
                     }
             }
             break;
@@ -218,13 +218,13 @@ int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
                     {
                         std::cout << "!! RelativeXCoord ERROR - needs one of 3 (G)" << std::endl;
                         return -1;
-                        //assert(0);
+                        //ASSERT(0);
                     }
             }
 
             break;
     }
-    //assert(0);
+    //ASSERT(0);
     std::cout << "!! RelativeXCoord ERROR - Conversion failed!" << std::endl;
     return -1;
 

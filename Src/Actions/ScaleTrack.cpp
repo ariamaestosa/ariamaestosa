@@ -51,7 +51,7 @@ void ScaleTrack::undo()
 
 void ScaleTrack::perform()
 {
-    assert(track != NULL);
+    ASSERT(track != NULL);
     
     const int noteAmount=track->m_notes.size();
     

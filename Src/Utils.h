@@ -19,7 +19,7 @@
 
 #include "IO/IOUtils.h"
 
-// -------------------- my assert stuff -----------------
+// -------------------- my ASSERT stuff -----------------
 #include <iostream>
 
 
@@ -27,9 +27,13 @@
 
 #include "IO/IOUtils.h"
 
-#undef assert
-#define assert(expr) if (! (expr)){assertFailed( wxT("Assert failed: ") + wxString( #expr , wxConvUTF8 ) + wxT("\n@ ") + extract_filename( fromCString(__FILE__) ) + wxT(": ") + to_wxString(__LINE__));}
-#define assertExpr(v1,sign,v2) if (!((v1) sign (v2))){ std::cout << "assert failed values : " << v1 << #sign << v2 << std::endl; assertFailed( wxT("Assert failed: ") + wxString( #v1, wxConvUTF8 ) + wxString( #sign , wxConvUTF8 ) + fromCString( #v2 ) + wxT("\n@ ") + extract_filename(fromCString(__FILE__)) + wxT(": ") + to_wxString(__LINE__) ); }
+#define ASSERT(expr) if (! (expr)){assertFailed( wxT("ASSERT failed: ") + wxString( #expr , wxConvUTF8 ) + wxT("\n@ ") + extract_filename( fromCString(__FILE__) ) + wxT(": ") + to_wxString(__LINE__));}
+#define ASSERT_E(v1,sign,v2) if (!((v1) sign (v2))){ std::cout << "ASSERT failed values : " << v1 << #sign << v2 << std::endl; assertFailed( wxT("Assert failed: ") + wxString( #v1, wxConvUTF8 ) + wxString( #sign , wxConvUTF8 ) + fromCString( #v2 ) + wxT("\n@ ") + extract_filename(fromCString(__FILE__)) + wxT(": ") + to_wxString(__LINE__) ); }
+
+/** less strict than ASSERT, doesn't abort program on failure but only prints warning */
+#define PREFER(expr) if (! (expr)){ std::cerr << "\n/!\\ PREFER failed: " << #expr << "\n@ " << extract_filename( fromCString(__FILE__) ).mb_str() << ": " << __LINE__ << "\n\n";}
+#define PREFER_E(v1,sign,v2) if (!((v1) sign (v2))){ std::cerr << "\n/!\\ PREFER failed: " << #v1 << #sign << #v2 << "\n@ " << extract_filename( fromCString(__FILE__) ).mb_str() << ": " << __LINE__ << "\n"; std::cerr << "PREFER failed values : " << v1 << #sign << v2 << "\n\n"; }
+
 
 struct AriaDebugMagicNumber
 {
@@ -51,9 +55,11 @@ struct AriaDebugMagicNumber
 
 #else
 
-#undef assert
-#define assert(expr)
-#define assertExpr(v1,sign,v2)
+#define ASSERT(expr)
+#define ASSERT_E(v1,sign,v2)
+
+#define PREFER(expr)
+#define PREFER_E(v1,sign,v2)
 
 #define DECLARE_MAGIC_NUMBER()
 #define MAGIC_NUMBER_OK() true

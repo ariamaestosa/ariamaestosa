@@ -195,7 +195,7 @@ int RelativePlacementManager::getNextTick(const int from_tick)
     for (int n=0; n<tickAmount; n++)
     {
         // Assert that it's sorted
-        assert(n == 0 or m_all_interesting_ticks[n].tick >= m_all_interesting_ticks[n-1].tick);
+        ASSERT(n == 0 or m_all_interesting_ticks[n].tick >= m_all_interesting_ticks[n-1].tick);
         
         if (m_all_interesting_ticks[n].tick > from_tick)
         {
@@ -215,7 +215,7 @@ int RelativePlacementManager::getNextTickInTrack(const int from_tick, const int 
     for (int n=0; n<tickAmount; n++)
     {
         // Assert that it's sorted
-        assert(n == 0 or m_all_interesting_ticks[n].tick >= m_all_interesting_ticks[n-1].tick);
+        ASSERT(n == 0 or m_all_interesting_ticks[n].tick >= m_all_interesting_ticks[n-1].tick);
         
         if (m_all_interesting_ticks[n].tick > from_tick and m_all_interesting_ticks[n].hasSymbolInTrack(trackID))
         {
@@ -331,13 +331,13 @@ void RelativePlacementManager::addSymbol(int tickFrom, int tickTo, int symbolWid
     std::cout << "++++ addSymbol " << symbolWidth << "; tick " << tickFrom << " track " << trackID << std::endl;
 #endif
     
-    assert (tickFrom < m_end_of_measure_tick);
-    //assert (tickTo <= m_end_of_measure_tick);
+    ASSERT (tickFrom < m_end_of_measure_tick);
+    //ASSERT (tickTo <= m_end_of_measure_tick);
     
     const int interestingTickID = getInterestingTick( tickFrom, 0, m_all_interesting_ticks.size()-1 );
-    assert( interestingTickID >= 0 );
-    assert( interestingTickID < (int)m_all_interesting_ticks.size() );
-    assert( m_all_interesting_ticks[interestingTickID].tick == tickFrom );
+    ASSERT( interestingTickID >= 0 );
+    ASSERT( interestingTickID < (int)m_all_interesting_ticks.size() );
+    ASSERT( m_all_interesting_ticks[interestingTickID].tick == tickFrom );
     
     m_all_interesting_ticks[interestingTickID].all_symbols_on_that_tick.push_back(
                         Symbol(tickTo, symbolWidth, trackID) );
@@ -411,7 +411,7 @@ void RelativePlacementManager::calculateRelativePlacement()
     if (tickAmount == 0) return;
 
     const int shortestSymbolLength = findShortestSymbolLength();
-    assert(shortestSymbolLength > 0);
+    ASSERT(shortestSymbolLength > 0);
     
     m_total_needed_size = 0;
 
@@ -427,7 +427,7 @@ void RelativePlacementManager::calculateRelativePlacement()
         int spaceNeededAfterSymbolForProportions = 0;
         
         const int symbolAmount = currTick.all_symbols_on_that_tick.size();
-        assertExpr(symbolAmount, >, 0);
+        ASSERT_E(symbolAmount, >, 0);
         
 #if RPM_CHATTY
         std::cout << "    {\n";
@@ -453,7 +453,7 @@ void RelativePlacementManager::calculateRelativePlacement()
                 //const int whats_missing = std::max(0, currSym.endTick - nextTickInAnyTrack);
                 //float ratioToShortest = (float)whats_missing / (float)shortestSymbolLength;
                 
-                assertExpr(shortestSymbolLength, >=, 0);
+                ASSERT_E(shortestSymbolLength, >=, 0);
                 
                 const int length = currSym.endTick - currTick.tick;
                 if (length <= 0)
@@ -468,14 +468,14 @@ void RelativePlacementManager::calculateRelativePlacement()
                 float ratioToShortest = (float)length / (float)shortestSymbolLength;
                 
                 // if the ratio is smaller than 1, then we don't have the right "shortest"...
-                assertExpr(ratioToShortest, >=, 1.0);
+                ASSERT_E(ratioToShortest, >=, 1.0);
                 
                 if (ratioToShortest >= 1)
                 {
                     // grow logaritmically (the factor is empirical - FIXME)
                     currSym.neededAdditionalProportion = (float)std::log( ratioToShortest ) /
                                                             (float)std::log( 2 ) * 90.0f;
-                    assertExpr( currSym.neededAdditionalProportion, >=, 0.0f );
+                    ASSERT_E( currSym.neededAdditionalProportion, >=, 0.0f );
                     //std::cout << "currSym.neededAdditionalProportion = " << currSym.neededAdditionalProportion << "\n";
                 }
                 else // no additionnal needed space
@@ -519,7 +519,7 @@ void RelativePlacementManager::calculateRelativePlacement()
         // set end position of previous unit (without caring yet for value to be in range [0, 1])
         //if (n>0) m_all_interesting_ticks[n-1].endPosition = totalAbsolutePosition;
         
-        assertExpr( spaceNeededToFitAllSymbols, >, 0 );
+        ASSERT_E( spaceNeededToFitAllSymbols, >, 0 );
         
         // increment current position
         m_total_needed_size += spaceNeededToFitAllSymbols + spaceNeededAfterSymbolForProportions;
@@ -544,11 +544,11 @@ void RelativePlacementManager::calculateRelativePlacement()
                   << currTick.position << " to " << currTick.endPosition << std::endl;
 #endif
         
-        assertExpr(currTick.position, >=, 0.0f);
-        assertExpr(currTick.position, <=, 1.0f);
+        ASSERT_E(currTick.position, >=, 0.0f);
+        ASSERT_E(currTick.position, <=, 1.0f);
         
-        assertExpr(currTick.endPosition, >=, 0.0f);
-        assertExpr(currTick.endPosition, <=, 1.0f);
+        ASSERT_E(currTick.endPosition, >=, 0.0f);
+        ASSERT_E(currTick.endPosition, <=, 1.0f);
     }
     
 }
@@ -565,7 +565,7 @@ Range<float> RelativePlacementManager::getSymbolRelativeArea(int tick) const
         return Range<float>(0, 0);
     }
     
-    assert(id < (int)m_all_interesting_ticks.size());
+    ASSERT(id < (int)m_all_interesting_ticks.size());
     
     const InterestingTick& currTick = m_all_interesting_ticks[id];
     return Range<float>(currTick.position, currTick.endPosition);

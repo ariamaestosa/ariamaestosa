@@ -52,7 +52,7 @@ void SnapNotesToGrid::perform()
 {
     //undo_obj.saveState(track);
     
-    assert(track != NULL);
+    ASSERT(track != NULL);
     
     const int n_amount = track->m_notes.size();
     for(int n=0; n<n_amount; n++)

@@ -81,8 +81,8 @@ Track::Track(MainFrame* parent, Sequence* sequence)
         const int track_amount = sequence->getTrackAmount();
         for (int i=0; i<track_amount; i++)
         {
-            assertExpr(sequence->getTrack(i)->getChannel(),>=,0);
-            assertExpr(sequence->getTrack(i)->getChannel(),<,16);
+            ASSERT_E(sequence->getTrack(i)->getChannel(),>=,0);
+            ASSERT_E(sequence->getTrack(i)->getChannel(),<,16);
             channel_taken[sequence->getTrack(i)->getChannel()] = true;
         }
         for (int i=0; i<16; i++)
@@ -264,8 +264,8 @@ void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
         return;
     }
 
-    assertExpr(evt->getController(),<,205);
-    assertExpr(evt->getValue(),<,128);
+    ASSERT_E(evt->getController(),<,205);
+    ASSERT_E(evt->getValue(),<,128);
 
     const int eventAmount=vector->size();
     for(int n=0; n<eventAmount; n++)
@@ -296,7 +296,7 @@ void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
 
 void Track::addControlEvent_import(const int x, const int value, const int controller)
 {
-    assert(sequence->importing); // not to be used when not importing
+    ASSERT(sequence->importing); // not to be used when not importing
     m_control_events.push_back(new ControllerEvent(sequence, controller, x, value) );
 }
 
@@ -304,7 +304,7 @@ void Track::addControlEvent_import(const int x, const int value, const int contr
 
 bool Track::addNote_import(const int pitchID, const int startTick, const int endTick, const int volume, const int string)
 {
-    assert(sequence->importing); // not to be used when not importing
+    ASSERT(sequence->importing); // not to be used when not importing
     return addNote( new Note(graphics, pitchID, startTick, endTick, volume, string) );
 }
 
@@ -312,12 +312,12 @@ bool Track::addNote_import(const int pitchID, const int startTick, const int end
 
 void Track::setNoteEnd_import(const int tick, const int noteID)
 {
-    assert(sequence->importing); // not to be used when not importing
-    assert(noteID != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
-    assert(noteID != SELECTED_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
+    ASSERT(sequence->importing); // not to be used when not importing
+    ASSERT(noteID != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
+    ASSERT(noteID != SELECTED_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
 
-    assertExpr(noteID,<,m_notes.size());
-    assertExpr(noteID,>=,0);
+    ASSERT_E(noteID,<,m_notes.size());
+    ASSERT_E(noteID,>=,0);
 
     m_notes[noteID].setEnd(tick);
 }
@@ -346,8 +346,8 @@ void Track::removeNote(const int id)
 
 void Track::markNoteToBeRemoved(const int id)
 {
-    assertExpr(id,>=,0);
-    assertExpr(id,<,m_notes.size());
+    ASSERT_E(id,>=,0);
+    ASSERT_E(id,<,m_notes.size());
 
     // also delete corresponding note off event
     const int namount = m_note_off.size();
@@ -405,7 +405,7 @@ void Track::reorderNoteVector()
     for(int n=0; n<noteAmount-1; n++)
     {
 
-        assertExpr(n+1,<,m_notes.size());
+        ASSERT_E(n+1,<,m_notes.size());
 
         if (m_notes[n].startTick > m_notes[n+1].startTick)
         {
@@ -430,11 +430,11 @@ void Track::reorderNoteOffVector()
     for(int n=0; n<noteAmount-1; n++)
     {
 
-        assertExpr(n+1,<,m_note_off.size());
-        assert(m_note_off.get(n) != NULL);
-        assert(m_note_off.get(n+1) != NULL);
-        assert(m_note_off.get(n) != 0);
-        assert(m_note_off.get(n+1) != 0);
+        ASSERT_E(n+1,<,m_note_off.size());
+        ASSERT(m_note_off.get(n) != NULL);
+        ASSERT(m_note_off.get(n+1) != NULL);
+        ASSERT(m_note_off.get(n) != 0);
+        ASSERT(m_note_off.get(n+1) != 0);
 
         if (m_note_off[n].endTick > m_note_off[n+1].endTick)
         {
@@ -457,7 +457,7 @@ void Track::reorderControlVector()
     for(int n=0; n<ctrlAmount-1; n++)
     {
 
-        assertExpr(n+1,<,ctrlAmount);
+        ASSERT_E(n+1,<,ctrlAmount);
 
         if (m_control_events[n].getTick() > m_control_events[n+1].getTick())
         {
@@ -518,7 +518,7 @@ void Track::checkControlEventsOrder()
 
 Note* Track::getNote(const int id)
 {
-    assertExpr(id,<,m_notes.size());
+    ASSERT_E(id,<,m_notes.size());
     return m_notes.get(id);
 }
 
@@ -526,8 +526,8 @@ Note* Track::getNote(const int id)
 
 int Track::getNoteStartInPixels(const int id) const
 {
-    assertExpr(id,>=,0);
-    assertExpr(id,<,m_notes.size());
+    ASSERT_E(id,>=,0);
+    ASSERT_E(id,<,m_notes.size());
 
     return (int)round( m_notes[id].startTick * sequence->getZoom() );
 }
@@ -536,8 +536,8 @@ int Track::getNoteStartInPixels(const int id) const
 
 int Track::getNoteEndInPixels(const int id) const
 {
-    assertExpr(id,>=,0);
-    assertExpr(id,<,m_notes.size());
+    ASSERT_E(id,>=,0);
+    ASSERT_E(id,<,m_notes.size());
 
     return (int)round( m_notes[id].endTick * sequence->getZoom() );
 }
@@ -546,8 +546,8 @@ int Track::getNoteEndInPixels(const int id) const
 
 int Track::getNoteStartInMidiTicks(const int id) const
 {
-    assertExpr(id,>=,0);
-    assertExpr(id,<,m_notes.size());
+    ASSERT_E(id,>=,0);
+    ASSERT_E(id,<,m_notes.size());
 
     return m_notes[id].startTick;
 }
@@ -556,8 +556,8 @@ int Track::getNoteStartInMidiTicks(const int id) const
 
 int Track::getNoteEndInMidiTicks(const int id) const
 {
-    assertExpr(id,>=,0);
-    assertExpr(id,<,m_notes.size());
+    ASSERT_E(id,>=,0);
+    ASSERT_E(id,<,m_notes.size());
 
     return m_notes[id].endTick;
 }
@@ -566,8 +566,8 @@ int Track::getNoteEndInMidiTicks(const int id) const
 
 int Track::getNotePitchID(const int id) const
 {
-    assertExpr(id,>=,0);
-    assertExpr(id,<,m_notes.size());
+    ASSERT_E(id,>=,0);
+    ASSERT_E(id,<,m_notes.size());
     return m_notes[id].pitchID;
 }
 
@@ -582,8 +582,8 @@ int Track::getNoteAmount() const
 
 int Track::getNoteVolume(const int id) const
 {
-    assertExpr(id,>=,0);
-    assertExpr(id,<,m_notes.size());
+    ASSERT_E(id,>=,0);
+    ASSERT_E(id,<,m_notes.size());
     return m_notes[id].volume;
 }
 
@@ -591,8 +591,8 @@ int Track::getNoteVolume(const int id) const
 
 int Track::getNoteString(const int id)
 {
-    assertExpr(id,>=,0);
-    assertExpr(id,<,m_notes.size());
+    ASSERT_E(id,>=,0);
+    ASSERT_E(id,<,m_notes.size());
 
     //if (m_notes[id].tuning == NULL) m_notes[id].setTuning(&graphics->guitarEditor->tuning); // make sure the note knows the tuning
     if (m_notes[id].getString() == -1) m_notes[id].findStringAndFretFromNote();
@@ -605,8 +605,8 @@ int Track::getNoteString(const int id)
 
 int Track::getNoteFret(const int id)
 {
-    assertExpr(id,>=,0);
-    assertExpr(id,<,m_notes.size());
+    ASSERT_E(id,>=,0);
+    ASSERT_E(id,<,m_notes.size());
 
     //if (m_notes[id].tuning == NULL) m_notes[id].setTuning(&graphics->guitarEditor->tuning); // make sure the note knows the tuning
     
@@ -620,8 +620,8 @@ int Track::getNoteFret(const int id)
 
 int Track::getNoteStringConst(const int id) const
 {
-    assertExpr(id,>=,0);
-    assertExpr(id,<,m_notes.size());
+    ASSERT_E(id,>=,0);
+    ASSERT_E(id,<,m_notes.size());
     
     return m_notes[id].getStringConst();
 }
@@ -630,8 +630,8 @@ int Track::getNoteStringConst(const int id) const
 
 int Track::getNoteFretConst(const int id) const
 {
-    assertExpr(id,>=,0);
-    assertExpr(id,<,m_notes.size());
+    ASSERT_E(id,>=,0);
+    ASSERT_E(id,<,m_notes.size());
     
     return m_notes[id].getFretConst();
 }
@@ -677,11 +677,11 @@ int Track::getControllerEventAmount(const int controllerTypeID) const
 
 ControllerEvent* Track::getControllerEvent(const int id, const int controllerTypeID)
 {
-    assertExpr(id,>=,0);
+    ASSERT_E(id,>=,0);
     if (controllerTypeID==201 /*tempo*/){
-        assertExpr(id,<,sequence->tempoEvents.size());
+        ASSERT_E(id,<,sequence->tempoEvents.size());
     } else {
-        assertExpr(id,<,m_control_events.size());
+        ASSERT_E(id,<,m_control_events.size());
     }
 
     if (controllerTypeID==201 /*tempo*/) return &sequence->tempoEvents[id];
@@ -712,7 +712,7 @@ int Track::getFirstNoteTick(bool selectionOnly) const
 void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
 {
 
-    assert(id != SELECTED_NOTES); // not supported in this function
+    ASSERT(id != SELECTED_NOTES); // not supported in this function
 
 
     if (!Display::isSelectMorePressed() and !Display:: isSelectLessPressed()) ignoreModifiers=true; // if no modifier is pressed, don't do any special checks
@@ -744,8 +744,8 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
     else  // ---- select/deselect one specific note
     {
 
-        assertExpr(id,>=,0);
-        assertExpr(id,<,m_notes.size());
+        ASSERT_E(id,>=,0);
+        ASSERT_E(id,<,m_notes.size());
 
         // if we ignore +/- key modifiers, just set the value right away
         if (ignoreModifiers) m_notes[id].setSelected(selected);
@@ -765,8 +765,8 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
 
 bool Track::isNoteSelected(const int id) const
 {
-    assertExpr(id,>=,0);
-    assertExpr(id,<,m_notes.size());
+    ASSERT_E(id,>=,0);
+    ASSERT_E(id,<,m_notes.size());
     return m_notes[id].isSelected();
 }
 
@@ -985,7 +985,7 @@ void Track::setKey(const int symbolAmount, const PitchSign symbol)
     else
     {
         std::cerr << "Bogus call to Track::setKey! Symbol must be SHARP or FLAT\n";
-        assert(false);
+        ASSERT(false);
     }
     
     // ---- update 'm_key_notes' array
@@ -1075,8 +1075,8 @@ void Track::setKey(const int symbolAmount, const PitchSign symbol)
 
 void Track::playNote(const int id, const bool noteChange)
 {
-    assertExpr(id,<,m_notes.size());
-    assertExpr(id,>=,0);
+    ASSERT_E(id,<,m_notes.size());
+    ASSERT_E(id,>=,0);
 
     m_notes[id].play(noteChange);
 }
@@ -1184,12 +1184,12 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         m.SetTime( 0 );
         m.SetControlChange( track_ID, 0, 0 );
 
-        if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; assert(0); }
+        if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; ASSERT(0); }
 
         m.SetTime( 0 );
         m.SetControlChange( track_ID, 32, 0 );
 
-        if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; assert(0); }
+        if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; ASSERT(0); }
     }
 
     // set instrument
@@ -1217,7 +1217,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
         m.CopySysEx( &sysex );
         m.SetTime( 0 );
-        if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; assert(0); }
+        if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; ASSERT(0); }
     }
 
     // set maximum volume
@@ -1227,7 +1227,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         m.SetTime( 0 );
         m.SetControlChange( track_ID, 7, 127 );
 
-        if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; assert(false); }
+        if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; ASSERT(false); }
     }
 
     // ----------------------------------- add events in order --------------------------

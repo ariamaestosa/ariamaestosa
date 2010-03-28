@@ -175,8 +175,8 @@ namespace AriaMaestosa {
             return;
         }
 
-        assert(noteID!=-1);
-        assert(currentTrack!=NULL);
+        ASSERT(noteID!=-1);
+        ASSERT(currentTrack!=NULL);
 
         if (currentTrack->isNoteSelected(noteID))
             currentTrack->action( new Action::SetNoteVolume(newValue, SELECTED_NOTES) );

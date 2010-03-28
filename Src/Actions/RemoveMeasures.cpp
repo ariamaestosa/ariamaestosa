@@ -103,7 +103,7 @@ void RemoveMeasures::undo()
 void RemoveMeasures::perform()
 {
     
-    assert(sequence != NULL);
+    ASSERT(sequence != NULL);
     
     // find the range of ticks that need to be removed (convert measure IDs to midi ticks)
     const int from_tick = getMeasureData()->firstTickInMeasure(from_measure) - 1;

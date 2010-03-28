@@ -58,8 +58,8 @@ namespace AriaMaestosa {
 
         Note* getNote( int index )
         {
-            assertExpr(index, >=, 0);
-            assertExpr(index, <, clipboard.size());
+            ASSERT_E(index, >=, 0);
+            ASSERT_E(index, <, clipboard.size());
 
             return &clipboard[index];
         }

@@ -48,7 +48,7 @@ namespace AriaMaestosa {
             if (!wxFileExists(getResourcePrefix()  + path))
             {
                 wxMessageBox( _("Failed to load resource image") );
-                assert(false);
+                ASSERT(false);
             }
         }
 
@@ -95,7 +95,7 @@ namespace AriaMaestosa {
                 if (x<(*imageWidth) and y<(*imageHeight))
                 {
                     const int srcArrayIndex  = (x+(rev_val-y)*(*imageWidth))*old_bytesPerPixel;
-                    assertExpr( srcArrayIndex + (bytesPerPixel-1), <, imageSize);
+                    ASSERT_E( srcArrayIndex + (bytesPerPixel-1), <, imageSize);
 
                     imageData[destArrayIndex+0] = bitmapData[srcArrayIndex + 0];
                     imageData[destArrayIndex+1] = bitmapData[srcArrayIndex + 1];
@@ -110,7 +110,7 @@ namespace AriaMaestosa {
                         }
                         else
                         {
-                            assert(alphaData != NULL);
+                            ASSERT(alphaData != NULL);
                             imageData[destArrayIndex+3] = alphaData[ x+(rev_val-y)*(*imageWidth) ];
                         }
                     }
@@ -118,7 +118,7 @@ namespace AriaMaestosa {
                 }
                 else
                 {
-                    assertExpr( (x+y*newWidth)*bytesPerPixel+(bytesPerPixel-1), <, imageSize);
+                    ASSERT_E( (x+y*newWidth)*bytesPerPixel+(bytesPerPixel-1), <, imageSize);
 
                     imageData[destArrayIndex+0] = 0;
                     imageData[destArrayIndex+1] = 0;

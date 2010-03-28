@@ -42,7 +42,7 @@ void NumberPressed::undo()
 
 void NumberPressed::perform()
 {
-    assert(track != NULL);
+    ASSERT(track != NULL);
 
     if (track->graphics->editorMode != GUITAR) return;
 

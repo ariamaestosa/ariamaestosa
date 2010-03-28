@@ -122,7 +122,7 @@ bool ScoreMidiConverter::goingInFlats()
 
 PitchSign ScoreMidiConverter::getKeySigSharpnessSignForLevel(const unsigned int level)
 {
-    assertExpr(level,<,73);
+    ASSERT_E(level,<,73);
     
     PitchSign value = scoreNotesSharpness[ levelToNote7(level) ];
     
@@ -359,8 +359,8 @@ void ScoreMidiConverter::updateConversionData()
 
         levelToMidiNote[n] = Editor::findNotePitch( note_7, sharpness, octave );
 
-        assertExpr(levelToMidiNote[n],<,128);
-        assertExpr(levelToMidiNote[n],>,-1);
+        ASSERT_E(levelToMidiNote[n],<,128);
+        ASSERT_E(levelToMidiNote[n],>,-1);
 
         midiNoteToLevel[ levelToMidiNote[n] ] = n;
         midiNoteToLevel_type[ levelToMidiNote[n] ] = DIRECT_ON_LEVEL;
@@ -823,7 +823,7 @@ void renderSilence(const int duration, const int tick, const int type, const int
                    const bool triplet, const bool dotted,
                    const int dot_delta_x, const int dot_delta_y)
 {
-    assertExpr(tick,>,-1);
+    ASSERT_E(tick,>,-1);
     RelativeXCoord relX(tick, MIDI);
     const int x = relX.getRelativeTo(WINDOW) + 5;
     
@@ -1327,7 +1327,7 @@ void ScoreEditor::renderScore(ScoreAnalyser* analyser, const int silences_y)
     visibleNoteAmount = analyser->noteRenderInfo.size();
     for(int i=0; i<visibleNoteAmount; i++)
     {
-        assertExpr(i,<,(int)analyser->noteRenderInfo.size());
+        ASSERT_E(i,<,(int)analyser->noteRenderInfo.size());
         renderNote_pass2(analyser->noteRenderInfo[i], analyser);
     }
 

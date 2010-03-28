@@ -48,11 +48,11 @@ void ShiftBySemiTone::undo()
 
 void ShiftBySemiTone::perform()
 {
-    assert(track != NULL);
+    ASSERT(track != NULL);
     
     if (track->graphics->editorMode != SCORE) return;
     
-    assert(noteid != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implemented)
+    ASSERT(noteid != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implemented)
     
     // concerns all selected notes
     if (noteid==SELECTED_NOTES)
@@ -79,8 +79,8 @@ void ShiftBySemiTone::perform()
     else
     {
         // warning : not yet used so not tested
-        assertExpr(noteid,>=,0);
-        assertExpr(noteid,<,track->m_notes.size());
+        ASSERT_E(noteid,>=,0);
+        ASSERT_E(noteid,<,track->m_notes.size());
         
         track->m_notes[noteid].pitchID += deltaY;
         relocator.rememberNote( track->m_notes[noteid] );

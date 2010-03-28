@@ -115,14 +115,14 @@ void AddControllerSlide::pushBackOneEvent(ControllerEvent* ptr, ptr_vector<Contr
 void AddControllerSlide::perform()
 {
     
-    assertExpr(controller,>=,0);
-    assertExpr(controller,<,205);
-    assertExpr(x1,>=,0);
-    assertExpr(x2,>=,0);
-    assertExpr(value1,>=,0);
-    assertExpr(value1,<,128);
-    assertExpr(value2,>=,0);
-    assertExpr(value2,<,128);
+    ASSERT_E(controller,>=,0);
+    ASSERT_E(controller,<,205);
+    ASSERT_E(x1,>=,0);
+    ASSERT_E(x2,>=,0);
+    ASSERT_E(value1,>=,0);
+    ASSERT_E(value1,<,128);
+    ASSERT_E(value2,>=,0);
+    ASSERT_E(value2,<,128);
     
     int addedAmount=0;
     

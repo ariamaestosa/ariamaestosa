@@ -70,7 +70,7 @@ public:
 
     void doBeam(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* editor)
     {
-        assert( editor != NULL );
+        ASSERT( editor != NULL );
         
         if (last_id == first_id) return; // note alone, no beaming to perform
 
@@ -514,7 +514,7 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
         renderInfo.triplet_arc_level = renderInfo.level;
     }
     
-    assertExpr(renderInfo.level,>,-1);
+    ASSERT_E(renderInfo.level,>,-1);
     noteRenderInfo.push_back(renderInfo);
 }
 
@@ -539,7 +539,7 @@ float ScoreAnalyser::getStemTo(NoteRenderInfo& note)
     if      (note.stem_y_level != -1)     return note.stem_y_level;
     else if (note.stem_type == STEM_UP)   return note.getStemOriginLevel() - stem_height;
     else if (note.stem_type == STEM_DOWN) return note.getStemOriginLevel() + stem_height;
-    else { assert(false); return -1; }
+    else { ASSERT(false); return -1; }
 }
     
 // -----------------------------------------------------------------------------------------------------------
@@ -595,7 +595,7 @@ void ScoreAnalyser::putInTimeOrder()
     {
 #ifdef _MORE_DEBUG_CHECKS
         iteration++;
-        assertExpr(iteration,<,100000);
+        ASSERT_E(iteration,<,100000);
 #endif
 
         // put in time order
@@ -742,7 +742,7 @@ void ScoreAnalyser::findAndMergeChords()
                 noteRenderInfo[i] = summary;
 
                 // now that we summarised concurrent notes into a single one, we can erase the other notes of the chord
-                assertExpr(i,<,(int)noteRenderInfo.size());
+                ASSERT_E(i,<,(int)noteRenderInfo.size());
                 noteRenderInfo.erase( noteRenderInfo.begin()+first_note_of_chord, noteRenderInfo.begin()+i );
                 i = first_note_of_chord-2;
                 if (i<0) i=0;

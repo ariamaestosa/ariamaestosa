@@ -326,7 +326,7 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
     sequence = seq;
     GraphicalTrack::track = track;
 
-    assert(track);
+    ASSERT(track);
 
     grid = new MagneticGrid(this);
 
@@ -466,8 +466,8 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         if (!collapsed) getCurrentEditor()->mouseDown(mousex, mousey);
 
         if (!ImageProvider::imagesLoaded()) return true;
-        assert(collapseDrawable->image!=NULL);
-        assert(muteDrawable->image!=NULL);
+        ASSERT(collapseDrawable->image!=NULL);
+        ASSERT(muteDrawable->image!=NULL);
 
         const int winX = mousex.getRelativeTo(WINDOW);
         // collapse
@@ -854,7 +854,7 @@ Editor* GraphicalTrack::getCurrentEditor()
     else
     {
         std::cout << "No such editor!" << std::endl;
-        assert(false);
+        ASSERT(false);
         return NULL; // shut up warnings
     }
 }

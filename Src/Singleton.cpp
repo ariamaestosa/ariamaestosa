@@ -9,12 +9,12 @@ namespace AriaMaestosa
     {
         if (g_singletons == NULL) g_singletons = new ptr_vector<SingletonBase>();
         
-        assert (g_singletons != NULL);
+        ASSERT (g_singletons != NULL);
         g_singletons->push_back(newone);
     }
     void cleanSingletons()
     {
-        assert (g_singletons != NULL);
+        ASSERT (g_singletons != NULL);
         g_singletons->clearAndDeleteAll();
         delete g_singletons;
         g_singletons = NULL;

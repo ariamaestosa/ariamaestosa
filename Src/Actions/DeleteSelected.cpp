@@ -64,7 +64,7 @@ void DeleteSelected::undo()
 }
 void DeleteSelected::perform()
 {
-    assert(track != NULL);
+    ASSERT(track != NULL);
     
     if (track->graphics->editorMode == CONTROLLER)
     {

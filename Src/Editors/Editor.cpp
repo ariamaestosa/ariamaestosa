@@ -76,7 +76,7 @@ Editor::~Editor()
 
 int Editor::getDefaultVolume() const
 {
-    assert( MAGIC_NUMBER_OK() );
+    ASSERT( MAGIC_NUMBER_OK() );
     return default_volume;
 }
 
@@ -84,7 +84,7 @@ int Editor::getDefaultVolume() const
 
 void Editor::setDefaultVolume(const int v)
 {
-    assert( MAGIC_NUMBER_OK() );
+    ASSERT( MAGIC_NUMBER_OK() );
     default_volume = v;
 }
 
@@ -92,7 +92,7 @@ void Editor::setDefaultVolume(const int v)
 
 void Editor::useInstantNotes(bool enabled)
 {
-    assert( MAGIC_NUMBER_OK() );
+    ASSERT( MAGIC_NUMBER_OK() );
     useInstantNotes_bool = enabled;
 }
 
@@ -100,7 +100,7 @@ void Editor::useInstantNotes(bool enabled)
 
 void Editor::useVerticalScrollbar(const bool useScrollbar)
 {
-    assert( MAGIC_NUMBER_OK() );
+    ASSERT( MAGIC_NUMBER_OK() );
     Editor::useVerticalScrollbar_bool = useScrollbar;
 }
 
@@ -114,7 +114,7 @@ void Editor::useVerticalScrollbar(const bool useScrollbar)
 
 void Editor::render()
 {
-    assert( MAGIC_NUMBER_OK() );
+    ASSERT( MAGIC_NUMBER_OK() );
     render( RelativeXCoord_empty(), -1, RelativeXCoord_empty(), -1, true );
 }
 
@@ -130,7 +130,7 @@ void Editor::render(RelativeXCoord mousex_current, int mousey_current,
 
 void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
 {
-    assert( MAGIC_NUMBER_OK() );
+    ASSERT( MAGIC_NUMBER_OK() );
     
     AriaRender::primitives();
     AriaRender::lineWidth(1);
@@ -183,7 +183,7 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
 
 void Editor::renderScrollbar()
 {
-    assert( MAGIC_NUMBER_OK() );
+    ASSERT( MAGIC_NUMBER_OK() );
     
     if ( !useVerticalScrollbar_bool ) return;
 
@@ -272,7 +272,7 @@ void Editor::renderScrollbar()
 
 void Editor::clearBackgroundTracks()
 {
-    assert( MAGIC_NUMBER_OK() );
+    ASSERT( MAGIC_NUMBER_OK() );
     
     backgroundTracks.clearWithoutDeleting();
 }
@@ -281,7 +281,7 @@ void Editor::clearBackgroundTracks()
 
 void Editor::addBackgroundTrack(Track* track)
 {
-    assert( MAGIC_NUMBER_OK() );
+    ASSERT( MAGIC_NUMBER_OK() );
     
     backgroundTracks.push_back(track);
 }
@@ -290,7 +290,7 @@ void Editor::addBackgroundTrack(Track* track)
 
 bool Editor::hasAsBackground(Track* track)
 {
-    assert( MAGIC_NUMBER_OK() );
+    ASSERT( MAGIC_NUMBER_OK() );
     
     const int bgTrackAmount = backgroundTracks.size();
 
@@ -306,7 +306,7 @@ bool Editor::hasAsBackground(Track* track)
 /** on track deletion, we need to check if this one is being used and remove references to it if so */
 void Editor::trackDeleted(Track* track)
 {
-    assert( MAGIC_NUMBER_OK() );
+    ASSERT( MAGIC_NUMBER_OK() );
     
     //Sequence* seq = getCurrentSequence();
     const int bgTrackAmount = backgroundTracks.size();
@@ -332,7 +332,7 @@ void Editor::trackDeleted(Track* track)
 
 void Editor::mouseDown(RelativeXCoord x, int y)
 {
-    assert( MAGIC_NUMBER_OK() );
+    ASSERT( MAGIC_NUMBER_OK() );
     selecting = false;
 
     lastDragY=y;
@@ -407,7 +407,7 @@ void Editor::mouseDown(RelativeXCoord x, int y)
 void Editor::mouseDrag(RelativeXCoord mousex_current, int mousey_current,
                        RelativeXCoord mousex_initial, int mousey_initial)
 {
-    assert( MAGIC_NUMBER_OK() );
+    ASSERT( MAGIC_NUMBER_OK() );
     
     if (useVerticalScrollbar_bool)
     {
@@ -449,7 +449,7 @@ void Editor::mouseDrag(RelativeXCoord mousex_current, int mousey_current,
 void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                      RelativeXCoord mousex_initial, int mousey_initial)
 {
-    assert( MAGIC_NUMBER_OK() );
+    ASSERT( MAGIC_NUMBER_OK() );
     
     if (useVerticalScrollbar_bool)
     {
@@ -552,7 +552,7 @@ end_of_func:
 void Editor::TrackPropertiesDialog(RelativeXCoord mousex_current, int mousey_current,
                          RelativeXCoord mousex_initial, int mousey_initial)
 {
-    assert( MAGIC_NUMBER_OK() );
+    ASSERT( MAGIC_NUMBER_OK() );
     
     if (selecting) selectNotesInRect(mousex_current, mousey_current, mousex_initial, mousey_initial);
     selecting = false;
@@ -593,7 +593,7 @@ void Editor::TrackPropertiesDialog(RelativeXCoord mousex_current, int mousey_cur
 void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
                            RelativeXCoord mousex_initial, int mousey_initial)
 {
-    assert( MAGIC_NUMBER_OK() );
+    ASSERT( MAGIC_NUMBER_OK() );
     
     // ------------------------------- horizontal scroll by pushing mouse to side ------------------------------
     if (not click_on_scrollbar and selecting and mouse_is_in_editor)
@@ -697,7 +697,7 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 
 void Editor::rightClick(RelativeXCoord x, int y)
 {
-    assert( MAGIC_NUMBER_OK() );
+    ASSERT( MAGIC_NUMBER_OK() );
     
     int noteID;
     const NoteSearchResult result = noteAt(x,y, noteID);
@@ -782,7 +782,7 @@ void Editor::setYStep(const int ystep)
 
 void Editor::updatePosition(int from_y, int to_y, int width, int height, int barHeight)
 {
-    assert( MAGIC_NUMBER_OK() );
+    ASSERT( MAGIC_NUMBER_OK() );
     Editor::from_y = from_y;
     Editor::to_y = to_y;
     Editor::width = width;
@@ -809,12 +809,12 @@ const int Editor::getWidth()        const {    return width;                    
 
 int Editor::getYScrollInPixels()
 {
-    assert( MAGIC_NUMBER_OK() );
+    ASSERT( MAGIC_NUMBER_OK() );
     
     // since each editor takes care of its own height this base class cannot return the correct answer
     // therefore this method needs to be overriden by any editor
     std::cout << "Edit base class called. This should not happen." << std::endl;
-    assert(false);
+    ASSERT(false);
     return -1;
 }
 
@@ -822,7 +822,7 @@ int Editor::getYScrollInPixels()
 
 void Editor::scroll(float amount)
 {
-    assert( MAGIC_NUMBER_OK() );
+    ASSERT( MAGIC_NUMBER_OK() );
     sb_position -= amount;
     if      (sb_position<0) sb_position=0;
     else if (sb_position>1) sb_position=1;
@@ -838,7 +838,7 @@ void Editor::scroll(float amount)
 
 int Editor::snapMidiTickToGrid(int tick)
 {
-    assert( MAGIC_NUMBER_OK() );
+    ASSERT( MAGIC_NUMBER_OK() );
     
     int origin_tick = 0;
     if (not getMeasureData()->isMeasureLengthConstant())
@@ -858,7 +858,7 @@ int Editor::snapMidiTickToGrid(int tick)
 
 int Editor::snapMidiTickToGrid_ceil(int tick)
 {
-    assert( MAGIC_NUMBER_OK() );
+    ASSERT( MAGIC_NUMBER_OK() );
     
     int origin_tick = 0;
     if (not getMeasureData()->isMeasureLengthConstant())
@@ -915,51 +915,51 @@ bool Editor::findNoteName(const int pitchID, Note12* note_12, int* octave)
     {
         case 0:
             *note_12 = NOTE_12_B;
-            assert( findNotePitch(NOTE_7_B, NATURAL, *octave) == pitchID );
+            ASSERT( findNotePitch(NOTE_7_B, NATURAL, *octave) == pitchID );
             return true;
         case 1:
             *note_12 = NOTE_12_A_SHARP;
-            assert( findNotePitch(NOTE_7_A, SHARP, *octave) == pitchID );
+            ASSERT( findNotePitch(NOTE_7_A, SHARP, *octave) == pitchID );
             return true;
         case 2:
             *note_12 = NOTE_12_A;
-            assert( findNotePitch(NOTE_7_A, NATURAL, *octave) == pitchID );
+            ASSERT( findNotePitch(NOTE_7_A, NATURAL, *octave) == pitchID );
             return true;
         case 3:
             *note_12 = NOTE_12_G_SHARP;
-            assert( findNotePitch(NOTE_7_G, SHARP, *octave) == pitchID );
+            ASSERT( findNotePitch(NOTE_7_G, SHARP, *octave) == pitchID );
             return true;
         case 4:
             *note_12 = NOTE_12_G;
-            assert( findNotePitch(NOTE_7_G, NATURAL, *octave) == pitchID );
+            ASSERT( findNotePitch(NOTE_7_G, NATURAL, *octave) == pitchID );
             return true;
         case 5:
             *note_12 = NOTE_12_F_SHARP;
-            assert( findNotePitch(NOTE_7_F, SHARP, *octave) == pitchID );
+            ASSERT( findNotePitch(NOTE_7_F, SHARP, *octave) == pitchID );
             return true;
         case 6:
             *note_12 = NOTE_12_F;
-            assert( findNotePitch(NOTE_7_F, NATURAL, *octave) == pitchID );
+            ASSERT( findNotePitch(NOTE_7_F, NATURAL, *octave) == pitchID );
             return true;
         case 7:
             *note_12 = NOTE_12_E;
-            assert( findNotePitch(NOTE_7_E, NATURAL, *octave) == pitchID );
+            ASSERT( findNotePitch(NOTE_7_E, NATURAL, *octave) == pitchID );
             return true;
         case 8:
             *note_12 = NOTE_12_D_SHARP;
-            assert( findNotePitch(NOTE_7_D, SHARP, *octave) == pitchID );
+            ASSERT( findNotePitch(NOTE_7_D, SHARP, *octave) == pitchID );
             return true;
         case 9:
             *note_12 = NOTE_12_D;
-            assert( findNotePitch(NOTE_7_D, NATURAL, *octave) == pitchID );
+            ASSERT( findNotePitch(NOTE_7_D, NATURAL, *octave) == pitchID );
             return true;
         case 10:
             *note_12 = NOTE_12_C_SHARP;
-            assert( findNotePitch(NOTE_7_C, SHARP, *octave) == pitchID );
+            ASSERT( findNotePitch(NOTE_7_C, SHARP, *octave) == pitchID );
             return true;
         case 11:
             *note_12 = NOTE_12_C;
-            assert( findNotePitch(NOTE_7_C, NATURAL, *octave) == pitchID );
+            ASSERT( findNotePitch(NOTE_7_C, NATURAL, *octave) == pitchID );
             return true;
         default:
             return false;

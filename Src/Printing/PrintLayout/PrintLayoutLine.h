@@ -57,12 +57,12 @@ namespace AriaMaestosa
         
         int getLevelFrom() const
         {
-            assert(m_level_from != -1);
+            ASSERT(m_level_from != -1);
             return m_level_from;
         }
         int getLevelTo() const
         {
-            assert(m_level_to != -1);
+            ASSERT(m_level_to != -1);
             return m_level_to;
         }
         
@@ -103,8 +103,8 @@ namespace AriaMaestosa
         /** @return whether this track reference (on this line) is empty (contains no note or symbol) */
         bool empty() const
         {
-            assert(m_level_from != -1);
-            assert(m_level_to != -1);
+            ASSERT(m_level_from != -1);
+            ASSERT(m_level_to != -1);
 
             return m_level_to <= m_level_from;
         }
@@ -114,8 +114,8 @@ namespace AriaMaestosa
           */
         int getLevelHeight() const
         {
-            assert(m_level_from != -1);
-            assert(m_level_to != -1);
+            ASSERT(m_level_from != -1);
+            ASSERT(m_level_to != -1);
             
             return m_level_to - m_level_from;
         }
@@ -174,8 +174,8 @@ namespace AriaMaestosa
         int getTrackAmount() const;
         const LineTrackRef& getLineTrackRef(const int trackID) const
         {
-            assertExpr(trackID,>=,0);
-            assertExpr(trackID,<,(int)m_tracks.size());
+            ASSERT_E(trackID,>=,0);
+            ASSERT_E(trackID,<,(int)m_tracks.size());
             return m_tracks[trackID];
         }
         
@@ -199,7 +199,7 @@ namespace AriaMaestosa
           */
         int getCalculatedHeight() const
         {
-            assert(m_level_height != -1);
+            ASSERT(m_level_height != -1);
             return m_level_height;
         }
         
@@ -211,12 +211,12 @@ namespace AriaMaestosa
         
         int getLevelFrom() const
         {
-            assert(m_level_from != -1);
+            ASSERT(m_level_from != -1);
             return m_level_from;
         }
         int getLevelTo() const
         {
-            assert(m_level_to != -1);
+            ASSERT(m_level_to != -1);
             return m_level_to;
         }
         void setLevelFrom(const int levelFrom)

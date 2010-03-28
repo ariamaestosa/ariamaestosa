@@ -189,7 +189,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                     {
                         ariaTrack->setNoteEnd_import( tick, n );
 
-                        assertExpr(ariaTrack->getNoteEndInMidiTicks(n), ==, tick);
+                        ASSERT_E(ariaTrack->getNoteEndInMidiTicks(n), ==, tick);
 
                         break;
                     }//end if

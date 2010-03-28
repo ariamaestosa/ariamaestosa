@@ -152,12 +152,12 @@ void TextGLDrawable::rotate(int angle)
 
 void TextGLDrawable::render()
 {
-    assert(image != NULL);
+    ASSERT(image != NULL);
 
-    assertExpr(w, >, 0);
-    assertExpr(h, >, 0);
-    assertExpr(w, <, 90000);
-    assertExpr(h, <, 90000);
+    ASSERT_E(w, >, 0);
+    ASSERT_E(h, >, 0);
+    ASSERT_E(w, <, 90000);
+    ASSERT_E(h, <, 90000);
     glPushMatrix();
     glTranslatef(x*10,(y-h-y_offset)*10,0);
     
@@ -231,7 +231,7 @@ void TextTexture::load(wxImage* img)
 
 GLuint* TextTexture::getID()
 {
-    assert(ID != NULL);
+    ASSERT(ID != NULL);
     return ID;
 }
 
@@ -301,7 +301,7 @@ void wxGLString::consolidate(wxDC* dc)
     const int power_of_2_h = std::max(32, (int)pow( 2, (int)ceil((float)log(h)/log(2.0)) ));
 
     wxBitmap bmp(power_of_2_w, power_of_2_h);
-    assert(bmp.IsOk());
+    ASSERT(bmp.IsOk());
 
     {
         wxMemoryDC temp_dc(bmp);
@@ -431,8 +431,8 @@ void wxGLNumberRenderer::renderNumber(float f, int x, int y)
 }
 void wxGLNumberRenderer::renderNumber(wxString s, int x, int y)
 {
-    assertExpr(space_w, >=, 0);
-    assertExpr(space_w, <, 90000);
+    ASSERT_E(space_w, >=, 0);
+    ASSERT_E(space_w, <, 90000);
     
     const int full_string_w = TextGLDrawable::texw;
 
@@ -460,7 +460,7 @@ void wxGLNumberRenderer::renderNumber(wxString s, int x, int y)
             default: printf("Warning: character %c unexpected in number!\n", schar); continue;
         }
 
-        assert( charid != -1 );
+        ASSERT( charid != -1 );
 
         TextGLDrawable::tex_coord_x1 = (float)number_location[charid] / (float)full_string_w;
         TextGLDrawable::tex_coord_x2 = (float)(number_location[charid+1]-space_w) / (float)full_string_w;
@@ -553,7 +553,7 @@ void wxGLStringArray::consolidate(wxDC* dc)
     //std::cout << "bitmap size : " <<  power_of_2_w << ", " << power_of_2_h << " // " << column_amount << " columns" << std::endl;
 
     wxBitmap bmp(power_of_2_w, power_of_2_h);
-    assert(bmp.IsOk());
+    ASSERT(bmp.IsOk());
 
     {
         wxMemoryDC temp_dc(bmp);

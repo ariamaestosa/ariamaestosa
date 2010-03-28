@@ -49,8 +49,8 @@ void ShiftFrets::undo()
 
 void ShiftFrets::perform()
 {
-    assert(track != NULL);
-    assert(noteid != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
+    ASSERT(track != NULL);
+    ASSERT(noteid != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
     
     // only accept to do this in guitar mode
     if (track->graphics->editorMode != GUITAR)  return;
@@ -81,8 +81,8 @@ void ShiftFrets::perform()
     else
     {
         // warning : not yet used so not tested
-        assertExpr(noteid,>=,0);
-        assertExpr(noteid,<,track->m_notes.size());
+        ASSERT_E(noteid,>=,0);
+        ASSERT_E(noteid,<,track->m_notes.size());
         
         frets.push_back( track->m_notes[noteid].getFret() );
         track->m_notes[noteid].shiftFret(amount);

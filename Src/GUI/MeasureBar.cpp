@@ -145,7 +145,7 @@ public:
             return;
         }
         
-        assert(remove_timeSigID != -1);
+        ASSERT(remove_timeSigID != -1);
 
         //std::cout << "really removing " << remove_timeSigID << std::endl;
         getMeasureData()->eraseTimeSig(remove_timeSigID);

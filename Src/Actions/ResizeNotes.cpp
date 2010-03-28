@@ -49,11 +49,11 @@ void ResizeNotes::undo()
 
 void ResizeNotes::perform()
 {
-    assert(track != NULL);
+    ASSERT(track != NULL);
     
     if (track->graphics->editorMode == DRUM) return;
     
-    assert(noteID != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
+    ASSERT(noteID != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
     
     if (noteID==SELECTED_NOTES)
     {
@@ -77,8 +77,8 @@ void ResizeNotes::perform()
     else
     {
         
-        assertExpr(noteID,<,track->m_notes.size());
-        assertExpr(noteID,>=,0);
+        ASSERT_E(noteID,<,track->m_notes.size());
+        ASSERT_E(noteID,>=,0);
         
         track->m_notes[noteID].resize(relativeWidth);
         track->m_notes[noteID].play(false);

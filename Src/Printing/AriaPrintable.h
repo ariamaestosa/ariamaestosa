@@ -144,8 +144,8 @@ namespace AriaMaestosa
           */
         int getUsableAreaHeight(const int pageNumber) const
         {
-            assert(pageNumber >= 1);
-            assert(m_usable_area_height_page_1 != -1 and m_usable_area_height != -1);
+            ASSERT(pageNumber >= 1);
+            ASSERT(m_usable_area_height_page_1 != -1 and m_usable_area_height != -1);
             return (pageNumber == 1 ? m_usable_area_height_page_1 : m_usable_area_height);
         }
         

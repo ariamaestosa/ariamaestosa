@@ -68,8 +68,8 @@ namespace AriaMaestosa
     
     int wxDCString::getWidth()
     {
-        assertExpr(w, >=, 0);
-        assertExpr(w, <, 90000);
+        ASSERT_E(w, >=, 0);
+        ASSERT_E(w, <, 90000);
         return w;
     }
     void wxDCString::scale(float f)
@@ -83,8 +83,8 @@ namespace AriaMaestosa
     {
         if (not consolidated) bind();
             
-        assertExpr(h, >=, 0);
-        assertExpr(h, <, 90000);
+        ASSERT_E(h, >=, 0);
+        ASSERT_E(h, <, 90000);
         
         if (font.IsOk()) Display::renderDC->SetFont(font);
         else Display::renderDC->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
@@ -160,8 +160,8 @@ namespace AriaMaestosa
     
     void wxDCNumberRenderer::renderNumber(wxString s, int x, int y)
     {
-        assertExpr(h, >, -1);
-        assertExpr(h, <, 90000);
+        ASSERT_E(h, >, -1);
+        ASSERT_E(h, <, 90000);
 
         //if (font.IsOk()) Display::renderDC->SetFont(font);
         //else

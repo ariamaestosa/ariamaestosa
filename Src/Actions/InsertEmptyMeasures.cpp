@@ -54,7 +54,7 @@ void InsertEmptyMeasures::undo()
 
 void InsertEmptyMeasures::perform()
 {
-    assert(sequence != NULL);
+    ASSERT(sequence != NULL);
     
     // convert measures into midi ticks
     const int amountInTicks = amount * getMeasureData()->measureLengthInTicks(measureID);

@@ -51,7 +51,7 @@ namespace AriaMaestosa
             }
             
             if (tick < 0) return; // FIXME - find why it happens
-                                  // assertExpr(tick,>,-1);
+                                  // ASSERT_E(tick,>,-1);
             
             bool dotted = false, triplet = false;
             int type = -1;
@@ -132,8 +132,8 @@ namespace AriaMaestosa
                 for (int i=0; i<visibleNoteAmount; i++)
                 {       
                     const int measure = noteSource->getBeginMeasure(i);
-                    assertExpr(measure,>=,0);                    
-                    assertExpr(last_measure,>=,-1);
+                    ASSERT_E(measure,>=,0);                    
+                    ASSERT_E(last_measure,>=,-1);
                     
                     // we switched to another measure
                     if (measure>last_measure)

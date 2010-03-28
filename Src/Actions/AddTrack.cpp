@@ -42,7 +42,7 @@ AddTrack::~AddTrack()
 
 void AddTrack::undo()
 {
-    assert(m_added_track != NULL)
+    ASSERT(m_added_track != NULL)
     m_parent_sequence->deleteTrack(m_added_track);
     m_added_track = NULL;
 }

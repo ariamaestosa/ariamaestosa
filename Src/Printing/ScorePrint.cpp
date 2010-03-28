@@ -136,7 +136,7 @@ namespace AriaMaestosa
          {
          const int out = parent->tickToXLimit(trackID, *line, tick);
          std::cout << "out : " << tick << " --> " << out << std::endl;
-         assert(out != -1);
+         ASSERT(out != -1);
          return out;
          }
          int getClosestXFromTick(const int tick)
@@ -291,13 +291,13 @@ namespace AriaMaestosa
                                const bool triplet, const bool dotted, const int dot_delta_x,
                                const int dot_delta_y)
     {
-        assert( global_dc != NULL);
+        ASSERT( global_dc != NULL);
         
         const Range<int> x = x_converter->tickToX(tick);
         
         //FIXME: don't rely on from_tick being negative!! what's that crap
         if (x.from < 0) return; // this part of score is not printed (e.g. is in a repetition)
-        assert(x.to != -1);
+        ASSERT(x.to != -1);
         
         g_printable->drawSilence(global_dc, x, silences_y, g_line_height, type, triplet, dotted);
     }
@@ -328,7 +328,7 @@ namespace AriaMaestosa
         gatherVerticalSizingInfo(trackID, lineTrack, line);
         
         ScoreData* scoreData = dynamic_cast<ScoreData*>(lineTrack.editor_data.raw_ptr);
-        assert(scoreData != NULL);
+        ASSERT(scoreData != NULL);
         
         const int from_note = lineTrack.getFirstNote();
         const int to_note   = lineTrack.getLastNote();
@@ -398,10 +398,10 @@ namespace AriaMaestosa
             }
             else
             {
-                assert(false);
+                ASSERT(false);
                 break;
             }
-            assert( current_analyser != NULL );
+            ASSERT( current_analyser != NULL );
             
             const int noteAmount = current_analyser->noteRenderInfo.size();
             
@@ -459,12 +459,12 @@ namespace AriaMaestosa
                                    LayoutLine& currentLine, wxDC& dc, const bool drawMeasureNumbers)
     {
         const TrackCoords* trackCoords = currentTrack.m_track_coords.raw_ptr;
-        assert(trackCoords != NULL);
+        ASSERT(trackCoords != NULL);
         
-        assertExpr(trackCoords->y0,>,0);
-        assertExpr(trackCoords->y1,>,0);
-        assertExpr(trackCoords->y0,<,50000);
-        assertExpr(trackCoords->y1,<,50000);
+        ASSERT_E(trackCoords->y0,>,0);
+        ASSERT_E(trackCoords->y1,>,0);
+        ASSERT_E(trackCoords->y0,<,50000);
+        ASSERT_E(trackCoords->y1,<,50000);
         setCurrentDC(&dc);
         
         
@@ -501,7 +501,7 @@ namespace AriaMaestosa
         }
         else
         {
-            assert(false);
+            ASSERT(false);
         }
         
         g_printable = this;
@@ -602,9 +602,9 @@ namespace AriaMaestosa
             ScoreAnalyser* analyser = NULL;
             if      (n == 0) analyser = g_clef_analyser;
             else if (n == 1) analyser = f_clef_analyser;
-            else             assert(false);
+            else             ASSERT(false);
             
-            assert(analyser != NULL);
+            ASSERT(analyser != NULL);
 
             OwnerPtr<ScoreAnalyser> lineAnalyser;
             lineAnalyser = analyser->getSubset(fromTick, toTick);
@@ -1138,7 +1138,7 @@ namespace AriaMaestosa
             
             const int sharps = track->getKeySharpsAmount();
             const int flats  = track->getKeyFlatsAmount();
-            assertExpr(line.getLayoutElementCount(),>=,0);
+            ASSERT_E(line.getLayoutElementCount(),>=,0);
             
             if (sharps > 0 or flats > 0)
             {
@@ -1258,7 +1258,7 @@ namespace AriaMaestosa
                 const Range<int> noteX = x_converter->tickToX(noteRenderInfo.tick);
                 
                 // make sure we were given the requested size (TODO: fix and uncomment)
-                //assertExpr(noteX.to - noteX.from, >=, HEAD_RADIUS*2 +
+                //ASSERT_E(noteX.to - noteX.from, >=, HEAD_RADIUS*2 +
                 //           (noteRenderInfo.sign == PITCH_SIGN_NONE ? 0 : MAX_ACCIDENTAL_SIZE) +
                 //            NOTE_HEAD_MARGIN);
                 

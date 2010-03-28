@@ -48,11 +48,11 @@ void ShiftString::undo()
 
 void ShiftString::perform()
 {
-    assert(track != NULL);
+    ASSERT(track != NULL);
     
     if (track->graphics->editorMode != GUITAR) return;
     
-    assert(noteid != ALL_NOTES); // not supported in this function (mostly because not needed, but could logically be implmented)
+    ASSERT(noteid != ALL_NOTES); // not supported in this function (mostly because not needed, but could logically be implmented)
     
     // only accept to do this in guitar mode
     if (track->graphics->editorMode != GUITAR)
@@ -84,8 +84,8 @@ void ShiftString::perform()
     }
     else
     {
-        assertExpr(noteid,>=,0);
-        assertExpr(noteid,<,track->m_notes.size());
+        ASSERT_E(noteid,>=,0);
+        ASSERT_E(noteid,<,track->m_notes.size());
         
         frets.push_back( track->m_notes[noteid].getFret() );
         strings.push_back( track->m_notes[noteid].getString() );

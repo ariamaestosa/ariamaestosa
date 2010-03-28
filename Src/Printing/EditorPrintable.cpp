@@ -242,7 +242,7 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
             //    std::cout << "\n/!\\ tickToX didn't find X for tick " << tick << " in measure " << (meas.id+1) << "\n\n";
             //}
             
-            assertExpr(elem_w, >, 0);
+            ASSERT_E(elem_w, >, 0);
             
             const int from = (int)round(relative_pos.from * elem_w + elem_x_start);
             int to = (int)round(relative_pos.to   * elem_w + elem_x_start);
@@ -416,8 +416,8 @@ void EditorPrintable::drawSilence(wxDC* dc, const Range<int> x, const int y, con
         const int mx = x.to - silence_radius*2;
         const int sy = y + 80;
         
-        assertExpr(mx, >, -5000);
-        assertExpr(sy, >, -5000);
+        ASSERT_E(mx, >, -5000);
+        ASSERT_E(sy, >, -5000);
 
         std::cout << "1/16th : x=" << mx << ", y=" << sy << "\n";
         

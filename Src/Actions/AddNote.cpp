@@ -61,7 +61,7 @@ void AddNote::undo()
 }
 void AddNote::perform()
 {
-    assert(track != NULL);
+    ASSERT(track != NULL);
     
     
     Note* tmp_note;

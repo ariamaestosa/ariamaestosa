@@ -44,7 +44,7 @@ DeleteTrack::~DeleteTrack()
 
 void DeleteTrack::undo()
 {
-    assert(m_removed_track != NULL)
+    ASSERT(m_removed_track != NULL)
     
     // add back the track that was removed (FIXME: not added where it was)
     m_parent_sequence->addTrack(m_removed_track);
@@ -56,7 +56,7 @@ void DeleteTrack::undo()
 void DeleteTrack::perform()
 {
     m_removed_track = m_parent_sequence->removeSelectedTrack();
-    assert(m_removed_track != NULL);
+    ASSERT(m_removed_track != NULL);
 }
 
 // --------------------------------------------------------------------------------------------------------

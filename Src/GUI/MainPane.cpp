@@ -580,7 +580,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
     if (event.GetY() > getHeight()-getCurrentSequence()->dockHeight)
     {
         click_area = CLICK_DOCK;
-        assertExpr( (int)positionsInDock.size()/2 ,==,(int)getCurrentSequence()->dock.size());
+        ASSERT_E( (int)positionsInDock.size()/2 ,==,(int)getCurrentSequence()->dock.size());
 
         for(unsigned int n=0; n<positionsInDock.size(); n+=2)
         {

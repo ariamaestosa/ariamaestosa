@@ -434,8 +434,8 @@ NoteSearchResult DrumEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
     {
         const int drumx=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
 
-        assert(track->getNotePitchID(n)>0);
-        assert(track->getNotePitchID(n)<128);
+        ASSERT(track->getNotePitchID(n)>0);
+        ASSERT(track->getNotePitchID(n)<128);
 
         const int drumIDInVector= midiKeyToVectorID[ track->getNotePitchID(n) ];
         if (drumIDInVector == -1) continue;
@@ -499,8 +499,8 @@ void DrumEditor::moveNote(Note& note, const int relativeX, const int relativeY)
      *      3. Find the new midi key at the new screen location
      */
 
-    //assert(note.pitchID>=0);
-    assert(note.pitchID<128);
+    //ASSERT(note.pitchID>=0);
+    ASSERT(note.pitchID<128);
 
     // find where on screen this particular drum is drawn (their screen position is not in the same order as the midi order)
     int newVectorLoc = midiKeyToVectorID[note.pitchID];
@@ -536,8 +536,8 @@ void DrumEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_cu
     {
         const int drumx=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
 
-        assert(track->getNotePitchID(n)>0);
-        assert(track->getNotePitchID(n)<128);
+        ASSERT(track->getNotePitchID(n)>0);
+        ASSERT(track->getNotePitchID(n)<128);
 
         const int drumIDInVector= midiKeyToVectorID[ track->getNotePitchID(n) ];
         if (drumIDInVector == -1) continue;
@@ -681,8 +681,8 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         if (drumx<0) continue;
         if (drumx>width) break;
 
-        assert(track->getNotePitchID(n)>=0);
-        assert(track->getNotePitchID(n)<128);
+        ASSERT(track->getNotePitchID(n)>=0);
+        ASSERT(track->getNotePitchID(n)<128);
 
         const int drumIDInVector= midiKeyToVectorID[ track->getNotePitchID(n) ];
         if (drumIDInVector == -1) continue;
@@ -751,8 +751,8 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
                 const int drumx=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels() + Editor::getEditorXStart();
 
-                assert(track->getNotePitchID(n)>0);
-                assert(track->getNotePitchID(n)<128);
+                ASSERT(track->getNotePitchID(n)>0);
+                ASSERT(track->getNotePitchID(n)<128);
 
                 const int drumIDInVector= midiKeyToVectorID[ track->getNotePitchID(n) ];
                 if (drumIDInVector == -1) continue;
@@ -852,7 +852,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         AriaRender::color(0,0,0);
 
         // if section is collapsed, skip all its elements
-        assertExpr(drumID,<,(int)drums.size());
+        ASSERT_E(drumID,<,(int)drums.size());
         if (!drums[drumID].sectionExpanded)
         {
             drumID++;
@@ -894,11 +894,11 @@ int DrumEditor::getDrumAtY(const int given_y)
         if ( given_y > y and given_y < y+y_step)  return drumID;
 
         // if section is collapsed, skip all its elements
-        assertExpr(drumID,<,drums.size());
+        ASSERT_E(drumID,<,drums.size());
         if (!drums[drumID].sectionExpanded)
         {
             drumID++;
-            while(!drums[drumID++].section){ assertExpr(drumID,<,drums.size()); }
+            while(!drums[drumID++].section){ ASSERT_E(drumID,<,drums.size()); }
             drumID=drumID-2;
             continue;
         }//end if section collapsed
@@ -924,11 +924,11 @@ int DrumEditor::getYForDrum(const int given_drumID)
         }
 
         // if section is collapsed, skip all its elements
-        assertExpr(drumID,<,drums.size());
+        ASSERT_E(drumID,<,drums.size());
         if (!drums[drumID].sectionExpanded)
         {
             drumID++;
-            while(!drums[drumID++].section){ assertExpr(drumID,<,drums.size()); }
+            while(!drums[drumID++].section){ ASSERT_E(drumID,<,drums.size()); }
             drumID=drumID-2;
             continue;
         }//end if section collapsed

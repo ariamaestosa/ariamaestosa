@@ -56,7 +56,7 @@ void UpdateGuitarTuning::undo()
 
 void UpdateGuitarTuning::perform()
 {
-    assert(track != NULL);
+    ASSERT(track != NULL);
     
     GuitarEditor* editor = track->graphics->guitarEditor;
     if (editor == NULL) return; // before editor is created, probably setting initial tuning. FIXME - find cleaner way

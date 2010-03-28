@@ -290,7 +290,7 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
 
                 m.CopySysEx( &sysex );
                 m.SetTime( 0 );
-                if ( !tracks.GetTrack(0)->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; assert(0); }
+                if ( !tracks.GetTrack(0)->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; ASSERT(0); }
             }
 
         }// end if not playing

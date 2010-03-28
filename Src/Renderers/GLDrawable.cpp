@@ -119,7 +119,7 @@ void Drawable::rotate(int angle)
 
 void Drawable::render()
 {
-    assert(image!=NULL);
+    ASSERT(image!=NULL);
 
     glLoadIdentity();
 
