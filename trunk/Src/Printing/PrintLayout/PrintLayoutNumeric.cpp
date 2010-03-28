@@ -73,11 +73,11 @@ void PrintLayoutNumeric::placeTrackWithinCoords(const int trackID, LayoutLine& l
 {
     std::cout << "= placeTrackWithinCoords =\n";
     
-    assertExpr(x0, >=, 0);
-    assertExpr(x1, >=, 0);
-    assertExpr(y0, >=, 0);
-    assertExpr(y1, >=, 0);
-    assertExpr(y1, >, y0);
+    ASSERT_E(x0, >=, 0);
+    ASSERT_E(x1, >=, 0);
+    ASSERT_E(y0, >=, 0);
+    ASSERT_E(y1, >=, 0);
+    ASSERT_E(y1, >, y0);
     
     TrackCoords* trackCoords = new TrackCoords();
     trackCoords->x0 = x0;
@@ -101,7 +101,7 @@ void PrintLayoutNumeric::placeElementsWithinCoords(LayoutLine& line, int x0, con
     }
     
     const int availableWidth = (x1 - x0);
-    assertExpr(totalNeededWidth, <=, availableWidth);
+    PREFER_E(totalNeededWidth, <=, availableWidth);
     
     float zoom = (float)availableWidth / (float)totalNeededWidth;
     if (zoom > ELEMENT_MAX_ZOOM) zoom = ELEMENT_MAX_ZOOM; // prevent zooming too much, will look weird
@@ -137,7 +137,7 @@ void PrintLayoutNumeric::placeElementsWithinCoords(LayoutLine& line, int x0, con
         line.getLayoutElement(line.getLayoutElementCount()-1).m_render_end_bar = true;
     }
     
-    //assertExpr(line.width_in_units,>,0);
+    //ASSERT_E(line.width_in_units,>,0);
 }
 
 // -----------------------------------------------------------------------------------------------------------------
@@ -165,7 +165,7 @@ void PrintLayoutNumeric::setLineCoordsAndDivideItsSpace(LayoutLine& line, const 
     //std::cout << "Level height within line : " << levelHeight << "\n";
     
     //FIXME; don't hardcode 70 here, have a formal minimal value
-    //assertExpr((heightAvailableForThisLine - margin_below - margin_above)/line.calculateHeight(), >=, 70);
+    //ASSERT_E((heightAvailableForThisLine - margin_below - margin_above)/line.calculateHeight(), >=, 70);
     
     // ---- Determine tracks positions and sizes
     
@@ -208,9 +208,9 @@ void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, float notation_area_
                                           const float notation_area_h,
                                           const int pageHeight, const int x0, const int x1)
 {
-    assert(notation_area_y_from >= 0);
-    assert(notation_area_h > 0);
-    assert(pageHeight > 0);
+    ASSERT(notation_area_y_from >= 0);
+    ASSERT(notation_area_h > 0);
+    ASSERT(pageHeight > 0);
     
     const int lineAmount = page.getLineCount();
 
@@ -232,14 +232,14 @@ void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, float notation_area_
         const int y_from = notation_area_y_from + line.getLevelFrom()*levelHeight;
         const int y_to   = notation_area_y_from + line.getLevelTo()*levelHeight;
         
-        assertExpr(line.getLevelTo(), <=, level_y_amount);
-        assertExpr(y_from, >, 0);
-        assertExpr(y_from, <, pageHeight);
+        ASSERT_E(line.getLevelTo(), <=, level_y_amount);
+        ASSERT_E(y_from, >, 0);
+        ASSERT_E(y_from, <, pageHeight);
         
         //FIXME: handle empty lines
-        assertExpr(y_to,   >=, y_from);
+        ASSERT_E(y_to,   >=, y_from);
         //TODO: uncomment
-        //assertExpr(y_to,   <, pageHeight);
+        //ASSERT_E(y_to,   <, pageHeight);
         
         this->setLineCoordsAndDivideItsSpace(line, x0, y_from,
                                                    x1, y_to);

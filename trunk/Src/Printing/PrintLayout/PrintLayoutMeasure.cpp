@@ -57,9 +57,9 @@ bool PrintLayoutMeasure::calculateIfMeasureIsSameAs(PrintLayoutMeasure& checkMea
         const int his_first_note = checkMeasure.m_track_refs[tref].getFirstNote();
         const int his_last_note  = checkMeasure.m_track_refs[tref].getLastNote();
         
-        assert( m_track_refs.size() == checkMeasure.m_track_refs.size() );
-        assertExpr( tref,<,(int)m_track_refs.size() );
-        assert( m_track_refs[tref].getTrack() == checkMeasure.m_track_refs[tref].getTrack() );
+        ASSERT( m_track_refs.size() == checkMeasure.m_track_refs.size() );
+        ASSERT_E( tref,<,(int)m_track_refs.size() );
+        ASSERT( m_track_refs[tref].getTrack() == checkMeasure.m_track_refs[tref].getTrack() );
         Track* track = m_track_refs[tref].getTrack();
         
         // if these 2 measures don't even have the same number of notes, they're definitely not the same
@@ -208,8 +208,8 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
             m_shortest_duration = currentNoteDuration;
         }
     }
-    assertExpr(lastNote,>,-1);
-    assertExpr(lastNote,<,noteAmount);
+    ASSERT_E(lastNote,>,-1);
+    ASSERT_E(lastNote,<,noteAmount);
     
     if (measure_empty)
     {

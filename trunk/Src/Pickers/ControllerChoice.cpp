@@ -309,8 +309,8 @@ void ControllerChoice::menuSelected(wxCommandEvent& evt)
     else if (controllerID == 201)   controller_label.set(g_controller_names[31]);
     else                            controller_label.set(g_controller_names[controllerID]);
     
-    assertExpr(controllerID,<,205);
-    assertExpr(controllerID,>=,0);
+    ASSERT_E(controllerID,<,205);
+    ASSERT_E(controllerID,>=,0);
 
     Display::render();
 }

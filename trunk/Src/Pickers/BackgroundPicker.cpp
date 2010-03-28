@@ -219,7 +219,7 @@ public:
             }
         }
         
-        assertExpr(modalid, !=, -1);
+        ASSERT_E(modalid, !=, -1);
 
         wxDialog::EndModal(modalid);
         Display::render();

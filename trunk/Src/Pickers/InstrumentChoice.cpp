@@ -359,8 +359,8 @@ void InstrumentChoice::menuSelected(wxCommandEvent& evt)
 {
     instrumentID=evt.GetId()-10000;
 
-    assertExpr(instrumentID,<,128);
-    assertExpr(instrumentID,>=,0);
+    ASSERT_E(instrumentID,<,128);
+    ASSERT_E(instrumentID,>=,0);
 
     parent->setInstrument(instrumentID);
     Display::render();
@@ -370,8 +370,8 @@ void InstrumentChoice::menuSelected(wxCommandEvent& evt)
 
 const wxString& InstrumentChoice::getInstrumentName(int instrumentID)
 {
-    assertExpr(instrumentID,<,128);
-    assertExpr(instrumentID,>=,0);
+    ASSERT_E(instrumentID,<,128);
+    ASSERT_E(instrumentID,>=,0);
 
     return g_inst_names[instrumentID];
 }

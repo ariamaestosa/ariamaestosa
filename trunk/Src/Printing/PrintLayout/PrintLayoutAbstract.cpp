@@ -87,7 +87,7 @@ void PrintLayoutAbstract::generateMeasures(ptr_vector<Track, REF>& tracks)
         // give them track references
         for (int measure=0; measure<measureAmount; measure++)
         {
-            assertExpr(measure,<,m_measures.size());
+            ASSERT_E(measure,<,m_measures.size());
             
             note = m_measures[measure].addTrackReference(note, track);
             
@@ -106,7 +106,7 @@ void PrintLayoutAbstract::calculateLayoutElements (ptr_vector<Track, REF>& track
                                                    ptr_vector<LayoutPage>& layoutPages,
                                                    const bool checkRepetitions_bool)
 {
-    assert(m_measures.size() > 0); // generating m_measures must have been done first
+    ASSERT(m_measures.size() > 0); // generating m_measures must have been done first
     std::vector<LayoutElement> layoutElements;
     
     // search for repeated m_measures if necessary
@@ -116,7 +116,7 @@ void PrintLayoutAbstract::calculateLayoutElements (ptr_vector<Track, REF>& track
     for (int i=0; i<trackAmount; i++)
     {
         EditorPrintable* editorPrintable = m_sequence->getEditorPrintable( i );
-        assert( editorPrintable != NULL );
+        ASSERT( editorPrintable != NULL );
         editorPrintable->earlySetup( i, tracks.get(i) );
     }
     
@@ -138,8 +138,8 @@ void PrintLayoutAbstract::findSimilarMeasures()
         // check current measure against all previous m_measures to see if it is not a repetition
         for (int checkMeasure=0; checkMeasure<measure; checkMeasure++)
         {
-            assertExpr(measure,<,(int)m_measures.size());
-            assertExpr(checkMeasure,<,(int)m_measures.size());
+            ASSERT_E(measure,<,(int)m_measures.size());
+            ASSERT_E(checkMeasure,<,(int)m_measures.size());
             const bool isSameAs = m_measures[measure].calculateIfMeasureIsSameAs(m_measures[checkMeasure]);
             //std::cout << "measure " << (measure+1) << " is same as " << (checkMeasure+1) << " ? " << isSameAs << std::endl;
             
@@ -414,7 +414,7 @@ void PrintLayoutAbstract::calculateRelativeLengths(std::vector<LayoutElement>& l
             for (int i=0; i<trackAmount; i++)
             {
                 EditorPrintable* editorPrintable = m_sequence->getEditorPrintable( i );
-                assert( editorPrintable != NULL );
+                ASSERT( editorPrintable != NULL );
                 
                 editorPrintable->addUsedTicks(meas, i, meas.getTrackRef(i), ticks_relative_position);
             }
@@ -507,14 +507,14 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     const int usableAreaHeightPage1 = AriaPrintable::getCurrentPrintable()->getUsableAreaHeight(1);
     const int usableAreaHeightOtherPages = AriaPrintable::getCurrentPrintable()->getUsableAreaHeight(2);
 
-    assert(usableAreaHeightPage1 > 0);
-    assert(usableAreaHeightOtherPages > 0);
+    ASSERT(usableAreaHeightPage1 > 0);
+    ASSERT(usableAreaHeightOtherPages > 0);
     
     const int maxLevelsOnPage1      = usableAreaHeightPage1 / MIN_LEVEL_HEIGHT;
     const int maxLevelsOnOtherPages = usableAreaHeightOtherPages / MIN_LEVEL_HEIGHT;
 
-    assert(maxLevelsOnPage1 > 0);
-    assert(maxLevelsOnOtherPages > 0);
+    ASSERT(maxLevelsOnPage1 > 0);
+    ASSERT(maxLevelsOnOtherPages > 0);
     std::cout << " maxLevelsOnPage0="      << maxLevelsOnPage1
               << " maxLevelsOnOtherPages=" << maxLevelsOnOtherPages << std::endl;
     
@@ -524,21 +524,22 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     int current_width = 0;
     int current_height = 0;
 
-    int current_page = 0;
-    
-    layoutPages.push_back( new LayoutPage() );
-
     ptr_vector<PrintLayoutMeasure, REF> measures_ref = m_measures.getWeakView();
+
+    // create a first page
+    int current_page = 0;
+    layoutPages.push_back( new LayoutPage() );
     
+    // create a first line
     LayoutLine* currentLine = new LayoutLine(m_sequence, measures_ref);
     layoutPages[current_page].addLine( currentLine );
+    currentLine->setLevelFrom(current_height);
 
     // add line header
     LayoutElement el = generateLineHeaderElement();
     current_width += el.width_in_print_units;
     currentLine->addLayoutElement( el );
     
-    currentLine->setLevelFrom(current_height);
     
     // add layout elements one by one, switching to the next line when there's too many
     // elements on the current one
@@ -552,22 +553,22 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
         const int nextWidth = current_width + layoutElements[n].width_in_print_units +
                               MARGIN_AT_MEASURE_BEGINNING;
         
+        // if too much stuff on current line, switch to another line
         if (nextWidth > maxLineWidthInPrintUnits)
         {
-            // too much stuff on current line, switch to another line
             current_width = 0;
             
             // terminate current line
             const int maxLevelHeight = (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages);
             terminateLine( currentLine, layoutPages, maxLevelHeight, current_height, current_page );
             
-            assert(current_height <= (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages));
+            ASSERT(current_height <= (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages));
             
             // begin new line
-            ptr_vector<PrintLayoutMeasure, REF> refview = m_measures.getWeakView();
-            currentLine = new LayoutLine(m_sequence, refview);
+            currentLine = new LayoutLine(m_sequence, measures_ref);
             layoutPages[current_page].addLine( currentLine );
-            
+            currentLine->setLevelFrom(current_height);
+
             if (HEADER_ON_EVERY_LINE)
             {
                 // add line header
@@ -576,10 +577,10 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
                 currentLine->addLayoutElement( el );
             }
             
-            currentLine->setLevelFrom(current_height);
         }        
-        currentLine->addLayoutElement(layoutElements[n]);
         
+        // add next element to the current line
+        currentLine->addLayoutElement(layoutElements[n]);
         current_width += layoutElements[n].width_in_print_units + MARGIN_AT_MEASURE_BEGINNING;
     }
     
@@ -587,7 +588,7 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     const int maxLevelHeight = (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages);
     terminateLine( currentLine, layoutPages, maxLevelHeight, current_height, current_page );
     
-    assert(current_height <= (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages));
+    ASSERT(current_height <= (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages));
     
     
 #ifndef NDEBUG
@@ -610,15 +611,15 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
                       << page.getLine(t).getLevelTo() << "\n";
             std::cout << "        " << INTER_LINE_MARGIN_LEVELS << " (margin)\n";
             
-            assertExpr( page.getLine(t).getLevelFrom(),  >, -1 );
+            ASSERT_E( page.getLine(t).getLevelFrom(),  >, -1 );
             
-            assert( page.getLine(t).getLevelTo()   != -1 );
-            assertExpr( page.getLine(t).getLevelTo(),   <=, maxh );
+            ASSERT( page.getLine(t).getLevelTo()   != -1 );
+            ASSERT_E( page.getLine(t).getLevelTo(),   <=, maxh );
             
-            assertExpr( page.getLine(t).getLevelTo(), >=, page.getLine(t).getLevelFrom() );
+            ASSERT_E( page.getLine(t).getLevelTo(), >=, page.getLine(t).getLevelFrom() );
         }
         std::cout << "    ------------\n        " << total << "\n\n";
-        //assert(total <= maxh);
+        //ASSERT(total <= maxh);
     }
 #endif
 }
@@ -642,7 +643,7 @@ void PrintLayoutAbstract::addLayoutInformation(ptr_vector<Track, REF>& tracks,
                                                ptr_vector<LayoutPage>& layoutPages,
                                                const bool checkRepetitions_bool)
 {    
-    assert( MAGIC_NUMBER_OK_FOR(&tracks) );
+    ASSERT( MAGIC_NUMBER_OK_FOR(&tracks) );
 
     generateMeasures(tracks);
     

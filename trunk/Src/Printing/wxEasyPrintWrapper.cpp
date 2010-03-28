@@ -93,8 +93,8 @@ bool wxEasyPrintWrapper::performPageSetup(const bool showPageSetupDialog)
         }
     }
     
-    assert(m_paper_id != wxPAPER_NONE);
-    assert(m_page_setup.GetPaperId() != wxPAPER_NONE);
+    ASSERT(m_paper_id != wxPAPER_NONE);
+    ASSERT(m_page_setup.GetPaperId() != wxPAPER_NONE);
 
     updateCoordinateSystem();
     return true;
@@ -114,8 +114,8 @@ void wxEasyPrintWrapper::updateCoordinateSystem()
     float large_side_cm = large_side / 10.0f;                                 // in centimeters
     float small_side_cm = small_side / 10.0f;                                 // in centimeters
     
-    assert(large_side_cm > 0.0f);
-    assert(small_side_cm > 0.0f);
+    ASSERT(large_side_cm > 0.0f);
+    ASSERT(small_side_cm > 0.0f);
     
     /*
      // here i'm using an arbitrary size, use whatever you wish
@@ -160,8 +160,8 @@ void wxEasyPrintWrapper::updateCoordinateSystem()
     
     std::cout << "ASKING FOR " << PRINT_VAR(m_unit_width) << PRINT_VAR(m_unit_height) << "\n";
     
-    assert(m_unit_width  > 0);
-    assert(m_unit_height > 0);
+    ASSERT(m_unit_width  > 0);
+    ASSERT(m_unit_height > 0);
     
     //std::cout << PRINT_VAR(height) << " - " << PRINT_VAR(m_print_callback->m_title_font_height)
     //          << " - " <<  PRINT_VAR(MARGIN_UNDER_PAGE_HEADER) << std::endl;
@@ -229,7 +229,7 @@ wxString wxEasyPrintWrapper::getPageSetupSummary() const
 
 void wxEasyPrintWrapper::setPrintableSequence(PrintableSequence* printableSequence)
 {
-    assert(printableSequence->isLayoutCalculated());
+    ASSERT(printableSequence->isLayoutCalculated());
     m_page_amount    = printableSequence->getPageAmount();
 }
 
@@ -264,7 +264,7 @@ bool wxEasyPrintWrapper::OnBeginDocument(int startPage, int endPage)
 
 void wxEasyPrintWrapper::GetPageInfo(int *minPage, int *maxPage, int *pageSelFrom, int *pageSelTo)
 {
-    assert(m_page_amount > 0);
+    ASSERT(m_page_amount > 0);
     
     *minPage = 1;
     *maxPage = m_page_amount;
@@ -277,7 +277,7 @@ void wxEasyPrintWrapper::GetPageInfo(int *minPage, int *maxPage, int *pageSelFro
 
 bool wxEasyPrintWrapper::HasPage(int pageNum)
 {
-    assert(m_page_amount > 0);
+    ASSERT(m_page_amount > 0);
     
     if (pageNum >= 1 and pageNum <= m_page_amount) return true;
     else                                           return false;
@@ -291,8 +291,8 @@ bool wxEasyPrintWrapper::OnPrintPage(int pageNum)
     
     // ---- setup DC with coordinate system ----
     
-    assert(m_unit_width  > 0);
-    assert(m_unit_height > 0);
+    ASSERT(m_unit_width  > 0);
+    ASSERT(m_unit_height > 0);
     
     FitThisSizeToPageMargins(wxSize(m_unit_width, m_unit_height), m_page_setup);
     

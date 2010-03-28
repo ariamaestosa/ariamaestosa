@@ -334,7 +334,7 @@ int MeasureData::firstPixelInMeasure(int id)
     }
     else
     {
-        assertExpr(id,<,(int)measureInfo.size());
+        ASSERT_E(id,<,(int)measureInfo.size());
         return measureInfo[id].pixel -  getCurrentSequence()->getXScrollInPixels() + 90;
     }
 }
@@ -352,7 +352,7 @@ int MeasureData::lastPixelInMeasure(int id)
     }
     else
     {
-        assertExpr(id,<,(int)measureInfo.size());
+        ASSERT_E(id,<,(int)measureInfo.size());
         return measureInfo[id].endPixel -  getCurrentSequence()->getXScrollInPixels() + 90;
     }
 }
@@ -370,7 +370,7 @@ int MeasureData::firstTickInMeasure(int id)
         // allow going a little past 'official' song end
         if (id >= (int)measureInfo.size())
         {
-            if (id > (int)measureInfo.size()+50){ assert(false); } // but not too far, to detect corrupt values
+            if (id > (int)measureInfo.size()+50){ ASSERT(false); } // but not too far, to detect corrupt values
             
             return measureInfo[measureInfo.size()-1].endTick;
         }
@@ -393,12 +393,12 @@ int MeasureData::lastTickInMeasure(int id)
         // allow going a little past 'official' song end
         if (id >= (int)measureInfo.size())
         {
-            if (id > (int)measureInfo.size()+50){ assert(false); } // but not too far, to detect corrupt values
+            if (id > (int)measureInfo.size()+50){ ASSERT(false); } // but not too far, to detect corrupt values
             
             return measureInfo[measureInfo.size()-1].endTick;
         }
         
-        assertExpr(id,<,(int)measureInfo.size());
+        ASSERT_E(id,<,(int)measureInfo.size());
         return measureInfo[id].endTick;
     }
 }
@@ -475,8 +475,8 @@ void MeasureData::setTimeSig(int top, int bottom)
 
 TimeSigChange& MeasureData::getTimeSig(int id)
 {
-    assertExpr(id,>=,0);
-    assertExpr(id,<,timeSigChanges.size());
+    ASSERT_E(id,>=,0);
+    ASSERT_E(id,<,timeSigChanges.size());
     return timeSigChanges[id];
 }
 
@@ -612,7 +612,7 @@ void MeasureData::updateMeasureInfo()
     float tick = 0;
     int timg_sig_event = 0;
 
-    assertExpr(timg_sig_event,<,timeSigChanges.size());
+    ASSERT_E(timg_sig_event,<,timeSigChanges.size());
     timeSigChanges[timg_sig_event].tick = 0;
     timeSigChanges[timg_sig_event].pixel = 0;
 

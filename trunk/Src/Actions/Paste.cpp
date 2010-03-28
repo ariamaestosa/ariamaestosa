@@ -68,7 +68,7 @@ void Paste::undo()
 
 void Paste::perform()
 {
-    assert(track != NULL);
+    ASSERT(track != NULL);
 
     if (track->graphics->editorMode == CONTROLLER)
     {

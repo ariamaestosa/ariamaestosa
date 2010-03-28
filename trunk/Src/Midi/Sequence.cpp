@@ -321,7 +321,7 @@ void Sequence::scale(float factor,
                      bool affect_selection, bool affect_track, bool affect_song // scale what (only one must be true)
                      )
 {
-    assert(affect_selection xor affect_track xor affect_song);
+    ASSERT(affect_selection xor affect_track xor affect_song);
     
     int relative_to = -1;
     
@@ -409,8 +409,8 @@ void Sequence::addTempoEvent_import( ControllerEvent* evt )
 //FIXME: dubious this goes here
 void Sequence::snapNotesToGrid()
 {
-    assert(currentTrack>=0);
-    assert(currentTrack<tracks.size());
+    ASSERT(currentTrack>=0);
+    ASSERT(currentTrack<tracks.size());
     
     tracks[ currentTrack ].action( new Action::SnapNotesToGrid() );
     
@@ -660,7 +660,7 @@ Track* Sequence::addTrack()
         result = new Track(getMainFrame(), this);
         tracks.push_back(result);
     }
-    assert(result != NULL);
+    ASSERT(result != NULL);
     
     Display::render();
     
@@ -694,8 +694,8 @@ Track* Sequence::removeSelectedTrack()
 
 void Sequence::deleteTrack(int id)
 {
-    assertExpr(id,>=,0);
-    assertExpr(id,<,tracks.size());
+    ASSERT_E(id,>=,0);
+    ASSERT_E(id,<,tracks.size());
 
     tracks[id].notifyOthersIWillBeRemoved();
     tracks.erase( id );
@@ -769,8 +769,8 @@ void Sequence::setCurrentTrackID(int ID)
 
 Track* Sequence::getTrack(int ID)
 {
-    assertExpr(ID,>=,0);
-    assertExpr(ID,<,tracks.size());
+    ASSERT_E(ID,>=,0);
+    ASSERT_E(ID,<,tracks.size());
 
     return &tracks[ID];
 }

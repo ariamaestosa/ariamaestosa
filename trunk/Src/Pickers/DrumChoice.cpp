@@ -77,8 +77,8 @@ void DrumChoice::menuSelected(wxCommandEvent& evt)
 
     int drumID=evt.GetId() - 20000;
 
-    assertExpr(drumID,<,128);
-    assertExpr(drumID,>=,0);
+    ASSERT_E(drumID,<,128);
+    ASSERT_E(drumID,>=,0);
 
     parent->setDrumKit(drumID);
 

@@ -49,7 +49,7 @@ void SetNoteVolume::undo()
 
 void SetNoteVolume::perform()
 {
-    assert(track != NULL);
+    ASSERT(track != NULL);
     
     if (noteID == SELECTED_NOTES)
     {
@@ -76,8 +76,8 @@ void SetNoteVolume::perform()
     {
         // single note
         
-        assertExpr(noteID,>=,0);
-        assertExpr(noteID,<,track->m_notes.size());
+        ASSERT_E(noteID,>=,0);
+        ASSERT_E(noteID,<,track->m_notes.size());
         
         // if user changed the volume of a note that is not selected, change the volume of this note only
         volumes.push_back( track->m_notes[noteID].volume  );

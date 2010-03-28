@@ -28,8 +28,8 @@ PrintableSequence::PrintableSequence(Sequence* parent)
 
 bool PrintableSequence::addTrack(Track* track, EditorType mode)
 {
-    assert(track->sequence == m_sequence);
-    assert(not m_layout_calculated);
+    ASSERT(track->sequence == m_sequence);
+    ASSERT(not m_layout_calculated);
     
     if (mode == GUITAR)
     {
@@ -58,7 +58,7 @@ bool PrintableSequence::addTrack(Track* track, EditorType mode)
 
 void PrintableSequence::calculateLayout(bool checkRepetitions)
 {
-    assert( MAGIC_NUMBER_OK_FOR(&m_tracks) );
+    ASSERT( MAGIC_NUMBER_OK_FOR(&m_tracks) );
     
     m_abstract_layout_manager = new PrintLayoutAbstract(this);
     m_abstract_layout_manager->addLayoutInformation(m_tracks, layoutPages /* out */, checkRepetitions);
@@ -82,12 +82,12 @@ void PrintableSequence::printLinesInArea(wxDC& dc, LayoutPage& page,
                                          const float notation_area_y0, const float notation_area_h,
                                          const int pageHeight, const int x0, const int x1)
 {
-    assert(m_layout_calculated);
-    assert(m_numeric_layout_manager != NULL);
+    ASSERT(m_layout_calculated);
+    ASSERT(m_numeric_layout_manager != NULL);
     
-    assert(notation_area_h > 0);
-    assert(pageHeight > 0);
-    //assertExpr(notation_area_y0 + notation_area_h, <=, pageHeight);
+    ASSERT(notation_area_h > 0);
+    ASSERT(pageHeight > 0);
+    //ASSERT_E(notation_area_y0 + notation_area_h, <=, pageHeight);
 
     // ---- Give each track an area on the page
     m_numeric_layout_manager->placeLinesInPage(page, notation_area_y0, notation_area_h,
@@ -111,7 +111,7 @@ void PrintableSequence::printLine(LayoutLine& line, wxDC& dc)
     const int trackAmount = line.getTrackAmount();
     
     const LineCoords* lineCoords = line.m_line_coords;
-    assert(lineCoords != NULL);
+    ASSERT(lineCoords != NULL);
     
 #if DEBUG_DRAW
     dc.SetPen(  wxPen( wxColour(255,0,0), 25 ) );
@@ -159,7 +159,7 @@ void PrintableSequence::printLine(LayoutLine& line, wxDC& dc)
         
         const LineTrackRef& sizing = line.getLineTrackRef(n);
         const TrackCoords* trackCoords = sizing.m_track_coords.raw_ptr;
-        assert(trackCoords != NULL);
+        ASSERT(trackCoords != NULL);
         
         std::cout << "Coords : " << trackCoords->x0 << ", " << trackCoords->y0 << " to "
                   << trackCoords->x1 << ", " << trackCoords->y1 << std::endl;
@@ -215,12 +215,12 @@ int PrintableSequence::getPageAmount() const
 
 LayoutPage& PrintableSequence::getPage(const int id)
 {
-    assertExpr(id, >=, 0);
-    assertExpr(id, <, (int)layoutPages.size());
+    ASSERT_E(id, >=, 0);
+    ASSERT_E(id, <, (int)layoutPages.size());
     
     LayoutPage& out = layoutPages[id];
     
-    assert( MAGIC_NUMBER_OK_FOR(&out) );
+    ASSERT( MAGIC_NUMBER_OK_FOR(&out) );
     
     return out;
 }

@@ -838,7 +838,7 @@ void MainFrame::toolButtonClicked(wxCommandEvent& evt)
     }
     else
     {
-        assert (false);
+        ASSERT (false);
     }
     
 }
@@ -1111,8 +1111,8 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
 
 Sequence* MainFrame::getCurrentSequence()
 {
-    assertExpr(currentSequence,>=,0);
-    assertExpr(currentSequence,<,sequences.size());
+    ASSERT_E(currentSequence,>=,0);
+    ASSERT_E(currentSequence,<,sequences.size());
 
     return &sequences[currentSequence];
 }
@@ -1121,8 +1121,8 @@ Sequence* MainFrame::getCurrentSequence()
 
 Sequence* MainFrame::getSequence(int n)
 {
-    assertExpr(n,>=,0);
-    assertExpr(n,<,sequences.size());
+    ASSERT_E(n,>=,0);
+    ASSERT_E(n,<,sequences.size());
 
     return &sequences[n];
 }
@@ -1138,8 +1138,8 @@ int MainFrame::getCurrentSequenceID()
 
 void MainFrame::setCurrentSequence(int n)
 {
-    assertExpr(n,>=,0);
-    assertExpr(n,<,sequences.size());
+    ASSERT_E(n,>=,0);
+    ASSERT_E(n,<,sequences.size());
 
     currentSequence = n;
     updateTopBarAndScrollbarsForSequence( getCurrentSequence() );

@@ -68,7 +68,7 @@ void MoveNotes::undo()
 }
 void MoveNotes::perform()
 {
-    assert(track != NULL);
+    ASSERT(track != NULL);
 
     mode = track->graphics->editorMode;
     if (mode == SCORE and relativeY != 0) move_mode = SCORE_VERTICAL;
@@ -76,7 +76,7 @@ void MoveNotes::perform()
     else if (mode == DRUM and relativeY != 0) move_mode = DRUMS_VERTICAL;
 
     // perform action
-    assert(noteID != ALL_NOTES); // not supported in this function (not needed)
+    ASSERT(noteID != ALL_NOTES); // not supported in this function (not needed)
 
     if (noteID==SELECTED_NOTES)
     {
@@ -101,8 +101,8 @@ void MoveNotes::perform()
     else
     {
         // move a single note
-        assertExpr(noteID,>=,0);
-        assertExpr(noteID,<,track->m_notes.size());
+        ASSERT_E(noteID,>=,0);
+        ASSERT_E(noteID,<,track->m_notes.size());
 
         doMoveOneNote(noteID);
 

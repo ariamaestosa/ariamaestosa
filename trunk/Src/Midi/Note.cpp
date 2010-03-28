@@ -240,7 +240,7 @@ void Note::resize(const int ticks)
 
 void Note::setEnd(const int ticks)
 {
-    assertExpr(ticks,>=,0);
+    ASSERT_E(ticks,>=,0);
 
     endTick = ticks;
 }

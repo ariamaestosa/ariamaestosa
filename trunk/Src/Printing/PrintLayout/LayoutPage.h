@@ -39,30 +39,30 @@ namespace AriaMaestosa
 
         const int getLineCount() const
         {
-            assert( MAGIC_NUMBER_OK() );
+            ASSERT( MAGIC_NUMBER_OK() );
 
             return m_layout_lines.size();
         }
         
         LayoutLine& getLine(const int lineID)
         {
-            assert( MAGIC_NUMBER_OK() );
-            assert( MAGIC_NUMBER_OK_FOR(&m_layout_lines) );
+            ASSERT( MAGIC_NUMBER_OK() );
+            ASSERT( MAGIC_NUMBER_OK_FOR(&m_layout_lines) );
 
             return m_layout_lines[lineID];
         }
         
         void addLine( LayoutLine* line )
         {
-            assert( MAGIC_NUMBER_OK() );
-            assert( MAGIC_NUMBER_OK_FOR(&m_layout_lines) );
+            ASSERT( MAGIC_NUMBER_OK() );
+            ASSERT( MAGIC_NUMBER_OK_FOR(&m_layout_lines) );
             
             m_layout_lines.push_back(line);
         }
         
         void moveYourLastLineTo( LayoutPage& otherPage )
         {
-            assert( &otherPage != this );
+            ASSERT( &otherPage != this );
             
             LayoutLine* lastLine = m_layout_lines.get(m_layout_lines.size()-1);
             otherPage.addLine( lastLine );

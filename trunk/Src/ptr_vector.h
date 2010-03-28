@@ -75,16 +75,16 @@ namespace AriaMaestosa
         
         void push_back(TYPE* t)
         {
-            assert( MAGIC_NUMBER_OK() );
-            assert( not m_performing_deletion );
+            ASSERT( MAGIC_NUMBER_OK() );
+            ASSERT( not m_performing_deletion );
             
             contentsVector.push_back(t);
         }
         
         void add(TYPE* t, int index)
         {
-            assert( MAGIC_NUMBER_OK() );
-            assert( not m_performing_deletion );
+            ASSERT( MAGIC_NUMBER_OK() );
+            ASSERT( not m_performing_deletion );
 
             contentsVector.insert(contentsVector.begin()+index, t);
         }
@@ -98,8 +98,8 @@ namespace AriaMaestosa
         /** @return the number of items in this vector */
         int size() const
         {
-            assert( MAGIC_NUMBER_OK() );
-            assert( not m_performing_deletion );
+            ASSERT( MAGIC_NUMBER_OK() );
+            ASSERT( not m_performing_deletion );
 
             return contentsVector.size();
         }
@@ -116,11 +116,11 @@ namespace AriaMaestosa
           */
         TYPE* get(const int ID)
         {
-            assert( MAGIC_NUMBER_OK() );
-            assert( not m_performing_deletion );
+            ASSERT( MAGIC_NUMBER_OK() );
+            ASSERT( not m_performing_deletion );
 
-            assertExpr(ID,>,-1);
-            assertExpr((unsigned int)ID,<,contentsVector.size());
+            ASSERT_E(ID,>,-1);
+            ASSERT_E((unsigned int)ID,<,contentsVector.size());
             
             return contentsVector[ID];
         }
@@ -132,10 +132,10 @@ namespace AriaMaestosa
           */
         const TYPE* getConst(const int ID) const
         {
-            assert( MAGIC_NUMBER_OK() );
-            assert( not m_performing_deletion );
-            assertExpr(ID,>,-1);
-            assertExpr((unsigned int)ID,<,contentsVector.size());
+            ASSERT( MAGIC_NUMBER_OK() );
+            ASSERT( not m_performing_deletion );
+            ASSERT_E(ID,>,-1);
+            ASSERT_E((unsigned int)ID,<,contentsVector.size());
             
             return contentsVector[ID];
         }
@@ -145,10 +145,10 @@ namespace AriaMaestosa
           */
         TYPE& getRef(const int ID) const
         {
-            assert( MAGIC_NUMBER_OK() );
-            assert( not m_performing_deletion );
-            assertExpr(ID,>,-1);
-            assertExpr((unsigned int)ID,<,contentsVector.size());
+            ASSERT( MAGIC_NUMBER_OK() );
+            ASSERT( not m_performing_deletion );
+            ASSERT_E(ID,>,-1);
+            ASSERT_E((unsigned int)ID,<,contentsVector.size());
             
             return (TYPE&)(*(contentsVector[ID]));
         }
@@ -159,9 +159,9 @@ namespace AriaMaestosa
          */
         TYPE& operator[](const unsigned int ID)
         {
-            assert( MAGIC_NUMBER_OK() );
-            assert( not m_performing_deletion );
-            assertExpr((unsigned int)ID,<,contentsVector.size());
+            ASSERT( MAGIC_NUMBER_OK() );
+            ASSERT( not m_performing_deletion );
+            ASSERT_E((unsigned int)ID,<,contentsVector.size());
             
             return *(contentsVector[ID]);
         }
@@ -173,9 +173,9 @@ namespace AriaMaestosa
          */
         const TYPE& operator[](const unsigned int ID) const
         {
-            assert( MAGIC_NUMBER_OK() );
-            assert( not m_performing_deletion );
-            assertExpr((unsigned int)ID,<,contentsVector.size());
+            ASSERT( MAGIC_NUMBER_OK() );
+            ASSERT( not m_performing_deletion );
+            ASSERT_E((unsigned int)ID,<,contentsVector.size());
             
             return *(contentsVector[ID]);
         }
@@ -189,10 +189,10 @@ namespace AriaMaestosa
         /** delete and remove an object from the vector. */
         void erase(const int ID)
         {
-            assert( MAGIC_NUMBER_OK() );
-            assert( not m_performing_deletion );
-            assertExpr(ID,>,-1);
-            assertExpr((unsigned int)ID,<,contentsVector.size());
+            ASSERT( MAGIC_NUMBER_OK() );
+            ASSERT( not m_performing_deletion );
+            ASSERT_E(ID,>,-1);
+            ASSERT_E((unsigned int)ID,<,contentsVector.size());
             
             delete contentsVector[ID];
             
@@ -202,10 +202,10 @@ namespace AriaMaestosa
         /** remove (but do not delete) an object from the vector. */
         void remove(const int ID)
         {
-            assert( MAGIC_NUMBER_OK() );
-            assert( not m_performing_deletion );
-            assertExpr(ID,>,-1);
-            assertExpr((unsigned int)ID,<,contentsVector.size());
+            ASSERT( MAGIC_NUMBER_OK() );
+            ASSERT( not m_performing_deletion );
+            ASSERT_E(ID,>,-1);
+            ASSERT_E((unsigned int)ID,<,contentsVector.size());
             
             contentsVector.erase(contentsVector.begin()+ID);
         }
@@ -213,8 +213,8 @@ namespace AriaMaestosa
         /** delete and remove an object from the vector. */
         void erase(TYPE* obj)
         {
-            assert( MAGIC_NUMBER_OK() );
-            assert( not m_performing_deletion );
+            ASSERT( MAGIC_NUMBER_OK() );
+            ASSERT( not m_performing_deletion );
 
             for (unsigned int n=0; n<contentsVector.size(); n++)
             {
@@ -232,8 +232,8 @@ namespace AriaMaestosa
         /** remove (but do not delete) an object from the vector. */
         void remove(TYPE* obj)
         {
-            assert( MAGIC_NUMBER_OK() );
-            assert( not m_performing_deletion );
+            ASSERT( MAGIC_NUMBER_OK() );
+            ASSERT( not m_performing_deletion );
 
             for(unsigned int n=0; n<contentsVector.size(); n++)
             {
@@ -271,8 +271,8 @@ namespace AriaMaestosa
         /** clears the vector, but does not delete the objects it contained */
         void clearWithoutDeleting()
         {
-            assert( MAGIC_NUMBER_OK() );
-            assert( not m_performing_deletion );
+            ASSERT( MAGIC_NUMBER_OK() );
+            ASSERT( not m_performing_deletion );
 
             contentsVector.clear();
         }
@@ -284,13 +284,13 @@ namespace AriaMaestosa
         
         void swap(int ID1, int ID2)
         {
-            assert( MAGIC_NUMBER_OK() );
-            assert( not m_performing_deletion );
+            ASSERT( MAGIC_NUMBER_OK() );
+            ASSERT( not m_performing_deletion );
 
-            assertExpr(ID1,>,-1);
-            assertExpr((unsigned int)ID1,<,contentsVector.size());
-            assertExpr(ID2,>,-1);
-            assertExpr((unsigned int)ID2,<,contentsVector.size());
+            ASSERT_E(ID1,>,-1);
+            ASSERT_E((unsigned int)ID1,<,contentsVector.size());
+            ASSERT_E(ID2,>,-1);
+            ASSERT_E((unsigned int)ID2,<,contentsVector.size());
             
             
             TYPE* temp = contentsVector[ID2];
@@ -311,10 +311,10 @@ namespace AriaMaestosa
          */
         void markToBeDeleted(const int ID)
         {
-            assert( MAGIC_NUMBER_OK() );
-            assert( not m_performing_deletion );
-            assertExpr(ID,>,-1);
-            assertExpr((unsigned int)ID,<,contentsVector.size());
+            ASSERT( MAGIC_NUMBER_OK() );
+            ASSERT( not m_performing_deletion );
+            ASSERT_E(ID,>,-1);
+            ASSERT_E((unsigned int)ID,<,contentsVector.size());
             
             delete contentsVector[ID];
             
@@ -328,10 +328,10 @@ namespace AriaMaestosa
          */
         void markToBeRemoved(const int ID)
         {
-            assert( MAGIC_NUMBER_OK() );
-            assert( not m_performing_deletion );
-            assertExpr(ID,>,-1);
-            assertExpr((unsigned int)ID,<,contentsVector.size());
+            ASSERT( MAGIC_NUMBER_OK() );
+            ASSERT( not m_performing_deletion );
+            ASSERT_E(ID,>,-1);
+            ASSERT_E((unsigned int)ID,<,contentsVector.size());
             
             contentsVector[ID] = 0;
             
@@ -340,10 +340,10 @@ namespace AriaMaestosa
         /** @return whether object 'ID" within this vector is marked to be removed (see 'markToBeDeleted') */
         bool isMarked(const int ID) const
         {
-            assert( MAGIC_NUMBER_OK() );
-            assert( not m_performing_deletion );
-            assertExpr(ID,>,-1);
-            assertExpr((unsigned int)ID,<,contentsVector.size());
+            ASSERT( MAGIC_NUMBER_OK() );
+            ASSERT( not m_performing_deletion );
+            ASSERT_E(ID,>,-1);
+            ASSERT_E((unsigned int)ID,<,contentsVector.size());
             
             return (contentsVector[ID] == 0);
         }
@@ -351,8 +351,8 @@ namespace AriaMaestosa
         /** removes all objects that have been previously marked with 'markToBeDeleted' or 'markToBeRemoved' */
         void removeMarked()
         {
-            assert( MAGIC_NUMBER_OK() );
-            assert( not m_performing_deletion );
+            ASSERT( MAGIC_NUMBER_OK() );
+            ASSERT( not m_performing_deletion );
 
             int size = contentsVector.size();
             for(int n=0; n<size; n++)

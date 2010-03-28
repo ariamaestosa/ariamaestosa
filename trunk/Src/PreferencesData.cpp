@@ -203,7 +203,7 @@ void PreferencesData::setValue(wxString entryName, long newValue)
             return;
         }
     }
-    assert(false);
+    ASSERT(false);
 }
 
 // ----------------------------------------------------------------------------------------------------

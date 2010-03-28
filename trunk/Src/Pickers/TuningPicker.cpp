@@ -266,7 +266,7 @@ public:
 
     void show()
     {
-        assert(parent != NULL);
+        ASSERT(parent != NULL);
         
         // enter default values
         for(int n=0; n<10; n++)

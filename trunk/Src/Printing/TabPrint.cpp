@@ -222,12 +222,12 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
                                    LayoutLine& currentLine, wxDC& dc, const bool drawMeasureNumbers)
 {
     const TrackCoords* trackCoords = currentTrack.m_track_coords.raw_ptr;
-    assert(trackCoords != NULL);
+    ASSERT(trackCoords != NULL);
     
-    assertExpr(trackCoords->y0,>,0);
-    assertExpr(trackCoords->y1,>,0);
-    assertExpr(trackCoords->y0,<,50000);
-    assertExpr(trackCoords->y1,<,50000);
+    ASSERT_E(trackCoords->y0,>,0);
+    ASSERT_E(trackCoords->y1,>,0);
+    ASSERT_E(trackCoords->y0,<,50000);
+    ASSERT_E(trackCoords->y1,<,50000);
     
     wxFont oldfont = dc.GetFont();
     

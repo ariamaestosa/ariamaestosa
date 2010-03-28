@@ -91,7 +91,7 @@ namespace AriaMaestosa
          */
         int getUnitWidth() const
         {
-            assertExpr(m_unit_width, >, 0);
+            ASSERT_E(m_unit_width, >, 0);
             return m_unit_width;
         }
         
@@ -101,7 +101,7 @@ namespace AriaMaestosa
           */
         int getUnitHeight() const
         {
-            assertExpr(m_unit_height, >, 0);
+            ASSERT_E(m_unit_height, >, 0);
             return m_unit_height;
         }
 

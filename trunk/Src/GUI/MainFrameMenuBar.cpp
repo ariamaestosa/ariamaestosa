@@ -224,7 +224,7 @@ void MainFrame::initMenuBar()
     if (playValue == PLAY_ON_CHANGE)   playDuringEdits_onchange->Check();
     else if (playValue == PLAY_ALWAYS) playDuringEdits_always->Check();
     else if (playValue == PLAY_NEVER)  playDuringEdits_never->Check();
-    else                               {assert(false);}
+    else                               {ASSERT(false);}
 
     // Help menu
     helpMenu = new wxMenu();

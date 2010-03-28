@@ -47,7 +47,7 @@ void RemoveOverlapping::undo()
 
 void RemoveOverlapping::perform()
 {
-    assert(track != NULL);
+    ASSERT(track != NULL);
     wxBeginBusyCursor();
     
     //const int noteOffAmount = track->m_note_off.size();
