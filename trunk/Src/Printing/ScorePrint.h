@@ -18,13 +18,11 @@
 #ifndef _score_out_
 #define _score_out_
 
-#include <wx/file.h>
 #include "Utils.h"
 #include "Editors/ScoreEditor.h"
 #include "Analysers/SilenceAnalyser.h"
 #include "Printing/AriaPrintable.h"
 #include "Printing/EditorPrintable.h"
-#include "Printing/PrintLayout/PrintLayoutAbstract.h"
 #include "Printing/PrintLayout/RelativePlacementManager.h"
 
 namespace AriaMaestosa
