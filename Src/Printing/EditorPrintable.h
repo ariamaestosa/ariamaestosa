@@ -82,9 +82,19 @@ namespace AriaMaestosa
         virtual void drawTrack(const int trackID, const LineTrackRef& track, LayoutLine& line,
                                wxDC& dc, const bool drawMeasureNumbers) = 0;
         
-        /** Called by the layout code to know the relative height of this line
-         */
-        virtual int calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line) = 0;
+        /**
+          * Called by the layout code to know the relative height of a track within a line
+          * for this particular editor
+          *
+          * @param      trackID  id of the track within this line to calculate the height of
+          * @param      track    the 'LineTrackRef' associated with this track
+          * @param      line     the line this track is part of
+          * @param[out] empty    this parameter shall be set to 'true' if this track, in this
+          *                      line, is empty (contains no note or symbol whatsoever)
+          * @return              the calculated height, in abstract vertical print units
+          */
+        virtual int calculateHeight(const int trackID, LineTrackRef& track, LayoutLine& line,
+                                    bool* empty) = 0;
                         
         /**
           * call early in the callback to draw a track. All base class methods doing rendering

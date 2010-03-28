@@ -205,13 +205,17 @@ void TablaturePrintable::addUsedTicks(const PrintLayoutMeasure& measure,  const 
 
 // ------------------------------------------------------------------------------------------------------------
 
-int TablaturePrintable::calculateHeight(const int trackID, LineTrackRef& lineTrack, LayoutLine& line)
+int TablaturePrintable::calculateHeight(const int trackID, LineTrackRef& lineTrack, LayoutLine& line,
+                                        bool* empty)
 {
     const int from_note = lineTrack.getFirstNote();
     const int to_note   = lineTrack.getLastNote();
     
     // check if empty
-    if (from_note == -1 or to_note == -1) return 0;
+    //FIXME: if a note starts in previous line but ends in this one, track will still be reported empty
+    //       even though it's not
+    if (from_note == -1 or to_note == -1) *empty  = true;
+    else                                  *empty = false;
 
     return string_amount;
 }  

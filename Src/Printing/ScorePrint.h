@@ -71,7 +71,7 @@ namespace AriaMaestosa
                                wxDC& dc, const bool drawMeasureNumbers);
         
         /** Implement method from EditorPrintable */
-        virtual int calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line);
+        virtual int calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line, bool* empty);
     };
     
 }

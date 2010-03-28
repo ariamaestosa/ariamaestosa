@@ -47,7 +47,7 @@ NOTE: sorry, this is very raw :)
     * Printing a score where empty *lines* (not tracks) will occur is not handled 100% well
     - X notes not printed right (nor handled correctly in score editor anyway)
 * empty tracks are auto hidden. unfortunately, since tracks are not labelled, you don't know which tracks are
-  visible and which aren't...
+  visible and which aren't... (track hiding is done in "LayoutLine::calculateHeight()")
 * when a track first appears, we need its clef, key, etc. (maybe even once a page). Right now it's only
   given if the said track starts playing on the first line
 * print tempo (and tempo changes)

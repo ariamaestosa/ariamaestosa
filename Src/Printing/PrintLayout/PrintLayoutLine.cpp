@@ -221,7 +221,11 @@ int LayoutLine::calculateHeight()
     const int trackAmount = getTrackAmount();
     for (int n=0; n<trackAmount; n++)
     {
-        const int this_height = m_printable->getEditorPrintable(n)->calculateHeight(n, m_tracks[n], *this);
+        bool empty = false;
+        int this_height = m_printable->getEditorPrintable(n)->calculateHeight(n, m_tracks[n], *this, &empty);
+        
+        // hide hidden tracks
+        if (empty and HIDE_EMPTY_TRACKS) this_height = 0;
         
         // add space between tracks
         if (this_height > 0 and n > 0)
