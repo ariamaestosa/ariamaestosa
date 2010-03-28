@@ -18,11 +18,9 @@
 #ifndef _tablature_out_
 #define _tablature_out_
 
-#include <wx/file.h>
 #include "Utils.h"
 #include "Analysers/SilenceAnalyser.h"
 #include "Printing/EditorPrintable.h"
-#include "Printing/PrintLayout/PrintLayoutAbstract.h"
 #include "Printing/PrintLayout/RelativePlacementManager.h"
 
 namespace AriaMaestosa
