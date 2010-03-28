@@ -22,8 +22,6 @@
 namespace AriaMaestosa
 {
     const int INTER_TRACK_MARGIN_LEVELS = 3;
-
-    const bool HIDE_EMPTY_TRACKS = true;
     
     class Track;
     class LayoutElement;
@@ -190,7 +188,7 @@ namespace AriaMaestosa
         int getLastNoteInElement (const int trackID, const LayoutElement* layoutElement) const;
         
         /** @return the number of levels that make this line (vertically) INCLUDING required margin space */
-        int calculateHeight();
+        int calculateHeight(const bool hideEmptyTracks);
         
         /** 
           * The rationale for this method is that it's faster than 'calculateHeight' since it

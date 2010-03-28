@@ -41,6 +41,8 @@ namespace AriaMaestosa
     
     int repetitionMinimalLength = 2;
     
+    const bool HIDE_EMPTY_TRACKS = true;
+    
     // -------------------------------------------------------------------------------------------
     
     int getRepetitionMinimalLength()
@@ -453,7 +455,7 @@ void PrintLayoutAbstract::terminateLine(LayoutLine* currentLine, ptr_vector<Layo
                                         const int maxLevelHeight,
                                         int& current_height, int& current_page)
 {
-    const int line_height = currentLine->calculateHeight();
+    const int line_height = currentLine->calculateHeight(HIDE_EMPTY_TRACKS);
     current_height += line_height;
     
     currentLine->setLevelTo(current_height);
