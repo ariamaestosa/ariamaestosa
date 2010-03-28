@@ -15,12 +15,12 @@
  */
 
 
-#ifndef _scoreeditor_
-#define _scoreeditor_
+#ifndef __SCORE_EDITOR_H__
+#define __SCORE_EDITOR_H__
 
 #include "Editors/Editor.h"
 
-#include <vector>
+#include "wx/intl.h"
 
 namespace AriaMaestosa
 {

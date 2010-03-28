@@ -18,7 +18,6 @@
 #define _ssemitone_
 
 #include "Actions/EditAction.h"
-#include <vector>
 
 namespace AriaMaestosa
 {

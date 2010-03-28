@@ -14,20 +14,20 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _bg_picker_
-#define _bg_picker_
+#ifndef __BG_PICKER_H__
+#define __BG_PICKER_H__
 
-#include "wx/wx.h"
 #include "Utils.h"
 
-namespace AriaMaestosa {
+namespace AriaMaestosa
+{
     class Track;
     
-namespace TrackProperties{
+    namespace TrackProperties
+    {
         
-    void show(Track* parent);
-        
-}
+        void show(Track* parent);
+    }
 }
 
 #endif

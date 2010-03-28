@@ -2,7 +2,6 @@
 #define __UNIT_TEST_H__
 
 #include <string>
-#include <vector>
 #include <stdexcept>
 
 class UnitTestCase

@@ -5,7 +5,7 @@
 #include <alsa/asoundlib.h>
 #include <vector>
 #include "glib.h"
-#include "wx/wx.h"
+#include "wx/string.h"
 
 namespace AriaMaestosa
 {

@@ -35,9 +35,6 @@
 #include "jdkmidi/driver.h"
 #include "jdkmidi/process.h"
 
-#include <vector>
-#include <string>
-
 #include "Editors/Editor.h"
 #include "Midi/Note.h"
 #include "Midi/ControllerEvent.h"

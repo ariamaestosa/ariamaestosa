@@ -21,7 +21,7 @@
 
 // -------------------- my ASSERT stuff -----------------
 #include <iostream>
-
+#include "wx/string.h" // needed pretty much everywhere
 
 #ifdef _MORE_DEBUG_CHECKS
 

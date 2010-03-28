@@ -20,7 +20,8 @@
 #include "Singleton.h"
 #include "ptr_vector.h"
 
-#include "wx/wx.h"
+#include "wx/string.h"
+#include "wx/arrstr.h"
 
 namespace AriaMaestosa
 {
