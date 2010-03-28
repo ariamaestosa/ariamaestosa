@@ -17,10 +17,14 @@
 #ifndef _ControllerEvent_
 #define _ControllerEvent_
 
-#include "wx/wfstream.h"
-
 #include "Utils.h"
-#include "irrXML/irrXML.h"
+
+class wxFileOutputStream;
+// forward
+namespace irr { namespace io {
+    class IXMLBase;
+    template<class char_type, class super_class> class IIrrXMLReader;
+    typedef IIrrXMLReader<char, IXMLBase> IrrXMLReader; } }
 
 namespace AriaMaestosa
 {
@@ -51,7 +55,6 @@ namespace AriaMaestosa
         // ---- serialization
         void saveToFile(wxFileOutputStream& fileout);
         bool readFromFile(irr::io::IrrXMLReader* xml);
-        
     };
     
 }

@@ -39,7 +39,7 @@
 #include "Pickers/TimeSigPicker.h"
 
 #include <iostream>
-
+#include "irrXML/irrXML.h"
 
 using namespace AriaMaestosa;
 

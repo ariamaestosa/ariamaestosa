@@ -20,8 +20,10 @@
 #include "IO/IOUtils.h"
 
 #include "AriaCore.h"
+#include "irrXML/irrXML.h"
 
-namespace AriaMaestosa {
+namespace AriaMaestosa
+{
 
 BEGIN_EVENT_TABLE(MagneticGrid, wxMenu)
 
@@ -38,6 +40,9 @@ EVT_MENU(3, MagneticGrid::tripletChanged)
 
 END_EVENT_TABLE()
 
+}
+
+using namespace AriaMaestosa;
 
 MagneticGrid::MagneticGrid(GraphicalTrack* parent) : wxMenu()
 {
@@ -335,4 +340,3 @@ bool MagneticGrid::readFromFile(irr::io::IrrXMLReader* xml)
     return true;
 }
 
-}
