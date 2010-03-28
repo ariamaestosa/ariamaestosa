@@ -512,7 +512,7 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     layoutPages[current_page].addLine( currentLine );
 
     // add line header
-    LayoutElement el(LayoutElement(LINE_HEADER, -1));
+    LayoutElement el(LINE_HEADER, -1);
     
     int header_width = CLEF_WIDTH;
     
