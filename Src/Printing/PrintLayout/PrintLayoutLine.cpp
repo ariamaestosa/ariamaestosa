@@ -212,7 +212,7 @@ int LayoutLine::getFirstMeasure() const
 
 // -------------------------------------------------------------------------------------------
 
-int LayoutLine::calculateHeight()
+int LayoutLine::calculateHeight(const bool hideEmptyTracks)
 {
     m_level_height = 0;
         
@@ -225,7 +225,7 @@ int LayoutLine::calculateHeight()
         int this_height = m_printable->getEditorPrintable(n)->calculateHeight(n, m_tracks[n], *this, &empty);
         
         // hide hidden tracks
-        if (empty and HIDE_EMPTY_TRACKS) this_height = 0;
+        if (empty and hideEmptyTracks) this_height = 0;
         
         // add space between tracks
         if (this_height > 0 and n > 0)
