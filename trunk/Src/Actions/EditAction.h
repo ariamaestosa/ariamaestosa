@@ -19,15 +19,13 @@
 
 #include "Utils.h"
 #include "ptr_vector.h"
-#include <vector>
 #include "Midi/Note.h"
 #include "Midi/ControllerEvent.h"
 
-namespace AriaMaestosa {
-    
+namespace AriaMaestosa
+{
     class Track;
     class Sequence;
-    
     
     /*
      * In the opposite situation, when it is easy to revert the changes, NoteRelocator is used.

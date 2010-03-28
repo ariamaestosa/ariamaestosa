@@ -18,7 +18,6 @@
 #ifndef _print_base_h_
 #define _print_base_h_
 
-#include <vector>
 #include "Printing/PrintLayout/PrintLayoutAbstract.h"
 #include "Printing/wxEasyPrintWrapper.h"
 #include "wx/wx.h"

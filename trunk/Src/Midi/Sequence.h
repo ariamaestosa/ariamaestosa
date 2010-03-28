@@ -17,8 +17,9 @@
 #ifndef _sequence_
 #define _sequence_
 
-#include "wx/wx.h"
-#include "wx/wfstream.h"
+#include "wx/string.h"
+//#include "wx/wfstream.h"
+class wxFileOutputStream;
 
 #include "irrXML/irrXML.h"
 

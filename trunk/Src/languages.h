@@ -14,18 +14,16 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _languages_
-#define _languages_
+#ifndef __LANGUAGES_H__
+#define __LANGUAGES_H__
 
-class wxConfig;
-#include "wx/wx.h"
+#include "wx/arrstr.h"
 
 namespace AriaMaestosa
 {
     void initLanguageSupport();
     wxArrayString getLanguageList();
     int getDefaultLanguageAriaID();
-
 }
 
 #endif

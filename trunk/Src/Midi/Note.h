@@ -17,7 +17,6 @@
 #ifndef _note_h_
 #define _note_h_
 
-#include <vector>
 #include "Utils.h"
 
 #include "wx/wfstream.h"
@@ -53,7 +52,6 @@ public:
 
     bool selected;
 
-    //std::vector<int> *tuning;
     GraphicalTrack* gtrack;
 
     int getString();

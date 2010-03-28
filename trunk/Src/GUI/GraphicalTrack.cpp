@@ -19,7 +19,8 @@
  */
 
 #include <iostream>
-#include <wx/numdlg.h>
+#include "wx/numdlg.h"
+#include "wx/wfstream.h"
 
 #include "Utils.h"
 
