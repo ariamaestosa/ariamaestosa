@@ -323,7 +323,8 @@ namespace AriaMaestosa
     
     // -------------------------------------------------------------------------------------------
       
-    int ScorePrintable::calculateHeight(const int trackID, LineTrackRef& lineTrack, LayoutLine& line)
+    int ScorePrintable::calculateHeight(const int trackID, LineTrackRef& lineTrack, LayoutLine& line,
+                                        bool* empty)
     {
         gatherVerticalSizingInfo(trackID, lineTrack, line);
         
@@ -332,10 +333,6 @@ namespace AriaMaestosa
         
         const int from_note = lineTrack.getFirstNote();
         const int to_note   = lineTrack.getLastNote();
-        
-        // check if empty
-        // FIXME : if a note starts in the previous line and ends in this one, it won't be detected
-        if (from_note == -1 || to_note == -1) return 0;
                 
         std::cout <<
             PRINT_VAR(scoreData->extra_lines_under_g_score) <<
@@ -356,6 +353,11 @@ namespace AriaMaestosa
             //       as a function of levels??
             total = total + MARGIN_PROPORTION_BETWEEN_CLEFS*total;
         }
+        
+        // check if empty
+        // FIXME : if a note starts in the previous line and ends in this one, it won't be detected
+        if (from_note == -1 or to_note == -1) *empty = true;
+        else                                  *empty = false;
         
         return total;
 

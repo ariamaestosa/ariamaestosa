@@ -23,6 +23,8 @@ namespace AriaMaestosa
 {
     const int INTER_TRACK_MARGIN_LEVELS = 3;
 
+    const bool HIDE_EMPTY_TRACKS = true;
+    
     class Track;
     class LayoutElement;
     class LayoutLine;
