@@ -255,6 +255,8 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
     // draw end of line vertical line
     drawVerticalDivider(trackCoords->x1, trackCoords->y0, trackCoords->y1);
 
+    // draw track name
+    drawTrackName(dc, currentTrack, trackCoords->x0, trackCoords->y0, trackCoords->y1);
     
     const int elementAmount = currentLine.getLayoutElementCount();
     for (int el=0; el<elementAmount; el++)
@@ -346,8 +348,8 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
         
         for (int i=firstNote; i<=lastNote; i++)
         {
-            const int string = currentTrack.m_track->getNoteStringConst(i);
-            const int fret   = currentTrack.m_track->getNoteFretConst(i);
+            const int string = currentTrack.getTrack()->getNoteStringConst(i);
+            const int fret   = currentTrack.getTrack()->getNoteFretConst(i);
             
             if (fret < 0)  dc.SetTextForeground( wxColour(255,0,0) );
             

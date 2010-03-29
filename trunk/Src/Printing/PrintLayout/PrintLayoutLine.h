@@ -55,6 +55,9 @@ namespace AriaMaestosa
         /** y "to" coordinate in relative units (levels) */
         int m_level_to;
         
+        /** The Track objet associated with this print track object */
+        const Track* m_track;
+        
     public:
         
         int getLevelFrom() const
@@ -85,7 +88,6 @@ namespace AriaMaestosa
           * Will be set by the PrintLayoutNumeric when layout is finalized. */
         OwnerPtr<TrackCoords> m_track_coords;
         
-        const Track* m_track;
         
         LineTrackRef(LayoutLine* parent, int trackID, const Track* track) : m_track(track)
         {
@@ -101,6 +103,10 @@ namespace AriaMaestosa
         int getLastNoteInElement(const int layoutElementID);
         int getFirstNoteInElement(LayoutElement* layoutElement);
         int getLastNoteInElement(LayoutElement* layoutElement);
+        
+        /** @return The Track objet associated with this print track object */
+        const Track* getTrack() const { return m_track; }
+        
         
         /** @return whether this track reference (on this line) is empty (contains no note or symbol) */
         bool empty() const
