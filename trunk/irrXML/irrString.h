@@ -645,9 +645,10 @@ private:
 
 	//--- member variables
 
-	T* array;
-	s32 allocated;
-	s32 used;
+    s32 allocated;
+    s32 used;
+    T* array;
+
 };
 
 

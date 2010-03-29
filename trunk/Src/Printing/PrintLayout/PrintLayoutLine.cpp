@@ -241,3 +241,10 @@ int LayoutLine::calculateHeight(const bool hideEmptyTracks)
     return m_level_height;
 }
     
+// -------------------------------------------------------------------------------------------
+
+void LayoutLine::addLayoutElement( const LayoutElement& newElem )
+{
+    m_layout_elements.push_back( newElem );
+}
+

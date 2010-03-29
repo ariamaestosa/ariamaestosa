@@ -15,19 +15,17 @@
  */
 
 
-#ifndef _score_out_
-#define _score_out_
+#ifndef __SCORE_PRINTABLE_H__
+#define __SCORE_PRINTABLE_H__
 
 #include "Utils.h"
-#include "Editors/ScoreEditor.h"
 #include "Analysers/SilenceAnalyser.h"
-#include "Printing/AriaPrintable.h"
 #include "Printing/EditorPrintable.h"
-#include "Printing/PrintLayout/RelativePlacementManager.h"
 
 namespace AriaMaestosa
 {
     class ScoreAnalyser;
+    class RelativePlacementManager;
 
     /** Specialization to print scores */
     class ScorePrintable : public EditorPrintable

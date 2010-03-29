@@ -4,14 +4,17 @@
 #define __PRINTABLE_SEQUENCE_H__
 
 #include "Editors/Editor.h"
-#include "Printing/PrintLayout/PrintLayoutAbstract.h"
+#include "Printing/PrintLayout/LayoutPage.h"
 #include "Printing/PrintLayout/PrintLayoutNumeric.h"
-#include "Printing/PrintLayout/PrintLayoutLine.h"
+#include "Printing/PrintLayout/PrintLayoutAbstract.h"
+
+class wxDC;
 
 namespace AriaMaestosa
 {
     class Track;
     class EditorPrintable;
+    class LayoutLine;
     
     class PrintableSequence
     {

@@ -14,12 +14,10 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _editor_printable_h_
-#define _editor_printable_h_
+#ifndef __EDITOR_PRINTABLE_H__
+#define __EDITOR_PRINTABLE_H__
 
-#include <map>
 #include "Range.h"
-#include "Printing/PrintLayout/PrintLayoutAbstract.h"
 #include "Printing/PrintLayout/RelativePlacementManager.h"
 
 class wxDC;

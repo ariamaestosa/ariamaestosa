@@ -19,6 +19,8 @@
 #include "Midi/MeasureData.h"
 #include "Midi/Track.h"
 
+#include "Printing/PrintLayout/PrintLayoutAbstract.h"
+
 namespace AriaMaestosa
 {
     const PrintLayoutMeasure NULL_MEASURE(-1);

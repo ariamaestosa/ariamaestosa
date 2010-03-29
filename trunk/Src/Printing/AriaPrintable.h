@@ -15,10 +15,9 @@
  */
 
 
-#ifndef _print_base_h_
-#define _print_base_h_
+#ifndef __ARIA_PRINTABLE_H__
+#define __ARIA_PRINTABLE_H__
 
-#include "Printing/PrintLayout/PrintLayoutAbstract.h"
 #include "Printing/wxEasyPrintWrapper.h"
 #include "wx/wx.h"
 #include "wx/print.h"
@@ -27,7 +26,8 @@ const bool PRINT_LAYOUT_HINTS = false;
 
 namespace AriaMaestosa
 {
-    class PrintableSequence;    
+    class PrintableSequence;   
+    class LayoutLine;
     
     class AriaPrintable : public IPrintCallback
     {

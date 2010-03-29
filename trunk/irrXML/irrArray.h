@@ -428,8 +428,8 @@ public:
 	private:
 
 		T* data;
-		u32 allocated;
 		u32 used;
+        u32 allocated;
 		bool free_when_destroyed;
 		bool is_sorted;
 };

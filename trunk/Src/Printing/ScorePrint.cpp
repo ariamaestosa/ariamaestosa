@@ -31,6 +31,7 @@
 #include "Printing/PrintLayout/PrintLayoutAbstract.h"
 #include "Printing/PrintLayout/PrintLayoutMeasure.h"
 #include "Printing/PrintLayout/PrintLayoutLine.h"
+#include "Printing/PrintLayout/RelativePlacementManager.h"
 
 namespace AriaMaestosa
 {

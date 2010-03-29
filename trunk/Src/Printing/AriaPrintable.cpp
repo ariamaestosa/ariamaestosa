@@ -5,6 +5,8 @@
 #include "Printing/PrintableSequence.h"
 #include "Printing/TabPrint.h"
 #include "Printing/ScorePrint.h"
+#include "Printing/PrintLayout/LayoutElement.h"
+#include "Printing/PrintLayout/LayoutPage.h"
 
 #include "GUI/MainFrame.h"
 #include "Midi/Track.h"

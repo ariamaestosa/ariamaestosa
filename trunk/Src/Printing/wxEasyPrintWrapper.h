@@ -18,14 +18,15 @@
 #ifndef _WX_EASY_PRINT_WRAPPER_
 #define _WX_EASY_PRINT_WRAPPER_
 
-
+#include "Utils.h"
 #include "wx/wx.h"
 #include "wx/print.h"
 
 namespace AriaMaestosa
 {
     const int MARGIN_UNDER_PAGE_HEADER = 200;
-            
+    class PrintableSequence;
+    
     class IPrintCallback
     {
     public:
