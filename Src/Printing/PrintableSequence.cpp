@@ -7,7 +7,6 @@
 #include "Printing/TabPrint.h"
 #include "Printing/ScorePrint.h"
 
-#include "GUI/MainFrame.h"
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
 

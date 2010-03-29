@@ -542,6 +542,7 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     current_width += el.width_in_print_units;
     currentLine->addLayoutElement( el );
     
+    bool first_line = true;
     
     // add layout elements one by one, switching to the next line when there's too many
     // elements on the current one
@@ -562,7 +563,9 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
             
             // terminate current line
             const int maxLevelHeight = (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages);
-            terminateLine( currentLine, layoutPages, maxLevelHeight, HIDE_EMPTY_TRACKS, current_height, current_page );
+            terminateLine( currentLine, layoutPages, maxLevelHeight, HIDE_EMPTY_TRACKS and not first_line,
+                           current_height, current_page );
+            first_line = false;
             
             ASSERT(current_height <= (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages));
             
@@ -588,7 +591,8 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     
     // ---- for last line processed
     const int maxLevelHeight = (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages);
-    terminateLine( currentLine, layoutPages, maxLevelHeight, HIDE_EMPTY_TRACKS, current_height, current_page );
+    terminateLine( currentLine, layoutPages, maxLevelHeight, HIDE_EMPTY_TRACKS and not first_line,
+                   current_height, current_page );
     
     ASSERT(current_height <= (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages));
     
