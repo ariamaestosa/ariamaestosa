@@ -14,29 +14,16 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-/*
- * The graphical part of a track (the data being held in Track)
- */
 
 #include <iostream>
 #include "wx/numdlg.h"
 #include "wx/wfstream.h"
 
 #include "Utils.h"
+#include "GUI/GraphicalTrack.h"
 
 #include "AriaCore.h"
 #include "Actions/SetAccidentalSign.h"
-#include "Pickers/InstrumentChoice.h"
-#include "Pickers/DrumChoice.h"
-#include "Pickers/MagneticGrid.h"
-#include "Renderers/Drawable.h"
-#include "Renderers/ImageBase.h"
-#include "GUI/ImageProvider.h"
-#include "GUI/MainFrame.h"
-#include "GUI/MainPane.h"
-#include "Midi/Sequence.h"
-#include "Midi/Track.h"
-#include "Midi/MeasureData.h"
 #include "Editors/KeyboardEditor.h"
 #include "Editors/Editor.h"
 #include "Editors/GuitarEditor.h"
@@ -44,9 +31,19 @@
 #include "Editors/RelativeXCoord.h"
 #include "Editors/ControllerEditor.h"
 #include "Editors/ScoreEditor.h"
-#include "GUI/GraphicalTrack.h"
-#include "Renderers/RenderAPI.h"
+#include "GUI/ImageProvider.h"
+#include "GUI/MainFrame.h"
+#include "GUI/MainPane.h"
 #include "IO/IOUtils.h"
+#include "Midi/Sequence.h"
+#include "Midi/Track.h"
+#include "Midi/MeasureData.h"
+#include "Pickers/InstrumentChoice.h"
+#include "Pickers/DrumChoice.h"
+#include "Pickers/MagneticGrid.h"
+#include "Renderers/Drawable.h"
+#include "Renderers/ImageBase.h"
+#include "Renderers/RenderAPI.h"
 
 #include "irrXML/irrXML.h"
 

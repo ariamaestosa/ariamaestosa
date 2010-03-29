@@ -48,6 +48,9 @@ namespace AriaMaestosa
     class BlankField;
     template<typename PARENT> class ToolBar;
     
+    /**
+      * The graphical part of a track (the data being held in Track)
+      */
     class GraphicalTrack
     {
         int height;
