@@ -15,8 +15,8 @@
  */
 
 
-#ifndef _scrollpane_
-#define _scrollpane_
+#ifndef __KEYBOARD_EDITOR_H__
+#define __KEYBOARD_EDITOR_H__
 
 #include "Editors/Editor.h"
 
