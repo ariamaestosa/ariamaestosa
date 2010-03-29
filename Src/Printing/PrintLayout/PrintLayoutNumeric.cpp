@@ -16,8 +16,11 @@
 
 #include "Printing/PrintLayout/PrintLayoutNumeric.h"
 
+#include "Printing/PrintLayout/PrintLayoutAbstract.h"
 #include "Printing/AriaPrintable.h"
 #include "Printing/PrintableSequence.h"
+#include "Printing/PrintLayout/PrintLayoutLine.h"
+#include "Printing/PrintLayout/LayoutPage.h"
 
 using namespace AriaMaestosa;
 

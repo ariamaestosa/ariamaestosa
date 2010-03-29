@@ -14,19 +14,17 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "AriaCore.h"
-#include "Printing/AriaPrintable.h"
-#include "Printing/AriaPrintable.h"
+#include "Printing/PrintLayout/LayoutElement.h"
 
 using namespace AriaMaestosa;
 
 LayoutElement::LayoutElement(LayoutElementType type_arg, int measure_arg)
 {
-    type = type_arg;
+    type    = type_arg;
     measure = measure_arg;
         
-    x = -1;
-    x2 = -1;
+    x       = -1;
+    x2      = -1;
     m_render_end_bar   = false;
     m_render_start_bar = true;
 }

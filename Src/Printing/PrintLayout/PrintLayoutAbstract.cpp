@@ -452,10 +452,10 @@ void PrintLayoutAbstract::calculateRelativeLengths(std::vector<LayoutElement>& l
 // -----------------------------------------------------------------------------------------------------
 
 void PrintLayoutAbstract::terminateLine(LayoutLine* currentLine, ptr_vector<LayoutPage>& layoutPages,
-                                        const int maxLevelHeight,
+                                        const int maxLevelHeight, bool hideEmptyTracks,
                                         int& current_height, int& current_page)
 {
-    const int line_height = currentLine->calculateHeight(HIDE_EMPTY_TRACKS);
+    const int line_height = currentLine->calculateHeight(hideEmptyTracks);
     current_height += line_height;
     
     currentLine->setLevelTo(current_height);
@@ -562,7 +562,7 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
             
             // terminate current line
             const int maxLevelHeight = (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages);
-            terminateLine( currentLine, layoutPages, maxLevelHeight, current_height, current_page );
+            terminateLine( currentLine, layoutPages, maxLevelHeight, HIDE_EMPTY_TRACKS, current_height, current_page );
             
             ASSERT(current_height <= (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages));
             
@@ -588,7 +588,7 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     
     // ---- for last line processed
     const int maxLevelHeight = (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages);
-    terminateLine( currentLine, layoutPages, maxLevelHeight, current_height, current_page );
+    terminateLine( currentLine, layoutPages, maxLevelHeight, HIDE_EMPTY_TRACKS, current_height, current_page );
     
     ASSERT(current_height <= (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages));
     

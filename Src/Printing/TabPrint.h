@@ -15,18 +15,18 @@
  */
 
 
-#ifndef _tablature_out_
-#define _tablature_out_
+#ifndef __TABLATURE_PRINTABLE_H__
+#define __TABLATURE_PRINTABLE_H__
 
 #include "Utils.h"
 #include "Analysers/SilenceAnalyser.h"
 #include "Printing/EditorPrintable.h"
-#include "Printing/PrintLayout/RelativePlacementManager.h"
 
 namespace AriaMaestosa
 {
     class GuitarEditor;
     class ScoreAnalyser;
+    class RelativePlacementManager;
     
     /** Specialization to print tablatures */
     class TablaturePrintable : public EditorPrintable

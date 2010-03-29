@@ -80,7 +80,7 @@ namespace AriaMaestosa
         
         /** utility method invoked by 'layInLinesAndPages' when a line is complete */
         void terminateLine(LayoutLine* line, ptr_vector<LayoutPage>& layoutPages, const int maxLevelHeight,
-                           int& current_height, int& current_page);
+                           bool hideEmptyTracks, int& current_height, int& current_page);
 
         /** generates measures. needs to be called before "calculateLayoutElements" */
         void generateMeasures(ptr_vector<Track, REF>& tracks);

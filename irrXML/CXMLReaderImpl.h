@@ -772,8 +772,8 @@ private:
 
 	char_type* TextData;         // data block of the text file
 	char_type* P;                // current point in text to parse
-	char_type* TextBegin;        // start of text to parse
 	unsigned int TextSize;       // size of text to parse in characters, not bytes
+	char_type* TextBegin;        // start of text to parse
 
 	EXML_NODE CurrentNodeType;   // type of the currently parsed node
 	ETEXT_FORMAT SourceFormat;   // source format of the xml file

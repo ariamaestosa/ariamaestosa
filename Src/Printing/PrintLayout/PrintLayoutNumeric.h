@@ -17,11 +17,11 @@
 #ifndef __PrintLayoutNumeric_H__
 #define __PrintLayoutNumeric_H__
 
-#include "Printing/PrintLayout/PrintLayoutAbstract.h"
-#include "Printing/PrintLayout/PrintLayoutLine.h"
 
 namespace AriaMaestosa
 {
+    class LayoutLine;
+    class LayoutPage;
     
     /**
      * This is the "numeric" counterpart for PrintLayoutAbstract.

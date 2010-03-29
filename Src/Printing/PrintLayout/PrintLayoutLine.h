@@ -18,6 +18,9 @@
 #define _PRINT_LAYOUT_LINE_H_
 
 #include "Utils.h"
+#include "ptr_vector.h"
+#include "Printing/PrintLayout/LayoutElement.h"
+#include "Printing/PrintLayout/PrintLayoutMeasure.h"
 
 namespace AriaMaestosa
 {
@@ -26,7 +29,6 @@ namespace AriaMaestosa
     class Track;
     class LayoutElement;
     class LayoutLine;
-    class PrintLayoutMeasure;
     class PrintableSequence;
     
     /** Contains the absolute coords part of a LineTrackRef */
@@ -166,10 +168,7 @@ namespace AriaMaestosa
         LayoutLine(PrintableSequence* parent, ptr_vector<PrintLayoutMeasure, REF>& measures);
 
         
-        void addLayoutElement( const LayoutElement& newElem )
-        {
-            m_layout_elements.push_back( newElem );
-        }
+        void addLayoutElement( const LayoutElement& newElem );
         
         int getTrackAmount() const;
         const LineTrackRef& getLineTrackRef(const int trackID) const
@@ -179,8 +178,8 @@ namespace AriaMaestosa
             return m_tracks[trackID];
         }
         
-        int getLayoutElementCount() const { return m_layout_elements.size(); }
-        LayoutElement& getLayoutElement(const int id) { return m_layout_elements[id]; }
+        int getLayoutElementCount() const             { return m_layout_elements.size(); }
+        LayoutElement& getLayoutElement(const int id) { return m_layout_elements[id];    }
         
         int getFirstNoteInElement(const int trackID, const int layoutElementID) const;
         int getLastNoteInElement (const int trackID, const int layoutElementID) const;
