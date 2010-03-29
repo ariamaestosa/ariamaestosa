@@ -13,7 +13,6 @@
 #include "Midi/Sequence.h"
 
 #include "wx/wx.h"
-#include "wx/paper.h"
 #include "wx/print.h"
 #include "wx/printdlg.h"
 #include <iostream>
@@ -35,11 +34,11 @@ AriaPrintable::AriaPrintable(PrintableSequence* seq, bool* success) :
     m_title_font    (130, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD  ),
     m_subtitle_font (90,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL)
 {
-    ;
     ASSERT(m_current_printable == NULL);
     
     m_current_printable = this;
-
+    m_hide_empty_tracks = true;
+    
     // ---- Get fonts size
     m_font_height       = -1;
     m_character_width   = -1;

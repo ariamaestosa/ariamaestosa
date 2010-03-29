@@ -14,8 +14,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _track_h_
-#define _track_h_
+#ifndef __TRACK_H__
+#define __TRACK_H__
 
 class wxFileOutputStream;
 // forward
@@ -24,19 +24,7 @@ namespace irr { namespace io {
     template<class char_type, class super_class> class IIrrXMLReader;
     typedef IIrrXMLReader<char, IXMLBase> IrrXMLReader; } }
 
-#include "jdkmidi/world.h"
-#include "jdkmidi/track.h"
-#include "jdkmidi/multitrack.h"
-#include "jdkmidi/filereadmultitrack.h"
-#include "jdkmidi/fileread.h"
-#include "jdkmidi/fileshow.h"
-#include "jdkmidi/filewritemultitrack.h"
-#include "jdkmidi/msg.h"
-#include "jdkmidi/sysex.h"
-
-#include "jdkmidi/sequencer.h"
-#include "jdkmidi/driver.h"
-#include "jdkmidi/process.h"
+namespace jdkmidi { class MIDITrack; }
 
 #include "Editors/Editor.h"
 #include "Midi/Note.h"

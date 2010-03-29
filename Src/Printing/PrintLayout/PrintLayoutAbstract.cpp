@@ -40,9 +40,7 @@ namespace AriaMaestosa
     const bool HEADER_ON_EVERY_LINE = false;
     
     int repetitionMinimalLength = 2;
-    
-    const bool HIDE_EMPTY_TRACKS = true;
-    
+        
     // -------------------------------------------------------------------------------------------
     
     int getRepetitionMinimalLength()
@@ -563,7 +561,8 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
             
             // terminate current line
             const int maxLevelHeight = (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages);
-            terminateLine( currentLine, layoutPages, maxLevelHeight, HIDE_EMPTY_TRACKS and not first_line,
+            terminateLine( currentLine, layoutPages, maxLevelHeight,
+                           AriaPrintable::getCurrentPrintable()->hideEmptyTracks() and not first_line,
                            current_height, current_page );
             first_line = false;
             
@@ -591,7 +590,8 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     
     // ---- for last line processed
     const int maxLevelHeight = (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages);
-    terminateLine( currentLine, layoutPages, maxLevelHeight, HIDE_EMPTY_TRACKS and not first_line,
+    terminateLine( currentLine, layoutPages, maxLevelHeight,
+                   AriaPrintable::getCurrentPrintable()->hideEmptyTracks() and not first_line,
                    current_height, current_page );
     
     ASSERT(current_height <= (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages));

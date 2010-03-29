@@ -25,7 +25,6 @@
 namespace AriaMaestosa
 {
 
-    class MainFrame;
     class SettingWidget;
 
     class PreferencesDialog : public wxDialog
@@ -36,15 +35,13 @@ namespace AriaMaestosa
         wxBoxSizer* vert_sizer;
 
         wxButton* ok_btn;
-
-        MainFrame* parent;
         
         ptr_vector<SettingWidget> m_setting_widgets;
         
     public:
         LEAK_CHECK();
 
-        PreferencesDialog(MainFrame* parent, PreferencesData* data);
+        PreferencesDialog(wxFrame* parent, PreferencesData* data);
         ~PreferencesDialog();
         void show();
 

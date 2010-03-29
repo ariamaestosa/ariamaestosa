@@ -40,6 +40,7 @@
 
 #include <iostream>
 #include "irrXML/irrXML.h"
+#include "wx/spinctrl.h"
 
 using namespace AriaMaestosa;
 
