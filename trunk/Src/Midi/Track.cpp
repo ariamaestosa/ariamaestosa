@@ -41,6 +41,20 @@
 
 #include <iostream>
 
+#include "jdkmidi/world.h"
+#include "jdkmidi/track.h"
+#include "jdkmidi/multitrack.h"
+#include "jdkmidi/filereadmultitrack.h"
+#include "jdkmidi/fileread.h"
+#include "jdkmidi/fileshow.h"
+#include "jdkmidi/filewritemultitrack.h"
+#include "jdkmidi/msg.h"
+#include "jdkmidi/sysex.h"
+
+#include "jdkmidi/sequencer.h"
+#include "jdkmidi/driver.h"
+#include "jdkmidi/process.h"
+
 #include "wx/utils.h"
 #include "irrXML/irrXML.h"
 

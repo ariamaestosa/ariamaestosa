@@ -95,6 +95,8 @@ namespace AriaMaestosa
         wxCheckListBox* m_track_choice;
         //wxListCtrl* m_track_choice;
         
+        wxCheckBox*    m_hide_empty_tracks; 
+
         wxStaticText* m_page_setup_summary;
         
         PrintableSequence* m_printable_sequence;
@@ -214,6 +216,11 @@ namespace AriaMaestosa
             //m_detect_repetitions_checkbox = new wxCheckBox(parent_panel, wxID_ANY,  _("Automatically detect repeated measures (experimental!)"));
             //m_detect_repetitions_checkbox->SetValue(false);
             //boxSizer->Add(m_detect_repetitions_checkbox, 0, wxALL, 5);
+            
+            // hide empty tracks
+            m_hide_empty_tracks = new wxCheckBox(parent_panel, wxID_ANY,  _("Hide empty tracks"));
+            m_hide_empty_tracks->SetValue(true);
+            boxSizer->Add(m_hide_empty_tracks, 0, wxALL, 5);
             
             // Page setup summary
             {
@@ -346,6 +353,8 @@ namespace AriaMaestosa
             }
             
             m_detect_repetitions = false; //m_detect_repetitions_checkbox->IsChecked();
+            
+            m_printable->hideEmptyTracks(m_hide_empty_tracks->IsChecked());
             
             // terminate the dialog
             Hide();

@@ -59,6 +59,8 @@
 #include "main.h"
 #include <iostream>
 
+#include "wx/spinctrl.h"
+
 #ifdef __WXMAC__
 #include <ApplicationServices/ApplicationServices.h>
 #endif

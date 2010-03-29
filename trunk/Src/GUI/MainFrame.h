@@ -14,17 +14,20 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _mainframe_
-#define _mainframe_
+#ifndef __MAIN_FRAME_H__
+#define __MAIN_FRAME_H__
 
 #include "wx/wx.h"
-#include "wx/scrolbar.h"
-#include "wx/image.h"
-#include "wx/spinctrl.h"
+//#include "wx/scrolbar.h"
+//#include "wx/image.h"
+//#include "wx/spinctrl.h"
 
 #include "Utils.h"
 #include "AriaCore.h"
 #include "ptr_vector.h"
+
+class wxScrollBar;
+class wxSpinCtrl;
 
 namespace AriaMaestosa
 {

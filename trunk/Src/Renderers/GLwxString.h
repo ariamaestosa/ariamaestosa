@@ -1,13 +1,8 @@
 #ifdef RENDERER_OPENGL
-#ifndef _glstring_
-#define _glstring_
+#ifndef __GL_STRING_H__
+#define __GL_STRING_H__
 
 #include "Utils.h"
-#ifdef __WXMAC__
-#include "OpenGL/gl.h"
-#else
-#include <GL/gl.h>
-#endif
 
 #include "wx/wx.h"
 #include "ptr_vector.h"
@@ -25,10 +20,13 @@ namespace AriaMaestosa
         friend class wxGLStringArray;
         friend class wxGLStringNumber;
     private:
-        GLuint* ID;
+        
+        /** here I don't use GLuint to avoid including OpenGL everywhere in the project */
+        unsigned int* ID;
     protected:
         
-        GLuint* getID();
+        /** here I don't use GLuint to avoid including OpenGL everywhere in the project */
+        unsigned int* getID();
         
         TextTexture();
         TextTexture(wxBitmap& bmp);

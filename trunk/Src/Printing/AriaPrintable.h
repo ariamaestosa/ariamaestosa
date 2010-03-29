@@ -72,6 +72,8 @@ namespace AriaMaestosa
           */
         void findUsableHeight();
         
+        bool m_hide_empty_tracks;
+        
     public:
         
         LEAK_CHECK();
@@ -87,6 +89,11 @@ namespace AriaMaestosa
         AriaPrintable(PrintableSequence* seq, bool* success);
         
         virtual ~AriaPrintable();
+        
+        /** @return whether to hide empty tracks */
+        bool   hideEmptyTracks() const { return m_hide_empty_tracks; }
+        
+        void   hideEmptyTracks(const bool hide) { m_hide_empty_tracks = hide; }
         
         /** 
           * @brief Initiate the actual printing of the sequence

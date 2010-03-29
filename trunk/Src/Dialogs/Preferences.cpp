@@ -20,9 +20,12 @@
 #include <iostream>
 
 #include "AriaCore.h"
-#include "GUI/MainFrame.h"
 #include "Midi/Sequence.h"
 #include "PreferencesData.h"
+
+//#include "wx/scrolbar.h"
+//#include "wx/image.h"
+#include "wx/spinctrl.h"
 
 using namespace AriaMaestosa;
 
@@ -129,12 +132,11 @@ END_EVENT_TABLE()
 
 // ---------------------------------------------------------------------------------------------------------
 
-PreferencesDialog::PreferencesDialog(MainFrame* parent, PreferencesData* data) :
+PreferencesDialog::PreferencesDialog(wxFrame* parent, PreferencesData* data) :
 wxDialog(parent, wxID_ANY,
          //I18N: - title of the preferences dialog
          _("Preferences"), wxPoint(100,100), wxSize(500,300), wxCAPTION )
 {
-    PreferencesDialog::parent = parent;
     PreferencesDialog::data = data;
     
     ptr_vector<Setting>& settings = PreferencesData::getInstance()->getSettings();
