@@ -206,12 +206,6 @@ void KeyboardEditor::moveNote(Note& note, const int relativeX, const int relativ
 #pragma mark Render
 #endif
 
-void KeyboardEditor::render()
-{
-    render( RelativeXCoord_empty(), -1, RelativeXCoord_empty(), -1, true );
-}
-
-// -----------------------------------------------------------------------------------------------------------
 
 void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
                             RelativeXCoord mousex_initial, int mousey_initial, bool focus)

@@ -170,6 +170,8 @@ namespace AriaMaestosa
         /** Considering the vertical step, the current scrolling, etc. returns the vertical level coord from a y coord */
         int getLevelAtY(const int y);
         
+        void makeMoveNoteEvent(const int relativeX, const int relativeY, const int lastClickedNote);
+
     public:
         LEAK_CHECK();
         DECLARE_MAGIC_NUMBER();
@@ -240,48 +242,69 @@ namespace AriaMaestosa
         /** override to be notified of key change events */
         virtual void onKeyChange(const int symbol_amount, const PitchSign sharpness_symbol){}
         
-        // ------------------------------------------------------------------------------------------------------
-        // methods that provide basic Editor functionnality like scrollbars, selection, horizontal mouse drag,
-        // note move, etc. children may override them if they need different functionality
-        // ------------------------------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------------------
+        // events
+        // ----------------------------------------------------------------------------------------------------
+        /** event callback for when mouse button is pressed in the editor */
         virtual void mouseDown(RelativeXCoord x, int y);
-        virtual void mouseDrag(RelativeXCoord mousex_current, int mousey_current, RelativeXCoord mousex_initial, int mousey_initial);
-        virtual void mouseUp(RelativeXCoord mousex_current, int mousey_current, RelativeXCoord mousex_initial, int mousey_initial);
+        
+        /** event callback for when mouse button is dragged in the editor */
+        virtual void mouseDrag(RelativeXCoord mousex_current, int mousey_current,
+                               RelativeXCoord mousex_initial, int mousey_initial);
+        
+        /** event callback for when mouse button is release in the editor */
+        virtual void mouseUp(RelativeXCoord mousex_current, int mousey_current,
+                             RelativeXCoord mousex_initial, int mousey_initial);
+        
+        /** event callback for when mouse right button is pressed in the editor */
         virtual void rightClick(RelativeXCoord x, int y);
+        
+        /** event callback invoked repeatedly when mouse button is held down in the editor */
         virtual void mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
                                    RelativeXCoord mousex_initial, int mousey_initial);
-        virtual void TrackPropertiesDialog(RelativeXCoord dragX_arg, int mousey_current,
-                                           RelativeXCoord XBeforeDrag_arg, int mousey_initial);
-        virtual void render();
-        virtual void render(RelativeXCoord mousex_current, int mousey_current,
-                            RelativeXCoord mousex_initial, int, bool focus=false);
         
-        // ------------------------------------------------------------------------------------------------------
-        // methods children must implement (unless they do not use Editor and override every event callback)
-        // ------------------------------------------------------------------------------------------------------
+        /** event callback for when mouse drag exited the bounds of the editor */
+        virtual void mouseExited(RelativeXCoord dragX_arg, int mousey_current,
+                                 RelativeXCoord XBeforeDrag_arg, int mousey_initial);
+        
+        /** called when it's time to render; invokes the other render method in derived editor class */
+        void render();
+        
+        /** called in derived class when it's time to render */
+        virtual void render(RelativeXCoord mousex_current, int mousey_current,
+                            RelativeXCoord mousex_initial, int, bool focus=false) = 0;
+        
+        // ----------------------------------------------------------------------------------------------------
+        // methods children must implement
+        // ----------------------------------------------------------------------------------------------------
         /** if there is a note here, its ID is set in 'noteID'.
           * @return either FOUND_NOTE, FOUND_SELECTED_NOTE or FOUND_NOTHING
           */
-        virtual NoteSearchResult noteAt(RelativeXCoord x, const int y, int& noteID);
+        virtual NoteSearchResult noteAt(RelativeXCoord x, const int y, int& noteID) = 0;
         
         /** to notify the editor that note 'id' was just clicked. */
-        virtual void noteClicked(const int id);
+        virtual void noteClicked(const int id) = 0;
         
-        virtual void addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY);
-        virtual void addNote(const int snappedX, const int mouseY); // for instant notes
+        /** called when user adds a note */
+        virtual void addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY) = 0;
         
-        virtual void selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current, RelativeXCoord& mousex_initial, int mousey_initial);
+        /** variant of 'addNote' for instant notes */
+        virtual void addNote(const int snappedX, const int mouseY) = 0;
         
+        /** called when user completes a selection rectangle */
+        virtual void selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current,
+                                       RelativeXCoord& mousex_initial, int mousey_initial) = 0;
+        
+        virtual void moveNote(Note& note, const int relativeX, const int relativeY) = 0;
+
         /**
           * Editor holds 'sb_position', a float value between 0 and 1 of where the scrollbar is.
           * It is up to each editor to determine how many pixels of scrolling results from the value
           * of 'sb_position'.
           */
-        virtual int getYScrollInPixels();
-        
-        virtual void makeMoveNoteEvent(const int relativeX, const int relativeY, const int lastClickedNote);
-        virtual void moveNote(Note& note, const int relativeX, const int relativeY);
-        
+        virtual int getYScrollInPixels() = 0;
+                
+        /** @return the (potentially translated) name of this editor */
         virtual wxString getName() const = 0;
         
         // ------------------------------------------------------------------------------------------------------

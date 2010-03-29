@@ -120,14 +120,6 @@ void Editor::render()
 
 // ------------------------------------------------------------------------------------------------------------
 
-//FIXME: make pure virtual
-void Editor::render(RelativeXCoord mousex_current, int mousey_current,
-                    RelativeXCoord mousex_initial, int mousey_initial, const bool focus)
-{
-}
-
-// ------------------------------------------------------------------------------------------------------------
-
 void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
 {
     ASSERT( MAGIC_NUMBER_OK() );
@@ -549,7 +541,7 @@ end_of_func:
 
 // ------------------------------------------------------------------------------------------------------------
 
-void Editor::TrackPropertiesDialog(RelativeXCoord mousex_current, int mousey_current,
+void Editor::mouseExited(RelativeXCoord mousex_current, int mousey_current,
                          RelativeXCoord mousex_initial, int mousey_initial)
 {
     ASSERT( MAGIC_NUMBER_OK() );
@@ -712,42 +704,12 @@ void Editor::rightClick(RelativeXCoord x, int y)
 }
 
 // ------------------------------------------------------------------------------------------------------------
-// ------------------------------- note stuff to be implemented by children -----------------------------------
 // ------------------------------------------------------------------------------------------------------------
+
 #if 0
 #pragma mark -
-#pragma mark To be implemented in children
 #endif
 
-//FIXME: should these be pure virtual?
-NoteSearchResult Editor::noteAt(RelativeXCoord x, const int y, int& noteID)
-{
-    std::cerr << "ERROR base class method called" << std::endl;
-    return FOUND_NOTHING;
-}
-void Editor::noteClicked(const int id)
-{
-    std::cerr << "ERROR base class method called" << std::endl;
-}
-void Editor::addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY)
-{ 
-    std::cerr << "ERROR base class method called" << std::endl;
-}
-void Editor::addNote(const int snappedX, const int mouseY)
-{
-    std::cerr << "ERROR base class method called" << std::endl;
-}
-void Editor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current,
-                               RelativeXCoord& mousex_initial, int mousey_initial)
-{
-    std::cerr << "ERROR base class method called" << std::endl;
-}
-void Editor::moveNote(Note& note, const int x_steps_to_move, const int y_steps_to_move)
-{ 
-    std::cerr << "ERROR base class method called" << std::endl;
-}
-
-// ------------------------------------------------------------------------------------------------------------
 int Editor::getLevelAtY(const int y)
 {
     return (y - getEditorYStart() + getYScrollInPixels())/ystep;
@@ -807,18 +769,6 @@ const int Editor::getWidth()        const {    return width;                    
 #pragma mark Scrolling
 #endif
 
-int Editor::getYScrollInPixels()
-{
-    ASSERT( MAGIC_NUMBER_OK() );
-    
-    // since each editor takes care of its own height this base class cannot return the correct answer
-    // therefore this method needs to be overriden by any editor
-    std::cout << "Edit base class called. This should not happen." << std::endl;
-    ASSERT(false);
-    return -1;
-}
-
-// ------------------------------------------------------------------------------------------------------------
 
 void Editor::scroll(float amount)
 {

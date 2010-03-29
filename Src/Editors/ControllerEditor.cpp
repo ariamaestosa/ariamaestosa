@@ -54,10 +54,6 @@ int ControllerEditor::getCurrentControllerType()
     return controllerChoice->getControllerID();
 }
 
-void ControllerEditor::render()
-{
-    render( RelativeXCoord_empty(), -1, RelativeXCoord_empty(), -1, true );
-}
 
 void ControllerEditor::renderEvents()
 {
@@ -367,20 +363,14 @@ void ControllerEditor::rightClick(RelativeXCoord x, const int y)
 
 }
 
-void ControllerEditor::TrackPropertiesDialog(RelativeXCoord mousex_current, int mousey_current,
+void ControllerEditor::mouseExited(RelativeXCoord mousex_current, int mousey_current,
                                    RelativeXCoord mousex_initial, int mousey_initial)
 {
     // if mouse leaves the frame, it has the same effect as if it was released (terminate drag, terminate selection, etc.)
     this->mouseUp(mousex_current, mousey_current, mousex_initial, mousey_initial);
     Display::render();
 }
-
-int ControllerEditor::getYScrollInPixels()
-{
-    /*Unused*/
-    return -1;
-}
-
+    
 ControllerEditor::~ControllerEditor()
 {
 }

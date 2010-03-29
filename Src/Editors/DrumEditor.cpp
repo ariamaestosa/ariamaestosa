@@ -35,9 +35,11 @@
 
 #include "AriaCore.h"
 
-namespace AriaMaestosa {
+using namespace AriaMaestosa;
 
-const int y_step = 10;
+const int Y_STEP = 10;
+
+// ----------------------------------------------------------------------------------------------------------
 
 DrumInfo::DrumInfo(int midiKey, const bool a_section)
 {
@@ -47,9 +49,10 @@ DrumInfo::DrumInfo(int midiKey, const bool a_section)
 
     sectionExpanded=true;
 }
-// ***********************************************************************************************************************************************************
-// **********************************************************    CONSTRUCTOR      ****************************************************************************
-// ***********************************************************************************************************************************************************
+
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------    CONSTRUCTOR   ------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 static const wxString g_drum_names[] =
 {
@@ -181,8 +184,8 @@ static const wxString g_drum_names[] =
     wxT(" "), // 119*/
 };
 
-    DrumEditor::DrumEditor(Track* track) : Editor(track),
-    drum_names_renderer( g_drum_names, 96-27)
+// ----------------------------------------------------------------------------------------------------------
+DrumEditor::DrumEditor(Track* track) : Editor(track), drum_names_renderer( g_drum_names, 96-27 )
 {
 
     sb_position=0;
@@ -195,15 +198,21 @@ static const wxString g_drum_names[] =
     Editor::useInstantNotes();
 
 #ifdef __WXMAC__
-    drum_names_renderer.setFont( wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, /*wxFONTWEIGHT_BOLD*/ wxFONTWEIGHT_NORMAL) );
+    drum_names_renderer.setFont( wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
+                                        /*wxFONTWEIGHT_BOLD*/ wxFONTWEIGHT_NORMAL) );
 #else
-    drum_names_renderer.setFont( wxFont(7, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, /*wxFONTWEIGHT_BOLD*/ wxFONTWEIGHT_NORMAL) );
+    drum_names_renderer.setFont( wxFont(7, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
+                                        /*wxFONTWEIGHT_BOLD*/ wxFONTWEIGHT_NORMAL) );
 #endif
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 DrumEditor::~DrumEditor()
 {
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void DrumEditor::useCustomDrumSet()
 {
@@ -263,7 +272,8 @@ void DrumEditor::useCustomDrumSet()
         if (inuse[50]) drums.push_back( DrumInfo(50)); // "Tom 6"
     }
 
-    if (inuse[76] or inuse[77] or inuse[69] or inuse[67] or inuse[68] or inuse[58] or inuse[62] or inuse[63] or inuse[64])
+    if (inuse[76] or inuse[77] or inuse[69] or inuse[67] or inuse[68] or inuse[58] or inuse[62] or
+        inuse[63] or inuse[64])
     {
         drums.push_back( DrumInfo(91, true) ); // African
         if (inuse[76]) drums.push_back( DrumInfo(76)); // "Hi wood block"
@@ -277,7 +287,8 @@ void DrumEditor::useCustomDrumSet()
         if (inuse[64]) drums.push_back( DrumInfo(64)); // "Low conga"
     }
 
-    if (inuse[73] or inuse[74] or inuse[75] or inuse[78] or inuse[79] or inuse[70] or inuse[56] or inuse[60] or inuse[61] or inuse[85] or inuse[86] or inuse[87])
+    if (inuse[73] or inuse[74] or inuse[75] or inuse[78] or inuse[79] or inuse[70] or inuse[56] or
+        inuse[60] or inuse[61] or inuse[85] or inuse[86] or inuse[87])
     {
         drums.push_back( DrumInfo(92, true) ); // Latin
         if (inuse[73]) drums.push_back( DrumInfo(73)); // "Short guiro"
@@ -294,7 +305,8 @@ void DrumEditor::useCustomDrumSet()
         if (inuse[87]) drums.push_back( DrumInfo(87)); // "Open surdo"
     }
 
-    if (inuse[54] or inuse[65] or inuse[66] or inuse[71] or inuse[72] or inuse[80] or inuse[81] or inuse[82] or inuse[83] or inuse[84] or inuse[31])
+    if (inuse[54] or inuse[65] or inuse[66] or inuse[71] or inuse[72] or inuse[80] or inuse[81] or
+        inuse[82] or inuse[83] or inuse[84] or inuse[31])
     {
         drums.push_back( DrumInfo(93, true) ); // Others
         if (inuse[54]) drums.push_back( DrumInfo(54)); // "Tambourine"
@@ -330,6 +342,8 @@ void DrumEditor::useCustomDrumSet()
     for(unsigned int n=0; n<drums.size(); n++)
         midiKeyToVectorID[ drums[n].midiKey ]=n;
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void DrumEditor::useDefaultDrumSet()
 {
@@ -423,9 +437,13 @@ void DrumEditor::useDefaultDrumSet()
 
 
 
-// *******************************************************************************************************************************************************
-// ***********************************************************    EDITOR      ****************************************************************************
-// *******************************************************************************************************************************************************
+// ----------------------------------------------------------------------------------------------------------
+// ---------------------------------------------  EDITOR  ---------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+#if 0
+#pragma mark -
+#pragma mark Editor overrides
+#endif
 
 NoteSearchResult DrumEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 {
@@ -442,7 +460,7 @@ NoteSearchResult DrumEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 
         const int drumy=getYForDrum(drumIDInVector);
 
-        if (x.getRelativeTo(EDITOR)>drumx-1 and x.getRelativeTo(EDITOR)<drumx+5 and y>drumy and y<drumy+y_step)
+        if (x.getRelativeTo(EDITOR)>drumx-1 and x.getRelativeTo(EDITOR)<drumx+5 and y>drumy and y<drumy+Y_STEP)
         {
 
             noteID = n;
@@ -464,15 +482,21 @@ NoteSearchResult DrumEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
     return FOUND_NOTHING;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void DrumEditor::noteClicked(const int id)
 {
     track->selectNote(ALL_NOTES, false);
     track->selectNote(id, true);
     track->playNote(id);
 }
+
+// ----------------------------------------------------------------------------------------------------------
+
 void DrumEditor::addNote(const int snappedX, const int mouseY)
 {
-    const int drumID = getDrumAtY(mouseY); // FIXME - double checks? something very similar is also checked in MouseDown
+    // FIXME - double checks? something very similar is also checked in MouseDown
+    const int drumID = getDrumAtY(mouseY); 
 
     if (drumID < 0) return;
     if (drumID > (int)drums.size()-1) return;
@@ -482,6 +506,8 @@ void DrumEditor::addNote(const int snappedX, const int mouseY)
 
     track->action( new Action::AddNote(note, snappedX, snappedX+sequence->ticksPerBeat()/32+1, default_volume ) );
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void DrumEditor::moveNote(Note& note, const int relativeX, const int relativeY)
 {
@@ -502,13 +528,17 @@ void DrumEditor::moveNote(Note& note, const int relativeX, const int relativeY)
     //ASSERT(note.pitchID>=0);
     ASSERT(note.pitchID<128);
 
-    // find where on screen this particular drum is drawn (their screen position is not in the same order as the midi order)
+    // find where on screen this particular drum is drawn (their screen position is not in the same order
+    // as the midi order)
     int newVectorLoc = midiKeyToVectorID[note.pitchID];
     if (newVectorLoc == -1) return;
 
     // move to the new location (in screen order)
     if (newVectorLoc + relativeY < 0 or
-       newVectorLoc + relativeY > (int)drums.size()-1 ) return; // discard moves that would result in an out-of-bound note
+       newVectorLoc + relativeY > (int)drums.size()-1 )
+    {
+        return; // discard moves that would result in an out-of-bound note
+    }
 
     newVectorLoc += relativeY;
 
@@ -530,9 +560,12 @@ void DrumEditor::moveNote(Note& note, const int relativeX, const int relativeY)
     note.pitchID = new_pitchID;
 }
 
-void DrumEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current, RelativeXCoord& mousex_initial, int mousey_initial)
+// ----------------------------------------------------------------------------------------------------------
+
+void DrumEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current,
+                                   RelativeXCoord& mousex_initial, int mousey_initial)
 {
-    for(int n=0; n<track->getNoteAmount(); n++)
+    for (int n=0; n<track->getNoteAmount(); n++)
     {
         const int drumx=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
 
@@ -559,10 +592,12 @@ void DrumEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_cu
     }//next note
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 int DrumEditor::getYScrollInPixels()
 {
     // check if visible area is large enough to display everything
-    if ((int)(drums.size()*y_step) < height)
+    if ((int)(drums.size()*Y_STEP) < height)
     {
         useVerticalScrollbar(false);
         return 0;
@@ -572,12 +607,17 @@ int DrumEditor::getYScrollInPixels()
         useVerticalScrollbar(true);
     }
 
-    return (int)(   sb_position*(drums.size()*y_step-height )   );
+    return (int)(   sb_position*(drums.size()*Y_STEP-height )   );
 }
 
-// *******************************************************************************************************************************************************
-// ***********************************************************    EVENTS      ****************************************************************************
-// *******************************************************************************************************************************************************
+// ----------------------------------------------------------------------------------------------------------
+// ------------------------------------------    EVENTS    --------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+#if 0
+#pragma mark -
+#pragma mark Events
+#endif
+
 void DrumEditor::mouseDown(RelativeXCoord x, const int y)
 {
 
@@ -619,6 +659,8 @@ void DrumEditor::mouseDown(RelativeXCoord x, const int y)
 
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void DrumEditor::mouseUp(RelativeXCoord mousex_current, const int mousey_current,
                          RelativeXCoord mousex_initial, const int mousey_initial)
 {
@@ -641,14 +683,13 @@ void DrumEditor::mouseUp(RelativeXCoord mousex_current, const int mousey_current
 
 }
 
-// ***********************************************************************************************************************************************************
-// ************************************************************    RENDER      *******************************************************************************
-// ***********************************************************************************************************************************************************
-
-void DrumEditor::render()
-{
-    render( RelativeXCoord_empty(), -1, RelativeXCoord_empty(), -1, true );
-}
+// ----------------------------------------------------------------------------------------------------------
+// -------------------------------------------    RENDER     ------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+#if 0
+#pragma mark -
+#pragma mark Rendering
+#endif
 
 void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
                         RelativeXCoord mousex_initial, int mousey_initial, bool focus)
@@ -663,7 +704,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
     const int drumAmount = drums.size();
     for(int drumID=0; drumID<drumAmount+1; drumID++)
     {
-        const int y = getEditorYStart() + drumID*y_step - getYScrollInPixels();
+        const int y = getEditorYStart() + drumID*Y_STEP - getYScrollInPixels();
         if (y<getEditorYStart() or y>getYEnd()) continue;
 
         AriaRender::line(Editor::getEditorXStart(), y, getXEnd(), y);
@@ -675,10 +716,11 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
     const int noteAmount = track->getNoteAmount();
     for(int n=0; n<noteAmount; n++)
     {
-        const int drumx=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels() + Editor::getEditorXStart();
+        const int drumx = track->getNoteStartInPixels(n) - sequence->getXScrollInPixels() +
+                          Editor::getEditorXStart();
 
         // don't draw notes that won't visible
-        if (drumx<0) continue;
+        if (drumx<0)     continue;
         if (drumx>width) break;
 
         ASSERT(track->getNotePitchID(n)>=0);
@@ -695,7 +737,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         const int drumy=getYForDrum(drumIDInVector);
 
         AriaRender::triangle(drumx,     drumy,
-                             drumx,     drumy+y_step,
+                             drumx,     drumy+Y_STEP,
                              drumx+5,   drumy+5);
     }
 
@@ -722,7 +764,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         const int y_difference = mousey_current-mousey_initial;
 
         const int x_steps_to_move = (int)( snapMidiTickToGrid(x_difference)*sequence->getZoom() );
-        const int y_steps_to_move = (int)round(y_difference/ (float)y_step );
+        const int y_steps_to_move = (int)round(y_difference/ (float)Y_STEP );
 
         // move a single note
         if (lastClickedNote != -1)
@@ -735,9 +777,9 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
                 const int drumy=getYForDrum(drumIDInVector);
 
-                AriaRender::triangle(drumx + x_steps_to_move,       drumy + y_steps_to_move*y_step,
-                                     drumx + x_steps_to_move,       drumy + (y_steps_to_move+1)*y_step,
-                                     drumx + 5 + x_steps_to_move,   drumy + y_step/2 + y_steps_to_move*y_step);
+                AriaRender::triangle(drumx + x_steps_to_move,       drumy + y_steps_to_move*Y_STEP,
+                                     drumx + x_steps_to_move,       drumy + (y_steps_to_move+1)*Y_STEP,
+                                     drumx + 5 + x_steps_to_move,   drumy + Y_STEP/2 + y_steps_to_move*Y_STEP);
             }
 
         }
@@ -759,9 +801,9 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
                 const int drumy=getYForDrum(drumIDInVector);
 
-                AriaRender::triangle(drumx+x_steps_to_move,         drumy + y_steps_to_move*y_step,
-                                     drumx+x_steps_to_move,         drumy + (y_steps_to_move+1)*y_step,
-                                     drumx + 5 + x_steps_to_move,   drumy + y_step/2 + y_steps_to_move*y_step);
+                AriaRender::triangle(drumx+x_steps_to_move,         drumy + y_steps_to_move*Y_STEP,
+                                     drumx+x_steps_to_move,         drumy + (y_steps_to_move+1)*Y_STEP,
+                                     drumx + 5 + x_steps_to_move,   drumy + Y_STEP/2 + y_steps_to_move*Y_STEP);
             } // next note
 
 
@@ -788,7 +830,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
     {
         drumY++;
 
-        const int y = getEditorYStart() + drumY*y_step - getYScrollInPixels();
+        const int y = getEditorYStart() + drumY*Y_STEP - getYScrollInPixels();
         if (y<getEditorYStart()-10 or y>getYEnd()) continue;
 
         // only show used drums widget
@@ -818,7 +860,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
             AriaRender::primitives();
             AriaRender::color(0,0,0);
             AriaRender::rect(Editor::getEditorXStart(), y,
-                             getXEnd(), y+y_step);
+                             getXEnd(), y+Y_STEP);
 
             AriaRender::color(1,1,1);
 
@@ -879,6 +921,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
     AriaRender::endScissors();
 }
 
+// ----------------------------------------------------------------------------------------------------------
 
 int DrumEditor::getDrumAtY(const int given_y)
 {
@@ -888,10 +931,10 @@ int DrumEditor::getDrumAtY(const int given_y)
     {
         drumY++;
 
-        const int y = getEditorYStart() + drumY*y_step - getYScrollInPixels();
+        const int y = getEditorYStart() + drumY*Y_STEP - getYScrollInPixels();
 
         // check if given y is in the area drum drumID
-        if ( given_y > y and given_y < y+y_step)  return drumID;
+        if ( given_y > y and given_y < y+Y_STEP)  return drumID;
 
         // if section is collapsed, skip all its elements
         ASSERT_E(drumID,<,drums.size());
@@ -908,6 +951,8 @@ int DrumEditor::getDrumAtY(const int given_y)
 
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 int DrumEditor::getYForDrum(const int given_drumID)
 {
 
@@ -916,7 +961,7 @@ int DrumEditor::getYForDrum(const int given_drumID)
     {
         drumY++;
 
-        const int y = getEditorYStart() + drumY*y_step - getYScrollInPixels();
+        const int y = getEditorYStart() + drumY*Y_STEP - getYScrollInPixels();
 
         if ( (int)given_drumID == (int)drumID)
         {
@@ -938,5 +983,4 @@ int DrumEditor::getYForDrum(const int given_drumID)
 
 }
 
-
-}
+// ----------------------------------------------------------------------------------------------------------

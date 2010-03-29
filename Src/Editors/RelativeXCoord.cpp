@@ -192,7 +192,7 @@ int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
                     if (relativeToMidi != -1)
                     {
                         return int(relativeToMidi * sequence->getZoom()) -
-                               sequence->getXScrollInPixels() + Editor::getEditorXStart();
+                                   sequence->getXScrollInPixels() + Editor::getEditorXStart();
                     }
                     else
                     {
@@ -206,7 +206,10 @@ int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
         case MIDI:
 
 
-            if (relativeToMidi != -1) return relativeToMidi;
+            if (relativeToMidi != -1)
+            {
+                return relativeToMidi;
+            }
             else
             {
 
