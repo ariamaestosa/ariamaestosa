@@ -49,9 +49,8 @@ namespace AriaMaestosa
         ControllerEditor(Track* track);
         ~ControllerEditor();
         
-        void render();
-        void render(RelativeXCoord mousex_current, int mousey_current,
-                    RelativeXCoord mousex_initial, int mousey_initial, bool focus=false);
+        virtual void render(RelativeXCoord mousex_current, int mousey_current,
+                            RelativeXCoord mousex_initial, int mousey_initial, bool focus=false);
         
         void renderEvents();
         
@@ -65,17 +64,59 @@ namespace AriaMaestosa
         void mouseUp(RelativeXCoord mousex_current, int mousey_current,
                      RelativeXCoord mousex_initial, int mousey_initial);
         void rightClick(RelativeXCoord, const int y);
-        void TrackPropertiesDialog(RelativeXCoord dragX_arg, int mousey_current,
-                                   RelativeXCoord XBeforeDrag_arg, int mousey_initial);
+        void mouseExited(RelativeXCoord dragX_arg, int mousey_current,
+                         RelativeXCoord XBeforeDrag_arg, int mousey_initial);
         
         int getSelectionBegin();
         int getSelectionEnd();
         
         int getCurrentControllerType();
         
-        int getYScrollInPixels();
+        /** implemented from base class Editor's required interface */
+        virtual int getYScrollInPixels()
+        {
+            // no scrolling in this editor
+            return 0;
+        }        
         
+        /** implemented from base class Editor's required interface */
+        virtual void addNote(const int snappedX, const int mouseY)
+        {
+            assert(false); // not supported in this editor
+        }
         
+        /** to notify the editor that note 'id' was just clicked. */
+        virtual void noteClicked(const int id)
+        {
+            assert(false); // not supported in this editor
+        }
+        
+        /** called when user adds a note */
+        virtual void addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY)
+        {
+            assert(false); // not supported in this editor
+        }
+        
+        /** called when user completes a selection rectangle */
+        virtual void selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current,
+                                       RelativeXCoord& mousex_initial, int mousey_initial)
+        {
+            assert(false); // not supported in this editor
+        }
+        
+        /** called when user completes a selection rectangle */
+        virtual NoteSearchResult noteAt(RelativeXCoord x, const int y, int& noteID)
+        {
+            assert(false); // not supported in this editor
+            return FOUND_NOTHING;
+        }
+        
+        /** called when user completes a selection rectangle */
+        virtual void moveNote(Note& note, const int relativeX, const int relativeY)
+        {
+            assert(false); // not supported in this editor
+        }
+
         virtual wxString getName() const { return _("Controller Editor"); }
     };
     

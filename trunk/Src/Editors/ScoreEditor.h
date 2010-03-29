@@ -151,6 +151,15 @@ namespace AriaMaestosa
         
         bool musicalNotationEnabled, linearNotationEnabled;
         
+        /** helper method for rendering */
+        void renderScore(ScoreAnalyser* analyser, const int silences_y);
+        
+        /** helper method for rendering */
+        void renderNote_pass1(NoteRenderInfo& renderInfo);
+        
+        /** helper method for rendering */
+        void renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* analyser);
+        
     public:
         ScoreEditor(Track* track);
         ~ScoreEditor();
@@ -174,38 +183,64 @@ namespace AriaMaestosa
         /** Called when user changes key. parameters are e.g. 5 sharps, 3 flats, etc. */
         virtual void onKeyChange(const int symbol_amount, const PitchSign sharpness_symbol);
         
-        void render(RelativeXCoord mousex_current, int mousey_current,
-                    RelativeXCoord mousex_initial, int mousey_initial, bool focus=false);
-        void renderScore(ScoreAnalyser* analyser, const int silences_y);
-        //void renderSilence(const int tick, const int tick_length, const int silences_y);
-        void renderNote_pass1(NoteRenderInfo& renderInfo);
-        void renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* analyser);
+        virtual void render(RelativeXCoord mousex_current, int mousey_current,
+                            RelativeXCoord mousex_initial, int mousey_initial, bool focus=false);
+        
         
         void updatePosition(const int from_y, const int to_y, const int width, const int height, const int barHeight);
         
-        void mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
-                           RelativeXCoord mousex_initial, int mousey_initial);
-        void mouseDown(RelativeXCoord, int y);
-        void mouseDrag(RelativeXCoord mousex_current, int mousey_current,
-                       RelativeXCoord mousex_initial, int mousey_initial);
-        void mouseUp(RelativeXCoord mousex_current, int mousey_current,
-                     RelativeXCoord mousex_initial, int mousey_initial);
-        void rightClick(RelativeXCoord x, int y);
-        void TrackPropertiesDialog(RelativeXCoord mousex_current, int mousey_current,
+        /** event callback from base class */
+        virtual void mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
                                    RelativeXCoord mousex_initial, int mousey_initial);
         
-        int getYScrollInPixels();
-        NoteSearchResult noteAt(RelativeXCoord x, const int y, int& noteID);
-        void noteClicked(const int id);
-        void addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY);
-        void moveNote(Note& note, const int x_steps_to_move, const int y_steps_to_move);
-        void selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current, RelativeXCoord& mousex_initial, int mousey_initial);
+        /** event callback from base class */
+        virtual void mouseDown(RelativeXCoord, int y);
+        
+        /** event callback from base class */
+        virtual void mouseDrag(RelativeXCoord mousex_current, int mousey_current,
+                               RelativeXCoord mousex_initial, int mousey_initial);
+        
+        /** event callback from base class */
+        virtual void mouseUp(RelativeXCoord mousex_current, int mousey_current,
+                             RelativeXCoord mousex_initial, int mousey_initial);
+        
+        /** event callback from base class */
+        virtual void rightClick(RelativeXCoord x, int y);
+        
+        virtual void mouseExited(RelativeXCoord mousex_current, int mousey_current,
+                                 RelativeXCoord mousex_initial, int mousey_initial);
+        
+        /** implemented from base class Editor's required interface */
+        virtual int getYScrollInPixels();
         
         /** user clicked on a sign in the track's header (called from 'SetAccidentalSign' Action) */
         void setNoteSign(const int sign, const int noteID);
         
+        /** implemented from base class Editor's required interface */
+        virtual NoteSearchResult noteAt(RelativeXCoord x, const int y, int& noteID);
         
+        /** implemented from base class Editor's required interface */
+        virtual void noteClicked(const int id);
+        
+        /** implemented from base class Editor's required interface */
+        virtual void addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY);
+        
+        /** implemented from base class Editor's required interface */
+        virtual void moveNote(Note& note, const int x_steps_to_move, const int y_steps_to_move);
+        
+        /** implemented from base class Editor's required interface */
+        virtual void selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current,
+                                       RelativeXCoord& mousex_initial, int mousey_initial);
+        
+        /** implemented from base class Editor's required interface */
         virtual wxString getName() const { return _("Score Editor"); }
+        
+        /** implemented from base class Editor's required interface */
+        virtual void addNote(const int snappedX, const int mouseY)
+        {
+            // not supported in this editor
+            assert(false);
+        }
 
     };
     

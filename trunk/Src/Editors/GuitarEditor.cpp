@@ -123,13 +123,6 @@ void GuitarEditor::tuningUpdated(const bool user_triggered)
 
 // ---------------------------------------------------------------------------------------------------------
 
-void GuitarEditor::render()
-{
-    render( RelativeXCoord_empty(), -1, RelativeXCoord_empty(), -1, true );
-}
-
-// ---------------------------------------------------------------------------------------------------------
-
 void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
                           RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {

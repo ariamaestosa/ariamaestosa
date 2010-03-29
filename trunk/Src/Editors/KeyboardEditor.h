@@ -39,29 +39,47 @@ namespace AriaMaestosa
         KeyboardEditor(Track* data);
         virtual ~KeyboardEditor();
         
-        void mouseDown(RelativeXCoord x, const int y);
+        /** event callback from base class */
+        virtual void mouseDown(RelativeXCoord x, const int y);
         
-        void render();
-        void render(RelativeXCoord mousex_current, int mousey_current,
-                    RelativeXCoord mousex_initial, int mousey_initial, bool focus=false);
-        
-        void selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current,
-                               RelativeXCoord& mousex_initial, int mousey_initial);
-        
-        int getYScrollInPixels();
-        
-        NoteSearchResult noteAt(RelativeXCoord x, const int y, int& noteID);
-        void noteClicked(const int id);
-        void addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY);
-        void moveNote(Note& note, const int relativeX, const int relativeY);
+        virtual void render(RelativeXCoord mousex_current, int mousey_current,
+                            RelativeXCoord mousex_initial, int mousey_initial, bool focus=false);
+
+
         
         int levelToY(const int level)
         {
             return level*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels();
         }
         
+        /** implemented from base class Editor's required interface */
+        virtual int getYScrollInPixels();
+        
+        /** implemented from base class Editor's required interface */
+        virtual NoteSearchResult noteAt(RelativeXCoord x, const int y, int& noteID);
+        
+        /** implemented from base class Editor's required interface */
+        virtual void noteClicked(const int id);
+        
+        /** implemented from base class Editor's required interface */
+        virtual void addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY);
+        
+        /** implemented from base class Editor's required interface */
+        virtual void moveNote(Note& note, const int relativeX, const int relativeY);
+        
+        
+        /** implemented from base class Editor's required interface */
+        virtual void selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current,
+                                       RelativeXCoord& mousex_initial, int mousey_initial);
+        
+        /** implemented from base class Editor's required interface */
         virtual wxString getName() const { return _("Keyboard Editor"); }
         
+        /** implemented from base class Editor's required interface */
+        virtual void addNote(const int snappedX, const int mouseY)
+        {
+            assert(false); // not supported in this editor
+        }
     };
 }
 

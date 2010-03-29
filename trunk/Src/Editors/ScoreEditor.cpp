@@ -1350,10 +1350,10 @@ void ScoreEditor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_curren
 
 // ------------------------------------------------------------------------------------------------------------
 
-void ScoreEditor::TrackPropertiesDialog(RelativeXCoord mousex_current, int mousey_current,
+void ScoreEditor::mouseExited(RelativeXCoord mousex_current, int mousey_current,
                               RelativeXCoord mousex_initial, int mousey_initial)
 {
-    Editor::TrackPropertiesDialog(mousex_current, mousey_current, mousex_initial, mousey_initial);
+    Editor::mouseExited(mousex_current, mousey_current, mousex_initial, mousey_initial);
 }
 
 // ------------------------------------------------------------------------------------------------------------
