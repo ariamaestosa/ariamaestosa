@@ -509,13 +509,18 @@ namespace AriaMaestosa
         
         g_printable = this;
         
-        // draw scores
-        const int grandStaffCenterY = (m_g_clef and m_f_clef ? (g_clef_y_to + f_clef_y_from)/2 : -1);
+        // draw track name
+        int score_area_from_y = (m_g_clef ? g_clef_y_from : f_clef_y_from);
+        int score_area_to_y   = (m_f_clef ? f_clef_y_to   : g_clef_y_to);
+        drawTrackName(dc, currentTrack, trackCoords->x0, score_area_from_y, score_area_to_y);
         
+        // ---- draw scores
+        const int grandStaffCenterY = (m_g_clef and m_f_clef ? (g_clef_y_to + f_clef_y_from)/2 : -1);
+
         if (m_g_clef)
         {
             ClefRenderType clef = (m_f_clef ? G_CLEF_FROM_GRAND_STAFF : G_CLEF_ALONE);
-            analyseAndDrawScore(clef, *g_clef_analyser, currentLine, currentTrack.m_track,
+            analyseAndDrawScore(clef, *g_clef_analyser, currentLine, currentTrack.getTrack(),
                                 dc, abs(scoreData->extra_lines_above_g_score),
                                 abs(scoreData->extra_lines_under_g_score),
                                 trackCoords->x0, g_clef_y_from, trackCoords->x1, g_clef_y_to,
@@ -526,7 +531,7 @@ namespace AriaMaestosa
         {
             ClefRenderType clef = (m_g_clef ? F_CLEF_FROM_GRAND_STAFF : F_CLEF_ALONE);
 
-            analyseAndDrawScore(clef, *f_clef_analyser, currentLine, currentTrack.m_track,
+            analyseAndDrawScore(clef, *f_clef_analyser, currentLine, currentTrack.getTrack(),
                                 dc, abs(scoreData->extra_lines_above_f_score),
                                 abs(scoreData->extra_lines_under_f_score),
                                 trackCoords->x0, f_clef_y_from, trackCoords->x1, f_clef_y_to,
@@ -555,7 +560,7 @@ namespace AriaMaestosa
         ScoreData* scoreData = new ScoreData();
         lineTrack.editor_data = scoreData;
         
-        const Track* track = lineTrack.m_track;
+        const Track* track = lineTrack.getTrack();
         ScoreEditor* scoreEditor = track->graphics->scoreEditor;
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         

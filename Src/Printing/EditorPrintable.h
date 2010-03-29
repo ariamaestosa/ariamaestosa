@@ -69,6 +69,9 @@ namespace AriaMaestosa
         static void renderArc(wxDC& dc, const int center_x, const int center_y,
                               const int radius_x, const int radius_y);
         
+        /** Utility function : renders the track name at the given coordinates */
+        static void drawTrackName(wxDC& dc, const LineTrackRef& currentTrack, int x, int y0, int y1);
+
     public:
         EditorPrintable();
         virtual ~EditorPrintable();

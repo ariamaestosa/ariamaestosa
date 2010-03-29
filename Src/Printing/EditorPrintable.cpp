@@ -190,6 +190,16 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
 }
 
 // -------------------------------------------------------------------------------------------
+
+void EditorPrintable::drawTrackName(wxDC& dc, const LineTrackRef& currentTrack, int x, int y0, int y1)
+{
+    wxString label = currentTrack.getTrack()->getName();
+    wxSize textSize = dc.GetTextExtent(label);
+    dc.DrawRotatedText( label, x - textSize.GetHeight() - 20,
+                       (y0 + y1)/2 + textSize.GetWidth()/2,
+                       90 /* degrees */ );
+}
+// -------------------------------------------------------------------------------------------
     
 //Range<int> EditorPrintable::getNoteAreaX(const int trackID, LayoutLine& line, int noteID)
 //{
@@ -201,7 +211,7 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
 Range<int> EditorPrintable::getNoteSymbolX(const int trackID, LayoutLine& line, int noteID)
 {
     return tickToX(trackID, line,
-                   line.getLineTrackRef(trackID).m_track->getNoteStartInMidiTicks(noteID));
+                   line.getLineTrackRef(trackID).getTrack()->getNoteStartInMidiTicks(noteID));
 }
 
 // -------------------------------------------------------------------------------------------
