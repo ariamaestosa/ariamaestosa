@@ -363,6 +363,7 @@ namespace AriaMaestosa
             m_detect_repetitions = false; //m_detect_repetitions_checkbox->IsChecked();
             
             m_printable->hideEmptyTracks( (print_one_track ? false : m_hide_empty_tracks->IsChecked()) );
+            m_printable->showTrackNames( not print_one_track );
             
             // terminate the dialog
             Hide();
