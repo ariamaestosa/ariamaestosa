@@ -218,10 +218,12 @@ namespace AriaMaestosa
             //boxSizer->Add(m_detect_repetitions_checkbox, 0, wxALL, 5);
             
             // hide empty tracks
-            m_hide_empty_tracks = new wxCheckBox(parent_panel, wxID_ANY,  _("Hide empty tracks"));
-            m_hide_empty_tracks->SetValue(true);
+            m_hide_empty_tracks = new wxCheckBox(parent_panel, wxID_ANY,  _("Omit instruments that play nothing on the current line"));
+            m_hide_empty_tracks->SetValue(false);
+            m_hide_empty_tracks->SetToolTip( _("If some instrument plays nothing during a long part of the song, checking this option can make the printed score tighter by eliminating empty lines") );
             boxSizer->Add(m_hide_empty_tracks, 0, wxALL, 5);
-            
+            m_hide_empty_tracks->Enable(false);
+
             // Page setup summary
             {
                 wxStaticBoxSizer* pageSetupSizer = new wxStaticBoxSizer(wxHORIZONTAL, parent_panel, _("Page Setup"));
@@ -312,12 +314,16 @@ namespace AriaMaestosa
         
         void onSelectCurrentTrackOnly(wxCommandEvent& evt)
         {
+            m_hide_empty_tracks->SetValue(false);
+            m_hide_empty_tracks->Enable(false);
             m_track_choice->Enable(false);
             m_track_choice->Refresh();
         }
         
         void onSelectTrackList(wxCommandEvent& evt)
         {
+            m_hide_empty_tracks->SetValue(true);
+            m_hide_empty_tracks->Enable(true);
             m_track_choice->Enable(true);
             m_track_choice->Refresh();
         }
@@ -335,8 +341,10 @@ namespace AriaMaestosa
         /** when the 'ok' button is clicked */
         void onOkClicked(wxCommandEvent& evt)
         {
+            const bool print_one_track = m_current_track_radiobtn->GetValue();
+            
             std::vector<Track*> what_to_print;
-            if (m_current_track_radiobtn->GetValue())  // only print selected track
+            if (print_one_track)
             {
                 what_to_print.push_back( m_current_sequence->getCurrentTrack() );
             }
@@ -354,7 +362,7 @@ namespace AriaMaestosa
             
             m_detect_repetitions = false; //m_detect_repetitions_checkbox->IsChecked();
             
-            m_printable->hideEmptyTracks(m_hide_empty_tracks->IsChecked());
+            m_printable->hideEmptyTracks( (print_one_track ? false : m_hide_empty_tracks->IsChecked()) );
             
             // terminate the dialog
             Hide();
