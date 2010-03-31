@@ -87,7 +87,7 @@ TextGLDrawable::TextGLDrawable(TextTexture* image_arg)
     xscale=1;
     yscale=1;
 
-    y_offset = 0;
+    y_offset = 1;
     
     max_width = -1;
     
@@ -98,7 +98,7 @@ TextGLDrawable::TextGLDrawable(TextTexture* image_arg)
     h = -1;
 
     if (image_arg != NULL) setImage(image_arg);
-    else image = NULL;
+    else                   image = NULL;
 
     tex_coord_x1 = 0;
     tex_coord_y1 = 1;
@@ -108,8 +108,8 @@ TextGLDrawable::TextGLDrawable(TextTexture* image_arg)
 
 void TextGLDrawable::setFlip(bool x, bool y)
 {
-    xflip=x;
-    yflip=y;
+    xflip = x;
+    yflip = y;
 }
 
 void TextGLDrawable::setMaxWidth(const int w)
@@ -119,8 +119,8 @@ void TextGLDrawable::setMaxWidth(const int w)
 
 void TextGLDrawable::move(int x, int y)
 {
-    TextGLDrawable::x=x;
-    TextGLDrawable::y=y;
+    TextGLDrawable::x = x;
+    TextGLDrawable::y = y;
 }
 
 void TextGLDrawable::scale(float x, float y)
@@ -131,8 +131,8 @@ void TextGLDrawable::scale(float x, float y)
 
 void TextGLDrawable::scale(float k)
 {
-    TextGLDrawable::xscale=k;
-    TextGLDrawable::yscale=k;
+    TextGLDrawable::xscale = k;
+    TextGLDrawable::yscale = k;
 }
 
 void TextGLDrawable::setImage(TextTexture* image, bool giveUpOwnership)
@@ -274,7 +274,7 @@ void wxGLString::calculateSize(wxDC* dc, const bool ignore_font /* when from arr
     if (!ignore_font)
     {
         if (font.IsOk()) dc->SetFont(font);
-        else dc->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
+        else             dc->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
     }
 
     dc->GetTextExtent(*this, &w, &h);
@@ -282,7 +282,7 @@ void wxGLString::calculateSize(wxDC* dc, const bool ignore_font /* when from arr
 
 void wxGLString::consolidate(wxDC* dc)
 {
-    TextGLDrawable::y_offset = 0;
+    TextGLDrawable::y_offset = 1;
     calculateSize(dc);
 
     bool multi_line = false;
@@ -363,7 +363,9 @@ void wxGLString::setMaxWidth(const int w, const bool warp /*false: truncate. tru
 {
    // std::cout << "wxGLString::setMaxWidth " << w << ", " << warp << std::endl;
     if (not warp)
+    {
         TextGLDrawable::setMaxWidth(w);
+    }
     else
     {
         warp_after = w;
@@ -437,12 +439,12 @@ void wxGLNumberRenderer::renderNumber(wxString s, int x, int y)
     const int full_string_w = TextGLDrawable::texw;
 
     const int char_amount = s.Length();
-    for(int c=0; c<char_amount; c++)
+    for (int c=0; c<char_amount; c++)
     {
         int charid = -1;
 
         char schar = s[c];
-        switch(schar)
+        switch (schar)
         {
             case '0' : charid = 0; break;
             case '1' : charid = 1; break;
@@ -525,13 +527,13 @@ void wxGLStringArray::consolidate(wxDC* dc)
     int x=0, y=0;
 
     if (font.IsOk()) dc->SetFont(font);
-    else dc->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
+    else             dc->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
 
     // find how much space we need
     int longest_string = 0;
 
     const int amount = strings.size();
-    for(int n=0; n<amount; n++)
+    for (int n=0; n<amount; n++)
     {
         if (strings[n].IsEmpty()) continue;
         
@@ -545,8 +547,10 @@ void wxGLStringArray::consolidate(wxDC* dc)
     // split in multiple columns if necessary
     int column_amount = 1;
     while (amount/column_amount > 30 and column_amount<10)
+    {
         column_amount ++;
-
+    }
+    
     const int power_of_2_w = pow( 2, (int)ceil((float)log(longest_string*column_amount)/log(2.0)) );
     const int power_of_2_h = pow( 2, (int)ceil((float)log(y/column_amount)/log(2.0)) );
 
@@ -566,7 +570,7 @@ void wxGLStringArray::consolidate(wxDC* dc)
         if (font.IsOk()) temp_dc.SetFont(font);
         else temp_dc.SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
 
-        for(int n=0; n<amount; n++)
+        for (int n=0; n<amount; n++)
         {
             if (strings[n].IsEmpty()) continue;
             strings[n].consolidateFromArray(&temp_dc, x, y);
@@ -587,7 +591,7 @@ void wxGLStringArray::consolidate(wxDC* dc)
 
     img = new TextTexture(bmp);
 
-    for(int n=0; n<amount; n++)
+    for (int n=0; n<amount; n++)
     {
         strings[n].setImage(img, true);
     }
