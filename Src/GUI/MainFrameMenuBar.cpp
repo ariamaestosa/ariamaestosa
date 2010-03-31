@@ -118,10 +118,9 @@ void MainFrame::initMenuBar()
 #define QUICK_ADD_MENU( MENUID, MENUSTRING, METHOD ) Append( MENUID,  MENUSTRING ); Connect(MENUID, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( METHOD ) );
 #define QUICK_ADD_CHECK_MENU( MENUID, MENUSTRING, METHOD ) AppendCheckItem( MENUID,  MENUSTRING ); Connect(MENUID, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( METHOD ) );
 
-    // File menu
+    // ---- File menu
     fileMenu = new wxMenu();
-    //I18N: name of a menu
-    menuBar->Append(fileMenu,  _("File") );
+    
     //I18N: menu item in the "file" menu
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_NEW, _("New\tCtrl-N"), MainFrame::menuEvent_new );
     //I18N: menu item in the "file" menu
@@ -147,11 +146,11 @@ void MainFrame::initMenuBar()
     //I18N: menu item in the "file" menu
     fileMenu -> QUICK_ADD_MENU ( wxID_EXIT, _("Quit\tCtrl-Q"), MainFrame::menuEvent_quit );
 
-
-    // Edit menu
-    editMenu = new wxMenu();
     //I18N: name of a menu
-    menuBar->Append(editMenu,  _("Edit"));
+    menuBar->Append(fileMenu,  _("File") );
+
+    // ---- Edit menu
+    editMenu = new wxMenu();
 
     //I18N: menu item in the "edit" menu
     editMenu -> QUICK_ADD_MENU ( MENU_EDIT_UNDO, _("Undo\tCtrl-Z"), MainFrame::menuEvent_undo );
@@ -177,10 +176,13 @@ void MainFrame::initMenuBar()
     //I18N: menu item in the "edit" menu
     editMenu -> QUICK_ADD_MENU ( MENU_EDIT_REMOVE_OVERLAPPING, _("Remove Overlapping Notes"), MainFrame::menuEvent_removeOverlapping );
 
-
-    // Tracks menu
+    //I18N: name of a menu
+    menuBar->Append(editMenu,  _("Edit"));
+    
+    
+    // ---- Tracks menu
     trackMenu = new wxMenu();
-    menuBar->Append(trackMenu,  _("Tracks"));
+    
     //I18N: menu item in the "track" menu
     trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_ADD, wxString(_("Add Track"))+wxT("\tCtrl-Shift-N"), MainFrame::menuEvent_addTrack );
     //I18N: menu item in the "track" menu
@@ -189,15 +191,17 @@ void MainFrame::initMenuBar()
     //I18N: - in the track menu, allows choosing the properties of a track
     trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_BACKG, _("Properties"), MainFrame::menuEvent_trackBackground );
 
-    // Settings menu
+    menuBar->Append(trackMenu,  _("Tracks"));
+    
+    // ---- Settings menu
     settingsMenu = new wxMenu();
-    menuBar->Append(settingsMenu,  _("Settings"));
     followPlaybackMenuItem = settingsMenu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_FOLLOW_PLAYBACK, _("Follow Playback"), MainFrame::menuEvent_followPlayback );
     expandedMeasuresMenuItem = settingsMenu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_MEASURE_EXPANDED, _("Expanded time sig management"), MainFrame::menuEvent_expandedMeasuresSelected );
 
     followPlaybackMenuItem->Check( Core::getPrefsValue("followPlayback") != 0 );
 
     wxMenu* channelMode_menu = new wxMenu();
+    
     //I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
     settingsMenu->AppendSubMenu(channelMode_menu,  _("Channel management") );
     //I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
@@ -226,12 +230,16 @@ void MainFrame::initMenuBar()
     else if (playValue == PLAY_NEVER)  playDuringEdits_never->Check();
     else                               {ASSERT(false);}
 
-    // Help menu
+    menuBar->Append(settingsMenu,  _("Settings"));
+
+    // ----Help menu
     helpMenu = new wxMenu();
-    menuBar->Append(helpMenu, wxT("&Help"));
+    
     helpMenu->QUICK_ADD_MENU(wxID_ABOUT,  _("About this app"), MainFrame::menuEvent_about);
     //I18N: - in help menu - see the help files
     helpMenu->QUICK_ADD_MENU(wxID_HELP,  _("Manual"), MainFrame::menuEvent_manual);
+
+    menuBar->Append(helpMenu, wxT("&Help"));
 
     SetMenuBar(menuBar);
 }
