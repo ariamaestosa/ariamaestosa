@@ -74,6 +74,8 @@ namespace AriaMaestosa
         
         bool m_hide_empty_tracks;
         
+        bool m_show_track_names;
+        
     public:
         
         LEAK_CHECK();
@@ -94,6 +96,11 @@ namespace AriaMaestosa
         bool   hideEmptyTracks() const { return m_hide_empty_tracks; }
         
         void   hideEmptyTracks(const bool hide) { m_hide_empty_tracks = hide; }
+        
+        /** @return whether to print track names */
+        bool   showTrackNames() const { return m_show_track_names; }
+        
+        void   showTrackNames(const bool show) { m_show_track_names = show; }
         
         /** 
           * @brief Initiate the actual printing of the sequence

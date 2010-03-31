@@ -38,6 +38,7 @@ AriaPrintable::AriaPrintable(PrintableSequence* seq, bool* success) :
     
     m_current_printable = this;
     m_hide_empty_tracks = true;
+    m_show_track_names  = true;
     
     // ---- Get fonts size
     m_font_height       = -1;
