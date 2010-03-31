@@ -212,12 +212,12 @@ namespace AriaMaestosa
             boxSizer->Add(subsizer, 1, wxALL | wxEXPAND, 5);
             
             // "Show repeated measures only once" checkbox
-            //I18N: - in notation export dialog
             //m_detect_repetitions_checkbox = new wxCheckBox(parent_panel, wxID_ANY,  _("Automatically detect repeated measures (experimental!)"));
             //m_detect_repetitions_checkbox->SetValue(false);
             //boxSizer->Add(m_detect_repetitions_checkbox, 0, wxALL, 5);
             
             // hide empty tracks
+            //I18N: in printing dialog
             m_hide_empty_tracks = new wxCheckBox(parent_panel, wxID_ANY,  _("Omit instruments that play nothing on the current line"));
             m_hide_empty_tracks->SetValue(false);
             m_hide_empty_tracks->SetToolTip( _("If some instrument plays nothing during a long part of the song, checking this option can make the printed score tighter by eliminating empty lines") );

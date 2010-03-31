@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-25 21:58-0400\n"
+"POT-Creation-Date: 2010-03-31 14:47-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -76,17 +76,17 @@ msgstr ""
 msgid "About Aria Maestosa"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:232
+#: Src/GUI/MainFrameMenuBar.cpp:238
 msgid "About this app"
 msgstr ""
 
 #. I18N: menu item in the "track" menu
-#: Src/GUI/MainFrameMenuBar.cpp:185
+#: Src/GUI/MainFrameMenuBar.cpp:187
 msgid "Add Track"
 msgstr ""
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-#: Src/GUI/MainFrameMenuBar.cpp:215 Src/PreferencesData.cpp:102
+#: Src/GUI/MainFrameMenuBar.cpp:219 Src/PreferencesData.cpp:102
 msgid "Always"
 msgstr ""
 
@@ -98,26 +98,26 @@ msgstr ""
 msgid "An error occurred during printing."
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:122
+#: Src/Dialogs/PrintSetupDialog.cpp:124
 msgid "An error occurred while preparing to print."
 msgstr ""
 
-#: Src/Midi/MeasureData.cpp:82
+#: Src/Midi/MeasureData.cpp:83
 msgid ""
 "Are you sure you want to go back to having a single time signature? Any time "
 "sig events you may have added will be lost. This cannot be undone."
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:372
+#: Src/GUI/MainFrameMenuBar.cpp:380
 msgid "Aria Maestosa file|*.aria"
 msgstr ""
 
-#: Src/Printing/PrintableSequence.cpp:194
+#: Src/Printing/PrintableSequence.cpp:195
 msgid "Aria Maestosa song"
 msgstr ""
 
 #. I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
-#: Src/GUI/MainFrameMenuBar.cpp:204
+#: Src/GUI/MainFrameMenuBar.cpp:208
 msgid "Automatic"
 msgstr ""
 
@@ -133,19 +133,19 @@ msgstr ""
 msgid "Calculating print layout..."
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:295
+#: Src/GUI/MainFrameMenuBar.cpp:303
 msgid "Can't Undo\tCtrl-Z"
 msgstr ""
 
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:162
-#: Src/Dialogs/PrintSetupDialog.cpp:263 Src/Dialogs/ScalePicker.cpp:142
+#: Src/Dialogs/PrintSetupDialog.cpp:272 Src/Dialogs/ScalePicker.cpp:142
 #: Src/Pickers/BackgroundPicker.cpp:172 Src/Pickers/KeyPicker.cpp:78
 #: Src/Pickers/TuningPicker.cpp:250
 msgid "Cancel"
 msgstr ""
 
 #. I18N: - in the preferences dialog
-#: Src/Dialogs/Preferences.cpp:196
+#: Src/Dialogs/Preferences.cpp:198
 msgid "Changes will take effect next time you open the app."
 msgstr ""
 
@@ -154,7 +154,7 @@ msgid "Channel choice"
 msgstr ""
 
 #. I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
-#: Src/GUI/MainFrameMenuBar.cpp:202
+#: Src/GUI/MainFrameMenuBar.cpp:206
 msgid "Channel management"
 msgstr ""
 
@@ -163,22 +163,22 @@ msgid "Choose a new track title."
 msgstr ""
 
 #. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:134
+#: Src/GUI/MainFrameMenuBar.cpp:133
 msgid "Close\tCtrl-W"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:353 Src/GUI/MainFrameMenuBar.cpp:399
-#: Src/GUI/MainFrameMenuBar.cpp:433 Src/GUI/MainFrameMenuBar.cpp:573
-#: Src/GUI/MainFrameMenuBar.cpp:653 Src/Midi/MeasureData.cpp:83
+#: Src/GUI/MainFrameMenuBar.cpp:361 Src/GUI/MainFrameMenuBar.cpp:407
+#: Src/GUI/MainFrameMenuBar.cpp:441 Src/GUI/MainFrameMenuBar.cpp:581
+#: Src/GUI/MainFrameMenuBar.cpp:661 Src/Midi/MeasureData.cpp:84
 msgid "Confirm"
 msgstr ""
 
-#: Src/Editors/ControllerEditor.h:78
+#: Src/Editors/ControllerEditor.h:120
 msgid "Controller Editor"
 msgstr ""
 
 #. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:160
+#: Src/GUI/MainFrameMenuBar.cpp:159
 msgid "Copy\tCtrl-C"
 msgstr ""
 
@@ -193,7 +193,7 @@ msgid "Copyright and song info"
 msgstr ""
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:136
+#: Src/Dialogs/PrintSetupDialog.cpp:138
 msgid "Current track only"
 msgstr ""
 
@@ -214,7 +214,7 @@ msgid "Default Volume"
 msgstr ""
 
 #. I18N: menu item in the "track" menu
-#: Src/GUI/MainFrameMenuBar.cpp:187
+#: Src/GUI/MainFrameMenuBar.cpp:189
 msgid "Delete Track"
 msgstr ""
 
@@ -223,7 +223,7 @@ msgstr ""
 msgid "Denominator must be a power of 2"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:573
+#: Src/GUI/MainFrameMenuBar.cpp:581
 msgid "Do you really want to delete this track?"
 msgstr ""
 
@@ -235,20 +235,20 @@ msgstr ""
 msgid "Do you really want to remove this time sig change?"
 msgstr ""
 
-#: Src/Editors/DrumEditor.h:90
+#: Src/Editors/DrumEditor.h:105
 msgid "Drum Editor"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:358
+#: Src/GUI/MainFrame.cpp:360
 msgid "Duration"
 msgstr ""
 
 #. I18N: name of a menu
-#: Src/GUI/MainFrameMenuBar.cpp:154
+#: Src/GUI/MainFrameMenuBar.cpp:180
 msgid "Edit"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:231
+#: Src/Dialogs/PrintSetupDialog.cpp:240
 msgid "Edit Page Setup"
 msgstr ""
 
@@ -256,17 +256,17 @@ msgstr ""
 msgid "Enter the ID of the channel this track should play in"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:196
+#: Src/GUI/MainFrameMenuBar.cpp:199
 msgid "Expanded time sig management"
 msgstr ""
 
 #. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:146
+#: Src/GUI/MainFrameMenuBar.cpp:145
 msgid "Export to Audio"
 msgstr ""
 
 #. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:144
+#: Src/GUI/MainFrameMenuBar.cpp:143
 msgid "Export to Midi"
 msgstr ""
 
@@ -287,11 +287,11 @@ msgid "Failed to open ALSA port."
 msgstr ""
 
 #. I18N: name of a menu
-#: Src/GUI/MainFrameMenuBar.cpp:124
+#: Src/GUI/MainFrameMenuBar.cpp:150
 msgid "File"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:195
+#: Src/GUI/MainFrameMenuBar.cpp:198
 msgid "Follow Playback"
 msgstr ""
 
@@ -307,7 +307,7 @@ msgstr ""
 msgid "Guess Key"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:652
+#: Src/GUI/MainFrameMenuBar.cpp:660
 msgid ""
 "If multiple tracks play on the same channel, they will be merged.\n"
 "This cannot be undone.\n"
@@ -315,12 +315,18 @@ msgid ""
 "Do you really want to continue?"
 msgstr ""
 
+#: Src/Dialogs/PrintSetupDialog.cpp:223
+msgid ""
+"If some instrument plays nothing during a long part of the song, checking "
+"this option can make the printed score tighter by eliminating empty lines"
+msgstr ""
+
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:234
 msgid "Illegal values"
 msgstr ""
 
 #. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:142
+#: Src/GUI/MainFrameMenuBar.cpp:141
 msgid "Import Midi File"
 msgstr ""
 
@@ -332,7 +338,7 @@ msgstr ""
 msgid "Insert measures"
 msgstr ""
 
-#: Src/Editors/KeyboardEditor.h:63
+#: Src/Editors/KeyboardEditor.h:76
 msgid "Keyboard Editor"
 msgstr ""
 
@@ -356,12 +362,12 @@ msgstr ""
 
 #. I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
 #. I18N: - in help menu - see the help files
-#: Src/GUI/MainFrameMenuBar.cpp:207 Src/GUI/MainFrameMenuBar.cpp:234
-#: Src/GUI/MainFrameMenuBar.cpp:760
+#: Src/GUI/MainFrameMenuBar.cpp:211 Src/GUI/MainFrameMenuBar.cpp:240
+#: Src/GUI/MainFrameMenuBar.cpp:768
 msgid "Manual"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:239
+#: Src/Dialogs/PrintSetupDialog.cpp:248
 msgid "Margins"
 msgstr ""
 
@@ -378,11 +384,11 @@ msgstr ""
 msgid "Max"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:392
+#: Src/GUI/MainFrameMenuBar.cpp:400
 msgid "Midi file|*.mid"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:380
+#: Src/GUI/MainFrameMenuBar.cpp:388
 msgid "Midi file|*.mid;*.midi"
 msgstr ""
 
@@ -401,12 +407,12 @@ msgid "Musical notation"
 msgstr ""
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-#: Src/GUI/MainFrameMenuBar.cpp:219 Src/PreferencesData.cpp:104
+#: Src/GUI/MainFrameMenuBar.cpp:223 Src/PreferencesData.cpp:104
 msgid "Never"
 msgstr ""
 
 #. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:126
+#: Src/GUI/MainFrameMenuBar.cpp:125
 msgid "New\tCtrl-N"
 msgstr ""
 
@@ -415,7 +421,7 @@ msgid "No midi port found, no sound will be available."
 msgstr ""
 
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:157
-#: Src/Dialogs/PrintSetupDialog.cpp:260 Src/Dialogs/ScalePicker.cpp:146
+#: Src/Dialogs/PrintSetupDialog.cpp:269 Src/Dialogs/ScalePicker.cpp:146
 #: Src/Pickers/KeyPicker.cpp:77 Src/Pickers/TimeSigPicker.cpp:107
 #: Src/Pickers/TuningPicker.cpp:246
 msgid "OK"
@@ -436,22 +442,27 @@ msgstr ""
 msgid "Off"
 msgstr ""
 
+#. I18N: in printing dialog
+#: Src/Dialogs/PrintSetupDialog.cpp:221
+msgid "Omit instruments that play nothing on the current line"
+msgstr ""
+
 #. I18N: - in controller, when a controller can only be on/off
 #: Src/Pickers/ControllerChoice.cpp:193
 msgid "On"
 msgstr ""
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-#: Src/GUI/MainFrameMenuBar.cpp:217 Src/PreferencesData.cpp:103
+#: Src/GUI/MainFrameMenuBar.cpp:221 Src/PreferencesData.cpp:103
 msgid "On note change"
 msgstr ""
 
 #. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:128
+#: Src/GUI/MainFrameMenuBar.cpp:127
 msgid "Open\tCtrl-O"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:220
+#: Src/Dialogs/PrintSetupDialog.cpp:229
 msgid "Page Setup"
 msgstr ""
 
@@ -460,21 +471,21 @@ msgid "Paper :"
 msgstr ""
 
 #. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:162
+#: Src/GUI/MainFrameMenuBar.cpp:161
 msgid "Paste\tCtrl-V"
 msgstr ""
 
 #. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:164
+#: Src/GUI/MainFrameMenuBar.cpp:163
 msgid "Paste at cursor\tCtrl-Shift-V"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:341
+#: Src/GUI/MainFrame.cpp:343
 msgid "Play"
 msgstr ""
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-#: Src/GUI/MainFrameMenuBar.cpp:213
+#: Src/GUI/MainFrameMenuBar.cpp:217
 msgid "Play during edit"
 msgstr ""
 
@@ -482,11 +493,11 @@ msgstr ""
 msgid "Play during edit (default value)"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1172
+#: Src/GUI/MainFrame.cpp:1174
 msgid "Please wait while .aria file is loading."
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:440
+#: Src/GUI/MainFrameMenuBar.cpp:448
 msgid ""
 "Please wait while audio file is being generated.\n"
 "\n"
@@ -494,7 +505,7 @@ msgid ""
 "this can take several minutes."
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1212
+#: Src/GUI/MainFrame.cpp:1214
 msgid "Please wait while midi file is loading."
 msgstr ""
 
@@ -508,27 +519,27 @@ msgid "Portrait"
 msgstr ""
 
 #. I18N: - title of the preferences dialog
-#: Src/Dialogs/Preferences.cpp:135 Src/GUI/MainFrameMenuBar.cpp:221
+#: Src/Dialogs/Preferences.cpp:138 Src/GUI/MainFrameMenuBar.cpp:225
 msgid "Preferences"
 msgstr ""
 
 #. I18N: - title of the notation-print dialog
-#: Src/Dialogs/PrintSetupDialog.cpp:109 Src/GUI/MainFrameMenuBar.cpp:139
+#: Src/Dialogs/PrintSetupDialog.cpp:111 Src/GUI/MainFrameMenuBar.cpp:138
 msgid "Print musical notation"
 msgstr ""
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:133
+#: Src/Dialogs/PrintSetupDialog.cpp:135
 msgid "Print..."
 msgstr ""
 
 #. I18N: - in the track menu, allows choosing the properties of a track
-#: Src/GUI/MainFrameMenuBar.cpp:190
+#: Src/GUI/MainFrameMenuBar.cpp:192
 msgid "Properties"
 msgstr ""
 
 #. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:148
+#: Src/GUI/MainFrameMenuBar.cpp:147
 msgid "Quit\tCtrl-Q"
 msgstr ""
 
@@ -537,7 +548,7 @@ msgid "Rearrange selected notes"
 msgstr ""
 
 #. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:178
+#: Src/GUI/MainFrameMenuBar.cpp:177
 msgid "Remove Overlapping Notes"
 msgstr ""
 
@@ -555,18 +566,18 @@ msgid "Right"
 msgstr ""
 
 #. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:130
+#: Src/GUI/MainFrameMenuBar.cpp:129
 msgid "Save\tCtrl-S"
 msgstr ""
 
 #. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:132
+#: Src/GUI/MainFrameMenuBar.cpp:131
 msgid "Save As\tCtrl-Shift-S"
 msgstr ""
 
 #. I18N: - title of the scale dialog
 #. I18N: menu item in the "edit" menu
-#: Src/Dialogs/ScalePicker.cpp:65 Src/GUI/MainFrameMenuBar.cpp:176
+#: Src/Dialogs/ScalePicker.cpp:65 Src/GUI/MainFrameMenuBar.cpp:175
 msgid "Scale"
 msgstr ""
 
@@ -575,22 +586,22 @@ msgstr ""
 msgid "Scale notes in..."
 msgstr ""
 
-#: Src/Editors/ScoreEditor.h:208
+#: Src/Editors/ScoreEditor.h:243
 msgid "Score Editor"
 msgstr ""
 
 #. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:167
+#: Src/GUI/MainFrameMenuBar.cpp:166
 msgid "Select All\tCtrl-A"
 msgstr ""
 
 #. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:169
+#: Src/GUI/MainFrameMenuBar.cpp:168
 msgid "Select None\tCtrl-Shift-A"
 msgstr ""
 
 #. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:171
+#: Src/GUI/MainFrameMenuBar.cpp:170
 msgid "Select Notes...\tCtrl-F"
 msgstr ""
 
@@ -598,16 +609,16 @@ msgstr ""
 msgid "Select an ALSA midi port to use for output."
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:344 Src/GUI/MainFrameMenuBar.cpp:391
-#: Src/GUI/MainFrameMenuBar.cpp:424
+#: Src/GUI/MainFrameMenuBar.cpp:352 Src/GUI/MainFrameMenuBar.cpp:399
+#: Src/GUI/MainFrameMenuBar.cpp:432
 msgid "Select destination file"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:372
+#: Src/GUI/MainFrameMenuBar.cpp:380
 msgid "Select file"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:380
+#: Src/GUI/MainFrameMenuBar.cpp:388
 msgid "Select midi file"
 msgstr ""
 
@@ -626,24 +637,24 @@ msgstr ""
 msgid "Select which notes should be part of the custom key"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1079
+#: Src/GUI/MainFrame.cpp:1081
 msgid "Selecting 'Cancel' will cancel exiting the application"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1078
+#: Src/GUI/MainFrame.cpp:1080
 msgid "Selecting 'No' will discard unsaved changes"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1077
+#: Src/GUI/MainFrame.cpp:1079
 msgid "Selecting 'Yes' will save your document before closing"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:194
+#: Src/GUI/MainFrameMenuBar.cpp:233
 msgid "Settings"
 msgstr ""
 
 #. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:174
+#: Src/GUI/MainFrameMenuBar.cpp:173
 msgid "Snap Notes to Grid"
 msgstr ""
 
@@ -651,7 +662,7 @@ msgstr ""
 msgid "Song duration :"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:137
+#: Src/GUI/MainFrameMenuBar.cpp:136
 msgid "Song info"
 msgstr ""
 
@@ -660,36 +671,36 @@ msgstr ""
 msgid "Song name"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:409
+#: Src/GUI/MainFrameMenuBar.cpp:417
 msgid "Sorry, failed to export midi file."
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1178
+#: Src/GUI/MainFrame.cpp:1180
 msgid "Sorry, loading .aria file failed."
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1218
+#: Src/GUI/MainFrame.cpp:1220
 msgid "Sorry, loading midi file failed."
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:369
+#: Src/GUI/MainFrame.cpp:371
 msgid "Start"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:345
+#: Src/GUI/MainFrame.cpp:347
 msgid "Stop"
 msgstr ""
 
-#: Src/Editors/GuitarEditor.h:59
+#: Src/Editors/GuitarEditor.h:73
 msgid "Tablature Editor"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:361
+#: Src/GUI/MainFrame.cpp:363
 msgid "Tempo"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:353 Src/GUI/MainFrameMenuBar.cpp:399
-#: Src/GUI/MainFrameMenuBar.cpp:433
+#: Src/GUI/MainFrameMenuBar.cpp:361 Src/GUI/MainFrameMenuBar.cpp:407
+#: Src/GUI/MainFrameMenuBar.cpp:441
 msgid "The file already exists. Do you wish to overwrite it?"
 msgstr ""
 
@@ -698,11 +709,11 @@ msgid "The selected ALSA device could not be opened."
 msgstr ""
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:141
+#: Src/Dialogs/PrintSetupDialog.cpp:143
 msgid "This list of tracks"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:364
+#: Src/GUI/MainFrame.cpp:366
 msgid "Time Sig"
 msgstr ""
 
@@ -710,7 +721,7 @@ msgstr ""
 msgid "Time Signature"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:391
+#: Src/GUI/MainFrame.cpp:393
 msgid "Tool"
 msgstr ""
 
@@ -730,16 +741,16 @@ msgstr ""
 msgid "Track Properties"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:183
+#: Src/GUI/MainFrameMenuBar.cpp:194
 msgid "Tracks"
 msgstr ""
 
 #. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:157
+#: Src/GUI/MainFrameMenuBar.cpp:156
 msgid "Undo\tCtrl-Z"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:288
+#: Src/GUI/MainFrameMenuBar.cpp:296
 #, c-format
 msgid "Undo %s\tCtrl-Z"
 msgstr ""
@@ -748,11 +759,11 @@ msgstr ""
 msgid "Unknown file type: "
 msgstr ""
 
-#: Src/IO/MidiFileReader.cpp:430 Src/Midi/Sequence.cpp:80
-#: Src/Midi/Sequence.cpp:127 Src/Midi/Sequence.cpp:146 Src/Midi/Track.cpp:55
-#: Src/Midi/Track.cpp:854 Src/Midi/Track.cpp:1567
-#: Src/Printing/PrintableSequence.cpp:194
-#: Src/Printing/PrintableSequence.cpp:198
+#: Src/IO/MidiFileReader.cpp:430 Src/Midi/Sequence.cpp:76
+#: Src/Midi/Sequence.cpp:123 Src/Midi/Sequence.cpp:145 Src/Midi/Track.cpp:70
+#: Src/Midi/Track.cpp:869 Src/Midi/Track.cpp:1582
+#: Src/Printing/PrintableSequence.cpp:195
+#: Src/Printing/PrintableSequence.cpp:199
 msgid "Untitled"
 msgstr ""
 
@@ -773,7 +784,7 @@ msgstr ""
 msgid "WAV file"
 msgstr ""
 
-#: Src/Midi/Sequence.cpp:1038
+#: Src/Midi/Sequence.cpp:1037
 msgid ""
 "Warning : you are opening a file saved with a version of\n"
 "Aria Maestosa more recent than the version you currently have.\n"
@@ -784,14 +795,14 @@ msgstr ""
 msgid "You can't remove the first time signature change."
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1074
+#: Src/GUI/MainFrame.cpp:1076
 #, c-format
 msgid ""
 "You have unsaved changes in sequence '%s'. Do you want to save them before "
 "proceeding?"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:380
+#: Src/GUI/MainFrame.cpp:382
 msgid "Zoom"
 msgstr ""
 
