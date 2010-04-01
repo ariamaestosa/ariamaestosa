@@ -1,0 +1,61 @@
+Index: src/osx/core/printmac.cpp
+===================================================================
+--- src/osx/core/printmac.cpp	(revision 63701)
++++ src/osx/core/printmac.cpp	(working copy)
+@@ -560,12 +560,30 @@
+     
+     printout->SetIsPreview(false);
+ 
++    printout->OnPreparePrinting();
++
++    // Get some parameters from the printout, if defined
++    int fromPage, toPage;
++    int minPage, maxPage;
++    printout->GetPageInfo(&minPage, &maxPage, &fromPage, &toPage);
++    
++    if (maxPage == 0)
++    {
++        sm_lastError = wxPRINTER_ERROR;
++        return false;
++    }
++    
++    // Only set min and max, because from and to will be
++    // set by the user
++    m_printDialogData.SetMinPage(minPage);
++    m_printDialogData.SetMaxPage(maxPage);
++    
+     if (m_printDialogData.GetMinPage() < 1)
+         m_printDialogData.SetMinPage(1);
+     if (m_printDialogData.GetMaxPage() < 1)
+         m_printDialogData.SetMaxPage(9999);
+     
+-    // Create a suitable device context
++    // Show dialog if requested, Create a suitable device context
+     wxPrinterDC *dc = NULL;
+     if (prompt)
+     {
+@@ -630,24 +648,6 @@
+ 
+     // Create an abort window
+     wxBeginBusyCursor();
+-
+-    printout->OnPreparePrinting();
+-
+-    // Get some parameters from the printout, if defined
+-    int fromPage, toPage;
+-    int minPage, maxPage;
+-    printout->GetPageInfo(&minPage, &maxPage, &fromPage, &toPage);
+-    
+-    if (maxPage == 0)
+-    {
+-        sm_lastError = wxPRINTER_ERROR;
+-        return false;
+-    }
+-    
+-    // Only set min and max, because from and to will be
+-    // set by the user
+-    m_printDialogData.SetMinPage(minPage);
+-    m_printDialogData.SetMaxPage(maxPage);
+         
+     printout->OnBeginPrinting();
+ 
