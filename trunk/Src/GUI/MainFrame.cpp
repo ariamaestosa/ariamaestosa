@@ -170,13 +170,14 @@ CustomToolBar::CustomToolBar(wxWindow* parent) : wxToolBar(parent, wxID_ANY, wxD
 
 void CustomToolBar::add(wxControl* ctrl, wxString label)
 {
-#if wxMAJOR_VERSION >= 3
+#if wxCHECK_VERSION(2,9,0)
     // wxWidgets 3 supports labels under components in toolbar.
     AddControl(ctrl, label);
 #else
     AddControl(ctrl);
 #endif
     
+    /*
 #ifdef __WXMAC__
     if (not label.IsEmpty())
     {
@@ -187,6 +188,7 @@ void CustomToolBar::add(wxControl* ctrl, wxString label)
         else std::cerr << "Failed to set label : " << label.mb_str() << std::endl;
     }
 #endif
+     */
 }
 void CustomToolBar::realize()
 {
