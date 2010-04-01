@@ -965,19 +965,7 @@ namespace AriaMaestosa
                                    // |     |  <-- stem at the right
                                    // |  ( )|
         						   //     ^ origin of the note here, in its center. so substract a radius from the right
-        
-        // FIXME: for some reason, line doesn't draw the same way on 2.8 and 2.9
-        //        see http://trac.wxwidgets.org/ticket/11853
-#if defined(__WXMAC__) && wxCHECK_VERSION(2, 9, 0)
-        // since note is right-aligned, keep the stem at the right. go 10 towards the note to "blend" in it.
-        stem_up_x_offset = -15;
-        
-        // since note is right-aligned.
-        stem_down_x_offset = -HEAD_RADIUS*2 - 2;
-        
-        //stem_up_y_offset = 0;
-        //stem_down_y_offset = 4;
-#else
+
         // since note is right-aligned, keep the stem at the right. go 10 towards the note to "blend" in it.
         stem_up_x_offset = -10;
         
@@ -986,8 +974,7 @@ namespace AriaMaestosa
         
         //stem_up_y_offset = 0;
         //stem_down_y_offset = 0;
-#endif
-        
+
 
 
 #define LEVEL_TO_Y( lvl ) (y0 + 1 + lineHeight*0.5*((lvl) - min_level))
@@ -1435,18 +1422,6 @@ namespace AriaMaestosa
                 
                 for (int n=0; n<noteRenderInfo.flag_amount; n++)
                 {
-                    
-                    // FIXME: for some reason, line doesn't draw the same way on 2.8 and 2.9
-                    //        see http://trac.wxwidgets.org/ticket/11853
-#if defined(__WXMAC__) &&  wxCHECK_VERSION(2, 9, 0)
-                    wxPoint points[] =
-                    {
-                        wxPoint(x1+5,        y1),
-                        wxPoint(beam_to_x+5, y2),
-                        wxPoint(beam_to_x+5, y2+20),
-                        wxPoint(x1+5,        y1+20)
-                    };
-#else
                     wxPoint points[] =
                     {
                         wxPoint(x1, y1),
@@ -1454,7 +1429,6 @@ namespace AriaMaestosa
                         wxPoint(beam_to_x, y2+20),
                         wxPoint(x1, y1+20)
                     };
-#endif
                     dc.DrawPolygon(4, points);
                     
                     y1 += y_diff;
