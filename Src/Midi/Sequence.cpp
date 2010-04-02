@@ -17,7 +17,8 @@
 /** Version of the .aria file format. */
 const float CURRENT_FILE_VERSION = 1.0;
 
-#include "Utils.h"
+#include "Midi/Sequence.h"
+
 #include "AriaCore.h"
 
 #include "Actions/EditAction.h"
@@ -26,20 +27,16 @@ const float CURRENT_FILE_VERSION = 1.0;
 #include "Actions/ScaleTrack.h"
 #include "Actions/ScaleSong.h"
 
-#include "Renderers/RenderAPI.h"
-#include "GUI/MainFrame.h"
-
 #include "Dialogs/Preferences.h"
-
-#include "Midi/Players/PlatformMidiManager.h"
-#include "Midi/Sequence.h"
-#include "Midi/Track.h"
+#include "Editors/Editor.h"
+#include "GUI/MainFrame.h"
+#include "IO/IOUtils.h"
 #include "Midi/CommonMidiUtils.h"
 #include "Midi/MeasureData.h"
-
-#include "Editors/Editor.h"
-
-#include "IO/IOUtils.h"
+#include "Midi/Players/PlatformMidiManager.h"
+#include "Midi/Track.h"
+#include "Renderers/RenderAPI.h"
+#include "Utils.h"
 
 #include "irrXML/irrXML.h"
 
@@ -392,7 +389,7 @@ int Sequence::getTempoAtTick(const int tick) const
     {
         if (tempoEvents[n].getTick() <= tick)
         {
-            outTempo = tempoEvents[n].getValue();
+            outTempo = convertTempoBendToBPM(tempoEvents[n].getValue());
         }
         else
         {

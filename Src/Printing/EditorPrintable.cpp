@@ -185,6 +185,29 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
         dc->SetTextForeground( wxColour(0,0,0) );
     }
     
+    if (currElem.hasTempoChange() and drawMeasureNumbers)
+    {
+        const int tempo_y = y0 - HEAD_RADIUS - 50;
+        const int tempo_x = elem_x_start +
+                            // leave space for measure number
+                            AriaPrintable::getCurrentPrintable()->getCharacterWidth()*2 +
+                            HEAD_RADIUS + 50;
+        wxPoint tempoHeadLocation(tempo_x, tempo_y);
+        
+        dc->SetPen(  wxPen( wxColour(0,0,0), 12 ) );
+        dc->SetBrush( *wxBLACK_BRUSH );
+        EditorPrintable::drawNoteHead(*dc, tempoHeadLocation, false /* not hollow head */);
+        
+        const int tempo = currElem.getTempo();
+        dc->DrawText( wxString::Format(wxT(" = %i"), tempo),
+                      tempo_x+HEAD_RADIUS*2,
+                      tempo_y+HEAD_RADIUS-AriaPrintable::getCurrentPrintable()->getCharacterHeight() );
+        
+        //FIXME: don't hardcode values
+        dc->DrawLine( tempo_x + HEAD_RADIUS - 8, tempo_y - 10, tempo_x + HEAD_RADIUS - 8, tempo_y-150 );
+        
+    }
+    
 }
 
 // -------------------------------------------------------------------------------------------
