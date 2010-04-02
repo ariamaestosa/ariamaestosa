@@ -257,7 +257,10 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     
     dc.SetFont( m_normal_font );
     
-    // get usable area (some area at the top is reserved to the title) 
+    // ---- draw tempo
+    
+    
+    // ---- get usable area (some area at the top is reserved to the title) 
     const float notation_area_h  = getUsableAreaHeight(pageNum);
     const float notation_area_y0 = y0 + MARGIN_UNDER_PAGE_HEADER +
                                    (pageNum == 1 ? m_title_font_height : m_subtitle_font_height);

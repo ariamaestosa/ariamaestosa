@@ -49,6 +49,7 @@ NOTE: sorry, this is very raw :)
 - add double bar at the end of the song
 - make "print track name" configurable?
 - when printing a single track, print track name at top near title?
+- print copyright data under title
 - long-term : in multi-track printing, some tracks need to be visually more tightly bound toghether (like tab and its score)
 ? allow setting font size, number of lines per page, zoom, etc...
 
@@ -131,6 +132,8 @@ UNSURE/MINOR:
  - score editor should be able to display notes with more than 2 flags (unusure... those with 2 are already so small and barely visible)
 
 ************************* BUGS: *************************
+
+** Issuing "Command-P" keyboard shortcut invokes two print dialogs and makes Aria crash
 
 * Undoing "delete track" places it back at the bottom, not where it was
 

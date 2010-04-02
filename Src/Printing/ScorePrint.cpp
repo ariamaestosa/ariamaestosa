@@ -35,9 +35,6 @@
 
 namespace AriaMaestosa
 {
-    /** Size of a note's head */
-    const int HEAD_RADIUS = 36;
-
     /** Width of the "natural" accidental symbol */
     const int NATURAL_SIGN_WIDTH = 30;
     
@@ -1271,20 +1268,7 @@ namespace AriaMaestosa
                 }
                 else
                 {
-                    const int cx = headLocation.x + (noteRenderInfo.hollow_head ? -2 : 0); // FIXME: the -2 is a hack for the head to blend in the stem
-                    const int cy = headLocation.y;
-                    wxPoint points[25];
-                    for (int n=0; n<25; n++)
-                    {
-                        // FIXME - instead of always substracting to radius, just make it smaller...
-                        const float angle = n/25.0*6.283185f /* 2*PI */;
-                        points[n] = wxPoint( cx + (HEAD_RADIUS-5)*cos(angle),
-                                             cy + (HEAD_RADIUS - 14)*sin(angle) - HEAD_RADIUS*(-0.5f + fabsf( (n-12.5f)/12.5f ))/2.0f );
-                    }
-
-                    if (noteRenderInfo.hollow_head) dc.DrawSpline(25, points);
-                    else                            dc.DrawPolygon(25, points, -3);
-                    
+                    EditorPrintable::drawNoteHead(dc, headLocation, noteRenderInfo.hollow_head);
                 }
                 noteRenderInfo.setY(notey+HEAD_RADIUS/2.0); // FIXME: why +HEAD_RADIUS/2.0 ?
                 
