@@ -40,10 +40,8 @@ const int CHAR_MARGIN = 35;
 
 TablaturePrintable::TablaturePrintable(Track* track) : EditorPrintable()
 {
-    // FIXME  - will that work if printing e.g. a bass track + a guitar track,
-    // both with different string counts?
     string_amount = track->graphics->guitarEditor->tuning.size();
-    editor = track->graphics->guitarEditor;
+    editor        = track->graphics->guitarEditor;
 }
 
 // ------------------------------------------------------------------------------------------------------------
