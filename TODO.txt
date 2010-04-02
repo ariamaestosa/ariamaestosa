@@ -135,6 +135,8 @@ UNSURE/MINOR:
 
 * Undoing "delete track" places it back at the bottom, not where it was
 
+* Sequence::setTempo / getTempo may get out of sync if first event is edited through controller editor!!
+
 * score editor at wrong octave
  
 * red selection color in score editor should dim when switching to another track

@@ -50,27 +50,21 @@ using namespace AriaMaestosa;
 Sequence::Sequence()
 {
     reordering_newPosition = -1;
-
-    dockHeight=0;
-
-    beatResolution = 960;
-
-    dockSize=0;
-    currentTrack=0;
-    tempo=120;
-    x_scroll_in_pixels = 0;
-    y_scroll = 0;
-    reorderYScroll = 0;
-
-    importing=false;
-    maximize_track_mode = false;
-
-    x_scroll_upon_copying = -1;
-
-    follow_playback = Core::getPrefsValue("followPlayback") != 0;
+    beatResolution         = 960;
+    dockSize               = 0;
+    dockHeight             = 0;
+    currentTrack           = 0;
+    m_tempo                = 120;
+    x_scroll_in_pixels     = 0;
+    y_scroll               = 0;
+    reorderYScroll         = 0;
+    importing              = false;
+    maximize_track_mode    = false;
+    x_scroll_upon_copying  = -1;
+    follow_playback        = Core::getPrefsValue("followPlayback") != 0;
 
     //setZoom(100);
-    zoom = (128.0/(beatResolution*4));
+    zoom         = (128.0/(beatResolution*4));
     zoom_percent = 100;
 
     sequenceFileName.set(wxString(_("Untitled")));
@@ -377,14 +371,35 @@ void Sequence::scale(float factor,
 
 void Sequence::setTempo(int tmp)
 {
-    tempo = tmp;
+    m_tempo = tmp;
 }
 
 // ----------------------------------------------------------------------------------------------------------
 
 int Sequence::getTempo() const
 {
-    return tempo;
+    return m_tempo;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+int Sequence::getTempoAtTick(const int tick) const
+{
+    int outTempo = getTempo();
+    
+    const int amount = tempoEvents.size();
+    for (int n=0; n<amount; n++)
+    {
+        if (tempoEvents[n].getTick() <= tick)
+        {
+            outTempo = tempoEvents[n].getValue();
+        }
+        else
+        {
+            break;
+        }
+    }
+    return outTempo;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -949,7 +964,7 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
 
     writeData(wxT("<sequence"), fileout );
 
-    writeData(wxT(" maintempo=\"") + to_wxString(tempo) +
+    writeData(wxT(" maintempo=\"") + to_wxString(m_tempo) +
               wxT("\" measureAmount=\"") + to_wxString(measureData->getMeasureAmount()) +
               wxT("\" currentTrack=\"") + to_wxString(currentTrack) +
               wxT("\" beatResolution=\"") + to_wxString(beatResolution) +
@@ -967,7 +982,7 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
 
     writeData(wxT("<tempo>\n"), fileout );
     // tempo changes
-    for(int n=0; n<tempoEvents.size(); n++)
+    for (int n=0; n<tempoEvents.size(); n++)
     {
         tempoEvents[n].saveToFile(fileout);
     }
@@ -1021,9 +1036,14 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                 {
 
                     const char* maintempo = xml->getAttributeValue("maintempo");
-                    if (maintempo != NULL) tempo = atoi( maintempo );
-                    else{
-                        tempo = 120;
+                    const int atoi_out = atoi( maintempo );
+                    if (maintempo != NULL and atoi_out > 0)
+                    {
+                        m_tempo = atoi_out;
+                    }
+                    else
+                    {
+                        m_tempo = 120;
                         std::cerr << "Missing info from file: main tempo" << std::endl;
                     }
 
@@ -1173,7 +1193,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                 // ---------- tempo events ------
                 else if (!strcmp("tempo", xml->getNodeName()))
                 {
-                    tempo_mode=true;
+                    tempo_mode = true;
                 }
                 // all control events in <sequence> are tempo events
                 else if (!strcmp("controlevent", xml->getNodeName()))
@@ -1197,7 +1217,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                     int tempo_value = -1;
                     const char* value = xml->getAttributeValue("value");
                     if ( value != NULL ) tempo_value = atoi( value );
-                    if ( tempo_value<0 )
+                    if ( tempo_value <= 0 )
                     {
                         std::cerr << "Failed to read tempo event" << std::endl;
                         continue;

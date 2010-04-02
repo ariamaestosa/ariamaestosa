@@ -45,10 +45,10 @@ namespace AriaMaestosa
         ControllerEvent(Sequence* sequence, unsigned short controller, int tick, unsigned short value);
         
         unsigned short getController() const { return m_controller; }
-        int getTick()                  const { return m_tick;       }    
-        unsigned short getValue()      const { return m_value;      }
-
-        int  getPositionInPixels();
+        int            getTick      () const { return m_tick;       }    
+        unsigned short getValue     () const { return m_value;      }
+        int            getPositionInPixels();
+        
         void setTick(int i);
         void setValue(unsigned short value);
         

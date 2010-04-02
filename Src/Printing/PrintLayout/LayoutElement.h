@@ -43,6 +43,9 @@ namespace AriaMaestosa
     {
         LayoutElementType type;
         
+        /** value is -1 if no tempo change occurs on this element, contains the new tempo otherwise */
+        int m_tempo_change;
+        
         int x, x2;
     public:
         LayoutElement(LayoutElementType type_arg, int measure_arg = -1);
@@ -50,11 +53,17 @@ namespace AriaMaestosa
         LayoutElementType getType() const { return type; }
         
         int measure;
-        
-        /** Most Layout Elements don't draw their end vertical line, since the next element generally
-          * draws a line at its beginning. But for special cases you can use this */
+         /** 
+           * @brief whether to draw a vertical divider line at the start of this element 
+           * @note  most Layout Elements don't draw their end vertical line, since the next element
+           *        generally draws a line at its beginning. So that's for special cases.
+           */
         bool m_render_end_bar;
         
+        /**
+          * @brief whether to draw a vertical divider line at the start of this element 
+          * @note for most elements, this is true by defaut
+          */
         bool m_render_start_bar;
         
         int width_in_print_units;
@@ -77,6 +86,21 @@ namespace AriaMaestosa
         void setXTo  (const int x) { this->x2 = x; };
         const int getXFrom() const { return x; }
         const int getXTo()   const { return x2; }
+        
+        /** @return       whether a tempo change occurs at this element */
+        bool  hasTempoChange() const { return m_tempo_change != -1; }
+        
+        /** 
+          * @return       the new tempo at this element
+          * @precondition 'hasTempoChange' must have returned 'true'
+          */
+        int   getTempo      () const { return m_tempo_change;       }
+        
+        /** 
+          * @brrief          records a tempo change at this layout element
+          * @param newTempo  the new value of the tempo, in bpm, at this layout element
+          */
+        void  setTempoChange(const int newTempo) { m_tempo_change = newTempo; }
     };
     
       

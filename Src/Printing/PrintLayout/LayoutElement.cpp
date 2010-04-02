@@ -27,5 +27,7 @@ LayoutElement::LayoutElement(LayoutElementType type_arg, int measure_arg)
     x2      = -1;
     m_render_end_bar   = false;
     m_render_start_bar = true;
+    
+    m_tempo_change = -1;
 }
 
