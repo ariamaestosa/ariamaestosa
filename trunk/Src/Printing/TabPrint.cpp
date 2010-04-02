@@ -138,27 +138,9 @@ void TablaturePrintable::addUsedTicks(const PrintLayoutMeasure& measure,  const 
     const int firstTickInMeasure = measure.getFirstTick();
     const int lastTickInMeasure  = measure.getLastTick();
     
-    //const Track* track = trackRef.getConstTrack();
-    
-    //const bool empty_measure = (first_note == -1 or last_note == -1);
-    
     //if (not empty_measure)
     {
-        /*
-        // find shortest note
-        int shortest = -1;
-        
-        for (int n=first_note; n<=last_note; n++)
-        {
-            int noteLen = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
-
-            if (noteLen < shortest or shortest == -1) shortest = noteLen;
-        }
-         */
-            
-        // FIXME: get this dynamically fron the font, don't hardcode it
         const int characterWidth = AriaPrintable::getCurrentPrintable()->getCharacterWidth();
-        // wxSize textSize2 = dc.GetTextExtent( wxT("T") );
         
         // ---- notes
         const int noteAmount = m_analyser->getNoteCount();
