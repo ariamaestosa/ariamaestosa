@@ -155,7 +155,10 @@ namespace AriaMaestosa
         int to_y;
         int width;
         int height;
-        int barHeight;
+        
+        /** height of the header bar of a track (editor) */
+        int m_header_bar_height;
+        
         bool selecting;
         int ystep;
         
@@ -310,12 +313,14 @@ namespace AriaMaestosa
         // ------------------------------------------------------------------------------------------------------
         // methods that provide general information common to all editors
         // ------------------------------------------------------------------------------------------------------
-        const int getXEnd() const;
-        const int getTrackYStart() const;
-        static const int getEditorXStart();
-        const int getEditorYStart() const;
-        const int getYEnd() const;
-        const int getWidth() const;
+
+        static const int getEditorXStart(){ return 90;                            }
+        const int getXEnd()         const { return width - 5;                     } // FIXME - adapt to include vertical scrollbar
+        const int getTrackYStart()  const { return from_y;                        }
+        const int getEditorYStart() const { return from_y+m_header_bar_height+20; }
+        const int getYEnd()         const { return to_y - 10;                     }
+        const int getWidth()        const { return width;                         }
+
         
         //const Note7 pitchToNoteName
         
