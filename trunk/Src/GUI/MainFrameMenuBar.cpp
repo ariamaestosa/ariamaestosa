@@ -608,6 +608,7 @@ void MainFrame::menuEvent_trackBackground(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_preferences(wxCommandEvent& evt)
 {
+    if (preferences == NULL) preferences = new PreferencesDialog(this, wxGetApp().prefs);
     preferences->show();
 }
 

@@ -331,9 +331,6 @@ void MainFrame::init()
     wxSize tinyTextCtrlSize(wxDefaultSize);
     tinyTextCtrlSize.SetWidth(25);
 
-    //TODO: init lazily
-    preferences = new PreferencesDialog(this, wxGetApp().prefs);
-
     // -------------------------- Toolbar ----------------------------
 #ifdef NO_WX_TOOLBAR
     borderSizer->Add(toolbar, 0, wxALIGN_CENTER_VERTICAL | wxALL, 2);
