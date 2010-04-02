@@ -59,6 +59,9 @@ namespace AriaMaestosa
           */
         PrintableSequence(Sequence* parent);
         
+        /** @return the Sequence object associated with this printable sequence */
+        const Sequence* getSequence() const { return m_sequence; }
+        
         /**
           * Add a track (from the parent sequence of this object) to be printed.
           *

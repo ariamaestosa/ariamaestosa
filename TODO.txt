@@ -45,7 +45,7 @@ NOTE: sorry, this is very raw :)
 * score print :
     * red images
     - X notes not printed right (nor handled correctly in score editor anyway)
-* print tempo (and tempo changes)
+* print tempo changes
 - add double bar at the end of the song
 - make "print track name" configurable?
 - when printing a single track, print track name at top near title?
