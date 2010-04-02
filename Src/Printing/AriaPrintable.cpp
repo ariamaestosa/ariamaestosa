@@ -257,24 +257,27 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     
     
     // ---- draw tempo
-    dc.SetFont( m_subtitle_font );
-    const int tempo_x = 100;
-    const int tempo_y = y0 + m_title_font_height + MARGIN_UNDER_PAGE_HEADER/3;
-    wxPoint tempoHeadLocation(tempo_x, tempo_y);
+    if (pageNum == 1)
+    {
+        dc.SetFont( m_subtitle_font );
+        const int tempo_x = 100;
+        const int tempo_y = y0 + m_title_font_height + MARGIN_UNDER_PAGE_HEADER/3;
+        wxPoint tempoHeadLocation(tempo_x, tempo_y);
+        
+        dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
+        dc.SetBrush( *wxBLACK_BRUSH );
+        EditorPrintable::drawNoteHead(dc, tempoHeadLocation, false /* not hollow head */);
+        
+        const Sequence* seq = m_seq->getSequence();
+        const int tempo = seq->getTempo();
+        dc.DrawText( wxString::Format(wxT(" = %i"), tempo),
+                     tempo_x+HEAD_RADIUS*2,
+                     tempo_y+HEAD_RADIUS-m_subtitle_font_height );
+        
+        //FIXME: don't hardcode values
+        dc.DrawLine( tempo_x + HEAD_RADIUS - 8, tempo_y - 10, tempo_x + HEAD_RADIUS - 8, tempo_y-150 );
+    }
     
-    dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
-    dc.SetBrush( *wxBLACK_BRUSH );
-    EditorPrintable::drawNoteHead(dc, tempoHeadLocation, false /* not hollow head */);
-    
-    const Sequence* seq = m_seq->getSequence();
-    const int tempo = seq->getTempo();
-    dc.DrawText( wxString::Format(wxT(" = %i"), tempo),
-                 tempo_x+HEAD_RADIUS*2,
-                 tempo_y+HEAD_RADIUS-m_subtitle_font_height );
-    
-    //FIXME: don't hardcode values
-    dc.DrawLine( tempo_x + HEAD_RADIUS - 8, tempo_y - 10, tempo_x + HEAD_RADIUS - 8, tempo_y-150 );
-
     // ---- get usable area (some area at the top is reserved to the title) 
     const float notation_area_h  = getUsableAreaHeight(pageNum);
     const float notation_area_y0 = y0 + MARGIN_UNDER_PAGE_HEADER +
