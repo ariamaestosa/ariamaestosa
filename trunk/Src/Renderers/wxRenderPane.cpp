@@ -29,30 +29,31 @@
 #include "GUI/MainFrame.h"
 #include "Utils.h"
 
-namespace AriaMaestosa {
+using namespace AriaMaestosa;
 
-// ==========================================================================================
-// ==========================================================================================
+// ----------------------------------------------------------------------------------------------------------
 
 wxRenderPane::wxRenderPane(MainFrame* mainFrame, int* args) :
     wxPanel(mainFrame, wxID_ANY,  wxDefaultPosition, wxDefaultSize)
 {
-
-    
-
+    SetBackgroundStyle(wxBG_STYLE_PAINT);
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 wxRenderPane::~wxRenderPane()
 {
 }
 
-
+// ----------------------------------------------------------------------------------------------------------
 
 void wxRenderPane::resized(wxSizeEvent& evt)
 {
-    wxPanel::OnSize(evt);
+    evt.Skip();
     if (getMainFrame()->getSequenceAmount()>0) DisplayFrame::updateVerticalScrollbar();
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 int wxRenderPane::getWidth()
 {
@@ -61,6 +62,8 @@ int wxRenderPane::getWidth()
     else return 795; // default value
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 int wxRenderPane::getHeight()
 {
     // FIXME - is it really necessary to check if it's visible?
@@ -68,22 +71,28 @@ int wxRenderPane::getHeight()
     else return 550; // approximately default
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 bool wxRenderPane::prepareFrame()
 {
     if (!GetParent()->IsShown()) return false; 
     return true;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void wxRenderPane::beginFrame()
 {
     Display::renderDC -> SetBackground( *wxBLACK_BRUSH );
     Display::renderDC -> Clear();
 }
+
+// ----------------------------------------------------------------------------------------------------------
+
 void wxRenderPane::endFrame()
 {
 }
 
-
-}
+// ----------------------------------------------------------------------------------------------------------
 
 #endif

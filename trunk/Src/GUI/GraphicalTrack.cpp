@@ -1003,7 +1003,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     AriaRender::color(0,0,0);
     AriaRenderString& track_name = track->getNameRenderer();
     track_name.bind();
-    track_name.render(trackName->getX()+11, y+30);
+    track_name.render(trackName->getX()+11, y+29);
     
     // draw grid label
     int grid_selection_x;
@@ -1054,12 +1054,12 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     
     if (editorMode == DRUM) 
     {
-        Core::getDrumPicker()->renderDrumKitName( track->getDrumKit(), instrumentName->getX()+11 ,y+30);
+        Core::getDrumPicker()->renderDrumKitName( track->getDrumKit(), instrumentName->getX()+11 ,y+29);
     }
     else
     {
         track->instrument_name.bind();
-        track->instrument_name.render(instrumentName->getX()+11 ,y+30);
+        track->instrument_name.render(instrumentName->getX()+11 ,y+29);
     }
     
     AriaRender::images();
