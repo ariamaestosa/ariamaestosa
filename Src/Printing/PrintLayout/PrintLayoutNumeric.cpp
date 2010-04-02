@@ -37,31 +37,6 @@ const int MAX_LEVEL_HEIGHT = 72;
   */
 const float ELEMENT_MAX_ZOOM = 1.5f;
 
-/**
-  * Vertical empty space left above/below the various tracks of a single line.
-  * (this space is split between above and below each track)
-  */
-const int SPACE_BETWEEN_TRACKS = 150;
-
-/**
- * Vertical empty space left above/below the various lines of a page.
- * (this space is split between above and below each line)
- */
-const int MARGIN_AROUND_LINE = 250;
-
-/**
-  * A page is split between its various lines, proportionnally to how much
-  * vertical space they need. However, if there are few tracks in the page,
-  * each track will be given a way too large area, which can result in the lines
-  * being "widely spread" through the page, i.e. one line at the top, another
-  * at the middle of the page (notice the difference with MAX_LEVEL_HEIGHT;
-  * MAX_LEVEL_HEIGHT will determine the maximum _used_ space within the space
-  * allocated for a line; this variable will _also_ reduce the allocated
-  * space so the various lines are not vertically too far from each other).
-  * This constant means that the total allocated heigt might not be more than
-  * e.g. 1.3 as high as the actually used part of the allocaed height.
-  */
-const float MAX_HEIGHT_COMPARED_TO_USED_HEIGHT = 1.3f;
 
 // -----------------------------------------------------------------------------------------------------------------
 
