@@ -313,7 +313,7 @@ namespace AriaMaestosa
 // --------------------------------------------------------------------------------------------------
     
 const int EXPANDED_BAR_HEIGHT = 20;
-const int COLLAPSED_BAR_HEIGHT = 5;
+const int COLLAPSED_BAR_HEIGHT = 5; //FIXME: what's that?? a collapsed bar is not 5 pixels high?? */
 
 GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
 {
@@ -1093,16 +1093,13 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
         return y;
     }
     
-    int barHeight = EXPANDED_BAR_HEIGHT;
-    if (collapsed) barHeight = COLLAPSED_BAR_HEIGHT;
-    
     from_y = y;
     
     if (collapsed) to_y = from_y + 45;
-    else           to_y = y + barHeight + 50 + height;
+    else           to_y = y + EXPANDED_BAR_HEIGHT + 50 + height;
     
     // tell the editor about its new location
-    getCurrentEditor()->updatePosition(from_y, to_y, Display::getWidth(), height, barHeight);
+    getCurrentEditor()->updatePosition(from_y, to_y, Display::getWidth(), height, EXPANDED_BAR_HEIGHT);
     
     // don't waste time drawing it if out of bounds
     if (to_y < 0) return to_y;
@@ -1142,22 +1139,26 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
         
         AriaRender::images();
         
+        
+        int barHeight = EXPANDED_BAR_HEIGHT;
+        if (collapsed) barHeight = COLLAPSED_BAR_HEIGHT;
+        
         if (!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
         else        AriaRender::setImageState(AriaRender::STATE_NORMAL);
         
-        // bottom left corner
+        // bottom left corner (FIXME: remove those hardcoded numbers; they are in Editor too so avoid duplicating)
         whiteCornerDrawable->move(10, y+20+barHeight+height);
         whiteCornerDrawable->setFlip(false, false);
         whiteCornerDrawable->render();
         
-        // bottom border
+        // bottom border (FIXME: remove those hardcoded numbers; they are in Editor too so avoid duplicating)
         whiteBorderDrawable->move(30, y+20+barHeight+height);
         whiteBorderDrawable->setFlip(false, false);
         whiteBorderDrawable->rotate(0);
         whiteBorderDrawable->scale((Display::getWidth() - 5 /* margin*/ - 20 /*left round cornerDrawable*/ - 20 /*right round cornerDrawable*/)/20.0, 1 );
         whiteBorderDrawable->render();
         
-        // bottom right corner
+        // bottom right corner (FIXME: remove those hardcoded numbers; they are in Editor too so avoid duplicating)
         whiteCornerDrawable->move(Display::getWidth() - 5 /* margin*/ - 20 /*left round cornerDrawable*/,
                                   y + 20 + barHeight + height);
         whiteCornerDrawable->setFlip(true, false);
@@ -1165,14 +1166,14 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
         
         // --------------------------------------------------
         
-        // left borderDrawable
+        // left borderDrawable (FIXME: remove those hardcoded numbers; they are in Editor too so avoid duplicating)
         whiteBorderDrawable->move(30, y+barHeight+20);
         whiteBorderDrawable->setFlip(false, false);
         whiteBorderDrawable->rotate(90);
         whiteBorderDrawable->scale(1, height /*number of pixels high*/ /20.0 );
         whiteBorderDrawable->render();
         
-        // right borderDrawable
+        // right borderDrawable (FIXME: remove those hardcoded numbers; they are in Editor too so avoid duplicating)
         whiteBorderDrawable->move(Display::getWidth() - 5 , y+barHeight+20);
         whiteBorderDrawable->setFlip(false, true);
         whiteBorderDrawable->rotate(90);

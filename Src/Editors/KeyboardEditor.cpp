@@ -346,21 +346,19 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             else        AriaRender::setImageState(AriaRender::STATE_NORMAL);
 
             const int keyboard_image_x = getEditorXStart()-noteTrackDrawable->getImageWidth();
-            noteTrackDrawable->move(keyboard_image_x,
-                                    from_y+barHeight+20 + g_octave_y);
+            noteTrackDrawable->move(keyboard_image_x, getEditorYStart() + g_octave_y);
             noteTrackDrawable->render();
 
             AriaRender::primitives();
             AriaRender::color(0,0,0);
 
-            // FIXME - all those from_y+barHeight+20 stuff needs to be cleaned up for good
-            AriaRender::line(0,                from_y+barHeight+20 + g_octave_y,
-                             keyboard_image_x, from_y+barHeight+20 + g_octave_y);
+            AriaRender::line(0,                getEditorYStart() + g_octave_y,
+                             keyboard_image_x, getEditorYStart() + g_octave_y);
 
             // octave number
             AriaRender::images();
             AriaRender::color(0,0,0);
-            AriaRender::renderNumber(10-g_octaveID, 30, from_y+barHeight+21 + g_octave_y +120/2);
+            AriaRender::renderNumber(10-g_octaveID, 30, getEditorYStart()+1 + g_octave_y + 120/2);
             
         }//end if
     }//next
