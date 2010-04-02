@@ -23,6 +23,9 @@
 
 using namespace AriaMaestosa;
 
+/** how many levels (vertical units) to leave between the tracks of a line */
+const int INTER_TRACK_MARGIN_LEVELS = 3;
+
 #pragma mark LineTrackRef
     
 // -------------------------------------------------------------------------------------------
@@ -216,6 +219,8 @@ int LayoutLine::calculateHeight(const bool hideEmptyTracks)
 {
     m_level_height = 0;
         
+    bool nonEmptyTrackMetYet = false;
+    
     // calculate the total height of this line (i.e. sum of heights of tracks within the line
     // PLUS empty space between the tracks) FIXME: shouldn't that go in PrintLayoutAbstract ?
     const int trackAmount = getTrackAmount();
@@ -228,7 +233,7 @@ int LayoutLine::calculateHeight(const bool hideEmptyTracks)
         if (empty and hideEmptyTracks) this_height = 0;
         
         // add space between tracks
-        if (this_height > 0 and n > 0)
+        if (this_height > 0 and nonEmptyTrackMetYet)
         {
             m_level_height += INTER_TRACK_MARGIN_LEVELS;
         }
@@ -236,6 +241,8 @@ int LayoutLine::calculateHeight(const bool hideEmptyTracks)
         m_tracks[n].m_level_from  = m_level_height;
         m_level_height           += this_height;
         m_tracks[n].m_level_to    = m_level_height;
+        
+        if (not nonEmptyTrackMetYet) nonEmptyTrackMetYet = (this_height > 0);
     }
     
     return m_level_height;
