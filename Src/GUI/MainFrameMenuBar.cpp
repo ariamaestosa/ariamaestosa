@@ -246,7 +246,7 @@ void MainFrame::initMenuBar()
 
 // -----------------------------------------------------------------------------------------------------------
 
-void MainFrame::disableMenusForPlayback(const bool disable)
+void MainFrame::disableMenus(const bool disable)
 {
     const bool on = !disable;
 
