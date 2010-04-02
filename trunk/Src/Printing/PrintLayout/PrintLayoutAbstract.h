@@ -32,7 +32,6 @@
 namespace AriaMaestosa
 {
     const int MARGIN_AT_MEASURE_BEGINNING = 50;
-    const int INTER_LINE_MARGIN_LEVELS = 6;
 
     class Track;
     class PrintableSequence;

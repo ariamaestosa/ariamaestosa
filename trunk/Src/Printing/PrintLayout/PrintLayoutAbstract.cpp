@@ -36,6 +36,8 @@ namespace AriaMaestosa
         
     const int MIN_NUMBER_OF_EMPTY_MEASURES_TO_COLLPASE = 4;
     
+    const int INTER_LINE_MARGIN_LEVELS = 6;
+    
     /** Whether to show a line ehader (clef+key, tab tuning, etc...) on every line */
     const bool HEADER_ON_EVERY_LINE = false;
     

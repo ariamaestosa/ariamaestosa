@@ -23,9 +23,7 @@
 #include "Printing/PrintLayout/PrintLayoutMeasure.h"
 
 namespace AriaMaestosa
-{
-    const int INTER_TRACK_MARGIN_LEVELS = 3;
-    
+{    
     class Track;
     class LayoutElement;
     class LayoutLine;
@@ -34,7 +32,6 @@ namespace AriaMaestosa
     /** Contains the absolute coords part of a LineTrackRef */
     struct TrackCoords
     {
-        /** Coordinates of that track, in print units. Will not be set initially. */
         int x0, y0, x1, y1;
     };
     
@@ -59,17 +56,6 @@ namespace AriaMaestosa
         const Track* m_track;
         
     public:
-        
-        int getLevelFrom() const
-        {
-            ASSERT(m_level_from != -1);
-            return m_level_from;
-        }
-        int getLevelTo() const
-        {
-            ASSERT(m_level_to != -1);
-            return m_level_to;
-        }
         
         /**
          * Editor-specific data (each editor can override this class and set their data through it in each
@@ -128,6 +114,16 @@ namespace AriaMaestosa
             return m_level_to - m_level_from;
         }
 
+        int getLevelFrom() const
+        {
+            ASSERT(m_level_from != -1);
+            return m_level_from;
+        }
+        int getLevelTo() const
+        {
+            ASSERT(m_level_to != -1);
+            return m_level_to;
+        }
     };
     
     /**
