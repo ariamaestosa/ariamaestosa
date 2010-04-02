@@ -3,7 +3,7 @@
     - Improved printing dialog
     - Give access to page setup dialog
     - Show progress dialog while calculating print layout
-    - Print song tempo (at the beginning of the song)
+    - Print song tempo
     - Improved layout code, which result in vast improvements when printing tablatures without scores
     - In printing code, removed absolute constants and repalced them to be relative to page size
     - Fixed bugs that caused pages > 1 to have less contents than first page

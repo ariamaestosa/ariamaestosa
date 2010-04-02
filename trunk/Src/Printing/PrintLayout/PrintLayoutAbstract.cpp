@@ -165,6 +165,7 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
     int previous_num = -1, previous_denom = -1;
     
     bool noStartLine = false;
+    int  tempo = m_sequence->getSequence()->getTempo();
     
     for (int measure=0; measure<measureAmount; measure++)
     {
@@ -193,6 +194,9 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
             layoutElements.push_back( el2 );
             noStartLine = true;
         }
+        
+        const int tick      = getMeasureData()->firstTickInMeasure(measure);
+        const int tempoHere = m_sequence->getSequence()->getTempoAtTick(tick);
 
         int emptyMeasureCount = 0;
         for (int n=measure; n<measureAmount; n++)
@@ -204,7 +208,6 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
         // ---- many empty measures ----
         if (emptyMeasureCount >= MIN_NUMBER_OF_EMPTY_MEASURES_TO_COLLPASE)
         {
-            //TODO
             layoutElements.push_back( LayoutElement(GATHERED_REST, measure) );
             const int id = layoutElements.size()-1;
             layoutElements[id].width_in_print_units = LAYOUT_ELEMENT_MIN_WIDTH;
@@ -372,6 +375,13 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
         
         if (noStartLine) layoutElements[layoutElements.size()-1].m_render_start_bar = false;
 
+        //TODO: if a tempo change occurs during a gathered rest, it won't displayed at the right location
+        if (tempoHere != tempo)
+        {
+            layoutElements[layoutElements.size()-1].setTempoChange(tempoHere);
+            tempo = tempoHere;
+        }
+        
     }//next measure
 }
 
