@@ -145,7 +145,8 @@ namespace AriaMaestosa
         
         /** draw some basic stuff common to all editors for the given layout element */
         void drawElementBase(LayoutElement& currElem, const LayoutLine& layoutLine,
-                             const bool drawMeasureNumbers, const int y0, const int y1);
+                             const bool drawMeasureNumbers, const int y0, const int y1,
+                             const int barYFrom, const int barYTo);
         
         /** utility method to render a note's head */
         static void drawNoteHead(wxDC& dc, const wxPoint headCenter, const bool hollowHead);

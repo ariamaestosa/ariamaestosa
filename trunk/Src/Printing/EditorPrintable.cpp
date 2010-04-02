@@ -93,7 +93,8 @@ void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0,
 // -------------------------------------------------------------------------------------------
 
 void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine& layoutLine,
-                                      const bool drawMeasureNumbers, const int y0, const int y1)
+                                      const bool drawMeasureNumbers, const int y0, const int y1,
+                                      const int barYFrom, const int barYTo)
 {
     const int elem_x_start = currElem.getXFrom();
     
@@ -124,15 +125,13 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
         
         dc->SetTextForeground( wxColour(0,0,255) );
         dc->DrawText( message, elem_x_start,
-                     (y0 + y1)/2 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()/2 );
+                     (barYFrom + barYTo)/2 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()/2 );
     }
     // ****** gathered rest
     else if (currElem.getType() == GATHERED_REST)
     {
-        //TODO
-        
         const int elem_x_end = currElem.getXTo();
-        const int y          = (y0 + y1)/2;
+        const int y          = (barYFrom + barYTo)/2;
         
         wxString label;
         label << currElem.amountOfTimes;
@@ -161,7 +160,7 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
         
         dc->SetTextForeground( wxColour(0,0,255) );
         dc->DrawText( label, elem_x_start,
-                     (y0 + y1)/2 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()/2 );
+                     (barYFrom + barYTo)/2 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()/2 );
     }
     // ****** normal measure
     else if (currElem.getType() == SINGLE_MEASURE)
@@ -180,7 +179,7 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
             
             dc->DrawText( measureLabel,
                          elem_x_start,
-                         y0 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()*1.4 );
+                         barYFrom - AriaPrintable::getCurrentPrintable()->getCharacterHeight()*1.4 );
         }
         dc->SetTextForeground( wxColour(0,0,0) );
     }
@@ -199,7 +198,7 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
         EditorPrintable::drawNoteHead(*dc, tempoHeadLocation, false /* not hollow head */);
         
         const int tempo = currElem.getTempo();
-        dc->DrawText( wxString::Format(wxT(" = %i"), tempo),
+        dc->DrawText( wxString::Format(wxT("= %i"), tempo),
                       tempo_x+HEAD_RADIUS*2,
                       tempo_y+HEAD_RADIUS-AriaPrintable::getCurrentPrintable()->getCharacterHeight() );
         
