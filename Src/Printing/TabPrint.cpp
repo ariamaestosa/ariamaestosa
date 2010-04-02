@@ -359,7 +359,7 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
     const int toTick   = getMeasureData()->lastTickInMeasure(currentLine.getLastMeasure());
 
     const int silencesY  = trackCoords->y0 + stringHeight;   // second string
-    const int silencesY2 = trackCoords->y0 + stringHeight*2; // third string
+    const int silencesY2 = (string_amount > 5 ? trackCoords->y0 + stringHeight*2 : silencesY);
 
     const int silenceAmount = m_silences.size();
     for (int n=0; n<silenceAmount; n++)
