@@ -104,7 +104,7 @@ namespace AriaMaestosa
                 std::cout << "Note " << pitch << " : " << custom_key[pitch] << std::endl;
             }
             
-            //TODO
+            //TODO: custom key support
             EndModal( GetReturnCode() );
         }
         void onCancel(wxCommandEvent& evt)

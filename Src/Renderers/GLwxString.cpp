@@ -87,7 +87,7 @@ TextGLDrawable::TextGLDrawable(TextTexture* image_arg)
     xscale=1;
     yscale=1;
 
-    y_offset = 1;
+    y_offset = 0;
     
     max_width = -1;
     
@@ -282,7 +282,7 @@ void wxGLString::calculateSize(wxDC* dc, const bool ignore_font /* when from arr
 
 void wxGLString::consolidate(wxDC* dc)
 {
-    TextGLDrawable::y_offset = 1;
+    TextGLDrawable::y_offset = 0;
     calculateSize(dc);
 
     bool multi_line = false;
