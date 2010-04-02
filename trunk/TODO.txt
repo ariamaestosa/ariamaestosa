@@ -133,8 +133,6 @@ UNSURE/MINOR:
 
 ************************* BUGS: *************************
 
-** Issuing "Command-P" keyboard shortcut invokes two print dialogs and makes Aria crash
-
 * Undoing "delete track" places it back at the bottom, not where it was
 
 * score editor at wrong octave

@@ -559,7 +559,7 @@ void MainFrame::toolsEnterPlaybackMode()
     toolbar->SetToolNormalBitmap(PLAY_CLICKED, pauseBitmap);
     toolbar->EnableTool(STOP_CLICKED, true);
 
-    disableMenusForPlayback(true);
+    disableMenus(true);
 
     timeSig->Enable(false);
     firstMeasure->Enable(false);
@@ -576,7 +576,7 @@ void MainFrame::toolsExitPlaybackMode()
     toolbar->SetToolNormalBitmap(PLAY_CLICKED, playBitmap);
     toolbar->EnableTool(STOP_CLICKED, false);
 
-    disableMenusForPlayback(false);
+    disableMenus(false);
 
     timeSig->Enable(true);
     firstMeasure->Enable(true);

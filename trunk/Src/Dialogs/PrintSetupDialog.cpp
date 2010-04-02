@@ -14,6 +14,7 @@
 #include "Dialogs/WaitWindow.h"
 #include "Editors/GuitarEditor.h"
 #include "GUI/GraphicalTrack.h"
+#include "GUI/MainFrame.h"
 #include "IO/IOUtils.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
@@ -78,6 +79,8 @@ namespace AriaMaestosa
                 
         delete printable;
         delete printable_sequence;
+        
+        getMainFrame()->disableMenus(false);
     }        
 
     
@@ -336,6 +339,7 @@ namespace AriaMaestosa
             
             Hide();
             Destroy();
+            getMainFrame()->disableMenus(false);
         }
         
         /** when the 'ok' button is clicked */
@@ -383,6 +387,7 @@ namespace AriaMaestosa
     // user wants to export to notation - remember what is the sequence, then show set-up dialog
     void showPrintSetupDialog(Sequence* sequence)
     {
+        getMainFrame()->disableMenus(true);
         new PrintSetupDialog(sequence);
     }
 

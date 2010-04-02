@@ -154,7 +154,7 @@ namespace AriaMaestosa
             //void measureDenomChanged(wxCommandEvent& evt);
             void firstMeasureChanged(wxCommandEvent& evt);
             void changeMeasureAmount(int i, bool throwEvent=true);
-            void disableMenusForPlayback(const bool disable);
+            void disableMenus(const bool disable);
             
             void enterPressedInTopBar(wxCommandEvent& evt);
             
