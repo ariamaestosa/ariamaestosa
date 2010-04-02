@@ -1178,7 +1178,7 @@ namespace AriaMaestosa
         for (int el=0; el<elamount; el++)
         {
             drawElementBase(line.getLayoutElement(el), line,
-                            show_measure_number, measure_dividers_from_y, measure_dividers_to_y);
+                            show_measure_number, y0, y1, measure_dividers_from_y, measure_dividers_to_y);
         }
         
         // ------------------ first part : basic unintelligent drawing -----------------
