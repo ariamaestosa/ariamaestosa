@@ -54,7 +54,7 @@ namespace AriaMaestosa
     class Sequence
     {
 
-        int tempo;
+        int m_tempo;
         int beatResolution;
 
         float zoom; int zoom_percent;
@@ -222,9 +222,24 @@ namespace AriaMaestosa
          */    
         int   getTotalHeight() const;
         
+        /** @brief       sets the "default" tempo (tempo at start of song)
+          * @param tempo the new tempo value
+          */
         void  setTempo(int tempo);
+        
+        /** @return      the "default" tempo (tempo at start of song) */
         int   getTempo() const;
-
+        
+        /** @return the tempo at any tick (not necessarily a tick where there is a tempo change event) */
+        int   getTempoAtTick(const int tick) const;
+        
+        void  addTempoEvent( ControllerEvent* evt );
+        
+        /** adds a tempo event. used during importing - then we know events are in time order
+         * so no time is wasted verifying that
+         */
+        void  addTempoEvent_import( ControllerEvent* evt );
+        
         int   getZoomInPercent() const;
         float getZoom() const;
         void  setZoom(int percent);
@@ -237,13 +252,6 @@ namespace AriaMaestosa
 
         void  setYScroll(int value);
         int   getYScroll();
-
-        void  addTempoEvent( ControllerEvent* evt );
-        
-        /** adds a tempo event. used during importing - then we know events are in time order
-          * so no time is wasted verifying that
-          */
-        void  addTempoEvent_import( ControllerEvent* evt );
 
         void  setChannelManagementType(ChannelManagementType m);
         ChannelManagementType getChannelManagementType() const;
