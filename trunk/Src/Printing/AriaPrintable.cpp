@@ -126,7 +126,7 @@ void AriaPrintable::macEditMargins(wxFrame* parentFrame)
 void AriaPrintable::findUsableHeight()
 {
     const int height = getUnitHeight();
-    m_usable_area_height_page_1 = height - m_title_font_height - MARGIN_UNDER_PAGE_HEADER;
+    m_usable_area_height_page_1 = height - m_title_font_height - m_subtitle_font_height - MARGIN_UNDER_PAGE_HEADER;
     m_usable_area_height        = height - m_subtitle_font_height - MARGIN_UNDER_PAGE_HEADER;
     
     std::cout << "Calculating 'm_usable_area_height' with height=" << height << "\n";
@@ -255,13 +255,23 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     dc.SetTextForeground( wxColour(0,0,0) );
     dc.DrawText( label, title_x, y0 );
     
+    const int subtitle_y = y0 + m_title_font_height + MARGIN_UNDER_PAGE_HEADER/3;
+
+    /*
+     //DEBUG
+    dc.SetPen(  wxPen( wxColour(255,0,0), 5 ) );
+    dc.DrawLine( x0, subtitle_y, x1, subtitle_y );
+    dc.DrawLine( x0, subtitle_y+m_subtitle_font_height, x1, subtitle_y+m_subtitle_font_height );
+     */
     
     // ---- draw tempo
     if (pageNum == 1)
     {
+        // center note head vertically
+        const int tempo_y = subtitle_y + m_subtitle_font_height/2;
+        
         dc.SetFont( m_subtitle_font );
         const int tempo_x = 100;
-        const int tempo_y = y0 + m_title_font_height + MARGIN_UNDER_PAGE_HEADER/3;
         wxPoint tempoHeadLocation(tempo_x, tempo_y);
         
         dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
@@ -272,16 +282,28 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
         const int tempo = seq->getTempo();
         dc.DrawText( wxString::Format(wxT(" = %i"), tempo),
                      tempo_x+HEAD_RADIUS*2,
-                     tempo_y+HEAD_RADIUS-m_subtitle_font_height );
+                     subtitle_y );
         
         //FIXME: don't hardcode values
-        dc.DrawLine( tempo_x + HEAD_RADIUS - 8, tempo_y - 10, tempo_x + HEAD_RADIUS - 8, tempo_y-150 );
+        dc.DrawLine( tempo_x + HEAD_RADIUS - 8, tempo_y - 10,
+                     tempo_x + HEAD_RADIUS - 8, tempo_y - 150 );
+    }
+    
+    // ---- draw track name at top if relevant
+    if (pageNum == 1 and m_seq->getTrackAmount() == 1 and not showTrackNames())
+    {
+        wxString name = m_seq->getTrack(0)->getName();
+        dc.DrawText( name,
+                     x1 - dc.GetTextExtent(name).GetWidth(),
+                     subtitle_y );
     }
     
     // ---- get usable area (some area at the top is reserved to the title) 
     const float notation_area_h  = getUsableAreaHeight(pageNum);
     const float notation_area_y0 = y0 + MARGIN_UNDER_PAGE_HEADER +
-                                   (pageNum == 1 ? m_title_font_height : m_subtitle_font_height);
+                                   (pageNum == 1 ?
+                                    m_title_font_height + m_subtitle_font_height :
+                                    m_subtitle_font_height);
 
     ASSERT(notation_area_h > 0);
     ASSERT(h > 0);
