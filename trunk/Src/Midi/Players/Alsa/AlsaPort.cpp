@@ -138,10 +138,10 @@ void MidiContext::closeDevice()
     device->close();
 }
 
-bool MidiContext::askOpenDevice()
+bool MidiContext::openDevice(bool ask)
 {
-    const bool launchTimidity = Core::getPrefsValue("launchTimidity") != 0;
-    if(launchTimidity)
+    const bool launchTimidity = (not ask);
+    if (launchTimidity)
     {
         runTimidity();
     }
@@ -151,7 +151,7 @@ bool MidiContext::askOpenDevice()
     // -------------- ask user to choose a midi port -----------------
     const int deviceAmount = getDeviceAmount();
 
-    if(deviceAmount < 1)
+    if (deviceAmount < 1)
     {
         wxMessageBox( _("No midi port found, no sound will be available.") );
         return false;
@@ -162,7 +162,7 @@ bool MidiContext::askOpenDevice()
 
     bool success = false;
 
-    if(launchTimidity)
+    if (launchTimidity)
     {
         success = openTimidityDevice();
         /*
@@ -184,7 +184,7 @@ bool MidiContext::askOpenDevice()
     }
     else
     {
-        for(int n=0; n<deviceAmount; n++)
+        for (int n=0; n<deviceAmount; n++)
         {
             currentDevice = getDevice(n);
             choices[n] =    to_wxString(currentDevice->client) +
@@ -198,16 +198,26 @@ bool MidiContext::askOpenDevice()
         int userChoice = wxGetSingleChoiceIndex(_("Select an ALSA midi port to use for output."),
                                                 _("ALSA midi port choice"),
                                                 deviceAmount, choices);
-        if(userChoice == -1) return false;
+        if (userChoice == -1) return false;
 
         success = openDevice(getDevice(userChoice));
     }
 
-    if(success) return true;
+    if (success)
+    {
+        return true;
+    }
     else
     {
-        wxMessageBox( _("The selected ALSA device could not be opened.") );
-        return askOpenDevice();
+        if (ask)
+        {
+            wxMessageBox( _("The selected ALSA device could not be opened.") );
+        }
+        else
+        {
+            wxMessageBox( _("Could not launch TiMidity and/or open ALSA port.") );
+        }
+        return openDevice(true);
     }
     return false;
 }

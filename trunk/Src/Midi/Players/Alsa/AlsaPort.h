@@ -45,7 +45,7 @@ namespace AriaMaestosa
         bool openDevice(MidiDevice* device);
         bool openTimidityDevice();
         void closeDevice();
-        bool askOpenDevice();
+        bool openDevice(bool ask);
 
         bool isPlaying();
         void setPlaying(bool playing);
