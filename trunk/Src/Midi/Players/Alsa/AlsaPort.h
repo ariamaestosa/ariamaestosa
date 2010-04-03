@@ -3,9 +3,20 @@
 
 #include "Utils.h"
 #include <alsa/asoundlib.h>
-#include <vector>
 #include "glib.h"
 #include "wx/string.h"
+#include "ptr_vector.h"
+
+#include "jdkmidi/world.h"
+#include "jdkmidi/track.h"
+#include "jdkmidi/multitrack.h"
+#include "jdkmidi/filereadmultitrack.h"
+#include "jdkmidi/fileread.h"
+#include "jdkmidi/fileshow.h"
+#include "jdkmidi/filewritemultitrack.h"
+#include "jdkmidi/msg.h"
+#include "jdkmidi/sysex.h"
+
 
 namespace AriaMaestosa
 {

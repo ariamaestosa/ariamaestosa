@@ -28,6 +28,7 @@
 
 class wxScrollBar;
 class wxSpinCtrl;
+class wxSpinEvent;
 
 namespace AriaMaestosa
 {

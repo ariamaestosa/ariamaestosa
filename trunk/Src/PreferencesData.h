@@ -88,8 +88,10 @@ namespace AriaMaestosa
 
     public:
                 
+        long getValue(const char* entryName) const { return getValue(wxString(entryName, wxConvUTF8)); }
         long getValue(wxString entryName) const;
         
+        void setValue(const char* entryName, long newValue) { setValue( wxString(entryName, wxConvUTF8), newValue ); }
         void setValue(wxString entryName, long newValue);
         
         /** write config file */
