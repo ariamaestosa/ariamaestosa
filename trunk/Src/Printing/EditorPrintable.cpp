@@ -78,14 +78,25 @@ void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0,
     wxString denom = wxString::Format( wxT("%i"), el->denom );
     
     wxFont oldfont = dc->GetFont();
+
+    //FIXME: don't hardcode fonts here
+    //FIXME: find why font sizes are so different between OS X and Linux
+#ifdef __WXMAC__
     dc->SetFont( wxFont(150,wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD) );
+#else
+    dc->SetFont( wxFont(100,wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD) );
+#endif
     dc->SetTextForeground( wxColour(0,0,0) );
     
     wxSize text_size = dc->GetTextExtent(denom);
     const int text_x = el->getXTo() - text_size.GetWidth() - 20;
-    
-    dc->DrawText(num,   text_x, y0 + 10);
-    dc->DrawText(denom, text_x, y0 + (y1 - y0)/2 + 10  );
+    const int text_h = text_size.GetHeight();
+
+    const int numY   = y0 + (y1 - y0)/4;
+    const int denomY = y0 + (y1 - y0)*3/4;
+
+    dc->DrawText(num,   text_x, numY - text_h/2);
+    dc->DrawText(denom, text_x, denomY - text_h/2);
     
     dc->SetFont(oldfont);    
 }
