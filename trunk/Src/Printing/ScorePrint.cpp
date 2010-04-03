@@ -265,7 +265,7 @@ namespace AriaMaestosa
     /** Renders a 'F clef' sign at the the given coordinates */
     void renderFClef(wxDC& dc, const int x, const float score_top, const float e_line_y)
     {
-        static wxBitmap fclef( getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("Fkey.png"), wxBITMAP_TYPE_PNG );
+        static wxBitmap fclef( getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("FKey.png"), wxBITMAP_TYPE_PNG );
         
         const int e_on_image = 15;
         const float scale = (float)(e_line_y - score_top) / (float)e_on_image;
