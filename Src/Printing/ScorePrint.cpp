@@ -51,6 +51,9 @@ namespace AriaMaestosa
       */
     const float MARGIN_PROPORTION_BETWEEN_CLEFS = 0.2f;
     
+    /** how many units after the note head to render the dot (for dotted notes) */
+    const int DOT_SHIFT_AFTER_NOTE_HEAD = 20;
+    
 #if 0
 #pragma mark -
 #pragma mark ScoreData
@@ -1274,9 +1277,9 @@ namespace AriaMaestosa
                 
                 // draw dot if note is dotted
                 if (noteRenderInfo.dotted)
-                {
-                    wxPoint headLocation( headLocation.x + HEAD_RADIUS, notey+10 );
-                    dc.DrawEllipse( headLocation /* top left corner */, wxSize(DOT_SIZE, DOT_SIZE) );
+                {     
+                    wxPoint dotLocation( headLocation.x + HEAD_RADIUS + DOT_SHIFT_AFTER_NOTE_HEAD, notey+10 );
+                    dc.DrawEllipse( dotLocation /* top left corner */, wxSize(DOT_SIZE, DOT_SIZE) );
                 }
                 
                 /*

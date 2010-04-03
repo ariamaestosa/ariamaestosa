@@ -51,6 +51,8 @@ NOTE: sorry, this is very raw :)
 - long-term : in multi-track printing, some tracks need to be visually more tightly bound toghether (like tab and its score)
 ? allow setting font size, number of lines per page, zoom, etc...
 
+* Allow setting, in G+F score, whether each note is in the G or F clef
+
 * Keyboard editor : show current key in left area
 * In score and tab editors, show more clearly where you can click to hear the note
  
