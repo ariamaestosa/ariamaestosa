@@ -133,6 +133,8 @@ UNSURE/MINOR:
 
 ************************* BUGS: *************************
 
+** Midi playback on Linux seems very broken :'(
+
 * Undoing "delete track" places it back at the bottom, not where it was
 
 * Sequence::setTempo / getTempo may get out of sync if first event is edited through controller editor!!
