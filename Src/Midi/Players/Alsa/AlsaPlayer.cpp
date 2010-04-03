@@ -183,7 +183,9 @@ void initMidiPlayer()
 
     context = new MidiContext();
 
-    if(! context->askOpenDevice() )
+    const bool launchTimidity = Core::getPrefsValue("launchTimidity") != 0;
+
+    if (not context->openDevice(not launchTimidity))
     {
         std::cerr << "failed to open ALSA device" << std::endl;
         sound_available = false;
