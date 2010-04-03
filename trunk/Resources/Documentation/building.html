@@ -122,12 +122,12 @@ Don't forget to specify the prefix it was installed into if it is not the defaul
 
 If it is not already the case, you will need to install a softsynth like Timidity configured with flags : <blockquote><pre>./configure --enable-audio=alsa --enable-server --enable-alsaseq</pre></blockquote> and a soundbank, and run it as Alsa daemon with commands (in the case of Timidity) :
 
-<blockquote><pre>
-sudo modprobe snd-seq-midisudo timidity -iA -B2,8 -Os -EFreverb=0
+<blockquote><pre>timidity -iA -Os -EFreverb=0
 </pre></blockquote>
--EFreverb=0 disables reverbering because it tends to cause problems, but you can leave that part out if you computer is very fast.<br/><br/>
+-EFreverb=0 disables reverbering because it tends to cause problems, but you can leave that part out if you computer is very fast.<br/>
+Unfortunately, if you use PulseAudio, there are known compatibility issues with the timidity daemon. In particular, running the Timidity daemon at startup as part of init.d seems to cause a lot of issues.<br/><br/>TiMidity will also need to be given a synthesizer; many distros will ship FreePats in their repos.<br/><br/>Newer versions of Aria have an item in the preferences that, if enabled, will make Aria automatically launch TiMidity and pick a port. This should make the process a little more enjoyable, even though audio on Linux still seems to remain very difficult to handle =( So I'm afraid getting Aria to run on Linux can be a little pain because of the Linux audio maze. Sorry, I'll try to support other midi synths than TiMidity/Alsa in the future.<br/><br/>
 
-Then, to open Aria, type <i>Aria</i> in a terminal - enjoy!
+Then, to open Aria, type <i>Aria</i> in a terminal. Hopefully all will be fine!
 
 <br/><br/><br/><br/>
 If you have any question or issue, do not hesitate to contact me!

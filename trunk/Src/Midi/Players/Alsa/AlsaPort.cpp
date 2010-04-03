@@ -128,7 +128,7 @@ void runTimidity()
     //  -c '/home/mmg/Desktop/timidity-synth/default/timidity.cfg'
     // -EFreverb=0
     std::cout << "Launching TiMidity ALSA deamon\n";
-    wxString cmd("timidity -iA -B2,8 -Os", wxConvUTF8);
+    wxString cmd("timidity -iA -Os", wxConvUTF8);
     wxExecute(cmd);
     wxMilliSleep(500); // let the timidity deamon some time to start
 }
