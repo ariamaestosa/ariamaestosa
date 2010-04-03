@@ -217,7 +217,7 @@ wxString wxEasyPrintWrapper::getPageSetupSummary() const
 {
     // printdata.SetOrientation( m_orient ); // wxPORTRAIT, wxLANDSCAPE
     // printdata.SetPaperId( m_paper_id );
-    return _("Paper :") + wxT("\t\t") + wxThePrintPaperDatabase->ConvertIdToName( m_paper_id ) + wxT(", ") +
+    return wxString(_("Paper :")) + wxT("\t\t") + wxThePrintPaperDatabase->ConvertIdToName( m_paper_id ) + wxT(", ") +
            //I18N: for printing (page orientation)
            (m_orient == wxPORTRAIT ? _("Portrait") : _("Landscape")) + wxT("\n") +
            //I18N: for printing (page setup)

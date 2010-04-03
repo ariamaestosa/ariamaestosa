@@ -1076,10 +1076,9 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
         message.Replace(wxT("%s"), sequences[id].sequenceFileName, false);
 
         int answer = wxMessageBox(  _("Selecting 'Yes' will save your document before closing") +
-                                    wxT("\n") + _("Selecting 'No' will discard unsaved changes") +
-                                    wxT("\n") + _("Selecting 'Cancel' will cancel exiting the application"),
-                                  message,
-                                   wxYES_NO | wxCANCEL, this);
+                                    wxString(wxT("\n")) + _("Selecting 'No' will discard unsaved changes") +
+                                    wxString(wxT("\n")) + _("Selecting 'Cancel' will cancel exiting the application"),
+                                    message,  wxYES_NO | wxCANCEL, this);
         
         if (answer == wxCANCEL) return false;
 

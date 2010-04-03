@@ -19,7 +19,8 @@
 #undef DEFINE_SETTING_NAMES
 
 #include "languages.h"
-#include <wx/config.h>
+#include "wx/config.h"
+#include "wx/intl.h"
 
 
 using namespace AriaMaestosa; 
