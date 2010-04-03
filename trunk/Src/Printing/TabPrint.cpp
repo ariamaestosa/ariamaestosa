@@ -252,7 +252,8 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
             drawVerticalDivider(currentElement, trackCoords->y0, trackCoords->y1, true /* at end */);
         }
         if (currentElement->getType() == LINE_HEADER)
-        {            
+        {
+            //FIXME: dont" hardcode font here
             dc.SetFont( wxFont(100,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD) );
             dc.SetTextForeground( wxColour(0,0,0) );
             
@@ -322,7 +323,7 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
             continue; // empty measure
         }
         
-        dc.SetFont( wxFont(75, wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD) );
+        dc.SetFont( AriaPrintable::getCurrentPrintable()->getNormalFont() );
         wxSize textSize3 = dc.GetTextExtent( wxT("X") );
         
         //std::cout << "Tablature : drawing notes " << firstNote << " to " << lastNote << std::endl;

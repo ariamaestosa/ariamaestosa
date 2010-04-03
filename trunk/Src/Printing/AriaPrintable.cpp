@@ -30,9 +30,19 @@ AriaPrintable* AriaPrintable::m_current_printable = NULL;
 
 
 AriaPrintable::AriaPrintable(PrintableSequence* seq, bool* success) :
+#ifdef __WXMAC__
     m_normal_font   (75,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL),
+#else
+    //FIXME: find why fonts sizes are different on linux and OS X
+    m_normal_font   (50,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL),
+#endif
     m_title_font    (130, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD  ),
+#ifdef __WXMAC__
     m_subtitle_font (90,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL)
+#else
+    //FIXME: find why fonts sizes are different on linux and OS X
+    m_subtitle_font (60,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL)
+#endif
 {
     ASSERT(m_current_printable == NULL);
     

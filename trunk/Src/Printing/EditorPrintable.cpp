@@ -148,6 +148,7 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
         label << currElem.amountOfTimes;
 
         dc->SetTextForeground( wxColour(0,0,0) );
+        dc->SetFont( AriaPrintable::getCurrentPrintable()->getNormalFont() );
         dc->DrawText( label, (elem_x_start + elem_x_end)/2 - AriaPrintable::getCurrentPrintable()->getCharacterWidth()*label.size()/2,
                      y - AriaPrintable::getCurrentPrintable()->getCharacterHeight()*1.5 );
         
@@ -179,6 +180,7 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
         //std::cout << "---- element is normal\n";
         
         dc->SetTextForeground( wxColour(0,0,255) );
+        dc->SetFont( AriaPrintable::getCurrentPrintable()->getNormalFont() );
 
         // draw measure ID
         if (drawMeasureNumbers)
@@ -226,6 +228,8 @@ void EditorPrintable::drawTrackName(wxDC& dc, const LineTrackRef& currentTrack, 
 {
     if (AriaPrintable::getCurrentPrintable()->showTrackNames())
     {
+        dc.SetFont( AriaPrintable::getCurrentPrintable()->getNormalFont() );
+
         wxString label = currentTrack.getTrack()->getName();
         wxSize textSize = dc.GetTextExtent(label);
         dc.DrawRotatedText( label, x - textSize.GetHeight() - 20,
