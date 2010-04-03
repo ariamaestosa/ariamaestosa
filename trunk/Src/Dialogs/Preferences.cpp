@@ -157,7 +157,6 @@ wxDialog(parent, wxID_ANY,
             case SETTING_ENUM:
             {
                 QuickBoxLayout box(this, vert_sizer);
-                //I18N: - in preferences window
                 box.add(new wxStaticText(box.pane , wxID_ANY, settings[i].m_user_name ));
                 
                 w->m_combo = new wxChoice(box.pane, 1, wxDefaultPosition, wxDefaultSize, 
@@ -175,7 +174,6 @@ wxDialog(parent, wxID_ANY,
             case SETTING_INT:
             {
                 QuickBoxLayout box(this, vert_sizer);
-                //I18N: - in preferences window
                 box.add(new wxStaticText(box.pane, wxID_ANY, settings[i].m_user_name ));
                 
                 w->m_number = new wxSpinCtrl(box.pane, wxID_ANY,
