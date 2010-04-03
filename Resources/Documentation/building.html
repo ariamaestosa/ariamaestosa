@@ -41,81 +41,9 @@ You will need to install Developer Tools from the mac OS X install disc. You nee
 
 <center><b>Installing wxWidgets - Mac OS X</b></center><br/>
 
-First, download and install wxWidgets. I usually build static. Don't forget to enable OpenGL support. In order to get proper Unified ToolBar support, you will need to patch wxWidgets as follows :
-<pre>
---- wxMac-2.8.9/src/mac/carbon/toolbar.cpp	2008-09-15 05:39:33.000000000 -0400
-+++ wxMac-2.8.9/src/mac/carbon/toolbar.cpp	2008-12-23 13:51:16.000000000 -0500
-@@ -1200,6 +1200,11 @@
-             {
-                 // since setting the help texts is non-virtual we have to update
-                 // the strings now
-+
-+                wxString label = tool->GetLabel();
-+                HIToolbarItemSetLabel( hiItemRef , wxMacCFStringHolder(label, enc) );
-+                
-                 HIToolbarItemSetHelpText( hiItemRef,
-                     wxMacCFStringHolder( tool->GetShortHelp(), enc ),
-                     wxMacCFStringHolder( tool->GetLongHelp(), enc ) );
-</pre>
+First, download and install wxWidgets. I usually build static. Don't forget to enable OpenGL support if you use wxWidgets 2.8. 
 
-Furthermore, the print dialog in wxWidgets has a bug, it will show 9999 as the number of pages no matter what. To fix this, apply the following patch (this was taken in SVN version of wxWidgets. The same fix works on wx 2.8.x but you will need to apply the changes manually since this patch won't work there. In wx 2.8, the file to patch is instead src/mac/carbon/printmac.cpp).
-<pre>
-Index: src/osx/core/printmac.cpp
-===================================================================
---- src/osx/core/printmac.cpp (revision 57516)
-+++ src/osx/core/printmac.cpp (working copy)
-@@ -468,11 +468,24 @@
-         return false;
- 
-     printout->SetIsPreview(false);
-+    
-+    // Get some parameters from the printout, if defined
-+    int fromPage, toPage;
-+    int minPage, maxPage;
-+    printout->GetPageInfo(&minPage, &maxPage, &fromPage, &toPage);
-+
-+    if (maxPage == 0) return false;
-+
-+    // Only set min and max, because from and to will be
-+    // set by the user
-+    m_printDialogData.SetMinPage(minPage);
-+    m_printDialogData.SetMaxPage(maxPage);
-+    
-     if (m_printDialogData.GetMinPage() < 1)
-         m_printDialogData.SetMinPage(1);
-     if (m_printDialogData.GetMaxPage() < 1)
-         m_printDialogData.SetMaxPage(9999);
--
-+    
-     // Create a suitable device context
-     wxPrinterDC *dc = NULL;
-     if (prompt)
-@@ -526,23 +539,7 @@
-     wxBeginBusyCursor();
- 
-     printout->OnPreparePrinting();
--
--    // Get some parameters from the printout, if defined
--    int fromPage, toPage;
--    int minPage, maxPage;
--    printout->GetPageInfo(&minPage, &maxPage, &fromPage, &toPage);
--
--    if (maxPage == 0)
--    {
--        wxEndBusyCursor();
--        return false;
--    }
--
--    // Only set min and max, because from and to have been
--    // set by the user
--    m_printDialogData.SetMinPage(minPage);
--    m_printDialogData.SetMaxPage(maxPage);
--
-+    
-     printout->OnBeginPrinting();
- 
-     bool keepGoing = true;
-</pre>
+Starting from Aria 1.2b10, I use wxOSX 2.9.x trunk. wxWidgets 2.8 will still work but it has a couple printing-related bugs. Because wx 2.9 still has a couple bugs, patches have been included in the /OSX directory - apply them to wxWidgets before building it for better results.
 
 <br/><br/>Example terminal commands to build wx (read the instructions that come with wxWidgets or wxWiki for more info):<br/>
 <blockquote>
