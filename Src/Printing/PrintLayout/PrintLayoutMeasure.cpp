@@ -26,21 +26,24 @@ namespace AriaMaestosa
     const PrintLayoutMeasure NULL_MEASURE(-1);
 }
 
+#define PLM_CHATTY 1
+
 using namespace AriaMaestosa;
 // -------------------------------------------------------------------------------------------
     
 PrintLayoutMeasure::PrintLayoutMeasure(const int measID) :
     ticks_placement_manager(measID == -1 ? 0 : getMeasureData()->lastTickInMeasure( measID ))
 {
-    m_shortest_duration = -1;
-    firstSimilarMeasure = -1;
-    cutApart = false;
-    m_measure_id = measID;
+    m_shortest_duration  = -1;
+    firstSimilarMeasure  = -1;
+    cutApart             = false;
+    m_measure_id         = measID;
+    m_contains_something = false;
     
     if (measID != -1)
     {
         m_first_tick = getMeasureData()->firstTickInMeasure( measID );
-        m_last_tick  = getMeasureData()->lastTickInMeasure( measID );
+        m_last_tick  = getMeasureData()->lastTickInMeasure ( measID );
     }
 }
 
@@ -91,15 +94,15 @@ bool PrintLayoutMeasure::calculateIfMeasureIsSameAs(PrintLayoutMeasure& checkMea
          */
         int noteMatched_this[noteAmount];
         int noteMatched_other[noteAmount];
-        for(int n=0; n<noteAmount; n++)
+        for (int n=0; n<noteAmount; n++)
         {
             noteMatched_this[n] = false;
             noteMatched_other[n] = false;
         }
         
-        for(int checkNote_this=0; checkNote_this<=noteAmount; checkNote_this++)
+        for (int checkNote_this=0; checkNote_this<=noteAmount; checkNote_this++)
         {
-            for(int checkNote_other=0; checkNote_other<=noteAmount; checkNote_other++)
+            for (int checkNote_other=0; checkNote_other<=noteAmount; checkNote_other++)
             {
                 if (noteMatched_other[checkNote_other]) continue; // this note was already matched
                 
@@ -164,6 +167,20 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
     // if firstNote is -1, it means all notes were processed. just add the track ref without searching for notes
     if (firstNote == -1)
     {
+        // but first check if some note starts in a previous measure and ends in the current one :
+        // the layout code will need to know the measure is not empty.
+        for (int note=0; note<noteAmount; note++)
+        {
+            const int start_tick = track->getNoteStartInMidiTicks(note);
+            const int end_tick   = track->getNoteEndInMidiTicks(note);
+            
+            if (start_tick < m_first_tick and end_tick > m_first_tick)
+            {
+                m_contains_something = true;
+                break;
+            }
+        }
+
         m_track_refs.push_back( new MeasureTrackReference(track, -1, -1) );
 #if PLM_CHATTY
         std::cout << "    --> Received input -1, assuming empty\n";
@@ -179,7 +196,21 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
     int lastNote = effectiveFirstNote;
     int last_note_end = -1, last_note_start = -1;
     
-    bool measure_empty = true;
+    bool measure_empty_in_this_track = true;
+    
+    // check if some note starts in a previous measure and ends in the current one
+    for (int note=effectiveFirstNote-1; note>=0; note--)
+    {
+        const int end_tick = track->getNoteEndInMidiTicks(note);
+
+        if (end_tick > m_first_tick)
+        {
+            measure_empty_in_this_track = false;
+            break;
+        }
+    }
+    
+    // check for notes that start in this measure
     for (int note = effectiveFirstNote; note<noteAmount; note++)
     {
         const int start_tick          = track->getNoteStartInMidiTicks(note);
@@ -190,7 +221,7 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
         
         // stop when we're at next measure
         if (start_tick >= m_last_tick) break;
-        
+                
         // find last note (if many notes end at the same time, keep the one that started last)
         if (start_tick > last_note_start || end_tick > last_note_start ||
             (end_tick == last_note_end && start_tick >= last_note_start))
@@ -198,7 +229,7 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
             lastNote        = note;
             last_note_end   = end_tick;
             last_note_start = start_tick;
-            measure_empty   = false;
+            measure_empty_in_this_track   = false;
         }
         
         // store duration if it's the shortest yet (but ignore dead/instant-hit notes)
@@ -213,7 +244,7 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
     ASSERT_E(lastNote,>,-1);
     ASSERT_E(lastNote,<,noteAmount);
     
-    if (measure_empty)
+    if (measure_empty_in_this_track)
     {
 #if PLM_CHATTY
         std::cout << "    --> empty\n";
@@ -228,10 +259,11 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
         m_track_refs.push_back( new MeasureTrackReference(track, effectiveFirstNote, lastNote) );
     }
     
+    m_contains_something = m_contains_something or not measure_empty_in_this_track;
     
     // check if all notes were used (but check 'measure_empty' first, firstNote and lastNote can
     // exist but be out of the bounds of this measure
-    if (not measure_empty and lastNote == noteAmount-1)
+    if (not measure_empty_in_this_track and lastNote == noteAmount-1)
     {
 #if PLM_CHATTY
         std::cout << "    --> returning -1 because all notes were covered\n";
@@ -242,9 +274,9 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
     // if this measure is empty, return the same note as the one given in input (i.e. it was not used)
     // if this measure is not empty, add 1 so next measure will start from the next
 #if PLM_CHATTY
-    std::cout << "    -> returning " << lastNote << " + " << (measure_empty ? 0 : 1) << "\n";
+    std::cout << "    -> returning " << lastNote << " + " << (measure_empty_in_this_track ? 0 : 1) << "\n";
 #endif
-    return lastNote + (measure_empty ? 0 : 1);
+    return lastNote + (measure_empty_in_this_track ? 0 : 1);
 }
     
 // -------------------------------------------------------------------------------------------
@@ -260,7 +292,7 @@ bool PrintLayoutMeasure::findConsecutiveRepetition(ptr_vector<PrintLayoutMeasure
     {
         int amount = 0;
         
-        for(int iter=1; iter<measureAmount; iter++)
+        for (int iter=1; iter<measureAmount; iter++)
         {
             if (m_measure_id+iter<measureAmount and
                 measures[m_measure_id+iter].firstSimilarMeasure == measures[m_measure_id].firstSimilarMeasure+iter )

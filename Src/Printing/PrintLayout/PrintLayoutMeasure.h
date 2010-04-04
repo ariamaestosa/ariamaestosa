@@ -70,6 +70,12 @@ namespace AriaMaestosa
          */
         int m_shortest_duration;
         
+        /** 
+         * whether there is anything in this measure (a note that starts, or a note that starts in
+         * previous measure and continues in this one, etc...) i.e. whether it's not empty
+         */
+        bool m_contains_something;
+        
         /** ID of the measure */
         int m_measure_id;
         
@@ -94,12 +100,16 @@ namespace AriaMaestosa
           */
         int  addTrackReference(const int firstNote, Track* track);
         
-        int  getFirstTick() const { return m_first_tick;              }
-        int  getLastTick () const { return m_last_tick;               }
+        int  getFirstTick     () const { return m_first_tick;             }
+        int  getLastTick      () const { return m_last_tick;              }
 
-        bool isEmpty     () const { return m_shortest_duration == -1; }
+        /** 
+          * @return whether there is anything in this measure (a note that starts, or a note that starts in
+          *         previous measure and continues in this one, etc...)
+          */
+        bool isEmpty          () const { return not m_contains_something; }
         
-        int  getTrackRefAmount() const { return m_track_refs.size(); }
+        int  getTrackRefAmount() const { return m_track_refs.size();      }
         
         const MeasureTrackReference& getTrackRef(const int id) const { return m_track_refs[id]; }
         
