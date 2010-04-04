@@ -914,8 +914,12 @@ namespace AriaMaestosa
         }
         if (m_g_clef)
         {
-            m_silences_ticks = SilenceAnalyser::findSilences( g_clef_analyser, 0, measureAmount-1,
-                                                            -1 /* y not important at this point */ );
+            std::vector< SilenceAnalyser::SilenceInfo > g_clef_silences =
+                    SilenceAnalyser::findSilences( g_clef_analyser, 0, measureAmount-1,
+                                                    -1 /* y not important at this point */ );
+            
+            // append the new items to the existing F clef items if any
+            m_silences_ticks.insert(m_silences_ticks.end(), g_clef_silences.begin(), g_clef_silences.end());
         }
         
         

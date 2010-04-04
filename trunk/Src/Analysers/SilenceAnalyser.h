@@ -103,7 +103,9 @@ namespace AriaMaestosa
                             const int first_visible_measure, const int last_visible_measure,
                             const int silences_y);
         
-        /** variant of the above, but instead of using a function callback it justs returns a vector */
+        /** variant of the above, but instead of using a function callback it justs returns a vector
+          * @note the returned vector is NOT ordered
+          */
         std::vector<SilenceInfo> findSilences(INoteSource* noteSource,
                                               const int first_visible_measure, const int last_visible_measure,
                                               const int silences_y);
