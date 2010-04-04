@@ -133,7 +133,10 @@ UNSURE/MINOR:
 
 ************************* BUGS: *************************
 
-** Midi playback on Linux seems very broken :'(
+** Crash with hovering when closing sequence :
+    #0	0x0000e778 in AriaMaestosa::assertFailed at IOUtils.cpp:49
+    #1	0x00107238 in AriaMaestosa::Sequence::getTrack at Sequence.cpp:784
+    #2	0x000e8be9 in AriaMaestosa::MainPane::mouseMoved at MainPane.cpp:686
 
 * Undoing "delete track" places it back at the bottom, not where it was
 

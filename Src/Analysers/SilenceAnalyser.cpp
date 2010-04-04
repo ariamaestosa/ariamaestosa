@@ -216,8 +216,8 @@ namespace AriaMaestosa
                 
             }// end if there are visible notes
             
-            // draw silences in empty measures
-            for(int i=0; i<visible_measure_amount; i++)
+            // silences in empty measures
+            for (int i=0; i<visible_measure_amount; i++)
             {
                 if (measure_empty[i])
                 {
