@@ -1195,7 +1195,7 @@ namespace AriaMaestosa
         {
             const int noteAmount = analyser.noteRenderInfo.size();
                 
-            // ---- Draw small lines above/below score
+            // ---- Draw small lines above/below score (ledger lines)
             std::cout << " == rendering lines for notes out of score ==\n";
             for (int i=0; i<noteAmount; i++)
             {
@@ -1213,7 +1213,8 @@ namespace AriaMaestosa
                     for (int lvl=first_score_level-2; lvl>noteRenderInfo.level+noteRenderInfo.level%2-2; lvl -= 2)
                     {
                         const int y = LEVEL_TO_Y(lvl);
-                        dc.DrawLine(noteX.from+HEAD_RADIUS, y, noteX.to+HEAD_RADIUS, y);
+                        //FIXME: not sure why I need to add HEAD_RADIUS/2 to make it look good
+                        dc.DrawLine(noteX.from+HEAD_RADIUS/2, y, noteX.to+HEAD_RADIUS, y);
                     }
                 }
                 
