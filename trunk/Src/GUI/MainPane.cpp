@@ -220,7 +220,7 @@ void MainPane::render(const bool paintEvent)
 bool MainPane::do_render()
 {
 
-    if (!ImageProvider::imagesLoaded()) return false;
+    if (!ImageProvider::imagesLoaded())  return false;
     if (getCurrentSequence()->importing) return false;
 
     AriaRender::images();
@@ -320,7 +320,7 @@ bool MainPane::do_render()
         // FIXME - find better way than scaling. add back '...'
         //if (seq_name.getWidth() > tab_width+12) seq_name.scale( (float)(tab_width+12)/seq_name.getWidth() );
         //else seq_name.scale(1.0f);
-        seq_name.render( start_at_x+10, TAB_BAR_Y+21);
+        seq_name.render( start_at_x+10, TAB_BAR_Y+20);
 
         start_at_x += TAB_SIDE_WIDTH+tab_width+TAB_SIDE_WIDTH;
     }//next
