@@ -14,8 +14,9 @@
     - Connect grand staffs toghether (extend measure bars)
     - Collapse long series of empty measures into a gathered rest
     - Allowing configuring whether empty tracks are hidden
-    - Misc tweaks and fixes
     - Prevent invoking print dialog when it's already visible, which caused crashes
+    - Don't add a time sig change alone at the end of a line.
+    - Misc tweaks and fixes
 - Adding and removing tracks no more confuse the undo system
 - The "undo" menu is now chattier about what is next to undo
 - Fixed bug with key selection (when going back to C)

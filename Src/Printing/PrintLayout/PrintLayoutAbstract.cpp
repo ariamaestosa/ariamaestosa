@@ -565,8 +565,22 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
             WaitWindow::setProgress( 60 + n*40/layoutElementsAmount );
         }
 
-        const int nextWidth = current_width + layoutElements[n].width_in_print_units +
-                              MARGIN_AT_MEASURE_BEGINNING;
+        int nextWidth = current_width + layoutElements[n].width_in_print_units +
+                        MARGIN_AT_MEASURE_BEGINNING;
+        
+        // time sig changes must go right before their measure (both must be on the same
+        // line) so check a bit further
+        if (layoutElements[n].getType() == TIME_SIGNATURE_EL)
+        {
+            if (n+1 < layoutElementsAmount)
+            {
+                nextWidth += layoutElements[n+1].width_in_print_units + MARGIN_AT_MEASURE_BEGINNING;
+            }
+            else
+            {
+                std::cerr << "Weird, I have a time sig change with no measure after!!\n";
+            }
+        }
         
         // if too much stuff on current line, switch to another line
         if (nextWidth > maxLineWidthInPrintUnits)
