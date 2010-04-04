@@ -208,7 +208,9 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
         }
         
         // ---- many empty measures ----
-        if (emptyMeasureCount >= MIN_NUMBER_OF_EMPTY_MEASURES_TO_COLLPASE)
+        // merge measures if there are many empty measures or at the end of the song
+        if (emptyMeasureCount >= MIN_NUMBER_OF_EMPTY_MEASURES_TO_COLLPASE or
+            measure + emptyMeasureCount >= measureAmount)
         {
             layoutElements.push_back( LayoutElement(GATHERED_REST, measure) );
             const int id = layoutElements.size()-1;
