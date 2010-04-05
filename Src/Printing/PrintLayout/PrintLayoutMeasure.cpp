@@ -156,7 +156,8 @@ bool PrintLayoutMeasure::calculateIfMeasureIsSameAs(PrintLayoutMeasure& checkMea
 int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
 {
 #if PLM_CHATTY
-    std::cout << "PrintLayoutMeasure::addTrackReference in measure " << (m_measure_id + 1) << "\n";
+    std::cout << "PrintLayoutMeasure::addTrackReference '" << track->getName().mb_str()
+              << "' in measure " << (m_measure_id + 1) << "\n";
 #endif
     
     const int noteAmount = track->getNoteAmount();
@@ -201,10 +202,14 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
     // check if some note starts in a previous measure and ends in the current one
     for (int note=effectiveFirstNote-1; note>=0; note--)
     {
-        const int end_tick = track->getNoteEndInMidiTicks(note);
+        const int startTick = track->getNoteStartInMidiTicks(note);
+        const int endTick = track->getNoteEndInMidiTicks(note);
 
-        if (end_tick > m_first_tick)
+        if (startTick < m_first_tick and endTick > m_first_tick)
         {
+            //const int startMeas = getMeasureData()->measureAtTick(track->getNoteStartInMidiTicks(note));
+            //std::cout << "---> found a note that starts in measure " << startMeas << " but ends measure "
+            //          << getMeasureData()->measureAtTick(end_tick) << "\n";
             measure_empty_in_this_track = false;
             break;
         }
@@ -254,7 +259,7 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
     else
     {
 #if PLM_CHATTY
-        std::cout << "    --> m_shortest_duration = " << m_shortest_duration << "\n";
+        std::cout << "    --> non-empty measure, m_shortest_duration = " << m_shortest_duration << "\n";
 #endif
         m_track_refs.push_back( new MeasureTrackReference(track, effectiveFirstNote, lastNote) );
     }
