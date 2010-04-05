@@ -192,7 +192,7 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
             
             dc->DrawText( measureLabel,
                          elem_x_start,
-                         barYFrom - AriaPrintable::getCurrentPrintable()->getCharacterHeight()*1.4 );
+                         y0 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()*1.4 );
         }
         dc->SetTextForeground( wxColour(0,0,0) );
     }

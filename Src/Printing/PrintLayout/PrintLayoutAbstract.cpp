@@ -185,7 +185,7 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
         if (getMeasureData()->getTimeSigDenominator(measure) != previous_denom ||
             getMeasureData()->getTimeSigNumerator(measure)   != previous_num)
         {
-            // add time signature element
+            // ---- add time signature element
             LayoutElement el2(LayoutElement(TIME_SIGNATURE_EL, -1));
             el2.width_in_print_units = TIME_SIG_LAYOUT_ELEMENT_WIDTH;
             el2.num = getMeasureData()->getTimeSigNumerator(measure);
@@ -200,6 +200,7 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
         const int tick      = getMeasureData()->firstTickInMeasure(measure);
         const int tempoHere = m_sequence->getSequence()->getTempoAtTick(tick);
 
+        // check for empty measures
         int emptyMeasureCount = 0;
         for (int n=measure; n<measureAmount; n++)
         {
@@ -508,6 +509,7 @@ LayoutElement PrintLayoutAbstract::generateLineHeaderElement() const
     }
     
     el.width_in_print_units = header_width;
+    el.m_render_end_bar = false;
     return el;
 }
 
