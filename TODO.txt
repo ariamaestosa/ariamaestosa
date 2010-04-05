@@ -51,6 +51,9 @@ NOTE: sorry, this is very raw :)
 - long-term : in multi-track printing, some tracks need to be visually more tightly bound toghether (like tab and its score)
 ? allow setting font size, number of lines per page, zoom, etc...
 
+** Things like changing global tempo, changing song length, etc... are not actions and thus do not mark the
+   document as having unsaved changes!
+
 * Allow setting, in G+F score, whether each note is in the G or F clef
 
 * Keyboard editor : show current key in left area
@@ -143,6 +146,32 @@ UNSURE/MINOR:
     #1	0x00106c78 in AriaMaestosa::Sequence::getTrack at Sequence.cpp:784
     #2	0x000e8472 in AriaMaestosa::MainPane::mouseReleased at MainPane.cpp:790
     #3	0x003dcc2f in wxAppConsoleBase::CallEventHandler at intl.h:621
+
+** Crash when adding time sig change near the end of the song
+    #0	0x0000e1b8 in AriaMaestosa::assertFailed at IOUtils.cpp:49
+    #1	0x00010344 in AriaMaestosa::MeasureData::firstTickInMeasure at MeasureData.cpp:374
+    #2	0x001d76fc in AriaMaestosa::ScoreAnalyser::addToVector at ScoreAnalyser.cpp:439
+    #3	0x001d8150 in AriaMaestosa::ScoreAnalyser::addToVector at ScoreAnalyser.cpp:388
+    #4	0x000bdc5d in AriaMaestosa::ScoreEditor::render at ScoreEditor.cpp:1009
+    #5	0x000c2382 in AriaMaestosa::GraphicalTrack::render at GraphicalTrack.cpp:1117
+    #6	0x00108514 in AriaMaestosa::Sequence::renderTracks at Sequence.cpp:528
+    #7	0x000e9828 in AriaMaestosa::MainPane::do_render at MainPane.cpp:230
+    #8	0x000ea2a3 in AriaMaestosa::MainPane::render at MainPane.cpp:213
+    #9	0x0008627d in AriaMaestosa::Display::render at AriaCore.cpp:91
+    #10	0x000d53dc in AriaMaestosa::MainFrame::tempoChanged at MainFrame.cpp:720
+
+** Crash when enlarging song from end
+    #0	0x0000e1b8 in AriaMaestosa::assertFailed at IOUtils.cpp:49
+    #1	0x000fe12c in AriaMaestosa::MeasureData::firstPixelInMeasure at MeasureData.cpp:338
+    #2	0x000af3e2 in AriaMaestosa::Editor::drawVerticalMeasureLines at Editor.cpp:141
+    #3	0x000bd60b in AriaMaestosa::ScoreEditor::render at ScoreEditor.cpp:914
+    #4	0x000c2382 in AriaMaestosa::GraphicalTrack::render at GraphicalTrack.cpp:1117
+    #5	0x00108514 in AriaMaestosa::Sequence::renderTracks at Sequence.cpp:528
+    #6	0x000e9828 in AriaMaestosa::MainPane::do_render at MainPane.cpp:230
+    #7	0x000ea2a3 in AriaMaestosa::MainPane::render at MainPane.cpp:213
+    #8	0x0008627d in AriaMaestosa::Display::render at AriaCore.cpp:91
+    #9	0x000fd80e in AriaMaestosa::MeasureData::setMeasureAmount at MeasureData.cpp:112
+
 
 
 * Undoing "delete track" places it back at the bottom, not where it was
