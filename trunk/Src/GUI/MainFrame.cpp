@@ -447,8 +447,9 @@ void MainFrame::init()
 
     borderSizer->Layout();
 
-    Show();
     Maximize(true);
+    Show();
+    //Maximize(true);
     
 #ifdef __WXMSW__
     // Drag files
