@@ -134,7 +134,7 @@ namespace AriaMaestosa
 MainPane::MainPane(MainFrame* mainframe, int* args) : RenderPane(mainframe, args)
 {
     currentTick = -1;
-    draggingTrack = -1;
+    m_dragged_track_id = -1;
     isVisible = false;
     isMouseDown_bool = false;
     m_mouse_hovering_tabs = false;
@@ -552,9 +552,9 @@ void MainPane::mouseDown(wxMouseEvent& event)
         click_area = CLICK_TRACK;
 
         // dispatch event to all tracks (stop when either of them uses it)
-        click_in_track = -1;
+        m_click_in_track = -1;
         const unsigned int track_amount = getCurrentSequence()->getTrackAmount();
-        for(unsigned int n=0; n<track_amount; n++)
+        for (unsigned int n=0; n<track_amount; n++)
         {
             const int y = getCurrentSequence()->getTrack(n)->graphics->getCurrentEditor()->getTrackYStart();
 
@@ -562,14 +562,14 @@ void MainPane::mouseDown(wxMouseEvent& event)
             if (!getCurrentSequence()->getTrack(n)->graphics->docked and mousey_current>y and mousey_current<y+7)
             {
                 click_area = CLICK_REORDER;
-                draggingTrack = n;
+                m_dragged_track_id = n;
             }
             else
             { // otherwise ask the track to check if it has something to do with this event
                 const bool event_processed = !getCurrentSequence()->getTrack(n)->graphics->processMouseClick( mousex_current, event.GetY());
                 if (event_processed)
                 {
-                    click_in_track = n;
+                    m_click_in_track = n;
                     break;
                 }
             }
@@ -679,12 +679,14 @@ void MainPane::mouseMoved(wxMouseEvent& event)
     if (event.Dragging())
     {
         // we are not reordering tracks
-        if (draggingTrack==-1)
+        if (m_dragged_track_id==-1)
         {
             // ----------------------------------- click is in track area ----------------------------
-            if (click_area == CLICK_TRACK and click_in_track != -1)
-                getCurrentSequence()->getTrack(click_in_track)->graphics->processMouseDrag( mousex_current, event.GetY());
-
+            if (click_area == CLICK_TRACK and m_click_in_track != -1)
+            {
+                getCurrentSequence()->getTrack(m_click_in_track)->graphics->processMouseDrag( mousex_current, event.GetY());
+            }
+            
             // ----------------------------------- click is in measure bar ----------------------------
             if (click_area == CLICK_MEASURE_BAR)
             {
@@ -754,10 +756,10 @@ void MainPane::mouseReleased(wxMouseEvent& event)
 
 
     // if releasing after having dragged a track
-    if (draggingTrack!=-1)
+    if (m_dragged_track_id!=-1)
     {
         getCurrentSequence()->reorderTracks();
-        draggingTrack=-1;
+        m_dragged_track_id=-1;
     }//end if
 
     // ---- click is in measure bar
@@ -784,10 +786,10 @@ void MainPane::mouseReleased(wxMouseEvent& event)
                                                 mousex_initial.getRelativeTo(WINDOW), mousey_initial - MEASURE_BAR_Y);
         }
     }
-    else if (click_area == CLICK_TRACK and click_in_track != -1)
+    else if (click_area == CLICK_TRACK and m_click_in_track != -1)
     {
         // disptach mouse up event to current track
-        getCurrentSequence()->getTrack(click_in_track)->graphics->processMouseRelease();
+        getCurrentSequence()->getTrack(m_click_in_track)->graphics->processMouseRelease();
     }
 
     Display::render();
@@ -1040,7 +1042,7 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
 /*
  * Returns the ID of the track the user is dragging (in a track reordering process), or -1 if no reoredring is being done
  */
-int MainPane::getDraggedTrackID()                {    return draggingTrack;    }
+int MainPane::getDraggedTrackID()                {    return m_dragged_track_id;    }
 
 
 // --------------------------------------------------------------------------------------------------

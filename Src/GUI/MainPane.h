@@ -68,7 +68,7 @@ class MainPane : public RenderPane
     int currentTick;
     
     /** which track the user is dragging (in a track reordering process), or -1 if none */
-    int draggingTrack;
+    int m_dragged_track_id;
 
     std::vector<int> positionsInDock;
 
@@ -82,7 +82,7 @@ class MainPane : public RenderPane
     ClickArea click_area;
     
     /** if click_area == CLICK_TRACK, contains the ID of the track */
-    int click_in_track;
+    int m_click_in_track;
     
     bool do_render();
     
@@ -171,6 +171,14 @@ public:
     bool isSelectLessPressed();
     bool isCtrlDown();
 
+    /** to be called e.g. when a track is deleted */
+    //FIXME: that's ugly but it does the job...
+    void forgetClickData()
+    {
+        m_click_in_track   = -1;
+        m_dragged_track_id = -1;
+    }
+    
     // ---- rendering
     void render(const bool paintEvent = false);
     void paintEvent(wxPaintEvent& evt);
