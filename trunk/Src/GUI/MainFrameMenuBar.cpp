@@ -604,12 +604,12 @@ void MainFrame::menuEvent_trackBackground(wxCommandEvent& evt)
 }
 
 // -----------------------------------------------------------------------------------------------------------
-// ------------------------------------------ TRACK MENU EVENTS ----------------------------------------------
+// ----------------------------------------- SETTINGS MENU EVENTS --------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
 
 #if 0
 #pragma mark -
-#pragma mark Track Menu Events
+#pragma mark Settings Menu Events
 #endif
 
 void MainFrame::menuEvent_preferences(wxCommandEvent& evt)
@@ -781,8 +781,25 @@ public:
         sizer->Add(html, 1, wxEXPAND);
 
         SetSizer(sizer);
+        
+        wxMenuBar* menuBar = new wxMenuBar();
+        
+        wxMenu* window = new wxMenu();
+        window->Append(wxID_CLOSE, wxString(_("Close"))+wxT("\tCtrl-W"));
+        
+        menuBar->Append(window, wxT("Window"));
+        SetMenuBar(menuBar);
+        
+        Connect(wxID_CLOSE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( ManualView::onClose ));
+        
         Center();
         Show();
+    }
+    
+    void onClose(wxCommandEvent& evt)
+    {
+        Hide();
+        Destroy();
     }
 
 };
