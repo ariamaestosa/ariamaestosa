@@ -160,19 +160,6 @@ UNSURE/MINOR:
     #9	0x0008627d in AriaMaestosa::Display::render at AriaCore.cpp:91
     #10	0x000d53dc in AriaMaestosa::MainFrame::tempoChanged at MainFrame.cpp:720
 
-** Crash when enlarging song from end
-    #0	0x0000e1b8 in AriaMaestosa::assertFailed at IOUtils.cpp:49
-    #1	0x000fe12c in AriaMaestosa::MeasureData::firstPixelInMeasure at MeasureData.cpp:338
-    #2	0x000af3e2 in AriaMaestosa::Editor::drawVerticalMeasureLines at Editor.cpp:141
-    #3	0x000bd60b in AriaMaestosa::ScoreEditor::render at ScoreEditor.cpp:914
-    #4	0x000c2382 in AriaMaestosa::GraphicalTrack::render at GraphicalTrack.cpp:1117
-    #5	0x00108514 in AriaMaestosa::Sequence::renderTracks at Sequence.cpp:528
-    #6	0x000e9828 in AriaMaestosa::MainPane::do_render at MainPane.cpp:230
-    #7	0x000ea2a3 in AriaMaestosa::MainPane::render at MainPane.cpp:213
-    #8	0x0008627d in AriaMaestosa::Display::render at AriaCore.cpp:91
-    #9	0x000fd80e in AriaMaestosa::MeasureData::setMeasureAmount at MeasureData.cpp:112
-
-
 
 * Undoing "delete track" places it back at the bottom, not where it was
 
