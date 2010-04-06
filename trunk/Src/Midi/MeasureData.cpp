@@ -109,8 +109,10 @@ void MeasureData::setExpandedMode(bool arg_expanded)
 void MeasureData::setMeasureAmount(int measureAmount)
 {
     m_measure_amount = measureAmount;
-    Display::render();
     updateVector(measureAmount);
+    
+    ASSERT_E(m_measure_amount, ==, (int)measureInfo.size());
+    Display::render();
 }
 
 // ---------------------------------------------------------------------------------------------------------
@@ -263,8 +265,8 @@ int MeasureData::measureAtTick(int tick)
 
 int MeasureData::measureDivisionAt(int pixel)
 {
+    ASSERT_E(m_measure_amount, ==, (int)measureInfo.size());
     const float x1 = 90 - getCurrentSequence()->getXScrollInPixels();
-
 
     if (isMeasureLengthConstant())
     {
@@ -326,6 +328,7 @@ int MeasureData::measureAtPixel(int pixel)
 
 int MeasureData::firstPixelInMeasure(int id)
 {
+    ASSERT_E(m_measure_amount, ==, (int)measureInfo.size());
     if (isMeasureLengthConstant())
     {
         return (int)(
@@ -344,6 +347,8 @@ int MeasureData::firstPixelInMeasure(int id)
 
 int MeasureData::lastPixelInMeasure(int id)
 {
+    ASSERT_E(m_measure_amount, ==, (int)measureInfo.size());
+    
     if (isMeasureLengthConstant())
     {
         return (int)(
@@ -362,6 +367,8 @@ int MeasureData::lastPixelInMeasure(int id)
 
 int MeasureData::firstTickInMeasure(int id)
 {
+    ASSERT_E(m_measure_amount, ==, (int)measureInfo.size());
+    
     if (isMeasureLengthConstant())
     {
         return id * measureLengthInTicks();
@@ -385,6 +392,8 @@ int MeasureData::firstTickInMeasure(int id)
 
 int MeasureData::lastTickInMeasure(int id)
 {
+    ASSERT_E(m_measure_amount, ==, (int)measureInfo.size());
+    
     if (isMeasureLengthConstant())
     {
         return (id+1) * measureLengthInTicks();
@@ -458,6 +467,8 @@ int MeasureData::getTimeSigDenominator(int measure) const
 
 void MeasureData::setTimeSig(int top, int bottom)
 {
+    ASSERT_E(m_measure_amount, ==, (int)measureInfo.size());
+    
     timeSigChanges[selectedTimeSig].num = top;
     timeSigChanges[selectedTimeSig].denom = bottom;
     updateMeasureInfo();
@@ -596,10 +607,12 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
 
 void MeasureData::updateVector(int newSize)
 {
-    while((int)measureInfo.size() < newSize) measureInfo.push_back( MeasureInfo() );
-    while((int)measureInfo.size() > newSize) measureInfo.erase( measureInfo.begin()+measureInfo.size()-1 );
+    while ((int)measureInfo.size() < newSize) measureInfo.push_back( MeasureInfo() );
+    while ((int)measureInfo.size() > newSize) measureInfo.erase( measureInfo.begin()+measureInfo.size()-1 );
 
-    if (!isMeasureLengthConstant() or expandedMode) updateMeasureInfo();
+    ASSERT_E(m_measure_amount, ==, (int)measureInfo.size());
+    
+    if (not isMeasureLengthConstant() or expandedMode) updateMeasureInfo();
 }
 
 // ---------------------------------------------------------------------------------------------------------
@@ -653,7 +666,7 @@ void MeasureData::updateMeasureInfo()
     totalNeededLengthInPixels = (int)( tick * zoom );
 
     DisplayFrame::updateHorizontalScrollbar();
-
+    ASSERT_E(m_measure_amount, ==, (int)measureInfo.size());
 }
 
 // ---------------------------------------------------------------------------------------------------------
