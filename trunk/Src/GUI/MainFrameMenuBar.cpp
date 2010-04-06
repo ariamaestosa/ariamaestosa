@@ -318,6 +318,7 @@ void MainFrame::updateUndoMenuLabel()
 
 void MainFrame::menuEvent_new(wxCommandEvent& evt)
 {
+    mainPane->forgetClickData();
     addSequence();
 }
 
@@ -325,6 +326,7 @@ void MainFrame::menuEvent_new(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_close(wxCommandEvent& evt)
 {
+    mainPane->forgetClickData();
     closeSequence();
 }
 
@@ -377,6 +379,7 @@ void MainFrame::menuEvent_saveas(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_open(wxCommandEvent& evt)
 {
+    mainPane->forgetClickData();
     wxString filePath = showFileDialog( _("Select file"), wxT(""), wxT(""),  _("Aria Maestosa file|*.aria"), false /*open*/);
     MainFrame::loadAriaFile(filePath);
 }
@@ -385,6 +388,7 @@ void MainFrame::menuEvent_open(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_importmidi(wxCommandEvent& evt)
 {
+    mainPane->forgetClickData();
     wxString midiFilePath = showFileDialog( _("Select midi file"), wxT(""), wxT(""),  _("Midi file|*.mid;*.midi"), false /*open*/);
     MainFrame::loadMidiFile(midiFilePath);
 }
@@ -581,6 +585,8 @@ void MainFrame::menuEvent_deleteTrack(wxCommandEvent& evt)
     int answer = wxMessageBox(  _("Do you really want to delete this track?"),  _("Confirm"),
                               wxYES_NO, this);
 
+    mainPane->forgetClickData();
+    
     if (answer == wxYES)
     {
         getCurrentSequence()->action( new Action::DeleteTrack( getCurrentSequence() ) );
