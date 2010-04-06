@@ -232,31 +232,40 @@ int MeasureData::measureAtTick(int tick)
     {
         const float step = measureLengthInTicks();
 
-        return (int)( tick / step );
+        const int answer = (int)( tick / step );
+        
+        ASSERT_E(answer, <=, m_measure_amount);
+        
+        return answer;
 
     }
     else
     {
         if (tick <0) tick = 0;
-
+        ASSERT_E(tick, <=, lastTickInMeasure(m_measure_amount-1));
+        
         // iterate through measures till we find the one at the given tick
         const int amount = measureInfo.size();
-        for(int n=0; n<amount-1; n++)
+        for (int n=0; n<amount-1; n++)
         {
             if ( measureInfo[n].tick <= tick and measureInfo[n+1].tick > tick ) return n;
         }
 
         // didnt find any... current song length is not long enough
+        return m_measure_amount-1;
+        /*
         const int last_id = timeSigChanges.size()-1;
         tick -= timeSigChanges[ last_id ].tick;
 
-        return (int)(
+        const int answer =  (int)(
                      timeSigChanges[ last_id ].measure +
                      tick / ( getCurrentSequence()->ticksPerBeat() *
                               timeSigChanges[ last_id ].num *
                               (4.0/ timeSigChanges[ last_id ].denom ) )
                      );
-
+        ASSERT_E(answer, <=, m_measure_amount);
+        return answer;
+         */
     }
 
 }
@@ -368,6 +377,7 @@ int MeasureData::lastPixelInMeasure(int id)
 int MeasureData::firstTickInMeasure(int id)
 {
     ASSERT_E(m_measure_amount, ==, (int)measureInfo.size());
+    ASSERT_E(id, <, m_measure_amount);
     
     if (isMeasureLengthConstant())
     {
