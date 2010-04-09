@@ -49,7 +49,7 @@ namespace AriaMaestosa
         IPrintCallback*       m_print_callback;
         wxPageSetupDialogData m_page_setup;
         wxPaperSize           m_paper_id;
-        int                   m_orient;
+        wxPrintOrientation    m_orient;
         int                   m_page_amount;
         
         /** in millimeters */
