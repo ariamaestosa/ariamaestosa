@@ -51,9 +51,6 @@ NOTE: sorry, this is very raw :)
 - long-term : in multi-track printing, some tracks need to be visually more tightly bound toghether (like tab and its score)
 ? allow setting font size, number of lines per page, zoom, etc...
 
-** Things like changing global tempo, changing song length, etc... are not actions and thus do not mark the
-   document as having unsaved changes!
-
 * Allow setting, in G+F score, whether each note is in the G or F clef
 
 * Keyboard editor : show current key in left area
@@ -135,6 +132,9 @@ UNSURE/MINOR:
  - score editor should be able to display notes with more than 2 flags (unusure... those with 2 are already so small and barely visible)
 
 ************************* BUGS: *************************
+
+** Things like changing global tempo, changing song length, etc... are not actions and thus do not mark the
+   document as having unsaved changes!
 
 * Undoing "delete track" places it back at the bottom, not where it was
 
