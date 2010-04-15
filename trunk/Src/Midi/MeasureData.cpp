@@ -377,15 +377,20 @@ int MeasureData::lastPixelInMeasure(int id)
 int MeasureData::firstTickInMeasure(int id)
 {
     ASSERT_E(m_measure_amount, ==, (int)measureInfo.size());
-    ASSERT_E(id, <, m_measure_amount);
     
     if (isMeasureLengthConstant())
     {
+        if (id >= m_measure_amount)
+        {
+            // allow going a little past 'official' song end to account for rounding errors, etc. (FIXME?)
+            ASSERT(id < m_measure_amount + 50); // but not too far, to detect corrupt values
+            return m_measure_amount * measureLengthInTicks();
+        }
         return id * measureLengthInTicks();
     }
     else
     {
-        // allow going a little past 'official' song end
+        // allow going a little past 'official' song end to account for rounding errors, etc. (FIXME?)
         if (id >= (int)measureInfo.size())
         {
             if (id > (int)measureInfo.size()+50){ ASSERT(false); } // but not too far, to detect corrupt values
