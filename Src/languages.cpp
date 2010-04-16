@@ -98,6 +98,7 @@ namespace AriaMaestosa
             
 #if defined(__WXGTK__)
             // add locale search paths
+            //TODO: enable wx to find the catalogs when Aria is ran in-place, if that's possible at all. otherwise print a warning
             locale->AddCatalogLookupPathPrefix(wxT("/usr"));
             locale->AddCatalogLookupPathPrefix(wxT("/usr/local"));
             wxStandardPaths* paths = (wxStandardPaths*) &wxStandardPaths::Get();

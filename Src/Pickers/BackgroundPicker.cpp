@@ -88,6 +88,8 @@ class TrackPropertiesDialog : public wxDialog
 
     int modalid;
 
+    bool m_ignore_events;
+    
 public:
     LEAK_CHECK();
 
@@ -98,6 +100,7 @@ public:
     TrackPropertiesDialog(Track* parent) :
         wxDialog(NULL, wxID_ANY,  _("Track Properties"), wxPoint(100,100), wxSize(700,300), wxCAPTION | wxCLOSE_BOX | wxSTAY_ON_TOP )
     {
+        m_ignore_events = true;
         TrackPropertiesDialog::parent = parent;
 
         modalid = -1;
@@ -178,6 +181,8 @@ public:
         sizer->Layout();
         sizer->SetSizeHints(this); // resize window to take ideal space
         // FIXME - if too many tracks for current screen space, may cause problems
+        
+        m_ignore_events = false;
     }
 
     void show()
@@ -227,12 +232,18 @@ public:
 
     void volumeSlideChanging(wxScrollEvent& evt)
     {
+        // FIXME: an apparent wxGTK bug sends events before the constructor even returned
+        if (m_ignore_events) return;
+        
         const int value = volume_slider->GetValue();
         if (value >=0 and value < 128) volume_text->SetValue( to_wxString(value) );
     }
 
     void volumeTextChanged(wxCommandEvent& evt)
     {
+        // FIXME: an apparent wxGTK bug sends events before the constructor even returned
+        if (m_ignore_events) return;
+        
         const int value = atoi_u(volume_text->GetValue());
         volume_slider->SetValue( value );
     }
