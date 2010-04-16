@@ -298,12 +298,12 @@ MainFrame::~MainFrame()
     
 void MainFrame::init()
 {
+    changingValues = true;
+
     Centre();
 
     currentSequence=0;
     playback_mode=false;
-
-    changingValues=false;
 
     SetMinSize(wxSize(750, 330));
 
@@ -451,6 +451,8 @@ void MainFrame::init()
     Show();
     //Maximize(true);
     
+    changingValues = false;
+
 #ifdef __WXMSW__
     // Drag files
     Connect(wxID_ANY, wxEVT_DROP_FILES, wxDropFilesEventHandler(MainFrame::onDropFile),NULL, this);
