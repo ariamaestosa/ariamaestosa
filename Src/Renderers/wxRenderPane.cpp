@@ -36,7 +36,11 @@ using namespace AriaMaestosa;
 wxRenderPane::wxRenderPane(MainFrame* mainFrame, int* args) :
     wxPanel(mainFrame, wxID_ANY,  wxDefaultPosition, wxDefaultSize)
 {
+#if wxCHECK_VERSION(2,9,1)
     SetBackgroundStyle(wxBG_STYLE_PAINT);
+#else
+    SetBackgroundStyle(wxBG_STYLE_CUSTOM);
+#endif
 }
 
 // ----------------------------------------------------------------------------------------------------------
