@@ -83,11 +83,19 @@ namespace AriaMaestosa
         /** Add and init preferences values */
         void fillSettingsVector();
         
+        void prepareLanguageEntry();
+        
         /** Private constructor */
         PreferencesData();
+        
+        /** Fills the setting objects with the user's saved values, if any, replacing the defaults */
+        void readValues();
 
     public:
                 
+        /** call early */
+        void init();
+        
         long getValue(const char* entryName) const { return getValue(wxString(entryName, wxConvUTF8)); }
         long getValue(wxString entryName) const;
         
