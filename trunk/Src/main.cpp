@@ -95,10 +95,10 @@ bool wxWidgetApp::OnInit()
     }
     
     frame = NULL;
-    // prefs = (wxConfig*) wxConfig::Get();
 
     prefs = PreferencesData::getInstance();
-    initLanguageSupport();
+    prefs->init();
+    
     PlatformMidiManager::initMidiPlayer();
 
     frame=new MainFrame();

@@ -68,8 +68,22 @@ DEFINE_SINGLETON(AriaMaestosa::PreferencesData);
 
 PreferencesData::PreferencesData()
 {
-    fillSettingsVector();
+}
+
+void PreferencesData::init()
+{
+    prepareLanguageEntry();
+    readValues();
     
+    initLanguageSupport();
+    fillSettingsVector();
+    readValues();
+}
+
+// ----------------------------------------------------------------------------------------------------
+
+void PreferencesData::readValues()
+{
     // --- read values from file
     wxConfig* prefs = (wxConfig*) wxConfig::Get();
     
@@ -84,19 +98,24 @@ PreferencesData::PreferencesData()
         {
             m_settings[i].m_value = value;
         }
-    }
+    }    
+}
+
+// ----------------------------------------------------------------------------------------------------
+
+void PreferencesData::prepareLanguageEntry()
+{
+    // ---- language
+    Setting* languages = new Setting(fromCString(SETTING_ID_LANGUAGE), _("Language"), SETTING_ENUM, true,
+                                     getDefaultLanguageAriaID() );
+    languages->setChoices( getLanguageList() );
+    m_settings.push_back( languages );
 }
 
 // ----------------------------------------------------------------------------------------------------
 
 void PreferencesData::fillSettingsVector()
 {
-    // ---- language
-    Setting* languages = new Setting(fromCString(SETTING_ID_LANGUAGE), wxT("Language"), SETTING_ENUM, true,
-                                     getDefaultLanguageAriaID() );
-    languages->setChoices( getLanguageList() );
-    m_settings.push_back( languages );
-    
     // ---- play during edit
     Setting* play = new Setting(fromCString(SETTING_ID_PLAY_DURING_EDIT), _("Play during edit (default value)"),
                                 SETTING_ENUM, true, 1 );
