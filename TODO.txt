@@ -58,6 +58,8 @@ NOTE: sorry, this is very raw :)
  
 * Allow 8va to be applied to only some parts of track
  
+* Keyboard shortcuts to change currently selected note length
+ 
 * Custom Key editor :
     - make it actually work
     - save to .aria file and load back
