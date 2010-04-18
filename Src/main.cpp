@@ -37,17 +37,20 @@
 
 IMPLEMENT_APP(AriaMaestosa::wxWidgetApp)
 
+//FIXME: remove global, make it member
 namespace AriaMaestosa
 {
-
-bool render_loop_on = false;
+    bool render_loop_on = false;
+}
+using namespace AriaMaestosa;
 
 BEGIN_EVENT_TABLE(wxWidgetApp,wxApp)
 EVT_ACTIVATE_APP(wxWidgetApp::onActivate)
 EVT_IDLE(wxWidgetApp::onIdle)
 END_EVENT_TABLE()
 
-wxConfig* prefs;
+// ------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------------
 
 void wxWidgetApp::activateRenderLoop(bool on)
 {
@@ -64,6 +67,8 @@ void wxWidgetApp::activateRenderLoop(bool on)
     }
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 void wxWidgetApp::onIdle(wxIdleEvent& evt)
 {
     if (render_loop_on)
@@ -73,15 +78,19 @@ void wxWidgetApp::onIdle(wxIdleEvent& evt)
     }
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 void wxWidgetApp::onActivate(wxActivateEvent& evt)
 {
-    #ifdef __WXMAC__
+#ifdef __WXMAC__
     if (evt.GetActive())
     {
         frame->Raise();
     }
-    #endif
+#endif
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 bool wxWidgetApp::OnInit()
 {
@@ -96,6 +105,17 @@ bool wxWidgetApp::OnInit()
     
     frame = NULL;
 
+#if USE_WX_LOGGING
+    int x, y;
+
+    m_log_window = new wxLogWindow(NULL, wxT("Log") );
+    m_log_frame  = m_log_window->GetFrame();
+    m_log_frame->SetWindowStyle(wxDEFAULT_FRAME_STYLE | wxSTAY_ON_TOP);
+
+    m_log_frame->SetSize( wxRect(0,wxSystemSettings::GetMetric(wxSYS_SCREEN_Y)*3/4, 400,250) );
+    wxLog::SetActiveTarget(m_log_window);
+#endif
+    
     prefs = PreferencesData::getInstance();
     prefs->init();
     
@@ -113,6 +133,20 @@ bool wxWidgetApp::OnInit()
     return true;
 }
 
+// ------------------------------------------------------------------------------------------------------
+
+#if USE_WX_LOGGING
+
+int wxWidgetApp::CloseLogWindow()
+{
+    wxLog::SetActiveTarget(NULL);
+    m_log_frame->Close();
+    wxDELETE(m_log_window);
+}
+
+#endif
+    
+// ------------------------------------------------------------------------------------------------------
 
 int wxWidgetApp::OnExit()
 {
@@ -122,6 +156,7 @@ int wxWidgetApp::OnExit()
     return 0;
 }
 
+// ------------------------------------------------------------------------------------------------------
 
 void wxWidgetApp::MacOpenFile(const wxString &fileName)
 {
@@ -141,4 +176,4 @@ void wxWidgetApp::MacOpenFile(const wxString &fileName)
 
 }
 
-}
+// ------------------------------------------------------------------------------------------------------
