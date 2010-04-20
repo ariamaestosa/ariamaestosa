@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-31 14:47-0400\n"
-"PO-Revision-Date: 2010-04-16 20:20-0500\n"
+"PO-Revision-Date: 2010-04-19 20:30-0500\n"
 "Last-Translator: Marianne Gagnon (Auria) <auria.mg@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -22,12 +22,12 @@ msgid ""
 "\tThe irrXML team for their great XML parser\n"
 msgstr ""
 "\tJ.D. Koftinoff Software für libjdkmidi\n"
-"\tdem irrXML team für ihren großartigen XML-Parser\n"
+"\tdas irrXML team für ihren großartigen XML-Parser\n"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/About.cpp:47
 msgid "\tThe Tango icon set\n"
-msgstr "\tDas Tango-Iconset\n"
+msgstr "\tdas Tango-Iconset\n"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/About.cpp:45
@@ -35,7 +35,7 @@ msgid ""
 "\tThe wxWidgets team\n"
 "\twww.freesmug.org for allowing me to access an intel mac\n"
 msgstr ""
-"\tdem wxWidgets Team\n"
+"\tdas wxWidgets Team\n"
 "\twww.freesmug.org, dass sie mir Zugriff auf einen Intel-Mac ermöglichten\n"
 
 #. I18N: - in about dialog
@@ -116,7 +116,7 @@ msgstr "Bei der Vorbereitung des Druckvorgangs trat ein Fehler auf."
 
 #: Src/Midi/MeasureData.cpp:83
 msgid "Are you sure you want to go back to having a single time signature? Any time sig events you may have added will be lost. This cannot be undone."
-msgstr "Bist Du sicher, dass Du wieder nur noch eine Zeitsignatur haben willst? Alle Zeitsignatur-Events, die Du hinzugefügt hast, werden unwiderruflich gelöscht."
+msgstr "Bist du sicher, dass wieder nur noch eine Zeitsignatur gelten soll? Alle Zeitsignatur-Events, die du hinzugefügt hast, werden unwiderruflich gelöscht."
 
 #: Src/GUI/MainFrameMenuBar.cpp:380
 msgid "Aria Maestosa file|*.aria"
@@ -834,8 +834,8 @@ msgid ""
 "Aria Maestosa more recent than the version you currently have.\n"
 "It may not open correctly."
 msgstr ""
-"Achtung: Du öffnest eine Datei, die mit einer Version von Aria Maestosa\n"
-"gespeichert wurde, die um einiges neuer ist als die Version, die du hast.\n"
+"Achtung: Du öffnest eine Datei, die mit einer neueren Version von Aria Maestosa\n"
+"als deiner gespeichert wurde.\n"
 "Es könnte passieren, dass die Datei nicht richtig geöffnet wird."
 
 #: Src/GUI/MeasureBar.cpp:144
