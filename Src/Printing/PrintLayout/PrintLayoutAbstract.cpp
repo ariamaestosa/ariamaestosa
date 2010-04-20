@@ -84,6 +84,8 @@ void PrintLayoutAbstract::generateMeasures(ptr_vector<Track, REF>& tracks)
             m_measures.push_back( new PrintLayoutMeasure(measure) );
         }
         
+        if (track->getNoteAmount() == 0) continue; //empty track
+        
         int note=0;
         
         // give them track references
