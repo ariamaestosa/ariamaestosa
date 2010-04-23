@@ -23,6 +23,8 @@
 - Code cleanup and general improvements/fixes
 - Improved dialog shown when quitting and there are unsaved changes (now offer to save them)
 - Started adding support for custom keys (hidden for now)
+- Fixed deleting control events when selection was done from right to left
+  (thanks to Alexis Archambault for finding this bug!)
 - Fixed preferences dialog not being translated
 
 1.2b9

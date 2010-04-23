@@ -22,6 +22,8 @@
 #include "GUI/GraphicalTrack.h"
 #include "Editors/ControllerEditor.h"
 
+#include <cmath>
+
 using namespace AriaMaestosa::Action;
 
 DeleteSelected::DeleteSelected() :
@@ -69,9 +71,12 @@ void DeleteSelected::perform()
     if (track->graphics->editorMode == CONTROLLER)
     {
         
-        const int from = track->graphics->controllerEditor->getSelectionBegin();
-        const int to = track->graphics->controllerEditor->getSelectionEnd();
+        int selBegin = track->graphics->controllerEditor->getSelectionBegin();
+        int selEnd = track->graphics->controllerEditor->getSelectionEnd();
         const int type = track->graphics->controllerEditor->getCurrentControllerType();
+
+        const int from = std::min(selBegin, selEnd);
+        const int to   = std::max(selBegin, selEnd);
         
         if (type != 201 /*tempo*/)
         {
