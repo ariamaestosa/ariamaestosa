@@ -137,7 +137,7 @@ bool wxWidgetApp::OnInit()
 
 #if USE_WX_LOGGING
 
-int wxWidgetApp::CloseLogWindow()
+void wxWidgetApp::closeLogWindow()
 {
     wxLog::SetActiveTarget(NULL);
     m_log_frame->Close();
