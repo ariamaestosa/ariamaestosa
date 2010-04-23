@@ -148,9 +148,15 @@ namespace AriaMaestosa
     {
         if (not consolidated)
         {
+
+#if defined(__WXMSW__)
+            //FIXME: find why we need this special case
+            Display::renderDC->SetFont( wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+#else
             //if (font.IsOk()) Display::renderDC->SetFont(font);
-           // else
+            // else
             Display::renderDC->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
+#endif
             
             Display::renderDC->GetTextExtent(wxT("0"), &w, &h);
             
@@ -163,9 +169,14 @@ namespace AriaMaestosa
         ASSERT_E(h, >, -1);
         ASSERT_E(h, <, 90000);
 
+#if defined(__WXMSW__)
+        //FIXME: find why we need this special case
+        Display::renderDC->SetFont( wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+#else
         //if (font.IsOk()) Display::renderDC->SetFont(font);
         //else
         Display::renderDC->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
+#endif
         
         Display::renderDC->DrawText(s, x, y-h);
     }
