@@ -1,4 +1,5 @@
 /*
+ *  Copyright (C) 1999-2003 -------
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License version 2 as
@@ -9,7 +10,6 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
- *  Core by Alexis Archambault
  */
 
 // everything here must be added/changed/checked, that's just a placeholder to help anyone willing to help
@@ -23,6 +23,8 @@
 #include "IO/IOUtils.h"
 #include "Dialogs/WaitWindow.h"
 #include "Midi/Players/Sequencer.h"
+#include "jdkmidi/multitrack.h"
+#include "jdkmidi/sequencer.h"
 
 #include "wx/wx.h"
 #include "wx/utils.h"
@@ -57,6 +59,8 @@ namespace AriaMaestosa
         int current_tick = -1;
 		HMIDIOUT m_hOutMidiDevice = 0;
 		bool m_bOutOpen = false;
+
+		bool play(Sequence* sequence, /*out*/int* startTick, bool selectionOnly);
 
 
 		// all sound off, reset all controllers, reset pitch bend, etc.
@@ -208,17 +212,17 @@ namespace AriaMaestosa
 
 			if (midi_out_caps != NULL)
 			{
-				::wxLogDebug(wxT("Manufacturer ID | Product ID | Driver Version | Name"));
+				std::cout << "Manufacturer ID | Product ID | Driver Version | Name";
 
 				for (i = 0; i < midi_num_outputs; i++)
 				{
 					wRtn = midiOutGetDevCaps(i, (LPMIDIOUTCAPS) & midi_out_caps[i],
 											 sizeof(MIDIOUTCAPS));
 					if (wRtn == MMSYSERR_NOERROR)
-					{
+		{
 						// see http://msdn.microsoft.com/en-us/library/dd798467%28VS.85%29.aspx
-						::wxLogDebug(wxT("%u | %u | %u | %s"), midi_out_caps[i].wMid, midi_out_caps[i].wPid,
-										midi_out_caps[i].vDriverVersion,midi_out_caps[i].szPname);
+						std::cout << midi_out_caps[i].wMid << " " << midi_out_caps[i].wPid << " "
+										<< midi_out_caps[i].vDriverVersion << " " << midi_out_caps[i].szPname;
 					}
 				}
 			}
@@ -233,7 +237,7 @@ namespace AriaMaestosa
 
 			if( !m_bOutOpen )
 			{
-				enumerateDevices();
+				//enumerateDevices();
 
 				// To access Midi Yoke Output, simply put its number instead of MIDI_MAPPER
 			  int e = ::midiOutOpen(
