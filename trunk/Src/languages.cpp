@@ -32,7 +32,9 @@ namespace AriaMaestosa
     static long language_aria_id = 0;
     static long language_wx_id = wxLANGUAGE_DEFAULT;
     
-    const char* WINDOWS_LANG_DIR = "Languages";
+#ifdef __WXMSW__
+    const wxChar* WINDOWS_LANG_DIR = wxT("Languages");
+#endif
     
     class AriaLanguage
     {
