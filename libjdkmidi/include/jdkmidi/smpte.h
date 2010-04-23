@@ -58,18 +58,53 @@ namespace jdkmidi
       SAMPLE_48000,
       SAMPLE_48048
     };
+
+ const uchar smpte_max_frames[] =
+  {
+    24, 25, 30, 30, 30, 30
+  };
+  
+  const double smpte_smpte_rates[] =
+  {
+    24.0,
+    25.0,
+    30.0/1.001,
+    30.0/1.001,
+    30.0,
+    30.0
+  };
   
   
+  const double smpte_sample_rates[] =
+  {
+    32000.0,
+    44100.0/1.001,
+    44100.0,
+    48000.0/1.001,
+    48000.0,
+    48000.0*1.001
+  };
   
-  
+  const long smpte_sample_rates_long[] =
+  {
+    320000,
+    (long)(441000.0/1.001),
+    441000,
+    (long)(480000.0/1.001),
+    480000,
+    (long)(480000.0*1.001)
+  };
+
+
+
+
+
 //
 // MDGetSMPTERateFrequency() converts the SMPTE_RATE enum to a double frequency.
 //
   
   inline double GetSMPTERateFrequency( SMPTE_RATE r )
     {
-      extern const double smpte_smpte_rates[];
-      
       return smpte_smpte_rates[(int)r];
     }
   
@@ -81,9 +116,7 @@ namespace jdkmidi
   
   inline long GetSMPTERateFrequencyLong( SMPTE_RATE r )
     {
-      extern const double smpte_smpte_rates_long[];
-      
-      return (long)smpte_smpte_rates_long[(int)r];
+      return (long)smpte_sample_rates_long[(int)r];
     }
   
   
@@ -94,8 +127,6 @@ namespace jdkmidi
   
   inline 	double 	GetSampleRateFrequency( SAMPLE_RATE r )
     {
-      extern const double smpte_sample_rates[];
-      
       return smpte_sample_rates[(int)r];
     }
   
@@ -109,12 +140,8 @@ namespace jdkmidi
   inline	long	GetSampleRateFrequencyLong( SAMPLE_RATE r )
     {
       // return the sample rate as a long word of the frequency times 10.
-      
-      extern const long smpte_sample_rates_long[];
       return smpte_sample_rates_long[(int)r];
     }
-  
-  
   
   
   
