@@ -17,11 +17,13 @@
 #ifndef __MAIN_H__
 #define __MAIN_H__
 
+
 #if defined(__WXMSW__) && !defined(NDEBUG)
 #define USE_WX_LOGGING 1
 #else
 #define USE_WX_LOGGING 0
 #endif
+
 
 #include "wx/wx.h"
 #include "Utils.h"
@@ -38,7 +40,12 @@ namespace AriaMaestosa
     public:
         MainFrame* frame;
         PreferencesData*  prefs;
+
+#if USE_WX_LOGGING
+        void closeLogWindow();
+#endif
         
+
         /** implement callback from wxApp */
         bool OnInit();
         
@@ -58,10 +65,6 @@ namespace AriaMaestosa
         void onActivate(wxActivateEvent& evt);
         
         DECLARE_EVENT_TABLE();
-        
-#if USE_WX_LOGGING
-        int CloseLogWindow();
-#endif
         
     private:
         
