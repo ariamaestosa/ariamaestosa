@@ -65,6 +65,12 @@
 #include <ApplicationServices/ApplicationServices.h>
 #endif
 
+
+#ifdef __WXMSW__
+#include "win32/Aria.xpm"
+#endif
+
+
 using namespace AriaMaestosa;
 
 namespace AriaMaestosa
@@ -304,6 +310,12 @@ void MainFrame::init()
     changingValues = true;
 
     Centre();
+
+#ifdef __WXMSW__
+    // Main frame icon
+    wxIcon FrameIcon(Aria_xpm);
+       SetIcon(FrameIcon);
+#endif
 
     currentSequence=0;
     playback_mode=false;
