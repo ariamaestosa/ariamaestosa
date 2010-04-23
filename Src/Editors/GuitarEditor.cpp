@@ -84,7 +84,8 @@ GuitarEditor::GuitarEditor(Track* track) : Editor(track)
 
     lastClickedNote=-1;
 
-#ifdef __WXGTK__
+    //FIXME: find why font sizes are different on wxMac, and fix those issues cleanly
+#ifndef __WXMAC__
     GuitarNoteNamesSingleton::getInstance()->setFont( wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, /*wxFONTWEIGHT_BOLD*/ wxFONTWEIGHT_NORMAL) );
 #endif
 
