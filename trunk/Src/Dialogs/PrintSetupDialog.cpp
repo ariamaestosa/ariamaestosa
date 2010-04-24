@@ -109,7 +109,7 @@ namespace AriaMaestosa
         
         LEAK_CHECK();
         
-        PrintSetupDialog(Sequence* sequence) : wxFrame(NULL, wxID_ANY,
+        PrintSetupDialog(wxWindow *parent, Sequence* sequence) : wxFrame(parent, wxID_ANY,
                                   //I18N: - title of the notation-print dialog
                                   _("Print musical notation"),
                                   wxPoint(200,200), wxSize(500, 400), wxCAPTION | wxFRAME_FLOAT_ON_PARENT)
@@ -387,8 +387,9 @@ namespace AriaMaestosa
     // user wants to export to notation - remember what is the sequence, then show set-up dialog
     void showPrintSetupDialog(Sequence* sequence)
     {
-        getMainFrame()->disableMenus(true);
-        new PrintSetupDialog(sequence);
+        MainFrame* mainFrame = getMainFrame();
+        mainFrame->disableMenus(true);
+        new PrintSetupDialog(mainFrame, sequence);
     }
 
 }
