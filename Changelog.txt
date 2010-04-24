@@ -25,6 +25,7 @@
 - Started adding support for custom keys (hidden for now)
 - Fixed deleting control events when selection was done from right to left
   (thanks to Alexis Archambault for finding this bug!)
+- Applied several patches by Alexis Archambault to improve Windows support
 - Fixed preferences dialog not being translated
 
 1.2b9
