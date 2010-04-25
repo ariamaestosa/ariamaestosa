@@ -36,7 +36,7 @@ AboutDialog::AboutDialog() : wxDialog(NULL, wxID_ANY,  _("About Aria Maestosa"),
     picture=new wxBitmapButton(this, 0, titleBitmap, wxPoint(0,0), wxSize(517,174) );
 
     //I18N: - in about dialog
-    wxString about_text =  wxString::Format(_("version %s"), wxT("1.2 beta 10") ) +
+    wxString about_text =  wxString::Format(_("version %s"), wxT("1.2") ) +
     //I18N: - in about dialog
     wxString::Format(_("\n\nThanks to:\n\n\tErgonis Software and %s for making EasyBeat,\n\t\ta great app that inspired Aria (www.ergonis.com).\n"), wxT(" G\u00FCnther Blaschek "))  +
     //I18N: - in about dialog

@@ -1,4 +1,4 @@
-1.2b10
+1.2
 - Printing
     - Improved printing dialog
     - Give access to page setup dialog
