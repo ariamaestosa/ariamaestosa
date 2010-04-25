@@ -36,13 +36,13 @@ void freeVolumeSlider();
 
 class VolumeSlider : public wxDialog
 {
-    wxSlider* slider;
-    wxTextCtrl* valueText;
-    wxPanel* pane;
-    int returnCode;
+    wxSlider* m_slider;
+    wxTextCtrl* m_value_text;
+    wxPanel* m_pane;
+    int m_return_code;
 
-    int noteID;
-    Track* currentTrack;
+    int m_note_ID;
+    Track* m_current_track;
 
 public:
     LEAK_CHECK();
