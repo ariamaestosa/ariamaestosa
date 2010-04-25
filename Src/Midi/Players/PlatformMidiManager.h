@@ -32,36 +32,86 @@ namespace AriaMaestosa {
 namespace PlatformMidiManager {
 
 
-    /*
-     * startTick is an 'out' argument where you set where the song starts playing
+    /**
+     * @brief                  starts playing the entire sequence, from the measure being marked as the first one
+     * @param[out] startTick   gives the tick where the song starts playing
      */
     bool playSequence(Sequence* sequence, /*out*/int* startTick);
+    
+    /**
+     * @brief                  starts playing the selected notes from the current track
+     * @param[out] startTick   gives the tick where the song starts playing
+     */
     bool playSelected(Sequence* sequence, /*out*/int* startTick);
+    
+    /**
+      * @return  whether a song is playing as a result of PlatformMidiManager::playSequence or
+      *          PlatformMidiManager::playSelected
+      * @note    "preview" notes, as issued by PlatformMidiManager::playNote, do NOT count here;
+      *          this method really only tracks the playback of entire sequences/tracks portions,
+      *          not of single notes alone
+      */
     bool isPlaying();
+    
+    /**
+      * @brief        stops a playing sequence previously started by PlatformMidiManager::playSequence
+      *               or PlatformMidiManager::playSelected
+      * @precondition this function is not to be called when there is no songn playing
+      *               (when PlatformMidiManager::isPlaying returns false)
+      */
     void stop();
 
     void exportAudioFile(Sequence* sequence, wxString filepath);
+    
+    //FIXME: not sure this belongs here at all.
+    /**
+      * @brief Invoked when user requests and export to MIDI file format
+      * @note  Aria provides a factory implementation that can generally be used for this :
+      *        AriaMaestosa::exportMidiFile(sequence, filepath);
+      */
     bool exportMidiFile(Sequence* sequence, wxString filepath);
 
-    /*
-     * returns midi tick currently being played, -1 if none
-     * called repeatedly during playback
+    /**
+     * @brief  called repeatedly during playback to know progression
      *
-     * returns number of ticks elapsed *since startTick* as returned above
+     * @return midi tick currently being played, -1 if none
+     * @note   must return the number of ticks elapsed since startTick
+     *         (as returned by PlatformMidiManager::playSequence / PlatformMidiManager::playSelected)
      */
     int trackPlaybackProgression();
 
-    // called when app opens
+    /** @brief called when app opens */
     void initMidiPlayer();
 
-    // called when app closes
+    /** @brief called when app closes */
     void freeMidiPlayer();
 
-    // play/stop a single preview note
+    /**
+      * @brief play/stop a single "preview" note
+      * By "preview" note I mean that this method is used to play notes during editing,
+      * not during actuakl song playback.
+      * @note calls to this function should be ignored while PlatformMidiManager::isPlaying returns true
+      */
     void playNote(int noteNum, int volume, int duration, int channel, int instrument);
+    
+    /**
+      * @brief stop any note started with PlatformMidiManager::playNote
+      * @note  it is harmless to invoke this function even if no note is currently playing
+      */
     void stopNote();
 
+    /**
+      * @return the extension of sampled audio files that this platform implementation supports
+      *         e.g. ".aiff", ".wav"
+      * @note   this interface currently supports a single sampled audio format per platform
+      * @note   returning wxEmptyString will be interpreted as "audio export not supported"
+      */
     const wxString getAudioExtension();
+    
+    /**
+      * @return the wildcard string used for the file dialog when exporting to sampled audio
+      *         e.g. "AIFF file|*.aiff"
+      */
     const wxString getAudioWildcard();
 
     /* ---------- non-native sequencer interface ---------
