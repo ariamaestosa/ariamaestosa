@@ -241,7 +241,7 @@ public:
 
     void volumeTextChanged(wxCommandEvent& evt)
     {
-        // FIXME: an apparent wxGTK bug sends events before the constructor even returned
+        // FIXME: an apparent wxGTK/wxMSW bug(?) sends events before the constructor even returned
         if (m_ignore_events) return;
         
         const int value = atoi_u(volume_text->GetValue());

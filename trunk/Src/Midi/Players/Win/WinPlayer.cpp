@@ -165,11 +165,13 @@ namespace AriaMaestosa
         }
         const wxString getAudioExtension()
         {
-            return wxT(".wav");
+            return wxEmptyString;
+            //return wxT(".wav");
         }
         const wxString getAudioWildcard()
         {
-            return  wxString( _("WAV file")) + wxT("|*.wav");
+            return wxEmptyString;
+            //return  wxString( _("WAV file")) + wxT("|*.wav");
         }
 
 

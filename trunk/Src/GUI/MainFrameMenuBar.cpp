@@ -242,6 +242,12 @@ void MainFrame::initMenuBar()
     menuBar->Append(helpMenu, wxT("&Help"));
 
     SetMenuBar(menuBar);
+    
+    // disable export to sampled audio if this feature is not supported by the current PlatformMidiManager
+    if (PlatformMidiManager::getAudioExtension().IsEmpty())
+    {
+        fileMenu->Enable(MENU_FILE_EXPORT_SAMPLED_AUDIO, false);
+    }
 }
 
 // -----------------------------------------------------------------------------------------------------------
