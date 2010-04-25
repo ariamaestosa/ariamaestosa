@@ -3,12 +3,12 @@
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
-
+ 
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
-
+ 
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -25,30 +25,41 @@
 #include "Utils.h"
 #include "AriaCore.h"
 
-namespace AriaMaestosa {
-
-
+namespace AriaMaestosa
+{
+    
+    enum
+    {
+        ID_SLIDER = wxID_HIGHEST + 1000, //hope there are no conflicts... FIXME: switch to wxNewID() + Bind when 3.0 is out
+        ID_TEXT_AREA
+    };
+    
+    
     DEFINE_EVENT_TYPE(wxEVT_DESTROY_VOLUME_SLIDER)
-
+    
     BEGIN_EVENT_TABLE(VolumeSlider, wxDialog)
-
-    EVT_COMMAND_SCROLL_THUMBTRACK(1, VolumeSlider::volumeSlideChanging)
-    EVT_COMMAND_SCROLL_THUMBRELEASE(1, VolumeSlider::volumeSlideChanged)
-    EVT_COMMAND_SCROLL_LINEUP(1, VolumeSlider::volumeSlideChanging)
-    EVT_COMMAND_SCROLL_LINEDOWN(1, VolumeSlider::volumeSlideChanging)
-    EVT_COMMAND_SCROLL_PAGEUP(1, VolumeSlider::volumeSlideChanging)
-    EVT_COMMAND_SCROLL_PAGEDOWN(1, VolumeSlider::volumeSlideChanging)
-
-    EVT_TEXT(2, VolumeSlider::volumeTextChanged)
-    EVT_TEXT_ENTER(2, VolumeSlider::enterPressed)
-
+    
+    EVT_COMMAND_SCROLL_THUMBTRACK  (ID_SLIDER, VolumeSlider::volumeSlideChanging)
+    EVT_COMMAND_SCROLL_THUMBRELEASE(ID_SLIDER, VolumeSlider::volumeSlideChanged)
+    EVT_COMMAND_SCROLL_LINEUP      (ID_SLIDER, VolumeSlider::volumeSlideChanging)
+    EVT_COMMAND_SCROLL_LINEDOWN    (ID_SLIDER, VolumeSlider::volumeSlideChanging)
+    EVT_COMMAND_SCROLL_PAGEUP      (ID_SLIDER, VolumeSlider::volumeSlideChanging)
+    EVT_COMMAND_SCROLL_PAGEDOWN    (ID_SLIDER, VolumeSlider::volumeSlideChanging)
+    
+    EVT_TEXT      (ID_TEXT_AREA, VolumeSlider::volumeTextChanged)
+    EVT_TEXT_ENTER(ID_TEXT_AREA, VolumeSlider::enterPressed)
+    
     EVT_CLOSE(VolumeSlider::closed)
     EVT_COMMAND(wxID_CANCEL, wxEVT_COMMAND_BUTTON_CLICKED, VolumeSlider::onCancel )
-
+    
     END_EVENT_TABLE()
-
+    
     VolumeSlider* sliderframe = NULL;
-
+    
+#if 0
+#pragma mark Functions
+#endif
+    
     void freeVolumeSlider()
     {
         if (sliderframe != NULL)
@@ -56,159 +67,191 @@ namespace AriaMaestosa {
             sliderframe->Destroy();
             sliderframe = NULL;
         }
-
+        
     }
-
+    
     void showVolumeSlider(int x, int y, int noteID, Track* track)
     {
         if (sliderframe == NULL) sliderframe = new VolumeSlider();
         sliderframe->show(x,y,noteID, track);
     }
+    
+}
 
-    VolumeSlider::VolumeSlider() : wxDialog(NULL, 0,  _("volume"), wxDefaultPosition, wxSize(50,160), wxSTAY_ON_TOP | wxWANTS_CHARS )
+using namespace AriaMaestosa;
+
+// -------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------
+
+#if 0
+#pragma mark -
+#pragma mark Class implementation
+#endif
+
+VolumeSlider::VolumeSlider() : wxDialog(NULL, wxNewId(),  _("volume"), wxDefaultPosition, wxSize(50,160),
+                                        wxSTAY_ON_TOP | wxWANTS_CHARS )
+{
+    m_pane = new wxPanel(this);
+    
+    m_slider = new wxSlider(m_pane, ID_SLIDER, 60, 0, 127, wxDefaultPosition, wxSize(50,128),
+                            wxSL_VERTICAL | wxSL_INVERSE | wxWANTS_CHARS);
+    
+    wxSize smallsize = wxDefaultSize;
+    smallsize.x = 50;
+    
+    m_value_text = new wxTextCtrl(m_pane, ID_TEXT_AREA, wxT("0"), wxPoint(0,130), smallsize,
+                                  wxTE_PROCESS_ENTER | wxWANTS_CHARS);
+    m_note_ID = -1;
+    m_current_track = NULL;
+    
+    
+    this        ->Connect(GetId(),               wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
+    m_slider    ->Connect(m_slider->GetId(),     wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
+    m_pane      ->Connect(m_pane->GetId(),       wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
+    m_value_text->Connect(m_value_text->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
+    
+    this        ->Connect(GetId(),               wxEVT_CHAR, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
+    m_slider    ->Connect(m_slider->GetId(),     wxEVT_CHAR, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
+    m_pane      ->Connect(m_pane->GetId(),       wxEVT_CHAR, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
+    m_value_text->Connect(m_value_text->GetId(), wxEVT_CHAR, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
+    
+}
+
+// -------------------------------------------------------------------------------------------------------
+
+void VolumeSlider::closed(wxCloseEvent& evt)
+{
+}
+
+// -------------------------------------------------------------------------------------------------------
+
+void VolumeSlider::onCancel(wxCommandEvent& evt)
+{
+    closeWindow();
+}
+
+// -------------------------------------------------------------------------------------------------------
+
+void VolumeSlider::show(int x, int y, int noteID, Track* track)
+{
+    // show the volume picking dialog
+    
+    if (track == NULL) return;
+    
+    m_current_track = track;
+    m_note_ID       = noteID;
+    
+    SetPosition(wxPoint(x,y));
+    m_slider->SetValue(m_current_track->getNoteVolume(noteID));
+    
+    m_value_text->SetValue( to_wxString(m_current_track->getNoteVolume(noteID)) );
+    
+    m_slider->SetFocus();
+    m_return_code = ShowModal();
+}
+
+// -------------------------------------------------------------------------------------------------------
+
+void VolumeSlider::volumeSlideChanged(wxScrollEvent& evt)
+{
+    
+    if (m_current_track == NULL) return;
+    
+    if (m_note_ID!=-1)
     {
-        pane = new wxPanel(this);
-
-        slider=new wxSlider(pane, 1, 60, 0, 127, wxDefaultPosition, wxSize(50,128), wxSL_VERTICAL | wxSL_INVERSE | wxWANTS_CHARS);
-
-        wxSize smallsize = wxDefaultSize;
-        smallsize.x = 50;
-
-        valueText=new wxTextCtrl(pane, 2, wxT("0"), wxPoint(0,130), smallsize, wxTE_PROCESS_ENTER | wxWANTS_CHARS);
-        noteID=-1;
-        currentTrack=NULL;
-
-
-        Connect(GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
-        slider->Connect(slider->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
-        pane->Connect(pane->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
-        valueText->Connect(valueText->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
-
-        Connect(GetId(), wxEVT_CHAR, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
-        slider->Connect(slider->GetId(), wxEVT_CHAR, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
-        pane->Connect(pane->GetId(), wxEVT_CHAR, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
-        valueText->Connect(valueText->GetId(), wxEVT_CHAR, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
-
+        
+        if (m_current_track->isNoteSelected(m_note_ID))
+            m_current_track->action( new Action::SetNoteVolume(m_slider->GetValue(), SELECTED_NOTES) );
+        else
+            m_current_track->action( new Action::SetNoteVolume(m_slider->GetValue(), m_note_ID) );
+        
     }
+    
+    // close the volume picking dialog
+    closeWindow();
+    return;
+}
 
-    void VolumeSlider::closed(wxCloseEvent& evt)
+// -------------------------------------------------------------------------------------------------------
+
+void VolumeSlider::volumeSlideChanging(wxScrollEvent& evt)
+{
+    const int newValue = m_slider->GetValue();
+    m_value_text->SetValue( to_wxString(newValue) );
+}
+
+// -------------------------------------------------------------------------------------------------------
+
+void VolumeSlider::volumeTextChanged(wxCommandEvent& evt)
+{
+}
+
+// -------------------------------------------------------------------------------------------------------
+
+void VolumeSlider::enterPressed(wxCommandEvent& evt)
+{
+    
+    if (!m_value_text->GetValue().IsNumber())
     {
-    }
-
-    void VolumeSlider::onCancel(wxCommandEvent& evt)
-    {
-        closeWindow();
-    }
-
-    void VolumeSlider::show(int x, int y, int noteID, Track* track)
-    {
-        // show the volume picking dialog
-
-        if (track == NULL) return;
-
-        VolumeSlider::currentTrack=track;
-        VolumeSlider::noteID=noteID;
-
-        SetPosition(wxPoint(x,y));
-        slider->SetValue(currentTrack->getNoteVolume(noteID));
-
-        valueText->SetValue( to_wxString(currentTrack->getNoteVolume(noteID)) );
-
-        slider->SetFocus();
-        returnCode = ShowModal();
-    }
-
-    void VolumeSlider::volumeSlideChanged(wxScrollEvent& evt)
-    {
-
-        if (currentTrack == NULL) return;
-
-        if (noteID!=-1)
-        {
-
-            if (currentTrack->isNoteSelected(noteID))
-                currentTrack->action( new Action::SetNoteVolume(slider->GetValue(), SELECTED_NOTES) );
-            else
-                currentTrack->action( new Action::SetNoteVolume(slider->GetValue(), noteID) );
-
-        }
-
-        // close the volume picking dialog
-        closeWindow();
+        wxBell();
+        const int newValue = m_slider->GetValue();
+        m_value_text->SetValue( to_wxString(newValue) );
         return;
     }
-
-
-    void VolumeSlider::volumeSlideChanging(wxScrollEvent& evt)
+    
+    const int newValue = atoi_u(m_value_text->GetValue());
+    if (newValue<0)
     {
-        const int newValue = slider->GetValue();
-        valueText->SetValue( to_wxString(newValue) );
+        wxBell();
+        m_value_text->SetValue(wxT("0"));
+        return;
     }
-
-    void VolumeSlider::volumeTextChanged(wxCommandEvent& evt)
+    
+    if (newValue>127)
     {
+        wxBell();
+        m_value_text->SetValue(wxT("127"));
+        return;
     }
-
-    void VolumeSlider::enterPressed(wxCommandEvent& evt)
-    {
-
-        if (!valueText->GetValue().IsNumber())
-        {
-            wxBell();
-            const int newValue = slider->GetValue();
-            valueText->SetValue( to_wxString(newValue) );
-            return;
-        }
-
-        const int newValue = atoi_u(valueText->GetValue());
-        if (newValue<0)
-        {
-            wxBell();
-            valueText->SetValue(wxT("0"));
-            return;
-        }
-
-        if (newValue>127)
-        {
-            wxBell();
-            valueText->SetValue(wxT("127"));
-            return;
-        }
-
-        ASSERT(noteID!=-1);
-        ASSERT(currentTrack!=NULL);
-
-        if (currentTrack->isNoteSelected(noteID))
-            currentTrack->action( new Action::SetNoteVolume(newValue, SELECTED_NOTES) );
-        else
-            currentTrack->action( new Action::SetNoteVolume(newValue, noteID) );
-
-        closeWindow();
-
-    }
-
-    void VolumeSlider::closeWindow()
-    {
-        wxDialog::EndModal(returnCode);
-        currentTrack=NULL;
-        Display::requestFocus();
-
-        wxCommandEvent event( wxEVT_DESTROY_VOLUME_SLIDER, 100000 );
-        getMainFrame()->GetEventHandler()->AddPendingEvent( event );
-    }
-
-    void VolumeSlider::keyPress(wxKeyEvent& evt)
-    {
-        if (evt.GetKeyCode()==WXK_ESCAPE || evt.GetKeyCode()==WXK_CANCEL || evt.GetKeyCode()==WXK_DELETE)
-        {
-            closeWindow();
-        }
-        else if (evt.GetKeyCode() == WXK_RETURN)
-        {
-            wxCommandEvent dummyEvt;
-            enterPressed(dummyEvt);
-        }
-        else evt.Skip(true);
-    }
-
+    
+    ASSERT(m_note_ID       != -1  );
+    ASSERT(m_current_track != NULL);
+    
+    if (m_current_track->isNoteSelected(m_note_ID))
+        m_current_track->action( new Action::SetNoteVolume(newValue, SELECTED_NOTES) );
+    else
+        m_current_track->action( new Action::SetNoteVolume(newValue, m_note_ID) );
+    
+    closeWindow();
+    
 }
+
+// -------------------------------------------------------------------------------------------------------
+
+void VolumeSlider::closeWindow()
+{
+    wxDialog::EndModal(m_return_code);
+    m_current_track = NULL;
+    Display::requestFocus();
+    
+    wxCommandEvent event( wxEVT_DESTROY_VOLUME_SLIDER, 100000 );
+    getMainFrame()->GetEventHandler()->AddPendingEvent( event );
+}
+
+// -------------------------------------------------------------------------------------------------------
+
+void VolumeSlider::keyPress(wxKeyEvent& evt)
+{
+    if (evt.GetKeyCode()==WXK_ESCAPE or evt.GetKeyCode()==WXK_CANCEL or evt.GetKeyCode()==WXK_DELETE)
+    {
+        closeWindow();
+    }
+    else if (evt.GetKeyCode() == WXK_RETURN)
+    {
+        wxCommandEvent dummyEvt;
+        enterPressed(dummyEvt);
+    }
+    else evt.Skip(true);
+}
+
+// -------------------------------------------------------------------------------------------------------
