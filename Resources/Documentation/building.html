@@ -20,8 +20,8 @@ First, download the source code from the <A href="http://sourceforge.net/project
 Aria is written in C++.
 <br/><br/><b>Dependencies : </b>
 <list>
-<li/> <a href="http://www.wxwidgets.org">wxWidgets</A>. I am currently using 2.8.x.
-<li/> <a href="http://www.opengl.org">OpenGL</A> and GLUT (included by default on mac OS X)
+<li/> <a href="http://www.wxwidgets.org">wxWidgets</A>. I am currently using 2.8.x on Linux, and 2.9.x trunk on OS X (because trunk has a couple printing bugs fixed)
+<li/> <a href="http://www.opengl.org">OpenGL</A> (included by default on mac OS X)
 <li/> <a href="http://www.jdkoftinoff.com/main/Free_Projects/C++_MIDI_Library/"> libjdkmidi</A> (included in the Aria source)
 <li/> <a href="http://www.ambiera.com/irrxml/index.html">irrXML</A> (included in the Aria source)
 </list>
@@ -36,18 +36,18 @@ Aria is written in C++.
 You will need to install Developer Tools from the mac OS X install disc. You need OS X 10.4.<br/><br/>
 
 <center><b>Prerequisites - Linux</b></center>
-<br/>The Linux version has been tested less than the mac one but appears to be getting more stable. At this point, you might want to build it to help me test it - it might also be stable enough for production but no promise :).<br/>
+<br/>The Linux version has been tested less than the mac one but appears to be getting more stable. At this point, you might want to build it to help me test it - it might also be stable enough for production but no promise :) Midi on Linux is especially painful, synthesizers like TiMidity haven't been maintained for years, eat a lot of CPU and don't play nicely with PulseAudio. In the future I will consider alternative implementations.<br/>
 <br/>You will need Python, Alsa (including -dev packages if your distro uses them), wxGTK (wxWidgets), OpenGL (if you wish to use the OpenGL renderer, and also get -dev packages if any), gcc/g++ (build-essential in Ubuntu). For midi playback, you will need a softsynth like Timidity with a soundbank (more info below)<br/><br/>
 
 <center><b>Installing wxWidgets - Mac OS X</b></center><br/>
 
 First, download and install wxWidgets. I usually build static. Don't forget to enable OpenGL support if you use wxWidgets 2.8. 
 
-Starting from Aria 1.2b10, I use wxOSX 2.9.x trunk. wxWidgets 2.8 will still work but it has a couple printing-related bugs. Because wx 2.9 still has a couple bugs, patches have been included in the /OSX directory - apply them to wxWidgets before building it for better results.
+Starting from Aria 1.2, I use wxOSX 2.9.x trunk. wxWidgets 2.8 will still work but it has a couple printing-related bugs. Because wx 2.9 still has a couple bugs, patches have been included in the /OSX directory - apply them to wxWidgets before building it for better results.
 
 <br/><br/>Example terminal commands to build wx (read the instructions that come with wxWidgets or wxWiki for more info):<br/>
 <blockquote>
-<pre>cd wxMac2.8.x
+<pre>cd wxMac2.x.x
 mkdir osx-build && cd osx-build
 ../configure --with-libjpeg=builtin --with-libpng=builtin --with-regex=builtin --with-libtiff=builtin
      --with-zlib=builtin --with-expat=builtin --with-opengl --enable-unicode --disable-shared
