@@ -23,35 +23,42 @@
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 
-namespace AriaMaestosa {
-
-
-DEFINE_EVENT_TYPE(wxEVT_DESTROY_TIMESIG_PICKER) // actually do something with this event
-
-BEGIN_EVENT_TABLE(TimeSigPicker, wxFrame)
-
-//EVT_TEXT(1, TimeSigPicker::textNumChanged)
-//EVT_TEXT(2, TimeSigPicker::textDenomChanged)
-EVT_TEXT_ENTER(1, TimeSigPicker::enterPressed)
-EVT_TEXT_ENTER(2, TimeSigPicker::enterPressed)
-EVT_BUTTON(3, TimeSigPicker::enterPressed)
-
-EVT_CLOSE(TimeSigPicker::closed)
-
-END_EVENT_TABLE()
-
-TimeSigPicker* timesigpicker_frame = NULL;
-
-
-namespace TimeSigPickerNames
+namespace AriaMaestosa
 {
-
-    class QuickBoxLayout
+    
+    enum
+    {
+        NUM_ID = wxID_HIGHEST,
+        DENOM_ID,
+        OK_BTN_ID,
+        VARIES_ID 
+    };
+    
+    DEFINE_EVENT_TYPE(wxEVT_DESTROY_TIMESIG_PICKER) // actually do something with this event
+    
+    BEGIN_EVENT_TABLE(TimeSigPicker, wxFrame)
+    
+    //EVT_TEXT(NUM_ID, TimeSigPicker::textNumChanged)
+    //EVT_TEXT(DENOM_ID, TimeSigPicker::textDenomChanged)
+    EVT_TEXT_ENTER(NUM_ID, TimeSigPicker::enterPressed)
+    EVT_TEXT_ENTER(DENOM_ID, TimeSigPicker::enterPressed)
+    EVT_BUTTON(OK_BTN_ID, TimeSigPicker::enterPressed)
+    
+    EVT_CLOSE(TimeSigPicker::closed)
+    
+    END_EVENT_TABLE()
+    
+    TimeSigPicker* timesigpicker_frame = NULL;
+    
+    namespace TimeSigPickerNames
+    {
+        
+        class QuickBoxLayout
         {
             wxBoxSizer* bsizer;
         public:
             wxPanel* pane;
-
+            
             QuickBoxLayout(wxWindow* component, wxSizer* parent, int orientation=wxHORIZONTAL)
             {
                 pane = new wxPanel(component);
@@ -69,11 +76,21 @@ namespace TimeSigPickerNames
                 //bsizer->SetSizeHints(pane);
             }
         };
-
+        
+    }
 }
+
+using namespace AriaMaestosa;
 using namespace TimeSigPickerNames;
 
-void freeTimeSigPicker()
+// --------------------------------------------------------------------------------------------------------
+
+#if 0
+#pragma mark -
+#pragma mark Functions
+#endif
+
+void AriaMaestosa::freeTimeSigPicker()
 {
     if (timesigpicker_frame != NULL)
     {
@@ -83,14 +100,25 @@ void freeTimeSigPicker()
 
 }
 
-void showTimeSigPicker(const int x, const int y, const int num, const int denom)
+// --------------------------------------------------------------------------------------------------------
+
+void AriaMaestosa::showTimeSigPicker(const int x, const int y, const int num, const int denom)
 {
     if (timesigpicker_frame == NULL) timesigpicker_frame = new TimeSigPicker();
     timesigpicker_frame->show(x, y, num, denom);
 }
 
-TimeSigPicker::TimeSigPicker() : wxFrame(getMainFrame(), 0,  _("Time Signature"), wxDefaultPosition, wxSize(185,130),
-                                         wxCAPTION | wxCLOSE_BOX | wxFRAME_TOOL_WINDOW | wxWANTS_CHARS)
+// --------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------
+
+#if 0
+#pragma mark -
+#pragma mark Class implementation
+#endif
+
+TimeSigPicker::TimeSigPicker() : wxFrame(getMainFrame(), wxNewId(),  _("Time Signature"),
+                                         wxDefaultPosition, wxSize(185,130),
+                                         wxCAPTION | wxCLOSE_BOX | wxFRAME_TOOL_WINDOW | wxFRAME_FLOAT_ON_PARENT | wxWANTS_CHARS)
 {
     pane = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS);
 
@@ -99,23 +127,28 @@ TimeSigPicker::TimeSigPicker() : wxFrame(getMainFrame(), 0,  _("Time Signature")
 
     wxBoxSizer* vertical = new wxBoxSizer(wxVERTICAL);
     QuickBoxLayout horizontal(pane, vertical);
-    valueTextNum=new wxTextCtrl(horizontal.pane, 1, wxT("4"), wxPoint(0,130), smallsize, wxTE_PROCESS_ENTER | wxWANTS_CHARS | wxTAB_TRAVERSAL);
+    valueTextNum=new wxTextCtrl(horizontal.pane, NUM_ID, wxT("4"), wxPoint(0,130), smallsize,
+                                wxTE_PROCESS_ENTER | wxWANTS_CHARS | wxTAB_TRAVERSAL);
     wxStaticText* slash = new wxStaticText(horizontal.pane, wxID_ANY, wxT("/"), wxDefaultPosition, wxSize(15,15));
     slash->SetMinSize(wxSize(15,15));
     slash->SetMaxSize(wxSize(15,15));
-    valueTextDenom=new wxTextCtrl(horizontal.pane, 2, wxT("4"), wxPoint(0,130), smallsize, wxTE_PROCESS_ENTER | wxWANTS_CHARS | wxTAB_TRAVERSAL);
-    okbtn = new wxButton(pane, 3, _("OK"));
+    valueTextDenom=new wxTextCtrl(horizontal.pane, DENOM_ID, wxT("4"), wxPoint(0,130), smallsize,
+                                  wxTE_PROCESS_ENTER | wxWANTS_CHARS | wxTAB_TRAVERSAL);
+    okbtn = new wxButton(pane, OK_BTN_ID, _("OK"));
     okbtn->SetDefault();
 
-    valueTextNum  ->Connect( valueTextNum  ->GetId(), wxEVT_SET_FOCUS, wxFocusEventHandler(TimeSigPicker::onFocus), 0, this);
-    valueTextDenom->Connect( valueTextDenom->GetId(), wxEVT_SET_FOCUS, wxFocusEventHandler(TimeSigPicker::onFocus), 0, this);
+    //FIXME: don't use a mixture of event tables and Connect xD
+    valueTextNum  ->Connect( valueTextNum->GetId(), wxEVT_SET_FOCUS,
+                             wxFocusEventHandler(TimeSigPicker::onFocus), 0, this);
+    valueTextDenom->Connect( valueTextDenom->GetId(), wxEVT_SET_FOCUS,
+                             wxFocusEventHandler(TimeSigPicker::onFocus), 0, this);
 
     horizontal.add(valueTextNum, 5, 0, wxLEFT | wxRIGHT);
     horizontal.add(slash, 0, 0);
     horizontal.add(valueTextDenom, 5, 0, wxRIGHT);
 
     //I18N: - when setting time signature, to indicate it's not constant through song
-    variable = new wxCheckBox(pane, 4, _("Varies throughout song"));
+    variable = new wxCheckBox(pane, VARIES_ID, _("Varies throughout song"));
 
     vertical->Add(variable, 0, wxALL, 5);
     vertical->Add(okbtn, 0, wxALL | wxALIGN_CENTER, 5);
@@ -134,6 +167,8 @@ TimeSigPicker::TimeSigPicker() : wxFrame(getMainFrame(), 0,  _("Time Signature")
     valueTextNum->Connect(valueTextNum->GetId(), wxEVT_CHAR, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
 }
 
+// --------------------------------------------------------------------------------------------------------
+
 void TimeSigPicker::closed(wxCloseEvent& evt)
 {
     if (IsShown())
@@ -143,6 +178,8 @@ void TimeSigPicker::closed(wxCloseEvent& evt)
         Hide();
     }
 }
+
+// --------------------------------------------------------------------------------------------------------
 
 void TimeSigPicker::onFocus(wxFocusEvent& evt)
 {
@@ -154,6 +191,7 @@ void TimeSigPicker::onFocus(wxFocusEvent& evt)
     }
 }
 
+// --------------------------------------------------------------------------------------------------------
 
 void TimeSigPicker::show(const int x, const int y, const int num, const int denom)
 {
@@ -165,12 +203,14 @@ void TimeSigPicker::show(const int x, const int y, const int num, const int deno
     variable->SetValue( getMeasureData()->isExpandedMode() );
     Show();
     valueTextNum->SetFocus();
-    valueTextNum->SetSelection( -1, -1 );
+    valueTextNum->SetSelection( -1, -1 ); // select everything
 }
+
+// --------------------------------------------------------------------------------------------------------
 
 void TimeSigPicker::enterPressed(wxCommandEvent& evt)
 {
-    int top = atoi_u( valueTextNum->GetValue() );
+    int top    = atoi_u( valueTextNum->GetValue() );
     int bottom = atoi_u( valueTextDenom->GetValue() );
 
     if (bottom < 1 or top<1 or bottom>32 or top>32 or
@@ -203,6 +243,8 @@ void TimeSigPicker::enterPressed(wxCommandEvent& evt)
     closeWindow();
 }
 
+// --------------------------------------------------------------------------------------------------------
+
 void TimeSigPicker::closeWindow()
 {
     Hide();
@@ -212,6 +254,8 @@ void TimeSigPicker::closeWindow()
     getMainFrame()->GetEventHandler()->AddPendingEvent( event );
 
 }
+
+// --------------------------------------------------------------------------------------------------------
 
 void TimeSigPicker::keyPress(wxKeyEvent& evt)
 {
@@ -227,4 +271,4 @@ void TimeSigPicker::keyPress(wxKeyEvent& evt)
     else evt.Skip(true);
 }
 
-}
+// --------------------------------------------------------------------------------------------------------
