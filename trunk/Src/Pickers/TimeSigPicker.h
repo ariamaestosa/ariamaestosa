@@ -3,61 +3,63 @@
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
-
+ 
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
-
+ 
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _timesigpicker_
-#define _timesigpicker_
+#ifndef __TIME_SIG_PICKER_H__
+#define __TIME_SIG_PICKER_H__
 
 #include "wx/wx.h"
 #include "wx/event.h"
 
 #include "Utils.h"
 
-namespace AriaMaestosa {
-
-class Note; // forward
-class Track;
-
-
-DECLARE_LOCAL_EVENT_TYPE(wxEVT_DESTROY_TIMESIG_PICKER, -1)
-
-void showTimeSigPicker(const int x, const int y, const int num, const int denom);
-void freeTimeSigPicker();
-
-class TimeSigPicker : public wxFrame
+namespace AriaMaestosa
 {
-    wxTextCtrl* valueTextNum;
-    wxTextCtrl* valueTextDenom;
-    wxButton* okbtn;
-    wxPanel* pane;
-    wxCheckBox* variable;
-
-public:
-    LEAK_CHECK();
-
-    TimeSigPicker();
-
-    void show(const int x, const int y, const int num, const int denom);
-    void closeWindow();
-
-    void enterPressed(wxCommandEvent& evt);
-
-    void closed(wxCloseEvent& evt);
-    void keyPress(wxKeyEvent& evt);
-    void onFocus(wxFocusEvent& evt);
-
-    DECLARE_EVENT_TABLE();
-};
-
+    
+    class Note; // forward
+    class Track;
+    
+    
+    DECLARE_LOCAL_EVENT_TYPE(wxEVT_DESTROY_TIMESIG_PICKER, -1)
+    const int DESTROY_TIMESIG_EVENT_ID = 100000;
+    
+    void showTimeSigPicker(const int x, const int y, const int num, const int denom);
+    void freeTimeSigPicker();
+    
+    class TimeSigPicker : public wxFrame
+    {
+        wxTextCtrl* valueTextNum;
+        wxTextCtrl* valueTextDenom;
+        wxButton* okbtn;
+        wxPanel* pane;
+        wxCheckBox* variable;
+        
+    public:
+        LEAK_CHECK();
+        
+        TimeSigPicker();
+        
+        void show(const int x, const int y, const int num, const int denom);
+        void closeWindow();
+        
+        void enterPressed(wxCommandEvent& evt);
+        
+        void closed(wxCloseEvent& evt);
+        void keyPress(wxKeyEvent& evt);
+        void onFocus(wxFocusEvent& evt);
+        
+        DECLARE_EVENT_TABLE();
+    };
+    
 }
 
 #endif

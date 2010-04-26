@@ -176,7 +176,7 @@ void TimeSigPicker::closed(wxCloseEvent& evt)
 {
     if (IsShown())
     {
-        wxCommandEvent event( wxEVT_DESTROY_TIMESIG_PICKER, 100000 );
+        wxCommandEvent event( wxEVT_DESTROY_TIMESIG_PICKER, DESTROY_TIMESIG_EVENT_ID );
         getMainFrame()->GetEventHandler()->AddPendingEvent( event );
         Hide();
     }
@@ -254,7 +254,7 @@ void TimeSigPicker::closeWindow()
     Display::requestFocus();
 
     // schedule delete event
-    wxCommandEvent event( wxEVT_DESTROY_TIMESIG_PICKER, 100000 );
+    wxCommandEvent event( wxEVT_DESTROY_TIMESIG_PICKER, DESTROY_TIMESIG_EVENT_ID );
     getMainFrame()->GetEventHandler()->AddPendingEvent( event );
 
 }
