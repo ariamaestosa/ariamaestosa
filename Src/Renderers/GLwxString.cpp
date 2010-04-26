@@ -226,10 +226,10 @@ TextTexture::TextTexture(wxBitmap& bmp)
 }
 void TextTexture::load(wxImage* img)
 {
-    ID = loadImage(img);
+    ID = (unsigned int*)loadImage(img);
 }
 
-GLuint* TextTexture::getID()
+unsigned int* TextTexture::getID()
 {
     ASSERT(ID != NULL);
     return ID;
@@ -237,7 +237,7 @@ GLuint* TextTexture::getID()
 
 TextTexture::~TextTexture()
 {
-    glDeleteTextures (1, ID);
+    glDeleteTextures (1, (GLuint*)ID);
     delete[] ID;
 }
 
