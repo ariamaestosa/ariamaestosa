@@ -153,14 +153,13 @@ EVT_BUTTON(TOOL_BUTTON, MainFrame::toolButtonClicked)
 EVT_TOOL(TOOL_BUTTON, MainFrame::toolButtonClicked)
 #endif
 
-EVT_COMMAND  (100000, wxEVT_DESTROY_VOLUME_SLIDER, MainFrame::evt_freeVolumeSlider)
-EVT_COMMAND  (100000, wxEVT_DESTROY_TIMESIG_PICKER, MainFrame::evt_freeTimeSigPicker)
+EVT_COMMAND  (DESTROY_SLIDER_EVENT_ID, wxEVT_DESTROY_VOLUME_SLIDER, MainFrame::evt_freeVolumeSlider)
+EVT_COMMAND  (DESTROY_TIMESIG_EVENT_ID, wxEVT_DESTROY_TIMESIG_PICKER, MainFrame::evt_freeTimeSigPicker)
 
-// events useful if you need to show a
-// progress bar from another thread
-EVT_COMMAND  (100001, wxEVT_SHOW_WAIT_WINDOW, MainFrame::evt_showWaitWindow)
-EVT_COMMAND  (100002, wxEVT_UPDATE_WAIT_WINDOW, MainFrame::evt_updateWaitWindow)
-EVT_COMMAND  (100003, wxEVT_HIDE_WAIT_WINDOW, MainFrame::evt_hideWaitWindow)
+// events useful if you need to show a progress bar from another thread
+EVT_COMMAND  (SHOW_WAIT_WINDOW_EVENT_ID, wxEVT_SHOW_WAIT_WINDOW,   MainFrame::evt_showWaitWindow)
+EVT_COMMAND  (UPDT_WAIT_WINDOW_EVENT_ID, wxEVT_UPDATE_WAIT_WINDOW, MainFrame::evt_updateWaitWindow)
+EVT_COMMAND  (HIDE_WAIT_WINDOW_EVENT_ID, wxEVT_HIDE_WAIT_WINDOW,   MainFrame::evt_hideWaitWindow)
 
 END_EVENT_TABLE()
 

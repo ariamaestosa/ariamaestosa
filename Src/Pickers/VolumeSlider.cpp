@@ -236,7 +236,7 @@ void VolumeSlider::closeWindow()
     m_current_track = NULL;
     Display::requestFocus();
     
-    wxCommandEvent event( wxEVT_DESTROY_VOLUME_SLIDER, 100000 );
+    wxCommandEvent event( wxEVT_DESTROY_VOLUME_SLIDER, DESTROY_SLIDER_EVENT_ID );
     getMainFrame()->GetEventHandler()->AddPendingEvent( event );
 }
 

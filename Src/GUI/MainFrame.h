@@ -44,13 +44,18 @@ namespace AriaMaestosa
     
     // events useful if you need to show a
     // progress bar from another thread
-    DECLARE_LOCAL_EVENT_TYPE(wxEVT_SHOW_WAIT_WINDOW, -1)
+    DECLARE_LOCAL_EVENT_TYPE(wxEVT_SHOW_WAIT_WINDOW,   -1)
     DECLARE_LOCAL_EVENT_TYPE(wxEVT_UPDATE_WAIT_WINDOW, -1)
-    DECLARE_LOCAL_EVENT_TYPE(wxEVT_HIDE_WAIT_WINDOW, -1)
+    DECLARE_LOCAL_EVENT_TYPE(wxEVT_HIDE_WAIT_WINDOW,   -1)
     
-#define MAKE_SHOW_PROGRESSBAR_EVENT(eventname, message, time_known) wxCommandEvent eventname( wxEVT_SHOW_WAIT_WINDOW, 100001 ); eventname.SetString(message); eventname.SetInt(time_known)
-#define MAKE_UPDATE_PROGRESSBAR_EVENT(eventname, progress) wxCommandEvent eventname( wxEVT_UPDATE_WAIT_WINDOW, 100002 ); eventname.SetInt(progress)
-#define MAKE_HIDE_PROGRESSBAR_EVENT(eventname) wxCommandEvent eventname( wxEVT_HIDE_WAIT_WINDOW, 100003 )
+    const int SHOW_WAIT_WINDOW_EVENT_ID = 100001;
+    const int UPDT_WAIT_WINDOW_EVENT_ID = 100002;
+    const int HIDE_WAIT_WINDOW_EVENT_ID = 100003;
+    
+    
+#define MAKE_SHOW_PROGRESSBAR_EVENT(eventname, message, time_known) wxCommandEvent eventname( wxEVT_SHOW_WAIT_WINDOW, SHOW_WAIT_WINDOW_EVENT_ID ); eventname.SetString(message); eventname.SetInt(time_known)
+#define MAKE_UPDATE_PROGRESSBAR_EVENT(eventname, progress) wxCommandEvent eventname( wxEVT_UPDATE_WAIT_WINDOW, UPDT_WAIT_WINDOW_EVENT_ID ); eventname.SetInt(progress)
+#define MAKE_HIDE_PROGRESSBAR_EVENT(eventname) wxCommandEvent eventname( wxEVT_HIDE_WAIT_WINDOW, HIDE_WAIT_WINDOW_EVENT_ID )
     
 #ifndef __WXMAC__
 #define NO_WX_TOOLBAR
