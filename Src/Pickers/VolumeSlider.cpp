@@ -35,7 +35,7 @@ namespace AriaMaestosa
     };
     
     
-    DEFINE_EVENT_TYPE(wxEVT_DESTROY_VOLUME_SLIDER)
+    DEFINE_LOCAL_EVENT_TYPE(wxEVT_DESTROY_VOLUME_SLIDER)
     
     //FIXME: don't mix event tables and Connect!
     BEGIN_EVENT_TABLE(VolumeSlider, wxDialog)

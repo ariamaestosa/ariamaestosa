@@ -29,7 +29,7 @@ class Note; // forward
 class Track;
 
 
-DECLARE_EVENT_TYPE(wxEVT_DESTROY_VOLUME_SLIDER, -1)
+DECLARE_LOCAL_EVENT_TYPE(wxEVT_DESTROY_VOLUME_SLIDER, -1)
 
 void showVolumeSlider(int x, int y, int noteID, Track* track);
 void freeVolumeSlider();

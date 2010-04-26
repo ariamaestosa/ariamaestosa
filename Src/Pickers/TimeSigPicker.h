@@ -28,7 +28,7 @@ class Note; // forward
 class Track;
 
 
-DECLARE_EVENT_TYPE(wxEVT_DESTROY_TIMESIG_PICKER, -1)
+DECLARE_LOCAL_EVENT_TYPE(wxEVT_DESTROY_TIMESIG_PICKER, -1)
 
 void showTimeSigPicker(const int x, const int y, const int num, const int denom);
 void freeTimeSigPicker();
