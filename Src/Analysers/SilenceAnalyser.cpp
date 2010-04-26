@@ -23,6 +23,9 @@ namespace AriaMaestosa
     namespace SilenceAnalyser
     {
         
+        /**
+          * @internal
+          */
         void recursivelyAnalyzeSilence(RenderSilenceCallback renderSilenceCallback,
                                        const int tick, const int tick_length, const int silences_y)
         {
