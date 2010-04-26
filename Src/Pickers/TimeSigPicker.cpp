@@ -263,6 +263,7 @@ void TimeSigPicker::closeWindow()
 
 void TimeSigPicker::keyPress(wxKeyEvent& evt)
 {
+    //FIXME: pressing escape doesn't work on OS X
     if (evt.GetKeyCode()==WXK_ESCAPE || evt.GetKeyCode()==WXK_CANCEL || evt.GetKeyCode()==WXK_DELETE)
     {
         closeWindow();
