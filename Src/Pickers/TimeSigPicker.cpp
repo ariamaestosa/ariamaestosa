@@ -53,6 +53,7 @@ namespace AriaMaestosa
     namespace TimeSigPickerNames
     {
         
+        //FIXME: preferences use that too, move it out of here and make it common
         class QuickBoxLayout
         {
             wxBoxSizer* bsizer;
