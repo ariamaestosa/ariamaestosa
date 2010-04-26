@@ -37,6 +37,7 @@ namespace AriaMaestosa
     
     DEFINE_EVENT_TYPE(wxEVT_DESTROY_VOLUME_SLIDER)
     
+    //FIXME: don't mix event tables and Connect!
     BEGIN_EVENT_TABLE(VolumeSlider, wxDialog)
     
     EVT_COMMAND_SCROLL_THUMBTRACK  (ID_SLIDER, VolumeSlider::volumeSlideChanging)
@@ -105,6 +106,7 @@ VolumeSlider::VolumeSlider() : wxDialog(NULL, wxNewId(),  _("volume"), wxDefault
     m_current_track = NULL;
     
     
+    // Connect all widgets to receive keypress events no matter where keyboard focus is
     this        ->Connect(GetId(),               wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
     m_slider    ->Connect(m_slider->GetId(),     wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
     m_pane      ->Connect(m_pane->GetId(),       wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
@@ -251,7 +253,10 @@ void VolumeSlider::keyPress(wxKeyEvent& evt)
         wxCommandEvent dummyEvt;
         enterPressed(dummyEvt);
     }
-    else evt.Skip(true);
+    else
+    {
+        evt.Skip(true);
+    }
 }
 
 // -------------------------------------------------------------------------------------------------------
