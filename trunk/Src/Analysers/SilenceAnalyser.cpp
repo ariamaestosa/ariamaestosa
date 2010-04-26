@@ -233,7 +233,7 @@ namespace AriaMaestosa
         std::vector<SilenceInfo> g_silences_ticks;
 
         /**
-          * @brief private utility function
+          * @internal
           */
         void gatherSilenceCallback(const int duration, const int tick, const int type, const int silences_y,
                                    const bool triplet,  const bool dotted,
