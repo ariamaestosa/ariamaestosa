@@ -17,16 +17,10 @@
 #ifndef _scoreanalyser_
 #define _scoreanalyser_
 
-/*
- * ScoreAnalyser contains what is necessary to decide how to render the score. Editors like Keyboard or Drum draw all notes
- * seperately from each other, so there rendering is simple and can be done in a single render pass. Score, however,
- * features much more complex interaction. For instance, draw a single triplet sign for 3 consecutive triplets, beam notes,
- * draw chords correctly, etc. The first render pass of the score editor is where the head of each note is rendered.
- * In this pass, a NoteRenderInfo object is added to a vector for each visible note. These objects contain basic information
- * on each note. The vector of visible notes is then passed to the ScoreAnalyser functions. These functions will analyse notes
- * and modify the NoteRenderInfo objects as needed so that they render nicely in the next rendering passes of the score editor.
- */
 
+/**
+  * @defgroup analysers
+  */
 
 #include <vector>
 
@@ -43,13 +37,16 @@ namespace AriaMaestosa
     };
     
     /**
-     *  Contains info about a single visible note. A vector of these objects is created inthe first rendering pass.
-     *  This vector contains one of these for each visible note. This vector is then analysed and used in the
-     *  next rendering passes. The object starts with a few info fields, passed in the constructors, and builds/tweaks
-     *  the others as needed in the next passes. The vector is destroyed and recreated with each render.
-     *
-     *  A few utility methods will ease setting some variables, but they are usually changed directly from code.
-     */
+      * @brief Contains info about how to render a single visible note.
+      *
+      * A vector of these objects is created inthe first rendering pass.
+      * This vector contains one of these for each visible note. This vector is then analysed and used in the
+      * next rendering passes. The object starts with a few info fields, passed in the constructors, and builds/tweaks
+      * the others as needed in the next passes. The vector is destroyed and recreated with each render.
+      *
+      * A few utility methods will ease setting some variables, but they are usually changed directly from code.
+      * @ingroup analysers
+      */
     // FIXME: make less of these public!
     class NoteRenderInfo
     {
@@ -167,6 +164,22 @@ namespace AriaMaestosa
     };
         
     class BeamGroup;
+    
+    /**
+      * @brief analyses a bunch of notes to make a score out of them
+      *
+      * ScoreAnalyser contains what is necessary to decide how to render the score. Editors like Keyboard or
+      * Drum draw all notes seperately from each other, so there rendering is simple and can be done in a single
+      * render pass. Score, however, features much more complex interaction. For instance, draw a single triplet
+      * sign for 3 consecutive triplets, beam notes, draw chords correctly, etc. The first render pass of the
+      * score editor is where the head of each note is rendered.
+      * In this pass, a NoteRenderInfo object is added to a vector for each visible note. These objects contain
+      * basic information on each note. The vector of visible notes is then passed to the ScoreAnalyser functions.
+      * These functions will analyse notes and modify the NoteRenderInfo objects as needed so that they render
+      * nicely in the next rendering passes of the score editor.
+      *
+      * @ingroup analysers
+      */
     class ScoreAnalyser : public SilenceAnalyser::INoteSource
     {
         friend class BeamGroup;
@@ -187,17 +200,17 @@ namespace AriaMaestosa
         ScoreAnalyser(Editor* parent, int stemPivot);
         
         /**
-         * Returns a new ScoreAnalyser, that contains a subset of the current one.
-         * The returned pointer must be freed.
+         * @return a new ScoreAnalyser, that contains a subset of the current one.
+         * @note   The returned pointer must be freed.
          */
         ScoreAnalyser* getSubset(const int fromTick, const int toTick);
         
         float getStemTo(NoteRenderInfo& note);
         
-        /** call when you're done rendering the current frame, to prepare to render the next */
+        /** @brief call when you're done rendering the current frame, to prepare to render the next */
         void clearAndPrepare();
         
-        /** Add a note to the score analyser. */
+        /** @brief Add a note to the score analyser. */
         void addToVector( NoteRenderInfo& renderInfo );
         
         /**
@@ -213,11 +226,11 @@ namespace AriaMaestosa
          */
         void analyseNoteInfo();
         
-        /** set the level below which the stem is up, and above which it is down */
+        /** @brief set the level below which the stem is up, and above which it is down */
         void setStemPivot(const int level);
         
         /**
-         * Puts notes in time order.
+         * @brief Puts notes in time order.
          * Notes that have no stems go last so that they don't disturb note grouping in chords.
          * Note that the 'analyseNoteInfo' method will automatically call this; so this method
          * might be useful only if you want to iterate through the NoteRenderInfo objects of
@@ -226,25 +239,25 @@ namespace AriaMaestosa
         void putInTimeOrder();
         
         
-        /** implementing the INoteSource interface for the SilenceAnalyser to use */
+        /** @brief implementing the INoteSource interface for the SilenceAnalyser to use */
         virtual int  getNoteCount() const
         {
             return noteRenderInfo.size();
         }
         
-        /** implementing the INoteSource interface for the SilenceAnalyser to use */
+        /** @brief implementing the INoteSource interface for the SilenceAnalyser to use */
         virtual int  getBeginMeasure(const int noteID) const
         {
             return noteRenderInfo[noteID].measureBegin;
         }
         
-        /** implementing the INoteSource interface for the SilenceAnalyser to use */
+        /** @brief implementing the INoteSource interface for the SilenceAnalyser to use */
         virtual int  getStartTick(const int noteID) const
         {
             return noteRenderInfo[noteID].tick;
         }
         
-        /** implementing the INoteSource interface for the SilenceAnalyser to use */
+        /** @brief implementing the INoteSource interface for the SilenceAnalyser to use */
         virtual int  getEndTick(const int noteID) const
         {
             return noteRenderInfo[noteID].tick + noteRenderInfo[noteID].tick_length;

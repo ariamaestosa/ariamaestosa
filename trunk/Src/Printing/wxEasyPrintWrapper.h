@@ -27,6 +27,10 @@ namespace AriaMaestosa
     const int MARGIN_UNDER_PAGE_HEADER = 200;
     class PrintableSequence;
     
+    /**
+      * @brief abstract interface used by wxEasyPrintWrapper to communicate with its caller
+      * @ingroup printing
+      */
     class IPrintCallback
     {
     public:
@@ -44,6 +48,10 @@ namespace AriaMaestosa
         
     };
     
+    /**
+      * @brief utility class to wrap the wxWidgets print framework into a higher-level API
+      * @ingroup printing
+      */
     class wxEasyPrintWrapper : public wxPrintout
     {
         IPrintCallback*       m_print_callback;

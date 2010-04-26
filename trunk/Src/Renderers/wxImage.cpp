@@ -23,7 +23,7 @@
 #include <iostream>
 #include "Utils.h"
 
-namespace AriaMaestosa {
+using namespace AriaMaestosa;
 
 Image::Image()
 {
@@ -153,6 +153,5 @@ wxBitmap* Image::getBitmapForState(AriaRender::ImageState s)
     return states_bmp[s];
 }
 
-}
 
 #endif

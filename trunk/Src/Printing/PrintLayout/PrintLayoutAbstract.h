@@ -58,6 +58,7 @@ namespace AriaMaestosa
 
         /**
           * @brief Builds the Page/Line layout tree from the full list of layout elements
+          *
           * Creates LayoutPage and LayoutLine objects, add the created layout elements to their
           * corresponding line
           */

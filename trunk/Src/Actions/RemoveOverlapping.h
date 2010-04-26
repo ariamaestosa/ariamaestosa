@@ -27,6 +27,10 @@ namespace AriaMaestosa
     
     namespace Action
     {
+        
+        /**
+         * @ingroup actions
+         */
         class RemoveOverlapping : public SingleTrackAction
         {
             friend class AriaMaestosa::Track;

@@ -17,6 +17,8 @@
 #ifndef __COMMON_MIDI_UTILS_H__
 #define __COMMON_MIDI_UTILS_H__
 
+/** @defgroup midi */
+
 // forward
 namespace jdkmidi{ class MIDIMultiTrack; }
 
@@ -25,15 +27,26 @@ namespace AriaMaestosa
     
     class Sequence; // forward
     
-    // these functions are to be used by PlatformMidiManager to ease generating midi data
+    /**
+      * @brief used to ease generating midi data
+      * @ingroup midi
+      */
     void allocAsMidiBytes(Sequence* sequence, bool selectionOnly, /*out*/int* songlength, /*out*/int* startTick, /*out*/char** midiSongData, /*out*/int* datalength, bool playing);
     
-    // write a midi file
+    /**
+      * @brief write a midi file
+      * @ingroup midi
+      */
     bool exportMidiFile(Sequence* sequence, wxString filepath);
     
+    /**
+      * @brief converts an Aria sequence into a libjdkmidi sequence
+      * @ingroup midi
+      */
     bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bool selectionOnly,
                              /*out*/int* songLengthInTicks, /*out*/int* startTick, /*out*/ int* numTracks, bool playing);
     
+    /** @ingroup midi */
     int convertTempoBendToBPM(int val);
     
     

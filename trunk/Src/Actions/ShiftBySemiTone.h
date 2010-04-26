@@ -26,6 +26,9 @@ namespace AriaMaestosa
     namespace Action
     {
         
+        /**
+         * @ingroup actions
+         */
         class ShiftBySemiTone : public SingleTrackAction
         {
             friend class AriaMaestosa::Track;

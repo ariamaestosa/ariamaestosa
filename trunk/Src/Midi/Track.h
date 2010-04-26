@@ -74,6 +74,12 @@ namespace AriaMaestosa
     const int SELECTED_NOTES = -1;
     const int ALL_NOTES = -2;
     
+    /**
+      * @brief represents a track within a sequence.
+      *
+      * Contains notes, control events, etc...
+      * @ingroup midi
+      */
     class Track
     {
         // FIXME - find better way then friends?

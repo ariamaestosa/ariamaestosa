@@ -29,6 +29,9 @@ namespace AriaMaestosa
     namespace Action
     {
         
+        /**
+         * @ingroup actions
+         */
         class DeleteSelected : public SingleTrackAction
         {
             friend class AriaMaestosa::Track;

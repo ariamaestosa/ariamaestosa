@@ -28,11 +28,13 @@ namespace AriaMaestosa
     class Track; // forward
     class ControllerChoice;
     
-    /*
-     * Since this Editor is very different from others, it does not use much functionnality of the base class editor
-     * It instead overrides all event methods.
+    /**
+     * @brief editor for MIDI controllers (effects)
+     *
+     * Since this Editor is very different from others, it does not use much functionnality of the base class
+     * editor. It instead overrides all event methods. (FIXME, unclean)
+     * @ingroup editors
      */
-    
     class ControllerEditor : public Editor
     {
         

@@ -26,6 +26,9 @@ namespace AriaMaestosa
     namespace Action
     {
         
+        /**
+         * @ingroup actions
+         */
         class ScaleSong : public MultiTrackAction
         {
             friend class AriaMaestosa::Track;

@@ -31,6 +31,10 @@ namespace AriaMaestosa
     
     class MainFrame;
     
+    /**
+     * @brief   OpenGL render backend : main render panel
+     * @ingroup renderers
+     */
     class GLPane : public wxGLCanvas
     {
     public:

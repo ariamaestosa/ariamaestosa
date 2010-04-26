@@ -25,16 +25,19 @@ namespace AriaMaestosa
     namespace Action
     {
         
-        enum MoveMode
-        {
-            DELTA, // moves that only require to know the amount of steps to perform a correct undo
-            SCORE_VERTICAL, // these modes require more info than just amount of steps to undo correctly
-            GUITAR_VERTICAL,
-            DRUMS_VERTICAL
-        };
-        
+        /**
+         * @ingroup actions
+         */
         class MoveNotes : public SingleTrackAction
         {
+            enum MoveMode
+            {
+                DELTA,           //!< move that only requires to know the amount of steps to perform a correct undo
+                SCORE_VERTICAL,  //!< this modes requires more info than just amount of steps to undo correctly
+                GUITAR_VERTICAL, //!< this modes requires more info than just amount of steps to undo correctly
+                DRUMS_VERTICAL   //!< this modes requires more info than just amount of steps to undo correctly
+            };
+            
             int relativeX, relativeY, noteID;
             friend class AriaMaestosa::Track;
             

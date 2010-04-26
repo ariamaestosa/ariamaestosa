@@ -22,6 +22,8 @@
 #include "wx/wx.h"
 #include "wx/print.h"
 
+/** @defgroup printing */
+
 const bool PRINT_LAYOUT_HINTS = false;
 
 namespace AriaMaestosa
@@ -29,6 +31,13 @@ namespace AriaMaestosa
     class PrintableSequence;   
     class LayoutLine;
     
+    /**
+      * @brief public interface to the low-level aspects of the printing module
+      *
+      * Receives a PrintableSequence and manages the page setup/print dialogs, handles print
+      * margins, initiates the actual printing by delegating to wxEasyPrintWrapper.
+      * @ingroup printing
+      */
     class AriaPrintable : public IPrintCallback
     {
         DECLARE_MAGIC_NUMBER();

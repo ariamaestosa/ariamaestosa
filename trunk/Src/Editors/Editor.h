@@ -14,9 +14,12 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+/**
+  * @defgroup editors
+  */
 
-#ifndef _editor_
-#define _editor_
+#ifndef __EDITOR_H__
+#define __EDITOR_H__
 
 #include "Utils.h"
 #include "ptr_vector.h"
@@ -92,10 +95,20 @@ namespace AriaMaestosa
         NOTE_12_G       = 10,
         NOTE_12_G_SHARP = 11
     };
+    
+    /** synonym; @see Note12 */
     const Note12 NOTE_12_A_FLAT = NOTE_12_G_SHARP;
+    
+    /** synonym; @see Note12 */
     const Note12 NOTE_12_B_FLAT = NOTE_12_A_SHARP;
+    
+    /** synonym; @see Note12 */
     const Note12 NOTE_12_D_FLAT = NOTE_12_C_SHARP;
+    
+    /** synonym; @see Note12 */
     const Note12 NOTE_12_E_FLAT = NOTE_12_D_SHARP;
+    
+    /** synonym; @see Note12 */
     const Note12 NOTE_12_G_FLAT = NOTE_12_F_SHARP;
     
     static const wxString NOTE_12_NAME[] =
@@ -121,8 +134,11 @@ namespace AriaMaestosa
         EDIT_TOOL_ADD
     };
     
-    /** The common base class for all editors. Manages several common tasks and provides
-      * the interface for event callbacks
+    /** 
+      * @brief The common base class for all editors.
+      *
+      * Manages several common tasks and providesthe interface for event callbacks
+      * @ingroup editors
       */
     class Editor
     {

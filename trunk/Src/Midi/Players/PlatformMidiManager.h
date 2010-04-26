@@ -104,6 +104,7 @@ namespace AriaMaestosa
         
         /**
          * @brief play/stop a single "preview" note
+         *
          * By "preview" note I mean that this function is used to play notes during editing,
          * not during actuakl song playback.
          * @note calls to this function should be ignored while PlatformMidiManager::isPlaying returns true

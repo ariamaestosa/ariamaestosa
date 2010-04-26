@@ -17,6 +17,10 @@
 #ifndef __MAIN_FRAME_H__
 #define __MAIN_FRAME_H__
 
+/**
+  * @defgroup gui
+  */
+
 #include "wx/wx.h"
 //#include "wx/scrolbar.h"
 //#include "wx/image.h"
@@ -62,6 +66,7 @@ namespace AriaMaestosa
 #endif
     
 #ifndef NO_WX_TOOLBAR
+    /** @ingroup gui */
     class CustomToolBar : public wxToolBar
     {
     public:
@@ -82,6 +87,9 @@ namespace AriaMaestosa
             void realize();
         };
         
+        /**
+          * @ingroup gui
+          */
         class MainFrame : public wxFrame
         {
             WxOwnerPtr<AboutDialog>  aboutDialog;

@@ -25,7 +25,10 @@ namespace AriaMaestosa
     
     class Sequence; // forward
     
+    /** @ingroup io */
     bool loadAriaFile(Sequence* sequence, wxString filepath);
+    
+    /** @ingroup io */
     void saveAriaFile(Sequence* sequence, wxString filepath);
     
 }

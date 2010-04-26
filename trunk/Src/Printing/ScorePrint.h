@@ -27,7 +27,10 @@ namespace AriaMaestosa
     class ScoreAnalyser;
     class RelativePlacementManager;
 
-    /** Specialization to print scores */
+    /**
+      * @brief Implementation of EditorPrintable that can print scores
+      * @ingroup printing
+      */
     class ScorePrintable : public EditorPrintable
     {
         void gatherVerticalSizingInfo(const int trackID, LineTrackRef& track, LayoutLine& line);

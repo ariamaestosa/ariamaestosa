@@ -46,7 +46,15 @@ namespace AriaMaestosa
     /** Size of a note's head */
     const int HEAD_RADIUS = 36;
     
-    
+    /**
+      * @brief   base class for the various types of notations that can be printed
+      *
+      * To add the ability to print a new notation type, simply derive from this class.
+      * This base class provides many common features, like rendering of common features and
+      * coordinate management of notes.
+      *
+      * @ingroup printing
+      */
     class EditorPrintable
     {
     protected:
@@ -83,15 +91,16 @@ namespace AriaMaestosa
         virtual ~EditorPrintable();
         
         /** 
-          * Called by the print code when it's time to render one track.
+          * @brief Called by the print code when it's time to render one track.
+          *
           * This will be handled in the appropriate subclass.
          */
         virtual void drawTrack(const int trackID, const LineTrackRef& track, LayoutLine& line,
                                wxDC& dc, const bool drawMeasureNumbers) = 0;
         
         /**
-          * Called by the layout code to know the relative height of a track within a line
-          * for this particular editor
+          * @brief Called by the layout code to know the relative height of a track within a line
+          *        for this particular editor
           *
           * @param      trackID  id of the track within this line to calculate the height of
           * @param      track    the 'LineTrackRef' associated with this track
@@ -104,27 +113,32 @@ namespace AriaMaestosa
                                     bool* empty) = 0;
                         
         /**
-          * call early in the callback to draw a track. All base class methods doing rendering
+          * @brief call early in the callback to draw a track.
+          *
+          * All base class methods doing rendering
           * will use the passed DC to perform the rendering (FIXME: that's quite ugly)
           */
         void setCurrentDC(wxDC* dc);
 
-        /** Returns the print area reserved for a specific note (by note ID) */
-        //Range<int> getNoteAreaX(const int trackID, LayoutLine& line, int noteID);
-        
-        /** Returns the print area reserved for a specific note's symbol (by note ID) */
+        /** @return the print area reserved for a specific note's symbol (by note ID) */
         Range<int> getNoteSymbolX(const int trackID, LayoutLine& line, int noteID);
 
-        /** Returns the print area reserved for a specific note/silence/symbol (by tick).
+        /** @return the print area reserved for a specific note/silence/symbol (by tick).
           * @precondition The tick must be known already to the RelativePlacementManager;
           * otherwise (-1,-1) may be returned. */
         Range<int> tickToX(const int trackID, LayoutLine& line, const int tick);
 
-        /** Render utility; renders time signature numbers in the coords of the passed layout element,
-          * at the given y coords */
+        /** 
+          * @brief Render utility
+          *
+          * renders time signature numbers in the coords of the passed layout element,
+          * at the given y coords
+          */
         void renderTimeSignatureChange(LayoutElement* el, const int y0, const int y1);
         
-        /** This method is called for each track of this editor very early in the layout process.
+        /** 
+          * @brief This method is called for each track of this editor very early in the layout process.
+          *
           * If this class needs to do some early setup to prepare the data for following calls,
           * this is the place to do so.
           */
@@ -139,16 +153,16 @@ namespace AriaMaestosa
         virtual void addUsedTicks(const PrintLayoutMeasure& measure, const int trackID,
                                   const MeasureTrackReference& trackRef, RelativePlacementManager& ticks) = 0;
         
-        /** utility method subclasses can call to render a silence at a given location */
+        /** @brief utility method subclasses can call to render a silence at a given location */
         void drawSilence(wxDC* dc, const Range<int> x, const int y, const int level_height,
                          const int type, const bool triplet, const bool dotted);
         
-        /** draw some basic stuff common to all editors for the given layout element */
+        /** @brief draw some basic stuff common to all editors for the given layout element */
         void drawElementBase(LayoutElement& currElem, const LayoutLine& layoutLine,
                              const bool drawMeasureNumbers, const int y0, const int y1,
                              const int barYFrom, const int barYTo);
         
-        /** utility method to render a note's head */
+        /** @brief utility method to render a note's head */
         static void drawNoteHead(wxDC& dc, const wxPoint headCenter, const bool hollowHead);
 
     };

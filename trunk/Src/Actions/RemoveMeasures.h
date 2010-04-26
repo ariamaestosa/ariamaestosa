@@ -27,18 +27,22 @@ namespace AriaMaestosa
     namespace Action
     {
         
-        class RemovedTrackPart
-        {
-        public:
-            Track* track;
-            ptr_vector<Note> removedNotes;
-            ptr_vector<ControllerEvent> removedControlEvents;
-            
-            virtual ~RemovedTrackPart();
-        };
         
+        /**
+         * @ingroup actions
+         */
         class RemoveMeasures : public MultiTrackAction
         {
+            class RemovedTrackPart
+            {
+            public:
+                Track* track;
+                ptr_vector<Note> removedNotes;
+                ptr_vector<ControllerEvent> removedControlEvents;
+                
+                virtual ~RemovedTrackPart();
+            };
+            
             friend class AriaMaestosa::Track;
             int from_measure, to_measure;
             

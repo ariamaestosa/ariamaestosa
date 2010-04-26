@@ -27,6 +27,9 @@ namespace AriaMaestosa
     namespace Action
     {
         
+        /**
+         * @ingroup actions
+         */
         class ShiftFrets : public SingleTrackAction
         {
             friend class AriaMaestosa::Track;

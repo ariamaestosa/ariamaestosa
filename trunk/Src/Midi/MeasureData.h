@@ -38,28 +38,31 @@ namespace AriaMaestosa
     class MeasureBar;
     
 
-    class MeasureInfo
-    {
-    public:
-        MeasureInfo() { selected = false, tick = 0, pixel = 0; endTick=-1; widthInTicks=-1; widthInPixels=-1;}
-        
-        bool selected;
-        int tick, endTick;
-        int pixel, endPixel;
-        int widthInTicks, widthInPixels;
-    };
-    
    /**
-     *  This class takes care of everything related to measure data.
-     *  Since it manages multiple time signature changes, it should
-     *  always be used when measure info is necessary.
-     *  It is closely related to MeasureBar, its graphical counterpart
+     * @brief This class takes care of everything related to measure data.
+     *
+     * Since it manages multiple time signature changes, it should
+     * always be used when measure info is necessary.
+     * It is closely related to MeasureBar, its graphical counterpart.
+     *
+     * @ingroup midi
      */
     class MeasureData
     {
         friend class MeasureBar;
         
-        // contains one item for each measure in the sequence
+        class MeasureInfo
+        {
+        public:
+            MeasureInfo() { selected = false, tick = 0, pixel = 0; endTick=-1; widthInTicks=-1; widthInPixels=-1;}
+            
+            bool selected;
+            int tick, endTick;
+            int pixel, endPixel;
+            int widthInTicks, widthInPixels;
+        };
+        
+        /** contains one item for each measure in the sequence */
         std::vector<MeasureInfo> measureInfo;
         
         int m_measure_amount;
@@ -67,19 +70,20 @@ namespace AriaMaestosa
         
         bool expandedMode;
         
-        // contains one item for each time signature change event
+        /** contains one item for each time signature change event */
         ptr_vector<TimeSigChange> timeSigChanges;
         
         bool somethingSelected;
         int selectedTimeSig;
         
         // Only access this in expanded mode otherwise they're empty
-        int    totalNeededLengthInTicks;
+        int totalNeededLengthInTicks;
         int totalNeededLengthInPixels;
     public:
         
         LEAK_CHECK();
         
+        //FIXME: it's bad design that the data owns the graphics...
         OwnerPtr<MeasureBar>  graphics;
         
         MeasureData(int measureAmount);
