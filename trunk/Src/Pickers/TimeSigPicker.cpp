@@ -34,7 +34,7 @@ namespace AriaMaestosa
         VARIES_ID 
     };
     
-    DEFINE_EVENT_TYPE(wxEVT_DESTROY_TIMESIG_PICKER)
+    DEFINE_LOCAL_EVENT_TYPE(wxEVT_DESTROY_TIMESIG_PICKER)
     
     //FIXME: don't mix event tables and Connect for the same class
     BEGIN_EVENT_TABLE(TimeSigPicker, wxFrame)
