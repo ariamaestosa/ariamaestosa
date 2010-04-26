@@ -89,10 +89,15 @@ using namespace AriaMaestosa;
 #pragma mark Class implementation
 #endif
 
-VolumeSlider::VolumeSlider() : wxDialog(NULL, wxNewId(),  _("volume"), wxDefaultPosition, wxSize(50,160),
+const int VOLUME_SLIDER_FRAME_WIDTH = 50;
+const int VOLUME_SLIDER_FRAME_HEIGHT = 160;
+
+VolumeSlider::VolumeSlider() : wxDialog(NULL, wxNewId(),  _("volume"), wxDefaultPosition,
+                                        wxSize(VOLUME_SLIDER_FRAME_WIDTH, VOLUME_SLIDER_FRAME_HEIGHT),
                                         wxSTAY_ON_TOP | wxWANTS_CHARS )
 {
-    m_pane = new wxPanel(this);
+    m_pane = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(VOLUME_SLIDER_FRAME_WIDTH,
+                                                                   VOLUME_SLIDER_FRAME_HEIGHT));
     
     m_slider = new wxSlider(m_pane, ID_SLIDER, 60, 0, 127, wxDefaultPosition, wxSize(50,128),
                             wxSL_VERTICAL | wxSL_INVERSE | wxWANTS_CHARS);
