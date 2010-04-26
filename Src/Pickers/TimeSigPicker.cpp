@@ -34,13 +34,14 @@ namespace AriaMaestosa
         VARIES_ID 
     };
     
-    DEFINE_EVENT_TYPE(wxEVT_DESTROY_TIMESIG_PICKER) // actually do something with this event
+    DEFINE_EVENT_TYPE(wxEVT_DESTROY_TIMESIG_PICKER)
     
+    //FIXME: don't mix event tables and Connect for the same class
     BEGIN_EVENT_TABLE(TimeSigPicker, wxFrame)
     
     //EVT_TEXT(NUM_ID, TimeSigPicker::textNumChanged)
     //EVT_TEXT(DENOM_ID, TimeSigPicker::textDenomChanged)
-    EVT_TEXT_ENTER(NUM_ID, TimeSigPicker::enterPressed)
+    EVT_TEXT_ENTER(NUM_ID,   TimeSigPicker::enterPressed)
     EVT_TEXT_ENTER(DENOM_ID, TimeSigPicker::enterPressed)
     EVT_BUTTON(OK_BTN_ID, TimeSigPicker::enterPressed)
     
@@ -157,15 +158,16 @@ TimeSigPicker::TimeSigPicker() : wxFrame(getMainFrame(), wxNewId(),  _("Time Sig
     pane->SetSizer(vertical);
 
 
-    Connect(GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
-    pane->Connect(pane->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
-    valueTextNum->Connect(valueTextDenom->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
-    valueTextNum->Connect(valueTextNum->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
+    // Connect all widgets in order to catch key events like escape and enter no matter where keyboard focus is
+    this          ->Connect(this->GetId(),           wxEVT_KEY_DOWN, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
+    pane          ->Connect(pane->GetId(),           wxEVT_KEY_DOWN, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
+    valueTextDenom->Connect(valueTextDenom->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
+    valueTextNum  ->Connect(valueTextNum->GetId(),   wxEVT_KEY_DOWN, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
 
-    Connect(GetId(), wxEVT_CHAR, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
-    pane->Connect(pane->GetId(), wxEVT_CHAR, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
-    valueTextNum->Connect(valueTextDenom->GetId(), wxEVT_CHAR, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
-    valueTextNum->Connect(valueTextNum->GetId(), wxEVT_CHAR, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
+    this          ->Connect(this->GetId(),           wxEVT_CHAR, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
+    pane          ->Connect(pane->GetId(),           wxEVT_CHAR, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
+    valueTextDenom->Connect(valueTextDenom->GetId(), wxEVT_CHAR, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
+    valueTextNum  ->Connect(valueTextNum->GetId(),   wxEVT_CHAR, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
 }
 
 // --------------------------------------------------------------------------------------------------------
@@ -251,6 +253,7 @@ void TimeSigPicker::closeWindow()
     Hide();
     Display::requestFocus();
 
+    // schedule delete event
     wxCommandEvent event( wxEVT_DESTROY_TIMESIG_PICKER, 100000 );
     getMainFrame()->GetEventHandler()->AddPendingEvent( event );
 
@@ -264,12 +267,16 @@ void TimeSigPicker::keyPress(wxKeyEvent& evt)
     {
         closeWindow();
     }
+    //FIXME: EVT_TEXT_ENTER should be sufficient, verify that this is indeed not necessary and remove it
     else if (evt.GetKeyCode() == WXK_RETURN)
     {
         wxCommandEvent dummyEvt;
         enterPressed(dummyEvt);
     }
-    else evt.Skip(true);
+    else
+    {
+        evt.Skip(true);
+    }
 }
 
 // --------------------------------------------------------------------------------------------------------
