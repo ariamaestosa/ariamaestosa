@@ -18,6 +18,8 @@
 #ifndef __IO_UTILS_H__
 #define __IO_UTILS_H__
 
+/** @defgroup io I/O */
+
 #include "wx/string.h"
 
 class wxFileOutputStream;
@@ -27,27 +29,40 @@ namespace AriaMaestosa
     
     class Sequence;
     
+    /** @ingroup io */
     wxString to_wxString(int i);
+    
+    /** @ingroup io */
     wxString to_wxString(float f);
+    
+    /** @ingroup io */
     void writeData(wxString data, wxFileOutputStream& fileout);
     
     wxString extract_filename(wxString filepath);
+    
+    /** @ingroup io */
     wxString extract_path(wxString str);
     
+    /** @ingroup io */
     wxString showFileDialog(wxString message, wxString defaultDir,
                             wxString filename, wxString wildcard, bool save);
     
     /** Returns the path to the directory where resource files are located. The returned path
-     always contains a trailing '/', i.e. you can do getResourcePrefix() + "somefile.png" */
+      * always contains a trailing '/', i.e. you can do getResourcePrefix() + "somefile.png"
+      * @ingroup ip
+      */
     wxString getResourcePrefix();
     
+    /** @ingroup io */
     long atoi_u(wxString s);
     
+    /** @ingroup io */
     wxString fromCString(const char* chars);
+    
+    /** @ingroup io */
     wxString fromCString(char* chars);
     
-    //void checkAppPath();
-    
+    /** @ingroup io */
     void assertFailed(wxString message);
     
 }

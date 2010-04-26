@@ -24,43 +24,52 @@
 using namespace AriaMaestosa;
 using namespace AriaMaestosa::Action;
 
-SingleTrackAction::SingleTrackAction(wxString name) : EditAction(name)
-{
-}
-
-MultiTrackAction::MultiTrackAction(wxString name) : EditAction(name)
-{
-}
+// ----------------------------------------------------------------------------------------------------
 
 EditAction::EditAction(wxString name) : m_name(name)
 {
     
 }
+
+
+// ----------------------------------------------------------------------------------------------------
+
+SingleTrackAction::SingleTrackAction(wxString name) : EditAction(name)
+{
+}
+
+// ----------------------------------------------------------------------------------------------------
+
 void SingleTrackAction::setParentTrack(Track* parent)
 {
     track = parent;
 }
+
+// ----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------
+
+MultiTrackAction::MultiTrackAction(wxString name) : EditAction(name)
+{
+}
+
+
+// ----------------------------------------------------------------------------------------------------
+
 void MultiTrackAction::setParentSequence(Sequence* parent)
 {
     sequence = parent;
 }
 
-SingleTrackAction::~SingleTrackAction()
-{
-}
-MultiTrackAction::~MultiTrackAction()
-{
-}
 
-EditAction::~EditAction() {}
-void EditAction::perform() { std::cout << "EditAction::perform called, this shouldn't happen" << std::endl; }
-void EditAction::undo() { std::cout << "EditAction::uno called, this shouldn't happen" << std::endl; }
-
+// ----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------
 
 void NoteRelocator::setParent(Track* t)
 {
     track = t;
 }
+
+// ----------------------------------------------------------------------------------------------------
 
 void NoteRelocator::prepareToRelocate()
 {
@@ -68,6 +77,9 @@ void NoteRelocator::prepareToRelocate()
     noteamount_in_track = track->m_notes.size();
     noteamount_in_relocator = notes.size();
 }
+
+// ----------------------------------------------------------------------------------------------------
+
 Note* NoteRelocator::getNextNote()
 {
     if (id >= noteamount_in_relocator) return NULL;
@@ -75,25 +87,37 @@ Note* NoteRelocator::getNextNote()
     id++;
     return notes.get(id-1);
 }
+
+// ----------------------------------------------------------------------------------------------------
+
 void NoteRelocator::rememberNote(Note& n)
 {
     notes.push_back(&n);
 }
+
+// ----------------------------------------------------------------------------------------------------
+
 void NoteRelocator::rememberNote(Note* n)
 {
     notes.push_back(n);
 }
+
+// ----------------------------------------------------------------------------------------------------
+
 NoteRelocator::~NoteRelocator()
 {
 }
 
 
-// ------
+// ----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------
 
 void ControlEventRelocator::setParent(Track* t)
 {
     track = t;
 }
+
+// ----------------------------------------------------------------------------------------------------
 
 void ControlEventRelocator::prepareToRelocate()
 {
@@ -101,6 +125,9 @@ void ControlEventRelocator::prepareToRelocate()
     amount_in_track = track->m_control_events.size();
     amount_in_relocator = events.size();
 }
+
+// ----------------------------------------------------------------------------------------------------
+
 ControllerEvent* ControlEventRelocator::getNextControlEvent()
 {
     if (id >= amount_in_relocator) return NULL;
@@ -108,10 +135,16 @@ ControllerEvent* ControlEventRelocator::getNextControlEvent()
     id++;
     return events.get(id-1);
 }
+
+// ----------------------------------------------------------------------------------------------------
+
 void ControlEventRelocator::rememberControlEvent(ControllerEvent& n)
 {
     events.push_back(&n);
 }
+
+// ----------------------------------------------------------------------------------------------------
+
 ControlEventRelocator::~ControlEventRelocator()
 {
 }

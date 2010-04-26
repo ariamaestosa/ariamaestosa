@@ -30,6 +30,7 @@ namespace AriaMaestosa
      * So i wrote this "fake stream" that captures the bytes and stores them in memory rather than to a file.
      * This is a quick'n'dirty hack that should probably be reconsidered, even though it doesn't seem to
      * cause major performance issues. (FIXME)
+     * @ingroup io
      */
     class MidiToMemoryStream : public jdkmidi::MIDIFileWriteStream
     {

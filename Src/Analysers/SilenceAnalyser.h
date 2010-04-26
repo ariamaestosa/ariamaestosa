@@ -23,7 +23,8 @@
 namespace AriaMaestosa
 {
     /**
-      * Contains the necessary to determine (score) silences from a bunch of notes
+      * @brief Contains the necessary to determine (score) silences from a bunch of notes
+      * @ingroup analysers
       */
     namespace SilenceAnalyser
     {

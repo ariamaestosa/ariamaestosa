@@ -36,15 +36,15 @@ RemoveMeasures::RemoveMeasures(int from_measure, int to_measure) :
     RemoveMeasures::to_measure = to_measure;
 }
 
-RemoveMeasures::~RemoveMeasures()
+RemoveMeasures::RemoveMeasures::~RemoveMeasures()
 {
 }
 
-RemovedTrackPart::~RemovedTrackPart()
+RemoveMeasures::RemovedTrackPart::~RemovedTrackPart()
 {
 }
 
-void RemoveMeasures::undo()
+void RemoveMeasures::RemoveMeasures::undo()
 {
     Action::InsertEmptyMeasures opposite_action(from_measure, to_measure-from_measure);
     opposite_action.setParentSequence( sequence );

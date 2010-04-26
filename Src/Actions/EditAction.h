@@ -22,6 +22,10 @@
 #include "Midi/Note.h"
 #include "Midi/ControllerEvent.h"
 
+/**
+  * @defgroup actions
+  */
+
 namespace AriaMaestosa
 {
     class Track;
@@ -76,18 +80,26 @@ namespace AriaMaestosa
         void prepareToRelocate();
         ControllerEvent* getNextControlEvent(); // returns one note at a time, and NULL when all of them where given
     };
-    /*
-     * In Aria changes to tracks are represented with EditAction subclasses.
-     * When a change must be done, a new EditAction object is instanciated and
-     * placed in a stack. The goal of this is to be able to provide multiple undos,
-     * by reversing the operations of the stack. Each EditAction subclass should
-     * also be able to revert its action.
-     */
     
+    /**
+     * @ingroup actions
+     * Namespace
+     */
     namespace Action
     {
         
-        
+        /**
+         * @brief the base for all undoable actions
+         *
+         * In Aria changes to tracks are represented with EditAction subclasses.
+         * When a change must be done, a new EditAction object is instanciated and
+         * placed in a stack. The goal of this is to be able to provide multiple undos,
+         * by reversing the operations of the stack. Each EditAction subclass should
+         * also be able to revert its action.
+         *
+         * @note action classes should not derive directly from EditAction; instead they should
+         *       derive from SingleTrackAction or MultiTrackAction
+         */
         class EditAction
         {
             friend class AriaMaestosa::Track;
@@ -97,31 +109,45 @@ namespace AriaMaestosa
             LEAK_CHECK();
             
             EditAction(wxString name);
-            virtual void perform();
-            virtual void undo();
-            virtual ~EditAction();
+            virtual void perform() = 0;
+            virtual void undo() = 0;
+            virtual ~EditAction() {}
             
             wxString getName() const { return m_name; }
         };
         
+        /**
+          * @brief an EditAction that modifies a single track
+          */
         class SingleTrackAction : public EditAction
         {
         protected:
             Track* track;
         public:
             SingleTrackAction(wxString name);
+            virtual ~SingleTrackAction() {}
+
+            virtual void perform() = 0;
+            virtual void undo() = 0;
+            
             void setParentTrack(Track* parent);
-            virtual ~SingleTrackAction();
         };
         
+        /**
+          * @brief an EditAction that modifies several tracks
+          */
         class MultiTrackAction : public EditAction
         {
         protected:
             Sequence* sequence;
         public:
             MultiTrackAction(wxString name);
-            void setParentSequence(Sequence* parent); // for multi-track actions
-            virtual ~MultiTrackAction();
+            virtual ~MultiTrackAction(){}
+            
+            virtual void perform() = 0;
+            virtual void undo() = 0;
+
+            void setParentSequence(Sequence* parent);
         };
         
     }

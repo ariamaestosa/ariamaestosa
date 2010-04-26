@@ -27,6 +27,9 @@ namespace AriaMaestosa
     namespace Action
     {
         
+        /**
+         * @ingroup actions
+         */
         class DeleteTrack : public MultiTrackAction
         {
             /** A pointer to the track that was removed, or NULL if action not performed yet */

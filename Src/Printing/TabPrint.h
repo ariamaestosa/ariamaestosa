@@ -28,7 +28,10 @@ namespace AriaMaestosa
     class ScoreAnalyser;
     class RelativePlacementManager;
     
-    /** Specialization to print tablatures */
+    /**
+      * @brief Implementation of EditorPrintable that can print tablatures
+      * @ingroup printing
+      */
     class TablaturePrintable : public EditorPrintable
     {
         int string_amount;

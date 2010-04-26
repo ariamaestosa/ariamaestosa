@@ -21,6 +21,7 @@
 namespace AriaMaestosa
 {
     
+    /** @brief goes along class RelativeXCood */
     enum RelativeType
     {
         WINDOW,
@@ -29,15 +30,19 @@ namespace AriaMaestosa
     };
     
     /**
-      * This class is there to ease midi coord manipulation.
+      * @brief class to ease midi coord manipulation.
+      *
       * Each location can be expressed in 3 ways: pixel within the window, pixel within the editor, midi tick
       * This class allows to seamlessly work with all these datas.
+      * @ingroup editors
       */
     class RelativeXCoord
     {
         int relativeToEditor;
         int relativeToWindow, relativeToMidi;
+        
     public:
+        
         RelativeXCoord();
         RelativeXCoord(int i, RelativeType relativeTo);
         void setValue(int i, RelativeType relativeTo);

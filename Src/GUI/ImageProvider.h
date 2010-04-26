@@ -29,6 +29,11 @@ namespace AriaMaestosa
     class Drawable;
     class Image;
 
+    /** 
+      * @addtogroup gui
+      * @{
+      */
+
     // note display
     IMG_DEC Drawable* noteTrackDrawable;
 
@@ -98,6 +103,11 @@ namespace AriaMaestosa
     IMG_DEC Drawable* mgrid_32;
     IMG_DEC Drawable* mgrid_triplet;
 
+    /** @} */
+
+    /**
+      * @ingroup gui
+      */
     namespace ImageProvider
     {
         void loadImages();

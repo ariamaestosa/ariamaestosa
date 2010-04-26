@@ -26,12 +26,15 @@ namespace AriaMaestosa
     namespace Action
     {
         
+        /**
+         * @ingroup actions
+         */
         class SetNoteVolume : public SingleTrackAction
         {
             int volume, noteID;
             friend class AriaMaestosa::Track;
             
-            // for undo
+            /** for undo */
             int oldVolume;
             
             NoteRelocator relocator;

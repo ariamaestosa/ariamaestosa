@@ -31,6 +31,10 @@ namespace AriaMaestosa
     class Track; // forward
     class TuningPicker;
     
+    /**
+      * @brief a note editor using tablature notation
+      * @ingroup editors
+      */
     class GuitarEditor : public Editor
     {
         

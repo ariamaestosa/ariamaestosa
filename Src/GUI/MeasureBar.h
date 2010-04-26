@@ -29,22 +29,25 @@ namespace AriaMaestosa
     class SelectedMenu;
     
     /**
-     *  This class takes care of drawing the measure bar and handles
-     *  mouse events on it. It is closely related to MeasureData,
-     *  the class managing the actual measure data used to draw the bar.
-     */    
+      * @brief takes care of drawing the measure bar and handles mouse events on it.
+      *
+      * It is closely related to MeasureData, the class managing the actual measure data used
+      * to draw the bar.
+      *
+      * @ingroup gui
+      */    
     class MeasureBar
     {
         friend class MeasureData;
         
-        int measureBarY; // remember the latest value given by the renderer
+        int measureBarY; //!< remember the latest value given by the renderer
         
         int lastMeasureInDrag;
         
         OwnerPtr<UnselectedMenu>  unselectedMenu;
         OwnerPtr<SelectedMenu>  selectedMenu;
         
-        MeasureData* data; /* ref */
+        MeasureData* data;
         
     public:
         LEAK_CHECK();

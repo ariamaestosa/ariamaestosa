@@ -25,7 +25,10 @@ namespace AriaMaestosa
     
     namespace Action
     {
-        
+
+        /**
+         * @ingroup actions
+         */
         class Paste : public SingleTrackAction
         {
             friend class AriaMaestosa::Track;

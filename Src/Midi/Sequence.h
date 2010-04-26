@@ -48,8 +48,12 @@ namespace AriaMaestosa
     const int DEFAULT_SONG_LENGTH = 12;
     
     /**
-      * This is a midi Sequence, or a "file". Each tab in the tab bar represents one Sequence instance.
-      * It contains general information and a vector of tracks.
+      * @brief This is a midi Sequence, or a "file".
+      *
+      * Each tab in the tab bar represents one Sequence instance.
+      * It contains general information and a list of tracks.
+      *
+      * @ingroup midi
       */
     class Sequence
     {
@@ -62,8 +66,8 @@ namespace AriaMaestosa
         int x_scroll_in_pixels, y_scroll;
         //int measureWidth;
 
-        int reordering_newPosition; // used when reordering tracks, to hold the new position of the track being moved
-        int reorderYScroll; // while reordering tracks, contains the vertical scrolling amount
+        int reordering_newPosition; //!< used when reordering tracks, to hold the new position of the track being moved
+        int reorderYScroll;         //!< while reordering tracks, contains the vertical scrolling amount
 
         wxString copyright;
         wxString internal_sequenceName;
@@ -86,7 +90,8 @@ namespace AriaMaestosa
 
         // ---- these variables are to be modified by tracks
         
-        /** will store the horizontal scrolling when copying, and upon pasting behaviour will depend if
+        /** 
+          * will store the horizontal scrolling when copying, and upon pasting behaviour will depend if
           * x_scroll has changed since copy
           */
         int x_scroll_upon_copying;
@@ -97,12 +102,13 @@ namespace AriaMaestosa
         bool maximize_track_mode;
         
         // ------------ read-only -------------
-        /** set to true when importing - indicates the sequence will have frequent changes and not compute
+        /** 
+          * set to true when importing - indicates the sequence will have frequent changes and not compute
           * too much until it's over
           */
         bool importing;
 
-        // set this flag true to follow playback
+        /** set this flag true to follow playback */
         bool follow_playback;
 
         // dock
@@ -119,7 +125,7 @@ namespace AriaMaestosa
         Sequence();
         ~Sequence();
         
-        /*
+        /**
          * @brief perform an action that affects multiple tracks
          *
          * This is the method called for performing any action that can be undone.

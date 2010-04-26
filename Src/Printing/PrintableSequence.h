@@ -16,6 +16,14 @@ namespace AriaMaestosa
     class EditorPrintable;
     class LayoutLine;
     
+    /**
+      * @brief   public interface to the high-level layout/printing module
+      *
+      * This object is used to keep track of what tracks to print, and coordinates
+      * the layouting of the sequence. One object of this type must be constructed
+      * to print anything.
+      * @ingroup printing
+      */
     class PrintableSequence
     {
         ptr_vector<LayoutPage> layoutPages;

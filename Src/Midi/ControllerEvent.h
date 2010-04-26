@@ -31,6 +31,10 @@ namespace AriaMaestosa
     
     class Sequence;
     
+    /**
+      * @brief represents a single control event
+      * @ingroup midi
+      */
     class ControllerEvent
     {
         

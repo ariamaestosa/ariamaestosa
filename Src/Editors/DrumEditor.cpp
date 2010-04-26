@@ -41,7 +41,7 @@ const int Y_STEP = 10;
 
 // ----------------------------------------------------------------------------------------------------------
 
-DrumInfo::DrumInfo(int midiKey, const bool a_section)
+DrumEditor::DrumInfo::DrumInfo(int midiKey, const bool a_section)
 {
     DrumInfo::midiKey = midiKey;
 

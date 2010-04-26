@@ -26,7 +26,9 @@ namespace AriaMaestosa
     namespace Action
     {
         
-        
+        /**
+         * @ingroup actions
+         */
         class InsertEmptyMeasures : public MultiTrackAction
         {
             friend class AriaMaestosa::Track;

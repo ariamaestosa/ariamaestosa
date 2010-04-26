@@ -49,7 +49,8 @@ namespace AriaMaestosa
     template<typename PARENT> class ToolBar;
     
     /**
-      * The graphical part of a track (the data being held in Track)
+      * @brief The graphical part of a track (the data being held in Track)
+      * @ingroup gui
       */
     class GraphicalTrack
     {

@@ -14,6 +14,10 @@ namespace AriaMaestosa
     class wxGLStringArray;
     class wxGLStringNumber;
     
+    /**
+     * @brief   OpenGL render backend : text renderer helper class (OpenGL backend)
+     * @ingroup renderers
+     */
     class TextTexture
     {
         friend class wxGLString;
@@ -37,10 +41,16 @@ namespace AriaMaestosa
         ~TextTexture();
     };
     
-    /** base class for renderable elements. You won't create this one directly,
-     but may use its public members from wxGLString since it inherits from TextGLDrawable.
-     This class will be useful if you wish to apply effects to the text like rotation or
-     scaling. */
+    /** 
+      * @brief OpenGL render backend : utility class for text rendering
+      *
+      * Base class for renderable elements. You won't create this one directly,
+      * but may use its public members from wxGLString since it inherits from TextGLDrawable.
+      * This class will be useful if you wish to apply effects to the text like rotation or
+      * scaling.
+      *
+      * @ingroup renderers
+      */
     class TextGLDrawable
     {
         friend class wxGLString;
@@ -94,11 +104,15 @@ namespace AriaMaestosa
     
     class wxGLStringArray;
     
-    /** wxGLString is the simplest class you can use. It draws a single string on a single line.
+    /**
+     @brief OpenGL render backend : text renderer
+     
+     It draws a single string on a single line.
      If you plan to render multiple strings, this class is not the fastest.
      
      Use example :
      
+     \code
      wxGLString my_message(wxT("Hello World"));
      ...
      if (first_render)
@@ -107,6 +121,9 @@ namespace AriaMaestosa
      glColor3f(0,0,0); // black text
      my_message.bind();
      my_message.render(x, y);
+     \endcode
+
+     @ingroup renderers
      */
     class wxGLString : public wxString, public TextGLDrawable
     {
@@ -156,10 +173,12 @@ namespace AriaMaestosa
     
     typedef wxGLString AriaRenderString;
     
-    /** This class allows rendering numbers.
+    /**
+     @brief OpenGL render backend : number renderer
      
      Use example :
      
+     \code
      wxGLNumberRenderer glnumbers;
      ...
      if (first_render)
@@ -168,6 +187,9 @@ namespace AriaMaestosa
      glColor3f(0,0,0); // black numbers
      glnumbers.bind();
      glnumbers.renderNumber( 3.141593f, x, y );
+     \endcode
+     
+     @ingroup renderers
      */
     class wxGLNumberRenderer : public wxGLString
     {
@@ -192,12 +214,16 @@ namespace AriaMaestosa
     
     typedef wxGLNumberRenderer AriaRenderNumber;
     
-    /** This class is useful to render a serie of strings that are usually rendered at the same time.
+    /**
+     @brief OpenGL render backend : text array renderer
+     
+     This class is useful to render a serie of strings that are usually rendered at the same time.
      It behaves exactly like wxGLString but is more efficient.
      
      
      Use example :
      
+     \code
      wxGLStringArray my_messages();
      my_messages.addString("wxMac");
      my_messages.addString("wxGTK");
@@ -211,6 +237,9 @@ namespace AriaMaestosa
      my_messages.get(0).render( x, y      );
      my_messages.get(1).render( x, y + 25 );
      my_messages.get(2).render( x, y + 50 );
+     \endcode
+     
+     @ingroup renderers
      */
     class wxGLStringArray
     {

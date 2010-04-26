@@ -73,6 +73,7 @@ namespace AriaMaestosa
      * Each note can be represented in many ways (its Y position on screen, its note_7, its note_12,
      * its midi pitch...). This class eases the burden by doing convertions and managing the location where
      * notes should appear and what signs should appear next to them, + it cares about the key.
+     * @ingroup editors
      */
     class ScoreMidiConverter
     {
@@ -148,6 +149,10 @@ namespace AriaMaestosa
     };
     
     
+    /**
+      * @brief note editor using score (staff) notation
+      * @ingroup editors
+      */
     class ScoreEditor : public Editor
     {
         bool g_clef;

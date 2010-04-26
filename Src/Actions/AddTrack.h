@@ -27,6 +27,9 @@ namespace AriaMaestosa
     namespace Action
     {
         
+        /**
+         * @ingroup actions
+         */
         class AddTrack : public MultiTrackAction
         {
             /** A pointer to the track that was added, or NULL if action not performed yet */

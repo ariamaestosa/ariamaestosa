@@ -23,15 +23,19 @@ namespace AriaMaestosa
 {
     class Track;
     
+
     namespace Action
     {
         
+        /**
+          * @ingroup actions
+          */
         class AddControlEvent : public SingleTrackAction
         {
             friend class AriaMaestosa::Track;
             int x, value, controller;
             
-            int removedEventValue; // if any event was replaced by this one...
+            int removedEventValue; //!< if any event was replaced by this one...
         public:
             AddControlEvent(const int x, const int value, const int controller);
             void perform();

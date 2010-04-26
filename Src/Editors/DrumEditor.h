@@ -30,17 +30,22 @@ namespace AriaMaestosa
     class DrumChoice;
     class RelativeXCoord;
     
-    class DrumInfo
-    {
-    public:
-        DrumInfo(int midiKey, const bool a_section=false);
-        int midiKey;
-        bool section;
-        bool sectionExpanded;
-    };
     
+    /**
+      * @brief   a note editor for drum tracks 
+      * @ingroup editors
+      */
     class DrumEditor : public Editor
     {
+        class DrumInfo
+        {
+        public:
+            DrumInfo(int midiKey, const bool a_section=false);
+            int midiKey;
+            bool section;
+            bool sectionExpanded;
+        };
+        
         bool showUsedDrumsOnly;
         
         AriaRenderArray drum_names_renderer;
