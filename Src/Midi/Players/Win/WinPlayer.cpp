@@ -181,15 +181,13 @@ namespace AriaMaestosa
             return AriaMaestosa::exportMidiFile(sequence, filepath);
         }
 
-        // get current tick, either from native API or from a variable you keep around and update from the playback thread
+        // get current tick, either from native API or from a variable (current_tick) you keep around and update from the playback thread
+        // current_tick is updated by seq_notify_current_tick
         int trackPlaybackProgression()
         {
-        	//@todo AAR
-            //current_tick = getTickFromNativeAPI();
-            if(current_tick > songLengthInTicks || current_tick == -1)
+            if (current_tick > songLengthInTicks || current_tick == -1)
             {
                 // song is over
-
                 playing = false;
                 // this function is probably called too many times in this example...
                 cleanup_after_playback();
@@ -198,6 +196,7 @@ namespace AriaMaestosa
                 Core::songHasFinishedPlaying();
                 return -1;
             }
+
             return current_tick;
         }
 
@@ -221,15 +220,16 @@ namespace AriaMaestosa
 					wRtn = midiOutGetDevCaps(i, (LPMIDIOUTCAPS) & midi_out_caps[i],
 											 sizeof(MIDIOUTCAPS));
 					if (wRtn == MMSYSERR_NOERROR)
-		{
+                    {
 						// see http://msdn.microsoft.com/en-us/library/dd798467%28VS.85%29.aspx
 						std::cout << midi_out_caps[i].wMid << " " << midi_out_caps[i].wPid << " "
 										<< midi_out_caps[i].vDriverVersion << " " << midi_out_caps[i].szPname;
 					}
 				}
+				free (midi_out_caps);
 			}
 
-			free (midi_out_caps);
+
 		}
 
 
@@ -405,6 +405,8 @@ namespace AriaMaestosa
 
             SequencerThread* seqthread = new SequencerThread(selectionOnly, sequence);
             seqthread->go(startTick);
+
+            return true;
         }
 
     }
