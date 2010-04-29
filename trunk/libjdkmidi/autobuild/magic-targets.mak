@@ -27,7 +27,8 @@ lib : dirs prelib $(OUTPUT_LIB)
 $(OUTPUT_LIB) : $(LIB_O_FILES) 
 ifeq ($(TARGET_USE_AR),1)
 	@echo "AR     : $(notdir $@)($(notdir $?))"
-	@$(AR) $(ARFLAGS) $@ $? >/dev/null
+	@echo "$(AR) $(ARFLAGS) $@ $?"
+	@$(AR) $(ARFLAGS) $@ $?
 	@$(RANLIB) $@
 endif
 ifeq ($(TARGET_USE_MACOSX_LIBTOOL),1)
