@@ -16,8 +16,8 @@ echo "making packgage for version $VERSION"
 
 USE_WX_CONFIG="/Developer/svn/wxWidgets/aria_build/wx-config "
 OUTPUT="$HOME/Desktop/aria-build/"
-ADDITIONAL_BUILD_FLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.5 -Wfatal-errors -arch ppc -arch i386"
-ADDITIONAL_LINK_FLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.5 -arch ppc -arch i386"
+ADDITIONAL_BUILD_FLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.4 -Wfatal-errors -arch ppc -arch i386"
+ADDITIONAL_LINK_FLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.4 -arch ppc -arch i386"
 export CC="gcc-4.0"
 export CXX="g++-4.0"
 
@@ -38,20 +38,20 @@ tar cj --exclude '.svn' --exclude '.DS_Store' --exclude '.sconsign' -f "./AriaSr
 cd $OUTPUT/build
 
 # ------ build mac binaries -----
-cd libjdkmidi
-./configure
-sed 's/CXXFLAGS=/CXXFLAGS=-isysroot \/Developer\/SDKs\/MacOSX10.5.sdk -mmacosx-version-min=10.5 -arch ppc -arch i386/' < GNUMakefile > GNUMakefile1
-sed 's/LDFLAGS=/LDFLAGS=-isysroot \/Developer\/SDKs\/MacOSX10.5.sdk -mmacosx-version-min=10.5 -arch ppc -arch i386/' < GNUMakefile1 > GNUMakefile2
-sed 's/CXX=g++/CXX=g++-4.0/' < GNUMakefile2 > GNUMakefile3
-sed 's/CC=gcc/CC=gcc-4.0/' < GNUMakefile3 > GNUMakefile4
-rm GNUMakefile3
-rm GNUMakefile2
-rm GNUMakefile1
-rm GNUMakefile
-mv GNUMakefile4 GNUMakefile
-make -f GNUMakefile clean
-make -f GNUMakefile all
-cd ..
+#cd libjdkmidi
+#./configure
+#sed 's/CXXFLAGS=/CXXFLAGS=-isysroot \/Developer\/SDKs\/MacOSX10.5.sdk -mmacosx-version-min=10.5 -arch ppc -arch i386/' < GNUMakefile > GNUMakefile1
+#sed 's/LDFLAGS=/LDFLAGS=-isysroot \/Developer\/SDKs\/MacOSX10.5.sdk -mmacosx-version-min=10.5 -arch ppc -arch i386/' < GNUMakefile1 > GNUMakefile2
+#sed 's/CXX=g++/CXX=g++-4.0/' < GNUMakefile2 > GNUMakefile3
+#sed 's/CC=gcc/CC=gcc-4.0/' < GNUMakefile3 > GNUMakefile4
+#rm GNUMakefile3
+#rm GNUMakefile2
+#rm GNUMakefile1
+#rm GNUMakefile
+#mv GNUMakefile4 GNUMakefile
+#make -f GNUMakefile clean
+#make -f GNUMakefile all
+#cd ..
 
 python scons/scons.py config=release WXCONFIG=$USE_WX_CONFIG CXXFLAGS="$ADDITIONAL_BUILD_FLAGS" LDFLAGS="$ADDITIONAL_LINK_FLAGS" -j 2
 python scons/scons.py install
