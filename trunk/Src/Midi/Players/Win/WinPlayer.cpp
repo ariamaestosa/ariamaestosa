@@ -54,13 +54,35 @@ namespace AriaMaestosa
     namespace PlatformMidiManager
     {
 
+        class StopNoteTimer : public wxTimer
+        {
+            public:
+
+                StopNoteTimer() : wxTimer(){ }
+
+                void Notify()
+                {
+                    PlatformMidiManager::stopNote();
+                    wxTimer::Stop();
+                }
+
+                void start(int duration)
+                {
+                    wxTimer::Start(duration);
+                }
+        };
+
+
         int songLengthInTicks = -1;
         bool playing = false;
         int current_tick = -1;
 		HMIDIOUT m_hOutMidiDevice = 0;
 		bool m_bOutOpen = false;
+		int lastPlayedNote = -1, lastChannel;
+        StopNoteTimer* stopNoteTimer = NULL;
 
 		bool play(Sequence* sequence, /*out*/int* startTick, bool selectionOnly);
+
 
 
 		// all sound off, reset all controllers, reset pitch bend, etc.
@@ -160,7 +182,7 @@ namespace AriaMaestosa
         }
 
         // export to audio file, e.g. .wav
-        void exportAudioFile(Sequence* sequence, wxString filepath)
+        void exportAudioFile(Sequence* /*sequence*/, wxString /*filepath*/)
         {
         }
         const wxString getAudioExtension()
@@ -201,9 +223,10 @@ namespace AriaMaestosa
         }
 
 
+        // Not used currently, but could be added to enumerate the MIDI devices (i. e. MIDI Yoke virtual devices)
 		void enumerateDevices()
 		{
-			UINT i;
+			int i;
 			DWORD wRtn;
 			int midi_num_outputs;
 			LPMIDIOUTCAPS midi_out_caps;
@@ -256,6 +279,9 @@ namespace AriaMaestosa
 			  }
 			  m_bOutOpen=true;
 			}
+
+			stopNoteTimer = new StopNoteTimer();
+
 			return;
         }
 
@@ -268,6 +294,12 @@ namespace AriaMaestosa
 			  m_bOutOpen=false;
 			}
 
+            if (stopNoteTimer != NULL)
+            {
+                delete stopNoteTimer;
+                stopNoteTimer = NULL;
+            }
+
         }
 
         // play/stop a single preview note (no sequencing is to be done, only direct output)
@@ -275,26 +307,31 @@ namespace AriaMaestosa
         {
 			DWORD dwMsg;
 
+            if (lastPlayedNote != -1)
+            {
+                stopNote();
+            }
+
 			dwMsg = MAKEMIDISHORTMSG(MIDI_PROGRAM_CHANGE, channel, instrument, 0);
 			::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
 
-			// @todo AAR : handle duration
         	dwMsg = MAKEMIDISHORTMSG(MIDI_NOTE_ON, channel, noteNum, volume);
 			::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
+
+            stopNoteTimer->start(duration);
+            lastPlayedNote = noteNum;
+            lastChannel = channel;
         }
 
         void stopNote()
         {
 			 DWORD dwMsg;
 
-			/*
         	// 0 velocity turns note off
-        	dwMsg = MAKEMIDISHORTMSG(MIDI_NOTE_ON, channel, note, 0);
+        	dwMsg = MAKEMIDISHORTMSG(MIDI_NOTE_ON, lastChannel, lastPlayedNote, 0);
 			::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
-			*/
 
-			// too hardcore
-			midiOutReset(m_hOutMidiDevice);
+			lastPlayedNote = -1;
         }
 
         // ----------------------------------------------------------------------
