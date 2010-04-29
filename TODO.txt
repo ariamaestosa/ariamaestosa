@@ -42,6 +42,9 @@ NOTE: sorry, this is very raw :)
 
 * Test Actions with Unit tests
 
+* Exporting to sampled audio not supported on Windows. Before release, decide if we keep the menu greyed
+  out like now or plain remove it
+
 * score print :
     * red images
     - X notes not printed right (nor handled correctly in score editor anyway)
