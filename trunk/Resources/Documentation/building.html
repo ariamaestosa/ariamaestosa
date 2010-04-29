@@ -65,19 +65,6 @@ You can simply download wxWidgets 2.8 from your distribution's repositories. It 
 Make sure <i>wx-config --libs</i> points to the 2.8 libs when run from a terminal. If it does not, it is likely that your distribution's wxWidgets (in /usr/) is picked up before the one you built (in /usr/local/). To fix this, you can pass WXCONFIG=/usr/local/bin/wx-config to scons when building - more info below.
 <br/><br/>
 
-<center><b>building libjdkmidi (any platform)</b></center>
-
-Then you need to build libjdkmidi - its source is included with Aria however it is built seperately.<br/>
-<blockquote>
-<pre>
-cd /path/to/Aria/Src
-cd libjdkmidi
-./configure
-make
-cd ..
-</pre>
-</blockquote>
-
 <center><b>Compiling Aria (any platform)</b></center>
 You are now ready to build Aria itself. All you need to do is type the command appropriate for your system :<br/>
 
