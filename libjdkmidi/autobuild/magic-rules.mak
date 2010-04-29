@@ -74,6 +74,7 @@ $(OUTPUT_OBJ_DIR)/%.o $(OUTPUT_OBJ_DIR)/%.d : %.m
 # For C++: (cpp)
 $(OUTPUT_OBJ_DIR)/%.o $(OUTPUT_OBJ_DIR)/%.d : %.cpp
 	@echo "CXX    : $(notdir $<)"
+	@echo "$(CXX) $(SORTED_PREPROCESS_FLAGS)  $(DEPENDENCY_OPTIONS) -MT $(OUTPUT_OBJ_DIR)/$*.o -MF $(OUTPUT_OBJ_DIR)/$*.d $< && $(COMPILE.cpp) $(SORTED_PREPROCESS_FLAGS) $(COMPILE_FLAGS) -o $(OUTPUT_OBJ_DIR)/$*.o $<"
 	@$(CXX) $(SORTED_PREPROCESS_FLAGS)  $(DEPENDENCY_OPTIONS) -MT $(OUTPUT_OBJ_DIR)/$*.o -MF $(OUTPUT_OBJ_DIR)/$*.d $< && $(COMPILE.cpp) $(SORTED_PREPROCESS_FLAGS) $(COMPILE_FLAGS) -o $(OUTPUT_OBJ_DIR)/$*.o $<
 
 # Asm For C++: (cpp)

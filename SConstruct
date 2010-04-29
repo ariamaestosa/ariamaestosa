@@ -59,9 +59,9 @@ class RecursiveGlob:
         self.files = os.listdir(self.directory)
         self.index = 0
 
-        if 'libjdkmidi' in self.directory:
-            # ignore libjdkmidi stuff
-            self.pop_dir()
+        #if 'libjdkmidi' in self.directory:
+        #    # ignore libjdkmidi stuff
+        #    self.pop_dir()
         if 'scons' in self.directory:
             # ignore scons stuff
             self.pop_dir()
@@ -242,10 +242,8 @@ def compile_Aria(which_os):
         print 'Unknown build type, cannot continue'
         sys.exit(0)
         
-    # init common library and header search paths
+    # init common header search paths
     env.Append(CPPPATH = ['./Src','.','./libjdkmidi/include'])
-    env.Append(LIBPATH = ['.','./libjdkmidi/tmp/build/lib','./libjdkmidi/tmp-target/build/lib'])
-    env.Append(LIBS = ['libjdkmidi'])
 
     print " "
 
