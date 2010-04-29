@@ -96,7 +96,7 @@ namespace AriaMaestosa
         // load language if possible, fall back to english otherwise
         if (wxLocale::IsAvailable(language_wx_id))
         {
-            locale = new wxLocale( language_wx_id, wxLOCALE_CONV_ENCODING );
+            locale = new wxLocale( language_wx_id );
             
 #if defined(__WXGTK__)
             // add locale search paths
