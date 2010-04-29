@@ -122,7 +122,7 @@ TimeSigPicker::TimeSigPicker() : wxFrame(getMainFrame(), wxNewId(),  _("Time Sig
                                          wxDefaultPosition, wxSize(185,130),
                                          wxCAPTION | wxCLOSE_BOX | wxFRAME_TOOL_WINDOW | wxFRAME_FLOAT_ON_PARENT | wxWANTS_CHARS)
 {
-    pane = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS);
+    pane = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS | wxTAB_TRAVERSAL);
 
     wxSize smallsize = wxDefaultSize;
     smallsize.x = 50;
@@ -130,15 +130,12 @@ TimeSigPicker::TimeSigPicker() : wxFrame(getMainFrame(), wxNewId(),  _("Time Sig
     wxBoxSizer* vertical = new wxBoxSizer(wxVERTICAL);
     QuickBoxLayout horizontal(pane, vertical);
     valueTextNum=new wxTextCtrl(horizontal.pane, NUM_ID, wxT("4"), wxPoint(0,130), smallsize,
-                                wxTE_PROCESS_ENTER | wxWANTS_CHARS | wxTAB_TRAVERSAL);
+                                wxTE_PROCESS_ENTER | wxWANTS_CHARS);
     wxStaticText* slash = new wxStaticText(horizontal.pane, wxID_ANY, wxT("/"), wxDefaultPosition, wxSize(15,15));
     slash->SetMinSize(wxSize(15,15));
     slash->SetMaxSize(wxSize(15,15));
     valueTextDenom=new wxTextCtrl(horizontal.pane, DENOM_ID, wxT("4"), wxPoint(0,130), smallsize,
-                                  wxTE_PROCESS_ENTER | wxWANTS_CHARS | wxTAB_TRAVERSAL);
-    okbtn = new wxButton(pane, OK_BTN_ID, _("OK"));
-    okbtn->SetDefault();
-
+                                  wxTE_PROCESS_ENTER | wxWANTS_CHARS);
     //FIXME: don't use a mixture of event tables and Connect xD
     valueTextNum  ->Connect( valueTextNum->GetId(), wxEVT_SET_FOCUS,
                              wxFocusEventHandler(TimeSigPicker::onFocus), 0, this);
@@ -151,8 +148,10 @@ TimeSigPicker::TimeSigPicker() : wxFrame(getMainFrame(), wxNewId(),  _("Time Sig
 
     //I18N: - when setting time signature, to indicate it's not constant through song
     variable = new wxCheckBox(pane, VARIES_ID, _("Varies throughout song"));
-
     vertical->Add(variable, 0, wxALL, 5);
+    
+    okbtn = new wxButton(pane, OK_BTN_ID, _("OK"));
+    okbtn->SetDefault();
     vertical->Add(okbtn, 0, wxALL | wxALIGN_CENTER, 5);
 
     pane->SetSizer(vertical);
