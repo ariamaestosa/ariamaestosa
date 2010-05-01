@@ -23,19 +23,6 @@
 #include "Actions/EditAction.h"
 #include "Actions/RemoveOverlapping.h"
 
-#include "GUI/MainFrame.h"
-#include "GUI/MainPane.h"
-#include "GUI/GraphicalTrack.h"
-#include "Midi/MeasureData.h"
-
-#include "Midi/Sequence.h"
-#include "Midi/Players/PlatformMidiManager.h"
-#include "Midi/CommonMidiUtils.h"
-
-#include "Editors/KeyboardEditor.h"
-
-#include "GUI/ImageProvider.h"
-
 #include "Dialogs/About.h"
 #include "Dialogs/CopyrightWindow.h"
 #include "Dialogs/CustomNoteSelectDialog.h"
@@ -43,21 +30,22 @@
 #include "Dialogs/PrintSetupDialog.h"
 #include "Dialogs/ScalePicker.h"
 #include "Dialogs/WaitWindow.h"
-
-#include "Pickers/InstrumentChoice.h"
-#include "Pickers/DrumChoice.h"
-#include "Pickers/VolumeSlider.h"
+#include "GUI/MainFrame.h"
+#include "GUI/MainPane.h"
+#include "IO/IOUtils.h"
+#include "IO/AriaFileWriter.h"
+#include "IO/MidiFileReader.h"
+#include "main.h"
+#include "Midi/MeasureData.h"
+#include "Midi/Sequence.h"
+#include "Midi/Players/PlatformMidiManager.h"
+#include "Midi/CommonMidiUtils.h"
 #include "Pickers/TuningPicker.h"
 #include "Pickers/KeyPicker.h"
 #include "Pickers/BackgroundPicker.h"
 
-#include "IO/IOUtils.h"
-#include "IO/AriaFileWriter.h"
-#include "IO/MidiFileReader.h"
-
 #include "Utils.h"
 #include <iostream>
-#include "main.h"
 
 #ifdef __WXMAC__
 #include "wx/html/webkit.h"
