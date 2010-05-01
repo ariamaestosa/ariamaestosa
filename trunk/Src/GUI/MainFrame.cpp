@@ -56,7 +56,6 @@
 
 #include "Clipboard.h"
 #include "Singleton.h"
-#include "main.h"
 #include <iostream>
 
 #include "wx/spinctrl.h"
