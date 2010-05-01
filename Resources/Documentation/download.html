@@ -1,4 +1,40 @@
 <html>
+
+<style type="text/css">
+    .section
+    {
+        background-color    : rgb(205, 155, 0);
+        border-color        : rgb(130, 100, 0);
+        border-style        : solid;
+        border-width        : medium;
+        margin              : 0;
+        padding             : 0;
+    }
+    
+    .section_inside
+    {
+        background-color    : rgb(240, 225, 160);
+        margin              : 0;
+        padding             : 5;
+    }
+    
+</style>
+
+<script language="javascript">
+    function toggleDiv(divid)
+    {
+        if (document.getElementById(divid).style.display == 'none')
+        {
+            document.getElementById(divid).style.display = 'block';
+        }
+        else
+        {
+            document.getElementById(divid).style.display = 'none';
+        }
+      }
+</script>
+
+
 <body link=black hlink=black vlink=black>
 
 <!----------------------------- TITLE ------------------------->
@@ -12,30 +48,53 @@
 <!----------------------------- CONTENT ------------------------->
 
 <blockquote>
-<b>Mac OS X 10.4 and up, PPC and intel</b>
+
+<div class="section">
+    <a href="javascript:;" onmousedown="toggleDiv('osx');" border="0">Mac OS X Universal</a>
+    <div id="osx" class="section_inside" border="0">
+
+        <list>
+        <li/>   <A href="http://downloads.sourceforge.net/ariamaestosa/AriaMaestosa-1.2.zip"><b>Stable version 1.2</b></A>
+                for mac OS X 10.5+
+        <li/>   <A href="http://downloads.sourceforge.net/ariamaestosa/AriaMaestosa-1.2-tiger.zip"><b>Tiger-compatible build of 1.2</b></A>
+                for mac OS X 10.4
+        </list>
+        
+        <i>
+           <b>Note:</b> The Tiger build or Aria Maestosa contains the same features as the regular build
+           <b>except</b> printing, which has some unresolved bugs on mac OS X 10.4 (see readme file inside
+           download for more information)
+        </i> 
+    </div>
+</div>
+
+<br/>
+
+
+<div class="section">
+    <a href="javascript:;" onmousedown="toggleDiv('linux');" border="0">Linux (ALSA)</a>
+    <div id="linux" class="section_inside" border="0">
+
+        <list>
+        <li/>   <A href="http://packman.links2linux.de/package/AriaMaestosa">openSUSE 11 rpms</A>
+                (also <A href="http://rpm.pbone.net/index.php3?stat=3&search=AriaMaestosa&srodzaj=3">
+                 listed here</A>)
+        <li/>   <A href="building.html">building from source</A> for others
+        </list>
+
+    </div>
+</div>
+
+<br/>
+
+<A href="https://sourceforge.net/projects/ariamaestosa/files/"><i>See all downloads on sourceforge</i></A>
+
 
 <br/><br/>
-<A href="http://downloads.sourceforge.net/ariamaestosa/AriaMaestosa-1.2.zip"><b>stable version 1.2</b></A>
-<br/>
-<br/>
-
-<b> Linux (Alsa)</b>
-<br/><br/>
-<list>
-<li/><A href="http://packman.links2linux.de/package/AriaMaestosa/87485">SUSE 10 and 11 rpms</A> (also <A href="http://rpm.pbone.net/index.php3?stat=3&search=AriaMaestosa&srodzaj=3">listed here</A>)
-<li/><A href="building.html">building from source</A>
-</list>
-
-<br/>
-<A href="http://sourceforge.net/project/showfiles.php?group_id=186987">See all downloads on sourceforge</A><br/>
+<A name="changelog">   <center><h2>What's new</h2></center></A>
 
 
-<br/><br/><br/>
-<A name="changelog">   <center><h2>What's new</h2></center>   </A>
-
-<br/>
-
-<font size=1>
+<font size="2">
 <i>(See <A href="changelog.html">full changelog</A>)</i>
 </font>
 
