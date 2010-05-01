@@ -185,7 +185,7 @@ namespace AriaMaestosa
       */
     void renderFlat(wxDC& dc, int x, const int y, const bool center=true)
     {
-        if (not center) x -= 25;
+        if (not center) x -= 30;
 
         dc.SetPen(  wxPen( wxColour(0,0,0), 6 ) );
         
