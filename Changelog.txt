@@ -1,3 +1,6 @@
+1.2.1
+- Fixed printing of accidentals
+
 1.2
 - Printing
     - Improved printing dialog

@@ -159,9 +159,14 @@ namespace AriaMaestosa
      * A few drawing routines
      */
     // -------------------------------------------------------------------------------------------
-    /** Renders a 'sharp' symbol at the given coordinates */
-    void renderSharp(wxDC& dc, const int x, const int y)
+    /** @brief Renders a 'sharp' symbol at the given coordinates
+      * @param center  If true, the center of the symbol is drawn at the x coordinate.
+      *                If false, the right side of the symbol is drawn the x coordinate.
+      */
+    void renderSharp(wxDC& dc, int x, const int y, const bool center=true)
     {
+        if (not center) x -= 50;
+        
         dc.SetPen(  wxPen( wxColour(0,0,0), 6 ) );
         
         // horizontal lines
@@ -174,9 +179,14 @@ namespace AriaMaestosa
     }
     
     // -------------------------------------------------------------------------------------------
-    /** Renders a 'flat' symbol at the given coordinates */
-    void renderFlat(wxDC& dc, const int x, const int y)
+    /** @brief Renders a 'flat' symbol at the given coordinates
+      * @param center  If true, the center of the symbol is drawn at the x coordinate.
+      *                If false, the right side of the symbol is drawn the x coordinate.
+      */
+    void renderFlat(wxDC& dc, int x, const int y, const bool center=true)
     {
+        if (not center) x -= 25;
+
         dc.SetPen(  wxPen( wxColour(0,0,0), 6 ) );
         
         wxPoint points[] =
@@ -192,9 +202,14 @@ namespace AriaMaestosa
     }
     
     // -------------------------------------------------------------------------------------------
-    /** Renders a 'natural' symbol at the given coordinates */
-    void renderNatural(wxDC& dc, const int x, const int y)
+    /** @brief Renders a 'natural' symbol at the given coordinates
+      * @param center  If true, the center of the symbol is drawn at the x coordinate.
+      *                If false, the right side of the symbol is drawn the x coordinate.
+      */
+    void renderNatural(wxDC& dc, int x, const int y, const bool center=true)
     {
+        if (not center) x -= NATURAL_SIGN_WIDTH;
+
         dc.SetPen(  wxPen( wxColour(0,0,0), 6 ) );
         
         // horizontal lines
@@ -1311,13 +1326,22 @@ namespace AriaMaestosa
                 dc.DrawText( wxString::Format(wxT("%i"), lvlBelow), headLocation.x - 50, lvlBelow );
                 dc.SetFont(saved);
                 
-                // draw sharpness sign if relevant
-                if      (noteRenderInfo.sign == SHARP)   renderSharp  ( dc, noteX.from + accidentalShift, noteRenderInfo.getY() - 15  );
-                else if (noteRenderInfo.sign == FLAT)    renderFlat   ( dc, noteX.from + accidentalShift, noteRenderInfo.getY() - 15  );
-                else if (noteRenderInfo.sign == NATURAL) renderNatural( dc, noteX.from + accidentalShift, noteRenderInfo.getY() - 20  );
-                
                 // ---- }
                 */
+                
+                // draw sharpness sign if relevant
+                if      (noteRenderInfo.sign == SHARP)
+                {
+                    renderSharp  ( dc, headLocation.x - HEAD_RADIUS, noteRenderInfo.getY() - 15, false );
+                }
+                else if (noteRenderInfo.sign == FLAT)
+                {
+                    renderFlat   ( dc, headLocation.x - HEAD_RADIUS, noteRenderInfo.getY() - 15, false );
+                }
+                else if (noteRenderInfo.sign == NATURAL)
+                {
+                    renderNatural( dc, headLocation.x - HEAD_RADIUS, noteRenderInfo.getY() - 20, false );
+                }
                 
                 // set pen/brush back, accidental routines might have changed them
                 dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
