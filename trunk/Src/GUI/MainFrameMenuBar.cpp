@@ -92,7 +92,7 @@ namespace AriaMaestosa
         MENU_TRACK_REMOVE,
         MENU_TRACK_BACKG
     };
-    
+
 }
 
 using namespace AriaMaestosa;
@@ -108,7 +108,7 @@ void MainFrame::initMenuBar()
 
     // ---- File menu
     fileMenu = new wxMenu();
-    
+
     //I18N: menu item in the "file" menu
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_NEW, _("New\tCtrl-N"), MainFrame::menuEvent_new );
     //I18N: menu item in the "file" menu
@@ -129,14 +129,14 @@ void MainFrame::initMenuBar()
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_IMPORT_MIDI, _("Import Midi File"), MainFrame::menuEvent_importmidi );
     //I18N: menu item in the "file" menu
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_MIDI, _("Export to Midi"), MainFrame::menuEvent_exportmidi );
-    
+
     // disable export to sampled audio if this feature is not supported by the current PlatformMidiManager
     if (not PlatformMidiManager::getAudioExtension().IsEmpty())
     {
         //I18N: menu item in the "file" menu
         fileMenu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_SAMPLED_AUDIO, _("Export to Audio"), MainFrame::menuEvent_exportSampledAudio );
     }
-    
+
     //I18N: menu item in the "file" menu
     fileMenu -> QUICK_ADD_MENU ( wxID_EXIT, _("Quit\tCtrl-Q"), MainFrame::menuEvent_quit );
 
@@ -172,11 +172,11 @@ void MainFrame::initMenuBar()
 
     //I18N: name of a menu
     menuBar->Append(editMenu,  _("Edit"));
-    
-    
+
+
     // ---- Tracks menu
     trackMenu = new wxMenu();
-    
+
     //I18N: menu item in the "track" menu
     trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_ADD, wxString(_("Add Track"))+wxT("\tCtrl-Shift-N"), MainFrame::menuEvent_addTrack );
     //I18N: menu item in the "track" menu
@@ -186,7 +186,7 @@ void MainFrame::initMenuBar()
     trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_BACKG, _("Properties"), MainFrame::menuEvent_trackBackground );
 
     menuBar->Append(trackMenu,  _("Tracks"));
-    
+
     // ---- Settings menu
     settingsMenu = new wxMenu();
     followPlaybackMenuItem = settingsMenu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_FOLLOW_PLAYBACK, _("Follow Playback"), MainFrame::menuEvent_followPlayback );
@@ -195,7 +195,7 @@ void MainFrame::initMenuBar()
     followPlaybackMenuItem->Check( Core::getPrefsValue("followPlayback") != 0 );
 
     wxMenu* channelMode_menu = new wxMenu();
-    
+
     //I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
     settingsMenu->AppendSubMenu(channelMode_menu,  _("Channel management") );
     //I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
@@ -228,7 +228,7 @@ void MainFrame::initMenuBar()
 
     // ----Help menu
     helpMenu = new wxMenu();
-    
+
     helpMenu->QUICK_ADD_MENU(wxID_ABOUT,  _("About this app"), MainFrame::menuEvent_about);
     //I18N: - in help menu - see the help files
     helpMenu->QUICK_ADD_MENU(wxID_HELP,  _("Manual"), MainFrame::menuEvent_manual);
@@ -251,7 +251,11 @@ void MainFrame::disableMenus(const bool disable)
     fileMenu->Enable(MENU_FILE_CLOSE, on);
     fileMenu->Enable(MENU_FILE_IMPORT_MIDI, on);
     fileMenu->Enable(MENU_FILE_EXPORT_MIDI, on);
-    fileMenu->Enable(MENU_FILE_EXPORT_SAMPLED_AUDIO, on);
+
+    if (not PlatformMidiManager::getAudioExtension().IsEmpty())
+    {
+        fileMenu->Enable(MENU_FILE_EXPORT_SAMPLED_AUDIO, on);
+    }
 
     fileMenu->Enable(MENU_FILE_EXPORT_NOTATION, on);
     fileMenu->Enable(MENU_FILE_COPYRIGHT, on);
@@ -264,7 +268,7 @@ void MainFrame::updateMenuBarToSequence()
 {
     Sequence* sequence = getCurrentSequence();
     ChannelManagementType channelMode = sequence->getChannelManagementType();
-    
+
     if (channelMode == CHANNEL_AUTO)
     {
         channelManagement_automatic->Check(true);
@@ -275,7 +279,7 @@ void MainFrame::updateMenuBarToSequence()
         channelManagement_automatic->Check(false);
         channelManagement_manual->Check(true);
     }
-    
+
     followPlaybackMenuItem->Check( sequence->follow_playback );
     expandedMeasuresMenuItem->Check(getMeasureData()->isExpandedMode());
 }
@@ -285,7 +289,7 @@ void MainFrame::updateMenuBarToSequence()
 void MainFrame::updateUndoMenuLabel()
 {
     wxString undo_what = getCurrentSequence()->getTopActionName();
-    
+
     if (undo_what.size() > 0)
     {
         wxString label =  _("Undo %s\tCtrl-Z");
@@ -581,7 +585,7 @@ void MainFrame::menuEvent_deleteTrack(wxCommandEvent& evt)
                               wxYES_NO, this);
 
     mainPane->forgetClickData();
-    
+
     if (answer == wxYES)
     {
         getCurrentSequence()->action( new Action::DeleteTrack( getCurrentSequence() ) );
@@ -776,21 +780,21 @@ public:
         sizer->Add(html, 1, wxEXPAND);
 
         SetSizer(sizer);
-        
+
         wxMenuBar* menuBar = new wxMenuBar();
-        
+
         wxMenu* window = new wxMenu();
         window->Append(wxID_CLOSE, wxString(_("Close"))+wxT("\tCtrl-W"));
-        
+
         menuBar->Append(window, wxT("Window"));
         SetMenuBar(menuBar);
-        
+
         Connect(wxID_CLOSE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( ManualView::onClose ));
-        
+
         Center();
         Show();
     }
-    
+
     void onClose(wxCommandEvent& evt)
     {
         Hide();
@@ -805,7 +809,7 @@ public:
 void MainFrame::menuEvent_manual(wxCommandEvent& evt)
 {
     wxString path_to_docs =  getResourcePrefix() + wxT("Documentation") + wxFileName::GetPathSeparators() + wxT("index.html");
-    
+
 #ifdef __WXMAC__
     new ManualView(this, path_to_docs);
 #else
