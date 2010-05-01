@@ -141,8 +141,14 @@ void MainFrame::initMenuBar()
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_IMPORT_MIDI, _("Import Midi File"), MainFrame::menuEvent_importmidi );
     //I18N: menu item in the "file" menu
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_MIDI, _("Export to Midi"), MainFrame::menuEvent_exportmidi );
-    //I18N: menu item in the "file" menu
-    fileMenu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_SAMPLED_AUDIO, _("Export to Audio"), MainFrame::menuEvent_exportSampledAudio );
+    
+    // disable export to sampled audio if this feature is not supported by the current PlatformMidiManager
+    if (not PlatformMidiManager::getAudioExtension().IsEmpty())
+    {
+        //I18N: menu item in the "file" menu
+        fileMenu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_SAMPLED_AUDIO, _("Export to Audio"), MainFrame::menuEvent_exportSampledAudio );
+    }
+    
     //I18N: menu item in the "file" menu
     fileMenu -> QUICK_ADD_MENU ( wxID_EXIT, _("Quit\tCtrl-Q"), MainFrame::menuEvent_quit );
 
@@ -242,12 +248,6 @@ void MainFrame::initMenuBar()
     menuBar->Append(helpMenu, wxT("&Help"));
 
     SetMenuBar(menuBar);
-    
-    // disable export to sampled audio if this feature is not supported by the current PlatformMidiManager
-    if (PlatformMidiManager::getAudioExtension().IsEmpty())
-    {
-        fileMenu->Enable(MENU_FILE_EXPORT_SAMPLED_AUDIO, false);
-    }
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -264,6 +264,7 @@ void MainFrame::disableMenus(const bool disable)
     fileMenu->Enable(MENU_FILE_IMPORT_MIDI, on);
     fileMenu->Enable(MENU_FILE_EXPORT_MIDI, on);
     fileMenu->Enable(MENU_FILE_EXPORT_SAMPLED_AUDIO, on);
+
     fileMenu->Enable(MENU_FILE_EXPORT_NOTATION, on);
     fileMenu->Enable(MENU_FILE_COPYRIGHT, on);
     fileMenu->Enable(wxID_EXIT, on);
