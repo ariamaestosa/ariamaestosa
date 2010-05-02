@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="AriaCB" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="GCC_Win32_Debug">
+				<Option platforms="Windows;" />
+				<Option output="..\Program Files\AriaGCCDbg" prefix_auto="1" extension_auto="1" />
+				<Option object_output="..\_Intermediate\GCC_Win32_Debug\Aria" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option host_application="AriaDbg.exe" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="-pipe" />
+					<Add option="-mthreads" />
+					<Add option='[[if (PLATFORM == PLATFORM_MSW &amp;&amp; (GetCompilerFactory().GetCompilerVersionString(_T(&quot;gcc&quot;)) &gt;= _T(&quot;4.0.0&quot;))) print(_T(&quot;-Wno-attributes&quot;));]]' />
+					<Add option="-D__GNUWIN32__" />
+					<Add option="-D__WXMSW__" />
+					<Add option="-DWXUSINGDLL" />
+					<Add option="-DWIN32_GUI" />
+					<Add option="-D_DEBUG" />
+					<Add option="-D__WXDEBUG__" />
+					<Add option="-DUSE_WX_LOGGING" />
+					<Add directory="$(#wx)\lib\gcc_dll\mswud" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="$(#wx)\lib\gcc_dll\mswu" />
+				</ResourceCompiler>
+				<Linker>
+					<Add library="libwxmsw28ud.a" />
+					<Add directory="$(#wx)\lib\gcc_dll" />
+				</Linker>
+			</Target>
+			<Target title="GCC_Win32_Release">
+				<Option platforms="Windows;" />
+				<Option output="..\Program Files\AriaGCC" prefix_auto="1" extension_auto="1" />
+				<Option object_output="..\_Intermediate\GCC_Win32_Release\Aria" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-Wall" />
+					<Add option="-pipe" />
+					<Add option="-mthreads" />
+					<Add option='[[if (PLATFORM == PLATFORM_MSW &amp;&amp; (GetCompilerFactory().GetCompilerVersionString(_T(&quot;gcc&quot;)) &gt;= _T(&quot;4.0.0&quot;))) print(_T(&quot;-Wno-attributes&quot;));]]' />
+					<Add option="-D__GNUWIN32__" />
+					<Add option="-D__WXMSW__" />
+					<Add option="-DWIN32_GUI" />
+					<Add option="-DNDEBUG" />
+					<Add directory="$(#wx)\lib\gcc_lib\mswu" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="$(#wx)\lib\gcc_lib\mswu" />
+				</ResourceCompiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="libwxmsw28u.a" />
+					<Add library="libwinmm.a" />
+					<Add library="libcomctl32.a" />
+					<Add library="librpcrt4.a" />
+					<Add library="libOle32.a" />
+					<Add library="libUuid.a" />
+					<Add library="libwxjpeg.a" />
+					<Add library="libwxpng.a" />
+					<Add library="libwxtiff.a" />
+					<Add library="libwxzlib.a" />
+					<Add library="libwxexpat.a" />
+					<Add library="liboleaut32.a" />
+					<Add directory="$(#wx)\lib\gcc_lib" />
+				</Linker>
+			</Target>
+			<Target title="GCC_Linux_Debug">
+				<Option output="..\Aria" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="..\..\ariamaestosa" />
+				<Option object_output="obj\Debug\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-D_ALSA" />
+					<Add option="-D__WXDEBUG__" />
+				</Compiler>
+				<MakeCommands>
+					<Build command="cd .. &amp;&amp; python scons/scons.py config=debug -j 2" />
+					<CompileFile command="" />
+					<Clean command="cd .. &amp;&amp; python scons/scons.py --clean" />
+					<DistClean command="cd .. &amp;&amp; python scons/scons.py --clean" />
+					<AskRebuildNeeded command="$make -q -f $makefile $target" />
+					<SilentBuild command="$make -s -f $makefile $target" />
+				</MakeCommands>
+			</Target>
+			<Target title="GCC_Linux_Release">
+				<Option output="..\Aria" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="..\..\ariamaestosa" />
+				<Option object_output="obj\Release\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-D_ALSA" />
+					<Add option="-DNDEBUG" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+				<MakeCommands>
+					<Build command="cd .. &amp;&amp; python scons/scons.py config=release -j 2" />
+					<CompileFile command="" />
+					<Clean command="cd .. &amp;&amp; python scons/scons.py --clean" />
+					<DistClean command="cd .. &amp;&amp; python scons/scons.py --clean" />
+					<AskRebuildNeeded command="$make -q -f $makefile $target" />
+					<SilentBuild command="$make -s -f $makefile $target" />
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wextra" />
+			<Add option="-Wall" />
+			<Add option="`wx-config --cflags`" />
+			<Add option="`pkg-config --cflags glib-2.0`" />
+			<Add option="-DRENDERER_WXWIDGETS" />
+			<Add option="-DwxUSE_UNICODE" />
+			<Add directory="..\Src" />
+			<Add directory="..\libjdkmidi\include" />
+			<Add directory="..\" />
+		</Compiler>
+		<ResourceCompiler>
+			<Add directory="$(#wx)\include" />
+		</ResourceCompiler>
+		<Linker>
+			<Add option="`wx-config --libs`" />
+			<Add library="libwinmm.a" />
+		</Linker>
+		<Unit filename="..\Src\Actions\AddControlEvent.cpp" />
+		<Unit filename="..\Src\Actions\AddControlEvent.h" />
+		<Unit filename="..\Src\Actions\AddControllerSlide.cpp" />
+		<Unit filename="..\Src\Actions\AddControllerSlide.h" />
+		<Unit filename="..\Src\Actions\AddNote.cpp" />
+		<Unit filename="..\Src\Actions\AddNote.h" />
+		<Unit filename="..\Src\Actions\AddTrack.cpp" />
+		<Unit filename="..\Src\Actions\AddTrack.h" />
+		<Unit filename="..\Src\Actions\DeleteSelected.cpp" />
+		<Unit filename="..\Src\Actions\DeleteSelected.h" />
+		<Unit filename="..\Src\Actions\DeleteTrack.cpp" />
+		<Unit filename="..\Src\Actions\DeleteTrack.h" />
+		<Unit filename="..\Src\Actions\EditAction.cpp" />
+		<Unit filename="..\Src\Actions\EditAction.h" />
+		<Unit filename="..\Src\Actions\InsertEmptyMeasures.cpp" />
+		<Unit filename="..\Src\Actions\InsertEmptyMeasures.h" />
+		<Unit filename="..\Src\Actions\MoveNotes.cpp" />
+		<Unit filename="..\Src\Actions\MoveNotes.h" />
+		<Unit filename="..\Src\Actions\NumberPressed.cpp" />
+		<Unit filename="..\Src\Actions\NumberPressed.h" />
+		<Unit filename="..\Src\Actions\Paste.cpp" />
+		<Unit filename="..\Src\Actions\Paste.h" />
+		<Unit filename="..\Src\Actions\RearrangeNotes.cpp" />
+		<Unit filename="..\Src\Actions\RearrangeNotes.h" />
+		<Unit filename="..\Src\Actions\RemoveMeasures.cpp" />
+		<Unit filename="..\Src\Actions\RemoveMeasures.h" />
+		<Unit filename="..\Src\Actions\RemoveOverlapping.cpp" />
+		<Unit filename="..\Src\Actions\RemoveOverlapping.h" />
+		<Unit filename="..\Src\Actions\ResizeNotes.cpp" />
+		<Unit filename="..\Src\Actions\ResizeNotes.h" />
+		<Unit filename="..\Src\Actions\ScaleSong.cpp" />
+		<Unit filename="..\Src\Actions\ScaleSong.h" />
+		<Unit filename="..\Src\Actions\ScaleTrack.cpp" />
+		<Unit filename="..\Src\Actions\ScaleTrack.h" />
+		<Unit filename="..\Src\Actions\SetAccidentalSign.cpp" />
+		<Unit filename="..\Src\Actions\SetAccidentalSign.h" />
+		<Unit filename="..\Src\Actions\SetNoteVolume.cpp" />
+		<Unit filename="..\Src\Actions\SetNoteVolume.h" />
+		<Unit filename="..\Src\Actions\ShiftBySemiTone.cpp" />
+		<Unit filename="..\Src\Actions\ShiftBySemiTone.h" />
+		<Unit filename="..\Src\Actions\ShiftFrets.cpp" />
+		<Unit filename="..\Src\Actions\ShiftFrets.h" />
+		<Unit filename="..\Src\Actions\ShiftString.cpp" />
+		<Unit filename="..\Src\Actions\ShiftString.h" />
+		<Unit filename="..\Src\Actions\SnapNotesToGrid.cpp" />
+		<Unit filename="..\Src\Actions\SnapNotesToGrid.h" />
+		<Unit filename="..\Src\Actions\UpdateGuitarTuning.cpp" />
+		<Unit filename="..\Src\Actions\UpdateGuitarTuning.h" />
+		<Unit filename="..\Src\Analysers\ScoreAnalyser.cpp" />
+		<Unit filename="..\Src\Analysers\ScoreAnalyser.h" />
+		<Unit filename="..\Src\Analysers\SilenceAnalyser.cpp" />
+		<Unit filename="..\Src\Analysers\SilenceAnalyser.h" />
+		<Unit filename="..\Src\AriaCore.cpp" />
+		<Unit filename="..\Src\AriaCore.h" />
+		<Unit filename="..\Src\Clipboard.cpp" />
+		<Unit filename="..\Src\Clipboard.h" />
+		<Unit filename="..\Src\Dialogs\About.cpp" />
+		<Unit filename="..\Src\Dialogs\About.h" />
+		<Unit filename="..\Src\Dialogs\CopyrightWindow.cpp" />
+		<Unit filename="..\Src\Dialogs\CopyrightWindow.h" />
+		<Unit filename="..\Src\Dialogs\CustomNoteSelectDialog.cpp" />
+		<Unit filename="..\Src\Dialogs\CustomNoteSelectDialog.h" />
+		<Unit filename="..\Src\Dialogs\Preferences.cpp" />
+		<Unit filename="..\Src\Dialogs\Preferences.h" />
+		<Unit filename="..\Src\Dialogs\PrintSetupDialog.cpp" />
+		<Unit filename="..\Src\Dialogs\PrintSetupDialog.h" />
+		<Unit filename="..\Src\Dialogs\ScalePicker.cpp" />
+		<Unit filename="..\Src\Dialogs\ScalePicker.h" />
+		<Unit filename="..\Src\Dialogs\WaitWindow.cpp" />
+		<Unit filename="..\Src\Dialogs\WaitWindow.h" />
+		<Unit filename="..\Src\Editors\ControllerEditor.cpp" />
+		<Unit filename="..\Src\Editors\ControllerEditor.h" />
+		<Unit filename="..\Src\Editors\DrumEditor.cpp" />
+		<Unit filename="..\Src\Editors\DrumEditor.h" />
+		<Unit filename="..\Src\Editors\Editor.cpp" />
+		<Unit filename="..\Src\Editors\Editor.h" />
+		<Unit filename="..\Src\Editors\GuitarEditor.cpp" />
+		<Unit filename="..\Src\Editors\GuitarEditor.h" />
+		<Unit filename="..\Src\Editors\KeyboardEditor.cpp" />
+		<Unit filename="..\Src\Editors\KeyboardEditor.h" />
+		<Unit filename="..\Src\Editors\RelativeXCoord.cpp" />
+		<Unit filename="..\Src\Editors\RelativeXCoord.h" />
+		<Unit filename="..\Src\Editors\ScoreEditor.cpp" />
+		<Unit filename="..\Src\Editors\ScoreEditor.h" />
+		<Unit filename="..\Src\GUI\GraphicalTrack.cpp" />
+		<Unit filename="..\Src\GUI\GraphicalTrack.h" />
+		<Unit filename="..\Src\GUI\ImageProvider.cpp" />
+		<Unit filename="..\Src\GUI\ImageProvider.h" />
+		<Unit filename="..\Src\GUI\MainFrame.cpp" />
+		<Unit filename="..\Src\GUI\MainFrame.h" />
+		<Unit filename="..\Src\GUI\MainFrameMenuBar.cpp" />
+		<Unit filename="..\Src\GUI\MainPane.cpp" />
+		<Unit filename="..\Src\GUI\MainPane.h" />
+		<Unit filename="..\Src\GUI\MeasureBar.cpp" />
+		<Unit filename="..\Src\GUI\MeasureBar.h" />
+		<Unit filename="..\Src\IO\AriaFileWriter.cpp" />
+		<Unit filename="..\Src\IO\AriaFileWriter.h" />
+		<Unit filename="..\Src\IO\IOUtils.cpp" />
+		<Unit filename="..\Src\IO\IOUtils.h" />
+		<Unit filename="..\Src\IO\MidiFileReader.cpp" />
+		<Unit filename="..\Src\IO\MidiFileReader.h" />
+		<Unit filename="..\Src\IO\MidiToMemoryStream.cpp" />
+		<Unit filename="..\Src\IO\MidiToMemoryStream.h" />
+		<Unit filename="..\Src\LeakCheck.cpp" />
+		<Unit filename="..\Src\LeakCheck.h" />
+		<Unit filename="..\Src\Midi\CommonMidiUtils.cpp" />
+		<Unit filename="..\Src\Midi\CommonMidiUtils.h" />
+		<Unit filename="..\Src\Midi\ControllerEvent.cpp" />
+		<Unit filename="..\Src\Midi\ControllerEvent.h" />
+		<Unit filename="..\Src\Midi\MeasureData.cpp" />
+		<Unit filename="..\Src\Midi\MeasureData.h" />
+		<Unit filename="..\Src\Midi\Note.cpp" />
+		<Unit filename="..\Src\Midi\Note.h" />
+		<Unit filename="..\Src\Midi\Players\Alsa\AlsaNotePlayer.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="..\Src\Midi\Players\Alsa\AlsaNotePlayer.h" />
+		<Unit filename="..\Src\Midi\Players\Alsa\AlsaPlayer.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="..\Src\Midi\Players\Alsa\AlsaPort.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="..\Src\Midi\Players\Alsa\AlsaPort.h" />
+		<Unit filename="..\Src\Midi\Players\PlatformMidiManager.h" />
+		<Unit filename="..\Src\Midi\Players\Sequencer.cpp" />
+		<Unit filename="..\Src\Midi\Players\Sequencer.h" />
+		<Unit filename="..\Src\Midi\Players\Win\WinPlayer.cpp" />
+		<Unit filename="..\Src\Midi\Sequence.cpp" />
+		<Unit filename="..\Src\Midi\Sequence.h" />
+		<Unit filename="..\Src\Midi\TimeSigChange.cpp" />
+		<Unit filename="..\Src\Midi\TimeSigChange.h" />
+		<Unit filename="..\Src\Midi\Track.cpp" />
+		<Unit filename="..\Src\Midi\Track.h" />
+		<Unit filename="..\Src\OpenGL.h" />
+		<Unit filename="..\Src\Pickers\BackgroundPicker.cpp" />
+		<Unit filename="..\Src\Pickers\BackgroundPicker.h" />
+		<Unit filename="..\Src\Pickers\ControllerChoice.cpp" />
+		<Unit filename="..\Src\Pickers\ControllerChoice.h" />
+		<Unit filename="..\Src\Pickers\DrumChoice.cpp" />
+		<Unit filename="..\Src\Pickers\DrumChoice.h" />
+		<Unit filename="..\Src\Pickers\InstrumentChoice.cpp" />
+		<Unit filename="..\Src\Pickers\InstrumentChoice.h" />
+		<Unit filename="..\Src\Pickers\KeyPicker.cpp" />
+		<Unit filename="..\Src\Pickers\KeyPicker.h" />
+		<Unit filename="..\Src\Pickers\MagneticGrid.cpp" />
+		<Unit filename="..\Src\Pickers\MagneticGrid.h" />
+		<Unit filename="..\Src\Pickers\TimeSigPicker.cpp" />
+		<Unit filename="..\Src\Pickers\TimeSigPicker.h" />
+		<Unit filename="..\Src\Pickers\TuningPicker.cpp" />
+		<Unit filename="..\Src\Pickers\TuningPicker.h" />
+		<Unit filename="..\Src\Pickers\VolumeSlider.cpp" />
+		<Unit filename="..\Src\Pickers\VolumeSlider.h" />
+		<Unit filename="..\Src\PreferencesData.cpp" />
+		<Unit filename="..\Src\PreferencesData.h" />
+		<Unit filename="..\Src\Printing\AriaPrintable.cpp" />
+		<Unit filename="..\Src\Printing\AriaPrintable.h" />
+		<Unit filename="..\Src\Printing\EditorPrintable.cpp" />
+		<Unit filename="..\Src\Printing\EditorPrintable.h" />
+		<Unit filename="..\Src\Printing\PrintLayout\LayoutElement.cpp" />
+		<Unit filename="..\Src\Printing\PrintLayout\LayoutElement.h" />
+		<Unit filename="..\Src\Printing\PrintLayout\LayoutPage.h" />
+		<Unit filename="..\Src\Printing\PrintLayout\PrintLayoutAbstract.cpp" />
+		<Unit filename="..\Src\Printing\PrintLayout\PrintLayoutAbstract.h" />
+		<Unit filename="..\Src\Printing\PrintLayout\PrintLayoutLine.cpp" />
+		<Unit filename="..\Src\Printing\PrintLayout\PrintLayoutLine.h" />
+		<Unit filename="..\Src\Printing\PrintLayout\PrintLayoutMeasure.cpp" />
+		<Unit filename="..\Src\Printing\PrintLayout\PrintLayoutMeasure.h" />
+		<Unit filename="..\Src\Printing\PrintLayout\PrintLayoutNumeric.cpp" />
+		<Unit filename="..\Src\Printing\PrintLayout\PrintLayoutNumeric.h" />
+		<Unit filename="..\Src\Printing\PrintLayout\RelativePlacementManager.cpp" />
+		<Unit filename="..\Src\Printing\PrintLayout\RelativePlacementManager.h" />
+		<Unit filename="..\Src\Printing\PrintableSequence.cpp" />
+		<Unit filename="..\Src\Printing\PrintableSequence.h" />
+		<Unit filename="..\Src\Printing\ScorePrint.cpp" />
+		<Unit filename="..\Src\Printing\ScorePrint.h" />
+		<Unit filename="..\Src\Printing\TabPrint.cpp" />
+		<Unit filename="..\Src\Printing\TabPrint.h" />
+		<Unit filename="..\Src\Printing\wxEasyPrintWrapper.cpp" />
+		<Unit filename="..\Src\Printing\wxEasyPrintWrapper.h" />
+		<Unit filename="..\Src\Range.h" />
+		<Unit filename="..\Src\Renderers\Drawable.h" />
+		<Unit filename="..\Src\Renderers\GLDrawable.cpp" />
+		<Unit filename="..\Src\Renderers\GLImage.cpp" />
+		<Unit filename="..\Src\Renderers\GLImage.h" />
+		<Unit filename="..\Src\Renderers\GLPane.cpp" />
+		<Unit filename="..\Src\Renderers\GLPane.h" />
+		<Unit filename="..\Src\Renderers\GLRenderImp.cpp" />
+		<Unit filename="..\Src\Renderers\GLwxString.cpp" />
+		<Unit filename="..\Src\Renderers\GLwxString.h" />
+		<Unit filename="..\Src\Renderers\ImageBase.h" />
+		<Unit filename="..\Src\Renderers\RenderAPI.h" />
+		<Unit filename="..\Src\Renderers\wxDCString.cpp" />
+		<Unit filename="..\Src\Renderers\wxDCString.h" />
+		<Unit filename="..\Src\Renderers\wxDrawable.cpp" />
+		<Unit filename="..\Src\Renderers\wxImage.cpp" />
+		<Unit filename="..\Src\Renderers\wxImage.h" />
+		<Unit filename="..\Src\Renderers\wxRenderImp.cpp" />
+		<Unit filename="..\Src\Renderers\wxRenderPane.cpp" />
+		<Unit filename="..\Src\Renderers\wxRenderPane.h" />
+		<Unit filename="..\Src\Singleton.cpp" />
+		<Unit filename="..\Src\Singleton.h" />
+		<Unit filename="..\Src\Utils.h" />
+		<Unit filename="..\Src\languages.cpp" />
+		<Unit filename="..\Src\languages.h" />
+		<Unit filename="..\Src\main.cpp" />
+		<Unit filename="..\Src\main.h" />
+		<Unit filename="..\Src\ptr_vector.h" />
+		<Unit filename="..\Src\unit_test.cpp" />
+		<Unit filename="..\Src\unit_test.h" />
+		<Unit filename="..\doc\BugsWindows.txt" />
+		<Unit filename="..\irrXML\CXMLReaderImpl.h" />
+		<Unit filename="..\irrXML\fast_atof.h" />
+		<Unit filename="..\irrXML\heapsort.h" />
+		<Unit filename="..\irrXML\irrArray.h" />
+		<Unit filename="..\irrXML\irrString.h" />
+		<Unit filename="..\irrXML\irrTypes.h" />
+		<Unit filename="..\irrXML\irrXML.cpp" />
+		<Unit filename="..\irrXML\irrXML.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\advancedsequencer.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\driver.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\driverdump.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\driverwin32.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\edittrack.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\file.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\fileread.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\filereadmultitrack.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\fileshow.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\filewrite.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\filewritemultitrack.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\keysig.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\manager.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\matrix.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\midi.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\msg.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\multitrack.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\parser.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\process.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\queue.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\sequencer.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\showcontrol.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\showcontrolhandler.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\smpte.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\song.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\sysex.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\tempo.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\tick.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\track.h" />
+		<Unit filename="..\libjdkmidi\include\jdkmidi\world.h" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_advancedsequencer.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_driver.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_driverdump.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_edittrack.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_file.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_fileread.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_filereadmultitrack.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_fileshow.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_filewrite.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_filewritemultitrack.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_keysig.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_manager.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_matrix.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_midi.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_msg.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_multitrack.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_parser.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_process.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_queue.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_sequencer.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_showcontrol.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_showcontrolhandler.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_smpte.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_sysex.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_tempo.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_tick.cpp" />
+		<Unit filename="..\libjdkmidi\src\jdkmidi_track.cpp" />
+		<Unit filename="..\libjdkmidi\src\win32\jdkmidi_driverwin32.cpp" />
+		<Unit filename="Aria.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Extensions>
+			<code_completion>
+				<search_path add="$(#wx.base)" />
+			</code_completion>
+			<debugger />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

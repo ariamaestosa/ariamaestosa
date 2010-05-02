@@ -1,0 +1,42 @@
+
+// important : constant names determine icon order in exe
+IDR_MAINFRAME ICON "Aria.ico"
+IDR_TYPE ICON "AriaDoc.ico"		// for Aria docs in Explorer
+
+
+#include "wx\msw\wx.rc"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version  (for Visual C++)
+//
+
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 3,0,0,0
+ PRODUCTVERSION 3,0,0,0
+ FILEFLAGSMASK 0x3fL		// VS_FFI_FILEFLAGSMASK
+#if defined(_DEBUG) && defined (_MSC_VER)
+ FILEFLAGS 0x1L		//// VS_FF_DEBUG|VS_FF_PRIVATEBUILD|VS_FF_PRERELEASE
+#else
+ FILEFLAGS 0x0L		// final version
+#endif
+  FILEOS           VOS_NT_WINDOWS32
+  FILETYPE         VFT_APP
+  FILESUBTYPE      VFT2_UNKNOWN // not used
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+		BLOCK "040904E4" // Lang=US English, CharSet=Windows Multilingual
+        BEGIN
+            VALUE "FileDescription", "Aria"
+            VALUE "FileVersion", "0.1.0.0"
+            VALUE "ProductName", "Aria"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x40c, 1252
+    END
+END
