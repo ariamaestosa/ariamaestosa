@@ -183,8 +183,6 @@
 		957119CC1125D8D300104BF5 /* CustomNoteSelectDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F51125D8D200104BF5 /* CustomNoteSelectDialog.h */; };
 		957119CF1125D8D300104BF5 /* Preferences.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F81125D8D200104BF5 /* Preferences.cpp */; };
 		957119D01125D8D300104BF5 /* Preferences.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F91125D8D200104BF5 /* Preferences.h */; };
-		957119D11125D8D300104BF5 /* ScalePicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118FA1125D8D200104BF5 /* ScalePicker.cpp */; };
-		957119D21125D8D300104BF5 /* ScalePicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118FB1125D8D200104BF5 /* ScalePicker.h */; };
 		957119D31125D8D300104BF5 /* WaitWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118FC1125D8D200104BF5 /* WaitWindow.cpp */; };
 		957119D41125D8D300104BF5 /* WaitWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118FD1125D8D200104BF5 /* WaitWindow.h */; };
 		957119D51125D8D300104BF5 /* ControllerEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118FF1125D8D200104BF5 /* ControllerEditor.cpp */; };
@@ -258,8 +256,6 @@
 		95711A1B1125D8D300104BF5 /* Track.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571194D1125D8D200104BF5 /* Track.cpp */; };
 		95711A1C1125D8D300104BF5 /* Track.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571194E1125D8D200104BF5 /* Track.h */; };
 		95711A1D1125D8D300104BF5 /* OpenGL.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571194F1125D8D200104BF5 /* OpenGL.h */; };
-		95711A1E1125D8D300104BF5 /* BackgroundPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119511125D8D200104BF5 /* BackgroundPicker.cpp */; };
-		95711A1F1125D8D300104BF5 /* BackgroundPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119521125D8D200104BF5 /* BackgroundPicker.h */; };
 		95711A201125D8D300104BF5 /* ControllerChoice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119531125D8D200104BF5 /* ControllerChoice.cpp */; };
 		95711A211125D8D300104BF5 /* ControllerChoice.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119541125D8D200104BF5 /* ControllerChoice.h */; };
 		95711A221125D8D300104BF5 /* DrumChoice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119551125D8D200104BF5 /* DrumChoice.cpp */; };
@@ -380,8 +376,6 @@
 		95711A961125D8D300104BF5 /* CustomNoteSelectDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F51125D8D200104BF5 /* CustomNoteSelectDialog.h */; };
 		95711A991125D8D300104BF5 /* Preferences.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F81125D8D200104BF5 /* Preferences.cpp */; };
 		95711A9A1125D8D300104BF5 /* Preferences.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F91125D8D200104BF5 /* Preferences.h */; };
-		95711A9B1125D8D300104BF5 /* ScalePicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118FA1125D8D200104BF5 /* ScalePicker.cpp */; };
-		95711A9C1125D8D300104BF5 /* ScalePicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118FB1125D8D200104BF5 /* ScalePicker.h */; };
 		95711A9D1125D8D300104BF5 /* WaitWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118FC1125D8D200104BF5 /* WaitWindow.cpp */; };
 		95711A9E1125D8D300104BF5 /* WaitWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118FD1125D8D200104BF5 /* WaitWindow.h */; };
 		95711A9F1125D8D300104BF5 /* ControllerEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118FF1125D8D200104BF5 /* ControllerEditor.cpp */; };
@@ -455,8 +449,6 @@
 		95711AE51125D8D300104BF5 /* Track.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571194D1125D8D200104BF5 /* Track.cpp */; };
 		95711AE61125D8D300104BF5 /* Track.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571194E1125D8D200104BF5 /* Track.h */; };
 		95711AE71125D8D300104BF5 /* OpenGL.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571194F1125D8D200104BF5 /* OpenGL.h */; };
-		95711AE81125D8D300104BF5 /* BackgroundPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119511125D8D200104BF5 /* BackgroundPicker.cpp */; };
-		95711AE91125D8D300104BF5 /* BackgroundPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119521125D8D200104BF5 /* BackgroundPicker.h */; };
 		95711AEA1125D8D300104BF5 /* ControllerChoice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119531125D8D200104BF5 /* ControllerChoice.cpp */; };
 		95711AEB1125D8D300104BF5 /* ControllerChoice.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119541125D8D200104BF5 /* ControllerChoice.h */; };
 		95711AEC1125D8D300104BF5 /* DrumChoice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119551125D8D200104BF5 /* DrumChoice.cpp */; };
@@ -537,6 +529,18 @@
 		959FD6C0114451A400F22579 /* DeleteTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959FD6BE114451A400F22579 /* DeleteTrack.h */; };
 		959FD6C1114451A400F22579 /* DeleteTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959FD6BD114451A400F22579 /* DeleteTrack.cpp */; };
 		959FD6C2114451A400F22579 /* DeleteTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959FD6BE114451A400F22579 /* DeleteTrack.h */; };
+		95AFD78E118F206E007DC6C7 /* TrackPropertiesDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95AFD78C118F206E007DC6C7 /* TrackPropertiesDialog.cpp */; };
+		95AFD78F118F206E007DC6C7 /* TrackPropertiesDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 95AFD78D118F206E007DC6C7 /* TrackPropertiesDialog.h */; };
+		95AFD790118F206E007DC6C7 /* TrackPropertiesDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95AFD78C118F206E007DC6C7 /* TrackPropertiesDialog.cpp */; };
+		95AFD791118F206E007DC6C7 /* TrackPropertiesDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 95AFD78D118F206E007DC6C7 /* TrackPropertiesDialog.h */; };
+		95AFD7A0118F21C8007DC6C7 /* ScaleDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95AFD79E118F21C8007DC6C7 /* ScaleDialog.cpp */; };
+		95AFD7A1118F21C8007DC6C7 /* ScaleDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 95AFD79F118F21C8007DC6C7 /* ScaleDialog.h */; };
+		95AFD7A2118F21C8007DC6C7 /* ScaleDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95AFD79E118F21C8007DC6C7 /* ScaleDialog.cpp */; };
+		95AFD7A3118F21C8007DC6C7 /* ScaleDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 95AFD79F118F21C8007DC6C7 /* ScaleDialog.h */; };
+		95AFD7A8118F2279007DC6C7 /* TuningDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95AFD7A6118F2279007DC6C7 /* TuningDialog.cpp */; };
+		95AFD7A9118F2279007DC6C7 /* TuningDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 95AFD7A7118F2279007DC6C7 /* TuningDialog.h */; };
+		95AFD7AA118F2279007DC6C7 /* TuningDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95AFD7A6118F2279007DC6C7 /* TuningDialog.cpp */; };
+		95AFD7AB118F2279007DC6C7 /* TuningDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 95AFD7A7118F2279007DC6C7 /* TuningDialog.h */; };
 		95B90464114ADF23007F4778 /* PrintSetupDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95B90462114ADF23007F4778 /* PrintSetupDialog.cpp */; };
 		95B90465114ADF23007F4778 /* PrintSetupDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 95B90463114ADF23007F4778 /* PrintSetupDialog.h */; };
 		95B90466114ADF23007F4778 /* PrintSetupDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95B90462114ADF23007F4778 /* PrintSetupDialog.cpp */; };
@@ -742,8 +746,6 @@
 		957118F51125D8D200104BF5 /* CustomNoteSelectDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomNoteSelectDialog.h; path = ../Src/Dialogs/CustomNoteSelectDialog.h; sourceTree = SOURCE_ROOT; };
 		957118F81125D8D200104BF5 /* Preferences.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Preferences.cpp; path = ../Src/Dialogs/Preferences.cpp; sourceTree = SOURCE_ROOT; };
 		957118F91125D8D200104BF5 /* Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Preferences.h; path = ../Src/Dialogs/Preferences.h; sourceTree = SOURCE_ROOT; };
-		957118FA1125D8D200104BF5 /* ScalePicker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScalePicker.cpp; path = ../Src/Dialogs/ScalePicker.cpp; sourceTree = SOURCE_ROOT; };
-		957118FB1125D8D200104BF5 /* ScalePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScalePicker.h; path = ../Src/Dialogs/ScalePicker.h; sourceTree = SOURCE_ROOT; };
 		957118FC1125D8D200104BF5 /* WaitWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WaitWindow.cpp; path = ../Src/Dialogs/WaitWindow.cpp; sourceTree = SOURCE_ROOT; };
 		957118FD1125D8D200104BF5 /* WaitWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WaitWindow.h; path = ../Src/Dialogs/WaitWindow.h; sourceTree = SOURCE_ROOT; };
 		957118FF1125D8D200104BF5 /* ControllerEditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ControllerEditor.cpp; path = ../Src/Editors/ControllerEditor.cpp; sourceTree = SOURCE_ROOT; };
@@ -817,8 +819,6 @@
 		9571194D1125D8D200104BF5 /* Track.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Track.cpp; path = ../Src/Midi/Track.cpp; sourceTree = SOURCE_ROOT; };
 		9571194E1125D8D200104BF5 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Track.h; path = ../Src/Midi/Track.h; sourceTree = SOURCE_ROOT; };
 		9571194F1125D8D200104BF5 /* OpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OpenGL.h; path = ../Src/OpenGL.h; sourceTree = SOURCE_ROOT; };
-		957119511125D8D200104BF5 /* BackgroundPicker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BackgroundPicker.cpp; path = ../Src/Pickers/BackgroundPicker.cpp; sourceTree = SOURCE_ROOT; };
-		957119521125D8D200104BF5 /* BackgroundPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BackgroundPicker.h; path = ../Src/Pickers/BackgroundPicker.h; sourceTree = SOURCE_ROOT; };
 		957119531125D8D200104BF5 /* ControllerChoice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ControllerChoice.cpp; path = ../Src/Pickers/ControllerChoice.cpp; sourceTree = SOURCE_ROOT; };
 		957119541125D8D200104BF5 /* ControllerChoice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ControllerChoice.h; path = ../Src/Pickers/ControllerChoice.h; sourceTree = SOURCE_ROOT; };
 		957119551125D8D200104BF5 /* DrumChoice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DrumChoice.cpp; path = ../Src/Pickers/DrumChoice.cpp; sourceTree = SOURCE_ROOT; };
@@ -927,6 +927,12 @@
 		959FD68A1144493C00F22579 /* AddTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddTrack.h; path = ../Src/Actions/AddTrack.h; sourceTree = SOURCE_ROOT; };
 		959FD6BD114451A400F22579 /* DeleteTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DeleteTrack.cpp; path = ../Src/Actions/DeleteTrack.cpp; sourceTree = SOURCE_ROOT; };
 		959FD6BE114451A400F22579 /* DeleteTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DeleteTrack.h; path = ../Src/Actions/DeleteTrack.h; sourceTree = SOURCE_ROOT; };
+		95AFD78C118F206E007DC6C7 /* TrackPropertiesDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TrackPropertiesDialog.cpp; path = ../Src/Dialogs/TrackPropertiesDialog.cpp; sourceTree = SOURCE_ROOT; };
+		95AFD78D118F206E007DC6C7 /* TrackPropertiesDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TrackPropertiesDialog.h; path = ../Src/Dialogs/TrackPropertiesDialog.h; sourceTree = SOURCE_ROOT; };
+		95AFD79E118F21C8007DC6C7 /* ScaleDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScaleDialog.cpp; path = ../Src/Dialogs/ScaleDialog.cpp; sourceTree = SOURCE_ROOT; };
+		95AFD79F118F21C8007DC6C7 /* ScaleDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScaleDialog.h; path = ../Src/Dialogs/ScaleDialog.h; sourceTree = SOURCE_ROOT; };
+		95AFD7A6118F2279007DC6C7 /* TuningDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TuningDialog.cpp; path = ../Src/Dialogs/TuningDialog.cpp; sourceTree = SOURCE_ROOT; };
+		95AFD7A7118F2279007DC6C7 /* TuningDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TuningDialog.h; path = ../Src/Dialogs/TuningDialog.h; sourceTree = SOURCE_ROOT; };
 		95B90462114ADF23007F4778 /* PrintSetupDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrintSetupDialog.cpp; path = ../Src/Dialogs/PrintSetupDialog.cpp; sourceTree = SOURCE_ROOT; };
 		95B90463114ADF23007F4778 /* PrintSetupDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrintSetupDialog.h; path = ../Src/Dialogs/PrintSetupDialog.h; sourceTree = SOURCE_ROOT; };
 		95C283741159481C007B8CF7 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utils.h; path = ../Src/Utils.h; sourceTree = SOURCE_ROOT; };
@@ -1069,8 +1075,12 @@
 				957118F91125D8D200104BF5 /* Preferences.h */,
 				95B90462114ADF23007F4778 /* PrintSetupDialog.cpp */,
 				95B90463114ADF23007F4778 /* PrintSetupDialog.h */,
-				957118FA1125D8D200104BF5 /* ScalePicker.cpp */,
-				957118FB1125D8D200104BF5 /* ScalePicker.h */,
+				95AFD79E118F21C8007DC6C7 /* ScaleDialog.cpp */,
+				95AFD79F118F21C8007DC6C7 /* ScaleDialog.h */,
+				95AFD78C118F206E007DC6C7 /* TrackPropertiesDialog.cpp */,
+				95AFD78D118F206E007DC6C7 /* TrackPropertiesDialog.h */,
+				95AFD7A6118F2279007DC6C7 /* TuningDialog.cpp */,
+				95AFD7A7118F2279007DC6C7 /* TuningDialog.h */,
 				957118FC1125D8D200104BF5 /* WaitWindow.cpp */,
 				957118FD1125D8D200104BF5 /* WaitWindow.h */,
 			);
@@ -1222,8 +1232,6 @@
 		957119501125D8D200104BF5 /* Pickers */ = {
 			isa = PBXGroup;
 			children = (
-				957119511125D8D200104BF5 /* BackgroundPicker.cpp */,
-				957119521125D8D200104BF5 /* BackgroundPicker.h */,
 				957119531125D8D200104BF5 /* ControllerChoice.cpp */,
 				957119541125D8D200104BF5 /* ControllerChoice.h */,
 				957119551125D8D200104BF5 /* DrumChoice.cpp */,
@@ -1494,7 +1502,6 @@
 				95711A941125D8D300104BF5 /* CopyrightWindow.h in Headers */,
 				95711A961125D8D300104BF5 /* CustomNoteSelectDialog.h in Headers */,
 				95711A9A1125D8D300104BF5 /* Preferences.h in Headers */,
-				95711A9C1125D8D300104BF5 /* ScalePicker.h in Headers */,
 				95711A9E1125D8D300104BF5 /* WaitWindow.h in Headers */,
 				95711AA01125D8D300104BF5 /* ControllerEditor.h in Headers */,
 				95711AA21125D8D300104BF5 /* DrumEditor.h in Headers */,
@@ -1530,7 +1537,6 @@
 				95711AE41125D8D300104BF5 /* TimeSigChange.h in Headers */,
 				95711AE61125D8D300104BF5 /* Track.h in Headers */,
 				95711AE71125D8D300104BF5 /* OpenGL.h in Headers */,
-				95711AE91125D8D300104BF5 /* BackgroundPicker.h in Headers */,
 				95711AEB1125D8D300104BF5 /* ControllerChoice.h in Headers */,
 				95711AED1125D8D300104BF5 /* DrumChoice.h in Headers */,
 				95711AEF1125D8D300104BF5 /* InstrumentChoice.h in Headers */,
@@ -1579,6 +1585,9 @@
 				9544D68511582D5300E0A3BD /* wxEasyPrintWrapper.h in Headers */,
 				95C283751159481C007B8CF7 /* Utils.h in Headers */,
 				955AB043115950610067DA80 /* PreferencesData.h in Headers */,
+				95AFD78F118F206E007DC6C7 /* TrackPropertiesDialog.h in Headers */,
+				95AFD7A1118F21C8007DC6C7 /* ScaleDialog.h in Headers */,
+				95AFD7A9118F2279007DC6C7 /* TuningDialog.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1614,7 +1623,6 @@
 				957119CA1125D8D300104BF5 /* CopyrightWindow.h in Headers */,
 				957119CC1125D8D300104BF5 /* CustomNoteSelectDialog.h in Headers */,
 				957119D01125D8D300104BF5 /* Preferences.h in Headers */,
-				957119D21125D8D300104BF5 /* ScalePicker.h in Headers */,
 				957119D41125D8D300104BF5 /* WaitWindow.h in Headers */,
 				957119D61125D8D300104BF5 /* ControllerEditor.h in Headers */,
 				957119D81125D8D300104BF5 /* DrumEditor.h in Headers */,
@@ -1650,7 +1658,6 @@
 				95711A1A1125D8D300104BF5 /* TimeSigChange.h in Headers */,
 				95711A1C1125D8D300104BF5 /* Track.h in Headers */,
 				95711A1D1125D8D300104BF5 /* OpenGL.h in Headers */,
-				95711A1F1125D8D300104BF5 /* BackgroundPicker.h in Headers */,
 				95711A211125D8D300104BF5 /* ControllerChoice.h in Headers */,
 				95711A231125D8D300104BF5 /* DrumChoice.h in Headers */,
 				95711A251125D8D300104BF5 /* InstrumentChoice.h in Headers */,
@@ -1699,6 +1706,9 @@
 				9544D68711582D5300E0A3BD /* wxEasyPrintWrapper.h in Headers */,
 				95C283761159481C007B8CF7 /* Utils.h in Headers */,
 				955AB045115950610067DA80 /* PreferencesData.h in Headers */,
+				95AFD791118F206E007DC6C7 /* TrackPropertiesDialog.h in Headers */,
+				95AFD7A3118F21C8007DC6C7 /* ScaleDialog.h in Headers */,
+				95AFD7AB118F2279007DC6C7 /* TuningDialog.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1813,7 +1823,6 @@
 				95711A931125D8D300104BF5 /* CopyrightWindow.cpp in Sources */,
 				95711A951125D8D300104BF5 /* CustomNoteSelectDialog.cpp in Sources */,
 				95711A991125D8D300104BF5 /* Preferences.cpp in Sources */,
-				95711A9B1125D8D300104BF5 /* ScalePicker.cpp in Sources */,
 				95711A9D1125D8D300104BF5 /* WaitWindow.cpp in Sources */,
 				95711A9F1125D8D300104BF5 /* ControllerEditor.cpp in Sources */,
 				95711AA11125D8D300104BF5 /* DrumEditor.cpp in Sources */,
@@ -1852,7 +1861,6 @@
 				95711AE11125D8D300104BF5 /* Sequence.cpp in Sources */,
 				95711AE31125D8D300104BF5 /* TimeSigChange.cpp in Sources */,
 				95711AE51125D8D300104BF5 /* Track.cpp in Sources */,
-				95711AE81125D8D300104BF5 /* BackgroundPicker.cpp in Sources */,
 				95711AEA1125D8D300104BF5 /* ControllerChoice.cpp in Sources */,
 				95711AEC1125D8D300104BF5 /* DrumChoice.cpp in Sources */,
 				95711AEE1125D8D300104BF5 /* InstrumentChoice.cpp in Sources */,
@@ -1892,6 +1900,9 @@
 				9596933A1153E612001E321B /* SilenceAnalyser.cpp in Sources */,
 				9544D68411582D5300E0A3BD /* wxEasyPrintWrapper.cpp in Sources */,
 				955AB042115950610067DA80 /* PreferencesData.cpp in Sources */,
+				95AFD78E118F206E007DC6C7 /* TrackPropertiesDialog.cpp in Sources */,
+				95AFD7A0118F21C8007DC6C7 /* ScaleDialog.cpp in Sources */,
+				95AFD7A8118F2279007DC6C7 /* TuningDialog.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1927,7 +1938,6 @@
 				957119C91125D8D300104BF5 /* CopyrightWindow.cpp in Sources */,
 				957119CB1125D8D300104BF5 /* CustomNoteSelectDialog.cpp in Sources */,
 				957119CF1125D8D300104BF5 /* Preferences.cpp in Sources */,
-				957119D11125D8D300104BF5 /* ScalePicker.cpp in Sources */,
 				957119D31125D8D300104BF5 /* WaitWindow.cpp in Sources */,
 				957119D51125D8D300104BF5 /* ControllerEditor.cpp in Sources */,
 				957119D71125D8D300104BF5 /* DrumEditor.cpp in Sources */,
@@ -1966,7 +1976,6 @@
 				95711A171125D8D300104BF5 /* Sequence.cpp in Sources */,
 				95711A191125D8D300104BF5 /* TimeSigChange.cpp in Sources */,
 				95711A1B1125D8D300104BF5 /* Track.cpp in Sources */,
-				95711A1E1125D8D300104BF5 /* BackgroundPicker.cpp in Sources */,
 				95711A201125D8D300104BF5 /* ControllerChoice.cpp in Sources */,
 				95711A221125D8D300104BF5 /* DrumChoice.cpp in Sources */,
 				95711A241125D8D300104BF5 /* InstrumentChoice.cpp in Sources */,
@@ -2006,6 +2015,9 @@
 				9596933E1153E612001E321B /* SilenceAnalyser.cpp in Sources */,
 				9544D68611582D5300E0A3BD /* wxEasyPrintWrapper.cpp in Sources */,
 				955AB044115950610067DA80 /* PreferencesData.cpp in Sources */,
+				95AFD790118F206E007DC6C7 /* TrackPropertiesDialog.cpp in Sources */,
+				95AFD7A2118F21C8007DC6C7 /* ScaleDialog.cpp in Sources */,
+				95AFD7AA118F2279007DC6C7 /* TuningDialog.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

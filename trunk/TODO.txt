@@ -70,6 +70,9 @@ NOTE: sorry, this is very raw :)
  
 * show which files have unsaved changes
  
++ move make_release.sh under OSX/
++ move documentation out of resources?
+ 
 + find dialog should have options greyed out if brought up with no selected note
  
 + resize note with drag-and-drop
@@ -190,8 +193,6 @@ repetition detection:
     yet you can't make it modal otherwise the background process stops.
 
  - controller editor should keep drum instrument in a drum track (would be fixed if control editor appears under current editor)
- - class ScalePicker in /Dialogs... should be renamed ScaleDialog, or moved
- - tuningpicker and tuningdialog should be 2 separate things
 
  - if a midi has control events in an empty track they might be removed during import (though what could go there? tempo events are already stored in sequence)
  - linux: exporting to audio via timidity : give better feedback about progression?
