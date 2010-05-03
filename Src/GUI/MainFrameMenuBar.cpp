@@ -23,7 +23,7 @@
 #include "Actions/EditAction.h"
 #include "Actions/RemoveOverlapping.h"
 
-#include "Dialogs/About.h"
+#include "Dialogs/AboutDialog.h"
 #include "Dialogs/CopyrightWindow.h"
 #include "Dialogs/CustomNoteSelectDialog.h"
 #include "Dialogs/Preferences.h"
