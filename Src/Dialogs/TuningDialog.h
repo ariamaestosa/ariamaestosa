@@ -14,38 +14,54 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef __TUNING_PICKER_H__
-#define __TUNING_PICKER_H__
 
-#include "wx/menu.h"
-#include "Utils.h"
-#include "Dialogs/TuningDialog.h"
+
+#ifndef __TUNING_DIALOG_H__
+#define __TUNING_DIALOG_H__
+
+#include "wx/frame.h"
+class wxPanel;
+class wxButton;
+class wxBoxSizer;
 
 namespace AriaMaestosa
 {
+    class GuitarEditor;
+    class StringEditor;
     
-    class GuitarEditor; // forward
-
     /**
-      * @brief guitar tuning tuning (for the tablature editor)
-      */
-    class TuningPicker : public wxMenu
+     * @brief Frame that lets you enter a custom guitar tuning for the tablature editor
+     */
+    class TuningDialog : public wxFrame
     {
-        void resetChecks();
+        wxPanel* buttonPane;
+        wxButton* ok_btn;
+        wxButton* cancel_btn;
+        wxBoxSizer* buttonsizer;
+        
+        wxBoxSizer* sizer;
+        
         GuitarEditor* parent;
-        WxOwnerPtr<TuningDialog>  m_dialog_dialog;
+        
+        StringEditor* strings[10];
         
     public:
         LEAK_CHECK();
         
-        TuningPicker();
-        ~TuningPicker();
+        TuningDialog();
+        ~TuningDialog();
         
-        void menuItemSelected(wxCommandEvent& evt);
-        void loadTuning(const int id, const bool user_triggered=true);
         void setParent(GuitarEditor* parent_arg);
         
-        DECLARE_EVENT_TABLE();
+        void show();
+        
+        /** @brief callback invoked when Cancel button of the tuning picker is pressed */
+        void cancelButton(wxCommandEvent& evt);
+        
+        /** @brief callback invoked when OK button of the tuning picker is pressed */
+        void okButton(wxCommandEvent& evt);
+        
+        DECLARE_EVENT_TABLE()
     };
     
 }

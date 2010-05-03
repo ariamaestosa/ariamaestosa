@@ -28,7 +28,8 @@
 #include "Dialogs/CustomNoteSelectDialog.h"
 #include "Dialogs/Preferences.h"
 #include "Dialogs/PrintSetupDialog.h"
-#include "Dialogs/ScalePicker.h"
+#include "Dialogs/ScaleDialog.h"
+#include "Dialogs/TrackPropertiesDialog.h"
 #include "Dialogs/WaitWindow.h"
 #include "GUI/MainFrame.h"
 #include "GUI/MainPane.h"
@@ -40,9 +41,8 @@
 #include "Midi/Sequence.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/CommonMidiUtils.h"
-#include "Pickers/TuningPicker.h"
 #include "Pickers/KeyPicker.h"
-#include "Pickers/BackgroundPicker.h"
+#include "Pickers/TuningPicker.h"
 
 #include "Utils.h"
 #include <iostream>
@@ -551,7 +551,7 @@ void MainFrame::menuEvent_selectAll(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_scale(wxCommandEvent& evt)
 {
-    ScalePicker::pickScale( getCurrentSequence() );
+    ScaleDialog::pickScale( getCurrentSequence() );
 }
 
 // -----------------------------------------------------------------------------------------------------------

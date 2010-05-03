@@ -41,7 +41,7 @@ namespace AriaMaestosa
     public:
         
         std::vector<int> tuning;
-        std::vector<int> previous_tuning; // for undo purposes
+        std::vector<int> previous_tuning; //!< for undo purposes
         
         GuitarEditor(Track* track);
         ~GuitarEditor();

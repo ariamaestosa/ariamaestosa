@@ -14,20 +14,21 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef __BG_PICKER_H__
-#define __BG_PICKER_H__
 
-#include "Utils.h"
+
+#ifndef __SCALE_DIALOG_H__
+#define __SCALE_DIALOG_H__
 
 namespace AriaMaestosa
 {
-    class Track;
+    class Sequence;
     
-    namespace TrackProperties
+    namespace ScaleDialog
     {
-        
-        void show(Track* parent);
+        void pickScale(Sequence* seq);
+        void free();
     }
+    
 }
 
 #endif

@@ -37,7 +37,7 @@
 
 #include "Dialogs/CustomNoteSelectDialog.h"
 #include "Dialogs/WaitWindow.h"
-#include "Dialogs/ScalePicker.h"
+#include "Dialogs/ScaleDialog.h"
 #include "Dialogs/CopyrightWindow.h"
 #include "Dialogs/Preferences.h"
 #include "Dialogs/About.h"

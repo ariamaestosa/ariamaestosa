@@ -3,30 +3,31 @@
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
-
+ 
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
-
+ 
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#ifndef __TRACK_PROPERTIES_DIALOG_H__
+#define __TRACK_PROPERTIES_DIALOG_H__
 
+#include "Utils.h"
 
-#ifndef _scalepicker
-#define _scalepicker
-
-namespace AriaMaestosa {
-class Sequence;
-
-namespace ScalePicker {
-    void pickScale(Sequence* seq);
-    void free();
-}
-
+namespace AriaMaestosa
+{
+    class Track;
+    
+    namespace TrackProperties
+    {
+        
+        void show(Track* parent);
+    }
 }
 
 #endif
