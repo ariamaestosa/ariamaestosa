@@ -15,7 +15,7 @@
  */
 
 #include "Utils.h"
-#include "Dialogs/About.h"
+#include "Dialogs/AboutDialog.h"
 
 #include "wx/utils.h"
 #include "wx/stdpaths.h"

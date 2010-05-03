@@ -175,8 +175,6 @@
 		957119C31125D8D300104BF5 /* AriaCore.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118EB1125D8D200104BF5 /* AriaCore.h */; };
 		957119C41125D8D300104BF5 /* Clipboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118EC1125D8D200104BF5 /* Clipboard.cpp */; };
 		957119C51125D8D300104BF5 /* Clipboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118ED1125D8D200104BF5 /* Clipboard.h */; };
-		957119C71125D8D300104BF5 /* About.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F01125D8D200104BF5 /* About.cpp */; };
-		957119C81125D8D300104BF5 /* About.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F11125D8D200104BF5 /* About.h */; };
 		957119C91125D8D300104BF5 /* CopyrightWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F21125D8D200104BF5 /* CopyrightWindow.cpp */; };
 		957119CA1125D8D300104BF5 /* CopyrightWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F31125D8D200104BF5 /* CopyrightWindow.h */; };
 		957119CB1125D8D300104BF5 /* CustomNoteSelectDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F41125D8D200104BF5 /* CustomNoteSelectDialog.cpp */; };
@@ -368,8 +366,6 @@
 		95711A8D1125D8D300104BF5 /* AriaCore.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118EB1125D8D200104BF5 /* AriaCore.h */; };
 		95711A8E1125D8D300104BF5 /* Clipboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118EC1125D8D200104BF5 /* Clipboard.cpp */; };
 		95711A8F1125D8D300104BF5 /* Clipboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118ED1125D8D200104BF5 /* Clipboard.h */; };
-		95711A911125D8D300104BF5 /* About.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F01125D8D200104BF5 /* About.cpp */; };
-		95711A921125D8D300104BF5 /* About.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F11125D8D200104BF5 /* About.h */; };
 		95711A931125D8D300104BF5 /* CopyrightWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F21125D8D200104BF5 /* CopyrightWindow.cpp */; };
 		95711A941125D8D300104BF5 /* CopyrightWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 957118F31125D8D200104BF5 /* CopyrightWindow.h */; };
 		95711A951125D8D300104BF5 /* CustomNoteSelectDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957118F41125D8D200104BF5 /* CustomNoteSelectDialog.cpp */; };
@@ -541,6 +537,10 @@
 		95AFD7A9118F2279007DC6C7 /* TuningDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 95AFD7A7118F2279007DC6C7 /* TuningDialog.h */; };
 		95AFD7AA118F2279007DC6C7 /* TuningDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95AFD7A6118F2279007DC6C7 /* TuningDialog.cpp */; };
 		95AFD7AB118F2279007DC6C7 /* TuningDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 95AFD7A7118F2279007DC6C7 /* TuningDialog.h */; };
+		95AFD808118F2B07007DC6C7 /* AboutDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95AFD806118F2B07007DC6C7 /* AboutDialog.cpp */; };
+		95AFD809118F2B07007DC6C7 /* AboutDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 95AFD807118F2B07007DC6C7 /* AboutDialog.h */; };
+		95AFD80A118F2B07007DC6C7 /* AboutDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95AFD806118F2B07007DC6C7 /* AboutDialog.cpp */; };
+		95AFD80B118F2B07007DC6C7 /* AboutDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 95AFD807118F2B07007DC6C7 /* AboutDialog.h */; };
 		95B90464114ADF23007F4778 /* PrintSetupDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95B90462114ADF23007F4778 /* PrintSetupDialog.cpp */; };
 		95B90465114ADF23007F4778 /* PrintSetupDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 95B90463114ADF23007F4778 /* PrintSetupDialog.h */; };
 		95B90466114ADF23007F4778 /* PrintSetupDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95B90462114ADF23007F4778 /* PrintSetupDialog.cpp */; };
@@ -738,8 +738,6 @@
 		957118EB1125D8D200104BF5 /* AriaCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AriaCore.h; path = ../Src/AriaCore.h; sourceTree = SOURCE_ROOT; };
 		957118EC1125D8D200104BF5 /* Clipboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Clipboard.cpp; path = ../Src/Clipboard.cpp; sourceTree = SOURCE_ROOT; };
 		957118ED1125D8D200104BF5 /* Clipboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Clipboard.h; path = ../Src/Clipboard.h; sourceTree = SOURCE_ROOT; };
-		957118F01125D8D200104BF5 /* About.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = About.cpp; path = ../Src/Dialogs/About.cpp; sourceTree = SOURCE_ROOT; };
-		957118F11125D8D200104BF5 /* About.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = About.h; path = ../Src/Dialogs/About.h; sourceTree = SOURCE_ROOT; };
 		957118F21125D8D200104BF5 /* CopyrightWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CopyrightWindow.cpp; path = ../Src/Dialogs/CopyrightWindow.cpp; sourceTree = SOURCE_ROOT; };
 		957118F31125D8D200104BF5 /* CopyrightWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CopyrightWindow.h; path = ../Src/Dialogs/CopyrightWindow.h; sourceTree = SOURCE_ROOT; };
 		957118F41125D8D200104BF5 /* CustomNoteSelectDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CustomNoteSelectDialog.cpp; path = ../Src/Dialogs/CustomNoteSelectDialog.cpp; sourceTree = SOURCE_ROOT; };
@@ -933,6 +931,8 @@
 		95AFD79F118F21C8007DC6C7 /* ScaleDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScaleDialog.h; path = ../Src/Dialogs/ScaleDialog.h; sourceTree = SOURCE_ROOT; };
 		95AFD7A6118F2279007DC6C7 /* TuningDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TuningDialog.cpp; path = ../Src/Dialogs/TuningDialog.cpp; sourceTree = SOURCE_ROOT; };
 		95AFD7A7118F2279007DC6C7 /* TuningDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TuningDialog.h; path = ../Src/Dialogs/TuningDialog.h; sourceTree = SOURCE_ROOT; };
+		95AFD806118F2B07007DC6C7 /* AboutDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AboutDialog.cpp; path = ../Src/Dialogs/AboutDialog.cpp; sourceTree = SOURCE_ROOT; };
+		95AFD807118F2B07007DC6C7 /* AboutDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AboutDialog.h; path = ../Src/Dialogs/AboutDialog.h; sourceTree = SOURCE_ROOT; };
 		95B90462114ADF23007F4778 /* PrintSetupDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrintSetupDialog.cpp; path = ../Src/Dialogs/PrintSetupDialog.cpp; sourceTree = SOURCE_ROOT; };
 		95B90463114ADF23007F4778 /* PrintSetupDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrintSetupDialog.h; path = ../Src/Dialogs/PrintSetupDialog.h; sourceTree = SOURCE_ROOT; };
 		95C283741159481C007B8CF7 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utils.h; path = ../Src/Utils.h; sourceTree = SOURCE_ROOT; };
@@ -1065,8 +1065,8 @@
 		957118EF1125D8D200104BF5 /* Dialogs */ = {
 			isa = PBXGroup;
 			children = (
-				957118F01125D8D200104BF5 /* About.cpp */,
-				957118F11125D8D200104BF5 /* About.h */,
+				95AFD806118F2B07007DC6C7 /* AboutDialog.cpp */,
+				95AFD807118F2B07007DC6C7 /* AboutDialog.h */,
 				957118F21125D8D200104BF5 /* CopyrightWindow.cpp */,
 				957118F31125D8D200104BF5 /* CopyrightWindow.h */,
 				957118F41125D8D200104BF5 /* CustomNoteSelectDialog.cpp */,
@@ -1498,7 +1498,6 @@
 				95711A8B1125D8D300104BF5 /* UpdateGuitarTuning.h in Headers */,
 				95711A8D1125D8D300104BF5 /* AriaCore.h in Headers */,
 				95711A8F1125D8D300104BF5 /* Clipboard.h in Headers */,
-				95711A921125D8D300104BF5 /* About.h in Headers */,
 				95711A941125D8D300104BF5 /* CopyrightWindow.h in Headers */,
 				95711A961125D8D300104BF5 /* CustomNoteSelectDialog.h in Headers */,
 				95711A9A1125D8D300104BF5 /* Preferences.h in Headers */,
@@ -1588,6 +1587,7 @@
 				95AFD78F118F206E007DC6C7 /* TrackPropertiesDialog.h in Headers */,
 				95AFD7A1118F21C8007DC6C7 /* ScaleDialog.h in Headers */,
 				95AFD7A9118F2279007DC6C7 /* TuningDialog.h in Headers */,
+				95AFD809118F2B07007DC6C7 /* AboutDialog.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1619,7 +1619,6 @@
 				957119C11125D8D300104BF5 /* UpdateGuitarTuning.h in Headers */,
 				957119C31125D8D300104BF5 /* AriaCore.h in Headers */,
 				957119C51125D8D300104BF5 /* Clipboard.h in Headers */,
-				957119C81125D8D300104BF5 /* About.h in Headers */,
 				957119CA1125D8D300104BF5 /* CopyrightWindow.h in Headers */,
 				957119CC1125D8D300104BF5 /* CustomNoteSelectDialog.h in Headers */,
 				957119D01125D8D300104BF5 /* Preferences.h in Headers */,
@@ -1709,6 +1708,7 @@
 				95AFD791118F206E007DC6C7 /* TrackPropertiesDialog.h in Headers */,
 				95AFD7A3118F21C8007DC6C7 /* ScaleDialog.h in Headers */,
 				95AFD7AB118F2279007DC6C7 /* TuningDialog.h in Headers */,
+				95AFD80B118F2B07007DC6C7 /* AboutDialog.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1819,7 +1819,6 @@
 				95711A8A1125D8D300104BF5 /* UpdateGuitarTuning.cpp in Sources */,
 				95711A8C1125D8D300104BF5 /* AriaCore.cpp in Sources */,
 				95711A8E1125D8D300104BF5 /* Clipboard.cpp in Sources */,
-				95711A911125D8D300104BF5 /* About.cpp in Sources */,
 				95711A931125D8D300104BF5 /* CopyrightWindow.cpp in Sources */,
 				95711A951125D8D300104BF5 /* CustomNoteSelectDialog.cpp in Sources */,
 				95711A991125D8D300104BF5 /* Preferences.cpp in Sources */,
@@ -1903,6 +1902,7 @@
 				95AFD78E118F206E007DC6C7 /* TrackPropertiesDialog.cpp in Sources */,
 				95AFD7A0118F21C8007DC6C7 /* ScaleDialog.cpp in Sources */,
 				95AFD7A8118F2279007DC6C7 /* TuningDialog.cpp in Sources */,
+				95AFD808118F2B07007DC6C7 /* AboutDialog.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1934,7 +1934,6 @@
 				957119C01125D8D300104BF5 /* UpdateGuitarTuning.cpp in Sources */,
 				957119C21125D8D300104BF5 /* AriaCore.cpp in Sources */,
 				957119C41125D8D300104BF5 /* Clipboard.cpp in Sources */,
-				957119C71125D8D300104BF5 /* About.cpp in Sources */,
 				957119C91125D8D300104BF5 /* CopyrightWindow.cpp in Sources */,
 				957119CB1125D8D300104BF5 /* CustomNoteSelectDialog.cpp in Sources */,
 				957119CF1125D8D300104BF5 /* Preferences.cpp in Sources */,
@@ -2018,6 +2017,7 @@
 				95AFD790118F206E007DC6C7 /* TrackPropertiesDialog.cpp in Sources */,
 				95AFD7A2118F21C8007DC6C7 /* ScaleDialog.cpp in Sources */,
 				95AFD7AA118F2279007DC6C7 /* TuningDialog.cpp in Sources */,
+				95AFD80A118F2B07007DC6C7 /* AboutDialog.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
