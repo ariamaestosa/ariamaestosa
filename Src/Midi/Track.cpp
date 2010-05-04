@@ -1088,9 +1088,7 @@ void Track::setKey(const int symbolAmount, const KeyType type)
 // -------------------------------------------------------------------------------------------------------
 
 void Track::setCustomKey(bool key_notes[131])
-{
-    assert(false); //not yet supported very well
-    
+{    
     m_key_type = KEY_TYPE_CUSTOM; //TODO: this is not yet supported by most of the code
     m_key_sharps_amnt = 0;
     m_key_flats_amnt = 0;
