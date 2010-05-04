@@ -26,6 +26,7 @@
 
 #include "Editors/Editor.h"
 #include "Editors/RelativeXCoord.h"
+#include "Midi/Track.h"
 
 namespace AriaMaestosa
 {
@@ -258,38 +259,38 @@ namespace AriaMaestosa
           */
         void setYStep(const int height);
         
-        /** override to be notified of key change events */
-        virtual void onKeyChange(const int symbol_amount, const PitchSign sharpness_symbol){}
+        /** @brief override to be notified of key change events */
+        virtual void onKeyChange(const int symbol_amount, const KeyType type){}
         
         // ----------------------------------------------------------------------------------------------------
         // events
         // ----------------------------------------------------------------------------------------------------
-        /** event callback for when mouse button is pressed in the editor */
+        /** @brief event callback for when mouse button is pressed in the editor */
         virtual void mouseDown(RelativeXCoord x, int y);
         
-        /** event callback for when mouse button is dragged in the editor */
+        /** @brief event callback for when mouse button is dragged in the editor */
         virtual void mouseDrag(RelativeXCoord mousex_current, int mousey_current,
                                RelativeXCoord mousex_initial, int mousey_initial);
         
-        /** event callback for when mouse button is release in the editor */
+        /** @brief event callback for when mouse button is release in the editor */
         virtual void mouseUp(RelativeXCoord mousex_current, int mousey_current,
                              RelativeXCoord mousex_initial, int mousey_initial);
         
-        /** event callback for when mouse right button is pressed in the editor */
+        /** @brief event callback for when mouse right button is pressed in the editor */
         virtual void rightClick(RelativeXCoord x, int y);
         
-        /** event callback invoked repeatedly when mouse button is held down in the editor */
+        /** @brief event callback invoked repeatedly when mouse button is held down in the editor */
         virtual void mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
                                    RelativeXCoord mousex_initial, int mousey_initial);
         
-        /** event callback for when mouse drag exited the bounds of the editor */
+        /** @brief event callback for when mouse drag exited the bounds of the editor */
         virtual void mouseExited(RelativeXCoord dragX_arg, int mousey_current,
                                  RelativeXCoord XBeforeDrag_arg, int mousey_initial);
         
-        /** called when it's time to render; invokes the other render method in derived editor class */
+        /** @brief called when it's time to render; invokes the other render method in derived editor class */
         void render();
         
-        /** called in derived class when it's time to render */
+        /** @brief called in derived class when it's time to render */
         virtual void render(RelativeXCoord mousex_current, int mousey_current,
                             RelativeXCoord mousex_initial, int, bool focus=false) = 0;
         

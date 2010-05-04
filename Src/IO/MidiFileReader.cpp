@@ -303,13 +303,13 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                 {
                     if (amount > 0)
                     {
-                        sequence->getTrack(trackn)->setKey(amount, SHARP);
+                        sequence->getTrack(trackn)->setKey(amount, KEY_TYPE_SHARPS);
                         //sequence->getTrack(trackn)->graphics->scoreEditor->loadKey(SHARP, amount);
                         //sequence->getTrack(trackn)->graphics->keyboardEditor->loadKey(SHARP, amount);
                     }
                     else if (amount < 0)
                     {
-                        sequence->getTrack(trackn)->setKey(-amount,FLAT);
+                        sequence->getTrack(trackn)->setKey(-amount, KEY_TYPE_FLATS);
                         //sequence->getTrack(trackn)->graphics->scoreEditor->loadKey(FLAT, -amount);
                         //sequence->getTrack(trackn)->graphics->keyboardEditor->loadKey(FLAT, -amount);
                     }

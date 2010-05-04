@@ -760,11 +760,11 @@ bool GraphicalTrack::processMouseDrag(RelativeXCoord x, int y)
 
 // --------------------------------------------------------------------------------------------------
 
-void GraphicalTrack::onKeyChange(const int symbolAmount, const PitchSign symbol)
+void GraphicalTrack::onKeyChange(const int symbolAmount, const KeyType type)
 {
     for (int n=0; n<m_all_editors.size(); n++)
     {
-        m_all_editors[n].onKeyChange(symbolAmount, symbol);
+        m_all_editors[n].onKeyChange(symbolAmount, type);
     }
 }
 

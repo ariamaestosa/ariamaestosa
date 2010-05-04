@@ -23,7 +23,7 @@
 
 namespace AriaMaestosa
 {
-    
+    //TODO: move this class out of Pickers
     class CustomKeyDialog : public wxDialog
     {
         wxCheckBox* m_check_boxes[132];
@@ -206,7 +206,7 @@ KeyPicker::KeyPicker() : wxMenu()
     
     AppendSeparator();
     Append( KEY_GUESS,  _("Guess Key"));
-    //Append( KEY_CUSTOM, _("Custom Key"));
+    Append( KEY_CUSTOM, _("Custom Key"));
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -258,32 +258,50 @@ void KeyPicker::setParent(Track* parent_arg)
     key_flats_6->Check(false);
     key_flats_7->Check(false);
     
-    const int sharps = parent_arg->getKeySharpsAmount();
-    const int flats  = parent_arg->getKeyFlatsAmount();
+    const KeyType type = parent_arg->getKeyType();
     
-    if (sharps==0 and flats==0)
+    switch (type)
     {
-        key_c->Check(true);
-    }
-    else if (sharps > flats)
-    {
-        if (sharps == 1) key_sharps_1->Check(true);
-        else if (sharps == 2) key_sharps_2->Check(true);
-        else if (sharps == 3) key_sharps_3->Check(true);
-        else if (sharps == 4) key_sharps_4->Check(true);
-        else if (sharps == 5) key_sharps_5->Check(true);
-        else if (sharps == 6) key_sharps_6->Check(true);
-        else if (sharps == 7) key_sharps_7->Check(true);
-    }
-    else
-    {
-        if (flats == 1) key_flats_1->Check(true);
-        else if (flats == 2) key_flats_2->Check(true);
-        else if (flats == 3) key_flats_3->Check(true);
-        else if (flats == 4) key_flats_4->Check(true);
-        else if (flats == 5) key_flats_5->Check(true);
-        else if (flats == 6) key_flats_6->Check(true);
-        else if (flats == 7) key_flats_7->Check(true);
+        case KEY_TYPE_C:
+        {
+            key_c->Check(true);
+            break;
+        }
+            
+        case KEY_TYPE_SHARPS:
+        {
+            const int sharps = parent_arg->getKeySharpsAmount();
+
+            if (sharps == 1) key_sharps_1->Check(true);
+            else if (sharps == 2) key_sharps_2->Check(true);
+            else if (sharps == 3) key_sharps_3->Check(true);
+            else if (sharps == 4) key_sharps_4->Check(true);
+            else if (sharps == 5) key_sharps_5->Check(true);
+            else if (sharps == 6) key_sharps_6->Check(true);
+            else if (sharps == 7) key_sharps_7->Check(true);
+            break;
+        }
+            
+        case KEY_TYPE_FLATS:
+        {
+            const int flats  = parent_arg->getKeyFlatsAmount();
+
+            if (flats == 1) key_flats_1->Check(true);
+            else if (flats == 2) key_flats_2->Check(true);
+            else if (flats == 3) key_flats_3->Check(true);
+            else if (flats == 4) key_flats_4->Check(true);
+            else if (flats == 5) key_flats_5->Check(true);
+            else if (flats == 6) key_flats_6->Check(true);
+            else if (flats == 7) key_flats_7->Check(true);
+            break;
+        }
+
+        case KEY_TYPE_CUSTOM:
+        {
+            assert(false);
+            //TODO: KEY_TYPE_CUSTOM not supported yet
+            break;
+        }
     }
 }
 
@@ -371,15 +389,15 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
     }
     else if ( id == KEY_C_AM )
     {
-        parent->track->setKey(0, NATURAL);
+        parent->track->setKey(0, KEY_TYPE_C);
     }
     else if ( id >= KEY_SHARPS_1 and id <= KEY_SHARPS_7 )
     {
-        parent->track->setKey(id-KEY_SHARPS_1+1, SHARP);
+        parent->track->setKey(id-KEY_SHARPS_1+1, KEY_TYPE_SHARPS);
     }
     else if ( id >= KEY_FLATS_1 and id <= KEY_FLATS_7 )
     {
-        parent->track->setKey(id-KEY_FLATS_1+1, FLAT);
+        parent->track->setKey(id-KEY_FLATS_1+1, KEY_TYPE_FLATS);
     }
     else if ( id == KEY_CUSTOM )
     {
@@ -447,7 +465,7 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
         }
         if (best_candidate==-1) return;
         
-        PitchSign sign = NATURAL;
+        KeyType type = KEY_TYPE_C;
         int amount = 0;
         switch (best_candidate)
         {
@@ -455,59 +473,52 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
                 break;
                 
             case 1: // C#
-                sign = SHARP;
+                type = KEY_TYPE_SHARPS;
                 amount = 7;
                 break;
             case 2: // D
-                sign = SHARP;
+                type = KEY_TYPE_SHARPS;
                 amount = 2;
                 break;
             case 4: // E
-                sign = SHARP;
+                type = KEY_TYPE_SHARPS;
                 amount = 4;
                 break; 
             case 6: // F#
-                sign = SHARP;
+                type = KEY_TYPE_SHARPS;
                 amount = 6;
                 break; 
             case 7: // G
-                sign = SHARP;
+                type = KEY_TYPE_SHARPS;
                 amount = 1;
                 break; 
             case 9: // A
-                sign = SHARP;
+                type = KEY_TYPE_SHARPS;
                 amount = 3;
                 break; 
             case 11: // B
-                sign = SHARP;
+                type = KEY_TYPE_SHARPS;
                 amount = 5;
                 break; 
                 
             case 3: // D#
-                sign = FLAT;
+                type = KEY_TYPE_FLATS;
                 amount = 3;
                 break;
             case 5: // F
-                sign = FLAT;
+                type = KEY_TYPE_FLATS;
                 amount = 1;
                 break; 
             case 8: // G#
-                sign = FLAT;
+                type = KEY_TYPE_FLATS;
                 amount = 4;
                 break; 
             case 10: // A#
-                sign = FLAT;
+                type = KEY_TYPE_FLATS;
                 amount = 2;
                 break; 
         }
-        parent->track->setKey(amount, sign);
-        //parent -> scoreEditor    -> loadKey(sign, amount);
-        //parent -> keyboardEditor -> loadKey(sign, amount);
-        /*
-         wxString choices[12] = { wxT("C"), wxT("C#"), wxT("D"), wxT("D#"), wxT("E"), wxT("F"),
-         wxT("F#"), wxT("G"), wxT("G#"), wxT("A"), wxT("A#"), wxT("B")};
-         std::cout << "best_candidate = " << choices[best_candidate].mb_str() << std::endl;
-         */
+        parent->track->setKey(amount, type);
     }
     
     Display::render();

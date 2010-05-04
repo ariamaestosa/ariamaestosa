@@ -15,7 +15,7 @@
  */
 
 /** Version of the .aria file format. */
-const float CURRENT_FILE_VERSION = 1.0;
+const float CURRENT_FILE_VERSION = 2.0;
 
 #include "Midi/Sequence.h"
 

@@ -20,6 +20,7 @@
 
 #include "Utils.h"
 #include "Editors/Editor.h"
+#include "Midi/Track.h"
 
 class wxFileOutputStream;
 // forward
@@ -157,7 +158,7 @@ namespace AriaMaestosa
                                 RelativeXCoord x_initial, int y_initial);
         
         /** Called when a track's key changes */
-        void onKeyChange(const int symbolAmount, const PitchSign symbol);
+        void onKeyChange(const int symbolAmount, const KeyType symbol);
         
         // serialization
         void saveToFile(wxFileOutputStream& fileout);
