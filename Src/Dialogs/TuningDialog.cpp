@@ -32,33 +32,35 @@ namespace AriaMaestosa
       * @brief e.g.: you could call findNote('B','#',5) and it would return the correct number
       */
     int findNote(char noteLetter, char flatSharpSign, int octave)
-    {
-        int note = (10-octave)*12;
+    {        
+        Note7 note;
+        PitchSign sign = PITCH_SIGN_NONE;
         
-        if      (noteLetter=='B') note += 0;
-        else if (noteLetter=='A') note += 2;
-        else if (noteLetter=='G') note += 4;
-        else if (noteLetter=='F') note += 6;
-        else if (noteLetter=='E') note += 7;
-        else if (noteLetter=='D') note += 9;
-        else if (noteLetter=='C') note += 11;
+        if      (noteLetter=='B') note = NOTE_7_B;
+        else if (noteLetter=='A') note = NOTE_7_A;
+        else if (noteLetter=='G') note = NOTE_7_G;
+        else if (noteLetter=='F') note = NOTE_7_F;
+        else if (noteLetter=='E') note = NOTE_7_E;
+        else if (noteLetter=='D') note = NOTE_7_D;
+        else if (noteLetter=='C') note = NOTE_7_C;
         else
         {
             wxBell();
-            std::cout << "Invalid note: " << noteLetter << std::endl;
+            std::cerr << "Invalid note: " << noteLetter << std::endl;
             return 0;
         }
         
         if (flatSharpSign==' ')
         {
+            sign = PITCH_SIGN_NONE;
         }
         else if (flatSharpSign=='#')
         {
-            note -= 1;
+            sign = SHARP;
         }
         else if (flatSharpSign=='b')
         {
-            note += 1;
+            sign = FLAT;
         }
         else
         {
@@ -68,7 +70,7 @@ namespace AriaMaestosa
             return 0;
         }
         
-        return note;
+        return Editor::findNotePitch(note, sign, octave);
     }
     
 #if 0
@@ -92,73 +94,80 @@ namespace AriaMaestosa
         
         // ---------------------------------------------------------------------------------------------------------
         
-        void enterDefaultValue(int value)
+        void enterDefaultValue(int pitchID)
         {
             
             // enter default value
-            if (value!=-1)
+            if (pitchID != -1)
             {
+                Note12 noteName;
+                int octave;
                 
-                const int octave = 10 - (value/12);
-                const int note   = value%12;
+                const bool success = Editor::findNoteName(pitchID, &noteName, &octave);
+                if (not success) return;
                 
                 octave_choice->SetStringSelection( to_wxString(octave) );
                 active->SetValue(true);
                 
-                switch(note){
-                    case 0:
+                switch (noteName)
+                {
+                    case NOTE_12_B:
                         note_choice->SetStringSelection(wxT("B"));
                         sign_choice->SetStringSelection(wxT(" "));
                         break;
-                    case 1:
+                    case NOTE_12_A_SHARP:
                         note_choice->SetStringSelection(wxT("A"));
                         sign_choice->SetStringSelection(wxT("#"));
                         break;
-                    case 2:
+                    case NOTE_12_A:
                         note_choice->SetStringSelection(wxT("A"));
                         sign_choice->SetStringSelection(wxT(" "));
                         break;
-                    case 3:
+                    case NOTE_12_G_SHARP:
                         note_choice->SetStringSelection(wxT("G"));
                         sign_choice->SetStringSelection(wxT("#"));
                         break;
-                    case 4:
+                    case NOTE_12_G:
                         note_choice->SetStringSelection(wxT("G"));
                         sign_choice->SetStringSelection(wxT(" "));
                         break;
-                    case 5:
+                    case NOTE_12_F_SHARP:
                         note_choice->SetStringSelection(wxT("F"));
                         sign_choice->SetStringSelection(wxT("#"));
                         break;
-                    case 6:
+                    case NOTE_12_F:
                         note_choice->SetStringSelection(wxT("F"));
                         sign_choice->SetStringSelection(wxT(" "));
                         break;
-                    case 7:
+                    case NOTE_12_E:
                         note_choice->SetStringSelection(wxT("E"));
                         sign_choice->SetStringSelection(wxT(" "));
                         break;
-                    case 8:
+                    case NOTE_12_D_SHARP:
                         note_choice->SetStringSelection(wxT("D"));
                         sign_choice->SetStringSelection(wxT("#"));
                         break;
-                    case 9:
+                    case NOTE_12_D:
                         note_choice->SetStringSelection(wxT("D"));
                         sign_choice->SetStringSelection(wxT(" "));
                         break;
-                    case 10:
+                    case NOTE_12_C_SHARP:
                         note_choice->SetStringSelection(wxT("C"));
                         sign_choice->SetStringSelection(wxT("#"));
                         break;
-                    case 11:
+                    case NOTE_12_C:
                         note_choice->SetStringSelection(wxT("C"));
                         sign_choice->SetStringSelection(wxT(" "));
                         break;
                 } // end switch
-                
-                
             }
-            
+            else
+            {
+                active->SetValue(false);
+                note_choice->SetStringSelection(wxT("C"));
+                sign_choice->SetStringSelection(wxT(" "));
+                octave_choice->SetStringSelection( wxT("1") );
+            }
         }
         
         // ---------------------------------------------------------------------------------------------------------
@@ -278,12 +287,12 @@ namespace AriaMaestosa
         ASSERT(parent != NULL);
         
         // enter default values
-        for(int n=0; n<10; n++)
+        for (int n=0; n<10; n++)
         {
-            int value = -1;
-            if (n<(int)parent->tuning.size()) value = parent->tuning[n];
+            int pitchID = -1;
+            if (n<(int)parent->tuning.size()) pitchID = parent->tuning[n];
             
-            strings[n]->enterDefaultValue(value);
+            strings[n]->enterDefaultValue(pitchID);
         }
         
         Center();
