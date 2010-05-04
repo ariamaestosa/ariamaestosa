@@ -37,7 +37,7 @@
 
 #include "AriaCore.h"
 
-
+#define SHOW_MIDI_PITCH 0
 
 using namespace AriaMaestosa;
 
@@ -238,6 +238,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
         //const int note12 = 11 - ((levelid - 3) % 12);
         const int pitchID = levelid; //FIXME: fix this conflation of level and pitch ID. it's handy in keyboard
                                      // editor, but a pain everywhere else...
+
         if (not key_notes[pitchID])
         {
             AriaRender::rect(x1, levelToY(levelid),
@@ -249,6 +250,20 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
                              x2, levelToY(levelid+1));
         }
 
+        
+#if SHOW_MIDI_PITCH
+        const int midiID = (131 - pitchID);
+        // octave number
+        AriaRender::images();
+        AriaRender::color(0,0,0);
+        
+        AriaRender::renderNumber(midiID, 100, levelToY(levelid+1));
+
+        AriaRender::primitives();
+        AriaRender::color(0.94, 0.94, 0.94, 1);
+#endif
+        
+        
         levelid++;
     }
 
@@ -358,7 +373,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             // octave number
             AriaRender::images();
             AriaRender::color(0,0,0);
-            AriaRender::renderNumber(10-g_octaveID, 30, getEditorYStart()+1 + g_octave_y + 120/2);
+            AriaRender::renderNumber(9-g_octaveID, 30, getEditorYStart()+1 + g_octave_y + 120/2);
             
         }//end if
     }//next
