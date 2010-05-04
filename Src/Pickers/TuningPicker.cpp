@@ -92,54 +92,8 @@ void TuningPicker::loadTuning(const int id, const bool user_triggered) // if use
         case TUNING_STD: // standard
             parent->previous_tuning = parent->tuning;
             parent->tuning.clear();
-            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 5) );
-            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 4) );
-            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_G, PITCH_SIGN_NONE, 4) );
-            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 4) );
-            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 3) );
-            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 3) );
-            parent->tuningUpdated(user_triggered);
-            break;
-
-        case TUNING_DROPD: // drop D
-            parent->previous_tuning = parent->tuning;
-            parent->tuning.clear();
-            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 5) );
-            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 4) );
-            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_G, PITCH_SIGN_NONE, 4) );
-            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 4) );
-            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 3) );
-            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 3) );
-            parent->tuningUpdated(user_triggered);
-            break;
-
-        case TUNING_DROPC: // drop C
-            parent->previous_tuning = parent->tuning;
-            parent->tuning.clear();
-            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 5) );
-            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 4) );
-            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_F, PITCH_SIGN_NONE, 4) );
-            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_C, PITCH_SIGN_NONE, 4) );
-            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_G, PITCH_SIGN_NONE, 3) );
-            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_C, PITCH_SIGN_NONE, 3) );
-            parent->tuningUpdated(user_triggered);
-            break;
-
-        case TUNING_DROPB: // drop B  //B-F#-B-e-g#-c#'
-            parent->previous_tuning = parent->tuning;
-            parent->tuning.clear();
-            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_C, SHARP,           5) );
-            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_G, SHARP,           4) );
+            
             parent->tuning.push_back( Editor::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 4) );
-            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 3) );
-            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_F, SHARP,           3) );
-            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 2) );
-            parent->tuningUpdated(user_triggered);
-            break;
-
-        case TUNING_BASS: // bass
-            parent->previous_tuning = parent->tuning;
-            parent->tuning.clear();
             parent->tuning.push_back( Editor::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 3) );
             parent->tuning.push_back( Editor::findNotePitch(NOTE_7_G, PITCH_SIGN_NONE, 3) );
             parent->tuning.push_back( Editor::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 3) );
@@ -148,14 +102,61 @@ void TuningPicker::loadTuning(const int id, const bool user_triggered) // if use
             parent->tuningUpdated(user_triggered);
             break;
 
-        case TUNING_DROPDBASS: // drop-D bass
+        case TUNING_DROPD: // drop D
             parent->previous_tuning = parent->tuning;
             parent->tuning.clear();
+            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 4) );
             parent->tuning.push_back( Editor::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 3) );
             parent->tuning.push_back( Editor::findNotePitch(NOTE_7_G, PITCH_SIGN_NONE, 3) );
             parent->tuning.push_back( Editor::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 3) );
             parent->tuning.push_back( Editor::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 2) );
             parent->tuning.push_back( Editor::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 2) );
+            parent->tuningUpdated(user_triggered);
+            break;
+
+        case TUNING_DROPC: // drop C
+            parent->previous_tuning = parent->tuning;
+            parent->tuning.clear();
+            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 4) );
+            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 3) );
+            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_F, PITCH_SIGN_NONE, 3) );
+            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_C, PITCH_SIGN_NONE, 3) );
+            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_G, PITCH_SIGN_NONE, 2) );
+            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_C, PITCH_SIGN_NONE, 2) );
+            parent->tuningUpdated(user_triggered);
+            break;
+
+        case TUNING_DROPB: // drop B  //B-F#-B-e-g#-c#'
+            parent->previous_tuning = parent->tuning;
+            parent->tuning.clear();
+            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_C, SHARP,           4) );
+            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_G, SHARP,           3) );
+            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 3) );
+            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 2) );
+            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_F, SHARP,           2) );
+            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 1) );
+            parent->tuningUpdated(user_triggered);
+            break;
+
+        case TUNING_BASS: // bass
+            parent->previous_tuning = parent->tuning;
+            parent->tuning.clear();
+            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 2) );
+            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_G, PITCH_SIGN_NONE, 2) );
+            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 2) );
+            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 1) );
+            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 1) );
+            parent->tuningUpdated(user_triggered);
+            break;
+
+        case TUNING_DROPDBASS: // drop-D bass
+            parent->previous_tuning = parent->tuning;
+            parent->tuning.clear();
+            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 2) );
+            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_G, PITCH_SIGN_NONE, 2) );
+            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 2) );
+            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 1) );
+            parent->tuning.push_back( Editor::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 1) );
             parent->tuningUpdated(user_triggered);
             break;
 

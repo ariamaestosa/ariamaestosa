@@ -58,6 +58,8 @@ NOTE: sorry, this is very raw :)
  
 * Allow 8va to be applied to only some parts of track
  
+* OS X : allow sending playback to an external MIDI device (e.g. keyboard)
+ 
 * Keyboard shortcuts to change currently selected note length
  
 * Custom Key editor :
@@ -73,7 +75,6 @@ NOTE: sorry, this is very raw :)
 + move make_release.sh under OSX/
 + move documentation out of resources?
 
-+ OS X : allow sending playback to an external MIDI device (e.g. keyboard)
  
 + find dialog should have options greyed out if brought up with no selected note
  
@@ -142,8 +143,6 @@ UNSURE/MINOR:
 
 ** Things like changing global tempo, changing song length, etc... are not actions and thus do not mark the
    document as having unsaved changes!
-
-** Note names in custom key picker are not the same as note names in keyboard editor
 
 ** If a message dialog is shown during track loading, app freezes (conflict with WaitWindow, most likely)
 

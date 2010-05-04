@@ -38,28 +38,12 @@ namespace AriaMaestosa
     const int first_string_position = 17;
     const int y_step = 10;
 
-    //FIXME: what about flats?
-    //FIXME: remove duplicated code, use Note12 from Editor.h
-    static const wxString g_note_names[] =
-    {
-        wxT("B"),  // 0
-        wxT("A#"), // 1
-        wxT("A"),  // 2
-        wxT("G#"), // 3
-        wxT("G"),  // 4
-        wxT("F#"), //5
-        wxT("F"),  //6
-        wxT("E"),  //7
-        wxT("D#"), //8
-        wxT("D"),  //9
-        wxT("C#"), //10
-        wxT("C"),  //11
-    };
-
     class GuitarNoteNamesSingleton : public AriaRenderArray, public Singleton<GuitarNoteNamesSingleton>
     {
         friend class Singleton<GuitarNoteNamesSingleton>;
-        GuitarNoteNamesSingleton() : AriaRenderArray(g_note_names, 12)
+        
+        //FIXME: what about flats?
+        GuitarNoteNamesSingleton() : AriaRenderArray(NOTE_12_NAME, 12)
         {
         }
     public:
@@ -168,7 +152,7 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
         int string=track->getNoteString(n);
         int fret=track->getNoteFret(n);
-
+        
         float volume=track->getNoteVolume(n)/127.0;
 
         if (track->isNoteSelected(n) and focus) AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
@@ -312,26 +296,33 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
     AriaRender::images();
     AriaRender::color(0,0,0);
 
-    int text_x = Editor::getEditorXStart()-23;
-    for(int n=0; n<string_amount; n++)
+    const int text_x = Editor::getEditorXStart()-23;
+    
+    GuitarNoteNamesSingleton* instance = GuitarNoteNamesSingleton::getInstance();
+    
+    for (int n=0; n<string_amount; n++)
     {
         const int text_y = getEditorYStart() + 21 + n*y_step;
 
-        const int octave=tuning[n]/12;
-        const int note=tuning[n]%12;
+        Note12 noteName;
+        int octave;
+        bool success = Editor::findNoteName(tuning[n], &noteName, &octave);
 
-        GuitarNoteNamesSingleton* instance = GuitarNoteNamesSingleton::getInstance();
-        instance->bind();
-        if (note == 1 or note == 3 or note == 5 or note == 8 or note == 10)
+        if (success)
         {
-            instance->get(note).render(text_x-6, text_y );
+            instance->bind();
+            if (noteName == NOTE_12_A_SHARP or noteName == NOTE_12_C_SHARP or noteName == NOTE_12_D_SHARP or
+                noteName == NOTE_12_F_SHARP or noteName == NOTE_12_G_SHARP)
+            {
+                instance->get((int)noteName).render(text_x-6, text_y );
+            }
+            else
+            {
+                instance->get((int)noteName).render(text_x, text_y );
+            }
         }
-        else
-        {
-            instance->get(note).render(text_x, text_y );
-        }
-        AriaRender::renderNumber( 10-octave, text_x+8, text_y );
-
+        AriaRender::renderNumber( octave, text_x+8, text_y );
+        
     }//next
 
 
