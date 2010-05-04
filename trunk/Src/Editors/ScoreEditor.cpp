@@ -471,7 +471,7 @@ const Note7 flat_order[]  = { NOTE_7_B, NOTE_7_E, NOTE_7_A, NOTE_7_D, NOTE_7_G, 
 
 // ------------------------------------------------------------------------------------------------------------
 
-void ScoreEditor::onKeyChange(const int symbol_amount, const PitchSign sharpness_symbol)
+void ScoreEditor::onKeyChange(const int symbol_amount, const KeyType type)
 {
     // reset key signature before beginning
     converter->setNoteSharpness(NOTE_7_A, NATURAL);
@@ -482,18 +482,18 @@ void ScoreEditor::onKeyChange(const int symbol_amount, const PitchSign sharpness
     converter->setNoteSharpness(NOTE_7_F, NATURAL);
     converter->setNoteSharpness(NOTE_7_G, NATURAL);
 
-    if (sharpness_symbol == SHARP)
+    if (type == KEY_TYPE_SHARPS)
     {
         for (int n=NOTE_7_A; n<symbol_amount; n++)
         {
-            converter->setNoteSharpness(sharp_order[n], sharpness_symbol);
+            converter->setNoteSharpness(sharp_order[n], SHARP);
         }
     }
-    else if (sharpness_symbol == FLAT)
+    else if (type == KEY_TYPE_FLATS)
     {
         for (int n=NOTE_7_A; n<symbol_amount; n++)
         {
-            converter->setNoteSharpness(flat_order[n], sharpness_symbol);
+            converter->setNoteSharpness(flat_order[n], FLAT);
         }
     }
 

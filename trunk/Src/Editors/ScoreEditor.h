@@ -19,6 +19,7 @@
 #define __SCORE_EDITOR_H__
 
 #include "Editors/Editor.h"
+#include "Midi/Track.h"
 
 #include "wx/intl.h"
 
@@ -193,7 +194,7 @@ namespace AriaMaestosa
         void enableLinearNotation(const bool enabled);
         
         /** Called when user changes key. parameters are e.g. 5 sharps, 3 flats, etc. */
-        virtual void onKeyChange(const int symbol_amount, const PitchSign sharpness_symbol);
+        virtual void onKeyChange(const int symbol_amount, const KeyType sharpness_symbol);
         
         virtual void render(RelativeXCoord mousex_current, int mousey_current,
                             RelativeXCoord mousex_initial, int mousey_initial, bool focus=false);

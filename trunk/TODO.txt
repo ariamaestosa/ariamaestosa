@@ -143,6 +143,8 @@ UNSURE/MINOR:
 ** Things like changing global tempo, changing song length, etc... are not actions and thus do not mark the
    document as having unsaved changes!
 
+** If a message dialog is shown during track loading, app freezes (conflict with WaitWindow, most likely)
+
 * Undoing "delete track" places it back at the bottom, not where it was
 
 * Sequence::setTempo / getTempo may get out of sync if first event is edited through controller editor!!

@@ -65,7 +65,7 @@ using namespace AriaMaestosa;
 Track::Track(MainFrame* parent, Sequence* sequence)
 {
     // init key data
-    setKey(0, NATURAL);
+    setKey(0, KEY_TYPE_C);
     
     m_name.set( wxString( _("Untitled") ) );
     m_name.setMaxWidth(120);
@@ -979,27 +979,32 @@ int Track::getDuration() const
 
 // -------------------------------------------------------------------------------------------------------
 
-void Track::setKey(const int symbolAmount, const PitchSign symbol)
+void Track::setKey(const int symbolAmount, const KeyType type)
 {
+    assert(symbolAmount < 8);
+    
     // ---- update "key_sharps_amnt" and "key_flats_amnt" members
-    if (symbol == SHARP)
+    if (type == KEY_TYPE_SHARPS)
     {
+        m_key_type = type;
         m_key_sharps_amnt = symbolAmount;
         m_key_flats_amnt  = 0;
     }
-    else if (symbol == FLAT)
+    else if (type == KEY_TYPE_FLATS)
     {
+        m_key_type = type;
         m_key_sharps_amnt = 0;
         m_key_flats_amnt  = symbolAmount;
     }
-    else if (symbol == NATURAL and symbolAmount == 0)
+    else if (type == KEY_TYPE_C and symbolAmount == 0)
     {
+        m_key_type = type;
         m_key_sharps_amnt = 0;
         m_key_flats_amnt  = 0;
     }
     else
     {
-        std::cerr << "Bogus call to Track::setKey! Symbol must be SHARP or FLAT\n";
+        std::cerr << "Bogus call to Track::setKey! Invalid key type.\n";
         ASSERT(false);
     }
     
@@ -1009,11 +1014,11 @@ void Track::setKey(const int symbolAmount, const PitchSign symbol)
     // to ease the process
     Note12 major_note12 = NOTE_12_C;
     
-    if (symbolAmount == 0 or symbol == NATURAL)
+    if (symbolAmount == 0 or type == KEY_TYPE_C)
     {
         major_note12 = NOTE_12_C;
     }
-    else if (symbol == SHARP)
+    else if (m_key_type == KEY_TYPE_SHARPS)
     {
         switch (symbolAmount)
         {
@@ -1026,9 +1031,9 @@ void Track::setKey(const int symbolAmount, const PitchSign symbol)
             case 7: major_note12 = NOTE_12_C_SHARP; break;
         }
     }
-    else if (symbol == FLAT)
+    else if (m_key_type == KEY_TYPE_FLATS)
     {
-        switch(symbolAmount)
+        switch (symbolAmount)
         {
             case 1: major_note12 = NOTE_12_F;      break;
             case 2: major_note12 = NOTE_12_B_FLAT; break;
@@ -1077,7 +1082,23 @@ void Track::setKey(const int symbolAmount, const PitchSign symbol)
 
     // ---- notify graphical track (and editors)
     //FIXME: do not call this while editors are still null
-    if (graphics != NULL) graphics->onKeyChange(symbolAmount, symbol);
+    if (graphics != NULL) graphics->onKeyChange(symbolAmount, type);
+}
+
+// -------------------------------------------------------------------------------------------------------
+
+void Track::setCustomKey(bool key_notes[131])
+{
+    assert(false); //not yet supported very well
+    
+    m_key_type = KEY_TYPE_CUSTOM; //TODO: this is not yet supported by most of the code
+    m_key_sharps_amnt = 0;
+    m_key_flats_amnt = 0;
+    
+    for (int n=0; n<131; n++)
+    {
+        m_key_notes[n] = key_notes[n];
+    }
 }
 
 // =======================================================================================================
@@ -1530,6 +1551,28 @@ void Track::saveToFile(wxFileOutputStream& fileout)
               wxT("\" flats=\"")    + to_wxString( getKeyFlatsAmount () ) +
               wxT("\"/>\n"), fileout);
     
+
+              
+    switch (m_key_type)
+    {
+        case KEY_TYPE_C:
+            writeData(wxT("<key type=\"C\" />\n"), fileout);
+            break;
+        case KEY_TYPE_SHARPS:
+            writeData(wxT("<key type=\"sharps\" value=\"") + to_wxString( getKeySharpsAmount() ) +
+                      wxT("\" />\n"), fileout);
+            break;
+        case KEY_TYPE_FLATS:
+            writeData(wxT("<key type=\"flats\" value=\"") + to_wxString( getKeyFlatsAmount() ) +
+                      wxT("\" />\n"), fileout);
+            break;
+        case KEY_TYPE_CUSTOM:
+            assert(false);
+            //TODO: saving KEY_TYPE_CUSTOM not implemented yet
+            writeData( wxT("<key type=\"custom\" value=\""), fileout); //TODO: complete
+            break;
+    }
+    
     graphics->saveToFile(fileout);
 
     // notes
@@ -1639,19 +1682,81 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                 }
                 else if (!strcmp("key", xml->getNodeName()))
                 {
-                    //std::cout << "Found 'key'!" << std::endl;
-                    char* flats_c  = (char*)xml->getAttributeValue("flats");
-                    char* sharps_c = (char*)xml->getAttributeValue("sharps");
-                    
-                    int sharps = 0, flats = 0;
-                    if (flats_c != NULL or sharps_c != NULL)
+                    char* key_type  = (char*)xml->getAttributeValue("type");
+                    if (key_type != NULL)
                     {
-                        if (flats_c != NULL)  flats = atoi(flats_c);
-                        if (sharps_c != NULL) sharps = atoi(sharps_c);
-                        //std::cout << "sharps = " << sharps << " flats = " << flats << std::endl;
+                        if (strcmp(key_type, "C") == 0)
+                        {
+                            setKey(0, KEY_TYPE_C);
+                        }
+                        else if (strcmp(key_type, "sharps") == 0)
+                        {
+                            char* count_c = (char*)xml->getAttributeValue("value");
+                            int count;
+                            
+                            if (count_c != NULL)  count = atoi(count_c);
+                            
+                            if (count_c == NULL or count == 0)
+                            {
+                                std::cerr << "Warning : malformed key in .aria file for track "
+                                          << getName().mb_str()
+                                          << " : 'sharp' key type needs a value in range [1 .. 7]"
+                                          << std::endl;
+                            }
+                            else
+                            {
+                                setKey(count, KEY_TYPE_SHARPS);
+                            }
+                        }
+                        else if (strcmp(key_type, "flats") == 0)
+                        {
+                            char* count_c = (char*)xml->getAttributeValue("value");
+                            int count;
+                            
+                            if (count_c != NULL)  count = atoi(count_c);
+                            
+                            if (count_c == NULL or count == 0)
+                            {
+                                std::cerr << "Warning : malformed key in .aria file for track "
+                                          << getName().mb_str()
+                                          << " : 'flats' key type needs value in range [1 .. 7]"
+                                          << std::endl;
+                            }
+                            else
+                            {
+                                setKey(count, KEY_TYPE_FLATS);
+                            }
+                        }
+                        else if (strcmp(key_type, "custom") == 0)
+                        {
+                            assert(false);
+                            //TODO: implement loading KEY_TYPE_CUSTOM
+                        }
+                        else
+                        {
+                            std::cerr << "Warning : malformed key in .aria file for track "
+                                      << getName().mb_str() << " : unknown key type '" << key_type << "'"
+                                      << std::endl;
+                        }
+
+                    }
+                    else
+                    {
+                        // current key format not found, check for old format
+                        // TODO: eventuall remove support for old format (file format version 1.0000)
+                        char* flats_c  = (char*)xml->getAttributeValue("flats");
+                        char* sharps_c = (char*)xml->getAttributeValue("sharps");
                         
-                        if (sharps > flats) setKey(sharps, SHARP);
-                        else                setKey(flats, FLAT);
+                        int sharps = 0, flats = 0;
+                        if (flats_c != NULL or sharps_c != NULL)
+                        {
+                            if (flats_c != NULL)  flats = atoi(flats_c);
+                            if (sharps_c != NULL) sharps = atoi(sharps_c);
+                            //std::cout << "sharps = " << sharps << " flats = " << flats << std::endl;
+                            
+                            if (sharps > flats) setKey(sharps, KEY_TYPE_SHARPS);
+                            else                setKey(flats,  KEY_TYPE_FLATS);
+                        }
                     }
                     
                 }
@@ -1660,7 +1765,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                     Note* temp = new Note(graphics);
                     if (! temp->readFromFile(xml) )
                     {
-                        std::cout << "A note was discarded because it is invalid" << std::endl;
+                        std::cerr << "A note was discarded because it is invalid" << std::endl;
                         delete temp;
                     }
                     else

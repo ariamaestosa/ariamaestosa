@@ -26,7 +26,6 @@ namespace irr { namespace io {
 
 namespace jdkmidi { class MIDITrack; }
 
-#include "Editors/Editor.h"
 #include "Midi/Note.h"
 #include "Midi/ControllerEvent.h"
 
@@ -73,6 +72,14 @@ namespace AriaMaestosa
     
     const int SELECTED_NOTES = -1;
     const int ALL_NOTES = -2;
+    
+    enum KeyType
+    {
+        KEY_TYPE_SHARPS,
+        KEY_TYPE_FLATS,
+        KEY_TYPE_C,
+        KEY_TYPE_CUSTOM
+    };
     
     /**
       * @brief represents a track within a sequence.
@@ -124,16 +131,21 @@ namespace AriaMaestosa
         /** Name of the track, and also object that can render it */
         AriaRenderString m_name;
         
-        /** only used if in channel mode */
+        /** Only used if in manual channel management mode */
         int m_channel;
+        
         int m_instrument, m_drum_kit;
+        
+        KeyType m_key_type;
         
         int m_key_sharps_amnt;
         int m_key_flats_amnt;
         
-        /** contains wich notes appear as gray on the keyboard editor (by default, in C key, it is
-         * the sharp ones)
-         */
+        /** 
+          * @brief contains wich notes are part of the key of this track.
+          * It may be calculated from m_key_sharps_amnt / m_key_flats_amnt or set
+          * directly for custom keys.
+          */
         bool m_key_notes[131];
         
     public:
@@ -157,27 +169,33 @@ namespace AriaMaestosa
          */
         void trackDeleted(Track* track);
         
-        /** [re]place events in time order */
+        /** @brief place events in time order */
         void reorderNoteVector();
         
-        /** [re]place events in time order */
+        /** @brief place events in time order */
         void reorderNoteOffVector();
         
-        /** [re]place events in time order */
+        /** @brief place events in time order */
         void reorderControlVector();
         
         void removeNote(const int id);
         
         void setId(const int id);
         
-        /** set notes while importing files. otherwise, use edit actions. */
+        /**
+          * @brief set notes while importing files.
+          * @note when not importing, use edit actions instead.
+          */
         bool addNote_import(const int pitchID, const int startTick, const int endTick, const int volume, const int string=-1);
         
-        /** set notes while importing files. otherwise, use edit actions. */
+        /** 
+          * @brief set notes while importing files.
+          * @note when not importing, use edit actions instead.
+          */
         void setNoteEnd_import(const int tick, const int noteID);
         
         /**
-         * A midi control change, added when reading a file.
+         * @brief Add a midi control change, added when reading a file.
          * If we're reading the even from file, we can add it right away without further checks
          * because we know events won't overlap and are in time order. (i.e. this exists, as opposed to
          * the regular add method, for performance reasons)
@@ -196,18 +214,37 @@ namespace AriaMaestosa
         
         void selectNote(const int id, const bool selected, bool ignoreModifiers=false);
         
-        /** @return the number of sharp symbols in this track's key (or 0 if the key uses flats) */
+        /** 
+          * @return the type of key for this track
+          */
+        KeyType getKeyType    () const { return m_key_type;        }
+        
+        /** 
+          * @return the number of sharp symbols in this track's key (or 0 if the key uses flats)
+          * @note if key type (see Track::getKeyType) is not KEY_TYPE_SHARPS, will return 0
+          */
         int getKeySharpsAmount() const { return m_key_sharps_amnt; }
         
-        /** @return the number of flat symbols in this track's key (or 0 if the key uses sharps) */
-        int getKeyFlatsAmount()  const { return m_key_flats_amnt;  }
+        /**
+          * @return the number of flat symbols in this track's key (or 0 if the key uses sharps)
+          * @note if key type (see Track::getKeyType) is not KEY_TYPE_FLATS, will return 0
+          */
+        int getKeyFlatsAmount () const { return m_key_flats_amnt;  }
         
         /**
-          * Sets the key of this track
+          * @brief Sets the key of this track
+          *
           * @param symbolAmount Amount of sharp/flat signs this key has
-          * @param symbol       FLAT or SHARP.
+          * @param type         Key type - must be a standard type (i.e. may not be KEY_TYPE_CUSTOM).
           */
-        void setKey(const int symbolAmount, const PitchSign symbol);
+        void setKey(const int symbolAmount, const KeyType type);
+        
+        /**
+          * @brief Sets the key of this track.
+          *
+          * This overload can take any non-standard key.
+          */
+        void setCustomKey(bool key_notes[131]);
         
         // ---- get info on notes
         int   getNoteAmount           ()             const;
