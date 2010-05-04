@@ -42,9 +42,11 @@ AboutDialog::AboutDialog() : wxDialog(NULL, wxID_ANY,  _("About Aria Maestosa"),
     //I18N: - in about dialog
     wxString(_("\tJ.D. Koftinoff Software for libjdkmidi\n\tThe irrXML team for their great XML parser\n")) +
     //I18N: - in about dialog
-    wxString(_("\tThe wxWidgets team\n\twww.freesmug.org for allowing me to access an intel mac\n")) +
+    wxString(_("\tThe wxWidgets team\n")) +
     //I18N: - in about dialog
     wxString(_("\tThe Tango icon set\n")) +
+    //I18N: - in about dialog
+    wxString(_("\tWindows port by Alexis Archambault\n")) +
     //I18N: - in about dialog
     wxString(_("\nTranslations:\n") +
              wxString( wxT("\t it : Gianluca Pignalberi\n")) +
