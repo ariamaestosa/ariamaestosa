@@ -103,6 +103,8 @@ namespace AriaMaestosa
     // FIXME : find cleaner way to keep info per-track
     std::map< int /* trackID*5000 measure ID */, PerMeasureInfo > perMeasureInfo;
 
+
+
 #if 0
 #pragma mark -
 #pragma mark PrintXConverter
@@ -158,6 +160,9 @@ namespace AriaMaestosa
     /*
      * A few drawing routines
      */
+
+
+
     // -------------------------------------------------------------------------------------------
     /** @brief Renders a 'sharp' symbol at the given coordinates
       * @param center  If true, the center of the symbol is drawn at the x coordinate.
@@ -225,16 +230,22 @@ namespace AriaMaestosa
     /** Renders a 'G clef' sign at the the given coordinates */
     void renderGClef(wxDC& dc, const int x, const float score_bottom, const float b_line_y)
     {
-        static wxBitmap gclef( getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("keyG.png"), wxBITMAP_TYPE_PNG );
-        
         const int b_on_image = 30;
         const int bottom_on_image = 49;
         const float scale = (score_bottom - b_line_y) / (float)(bottom_on_image - b_on_image);
         const int y = score_bottom - bottom_on_image*scale;
+        static wxString path = getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("keyG.png");
         
+        /*
+        static wxBitmap gclef(path, wxBITMAP_TYPE_PNG);
         wxBitmap scaled = wxBitmap(gclef.ConvertToImage().Scale(gclef.GetWidth()*scale, gclef.GetHeight()*scale));
+        */
         
+        wxImage inputGClef(path, wxBITMAP_TYPE_PNG);
+        wxImage gclef = EditorPrintable::getPrintableImage(inputGClef);
+        wxBitmap scaled = wxBitmap(gclef.Scale(gclef.GetWidth()*scale, gclef.GetHeight()*scale),wxIMAGE_QUALITY_HIGH);
         
+
         dc.DrawBitmap(scaled, x, y, true);
         
         /*
@@ -280,12 +291,17 @@ namespace AriaMaestosa
     /** Renders a 'F clef' sign at the the given coordinates */
     void renderFClef(wxDC& dc, const int x, const float score_top, const float e_line_y)
     {
-        static wxBitmap fclef( getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("FKey.png"), wxBITMAP_TYPE_PNG );
-        
         const int e_on_image = 15;
         const float scale = (float)(e_line_y - score_top) / (float)e_on_image;
+        wxString path =  getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("FKey.png");
         
+        wxImage inputFClef(path, wxBITMAP_TYPE_PNG);
+        wxImage fclef = EditorPrintable::getPrintableImage(inputFClef);
+        wxBitmap scaled = wxBitmap(fclef.Scale(fclef.GetWidth()*scale, fclef.GetHeight()*scale),wxIMAGE_QUALITY_HIGH);
+        /*
+        static wxBitmap fclef( , wxBITMAP_TYPE_PNG );
         wxBitmap scaled = wxBitmap(fclef.ConvertToImage().Scale(fclef.GetWidth()*scale, fclef.GetHeight()*scale));
+        */
         
         dc.DrawBitmap(scaled, x, score_top, true);
     }
@@ -1512,5 +1528,6 @@ namespace AriaMaestosa
         }
         
     }
+
     // -------------------------------------------------------------------------------------------
 }

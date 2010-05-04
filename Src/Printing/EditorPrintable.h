@@ -22,6 +22,8 @@
 
 class wxDC;
 class wxPoint;
+class wxImage;
+class wxBitmap;
 
 namespace AriaMaestosa
 {
@@ -85,6 +87,8 @@ namespace AriaMaestosa
         
         /** Utility function : renders the track name at the given coordinates */
         static void drawTrackName(wxDC& dc, const LineTrackRef& currentTrack, int x, int y0, int y1);
+
+
 
     public:
         EditorPrintable();
@@ -164,6 +168,17 @@ namespace AriaMaestosa
         
         /** @brief utility method to render a note's head */
         static void drawNoteHead(wxDC& dc, const wxPoint headCenter, const bool hollowHead);
+
+        /**
+          * @brief  loads an image from file and scales it
+          * @return the scaled image
+          */
+        wxBitmap getScaledBitmap(const wxString& fileName, float scale);
+        
+        /**
+          * @brief  make an image more print-friendly on Windows
+          */
+        static wxImage getPrintableImage(const wxImage& image);
 
     };
 }

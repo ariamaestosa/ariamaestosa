@@ -424,9 +424,7 @@ void EditorPrintable::drawSilence(wxDC* dc, const Range<int> x, const int y, con
     }
     else if ( type == 4 )
     {
-        static wxBitmap silence( getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("silence4.png"), wxBITMAP_TYPE_PNG );
-        const float scale = 6.5f;
-        static wxBitmap silenceBigger = wxBitmap(silence.ConvertToImage().Scale(silence.GetWidth()*scale, silence.GetHeight()*scale));
+        static wxBitmap silenceBigger = getScaledBitmap(wxT("silence4.png"), 6.5f);
         
         silence_radius = silenceBigger.GetWidth()/2;
         // take the average of 'center-aligned' and 'right-aligned'
@@ -445,9 +443,7 @@ void EditorPrintable::drawSilence(wxDC* dc, const Range<int> x, const int y, con
     }
     else if ( type == 8 )
     {
-        static wxBitmap silence( getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("silence8.png"), wxBITMAP_TYPE_PNG );
-        const float scale = 6.5f;
-        static wxBitmap silenceBigger = wxBitmap(silence.ConvertToImage().Scale(silence.GetWidth()*scale, silence.GetHeight()*scale));
+        static wxBitmap silenceBigger = getScaledBitmap(wxT("silence8.png"), 6.5f);
         
         silence_radius = silenceBigger.GetWidth()/2;
         
@@ -463,10 +459,7 @@ void EditorPrintable::drawSilence(wxDC* dc, const Range<int> x, const int y, con
     }
     else if ( type == 16 )
     {
-        static wxBitmap silence( getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("silence8.png"), wxBITMAP_TYPE_PNG );
-        const float scale = 6.5f;
-        static wxBitmap silenceBigger = wxBitmap(silence.ConvertToImage().Scale(silence.GetWidth()*scale,
-                                                                                silence.GetHeight()*scale));
+        static wxBitmap silenceBigger = getScaledBitmap(wxT("silence8.png"), 6.5f);
         
         silence_radius = silenceBigger.GetWidth()/2;
         
@@ -537,5 +530,36 @@ void EditorPrintable::drawSilence(wxDC* dc, const Range<int> x, const int y, con
         dc->SetTextForeground( wxColour(0,0,0) );
         dc->DrawText( wxT("3"), silence_center - triplet_3_size.GetWidth()/3 - 11, base_y-20 );
     }
-    
 }
+    
+
+wxBitmap EditorPrintable::getScaledBitmap(const wxString& fileName, float scale)
+{
+    wxImage tempImage(getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + fileName, wxBITMAP_TYPE_PNG);
+    wxImage image = getPrintableImage(tempImage);
+    return wxBitmap(image.Scale(image.GetWidth()*scale, image.GetHeight()*scale),wxIMAGE_QUALITY_HIGH);
+}
+
+
+wxImage EditorPrintable::getPrintableImage(const wxImage& image)
+{
+#ifdef __WXMSW__
+    wxImage printimage = image;
+    if (printimage.HasAlpha())
+    {
+        printimage.ConvertAlphaToMask();
+    }
+    if (printimage.HasMask())
+    {
+        const wxColour mask(printimage.GetMaskRed(), printimage.GetMaskGreen(), printimage.GetMaskBlue());
+        const wxColour back = *wxWHITE;
+        
+        printimage.Replace(mask.Red(), mask.Green(), mask.Blue(),
+                           back.Red(), back.Green(), back.Blue());
+    }
+    return printimage;
+#else
+    return image;
+#endif
+}
+
