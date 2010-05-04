@@ -83,7 +83,12 @@ namespace AriaMaestosa
         getMainFrame()->disableMenus(false);
     }        
 
-    
+    /**
+      * @ingroup dialogs
+      * @brief the dialog to set-up printing of track(s) and page setup
+      * @note this is a private class, it won't be instanciated directly
+      * @see showPrintSetupDialog
+      */
     class PrintSetupDialog : public wxFrame
     {
         Sequence* m_current_sequence;

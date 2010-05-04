@@ -19,12 +19,20 @@
 #ifndef __ABOUT_DIALOG_H__
 #define __ABOUT_DIALOG_H__
 
+/**
+  * @defgroup dialogs
+  * @brief This module contains all dialogs/frames that can appear over the main frame.
+  */
+
 #include "wx/wx.h"
 #include "Utils.h"
 
 namespace AriaMaestosa
 {
     
+    /**
+      * @ingroup dialogs
+      */
     class AboutDialog : public wxDialog
     {
         

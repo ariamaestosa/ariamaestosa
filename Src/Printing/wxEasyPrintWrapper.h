@@ -102,7 +102,7 @@ namespace AriaMaestosa
         
         /** 
          * @return the number of units horizontally on the printable area of the paper
-         * @precondition  'performPageSetup' must have been called at least once prior to calling this
+         * @pre  'performPageSetup' must have been called at least once prior to calling this
          */
         int getUnitWidth() const
         {
@@ -112,7 +112,7 @@ namespace AriaMaestosa
         
         /** 
           * @return the number of units vertically on the printable area of the paper
-          * @precondition  'performPageSetup' must have been called at least once prior to calling this
+          * @pre  'performPageSetup' must have been called at least once prior to calling this
           */
         int getUnitHeight() const
         {

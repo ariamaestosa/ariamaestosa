@@ -128,7 +128,7 @@ namespace AriaMaestosa
         void setEditorMode(EditorType mode);
         
         /**
-         * @precondition Track, Sequence and GraphicalTrack must be initialized properly upon calling this
+         * @pre Track, Sequence and GraphicalTrack must be initialized properly upon calling this
          */
         void createEditors();
         

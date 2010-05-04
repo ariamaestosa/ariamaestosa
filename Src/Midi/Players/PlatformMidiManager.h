@@ -72,7 +72,7 @@ namespace AriaMaestosa
         /**
          * @brief        stops a playing sequence previously started by PlatformMidiManager::playSequence
          *               or PlatformMidiManager::playSelected
-         * @precondition this function is not to be called when there is no songn playing
+         * @pre this function is not to be called when there is no songn playing
          *               (when PlatformMidiManager::isPlaying returns false)
          */
         void stop();

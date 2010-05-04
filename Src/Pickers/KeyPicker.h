@@ -14,17 +14,23 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _key_picker_
-#define _key_picker_
+#ifndef __KEY_PICKER__
+#define __KEY_PICKER__
 
-#include "wx/wx.h"
+#include "wx/menu.h"
 #include "Utils.h"
+
+class wxCommandEvent;
 
 namespace AriaMaestosa
 {
 
     class GraphicalTrack; // forward
 
+    /**
+      * @ingroup pickers
+      * @brief menu where users can select the key of a track
+      */
     class KeyPicker : public wxMenu
     {
 

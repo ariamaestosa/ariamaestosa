@@ -30,8 +30,9 @@ namespace AriaMaestosa
     class StringEditor;
     
     /**
-     * @brief Frame that lets you enter a custom guitar tuning for the tablature editor
-     */
+      * @ingroup dialogs
+      * @brief Frame that lets you enter a custom guitar tuning for the tablature editor
+      */
     class TuningDialog : public wxFrame
     {
         wxPanel* buttonPane;

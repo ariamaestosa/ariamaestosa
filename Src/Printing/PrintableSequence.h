@@ -73,7 +73,7 @@ namespace AriaMaestosa
         /**
           * Add a track (from the parent sequence of this object) to be printed.
           *
-          * @precondition   The print layout must not have been "frozen" yet with 'caclulateLayout'.
+          * @pre   The print layout must not have been "frozen" yet with 'caclulateLayout'.
           *
           * @param track    The track from the parent sequence to be added to this print job.
           * @param mode     The type of view to use for printing (score, tablature, etc...)
@@ -106,7 +106,7 @@ namespace AriaMaestosa
         int getPageAmount() const;
         
         /** 
-          * @precondition Only call after calling 'calculateLayout'.
+          * @pre Only call after calling 'calculateLayout'.
           *
           * @param id     ID pf the page to retrieve. Must be in range [0 .. getPageAmount() - 1].
           * @return       the nth page of this printable sequence.
@@ -114,13 +114,13 @@ namespace AriaMaestosa
         LayoutPage& getPage(const int id);
         
         /** 
-          * @precondition only meaningful if called after all tracks have been added through 'addTrack'
+          * @pre only meaningful if called after all tracks have been added through 'addTrack'
           * @return whether at least one track with guitar view was added
           */
         bool isGuitarEditorUsed () const { return m_is_guitar_editor_used; }
         
         /**
-          * @precondition only meaningful if called after all tracks have been added through 'addTrack'
+          * @pre only meaningful if called after all tracks have been added through 'addTrack'
           * @return whether at least one track with score view was added
           */
         bool isScoreEditorUsed  () const { return m_is_score_editor_used;  }
@@ -148,7 +148,7 @@ namespace AriaMaestosa
           * @param x0                  The minimum x coordinate at which printing can occur
           * @param x1                  The maximum x coordinate at which printing can occur
           *
-          * @precondition              'calculateLayout' must have been called first.
+          * @pre              'calculateLayout' must have been called first.
           */
         void printLinesInArea(wxDC& dc, LayoutPage& page, const float notation_area_y0, const float notation_area_h,
                               const int pageHeight, const int x0, const int x1);

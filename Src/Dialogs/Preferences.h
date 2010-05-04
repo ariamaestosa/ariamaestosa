@@ -27,6 +27,10 @@ namespace AriaMaestosa
 
     class SettingWidget;
 
+    /**
+      * @ingroup dialogs
+      * @brief the dialog where you can edit the preferences
+      */
     class PreferencesDialog : public wxDialog
     {
         PreferencesData* data;

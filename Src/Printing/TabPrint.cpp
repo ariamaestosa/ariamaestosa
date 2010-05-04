@@ -52,7 +52,6 @@ TablaturePrintable::~TablaturePrintable()
 
 // ------------------------------------------------------------------------------------------------------------
 
-/** Implement method from EditorPrintable */
 void TablaturePrintable::earlySetup(const int trackID, Track* track)
 {
     m_analyser = new ScoreAnalyser(editor, -1);

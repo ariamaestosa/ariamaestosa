@@ -28,6 +28,13 @@
 namespace AriaMaestosa
 {
 
+    /**
+      * @ingroup dialogs
+      * @brief the dialog to set-up resizing of track portions
+      * @note this is a private class, it won't be instanciated directly
+      * @see ScaleDialog::pickScale
+      * @see ScaleDialog::free
+      */
     class ScalePickerFrame : public wxDialog
     {
         wxStaticText* label;

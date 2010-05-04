@@ -91,13 +91,13 @@ namespace AriaMaestosa
         bool  hasTempoChange() const { return m_tempo_change != -1; }
         
         /** 
-          * @return       the new tempo at this element
-          * @precondition 'hasTempoChange' must have returned 'true'
+          * @return the new tempo at this element
+          * @pre    'hasTempoChange' must have returned 'true'
           */
         int   getTempo      () const { return m_tempo_change;       }
         
         /** 
-          * @brrief          records a tempo change at this layout element
+          * @brief           records a tempo change at this layout element
           * @param newTempo  the new value of the tempo, in bpm, at this layout element
           */
         void  setTempoChange(const int newTempo) { m_tempo_change = newTempo; }

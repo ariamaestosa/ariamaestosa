@@ -136,16 +136,16 @@ namespace AriaMaestosa
          */
         void action( Action::MultiTrackAction* action );
 
-        /** you do not need to call this yourself, Track::action and Sequence::action do. */
+        /** @brief you do not need to call this yourself, Track::action and Sequence::action do. */
         void addToUndoStack( Action::EditAction* action );
         
-        /** undo the Action at the top of the undo stack */
+        /** @brief undo the Action at the top of the undo stack */
         void undo();
         
         /** @return the name of the Action at the top of the undo stack */
         wxString getTopActionName() const;
         
-        /** forbid undo, drop all undo information kept in memory. */
+        /** @brief forbid undo, by dropping all undo information kept in memory. */
         void clearUndoStack();
         
         /** @return is there something to undo? */
@@ -154,8 +154,9 @@ namespace AriaMaestosa
         wxString suggestFileName();
         wxString suggestTitle();
 
-        /** Hide a track by sending it to the 'dock' */
+        /** @brief Hide a track by sending it to the 'dock' */
         void addToDock(GraphicalTrack* track);
+        
         void removeFromDock(GraphicalTrack* track);
 
         void pushYScroll(int delta) { y_scroll += delta; }
@@ -172,11 +173,11 @@ namespace AriaMaestosa
          */    
         void reorderTracks();
 
-        /** called repeatedly when mouse is held down */
+        /** @brief called repeatedly when mouse is held down */
         void mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
                            RelativeXCoord mousex_initial, int mousey_initial);
 
-        /** do we need to start a timer that will frequently send mouse held down events? */
+        /** @return do we need to start a timer that will frequently send mouse held down events? */
         bool areMouseHeldDownEventsNeeded();
 
         /** @return the number of tracks in this sequence */
@@ -190,22 +191,27 @@ namespace AriaMaestosa
         void setCurrentTrackID(int ID);
         void setCurrentTrack(Track* track);
         
-        /** Adds a new track (below currently selected track) to this sequence
-          * Does NOT add an action in the action/undo stack. So if the user requested to add
-          * a track, use the corresponding Action instead.
+        /** 
+          * @brief  Adds a new track (below currently selected track) to this sequence.
+          *
+          * @note   Does NOT add an action in the action/undo stack. So if the user requested to add
+          *         a track, use the corresponding Action instead.
           * @return a pointer to the added track
           */
         Track* addTrack();
         
-        /** Add an existing track to the sequence.
-          * Does NOT add an action in the action/undo stack. So if the user requested to add
-          * a track, use the corresponding Action instead.
+        /** 
+          * @brief Adds an existing track to the sequence.
+          *
+          * @note  Does NOT add an action in the action/undo stack. So if the user requested to add
+          *        a track, use the corresponding Action instead.
           */
         void addTrack(Track* track);
         
-        /** Removes (but does not delete) the currently selected track.
+        /** 
+          * @brief  Removes (but does not delete) the currently selected track.
           * @return the removed track
-           */
+          */
         Track* removeSelectedTrack();
         
         /** Deletes a track
@@ -213,22 +219,24 @@ namespace AriaMaestosa
           */
         void deleteTrack(int ID);
         
-        /** Deletes a track
+        /** 
+          * @brief Deletes a track
           * @param track A pointer to the track that must be deleted
           */
         void deleteTrack(Track* track);
         
-        /** Called before loading, prepares empty tracks */    
+        /** @brief Called before loading, prepares empty tracks */    
         void prepareEmptyTracksForLoading(int amount);
 
         
         /**
          * @return the number of pixels it takes to draw all tracks, vertically.
-         *         This is used mostly by the code managing the vertical scrollbar.
+         * @note   This is used mostly by the code managing the vertical scrollbar.
          */    
         int   getTotalHeight() const;
         
-        /** @brief       sets the "default" tempo (tempo at start of song)
+        /** 
+          * @brief       sets the "default" tempo (tempo at start of song)
           * @param tempo the new tempo value
           */
         void  setTempo(int tempo);
@@ -241,9 +249,11 @@ namespace AriaMaestosa
         
         void  addTempoEvent( ControllerEvent* evt );
         
-        /** adds a tempo event. used during importing - then we know events are in time order
-         * so no time is wasted verifying that
-         */
+        /**
+          * @brief adds a tempo event.
+          * @note  used during importing - then we know events are in time order
+          *        so no time is wasted verifying that
+          */
         void  addTempoEvent_import( ControllerEvent* evt );
         
         int   getZoomInPercent() const;
@@ -262,7 +272,7 @@ namespace AriaMaestosa
         void  setChannelManagementType(ChannelManagementType m);
         ChannelManagementType getChannelManagementType() const;
 
-        /** called reacting to the user selecting "snap notes to grid" from the edit menu */
+        /** @brief called reacting to the user selecting "snap notes to grid" from the edit menu */
         void snapNotesToGrid();
 
         void setCopyright( wxString copyright );
@@ -283,21 +293,21 @@ namespace AriaMaestosa
         void selectNone();
 
         /**
-         * @return Ticks per beat (the number of time units in a quarter note.)
-         */
+          * @return Ticks per beat (the number of time units in a quarter note.)
+          */
         int ticksPerBeat() const;
         
         /**
-         * @param res Ticks per beat (the number of time units in a quarter note.)
-         */
+          * @param res Ticks per beat (the number of time units in a quarter note.)
+          */
         void setTicksPerBeat(int res);
 
         // ---- serialization
         
-        /** Called when saving <Sequence> ... </Sequence> in .aria file */
+        /** Called when saving \<Sequence\> ... \</Sequence\> in .aria file */
         void saveToFile(wxFileOutputStream& fileout);
         
-        /** Called when reading <sequence> ... </sequence> in .aria file */
+        /** Called when reading \<sequence\> ... \</sequence\> in .aria file */
         bool readFromFile(irr::io::IrrXMLReader* xml);
 
     };

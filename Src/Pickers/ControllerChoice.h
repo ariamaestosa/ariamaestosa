@@ -15,8 +15,8 @@
  */
 
 
-#ifndef _controllerchoice_
-#define _controllerchoice_
+#ifndef __CONTROLLER_CHOICE_H__
+#define __CONTROLLER_CHOICE_H__
 
 #include "wx/menu.h"
 
@@ -28,7 +28,10 @@ namespace AriaMaestosa
     
     class GraphicalTrack; // forward
     
-    
+    /**
+      * @ingroup pickers
+      * @brief the menu where you can choose a midi controller
+      */
     class ControllerChoice : public wxMenu
     {
         int controllerID;
@@ -41,7 +44,6 @@ namespace AriaMaestosa
         ~ControllerChoice();
         
         int getControllerID();
-        // void setControllerID(int id);
         void renderControllerName(const int x, const int y);
         bool isOnOffController(const int id) const;
         

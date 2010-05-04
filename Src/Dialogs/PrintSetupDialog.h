@@ -24,8 +24,11 @@ namespace AriaMaestosa
     class Sequence;
     class Track;
 
+    /**
+      * @ingroup dialogs
+      * @brief the dialog that allows you to set-up printing for a sequence
+      */
     void showPrintSetupDialog(Sequence* sequence);
-    //void exportNotation(Track* t);
 }
 
 #endif

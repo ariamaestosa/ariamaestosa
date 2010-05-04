@@ -23,9 +23,12 @@ namespace AriaMaestosa
 {
     class Track;
     
+    /**
+      * @ingroup dialogs
+      * @brief the dialog where you can edit per-track properties
+      */
     namespace TrackProperties
     {
-        
         void show(Track* parent);
     }
 }

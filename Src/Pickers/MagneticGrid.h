@@ -15,8 +15,8 @@
  */
 
 
-#ifndef _magnetic_grid_
-#define _magnetic_grid_
+#ifndef __MAGNETIC_GRID_H__
+#define __MAGNETIC_GRID_H__
 
 #include "wx/menu.h"
 
@@ -34,6 +34,11 @@ namespace AriaMaestosa
     
     class GraphicalTrack; // forward
     
+    /**
+      * @ingroup pickers
+      * @brief menu where users can choose the size of the magnetic grid and/or the current note length
+      *        (depending on the current edit tool)
+      */
     class MagneticGrid : public wxMenu
     {
         bool triplet;

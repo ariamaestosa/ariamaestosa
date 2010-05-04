@@ -70,6 +70,12 @@ namespace AriaMaestosa
         
     };
     
+    /**
+      * @ingroup dialogs
+      * @brief The dialog where per-track properties may be edited
+      * @note this is a private class, it won't be instanciated directly
+      * @see TrackProperties::show
+      */
     class TrackPropertiesDialog : public wxDialog
     {
         wxButton* ok_btn;
