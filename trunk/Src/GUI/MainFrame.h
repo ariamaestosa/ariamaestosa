@@ -19,6 +19,9 @@
 
 /**
   * @defgroup gui
+  * @brief This module contains the classes that manage the main frame and its contents.
+  * This includes the management of the main pane and its various areas, including the track
+  * area (even though the contents of each track is managed by module Editors)
   */
 
 #include "wx/wx.h"

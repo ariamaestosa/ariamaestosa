@@ -32,33 +32,17 @@ namespace AriaMaestosa
     DECLARE_LOCAL_EVENT_TYPE(wxEVT_DESTROY_TIMESIG_PICKER, -1)
     const int DESTROY_TIMESIG_EVENT_ID = 100000;
     
+    /**
+      * @ingroup pickers
+      * @brief show a time signature picker frame
+      */
     void showTimeSigPicker(const int x, const int y, const int num, const int denom);
-    void freeTimeSigPicker();
     
-    class TimeSigPicker : public wxFrame
-    {
-        wxTextCtrl* valueTextNum;
-        wxTextCtrl* valueTextDenom;
-        wxButton* okbtn;
-        wxPanel* pane;
-        wxCheckBox* variable;
-        
-    public:
-        LEAK_CHECK();
-        
-        TimeSigPicker();
-        
-        void show(const int x, const int y, const int num, const int denom);
-        void closeWindow();
-        
-        void enterPressed(wxCommandEvent& evt);
-        
-        void closed(wxCloseEvent& evt);
-        void keyPress(wxKeyEvent& evt);
-        void onFocus(wxFocusEvent& evt);
-        
-        DECLARE_EVENT_TABLE();
-    };
+    /**
+      * @ingroup pickers
+      * @brief hide and delete the time signature picker frame
+      */
+    void freeTimeSigPicker();
     
 }
 

@@ -86,7 +86,7 @@ namespace AriaMaestosa
         void generateMeasures(ptr_vector<Track, REF>& tracks);
         
         /**
-          * @precondition measures must have been generated.
+          * @pre measures must have been generated.
           *
           * @param[out] layoutPages
           */
@@ -108,7 +108,7 @@ namespace AriaMaestosa
         
         /**
           * @brief                  main function called from other classes
-          * @precondition           measures must have been generated.
+          * @pre           measures must have been generated.
           * @param tracks           a list of all tracks to be printed.
           * @param[out] layoutPages the vector of pages that is filled by this call
           * @param findReps         whether to use the feature to automatically attempt to detect

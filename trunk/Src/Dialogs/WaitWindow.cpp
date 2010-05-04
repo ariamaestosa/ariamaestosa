@@ -3,12 +3,12 @@
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
-
+ 
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
-
+ 
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -25,131 +25,139 @@
 
 namespace AriaMaestosa
 {
-class WaitWindowClass;
-
+    class WaitWindowClass;
+    
     namespace WaitWindow
     {
         WaitWindowClass* waitWindow=NULL;
     }
-
-class PulseNotifier : public wxTimer
-{
-public:
-    PulseNotifier();
-    void Notify();
-    void start();
-};
-
-class WaitWindowClass : public wxDialog
-{
-    PulseNotifier pulseNotifier;
-
-    wxBoxSizer* boxSizer;
-    wxStaticText* label;
-    wxGauge* progress;
-
-    bool progress_known;
-
-public:
-    LEAK_CHECK();
-
-    WaitWindowClass(wxString message, bool progress_known) : wxDialog( NULL, wxID_ANY,  _("Please wait..."), wxDefaultPosition, wxSize(400,200), wxCAPTION | wxSTAY_ON_TOP )
+    
+    class PulseNotifier : public wxTimer
     {
-
-
-
-        boxSizer=new wxBoxSizer(wxVERTICAL);
-        WaitWindowClass::progress_known = progress_known;
-
-        // gauge
-        progress = new wxGauge( this, wxID_ANY, 100/*, wxDefaultPosition, wxSize(200, 15)*/ );
-        if (progress_known) progress->SetValue(0);
-        else
+    public:
+        PulseNotifier();
+        void Notify();
+        void start();
+    };
+    
+    /**
+     * @ingroup dialogs
+     * @brief the dialog where a progress bar is shown to tell the user to wait
+     * @note this is a private class, you won't use it directly
+     * @see WaitWindow::show
+     * @see WaitWindow::setProgress
+     * @see WaitWindow::hide
+     */
+    class WaitWindowClass : public wxDialog
+    {
+        PulseNotifier pulseNotifier;
+        
+        wxBoxSizer* boxSizer;
+        wxStaticText* label;
+        wxGauge* progress;
+        
+        bool progress_known;
+        
+    public:
+        LEAK_CHECK();
+        
+        WaitWindowClass(wxString message, bool progress_known) : wxDialog( NULL, wxID_ANY,  _("Please wait..."), wxDefaultPosition, wxSize(400,200), wxCAPTION | wxSTAY_ON_TOP )
         {
-            pulseNotifier.start();
-            //progress->Pulse();
+            
+            
+            
+            boxSizer=new wxBoxSizer(wxVERTICAL);
+            WaitWindowClass::progress_known = progress_known;
+            
+            // gauge
+            progress = new wxGauge( this, wxID_ANY, 100/*, wxDefaultPosition, wxSize(200, 15)*/ );
+            if (progress_known) progress->SetValue(0);
+            else
+            {
+                pulseNotifier.start();
+                //progress->Pulse();
+            }
+            boxSizer->Add( progress, 1, wxEXPAND | wxALL, 10 );
+            
+            // label
+            label = new wxStaticText( this, wxID_ANY, message, wxPoint(25,25) );
+            boxSizer->Add( label, 0, wxALL, 10 );
+            
+            SetSizer( boxSizer );
+            boxSizer->Layout();
+            boxSizer->SetSizeHints( this );
+            
+            wxSize windowSize = GetSize();
+            wxSize gaugeSize = progress->GetSize();
+            gaugeSize.x = windowSize.x - 20;
+            progress->SetSize(gaugeSize);
         }
-        boxSizer->Add( progress, 1, wxEXPAND | wxALL, 10 );
-
-        // label
-        label = new wxStaticText( this, wxID_ANY, message, wxPoint(25,25) );
-        boxSizer->Add( label, 0, wxALL, 10 );
-
-        SetSizer( boxSizer );
-        boxSizer->Layout();
-        boxSizer->SetSizeHints( this );
-
-        wxSize windowSize = GetSize();
-        wxSize gaugeSize = progress->GetSize();
-        gaugeSize.x = windowSize.x - 20;
-        progress->SetSize(gaugeSize);
+        
+        void pulse()
+        {
+            progress->Pulse();
+        }
+        
+        /** sets the progress, between 0 and 100. Value is clipped if out of bounds */
+        void setProgress(int val)
+        {
+            if      (val < 0)   val = 0;
+            else if (val > 100) val = 100;
+            progress->SetValue( val );
+            Update();
+        }
+        
+        void show()
+        {
+            wxDialog::Center();
+            wxDialog::Show();
+            wxYield();
+        }
+        
+        void hide()
+        {
+            if (progress_known) pulseNotifier.Stop();
+            wxDialog::Hide();
+        }
+        
+    };
+    
+    namespace WaitWindow {
+        
+        void show(wxString message, bool progress_known)
+        {
+            
+            wxBeginBusyCursor();
+            waitWindow = new WaitWindowClass(message, progress_known);
+            waitWindow->show();
+        }
+        
+        void setProgress(int progress)
+        {
+            waitWindow->setProgress( progress );
+        }
+        
+        void hide()
+        {
+            wxEndBusyCursor();
+            waitWindow->hide();
+            waitWindow->Destroy();
+        }
+        
     }
-
-    void pulse()
+    
+    PulseNotifier::PulseNotifier() : wxTimer()
     {
-        progress->Pulse();
     }
-
-    /** sets the progress, between 0 and 100. Value is clipped if out of bounds */
-    void setProgress(int val)
+    
+    void PulseNotifier::Notify()
     {
-        if      (val < 0)   val = 0;
-        else if (val > 100) val = 100;
-        progress->SetValue( val );
-        Update();
+        if (WaitWindow::waitWindow != NULL) WaitWindow::waitWindow->pulse();
     }
-
-    void show()
+    
+    void PulseNotifier::start()
     {
-        wxDialog::Center();
-        wxDialog::Show();
-        wxYield();
+        wxTimer::Start(100);
     }
-
-    void hide()
-    {
-        if (progress_known) pulseNotifier.Stop();
-        wxDialog::Hide();
-    }
-
-};
-
-namespace WaitWindow {
-
-    void show(wxString message, bool progress_known)
-    {
-
-        wxBeginBusyCursor();
-        waitWindow = new WaitWindowClass(message, progress_known);
-        waitWindow->show();
-    }
-
-    void setProgress(int progress)
-    {
-        waitWindow->setProgress( progress );
-    }
-
-    void hide()
-    {
-        wxEndBusyCursor();
-        waitWindow->hide();
-        waitWindow->Destroy();
-    }
-
-}
-
-PulseNotifier::PulseNotifier() : wxTimer()
-{
-}
-
-void PulseNotifier::Notify()
-{
-    if (WaitWindow::waitWindow != NULL) WaitWindow::waitWindow->pulse();
-}
-
-void PulseNotifier::start()
-{
-    wxTimer::Start(100);
-}
-
+    
 }

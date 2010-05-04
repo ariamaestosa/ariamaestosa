@@ -196,7 +196,7 @@ namespace AriaMaestosa
           * simply returns the cached value.
           *
           * @return the value that was determined by a previous call to 'calculateHeight'.
-          * @precondition 'calculateHeight' must have been called first
+          * @pre 'calculateHeight' must have been called first
           */
         int getCalculatedHeight() const
         {

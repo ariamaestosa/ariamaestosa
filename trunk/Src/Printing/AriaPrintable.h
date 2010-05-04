@@ -113,7 +113,7 @@ namespace AriaMaestosa
         
         /** 
           * @brief Initiate the actual printing of the sequence
-          * @precondition  the 'calculateLayout' method of the printable sequence has been called
+          * @pre  the 'calculateLayout' method of the printable sequence has been called
           * @return whether an error occurred (wxPRINTER_ERROR), whether printing was cancelled
           *         (wxPRINTER_CANCELLED), or whether all is well (wxPRINTER_NO_ERROR)
           */ 

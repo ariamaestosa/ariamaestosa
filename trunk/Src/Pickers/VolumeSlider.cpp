@@ -34,6 +34,40 @@ namespace AriaMaestosa
         ID_TEXT_AREA
     };
     
+    /**
+      * @ingroup pickers
+      * @brief small frame used to pick a note volume (velocity)
+      */
+    class VolumeSlider : public wxDialog
+    {
+        wxSlider* m_slider;
+        wxTextCtrl* m_value_text;
+        wxPanel* m_pane;
+        int m_return_code;
+        
+        int m_note_ID;
+        Track* m_current_track;
+        
+    public:
+        LEAK_CHECK();
+        
+        VolumeSlider();
+        
+        void show(int x, int y, int noteID, Track* track);
+        void closeWindow();
+        
+        void volumeSlideChanging(wxScrollEvent& evt);
+        void volumeSlideChanged(wxScrollEvent& evt);
+        void volumeTextChanged(wxCommandEvent& evt);
+        void enterPressed(wxCommandEvent& evt);
+        
+        void closed(wxCloseEvent& evt);
+        void keyPress(wxKeyEvent& evt);
+        void onCancel(wxCommandEvent& evt);
+        
+        DECLARE_EVENT_TABLE();
+    };
+    
     
     DEFINE_LOCAL_EVENT_TYPE(wxEVT_DESTROY_VOLUME_SLIDER)
     

@@ -28,6 +28,10 @@ namespace AriaMaestosa
     
     class Track;
     
+    /**
+      * @ingroup pickers
+      * @brief the menu where you can choose a drum kit
+      */
     class DrumChoice : public wxMenu
     {
         Track* parent;

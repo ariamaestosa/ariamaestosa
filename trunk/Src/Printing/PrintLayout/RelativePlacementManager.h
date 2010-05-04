@@ -174,18 +174,18 @@ public:
     /**
      * Calculates the relative placement of all added symbols.
      *
-     * @precondition           To be called after all symbols have been added
+     * @pre           To be called after all symbols have been added
      */
     void calculateRelativePlacement();
 
     /**
-     * @precondition           To be called after all symbols have been added
+     * @pre           To be called after all symbols have been added
      * @return                 The number of units (number of distinct ticks on which symbols are place)
      */
     //int getUnitCount() const;
     
     /**
-     * @precondition           To be called after all symbols have been added
+     * @pre           To be called after all symbols have been added
      * @return                 The number of print units this measure needs to be allocated
      */
     int getWidth() const
@@ -197,7 +197,7 @@ public:
      * Getter to get the results of the calculation
      *
      * @param tick             The tick at which the symbol we want to get info on starts
-     * @precondition           calculateRelativePlacement must have been called first.
+     * @pre           calculateRelativePlacement must have been called first.
      *
      * @return                 The calculated area (in proportion, 0 being leftmost and 1 rightmost)
      *                         of a tick within a specific track.

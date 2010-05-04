@@ -23,6 +23,10 @@ namespace AriaMaestosa
 {
     class Sequence;
     
+    /**
+      * @ingroup dialogs
+      * @brief the dialog to set-up scaling of track parts
+      */
     namespace ScaleDialog
     {
         void pickScale(Sequence* seq);

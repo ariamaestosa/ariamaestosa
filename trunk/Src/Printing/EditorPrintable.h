@@ -124,7 +124,7 @@ namespace AriaMaestosa
         Range<int> getNoteSymbolX(const int trackID, LayoutLine& line, int noteID);
 
         /** @return the print area reserved for a specific note/silence/symbol (by tick).
-          * @precondition The tick must be known already to the RelativePlacementManager;
+          * @pre The tick must be known already to the RelativePlacementManager;
           * otherwise (-1,-1) may be returned. */
         Range<int> tickToX(const int trackID, LayoutLine& line, const int tick);
 

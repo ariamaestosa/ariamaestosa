@@ -23,7 +23,10 @@
 
 namespace AriaMaestosa
 {
-    
+    /**
+      * @ingroup dialogs
+      * @brief progress bar frame, to tell the user to wait
+      */
     namespace WaitWindow
     {
         void show(wxString message, bool progress_known = false);

@@ -14,8 +14,17 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _instrumentchoice_
-#define _instrumentchoice_
+#ifndef __INSTRUMENT_CHOICE_H__
+#define __INSTRUMENT_CHOICE_H__
+
+/**
+  * @defgroup pickers
+  * @brief This module contains all picker menus that are meant to be quickly shown
+  *        and hidden.
+  * This includes all pop-up menus that appear for the user to make a quick selection,
+  * and other dialogs that act in a "pop-up-menu-like" fashion, i.e. they're short-lived
+  * and only used to make a quick selection.
+  */
 
 #include "wx/menu.h"
 #include "wx/string.h"
@@ -28,6 +37,10 @@ namespace AriaMaestosa
     
     class Track; // forward
     
+    /**
+      * @ingroup pickers
+      * @brief menu where a MIDI instrument can be selected
+      */
     class InstrumentChoice : public wxMenu
     {
         wxMenuItem* inst_menus[128];

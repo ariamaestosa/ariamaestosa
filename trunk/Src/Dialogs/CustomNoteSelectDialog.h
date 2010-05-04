@@ -28,6 +28,10 @@ namespace AriaMaestosa
     
     class Track;
     
+    /**
+      * @ingroup dialogs
+      * @brief the dialog that lets you setup a custom note selection from various criteria
+      */
     class CustomNoteSelectDialog : public wxDialog
     {
         

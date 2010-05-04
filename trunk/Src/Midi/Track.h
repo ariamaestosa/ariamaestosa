@@ -204,8 +204,8 @@ namespace AriaMaestosa
         
         /**
           * Sets the key of this track
-          * @paramsymbolAmount Amount of sharp/flat signs this key has
-          * @param symbol      FLAT or SHARP.
+          * @param symbolAmount Amount of sharp/flat signs this key has
+          * @param symbol       FLAT or SHARP.
           */
         void setKey(const int symbolAmount, const PitchSign symbol);
         
@@ -325,13 +325,13 @@ namespace AriaMaestosa
         int getDuration() const;
         
         /*
-         * @precondition only use in manual channel management mode
+         * @pre only use in manual channel management mode
          * if auto mode is on, the playing code must pick a channel for each track.
          * if you use Aria's libjdkmidi/midibytes functions, this will be done for you
          */
         void setChannel(int i);
         
-        /** @precondition only used in manual channel mode */
+        /** @pre only used in manual channel mode */
         int getChannel();
         
         void setInstrument(int i, bool recursive=false); // 'recursive' is set to true when the method calls itself
