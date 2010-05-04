@@ -30,6 +30,8 @@
 #include "Renderers/Drawable.h"
 #include "IO/IOUtils.h"
 
+#include "unit_test.h"
+
 namespace AriaMaestosa
 {
     EditTool g_current_edit_tool = EDIT_TOOL_PENCIL;
@@ -839,8 +841,27 @@ int Editor::findNotePitch(Note7 note_7, PitchSign sharpness, const int octave)
     if      (sharpness == SHARP) note -= 1;
     else if (sharpness == FLAT)  note += 1;
     
-    //FIXME: add sanity checks for 'octave'
-    return note + octave*12;
+    //FIXME: add sanity checks for the value of 'octave'
+    return note + (9 - octave)*12;
+}
+
+UNIT_TEST( TestFindNotePitch )
+{
+    require(Editor::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 4 /* octave */) == 131 - 69,
+            "findNotePitch works correctly" );
+    require(Editor::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 4 /* octave */) == 131 - 71,
+            "findNotePitch works correctly" );
+    require(Editor::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 4 /* octave */) == 131 - 64,
+            "findNotePitch works correctly" );
+    require(Editor::findNotePitch(NOTE_7_D, SHARP, 4 /* octave */) == 131 - 63,
+            "findNotePitch works correctly" );
+    require(Editor::findNotePitch(NOTE_7_E, FLAT, 4 /* octave */) == 131 - 63,
+            "findNotePitch works correctly" );
+    
+    require(Editor::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 3 /* octave */) == 131 - 57,
+            "findNotePitch works correctly" );
+    require(Editor::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 6 /* octave */) == 131 - 93,
+            "findNotePitch works correctly" );
 }
 
 // ------------------------------------------------------------------------------------------------------------
@@ -850,63 +871,120 @@ bool Editor::findNoteName(const int pitchID, Note12* note_12, int* octave)
     //TODO: this function would be excellent to test through unit tests
     if (pitchID < 4)   return false;
     if (pitchID > 131) return false;
-    *octave = pitchID/12;
+    *octave = 9 - pitchID/12;
     
-    const int remainder = pitchID - (*octave) * 12;
+    const int remainder = pitchID - int(pitchID/12) * 12;
     
     switch (remainder)
     {
         case 0:
             *note_12 = NOTE_12_B;
-            ASSERT( findNotePitch(NOTE_7_B, NATURAL, *octave) == pitchID );
+            ASSERT_E( findNotePitch(NOTE_7_B, NATURAL, *octave), ==, pitchID );
             return true;
         case 1:
             *note_12 = NOTE_12_A_SHARP;
-            ASSERT( findNotePitch(NOTE_7_A, SHARP, *octave) == pitchID );
+            ASSERT_E( findNotePitch(NOTE_7_A, SHARP, *octave), ==, pitchID );
             return true;
         case 2:
             *note_12 = NOTE_12_A;
-            ASSERT( findNotePitch(NOTE_7_A, NATURAL, *octave) == pitchID );
+            ASSERT_E( findNotePitch(NOTE_7_A, NATURAL, *octave), ==, pitchID );
             return true;
         case 3:
             *note_12 = NOTE_12_G_SHARP;
-            ASSERT( findNotePitch(NOTE_7_G, SHARP, *octave) == pitchID );
+            ASSERT_E( findNotePitch(NOTE_7_G, SHARP, *octave), ==, pitchID );
             return true;
         case 4:
             *note_12 = NOTE_12_G;
-            ASSERT( findNotePitch(NOTE_7_G, NATURAL, *octave) == pitchID );
+            ASSERT_E( findNotePitch(NOTE_7_G, NATURAL, *octave), ==, pitchID );
             return true;
         case 5:
             *note_12 = NOTE_12_F_SHARP;
-            ASSERT( findNotePitch(NOTE_7_F, SHARP, *octave) == pitchID );
+            ASSERT_E( findNotePitch(NOTE_7_F, SHARP, *octave), ==, pitchID );
             return true;
         case 6:
             *note_12 = NOTE_12_F;
-            ASSERT( findNotePitch(NOTE_7_F, NATURAL, *octave) == pitchID );
+            ASSERT_E( findNotePitch(NOTE_7_F, NATURAL, *octave), ==, pitchID );
             return true;
         case 7:
             *note_12 = NOTE_12_E;
-            ASSERT( findNotePitch(NOTE_7_E, NATURAL, *octave) == pitchID );
+            ASSERT_E( findNotePitch(NOTE_7_E, NATURAL, *octave), ==, pitchID );
             return true;
         case 8:
             *note_12 = NOTE_12_D_SHARP;
-            ASSERT( findNotePitch(NOTE_7_D, SHARP, *octave) == pitchID );
+            ASSERT_E( findNotePitch(NOTE_7_D, SHARP, *octave), ==, pitchID );
             return true;
         case 9:
             *note_12 = NOTE_12_D;
-            ASSERT( findNotePitch(NOTE_7_D, NATURAL, *octave) == pitchID );
+            ASSERT_E( findNotePitch(NOTE_7_D, NATURAL, *octave), ==, pitchID );
             return true;
         case 10:
             *note_12 = NOTE_12_C_SHARP;
-            ASSERT( findNotePitch(NOTE_7_C, SHARP, *octave) == pitchID );
+            ASSERT_E( findNotePitch(NOTE_7_C, SHARP, *octave), ==, pitchID );
             return true;
         case 11:
             *note_12 = NOTE_12_C;
-            ASSERT( findNotePitch(NOTE_7_C, NATURAL, *octave) == pitchID );
+            ASSERT_E( findNotePitch(NOTE_7_C, NATURAL, *octave), ==, pitchID );
             return true;
         default:
             return false;
     }
+}
+
+
+UNIT_TEST( TestFindNoteName )
+{
+    Note12 note;
+    int octave;
+    
+    {
+        const bool success = Editor::findNoteName(131 - 69, &note, &octave);
+        require(success, "Conversion didn't abort with error");
+        require(note == NOTE_12_A, "Conversion outputs the right note");
+        require(octave == 4, "Conversion outputs the right octave");
+    }
+    
+    {
+        const bool success = Editor::findNoteName(131 - 71, &note, &octave);
+        require(success, "Conversion didn't abort with error");
+        require(note == NOTE_12_B, "Conversion outputs the right note");
+        require(octave == 4, "Conversion outputs the right octave");
+    }
+    
+    {
+        const bool success = Editor::findNoteName(131 - 64, &note, &octave);
+        require(success, "Conversion didn't abort with error");
+        require(note == NOTE_12_E, "Conversion outputs the right note");
+        require(octave == 4, "Conversion outputs the right octave");
+    }
+    
+    {
+        const bool success = Editor::findNoteName(131 - 63, &note, &octave);
+        require(success, "Conversion didn't abort with error");
+        require(note == NOTE_12_D_SHARP, "Conversion outputs the right note");
+        require(octave == 4, "Conversion outputs the right octave");
+    }
+    
+    {
+        const bool success = Editor::findNoteName(131 - 63, &note, &octave);
+        require(success, "Conversion didn't abort with error");
+        require(note == NOTE_12_E_FLAT, "Conversion outputs the right note");
+        require(octave == 4, "Conversion outputs the right octave");
+    }
+
+    {
+        const bool success = Editor::findNoteName(131 - 57, &note, &octave);
+        require(success, "Conversion didn't abort with error");
+        require(note == NOTE_12_A, "Conversion outputs the right note");
+        require(octave == 3, "Conversion outputs the right octave");
+    }
+    
+    {
+        const bool success = Editor::findNoteName(131 - 93, &note, &octave);
+        require(success, "Conversion didn't abort with error");
+        require(note == NOTE_12_A, "Conversion outputs the right note");
+        require(octave == 6, "Conversion outputs the right octave");
+    }
+
 }
 
 // ------------------------------------------------------------------------------------------------------------

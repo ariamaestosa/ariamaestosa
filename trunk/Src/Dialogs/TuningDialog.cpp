@@ -315,14 +315,13 @@ namespace AriaMaestosa
                 
                 std::cout << (char)(note.GetChar(0)) << " " << (char)(sign.GetChar(0)) << " " << (char)(octave.GetChar(0)) << std::endl;
                 
-                parent->tuning.push_back(
-                                         findNote(
-                                                  (char)(note.GetChar(0)) ,
-                                                  (char)(sign.GetChar(0)),
-                                                  atoi_u( octave )
-                                                  )
-                                         );
+                const int notepitch = findNote(
+                                          (char)(note.GetChar(0)) ,
+                                          (char)(sign.GetChar(0)),
+                                          atoi_u( octave )
+                                          );
                 
+                parent->tuning.push_back(notepitch);
             }
         }
         
