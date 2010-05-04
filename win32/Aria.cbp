@@ -198,8 +198,8 @@
 		<Unit filename="..\Src\AriaCore.h" />
 		<Unit filename="..\Src\Clipboard.cpp" />
 		<Unit filename="..\Src\Clipboard.h" />
-		<Unit filename="..\Src\Dialogs\About.cpp" />
-		<Unit filename="..\Src\Dialogs\About.h" />
+		<Unit filename="..\Src\Dialogs\AboutDialog.cpp" />
+		<Unit filename="..\Src\Dialogs\AboutDialog.h" />
 		<Unit filename="..\Src\Dialogs\CopyrightWindow.cpp" />
 		<Unit filename="..\Src\Dialogs\CopyrightWindow.h" />
 		<Unit filename="..\Src\Dialogs\CustomNoteSelectDialog.cpp" />
@@ -208,8 +208,12 @@
 		<Unit filename="..\Src\Dialogs\Preferences.h" />
 		<Unit filename="..\Src\Dialogs\PrintSetupDialog.cpp" />
 		<Unit filename="..\Src\Dialogs\PrintSetupDialog.h" />
-		<Unit filename="..\Src\Dialogs\ScalePicker.cpp" />
-		<Unit filename="..\Src\Dialogs\ScalePicker.h" />
+		<Unit filename="..\Src\Dialogs\ScaleDialog.cpp" />
+		<Unit filename="..\Src\Dialogs\ScaleDialog.h" />
+		<Unit filename="..\Src\Dialogs\TrackPropertiesDialog.cpp" />
+		<Unit filename="..\Src\Dialogs\TrackPropertiesDialog.h" />
+		<Unit filename="..\Src\Dialogs\TuningDialog.cpp" />
+		<Unit filename="..\Src\Dialogs\TuningDialog.h" />
 		<Unit filename="..\Src\Dialogs\WaitWindow.cpp" />
 		<Unit filename="..\Src\Dialogs\WaitWindow.h" />
 		<Unit filename="..\Src\Editors\ControllerEditor.cpp" />
@@ -280,8 +284,6 @@
 		<Unit filename="..\Src\Midi\Track.cpp" />
 		<Unit filename="..\Src\Midi\Track.h" />
 		<Unit filename="..\Src\OpenGL.h" />
-		<Unit filename="..\Src\Pickers\BackgroundPicker.cpp" />
-		<Unit filename="..\Src\Pickers\BackgroundPicker.h" />
 		<Unit filename="..\Src\Pickers\ControllerChoice.cpp" />
 		<Unit filename="..\Src\Pickers\ControllerChoice.h" />
 		<Unit filename="..\Src\Pickers\DrumChoice.cpp" />
