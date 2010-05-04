@@ -1,3 +1,8 @@
+1.2.2
+- Cleanup and code documentation
+- Work on custom key support
+- Fixed octave numbers in keyboard editor
+
 1.2.1
 - Fixed printing of accidentals
 
