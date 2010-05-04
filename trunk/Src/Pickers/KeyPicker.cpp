@@ -27,12 +27,16 @@ namespace AriaMaestosa
     class CustomKeyDialog : public wxDialog
     {
         wxCheckBox* m_check_boxes[132];
+        GraphicalTrack* m_parent;
+        
     public:
         
         CustomKeyDialog(wxWindow* parent, GraphicalTrack* gtrack) : 
         wxDialog(parent, wxID_ANY, _("Custom Key Editor"), wxDefaultPosition,
                  wxSize(800,600), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
         {
+            m_parent = gtrack;
+            
             const bool* curr_key_notes = gtrack->track->getKeyNotes();
             
             wxPanel* pane = new wxPanel(this);
@@ -91,22 +95,25 @@ namespace AriaMaestosa
             
             Centre();
         }
+        
         void onOK(wxCommandEvent& evt)
         {
-            bool custom_key[132];
+            bool custom_key[131];
             custom_key[0] = false;
             custom_key[1] = false;
             custom_key[2] = false;
             custom_key[3] = false;
-            for (int pitch=4; pitch<=131; pitch++)
+            for (int pitch=4; pitch<=130; pitch++)
             {
                 custom_key[pitch] = m_check_boxes[pitch]->GetValue();
                 std::cout << "Note " << pitch << " : " << custom_key[pitch] << std::endl;
             }
             
-            //TODO: custom key support
+            m_parent->track->setCustomKey(custom_key);
+            
             EndModal( GetReturnCode() );
         }
+        
         void onCancel(wxCommandEvent& evt)
         {
             EndModal( GetReturnCode() );
@@ -206,7 +213,7 @@ KeyPicker::KeyPicker() : wxMenu()
     
     AppendSeparator();
     Append( KEY_GUESS,  _("Guess Key"));
-    Append( KEY_CUSTOM, _("Custom Key"));
+    m_custom_key_menu = AppendCheckItem( KEY_CUSTOM, _("Custom Key"));
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -257,6 +264,7 @@ void KeyPicker::setParent(Track* parent_arg)
     key_flats_5->Check(false);
     key_flats_6->Check(false);
     key_flats_7->Check(false);
+    m_custom_key_menu->Check(false);
     
     const KeyType type = parent_arg->getKeyType();
     
@@ -298,8 +306,7 @@ void KeyPicker::setParent(Track* parent_arg)
 
         case KEY_TYPE_CUSTOM:
         {
-            assert(false);
-            //TODO: KEY_TYPE_CUSTOM not supported yet
+            m_custom_key_menu->Check(true);
             break;
         }
     }

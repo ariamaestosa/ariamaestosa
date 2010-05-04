@@ -63,6 +63,8 @@ namespace AriaMaestosa
         wxMenuItem* key_flats_5;
         wxMenuItem* key_flats_6;
         wxMenuItem* key_flats_7;
+        
+        wxMenuItem* m_custom_key_menu;
 public:
         LEAK_CHECK();
 
