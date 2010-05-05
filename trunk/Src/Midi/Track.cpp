@@ -66,10 +66,10 @@ Track::Track(MainFrame* parent, Sequence* sequence)
 {
     // init key data
     setKey(0, KEY_TYPE_C);
-    
+
     m_name.set( wxString( _("Untitled") ) );
     m_name.setMaxWidth(120);
-    
+
     //FIXME: find out why fonts are so different on mac and linux
     //FIXME: what does this do in the data class, and not in the graphics class?
 #ifdef __WXMAC__
@@ -127,7 +127,7 @@ Track::Track(MainFrame* parent, Sequence* sequence)
 #else
     instrument_name.setFont( wxFont(9,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
 #endif
-    
+
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -624,7 +624,7 @@ int Track::getNoteFret(const int id)
     ASSERT_E(id,<,m_notes.size());
 
     //if (m_notes[id].tuning == NULL) m_notes[id].setTuning(&graphics->guitarEditor->tuning); // make sure the note knows the tuning
-    
+
     //FIXME: I think Note::getFret also does this check, so we're duplicating it here...
     if (m_notes[id].getFret() == -1) m_notes[id].findStringAndFretFromNote();
 
@@ -637,7 +637,7 @@ int Track::getNoteStringConst(const int id) const
 {
     ASSERT_E(id,>=,0);
     ASSERT_E(id,<,m_notes.size());
-    
+
     return m_notes[id].getStringConst();
 }
 
@@ -647,17 +647,17 @@ int Track::getNoteFretConst(const int id) const
 {
     ASSERT_E(id,>=,0);
     ASSERT_E(id,<,m_notes.size());
-    
+
     return m_notes[id].getFretConst();
 }
 
 
 // -------------------------------------------------------------------------------------------------------
-    
+
 int Track::findFirstNoteInRange(const int fromTick, const int toTick) const
 {
     const int noteAmount = m_notes.size();
-    
+
     for (int n=0; n<noteAmount; n++)
     {
         if (m_notes[n].startTick >= fromTick && m_notes[n].startTick < toTick) return n;
@@ -665,13 +665,13 @@ int Track::findFirstNoteInRange(const int fromTick, const int toTick) const
     }
     return -1;
 }
-    
+
 // -------------------------------------------------------------------------------------------------------
 
 int Track::findLastNoteInRange(const int fromTick, const int toTick) const
 {
     const int noteAmount = m_notes.size();
-    
+
     for (int n=noteAmount-1; n>-1; n--)
     {
         if (m_notes[n].startTick >= fromTick && m_notes[n].startTick < toTick) return n;
@@ -801,47 +801,47 @@ void Track::prepareNotesForGuitarEditor()
 
 void Track::copy()
 {
-    
+
     if (graphics->editorMode == CONTROLLER)
     {
         wxBell();
         return; // no copy/paste in controller mode
     }
-    
+
     Clipboard::clear();
     Clipboard::setBeatLength(sequence->ticksPerBeat());
-    
+
     int tickOfFirstSelectedNote=-1;
     // place all selected notes into clipboard
     for (int n=0; n<m_notes.size(); n++)
     {
         if (!m_notes[n].isSelected()) continue;
-        
+
         Note* tmp=new Note(m_notes[n]);
         Clipboard::add(tmp);
-        
+
         // if in guitar mode, make sure string/fret and note match
         if (graphics->editorMode == GUITAR) Clipboard::getNote( Clipboard::getSize()-1 )->checkIfStringAndFretMatchNote(false);
         else Clipboard::getNote( Clipboard::getSize()-1 )->checkIfStringAndFretMatchNote(true);
-        
+
         // find tickOfFirstSelectedNote of the first note
         if (m_notes[n].startTick < tickOfFirstSelectedNote or tickOfFirstSelectedNote==-1)
         {
             tickOfFirstSelectedNote=m_notes[n].startTick;
         }
-        
+
     }//next
-    
+
     // remove all empty measures before notes, so that they appear in the current measure when pasting
     const int lastMeasureStart = getMeasureData()->firstTickInMeasure( getMeasureData()->measureAtTick(tickOfFirstSelectedNote) );
-    
+
     const int clipboard_size = Clipboard::getSize();
     for(int n=0; n<clipboard_size; n++)
     {
         //Clipboard::getNote(n)->move( -lastMeasureStart, 0, graphics->editorMode);
         graphics->getCurrentEditor()->moveNote(*Clipboard::getNote(n), -lastMeasureStart, 0);
     }
-    
+
     sequence->notes_shift_when_no_scrolling = lastMeasureStart;
 }
 
@@ -910,7 +910,7 @@ void Track::setInstrument(int i, bool recursive)
 {
     m_instrument = i;
     instrument_name.set(Core::getInstrumentPicker()->getInstrumentName( m_instrument ));
-    
+
     // if we're in manual channel management mode, change all tracks of the same channel
     // to have the same instrument
     if (sequence->getChannelManagementType() == CHANNEL_MANUAL and not recursive)
@@ -973,7 +973,7 @@ void Track::setDrumKit(int i, bool recursive)
 int Track::getDuration() const
 {
     if (m_note_off.size() < 1) return 0;
-    
+
     return m_note_off[m_note_off.size()-1].endTick;
 }
 
@@ -982,7 +982,7 @@ int Track::getDuration() const
 void Track::setKey(const int symbolAmount, const KeyType type)
 {
     assert(symbolAmount < 8);
-    
+
     // ---- update "key_sharps_amnt" and "key_flats_amnt" members
     if (type == KEY_TYPE_SHARPS)
     {
@@ -1007,13 +1007,13 @@ void Track::setKey(const int symbolAmount, const KeyType type)
         std::cerr << "Bogus call to Track::setKey! Invalid key type.\n";
         ASSERT(false);
     }
-    
+
     // ---- update 'm_key_notes' array
     // if key is e.g. G Major, "major_note" will be set to note12 equivalent of G.
     // to load a minor key, it's just set to the major one that has same sharps and flats
     // to ease the process
     Note12 major_note12 = NOTE_12_C;
-    
+
     if (symbolAmount == 0 or type == KEY_TYPE_C)
     {
         major_note12 = NOTE_12_C;
@@ -1044,13 +1044,13 @@ void Track::setKey(const int symbolAmount, const KeyType type)
             case 7: major_note12 = NOTE_12_B;      break; // C flat
         }
     }
-    
+
     bool note_12_greyed_out[12];
-    
+
 #define NEXT n--; if (n<0) n+=12
     int n = int(major_note12) + 7;
     if (n > 11) n -= 12;
-    
+
     note_12_greyed_out[n] = false; NEXT;
     note_12_greyed_out[n] = true;  NEXT;
     note_12_greyed_out[n] = false; NEXT;
@@ -1064,10 +1064,10 @@ void Track::setKey(const int symbolAmount, const KeyType type)
     note_12_greyed_out[n] = false; NEXT;
     note_12_greyed_out[n] = true;
 #undef NEXT
-    
+
     Note12 noteName;
     int octave;
-    
+
     for (int n=0; n<131; n++)
     {
         if (Editor::findNoteName(n, &noteName, &octave))
@@ -1088,11 +1088,11 @@ void Track::setKey(const int symbolAmount, const KeyType type)
 // -------------------------------------------------------------------------------------------------------
 
 void Track::setCustomKey(bool key_notes[131])
-{    
+{
     m_key_type = KEY_TYPE_CUSTOM;
     m_key_sharps_amnt = 0;
     m_key_flats_amnt = 0;
-    
+
     for (int n=0; n<131; n++)
     {
         m_key_notes[n] = key_notes[n];
@@ -1548,9 +1548,9 @@ void Track::saveToFile(wxFileOutputStream& fileout)
     writeData(wxT("<key sharps=\"") + to_wxString( getKeySharpsAmount() ) +
               wxT("\" flats=\"")    + to_wxString( getKeyFlatsAmount () ) +
               wxT("\"/>\n"), fileout);
-    
 
-              
+
+
     switch (m_key_type)
     {
         case KEY_TYPE_C:
@@ -1560,15 +1560,15 @@ void Track::saveToFile(wxFileOutputStream& fileout)
             writeData(wxT("<key type=\"sharps\" value=\"") + to_wxString( getKeySharpsAmount() ) +
                       wxT("\" />\n"), fileout);
             break;
-            
+
         case KEY_TYPE_FLATS:
             writeData(wxT("<key type=\"flats\" value=\"") + to_wxString( getKeyFlatsAmount() ) +
                       wxT("\" />\n"), fileout);
             break;
-            
+
         case KEY_TYPE_CUSTOM:
             writeData( wxT("<key type=\"custom\" value=\""), fileout);
-            
+
             // saved in MIDI order, not in my weird pitch ID order
             char value[128];
             for (int n=130; n>3; n--)
@@ -1576,11 +1576,12 @@ void Track::saveToFile(wxFileOutputStream& fileout)
                 value[n-4] = (m_key_notes[n] ? '1' : '0');
             }
             value[127] = '\0';
-            writeData( value, fileout );
+            wxString wxStringValue(value, wxConvUTF8);
+            writeData( wxStringValue, fileout );
             writeData( wxT("\" />"), fileout );
             break;
     }
-    
+
     graphics->saveToFile(fileout);
 
     // notes
@@ -1588,13 +1589,13 @@ void Track::saveToFile(wxFileOutputStream& fileout)
     {
         m_notes[n].saveToFile(fileout);
     }
-    
+
     // controller changes
     for (int n=0; n<m_control_events.size(); n++)
     {
         m_control_events[n].saveToFile(fileout);
     }
-    
+
     writeData(wxT("</track>\n\n"), fileout );
 
 
@@ -1701,9 +1702,9 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                         {
                             char* count_c = (char*)xml->getAttributeValue("value");
                             int count;
-                            
+
                             if (count_c != NULL)  count = atoi(count_c);
-                            
+
                             if (count_c == NULL or count == 0)
                             {
                                 std::cerr << "Warning : malformed key in .aria file for track "
@@ -1720,9 +1721,9 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                         {
                             char* count_c = (char*)xml->getAttributeValue("value");
                             int count;
-                            
+
                             if (count_c != NULL)  count = atoi(count_c);
-                            
+
                             if (count_c == NULL or count == 0)
                             {
                                 std::cerr << "Warning : malformed key in .aria file for track "
@@ -1781,19 +1782,19 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                         // TODO: eventuall remove support for old format (file format version 1.0000)
                         char* flats_c  = (char*)xml->getAttributeValue("flats");
                         char* sharps_c = (char*)xml->getAttributeValue("sharps");
-                        
+
                         int sharps = 0, flats = 0;
                         if (flats_c != NULL or sharps_c != NULL)
                         {
                             if (flats_c != NULL)  flats = atoi(flats_c);
                             if (sharps_c != NULL) sharps = atoi(sharps_c);
                             //std::cout << "sharps = " << sharps << " flats = " << flats << std::endl;
-                            
+
                             if (sharps > flats) setKey(sharps, KEY_TYPE_SHARPS);
                             else                setKey(flats,  KEY_TYPE_FLATS);
                         }
                     }
-                    
+
                 }
                 else if (!strcmp("note", xml->getNodeName()))
                 {
