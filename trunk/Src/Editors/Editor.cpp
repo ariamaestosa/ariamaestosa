@@ -868,7 +868,6 @@ UNIT_TEST( TestFindNotePitch )
 
 bool Editor::findNoteName(const int pitchID, Note12* note_12, int* octave)
 {
-    //TODO: this function would be excellent to test through unit tests
     if (pitchID < 4)   return false;
     if (pitchID > 131) return false;
     *octave = 9 - pitchID/12;
