@@ -1089,7 +1089,7 @@ void Track::setKey(const int symbolAmount, const KeyType type)
 
 void Track::setCustomKey(bool key_notes[131])
 {    
-    m_key_type = KEY_TYPE_CUSTOM; //TODO: this is not yet supported by most of the code
+    m_key_type = KEY_TYPE_CUSTOM;
     m_key_sharps_amnt = 0;
     m_key_flats_amnt = 0;
     
@@ -1560,14 +1560,24 @@ void Track::saveToFile(wxFileOutputStream& fileout)
             writeData(wxT("<key type=\"sharps\" value=\"") + to_wxString( getKeySharpsAmount() ) +
                       wxT("\" />\n"), fileout);
             break;
+            
         case KEY_TYPE_FLATS:
             writeData(wxT("<key type=\"flats\" value=\"") + to_wxString( getKeyFlatsAmount() ) +
                       wxT("\" />\n"), fileout);
             break;
+            
         case KEY_TYPE_CUSTOM:
-            assert(false);
-            //TODO: saving KEY_TYPE_CUSTOM not implemented yet
-            writeData( wxT("<key type=\"custom\" value=\""), fileout); //TODO: complete
+            writeData( wxT("<key type=\"custom\" value=\""), fileout);
+            
+            // saved in MIDI order, not in my weird pitch ID order
+            char value[128];
+            for (int n=130; n>3; n--)
+            {
+                value[n-4] = (m_key_notes[n] ? '1' : '0');
+            }
+            value[127] = '\0';
+            writeData( value, fileout );
+            writeData( wxT("\" />"), fileout );
             break;
     }
     
@@ -1717,7 +1727,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                             {
                                 std::cerr << "Warning : malformed key in .aria file for track "
                                           << getName().mb_str()
-                                          << " : 'flats' key type needs value in range [1 .. 7]"
+                                          << " : 'flats' key type needs a value in range [1 .. 7]"
                                           << std::endl;
                             }
                             else
@@ -1727,8 +1737,35 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                         }
                         else if (strcmp(key_type, "custom") == 0)
                         {
-                            assert(false);
-                            //TODO: implement loading KEY_TYPE_CUSTOM
+                            char* value_c = (char*)xml->getAttributeValue("value");
+                            if (value_c == NULL or strlen(value_c) != 127)
+                            {
+                                std::cerr << "Warning : malformed key in .aria file for track "
+                                          << getName().mb_str()
+                                          << " : 'custom' key type needs a value of 127 characters"
+                                          << std::endl;
+                            }
+                            else
+                            {
+                                // saved in MIDI order, not in my weird pitch ID order
+                                for (int n=4; n<131; n++)
+                                {
+                                    char c = value_c[n-4];
+                                    if (c == '1') m_key_notes[n] = true;
+                                    else if (c == '0') m_key_notes[n] = false;
+                                    else
+                                    {
+                                        std::cerr << "Warning : malformed key in .aria file for track "
+                                                  << getName().mb_str()
+                                                  << " : 'custom' key type needs a value made of 0/1 characters"
+                                                  << std::endl;
+                                    }
+                                }
+                                m_key_notes[3] = false;
+                                m_key_notes[2] = false;
+                                m_key_notes[1] = false;
+                                m_key_notes[0] = false;
+                            }
                         }
                         else
                         {

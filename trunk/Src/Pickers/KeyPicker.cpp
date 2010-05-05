@@ -106,7 +106,7 @@ namespace AriaMaestosa
             for (int pitch=4; pitch<=130; pitch++)
             {
                 custom_key[pitch] = m_check_boxes[pitch]->GetValue();
-                std::cout << "Note " << pitch << " : " << custom_key[pitch] << std::endl;
+                //std::cout << "Note " << pitch << " : " << custom_key[pitch] << std::endl;
             }
             
             m_parent->track->setCustomKey(custom_key);
