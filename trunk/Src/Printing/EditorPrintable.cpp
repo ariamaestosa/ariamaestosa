@@ -250,11 +250,12 @@ void EditorPrintable::drawNoteHead(wxDC& dc, const wxPoint headCenter, const boo
     wxPoint points[25];
     for (int n=0; n<25; n++)
     {
+        const float angle = n/25.0*6.283185f /* 2*PI */;
+
         // FIXME - instead of always substracting to radius, just make it smaller...
         const int px = cx + (HEAD_RADIUS-5)*cos(angle);
         const int py = cy + (HEAD_RADIUS - 14)*sin(angle) - HEAD_RADIUS*(-0.5f + fabsf( (n-12.5f)/12.5f ))/2.0f;
         
-        const float angle = n/25.0*6.283185f /* 2*PI */;
         points[n] = wxPoint( px, py );
     }
     
