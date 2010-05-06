@@ -21,13 +21,22 @@
 #include "GUI/GraphicalTrack.h"
 #include "AriaCore.h"
 
+#include "wx/notebook.h"
+
 namespace AriaMaestosa
 {
     //TODO: move this class out of Pickers
     class CustomKeyDialog : public wxDialog
     {
         wxCheckBox* m_check_boxes[132];
+        wxCheckBox* m_check_boxes_one_octave[12];
+
         GraphicalTrack* m_parent;
+        
+        int m_page1_id;
+        int m_page2_id;
+        
+        wxNotebook* m_notebook;
         
     public:
         
@@ -42,12 +51,46 @@ namespace AriaMaestosa
             wxPanel* pane = new wxPanel(this);
             
             wxBoxSizer* over_sizer = new wxBoxSizer(wxVERTICAL);
+            wxStaticText* title = new wxStaticText(pane, wxID_ANY,
+                                                   _("Select which notes should be part of the custom key"));
+            over_sizer->Add(title);
             
-            wxStaticBoxSizer* within_box_sizer = new wxStaticBoxSizer(wxVERTICAL, pane, _("Select which notes should be part of the custom key"));
+            m_notebook = new wxNotebook( pane, wxID_ANY );
             {
-                wxScrolledWindow* scrollpane = new wxScrolledWindow(pane);
+                m_page1_id = wxNewId();
+                wxPanel* page = new wxPanel( m_notebook, m_page1_id );
+                wxBoxSizer* vsizer = new wxBoxSizer(wxVERTICAL);
+
+                Note12 note;
+                int    octave;
                 
-                wxBoxSizer* within_scrollpane_sizer = new wxBoxSizer(wxVERTICAL);
+                const int pitchFrom = Editor::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 4);
+                const int pitchTo = Editor::findNotePitch(NOTE_7_C, PITCH_SIGN_NONE, 4);
+
+                for (int pitch=pitchFrom; pitch<=pitchTo; pitch++)
+                {
+                    if (Editor::findNoteName(pitch, &note, &octave))
+                    {
+                        wxString label = NOTE_12_NAME[note];
+                        wxCheckBox* cb = new wxCheckBox(page, wxID_ANY, label);
+                        cb->SetValue( curr_key_notes[pitch] );
+                        
+                        vsizer->Add(cb, 0, wxALL, 3);
+                        
+                        m_check_boxes_one_octave[pitch - pitchFrom] = cb;
+                    }
+                }
+                
+                page->SetSizer(vsizer);
+                
+                //I18N: in custom key editor, this is the option to edit notes on a single octave
+                m_notebook->AddPage(page, _("All Octaves are Similar"));
+            }
+            {
+                m_page2_id = wxNewId();
+                wxScrolledWindow* scrollpane = new wxScrolledWindow( m_notebook, m_page2_id );
+                
+                wxBoxSizer* within_scrollpane_sizer = new wxBoxSizer( wxVERTICAL );
                 
                 Note12 note;
                 int    octave;
@@ -70,9 +113,10 @@ namespace AriaMaestosa
                 scrollpane->FitInside();
                 scrollpane->SetScrollRate(5, 5);  
                 
-                within_box_sizer->Add(scrollpane, 1, wxEXPAND);
+                //I18N: in custom key editor, this is the option to edit all octaves independently
+                m_notebook->AddPage(scrollpane, _("All Octaves are Independent"));
             }
-            over_sizer->Add(within_box_sizer, 1, wxEXPAND | wxALL, 2);
+            over_sizer->Add(m_notebook, 1, wxEXPAND | wxALL, 2);
             
             {
                 wxPanel* buttonsPane = new wxPanel(pane);
@@ -103,10 +147,27 @@ namespace AriaMaestosa
             custom_key[1] = false;
             custom_key[2] = false;
             custom_key[3] = false;
-            for (int pitch=4; pitch<=130; pitch++)
+            
+            const int currPage = m_notebook->GetCurrentPage()->GetId();
+            if (currPage == m_page1_id)
             {
-                custom_key[pitch] = m_check_boxes[pitch]->GetValue();
-                //std::cout << "Note " << pitch << " : " << custom_key[pitch] << std::endl;
+                //TODO!
+                for (int pitch=4; pitch<=130; pitch++)
+                {
+                    custom_key[pitch] = m_check_boxes_one_octave[pitch % 12]->GetValue();
+                }
+            }
+            else if (currPage == m_page2_id)
+            {
+                for (int pitch=4; pitch<=130; pitch++)
+                {
+                    custom_key[pitch] = m_check_boxes[pitch]->GetValue();
+                }
+            }
+            else
+            {
+                assert(false);
+                EndModal( GetReturnCode() );
             }
             
             m_parent->track->setCustomKey(custom_key);
