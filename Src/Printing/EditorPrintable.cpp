@@ -26,27 +26,27 @@
 
 using namespace AriaMaestosa;
     
-// -------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------
     
 EditorPrintable::EditorPrintable()
 {
 }
 
-// -------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------
 
 EditorPrintable::~EditorPrintable()
 {
 }
 
-// -------------------------------------------------------------------------------------------
-    
+// -------------------------------------------------------------------------------------------------------------
+
 void EditorPrintable::setCurrentDC(wxDC* dc)
 {
     EditorPrintable::dc = dc;
 }
 
-// -------------------------------------------------------------------------------------------
-    
+// -------------------------------------------------------------------------------------------------------------
+
 void EditorPrintable::drawVerticalDivider(LayoutElement* el, const int y0, const int y1, const bool atEnd)
 {
     //if (el->getType() == TIME_SIGNATURE_EL) return;
@@ -61,7 +61,7 @@ void EditorPrintable::drawVerticalDivider(LayoutElement* el, const int y0, const
     dc->DrawLine( elem_x_start, y0, elem_x_start, y1);
 }
 
-// -------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------
 
 void EditorPrintable::drawVerticalDivider(const int x, const int y0, const int y1)
 {
@@ -70,7 +70,7 @@ void EditorPrintable::drawVerticalDivider(const int x, const int y0, const int y
     dc->DrawLine( x, y0, x, y1);
 }
 
-// -------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------
     
 void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0, const int y1)
 {
@@ -101,7 +101,7 @@ void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0,
     dc->SetFont(oldfont);    
 }
 
-// -------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------
 
 void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine& layoutLine,
                                       const bool drawMeasureNumbers, const int y0, const int y1,
@@ -149,8 +149,11 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
 
         dc->SetTextForeground( wxColour(0,0,0) );
         dc->SetFont( AriaPrintable::getCurrentPrintable()->getNormalFont() );
-        dc->DrawText( label, (elem_x_start + elem_x_end)/2 - AriaPrintable::getCurrentPrintable()->getCharacterWidth()*label.size()/2,
-                     y - AriaPrintable::getCurrentPrintable()->getCharacterHeight()*1.5 );
+        const int lx = (elem_x_start + elem_x_end)/2 -
+                       AriaPrintable::getCurrentPrintable()->getCharacterWidth()*label.size()/2;
+        const int ly = y - AriaPrintable::getCurrentPrintable()->getCharacterHeight()*1.5;
+        
+        dc->DrawText( label, lx, ly );
         
         dc->SetPen( *wxBLACK_PEN );
         dc->SetBrush( *wxBLACK_BRUSH );
@@ -222,7 +225,7 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
     
 }
 
-// -------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------
 
 void EditorPrintable::drawTrackName(wxDC& dc, const LineTrackRef& currentTrack, int x, int y0, int y1)
 {
@@ -238,7 +241,7 @@ void EditorPrintable::drawTrackName(wxDC& dc, const LineTrackRef& currentTrack, 
     }
 }
 
-// -------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------
 
 void EditorPrintable::drawNoteHead(wxDC& dc, const wxPoint headCenter, const bool hollowHead)
 {
@@ -257,14 +260,7 @@ void EditorPrintable::drawNoteHead(wxDC& dc, const wxPoint headCenter, const boo
     else            dc.DrawPolygon(25, points, -3);
 }
 
-// -------------------------------------------------------------------------------------------
-    
-//Range<int> EditorPrintable::getNoteAreaX(const int trackID, LayoutLine& line, int noteID)
-//{
-//    return tickToX( trackID, line, line.getLineTrackRef(trackID).m_track->getNoteStartInMidiTicks(noteID) );
-//}
-    
-// -------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------
 
 Range<int> EditorPrintable::getNoteSymbolX(const int trackID, LayoutLine& line, int noteID)
 {
@@ -272,7 +268,7 @@ Range<int> EditorPrintable::getNoteSymbolX(const int trackID, LayoutLine& line, 
                    line.getLineTrackRef(trackID).getTrack()->getNoteStartInMidiTicks(noteID));
 }
 
-// -------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------
     
 Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const int tick)
 {
@@ -346,7 +342,7 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
     return Range<int>(-1, -1);
 }
     
-// -------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------
 
 void EditorPrintable::renderArc(wxDC& dc, const int center_x, const int center_y,
                                 const int radius_x, const int radius_y)
@@ -375,7 +371,7 @@ void EditorPrintable::renderArc(wxDC& dc, const int center_x, const int center_y
 #endif
 }
 
-// -------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------
 
 void EditorPrintable::drawSilence(wxDC* dc, const Range<int> x, const int y, const int levelHeight,
                                   const int type, const bool triplet, const bool dotted)
@@ -532,14 +528,17 @@ void EditorPrintable::drawSilence(wxDC* dc, const Range<int> x, const int y, con
     }
 }
     
+// -------------------------------------------------------------------------------------------------------------
 
 wxBitmap EditorPrintable::getScaledBitmap(const wxString& fileName, float scale)
 {
-    wxImage tempImage(getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + fileName, wxBITMAP_TYPE_PNG);
+    wxImage tempImage(getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + fileName,
+                      wxBITMAP_TYPE_PNG);
     wxImage image = getPrintableImage(tempImage);
     return wxBitmap(image.Scale(image.GetWidth()*scale, image.GetHeight()*scale),wxIMAGE_QUALITY_HIGH);
 }
 
+// -------------------------------------------------------------------------------------------------------------
 
 wxImage EditorPrintable::getPrintableImage(const wxImage& image)
 {
@@ -562,4 +561,6 @@ wxImage EditorPrintable::getPrintableImage(const wxImage& image)
     return image;
 #endif
 }
+
+// -------------------------------------------------------------------------------------------------------------
 
