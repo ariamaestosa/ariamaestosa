@@ -118,6 +118,11 @@ namespace AriaMaestosa
             }
             over_sizer->Add(m_notebook, 1, wxEXPAND | wxALL, 2);
             
+            //I18N: in custom key editor
+            //wxButton* copySettingsBtn = new wxButton( pane, wxID_COPY, _("Copy settings from another track...") );
+            //over_sizer->Add(copySettingsBtn, 0, wxALL, 5);
+            
+            
             {
                 wxPanel* buttonsPane = new wxPanel(pane);
                 over_sizer->Add(buttonsPane, 0, wxEXPAND | wxALL, 5);
@@ -151,7 +156,6 @@ namespace AriaMaestosa
             const int currPage = m_notebook->GetCurrentPage()->GetId();
             if (currPage == m_page1_id)
             {
-                //TODO!
                 for (int pitch=4; pitch<=130; pitch++)
                 {
                     custom_key[pitch] = m_check_boxes_one_octave[pitch % 12]->GetValue();
@@ -180,6 +184,12 @@ namespace AriaMaestosa
             EndModal( GetReturnCode() );
         }
         
+        /*
+        void onCopySettings(wxCommandEvent& evt)
+        {
+        }
+        */
+        
         DECLARE_EVENT_TABLE()
     };
     
@@ -187,6 +197,7 @@ namespace AriaMaestosa
     
     EVT_COMMAND(wxID_OK,     wxEVT_COMMAND_BUTTON_CLICKED, CustomKeyDialog::onOK )
     EVT_COMMAND(wxID_CANCEL, wxEVT_COMMAND_BUTTON_CLICKED, CustomKeyDialog::onCancel )
+    //EVT_COMMAND(wxID_COPY,   wxEVT_COMMAND_BUTTON_CLICKED, CustomKeyDialog::onCopySettings )
     
     END_EVENT_TABLE()
     
