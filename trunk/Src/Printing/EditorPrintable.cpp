@@ -251,9 +251,11 @@ void EditorPrintable::drawNoteHead(wxDC& dc, const wxPoint headCenter, const boo
     for (int n=0; n<25; n++)
     {
         // FIXME - instead of always substracting to radius, just make it smaller...
+        const int px = cx + (HEAD_RADIUS-5)*cos(angle);
+        const int py = cy + (HEAD_RADIUS - 14)*sin(angle) - HEAD_RADIUS*(-0.5f + fabsf( (n-12.5f)/12.5f ))/2.0f;
+        
         const float angle = n/25.0*6.283185f /* 2*PI */;
-        points[n] = wxPoint( cx + (HEAD_RADIUS-5)*cos(angle),
-                             cy + (HEAD_RADIUS - 14)*sin(angle) - HEAD_RADIUS*(-0.5f + fabsf( (n-12.5f)/12.5f ))/2.0f );
+        points[n] = wxPoint( px, py );
     }
     
     if (hollowHead) dc.DrawSpline(25, points);
@@ -303,7 +305,8 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
             
             //if (meas.ticks_relative_position.find(tick) == meas.ticks_relative_position.end())
             //{
-            //    std::cout << "\n/!\\ tickToX didn't find X for tick " << tick << " in measure " << (meas.id+1) << "\n\n";
+            //    std::cout << "\n/!\\ tickToX didn't find X for tick " << tick << " in measure "
+            //              << (meas.id+1) << "\n\n";
             //}
             
             ASSERT_E(elem_w, >, 0);
