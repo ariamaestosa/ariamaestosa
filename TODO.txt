@@ -47,7 +47,6 @@ NOTE: sorry, this is very raw :)
 ** KEY_TYPE_CUSTOM and score editor
  * custom keys : allow saving presets
  * custom keys : allow forbidding notes (i.e. three states : part of key, accidental, impossible to play)
- * custom keys : allow [un]checking a note in all octaves (or have a mode where you edit a single octave)
 
 * score print :
     * red images
