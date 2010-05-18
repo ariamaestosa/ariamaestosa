@@ -14,8 +14,8 @@ IDR_TYPE ICON "AriaDoc.ico"		// for Aria docs in Explorer
 
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 3,0,0,0
- PRODUCTVERSION 3,0,0,0
+ FILEVERSION 1,2,1,0
+ PRODUCTVERSION 1,2,1,0
  FILEFLAGSMASK 0x3fL		// VS_FFI_FILEFLAGSMASK
 #if defined(_DEBUG) && defined (_MSC_VER)
  FILEFLAGS 0x1L		//// VS_FF_DEBUG|VS_FF_PRIVATEBUILD|VS_FF_PRERELEASE
@@ -31,7 +31,7 @@ BEGIN
 		BLOCK "040904E4" // Lang=US English, CharSet=Windows Multilingual
         BEGIN
             VALUE "FileDescription", "Aria"
-            VALUE "FileVersion", "0.1.0.0"
+            VALUE "FileVersion", "1.2.1.0"
             VALUE "ProductName", "Aria"
         END
     END
