@@ -15,6 +15,7 @@
  */
 
 #include "wx/stdpaths.h"
+#include "wx/artprov.h"
 
 #include "AriaCore.h"
 
@@ -101,6 +102,7 @@ using namespace AriaMaestosa;
 
 void MainFrame::initMenuBar()
 {
+    wxMenuItem* menuItem;
     wxMenuBar* menuBar=new wxMenuBar();
 
 #define QUICK_ADD_MENU( MENUID, MENUSTRING, METHOD ) Append( MENUID,  MENUSTRING ); Connect(MENUID, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( METHOD ) );
@@ -110,20 +112,34 @@ void MainFrame::initMenuBar()
     fileMenu = new wxMenu();
 
     //I18N: menu item in the "file" menu
-    fileMenu -> QUICK_ADD_MENU ( MENU_FILE_NEW, _("New\tCtrl-N"), MainFrame::menuEvent_new );
+    addIconItem(fileMenu, MENU_FILE_NEW, _("New\tCtrl-N"), wxART_NEW);
+    Connect(MENU_FILE_NEW, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_new));
+
+
     //I18N: menu item in the "file" menu
-    fileMenu -> QUICK_ADD_MENU ( MENU_FILE_OPEN, _("Open\tCtrl-O"), MainFrame::menuEvent_open );
+    addIconItem(fileMenu, MENU_FILE_OPEN, _("Open\tCtrl-O"), wxART_FILE_OPEN);
+    Connect(MENU_FILE_OPEN, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_open));
+
+
     //I18N: menu item in the "file" menu
-    fileMenu -> QUICK_ADD_MENU ( MENU_FILE_SAVE, _("Save\tCtrl-S"), MainFrame::menuEvent_save );
+    addIconItem(fileMenu, MENU_FILE_SAVE, _("Save\tCtrl-S"), wxART_FILE_SAVE);
+    Connect(MENU_FILE_SAVE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_save));
+
     //I18N: menu item in the "file" menu
-    fileMenu -> QUICK_ADD_MENU ( MENU_FILE_SAVE_AS, _("Save As\tCtrl-Shift-S"), MainFrame::menuEvent_saveas );
+    addIconItem(fileMenu, MENU_FILE_SAVE_AS, _("Save As\tCtrl-Shift-S"), wxART_FILE_SAVE_AS);
+    Connect(MENU_FILE_SAVE_AS, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_saveas));
+
     //I18N: menu item in the "file" menu
-    fileMenu -> QUICK_ADD_MENU ( MENU_FILE_CLOSE, _("Close\tCtrl-W"), MainFrame::menuEvent_close );
+    fileMenu -> QUICK_ADD_MENU ( MENU_FILE_CLOSE, _("Close\tCtrl-W"), MainFrame::menuEvent_close);
 
     fileMenu->AppendSeparator();
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_COPYRIGHT, wxString(_("Song info"))+wxT("\tCtrl-I"), MainFrame::menuEvent_copyright );
     //fileMenu->AppendSeparator();
-    fileMenu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_NOTATION, wxString(_("Print musical notation"))+wxT("\tCtrl-P"), MainFrame::menuEvent_exportNotation );
+
+    addIconItem(fileMenu, MENU_FILE_EXPORT_NOTATION, wxString(_("Print musical notation"))+wxT("\tCtrl-P"), wxART_PRINT);
+    Connect(MENU_FILE_EXPORT_NOTATION, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_exportNotation));
+
+
     fileMenu->AppendSeparator();
     //I18N: menu item in the "file" menu
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_IMPORT_MIDI, _("Import Midi File"), MainFrame::menuEvent_importmidi );
@@ -138,7 +154,10 @@ void MainFrame::initMenuBar()
     }
 
     //I18N: menu item in the "file" menu
-    fileMenu -> QUICK_ADD_MENU ( wxID_EXIT, _("Quit\tCtrl-Q"), MainFrame::menuEvent_quit );
+    addIconItem(fileMenu, wxID_EXIT, _("Quit\tCtrl-Q"), wxART_QUIT);
+    Connect(wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_quit));
+
+
 
     //I18N: name of a menu
     menuBar->Append(fileMenu,  _("File") );
@@ -147,12 +166,22 @@ void MainFrame::initMenuBar()
     editMenu = new wxMenu();
 
     //I18N: menu item in the "edit" menu
-    editMenu -> QUICK_ADD_MENU ( MENU_EDIT_UNDO, _("Undo\tCtrl-Z"), MainFrame::menuEvent_undo );
+    addIconItem(editMenu, MENU_EDIT_UNDO, _("Undo\tCtrl-Z"), wxART_UNDO);
+    Connect(MENU_EDIT_UNDO, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_undo));
+
+
     editMenu->AppendSeparator();
+
     //I18N: menu item in the "edit" menu
-    editMenu -> QUICK_ADD_MENU ( MENU_EDIT_COPY, _("Copy\tCtrl-C"), MainFrame::menuEvent_copy );
+    addIconItem(editMenu, MENU_EDIT_COPY, _("Copy\tCtrl-C"), wxART_COPY);
+    Connect(MENU_EDIT_COPY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_copy));
+
+
     //I18N: menu item in the "edit" menu
-    editMenu -> QUICK_ADD_MENU ( MENU_EDIT_PASTE, _("Paste\tCtrl-V"), MainFrame::menuEvent_paste );
+    addIconItem(editMenu, MENU_EDIT_PASTE, _("Paste\tCtrl-V"), wxART_PASTE);
+    Connect(MENU_EDIT_PASTE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_paste));
+
+
     //I18N: menu item in the "edit" menu
     editMenu -> QUICK_ADD_MENU ( MENU_EDIT_PASTE_AT_CURSOR, _("Paste at cursor\tCtrl-Shift-V"), MainFrame::menuEvent_pasteAtMouse );
     editMenu->AppendSeparator(); // ----- selection
@@ -288,19 +317,30 @@ void MainFrame::updateMenuBarToSequence()
 
 void MainFrame::updateUndoMenuLabel()
 {
+    wxMenuBar* menuBar = GetMenuBar();
     wxString undo_what = getCurrentSequence()->getTopActionName();
 
-    if (undo_what.size() > 0)
+    if (menuBar!=NULL)
     {
-        wxString label =  _("Undo %s\tCtrl-Z");
-        label.Replace(wxT("%s"),undo_what );
-        GetMenuBar()->SetLabel( MENU_EDIT_UNDO, label );
-        GetMenuBar()->Enable( MENU_EDIT_UNDO, true );
-    }
-    else
-    {
-        GetMenuBar()->SetLabel( MENU_EDIT_UNDO, _("Can't Undo\tCtrl-Z") );
-        GetMenuBar()->Enable( MENU_EDIT_UNDO, false );
+        if (undo_what.size() > 0)
+        {
+            wxString label =  _("Undo %s\tCtrl-Z");
+            label.Replace(wxT("%s"),undo_what );
+            menuBar->SetLabel( MENU_EDIT_UNDO, label );
+            menuBar->Enable( MENU_EDIT_UNDO, true );
+        }
+        else
+        {
+            menuBar->SetLabel( MENU_EDIT_UNDO, _("Can't Undo\tCtrl-Z") );
+            menuBar->Enable( MENU_EDIT_UNDO, false );
+        }
+
+        wxMenuItem* undoMenuItem = menuBar->FindItem(MENU_EDIT_UNDO, NULL);
+
+        if (undoMenuItem!=NULL)
+        {
+            undoMenuItem->SetBitmap(wxArtProvider::GetBitmap(wxART_UNDO));
+        }
     }
 }
 
@@ -747,6 +787,8 @@ void MainFrame::menuEvent_expandedMeasuresSelected(wxCommandEvent& evt)
     updateVerticalScrollbar();
 }
 
+
+
 // -----------------------------------------------------------------------------------------------------------
 // ----------------------------------------- HELP MENU EVENTS ------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------
@@ -808,7 +850,9 @@ public:
 
 void MainFrame::menuEvent_manual(wxCommandEvent& evt)
 {
-    wxString path_to_docs =  getResourcePrefix() + wxT("Documentation") + wxFileName::GetPathSeparators() + wxT("index.html");
+    wxString path_to_docs =  getResourcePrefix() + wxT("Documentation") + wxFileName::GetPathSeparator() + wxT("index.html");
+
+    wxString sep = wxFileName::GetPathSeparators();
 
 #ifdef __WXMAC__
     new ManualView(this, path_to_docs);
@@ -819,6 +863,18 @@ void MainFrame::menuEvent_manual(wxCommandEvent& evt)
     }
 #endif
 }
+
+
+void MainFrame::addIconItem(wxMenu* menu, int menuID, const wxString& label, const wxString& stockIconId)
+{
+    wxMenuItem* menuItem;
+
+    menuItem = new wxMenuItem( menu, menuID, label, wxT(""), wxITEM_NORMAL, NULL);
+    menuItem->SetBitmap(wxArtProvider::GetBitmap(stockIconId));
+    menu->Append(menuItem);
+}
+
+
 
 // -----------------------------------------------------------------------------------------------------------
 
