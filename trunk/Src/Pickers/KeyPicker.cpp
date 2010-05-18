@@ -3,12 +3,12 @@
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
- 
+
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
- 
+
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -32,30 +32,30 @@ namespace AriaMaestosa
         wxCheckBox* m_check_boxes_one_octave[12];
 
         GraphicalTrack* m_parent;
-        
+
         int m_page1_id;
         int m_page2_id;
-        
+
         wxNotebook* m_notebook;
-        
+
     public:
-        
-        CustomKeyDialog(wxWindow* parent, GraphicalTrack* gtrack) : 
+
+        CustomKeyDialog(wxWindow* parent, GraphicalTrack* gtrack) :
         wxDialog(parent, wxID_ANY, _("Custom Key Editor"), wxDefaultPosition,
                  wxSize(800,600), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
         {
             m_parent = gtrack;
-            
+
             const bool* curr_key_notes = gtrack->track->getKeyNotes();
-            
+
             wxPanel* pane = new wxPanel(this);
-            
+
             wxBoxSizer* over_sizer = new wxBoxSizer(wxVERTICAL);
             wxStaticText* title = new wxStaticText(pane, wxID_ANY,
                                                    _("Select which notes should be part of the custom key"));
             over_sizer->Add(title);
-            
-            m_notebook = new wxNotebook( pane, wxID_ANY );
+
+            m_notebook = new wxNotebook( pane, wxID_ANY, wxDefaultPosition, wxSize(400,280) );
             {
                 m_page1_id = wxNewId();
                 wxPanel* page = new wxPanel( m_notebook, m_page1_id );
@@ -63,7 +63,7 @@ namespace AriaMaestosa
 
                 Note12 note;
                 int    octave;
-                
+
                 const int pitchFrom = Editor::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 4);
                 const int pitchTo = Editor::findNotePitch(NOTE_7_C, PITCH_SIGN_NONE, 4);
 
@@ -74,27 +74,27 @@ namespace AriaMaestosa
                         wxString label = NOTE_12_NAME[note];
                         wxCheckBox* cb = new wxCheckBox(page, wxID_ANY, label);
                         cb->SetValue( curr_key_notes[pitch] );
-                        
+
                         vsizer->Add(cb, 0, wxALL, 3);
-                        
+
                         m_check_boxes_one_octave[pitch - pitchFrom] = cb;
                     }
                 }
-                
+
                 page->SetSizer(vsizer);
-                
+
                 //I18N: in custom key editor, this is the option to edit notes on a single octave
                 m_notebook->AddPage(page, _("All Octaves are Similar"));
             }
             {
                 m_page2_id = wxNewId();
                 wxScrolledWindow* scrollpane = new wxScrolledWindow( m_notebook, m_page2_id );
-                
+
                 wxBoxSizer* within_scrollpane_sizer = new wxBoxSizer( wxVERTICAL );
-                
+
                 Note12 note;
                 int    octave;
-                
+
                 for (int pitch=4; pitch<=131; pitch++)
                 {
                     if (Editor::findNoteName(pitch, &note, &octave))
@@ -102,49 +102,50 @@ namespace AriaMaestosa
                         wxString label = NOTE_12_NAME[note] + wxT(" ") + wxString::Format(wxT("%i"), octave);
                         wxCheckBox* cb = new wxCheckBox(scrollpane, wxID_ANY, label);
                         cb->SetValue( curr_key_notes[pitch] );
-                        
+
                         within_scrollpane_sizer->Add(cb, 0, wxALL, 3);
-                        
+
                         m_check_boxes[pitch] = cb;
                     }
                 }
-                
+
                 scrollpane->SetSizer(within_scrollpane_sizer);
                 scrollpane->FitInside();
-                scrollpane->SetScrollRate(5, 5);  
-                
+                scrollpane->SetScrollRate(5, 5);
+
                 //I18N: in custom key editor, this is the option to edit all octaves independently
                 m_notebook->AddPage(scrollpane, _("All Octaves are Independent"));
             }
             over_sizer->Add(m_notebook, 1, wxEXPAND | wxALL, 2);
-            
+
             //I18N: in custom key editor
             //wxButton* copySettingsBtn = new wxButton( pane, wxID_COPY, _("Copy settings from another track...") );
             //over_sizer->Add(copySettingsBtn, 0, wxALL, 5);
-            
-            
+
+
             {
                 wxPanel* buttonsPane = new wxPanel(pane);
                 over_sizer->Add(buttonsPane, 0, wxEXPAND | wxALL, 5);
-                
+
                 wxButton* ok_btn     = new wxButton(buttonsPane, wxID_OK, _("OK"));
                 wxButton* cancel_btn = new wxButton(buttonsPane, wxID_CANCEL, _("Cancel"));
-                
+
                 wxBoxSizer* btn_sizer = new wxBoxSizer(wxHORIZONTAL);
                 btn_sizer->AddStretchSpacer();
                 btn_sizer->Add(cancel_btn, 0, wxALL, 5);
                 btn_sizer->Add(ok_btn, 0, wxALL, 5);
                 buttonsPane->SetSizer(btn_sizer);
-                
+
                 ok_btn->SetDefault();
             }
-            
+
             pane->SetSizer(over_sizer);
+            over_sizer->SetSizeHints(this);
             Layout();
-            
+
             Centre();
         }
-        
+
         void onOK(wxCommandEvent& evt)
         {
             bool custom_key[131];
@@ -152,7 +153,7 @@ namespace AriaMaestosa
             custom_key[1] = false;
             custom_key[2] = false;
             custom_key[3] = false;
-            
+
             const int currPage = m_notebook->GetCurrentPage()->GetId();
             if (currPage == m_page1_id)
             {
@@ -173,39 +174,39 @@ namespace AriaMaestosa
                 assert(false);
                 EndModal( GetReturnCode() );
             }
-            
+
             m_parent->track->setCustomKey(custom_key);
-            
+
             EndModal( GetReturnCode() );
         }
-        
+
         void onCancel(wxCommandEvent& evt)
         {
             EndModal( GetReturnCode() );
         }
-        
+
         /*
         void onCopySettings(wxCommandEvent& evt)
         {
         }
         */
-        
+
         DECLARE_EVENT_TABLE()
     };
-    
+
     BEGIN_EVENT_TABLE(CustomKeyDialog, wxDialog)
-    
+
     EVT_COMMAND(wxID_OK,     wxEVT_COMMAND_BUTTON_CLICKED, CustomKeyDialog::onOK )
     EVT_COMMAND(wxID_CANCEL, wxEVT_COMMAND_BUTTON_CLICKED, CustomKeyDialog::onCancel )
     //EVT_COMMAND(wxID_COPY,   wxEVT_COMMAND_BUTTON_CLICKED, CustomKeyDialog::onCopySettings )
-    
+
     END_EVENT_TABLE()
-    
+
 #if 0
 #pragma mark -
 #pragma mark KeyPicker
 #endif
-    
+
     enum IDs
     {
         MUSICAL_NOTATION = 1,
@@ -214,7 +215,7 @@ namespace AriaMaestosa
         G_CLEF,
         OCTAVE_ABOVE,
         OCTAVE_BELOW,
-        
+
         KEY_C_AM,
         KEY_SHARPS_1,
         KEY_SHARPS_2,
@@ -232,7 +233,7 @@ namespace AriaMaestosa
         KEY_FLATS_7,
         KEY_GUESS,
         KEY_CUSTOM,
-        
+
         ID_AMOUNT
     };
 }
@@ -250,7 +251,7 @@ KeyPicker::KeyPicker() : wxMenu()
     musical_checkbox = AppendCheckItem(MUSICAL_NOTATION,_("Musical notation")); musical_checkbox->Check(true);
     //I18N: - in the view settings for score editor. whether to show notes in a "computer" linear way.
     linear_checkbox = AppendCheckItem(LINEAR_NOTATION,_("Linear Notation")); linear_checkbox->Check(true);
-    
+
     //AppendSeparator();
     gclef = AppendCheckItem(G_CLEF, _("G Clef")); gclef->Check(true);
     fclef = AppendCheckItem(F_CLEF, _("F Clef")); fclef->Check(true);
@@ -258,13 +259,13 @@ KeyPicker::KeyPicker() : wxMenu()
     octave_above = AppendCheckItem(OCTAVE_ABOVE, _("Octave +1"));
     //I18N: - show score an octave lower
     octave_below = AppendCheckItem(OCTAVE_BELOW, _("Octave -1"));
-    
+
     score_items_added = true;
-    
+
     AppendSeparator();
     key_c = AppendCheckItem(KEY_C_AM, wxT("C, Am"));
     key_c->Check(true);
-    
+
     AppendSeparator();
     key_sharps_1 = AppendCheckItem( KEY_SHARPS_1, wxT("G, Em"));
     key_sharps_2 = AppendCheckItem( KEY_SHARPS_2, wxT("D, Bm"));
@@ -273,7 +274,7 @@ KeyPicker::KeyPicker() : wxMenu()
     key_sharps_5 = AppendCheckItem( KEY_SHARPS_5, wxT("B, G#m"));
     key_sharps_6 = AppendCheckItem( KEY_SHARPS_6, wxT("F#, D#m"));
     key_sharps_7 = AppendCheckItem( KEY_SHARPS_7, wxT("C#, A#m"));
-    
+
     AppendSeparator();
     key_flats_1 = AppendCheckItem( KEY_FLATS_1, wxT("F, Dm"));
     key_flats_2 = AppendCheckItem( KEY_FLATS_2, wxT("Bb, Gm"));
@@ -282,7 +283,7 @@ KeyPicker::KeyPicker() : wxMenu()
     key_flats_5 = AppendCheckItem( KEY_FLATS_5, wxT("Db, Bbm"));
     key_flats_6 = AppendCheckItem( KEY_FLATS_6, wxT("Gb, Ebm"));
     key_flats_7 = AppendCheckItem( KEY_FLATS_7, wxT("Cb, Abm"));
-    
+
     AppendSeparator();
     Append( KEY_GUESS,  _("Guess Key"));
     m_custom_key_menu = AppendCheckItem( KEY_CUSTOM, _("Custom Key"));
@@ -320,7 +321,7 @@ void KeyPicker::setParent(Track* parent_arg)
             score_items_added = true;
         }
     }
-    
+
     key_c->Check(false);
     key_sharps_1->Check(false);
     key_sharps_2->Check(false);
@@ -337,9 +338,9 @@ void KeyPicker::setParent(Track* parent_arg)
     key_flats_6->Check(false);
     key_flats_7->Check(false);
     m_custom_key_menu->Check(false);
-    
+
     const KeyType type = parent_arg->getKeyType();
-    
+
     switch (type)
     {
         case KEY_TYPE_C:
@@ -347,7 +348,7 @@ void KeyPicker::setParent(Track* parent_arg)
             key_c->Check(true);
             break;
         }
-            
+
         case KEY_TYPE_SHARPS:
         {
             const int sharps = parent_arg->getKeySharpsAmount();
@@ -361,7 +362,7 @@ void KeyPicker::setParent(Track* parent_arg)
             else if (sharps == 7) key_sharps_7->Check(true);
             break;
         }
-            
+
         case KEY_TYPE_FLATS:
         {
             const int flats  = parent_arg->getKeyFlatsAmount();
@@ -398,7 +399,7 @@ void KeyPicker::setChecks( bool musicalNotationEnabled, bool linearNotationEnabl
     linear_checkbox  -> Check(linearNotationEnabled);
     fclef            -> Check(f_clef);
     gclef            -> Check(g_clef);
-    
+
     if (octave_shift == -1)
     {
         octave_above -> Check(false);
@@ -421,13 +422,13 @@ void KeyPicker::setChecks( bool musicalNotationEnabled, bool linearNotationEnabl
 void KeyPicker::menuItemSelected(wxCommandEvent& evt)
 {
     const int id = evt.GetId();
-    
+
     if ( id < 0 or id > ID_AMOUNT ) return;
-    
+
     if ( id == MUSICAL_NOTATION )
     {
         parent -> scoreEditor -> enableMusicalNotation( musical_checkbox->IsChecked() );
-        
+
         // don't allow disabling both
         if (not musical_checkbox->IsChecked() and not linear_checkbox->IsChecked())
             parent -> scoreEditor -> enableLinearNotation( true );
@@ -435,7 +436,7 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
     else if ( id == LINEAR_NOTATION )
     {
         parent -> scoreEditor -> enableLinearNotation( linear_checkbox->IsChecked() );
-        
+
         // don't allow disabling both
         if (not musical_checkbox->IsChecked() and not linear_checkbox->IsChecked())
             parent -> scoreEditor -> enableMusicalNotation( true );
@@ -443,7 +444,7 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
     else if ( id == F_CLEF )
     {
         parent -> scoreEditor -> enableFClef( fclef->IsChecked() );
-        
+
         // don't allow disabling both
         if (not gclef->IsChecked() and not fclef->IsChecked())
             parent -> scoreEditor -> enableGClef( true );
@@ -451,7 +452,7 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
     else if ( id == G_CLEF )
     {
         parent -> scoreEditor -> enableGClef( gclef->IsChecked() );
-        
+
         // don't allow disabling both
         if (not gclef->IsChecked() and not fclef->IsChecked())
             parent -> scoreEditor -> enableFClef( true );
@@ -490,7 +491,7 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
         {
             note_12_occurance[n] = 0;
         }
-        
+
         // count how many A's, how many B's, etc., we have in this track
         const int noteAmount = parent->track->getNoteAmount();
         for (int n=0; n<noteAmount; n++)
@@ -502,7 +503,7 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
             //std::cout << "r=" << r << std::endl;
             note_12_occurance[r] += 1;
         }
-        
+
         // find max value, will make it easier to compare values
         //int max = 0;
         //for(int n=0; n<12; n++)
@@ -510,7 +511,7 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
         // print values for debug purposes
         //for(int n=0; n<12; n++)
         //    std::cout << (note_12_occurance[n] * 100 / max) << std::endl;
-        
+
         // test the note repartition pattern found against keys
         // and grade them ( smaller = less alike, bigger = much alike )
         // here we only test major keys; a minor one will get the same key sig
@@ -518,15 +519,15 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
         for (int n=0; n<12; n++)
         {
             key_test[n] = 0; // reset before starting
-            
+
             // some values are somehwat arbitrarly multiplied by 2 cause
             // they are more likely/unlikely to be found in a given key
-            
+
             key_test[n] += note_12_occurance[n]*2; // tonic
-            key_test[n] -= note_12_occurance[(n+1)%12]*2; // 2nd minor 
-            key_test[n] += note_12_occurance[(n+2)%12]; // 2nd major 
-            key_test[n] -= note_12_occurance[(n+3)%12]; // 3rd minor 
-            key_test[n] += note_12_occurance[(n+4)%12]; // 3rd major 
+            key_test[n] -= note_12_occurance[(n+1)%12]*2; // 2nd minor
+            key_test[n] += note_12_occurance[(n+2)%12]; // 2nd major
+            key_test[n] -= note_12_occurance[(n+3)%12]; // 3rd minor
+            key_test[n] += note_12_occurance[(n+4)%12]; // 3rd major
             key_test[n] += note_12_occurance[(n+5)%12]; // 4th
             key_test[n] -= note_12_occurance[(n+6)%12]*2; // tritone
             key_test[n] += note_12_occurance[(n+7)%12]*2; // fifth
@@ -536,21 +537,21 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
             key_test[n] -= note_12_occurance[(n+10)%12]; // 7th minor
             key_test[n] += note_12_occurance[(n+11)%12]; // 7th major
         }
-        
+
         int best_candidate = -1;
         for (int n=0; n<12; n++)
         {
             if (best_candidate==-1 or key_test[n]>key_test[best_candidate]) best_candidate = n;
         }
         if (best_candidate==-1) return;
-        
+
         KeyType type = KEY_TYPE_C;
         int amount = 0;
         switch (best_candidate)
         {
             case 0: //C
                 break;
-                
+
             case 1: // C#
                 type = KEY_TYPE_SHARPS;
                 amount = 7;
@@ -562,24 +563,24 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
             case 4: // E
                 type = KEY_TYPE_SHARPS;
                 amount = 4;
-                break; 
+                break;
             case 6: // F#
                 type = KEY_TYPE_SHARPS;
                 amount = 6;
-                break; 
+                break;
             case 7: // G
                 type = KEY_TYPE_SHARPS;
                 amount = 1;
-                break; 
+                break;
             case 9: // A
                 type = KEY_TYPE_SHARPS;
                 amount = 3;
-                break; 
+                break;
             case 11: // B
                 type = KEY_TYPE_SHARPS;
                 amount = 5;
-                break; 
-                
+                break;
+
             case 3: // D#
                 type = KEY_TYPE_FLATS;
                 amount = 3;
@@ -587,19 +588,19 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
             case 5: // F
                 type = KEY_TYPE_FLATS;
                 amount = 1;
-                break; 
+                break;
             case 8: // G#
                 type = KEY_TYPE_FLATS;
                 amount = 4;
-                break; 
+                break;
             case 10: // A#
                 type = KEY_TYPE_FLATS;
                 amount = 2;
-                break; 
+                break;
         }
         parent->track->setKey(amount, type);
     }
-    
+
     Display::render();
 }
 
