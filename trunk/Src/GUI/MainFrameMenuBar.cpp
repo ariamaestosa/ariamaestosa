@@ -102,8 +102,7 @@ using namespace AriaMaestosa;
 
 void MainFrame::initMenuBar()
 {
-    wxMenuItem* menuItem;
-    wxMenuBar* menuBar=new wxMenuBar();
+    wxMenuBar* menuBar = new wxMenuBar();
 
 #define QUICK_ADD_MENU( MENUID, MENUSTRING, METHOD ) Append( MENUID,  MENUSTRING ); Connect(MENUID, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( METHOD ) );
 #define QUICK_ADD_CHECK_MENU( MENUID, MENUSTRING, METHOD ) AppendCheckItem( MENUID,  MENUSTRING ); Connect(MENUID, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( METHOD ) );
@@ -269,6 +268,20 @@ void MainFrame::initMenuBar()
 
 // -----------------------------------------------------------------------------------------------------------
 
+void MainFrame::addIconItem(wxMenu* menu, int menuID, const wxString& label, const wxString& stockIconId)
+{
+    wxMenuItem* menuItem;
+    
+    menuItem = new wxMenuItem( menu, menuID, label, wxT(""), wxITEM_NORMAL, NULL);
+#ifndef __WXMAC__
+    menuItem->SetBitmap(wxArtProvider::GetBitmap(stockIconId));
+#endif
+    menu->Append(menuItem);
+}
+
+
+// -----------------------------------------------------------------------------------------------------------
+
 void MainFrame::disableMenus(const bool disable)
 {
     const bool on = !disable;
@@ -335,12 +348,13 @@ void MainFrame::updateUndoMenuLabel()
             menuBar->Enable( MENU_EDIT_UNDO, false );
         }
 
+#ifndef __WXMAC__
         wxMenuItem* undoMenuItem = menuBar->FindItem(MENU_EDIT_UNDO, NULL);
-
-        if (undoMenuItem!=NULL)
+        if (undoMenuItem != NULL)
         {
             undoMenuItem->SetBitmap(wxArtProvider::GetBitmap(wxART_UNDO));
         }
+#endif
     }
 }
 
@@ -818,7 +832,7 @@ public:
         m_sizer = new wxBoxSizer(wxHORIZONTAL);
         wxString filepath = wxT("file://") + file ;
         filepath.Replace(wxT(" "), wxT("%20"));
-        wxWebKitCtrl* m_html = new wxWebKitCtrl(this, wxID_ANY, filepath );
+        m_html = new wxWebKitCtrl(this, wxID_ANY, filepath );
         m_sizer->Add(m_html, 1, wxEXPAND);
 
         SetSizer(m_sizer);
@@ -863,18 +877,6 @@ void MainFrame::menuEvent_manual(wxCommandEvent& evt)
     }
 #endif
 }
-
-
-void MainFrame::addIconItem(wxMenu* menu, int menuID, const wxString& label, const wxString& stockIconId)
-{
-    wxMenuItem* menuItem;
-
-    menuItem = new wxMenuItem( menu, menuID, label, wxT(""), wxITEM_NORMAL, NULL);
-    menuItem->SetBitmap(wxArtProvider::GetBitmap(stockIconId));
-    menu->Append(menuItem);
-}
-
-
 
 // -----------------------------------------------------------------------------------------------------------
 
