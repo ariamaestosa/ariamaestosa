@@ -32,8 +32,8 @@ namespace AriaMaestosa
         class ScaleSong : public MultiTrackAction
         {
             friend class AriaMaestosa::Track;
-            float factor;
-            int relative_to;
+            float m_factor;
+            int m_relative_to;
             
             ptr_vector<ScaleTrack> actions;
             

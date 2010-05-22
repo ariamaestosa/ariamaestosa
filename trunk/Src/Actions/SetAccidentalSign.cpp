@@ -27,7 +27,7 @@ SetAccidentalSign::SetAccidentalSign(const int sign) :
     //I18N: (undoable) action name
     SingleTrackAction( _("accidental change") )
 {
-    SetAccidentalSign::sign = sign;
+    m_sign = sign;
 }
 
 SetAccidentalSign::~SetAccidentalSign()
@@ -43,8 +43,8 @@ void SetAccidentalSign::undo()
         int n=0;
         while( (current_note = relocator.getNextNote()) and current_note != NULL)
         {
-            current_note->preferred_accidental_sign = original_signs[n];
-            current_note->pitchID = pitch[n];
+            current_note->preferred_accidental_sign = m_original_signs[n];
+            current_note->pitchID = m_pitch[n];
             n++;
         }
 }
@@ -59,10 +59,10 @@ void SetAccidentalSign::perform()
     {
         if (!track->isNoteSelected(n)) continue;
 
-        original_signs.push_back( track->m_notes[n].preferred_accidental_sign );
-        pitch.push_back(  track->m_notes[n].pitchID );
+        m_original_signs.push_back( track->m_notes[n].preferred_accidental_sign );
+        m_pitch.push_back(  track->m_notes[n].pitchID );
 
-        track->graphics->scoreEditor->setNoteSign(sign, n);
+        track->graphics->scoreEditor->setNoteSign(m_sign, n);
         relocator.rememberNote( track->m_notes[n] );
 
         if (!played)

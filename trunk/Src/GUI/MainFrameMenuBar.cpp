@@ -809,19 +809,19 @@ void MainFrame::menuEvent_about(wxCommandEvent& evt)
 #ifdef __WXMAC__
 class ManualView : public wxFrame
 {
-    wxWebKitCtrl* html;
-    wxBoxSizer* sizer;
+    wxWebKitCtrl* m_html;
+    wxBoxSizer* m_sizer;
 
 public:
     ManualView(wxFrame* parent, wxString file) : wxFrame(parent, wxID_ANY, _("Manual"), wxDefaultPosition, wxSize(1000,600))
     {
-        sizer = new wxBoxSizer(wxHORIZONTAL);
+        m_sizer = new wxBoxSizer(wxHORIZONTAL);
         wxString filepath = wxT("file://") + file ;
         filepath.Replace(wxT(" "), wxT("%20"));
-        wxWebKitCtrl* html = new wxWebKitCtrl(this, wxID_ANY, filepath );
-        sizer->Add(html, 1, wxEXPAND);
+        wxWebKitCtrl* m_html = new wxWebKitCtrl(this, wxID_ANY, filepath );
+        m_sizer->Add(m_html, 1, wxEXPAND);
 
-        SetSizer(sizer);
+        SetSizer(m_sizer);
 
         wxMenuBar* menuBar = new wxMenuBar();
 

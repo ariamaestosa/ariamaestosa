@@ -86,9 +86,9 @@ namespace AriaMaestosa
         wxTextCtrl* volume_text;
         wxSlider* volume_slider;
         
-        ptr_vector<BackgroundChoicePanel> choicePanels;
+        ptr_vector<BackgroundChoicePanel> m_choice_panels;
         
-        Track* parent;
+        Track* m_parent;
         
         int modalid;
         
@@ -105,7 +105,7 @@ namespace AriaMaestosa
         wxDialog(NULL, wxID_ANY,  _("Track Properties"), wxPoint(100,100), wxSize(700,300), wxCAPTION | wxCLOSE_BOX | wxSTAY_ON_TOP )
         {
             m_ignore_events = true;
-            TrackPropertiesDialog::parent = parent;
+            m_parent = parent;
             
             modalid = -1;
             
@@ -124,7 +124,7 @@ namespace AriaMaestosa
             wxStaticBoxSizer* bg_subsizer = new wxStaticBoxSizer(wxVERTICAL, properties_panel, _("Track Background"));
             
             const int trackAmount = getCurrentSequence()->getTrackAmount();
-            for(int n=0; n<trackAmount; n++)
+            for (int n=0; n<trackAmount; n++)
             {
                 Track* track = getCurrentSequence()->getTrack(n);
                 bool enabled = true;
@@ -135,7 +135,7 @@ namespace AriaMaestosa
                 
                 BackgroundChoicePanel* bcp = new BackgroundChoicePanel(properties_panel, n, track, activated, enabled);
                 bg_subsizer->Add(bcp, 0, wxALL, 5);
-                choicePanels.push_back(bcp);
+                m_choice_panels.push_back(bcp);
             }
             props_sizer->Add(bg_subsizer, 0, wxALL, 5);
             
@@ -193,7 +193,7 @@ namespace AriaMaestosa
         {
             Center();
             
-            Editor* editor = parent->graphics->getCurrentEditor();
+            Editor* editor = m_parent->graphics->getCurrentEditor();
             volume_text->SetValue( to_wxString(editor->getDefaultVolume()) );
             volume_slider->SetValue( editor->getDefaultVolume() );
             
@@ -209,19 +209,19 @@ namespace AriaMaestosa
         // when OK button of the tuning picker is pressed
         void okButton(wxCommandEvent& evt)
         {
-            Editor* editor = parent->graphics->getCurrentEditor();
+            Editor* editor = m_parent->graphics->getCurrentEditor();
             const int value = atoi_u(volume_text->GetValue());
             if (value >=0 and value < 128) editor->setDefaultVolume( value );
             else wxBell();
             
-            const int amount = choicePanels.size();
+            const int amount = m_choice_panels.size();
             Sequence* seq = getCurrentSequence();
             
             editor->clearBackgroundTracks();
             
-            for(int n=0; n<amount; n++)
+            for (int n=0; n<amount; n++)
             {
-                if (choicePanels[n].isChecked())
+                if (m_choice_panels[n].isChecked())
                 {
                     editor->addBackgroundTrack( seq->getTrack(n) );
                     std::cout << "Adding track " << n << " as background to track " << std::endl;

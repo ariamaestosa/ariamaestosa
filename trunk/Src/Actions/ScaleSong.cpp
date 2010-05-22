@@ -27,8 +27,8 @@ ScaleSong::ScaleSong(float factor, int relative_to) :
     //I18N: (undoable) action name
     MultiTrackAction( _("scale song") )
 {
-    ScaleSong::factor = factor;
-    ScaleSong::relative_to = relative_to;
+    m_factor = factor;
+    m_relative_to = relative_to;
 }
 
 ScaleSong::~ScaleSong()
@@ -38,9 +38,9 @@ ScaleSong::~ScaleSong()
 void ScaleSong::perform()
 {
     const int trackAmount = sequence->getTrackAmount();
-    for(int t=0; t<trackAmount; t++)
+    for (int t=0; t<trackAmount; t++)
     {
-        Action::ScaleTrack* action = new Action::ScaleTrack(factor, relative_to, false);
+        Action::ScaleTrack* action = new Action::ScaleTrack(m_factor, m_relative_to, false);
         action->setParentTrack(sequence->getTrack(t));
         action->perform();
         actions.push_back(action);
@@ -50,7 +50,7 @@ void ScaleSong::perform()
 void ScaleSong::undo()
 {
     const int amount = actions.size();
-    for(int a=0; a<amount; a++)
+    for (int a=0; a<amount; a++)
     {
         actions[a].undo();
     }

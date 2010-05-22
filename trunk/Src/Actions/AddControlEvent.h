@@ -33,9 +33,9 @@ namespace AriaMaestosa
         class AddControlEvent : public SingleTrackAction
         {
             friend class AriaMaestosa::Track;
-            int x, value, controller;
+            int m_x, m_value, m_controller;
             
-            int removedEventValue; //!< if any event was replaced by this one...
+            int m_removed_event_value; //!< if any event was replaced by this one...
         public:
             AddControlEvent(const int x, const int value, const int controller);
             void perform();

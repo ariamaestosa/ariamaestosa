@@ -9,7 +9,7 @@ class UnitTestCase
     std::string m_name;
 public:
     UnitTestCase(const char* name);
-    ~UnitTestCase();
+    virtual ~UnitTestCase();
     virtual void run() = 0;
     
     const std::string& getName() const { return m_name; }

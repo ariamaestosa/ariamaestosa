@@ -31,7 +31,8 @@ namespace AriaMaestosa
          */
         class ResizeNotes : public SingleTrackAction
         {
-            int relativeWidth, noteID;
+            int m_relative_width;
+            int m_note_ID;
             friend class AriaMaestosa::Track;
             
             NoteRelocator relocator;

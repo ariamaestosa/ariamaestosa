@@ -48,14 +48,17 @@ namespace AriaMaestosa
 
             const bool* curr_key_notes = gtrack->track->getKeyNotes();
 
+            wxBoxSizer* maximizePaneSizer = new wxBoxSizer(wxVERTICAL);
             wxPanel* pane = new wxPanel(this);
-
-            wxBoxSizer* over_sizer = new wxBoxSizer(wxVERTICAL);
+            maximizePaneSizer->Add(pane, 1, wxEXPAND);
+            SetSizer(maximizePaneSizer);
+            
+            wxBoxSizer* globalSizer = new wxBoxSizer(wxVERTICAL);
             wxStaticText* title = new wxStaticText(pane, wxID_ANY,
                                                    _("Select which notes should be part of the custom key"));
-            over_sizer->Add(title);
+            globalSizer->Add(title, 0, wxALL, 5);
 
-            m_notebook = new wxNotebook( pane, wxID_ANY, wxDefaultPosition, wxSize(400,280) );
+            m_notebook = new wxNotebook( pane, wxID_ANY );
             {
                 m_page1_id = wxNewId();
                 wxPanel* page = new wxPanel( m_notebook, m_page1_id );
@@ -116,7 +119,7 @@ namespace AriaMaestosa
                 //I18N: in custom key editor, this is the option to edit all octaves independently
                 m_notebook->AddPage(scrollpane, _("All Octaves are Independent"));
             }
-            over_sizer->Add(m_notebook, 1, wxEXPAND | wxALL, 2);
+            globalSizer->Add(m_notebook, 1, wxEXPAND | wxALL, 2);
 
             //I18N: in custom key editor
             //wxButton* copySettingsBtn = new wxButton( pane, wxID_COPY, _("Copy settings from another track...") );
@@ -125,7 +128,7 @@ namespace AriaMaestosa
 
             {
                 wxPanel* buttonsPane = new wxPanel(pane);
-                over_sizer->Add(buttonsPane, 0, wxEXPAND | wxALL, 5);
+                globalSizer->Add(buttonsPane, 0, wxEXPAND | wxALL, 5);
 
                 wxButton* ok_btn     = new wxButton(buttonsPane, wxID_OK, _("OK"));
                 wxButton* cancel_btn = new wxButton(buttonsPane, wxID_CANCEL, _("Cancel"));
@@ -139,10 +142,8 @@ namespace AriaMaestosa
                 ok_btn->SetDefault();
             }
 
-            pane->SetSizer(over_sizer);
-            over_sizer->SetSizeHints(this);
+            pane->SetSizer(globalSizer);
             Layout();
-
             Centre();
         }
 

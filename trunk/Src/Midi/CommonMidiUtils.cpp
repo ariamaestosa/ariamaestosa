@@ -300,9 +300,9 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
         // CoreAudio chokes on time sig changes... easy hack, just ignore them when playing back
         // it's also quicker because time sig events are not heard in any way so no reason to waste time adding them when playing
         // FIXME find real problem
-        if (!playing)
+        if (not playing)
         {
-            if ( getMeasureData()->isMeasureLengthConstant() )
+            if (getMeasureData()->isMeasureLengthConstant())
             {
                 // time signature
                 jdkmidi::MIDITimedBigMessage m;
@@ -311,11 +311,15 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
                 float denom = (float)log(getMeasureData()->getTimeSigDenominator())/(float)log(2);
                 m.SetTimeSig( getMeasureData()->getTimeSigNumerator(), (int)denom );
 
-                if ( !tracks.GetTrack(0)->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl;  return false; }
+                if (not tracks.GetTrack(0)->PutEvent( m ))
+                {
+                    std::cout << "Error adding event" << std::endl;
+                    return false;
+                }
 
                 // add tempo changes straight away, there's nothing else in track 0 so time order is not a problem
                 const int amount = sequence->tempoEvents.size();
-                for(int n=0; n<amount; n++)
+                for (int n=0; n<amount; n++)
                 {
                     addTempoEventFromSequenceVector(n, amount, sequence, tracks, substract_ticks);
                 }
