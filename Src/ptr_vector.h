@@ -354,14 +354,14 @@ namespace AriaMaestosa
             ASSERT( MAGIC_NUMBER_OK() );
             ASSERT( not m_performing_deletion );
 
-            int size = contentsVector.size();
-            for(int n=0; n<size; n++)
+            int vectorSize = contentsVector.size();
+            for(int n=0; n<vectorSize; n++)
             {
                 
                 if ( contentsVector[n] == 0 )
                 {
                     contentsVector.erase(contentsVector.begin()+n);
-                    size = contentsVector.size();
+                    vectorSize = contentsVector.size();
                     n -= 2;
                     if (n < -1) n=-1;
                 }

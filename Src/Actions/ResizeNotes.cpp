@@ -26,8 +26,8 @@ ResizeNotes::ResizeNotes(const int relativeWidth, const int noteID) :
     //I18N: (undoable) action name
     SingleTrackAction( _("resize note(s)") )
 {
-    ResizeNotes::relativeWidth = relativeWidth;
-    ResizeNotes::noteID = noteID;
+    m_relative_width = relativeWidth;
+    m_note_ID = noteID;
 }
 
 ResizeNotes::~ResizeNotes()
@@ -39,9 +39,9 @@ void ResizeNotes::undo()
     Note* current_note;
     relocator.setParent(track);
     relocator.prepareToRelocate();
-    while( (current_note = relocator.getNextNote()) and current_note != NULL)
+    while ((current_note = relocator.getNextNote()) and current_note != NULL)
     {
-        current_note->resize( -relativeWidth );
+        current_note->resize( -m_relative_width );
     }
     track->reorderNoteVector();
     track->reorderNoteOffVector();
@@ -53,9 +53,9 @@ void ResizeNotes::perform()
     
     if (track->graphics->editorMode == DRUM) return;
     
-    ASSERT(noteID != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
+    ASSERT(m_note_ID != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
     
-    if (noteID==SELECTED_NOTES)
+    if (m_note_ID == SELECTED_NOTES)
     {
         
         bool played=false;
@@ -63,7 +63,7 @@ void ResizeNotes::perform()
         {
             if (!track->m_notes[n].isSelected()) continue;
             
-            track->m_notes[n].resize(relativeWidth);
+            track->m_notes[n].resize(m_relative_width);
             relocator.rememberNote(track->m_notes[n]);
             
             if (!played)
@@ -77,12 +77,12 @@ void ResizeNotes::perform()
     else
     {
         
-        ASSERT_E(noteID,<,track->m_notes.size());
-        ASSERT_E(noteID,>=,0);
+        ASSERT_E(m_note_ID,<,track->m_notes.size());
+        ASSERT_E(m_note_ID,>=,0);
         
-        track->m_notes[noteID].resize(relativeWidth);
-        track->m_notes[noteID].play(false);
-        relocator.rememberNote(track->m_notes[noteID]);
+        track->m_notes[m_note_ID].resize(m_relative_width);
+        track->m_notes[m_note_ID].play(false);
+        relocator.rememberNote(track->m_notes[m_note_ID]);
     }
     
     track->reorderNoteOffVector();

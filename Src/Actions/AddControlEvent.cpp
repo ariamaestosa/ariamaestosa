@@ -28,10 +28,10 @@ AddControlEvent::AddControlEvent(const int x, const int value, const int control
     //I18N: (undoable) action name
     SingleTrackAction( _("add control event") )
 {
-    AddControlEvent::x = x;
-    AddControlEvent::value = value;
-    AddControlEvent::controller = controller;
-    removedEventValue = -1;
+    m_x = x;
+    m_value = value;
+    m_controller = controller;
+    m_removed_event_value = -1;
 }
 
 AddControlEvent::~AddControlEvent()
@@ -49,11 +49,11 @@ void AddControlEvent::undo()
         for(int n=0; n<controlEventsAmount; n++)
         {
             
-            if (track->m_control_events[n].getTick() == x and
-                track->m_control_events[n].getController() == controller)
+            if (track->m_control_events[n].getTick() == m_x and
+                track->m_control_events[n].getController() == m_controller)
             {
                 // if event was added where there was no event before
-                if (removedEventValue == -1)
+                if (m_removed_event_value == -1)
                 {
                     track->m_control_events.erase(n);
                     break;
@@ -61,7 +61,7 @@ void AddControlEvent::undo()
                 else
                     // if event replaced an event that existed before
                 {
-                    track->m_control_events[n].setValue( removedEventValue );
+                    track->m_control_events[n].setValue( m_removed_event_value );
                 }
             }//endif
         }//next
@@ -72,11 +72,11 @@ void AddControlEvent::undo()
         for(int n=0; n<tempoEventsAmount; n++)
         {
             
-            if (track->sequence->tempoEvents[n].getTick() == x and
-                track->sequence->tempoEvents[n].getController() == controller)
+            if (track->sequence->tempoEvents[n].getTick() == m_x and
+                track->sequence->tempoEvents[n].getController() == m_controller)
             {
                 // if event was added where there was no event before
-                if (removedEventValue == -1)
+                if (m_removed_event_value == -1)
                 {
                     track->sequence->tempoEvents.erase(n);
                     break;
@@ -84,7 +84,7 @@ void AddControlEvent::undo()
                 else
                     // if event replaced an event that existed before
                 {
-                    track->sequence->tempoEvents[n].setValue( removedEventValue );
+                    track->sequence->tempoEvents[n].setValue( m_removed_event_value );
                 }
             }//endif
         }//next
@@ -94,8 +94,8 @@ void AddControlEvent::undo()
 
 void AddControlEvent::perform()
 {
-    ControllerEvent* event = new ControllerEvent(track->sequence, controller, x, value);
-    track->addControlEvent( event, &removedEventValue );
+    ControllerEvent* event = new ControllerEvent(track->sequence, m_controller, m_x, m_value);
+    track->addControlEvent( event, &m_removed_event_value );
 }
 
 

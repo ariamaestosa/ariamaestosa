@@ -31,14 +31,14 @@ namespace AriaMaestosa
          */
         class SetNoteVolume : public SingleTrackAction
         {
-            int volume, noteID;
+            int m_volume, m_note_ID;
             friend class AriaMaestosa::Track;
             
             /** for undo */
-            int oldVolume;
+            int m_old_volume;
             
             NoteRelocator relocator;
-            std::vector<int> volumes;
+            std::vector<int> m_volumes;
             
         public:
             

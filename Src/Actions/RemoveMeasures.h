@@ -44,7 +44,7 @@ namespace AriaMaestosa
             };
             
             friend class AriaMaestosa::Track;
-            int from_measure, to_measure;
+            int m_from_measure, m_to_measure;
             
             ptr_vector<RemovedTrackPart> removedTrackParts;
             ptr_vector<ControllerEvent> removedTempoEvents;

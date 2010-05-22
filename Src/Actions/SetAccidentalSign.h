@@ -30,13 +30,13 @@ namespace AriaMaestosa
          */
         class SetAccidentalSign : public SingleTrackAction
         {
-            int sign;
+            int m_sign;
             friend class AriaMaestosa::Track;
             
             // for undo
             NoteRelocator relocator;
-            std::vector<int> original_signs;
-            std::vector<int> pitch;
+            std::vector<int> m_original_signs;
+            std::vector<int> m_pitch;
             
         public:
             

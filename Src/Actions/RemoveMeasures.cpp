@@ -32,8 +32,8 @@ RemoveMeasures::RemoveMeasures(int from_measure, int to_measure) :
     //I18N: (undoable) action name
     MultiTrackAction( _("remove measure(s)") )
 {
-    RemoveMeasures::from_measure = from_measure;
-    RemoveMeasures::to_measure = to_measure;
+    m_from_measure = from_measure;
+    m_to_measure = to_measure;
 }
 
 RemoveMeasures::RemoveMeasures::~RemoveMeasures()
@@ -46,7 +46,7 @@ RemoveMeasures::RemovedTrackPart::~RemovedTrackPart()
 
 void RemoveMeasures::RemoveMeasures::undo()
 {
-    Action::InsertEmptyMeasures opposite_action(from_measure, to_measure-from_measure);
+    Action::InsertEmptyMeasures opposite_action(m_from_measure, (m_to_measure - m_from_measure));
     opposite_action.setParentSequence( sequence );
     opposite_action.perform();
     
@@ -106,11 +106,12 @@ void RemoveMeasures::perform()
     ASSERT(sequence != NULL);
     
     // find the range of ticks that need to be removed (convert measure IDs to midi ticks)
-    const int from_tick = getMeasureData()->firstTickInMeasure(from_measure) - 1;
-    const int to_tick = getMeasureData()->firstTickInMeasure(to_measure);
+    const int fromTick = getMeasureData()->firstTickInMeasure(m_from_measure) - 1;
+    const int toTick = getMeasureData()->firstTickInMeasure(m_to_measure);
     
-    // find the amount of ticks that will be removed. This will be used to move back notes located after the area that is removed.
-    const int amountInTicks = to_tick - from_tick - 1;
+    // find the amount of ticks that will be removed. This will be used to move back notes located
+    // after the area that is removed.
+    const int amountInTicks = toTick - fromTick - 1;
     
     const int trackAmount = sequence->getTrackAmount();
     for(int t=0; t<trackAmount; t++)
@@ -126,13 +127,13 @@ void RemoveMeasures::perform()
         for(int n=0; n<amount_n; n++)
         {
             // note is an area that is removed. remove it.
-            if (track->m_notes[n].startTick > from_tick and track->m_notes[n].startTick < to_tick)
+            if (track->m_notes[n].startTick > fromTick and track->m_notes[n].startTick < toTick)
             {
                 removedBits->removedNotes.push_back(track->m_notes.get(n));
                 track->markNoteToBeRemoved(n);
             }
             // note is in after the removed area. move it back by necessary amound
-            else if (removedBits->track->m_notes[n].startTick >= to_tick)
+            else if (removedBits->track->m_notes[n].startTick >= toTick)
             {
                 track->m_notes[n].startTick -= amountInTicks;
                 track->m_notes[n].endTick -= amountInTicks;
@@ -145,15 +146,15 @@ void RemoveMeasures::perform()
         for(int n=0; n<c_amount; n++)
         {
             // delete all controller events located in the area to be deleted
-            if (track->m_control_events[n].getTick() > from_tick and track->m_control_events[n].getTick() < to_tick)
+            if (track->m_control_events[n].getTick() > fromTick and track->m_control_events[n].getTick() < toTick)
             {
                 removedBits->removedControlEvents.push_back( track->m_control_events.get(n) );
                 track->m_control_events.markToBeRemoved(n);
             }
             // move all controller events that are after given start tick by the necessary amount
-            else if (track->m_control_events[n].getTick() >= to_tick)
+            else if (track->m_control_events[n].getTick() >= toTick)
             {
-                removedBits->track->m_control_events[n].setTick( track->m_control_events[n].getTick() - amountInTicks );
+                removedBits->track->m_control_events[n].setTick(track->m_control_events[n].getTick() - amountInTicks);
             }
         }
         track->m_control_events.removeMarked();
@@ -170,16 +171,16 @@ void RemoveMeasures::perform()
         for(int n=0; n<s_amount; n++)
         {
             // event is in deleted area
-            if (sequence->tempoEvents[n].getTick() > from_tick and sequence->tempoEvents[n].getTick() < to_tick)
+            if (sequence->tempoEvents[n].getTick() > fromTick and sequence->tempoEvents[n].getTick() < toTick)
             {
                 removedTempoEvents.push_back( sequence->tempoEvents.get(n) );
                 sequence->tempoEvents.markToBeRemoved(n);
             }
             //event is after deleted area
-            else if (sequence->tempoEvents[n].getTick() >= to_tick)
+            else if (sequence->tempoEvents[n].getTick() >= toTick)
             {
                 // move it back
-                sequence->tempoEvents[n].setTick( sequence->tempoEvents[n].getTick() - (to_tick-from_tick-1) );
+                sequence->tempoEvents[n].setTick( sequence->tempoEvents[n].getTick() - (toTick-fromTick-1) );
             }
         }
         
@@ -190,40 +191,40 @@ void RemoveMeasures::perform()
     MeasureData* measureBar = getMeasureData();
     timeSigChangesBackup.clear();
     
-    if (!measureBar->isMeasureLengthConstant())
+    if (not measureBar->isMeasureLengthConstant())
     {
         // keep a backup copy of measure events
-        for(int n=0; n<measureBar->getTimeSigAmount(); n++)
+        for (int n=0; n<measureBar->getTimeSigAmount(); n++)
         {
             timeSigChangesBackup.push_back( measureBar->getTimeSig(n) );
         }
         
         
-        for(int n=0; n<measureBar->getTimeSigAmount(); n++)
+        for (int n=0; n<measureBar->getTimeSigAmount(); n++)
         {
             
-            if ( measureBar->getTimeSig(n).measure >= from_measure and measureBar->getTimeSig(n).measure <= to_measure )
+            if (measureBar->getTimeSig(n).measure >= m_from_measure and
+                measureBar->getTimeSig(n).measure <= m_to_measure )
             {
                 // an event is located in the area we are trying to remove.
                 // check if there are measures after the deleted area that still need this event.
-                if (
-                    (n<measureBar->getTimeSigAmount()-1 and measureBar->getTimeSig(n+1).measure > to_measure)
-                    or
+                if ((n<measureBar->getTimeSigAmount()-1 and measureBar->getTimeSig(n+1).measure > m_to_measure) or
                     n==measureBar->getTimeSigAmount()-1)
                 {
-                    if (measureBar->getTimeSig(n).measure == from_measure) continue; // dont move if its already there
+                    // dont move if its already there
+                    if (measureBar->getTimeSig(n).measure == m_from_measure) continue; 
                     
                     // check if there already was an event there if so remove it
-                    for(int i=0; i<measureBar->getTimeSigAmount(); i++)
+                    for (int i=0; i<measureBar->getTimeSigAmount(); i++)
                     {
-                        if ( measureBar->getTimeSig(i).measure == from_measure)
+                        if (measureBar->getTimeSig(i).measure == m_from_measure)
                         {
                             measureBar->eraseTimeSig(i);
                             i -= 2; if (i<-1) i=-1;
                         }
                     }
                     
-                    measureBar->getTimeSig(n).measure = from_measure; // move back event to its new location
+                    measureBar->getTimeSig(n).measure = m_from_measure; // move back event to its new location
                     
                 }
                 else
@@ -235,9 +236,9 @@ void RemoveMeasures::perform()
                 
             }
             
-            if ( measureBar->getTimeSig(n).tick >= to_tick )
+            if (measureBar->getTimeSig(n).tick >= toTick)
             {
-                const int new_measure = measureBar->getTimeSig(n).measure - (to_measure - from_measure);
+                const int new_measure = measureBar->getTimeSig(n).measure - (m_to_measure - m_from_measure);
                 // check if there already was an event there if so remove it
                 for(int i=0; i<measureBar->getTimeSigAmount(); i++)
                 {
@@ -255,7 +256,7 @@ void RemoveMeasures::perform()
     }//endif
     
     // shorten song accordingly to the number of measures removed
-    DisplayFrame::changeMeasureAmount( sequence->measureData->getMeasureAmount() - (to_measure - from_measure) );
+    DisplayFrame::changeMeasureAmount( sequence->measureData->getMeasureAmount() - (m_to_measure - m_from_measure) );
     getMeasureData()->updateMeasureInfo();
 }
 

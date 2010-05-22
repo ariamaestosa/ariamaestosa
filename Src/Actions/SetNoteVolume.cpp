@@ -24,8 +24,8 @@ SetNoteVolume::SetNoteVolume(const int volume, const int noteID) :
     //I18N: (undoable) action name
     SingleTrackAction( _("change note(s) volume") )
 {
-    SetNoteVolume::volume = volume;
-    SetNoteVolume::noteID = noteID;
+    m_volume = volume;
+    m_note_ID = noteID;
 }
 
 SetNoteVolume::~SetNoteVolume()
@@ -40,9 +40,9 @@ void SetNoteVolume::undo()
     relocator.setParent(track);
     relocator.prepareToRelocate();
     int n = 0;
-    while( (current_note = relocator.getNextNote()) and current_note != NULL)
+    while ((current_note = relocator.getNextNote()) and current_note != NULL)
     {
-        current_note->setVolume( volumes[n] );
+        current_note->setVolume( m_volumes[n] );
         n++;
     }
 }
@@ -51,17 +51,17 @@ void SetNoteVolume::perform()
 {
     ASSERT(track != NULL);
     
-    if (noteID == SELECTED_NOTES)
+    if (m_note_ID == SELECTED_NOTES)
     {
         
         bool played = false;
         const int noteAmount = track->m_notes.size();
-        for(int n=0; n<noteAmount; n++)
+        for (int n=0; n<noteAmount; n++)
         {
             if (track->m_notes[n].isSelected())
             {
-                volumes.push_back( track->m_notes[n].volume  );
-                track->m_notes[n].setVolume( volume );
+                m_volumes.push_back( track->m_notes[n].volume  );
+                track->m_notes[n].setVolume( m_volume );
                 relocator.rememberNote(track->m_notes[n]);
                 if (!played)
                 {
@@ -76,14 +76,14 @@ void SetNoteVolume::perform()
     {
         // single note
         
-        ASSERT_E(noteID,>=,0);
-        ASSERT_E(noteID,<,track->m_notes.size());
+        ASSERT_E(m_note_ID,>=,0);
+        ASSERT_E(m_note_ID,<,track->m_notes.size());
         
         // if user changed the volume of a note that is not selected, change the volume of this note only
-        volumes.push_back( track->m_notes[noteID].volume  );
-        track->m_notes[noteID].setVolume( volume );
-        relocator.rememberNote(track->m_notes[noteID]);
-        track->m_notes[noteID].play(true);
+        m_volumes.push_back( track->m_notes[m_note_ID].volume  );
+        track->m_notes[m_note_ID].setVolume( m_volume );
+        relocator.rememberNote(track->m_notes[m_note_ID]);
+        track->m_notes[m_note_ID].play(true);
     }
     
 }
