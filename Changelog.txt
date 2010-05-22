@@ -1,3 +1,6 @@
+1.2.3
+- More flexible printing dialog; allows changing the printing notation type for each track
+
 1.2.2
 - Cleanup and code documentation
 - Work on custom key support
