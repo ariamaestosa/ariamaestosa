@@ -32,11 +32,13 @@ namespace AriaMaestosa
         class NumberPressed : public SingleTrackAction
         {
             friend class AriaMaestosa::Track;
-            int number;
-            
+            int m_number;
+            int m_previous_number;
+
             NoteRelocator relocator;
-            int previousNumber;
+            
         public:
+            
             NumberPressed(const int number);
             void perform();
             void undo();

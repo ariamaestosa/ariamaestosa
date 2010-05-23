@@ -33,7 +33,7 @@ Paste::Paste(const bool atMouse) :
     //I18N: (undoable) action name
     SingleTrackAction( _("paste") )
 {
-    Paste::atMouse = atMouse;
+    m_at_mouse = atMouse;
 }
 
 // -------------------------------------------------------------------------------------------------------------
@@ -50,10 +50,10 @@ void Paste::undo()
     relocator.setParent(track);
     relocator.prepareToRelocate();
 
-    while( (current_note = relocator.getNextNote()) and current_note != NULL)
+    while ((current_note = relocator.getNextNote()) and current_note != NULL)
     {
         const int noteAmount = track->getNoteAmount();
-        for(int n=0; n<noteAmount; n++)
+        for (int n=0; n<noteAmount; n++)
         {
             if (track->getNote(n) == current_note)
             {
@@ -77,37 +77,37 @@ void Paste::perform()
     }
     if (Clipboard::getSize() == 0) return; // nothing copied
 
-    const int copied_beat_length = Clipboard::getBeatLength();
-    const int seq_beat_length = track->sequence->ticksPerBeat();
-    float scale_pasted_notes = 1;
-    bool need_to_scale_pasted_notes = false;
+    const int copiedBeatLength = Clipboard::getBeatLength();
+    const int seqBeatLength = track->sequence->ticksPerBeat();
+    float scalePastedNotes = 1;
+    bool needToScalePastedNotes = false;
 
-    if (copied_beat_length != seq_beat_length)
+    if (copiedBeatLength != seqBeatLength)
     {
-        scale_pasted_notes = (float)seq_beat_length / (float)copied_beat_length;
-        need_to_scale_pasted_notes = true;
-        std::cout << "pasting from a song with beat=" << copied_beat_length << " to one with beat=" << seq_beat_length <<
-            ", it will be necessary to scale notes by " << scale_pasted_notes << std::endl;
+        scalePastedNotes = (float)seqBeatLength / (float)copiedBeatLength;
+        needToScalePastedNotes = true;
+        std::cout << "pasting from a song with beat=" << copiedBeatLength << " to one with beat=" << seqBeatLength <<
+            ", it will be necessary to scale notes by " << scalePastedNotes << std::endl;
     }
 
     // used to find when the first note is played.
     // If we're pasting at the mouse cursor, it is necessary to know that so that the first note is next to the cursor.
     // However, if we're pasting in the first measure, we don't want this info since we want the track->m_notes to keep their location within the measure.
     int beginning=-1;
-    if (!atMouse) beginning=0;
+    if (not m_at_mouse) beginning=0;
 
     // unselected previously selected track->m_notes
     for (int n=0; n<track->m_notes.size(); n++) track->m_notes[n].setSelected(false);
 
     // find where track->m_notes begin if necessary
-    if (atMouse)
+    if (m_at_mouse)
     {
         beginning = Clipboard::getNote(0)->startTick;
     }
     int shift=0;
 
     // if "paste at mouse", use its location to know where to paste track->m_notes
-    wxPoint mouseLoc=wxGetMousePosition();
+    wxPoint mouseLoc = wxGetMousePosition();
 
     int trackMouseLoc_x, trackMouseLoc_y;
 
@@ -116,7 +116,7 @@ void Paste::perform()
     Editor* editor = track->graphics->getCurrentEditor();
     
     // Calculate 'shift' (i.e. X position of pasted notes)
-    if (atMouse and
+    if (m_at_mouse and
         trackMouseLoc_y > editor->getEditorYStart() and
         trackMouseLoc_y < editor->getYEnd() and
         trackMouseLoc_x > Editor::getEditorXStart())
@@ -127,7 +127,7 @@ void Paste::perform()
         shift=track->graphics->getCurrentEditor()->snapMidiTickToGrid( mx.getRelativeTo(MIDI) );
 
     }
-    else if (not atMouse and track->sequence->x_scroll_upon_copying == track->sequence->getXScrollInPixels() )
+    else if (not m_at_mouse and track->sequence->x_scroll_upon_copying == track->sequence->getXScrollInPixels() )
     {
 
         /*
@@ -186,18 +186,18 @@ regular_paste: // FIXME - find better way than goto
 
     // add new notes
     const int clipboardSize = Clipboard::getSize();
-    for(int n=0; n<clipboardSize; n++)
+    for (int n=0; n<clipboardSize; n++)
     {
-        Note* tmp=new Note( *(Clipboard::getNote(n)) );
+        Note* tmp = new Note( *(Clipboard::getNote(n)) );
 
-        if (need_to_scale_pasted_notes)
+        if (needToScalePastedNotes)
         {
-            tmp->startTick *= scale_pasted_notes;
-            tmp->endTick *= scale_pasted_notes;
+            tmp->startTick *= scalePastedNotes;
+            tmp->endTick   *= scalePastedNotes;
         }
 
         track->graphics->getCurrentEditor()->moveNote(*tmp, shift , 0);
-        if (atMouse) track->graphics->getCurrentEditor()->moveNote(*tmp, -beginning , 0);
+        if (m_at_mouse) track->graphics->getCurrentEditor()->moveNote(*tmp, -beginning , 0);
 
         tmp->setParent( track->graphics );
         tmp->setSelected(true);

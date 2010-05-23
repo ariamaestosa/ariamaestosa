@@ -128,11 +128,11 @@ namespace AriaMaestosa
     class wxGLString : public wxString, public TextGLDrawable
     {
     protected:
-        wxFont font;
+        wxFont m_font;
         
-        int warp_after;
+        int m_warp_after;
         
-        bool consolidated;
+        bool m_consolidated;
         
         friend class wxGLStringArray;
         

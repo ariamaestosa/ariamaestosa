@@ -32,10 +32,12 @@ namespace AriaMaestosa
         class Paste : public SingleTrackAction
         {
             friend class AriaMaestosa::Track;
-            bool atMouse;
+            bool m_at_mouse;
             
             NoteRelocator relocator;
+            
         public:
+            
             Paste(const bool atMouse);
             void perform();
             void undo();

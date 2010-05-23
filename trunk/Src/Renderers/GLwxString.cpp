@@ -249,23 +249,25 @@ TextTexture::~TextTexture()
 
 wxGLString::wxGLString() : wxString(wxT("")), TextGLDrawable()
 {
-    consolidated = false;
-    warp_after = -1;
+    m_consolidated = false;
+    m_warp_after = -1;
 }
+
 wxGLString::wxGLString(wxString message) : wxString(message), TextGLDrawable()
 {
-    consolidated = false;
-    warp_after = -1;
+    m_consolidated = false;
+    m_warp_after = -1;
 }
+
 void wxGLString::set(const wxString& string)
 {
-    (*((wxString*)this))=string;
-    consolidated=false;
+    (*((wxString*)this)) = string;
+    m_consolidated = false;
 }
 
 void wxGLString::bind()
 {
-    if (not consolidated) consolidate(Display::renderDC);
+    if (not m_consolidated) consolidate(Display::renderDC);
     
     glBindTexture(GL_TEXTURE_2D, m_image->getID()[0] );
 }
@@ -274,8 +276,8 @@ void wxGLString::calculateSize(wxDC* dc, const bool ignore_font /* when from arr
 {
     if (!ignore_font)
     {
-        if (font.IsOk()) dc->SetFont(font);
-        else             dc->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
+        if (m_font.IsOk()) dc->SetFont(m_font);
+        else               dc->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
     }
 
     dc->GetTextExtent(*this, &m_w, &m_h);
@@ -286,16 +288,16 @@ void wxGLString::consolidate(wxDC* dc)
     TextGLDrawable::y_offset = 0;
     calculateSize(dc);
 
-    bool multi_line = false;
-    int single_line_height = 0;
-    if (warp_after != -1 and m_w > warp_after)
+    bool multiLine = false;
+    int singleLineHeight = 0;
+    if (m_warp_after != -1 and m_w > m_warp_after)
     {
         Replace(wxT(" "),wxT("\n"));
         Replace(wxT("/"),wxT("/\n"));
-        single_line_height = m_h;
+        singleLineHeight = m_h;
         dc->GetMultiLineTextExtent(*this, &m_w, &m_h);
         std::cout << "new size: " << m_w << ", " << m_h << std::endl;
-        multi_line = true;
+        multiLine = true;
     }
     
     const int power_of_2_w = std::max(32, (int)pow( 2, (int)ceil((float)log(m_w)/log(2.0)) ));
@@ -310,23 +312,25 @@ void wxGLString::consolidate(wxDC* dc)
         temp_dc.SetBrush(*wxWHITE_BRUSH);
         temp_dc.Clear();
 
-        if (font.IsOk()) temp_dc.SetFont(font);
-        else temp_dc.SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
+        if (m_font.IsOk()) temp_dc.SetFont(m_font);
+        else               temp_dc.SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
 
-        if (multi_line)
+        if (multiLine)
         {
             int y = 0;
             wxStringTokenizer tkz(*this, wxT("\n"));
-            while ( tkz.HasMoreTokens() )
+            while (tkz.HasMoreTokens())
             {
                 wxString token = tkz.GetNextToken();
                 temp_dc.DrawText(token, 0, y);
-                y += single_line_height;
+                y += singleLineHeight;
             }
-            TextGLDrawable::y_offset = -y +  single_line_height;
+            TextGLDrawable::y_offset = -y +  singleLineHeight;
         }
         else
+        {
             temp_dc.DrawText(*this, 0, 0);
+        }
     }
     TextTexture* img = new TextTexture(bmp);
 
@@ -340,18 +344,18 @@ void wxGLString::consolidate(wxDC* dc)
 
     TextGLDrawable::setImage(img);
 
-    consolidated = true;
+    m_consolidated = true;
 }
     
 void wxGLString::consolidateFromArray(wxDC* dc, int x, int y)
 {
     dc->DrawText(*this, x, y);
-    consolidated = true;
+    m_consolidated = true;
 }
 
 void wxGLString::setFont(wxFont font)
 {
-    wxGLString::font = font;
+    m_font = font;
 }
 
 void wxGLString::render(const int x, const int y)
@@ -369,7 +373,7 @@ void wxGLString::setMaxWidth(const int w, const bool warp /*false: truncate. tru
     }
     else
     {
-        warp_after = w;
+        m_warp_after = w;
     }
 }
  
@@ -387,6 +391,7 @@ wxGLNumberRenderer::wxGLNumberRenderer() : wxGLString( wxT("0 1 2 3 4 5 6 7 8 9 
 {
     number_location = new int[13];
 #ifdef __WXGTK__
+    //FIXME: don't hardcode fonts
     setFont( wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, /*wxFONTWEIGHT_BOLD*/ wxFONTWEIGHT_NORMAL) );
 #endif
     space_w = -1;
@@ -400,8 +405,8 @@ void wxGLNumberRenderer::consolidate(wxDC* dc)
 {
     wxGLString::consolidate(dc);
 
-    if (font.IsOk()) dc->SetFont(font);
-    else dc->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
+    if (m_font.IsOk()) dc->SetFont(m_font);
+    else               dc->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
 
     number_location[0] = 0;
     number_location[1]  = dc->GetTextExtent(wxT("0 ")).GetWidth();
@@ -418,7 +423,7 @@ void wxGLNumberRenderer::consolidate(wxDC* dc)
     number_location[12] = dc->GetTextExtent(wxT("0 1 2 3 4 5 6 7 8 9 . - ")).GetWidth();
 
     space_w = dc->GetTextExtent(wxT(" ")).GetWidth();
-    consolidated = true;
+    m_consolidated = true;
 }
 void wxGLNumberRenderer::renderNumber(int i, int x, int y)
 {

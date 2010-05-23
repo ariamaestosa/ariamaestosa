@@ -25,7 +25,7 @@ NumberPressed::NumberPressed(const int number) :
     //I18N: (undoable) action name
     SingleTrackAction( _("change note fret") )
 {
-    NumberPressed::number = number;
+    m_number = number;
 }
 
 NumberPressed::~NumberPressed()
@@ -37,7 +37,7 @@ void NumberPressed::undo()
     relocator.setParent(track);
     relocator.prepareToRelocate();
     Note* note = relocator.getNextNote();
-    note->setFret(previousNumber);
+    note->setFret(m_previous_number);
 }
 
 void NumberPressed::perform()
@@ -47,16 +47,16 @@ void NumberPressed::perform()
     if (track->graphics->editorMode != GUITAR) return;
 
     bool played = false;
-    const int amount_n = track->m_notes.size();
+    const int noteAmount = track->m_notes.size();
     
-    for (int n=0; n<amount_n; n++)
+    for (int n=0; n<noteAmount; n++)
     {
-        if (!track->m_notes[n].isSelected()) continue;
+        if (not track->m_notes[n].isSelected()) continue;
 
-        previousNumber = track->m_notes[n].getFret();
-        track->m_notes[n].setFret(number);
+        m_previous_number = track->m_notes[n].getFret();
+        track->m_notes[n].setFret(m_number);
         relocator.rememberNote( track->m_notes[n] );
-        if (!played)
+        if (not played)
         {
             track->m_notes[n].play(true);
             played = true;

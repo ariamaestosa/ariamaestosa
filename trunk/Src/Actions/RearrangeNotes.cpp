@@ -53,7 +53,7 @@ void RearrangeNotes::perform()
     std::vector<int> candidates;
 
     const int noteAmount = track->getNoteAmount();
-    for(int n=0; n<noteAmount; n++)
+    for (int n=0; n<noteAmount; n++)
     {
 
         // find notes that have the same tick
@@ -114,7 +114,7 @@ void RearrangeNotes::perform()
             {
 
                 // order in pitch order (lowest to highest)
-                for(int i=0; i<size-1; i++)
+                for (int i=0; i<size-1; i++)
                 {
 
                     if (track->getNotePitchID(candidates[i]) < track->getNotePitchID(candidates[i+1]))
@@ -134,10 +134,11 @@ void RearrangeNotes::perform()
                 // shift first note down if possible (if necessary)
                 const int fstr = track->getNoteString(candidates[0])-(size-1); // calculate where highest note would end up this way
 
-                if ( fstr < 0)
+                if (fstr < 0)
                 { // if highest note wouldn't fit in available space, shift down all notes as many times as needed
-                    for(int n=0; n<abs(fstr); n++)
+                    for (int m=0; m<abs(fstr); m++)
                     {
+                        //FIXME: why do I do this to note 0 fstr times???
                         Note* current = track->getNote(candidates[0]);
                         relocator.rememberNote( current );
 
@@ -153,7 +154,7 @@ void RearrangeNotes::perform()
                 const int base_string = track->getNoteString(candidates[0]);
 
                 // lay them out
-                for(int i=1; i<size; i++)
+                for (int i=1; i<size; i++)
                 {
                     Note* current = track->getNote(candidates[i]);
                     relocator.rememberNote( current );
