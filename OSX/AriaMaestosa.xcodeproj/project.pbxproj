@@ -919,8 +919,8 @@
 		95711BE11125D94900104BF5 /* tool2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tool2.png; path = ../Resources/tool2.png; sourceTree = SOURCE_ROOT; };
 		95711BE31125D94900104BF5 /* white_border.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = white_border.png; path = ../Resources/white_border.png; sourceTree = SOURCE_ROOT; };
 		95711BE41125D94900104BF5 /* white_corner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = white_corner.png; path = ../Resources/white_corner.png; sourceTree = SOURCE_ROOT; };
-		9578398A11A9A1E500E2FABA /* AbstractPrintableSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractPrintableSequence.h; sourceTree = "<group>"; };
-		9578398B11A9A1E500E2FABA /* AbstractPrintableSequence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AbstractPrintableSequence.cpp; sourceTree = "<group>"; };
+		9578398A11A9A1E500E2FABA /* AbstractPrintableSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AbstractPrintableSequence.h; path = ../Src/Printing/AbstractPrintableSequence.h; sourceTree = SOURCE_ROOT; };
+		9578398B11A9A1E500E2FABA /* AbstractPrintableSequence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AbstractPrintableSequence.cpp; path = ../Src/Printing/AbstractPrintableSequence.cpp; sourceTree = SOURCE_ROOT; };
 		957C860F1127013D006AC7D3 /* Changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Changelog.txt; path = ../Changelog.txt; sourceTree = SOURCE_ROOT; };
 		957C861011270142006AC7D3 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = ../TODO.txt; sourceTree = SOURCE_ROOT; };
 		959693341153E612001E321B /* ScoreAnalyser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreAnalyser.cpp; path = ../Src/Analysers/ScoreAnalyser.cpp; sourceTree = SOURCE_ROOT; };
