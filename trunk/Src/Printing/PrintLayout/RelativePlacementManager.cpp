@@ -47,7 +47,7 @@ int RelativePlacementManager::getInterestingTick(const int tick, const int id_fr
     {
         // perform binary search to find the interesting tick (or to find where to insert it, if it doesn't exist)
         const int pivot_id = (id_from + id_to)/2;
-        const int pivot_tick = m_all_interesting_ticks[pivot_id].tick;
+        const int pivot_tick = m_all_interesting_ticks[pivot_id].m_tick;
         
         if (tick == pivot_tick)
         {
@@ -76,7 +76,7 @@ int RelativePlacementManager::getInterestingTickNoAdd(const int tick, const int 
     {
         // perform binary search to find the interesting tick
         const int pivot_id = (id_from + id_to)/2;
-        const int pivot_tick = m_all_interesting_ticks[pivot_id].tick;
+        const int pivot_tick = m_all_interesting_ticks[pivot_id].m_tick;
         
         if (tick == pivot_tick)
         {
@@ -110,7 +110,7 @@ UNIT_TEST( RelativePlacementManager_TestAddingAndFindingInterestingTicks )
     
     require( test.m_all_interesting_ticks.size() == 1, "An element was added when we wanted to obtained it and it wasn't already there" );
     require( id_added == 0, "The returned ID is correct for the first added item" );
-    require( test.m_all_interesting_ticks[0].tick == 15, "First added item was correctly added" );
+    require( test.m_all_interesting_ticks[0].m_tick == 15, "First added item was correctly added" );
     
     int id_obtained = test.getInterestingTick( 15, 0, test.m_all_interesting_ticks.size()-1 );
     
@@ -132,7 +132,7 @@ UNIT_TEST( RelativePlacementManager_TestAddingAndFindingInterestingTicks )
     
     require( test.m_all_interesting_ticks.size() == 2, "An second element was added when we wanted to obtained it and it wasn't already there" );
     require( id_added == 1, "The returned ID is correct for the second added item" );
-    require( test.m_all_interesting_ticks[1].tick == 17, "Second added item was correctly added" );
+    require( test.m_all_interesting_ticks[1].m_tick == 17, "Second added item was correctly added" );
     
     id_obtained = test.getInterestingTick( 15, 0, test.m_all_interesting_ticks.size()-1 );
     require( test.m_all_interesting_ticks.size() == 2, "No element was added when we wanted to obtained one that already exists" );
@@ -152,7 +152,7 @@ UNIT_TEST( RelativePlacementManager_TestAddingAndFindingInterestingTicks )
     
     require( test.m_all_interesting_ticks.size() == 3, "A third element was added when we wanted to obtained it and it wasn't already there" );
     require( id_added == 0, "The returned ID is correct for the third added item" );
-    require( test.m_all_interesting_ticks[0].tick == 13, "third added item was correctly added" );
+    require( test.m_all_interesting_ticks[0].m_tick == 13, "third added item was correctly added" );
     
     // ---- add 14
     id_added = test.getInterestingTick( 14, 0, test.m_all_interesting_ticks.size()-1 );
@@ -164,10 +164,10 @@ UNIT_TEST( RelativePlacementManager_TestAddingAndFindingInterestingTicks )
     
     require( test.m_all_interesting_ticks.size() == 4, "A fourth element was added when we wanted to obtained it and it wasn't already there" );
     require( id_added == 1, "The returned ID is correct for the fourth added item" );
-    require( test.m_all_interesting_ticks[0].tick == 13, "fourth added item was correctly added" );
-    require( test.m_all_interesting_ticks[1].tick == 14, "fourth added item was correctly added" );
-    require( test.m_all_interesting_ticks[2].tick == 15, "fourth added item was correctly added" );
-    require( test.m_all_interesting_ticks[3].tick == 17, "fourth added item was correctly added" );
+    require( test.m_all_interesting_ticks[0].m_tick == 13, "fourth added item was correctly added" );
+    require( test.m_all_interesting_ticks[1].m_tick == 14, "fourth added item was correctly added" );
+    require( test.m_all_interesting_ticks[2].m_tick == 15, "fourth added item was correctly added" );
+    require( test.m_all_interesting_ticks[3].m_tick == 17, "fourth added item was correctly added" );
 
     // ---- add 16
     id_added = test.getInterestingTick( 16, 0, test.m_all_interesting_ticks.size()-1 );
@@ -179,27 +179,27 @@ UNIT_TEST( RelativePlacementManager_TestAddingAndFindingInterestingTicks )
     
     require( test.m_all_interesting_ticks.size() == 5, "A fifth element was added when we wanted to obtained it and it wasn't already there" );
     require( id_added == 3, "The returned ID is correct for the fifth added item" );
-    require( test.m_all_interesting_ticks[0].tick == 13, "fifth added item was correctly added" );
-    require( test.m_all_interesting_ticks[1].tick == 14, "fifth added item was correctly added" );
-    require( test.m_all_interesting_ticks[2].tick == 15, "fifth added item was correctly added" );
-    require( test.m_all_interesting_ticks[3].tick == 16, "fifth added item was correctly added" );
-    require( test.m_all_interesting_ticks[4].tick == 17, "fifth added item was correctly added" );
+    require( test.m_all_interesting_ticks[0].m_tick == 13, "fifth added item was correctly added" );
+    require( test.m_all_interesting_ticks[1].m_tick == 14, "fifth added item was correctly added" );
+    require( test.m_all_interesting_ticks[2].m_tick == 15, "fifth added item was correctly added" );
+    require( test.m_all_interesting_ticks[3].m_tick == 16, "fifth added item was correctly added" );
+    require( test.m_all_interesting_ticks[4].m_tick == 17, "fifth added item was correctly added" );
 
 }
 
 // ----------------------------------------------------------------------------------------------------------------
 
-int RelativePlacementManager::getNextTick(const int from_tick)
+int RelativePlacementManager::getNextTick(const int fromTick)
 {
     const int tickAmount = m_all_interesting_ticks.size();
     for (int n=0; n<tickAmount; n++)
     {
         // Assert that it's sorted
-        ASSERT(n == 0 or m_all_interesting_ticks[n].tick >= m_all_interesting_ticks[n-1].tick);
+        ASSERT(n == 0 or m_all_interesting_ticks[n].m_tick >= m_all_interesting_ticks[n-1].m_tick);
         
-        if (m_all_interesting_ticks[n].tick > from_tick)
+        if (m_all_interesting_ticks[n].m_tick > fromTick)
         {
-            return m_all_interesting_ticks[n].tick;
+            return m_all_interesting_ticks[n].m_tick;
         }
     }
     
@@ -209,17 +209,17 @@ int RelativePlacementManager::getNextTick(const int from_tick)
 
 // ----------------------------------------------------------------------------------------------------------------
 
-int RelativePlacementManager::getNextTickInTrack(const int from_tick, const int trackID)
+int RelativePlacementManager::getNextTickInTrack(const int fromTick, const int trackID)
 {
     const int tickAmount = m_all_interesting_ticks.size();
     for (int n=0; n<tickAmount; n++)
     {
         // Assert that it's sorted
-        ASSERT(n == 0 or m_all_interesting_ticks[n].tick >= m_all_interesting_ticks[n-1].tick);
+        ASSERT(n == 0 or m_all_interesting_ticks[n].m_tick >= m_all_interesting_ticks[n-1].m_tick);
         
-        if (m_all_interesting_ticks[n].tick > from_tick and m_all_interesting_ticks[n].hasSymbolInTrack(trackID))
+        if (m_all_interesting_ticks[n].m_tick > fromTick and m_all_interesting_ticks[n].hasSymbolInTrack(trackID))
         {
-            return m_all_interesting_ticks[n].tick;
+            return m_all_interesting_ticks[n].m_tick;
         }
     }
     
@@ -294,11 +294,11 @@ int RelativePlacementManager::findShortestSymbolLength() const
     {
         const InterestingTick& currTick = m_all_interesting_ticks[n];
         
-        const int symbolAmount = currTick.all_symbols_on_that_tick.size();
+        const int symbolAmount = currTick.m_all_symbols_on_that_tick.size();
         for (int sym=0; sym<symbolAmount; sym++)
         {
-            const Symbol& currSym = currTick.all_symbols_on_that_tick[sym];
-            const int newAttempt = currSym.endTick - currTick.tick;
+            const Symbol& currSym = currTick.m_all_symbols_on_that_tick[sym];
+            const int newAttempt = currSym.m_end_tick - currTick.m_tick;
             
             if (newAttempt <= 0)
             {
@@ -337,9 +337,9 @@ void RelativePlacementManager::addSymbol(int tickFrom, int tickTo, int symbolWid
     const int interestingTickID = getInterestingTick( tickFrom, 0, m_all_interesting_ticks.size()-1 );
     ASSERT( interestingTickID >= 0 );
     ASSERT( interestingTickID < (int)m_all_interesting_ticks.size() );
-    ASSERT( m_all_interesting_ticks[interestingTickID].tick == tickFrom );
+    ASSERT( m_all_interesting_ticks[interestingTickID].m_tick == tickFrom );
     
-    m_all_interesting_ticks[interestingTickID].all_symbols_on_that_tick.push_back(
+    m_all_interesting_ticks[interestingTickID].m_all_symbols_on_that_tick.push_back(
                         Symbol(tickTo, symbolWidth, trackID) );
 }
 
@@ -426,7 +426,7 @@ void RelativePlacementManager::calculateRelativePlacement()
         int spaceNeededToFitAllSymbols = 0;
         int spaceNeededAfterSymbolForProportions = 0;
         
-        const int symbolAmount = currTick.all_symbols_on_that_tick.size();
+        const int symbolAmount = currTick.m_all_symbols_on_that_tick.size();
         ASSERT_E(symbolAmount, >, 0);
         
 #if RPM_CHATTY
@@ -434,16 +434,16 @@ void RelativePlacementManager::calculateRelativePlacement()
 #endif
         for (int sym=0; sym<symbolAmount; sym++)
         {
-            Symbol& currSym = currTick.all_symbols_on_that_tick[sym];
+            Symbol& currSym = currTick.m_all_symbols_on_that_tick[sym];
             
             currSym.fromUnit = n;
             
             //const int nextTickInTrack = getNextTickInTrack(currTick.tick, currSym.trackID);
-            const int nextTickInAnyTrack = getNextTick(currTick.tick);
+            const int nextTickInAnyTrack = getNextTick(currTick.m_tick);
 
             // 2 cases : either the needed space for this symbol is implicitely granted by symbols
             // on other lines (see above), either it's not
-            if (/*currSym.endTick <= nextTickInTrack and*/ currSym.endTick > nextTickInAnyTrack)
+            if (/*currSym.endTick <= nextTickInTrack and*/ currSym.m_end_tick > nextTickInAnyTrack)
             {
                 currSym.neededAdditionalProportion = 0.0f;
             }
@@ -455,11 +455,11 @@ void RelativePlacementManager::calculateRelativePlacement()
                 
                 ASSERT_E(shortestSymbolLength, >=, 0);
                 
-                const int length = currSym.endTick - currTick.tick;
+                const int length = currSym.m_end_tick - currTick.m_tick;
                 if (length <= 0)
                 {
                     std::cerr << "Warning, RelativePlacementManager::calculateRelativePlacement() found a "
-                              << " note of length " << (currSym.endTick - currTick.tick)
+                              << " note of length " << (currSym.m_end_tick - currTick.m_tick)
                               << ", which is kinda weird!\n";
                     currSym.neededAdditionalProportion = 0.0f;
                     continue;
@@ -490,7 +490,7 @@ void RelativePlacementManager::calculateRelativePlacement()
             }
             
             // determine the largest needed proportion for each tick
-            spaceNeededToFitAllSymbols = std::max( spaceNeededToFitAllSymbols, currSym.widthInPrintUnits );
+            spaceNeededToFitAllSymbols = std::max( spaceNeededToFitAllSymbols, currSym.m_width_in_print_units );
             
             spaceNeededAfterSymbolForProportions = std::max( spaceNeededAfterSymbolForProportions,
                                                              (int)round(currSym.neededAdditionalProportion) );
@@ -507,14 +507,14 @@ void RelativePlacementManager::calculateRelativePlacement()
         std::cout << "    }\n";
 #endif
         
-        currTick.size = spaceNeededToFitAllSymbols;
+        currTick.m_size = spaceNeededToFitAllSymbols;
         
         // --------------------------------------------------------------------------------
         // Set coordinatess
         
         // set start position of current unit (without caring yet for value to be in range [0, 1])
-        currTick.position    = m_total_needed_size;
-        currTick.endPosition = m_total_needed_size + spaceNeededToFitAllSymbols;
+        currTick.m_position     = m_total_needed_size;
+        currTick.m_end_position = m_total_needed_size + spaceNeededToFitAllSymbols;
 
         // set end position of previous unit (without caring yet for value to be in range [0, 1])
         //if (n>0) m_all_interesting_ticks[n-1].endPosition = totalAbsolutePosition;
@@ -536,19 +536,19 @@ void RelativePlacementManager::calculateRelativePlacement()
     {
         InterestingTick& currTick = m_all_interesting_ticks[n];
         
-        currTick.position    = currTick.position    / m_total_needed_size;
-        currTick.endPosition = currTick.endPosition / m_total_needed_size;
+        currTick.m_position     = currTick.m_position     / m_total_needed_size;
+        currTick.m_end_position = currTick.m_end_position / m_total_needed_size;
         
 #if RPM_CHATTY
         std::cout << "m_all_interesting_ticks[" << n << "].position = "
                   << currTick.position << " to " << currTick.endPosition << std::endl;
 #endif
         
-        ASSERT_E(currTick.position, >=, 0.0f);
-        ASSERT_E(currTick.position, <=, 1.0f);
+        ASSERT_E(currTick.m_position, >=, 0.0f);
+        ASSERT_E(currTick.m_position, <=, 1.0f);
         
-        ASSERT_E(currTick.endPosition, >=, 0.0f);
-        ASSERT_E(currTick.endPosition, <=, 1.0f);
+        ASSERT_E(currTick.m_end_position, >=, 0.0f);
+        ASSERT_E(currTick.m_end_position, <=, 1.0f);
     }
     
 }
@@ -569,7 +569,7 @@ Range<float> RelativePlacementManager::getSymbolRelativeArea(int tick) const
     ASSERT(id < (int)m_all_interesting_ticks.size());
     
     const InterestingTick& currTick = m_all_interesting_ticks[id];
-    return Range<float>(currTick.position, currTick.endPosition);
+    return Range<float>(currTick.m_position, currTick.m_end_position);
 }
 
 // ----------------------------------------------------------------------------------------------------------------

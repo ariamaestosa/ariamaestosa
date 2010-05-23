@@ -46,7 +46,7 @@ using namespace AriaMaestosa;
 
 MagneticGrid::MagneticGrid(GraphicalTrack* parent) : wxMenu()
 {
-    triplet= false;
+    triplet = false;
 
     grid1 = AppendCheckItem(1,wxT("1/1"));
     grid2 = AppendCheckItem(2,wxT("1/2"));
