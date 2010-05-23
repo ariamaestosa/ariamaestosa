@@ -34,6 +34,9 @@ namespace AriaMaestosa
     class IPrintCallback
     {
     public:
+        
+        virtual ~IPrintCallback() {}
+        
         /**
          * Called (by wxEasyPrintWrapper) when it is time to print a page.
          *
