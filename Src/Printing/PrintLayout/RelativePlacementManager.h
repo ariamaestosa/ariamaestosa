@@ -45,9 +45,9 @@ class RelativePlacementManager
     
     struct Symbol
     {
-        int widthInPrintUnits;
-        int trackID;
-        int endTick;
+        int m_width_in_print_units;
+        int m_track_ID;
+        int m_end_tick;
         
         /** to be filled later; the first interesting tick would be unit 0,
          * the second will be unit 1, etc. */
@@ -56,9 +56,9 @@ class RelativePlacementManager
         
         Symbol (const int tick_to, const int widthInPrintUnits, const int trackID)
         {
-            Symbol::endTick = tick_to;
-            Symbol::widthInPrintUnits = widthInPrintUnits;
-            Symbol::trackID = trackID;
+            m_end_tick = tick_to;
+            m_width_in_print_units = widthInPrintUnits;
+            m_track_ID = trackID;
             
             // To be set later
             fromUnit = -1;
@@ -68,31 +68,31 @@ class RelativePlacementManager
     
     struct InterestingTick
     {
-        int tick;
-        std::vector<Symbol> all_symbols_on_that_tick;
+        int m_tick;
+        std::vector<Symbol> m_all_symbols_on_that_tick;
         
         /** unset intially, is set later during calculations.
           * represents the total proportion this unit needs to receive */
-        int size;
+        int m_size;
         
         /** unset intially, is set later during calculations.
          * represents the position of this tick, from 0 to 1 */
-        float position;
+        float m_position;
         
-        float endPosition;
+        float m_end_position;
         
         InterestingTick (const int tick)
         {
-            InterestingTick::tick = tick;
+            m_tick = tick;
         }
         
         /** Returns whether this object contains a symbol on the given track */
         bool hasSymbolInTrack(const int trackID)
         {
-            const int sym_amount = all_symbols_on_that_tick.size();
+            const int sym_amount = m_all_symbols_on_that_tick.size();
             for (int n=0; n<sym_amount; n++)
             {
-                if (all_symbols_on_that_tick[n].trackID == trackID) return true;
+                if (m_all_symbols_on_that_tick[n].m_track_ID == trackID) return true;
             }
             return false;
         }
