@@ -77,6 +77,8 @@ namespace AriaMaestosa
         {
         public:
             
+            virtual ~INoteSource() { }
+            
             /** @return the number of notes that can be obtained through this interface */
             virtual int  getNoteCount() const = 0;
             

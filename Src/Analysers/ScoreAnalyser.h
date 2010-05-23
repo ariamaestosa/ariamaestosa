@@ -199,6 +199,8 @@ namespace AriaMaestosa
         
         ScoreAnalyser(Editor* parent, int stemPivot);
         
+        virtual ~ScoreAnalyser() {}
+        
         /**
          * @return a new ScoreAnalyser, that contains a subset of the current one.
          * @note   The returned pointer must be freed.
