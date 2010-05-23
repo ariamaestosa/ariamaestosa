@@ -227,10 +227,10 @@ wxString wxEasyPrintWrapper::getPageSetupSummary() const
 
 // -----------------------------------------------------------------------------------------------------
 
-void wxEasyPrintWrapper::setPrintableSequence(PrintableSequence* printableSequence)
+void wxEasyPrintWrapper::setPageCount(const int pageCount)
 {
-    ASSERT(printableSequence->isLayoutCalculated());
-    m_page_amount    = printableSequence->getPageAmount();
+    ASSERT_E(pageCount,>,0);
+    m_page_amount = pageCount;
 }
 
 // -----------------------------------------------------------------------------------------------------

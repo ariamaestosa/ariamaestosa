@@ -1,8 +1,8 @@
 #include "AriaCore.h"
 
 #include "Printing/AriaPrintable.h"
+#include "Printing/AbstractPrintableSequence.h"
 #include "Printing/PrintLayout/PrintLayoutLine.h"
-#include "Printing/PrintableSequence.h"
 #include "Printing/TabPrint.h"
 #include "Printing/ScorePrint.h"
 #include "Printing/PrintLayout/LayoutElement.h"
@@ -29,7 +29,7 @@ using namespace AriaMaestosa;
 AriaPrintable* AriaPrintable::m_current_printable = NULL;
 
 
-AriaPrintable::AriaPrintable(PrintableSequence* seq, bool* success) :
+AriaPrintable::AriaPrintable(AbstractPrintableSequence* seq, bool* success) :
 #ifdef __WXMAC__
     m_normal_font   (75,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL),
 #else
@@ -167,7 +167,7 @@ wxPrinterError AriaPrintable::print()
 #endif
 
     ASSERT(m_printer_manager != NULL);
-    m_printer_manager->setPrintableSequence(m_seq);
+    m_printer_manager->setPageCount(m_seq->getPageAmount());
     
     wxPrintDialogData data(m_printer_manager->getPrintData());
     wxPrinter printer(&data);
@@ -206,12 +206,12 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     
     const int h = y1 - y0;
 
-    LayoutPage& page = m_seq->getPage(pageNum-1);
+    //LayoutPage& page = m_seq->getPage(pageNum-1);
 
-    const int lineAmount = page.getLineCount();
+    //const int lineAmount = page.getLineCount();
     // const int lineAmount = page.last_line - page.first_line + 1;
 
-    std::cout << "page has " << lineAmount << " lines" << std::endl;
+    //std::cout << "page has " << lineAmount << " lines" << std::endl;
     
     dc.SetBackground(*wxWHITE_BRUSH);
     dc.Clear();
@@ -321,7 +321,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     ASSERT_E(notation_area_y0 + notation_area_h, <=, y1);
 
     dc.SetFont( m_normal_font );
-    m_seq->printLinesInArea(dc, page, notation_area_y0, notation_area_h, h, x0, x1);
+    m_seq->printLinesInArea(dc, pageNum-1, notation_area_y0, notation_area_h, h, x0, x1);
     
 }
     

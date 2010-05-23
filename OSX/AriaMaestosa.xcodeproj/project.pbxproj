@@ -509,6 +509,10 @@
 		95711B271125D8D300104BF5 /* Singleton.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119931125D8D300104BF5 /* Singleton.h */; };
 		95711B281125D8D300104BF5 /* unit_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119941125D8D300104BF5 /* unit_test.cpp */; };
 		95711B291125D8D300104BF5 /* unit_test.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119951125D8D300104BF5 /* unit_test.h */; };
+		9578398C11A9A1E500E2FABA /* AbstractPrintableSequence.h in Headers */ = {isa = PBXBuildFile; fileRef = 9578398A11A9A1E500E2FABA /* AbstractPrintableSequence.h */; };
+		9578398D11A9A1E500E2FABA /* AbstractPrintableSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9578398B11A9A1E500E2FABA /* AbstractPrintableSequence.cpp */; };
+		9578398E11A9A1E500E2FABA /* AbstractPrintableSequence.h in Headers */ = {isa = PBXBuildFile; fileRef = 9578398A11A9A1E500E2FABA /* AbstractPrintableSequence.h */; };
+		9578398F11A9A1E500E2FABA /* AbstractPrintableSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9578398B11A9A1E500E2FABA /* AbstractPrintableSequence.cpp */; };
 		959693381153E612001E321B /* ScoreAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959693341153E612001E321B /* ScoreAnalyser.cpp */; };
 		959693391153E612001E321B /* ScoreAnalyser.h in Headers */ = {isa = PBXBuildFile; fileRef = 959693351153E612001E321B /* ScoreAnalyser.h */; };
 		9596933A1153E612001E321B /* SilenceAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959693361153E612001E321B /* SilenceAnalyser.cpp */; };
@@ -915,6 +919,8 @@
 		95711BE11125D94900104BF5 /* tool2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tool2.png; path = ../Resources/tool2.png; sourceTree = SOURCE_ROOT; };
 		95711BE31125D94900104BF5 /* white_border.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = white_border.png; path = ../Resources/white_border.png; sourceTree = SOURCE_ROOT; };
 		95711BE41125D94900104BF5 /* white_corner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = white_corner.png; path = ../Resources/white_corner.png; sourceTree = SOURCE_ROOT; };
+		9578398A11A9A1E500E2FABA /* AbstractPrintableSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractPrintableSequence.h; sourceTree = "<group>"; };
+		9578398B11A9A1E500E2FABA /* AbstractPrintableSequence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AbstractPrintableSequence.cpp; sourceTree = "<group>"; };
 		957C860F1127013D006AC7D3 /* Changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Changelog.txt; path = ../Changelog.txt; sourceTree = SOURCE_ROOT; };
 		957C861011270142006AC7D3 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = ../TODO.txt; sourceTree = SOURCE_ROOT; };
 		959693341153E612001E321B /* ScoreAnalyser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreAnalyser.cpp; path = ../Src/Analysers/ScoreAnalyser.cpp; sourceTree = SOURCE_ROOT; };
@@ -1257,6 +1263,8 @@
 			isa = PBXGroup;
 			children = (
 				9571196A1125D8D300104BF5 /* PrintLayout */,
+				9578398B11A9A1E500E2FABA /* AbstractPrintableSequence.cpp */,
+				9578398A11A9A1E500E2FABA /* AbstractPrintableSequence.h */,
 				957119641125D8D300104BF5 /* AriaPrintable.cpp */,
 				957119651125D8D300104BF5 /* AriaPrintable.h */,
 				957119661125D8D300104BF5 /* EditorPrintable.cpp */,
@@ -1588,6 +1596,7 @@
 				95AFD7A1118F21C8007DC6C7 /* ScaleDialog.h in Headers */,
 				95AFD7A9118F2279007DC6C7 /* TuningDialog.h in Headers */,
 				95AFD809118F2B07007DC6C7 /* AboutDialog.h in Headers */,
+				9578398E11A9A1E500E2FABA /* AbstractPrintableSequence.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1709,6 +1718,7 @@
 				95AFD7A3118F21C8007DC6C7 /* ScaleDialog.h in Headers */,
 				95AFD7AB118F2279007DC6C7 /* TuningDialog.h in Headers */,
 				95AFD80B118F2B07007DC6C7 /* AboutDialog.h in Headers */,
+				9578398C11A9A1E500E2FABA /* AbstractPrintableSequence.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1903,6 +1913,7 @@
 				95AFD7A0118F21C8007DC6C7 /* ScaleDialog.cpp in Sources */,
 				95AFD7A8118F2279007DC6C7 /* TuningDialog.cpp in Sources */,
 				95AFD808118F2B07007DC6C7 /* AboutDialog.cpp in Sources */,
+				9578398F11A9A1E500E2FABA /* AbstractPrintableSequence.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2018,6 +2029,7 @@
 				95AFD7A2118F21C8007DC6C7 /* ScaleDialog.cpp in Sources */,
 				95AFD7AA118F2279007DC6C7 /* TuningDialog.cpp in Sources */,
 				95AFD80A118F2B07007DC6C7 /* AboutDialog.cpp in Sources */,
+				9578398D11A9A1E500E2FABA /* AbstractPrintableSequence.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

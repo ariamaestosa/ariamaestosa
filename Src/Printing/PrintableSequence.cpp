@@ -1,3 +1,19 @@
+/*
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+ 
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public License along
+ with this program; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
 
 #include "Printing/PrintableSequence.h"
 #include "Printing/AriaPrintable.h"
@@ -14,10 +30,8 @@ using namespace AriaMaestosa;
 
 #define DEBUG_DRAW 0
 
-PrintableSequence::PrintableSequence(Sequence* parent)
+PrintableSequence::PrintableSequence(Sequence* parent) : AbstractPrintableSequence(parent)
 {
-    m_sequence = parent;
-    //track_amount = 0;
     m_is_guitar_editor_used = false;
     m_is_score_editor_used = false;
     m_max_signs_in_keysig = 0;
@@ -51,8 +65,8 @@ bool PrintableSequence::addTrack(Track* track, EditorType mode)
         std::cerr << "PrintableSequence::addTrack : mode " << mode << " not supported for printing" << std::endl;
         return false;
     }
-    m_tracks.push_back(track);
-    return true;
+    
+    return AbstractPrintableSequence::addTrack(track, mode);
 }
 
 // -----------------------------------------------------------------------------------------------------------------
@@ -67,7 +81,7 @@ void PrintableSequence::calculateLayout(bool checkRepetitions)
     // prepare it for when we're ready to print
     m_numeric_layout_manager = new PrintLayoutNumeric();
     
-    m_layout_calculated = true;
+    AbstractPrintableSequence::calculateLayout(checkRepetitions);
 }
 
 // -----------------------------------------------------------------------------------------------------------------
@@ -79,7 +93,7 @@ EditorPrintable* PrintableSequence::getEditorPrintable(const int trackID)
 
 // ------------------------------------------------------------------------------------------------------------------
 
-void PrintableSequence::printLinesInArea(wxDC& dc, LayoutPage& page, 
+void PrintableSequence::printLinesInArea(wxDC& dc, const int pageID, 
                                          const float notation_area_y0, const float notation_area_h,
                                          const int pageHeight, const int x0, const int x1)
 {
@@ -88,8 +102,11 @@ void PrintableSequence::printLinesInArea(wxDC& dc, LayoutPage& page,
     
     ASSERT(notation_area_h > 0);
     ASSERT(pageHeight > 0);
+    
     //ASSERT_E(notation_area_y0 + notation_area_h, <=, pageHeight);
 
+    LayoutPage& page = getPage(pageID);
+    
     // ---- Give each track an area on the page
     m_numeric_layout_manager->placeLinesInPage(page, notation_area_y0, notation_area_h,
                                                pageHeight, x0, x1);
@@ -179,32 +196,6 @@ void PrintableSequence::printLine(LayoutLine& line, wxDC& dc)
     }
 }
     
-// -----------------------------------------------------------------------------------------------------------------
-
-wxString PrintableSequence::getTitle() const
-{
-    wxString song_title = m_sequence->suggestTitle();
-    wxString track_title;
-    
-    //FIXME: what's that line for??
-    if (m_tracks.size()==1) m_tracks[0].getName();
-    
-    wxString final_title;
-    
-    // give song title
-    if (song_title.IsSameAs(_("Untitled"))) final_title = _("Aria Maestosa song");
-    else                                    final_title = song_title;
-    
-    // give track name, if any
-    if (!track_title.IsSameAs(_("Untitled")) and track_title.Length()>0)
-    {
-        final_title += (wxT(", ") + track_title);
-    }
-    
-    std::cout << "Title = " << final_title.mb_str() << std::endl;
-    return final_title;
-}
-
 // -----------------------------------------------------------------------------------------------------------------
 
 int PrintableSequence::getPageAmount() const

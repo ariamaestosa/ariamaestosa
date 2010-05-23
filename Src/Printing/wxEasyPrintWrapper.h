@@ -145,10 +145,9 @@ namespace AriaMaestosa
         wxString getPageSetupSummary() const;
         
         /** 
-          * Call AFTER the PrintableSequence had its layout calculated.
-          * Call BEFORE trying to actually print this wxPrintout.
+          * Call before trying to actually print this wxPrintout.
           */
-        void setPrintableSequence(PrintableSequence* printableSequence);
+        void setPageCount(const int pageCount);
                 
         // ---- callbacks from wxPrintout
         virtual void OnBeginPrinting();
