@@ -53,7 +53,7 @@ namespace AriaMaestosa
         wxMenuItem* grid128;
         wxMenuItem* gridTriplet;
         
-        GraphicalTrack* parent;
+        GraphicalTrack* m_parent;
         
         void resetChecks();
         

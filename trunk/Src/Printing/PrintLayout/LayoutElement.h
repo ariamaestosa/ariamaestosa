@@ -41,18 +41,18 @@ namespace AriaMaestosa
     
     class LayoutElement
     {
-        LayoutElementType type;
+        LayoutElementType m_type;
         
         /** value is -1 if no tempo change occurs on this element, contains the new tempo otherwise */
         int m_tempo_change;
         
-        int x, x2;
+        int m_x, m_x2;
     public:
         LayoutElement(LayoutElementType type_arg, int measure_arg = -1);
 
-        LayoutElementType getType() const { return type; }
+        LayoutElementType getType() const { return m_type; }
         
-        int measure;
+        int m_measure;
          /** 
            * @brief whether to draw a vertical divider line at the start of this element 
            * @note  most Layout Elements don't draw their end vertical line, since the next element
@@ -82,10 +82,10 @@ namespace AriaMaestosa
         
         
         
-        void setXFrom(const int x) { this->x = x; };
-        void setXTo  (const int x) { this->x2 = x; };
-        const int getXFrom() const { return x; }
-        const int getXTo()   const { return x2; }
+        void setXFrom(const int x) { m_x = x; };
+        void setXTo  (const int x) { m_x2 = x; };
+        const int getXFrom() const { return m_x; }
+        const int getXTo()   const { return m_x2; }
         
         /** @return       whether a tempo change occurs at this element */
         bool  hasTempoChange() const { return m_tempo_change != -1; }

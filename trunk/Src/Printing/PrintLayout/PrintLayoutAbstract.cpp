@@ -341,7 +341,7 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
 
                     LayoutElement element(REPEATED_RIFF);
                     element.firstMeasure = firstMeasureThatRepeats;
-                    element.measure = firstMeasureThatRepeats;
+                    element.m_measure = firstMeasureThatRepeats;
                     element.lastMeasure = lastMeasureThatRepeats;
                     element.firstMeasureToRepeat = firstRepeatedMeasure;
                     element.lastMeasureToRepeat = lastRepeatedMeasure;
@@ -421,7 +421,7 @@ void PrintLayoutAbstract::calculateRelativeLengths(std::vector<LayoutElement>& l
             std::vector<int> all_ticks_vector;
             
             // Ask all editors to add their symbols to the list
-            PrintLayoutMeasure& meas = m_measures[layoutElements[n].measure];
+            PrintLayoutMeasure& meas = m_measures[layoutElements[n].m_measure];
             RelativePlacementManager& ticks_relative_position = meas.ticks_placement_manager;
             
             const int trackAmount = meas.getTrackRefAmount();

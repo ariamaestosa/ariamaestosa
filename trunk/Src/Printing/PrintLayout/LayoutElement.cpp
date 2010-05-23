@@ -20,11 +20,11 @@ using namespace AriaMaestosa;
 
 LayoutElement::LayoutElement(LayoutElementType type_arg, int measure_arg)
 {
-    type    = type_arg;
-    measure = measure_arg;
+    m_type    = type_arg;
+    m_measure = measure_arg;
         
-    x       = -1;
-    x2      = -1;
+    m_x       = -1;
+    m_x2      = -1;
     m_render_end_bar   = false;
     m_render_start_bar = true;
     

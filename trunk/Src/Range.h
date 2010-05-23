@@ -27,10 +27,10 @@ namespace AriaMaestosa
         T from;
         T to;
         
-        Range(T from, T to)
+        Range(T from_a, T to_a)
         {
-            Range::from = from;
-            Range::to = to;
+            from = from_a;
+            to = to_a;
         }
     };
 }
