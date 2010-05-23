@@ -80,25 +80,25 @@ GLuint* loadImage(wxImage* img)
 
 TextGLDrawable::TextGLDrawable(TextTexture* image_arg)
 {
-    x=0;
-    y=0;
-    angle=0;
+    m_x = 0;
+    m_y = 0;
+    m_angle = 0;
 
-    xscale=1;
-    yscale=1;
+    m_x_scale = 1;
+    m_y_scale = 1;
 
     y_offset = 0;
     
-    max_width = -1;
+    m_max_width = -1;
     
-    xflip=false;
-    yflip=false;
+    m_x_flip=false;
+    m_y_flip=false;
     
-    w = -1;
-    h = -1;
+    m_w = -1;
+    m_h = -1;
 
     if (image_arg != NULL) setImage(image_arg);
-    else                   image = NULL;
+    else                   m_image = NULL;
 
     tex_coord_x1 = 0;
     tex_coord_y1 = 1;
@@ -106,104 +106,104 @@ TextGLDrawable::TextGLDrawable(TextTexture* image_arg)
     tex_coord_y2 = 0;
 }
 
-void TextGLDrawable::setFlip(bool x, bool y)
+void TextGLDrawable::setFlip(bool xFlip, bool yFlip)
 {
-    xflip = x;
-    yflip = y;
+    m_x_flip = xFlip;
+    m_y_flip = yFlip;
 }
 
-void TextGLDrawable::setMaxWidth(const int w)
+void TextGLDrawable::setMaxWidth(const int maxWidth)
 {
-    max_width = w;
+    m_max_width = maxWidth;
 }
 
 void TextGLDrawable::move(int x, int y)
 {
-    TextGLDrawable::x = x;
-    TextGLDrawable::y = y;
+    m_x = x;
+    m_y = y;
 }
 
 void TextGLDrawable::scale(float x, float y)
 {
-    TextGLDrawable::xscale=x;
-    TextGLDrawable::yscale=y;
+    m_x_scale = x;
+    m_y_scale = y;
 }
 
 void TextGLDrawable::scale(float k)
 {
-    TextGLDrawable::xscale = k;
-    TextGLDrawable::yscale = k;
+    m_x_scale = k;
+    m_y_scale = k;
 }
 
 void TextGLDrawable::setImage(TextTexture* image, bool giveUpOwnership)
 {
-    TextGLDrawable::image = image;
+    m_image = image;
     
     if (giveUpOwnership)
     {
-        TextGLDrawable::image.owner = false;
+        m_image.owner = false;
     }
 }
 
 void TextGLDrawable::rotate(int angle)
 {
-    TextGLDrawable::angle=angle;
+    m_angle=angle;
 }
 
 void TextGLDrawable::render()
 {
-    ASSERT(image != NULL);
+    ASSERT(m_image != NULL);
 
-    ASSERT_E(w, >, 0);
-    ASSERT_E(h, >, 0);
-    ASSERT_E(w, <, 90000);
-    ASSERT_E(h, <, 90000);
+    ASSERT_E(m_w, >, 0);
+    ASSERT_E(m_h, >, 0);
+    ASSERT_E(m_w, <, 90000);
+    ASSERT_E(m_h, <, 90000);
     glPushMatrix();
-    glTranslatef(x*10,(y-h-y_offset)*10,0);
+    glTranslatef(m_x*10,(m_y - m_h - y_offset)*10,0);
     
-    if (xscale!=1 || yscale!=1) glScalef(xscale, yscale, 1);
-    if (angle!=0) glRotatef(angle, 0,0,1);
+    if (m_x_scale != 1 or m_y_scale != 1) glScalef(m_x_scale, m_y_scale, 1);
+    if (m_angle != 0) glRotatef(m_angle, 0,0,1);
 
-    if (max_width != -1 and getWidth()>max_width)
+    if (m_max_width != -1 and getWidth() > m_max_width)
     {
-        const float ratio = (float)max_width/(float)getWidth();
+        const float ratio = (float)m_max_width/(float)getWidth();
         glBegin(GL_QUADS);
         
-        glTexCoord2f(xflip? tex_coord_x2*ratio : tex_coord_x1,
-                     yflip? tex_coord_y2 : tex_coord_y1);
+        glTexCoord2f(m_x_flip? tex_coord_x2*ratio : tex_coord_x1,
+                     m_y_flip? tex_coord_y2 : tex_coord_y1);
         glVertex2f( 0, 0 );
         
-        glTexCoord2f(xflip? tex_coord_x1 : tex_coord_x2*ratio,
-                     yflip? tex_coord_y2 : tex_coord_y1);
-        glVertex2f( max_width*10, 0 );
+        glTexCoord2f(m_x_flip? tex_coord_x1 : tex_coord_x2*ratio,
+                     m_y_flip? tex_coord_y2 : tex_coord_y1);
+        glVertex2f( m_max_width*10, 0 );
         
-        glTexCoord2f(xflip? tex_coord_x1 : tex_coord_x2*ratio,
-                     yflip? tex_coord_y1 : tex_coord_y2);
-        glVertex2f( max_width*10, h*10 );
+        glTexCoord2f(m_x_flip? tex_coord_x1 : tex_coord_x2*ratio,
+                     m_y_flip? tex_coord_y1 : tex_coord_y2);
+        glVertex2f( m_max_width*10, m_h*10 );
         
-        glTexCoord2f(xflip? tex_coord_x2*ratio : tex_coord_x1,
-                     yflip? tex_coord_y1 : tex_coord_y2);
-        glVertex2f( 0, h*10 );
+        glTexCoord2f(m_x_flip? tex_coord_x2*ratio : tex_coord_x1,
+                     m_y_flip? tex_coord_y1 : tex_coord_y2);
+        glVertex2f( 0, m_h*10 );
     }
     else
     {
         glBegin(GL_QUADS);
 
-        glTexCoord2f(xflip? tex_coord_x2 : tex_coord_x1,
-                     yflip? tex_coord_y2 : tex_coord_y1);
+        glTexCoord2f(m_x_flip? tex_coord_x2 : tex_coord_x1,
+                     m_y_flip? tex_coord_y2 : tex_coord_y1);
         glVertex2f( 0, 0 );
 
-        glTexCoord2f(xflip? tex_coord_x1 : tex_coord_x2,
-                     yflip? tex_coord_y2 : tex_coord_y1);
-        glVertex2f( w*10, 0 );
+        glTexCoord2f(m_x_flip? tex_coord_x1 : tex_coord_x2,
+                     m_y_flip? tex_coord_y2 : tex_coord_y1);
+        glVertex2f( m_w*10, 0 );
 
-        glTexCoord2f(xflip? tex_coord_x1 : tex_coord_x2,
-                     yflip? tex_coord_y1 : tex_coord_y2);
-        glVertex2f( w*10, h*10 );
+        glTexCoord2f(m_x_flip? tex_coord_x1 : tex_coord_x2,
+                     m_y_flip? tex_coord_y1 : tex_coord_y2);
+        glVertex2f( m_w*10, m_h*10 );
 
-        glTexCoord2f(xflip? tex_coord_x2 : tex_coord_x1,
-                     yflip? tex_coord_y1 : tex_coord_y2);
-        glVertex2f( 0, h*10 );
+        glTexCoord2f(m_x_flip? tex_coord_x2 : tex_coord_x1,
+                     m_y_flip? tex_coord_y1 : tex_coord_y2);
+        glVertex2f( 0, m_h*10 );
     }
     glEnd();
     glPopMatrix();
@@ -267,8 +267,9 @@ void wxGLString::bind()
 {
     if (not consolidated) consolidate(Display::renderDC);
     
-    glBindTexture(GL_TEXTURE_2D, image->getID()[0] );
+    glBindTexture(GL_TEXTURE_2D, m_image->getID()[0] );
 }
+    
 void wxGLString::calculateSize(wxDC* dc, const bool ignore_font /* when from array */)
 {
     if (!ignore_font)
@@ -277,7 +278,7 @@ void wxGLString::calculateSize(wxDC* dc, const bool ignore_font /* when from arr
         else             dc->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
     }
 
-    dc->GetTextExtent(*this, &w, &h);
+    dc->GetTextExtent(*this, &m_w, &m_h);
 }
 
 void wxGLString::consolidate(wxDC* dc)
@@ -287,18 +288,18 @@ void wxGLString::consolidate(wxDC* dc)
 
     bool multi_line = false;
     int single_line_height = 0;
-    if (warp_after != -1 and w > warp_after)
+    if (warp_after != -1 and m_w > warp_after)
     {
         Replace(wxT(" "),wxT("\n"));
         Replace(wxT("/"),wxT("/\n"));
-        single_line_height = h;
-        dc->GetMultiLineTextExtent(*this, &w, &h);
-        std::cout << "new size: " << w << ", " << h << std::endl;
+        single_line_height = m_h;
+        dc->GetMultiLineTextExtent(*this, &m_w, &m_h);
+        std::cout << "new size: " << m_w << ", " << m_h << std::endl;
         multi_line = true;
     }
     
-    const int power_of_2_w = std::max(32, (int)pow( 2, (int)ceil((float)log(w)/log(2.0)) ));
-    const int power_of_2_h = std::max(32, (int)pow( 2, (int)ceil((float)log(h)/log(2.0)) ));
+    const int power_of_2_w = std::max(32, (int)pow( 2, (int)ceil((float)log(m_w)/log(2.0)) ));
+    const int power_of_2_h = std::max(32, (int)pow( 2, (int)ceil((float)log(m_h)/log(2.0)) ));
 
     wxBitmap bmp(power_of_2_w, power_of_2_h);
     ASSERT(bmp.IsOk());
@@ -333,8 +334,8 @@ void wxGLString::consolidate(wxDC* dc)
     
     TextGLDrawable::texw = power_of_2_w;
     TextGLDrawable::texh = power_of_2_h;
-    TextGLDrawable::tex_coord_x2 = (float)w / (float)power_of_2_w;
-    TextGLDrawable::tex_coord_y2 = 1-(float)h / (float)power_of_2_h;
+    TextGLDrawable::tex_coord_x2 = (float)m_w / (float)power_of_2_w;
+    TextGLDrawable::tex_coord_y2 = 1-(float)m_h / (float)power_of_2_h;
     TextGLDrawable::tex_coord_y1 = 1;
 
     TextGLDrawable::setImage(img);
@@ -468,7 +469,7 @@ void wxGLNumberRenderer::renderNumber(wxString s, int x, int y)
         TextGLDrawable::tex_coord_x2 = (float)(number_location[charid+1]-space_w) / (float)full_string_w;
 
         const int char_width = number_location[charid+1] - number_location[charid] - space_w;
-        TextGLDrawable::w = char_width;
+        m_w = char_width;
 
 
         TextGLDrawable::move(x, y);
@@ -538,8 +539,8 @@ void wxGLStringArray::consolidate(wxDC* dc)
         if (strings[n].IsEmpty()) continue;
         
         strings[n].calculateSize(dc, true);
-        y += strings[n].h;
-        if (strings[n].w > longest_string) longest_string = strings[n].w;
+        y += strings[n].m_h;
+        if (strings[n].m_w > longest_string) longest_string = strings[n].m_w;
     }//next
 
     const int average_string_height = y / amount;
@@ -577,10 +578,10 @@ void wxGLStringArray::consolidate(wxDC* dc)
 
             strings[n].tex_coord_x1 = (float)x/(float)power_of_2_w;
             strings[n].tex_coord_y1 = 1.0 - (float)y/(float)power_of_2_h;
-            strings[n].tex_coord_x2 = (float)(x+strings[n].w)/(float)power_of_2_w;
-            strings[n].tex_coord_y2 = 1.0 - (float)(y+strings[n].h)/(float)power_of_2_h;
+            strings[n].tex_coord_x2 = (float)(x+strings[n].m_w)/(float)power_of_2_w;
+            strings[n].tex_coord_y2 = 1.0 - (float)(y+strings[n].m_h)/(float)power_of_2_h;
 
-            y += strings[n].h;
+            y += strings[n].m_h;
             if (y > power_of_2_h - average_string_height*2) // check if we need to switch to next column
             {
                 y = 0;

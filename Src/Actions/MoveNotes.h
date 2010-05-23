@@ -38,14 +38,14 @@ namespace AriaMaestosa
                 DRUMS_VERTICAL   //!< this modes requires more info than just amount of steps to undo correctly
             };
             
-            int relativeX, relativeY, noteID;
+            int m_relativeX, m_relativeY, m_note_ID;
             friend class AriaMaestosa::Track;
             
-            MoveMode move_mode;
+            MoveMode m_move_mode;
             
             // for undo
             NoteRelocator relocator;
-            int mode;
+            int m_mode;
             
             // vertical movements in score require a little more than others because of possible accidentals
             std::vector<short> undo_pitch; // for SCORE_VERTICAL mode
