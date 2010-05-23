@@ -58,18 +58,18 @@ namespace AriaMaestosa
         friend class wxGLStringNumber;
     protected:
         
-        int x,y, angle;
-        float xscale, yscale;
-        OwnerPtr<TextTexture> image;
-        bool xflip, yflip;
+        int m_x, m_y, m_angle;
+        float m_x_scale, m_y_scale;
+        OwnerPtr<TextTexture> m_image;
+        bool m_x_flip, m_y_flip;
         
         int y_offset;
         
         float tex_coord_x1, tex_coord_y1;
         float tex_coord_x2, tex_coord_y2;
-        int w, h, texw, texh;
+        int m_w, m_h, texw, texh;
         
-        int max_width;
+        int m_max_width;
         
         TextGLDrawable(TextTexture* image=(TextTexture*)0);
         void render();
@@ -96,9 +96,9 @@ namespace AriaMaestosa
         void setMaxWidth(const int w);
         
         /** returns the width of this element */
-        int getWidth() const { return w; }
+        int getWidth() const { return m_w; }
         /** returns the height of this element */
-        int getheight() const { return h; }
+        int getHeight() const { return m_h; }
         
     };
     

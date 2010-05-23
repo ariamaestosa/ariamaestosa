@@ -30,8 +30,8 @@ InsertEmptyMeasures::InsertEmptyMeasures(int measureID, int amount) :
     //I18N: (undoable) action name
     MultiTrackAction( _("insert measures") )
 {
-    InsertEmptyMeasures::measureID = measureID;
-    InsertEmptyMeasures::amount = amount;
+    m_measure_ID = measureID;
+    m_amount = amount;
 }
 
 // --------------------------------------------------------------------------------------------------------
@@ -44,7 +44,7 @@ InsertEmptyMeasures::~InsertEmptyMeasures()
 
 void InsertEmptyMeasures::undo()
 {
-    Action::RemoveMeasures opposite_action( measureID, measureID+amount );
+    Action::RemoveMeasures opposite_action( m_measure_ID, m_measure_ID + m_amount );
     opposite_action.setParentSequence( sequence );
     opposite_action.perform();
     //undo_obj.restoreState(track);
@@ -57,10 +57,10 @@ void InsertEmptyMeasures::perform()
     ASSERT(sequence != NULL);
     
     // convert measures into midi ticks
-    const int amountInTicks = amount * getMeasureData()->measureLengthInTicks(measureID);
-    const int afterTick = getMeasureData()->firstTickInMeasure(measureID) - 1;
+    const int amountInTicks = m_amount * getMeasureData()->measureLengthInTicks(m_measure_ID);
+    const int afterTick = getMeasureData()->firstTickInMeasure(m_measure_ID) - 1;
     
-    DisplayFrame::changeMeasureAmount( getMeasureData()->getMeasureAmount() + amount );
+    DisplayFrame::changeMeasureAmount( getMeasureData()->getMeasureAmount() + m_amount );
     
     // move all notes that are after given start tick by the necessary amount
     const int trackAmount = sequence->getTrackAmount();
@@ -114,10 +114,10 @@ void InsertEmptyMeasures::perform()
         const int timeSigAmount = getMeasureData()->getTimeSigAmount();
         for(int n=0; n<timeSigAmount; n++)
         {
-            if ( getMeasureData()->getTimeSig(n).measure >= measureID+1 and
+            if ( getMeasureData()->getTimeSig(n).measure >= m_measure_ID+1 and
                 n!=0 /* dont move first time sig event*/ )
             {
-                getMeasureData()->getTimeSig(n).measure += amount;
+                getMeasureData()->getTimeSig(n).measure += m_amount;
             }
         }//next
     }//endif

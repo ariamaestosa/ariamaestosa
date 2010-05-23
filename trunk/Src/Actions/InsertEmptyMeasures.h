@@ -32,7 +32,8 @@ namespace AriaMaestosa
         class InsertEmptyMeasures : public MultiTrackAction
         {
             friend class AriaMaestosa::Track;
-            int measureID, amount;
+            int m_measure_ID;
+            int m_amount;
             
         public:
             InsertEmptyMeasures(int measureID, int amount);
