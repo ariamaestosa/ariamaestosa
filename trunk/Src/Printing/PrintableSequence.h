@@ -1,9 +1,25 @@
+/*
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+ 
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public License along
+ with this program; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
 
 
 #ifndef __PRINTABLE_SEQUENCE_H__
 #define __PRINTABLE_SEQUENCE_H__
 
 #include "Editors/Editor.h"
+#include "Printing/AbstractPrintableSequence.h"
 #include "Printing/PrintLayout/LayoutPage.h"
 #include "Printing/PrintLayout/PrintLayoutNumeric.h"
 #include "Printing/PrintLayout/PrintLayoutAbstract.h"
@@ -24,15 +40,13 @@ namespace AriaMaestosa
       * to print anything.
       * @ingroup printing
       */
-    class PrintableSequence
+    class PrintableSequence : public AbstractPrintableSequence
     {
         ptr_vector<LayoutPage> layoutPages;
         
         OwnerPtr<PrintLayoutAbstract> m_abstract_layout_manager;
-        OwnerPtr<PrintLayoutNumeric> m_numeric_layout_manager;
+        OwnerPtr<PrintLayoutNumeric>  m_numeric_layout_manager;
         
-        /** The parent sequence */
-        Sequence* m_sequence;
         
         void printLine(LayoutLine& line, wxDC& dc);
         
@@ -41,9 +55,6 @@ namespace AriaMaestosa
         
         /** Whether at least one track with score view was added */
         bool m_is_score_editor_used;
-
-        /** Whether 'calculateLayout' was called on this object */
-        bool m_layout_calculated;
         
         /** Holds one EditorPrintable derivate for each track added to this printing job */
         ptr_vector<EditorPrintable> m_editor_printables;
@@ -52,9 +63,6 @@ namespace AriaMaestosa
 
         /** the max number of sharp/flats we'll need to display at header (useful to allocate proper size) */
         int m_max_signs_in_keysig;
-
-        /** A list of all tracks added to be printed. This is vector is parallel to 'm_editor_printables'. */
-        ptr_vector<Track, REF> m_tracks;        
 
     public:
                 
@@ -67,34 +75,31 @@ namespace AriaMaestosa
           */
         PrintableSequence(Sequence* parent);
         
-        /** @return the Sequence object associated with this printable sequence */
-        const Sequence* getSequence() const { return m_sequence; }
-        
         /**
-          * Add a track (from the parent sequence of this object) to be printed.
-          *
-          * @pre   The print layout must not have been "frozen" yet with 'caclulateLayout'.
-          *
-          * @param track    The track from the parent sequence to be added to this print job.
-          * @param mode     The type of view to use for printing (score, tablature, etc...)
+          * @brief Prepare the abstract layout for this sequence.
+          * Divides sequence in pages, decides contents of each line, etc.
+          * Must be called before actually printing.
           */
-        bool addTrack(Track* track, EditorType mode);
+        virtual void calculateLayout(bool checkRepetitions);
         
         /**
-          * Prepare the abstract layout for this sequence; divides sequence in pages, decides contents of
-          * each line, etc. Must be called before actually printing.
-          */
-        void calculateLayout(bool checkRepetitions);
-        
-        /**
+          * @brief         Get the EditorPrintable derivate corresponding to the requested track
           * @param trackID Local ID of the track for which you want the editor printable (local
           *                means it's the ID within this class, NOT the ID within the original Sequence)
           * @return        the EditorPrintable derivate corresponding to the requested track
           */
         EditorPrintable* getEditorPrintable(const int trackID);
         
-        /** @return the title of this sequence. If none was provided, makes up one from the context if it can */
-        wxString getTitle() const;
+        /**
+         * Add a track (from the parent sequence of this object) to be printed.
+         *
+         * @pre   The print layout must not have been "frozen" yet with 'caclulateLayout'.
+         *
+         * @param track    The track from the parent sequence to be added to this print job.
+         * @param mode     The type of view to use for printing (score, tablature, etc...)
+         * @return         whether the track was successfully added
+         */
+        virtual bool addTrack(Track* track, EditorType mode);
         
         /** @return the max number of sharp/flats we'll need to display at header (useful to allocate proper size) */
         int getMaxKeySignatureSignCount() const { return m_max_signs_in_keysig; }
@@ -103,7 +108,7 @@ namespace AriaMaestosa
           * @return the number of pages that was determined to be necessary in order to print this sequence.
           *         This information is only available after calling 'calculateLayout'; will return 0 before.
           */
-        int getPageAmount() const;
+        virtual int getPageAmount() const;
         
         /** 
           * @pre Only call after calling 'calculateLayout'.
@@ -124,16 +129,7 @@ namespace AriaMaestosa
           * @return whether at least one track with score view was added
           */
         bool isScoreEditorUsed  () const { return m_is_score_editor_used;  }
-        
-        /** @return the number of tracks added through 'addTrack' */
-        const int getTrackAmount() const { return m_tracks.size();         }
-        
-        /**
-          * Get access to the tracks added for printing. This method returns the tracks added through 'addTrack'.
-          * @param id   ID of the track to get. Must be in range [0 .. getTrackAmount() - 1]
-          * @return     The track
-          */
-        const Track* getTrack(const int id) const { return m_tracks.getConst(id); }
+
 
         /**
           * Call when it is time to print all lines of a page.
@@ -150,11 +146,10 @@ namespace AriaMaestosa
           *
           * @pre              'calculateLayout' must have been called first.
           */
-        void printLinesInArea(wxDC& dc, LayoutPage& page, const float notation_area_y0, const float notation_area_h,
-                              const int pageHeight, const int x0, const int x1);
-        
-        /** @return whether 'calculteLayout' was called on this object */
-        bool isLayoutCalculated() const { return m_layout_calculated; }
+        virtual void printLinesInArea(wxDC& dc, const int page, const float notation_area_y0,
+                                      const float notation_area_h, const int pageHeight,
+                                      const int x0, const int x1);
+
     };
     
 }

@@ -28,7 +28,7 @@ const bool PRINT_LAYOUT_HINTS = false;
 
 namespace AriaMaestosa
 {
-    class PrintableSequence;   
+    class AbstractPrintableSequence;   
     class LayoutLine;
     
     /**
@@ -45,7 +45,7 @@ namespace AriaMaestosa
         friend class AriaMaestosa::LayoutLine;
         friend class AriaMaestosa::wxEasyPrintWrapper;
 
-        PrintableSequence* m_seq;
+        AbstractPrintableSequence* m_seq;
 
         wxFont m_normal_font;
         wxFont m_title_font;
@@ -97,7 +97,7 @@ namespace AriaMaestosa
          *            The caller must not delete the passed sequence before AriaPrintable is deleted too.
          * @param[out] success Whether setting up the printing subsystem was successful.
          */
-        AriaPrintable(PrintableSequence* seq, bool* success);
+        AriaPrintable(AbstractPrintableSequence* seq, bool* success);
         
         virtual ~AriaPrintable();
         
