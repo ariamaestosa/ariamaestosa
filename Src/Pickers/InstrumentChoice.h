@@ -63,7 +63,7 @@ namespace AriaMaestosa
         
         Track* parent;
         
-        int instrumentID;
+        int m_instrument_ID;
         
     public:
         

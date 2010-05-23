@@ -65,7 +65,7 @@ MagneticGrid::MagneticGrid(GraphicalTrack* parent) : wxMenu()
     divider=8;
     label= wxT("1/8");
 
-    MagneticGrid::parent = parent;
+    m_parent = parent;
 }
 
 MagneticGrid::~MagneticGrid()

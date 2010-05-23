@@ -178,7 +178,7 @@ int LayoutLine::getLastNoteInElement(const int trackID, const LayoutElement* lay
 
 const PrintLayoutMeasure& LayoutLine::getMeasureForElement(const int layoutElementID) const
 {
-    const int measID = m_layout_elements[layoutElementID].measure;
+    const int measID = m_layout_elements[layoutElementID].m_measure;
     if (measID == -1) return (PrintLayoutMeasure&)NULL_MEASURE;
     return m_measures.getRef(measID);
 }
@@ -187,7 +187,7 @@ const PrintLayoutMeasure& LayoutLine::getMeasureForElement(const int layoutEleme
 
 const PrintLayoutMeasure& LayoutLine::getMeasureForElement(const LayoutElement* layoutElement) const
 {
-    return m_measures[layoutElement->measure];
+    return m_measures[layoutElement->m_measure];
 }
 
 // -------------------------------------------------------------------------------------------
@@ -196,7 +196,7 @@ int LayoutLine::getLastMeasure() const
 {
     for (int n=m_layout_elements.size()-1; n>=0; n--)
     {
-        if ( m_layout_elements[n].measure != -1) return m_layout_elements[n].measure;
+        if ( m_layout_elements[n].m_measure != -1) return m_layout_elements[n].m_measure;
     }
     return -1;
 }
@@ -208,7 +208,7 @@ int LayoutLine::getFirstMeasure() const
     const int amount = m_layout_elements.size();
     for (int n=0; n<amount; n++)
     {
-        if ( m_layout_elements[n].measure != -1) return m_layout_elements[n].measure;
+        if ( m_layout_elements[n].m_measure != -1) return m_layout_elements[n].m_measure;
     }
     return -1;
 }

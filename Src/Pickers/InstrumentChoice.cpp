@@ -355,16 +355,16 @@ InstrumentChoice::~InstrumentChoice()
 {
     // FIMXE - this should maybe delete the menus
 }
+    
 void InstrumentChoice::menuSelected(wxCommandEvent& evt)
 {
-    instrumentID=evt.GetId()-10000;
+    m_instrument_ID = evt.GetId() - 10000;
 
-    ASSERT_E(instrumentID,<,128);
-    ASSERT_E(instrumentID,>=,0);
+    ASSERT_E(m_instrument_ID, <,  128);
+    ASSERT_E(m_instrument_ID, >=, 0);
 
-    parent->setInstrument(instrumentID);
+    parent->setInstrument(m_instrument_ID);
     Display::render();
-
 }
 
 
