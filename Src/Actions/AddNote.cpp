@@ -24,21 +24,21 @@
 
 using namespace AriaMaestosa::Action;
 
+// ----------------------------------------------------------------------------------------------------------
+
 AddNote::AddNote(const int pitchID, const int startTick, const int endTick,
                  const int volume, const int string) :
     //I18N: (undoable) action name
     SingleTrackAction( _("add note") )
 {
-    AddNote::pitchID = pitchID;
-    AddNote::startTick = startTick;
-    AddNote::endTick = endTick;
-    AddNote::volume = volume;
-    AddNote::string = string;
+    m_pitch_ID   = pitchID;
+    m_start_tick = startTick;
+    m_end_tick   = endTick;
+    m_volume     = volume;
+    m_string     = string;
 }
 
-AddNote::~AddNote()
-{
-}
+// ----------------------------------------------------------------------------------------------------------
 
 void AddNote::undo()
 {
@@ -46,10 +46,10 @@ void AddNote::undo()
     relocator.setParent(track);
     relocator.prepareToRelocate();
     
-    while( (current_note = relocator.getNextNote()) and current_note != NULL)
+    while ((current_note = relocator.getNextNote()) and current_note != NULL)
     {
         const int noteAmount = track->getNoteAmount();
-        for(int n=0; n<noteAmount; n++)
+        for (int n=0; n<noteAmount; n++)
         {
             if (track->getNote(n) == current_note)
             {
@@ -59,14 +59,18 @@ void AddNote::undo()
         }//next
     }//wend
 }
+
+// ----------------------------------------------------------------------------------------------------------
+
 void AddNote::perform()
 {
     ASSERT(track != NULL);
     
     
     Note* tmp_note;
-    if (string==-1) tmp_note = new Note(track->graphics, pitchID, startTick, endTick, volume);
-    else tmp_note = new Note(track->graphics, pitchID, startTick, endTick, volume, string, 0);
+    if (m_string == -1) tmp_note = new Note(track->graphics, m_pitch_ID, m_start_tick, m_end_tick, m_volume);
+    else                tmp_note = new Note(track->graphics, m_pitch_ID, m_start_tick, m_end_tick, m_volume,
+                                            m_string, 0);
     
     const bool success = track->addNote( tmp_note );
     
@@ -82,3 +86,4 @@ void AddNote::perform()
     tmp_note->play(true);
 }
 
+// ----------------------------------------------------------------------------------------------------------

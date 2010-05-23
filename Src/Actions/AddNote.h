@@ -33,14 +33,23 @@ namespace AriaMaestosa
         class AddNote : public SingleTrackAction
         {
             friend class AriaMaestosa::Track;
-            int pitchID, startTick, endTick, volume, string;
+            int m_pitch_ID;
+            
+            int m_start_tick, m_end_tick;
+            
+            int m_volume;
+            
+            int m_string;
             
             NoteRelocator relocator;
+            
         public:
+            
             AddNote(const int pitchID, const int startTick, const int endTick, const int volume, const int string=-1);
-            void perform();
-            void undo();
-            virtual ~AddNote();
+            virtual ~AddNote() {}
+
+            virtual void perform();
+            virtual void undo();
         };
     }
 }
