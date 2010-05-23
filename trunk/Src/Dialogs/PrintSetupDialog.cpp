@@ -406,20 +406,20 @@ namespace AriaMaestosa
                 wxPanel* buttonPanel = new wxPanel(parent_panel);
                 boxSizer->Add(buttonPanel, 0, wxALL | wxEXPAND, 5);
                 
-                wxBoxSizer* subsizer = new wxBoxSizer(wxHORIZONTAL);
+                wxBoxSizer* buttonsSizer = new wxBoxSizer(wxHORIZONTAL);
                 
                 wxButton* okButton = new wxButton(buttonPanel, wxID_OK, _("OK"));
                 okButton->SetDefault();
                 
                 wxButton* cancelButton = new wxButton(buttonPanel, wxID_CANCEL,  _("Cancel"));
                 
-                subsizer->AddStretchSpacer();
-                subsizer->Add(cancelButton, 0, wxALL, 7);
-                subsizer->Add(okButton,     0, wxALL, 7);
+                buttonsSizer->AddStretchSpacer();
+                buttonsSizer->Add(cancelButton, 0, wxALL, 7);
+                buttonsSizer->Add(okButton,     0, wxALL, 7);
 
-                buttonPanel->SetSizer(subsizer);
+                buttonPanel->SetSizer(buttonsSizer);
                 buttonPanel->SetAutoLayout(true);
-                subsizer->Layout();
+                buttonsSizer->Layout();
                 
                 Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED,
                                          wxCommandEventHandler(PrintSetupDialog::onOkClicked), NULL, this);
