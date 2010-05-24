@@ -43,159 +43,148 @@ void drawable_set_state(AriaRender::ImageState arg)
 using namespace AriaMaestosa;
 
 // -------------------------------------------------------------------------------------------------------
+//FIXME: large chunks of code are identical in the GL drawable and the wx drawable
 
-Drawable::Drawable(Image* image_arg)
+Drawable::Drawable(Image* image)
 {
-    x=0;
-    y=0;
-    hotspotX=0;
-    hotspotY=0;
-    angle=0;
+    m_x = 0;
+    m_y = 0;
+    m_hotspot_x=0;
+    m_hotspot_y=0;
+    m_angle = 0;
 
-    xscale=1;
-    yscale=1;
+    m_x_scale = 1;
+    m_y_scale = 1;
 
-    xflip=false;
-    yflip=false;
+    m_x_flip = false;
+    m_y_flip = false;
 
-    delete_image = false;
+    m_delete_image = false;
 
-    if (image_arg!=NULL) setImage(image_arg);
-    else image=NULL;
+    if (image != NULL) setImage(image);
+    else               m_image = NULL;
 }
 
 // -------------------------------------------------------------------------------------------------------
 
 Drawable::Drawable(wxString imagePath)
 {
-    x=0;
-    y=0;
-    hotspotX=0;
-    hotspotY=0;
-    angle=0;
+    m_x = 0;
+    m_y = 0;
+    m_hotspot_x = 0;
+    m_hotspot_y = 0;
+    m_angle = 0;
 
-    xscale=1;
-    yscale=1;
+    m_x_scale = 1;
+    m_y_scale = 1;
 
-    xflip=false;
-    yflip=false;
+    m_x_flip = false;
+    m_y_flip = false;
 
-    delete_image = true;
+    m_delete_image = true;
 
-    image = new Image(imagePath);
+    m_image = new Image(imagePath);
 }
 
 // -------------------------------------------------------------------------------------------------------
 
 Drawable::~Drawable()
 {
-    if (delete_image) delete image;
+    if (m_delete_image) delete m_image;
 }
 
 // -------------------------------------------------------------------------------------------------------
 
-void Drawable::setFlip(bool x, bool y)
+void Drawable::setFlip(bool xFlip, bool yFlip)
 {
-    xflip=x;
-    yflip=y;
+    m_x_flip = xFlip;
+    m_y_flip = yFlip;
 }
 
 // -------------------------------------------------------------------------------------------------------
 
 void Drawable::setHotspot(int x, int y)
 {
-    hotspotX=x;
-    hotspotY=y;
+    m_hotspot_x = x;
+    m_hotspot_y = y;
 }
 
 // -------------------------------------------------------------------------------------------------------
 
 void Drawable::move(int x, int y)
 {
-    Drawable::x=x;
-    Drawable::y=y;
+    m_x = x;
+    m_y = y;
 }
 
 // -------------------------------------------------------------------------------------------------------
 
-void Drawable::scale(float x, float y)
+void Drawable::scale(float xScale, float yScale)
 {
-    Drawable::xscale=x;
-    Drawable::yscale=y;
+    m_x_scale = xScale;
+    m_y_scale = yScale;
 }
 
 // -------------------------------------------------------------------------------------------------------
 
 void Drawable::scale(float k)
 {
-    Drawable::xscale=k;
-    Drawable::yscale=k;
+    m_x_scale = k;
+    m_y_scale = k;
 }
 
 // -------------------------------------------------------------------------------------------------------
 
 void Drawable::setImage(Image* image)
 {
-    Drawable::image=image;
+    m_image = image;
 }
+
+// -------------------------------------------------------------------------------------------------------
 
 void Drawable::rotate(int angle)
 {
-    Drawable::angle=angle;
+    m_angle = angle;
 }
 
 // -------------------------------------------------------------------------------------------------------
 
 void Drawable::render()
 {
-    if (xflip or yflip or xscale != 1 or yscale != 1 or angle!=0)
+    if (m_x_flip or m_y_flip or m_x_scale != 1 or m_y_scale != 1 or m_angle != 0)
     {
-        int hotspotX_mod = hotspotX;
-        int hotspotY_mod = hotspotY;
+        int hotspotX_mod = m_hotspot_x;
+        int hotspotY_mod = m_hotspot_y;
 
-        wxImage modimage = image->getBitmapForState(g_state)->ConvertToImage();
+        wxImage modimage = m_image->getBitmapForState(g_state)->ConvertToImage();
 
-        if (xflip) modimage = modimage.Mirror();
-        if (yflip) modimage = modimage.Mirror(false);
+        if (m_x_flip) modimage = modimage.Mirror();
+        if (m_y_flip) modimage = modimage.Mirror(false);
 
-        if (angle == 90)
+        if (m_angle == 90)
         {
             modimage = modimage.Rotate90();
-            if (!xflip) hotspotX_mod = hotspotX + image->width;
-            else hotspotX_mod = hotspotX - image->width;
-            //hotspotY_mod = hotspotY - image->height;
+            if (not m_x_flip) hotspotX_mod = m_hotspot_x + m_image->width;
+            else              hotspotX_mod = m_hotspot_x - m_image->width;
         }
 
-        if (xscale != 1 or yscale != 1)
+        if (m_x_scale != 1 or m_y_scale != 1)
         {
-            const int new_w = (int)(image->width * xscale);
-            const int new_h = (int)(image->height * yscale);
+            const int new_w = (int)(m_image->width  * m_x_scale);
+            const int new_h = (int)(m_image->height * m_y_scale);
             if (new_w == 0 or new_h == 0) return;
             modimage.Rescale( new_w, new_h );
         }
 
         wxBitmap modbitmap(modimage);
-        Display::renderDC -> DrawBitmap( modbitmap, x - hotspotX_mod, y - hotspotY_mod);
+        Display::renderDC -> DrawBitmap( modbitmap, m_x - hotspotX_mod, m_y - hotspotY_mod);
     }
     else
     {
-        Display::renderDC -> DrawBitmap( *image->getBitmapForState(g_state), x - hotspotX, y - hotspotY);
+        Display::renderDC -> DrawBitmap( *m_image->getBitmapForState(g_state),
+                                         m_x - m_hotspot_x, m_y - m_hotspot_y);
     }
 
-}
-
-// -------------------------------------------------------------------------------------------------------
-
-int Drawable::getImageWidth()
-{
-    return image->width;
-}
-
-// -------------------------------------------------------------------------------------------------------
-
-int Drawable::getImageHeight()
-{
-    return image->height;
 }
 
 // -------------------------------------------------------------------------------------------------------

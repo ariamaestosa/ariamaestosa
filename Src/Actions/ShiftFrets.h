@@ -29,21 +29,23 @@ namespace AriaMaestosa
         
         /**
          * @ingroup actions
+         * @brief action to change note fret in tablature editor
          */
         class ShiftFrets : public SingleTrackAction
         {
             friend class AriaMaestosa::Track;
-            int amount, noteid;
+            int m_amount, m_note_id;
             
             NoteRelocator relocator;
-            std::vector<int> frets;
+            std::vector<int> m_frets;
             
         public:
             
-            ShiftFrets(const int amount, const int noteid);
+            ShiftFrets(const int amount, const int noteID);
+            virtual ~ShiftFrets() {}
+
             void perform();
             void undo();
-            virtual ~ShiftFrets();
         };
         
         

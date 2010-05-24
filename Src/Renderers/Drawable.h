@@ -18,6 +18,7 @@
 #define __DRAWABLE_H__
 
 #include "Utils.h"
+#include "Renderers/ImageBase.h"
 #include "Renderers/RenderAPI.h"
 
 namespace AriaMaestosa
@@ -32,17 +33,17 @@ namespace AriaMaestosa
     
     class Drawable
     {
+        int m_x, m_y;
+        int m_angle;
+        int m_hotspot_x, m_hotspot_y;
+        float m_x_scale, m_y_scale;
+        Image* m_image;
+        bool m_x_flip, m_y_flip;
+        bool m_delete_image;
+        
     public:
         LEAK_CHECK();
-        
-        // ------------ read-only fields -------------
-        int x,y, angle, hotspotX, hotspotY;
-        float xscale, yscale;
-        Image* image;
-        bool xflip, yflip;
-        bool delete_image;
-        // -------------------------------------------
-        
+
         
         Drawable(Image* image=(Image*)0);
         Drawable(wxString imagePath);
@@ -50,9 +51,15 @@ namespace AriaMaestosa
         
         void setFlip(bool x, bool y);
         
-        int getImageWidth();
-        int getImageHeight();
+        int getImageWidth()  const { return m_image->width;  }
+        int getImageHeight() const { return m_image->height; }
         
+        int getX() const { return m_x; }
+        int getY() const { return m_y; }
+        
+        int getHotspotX() const { return m_hotspot_x; }
+        int getHotspotY() const { return m_hotspot_y; }
+
         void move(int x, int y);
         void setHotspot(int x, int y);
         void scale(float x, float y);
