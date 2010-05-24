@@ -1,0 +1,14 @@
+#!/usr/bin/env xdg-open
+
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.2.1
+Type=Application
+Terminal=false
+Exec=Aria %f
+Comment[en_US]=Aria Maestosa music editor
+Name=AriaMaestosa
+Comment=Aria Maestosa music editor
+Icon=/usr/local/share/Aria/aria64.png
+MimeType=audio/auria-ariamaestosa
+Categories=AudioVideo;Audio
