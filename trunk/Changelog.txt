@@ -1,11 +1,10 @@
-1.2.3
-- More flexible printing dialog; allows changing the printing notation type for each track
-- Menu icons on Linux/Windows (thanks to Alexis Archambault for coding this!)
 
 1.2.2
 - Cleanup and code documentation
 - Work on custom key support
 - Fixed octave numbers in keyboard editor and guitar editor
+- More flexible printing dialog; allows changing the printing notation type for each track
+- Menu icons on Linux/Windows (thanks to Alexis Archambault for coding this!)
 
 1.2.1
 - Fixed printing of accidentals
