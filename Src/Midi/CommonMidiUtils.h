@@ -19,6 +19,8 @@
 
 /** @defgroup midi */
 
+#include "wx/string.h"
+
 // forward
 namespace jdkmidi{ class MIDIMultiTrack; }
 

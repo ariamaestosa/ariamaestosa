@@ -17,6 +17,7 @@
 #include <iostream>
 //#include "wx/wx.h"
 #include "wx/filename.h"
+#include "wx/dc.h"
 
 #include "Midi/Track.h"
 #include "Printing/AriaPrintable.h"

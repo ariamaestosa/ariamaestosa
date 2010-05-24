@@ -5,6 +5,7 @@
 #include "Printing/wxEasyPrintWrapper.h"
 #include "wx/paper.h"
 #include "wx/printdlg.h"
+#include "wx/dc.h"
 
 #ifdef __WXMAC__
 
