@@ -130,6 +130,20 @@ bool wxWidgetApp::OnInit()
 
     SetTopWindow(frame);
 
+    // check if filenames to open were given on the command-line
+    for (int n=0; n<argc; n++)
+    {
+        wxString fileName = wxString(argv[n]);
+        if (fileName.EndsWith(wxT("aria")))
+        {
+            frame->loadAriaFile( fileName );
+        }
+        else if (fileName.EndsWith(wxT("mid")) or fileName.EndsWith(wxT("midi")))
+        {
+            frame->loadMidiFile( fileName );
+        }
+    }
+
     return true;
 }
 
