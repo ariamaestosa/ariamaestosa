@@ -23,16 +23,12 @@
 
 using namespace AriaMaestosa::Action;
 
-ShiftFrets::ShiftFrets(const int amount, const int noteid) :
+ShiftFrets::ShiftFrets(const int amount, const int noteID) :
     //I18N: (undoable) action name
     SingleTrackAction( _("change note fret") )
 {
-    ShiftFrets::amount = amount;
-    ShiftFrets::noteid = noteid;
-}
-
-ShiftFrets::~ShiftFrets()
-{
+    m_amount = amount;
+    m_note_id = noteID;
 }
 
 void ShiftFrets::undo()
@@ -41,10 +37,10 @@ void ShiftFrets::undo()
     Note* current_note;
     relocator.setParent(track);
     relocator.prepareToRelocate();
-    int n=0;
-    while( (current_note = relocator.getNextNote()) and current_note != NULL)
+    int n = 0;
+    while ((current_note = relocator.getNextNote()) and current_note != NULL)
     {
-        current_note->setFret( frets[n] );
+        current_note->setFret( m_frets[n] );
         n++;
     }
 }
@@ -52,26 +48,26 @@ void ShiftFrets::undo()
 void ShiftFrets::perform()
 {
     ASSERT(track != NULL);
-    ASSERT(noteid != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
+    ASSERT(m_note_id != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
     
     // only accept to do this in guitar mode
     if (track->graphics->editorMode != GUITAR)  return;
     
     // concerns all selected notes
-    if (noteid==SELECTED_NOTES)
+    if (m_note_id == SELECTED_NOTES)
     {
         
         bool played = false;
-        const int amount_n = track->m_notes.size();
-        for(int n=0; n<amount_n; n++)
+        const int noteAmount = track->m_notes.size();
+        for (int n=0; n<noteAmount; n++)
         {
-            if (!track->m_notes[n].isSelected()) continue;
+            if (not track->m_notes[n].isSelected()) continue;
             
-            frets.push_back( track->m_notes[n].getFret() );
-            track->m_notes[n].shiftFret(amount);
+            m_frets.push_back( track->m_notes[n].getFret() );
+            track->m_notes[n].shiftFret(m_amount);
             relocator.rememberNote( track->m_notes[n] );
             
-            if (!played)
+            if (not played)
             {
                 track->m_notes[n].play(true);
                 played = true;
@@ -79,18 +75,18 @@ void ShiftFrets::perform()
         }//next
         
     }
-    // only concernes one specific note
+    // only one specific note
     else
     {
         // warning : not yet used so not tested
-        ASSERT_E(noteid,>=,0);
-        ASSERT_E(noteid,<,track->m_notes.size());
+        ASSERT_E(m_note_id,>=,0);
+        ASSERT_E(m_note_id,<,track->m_notes.size());
         
-        frets.push_back( track->m_notes[noteid].getFret() );
-        track->m_notes[noteid].shiftFret(amount);
-        relocator.rememberNote( track->m_notes[noteid] );
+        m_frets.push_back( track->m_notes[m_note_id].getFret() );
+        track->m_notes[m_note_id].shiftFret(m_amount);
+        relocator.rememberNote( track->m_notes[m_note_id] );
         
-        track->m_notes[noteid].play(true);
+        track->m_notes[m_note_id].play(true);
     }
     
 }

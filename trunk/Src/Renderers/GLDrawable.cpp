@@ -34,165 +34,150 @@ using namespace AriaMaestosa;
 
 // -------------------------------------------------------------------------------------------------------
 
-Drawable::Drawable(Image* image_arg)
+Drawable::Drawable(Image* image)
 {
-    x=0;
-    y=0;
-    hotspotX=0;
-    hotspotY=0;
-    angle=0;
+    m_x = 0;
+    m_y = 0;
+    m_hotspot_x = 0;
+    m_hotspot_y = 0;
+    m_angle = 0;
     
-    xscale=1;
-    yscale=1;
+    m_x_scale = 1;
+    m_y_scale = 1;
     
-    xflip=false;
-    yflip=false;
+    m_x_flip = false;
+    m_y_flip = false;
     
-    delete_image = false;
+    m_delete_image = false;
     
-    if (image_arg!=NULL) setImage(image_arg);
-    else image=NULL;
+    if (image != NULL) setImage(image);
+    else               m_image = NULL;
 }
 
 // -------------------------------------------------------------------------------------------------------
 
 Drawable::Drawable(wxString imagePath)
 {
-    x=0;
-    y=0;
-    hotspotX=0;
-    hotspotY=0;
-    angle=0;
+    m_x = 0;
+    m_y = 0;
+    m_hotspot_x = 0;
+    m_hotspot_y = 0;
+    m_angle = 0;
     
-    xscale=1;
-    yscale=1;
+    m_x_scale = 1;
+    m_y_scale = 1;
     
-    xflip=false;
-    yflip=false;
+    m_x_flip = false;
+    m_y_flip = false;
     
-    delete_image = true;
+    m_delete_image = true;
     
-    image = new Image(imagePath);
+    m_image = new Image(imagePath);
 }
 
 // -------------------------------------------------------------------------------------------------------
 
 Drawable::~Drawable()
 {
-    if (delete_image) delete image;
+    if (m_delete_image) delete m_image;
 }
 
 // -------------------------------------------------------------------------------------------------------
 
-void Drawable::setFlip(bool x, bool y)
+void Drawable::setFlip(bool xFlip, bool yFlip)
 {
-    xflip=x;
-    yflip=y;
+    m_x_flip = xFlip;
+    m_y_flip = yFlip;
 }
 
 // -------------------------------------------------------------------------------------------------------
 
-void Drawable::setHotspot(int x, int y)
+void Drawable::setHotspot(int hotspotX, int hotspotY)
 {
-    hotspotX=x;
-    hotspotY=y;
+    m_hotspot_x = hotspotX;
+    m_hotspot_y = hotspotY;
 }
 
 // -------------------------------------------------------------------------------------------------------
 
 void Drawable::move(int x, int y)
 {
-    Drawable::x=x;
-    Drawable::y=y;
+    m_x = x;
+    m_y = y;
 }
 
 // -------------------------------------------------------------------------------------------------------
 
 void Drawable::scale(float x, float y)
 {
-    Drawable::xscale=x;
-    Drawable::yscale=y;
+    m_x_scale = x;
+    m_y_scale = y;
 }
 
 // -------------------------------------------------------------------------------------------------------
 
 void Drawable::scale(float k)
 {
-    Drawable::xscale=k;
-    Drawable::yscale=k;
+    m_x_scale = k;
+    m_y_scale = k;
 }
 
 // -------------------------------------------------------------------------------------------------------
 
 void Drawable::setImage(Image* image)
 {
-    Drawable::image=image;
+    m_image = image;
 }
 
 // -------------------------------------------------------------------------------------------------------
 
 void Drawable::rotate(int angle)
 {
-    Drawable::angle=angle;
+    m_angle = angle;
 }
 
 // -------------------------------------------------------------------------------------------------------
 
 void Drawable::render()
 {
-    ASSERT(image!=NULL);
+    ASSERT(m_image != NULL);
     
     glLoadIdentity();
     
-    glTranslatef(x*10.0, y*10.0, 0);
+    glTranslatef(m_x*10.0, m_y*10.0, 0);
     
-    if (xscale!=1 || yscale!=1)
+    if (m_x_scale != 1 or m_y_scale != 1)
     {
-        glScalef(xscale, yscale, 1);
+        glScalef(m_x_scale, m_y_scale, 1);
     }
     
-    // unused
-    if (angle!=0)
+    if (m_angle != 0)
     {
-        glRotatef(angle, 0,0,1);
+        glRotatef(m_angle, 0,0,1);
     }
     
-    bool do_yflip = yflip;
+    bool do_yflip = m_y_flip;
     // hack, textureHeight made smaller than zero when image was power of two.
     // in these cases, the image will be upside down so we need to flip it
-    if (image->textureHeight < 0) do_yflip = !yflip;
+    if (m_image->textureHeight < 0) do_yflip = not m_y_flip;
     
-    glBindTexture(GL_TEXTURE_2D, image->getID()[0] );
+    glBindTexture(GL_TEXTURE_2D, m_image->getID()[0] );
     
     glBegin(GL_QUADS);
     
-    glTexCoord2f(xflip? image->tex_coord_x : 0, do_yflip? 0 : image->tex_coord_y);
-    glVertex2f( -hotspotX*10.0, -hotspotY*10.0 );
+    glTexCoord2f(m_x_flip? m_image->tex_coord_x : 0, do_yflip? 0 : m_image->tex_coord_y);
+    glVertex2f( -m_hotspot_x*10.0, -m_hotspot_y*10.0 );
     
-    glTexCoord2f(xflip? 0 : image->tex_coord_x, do_yflip? 0 : image->tex_coord_y);
-    glVertex2f( (image->width-hotspotX)*10.0, -hotspotY*10.0 );
+    glTexCoord2f(m_x_flip? 0 : m_image->tex_coord_x, do_yflip? 0 : m_image->tex_coord_y);
+    glVertex2f( (m_image->width-m_hotspot_x)*10.0, -m_hotspot_y*10.0 );
     
-    glTexCoord2f(xflip? 0 : image->tex_coord_x, do_yflip? image->tex_coord_y : 0);
-    glVertex2f( (image->width-hotspotX)*10.0, (image->height-hotspotY)*10.0 );
+    glTexCoord2f(m_x_flip? 0 : m_image->tex_coord_x, do_yflip? m_image->tex_coord_y : 0);
+    glVertex2f( (m_image->width-m_hotspot_x)*10.0, (m_image->height-m_hotspot_y)*10.0 );
     
-    glTexCoord2f(xflip? image->tex_coord_x : 0, do_yflip? image->tex_coord_y : 0);
-    glVertex2f( -hotspotX*10.0, (image->height-hotspotY)*10.0 );
+    glTexCoord2f(m_x_flip? m_image->tex_coord_x : 0, do_yflip? m_image->tex_coord_y : 0);
+    glVertex2f( -m_hotspot_x*10.0, (m_image->height-m_hotspot_y)*10.0 );
     
     glEnd();
-}
-
-// -------------------------------------------------------------------------------------------------------
-
-int Drawable::getImageWidth()
-{
-    return image->width;
-}
-
-// -------------------------------------------------------------------------------------------------------
-
-int Drawable::getImageHeight()
-{
-    return image->height;
 }
 
 // -------------------------------------------------------------------------------------------------------

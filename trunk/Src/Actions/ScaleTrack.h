@@ -32,13 +32,13 @@ namespace AriaMaestosa
         class ScaleTrack : public SingleTrackAction
         {
             friend class AriaMaestosa::Track;
-            float factor;
-            int relative_to;
-            bool selectionOnly;
+            float m_factor;
+            int   m_relative_to;
+            bool  m_selection_only;
             
             NoteRelocator relocator;
-            std::vector<int> note_start;
-            std::vector<int> note_end;
+            std::vector<int> m_note_start;
+            std::vector<int> m_note_end;
             
         public:
             

@@ -723,7 +723,7 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
         // flags
         if (renderInfo.flag_amount>0 and not renderInfo.beam)
         {
-            static const int stem_height = noteFlag->image->height;
+            static const int stem_height = noteFlag->getImageHeight();
             const int stem_end = LEVEL_TO_Y(analyser->getStemTo(renderInfo));
             const int flag_y_origin = (renderInfo.stem_type==STEM_UP ? stem_end : stem_end - stem_height );
             const int flag_x_origin = getStemX(renderInfo);

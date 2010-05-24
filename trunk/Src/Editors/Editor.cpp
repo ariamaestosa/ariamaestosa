@@ -200,10 +200,12 @@ void Editor::renderScrollbar()
 
     if (!verticalScrolling and // ignore arrows if user is dragging thumb
        Display:: isMouseDown() and // only if mouse is down
-       mouseX > sbArrowDrawable->x and mouseX2 > sbArrowDrawable->x and // and mouse is located on the arrow
-       mouseY > sbArrowDrawable->y and mouseY2 > sbArrowDrawable->y and
-       mouseX < sbArrowDrawable->x+sbArrowDrawable->getImageWidth() and mouseX2 < sbArrowDrawable->x+sbArrowDrawable->getImageWidth() and
-       mouseY < sbArrowDrawable->y+sbArrowDrawable->getImageHeight() and mouseY2 < sbArrowDrawable->y+sbArrowDrawable->getImageHeight())
+       mouseX  > sbArrowDrawable->getX() and mouseX2 > sbArrowDrawable->getX() and // and mouse is located on the arrow
+       mouseY  > sbArrowDrawable->getY() and mouseY2 > sbArrowDrawable->getY() and
+       mouseX  < sbArrowDrawable->getX() + sbArrowDrawable->getImageWidth() and
+       mouseX2 < sbArrowDrawable->getX() + sbArrowDrawable->getImageWidth() and
+       mouseY  < sbArrowDrawable->getY() + sbArrowDrawable->getImageHeight() and
+       mouseY2 < sbArrowDrawable->getY() + sbArrowDrawable->getImageHeight())
     {
 
         sbArrowDrawable->setImage( sbArrowDownImg );
@@ -227,10 +229,12 @@ void Editor::renderScrollbar()
 
     if (!verticalScrolling and // ignore arrows if user is dragging thumb
        Display:: isMouseDown() and // only if mouse is down
-       mouseX > sbArrowDrawable->x and mouseX2 > sbArrowDrawable->x and // and mouse is lcoated on the arrow
-       mouseY > sbArrowDrawable->y and mouseY2 > sbArrowDrawable->y and
-       mouseX < sbArrowDrawable->x+sbArrowDrawable->getImageWidth() and mouseX2 < sbArrowDrawable->x+sbArrowDrawable->getImageWidth() and
-       mouseY < sbArrowDrawable->y+sbArrowDrawable->getImageHeight() and mouseY2 < sbArrowDrawable->y+sbArrowDrawable->getImageHeight())
+       mouseX  > sbArrowDrawable->getX() and mouseX2 > sbArrowDrawable->getX() and // and mouse is lcoated on the arrow
+       mouseY  > sbArrowDrawable->getY() and mouseY2 > sbArrowDrawable->getY() and
+       mouseX  < sbArrowDrawable->getX() + sbArrowDrawable->getImageWidth() and
+       mouseX2 < sbArrowDrawable->getX() + sbArrowDrawable->getImageWidth() and
+       mouseY  < sbArrowDrawable->getY() + sbArrowDrawable->getImageHeight() and
+       mouseY2 < sbArrowDrawable->getY() + sbArrowDrawable->getImageHeight())
     {
 
         sbArrowDrawable->setImage( sbArrowDownImg );
@@ -334,9 +338,9 @@ void Editor::mouseDown(RelativeXCoord x, int y)
     if (useVerticalScrollbar_bool)
     {
         // check if user is grabbing the scroll bar
-        if (x.getRelativeTo(WINDOW)>sbThumbDrawable->x and
-           x.getRelativeTo(WINDOW)<sbThumbDrawable->x+sbThumbDrawable->getImageWidth() and
-           y<getYEnd()-15 and y>getEditorYStart())
+        if (x.getRelativeTo(WINDOW)>sbThumbDrawable->getX() and
+            x.getRelativeTo(WINDOW)<sbThumbDrawable->getX() + sbThumbDrawable->getImageWidth() and
+            y < getYEnd()-15 and y > getEditorYStart())
         {
             click_on_scrollbar = true;
 
@@ -469,7 +473,11 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
 
                 if (useVerticalScrollbar_bool)
                 {
-                    if (mousex_current.getRelativeTo(WINDOW) > sbThumbDrawable->x or mousex_initial.getRelativeTo(WINDOW) > sbThumbDrawable->x) goto end_of_func;
+                    if (mousex_current.getRelativeTo(WINDOW) > sbThumbDrawable->getX() or
+                        mousex_initial.getRelativeTo(WINDOW) > sbThumbDrawable->getX())
+                    {
+                        goto end_of_func;
+                    }
                 }
                 else
                 {
@@ -625,8 +633,8 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
         click_on_scrollbar = false;
 
         // make thumb slide to mouse
-        if (mousex_current.getRelativeTo(WINDOW) > sbThumbDrawable->x and
-           mousex_current.getRelativeTo(WINDOW) < sbThumbDrawable->x+sbThumbDrawable->getImageWidth() and
+        if (mousex_current.getRelativeTo(WINDOW) > sbThumbDrawable->getX() and
+           mousex_current.getRelativeTo(WINDOW) < sbThumbDrawable->getX() + sbThumbDrawable->getImageWidth() and
            mousey_current < getYEnd()-15 and mousey_current>getEditorYStart())
         {
 

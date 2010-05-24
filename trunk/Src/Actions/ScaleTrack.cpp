@@ -26,9 +26,9 @@ ScaleTrack::ScaleTrack(float factor, int relative_to, bool selectionOnly) :
     //I18N: (undoable) action name
     SingleTrackAction( _("scale note(s)") )
 {
-    ScaleTrack::factor = factor;
-    ScaleTrack::relative_to = relative_to;
-    ScaleTrack::selectionOnly = selectionOnly;
+    m_factor = factor;
+    m_relative_to = relative_to;
+    m_selection_only = selectionOnly;
 }
 
 ScaleTrack::~ScaleTrack()
@@ -41,10 +41,10 @@ void ScaleTrack::undo()
     relocator.setParent(track);
     relocator.prepareToRelocate();
     int n=0;
-    while( (current_note = relocator.getNextNote()) and current_note != NULL)
+    while ((current_note = relocator.getNextNote()) and current_note != NULL)
     {
-        current_note->startTick = note_start[n];
-        current_note->endTick = note_end[n];
+        current_note->startTick = m_note_start[n];
+        current_note->endTick = m_note_end[n];
         n++;
     }
     track->reorderNoteVector();
@@ -55,21 +55,21 @@ void ScaleTrack::perform()
 {
     ASSERT(track != NULL);
     
-    const int noteAmount=track->m_notes.size();
+    const int noteAmount = track->m_notes.size();
     
-    for(int n=0; n<noteAmount; n++)
+    for (int n=0; n<noteAmount; n++)
     {
+        // skip unselected notes if we only want to affect selection
+        if (m_selection_only and not track->m_notes[n].isSelected()) continue; 
         
-        if (selectionOnly and !track->m_notes[n].isSelected()) continue; // skip unselected notes if we only want to affect selection
-        
-        note_start.push_back( track->m_notes[n].startTick );
-        note_end.push_back( track->m_notes[n].endTick );
+        m_note_start.push_back( track->m_notes[n].startTick );
+        m_note_end.push_back( track->m_notes[n].endTick );
         
         track->m_notes[n].startTick = (int)(
-                                          (track->m_notes[n].startTick-relative_to)*factor + relative_to
+                                          (track->m_notes[n].startTick-m_relative_to)*m_factor + m_relative_to
                                           );
         track->m_notes[n].endTick = (int)(
-                                        (track->m_notes[n].endTick-relative_to)*factor + relative_to
+                                        (track->m_notes[n].endTick-m_relative_to)*m_factor + m_relative_to
                                         );
         relocator.rememberNote(track->m_notes[n]);
         

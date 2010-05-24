@@ -167,13 +167,15 @@ namespace AriaMaestosa
             else if (not enabled)
                 AriaRender::setImageState(AriaRender::STATE_DISABLED);
             
-            if (centerX and drawable->image->width < width)
+            if (centerX and drawable->getImageWidth() < width)
             {
-                const int ajust = (width - drawable->image->width)/2;
-                drawable->move(x + drawable->hotspotX + ajust, y+y_offset);
+                const int ajust = (width - drawable->getImageWidth())/2;
+                drawable->move(x + drawable->getHotspotX() + ajust, y+y_offset);
             }
             else
-                drawable->move(x + drawable->hotspotX, y+y_offset);
+            {
+                drawable->move(x + drawable->getHotspotX(), y+y_offset);
+            }
             
             drawable->render();
         }
@@ -463,22 +465,20 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         }
 
         // if track is not collapsed, let the editor handle the mouse event too
-        if (!collapsed) getCurrentEditor()->mouseDown(mousex, mousey);
+        if (not collapsed) getCurrentEditor()->mouseDown(mousex, mousey);
 
-        if (!ImageProvider::imagesLoaded()) return true;
-        ASSERT(collapseDrawable->image!=NULL);
-        ASSERT(muteDrawable->image!=NULL);
+        if (not ImageProvider::imagesLoaded()) return true;
 
         const int winX = mousex.getRelativeTo(WINDOW);
         // collapse
-        if ( collapseButton->clickIsOnThisWidget(winX, mousey) )
+        if (collapseButton->clickIsOnThisWidget(winX, mousey))
         {
             collapsed = !collapsed;
             DisplayFrame::updateVerticalScrollbar();
         }
 
         // maximize button
-        if ( dockToolBar->getItem(0).clickIsOnThisWidget(winX, mousey) )
+        if (dockToolBar->getItem(0).clickIsOnThisWidget(winX, mousey))
         {
             if (not getCurrentSequence()->maximize_track_mode)
             {
@@ -1010,27 +1010,27 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     switch(grid->divider)
     {
         case 1:
-            grid_selection_x = mgrid_1->x;
+            grid_selection_x = mgrid_1->getX();
             break;
         case 2:
         case 3:
-            grid_selection_x = mgrid_2->x;
+            grid_selection_x = mgrid_2->getX();
             break;
         case 4:
         case 6:
-            grid_selection_x = mgrid_4->x;
+            grid_selection_x = mgrid_4->getX();
             break;
         case 8:
         case 12:
-            grid_selection_x = mgrid_8->x;
+            grid_selection_x = mgrid_8->getX();
             break;
         case 16:
         case 24:
-            grid_selection_x = mgrid_16->x;
+            grid_selection_x = mgrid_16->getX();
             break;
         case 32:
         case 48:
-            grid_selection_x = mgrid_32->x;
+            grid_selection_x = mgrid_32->getX();
             break;
         default: // length is chosen from drop-down menu
             grid_selection_x = -1;
@@ -1039,7 +1039,8 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     AriaRender::primitives();
     AriaRender::color(0,0,0);
     AriaRender::hollow_rect(grid_selection_x, y+15, grid_selection_x+16, y+30);
-    if (grid->isTriplet()) AriaRender::hollow_rect(mgrid_triplet->x, y+15, mgrid_triplet->x+16, y+30);
+    if (grid->isTriplet()) AriaRender::hollow_rect(mgrid_triplet->getX(),      y + 15,
+                                                   mgrid_triplet->getX() + 16, y + 30);
     
     // mark maximize mode as on if relevant
     if (getCurrentSequence()->maximize_track_mode)
