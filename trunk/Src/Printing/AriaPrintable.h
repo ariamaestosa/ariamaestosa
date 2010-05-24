@@ -19,7 +19,6 @@
 #define __ARIA_PRINTABLE_H__
 
 #include "Printing/wxEasyPrintWrapper.h"
-#include "wx/wx.h"
 #include "wx/print.h"
 
 /** @defgroup printing */

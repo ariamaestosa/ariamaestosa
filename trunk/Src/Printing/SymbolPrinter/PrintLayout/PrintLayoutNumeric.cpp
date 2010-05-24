@@ -14,13 +14,13 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "Printing/PrintLayout/PrintLayoutNumeric.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutNumeric.h"
 
-#include "Printing/PrintLayout/PrintLayoutAbstract.h"
 #include "Printing/AriaPrintable.h"
-#include "Printing/PrintableSequence.h"
-#include "Printing/PrintLayout/PrintLayoutLine.h"
-#include "Printing/PrintLayout/LayoutPage.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutAbstract.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutLine.h"
+#include "Printing/SymbolPrinter/PrintLayout/LayoutPage.h"
+#include "Printing/SymbolPrinter/SymbolPrintableSequence.h"
 
 using namespace AriaMaestosa;
 

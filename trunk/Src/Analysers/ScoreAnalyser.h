@@ -25,6 +25,7 @@
 #include <vector>
 
 #include "Analysers/SilenceAnalyser.h"
+#include "Editors/Editor.h"
 
 namespace AriaMaestosa
 {

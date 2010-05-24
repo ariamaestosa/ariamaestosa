@@ -20,7 +20,7 @@
 
 #include "Utils.h"
 #include "Analysers/SilenceAnalyser.h"
-#include "Printing/EditorPrintable.h"
+#include "Printing/SymbolPrinter/EditorPrintable.h"
 
 namespace AriaMaestosa
 {

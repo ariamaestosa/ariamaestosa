@@ -18,7 +18,6 @@
 #define __EDITOR_PRINTABLE_H__
 
 #include "Range.h"
-#include "Printing/PrintLayout/RelativePlacementManager.h"
 
 class wxDC;
 class wxPoint;
@@ -33,20 +32,8 @@ namespace AriaMaestosa
     class LineTrackRef;
     class PrintLayoutMeasure;
     class MeasureTrackReference;
+    class RelativePlacementManager;
     class Track;
-    
-    
-    /** Width of 1/1 and 1/2 silences */
-    const int RECTANGULAR_SILENCE_SIZE = 80;
-    
-    /** How much margin space to leave at the left of 1/1 and 1/2 silences*/
-    const int RECTANGULAR_SILENCE_LEFT_MARGIN = 40;
-    
-    /** size of the dot, for dotted notes */
-    const int DOT_SIZE = 14;
-    
-    /** Size of a note's head */
-    const int HEAD_RADIUS = 36;
     
     /**
       * @brief   base class for the various types of notations that can be printed
@@ -80,10 +67,6 @@ namespace AriaMaestosa
           * @param y1     The y at which the divider ends
           */
         void drawVerticalDivider(const int x, const int y0, const int y1);
-        
-        /** Utility function : renders an arc (half an ellipse) at the given coordinates */
-        static void renderArc(wxDC& dc, const int center_x, const int center_y,
-                              const int radius_x, const int radius_y);
         
         /** Utility function : renders the track name at the given coordinates */
         static void drawTrackName(wxDC& dc, const LineTrackRef& currentTrack, int x, int y0, int y1);
@@ -156,29 +139,12 @@ namespace AriaMaestosa
           */ 
         virtual void addUsedTicks(const PrintLayoutMeasure& measure, const int trackID,
                                   const MeasureTrackReference& trackRef, RelativePlacementManager& ticks) = 0;
-        
-        /** @brief utility method subclasses can call to render a silence at a given location */
-        void drawSilence(wxDC* dc, const Range<int> x, const int y, const int level_height,
-                         const int type, const bool triplet, const bool dotted);
+
         
         /** @brief draw some basic stuff common to all editors for the given layout element */
         void drawElementBase(LayoutElement& currElem, const LayoutLine& layoutLine,
                              const bool drawMeasureNumbers, const int y0, const int y1,
                              const int barYFrom, const int barYTo);
-        
-        /** @brief utility method to render a note's head */
-        static void drawNoteHead(wxDC& dc, const wxPoint headCenter, const bool hollowHead);
-
-        /**
-          * @brief  loads an image from file and scales it
-          * @return the scaled image
-          */
-        wxBitmap getScaledBitmap(const wxString& fileName, float scale);
-        
-        /**
-          * @brief  make an image more print-friendly on Windows
-          */
-        static wxImage getPrintableImage(const wxImage& image);
 
     };
 }

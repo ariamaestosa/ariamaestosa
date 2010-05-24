@@ -15,13 +15,13 @@
  */
 
 
-#include "Printing/PrintableSequence.h"
 #include "Printing/AriaPrintable.h"
-#include "Printing/PrintLayout/PrintLayoutAbstract.h"
-#include "Printing/PrintLayout/PrintLayoutNumeric.h"
-#include "Printing/PrintLayout/PrintLayoutLine.h"
-#include "Printing/TabPrint.h"
-#include "Printing/ScorePrint.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutAbstract.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutNumeric.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutLine.h"
+#include "Printing/SymbolPrinter/TabPrint.h"
+#include "Printing/SymbolPrinter/ScorePrint.h"
+#include "Printing/SymbolPrinter/SymbolPrintableSequence.h"
 
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
@@ -30,7 +30,7 @@ using namespace AriaMaestosa;
 
 #define DEBUG_DRAW 0
 
-PrintableSequence::PrintableSequence(Sequence* parent) : AbstractPrintableSequence(parent)
+SymbolPrintableSequence::SymbolPrintableSequence(Sequence* parent) : AbstractPrintableSequence(parent)
 {
     m_is_guitar_editor_used = false;
     m_is_score_editor_used = false;
@@ -41,7 +41,7 @@ PrintableSequence::PrintableSequence(Sequence* parent) : AbstractPrintableSequen
 
 // -----------------------------------------------------------------------------------------------------------------
 
-bool PrintableSequence::addTrack(Track* track, EditorType mode)
+bool SymbolPrintableSequence::addTrack(Track* track, EditorType mode)
 {
     ASSERT(track->sequence == m_sequence);
     ASSERT(not m_layout_calculated);
@@ -62,7 +62,7 @@ bool PrintableSequence::addTrack(Track* track, EditorType mode)
     }
     else
     {
-        std::cerr << "PrintableSequence::addTrack : mode " << mode << " not supported for printing" << std::endl;
+        std::cerr << "SymbolPrintableSequence::addTrack : mode " << mode << " not supported for printing" << std::endl;
         return false;
     }
     
@@ -71,7 +71,7 @@ bool PrintableSequence::addTrack(Track* track, EditorType mode)
 
 // -----------------------------------------------------------------------------------------------------------------
 
-void PrintableSequence::calculateLayout(bool checkRepetitions)
+void SymbolPrintableSequence::calculateLayout(bool checkRepetitions)
 {
     ASSERT( MAGIC_NUMBER_OK_FOR(&m_tracks) );
     
@@ -86,14 +86,14 @@ void PrintableSequence::calculateLayout(bool checkRepetitions)
 
 // -----------------------------------------------------------------------------------------------------------------
 
-EditorPrintable* PrintableSequence::getEditorPrintable(const int trackID)
+EditorPrintable* SymbolPrintableSequence::getEditorPrintable(const int trackID)
 {
     return m_editor_printables.get(trackID);
 }
 
 // ------------------------------------------------------------------------------------------------------------------
 
-void PrintableSequence::printLinesInArea(wxDC& dc, const int pageID, 
+void SymbolPrintableSequence::printLinesInArea(wxDC& dc, const int pageID, 
                                          const float notation_area_y0, const float notation_area_h,
                                          const int pageHeight, const int x0, const int x1)
 {
@@ -124,7 +124,7 @@ void PrintableSequence::printLinesInArea(wxDC& dc, const int pageID,
 
 // -----------------------------------------------------------------------------------------------------------------
 
-void PrintableSequence::printLine(LayoutLine& line, wxDC& dc)
+void SymbolPrintableSequence::printLine(LayoutLine& line, wxDC& dc)
 {        
     const int trackAmount = line.getTrackAmount();
     
@@ -198,14 +198,14 @@ void PrintableSequence::printLine(LayoutLine& line, wxDC& dc)
     
 // -----------------------------------------------------------------------------------------------------------------
 
-int PrintableSequence::getPageAmount() const
+int SymbolPrintableSequence::getPageAmount() const
 {
     return layoutPages.size();
 }
 
 // -----------------------------------------------------------------------------------------------------------------
 
-LayoutPage& PrintableSequence::getPage(const int id)
+LayoutPage& SymbolPrintableSequence::getPage(const int id)
 {
     ASSERT_E(id, >=, 0);
     ASSERT_E(id, <, (int)layoutPages.size());

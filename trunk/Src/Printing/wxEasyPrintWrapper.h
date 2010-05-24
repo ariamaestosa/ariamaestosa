@@ -15,17 +15,15 @@
  */
 
 
-#ifndef _WX_EASY_PRINT_WRAPPER_
-#define _WX_EASY_PRINT_WRAPPER_
+#ifndef __WX_EASY_PRINT_WRAPPER_H__
+#define __WX_EASY_PRINT_WRAPPER_H__
 
 #include "Utils.h"
-#include "wx/wx.h"
 #include "wx/print.h"
 
 namespace AriaMaestosa
 {
     const int MARGIN_UNDER_PAGE_HEADER = 200;
-    class PrintableSequence;
     
     /**
       * @brief abstract interface used by wxEasyPrintWrapper to communicate with its caller

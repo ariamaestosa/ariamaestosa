@@ -14,23 +14,20 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include <wx/wx.h>
-#include <wx/sizer.h>
-#include <wx/file.h>
-
-#include "Midi/Sequence.h"
 #include "AriaCore.h"
 
 #include "Analysers/ScoreAnalyser.h"
 #include "Midi/MeasureData.h"
+#include "Midi/Sequence.h"
 #include "Editors/GuitarEditor.h"
 #include "IO/IOUtils.h"
-#include "Printing/TabPrint.h"
 #include "Printing/AriaPrintable.h"
-#include "Printing/PrintLayout/PrintLayoutAbstract.h"
-#include "Printing/PrintLayout/PrintLayoutMeasure.h"
-#include "Printing/PrintLayout/PrintLayoutLine.h"
-#include "Printing/PrintLayout/RelativePlacementManager.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutAbstract.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutMeasure.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutLine.h"
+#include "Printing/SymbolPrinter/PrintLayout/RelativePlacementManager.h"
+#include "Printing/SymbolPrinter/TabPrint.h"
+#include "Printing/RenderRoutines.h"
 
 using namespace AriaMaestosa;
  
@@ -373,8 +370,9 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
             Range<int> silenceX = tickToX(trackID, currentLine, tick);
             if (silenceX.from == -1 or silenceX.to == -1) continue;
             
-            drawSilence(&dc, silenceX, (m_silences[n].m_type <= 2 ? silencesY : silencesY2), stringHeight,
-                        m_silences[n].m_type, m_silences[n].m_triplet, m_silences[n].m_dotted);
+            RenderRoutines::drawSilence(&dc, silenceX, (m_silences[n].m_type <= 2 ? silencesY : silencesY2),
+                                        stringHeight, m_silences[n].m_type, m_silences[n].m_triplet,
+                                        m_silences[n].m_dotted);
             
             //DEBUG
             //Range<int> symbolArea = tickToX(trackID, currentLine, tick);

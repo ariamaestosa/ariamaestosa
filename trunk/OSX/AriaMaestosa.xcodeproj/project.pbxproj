@@ -272,27 +272,6 @@
 		95711A2F1125D8D300104BF5 /* VolumeSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119621125D8D200104BF5 /* VolumeSlider.h */; };
 		95711A301125D8D300104BF5 /* AriaPrintable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119641125D8D300104BF5 /* AriaPrintable.cpp */; };
 		95711A311125D8D300104BF5 /* AriaPrintable.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119651125D8D300104BF5 /* AriaPrintable.h */; };
-		95711A321125D8D300104BF5 /* EditorPrintable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119661125D8D300104BF5 /* EditorPrintable.cpp */; };
-		95711A331125D8D300104BF5 /* EditorPrintable.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119671125D8D300104BF5 /* EditorPrintable.h */; };
-		95711A341125D8D300104BF5 /* PrintableSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119681125D8D300104BF5 /* PrintableSequence.cpp */; };
-		95711A351125D8D300104BF5 /* PrintableSequence.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119691125D8D300104BF5 /* PrintableSequence.h */; };
-		95711A361125D8D300104BF5 /* LayoutElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571196B1125D8D300104BF5 /* LayoutElement.cpp */; };
-		95711A371125D8D300104BF5 /* LayoutElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571196C1125D8D300104BF5 /* LayoutElement.h */; };
-		95711A381125D8D300104BF5 /* LayoutPage.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571196D1125D8D300104BF5 /* LayoutPage.h */; };
-		95711A391125D8D300104BF5 /* PrintLayoutAbstract.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571196E1125D8D300104BF5 /* PrintLayoutAbstract.cpp */; };
-		95711A3A1125D8D300104BF5 /* PrintLayoutAbstract.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571196F1125D8D300104BF5 /* PrintLayoutAbstract.h */; };
-		95711A3B1125D8D300104BF5 /* PrintLayoutLine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119701125D8D300104BF5 /* PrintLayoutLine.cpp */; };
-		95711A3C1125D8D300104BF5 /* PrintLayoutLine.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119711125D8D300104BF5 /* PrintLayoutLine.h */; };
-		95711A3D1125D8D300104BF5 /* PrintLayoutMeasure.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119721125D8D300104BF5 /* PrintLayoutMeasure.cpp */; };
-		95711A3E1125D8D300104BF5 /* PrintLayoutMeasure.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119731125D8D300104BF5 /* PrintLayoutMeasure.h */; };
-		95711A3F1125D8D300104BF5 /* PrintLayoutNumeric.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119741125D8D300104BF5 /* PrintLayoutNumeric.cpp */; };
-		95711A401125D8D300104BF5 /* PrintLayoutNumeric.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119751125D8D300104BF5 /* PrintLayoutNumeric.h */; };
-		95711A411125D8D300104BF5 /* RelativePlacementManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119761125D8D300104BF5 /* RelativePlacementManager.cpp */; };
-		95711A421125D8D300104BF5 /* RelativePlacementManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119771125D8D300104BF5 /* RelativePlacementManager.h */; };
-		95711A431125D8D300104BF5 /* ScorePrint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119781125D8D300104BF5 /* ScorePrint.cpp */; };
-		95711A441125D8D300104BF5 /* ScorePrint.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119791125D8D300104BF5 /* ScorePrint.h */; };
-		95711A451125D8D300104BF5 /* TabPrint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571197A1125D8D300104BF5 /* TabPrint.cpp */; };
-		95711A461125D8D300104BF5 /* TabPrint.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571197B1125D8D300104BF5 /* TabPrint.h */; };
 		95711A471125D8D300104BF5 /* ptr_vector.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571197C1125D8D300104BF5 /* ptr_vector.h */; };
 		95711A481125D8D300104BF5 /* Range.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571197D1125D8D300104BF5 /* Range.h */; };
 		95711A491125D8D300104BF5 /* Drawable.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571197F1125D8D300104BF5 /* Drawable.h */; };
@@ -463,27 +442,6 @@
 		95711AF91125D8D300104BF5 /* VolumeSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119621125D8D200104BF5 /* VolumeSlider.h */; };
 		95711AFA1125D8D300104BF5 /* AriaPrintable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119641125D8D300104BF5 /* AriaPrintable.cpp */; };
 		95711AFB1125D8D300104BF5 /* AriaPrintable.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119651125D8D300104BF5 /* AriaPrintable.h */; };
-		95711AFC1125D8D300104BF5 /* EditorPrintable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119661125D8D300104BF5 /* EditorPrintable.cpp */; };
-		95711AFD1125D8D300104BF5 /* EditorPrintable.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119671125D8D300104BF5 /* EditorPrintable.h */; };
-		95711AFE1125D8D300104BF5 /* PrintableSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119681125D8D300104BF5 /* PrintableSequence.cpp */; };
-		95711AFF1125D8D300104BF5 /* PrintableSequence.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119691125D8D300104BF5 /* PrintableSequence.h */; };
-		95711B001125D8D300104BF5 /* LayoutElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571196B1125D8D300104BF5 /* LayoutElement.cpp */; };
-		95711B011125D8D300104BF5 /* LayoutElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571196C1125D8D300104BF5 /* LayoutElement.h */; };
-		95711B021125D8D300104BF5 /* LayoutPage.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571196D1125D8D300104BF5 /* LayoutPage.h */; };
-		95711B031125D8D300104BF5 /* PrintLayoutAbstract.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571196E1125D8D300104BF5 /* PrintLayoutAbstract.cpp */; };
-		95711B041125D8D300104BF5 /* PrintLayoutAbstract.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571196F1125D8D300104BF5 /* PrintLayoutAbstract.h */; };
-		95711B051125D8D300104BF5 /* PrintLayoutLine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119701125D8D300104BF5 /* PrintLayoutLine.cpp */; };
-		95711B061125D8D300104BF5 /* PrintLayoutLine.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119711125D8D300104BF5 /* PrintLayoutLine.h */; };
-		95711B071125D8D300104BF5 /* PrintLayoutMeasure.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119721125D8D300104BF5 /* PrintLayoutMeasure.cpp */; };
-		95711B081125D8D300104BF5 /* PrintLayoutMeasure.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119731125D8D300104BF5 /* PrintLayoutMeasure.h */; };
-		95711B091125D8D300104BF5 /* PrintLayoutNumeric.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119741125D8D300104BF5 /* PrintLayoutNumeric.cpp */; };
-		95711B0A1125D8D300104BF5 /* PrintLayoutNumeric.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119751125D8D300104BF5 /* PrintLayoutNumeric.h */; };
-		95711B0B1125D8D300104BF5 /* RelativePlacementManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119761125D8D300104BF5 /* RelativePlacementManager.cpp */; };
-		95711B0C1125D8D300104BF5 /* RelativePlacementManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119771125D8D300104BF5 /* RelativePlacementManager.h */; };
-		95711B0D1125D8D300104BF5 /* ScorePrint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119781125D8D300104BF5 /* ScorePrint.cpp */; };
-		95711B0E1125D8D300104BF5 /* ScorePrint.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119791125D8D300104BF5 /* ScorePrint.h */; };
-		95711B0F1125D8D300104BF5 /* TabPrint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571197A1125D8D300104BF5 /* TabPrint.cpp */; };
-		95711B101125D8D300104BF5 /* TabPrint.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571197B1125D8D300104BF5 /* TabPrint.h */; };
 		95711B111125D8D300104BF5 /* ptr_vector.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571197C1125D8D300104BF5 /* ptr_vector.h */; };
 		95711B121125D8D300104BF5 /* Range.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571197D1125D8D300104BF5 /* Range.h */; };
 		95711B131125D8D300104BF5 /* Drawable.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571197F1125D8D300104BF5 /* Drawable.h */; };
@@ -513,6 +471,52 @@
 		9578398D11A9A1E500E2FABA /* AbstractPrintableSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9578398B11A9A1E500E2FABA /* AbstractPrintableSequence.cpp */; };
 		9578398E11A9A1E500E2FABA /* AbstractPrintableSequence.h in Headers */ = {isa = PBXBuildFile; fileRef = 9578398A11A9A1E500E2FABA /* AbstractPrintableSequence.h */; };
 		9578398F11A9A1E500E2FABA /* AbstractPrintableSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9578398B11A9A1E500E2FABA /* AbstractPrintableSequence.cpp */; };
+		95783A0711A9F87A00E2FABA /* EditorPrintable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957839F111A9F87A00E2FABA /* EditorPrintable.cpp */; };
+		95783A0811A9F87A00E2FABA /* EditorPrintable.h in Headers */ = {isa = PBXBuildFile; fileRef = 957839F211A9F87A00E2FABA /* EditorPrintable.h */; };
+		95783A0911A9F87A00E2FABA /* LayoutElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957839F411A9F87A00E2FABA /* LayoutElement.cpp */; };
+		95783A0A11A9F87A00E2FABA /* LayoutElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 957839F511A9F87A00E2FABA /* LayoutElement.h */; };
+		95783A0B11A9F87A00E2FABA /* LayoutPage.h in Headers */ = {isa = PBXBuildFile; fileRef = 957839F611A9F87A00E2FABA /* LayoutPage.h */; };
+		95783A0C11A9F87A00E2FABA /* PrintLayoutAbstract.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957839F711A9F87A00E2FABA /* PrintLayoutAbstract.cpp */; };
+		95783A0D11A9F87A00E2FABA /* PrintLayoutAbstract.h in Headers */ = {isa = PBXBuildFile; fileRef = 957839F811A9F87A00E2FABA /* PrintLayoutAbstract.h */; };
+		95783A0E11A9F87A00E2FABA /* PrintLayoutLine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957839F911A9F87A00E2FABA /* PrintLayoutLine.cpp */; };
+		95783A0F11A9F87A00E2FABA /* PrintLayoutLine.h in Headers */ = {isa = PBXBuildFile; fileRef = 957839FA11A9F87A00E2FABA /* PrintLayoutLine.h */; };
+		95783A1011A9F87A00E2FABA /* PrintLayoutMeasure.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957839FB11A9F87A00E2FABA /* PrintLayoutMeasure.cpp */; };
+		95783A1111A9F87A00E2FABA /* PrintLayoutMeasure.h in Headers */ = {isa = PBXBuildFile; fileRef = 957839FC11A9F87A00E2FABA /* PrintLayoutMeasure.h */; };
+		95783A1211A9F87A00E2FABA /* PrintLayoutNumeric.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957839FD11A9F87A00E2FABA /* PrintLayoutNumeric.cpp */; };
+		95783A1311A9F87A00E2FABA /* PrintLayoutNumeric.h in Headers */ = {isa = PBXBuildFile; fileRef = 957839FE11A9F87A00E2FABA /* PrintLayoutNumeric.h */; };
+		95783A1411A9F87A00E2FABA /* RelativePlacementManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957839FF11A9F87A00E2FABA /* RelativePlacementManager.cpp */; };
+		95783A1511A9F87A00E2FABA /* RelativePlacementManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 95783A0011A9F87A00E2FABA /* RelativePlacementManager.h */; };
+		95783A1611A9F87A00E2FABA /* ScorePrint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95783A0111A9F87A00E2FABA /* ScorePrint.cpp */; };
+		95783A1711A9F87A00E2FABA /* ScorePrint.h in Headers */ = {isa = PBXBuildFile; fileRef = 95783A0211A9F87A00E2FABA /* ScorePrint.h */; };
+		95783A1811A9F87A00E2FABA /* SymbolPrintableSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95783A0311A9F87A00E2FABA /* SymbolPrintableSequence.cpp */; };
+		95783A1911A9F87A00E2FABA /* SymbolPrintableSequence.h in Headers */ = {isa = PBXBuildFile; fileRef = 95783A0411A9F87A00E2FABA /* SymbolPrintableSequence.h */; };
+		95783A1A11A9F87A00E2FABA /* TabPrint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95783A0511A9F87A00E2FABA /* TabPrint.cpp */; };
+		95783A1B11A9F87A00E2FABA /* TabPrint.h in Headers */ = {isa = PBXBuildFile; fileRef = 95783A0611A9F87A00E2FABA /* TabPrint.h */; };
+		95783A1C11A9F87A00E2FABA /* EditorPrintable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957839F111A9F87A00E2FABA /* EditorPrintable.cpp */; };
+		95783A1D11A9F87A00E2FABA /* EditorPrintable.h in Headers */ = {isa = PBXBuildFile; fileRef = 957839F211A9F87A00E2FABA /* EditorPrintable.h */; };
+		95783A1E11A9F87A00E2FABA /* LayoutElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957839F411A9F87A00E2FABA /* LayoutElement.cpp */; };
+		95783A1F11A9F87A00E2FABA /* LayoutElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 957839F511A9F87A00E2FABA /* LayoutElement.h */; };
+		95783A2011A9F87A00E2FABA /* LayoutPage.h in Headers */ = {isa = PBXBuildFile; fileRef = 957839F611A9F87A00E2FABA /* LayoutPage.h */; };
+		95783A2111A9F87A00E2FABA /* PrintLayoutAbstract.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957839F711A9F87A00E2FABA /* PrintLayoutAbstract.cpp */; };
+		95783A2211A9F87A00E2FABA /* PrintLayoutAbstract.h in Headers */ = {isa = PBXBuildFile; fileRef = 957839F811A9F87A00E2FABA /* PrintLayoutAbstract.h */; };
+		95783A2311A9F87A00E2FABA /* PrintLayoutLine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957839F911A9F87A00E2FABA /* PrintLayoutLine.cpp */; };
+		95783A2411A9F87A00E2FABA /* PrintLayoutLine.h in Headers */ = {isa = PBXBuildFile; fileRef = 957839FA11A9F87A00E2FABA /* PrintLayoutLine.h */; };
+		95783A2511A9F87A00E2FABA /* PrintLayoutMeasure.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957839FB11A9F87A00E2FABA /* PrintLayoutMeasure.cpp */; };
+		95783A2611A9F87A00E2FABA /* PrintLayoutMeasure.h in Headers */ = {isa = PBXBuildFile; fileRef = 957839FC11A9F87A00E2FABA /* PrintLayoutMeasure.h */; };
+		95783A2711A9F87A00E2FABA /* PrintLayoutNumeric.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957839FD11A9F87A00E2FABA /* PrintLayoutNumeric.cpp */; };
+		95783A2811A9F87A00E2FABA /* PrintLayoutNumeric.h in Headers */ = {isa = PBXBuildFile; fileRef = 957839FE11A9F87A00E2FABA /* PrintLayoutNumeric.h */; };
+		95783A2911A9F87A00E2FABA /* RelativePlacementManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957839FF11A9F87A00E2FABA /* RelativePlacementManager.cpp */; };
+		95783A2A11A9F87A00E2FABA /* RelativePlacementManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 95783A0011A9F87A00E2FABA /* RelativePlacementManager.h */; };
+		95783A2B11A9F87A00E2FABA /* ScorePrint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95783A0111A9F87A00E2FABA /* ScorePrint.cpp */; };
+		95783A2C11A9F87A00E2FABA /* ScorePrint.h in Headers */ = {isa = PBXBuildFile; fileRef = 95783A0211A9F87A00E2FABA /* ScorePrint.h */; };
+		95783A2D11A9F87A00E2FABA /* SymbolPrintableSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95783A0311A9F87A00E2FABA /* SymbolPrintableSequence.cpp */; };
+		95783A2E11A9F87A00E2FABA /* SymbolPrintableSequence.h in Headers */ = {isa = PBXBuildFile; fileRef = 95783A0411A9F87A00E2FABA /* SymbolPrintableSequence.h */; };
+		95783A2F11A9F87A00E2FABA /* TabPrint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95783A0511A9F87A00E2FABA /* TabPrint.cpp */; };
+		95783A3011A9F87A00E2FABA /* TabPrint.h in Headers */ = {isa = PBXBuildFile; fileRef = 95783A0611A9F87A00E2FABA /* TabPrint.h */; };
+		95783A4211A9FB9800E2FABA /* RenderRoutines.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95783A4011A9FB9800E2FABA /* RenderRoutines.cpp */; };
+		95783A4311A9FB9800E2FABA /* RenderRoutines.h in Headers */ = {isa = PBXBuildFile; fileRef = 95783A4111A9FB9800E2FABA /* RenderRoutines.h */; };
+		95783A4411A9FB9800E2FABA /* RenderRoutines.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95783A4011A9FB9800E2FABA /* RenderRoutines.cpp */; };
+		95783A4511A9FB9800E2FABA /* RenderRoutines.h in Headers */ = {isa = PBXBuildFile; fileRef = 95783A4111A9FB9800E2FABA /* RenderRoutines.h */; };
 		959693381153E612001E321B /* ScoreAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959693341153E612001E321B /* ScoreAnalyser.cpp */; };
 		959693391153E612001E321B /* ScoreAnalyser.h in Headers */ = {isa = PBXBuildFile; fileRef = 959693351153E612001E321B /* ScoreAnalyser.h */; };
 		9596933A1153E612001E321B /* SilenceAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959693361153E612001E321B /* SilenceAnalyser.cpp */; };
@@ -839,27 +843,6 @@
 		957119621125D8D200104BF5 /* VolumeSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VolumeSlider.h; path = ../Src/Pickers/VolumeSlider.h; sourceTree = SOURCE_ROOT; };
 		957119641125D8D300104BF5 /* AriaPrintable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AriaPrintable.cpp; path = ../Src/Printing/AriaPrintable.cpp; sourceTree = SOURCE_ROOT; };
 		957119651125D8D300104BF5 /* AriaPrintable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AriaPrintable.h; path = ../Src/Printing/AriaPrintable.h; sourceTree = SOURCE_ROOT; };
-		957119661125D8D300104BF5 /* EditorPrintable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EditorPrintable.cpp; path = ../Src/Printing/EditorPrintable.cpp; sourceTree = SOURCE_ROOT; };
-		957119671125D8D300104BF5 /* EditorPrintable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditorPrintable.h; path = ../Src/Printing/EditorPrintable.h; sourceTree = SOURCE_ROOT; };
-		957119681125D8D300104BF5 /* PrintableSequence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrintableSequence.cpp; path = ../Src/Printing/PrintableSequence.cpp; sourceTree = SOURCE_ROOT; };
-		957119691125D8D300104BF5 /* PrintableSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrintableSequence.h; path = ../Src/Printing/PrintableSequence.h; sourceTree = SOURCE_ROOT; };
-		9571196B1125D8D300104BF5 /* LayoutElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LayoutElement.cpp; path = ../Src/Printing/PrintLayout/LayoutElement.cpp; sourceTree = SOURCE_ROOT; };
-		9571196C1125D8D300104BF5 /* LayoutElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LayoutElement.h; path = ../Src/Printing/PrintLayout/LayoutElement.h; sourceTree = SOURCE_ROOT; };
-		9571196D1125D8D300104BF5 /* LayoutPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LayoutPage.h; path = ../Src/Printing/PrintLayout/LayoutPage.h; sourceTree = SOURCE_ROOT; };
-		9571196E1125D8D300104BF5 /* PrintLayoutAbstract.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrintLayoutAbstract.cpp; path = ../Src/Printing/PrintLayout/PrintLayoutAbstract.cpp; sourceTree = SOURCE_ROOT; };
-		9571196F1125D8D300104BF5 /* PrintLayoutAbstract.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrintLayoutAbstract.h; path = ../Src/Printing/PrintLayout/PrintLayoutAbstract.h; sourceTree = SOURCE_ROOT; };
-		957119701125D8D300104BF5 /* PrintLayoutLine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrintLayoutLine.cpp; path = ../Src/Printing/PrintLayout/PrintLayoutLine.cpp; sourceTree = SOURCE_ROOT; };
-		957119711125D8D300104BF5 /* PrintLayoutLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrintLayoutLine.h; path = ../Src/Printing/PrintLayout/PrintLayoutLine.h; sourceTree = SOURCE_ROOT; };
-		957119721125D8D300104BF5 /* PrintLayoutMeasure.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrintLayoutMeasure.cpp; path = ../Src/Printing/PrintLayout/PrintLayoutMeasure.cpp; sourceTree = SOURCE_ROOT; };
-		957119731125D8D300104BF5 /* PrintLayoutMeasure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrintLayoutMeasure.h; path = ../Src/Printing/PrintLayout/PrintLayoutMeasure.h; sourceTree = SOURCE_ROOT; };
-		957119741125D8D300104BF5 /* PrintLayoutNumeric.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrintLayoutNumeric.cpp; path = ../Src/Printing/PrintLayout/PrintLayoutNumeric.cpp; sourceTree = SOURCE_ROOT; };
-		957119751125D8D300104BF5 /* PrintLayoutNumeric.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrintLayoutNumeric.h; path = ../Src/Printing/PrintLayout/PrintLayoutNumeric.h; sourceTree = SOURCE_ROOT; };
-		957119761125D8D300104BF5 /* RelativePlacementManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RelativePlacementManager.cpp; path = ../Src/Printing/PrintLayout/RelativePlacementManager.cpp; sourceTree = SOURCE_ROOT; };
-		957119771125D8D300104BF5 /* RelativePlacementManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RelativePlacementManager.h; path = ../Src/Printing/PrintLayout/RelativePlacementManager.h; sourceTree = SOURCE_ROOT; };
-		957119781125D8D300104BF5 /* ScorePrint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScorePrint.cpp; path = ../Src/Printing/ScorePrint.cpp; sourceTree = SOURCE_ROOT; };
-		957119791125D8D300104BF5 /* ScorePrint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScorePrint.h; path = ../Src/Printing/ScorePrint.h; sourceTree = SOURCE_ROOT; };
-		9571197A1125D8D300104BF5 /* TabPrint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TabPrint.cpp; path = ../Src/Printing/TabPrint.cpp; sourceTree = SOURCE_ROOT; };
-		9571197B1125D8D300104BF5 /* TabPrint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TabPrint.h; path = ../Src/Printing/TabPrint.h; sourceTree = SOURCE_ROOT; };
 		9571197C1125D8D300104BF5 /* ptr_vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ptr_vector.h; path = ../Src/ptr_vector.h; sourceTree = SOURCE_ROOT; };
 		9571197D1125D8D300104BF5 /* Range.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Range.h; path = ../Src/Range.h; sourceTree = SOURCE_ROOT; };
 		9571197F1125D8D300104BF5 /* Drawable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Drawable.h; path = ../Src/Renderers/Drawable.h; sourceTree = SOURCE_ROOT; };
@@ -921,6 +904,29 @@
 		95711BE41125D94900104BF5 /* white_corner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = white_corner.png; path = ../Resources/white_corner.png; sourceTree = SOURCE_ROOT; };
 		9578398A11A9A1E500E2FABA /* AbstractPrintableSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AbstractPrintableSequence.h; path = ../Src/Printing/AbstractPrintableSequence.h; sourceTree = SOURCE_ROOT; };
 		9578398B11A9A1E500E2FABA /* AbstractPrintableSequence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AbstractPrintableSequence.cpp; path = ../Src/Printing/AbstractPrintableSequence.cpp; sourceTree = SOURCE_ROOT; };
+		957839F111A9F87A00E2FABA /* EditorPrintable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EditorPrintable.cpp; path = ../Src/Printing/SymbolPrinter/EditorPrintable.cpp; sourceTree = SOURCE_ROOT; };
+		957839F211A9F87A00E2FABA /* EditorPrintable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditorPrintable.h; path = ../Src/Printing/SymbolPrinter/EditorPrintable.h; sourceTree = SOURCE_ROOT; };
+		957839F411A9F87A00E2FABA /* LayoutElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LayoutElement.cpp; path = ../Src/Printing/SymbolPrinter/PrintLayout/LayoutElement.cpp; sourceTree = SOURCE_ROOT; };
+		957839F511A9F87A00E2FABA /* LayoutElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LayoutElement.h; path = ../Src/Printing/SymbolPrinter/PrintLayout/LayoutElement.h; sourceTree = SOURCE_ROOT; };
+		957839F611A9F87A00E2FABA /* LayoutPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LayoutPage.h; path = ../Src/Printing/SymbolPrinter/PrintLayout/LayoutPage.h; sourceTree = SOURCE_ROOT; };
+		957839F711A9F87A00E2FABA /* PrintLayoutAbstract.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrintLayoutAbstract.cpp; path = ../Src/Printing/SymbolPrinter/PrintLayout/PrintLayoutAbstract.cpp; sourceTree = SOURCE_ROOT; };
+		957839F811A9F87A00E2FABA /* PrintLayoutAbstract.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrintLayoutAbstract.h; path = ../Src/Printing/SymbolPrinter/PrintLayout/PrintLayoutAbstract.h; sourceTree = SOURCE_ROOT; };
+		957839F911A9F87A00E2FABA /* PrintLayoutLine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrintLayoutLine.cpp; path = ../Src/Printing/SymbolPrinter/PrintLayout/PrintLayoutLine.cpp; sourceTree = SOURCE_ROOT; };
+		957839FA11A9F87A00E2FABA /* PrintLayoutLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrintLayoutLine.h; path = ../Src/Printing/SymbolPrinter/PrintLayout/PrintLayoutLine.h; sourceTree = SOURCE_ROOT; };
+		957839FB11A9F87A00E2FABA /* PrintLayoutMeasure.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrintLayoutMeasure.cpp; path = ../Src/Printing/SymbolPrinter/PrintLayout/PrintLayoutMeasure.cpp; sourceTree = SOURCE_ROOT; };
+		957839FC11A9F87A00E2FABA /* PrintLayoutMeasure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrintLayoutMeasure.h; path = ../Src/Printing/SymbolPrinter/PrintLayout/PrintLayoutMeasure.h; sourceTree = SOURCE_ROOT; };
+		957839FD11A9F87A00E2FABA /* PrintLayoutNumeric.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrintLayoutNumeric.cpp; path = ../Src/Printing/SymbolPrinter/PrintLayout/PrintLayoutNumeric.cpp; sourceTree = SOURCE_ROOT; };
+		957839FE11A9F87A00E2FABA /* PrintLayoutNumeric.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrintLayoutNumeric.h; path = ../Src/Printing/SymbolPrinter/PrintLayout/PrintLayoutNumeric.h; sourceTree = SOURCE_ROOT; };
+		957839FF11A9F87A00E2FABA /* RelativePlacementManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RelativePlacementManager.cpp; path = ../Src/Printing/SymbolPrinter/PrintLayout/RelativePlacementManager.cpp; sourceTree = SOURCE_ROOT; };
+		95783A0011A9F87A00E2FABA /* RelativePlacementManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RelativePlacementManager.h; path = ../Src/Printing/SymbolPrinter/PrintLayout/RelativePlacementManager.h; sourceTree = SOURCE_ROOT; };
+		95783A0111A9F87A00E2FABA /* ScorePrint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScorePrint.cpp; path = ../Src/Printing/SymbolPrinter/ScorePrint.cpp; sourceTree = SOURCE_ROOT; };
+		95783A0211A9F87A00E2FABA /* ScorePrint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScorePrint.h; path = ../Src/Printing/SymbolPrinter/ScorePrint.h; sourceTree = SOURCE_ROOT; };
+		95783A0311A9F87A00E2FABA /* SymbolPrintableSequence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SymbolPrintableSequence.cpp; path = ../Src/Printing/SymbolPrinter/SymbolPrintableSequence.cpp; sourceTree = SOURCE_ROOT; };
+		95783A0411A9F87A00E2FABA /* SymbolPrintableSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SymbolPrintableSequence.h; path = ../Src/Printing/SymbolPrinter/SymbolPrintableSequence.h; sourceTree = SOURCE_ROOT; };
+		95783A0511A9F87A00E2FABA /* TabPrint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TabPrint.cpp; path = ../Src/Printing/SymbolPrinter/TabPrint.cpp; sourceTree = SOURCE_ROOT; };
+		95783A0611A9F87A00E2FABA /* TabPrint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TabPrint.h; path = ../Src/Printing/SymbolPrinter/TabPrint.h; sourceTree = SOURCE_ROOT; };
+		95783A4011A9FB9800E2FABA /* RenderRoutines.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RenderRoutines.cpp; path = ../Src/Printing/RenderRoutines.cpp; sourceTree = SOURCE_ROOT; };
+		95783A4111A9FB9800E2FABA /* RenderRoutines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RenderRoutines.h; path = ../Src/Printing/RenderRoutines.h; sourceTree = SOURCE_ROOT; };
 		957C860F1127013D006AC7D3 /* Changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Changelog.txt; path = ../Changelog.txt; sourceTree = SOURCE_ROOT; };
 		957C861011270142006AC7D3 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = ../TODO.txt; sourceTree = SOURCE_ROOT; };
 		959693341153E612001E321B /* ScoreAnalyser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreAnalyser.cpp; path = ../Src/Analysers/ScoreAnalyser.cpp; sourceTree = SOURCE_ROOT; };
@@ -1262,45 +1268,18 @@
 		957119631125D8D300104BF5 /* Printing */ = {
 			isa = PBXGroup;
 			children = (
-				9571196A1125D8D300104BF5 /* PrintLayout */,
+				957839F011A9F87A00E2FABA /* SymbolPrinter */,
 				9578398B11A9A1E500E2FABA /* AbstractPrintableSequence.cpp */,
 				9578398A11A9A1E500E2FABA /* AbstractPrintableSequence.h */,
 				957119641125D8D300104BF5 /* AriaPrintable.cpp */,
 				957119651125D8D300104BF5 /* AriaPrintable.h */,
-				957119661125D8D300104BF5 /* EditorPrintable.cpp */,
-				957119671125D8D300104BF5 /* EditorPrintable.h */,
-				957119681125D8D300104BF5 /* PrintableSequence.cpp */,
-				957119691125D8D300104BF5 /* PrintableSequence.h */,
-				957119781125D8D300104BF5 /* ScorePrint.cpp */,
-				957119791125D8D300104BF5 /* ScorePrint.h */,
-				9571197A1125D8D300104BF5 /* TabPrint.cpp */,
-				9571197B1125D8D300104BF5 /* TabPrint.h */,
+				95783A4011A9FB9800E2FABA /* RenderRoutines.cpp */,
+				95783A4111A9FB9800E2FABA /* RenderRoutines.h */,
 				9544D68211582D5300E0A3BD /* wxEasyPrintWrapper.cpp */,
 				9544D68311582D5300E0A3BD /* wxEasyPrintWrapper.h */,
 			);
 			name = Printing;
 			path = ../Src/Printing;
-			sourceTree = SOURCE_ROOT;
-		};
-		9571196A1125D8D300104BF5 /* PrintLayout */ = {
-			isa = PBXGroup;
-			children = (
-				9571196B1125D8D300104BF5 /* LayoutElement.cpp */,
-				9571196C1125D8D300104BF5 /* LayoutElement.h */,
-				9571196D1125D8D300104BF5 /* LayoutPage.h */,
-				9571196E1125D8D300104BF5 /* PrintLayoutAbstract.cpp */,
-				9571196F1125D8D300104BF5 /* PrintLayoutAbstract.h */,
-				957119701125D8D300104BF5 /* PrintLayoutLine.cpp */,
-				957119711125D8D300104BF5 /* PrintLayoutLine.h */,
-				957119721125D8D300104BF5 /* PrintLayoutMeasure.cpp */,
-				957119731125D8D300104BF5 /* PrintLayoutMeasure.h */,
-				957119741125D8D300104BF5 /* PrintLayoutNumeric.cpp */,
-				957119751125D8D300104BF5 /* PrintLayoutNumeric.h */,
-				957119761125D8D300104BF5 /* RelativePlacementManager.cpp */,
-				957119771125D8D300104BF5 /* RelativePlacementManager.h */,
-			);
-			name = PrintLayout;
-			path = ../Src/Printing/PrintLayout;
 			sourceTree = SOURCE_ROOT;
 		};
 		9571197E1125D8D300104BF5 /* Renderers */ = {
@@ -1381,6 +1360,44 @@
 			);
 			name = Resources;
 			path = ../Resources;
+			sourceTree = SOURCE_ROOT;
+		};
+		957839F011A9F87A00E2FABA /* SymbolPrinter */ = {
+			isa = PBXGroup;
+			children = (
+				957839F311A9F87A00E2FABA /* PrintLayout */,
+				957839F111A9F87A00E2FABA /* EditorPrintable.cpp */,
+				957839F211A9F87A00E2FABA /* EditorPrintable.h */,
+				95783A0111A9F87A00E2FABA /* ScorePrint.cpp */,
+				95783A0211A9F87A00E2FABA /* ScorePrint.h */,
+				95783A0311A9F87A00E2FABA /* SymbolPrintableSequence.cpp */,
+				95783A0411A9F87A00E2FABA /* SymbolPrintableSequence.h */,
+				95783A0511A9F87A00E2FABA /* TabPrint.cpp */,
+				95783A0611A9F87A00E2FABA /* TabPrint.h */,
+			);
+			name = SymbolPrinter;
+			path = ../Src/Printing/SymbolPrinter;
+			sourceTree = SOURCE_ROOT;
+		};
+		957839F311A9F87A00E2FABA /* PrintLayout */ = {
+			isa = PBXGroup;
+			children = (
+				957839F411A9F87A00E2FABA /* LayoutElement.cpp */,
+				957839F511A9F87A00E2FABA /* LayoutElement.h */,
+				957839F611A9F87A00E2FABA /* LayoutPage.h */,
+				957839F711A9F87A00E2FABA /* PrintLayoutAbstract.cpp */,
+				957839F811A9F87A00E2FABA /* PrintLayoutAbstract.h */,
+				957839F911A9F87A00E2FABA /* PrintLayoutLine.cpp */,
+				957839FA11A9F87A00E2FABA /* PrintLayoutLine.h */,
+				957839FB11A9F87A00E2FABA /* PrintLayoutMeasure.cpp */,
+				957839FC11A9F87A00E2FABA /* PrintLayoutMeasure.h */,
+				957839FD11A9F87A00E2FABA /* PrintLayoutNumeric.cpp */,
+				957839FE11A9F87A00E2FABA /* PrintLayoutNumeric.h */,
+				957839FF11A9F87A00E2FABA /* RelativePlacementManager.cpp */,
+				95783A0011A9F87A00E2FABA /* RelativePlacementManager.h */,
+			);
+			name = PrintLayout;
+			path = ../Src/Printing/SymbolPrinter/PrintLayout;
 			sourceTree = SOURCE_ROOT;
 		};
 		959693331153E612001E321B /* Analysers */ = {
@@ -1553,17 +1570,6 @@
 				95711AF71125D8D300104BF5 /* TuningPicker.h in Headers */,
 				95711AF91125D8D300104BF5 /* VolumeSlider.h in Headers */,
 				95711AFB1125D8D300104BF5 /* AriaPrintable.h in Headers */,
-				95711AFD1125D8D300104BF5 /* EditorPrintable.h in Headers */,
-				95711AFF1125D8D300104BF5 /* PrintableSequence.h in Headers */,
-				95711B011125D8D300104BF5 /* LayoutElement.h in Headers */,
-				95711B021125D8D300104BF5 /* LayoutPage.h in Headers */,
-				95711B041125D8D300104BF5 /* PrintLayoutAbstract.h in Headers */,
-				95711B061125D8D300104BF5 /* PrintLayoutLine.h in Headers */,
-				95711B081125D8D300104BF5 /* PrintLayoutMeasure.h in Headers */,
-				95711B0A1125D8D300104BF5 /* PrintLayoutNumeric.h in Headers */,
-				95711B0C1125D8D300104BF5 /* RelativePlacementManager.h in Headers */,
-				95711B0E1125D8D300104BF5 /* ScorePrint.h in Headers */,
-				95711B101125D8D300104BF5 /* TabPrint.h in Headers */,
 				95711B111125D8D300104BF5 /* ptr_vector.h in Headers */,
 				95711B121125D8D300104BF5 /* Range.h in Headers */,
 				95711B131125D8D300104BF5 /* Drawable.h in Headers */,
@@ -1597,6 +1603,18 @@
 				95AFD7A9118F2279007DC6C7 /* TuningDialog.h in Headers */,
 				95AFD809118F2B07007DC6C7 /* AboutDialog.h in Headers */,
 				9578398E11A9A1E500E2FABA /* AbstractPrintableSequence.h in Headers */,
+				95783A1D11A9F87A00E2FABA /* EditorPrintable.h in Headers */,
+				95783A1F11A9F87A00E2FABA /* LayoutElement.h in Headers */,
+				95783A2011A9F87A00E2FABA /* LayoutPage.h in Headers */,
+				95783A2211A9F87A00E2FABA /* PrintLayoutAbstract.h in Headers */,
+				95783A2411A9F87A00E2FABA /* PrintLayoutLine.h in Headers */,
+				95783A2611A9F87A00E2FABA /* PrintLayoutMeasure.h in Headers */,
+				95783A2811A9F87A00E2FABA /* PrintLayoutNumeric.h in Headers */,
+				95783A2A11A9F87A00E2FABA /* RelativePlacementManager.h in Headers */,
+				95783A2C11A9F87A00E2FABA /* ScorePrint.h in Headers */,
+				95783A2E11A9F87A00E2FABA /* SymbolPrintableSequence.h in Headers */,
+				95783A3011A9F87A00E2FABA /* TabPrint.h in Headers */,
+				95783A4511A9FB9800E2FABA /* RenderRoutines.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1675,17 +1693,6 @@
 				95711A2D1125D8D300104BF5 /* TuningPicker.h in Headers */,
 				95711A2F1125D8D300104BF5 /* VolumeSlider.h in Headers */,
 				95711A311125D8D300104BF5 /* AriaPrintable.h in Headers */,
-				95711A331125D8D300104BF5 /* EditorPrintable.h in Headers */,
-				95711A351125D8D300104BF5 /* PrintableSequence.h in Headers */,
-				95711A371125D8D300104BF5 /* LayoutElement.h in Headers */,
-				95711A381125D8D300104BF5 /* LayoutPage.h in Headers */,
-				95711A3A1125D8D300104BF5 /* PrintLayoutAbstract.h in Headers */,
-				95711A3C1125D8D300104BF5 /* PrintLayoutLine.h in Headers */,
-				95711A3E1125D8D300104BF5 /* PrintLayoutMeasure.h in Headers */,
-				95711A401125D8D300104BF5 /* PrintLayoutNumeric.h in Headers */,
-				95711A421125D8D300104BF5 /* RelativePlacementManager.h in Headers */,
-				95711A441125D8D300104BF5 /* ScorePrint.h in Headers */,
-				95711A461125D8D300104BF5 /* TabPrint.h in Headers */,
 				95711A471125D8D300104BF5 /* ptr_vector.h in Headers */,
 				95711A481125D8D300104BF5 /* Range.h in Headers */,
 				95711A491125D8D300104BF5 /* Drawable.h in Headers */,
@@ -1719,6 +1726,18 @@
 				95AFD7AB118F2279007DC6C7 /* TuningDialog.h in Headers */,
 				95AFD80B118F2B07007DC6C7 /* AboutDialog.h in Headers */,
 				9578398C11A9A1E500E2FABA /* AbstractPrintableSequence.h in Headers */,
+				95783A0811A9F87A00E2FABA /* EditorPrintable.h in Headers */,
+				95783A0A11A9F87A00E2FABA /* LayoutElement.h in Headers */,
+				95783A0B11A9F87A00E2FABA /* LayoutPage.h in Headers */,
+				95783A0D11A9F87A00E2FABA /* PrintLayoutAbstract.h in Headers */,
+				95783A0F11A9F87A00E2FABA /* PrintLayoutLine.h in Headers */,
+				95783A1111A9F87A00E2FABA /* PrintLayoutMeasure.h in Headers */,
+				95783A1311A9F87A00E2FABA /* PrintLayoutNumeric.h in Headers */,
+				95783A1511A9F87A00E2FABA /* RelativePlacementManager.h in Headers */,
+				95783A1711A9F87A00E2FABA /* ScorePrint.h in Headers */,
+				95783A1911A9F87A00E2FABA /* SymbolPrintableSequence.h in Headers */,
+				95783A1B11A9F87A00E2FABA /* TabPrint.h in Headers */,
+				95783A4311A9FB9800E2FABA /* RenderRoutines.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1879,16 +1898,6 @@
 				95711AF61125D8D300104BF5 /* TuningPicker.cpp in Sources */,
 				95711AF81125D8D300104BF5 /* VolumeSlider.cpp in Sources */,
 				95711AFA1125D8D300104BF5 /* AriaPrintable.cpp in Sources */,
-				95711AFC1125D8D300104BF5 /* EditorPrintable.cpp in Sources */,
-				95711AFE1125D8D300104BF5 /* PrintableSequence.cpp in Sources */,
-				95711B001125D8D300104BF5 /* LayoutElement.cpp in Sources */,
-				95711B031125D8D300104BF5 /* PrintLayoutAbstract.cpp in Sources */,
-				95711B051125D8D300104BF5 /* PrintLayoutLine.cpp in Sources */,
-				95711B071125D8D300104BF5 /* PrintLayoutMeasure.cpp in Sources */,
-				95711B091125D8D300104BF5 /* PrintLayoutNumeric.cpp in Sources */,
-				95711B0B1125D8D300104BF5 /* RelativePlacementManager.cpp in Sources */,
-				95711B0D1125D8D300104BF5 /* ScorePrint.cpp in Sources */,
-				95711B0F1125D8D300104BF5 /* TabPrint.cpp in Sources */,
 				95711B141125D8D300104BF5 /* GLDrawable.cpp in Sources */,
 				95711B151125D8D300104BF5 /* GLImage.cpp in Sources */,
 				95711B171125D8D300104BF5 /* GLPane.cpp in Sources */,
@@ -1914,6 +1923,17 @@
 				95AFD7A8118F2279007DC6C7 /* TuningDialog.cpp in Sources */,
 				95AFD808118F2B07007DC6C7 /* AboutDialog.cpp in Sources */,
 				9578398F11A9A1E500E2FABA /* AbstractPrintableSequence.cpp in Sources */,
+				95783A1C11A9F87A00E2FABA /* EditorPrintable.cpp in Sources */,
+				95783A1E11A9F87A00E2FABA /* LayoutElement.cpp in Sources */,
+				95783A2111A9F87A00E2FABA /* PrintLayoutAbstract.cpp in Sources */,
+				95783A2311A9F87A00E2FABA /* PrintLayoutLine.cpp in Sources */,
+				95783A2511A9F87A00E2FABA /* PrintLayoutMeasure.cpp in Sources */,
+				95783A2711A9F87A00E2FABA /* PrintLayoutNumeric.cpp in Sources */,
+				95783A2911A9F87A00E2FABA /* RelativePlacementManager.cpp in Sources */,
+				95783A2B11A9F87A00E2FABA /* ScorePrint.cpp in Sources */,
+				95783A2D11A9F87A00E2FABA /* SymbolPrintableSequence.cpp in Sources */,
+				95783A2F11A9F87A00E2FABA /* TabPrint.cpp in Sources */,
+				95783A4411A9FB9800E2FABA /* RenderRoutines.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1995,16 +2015,6 @@
 				95711A2C1125D8D300104BF5 /* TuningPicker.cpp in Sources */,
 				95711A2E1125D8D300104BF5 /* VolumeSlider.cpp in Sources */,
 				95711A301125D8D300104BF5 /* AriaPrintable.cpp in Sources */,
-				95711A321125D8D300104BF5 /* EditorPrintable.cpp in Sources */,
-				95711A341125D8D300104BF5 /* PrintableSequence.cpp in Sources */,
-				95711A361125D8D300104BF5 /* LayoutElement.cpp in Sources */,
-				95711A391125D8D300104BF5 /* PrintLayoutAbstract.cpp in Sources */,
-				95711A3B1125D8D300104BF5 /* PrintLayoutLine.cpp in Sources */,
-				95711A3D1125D8D300104BF5 /* PrintLayoutMeasure.cpp in Sources */,
-				95711A3F1125D8D300104BF5 /* PrintLayoutNumeric.cpp in Sources */,
-				95711A411125D8D300104BF5 /* RelativePlacementManager.cpp in Sources */,
-				95711A431125D8D300104BF5 /* ScorePrint.cpp in Sources */,
-				95711A451125D8D300104BF5 /* TabPrint.cpp in Sources */,
 				95711A4A1125D8D300104BF5 /* GLDrawable.cpp in Sources */,
 				95711A4B1125D8D300104BF5 /* GLImage.cpp in Sources */,
 				95711A4D1125D8D300104BF5 /* GLPane.cpp in Sources */,
@@ -2030,6 +2040,17 @@
 				95AFD7AA118F2279007DC6C7 /* TuningDialog.cpp in Sources */,
 				95AFD80A118F2B07007DC6C7 /* AboutDialog.cpp in Sources */,
 				9578398D11A9A1E500E2FABA /* AbstractPrintableSequence.cpp in Sources */,
+				95783A0711A9F87A00E2FABA /* EditorPrintable.cpp in Sources */,
+				95783A0911A9F87A00E2FABA /* LayoutElement.cpp in Sources */,
+				95783A0C11A9F87A00E2FABA /* PrintLayoutAbstract.cpp in Sources */,
+				95783A0E11A9F87A00E2FABA /* PrintLayoutLine.cpp in Sources */,
+				95783A1011A9F87A00E2FABA /* PrintLayoutMeasure.cpp in Sources */,
+				95783A1211A9F87A00E2FABA /* PrintLayoutNumeric.cpp in Sources */,
+				95783A1411A9F87A00E2FABA /* RelativePlacementManager.cpp in Sources */,
+				95783A1611A9F87A00E2FABA /* ScorePrint.cpp in Sources */,
+				95783A1811A9F87A00E2FABA /* SymbolPrintableSequence.cpp in Sources */,
+				95783A1A11A9F87A00E2FABA /* TabPrint.cpp in Sources */,
+				95783A4211A9FB9800E2FABA /* RenderRoutines.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,24 +14,23 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "wx/wx.h"
-#include "wx/sizer.h"
-#include "wx/file.h"
+//#include "wx/sizer.h"
+//#include "wx/file.h"
 #include "wx/filename.h"
 
-#include "Midi/Sequence.h"
 #include "AriaCore.h"
-
-#include "Midi/MeasureData.h"
-#include "Editors/ScoreEditor.h"
 #include "Analysers/ScoreAnalyser.h"
+#include "Editors/ScoreEditor.h"
 #include "IO/IOUtils.h"
-#include "Printing/ScorePrint.h"
+#include "Midi/MeasureData.h"
+#include "Midi/Sequence.h"
 #include "Printing/AriaPrintable.h"
-#include "Printing/PrintLayout/PrintLayoutAbstract.h"
-#include "Printing/PrintLayout/PrintLayoutMeasure.h"
-#include "Printing/PrintLayout/PrintLayoutLine.h"
-#include "Printing/PrintLayout/RelativePlacementManager.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutAbstract.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutMeasure.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutLine.h"
+#include "Printing/SymbolPrinter/PrintLayout/RelativePlacementManager.h"
+#include "Printing/SymbolPrinter/ScorePrint.h"
+#include "Printing/RenderRoutines.h"
 
 namespace AriaMaestosa
 {
@@ -242,7 +241,7 @@ namespace AriaMaestosa
         */
         
         wxImage inputGClef(path, wxBITMAP_TYPE_PNG);
-        wxImage gclef = EditorPrintable::getPrintableImage(inputGClef);
+        wxImage gclef = RenderRoutines::getPrintableImage(inputGClef);
         wxBitmap scaled = wxBitmap(gclef.Scale(gclef.GetWidth()*scale, gclef.GetHeight()*scale),wxIMAGE_QUALITY_HIGH);
         
 
@@ -296,7 +295,7 @@ namespace AriaMaestosa
         wxString path =  getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("FKey.png");
         
         wxImage inputFClef(path, wxBITMAP_TYPE_PNG);
-        wxImage fclef = EditorPrintable::getPrintableImage(inputFClef);
+        wxImage fclef = RenderRoutines::getPrintableImage(inputFClef);
         wxBitmap scaled = wxBitmap(fclef.Scale(fclef.GetWidth()*scale, fclef.GetHeight()*scale),wxIMAGE_QUALITY_HIGH);
         /*
         static wxBitmap fclef( , wxBITMAP_TYPE_PNG );
@@ -331,7 +330,7 @@ namespace AriaMaestosa
         if (x.from < 0) return; // this part of score is not printed (e.g. is in a repetition)
         ASSERT(x.to != -1);
         
-        g_printable->drawSilence(global_dc, x, silences_y, g_line_height, type, triplet, dotted);
+        RenderRoutines::drawSilence(global_dc, x, silences_y, g_line_height, type, triplet, dotted);
     }
     
 #if 0
@@ -1307,7 +1306,7 @@ namespace AriaMaestosa
                 }
                 else
                 {
-                    EditorPrintable::drawNoteHead(dc, headLocation, noteRenderInfo.hollow_head);
+                    RenderRoutines::drawNoteHead(dc, headLocation, noteRenderInfo.hollow_head);
                 }
                 noteRenderInfo.setY(notey+HEAD_RADIUS/2.0); // FIXME: why +HEAD_RADIUS/2.0 ?
                 
@@ -1435,7 +1434,7 @@ namespace AriaMaestosa
 
                 const int center_x = (tiedToPixel + tiedXStart)/2;
                 const int radius_x = abs(tiedToPixel - tiedXStart)/2;
-                renderArc(dc, center_x, base_y, radius_x, show_above ? -50 : 50);
+                RenderRoutines::renderArc(dc, center_x, base_y, radius_x, show_above ? -50 : 50);
             }
             
             // beam
@@ -1494,7 +1493,7 @@ namespace AriaMaestosa
                 
                 const int base_y = LEVEL_TO_Y(noteRenderInfo.triplet_arc_level) + (noteRenderInfo.triplet_show_above ? -80 : 90);
                 
-                renderArc(dc, center_x, base_y, radius_x, noteRenderInfo.triplet_show_above ? -80 : 80);
+                RenderRoutines::renderArc(dc, center_x, base_y, radius_x, noteRenderInfo.triplet_show_above ? -80 : 80);
                 dc.SetTextForeground( wxColour(0,0,0) );
                 // FIXME: use font size instead of hardcoded constant
                 dc.DrawText( wxT("3"), center_x - 25, base_y + (noteRenderInfo.triplet_show_above ? -75 : -20) );

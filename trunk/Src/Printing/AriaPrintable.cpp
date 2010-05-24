@@ -2,17 +2,18 @@
 
 #include "Printing/AriaPrintable.h"
 #include "Printing/AbstractPrintableSequence.h"
-#include "Printing/PrintLayout/PrintLayoutLine.h"
-#include "Printing/TabPrint.h"
-#include "Printing/ScorePrint.h"
-#include "Printing/PrintLayout/LayoutElement.h"
-#include "Printing/PrintLayout/LayoutPage.h"
+#include "Printing/RenderRoutines.h"
+//#include "Printing/PrintLayout/PrintLayoutLine.h"
+//#include "Printing/TabPrint.h"
+//#include "Printing/ScorePrint.h"
+//#include "Printing/PrintLayout/LayoutElement.h"
+//#include "Printing/PrintLayout/LayoutPage.h"
 
 #include "GUI/MainFrame.h"
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
 
-#include "wx/wx.h"
+//#include "wx/wx.h"
 #include "wx/print.h"
 #include "wx/printdlg.h"
 #include <iostream>
@@ -286,7 +287,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
         
         dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
         dc.SetBrush( *wxBLACK_BRUSH );
-        EditorPrintable::drawNoteHead(dc, tempoHeadLocation, false /* not hollow head */);
+        RenderRoutines::drawNoteHead(dc, tempoHeadLocation, false /* not hollow head */);
         
         const Sequence* seq = m_seq->getSequence();
         const int tempo = seq->getTempo();
