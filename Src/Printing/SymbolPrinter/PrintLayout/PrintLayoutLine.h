@@ -19,15 +19,15 @@
 
 #include "Utils.h"
 #include "ptr_vector.h"
-#include "Printing/PrintLayout/LayoutElement.h"
-#include "Printing/PrintLayout/PrintLayoutMeasure.h"
+#include "Printing/SymbolPrinter/PrintLayout/LayoutElement.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutMeasure.h"
 
 namespace AriaMaestosa
 {    
     class Track;
     class LayoutElement;
     class LayoutLine;
-    class PrintableSequence;
+    class SymbolPrintableSequence;
     
     /** Contains the absolute coords part of a LineTrackRef */
     struct TrackCoords
@@ -147,7 +147,7 @@ namespace AriaMaestosa
         ptr_vector<LineTrackRef> m_tracks;
         ptr_vector<PrintLayoutMeasure, REF> m_measures;
         
-        PrintableSequence* m_printable;
+        SymbolPrintableSequence* m_printable;
         
         std::vector<LayoutElement> m_layout_elements;
 
@@ -167,7 +167,7 @@ namespace AriaMaestosa
           */
         OwnerPtr<LineCoords> m_line_coords;
         
-        LayoutLine(PrintableSequence* parent, ptr_vector<PrintLayoutMeasure, REF>& measures);
+        LayoutLine(SymbolPrintableSequence* parent, ptr_vector<PrintLayoutMeasure, REF>& measures);
 
         
         void addLayoutElement( const LayoutElement& newElem );

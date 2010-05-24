@@ -19,7 +19,7 @@
 #define __LAYOUT_PAGE_H__
 
 #include "ptr_vector.h"
-#include "Printing/PrintLayout/PrintLayoutLine.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutLine.h"
 
 namespace AriaMaestosa
 {

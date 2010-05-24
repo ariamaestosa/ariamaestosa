@@ -19,7 +19,7 @@
 #ifndef _PRINT_LAYOUT_MEASURE_H_
 #define _PRINT_LAYOUT_MEASURE_H_
 
-#include "Printing/PrintLayout/RelativePlacementManager.h"
+#include "Printing/SymbolPrinter/PrintLayout/RelativePlacementManager.h"
 #include "ptr_vector.h"
 
 namespace AriaMaestosa

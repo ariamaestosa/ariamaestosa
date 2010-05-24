@@ -15,11 +15,11 @@
  */
 
 #include "Printing/AriaPrintable.h"
-#include "Printing/EditorPrintable.h"
-#include "Printing/PrintLayout/PrintLayoutLine.h"
-#include "Printing/PrintLayout/LayoutElement.h"
-#include "Printing/PrintLayout/PrintLayoutMeasure.h"
-#include "Printing/PrintableSequence.h"
+#include "Printing/SymbolPrinter/EditorPrintable.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutLine.h"
+#include "Printing/SymbolPrinter/PrintLayout/LayoutElement.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutMeasure.h"
+#include "Printing/SymbolPrinter/SymbolPrintableSequence.h"
 
 using namespace AriaMaestosa;
 
@@ -117,7 +117,7 @@ int LineTrackRef::getLastNoteInElement(LayoutElement* layoutElement)
 #pragma mark -
 #pragma mark LayoutLine
 
-LayoutLine::LayoutLine(PrintableSequence* parent, ptr_vector<PrintLayoutMeasure, REF>& measures)
+LayoutLine::LayoutLine(SymbolPrintableSequence* parent, ptr_vector<PrintLayoutMeasure, REF>& measures)
 {
     m_level_height = -1;
     m_printable = parent;

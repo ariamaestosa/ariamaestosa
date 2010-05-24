@@ -1,16 +1,18 @@
-#include "Printing/PrintLayout/PrintLayoutAbstract.h"
-#include "Printing/AriaPrintable.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutAbstract.h"
+
 
 #include "Dialogs/WaitWindow.h"
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
 #include "Midi/MeasureData.h"
 #include "Editors/GuitarEditor.h"
-#include "Printing/ScorePrint.h"
-#include "Printing/TabPrint.h"
-#include "Printing/PrintLayout/PrintLayoutMeasure.h"
-#include "Printing/PrintableSequence.h"
-#include "Printing/PrintLayout/PrintLayoutLine.h"
+#include "Printing/AriaPrintable.h"
+#include "Printing/SymbolPrinter/ScorePrint.h"
+#include "Printing/SymbolPrinter/TabPrint.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutMeasure.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutLine.h"
+#include "Printing/SymbolPrinter/SymbolPrintableSequence.h"
+
 #include "AriaCore.h"
 
 #include <iostream>
@@ -670,7 +672,7 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
 #pragma mark public
 #endif
 
-PrintLayoutAbstract::PrintLayoutAbstract(PrintableSequence* sequence)
+PrintLayoutAbstract::PrintLayoutAbstract(SymbolPrintableSequence* sequence)
 {
     m_sequence = sequence;
 }

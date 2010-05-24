@@ -14,7 +14,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "Printing/PrintLayout/LayoutElement.h"
+#include "Printing/SymbolPrinter/PrintLayout/LayoutElement.h"
 
 using namespace AriaMaestosa;
 

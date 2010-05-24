@@ -19,7 +19,7 @@
 #include "Midi/MeasureData.h"
 #include "Midi/Track.h"
 
-#include "Printing/PrintLayout/PrintLayoutAbstract.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutAbstract.h"
 
 namespace AriaMaestosa
 {
@@ -29,6 +29,7 @@ namespace AriaMaestosa
 #define PLM_CHATTY 1
 
 using namespace AriaMaestosa;
+
 // -------------------------------------------------------------------------------------------
     
 PrintLayoutMeasure::PrintLayoutMeasure(const int measID) :

@@ -19,16 +19,16 @@
 #include "IO/IOUtils.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
-#include "Printing/TabPrint.h"
 #include "Printing/AriaPrintable.h"
-#include "Printing/PrintableSequence.h"
+#include "Printing/SymbolPrinter/TabPrint.h"
+#include "Printing/SymbolPrinter/SymbolPrintableSequence.h"
 
 namespace AriaMaestosa
 {
     
     /** after dialog is shown, and user clicked 'OK', this is called to launch the actual printing */
     void doPrint(std::vector< std::pair<Track*, EditorType> > what_to_print, AriaPrintable* printable,
-                 PrintableSequence* printable_sequence, bool detect_repetitions)
+                 SymbolPrintableSequence* printable_sequence, bool detect_repetitions)
     {        
         WaitWindow::show(_("Calculating print layout...") );
         
@@ -192,7 +192,7 @@ namespace AriaMaestosa
 
         wxStaticText* m_page_setup_summary;
         
-        PrintableSequence* m_printable_sequence;
+        SymbolPrintableSequence* m_printable_sequence;
         AriaPrintable*     m_printable;
         
     public:
@@ -204,7 +204,7 @@ namespace AriaMaestosa
                                   _("Print musical notation"),
                                   wxPoint(200,200), wxSize(500, 400), wxCAPTION | wxFRAME_FLOAT_ON_PARENT)
         {
-            m_printable_sequence = new PrintableSequence(sequence);
+            m_printable_sequence = new SymbolPrintableSequence(sequence);
             m_current_sequence = sequence;
             m_detect_repetitions = false;
 

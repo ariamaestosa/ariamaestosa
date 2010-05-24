@@ -20,9 +20,9 @@
 
 #include "Editors/Editor.h"
 #include "Printing/AbstractPrintableSequence.h"
-#include "Printing/PrintLayout/LayoutPage.h"
-#include "Printing/PrintLayout/PrintLayoutNumeric.h"
-#include "Printing/PrintLayout/PrintLayoutAbstract.h"
+#include "Printing/SymbolPrinter/PrintLayout/LayoutPage.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutNumeric.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutAbstract.h"
 
 class wxDC;
 
@@ -40,7 +40,7 @@ namespace AriaMaestosa
       * to print anything.
       * @ingroup printing
       */
-    class PrintableSequence : public AbstractPrintableSequence
+    class SymbolPrintableSequence : public AbstractPrintableSequence
     {
         ptr_vector<LayoutPage> layoutPages;
         
@@ -73,7 +73,7 @@ namespace AriaMaestosa
           * @param parent   Parent sequence of this printable sequence.
           *                 All tracks added later must belong to this Sequence.
           */
-        PrintableSequence(Sequence* parent);
+        SymbolPrintableSequence(Sequence* parent);
         
         /**
           * @brief Prepare the abstract layout for this sequence.

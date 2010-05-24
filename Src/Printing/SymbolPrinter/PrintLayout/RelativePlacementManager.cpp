@@ -22,7 +22,8 @@
 #include <cmath>
 #include <cassert>
 
-#include "Printing/EditorPrintable.h"
+#include "Printing/RenderRoutines.h"
+#include "Printing/SymbolPrinter/EditorPrintable.h"
 
 #if 0
 #pragma mark Private

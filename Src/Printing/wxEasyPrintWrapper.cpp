@@ -1,7 +1,7 @@
 #include "AriaCore.h"
 
 #include "PreferencesData.h"
-#include "Printing/PrintableSequence.h"
+#include "Printing/AbstractPrintableSequence.h"
 #include "Printing/wxEasyPrintWrapper.h"
 #include "wx/paper.h"
 #include "wx/printdlg.h"

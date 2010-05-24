@@ -15,18 +15,17 @@
  */
 
 
-#ifndef _print_layout_h_
-#define _print_layout_h_
+#ifndef __PRINT_LAYOUT_H__
+#define __PRINT_LAYOUT_H__
 
 #include <vector>
 #include <map>
 #include "ptr_vector.h"
-#include "wx/wx.h"
 
-#include "Printing/PrintLayout/LayoutElement.h"
-#include "Printing/PrintLayout/LayoutPage.h"
-#include "Printing/PrintLayout/PrintLayoutLine.h"
-#include "Printing/PrintLayout/PrintLayoutMeasure.h"
+#include "Printing/SymbolPrinter/PrintLayout/LayoutElement.h"
+#include "Printing/SymbolPrinter/PrintLayout/LayoutPage.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutLine.h"
+#include "Printing/SymbolPrinter/PrintLayout/PrintLayoutMeasure.h"
 
 
 namespace AriaMaestosa
@@ -34,7 +33,7 @@ namespace AriaMaestosa
     const int MARGIN_AT_MEASURE_BEGINNING = 50;
 
     class Track;
-    class PrintableSequence;
+    class SymbolPrintableSequence;
     class PrintLayoutMeasure;
     
     int  getRepetitionMinimalLength();
@@ -48,7 +47,7 @@ namespace AriaMaestosa
     class PrintLayoutAbstract
     {
         /** Reference to the parent sequence */
-        PrintableSequence* m_sequence;
+        SymbolPrintableSequence* m_sequence;
         
         /** holds all measure objects from this sequence (there are not multiple copies of these
           * objects for each measure number even if multiple tracks are being printed) 
@@ -104,7 +103,7 @@ namespace AriaMaestosa
           * Constructs a PrintLayoutAbstract object that can lay a given sequence within pages
           * @param sequence   which sequence this layout manager will analyse and fit
           */
-        PrintLayoutAbstract(PrintableSequence* sequence);
+        PrintLayoutAbstract(SymbolPrintableSequence* sequence);
         
         /**
           * @brief                  main function called from other classes
