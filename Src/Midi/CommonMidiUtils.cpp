@@ -245,12 +245,14 @@ bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bo
 
         // --------------------------------- default tempo --------------------
 
+        {
         jdkmidi::MIDITimedBigMessage m;
         m.SetTime( 0 );
         m.SetTempo32( sequence->getTempo() * 32 ); // tempo stored as bpm * 32, giving 1/32 bpm resolution
 
         if ( !tracks.GetTrack(0)->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl;  return false; }
-
+        }
+    
         if (!playing)
         {
             // --------------------------------- copyright and song name ---------------------------------
