@@ -555,9 +555,11 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     currentLine->setLevelFrom(current_height);
 
     // add line header
+    {
     LayoutElement el = generateLineHeaderElement();
     current_width += el.width_in_print_units;
     currentLine->addLayoutElement( el );
+    }
     
     bool first_line = true;
     
