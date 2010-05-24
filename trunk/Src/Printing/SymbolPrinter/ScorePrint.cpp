@@ -17,6 +17,8 @@
 //#include "wx/sizer.h"
 //#include "wx/file.h"
 #include "wx/filename.h"
+#include "wx/dc.h"
+#include "wx/image.h"
 
 #include "AriaCore.h"
 #include "Analysers/ScoreAnalyser.h"

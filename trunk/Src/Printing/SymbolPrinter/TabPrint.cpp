@@ -29,6 +29,8 @@
 #include "Printing/SymbolPrinter/TabPrint.h"
 #include "Printing/RenderRoutines.h"
 
+#include "wx/dc.h"
+
 using namespace AriaMaestosa;
  
 const int CHAR_MARGIN = 35;
