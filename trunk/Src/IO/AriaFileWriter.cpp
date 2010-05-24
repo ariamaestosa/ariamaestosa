@@ -18,7 +18,7 @@
 
 #include "Midi/Sequence.h"
 
-#include "wx/wx.h"
+#include "wx/string.h"
 #include "wx/wfstream.h"
 #include "irrXML/irrXML.h"
 

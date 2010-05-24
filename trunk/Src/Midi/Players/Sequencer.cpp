@@ -14,7 +14,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "wx/wx.h"
+#include "wx/thread.h"
 
 #include "Midi/Players/Sequencer.h"
 #include "Midi/CommonMidiUtils.h"

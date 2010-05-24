@@ -24,8 +24,11 @@
   * @brief This module contains all dialogs/frames that can appear over the main frame.
   */
 
-#include "wx/wx.h"
+#include "wx/dialog.h"
 #include "Utils.h"
+
+class wxBitmapButton;
+class wxTextCtrl;
 
 namespace AriaMaestosa
 {

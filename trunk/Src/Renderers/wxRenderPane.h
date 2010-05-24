@@ -15,12 +15,14 @@
  */
 
 #ifdef RENDERER_WXWIDGETS
+
+#ifndef __WX_RENDER_PANE_H__
+#define __WX_RENDER_PANE_H__
+
 #include "Utils.h"
+#include "wx/panel.h"
 
-#ifndef _wxrender_
-#define _wxrender_
-
-#include "wx/wx.h"
+class wxSizeEvent;
 
 namespace AriaMaestosa
 {

@@ -16,25 +16,22 @@
 
 #include "Utils.h"
 
-#include "wx/wx.h"
 #include "wx/numdlg.h"
+#include "wx/menu.h"
+#include "wx/msgdlg.h"
 
 #include "Actions/EditAction.h"
 #include "Actions/InsertEmptyMeasures.h"
 #include "Actions/RemoveMeasures.h"
-
 #include "AriaCore.h"
-
+#include "Editors/Editor.h"
 #include "GUI/MeasureBar.h"
-#include "Renderers/RenderAPI.h"
-
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 #include "Midi/TimeSigChange.h"
 #include "Midi/Players/PlatformMidiManager.h"
-
-#include "Editors/Editor.h"
+#include "Renderers/RenderAPI.h"
 
 #include <iostream>
 

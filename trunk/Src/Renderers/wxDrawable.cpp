@@ -23,10 +23,12 @@
 
 #include "AriaCore.h"
 
-#include "wx/wx.h"
+#include "wx/dc.h"
+#include "wx/image.h"
+#include "wx/string.h"
 
-
-namespace AriaMaestosa {
+namespace AriaMaestosa
+{
 
 AriaRender::ImageState g_state;
     
@@ -36,6 +38,11 @@ void drawable_set_state(AriaRender::ImageState arg)
     g_state = arg;
 }
 
+}
+
+using namespace AriaMaestosa;
+
+// -------------------------------------------------------------------------------------------------------
 
 Drawable::Drawable(Image* image_arg)
 {
@@ -57,6 +64,8 @@ Drawable::Drawable(Image* image_arg)
     else image=NULL;
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 Drawable::Drawable(wxString imagePath)
 {
     x=0;
@@ -76,10 +85,14 @@ Drawable::Drawable(wxString imagePath)
     image = new Image(imagePath);
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 Drawable::~Drawable()
 {
     if (delete_image) delete image;
 }
+
+// -------------------------------------------------------------------------------------------------------
 
 void Drawable::setFlip(bool x, bool y)
 {
@@ -87,11 +100,15 @@ void Drawable::setFlip(bool x, bool y)
     yflip=y;
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 void Drawable::setHotspot(int x, int y)
 {
     hotspotX=x;
     hotspotY=y;
 }
+
+// -------------------------------------------------------------------------------------------------------
 
 void Drawable::move(int x, int y)
 {
@@ -99,17 +116,23 @@ void Drawable::move(int x, int y)
     Drawable::y=y;
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 void Drawable::scale(float x, float y)
 {
     Drawable::xscale=x;
     Drawable::yscale=y;
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 void Drawable::scale(float k)
 {
     Drawable::xscale=k;
     Drawable::yscale=k;
 }
+
+// -------------------------------------------------------------------------------------------------------
 
 void Drawable::setImage(Image* image)
 {
@@ -120,6 +143,8 @@ void Drawable::rotate(int angle)
 {
     Drawable::angle=angle;
 }
+
+// -------------------------------------------------------------------------------------------------------
 
 void Drawable::render()
 {
@@ -159,16 +184,20 @@ void Drawable::render()
 
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 int Drawable::getImageWidth()
 {
     return image->width;
 }
+
+// -------------------------------------------------------------------------------------------------------
+
 int Drawable::getImageHeight()
 {
     return image->height;
 }
 
-
-}
+// -------------------------------------------------------------------------------------------------------
 
 #endif

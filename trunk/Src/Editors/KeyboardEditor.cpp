@@ -18,21 +18,19 @@
 #include <cmath>
 #include "Utils.h"
 
-#include "wx/wx.h"
 
 #include "Actions/EditAction.h"
 #include "Actions/AddNote.h"
-
-#include "Renderers/Drawable.h"
-#include "GUI/ImageProvider.h"
 #include "Editors/KeyboardEditor.h"
 #include "Editors/RelativeXCoord.h"
+#include "GUI/GraphicalTrack.h"
+#include "GUI/ImageProvider.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 #include "Pickers/MagneticGrid.h"
 #include "Pickers/KeyPicker.h"
-#include "GUI/GraphicalTrack.h"
+#include "Renderers/Drawable.h"
 #include "Renderers/RenderAPI.h"
 
 #include "AriaCore.h"

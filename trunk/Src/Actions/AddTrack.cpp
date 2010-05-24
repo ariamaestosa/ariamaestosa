@@ -20,6 +20,8 @@
 #include "Midi/Sequence.h"
 #include "AriaCore.h"
 
+#include "wx/intl.h"
+
 using namespace AriaMaestosa::Action;
 
 // --------------------------------------------------------------------------------------------------------

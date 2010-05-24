@@ -14,11 +14,9 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _volumeslider_
-#define _volumeslider_
+#ifndef __VOLUME_SLIDER_H__
+#define __VOLUME_SLIDER_H__
 
-#include "wx/wx.h"
-#include "wx/slider.h"
 #include "wx/event.h"
 
 #include "Utils.h"

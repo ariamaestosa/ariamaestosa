@@ -18,8 +18,10 @@
 #include "Actions/EditAction.h"
 #include "Midi/Track.h"
 #include "Midi/Note.h"
-#include "wx/wx.h"
 #include "AriaCore.h"
+
+#include "wx/intl.h"
+#include "wx/utils.h"
 
 using namespace AriaMaestosa::Action;
 

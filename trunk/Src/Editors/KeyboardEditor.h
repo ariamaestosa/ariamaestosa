@@ -18,11 +18,11 @@
 #ifndef __KEYBOARD_EDITOR_H__
 #define __KEYBOARD_EDITOR_H__
 
+#include "wx/intl.h"
+
 #include "Editors/Editor.h"
-
-#include "Utils.h"
-
 #include "Editors/RelativeXCoord.h"
+#include "Utils.h"
 
 namespace AriaMaestosa
 {

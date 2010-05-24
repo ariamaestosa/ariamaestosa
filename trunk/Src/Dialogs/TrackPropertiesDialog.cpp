@@ -23,6 +23,7 @@
 #include "Pickers/InstrumentChoice.h"
 #include "Pickers/DrumChoice.h"
 
+#include "wx/wx.h"
 #include "wx/tokenzr.h"
 
 #include <iostream>

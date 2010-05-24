@@ -16,9 +16,10 @@
 
 #include "Actions/ResizeNotes.h"
 #include "Actions/EditAction.h"
-#include "Midi/Track.h"
 #include "GUI/GraphicalTrack.h"
+#include "Midi/Track.h"
 
+#include "wx/intl.h"
 
 using namespace AriaMaestosa::Action;
 

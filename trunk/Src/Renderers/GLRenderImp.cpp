@@ -21,8 +21,6 @@
 #include "Singleton.h"
 #include "Renderers/RenderAPI.h"
 
-#include "wx/wx.h"
-
 #include "OpenGL.h"
 #include <cmath>
 #include <iostream>

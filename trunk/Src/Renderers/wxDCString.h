@@ -1,10 +1,13 @@
-#ifndef _dcstring_
-#define _dcstring_
+#ifndef __WXDC_STRING_H__
+#define __WXDC_STRING_H__
 
 #ifdef RENDERER_WXWIDGETS
 
+#include "wx/font.h"
+#include "wx/string.h"
 
-#include "wx/wx.h"
+class wxDC;
+
 #include <vector>
 #include "Singleton.h"
 

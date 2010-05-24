@@ -3,7 +3,8 @@
 #include "wxDCString.h"
 #include "Utils.h"
 
-#include "wx/wx.h"
+#include "wx/dc.h"
+#include "wx/string.h"
 #include "wx/tokenzr.h"
 #include "AriaCore.h"
 #include "Renderers/RenderAPI.h"

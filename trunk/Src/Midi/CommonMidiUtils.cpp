@@ -39,7 +39,9 @@
 //#include "jdkmidi/driver.h"
 //#include "jdkmidi/process.h"
 
-#include <wx/timer.h>
+#include "wx/intl.h"
+#include "wx/timer.h"
+#include "wx/msgdlg.h"
 
 //#include <sys/resource.h>
 //#include <sys/time.h>
