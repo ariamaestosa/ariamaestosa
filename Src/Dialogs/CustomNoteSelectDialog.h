@@ -16,12 +16,19 @@
 
 
 
-#ifndef _customnoteselectdlg_
-#define _customnoteselectdlg_
+#ifndef __CUSTOM_NOTE_SELECT_DIALOG_H__
+#define __CUSTOM_NOTE_SELECT_DIALOG_H__
 
-#include "wx/wx.h"
+#include "wx/dialog.h"
 
 #include "Utils.h"
+
+class wxBoxSizer;
+class wxCheckBox;
+class wxTextCtrl;
+class wxCommandEvent;
+class wxKeyEvent;
+class wxFocusEvent;
 
 namespace AriaMaestosa
 {

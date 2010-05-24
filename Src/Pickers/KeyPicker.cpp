@@ -21,6 +21,7 @@
 #include "GUI/GraphicalTrack.h"
 #include "AriaCore.h"
 
+#include "wx/wx.h"
 #include "wx/notebook.h"
 
 namespace AriaMaestosa

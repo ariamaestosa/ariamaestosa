@@ -15,13 +15,16 @@
  */
 
 
-#ifndef _drumchoice_
-#define _drumchoice_
+#ifndef __DRUM_CHOICE_H__
+#define __DRUM_CHOICE_H__
 
-#include "wx/wx.h"
+#include "wx/menu.h"
+#include "wx/string.h"
 
 #include "Utils.h"
 #include "Renderers/RenderAPI.h"
+
+class wxCommandEvent;
 
 namespace AriaMaestosa
 {

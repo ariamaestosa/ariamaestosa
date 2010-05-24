@@ -30,21 +30,22 @@
 
 #include "GUI/MainFrame.h"
 
-namespace AriaMaestosa {
+using namespace AriaMaestosa;
 
-// ==========================================================================================
-// ==========================================================================================
+// -------------------------------------------------------------------------------------------------------
 
 GLPane::GLPane(MainFrame* mainFrame, int* args) :
     wxGLCanvas(mainFrame, wxID_ANY,  wxDefaultPosition, wxDefaultSize, 0, wxT("GLCanvas"),  args)
 {
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 GLPane::~GLPane()
 {
 }
 
-
+// -------------------------------------------------------------------------------------------------------
 
 void GLPane::resized(wxSizeEvent& evt)
 {
@@ -58,6 +59,7 @@ void GLPane::resized(wxSizeEvent& evt)
     if (getMainFrame()->getSequenceAmount()>0) DisplayFrame::updateVerticalScrollbar();
 }
 
+// -------------------------------------------------------------------------------------------------------
 
 void GLPane::setCurrent()
 {
@@ -65,10 +67,14 @@ void GLPane::setCurrent()
     wxGLCanvas::SetCurrent();
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 void GLPane::swapBuffers()
 {
     wxGLCanvas::SwapBuffers();
 }
+
+// -------------------------------------------------------------------------------------------------------
 
 void GLPane::initOpenGLFor2D()
 {
@@ -97,12 +103,16 @@ void GLPane::initOpenGLFor2D()
     glLoadIdentity();
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 int GLPane::getWidth()
 {
 
     if (Display::isVisible()) return GetSize().x;
     else return 795; // default value
 }
+
+// -------------------------------------------------------------------------------------------------------
 
 int GLPane::getHeight()
 {
@@ -111,6 +121,8 @@ int GLPane::getHeight()
     else return 550; // approximately default
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 bool GLPane::prepareFrame()
 {
     if (!GetParent()->IsShown()) return false;
@@ -118,18 +130,22 @@ bool GLPane::prepareFrame()
     return true;
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 void GLPane::beginFrame()
 {
     initOpenGLFor2D();
     glClear(GL_COLOR_BUFFER_BIT);
 }
+
+// -------------------------------------------------------------------------------------------------------
+
 void GLPane::endFrame()
 {
     glFlush();
     SwapBuffers();
 }
 
-
-}
+// -------------------------------------------------------------------------------------------------------
 
 #endif

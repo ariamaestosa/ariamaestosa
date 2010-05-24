@@ -17,6 +17,7 @@
 #include "Actions/RemoveMeasures.h"
 #include "Actions/InsertEmptyMeasures.h"
 #include "Actions/EditAction.h"
+#include "IO/IOUtils.h"
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
 #include "Midi/TimeSigChange.h"
@@ -24,7 +25,8 @@
 #include "AriaCore.h"
 
 #include <iostream>
-#include "IO/IOUtils.h"
+
+#include "wx/intl.h"
 
 using namespace AriaMaestosa::Action;
 

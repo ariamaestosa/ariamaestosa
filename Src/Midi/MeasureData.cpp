@@ -16,31 +16,24 @@
 
 #include "Utils.h"
 
-#include "wx/wx.h"
-#include "wx/numdlg.h"
-
 #include "Actions/EditAction.h"
 #include "Actions/InsertEmptyMeasures.h"
 #include "Actions/RemoveMeasures.h"
 
 #include "AriaCore.h"
-
+#include "Editors/Editor.h"
 #include "GUI/MeasureBar.h"
 #include "GUI/MainFrame.h"
-
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 #include "Midi/TimeSigChange.h"
 #include "Midi/Players/PlatformMidiManager.h"
-
-#include "Editors/Editor.h"
-
 #include "Pickers/TimeSigPicker.h"
 
 #include <iostream>
 #include "irrXML/irrXML.h"
-#include "wx/spinctrl.h"
+#include "wx/spinbutt.h"
 
 using namespace AriaMaestosa;
 

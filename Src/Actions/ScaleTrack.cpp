@@ -18,6 +18,8 @@
 #include "Actions/EditAction.h"
 #include "Midi/Track.h"
 
+#include "wx/intl.h"
+
 using namespace AriaMaestosa::Action;
 
 ScaleTrack::ScaleTrack(float factor, int relative_to, bool selectionOnly) :

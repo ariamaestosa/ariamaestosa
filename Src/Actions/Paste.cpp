@@ -24,6 +24,10 @@
 #include "AriaCore.h"
 #include "Editors/KeyboardEditor.h"
 
+#include "wx/intl.h"
+#include "wx/utils.h"
+#include "wx/window.h"
+
 using namespace AriaMaestosa;
 using namespace AriaMaestosa::Action;
 

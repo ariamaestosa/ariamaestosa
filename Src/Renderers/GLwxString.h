@@ -4,7 +4,12 @@
 
 #include "Utils.h"
 
-#include "wx/wx.h"
+#include "wx/font.h"
+#include "wx/string.h"
+class wxImage;
+class wxBitmap;
+class wxDC;
+
 #include "ptr_vector.h"
 
 namespace AriaMaestosa

@@ -16,7 +16,6 @@
 #include "AriaCore.h"
 
 #include <iostream>
-#include "wx/wx.h"
 #include <cmath>
 #include <map>
 

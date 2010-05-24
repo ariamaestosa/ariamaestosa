@@ -14,6 +14,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include "wx/intl.h"
+
 #include "Actions/InsertEmptyMeasures.h"
 #include "Actions/EditAction.h"
 #include "Midi/Track.h"
