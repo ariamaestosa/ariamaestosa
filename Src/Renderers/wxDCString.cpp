@@ -4,6 +4,7 @@
 #include "Utils.h"
 
 #include "wx/dc.h"
+#include "wx/settings.h"
 #include "wx/string.h"
 #include "wx/tokenzr.h"
 #include "AriaCore.h"
