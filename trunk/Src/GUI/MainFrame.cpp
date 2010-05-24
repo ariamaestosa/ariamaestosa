@@ -309,12 +309,6 @@ void MainFrame::init()
 
     Centre();
 
-#ifdef __WXMSW__
-    // Main frame icon
-    wxIcon FrameIcon(Aria_xpm);
-       SetIcon(FrameIcon);
-#endif
-
     currentSequence=0;
     playback_mode=false;
 
@@ -459,6 +453,22 @@ void MainFrame::init()
     Centre();
 
     borderSizer->Layout();
+
+#ifdef __WXMSW__
+    // Main frame icon
+    wxIcon FrameIcon(Aria_xpm);
+       SetIcon(FrameIcon);
+#elif defined(__WXGTK__)
+    wxIcon ariaIcon(getResourcePrefix()+wxT("/aria64.png"));
+    if (not ariaIcon.IsOk())
+    {
+        fprintf(stderr, "Aria icon not found! (application will have a generic icon)\n");
+    }
+    else
+    {
+        SetIcon(ariaIcon);
+    }
+#endif
 
     Maximize(true);
     Show();
