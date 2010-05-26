@@ -57,13 +57,11 @@ namespace AriaMaestosa
         if (symbolPrinter and keyrollPrinter)
         {
             wxMessageBox( _("Keyroll tracks and tablature/score tracks cannot be mixed in the same printout") );
-            WaitWindow::hide();
             state_ok = false;
         }
         else if (not symbolPrinter and not keyrollPrinter)
         {
             wxMessageBox( _("No printable track selected") );
-            WaitWindow::hide();
             state_ok = false;
         }
         
@@ -298,15 +296,20 @@ namespace AriaMaestosa
                 choices.Add( _("Score (staff)") );
                 //I18N: printing notation type
                 choices.Add( _("Tablature") );
+                //I18N: printing notation type
+                choices.Add( _("Keyroll") );
                 wxChoice* editorType = new wxChoice( m_track_choice, wxID_ANY, wxDefaultPosition, wxDefaultSize, choices );
                 
                 switch (track->graphics->editorMode)
                 {
-                    case KEYBOARD:
+                    case SCORE:
                         editorType->SetSelection(0);
                         break;
                     case GUITAR:
                         editorType->SetSelection(1);
+                        break;
+                    case KEYBOARD:
+                        editorType->SetSelection(2);
                         break;
                     default:
                         // unsupported editor, do nothing, leave default selection
@@ -554,6 +557,10 @@ namespace AriaMaestosa
                         else if (editorChoice->GetSelection() == 1)
                         {
                             printType = GUITAR;
+                        }
+                        else if (editorChoice->GetSelection() == 2)
+                        {
+                            printType = KEYBOARD;
                         }
                         else
                         {
