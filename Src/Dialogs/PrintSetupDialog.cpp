@@ -20,7 +20,7 @@
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Printing/AriaPrintable.h"
-#include "Printing/SymbolPrinter/TabPrint.h"
+#include "Printing/KeyrollPrintableSequence.h"
 #include "Printing/SymbolPrinter/SymbolPrintableSequence.h"
 
 namespace AriaMaestosa
@@ -31,28 +31,69 @@ namespace AriaMaestosa
                  AriaPrintable* printable, bool detect_repetitions)
     {
         
-        SymbolPrintableSequence printableSeq( seq );
-        printable->setSequence(&printableSeq);
-        WaitWindow::show(_("Calculating print layout...") );
-        
-        bool state_ok = true;
+        bool symbolPrinter = false;
+        bool keyrollPrinter = false;
         
         const unsigned int trackCount = what_to_print.size();
         for (unsigned int n=0; n<trackCount; n++)
         {
-            if (not printableSeq.addTrack( what_to_print[n].first, what_to_print[n].second ))
+            switch (what_to_print[n].second)
             {
-                WaitWindow::hide();
-                
-                wxString track_name = what_to_print[n].first->getName();
-                
-                //I18N: - %s is the name of the track
-                wxString message = _("Track '%s' could not be printed, since its current\nview (editor) does not support printing.");
-                message.Replace(wxT("%s"), track_name); // wxString::Format crashes, so I need to use this stupid workaround
-                wxMessageBox( message );
-                
-                state_ok = false;
-                break;
+                case GUITAR:
+                case SCORE:
+                    symbolPrinter = true;
+                    break;
+                case KEYBOARD:
+                    keyrollPrinter = true;
+                    break;
+                default:
+                    // ignore, it will complain below
+                    break;
+            }
+        }
+        
+        bool state_ok = true;
+
+        if (symbolPrinter and keyrollPrinter)
+        {
+            wxMessageBox( _("Keyroll tracks and tablature/score tracks cannot be mixed in the same printout") );
+            WaitWindow::hide();
+            state_ok = false;
+        }
+        else if (not symbolPrinter and not keyrollPrinter)
+        {
+            wxMessageBox( _("No printable track selected") );
+            WaitWindow::hide();
+            state_ok = false;
+        }
+        
+        OwnerPtr<AbstractPrintableSequence> printableSeq;
+
+        if (state_ok)
+        {
+            if (symbolPrinter) printableSeq = new SymbolPrintableSequence( seq );
+            else if (keyrollPrinter) printableSeq = new KeyrollPrintableSequence( seq );
+            else ASSERT(false);
+            
+            printable->setSequence(printableSeq);
+            WaitWindow::show(_("Calculating print layout...") );
+                    
+            for (unsigned int n=0; n<trackCount; n++)
+            {
+                if (not printableSeq->addTrack( what_to_print[n].first, what_to_print[n].second ))
+                {
+                    WaitWindow::hide();
+                    
+                    wxString track_name = what_to_print[n].first->getName();
+                    
+                    //I18N: - %s is the name of the track
+                    wxString message = _("Track '%s' could not be printed, since its current\nview (editor) does not support printing.");
+                    message.Replace(wxT("%s"), track_name); // wxString::Format crashes, so I need to use this stupid workaround
+                    wxMessageBox( message );
+                    
+                    state_ok = false;
+                    break;
+                }
             }
         }
         
@@ -62,7 +103,7 @@ namespace AriaMaestosa
             std::cout << "******************* CALCULATE LAYOUT *******************\n";
             std::cout << "********************************************************\n\n";
             
-            printableSeq.calculateLayout( detect_repetitions );
+            printableSeq->calculateLayout( detect_repetitions );
             
             std::cout << "\n********************************************************\n";
             std::cout << "********************* PRINT RESULT *********************\n";
