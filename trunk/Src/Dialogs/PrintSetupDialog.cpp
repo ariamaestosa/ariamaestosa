@@ -27,16 +27,20 @@ namespace AriaMaestosa
 {
     
     /** after dialog is shown, and user clicked 'OK', this is called to launch the actual printing */
-    void doPrint(std::vector< std::pair<Track*, EditorType> > what_to_print, AriaPrintable* printable,
-                 SymbolPrintableSequence* printable_sequence, bool detect_repetitions)
-    {        
+    void doPrint(std::vector< std::pair<Track*, EditorType> > what_to_print, Sequence* seq,
+                 AriaPrintable* printable, bool detect_repetitions)
+    {
+        
+        SymbolPrintableSequence printableSeq( seq );
+        printable->setSequence(&printableSeq);
         WaitWindow::show(_("Calculating print layout...") );
         
         bool state_ok = true;
         
-        for (unsigned int n=0; n<what_to_print.size(); n++)
+        const unsigned int trackCount = what_to_print.size();
+        for (unsigned int n=0; n<trackCount; n++)
         {
-            if (not printable_sequence->addTrack( what_to_print[n].first, what_to_print[n].second ))
+            if (not printableSeq.addTrack( what_to_print[n].first, what_to_print[n].second ))
             {
                 WaitWindow::hide();
                 
@@ -58,7 +62,7 @@ namespace AriaMaestosa
             std::cout << "******************* CALCULATE LAYOUT *******************\n";
             std::cout << "********************************************************\n\n";
             
-            printable_sequence->calculateLayout( detect_repetitions );
+            printableSeq.calculateLayout( detect_repetitions );
             
             std::cout << "\n********************************************************\n";
             std::cout << "********************* PRINT RESULT *********************\n";
@@ -79,7 +83,6 @@ namespace AriaMaestosa
         }
                 
         delete printable;
-        delete printable_sequence;
         
         getMainFrame()->disableMenus(false);
     }        
@@ -192,7 +195,6 @@ namespace AriaMaestosa
 
         wxStaticText* m_page_setup_summary;
         
-        SymbolPrintableSequence* m_printable_sequence;
         AriaPrintable*     m_printable;
         
     public:
@@ -204,12 +206,11 @@ namespace AriaMaestosa
                                   _("Print musical notation"),
                                   wxPoint(200,200), wxSize(500, 400), wxCAPTION | wxFRAME_FLOAT_ON_PARENT)
         {
-            m_printable_sequence = new SymbolPrintableSequence(sequence);
             m_current_sequence = sequence;
             m_detect_repetitions = false;
 
             bool success = false;
-            m_printable = new AriaPrintable( m_printable_sequence, &success );
+            m_printable = new AriaPrintable( AbstractPrintableSequence::getTitle(sequence), &success );
             
             if (not success)
             {                
@@ -474,7 +475,6 @@ namespace AriaMaestosa
         void onCancelClicked(wxCommandEvent& evt)
         {
             delete m_printable;
-            delete m_printable_sequence;
             
             Hide();
             Destroy();
@@ -536,7 +536,7 @@ namespace AriaMaestosa
             Destroy();
             
             // continue with the printing sequence
-            doPrint(what_to_print, m_printable, m_printable_sequence, m_detect_repetitions);
+            doPrint(what_to_print, m_current_sequence, m_printable, m_detect_repetitions);
         }
         
         

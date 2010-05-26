@@ -95,10 +95,17 @@ namespace AriaMaestosa
          * @param seq the sequence to print. Remains owned by the caller, AriaPrintable will not delete it.
          *            The caller must not delete the passed sequence before AriaPrintable is deleted too.
          * @param[out] success Whether setting up the printing subsystem was successful.
+         * @note it is mandatory to call 'setSequence' before actually printing
          */
-        AriaPrintable(AbstractPrintableSequence* seq, bool* success);
+        AriaPrintable(wxString title, bool* success);
         
         virtual ~AriaPrintable();
+        
+        /**
+          * @param seq the sequence to print. Remains owned by the caller, AriaPrintable will not delete it.
+          *            The caller must not delete the passed sequence before AriaPrintable is deleted too.
+          */
+        void setSequence(AbstractPrintableSequence* seq) { m_seq = seq; }
         
         /** @return whether to hide empty tracks */
         bool   hideEmptyTracks() const { return m_hide_empty_tracks; }
