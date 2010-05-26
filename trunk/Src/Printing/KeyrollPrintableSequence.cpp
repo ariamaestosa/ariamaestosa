@@ -23,7 +23,7 @@
 
 using namespace AriaMaestosa;
 
-const float UNITS_PER_TICK = 1.0f;
+const float UNITS_PER_TICK = 0.2f;
 
 // -------------------------------------------------------------------------------------------------------
 
@@ -46,12 +46,10 @@ void KeyrollPrintableSequence::calculateLayout(bool checkRepetitions)
 {
     ASSERT(not checkRepetitions); // not supported
     
-    const float unitCount = getMeasureData()->getTotalTickAmount() / UNITS_PER_TICK;
+    const float unitCount = getMeasureData()->getTotalTickAmount() * UNITS_PER_TICK;
     
     m_page_amount = unitCount / AriaPrintable::getCurrentPrintable()->getUnitHeight(); 
-    
-    printf("%i pages\n", m_page_amount);
-    
+        
     AbstractPrintableSequence::calculateLayout(checkRepetitions);
 }
 
