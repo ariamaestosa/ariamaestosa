@@ -555,6 +555,10 @@
 		95B90467114ADF23007F4778 /* PrintSetupDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 95B90463114ADF23007F4778 /* PrintSetupDialog.h */; };
 		95C283751159481C007B8CF7 /* Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 95C283741159481C007B8CF7 /* Utils.h */; };
 		95C283761159481C007B8CF7 /* Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 95C283741159481C007B8CF7 /* Utils.h */; };
+		95FF51C411AC9BDC00171A7E /* KeyrollPrintableSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95FF51C211AC9BDC00171A7E /* KeyrollPrintableSequence.cpp */; };
+		95FF51C511AC9BDC00171A7E /* KeyrollPrintableSequence.h in Headers */ = {isa = PBXBuildFile; fileRef = 95FF51C311AC9BDC00171A7E /* KeyrollPrintableSequence.h */; };
+		95FF51C611AC9BDC00171A7E /* KeyrollPrintableSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95FF51C211AC9BDC00171A7E /* KeyrollPrintableSequence.cpp */; };
+		95FF51C711AC9BDC00171A7E /* KeyrollPrintableSequence.h in Headers */ = {isa = PBXBuildFile; fileRef = 95FF51C311AC9BDC00171A7E /* KeyrollPrintableSequence.h */; };
 		EF104F6C0B21E1900079A1B7 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF104F6B0B21E1900079A1B7 /* QTKit.framework */; };
 		EF85576209BDE24C00D9D1BC /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF85576109BDE24C00D9D1BC /* OpenGL.framework */; };
 		EF9D1CB709ABE21F00CAF7A6 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF9D1CB609ABE21F00CAF7A6 /* Carbon.framework */; };
@@ -948,6 +952,8 @@
 		95B90462114ADF23007F4778 /* PrintSetupDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrintSetupDialog.cpp; path = ../Src/Dialogs/PrintSetupDialog.cpp; sourceTree = SOURCE_ROOT; };
 		95B90463114ADF23007F4778 /* PrintSetupDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrintSetupDialog.h; path = ../Src/Dialogs/PrintSetupDialog.h; sourceTree = SOURCE_ROOT; };
 		95C283741159481C007B8CF7 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utils.h; path = ../Src/Utils.h; sourceTree = SOURCE_ROOT; };
+		95FF51C211AC9BDC00171A7E /* KeyrollPrintableSequence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KeyrollPrintableSequence.cpp; path = ../Src/Printing/KeyrollPrintableSequence.cpp; sourceTree = SOURCE_ROOT; };
+		95FF51C311AC9BDC00171A7E /* KeyrollPrintableSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeyrollPrintableSequence.h; path = ../Src/Printing/KeyrollPrintableSequence.h; sourceTree = SOURCE_ROOT; };
 		EF104F6B0B21E1900079A1B7 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		EF85576109BDE24C00D9D1BC /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		EF9D1BFF09ABE02100CAF7A6 /* Aria Maestosa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Aria Maestosa.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1273,6 +1279,8 @@
 				9578398A11A9A1E500E2FABA /* AbstractPrintableSequence.h */,
 				957119641125D8D300104BF5 /* AriaPrintable.cpp */,
 				957119651125D8D300104BF5 /* AriaPrintable.h */,
+				95FF51C211AC9BDC00171A7E /* KeyrollPrintableSequence.cpp */,
+				95FF51C311AC9BDC00171A7E /* KeyrollPrintableSequence.h */,
 				95783A4011A9FB9800E2FABA /* RenderRoutines.cpp */,
 				95783A4111A9FB9800E2FABA /* RenderRoutines.h */,
 				9544D68211582D5300E0A3BD /* wxEasyPrintWrapper.cpp */,
@@ -1615,6 +1623,7 @@
 				95783A2E11A9F87A00E2FABA /* SymbolPrintableSequence.h in Headers */,
 				95783A3011A9F87A00E2FABA /* TabPrint.h in Headers */,
 				95783A4511A9FB9800E2FABA /* RenderRoutines.h in Headers */,
+				95FF51C711AC9BDC00171A7E /* KeyrollPrintableSequence.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1738,6 +1747,7 @@
 				95783A1911A9F87A00E2FABA /* SymbolPrintableSequence.h in Headers */,
 				95783A1B11A9F87A00E2FABA /* TabPrint.h in Headers */,
 				95783A4311A9FB9800E2FABA /* RenderRoutines.h in Headers */,
+				95FF51C511AC9BDC00171A7E /* KeyrollPrintableSequence.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1934,6 +1944,7 @@
 				95783A2D11A9F87A00E2FABA /* SymbolPrintableSequence.cpp in Sources */,
 				95783A2F11A9F87A00E2FABA /* TabPrint.cpp in Sources */,
 				95783A4411A9FB9800E2FABA /* RenderRoutines.cpp in Sources */,
+				95FF51C611AC9BDC00171A7E /* KeyrollPrintableSequence.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2051,6 +2062,7 @@
 				95783A1811A9F87A00E2FABA /* SymbolPrintableSequence.cpp in Sources */,
 				95783A1A11A9F87A00E2FABA /* TabPrint.cpp in Sources */,
 				95783A4211A9FB9800E2FABA /* RenderRoutines.cpp in Sources */,
+				95FF51C411AC9BDC00171A7E /* KeyrollPrintableSequence.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

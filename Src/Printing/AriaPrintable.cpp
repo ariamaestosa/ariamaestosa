@@ -3,11 +3,6 @@
 #include "Printing/AriaPrintable.h"
 #include "Printing/AbstractPrintableSequence.h"
 #include "Printing/RenderRoutines.h"
-//#include "Printing/PrintLayout/PrintLayoutLine.h"
-//#include "Printing/TabPrint.h"
-//#include "Printing/ScorePrint.h"
-//#include "Printing/PrintLayout/LayoutElement.h"
-//#include "Printing/PrintLayout/LayoutPage.h"
 
 #include "GUI/MainFrame.h"
 #include "Midi/Track.h"
@@ -30,7 +25,7 @@ using namespace AriaMaestosa;
 AriaPrintable* AriaPrintable::m_current_printable = NULL;
 
 
-AriaPrintable::AriaPrintable(AbstractPrintableSequence* seq, bool* success) :
+AriaPrintable::AriaPrintable(wxString title, bool* success) :
 #ifdef __WXMAC__
     m_normal_font   (75,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL),
 #else
@@ -89,10 +84,9 @@ AriaPrintable::AriaPrintable(AbstractPrintableSequence* seq, bool* success) :
     m_usable_area_height_page_1 = -1;
     m_usable_area_height        = -1;
     
-    m_seq  = seq;
-    ASSERT(not m_seq->isLayoutCalculated());
+    m_seq  = NULL;
     
-    m_printer_manager = new wxEasyPrintWrapper( m_seq->getTitle(), this, 315.0f );
+    m_printer_manager = new wxEasyPrintWrapper( title, this, 315.0f );
     if (not m_printer_manager->performPageSetup())
     {
         std::cerr << "Default page setup failed!\n";
@@ -164,7 +158,7 @@ wxPrinterError AriaPrintable::print()
 
 #ifdef __WXMAC__
     // change window title so any generated PDF is given the right name
-    getMainFrame()->SetTitle(m_seq->getTitle());
+    getMainFrame()->SetTitle(AbstractPrintableSequence::getTitle(m_seq->getSequence()));
 #endif
 
     ASSERT(m_printer_manager != NULL);
@@ -205,6 +199,8 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     ASSERT( x1 - x0 > 0 );
     ASSERT( y1 - y0 > 0 );
     
+    ASSERT( m_seq != NULL );
+    
     const int h = y1 - y0;
 
     //LayoutPage& page = m_seq->getPage(pageNum-1);
@@ -243,7 +239,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     }
     
     // ---- Draw title / page number
-    wxString label = m_seq->getTitle();
+    wxString label = AbstractPrintableSequence::getTitle(m_seq->getSequence());
 
     int title_x = x0;
 

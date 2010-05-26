@@ -85,7 +85,7 @@ namespace AriaMaestosa
         const Track* getTrack(const int id) const { return m_tracks.getConst(id); }
         
         /** @return the title of this sequence. If none was provided, makes up one from the context if it can */
-        wxString getTitle() const;
+        static wxString getTitle(const Sequence* seq);
         
         /**
          * @brief Prepare the abstract layout for this sequence.

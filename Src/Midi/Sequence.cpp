@@ -95,7 +95,7 @@ Sequence::~Sequence()
 #pragma mark -
 #endif
 
-wxString Sequence::suggestTitle()
+wxString Sequence::suggestTitle() const
 {
     if (!getInternalName().IsEmpty())
     {
@@ -117,7 +117,7 @@ wxString Sequence::suggestTitle()
 
 // ----------------------------------------------------------------------------------------------------------
 
-wxString Sequence::suggestFileName()
+wxString Sequence::suggestFileName() const
 {
     if (!filepath.IsEmpty())
     {
@@ -162,12 +162,6 @@ wxString Sequence::getCopyright()
 void Sequence::setInternalName(wxString name)
 {
     internal_sequenceName = name;
-}
-// ----------------------------------------------------------------------------------------------------------
-
-wxString Sequence::getInternalName()
-{
-    return internal_sequenceName;
 }
 
 // ----------------------------------------------------------------------------------------------------------

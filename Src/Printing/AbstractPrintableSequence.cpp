@@ -28,13 +28,10 @@ AbstractPrintableSequence::AbstractPrintableSequence(Sequence* parent)
     m_sequence = parent;
 }
 
-wxString AbstractPrintableSequence::getTitle() const
+wxString AbstractPrintableSequence::getTitle(const Sequence* seq)
 {
-    wxString song_title = m_sequence->suggestTitle();
+    wxString song_title = seq->suggestTitle();
     wxString track_title;
-    
-    //FIXME: what's that line for??
-    if (m_tracks.size() == 1) m_tracks[0].getName();
     
     wxString final_title;
     

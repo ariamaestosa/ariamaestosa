@@ -151,8 +151,8 @@ namespace AriaMaestosa
         /** @return is there something to undo? */
         bool somethingToUndo();
 
-        wxString suggestFileName();
-        wxString suggestTitle();
+        wxString suggestFileName() const;
+        wxString suggestTitle() const;
 
         /** @brief Hide a track by sending it to the 'dock' */
         void addToDock(GraphicalTrack* track);
@@ -278,7 +278,10 @@ namespace AriaMaestosa
         void setCopyright( wxString copyright );
         wxString getCopyright();
         void setInternalName(wxString name);
-        wxString getInternalName();
+        wxString getInternalName() const
+        {
+            return internal_sequenceName;
+        }
 
         void scale(
                    float factor,
