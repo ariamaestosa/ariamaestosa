@@ -135,7 +135,7 @@ def main_Aria_func():
 def install_Aria_mac():
     sys_command("mkdir -p ./AriaMaestosa.app/Contents/MacOS")
     sys_command("cp ./Aria ./AriaMaestosa.app/Contents/MacOS/Aria\ Maestosa")
-    sys_command("cp ./OSX/release.plist ./AriaMaestosa.app/Contents/info.plist")
+    sys_command("cp ./OSX/release.plist ./AriaMaestosa.app/Contents/Info.plist")
     sys_command("cp -r ./Resources ./AriaMaestosa.app/Contents/")
     sys_command("cp -r ./OSX/mac-i18n/. ./AriaMaestosa.app/Contents/Resources/.")
     sys_command("cp -r ./OSX/*.icns ./AriaMaestosa.app/Contents/Resources/.")
