@@ -46,11 +46,14 @@ void KeyrollPrintableSequence::printLinesInArea(wxDC& dc, const int page, const 
     dc.SetBrush( wxBrush(wxColor(200,200,200)) );
     dc.DrawRectangle( x0, notationAreaY0, LEFT_SIDE_WIDTH, notationAreaHeight);
     
+#define PITCH_TO_Y( pitch ) (notationAreaY0 + notationAreaHeight*((pitch)  - m_min_pitch)/(pitchRange + 1))
+#define TICK_TO_X( tick ) (((tick) - m_pages[page].m_first_tick)*(x1 - usableX0)/  \
+                          (m_pages[page].m_last_tick - m_pages[page].m_first_tick))
     
     const int pitchRange = m_max_pitch - m_min_pitch + 1;
     for (int note = m_min_pitch; note <= m_max_pitch+1; note++)
     {
-        const int y = notationAreaY0 + notationAreaHeight*(note - m_min_pitch)/(pitchRange + 1);
+        const int y = PITCH_TO_Y(note);
         dc.DrawLine(usableX0, y, x1, y);
         
         Note12 noteName;
@@ -62,9 +65,6 @@ void KeyrollPrintableSequence::printLinesInArea(wxDC& dc, const int page, const 
         }
     }
     dc.DrawLine(usableX0, notationAreaY0 + notationAreaHeight, x1, notationAreaY0 + notationAreaHeight);
-    
-#define TICK_TO_X( tick ) (tick - m_pages[page].m_first_tick)*(x1 - usableX0)/  \
-                          (m_pages[page].m_last_tick - m_pages[page].m_first_tick);
     
     const int beatLen = getMeasureData()->beatLengthInTicks();
     
@@ -104,8 +104,8 @@ void KeyrollPrintableSequence::printLinesInArea(wxDC& dc, const int page, const 
                 if (x2 < usableX0) x2 = usableX0;
                 else if (x2 > x1) x2 = x1;
                 
-                const int y = notationAreaY0 + notationAreaHeight*(pitch  - m_min_pitch)/(pitchRange + 1);
-                const int y2 = notationAreaY0 + notationAreaHeight*(pitch + 1 - m_min_pitch)/(pitchRange + 1);
+                const int y = PITCH_TO_Y(pitch);
+                const int y2 = PITCH_TO_Y(pitch + 1);
 
                 dc.DrawRectangle(x, y, x2 - x, y2 - y);
             }
