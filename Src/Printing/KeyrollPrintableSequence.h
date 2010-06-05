@@ -18,6 +18,7 @@
 #define __KEYROLL_PRINTABLE_SEQUENCE_H__
 
 #include "Printing/AbstractPrintableSequence.h"
+#include <vector>
 
 namespace AriaMaestosa
 {
@@ -25,7 +26,16 @@ namespace AriaMaestosa
     
     class KeyrollPrintableSequence : public AbstractPrintableSequence
     {
-        int m_page_amount;
+        int m_min_pitch, m_max_pitch;
+
+        struct Page
+        {
+            int m_first_tick;
+            int m_last_tick;
+            int m_first_print_unit;
+            int m_last_print_unit;
+        };
+        std::vector<Page> m_pages;
         
     public:
         
@@ -34,7 +44,7 @@ namespace AriaMaestosa
         /**
          * @return the number of pages that was determined to be necessary in order to print this sequence.
          */
-        virtual int getPageAmount() const { return m_page_amount; }
+        virtual int getPageAmount() const { return m_pages.size(); }
 
         /**
           * @brief implement callback from parent
