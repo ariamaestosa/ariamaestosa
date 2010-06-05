@@ -16,9 +16,14 @@ public:
     static void showMenu();
 };
 
+#ifdef _MORE_DEBUG_CHECKS
 #define UNIT_TEST( NAME ) class NAME : public UnitTestCase { public: NAME(const char* name) : UnitTestCase(name){} void run(); }; \
                           NAME unit_test_##NAME = NAME( #NAME ); void NAME::run()
-
+#else
+// silly trick to not bloat the executable with unit test code in release mode; since the template is
+// never instantiated the code will be discarded
+#define UNIT_TEST( NAME ) template<typename T> void NAME()
+#endif
 
 #define require( CONDITION, MESSAGE ) if (!( CONDITION )) \
 { \
