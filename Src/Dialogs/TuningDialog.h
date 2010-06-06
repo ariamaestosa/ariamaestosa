@@ -27,7 +27,7 @@ class wxBoxSizer;
 namespace AriaMaestosa
 {
     class GuitarEditor;
-    class StringEditor;
+    class NotePickerWidget;
     
     /**
       * @ingroup dialogs
@@ -44,7 +44,7 @@ namespace AriaMaestosa
         
         GuitarEditor* parent;
         
-        StringEditor* strings[10];
+        NotePickerWidget* m_note_pickers[10];
         
     public:
         LEAK_CHECK();
