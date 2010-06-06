@@ -59,7 +59,8 @@ NotePickerWidget::NotePickerWidget(wxWindow* parent, bool withCheckbox) : wxPane
     
     // octave choice
     {
-        wxString choices[10] = {wxT("1"), wxT("2"), wxT("3"), wxT("4"), wxT("5"), wxT("6"), wxT("7"), wxT("8"), wxT("9"), wxT("10")};
+        // TODO: add octave -1 too (wx seems the interpret the minus "-" sign as meaning "separator here"...)
+        wxString choices[10] = { wxT("0"), wxT("1"), wxT("2"), wxT("3"), wxT("4"), wxT("5"), wxT("6"), wxT("7"), wxT("8"), wxT("9")};
         octave_choice = new wxChoice(this, 201, wxDefaultPosition, wxDefaultSize, 10, choices);
         sizer->Add(octave_choice, 0, wxALL, 5);
     }
