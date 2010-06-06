@@ -96,7 +96,7 @@ namespace AriaMaestosa
         {
             std::vector<wxColour> out;
             
-            for (int n=0; n<m_color_pickers.size(); n++)
+            for (int n=0; n<(int)m_color_pickers.size(); n++)
             {
                 out.push_back( m_color_pickers[n]->GetColour() );
             }

@@ -86,7 +86,7 @@ AriaPrintable::AriaPrintable(wxString title, bool* success) :
     
     m_seq  = NULL;
     
-    m_printer_manager = new wxEasyPrintWrapper( title, this, 315.0f );
+    m_printer_manager = new wxEasyPrintWrapper( title, this, UNITS_PER_CM );
     if (not m_printer_manager->performPageSetup())
     {
         std::cerr << "Default page setup failed!\n";
