@@ -27,6 +27,9 @@ const bool PRINT_LAYOUT_HINTS = false;
 
 namespace AriaMaestosa
 {
+    const float UNITS_PER_CM = 315.0f;
+
+    
     class AbstractPrintableSequence;   
     class LayoutLine;
     
