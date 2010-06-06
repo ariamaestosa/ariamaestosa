@@ -80,6 +80,11 @@ namespace AriaMaestosa
         return getMainFrame()->getCurrentSequence();
     }
     
+    bool isPlaybackMode()
+    {
+        return getMainFrame()->playback_mode;
+    }
+    
     namespace Display
     {
         //#ifdef RENDERER_WXWIDGETS
@@ -193,9 +198,11 @@ namespace AriaMaestosa
     
     namespace DisplayFrame
     {
-        void changeMeasureAmount(const int i)
+        // FIXME: that function shouldn't exist. the MainFrame should register a listener on the measures
+        // object and be notified automatically on change.
+        void changeMeasureAmount(const int i, bool throwEvent)
         {
-            getMainFrame()->changeMeasureAmount(i);
+            getMainFrame()->changeMeasureAmount(i, throwEvent);
         }
         void updateHorizontalScrollbar(const int thumbPos)
         {

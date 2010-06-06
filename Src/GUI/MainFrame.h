@@ -32,6 +32,7 @@
 #include "Utils.h"
 #include "AriaCore.h"
 #include "ptr_vector.h"
+#include "Midi/Sequence.h"
 
 class wxScrollBar;
 class wxSpinCtrl;
@@ -107,7 +108,7 @@ namespace AriaMaestosa
       * @ingroup gui
       * @brief manages the main frame of Aria Maestosa
       */
-    class MainFrame : public wxFrame
+    class MainFrame : public wxFrame, public IPlaybackModeListener, public IActionStackListener
     {
         WxOwnerPtr<AboutDialog>  aboutDialog;
         WxOwnerPtr<CustomNoteSelectDialog>  customNoteSelectDialog;
@@ -314,6 +315,15 @@ namespace AriaMaestosa
 
         void addIconItem(wxMenu* menu, int menuID, const wxString& label, const wxString& stockIconId);
 
+        /** @brief Implement callback from IPlaybackModeListener */
+        virtual void onEnterPlaybackMode();
+        
+        /** @brief Implement callback from IPlaybackModeListener */
+        virtual void onLeavePlaybackMode();
+        
+        /** @brief Implement callback from IActionStackListener */
+        virtual void onActionStackChanged();
+        
         DECLARE_EVENT_TABLE();
     };
 

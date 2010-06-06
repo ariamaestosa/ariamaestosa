@@ -91,6 +91,8 @@ namespace AriaMaestosa
         /** Fills the setting objects with the user's saved values, if any, replacing the defaults */
         void readValues();
 
+        bool m_inited;
+        
     public:
                 
         /** call early */

@@ -27,9 +27,9 @@ const float CURRENT_FILE_VERSION = 2.0;
 #include "Actions/ScaleTrack.h"
 #include "Actions/ScaleSong.h"
 
-#include "Dialogs/Preferences.h"
+//#include "Dialogs/Preferences.h"
 #include "Editors/Editor.h"
-#include "GUI/MainFrame.h"
+//#include "GUI/MainFrame.h"
 #include "IO/IOUtils.h"
 #include "Midi/CommonMidiUtils.h"
 #include "Midi/MeasureData.h"
@@ -38,28 +38,34 @@ const float CURRENT_FILE_VERSION = 2.0;
 #include "Renderers/RenderAPI.h"
 #include "Utils.h"
 
+#include "wx/intl.h"
+#include "wx/utils.h"
+#include "wx/msgdlg.h"
 #include "irrXML/irrXML.h"
 
 using namespace AriaMaestosa;
 
 // ----------------------------------------------------------------------------------------------------------
 
-Sequence::Sequence()
+Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener* actionStackListener,
+                   bool addDefautTrack)
 {
-    reordering_newPosition = -1;
-    beatResolution         = 960;
-    dockSize               = 0;
-    dockHeight             = 0;
-    currentTrack           = 0;
-    m_tempo                = 120;
-    x_scroll_in_pixels     = 0;
-    y_scroll               = 0;
-    reorderYScroll         = 0;
-    importing              = false;
-    maximize_track_mode    = false;
-    x_scroll_upon_copying  = -1;
-    follow_playback        = Core::getPrefsValue("followPlayback") != 0;
-
+    reordering_newPosition  = -1;
+    beatResolution          = 960;
+    dockSize                = 0;
+    dockHeight              = 0;
+    currentTrack            = 0;
+    m_tempo                 = 120;
+    x_scroll_in_pixels      = 0;
+    y_scroll                = 0;
+    reorderYScroll          = 0;
+    importing               = false;
+    maximize_track_mode     = false;
+    x_scroll_upon_copying   = -1;
+    follow_playback         = Core::getPrefsValue("followPlayback") != 0;
+    m_playback_listener     = playbackListener;
+    m_action_stack_listener = actionStackListener;
+    
     //setZoom(100);
     zoom         = (128.0/(beatResolution*4));
     zoom_percent = 100;
@@ -72,7 +78,7 @@ Sequence::Sequence()
     sequenceFileName.setFont( wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
 #endif
 
-    if (Display::isVisible()) addTrack();
+    if (addDefautTrack) addTrack();
 
     copyright = wxT("");
 
@@ -438,7 +444,7 @@ void Sequence::action( Action::MultiTrackAction* action)
     action->setParentSequence(this);
     action->perform();
     
-    getMainFrame()->updateUndoMenuLabel();
+    if (m_action_stack_listener != NULL) m_action_stack_listener->onActionStackChanged();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -450,7 +456,7 @@ void Sequence::addToUndoStack( Action::EditAction* action )
     // remove old actions from undo stack, to not take memory uselessly
     if (undoStack.size()>8) undoStack.erase(0);
     
-    getMainFrame()->updateUndoMenuLabel();
+    if (m_action_stack_listener != NULL) m_action_stack_listener->onActionStackChanged();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -468,8 +474,10 @@ void Sequence::undo()
     lastAction->undo();
     undoStack.erase( undoStack.size() - 1 );
 
+    // FIXME: this doesn't go here
     Display::render();
-    getMainFrame()->updateUndoMenuLabel();
+    
+    if (m_action_stack_listener != NULL) m_action_stack_listener->onActionStackChanged();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -487,7 +495,7 @@ wxString Sequence::getTopActionName() const
 void Sequence::clearUndoStack()
 {
     undoStack.clearAndDeleteAll();
-    getMainFrame()->updateUndoMenuLabel();
+    if (m_action_stack_listener != NULL) m_action_stack_listener->onActionStackChanged();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -657,12 +665,12 @@ Track* Sequence::addTrack()
     if (currentTrack>=0 and currentTrack<tracks.size())
     {
         // add new track below active one
-        result = new Track(getMainFrame(), this);
+        result = new Track(this);
         tracks.add(result, currentTrack+1);
     }
     else
     {
-        result = new Track(getMainFrame(), this);
+        result = new Track(this);
         tracks.push_back(result);
     }
     ASSERT(result != NULL);
@@ -838,23 +846,26 @@ void Sequence::removeFromDock(GraphicalTrack* track)
 #pragma mark Playback
 #endif
 
+// FIXME: I doubt this method goes here. Sequence is primarly a data class.
+// and MainFrame handles the rest of playback start/stop, why have SOME of it here???
 void Sequence::spacePressed()
 {
 
-    if (!PlatformMidiManager::isPlaying())
+    if (not PlatformMidiManager::isPlaying())
     {
 
-        if ( getMainFrame()->playback_mode )
+        if (isPlaybackMode())
         {
             return;
         }
 
-        getMainFrame()->toolsEnterPlaybackMode();
+        if (m_playback_listener != NULL) m_playback_listener->onEnterPlaybackMode();
 
         int startTick = -1;
         bool success = PlatformMidiManager::playSelected(this, &startTick);
         Display::setPlaybackStartTick( startTick ); // FIXME - start tick should NOT go in GlPane
 
+        // FIXME: there's MainFrame::playback_mode AND MainPane::enterPlayLoop/exitPlayLoop. Fix this MESS
         if (!success or startTick == -1 ) // failure
         {
             Display::exitPlayLoop();
@@ -867,11 +878,12 @@ void Sequence::spacePressed()
     }
     else
     {
+        if (m_playback_listener != NULL) m_playback_listener->onLeavePlaybackMode();
 
-        getMainFrame()->toolsExitPlaybackMode();
         PlatformMidiManager::stop();
+        
+        // FIXME: doesn't go here, this is a data class, not a GUI class
         Display::render();
-
     }
 
 }
@@ -944,7 +956,7 @@ void Sequence::prepareEmptyTracksForLoading(int amount)
     tracks.clearAndDeleteAll();
     for (int n=0; n<amount; n++)
     {
-        tracks.push_back( new Track(getMainFrame(), this) );
+        tracks.push_back( new Track(this) );
     }
 }
 
@@ -1012,7 +1024,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
     {
 
 
-        switch(xml->getNodeType())
+        switch (xml->getNodeType())
         {
             case irr::io::EXN_TEXT:
 
@@ -1023,7 +1035,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
             {
 
                 // ---------- sequence ------
-                if (!strcmp("sequence", xml->getNodeName()))
+                if (strcmp("sequence", xml->getNodeName()) == 0)
                 {
 
                     const char* maintempo = xml->getAttributeValue("maintempo");
@@ -1053,7 +1065,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                     {
                         std::cout << "measureAmount = " <<  atoi(measureAmount_c) << std::endl;
                         measureData->setMeasureAmount( atoi(measureAmount_c) );
-                        getMainFrame()->changeMeasureAmount( measureData->getMeasureAmount(), false);
+                        DisplayFrame::changeMeasureAmount( measureData->getMeasureAmount(), false);
                     }
                     else
                     {
@@ -1062,7 +1074,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                     }
 
                     const char* channelManagement_c = xml->getAttributeValue("channelManagement");
-                    if ( channelManagement_c != NULL )
+                    if (channelManagement_c != NULL)
                     {
                         if ( fromCString(channelManagement_c).IsSameAs( wxT("manual") ) ) setChannelManagementType(CHANNEL_MANUAL);
                         else if ( fromCString(channelManagement_c).IsSameAs(  wxT("auto") ) ) setChannelManagementType(CHANNEL_AUTO);
@@ -1075,7 +1087,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                     }
 
                     const char* internalName_c = xml->getAttributeValue("internalName");
-                    if ( internalName_c != NULL )
+                    if (internalName_c != NULL)
                     {
                         internal_sequenceName = fromCString(internalName_c);
                     }
@@ -1085,7 +1097,10 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                     }
 
                     const char* currentTrack_c = xml->getAttributeValue("currentTrack");
-                    if ( currentTrack_c != NULL ) currentTrack = atoi( currentTrack_c );
+                    if (currentTrack_c != NULL)
+                    {
+                        currentTrack = atoi( currentTrack_c );
+                    }
                     else
                     {
                         currentTrack = 0;
@@ -1104,11 +1119,14 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                 }
 
                 // ---------- view ------
-                else if (!strcmp("view", xml->getNodeName()))
+                else if (strcmp("view", xml->getNodeName()) == 0)
                 {
 
                     const char* xscroll_c = xml->getAttributeValue("xscroll");
-                    if ( xscroll_c != NULL ) x_scroll_in_pixels = atoi( xscroll_c );
+                    if (xscroll_c != NULL)
+                    {
+                        x_scroll_in_pixels = atoi( xscroll_c );
+                    }
                     else
                     {
                         x_scroll_in_pixels = 0;
@@ -1122,7 +1140,10 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                     }
 
                     const char* yscroll_c = xml->getAttributeValue("yscroll");
-                    if ( yscroll_c != NULL ) y_scroll = atoi( yscroll_c );
+                    if ( yscroll_c != NULL )
+                    {
+                        y_scroll = atoi( yscroll_c );
+                    }
                     else
                     {
                         y_scroll = 0;
@@ -1136,7 +1157,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                     }
 
                     const char* zoom_c = xml->getAttributeValue("zoom");
-                    if ( zoom_c != NULL )
+                    if (zoom_c != NULL)
                     {
                         int zoom_i = atoi(zoom_c);
                         if (zoom_i > 0 and zoom_i<501) setZoom( zoom_i );
@@ -1157,40 +1178,40 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                 }
 
                 // ---------- measure ------
-                else if (!strcmp("measure", xml->getNodeName()))
+                else if (strcmp("measure", xml->getNodeName()) == 0)
                 {
-                    if (! measureData->readFromFile(xml) )
-                        return false;
+                    if (not measureData->readFromFile(xml) ) return false;
                 }
-                else if (!strcmp("timesig", xml->getNodeName()))
+                
+                // ---------- time sig ------
+                else if (strcmp("timesig", xml->getNodeName()) == 0)
                 {
-                    if (! measureData->readFromFile(xml) )
-                        return false;
+                    if (not measureData->readFromFile(xml)) return false;
                 }
+                
                 // ---------- track ------
-                else if (!strcmp("track", xml->getNodeName()))
+                else if (strcmp("track", xml->getNodeName()) == 0)
                 {
-                    tracks.push_back( new Track(getMainFrame(), this) );
-                    if (! tracks[ tracks.size()-1 ].readFromFile(xml) )
-                        return false;
+                    tracks.push_back( new Track(this) );
+                    if (not tracks[ tracks.size()-1 ].readFromFile(xml)) return false;
                 }
 
                 // ---------- copyright ------
-                else if (!strcmp("copyright", xml->getNodeName()))
+                else if (strcmp("copyright", xml->getNodeName()) == 0)
                 {
                     copyright_mode=true;
                 }
 
                 // ---------- tempo events ------
-                else if (!strcmp("tempo", xml->getNodeName()))
+                else if (strcmp("tempo", xml->getNodeName()) == 0)
                 {
                     tempo_mode = true;
                 }
                 // all control events in <sequence> are tempo events
-                else if (!strcmp("controlevent", xml->getNodeName()))
+                else if (strcmp("controlevent", xml->getNodeName()) == 0)
                 {
 
-                    if (!tempo_mode)
+                    if (not tempo_mode)
                     {
                         std::cerr << "Unexpected control event" << std::endl;
                         continue;
@@ -1198,8 +1219,8 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
 
                     int tempo_tick = -1;
                     const char* tick = xml->getAttributeValue("tick");
-                    if ( tick != NULL ) tempo_tick = atoi( tick );
-                    if ( tempo_tick<0 )
+                    if (tick != NULL) tempo_tick = atoi( tick );
+                    if (tempo_tick < 0)
                     {
                         std::cerr << "Failed to read tempo event" << std::endl;
                         continue;
@@ -1207,8 +1228,8 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
 
                     int tempo_value = -1;
                     const char* value = xml->getAttributeValue("value");
-                    if ( value != NULL ) tempo_value = atoi( value );
-                    if ( tempo_value <= 0 )
+                    if (value != NULL) tempo_value = atoi( value );
+                    if (tempo_value <= 0)
                     {
                         std::cerr << "Failed to read tempo event" << std::endl;
                         continue;
@@ -1224,15 +1245,15 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
             case irr::io::EXN_ELEMENT_END:
             {
 
-                if (!strcmp("sequence", xml->getNodeName()))
+                if (strcmp("sequence", xml->getNodeName()) == 0)
                 {
                     goto over;
                 }
-                else if (!strcmp("copyright", xml->getNodeName()))
+                else if (strcmp("copyright", xml->getNodeName()) == 0)
                 {
                     copyright_mode=false;
                 }
-                else if (!strcmp("tempo", xml->getNodeName()))
+                else if (strcmp("tempo", xml->getNodeName()) == 0)
                 {
                     tempo_mode=false;
                 }
