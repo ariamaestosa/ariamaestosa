@@ -5,6 +5,7 @@
 #include "wx/radiobut.h"
 #include "wx/print.h"
 #include "wx/renderer.h"
+#include "wx/clrpicker.h"
 //#include <wx/listctrl.h>
 
 #include "Utils.h"
@@ -26,18 +27,97 @@
 namespace AriaMaestosa
 {
     
+    class KeyrollPrintOptions : public wxDialog
+    {
+        wxCheckBox* m_compact_cb;
+        std::vector<wxColourPickerCtrl*> m_color_pickers;
+        bool m_ok_pressed;
+        
+    public:  
+        KeyrollPrintOptions(wxWindow* parent, const std::vector< std::pair<Track*, EditorType> >& whatToPrint) :
+                wxDialog(parent, wxID_ANY, _("Keyroll Printing Options"), wxDefaultPosition, wxDefaultSize,
+                         wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
+        {
+            m_ok_pressed = false;
+            
+            wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+            //I18N: keyroll printing option
+            m_compact_cb = new wxCheckBox(this, wxID_ANY, _("Compact (print only key notes)"));
+            sizer->Add(m_compact_cb, 0, wxALL, 5);
+            
+            wxFlexGridSizer* colorsSizer = new wxFlexGridSizer(2);
+            const int size = whatToPrint.size();
+            for (int t=0; t<size; t++)
+            {
+                colorsSizer->Add(new wxStaticText(this, wxID_ANY, whatToPrint[t].first->getName()), 0,
+                                 wxALIGN_CENTER_VERTICAL  | wxALL, 5);
+                wxColourPickerCtrl* ctrl = new wxColourPickerCtrl(this, wxID_ANY);
+                
+                // a few factory colors
+                if (t == 1)      ctrl->SetColour(wxColour(0,255,0));
+                else if (t == 2) ctrl->SetColour(wxColour(255,0,0));
+                else if (t == 3) ctrl->SetColour(wxColour(0,0,255));
+                else if (t == 4) ctrl->SetColour(wxColour(255,255,0));
+                else if (t == 5) ctrl->SetColour(wxColour(255,0,255));
+                else if (t == 6) ctrl->SetColour(wxColour(0,255,255));
+                else             ctrl->SetColour(wxColour(150,150,150));
+                
+                colorsSizer->Add(ctrl);
+                m_color_pickers.push_back(ctrl);
+            }
+            sizer->Add(colorsSizer, 0, wxALL, 10);
+            
+            wxButton* okBtn = new wxButton(this, wxID_ANY, _("OK"));
+            sizer->Add(okBtn, 0 , wxALL, 5);
+            okBtn->SetDefault();
+            
+            SetSizerAndFit(sizer);
+            
+            okBtn->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(KeyrollPrintOptions::onOk), NULL, this);
+        }
+        
+        void onOk(wxCommandEvent& evt)
+        {
+            EndModal(GetReturnCode());
+            m_ok_pressed = true;
+        }
+        
+        bool okPressed() const
+        {
+            return m_ok_pressed;
+        }
+        
+        bool compact() const
+        {
+            return m_compact_cb->IsChecked();
+        }
+        
+        std::vector<wxColour> getColors() const
+        {
+            std::vector<wxColour> out;
+            
+            for (int n=0; n<m_color_pickers.size(); n++)
+            {
+                out.push_back( m_color_pickers[n]->GetColour() );
+            }
+            
+            return out;
+        }
+        
+    };
+    
     /** after dialog is shown, and user clicked 'OK', this is called to launch the actual printing */
-    void doPrint(std::vector< std::pair<Track*, EditorType> > what_to_print, Sequence* seq,
+    void doPrint(std::vector< std::pair<Track*, EditorType> > whatToPrint, Sequence* seq,
                  AriaPrintable* printable, bool detect_repetitions)
     {
         
         bool symbolPrinter = false;
         bool keyrollPrinter = false;
         
-        const unsigned int trackCount = what_to_print.size();
+        const unsigned int trackCount = whatToPrint.size();
         for (unsigned int n=0; n<trackCount; n++)
         {
-            switch (what_to_print[n].second)
+            switch (whatToPrint[n].second)
             {
                 case GUITAR:
                 case SCORE:
@@ -52,50 +132,72 @@ namespace AriaMaestosa
             }
         }
         
-        bool state_ok = true;
+        bool keepGoingOn = true;
 
         if (symbolPrinter and keyrollPrinter)
         {
             wxMessageBox( _("Keyroll tracks and tablature/score tracks cannot be mixed in the same printout") );
-            state_ok = false;
+            keepGoingOn = false;
         }
         else if (not symbolPrinter and not keyrollPrinter)
         {
             wxMessageBox( _("No printable track selected") );
-            state_ok = false;
+            keepGoingOn = false;
         }
         
         OwnerPtr<AbstractPrintableSequence> printableSeq;
 
-        if (state_ok)
+        if (keepGoingOn)
         {
-            if (symbolPrinter) printableSeq = new SymbolPrintableSequence( seq );
-            else if (keyrollPrinter) printableSeq = new KeyrollPrintableSequence( seq );
-            else ASSERT(false);
-            
+            if (symbolPrinter) 
+            {
+                printableSeq = new SymbolPrintableSequence( seq );
+            }
+            else if (keyrollPrinter)
+            {
+                KeyrollPrintOptions dialog(getMainFrame(), whatToPrint);
+                dialog.Center();
+                dialog.ShowModal();
+                if (not dialog.okPressed()) 
+                {
+                    keepGoingOn = false;
+                }
+                else
+                {
+                    printableSeq = new KeyrollPrintableSequence( seq, dialog.compact(), dialog.getColors() );
+                }
+            }
+            else
+            {
+                ASSERT(false);
+            }
+        }
+         
+        if (keepGoingOn)
+        {
             printable->setSequence(printableSeq);
             WaitWindow::show(_("Calculating print layout...") );
                     
             for (unsigned int n=0; n<trackCount; n++)
             {
-                if (not printableSeq->addTrack( what_to_print[n].first, what_to_print[n].second ))
+                if (not printableSeq->addTrack( whatToPrint[n].first, whatToPrint[n].second ))
                 {
                     WaitWindow::hide();
                     
-                    wxString track_name = what_to_print[n].first->getName();
+                    wxString track_name = whatToPrint[n].first->getName();
                     
                     //I18N: - %s is the name of the track
                     wxString message = _("Track '%s' could not be printed, since its current\nview (editor) does not support printing.");
                     message.Replace(wxT("%s"), track_name); // wxString::Format crashes, so I need to use this stupid workaround
                     wxMessageBox( message );
                     
-                    state_ok = false;
+                    keepGoingOn = false;
                     break;
                 }
             }
         }
         
-        if (state_ok)
+        if (keepGoingOn)
         {
             std::cout << "********************************************************\n";
             std::cout << "******************* CALCULATE LAYOUT *******************\n";
