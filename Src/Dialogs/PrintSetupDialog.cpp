@@ -52,6 +52,7 @@ namespace AriaMaestosa
             hsizer->Add( new wxStaticText(this, wxID_ANY, wxT("mm")), 0, wxALIGN_CENTER_VERTICAL );
             sizer->Add(hsizer, 1, wxALL, 5);
             
+            wxStaticBoxSizer* box = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Colors"));
             wxFlexGridSizer* colorsSizer = new wxFlexGridSizer(2);
             const int size = whatToPrint.size();
             for (int t=0; t<size; t++)
@@ -72,7 +73,8 @@ namespace AriaMaestosa
                 colorsSizer->Add(ctrl);
                 m_color_pickers.push_back(ctrl);
             }
-            sizer->Add(colorsSizer, 0, wxALL, 10);
+            box->Add(colorsSizer);
+            sizer->Add(box, 0, wxALL, 10);
             
             //I18N: keyroll printing option
             m_compact_cb = new wxCheckBox(this, wxID_ANY, _("Compact (print only key notes)"));

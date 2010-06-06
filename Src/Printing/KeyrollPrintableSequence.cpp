@@ -100,7 +100,7 @@ void KeyrollPrintableSequence::calculateLayout(bool checkRepetitions)
             
             for (int p = m_min_pitch; p <= m_max_pitch; p++)
             {
-                if (not keyNotes[p])
+                if (keyNotes[p] == KEY_INCLUSION_NONE)
                 {
                     m_compact_info[p - m_min_pitch] = -1;
                 }
@@ -225,6 +225,10 @@ void KeyrollPrintableSequence::printLinesInArea(wxDC& dc, const int page, const 
         for (int note=0; note<noteAmount; note++)
         {
             const int pitch = m_tracks[n].getNotePitchID(note);
+            
+            // skip notes
+            if (m_compact and m_compact_info[pitch] == -1) continue;
+            
             const int tick = m_tracks[n].getNoteStartInMidiTicks(note);
             const int tickTo = m_tracks[n].getNoteEndInMidiTicks(note);
             
