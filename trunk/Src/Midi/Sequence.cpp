@@ -660,20 +660,21 @@ void Sequence::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 
 Track* Sequence::addTrack()
 {
-    Track* result = NULL;
+    // FIXME: this track creationg processus is duplicated in many areas.
+    // Furthermore, it's dubious that the Sequence track should handle graphical tracks.
+    Track* result = new Track(this);
+    result->graphics = new GraphicalTrack(result, this);
+    result->graphics->createEditors();
     
     if (currentTrack>=0 and currentTrack<tracks.size())
     {
         // add new track below active one
-        result = new Track(this);
         tracks.add(result, currentTrack+1);
     }
     else
     {
-        result = new Track(this);
         tracks.push_back(result);
     }
-    ASSERT(result != NULL);
     
     Display::render();
     
@@ -956,7 +957,13 @@ void Sequence::prepareEmptyTracksForLoading(int amount)
     tracks.clearAndDeleteAll();
     for (int n=0; n<amount; n++)
     {
-        tracks.push_back( new Track(this) );
+        // FIXME: this track creationg processus is duplicated in many areas.
+        // Furthermore, it's dubious that the Sequence track should handle graphical tracks.
+        Track* newTrack = new Track(this);
+        newTrack->graphics = new GraphicalTrack(newTrack, this);
+        newTrack->graphics->createEditors();
+        
+        tracks.push_back( newTrack );
     }
 }
 
@@ -1192,7 +1199,14 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                 // ---------- track ------
                 else if (strcmp("track", xml->getNodeName()) == 0)
                 {
-                    tracks.push_back( new Track(this) );
+                    // FIXME: this track creationg processus is duplicated in many areas.
+                    // Furthermore, it's dubious that the Sequence track should handle graphical tracks.
+                    Track* newTrack = new Track(this);
+                    newTrack->graphics = new GraphicalTrack(newTrack, this);
+                    newTrack->graphics->createEditors();
+                    tracks.push_back( newTrack );
+                    
+                    
                     if (not tracks[ tracks.size()-1 ].readFromFile(xml)) return false;
                 }
 

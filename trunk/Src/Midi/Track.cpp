@@ -82,9 +82,6 @@ Track::Track(Sequence* sequence)
 
     Track::sequence = sequence;
 
-    graphics = new GraphicalTrack(this, sequence);
-    graphics->createEditors();
-
     m_channel = 0;
     if ( sequence->getChannelManagementType() == CHANNEL_MANUAL )
     {
