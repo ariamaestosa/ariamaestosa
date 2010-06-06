@@ -148,8 +148,8 @@ void KeyrollPrintableSequence::printLinesInArea(wxDC& dc, const int page, const 
 #define PITCH_TO_Y( pitch ) (m_compact ? notationAreaY0 + notationAreaHeight*(m_compact_info[pitch])/(m_compact_pitch_count) \
 : notationAreaY0 + notationAreaHeight*(pitch)/(pitchRange + 1))
 #define NOTE_H (m_compact ? notationAreaHeight/(m_compact_pitch_count) : notationAreaHeight/(pitchRange + 1))
-#define TICK_TO_X( tick ) (((tick) - m_pages[page].m_first_tick)*(x1 - usableX0)/  \
-(m_pages[page].m_last_tick - m_pages[page].m_first_tick))
+#define TICK_TO_X( tick ) (usableX0 + (((tick) - m_pages[page].m_first_tick)*(x1 - usableX0)/  \
+(m_pages[page].m_last_tick - m_pages[page].m_first_tick)))
     
     const int pitchRange = m_max_pitch - m_min_pitch + 1;
     
