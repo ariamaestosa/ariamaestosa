@@ -37,9 +37,15 @@ namespace AriaMaestosa
         };
         std::vector<Page> m_pages;
         
+        bool m_compact;
+        int m_compact_pitch_count;
+        std::vector<int> m_compact_info;
+        
+        std::vector<wxColor> m_colors;
+        
     public:
         
-        KeyrollPrintableSequence(Sequence* parent);
+        KeyrollPrintableSequence(Sequence* parent, bool compact, std::vector<wxColor> colors);
         
         /**
          * @return the number of pages that was determined to be necessary in order to print this sequence.
