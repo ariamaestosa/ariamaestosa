@@ -5,7 +5,7 @@
 - Fixed octave numbers in keyboard editor and guitar editor
 - More flexible printing dialog; allows changing the printing notation type for each track
 - Menu icons on Linux/Windows (thanks to Alexis Archambault for coding this!)
-- Work on keyroll printing
+- Keyroll printing
 
 1.2.1
 - Fixed printing of accidentals
