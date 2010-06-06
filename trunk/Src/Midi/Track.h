@@ -125,7 +125,7 @@ namespace AriaMaestosa
         friend class Action::SetAccidentalSign;
         friend class Action::ShiftBySemiTone;
         
-        MainFrame* m_parent_frame;
+        //MainFrame* m_parent_frame;
         
         /** Holds all notes contained in this track, sorted in time order (of note start) */
         ptr_vector<Note> m_notes;
@@ -170,7 +170,7 @@ namespace AriaMaestosa
         AriaRenderString instrument_name;
         // -------------------------------------
         
-        Track(MainFrame* parent, Sequence* sequence);
+        Track(Sequence* sequence);
         ~Track();
         
         /**

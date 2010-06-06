@@ -48,6 +48,29 @@ namespace AriaMaestosa
     const int DEFAULT_SONG_LENGTH = 12;
     
     /**
+      * @brief Interface for listeners that are to be notified of playback start/end
+      */
+    class IPlaybackModeListener
+    {
+    public:
+        virtual ~IPlaybackModeListener() { }
+        
+        virtual void onEnterPlaybackMode() = 0;
+        virtual void onLeavePlaybackMode() = 0;
+    };
+    
+    /**
+      * @brief Interface for listeners that are to be notified of changes to the event (undo) stack
+      */
+    class IActionStackListener
+    {
+    public:
+        virtual ~IActionStackListener() {}
+        
+        virtual void onActionStackChanged() = 0;
+    };
+    
+    /**
       * @brief This is a midi Sequence, or a "file".
       *
       * Each tab in the tab bar represents one Sequence instance.
@@ -80,6 +103,10 @@ namespace AriaMaestosa
 
         ptr_vector<Action::EditAction> undoStack;
 
+        IPlaybackModeListener* m_playback_listener;
+        
+        IActionStackListener* m_action_stack_listener;
+        
      public:
 
         LEAK_CHECK();
@@ -122,7 +149,8 @@ namespace AriaMaestosa
         ptr_vector<ControllerEvent> tempoEvents;
         // ------------------------------------
 
-        Sequence();
+        Sequence(IPlaybackModeListener* playbackListener, IActionStackListener* actionStackListener,
+                 bool addDefautTrack);
         ~Sequence();
         
         /**

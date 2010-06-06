@@ -53,6 +53,8 @@ namespace AriaMaestosa
     MeasureData* getMeasureData();
     Sequence* getCurrentSequence();
     
+    bool isPlaybackMode();
+    
     namespace Core
     {
         void activateRenderLoop(bool on);
@@ -107,7 +109,7 @@ namespace AriaMaestosa
     
     namespace DisplayFrame
     {
-        void changeMeasureAmount(const int i);
+        void changeMeasureAmount(const int i, bool throwEvent=true);
         void updateHorizontalScrollbar(const int thumbPos=-1);
         void updateVerticalScrollbar();
     }

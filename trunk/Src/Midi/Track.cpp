@@ -62,7 +62,7 @@ using namespace AriaMaestosa;
 
 // -------------------------------------------------------------------------------------------------------
 
-Track::Track(MainFrame* parent, Sequence* sequence)
+Track::Track(Sequence* sequence)
 {
     // init key data
     setKey(0, KEY_TYPE_C);
@@ -78,7 +78,7 @@ Track::Track(MainFrame* parent, Sequence* sequence)
     m_name.setFont( wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
 #endif
 
-    m_parent_frame = parent;
+    //m_parent_frame = parent;
 
     Track::sequence = sequence;
 
@@ -91,7 +91,7 @@ Track::Track(MainFrame* parent, Sequence* sequence)
         // if in manual channel management mode, we need to give it a proper channel
         // the following array will store what channels are currently taken
         bool channel_taken[16];
-        for(int i=0; i<16; i++) channel_taken[i] = false;
+        for (int i=0; i<16; i++) channel_taken[i] = false;
 
         const int track_amount = sequence->getTrackAmount();
         for (int i=0; i<track_amount; i++)
@@ -983,6 +983,10 @@ void Track::setKey(const int symbolAmount, const KeyType type)
 {
     assert(symbolAmount < 8);
 
+    // This is to support older file formats. TODO: eventually remove compat.
+    KeyType actualType = type;
+    if (symbolAmount == 0) type = KEY_TYPE_C;
+    
     // ---- update "key_sharps_amnt" and "key_flats_amnt" members
     if (type == KEY_TYPE_SHARPS)
     {
@@ -1705,7 +1709,9 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
 
                             if (count_c != NULL)  count = atoi(count_c);
 
-                            if (count_c == NULL or count == 0)
+                            // For now we tolerator 0 because older file formats used it.
+                            // TODO: eventually remove old format compat
+                            if (count_c == NULL or count < 0 or count > 7)
                             {
                                 std::cerr << "Warning : malformed key in .aria file for track "
                                           << getName().mb_str()
@@ -1724,7 +1730,9 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
 
                             if (count_c != NULL)  count = atoi(count_c);
 
-                            if (count_c == NULL or count == 0)
+                            // For now we tolerator 0 because older file formats used it.
+                            // TODO: eventually remove old format compat
+                            if (count_c == NULL or count < 0 or count > 7)
                             {
                                 std::cerr << "Warning : malformed key in .aria file for track "
                                           << getName().mb_str()

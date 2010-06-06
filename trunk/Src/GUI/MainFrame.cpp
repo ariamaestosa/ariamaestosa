@@ -573,6 +573,20 @@ void MainFrame::stopClicked(wxCommandEvent& evt)
 
 // --------------------------------------------------------------------------------------------------------
     
+void MainFrame::onEnterPlaybackMode()
+{
+    toolsEnterPlaybackMode();
+}
+
+// --------------------------------------------------------------------------------------------------------
+
+void MainFrame::onLeavePlaybackMode()
+{
+    toolsExitPlaybackMode();
+}
+
+// --------------------------------------------------------------------------------------------------------
+
 void MainFrame::toolsEnterPlaybackMode()
 {
     if (playback_mode) return;
@@ -1072,7 +1086,7 @@ void MainFrame::updateVerticalScrollbar()
 
 void MainFrame::addSequence()
 {
-    sequences.push_back( new Sequence() );
+    sequences.push_back( new Sequence(this, this, Display::isVisible()) );
     setCurrentSequence( sequences.size() - 1 );
     Display::render();
     getMainFrame()->updateUndoMenuLabel();
@@ -1267,6 +1281,13 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
 #pragma mark -
 #pragma mark various events and notifications
 #endif
+
+void MainFrame::onActionStackChanged()
+{
+    updateUndoMenuLabel();
+}
+
+// ----------------------------------------------------------------------------------------------------------------
 
 /** event sent by the MusicPlayer to notify that it has stopped playing because the song is over. */
 void MainFrame::songHasFinishedPlaying()

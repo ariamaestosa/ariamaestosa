@@ -68,16 +68,21 @@ DEFINE_SINGLETON(AriaMaestosa::PreferencesData);
 
 PreferencesData::PreferencesData()
 {
+    m_inited = false;
 }
 
 void PreferencesData::init()
 {
+    if (m_inited) return;
+    
     prepareLanguageEntry();
     readValues();
     
     initLanguageSupport();
     fillSettingsVector();
     readValues();
+    
+    m_inited = true;
 }
 
 // ----------------------------------------------------------------------------------------------------

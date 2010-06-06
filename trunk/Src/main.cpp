@@ -98,6 +98,9 @@ bool wxWidgetApp::OnInit()
     {
         if (wxString(argv[n]) == wxT("--utest"))
         {
+            prefs = PreferencesData::getInstance();
+            prefs->init();
+
             UnitTestCase::showMenu();
             exit(0);
         }
