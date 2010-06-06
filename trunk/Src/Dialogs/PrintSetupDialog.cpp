@@ -6,6 +6,7 @@
 #include "wx/print.h"
 #include "wx/renderer.h"
 #include "wx/clrpicker.h"
+#include "wx/spinctrl.h"
 //#include <wx/listctrl.h>
 
 #include "Utils.h"
@@ -30,6 +31,7 @@ namespace AriaMaestosa
     class KeyrollPrintOptions : public wxDialog
     {
         wxCheckBox* m_compact_cb;
+        wxSpinCtrl* m_size_spinner;
         std::vector<wxColourPickerCtrl*> m_color_pickers;
         bool m_ok_pressed;
         
@@ -41,9 +43,14 @@ namespace AriaMaestosa
             m_ok_pressed = false;
             
             wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
-            //I18N: keyroll printing option
-            m_compact_cb = new wxCheckBox(this, wxID_ANY, _("Compact (print only key notes)"));
-            sizer->Add(m_compact_cb, 0, wxALL, 5);
+
+            wxBoxSizer* hsizer = new wxBoxSizer(wxHORIZONTAL);
+            m_size_spinner = new wxSpinCtrl(this, wxID_ANY, wxT("7"), wxDefaultPosition, wxDefaultSize,
+                                            wxSP_ARROW_KEYS, 1, 100);
+            hsizer->Add( new wxStaticText(this, wxID_ANY, _("Size of a beat : ")), 0, wxALIGN_CENTER_VERTICAL );
+            hsizer->Add( m_size_spinner, 0, wxALIGN_CENTER_VERTICAL ) ;
+            hsizer->Add( new wxStaticText(this, wxID_ANY, wxT("mm")), 0, wxALIGN_CENTER_VERTICAL );
+            sizer->Add(hsizer, 1, wxALL, 5);
             
             wxFlexGridSizer* colorsSizer = new wxFlexGridSizer(2);
             const int size = whatToPrint.size();
@@ -66,6 +73,10 @@ namespace AriaMaestosa
                 m_color_pickers.push_back(ctrl);
             }
             sizer->Add(colorsSizer, 0, wxALL, 10);
+            
+            //I18N: keyroll printing option
+            m_compact_cb = new wxCheckBox(this, wxID_ANY, _("Compact (print only key notes)"));
+            sizer->Add(m_compact_cb, 0, wxALL, 5);
             
             wxButton* okBtn = new wxButton(this, wxID_ANY, _("OK"));
             sizer->Add(okBtn, 0 , wxALL, 5);
@@ -102,6 +113,11 @@ namespace AriaMaestosa
             }
             
             return out;
+        }
+        
+        int getBeatSize()
+        {
+            return m_size_spinner->GetValue();
         }
         
     };
@@ -164,7 +180,8 @@ namespace AriaMaestosa
                 }
                 else
                 {
-                    printableSeq = new KeyrollPrintableSequence( seq, dialog.compact(), dialog.getColors() );
+                    printableSeq = new KeyrollPrintableSequence( seq, dialog.getBeatSize()/10.f, dialog.compact(), 
+                                                                 dialog.getColors() );
                 }
             }
             else

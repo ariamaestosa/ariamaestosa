@@ -43,9 +43,11 @@ namespace AriaMaestosa
         
         std::vector<wxColor> m_colors;
         
+        float m_units_per_tick;
+        
     public:
         
-        KeyrollPrintableSequence(Sequence* parent, bool compact, std::vector<wxColor> colors);
+        KeyrollPrintableSequence(Sequence* parent, float cmPerBeat, bool compact, std::vector<wxColor> colors);
         
         /**
          * @return the number of pages that was determined to be necessary in order to print this sequence.
