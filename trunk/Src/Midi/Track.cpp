@@ -985,24 +985,24 @@ void Track::setKey(const int symbolAmount, const KeyType type)
 
     // This is to support older file formats. TODO: eventually remove compat.
     KeyType actualType = type;
-    if (symbolAmount == 0) type = KEY_TYPE_C;
+    if (symbolAmount == 0) actualType = KEY_TYPE_C;
     
     // ---- update "key_sharps_amnt" and "key_flats_amnt" members
-    if (type == KEY_TYPE_SHARPS)
+    if (actualType == KEY_TYPE_SHARPS)
     {
-        m_key_type = type;
+        m_key_type = actualType;
         m_key_sharps_amnt = symbolAmount;
         m_key_flats_amnt  = 0;
     }
-    else if (type == KEY_TYPE_FLATS)
+    else if (actualType == KEY_TYPE_FLATS)
     {
-        m_key_type = type;
+        m_key_type = actualType;
         m_key_sharps_amnt = 0;
         m_key_flats_amnt  = symbolAmount;
     }
-    else if (type == KEY_TYPE_C and symbolAmount == 0)
+    else if (actualType == KEY_TYPE_C and symbolAmount == 0)
     {
-        m_key_type = type;
+        m_key_type = actualType;
         m_key_sharps_amnt = 0;
         m_key_flats_amnt  = 0;
     }
@@ -1018,7 +1018,7 @@ void Track::setKey(const int symbolAmount, const KeyType type)
     // to ease the process
     Note12 major_note12 = NOTE_12_C;
 
-    if (symbolAmount == 0 or type == KEY_TYPE_C)
+    if (symbolAmount == 0 or m_key_type == KEY_TYPE_C)
     {
         major_note12 = NOTE_12_C;
     }
@@ -1086,7 +1086,7 @@ void Track::setKey(const int symbolAmount, const KeyType type)
 
     // ---- notify graphical track (and editors)
     //FIXME: do not call this while editors are still null
-    if (graphics != NULL) graphics->onKeyChange(symbolAmount, type);
+    if (graphics != NULL) graphics->onKeyChange(symbolAmount, m_key_type);
 }
 
 // -------------------------------------------------------------------------------------------------------
