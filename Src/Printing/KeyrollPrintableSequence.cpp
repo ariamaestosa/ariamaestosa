@@ -23,16 +23,19 @@
 
 using namespace AriaMaestosa;
 
-const float UNITS_PER_TICK = 0.2f;
+//const float UNITS_PER_TICK = 0.2f;
 
 // -------------------------------------------------------------------------------------------------------
 
-KeyrollPrintableSequence::KeyrollPrintableSequence(Sequence* parent, bool compact,
+KeyrollPrintableSequence::KeyrollPrintableSequence(Sequence* parent, float cmPerBeat, bool compact,
                                                    std::vector<wxColor> colors) :
     AbstractPrintableSequence(parent)
 {
     m_compact = compact;
     m_colors = colors;
+    
+    m_units_per_tick = cmPerBeat * UNITS_PER_CM / getMeasureData()->beatLengthInTicks();
+    ASSERT_E(m_units_per_tick, >, 0.0f);
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -43,7 +46,7 @@ void KeyrollPrintableSequence::calculateLayout(bool checkRepetitions)
     
     const int tickCount = getMeasureData()->getTotalTickAmount();
     //const float unitCount = tickCount * UNITS_PER_TICK;
-    int ticksPerPage = AriaPrintable::getCurrentPrintable()->getUnitWidth() / UNITS_PER_TICK;
+    int ticksPerPage = AriaPrintable::getCurrentPrintable()->getUnitWidth() / m_units_per_tick;
     ticksPerPage = (ticksPerPage / getMeasureData()->beatLengthInTicks())* getMeasureData()->beatLengthInTicks();
     
     int currTick = 0;
@@ -55,11 +58,11 @@ void KeyrollPrintableSequence::calculateLayout(bool checkRepetitions)
     {
         Page newPage;
         newPage.m_first_tick = currTick;
-        newPage.m_first_print_unit = currTick*UNITS_PER_TICK;
+        newPage.m_first_print_unit = currTick*m_units_per_tick;
         
         currTick += ticksPerPage;
         newPage.m_last_tick = currTick - 1;
-        newPage.m_last_print_unit = (currTick - 1)*UNITS_PER_TICK;
+        newPage.m_last_print_unit = (currTick - 1)*m_units_per_tick;
         
         m_pages.push_back(newPage);
     }
@@ -196,12 +199,16 @@ void KeyrollPrintableSequence::printLinesInArea(wxDC& dc, const int page, const 
     // page must start on a beat
     ASSERT_E( (m_pages[page].m_first_tick/beatLen)*beatLen, ==, m_pages[page].m_first_tick );
     
+    ASSERT_E(m_pages[page].m_last_tick, >, m_pages[page].m_first_tick);
+    
     // draw vertical lines
     for (int beatTick=m_pages[page].m_first_tick;
          beatTick <= m_pages[page].m_last_tick+1;
          beatTick += beatLen)
     {
+        ASSERT_E(beatTick, >=, 0);
         const int x = TICK_TO_X(beatTick);
+        // TODO: measure lines must be stronger than beat lines (which can be very pale)
         dc.DrawLine(x, notationAreaY0, x, notationAreaY0 + notationAreaHeight);
     }
     
