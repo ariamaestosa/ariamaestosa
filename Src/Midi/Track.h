@@ -81,6 +81,16 @@ namespace AriaMaestosa
         KEY_TYPE_CUSTOM
     };
     
+    enum KeyInclusionType
+    {
+        /** This note normally appears in this key */
+        KEY_INCLUSION_FULL = 2,
+        /** This note may appear in this key as accidental */
+        KEY_INCLUSION_ACCIDENTAL = 1,
+        /** this note is forbidden by this key / cannot be played at all by the instrument */
+        KEY_INCLUSION_NONE = 0
+    };
+    
     /**
       * @brief represents a track within a sequence.
       *
@@ -146,7 +156,7 @@ namespace AriaMaestosa
           * It may be calculated from m_key_sharps_amnt / m_key_flats_amnt or set
           * directly for custom keys.
           */
-        bool m_key_notes[131];
+        KeyInclusionType m_key_notes[131];
         
     public:
         LEAK_CHECK();
@@ -244,7 +254,7 @@ namespace AriaMaestosa
           *
           * This overload can take any non-standard key.
           */
-        void setCustomKey(bool key_notes[131]);
+        void setCustomKey(KeyInclusionType key_notes[131]);
         
         // ---- get info on notes
         int   getNoteAmount           ()             const;
@@ -387,7 +397,7 @@ namespace AriaMaestosa
         
         /** @return an array of bools, for each note (one entry per pitch ID), that indicates
          *         which notes are part of the current key */
-        const bool* getKeyNotes() const { return m_key_notes; }
+        const KeyInclusionType* getKeyNotes() const { return m_key_notes; }
     
         /**
          * Add Midi Events to JDKMidi track object

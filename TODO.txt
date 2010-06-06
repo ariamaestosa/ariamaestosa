@@ -46,9 +46,7 @@ NOTE: sorry, this is very raw :)
 
 ** When a .aria file causes trouble during loading, show a warning message, don't just print errors to the terminal
 
-** KEY_TYPE_CUSTOM and score editor
  * custom keys : allow saving presets
- * custom keys : allow forbidding notes (i.e. three states : part of key, accidental, impossible to play)
 
 * score print :
     * red images

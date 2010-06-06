@@ -222,7 +222,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     const int x1 = getEditorXStart();
     const int x2 = getXEnd();
 
-    const bool* key_notes = track->getKeyNotes();
+    const KeyInclusionType* key_notes = track->getKeyNotes();
     
     // white background
     AriaRender::primitives();
@@ -237,7 +237,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
         const int pitchID = levelid; //FIXME: fix this conflation of level and pitch ID. it's handy in keyboard
                                      // editor, but a pain everywhere else...
 
-        if (not key_notes[pitchID])
+        if (key_notes[pitchID] != KEY_INCLUSION_FULL)
         {
             AriaRender::rect(x1, levelToY(levelid),
                              x2, levelToY(levelid+1));
@@ -316,17 +316,22 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     for (int n=0; n<noteAmount; n++)
     {
 
-        int x1 = track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
-        int x2 = track->getNoteEndInPixels(n)   - sequence->getXScrollInPixels();
+        const int x1 = track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
+        const int x2 = track->getNoteEndInPixels(n)   - sequence->getXScrollInPixels();
 
         // don't draw notes that won't be visible
         if (x2 < 0)     continue;
         if (x1 > width) break;
 
-        int   y     = track->getNotePitchID(n);
-        float volume = track->getNoteVolume(n)/127.0;
+        const int pitch = track->getNotePitchID(n);
+        const int level = pitch;
+        float volume    = track->getNoteVolume(n)/127.0;
 
-        if (track->isNoteSelected(n) and focus)
+        if (key_notes[pitch] == KEY_INCLUSION_NONE)
+        {
+            AriaRender::color(1.0f, 0.0f, 0.0f);
+        }
+        else if (track->isNoteSelected(n) and focus)
         {
             AriaRender::color((1-volume)*1,   (1-(volume/2))*1, 0);
         }
@@ -335,8 +340,8 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             AriaRender::color((1-volume)*0.9, (1-volume)*0.9,  (1-volume)*0.9);
         }
 
-        AriaRender::bordered_rect(x1+getEditorXStart()+1, levelToY(y),
-                                  x2+getEditorXStart()-1, levelToY(y+1));
+        AriaRender::bordered_rect(x1+getEditorXStart()+1, levelToY(level),
+                                  x2+getEditorXStart()-1, levelToY(level+1));
     }
 
 

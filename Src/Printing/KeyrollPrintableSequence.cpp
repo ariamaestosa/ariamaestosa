@@ -96,7 +96,7 @@ void KeyrollPrintableSequence::calculateLayout(bool checkRepetitions)
         int count = 0;
         for (int t=0; t<trackAmount; t++)
         {
-            const bool* keyNotes = m_tracks[t].getKeyNotes();
+            const KeyInclusionType* keyNotes = m_tracks[t].getKeyNotes();
             
             for (int p = m_min_pitch; p <= m_max_pitch; p++)
             {
