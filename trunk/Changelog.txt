@@ -1,7 +1,8 @@
 
 1.2.2
 - Cleanup and code documentation
-- Work on custom key support
+- Support for custom keys (e.g. for street organs)
+- Support for disabling notes (e.g. if your instrument cannot play all notes)
 - Fixed octave numbers in keyboard editor and guitar editor
 - More flexible printing dialog; allows changing the printing notation type for each track
 - Menu icons on Linux/Windows (thanks to Alexis Archambault for coding this!)

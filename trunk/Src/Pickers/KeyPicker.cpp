@@ -47,7 +47,7 @@ namespace AriaMaestosa
         {
             m_parent = gtrack;
 
-            const bool* curr_key_notes = gtrack->track->getKeyNotes();
+            const KeyInclusionType* curr_key_notes = gtrack->track->getKeyNotes();
 
             wxBoxSizer* maximizePaneSizer = new wxBoxSizer(wxVERTICAL);
             wxPanel* pane = new wxPanel(this);
@@ -76,9 +76,23 @@ namespace AriaMaestosa
                     if (Editor::findNoteName(pitch, &note, &octave))
                     {
                         wxString label = NOTE_12_NAME[note];
-                        wxCheckBox* cb = new wxCheckBox(page, wxID_ANY, label);
-                        cb->SetValue( curr_key_notes[pitch] );
-
+                        wxCheckBox* cb = new wxCheckBox(page, wxID_ANY, label, 
+                                                        wxDefaultPosition, wxDefaultSize,
+                                                        wxCHK_3STATE | wxCHK_ALLOW_3RD_STATE_FOR_USER);
+                        
+                        switch (curr_key_notes[pitch])
+                        {
+                            case KEY_INCLUSION_FULL :
+                                cb->Set3StateValue( wxCHK_CHECKED );
+                                break;
+                            case KEY_INCLUSION_ACCIDENTAL :
+                                cb->Set3StateValue( wxCHK_UNDETERMINED );
+                                break;
+                            case KEY_INCLUSION_NONE :
+                                cb->Set3StateValue( wxCHK_UNCHECKED );
+                                break;
+                        }
+                        
                         vsizer->Add(cb, 0, wxALL, 3);
 
                         m_check_boxes_one_octave[pitch - pitchFrom] = cb;
@@ -104,8 +118,23 @@ namespace AriaMaestosa
                     if (Editor::findNoteName(pitch, &note, &octave))
                     {
                         wxString label = NOTE_12_NAME[note] + wxT(" ") + wxString::Format(wxT("%i"), octave);
-                        wxCheckBox* cb = new wxCheckBox(scrollpane, wxID_ANY, label);
-                        cb->SetValue( curr_key_notes[pitch] );
+                        wxCheckBox* cb = new wxCheckBox(scrollpane, wxID_ANY, label,
+                                                        wxDefaultPosition, wxDefaultSize, 
+                                                        wxCHK_3STATE | wxCHK_ALLOW_3RD_STATE_FOR_USER);
+                        //cb->SetValue( curr_key_notes[pitch] );
+                        switch (curr_key_notes[pitch])
+                        {
+                            case KEY_INCLUSION_FULL :
+                                cb->Set3StateValue( wxCHK_CHECKED );
+                                break;
+                            case KEY_INCLUSION_ACCIDENTAL :
+                                cb->Set3StateValue( wxCHK_UNDETERMINED );
+                                break;
+                            case KEY_INCLUSION_NONE :
+                                cb->Set3StateValue( wxCHK_UNCHECKED );
+                                break;
+                        }
+                        
 
                         within_scrollpane_sizer->Add(cb, 0, wxALL, 3);
 
@@ -126,6 +155,12 @@ namespace AriaMaestosa
             //wxButton* copySettingsBtn = new wxButton( pane, wxID_COPY, _("Copy settings from another track...") );
             //over_sizer->Add(copySettingsBtn, 0, wxALL, 5);
 
+            //I18N: in the key editor
+            globalSizer->Add( new wxStaticText(this, wxID_ANY, _("* Checked notes are included in the key")), 0, wxLEFT | wxTOP, 5 );
+            //I18N: in the key editor
+            globalSizer->Add( new wxStaticText(this, wxID_ANY, _("* \"Half-checked\" notes are included as accidentals")), 0, wxLEFT, 5 );
+            //I18N: in the key editor
+            globalSizer->Add( new wxStaticText(this, wxID_ANY, _("* Unchecked notes are excluded (for instance, they could be unplayable on your instrument)")), 0, wxLEFT | wxBOTTOM, 5 );
 
             {
                 wxPanel* buttonsPane = new wxPanel(pane);
@@ -142,7 +177,7 @@ namespace AriaMaestosa
 
                 ok_btn->SetDefault();
             }
-
+  
             pane->SetSizer(globalSizer);
             Layout();
             Centre();
@@ -150,25 +185,47 @@ namespace AriaMaestosa
 
         void onOK(wxCommandEvent& evt)
         {
-            bool custom_key[131];
-            custom_key[0] = false;
-            custom_key[1] = false;
-            custom_key[2] = false;
-            custom_key[3] = false;
+            KeyInclusionType custom_key[131];
+            custom_key[0] = KEY_INCLUSION_NONE;
+            custom_key[1] = KEY_INCLUSION_NONE;
+            custom_key[2] = KEY_INCLUSION_NONE;
+            custom_key[3] = KEY_INCLUSION_NONE;
 
             const int currPage = m_notebook->GetCurrentPage()->GetId();
             if (currPage == m_page1_id)
             {
                 for (int pitch=4; pitch<=130; pitch++)
                 {
-                    custom_key[pitch] = m_check_boxes_one_octave[pitch % 12]->GetValue();
+                    switch (m_check_boxes_one_octave[pitch % 12]->Get3StateValue())
+                    {
+                        case wxCHK_CHECKED:
+                            custom_key[pitch] = KEY_INCLUSION_FULL;
+                            break;
+                        case wxCHK_UNDETERMINED:
+                            custom_key[pitch] = KEY_INCLUSION_ACCIDENTAL;
+                            break;
+                        case wxCHK_UNCHECKED:
+                            custom_key[pitch] = KEY_INCLUSION_NONE;
+                            break;
+                    }
                 }
             }
             else if (currPage == m_page2_id)
             {
                 for (int pitch=4; pitch<=130; pitch++)
                 {
-                    custom_key[pitch] = m_check_boxes[pitch]->GetValue();
+                    switch (m_check_boxes[pitch]->Get3StateValue())
+                    {
+                        case wxCHK_CHECKED:
+                            custom_key[pitch] = KEY_INCLUSION_FULL;
+                            break;
+                        case wxCHK_UNDETERMINED:
+                            custom_key[pitch] = KEY_INCLUSION_ACCIDENTAL;
+                            break;
+                        case wxCHK_UNCHECKED:
+                            custom_key[pitch] = KEY_INCLUSION_NONE;
+                            break;
+                    }
                 }
             }
             else

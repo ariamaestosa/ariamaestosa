@@ -1072,11 +1072,11 @@ void Track::setKey(const int symbolAmount, const KeyType type)
     {
         if (Editor::findNoteName(n, &noteName, &octave))
         {
-            m_key_notes[n] = not note_12_greyed_out[noteName];
+            m_key_notes[n] = (note_12_greyed_out[noteName] ? KEY_INCLUSION_ACCIDENTAL : KEY_INCLUSION_FULL);
         }
         else
         {
-            m_key_notes[n] = false;
+            m_key_notes[n] = KEY_INCLUSION_NONE;
         }
     }
 
@@ -1087,7 +1087,7 @@ void Track::setKey(const int symbolAmount, const KeyType type)
 
 // -------------------------------------------------------------------------------------------------------
 
-void Track::setCustomKey(bool key_notes[131])
+void Track::setCustomKey(KeyInclusionType key_notes[131])
 {
     m_key_type = KEY_TYPE_CUSTOM;
     m_key_sharps_amnt = 0;
@@ -1573,7 +1573,7 @@ void Track::saveToFile(wxFileOutputStream& fileout)
             char value[128];
             for (int n=130; n>3; n--)
             {
-                value[n-4] = (m_key_notes[n] ? '1' : '0');
+                value[n-4] = '0' + (int)m_key_notes[n];
             }
             value[127] = '\0';
             wxString wxStringValue(value, wxConvUTF8);
@@ -1752,8 +1752,9 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                                 for (int n=4; n<131; n++)
                                 {
                                     char c = value_c[n-4];
-                                    if (c == '1') m_key_notes[n] = true;
-                                    else if (c == '0') m_key_notes[n] = false;
+                                    if (c == '2') m_key_notes[n] = KEY_INCLUSION_FULL;
+                                    else if (c == '1') m_key_notes[n] = KEY_INCLUSION_ACCIDENTAL;
+                                    else if (c == '0') m_key_notes[n] = KEY_INCLUSION_NONE;
                                     else
                                     {
                                         std::cerr << "Warning : malformed key in .aria file for track "
@@ -1762,10 +1763,10 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                                                   << std::endl;
                                     }
                                 }
-                                m_key_notes[3] = false;
-                                m_key_notes[2] = false;
-                                m_key_notes[1] = false;
-                                m_key_notes[0] = false;
+                                m_key_notes[3] = KEY_INCLUSION_NONE;
+                                m_key_notes[2] = KEY_INCLUSION_NONE;
+                                m_key_notes[1] = KEY_INCLUSION_NONE;
+                                m_key_notes[0] = KEY_INCLUSION_NONE;
                             }
                         }
                         else
