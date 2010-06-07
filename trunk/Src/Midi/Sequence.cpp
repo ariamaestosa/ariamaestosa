@@ -91,7 +91,10 @@ Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener
 
 Sequence::~Sequence()
 {
-    std::cout << "cleaning up sequence " << suggestTitle().mb_str() << "..." << std::endl;
+    if (okToLog)
+    {
+        std::cout << "cleaning up sequence " << suggestTitle().mb_str() << "..." << std::endl;
+    }
 }
 
 
