@@ -110,7 +110,7 @@ void AddControlEvent::perform()
 // ---------------------------------------------------------------------------------------------------------
 
 using namespace AriaMaestosa;
-UNIT_TEST(AddControlEventTest)
+UNIT_TEST(AddControlEventTest_Insert)
 {    
     Sequence* seq = new Sequence(NULL, NULL, NULL, false);
     
@@ -150,3 +150,192 @@ UNIT_TEST(AddControlEventTest)
 }
 
 // ---------------------------------------------------------------------------------------------------------
+
+UNIT_TEST(AddControlEventTest_OverwriteFirst)
+{    
+    Sequence* seq = new Sequence(NULL, NULL, NULL, false);
+    
+    Track* t = new Track(seq);
+    
+    // make a factory sequence to work from
+    seq->importing = true;
+    t->addControlEvent_import(0,   64,  0);
+    t->addControlEvent_import(100, 127, 0);
+    t->addControlEvent_import(200, 64,  0);
+    t->addControlEvent_import(300, 0,   0);
+    seq->importing = false;
+    require(t->getControllerEventAmount(0) == 4, "sanity check"); // sanity check on the way...
+    
+    // test the action
+    seq->addTrack(t);
+    
+    seq->getTrack(0)->action(new AddControlEvent(0, 100, 0));
+    
+    require(t->getControllerEventAmount(0) == 4, "the number of events was not increased");
+    require(t->getControllerEvent(0, 0)->getTick()  == 0, "events were properly ordered");
+    require(t->getControllerEvent(0, 0)->getValue() == 100, "value of first event was changed");
+    
+    require(t->getControllerEvent(1, 0)->getTick()  == 100, "events were properly ordered");
+    require(t->getControllerEvent(1, 0)->getValue() == 127, "events were properly ordered");
+    
+    require(t->getControllerEvent(2, 0)->getTick()  == 200, "events were properly ordered");
+    require(t->getControllerEvent(2, 0)->getValue() == 64, "events were properly ordered");
+    
+    require(t->getControllerEvent(3, 0)->getTick()  == 300, "events were properly ordered");
+    require(t->getControllerEvent(3, 0)->getValue() == 0, "events were properly ordered");
+    
+    seq->getTrack(0)->action(new AddControlEvent(200, 100, 0));
+    
+    require(t->getControllerEventAmount(0) == 4, "the number of events was not increased");
+    require(t->getControllerEvent(0, 0)->getTick()  == 0, " events were properly ordered");
+    require(t->getControllerEvent(0, 0)->getValue() == 100, "events were properly ordered");
+    
+    require(t->getControllerEvent(1, 0)->getTick()  == 100, "events were properly ordered");
+    require(t->getControllerEvent(1, 0)->getValue() == 127, "events were properly ordered");
+    
+    require(t->getControllerEvent(2, 0)->getTick()  == 200, "events were properly ordered");
+    require(t->getControllerEvent(2, 0)->getValue() == 100, "value of third event was changed");
+    
+    require(t->getControllerEvent(3, 0)->getTick()  == 300, "events were properly ordered");
+    require(t->getControllerEvent(3, 0)->getValue() == 0,   "events were properly ordered");
+    
+    
+    delete seq;
+}
+
+// ---------------------------------------------------------------------------------------------------------
+
+UNIT_TEST(AddControlEventTest_OverwriteLast)
+{    
+    Sequence* seq = new Sequence(NULL, NULL, NULL, false);
+    
+    Track* t = new Track(seq);
+    
+    // make a factory sequence to work from
+    seq->importing = true;
+    t->addControlEvent_import(0,   64,  0);
+    t->addControlEvent_import(100, 127, 0);
+    t->addControlEvent_import(200, 64,  0);
+    t->addControlEvent_import(300, 0,   0);
+    seq->importing = false;
+    require(t->getControllerEventAmount(0) == 4, "sanity check"); // sanity check on the way...
+    
+    // test the action
+    seq->addTrack(t);
+    
+    seq->getTrack(0)->action(new AddControlEvent(300, 100, 0));
+    
+    require(t->getControllerEventAmount(0) == 4, "the number of events was not increased");
+    require(t->getControllerEvent(0, 0)->getTick()  == 0,   "events were properly ordered");
+    require(t->getControllerEvent(0, 0)->getValue() == 64,  "events were properly ordered");
+    
+    require(t->getControllerEvent(1, 0)->getTick()  == 100, "events were properly ordered");
+    require(t->getControllerEvent(1, 0)->getValue() == 127, "events were properly ordered");
+    
+    require(t->getControllerEvent(2, 0)->getTick()  == 200, "events were properly ordered");
+    require(t->getControllerEvent(2, 0)->getValue() == 64,  "events were properly ordered");
+    
+    require(t->getControllerEvent(3, 0)->getTick()  == 300, "events were properly ordered");
+    require(t->getControllerEvent(3, 0)->getValue() == 100, "events were properly ordered");
+    
+    seq->getTrack(0)->action(new AddControlEvent(200, 100, 0));
+    
+    require(t->getControllerEventAmount(0) == 4, "the number of events was not increased");
+    require(t->getControllerEvent(0, 0)->getTick()  == 0, " events were properly ordered");
+    require(t->getControllerEvent(0, 0)->getValue() == 100, "events were properly ordered");
+    
+    require(t->getControllerEvent(1, 0)->getTick()  == 100, "events were properly ordered");
+    require(t->getControllerEvent(1, 0)->getValue() == 127, "events were properly ordered");
+    
+    require(t->getControllerEvent(2, 0)->getTick()  == 200, "events were properly ordered");
+    require(t->getControllerEvent(2, 0)->getValue() == 100, "value of third event was changed");
+    
+    require(t->getControllerEvent(3, 0)->getTick()  == 300, "events were properly ordered");
+    require(t->getControllerEvent(3, 0)->getValue() == 0,   "events were properly ordered");
+    
+    
+    delete seq;
+}
+
+// ---------------------------------------------------------------------------------------------------------
+
+UNIT_TEST(AddControlEventTest_Append)
+{    
+    Sequence* seq = new Sequence(NULL, NULL, NULL, false);
+    
+    Track* t = new Track(seq);
+    
+    // make a factory sequence to work from
+    seq->importing = true;
+    t->addControlEvent_import(0,   64,  0);
+    t->addControlEvent_import(100, 127, 0);
+    t->addControlEvent_import(200, 64,  0);
+    t->addControlEvent_import(300, 0,   0);
+    seq->importing = false;
+    require(t->getControllerEventAmount(0) == 4, "sanity check"); // sanity check on the way...
+    
+    // test the action
+    seq->addTrack(t);
+    
+    seq->getTrack(0)->action(new AddControlEvent(400, 123, 0));
+    
+    require(t->getControllerEventAmount(0) == 5, "the number of events was increased");
+    require(t->getControllerEvent(0, 0)->getTick()  == 0,  "events were properly ordered");
+    require(t->getControllerEvent(0, 0)->getValue() == 64, "events were properly ordered");
+    
+    require(t->getControllerEvent(1, 0)->getTick()  == 100, "events were properly ordered");
+    require(t->getControllerEvent(1, 0)->getValue() == 127, "events were properly ordered");
+    
+    require(t->getControllerEvent(2, 0)->getTick()  == 200, "events were properly ordered");
+    require(t->getControllerEvent(2, 0)->getValue() == 64,  "events were properly ordered");
+    
+    require(t->getControllerEvent(3, 0)->getTick()  == 300, "events were properly ordered");
+    require(t->getControllerEvent(3, 0)->getValue() == 0,   "events were properly ordered");
+    
+    require(t->getControllerEvent(4, 0)->getTick()  == 400, "new event was added at the end");
+    require(t->getControllerEvent(4, 0)->getValue() == 123, "new event was added at the end");
+    
+    delete seq;
+}
+
+// ---------------------------------------------------------------------------------------------------------
+
+UNIT_TEST(AddControlEventTest_Prepend)
+{    
+    Sequence* seq = new Sequence(NULL, NULL, NULL, false);
+    
+    Track* t = new Track(seq);
+    
+    // make a factory sequence to work from
+    seq->importing = true;
+    t->addControlEvent_import(50,   64,  0);
+    t->addControlEvent_import(100, 127, 0);
+    t->addControlEvent_import(200, 64,  0);
+    t->addControlEvent_import(300, 0,   0);
+    seq->importing = false;
+    require(t->getControllerEventAmount(0) == 4, "sanity check"); // sanity check on the way...
+    
+    // test the action
+    seq->addTrack(t);
+    
+    seq->getTrack(0)->action(new AddControlEvent(0, 53, 0));
+    
+    require(t->getControllerEventAmount(0) == 5, "the number of events was increased");
+    require(t->getControllerEvent(0, 0)->getTick()  == 0,   "events were properly ordered");
+    require(t->getControllerEvent(0, 0)->getValue() == 53,  "events were properly ordered");
+    
+    require(t->getControllerEvent(1, 0)->getTick()  == 50,  "events were properly ordered");
+    require(t->getControllerEvent(1, 0)->getValue() == 64,  "events were properly ordered");
+    
+    require(t->getControllerEvent(2, 0)->getTick()  == 100, "events were properly ordered");
+    require(t->getControllerEvent(2, 0)->getValue() == 127, "events were properly ordered");
+
+    require(t->getControllerEvent(3, 0)->getTick()  == 200, "events were properly ordered");
+    require(t->getControllerEvent(3, 0)->getValue() == 64,  "events were properly ordered");
+    
+    require(t->getControllerEvent(4, 0)->getTick()  == 300, "events were properly ordered");
+    require(t->getControllerEvent(4, 0)->getValue() == 0,   "events were properly ordered");
+    
+    delete seq;
+}
+
