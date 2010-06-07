@@ -110,7 +110,10 @@ namespace AriaMaestosa
         OwnerPtr<DrumEditor>        drumEditor       ;
         OwnerPtr<ControllerEditor>  controllerEditor ;
         OwnerPtr<ScoreEditor>       scoreEditor      ;
-        ptr_vector<Editor, REF>     m_all_editors;
+        ptr_vector<Editor, REF>     m_all_editors    ;
+        
+        AriaRenderString instrument_name;
+
         // ----------------------------------------
         
         GraphicalTrack(Track* track, Sequence* parent);
@@ -157,6 +160,8 @@ namespace AriaMaestosa
         void processMouseExited(RelativeXCoord x_now, int y_now,
                                 RelativeXCoord x_initial, int y_initial);
         
+        void onInstrumentChange(const int newInstrument);
+
         /** Called when a track's key changes */
         void onKeyChange(const int symbolAmount, const KeyType symbol);
         

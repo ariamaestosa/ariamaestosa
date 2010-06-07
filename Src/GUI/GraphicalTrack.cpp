@@ -393,6 +393,13 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
 
     channelButton = new BlankField(28);
     components->addFromRight(channelButton);
+    
+    instrument_name.set(Core::getInstrumentPicker()->getInstrumentName( track->getInstrument() ));
+#ifdef __WXMAC__
+    instrument_name.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+#else
+    instrument_name.setFont( wxFont(9,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+#endif
 }
 
 // --------------------------------------------------------------------------------------------------
@@ -769,6 +776,13 @@ void GraphicalTrack::onKeyChange(const int symbolAmount, const KeyType type)
 }
 
 // --------------------------------------------------------------------------------------------------
+
+void GraphicalTrack::onInstrumentChange(const int newInstrument)
+{
+    instrument_name.set(Core::getInstrumentPicker()->getInstrumentName( newInstrument ));
+}
+
+// --------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #pragma mark Getters/Setters
@@ -1059,8 +1073,8 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     }
     else
     {
-        track->instrument_name.bind();
-        track->instrument_name.render(instrumentName->getX()+11 ,y+29);
+        instrument_name.bind();
+        instrument_name.render(instrumentName->getX()+11 ,y+29);
     }
     
     AriaRender::images();
