@@ -48,7 +48,7 @@ using namespace AriaMaestosa;
 // ----------------------------------------------------------------------------------------------------------
 
 Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener* actionStackListener,
-                   bool addDefautTrack)
+                   ISequenceDataListener* sequenceDataListener, bool addDefautTrack)
 {
     reordering_newPosition  = -1;
     beatResolution          = 960;
@@ -65,6 +65,7 @@ Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener
     follow_playback         = Core::getPrefsValue("followPlayback") != 0;
     m_playback_listener     = playbackListener;
     m_action_stack_listener = actionStackListener;
+    m_seq_data_listener     = sequenceDataListener;
     
     //setZoom(100);
     zoom         = (128.0/(beatResolution*4));
@@ -214,11 +215,10 @@ void Sequence::setXScrollInPixels(int value)
     const int editor_size=Display::getWidth()-100,
         total_size = getMeasureData()->getTotalPixelAmount();
 
-    if ( x_scroll_in_pixels < 0 ) x_scroll_in_pixels = 0;
-    if ( x_scroll_in_pixels >= total_size-editor_size) x_scroll_in_pixels = total_size-editor_size-1;
+    if (x_scroll_in_pixels < 0) x_scroll_in_pixels = 0;
+    if (x_scroll_in_pixels >= total_size-editor_size) x_scroll_in_pixels = total_size-editor_size-1;
 
-
-    Display::render();
+    if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -360,8 +360,7 @@ void Sequence::scale(float factor,
         
     }
     
-    Display::render();
-    
+    if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -369,13 +368,6 @@ void Sequence::scale(float factor,
 void Sequence::setTempo(int tmp)
 {
     m_tempo = tmp;
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-int Sequence::getTempo() const
-{
-    return m_tempo;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -425,7 +417,7 @@ void Sequence::snapNotesToGrid()
     
     tracks[ currentTrack ].action( new Action::SnapNotesToGrid() );
     
-    Display::render();
+    if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
 }
 
 
@@ -474,8 +466,7 @@ void Sequence::undo()
     lastAction->undo();
     undoStack.erase( undoStack.size() - 1 );
 
-    // FIXME: this doesn't go here
-    Display::render();
+    if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
     
     if (m_action_stack_listener != NULL) m_action_stack_listener->onActionStackChanged();
 }
@@ -636,7 +627,9 @@ void Sequence::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
     // if reordering tracks
     if (draggedTrack!=-1)
     {
-        Display::render(); // reordering preview is done while rendering, so calling 'render' will update reordering onscreen.
+        // reordering preview is done while rendering, so calling 'render' will update reordering onscreen.
+        // FIXME: hackish
+        if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
         return;
     }
 
@@ -676,7 +669,7 @@ Track* Sequence::addTrack()
         tracks.push_back(result);
     }
     
-    Display::render();
+    if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
     
     return result;
 }
@@ -686,7 +679,7 @@ Track* Sequence::addTrack()
 void Sequence::addTrack(Track* track)
 {
     tracks.push_back(track);
-    Display::render();
+    if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -700,7 +693,7 @@ Track* Sequence::removeSelectedTrack()
 
     while (currentTrack > tracks.size()-1) currentTrack -= 1;
 
-    Display::render();
+    if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
     return removedTrack;
 }
 
@@ -883,8 +876,7 @@ void Sequence::spacePressed()
 
         PlatformMidiManager::stop();
         
-        // FIXME: doesn't go here, this is a data class, not a GUI class
-        Display::render();
+        if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
     }
 
 }
@@ -909,7 +901,7 @@ void Sequence::copy()
 void Sequence::paste()
 {
     tracks[currentTrack].action( new Action::Paste(false) );
-    Display::render();
+    if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -917,7 +909,7 @@ void Sequence::paste()
 void Sequence::pasteAtMouse()
 {
     tracks[currentTrack].action( new Action::Paste(true) );
-    Display::render();
+    if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -932,7 +924,7 @@ void Sequence::pasteAtMouse()
 void Sequence::selectAll()
 {
     tracks[currentTrack].selectNote(ALL_NOTES, true, true);
-    Display::render();
+    if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -940,7 +932,7 @@ void Sequence::selectAll()
 void Sequence::selectNone()
 {
     tracks[currentTrack].selectNote(ALL_NOTES, false, true);
-    Display::render();
+    if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -1286,7 +1278,7 @@ over:
 
     importing = false;
     DisplayFrame::updateHorizontalScrollbar( x_scroll_in_pixels );
-    Display::render();
+    if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
 
     return true;
 

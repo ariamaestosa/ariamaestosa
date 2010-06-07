@@ -70,6 +70,14 @@ namespace AriaMaestosa
         virtual void onActionStackChanged() = 0;
     };
     
+    class ISequenceDataListener
+    {
+    public:
+        virtual ~ISequenceDataListener() {}
+        
+        virtual void onSequenceDataChanged() = 0;
+    };
+    
     /**
       * @brief This is a midi Sequence, or a "file".
       *
@@ -106,6 +114,8 @@ namespace AriaMaestosa
         IPlaybackModeListener* m_playback_listener;
         
         IActionStackListener* m_action_stack_listener;
+        
+        ISequenceDataListener* m_seq_data_listener;
         
      public:
 
@@ -150,7 +160,7 @@ namespace AriaMaestosa
         // ------------------------------------
 
         Sequence(IPlaybackModeListener* playbackListener, IActionStackListener* actionStackListener,
-                 bool addDefautTrack);
+                 ISequenceDataListener* sequenceDataListener, bool addDefautTrack);
         ~Sequence();
         
         /**
@@ -270,7 +280,7 @@ namespace AriaMaestosa
         void  setTempo(int tempo);
         
         /** @return      the "default" tempo (tempo at start of song) */
-        int   getTempo() const;
+        int   getTempo() const { return m_tempo; }
         
         /** @return the tempo at any tick (not necessarily a tick where there is a tempo change event) */
         int   getTempoAtTick(const int tick) const;
