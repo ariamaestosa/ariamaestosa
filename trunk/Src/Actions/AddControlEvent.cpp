@@ -21,8 +21,11 @@
 #include "Midi/Sequence.h"
 #include "GUI/GraphicalTrack.h"
 #include "Editors/ControllerEditor.h"
+#include "unit_test.h"
 
 using namespace AriaMaestosa::Action;
+
+// ---------------------------------------------------------------------------------------------------------
 
 AddControlEvent::AddControlEvent(const int x, const int value, const int controller) :
     //I18N: (undoable) action name
@@ -34,9 +37,13 @@ AddControlEvent::AddControlEvent(const int x, const int value, const int control
     m_removed_event_value = -1;
 }
 
+// ---------------------------------------------------------------------------------------------------------
+
 AddControlEvent::~AddControlEvent()
 {
 }
+
+// ---------------------------------------------------------------------------------------------------------
 
 void AddControlEvent::undo()
 {
@@ -92,10 +99,54 @@ void AddControlEvent::undo()
     
 }
 
+// ---------------------------------------------------------------------------------------------------------
+
 void AddControlEvent::perform()
 {
     ControllerEvent* event = new ControllerEvent(track->sequence, m_controller, m_x, m_value);
     track->addControlEvent( event, &m_removed_event_value );
 }
 
+// ---------------------------------------------------------------------------------------------------------
 
+using namespace AriaMaestosa;
+UNIT_TEST(AddControlEventTest)
+{    
+    Sequence* seq = new Sequence(NULL, NULL, NULL, false);
+    
+    Track* t = new Track(seq);
+    
+    // make a factory sequence to work from
+    seq->importing = true;
+    t->addControlEvent_import(0,   64,  0);
+    t->addControlEvent_import(100, 127, 0);
+    t->addControlEvent_import(200, 64,  0);
+    t->addControlEvent_import(300, 0,   0);
+    seq->importing = false;
+    require(t->getControllerEventAmount(0) == 4, "sanity check"); // sanity check on the way...
+
+    // test the action
+    seq->addTrack(t);
+    
+    seq->getTrack(0)->action(new AddControlEvent(150, 100, 0));
+    
+    require(t->getControllerEventAmount(0) == 5, "the number of events was increased");
+    require(t->getControllerEvent(0, 0)->getTick()  == 0, "events were properly ordered");
+    require(t->getControllerEvent(0, 0)->getValue() == 64, "events were properly ordered");
+
+    require(t->getControllerEvent(1, 0)->getTick()  == 100, "events were properly ordered");
+    require(t->getControllerEvent(1, 0)->getValue() == 127, "events were properly ordered");
+
+    require(t->getControllerEvent(2, 0)->getTick()  == 150, "events were properly ordered");
+    require(t->getControllerEvent(2, 0)->getValue() == 100, "events were properly ordered");
+
+    require(t->getControllerEvent(3, 0)->getTick()  == 200, "events were properly ordered");
+    require(t->getControllerEvent(3, 0)->getValue() == 64, "events were properly ordered");
+
+    require(t->getControllerEvent(4, 0)->getTick()  == 300, "events were properly ordered");
+    require(t->getControllerEvent(4, 0)->getValue() == 0, "events were properly ordered");
+
+    delete seq;
+}
+
+// ---------------------------------------------------------------------------------------------------------
