@@ -238,20 +238,20 @@ UNIT_TEST(AddControlEventTest_OverwriteLast)
     require(t->getControllerEvent(3, 0)->getTick()  == 300, "events were properly ordered");
     require(t->getControllerEvent(3, 0)->getValue() == 100, "events were properly ordered");
     
-    seq->getTrack(0)->action(new AddControlEvent(200, 100, 0));
+    seq->getTrack(0)->action(new AddControlEvent(200, 111, 0));
     
     require(t->getControllerEventAmount(0) == 4, "the number of events was not increased");
     require(t->getControllerEvent(0, 0)->getTick()  == 0, " events were properly ordered");
-    require(t->getControllerEvent(0, 0)->getValue() == 100, "events were properly ordered");
+    require(t->getControllerEvent(0, 0)->getValue() == 64, "events were properly ordered");
     
     require(t->getControllerEvent(1, 0)->getTick()  == 100, "events were properly ordered");
     require(t->getControllerEvent(1, 0)->getValue() == 127, "events were properly ordered");
     
     require(t->getControllerEvent(2, 0)->getTick()  == 200, "events were properly ordered");
-    require(t->getControllerEvent(2, 0)->getValue() == 100, "value of third event was changed");
+    require(t->getControllerEvent(2, 0)->getValue() == 111, "value of third event was changed");
     
     require(t->getControllerEvent(3, 0)->getTick()  == 300, "events were properly ordered");
-    require(t->getControllerEvent(3, 0)->getValue() == 0,   "events were properly ordered");
+    require(t->getControllerEvent(3, 0)->getValue() == 100, "events were properly ordered");
     
     
     delete seq;

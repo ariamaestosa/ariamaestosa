@@ -5,16 +5,22 @@
 #include "Dialogs/Preferences.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
-#include "Pickers/TuningPicker.h"
-#include "Pickers/KeyPicker.h"
-#include "Pickers/DrumChoice.h"
-#include "Pickers/InstrumentChoice.h"
-#include "wx/wx.h"
+//#include "Pickers/TuningPicker.h"
+//#include "Pickers/KeyPicker.h"
+//#include "Pickers/DrumChoice.h"
+//#include "Pickers/InstrumentChoice.h"
+//#include "wx/wx.h"
 
 namespace AriaMaestosa
 {
+    class TuningPicker;
+    class KeyPicker;
+    class DrumChoice;
+    class InstrumentChoice;
     
     MainPane* mainPane = NULL;
+    
+    bool okToLog = true;
     
     namespace Core
     {

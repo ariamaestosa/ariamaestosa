@@ -49,6 +49,8 @@ namespace AriaMaestosa
     class DrumChoice;
     class InstrumentChoice;
     
+    extern bool okToLog;
+    
     MainFrame* getMainFrame();
     MeasureData* getMeasureData();
     Sequence* getCurrentSequence();

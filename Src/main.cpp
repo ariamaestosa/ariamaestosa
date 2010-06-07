@@ -98,6 +98,7 @@ bool wxWidgetApp::OnInit()
     {
         if (wxString(argv[n]) == wxT("--utest"))
         {
+            okToLog = false;
             prefs = PreferencesData::getInstance();
             prefs->init();
 
