@@ -166,8 +166,6 @@ namespace AriaMaestosa
         OwnerPtr<GraphicalTrack>  graphics;
         Sequence* sequence;
         int trackUniqueID;
-        
-        AriaRenderString instrument_name;
         // -------------------------------------
         
         Track(Sequence* sequence);
@@ -381,8 +379,17 @@ namespace AriaMaestosa
         /** @pre only used in manual channel mode */
         int getChannel();
         
-        void setInstrument(int i, bool recursive=false); // 'recursive' is set to true when the method calls itself
-        int getInstrument();
+        /**
+          * @brief set the MIDI instrument used by this track
+          * @param recursive set to true when the method calls itself
+          */
+        void setInstrument(int i, bool recursive=false);
+        
+        /**
+          * @brief  the MIDI instrument used by this track
+          * @return the MIDI instrument used by this track
+          */
+        int getInstrument() const { return m_instrument; }
         
         /**
          * @param recursive Set to true when 'setDrumKit' when the function was called by itself

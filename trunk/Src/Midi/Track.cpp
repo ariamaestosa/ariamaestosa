@@ -117,14 +117,6 @@ Track::Track(Sequence* sequence)
 
     m_instrument = 0;
     m_drum_kit   = 0;
-
-    instrument_name.set(Core::getInstrumentPicker()->getInstrumentName( m_instrument ));
-#ifdef __WXMAC__
-    instrument_name.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-#else
-    instrument_name.setFont( wxFont(9,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-#endif
-
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -906,7 +898,7 @@ void Track::setChannel(int i)
 void Track::setInstrument(int i, bool recursive)
 {
     m_instrument = i;
-    instrument_name.set(Core::getInstrumentPicker()->getInstrumentName( m_instrument ));
+    graphics->onInstrumentChange( m_instrument );
 
     // if we're in manual channel management mode, change all tracks of the same channel
     // to have the same instrument
@@ -923,13 +915,6 @@ void Track::setInstrument(int i, bool recursive)
             }
         }//next
     }//endif
-}
-
-// -------------------------------------------------------------------------------------------------------
-
-int Track::getInstrument()
-{
-    return m_instrument;
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -956,7 +941,7 @@ void Track::setDrumKit(int i, bool recursive)
     {
 
         const int trackAmount = sequence->getTrackAmount();
-        for(int n=0; n<trackAmount; n++)
+        for (int n=0; n<trackAmount; n++)
         {
             Track* track = sequence->getTrack(n);
             if (track == this) continue; // track must not evaluate itself...
