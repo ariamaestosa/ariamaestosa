@@ -108,7 +108,8 @@ namespace AriaMaestosa
       * @ingroup gui
       * @brief manages the main frame of Aria Maestosa
       */
-    class MainFrame : public wxFrame, public IPlaybackModeListener, public IActionStackListener
+    class MainFrame : public wxFrame, public IPlaybackModeListener, public IActionStackListener,
+        public ISequenceDataListener
     {
         WxOwnerPtr<AboutDialog>  aboutDialog;
         WxOwnerPtr<CustomNoteSelectDialog>  customNoteSelectDialog;
@@ -323,6 +324,9 @@ namespace AriaMaestosa
         
         /** @brief Implement callback from IActionStackListener */
         virtual void onActionStackChanged();
+        
+        /** @brief Implement callback from ISequenceDataListener */
+        virtual void onSequenceDataChanged();
         
         DECLARE_EVENT_TABLE();
     };

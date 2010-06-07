@@ -1086,7 +1086,7 @@ void MainFrame::updateVerticalScrollbar()
 
 void MainFrame::addSequence()
 {
-    sequences.push_back( new Sequence(this, this, Display::isVisible()) );
+    sequences.push_back( new Sequence(this, this, this, Display::isVisible()) );
     setCurrentSequence( sequences.size() - 1 );
     Display::render();
     getMainFrame()->updateUndoMenuLabel();
@@ -1285,6 +1285,11 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
 void MainFrame::onActionStackChanged()
 {
     updateUndoMenuLabel();
+}
+
+void MainFrame::onSequenceDataChanged()
+{
+    mainPane->render();
 }
 
 // ----------------------------------------------------------------------------------------------------------------
