@@ -8,7 +8,7 @@ class UnitTestCase
 {
     std::string m_name;
 public:
-    UnitTestCase(const char* name);
+    UnitTestCase(const char* name, const char* filePath);
     virtual ~UnitTestCase();
     virtual void run() = 0;
     
@@ -17,8 +17,8 @@ public:
 };
 
 #ifdef _MORE_DEBUG_CHECKS
-#define UNIT_TEST( NAME ) class NAME : public UnitTestCase { public: NAME(const char* name) : UnitTestCase(name){} void run(); }; \
-                          NAME unit_test_##NAME = NAME( #NAME ); void NAME::run()
+#define UNIT_TEST( NAME ) class NAME : public UnitTestCase { public: NAME(const char* name, const char* filename) : UnitTestCase(name, filename){} void run(); }; \
+                          NAME unit_test_##NAME = NAME( #NAME, __FILE__ ); void NAME::run()
 #else
 // silly trick to not bloat the executable with unit test code in release mode; since the template is
 // never instantiated the code will be discarded
