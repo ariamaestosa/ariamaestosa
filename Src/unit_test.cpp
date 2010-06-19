@@ -56,10 +56,14 @@ UnitTestCase::UnitTestCase(const char* name, const char* filePath)
     
     m_name = name;
     
+    wxString filePathWxString(filePath);
+    if (filePathWxString.Find('.') != wxNOT_FOUND)
+    {
+        filePathWxString = filePathWxString.BeforeLast('.');
+    }
     
     std::vector<wxString> path;
-    wxStringTokenizer tokenizer(wxString(filePath).BeforeLast(wxFileName::GetPathSeparator()),
-                                wxFileName::GetPathSeparator());
+    wxStringTokenizer tokenizer(filePathWxString, wxFileName::GetPathSeparator());
     while (tokenizer.HasMoreTokens())
     {
         wxString token = tokenizer.GetNextToken();
@@ -157,7 +161,6 @@ void UnitTestCase::showMenu()
     TestCaseList::testGroupsById.clear();
     id = 1;
     
-    std::cout << "(0) [group] All Tests\n";
     TestCaseList::Node* from = TestCaseList::root;
     while (from->m_children.size() == 1)
     {
@@ -165,6 +168,7 @@ void UnitTestCase::showMenu()
     }
     
     std::cout << "==== UNIT TESTS ===\n";
+    std::cout << "(0) [group] All Tests\n";
     printTree(from, 0);
     
     std::cout << "----\n";
