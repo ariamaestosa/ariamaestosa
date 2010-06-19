@@ -228,9 +228,7 @@ namespace AriaMaestosa
                     std::cout << "Adding track " << n << " as background to track " << std::endl;
                 }
             }
-            
-            ASSERT_E(modalid, !=, -1);
-            
+                        
             wxDialog::EndModal(modalid);
             Display::render();
         }

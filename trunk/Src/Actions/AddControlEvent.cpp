@@ -125,9 +125,9 @@ UNIT_TEST(AddControlEventTest_Insert)
     seq->importing = false;
     require(t->getControllerEventAmount(0) == 4, "sanity check"); // sanity check on the way...
 
-    // test the action
     seq->addTrack(t);
     
+    // test the action
     seq->getTrack(0)->action(new AddControlEvent(150, 100, 0));
     
     require(t->getControllerEventAmount(0) == 5, "the number of events was increased");
@@ -166,9 +166,9 @@ UNIT_TEST(AddControlEventTest_OverwriteFirst)
     seq->importing = false;
     require(t->getControllerEventAmount(0) == 4, "sanity check"); // sanity check on the way...
     
-    // test the action
     seq->addTrack(t);
     
+    // test the action
     seq->getTrack(0)->action(new AddControlEvent(0, 100, 0));
     
     require(t->getControllerEventAmount(0) == 4, "the number of events was not increased");
@@ -220,9 +220,9 @@ UNIT_TEST(AddControlEventTest_OverwriteLast)
     seq->importing = false;
     require(t->getControllerEventAmount(0) == 4, "sanity check"); // sanity check on the way...
     
-    // test the action
     seq->addTrack(t);
     
+    // test the action
     seq->getTrack(0)->action(new AddControlEvent(300, 100, 0));
     
     require(t->getControllerEventAmount(0) == 4, "the number of events was not increased");
@@ -274,9 +274,9 @@ UNIT_TEST(AddControlEventTest_Append)
     seq->importing = false;
     require(t->getControllerEventAmount(0) == 4, "sanity check"); // sanity check on the way...
     
-    // test the action
     seq->addTrack(t);
     
+    // test the action
     seq->getTrack(0)->action(new AddControlEvent(400, 123, 0));
     
     require(t->getControllerEventAmount(0) == 5, "the number of events was increased");
@@ -315,9 +315,9 @@ UNIT_TEST(AddControlEventTest_Prepend)
     seq->importing = false;
     require(t->getControllerEventAmount(0) == 4, "sanity check"); // sanity check on the way...
     
-    // test the action
     seq->addTrack(t);
     
+    // test the action
     seq->getTrack(0)->action(new AddControlEvent(0, 53, 0));
     
     require(t->getControllerEventAmount(0) == 5, "the number of events was increased");
