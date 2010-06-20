@@ -33,6 +33,7 @@ namespace AriaMaestosa
         virtual ~IPreset(){};
         virtual wxString getName() = 0;
         virtual wxString getStringizedForm() = 0;
+        virtual IPreset* clone(wxString newName) = 0;
     };
     
     
@@ -55,6 +56,7 @@ namespace AriaMaestosa
         ptr_vector<IPreset, REF> getPresets()  {  return m_presets.getWeakView();  }
         
         void add(IPreset* preset);
+        void remove(IPreset* preset, bool deleteIt=true);
         
         void read(PresetFactory presetFactory);
         void write();

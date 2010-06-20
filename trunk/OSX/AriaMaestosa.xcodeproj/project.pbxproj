@@ -529,6 +529,10 @@
 		95866C6C11CE7C10008F2938 /* KeyPresets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95866C6A11CE7C10008F2938 /* KeyPresets.cpp */; };
 		95866C6D11CE7C10008F2938 /* KeyPresets.h in Headers */ = {isa = PBXBuildFile; fileRef = 95866C6911CE7C10008F2938 /* KeyPresets.h */; };
 		95866C6E11CE7C10008F2938 /* KeyPresets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95866C6A11CE7C10008F2938 /* KeyPresets.cpp */; };
+		95866DA211CE9561008F2938 /* PresetEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = 95866DA011CE9561008F2938 /* PresetEditor.h */; };
+		95866DA311CE9561008F2938 /* PresetEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95866DA111CE9561008F2938 /* PresetEditor.cpp */; };
+		95866DA411CE9561008F2938 /* PresetEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = 95866DA011CE9561008F2938 /* PresetEditor.h */; };
+		95866DA511CE9561008F2938 /* PresetEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95866DA111CE9561008F2938 /* PresetEditor.cpp */; };
 		959693381153E612001E321B /* ScoreAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959693341153E612001E321B /* ScoreAnalyser.cpp */; };
 		959693391153E612001E321B /* ScoreAnalyser.h in Headers */ = {isa = PBXBuildFile; fileRef = 959693351153E612001E321B /* ScoreAnalyser.h */; };
 		9596933A1153E612001E321B /* SilenceAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959693361153E612001E321B /* SilenceAnalyser.cpp */; };
@@ -951,6 +955,8 @@
 		957C861011270142006AC7D3 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = ../TODO.txt; sourceTree = SOURCE_ROOT; };
 		95866C6911CE7C10008F2938 /* KeyPresets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeyPresets.h; path = ../Src/Midi/KeyPresets.h; sourceTree = SOURCE_ROOT; };
 		95866C6A11CE7C10008F2938 /* KeyPresets.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KeyPresets.cpp; path = ../Src/Midi/KeyPresets.cpp; sourceTree = SOURCE_ROOT; };
+		95866DA011CE9561008F2938 /* PresetEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PresetEditor.h; path = ../Src/Dialogs/PresetEditor.h; sourceTree = SOURCE_ROOT; };
+		95866DA111CE9561008F2938 /* PresetEditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PresetEditor.cpp; path = ../Src/Dialogs/PresetEditor.cpp; sourceTree = SOURCE_ROOT; };
 		959693341153E612001E321B /* ScoreAnalyser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreAnalyser.cpp; path = ../Src/Analysers/ScoreAnalyser.cpp; sourceTree = SOURCE_ROOT; };
 		959693351153E612001E321B /* ScoreAnalyser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreAnalyser.h; path = ../Src/Analysers/ScoreAnalyser.h; sourceTree = SOURCE_ROOT; };
 		959693361153E612001E321B /* SilenceAnalyser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SilenceAnalyser.cpp; path = ../Src/Analysers/SilenceAnalyser.cpp; sourceTree = SOURCE_ROOT; };
@@ -1109,6 +1115,8 @@
 				957118F51125D8D200104BF5 /* CustomNoteSelectDialog.h */,
 				957118F81125D8D200104BF5 /* Preferences.cpp */,
 				957118F91125D8D200104BF5 /* Preferences.h */,
+				95866DA111CE9561008F2938 /* PresetEditor.cpp */,
+				95866DA011CE9561008F2938 /* PresetEditor.h */,
 				95B90462114ADF23007F4778 /* PrintSetupDialog.cpp */,
 				95B90463114ADF23007F4778 /* PrintSetupDialog.h */,
 				95AFD79E118F21C8007DC6C7 /* ScaleDialog.cpp */,
@@ -1651,6 +1659,7 @@
 				95643A7311BC0B2B003CC6C0 /* NotePickerWidget.h in Headers */,
 				954A192411CD3218004C13E0 /* PresetManager.h in Headers */,
 				95866C6B11CE7C10008F2938 /* KeyPresets.h in Headers */,
+				95866DA211CE9561008F2938 /* PresetEditor.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1778,6 +1787,7 @@
 				95643A7111BC0B2B003CC6C0 /* NotePickerWidget.h in Headers */,
 				954A192611CD3218004C13E0 /* PresetManager.h in Headers */,
 				95866C6D11CE7C10008F2938 /* KeyPresets.h in Headers */,
+				95866DA411CE9561008F2938 /* PresetEditor.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1978,6 +1988,7 @@
 				95643A7411BC0B2B003CC6C0 /* NotePickerWidget.cpp in Sources */,
 				954A192511CD3218004C13E0 /* PresetManager.cpp in Sources */,
 				95866C6C11CE7C10008F2938 /* KeyPresets.cpp in Sources */,
+				95866DA311CE9561008F2938 /* PresetEditor.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2099,6 +2110,7 @@
 				95643A7211BC0B2B003CC6C0 /* NotePickerWidget.cpp in Sources */,
 				954A192711CD3218004C13E0 /* PresetManager.cpp in Sources */,
 				95866C6E11CE7C10008F2938 /* KeyPresets.cpp in Sources */,
+				95866DA511CE9561008F2938 /* PresetEditor.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

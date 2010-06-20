@@ -67,6 +67,13 @@ KeyPreset::KeyPreset(const char* name, const char* contents)
 
 // ----------------------------------------------------------------------------------------------------------
 
+IPreset* KeyPreset::clone(wxString newName)
+{
+    return new KeyPreset(newName, m_key_notes);
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
 wxString KeyPreset::getStringizedForm()
 {
     // saved in MIDI order, not in my weird pitch ID order

@@ -47,7 +47,8 @@ namespace AriaMaestosa
         virtual ~KeyPreset() {}
         virtual wxString getName() { return m_name; }
         virtual wxString getStringizedForm();
-        
+        virtual IPreset* clone(wxString newName);
+
         static IPreset* factory(const char* name, const char* stringizedForm)
         {
             return new KeyPreset(name, stringizedForm);

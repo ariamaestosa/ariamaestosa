@@ -15,6 +15,7 @@
  */
 
 #include "AriaCore.h"
+#include "Dialogs/PresetEditor.h"
 #include "Editors/ScoreEditor.h"
 #include "Editors/KeyboardEditor.h"
 #include "GUI/GraphicalTrack.h"
@@ -268,6 +269,7 @@ namespace AriaMaestosa
                 KeyPreset* newInstance = new KeyPreset(name.mb_str(), customKey);
                 KeyPresetGroup::getInstance()->add(newInstance);
                 KeyPresetGroup::getInstance()->write();
+                Core::getKeyPicker()->updateUserPresetsMenu();
             }
         }
         
@@ -372,25 +374,13 @@ KeyPicker::KeyPicker() : wxMenu()
 
     AppendSeparator();
     
+    m_user_presets = NULL;
     
     ptr_vector<IPreset, REF> userDefinedKeys = KeyPresetGroup::getInstance()->getPresets();
     const int userDefinedKeysCount = userDefinedKeys.size();
     if (userDefinedKeysCount > 0)
     {
-        wxMenu* userDefinedMenu = new wxMenu();
-        AppendSubMenu(userDefinedMenu, _("User presets"));
-        for (int n=0; n<userDefinedKeysCount; n++)
-        {
-            int id = wxNewId();
-            wxMenuItem* item = userDefinedMenu->Append( id, userDefinedKeys[n].getName() );
-            KeyPreset* keyPreset = dynamic_cast<KeyPreset*>(userDefinedKeys.get(n));
-            ASSERT(keyPreset != NULL);
-            m_custom_keys[id] = std::pair<wxMenuItem*, KeyPreset*>(item, keyPreset);
-            userDefinedMenu->Connect(id, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(KeyPicker::onUserPresetSelected),
-                          NULL, this);
-        }
-        
-        AppendSeparator();
+        updateUserPresetsMenu();
     }
     
     Append( KEY_GUESS,  _("Guess Key"));
@@ -403,6 +393,42 @@ KeyPicker::~KeyPicker()
 {
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
+void KeyPicker::updateUserPresetsMenu()
+{
+    // FIXME: after being updated, the user presets menu has moved to the bottom
+    if (m_user_presets != NULL)
+    {
+        wxMenuItem* removedItem = Remove(m_user_presets);
+        ASSERT(removedItem != NULL);
+        delete removedItem;
+    }
+    
+    ptr_vector<IPreset, REF> userDefinedKeys = KeyPresetGroup::getInstance()->getPresets();
+    const int userDefinedKeysCount = userDefinedKeys.size();
+    
+    wxMenu* userDefinedMenu = new wxMenu();
+    m_user_presets = AppendSubMenu(userDefinedMenu, _("User presets"));
+    for (int n=0; n<userDefinedKeysCount; n++)
+    {
+        int id = wxNewId();
+        userDefinedMenu->Append( id, userDefinedKeys[n].getName() );
+        KeyPreset* keyPreset = dynamic_cast<KeyPreset*>(userDefinedKeys.get(n));
+        ASSERT(keyPreset != NULL);
+        m_custom_keys[id] = keyPreset;
+        userDefinedMenu->Connect(id, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(KeyPicker::onUserPresetSelected),
+                                 NULL, this);
+    }
+    userDefinedMenu->AppendSeparator();
+    
+    wxMenuItem* editPresets = userDefinedMenu->Append(wxNewId(), _("Edit Presets..."));
+    userDefinedMenu->Connect(editPresets->GetId(),
+                             wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(KeyPicker::onEditPresets),
+                             NULL, this);
+    
+    AppendSeparator();    
+}
 
 // ----------------------------------------------------------------------------------------------------------
 
@@ -733,10 +759,16 @@ void KeyPicker::onUserPresetSelected(wxCommandEvent& evt)
         ASSERT(false);
     }
     
-    std::pair<wxMenuItem*, KeyPreset*> selection = m_custom_keys[id];
+    KeyPreset* selection = m_custom_keys[id];
     
-    parent->track->setCustomKey( selection.second->getArray() );
+    parent->track->setCustomKey( selection->getArray() );
 }
 
 // ----------------------------------------------------------------------------------------------------------
 
+void KeyPicker::onEditPresets(wxCommandEvent& evt)
+{
+    PresetEditor presetEditor((wxWindow*)getMainFrame(), (PresetGroup*)KeyPresetGroup::getInstance());
+}
+
+// ----------------------------------------------------------------------------------------------------------
