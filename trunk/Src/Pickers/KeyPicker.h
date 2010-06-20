@@ -19,6 +19,7 @@
 
 #include "wx/menu.h"
 #include "Utils.h"
+#include <map>
 
 class wxCommandEvent;
 
@@ -26,6 +27,7 @@ namespace AriaMaestosa
 {
 
     class GraphicalTrack; // forward
+    class KeyPreset;
 
     /**
       * @ingroup pickers
@@ -65,6 +67,9 @@ namespace AriaMaestosa
         wxMenuItem* key_flats_7;
         
         wxMenuItem* m_custom_key_menu;
+        
+        std::map< int, std::pair<wxMenuItem*, KeyPreset*> > m_custom_keys;
+        
 public:
         LEAK_CHECK();
 
@@ -74,6 +79,7 @@ public:
         void setChecks( bool musicalNotationEnabled, bool linearNotationEnabled, bool f_clef, bool g_clef, int octave_shift);
 
         void menuItemSelected(wxCommandEvent& evt);
+        void onUserPresetSelected(wxCommandEvent& evt);
         void setParent(Track* parent_arg);
 
         DECLARE_EVENT_TABLE();

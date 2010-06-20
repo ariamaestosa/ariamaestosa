@@ -1,0 +1,158 @@
+/*
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+ 
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public License along
+ with this program; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
+#include "PresetManager.h"
+#include "wx/txtstrm.h"
+#include "wx/wfstream.h"
+#include "wx/stdpaths.h"
+#include "wx/msgdlg.h"
+#include "wx/filename.h"
+
+#include "unit_test.h"
+
+using namespace AriaMaestosa;
+
+// ----------------------------------------------------------------------------------------------------------
+
+PresetGroup::PresetGroup(const char* name)
+{
+    m_name = wxString(name, wxConvUTF8);
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void PresetGroup::add(IPreset* preset)
+{
+    m_presets.push_back(preset);
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void PresetGroup::read(wxTextInputStream* source, PresetFactory preset)
+{    
+    wxString countLine = source->ReadLine();
+    long val;
+    if (not countLine.ToLong(&val))
+    {
+        // TODO: error handling
+        std::cerr << "Invalid preset file!\n";
+        return;
+    }
+    
+    for (int n=0; n<val; n++)
+    {
+        wxString nameLine = source->ReadLine();
+        if (nameLine.IsEmpty())
+        {
+            // TODO: error handling
+            std::cerr << "Invalid preset file!\n";
+            return;
+        }
+        wxString contentsLine = source->ReadLine();
+        if (contentsLine.IsEmpty())
+        {
+            // TODO: error handling
+            std::cerr << "Invalid preset file!\n";
+            return;
+        }
+
+        IPreset* thePreset = preset(nameLine.mb_str(), contentsLine.mb_str());
+        m_presets.push_back(thePreset);
+    }
+    
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void PresetGroup::write(wxTextOutputStream* where)
+{
+    const int count = m_presets.size();
+    where->WriteString(to_wxString(count) + wxT("\n"));
+    
+    for (int n=0; n<count; n++)
+    {
+        where->WriteString(m_presets[n].getName() + wxT("\n"));
+        where->WriteString(m_presets[n].getStringizedForm() + wxT("\n"));
+    }
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void PresetGroup::read(PresetFactory presetFactory)
+{
+    wxString prefix = wxStandardPaths::Get().GetUserDataDir();
+
+    
+    wxFileInputStream input( prefix + wxFileName::GetPathSeparator() + m_name + wxT(".ariapreset"));
+    wxTextInputStream text( input );
+    read(&text, presetFactory);
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void PresetGroup::write()
+{
+    wxString prefix = wxStandardPaths::Get().GetUserDataDir();
+    if (not wxDirExists(prefix))
+    {
+        const bool success = wxMkDir(prefix, 0777);
+        if (not success and not wxDirExists(prefix))
+        {
+            wxMessageBox(wxT("Sorry, would not create ") + prefix);
+            return;
+        }
+    }
+    
+    wxFileOutputStream output( prefix + wxFileName::GetPathSeparator() + m_name + wxT(".ariapreset"));
+    wxTextOutputStream text( output );
+    write(&text);
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+// TODO: write a real unit test
+UNIT_TEST(PresetManagerTest)
+{
+    class KeyPreset : public IPreset
+    {
+        wxString m_name;
+        wxString m_contents;
+    public:
+        KeyPreset(const char* name, const char* contents)
+        {
+            m_name = wxString(name, wxConvUTF8);
+            m_contents = wxString(contents, wxConvUTF8);
+        }
+        virtual ~KeyPreset() {}
+        virtual wxString getName() { return m_name; }
+        virtual wxString getStringizedForm()
+        {
+            return m_contents;
+        }
+        
+        static IPreset* factory(const char* name, const char* stringizedForm)
+        {
+            return new KeyPreset(name, stringizedForm);
+        }
+    };
+    
+    PresetGroup group("key");
+    group.add(new KeyPreset("C", "abcdefg"));
+    group.add(new KeyPreset("D", "foobar"));
+    group.add(new KeyPreset("E", "$^$&@("));
+
+    group.write();
+}

@@ -18,21 +18,21 @@
 #include "wx/stdpaths.h"
 #include "wx/config.h"
 
-
+#include "Utils.h"
+#include "Dialogs/Preferences.h"
 #include "GUI/MainFrame.h"
 #include "GUI/MainPane.h"
+#include "GUI/ImageProvider.h"
+#include "IO/IOUtils.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Sequence.h"
-#include "GUI/ImageProvider.h"
-#include "Dialogs/Preferences.h"
-#include "IO/IOUtils.h"
+#include "Midi/KeyPresets.h"
 #include "languages.h"
 #include "unit_test.h"
 
 #include <iostream>
 
-#include "Utils.h"
 #include "main.h"
 
 IMPLEMENT_APP(AriaMaestosa::wxWidgetApp)
@@ -122,6 +122,9 @@ bool wxWidgetApp::OnInit()
     
     prefs = PreferencesData::getInstance();
     prefs->init();
+    
+    //read presets
+    KeyPresetGroup::getInstance();
     
     PlatformMidiManager::initMidiPlayer();
 

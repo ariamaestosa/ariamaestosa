@@ -252,7 +252,7 @@ namespace AriaMaestosa
           *
           * This overload can take any non-standard key.
           */
-        void setCustomKey(KeyInclusionType key_notes[131]);
+        void setCustomKey(const KeyInclusionType key_notes[131]);
         
         // ---- get info on notes
         int   getNoteAmount           ()             const;

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 44;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -113,6 +113,10 @@
 		9544D68511582D5300E0A3BD /* wxEasyPrintWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 9544D68311582D5300E0A3BD /* wxEasyPrintWrapper.h */; };
 		9544D68611582D5300E0A3BD /* wxEasyPrintWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9544D68211582D5300E0A3BD /* wxEasyPrintWrapper.cpp */; };
 		9544D68711582D5300E0A3BD /* wxEasyPrintWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 9544D68311582D5300E0A3BD /* wxEasyPrintWrapper.h */; };
+		954A192411CD3218004C13E0 /* PresetManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 954A192211CD3218004C13E0 /* PresetManager.h */; };
+		954A192511CD3218004C13E0 /* PresetManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 954A192311CD3218004C13E0 /* PresetManager.cpp */; };
+		954A192611CD3218004C13E0 /* PresetManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 954A192211CD3218004C13E0 /* PresetManager.h */; };
+		954A192711CD3218004C13E0 /* PresetManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 954A192311CD3218004C13E0 /* PresetManager.cpp */; };
 		955AB042115950610067DA80 /* PreferencesData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955AB040115950610067DA80 /* PreferencesData.cpp */; };
 		955AB043115950610067DA80 /* PreferencesData.h in Headers */ = {isa = PBXBuildFile; fileRef = 955AB041115950610067DA80 /* PreferencesData.h */; };
 		955AB044115950610067DA80 /* PreferencesData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955AB040115950610067DA80 /* PreferencesData.cpp */; };
@@ -521,6 +525,10 @@
 		95783A4311A9FB9800E2FABA /* RenderRoutines.h in Headers */ = {isa = PBXBuildFile; fileRef = 95783A4111A9FB9800E2FABA /* RenderRoutines.h */; };
 		95783A4411A9FB9800E2FABA /* RenderRoutines.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95783A4011A9FB9800E2FABA /* RenderRoutines.cpp */; };
 		95783A4511A9FB9800E2FABA /* RenderRoutines.h in Headers */ = {isa = PBXBuildFile; fileRef = 95783A4111A9FB9800E2FABA /* RenderRoutines.h */; };
+		95866C6B11CE7C10008F2938 /* KeyPresets.h in Headers */ = {isa = PBXBuildFile; fileRef = 95866C6911CE7C10008F2938 /* KeyPresets.h */; };
+		95866C6C11CE7C10008F2938 /* KeyPresets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95866C6A11CE7C10008F2938 /* KeyPresets.cpp */; };
+		95866C6D11CE7C10008F2938 /* KeyPresets.h in Headers */ = {isa = PBXBuildFile; fileRef = 95866C6911CE7C10008F2938 /* KeyPresets.h */; };
+		95866C6E11CE7C10008F2938 /* KeyPresets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95866C6A11CE7C10008F2938 /* KeyPresets.cpp */; };
 		959693381153E612001E321B /* ScoreAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959693341153E612001E321B /* ScoreAnalyser.cpp */; };
 		959693391153E612001E321B /* ScoreAnalyser.h in Headers */ = {isa = PBXBuildFile; fileRef = 959693351153E612001E321B /* ScoreAnalyser.h */; };
 		9596933A1153E612001E321B /* SilenceAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959693361153E612001E321B /* SilenceAnalyser.cpp */; };
@@ -699,6 +707,8 @@
 		950B3EEF1125DE2F006C9AF1 /* aria_midi_file.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = aria_midi_file.icns; path = ../OSX/aria_midi_file.icns; sourceTree = SOURCE_ROOT; };
 		9544D68211582D5300E0A3BD /* wxEasyPrintWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wxEasyPrintWrapper.cpp; path = ../Src/Printing/wxEasyPrintWrapper.cpp; sourceTree = SOURCE_ROOT; };
 		9544D68311582D5300E0A3BD /* wxEasyPrintWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wxEasyPrintWrapper.h; path = ../Src/Printing/wxEasyPrintWrapper.h; sourceTree = SOURCE_ROOT; };
+		954A192211CD3218004C13E0 /* PresetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PresetManager.h; sourceTree = SOURCE_ROOT; };
+		954A192311CD3218004C13E0 /* PresetManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PresetManager.cpp; sourceTree = SOURCE_ROOT; };
 		955AB040115950610067DA80 /* PreferencesData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PreferencesData.cpp; path = ../Src/PreferencesData.cpp; sourceTree = SOURCE_ROOT; };
 		955AB041115950610067DA80 /* PreferencesData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PreferencesData.h; path = ../Src/PreferencesData.h; sourceTree = SOURCE_ROOT; };
 		95643A6F11BC0B2B003CC6C0 /* NotePickerWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NotePickerWidget.h; path = ../Src/Pickers/NotePickerWidget.h; sourceTree = SOURCE_ROOT; };
@@ -939,6 +949,8 @@
 		95783A4111A9FB9800E2FABA /* RenderRoutines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RenderRoutines.h; path = ../Src/Printing/RenderRoutines.h; sourceTree = SOURCE_ROOT; };
 		957C860F1127013D006AC7D3 /* Changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Changelog.txt; path = ../Changelog.txt; sourceTree = SOURCE_ROOT; };
 		957C861011270142006AC7D3 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = ../TODO.txt; sourceTree = SOURCE_ROOT; };
+		95866C6911CE7C10008F2938 /* KeyPresets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeyPresets.h; path = ../Src/Midi/KeyPresets.h; sourceTree = SOURCE_ROOT; };
+		95866C6A11CE7C10008F2938 /* KeyPresets.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KeyPresets.cpp; path = ../Src/Midi/KeyPresets.cpp; sourceTree = SOURCE_ROOT; };
 		959693341153E612001E321B /* ScoreAnalyser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreAnalyser.cpp; path = ../Src/Analysers/ScoreAnalyser.cpp; sourceTree = SOURCE_ROOT; };
 		959693351153E612001E321B /* ScoreAnalyser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreAnalyser.h; path = ../Src/Analysers/ScoreAnalyser.h; sourceTree = SOURCE_ROOT; };
 		959693361153E612001E321B /* SilenceAnalyser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SilenceAnalyser.cpp; path = ../Src/Analysers/SilenceAnalyser.cpp; sourceTree = SOURCE_ROOT; };
@@ -1177,6 +1189,8 @@
 				9571192C1125D8D200104BF5 /* CommonMidiUtils.h */,
 				9571192D1125D8D200104BF5 /* ControllerEvent.cpp */,
 				9571192E1125D8D200104BF5 /* ControllerEvent.h */,
+				95866C6A11CE7C10008F2938 /* KeyPresets.cpp */,
+				95866C6911CE7C10008F2938 /* KeyPresets.h */,
 				9571192F1125D8D200104BF5 /* MeasureData.cpp */,
 				957119301125D8D200104BF5 /* MeasureData.h */,
 				957119311125D8D200104BF5 /* Note.cpp */,
@@ -1456,6 +1470,8 @@
 				9571194F1125D8D200104BF5 /* OpenGL.h */,
 				955AB040115950610067DA80 /* PreferencesData.cpp */,
 				955AB041115950610067DA80 /* PreferencesData.h */,
+				954A192311CD3218004C13E0 /* PresetManager.cpp */,
+				954A192211CD3218004C13E0 /* PresetManager.h */,
 				9571197C1125D8D300104BF5 /* ptr_vector.h */,
 				9571197D1125D8D300104BF5 /* Range.h */,
 				957119921125D8D300104BF5 /* Singleton.cpp */,
@@ -1633,6 +1649,8 @@
 				95783A4511A9FB9800E2FABA /* RenderRoutines.h in Headers */,
 				95FF51C711AC9BDC00171A7E /* KeyrollPrintableSequence.h in Headers */,
 				95643A7311BC0B2B003CC6C0 /* NotePickerWidget.h in Headers */,
+				954A192411CD3218004C13E0 /* PresetManager.h in Headers */,
+				95866C6B11CE7C10008F2938 /* KeyPresets.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1758,6 +1776,8 @@
 				95783A4311A9FB9800E2FABA /* RenderRoutines.h in Headers */,
 				95FF51C511AC9BDC00171A7E /* KeyrollPrintableSequence.h in Headers */,
 				95643A7111BC0B2B003CC6C0 /* NotePickerWidget.h in Headers */,
+				954A192611CD3218004C13E0 /* PresetManager.h in Headers */,
+				95866C6D11CE7C10008F2938 /* KeyPresets.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1807,7 +1827,7 @@
 		EF9D1BF209ABE00400CAF7A6 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = EF49C66D0AC4A6240054F45D /* Build configuration list for PBXProject "AriaMaestosa" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.0";
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -1821,7 +1841,7 @@
 			mainGroup = EF9D1BEE09ABE00400CAF7A6;
 			productRefGroup = EF9D1C0009ABE02100CAF7A6 /* Products */;
 			projectDirPath = "";
-			projectRoot = "";
+			projectRoot = "$(PROJECT_DIR)/../..";
 			targets = (
 				EF9D1BFE09ABE02100CAF7A6 /* Aria */,
 				9568DD9910D54FE30089AAAF /* Aria (no OpenGL) */,
@@ -1956,6 +1976,8 @@
 				95783A4411A9FB9800E2FABA /* RenderRoutines.cpp in Sources */,
 				95FF51C611AC9BDC00171A7E /* KeyrollPrintableSequence.cpp in Sources */,
 				95643A7411BC0B2B003CC6C0 /* NotePickerWidget.cpp in Sources */,
+				954A192511CD3218004C13E0 /* PresetManager.cpp in Sources */,
+				95866C6C11CE7C10008F2938 /* KeyPresets.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2075,6 +2097,8 @@
 				95783A4211A9FB9800E2FABA /* RenderRoutines.cpp in Sources */,
 				95FF51C411AC9BDC00171A7E /* KeyrollPrintableSequence.cpp in Sources */,
 				95643A7211BC0B2B003CC6C0 /* NotePickerWidget.cpp in Sources */,
+				954A192711CD3218004C13E0 /* PresetManager.cpp in Sources */,
+				95866C6E11CE7C10008F2938 /* KeyPresets.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2115,7 +2139,7 @@
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
 				PRODUCT_NAME = "Aria Maestosa (no GL)";
 				REZ_EXECUTABLE = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
 				SECTORDER_FLAGS = "";
 				UNSTRIPPED_PRODUCT = YES;
 				WARNING_CFLAGS = "-Wmost";
@@ -2157,7 +2181,7 @@
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
 				PRODUCT_NAME = "Aria Maestosa (no GL)";
 				REZ_EXECUTABLE = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
 				SECTORDER_FLAGS = "";
 				UNSTRIPPED_PRODUCT = YES;
 				WARNING_CFLAGS = "-Wmost";
@@ -2194,7 +2218,7 @@
 				PREBINDING = NO;
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
 				PRODUCT_NAME = "Aria Maestosa";
-				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = "-Wmost";
 			};
@@ -2231,7 +2255,7 @@
 				PREBINDING = NO;
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
 				PRODUCT_NAME = "Aria Maestosa";
-				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = "-Wmost";
 			};
@@ -2240,14 +2264,14 @@
 		EF49C66E0AC4A6240054F45D /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
 			};
 			name = Development;
 		};
 		EF49C66F0AC4A6240054F45D /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
 			};
 			name = Deployment;
 		};

@@ -1073,7 +1073,7 @@ void Track::setKey(const int symbolAmount, const KeyType type)
 
 // -------------------------------------------------------------------------------------------------------
 
-void Track::setCustomKey(KeyInclusionType key_notes[131])
+void Track::setCustomKey(const KeyInclusionType key_notes[131])
 {
     m_key_type = KEY_TYPE_CUSTOM;
     m_key_sharps_amnt = 0;
