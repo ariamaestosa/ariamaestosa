@@ -42,6 +42,8 @@ NOTE: sorry, this is very raw :)
 
 * Test Actions with Unit tests
 
+* Add gutar tuning user-defined presets
+
 * remember printing orientation
 
 ** When a .aria file causes trouble during loading, show a warning message, don't just print errors to the terminal
