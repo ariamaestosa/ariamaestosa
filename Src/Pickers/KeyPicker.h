@@ -28,6 +28,7 @@ namespace AriaMaestosa
 
     class GraphicalTrack; // forward
     class KeyPreset;
+    class Track;
 
     /**
       * @ingroup pickers
@@ -67,8 +68,9 @@ namespace AriaMaestosa
         wxMenuItem* key_flats_7;
         
         wxMenuItem* m_custom_key_menu;
+        wxMenuItem* m_user_presets;
         
-        std::map< int, std::pair<wxMenuItem*, KeyPreset*> > m_custom_keys;
+        std::map< int, KeyPreset* > m_custom_keys;
         
 public:
         LEAK_CHECK();
@@ -80,8 +82,12 @@ public:
 
         void menuItemSelected(wxCommandEvent& evt);
         void onUserPresetSelected(wxCommandEvent& evt);
+        void onEditPresets(wxCommandEvent& evt);
+
         void setParent(Track* parent_arg);
 
+        void updateUserPresetsMenu();
+        
         DECLARE_EVENT_TABLE();
     };
 

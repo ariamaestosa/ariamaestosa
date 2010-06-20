@@ -41,6 +41,14 @@ void PresetGroup::add(IPreset* preset)
 
 // ----------------------------------------------------------------------------------------------------------
 
+void PresetGroup::remove(IPreset* preset, bool deleteIt)
+{
+    if (deleteIt) m_presets.erase(preset);   
+    else          m_presets.remove(preset);
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
 void PresetGroup::read(wxTextInputStream* source, PresetFactory preset)
 {    
     wxString countLine = source->ReadLine();
@@ -122,37 +130,3 @@ void PresetGroup::write()
 }
 
 // ----------------------------------------------------------------------------------------------------------
-
-// TODO: write a real unit test
-UNIT_TEST(PresetManagerTest)
-{
-    class KeyPreset : public IPreset
-    {
-        wxString m_name;
-        wxString m_contents;
-    public:
-        KeyPreset(const char* name, const char* contents)
-        {
-            m_name = wxString(name, wxConvUTF8);
-            m_contents = wxString(contents, wxConvUTF8);
-        }
-        virtual ~KeyPreset() {}
-        virtual wxString getName() { return m_name; }
-        virtual wxString getStringizedForm()
-        {
-            return m_contents;
-        }
-        
-        static IPreset* factory(const char* name, const char* stringizedForm)
-        {
-            return new KeyPreset(name, stringizedForm);
-        }
-    };
-    
-    PresetGroup group("key");
-    group.add(new KeyPreset("C", "abcdefg"));
-    group.add(new KeyPreset("D", "foobar"));
-    group.add(new KeyPreset("E", "$^$&@("));
-
-    group.write();
-}
