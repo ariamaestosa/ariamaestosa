@@ -14,18 +14,21 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "Midi/Track.h"
-#include "Pickers/KeyPicker.h"
+#include "AriaCore.h"
 #include "Editors/ScoreEditor.h"
 #include "Editors/KeyboardEditor.h"
 #include "GUI/GraphicalTrack.h"
-#include "AriaCore.h"
+#include "Midi/Track.h"
+#include "Midi/KeyPresets.h"
+#include "Pickers/KeyPicker.h"
 
 #include "wx/wx.h"
 #include "wx/notebook.h"
+#include "wx/textdlg.h"
 
 namespace AriaMaestosa
 {
+    
     //TODO: move this class out of Pickers
     class CustomKeyDialog : public wxDialog
     {
@@ -168,12 +171,17 @@ namespace AriaMaestosa
 
                 wxButton* ok_btn     = new wxButton(buttonsPane, wxID_OK, _("OK"));
                 wxButton* cancel_btn = new wxButton(buttonsPane, wxID_CANCEL, _("Cancel"));
-
-                wxBoxSizer* btn_sizer = new wxBoxSizer(wxHORIZONTAL);
-                btn_sizer->AddStretchSpacer();
-                btn_sizer->Add(cancel_btn, 0, wxALL, 5);
-                btn_sizer->Add(ok_btn, 0, wxALL, 5);
-                buttonsPane->SetSizer(btn_sizer);
+                wxButton* presetBtn  = new wxButton(buttonsPane, wxNewId(), _("Save as preset..."));
+                presetBtn->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
+                                   wxCommandEventHandler(CustomKeyDialog::saveAsPreset),
+                                   NULL, this);
+                
+                wxBoxSizer* btnSizer = new wxBoxSizer(wxHORIZONTAL);
+                btnSizer->Add(presetBtn, 0, wxALL, 5);
+                btnSizer->AddStretchSpacer();
+                btnSizer->Add(cancel_btn, 0, wxALL, 5);
+                btnSizer->Add(ok_btn, 0, wxALL, 5);
+                buttonsPane->SetSizer(btnSizer);
 
                 ok_btn->SetDefault();
             }
@@ -183,14 +191,13 @@ namespace AriaMaestosa
             Centre();
         }
 
-        void onOK(wxCommandEvent& evt)
+        void buildKey(KeyInclusionType customKey[131])
         {
-            KeyInclusionType custom_key[131];
-            custom_key[0] = KEY_INCLUSION_NONE;
-            custom_key[1] = KEY_INCLUSION_NONE;
-            custom_key[2] = KEY_INCLUSION_NONE;
-            custom_key[3] = KEY_INCLUSION_NONE;
-
+            customKey[0] = KEY_INCLUSION_NONE;
+            customKey[1] = KEY_INCLUSION_NONE;
+            customKey[2] = KEY_INCLUSION_NONE;
+            customKey[3] = KEY_INCLUSION_NONE;
+            
             const int currPage = m_notebook->GetCurrentPage()->GetId();
             if (currPage == m_page1_id)
             {
@@ -199,13 +206,13 @@ namespace AriaMaestosa
                     switch (m_check_boxes_one_octave[pitch % 12]->Get3StateValue())
                     {
                         case wxCHK_CHECKED:
-                            custom_key[pitch] = KEY_INCLUSION_FULL;
+                            customKey[pitch] = KEY_INCLUSION_FULL;
                             break;
                         case wxCHK_UNDETERMINED:
-                            custom_key[pitch] = KEY_INCLUSION_ACCIDENTAL;
+                            customKey[pitch] = KEY_INCLUSION_ACCIDENTAL;
                             break;
                         case wxCHK_UNCHECKED:
-                            custom_key[pitch] = KEY_INCLUSION_NONE;
+                            customKey[pitch] = KEY_INCLUSION_NONE;
                             break;
                     }
                 }
@@ -217,13 +224,13 @@ namespace AriaMaestosa
                     switch (m_check_boxes[pitch]->Get3StateValue())
                     {
                         case wxCHK_CHECKED:
-                            custom_key[pitch] = KEY_INCLUSION_FULL;
+                            customKey[pitch] = KEY_INCLUSION_FULL;
                             break;
                         case wxCHK_UNDETERMINED:
-                            custom_key[pitch] = KEY_INCLUSION_ACCIDENTAL;
+                            customKey[pitch] = KEY_INCLUSION_ACCIDENTAL;
                             break;
                         case wxCHK_UNCHECKED:
-                            custom_key[pitch] = KEY_INCLUSION_NONE;
+                            customKey[pitch] = KEY_INCLUSION_NONE;
                             break;
                     }
                 }
@@ -233,8 +240,14 @@ namespace AriaMaestosa
                 assert(false);
                 EndModal( GetReturnCode() );
             }
+        }
+        
+        void onOK(wxCommandEvent& evt)
+        {
+            KeyInclusionType customKey[131];
+            buildKey(customKey);
 
-            m_parent->track->setCustomKey(custom_key);
+            m_parent->track->setCustomKey(customKey);
 
             EndModal( GetReturnCode() );
         }
@@ -244,6 +257,20 @@ namespace AriaMaestosa
             EndModal( GetReturnCode() );
         }
 
+        void saveAsPreset(wxCommandEvent& evt)
+        {
+            KeyInclusionType customKey[131];
+            buildKey(customKey);
+
+            wxString name = wxGetTextFromUser(_("Enter the name of the preset"));
+            if (not name.IsEmpty())
+            {
+                KeyPreset* newInstance = new KeyPreset(name.mb_str(), customKey);
+                KeyPresetGroup::getInstance()->add(newInstance);
+                KeyPresetGroup::getInstance()->write();
+            }
+        }
+        
         /*
         void onCopySettings(wxCommandEvent& evt)
         {
@@ -302,7 +329,7 @@ BEGIN_EVENT_TABLE(KeyPicker, wxMenu)
 EVT_MENU_RANGE(1, ID_AMOUNT-1, KeyPicker::menuItemSelected)
 END_EVENT_TABLE()
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 KeyPicker::KeyPicker() : wxMenu()
 {
@@ -344,11 +371,40 @@ KeyPicker::KeyPicker() : wxMenu()
     key_flats_7 = AppendCheckItem( KEY_FLATS_7, wxT("Cb, Abm"));
 
     AppendSeparator();
+    
+    
+    ptr_vector<IPreset, REF> userDefinedKeys = KeyPresetGroup::getInstance()->getPresets();
+    const int userDefinedKeysCount = userDefinedKeys.size();
+    if (userDefinedKeysCount > 0)
+    {
+        wxMenu* userDefinedMenu = new wxMenu();
+        AppendSubMenu(userDefinedMenu, _("User presets"));
+        for (int n=0; n<userDefinedKeysCount; n++)
+        {
+            int id = wxNewId();
+            wxMenuItem* item = userDefinedMenu->Append( id, userDefinedKeys[n].getName() );
+            KeyPreset* keyPreset = dynamic_cast<KeyPreset*>(userDefinedKeys.get(n));
+            ASSERT(keyPreset != NULL);
+            m_custom_keys[id] = std::pair<wxMenuItem*, KeyPreset*>(item, keyPreset);
+            userDefinedMenu->Connect(id, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(KeyPicker::onUserPresetSelected),
+                          NULL, this);
+        }
+        
+        AppendSeparator();
+    }
+    
     Append( KEY_GUESS,  _("Guess Key"));
     m_custom_key_menu = AppendCheckItem( KEY_CUSTOM, _("Custom Key"));
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+
+KeyPicker::~KeyPicker()
+{
+}
+
+
+// ----------------------------------------------------------------------------------------------------------
 
 void KeyPicker::setParent(Track* parent_arg)
 {
@@ -444,15 +500,10 @@ void KeyPicker::setParent(Track* parent_arg)
     }
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
-KeyPicker::~KeyPicker()
-{
-}
-
-// -------------------------------------------------------------------------------------------------------
-
-void KeyPicker::setChecks( bool musicalNotationEnabled, bool linearNotationEnabled, bool f_clef, bool g_clef, int octave_shift )
+void KeyPicker::setChecks(bool musicalNotationEnabled, bool linearNotationEnabled,
+                          bool f_clef, bool g_clef, int octave_shift)
 {
     musical_checkbox -> Check(musicalNotationEnabled);
     linear_checkbox  -> Check(linearNotationEnabled);
@@ -476,7 +527,7 @@ void KeyPicker::setChecks( bool musicalNotationEnabled, bool linearNotationEnabl
     }
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void KeyPicker::menuItemSelected(wxCommandEvent& evt)
 {
@@ -490,7 +541,9 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
 
         // don't allow disabling both
         if (not musical_checkbox->IsChecked() and not linear_checkbox->IsChecked())
-            parent -> scoreEditor -> enableLinearNotation( true );
+        {
+            parent->scoreEditor->enableLinearNotation(true);
+        }
     }
     else if ( id == LINEAR_NOTATION )
     {
@@ -498,7 +551,9 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
 
         // don't allow disabling both
         if (not musical_checkbox->IsChecked() and not linear_checkbox->IsChecked())
-            parent -> scoreEditor -> enableMusicalNotation( true );
+        {
+            parent->scoreEditor->enableMusicalNotation(true);
+        }
     }
     else if ( id == F_CLEF )
     {
@@ -506,7 +561,9 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
 
         // don't allow disabling both
         if (not gclef->IsChecked() and not fclef->IsChecked())
-            parent -> scoreEditor -> enableGClef( true );
+        {
+            parent->scoreEditor->enableGClef( true );
+        }
     }
     else if ( id == G_CLEF )
     {
@@ -514,7 +571,9 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
 
         // don't allow disabling both
         if (not gclef->IsChecked() and not fclef->IsChecked())
-            parent -> scoreEditor -> enableFClef( true );
+        {
+            parent->scoreEditor->enableFClef( true );
+        }
     }
     else if ( id == OCTAVE_ABOVE )
     {
@@ -663,6 +722,21 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
     Display::render();
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
+void KeyPicker::onUserPresetSelected(wxCommandEvent& evt)
+{
+    const int id = evt.GetId();
+    if (m_custom_keys.find(id) == m_custom_keys.end())
+    {
+        std::cerr << "Invalid key selected!\n";
+        ASSERT(false);
+    }
+    
+    std::pair<wxMenuItem*, KeyPreset*> selection = m_custom_keys[id];
+    
+    parent->track->setCustomKey( selection.second->getArray() );
+}
+
+// ----------------------------------------------------------------------------------------------------------
 
