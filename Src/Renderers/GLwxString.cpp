@@ -334,7 +334,7 @@ void wxGLString::consolidate(wxDC* dc)
     }
     TextTexture* img = new TextTexture(bmp);
 
-    bmp.SaveFile(wxT("/tmp/test.png"), wxBITMAP_TYPE_PNG);
+    //bmp.SaveFile(wxT("/tmp/test.png"), wxBITMAP_TYPE_PNG);
     
     TextGLDrawable::texw = power_of_2_w;
     TextGLDrawable::texh = power_of_2_h;
