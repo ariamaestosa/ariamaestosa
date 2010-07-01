@@ -70,7 +70,7 @@ namespace AriaMaestosa
         InstrumentPicker();
         ~InstrumentPicker();
                 
-        void setParent(InstrumentChoice* choice);
+        void setModel(InstrumentChoice* choice);
         
         void menuSelected(wxCommandEvent& evt);
         

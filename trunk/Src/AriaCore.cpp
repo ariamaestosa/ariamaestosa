@@ -52,7 +52,7 @@ namespace AriaMaestosa
         {
             return getMainFrame()->keyPicker;
         }
-        DrumChoice* getDrumPicker()
+        DrumPicker* getDrumPicker()
         {
             return getMainFrame()->drumKit_picker;
         }

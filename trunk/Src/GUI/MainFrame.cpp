@@ -44,7 +44,7 @@
 #include "Dialogs/CustomNoteSelectDialog.h"
 
 #include "Pickers/InstrumentPicker.h"
-#include "Pickers/DrumChoice.h"
+#include "Pickers/DrumPicker.h"
 #include "Pickers/VolumeSlider.h"
 #include "Pickers/TuningPicker.h"
 #include "Pickers/KeyPicker.h"
@@ -485,7 +485,7 @@ void MainFrame::init()
     tuningPicker        =  new TuningPicker();
     keyPicker           =  new KeyPicker();
     instrument_picker   =  new InstrumentPicker();
-    drumKit_picker      =  new DrumChoice();
+    drumKit_picker      =  new DrumPicker();
 
     ImageProvider::loadImages();
     mainPane->isNowVisible();

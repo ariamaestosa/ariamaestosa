@@ -45,7 +45,7 @@
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Pickers/MagneticGrid.h"
 #include "Pickers/InstrumentPicker.h"
-#include "Pickers/DrumChoice.h"
+#include "Pickers/DrumPicker.h"
 #include "Editors/RelativeXCoord.h"
 #include "Editors/KeyboardEditor.h"
 
@@ -445,8 +445,9 @@ bool MainPane::do_render()
 #pragma mark Pop-ups events
 #endif
 
-/*
- * Since instrument picker is shown by MainPane, its events go to MainPane. So, when MainPane catches InstrumentPicker events, it forwards them to it.
+/**
+ * Since instrument picker is shown by MainPane, its events go to MainPane. So, when MainPane catches
+ * InstrumentPicker events, it forwards them to it. (FIXME: find better way)
  */
 void MainPane::instrumentPopupSelected(wxCommandEvent& evt)
 {

@@ -20,21 +20,22 @@
 
 #include "Actions/EditAction.h"
 
-#include "Midi/Track.h"
-#include "Midi/Sequence.h"
-#include "Midi/ControllerEvent.h"
-
-#include "GUI/GraphicalTrack.h"
-#include "Midi/MeasureData.h"
-
-#include "Pickers/MagneticGrid.h"
-#include "Pickers/DrumChoice.h"
-
 #include "Editors/KeyboardEditor.h"
 #include "Editors/GuitarEditor.h"
 #include "Editors/RelativeXCoord.h"
 #include "Editors/DrumEditor.h"
 #include "Editors/ControllerEditor.h"
+
+#include "GUI/GraphicalTrack.h"
+
+#include "Midi/Track.h"
+#include "Midi/Sequence.h"
+#include "Midi/ControllerEvent.h"
+#include "Midi/DrumChoice.h"
+#include "Midi/MeasureData.h"
+
+#include "Pickers/MagneticGrid.h"
+
 
 #include "IO/IOUtils.h"
 
@@ -117,7 +118,7 @@ Track::Track(Sequence* sequence)
 
 
     m_instrument = new InstrumentChoice(0, this);
-    m_drum_kit   = 0;
+    m_drum_kit   = new DrumChoice(0, this);
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -919,7 +920,7 @@ void Track::doSetInstrument(int i, bool recursive)
     if (m_instrument->getSelectedInstrument() != i)
     {
         m_instrument->setInstrument(i, false);
-        graphics->onInstrumentChange( getInstrument() );
+        graphics->onInstrumentChange( getInstrument(), false );
     }
     
     // if we're in manual channel management mode, change all tracks of the same channel
@@ -941,23 +942,35 @@ void Track::doSetInstrument(int i, bool recursive)
 
 // -------------------------------------------------------------------------------------------------------
 
-void Track::setDrumKit(int i, bool recursive)
+void Track::setDrumKit(int i)
+{
+    m_drum_kit->setDrumkit(i);
+}
+
+// -------------------------------------------------------------------------------------------------------
+
+void Track::doSetDrumKit(int i, bool recursive)
 {
 
     // check id validity
-    if      (i == 0 )  ; // Standard
-    else if (i == 8 )  ; // Room kit
-    else if (i == 16) ; // Power kit
-    else if (i == 24) ; // Electronic
-    else if (i == 25) ; // Analog
-    else if (i == 32) ; // Jazz
-    else if (i == 40) ; // Brush
-    else if (i == 48) ; // Orchestral
-    else if (i == 56) ; // Special Effects
+    if      (i == 0 ) ;  // Standard
+    else if (i == 8 ) ;  // Room kit
+    else if (i == 16) ;  // Power kit
+    else if (i == 24) ;  // Electronic
+    else if (i == 25) ;  // Analog
+    else if (i == 32) ;  // Jazz
+    else if (i == 40) ;  // Brush
+    else if (i == 48) ;  // Orchestral
+    else if (i == 56) ;  // Special Effects
     else return;         // invalid drum kit ID
 
-    m_drum_kit = i;
-
+    if (m_drum_kit->getSelectedDrumkit() != i)
+    {
+        m_drum_kit->setDrumkit(i, false);
+        graphics->onInstrumentChange(i, true);
+    }
+    
+    
     // if we're in manual channel management mode, change all tracks of the same channel to have the same instrument
     if (sequence->getChannelManagementType() == CHANNEL_MANUAL and not recursive)
     {
@@ -967,7 +980,7 @@ void Track::setDrumKit(int i, bool recursive)
         {
             Track* track = sequence->getTrack(n);
             if (track == this) continue; // track must not evaluate itself...
-            track->setDrumKit(i,true);
+            track->doSetDrumKit(i, true);
         }//next
     }//endif
 }
@@ -1111,8 +1124,16 @@ void Track::setCustomKey(const KeyInclusionType key_notes[131])
 
 void Track::onInstrumentChanged(const int newValue)
 {
-    graphics->onInstrumentChange( getInstrument() );
+    graphics->onInstrumentChange(getInstrument(), false);
     doSetInstrument(newValue);
+}
+
+// -------------------------------------------------------------------------------------------------------
+
+void Track::onDrumkitChanged(const int newValue)
+{
+    graphics->onInstrumentChange(newValue, true);
+    doSetDrumKit(newValue);
 }
 
 // =======================================================================================================
@@ -1248,7 +1269,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
         m.SetTime( 0 );
 
-        if (graphics->editorMode == DRUM) m.SetProgramChange( track_ID, m_drum_kit );
+        if (graphics->editorMode == DRUM) m.SetProgramChange( track_ID, getDrumKit() );
         else                              m.SetProgramChange( track_ID, getInstrument() );
 
         if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding instrument at track beginning!" << std::endl; }
@@ -1684,7 +1705,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                     }
                     else
                     {
-                        std::cout << "Missing info from file: track channel" << std::endl;
+                        std::cerr << "Missing info from file: track channel" << std::endl;
                     }
 
                 }
@@ -1701,21 +1722,25 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                     const char* id = xml->getAttributeValue("id");
                     if (id != NULL)
                     {
+                        // FIXME: remove this abuse of the 'recursive' parameter
                         doSetInstrument(atoi(id), true);
                     }
                     else
                     {
-                        std::cout << "Missing info from file: instrument ID" << std::endl;
-                        m_instrument = 0;
+                        std::cerr << "Missing info from file: instrument ID" << std::endl;
                     }
                 }
                 else if (strcmp("drumkit", xml->getNodeName()) == 0)
                 {
                     const char* id = xml->getAttributeValue("id");
-                    if (id != NULL) setDrumKit( atoi(id) );
+                    if (id != NULL)
+                    {
+                        // FIXME: remove this abuse of the 'recursive' parameter
+                        doSetDrumKit(atoi(id), true);
+                    }
                     else
                     {
-                        std::cout << "Missing info from file: drum ID" << std::endl;
+                        std::cerr << "Missing info from file: drum ID" << std::endl;
                     }
                 }
                 else if (strcmp("guitartuning", xml->getNodeName()) == 0)
