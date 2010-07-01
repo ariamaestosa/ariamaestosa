@@ -45,9 +45,13 @@ namespace AriaMaestosa
         
         float m_units_per_tick;
         
+        /** Space to leave vertically between notes (in millimeters) */
+        float m_vertical_margin;
+        
     public:
         
-        KeyrollPrintableSequence(Sequence* parent, float cmPerBeat, bool compact, std::vector<wxColor> colors);
+        KeyrollPrintableSequence(Sequence* parent, float cmPerBeat, float verticalMargin,
+                                 bool compact, std::vector<wxColor> colors);
         
         /**
          * @return the number of pages that was determined to be necessary in order to print this sequence.

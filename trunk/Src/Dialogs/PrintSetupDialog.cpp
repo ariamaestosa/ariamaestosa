@@ -32,6 +32,7 @@ namespace AriaMaestosa
     {
         wxCheckBox* m_compact_cb;
         wxSpinCtrl* m_size_spinner;
+        wxTextCtrl* m_vertical_margin;
         std::vector<wxColourPickerCtrl*> m_color_pickers;
         bool m_ok_pressed;
         
@@ -44,13 +45,27 @@ namespace AriaMaestosa
             
             wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
 
-            wxBoxSizer* hsizer = new wxBoxSizer(wxHORIZONTAL);
-            m_size_spinner = new wxSpinCtrl(this, wxID_ANY, wxT("7"), wxDefaultPosition, wxDefaultSize,
-                                            wxSP_ARROW_KEYS, 1, 100);
-            hsizer->Add( new wxStaticText(this, wxID_ANY, _("Size of a beat : ")), 0, wxALIGN_CENTER_VERTICAL );
-            hsizer->Add( m_size_spinner, 0, wxALIGN_CENTER_VERTICAL ) ;
-            hsizer->Add( new wxStaticText(this, wxID_ANY, wxT("mm")), 0, wxALIGN_CENTER_VERTICAL );
-            sizer->Add(hsizer, 1, wxALL, 5);
+            {
+                wxBoxSizer* hsizer = new wxBoxSizer(wxHORIZONTAL);
+                m_size_spinner = new wxSpinCtrl(this, wxID_ANY, wxT("7"), wxDefaultPosition, wxDefaultSize,
+                                                wxSP_ARROW_KEYS, 1, 100);
+                hsizer->Add( new wxStaticText(this, wxID_ANY, _("Size of a beat : ")), 0, wxALIGN_CENTER_VERTICAL );
+                hsizer->Add( m_size_spinner, 0, wxALIGN_CENTER_VERTICAL ) ;
+                hsizer->Add( new wxStaticText(this, wxID_ANY, wxT("mm")), 0, wxALIGN_CENTER_VERTICAL );
+                sizer->Add(hsizer, 1, wxALL, 5);
+            }
+            
+            {
+                wxBoxSizer* hsizer = new wxBoxSizer(wxHORIZONTAL);
+                hsizer->Add( new wxStaticText(this, wxID_ANY, _("Vertical margin between notes : ")), 0, wxALIGN_CENTER_VERTICAL );
+
+                m_vertical_margin = new wxTextCtrl(this, wxID_ANY, wxT("0"), wxDefaultPosition, wxDefaultSize, 0,
+                                                   wxTextValidator(wxFILTER_NUMERIC));
+                hsizer->Add( m_vertical_margin, 0, wxALIGN_CENTER_VERTICAL );
+
+                hsizer->Add( new wxStaticText(this, wxID_ANY, + _("mm")), 0, wxALIGN_CENTER_VERTICAL | wxLEFT, 5 );
+                sizer->Add(hsizer, 1, wxALL, 5);
+            }
             
             wxStaticBoxSizer* box = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Colors"));
             wxFlexGridSizer* colorsSizer = new wxFlexGridSizer(2);
@@ -103,6 +118,19 @@ namespace AriaMaestosa
         bool compact() const
         {
             return m_compact_cb->IsChecked();
+        }
+        
+        float getVerticalMargin() const
+        {
+            wxString stringValue = m_vertical_margin->GetValue();
+            double val = -1;
+            if (!stringValue.ToDouble(&val) or val < 0.0)
+            {
+                // TODO: pop a message?
+                wxBell();
+                return 0.0f;
+            }
+            return (float)val;
         }
         
         std::vector<wxColour> getColors() const
@@ -182,8 +210,9 @@ namespace AriaMaestosa
                 }
                 else
                 {
-                    printableSeq = new KeyrollPrintableSequence( seq, dialog.getBeatSize()/10.f, dialog.compact(), 
-                                                                 dialog.getColors() );
+                    printableSeq = new KeyrollPrintableSequence(seq, dialog.getBeatSize()/10.f,
+                                                                dialog.getVerticalMargin(),
+                                                                dialog.compact(), dialog.getColors() );
                 }
             }
             else
