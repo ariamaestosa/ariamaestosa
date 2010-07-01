@@ -40,6 +40,7 @@ enum ChannelManagementType
 
 namespace AriaMaestosa
 {
+    
     class MainFrame;
     class MainPane;
     class MeasureData;
@@ -51,9 +52,18 @@ namespace AriaMaestosa
     
     extern bool okToLog;
     
-    MainFrame* getMainFrame();
+    class ICurrentSequenceProvider
+    {
+    public:
+        virtual Sequence* getCurrentSequence() = 0;
+        virtual ~ICurrentSequenceProvider() {}
+    };
+    
+    MainFrame*   getMainFrame();
     MeasureData* getMeasureData();
-    Sequence* getCurrentSequence();
+    Sequence*    getCurrentSequence();
+    
+    void         setCurrentSequenceProvider(ICurrentSequenceProvider* provider);
     
     bool isPlaybackMode();
     

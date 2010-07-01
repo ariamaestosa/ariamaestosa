@@ -128,7 +128,8 @@ bool wxWidgetApp::OnInit()
     
     PlatformMidiManager::initMidiPlayer();
 
-    frame=new MainFrame();
+    frame = new MainFrame();
+    AriaMaestosa::setCurrentSequenceProvider(frame);
     frame->init();
 
     frame->updateHorizontalScrollbar(0);

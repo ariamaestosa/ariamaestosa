@@ -76,14 +76,20 @@ namespace AriaMaestosa
         return wxGetApp().frame;
     }
     
+    ICurrentSequenceProvider* g_provider;
+    void setCurrentSequenceProvider(ICurrentSequenceProvider* provider)
+    {
+        g_provider = provider;
+    }
+
     MeasureData* getMeasureData()
     {
-        return wxGetApp().frame->getCurrentSequence()->measureData;
+        return getCurrentSequence()->measureData;
     }
     
     Sequence* getCurrentSequence()
     {
-        return getMainFrame()->getCurrentSequence();
+        return g_provider->getCurrentSequence();
     }
     
     bool isPlaybackMode()
