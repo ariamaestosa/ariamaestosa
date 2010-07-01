@@ -194,6 +194,11 @@ namespace AriaMaestosa
 
         wxFont getNormalFont() { return m_normal_font; }
         
+        float getUnitsPerCm() const
+        {
+            return m_printer_manager->getUnitsPerCm();
+        }
+        
     };
         
     

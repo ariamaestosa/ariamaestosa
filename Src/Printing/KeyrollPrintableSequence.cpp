@@ -27,11 +27,12 @@ using namespace AriaMaestosa;
 
 // -------------------------------------------------------------------------------------------------------
 
-KeyrollPrintableSequence::KeyrollPrintableSequence(Sequence* parent, float cmPerBeat, bool compact,
-                                                   std::vector<wxColor> colors) :
+KeyrollPrintableSequence::KeyrollPrintableSequence(Sequence* parent, float cmPerBeat, float verticalMargin,
+                                                   bool compact, std::vector<wxColor> colors) :
     AbstractPrintableSequence(parent)
 {
     m_compact = compact;
+    m_vertical_margin = verticalMargin;
     m_colors = colors;
     
     m_units_per_tick = cmPerBeat * UNITS_PER_CM / getMeasureData()->beatLengthInTicks();
@@ -213,7 +214,9 @@ void KeyrollPrintableSequence::printLinesInArea(wxDC& dc, const int page, const 
     }
     
     // ---- draw notes
+    const float unitsPerCm = AriaPrintable::getCurrentPrintable()->getUnitsPerCm();
     const int noteHeightInUnits = NOTE_H;
+    const int verticalMarginInTicks = (m_vertical_margin/10.f)*unitsPerCm;
     
     const int trackAmount = m_tracks.size();
     for (int n=0; n<trackAmount; n++)
@@ -244,10 +247,9 @@ void KeyrollPrintableSequence::printLinesInArea(wxDC& dc, const int page, const 
                 if (x2 < usableX0) x2 = usableX0;
                 else if (x2 > x1) x2 = x1;
                 
-                const int y = PITCH_TO_Y(pitch - m_min_pitch);
-                const int y2 = y + noteHeightInUnits;
+                const int y = PITCH_TO_Y(pitch - m_min_pitch) + verticalMarginInTicks/2;
                 
-                dc.DrawRectangle(x, y, x2 - x, y2 - y);
+                dc.DrawRectangle(x, y, x2 - x, noteHeightInUnits - verticalMarginInTicks);
             }
         }
     }

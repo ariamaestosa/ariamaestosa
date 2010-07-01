@@ -111,6 +111,11 @@ namespace AriaMaestosa
             return m_unit_width;
         }
         
+        float getUnitsPerCm() const
+        {
+            return m_units_per_cm;
+        }
+        
         /** 
           * @return the number of units vertically on the printable area of the paper
           * @pre  'performPageSetup' must have been called at least once prior to calling this
