@@ -110,7 +110,7 @@ void AddControlEvent::perform()
 // ---------------------------------------------------------------------------------------------------------
 
 using namespace AriaMaestosa;
-UNIT_TEST(AddControlEventTest_Insert)
+UNIT_TEST(TestInsert)
 {    
     Sequence* seq = new Sequence(NULL, NULL, NULL, false);
     
@@ -151,7 +151,7 @@ UNIT_TEST(AddControlEventTest_Insert)
 
 // ---------------------------------------------------------------------------------------------------------
 
-UNIT_TEST(AddControlEventTest_OverwriteFirst)
+UNIT_TEST(TestOverwriteFirst)
 {    
     Sequence* seq = new Sequence(NULL, NULL, NULL, false);
     
@@ -205,7 +205,7 @@ UNIT_TEST(AddControlEventTest_OverwriteFirst)
 
 // ---------------------------------------------------------------------------------------------------------
 
-UNIT_TEST(AddControlEventTest_OverwriteLast)
+UNIT_TEST(TestOverwriteLast)
 {    
     Sequence* seq = new Sequence(NULL, NULL, NULL, false);
     
@@ -259,7 +259,7 @@ UNIT_TEST(AddControlEventTest_OverwriteLast)
 
 // ---------------------------------------------------------------------------------------------------------
 
-UNIT_TEST(AddControlEventTest_Append)
+UNIT_TEST(TestAppend)
 {    
     Sequence* seq = new Sequence(NULL, NULL, NULL, false);
     
@@ -300,7 +300,7 @@ UNIT_TEST(AddControlEventTest_Append)
 
 // ---------------------------------------------------------------------------------------------------------
 
-UNIT_TEST(AddControlEventTest_Prepend)
+UNIT_TEST(TestPrepend)
 {    
     Sequence* seq = new Sequence(NULL, NULL, NULL, false);
     

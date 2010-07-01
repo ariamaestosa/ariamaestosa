@@ -94,97 +94,97 @@ int RelativePlacementManager::getInterestingTickNoAdd(const int tick, const int 
     }
 }
 
-UNIT_TEST( RelativePlacementManager_TestAddingAndFindingInterestingTicks )
+UNIT_TEST( TestAddingAndFindingInterestingTicks )
 {
     //throw std::logic_error("C'est normal que ça échoue!!");
-    RelativePlacementManager test(20);
+    RelativePlacementManager testObj(20);
     
-    require( test.m_all_interesting_ticks.size() == 0, "RelativePlacementManager is initially empty" );
+    require( testObj.m_all_interesting_ticks.size() == 0, "RelativePlacementManager is initially empty" );
     
     // ---- add 15
-    int id_added = test.getInterestingTick( 15, 0, test.m_all_interesting_ticks.size()-1 );
+    int id_added = testObj.getInterestingTick( 15, 0, testObj.m_all_interesting_ticks.size()-1 );
     
     // __print__
     //for (int n=0; n<test.m_all_interesting_ticks.size(); n++) std::cout << test.m_all_interesting_ticks[n].tick << "  ";
     //std::cout << "\n";
     // _________
     
-    require( test.m_all_interesting_ticks.size() == 1, "An element was added when we wanted to obtained it and it wasn't already there" );
+    require( testObj.m_all_interesting_ticks.size() == 1, "An element was added when we wanted to obtained it and it wasn't already there" );
     require( id_added == 0, "The returned ID is correct for the first added item" );
-    require( test.m_all_interesting_ticks[0].m_tick == 15, "First added item was correctly added" );
+    require( testObj.m_all_interesting_ticks[0].m_tick == 15, "First added item was correctly added" );
     
-    int id_obtained = test.getInterestingTick( 15, 0, test.m_all_interesting_ticks.size()-1 );
+    int id_obtained = testObj.getInterestingTick( 15, 0, testObj.m_all_interesting_ticks.size()-1 );
     
     // __print__
     //for (int n=0; n<test.m_all_interesting_ticks.size(); n++) std::cout << test.m_all_interesting_ticks[n].tick << "  ";
     //std::cout << "\n";
     // _________
     
-    require( test.m_all_interesting_ticks.size() == 1, "No element was added when we wanted to obtained one that already exists" );
+    require( testObj.m_all_interesting_ticks.size() == 1, "No element was added when we wanted to obtained one that already exists" );
     require( id_obtained == 0, "The returned ID is correct for searching a single item" );
     
     // ---- add 17
-    id_added = test.getInterestingTick( 17, 0, test.m_all_interesting_ticks.size()-1 );
+    id_added = testObj.getInterestingTick( 17, 0, testObj.m_all_interesting_ticks.size()-1 );
     
     // __print__
     //for (int n=0; n<test.m_all_interesting_ticks.size(); n++) std::cout << test.m_all_interesting_ticks[n].tick << "  ";
     //std::cout << "\n";
     // _________
     
-    require( test.m_all_interesting_ticks.size() == 2, "An second element was added when we wanted to obtained it and it wasn't already there" );
+    require( testObj.m_all_interesting_ticks.size() == 2, "An second element was added when we wanted to obtained it and it wasn't already there" );
     require( id_added == 1, "The returned ID is correct for the second added item" );
-    require( test.m_all_interesting_ticks[1].m_tick == 17, "Second added item was correctly added" );
+    require( testObj.m_all_interesting_ticks[1].m_tick == 17, "Second added item was correctly added" );
     
-    id_obtained = test.getInterestingTick( 15, 0, test.m_all_interesting_ticks.size()-1 );
-    require( test.m_all_interesting_ticks.size() == 2, "No element was added when we wanted to obtained one that already exists" );
+    id_obtained = testObj.getInterestingTick( 15, 0, testObj.m_all_interesting_ticks.size()-1 );
+    require( testObj.m_all_interesting_ticks.size() == 2, "No element was added when we wanted to obtained one that already exists" );
     require( id_obtained == 0, "The returned ID is correct for searching a single item" );
     
-    id_obtained = test.getInterestingTick( 17, 0, test.m_all_interesting_ticks.size()-1 );
-    require( test.m_all_interesting_ticks.size() == 2, "No element was added when we wanted to obtained one that already exists" );
+    id_obtained = testObj.getInterestingTick( 17, 0, testObj.m_all_interesting_ticks.size()-1 );
+    require( testObj.m_all_interesting_ticks.size() == 2, "No element was added when we wanted to obtained one that already exists" );
     require( id_obtained == 1, "The returned ID is correct for searching a single item" );
     
     // ---- add 13
-    id_added = test.getInterestingTick( 13, 0, test.m_all_interesting_ticks.size()-1 );
+    id_added = testObj.getInterestingTick( 13, 0, testObj.m_all_interesting_ticks.size()-1 );
     
     // __print__
     //for (int n=0; n<test.m_all_interesting_ticks.size(); n++) std::cout << test.m_all_interesting_ticks[n].tick << "  ";
     //std::cout << "\n";
     // _________
     
-    require( test.m_all_interesting_ticks.size() == 3, "A third element was added when we wanted to obtained it and it wasn't already there" );
+    require( testObj.m_all_interesting_ticks.size() == 3, "A third element was added when we wanted to obtained it and it wasn't already there" );
     require( id_added == 0, "The returned ID is correct for the third added item" );
-    require( test.m_all_interesting_ticks[0].m_tick == 13, "third added item was correctly added" );
+    require( testObj.m_all_interesting_ticks[0].m_tick == 13, "third added item was correctly added" );
     
     // ---- add 14
-    id_added = test.getInterestingTick( 14, 0, test.m_all_interesting_ticks.size()-1 );
+    id_added = testObj.getInterestingTick( 14, 0, testObj.m_all_interesting_ticks.size()-1 );
     
     // __print__
     //for (int n=0; n<test.m_all_interesting_ticks.size(); n++) std::cout << test.m_all_interesting_ticks[n].tick << "  ";
     //std::cout << "\n";
     // _________
     
-    require( test.m_all_interesting_ticks.size() == 4, "A fourth element was added when we wanted to obtained it and it wasn't already there" );
+    require( testObj.m_all_interesting_ticks.size() == 4, "A fourth element was added when we wanted to obtained it and it wasn't already there" );
     require( id_added == 1, "The returned ID is correct for the fourth added item" );
-    require( test.m_all_interesting_ticks[0].m_tick == 13, "fourth added item was correctly added" );
-    require( test.m_all_interesting_ticks[1].m_tick == 14, "fourth added item was correctly added" );
-    require( test.m_all_interesting_ticks[2].m_tick == 15, "fourth added item was correctly added" );
-    require( test.m_all_interesting_ticks[3].m_tick == 17, "fourth added item was correctly added" );
+    require( testObj.m_all_interesting_ticks[0].m_tick == 13, "fourth added item was correctly added" );
+    require( testObj.m_all_interesting_ticks[1].m_tick == 14, "fourth added item was correctly added" );
+    require( testObj.m_all_interesting_ticks[2].m_tick == 15, "fourth added item was correctly added" );
+    require( testObj.m_all_interesting_ticks[3].m_tick == 17, "fourth added item was correctly added" );
 
     // ---- add 16
-    id_added = test.getInterestingTick( 16, 0, test.m_all_interesting_ticks.size()-1 );
+    id_added = testObj.getInterestingTick( 16, 0, testObj.m_all_interesting_ticks.size()-1 );
     
     // __print__
     //for (int n=0; n<test.m_all_interesting_ticks.size(); n++) std::cout << test.m_all_interesting_ticks[n].tick << "  ";
     //std::cout << "\n";
     // _________
     
-    require( test.m_all_interesting_ticks.size() == 5, "A fifth element was added when we wanted to obtained it and it wasn't already there" );
+    require( testObj.m_all_interesting_ticks.size() == 5, "A fifth element was added when we wanted to obtained it and it wasn't already there" );
     require( id_added == 3, "The returned ID is correct for the fifth added item" );
-    require( test.m_all_interesting_ticks[0].m_tick == 13, "fifth added item was correctly added" );
-    require( test.m_all_interesting_ticks[1].m_tick == 14, "fifth added item was correctly added" );
-    require( test.m_all_interesting_ticks[2].m_tick == 15, "fifth added item was correctly added" );
-    require( test.m_all_interesting_ticks[3].m_tick == 16, "fifth added item was correctly added" );
-    require( test.m_all_interesting_ticks[4].m_tick == 17, "fifth added item was correctly added" );
+    require( testObj.m_all_interesting_ticks[0].m_tick == 13, "fifth added item was correctly added" );
+    require( testObj.m_all_interesting_ticks[1].m_tick == 14, "fifth added item was correctly added" );
+    require( testObj.m_all_interesting_ticks[2].m_tick == 15, "fifth added item was correctly added" );
+    require( testObj.m_all_interesting_ticks[3].m_tick == 16, "fifth added item was correctly added" );
+    require( testObj.m_all_interesting_ticks[4].m_tick == 17, "fifth added item was correctly added" );
 
 }
 
@@ -228,10 +228,10 @@ int RelativePlacementManager::getNextTickInTrack(const int fromTick, const int t
     return m_end_of_measure_tick;
 }
 
-UNIT_TEST( RelativePlacementManager_TestFindingNextTick )
+UNIT_TEST( TestFindingNextTick )
 {
     const int last_tick_in_measure = 11;
-    RelativePlacementManager test(last_tick_in_measure);
+    RelativePlacementManager testObj(last_tick_in_measure);
         
     //    1     3     5     7     9
     //  /       ø=====      ø======  \    Track 0
@@ -241,45 +241,45 @@ UNIT_TEST( RelativePlacementManager_TestFindingNextTick )
     //  \             ø============  /
      
     // add 1
-    test.getInterestingTick( 1, 0, test.m_all_interesting_ticks.size()-1 );
-    test.addSymbol(1 /* from */, 3 /* to */, 1 /* symbol size */, 0 /* track ID */);
-    test.addSymbol(1 /* from */, 5 /* to */, 1 /* symbol size */, 1 /* track ID */);
+    testObj.getInterestingTick( 1, 0, testObj.m_all_interesting_ticks.size()-1 );
+    testObj.addSymbol(1 /* from */, 3 /* to */, 1 /* symbol size */, 0 /* track ID */);
+    testObj.addSymbol(1 /* from */, 5 /* to */, 1 /* symbol size */, 1 /* track ID */);
     
     // add 3
-    test.getInterestingTick( 3, 0, test.m_all_interesting_ticks.size()-1 );
-    test.addSymbol(3 /* from */, 5 /* to */, 1 /* symbol size */, 0 /* track ID */);
-    test.addSymbol(3 /* from */, 5 /* to */, 1 /* symbol size */, 0 /* track ID */);
+    testObj.getInterestingTick( 3, 0, testObj.m_all_interesting_ticks.size()-1 );
+    testObj.addSymbol(3 /* from */, 5 /* to */, 1 /* symbol size */, 0 /* track ID */);
+    testObj.addSymbol(3 /* from */, 5 /* to */, 1 /* symbol size */, 0 /* track ID */);
 
     // add 5
-    test.getInterestingTick( 5, 0, test.m_all_interesting_ticks.size()-1 );
-    test.addSymbol(5 /* from */, 7 /* to */, 1 /* symbol size */, 0 /* track ID */);
-    test.addSymbol(5 /* from */, 9 /* to */, 1 /* symbol size */, 1 /* track ID */);
+    testObj.getInterestingTick( 5, 0, testObj.m_all_interesting_ticks.size()-1 );
+    testObj.addSymbol(5 /* from */, 7 /* to */, 1 /* symbol size */, 0 /* track ID */);
+    testObj.addSymbol(5 /* from */, 9 /* to */, 1 /* symbol size */, 1 /* track ID */);
 
     // add 7
-    test.getInterestingTick( 7, 0, test.m_all_interesting_ticks.size()-1 );
-    test.addSymbol(7 /* from */, 9 /* to */, 1 /* symbol size */, 0 /* track ID */);
+    testObj.getInterestingTick( 7, 0, testObj.m_all_interesting_ticks.size()-1 );
+    testObj.addSymbol(7 /* from */, 9 /* to */, 1 /* symbol size */, 0 /* track ID */);
 
     // add 9
-    test.getInterestingTick( 9, 0, test.m_all_interesting_ticks.size()-1 );
+    testObj.getInterestingTick( 9, 0, testObj.m_all_interesting_ticks.size()-1 );
     
     // ---- perform tests in track 0
-    int next_tick = test.getNextTickInTrack(1 /* from */, 0 /* track ID */);
+    int next_tick = testObj.getNextTickInTrack(1 /* from */, 0 /* track ID */);
     require( next_tick == 3, "Next tick is OK in track 0" );
     
-    next_tick = test.getNextTickInTrack(3 /* from */, 0 /* track ID */);
+    next_tick = testObj.getNextTickInTrack(3 /* from */, 0 /* track ID */);
     require( next_tick == 5, "Next tick is OK in track 0" );
     
-    next_tick = test.getNextTickInTrack(5 /* from */, 0 /* track ID */);
+    next_tick = testObj.getNextTickInTrack(5 /* from */, 0 /* track ID */);
     require( next_tick == 7, "Next tick is OK in track 0" );
     
-    next_tick = test.getNextTickInTrack(7 /* from */, 0 /* track ID */);
+    next_tick = testObj.getNextTickInTrack(7 /* from */, 0 /* track ID */);
     require( next_tick == last_tick_in_measure, "Next tick is OK in track 0" );
     
     // ---- perform tests in track 1
-    next_tick = test.getNextTickInTrack(1 /* from */, 1 /* track ID */);
+    next_tick = testObj.getNextTickInTrack(1 /* from */, 1 /* track ID */);
     require( next_tick == 5, "Next tick is OK in track 1" );
     
-    next_tick = test.getNextTickInTrack(5 /* from */, 1 /* track ID */);
+    next_tick = testObj.getNextTickInTrack(5 /* from */, 1 /* track ID */);
     require( next_tick == last_tick_in_measure, "Next tick is OK in track 1" );
 }
 
