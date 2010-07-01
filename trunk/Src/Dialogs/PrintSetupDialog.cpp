@@ -63,7 +63,7 @@ namespace AriaMaestosa
                                                    wxTextValidator(wxFILTER_NUMERIC));
                 hsizer->Add( m_vertical_margin, 0, wxALIGN_CENTER_VERTICAL );
 
-                hsizer->Add( new wxStaticText(this, wxID_ANY, + _("mm")), 0, wxALIGN_CENTER_VERTICAL | wxLEFT, 5 );
+                hsizer->Add( new wxStaticText(this, wxID_ANY, _("mm")), 0, wxALIGN_CENTER_VERTICAL | wxLEFT, 5 );
                 sizer->Add(hsizer, 1, wxALL, 5);
             }
             
