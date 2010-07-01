@@ -113,7 +113,7 @@ void DrumChoice::renderDrumKitName(const int drumID, const int x, const int y)
     }
 }
 
-const wxString& DrumChoice::getDrumName(int drumID) const
+const wxString& DrumChoice::getDrumName(int drumID)
 {
     if (drumID == 0 )       return g_drumkit_names[0];
     else if (drumID == 8 )  return g_drumkit_names[1];

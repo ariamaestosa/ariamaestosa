@@ -28,7 +28,6 @@
 #include "Midi/MeasureData.h"
 
 #include "Pickers/MagneticGrid.h"
-#include "Pickers/InstrumentChoice.h"
 #include "Pickers/DrumChoice.h"
 
 #include "Editors/KeyboardEditor.h"
@@ -117,7 +116,7 @@ Track::Track(Sequence* sequence)
     }
 
 
-    m_instrument = 0;
+    m_instrument = new InstrumentChoice(0, this);
     m_drum_kit   = 0;
 }
 
@@ -892,16 +891,37 @@ int Track::getChannel()
 void Track::setChannel(int i)
 {
     m_channel = i;
+    
+    // check what is the instrument currently used in this channel, if any
+    const int trackAmount = sequence->getTrackAmount();
+    for (int n=0; n<trackAmount; n++) // find another track that has same channel and use the same instrument
+    {
+        if (sequence->getTrack(n)->getChannel() == m_channel)
+        {
+            // FIXME: remove this abuse of the 'recursive' parameter
+            this->doSetInstrument(sequence->getTrack(n)->getInstrument(), true);
+            break;
+        }
+    }//next
 }
-
 
 // -------------------------------------------------------------------------------------------------------
 
-void Track::setInstrument(int i, bool recursive)
+void Track::setInstrument(int i)
 {
-    m_instrument = i;
-    graphics->onInstrumentChange( m_instrument );
+    m_instrument->setInstrument(i);
+}
 
+// -------------------------------------------------------------------------------------------------------
+
+void Track::doSetInstrument(int i, bool recursive)
+{
+    if (m_instrument->getSelectedInstrument() != i)
+    {
+        m_instrument->setInstrument(i, false);
+        graphics->onInstrumentChange( getInstrument() );
+    }
+    
     // if we're in manual channel management mode, change all tracks of the same channel
     // to have the same instrument
     if (sequence->getChannelManagementType() == CHANNEL_MANUAL and not recursive)
@@ -911,9 +931,9 @@ void Track::setInstrument(int i, bool recursive)
         {
             Track* track = sequence->getTrack(n);
             if (track == this) continue; // track must not evaluate itself...
-            if ( track->getChannel() == m_channel )
+            if (track->getChannel() == m_channel)
             {
-                track->setInstrument(i,true);
+                track->doSetInstrument(i, true);
             }
         }//next
     }//endif
@@ -1087,6 +1107,14 @@ void Track::setCustomKey(const KeyInclusionType key_notes[131])
     }
 }
 
+// -------------------------------------------------------------------------------------------------------
+
+void Track::onInstrumentChanged(const int newValue)
+{
+    graphics->onInstrumentChange( getInstrument() );
+    doSetInstrument(newValue);
+}
+
 // =======================================================================================================
 // ========================================== Midi playback ==============================================
 // =======================================================================================================
@@ -1221,7 +1249,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         m.SetTime( 0 );
 
         if (graphics->editorMode == DRUM) m.SetProgramChange( track_ID, m_drum_kit );
-        else                              m.SetProgramChange( track_ID, m_instrument );
+        else                              m.SetProgramChange( track_ID, getInstrument() );
 
         if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding instrument at track beginning!" << std::endl; }
     }
@@ -1673,7 +1701,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                     const char* id = xml->getAttributeValue("id");
                     if (id != NULL)
                     {
-                        setInstrument( atoi(id) );
+                        doSetInstrument(atoi(id), true);
                     }
                     else
                     {

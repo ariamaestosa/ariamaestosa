@@ -161,7 +161,7 @@ namespace AriaMaestosa
         bool playback_mode;
         MainPane* mainPane;
         WxOwnerPtr<PreferencesDialog> preferences;
-        OwnerPtr<InstrumentChoice>    instrument_picker;
+        OwnerPtr<InstrumentPicker>    instrument_picker;
         OwnerPtr<DrumChoice>          drumKit_picker;
         OwnerPtr<TuningPicker>        tuningPicker;
         OwnerPtr<KeyPicker>           keyPicker;

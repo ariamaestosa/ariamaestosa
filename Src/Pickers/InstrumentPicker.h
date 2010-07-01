@@ -14,8 +14,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef __INSTRUMENT_CHOICE_H__
-#define __INSTRUMENT_CHOICE_H__
+#ifndef __INSTRUMENT_PICKER_H__
+#define __INSTRUMENT_PICKER_H__
 
 /**
   * @defgroup pickers
@@ -35,13 +35,13 @@
 namespace AriaMaestosa
 {
     
-    class Track; // forward
+    class InstrumentChoice;
     
     /**
       * @ingroup pickers
       * @brief menu where a MIDI instrument can be selected
       */
-    class InstrumentChoice : public wxMenu
+    class InstrumentPicker : public wxMenu
     {
         wxMenuItem* inst_menus[128];
         
@@ -58,23 +58,19 @@ namespace AriaMaestosa
         wxMenu* submenu_11_synths;
         wxMenu* submenu_12_ethnic;
         wxMenu* submenu_13_percussion;
-        wxMenu* submenu_14_sound_effects;
+        wxMenu* submenu_14_sound_fx;
         wxMenu* submenu_15_drums;
-        
-        Track* parent;
-        
-        int m_instrument_ID;
+                
+        InstrumentChoice* m_model;
         
     public:
         
         LEAK_CHECK();
         
-        InstrumentChoice();
-        ~InstrumentChoice();
-        
-        const wxString& getInstrumentName(int id);
-        
-        void setParent(Track* track);
+        InstrumentPicker();
+        ~InstrumentPicker();
+                
+        void setParent(InstrumentChoice* choice);
         
         void menuSelected(wxCommandEvent& evt);
         
