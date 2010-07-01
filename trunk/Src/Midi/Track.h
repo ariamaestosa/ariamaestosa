@@ -26,8 +26,9 @@ namespace irr { namespace io {
 
 namespace jdkmidi { class MIDITrack; }
 
-#include "Midi/Note.h"
 #include "Midi/ControllerEvent.h"
+#include "Midi/InstrumentChoice.h"
+#include "Midi/Note.h"
 
 #include "ptr_vector.h"
 #include "Renderers/RenderAPI.h"
@@ -97,7 +98,7 @@ namespace AriaMaestosa
       * Contains notes, control events, etc...
       * @ingroup midi
       */
-    class Track
+    class Track : public IInstrumentChoiceListener
     {
         // FIXME - find better way then friends?
         friend class FullTrackUndo;
@@ -144,7 +145,8 @@ namespace AriaMaestosa
         /** Only used if in manual channel management mode */
         int m_channel;
         
-        int m_instrument, m_drum_kit;
+        OwnerPtr<InstrumentChoice> m_instrument;
+        int m_drum_kit;
         
         KeyType m_key_type;
         
@@ -160,6 +162,12 @@ namespace AriaMaestosa
         
         /** Whether this track has been muted so that it's not heard on playback. */
         bool m_muted;
+        
+        /**
+         * @brief set the MIDI instrument used by this track
+         * @param recursive set to true when the method calls itself
+         */
+        void doSetInstrument(int i, bool recursive=false);
         
     public:
         LEAK_CHECK();
@@ -384,15 +392,16 @@ namespace AriaMaestosa
         
         /**
           * @brief set the MIDI instrument used by this track
-          * @param recursive set to true when the method calls itself
           */
-        void setInstrument(int i, bool recursive=false);
+        void setInstrument(int i);
         
         /**
           * @brief  the MIDI instrument used by this track
           * @return the MIDI instrument used by this track
           */
-        int getInstrument() const { return m_instrument; }
+        int getInstrument() const { return m_instrument->getSelectedInstrument(); }
+        
+        InstrumentChoice* getInstrumentModel() { return m_instrument; }
         
         /**
          * @param recursive Set to true when 'setDrumKit' when the function was called by itself
@@ -447,6 +456,12 @@ namespace AriaMaestosa
           */
         void setMuted(bool muted)  { m_muted = muted;       }
         
+
+        /**
+          * @brief Implement callback from IInstrumentChoiceListener
+          */
+        virtual void onInstrumentChanged(const int newValue);
+            
         // serialization
         void saveToFile(wxFileOutputStream& fileout);
         bool readFromFile(irr::io::IrrXMLReader* xml);

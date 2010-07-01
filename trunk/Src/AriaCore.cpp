@@ -56,7 +56,7 @@ namespace AriaMaestosa
         {
             return getMainFrame()->drumKit_picker;
         }
-        InstrumentChoice* getInstrumentPicker()
+        InstrumentPicker* getInstrumentPicker()
         {
             return getMainFrame()->instrument_picker;
         }

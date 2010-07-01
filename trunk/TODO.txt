@@ -154,6 +154,9 @@ UNSURE/MINOR:
 
 ** If a message dialog is shown during track loading, app freezes (conflict with WaitWindow, most likely)
 
+* The "channel management" menu check is not correctly placed when loading a sequence in manual channel managmene
+  mode
+
 * Undoing "delete track" places it back at the bottom, not where it was
 
 * Sequence::setTempo / getTempo may get out of sync if first event is edited through controller editor!!

@@ -44,7 +44,7 @@
 #include "Midi/MeasureData.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Pickers/MagneticGrid.h"
-#include "Pickers/InstrumentChoice.h"
+#include "Pickers/InstrumentPicker.h"
 #include "Pickers/DrumChoice.h"
 #include "Editors/RelativeXCoord.h"
 #include "Editors/KeyboardEditor.h"

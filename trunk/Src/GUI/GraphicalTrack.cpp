@@ -35,10 +35,11 @@
 #include "GUI/MainFrame.h"
 #include "GUI/MainPane.h"
 #include "IO/IOUtils.h"
+#include "Midi/InstrumentChoice.h"
+#include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
-#include "Midi/MeasureData.h"
-#include "Pickers/InstrumentChoice.h"
+#include "Pickers/InstrumentPicker.h"
 #include "Pickers/DrumChoice.h"
 #include "Pickers/MagneticGrid.h"
 #include "Renderers/Drawable.h"
@@ -393,7 +394,7 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
     channelButton = new BlankField(28);
     components->addFromRight(channelButton);
     
-    instrument_name.set(Core::getInstrumentPicker()->getInstrumentName( track->getInstrument() ));
+    instrument_name.set(InstrumentChoice::getInstrumentName( track->getInstrument() ));
 #ifdef __WXMAC__
     instrument_name.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
 #else
@@ -578,7 +579,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
             }
             else
             {
-                Core::getInstrumentPicker()->setParent(track);
+                Core::getInstrumentPicker()->setParent(track->getInstrumentModel());
                 Display::popupMenu((wxMenu*)(Core::getInstrumentPicker()), Display::getWidth() - 175, from_y+30);
             }
         }
@@ -587,7 +588,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         if (sequence->getChannelManagementType() == CHANNEL_MANUAL)
         {
 
-            if ( channelButton->clickIsOnThisWidget(winX, mousey) )
+            if (channelButton->clickIsOnThisWidget(winX, mousey))
             {
                 const int channel = wxGetNumberFromUser( _("Enter the ID of the channel this track should play in"),
                                                          wxT(""),
@@ -598,18 +599,6 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                 if (channel>=0 and channel<=15)
                 {
                     track->setChannel(channel);
-
-                    // check what is the instrument currently used in this channel, if any
-                    const int trackAmount = sequence->getTrackAmount();
-                    for(int n=0; n<trackAmount; n++) // find another track that has same channel and use the same instrument
-                    {
-                        if ( sequence->getTrack(n)->getChannel() == channel )
-                        {
-                            track->setInstrument(sequence->getTrack(n)->getInstrument(), true);
-                            break;
-                        }
-                    }//next
-
                     Display::render();
                 }
             }
@@ -778,7 +767,7 @@ void GraphicalTrack::onKeyChange(const int symbolAmount, const KeyType type)
 
 void GraphicalTrack::onInstrumentChange(const int newInstrument)
 {
-    instrument_name.set(Core::getInstrumentPicker()->getInstrumentName( newInstrument ));
+    instrument_name.set(InstrumentChoice::getInstrumentName( newInstrument ));
 }
 
 // --------------------------------------------------------------------------------------------------

@@ -49,7 +49,7 @@ namespace AriaMaestosa
         
         void setParent(Track* t);
         
-        const wxString& getDrumName(int id) const;
+        static const wxString& getDrumName(int id);
         void renderDrumKitName(const int drumID, const int x, const int y);
         
         void menuSelected(wxCommandEvent& evt);
