@@ -1310,6 +1310,20 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
             int new_value = atoi( octave_shift_c );
             if (new_value != 0) scoreEditor->getScoreMidiConverter()->setOctaveShift(new_value);
         }
+        
+        // compatibility code for older versions of .Aria file format (TODO: eventuall remove)
+        const char* muted_c = xml->getAttributeValue("muted");
+        if (muted_c != NULL)
+        {
+            if (strcmp(muted_c, "true") == 0)       track->setMuted(true);
+            else if (strcmp(muted_c, "false") == 0) track->setMuted(false);
+            else
+            {
+                std::cerr << "Unknown keyword for attribute 'muted' in track: " << muted_c << std::endl;
+            }
+            
+        }
+        
 
     }
     else if (!strcmp("magneticgrid", xml->getNodeName()))
