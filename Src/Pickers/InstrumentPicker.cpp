@@ -24,7 +24,7 @@
 #include "AriaCore.h"
 #include "Utils.h"
 
-namespace AriaMaestosa {
+using namespace AriaMaestosa;
 
 BEGIN_EVENT_TABLE(InstrumentPicker, wxMenu)
 
@@ -32,13 +32,8 @@ BEGIN_EVENT_TABLE(InstrumentPicker, wxMenu)
 
 END_EVENT_TABLE()
 
-void InstrumentPicker::setParent(InstrumentChoice* parent)
-{
-    m_model = parent;
-}
-
     
-InstrumentPicker::InstrumentPicker() : wxMenu()//, inst_names_renderer(g_inst_names, 128)
+InstrumentPicker::InstrumentPicker() : wxMenu()
 {
     m_model = NULL;
     
@@ -240,6 +235,7 @@ void InstrumentPicker::menuSelected(wxCommandEvent& evt)
 }
 
 
-
-    
+void InstrumentPicker::setModel(InstrumentChoice* model)
+{
+    m_model = model;
 }

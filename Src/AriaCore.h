@@ -47,7 +47,7 @@ namespace AriaMaestosa
     class TuningPicker;
     class Sequence;
     class KeyPicker;
-    class DrumChoice;
+    class DrumPicker;
     class InstrumentPicker;
     
     extern bool okToLog;
@@ -76,7 +76,7 @@ namespace AriaMaestosa
         void songHasFinishedPlaying();
         TuningPicker*     getTuningPicker();
         KeyPicker*        getKeyPicker();
-        DrumChoice*       getDrumPicker();
+        DrumPicker*       getDrumPicker();
         InstrumentPicker* getInstrumentPicker();
         
         long getPrefsValue( const char* entryName );

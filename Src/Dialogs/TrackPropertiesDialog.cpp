@@ -18,10 +18,10 @@
 #include "Dialogs/TrackPropertiesDialog.h"
 #include "Editors/Editor.h"
 #include "GUI/GraphicalTrack.h"
+#include "Midi/DrumChoice.h"
 #include "Midi/InstrumentChoice.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
-#include "Pickers/DrumChoice.h"
 
 #include "wx/wx.h"
 #include "wx/tokenzr.h"
@@ -50,14 +50,15 @@ namespace AriaMaestosa
             active = new wxCheckBox(this, 200, wxT(" "));
             sizer->Add(active, 0, wxALL, 5);
             
-            if (!enabled or editorMode==DRUM)  active->Enable(false);
-            else if (activated) active->SetValue(true);
+            if (not enabled or editorMode == DRUM)  active->Enable(false);
+            else if (activated)                     active->SetValue(true);
             
             wxString instrumentname;
-            if (editorMode == DRUM) instrumentname = DrumChoice::getDrumName( track->getDrumKit() );
-            else instrumentname = InstrumentChoice::getInstrumentName( track->getInstrument() );
+            if (editorMode == DRUM) instrumentname = DrumChoice::getDrumkitName( track->getDrumKit() );
+            else                    instrumentname = InstrumentChoice::getInstrumentName( track->getInstrument() );
             
-            sizer->Add( new wxStaticText(this, wxID_ANY, to_wxString(trackID) + wxT(" : ") + track->getName() + wxT(" (") + instrumentname + wxT(")")) , 1, wxALL, 5);
+            sizer->Add( new wxStaticText(this, wxID_ANY, to_wxString(trackID) + wxT(" : ") + track->getName() +
+                                         wxT(" (") + instrumentname + wxT(")")) , 1, wxALL, 5);
             
             SetSizer(sizer);
             sizer->Layout();

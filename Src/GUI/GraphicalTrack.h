@@ -157,7 +157,7 @@ namespace AriaMaestosa
         void processMouseExited(RelativeXCoord x_now, int y_now,
                                 RelativeXCoord x_initial, int y_initial);
         
-        void onInstrumentChange(const int newInstrument);
+        void onInstrumentChange(const int newInstrument, const bool isDrumKit);
 
         /** Called when a track's key changes */
         void onKeyChange(const int symbolAmount, const KeyType symbol);

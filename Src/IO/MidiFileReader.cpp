@@ -24,7 +24,6 @@
 #include "GUI/MainFrame.h"
 #include "GUI/GraphicalTrack.h"
 #include "Midi/MeasureData.h"
-#include "Pickers/DrumChoice.h"
 #include "Dialogs/WaitWindow.h"
 #include "Editors/DrumEditor.h"
 #include "Editors/KeyboardEditor.h"
@@ -251,7 +250,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                 //if (channel == 9)  sequence->getTrack(channel)->graphics->drumEditor->drumKit->setDrumID(instrument);
                 //else              sequence->getTrack(channel)->graphics->keyboardEditor->instrument->setInstrumentID(instrument);
 
-                if (channel == 9)  ariaTrack->setDrumKit(instrument, true);
+                if (channel == 9)  ariaTrack->setDrumKit(instrument);
                 else               ariaTrack->setInstrument(instrument);
 
                 continue;
@@ -516,7 +515,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
     // set song length
     int measureAmount_i = getMeasureData()->measureAtTick(lastEventTick) + 1;
 
-    std::cout << "song length = " << getMeasureData()->measureAtTick(lastEventTick) << "measures, last_event_tick=" << lastEventTick << std::endl;
+    std::cout << "song length = " << measureAmount_i << "measures, last_event_tick=" << lastEventTick << std::endl;
 
     if (measureAmount_i < 10) measureAmount_i=10;
 

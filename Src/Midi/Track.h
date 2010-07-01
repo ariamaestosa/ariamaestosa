@@ -27,6 +27,7 @@ namespace irr { namespace io {
 namespace jdkmidi { class MIDITrack; }
 
 #include "Midi/ControllerEvent.h"
+#include "Midi/DrumChoice.h"
 #include "Midi/InstrumentChoice.h"
 #include "Midi/Note.h"
 
@@ -98,7 +99,7 @@ namespace AriaMaestosa
       * Contains notes, control events, etc...
       * @ingroup midi
       */
-    class Track : public IInstrumentChoiceListener
+    class Track : public IInstrumentChoiceListener, public IDrumChoiceListener
     {
         // FIXME - find better way then friends?
         friend class FullTrackUndo;
@@ -146,7 +147,7 @@ namespace AriaMaestosa
         int m_channel;
         
         OwnerPtr<InstrumentChoice> m_instrument;
-        int m_drum_kit;
+        OwnerPtr<DrumChoice> m_drum_kit;
         
         KeyType m_key_type;
         
@@ -168,6 +169,12 @@ namespace AriaMaestosa
          * @param recursive set to true when the method calls itself
          */
         void doSetInstrument(int i, bool recursive=false);
+        
+        /**
+         * @param recursive Set to true when 'setDrumKit' when the function was called by itself
+         *                  It tells not to do any more recursion. Do not set when calling externally.
+         */
+        void doSetDrumKit(int i, bool recursive=false);
         
     public:
         LEAK_CHECK();
@@ -402,15 +409,12 @@ namespace AriaMaestosa
         int getInstrument() const { return m_instrument->getSelectedInstrument(); }
         
         InstrumentChoice* getInstrumentModel() { return m_instrument; }
-        
-        /**
-         * @param recursive Set to true when 'setDrumKit' when the function was called by itself
-         *                  It tells not to do any more recursion. Do not set when calling externally.
-         */
-        void setDrumKit(int i, bool recursive=false);
+        DrumChoice*       getDrumkitModel   () { return m_drum_kit;   }
+
+        void setDrumKit(int i);
         
         /** @return the selected drum kit (if this track is not a drum track, this value is ignored */
-        int  getDrumKit() const { return m_drum_kit; }
+        int  getDrumKit() const { return m_drum_kit->getSelectedDrumkit(); }
         
         void copy();
         
@@ -462,6 +466,11 @@ namespace AriaMaestosa
           */
         virtual void onInstrumentChanged(const int newValue);
             
+        /**
+          * @brief Implement callback from IDrumChoiceListener
+          */
+        virtual void onDrumkitChanged(const int newValue);
+
         // serialization
         void saveToFile(wxFileOutputStream& fileout);
         bool readFromFile(irr::io::IrrXMLReader* xml);

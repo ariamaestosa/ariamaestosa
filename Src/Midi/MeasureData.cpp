@@ -227,7 +227,12 @@ int MeasureData::measureAtTick(int tick)
 
         const int answer = (int)( tick / step );
         
-        ASSERT_E(answer, <=, m_measure_amount);
+        if (not getCurrentSequence()->importing)
+        {
+            // verify that we're within song bounds. except if importing, since the song length
+            // might not has been set yet.
+            ASSERT_E(answer, <=, m_measure_amount);
+        }
         
         return answer;
 
@@ -235,7 +240,12 @@ int MeasureData::measureAtTick(int tick)
     else
     {
         if (tick <0) tick = 0;
-        ASSERT_E(tick, <=, lastTickInMeasure(m_measure_amount-1));
+        if (not getCurrentSequence()->importing)
+        {
+            // verify that we're within song bounds. except if importing, since the song length
+            // might not has been set yet.
+            ASSERT_E(tick, <=, lastTickInMeasure(m_measure_amount-1));
+        }
         
         // iterate through measures till we find the one at the given tick
         const int amount = measureInfo.size();

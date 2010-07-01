@@ -35,12 +35,13 @@
 #include "GUI/MainFrame.h"
 #include "GUI/MainPane.h"
 #include "IO/IOUtils.h"
+#include "Midi/DrumChoice.h"
 #include "Midi/InstrumentChoice.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
+#include "Pickers/DrumPicker.h"
 #include "Pickers/InstrumentPicker.h"
-#include "Pickers/DrumChoice.h"
 #include "Pickers/MagneticGrid.h"
 #include "Renderers/Drawable.h"
 #include "Renderers/ImageBase.h"
@@ -574,12 +575,12 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         {
             if (editorMode==DRUM)
             {
-                Core::getDrumPicker()->setParent(track);
+                Core::getDrumPicker()->setModel(track->getDrumkitModel());
                 Display::popupMenu((wxMenu*)(Core::getDrumPicker()), Display::getWidth() - 175, from_y+30);
             }
             else
             {
-                Core::getInstrumentPicker()->setParent(track->getInstrumentModel());
+                Core::getInstrumentPicker()->setModel(track->getInstrumentModel());
                 Display::popupMenu((wxMenu*)(Core::getInstrumentPicker()), Display::getWidth() - 175, from_y+30);
             }
         }
@@ -765,9 +766,16 @@ void GraphicalTrack::onKeyChange(const int symbolAmount, const KeyType type)
 
 // --------------------------------------------------------------------------------------------------
 
-void GraphicalTrack::onInstrumentChange(const int newInstrument)
+void GraphicalTrack::onInstrumentChange(const int newInstrument, const bool isDrumKit)
 {
-    instrument_name.set(InstrumentChoice::getInstrumentName( newInstrument ));
+    if (isDrumKit)
+    {
+        instrument_name.set(DrumChoice::getDrumkitName( newInstrument ));
+    }
+    else
+    {
+        instrument_name.set(InstrumentChoice::getInstrumentName( newInstrument ));
+    }
 }
 
 // --------------------------------------------------------------------------------------------------
@@ -1055,18 +1063,9 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     AriaRender::images();
     AriaRender::color(0,0,0);
     
-    if (editorMode == DRUM) 
-    {
-        Core::getDrumPicker()->renderDrumKitName( track->getDrumKit(), instrumentName->getX()+11 ,y+29);
-    }
-    else
-    {
-        instrument_name.bind();
-        instrument_name.render(instrumentName->getX()+11 ,y+29);
-    }
-    
-    AriaRender::images();
-    
+    instrument_name.bind();
+    instrument_name.render(instrumentName->getX()+11 ,y+29);
+        
     // draw channel number
     if (channel_mode)
     {
@@ -1215,6 +1214,7 @@ void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
     //keyboardEditor->instrument->saveToFile(fileout);
     //drumEditor->drumKit->saveToFile(fileout);
 
+    // TODO: move this to 'Track', has nothing to do here in GraphicalTrack
     writeData( wxT("<instrument id=\"") + to_wxString( track->getInstrument() ) + wxT("\"/>\n"), fileout);
     writeData( wxT("<drumkit id=\"") + to_wxString( track->getDrumKit() ) + wxT("\"/>\n"), fileout);
 

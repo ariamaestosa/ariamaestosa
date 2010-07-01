@@ -162,7 +162,7 @@ namespace AriaMaestosa
         MainPane* mainPane;
         WxOwnerPtr<PreferencesDialog> preferences;
         OwnerPtr<InstrumentPicker>    instrument_picker;
-        OwnerPtr<DrumChoice>          drumKit_picker;
+        OwnerPtr<DrumPicker>          drumKit_picker;
         OwnerPtr<TuningPicker>        tuningPicker;
         OwnerPtr<KeyPicker>           keyPicker;
         // ----------------------

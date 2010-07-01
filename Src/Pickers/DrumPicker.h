@@ -15,8 +15,8 @@
  */
 
 
-#ifndef __DRUM_CHOICE_H__
-#define __DRUM_CHOICE_H__
+#ifndef __DRUM_PICKER_H__
+#define __DRUM_PICKER_H__
 
 #include "wx/menu.h"
 #include "wx/string.h"
@@ -29,28 +29,23 @@ class wxCommandEvent;
 namespace AriaMaestosa
 {
     
-    class Track;
+    class DrumChoice;
     
     /**
       * @ingroup pickers
       * @brief the menu where you can choose a drum kit
       */
-    class DrumChoice : public wxMenu
+    class DrumPicker : public wxMenu
     {
-        Track* parent;
-        
-        AriaRenderArray drumkit_names_renderer;
-        
+        DrumChoice* m_model;
+                
     public:
         LEAK_CHECK();
         
-        DrumChoice();
-        ~DrumChoice();
+        DrumPicker();
+        ~DrumPicker();
         
-        void setParent(Track* t);
-        
-        static const wxString& getDrumName(int id);
-        void renderDrumKitName(const int drumID, const int x, const int y);
+        void setModel(DrumChoice* model);
         
         void menuSelected(wxCommandEvent& evt);
         

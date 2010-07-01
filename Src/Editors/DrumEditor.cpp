@@ -28,7 +28,7 @@
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
-#include "Pickers/DrumChoice.h"
+#include "Pickers/DrumPicker.h"
 #include "Pickers/MagneticGrid.h"
 #include "Renderers/RenderAPI.h"
 #include "Renderers/Drawable.h"
