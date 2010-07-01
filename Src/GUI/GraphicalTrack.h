@@ -93,9 +93,6 @@ namespace AriaMaestosa
         /** Whether this track was collapsed with the triangle widget so that only its header is seen */
         bool collapsed;
         
-        /** Whether this track has been muted so that it's not heard on playback. */
-        bool muted;
-        
         /** Whether this track was "docked", i.e. minimized so that not even its header is visible */
         bool docked;
         

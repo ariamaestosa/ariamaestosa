@@ -336,7 +336,6 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
 
     collapsed=false;
     dragging_resize=false;
-    muted=false;
     docked = false;
     editorMode=KEYBOARD;
 
@@ -533,7 +532,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         // mute
         if ( muteButton->clickIsOnThisWidget(winX, mousey) )
         {
-            muted = !muted;
+            track->toggleMuted();
             DisplayFrame::updateVerticalScrollbar();
         }
 
@@ -988,10 +987,10 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     
     // ------------------ prepare to draw components ------------------
     if (collapsed) collapseButton->drawable->setImage( expandImg );
-    else collapseButton->drawable->setImage( collapseImg );
+    else           collapseButton->drawable->setImage( collapseImg );
     
-    if (muted) muteButton->drawable->setImage( muteOnImg );
-    else muteButton->drawable->setImage( muteOffImg );
+    if (track->isMuted()) muteButton->drawable->setImage( muteOnImg );
+    else                  muteButton->drawable->setImage( muteOffImg );
     
     scoreButton -> enable( editorMode == SCORE      and focus );
     pianoButton -> enable( editorMode == KEYBOARD   and focus );
@@ -1217,7 +1216,6 @@ void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
     writeData( wxT("<editor mode=\"") + to_wxString(editorMode) +
                wxT("\" height=\"") + to_wxString(height) +
                (collapsed ? wxT("\" collapsed=\"true") : wxT("")) +
-               (muted ? wxT("\" muted=\"true") : wxT("") ) +
                wxT("\" g_clef=\"") + (scoreEditor->isGClefEnabled()?wxT("true"):wxT("false")) +
                wxT("\" f_clef=\"") + (scoreEditor->isFClefEnabled()?wxT("true"):wxT("false")) +
                ( octave_shift != 0 ? wxT("\" octave_shift=\"")+to_wxString(octave_shift) : wxT("")) +
@@ -1283,22 +1281,6 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
             collapsed = false;
         }
 
-        const char* muted_c = xml->getAttributeValue("muted");
-        if ( muted_c != NULL )
-        {
-            if (!strcmp(muted_c, "true")) muted = true;
-            else if (!strcmp(muted_c, "false")) muted = false;
-            else
-            {
-                muted = false;
-                std::cout << "Unknown keyword for attribute 'muted' in track: " << muted_c << std::endl;
-            }
-
-        }
-        else
-        {
-            muted = false;
-        }
 
         const char* g_clef_c = xml->getAttributeValue("g_clef");
         if ( g_clef_c != NULL )
