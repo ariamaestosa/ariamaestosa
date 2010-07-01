@@ -18,12 +18,13 @@
 #define __RELATIVE_PLACEMENT_MANAGER__
 
 #include <vector>
+#include "unit_test.h"
 #include "Range.h"
 #include "Analysers/SilenceAnalyser.h"
 
 // For unit tests
-class RelativePlacementManager_TestAddingAndFindingInterestingTicks;
-class RelativePlacementManager_TestFindingNextTick;
+test TestAddingAndFindingInterestingTicks;
+test TestFindingNextTick;
 
 namespace AriaMaestosa
 {
@@ -35,8 +36,8 @@ namespace AriaMaestosa
 class RelativePlacementManager
 {
     // For unit tests
-    friend class ::RelativePlacementManager_TestAddingAndFindingInterestingTicks;
-    friend class ::RelativePlacementManager_TestFindingNextTick;
+    friend test ::TestAddingAndFindingInterestingTicks;
+    friend test ::TestFindingNextTick;
     
     /** Last tick of the measure (A RelativePlacementManager object represents a single measure) */
     int m_end_of_measure_tick;

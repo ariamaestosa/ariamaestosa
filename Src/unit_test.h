@@ -18,7 +18,7 @@ public:
 
 #ifdef _MORE_DEBUG_CHECKS
 #define UNIT_TEST( NAME ) class NAME : public UnitTestCase { public: NAME(const char* name, const char* filename) : UnitTestCase(name, filename){} void run(); }; \
-                          NAME unit_test_##NAME = NAME( #NAME, __FILE__ ); void NAME::run()
+                          static NAME unit_test_##NAME = NAME( #NAME, __FILE__ ); void NAME::run()
 #else
 // silly trick to not bloat the executable with unit test code in release mode; since the template is
 // never instantiated the code will be discarded
@@ -31,5 +31,8 @@ static char buffer[256];\
 sprintf(buffer, "Requirement failed at %s:%i : %s", __FILE__, __LINE__, MESSAGE);\
 throw std::logic_error(buffer);\
 }
+
+// pseudo-keyword :)
+#define test class
 
 #endif

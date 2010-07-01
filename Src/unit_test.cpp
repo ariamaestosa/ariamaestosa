@@ -91,16 +91,16 @@ UnitTestCase::~UnitTestCase()
      */
 }
 
-void runTest(UnitTestCase* test)
+void runTest(UnitTestCase* testCase)
 {
-    std::cout << "Running test case " << test->getName() << "... ";
+    std::cout << "Running test case " << testCase->getName() << "... ";
     std::cout.flush();
     
     bool passed = true;
     
     try
     {
-        test->run();
+        testCase->run();
     }
     catch (const std::exception& ex)
     {
