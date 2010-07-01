@@ -64,6 +64,8 @@ using namespace AriaMaestosa;
 
 Track::Track(Sequence* sequence)
 {
+    m_muted = false;
+
     // init key data
     setKey(0, KEY_TYPE_C);
 
@@ -1154,7 +1156,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     // ignore track if it's muted
     // (but for some reason drum track can't be completely omitted)
     // if we only play selection, ignore mute and play anyway
-    if (graphics->muted and graphics->editorMode != DRUM and !selectionOnly)
+    if (m_muted and graphics->editorMode != DRUM and !selectionOnly)
         return -1;
 
     // if in manual mode, use the user-specified channel ID and not the stock one
@@ -1275,7 +1277,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     int last_event_tick = 0;
 
     // if muted and drums, return now
-    if (graphics->muted and graphics->editorMode == DRUM and !selectionOnly) return -1;
+    if (m_muted and graphics->editorMode == DRUM and not selectionOnly) return -1;
 
     //std::cout << "-------------------- TRACK -------------" << std::endl;
 
@@ -1529,6 +1531,7 @@ void Track::saveToFile(wxFileOutputStream& fileout)
 
     writeData(wxT("\n<track name=\"") + m_name +
               wxT("\" channel=\"") + to_wxString(m_channel) +
+              (m_muted ? wxT("\" muted=\"true") : wxT("") )  +
               wxT("\">\n"), fileout );
 
     writeData(wxT("<key sharps=\"") + to_wxString( getKeySharpsAmount() ) +
@@ -1600,27 +1603,46 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
     do
     {
 
-        switch(xml->getNodeType())
+        switch (xml->getNodeType())
         {
             case irr::io::EXN_TEXT:
+            {
                 break;
+            }
             case irr::io::EXN_ELEMENT:
             {
-                if (!strcmp("track", xml->getNodeName()))
+                if (strcmp("track", xml->getNodeName()) == 0)
                 {
+                    const char* muted_c = xml->getAttributeValue("muted");
+                    if (muted_c != NULL)
+                    {
+                        if (strcmp(muted_c, "true") == 0)       m_muted = true;
+                        else if (strcmp(muted_c, "false") == 0) m_muted = false;
+                        else
+                        {
+                            m_muted = false;
+                            std::cerr << "Unknown keyword for attribute 'muted' in track: " << muted_c << std::endl;
+                        }
+                        
+                    }
+                    else
+                    {
+                        m_muted = false;
+                    }
 
                     const char* name = xml->getAttributeValue("name");
-                    if (name!=NULL)
+                    if (name != NULL)
                     {
                         setName( fromCString((char*)name) );
                     }
                     else
                     {
-                        std::cout << "Missing info from file: track name" << std::endl;
+                        std::cerr << "Missing info from file: track name" << std::endl;
                         setName( wxString(_("Untitled")) );
                     }
+                    
                     const char* channel_c = xml->getAttributeValue("channel");
-                    if (channel_c!=NULL)
+                    if (channel_c != NULL)
                     {
                         int loaded_channel = atoi(channel_c);
                         if (loaded_channel >=-0 and loaded_channel<16)
@@ -1638,17 +1660,15 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                     }
 
                 }
-                else if (!strcmp("editor", xml->getNodeName()))
+                else if (strcmp("editor", xml->getNodeName()) == 0)
                 {
-                    if (! graphics->readFromFile(xml) )
-                        return false;
+                    if (not graphics->readFromFile(xml)) return false;
                 }
-                else if (!strcmp("magneticgrid", xml->getNodeName()))
+                else if (strcmp("magneticgrid", xml->getNodeName()) == 0)
                 {
-                    if (! graphics->readFromFile(xml) )
-                        return false;
+                    if (not graphics->readFromFile(xml)) return false;
                 }
-                else if (!strcmp("instrument", xml->getNodeName()))
+                else if (strcmp("instrument", xml->getNodeName()) == 0)
                 {
                     const char* id = xml->getAttributeValue("id");
                     if (id != NULL)
@@ -1661,7 +1681,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                         m_instrument = 0;
                     }
                 }
-                else if (!strcmp("drumkit", xml->getNodeName()))
+                else if (strcmp("drumkit", xml->getNodeName()) == 0)
                 {
                     const char* id = xml->getAttributeValue("id");
                     if (id != NULL) setDrumKit( atoi(id) );
@@ -1670,12 +1690,12 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                         std::cout << "Missing info from file: drum ID" << std::endl;
                     }
                 }
-                else if (!strcmp("guitartuning", xml->getNodeName()))
+                else if (strcmp("guitartuning", xml->getNodeName()) == 0)
                 {
                     if (! graphics->readFromFile(xml) )
                         return false;
                 }
-                else if (!strcmp("key", xml->getNodeName()))
+                else if (strcmp("key", xml->getNodeName()) == 0)
                 {
                     char* key_type  = (char*)xml->getAttributeValue("type");
                     if (key_type != NULL)

@@ -158,6 +158,9 @@ namespace AriaMaestosa
           */
         KeyInclusionType m_key_notes[131];
         
+        /** Whether this track has been muted so that it's not heard on playback. */
+        bool m_muted;
+        
     public:
         LEAK_CHECK();
         
@@ -427,6 +430,10 @@ namespace AriaMaestosa
             return m_note_off;
         }
 
+        
+        void toggleMuted()  { m_muted = not m_muted; }
+        
+        bool isMuted() const { return m_muted; }
         
         // serialization
         void saveToFile(wxFileOutputStream& fileout);

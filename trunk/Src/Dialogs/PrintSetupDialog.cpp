@@ -437,7 +437,7 @@ namespace AriaMaestosa
             {
                 Track* track = m_current_sequence->getTrack(n);
                 wxCheckBox* cb = new wxCheckBox(m_track_choice, wxID_ANY, wxT(""));
-                cb->SetValue(not (track->graphics->collapsed or track->graphics->muted or track->graphics->docked));
+                cb->SetValue(not (track->graphics->collapsed or track->isMuted() or track->graphics->docked));
 
                 wxStaticText* trackName = new wxStaticText(m_track_choice, wxID_ANY, track->getName() );
                 
