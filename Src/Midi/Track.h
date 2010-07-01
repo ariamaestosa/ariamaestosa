@@ -431,9 +431,21 @@ namespace AriaMaestosa
         }
 
         
-        void toggleMuted()  { m_muted = not m_muted; }
+        /**
+          * @brief toggle the muted state of this track (a muted track becomes non-muted and vice-versa)
+          */
+        void toggleMuted()         { m_muted = not m_muted; }
         
-        bool isMuted() const { return m_muted; }
+        /**
+          * @return whether this track is muted (not heard when sequence is played)
+          */
+        bool isMuted() const       { return m_muted;        }
+        
+        /**
+          * @brief set whether this track is muted (not heard when sequence is played)
+          * @param muted whether this track is muted (not heard when sequence is played)
+          */
+        void setMuted(bool muted)  { m_muted = muted;       }
         
         // serialization
         void saveToFile(wxFileOutputStream& fileout);
