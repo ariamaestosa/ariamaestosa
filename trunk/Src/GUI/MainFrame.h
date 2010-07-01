@@ -109,7 +109,7 @@ namespace AriaMaestosa
       * @brief manages the main frame of Aria Maestosa
       */
     class MainFrame : public wxFrame, public IPlaybackModeListener, public IActionStackListener,
-        public ISequenceDataListener
+        public ISequenceDataListener, public ICurrentSequenceProvider
     {
         WxOwnerPtr<AboutDialog>  aboutDialog;
         WxOwnerPtr<CustomNoteSelectDialog>  customNoteSelectDialog;
@@ -303,7 +303,7 @@ namespace AriaMaestosa
         bool closeSequence(int id = -1);
 
         /** Returns the sequence (file) currently being active. */
-        Sequence* getCurrentSequence();
+        virtual Sequence* getCurrentSequence();
 
         Sequence* getSequence(int n);
         int getCurrentSequenceID();

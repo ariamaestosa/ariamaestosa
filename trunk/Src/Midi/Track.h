@@ -407,7 +407,7 @@ namespace AriaMaestosa
         const KeyInclusionType* getKeyNotes() const { return m_key_notes; }
     
         /**
-         * Add Midi Events to JDKMidi track object
+         * @brief Add Midi Events to JDKMidi track object
          */
         int addMidiEvents(jdkmidi::MIDITrack* track, int channel, int firstMeasure,
                           bool selectionOnly, int& startTick); // returns length
@@ -419,6 +419,15 @@ namespace AriaMaestosa
           */
         void notifyOthersIWillBeRemoved();
 
+        /**
+          * @brief Get a read-only list of all notes in this track, but ordered by their end tick.
+          */
+        const ptr_vector<Note, REF>& getNoteOffVector() const
+        {
+            return m_note_off;
+        }
+
+        
         // serialization
         void saveToFile(wxFileOutputStream& fileout);
         bool readFromFile(irr::io::IrrXMLReader* xml);

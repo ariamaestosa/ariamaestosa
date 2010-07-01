@@ -14,13 +14,16 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-
+#include "AriaCore.h"
 #include "Actions/AddNote.h"
 #include "Actions/EditAction.h"
 #include "GUI/GraphicalTrack.h"
 #include "Editors/GuitarEditor.h"
 #include "Midi/Track.h"
 #include "Midi/Note.h"
+#include "Midi/Sequence.h"
+
+#include "unit_test.h"
 
 using namespace AriaMaestosa::Action;
 
@@ -28,8 +31,8 @@ using namespace AriaMaestosa::Action;
 
 AddNote::AddNote(const int pitchID, const int startTick, const int endTick,
                  const int volume, const int string) :
-    //I18N: (undoable) action name
-    SingleTrackAction( _("add note") )
+//I18N: (undoable) action name
+SingleTrackAction( _("add note") )
 {
     m_pitch_ID   = pitchID;
     m_start_tick = startTick;
@@ -86,4 +89,147 @@ void AddNote::perform()
     tmp_note->play(true);
 }
 
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+
+using namespace AriaMaestosa;
+
+namespace TestAddNote
+{
+    
+    UNIT_TEST(TestAdd)
+    {            
+        class TestSeqProvider : public ICurrentSequenceProvider
+        {
+            Sequence* m_seq;
+        public:
+            TestSeqProvider(Sequence* seq)
+            {
+                m_seq = seq;
+            }
+            
+            virtual Sequence* getCurrentSequence()
+            {
+                return m_seq;
+            }
+        };
+        
+        Sequence* seq = new Sequence(NULL, NULL, NULL, false);
+        TestSeqProvider provider(seq);
+        AriaMaestosa::setCurrentSequenceProvider(&provider);
+        
+        Track* t = new Track(seq);
+        // FIXME: creating the graphics object shouldn't be manual nor necessary
+        t->graphics = new GraphicalTrack(t, seq);
+        t->graphics->createEditors();
+        
+        // make a factory sequence to work from
+        seq->importing = true;
+        t->addNote_import(100 /* pitch */, 0   /* start */, 100 /* end */, 127 /* volume */, -1);
+        t->addNote_import(101 /* pitch */, 101 /* start */, 200 /* end */, 127 /* volume */, -1);
+        t->addNote_import(102 /* pitch */, 201 /* start */, 300 /* end */, 127 /* volume */, -1);
+        t->addNote_import(103 /* pitch */, 301 /* start */, 400 /* end */, 127 /* volume */, -1);
+        seq->importing = false;
+        require(t->getNoteAmount() == 4, "sanity check"); // sanity check on the way...
+        
+        seq->addTrack(t);
+        
+        // test the action
+        seq->getTrack(0)->action(new AddNote(104 /* pitch */, 401 /* start */, 500 /* end */, 127 /* volume */, -1));
+        
+        require(t->getNoteAmount() == 5, "the number of events was increased");
+        require(t->getNote(0)->getTick()    == 0,   "events were properly ordered");
+        require(t->getNote(0)->getPitchID() == 100, "events were properly ordered");
+        
+        require(t->getNote(1)->getTick()    == 101, "events were properly ordered");
+        require(t->getNote(1)->getPitchID() == 101, "events were properly ordered");
+        
+        require(t->getNote(2)->getTick()    == 201, "events were properly ordered");
+        require(t->getNote(2)->getPitchID() == 102, "events were properly ordered");
+        
+        require(t->getNote(3)->getTick()    == 301, "events were properly ordered");
+        require(t->getNote(3)->getPitchID() == 103, "events were properly ordered");
+        
+        require(t->getNote(4)->getTick()    == 401, "events were properly ordered");
+        require(t->getNote(4)->getPitchID() == 104, "events were properly ordered");
+        
+        require(t->getNoteOffVector().size() == 5, "Note off vector was increased");
+        require(t->getNoteOffVector()[0].endTick == 100, "Note off vector is properly ordered");
+        require(t->getNoteOffVector()[1].endTick == 200, "Note off vector is properly ordered");
+        require(t->getNoteOffVector()[2].endTick == 300, "Note off vector is properly ordered");
+        require(t->getNoteOffVector()[3].endTick == 400, "Note off vector is properly ordered");
+        require(t->getNoteOffVector()[4].endTick == 500, "Note off vector is properly ordered");
+        
+        delete seq;
+    }
+    
+    // ----------------------------------------------------------------------------------------------------------
+    
+    UNIT_TEST(TestInsert)
+    {            
+        class TestSeqProvider : public ICurrentSequenceProvider
+        {
+            Sequence* m_seq;
+        public:
+            TestSeqProvider(Sequence* seq)
+            {
+                m_seq = seq;
+            }
+            
+            virtual Sequence* getCurrentSequence()
+            {
+                return m_seq;
+            }
+        };
+        
+        Sequence* seq = new Sequence(NULL, NULL, NULL, false);
+        TestSeqProvider provider(seq);
+        AriaMaestosa::setCurrentSequenceProvider(&provider);
+        
+        Track* t = new Track(seq);
+        // FIXME: creating the graphics object shouldn't be manual nor necessary
+        t->graphics = new GraphicalTrack(t, seq);
+        t->graphics->createEditors();
+        
+        // make a factory sequence to work from
+        seq->importing = true;
+        t->addNote_import(100 /* pitch */, 0   /* start */, 100 /* end */, 127 /* volume */, -1);
+        t->addNote_import(101 /* pitch */, 101 /* start */, 200 /* end */, 127 /* volume */, -1);
+        t->addNote_import(102 /* pitch */, 201 /* start */, 300 /* end */, 127 /* volume */, -1);
+        t->addNote_import(103 /* pitch */, 301 /* start */, 400 /* end */, 127 /* volume */, -1);
+        seq->importing = false;
+        require(t->getNoteAmount() == 4, "sanity check"); // sanity check on the way...
+        
+        seq->addTrack(t);
+        
+        // test the action
+        seq->getTrack(0)->action(new AddNote(104 /* pitch */, 150 /* start */, 250 /* end */, 127 /* volume */, -1));
+        
+        require(t->getNoteAmount() == 5, "the number of events was increased");
+        require(t->getNote(0)->getTick()    == 0,   "events were properly ordered");
+        require(t->getNote(0)->getPitchID() == 100, "events were properly ordered");
+        
+        require(t->getNote(1)->getTick()    == 101, "events were properly ordered");
+        require(t->getNote(1)->getPitchID() == 101, "events were properly ordered");
+        
+        require(t->getNote(2)->getTick()    == 150, "events were properly ordered");
+        require(t->getNote(2)->getPitchID() == 104, "events were properly ordered");
+        
+        require(t->getNote(3)->getTick()    == 201, "events were properly ordered");
+        require(t->getNote(3)->getPitchID() == 102, "events were properly ordered");
+        
+        require(t->getNote(4)->getTick()    == 301, "events were properly ordered");
+        require(t->getNote(5)->getPitchID() == 103, "events were properly ordered");
+        
+        require(t->getNoteOffVector().size() == 5, "Note off vector was increased");
+        require(t->getNoteOffVector()[0].endTick == 100, "Note off vector is properly ordered");
+        require(t->getNoteOffVector()[1].endTick == 200, "Note off vector is properly ordered");
+        require(t->getNoteOffVector()[2].endTick == 250, "Note off vector is properly ordered");
+        require(t->getNoteOffVector()[3].endTick == 300, "Note off vector is properly ordered");
+        require(t->getNoteOffVector()[4].endTick == 400, "Note off vector is properly ordered");
+        
+        delete seq;
+    }
+    
+}
 // ----------------------------------------------------------------------------------------------------------

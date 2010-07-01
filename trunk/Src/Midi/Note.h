@@ -131,6 +131,9 @@ namespace AriaMaestosa
          */
         void play(bool change);
         
+        int   getTick   () const    { return startTick; }
+        short getPitchID() const    { return pitchID;   }
+        
         // serialization
         void saveToFile(wxFileOutputStream& fileout);
         bool readFromFile(irr::io::IrrXMLReader* xml);
