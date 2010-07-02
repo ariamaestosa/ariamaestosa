@@ -34,21 +34,21 @@ UpdateGuitarTuning::~UpdateGuitarTuning()
 
 void UpdateGuitarTuning::undo()
 {
-    GuitarEditor* editor = track->graphics->guitarEditor;
-    editor->tuning = previous_tuning;
+    GuitarTuning* tuning = track->getGuitarTuning();
+    tuning->tuning = previous_tuning;
     
     Note* current_note;
     relocator.setParent(track);
     relocator.prepareToRelocate();
     int n=0;
-    while( (current_note = relocator.getNextNote()) and current_note != NULL)
+    while ((current_note = relocator.getNextNote()) and current_note != NULL)
     {
         current_note->setStringAndFret( strings[n], frets[n] );
         n++;
     }
     
     const int amount_n = track->m_notes.size();
-    for(int n=0; n<amount_n; n++)
+    for (int n=0; n<amount_n; n++)
     {
         track->m_notes[n].checkIfStringAndFretMatchNote(true);
     }//next
@@ -58,9 +58,7 @@ void UpdateGuitarTuning::perform()
 {
     ASSERT(track != NULL);
     
-    GuitarEditor* editor = track->graphics->guitarEditor;
-    if (editor == NULL) return; // before editor is created, probably setting initial tuning. FIXME - find cleaner way
-    previous_tuning = editor->previous_tuning;
+    previous_tuning = track->getGuitarTuning()->previous_tuning;
     
     const int amount_n = track->m_notes.size();
     for(int n=0; n<amount_n; n++)

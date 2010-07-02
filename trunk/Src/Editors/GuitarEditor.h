@@ -30,6 +30,7 @@ namespace AriaMaestosa
     
     class Track; // forward
     class TuningPicker;
+
     
     /**
       * @brief a note editor using tablature notation
@@ -40,15 +41,9 @@ namespace AriaMaestosa
         
     public:
         
-        std::vector<int> tuning;
-        std::vector<int> previous_tuning; //!< for undo purposes
-        
         GuitarEditor(Track* track);
         ~GuitarEditor();
         
-
-        
-        void tuningUpdated(const bool user_triggered=true); // if user-triggered, it will be undoable
         void updatePosition(const int from_y, const int to_y, const int width, const int height, const int barHeight);
         
 
@@ -88,6 +83,7 @@ namespace AriaMaestosa
             // no scrolling in this editor
             return 0;
         }
+        
     };
     
 }

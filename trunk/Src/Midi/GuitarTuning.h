@@ -14,40 +14,41 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef __TUNING_PICKER_H__
-#define __TUNING_PICKER_H__
+#ifndef __GUITAR_TUNING_H__
+#define __GUITAR_TUNING_H__
 
-#include "wx/menu.h"
-#include "Utils.h"
-#include "Dialogs/TuningDialog.h"
+#include <vector>
 
 namespace AriaMaestosa
 {
-    
-    class GuitarTuning; // forward
 
-    /**
-      * @brief guitar tuning tuning (for the tablature editor)
-      */
-    class TuningPicker : public wxMenu
+    class GuitarTuning;
+    
+    class IGuitarTuningListener
     {
-        void resetChecks();
-        GuitarTuning* m_model;
-        WxOwnerPtr<TuningDialog>  m_tuning_dialog;
-        
     public:
-        LEAK_CHECK();
+        virtual ~IGuitarTuningListener() {}
         
-        TuningPicker();
-        ~TuningPicker();
-        
-        void menuItemSelected(wxCommandEvent& evt);
-        void loadTuning(const int id, const bool user_triggered=true);
-        void setModel(GuitarTuning* model);
-        
-        DECLARE_EVENT_TABLE();
+        virtual void onGuitarTuningUpdated(GuitarTuning* tuning, const bool userTriggered) = 0;
     };
     
+    /**
+      * @brief The model to contain a guitar tuning
+      * @ingroup midi
+      */
+    class GuitarTuning
+    {
+        IGuitarTuningListener* m_listener;
+    public:
+        /** Contains one entry per string */
+        std::vector<int> tuning;
+        std::vector<int> previous_tuning; //!< for undo purposes
+        
+        GuitarTuning(IGuitarTuningListener* listener);
+        
+        void setTuning(const std::vector<int>& newTuning, const bool userTriggered);
+    };
+
 }
 
 #endif

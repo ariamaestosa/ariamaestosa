@@ -19,6 +19,7 @@
 #include "AriaCore.h"
 
 #include "Actions/EditAction.h"
+#include "Actions/UpdateGuitarTuning.h"
 
 #include "Editors/KeyboardEditor.h"
 #include "Editors/GuitarEditor.h"
@@ -68,6 +69,8 @@ Track::Track(Sequence* sequence)
 
     // init key data
     setKey(0, KEY_TYPE_C);
+
+    m_tuning = new GuitarTuning(this);
 
     m_name.set( wxString( _("Untitled") ) );
     m_name.setMaxWidth(120);
@@ -1134,6 +1137,22 @@ void Track::onDrumkitChanged(const int newValue)
 {
     graphics->onInstrumentChange(newValue, true);
     doSetDrumKit(newValue);
+}
+
+// -------------------------------------------------------------------------------------------------------
+
+void Track::onGuitarTuningUpdated(GuitarTuning* tuning, const bool userTriggered)
+{
+    if (userTriggered)
+    {
+        action( new Action::UpdateGuitarTuning() );
+    }
+    else
+    {
+        Action::UpdateGuitarTuning action;
+        action.setParentTrack(this);
+        action.perform();
+    }
 }
 
 // =======================================================================================================

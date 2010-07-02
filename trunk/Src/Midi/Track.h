@@ -28,6 +28,7 @@ namespace jdkmidi { class MIDITrack; }
 
 #include "Midi/ControllerEvent.h"
 #include "Midi/DrumChoice.h"
+#include "Midi/GuitarTuning.h"
 #include "Midi/InstrumentChoice.h"
 #include "Midi/Note.h"
 
@@ -99,7 +100,7 @@ namespace AriaMaestosa
       * Contains notes, control events, etc...
       * @ingroup midi
       */
-    class Track : public IInstrumentChoiceListener, public IDrumChoiceListener
+    class Track : public IInstrumentChoiceListener, public IDrumChoiceListener, public IGuitarTuningListener
     {
         // FIXME - find better way then friends?
         friend class FullTrackUndo;
@@ -164,6 +165,8 @@ namespace AriaMaestosa
         /** Whether this track has been muted so that it's not heard on playback. */
         bool m_muted;
         
+        OwnerPtr<GuitarTuning> m_tuning;
+
         /**
          * @brief set the MIDI instrument used by this track
          * @param recursive set to true when the method calls itself
@@ -178,7 +181,7 @@ namespace AriaMaestosa
         
     public:
         LEAK_CHECK();
-        
+                
         // ------------- read-only -------------
         // FIXME: it should be the graphics that refer to the data, not the data holding the graphics!
         OwnerPtr<GraphicalTrack>  graphics;
@@ -471,6 +474,21 @@ namespace AriaMaestosa
           */
         virtual void onDrumkitChanged(const int newValue);
 
+        /**
+          * @brief Get the guitar tuning model object
+          */
+        GuitarTuning* getGuitarTuning() { return m_tuning; }
+        
+        /**
+         * @brief Get the guitar tuning model object
+         */
+        const GuitarTuning* getConstGuitarTuning() const { return m_tuning.raw_ptr; }
+        
+        /**
+          * @brief Implement callback from IGuitarTuningListener
+          */
+        virtual void onGuitarTuningUpdated(GuitarTuning* tuning, const bool userTriggered);
+        
         // serialization
         void saveToFile(wxFileOutputStream& fileout);
         bool readFromFile(irr::io::IrrXMLReader* xml);

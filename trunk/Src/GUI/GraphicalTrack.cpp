@@ -418,7 +418,7 @@ void GraphicalTrack::createEditors()
     
     guitarEditor       = new GuitarEditor(track);
     m_all_editors.push_back(guitarEditor);
-
+    
     drumEditor         = new DrumEditor(track);
     m_all_editors.push_back(drumEditor);
 
@@ -1236,11 +1236,14 @@ void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
     writeData( wxT("<instrument id=\"") + to_wxString( track->getInstrument() ) + wxT("\"/>\n"), fileout);
     writeData( wxT("<drumkit id=\"") + to_wxString( track->getDrumKit() ) + wxT("\"/>\n"), fileout);
 
-    // guitar tuning
+    // guitar tuning (FIXME: move this out of here)
     writeData( wxT("<guitartuning "), fileout);
-    for(unsigned int n=0; n<guitarEditor->tuning.size(); n++)
+    GuitarTuning* tuning = track->getGuitarTuning();
+    const int stringCount = tuning->tuning.size();
+    for (unsigned int n=0; n<stringCount; n++)
     {
-        writeData( wxT(" string")+ to_wxString((int)n) + wxT("=\"") + to_wxString((int)guitarEditor->tuning[n]) + wxT("\""), fileout );
+        writeData(wxT(" string")+ to_wxString((int)n) + wxT("=\"") +
+                  to_wxString((int)tuning->tuning[n]) + wxT("\""), fileout );
     }
 
     writeData( wxT("/>\n\n"), fileout);
@@ -1342,28 +1345,30 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
     }
     else if (!strcmp("guitartuning", xml->getNodeName()))
     {
+        GuitarTuning* tuning = track->getGuitarTuning();
 
-        guitarEditor->tuning.clear();
-
+        std::vector<int> newTuning;
+        
         int n=0;
         char* string_v = (char*)xml->getAttributeValue("string0");
 
-        while(string_v != NULL)
+        while (string_v != NULL)
         {
-            guitarEditor->tuning.push_back( atoi(string_v) );
+            newTuning.push_back( atoi(string_v) );
 
             n++;
             wxString tmp = wxT("string") + to_wxString(n);
             string_v = (char*)xml->getAttributeValue( tmp.mb_str() );
         }
 
-        if (guitarEditor->tuning.size() < 3)
+        if (newTuning.size() < 3)
         {
-            std::cout << "FATAL ERROR: Invalid tuning!! only " << guitarEditor->tuning.size() << " strings found" << std::endl;
+            std::cout << "FATAL ERROR: Invalid tuning!! only " << newTuning.size() 
+                      << " strings found" << std::endl;
             return false;
         }
 
-        guitarEditor->tuningUpdated(false);
+        tuning->setTuning(newTuning, false);
     }
 
     return true;
