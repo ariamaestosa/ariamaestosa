@@ -26,7 +26,7 @@ class wxBoxSizer;
 
 namespace AriaMaestosa
 {
-    class GuitarEditor;
+    class GuitarTuning;
     class NotePickerWidget;
     
     /**
@@ -42,7 +42,7 @@ namespace AriaMaestosa
         
         wxBoxSizer* sizer;
         
-        GuitarEditor* parent;
+        GuitarTuning* m_model;
         
         NotePickerWidget* m_note_pickers[10];
         
@@ -52,7 +52,7 @@ namespace AriaMaestosa
         TuningDialog();
         ~TuningDialog();
         
-        void setParent(GuitarEditor* parent_arg);
+        void setModel(GuitarTuning* model);
         
         void show();
         

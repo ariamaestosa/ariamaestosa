@@ -95,14 +95,16 @@ void Note::setStringAndFret(int string_arg, int fret_arg)
 
 void Note::checkIfStringAndFretMatchNote(const bool fixStringAndFret)
 {
+    GuitarTuning* tuning = gtrack->track->getGuitarTuning();
+    
     // if note is placed on a string that doesn't exist (anymore)
-    if (fixStringAndFret and string > (int)gtrack->guitarEditor->tuning.size()-1)
+    if (fixStringAndFret and string > (int)tuning->tuning.size()-1)
     {
         findStringAndFretFromNote();
     }
 
 
-    if (string==-1 || fret==-1 || pitchID != gtrack->guitarEditor->tuning[string]-fret)
+    if (string == -1 or fret == -1 or pitchID != tuning->tuning[string]-fret)
     {
         if (fixStringAndFret) findStringAndFretFromNote();
         else findNoteFromStringAndFret();
@@ -146,15 +148,16 @@ void Note::shiftFret(const int amount)
 
 void Note::shiftString(const int amount)
 {
-
+    GuitarTuning* tuning = gtrack->track->getGuitarTuning();
+    
     // don't perform if result would be invalid
     if (string + amount < 0) return;
-    if (string + amount > (int)gtrack->guitarEditor->tuning.size()-1) return;
-    if ((gtrack->guitarEditor->tuning)[string+amount] - pitchID < 0) return;
-    if ((gtrack->guitarEditor->tuning)[string+amount] - pitchID > 35) return;
+    if (string + amount > (int)tuning->tuning.size()-1) return;
+    if ((tuning->tuning)[string+amount] - pitchID < 0) return;
+    if ((tuning->tuning)[string+amount] - pitchID > 35) return;
 
     string += amount;
-    fret = (gtrack->guitarEditor->tuning)[string] - pitchID;
+    fret = (tuning->tuning)[string] - pitchID;
 
 }
 
@@ -167,31 +170,33 @@ void Note::findStringAndFretFromNote()
     int nearest=-1;
     int distance=1000;
 
-    if (pitchID > (gtrack->guitarEditor->tuning)[ gtrack->guitarEditor->tuning.size()-1] )
+    GuitarTuning* tuning = gtrack->track->getGuitarTuning();
+    
+    if (pitchID > (tuning->tuning)[ tuning->tuning.size()-1] )
     {
         // note is too low to appear on this tab, will have a negative fret number
-        string = gtrack->guitarEditor->tuning.size()-1;
-        fret = (gtrack->guitarEditor->tuning)[ gtrack->guitarEditor->tuning.size()-1] - pitchID;
+        string = tuning->tuning.size()-1;
+        fret = (tuning->tuning)[ tuning->tuning.size()-1] - pitchID;
         return;
     }
 
-    for (int n=0; n<(int)gtrack->guitarEditor->tuning.size(); n++)
+    for (int n=0; n<(int)tuning->tuning.size(); n++)
     {
 
         // exact match (note can be played on a string at fret 0)
-        if ( (gtrack->guitarEditor->tuning)[n] == pitchID)
+        if ((tuning->tuning)[n] == pitchID)
         {
             string=n;
             fret=0;
             return;
         }
 
-        if ( (gtrack->guitarEditor->tuning)[n] > pitchID)
+        if ((tuning->tuning)[n] > pitchID)
         {
-            if ((gtrack->guitarEditor->tuning)[n] - pitchID < distance)
+            if ((tuning->tuning)[n] - pitchID < distance)
             {
                 nearest=n;
-                distance=(gtrack->guitarEditor->tuning)[n] - pitchID;
+                distance = (tuning->tuning)[n] - pitchID;
             }//end if
         }//end if
     }//next
@@ -205,7 +210,8 @@ void Note::findStringAndFretFromNote()
 
 void Note::findNoteFromStringAndFret()
 {
-    pitchID = (gtrack->guitarEditor->tuning)[string] - fret;
+    GuitarTuning* tuning = gtrack->track->getGuitarTuning();
+    pitchID = (tuning->tuning)[string] - fret;
 }
 
 // ----------------------------------------------------------------------------------------------------------

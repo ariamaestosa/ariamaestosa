@@ -579,6 +579,10 @@
 		95EC9DFF11DD5207009A5743 /* DrumChoice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95EC9DFD11DD5207009A5743 /* DrumChoice.cpp */; };
 		95EC9E0011DD5207009A5743 /* DrumChoice.h in Headers */ = {isa = PBXBuildFile; fileRef = 95EC9DFC11DD5207009A5743 /* DrumChoice.h */; };
 		95EC9E0111DD5207009A5743 /* DrumChoice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95EC9DFD11DD5207009A5743 /* DrumChoice.cpp */; };
+		95EC9F3311DD6FD0009A5743 /* GuitarTuning.h in Headers */ = {isa = PBXBuildFile; fileRef = 95EC9F3111DD6FD0009A5743 /* GuitarTuning.h */; };
+		95EC9F3411DD6FD0009A5743 /* GuitarTuning.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95EC9F3211DD6FD0009A5743 /* GuitarTuning.cpp */; };
+		95EC9F3511DD6FD0009A5743 /* GuitarTuning.h in Headers */ = {isa = PBXBuildFile; fileRef = 95EC9F3111DD6FD0009A5743 /* GuitarTuning.h */; };
+		95EC9F3611DD6FD0009A5743 /* GuitarTuning.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95EC9F3211DD6FD0009A5743 /* GuitarTuning.cpp */; };
 		95FF51C411AC9BDC00171A7E /* KeyrollPrintableSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95FF51C211AC9BDC00171A7E /* KeyrollPrintableSequence.cpp */; };
 		95FF51C511AC9BDC00171A7E /* KeyrollPrintableSequence.h in Headers */ = {isa = PBXBuildFile; fileRef = 95FF51C311AC9BDC00171A7E /* KeyrollPrintableSequence.h */; };
 		95FF51C611AC9BDC00171A7E /* KeyrollPrintableSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95FF51C211AC9BDC00171A7E /* KeyrollPrintableSequence.cpp */; };
@@ -988,6 +992,8 @@
 		95EC9D3411DD2D56009A5743 /* InstrumentChoice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InstrumentChoice.cpp; sourceTree = "<group>"; };
 		95EC9DFC11DD5207009A5743 /* DrumChoice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrumChoice.h; sourceTree = "<group>"; };
 		95EC9DFD11DD5207009A5743 /* DrumChoice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrumChoice.cpp; sourceTree = "<group>"; };
+		95EC9F3111DD6FD0009A5743 /* GuitarTuning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuitarTuning.h; sourceTree = "<group>"; };
+		95EC9F3211DD6FD0009A5743 /* GuitarTuning.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GuitarTuning.cpp; sourceTree = "<group>"; };
 		95FF51C211AC9BDC00171A7E /* KeyrollPrintableSequence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KeyrollPrintableSequence.cpp; path = ../Src/Printing/KeyrollPrintableSequence.cpp; sourceTree = SOURCE_ROOT; };
 		95FF51C311AC9BDC00171A7E /* KeyrollPrintableSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeyrollPrintableSequence.h; path = ../Src/Printing/KeyrollPrintableSequence.h; sourceTree = SOURCE_ROOT; };
 		EF104F6B0B21E1900079A1B7 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
@@ -1211,6 +1217,8 @@
 				9571192E1125D8D200104BF5 /* ControllerEvent.h */,
 				95EC9DFD11DD5207009A5743 /* DrumChoice.cpp */,
 				95EC9DFC11DD5207009A5743 /* DrumChoice.h */,
+				95EC9F3211DD6FD0009A5743 /* GuitarTuning.cpp */,
+				95EC9F3111DD6FD0009A5743 /* GuitarTuning.h */,
 				95EC9D3411DD2D56009A5743 /* InstrumentChoice.cpp */,
 				95EC9D3311DD2D56009A5743 /* InstrumentChoice.h */,
 				95866C6A11CE7C10008F2938 /* KeyPresets.cpp */,
@@ -1678,6 +1686,7 @@
 				95866DA211CE9561008F2938 /* PresetEditor.h in Headers */,
 				95EC9D3711DD2D56009A5743 /* InstrumentChoice.h in Headers */,
 				95EC9E0011DD5207009A5743 /* DrumChoice.h in Headers */,
+				95EC9F3511DD6FD0009A5743 /* GuitarTuning.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1808,6 +1817,7 @@
 				95866DA411CE9561008F2938 /* PresetEditor.h in Headers */,
 				95EC9D3511DD2D56009A5743 /* InstrumentChoice.h in Headers */,
 				95EC9DFE11DD5207009A5743 /* DrumChoice.h in Headers */,
+				95EC9F3311DD6FD0009A5743 /* GuitarTuning.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2011,6 +2021,7 @@
 				95866DA311CE9561008F2938 /* PresetEditor.cpp in Sources */,
 				95EC9D3811DD2D56009A5743 /* InstrumentChoice.cpp in Sources */,
 				95EC9E0111DD5207009A5743 /* DrumChoice.cpp in Sources */,
+				95EC9F3611DD6FD0009A5743 /* GuitarTuning.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2135,6 +2146,7 @@
 				95866DA511CE9561008F2938 /* PresetEditor.cpp in Sources */,
 				95EC9D3611DD2D56009A5743 /* InstrumentChoice.cpp in Sources */,
 				95EC9DFF11DD5207009A5743 /* DrumChoice.cpp in Sources */,
+				95EC9F3411DD6FD0009A5743 /* GuitarTuning.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

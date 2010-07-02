@@ -75,7 +75,7 @@ GuitarEditor::GuitarEditor(Track* track) : Editor(track)
 
     // let the tuning picker set-up the tuning of this guitar editor
     TuningPicker* picker = Core::getTuningPicker();
-    picker->setParent(this); // standard
+    picker->setModel(track->getGuitarTuning()); // standard
     picker->loadTuning(1, false); // standard
 
     Editor::useVerticalScrollbar(false);
@@ -89,32 +89,14 @@ GuitarEditor::~GuitarEditor()
 
 // ---------------------------------------------------------------------------------------------------------
 
-/**
- * This is called when user changes the tuning. This tells the editor to change notes so that they match the new settings.
- */
-void GuitarEditor::tuningUpdated(const bool user_triggered)
-{
-    if (user_triggered)
-    {
-        track->action( new Action::UpdateGuitarTuning() );
-    }
-    else
-    {
-        Action::UpdateGuitarTuning action;
-        action.setParentTrack(track);
-        action.perform();
-    }
-}
-
-// ---------------------------------------------------------------------------------------------------------
-
 void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
                           RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {
 
     if (!ImageProvider::imagesLoaded()) return;
 
-    const int string_amount = tuning.size();
+    const GuitarTuning* tuning = track->getGuitarTuning();
+    const int string_amount = tuning->tuning.size();
 
     AriaRender::beginScissors(10, getEditorYStart(), width-15, 20+height);
 
@@ -129,7 +111,8 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
     // ------------------------------- draw strings -------------------------------
     AriaRender::color(0,0,0);
 
-    for (unsigned int n=0; n<tuning.size(); n++)
+    const int stringCount = tuning->tuning.size();
+    for (unsigned int n=0; n<stringCount; n++)
     {
         AriaRender::line( Editor::getEditorXStart(), getEditorYStart() + first_string_position + n*y_step,
                           getXEnd(), getEditorYStart() + first_string_position + n*y_step);
@@ -225,7 +208,8 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
             int string = (int)round( (float)(mousey_initial - getEditorYStart() - first_string_position) / (float)y_step);
 
-            if (!(preview_x1<0 || preview_x2<0 || string<0 || (unsigned int)string>tuning.size()-1) and preview_x2>preview_x1)
+            if (not (preview_x1<0 or preview_x2<0 or string<0 or
+                     (unsigned int)string > tuning->tuning.size()-1) and preview_x2 > preview_x1)
             {
                 AriaRender::rect(preview_x1+Editor::getEditorXStart(), string*y_step + getEditorYStart() + first_string_position - 5,
                                  preview_x2+Editor::getEditorXStart(), (string+1)*y_step + getEditorYStart() + first_string_position - 5);
@@ -306,7 +290,7 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
         Note12 noteName;
         int octave;
-        bool success = Editor::findNoteName(tuning[n], &noteName, &octave);
+        bool success = Editor::findNoteName(tuning->tuning[n], &noteName, &octave);
 
         if (success)
         {
@@ -338,8 +322,9 @@ void GuitarEditor::mouseDown(RelativeXCoord x, const int y)
     // user clicked on left bar to change tuning
     if (x.getRelativeTo(EDITOR)<0 and x.getRelativeTo(EDITOR)>-75 and y>getEditorYStart())
     {
-        Core::getTuningPicker()->setParent(this);
-        Display::popupMenu(Core::getTuningPicker(),x.getRelativeTo(WINDOW),y);
+        TuningPicker* picker = Core::getTuningPicker();
+        picker->setModel(track->getGuitarTuning());
+        Display::popupMenu(picker, x.getRelativeTo(WINDOW), y);
         return;
     }
 
@@ -381,8 +366,13 @@ void GuitarEditor::moveNote(Note& note, const int relativeX, const int relativeY
     note.startTick += relativeX;
     note.endTick   += relativeX;
 
-    if (note.string+relativeY<0 or note.string+relativeY > (int)tuning.size()-1)
-        return; // note will end on a string that doesn't exist if we move it like that
+    GuitarTuning* tuning = track->getGuitarTuning();
+    
+    if (note.string+relativeY<0 or note.string+relativeY > (int)tuning->tuning.size()-1)
+    {
+        // note will end on a string that doesn't exist if we move it like that
+        return;
+    }
 
     note.string += relativeY;
     note.findNoteFromStringAndFret();
@@ -440,8 +430,11 @@ void GuitarEditor::addNote(const int snapped_start_tick, const int snapped_end_t
 {
     int string = (int)round( (float)(mouseY - getEditorYStart() - first_string_position) / (float)y_step );
 
-    if (string<0) return; //invalid note, don't add it
-    if (string>=(int)tuning.size()) return; //invalid note, don't add it
+    GuitarTuning* tuning = track->getGuitarTuning();
+    
+    if (string < 0) return; //invalid note, don't add it
+    if (string >= (int)tuning->tuning.size()) return; //invalid note, don't add it
 
-    track->action( new Action::AddNote(tuning[string], snapped_start_tick, snapped_end_tick, default_volume, string ) );
+    track->action( new Action::AddNote(tuning->tuning[string], snapped_start_tick, snapped_end_tick,
+                                       default_volume, string ) );
 }

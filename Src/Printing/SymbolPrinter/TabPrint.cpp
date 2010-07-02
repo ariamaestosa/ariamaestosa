@@ -39,7 +39,7 @@ const int CHAR_MARGIN = 35;
 
 TablaturePrintable::TablaturePrintable(Track* track) : EditorPrintable()
 {
-    string_amount = track->graphics->guitarEditor->tuning.size();
+    string_amount = track->getGuitarTuning()->tuning.size();
     editor        = track->graphics->guitarEditor;
 }
 
@@ -267,11 +267,11 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
             
             // draw tuning
             const int tuning_x = currentElement->getXFrom()+140;
-            for(int n=0; n<string_amount; n++)
+            for (int n=0; n<string_amount; n++)
             {
-                const int note   = editor->tuning[n]%12;
+                const int note   = currentTrack.getTrack()->getConstGuitarTuning()->tuning[n]%12;
                 wxString label;
-                switch(note) //TODO: there is now a method to do this IIRC
+                switch (note) //TODO: there is now a method to do this IIRC
                 {
                     case 0:  label = wxT("B");  break;
                     case 1:  label = wxT("A#"); break;
