@@ -69,7 +69,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
     jdkmidi::MIDITrack* track;
     jdkmidi::MIDITimedBigMessage* event;
 
-    getCurrentSequence()->setChannelManagementType(CHANNEL_MANUAL);
+    sequence->setChannelManagementType(CHANNEL_MANUAL);
     getMeasureData()->beforeImporting();
     
     const int resolution = jdksequence.GetClksPerBeat();
@@ -92,24 +92,28 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
     }
 
     sequence->prepareEmptyTracksForLoading(real_track_amount /*16*/);
-    
+        
      // ----------------------------------- for each track -------------------------------------
     int realTrackID=-1;
     for (int trackID=0; trackID<trackAmount; trackID++)
     {
-
         track = jdksequence.GetTrack( trackID );
 
+        // FIXME: to get reasonable performance, I have no choice but to kill the progress indicator,
+        // wxYield pauses for way too long??
+        // if there is a huge amount of tracks, only call wxYield once in a while because calling
+        // it everytime could be very slow
+        //if ((trackAmount < 10) or (trackID % (trackAmount/10) == 0))
+        //{
+        //    WaitWindow::setProgress(
+        //                            (int)(
+        //                                  log(trackID)*100/log(trackAmount)
+        //                                  )
+        //                            );
+        //    wxYield(); // FIXME - use a thread instead
+        //}
         
-        WaitWindow::setProgress(
-                                (int)(
-                                      log(trackID)*100/log(trackAmount)
-                                      )
-                                );
-
-        wxYield(); // FIXME - use a thread instead
-
-         // ----------------------------------- for each event -------------------------------------
+        // ----------------------------------- for each event -------------------------------------
 
         wxString trackName =  wxT("");
 
@@ -449,7 +453,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
     }//next track
 
     // erase empty tracks
-    for(int n=0; n<sequence->getTrackAmount(); n++)
+    for (int n=0; n<sequence->getTrackAmount(); n++)
     {
         if (sequence->getTrack(n)->getNoteAmount() == 0)
         {
@@ -461,9 +465,9 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
     // check if we're in one-track-one-channel mode. by the way, make sure all tracks with the same channel use the same instrument
     const int trackAmount_inAriaSeq = sequence->getTrackAmount();
     bool one_track_one_channel = true;
-    for(int n=0; n<trackAmount_inAriaSeq; n++)
+    for (int n=0; n<trackAmount_inAriaSeq; n++)
     {
-        for(int j=0; j<trackAmount_inAriaSeq; j++)
+        for (int j=0; j<trackAmount_inAriaSeq; j++)
         {
             if (n != j and sequence->getTrack(n)->getChannel() == sequence->getTrack(j)->getChannel())
             {
@@ -504,8 +508,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
         }//next j
     }//next n
 
-    if (one_track_one_channel)
-        getCurrentSequence()->setChannelManagementType(CHANNEL_AUTO);
+    if (one_track_one_channel) sequence->setChannelManagementType(CHANNEL_AUTO);
 
     getMeasureData()->afterImporting();
 
@@ -530,9 +533,12 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
     sequence->importing = false;
 
     getMainFrame()->updateMenuBarToSequence();
-    if (!getMeasureData()->isMeasureLengthConstant()) getMeasureData()->updateMeasureInfo();
+    if (not getMeasureData()->isMeasureLengthConstant())
+    {
+        getMeasureData()->updateMeasureInfo();
+    }
+    
     return true;
-
 }
 
 }
