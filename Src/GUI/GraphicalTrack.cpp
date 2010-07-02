@@ -611,7 +611,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
             // modes
             if (winX > scoreButton->getX() and winX < scoreButton->getX()+30)
             {
-                editorMode=SCORE;
+                setEditorMode(SCORE);
             }
             else
             if (winX > pianoButton->getX() and winX < pianoButton->getX()+30)
@@ -619,14 +619,14 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                 // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
                 if (editorMode == DRUM and sequence->getChannelManagementType() == CHANNEL_MANUAL) track->setChannel(0);
 
-                editorMode=KEYBOARD;
+                setEditorMode(KEYBOARD);
             }
             else if (winX > tabButton->getX() and winX < tabButton->getX()+30)
             {
                 // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
                 if (editorMode == DRUM and sequence->getChannelManagementType() == CHANNEL_MANUAL) track->setChannel(0);
 
-                editorMode=GUITAR;
+                setEditorMode(GUITAR);
                 track->prepareNotesForGuitarEditor();
             }
             else if (winX > drumButton->getX() and winX < drumButton->getX()+30)
@@ -634,11 +634,11 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                 // in midi, drums go to channel 9 (10 if you start from one)
                 if (sequence->getChannelManagementType() == CHANNEL_MANUAL) track->setChannel(9);
 
-                editorMode=DRUM;
+                setEditorMode(DRUM);
             }
             else if (winX > ctrlButton->getX() and winX < ctrlButton->getX()+30)
             {
-                editorMode=CONTROLLER;
+                setEditorMode(CONTROLLER);
             }
         }
 
@@ -873,7 +873,25 @@ Editor* GraphicalTrack::getCurrentEditor()
 
 void GraphicalTrack::setEditorMode(EditorType mode)
 {
+    // if already in this mode, ignore.
+    if (editorMode == mode) return;
+    
     editorMode = mode;
+    
+    if (editorMode == DRUM)
+    {
+        instrument_name.set(DrumChoice::getDrumkitName( track->getDrumKit() ));
+    }
+    else
+    {
+        // only call 'set' if the string really changed, the OpenGL implementation of 'set' involves
+        // RTT and is quite expensive.
+        wxString name = InstrumentChoice::getInstrumentName( track->getInstrument() );
+        if (instrument_name != name)
+        {
+            instrument_name.set(name);
+        }
+    }
 }
 
 // --------------------------------------------------------------------------------------------------
