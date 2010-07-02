@@ -1241,7 +1241,6 @@ void MainFrame::loadAriaFile(wxString filePath)
 // FIXME - it sounds very dubious that this task goes in MainFrame
 void MainFrame::loadMidiFile(wxString midiFilePath)
 {
-
     if (midiFilePath.IsEmpty()) return;
 
     const int old_currentSequence = currentSequence;
@@ -1249,7 +1248,7 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
     addSequence();
     setCurrentSequence( getSequenceAmount()-1 );
 
-    WaitWindow::show( _("Please wait while midi file is loading.") , true);
+    WaitWindow::show( _("Please wait while midi file is loading."));
 
     if (!AriaMaestosa::loadMidiFile( getCurrentSequence(), midiFilePath ) )
     {
