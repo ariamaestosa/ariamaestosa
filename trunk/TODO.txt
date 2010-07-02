@@ -149,6 +149,9 @@ UNSURE/MINOR:
 
 ************************* BUGS: *************************
 
+** Clicking on the "X" of a sequence's tab while it's in the background closes the current sequence and not the
+   clicked one!!
+
 ** Things like changing global tempo, changing song length, etc... are not actions and thus do not mark the
    document as having unsaved changes!
 
