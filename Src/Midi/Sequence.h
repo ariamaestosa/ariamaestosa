@@ -26,15 +26,12 @@ namespace irr { namespace io {
     template<class char_type, class super_class> class IIrrXMLReader;
     typedef IIrrXMLReader<char, IXMLBase> IrrXMLReader; } }
 
-#include "Utils.h"
-#include "ptr_vector.h"
-#include "GUI/GraphicalTrack.h"
-#include "Midi/Track.h"
-#include "Editors/RelativeXCoord.h"
-#include "Renderers/RenderAPI.h"
-
-#include "Utils.h"
 #include "AriaCore.h"
+#include "Editors/RelativeXCoord.h"
+#include "Midi/Track.h"
+#include "ptr_vector.h"
+#include "Utils.h"
+
 
 #include <string>
 
@@ -294,21 +291,21 @@ namespace AriaMaestosa
           */
         void  addTempoEvent_import( ControllerEvent* evt );
         
-        int   getZoomInPercent() const;
-        float getZoom() const;
+        int   getZoomInPercent() const { return zoom_percent; }
+        float getZoom         () const { return zoom;         }
         void  setZoom(int percent);
 
         //FIXME: graphics information shouldn't be there
         void  setXScrollInMidiTicks(int value);
         void  setXScrollInPixels(int value);
-        int   getXScrollInMidiTicks();
-        int   getXScrollInPixels();
+        int   getXScrollInMidiTicks() const;
+        int   getXScrollInPixels() const { return x_scroll_in_pixels; }
 
         void  setYScroll(int value);
-        int   getYScroll();
+        int   getYScroll() const { return y_scroll; }
 
         void  setChannelManagementType(ChannelManagementType m);
-        ChannelManagementType getChannelManagementType() const;
+        ChannelManagementType getChannelManagementType() const { return channelManagement; }
 
         /** @brief called reacting to the user selecting "snap notes to grid" from the edit menu */
         void snapNotesToGrid();
@@ -336,7 +333,7 @@ namespace AriaMaestosa
         /**
           * @return Ticks per beat (the number of time units in a quarter note.)
           */
-        int ticksPerBeat() const;
+        int ticksPerBeat() const { return beatResolution; }
         
         /**
           * @param res Ticks per beat (the number of time units in a quarter note.)

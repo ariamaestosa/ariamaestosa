@@ -17,7 +17,7 @@
 
 #include "IO/IOUtils.h"
 #include "IO/MidiToMemoryStream.h"
-
+#include "GUI/GraphicalTrack.h"
 #include "Midi/CommonMidiUtils.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Players/PlatformMidiManager.h"

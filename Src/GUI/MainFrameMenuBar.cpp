@@ -32,6 +32,7 @@
 #include "Dialogs/ScaleDialog.h"
 #include "Dialogs/TrackPropertiesDialog.h"
 #include "Dialogs/WaitWindow.h"
+#include "GUI/GraphicalTrack.h"
 #include "GUI/MainFrame.h"
 #include "GUI/MainPane.h"
 #include "IO/IOUtils.h"

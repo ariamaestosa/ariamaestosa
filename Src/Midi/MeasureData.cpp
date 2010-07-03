@@ -37,7 +37,7 @@
 
 using namespace AriaMaestosa;
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 MeasureData::MeasureData(int measureAmount)
 {
@@ -56,14 +56,14 @@ MeasureData::MeasureData(int measureAmount)
     updateVector(measureAmount);
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 MeasureData::~MeasureData()
 {
 }
 
-// ---------------------------------------------------------------------------------------------------------
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #endif
@@ -92,8 +92,8 @@ void MeasureData::setExpandedMode(bool arg_expanded)
 }
 
 
-// ---------------------------------------------------------------------------------------------------------
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #pragma mark Measures
@@ -108,21 +108,21 @@ void MeasureData::setMeasureAmount(int measureAmount)
     Display::render();
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void MeasureData::setFirstMeasure(int firstMeasureID)
 {
     firstMeasure = firstMeasureID;
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 bool MeasureData::isMeasureLengthConstant()
 {
     return (!expandedMode and timeSigChanges.size() == 1);
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 float MeasureData::measureLengthInPixels(int measure)
 {
@@ -130,7 +130,7 @@ float MeasureData::measureLengthInPixels(int measure)
     return (float)measureLengthInTicks(measure) * (float)getCurrentSequence()->getZoom();
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int MeasureData::measureLengthInTicks(int measure)
 {
@@ -144,10 +144,10 @@ int MeasureData::measureLengthInTicks(int measure)
                  );
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
-// right now, it's just the first measure that is considered "default". in the future, it should be made the most used
-// im not sure if this is used at all or very much
+// right now, it's just the first measure that is considered "default". This may need to be reviewed
+// (i'm not sure if this is used at all or very much)
 int MeasureData::defaultMeasureLengthInTicks()
 {
     Sequence* sequence = getCurrentSequence();
@@ -155,34 +155,34 @@ int MeasureData::defaultMeasureLengthInTicks()
     return (int)( sequence->ticksPerBeat() * getTimeSigNumerator(0) * (4.0/getTimeSigDenominator(0)) );
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
-// right now, it's just the first measure that is considered "default". in the future, it should be made the most used
-// im not sure if this is used at all or very much
+// right now, it's just the first measure that is considered "default". This may need to be reviewed.
+// (i'm not sure if this is used at all or very much)
 float MeasureData::defaultMeasureLengthInPixels()
 {
     Sequence* sequence = getCurrentSequence();
     return (float)measureLengthInTicks(0) * (float)sequence->getZoom();
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 // FIXME- unsure where that belongs
 void MeasureData::unselect()
 {
-    if (!somethingSelected) return;
+    if (not somethingSelected) return;
     somethingSelected = false;
 
     const int measureAmount = measureInfo.size();
-    for(int n=0; n<measureAmount; n++)
+    for (int n=0; n<measureAmount; n++)
     {
         measureInfo[n].selected = false;
     }
     graphics->lastMeasureInDrag = -1;
 }
 
-// ---------------------------------------------------------------------------------------------------------
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #pragma mark Find Measure From Location
@@ -207,7 +207,7 @@ int MeasureData::measureAtPixel(int pixel)
         if (pixel < 0) return 0;
 
         const int amount = measureInfo.size();
-        for(int n=0; n<amount; n++)
+        for (int n=0; n<amount; n++)
         {
             if (n==amount-1) return amount-1; // we hit end, return the last
             if ( measureInfo[n].pixel <= pixel and measureInfo[n+1].pixel > pixel ) return n;
@@ -217,7 +217,7 @@ int MeasureData::measureAtPixel(int pixel)
     }
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int MeasureData::measureAtTick(int tick)
 {
@@ -273,7 +273,7 @@ int MeasureData::measureAtTick(int tick)
 
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int MeasureData::measureDivisionAt(int pixel)
 {
@@ -292,8 +292,12 @@ int MeasureData::measureDivisionAt(int pixel)
         const int measureAmount = measureInfo.size();
         for(int n=0; n<measureAmount; n++)
         {
-            //std::cout << "checking measur " << n << " : is " << pixel << " between " << measureInfo[n].pixel-measureInfo[n].widthInPixels/2 << " and " << measureInfo[n].endPixel-measureInfo[n].widthInPixels/2 << std::endl;
-            if (pixel >= measureInfo[n].pixel-measureInfo[n].widthInPixels/2 and pixel<measureInfo[n].endPixel-measureInfo[n].widthInPixels/2)
+            //std::cout << "checking measur " << n << " : is " << pixel << " between "
+            //          << measureInfo[n].pixel-measureInfo[n].widthInPixels/2 << " and "
+            //          << measureInfo[n].endPixel-measureInfo[n].widthInPixels/2 << std::endl;
+            
+            if (pixel >= measureInfo[n].pixel-measureInfo[n].widthInPixels/2 and
+                pixel<measureInfo[n].endPixel-measureInfo[n].widthInPixels/2)
             {
                 return n;
             }
@@ -303,7 +307,7 @@ int MeasureData::measureDivisionAt(int pixel)
 
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 /*
 int MeasureData::measureAtPixel(int pixel)
@@ -336,7 +340,7 @@ int MeasureData::measureAtPixel(int pixel)
 }
 */
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int MeasureData::firstPixelInMeasure(int id)
 {
@@ -355,7 +359,7 @@ int MeasureData::firstPixelInMeasure(int id)
     }
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int MeasureData::lastPixelInMeasure(int id)
 {
@@ -375,7 +379,7 @@ int MeasureData::lastPixelInMeasure(int id)
     }
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int MeasureData::firstTickInMeasure(int id)
 {
@@ -406,7 +410,7 @@ int MeasureData::firstTickInMeasure(int id)
     }
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int MeasureData::lastTickInMeasure(int id)
 {
@@ -431,8 +435,8 @@ int MeasureData::lastTickInMeasure(int id)
     }
 }
 
-// ---------------------------------------------------------------------------------------------------------
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #pragma mark Time Signature Management
@@ -445,7 +449,7 @@ void MeasureData::selectTimeSig(const int id)
     getMainFrame()->changeShownTimeSig( timeSigChanges[id].num, timeSigChanges[id].denom );
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int MeasureData::getTimeSigNumerator(int measure) const
 {
@@ -462,7 +466,7 @@ int MeasureData::getTimeSigNumerator(int measure) const
     else return timeSigChanges[selectedTimeSig].num;
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int MeasureData::getTimeSigDenominator(int measure) const
 {
@@ -478,10 +482,13 @@ int MeasureData::getTimeSigDenominator(int measure) const
         }
         return timeSigChanges[timeSigChangeAmount-1].denom;
     }
-    else return timeSigChanges[selectedTimeSig].denom;
+    else
+    {
+        return timeSigChanges[selectedTimeSig].denom;
+    }
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void MeasureData::setTimeSig(int top, int bottom)
 {
@@ -500,8 +507,7 @@ void MeasureData::setTimeSig(int top, int bottom)
     Display::render();
 }
 
-
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 TimeSigChange& MeasureData::getTimeSig(int id)
 {
@@ -510,7 +516,7 @@ TimeSigChange& MeasureData::getTimeSig(int id)
     return timeSigChanges[id];
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void MeasureData::eraseTimeSig(int id)
 {
@@ -522,7 +528,7 @@ void MeasureData::eraseTimeSig(int id)
     }
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means "same as previous event"
 {
@@ -535,8 +541,8 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
     }
     else
     {
-
-        for(int n=0; n<(int)timeSigChanges.size(); n++) // iterate through time sig events, until an iteration does something with the event
+        // iterate through time sig events, until an iteration does something with the event
+        for (int n=0; n<(int)timeSigChanges.size(); n++) 
         {
             if ( timeSigChanges[n].measure == measure)
             {
@@ -545,7 +551,8 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
                 if (!getCurrentSequence()->importing)
                 {
                     selectedTimeSig = n;
-                    getMainFrame()->changeShownTimeSig( timeSigChanges[selectedTimeSig].num, timeSigChanges[selectedTimeSig].denom );
+                    getMainFrame()->changeShownTimeSig(timeSigChanges[selectedTimeSig].num,
+                                                       timeSigChanges[selectedTimeSig].denom );
 
                     wxPoint pt = wxGetMousePosition();
                     showTimeSigPicker( pt.x, pt.y, timeSigChanges[n].num, timeSigChanges[n].denom );
@@ -561,18 +568,23 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
             }
             // we checked enough events so that we are past the point where the click occured.
             // we know there is no event already existing at the clicked measure.
-            if ( timeSigChanges[n].measure > measure )
+            if (timeSigChanges[n].measure > measure)
             {
-                if (num==-1 or denom==-1)
-                    timeSigChanges.add( new TimeSigChange(measure, timeSigChanges[n].num, timeSigChanges[n].denom), n );
+                if (num == -1 or denom == -1)
+                {
+                    timeSigChanges.add( new TimeSigChange(measure, timeSigChanges[n].num,
+                                                          timeSigChanges[n].denom), n );
+                }
                 else
+                {
                     timeSigChanges.add( new TimeSigChange(measure, num, denom), n );
+                }
 
                 selectedTimeSig = n;
 
                 getMainFrame()->changeShownTimeSig( timeSigChanges[n].num, timeSigChanges[n].denom );
 
-                if (!getCurrentSequence()->importing)
+                if (not getCurrentSequence()->importing)
                 {
                     wxPoint pt = wxGetMousePosition();
                     showTimeSigPicker( pt.x, pt.y, timeSigChanges[n].num, timeSigChanges[n].denom );
@@ -581,23 +593,27 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
                 
                 break;
             }
-            else if ( n==timeSig_amount_minus_one )
+            else if (n == timeSig_amount_minus_one)
             {
 
-                if (num==-1 or denom==-1)
-                    timeSigChanges.add( new TimeSigChange(measure, timeSigChanges[n].num, timeSigChanges[n].denom), n+1 );
+                if (num == -1 or denom == -1)
+                {
+                    timeSigChanges.add( new TimeSigChange(measure, timeSigChanges[n].num,
+                                                          timeSigChanges[n].denom), n+1 );
+                }
                 else
+                {
                     timeSigChanges.add( new TimeSigChange(measure, num, denom), n+1 );
-
-                selectedTimeSig = n+1;
+                                                          selectedTimeSig = n+1;
+                }
 
                 getMainFrame()->changeShownTimeSig( timeSigChanges[n+1].num, timeSigChanges[n+1].denom );
 
-                if (!getCurrentSequence()->importing)
+                if (not getCurrentSequence()->importing)
                 {
                     wxPoint pt = wxGetMousePosition();
                     showTimeSigPicker( pt.x, pt.y, timeSigChanges[n].num, timeSigChanges[n].denom );
-                    if (!getCurrentSequence()->importing) updateMeasureInfo();
+                    if (not getCurrentSequence()->importing) updateMeasureInfo();
                 }
                 break;
             }
@@ -616,8 +632,8 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
 
 }
 
-// ---------------------------------------------------------------------------------------------------------
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #pragma mark Refresh Info
@@ -633,7 +649,7 @@ void MeasureData::updateVector(int newSize)
     if (not isMeasureLengthConstant() or expandedMode) updateMeasureInfo();
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void MeasureData::updateMeasureInfo()
 {
@@ -648,7 +664,7 @@ void MeasureData::updateMeasureInfo()
     timeSigChanges[timg_sig_event].tick = 0;
     timeSigChanges[timg_sig_event].pixel = 0;
 
-    for(int n=0; n<amount; n++)
+    for (int n=0; n<amount; n++)
     {
         // check if time sig changes on this measure
         if (timg_sig_event != (int)timeSigChanges.size()-1 and timeSigChanges[timg_sig_event+1].measure == n)
@@ -667,11 +683,12 @@ void MeasureData::updateMeasureInfo()
             measureInfo[n-1].widthInPixels = (int)( measureInfo[n-1].widthInTicks * zoom );
         }
 
-        // set the location of measure in both ticks and pixels so that it can be used later in calculations and drawing
+        // set the location of measure in both ticks and pixels so that it can be used later in
+        // calculations and drawing
         measureInfo[n].tick = (int)round( tick );
         measureInfo[n].pixel = (int)round( tick * zoom );
-        //std::cout << "beats : " << timeSigChanges[timg_sig_event].num * ( 4.0 /(float)timeSigChanges[timg_sig_event].denom ) << std::endl;
-        tick += ticksPerBeat * timeSigChanges[timg_sig_event].num * ( 4.0 /(float)timeSigChanges[timg_sig_event].denom );
+        tick += ticksPerBeat * timeSigChanges[timg_sig_event].num *
+                (4.0 /(float)timeSigChanges[timg_sig_event].denom);
     }
 
     // fill length and end of last measure
@@ -687,20 +704,21 @@ void MeasureData::updateMeasureInfo()
     ASSERT_E(m_measure_amount, ==, (int)measureInfo.size());
 }
 
-// ---------------------------------------------------------------------------------------------------------
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #pragma mark I/O
 #endif
 
 //FIXME: remove globals
-// when we import time sig changes, their time is given in ticks. however Aria needs them in measure ID. this variable is used to convert
-// ticks to measures (we can't yet use measureAt method and friends because measure information is still incomplete at this point ).
+// when we import time sig changes, their time is given in ticks. however Aria needs them in measure ID.
+// this variable is used to convert ticks to measures (we can't yet use measureAt method and friends because
+// measure information is still incomplete at this point ).
 int last_event_tick;
 int measuresPassed;
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void MeasureData::beforeImporting()
 {
@@ -712,7 +730,7 @@ void MeasureData::beforeImporting()
     measuresPassed = 0;
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void MeasureData::addTimeSigChange_import(int tick, int num, int denom)
 {
@@ -764,7 +782,7 @@ void MeasureData::addTimeSigChange_import(int tick, int num, int denom)
     timeSigChanges[timeSigChanges.size()-1].tick = tick;
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void MeasureData::afterImporting()
 {
@@ -779,8 +797,8 @@ void MeasureData::afterImporting()
     if (!isMeasureLengthConstant()) updateMeasureInfo();
 }
 
-// ---------------------------------------------------------------------------------------------------------
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #endif
@@ -797,7 +815,7 @@ int MeasureData::getTotalTickAmount()
     }
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int MeasureData::getTotalPixelAmount()
 {
@@ -811,7 +829,7 @@ int MeasureData::getTotalPixelAmount()
     }
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 float MeasureData::beatLengthInPixels()
 {
@@ -820,15 +838,15 @@ float MeasureData::beatLengthInPixels()
     return sequence->ticksPerBeat() * sequence->getZoom();
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int MeasureData::beatLengthInTicks()
 {
     return getCurrentSequence()->ticksPerBeat();
 }
 
-// ---------------------------------------------------------------------------------------------------------
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #pragma mark Serialisation
@@ -838,11 +856,14 @@ bool MeasureData::readFromFile(irr::io::IrrXMLReader* xml)
 {
 
     // ---------- measure ------
-    if (!strcmp("measure", xml->getNodeName()))
+    if (strcmp("measure", xml->getNodeName()) == 0)
     {
 
         const char* firstMeasure_c = xml->getAttributeValue("firstMeasure");
-        if ( firstMeasure_c != NULL ) setFirstMeasure( atoi( firstMeasure_c ) );
+        if ( firstMeasure_c != NULL )
+        {
+            setFirstMeasure( atoi( firstMeasure_c ) );
+        }
         else
         {
             std::cerr << "Missing info from file: first measure" << std::endl;
@@ -856,7 +877,7 @@ bool MeasureData::readFromFile(irr::io::IrrXMLReader* xml)
         }
 
         const char* denom = xml->getAttributeValue("denom");
-        if ( denom != NULL )
+        if (denom != NULL)
         {
             if (timeSigChanges.size()==0)
             {
@@ -874,7 +895,7 @@ bool MeasureData::readFromFile(irr::io::IrrXMLReader* xml)
         }
 
         const char* num = xml->getAttributeValue("num");
-        if ( num != NULL )
+        if (num != NULL)
         {
             if (timeSigChanges.size()==0)
             {
@@ -893,27 +914,36 @@ bool MeasureData::readFromFile(irr::io::IrrXMLReader* xml)
 
 
     }
-    else if (!strcmp("timesig", xml->getNodeName()))
+    else if (strcmp("timesig", xml->getNodeName()) == 0)
     {
         std::cout << "importing event" << std::endl;
         int num=-1, denom=-1, meas=-1;
 
         const char* num_c = xml->getAttributeValue("num");
-        if ( num_c != NULL ) num = atoi( num_c );
+        if (num_c != NULL)
+        {
+            num = atoi( num_c );
+        }
         else
         {
             std::cerr << "Missing info from file: measure numerator" << std::endl;
             return true; // dont halt program but just ignore event
         }
         const char* denom_c = xml->getAttributeValue("denom");
-        if ( denom_c != NULL ) denom = atoi( denom_c );
+        if (denom_c != NULL)
+        {
+            denom = atoi( denom_c );
+        }
         else
         {
             std::cerr << "Missing info from file: measure denominator" << std::endl;
             return true;  // dont halt program but just ignore event
         }
         const char* meas_c = xml->getAttributeValue("measure");
-        if ( meas_c != NULL ) meas = atoi( meas_c );
+        if (meas_c != NULL)
+        {
+            meas = atoi( meas_c );
+        }
         else
         {
             std::cerr << "Missing info from file: time sig location" << std::endl;
@@ -921,7 +951,7 @@ bool MeasureData::readFromFile(irr::io::IrrXMLReader* xml)
         }
 
         addTimeSigChange(meas, num, denom);
-        if (timeSigChanges.size()>1)
+        if (timeSigChanges.size() > 1)
         {
             expandedMode = true;
         }
@@ -931,7 +961,7 @@ bool MeasureData::readFromFile(irr::io::IrrXMLReader* xml)
 
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void MeasureData::saveToFile(wxFileOutputStream& fileout)
 {
@@ -961,4 +991,4 @@ void MeasureData::saveToFile(wxFileOutputStream& fileout)
     }
 }
 
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------

@@ -19,10 +19,14 @@
 
 using namespace AriaMaestosa;
 
+// ----------------------------------------------------------------------------------------------------------
+
 GuitarTuning::GuitarTuning(IGuitarTuningListener* listener)
 {
     m_listener = listener;
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void GuitarTuning::setTuning(const std::vector<int>& newTuning, const bool userTriggered)
 {
@@ -31,3 +35,5 @@ void GuitarTuning::setTuning(const std::vector<int>& newTuning, const bool userT
     
     if (m_listener != NULL) m_listener->onGuitarTuningUpdated(this, userTriggered);
 }
+
+// ----------------------------------------------------------------------------------------------------------

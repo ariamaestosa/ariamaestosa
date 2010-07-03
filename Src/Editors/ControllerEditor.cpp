@@ -20,20 +20,20 @@
 #include "Actions/EditAction.h"
 #include "Actions/AddControlEvent.h"
 #include "Actions/AddControllerSlide.h"
-
 #include "Editors/ControllerEditor.h"
+#include "Editors/RelativeXCoord.h"
+#include "GUI/ImageProvider.h"
+#include "GUI/GraphicalTrack.h"
+#include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
+#include "Pickers/ControllerChoice.h"
 #include "Pickers/TuningPicker.h"
-#include "GUI/ImageProvider.h"
-#include "Midi/MeasureData.h"
 #include "Renderers/RenderAPI.h"
 
 #include <string>
 #include <cmath>
-#include "Pickers/ControllerChoice.h"
 
-#include "Editors/RelativeXCoord.h"
 
 namespace AriaMaestosa {
 
