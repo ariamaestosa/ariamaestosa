@@ -10,6 +10,7 @@
 - Keyroll printing
 - Fixed bug that caused wrong sequence to be closed when pressing "X" on an unselected tab
 - Improved sequence is selected after closing a sequence
+- Fixed hanging if a warning message is hsown when opening a file
 
 1.2.1
 - Fixed printing of accidentals

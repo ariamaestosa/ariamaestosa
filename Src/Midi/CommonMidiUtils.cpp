@@ -18,6 +18,7 @@
 #include "IO/IOUtils.h"
 #include "IO/MidiToMemoryStream.h"
 #include "GUI/GraphicalTrack.h"
+#include "Dialogs/WaitWindow.h"
 #include "Midi/CommonMidiUtils.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Players/PlatformMidiManager.h"
@@ -250,6 +251,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
             {
                 if (channel > 15 and sequence->getChannelManagementType() == CHANNEL_AUTO)
                 {
+                    if (WaitWindow::isShown()) WaitWindow::hide();
                     wxMessageBox(_("WARNING: this song has too many\nchannels, expect unpredictable output"));
                     channel = 0;
                     std::cout << "WARNING: this song has too many channels, expect unpredictable output" << std::endl;

@@ -408,11 +408,11 @@ void MainFrame::menuEvent_saveas(wxCommandEvent& evt)
     wxString givenPath = showFileDialog( _("Select destination file"), wxT(""), suggestedName,
                                                      wxT("Aria Maestosa file|*.aria"), true /*save*/);
 
-    if (!givenPath.IsEmpty())
+    if (not givenPath.IsEmpty())
     {
 
 
-        if ( wxFileExists(givenPath) )
+        if (wxFileExists(givenPath))
         {
             int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
                                         wxYES_NO, this);
@@ -470,7 +470,7 @@ void MainFrame::menuEvent_exportmidi(wxCommandEvent& evt)
     // write data to file
     const bool success = PlatformMidiManager::exportMidiFile( getCurrentSequence(), midiFilePath );
 
-    if (!success)
+    if (not success)
     {
         wxMessageBox( _("Sorry, failed to export midi file."));
     }
@@ -872,9 +872,10 @@ void MainFrame::menuEvent_manual(wxCommandEvent& evt)
 #ifdef __WXMAC__
     new ManualView(this, path_to_docs);
 #else
-    if (!wxFileExists( path_to_docs ) or !wxLaunchDefaultBrowser( wxT("file://") + path_to_docs ))
+    if (not wxFileExists( path_to_docs ) or not wxLaunchDefaultBrowser( wxT("file://") + path_to_docs ))
     {
-        wxMessageBox(wxT("Sorry, opening docs failed\n(") + path_to_docs + wxT(" does not appear to exist).\nTry ariamaestosa.sourceforge.net instead."));
+        wxMessageBox(wxT("Sorry, opening docs failed\n(") + path_to_docs +
+                     wxT(" does not appear to exist).\nTry ariamaestosa.sourceforge.net instead."));
     }
 #endif
 }

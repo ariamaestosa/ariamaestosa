@@ -128,7 +128,10 @@ namespace AriaMaestosa
         
         void show(wxString message, bool progress_known)
         {
-            
+            if (waitWindow != NULL)
+            {
+                hide();
+            }
             wxBeginBusyCursor();
             waitWindow = new WaitWindowClass(message, progress_known);
             waitWindow->show();
@@ -141,9 +144,18 @@ namespace AriaMaestosa
         
         void hide()
         {
-            wxEndBusyCursor();
-            waitWindow->hide();
-            waitWindow->Destroy();
+            if (waitWindow != NULL)
+            {
+                wxEndBusyCursor();
+                waitWindow->hide();
+                waitWindow->Destroy();
+                waitWindow = NULL;
+            }
+        }
+        
+        bool isShown()
+        {
+            return waitWindow != NULL;
         }
         
     }

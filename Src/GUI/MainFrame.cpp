@@ -1232,11 +1232,11 @@ void MainFrame::loadAriaFile(wxString filePath)
     WaitWindow::show(_("Please wait while .aria file is loading.") );
 
     const bool success = AriaMaestosa::loadAriaFile(getCurrentSequence(), getCurrentSequence()->filepath);
-    if (!success)
+    if (not success)
     {
         std::cout << "Loading .aria file failed." << std::endl;
-        wxMessageBox(  _("Sorry, loading .aria file failed.") );
         WaitWindow::hide();
+        wxMessageBox(  _("Sorry, loading .aria file failed.") );
 
         closeSequence();
 
@@ -1270,7 +1270,7 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
 
     WaitWindow::show( _("Please wait while midi file is loading."));
 
-    if (!AriaMaestosa::loadMidiFile( getCurrentSequence(), midiFilePath ) )
+    if (not AriaMaestosa::loadMidiFile( getCurrentSequence(), midiFilePath ) )
     {
         std::cout << "Loading midi file failed." << std::endl;
         WaitWindow::hide();

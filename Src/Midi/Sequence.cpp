@@ -26,7 +26,7 @@ const float CURRENT_FILE_VERSION = 2.0;
 #include "Actions/Paste.h"
 #include "Actions/ScaleTrack.h"
 #include "Actions/ScaleSong.h"
-
+#include "Dialogs/WaitWindow.h"
 #include "Editors/Editor.h"
 #include "IO/IOUtils.h"
 #include "GUI/GraphicalTrack.h"
@@ -1020,6 +1020,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                         fileversion = atoi( (char*)fileFormatVersion );
                         if (fileversion > CURRENT_FILE_VERSION )
                         {
+                            if (WaitWindow::isShown()) WaitWindow::hide();
                             wxMessageBox( _("Warning : you are opening a file saved with a version of\nAria Maestosa more recent than the version you currently have.\nIt may not open correctly.") );
                         }
                     }
