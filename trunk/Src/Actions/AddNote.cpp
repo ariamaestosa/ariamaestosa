@@ -71,9 +71,8 @@ void AddNote::perform()
     
     
     Note* tmp_note;
-    if (m_string == -1) tmp_note = new Note(track->graphics, m_pitch_ID, m_start_tick, m_end_tick, m_volume);
-    else                tmp_note = new Note(track->graphics, m_pitch_ID, m_start_tick, m_end_tick, m_volume,
-                                            m_string, 0);
+    if (m_string == -1) tmp_note = new Note(track, m_pitch_ID, m_start_tick, m_end_tick, m_volume);
+    else                tmp_note = new Note(track, m_pitch_ID, m_start_tick, m_end_tick, m_volume, m_string, 0);
     
     const bool success = track->addNote( tmp_note );
     

@@ -308,7 +308,7 @@ void Track::addControlEvent_import(const int x, const int value, const int contr
 bool Track::addNote_import(const int pitchID, const int startTick, const int endTick, const int volume, const int string)
 {
     ASSERT(sequence->importing); // not to be used when not importing
-    return addNote( new Note(graphics, pitchID, startTick, endTick, volume, string) );
+    return addNote( new Note(this, pitchID, startTick, endTick, volume, string) );
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -1873,10 +1873,10 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                     }
 
                 }
-                else if (!strcmp("note", xml->getNodeName()))
+                else if (strcmp("note", xml->getNodeName()) == 0)
                 {
-                    Note* temp = new Note(graphics);
-                    if (! temp->readFromFile(xml) )
+                    Note* temp = new Note(this);
+                    if (not temp->readFromFile(xml))
                     {
                         std::cerr << "A note was discarded because it is invalid" << std::endl;
                         delete temp;
@@ -1886,7 +1886,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                         addNote( temp );
                     }
                 }
-                else if (!strcmp("controlevent", xml->getNodeName()))
+                else if (strcmp("controlevent", xml->getNodeName()) == 0)
                 {
 
                     ControllerEvent* temp = new ControllerEvent(sequence, 0, 0, 0);
@@ -1909,7 +1909,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
             case irr::io::EXN_ELEMENT_END:
             {
 
-                if (!strcmp("track", xml->getNodeName()))
+                if (strcmp("track", xml->getNodeName()) == 0)
                 {
                     reorderNoteOffVector();
                     return true;

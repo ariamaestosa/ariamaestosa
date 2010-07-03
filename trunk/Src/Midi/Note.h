@@ -31,7 +31,7 @@ namespace irr { namespace io {
 namespace AriaMaestosa
 {
     
-    class GraphicalTrack; // forward
+    class Track; // forward
     
     /**
       * @brief represents one note
@@ -39,6 +39,7 @@ namespace AriaMaestosa
       */
     class Note
     {
+        Track* m_track;
         
     public:
         LEAK_CHECK();
@@ -64,17 +65,15 @@ namespace AriaMaestosa
         short string, fret;
         
         bool selected;
-        
-        GraphicalTrack* gtrack;
-        
+                
         
         void setSelected(const bool selected);
         bool isSelected() const;
         
-        Note(GraphicalTrack* parent, const int pitchID=-1, const int startTick=-1, const int endTick=-1, const int volume=-1, const int string=-1, const int fret=-1); // guitar mode only
+        Note(Track* parent, const int pitchID=-1, const int startTick=-1, const int endTick=-1, const int volume=-1, const int string=-1, const int fret=-1); // guitar mode only
         ~Note();
         
-        void setParent(GraphicalTrack* parent);
+        void setParent(Track* parent);
         
         void setVolume(int vol);
         void resize(const int ticks);
