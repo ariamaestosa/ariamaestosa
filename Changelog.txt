@@ -1,16 +1,17 @@
 
 1.2.2
-- Cleanup and code documentation
 - Support for custom keys (e.g. for street organs)
-- Added ability to save user-defined key presets
-- Support for disabling notes (e.g. if your instrument cannot play all notes)
+    - Added ability to save user-defined key presets
+    - Support for disabling notes (e.g. if your instrument cannot play all notes)
 - Fixed octave numbers in keyboard editor and guitar editor
 - More flexible printing dialog; allows changing the printing notation type for each track
 - Menu icons on Linux/Windows (thanks to Alexis Archambault for coding this!)
 - Keyroll printing
 - Fixed bug that caused wrong sequence to be closed when pressing "X" on an unselected tab
 - Improved sequence is selected after closing a sequence
+- Loading MIDI files is now fast again
 - Fixed hanging if a warning message is hsown when opening a file
+- Much code cleanup, documentation and refactoring
 
 1.2.1
 - Fixed printing of accidentals
