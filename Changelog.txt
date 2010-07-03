@@ -8,6 +8,8 @@
 - More flexible printing dialog; allows changing the printing notation type for each track
 - Menu icons on Linux/Windows (thanks to Alexis Archambault for coding this!)
 - Keyroll printing
+- Fixed bug that caused wrong sequence to be closed when pressing "X" on an unselected tab
+- Improved sequence is selected after closing a sequence
 
 1.2.1
 - Fixed printing of accidentals
