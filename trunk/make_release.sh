@@ -14,7 +14,7 @@ fi
 
 echo "making packgage for version $VERSION"
 
-USE_WX_CONFIG="/Developer/svn/wxWidgets/aria_build/wx-config "
+USE_WX_CONFIG="/Developer/svn/wxWidgets/aria_build4/wx-config "
 OUTPUT="$HOME/Desktop/aria-build/"
 ADDITIONAL_BUILD_FLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.4 -Wfatal-errors -arch ppc -arch i386"
 ADDITIONAL_LINK_FLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.4 -arch ppc -arch i386"
