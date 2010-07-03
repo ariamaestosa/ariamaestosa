@@ -14,24 +14,21 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include "Editors/GuitarEditor.h"
+
+#include "AriaCore.h"
 #include "Actions/EditAction.h"
 #include "Actions/UpdateGuitarTuning.h"
 #include "Actions/AddNote.h"
 #include "Actions/ShiftString.h"
-
-#include "Editors/GuitarEditor.h"
+#include "Editors/RelativeXCoord.h"
+#include "GUI/ImageProvider.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 #include "Pickers/TuningPicker.h"
-#include "GUI/ImageProvider.h"
 #include "Renderers/RenderAPI.h"
-
-#include "AriaCore.h"
 #include "Singleton.h"
 
-#include <string>
-
-#include "Editors/RelativeXCoord.h"
 
 namespace AriaMaestosa
 {
@@ -73,11 +70,16 @@ GuitarEditor::GuitarEditor(Track* track) : Editor(track)
     GuitarNoteNamesSingleton::getInstance()->setFont( wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, /*wxFONTWEIGHT_BOLD*/ wxFONTWEIGHT_NORMAL) );
 #endif
 
-    // let the tuning picker set-up the tuning of this guitar editor
-    TuningPicker* picker = Core::getTuningPicker();
-    picker->setModel(track->getGuitarTuning()); // standard
-    picker->loadTuning(1, false); // standard
-
+    // set standard tuning by default (FIXME: don't duplicate the tuning from the tuning picker)
+    std::vector<int> newTuning;
+    newTuning.push_back( Editor::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 4) );
+    newTuning.push_back( Editor::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 3) );
+    newTuning.push_back( Editor::findNotePitch(NOTE_7_G, PITCH_SIGN_NONE, 3) );
+    newTuning.push_back( Editor::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 3) );
+    newTuning.push_back( Editor::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 2) );
+    newTuning.push_back( Editor::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 2) );
+    track->getGuitarTuning()->setTuning(newTuning, false);
+    
     Editor::useVerticalScrollbar(false);
 }
 
