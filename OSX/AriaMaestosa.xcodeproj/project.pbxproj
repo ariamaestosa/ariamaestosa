@@ -109,6 +109,10 @@
 		950B3EFD1125DE60006C9AF1 /* en.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EE61125DE18006C9AF1 /* en.lproj */; };
 		950B3EFE1125DE60006C9AF1 /* de.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EE31125DE18006C9AF1 /* de.lproj */; };
 		950B3EFF1125DE60006C9AF1 /* it.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EEB1125DE18006C9AF1 /* it.lproj */; };
+		9533F86111DFAA430002D3ED /* CustomKeyDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 9533F85F11DFAA430002D3ED /* CustomKeyDialog.h */; };
+		9533F86211DFAA430002D3ED /* CustomKeyDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9533F86011DFAA430002D3ED /* CustomKeyDialog.cpp */; };
+		9533F86311DFAA430002D3ED /* CustomKeyDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 9533F85F11DFAA430002D3ED /* CustomKeyDialog.h */; };
+		9533F86411DFAA430002D3ED /* CustomKeyDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9533F86011DFAA430002D3ED /* CustomKeyDialog.cpp */; };
 		9544D68411582D5300E0A3BD /* wxEasyPrintWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9544D68211582D5300E0A3BD /* wxEasyPrintWrapper.cpp */; };
 		9544D68511582D5300E0A3BD /* wxEasyPrintWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 9544D68311582D5300E0A3BD /* wxEasyPrintWrapper.h */; };
 		9544D68611582D5300E0A3BD /* wxEasyPrintWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9544D68211582D5300E0A3BD /* wxEasyPrintWrapper.cpp */; };
@@ -721,6 +725,8 @@
 		950B3EEB1125DE18006C9AF1 /* it.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = it.lproj; path = "../OSX/mac-i18n/it.lproj"; sourceTree = SOURCE_ROOT; };
 		950B3EEE1125DE2F006C9AF1 /* aria_file.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = aria_file.icns; path = ../OSX/aria_file.icns; sourceTree = SOURCE_ROOT; };
 		950B3EEF1125DE2F006C9AF1 /* aria_midi_file.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = aria_midi_file.icns; path = ../OSX/aria_midi_file.icns; sourceTree = SOURCE_ROOT; };
+		9533F85F11DFAA430002D3ED /* CustomKeyDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomKeyDialog.h; sourceTree = "<group>"; };
+		9533F86011DFAA430002D3ED /* CustomKeyDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CustomKeyDialog.cpp; sourceTree = "<group>"; };
 		9544D68211582D5300E0A3BD /* wxEasyPrintWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wxEasyPrintWrapper.cpp; path = ../Src/Printing/wxEasyPrintWrapper.cpp; sourceTree = SOURCE_ROOT; };
 		9544D68311582D5300E0A3BD /* wxEasyPrintWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wxEasyPrintWrapper.h; path = ../Src/Printing/wxEasyPrintWrapper.h; sourceTree = SOURCE_ROOT; };
 		954A192211CD3218004C13E0 /* PresetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PresetManager.h; sourceTree = SOURCE_ROOT; };
@@ -1129,6 +1135,8 @@
 				95AFD807118F2B07007DC6C7 /* AboutDialog.h */,
 				957118F21125D8D200104BF5 /* CopyrightWindow.cpp */,
 				957118F31125D8D200104BF5 /* CopyrightWindow.h */,
+				9533F86011DFAA430002D3ED /* CustomKeyDialog.cpp */,
+				9533F85F11DFAA430002D3ED /* CustomKeyDialog.h */,
 				957118F41125D8D200104BF5 /* CustomNoteSelectDialog.cpp */,
 				957118F51125D8D200104BF5 /* CustomNoteSelectDialog.h */,
 				957118F81125D8D200104BF5 /* Preferences.cpp */,
@@ -1687,6 +1695,7 @@
 				95EC9D3711DD2D56009A5743 /* InstrumentChoice.h in Headers */,
 				95EC9E0011DD5207009A5743 /* DrumChoice.h in Headers */,
 				95EC9F3511DD6FD0009A5743 /* GuitarTuning.h in Headers */,
+				9533F86311DFAA430002D3ED /* CustomKeyDialog.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1818,6 +1827,7 @@
 				95EC9D3511DD2D56009A5743 /* InstrumentChoice.h in Headers */,
 				95EC9DFE11DD5207009A5743 /* DrumChoice.h in Headers */,
 				95EC9F3311DD6FD0009A5743 /* GuitarTuning.h in Headers */,
+				9533F86111DFAA430002D3ED /* CustomKeyDialog.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2022,6 +2032,7 @@
 				95EC9D3811DD2D56009A5743 /* InstrumentChoice.cpp in Sources */,
 				95EC9E0111DD5207009A5743 /* DrumChoice.cpp in Sources */,
 				95EC9F3611DD6FD0009A5743 /* GuitarTuning.cpp in Sources */,
+				9533F86411DFAA430002D3ED /* CustomKeyDialog.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2147,6 +2158,7 @@
 				95EC9D3611DD2D56009A5743 /* InstrumentChoice.cpp in Sources */,
 				95EC9DFF11DD5207009A5743 /* DrumChoice.cpp in Sources */,
 				95EC9F3411DD6FD0009A5743 /* GuitarTuning.cpp in Sources */,
+				9533F86211DFAA430002D3ED /* CustomKeyDialog.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
