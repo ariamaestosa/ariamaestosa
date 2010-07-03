@@ -1046,7 +1046,6 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                     }
                     else
                     {
-                        currentTrack = 0;
                         std::cerr << "Missing info from file: channel management" << std::endl;
                     }
 
