@@ -159,6 +159,22 @@ namespace TestAddNote
         require(t->getNoteOffVector()[3].endTick == 400, "Note off vector is properly ordered");
         require(t->getNoteOffVector()[4].endTick == 500, "Note off vector is properly ordered");
         
+        // Now test undo
+        seq->undo();
+        
+        require(t->getNoteAmount() == 4, "the number of events was restored on undo");
+        require(t->getNote(0)->getTick()    == 0,   "events were properly ordered");
+        require(t->getNote(0)->getPitchID() == 100, "events were properly ordered");
+        
+        require(t->getNote(1)->getTick()    == 101, "events were properly ordered");
+        require(t->getNote(1)->getPitchID() == 101, "events were properly ordered");
+        
+        require(t->getNote(2)->getTick()    == 201, "events were properly ordered");
+        require(t->getNote(2)->getPitchID() == 102, "events were properly ordered");
+        
+        require(t->getNote(3)->getTick()    == 301, "events were properly ordered");
+        require(t->getNote(3)->getPitchID() == 103, "events were properly ordered");
+        
         delete seq;
     }
     
@@ -227,6 +243,22 @@ namespace TestAddNote
         require(t->getNoteOffVector()[3].endTick == 300, "Note off vector is properly ordered");
         require(t->getNoteOffVector()[4].endTick == 400, "Note off vector is properly ordered");
         
+        // Now test undo
+        seq->undo();
+        
+        require(t->getNoteAmount() == 4, "the number of events was restored on undo");
+        require(t->getNote(0)->getTick()    == 0,   "events were properly ordered");
+        require(t->getNote(0)->getPitchID() == 100, "events were properly ordered");
+        
+        require(t->getNote(1)->getTick()    == 101, "events were properly ordered");
+        require(t->getNote(1)->getPitchID() == 101, "events were properly ordered");
+        
+        require(t->getNote(2)->getTick()    == 201, "events were properly ordered");
+        require(t->getNote(2)->getPitchID() == 102, "events were properly ordered");
+        
+        require(t->getNote(3)->getTick()    == 301, "events were properly ordered");
+        require(t->getNote(3)->getPitchID() == 103, "events were properly ordered");
+
         delete seq;
     }
     
