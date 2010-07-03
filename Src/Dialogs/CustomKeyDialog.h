@@ -29,6 +29,10 @@ namespace AriaMaestosa
 {
     class GraphicalTrack;
     
+    /**
+     * @ingroup dialogs
+     * @brief the dialog that lets the user setup a custom key
+     */
     class CustomKeyDialog : public wxDialog
     {
         wxCheckBox* m_check_boxes[132];
