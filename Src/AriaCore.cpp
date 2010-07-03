@@ -60,9 +60,16 @@ namespace AriaMaestosa
         {
             return getMainFrame()->instrument_picker;
         }
-        int playDuringEdit()
+        
+        // TODO: move this into the midi player
+        PlayDuringEditMode g_play_during_edit = PLAY_ALWAYS;
+        void setPlayDuringEdit(PlayDuringEditMode mode)
         {
-            return getMainFrame()->play_during_edit;
+            g_play_during_edit = mode;
+        }
+        PlayDuringEditMode playDuringEdit()
+        {
+            return g_play_during_edit;
         }
         void songHasFinishedPlaying()
         {

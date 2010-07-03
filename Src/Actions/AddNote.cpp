@@ -219,7 +219,7 @@ namespace TestAddNote
         require(t->getNote(3)->getPitchID() == 102, "events were properly ordered");
         
         require(t->getNote(4)->getTick()    == 301, "events were properly ordered");
-        require(t->getNote(5)->getPitchID() == 103, "events were properly ordered");
+        require(t->getNote(4)->getPitchID() == 103, "events were properly ordered");
         
         require(t->getNoteOffVector().size() == 5, "Note off vector was increased");
         require(t->getNoteOffVector()[0].endTick == 100, "Note off vector is properly ordered");
