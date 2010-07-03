@@ -1105,8 +1105,19 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
 
     std::cout << "close sequence called" << std::endl;
 
+    wxString whoToFocusAfter;
+    
     int id = id_arg;
-    if (id==-1) id = currentSequence;
+    if (id == -1)
+    {
+        id = currentSequence;
+        if     (id > 0)               whoToFocusAfter = sequences[id - 1].sequenceFileName;
+        else if(sequences.size() > 0) whoToFocusAfter = sequences[sequences.size()-1].sequenceFileName;
+    }
+    else
+    {
+        whoToFocusAfter = sequences[currentSequence].sequenceFileName;
+    }
 
 
     if (sequences[id].somethingToUndo())
@@ -1130,7 +1141,7 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
 
     sequences.erase( id );
 
-    if (sequences.size()==0)
+    if (sequences.size() == 0)
     {
         // shut down program (we close last window, so wx will shut down the app)
         Hide();
@@ -1138,7 +1149,17 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
         return true;
     }
 
-    setCurrentSequence(0);
+    int newCurrent = 0;
+    const int seqCount = sequences.size();
+    for (int n=0; n<seqCount; n++)
+    {
+        if (sequences[n].sequenceFileName == whoToFocusAfter)
+        {
+            newCurrent = n;
+            break;
+        }
+    }
+    setCurrentSequence(newCurrent);
 
     //if (sequences.size()>0) Display::render();
     Display::render();

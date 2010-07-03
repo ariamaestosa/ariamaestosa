@@ -625,7 +625,8 @@ void MainPane::mouseDown(wxMouseEvent& event)
         click_area = CLICK_TAB_BAR;
 
         int start_at_x = 0;
-        for (int n=0; n<getMainFrame()->getSequenceAmount(); n++)
+        const int seqAmount = getMainFrame()->getSequenceAmount();
+        for (int n=0; n<seqAmount; n++)
         {
             start_at_x += TAB_SIDE_WIDTH + tab_width + TAB_SIDE_WIDTH;
             if (event.GetX() < start_at_x)
@@ -634,7 +635,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
                     event.GetX() < start_at_x - CLOSE_BUTTON_SPACE_FROM_RIGHT)
                 {
                     // click is on close button
-                    getMainFrame()->closeSequence();
+                    getMainFrame()->closeSequence(n);
                     return;
                 }
                 else
