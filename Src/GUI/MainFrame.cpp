@@ -1250,8 +1250,15 @@ void MainFrame::loadAriaFile(wxString filePath)
     getCurrentSequence()->sequenceFileName.set(getCurrentSequence()->filepath.AfterLast('/').BeforeLast('.'));
 
     // if a song is currently playing, it needs to stay on top
-    if (PlatformMidiManager::isPlaying()) setCurrentSequence(old_currentSequence);
-    else updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
+    if (PlatformMidiManager::isPlaying())
+    {
+        setCurrentSequence(old_currentSequence);
+    }
+    else 
+    {
+        updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
+        updateMenuBarToSequence();
+    }
 
     Display::render();
 }
