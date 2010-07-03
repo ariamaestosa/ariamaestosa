@@ -467,7 +467,11 @@ namespace AriaMaestosa
                 }
                 //wxStaticText* editorType = new wxStaticText(m_track_choice, wxID_ANY, track->graphics->getCurrentEditor()->getName() );
 
-                m_track_choice->addRowWidgets( (wxWindow*[]){cb, trackName, editorType} );
+                wxWindow* cells[3];
+                cells[0] = cb;
+                cells[1] = trackName;
+                cells[2] = editorType;
+                m_track_choice->addRowWidgets( cells );
                                           
                 /*
                 const int id = m_track_choice->Append( track->getName() + wxT(" (") +
