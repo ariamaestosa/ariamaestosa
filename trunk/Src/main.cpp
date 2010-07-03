@@ -99,6 +99,7 @@ bool wxWidgetApp::OnInit()
         if (wxString(argv[n]) == wxT("--utest"))
         {
             okToLog = false;
+            Core::setPlayDuringEdit(PLAY_NEVER);
             prefs = PreferencesData::getInstance();
             prefs->init();
 
@@ -122,6 +123,7 @@ bool wxWidgetApp::OnInit()
     
     prefs = PreferencesData::getInstance();
     prefs->init();
+    Core::setPlayDuringEdit((PlayDuringEditMode)Core::getPrefsValue("playDuringEdit"));
     
     //read presets
     KeyPresetGroup::getInstance();

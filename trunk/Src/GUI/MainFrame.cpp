@@ -315,7 +315,6 @@ void MainFrame::init()
     SetMinSize(wxSize(750, 330));
 
     initMenuBar();
-    play_during_edit = Core::getPrefsValue("playDuringEdit");
 
     wxInitAllImageHandlers();
 #ifdef NO_WX_TOOLBAR

@@ -20,25 +20,19 @@
 
 #include "Actions/EditAction.h"
 #include "Actions/UpdateGuitarTuning.h"
-
 #include "Editors/KeyboardEditor.h"
 #include "Editors/GuitarEditor.h"
 #include "Editors/RelativeXCoord.h"
 #include "Editors/DrumEditor.h"
 #include "Editors/ControllerEditor.h"
-
 #include "GUI/GraphicalTrack.h"
-
+#include "IO/IOUtils.h"
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
 #include "Midi/ControllerEvent.h"
 #include "Midi/DrumChoice.h"
 #include "Midi/MeasureData.h"
-
 #include "Pickers/MagneticGrid.h"
-
-
-#include "IO/IOUtils.h"
 
 #include <iostream>
 

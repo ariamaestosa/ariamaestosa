@@ -685,7 +685,7 @@ void MainFrame::menuEvent_playAlways(wxCommandEvent& evt)
     playDuringEdits_always->Check(true);
     playDuringEdits_onchange->Check(false);
     playDuringEdits_never->Check(false);
-    play_during_edit = PLAY_ALWAYS;
+    Core::setPlayDuringEdit(PLAY_ALWAYS);
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -695,7 +695,7 @@ void MainFrame::menuEvent_playOnChange(wxCommandEvent& evt)
     playDuringEdits_always->Check(false);
     playDuringEdits_onchange->Check(true);
     playDuringEdits_never->Check(false);
-    play_during_edit = PLAY_ON_CHANGE;
+    Core::setPlayDuringEdit(PLAY_ON_CHANGE);
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -705,7 +705,7 @@ void MainFrame::menuEvent_playNever(wxCommandEvent& evt)
     playDuringEdits_always->Check(false);
     playDuringEdits_onchange->Check(false);
     playDuringEdits_never->Check(true);
-    play_during_edit = PLAY_NEVER;
+    Core::setPlayDuringEdit(PLAY_NEVER);
 }
 
 // -----------------------------------------------------------------------------------------------------------

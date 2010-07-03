@@ -24,7 +24,7 @@
 class wxMenu;
 class wxDC;
 
-enum
+enum PlayDuringEditMode
 {
     PLAY_ALWAYS = 0,
     PLAY_ON_CHANGE = 1,
@@ -72,7 +72,10 @@ namespace AriaMaestosa
         void activateRenderLoop(bool on);
         void setMainPane(MainPane* pane);
         void setImporting(bool on);
-        int playDuringEdit();
+        
+        PlayDuringEditMode playDuringEdit();
+        void setPlayDuringEdit(PlayDuringEditMode mode);
+        
         void songHasFinishedPlaying();
         TuningPicker*     getTuningPicker();
         KeyPicker*        getKeyPicker();
