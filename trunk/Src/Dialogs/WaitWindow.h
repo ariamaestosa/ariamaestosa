@@ -32,6 +32,7 @@ namespace AriaMaestosa
         void show(wxString message, bool progress_known = false);
         void setProgress(int progress); // in percent
         void hide();
+        bool isShown();
     }
     
 }
