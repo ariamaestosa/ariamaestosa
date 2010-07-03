@@ -102,31 +102,31 @@ wxDialog(parent, wxID_ANY, _("Custom Key Editor"), wxDefaultPosition,
         
         for (int pitch=4; pitch<=131; pitch++)
         {
-            if (Editor::findNoteName(pitch, &note, &octave))
+            const bool success = Editor::findNoteName(pitch, &note, &octave);
+            ASSERT(success);
+            
+            wxString label = NOTE_12_NAME[note] + wxT(" ") + wxString::Format(wxT("%i"), octave);
+            wxCheckBox* cb = new wxCheckBox(scrollpane, wxID_ANY, label,
+                                            wxDefaultPosition, wxDefaultSize, 
+                                            wxCHK_3STATE | wxCHK_ALLOW_3RD_STATE_FOR_USER);
+            //cb->SetValue( curr_key_notes[pitch] );
+            switch (curr_key_notes[pitch])
             {
-                wxString label = NOTE_12_NAME[note] + wxT(" ") + wxString::Format(wxT("%i"), octave);
-                wxCheckBox* cb = new wxCheckBox(scrollpane, wxID_ANY, label,
-                                                wxDefaultPosition, wxDefaultSize, 
-                                                wxCHK_3STATE | wxCHK_ALLOW_3RD_STATE_FOR_USER);
-                //cb->SetValue( curr_key_notes[pitch] );
-                switch (curr_key_notes[pitch])
-                {
-                    case KEY_INCLUSION_FULL :
-                        cb->Set3StateValue( wxCHK_CHECKED );
-                        break;
-                    case KEY_INCLUSION_ACCIDENTAL :
-                        cb->Set3StateValue( wxCHK_UNDETERMINED );
-                        break;
-                    case KEY_INCLUSION_NONE :
-                        cb->Set3StateValue( wxCHK_UNCHECKED );
-                        break;
-                }
-                
-                
-                within_scrollpane_sizer->Add(cb, 0, wxALL, 3);
-                
-                m_check_boxes[pitch] = cb;
+                case KEY_INCLUSION_FULL :
+                    cb->Set3StateValue( wxCHK_CHECKED );
+                    break;
+                case KEY_INCLUSION_ACCIDENTAL :
+                    cb->Set3StateValue( wxCHK_UNDETERMINED );
+                    break;
+                case KEY_INCLUSION_NONE :
+                    cb->Set3StateValue( wxCHK_UNCHECKED );
+                    break;
             }
+            
+            
+            within_scrollpane_sizer->Add(cb, 0, wxALL, 3);
+            
+            m_check_boxes[pitch] = cb;
         }
         
         scrollpane->SetSizer(within_scrollpane_sizer);
