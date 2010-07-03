@@ -48,6 +48,7 @@ NOTE: sorry, this is very raw :)
 
 * Custom Key editor :
     - add 'select all', 'select none'
+    - when performing changes in one of the two editors, mirror them in the error
 
 ** When a .aria file causes trouble during loading, show a warning message, don't just print errors to the terminal
 
