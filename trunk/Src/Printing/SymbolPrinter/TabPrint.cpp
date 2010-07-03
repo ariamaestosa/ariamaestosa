@@ -20,6 +20,7 @@
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Editors/GuitarEditor.h"
+#include "GUI/GraphicalTrack.h"
 #include "IO/IOUtils.h"
 #include "Printing/AriaPrintable.h"
 #include "Printing/SymbolPrinter/PrintLayout/PrintLayoutAbstract.h"

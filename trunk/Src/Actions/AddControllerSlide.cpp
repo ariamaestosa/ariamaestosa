@@ -15,8 +15,9 @@
  */
 
 #include "Actions/AddControllerSlide.h"
-#include "Editors/ControllerEditor.h"
 #include "Actions/EditAction.h"
+#include "Editors/ControllerEditor.h"
+#include "GUI/GraphicalTrack.h"
 #include "Midi/Track.h"
 #include "Midi/ControllerEvent.h"
 #include "Midi/Sequence.h"

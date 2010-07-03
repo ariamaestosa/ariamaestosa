@@ -153,11 +153,15 @@ static const std::pair<int, wxString> g_inst_names[] =
     std::pair<int, wxString>(127, wxT("Gunshot"))
 };
 
+// ----------------------------------------------------------------------------------------------------------
+
 InstrumentChoice::InstrumentChoice(const int defaultInstrument, IInstrumentChoiceListener* listener)
 {
     m_selected_instrument = defaultInstrument;
     m_listener = listener;
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 const wxString& InstrumentChoice::getInstrumentName(int instrumentID)
 {
@@ -167,6 +171,8 @@ const wxString& InstrumentChoice::getInstrumentName(int instrumentID)
     return g_inst_names[instrumentID].second;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void InstrumentChoice::setInstrument(const int instrument, const bool generateEvent)
 {
     ASSERT_E(instrument, <,  128);
@@ -175,3 +181,5 @@ void InstrumentChoice::setInstrument(const int instrument, const bool generateEv
     
     if (generateEvent and m_listener != NULL) m_listener->onInstrumentChanged(instrument);
 }
+
+// ----------------------------------------------------------------------------------------------------------

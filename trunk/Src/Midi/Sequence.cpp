@@ -27,15 +27,14 @@ const float CURRENT_FILE_VERSION = 2.0;
 #include "Actions/ScaleTrack.h"
 #include "Actions/ScaleSong.h"
 
-//#include "Dialogs/Preferences.h"
 #include "Editors/Editor.h"
-//#include "GUI/MainFrame.h"
 #include "IO/IOUtils.h"
+#include "GUI/GraphicalTrack.h"
 #include "Midi/CommonMidiUtils.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Track.h"
-#include "Renderers/RenderAPI.h"
+//#include "Renderers/RenderAPI.h"
 #include "Utils.h"
 
 #include "wx/intl.h"
@@ -183,24 +182,12 @@ void Sequence::setInternalName(wxString name)
 #pragma mark Scrolling
 #endif
 
-int Sequence::getYScroll()
-{
-    return y_scroll;
-}
 
-// ----------------------------------------------------------------------------------------------------------
-
-int Sequence::getXScrollInMidiTicks()
+int Sequence::getXScrollInMidiTicks() const
 {
     return (int)( x_scroll_in_pixels/zoom );
 }
 
-// ----------------------------------------------------------------------------------------------------------
-
-int Sequence::getXScrollInPixels()
-{
-    return x_scroll_in_pixels;
-}
 
 // ----------------------------------------------------------------------------------------------------------
 
@@ -240,20 +227,6 @@ void Sequence::setYScroll(int value)
 #pragma mark Getters/Setters/Actions
 #endif
 
-float Sequence::getZoom() const
-{
-    return zoom;
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-int Sequence::getZoomInPercent() const
-{
-    return zoom_percent;
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
 void Sequence::setZoom(int zoom)
 {
 
@@ -271,20 +244,6 @@ void Sequence::setChannelManagementType(ChannelManagementType type)
 
 // ----------------------------------------------------------------------------------------------------------
 
-ChannelManagementType Sequence::getChannelManagementType() const
-{
-    return channelManagement;
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-int Sequence::ticksPerBeat() const
-{
-    return beatResolution;
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
 void Sequence::setTicksPerBeat(int res)
 {
     beatResolution = res;
@@ -297,7 +256,7 @@ int Sequence::getTotalHeight() const
     
     int totalHeight=0;
     
-    for(int n=0; n<tracks.size(); n++)
+    for (int n=0; n<tracks.size(); n++)
     {
         totalHeight += tracks[n].graphics->getTotalHeight() + 10;
     }
@@ -323,7 +282,7 @@ void Sequence::scale(float factor,
     {
         
         if (rel_first_note) relative_to = tracks[currentTrack].getFirstNoteTick(true);
-        else if (rel_begin) relative_to=0;
+        else if (rel_begin) relative_to = 0;
         
         tracks[currentTrack].action( new Action::ScaleTrack(factor, relative_to, true) );
     }
@@ -333,7 +292,7 @@ void Sequence::scale(float factor,
     {
         
         if (rel_first_note) relative_to = tracks[currentTrack].getFirstNoteTick();
-        else if (rel_begin) relative_to=0;
+        else if (rel_begin) relative_to = 0;
         
         tracks[currentTrack].action( new Action::ScaleTrack(factor, relative_to, false) );
     }
@@ -347,7 +306,7 @@ void Sequence::scale(float factor,
             
             // find first tick in all tracks [i.e. find the first tick of all tracks and keep the samllest]
             int song_first_tick = -1;
-            for(int n=0; n<tracks.size(); n++)
+            for (int n=0; n<tracks.size(); n++)
             {
                 
                 const int track_first_tick = relative_to = tracks[n].getFirstNoteTick();
@@ -356,7 +315,10 @@ void Sequence::scale(float factor,
             
             relative_to = song_first_tick;
         }
-        else if (rel_begin) relative_to=0;
+        else if (rel_begin)
+        {
+            relative_to = 0;
+        }
         
         // scale all tracks
         action( new Action::ScaleSong(factor, relative_to) );
@@ -518,7 +480,7 @@ void Sequence::renderTracks(int currentTick, RelativeXCoord mousex, int mousey, 
 
         int y = from_y - y_scroll;
         const int trackAmount = tracks.size();
-        for(int n=0; n<trackAmount; n++)
+        for (int n=0; n<trackAmount; n++)
         {
             tracks[n].setId(n);
             y = tracks[n].graphics->render(y, currentTick, n==currentTrack);
@@ -533,7 +495,7 @@ void Sequence::renderTracks(int currentTick, RelativeXCoord mousex, int mousey, 
         // draw tracks before current
         int first_y = mousey_initial - reorderYScroll;
 
-        for(int tracknum=draggedTrack-1; tracknum>=0; tracknum--)
+        for (int tracknum=draggedTrack-1; tracknum>=0; tracknum--)
         {
             if (tracks[tracknum].graphics->docked) continue;
 
@@ -545,7 +507,7 @@ void Sequence::renderTracks(int currentTick, RelativeXCoord mousex, int mousey, 
         // draw tracks after current
         int last_y = mousey_initial - reorderYScroll;
 
-        for(int tracknum=draggedTrack+1; tracknum<tracks.size(); tracknum++)
+        for (int tracknum=draggedTrack+1; tracknum<tracks.size(); tracknum++)
         {
             if (tracks[tracknum].graphics->docked) continue;
 
@@ -628,7 +590,7 @@ void Sequence::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
     const int draggedTrack = Display::getDraggedTrackID();
 
     // if reordering tracks
-    if (draggedTrack!=-1)
+    if (draggedTrack != -1)
     {
         // reordering preview is done while rendering, so calling 'render' will update reordering onscreen.
         // FIXME: hackish
@@ -638,9 +600,10 @@ void Sequence::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 
     // dispatch event to all tracks
     const int trackAmount = tracks.size();
-    for(int n=0; n<trackAmount; n++)
+    for (int n=0; n<trackAmount; n++)
     {
-        tracks[n].graphics->getCurrentEditor()->mouseHeldDown(mousex_current, mousey_current, mousex_initial, mousey_initial);
+        tracks[n].graphics->getCurrentEditor()->mouseHeldDown(mousex_current, mousey_current,
+                                                              mousex_initial, mousey_initial);
     }//next
 
 }
@@ -710,7 +673,7 @@ void Sequence::deleteTrack(int id)
     tracks[id].notifyOthersIWillBeRemoved();
     tracks.erase( id );
 
-    while (currentTrack>tracks.size()-1) currentTrack -= 1;
+    while (currentTrack > tracks.size()-1) currentTrack -= 1;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -720,18 +683,17 @@ void Sequence::deleteTrack(Track* track)
     track->notifyOthersIWillBeRemoved();
     tracks.erase( track );
     
-    while(currentTrack>tracks.size()-1) currentTrack -= 1;
+    while (currentTrack > tracks.size()-1) currentTrack -= 1;
 }
 
 // ----------------------------------------------------------------------------------------------------------
 
 void Sequence::reorderTracks()
 {
-
     const int draggedTrack = Display::getDraggedTrackID();
 
-    if ( reordering_newPosition == draggedTrack ) return;
-    if ( reordering_newPosition == -1 ) return;
+    if (reordering_newPosition == draggedTrack) return;
+    if (reordering_newPosition == -1)           return;
 
     Track* dragged_track = &tracks[draggedTrack];
 
@@ -743,8 +705,8 @@ void Sequence::reorderTracks()
 
     currentTrack = reordering_newPosition-1;
 
-    if (! (currentTrack>=0) ) currentTrack=0;
-    if (! (currentTrack<tracks.size()) ) currentTrack=0;
+    if (not (currentTrack >= 0))            currentTrack=0;
+    if (not (currentTrack < tracks.size())) currentTrack=0;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -790,7 +752,7 @@ Track* Sequence::getTrack(int ID)
 void Sequence::setCurrentTrack(Track* track)
 {
     const int trackAmount = tracks.size();
-    for(int n=0; n<trackAmount; n++)
+    for (int n=0; n<trackAmount; n++)
     {
         if ( &tracks[n] == track )
         {
@@ -805,9 +767,9 @@ void Sequence::setCurrentTrack(Track* track)
 
 // ----------------------------------------------------------------------------------------------------------
 
+// FIXME: I doubt this goes here, Sequence is a data class, the dock is display-related
 void Sequence::addToDock(GraphicalTrack* track)
 {
-
     dock.push_back(track);
     dockSize = dock.size();
 
@@ -821,7 +783,7 @@ void Sequence::addToDock(GraphicalTrack* track)
 void Sequence::removeFromDock(GraphicalTrack* track)
 {
 
-    for(int n=0; n<dock.size(); n++)
+    for (int n=0; n<dock.size(); n++)
     {
         if (&dock[n] == track)
         {
@@ -863,7 +825,7 @@ void Sequence::spacePressed()
         Display::setPlaybackStartTick( startTick ); // FIXME - start tick should NOT go in GlPane
 
         // FIXME: there's MainFrame::playback_mode AND MainPane::enterPlayLoop/exitPlayLoop. Fix this MESS
-        if (!success or startTick == -1 ) // failure
+        if (not success or startTick == -1) // failure
         {
             Display::exitPlayLoop();
         }
@@ -975,7 +937,8 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
               wxT("\" beatResolution=\"") + to_wxString(beatResolution) +
               wxT("\" internalName=\"") + internal_sequenceName +
               wxT("\" fileFormatVersion=\"") + to_wxString(CURRENT_FILE_VERSION) +
-              wxT("\" channelManagement=\"") + (getChannelManagementType() == CHANNEL_AUTO ? wxT("auto") : wxT("manual")) +
+              wxT("\" channelManagement=\"") + (getChannelManagementType() == CHANNEL_AUTO ?
+                                                wxT("auto") : wxT("manual")) +
               wxT("\">\n\n"), fileout );
 
     writeData(wxT("<view xscroll=\"") + to_wxString(x_scroll_in_pixels) +
@@ -998,11 +961,10 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
     writeData(wxT("</copyright>\n"), fileout );
 
     // tracks
-    for(int n=0; n<tracks.size(); n++)
+    for (int n=0; n<tracks.size(); n++)
     {
         tracks[n].saveToFile(fileout);
     }
-
 
     writeData(wxT("</sequence>"), fileout );
 
@@ -1013,7 +975,6 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
 
 bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
 {
-
     importing = true;
     tracks.clearAndDeleteAll();
     measureData->beforeImporting();
@@ -1022,17 +983,17 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
     bool tempo_mode = false;
 
     // parse the file until end reached
-    while(xml && xml->read())
+    while (xml && xml->read())
     {
-
 
         switch (xml->getNodeType())
         {
             case irr::io::EXN_TEXT:
-
+            {
                 if (copyright_mode) setCopyright( fromCString((char*)xml->getNodeData()) );
 
                 break;
+            }
             case irr::io::EXN_ELEMENT:
             {
 
@@ -1110,7 +1071,10 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                     }
 
                     const char* beatResolution_c = xml->getAttributeValue("beatResolution");
-                    if ( beatResolution_c != NULL ) beatResolution = atoi( beatResolution_c );
+                    if (beatResolution_c != NULL)
+                    {
+                        beatResolution = atoi( beatResolution_c );
+                    }
                     else
                     {
                         //beatResolution = 960;

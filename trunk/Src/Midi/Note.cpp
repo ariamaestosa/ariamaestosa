@@ -15,14 +15,15 @@
  */
 
 #include "AriaCore.h"
-#include "Midi/Note.h"
 #include "GUI/GraphicalTrack.h"
-#include "Utils.h"
 #include "IO/IOUtils.h"
+#include "Midi/Note.h"
 #include "Pickers/MagneticGrid.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Sequence.h"
-#include "Editors/GuitarEditor.h"
+#include "Utils.h"
+
+//#include "Editors/GuitarEditor.h"
 
 #include "irrXML/irrXML.h"
 
@@ -62,7 +63,7 @@ Note::~Note()
 
 int Note::getString()
 {
-    if (string==-1) findStringAndFretFromNote();
+    if (string == -1) findStringAndFretFromNote();
     return string;
 }
 
@@ -70,7 +71,7 @@ int Note::getString()
 
 int Note::getFret()
 {
-    if (fret==-1) findStringAndFretFromNote();
+    if (fret == -1) findStringAndFretFromNote();
     return fret;
 }
     
@@ -78,7 +79,7 @@ int Note::getFret()
 
 void Note::setFret(int i)
 {
-    fret=i;
+    fret = i;
     findNoteFromStringAndFret();
 }
 
@@ -282,9 +283,11 @@ void Note::saveToFile(wxFileOutputStream& fileout)
 
 bool Note::readFromFile(irr::io::IrrXMLReader* xml)
 {
-
     const char* pitch_c = xml->getAttributeValue("pitch");
-    if (pitch_c!=NULL) pitchID = atoi( pitch_c );
+    if (pitch_c != NULL)
+    {
+        pitchID = atoi( pitch_c );
+    }
     else
     {
         pitchID = 60;
@@ -293,7 +296,10 @@ bool Note::readFromFile(irr::io::IrrXMLReader* xml)
     }
 
     const char* start_c = xml->getAttributeValue("start");
-    if (start_c!=NULL) startTick = atoi(start_c);
+    if (start_c != NULL)
+    {
+        startTick = atoi(start_c);
+    }
     else
     {
         startTick = 0;
@@ -302,7 +308,10 @@ bool Note::readFromFile(irr::io::IrrXMLReader* xml)
     }
 
     const char* end_c = xml->getAttributeValue("end");
-    if (end_c!=NULL) endTick = atoi(end_c);
+    if (end_c != NULL)
+    {
+        endTick = atoi(end_c);
+    }
     else
     {
         endTick = 0;
@@ -311,25 +320,25 @@ bool Note::readFromFile(irr::io::IrrXMLReader* xml)
     }
 
     const char* volume_c = xml->getAttributeValue("volume");
-    if (volume_c!=NULL) volume = atoi(volume_c);
-    else volume = 80;
+    if (volume_c != NULL) volume = atoi(volume_c);
+    else                  volume = 80;
 
     const char* accsign_c = xml->getAttributeValue("accidentalsign");
     if (accsign_c != NULL) preferred_accidental_sign = atoi(accsign_c);
 
     const char* fret_c = xml->getAttributeValue("fret");
-    if (fret_c!=NULL) fret = atoi(fret_c);
-    else fret = -1;
+    if (fret_c != NULL) fret = atoi(fret_c);
+    else                fret = -1;
 
     const char* string_c = xml->getAttributeValue("string");
     if (string_c!=NULL) string = atoi(string_c);
-    else string = -1;
+    else                string = -1;
 
     const char* selected_c = xml->getAttributeValue("selected");
     if (selected_c != NULL)
     {
-        if ( !strcmp(selected_c, "true") ) selected = true;
-        else if ( !strcmp(selected_c, "false") ) selected = false;
+        if (strcmp(selected_c, "true") == 0)       selected = true;
+        else if (strcmp(selected_c, "false") == 0) selected = false;
         else
         {
             std::cout << "Unknown keyword for attribute 'selected' in note: " << selected_c << std::endl;
@@ -337,8 +346,10 @@ bool Note::readFromFile(irr::io::IrrXMLReader* xml)
         }
 
     }
-    else selected = false;
-
+    else
+    {
+        selected = false;
+    }
 
     return true;
 }
@@ -347,19 +358,24 @@ bool Note::readFromFile(irr::io::IrrXMLReader* xml)
 
 void Note::play(bool change)
 {
-
     if (gtrack->sequence->importing) return;
 
     const int play = Core::playDuringEdit();
 
     if (play == PLAY_NEVER) return;
-    if (play == PLAY_ON_CHANGE and !change) return;
+    if (play == PLAY_ON_CHANGE and not change) return;
 
-    int durationMilli = (endTick-startTick)*60*1000 / ( gtrack->sequence->getTempo() * gtrack->sequence->ticksPerBeat() );
+    int durationMilli = (endTick-startTick)*60*1000 /
+                        (gtrack->sequence->getTempo() * gtrack->sequence->ticksPerBeat());
 
-    if (gtrack->editorMode == DRUM) PlatformMidiManager::playNote( pitchID, volume, durationMilli, 9, gtrack->track->getDrumKit() );
-    else PlatformMidiManager::playNote( 131-pitchID, volume, durationMilli, 0, gtrack->track->getInstrument() );
-
+    if (gtrack->editorMode == DRUM) 
+    {
+        PlatformMidiManager::playNote( pitchID, volume, durationMilli, 9, gtrack->track->getDrumKit() );
+    }
+    else
+    {
+        PlatformMidiManager::playNote( 131-pitchID, volume, durationMilli, 0, gtrack->track->getInstrument() );
+    }
 }
 
 

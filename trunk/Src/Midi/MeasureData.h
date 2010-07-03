@@ -14,14 +14,12 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _measuredata_h_
-#define _measuredata_h_
-
+#ifndef __MEASURE_DATA_H__
+#define __MEASURE_DATA_H__
 
 
 #include "ptr_vector.h"
 #include "Utils.h"
-#include "Editors/RelativeXCoord.h"
 #include "Midi/TimeSigChange.h"
 
 class wxFileOutputStream;
@@ -89,77 +87,79 @@ namespace AriaMaestosa
         MeasureData(int measureAmount);
         ~MeasureData();
         
-        void setExpandedMode(bool expanded);
+        void  setExpandedMode(bool expanded);
         
-        bool isExpandedMode() const { return expandedMode; }
+        bool  isExpandedMode() const { return expandedMode; }
         
-        int getTotalTickAmount();
-        int getTotalPixelAmount();
-        bool isMeasureLengthConstant();
+        int   getTotalTickAmount();
+        int   getTotalPixelAmount();
+        bool  isMeasureLengthConstant();
         
-        void setMeasureAmount(int measureAmount);
-        int getMeasureAmount() const { return m_measure_amount; }
+        void  setMeasureAmount(int measureAmount);
+        int   getMeasureAmount() const { return m_measure_amount; }
         
         float defaultMeasureLengthInPixels();
-        int defaultMeasureLengthInTicks();
+        int   defaultMeasureLengthInTicks();
         
-        int getFirstMeasure() const { return firstMeasure; }
-        void setFirstMeasure(int firstMeasureID);
+        int   getFirstMeasure() const { return firstMeasure; }
+        void  setFirstMeasure(int firstMeasureID);
         
-        int measureAtPixel(int pixel);
-        int measureAtTick(int tick);
-        int measureDivisionAt(int pixel);
+        int   measureAtPixel(int pixel);
+        int   measureAtTick(int tick);
+        int   measureDivisionAt(int pixel);
         
         float measureLengthInPixels(int measure =-1);
-        int measureLengthInTicks(int measure = -1);
+        int   measureLengthInTicks(int measure = -1);
         float beatLengthInPixels();
-        int beatLengthInTicks();
+        int   beatLengthInTicks();
         
-        /** get time sig num, either for a specific mesure, either the default value (no argument) */
-        int getTimeSigNumerator(int measure=-1) const;
+        /** @brief get time sig num, either for a specific mesure, either the default value (no argument) */
+        int   getTimeSigNumerator(int measure=-1) const;
         
-        /** get time sig denom, either for a specific mesure, either the default value (no argument) */
-        int getTimeSigDenominator(int measure=-1) const;
+        /** @brief get time sig denom, either for a specific mesure, either the default value (no argument) */
+        int   getTimeSigDenominator(int measure=-1) const;
         
-        /**
-         * Called either when user changes the numbers on the top bar, either when importing a song
-         */
-        void setTimeSig(int num, int denom);
-        int getTimeSigAmount() const { return timeSigChanges.size(); }
+        /** @brief Called either when user changes the numbers on the top bar, either when importing a song */
+        void  setTimeSig(int num, int denom);
+        
+        int   getTimeSigAmount() const { return timeSigChanges.size(); }
+        
         TimeSigChange& getTimeSig(int id);
         
-        void addTimeSigChange(int measure, int num, int denom);
-        void eraseTimeSig(int id);
-        //TimeSigChange* removeTimeSig(int id);
+        void  addTimeSigChange(int measure, int num, int denom);
+        void  eraseTimeSig(int id);
         
-        void selectTimeSig(const int id);
-        void unselect();
+        void  selectTimeSig(const int id);
+        void  unselect();
         
-        int firstTickInMeasure(int id);
-        int firstPixelInMeasure(int id);
-        int lastTickInMeasure(int id);
-        int lastPixelInMeasure(int id);
+        int   firstTickInMeasure(int id);
+        int   firstPixelInMeasure(int id);
+        int   lastTickInMeasure(int id);
+        int   lastPixelInMeasure(int id);
         
         /**
-         * Time Signatures have changed, update and recalculate information about location of measures
+         * @brief Time Signatures have changed, update and recalculate information about location of measures
          * and events.
          */
-        void updateMeasureInfo();
+        void  updateMeasureInfo();
         
         /**
-         * Change the number of items in the selected vector sothat it contains the same amount of elements
+         * @brief Change the number of items in the selected vector sothat it contains the same amount of elements
          * as the number of measures.
          */
-        void updateVector(int newSize);
+        void  updateVector(int newSize);
         
-        void beforeImporting();
-        void afterImporting();
+        void  beforeImporting();
+        void  afterImporting();
         
-        /** used only while loading midi files */
-        void addTimeSigChange_import(int tick, int num, int denom);
+        /** @brief used only while loading midi files */
+        void  addTimeSigChange_import(int tick, int num, int denom);
         
-        bool readFromFile(irr::io::IrrXMLReader* xml);
-        void saveToFile(wxFileOutputStream& fileout);
+        /** @brief deserializatiuon */
+        bool  readFromFile(irr::io::IrrXMLReader* xml);
+        
+        /** @brief serializatiuon */
+        void  saveToFile(wxFileOutputStream& fileout);
     };
     
 }
