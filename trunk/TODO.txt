@@ -46,6 +46,9 @@ NOTE: sorry, this is very raw :)
 
 * remember printing orientation
 
+* Custom Key editor :
+    - add 'select all', 'select none'
+
 ** When a .aria file causes trouble during loading, show a warning message, don't just print errors to the terminal
 
  * custom keys : allow saving presets
@@ -69,12 +72,6 @@ NOTE: sorry, this is very raw :)
 * OS X : allow sending playback to an external MIDI device (e.g. keyboard)
  
 * Keyboard shortcuts to change currently selected note length
- 
-* Custom Key editor :
-    - make it actually work
-    - save to .aria file and load back
-    - save presets
-    - add 'select all', 'select none'
  
 * copy entire measures through measure bar
  
