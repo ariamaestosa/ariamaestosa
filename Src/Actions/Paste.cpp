@@ -203,7 +203,7 @@ regular_paste: // FIXME - find better way than goto
         track->graphics->getCurrentEditor()->moveNote(*tmp, shift , 0);
         if (m_at_mouse) track->graphics->getCurrentEditor()->moveNote(*tmp, -beginning , 0);
 
-        tmp->setParent( track->graphics );
+        tmp->setParent( track );
         tmp->setSelected(true);
 
         if (track->graphics->editorMode == GUITAR) tmp->checkIfStringAndFretMatchNote(true);

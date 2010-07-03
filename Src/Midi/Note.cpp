@@ -31,7 +31,7 @@
 
 using namespace AriaMaestosa;
 
-Note::Note(GraphicalTrack* parent,
+Note::Note(Track* parent,
            const int pitchID_arg,
            const int startTick_arg,
            const int endTick_arg,
@@ -46,7 +46,7 @@ Note::Note(GraphicalTrack* parent,
     Note::string=string_arg;
     Note::fret=fret_arg;
 
-    gtrack = parent;
+    m_track = parent;
 
     selected=false;
 
@@ -96,7 +96,7 @@ void Note::setStringAndFret(int string_arg, int fret_arg)
 
 void Note::checkIfStringAndFretMatchNote(const bool fixStringAndFret)
 {
-    GuitarTuning* tuning = gtrack->track->getGuitarTuning();
+    GuitarTuning* tuning = m_track->getGuitarTuning();
     
     // if note is placed on a string that doesn't exist (anymore)
     if (fixStringAndFret and string > (int)tuning->tuning.size()-1)
@@ -108,16 +108,16 @@ void Note::checkIfStringAndFretMatchNote(const bool fixStringAndFret)
     if (string == -1 or fret == -1 or pitchID != tuning->tuning[string]-fret)
     {
         if (fixStringAndFret) findStringAndFretFromNote();
-        else findNoteFromStringAndFret();
+        else                  findNoteFromStringAndFret();
     }
 
 }
 
 // ----------------------------------------------------------------------------------------------------------
 
-void Note::setParent(GraphicalTrack* parent)
+void Note::setParent(Track* parent)
 {
-    gtrack = parent;
+    m_track = parent;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -149,7 +149,7 @@ void Note::shiftFret(const int amount)
 
 void Note::shiftString(const int amount)
 {
-    GuitarTuning* tuning = gtrack->track->getGuitarTuning();
+    GuitarTuning* tuning = m_track->getGuitarTuning();
     
     // don't perform if result would be invalid
     if (string + amount < 0) return;
@@ -168,10 +168,10 @@ void Note::findStringAndFretFromNote()
 {
 
     // find string that can hold the value with the smallest fret number possible
-    int nearest=-1;
-    int distance=1000;
+    int nearest  = -1;
+    int distance = 1000;
 
-    GuitarTuning* tuning = gtrack->track->getGuitarTuning();
+    GuitarTuning* tuning = m_track->getGuitarTuning();
     
     if (pitchID > (tuning->tuning)[ tuning->tuning.size()-1] )
     {
@@ -187,8 +187,8 @@ void Note::findStringAndFretFromNote()
         // exact match (note can be played on a string at fret 0)
         if ((tuning->tuning)[n] == pitchID)
         {
-            string=n;
-            fret=0;
+            string = n;
+            fret   = 0;
             return;
         }
 
@@ -196,7 +196,7 @@ void Note::findStringAndFretFromNote()
         {
             if ((tuning->tuning)[n] - pitchID < distance)
             {
-                nearest=n;
+                nearest  = n;
                 distance = (tuning->tuning)[n] - pitchID;
             }//end if
         }//end if
@@ -211,7 +211,7 @@ void Note::findStringAndFretFromNote()
 
 void Note::findNoteFromStringAndFret()
 {
-    GuitarTuning* tuning = gtrack->track->getGuitarTuning();
+    GuitarTuning* tuning = m_track->getGuitarTuning();
     pitchID = (tuning->tuning)[string] - fret;
 }
 
@@ -233,7 +233,7 @@ bool Note::isSelected() const
 
 void Note::setVolume(const int vol)
 {
-    volume=vol;
+    volume = vol;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -242,7 +242,7 @@ void Note::resize(const int ticks)
 {
     if (endTick+ticks <= startTick) return; // refuse to shrink note so much that it disappears
 
-    endTick+=ticks;
+    endTick += ticks;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -264,19 +264,24 @@ void Note::setEnd(const int ticks)
 
 void Note::saveToFile(wxFileOutputStream& fileout)
 {
-    writeData( wxT("<note pitch=\"") + to_wxString(pitchID), fileout );
-    writeData( wxT("\" start=\"") + to_wxString(startTick), fileout );
-    writeData( wxT("\" end=\"") + to_wxString(endTick), fileout );
-    writeData( wxT("\" volume=\"") + to_wxString(volume), fileout );
+    writeData( wxT("<note pitch=\"") + to_wxString(pitchID)  , fileout );
+    writeData( wxT("\" start=\"")    + to_wxString(startTick), fileout );
+    writeData( wxT("\" end=\"")      + to_wxString(endTick)  , fileout );
+    writeData( wxT("\" volume=\"")   + to_wxString(volume)   , fileout );
 
-    if (fret != -1) writeData( wxT("\" fret=\"") + to_wxString(fret), fileout );
+    if (fret   != -1) writeData( wxT("\" fret=\"") + to_wxString(fret), fileout );
     if (string != -1) writeData( wxT("\" string=\"") + to_wxString(string), fileout );
-    if (selected) writeData( wxT("\" selected=\"") + wxString( selected?wxT("true"):wxT("false")), fileout );
+    if (selected)
+    {
+        writeData( wxT("\" selected=\"") + wxString(selected ? wxT("true") : wxT("false")), fileout );
+    }
 
-    if (preferred_accidental_sign != -1) writeData( wxT("\" accidentalsign=\"") + to_wxString(preferred_accidental_sign), fileout );
+    if (preferred_accidental_sign != -1)
+    {
+        writeData( wxT("\" accidentalsign=\"") + to_wxString(preferred_accidental_sign), fileout );
+    }
 
     writeData( wxT("\"/>\n"), fileout );
-
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -358,7 +363,7 @@ bool Note::readFromFile(irr::io::IrrXMLReader* xml)
 
 void Note::play(bool change)
 {
-    if (gtrack->sequence->importing) return;
+    if (m_track->sequence->importing) return;
 
     const int play = Core::playDuringEdit();
 
@@ -366,15 +371,15 @@ void Note::play(bool change)
     if (play == PLAY_ON_CHANGE and not change) return;
 
     int durationMilli = (endTick-startTick)*60*1000 /
-                        (gtrack->sequence->getTempo() * gtrack->sequence->ticksPerBeat());
+                        (m_track->sequence->getTempo() * m_track->sequence->ticksPerBeat());
 
-    if (gtrack->editorMode == DRUM) 
+    if (m_track->graphics->editorMode == DRUM) 
     {
-        PlatformMidiManager::playNote( pitchID, volume, durationMilli, 9, gtrack->track->getDrumKit() );
+        PlatformMidiManager::playNote( pitchID, volume, durationMilli, 9, m_track->getDrumKit() );
     }
     else
     {
-        PlatformMidiManager::playNote( 131-pitchID, volume, durationMilli, 0, gtrack->track->getInstrument() );
+        PlatformMidiManager::playNote( 131-pitchID, volume, durationMilli, 0, m_track->getInstrument() );
     }
 }
 
