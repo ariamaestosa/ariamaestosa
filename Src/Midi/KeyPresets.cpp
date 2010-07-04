@@ -69,7 +69,7 @@ KeyPreset::KeyPreset(const char* name, const char* contents)
 
 IPreset* KeyPreset::clone(wxString newName)
 {
-    return new KeyPreset(newName, m_key_notes);
+    return new KeyPreset(newName.mb_str(), m_key_notes);
 }
 
 // ----------------------------------------------------------------------------------------------------------
