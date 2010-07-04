@@ -116,7 +116,7 @@ void PresetGroup::write()
     wxString prefix = wxStandardPaths::Get().GetUserDataDir();
     if (not wxDirExists(prefix))
     {
-        const bool success = wxMkDir(prefix, 0777);
+        const bool success = wxMkDir(prefix.mb_str(), 0777);
         if (not success and not wxDirExists(prefix))
         {
             wxMessageBox(wxT("Sorry, would not create ") + prefix);

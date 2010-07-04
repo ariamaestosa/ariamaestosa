@@ -38,7 +38,7 @@ namespace TestCaseList
         {
             if (currNode->m_children.find(path[n]) == currNode->m_children.end())
             {
-                currNode->m_children[path[n]] = Node(path[n]);
+                currNode->m_children[path[n]] = Node(path[n].mb_str());
             }
             currNode = &currNode->m_children[path[n]];
         }
@@ -56,7 +56,7 @@ UnitTestCase::UnitTestCase(const char* name, const char* filePath)
     
     m_name = name;
     
-    wxString filePathWxString(filePath);
+    wxString filePathWxString(filePath, wxConvUTF8);
     if (filePathWxString.Find('.') != wxNOT_FOUND)
     {
         filePathWxString = filePathWxString.BeforeLast('.');
