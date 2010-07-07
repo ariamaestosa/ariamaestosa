@@ -103,6 +103,12 @@ void PresetGroup::read(PresetFactory presetFactory)
 {
     wxString prefix = wxStandardPaths::Get().GetUserDataDir();
 
+    if (not wxFileExists(prefix + wxFileName::GetPathSeparator() + m_name + wxT(".ariapreset")))
+    {
+        // nothing to read
+        return;
+    }
+    
     
     wxFileInputStream input( prefix + wxFileName::GetPathSeparator() + m_name + wxT(".ariapreset"));
     wxTextInputStream text( input );
