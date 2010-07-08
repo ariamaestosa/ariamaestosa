@@ -268,8 +268,8 @@ namespace AriaMaestosa
 			  int e = ::midiOutOpen(
 				&m_hOutMidiDevice,
 				MIDI_MAPPER,
-				0,
-				0,
+				NULL,
+				NULL,
 				CALLBACK_NULL
 				);
 
@@ -297,6 +297,7 @@ namespace AriaMaestosa
                         wxLogError(wxT("Failed to open windows MIDI output device, reason : <unknown>"));
                         break;
                 }
+                wxLogError(wxString::Format(wxT("(%i MIDI devices available)"), midiOutGetNumDevs()));
 				return;
 			  }
 			  m_bOutOpen=true;
