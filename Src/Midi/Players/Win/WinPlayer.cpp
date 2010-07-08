@@ -275,6 +275,7 @@ namespace AriaMaestosa
 
 			  if( e!=0 )
 			  {
+                wxMessageBox( _("Failed to initialize MIDI out device") );
 				return;
 			  }
 			  m_bOutOpen=true;
@@ -305,6 +306,8 @@ namespace AriaMaestosa
         // play/stop a single preview note (no sequencing is to be done, only direct output)
         void playNote(int noteNum, int volume, int duration, int channel, int instrument)
         {
+            if (not m_bOutOpen) return;
+
 			DWORD dwMsg;
 
             if (lastPlayedNote != -1)
@@ -318,6 +321,7 @@ namespace AriaMaestosa
         	dwMsg = MAKEMIDISHORTMSG(MIDI_NOTE_ON, channel, noteNum, volume);
 			::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
 
+            ASSERT(stopNoteTimer != NULL);
             stopNoteTimer->start(duration);
             lastPlayedNote = noteNum;
             lastChannel = channel;
@@ -325,7 +329,9 @@ namespace AriaMaestosa
 
         void stopNote()
         {
-			 DWORD dwMsg;
+            if (not m_bOutOpen) return;
+
+            DWORD dwMsg;
 
         	// 0 velocity turns note off
         	dwMsg = MAKEMIDISHORTMSG(MIDI_NOTE_ON, lastChannel, lastPlayedNote, 0);
@@ -411,6 +417,7 @@ namespace AriaMaestosa
 
         bool play(Sequence* sequence, /*out*/int* startTick, bool selectionOnly)
         {
+            if (not m_bOutOpen) return false;
             if (playing) return false; // already playing
             playing = true;
             current_tick = 0;
