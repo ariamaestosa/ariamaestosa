@@ -276,6 +276,27 @@ namespace AriaMaestosa
 			  if( e!=0 )
 			  {
                 wxMessageBox( _("Failed to initialize MIDI out device") );
+                switch (e)
+                {
+                    case MIDIERR_NODEVICE:
+                        wxLogError(wxT("Failed to open windows MIDI output device, reason : MIDIERR_NODEVICE"));
+                        break;
+                    case MMSYSERR_ALLOCATED:
+                        wxLogError(wxT("Failed to open windows MIDI output device, reason : MMSYSERR_ALLOCATED"));
+                        break;
+                    case MMSYSERR_BADDEVICEID:
+                        wxLogError(wxT("Failed to open windows MIDI output device, reason : MMSYSERR_BADDEVICEID"));
+                        break;
+                    case MMSYSERR_INVALPARAM:
+                        wxLogError(wxT("Failed to open windows MIDI output device, reason : MMSYSERR_INVALPARAM"));
+                        break;
+                    case MMSYSERR_NOMEM:
+                        wxLogError(wxT("Failed to open windows MIDI output device, reason : MMSYSERR_NOMEM"));
+                        break;
+                    default:
+                        wxLogError(wxT("Failed to open windows MIDI output device, reason : <unknown>"));
+                        break;
+                }
 				return;
 			  }
 			  m_bOutOpen=true;
