@@ -28,6 +28,7 @@
 					<Add option="-D__WXDEBUG__" />
 					<Add option="-DUSE_WX_LOGGING" />
 					<Add directory="$(#wx)\lib\gcc_dll\mswud" />
+					<Add directory="$(#wx)\include" />
 				</Compiler>
 				<ResourceCompiler>
 					<Add directory="$(#wx)\lib\gcc_dll\mswu" />
@@ -55,6 +56,7 @@
 					<Add option="-DWIN32_GUI" />
 					<Add option="-DNDEBUG" />
 					<Add directory="$(#wx)\lib\gcc_lib\mswu" />
+					<Add directory="$(#wx)\include" />
 				</Compiler>
 				<ResourceCompiler>
 					<Add directory="$(#wx)\lib\gcc_lib\mswu" />
@@ -94,8 +96,6 @@
 					<CompileFile command="" />
 					<Clean command="cd .. &amp;&amp; python scons/scons.py --clean" />
 					<DistClean command="cd .. &amp;&amp; python scons/scons.py --clean" />
-					<AskRebuildNeeded command="$make -q -f $makefile $target" />
-					<SilentBuild command="$make -s -f $makefile $target" />
 				</MakeCommands>
 			</Target>
 			<Target title="GCC_Linux_Release">
@@ -119,8 +119,6 @@
 					<CompileFile command="" />
 					<Clean command="cd .. &amp;&amp; python scons/scons.py --clean" />
 					<DistClean command="cd .. &amp;&amp; python scons/scons.py --clean" />
-					<AskRebuildNeeded command="$make -q -f $makefile $target" />
-					<SilentBuild command="$make -s -f $makefile $target" />
 				</MakeCommands>
 			</Target>
 		</Build>
@@ -202,10 +200,14 @@
 		<Unit filename="..\Src\Dialogs\AboutDialog.h" />
 		<Unit filename="..\Src\Dialogs\CopyrightWindow.cpp" />
 		<Unit filename="..\Src\Dialogs\CopyrightWindow.h" />
+		<Unit filename="..\Src\Dialogs\CustomKeyDialog.cpp" />
+		<Unit filename="..\Src\Dialogs\CustomKeyDialog.h" />
 		<Unit filename="..\Src\Dialogs\CustomNoteSelectDialog.cpp" />
 		<Unit filename="..\Src\Dialogs\CustomNoteSelectDialog.h" />
 		<Unit filename="..\Src\Dialogs\Preferences.cpp" />
 		<Unit filename="..\Src\Dialogs\Preferences.h" />
+		<Unit filename="..\Src\Dialogs\PresetEditor.cpp" />
+		<Unit filename="..\Src\Dialogs\PresetEditor.h" />
 		<Unit filename="..\Src\Dialogs\PrintSetupDialog.cpp" />
 		<Unit filename="..\Src\Dialogs\PrintSetupDialog.h" />
 		<Unit filename="..\Src\Dialogs\ScaleDialog.cpp" />
@@ -255,6 +257,14 @@
 		<Unit filename="..\Src\Midi\CommonMidiUtils.h" />
 		<Unit filename="..\Src\Midi\ControllerEvent.cpp" />
 		<Unit filename="..\Src\Midi\ControllerEvent.h" />
+		<Unit filename="..\Src\Midi\DrumChoice.cpp" />
+		<Unit filename="..\Src\Midi\DrumChoice.h" />
+		<Unit filename="..\Src\Midi\GuitarTuning.cpp" />
+		<Unit filename="..\Src\Midi\GuitarTuning.h" />
+		<Unit filename="..\Src\Midi\InstrumentChoice.cpp" />
+		<Unit filename="..\Src\Midi\InstrumentChoice.h" />
+		<Unit filename="..\Src\Midi\KeyPresets.cpp" />
+		<Unit filename="..\Src\Midi\KeyPresets.h" />
 		<Unit filename="..\Src\Midi\MeasureData.cpp" />
 		<Unit filename="..\Src\Midi\MeasureData.h" />
 		<Unit filename="..\Src\Midi\Note.cpp" />
@@ -286,14 +296,16 @@
 		<Unit filename="..\Src\OpenGL.h" />
 		<Unit filename="..\Src\Pickers\ControllerChoice.cpp" />
 		<Unit filename="..\Src\Pickers\ControllerChoice.h" />
-		<Unit filename="..\Src\Pickers\DrumChoice.cpp" />
-		<Unit filename="..\Src\Pickers\DrumChoice.h" />
-		<Unit filename="..\Src\Pickers\InstrumentChoice.cpp" />
-		<Unit filename="..\Src\Pickers\InstrumentChoice.h" />
+		<Unit filename="..\Src\Pickers\DrumPicker.cpp" />
+		<Unit filename="..\Src\Pickers\DrumPicker.h" />
+		<Unit filename="..\Src\Pickers\InstrumentPicker.cpp" />
+		<Unit filename="..\Src\Pickers\InstrumentPicker.h" />
 		<Unit filename="..\Src\Pickers\KeyPicker.cpp" />
 		<Unit filename="..\Src\Pickers\KeyPicker.h" />
 		<Unit filename="..\Src\Pickers\MagneticGrid.cpp" />
 		<Unit filename="..\Src\Pickers\MagneticGrid.h" />
+		<Unit filename="..\Src\Pickers\NotePickerWidget.cpp" />
+		<Unit filename="..\Src\Pickers\NotePickerWidget.h" />
 		<Unit filename="..\Src\Pickers\TimeSigPicker.cpp" />
 		<Unit filename="..\Src\Pickers\TimeSigPicker.h" />
 		<Unit filename="..\Src\Pickers\TuningPicker.cpp" />
@@ -302,6 +314,8 @@
 		<Unit filename="..\Src\Pickers\VolumeSlider.h" />
 		<Unit filename="..\Src\PreferencesData.cpp" />
 		<Unit filename="..\Src\PreferencesData.h" />
+		<Unit filename="..\Src\PresetManager.cpp" />
+		<Unit filename="..\Src\PresetManager.h" />
 		<Unit filename="..\Src\Printing\AbstractPrintableSequence.cpp" />
 		<Unit filename="..\Src\Printing\AbstractPrintableSequence.h" />
 		<Unit filename="..\Src\Printing\AriaPrintable.cpp" />
