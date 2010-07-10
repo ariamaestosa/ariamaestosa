@@ -20,8 +20,13 @@ Help("""
                 (does _not_ add flags to cross-compile, only selects the right lib dirs)
                 * currently only has an effect on Linux.
             renderer=[opengl/wxwidgets]
+                choose whether to use the OpenGL renderer or the software (wxWidgets-based) renderer
             CXXFLAGS="custom build flags"
+                To add other flags to pass when compiling
             LDFLAGS="custom link flags"
+                To add other flags to pass when linking
+            WXRC_PATH="C:\wxWidgets-2.8.10\include"
+                for windows only, defire the include path under which the "wx/msw/wx.rc" file may be found
              
         Furthermore, the CXX environment variable is read if it exists, allowing
         you to choose which g++ executable you wish to use.
@@ -240,7 +245,19 @@ def compile_Aria(which_os):
             winLdFlags=subprocess.check_output(WXCONFIG.split() + ["--libs", "core,base"])
         print "Build flags :", winCppFlags
         print "Link flags :", winLdFlags
+        
+        try:
+            out = subprocess.Popen(["windres", "--include-dir=C:\wxWidgets-2.8.10\include", "--input", "win32\Aria.rc", "--output", "msvcr.o"], stdout = subprocess.PIPE).communicate()
+        except:
+            sys.stderr.write("could not execute 'windres', is mingw installed?\n")
+        
         env.Append(CCFLAGS=winCppFlags.split())
+        
+        wxRcPath = ARGUMENTS.get('WXRC_PATH', None)
+        if wxRcPath is None:
+            sys.stderr.write("Please pass WXRC_PATH for Windows builds")
+            sys.exit(1)
+        
         #env.Append(LINKFLAGS=['-mwindows'] + winLdFlags.split())
         # Ugly hack : wx flags need to appear at the end of the command, but scons doesn't support that, so I need to hack their link command
         env['LINKCOM']     = '$LINK -o $TARGET $LINKFLAGS $SOURCES $_LIBDIRFLAGS $_LIBFLAGS -mwindows ' + winLdFlags
@@ -349,6 +366,9 @@ def compile_Aria(which_os):
 
     # compile to .o
     object_list = env.Object(source = sources)
+    
+    if which_os == "windows":
+        object_list = object_list + ["msvcr.o"]
     
     # link program
     executable = env.Program( target = 'Aria', source = object_list)
