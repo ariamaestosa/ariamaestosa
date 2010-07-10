@@ -98,7 +98,7 @@ This will do a release build with default wxWidgets. Issue <i>python scons/scons
 The command may need to be slightly different, mainly because scons doesn't import environment variable like PATH or WXWIN :
 
 <blockquote><pre>
-python.exe scons/scons.py WXCONFIG="C:\wx-config --libs --debug=no --static=yes --prefix=C:\wxWidgets-2.8.10" renderer="wxwidgets"</pre></blockquote>
+python.exe scons/scons.py WXCONFIG="C:\wx-config --libs --debug=no --static=yes --prefix=C:\wxWidgets-2.8.10" renderer="wxwidgets"  WXRC_PATH="C:\wxWidgets-2.8.10\include"</pre></blockquote>
 <br/>
 Adapt the path to "wx-config" and to your wxWidgets build as needed. Modify the flags given to wx-config to get the right build if you have
 many wxWidgets builds.
