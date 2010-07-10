@@ -38,13 +38,7 @@ Aria is written in C++.
 <center><b>Prerequisites - Mac OS X</b></center>
 You will need to install Developer Tools from the mac OS X install disc. You need OS X 10.4.<br/><br/>
 
-<center><b>Prerequisites - Linux</b></center>
-<br/>The Linux version has been tested less than the mac one but appears to be getting more stable. At this point, you might want to build it to help me test it - it might also be stable enough for production but no promise :) Midi on Linux is especially painful, synthesizers like TiMidity haven't been maintained for years, eat a lot of CPU and don't play nicely with PulseAudio. In the future I will consider alternative implementations.<br/>
-<br/>You will need Python, Alsa (including -dev packages if your distro uses them), wxGTK (wxWidgets), OpenGL (if you wish to use the OpenGL renderer, and also get -dev packages if any), gcc/g++ (build-essential in Ubuntu). For midi playback, you will need a softsynth like Timidity with a soundbank (more info below)<br/><br/>
-
-<center><b>Installing wxWidgets - Mac OS X</b></center><br/>
-
-First, download and install wxWidgets. I usually build static. Don't forget to enable OpenGL support if you use wxWidgets 2.8. 
+<br/><b>Installing wxWidgets :</b> First, download and install wxWidgets. I usually build static. Don't forget to enable OpenGL support if you use wxWidgets 2.8. 
 
 Starting from Aria 1.2, I use wxOSX 2.9.x trunk. wxWidgets 2.8 will still work but it has a couple printing-related bugs. Because wx 2.9 still has a couple bugs, patches have been included in the /OSX directory - apply them to wxWidgets before building it for better results.
 
@@ -58,9 +52,11 @@ make
 sudo make install</pre></blockquote>Make sure <i>wx-config --libs</i> points to the 2.8 libs when run from a terminal. Mac OS X 10.4 comes with wxWidgets 2.5 pre-installed. It is <b>not</b> recommended to build Aria with it. If you install wxWidgets 2.8 from source, it will default to installing in /usr/local, however pre-installed 2.5 is in /usr, so be careful about conflicts. If /usr comes before /usr/local in yout PATH environment variable, you  will get the 2.5 libs. For getting 2.5 out of the way quickly, just get /usr/bin/wx-config out of the way (sudo mv /usr/bin/wx-config /usr/bin/wx-config-2.5). If your computer does not find wx-config, make sure /usr/local/bin is in your PATH (or pass WXCONFIG=/usr/local/bin/wx-config to scons - see explainations below).
 <br/><br/>
 
-<center><b>Installing wxWidgets - Linux</b></center>
+<br/><center><b>Prerequisites - Linux</b></center>
+The Linux version has been tested less than the mac one but appears to be getting more stable. At this point, you might want to build it to help me test it - it might also be stable enough for production but no promise :) Midi on Linux is especially painful, synthesizers like TiMidity haven't been maintained for years, eat a lot of CPU and don't play nicely with PulseAudio. In the future I will consider alternative implementations.<br/>
+<br/>You will need Python, Alsa (including -dev packages if your distro uses them), wxGTK (wxWidgets), OpenGL (if you wish to use the OpenGL renderer, and also get -dev packages if any), gcc/g++ (build-essential in Ubuntu). For midi playback, you will need a softsynth like Timidity with a soundbank (more info below)<br/><br/>
 
-You can simply download wxWidgets 2.8 from your distribution's repositories. It needs OpenGL support enabled if you want to use the OpenGL renderer, and should be Unicode. Don't forget to install -dev packages if your distribution uses them.
+<b>Installing wxWidgets : </b> You can simply download wxWidgets 2.8 from your distribution's repositories. It needs OpenGL support enabled if you want to use the OpenGL renderer, and should be Unicode. Don't forget to install -dev packages if your distribution uses them.
 <br/><br/>If you want to build wxWidgets from source, you can use commands like (read the instructions that come with wxWidgets or wxWiki for more info):<br/>
 <blockquote>
 <pre>cd wxGTK2.8.x<br/>mkdir gtk-build && cd gtk-build<br/>../configure --with-opengl --enable-unicode<br/>make<br/>sudo make install</pre></blockquote>
@@ -68,8 +64,11 @@ You can simply download wxWidgets 2.8 from your distribution's repositories. It 
 Make sure <i>wx-config --libs</i> points to the 2.8 libs when run from a terminal. If it does not, it is likely that your distribution's wxWidgets (in /usr/) is picked up before the one you built (in /usr/local/). To fix this, you can pass WXCONFIG=/usr/local/bin/wx-config to scons when building - more info below.
 <br/><br/>
 
-<center><b>Installing wxWidgets - Windows</b></center>
-Build using MinGW - I don't have instructions here for the moment, please read the README or the wxWidgets wiki.
+<center><b>Prerequisites - Windows</b></center>
+Install MinGW. You'll need Python if you wish to use the scons build system (and update your PATH env variable if you wish to invoke python
+from the terminal without using the full path).
+
+<br/><br/><b>Installing wxWidgets : </b> Build using MinGW - I don't have instructions here for the moment, please read the README or the wxWidgets wiki.
 You will also need to install the Windows version of wx-config (a binary is included in CodeLite packages so you can rip it from there).
 
 <br/><br/>
@@ -143,9 +142,8 @@ Unfortunately, if you use PulseAudio, there are known compatibility issues with 
 
 Then, to open Aria, type <i>Aria</i> in a terminal. Hopefully all will be fine!
 
-<br/>
+<br/><br/>
 <b><center>Finishing on Windows</center></b>
-<br/>
 If your wxWidgets build is a DLL build, copy the DLL(s) into the same directory as Aria so they are found. Copy the resources in the same
 directory as Aria.
 
