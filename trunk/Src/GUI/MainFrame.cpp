@@ -364,7 +364,7 @@ void MainFrame::init()
 
 
     songLength=new wxSpinCtrl(toolbar, LENGTH, to_wxString(DEFAULT_SONG_LENGTH), wxDefaultPosition,
-#ifdef __WXGTK__
+    #if defined(__WXGTK__) || defined(__WXMSW__)
                               averageTextCtrlSize
 #else
                               wxDefaultSize
@@ -385,7 +385,7 @@ void MainFrame::init()
     toolbar->add(firstMeasure, _("Start"));
 
     displayZoom=new wxSpinCtrl(toolbar, ZOOM, wxT("100"), wxDefaultPosition,
-    #ifdef __WXGTK__
+    #if defined(__WXGTK__) || defined(__WXMSW__)
                            averageTextCtrlSize
     #else
                            wxDefaultSize
