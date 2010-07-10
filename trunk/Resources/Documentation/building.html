@@ -12,25 +12,28 @@
 <h2>Building</h2>
 </center>
 
-<!----------------------------- CONTENT ------------------------->
+<!--   ************  GETTING SETUP  *************  -->
 
 <blockquote>
 
 First, download the source code from the <A href="http://sourceforge.net/project/showfiles.php?group_id=186987">sourceforge downloads area</A> or from SVN.<br/>
 Aria is written in C++.
 <br/><br/><b>Dependencies : </b>
-<list>
-<li/> <a href="http://www.wxwidgets.org">wxWidgets</A>. I am currently using 2.8.x on Linux, and 2.9.x trunk on OS X (because trunk has a couple printing bugs fixed)
-<li/> <a href="http://www.opengl.org">OpenGL</A> (included by default on mac OS X)
+<ul>
+<li/> GCC (g++). Included in the developer tools on OS X, found in repositories of all distros on Linux, MinGW on Windows (VisualStudio not supported).
+<li/> <a href="http://www.wxwidgets.org">wxWidgets</A>. I am currently using 2.8.x on Linux/Windows, and 2.9.x trunk on OS X (because trunk has a couple printing bugs fixed)
+<li/> <a href="http://www.opengl.org">OpenGL</A> if you use the OpenGL renderer, which is optional (OpenGL is included by default on mac OS X)
 <li/> <a href="http://www.jdkoftinoff.com/main/Free_Projects/C++_MIDI_Library/"> libjdkmidi</A> (included in the Aria source)
 <li/> <a href="http://www.ambiera.com/irrxml/index.html">irrXML</A> (included in the Aria source)
-</list>
+</ul>
 
 <br/><b>Build system : </b>
 <list>
-<li/> <a href="http://www.scons.org/">scons</A> (included in source tarballs. To build from SVN, install scons 0.98 or better)
+<li/> <a href="http://www.scons.org/">scons</A> (included in the Aria source tree so you don't need to get it separately)
 <li/> You can also build with your favorite IDE/build system, but you'll then need to set up things yourself.
 </list><br/>
+
+<hr/>
 
 <center><b>Prerequisites - Mac OS X</b></center>
 You will need to install Developer Tools from the mac OS X install disc. You need OS X 10.4.<br/><br/>
@@ -65,15 +68,40 @@ You can simply download wxWidgets 2.8 from your distribution's repositories. It 
 Make sure <i>wx-config --libs</i> points to the 2.8 libs when run from a terminal. If it does not, it is likely that your distribution's wxWidgets (in /usr/) is picked up before the one you built (in /usr/local/). To fix this, you can pass WXCONFIG=/usr/local/bin/wx-config to scons when building - more info below.
 <br/><br/>
 
-<center><b>Compiling Aria (any platform)</b></center>
+<center><b>Installing wxWidgets - Windows</b></center>
+Build using MinGW - I don't have instructions here for the moment, please read the README or the wxWidgets wiki.
+You will also need to install the Windows version of wx-config (a binary is included in CodeLite packages so you can rip it from there).
+
+<br/><br/>
+<!--   ************  COMPILING  *************  -->
+<hr/>
+
+<br/>
+<center><b>Compiling Aria (OS X / Linux)</b></center>
 You are now ready to build Aria itself. All you need to do is type the command appropriate for your system :<br/>
 
 <blockquote><pre>
 python scons/scons.py
-</pre><br/></blockquote>
+</pre></blockquote>
+
+<br/>
 
 This will do a release build with default wxWidgets. Issue <i>python scons/scons.py --help</i> for a summary of all possible options, like to get a debug build or to use a different wxWidgets build.
+
 <br/><br/>
+<center><b>Compiling Aria (Windows)</b></center>
+The command may need to be slightly different, mainly because scons doesn't import environment variable like PATH or WXWIN :
+
+<blockquote><pre>
+python.exe scons/scons.py WXCONFIG="C:\wx-config --prefix=C:\wxWidgets-2.8.10" renderer="wxwidgets"
+</pre></blockquote>
+<br/>
+Adapt the path to "wx-config" and to your wxWidgets build as needed.
+
+<br/><br/>
+<hr/>
+<!--   ************  FINISHING  *************  -->
+<br/>
 
 <b><center>Finishing on OS X</center></b>
 
@@ -93,7 +121,6 @@ You can also install Aria into /usr/local/ by running the following command as r
 
 <blockquote><pre>python scons/scons.py install </pre></blockquote>
 
-This will require scons 0.98.4 or later to work correctly.<br/>
 Or, to specify an install prefix :
 
 <blockquote><pre>
@@ -116,7 +143,18 @@ Unfortunately, if you use PulseAudio, there are known compatibility issues with 
 
 Then, to open Aria, type <i>Aria</i> in a terminal. Hopefully all will be fine!
 
-<br/><br/><br/><br/>
+<br/>
+<b><center>Finishing on Windows</center></b>
+<br/>
+If your wxWidgets build is a DLL build, copy the DLL(s) into the same directory as Aria so they are found. Copy the resources in the same
+directory as Aria.
+
+<br/><br/>
+<hr/>
+<!--   ************  DONE  *************  -->
+<br/>
+<b><center>Closing Words</center></b>
+
 If you have any question or issue, do not hesitate to contact me!
 
 </body>

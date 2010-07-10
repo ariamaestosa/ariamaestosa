@@ -241,7 +241,9 @@ def compile_Aria(which_os):
         print "Build flags :", winCppFlags
         print "Link flags :", winLdFlags
         env.Append(CCFLAGS=winCppFlags.split())
-        env.Append(LINKFLAGS=['-mwindows'] + winLdFlags.split())
+        #env.Append(LINKFLAGS=['-mwindows'] + winLdFlags.split())
+        # Ugly hack : wx flags need to appear at the end of the command, but scons doesn't support that, so I need to hack their link command
+        env['LINKCOM']     = '$LINK -o $TARGET $LINKFLAGS $SOURCES $_LIBDIRFLAGS $_LIBFLAGS -mwindows ' + winLdFlags
     else:
         if renderer == "opengl":
             env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,gl'])
