@@ -14,8 +14,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _sequencer_
-#define _sequencer_
+#ifndef __ARIA_SEQUENCER_H__
+#define __ARIA_SEQUENCER_H__
 
 namespace jdkmidi{ class MIDISequencer; }
 

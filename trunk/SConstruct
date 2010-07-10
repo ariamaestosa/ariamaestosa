@@ -1,6 +1,7 @@
 import sys
 import os
 import platform
+import subprocess
 
 Help("""
       Usage:
@@ -104,10 +105,6 @@ def main_Aria_func():
         sys.exit(0) 
     
     print">> Operating system : " + which_os 
-        
-    if which_os == "windows":
-        print "!! Warning :  Windows is unsupported at this point" 
-
 
     # check what to do
     if 'uninstall' in COMMAND_LINE_TARGETS:
@@ -186,8 +183,12 @@ def sys_command(command):
 # ---------------------------- Compile -----------------------------
 def compile_Aria(which_os):
 
-    env = Environment()
-    
+    if which_os == "windows":
+        # on Windows ask for MinGW, VC++ can't handle Aria (since it doesn't support recent C++ standards)
+        env = Environment(tools = ['mingw'])
+    else:
+        env = Environment()
+	
     env.Decider('MD5-timestamp')
     
     env.Append(PATH = os.environ['PATH'])
@@ -229,7 +230,23 @@ def compile_Aria(which_os):
     WXCONFIG = ARGUMENTS.get('WXCONFIG', 'wx-config')
     print ">> wx-config : " + WXCONFIG
         
-    env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,gl'])
+    if which_os == 'windows':
+        # work around bugs in scons 'ParseConfig' on Windows...
+        if renderer == "opengl":
+            winCppFlags=subprocess.check_output(WXCONFIG.split() + ["--cppflags","core,base,gl"])
+            winLdFlags=subprocess.check_output(WXCONFIG.split() + ["--libs", "core,base,gl"])
+        else:
+            winCppFlags=subprocess.check_output(WXCONFIG.split() + ["--cppflags","core,base"])
+            winLdFlags=subprocess.check_output(WXCONFIG.split() + ["--libs", "core,base"])
+        print "Build flags :", winCppFlags
+        print "Link flags :", winLdFlags
+        env.Append(CCFLAGS=winCppFlags.split())
+        env.Append(LINKFLAGS=winLdFlags.split())
+    else:
+        if renderer == "opengl":
+            env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,gl'])
+        else:
+            env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base'])
 
     # check build type and init build flags
     if build_type == "debug":
