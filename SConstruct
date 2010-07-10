@@ -241,7 +241,7 @@ def compile_Aria(which_os):
         print "Build flags :", winCppFlags
         print "Link flags :", winLdFlags
         env.Append(CCFLAGS=winCppFlags.split())
-        env.Append(LINKFLAGS=winLdFlags.split())
+        env.Append(LINKFLAGS=['-mwindows'] + winLdFlags.split())
     else:
         if renderer == "opengl":
             env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,gl'])
@@ -349,7 +349,7 @@ def compile_Aria(which_os):
     object_list = env.Object(source = sources)
     
     # link program
-    executable = env.Program( target = 'Aria', source = object_list )
+    executable = env.Program( target = 'Aria', source = object_list)
 
     # install target
     if 'install' in COMMAND_LINE_TARGETS:

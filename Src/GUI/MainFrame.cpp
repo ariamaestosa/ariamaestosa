@@ -268,7 +268,15 @@ void CustomToolBar::EnableTool(const int id, const bool enabled)
 MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(100,100), wxSize(900,600),
                                  ARIA_WINDOW_FLAGS )
 {
-    toolbar = new CustomToolBar(this);
+    m_main_panel = new wxPanel(this);
+
+    // FIXME: normally the main panel expands to the size of the parent frame automatically.
+    // except on wxMSW when starting maximized *sigh*
+    wxBoxSizer* box = new wxBoxSizer(wxHORIZONTAL);
+    box->Add(m_main_panel, 1, wxEXPAND | wxALL, 0);
+    SetSizer(box);
+
+    toolbar = new CustomToolBar(m_main_panel);
 
 #ifdef __WXMAC__
     ProcessSerialNumber PSN;
@@ -340,7 +348,7 @@ void MainFrame::init()
 
     // -------------------------- Toolbar ----------------------------
 #ifdef NO_WX_TOOLBAR
-    borderSizer->Add(toolbar, 0, wxALIGN_CENTER_VERTICAL | wxALL, 2);
+    borderSizer->Add(toolbar, 0, wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALL, 2);
     borderSizer->AddSpacer(10);
 #endif
 
@@ -406,10 +414,10 @@ void MainFrame::init()
     args[0]=WX_GL_RGBA;
     args[1]=WX_GL_DOUBLEBUFFER;
     args[2]=0;
-    mainPane=new MainPane(this, args);
+    mainPane=new MainPane(m_main_panel, args);
     borderSizer->Add( static_cast<wxGLCanvas*>(mainPane), 1, wxEXPAND | wxALL, 2);
 #elif defined(RENDERER_WXWIDGETS)
-    mainPane=new MainPane(this, NULL);
+    mainPane = new MainPane(m_main_panel, NULL);
     borderSizer->Add( static_cast<wxPanel*>(mainPane), 1, wxEXPAND | wxALL, 2 );
 #endif
 
@@ -417,7 +425,8 @@ void MainFrame::init()
     Core::setMainPane(mainPane);
 
     // -------------------------- Vertical Scrollbar ----------------------------
-    verticalScrollbar=new wxScrollBar(this, SCROLLBAR_V, wxDefaultPosition, wxDefaultSize, wxSB_VERTICAL);
+    verticalScrollbar = new wxScrollBar(m_main_panel, SCROLLBAR_V,
+                                        wxDefaultPosition, wxDefaultSize, wxSB_VERTICAL);
 
     verticalScrollbar->SetScrollbar(
                                     0 /*position*/,
@@ -430,7 +439,7 @@ void MainFrame::init()
 
 
     // -------------------------- Horizontal Scrollbar ----------------------------
-    horizontalScrollbar=new wxScrollBar(this, SCROLLBAR_H);
+    horizontalScrollbar = new wxScrollBar(m_main_panel, SCROLLBAR_H);
     borderSizer->Add(horizontalScrollbar, 1, wxEXPAND | wxALL, 0);
 
     // For the first time, set scrollbar manually and not using updateHorizontalScrollbar(), because this method assumes the frame is visible.
@@ -448,11 +457,8 @@ void MainFrame::init()
 
     // -------------------------- finish ----------------------------
 
-    SetAutoLayout(TRUE);
-    SetSizer(borderSizer);
+    m_main_panel->SetSizer(borderSizer);
     Centre();
-
-    borderSizer->Layout();
 
 #ifdef __WXMSW__
     // Main frame icon
@@ -471,8 +477,13 @@ void MainFrame::init()
 #endif
 
     Maximize(true);
+    Layout();
     Show();
     //Maximize(true);
+
+#ifdef __WXMSW__
+    Layout();
+#endif
 
     changingValues = false;
 
