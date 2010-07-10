@@ -276,8 +276,12 @@ MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(1
     box->Add(m_main_panel, 1, wxEXPAND | wxALL, 0);
     SetSizer(box);
 
+#ifdef NO_WX_TOOLBAR
     toolbar = new CustomToolBar(m_main_panel);
-
+#else
+    toolbar = new CustomToolBar(this);
+#endif
+    
 #ifdef __WXMAC__
     ProcessSerialNumber PSN;
     GetCurrentProcess(&PSN);
