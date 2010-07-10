@@ -88,25 +88,25 @@ namespace AriaMaestosa
     const int CLOSE_BUTTON_SPACE_FROM_RIGHT = 8;
 
     int tab_width = 145;
-    
+
     /** when this is set to 'true', the app will wait for a new click to be begun to process any mouse events
       * (i.e. current click/drag is not valid anymore)
       */
     bool invalidateMouseEvents = false;
-    
+
     // ==========================================================================================
     // ==========================================================================================
     class MouseDownTimer : public wxTimer
     {
         MainPane* main_pane;
-        
+
     public:
-        
+
         MouseDownTimer(MainPane* parent) : wxTimer()
         {
             main_pane = parent;
         }
-        
+
         void Notify()
         {
             if (!main_pane->isMouseDown())
@@ -115,9 +115,9 @@ namespace AriaMaestosa
                 return;
             }
             main_pane->mouseHeldDown();
-            
+
         }
-        
+
         void start()
         {
             Start(10);
@@ -131,7 +131,7 @@ namespace AriaMaestosa
 #pragma mark -
 #endif
 
-MainPane::MainPane(MainFrame* mainframe, int* args) : RenderPane(mainframe, args)
+MainPane::MainPane(wxWindow* parent, int* args) : RenderPane(parent, args)
 {
     currentTick = -1;
     m_dragged_track_id = -1;
@@ -179,7 +179,7 @@ void MainPane::paintEvent(wxPaintEvent& evt)
 }
 
 // --------------------------------------------------------------------------------------------------
-    
+
 void MainPane::render(const bool paintEvent)
 {
     if (!prepareFrame()) return;
@@ -241,7 +241,7 @@ bool MainPane::do_render()
     int start_at_x = 0;
     const int seqamount = getMainFrame()->getSequenceAmount();
     const int currentSeqID = getMainFrame()->getCurrentSequenceID();
-    
+
     // if too many tabs for all to be visible, make them smaller
     tab_width = 145;
     if (seqamount*(TAB_SIDE_WIDTH+tab_width+TAB_SIDE_WIDTH) > Display::getWidth())
@@ -267,7 +267,7 @@ bool MainPane::do_render()
             tabBorderDrawable->move(start_at_x+TAB_SIDE_WIDTH+tab_width, TAB_BAR_Y);
             tabBorderDrawable->setFlip(true, false);
             tabBorderDrawable->render();
-            
+
             if (m_mouse_hovering_tabs)
             {
                 // draw close button
@@ -292,7 +292,7 @@ bool MainPane::do_render()
             tabBorderDrawable->move(start_at_x+TAB_SIDE_WIDTH+tab_width, TAB_BAR_Y+3);
             tabBorderDrawable->setFlip(true, false);
             tabBorderDrawable->render();
-            
+
             if (m_mouse_hovering_tabs)
             {
                 wxPoint mouse = this->ScreenToClient(wxGetMousePosition());
@@ -459,7 +459,7 @@ void MainPane::drumPopupSelected(wxCommandEvent& evt)
 {
     Core::getDrumPicker()->menuSelected( evt );
 }
-    
+
 // --------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
@@ -544,7 +544,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
     isMouseDown_bool=true;
 
     int measureBarHeight = getMeasureData()->graphics->getMeasureBarHeight();
-    
+
     // ----------------------------------- click is in track area ----------------------------
     // check click is within track area
     if (mousey_current < getHeight()-getCurrentSequence()->dockHeight and
@@ -668,7 +668,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
 }
 
 // --------------------------------------------------------------------------------------------------
-    
+
 void MainPane::mouseMoved(wxMouseEvent& event)
 {
     if (invalidateMouseEvents) return;
@@ -688,7 +688,7 @@ void MainPane::mouseMoved(wxMouseEvent& event)
             {
                 getCurrentSequence()->getTrack(m_click_in_track)->graphics->processMouseDrag( mousex_current, event.GetY());
             }
-            
+
             // ----------------------------------- click is in measure bar ----------------------------
             if (click_area == CLICK_MEASURE_BAR)
             {
@@ -740,7 +740,7 @@ void MainPane::mouseLeftWindow(wxMouseEvent& event)
 
         invalidateMouseEvents = true; // ignore all mouse events until a new click/drag is begun
     }
-    
+
     if (m_mouse_hovering_tabs)
     {
         m_mouse_hovering_tabs = false;
@@ -857,7 +857,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
     // FIXME - too many renders there, maybe even actions do render
 
     const int current_editor = getCurrentSequence()->getCurrentTrack()->graphics->editorMode;
-    
+
     // --------------- move by 1 measure ------------
     if (current_editor != GUITAR and !commandDown and shiftDown)
     {
@@ -867,7 +867,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             Display::render();
             return;
         }
-        
+
         if (evt.GetKeyCode()==WXK_RIGHT)
         {
             getCurrentSequence()->getCurrentTrack()->action( new Action::MoveNotes(getMeasureData()->measureLengthInTicks(), 0, SELECTED_NOTES));
@@ -875,7 +875,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             return;
         }
     }
-    
+
     // ---------------- shift by octave -------------
     if (current_editor == KEYBOARD and !commandDown and shiftDown)
     {
@@ -885,7 +885,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             Display::render();
             return;
         }
-        
+
         if (evt.GetKeyCode()==WXK_DOWN)
         {
             getCurrentSequence()->getCurrentTrack()->action( new Action::MoveNotes(0, 12, SELECTED_NOTES));
@@ -893,7 +893,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             return;
         }
     }
-    
+
     if (current_editor == GUITAR)
     {
 
@@ -913,7 +913,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             else getCurrentSequence()->getCurrentTrack()->action( new Action::NumberPressed(evt.GetKeyCode() - 324) );
             Display::render();
         }
-        
+
         // ---------------- shift frets -----------------
         if (!commandDown && shiftDown)
         {
@@ -1061,7 +1061,7 @@ void MainPane::enterPlayLoop()
     lastTick = -1;
     Core::activateRenderLoop(true);
 }
-    
+
 // --------------------------------------------------------------------------------------------------
 
 void MainPane::exitPlayLoop()
@@ -1177,7 +1177,7 @@ void MainPane::setCurrentTick(int currentTick)
 {
     MainPane::currentTick = currentTick;
 }
-    
+
 // --------------------------------------------------------------------------------------------------
 
 int MainPane::getCurrentTick() const

@@ -16,7 +16,6 @@
 
 #include "jdkmidi/multitrack.h"
 #include "jdkmidi/sequencer.h"
-
 #include "AriaCore.h"
 #include "Dialogs/WaitWindow.h"
 #include "IO/IOUtils.h"
@@ -29,7 +28,7 @@
 #include "wx/utils.h"
 #include "wx/process.h"
 
-// macro to pack a MIDI short message
+/** macro to pack a MIDI short message */
 #define MAKEMIDISHORTMSG(cStatus, cChannel, cData1, cData2)            \
     cStatus | cChannel | (((UINT)cData1) << 8) | (((DWORD)cData2) << 16)
 

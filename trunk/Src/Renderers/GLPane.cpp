@@ -34,8 +34,8 @@ using namespace AriaMaestosa;
 
 // -------------------------------------------------------------------------------------------------------
 
-GLPane::GLPane(MainFrame* mainFrame, int* args) :
-    wxGLCanvas(mainFrame, wxID_ANY,  wxDefaultPosition, wxDefaultSize, 0, wxT("GLCanvas"),  args)
+GLPane::GLPane(wxWindow* parent, int* args) :
+    wxGLCanvas(parent, wxID_ANY,  wxDefaultPosition, wxDefaultSize, 0, wxT("GLCanvas"),  args)
 {
 }
 

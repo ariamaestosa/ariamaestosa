@@ -114,6 +114,7 @@ namespace AriaMaestosa
         WxOwnerPtr<AboutDialog>  aboutDialog;
         WxOwnerPtr<CustomNoteSelectDialog>  customNoteSelectDialog;
 
+        wxPanel* m_main_panel;
         wxFlexGridSizer* borderSizer;
         CustomToolBar* toolbar;
 
@@ -318,16 +319,16 @@ namespace AriaMaestosa
 
         /** @brief Implement callback from IPlaybackModeListener */
         virtual void onEnterPlaybackMode();
-        
+
         /** @brief Implement callback from IPlaybackModeListener */
         virtual void onLeavePlaybackMode();
-        
+
         /** @brief Implement callback from IActionStackListener */
         virtual void onActionStackChanged();
-        
+
         /** @brief Implement callback from ISequenceDataListener */
         virtual void onSequenceDataChanged();
-        
+
         DECLARE_EVENT_TABLE();
     };
 
