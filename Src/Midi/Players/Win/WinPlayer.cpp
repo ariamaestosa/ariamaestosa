@@ -12,20 +12,19 @@
  *
  */
 
-// everything here must be added/changed/checked, that's just a placeholder to help anyone willing to help
 #ifdef __WIN32__
 
-#include "AriaCore.h"
-#include "Midi/Players/PlatformMidiManager.h"
-#include "Midi/CommonMidiUtils.h"
-#include "Midi/Sequence.h"
-#include "IO/MidiToMemoryStream.h"
-#include "IO/IOUtils.h"
-#include "Dialogs/WaitWindow.h"
-#include "Midi/Players/Sequencer.h"
 #include "jdkmidi/multitrack.h"
 #include "jdkmidi/sequencer.h"
 
+#include "AriaCore.h"
+#include "Dialogs/WaitWindow.h"
+#include "IO/IOUtils.h"
+#include "IO/MidiToMemoryStream.h"
+#include "Midi/Players/Sequencer.h"
+#include "Midi/Players/PlatformMidiManager.h"
+#include "Midi/CommonMidiUtils.h"
+#include "Midi/Sequence.h"
 #include "wx/wx.h"
 #include "wx/utils.h"
 #include "wx/process.h"
@@ -39,14 +38,14 @@
 
 
 // MIDI Status Bytes for Channel Voice Messages
-#define MIDI_NOTE_OFF           0x80
-#define MIDI_NOTE_ON            0x90
-#define MIDI_POLY_PRESSURE      0xA0
-#define MIDI_CONTROL_CHANGE     0xB0
-#define MIDI_PROGRAM_CHANGE     0xC0
-#define MIDI_CHANNEL_PRESSURE   0xD0
-#define MIDI_AFTERTOUCH         0xD0  // synonym for channel pressure
-#define MIDI_PITCH_WHEEL        0xE0
+const int MIDI_NOTE_OFF         = 0x80;
+const int MIDI_NOTE_ON          = 0x90;
+const int MIDI_POLY_PRESSURE    = 0xA0;
+const int MIDI_CONTROL_CHANGE   = 0xB0;
+const int MIDI_PROGRAM_CHANGE   = 0xC0;
+const int MIDI_CHANNEL_PRESSURE = 0xD0;
+const int MIDI_AFTERTOUCH       = 0xD0;  // synonym for channel pressure
+const int MIDI_PITCH_WHEEL      = 0xE0;
 
 
 namespace AriaMaestosa

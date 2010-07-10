@@ -13,7 +13,7 @@
  */
 
 // everything here must be added/changed/checked, that's just a placeholder to help anyone willing to help
-#ifdef __WIN32__
+#if 0
 
 #include "AriaCore.h"
 #include "Midi/Players/PlatformMidiManager.h"
