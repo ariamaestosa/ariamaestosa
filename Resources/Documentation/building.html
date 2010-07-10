@@ -68,7 +68,13 @@ Make sure <i>wx-config --libs</i> points to the 2.8 libs when run from a termina
 Install MinGW. You'll need Python if you wish to use the scons build system (and update your PATH env variable if you wish to invoke python
 from the terminal without using the full path).
 
-<br/><br/><b>Installing wxWidgets : </b> Build using MinGW - I don't have instructions here for the moment, please read the README or the wxWidgets wiki.
+<br/><br/><b>Installing wxWidgets : </b> Build using MinGW. You can use a command like :
+<blockquote><pre>
+cd "C:\wxWidgets-2.8.10\build\msw"
+mingw32-make -f makefile.gcc UNICODE=1 SHARED=0 MONOLITHIC=0 BUILD=release
+</pre></blockquote>
+
+Check the wxWidgets READMEs or the wxWiki for more information.
 You will also need to install the Windows version of wx-config (a binary is included in CodeLite packages so you can rip it from there).
 
 <br/><br/>
@@ -92,10 +98,10 @@ This will do a release build with default wxWidgets. Issue <i>python scons/scons
 The command may need to be slightly different, mainly because scons doesn't import environment variable like PATH or WXWIN :
 
 <blockquote><pre>
-python.exe scons/scons.py WXCONFIG="C:\wx-config --prefix=C:\wxWidgets-2.8.10" renderer="wxwidgets"
-</pre></blockquote>
+python.exe scons/scons.py WXCONFIG="C:\wx-config --libs --debug=no --static=yes --prefix=C:\wxWidgets-2.8.10" renderer="wxwidgets"</pre></blockquote>
 <br/>
-Adapt the path to "wx-config" and to your wxWidgets build as needed.
+Adapt the path to "wx-config" and to your wxWidgets build as needed. Modify the flags given to wx-config to get the right build if you have
+many wxWidgets builds.
 
 <br/><br/>
 <hr/>
@@ -145,7 +151,7 @@ Then, to open Aria, type <i>Aria</i> in a terminal. Hopefully all will be fine!
 <br/><br/>
 <b><center>Finishing on Windows</center></b>
 If your wxWidgets build is a DLL build, copy the DLL(s) into the same directory as Aria so they are found. Copy the resources in the same
-directory as Aria.
+directory as Aria (or move the Aria executable in the same directory as the resources)
 
 <br/><br/>
 <hr/>
