@@ -102,10 +102,10 @@ def main_Aria_func():
         elif os.uname()[0] == 'Darwin':
             which_os = "macosx"
         else:
-            print "!! Unknown operating system '" + os.uname()[0] + "', defaulting to Linux-like Unix"
-            which_os = "linux"
+            print "!! Unknown operating system '" + os.uname()[0] + "', defaulting to Unix"
+            which_os = "unix"
 
-    if which_os != 'linux' and which_os != 'macosx' and which_os != 'unix' and which_os != 'windows':
+    if not which_os in ["linux", "macosx", "unix", "windows"]:
         print "!! Unknown operating system '" + which_os + "', please specify 'platform=[linux/macosx/unix/windows]'"
         sys.exit(0) 
     
@@ -114,14 +114,14 @@ def main_Aria_func():
     # check what to do
     if 'uninstall' in COMMAND_LINE_TARGETS:
         # uninstall
-        if which_os == "linux":
-            uninstall_Aria_linux()
+        if which_os in ["linux", "unix"]:
+            uninstall_Aria_unix()
         else:
             print "!! Unknown operation or system (uninstall is not valid on your system)"
             sys.exit(0)
     elif 'install' in COMMAND_LINE_TARGETS:
         # install
-        if which_os == "linux":
+        if which_os in ["linux", "unix"]:
             compile_Aria(which_os)
         elif which_os == "macosx":
             install_Aria_mac()
@@ -151,7 +151,7 @@ def install_Aria_mac():
 
 # ---------------------------- Uninstall Linux -----------------------------
 
-def uninstall_Aria_linux():
+def uninstall_Aria_unix():
     
     # check if user defined his own prefix, else use defaults
     prefix = ARGUMENTS.get('prefix', 0)
@@ -269,7 +269,7 @@ def compile_Aria(which_os):
 
     # check build type and init build flags
     if build_type == "debug":
-        env.Append(CCFLAGS=['-g','-D_MORE_DEBUG_CHECKS','-D_CHECK_FOR_LEAKS','-Wfatal-errors','-DDEBUG=1'])
+        env.Append(CCFLAGS=['-g','-Wall','-Wextra','-Wno-unused-parameter','-D_MORE_DEBUG_CHECKS','-D_CHECK_FOR_LEAKS','-Wfatal-errors','-DDEBUG=1'])
         
     elif build_type == "release":
         env.Append(CCFLAGS=['-O3','-DNDEBUG=1'])
@@ -344,6 +344,21 @@ def compile_Aria(which_os):
         env.Append(LIBS = ['asound'])
         env.Append(LIBS = ['dl','m'])
         env.ParseConfig( 'pkg-config --cflags glib-2.0' )
+
+    elif which_os == "unix":
+        print "*** Adding libraries and defines for Unix"
+        
+        if renderer == 'opengl':
+            env.Append(CCFLAGS=['-DwxUSE_GLCANVAS=1'])
+            env.Append(LIBS = ['GL', 'GLU'])
+
+        if True: # midi_driver == 'jack'
+            env.Append(CCFLAGS=['-DUSE_JACK'])
+            env.Append(LIBS = ['jack'])
+
+        env.Append(CPPPATH = ['/usr/local/include'])
+        env.Append(LIBPATH = ['/usr/local/lib'])
+        env.ParseConfig('pkg-config --cflags glib-2.0')
 
     # Windows (currently unsupported)
     elif which_os == "windows":
