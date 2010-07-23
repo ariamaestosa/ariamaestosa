@@ -26,7 +26,7 @@
 #include "jdkmidi/driver.h"
 #include "jdkmidi/process.h"
 
-#include <sys/timeb.h>
+#include <sys/time.h>
 
 namespace AriaMaestosa
 {
@@ -41,34 +41,21 @@ namespace AriaMaestosa
 
 class FtimeTimer
 {
-    long initial_sec, initial_millis;
+    timeval _init_time;
     public:
 
     void reset_and_start()
     {
-        // FIXME - ftime is apparently obsolete (http://linux.die.net/man/3/ftime)
-        // use http://linux.die.net/man/2/gettimeofday instead
-
-        timeb tb;
-        ftime(&tb);
-        initial_sec= tb.time;
-        initial_millis = tb.millitm;
-        //std::cout << "time = " << tb.time << " seconds " << tb.millitm << " millis" << std::endl;
+        gettimeofday(&_init_time, 0);
     }
 
     int get_elapsed_millis()
     {
-        timeb tb;
-        ftime(&tb);
-
-        const long current_sec = tb.time;
-        const long current_millis = tb.millitm;
-
-        const long delta_sec = current_sec - initial_sec;
-
-        const long total_millis = delta_sec*1000 - initial_millis + current_millis;
-        return total_millis;
-
+        timeval curr_time;
+        timeval elap_time;
+        gettimeofday(&curr_time, 0);
+        timersub(&curr_time, &_init_time, &elap_time);
+        return elap_time.tv_sec * 1000 + elap_time.tv_usec / 1000;
     }
 };
 
