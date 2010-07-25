@@ -20,11 +20,14 @@
  
  CoreAudio is used to play single notes (the previews while editing)
  
- For actual playback of midi data, both QTKit and AudioToolbox implementations exist. The rationale behind this is that:
+ For actual playback of midi data, both QTKit and AudioToolbox implementations exist. The rationale behind this
+ is that:
  
- - QTKit offers more precise info for getting current tick, however it returns time and not ticks. It is easy to calculate current
- midi tick from time with tempo, but not when there are tempo bends. Furthermore, it allows to export to audio formats like AIFF.
- - AudioToolkit returns current playback location in midi beats. This is much less precise than tempo. However, this does follow tempo bends.
+ - QTKit offers more precise info for getting current tick, however it returns time and not ticks. It is easy to
+   calculate current midi tick from time with tempo, but not when there are tempo bends. Furthermore, it allows to
+   export to audio formats like AIFF.
+ - AudioToolkit returns current playback location in midi beats. This is much less precise than tempo. However,
+   this does follow tempo bends.
  
  So, when there are tempo bends, use AudioToolkit. Otherwise, use QTKit.
  
@@ -69,33 +72,98 @@
 namespace AriaMaestosa
 {
     
-    namespace PlatformMidiManager
+    class MyPThread
     {
+        int id;
+        pthread_t thread;
+    public:
+        MyPThread(){}
         
-        void playMidiBytes(char* bytes, int length);
+        void runFunction(void* (*func)(void*) )
+        {
+            id = pthread_create( &thread, NULL, func, (void*)NULL);
+        }
+    };
+    
+    
+    namespace threads
+    {
+        MyPThread export_audio;
+    }
+    
+    // Silly way to pass parameters to the thread
+    wxString export_audio_filepath;
+    Sequence* g_sequence;
+
+    void* add_events_func( void* ptr )
+    {
+        // when we're saving, we always want song to start at first measure, so temporarly switch firstMeasure to 0, and set it back in the end
+        const int firstMeasureValue=getMeasureData()->getFirstMeasure();
+        getMeasureData()->setFirstMeasure(0);
         
+        char* data;
+        int length = -1;
+        
+        int startTick = -1, songLength = -1;
+        allocAsMidiBytes(g_sequence, false, &songLength, &startTick, &data, &length, true);
+        
+        //exportToAudio( data, length, filepath );
+        qtkit_setData(data, length);
+        bool success = qtkit_exportToAiff( export_audio_filepath.mb_str() );
+        
+        if (!success)
+        {
+            // FIXME - give visual message. warning this is a thread.
+            std::cerr << "EXPORTING FAILED" << std::endl;
+        }
+        
+        // send hide progress window event
+        MAKE_HIDE_PROGRESSBAR_EVENT(event);
+        getMainFrame()->GetEventHandler()->AddPendingEvent(event);
+        
+        free(data);
+        getMeasureData()->setFirstMeasure(firstMeasureValue);
+        
+        return (void*)NULL;
+    }
+
+    void playMidiBytes(char* bytes, int length);
+
+    class MacMidiManager : public PlatformMidiManager
+    {        
         AudioToolboxMidiPlayer* audioToolboxMidiPlayer;
         
-        Sequence* sequence;
-        bool playing=false;
-        bool use_qtkit = true;
+        bool playing;
+        bool use_qtkit;
         
-        int stored_songLength = 0;
+        int stored_songLength;
         
-        const wxString getAudioExtension()
+    public:
+        
+        MacMidiManager()
+        {
+            playing   = false;
+            use_qtkit = true;
+            stored_songLength = 0;
+        }
+        
+        virtual ~MacMidiManager() { }
+        
+        virtual const wxString getAudioExtension()
         {
             return wxT(".aiff");
         }
-        const wxString getAudioWildcard()
+        
+        virtual const wxString getAudioWildcard()
         {
             return  wxString( _("AIFF file")) + wxT("|*.aiff");
         }
         
-        bool playSequence(Sequence* sequence, /*out*/ int* startTick)
+        virtual bool playSequence(Sequence* sequence, /*out*/ int* startTick)
         {
             if (playing) return false; //already playing
             
-            PlatformMidiManager::sequence = sequence;
+            g_sequence = sequence;
             
             char* data;
             int datalength = -1;
@@ -111,12 +179,12 @@ namespace AriaMaestosa
             return true;
         }
         
-        bool playSelected(Sequence* sequence, /*out*/ int* startTick)
+        virtual bool playSelected(Sequence* sequence, /*out*/ int* startTick)
         {
             
             if (playing) return false; //already playing
             
-            PlatformMidiManager::sequence = sequence;
+            g_sequence = sequence;
             
             char* data;
             int datalength = -1;
@@ -139,89 +207,36 @@ namespace AriaMaestosa
             return true;
         }
         
-        bool exportMidiFile(Sequence* sequence, wxString filepath)
+        virtual bool exportMidiFile(Sequence* sequence, wxString filepath)
         {
             AriaMaestosa::exportMidiFile(sequence, filepath);
             return true;
         }
-        
-        class MyPThread
+                
+        virtual void exportAudioFile(Sequence* sequence, wxString filepath)
         {
-            int id;
-            pthread_t thread;
-        public:
-            MyPThread(){}
-            
-            void runFunction(void* (*func)(void*) )
-            {
-                id = pthread_create( &thread, NULL, func, (void*)NULL);
-            }
-        };
-        
-        
-        namespace threads
-        {
-            MyPThread export_audio;
-        }
-        
-        wxString export_audio_filepath;
-        void* add_events_func( void *ptr )
-        {
-            // when we're saving, we always want song to start at first measure, so temporarly switch firstMeasure to 0, and set it back in the end
-            const int firstMeasureValue=getMeasureData()->getFirstMeasure();
-            getMeasureData()->setFirstMeasure(0);
-            
-            char* data;
-            int length = -1;
-            
-            int startTick = -1, songLength = -1;
-            allocAsMidiBytes(sequence, false, &songLength, &startTick, &data, &length, true);
-            
-            //exportToAudio( data, length, filepath );
-            qtkit_setData(data, length);
-            bool success = qtkit_exportToAiff( export_audio_filepath.mb_str() );
-            
-            if (!success)
-            {
-                // FIXME - give visual message. warning this is a thread.
-                std::cerr << "EXPORTING FAILED" << std::endl;
-            }
-            
-            // send hide progress window event
-            MAKE_HIDE_PROGRESSBAR_EVENT(event);
-            getMainFrame()->GetEventHandler()->AddPendingEvent(event);
-            
-            free(data);
-            getMeasureData()->setFirstMeasure(firstMeasureValue);
-            
-            return (void*)NULL;
-        }
-        
-        void exportAudioFile(Sequence* sequence, wxString filepath)
-        {
-            PlatformMidiManager::sequence = sequence;
+            g_sequence = sequence;
             export_audio_filepath = filepath;
             threads::export_audio.runFunction( &add_events_func );
         }
         
-        int getCurrentTick()
+        virtual int getCurrentTick()
         {
-            if ( use_qtkit )
+            if (use_qtkit)
             {
                 const float time = qtkit_getCurrentTime();
                 
                 if (time == -1) return -1; // not playing
                 
-                return (int)(
-                             time * sequence->getTempo()/60.0 * (float)sequence->ticksPerBeat()
-                             );
+                return (int)(time * g_sequence->getTempo()/60.0 * (float)g_sequence->ticksPerBeat());
             }
             else
             {
-                return audioToolboxMidiPlayer->getPosition() * sequence->ticksPerBeat();
+                return audioToolboxMidiPlayer->getPosition() * g_sequence->ticksPerBeat();
             }
         }
-        int trackPlaybackProgression()
+        
+        virtual int trackPlaybackProgression()
         {
             int currentTick = getCurrentTick();
             
@@ -239,15 +254,16 @@ namespace AriaMaestosa
             
         }
         
-        void playMidiBytes(char* bytes, int length)
+        virtual void playMidiBytes(char* bytes, int length)
         {
             CoreAudioNotePlayer::stopNote();
             
-            // if length==8, this is just the empty song to load QT. (when the app opens, Quicktime is triggered with an empty song to make it load)
-            if ( length==8 or sequence->tempoEvents.size()==0 ) use_qtkit=true;
+            // if length==8, this is just the empty song to load QT. (when the app opens, Quicktime is triggered
+            // with an empty song to make it load) - FIXME: this check is ugly
+            if (length == 8 or g_sequence->tempoEvents.size() == 0) use_qtkit = true;
             else use_qtkit=false;
             
-            if ( use_qtkit )
+            if (use_qtkit)
             {
                 qtkit_setData(bytes, length);
                 qtkit_play();
@@ -261,23 +277,23 @@ namespace AriaMaestosa
             playing = true;
         }
         
-        void playNote(int noteNum, int volume, int duration, int channel, int instrument)
+        virtual void playNote(int noteNum, int volume, int duration, int channel, int instrument)
         {
             if (playing) return;
             CoreAudioNotePlayer::playNote( noteNum, volume, duration, channel, instrument );
         }
         
-        bool isPlaying()
+        virtual bool isPlaying()
         {
             return playing;
         }
         
-        void stopNote()
+        virtual void stopNote()
         {
             CoreAudioNotePlayer::stopNote();
         }
         
-        void stop()
+        virtual void stop()
         {
             if ( use_qtkit ) qtkit_stop();
             else audioToolboxMidiPlayer->stop();
@@ -285,7 +301,7 @@ namespace AriaMaestosa
             playing = false;
         }
         
-        void initMidiPlayer()
+        virtual void initMidiPlayer()
         {
             qtkit_init();
             CoreAudioNotePlayer::init();
@@ -307,30 +323,34 @@ namespace AriaMaestosa
             stop();
         }
         
-        void freeMidiPlayer()
+        virtual void freeMidiPlayer()
         {
             qtkit_free();
             CoreAudioNotePlayer::free();
             delete audioToolboxMidiPlayer;
             audioToolboxMidiPlayer=NULL;
         }
+
         
+    }; // end class
+    
+    class MacMidiManagerFactory : public PlatformMidiManagerFactory
+    {
+    public:
+        MacMidiManagerFactory() : PlatformMidiManagerFactory(wxT("QuickTime/AudioToolkit"))
+        {
+        }
+        virtual ~MacMidiManagerFactory()
+        {
+        }
         
-        // ---------- unused since we use native sequencer/timer on OS X ---------
-        void seq_note_on(const int note, const int volume, const int channel){}
-        void seq_note_off(const int note, const int channel){}
-        void seq_prog_change(const int instrument, const int channel){}
-        void seq_controlchange(const int controller, const int value, const int channel){}
-        void seq_pitch_bend(const int value, const int channel){}
-        
-        // called repeatedly by the generic sequencer to tell
-        // the midi player what is the current progression
-        // the sequencer will call this with -1 as argument to indicate it exits.
-        void seq_notify_current_tick(const int tick){}
-        
-        bool seq_must_continue(){return false;}
-        
-    } // end namespace
+        virtual PlatformMidiManager* newInstance()
+        {
+            return new MacMidiManager();
+        }
+    };
+    MacMidiManagerFactory g_mac_midi_manager_factory;
+    
 } // end namespace
 
 #endif

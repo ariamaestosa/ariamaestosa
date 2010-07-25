@@ -375,11 +375,11 @@ void Note::play(bool change)
 
     if (m_track->graphics->editorMode == DRUM) 
     {
-        PlatformMidiManager::playNote( pitchID, volume, durationMilli, 9, m_track->getDrumKit() );
+        PlatformMidiManager::get()->playNote( pitchID, volume, durationMilli, 9, m_track->getDrumKit() );
     }
     else
     {
-        PlatformMidiManager::playNote( 131-pitchID, volume, durationMilli, 0, m_track->getInstrument() );
+        PlatformMidiManager::get()->playNote( 131-pitchID, volume, durationMilli, 0, m_track->getInstrument() );
     }
 }
 

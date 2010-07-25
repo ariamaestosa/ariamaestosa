@@ -26,7 +26,7 @@ namespace PlatformMidiManager
 
         void Notify()
         {
-            PlatformMidiManager::stopNote();
+            PlatformMidiManager::get()->stopNote();
             wxTimer::Stop();
         }
 
@@ -47,7 +47,7 @@ void allSoundOff()
 
     for(int channel=0; channel<16; channel++)
     {
-        PlatformMidiManager::seq_controlchange(0x78 /*120*/ /* all sound off */, 0, channel);
+        PlatformMidiManager::get()->seq_controlchange(0x78 /*120*/ /* all sound off */, 0, channel);
     }
 }
 

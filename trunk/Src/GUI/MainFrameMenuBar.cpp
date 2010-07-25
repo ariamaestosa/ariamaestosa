@@ -147,7 +147,7 @@ void MainFrame::initMenuBar()
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_MIDI, _("Export to Midi"), MainFrame::menuEvent_exportmidi );
 
     // disable export to sampled audio if this feature is not supported by the current PlatformMidiManager
-    if (not PlatformMidiManager::getAudioExtension().IsEmpty())
+    if (not PlatformMidiManager::get()->getAudioExtension().IsEmpty())
     {
         //I18N: menu item in the "file" menu
         fileMenu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_SAMPLED_AUDIO, _("Export to Audio"), MainFrame::menuEvent_exportSampledAudio );
@@ -295,7 +295,7 @@ void MainFrame::disableMenus(const bool disable)
     fileMenu->Enable(MENU_FILE_IMPORT_MIDI, on);
     fileMenu->Enable(MENU_FILE_EXPORT_MIDI, on);
 
-    if (not PlatformMidiManager::getAudioExtension().IsEmpty())
+    if (not PlatformMidiManager::get()->getAudioExtension().IsEmpty())
     {
         fileMenu->Enable(MENU_FILE_EXPORT_SAMPLED_AUDIO, on);
     }
@@ -468,7 +468,7 @@ void MainFrame::menuEvent_exportmidi(wxCommandEvent& evt)
     }
 
     // write data to file
-    const bool success = PlatformMidiManager::exportMidiFile( getCurrentSequence(), midiFilePath );
+    const bool success = PlatformMidiManager::get()->exportMidiFile( getCurrentSequence(), midiFilePath );
 
     if (not success)
     {
@@ -481,8 +481,8 @@ void MainFrame::menuEvent_exportmidi(wxCommandEvent& evt)
 void MainFrame::menuEvent_exportSampledAudio(wxCommandEvent& evt)
 {
 
-    wxString extension = PlatformMidiManager::getAudioExtension();
-    wxString wildcard = PlatformMidiManager::getAudioWildcard();
+    wxString extension = PlatformMidiManager::get()->getAudioExtension();
+    wxString wildcard = PlatformMidiManager::get()->getAudioWildcard();
 
     wxString suggestedName = getCurrentSequence()->suggestFileName() + extension;
 
@@ -509,7 +509,7 @@ void MainFrame::menuEvent_exportSampledAudio(wxCommandEvent& evt)
     std::cout << "export audio file " << audioFilePath.mb_str() << std::endl;
 
     // write data
-    PlatformMidiManager::exportAudioFile( getCurrentSequence(), audioFilePath );
+    PlatformMidiManager::get()->exportAudioFile( getCurrentSequence(), audioFilePath );
 }
 
 // -----------------------------------------------------------------------------------------------------------

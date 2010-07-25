@@ -305,7 +305,7 @@ MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(1
 MainFrame::~MainFrame()
 {
     ImageProvider::unloadImages();
-    PlatformMidiManager::freeMidiPlayer();
+    PlatformMidiManager::get()->freeMidiPlayer();
     CopyrightWindow::free();
     Clipboard::clear();
     SingletonBase::deleteAll();
@@ -569,7 +569,7 @@ void MainFrame::playClicked(wxCommandEvent& evt)
 
     int startTick = -1;
 
-    const bool success = PlatformMidiManager::playSequence( getCurrentSequence(), /*out*/ &startTick );
+    const bool success = PlatformMidiManager::get()->playSequence( getCurrentSequence(), /*out*/ &startTick );
     if (!success) std::cerr << "Couldn't play" << std::endl;
 
     mainPane->setPlaybackStartTick( startTick );
@@ -1266,7 +1266,7 @@ void MainFrame::loadAriaFile(wxString filePath)
     getCurrentSequence()->sequenceFileName.set(getCurrentSequence()->filepath.AfterLast('/').BeforeLast('.'));
 
     // if a song is currently playing, it needs to stay on top
-    if (PlatformMidiManager::isPlaying())
+    if (PlatformMidiManager::get()->isPlaying())
     {
         setCurrentSequence(old_currentSequence);
     }
@@ -1310,7 +1310,7 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
     getCurrentSequence()->sequenceFileName.set(midiFilePath.AfterLast('/').BeforeLast('.'));
 
     // if a song is currently playing, it needs to stay on top
-    if (PlatformMidiManager::isPlaying()) setCurrentSequence(old_currentSequence);
+    if (PlatformMidiManager::get()->isPlaying()) setCurrentSequence(old_currentSequence);
 
     Display::render();
 }

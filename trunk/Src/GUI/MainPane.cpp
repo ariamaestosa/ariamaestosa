@@ -620,7 +620,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
      }//end if user is clicking on the dock
 
     // ----------------------------------- click is in tab bar ----------------------------
-    if (!PlatformMidiManager::isPlaying() and event.GetY() > TAB_BAR_Y and event.GetY() < TAB_BAR_Y+20)
+    if (!PlatformMidiManager::get()->isPlaying() and event.GetY() > TAB_BAR_Y and event.GetY() < TAB_BAR_Y+20)
     {
         click_area = CLICK_TAB_BAR;
 
@@ -1066,7 +1066,7 @@ void MainPane::enterPlayLoop()
 
 void MainPane::exitPlayLoop()
 {
-    PlatformMidiManager::stop();
+    PlatformMidiManager::get()->stop();
     getMainFrame()->toolsExitPlaybackMode();
     Core::activateRenderLoop(false);
     setCurrentTick( -1 );
@@ -1084,10 +1084,10 @@ void MainPane::setPlaybackStartTick(int newValue)
 
 void MainPane::playbackRenderLoop()
 {
-        const int currentTick = PlatformMidiManager::trackPlaybackProgression();
+        const int currentTick = PlatformMidiManager::get()->trackPlaybackProgression();
 
         // check if song is over
-        if (currentTick == -1 or !PlatformMidiManager::isPlaying())
+        if (currentTick == -1 or !PlatformMidiManager::get()->isPlaying())
         {
             exitPlayLoop();
             return;
