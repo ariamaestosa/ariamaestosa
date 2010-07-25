@@ -215,6 +215,7 @@ public:
 
 	virtual void initMidiPlayer()
 	{
+        printf("Initializing JACK Midi Driver\n");
 		player.reset(new PrivateJackMidiPlayer());
 	}
 
