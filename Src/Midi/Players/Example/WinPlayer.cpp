@@ -29,95 +29,99 @@
 
 namespace AriaMaestosa
 {
-    namespace PlatformMidiManager
+
+    int songLengthInTicks = -1;
+    bool playing = false;
+    int current_tick = -1;
+
+
+    void cleanup_after_playback()
     {
+        // all sound off, reset all controllers, reset pitch bend, etc.
+    }
 
-        int songLengthInTicks = -1;
-        bool playing = false;
-        int current_tick = -1;
+    class SequencerThread : public wxThread
+    {
+        jdkmidi::MIDIMultiTrack* jdkmidiseq;
+        jdkmidi::MIDISequencer* jdksequencer;
+        int songLengthInTicks;
+        bool selectionOnly;
+        int m_start_tick;
+        Sequence* sequence;
 
+        public:
 
-        void cleanup_after_playback()
+        SequencerThread(const bool selectionOnly, Sequence* sequence)
         {
-            // all sound off, reset all controllers, reset pitch bend, etc.
+                jdkmidiseq = NULL;
+                jdksequencer = NULL;
+                SequencerThread::selectionOnly = selectionOnly;
+                SequencerThread::sequence = sequence;
+        }
+        ~SequencerThread()
+        {
+            std::cout << "cleaning up sequencer" << std::endl;
+            if(jdksequencer != NULL) delete jdksequencer;
+            if(jdkmidiseq != NULL) delete jdkmidiseq;
         }
 
-        class SequencerThread : public wxThread
+        void prepareSequencer()
         {
-            jdkmidi::MIDIMultiTrack* jdkmidiseq;
-            jdkmidi::MIDISequencer* jdksequencer;
-            int songLengthInTicks;
-            bool selectionOnly;
-            int m_start_tick;
-            Sequence* sequence;
+            jdkmidiseq = new jdkmidi::MIDIMultiTrack();
+            songLengthInTicks = -1;
+            int trackAmount = -1;
+            m_start_tick = 0;
+            makeJDKMidiSequence(sequence, *jdkmidiseq, selectionOnly, &songLengthInTicks,
+                                &m_start_tick, &trackAmount, true /* for playback */);
 
-            public:
+            //std::cout << "trackAmount=" << trackAmount << " start_tick=" << m_start_tick<<
+            //        " songLengthInTicks=" << songLengthInTicks << std::endl;
 
-            SequencerThread(const bool selectionOnly, Sequence* sequence)
+            jdksequencer = new jdkmidi::MIDISequencer(jdkmidiseq);
+        }
+
+        void go(int* startTick /* out */)
+        {
+            if(Create() != wxTHREAD_NO_ERROR)
             {
-                    jdkmidiseq = NULL;
-                    jdksequencer = NULL;
-                    SequencerThread::selectionOnly = selectionOnly;
-                    SequencerThread::sequence = sequence;
+                std::cerr << "error creating thread" << std::endl;
+                return;
             }
-            ~SequencerThread()
-            {
-                std::cout << "cleaning up sequencer" << std::endl;
-                if(jdksequencer != NULL) delete jdksequencer;
-                if(jdkmidiseq != NULL) delete jdkmidiseq;
-            }
+            SetPriority(85 /* 0 = min, 100 = max */);
 
-            void prepareSequencer()
-            {
-                jdkmidiseq = new jdkmidi::MIDIMultiTrack();
-                songLengthInTicks = -1;
-                int trackAmount = -1;
-                m_start_tick = 0;
-                makeJDKMidiSequence(sequence, *jdkmidiseq, selectionOnly, &songLengthInTicks,
-                                    &m_start_tick, &trackAmount, true /* for playback */);
+            prepareSequencer();
+            *startTick = m_start_tick;
 
-                //std::cout << "trackAmount=" << trackAmount << " start_tick=" << m_start_tick<<
-                //        " songLengthInTicks=" << songLengthInTicks << std::endl;
+            Run();
+        }
 
-                jdksequencer = new jdkmidi::MIDISequencer(jdkmidiseq);
-            }
+        ExitCode Entry()
+        {
+            AriaSequenceTimer timer(sequence);
+            timer.run(jdksequencer, songLengthInTicks);
 
-            void go(int* startTick /* out */)
-            {
-                if(Create() != wxTHREAD_NO_ERROR)
-                {
-                    std::cerr << "error creating thread" << std::endl;
-                    return;
-                }
-                SetPriority(85 /* 0 = min, 100 = max */);
+            playing = false;
+            cleanup_after_playback();
 
-                prepareSequencer();
-                *startTick = m_start_tick;
+            return 0;
+        }
+    };
 
-                Run();
-            }
-
-            ExitCode Entry()
-            {
-                AriaSequenceTimer timer(sequence);
-                timer.run(jdksequencer, songLengthInTicks);
-
-                playing = false;
-                cleanup_after_playback();
-
-                return 0;
-            }
-        };
-
-
-        bool playSequence(Sequence* sequence, /*out*/int* startTick)
+    
+    class ExamplePlayer : public PlatformMidiManager
+    {
+        
+    public:
+        
+        virtual bool playSequence(Sequence* sequence, /*out*/int* startTick)
         {
             /*
              * see 'playSelected' below, it's essentially the same, just
              * replace 'true' with 'false' where it says 'selection only'
              */
         }
-        bool playSelected(Sequence* sequence, /*out*/int* startTick)
+        
+        virtual bool playSelected(Sequence* sequence, /*out*/int* startTick)
         {
             if(playing) return false; // already playing
             playing = true;
@@ -149,38 +153,41 @@ namespace AriaMaestosa
             seqthread->go(startTick);
 
         }
-        bool isPlaying()
+        
+        virtual bool isPlaying()
         {
             return playing;
         }
 
-        void stop()
+        virtual void stop()
         {
             playing = false;
         }
 
         // export to audio file, e.g. .wav
-        void exportAudioFile(Sequence* sequence, wxString filepath)
+        virtual void exportAudioFile(Sequence* sequence, wxString filepath)
         {
         }
-        const wxString getAudioExtension()
+        
+        virtual const wxString getAudioExtension()
         {
             return wxT(".wav");
         }
-        const wxString getAudioWildcard()
+        
+        virtual const wxString getAudioWildcard()
         {
             return  wxString( _("WAV file")) + wxT("|*.wav");
         }
 
 
-        bool exportMidiFile(Sequence* sequence, wxString filepath)
+        virtual bool exportMidiFile(Sequence* sequence, wxString filepath)
         {
             // okay to use generic function for this
             return AriaMaestosa::exportMidiFile(sequence, filepath);
         }
 
         // get current tick, either from native API or from a variable you keep around and update from the playback thread
-        int trackPlaybackProgression()
+        virtual int trackPlaybackProgression()
         {
             current_tick = getTickFromNativeAPI();
             if(current_tick > songLengthInTicks || current_tick == -1)
@@ -199,20 +206,21 @@ namespace AriaMaestosa
         }
 
         // called when app opens
-        void initMidiPlayer()
+        virtual void initMidiPlayer()
         {
         }
 
         // called when app closes
-        void freeMidiPlayer()
+        virtual void freeMidiPlayer()
         {
         }
 
         // play/stop a single preview note (no sequencing is to be done, only direct output)
-        void playNote(int noteNum, int volume, int duration, int channel, int instrument)
+        virtual void playNote(int noteNum, int volume, int duration, int channel, int instrument)
         {
         }
-        void stopNote()
+        
+        virtual void stopNote()
         {
         }
 
@@ -221,30 +229,30 @@ namespace AriaMaestosa
         // if you use a native sequencer instead you can leave them empty
 
         // if you're going to use the generic sequencer/timer, implement those to send events to native API
-        void seq_note_on(const int note, const int volume, const int channel)
+        virtual void seq_note_on(const int note, const int volume, const int channel)
         {
         }
 
-        void seq_note_off(const int note, const int channel)
+        virtual void seq_note_off(const int note, const int channel)
         {
         }
 
-        void seq_prog_change(const int instrument, const int channel)
+        virtual void seq_prog_change(const int instrument, const int channel)
         {
         }
 
-        void seq_controlchange(const int controller, const int value, const int channel)
+        virtual void seq_controlchange(const int controller, const int value, const int channel)
         {
         }
 
-        void seq_pitch_bend(const int value, const int channel)
+        virtual void seq_pitch_bend(const int value, const int channel)
         {
         }
 
         // called repeatedly by the generic sequencer to tell
         // the midi player what is the current progression
         // the sequencer will call this with -1 as argument to indicate it exits.
-        void seq_notify_current_tick(const int tick_arg)
+        virtual void seq_notify_current_tick(const int tick_arg)
         {
             current_tick = tick_arg;
 
@@ -258,12 +266,29 @@ namespace AriaMaestosa
 
         // will be called by the generic sequencer to determine whether it should continue
         // return false to stop it.
-        bool seq_must_continue()
+        virtual bool seq_must_continue()
         {
             return playing;
         }
 
-    }
+    };
+    
+    class ExampleMidiManagerFactory : public PlatformMidiManagerFactory
+    {
+    public:
+        ExampleMidiManagerFactory() : PlatformMidiManagerFactory(wxT("ExampleMidiDriver"))
+        {
+        }
+        virtual ~ExampleMidiManagerFactory()
+        {
+        }
+        
+        virtual PlatformMidiManager* newInstance()
+        {
+            return new ExamplePlayer();
+        }
+    };
+    ExampleMidiManagerFactory g_example_midi_manager_factory;
 }
 
 #endif
