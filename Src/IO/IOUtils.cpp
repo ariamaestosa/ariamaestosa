@@ -113,16 +113,37 @@ wxString getResourcePrefix()
 {
 #if defined(__WXMAC__) || defined(__WXGTK__)
 
-    static bool app_in_place = wxFileExists( extract_path(wxStandardPaths::Get().GetExecutablePath())  + wxT("/Resources/collapse.jpg") );
+    static bool app_in_place = wxFileExists(
+            extract_path(wxStandardPaths::Get().GetExecutablePath()) +
+            wxT("/Resources/collapse.jpg") );
 
     if (app_in_place)
-        return extract_path( wxStandardPaths::Get().GetExecutablePath() ) + wxT("/Resources/");
+    {
+        return extract_path( wxStandardPaths::Get().GetExecutablePath() ) +
+                wxT("/Resources/");
+    }
     else
+    {
         return wxStandardPaths::Get().GetResourcesDir() + wxT("/");
+    }
     
 #elif defined(__WXMSW__)
     
-    return wxStandardPaths::Get().GetDataDir() + wxFileName::GetPathSeparator();
+    static bool app_in_place = wxFileExists(
+            extract_path(wxStandardPaths::Get().GetExecutablePath()) +
+            wxFileName::GetPathSeparator() + wxT("Resources") +
+            wxFileName::GetPathSeparator() + wxT("collapse.jpg") );
+
+    if (app_in_place)
+    {
+        return extract_path( wxStandardPaths::Get().GetExecutablePath() ) +
+               wxFileName::GetPathSeparator() + wxT("Resources") +
+               wxFileName::GetPathSeparator();
+    }
+    else
+    {
+        return wxStandardPaths::Get().GetDataDir() + wxFileName::GetPathSeparator();
+    }
     
 #else
 
