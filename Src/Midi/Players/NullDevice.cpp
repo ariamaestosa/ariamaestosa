@@ -32,9 +32,6 @@ namespace AriaMaestosa
         virtual void stop() { }
         
         virtual void exportAudioFile(Sequence* sequence, wxString filepath) { }
-        
-        virtual bool exportMidiFile(Sequence* sequence, wxString filepath) { return false; }
-        
 
         virtual int trackPlaybackProgression() { return 0; }
         

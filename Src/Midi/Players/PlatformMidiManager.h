@@ -89,14 +89,6 @@ namespace AriaMaestosa
         
         virtual void exportAudioFile(Sequence* sequence, wxString filepath) = 0;
         
-        //FIXME: not sure this belongs here at all.
-        /**
-         * @brief Invoked when user requests and export to MIDI file format
-         * @note  Aria provides a factory implementation that can generally be used for this :
-         *        AriaMaestosa::exportMidiFile(sequence, filepath);
-         */
-        virtual bool exportMidiFile(Sequence* sequence, wxString filepath) = 0;
-        
         /**
          * @brief  called repeatedly during playback to know progression
          *

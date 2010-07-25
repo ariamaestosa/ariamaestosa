@@ -468,7 +468,7 @@ void MainFrame::menuEvent_exportmidi(wxCommandEvent& evt)
     }
 
     // write data to file
-    const bool success = PlatformMidiManager::get()->exportMidiFile( getCurrentSequence(), midiFilePath );
+    const bool success = AriaMaestosa::exportMidiFile( getCurrentSequence(), midiFilePath );
 
     if (not success)
     {
