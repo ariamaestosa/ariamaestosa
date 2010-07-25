@@ -14,7 +14,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "Midi/Players/PlatformMidimanager.h"
+#include "Midi/Players/PlatformMidiManager.h"
 #include "ptr_vector.h"
 #include "wx/intl.h"
 #include "wx/msgdlg.h"

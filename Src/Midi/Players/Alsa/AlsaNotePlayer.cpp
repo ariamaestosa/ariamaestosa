@@ -9,7 +9,7 @@
 
 namespace AriaMaestosa
 {
-namespace PlatformMidiManager
+namespace AlsaPlayerStuff
 {
 
     void playQueue();
@@ -26,7 +26,7 @@ namespace PlatformMidiManager
 
         void Notify()
         {
-            PlatformMidiManager::get()->stopNote();
+            stopNote();
             wxTimer::Stop();
         }
 
@@ -43,9 +43,9 @@ MidiContext* context_ref;
 
 void allSoundOff()
 {
-    if(!sound_available) return;
+    if (not sound_available) return;
 
-    for(int channel=0; channel<16; channel++)
+    for (int channel=0; channel<16; channel++)
     {
         PlatformMidiManager::get()->seq_controlchange(0x78 /*120*/ /* all sound off */, 0, channel);
     }
@@ -53,9 +53,9 @@ void allSoundOff()
 
 void resetAllControllers()
 {
-    if(!sound_available) return;
+    if (not sound_available) return;
 
-    for(int channel=0; channel<16; channel++)
+    for (int channel=0; channel<16; channel++)
     {
         seq_controlchange(0x78 /*120*/ /* all sound off */, 0, channel);
         seq_controlchange(0x79 /*121*/ /* reset controllers */, 0, channel);
@@ -67,18 +67,19 @@ void resetAllControllers()
 
 void stopNoteIfAny()
 {
-    if(!sound_available) return;
+    if (not sound_available) return;
 
-    if(lastPlayedNote != -1) stopNote();
+    if (lastPlayedNote != -1) stopNote();
 }
 
 void alsa_output_module_init()
 {
     stopNoteTimer = new StopNoteTimer();
 }
+
 void alsa_output_module_free()
 {
-     if(stopNoteTimer != NULL)
+    if (stopNoteTimer != NULL)
     {
         delete stopNoteTimer;
         stopNoteTimer = NULL;
@@ -87,7 +88,7 @@ void alsa_output_module_free()
 
 void alsa_output_module_setContext(MidiContext* context_arg)
 {
-    if(!sound_available) return;
+    if (not sound_available) return;
 
    context_ref = context_arg;
 }
@@ -102,10 +103,10 @@ void alsa_output_module_setContext(MidiContext* context_arg)
 // play/stop a single preview note
 void playNote(int noteNum, int volume, int duration, int channel, int instrument)
 {
-    if(!sound_available) return;
+    if (not sound_available) return;
 
-    if(context_ref->isPlaying()) return;
-    if(lastPlayedNote != -1) stopNote();
+    if (context_ref->isPlaying()) return;
+    if (lastPlayedNote != -1) stopNote();
     seq_prog_change(instrument, channel);
     seq_controlchange(7, 127, channel); // max volume
     seq_note_on(noteNum, volume, channel);
@@ -117,7 +118,7 @@ void playNote(int noteNum, int volume, int duration, int channel, int instrument
 
 void stopNote()
 {
-    if(!sound_available) return;
+    if (not sound_available) return;
 
     seq_note_off(lastPlayedNote, lastChannel);
     lastPlayedNote = -1;
@@ -199,7 +200,7 @@ void seq_controlchange(const int controller, const int value, const int channel)
     snd_seq_ev_set_direct(&event);
     snd_seq_ev_set_controller(&event, channel, controller, value);
 
-    if(snd_seq_event_output_direct(context_ref->sequencer, &event) < 0)
+    if (snd_seq_event_output_direct(context_ref->sequencer, &event) < 0)
     {
         return;
     }
