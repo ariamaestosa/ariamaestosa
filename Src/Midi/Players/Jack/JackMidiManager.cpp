@@ -35,15 +35,16 @@ struct ScopedLocker
 		pthread_mutex_t* m_mutex;
 };
 
-struct JackMidiPlayer
+class PrivateJackMidiPlayer
 {
+public:
 	// note:
 	//     0. do not use new, delete, file i/o syscalls, etc. while _mutex is
 	//        being locked.
 	//     1. be careful of priority inversion because handleJack() is running
 	//        on the high priority thread.
 
-	~JackMidiPlayer()
+	~PrivateJackMidiPlayer()
 	{
 		jack_client_close(m_jack);
 		pthread_cond_destroy(&m_finish);
@@ -51,7 +52,7 @@ struct JackMidiPlayer
 		delete m_sequencer;
 	}
 
-	JackMidiPlayer(): m_playing(false), m_frame(0), m_sequencer(0)
+	PrivateJackMidiPlayer(): m_playing(false), m_frame(0), m_sequencer(0)
 	{
 		pthread_mutexattr_t mattr;
 		pthread_mutexattr_init(&mattr);
@@ -142,7 +143,7 @@ struct JackMidiPlayer
 	private:
 		static int handleJack(jack_nframes_t nFrame, void* selfv)
 		{
-			JackMidiPlayer* self = reinterpret_cast<JackMidiPlayer*>(selfv);
+			PrivateJackMidiPlayer* self = reinterpret_cast<PrivateJackMidiPlayer*>(selfv);
 			unsigned srate = jack_get_sample_rate(self->m_jack);
 			void* buf = jack_port_get_buffer(self->m_port, nFrame);
 			jack_midi_clear_buffer(buf);
@@ -203,17 +204,21 @@ struct JackMidiPlayer
 };
 
 
-namespace AriaMaestosa { namespace PlatformMidiManager
+namespace AriaMaestosa
 {
-	std::auto_ptr<JackMidiPlayer> player;
+class JackMidiPlayer : public PlatformMidiManager
+{
+	std::auto_ptr<PrivateJackMidiPlayer> player;
 	std::auto_ptr<jdkmidi::MIDIMultiTrack> tracks;
 
-	void initMidiPlayer()
+public:
+
+	virtual void initMidiPlayer()
 	{
-		player.reset(new JackMidiPlayer());
+		player.reset(new PrivateJackMidiPlayer());
 	}
 
-	void freeMidiPlayer()
+	virtual void freeMidiPlayer()
 	{
 		player.reset();
 	}
@@ -234,7 +239,7 @@ namespace AriaMaestosa { namespace PlatformMidiManager
 		player->wait(); // finish playing before destroying tracks.
 	}
 
-	void playNote(int note, int vel, int dur, int ch, int inst)
+	virtual void playNote(int note, int vel, int dur, int ch, int inst)
 	{
 		resetSync();
 
@@ -255,12 +260,12 @@ namespace AriaMaestosa { namespace PlatformMidiManager
 		player->play(tracks.get());
 	}
 
-	void stopNote()
+	virtual void stopNote()
 	{
 		resetSync();
 	}
 
-	bool playSequence(Sequence* seq, int* startTick)
+	virtual bool playSequence(Sequence* seq, int* startTick)
 	{
 		resetSync();
 
@@ -273,7 +278,7 @@ namespace AriaMaestosa { namespace PlatformMidiManager
 		return true;
 	}
 
-	bool playSelected(Sequence* seq, int* startTick)
+	virtual bool playSelected(Sequence* seq, int* startTick)
 	{
 		resetSync();
 
@@ -286,50 +291,60 @@ namespace AriaMaestosa { namespace PlatformMidiManager
 		return true;
 	}
 
-	bool isPlaying()
+	virtual bool isPlaying()
 	{
 		return player->isPlaying();
 	}
 
-	void stop()
+	virtual void stop()
 	{
 		resetSync();
 	}
 
-	int trackPlaybackProgression()
+	virtual int trackPlaybackProgression()
 	{
 		return player->getTick();
 	}
 
-	wxString const getAudioExtension()
+	virtual wxString const getAudioExtension()
 	{
 		return wxEmptyString;
 	}
 
-	wxString const getAudioWildcard()
+	virtual wxString const getAudioWildcard()
 	{
 		return wxEmptyString;
 	}
 
-	void exportAudioFile(Sequence*, wxString)
+	virtual void exportAudioFile(Sequence*, wxString)
 	{
 		assert(false);
 	}
 
-	bool exportMidiFile(Sequence* seq, wxString file)
+	virtual bool exportMidiFile(Sequence* seq, wxString file)
 	{
 		return AriaMaestosa::exportMidiFile(seq, file);
 	}
 
-	void seq_note_on(int, int, int) {}
-	void seq_note_off(int, int) {}
-	void seq_prog_change(int, int) {}
-	void seq_controlchange(int, int, int) {}
-	void seq_pitch_bend(int, int) {}
-	void seq_notify_current_tick(int) {}
-	bool seq_must_continue() { return false; }
+};
 
-} }
+class JackMidiManagerFactory : public PlatformMidiManagerFactory
+{
+public:
+    JackMidiManagerFactory() : PlatformMidiManagerFactory(wxT("Jack"))
+    {
+    }
+    virtual ~JackMidiManagerFactory()
+    {
+    }
+    
+    virtual PlatformMidiManager* newInstance()
+    {
+        return new JackMidiPlayer();
+    }
+};
+JackMidiManagerFactory g_jack_midi_manager_factory;
+}
 
 
 #endif // defined( USE_JACK )
