@@ -13,6 +13,8 @@ Help("""
                 specify platform, if not auto-detected
             config=[debug/release]
                 specify build type
+            jack=[0/1]
+                whether to enable the Jack MIDI driver (on by default for non-Linux unices, disabled everywhere else by default)
             WXCONFIG=/path/to/wx-config
                 build using a specified wx-config
             compiler_arch=[32bit/64bit]
@@ -303,6 +305,8 @@ def compile_Aria(which_os):
     # ********************************* PLATFORM SPECIFIC ******************************************
     # ********************************************************************************************** 
 
+    use_jack = ARGUMENTS.get('jack', '0')
+
     # OS X (QTKit, CoreAudio, audiotoolbox)
     if which_os == "macosx":
 
@@ -352,21 +356,27 @@ def compile_Aria(which_os):
             env.Append(CCFLAGS=['-DwxUSE_GLCANVAS=1'])
             env.Append(LIBS = ['GL', 'GLU'])
 
-        if True: # midi_driver == 'jack'
-            env.Append(CCFLAGS=['-DUSE_JACK'])
-            env.Append(LIBS = ['jack'])
+        # default sound driver for Unix, if not explicitely set
+        if ARGUMENTS.get('jack', '!') == '!':
+            use_jack = 1
 
         env.Append(CPPPATH = ['/usr/local/include'])
         env.Append(LIBPATH = ['/usr/local/lib'])
         env.ParseConfig('pkg-config --cflags glib-2.0')
 
-    # Windows (currently unsupported)
+    # Windows
     elif which_os == "windows":
         pass
+
     else:
     
-        print "\n\n/!\\ Platform must be either mac or linux "
-        sys.exit(0) 
+        print "\n\n/!\\ Platform ", which_os, " is unknown"
+        sys.exit(0)
+
+
+    if use_jack:
+        env.Append(CCFLAGS=['-DUSE_JACK'])
+        env.Append(LIBS = ['jack'])
     
     
     # *********************************************************************************************
