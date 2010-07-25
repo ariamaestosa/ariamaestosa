@@ -22,6 +22,8 @@
 #include "wx/config.h"
 #include "wx/intl.h"
 
+#include "Midi/Players/PlatformMidiManager.h"
+
 
 using namespace AriaMaestosa; 
 
@@ -33,7 +35,7 @@ using namespace AriaMaestosa;
 #endif
 
 Setting::Setting(wxString name, wxString user_name, SettingType type,
-                 bool visibleInPreferences, int default_value)
+                 bool visibleInPreferences, wxString default_value)
 {
     m_name                   = name;
     m_user_name              = user_name;
@@ -92,16 +94,16 @@ void PreferencesData::readValues()
     // --- read values from file
     wxConfig* prefs = (wxConfig*) wxConfig::Get();
     
-    long value;
+    //long value;
     
     // for each setting
     const int settingAmount = m_settings.size();
-    for(int i=0; i<settingAmount; i++)
+    for (int i=0; i<settingAmount; i++)
     {
         // see if this value is defined in file
-        if (prefs->Read( m_settings[i].m_name, &value) )
+        if (prefs->Read( m_settings[i].m_name, &m_settings[i].m_value) )
         {
-            m_settings[i].m_value = value;
+            //m_settings[i].m_value = value;
         }
     }    
 }
@@ -112,7 +114,7 @@ void PreferencesData::prepareLanguageEntry()
 {
     // ---- language
     Setting* languages = new Setting(fromCString(SETTING_ID_LANGUAGE), _("Language"), SETTING_ENUM, true,
-                                     getDefaultLanguageAriaID() );
+                                     to_wxString(getDefaultLanguageAriaID()) );
     languages->setChoices( getLanguageList() );
     m_settings.push_back( languages );
 }
@@ -121,9 +123,35 @@ void PreferencesData::prepareLanguageEntry()
 
 void PreferencesData::fillSettingsVector()
 {
+    // FIXME: don't hardcode driver names?
+#if defined(__WXMAC__)
+    wxString defaultMidiDriver(wxT("QuickTime/AudioToolkit"));
+#elif defined(__WXGTK__)
+    #ifdef _ALSA
+    wxString defaultMidiDriver(wxT("Linux/ALSA"));
+    #else
+    wxString defaultMidiDriver(wxT("Jack"));
+    #endif
+#elif defined(__WXMSW__)
+    wxString defaultMidiDriver(wxT("Windows"));
+#else
+    wxString defaultMidiDriver(wxT("No Sound"));
+#endif
+    
+    // ---- Midi Driver
+    Setting* midiDriver = new Setting(fromCString(SETTING_ID_MIDI_DRIVER), _("MIDI Driver"),
+                                SETTING_STRING_ENUM, true /* show in preferences */, defaultMidiDriver );
+    std::vector<wxString> midiDrivers = PlatformMidiManager::getChoices();
+    const int count = midiDrivers.size();
+    for (int n=0; n<count; n++)
+    {
+        midiDriver->addChoice(midiDrivers[n]);
+    }
+    m_settings.push_back( midiDriver );
+
     // ---- play during edit
     Setting* play = new Setting(fromCString(SETTING_ID_PLAY_DURING_EDIT), _("Play during edit (default value)"),
-                                SETTING_ENUM, true, 1 );
+                                SETTING_ENUM, true /* show in preferences */, wxT("1") );
     play->addChoice(_("Always"));        // PLAY_ALWAYS = 0,
     play->addChoice(_("On note change"));// PLAY_ON_CHANGE = 1,
     play->addChoice(_("Never"));         // PLAY_NEVER = 2
@@ -131,7 +159,7 @@ void PreferencesData::fillSettingsVector()
     
     // ---- score view
     Setting* scoreview = new Setting(fromCString(SETTING_ID_SCORE_VIEW), _("Default Score View"),
-                                     SETTING_ENUM, true, 0 );
+                                     SETTING_ENUM, true /* show in preferences */, wxT("0") );
     scoreview->addChoice(_("Both Musical and Linear"));
     scoreview->addChoice(_("Musical Only"));
     scoreview->addChoice(_("Linear Only"));
@@ -139,7 +167,7 @@ void PreferencesData::fillSettingsVector()
     
     // ---- follow playback
     Setting* followp = new Setting(fromCString(SETTING_ID_FOLLOW_PLAYBACK), _("Follow playback by default"),
-                                   SETTING_BOOL, true, 0 );
+                                   SETTING_BOOL, true /* show in preferences */, wxT("0") );
     m_settings.push_back( followp );
     
 #ifdef __WXGTK__
@@ -155,30 +183,30 @@ void PreferencesData::fillSettingsVector()
      */
     Setting* launchTim = new Setting(fromCString(SETTING_ID_LAUNCH_TIMIDITY),
                                      _("Automatically launch TiMidity and pick a port"),
-                                     SETTING_BOOL, true, 1 );
+                                     SETTING_BOOL, true /* show in preferences */, wxT("1") );
     m_settings.push_back( launchTim );
 #endif
     
     // ---- printing
     Setting* marginLeft = new Setting(fromCString(SETTING_ID_MARGIN_LEFT), wxT(""),
-                                      SETTING_INT, false, 12 );
+                                      SETTING_INT, false /* show in preferences */, wxT("12") );
     m_settings.push_back( marginLeft );
     
     Setting* marginRight = new Setting(fromCString(SETTING_ID_MARGIN_RIGHT), wxT(""),
-                                      SETTING_INT, false, 12 );
+                                      SETTING_INT, false /* show in preferences */, wxT("12") );
     m_settings.push_back( marginRight );
     
     Setting* marginTop = new Setting(fromCString(SETTING_ID_MARGIN_TOP), wxT(""),
-                                      SETTING_INT, false, 12 );
+                                      SETTING_INT, false /* show in preferences */, wxT("12") );
     m_settings.push_back( marginTop );
     
     Setting* marginBottom = new Setting(fromCString(SETTING_ID_MARGIN_BOTTOM), wxT(""),
-                                      SETTING_INT, false, 16 );
+                                      SETTING_INT, false /* show in preferences */, wxT("16") );
     m_settings.push_back( marginBottom );
     
-    
+    //FIXME: hope wx enum values don't change...
     Setting* paperType = new Setting(fromCString(SETTING_ID_PAPER_TYPE), wxT(""),
-                                     SETTING_INT, false, wxPAPER_LETTER ); //FIXME: hope wx enum values don't change...
+                                     SETTING_INT, false /* show in preferences */, to_wxString(wxPAPER_LETTER) );
     m_settings.push_back( paperType );
 }
 
@@ -189,7 +217,7 @@ void PreferencesData::save()
     wxConfig* prefs = (wxConfig*) wxConfig::Get();
     
     const int settingAmount = m_settings.size();
-    for(int i=0; i<settingAmount; i++)
+    for (int i=0; i<settingAmount; i++)
     {
         prefs->Write( m_settings[i].m_name, m_settings[i].m_value );
     }
@@ -199,7 +227,7 @@ void PreferencesData::save()
 
 // ----------------------------------------------------------------------------------------------------
 
-long PreferencesData::getValue(wxString entryName) const
+wxString PreferencesData::getValue(wxString entryName) const
 {
     
     const int settingAmount = m_settings.size();
@@ -212,12 +240,27 @@ long PreferencesData::getValue(wxString entryName) const
         }
     }
     std::cout << "prefs value not found : " << entryName.mb_str() << std::endl;
-    return -1;
+    return wxEmptyString;
 }
 
 // ----------------------------------------------------------------------------------------------------
 
-void PreferencesData::setValue(wxString entryName, long newValue)
+long PreferencesData::getIntValue(wxString entryName) const
+{
+    wxString asString = getValue(entryName);
+    ASSERT(not asString.IsEmpty());
+    
+    long asInt = -1;
+    if (not asString.ToLong(&asInt))
+    {
+        ASSERT(false);
+    }
+    return asInt;
+}
+
+// ----------------------------------------------------------------------------------------------------
+
+void PreferencesData::setValue(wxString entryName, wxString newValue)
 {
     const int settingAmount = m_settings.size();
     for (int i=0; i<settingAmount; i++)

@@ -80,39 +80,84 @@ namespace AriaMaestosa
         
         void updateWidgetFromValue()
         {
-            // FIXME : instead of switching over type, use polymorphism so that each parameter can handle itself
+            long asLong;
+            const bool longValueValid = m_parent->m_value.ToLong(&asLong);
+            
             switch (m_parent->m_type)
-            {
+            { 
                 case SETTING_ENUM:
-                    m_combo->Select(m_parent->m_value);
+                {
+                    ASSERT(longValueValid);
+                    if (not longValueValid) return;
+                    m_combo->Select(asLong);
                     break;
+                }
+                    
+                case SETTING_STRING_ENUM:
+                {
+                    int id = 0;
+                    // TODO: handle case where value not found?
+                    for (int n=0; n<m_parent->m_choices.size(); n++)
+                    {
+                        if (m_parent->m_choices[n] == m_parent->m_value)
+                        {
+                            id = n;
+                            break;
+                        }
+                    }
+                    m_combo->Select(id);
+                    break;
+                }
                     
                 case SETTING_BOOL:
-                    m_checkbox->SetValue(m_parent->m_value);
+                {
+                    ASSERT(longValueValid);
+                    if (not longValueValid) return;
+                    m_checkbox->SetValue(asLong);
                     break;
+                }
                     
                 case SETTING_INT:
-                    m_number->SetValue(m_parent->m_value);
+                {
+                    ASSERT(longValueValid);
+                    if (not longValueValid) return;
+                    m_number->SetValue(asLong);
                     break;
+                }
+                
+                default:
+                {
+                    ASSERT(false);
+                    fprintf(stderr, "Unknown preferences data type : %i\n", m_parent->m_type);
+                    return;
+                }
             }
         }
         
         void updateValueFromWidget()
         {
-            // FIXME : instead of switching over type, use polymorphism so that each parameter can handle itself
             switch (m_parent->m_type)
             {
                 case SETTING_ENUM:
-                    m_parent->m_value = m_combo->GetSelection();
+                    m_parent->m_value = to_wxString(m_combo->GetSelection());
+                    break;
+                    
+                case SETTING_STRING_ENUM:
+                    m_parent->m_value = m_combo->GetStringSelection();
                     break;
                     
                 case SETTING_BOOL:
-                    m_parent->m_value = m_checkbox->GetValue();
+                    m_parent->m_value = to_wxString(m_checkbox->GetValue());
                     break;
                     
                 case SETTING_INT:
-                    m_parent->m_value = m_number->GetValue();
+                    m_parent->m_value = to_wxString(m_number->GetValue());
                     break;
+                    
+                default:
+                    ASSERT(false);
+                    fprintf(stderr, "Unknown preferences data type : %i\n", m_parent->m_type);
+                    return;
             }
         }
     };
@@ -155,6 +200,7 @@ wxDialog(parent, wxID_ANY,
         {
                 
             case SETTING_ENUM:
+            case SETTING_STRING_ENUM:
             {
                 QuickBoxLayout box(this, vert_sizer);
                 box.add(new wxStaticText(box.pane , wxID_ANY, settings[i].m_user_name ));

@@ -221,7 +221,7 @@ void MainFrame::initMenuBar()
     followPlaybackMenuItem = settingsMenu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_FOLLOW_PLAYBACK, _("Follow Playback"), MainFrame::menuEvent_followPlayback );
     expandedMeasuresMenuItem = settingsMenu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_MEASURE_EXPANDED, _("Expanded time sig management"), MainFrame::menuEvent_expandedMeasuresSelected );
 
-    followPlaybackMenuItem->Check( Core::getPrefsValue("followPlayback") != 0 );
+    followPlaybackMenuItem->Check( Core::getPrefsLongValue("followPlayback") != 0 );
 
     wxMenu* channelMode_menu = new wxMenu();
 
@@ -247,7 +247,7 @@ void MainFrame::initMenuBar()
 
     settingsMenu->QUICK_ADD_MENU( wxID_PREFERENCES,   _("Preferences"), MainFrame::menuEvent_preferences );
 
-    const int playValue = Core::getPrefsValue("playDuringEdit");
+    const int playValue = Core::getPrefsLongValue("playDuringEdit");
     if (playValue == PLAY_ON_CHANGE)   playDuringEdits_onchange->Check();
     else if (playValue == PLAY_ALWAYS) playDuringEdits_always->Check();
     else if (playValue == PLAY_NEVER)  playDuringEdits_never->Check();

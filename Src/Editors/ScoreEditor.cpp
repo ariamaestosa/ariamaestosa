@@ -426,7 +426,7 @@ ScoreEditor::ScoreEditor(Track* track) : Editor(track)
     g_clef = true;
     f_clef = true;
 
-    const long scoreView = Core::getPrefsValue("scoreview");
+    const long scoreView = Core::getPrefsLongValue("scoreview");
     musicalNotationEnabled = scoreView == 0 or scoreView == 1;
     linearNotationEnabled  = scoreView == 0 or scoreView == 2;
 

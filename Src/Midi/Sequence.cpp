@@ -61,7 +61,7 @@ Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener
     importing               = false;
     maximize_track_mode     = false;
     x_scroll_upon_copying   = -1;
-    follow_playback         = Core::getPrefsValue("followPlayback") != 0;
+    follow_playback         = Core::getPrefsLongValue("followPlayback") != 0;
     m_playback_listener     = playbackListener;
     m_action_stack_listener = actionStackListener;
     m_seq_data_listener     = sequenceDataListener;
