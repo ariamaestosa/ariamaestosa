@@ -5,23 +5,31 @@
 
 namespace AriaMaestosa
 {
-    class MidiContext;
+class MidiContext;
 
-namespace PlatformMidiManager
+// global flag that is set when ALSA midi could not be initialized (FIXME: ugly)
+extern bool sound_available;
+
+namespace AlsaPlayerStuff
 {
-    // global flag that is set when ALSA midi could not be initialized
-    extern bool sound_available;
+    void alsa_output_module_setContext(MidiContext* context_arg);
 
-void alsa_output_module_setContext(MidiContext* context_arg);
-
-void alsa_output_module_init();
-void alsa_output_module_free();
+    void alsa_output_module_init();
+    void alsa_output_module_free();
 
 
- void allSoundOff();
- void resetAllControllers();
- void stopNoteIfAny();
+    void allSoundOff();
+    void resetAllControllers();
+    void stopNoteIfAny();
 
+    void playNote(int noteNum, int volume, int duration, int channel, int instrument);
+    void stopNote();
+
+    void seq_note_on(const int note, const int volume, const int channel);
+    void seq_note_off(const int note, const int channel);
+    void seq_prog_change(const int instrumentID, const int channel);
+    void seq_controlchange(const int controller, const int value, const int channel);
+    void seq_pitch_bend(const int value, const int channel);
 }
 }
 
