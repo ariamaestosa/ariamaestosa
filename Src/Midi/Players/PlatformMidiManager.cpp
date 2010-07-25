@@ -16,6 +16,8 @@
 
 #include "Midi/Players/PlatformMidimanager.h"
 #include "ptr_vector.h"
+#include "wx/intl.h"
+#include "wx/msgdlg.h"
 
 using namespace AriaMaestosa;
 
@@ -35,6 +37,13 @@ std::vector<wxString> PlatformMidiManager::getChoices()
 
 PlatformMidiManager* PlatformMidiManager::get()
 {
+    if (g_all_midi_managers == NULL)
+    {
+        // FIXME: instead of aborting, fire a no-op driver
+        wxMessageBox(_("Bad binary, no MIDI driver was compiled in!"));
+        exit(1);
+    }
+    
     if (g_manager == NULL)
     {
         // TODO : pick a midi manager according to user choice

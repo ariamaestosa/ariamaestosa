@@ -66,6 +66,22 @@ namespace AriaMaestosa
             wxTimer::Start(duration);
         }
     };
+    
+    // FIXME: cheap way to pass parameters to the thread
+    int songLengthInTicks = -1;
+    bool playing = false;
+    int current_tick = -1;
+    HMIDIOUT m_hOutMidiDevice = 0;
+    bool m_bOutOpen = false;
+    int lastPlayedNote = -1, lastChannel;
+    StopNoteTimer* stopNoteTimer = NULL;
+        
+    /** all sound off, reset all controllers, reset pitch bend, etc. */
+    void cleanup_after_playback()
+    {
+        midiOutReset(m_hOutMidiDevice);
+    }
+    
     class SequencerThread : public wxThread
     {
         jdkmidi::MIDIMultiTrack* jdkmidiseq;
@@ -136,26 +152,12 @@ namespace AriaMaestosa
     
     class WinMidiManager : public PlatformMidiManager
     {
-        int songLengthInTicks = -1;
-        bool playing = false;
-        int current_tick = -1;
-		HMIDIOUT m_hOutMidiDevice = 0;
-		bool m_bOutOpen = false;
-		int lastPlayedNote = -1, lastChannel;
-        StopNoteTimer* stopNoteTimer = NULL;
-
+        bool play(Sequence* sequence, /*out*/int* startTick, bool selectionOnly);
     public:
-		virtual bool play(Sequence* sequence, /*out*/int* startTick, bool selectionOnly);
-
-		/** all sound off, reset all controllers, reset pitch bend, etc. */
-        void cleanup_after_playback()
-        {
-        	midiOutReset(m_hOutMidiDevice);
-        }
 
         virtual bool playSequence(Sequence* sequence, /*out*/int* startTick)
         {
-        	return play(sequence, startTick, false);
+            return play(sequence, startTick, false);
             /*
              * see 'playSelected' below, it's essentially the same, just
              * replace 'true' with 'false' where it says 'selection only'
@@ -164,7 +166,7 @@ namespace AriaMaestosa
         
         virtual bool playSelected(Sequence* sequence, /*out*/int* startTick)
         {
-        	return play(sequence, startTick, true);
+            return play(sequence, startTick, true);
         }
         
         virtual bool isPlaying()
@@ -222,57 +224,57 @@ namespace AriaMaestosa
 
 
         // Not used currently, but could be added to enumerate the MIDI devices (i. e. MIDI Yoke virtual devices)
-		void enumerateDevices()
-		{
-			int i;
-			DWORD wRtn;
-			int midi_num_outputs;
-			LPMIDIOUTCAPS midi_out_caps;
+        void enumerateDevices()
+        {
+            int i;
+            DWORD wRtn;
+            int midi_num_outputs;
+            LPMIDIOUTCAPS midi_out_caps;
 
-			midi_num_outputs = midiOutGetNumDevs();
-			midi_out_caps = (LPMIDIOUTCAPS)malloc(sizeof(MIDIOUTCAPS)*midi_num_outputs);
+            midi_num_outputs = midiOutGetNumDevs();
+            midi_out_caps = (LPMIDIOUTCAPS)malloc(sizeof(MIDIOUTCAPS)*midi_num_outputs);
 
-			if (midi_out_caps != NULL)
-			{
-				std::cout << "Manufacturer ID | Product ID | Driver Version | Name";
+            if (midi_out_caps != NULL)
+            {
+                std::cout << "Manufacturer ID | Product ID | Driver Version | Name";
 
-				for (i = 0; i < midi_num_outputs; i++)
-				{
-					wRtn = midiOutGetDevCaps(i, (LPMIDIOUTCAPS) & midi_out_caps[i],
-											 sizeof(MIDIOUTCAPS));
-					if (wRtn == MMSYSERR_NOERROR)
+                for (i = 0; i < midi_num_outputs; i++)
+                {
+                    wRtn = midiOutGetDevCaps(i, (LPMIDIOUTCAPS) & midi_out_caps[i],
+                                             sizeof(MIDIOUTCAPS));
+                    if (wRtn == MMSYSERR_NOERROR)
                     {
-						// see http://msdn.microsoft.com/en-us/library/dd798467%28VS.85%29.aspx
-						std::cout << midi_out_caps[i].wMid << " " << midi_out_caps[i].wPid << " "
-										<< midi_out_caps[i].vDriverVersion << " " << midi_out_caps[i].szPname;
-					}
-				}
-				free (midi_out_caps);
-			}
+                        // see http://msdn.microsoft.com/en-us/library/dd798467%28VS.85%29.aspx
+                        std::cout << midi_out_caps[i].wMid << " " << midi_out_caps[i].wPid << " "
+                                        << midi_out_caps[i].vDriverVersion << " " << midi_out_caps[i].szPname;
+                    }
+                }
+                free (midi_out_caps);
+            }
 
 
-		}
+        }
 
 
         // called when app opens
         virtual void initMidiPlayer()
         {
 
-			if( !m_bOutOpen )
-			{
-				//enumerateDevices();
+            if( !m_bOutOpen )
+            {
+                //enumerateDevices();
 
-				// To access Midi Yoke Output, simply put its number instead of MIDI_MAPPER
-			  int e = ::midiOutOpen(
-				&m_hOutMidiDevice,
-				MIDI_MAPPER,
-				NULL,
-				NULL,
-				CALLBACK_NULL
-				);
+                // To access Midi Yoke Output, simply put its number instead of MIDI_MAPPER
+              int e = ::midiOutOpen(
+                &m_hOutMidiDevice,
+                MIDI_MAPPER,
+                NULL,
+                NULL,
+                CALLBACK_NULL
+                );
 
-			  if( e!=0 )
-			  {
+              if( e!=0 )
+              {
                 wxMessageBox( _("Failed to initialize MIDI out device") );
                 switch (e)
                 {
@@ -296,24 +298,24 @@ namespace AriaMaestosa
                         break;
                 }
                 wxLogError(wxString::Format(wxT("(%i MIDI devices available)"), midiOutGetNumDevs()));
-				return;
-			  }
-			  m_bOutOpen=true;
-			}
+                return;
+              }
+              m_bOutOpen=true;
+            }
 
-			stopNoteTimer = new StopNoteTimer();
+            stopNoteTimer = new StopNoteTimer();
 
-			return;
+            return;
         }
 
         // called when app closes
         virtual void freeMidiPlayer()
         {
-			if (m_bOutOpen)
-			{
-			  ::midiOutClose( m_hOutMidiDevice );
-			  m_bOutOpen=false;
-			}
+            if (m_bOutOpen)
+            {
+              ::midiOutClose( m_hOutMidiDevice );
+              m_bOutOpen=false;
+            }
 
             if (stopNoteTimer != NULL)
             {
@@ -328,18 +330,18 @@ namespace AriaMaestosa
         {
             if (not m_bOutOpen) return;
 
-			DWORD dwMsg;
+            DWORD dwMsg;
 
             if (lastPlayedNote != -1)
             {
                 stopNote();
             }
 
-			dwMsg = MAKEMIDISHORTMSG(MIDI_PROGRAM_CHANGE, channel, instrument, 0);
-			::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
+            dwMsg = MAKEMIDISHORTMSG(MIDI_PROGRAM_CHANGE, channel, instrument, 0);
+            ::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
 
-        	dwMsg = MAKEMIDISHORTMSG(MIDI_NOTE_ON, channel, noteNum, volume);
-			::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
+            dwMsg = MAKEMIDISHORTMSG(MIDI_NOTE_ON, channel, noteNum, volume);
+            ::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
 
             ASSERT(stopNoteTimer != NULL);
             stopNoteTimer->start(duration);
@@ -353,11 +355,11 @@ namespace AriaMaestosa
 
             DWORD dwMsg;
 
-        	// 0 velocity turns note off
-        	dwMsg = MAKEMIDISHORTMSG(MIDI_NOTE_ON, lastChannel, lastPlayedNote, 0);
-			::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
+            // 0 velocity turns note off
+            dwMsg = MAKEMIDISHORTMSG(MIDI_NOTE_ON, lastChannel, lastPlayedNote, 0);
+            ::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
 
-			lastPlayedNote = -1;
+            lastPlayedNote = -1;
         }
 
         // ----------------------------------------------------------------------
@@ -367,50 +369,50 @@ namespace AriaMaestosa
         // if you're going to use the generic sequencer/timer, implement those to send events to native API
         virtual void seq_note_on(const int note, const int volume, const int channel)
         {
-			DWORD dwMsg;
+            DWORD dwMsg;
 
-        	dwMsg = MAKEMIDISHORTMSG(MIDI_NOTE_ON, channel, note, volume);
-			::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
+            dwMsg = MAKEMIDISHORTMSG(MIDI_NOTE_ON, channel, note, volume);
+            ::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
         }
 
 
         virtual void seq_note_off(const int note, const int channel)
         {
-        	 DWORD dwMsg;
+             DWORD dwMsg;
 
-        	// 0 velocity turns note off
-        	dwMsg = MAKEMIDISHORTMSG(MIDI_NOTE_ON, channel, note, 0);
-			::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
+            // 0 velocity turns note off
+            dwMsg = MAKEMIDISHORTMSG(MIDI_NOTE_ON, channel, note, 0);
+            ::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
         }
 
         virtual void seq_prog_change(const int instrument, const int channel)
         {
-			DWORD dwMsg;
+            DWORD dwMsg;
 
-        	dwMsg = MAKEMIDISHORTMSG(MIDI_PROGRAM_CHANGE, channel, instrument, 0);
-			::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
+            dwMsg = MAKEMIDISHORTMSG(MIDI_PROGRAM_CHANGE, channel, instrument, 0);
+            ::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
         }
 
         virtual void seq_controlchange(const int controller, const int value, const int channel)
         {
-        	DWORD dwMsg;
+            DWORD dwMsg;
 
-        	dwMsg = MAKEMIDISHORTMSG(MIDI_CONTROL_CHANGE, channel, controller, value);
-			::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
+            dwMsg = MAKEMIDISHORTMSG(MIDI_CONTROL_CHANGE, channel, controller, value);
+            ::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
         }
 
         virtual void seq_pitch_bend(const int value, const int channel)
         {
-			DWORD dwMsg;
+            DWORD dwMsg;
 
-			int temp = ROUND(0x2000 * ((double)value + 1));
-			if (temp > 0x3fff) temp = 0x3fff; // 14 bits maximum
-			if (temp < 0) temp = 0;
-			int c1 = temp & 0x7F; // low 7 bits
-			int c2 = temp >> 7;   // high 7 bits
+            int temp = ROUND(0x2000 * ((double)value + 1));
+            if (temp > 0x3fff) temp = 0x3fff; // 14 bits maximum
+            if (temp < 0) temp = 0;
+            int c1 = temp & 0x7F; // low 7 bits
+            int c2 = temp >> 7;   // high 7 bits
 
-        	dwMsg = MAKEMIDISHORTMSG(MIDI_PITCH_WHEEL, channel, c1, c2);
-			::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
+            dwMsg = MAKEMIDISHORTMSG(MIDI_PITCH_WHEEL, channel, c1, c2);
+            ::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
         }
 
         // called repeatedly by the generic sequencer to tell
@@ -435,46 +437,62 @@ namespace AriaMaestosa
             return playing;
         }
 
-    private:
-        bool play(Sequence* sequence, /*out*/int* startTick, bool selectionOnly)
-        {
-            if (not m_bOutOpen) return false;
-            if (playing) return false; // already playing
-            playing = true;
-            current_tick = 0;
+    };
+    
+    bool WinMidiManager::play(Sequence* sequence, /*out*/int* startTick, bool selectionOnly)
+    {
+        if (not m_bOutOpen) return false;
+        if (playing) return false; // already playing
+        playing = true;
+        current_tick = 0;
 
-            // stop any preview note currently playing
-            stopNote();
+        // stop any preview note currently playing
+        stopNote();
 
-            /*
-             * Here there are a few ways to go.
-             *
-             * PATH 1 : Let helper functions generate midi bytes, and feed them
-             *          to a native sequencer API that can read midi bytes
-             */
-            char* data;
-            int datalength = -1;
+        /*
+         * Here there are a few ways to go.
+         *
+         * PATH 1 : Let helper functions generate midi bytes, and feed them
+         *          to a native sequencer API that can read midi bytes
+         */
+        char* data;
+        int datalength = -1;
 
-			//AAR : replaced makeMidiBytes by allocAsMidiBytes
-            //makeMidiBytes(sequence, true /* selection only */, &songLengthInTicks, startTick, &data, &datalength, true);
-			allocAsMidiBytes(sequence, selectionOnly, &songLengthInTicks, startTick, &data, &datalength, true);
+        //AAR : replaced makeMidiBytes by allocAsMidiBytes
+        //makeMidiBytes(sequence, true /* selection only */, &songLengthInTicks, startTick, &data, &datalength, true);
+        allocAsMidiBytes(sequence, selectionOnly, &songLengthInTicks, startTick, &data, &datalength, true);
 
-            // add some breath time at the end so that last note is not cut too sharply
-            // 'makeMidiBytes' adds some silence at the end so no need to worry about possible problems
-            songLengthInTicks += sequence->ticksPerBeat();
+        // add some breath time at the end so that last note is not cut too sharply
+        // 'makeMidiBytes' adds some silence at the end so no need to worry about possible problems
+        songLengthInTicks += sequence->ticksPerBeat();
 
-            /*
-             * PATH 2 : Use the generic Aria/jdkmidi sequencer, then native functions below
-             *          are used and only need to do direct output when called, no native sequencer invovled
-             */
+        /*
+         * PATH 2 : Use the generic Aria/jdkmidi sequencer, then native functions below
+         *          are used and only need to do direct output when called, no native sequencer invovled
+         */
 
-            SequencerThread* seqthread = new SequencerThread(selectionOnly, sequence);
-            seqthread->go(startTick);
+        SequencerThread* seqthread = new SequencerThread(selectionOnly, sequence);
+        seqthread->go(startTick);
 
-            return true;
-        }
-
+        return true;
     }
+    
+    class WinMidiManagerFactory : public PlatformMidiManagerFactory
+    {
+    public:
+        WinMidiManagerFactory() : PlatformMidiManagerFactory(wxT("Windows"))
+        {
+        }
+        virtual ~WinMidiManagerFactory()
+        {
+        }
+        
+        virtual PlatformMidiManager* newInstance()
+        {
+            return new WinMidiManager();
+        }
+    };
+    WinMidiManagerFactory g_windows_midi_manager_factory;
 }
 
 #endif
