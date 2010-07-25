@@ -206,12 +206,6 @@ namespace AriaMaestosa
             
             return true;
         }
-        
-        virtual bool exportMidiFile(Sequence* sequence, wxString filepath)
-        {
-            AriaMaestosa::exportMidiFile(sequence, filepath);
-            return true;
-        }
                 
         virtual void exportAudioFile(Sequence* sequence, wxString filepath)
         {

@@ -322,11 +322,6 @@ public:
 		assert(false);
 	}
 
-	virtual bool exportMidiFile(Sequence* seq, wxString file)
-	{
-		return AriaMaestosa::exportMidiFile(seq, file);
-	}
-
 };
 
 class JackMidiManagerFactory : public PlatformMidiManagerFactory

@@ -196,13 +196,6 @@ namespace AriaMaestosa
             //return  wxString( _("WAV file")) + wxT("|*.wav");
         }
 
-
-        virtual bool exportMidiFile(Sequence* sequence, wxString filepath)
-        {
-            // okay to use generic function for this
-            return AriaMaestosa::exportMidiFile(sequence, filepath);
-        }
-
         // get current tick, either from native API or from a variable (current_tick) you keep around and update from the playback thread
         // current_tick is updated by seq_notify_current_tick
         virtual int trackPlaybackProgression()

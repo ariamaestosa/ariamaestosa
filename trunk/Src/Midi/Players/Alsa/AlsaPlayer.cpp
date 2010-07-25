@@ -107,7 +107,7 @@ void* export_audio_func( void *ptr )
     // the file is exported to midi, and then we tell timidity to make it into wav
     wxString tempMidiFile = export_audio_filepath.BeforeLast('/') + wxT("/aria_temp_file.mid");
 
-    AriaMaestosa::PlatformMidiManager::get()->exportMidiFile(g_sequence, tempMidiFile);
+    AriaMaestosa::exportMidiFile(g_sequence, tempMidiFile);
     wxString cmd = wxT("timidity -Ow -o \"") + export_audio_filepath + wxT("\" \"") + tempMidiFile + wxT("\" -idt");
     std::cout << "executing " << cmd.mb_str() << std::endl;
 
@@ -380,11 +380,6 @@ public:
             return -1;
     }
     */
-
-    virtual bool exportMidiFile(Sequence* sequence, wxString filepath)
-    {
-        return AriaMaestosa::exportMidiFile(sequence, filepath);
-    }
 
     virtual const wxString getAudioExtension()
     {
