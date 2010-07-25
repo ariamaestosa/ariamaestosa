@@ -82,7 +82,7 @@ void KeyboardEditor::mouseDown(RelativeXCoord x, const int y)
     else if (x.getRelativeTo(EDITOR)<0 and x.getRelativeTo(EDITOR)>-30 and y>getEditorYStart())
     {
         const int pitchID = getLevelAtY(y);
-        PlatformMidiManager::playNote( 131-pitchID, default_volume, 500, 0, track->getInstrument() );
+        PlatformMidiManager::get()->playNote( 131-pitchID, default_volume, 500, 0, track->getInstrument() );
         return;
     }
     

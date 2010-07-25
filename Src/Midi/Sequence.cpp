@@ -810,7 +810,7 @@ void Sequence::removeFromDock(GraphicalTrack* track)
 void Sequence::spacePressed()
 {
 
-    if (not PlatformMidiManager::isPlaying())
+    if (not PlatformMidiManager::get()->isPlaying())
     {
 
         if (isPlaybackMode())
@@ -821,7 +821,7 @@ void Sequence::spacePressed()
         if (m_playback_listener != NULL) m_playback_listener->onEnterPlaybackMode();
 
         int startTick = -1;
-        bool success = PlatformMidiManager::playSelected(this, &startTick);
+        bool success = PlatformMidiManager::get()->playSelected(this, &startTick);
         Display::setPlaybackStartTick( startTick ); // FIXME - start tick should NOT go in GlPane
 
         // FIXME: there's MainFrame::playback_mode AND MainPane::enterPlayLoop/exitPlayLoop. Fix this MESS
@@ -839,7 +839,7 @@ void Sequence::spacePressed()
     {
         if (m_playback_listener != NULL) m_playback_listener->onLeavePlaybackMode();
 
-        PlatformMidiManager::stop();
+        PlatformMidiManager::get()->stop();
         
         if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
     }

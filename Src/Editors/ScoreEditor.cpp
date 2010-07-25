@@ -1374,7 +1374,7 @@ void ScoreEditor::mouseDown(RelativeXCoord x, const int y)
     {
         const int level = getLevelAtY(y-Y_STEP_HEIGHT/2);
         const int pitchID = converter->levelToNote(level);
-        if (pitchID != -1) PlatformMidiManager::playNote( 131-pitchID, default_volume, 500 /* duration */, 0, track->getInstrument() );
+        if (pitchID != -1) PlatformMidiManager::get()->playNote( 131-pitchID, default_volume, 500 /* duration */, 0, track->getInstrument() );
         return;
     }
     

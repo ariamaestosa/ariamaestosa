@@ -126,7 +126,7 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
     long last_millis = 0;
 
 
-    while(PlatformMidiManager::seq_must_continue())
+    while(PlatformMidiManager::get()->seq_must_continue())
     {
         // process all events that need to be done by the current tick
         while( next_event_time <= total_millis )
@@ -144,28 +144,28 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
             {
                 const int note = ev.GetNote();
                 const int volume = ev.GetVelocity();
-                PlatformMidiManager::seq_note_on(note, volume, channel);
+                PlatformMidiManager::get()->seq_note_on(note, volume, channel);
             }
             else if ( ev.IsNoteOff() )
             {
                 const int note = ev.GetNote();
-                PlatformMidiManager::seq_note_off(note, channel);
+                PlatformMidiManager::get()->seq_note_off(note, channel);
             }
             else if ( ev.IsControlChange() )
             {
                 const int controllerID = ev.GetController();
                 const int value = ev.GetControllerValue();
-                PlatformMidiManager::seq_controlchange(controllerID, value, channel);
+                PlatformMidiManager::get()->seq_controlchange(controllerID, value, channel);
             }
             else if ( ev.IsPitchBend() )
             {
                 const int pitchBendVal = ev.GetBenderValue();
-                PlatformMidiManager::seq_pitch_bend(pitchBendVal, channel);
+                PlatformMidiManager::get()->seq_pitch_bend(pitchBendVal, channel);
             }
             else if ( ev.IsProgramChange() )
             {
                 const int instrument = ev.GetPGValue();
-                PlatformMidiManager::seq_prog_change(instrument, channel);
+                PlatformMidiManager::get()->seq_prog_change(instrument, channel);
             }
             else if ( ev.IsTempo() )
             {
@@ -206,12 +206,12 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
             if ((long)tick > (long)songLengthInTicks)
             {
                 std::cout << "done, thread will exit" << std::endl;
-                PlatformMidiManager::seq_notify_current_tick(-1);
+                PlatformMidiManager::get()->seq_notify_current_tick(-1);
                 cleanup_sequencer();
                 return;
             }
 
-            PlatformMidiManager::seq_notify_current_tick(previous_tick);
+            PlatformMidiManager::get()->seq_notify_current_tick(previous_tick);
 
             //std::cout << "next_event_time was " << next_event_time << " adding " <<
             //((tick - previous_tick) / ticks_per_millis) << " tick=" << tick <<
@@ -236,7 +236,7 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
         //jdkmidi::MIDIClockTime tick;
         //jdksequencer->GetCurrentMIDIClockTime();
         //std::cout << "current tick got from sequencer : " << tick << std::endl;
-        //PlatformMidiManager::seq_notify_current_tick(tick);
+        //PlatformMidiManager::get()->seq_notify_current_tick(tick);
 
         std::cout << "current beat got from sequencer : " << jdksequencer->GetCurrentBeat() << std::endl;
         }

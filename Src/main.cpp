@@ -128,7 +128,7 @@ bool wxWidgetApp::OnInit()
     //read presets
     KeyPresetGroup::getInstance();
     
-    PlatformMidiManager::initMidiPlayer();
+    PlatformMidiManager::get()->initMidiPlayer();
 
     frame = new MainFrame();
     AriaMaestosa::setCurrentSequenceProvider(frame);

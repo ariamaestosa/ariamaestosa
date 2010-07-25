@@ -222,8 +222,8 @@ bool playSequence(Sequence* sequence, /*out*/int* startTick)
     must_stop = false;
     context->setPlaying(true);
 
-    PlatformMidiManager::sequence = sequence;
-    PlatformMidiManager::currentTick = 0;
+    PlatformMidiManager::get()->sequence = sequence;
+    PlatformMidiManager::get()->currentTick = 0;
 
     // std::cout << "  * playSequencer - creating new thread" << std::endl;
 
@@ -242,8 +242,8 @@ bool playSelected(Sequence* sequence, /*out*/int* startTick)
     must_stop = false;
     context->setPlaying(true);
 
-    PlatformMidiManager::sequence = sequence;
-    PlatformMidiManager::currentTick = 0;
+    PlatformMidiManager::get()->sequence = sequence;
+    PlatformMidiManager::get()->currentTick = 0;
 
     SequencerThread* seqthread = new SequencerThread(true /* selection only */);
     seqthread->go(startTick);
@@ -256,8 +256,8 @@ bool playSelected(Sequence* sequence, /*out*/int* startTick)
         stopNoteIfAny();
         must_stop = false;
 
-        PlatformMidiManager::sequence = sequence;
-        PlatformMidiManager::currentTick = 0;
+        PlatformMidiManager::get()->sequence = sequence;
+        PlatformMidiManager::get()->currentTick = 0;
 
         songLengthInTicks = -1;
 
@@ -345,22 +345,22 @@ const wxString getAudioWildcard()
 /*
 void trackPlayback_thread_loop()
 {
-    while(!PlatformMidiManager::must_stop)
+    while(!PlatformMidiManager::get()->must_stop)
     {
 
-        PlatformMidiManager::currentTick = seqContext->getCurrentTick();
+        PlatformMidiManager::get()->currentTick = seqContext->getCurrentTick();
 
-        if(PlatformMidiManager::currentTick >=
-        PlatformMidiManager::songLengthInTicks or
-        PlatformMidiManager::currentTick==-1) PlatformMidiManager::must_stop=true;
+        if(PlatformMidiManager::get()->currentTick >=
+        PlatformMidiManager::get()->songLengthInTicks or
+        PlatformMidiManager::get()->currentTick==-1) PlatformMidiManager::get()->must_stop=true;
     }
 
     // clean up any events remaining on the queue and stop it
     snd_seq_drop_output(seqContext->getAlsaHandle());
     seqContext->stopTimer();
-    PlatformMidiManager::allSoundOff();
+    PlatformMidiManager::get()->allSoundOff();
 
-    PlatformMidiManager::currentTick = -1;
+    PlatformMidiManager::get()->currentTick = -1;
 
     if(root != NULL)
     {
@@ -374,7 +374,7 @@ void trackPlayback_thread_loop()
     //signal(SIGINT, SIG_DFL);// FIXME - are these removed or not?
     context->setPlaying(false);
 
-    PlatformMidiManager::resetAllControllers();
+    PlatformMidiManager::get()->resetAllControllers();
 
 }
 */
@@ -394,7 +394,7 @@ void* export_audio_func( void *ptr )
     // the file is exported to midi, and then we tell timidity to make it into wav
     wxString tempMidiFile = export_audio_filepath.BeforeLast('/') + wxT("/aria_temp_file.mid");
 
-    AriaMaestosa::PlatformMidiManager::exportMidiFile(sequence, tempMidiFile);
+    AriaMaestosa::PlatformMidiManager::get()->exportMidiFile(sequence, tempMidiFile);
     wxString cmd = wxT("timidity -Ow -o \"") + export_audio_filepath + wxT("\" \"") + tempMidiFile + wxT("\" -idt");
     std::cout << "executing " << cmd.mb_str() << std::endl;
 
@@ -438,8 +438,8 @@ void* export_audio_func( void *ptr )
 }
 void exportAudioFile(Sequence* sequence, wxString filepath)
 {
-    PlatformMidiManager::sequence = sequence;
-    PlatformMidiManager::export_audio_filepath = filepath;
+    PlatformMidiManager::get()->sequence = sequence;
+    PlatformMidiManager::get()->export_audio_filepath = filepath;
     threads::export_audio.runFunction( &export_audio_func );
 }
 
