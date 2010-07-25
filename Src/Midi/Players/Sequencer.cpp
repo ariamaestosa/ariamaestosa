@@ -26,7 +26,20 @@
 #include "jdkmidi/driver.h"
 #include "jdkmidi/process.h"
 
+// FIXME: the build system should check for them.
+#ifdef __WXMSW__
+#define HAVE_GETIMEOFDAY 0
+#define HAVE_FTIME 1
+#else
+#define HAVE_GETIMEOFDAY 1
+#define HAVE_FTIME 1
+#endif
+
+#if HAVE_GETIMEOFDAY
 #include <sys/time.h>
+#else
+#include <sys/timeb.h>
+#endif
 
 namespace AriaMaestosa
 {
@@ -39,10 +52,12 @@ namespace AriaMaestosa
 #pragma mark -
 #endif
 
-class FtimeTimer
+#if HAVE_GETIMEOFDAY
+
+class GetTimeOfDayTimer
 {
     timeval _init_time;
-    public:
+public:
 
     void reset_and_start()
     {
@@ -58,6 +73,45 @@ class FtimeTimer
         return elap_time.tv_sec * 1000 + elap_time.tv_usec / 1000;
     }
 };
+typedef GetTimeOfDayTimer BasicTimer;
+
+#elif HAVE_FTIME
+
+class FtimeTimer
+{
+    long initial_sec, initial_millis;
+    public:
+
+    void reset_and_start()
+    {
+        // FIXME - ftime is apparently obsolete (http://linux.die.net/man/3/ftime)
+        // use http://linux.die.net/man/2/gettimeofday instead
+
+        timeb tb;
+        ftime(&tb);
+        initial_sec= tb.time;
+        initial_millis = tb.millitm;
+        //std::cout << "time = " << tb.time << " seconds " << tb.millitm << " millis" << std::endl;
+    }
+
+    int get_elapsed_millis()
+    {
+        timeb tb;
+        ftime(&tb);
+
+        const long current_sec = tb.time;
+        const long current_millis = tb.millitm;
+
+        const long delta_sec = current_sec - initial_sec;
+
+        const long total_millis = delta_sec*1000 - initial_millis + current_millis;
+        return total_millis;
+
+    }
+};
+typedef FtimeTimer BasicTimer;
+
+#else
 
 class DummyTimer
 {
@@ -66,10 +120,9 @@ class DummyTimer
     void reset_and_start(){ time=0; }
     int get_elapsed_millis(){ time+=13; return time; }
 };
+typedef DummyTimer BasicTimer;
 
-
-typedef FtimeTimer BasicTimer;
-//typedef DummyTimer BasicTimer;
+#endif
 
 AriaSequenceTimer::AriaSequenceTimer(Sequence* seq)
 {
