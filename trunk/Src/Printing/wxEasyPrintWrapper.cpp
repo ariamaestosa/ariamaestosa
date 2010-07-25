@@ -36,7 +36,7 @@ wxEasyPrintWrapper::wxEasyPrintWrapper(wxString title, IPrintCallback* printCall
     m_page_amount    = -1; // unknown yet
     m_orient         = wxPORTRAIT;
     
-    long paperTypeInt = prefs->getValue(SETTING_ID_PAPER_TYPE);
+    long paperTypeInt = prefs->getIntValue(SETTING_ID_PAPER_TYPE);
     
     // wxPAPER_PENV_10_ROTATED is currently the last of the enum (FIXME)
     wxPaperSize paperType = (paperTypeInt > wxPAPER_NONE and paperTypeInt <= wxPAPER_PENV_10_ROTATED ?
@@ -45,10 +45,10 @@ wxEasyPrintWrapper::wxEasyPrintWrapper(wxString title, IPrintCallback* printCall
     
     m_units_per_cm   = units_per_cm;
     
-    m_left_margin    = prefs->getValue(SETTING_ID_MARGIN_LEFT);
-    m_top_margin     = prefs->getValue(SETTING_ID_MARGIN_TOP);
-    m_right_margin   = prefs->getValue(SETTING_ID_MARGIN_RIGHT);
-    m_bottom_margin  = prefs->getValue(SETTING_ID_MARGIN_BOTTOM);
+    m_left_margin    = prefs->getIntValue(SETTING_ID_MARGIN_LEFT);
+    m_top_margin     = prefs->getIntValue(SETTING_ID_MARGIN_TOP);
+    m_right_margin   = prefs->getIntValue(SETTING_ID_MARGIN_RIGHT);
+    m_bottom_margin  = prefs->getIntValue(SETTING_ID_MARGIN_BOTTOM);
     
     m_unit_width     = -1.0f;
     m_unit_height    = -1.0f;
@@ -82,7 +82,7 @@ bool wxEasyPrintWrapper::performPageSetup(const bool showPageSetupDialog)
             m_orient         = m_page_setup.GetPrintData().GetOrientation();
             
             PreferencesData* prefs = PreferencesData::getInstance();
-            prefs->setValue(SETTING_ID_PAPER_TYPE, m_paper_id);
+            prefs->setValue(SETTING_ID_PAPER_TYPE, to_wxString(m_paper_id));
             // the call below will perform the save() (FIXME don't rely on this)
             
             updateMarginMembers();
@@ -198,10 +198,10 @@ void wxEasyPrintWrapper::updateMarginMembers()
     
     PreferencesData* prefs = PreferencesData::getInstance();
     
-    prefs->setValue(SETTING_ID_MARGIN_LEFT,   m_left_margin);
-    prefs->setValue(SETTING_ID_MARGIN_TOP,    m_top_margin);
-    prefs->setValue(SETTING_ID_MARGIN_RIGHT,  m_right_margin);
-    prefs->setValue(SETTING_ID_MARGIN_BOTTOM, m_bottom_margin);
+    prefs->setValue(SETTING_ID_MARGIN_LEFT,   to_wxString(m_left_margin));
+    prefs->setValue(SETTING_ID_MARGIN_TOP,    to_wxString(m_top_margin));
+    prefs->setValue(SETTING_ID_MARGIN_RIGHT,  to_wxString(m_right_margin));
+    prefs->setValue(SETTING_ID_MARGIN_BOTTOM, to_wxString(m_bottom_margin));
     prefs->save();
 }
 

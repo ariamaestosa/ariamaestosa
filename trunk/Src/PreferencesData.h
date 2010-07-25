@@ -29,6 +29,7 @@ namespace AriaMaestosa
     enum SettingType
     {
         SETTING_ENUM,
+        SETTING_STRING_ENUM,
         SETTING_BOOL,
         SETTING_INT
     };
@@ -53,7 +54,8 @@ namespace AriaMaestosa
     EXTERN const char* SETTING_ID_MARGIN_BOTTOM    DEFAULT("marginBottom");
 
     EXTERN const char* SETTING_ID_PAPER_TYPE       DEFAULT("paperType");
-    
+    EXTERN const char* SETTING_ID_MIDI_DRIVER      DEFAULT("midiDriver");
+
 #undef EXTERN
 #undef DEFAULT
     
@@ -65,11 +67,11 @@ namespace AriaMaestosa
         wxString      m_user_name;
         wxArrayString m_choices;
         SettingType   m_type;
-        int           m_value;
+        wxString      m_value;
         bool          m_visible_in_preferences;
         
         Setting(wxString name, wxString user_name, SettingType type, bool visibleInPreferences,
-                int default_value = 0);
+                wxString default_value = wxEmptyString);
         void addChoice(wxString choice);
         void setChoices(wxArrayString choices);
     };
@@ -98,11 +100,16 @@ namespace AriaMaestosa
         /** call early */
         void init();
         
-        long getValue(const char* entryName) const { return getValue(wxString(entryName, wxConvUTF8)); }
-        long getValue(wxString entryName) const;
-        
-        void setValue(const char* entryName, long newValue) { setValue( wxString(entryName, wxConvUTF8), newValue ); }
-        void setValue(wxString entryName, long newValue);
+        long getIntValue(const char* entryName) const { return getIntValue(wxString(entryName, wxConvUTF8)); }
+        wxString getValue(const char* entryName) const { return getValue(wxString(entryName, wxConvUTF8)); }
+        wxString getValue(wxString entryName) const;
+        long getIntValue(wxString entryName) const;
+
+        void setValue(const char* entryName, wxString newValue)
+        {
+            setValue( wxString(entryName, wxConvUTF8), newValue );
+        }
+        void setValue(wxString entryName, wxString newValue);
         
         /** write config file */
         void save();

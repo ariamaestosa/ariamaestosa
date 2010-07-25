@@ -232,7 +232,7 @@ public:
 
         context = new MidiContext();
 
-        const bool launchTimidity = Core::getPrefsValue("launchTimidity") != 0;
+        const bool launchTimidity = Core::getPrefsLongValue("launchTimidity") != 0;
 
         if (not context->openDevice(not launchTimidity))
         {

@@ -111,6 +111,8 @@
 		950B3EFF1125DE60006C9AF1 /* it.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EEB1125DE18006C9AF1 /* it.lproj */; };
 		9531304711FCC31A00B75472 /* JackMidiManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9531304611FCC31A00B75472 /* JackMidiManager.cpp */; };
 		9531304811FCC31A00B75472 /* JackMidiManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9531304611FCC31A00B75472 /* JackMidiManager.cpp */; };
+		953130D411FCDD3F00B75472 /* NullDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 953130D211FCDD3F00B75472 /* NullDevice.cpp */; };
+		953130D611FCDD3F00B75472 /* NullDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 953130D211FCDD3F00B75472 /* NullDevice.cpp */; };
 		9533F86111DFAA430002D3ED /* CustomKeyDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 9533F85F11DFAA430002D3ED /* CustomKeyDialog.h */; };
 		9533F86211DFAA430002D3ED /* CustomKeyDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9533F86011DFAA430002D3ED /* CustomKeyDialog.cpp */; };
 		9533F86311DFAA430002D3ED /* CustomKeyDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 9533F85F11DFAA430002D3ED /* CustomKeyDialog.h */; };
@@ -730,6 +732,7 @@
 		950B3EEE1125DE2F006C9AF1 /* aria_file.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = aria_file.icns; path = ../OSX/aria_file.icns; sourceTree = SOURCE_ROOT; };
 		950B3EEF1125DE2F006C9AF1 /* aria_midi_file.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = aria_midi_file.icns; path = ../OSX/aria_midi_file.icns; sourceTree = SOURCE_ROOT; };
 		9531304611FCC31A00B75472 /* JackMidiManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = JackMidiManager.cpp; path = ../Src/Midi/Players/Jack/JackMidiManager.cpp; sourceTree = SOURCE_ROOT; };
+		953130D211FCDD3F00B75472 /* NullDevice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NullDevice.cpp; sourceTree = "<group>"; };
 		9533F85F11DFAA430002D3ED /* CustomKeyDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomKeyDialog.h; sourceTree = "<group>"; };
 		9533F86011DFAA430002D3ED /* CustomKeyDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CustomKeyDialog.cpp; sourceTree = "<group>"; };
 		9533F8F511DFBFF70002D3ED /* PresetManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PresetManager.cpp; path = ../Src/PresetManager.cpp; sourceTree = SOURCE_ROOT; };
@@ -1269,6 +1272,7 @@
 				9531304511FCC31A00B75472 /* Jack */,
 				9571193C1125D8D200104BF5 /* Mac */,
 				957119471125D8D200104BF5 /* Win */,
+				953130D211FCDD3F00B75472 /* NullDevice.cpp */,
 				9566E20E11FC8D4700684709 /* PlatformMidiManager.cpp */,
 				957119441125D8D200104BF5 /* PlatformMidiManager.h */,
 				957119451125D8D200104BF5 /* Sequencer.cpp */,
@@ -2052,6 +2056,7 @@
 				9533F8F911DFBFF70002D3ED /* PresetManager.cpp in Sources */,
 				9566E20F11FC8D4700684709 /* PlatformMidiManager.cpp in Sources */,
 				9531304711FCC31A00B75472 /* JackMidiManager.cpp in Sources */,
+				953130D411FCDD3F00B75472 /* NullDevice.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2180,6 +2185,7 @@
 				9533F8F711DFBFF70002D3ED /* PresetManager.cpp in Sources */,
 				9566E21011FC8D4700684709 /* PlatformMidiManager.cpp in Sources */,
 				9531304811FCC31A00B75472 /* JackMidiManager.cpp in Sources */,
+				953130D611FCDD3F00B75472 /* NullDevice.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

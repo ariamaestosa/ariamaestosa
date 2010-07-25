@@ -15,6 +15,7 @@
  */
 
 #include "Midi/Players/PlatformMidiManager.h"
+#include "PreferencesData.h"
 #include "ptr_vector.h"
 #include "wx/intl.h"
 #include "wx/msgdlg.h"
@@ -46,8 +47,23 @@ PlatformMidiManager* PlatformMidiManager::get()
     
     if (g_manager == NULL)
     {
-        // TODO : pick a midi manager according to user choice
-        g_manager = g_all_midi_managers->get(0)->newInstance();
+        wxString preferredMidiDriver = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_DRIVER);
+
+        const int count = g_all_midi_managers->size();
+        for (int n=0; n<count; n++)
+        {
+            if (g_all_midi_managers->get(n)->getName() == preferredMidiDriver)
+            {
+                g_manager = g_all_midi_managers->get(n)->newInstance();
+                break;
+            }
+        }
+        
+        if (g_manager == NULL)
+        {
+            // TODO: fix invalid preferences value?
+            g_manager = g_all_midi_managers->get(0)->newInstance();
+        }
     }
     return g_manager;
 }

@@ -35,9 +35,20 @@ namespace AriaMaestosa
             wxGetApp().activateRenderLoop(on);
         }
         
-        long getPrefsValue( const char* entryName )
+        wxString getPrefsValue( const char* entryName )
         {
             return wxGetApp().prefs->getValue( wxString(entryName, wxConvUTF8) );
+        }
+        
+        long getPrefsLongValue( const char* entryName )
+        {
+            wxString asString = getPrefsValue(entryName);
+            long asInt = -1;
+            if (not asString.ToLong(&asInt))
+            {
+                ASSERT(false);
+            }
+            return asInt;
         }
         
         void setImporting(bool on)
