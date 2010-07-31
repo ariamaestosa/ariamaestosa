@@ -149,8 +149,6 @@ UNSURE/MINOR:
 
 ** Things like changing global tempo, changing song length, etc... are not actions and thus do not mark the
    document as having unsaved changes!
-   
-** After dismissing "select custom" dialog (Cmd+F), focus is not brought back to main pane, so hitting delete fails
 
 ** Clicking on track header of drum editor unselects notes
 
