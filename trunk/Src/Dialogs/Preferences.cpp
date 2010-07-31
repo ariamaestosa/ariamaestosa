@@ -43,12 +43,12 @@ namespace AriaMaestosa
         QuickBoxLayout(wxWindow* component, wxSizer* parent, int orientation=wxHORIZONTAL)
         {
             pane = new wxPanel(component);
-            parent->Add(pane,1,wxEXPAND);
+            parent->Add(pane, 0, wxEXPAND);
             bsizer = new wxBoxSizer(orientation);
         }
-        void add(wxWindow* window)
+        void add(wxWindow* window, int proportion = 1)
         {
-            bsizer->Add(window, 1, wxALL, 10);
+            bsizer->Add(window, proportion, wxALL, 10);
         }
         ~QuickBoxLayout()
         {
@@ -97,7 +97,8 @@ namespace AriaMaestosa
                 {
                     int id = 0;
                     // TODO: handle case where value not found?
-                    for (int n=0; n<m_parent->m_choices.size(); n++)
+                    const int count = m_parent->m_choices.size();
+                    for (int n=0; n<count; n++)
                     {
                         if (m_parent->m_choices[n] == m_parent->m_value)
                         {
@@ -180,7 +181,7 @@ END_EVENT_TABLE()
 PreferencesDialog::PreferencesDialog(wxFrame* parent, PreferencesData* data) :
 wxDialog(parent, wxID_ANY,
          //I18N: - title of the preferences dialog
-         _("Preferences"), wxPoint(100,100), wxSize(500,300), wxCAPTION )
+         _("Preferences"), wxPoint(100,100), wxSize(500, 350), wxCAPTION | wxRESIZE_BORDER)
 {
     PreferencesDialog::data = data;
     
@@ -203,11 +204,11 @@ wxDialog(parent, wxID_ANY,
             case SETTING_STRING_ENUM:
             {
                 QuickBoxLayout box(this, vert_sizer);
-                box.add(new wxStaticText(box.pane , wxID_ANY, settings[i].m_user_name ));
+                box.add(new wxStaticText(box.pane , wxID_ANY, settings[i].m_user_name), 1);
                 
                 w->m_combo = new wxChoice(box.pane, 1, wxDefaultPosition, wxDefaultSize, 
                                                    settings[i].m_choices );
-                box.add(w->m_combo);
+                box.add(w->m_combo, 1);
                 break;
             }
             case SETTING_BOOL:
@@ -220,7 +221,7 @@ wxDialog(parent, wxID_ANY,
             case SETTING_INT:
             {
                 QuickBoxLayout box(this, vert_sizer);
-                box.add(new wxStaticText(box.pane, wxID_ANY, settings[i].m_user_name ));
+                box.add(new wxStaticText(box.pane, wxID_ANY, settings[i].m_user_name ), 1);
                 
                 w->m_number = new wxSpinCtrl(box.pane, wxID_ANY,
                                                       wxString::Format(wxT("%i"), settings[i].m_value),
@@ -233,6 +234,8 @@ wxDialog(parent, wxID_ANY,
     }
     
     updateWidgetsFromValues();
+    
+    vert_sizer->AddStretchSpacer();
     
     // -----------------------------------
     ok_btn = new wxButton(this, 2, wxT("OK"));
@@ -247,7 +250,7 @@ wxDialog(parent, wxID_ANY,
     
     SetSizer( vert_sizer );
     vert_sizer->Layout();
-    vert_sizer->SetSizeHints( this );
+    //vert_sizer->SetSizeHints( this );
 }
 
 // ---------------------------------------------------------------------------------------------------------
