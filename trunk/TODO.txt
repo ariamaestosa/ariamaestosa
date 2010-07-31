@@ -40,6 +40,8 @@ NOTE: sorry, this is very raw :)
 
 ************************* NEW FEATURES TO ADD: *************************
 
+* Add clicktrack/metronome
+
 * Test Actions with Unit tests
 
 * Add gutar tuning user-defined presets
@@ -147,8 +149,16 @@ UNSURE/MINOR:
 
 ** Things like changing global tempo, changing song length, etc... are not actions and thus do not mark the
    document as having unsaved changes!
+   
+** After dismissing "select custom" dialog (Cmd+F), focus is not brought back to main pane, so hitting delete fails
+
+** Clicking on track header of drum editor unselects notes
 
 ** If a message dialog is shown during track loading, app freezes (conflict with WaitWindow, most likely)
+
+** Right-clicking on selected measures appears to unselect them visually, which is confusing
+
+* Shift+left/Shift+right in score editor doesn't work properly if vairoui time signatures are present
 
 * Undoing "delete track" places it back at the bottom, not where it was
 
