@@ -201,17 +201,18 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
                                        /*out*/int* songLengthInTicks, /*out*/int* startTick,
                                        /*out*/ int* numTracks, bool playing)
 {
-    int trackLength=-1;
-    int channel=0;
+    int trackLength = -1;
+    int channel     = 0;
     
     int substract_ticks;
+    const bool addMetronome = (sequence->playWithMetronome() and playing);
     
     tracks.SetClksPerBeat( sequence->ticksPerBeat() );
     
     if (selectionOnly)
     {
-        //  ---------------------------- add events to tracks --------------------
-        trackLength = sequence->getCurrentTrack()->addMidiEvents( tracks.GetTrack(sequence->getCurrentTrackID()+1),
+        //  ---- add events to tracks
+        trackLength = sequence->getCurrentTrack()->addMidiEvents(tracks.GetTrack(sequence->getCurrentTrackID()+1),
                                                                  channel,
                                                                  sequence->measureData->getFirstMeasure(),
                                                                  true,
@@ -231,14 +232,14 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
         const int trackAmount = sequence->getTrackAmount();
         for (int n=0; n<trackAmount; n++)
         {
-            bool drum_track = sequence->getTrack(n)->graphics->editorMode == DRUM;
+            bool drum_track = (sequence->getTrack(n)->graphics->editorMode == DRUM);
             
-            int trackFirstNote=-1;
+            int trackFirstNote =-1;
             trackLength = sequence->getTrack(n)->addMidiEvents(tracks.GetTrack(n+1), (drum_track ? 9 : channel),
                                                                sequence->measureData->getFirstMeasure(), false,
                                                                trackFirstNote );
             
-            if ((trackFirstNote<(*startTick) and trackFirstNote != -1) or (*startTick)==-1)
+            if ((trackFirstNote<(*startTick) and trackFirstNote != -1) or (*startTick) == -1)
             {
                 (*startTick) = trackFirstNote;
             }
@@ -267,7 +268,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
     if (*songLengthInTicks < 1) return -1; // nothing to play at all (empty song - play nothing)
     *numTracks = sequence->getTrackAmount()+1;
     
-    // --------------------------------- default tempo --------------------
+    // ---- default tempo
     
     {
         jdkmidi::MIDITimedBigMessage m;
@@ -283,7 +284,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
     
     if (not playing)
     {
-        // --------------------------------- copyright and song name ---------------------------------
+        // ---- copyright and song name
         // copyright
         if (not sequence->getCopyright().IsEmpty())
         {
@@ -335,7 +336,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
     }// end if not playing
     
     
-    // --------------------------------- time sig and tempo --------------------
+    // ---- time sig and tempo
     // CoreAudio chokes on time sig changes... easy hack, just ignore them when playing back
     // it's also quicker because time sig events are not heard in any way so no reason to waste time adding
     // them when playing
@@ -381,13 +382,16 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
                                           -1);
                 const int tempo_tick = (tempo_id < tempo_amount ? sequence->tempoEvents[tempo_id].getTick() : -1);
                 
-                if (timesig_tick==-1 and tempo_tick==-1) break; // all events added, done
-                else if (timesig_tick==-1)
+                if (timesig_tick == -1 and tempo_tick == -1)
+                {
+                    break; // all events added, done
+                }
+                else if (timesig_tick == -1)
                 {
                     addTempoEventFromSequenceVector(tempo_id, tempo_amount, sequence, tracks, substract_ticks);
                     tempo_id++;
                 }
-                else if (tempo_tick==-1)
+                else if (tempo_tick == -1)
                 {
                     addTimeSigFromVector(timesig_id, timesig_amount, measureData, tracks, substract_ticks);
                     timesig_id++;
@@ -410,7 +414,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
     {
         // add tempo changes straight away, there's nothing else in track 0 so time order is not a problem
         const int amount = sequence->tempoEvents.size();
-        for(int n=0; n<amount; n++)
+        for (int n=0; n<amount; n++)
         {
             addTempoEventFromSequenceVector(n, amount, sequence, tracks, substract_ticks);
         }
@@ -418,21 +422,85 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
     
     
     
-    // ---------------------------- add dummy event after the actual end to ensure it doesn't stop playing too quickly --------------------------
+    // ---- add dummy event after the actual end to ensure it doesn't stop playing too quickly
     // adds event way after actual stop point, to make sure song the midi player will reach the last actual note before stopping
     // (e.g. i had issues with Quicktime stopping playback too soon and never actually reaching end of song event)
     
     {
         jdkmidi::MIDITimedBigMessage m;
         m.SetTime( *songLengthInTicks + sequence->ticksPerBeat()*4 );
-        m.SetControlChange( 0,
-                           127,
-                           0 );
+        m.SetControlChange(0, 127, 0);
         
-        for(int n=0; n<sequence->getTrackAmount(); n++)
+        for (int n=0; n<sequence->getTrackAmount(); n++)
         {
-            if ( !tracks.GetTrack(n+1)->PutEvent( m ) ) { std::cout << "Error adding midi event!" << std::endl; }
+            if (not tracks.GetTrack(n+1)->PutEvent( m ))
+            {
+                std::cerr << "Error adding dummy end midi event!" << std::endl;
+            }
         }//next
+    }
+    
+    // ---- Add metronome track if enabled
+    if (addMetronome)
+    {
+        const int beat = getMeasureData()->beatLengthInTicks();
+        
+        const int metronomeInstrument = 56;
+        const int metronomeVolume = 127;
+        
+        // FIXME: if the user adds lots of tracks, just using the last track here may not be safe.
+        const int metronomeTrackId = sequence->getTrackAmount() + 1; //tracks.GetNumTracks() - 1;
+        jdkmidi::MIDITrack* metronomeTrack = tracks.GetTrack(metronomeTrackId);
+                
+        *numTracks = *numTracks + 1;
+        
+        // set track name
+        {
+            jdkmidi::MIDITimedBigMessage m;
+            m.SetText( 3 );
+            m.SetByte1( 3 );
+            
+            jdkmidi::MIDISystemExclusive sysex((unsigned char*)"Metronome",
+                                               strlen("Metronome")+1, strlen("Metronome")+1, false);
+            
+            m.CopySysEx( &sysex );
+            m.SetTime( 0 );
+            if (not metronomeTrack->PutEvent( m ))
+            {
+                std::cout << "Error adding metronome track name event" << std::endl;
+                ASSERT(FALSE);
+            }
+        }
+        
+        // set maximum volume
+        {
+            jdkmidi::MIDITimedBigMessage m;
+            
+            m.SetTime( 0 );
+            m.SetControlChange( channel, 7, 127 );
+            
+            if (not metronomeTrack->PutEvent( m ))
+            {
+                std::cerr << "Error adding metronome track volume event" << std::endl;
+                ASSERT(false);
+            }
+        }
+        
+        // make sure we start on a beat
+        const int shift = (*startTick % beat);
+        
+        // add the events
+        for (int tick = shift; tick <= *songLengthInTicks; tick += beat)
+        {
+            jdkmidi::MIDITimedBigMessage m;
+            m.SetTime(tick);
+            m.SetNoteOn( 9 /* channel */, metronomeInstrument, metronomeVolume );
+            
+            if (not metronomeTrack->PutEvent( m ))
+            {
+                std::cerr << "Error adding metronome midi event!" << std::endl;
+            }
+        }
     }
     
     return true;

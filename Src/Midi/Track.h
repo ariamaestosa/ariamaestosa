@@ -427,6 +427,7 @@ namespace AriaMaestosa
     
         /**
          * @brief Add Midi Events to JDKMidi track object
+         * @param channel in manual channel mode, this argument is NOT considered
          */
         int addMidiEvents(jdkmidi::MIDITrack* track, int channel, int firstMeasure,
                           bool selectionOnly, int& startTick); // returns length

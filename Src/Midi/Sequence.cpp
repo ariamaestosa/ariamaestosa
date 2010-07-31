@@ -65,6 +65,7 @@ Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener
     m_playback_listener     = playbackListener;
     m_action_stack_listener = actionStackListener;
     m_seq_data_listener     = sequenceDataListener;
+    m_play_with_metronome   = false;
     
     //setZoom(100);
     zoom         = (128.0/(beatResolution*4));
