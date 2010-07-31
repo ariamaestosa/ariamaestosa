@@ -395,7 +395,15 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
     channelButton = new BlankField(28);
     components->addFromRight(channelButton);
     
-    instrument_name.set(InstrumentChoice::getInstrumentName( track->getInstrument() ));
+    if (editorMode == DRUM)
+    {
+        instrument_name.set(DrumChoice::getDrumkitName( track->getDrumKit() ));
+    }
+    else
+    {
+        instrument_name.set(InstrumentChoice::getInstrumentName( track->getInstrument() ));
+    }
+    
 #ifdef __WXMAC__
     instrument_name.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
 #else
@@ -1259,7 +1267,10 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
     {
 
         const char* mode_c = xml->getAttributeValue("mode");
-        if ( mode_c != NULL ) editorMode = (EditorType)atoi( mode_c );
+        if ( mode_c != NULL )
+        {
+            setEditorMode((EditorType)atoi( mode_c ));
+        }
         else
         {
             editorMode = KEYBOARD;

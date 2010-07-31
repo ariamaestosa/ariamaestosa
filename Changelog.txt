@@ -1,3 +1,5 @@
+1.2.3
+- Fixed glitch with drum name when loading .aria file
 
 1.2.2
 - Support for custom keys (e.g. for street organs)
