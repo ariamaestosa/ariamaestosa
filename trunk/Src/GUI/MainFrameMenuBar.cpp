@@ -89,6 +89,7 @@ namespace AriaMaestosa
         MENU_SETTINGS_PLAY_ON_CHANGE,
         MENU_SETTINGS_CHANNELS_AUTO,
         MENU_SETTINGS_CHANNEL_MANUAL,
+        MENU_SETTINGS_METRONOME,
 
         MENU_TRACK_ADD,
         MENU_TRACK_REMOVE,
@@ -245,6 +246,8 @@ void MainFrame::initMenuBar()
     //I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
     playDuringEdits_never = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_NEVER,  _("Never"), MainFrame::menuEvent_playNever);
 
+    m_metronome = settingsMenu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_METRONOME, _("Play with Metronome"), MainFrame::menuEvent_metronome );
+
     settingsMenu->QUICK_ADD_MENU( wxID_PREFERENCES,   _("Preferences"), MainFrame::menuEvent_preferences );
 
     const int playValue = Core::getPrefsLongValue("playDuringEdit");
@@ -325,6 +328,7 @@ void MainFrame::updateMenuBarToSequence()
 
     followPlaybackMenuItem->Check( sequence->follow_playback );
     expandedMeasuresMenuItem->Check(getMeasureData()->isExpandedMode());
+    m_metronome->Check( sequence->playWithMetronome() );
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -808,7 +812,12 @@ void MainFrame::menuEvent_expandedMeasuresSelected(wxCommandEvent& evt)
     updateVerticalScrollbar();
 }
 
+// -----------------------------------------------------------------------------------------------------------
 
+void MainFrame::menuEvent_metronome(wxCommandEvent& evt)
+{
+    getCurrentSequence()->setPlayWithMetronome( m_metronome->IsChecked() );
+}
 
 // -----------------------------------------------------------------------------------------------------------
 // ----------------------------------------- HELP MENU EVENTS ------------------------------------------------

@@ -114,6 +114,9 @@ namespace AriaMaestosa
         
         ISequenceDataListener* m_seq_data_listener;
         
+        /** Whether a metronome should be heard during playback */
+        bool m_play_with_metronome;
+        
      public:
 
         LEAK_CHECK();
@@ -330,6 +333,9 @@ namespace AriaMaestosa
         void selectAll();
         void selectNone();
 
+        void setPlayWithMetronome(const bool enabled) { m_play_with_metronome = enabled; }
+        bool playWithMetronome   () const             { return m_play_with_metronome;    }
+        
         /**
           * @return Ticks per beat (the number of time units in a quarter note.)
           */

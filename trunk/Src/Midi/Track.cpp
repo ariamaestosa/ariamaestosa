@@ -1209,7 +1209,7 @@ int getActiveMin(int a, int b, int c)
 // -------------------------------------------------------------------------------------------------------
 
 int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
-                         int track_ID, /* in manual channel mode, this argument is NOT considered */
+                         int channel,
                          int firstMeasure,
                          bool selectionOnly,
                          int& startTick)
@@ -1218,26 +1218,28 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     // ignore track if it's muted
     // (but for some reason drum track can't be completely omitted)
     // if we only play selection, ignore mute and play anyway
-    if (m_muted and graphics->editorMode != DRUM and !selectionOnly)
+    if (m_muted and graphics->editorMode != DRUM and not selectionOnly)
+    {
         return -1;
-
+    }
+    
     // if in manual mode, use the user-specified channel ID and not the stock one
-    const bool manual_mode = sequence->getChannelManagementType() == CHANNEL_MANUAL;
-    if (manual_mode) track_ID = getChannel();
+    const bool manual_mode = (sequence->getChannelManagementType() == CHANNEL_MANUAL);
+    
+    if (manual_mode) channel = getChannel();
 
     // drum tracks
-    if (graphics->editorMode == DRUM) track_ID = 9;
+    if (graphics->editorMode == DRUM) channel = 9;
 
     //std::cout << "channel = " << track_ID << std::endl;
 
     // when previewing selected notes (start by finding the note that plays first, to start playing at
     // the right place and note from the beginning)
     int firstNoteStartTick = -1;
-    int selectedNoteAmount=0;
+    int selectedNoteAmount = 0;
 
     if (selectionOnly)
     {
-
         const int noteAmount = m_notes.size();
         for (int n=0; n<noteAmount; n++)
         {
@@ -1252,7 +1254,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         }
 
         if (firstNoteStartTick == -1) return -1; // error, no note was found.
-        if (selectedNoteAmount == 0) return -1; // error, no note was found.
+        if (selectedNoteAmount == 0)  return -1; // error, no note was found.
 
     }
     else
@@ -1266,14 +1268,22 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         jdkmidi::MIDITimedBigMessage m;
 
         m.SetTime( 0 );
-        m.SetControlChange( track_ID, 0, 0 );
+        m.SetControlChange( channel, 0, 0 );
 
-        if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; ASSERT(0); }
+        if (not midiTrack->PutEvent( m ))
+        {
+            std::cerr << "Error adding event" << std::endl;
+            ASSERT(false);
+        }
 
         m.SetTime( 0 );
-        m.SetControlChange( track_ID, 32, 0 );
+        m.SetControlChange( channel, 32, 0 );
 
-        if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; ASSERT(0); }
+        if (not midiTrack->PutEvent( m ))
+        {
+            std::cout << "Error adding event" << std::endl;
+            ASSERT(false);
+        }
     }
 
     // set instrument
@@ -1282,10 +1292,13 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
         m.SetTime( 0 );
 
-        if (graphics->editorMode == DRUM) m.SetProgramChange( track_ID, getDrumKit() );
-        else                              m.SetProgramChange( track_ID, getInstrument() );
+        if (graphics->editorMode == DRUM) m.SetProgramChange( channel, getDrumKit() );
+        else                              m.SetProgramChange( channel, getInstrument() );
 
-        if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding instrument at track beginning!" << std::endl; }
+        if (not midiTrack->PutEvent( m ))
+        {
+            std::cerr << "Error adding instrument at track beginning!" << std::endl;
+        }
     }
 
     // set track name
@@ -1301,7 +1314,11 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
         m.CopySysEx( &sysex );
         m.SetTime( 0 );
-        if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; ASSERT(0); }
+        if (not midiTrack->PutEvent( m ))
+        {
+            std::cout << "Error adding event" << std::endl;
+            ASSERT(FALSE);
+        }
     }
 
     // set maximum volume
@@ -1309,9 +1326,13 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         jdkmidi::MIDITimedBigMessage m;
 
         m.SetTime( 0 );
-        m.SetControlChange( track_ID, 7, 127 );
+        m.SetControlChange( channel, 7, 127 );
 
-        if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; ASSERT(false); }
+        if (not midiTrack->PutEvent( m ))
+        {
+            std::cerr << "Error adding event" << std::endl;
+            ASSERT(false);
+        }
     }
 
     // ----------------------------------- add events in order --------------------------
@@ -1343,46 +1364,66 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
     //std::cout << "-------------------- TRACK -------------" << std::endl;
 
-    while(true)
+    while (true)
     {
 
         // if we only want to play what's selected, skip unselected notes
         if (selectionOnly)
         {
-            while(note_on_id < noteOnAmount   and !m_notes[note_on_id].isSelected())     note_on_id++;
-            while(note_off_id < noteOffAmount and !m_note_off[note_off_id].isSelected()) note_off_id++;
+            while (note_on_id < noteOnAmount   and not m_notes[note_on_id].isSelected())
+            {
+                note_on_id++;
+            }
+            while (note_off_id < noteOffAmount and not m_note_off[note_off_id].isSelected())
+            {
+                note_off_id++;
+            }
         }
 
-        const int tick_on      = (note_on_id < noteOnAmount)     ?   m_notes[note_on_id].startTick - firstNoteStartTick      :  -1;
-        const int tick_off     = (note_off_id < noteOffAmount)   ?   m_note_off[note_off_id].endTick - firstNoteStartTick     :  -1;
+        const int tick_on  = (note_on_id < noteOnAmount)   ?
+                              m_notes[note_on_id].startTick - firstNoteStartTick   :  -1;
+        const int tick_off = (note_off_id < noteOffAmount) ?
+                              m_note_off[note_off_id].endTick - firstNoteStartTick :  -1;
 
         // ignore control events when only playing selection
-        const int tick_control = (control_evt_id < controllerAmount and !selectionOnly)  ?   m_control_events[control_evt_id].getTick() - firstNoteStartTick : -1;
+        const int tick_control = (control_evt_id < controllerAmount and not selectionOnly) ?
+                                  m_control_events[control_evt_id].getTick() - firstNoteStartTick : -1;
 
         const int activeMin = getActiveMin( tick_off, tick_control, tick_on );
 
-        if (activeMin==-1) break; // all events have been added
+        if (activeMin == -1) break; // all events have been added
 
         jdkmidi::MIDITimedBigMessage m;
 
         //  ------------------------ add note on event ------------------------
         if (activeMin == 2)
         {
-
             const int time = m_notes[note_on_id].startTick - firstNoteStartTick;
-            if (!(time < 0))
+            if (not (time < 0))
             {
 
                 m.SetTime( time );
 
 
-                if (graphics->editorMode == DRUM) m.SetNoteOn( track_ID, m_notes[note_on_id].pitchID, m_notes[note_on_id].volume );
-                else m.SetNoteOn( track_ID, 131-m_notes[note_on_id].pitchID, m_notes[note_on_id].volume );
+                if (graphics->editorMode == DRUM)
+                {
+                    m.SetNoteOn( channel, m_notes[note_on_id].pitchID, m_notes[note_on_id].volume );
+                }
+                else
+                {
+                    m.SetNoteOn( channel, 131-m_notes[note_on_id].pitchID, m_notes[note_on_id].volume );
+                }
 
                 // find track end
-                if (m_notes[note_on_id].endTick > last_event_tick) last_event_tick = m_notes[note_on_id].endTick;
+                if (m_notes[note_on_id].endTick > last_event_tick)
+                {
+                    last_event_tick = m_notes[note_on_id].endTick;
+                }
 
-                if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding midi event!" << std::endl; }
+                if (not midiTrack->PutEvent( m ))
+                {
+                    std::cerr << "Error adding midi event!" << std::endl;
+                }
             }
 
             note_on_id++;
@@ -1392,18 +1433,26 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         {
 
             const int time=m_note_off[note_off_id].endTick - firstNoteStartTick;
-            if (!(time < 0))
+            if (not (time < 0))
             {
-
                 m.SetTime( time );
 
-                if (graphics->editorMode == DRUM) m.SetNoteOff( track_ID, m_note_off[note_off_id].pitchID, 0 );
-                else m.SetNoteOff( track_ID, 131-m_note_off[note_off_id].pitchID, 0 );
-
+                if (graphics->editorMode == DRUM)
+                {
+                    m.SetNoteOff( channel, m_note_off[note_off_id].pitchID, 0 );
+                }
+                else
+                {
+                    m.SetNoteOff( channel, 131-m_note_off[note_off_id].pitchID, 0 );
+                }
+                
                 // find track end
                 if (time > last_event_tick) last_event_tick = time;
 
-                if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding midi event!" << std::endl; }
+                if (not midiTrack->PutEvent( m ))
+                {
+                    std::cerr << "Error adding midi event!" << std::endl;
+                }
             }
             note_off_id++;
         }
@@ -1415,9 +1464,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
             // pitch bend
             if (controllerID==200)
             {
-
-
-                int time=m_control_events[control_evt_id].getTick() - firstNoteStartTick;
+                int time = m_control_events[control_evt_id].getTick() - firstNoteStartTick;
 
                 // controller changes happens before the area we play
                 // but perhaps it still is affecting the area we want to play - check for that.
@@ -1428,8 +1475,9 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                     {
                         addControlEvent = false;
                         int checkEventID = control_evt_id+1;
+                        
                         // check if there are other controller events of the same type before the area we play.
-                        while(true)
+                        while (true)
                         {
 
                             if ((m_control_events[checkEventID].getTick() - firstNoteStartTick)<1  and
@@ -1450,7 +1498,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                             }
 
                             checkEventID++;
-                            if ( ! (checkEventID < controllerAmount ) )
+                            if (not (checkEventID < controllerAmount))
                             {
                                 // we reaached the end, there are no other events of the same type
                                 // this one still affects playback of the area that we're playing.
@@ -1484,7 +1532,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                     if (pitchBendVal > 0) pitchBendVal-=8192;
                     else if (pitchBendVal < 0) pitchBendVal +=8192;
 
-                    m.SetPitchBend( track_ID,
+                    m.SetPitchBend( channel,
                                     pitchBendVal );
 
                     if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding midi event!" << std::endl; }
@@ -1495,8 +1543,6 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
             // other controller
             else
             {
-
-
                 int time=m_control_events[control_evt_id].getTick() - firstNoteStartTick;
 
                 // controller changes happens before the area we play
@@ -1508,12 +1554,13 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                     {
                         addControlEvent = false;
                         int checkEventID = control_evt_id+1;
+                        
                         // check if there are other controller events of the same type before the area we play.
-                        while(true)
+                        while (true)
                         {
 
                             if ((m_control_events[checkEventID].getTick() - firstNoteStartTick)<1  and
-                               m_control_events[checkEventID].getController() == controllerID)
+                                m_control_events[checkEventID].getController() == controllerID)
                             {
                                 // the current event has no effect, there is another one later, disregard it.
                                 addControlEvent = false;
@@ -1530,7 +1577,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                             }
 
                             checkEventID++;
-                            if ( ! (checkEventID < controllerAmount ) )
+                            if (not (checkEventID < controllerAmount ))
                             {
                                 // we reaached the end, there are no other events of the same type
                                 // this one still affects playback of the area that we're playing.
@@ -1556,11 +1603,14 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                 {
                     m.SetTime( time );
 
-                    m.SetControlChange( track_ID,
+                    m.SetControlChange( channel,
                                         controllerID,
                                         127-m_control_events[control_evt_id].getValue() );
 
-                    if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding midi event!" << std::endl; }
+                    if (not midiTrack->PutEvent( m ))
+                    {
+                        std::cerr << "Error adding midi event!" << std::endl;
+                    }
                 }
 
                 control_evt_id++;
@@ -1573,7 +1623,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
 
     if (selectionOnly) startTick = firstNoteStartTick;
-    return last_event_tick - firstNoteStartTick;
+    return             last_event_tick - firstNoteStartTick;
 
 
 }

@@ -146,6 +146,8 @@ namespace AriaMaestosa
         wxMenuItem* channelManagement_automatic;
         wxMenuItem* channelManagement_manual;
         wxMenuItem* expandedMeasuresMenuItem;
+        
+        wxMenuItem* m_metronome;
 
         int currentSequence;
         ptr_vector<Sequence> sequences; // contains all open sequences
@@ -233,7 +235,8 @@ namespace AriaMaestosa
         void menuEvent_automaticChannelModeSelected(wxCommandEvent& evt);
         void menuEvent_manualChannelModeSelected(wxCommandEvent& evt);
         void menuEvent_expandedMeasuresSelected(wxCommandEvent& evt);
-
+        void menuEvent_metronome(wxCommandEvent& evt);
+        
         void updateMenuBarToSequence();
 
         // ---- playback
