@@ -620,41 +620,43 @@ int DrumEditor::getYScrollInPixels()
 
 void DrumEditor::mouseDown(RelativeXCoord x, const int y)
 {
-
-    const int drumID = getDrumAtY(y);
-
-    if (drumID >= 0 and drumID < (int)drums.size())
+    if (y > getEditorYStart())
     {
-        // click in the left area
-        if (x.getRelativeTo(EDITOR) < 0 and x.getRelativeTo(WINDOW) > 0)
-        {
-            const int note = drums[ drumID ].midiKey;
-            if (note == -1 || drums[ drumID ].section) return;
+        const int drumID = getDrumAtY(y);
 
-            PlatformMidiManager::get()->playNote( note, default_volume, 500 /* duration */, 9, track->getDrumKit() );
-        }    
-        // click on section
-        else if (drums[ drumID ].section)
+        if (drumID >= 0 and drumID < (int)drums.size())
         {
-            // user clicked on a section. if click is on the triangle, expand/collapse it. otherwise, it just selects nothing.
-            if (x.getRelativeTo(EDITOR) < 25 and x.getRelativeTo(EDITOR) > 0)
+            // click in the left area
+            if (x.getRelativeTo(EDITOR) < 0 and x.getRelativeTo(WINDOW) > 0)
             {
-                drums[ drumID ].sectionExpanded = !drums[ drumID ].sectionExpanded;
-                return;
-            }
+                const int note = drums[ drumID ].midiKey;
+                if (note == -1 || drums[ drumID ].section) return;
+
+                PlatformMidiManager::get()->playNote( note, default_volume, 500 /* duration */, 9, track->getDrumKit() );
+            }    
+            // click on section
+            else if (drums[ drumID ].section)
+            {
+                // user clicked on a section. if click is on the triangle, expand/collapse it. otherwise, it just selects nothing.
+                if (x.getRelativeTo(EDITOR) < 25 and x.getRelativeTo(EDITOR) > 0)
+                {
+                    drums[ drumID ].sectionExpanded = !drums[ drumID ].sectionExpanded;
+                    return;
+                }
+                // select none
+                else
+                {
+                    track->selectNote(ALL_NOTES, false, true);
+                }
+            }// end if section
+        }
+        else
+        {
             // select none
-            else
-            {
-                track->selectNote(ALL_NOTES, false, true);
-            }
-        }// end if section
+            track->selectNote(ALL_NOTES, false, true);
+        }
     }
-    else
-    {
-        // select none
-        track->selectNote(ALL_NOTES, false, true);
-    }
-
+    
     Editor::mouseDown(x, y);
 
 }

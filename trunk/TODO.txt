@@ -150,11 +150,11 @@ UNSURE/MINOR:
 ** Things like changing global tempo, changing song length, etc... are not actions and thus do not mark the
    document as having unsaved changes!
 
-** Clicking on track header of drum editor unselects notes
-
 ** If a message dialog is shown during track loading, app freezes (conflict with WaitWindow, most likely)
 
 ** Right-clicking on selected measures appears to unselect them visually, which is confusing
+
+* On OS X, "unselect" is Cmd+Click, that's certainly unintuitive
 
 * Shift+left/Shift+right in score editor doesn't work properly if vairoui time signatures are present
 
