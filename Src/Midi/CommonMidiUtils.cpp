@@ -445,7 +445,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
     {
         const int beat = getMeasureData()->beatLengthInTicks();
         
-        const int metronomeInstrument = 56;
+        const int metronomeInstrument = 37; // 31 (stick), 56 (cowbell), 37 (side stick)
         const int metronomeVolume = 127;
         
         // FIXME: if the user adds lots of tracks, just using the last track here may not be safe.
