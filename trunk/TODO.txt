@@ -51,7 +51,6 @@ NOTE: sorry, this is very raw :)
     * Add sound selection to preferences (+ option to have a different sound on first measure beat?
                                          (+ option to have a different sound on half-beats?)
     * Add "enabled by default" option to preferences
-    * Save the per-track value of whether it's enabled to. Aria files
 
 * Test Actions with Unit tests
 
