@@ -112,7 +112,7 @@ namespace AriaMaestosa
         public ISequenceDataListener, public ICurrentSequenceProvider
     {
         WxOwnerPtr<AboutDialog>  aboutDialog;
-        WxOwnerPtr<CustomNoteSelectDialog>  customNoteSelectDialog;
+        WxOwnerPtr<CustomNoteSelectDialog>  m_custom_note_select_dialog;
 
         wxPanel* m_main_panel;
         wxFlexGridSizer* borderSizer;
@@ -160,7 +160,7 @@ namespace AriaMaestosa
         // ------- read-only -------
         int play_during_edit; // what is the user's preference for note preview during edits
         bool playback_mode;
-        MainPane* mainPane;
+        MainPane*                     m_main_pane;
         WxOwnerPtr<PreferencesDialog> preferences;
         OwnerPtr<InstrumentPicker>    instrument_picker;
         OwnerPtr<DrumPicker>          drumKit_picker;

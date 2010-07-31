@@ -412,21 +412,25 @@ void MainFrame::init()
 
     toolbar->realize();
 
-    // -------------------------- RenderPane ----------------------------
+    // -------------------------- Main Pane ----------------------------
 #ifdef RENDERER_OPENGL
+    
     int args[3];
     args[0]=WX_GL_RGBA;
     args[1]=WX_GL_DOUBLEBUFFER;
     args[2]=0;
-    mainPane=new MainPane(m_main_panel, args);
-    borderSizer->Add( static_cast<wxGLCanvas*>(mainPane), 1, wxEXPAND | wxALL, 2);
+    m_main_pane = new MainPane(m_main_panel, args);
+    borderSizer->Add( static_cast<wxGLCanvas*>(m_main_pane), 1, wxEXPAND | wxALL, 2);
+    
 #elif defined(RENDERER_WXWIDGETS)
-    mainPane = new MainPane(m_main_panel, NULL);
-    borderSizer->Add( static_cast<wxPanel*>(mainPane), 1, wxEXPAND | wxALL, 2 );
+    
+    m_main_pane = new MainPane(m_main_panel, NULL);
+    borderSizer->Add( static_cast<wxPanel*>(m_main_pane), 1, wxEXPAND | wxALL, 2 );
+    
 #endif
 
     // give a pointer to our GL Pane to AriaCore
-    Core::setMainPane(mainPane);
+    Core::setMainPane(m_main_pane);
 
     // -------------------------- Vertical Scrollbar ----------------------------
     verticalScrollbar = new wxScrollBar(m_main_panel, SCROLLBAR_V,
@@ -503,7 +507,7 @@ void MainFrame::init()
     drumKit_picker      =  new DrumPicker();
 
     ImageProvider::loadImages();
-    mainPane->isNowVisible();
+    m_main_pane->isNowVisible();
 
     //ImageProvider::loadImages();
 
@@ -559,8 +563,8 @@ void MainFrame::playClicked(wxCommandEvent& evt)
     if (playback_mode)
     {
         // already playing, this button does "pause" instead
-        getMeasureData()->setFirstMeasure( getMeasureData()->measureAtTick(mainPane->getCurrentTick()) );
-        mainPane->exitPlayLoop();
+        getMeasureData()->setFirstMeasure( getMeasureData()->measureAtTick(m_main_pane->getCurrentTick()) );
+        m_main_pane->exitPlayLoop();
         updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
         return;
     }
@@ -570,20 +574,20 @@ void MainFrame::playClicked(wxCommandEvent& evt)
     int startTick = -1;
 
     const bool success = PlatformMidiManager::get()->playSequence( getCurrentSequence(), /*out*/ &startTick );
-    if (!success) std::cerr << "Couldn't play" << std::endl;
+    if (not success) std::cerr << "Couldn't play" << std::endl;
 
-    mainPane->setPlaybackStartTick( startTick );
+    m_main_pane->setPlaybackStartTick( startTick );
 
-    if (startTick == -1 or !success)    mainPane->exitPlayLoop();
-    else                                mainPane->enterPlayLoop();
+    if (startTick == -1 or not success) m_main_pane->exitPlayLoop();
+    else                                m_main_pane->enterPlayLoop();
 }
 
 // --------------------------------------------------------------------------------------------------------
 
 void MainFrame::stopClicked(wxCommandEvent& evt)
 {
-    if (!playback_mode) return;
-    mainPane->exitPlayLoop();
+    if (not playback_mode) return;
+    m_main_pane->exitPlayLoop();
 }
 
 // --------------------------------------------------------------------------------------------------------
@@ -702,7 +706,7 @@ void MainFrame::songLengthTextChanged(wxCommandEvent& evt)
         songLengthChanged(unused);
 
         // give keyboard focus back to main pane
-        if (enter_pressed) mainPane->SetFocus();
+        if (enter_pressed) m_main_pane->SetFocus();
     }
 
     previousString = evt.GetString();
@@ -857,7 +861,7 @@ void MainFrame::zoomTextChanged(wxCommandEvent& evt)
         zoomChanged(unused); // throw fake event (easier to process all events from a single method)
 
         // give keyboard focus back to main pane
-        if (enter_pressed) mainPane->SetFocus();
+        if (enter_pressed) m_main_pane->SetFocus();
     }
 
     previousString = evt.GetString();
@@ -904,7 +908,7 @@ void MainFrame::toolButtonClicked(wxCommandEvent& evt)
 void MainFrame::enterPressedInTopBar(wxCommandEvent& evt)
 {
     // give keyboard focus back to main pane
-    mainPane->SetFocus();
+    m_main_pane->SetFocus();
 }
 
 // --------------------------------------------------------------------------------------------------------
@@ -1331,7 +1335,7 @@ void MainFrame::onActionStackChanged()
 
 void MainFrame::onSequenceDataChanged()
 {
-    mainPane->render();
+    m_main_pane->render();
 }
 
 // ----------------------------------------------------------------------------------------------------------------

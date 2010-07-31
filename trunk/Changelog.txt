@@ -1,5 +1,7 @@
 1.2.3
 - Fixed glitch with drum name when loading .aria file
+- Fixed keyboard focus not brought back to main pane after showing "Select Notes" dialog
+- More code cleanup
 
 1.2.2
 - Support for custom keys (e.g. for street organs)

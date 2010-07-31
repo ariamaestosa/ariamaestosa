@@ -372,7 +372,7 @@ void MainFrame::updateUndoMenuLabel()
 
 void MainFrame::menuEvent_new(wxCommandEvent& evt)
 {
-    mainPane->forgetClickData();
+    m_main_pane->forgetClickData();
     addSequence();
 }
 
@@ -380,7 +380,7 @@ void MainFrame::menuEvent_new(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_close(wxCommandEvent& evt)
 {
-    mainPane->forgetClickData();
+    m_main_pane->forgetClickData();
     closeSequence();
 }
 
@@ -433,7 +433,7 @@ void MainFrame::menuEvent_saveas(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_open(wxCommandEvent& evt)
 {
-    mainPane->forgetClickData();
+    m_main_pane->forgetClickData();
     wxString filePath = showFileDialog( _("Select file"), wxT(""), wxT(""),  _("Aria Maestosa file|*.aria"), false /*open*/);
     MainFrame::loadAriaFile(filePath);
 }
@@ -442,7 +442,7 @@ void MainFrame::menuEvent_open(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_importmidi(wxCommandEvent& evt)
 {
-    mainPane->forgetClickData();
+    m_main_pane->forgetClickData();
     wxString midiFilePath = showFileDialog( _("Select midi file"), wxT(""), wxT(""),  _("Midi file|*.mid;*.midi"), false /*open*/);
     MainFrame::loadMidiFile(midiFilePath);
 }
@@ -555,9 +555,15 @@ void MainFrame::menuEvent_copy(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_customNoteSelect(wxCommandEvent& evt)
 {
-    if (customNoteSelectDialog.raw_ptr == NULL) customNoteSelectDialog = new CustomNoteSelectDialog();
+    if (m_custom_note_select_dialog.raw_ptr == NULL)
+    {
+        m_custom_note_select_dialog = new CustomNoteSelectDialog();
+    }
 
-    customNoteSelectDialog->show( getCurrentSequence()->getCurrentTrack() );
+    m_custom_note_select_dialog->show( getCurrentSequence()->getCurrentTrack() );
+    
+    // After dialog is dismissed, bring focus back to main pane so key presses are detected
+    m_main_pane->SetFocus();
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -639,7 +645,7 @@ void MainFrame::menuEvent_deleteTrack(wxCommandEvent& evt)
     int answer = wxMessageBox(  _("Do you really want to delete this track?"),  _("Confirm"),
                               wxYES_NO, this);
 
-    mainPane->forgetClickData();
+    m_main_pane->forgetClickData();
 
     if (answer == wxYES)
     {

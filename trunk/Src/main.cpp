@@ -73,7 +73,7 @@ void wxWidgetApp::onIdle(wxIdleEvent& evt)
 {
     if (render_loop_on)
     {
-        frame->mainPane->playbackRenderLoop();
+        frame->m_main_pane->playbackRenderLoop();
         evt.RequestMore();
     }
 }
