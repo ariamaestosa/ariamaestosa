@@ -932,19 +932,20 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
 
     writeData(wxT("<sequence"), fileout );
 
-    writeData(wxT(" maintempo=\"") + to_wxString(m_tempo) +
-              wxT("\" measureAmount=\"") + to_wxString(measureData->getMeasureAmount()) +
-              wxT("\" currentTrack=\"") + to_wxString(currentTrack) +
-              wxT("\" beatResolution=\"") + to_wxString(beatResolution) +
-              wxT("\" internalName=\"") + internal_sequenceName +
+    writeData(wxT(" maintempo=\"")           + to_wxString(m_tempo) +
+              wxT("\" measureAmount=\"")     + to_wxString(measureData->getMeasureAmount()) +
+              wxT("\" currentTrack=\"")      + to_wxString(currentTrack) +
+              wxT("\" beatResolution=\"")    + to_wxString(beatResolution) +
+              wxT("\" internalName=\"")      + internal_sequenceName +
               wxT("\" fileFormatVersion=\"") + to_wxString(CURRENT_FILE_VERSION) +
               wxT("\" channelManagement=\"") + (getChannelManagementType() == CHANNEL_AUTO ?
                                                 wxT("auto") : wxT("manual")) +
+              wxT("\" metronome=\"")         + (m_play_with_metronome ? "true" : "false") +
               wxT("\">\n\n"), fileout );
 
     writeData(wxT("<view xscroll=\"") + to_wxString(x_scroll_in_pixels) +
-              wxT("\" yscroll=\"") + to_wxString(y_scroll) +
-              wxT("\" zoom=\"") + to_wxString(zoom_percent) +
+              wxT("\" yscroll=\"")    + to_wxString(y_scroll) +
+              wxT("\" zoom=\"")       + to_wxString(zoom_percent) +
               wxT("\"/>\n"), fileout );
 
     measureData->saveToFile(fileout);
@@ -1083,6 +1084,27 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                         return false;
                     }
 
+                    const char* metronome_c = xml->getAttributeValue("metronome");
+                    if (metronome_c != NULL)
+                    {
+                        if (strcmp(metronome_c, "true") == 0)
+                        {
+                            m_play_with_metronome = true;
+                        }
+                        else if (strcmp(metronome_c, "false") == 0)
+                        {
+                            m_play_with_metronome = false;
+                        }
+                        else
+                        {
+                            std::cerr << "Invalid value for 'metronome' property : " << metronome_c << "\n";
+                            m_play_with_metronome = false;
+                        }
+                    }
+                    else
+                    {
+                        m_play_with_metronome = false;
+                    }
                 }
 
                 // ---------- view ------
