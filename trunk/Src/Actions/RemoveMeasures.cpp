@@ -242,9 +242,9 @@ void RemoveMeasures::perform()
             {
                 const int new_measure = measureBar->getTimeSig(n).measure - (m_to_measure - m_from_measure);
                 // check if there already was an event there if so remove it
-                for(int i=0; i<measureBar->getTimeSigAmount(); i++)
+                for (int i=0; i<measureBar->getTimeSigAmount(); i++)
                 {
-                    if ( i!=n and measureBar->getTimeSig(i).measure == new_measure)
+                    if ( i != n and measureBar->getTimeSig(i).measure == new_measure)
                     {
                         measureBar->eraseTimeSig(i);
                         i -= 2; if (i<0) i=0;

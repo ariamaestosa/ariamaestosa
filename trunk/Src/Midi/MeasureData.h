@@ -47,6 +47,7 @@ namespace AriaMaestosa
      */
     class MeasureData
     {
+        // FIXME: find better way than friend
         friend class MeasureBar;
         
         class MeasureInfo
@@ -77,6 +78,12 @@ namespace AriaMaestosa
         // Only access this in expanded mode otherwise they're empty
         int totalNeededLengthInTicks;
         int totalNeededLengthInPixels;
+        
+        /**
+         * @brief Change the number of items in the selected vector sothat it contains the same amount of elements
+         * as the number of measures.
+         */
+        void  updateVector(int newSize);
     public:
         
         LEAK_CHECK();
@@ -142,12 +149,6 @@ namespace AriaMaestosa
          * and events.
          */
         void  updateMeasureInfo();
-        
-        /**
-         * @brief Change the number of items in the selected vector sothat it contains the same amount of elements
-         * as the number of measures.
-         */
-        void  updateVector(int newSize);
         
         void  beforeImporting();
         void  afterImporting();

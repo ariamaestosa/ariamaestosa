@@ -43,58 +43,59 @@ namespace AriaMaestosa
   int remove_from = -1;
   int remove_to = -1;
 
-// ****************************************************************************************************************
-
-/*
- * The pop-up menu that is shown if you right-click on a selected measure in the measure bar
- */
-
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+    
+/**
+  * @brief This pop-up menu that is shown if you right-click on a selected measure in the measure bar
+  */
 class SelectedMenu : public wxMenu
 {
 
 public:
     LEAK_CHECK();
-SelectedMenu() : wxMenu()
-{
-
-
-        Append(1, _("Remove selected measures"));
-
-}
-
-/*
- * Removes selected measures
- */
-
-void removeSelected(wxCommandEvent& event)
-{
-    // ask confirmation
-    int answer = wxMessageBox(  _("Do you really want to remove selected measures?"), wxT(""), wxYES_NO);
-    if (answer == wxNO or answer == wxCANCEL) return;
-    if (answer != wxYES and answer != wxOK)
+    
+    SelectedMenu() : wxMenu()
     {
-        std::cout << "Unknown answer from wxMessageBox in SelectedMenu::removeSelected() : " << answer << std::endl;
+        Append(1, _("Remove selected measures"));
     }
 
-    getCurrentSequence()->action( new Action::RemoveMeasures(remove_from, remove_to) );
-    getMeasureData()->selectTimeSig(0);
-}
+    /**
+      * @brief Removes selected measures
+      */
+    void removeSelected(wxCommandEvent& event)
+    {
+        // ask confirmation
+        int answer = wxMessageBox(  _("Do you really want to remove selected measures?"), wxT(""), wxYES_NO);
+        if (answer == wxNO or answer == wxCANCEL) return;
+        if (answer != wxYES and answer != wxOK)
+        {
+            std::cerr << "Unknown answer from wxMessageBox in SelectedMenu::removeSelected() : "
+                      << answer << std::endl;
+        }
 
-DECLARE_EVENT_TABLE();
+        getMeasureData()->graphics->unselectAll();
+        
+        getCurrentSequence()->action( new Action::RemoveMeasures(remove_from, remove_to) );
+        getMeasureData()->selectTimeSig(0);
+    }
+
+    DECLARE_EVENT_TABLE();
 };
 
 BEGIN_EVENT_TABLE(SelectedMenu, wxMenu)
 EVT_MENU(1,SelectedMenu::removeSelected)
 END_EVENT_TABLE()
 
-// ****************************************************************************************************************
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #endif
-/*
- * The pop-up menu that is shown if you right-click on an unselected measure in the measure bar
- */
 
+/**
+  * @brief This pop-up menu that is shown if you right-click on an unselected measure in the measure bar
+  */
 class UnselectedMenu : public wxMenu
 {
     wxMenuItem* deleteTimeSig;
@@ -112,7 +113,8 @@ public:
 
     void insert(wxCommandEvent& event)
     {
-        int number = wxGetNumberFromUser(  _("Insert empty measures between measures ") + to_wxString(insert_at_measure+1) +
+        int number = wxGetNumberFromUser(  _("Insert empty measures between measures ") +
+                                           to_wxString(insert_at_measure+1) +
                                            _(" and ") + to_wxString(insert_at_measure+2),
                                            _("Amount: "), wxT(""), 4 /*default*/, 1 /*min*/);
         if (number==-1) return;
@@ -133,7 +135,8 @@ public:
 
     void removeTimeSig(wxCommandEvent& event)
     {
-        int answer = wxMessageBox(  _("Do you really want to remove this time sig change?"), wxT(""), wxYES_NO);
+        int answer = wxMessageBox(_("Do you really want to remove this time sig change?"), wxT(""),
+                                  wxYES_NO);
         if (answer == wxNO or answer == wxCANCEL) return;
 
         if (remove_timeSigID == 0)
@@ -158,7 +161,13 @@ EVT_MENU(2,UnselectedMenu::insert)
 EVT_MENU(3,UnselectedMenu::removeTimeSig)
 END_EVENT_TABLE()
 
-// ****************************************************************************************************************
+}
+
+using namespace AriaMaestosa;
+
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+
 #if 0
 #pragma mark -
 #endif
@@ -173,16 +182,22 @@ MeasureBar::MeasureBar(MeasureData* parent)
     data = parent;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 MeasureBar::~MeasureBar()
 {
 }
 
 
+// ----------------------------------------------------------------------------------------------------------
+
 int MeasureBar::getMeasureBarHeight()
 {
     if (data->expandedMode) return 40;
-    else return 20;
+    else                    return 20;
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void MeasureBar::render(int measureBarY_arg)
 {
@@ -248,7 +263,7 @@ void MeasureBar::render(int measureBarY_arg)
         if (data->expandedMode)
         {
             const int amount = data->timeSigChanges.size();
-            for(int i=0; i<amount; i++)
+            for (int i=0; i<amount; i++)
             {
 
                 if (data->timeSigChanges[i].measure == measureID-1)
@@ -267,7 +282,7 @@ void MeasureBar::render(int measureBarY_arg)
                     AriaRender::point(n, measureBarY + 30);
 
                     if (selected) AriaRender::color(0.5,0,0);
-                    else AriaRender::color(0,0,0);
+                    else          AriaRender::color(0,0,0);
 
                     AriaRender::pointSize(1);
                     AriaRender::images();
@@ -285,10 +300,21 @@ void MeasureBar::render(int measureBarY_arg)
 
 }
 
-/*
- * When mouse button is pushed on Measure Bar
- */
+// ----------------------------------------------------------------------------------------------------------
 
+void MeasureBar::unselectAll()
+{
+    for (int n=remove_from; n<remove_to+1; n++)
+    {
+        data->measureInfo[n].selected = false;
+    }
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+/**
+  * @brief When mouse button is pushed on Measure Bar
+  */
 void MeasureBar::mouseDown(int x, int y)
 {
 
@@ -320,10 +346,11 @@ void MeasureBar::mouseDown(int x, int y)
     // std::cout << "clicked on measure " << lastMeasureInDrag << std::endl;
 }
 
-/*
- * When mouse is held down and dragged on Measure Bar
- */
+// ----------------------------------------------------------------------------------------------------------
 
+/**
+  * @brief When mouse is held down and dragged on Measure Bar
+  */
 void MeasureBar::mouseDrag(int mousex_current, int mousey_current, int mousex_initial, int mousey_initial)
 {
 
@@ -348,10 +375,11 @@ void MeasureBar::mouseDrag(int mousex_current, int mousey_current, int mousex_in
     lastMeasureInDrag = measure_vectorID;
 }
 
-/*
- * Selection is done, select notes contained in the selected measures
- */
+// ----------------------------------------------------------------------------------------------------------
 
+/**
+  * @brief Selection is done, select notes contained in the selected measures
+  */
 void MeasureBar::mouseUp(int mousex_current, int mousey_current, int mousex_initial, int mousey_initial)
 {
 
@@ -378,45 +406,40 @@ void MeasureBar::mouseUp(int mousex_current, int mousey_current, int mousex_init
 
     // iterate through notes and select those that are within the selection range just found
     const int trackAmount = sequence->getTrackAmount();
-    for(int track=0; track<trackAmount; track++)
+    for (int track=0; track<trackAmount; track++)
     {
         const int noteAmount = sequence->getTrack(track)->getNoteAmount();
-        for(int n=0; n<noteAmount; n++)
+        for (int n=0; n<noteAmount; n++)
         {
             const int note_tick = sequence->getTrack(track)->getNoteStartInMidiTicks(n);
+            
             // note is within selection range? if so, select it, else unselect it.
-            if ( note_tick >= minimal_tick and note_tick < maximal_tick ) sequence->getTrack(track)->selectNote(n, true, true);
-            else sequence->getTrack(track)->selectNote(n, false, true);
+            if ( note_tick >= minimal_tick and note_tick < maximal_tick )
+            {
+                sequence->getTrack(track)->selectNote(n, true, true);
+            }
+            else
+            {
+                sequence->getTrack(track)->selectNote(n, false, true);
+            }
         }
     }
 
 }
 
-/*
-int MeasureBar::getTotalPixelAmount()
-{
-    if (isMeasureLengthConstant())
-    {
-        return (int)( measureAmount * measureLengthInTicks() * getCurrentSequence()->getZoom() );
-    }
-    else
-    {
-        return totalNeededLengthInPixels;
-    }
-}
-*/
+// ----------------------------------------------------------------------------------------------------------
 
 void MeasureBar::rightClick(int x, int y)
 {
 
-    if (y>20)
+    if (y > 20)
     {
         // find between which measures the user clicked
         int measure = data->measureDivisionAt(x);
 
         // check if click is on time sig event
         const int amount = data->timeSigChanges.size();
-        for(int n=0; n<amount; n++)
+        for (int n=0; n<amount; n++)
         {
             if (data->timeSigChanges[n].measure == measure)
             {
@@ -435,7 +458,7 @@ void MeasureBar::rightClick(int x, int y)
     if (data->measureInfo[measure_vectorID].selected)
     {
         const int measureAmount = data->measureInfo.size();
-        for(int n=0; n<measureAmount; n++)
+        for (int n=0; n<measureAmount; n++)
         {
             // iterate through measures to find which measures are selected
             if (data->measureInfo[n].selected)
@@ -449,10 +472,10 @@ void MeasureBar::rightClick(int x, int y)
         }
 
         // unselect
-        for(int n=remove_from; n<remove_to+1; n++)
-        {
-            data->measureInfo[n].selected=false;
-        }
+        //for (int n=remove_from; n<remove_to+1; n++)
+        //{
+        //    data->measureInfo[n].selected = false;
+        //}
         Display::popupMenu( (wxMenu*)selectedMenu, x, y+20);
     }
     else
@@ -463,7 +486,5 @@ void MeasureBar::rightClick(int x, int y)
         unselectedMenu->enable_deleteTimeSig_item(false);
         Display::popupMenu( (wxMenu*)unselectedMenu, x, y+20);
     }
-
-}
 
 }

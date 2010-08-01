@@ -506,7 +506,7 @@ void MainPane::rightClick(wxMouseEvent& event)
     // check click is not on dock before passing event to tracks
     // dispatch event to all tracks (stop when either of them uses it)
     if (event.GetY() < getHeight()-getCurrentSequence()->dockHeight and
-       event.GetY() > MEASURE_BAR_Y+measureBarHeight)
+        event.GetY() > MEASURE_BAR_Y+measureBarHeight)
     {
         for(int n=0; n<getCurrentSequence()->getTrackAmount(); n++)
         {

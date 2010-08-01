@@ -3,6 +3,7 @@
 - Fixed glitch with drum name when loading .aria file
 - Fixed keyboard focus not brought back to main pane after showing "Select Notes" dialog
 - Fixed clicking on track header of drum editor unselects notes
+- Fixed measures appearing unselected when right-clicking on them
 - More code cleanup
 
 1.2.2

@@ -787,7 +787,7 @@ void MainFrame::changeMeasureAmount(int i, bool throwEvent)
     if (changingValues) return; // discard events thrown because the computer changes values
 
     songLength->SetValue(i);
-    getMeasureData()->updateVector(i);
+    getMeasureData()->setMeasureAmount(i);
 
     if (throwEvent)
     {

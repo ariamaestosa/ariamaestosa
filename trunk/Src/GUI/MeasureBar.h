@@ -63,6 +63,7 @@ namespace AriaMaestosa
         
         
         int getMeasureBarHeight();
+        void unselectAll();
     };
     
 }
