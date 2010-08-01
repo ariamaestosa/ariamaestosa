@@ -232,15 +232,24 @@ namespace AriaMaestosa
         // object and be notified automatically on change.
         void changeMeasureAmount(const int i, bool throwEvent)
         {
-            getMainFrame()->changeMeasureAmount(i, throwEvent);
+            if (getMainFrame() != NULL)
+            {
+                getMainFrame()->changeMeasureAmount(i, throwEvent);
+            }
         }
         void updateHorizontalScrollbar(const int thumbPos)
         {
-            getMainFrame()->updateHorizontalScrollbar(thumbPos);
+            if (getMainFrame() != NULL)
+            {
+                getMainFrame()->updateHorizontalScrollbar(thumbPos);
+            }
         }
         void updateVerticalScrollbar()
         {
-            getMainFrame()->updateVerticalScrollbar();
+            if (getMainFrame() != NULL)
+            {
+                getMainFrame()->updateVerticalScrollbar();
+            }
         }
     } // end DisplayFrame namespace
     
