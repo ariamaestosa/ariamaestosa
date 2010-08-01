@@ -31,6 +31,7 @@ NOTE: sorry, this is very raw :)
         * MIDI event lister
         * re-arrange tablature to be easier to play
         * chord builder
+        * stand-alone metronome
 - better synth support (go beyond midi)
     * fluidsynth
     * gervill
@@ -161,8 +162,6 @@ UNSURE/MINOR:
    document as having unsaved changes!
 
 ** If a message dialog is shown during track loading, app freezes (conflict with WaitWindow, most likely)
-
-** Right-clicking on selected measures appears to unselect them visually, which is confusing
 
 * On OS X, "unselect" is Cmd+Click, that's certainly unintuitive
 
