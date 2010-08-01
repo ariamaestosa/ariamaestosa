@@ -14,17 +14,22 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include "AriaCore.h"
 #include "Actions/DeleteSelected.h"
 #include "Actions/EditAction.h"
-#include "Midi/Track.h"
 #include "Midi/Note.h"
 #include "Midi/Sequence.h"
+#include "Midi/Track.h"
 #include "GUI/GraphicalTrack.h"
 #include "Editors/ControllerEditor.h"
 
+#include "unit_test.h"
 #include <cmath>
 
+using namespace AriaMaestosa;
 using namespace AriaMaestosa::Action;
+
+// ----------------------------------------------------------------------------------------------------------
 
 DeleteSelected::DeleteSelected() :
     //I18N: (undoable) action name
@@ -32,9 +37,13 @@ DeleteSelected::DeleteSelected() :
 {
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 DeleteSelected::~DeleteSelected()
 {
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void DeleteSelected::undo()
 {
@@ -64,6 +73,9 @@ void DeleteSelected::undo()
         
     }
 }
+
+// ----------------------------------------------------------------------------------------------------------
+
 void DeleteSelected::perform()
 {
     ASSERT(track != NULL);
@@ -81,7 +93,7 @@ void DeleteSelected::perform()
         if (type != 201 /*tempo*/)
         {
             // remove controller events
-            for(int n=0; n<track->m_control_events.size(); n++)
+            for (int n=0; n<track->m_control_events.size(); n++)
             {
                 
                 if (track->m_control_events[n].getController() != type) continue; // in another controller
@@ -100,7 +112,7 @@ void DeleteSelected::perform()
         {
             // remove tempo events
             const int tempoEventsAmount = track->sequence->tempoEvents.size();
-            for(int n=0; n<tempoEventsAmount; n++)
+            for (int n=0; n<tempoEventsAmount; n++)
             {
                 
                 const int tick = track->sequence->tempoEvents[n].getTick();
@@ -145,3 +157,90 @@ void DeleteSelected::perform()
     track->reorderNoteOffVector();
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
+namespace DeleteSelectedTest
+{
+
+    UNIT_TEST(TestDelete)
+    {
+        // FIXME: this code is duplicated in too many tests
+        class TestSeqProvider : public ICurrentSequenceProvider
+        {
+            Sequence* m_seq;
+        public:
+            TestSeqProvider(Sequence* seq)
+            {
+                m_seq = seq;
+            }
+            
+            virtual Sequence* getCurrentSequence()
+            {
+                return m_seq;
+            }
+        };
+        
+        Sequence* seq = new Sequence(NULL, NULL, NULL, false);
+        TestSeqProvider provider(seq);
+        AriaMaestosa::setCurrentSequenceProvider(&provider);
+        
+        Track* t = new Track(seq);
+        // FIXME: creating the graphics object shouldn't be manual nor necessary for tests
+        t->graphics = new GraphicalTrack(t, seq);
+        t->graphics->createEditors();
+        
+        // make a factory sequence to work from
+        seq->importing = true;
+        t->addNote_import(100 /* pitch */, 0   /* start */, 100 /* end */, 127 /* volume */, -1);
+        t->addNote_import(101 /* pitch */, 101 /* start */, 200 /* end */, 127 /* volume */, -1);
+        t->addNote_import(102 /* pitch */, 201 /* start */, 300 /* end */, 127 /* volume */, -1);
+        t->addNote_import(103 /* pitch */, 301 /* start */, 400 /* end */, 127 /* volume */, -1);
+        seq->importing = false;
+        
+        require(t->getNoteAmount() == 4, "sanity check"); // sanity check on the way...
+        
+        seq->addTrack(t);
+        
+        t->selectNote(1, true);
+        t->selectNote(2, true);
+
+        // test the action
+        seq->getTrack(0)->action(new DeleteSelected());
+        
+        require(t->getNoteAmount() == 2, "the number of events was decreased");
+        require(t->getNote(0)->getTick()    == 0,   "events were properly ordered");
+        require(t->getNote(0)->getPitchID() == 100, "events were properly ordered");
+        
+        require(t->getNote(1)->getTick()    == 301, "events were properly ordered");
+        require(t->getNote(1)->getPitchID() == 103, "events were properly ordered");
+        
+        require(t->getNoteOffVector().size() == 2, "Note off vector was decreased");
+        require(t->getNoteOffVector()[0].endTick == 100, "Note off vector is properly ordered");
+        require(t->getNoteOffVector()[1].endTick == 400, "Note off vector is properly ordered");
+        
+        // Now test undo
+        seq->undo();
+        
+        require(t->getNoteAmount() == 4, "the number of events was restored on undo");
+        require(t->getNote(0)->getTick()    == 0,   "events were properly ordered");
+        require(t->getNote(0)->getPitchID() == 100, "events were properly ordered");
+        
+        require(t->getNote(1)->getTick()    == 101, "events were properly ordered");
+        require(t->getNote(1)->getPitchID() == 101, "events were properly ordered");
+        
+        require(t->getNote(2)->getTick()    == 201, "events were properly ordered");
+        require(t->getNote(2)->getPitchID() == 102, "events were properly ordered");
+        
+        require(t->getNote(3)->getTick()    == 301, "events were properly ordered");
+        require(t->getNote(3)->getPitchID() == 103, "events were properly ordered");
+        
+        require(t->getNoteOffVector().size() == 4, "Note off vector was restored on undo");
+        require(t->getNoteOffVector()[0].endTick == 100, "Note off vector is properly ordered");
+        require(t->getNoteOffVector()[1].endTick == 200, "Note off vector is properly ordered");
+        require(t->getNoteOffVector()[2].endTick == 300, "Note off vector is properly ordered");
+        require(t->getNoteOffVector()[3].endTick == 400, "Note off vector is properly ordered");
+        
+        delete seq;        
+    }
+    
+}
