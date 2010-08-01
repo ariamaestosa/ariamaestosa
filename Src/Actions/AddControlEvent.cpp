@@ -150,6 +150,8 @@ namespace TestAddControlEvent
         require(t->getControllerEvent(4, 0)->getTick()  == 300, "events were properly ordered");
         require(t->getControllerEvent(4, 0)->getValue() == 0, "events were properly ordered");
         
+        // TODO: test undo
+        
         delete seq;
     }
     
@@ -203,6 +205,7 @@ namespace TestAddControlEvent
         require(t->getControllerEvent(3, 0)->getTick()  == 300, "events were properly ordered");
         require(t->getControllerEvent(3, 0)->getValue() == 0,   "events were properly ordered");
         
+        // TODO: test undo
         
         delete seq;
     }
@@ -257,6 +260,7 @@ namespace TestAddControlEvent
         require(t->getControllerEvent(3, 0)->getTick()  == 300, "events were properly ordered");
         require(t->getControllerEvent(3, 0)->getValue() == 100, "events were properly ordered");
         
+        // TODO: test undo
         
         delete seq;
     }
@@ -299,6 +303,8 @@ namespace TestAddControlEvent
         require(t->getControllerEvent(4, 0)->getTick()  == 400, "new event was added at the end");
         require(t->getControllerEvent(4, 0)->getValue() == 123, "new event was added at the end");
         
+        // TODO: test undo
+        
         delete seq;
     }
     
@@ -339,6 +345,8 @@ namespace TestAddControlEvent
         
         require(t->getControllerEvent(4, 0)->getTick()  == 300, "events were properly ordered");
         require(t->getControllerEvent(4, 0)->getValue() == 0,   "events were properly ordered");
+        
+        // TODO: test undo
         
         delete seq;
     }
