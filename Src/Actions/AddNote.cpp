@@ -259,6 +259,12 @@ namespace TestAddNote
         require(t->getNote(3)->getTick()    == 301, "events were properly ordered");
         require(t->getNote(3)->getPitchID() == 103, "events were properly ordered");
 
+        require(t->getNoteOffVector().size() == 4, "Note off vector was restored on undo");
+        require(t->getNoteOffVector()[0].endTick == 100, "Note off vector is properly ordered");
+        require(t->getNoteOffVector()[1].endTick == 200, "Note off vector is properly ordered");
+        require(t->getNoteOffVector()[2].endTick == 300, "Note off vector is properly ordered");
+        require(t->getNoteOffVector()[3].endTick == 400, "Note off vector is properly ordered");
+        
         delete seq;
     }
     
