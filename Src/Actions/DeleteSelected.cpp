@@ -199,6 +199,30 @@ namespace DeleteSelectedTest
         {
             return m_seq;
         }
+        
+        void verifyUndo()
+        {
+            Track* t = m_seq->getTrack(0);
+            
+            require(t->getNoteAmount() == 4, "the number of events was restored on undo");
+            require(t->getNote(0)->getTick()    == 0,   "events were properly ordered");
+            require(t->getNote(0)->getPitchID() == 100, "events were properly ordered");
+            
+            require(t->getNote(1)->getTick()    == 101, "events were properly ordered");
+            require(t->getNote(1)->getPitchID() == 101, "events were properly ordered");
+            
+            require(t->getNote(2)->getTick()    == 201, "events were properly ordered");
+            require(t->getNote(2)->getPitchID() == 102, "events were properly ordered");
+            
+            require(t->getNote(3)->getTick()    == 301, "events were properly ordered");
+            require(t->getNote(3)->getPitchID() == 103, "events were properly ordered");
+            
+            require(t->getNoteOffVector().size() == 4, "Note off vector was restored on undo");
+            require(t->getNoteOffVector()[0].endTick == 100, "Note off vector is properly ordered");
+            require(t->getNoteOffVector()[1].endTick == 200, "Note off vector is properly ordered");
+            require(t->getNoteOffVector()[2].endTick == 300, "Note off vector is properly ordered");
+            require(t->getNoteOffVector()[3].endTick == 400, "Note off vector is properly ordered");  
+        }
     };
     
     UNIT_TEST(TestDelete)
@@ -225,25 +249,7 @@ namespace DeleteSelectedTest
         
         // Now test undo
         provider.m_seq->undo();
-        
-        require(t->getNoteAmount() == 4, "the number of events was restored on undo");
-        require(t->getNote(0)->getTick()    == 0,   "events were properly ordered");
-        require(t->getNote(0)->getPitchID() == 100, "events were properly ordered");
-        
-        require(t->getNote(1)->getTick()    == 101, "events were properly ordered");
-        require(t->getNote(1)->getPitchID() == 101, "events were properly ordered");
-        
-        require(t->getNote(2)->getTick()    == 201, "events were properly ordered");
-        require(t->getNote(2)->getPitchID() == 102, "events were properly ordered");
-        
-        require(t->getNote(3)->getTick()    == 301, "events were properly ordered");
-        require(t->getNote(3)->getPitchID() == 103, "events were properly ordered");
-        
-        require(t->getNoteOffVector().size() == 4, "Note off vector was restored on undo");
-        require(t->getNoteOffVector()[0].endTick == 100, "Note off vector is properly ordered");
-        require(t->getNoteOffVector()[1].endTick == 200, "Note off vector is properly ordered");
-        require(t->getNoteOffVector()[2].endTick == 300, "Note off vector is properly ordered");
-        require(t->getNoteOffVector()[3].endTick == 400, "Note off vector is properly ordered");
+        provider.verifyUndo();
     }
     
     UNIT_TEST(TestDeleteFirst)
@@ -274,25 +280,7 @@ namespace DeleteSelectedTest
         
         // Now test undo
         provider.m_seq->undo();
-        
-        require(t->getNoteAmount() == 4, "the number of events was restored on undo");
-        require(t->getNote(0)->getTick()    == 0,   "events were properly ordered");
-        require(t->getNote(0)->getPitchID() == 100, "events were properly ordered");
-        
-        require(t->getNote(1)->getTick()    == 101, "events were properly ordered");
-        require(t->getNote(1)->getPitchID() == 101, "events were properly ordered");
-        
-        require(t->getNote(2)->getTick()    == 201, "events were properly ordered");
-        require(t->getNote(2)->getPitchID() == 102, "events were properly ordered");
-        
-        require(t->getNote(3)->getTick()    == 301, "events were properly ordered");
-        require(t->getNote(3)->getPitchID() == 103, "events were properly ordered");
-        
-        require(t->getNoteOffVector().size() == 4, "Note off vector was restored on undo");
-        require(t->getNoteOffVector()[0].endTick == 100, "Note off vector is properly ordered");
-        require(t->getNoteOffVector()[1].endTick == 200, "Note off vector is properly ordered");
-        require(t->getNoteOffVector()[2].endTick == 300, "Note off vector is properly ordered");
-        require(t->getNoteOffVector()[3].endTick == 400, "Note off vector is properly ordered");
+        provider.verifyUndo();
     }
     
     UNIT_TEST(TestDeleteLast)
@@ -324,25 +312,7 @@ namespace DeleteSelectedTest
         
         // Now test undo
         provider.m_seq->undo();
-        
-        require(t->getNoteAmount() == 4, "the number of events was restored on undo");
-        require(t->getNote(0)->getTick()    == 0,   "events were properly ordered");
-        require(t->getNote(0)->getPitchID() == 100, "events were properly ordered");
-        
-        require(t->getNote(1)->getTick()    == 101, "events were properly ordered");
-        require(t->getNote(1)->getPitchID() == 101, "events were properly ordered");
-        
-        require(t->getNote(2)->getTick()    == 201, "events were properly ordered");
-        require(t->getNote(2)->getPitchID() == 102, "events were properly ordered");
-        
-        require(t->getNote(3)->getTick()    == 301, "events were properly ordered");
-        require(t->getNote(3)->getPitchID() == 103, "events were properly ordered");
-        
-        require(t->getNoteOffVector().size() == 4, "Note off vector was restored on undo");
-        require(t->getNoteOffVector()[0].endTick == 100, "Note off vector is properly ordered");
-        require(t->getNoteOffVector()[1].endTick == 200, "Note off vector is properly ordered");
-        require(t->getNoteOffVector()[2].endTick == 300, "Note off vector is properly ordered");
-        require(t->getNoteOffVector()[3].endTick == 400, "Note off vector is properly ordered");       
+        provider.verifyUndo();      
     }
     
 }
