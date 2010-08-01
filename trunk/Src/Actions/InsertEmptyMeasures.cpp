@@ -16,14 +16,17 @@
 
 #include "wx/intl.h"
 
-#include "Actions/InsertEmptyMeasures.h"
-#include "Actions/EditAction.h"
-#include "Midi/Track.h"
-#include "Midi/Sequence.h"
-#include "Midi/MeasureData.h"
-#include "Actions/RemoveMeasures.h"
 #include "AriaCore.h"
+#include "Actions/EditAction.h"
+#include "Actions/InsertEmptyMeasures.h"
+#include "Actions/RemoveMeasures.h"
+#include "GUI/GraphicalTrack.h"
+#include "Midi/MeasureData.h"
+#include "Midi/Sequence.h"
+#include "Midi/Track.h"
+#include "unit_test.h"
 
+using namespace AriaMaestosa;
 using namespace AriaMaestosa::Action;
 
 // --------------------------------------------------------------------------------------------------------
@@ -129,4 +132,119 @@ void InsertEmptyMeasures::perform()
 
 // --------------------------------------------------------------------------------------------------------
 
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
+#if 0
+#pragma mark -
+#pragma mark Unit Tests
+#endif
+
+#if _MORE_DEBUG_CHECKS // so that utility classes are not compiled in when unit tests are disabled
+namespace InsertMeasuresTest
+{
+    
+    class TestSeqProvider : public ICurrentSequenceProvider
+    {
+    public:
+        Sequence* m_seq;
+        
+        TestSeqProvider()
+        {
+            m_seq = new Sequence(NULL, NULL, NULL, false);
+            AriaMaestosa::setCurrentSequenceProvider(this);
+            
+            Track* t = new Track(m_seq);
+            // FIXME: creating the graphics object shouldn't be manual nor necessary for tests
+            t->graphics = new GraphicalTrack(t, m_seq);
+            t->graphics->createEditors();
+            
+            MeasureData* measures = m_seq->measureData;
+            const int beatLen = measures->beatLengthInTicks();
+            
+            // make a factory sequence to work from
+            m_seq->importing = true;
+            for (int n=0; n<16; n++)
+            {
+                t->addNote_import(100 + n           /* pitch  */,
+                                  n*beatLen         /* start  */,
+                                  (n+1)*beatLen - 1 /* end    */,
+                                  127               /* volume */, -1);
+            }
+            m_seq->importing = false;
+            
+            require(t->getNoteAmount() == 16, "sanity check"); // sanity check on the way...
+            
+            m_seq->addTrack(t);            
+        }
+        
+        ~TestSeqProvider()
+        {
+            delete m_seq;
+        }
+        
+        virtual Sequence* getCurrentSequence()
+        {
+            return m_seq;
+        }
+        
+        void verifyUndo()
+        {
+            Track* t = m_seq->getTrack(0);
+            
+            MeasureData* measures = m_seq->measureData;
+            const int beatLen = measures->beatLengthInTicks();
+            
+            require(t->getNoteAmount() == 16, "the number of events is fine on undo");
+            require(t->getNoteOffVector().size() == 16, "Note off vector is fine on undo");
+
+            for (int n=0; n<16; n++)
+            {
+                require(t->getNote(n)->getTick()    == n*beatLen, "events were properly restored");
+                require(t->getNote(n)->getPitchID() == 100 + n,   "events were properly restored");
+                require(t->getNoteOffVector()[n].endTick == (n + 1)*beatLen - 1,
+                        "Note off vector was properly restored");
+            }  
+        }
+    };
+    
+    UNIT_TEST(TestInsert)
+    {
+        TestSeqProvider provider;
+        Track* t = provider.m_seq->getTrack(0);
+        
+        // test the action
+        provider.m_seq->action(new InsertEmptyMeasures(2 /* insert at */, 2 /* amount of measures to insert */));
+        
+        // TODO: test this action on multiple tracks, not only one
+        // TODO: test this action on control events too (and don't forget tempo events)
+        
+        // verify the data is OK        
+        MeasureData* measures = provider.m_seq->measureData;
+        const int beatLen = measures->beatLengthInTicks();
+        
+        require(t->getNoteAmount() == 16, "the number of events is fine on undo");
+        require(t->getNoteOffVector().size() == 16, "Note off vector is fine on undo");
+        
+        for (int n=0; n<8; n++)
+        {
+            require(t->getNote(n)->getTick()    == n*beatLen, "events were properly modified by action");
+            require(t->getNote(n)->getPitchID() == 100 + n,   "events were properly modified by action");
+            require(t->getNoteOffVector()[n].endTick == (n + 1)*beatLen - 1,
+                    "Note off vector was properly modified by action");
+        }
+        const int insertedShift = 2*(beatLen*4); // two measures of 4 beats were inserted
+        for (int n=8; n<16; n++)
+        {
+            require(t->getNote(n)->getTick() == insertedShift + n*beatLen, "events were properly modified by action");
+            require(t->getNote(n)->getPitchID() == 100 + n,   "events were properly modified by action");
+            require(t->getNoteOffVector()[n].endTick == insertedShift + (n + 1)*beatLen - 1,
+                    "Note off vector was properly modified by action");
+        }
+        
+        // verify undo
+        provider.m_seq->undo();
+        provider.verifyUndo();
+    }
+}
+#endif

@@ -158,6 +158,12 @@ void DeleteSelected::perform()
 }
 
 // ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+
+#if 0
+#pragma mark -
+#pragma mark Unit Tests
+#endif
 
 #if _MORE_DEBUG_CHECKS // so that utility classes are not compiled in when unit tests are disabled
 namespace DeleteSelectedTest
