@@ -681,13 +681,17 @@ int Track::getControllerEventAmount(const int controllerTypeID) const
 ControllerEvent* Track::getControllerEvent(const int id, const int controllerTypeID)
 {
     ASSERT_E(id,>=,0);
-    if (controllerTypeID==201 /*tempo*/){
+    if (controllerTypeID == 201 /*tempo*/) 
+    {
         ASSERT_E(id,<,sequence->tempoEvents.size());
-    } else {
+    }
+    else
+    {
         ASSERT_E(id,<,m_control_events.size());
     }
 
-    if (controllerTypeID==201 /*tempo*/) return &sequence->tempoEvents[id];
+    if (controllerTypeID == 201 /*tempo*/) return &sequence->tempoEvents[id];
+    
     return &m_control_events[id];
 }
 
