@@ -3,6 +3,7 @@
 
 #include <string>
 #include <stdexcept>
+#include <sstream>
 
 class UnitTestCase
 {
@@ -25,11 +26,21 @@ public:
 #define UNIT_TEST( NAME ) template<typename T> void NAME()
 #endif
 
-#define require( CONDITION, MESSAGE ) if (!( CONDITION )) \
-{ \
-static char buffer[256];\
-sprintf(buffer, "Requirement failed at %s:%i : %s", __FILE__, __LINE__, MESSAGE);\
-throw std::logic_error(buffer);\
+#define require( CONDITION, MESSAGE ) if (!( CONDITION ))                          \
+{                                                                                  \
+char buffer[256];                                                                  \
+sprintf(buffer, "Requirement failed at %s:%i : %s", __FILE__, __LINE__, MESSAGE);  \
+throw std::logic_error(buffer);                                                    \
+}
+
+#define require_e( LEFT, OP, RIGHT, MESSAGE ) if (!( (LEFT) OP (RIGHT) ))          \
+{                                                                                  \
+char buffer[512];                                                                  \
+std::ostringstream values;                                                         \
+values << LEFT << " " << #OP << " " << RIGHT;                                      \
+sprintf(buffer, "Requirement (%s %s %s) failed at %s:%i : %s\nwith values : %s",   \
+        #LEFT, #OP, #RIGHT, __FILE__, __LINE__, MESSAGE, values.str().c_str());    \
+throw std::logic_error(buffer);                                                    \
 }
 
 // pseudo-keyword :)

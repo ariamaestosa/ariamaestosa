@@ -359,6 +359,12 @@ namespace AriaMaestosa
          */
         int getControllerEventAmount(const int controllerTypeID) const;
         
+        /**
+          * @brief get a controller event object
+          * @param id of the control event to retrieve (from 0 to count-1)
+          * @param controllerTypeID only to determine whether the app is searching for a control event
+          *                         or for a tempo event (FIXME: ugly)
+          */
         ControllerEvent* getControllerEvent(const int id, const int controllerTypeID);
         
         /** not to be called during editing, as it does not generate an action in the action stack. */

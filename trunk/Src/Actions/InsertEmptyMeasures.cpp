@@ -171,10 +171,23 @@ namespace InsertMeasuresTest
                                   (n+1)*beatLen - 1 /* end    */,
                                   127               /* volume */, -1);
             }
+            for (int n=0; n<32; n++)
+            {
+                t->addControlEvent_import((n*beatLen)/2 /* tick */, 64+n*2 /* value */,  0 /* controller */);
+            }
+            for (int n=0; n<32; n++)
+            {
+                t->addControlEvent_import((n*beatLen)/2 /* tick */, 64-n*2 /* value */,  1 /* controller */);
+            }
             m_seq->importing = false;
             
-            require(t->getNoteAmount() == 16, "sanity check"); // sanity check on the way...
+            require_e(t->getNoteAmount(), ==, 16, "sanity check"); // sanity check on the way...
             
+            // TODO: correct this after rectifying the semantics of "getControllerEventAmount"
+            require_e(t->getControllerEventAmount(0), ==, 64, "Controller events OK");
+            // require_e(t->getControllerEventAmount(0), ==, 32, "Controller events OK");
+            // require_e(t->getControllerEventAmount(1), ==, 32, "Controller events OK");
+
             m_seq->addTrack(t);            
         }
         
@@ -204,7 +217,22 @@ namespace InsertMeasuresTest
                 require(t->getNote(n)->getPitchID() == 100 + n,   "events were properly restored");
                 require(t->getNoteOffVector()[n].endTick == (n + 1)*beatLen - 1,
                         "Note off vector was properly restored");
-            }  
+            }
+            
+            for (int n=0; n<32; n++)
+            {
+                require(t->getControllerEvent(n, 0 /* controller */)->getTick() == (n*beatLen)/2,
+                        "control events were properly restored");
+                require(t->getControllerEvent(n, 0 /* controller */)->getValue() == 64+n*2,
+                        "control events were properly restored");
+            }
+            for (int n=0; n<32; n++)
+            {
+                require(t->getControllerEvent(n, 1 /* controller */)->getTick() == (n*beatLen)/2,
+                        "control events were properly restored");
+                require(t->getControllerEvent(n, 1 /* controller */)->getValue() == 64-n*2,
+                        "control events were properly restored");
+            }
         }
     };
     
@@ -217,15 +245,23 @@ namespace InsertMeasuresTest
         provider.m_seq->action(new InsertEmptyMeasures(2 /* insert at */, 2 /* amount of measures to insert */));
         
         // TODO: test this action on multiple tracks, not only one
-        // TODO: test this action on control events too (and don't forget tempo events)
+        // TODO: test this action on tempo events too
         
         // verify the data is OK        
         MeasureData* measures = provider.m_seq->measureData;
         const int beatLen = measures->beatLengthInTicks();
         
-        require(t->getNoteAmount() == 16, "the number of events is fine on undo");
-        require(t->getNoteOffVector().size() == 16, "Note off vector is fine on undo");
+        require(t->getNoteAmount() == 16, "the number of events is fine");
+        require(t->getNoteOffVector().size() == 16, "Note off vector is fine");
         
+        // TODO: correct this after semantics of 'getControllerEventAmount' have been rectified
+        require(t->getControllerEventAmount(0) == 64, "Controller events OK");
+        //require(t->getControllerEventAmount(0) == 32, "Controller 0 events OK");
+        //require(t->getControllerEventAmount(1) == 32, "Controller 1 events OK");
+
+        const int insertedShift = 2*(beatLen*4); // two measures of 4 beats were inserted
+
+        // verify notes
         for (int n=0; n<8; n++)
         {
             require(t->getNote(n)->getTick()    == n*beatLen, "events were properly modified by action");
@@ -233,13 +269,43 @@ namespace InsertMeasuresTest
             require(t->getNoteOffVector()[n].endTick == (n + 1)*beatLen - 1,
                     "Note off vector was properly modified by action");
         }
-        const int insertedShift = 2*(beatLen*4); // two measures of 4 beats were inserted
         for (int n=8; n<16; n++)
         {
             require(t->getNote(n)->getTick() == insertedShift + n*beatLen, "events were properly modified by action");
             require(t->getNote(n)->getPitchID() == 100 + n,   "events were properly modified by action");
             require(t->getNoteOffVector()[n].endTick == insertedShift + (n + 1)*beatLen - 1,
                     "Note off vector was properly modified by action");
+        }
+        
+        // verify control events
+        // FIXME: this fails because of the sloppy semantics of 'getControllerEvent'
+        for (int n=0; n<16; n++)
+        {
+            require_e(t->getControllerEvent(n, 0 /* controller */)->getTick(), ==, (n*beatLen)/2,
+                      "control events were properly modified");
+            require_e(t->getControllerEvent(n, 0 /* controller */)->getValue(), ==, 64+n*2,
+                      "control events were properly modified");
+        }
+        for (int n=0; n<16; n++)
+        {
+            require_e(t->getControllerEvent(n, 1 /* controller */)->getTick(), ==, (n*beatLen)/2,
+                    "control events were properly modified");
+            require_e(t->getControllerEvent(n, 1 /* controller */)->getValue(), ==, 64-n*2,
+                    "control events were properly modified");
+        }
+        for (int n=16; n<32; n++)
+        {
+            require_e(t->getControllerEvent(n, 0 /* controller */)->getTick(), ==, insertedShift + (n*beatLen)/2,
+                      "control events were properly modified");
+            require_e(t->getControllerEvent(n, 0 /* controller */)->getValue(), ==, 64+n*2,
+                      "control events were properly modified");
+        }
+        for (int n=16; n<32; n++)
+        {
+            require_e(t->getControllerEvent(n, 1 /* controller */)->getTick(), ==, insertedShift + (n*beatLen)/2,
+                      "control events were properly modified");
+            require_e(t->getControllerEvent(n, 1 /* controller */)->getValue(), ==, 64-n*2,
+                      "control events were properly modified");
         }
         
         // verify undo
