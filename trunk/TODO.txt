@@ -158,6 +158,8 @@ UNSURE/MINOR:
 
 ************************* BUGS: *************************
 
+*** New way to store preferences (with strings instead of integers) messes up on Windows (encoding issue?)
+
 ** Things like changing global tempo, changing song length, etc... are not actions and thus do not mark the
    document as having unsaved changes!
 
