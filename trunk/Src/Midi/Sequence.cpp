@@ -940,7 +940,7 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
               wxT("\" fileFormatVersion=\"") + to_wxString(CURRENT_FILE_VERSION) +
               wxT("\" channelManagement=\"") + (getChannelManagementType() == CHANNEL_AUTO ?
                                                 wxT("auto") : wxT("manual")) +
-              wxT("\" metronome=\"")         + (m_play_with_metronome ? "true" : "false") +
+              wxT("\" metronome=\"")         + (m_play_with_metronome ? wxT("true") : wxT("false")) +
               wxT("\">\n\n"), fileout );
 
     writeData(wxT("<view xscroll=\"") + to_wxString(x_scroll_in_pixels) +
