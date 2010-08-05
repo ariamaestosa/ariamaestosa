@@ -52,6 +52,77 @@ END_EVENT_TABLE()
 // ------------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------
 
+#ifdef __WXMSW__
+#include <windows.h>
+
+#include <stdio.h>
+#include <fcntl.h>
+#include <io.h>
+
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+
+// maximum mumber of lines the output console should have
+static const WORD MAX_CONSOLE_LINES = 500;
+
+#ifndef NDEBUG
+
+void RedirectIOToConsole()
+{
+    int hConHandle;
+    long lStdHandle;
+    
+    CONSOLE_SCREEN_BUFFER_INFO coninfo;
+    FILE *fp;
+    
+    // allocate a console for this app
+    AllocConsole();
+    
+    // set the screen buffer to be big enough to let us scroll text
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &coninfo);
+    coninfo.dwSize.Y = MAX_CONSOLE_LINES;
+    SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), coninfo.dwSize);
+    
+    // redirect unbuffered STDOUT to the console
+    lStdHandle = (long)GetStdHandle(STD_OUTPUT_HANDLE);
+    hConHandle = _open_osfhandle(lStdHandle, _O_TEXT);
+    
+    fp = _fdopen( hConHandle, "w" );
+    *stdout = *fp;
+    setvbuf( stdout, NULL, _IONBF, 0 );
+    
+    // redirect unbuffered STDIN to the console
+    lStdHandle = (long)GetStdHandle(STD_INPUT_HANDLE);
+    hConHandle = _open_osfhandle(lStdHandle, _O_TEXT);
+    
+    fp = _fdopen( hConHandle, "r" );
+    *stdin = *fp;
+    setvbuf( stdin, NULL, _IONBF, 0 );
+    
+    // redirect unbuffered STDERR to the console
+    
+    lStdHandle = (long)GetStdHandle(STD_ERROR_HANDLE);
+    hConHandle = _open_osfhandle(lStdHandle, _O_TEXT);
+    fp = _fdopen( hConHandle, "w" );
+    
+    *stderr = *fp;
+    setvbuf( stderr, NULL, _IONBF, 0 );
+    
+    // make cout, wcout, cin, wcin, wcerr, cerr, wclog and clog
+    // point to console as well
+    
+    ios::sync_with_stdio();
+}
+
+#endif
+#endif
+
+// ------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------------
+
 void wxWidgetApp::activateRenderLoop(bool on)
 {
     if (on and !render_loop_on)
@@ -94,6 +165,15 @@ void wxWidgetApp::onActivate(wxActivateEvent& evt)
 
 bool wxWidgetApp::OnInit()
 {
+    
+    #ifdef __WXMSW__
+    #ifndef NDEBUG
+    
+    RedirectIOToConsole();
+    
+    #endif
+    #endif
+    
     for (int n=0; n<argc; n++)
     {
         if (wxString(argv[n]) == wxT("--utest"))
@@ -109,17 +189,6 @@ bool wxWidgetApp::OnInit()
     }
     
     frame = NULL;
-
-#if USE_WX_LOGGING
-    int x, y;
-
-    m_log_window = new wxLogWindow(NULL, wxT("Log") );
-    m_log_frame  = m_log_window->GetFrame();
-    m_log_frame->SetWindowStyle(wxDEFAULT_FRAME_STYLE | wxSTAY_ON_TOP);
-
-    m_log_frame->SetSize( wxRect(0,wxSystemSettings::GetMetric(wxSYS_SCREEN_Y)*3/4, 400,250) );
-    wxLog::SetActiveTarget(m_log_window);
-#endif
     
     prefs = PreferencesData::getInstance();
     prefs->init();
@@ -156,19 +225,6 @@ bool wxWidgetApp::OnInit()
 
     return true;
 }
-
-// ------------------------------------------------------------------------------------------------------
-
-#if USE_WX_LOGGING
-
-void wxWidgetApp::closeLogWindow()
-{
-    wxLog::SetActiveTarget(NULL);
-    m_log_frame->Close();
-    wxDELETE(m_log_window);
-}
-
-#endif
     
 // ------------------------------------------------------------------------------------------------------
 
