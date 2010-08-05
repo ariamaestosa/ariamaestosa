@@ -87,8 +87,13 @@ namespace AriaMaestosa
             { 
                 case SETTING_ENUM:
                 {
-                    ASSERT(longValueValid);
-                    if (not longValueValid) return;
+                    if (not longValueValid)
+                    {
+                        std::cerr << "WARNING: invalid integer value <" << m_parent->m_value.mb_str() 
+                                  << "> in preferences\n";
+                        m_combo->SetSelection(0);
+                        return;
+                    }
                     m_combo->Select(asLong);
                     break;
                 }
@@ -112,16 +117,24 @@ namespace AriaMaestosa
                     
                 case SETTING_BOOL:
                 {
-                    ASSERT(longValueValid);
-                    if (not longValueValid) return;
+                    if (not longValueValid)
+                    {
+                        std::cerr << "WARNING: invalid boolean value <" << m_parent->m_value.mb_str() 
+                                  << "> in preferences\n";
+                        return;  
+                    }
                     m_checkbox->SetValue(asLong);
                     break;
                 }
                     
                 case SETTING_INT:
                 {
-                    ASSERT(longValueValid);
-                    if (not longValueValid) return;
+                    if (not longValueValid)
+                    {
+                        std::cerr << "WARNING: invalid integer value <" << m_parent->m_value.mb_str() 
+                                  << "> in preferences\n";
+                        return;  
+                    }
                     m_number->SetValue(asLong);
                     break;
                 }
@@ -224,7 +237,7 @@ wxDialog(parent, wxID_ANY,
                 box.add(new wxStaticText(box.pane, wxID_ANY, settings[i].m_user_name ), 1);
                 
                 w->m_number = new wxSpinCtrl(box.pane, wxID_ANY,
-                                                      wxString::Format(wxT("%i"), settings[i].m_value),
+                                                      settings[i].m_value,
                                                       wxDefaultPosition, wxDefaultSize,  wxSP_ARROW_KEYS,
                                                       0, 99999 );
                 box.add(w->m_number);
