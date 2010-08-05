@@ -305,7 +305,7 @@ def compile_Aria(which_os):
     # ********************************* PLATFORM SPECIFIC ******************************************
     # ********************************************************************************************** 
 
-    use_jack = ARGUMENTS.get('jack', '0')
+    use_jack = ARGUMENTS.get('jack', False)
 
     # OS X (QTKit, CoreAudio, audiotoolbox)
     if which_os == "macosx":
@@ -358,7 +358,7 @@ def compile_Aria(which_os):
 
         # default sound driver for Unix, if not explicitely set
         if ARGUMENTS.get('jack', '!') == '!':
-            use_jack = 1
+            use_jack = True
 
         env.Append(CPPPATH = ['/usr/local/include'])
         env.Append(LIBPATH = ['/usr/local/lib'])
