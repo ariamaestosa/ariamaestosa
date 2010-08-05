@@ -229,7 +229,7 @@ namespace AriaMaestosa
 
             if (midi_out_caps != NULL)
             {
-                std::cout << "Manufacturer ID | Product ID | Driver Version | Name";
+                std::cout << "==== MIDI Devices ====\nManufacturer ID | Product ID | Driver Version | Name\n";
 
                 for (i = 0; i < midi_num_outputs; i++)
                 {
@@ -239,7 +239,8 @@ namespace AriaMaestosa
                     {
                         // see http://msdn.microsoft.com/en-us/library/dd798467%28VS.85%29.aspx
                         std::cout << midi_out_caps[i].wMid << " " << midi_out_caps[i].wPid << " "
-                                        << midi_out_caps[i].vDriverVersion << " " << midi_out_caps[i].szPname;
+                                        << midi_out_caps[i].vDriverVersion << " "
+                                        << midi_out_caps[i].szPname << "\n";
                     }
                 }
                 free (midi_out_caps);
@@ -253,9 +254,9 @@ namespace AriaMaestosa
         virtual void initMidiPlayer()
         {
 
-            if( !m_bOutOpen )
+            if (not m_bOutOpen)
             {
-                //enumerateDevices();
+              enumerateDevices();
 
                 // To access Midi Yoke Output, simply put its number instead of MIDI_MAPPER
               int e = ::midiOutOpen(
@@ -266,7 +267,7 @@ namespace AriaMaestosa
                 CALLBACK_NULL
                 );
 
-              if( e!=0 )
+              if (e != 0)
               {
                 wxMessageBox( _("Failed to initialize MIDI out device") );
                 switch (e)
