@@ -331,12 +331,12 @@ namespace AriaMaestosa
         // methods that provide general information common to all editors
         // ------------------------------------------------------------------------------------------------------
 
-        static const int getEditorXStart(){ return 90;                            }
-        const int getXEnd()         const { return width - 5;                     } // FIXME - adapt to include vertical scrollbar
-        const int getTrackYStart()  const { return from_y;                        }
-        const int getEditorYStart() const { return from_y+m_header_bar_height+20; }
-        const int getYEnd()         const { return to_y - 10;                     }
-        const int getWidth()        const { return width;                         }
+        static int getEditorXStart(){ return 90;                            }
+        int getXEnd()         const { return width - 5;                     } // FIXME - adapt to include vertical scrollbar
+        int getTrackYStart()  const { return from_y;                        }
+        int getEditorYStart() const { return from_y+m_header_bar_height+20; }
+        int getYEnd()         const { return to_y - 10;                     }
+        int getWidth()        const { return width;                         }
 
         
         //const Note7 pitchToNoteName
