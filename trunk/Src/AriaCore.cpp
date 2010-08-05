@@ -43,10 +43,12 @@ namespace AriaMaestosa
         long getPrefsLongValue( const char* entryName )
         {
             wxString asString = getPrefsValue(entryName);
+            if (asString.IsEmpty()) return -1;
             long asInt = -1;
             if (not asString.ToLong(&asInt))
             {
-                ASSERT(false);
+                //ASSERT(false);
+                std::cerr << "WARNING: prefs value <" << asString.mb_str() << "> is not an integer\n";
             }
             return asInt;
         }
