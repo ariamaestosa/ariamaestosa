@@ -26,7 +26,6 @@
 					<Add option="-DWIN32_GUI" />
 					<Add option="-D_DEBUG" />
 					<Add option="-D__WXDEBUG__" />
-					<Add option="-DUSE_WX_LOGGING" />
 					<Add directory="$(#wx)\lib\gcc_dll\mswud" />
 					<Add directory="$(#wx)\include" />
 				</Compiler>
@@ -96,6 +95,8 @@
 					<CompileFile command="" />
 					<Clean command="cd .. &amp;&amp; python scons/scons.py --clean" />
 					<DistClean command="cd .. &amp;&amp; python scons/scons.py --clean" />
+					<AskRebuildNeeded command="$make -q -f $makefile $target" />
+					<SilentBuild command="$make -s -f $makefile $target" />
 				</MakeCommands>
 			</Target>
 			<Target title="GCC_Linux_Release">
@@ -119,6 +120,8 @@
 					<CompileFile command="" />
 					<Clean command="cd .. &amp;&amp; python scons/scons.py --clean" />
 					<DistClean command="cd .. &amp;&amp; python scons/scons.py --clean" />
+					<AskRebuildNeeded command="$make -q -f $makefile $target" />
+					<SilentBuild command="$make -s -f $makefile $target" />
 				</MakeCommands>
 			</Target>
 		</Build>
@@ -283,6 +286,7 @@
 			<Option link="0" />
 		</Unit>
 		<Unit filename="..\Src\Midi\Players\Alsa\AlsaPort.h" />
+		<Unit filename="..\Src\Midi\Players\PlatformMidiManager.cpp" />
 		<Unit filename="..\Src\Midi\Players\PlatformMidiManager.h" />
 		<Unit filename="..\Src\Midi\Players\Sequencer.cpp" />
 		<Unit filename="..\Src\Midi\Players\Sequencer.h" />
