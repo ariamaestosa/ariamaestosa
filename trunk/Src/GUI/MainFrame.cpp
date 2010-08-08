@@ -60,6 +60,8 @@
 #include <iostream>
 
 #include "wx/spinctrl.h"
+#include "wx/filename.h"
+
 
 #ifdef __WXMAC__
 #include <ApplicationServices/ApplicationServices.h>
@@ -69,6 +71,8 @@
 #ifdef __WXMSW__
 #include "win32/Aria.xpm"
 #endif
+
+#define WHEEL_ZOOM_INCREMENT 10
 
 
 using namespace AriaMaestosa;
@@ -160,6 +164,8 @@ EVT_COMMAND  (DESTROY_TIMESIG_EVENT_ID, wxEVT_DESTROY_TIMESIG_PICKER, MainFrame:
 EVT_COMMAND  (SHOW_WAIT_WINDOW_EVENT_ID, wxEVT_SHOW_WAIT_WINDOW,   MainFrame::evt_showWaitWindow)
 EVT_COMMAND  (UPDT_WAIT_WINDOW_EVENT_ID, wxEVT_UPDATE_WAIT_WINDOW, MainFrame::evt_updateWaitWindow)
 EVT_COMMAND  (HIDE_WAIT_WINDOW_EVENT_ID, wxEVT_HIDE_WAIT_WINDOW,   MainFrame::evt_hideWaitWindow)
+
+EVT_MOUSEWHEEL(MainFrame::onMouseWheel)
 
 END_EVENT_TABLE()
 
@@ -548,6 +554,58 @@ void MainFrame::onDropFile(wxDropFilesEvent& event)
     }
 }
 #endif
+
+
+void MainFrame::onMouseWheel(wxMouseEvent& event)
+{
+    int width, height;
+	int x,y;
+	int change;
+
+
+	change = event.GetWheelRotation();
+
+	if (event.m_controlDown)
+	{
+	    // Ctrl key hold: Zoom in/out
+        if (!changingValues)
+        {
+            int newZoom;
+
+            newZoom = displayZoom->GetValue();
+
+            if (change>0)
+            {
+                newZoom += WHEEL_ZOOM_INCREMENT;
+            }
+            else
+            {
+                 newZoom -= WHEEL_ZOOM_INCREMENT;
+            }
+
+            if (newZoom>1 && newZoom<500)
+            {
+                displayZoom->SetValue(newZoom);
+            }
+        }
+
+	}
+	else if ( event.m_shiftDown )
+	{
+		// x-axis
+		//Scroll(x - change, y);
+	}
+	else if ( event.m_altDown )
+	{
+		// y-axis
+		//Scroll(x - change, y);
+	}
+	else
+	{
+		event.Skip(true);
+	}
+}
+
 
 // ----------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------- PLAY/STOP ----------------------------------------------------
@@ -1267,7 +1325,7 @@ void MainFrame::loadAriaFile(wxString filePath)
     updateVerticalScrollbar();
 
     // change song name
-    getCurrentSequence()->sequenceFileName.set(getCurrentSequence()->filepath.AfterLast('/').BeforeLast('.'));
+    getCurrentSequence()->sequenceFileName.set( extractTitle(getCurrentSequence()->filepath) );
 
     // if a song is currently playing, it needs to stay on top
     if (PlatformMidiManager::get()->isPlaying())
@@ -1311,7 +1369,7 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
     updateVerticalScrollbar();
 
     // change song name
-    getCurrentSequence()->sequenceFileName.set(midiFilePath.AfterLast('/').BeforeLast('.'));
+    getCurrentSequence()->sequenceFileName.set( extractTitle(midiFilePath) );
 
     // if a song is currently playing, it needs to stay on top
     if (PlatformMidiManager::get()->isPlaying()) setCurrentSequence(old_currentSequence);
@@ -1382,3 +1440,8 @@ void MainFrame::evt_hideWaitWindow(wxCommandEvent& evt)
     WaitWindow::hide();
 }
 
+
+wxString MainFrame::extractTitle(const wxString& inputPath)
+{
+    return inputPath.AfterLast(wxFileName::GetPathSeparator()).BeforeLast('.');
+}

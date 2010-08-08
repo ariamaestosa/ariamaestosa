@@ -259,6 +259,8 @@ namespace AriaMaestosa
         void onDropFile(wxDropFilesEvent& event);
 #endif
 
+        void onMouseWheel(wxMouseEvent& event);
+
         // ---- scrollbars
         void updateVerticalScrollbar();
 
@@ -319,6 +321,9 @@ namespace AriaMaestosa
         void evt_freeTimeSigPicker( wxCommandEvent& evt );
 
         void addIconItem(wxMenu* menu, int menuID, const wxString& label, const wxString& stockIconId);
+
+        wxString extractTitle(const wxString& inputPath);
+
 
         /** @brief Implement callback from IPlaybackModeListener */
         virtual void onEnterPlaybackMode();

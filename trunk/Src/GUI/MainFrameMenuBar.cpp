@@ -275,7 +275,7 @@ void MainFrame::initMenuBar()
 void MainFrame::addIconItem(wxMenu* menu, int menuID, const wxString& label, const wxString& stockIconId)
 {
     wxMenuItem* menuItem;
-    
+
     menuItem = new wxMenuItem( menu, menuID, label, wxT(""), wxITEM_NORMAL, NULL);
 #ifndef __WXMAC__
     menuItem->SetBitmap(wxArtProvider::GetBitmap(stockIconId));
@@ -427,7 +427,7 @@ void MainFrame::menuEvent_saveas(wxCommandEvent& evt)
         saveAriaFile(getCurrentSequence(), getCurrentSequence()->filepath);
 
         // change song name
-        getCurrentSequence()->sequenceFileName.set(getCurrentSequence()->filepath.AfterLast('/').BeforeLast('.'));
+        getCurrentSequence()->sequenceFileName.set( extractTitle(getCurrentSequence()->filepath) );
         Display::render();
 
     }// end if
@@ -565,7 +565,7 @@ void MainFrame::menuEvent_customNoteSelect(wxCommandEvent& evt)
     }
 
     m_custom_note_select_dialog->show( getCurrentSequence()->getCurrentTrack() );
-    
+
     // After dialog is dismissed, bring focus back to main pane so key presses are detected
     m_main_pane->SetFocus();
 }
@@ -880,14 +880,16 @@ public:
 
 void MainFrame::menuEvent_manual(wxCommandEvent& evt)
 {
-    wxString path_to_docs =  getResourcePrefix() + wxT("Documentation") + wxFileName::GetPathSeparator() + wxT("index.html");
-
-    wxString sep = wxFileName::GetPathSeparators();
+    wxString sep = wxFileName::GetPathSeparator();
+    wxString path_to_docs =  getResourcePrefix() + wxT("Documentation") + sep + wxT("index.html");
 
 #ifdef __WXMAC__
     new ManualView(this, path_to_docs);
 #else
-    if (not wxFileExists( path_to_docs ) or not wxLaunchDefaultBrowser( wxT("file://") + path_to_docs ))
+
+    wxString test = wxT("file:") + sep +sep + sep + path_to_docs;
+
+    if (not wxFileExists( path_to_docs ) or not wxLaunchDefaultBrowser( wxT("file:") + sep +sep + sep + path_to_docs ))
     {
         wxMessageBox(wxT("Sorry, opening docs failed\n(") + path_to_docs +
                      wxT(" does not appear to exist).\nTry ariamaestosa.sourceforge.net instead."));
