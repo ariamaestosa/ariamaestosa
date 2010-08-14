@@ -153,4 +153,9 @@ return wxT("./");
 #endif
 }
 
+wxString extractTitle(const wxString& inputPath)
+{
+    return inputPath.AfterLast(wxFileName::GetPathSeparator()).BeforeLast('.');
+}
+    
 }

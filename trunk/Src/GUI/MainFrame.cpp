@@ -72,7 +72,7 @@
 #include "win32/Aria.xpm"
 #endif
 
-#define WHEEL_ZOOM_INCREMENT 10
+const int WHEEL_ZOOM_INCREMENT = 10;
 
 
 using namespace AriaMaestosa;
@@ -555,7 +555,8 @@ void MainFrame::onDropFile(wxDropFilesEvent& event)
 }
 #endif
 
-
+// FIXME: mouse wheel is already handled in mainpane code. If we need to also catch events here for windows,
+// let's at least share code and not duplicate wheel handling in two areas of the code
 void MainFrame::onMouseWheel(wxMouseEvent& event)
 {
     int width, height;
@@ -1438,10 +1439,4 @@ void MainFrame::evt_updateWaitWindow(wxCommandEvent& evt)
 void MainFrame::evt_hideWaitWindow(wxCommandEvent& evt)
 {
     WaitWindow::hide();
-}
-
-
-wxString MainFrame::extractTitle(const wxString& inputPath)
-{
-    return inputPath.AfterLast(wxFileName::GetPathSeparator()).BeforeLast('.');
 }
