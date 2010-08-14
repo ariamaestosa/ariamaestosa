@@ -165,6 +165,8 @@ UNSURE/MINOR:
 
 ** If a message dialog is shown during track loading, app freezes (conflict with WaitWindow, most likely)
 
+** Printing a song that has notes after the "official" song ending can cause assertion failures
+
 * On OS X, "unselect" is Cmd+Click, that's certainly unintuitive
 
 * Shift+left/Shift+right in score editor doesn't work properly if vairoui time signatures are present

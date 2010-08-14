@@ -4,6 +4,7 @@
 - Fixed keyboard focus not brought back to main pane after showing "Select Notes" dialog
 - Fixed clicking on track header of drum editor unselects notes
 - Fixed measures appearing unselected when right-clicking on them
+- Fixed printing bug where notes appeared in the wrong measure
 - More code cleanup
 
 1.2.2

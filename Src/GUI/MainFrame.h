@@ -322,9 +322,6 @@ namespace AriaMaestosa
 
         void addIconItem(wxMenu* menu, int menuID, const wxString& label, const wxString& stockIconId);
 
-        wxString extractTitle(const wxString& inputPath);
-
-
         /** @brief Implement callback from IPlaybackModeListener */
         virtual void onEnterPlaybackMode();
 

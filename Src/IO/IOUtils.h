@@ -65,6 +65,12 @@ namespace AriaMaestosa
     /** @ingroup io */
     void assertFailed(wxString message);
     
+    /**
+      * @ingroup io
+      * @return remove the path to a file and file extension, returning file name only
+      */
+    wxString extractTitle(const wxString& inputPath);
+
 }
 
 #endif
