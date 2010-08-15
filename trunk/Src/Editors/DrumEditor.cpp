@@ -188,10 +188,10 @@ static const wxString g_drum_names[] =
 DrumEditor::DrumEditor(Track* track) : Editor(track), drum_names_renderer( g_drum_names, 96-27 )
 {
 
-    sb_position=0;
-    mouse_is_in_editor=false;
-    clickedOnNote=false;
-    lastClickedNote = -1;
+    m_sb_position=0;
+    m_mouse_is_in_editor=false;
+    m_clicked_on_note=false;
+    m_last_clicked_note = -1;
     showUsedDrumsOnly=false;
 
     useDefaultDrumSet();
@@ -504,7 +504,7 @@ void DrumEditor::addNote(const int snappedX, const int mouseY)
     const int note = drums[ drumID ].midiKey;
     if (note == -1 || drums[ drumID ].section) return;
 
-    track->action( new Action::AddNote(note, snappedX, snappedX+sequence->ticksPerBeat()/32+1, default_volume ) );
+    track->action( new Action::AddNote(note, snappedX, snappedX+sequence->ticksPerBeat()/32+1, m_default_volume ) );
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -607,7 +607,7 @@ int DrumEditor::getYScrollInPixels()
         useVerticalScrollbar(true);
     }
 
-    return (int)(   sb_position*(drums.size()*Y_STEP-height )   );
+    return (int)(   m_sb_position*(drums.size()*Y_STEP-height )   );
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -632,7 +632,7 @@ void DrumEditor::mouseDown(RelativeXCoord x, const int y)
                 const int note = drums[ drumID ].midiKey;
                 if (note == -1 || drums[ drumID ].section) return;
 
-                PlatformMidiManager::get()->playNote( note, default_volume, 500 /* duration */, 9, track->getDrumKit() );
+                PlatformMidiManager::get()->playNote( note, m_default_volume, 500 /* duration */, 9, track->getDrumKit() );
             }    
             // click on section
             else if (drums[ drumID ].section)
@@ -745,7 +745,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
 
     // ------------------------- mouse drag (preview) ------------------------
-    if (!clickedOnNote and mouse_is_in_editor)
+    if (!m_clicked_on_note and m_mouse_is_in_editor)
     {
         // selection
         if (selecting)
@@ -754,10 +754,10 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
             AriaRender::hollow_rect(mousex_initial.getRelativeTo(WINDOW), mousey_initial,
                                     mousex_current.getRelativeTo(WINDOW), mousey_current);
         }
-    } // end if !clickedOnNote
+    } // end if !m_clicked_on_note
 
     // ------------------------- move note (preview) -----------------------
-    if (clickedOnNote)
+    if (m_clicked_on_note)
     {
 
         AriaRender::color(1, 0.85, 0, 0.5);
@@ -769,11 +769,11 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         const int y_steps_to_move = (int)round(y_difference/ (float)Y_STEP );
 
         // move a single note
-        if (lastClickedNote != -1)
+        if (m_last_clicked_note != -1)
         {
-            const int drumx=track->getNoteStartInPixels(lastClickedNote) - sequence->getXScrollInPixels() + Editor::getEditorXStart();
+            const int drumx=track->getNoteStartInPixels(m_last_clicked_note) - sequence->getXScrollInPixels() + Editor::getEditorXStart();
 
-            const int drumIDInVector= midiKeyToVectorID[ track->getNotePitchID(lastClickedNote) ];
+            const int drumIDInVector= midiKeyToVectorID[ track->getNotePitchID(m_last_clicked_note) ];
             if (drumIDInVector != -1)
             {
 

@@ -112,6 +112,7 @@ namespace AriaMaestosa
     /** synonym; @see Note12 */
     const Note12 NOTE_12_G_FLAT = NOTE_12_F_SHARP;
     
+    //FIXME: what about flats?
     static const wxString NOTE_12_NAME[] =
     {
         wxT("A"),
@@ -146,12 +147,12 @@ namespace AriaMaestosa
     protected:
         
         /** is user is dragging the scroll thumb? */
-        bool verticalScrolling; 
+        bool m_vertical_scrolling; 
         
         /** the Y position of the mouse during last drag event (to see how much mouse has
           * moved between 2 events)
           */
-        int lastDragY;    
+        int m_last_drag_y;    
     
         /** Whether this particular editor wants a vertical scrollbar */
         bool useVerticalScrollbar_bool;
@@ -160,13 +161,13 @@ namespace AriaMaestosa
         bool useInstantNotes_bool; 
         
         /** scrollbar position, 0 meaning at top and 1 at bottom */
-        float sb_position; 
+        float m_sb_position; 
         
         /** is the user holding down the arrows at the top and bottom of the scrollbar? */
-        bool scroll_up_arrow_pressed, scroll_down_arrow_pressed; 
+        bool m_scroll_up_arrow_pressed, m_scroll_down_arrow_pressed; 
         
         /** true if user is clicking on the scrollbar */
-        bool click_on_scrollbar;
+        bool m_click_on_scrollbar;
         
         int from_y;
         int to_y;
@@ -179,19 +180,34 @@ namespace AriaMaestosa
         bool selecting;
         int ystep;
         
-        bool mouse_is_in_editor;
-        int lastClickedNote; // contains the ID of the latest clicked note, or -1 to mean "selected notes"
-        bool clickedOnNote;
+        bool m_mouse_is_in_editor;
         
-        ptr_vector<Track, REF> backgroundTracks;
+        /** contains the ID of the latest clicked note, or -1 (FIXME: document when -1 is used) */
+        int m_last_clicked_note; 
         
-        unsigned short default_volume;
+        bool m_clicked_on_note;
         
-        /** Considering the vertical step, the current scrolling, etc. returns the vertical level coord from a y coord */
+        ptr_vector<Track, REF> m_background_tracks;
+        
+        unsigned short m_default_volume;
+        
+        /** 
+          * @brief Considering the vertical step, the current scrolling, etc.
+          * @return the vertical level coord from a y coord
+          */
         int getLevelAtY(const int y);
         
-        void makeMoveNoteEvent(const int relativeX, const int relativeY, const int lastClickedNote);
+        void makeMoveNoteEvent(const int relativeX, const int relativeY, const int m_last_clicked_note);
 
+        /** @brief if you use a scrollbar, call this method somewhere near the end of your render method. */
+        void renderScrollbar();
+        
+        /** 
+         * @brief in Aria, most editors (but ControlEditor) are organised as a vertical grid.
+         * this method tells Editor what is the height of each "level" or "step".
+         */
+        void setYStep(const int height);
+        
     public:
         LEAK_CHECK();
         DECLARE_MAGIC_NUMBER();
@@ -209,23 +225,35 @@ namespace AriaMaestosa
         // background tracks
         void clearBackgroundTracks();
         void addBackgroundTrack(Track* track);
-        void trackDeleted(Track* track); // on track deletion, we need to check if this one is being used and remove references to it if so
-        bool hasAsBackground(Track* track); // is the Track passed as argument a background of this?
+        
+        /**
+          * @brief on track deletion, we need to check if this one is being used and remove references
+          * to it if so (TODO: use weak pointers or some other automatic system instead of manual deletion?)
+          */
+        void trackDeleted(Track* track);
+        
+        /**
+          * @brief  Check if the Track passed as argument a background of this
+          * @return is the Track passed as argument a background of this?
+          */
+        bool hasAsBackground(Track* track);
         
         // Is it necessary to send frequent mouse held down events in current situation? this method tells you.
         //bool areMouseHeldDownEventsNeeded();
         
-        /** method called by GraphicalTrack to let the Editor know about its position */
+        /** @brief method called by GraphicalTrack to let the Editor know about its position */
         void updatePosition(const int from_y, const int to_y, const int width,
                             const int height, const int barHeight);
         
-        /** for default volume management.
+        /** 
+          * @brief  for default volume management.
           * @return the default volume for new notes in this editor
           */
         int  getDefaultVolume() const;
         
-        /** for default volume management.
-          * @param v  the new default volume for new notes in this editor
+        /** 
+          * @brief   for default volume management.
+          * @param v the new default volume for new notes in this editor
           */
         void setDefaultVolume(const int v);
         
@@ -233,7 +261,7 @@ namespace AriaMaestosa
         // utility methods that children may call as needed
         // ------------------------------------------------------------------------------------------------------
         
-        /** tells Editor whether to show a vertical scrollbar or not. on by default */
+        /** @brief tells Editor whether to show a vertical scrollbar or not. on by default */
         void useVerticalScrollbar(const bool useScrollbar);
         
         void useInstantNotes(bool enabled=true);
@@ -250,14 +278,6 @@ namespace AriaMaestosa
         
         /** Same as 'snapMidiTickToGrid', but will only snap the tick to a bigger value */
         int snapMidiTickToGrid_ceil(int absolute_x);
-        
-        /** if you use a scrollbar, call this method somewhere near the end of your render method. */
-        void renderScrollbar();
-        
-        /** in Aria, most editors (but ControlEditor) are organised as a vertical grid.
-          * this method tells Editor what is the height of each "level" or "step".
-          */
-        void setYStep(const int height);
         
         /** @brief override to be notified of key change events */
         virtual void onKeyChange(const int symbol_amount, const KeyType type){}
@@ -318,9 +338,9 @@ namespace AriaMaestosa
         virtual void moveNote(Note& note, const int relativeX, const int relativeY) = 0;
 
         /**
-          * Editor holds 'sb_position', a float value between 0 and 1 of where the scrollbar is.
+          * Editor holds 'm_sb_position', a float value between 0 and 1 of where the scrollbar is.
           * It is up to each editor to determine how many pixels of scrolling results from the value
-          * of 'sb_position'.
+          * of 'm_sb_position'.
           */
         virtual int getYScrollInPixels() = 0;
                 
@@ -356,7 +376,7 @@ namespace AriaMaestosa
           */ 
         static bool findNoteName(const int pitchID, Note12* note_12, int* octave);
 
-        /** Converts a Note7 to its Note12 counterpart */
+        /** @brief Converts a Note7 to its Note12 counterpart */
         static Note12 note7ToNote12(Note7 note7)
         {
             static const Note12 note7_to_note12[] =

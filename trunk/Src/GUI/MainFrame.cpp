@@ -119,10 +119,10 @@ EVT_COMMAND_SCROLL_PAGEDOWN(SCROLLBAR_H, MainFrame::horizontalScrolling_arrows)
 EVT_COMMAND_SCROLL_LINEUP(SCROLLBAR_H, MainFrame::horizontalScrolling_arrows)
 EVT_COMMAND_SCROLL_LINEDOWN(SCROLLBAR_H, MainFrame::horizontalScrolling_arrows)
 
-EVT_COMMAND_SCROLL_THUMBRELEASE(SCROLLBAR_V, MainFrame::verticalScrolling)
-EVT_COMMAND_SCROLL_THUMBTRACK(SCROLLBAR_V, MainFrame::verticalScrolling)
-EVT_COMMAND_SCROLL_PAGEUP(SCROLLBAR_V, MainFrame::verticalScrolling)
-EVT_COMMAND_SCROLL_PAGEDOWN(SCROLLBAR_V, MainFrame::verticalScrolling)
+EVT_COMMAND_SCROLL_THUMBRELEASE(SCROLLBAR_V, MainFrame::m_vertical_scrolling)
+EVT_COMMAND_SCROLL_THUMBTRACK(SCROLLBAR_V, MainFrame::m_vertical_scrolling)
+EVT_COMMAND_SCROLL_PAGEUP(SCROLLBAR_V, MainFrame::m_vertical_scrolling)
+EVT_COMMAND_SCROLL_PAGEDOWN(SCROLLBAR_V, MainFrame::m_vertical_scrolling)
 EVT_COMMAND_SCROLL_LINEUP(SCROLLBAR_V, MainFrame::verticalScrolling_arrows)
 EVT_COMMAND_SCROLL_LINEDOWN(SCROLLBAR_V, MainFrame::verticalScrolling_arrows)
 
@@ -1051,7 +1051,7 @@ void MainFrame::horizontalScrolling_arrows(wxScrollEvent& evt)
 
 // --------------------------------------------------------------------------------------------------------
 
-void MainFrame::verticalScrolling(wxScrollEvent& evt)
+void MainFrame::m_vertical_scrolling(wxScrollEvent& evt)
 {
     getCurrentSequence()->setYScroll( verticalScrollbar->GetThumbPosition() );
     Display::render();
@@ -1149,7 +1149,7 @@ void MainFrame::updateVerticalScrollbar()
     {
 
         wxScrollEvent evt;
-        verticalScrolling(evt);
+        m_vertical_scrolling(evt);
     }
 }
 

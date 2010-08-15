@@ -39,7 +39,7 @@ namespace AriaMaestosa
     {
         
         bool hasBeenResizing; // true if user has been resizing track anytime since last mouse down
-        bool mouse_is_in_editor; // true if mouse drag is within track bounds. false if is on header on scrollbar, etc.
+        bool m_mouse_is_in_editor; // true if mouse drag is within track bounds. false if is on header on scrollbar, etc.
         
         bool selecting;
         

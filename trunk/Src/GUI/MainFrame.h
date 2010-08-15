@@ -277,7 +277,7 @@ namespace AriaMaestosa
          * User scrolled vertically by dragging.
          * Just make sure to update the display to the new values.
          */
-        void verticalScrolling(wxScrollEvent& evt);
+        void m_vertical_scrolling(wxScrollEvent& evt);
 
         /**
          * User scrolled horizontally by clicking oin the arrows.
