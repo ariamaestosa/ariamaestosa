@@ -722,16 +722,20 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
     ASSERT(id != SELECTED_NOTES); // not supported in this function
 
 
-    if (!Display::isSelectMorePressed() and !Display:: isSelectLessPressed()) ignoreModifiers=true; // if no modifier is pressed, don't do any special checks
+    if (not Display::isSelectMorePressed() and not Display::isSelectLessPressed())
+    {
+        ignoreModifiers = true; // if no modifier is pressed, don't do any special checks
+    }
 
     // ---- select/deselect all notes
     if (id == ALL_NOTES)
     {
         // if this is a 'select none' command, unselect any selected measures in the top bar
-        if (selected == FALSE) getMeasureData()->unselect();
+        if (not selected) getMeasureData()->unselect();
 
         if (graphics->editorMode == CONTROLLER)
-        { // controller editor must be handled differently
+        { 
+            // controller editor must be handled differently
             graphics->controllerEditor->selectAll( selected );
         }
         else
@@ -755,13 +759,18 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
         ASSERT_E(id,<,m_notes.size());
 
         // if we ignore +/- key modifiers, just set the value right away
-        if (ignoreModifiers) m_notes[id].setSelected(selected);
+        if (ignoreModifiers)
+        {
+            m_notes[id].setSelected(selected);
+        }
         else
-        { // otherwise, check key modifiers and set value accordingly
+        { 
+            // otherwise, check key modifiers and set value accordingly
             if (selected)
             {
-                if (Display::isSelectMorePressed()) m_notes[id].setSelected(true);
-                else if (Display:: isSelectLessPressed()) m_notes[id].setSelected( !selected );
+                //FIXME: this belongs in graphics classes, not in data classes
+                if      (Display::isSelectMorePressed()) m_notes[id].setSelected(true);
+                else if (Display::isSelectLessPressed()) m_notes[id].setSelected( !selected );
             }
         }//end if
 

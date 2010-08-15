@@ -458,14 +458,15 @@ NoteSearchResult DrumEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
         const int drumIDInVector= midiKeyToVectorID[ track->getNotePitchID(n) ];
         if (drumIDInVector == -1) continue;
 
-        const int drumy=getYForDrum(drumIDInVector);
+        const int drumy = getYForDrum(drumIDInVector);
 
-        if (x.getRelativeTo(EDITOR)>drumx-1 and x.getRelativeTo(EDITOR)<drumx+5 and y>drumy and y<drumy+Y_STEP)
+        if (x.getRelativeTo(EDITOR) > drumx-1 and x.getRelativeTo(EDITOR) < drumx+5 and
+            y > drumy and y < drumy+Y_STEP)
         {
 
             noteID = n;
 
-            if (track->isNoteSelected(n) and !Display:: isSelectLessPressed())
+            if (track->isNoteSelected(n) and not Display:: isSelectLessPressed())
             {
                 // clicked on a selected note
                 return FOUND_SELECTED_NOTE;

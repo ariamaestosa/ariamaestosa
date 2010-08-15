@@ -14,8 +14,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _mainpane_
-#define _mainpane_
+#ifndef __MAIN_PANE_H__
+#define __MAIN_PANE_H__
 
 #include "Utils.h"
 #include "Editors/RelativeXCoord.h"
@@ -54,36 +54,36 @@ namespace AriaMaestosa
     class MainPane : public RenderPane
     {
         /** To send events repeatedly when the mouse is held down */
-        OwnerPtr<MouseDownTimer>  mouseDownTimer;
+        OwnerPtr<MouseDownTimer> m_mouse_down_timer;
 
         /** Gives information about the location of the mouse in a drag */
-        RelativeXCoord mousex_initial;
+        RelativeXCoord m_mouse_x_initial;
 
         /** Gives information about the location of the mouse in a drag */
-        int mousey_initial;
+        int m_mouse_y_initial;
 
         /** Gives information about the location of the mouse in a drag */
-        RelativeXCoord mousex_current;
+        RelativeXCoord m_mouse_x_current;
 
         /** Gives information about the location of the mouse in a drag */
-        int mousey_current;
+        int m_mouse_y_current;
 
         /** Gives information about the location of the mouse in a drag */
-        bool isMouseDown_bool;
+        bool m_is_mouse_down;
 
         int currentTick;
 
         /** which track the user is dragging (in a track reordering process), or -1 if none */
         int m_dragged_track_id;
 
-        std::vector<int> positionsInDock;
+        std::vector<int> m_positions_in_dock;
 
         // used during playback
-        int followPlaybackTime;
+        int m_follow_playback_time;
         int lastTick;
-        int playbackStartTick;
+        int m_playback_start_tick;
 
-        bool scrollToPlaybackPosition;
+        bool m_scroll_to_playback_position;
 
         ClickArea click_area;
 
@@ -127,24 +127,28 @@ namespace AriaMaestosa
         void exitPlayLoop();
         void scrollNowToPlaybackPosition();
 
-        int getDraggedTrackID();
+        /**
+          * @return the ID of the track the user is dragging (in a track reordering process),
+          *         or -1 if no reordering is currently being done
+          */
+        int getDraggedTrackID() const { return m_dragged_track_id; }
 
-        /** called when frame is made visible */
+        /** @brief called when frame is made visible */
         void isNowVisible();
 
         // ---- events
 
-        /** Event sent whenever user drags mouse on OpenGL pane where everything is drawn. */
+        /** @brief Event sent whenever user drags mouse on OpenGL pane where everything is drawn. */
         void mouseMoved(wxMouseEvent& event);
 
-        /** Event sent whenever user clicks on OpenGL pane where everything is drawn. */
+        /** @brief Event sent whenever user clicks on OpenGL pane where everything is drawn. */
         void mouseDown(wxMouseEvent& event);
 
         void mouseWheelMoved(wxMouseEvent& event);
 
         void mouseReleased(wxMouseEvent& event);
 
-        /** Event sent whenever user right-clicks on OpenGL pane where everything is drawn. */
+        /** @brief Event sent whenever user right-clicks on OpenGL pane where everything is drawn. */
         void rightClick(wxMouseEvent& event);
 
         void mouseLeftWindow(wxMouseEvent& event);
@@ -155,27 +159,27 @@ namespace AriaMaestosa
         void instrumentPopupSelected(wxCommandEvent& evt);
         void drumPopupSelected(wxCommandEvent& evt);
 
-        /** events will be sent regularly to this method when user holds down mouse */
+        /** @brief events will be sent regularly to this method when user holds down mouse */
         void mouseHeldDown();
 
-        /** Gives information about the location of the mouse in a drag */
-        bool isMouseDown();
+        /** @brief ives information about the location of the mouse in a drag */
+        bool isMouseDown() const { return m_is_mouse_down; }
 
-        /** Gives information about the location of the mouse in a drag */
-        RelativeXCoord getMouseX_current();
+        /** @brief Gives information about the location of the mouse in a drag */
+        RelativeXCoord getMouseX_current() const { return m_mouse_x_current; }
 
-        /** Gives information about the location of the mouse in a drag */
-        int getMouseY_current();
+        /** @brief Gives information about the location of the mouse in a drag */
+        int getMouseY_current()            const { return m_mouse_y_current; }
 
-        /** Gives information about the location of the mouse in a drag */
-        RelativeXCoord getMouseX_initial();
+        /** @brief Gives information about the location of the mouse in a drag */
+        RelativeXCoord getMouseX_initial() const { return m_mouse_x_initial; }
 
-        /** Gives information about the location of the mouse in a drag */
-        int getMouseY_initial();
+        /** @brief Gives information about the location of the mouse in a drag */
+        int getMouseY_initial()            const { return m_mouse_y_initial; }
 
-        bool isSelectMorePressed();
-        bool isSelectLessPressed();
-        bool isCtrlDown();
+        bool isSelectMorePressed() const;
+        bool isSelectLessPressed() const;
+        bool isCtrlDown         () const;
 
         /** to be called e.g. when a track is deleted */
         //FIXME: that's ugly but it does the job...

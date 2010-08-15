@@ -412,7 +412,7 @@ NoteSearchResult GuitarEditor::noteAt(RelativeXCoord x, const int y, int& noteID
 
             noteID = n;
 
-            if (track->isNoteSelected(n) and !Display:: isSelectLessPressed())
+            if (track->isNoteSelected(n) and not Display::isSelectLessPressed())
             {
                 // clicked on a selected note
                 return FOUND_SELECTED_NOTE;

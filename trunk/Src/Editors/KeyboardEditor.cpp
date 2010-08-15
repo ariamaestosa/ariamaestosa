@@ -121,17 +121,17 @@ NoteSearchResult KeyboardEditor::noteAt(RelativeXCoord x, const int y, int& note
     const int x_edit = x.getRelativeTo(EDITOR);
 
     const int noteAmount = track->getNoteAmount();
-    for(int n=0; n<noteAmount; n++)
+    for (int n=0; n<noteAmount; n++)
     {
-        const int x1=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
-        const int x2=track->getNoteEndInPixels(n) - sequence->getXScrollInPixels();
-        const int y1=track->getNotePitchID(n)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels();
+        const int x1 = track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
+        const int x2 = track->getNoteEndInPixels(n) - sequence->getXScrollInPixels();
+        const int y1 = track->getNotePitchID(n)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels();
 
         if (x_edit > x1 and x_edit < x2 and y > y1 and y < y1+12)
         {
             noteID = n;
 
-            if (track->isNoteSelected(n) and !Display:: isSelectLessPressed())
+            if (track->isNoteSelected(n) and not Display::isSelectLessPressed())
             {
                 // clicked on a selected note
                 return FOUND_SELECTED_NOTE;
