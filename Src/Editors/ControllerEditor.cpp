@@ -39,7 +39,7 @@ namespace AriaMaestosa {
 
 ControllerEditor::ControllerEditor(Track* track) : Editor(track)
 {
-    mouse_is_in_editor=false;
+    m_mouse_is_in_editor=false;
 
     selection_begin = -1;
     selection_end = -1;
@@ -178,7 +178,7 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     if (track->graphics->dragging_resize) hasBeenResizing=true;
 
     const bool on_off = controllerChoice->isOnOffController( controllerChoice->getControllerID() );
-    if (mouse_is_in_editor and selection_begin == -1 and not on_off)
+    if (m_mouse_is_in_editor and selection_begin == -1 and not on_off)
     {
 
         AriaRender::lineWidth(3);
@@ -237,15 +237,15 @@ void ControllerEditor::mouseDown(RelativeXCoord x, const int y)
     selection_end = -1;
 
     // check if user is dragging on this track
-    mouse_is_in_editor=false;
+    m_mouse_is_in_editor=false;
     if (y<getYEnd()-15 and y>getEditorYStart() and
        x.getRelativeTo(WINDOW) < getWidth() - 24 and
        x.getRelativeTo(EDITOR)>-1)
-        mouse_is_in_editor=true;
+        m_mouse_is_in_editor=true;
 
     // check whether we're selecting
     selecting = false;
-    if (mouse_is_in_editor and Display::isSelectMorePressed())
+    if (m_mouse_is_in_editor and Display::isSelectMorePressed())
         selecting = true;
 
     if ( x.getRelativeTo(WINDOW)<Editor::getEditorXStart() and y>getEditorYStart() and !track->graphics->collapsed )
@@ -257,7 +257,7 @@ void ControllerEditor::mouseDrag(RelativeXCoord mousex_current, const int mousey
                                  RelativeXCoord mousex_initial, const int mousey_initial)
 {
 
-    if ( mouse_is_in_editor and selecting /*Display::isSelectMorePressed()*/ )
+    if ( m_mouse_is_in_editor and selecting /*Display::isSelectMorePressed()*/ )
     {
 
         // ------------------------ select ---------------------
@@ -272,7 +272,7 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
                                RelativeXCoord mousex_initial, int mousey_initial)
 {
 
-    if (mouse_is_in_editor)
+    if (m_mouse_is_in_editor)
     {
 
         if ( selecting /*Display::isSelectMorePressed()*/ )
@@ -351,7 +351,7 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
         }// end if meta down
     }
 
-    mouse_is_in_editor=false;
+    m_mouse_is_in_editor=false;
 
 
     Display::render();

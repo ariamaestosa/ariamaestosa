@@ -39,7 +39,6 @@ namespace AriaMaestosa
     {
         friend class Singleton<GuitarNoteNamesSingleton>;
         
-        //FIXME: what about flats?
         GuitarNoteNamesSingleton() : AriaRenderArray(NOTE_12_NAME, 12)
         {
         }
@@ -59,11 +58,9 @@ using namespace AriaMaestosa;
 
 GuitarEditor::GuitarEditor(Track* track) : Editor(track)
 {
-    mouse_is_in_editor=false;
-
-    clickedOnNote=false;
-
-    lastClickedNote=-1;
+    m_mouse_is_in_editor = false;
+    m_clicked_on_note      = false;
+    m_last_clicked_note    = -1;
 
     //FIXME: find why font sizes are different on wxMac, and fix those issues cleanly
 #ifndef __WXMAC__
@@ -95,7 +92,7 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
                           RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {
 
-    if (!ImageProvider::imagesLoaded()) return;
+    if (not ImageProvider::imagesLoaded()) return;
 
     const GuitarTuning* tuning = track->getGuitarTuning();
     const int string_amount = tuning->tuning.size();
@@ -114,10 +111,10 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
     AriaRender::color(0,0,0);
 
     const int stringCount = tuning->tuning.size();
-    for (unsigned int n=0; n<stringCount; n++)
+    for (int n=0; n<stringCount; n++)
     {
-        AriaRender::line( Editor::getEditorXStart(), getEditorYStart() + first_string_position + n*y_step,
-                          getXEnd(), getEditorYStart() + first_string_position + n*y_step);
+        AriaRender::line(Editor::getEditorXStart(), getEditorYStart() + first_string_position + n*y_step,
+                        getXEnd(), getEditorYStart() + first_string_position + n*y_step);
     }
 
 
@@ -126,49 +123,56 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
     const int noteAmount = track->getNoteAmount();
     for (int n=0; n<noteAmount; n++)
     {
-        int x1=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
-        int x2=track->getNoteEndInPixels(n) - sequence->getXScrollInPixels();
+        int x1 = track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
+        int x2 = track->getNoteEndInPixels(n)   - sequence->getXScrollInPixels();
 
         // don't draw notes that won't visible
-        if (x2<0) continue;
-        if (x1>width) break;
+        if (x2 < 0    ) continue;
+        if (x1 > width) break;
 
         AriaRender::primitives();
 
-        int string=track->getNoteString(n);
-        int fret=track->getNoteFret(n);
+        int string = track->getNoteString(n);
+        int fret   = track->getNoteFret(n);
         
-        float volume=track->getNoteVolume(n)/127.0;
+        float volume = track->getNoteVolume(n)/127.0;
 
         if (track->isNoteSelected(n) and focus) AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
-        else AriaRender::color((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
+        else                                    AriaRender::color((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
 
         AriaRender::bordered_rect_no_start(x1+Editor::getEditorXStart(), getEditorYStart()+first_string_position+string*y_step-2,
                                            x2-1+Editor::getEditorXStart(), getEditorYStart()+first_string_position+string*y_step+2);
 
         // fret number
-        if (track->isNoteSelected(n)  and focus) AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
-        else AriaRender::color((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
+        if (track->isNoteSelected(n) and focus) AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
+        else                                    AriaRender::color((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
 
         if (fret < 10)
         {
-            AriaRender::quad(x1+Editor::getEditorXStart()-1, getEditorYStart()+first_string_position+string*y_step-8,
-                             x1+Editor::getEditorXStart()-1, getEditorYStart()+first_string_position+string*y_step,
+            AriaRender::quad(x1+Editor::getEditorXStart()-1,  getEditorYStart()+first_string_position+string*y_step-8,
+                             x1+Editor::getEditorXStart()-1,  getEditorYStart()+first_string_position+string*y_step,
                              x1+14+Editor::getEditorXStart(), getEditorYStart()+first_string_position+string*y_step,
-                             x1+9+Editor::getEditorXStart(), getEditorYStart()+first_string_position+string*y_step-8);
+                             x1+9+Editor::getEditorXStart(),  getEditorYStart()+first_string_position+string*y_step-8);
         }
         else
         {
-            AriaRender::quad(x1+Editor::getEditorXStart()-1, getEditorYStart()+first_string_position+string*y_step-8,
-                             x1+Editor::getEditorXStart()-1, getEditorYStart()+first_string_position+string*y_step,
+            AriaRender::quad(x1+Editor::getEditorXStart()-1,  getEditorYStart()+first_string_position+string*y_step-8,
+                             x1+Editor::getEditorXStart()-1,  getEditorYStart()+first_string_position+string*y_step,
                              x1+18+Editor::getEditorXStart(), getEditorYStart()+first_string_position+string*y_step,
                              x1+13+Editor::getEditorXStart(), getEditorYStart()+first_string_position+string*y_step-8);
         }
         
         AriaRender::images();
 
-        if ((!track->isNoteSelected(n) or !focus) && volume>0.5) AriaRender::color(1, 1, 1); // if note color is too dark, draw the fret number in white
-        else AriaRender::color(0, 0, 0);
+        // if note color is too dark, draw the fret number in white
+        if ((not track->isNoteSelected(n) or not focus) && volume > 0.5)
+        {
+            AriaRender::color(1, 1, 1);
+        }
+        else
+        {
+            AriaRender::color(0, 0, 0);
+        }
 
         // draw twice to make it more visible...
         AriaRender::renderNumber(fret, x1+Editor::getEditorXStart(),
@@ -181,7 +185,7 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
     AriaRender::primitives();
 
     // mouse drag
-    if (!clickedOnNote and mouse_is_in_editor)
+    if (not m_clicked_on_note and m_mouse_is_in_editor)
     {
 
         // -------------------- selection ----------------------
@@ -222,7 +226,7 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
     }
 
     // ------------------------- move note (preview) -----------------------
-    if (clickedOnNote)
+    if (m_clicked_on_note)
     {
 
         AriaRender::color(1, 0.85, 0, 0.5);
@@ -234,11 +238,11 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
         const int y_steps_to_move = (int)round( (float)y_difference / (float)y_step );
 
         // move a single note
-        if (lastClickedNote!=-1)
+        if (m_last_clicked_note!=-1)
         {
-            const int x1=track->getNoteStartInPixels(lastClickedNote) - sequence->getXScrollInPixels();
-            const int x2=track->getNoteEndInPixels(lastClickedNote) - sequence->getXScrollInPixels();
-            const int string=track->getNoteString(lastClickedNote);
+            const int x1=track->getNoteStartInPixels(m_last_clicked_note) - sequence->getXScrollInPixels();
+            const int x2=track->getNoteEndInPixels(m_last_clicked_note) - sequence->getXScrollInPixels();
+            const int string=track->getNoteString(m_last_clicked_note);
 
             AriaRender::rect(x1+x_steps_to_move+Editor::getEditorXStart(),
                              string*y_step + getEditorYStart() + first_string_position - 5 + y_steps_to_move*y_step,
@@ -254,18 +258,18 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
                 if (not track->isNoteSelected(n)) continue;
 
                 const int x1     = track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
-                const int x2     = track->getNoteEndInPixels(n) - sequence->getXScrollInPixels();
+                const int x2     = track->getNoteEndInPixels(n)   - sequence->getXScrollInPixels();
                 const int string = track->getNoteString(n);
 
                 AriaRender::rect(x1+x_steps_to_move+Editor::getEditorXStart(),
                                  string*y_step + getEditorYStart() + first_string_position - 5 + y_steps_to_move*y_step,
                                  x2-1+x_steps_to_move+Editor::getEditorXStart(),
                                  string*y_step + getEditorYStart() + first_string_position - 5 + (y_steps_to_move+1)*y_step);
-            }//next
+            } // next
 
-        }//end if lastClickedNote!=-1
+        } // end if m_last_clicked_note!=-1
 
-    }//end if clickedOnNote
+    } // end if m_clicked_on_note
 
     // -----------------------------------------------------------------
     // left part with string names
@@ -275,8 +279,8 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
     if (!focus) AriaRender::color(0.4, 0.4, 0.4);
     else AriaRender::color(0.8, 0.8, 0.8);
 
-    AriaRender::rect( 0, getEditorYStart(),
-                      Editor::getEditorXStart()-3, getYEnd());
+    AriaRender::rect(0, getEditorYStart(),
+                     Editor::getEditorXStart()-3, getYEnd());
 
     // string names
     AriaRender::images();
@@ -322,7 +326,7 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
 void GuitarEditor::mouseDown(RelativeXCoord x, const int y)
 {
     // user clicked on left bar to change tuning
-    if (x.getRelativeTo(EDITOR)<0 and x.getRelativeTo(EDITOR)>-75 and y>getEditorYStart())
+    if (x.getRelativeTo(EDITOR) < 0 and x.getRelativeTo(EDITOR) > -75 and y > getEditorYStart())
     {
         TuningPicker* picker = Core::getTuningPicker();
         picker->setModel(track->getGuitarTuning());
@@ -335,20 +339,24 @@ void GuitarEditor::mouseDown(RelativeXCoord x, const int y)
 
 // ---------------------------------------------------------------------------------------------------------
 
-void GuitarEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current, RelativeXCoord& mousex_initial, int mousey_initial)
+void GuitarEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current,
+                                     RelativeXCoord& mousex_initial, int mousey_initial)
 {
-    for(int n=0; n<track->getNoteAmount(); n++)
+    for (int n=0; n<track->getNoteAmount(); n++)
     {
-        const int x1=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels(); // on-screen pixel where note starts
-        const int x2=track->getNoteEndInPixels(n) - sequence->getXScrollInPixels(); // on-screen pixel where note ends
+        // on-screen pixel where note starts
+        const int x1=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
+        
+        // on-screen pixel where note ends
+        const int x2=track->getNoteEndInPixels(n)   - sequence->getXScrollInPixels();
 
         const int string=track->getNoteString(n);
 
         // check if note is within selection boundaries
         if (x1 > std::min(mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR)) and
-           x2 < std::max(mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR)) and
-           std::min(mousey_current, mousey_initial) < getEditorYStart() + first_string_position + string*y_step and
-           std::max(mousey_current, mousey_initial) > getEditorYStart() + first_string_position + string*y_step)
+            x2 < std::max(mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR)) and
+            std::min(mousey_current, mousey_initial) < getEditorYStart() + first_string_position + string*y_step and
+            std::max(mousey_current, mousey_initial) > getEditorYStart() + first_string_position + string*y_step)
         {
             track->selectNote(n, true);
         }
@@ -363,14 +371,14 @@ void GuitarEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_
 
 void GuitarEditor::moveNote(Note& note, const int relativeX, const int relativeY)
 {
-    if (note.startTick+relativeX < 0) return; // refuse to move before song start
+    if (note.startTick + relativeX < 0) return; // refuse to move before song start
 
     note.startTick += relativeX;
     note.endTick   += relativeX;
 
     GuitarTuning* tuning = track->getGuitarTuning();
     
-    if (note.string+relativeY<0 or note.string+relativeY > (int)tuning->tuning.size()-1)
+    if (note.string+relativeY < 0 or note.string+relativeY > (int)tuning->tuning.size()-1)
     {
         // note will end on a string that doesn't exist if we move it like that
         return;
@@ -387,18 +395,19 @@ NoteSearchResult GuitarEditor::noteAt(RelativeXCoord x, const int y, int& noteID
     const int x_edit = x.getRelativeTo(EDITOR);
 
     const int noteAmount = track->getNoteAmount();
+    
     // iterate through note n reverse order (last drawn note appears on top and must be first selected)
-    for(int n=noteAmount-1; n>-1; n--)
+    for (int n=noteAmount-1; n>-1; n--)
     {
-        const int x1=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
-        const int x2=track->getNoteEndInPixels(n) - sequence->getXScrollInPixels();
+        const int x1 = track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
+        const int x2 = track->getNoteEndInPixels(n)   - sequence->getXScrollInPixels();
 
-        const int string=track->getNoteString(n);
+        const int string = track->getNoteString(n);
 
         if (x_edit > x1 and
-           x_edit < x2 and
-           y < getEditorYStart() + first_string_position + string*y_step + 4 and
-           y > getEditorYStart() + first_string_position + string*y_step - 5)
+            x_edit < x2 and
+            y < getEditorYStart() + first_string_position + string*y_step + 4 and
+            y > getEditorYStart() + first_string_position + string*y_step - 5)
         {
 
             noteID = n;
@@ -438,5 +447,5 @@ void GuitarEditor::addNote(const int snapped_start_tick, const int snapped_end_t
     if (string >= (int)tuning->tuning.size()) return; //invalid note, don't add it
 
     track->action( new Action::AddNote(tuning->tuning[string], snapped_start_tick, snapped_end_tick,
-                                       default_volume, string ) );
+                                       m_default_volume, string ) );
 }

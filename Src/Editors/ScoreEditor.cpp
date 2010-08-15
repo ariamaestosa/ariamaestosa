@@ -439,7 +439,7 @@ ScoreEditor::ScoreEditor(Track* track) : Editor(track)
 
     setYStep( Y_STEP_HEIGHT );
 
-    sb_position = converter->getMiddleCLevel() / 73.0;
+    m_sb_position = converter->getMiddleCLevel() / 73.0;
 }
 
 // ------------------------------------------------------------------------------------------------------------
@@ -1071,7 +1071,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     AriaRender::primitives();
 
-    if (!clickedOnNote and mouse_is_in_editor)
+    if (!m_clicked_on_note and m_mouse_is_in_editor)
     {
         // selection
         if (selecting)
@@ -1116,7 +1116,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     // ------------------------- move note (preview) -----------------------
     AriaRender::primitives();
-    if (clickedOnNote)
+    if (m_clicked_on_note)
     {
         AriaRender::color(1, 0.85, 0, 0.5);
 
@@ -1127,12 +1127,12 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
         const int y_step_move = (int)round( (float)y_difference/ (float)Y_STEP_HEIGHT );
 
         // move a single note
-        if (lastClickedNote!=-1)
+        if (m_last_clicked_note!=-1)
         {
-            int x1=track->getNoteStartInPixels(lastClickedNote) - sequence->getXScrollInPixels() + Editor::getEditorXStart();
-            const int x2=track->getNoteEndInPixels(lastClickedNote) - sequence->getXScrollInPixels() + Editor::getEditorXStart();
-            //const int notePitch = track->getNotePitchID(lastClickedNote);
-            const int noteLevel = converter->noteToLevel(track->getNote(lastClickedNote));
+            int x1=track->getNoteStartInPixels(m_last_clicked_note) - sequence->getXScrollInPixels() + Editor::getEditorXStart();
+            const int x2=track->getNoteEndInPixels(m_last_clicked_note) - sequence->getXScrollInPixels() + Editor::getEditorXStart();
+            //const int notePitch = track->getNotePitchID(m_last_clicked_note);
+            const int noteLevel = converter->noteToLevel(track->getNote(m_last_clicked_note));
 
             AriaRender::rect(x1+1+x_pixel_move, (noteLevel+y_step_move)*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels()-1,
                              x2-1+x_pixel_move, (noteLevel+1+y_step_move)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels()-1);
@@ -1374,7 +1374,7 @@ void ScoreEditor::mouseDown(RelativeXCoord x, const int y)
     {
         const int level = getLevelAtY(y-Y_STEP_HEIGHT/2);
         const int pitchID = converter->levelToNote(level);
-        if (pitchID != -1) PlatformMidiManager::get()->playNote( 131-pitchID, default_volume, 500 /* duration */, 0, track->getInstrument() );
+        if (pitchID != -1) PlatformMidiManager::get()->playNote( 131-pitchID, m_default_volume, 500 /* duration */, 0, track->getInstrument() );
         return;
     }
     
@@ -1430,7 +1430,7 @@ int ScoreEditor::getYScrollInPixels()
         useVerticalScrollbar(true);
     }
 
-    return (int)(  sb_position*(73*Y_STEP_HEIGHT-height) );
+    return (int)(  m_sb_position*(73*Y_STEP_HEIGHT-height) );
 }
 
 // ------------------------------------------------------------------------------------------------------------
@@ -1504,7 +1504,7 @@ void ScoreEditor::addNote(const int snapped_start_tick, const int snapped_end_ti
     const int note = converter->levelToNote(level);
     if (note == -1) return;
 
-    track->action( new Action::AddNote(note, snapped_start_tick, snapped_end_tick, default_volume ) );
+    track->action( new Action::AddNote(note, snapped_start_tick, snapped_end_tick, m_default_volume ) );
 }
 
 // ------------------------------------------------------------------------------------------------------------

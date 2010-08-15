@@ -49,7 +49,7 @@ using namespace AriaMaestosa;
 
 KeyboardEditor::KeyboardEditor(Track* track) : Editor(track)
 {
-    sb_position = 0.5;
+    m_sb_position = 0.5;
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -82,7 +82,7 @@ void KeyboardEditor::mouseDown(RelativeXCoord x, const int y)
     else if (x.getRelativeTo(EDITOR)<0 and x.getRelativeTo(EDITOR)>-30 and y>getEditorYStart())
     {
         const int pitchID = getLevelAtY(y);
-        PlatformMidiManager::get()->playNote( 131-pitchID, default_volume, 500, 0, track->getInstrument() );
+        PlatformMidiManager::get()->playNote( 131-pitchID, m_default_volume, 500, 0, track->getInstrument() );
         return;
     }
     
@@ -102,7 +102,7 @@ void KeyboardEditor::mouseDown(RelativeXCoord x, const int y)
 void KeyboardEditor::addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY)
 {
     const int note = getLevelAtY(mouseY);
-    track->action( new Action::AddNote(note, snapped_start_tick, snapped_end_tick, default_volume ) );
+    track->action( new Action::AddNote(note, snapped_start_tick, snapped_end_tick, m_default_volume ) );
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -179,7 +179,7 @@ void KeyboardEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mouse
     
 int KeyboardEditor::getYScrollInPixels()
 {
-    return (int)(   sb_position*(120*11-height-20)   );
+    return (int)(   m_sb_position*(120*11-height-20)   );
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -269,15 +269,15 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     // ---------------------- draw background notes ------------------
 
-    if (backgroundTracks.size() > 0)
+    if (m_background_tracks.size() > 0)
     {
-        const int amount = backgroundTracks.size();
+        const int amount = m_background_tracks.size();
         int color = 0;
         
         // iterate through all tracks that need to be rendered as background
         for (int bgtrack=0; bgtrack<amount; bgtrack++)
         {
-            Track* track = backgroundTracks.get(bgtrack);
+            Track* track = m_background_tracks.get(bgtrack);
             const int noteAmount = track->getNoteAmount();
 
             // pick a color
@@ -386,7 +386,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     AriaRender::primitives();
 
-    if (!clickedOnNote and mouse_is_in_editor)
+    if (!m_clicked_on_note and m_mouse_is_in_editor)
     {
 
         if (selecting)
@@ -426,7 +426,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     }
 
     // ------------------------- move note (preview) -----------------------
-    if (clickedOnNote)
+    if (m_clicked_on_note)
     {
         AriaRender::color(1, 0.85, 0, 0.5);
 
@@ -437,11 +437,11 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
         const int y_step_move = (int)round( (float)y_difference/ (float)Y_STEP_HEIGHT );
 
         // move a single note
-        if (lastClickedNote!=-1)
+        if (m_last_clicked_note!=-1)
         {
-            int x1=track->getNoteStartInPixels(lastClickedNote) - sequence->getXScrollInPixels();
-            int x2=track->getNoteEndInPixels(lastClickedNote) - sequence->getXScrollInPixels();
-            int y=track->getNotePitchID(lastClickedNote);
+            int x1=track->getNoteStartInPixels(m_last_clicked_note) - sequence->getXScrollInPixels();
+            int x2=track->getNoteEndInPixels(m_last_clicked_note) - sequence->getXScrollInPixels();
+            int y=track->getNotePitchID(m_last_clicked_note);
 
             AriaRender::rect(x1+x_step_move+getEditorXStart(),
                              (y+y_step_move)*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels(),

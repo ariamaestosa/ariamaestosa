@@ -169,7 +169,7 @@ UNSURE/MINOR:
 
 * On OS X, "unselect" is Cmd+Click, that's certainly unintuitive
 
-* Shift+left/Shift+right in score editor doesn't work properly if vairoui time signatures are present
+* Shift+left/Shift+right in score editor doesn't work properly if vairous time signatures are present
 
 * Undoing "delete track" places it back at the bottom, not where it was
 
