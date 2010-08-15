@@ -1453,11 +1453,11 @@ NoteSearchResult ScoreEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 
         if (linearNotationEnabled)
         {
-            if ( mx<note_x2 and mx>note_x and y < note_y+11 and y > note_y)
+            if (mx < note_x2 and mx > note_x and y < note_y+11 and y > note_y)
             {
                 noteID = n;
 
-                if (track->isNoteSelected(n) and !Display:: isSelectLessPressed())
+                if (track->isNoteSelected(n) and not Display::isSelectLessPressed())
                     // clicked on a selected note
                     return FOUND_SELECTED_NOTE;
                 else
@@ -1467,11 +1467,11 @@ NoteSearchResult ScoreEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
         else if (musicalNotationEnabled)
         {
 
-            if ( mx<note_x+11 and mx>note_x and y < note_y+11 and y > note_y+2)
+            if (mx<note_x+11 and mx>note_x and y < note_y+11 and y > note_y+2)
             {
                 noteID = n;
 
-                if (track->isNoteSelected(n) and !Display:: isSelectLessPressed())
+                if (track->isNoteSelected(n) and not Display::isSelectLessPressed())
                     // clicked on a selected note
                     return FOUND_SELECTED_NOTE;
                 else
