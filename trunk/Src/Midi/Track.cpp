@@ -767,7 +767,7 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
         { 
             // otherwise, check key modifiers and set value accordingly
             if (selected)
-            {
+            {                
                 //FIXME: this belongs in graphics classes, not in data classes
                 if      (Display::isSelectMorePressed()) m_notes[id].setSelected(true);
                 else if (Display::isSelectLessPressed()) m_notes[id].setSelected( !selected );

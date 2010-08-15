@@ -167,8 +167,6 @@ UNSURE/MINOR:
 
 ** Printing a song that has notes after the "official" song ending can cause assertion failures
 
-* On OS X, "unselect" is Cmd+Click, that's certainly unintuitive
-
 * Shift+left/Shift+right in score editor doesn't work properly if vairous time signatures are present
 
 * Undoing "delete track" places it back at the bottom, not where it was
