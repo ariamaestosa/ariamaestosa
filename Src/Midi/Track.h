@@ -179,13 +179,15 @@ namespace AriaMaestosa
          */
         void doSetDrumKit(int i, bool recursive=false);
         
+        /** The sequence this track is part of */
+        Sequence* m_sequence;
+
     public:
         LEAK_CHECK();
                 
         // ------------- read-only -------------
         // FIXME: it should be the graphics that refer to the data, not the data holding the graphics!
         OwnerPtr<GraphicalTrack>  graphics;
-        Sequence* sequence;
         int trackUniqueID;
         // -------------------------------------
         
@@ -242,6 +244,8 @@ namespace AriaMaestosa
         const wxString&   getName() const { return m_name; }
         
         void selectNote(const int id, const bool selected, bool ignoreModifiers=false);
+        
+        Sequence* getSequence ()       { return m_sequence;        }
         
         /** 
           * @return the type of key for this track

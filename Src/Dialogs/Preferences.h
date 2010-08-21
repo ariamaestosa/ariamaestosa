@@ -33,7 +33,7 @@ namespace AriaMaestosa
       */
     class PreferencesDialog : public wxDialog
     {
-        PreferencesData* data;
+        PreferencesData* m_data;
         int modalCode;
 
         wxBoxSizer* vert_sizer;

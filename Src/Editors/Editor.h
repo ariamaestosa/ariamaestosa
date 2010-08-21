@@ -208,6 +208,10 @@ namespace AriaMaestosa
          */
         void setYStep(const int height);
         
+        Track* m_track;
+        Sequence* m_sequence;
+        GraphicalTrack* m_graphical_track;
+        
     public:
         LEAK_CHECK();
         DECLARE_MAGIC_NUMBER();
@@ -218,12 +222,14 @@ namespace AriaMaestosa
         static EditTool getCurrentTool();
         static void setEditTool(EditTool tool);
         
-        Track* track;
-        Sequence* sequence;
-        GraphicalTrack* graphicalTrack;
+        Track*          getTrack         () { return m_track;           }
+        Sequence*       getSequence      () { return m_sequence;        }
+        GraphicalTrack* getGraphicalTrack() { return m_graphical_track; }
         
-        // background tracks
+        /** @brief for background track rendering */
         void clearBackgroundTracks();
+        
+        /** @brief for background track rendering */
         void addBackgroundTrack(Track* track);
         
         /**
@@ -237,9 +243,6 @@ namespace AriaMaestosa
           * @return is the Track passed as argument a background of this?
           */
         bool hasAsBackground(Track* track);
-        
-        // Is it necessary to send frequent mouse held down events in current situation? this method tells you.
-        //bool areMouseHeldDownEventsNeeded();
         
         /** @brief method called by GraphicalTrack to let the Editor know about its position */
         void updatePosition(const int from_y, const int to_y, const int width,

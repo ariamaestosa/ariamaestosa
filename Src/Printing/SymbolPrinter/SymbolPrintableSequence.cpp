@@ -45,7 +45,7 @@ SymbolPrintableSequence::SymbolPrintableSequence(Sequence* parent) : AbstractPri
 
 bool SymbolPrintableSequence::addTrack(Track* track, EditorType mode)
 {
-    ASSERT(track->sequence == m_sequence);
+    ASSERT(track->getSequence() == m_sequence);
     ASSERT(not m_layout_calculated);
     
     if (mode == GUITAR)

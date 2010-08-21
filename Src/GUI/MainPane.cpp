@@ -180,11 +180,11 @@ void MainPane::paintEvent(wxPaintEvent& evt)
 
 // --------------------------------------------------------------------------------------------------
 
-void MainPane::render(const bool paintEvent)
+void MainPane::render(const bool isPaintEvent)
 {
-    if (!prepareFrame()) return;
+    if (not prepareFrame()) return;
 
-    if (paintEvent)
+    if (isPaintEvent)
     {
         wxAutoBufferedPaintDC mydc(this);
 
@@ -220,8 +220,8 @@ void MainPane::render(const bool paintEvent)
 bool MainPane::do_render()
 {
 
-    if (!ImageProvider::imagesLoaded())  return false;
-    if (getCurrentSequence()->importing) return false;
+    if (not ImageProvider::imagesLoaded()) return false;
+    if (getCurrentSequence()->importing)   return false;
 
     AriaRender::images();
 
@@ -241,12 +241,12 @@ bool MainPane::do_render()
 
     // draw tab
     int start_at_x = 0;
-    const int seqamount = getMainFrame()->getSequenceAmount();
+    const int seqamount    = getMainFrame()->getSequenceAmount();
     const int currentSeqID = getMainFrame()->getCurrentSequenceID();
 
     // if too many tabs for all to be visible, make them smaller
     tab_width = 145;
-    if (seqamount*(TAB_SIDE_WIDTH+tab_width+TAB_SIDE_WIDTH) > Display::getWidth())
+    if (seqamount*(TAB_SIDE_WIDTH + tab_width + TAB_SIDE_WIDTH) > Display::getWidth())
     {
         tab_width = Display::getWidth() / seqamount - TAB_SIDE_WIDTH*2;
     }

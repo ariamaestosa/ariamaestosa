@@ -50,6 +50,7 @@ EVT_KEY_DOWN(CustomNoteSelectDialog::keyPress)
 
 END_EVENT_TABLE()
 
+// ----------------------------------------------------------------------------------------------------------
 
 CustomNoteSelectDialog::CustomNoteSelectDialog() : wxDialog(NULL, wxID_ANY,
                                                             //I18N: - title of the custom note select dialog
@@ -181,15 +182,19 @@ CustomNoteSelectDialog::CustomNoteSelectDialog() : wxDialog(NULL, wxID_ANY,
     boxSizer->SetSizeHints(this);
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void CustomNoteSelectDialog::onFocus(wxFocusEvent& evt)
 {
     wxTextCtrl* ctrl = dynamic_cast<wxTextCtrl*>(FindFocus());
     if (ctrl != NULL) ctrl->SetSelection(-1, -1);
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void CustomNoteSelectDialog::show(Track* currentTrack)
 {
-    CustomNoteSelectDialog::currentTrack = currentTrack;
+    m_current_track = currentTrack;
     
     if (currentTrack->graphics->editorMode == GUITAR)
     {
@@ -214,13 +219,15 @@ void CustomNoteSelectDialog::keyPress(wxKeyEvent& evt)
     }
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void CustomNoteSelectDialog::okClicked(wxCommandEvent& evt)
 {
     
     const bool pitch = cb_pitch->IsChecked();
     const bool volume = cb_volume->IsChecked();
-    const bool string = cb_string->IsChecked() and currentTrack->graphics->editorMode == GUITAR;
-    const bool fret = cb_fret->IsChecked() and currentTrack->graphics->editorMode == GUITAR;
+    const bool string = cb_string->IsChecked() and m_current_track->graphics->editorMode == GUITAR;
+    const bool fret = cb_fret->IsChecked() and m_current_track->graphics->editorMode == GUITAR;
     const bool duration = cb_duration->IsChecked();
     const bool measure = cb_measure->IsChecked();
     
@@ -254,10 +261,10 @@ void CustomNoteSelectDialog::okClicked(wxCommandEvent& evt)
     
     // collect information about currently selected notes, to be then used for finding similar notes
     int referenceNoteAmount=0;
-    const int noteAmount = currentTrack->getNoteAmount();
-    for(int n=0; n<noteAmount; n++)
+    const int noteAmount = m_current_track->getNoteAmount();
+    for (int n=0; n<noteAmount; n++)
     {
-        if (currentTrack->isNoteSelected(n)) referenceNoteAmount++;
+        if (m_current_track->isNoteSelected(n)) referenceNoteAmount++;
     }
     
     int referencePitches[referenceNoteAmount];
@@ -267,23 +274,24 @@ void CustomNoteSelectDialog::okClicked(wxCommandEvent& evt)
     int referenceDurations[referenceNoteAmount];
     
     int currentID=0;
-    for(int n=0; n<noteAmount; n++)
+    for (int n=0; n<noteAmount; n++)
     {
-        if (currentTrack->isNoteSelected(n))
+        if (m_current_track->isNoteSelected(n))
         {
-            referencePitches[currentID] = currentTrack->getNotePitchID(n);
-            referenceVolumes[currentID] = currentTrack->getNoteVolume(n);
-            referenceStrings[currentID] = currentTrack->getNoteString(n);
-            referenceFrets[currentID] = currentTrack->getNoteFret(n);
-            referenceDurations[currentID] = currentTrack->getNoteEndInMidiTicks(n) - currentTrack->getNoteStartInMidiTicks(n);
+            referencePitches[currentID]   = m_current_track->getNotePitchID(n);
+            referenceVolumes[currentID]   = m_current_track->getNoteVolume(n);
+            referenceStrings[currentID]   = m_current_track->getNoteString(n);
+            referenceFrets[currentID]     = m_current_track->getNoteFret(n);
+            referenceDurations[currentID] = m_current_track->getNoteEndInMidiTicks(n) -
+                                            m_current_track->getNoteStartInMidiTicks(n);
             currentID++;
         }
     }
     
-    currentTrack->selectNote(ALL_NOTES, false, true); // deselect all currently selected notes
+    m_current_track->selectNote(ALL_NOTES, false, true); // deselect all currently selected notes
     
     // test all notes one by one
-    for(int n=0; n<noteAmount; n++)
+    for (int n=0; n<noteAmount; n++)
     {
         
         // test for pitch, if pitch checkbox was checked
@@ -291,13 +299,13 @@ void CustomNoteSelectDialog::okClicked(wxCommandEvent& evt)
         {
             bool passTest = false;
             
-            const int test_value = currentTrack->getNotePitchID(n);
-            for(int i=0; i<referenceNoteAmount; i++)
+            const int test_value = m_current_track->getNotePitchID(n);
+            for (int i=0; i<referenceNoteAmount; i++)
             {
                 if (test_value == referencePitches[i]) passTest=true;
             }
             
-            if (!passTest) continue;
+            if (not passTest) continue;
         }
         
         // test for string, if string checkbox was checked
@@ -305,13 +313,13 @@ void CustomNoteSelectDialog::okClicked(wxCommandEvent& evt)
         {
             bool passTest = false;
             
-            const int test_value = currentTrack->getNoteString(n);
+            const int test_value = m_current_track->getNoteString(n);
             for(int i=0; i<referenceNoteAmount; i++)
             {
                 if (test_value == referenceStrings[i]) passTest=true;
             }
             
-            if (!passTest) continue;
+            if (not passTest) continue;
         }
         
         // test for fret, if fret checkbox was checked
@@ -319,12 +327,13 @@ void CustomNoteSelectDialog::okClicked(wxCommandEvent& evt)
         {
             bool passTest = false;
             
-            const int test_value = currentTrack->getNoteFret(n);
-            for(int i=0; i<referenceNoteAmount; i++){
-                if (test_value == referenceFrets[i]) passTest=true;
+            const int test_value = m_current_track->getNoteFret(n);
+            for (int i=0; i<referenceNoteAmount; i++)
+            {
+                if (test_value == referenceFrets[i]) passTest = true;
             }
             
-            if (!passTest) continue;
+            if (not passTest) continue;
         }
         
         // test for volume, if volume checkbox was checked
@@ -332,13 +341,13 @@ void CustomNoteSelectDialog::okClicked(wxCommandEvent& evt)
         {
             bool passTest = false;
             
-            const int test_value = currentTrack->getNoteVolume(n);
-            for(int i=0; i<referenceNoteAmount; i++)
+            const int test_value = m_current_track->getNoteVolume(n);
+            for (int i=0; i<referenceNoteAmount; i++)
             {
                 if ( abs(test_value - referenceVolumes[i]) <= volume_tolerance_value ) passTest=true;
             }
             
-            if (!passTest) continue;
+            if (not passTest) continue;
         }
         
         // test for duration, if duration checkbox was checked
@@ -346,13 +355,14 @@ void CustomNoteSelectDialog::okClicked(wxCommandEvent& evt)
         {
             bool passTest = false;
             
-            const int test_value = currentTrack->getNoteEndInMidiTicks(n) - currentTrack->getNoteStartInMidiTicks(n);
-            for(int i=0; i<referenceNoteAmount; i++)
+            const int test_value = m_current_track->getNoteEndInMidiTicks(n) -
+                                   m_current_track->getNoteStartInMidiTicks(n);
+            for (int i=0; i<referenceNoteAmount; i++)
             {
-                if ( abs(test_value - referenceDurations[i]) <= duration_tolerance_value ) passTest=true;
+                if (abs(test_value - referenceDurations[i]) <= duration_tolerance_value ) passTest=true;
             }
             
-            if (!passTest) continue;
+            if (not passTest) continue;
         }
         
         // test for measure, if measure checkbox was checked
@@ -361,23 +371,26 @@ void CustomNoteSelectDialog::okClicked(wxCommandEvent& evt)
             bool passTest = false;
             
             // find in which measure the note is
-            const int test_value = getMeasureData()->measureAtTick( currentTrack->getNoteStartInMidiTicks(n) );
+            const int test_value = getMeasureData()->measureAtTick( m_current_track->getNoteStartInMidiTicks(n) );
             
             if (test_value >= from_measure_value-1 and test_value <= to_measure_value-1) passTest=true;
             
-            if (!passTest) continue;
+            if (not passTest) continue;
         }
         
         // if the flow reaches this part, it's because all checked tests succeeded. Select the note.
-        currentTrack->selectNote(n, true, true);
+        m_current_track->selectNote(n, true, true);
         
     }//next
     
     Display::render();
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void CustomNoteSelectDialog::cancelClicked(wxCommandEvent& evt)
 {
     EndModal(returnCode);
 }
 
+// ----------------------------------------------------------------------------------------------------------

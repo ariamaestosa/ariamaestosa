@@ -45,24 +45,24 @@ Editor::Editor(Track* track)
 {
     ystep = 10;
 
-    Editor::track = track;
-    Editor::sequence = track->sequence;
-    Editor::graphicalTrack = track->graphics;
+    m_track           = track;
+    m_sequence        = track->getSequence();
+    m_graphical_track = track->graphics;
 
-    m_vertical_scrolling=false;
-    m_click_on_scrollbar=false;
+    m_vertical_scrolling = false;
+    m_click_on_scrollbar = false;
 
-    m_scroll_up_arrow_pressed=false;
-    m_scroll_down_arrow_pressed=false;
+    m_scroll_up_arrow_pressed   = false;
+    m_scroll_down_arrow_pressed = false;
 
     m_click_on_scrollbar = false;
 
     selecting = false;
     useVerticalScrollbar_bool = true;
 
-    m_mouse_is_in_editor=false;
-    m_clicked_on_note=false;
-    m_last_clicked_note=-1;
+    m_mouse_is_in_editor = false;
+    m_clicked_on_note    = false;
+    m_last_clicked_note  = -1;
     useInstantNotes_bool = false;
 
     m_default_volume = 80;
@@ -128,8 +128,8 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
     
     AriaRender::primitives();
     AriaRender::lineWidth(1);
-    const int start_x = getMeasureData()->firstPixelInMeasure(
-            getMeasureData()->measureAtPixel( Editor::getEditorXStart() ) );
+    const int measure = getMeasureData()->measureAtPixel( Editor::getEditorXStart() );
+    const int start_x = getMeasureData()->firstPixelInMeasure( measure );
 
     MeasureData* measureBar = getMeasureData();
     const int measureAmount = measureBar->getMeasureAmount();
@@ -301,7 +301,6 @@ bool Editor::hasAsBackground(Track* track)
 
 // ------------------------------------------------------------------------------------------------------------
 
-/** on track deletion, we need to check if this one is being used and remove references to it if so */
 void Editor::trackDeleted(Track* track)
 {
     ASSERT( MAGIC_NUMBER_OK() );
@@ -389,7 +388,7 @@ void Editor::mouseDown(RelativeXCoord x, int y)
         else if (result == FOUND_SELECTED_NOTE)
         {
             m_clicked_on_note = true;
-            track->playNote( m_last_clicked_note, false );
+            m_track->playNote( m_last_clicked_note, false );
 
             // 'noteAt' set 'm_last_clicked_note' to the ID of the note that was clicked. However at this point
             // this is not important anymore to know precisely which one was clicked, because all future
@@ -504,22 +503,23 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                 {
                     if (snapped_end < 0)
                     {
-                        track->selectNote(ALL_NOTES, false);
+                        m_track->selectNote(ALL_NOTES, false);
                         goto end_of_func;
                     }
                     addNote( snapped_end, mousey_initial );
                 }
                 else
                 {
-                    if (g_current_edit_tool == EDIT_TOOL_ADD and snapped_start == snapped_end) // click without moving
+                    // click without moving
+                    if (g_current_edit_tool == EDIT_TOOL_ADD and snapped_start == snapped_end) 
                     {
                         addNote(snapped_start,
-                                snapped_start + sequence->ticksPerBeat()*4 / graphicalTrack->grid->divider,
+                                snapped_start + m_sequence->ticksPerBeat()*4 / m_graphical_track->grid->divider,
                                 mousey_initial );
                     }
                     else if (snapped_start == snapped_end or snapped_start>snapped_end or snapped_start<0)
                     {
-                        track->selectNote(ALL_NOTES, false);
+                        m_track->selectNote(ALL_NOTES, false);
                         goto end_of_func;
                     }
                     else
@@ -718,11 +718,11 @@ void Editor::rightClick(RelativeXCoord x, int y)
     int noteID;
     const NoteSearchResult result = noteAt(x,y, noteID);
 
-    if ( result == FOUND_NOTE or result == FOUND_SELECTED_NOTE )
+    if (result == FOUND_NOTE or result == FOUND_SELECTED_NOTE)
     {
         int screen_x, screen_y;
         Display::clientToScreen(x.getRelativeTo(WINDOW),y, &screen_x, &screen_y);
-        showVolumeSlider( screen_x, screen_y, noteID, track);
+        showVolumeSlider( screen_x, screen_y, noteID, m_track);
     }
 
 }
@@ -744,11 +744,15 @@ int Editor::getLevelAtY(const int y)
 void Editor::makeMoveNoteEvent(const int relativeX, const int relativeY, const int noteID)
 {
         // move a single note
-        if (noteID!=-1)
-            track->action( new Action::MoveNotes(relativeX, relativeY, noteID) );
+        if (noteID != -1)
+        {
+            m_track->action( new Action::MoveNotes(relativeX, relativeY, noteID) );
+        }
         else
+        {
             // move many notes
-            track->action( new Action::MoveNotes(relativeX, relativeY, SELECTED_NOTES) );
+            m_track->action( new Action::MoveNotes(relativeX, relativeY, SELECTED_NOTES) );
+        }
 }
 
 // ------------------------------------------------------------------------------------------------------------
@@ -790,8 +794,9 @@ void Editor::scroll(float amount)
 {
     ASSERT( MAGIC_NUMBER_OK() );
     m_sb_position -= amount;
-    if      (m_sb_position<0) m_sb_position=0;
-    else if (m_sb_position>1) m_sb_position=1;
+    
+    if      (m_sb_position < 0) m_sb_position = 0;
+    else if (m_sb_position > 1) m_sb_position = 1;
 }
 
 // ------------------------------------------------------------------------------------------------------------
@@ -813,9 +818,9 @@ int Editor::snapMidiTickToGrid(int tick)
         origin_tick = getMeasureData()->firstTickInMeasure(measure);
     }
 
-    return origin_tick + (int)( round((float)(tick-origin_tick)/
-                                      (float)(sequence->ticksPerBeat()*4 / graphicalTrack->grid->divider))
-                                *(sequence->ticksPerBeat()*4 / graphicalTrack->grid->divider)
+    return origin_tick + (int)( round((float)(tick - origin_tick)/
+                                      (float)(m_sequence->ticksPerBeat()*4 / m_graphical_track->grid->divider))
+                                *(m_sequence->ticksPerBeat()*4 / m_graphical_track->grid->divider)
                                 );
 
 }
@@ -833,9 +838,9 @@ int Editor::snapMidiTickToGrid_ceil(int tick)
         origin_tick = getMeasureData()->firstTickInMeasure(measure);
     }
 
-    return origin_tick + (int)( ceil((float)(tick-origin_tick)/
-                                     (float)(sequence->ticksPerBeat()*4 / graphicalTrack->grid->divider))
-                                *(sequence->ticksPerBeat()*4 / graphicalTrack->grid->divider)
+    return origin_tick + (int)( ceil((float)(tick - origin_tick)/
+                                     (float)(m_sequence->ticksPerBeat()*4 / m_graphical_track->grid->divider))
+                                *(m_sequence->ticksPerBeat()*4 / m_graphical_track->grid->divider)
                                 );
 
 }

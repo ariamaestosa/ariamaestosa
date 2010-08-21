@@ -71,18 +71,18 @@ KeyboardEditor::~KeyboardEditor()
 void KeyboardEditor::mouseDown(RelativeXCoord x, const int y)
 {
     // user clicked on left bar to change tuning
-    if (x.getRelativeTo(EDITOR)<-30 and x.getRelativeTo(WINDOW)>15 and y>getEditorYStart())
+    if (x.getRelativeTo(EDITOR) < -30 and x.getRelativeTo(WINDOW) > 15 and y > getEditorYStart())
     {
         KeyPicker* picker = Core::getKeyPicker();
-        picker->setParent(track);
+        picker->setParent( m_track );
         Display::popupMenu(picker, x.getRelativeTo(WINDOW), y);
         return;
     }
     // user clicked on a keyboard key
-    else if (x.getRelativeTo(EDITOR)<0 and x.getRelativeTo(EDITOR)>-30 and y>getEditorYStart())
+    else if (x.getRelativeTo(EDITOR) < 0 and x.getRelativeTo(EDITOR) > -30 and y > getEditorYStart())
     {
         const int pitchID = getLevelAtY(y);
-        PlatformMidiManager::get()->playNote( 131-pitchID, m_default_volume, 500, 0, track->getInstrument() );
+        PlatformMidiManager::get()->playNote( 131-pitchID, m_default_volume, 500, 0, m_track->getInstrument() );
         return;
     }
     
@@ -102,16 +102,16 @@ void KeyboardEditor::mouseDown(RelativeXCoord x, const int y)
 void KeyboardEditor::addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY)
 {
     const int note = getLevelAtY(mouseY);
-    track->action( new Action::AddNote(note, snapped_start_tick, snapped_end_tick, m_default_volume ) );
+    m_track->action( new Action::AddNote(note, snapped_start_tick, snapped_end_tick, m_default_volume ) );
 }
 
 // -----------------------------------------------------------------------------------------------------------
     
 void KeyboardEditor::noteClicked(const int id)
 {
-    track->selectNote(ALL_NOTES, false);
-    track->selectNote(id, true);
-    track->playNote(id);
+    m_track->selectNote(ALL_NOTES, false);
+    m_track->selectNote(id, true);
+    m_track->playNote(id);
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -120,18 +120,18 @@ NoteSearchResult KeyboardEditor::noteAt(RelativeXCoord x, const int y, int& note
 {
     const int x_edit = x.getRelativeTo(EDITOR);
 
-    const int noteAmount = track->getNoteAmount();
+    const int noteAmount = m_track->getNoteAmount();
     for (int n=0; n<noteAmount; n++)
     {
-        const int x1 = track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
-        const int x2 = track->getNoteEndInPixels(n) - sequence->getXScrollInPixels();
-        const int y1 = track->getNotePitchID(n)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels();
+        const int x1 = m_track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels();
+        const int x2 = m_track->getNoteEndInPixels(n)   - m_sequence->getXScrollInPixels();
+        const int y1 = m_track->getNotePitchID(n)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels();
 
         if (x_edit > x1 and x_edit < x2 and y > y1 and y < y1+12)
         {
             noteID = n;
 
-            if (track->isNoteSelected(n) and not Display::isSelectLessPressed())
+            if (m_track->isNoteSelected(n) and not Display::isSelectLessPressed())
             {
                 // clicked on a selected note
                 return FOUND_SELECTED_NOTE;
@@ -153,23 +153,29 @@ NoteSearchResult KeyboardEditor::noteAt(RelativeXCoord x, const int y, int& note
 void KeyboardEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current,
                                        RelativeXCoord& mousex_initial, int mousey_initial)
 {
-    for(int n=0; n<track->getNoteAmount(); n++)
+    for (int n=0; n<m_track->getNoteAmount(); n++)
     {
 
-        int x1=track->getNoteStartInPixels(n);
-        int x2=track->getNoteEndInPixels(n);
-        int from_note=track->getNotePitchID(n);
+        int x1        = m_track->getNoteStartInPixels(n);
+        int x2        = m_track->getNoteEndInPixels(n);
+        int from_note = m_track->getNotePitchID(n);
 
-        if ( x1>std::min( mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR) ) + sequence->getXScrollInPixels() and
-            x2<std::max( mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR) ) + sequence->getXScrollInPixels() and
-            from_note*Y_STEP_HEIGHT+getEditorYStart()-getYScrollInPixels() > std::min(mousey_current, mousey_initial) and
-            from_note*Y_STEP_HEIGHT+getEditorYStart()-getYScrollInPixels() < std::max(mousey_current, mousey_initial) )
+        if (x1 > std::min( mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR) ) +
+                m_sequence->getXScrollInPixels() and
+            x2 < std::max( mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR) ) +
+                m_sequence->getXScrollInPixels() and
+            from_note*Y_STEP_HEIGHT+getEditorYStart() - getYScrollInPixels() >
+                std::min(mousey_current, mousey_initial) and
+            from_note*Y_STEP_HEIGHT+getEditorYStart() - getYScrollInPixels() <
+                std::max(mousey_current, mousey_initial) )
         {
 
-            track->selectNote(n, true);
+            m_track->selectNote(n, true);
 
-        }else{
-            track->selectNote(n, false);
+        }
+        else
+        {
+            m_track->selectNote(n, false);
         }
     }//next
 
@@ -222,7 +228,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     const int x1 = getEditorXStart();
     const int x2 = getXEnd();
 
-    const KeyInclusionType* key_notes = track->getKeyNotes();
+    const KeyInclusionType* key_notes = m_track->getKeyNotes();
     
     // white background
     AriaRender::primitives();
@@ -295,8 +301,8 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             for (int n=0; n<noteAmount; n++)
             {
 
-                int x1=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
-                int x2=track->getNoteEndInPixels(n)   - sequence->getXScrollInPixels();
+                int x1 = m_track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels();
+                int x2 = m_track->getNoteEndInPixels(n)   - m_sequence->getXScrollInPixels();
 
                 // don't draw notes that won't be visible
                 if (x2 < 0)     continue;
@@ -304,34 +310,34 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
                 const int pitch = track->getNotePitchID(n);
 
-                AriaRender::rect(x1+getEditorXStart(),   levelToY(pitch),
-                                 x2+getEditorXStart()-1, levelToY(pitch+1));
+                AriaRender::rect(x1 + getEditorXStart(),   levelToY(pitch),
+                                 x2 + getEditorXStart()-1, levelToY(pitch+1));
             }
 
         }
     }
 
     // ---------------------- draw notes ----------------------------
-    const int noteAmount = track->getNoteAmount();
+    const int noteAmount = m_track->getNoteAmount();
     for (int n=0; n<noteAmount; n++)
     {
 
-        const int x1 = track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
-        const int x2 = track->getNoteEndInPixels(n)   - sequence->getXScrollInPixels();
+        const int x1 = m_track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels();
+        const int x2 = m_track->getNoteEndInPixels(n)   - m_sequence->getXScrollInPixels();
 
         // don't draw notes that won't be visible
         if (x2 < 0)     continue;
         if (x1 > width) break;
 
-        const int pitch = track->getNotePitchID(n);
+        const int pitch = m_track->getNotePitchID(n);
         const int level = pitch;
-        float volume    = track->getNoteVolume(n)/127.0;
+        float volume    = m_track->getNoteVolume(n)/127.0;
 
         if (key_notes[pitch] == KEY_INCLUSION_NONE)
         {
             AriaRender::color(1.0f, 0.0f, 0.0f);
         }
-        else if (track->isNoteSelected(n) and focus)
+        else if (m_track->isNoteSelected(n) and focus)
         {
             AriaRender::color((1-volume)*1,   (1-(volume/2))*1, 0);
         }
@@ -340,8 +346,8 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             AriaRender::color((1-volume)*0.9, (1-volume)*0.9,  (1-volume)*0.9);
         }
 
-        AriaRender::bordered_rect(x1+getEditorXStart()+1, levelToY(level),
-                                  x2+getEditorXStart()-1, levelToY(level+1));
+        AriaRender::bordered_rect(x1 + getEditorXStart() + 1, levelToY(level),
+                                  x2 + getEditorXStart() - 1, levelToY(level+1));
     }
 
 
@@ -355,13 +361,14 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     for (int g_octaveID=0; g_octaveID<11; g_octaveID++)
     {
-        int g_octave_y=g_octaveID*120-getYScrollInPixels();
-        if (g_octave_y>-120 and g_octave_y<height+20)
+        int g_octave_y = g_octaveID*120 - getYScrollInPixels();
+        
+        if (g_octave_y > -120 and g_octave_y < height+20)
         {
             AriaRender::images();
 
-            if (!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
-            else        AriaRender::setImageState(AriaRender::STATE_NORMAL);
+            if (not focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
+            else           AriaRender::setImageState(AriaRender::STATE_NORMAL);
 
             const int keyboard_image_x = getEditorXStart()-noteTrackDrawable->getImageWidth();
             noteTrackDrawable->move(keyboard_image_x, getEditorYStart() + g_octave_y);
@@ -403,22 +410,22 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             AriaRender::color(1, 0.85, 0);
 
 
-            int preview_x1=
+            int preview_x1 =
                 (int)(
                       (snapMidiTickToGrid(mousex_initial.getRelativeTo(MIDI)) -
-                       sequence->getXScrollInMidiTicks())*sequence->getZoom()
+                       m_sequence->getXScrollInMidiTicks()) * m_sequence->getZoom()
                       );
-            int preview_x2=
+            int preview_x2 =
                 (int)(
                       (snapMidiTickToGrid(mousex_current.getRelativeTo(MIDI)) -
-                       sequence->getXScrollInMidiTicks())*sequence->getZoom()
+                       m_sequence->getXScrollInMidiTicks()) * m_sequence->getZoom()
                       );
 
-            if (!(preview_x1<0 or preview_x2<0) and preview_x2>preview_x1)
+            if (not (preview_x1 < 0 or preview_x2 < 0) and preview_x2 > preview_x1)
             {
-                AriaRender::rect(preview_x1+getEditorXStart(),
+                AriaRender::rect(preview_x1 + getEditorXStart(),
                                  ((mousey_initial - getEditorYStart() + getYScrollInPixels())/Y_STEP_HEIGHT)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels(),
-                                 preview_x2+getEditorXStart(),
+                                 preview_x2 + getEditorXStart(),
                                  ((mousey_initial - getEditorYStart() + getYScrollInPixels())/Y_STEP_HEIGHT)*Y_STEP_HEIGHT+Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels());
             }
 
@@ -433,37 +440,37 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
         int x_difference = mousex_current.getRelativeTo(MIDI) - mousex_initial.getRelativeTo(MIDI);
         int y_difference = mousey_current - mousey_initial;
 
-        const int x_step_move = (int)( snapMidiTickToGrid(x_difference) * sequence->getZoom() );
+        const int x_step_move = (int)( snapMidiTickToGrid(x_difference) * m_sequence->getZoom() );
         const int y_step_move = (int)round( (float)y_difference/ (float)Y_STEP_HEIGHT );
 
         // move a single note
-        if (m_last_clicked_note!=-1)
+        if (m_last_clicked_note != -1)
         {
-            int x1=track->getNoteStartInPixels(m_last_clicked_note) - sequence->getXScrollInPixels();
-            int x2=track->getNoteEndInPixels(m_last_clicked_note) - sequence->getXScrollInPixels();
-            int y=track->getNotePitchID(m_last_clicked_note);
+            int x1 = m_track->getNoteStartInPixels(m_last_clicked_note) - m_sequence->getXScrollInPixels();
+            int x2 = m_track->getNoteEndInPixels  (m_last_clicked_note) - m_sequence->getXScrollInPixels();
+            int y  = m_track->getNotePitchID(m_last_clicked_note);
 
-            AriaRender::rect(x1+x_step_move+getEditorXStart(),
-                             (y+y_step_move)*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels(),
-                             x2-1+x_step_move+getEditorXStart(),
-                             (y+y_step_move+1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels());
+            AriaRender::rect(x1 + x_step_move + getEditorXStart(),
+                             (y + y_step_move)*Y_STEP_HEIGHT + 1 + getEditorYStart() - getYScrollInPixels(),
+                             x2 - 1 + x_step_move + getEditorXStart(),
+                             (y + y_step_move + 1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels());
         }
         else
         {
             // move a bunch of notes
 
-            for(int n=0; n<track->getNoteAmount(); n++)
+            for (int n=0; n<m_track->getNoteAmount(); n++)
             {
-                if (!track->isNoteSelected(n)) continue;
+                if (not m_track->isNoteSelected(n)) continue;
 
-                int x1=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
-                int x2=track->getNoteEndInPixels(n) - sequence->getXScrollInPixels();
-                int y=track->getNotePitchID(n);
+                int x1 = m_track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels();
+                int x2 = m_track->getNoteEndInPixels  (n) - m_sequence->getXScrollInPixels();
+                int y  = m_track->getNotePitchID(n);
 
-                AriaRender::rect(x1+x_step_move+getEditorXStart(),
-                                 (y+y_step_move)*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels(),
-                                 x2-1+x_step_move+getEditorXStart(),
-                                 (y+y_step_move+1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels());
+                AriaRender::rect(x1 + x_step_move + getEditorXStart(),
+                                 (y + y_step_move)*Y_STEP_HEIGHT + 1 + getEditorYStart() - getYScrollInPixels(),
+                                 x2 - 1 + x_step_move+getEditorXStart(),
+                                 (y + y_step_move + 1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels());
             }//next
 
         }
