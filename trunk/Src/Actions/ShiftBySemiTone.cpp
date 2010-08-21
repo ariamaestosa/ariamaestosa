@@ -23,30 +23,39 @@
 
 using namespace AriaMaestosa::Action;
 
+// ----------------------------------------------------------------------------------------------------------
+
 ShiftBySemiTone::ShiftBySemiTone(const int deltaY, const int noteid) :
     //I18N: (undoable) action name
     SingleTrackAction( _("change pitch") )
 {
-    ShiftBySemiTone::deltaY = deltaY;
-    ShiftBySemiTone::noteid = noteid;
+    m_delta_y = deltaY;
+    m_note_id = noteid;
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 ShiftBySemiTone::~ShiftBySemiTone()
 {
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void ShiftBySemiTone::undo()
 {
     Note* current_note;
-    relocator.setParent(track);
-    relocator.prepareToRelocate();
-    int n=0;
-    while( (current_note = relocator.getNextNote()) and current_note != NULL)
+    m_relocator.setParent(track);
+    m_relocator.prepareToRelocate();
+    
+    int n = 0;
+    while ((current_note = m_relocator.getNextNote()) and current_note != NULL)
     {
-        current_note->pitchID -= deltaY;
+        current_note->pitchID -= m_delta_y;
         n++;
     }
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void ShiftBySemiTone::perform()
 {
@@ -54,22 +63,22 @@ void ShiftBySemiTone::perform()
     
     if (track->graphics->editorMode != SCORE) return;
     
-    ASSERT(noteid != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implemented)
+    // not supported in this function (mostly bacause not needed, but could logically be implemented)
+    ASSERT(m_note_id != ALL_NOTES);
     
     // concerns all selected notes
-    if (noteid==SELECTED_NOTES)
+    if (m_note_id==SELECTED_NOTES)
     {
-        
         bool played = false;
         const int amount_n = track->m_notes.size();
-        for(int n=0; n<amount_n; n++)
+        for (int n=0; n<amount_n; n++)
         {
-            if (!track->m_notes[n].isSelected()) continue;
+            if (not track->m_notes[n].isSelected()) continue;
             
-            track->m_notes[n].pitchID += deltaY;
-            relocator.rememberNote( track->m_notes[n] );
+            track->m_notes[n].pitchID += m_delta_y;
+            m_relocator.rememberNote( track->m_notes[n] );
             
-            if (!played)
+            if (not played)
             {
                 track->m_notes[n].play(true);
                 played = true;
@@ -81,14 +90,15 @@ void ShiftBySemiTone::perform()
     else
     {
         // warning : not yet used so not tested
-        ASSERT_E(noteid,>=,0);
-        ASSERT_E(noteid,<,track->m_notes.size());
+        ASSERT_E(m_note_id,>=,0);
+        ASSERT_E(m_note_id,<,track->m_notes.size());
         
-        track->m_notes[noteid].pitchID += deltaY;
-        relocator.rememberNote( track->m_notes[noteid] );
+        track->m_notes[m_note_id].pitchID += m_delta_y;
+        m_relocator.rememberNote( track->m_notes[m_note_id] );
         
-        track->m_notes[noteid].play(true);
+        track->m_notes[m_note_id].play(true);
     }
     
 }
 
+// ----------------------------------------------------------------------------------------------------------

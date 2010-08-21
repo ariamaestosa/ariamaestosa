@@ -196,7 +196,7 @@ wxDialog(parent, wxID_ANY,
          //I18N: - title of the preferences dialog
          _("Preferences"), wxPoint(100,100), wxSize(500, 350), wxCAPTION | wxRESIZE_BORDER)
 {
-    PreferencesDialog::data = data;
+    m_data = data;
     
     ptr_vector<Setting>& settings = PreferencesData::getInstance()->getSettings();
     
@@ -285,7 +285,7 @@ void PreferencesDialog::show()
 void PreferencesDialog::okClicked(wxCommandEvent& evt)
 {
     updateValuesFromWidgets();
-    data->save();
+    m_data->save();
     wxDialog::EndModal(modalCode);
 }
 

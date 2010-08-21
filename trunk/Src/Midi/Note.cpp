@@ -363,15 +363,15 @@ bool Note::readFromFile(irr::io::IrrXMLReader* xml)
 
 void Note::play(bool change)
 {
-    if (m_track->sequence->importing) return;
+    if (m_track->getSequence()->importing) return;
 
     const int play = Core::playDuringEdit();
 
     if (play == PLAY_NEVER) return;
     if (play == PLAY_ON_CHANGE and not change) return;
 
-    int durationMilli = (endTick-startTick)*60*1000 /
-                        (m_track->sequence->getTempo() * m_track->sequence->ticksPerBeat());
+    int durationMilli = (endTick - startTick)*60*1000 /
+                        (m_track->getSequence()->getTempo() * m_track->getSequence()->ticksPerBeat());
 
     if (m_track->graphics->editorMode == DRUM) 
     {

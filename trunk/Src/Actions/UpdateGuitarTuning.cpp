@@ -40,11 +40,14 @@ void UpdateGuitarTuning::undo()
     Note* current_note;
     relocator.setParent(track);
     relocator.prepareToRelocate();
-    int n=0;
-    while ((current_note = relocator.getNextNote()) and current_note != NULL)
+    
     {
-        current_note->setStringAndFret( strings[n], frets[n] );
-        n++;
+        int n = 0;
+        while ((current_note = relocator.getNextNote()) and current_note != NULL)
+        {
+            current_note->setStringAndFret( strings[n], frets[n] );
+            n++;
+        }
     }
     
     const int amount_n = track->m_notes.size();

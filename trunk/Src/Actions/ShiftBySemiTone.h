@@ -32,9 +32,11 @@ namespace AriaMaestosa
         class ShiftBySemiTone : public SingleTrackAction
         {
             friend class AriaMaestosa::Track;
-            int deltaY, noteid;
             
-            NoteRelocator relocator;
+            int m_delta_y;
+            int m_note_id;
+            
+            NoteRelocator m_relocator;
             
         public:
             

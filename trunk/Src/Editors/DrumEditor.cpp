@@ -45,9 +45,9 @@ DrumEditor::DrumInfo::DrumInfo(int midiKey, const bool a_section)
 {
     DrumInfo::midiKey = midiKey;
 
-    section=a_section;
+    section = a_section;
 
-    sectionExpanded=true;
+    sectionExpanded = true;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -218,15 +218,15 @@ void DrumEditor::useCustomDrumSet()
 {
 
     bool inuse[128];
-    for(int n=0; n<128; n++)
+    for (int n=0; n<128; n++)
     {
-        inuse[n]=false;
+        inuse[n] = false;
     }
 
-    const int drum_amount = track->getNoteAmount();
-    for(int drumID=0; drumID<drum_amount; drumID++)
+    const int drum_amount = m_track->getNoteAmount();
+    for (int drumID=0; drumID<drum_amount; drumID++)
     {
-        inuse[ track->getNotePitchID(drumID) ] = true;
+        inuse[ m_track->getNotePitchID(drumID) ] = true;
     }
 
     drums.clear();
@@ -336,11 +336,16 @@ void DrumEditor::useCustomDrumSet()
     }
 
     // prepare midiKeyToVectorID
-    for(int n=0; n<128; n++)
-        midiKeyToVectorID[n]=-1;
+    for (int n=0; n<128; n++)
+    {
+        midiKeyToVectorID[n] = -1;
+    }
 
-    for(unsigned int n=0; n<drums.size(); n++)
-        midiKeyToVectorID[ drums[n].midiKey ]=n;
+    const int count = drums.size();
+    for (int n=0; n<count; n++)
+    {
+        midiKeyToVectorID[ drums[n].midiKey ] = n;
+    }
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -428,11 +433,16 @@ void DrumEditor::useDefaultDrumSet()
 
 
     // prepare midiKeyToVectorID
-    for(int n=0; n<128; n++)
-        midiKeyToVectorID[n]=-1;
+    for (int n=0; n<128; n++)
+    {
+        midiKeyToVectorID[n] = -1;
+    }
 
-    for(unsigned int n=0; n<drums.size(); n++)
-        midiKeyToVectorID[ drums[n].midiKey ]=n;
+    const int count = drums.size();
+    for (int n=0; n<count; n++)
+    {
+        midiKeyToVectorID[ drums[n].midiKey ] = n;
+    }
 }
 
 
@@ -447,15 +457,15 @@ void DrumEditor::useDefaultDrumSet()
 
 NoteSearchResult DrumEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 {
-    const int noteAmount = track->getNoteAmount();
-    for(int n=0; n<noteAmount; n++)
+    const int noteAmount = m_track->getNoteAmount();
+    for (int n=0; n<noteAmount; n++)
     {
-        const int drumx=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
+        const int drumx = m_track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels();
 
-        ASSERT(track->getNotePitchID(n)>0);
-        ASSERT(track->getNotePitchID(n)<128);
+        ASSERT(m_track->getNotePitchID(n)>0);
+        ASSERT(m_track->getNotePitchID(n)<128);
 
-        const int drumIDInVector= midiKeyToVectorID[ track->getNotePitchID(n) ];
+        const int drumIDInVector = midiKeyToVectorID[ m_track->getNotePitchID(n) ];
         if (drumIDInVector == -1) continue;
 
         const int drumy = getYForDrum(drumIDInVector);
@@ -466,7 +476,7 @@ NoteSearchResult DrumEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 
             noteID = n;
 
-            if (track->isNoteSelected(n) and not Display:: isSelectLessPressed())
+            if (m_track->isNoteSelected(n) and not Display::isSelectLessPressed())
             {
                 // clicked on a selected note
                 return FOUND_SELECTED_NOTE;
@@ -487,9 +497,9 @@ NoteSearchResult DrumEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 
 void DrumEditor::noteClicked(const int id)
 {
-    track->selectNote(ALL_NOTES, false);
-    track->selectNote(id, true);
-    track->playNote(id);
+    m_track->selectNote(ALL_NOTES, false);
+    m_track->selectNote(id, true);
+    m_track->playNote(id);
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -503,9 +513,14 @@ void DrumEditor::addNote(const int snappedX, const int mouseY)
     if (drumID > (int)drums.size()-1) return;
 
     const int note = drums[ drumID ].midiKey;
-    if (note == -1 || drums[ drumID ].section) return;
+    if (note == -1 or drums[ drumID ].section) return;
 
-    track->action( new Action::AddNote(note, snappedX, snappedX+sequence->ticksPerBeat()/32+1, m_default_volume ) );
+    m_track->action(
+                    new Action::AddNote(note,
+                                        snappedX,
+                                        snappedX + m_sequence->ticksPerBeat()/32+1,
+                                        m_default_volume )
+                    );
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -544,19 +559,24 @@ void DrumEditor::moveNote(Note& note, const int relativeX, const int relativeY)
     newVectorLoc += relativeY;
 
     // skip sections
-    while(drums[newVectorLoc].section)
+    while (drums[newVectorLoc].section)
     {
-        newVectorLoc+=(relativeY/abs(relativeY)); // keep the same sign, but only move 1 step at a time from now on
+        newVectorLoc += (relativeY/abs(relativeY)); // keep the same sign, but only move 1 step at a time from now on
 
         // discard moves that would result in an out-of-bound note
-        if (newVectorLoc < 0 or newVectorLoc > (int)drums.size()-1 )
+        if (newVectorLoc < 0 or newVectorLoc > (int)drums.size()-1)
+        {
             return;
+        }
     }
 
     // find the midi key at the new location
     const int new_pitchID = drums[newVectorLoc].midiKey;
     if (new_pitchID < 0 or new_pitchID > 127)
-        return; // invalid location - discard
+    {
+        // invalid location - discard
+        return;
+    }
 
     note.pitchID = new_pitchID;
 }
@@ -566,28 +586,28 @@ void DrumEditor::moveNote(Note& note, const int relativeX, const int relativeY)
 void DrumEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current,
                                    RelativeXCoord& mousex_initial, int mousey_initial)
 {
-    for (int n=0; n<track->getNoteAmount(); n++)
+    for (int n=0; n<m_track->getNoteAmount(); n++)
     {
-        const int drumx=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels();
+        const int drumx = m_track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels();
 
-        ASSERT(track->getNotePitchID(n)>0);
-        ASSERT(track->getNotePitchID(n)<128);
+        ASSERT(m_track->getNotePitchID(n)>0);
+        ASSERT(m_track->getNotePitchID(n)<128);
 
-        const int drumIDInVector= midiKeyToVectorID[ track->getNotePitchID(n) ];
+        const int drumIDInVector= midiKeyToVectorID[ m_track->getNotePitchID(n) ];
         if (drumIDInVector == -1) continue;
 
-        const int drumy=getYForDrum(drumIDInVector) + 5;
+        const int drumy = getYForDrum(drumIDInVector) + 5;
 
-        if (drumx>std::min(mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR)) and
-           drumx<std::max(mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR)) and
-           drumy > std::min(mousey_current, mousey_initial) and
-           drumy < std::max(mousey_current, mousey_initial))
+        if (drumx > std::min(mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR)) and
+            drumx < std::max(mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR)) and
+            drumy > std::min(mousey_current, mousey_initial) and
+            drumy < std::max(mousey_current, mousey_initial))
         {
-            track->selectNote(n, true);
+            m_track->selectNote(n, true);
         }
         else
         {
-            track->selectNote(n, false);
+            m_track->selectNote(n, false);
         }
 
     }//next note
@@ -631,9 +651,11 @@ void DrumEditor::mouseDown(RelativeXCoord x, const int y)
             if (x.getRelativeTo(EDITOR) < 0 and x.getRelativeTo(WINDOW) > 0)
             {
                 const int note = drums[ drumID ].midiKey;
-                if (note == -1 || drums[ drumID ].section) return;
+                
+                if (note == -1 or drums[ drumID ].section) return;
 
-                PlatformMidiManager::get()->playNote( note, m_default_volume, 500 /* duration */, 9, track->getDrumKit() );
+                PlatformMidiManager::get()->playNote(note, m_default_volume, 500 /* duration */, 9,
+                                                     m_track->getDrumKit() );
             }    
             // click on section
             else if (drums[ drumID ].section)
@@ -641,20 +663,20 @@ void DrumEditor::mouseDown(RelativeXCoord x, const int y)
                 // user clicked on a section. if click is on the triangle, expand/collapse it. otherwise, it just selects nothing.
                 if (x.getRelativeTo(EDITOR) < 25 and x.getRelativeTo(EDITOR) > 0)
                 {
-                    drums[ drumID ].sectionExpanded = !drums[ drumID ].sectionExpanded;
+                    drums[ drumID ].sectionExpanded = not drums[ drumID ].sectionExpanded;
                     return;
                 }
                 // select none
                 else
                 {
-                    track->selectNote(ALL_NOTES, false, true);
+                    m_track->selectNote(ALL_NOTES, false, true);
                 }
             }// end if section
         }
         else
         {
             // select none
-            track->selectNote(ALL_NOTES, false, true);
+            m_track->selectNote(ALL_NOTES, false, true);
         }
     }
     
@@ -671,16 +693,17 @@ void DrumEditor::mouseUp(RelativeXCoord mousex_current, const int mousey_current
 
     // ------------------- toggle "only show used drums" widget -----------------
     if (mousex_current.getRelativeTo(WINDOW) > Editor::getEditorXStart()-77 and
-       mousex_current.getRelativeTo(WINDOW) < Editor::getEditorXStart()-67 and
-       mousey_current - getYScrollInPixels() > getEditorYStart()+1 and
-       mousey_current - getYScrollInPixels() < getEditorYStart()+10)
+        mousex_current.getRelativeTo(WINDOW) < Editor::getEditorXStart()-67 and
+        mousey_current - getYScrollInPixels() > getEditorYStart()+1 and
+        mousey_current - getYScrollInPixels() < getEditorYStart()+10)
     {
-        if (track->getNoteAmount()<1) return;
+        if (m_track->getNoteAmount()<1) return;
 
-        showUsedDrumsOnly = !showUsedDrumsOnly;
+        showUsedDrumsOnly = not showUsedDrumsOnly;
 
         if (showUsedDrumsOnly) useCustomDrumSet();
-        else useDefaultDrumSet();
+        
+        else                   useDefaultDrumSet();
         Display::render();
     }
 
@@ -705,7 +728,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
     AriaRender::primitives();
     AriaRender::color(0.5, 0.5, 0.5);
     const int drumAmount = drums.size();
-    for(int drumID=0; drumID<drumAmount+1; drumID++)
+    for (int drumID=0; drumID<drumAmount+1; drumID++)
     {
         const int y = getEditorYStart() + drumID*Y_STEP - getYScrollInPixels();
         if (y<getEditorYStart() or y>getYEnd()) continue;
@@ -716,28 +739,35 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
 
     // ---------------------- draw notes ----------------------------
-    const int noteAmount = track->getNoteAmount();
-    for(int n=0; n<noteAmount; n++)
+    const int noteAmount = m_track->getNoteAmount();
+    for (int n=0; n<noteAmount; n++)
     {
-        const int drumx = track->getNoteStartInPixels(n) - sequence->getXScrollInPixels() +
+        const int drumx = m_track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels() +
                           Editor::getEditorXStart();
 
         // don't draw notes that won't visible
-        if (drumx<0)     continue;
-        if (drumx>width) break;
+        if (drumx < 0)     continue;
+        if (drumx > width) break;
 
-        ASSERT(track->getNotePitchID(n)>=0);
-        ASSERT(track->getNotePitchID(n)<128);
+        ASSERT(m_track->getNotePitchID(n) >= 0);
+        ASSERT(m_track->getNotePitchID(n) < 128);
 
-        const int drumIDInVector= midiKeyToVectorID[ track->getNotePitchID(n) ];
+        const int drumIDInVector = midiKeyToVectorID[ m_track->getNotePitchID(n) ];
+        
         if (drumIDInVector == -1) continue;
 
-        const float volume=track->getNoteVolume(n)/127.0;
+        const float volume = m_track->getNoteVolume(n)/127.0;
 
-        if (track->isNoteSelected(n) and focus) AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
-        else AriaRender::color((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
+        if (m_track->isNoteSelected(n) and focus)
+        {
+            AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
+        }
+        else
+        {
+            AriaRender::color((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
+        }
 
-        const int drumy=getYForDrum(drumIDInVector);
+        const int drumy = getYForDrum(drumIDInVector);
 
         AriaRender::triangle(drumx,     drumy,
                              drumx,     drumy+Y_STEP,
@@ -746,7 +776,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
 
     // ------------------------- mouse drag (preview) ------------------------
-    if (!m_clicked_on_note and m_mouse_is_in_editor)
+    if (not m_clicked_on_note and m_mouse_is_in_editor)
     {
         // selection
         if (selecting)
@@ -755,30 +785,31 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
             AriaRender::hollow_rect(mousex_initial.getRelativeTo(WINDOW), mousey_initial,
                                     mousex_current.getRelativeTo(WINDOW), mousey_current);
         }
-    } // end if !m_clicked_on_note
+    } // end if
 
     // ------------------------- move note (preview) -----------------------
     if (m_clicked_on_note)
     {
-
         AriaRender::color(1, 0.85, 0, 0.5);
 
         const int x_difference = mousex_current.getRelativeTo(MIDI)-mousex_initial.getRelativeTo(MIDI);
         const int y_difference = mousey_current-mousey_initial;
 
-        const int x_steps_to_move = (int)( snapMidiTickToGrid(x_difference)*sequence->getZoom() );
-        const int y_steps_to_move = (int)round(y_difference/ (float)Y_STEP );
+        const int x_steps_to_move = (int)(snapMidiTickToGrid(x_difference) * m_sequence->getZoom());
+        const int y_steps_to_move = (int)round( y_difference/ (float)Y_STEP );
 
         // move a single note
         if (m_last_clicked_note != -1)
         {
-            const int drumx=track->getNoteStartInPixels(m_last_clicked_note) - sequence->getXScrollInPixels() + Editor::getEditorXStart();
+            const int drumx = m_track->getNoteStartInPixels(m_last_clicked_note) -
+                              m_sequence->getXScrollInPixels() +
+                              Editor::getEditorXStart();
 
-            const int drumIDInVector= midiKeyToVectorID[ track->getNotePitchID(m_last_clicked_note) ];
+            const int drumIDInVector= midiKeyToVectorID[ m_track->getNotePitchID(m_last_clicked_note) ];
             if (drumIDInVector != -1)
             {
 
-                const int drumy=getYForDrum(drumIDInVector);
+                const int drumy = getYForDrum(drumIDInVector);
 
                 AriaRender::triangle(drumx + x_steps_to_move,       drumy + y_steps_to_move*Y_STEP,
                                      drumx + x_steps_to_move,       drumy + (y_steps_to_move+1)*Y_STEP,
@@ -790,19 +821,21 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         {
             // move a bunch of notes
 
-            for(int n=0; n<noteAmount; n++)
+            for (int n=0; n<noteAmount; n++)
             {
-                if (!track->isNoteSelected(n)) continue;
+                if (not m_track->isNoteSelected(n)) continue;
 
-                const int drumx=track->getNoteStartInPixels(n) - sequence->getXScrollInPixels() + Editor::getEditorXStart();
+                const int drumx = m_track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels() +
+                                  Editor::getEditorXStart();
 
-                ASSERT(track->getNotePitchID(n)>0);
-                ASSERT(track->getNotePitchID(n)<128);
+                ASSERT_E(m_track->getNotePitchID(n), >, 0);
+                ASSERT_E(m_track->getNotePitchID(n), <, 128);
 
-                const int drumIDInVector= midiKeyToVectorID[ track->getNotePitchID(n) ];
+                const int drumIDInVector = midiKeyToVectorID[ m_track->getNotePitchID(n) ];
+                
                 if (drumIDInVector == -1) continue;
 
-                const int drumy=getYForDrum(drumIDInVector);
+                const int drumy = getYForDrum(drumIDInVector);
 
                 AriaRender::triangle(drumx+x_steps_to_move,         drumy + y_steps_to_move*Y_STEP,
                                      drumx+x_steps_to_move,         drumy + (y_steps_to_move+1)*Y_STEP,

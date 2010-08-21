@@ -44,7 +44,6 @@ namespace AriaMaestosa
         
         wxBoxSizer* boxSizer;
         wxCheckBox* cb_pitch;
-        //wxCheckBox* cb_note;
         wxCheckBox* cb_volume;
         wxCheckBox* cb_string;
         wxCheckBox* cb_fret;
@@ -56,7 +55,7 @@ namespace AriaMaestosa
         wxTextCtrl* duration_tolerance;
         int returnCode;
         
-        Track* currentTrack;
+        Track* m_current_track;
         
     public:
         LEAK_CHECK();

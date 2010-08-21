@@ -111,19 +111,19 @@ void DeleteSelected::perform()
         else
         {
             // remove tempo events
-            const int tempoEventsAmount = track->sequence->tempoEvents.size();
+            Sequence* sequence = track->getSequence();
+            const int tempoEventsAmount = sequence->tempoEvents.size();
             for (int n=0; n<tempoEventsAmount; n++)
             {
+                const int tick = sequence->tempoEvents[n].getTick();
                 
-                const int tick = track->sequence->tempoEvents[n].getTick();
+                if (tick < from or tick > to) continue; // this event is not concerned by selection
                 
-                if (tick<from or tick>to) continue; // this event is not concerned by selection
-                
-                removedControlEvents.push_back( track->sequence->tempoEvents.get(n) );
-                track->sequence->tempoEvents.markToBeRemoved(n);
+                removedControlEvents.push_back( sequence->tempoEvents.get(n) );
+                sequence->tempoEvents.markToBeRemoved(n);
                 //n--;
             }//next
-            track->sequence->tempoEvents.removeMarked();
+            sequence->tempoEvents.removeMarked();
         }
         
     }

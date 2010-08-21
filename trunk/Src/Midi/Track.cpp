@@ -79,10 +79,10 @@ Track::Track(Sequence* sequence)
 
     //m_parent_frame = parent;
 
-    Track::sequence = sequence;
+    m_sequence = sequence;
 
     m_channel = 0;
-    if ( sequence->getChannelManagementType() == CHANNEL_MANUAL )
+    if (sequence->getChannelManagementType() == CHANNEL_MANUAL)
     {
         // if in manual channel management mode, we need to give it a proper channel
         // the following array will store what channels are currently taken
@@ -155,11 +155,11 @@ void Track::trackDeleted(Track* track)
 
 // -------------------------------------------------------------------------------------------------------
 
-void Track::action( Action::SingleTrackAction* action)
+void Track::action( Action::SingleTrackAction* actionObj)
 {
-    action->setParentTrack(this);
-    sequence->addToUndoStack( action );
-    action->perform();
+    actionObj->setParentTrack(this);
+    m_sequence->addToUndoStack( actionObj );
+    actionObj->perform();
 }
 
 
@@ -176,7 +176,7 @@ void Track::action( Action::SingleTrackAction* action)
 bool Track::addNote(Note* note, bool check_for_overlapping_notes)
 {
     // if we're importing, just push it to the end, we know they're in time order
-    if (sequence->importing)
+    if (m_sequence->importing)
     {
         m_notes.push_back(note);
         m_note_off.push_back(note); // dont forget to reorder note off vector after importing
@@ -255,13 +255,13 @@ void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
     if (previousValue != NULL) *previousValue = -1;
 
     // tempo events
-    if (evt->getController()==201) vector = &sequence->tempoEvents;
+    if (evt->getController()==201) vector = &m_sequence->tempoEvents;
     // controller and pitch bend events
     else vector = &m_control_events;
 
     // don't bother checking order if we're importing, we know its in time order and all
     // FIXME - what about 'addControlEvent_import' ??
-    if (sequence->importing)
+    if (m_sequence->importing)
     {
         vector->push_back( evt );
         return;
@@ -299,15 +299,15 @@ void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
 
 void Track::addControlEvent_import(const int x, const int value, const int controller)
 {
-    ASSERT(sequence->importing); // not to be used when not importing
-    m_control_events.push_back(new ControllerEvent(sequence, controller, x, value) );
+    ASSERT(m_sequence->importing); // not to be used when not importing
+    m_control_events.push_back(new ControllerEvent(m_sequence, controller, x, value) );
 }
 
 // -------------------------------------------------------------------------------------------------------
 
 bool Track::addNote_import(const int pitchID, const int startTick, const int endTick, const int volume, const int string)
 {
-    ASSERT(sequence->importing); // not to be used when not importing
+    ASSERT(m_sequence->importing); // not to be used when not importing
     return addNote( new Note(this, pitchID, startTick, endTick, volume, string) );
 }
 
@@ -315,7 +315,7 @@ bool Track::addNote_import(const int pitchID, const int startTick, const int end
 
 void Track::setNoteEnd_import(const int tick, const int noteID)
 {
-    ASSERT(sequence->importing); // not to be used when not importing
+    ASSERT(m_sequence->importing); // not to be used when not importing
     ASSERT(noteID != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
     ASSERT(noteID != SELECTED_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
 
@@ -486,7 +486,7 @@ void Track::mergeTrackIn(Track* track)
     const int controllerAmount = track->m_control_events.size();
     for(int n=0; n<controllerAmount; n++)
     {
-        addControlEvent( new ControllerEvent(sequence, track->m_control_events[n].getController(),
+        addControlEvent( new ControllerEvent(m_sequence, track->m_control_events[n].getController(),
                                              track->m_control_events[n].getTick(),
                                              track->m_control_events[n].getValue()) );
 
@@ -532,7 +532,7 @@ int Track::getNoteStartInPixels(const int id) const
     ASSERT_E(id,>=,0);
     ASSERT_E(id,<,m_notes.size());
 
-    return (int)round( m_notes[id].startTick * sequence->getZoom() );
+    return (int)round( m_notes[id].startTick * m_sequence->getZoom() );
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -542,7 +542,7 @@ int Track::getNoteEndInPixels(const int id) const
     ASSERT_E(id,>=,0);
     ASSERT_E(id,<,m_notes.size());
 
-    return (int)round( m_notes[id].endTick * sequence->getZoom() );
+    return (int)round( m_notes[id].endTick * m_sequence->getZoom() );
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -672,7 +672,7 @@ int Track::findLastNoteInRange(const int fromTick, const int toTick) const
 
 int Track::getControllerEventAmount(const int controllerTypeID) const
 {
-    if (controllerTypeID==201 /*tempo*/) return sequence->tempoEvents.size();
+    if (controllerTypeID==201 /*tempo*/) return m_sequence->tempoEvents.size();
     return m_control_events.size();
 }
 
@@ -683,14 +683,14 @@ ControllerEvent* Track::getControllerEvent(const int id, const int controllerTyp
     ASSERT_E(id,>=,0);
     if (controllerTypeID == 201 /*tempo*/) 
     {
-        ASSERT_E(id,<,sequence->tempoEvents.size());
+        ASSERT_E(id,<,m_sequence->tempoEvents.size());
     }
     else
     {
         ASSERT_E(id,<,m_control_events.size());
     }
 
-    if (controllerTypeID == 201 /*tempo*/) return &sequence->tempoEvents[id];
+    if (controllerTypeID == 201 /*tempo*/) return &m_sequence->tempoEvents[id];
     
     return &m_control_events[id];
 }
@@ -810,7 +810,7 @@ void Track::copy()
     }
 
     Clipboard::clear();
-    Clipboard::setBeatLength(sequence->ticksPerBeat());
+    Clipboard::setBeatLength(m_sequence->ticksPerBeat());
 
     int tickOfFirstSelectedNote=-1;
     // place all selected notes into clipboard
@@ -837,13 +837,13 @@ void Track::copy()
     const int lastMeasureStart = getMeasureData()->firstTickInMeasure( getMeasureData()->measureAtTick(tickOfFirstSelectedNote) );
 
     const int clipboard_size = Clipboard::getSize();
-    for(int n=0; n<clipboard_size; n++)
+    for (int n=0; n<clipboard_size; n++)
     {
         //Clipboard::getNote(n)->move( -lastMeasureStart, 0, graphics->editorMode);
         graphics->getCurrentEditor()->moveNote(*Clipboard::getNote(n), -lastMeasureStart, 0);
     }
 
-    sequence->notes_shift_when_no_scrolling = lastMeasureStart;
+    m_sequence->notes_shift_when_no_scrolling = lastMeasureStart;
 }
 
 
@@ -904,13 +904,13 @@ void Track::setChannel(int i)
     m_channel = i;
     
     // check what is the instrument currently used in this channel, if any
-    const int trackAmount = sequence->getTrackAmount();
+    const int trackAmount = m_sequence->getTrackAmount();
     for (int n=0; n<trackAmount; n++) // find another track that has same channel and use the same instrument
     {
-        if (sequence->getTrack(n)->getChannel() == m_channel)
+        if (m_sequence->getTrack(n)->getChannel() == m_channel)
         {
             // FIXME: remove this abuse of the 'recursive' parameter
-            this->doSetInstrument(sequence->getTrack(n)->getInstrument(), true);
+            this->doSetInstrument(m_sequence->getTrack(n)->getInstrument(), true);
             break;
         }
     }//next
@@ -935,12 +935,12 @@ void Track::doSetInstrument(int i, bool recursive)
     
     // if we're in manual channel management mode, change all tracks of the same channel
     // to have the same instrument
-    if (sequence->getChannelManagementType() == CHANNEL_MANUAL and not recursive)
+    if (m_sequence->getChannelManagementType() == CHANNEL_MANUAL and not recursive)
     {
-        const int trackAmount = sequence->getTrackAmount();
-        for(int n=0; n<trackAmount; n++)
+        const int trackAmount = m_sequence->getTrackAmount();
+        for (int n=0; n<trackAmount; n++)
         {
-            Track* track = sequence->getTrack(n);
+            Track* track = m_sequence->getTrack(n);
             if (track == this) continue; // track must not evaluate itself...
             if (track->getChannel() == m_channel)
             {
@@ -982,13 +982,13 @@ void Track::doSetDrumKit(int i, bool recursive)
     
     
     // if we're in manual channel management mode, change all tracks of the same channel to have the same instrument
-    if (sequence->getChannelManagementType() == CHANNEL_MANUAL and not recursive)
+    if (m_sequence->getChannelManagementType() == CHANNEL_MANUAL and not recursive)
     {
 
-        const int trackAmount = sequence->getTrackAmount();
+        const int trackAmount = m_sequence->getTrackAmount();
         for (int n=0; n<trackAmount; n++)
         {
-            Track* track = sequence->getTrack(n);
+            Track* track = m_sequence->getTrack(n);
             if (track == this) continue; // track must not evaluate itself...
             track->doSetDrumKit(i, true);
         }//next
@@ -1078,6 +1078,7 @@ void Track::setKey(const int symbolAmount, const KeyType type)
 
     bool note_12_greyed_out[12];
 
+    {
 #define NEXT n--; if (n<0) n+=12
     int n = int(major_note12) + 7;
     if (n > 11) n -= 12;
@@ -1095,6 +1096,7 @@ void Track::setKey(const int symbolAmount, const KeyType type)
     note_12_greyed_out[n] = false; NEXT;
     note_12_greyed_out[n] = true;
 #undef NEXT
+    }
 
     Note12 noteName;
     int octave;
@@ -1156,9 +1158,9 @@ void Track::onGuitarTuningUpdated(GuitarTuning* tuning, const bool userTriggered
     }
     else
     {
-        Action::UpdateGuitarTuning action;
-        action.setParentTrack(this);
-        action.perform();
+        Action::UpdateGuitarTuning actionObj;
+        actionObj.setParentTrack(this);
+        actionObj.perform();
     }
 }
 
@@ -1237,7 +1239,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     }
     
     // if in manual mode, use the user-specified channel ID and not the stock one
-    const bool manual_mode = (sequence->getChannelManagementType() == CHANNEL_MANUAL);
+    const bool manual_mode = (m_sequence->getChannelManagementType() == CHANNEL_MANUAL);
     
     if (manual_mode) channel = getChannel();
 
@@ -1481,12 +1483,12 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
                 // controller changes happens before the area we play
                 // but perhaps it still is affecting the area we want to play - check for that.
-                bool addControlEvent = true;
+                bool doAddControlEvent = true;
                 if (time < 0)
                 {
                     if (control_evt_id+1 < controllerAmount)
                     {
-                        addControlEvent = false;
+                        doAddControlEvent = false;
                         int checkEventID = control_evt_id+1;
                         
                         // check if there are other controller events of the same type before the area we play.
@@ -1497,7 +1499,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                                m_control_events[checkEventID].getController() == controllerID)
                             {
                                 // the current event has no effect, there is another one later, disregard it.
-                                addControlEvent = false;
+                                doAddControlEvent = false;
                                 break;
                             }
 
@@ -1505,7 +1507,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                                m_control_events[checkEventID].getController() == controllerID)
                             {
                                 // there is another event, but it's later so current event is still relevant.
-                                addControlEvent = true;
+                                doAddControlEvent = true;
                                 time = 0;
                                 break;
                             }
@@ -1515,7 +1517,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                             {
                                 // we reaached the end, there are no other events of the same type
                                 // this one still affects playback of the area that we're playing.
-                                addControlEvent = true;
+                                doAddControlEvent = true;
                                 time = 0;
                                 break;
                             }
@@ -1524,29 +1526,28 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                     else
                     {
                         // there are no other events in track. add it.
-                        addControlEvent = true;
+                        doAddControlEvent = true;
                         time = 0;
                     }
                 }
                 else
                 {
-                    addControlEvent = true;
+                    doAddControlEvent = true;
                 }
 
-                if (addControlEvent)
+                if (doAddControlEvent)
                 {
 
                     m.SetTime( time );
 
                     // FIXME
                     // ((value * 127) - 8191) ?
-                    int pitchBendVal = (127-m_control_events[control_evt_id].getValue())*128-128*128;
+                    int pitchBendVal = (127 - m_control_events[control_evt_id].getValue())*128 - 128*128;
 
-                    if (pitchBendVal > 0) pitchBendVal-=8192;
-                    else if (pitchBendVal < 0) pitchBendVal +=8192;
+                    if      (pitchBendVal > 0) pitchBendVal -= 8192;
+                    else if (pitchBendVal < 0) pitchBendVal += 8192;
 
-                    m.SetPitchBend( channel,
-                                    pitchBendVal );
+                    m.SetPitchBend(channel, pitchBendVal);
 
                     if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding midi event!" << std::endl; }
                 }
@@ -1556,16 +1557,16 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
             // other controller
             else
             {
-                int time=m_control_events[control_evt_id].getTick() - firstNoteStartTick;
+                int time = m_control_events[control_evt_id].getTick() - firstNoteStartTick;
 
                 // controller changes happens before the area we play
                 // but perhaps it still is affecting the area we want to play - check for that.
-                bool addControlEvent = true;
+                bool doAddControlEvent = true;
                 if (time < 0)
                 {
                     if (control_evt_id+1 < controllerAmount)
                     {
-                        addControlEvent = false;
+                        doAddControlEvent = false;
                         int checkEventID = control_evt_id+1;
                         
                         // check if there are other controller events of the same type before the area we play.
@@ -1576,7 +1577,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                                 m_control_events[checkEventID].getController() == controllerID)
                             {
                                 // the current event has no effect, there is another one later, disregard it.
-                                addControlEvent = false;
+                                doAddControlEvent = false;
                                 break;
                             }
 
@@ -1584,7 +1585,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                                m_control_events[checkEventID].getController() == controllerID)
                             {
                                 // there is another event, but it's later so current event is still relevant.
-                                addControlEvent = true;
+                                doAddControlEvent = true;
                                 time = 0;
                                 break;
                             }
@@ -1594,7 +1595,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                             {
                                 // we reaached the end, there are no other events of the same type
                                 // this one still affects playback of the area that we're playing.
-                                addControlEvent = true;
+                                doAddControlEvent = true;
                                 time = 0;
                                 break;
                             }
@@ -1603,22 +1604,22 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                     else
                     {
                         // there are no other events in track. add it.
-                        addControlEvent = true;
+                        doAddControlEvent = true;
                         time = 0;
                     }
                 }
                 else
                 {
-                    addControlEvent = true;
+                    doAddControlEvent = true;
                 }
 
-                if (addControlEvent)
+                if (doAddControlEvent)
                 {
                     m.SetTime( time );
 
-                    m.SetControlChange( channel,
-                                        controllerID,
-                                        127-m_control_events[control_evt_id].getValue() );
+                    m.SetControlChange(channel,
+                                       controllerID,
+                                       127 - m_control_events[control_evt_id].getValue() );
 
                     if (not midiTrack->PutEvent( m ))
                     {
@@ -1636,9 +1637,8 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
 
     if (selectionOnly) startTick = firstNoteStartTick;
-    return             last_event_tick - firstNoteStartTick;
-
-
+    
+    return last_event_tick - firstNoteStartTick;
 }
 
 // =======================================================================================================
@@ -1952,11 +1952,11 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                 else if (strcmp("controlevent", xml->getNodeName()) == 0)
                 {
 
-                    ControllerEvent* temp = new ControllerEvent(sequence, 0, 0, 0);
-                    if ( !temp->readFromFile(xml) )
+                    ControllerEvent* temp = new ControllerEvent(m_sequence, 0, 0, 0);
+                    if (not temp->readFromFile(xml))
                     {
                         // thre was an error when trying to load control event
-                        std::cout << "A controller event was discarded because it is invalid" << std::endl;
+                        std::cerr << "A controller event was discarded because it is invalid" << std::endl;
                         delete temp;
                     }
                     else

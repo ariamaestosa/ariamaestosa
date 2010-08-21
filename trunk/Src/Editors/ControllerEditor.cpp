@@ -35,7 +35,9 @@
 #include <cmath>
 
 
-namespace AriaMaestosa {
+using namespace AriaMaestosa;
+
+// ----------------------------------------------------------------------------------------------------------
 
 ControllerEditor::ControllerEditor(Track* track) : Editor(track)
 {
@@ -49,11 +51,20 @@ ControllerEditor::ControllerEditor(Track* track) : Editor(track)
     controllerChoice = new ControllerChoice();
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
+ControllerEditor::~ControllerEditor()
+{
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
 int ControllerEditor::getCurrentControllerType()
 {
     return controllerChoice->getControllerID();
 }
 
+// ----------------------------------------------------------------------------------------------------------
 
 void ControllerEditor::renderEvents()
 {
@@ -69,14 +80,14 @@ void ControllerEditor::renderEvents()
 
     const int currentController = controllerChoice->getControllerID();
 
-    const int eventAmount = track->getControllerEventAmount( currentController );
-    const int scroll = sequence->getXScrollInPixels();
+    const int eventAmount = m_track->getControllerEventAmount( currentController );
+    const int scroll = m_sequence->getXScrollInPixels();
 
 
     int eventsOfThisType=0;
-    for(int n=0; n<eventAmount; n++)
+    for (int n=0; n<eventAmount; n++)
     {
-        tmp = track->getControllerEvent(n, currentController);
+        tmp = m_track->getControllerEvent(n, currentController);
         if (tmp->getController() != currentController) continue; // only draw events of this controller
         eventsOfThisType++;
 
@@ -107,6 +118,8 @@ void ControllerEditor::renderEvents()
     }
 
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
                               RelativeXCoord mousex_initial, int mousey_initial, bool focus)
@@ -150,7 +163,7 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
         // top value is 500, bottom value is 0, find where to put middle value for it to be main tempo
         const int liney = (int)(
-                                area_to_y - (area_to_y-area_from_y)*( (sequence->getTempo()-20) / 380.0)
+                                area_to_y - (area_to_y-area_from_y)*((m_sequence->getTempo()-20) / 380.0)
                                 );
         AriaRender::line(0, liney, getXEnd(), liney);
     }
@@ -175,7 +188,7 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     renderEvents();
 
     // ----------------------- add controller events (preview) -------------------
-    if (track->graphics->dragging_resize) hasBeenResizing=true;
+    if (m_track->graphics->dragging_resize) hasBeenResizing=true;
 
     const bool on_off = controllerChoice->isOnOffController( controllerChoice->getControllerID() );
     if (m_mouse_is_in_editor and selection_begin == -1 and not on_off)
@@ -197,10 +210,10 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
             if (tick2 < 0) tick2 = 0;
             if (tick1 < 0) tick1 = 0;
 
-            AriaRender::line(( tick1 - sequence->getXScrollInMidiTicks())
-                             *sequence->getZoom()+Editor::getEditorXStart(), mousey_initial,
-                             ( tick2 - sequence->getXScrollInMidiTicks())
-                             *sequence->getZoom()+Editor::getEditorXStart(), mousey_current);
+            AriaRender::line((tick1 - m_sequence->getXScrollInMidiTicks()) *
+                             m_sequence->getZoom()+Editor::getEditorXStart(), mousey_initial,
+                             (tick2 - m_sequence->getXScrollInMidiTicks()) *
+                             m_sequence->getZoom()+Editor::getEditorXStart(), mousey_current);
         }
     }
     AriaRender::lineWidth(1);
@@ -210,11 +223,11 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     // -----------------------------------------------------------------
 
     // grey background
-    if (!focus) AriaRender::color(0.4, 0.4, 0.4);
-    else AriaRender::color(0.8, 0.8, 0.8);
+    if (not focus) AriaRender::color(0.4, 0.4, 0.4);
+    else           AriaRender::color(0.8, 0.8, 0.8);
 
-    AriaRender::rect( 0, getEditorYStart(),
-                      Editor::getEditorXStart(), getYEnd());
+    AriaRender::rect(0, getEditorYStart(),
+                     Editor::getEditorXStart(), getYEnd());
 
     // controller name
     AriaRender::images();
@@ -226,6 +239,8 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void ControllerEditor::mouseDown(RelativeXCoord x, const int y)
 {
 
@@ -234,39 +249,51 @@ void ControllerEditor::mouseDown(RelativeXCoord x, const int y)
 
     // prepare coords
     selection_begin = -1;
-    selection_end = -1;
+    selection_end   = -1;
 
     // check if user is dragging on this track
-    m_mouse_is_in_editor=false;
-    if (y<getYEnd()-15 and y>getEditorYStart() and
+    m_mouse_is_in_editor = false;
+    
+    if (y < getYEnd()-15 and y > getEditorYStart() and
        x.getRelativeTo(WINDOW) < getWidth() - 24 and
-       x.getRelativeTo(EDITOR)>-1)
-        m_mouse_is_in_editor=true;
+       x.getRelativeTo(EDITOR) > -1)
+    {
+        m_mouse_is_in_editor = true;
+    }
 
     // check whether we're selecting
     selecting = false;
     if (m_mouse_is_in_editor and Display::isSelectMorePressed())
+    {
         selecting = true;
+    }
 
-    if ( x.getRelativeTo(WINDOW)<Editor::getEditorXStart() and y>getEditorYStart() and !track->graphics->collapsed )
+    if (x.getRelativeTo(WINDOW) < Editor::getEditorXStart() and y > getEditorYStart() and
+        not m_track->graphics->collapsed )
+    {
         Display::popupMenu(controllerChoice,x.getRelativeTo(WINDOW),y+15);
+    }
 
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void ControllerEditor::mouseDrag(RelativeXCoord mousex_current, const int mousey_current,
                                  RelativeXCoord mousex_initial, const int mousey_initial)
 {
 
-    if ( m_mouse_is_in_editor and selecting /*Display::isSelectMorePressed()*/ )
+    if (m_mouse_is_in_editor and selecting)
     {
 
         // ------------------------ select ---------------------
-        selection_begin = snapMidiTickToGrid( /*sequence->getXScrollInMidiTicks() +*/ mousex_initial.getRelativeTo(MIDI) );
-        selection_end   = snapMidiTickToGrid( /*sequence->getXScrollInMidiTicks() +*/ mousex_current.getRelativeTo(MIDI) );
+        selection_begin = snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI) );
+        selection_end   = snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI) );
 
     }
 
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                                RelativeXCoord mousex_initial, int mousey_initial)
@@ -280,8 +307,8 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
 
             // ------------------------ select ---------------------
 
-            selection_begin = snapMidiTickToGrid(/*sequence->getXScrollInMidiTicks() +*/ mousex_initial.getRelativeTo(MIDI) );
-            selection_end   = snapMidiTickToGrid( /*sequence->getXScrollInMidiTicks() +*/ mousex_current.getRelativeTo(MIDI) );
+            selection_begin = snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI) );
+            selection_end   = snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI) );
 
             // no selection
             if (selection_begin == selection_end)
@@ -307,14 +334,14 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
             if (mousex_initial.getRelativeTo(WINDOW) < Editor::getEditorXStart()) return;
 
 
-            if (mousey_initial<area_from_y) return;
-            if (mousey_initial>area_to_y) return;
-            if (track->graphics->dragging_resize or hasBeenResizing) return;
-            if (mousey_current<area_from_y) mousey_current=area_from_y;
-            if (mousey_current>area_to_y) mousey_current=area_to_y;
+            if (mousey_initial < area_from_y) return;
+            if (mousey_initial > area_to_y)   return;
+            if (m_track->graphics->dragging_resize or hasBeenResizing) return;
+            if (mousey_current < area_from_y) mousey_current=area_from_y;
+            if (mousey_current > area_to_y) mousey_current=area_to_y;
 
-            int tick1=snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI) /*+ sequence->getXScrollInMidiTicks()*/ );
-            int tick2=snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI) /*+ sequence->getXScrollInMidiTicks()*/ );
+            int tick1 = snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI) );
+            int tick2 = snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI) );
 
             if (tick2 < 0) tick2 = 0;
             if (tick1 < 0) tick1 = 0;
@@ -326,29 +353,35 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
                 if ( on_off )
                 {
                     // on/off controllers should only use values 0 and 127
-                    if (y_value < 64) y_value = 0;
-                    else y_value = 127;
+                    if  (y_value < 64) y_value = 0;
+                    else               y_value = 127;
                 }
 
-                track->action( new Action::AddControlEvent(tick1,
-                                     y_value,
-                                     controllerChoice->getControllerID()) );
+                m_track->action( new Action::AddControlEvent(tick1,
+                                                             y_value,
+                                                             controllerChoice->getControllerID()) );
             }
             else if (not on_off) // on/off controllers can't have slides
             {
-                if (tick1<tick2) track->action( new Action::AddControllerSlide(tick1,
-                                                                         (int)( (mousey_initial-area_from_y)/y_zoom ),
-                                                                         tick2,
-                                                                         (int)( (mousey_current-area_from_y)/y_zoom ),
-                                                                         controllerChoice->getControllerID()) );
-                else track->action( new Action::AddControllerSlide(tick2,
-                                                               (int)( (mousey_current-area_from_y)/y_zoom ),
-                                                               tick1,
-                                                               (int)( (mousey_initial-area_from_y)/y_zoom ),
-                                                               controllerChoice->getControllerID()) );
-            }// end if tick1==tick2
+                if (tick1 < tick2) 
+                {
+                    m_track->action( new Action::AddControllerSlide(tick1,
+                                                       (int)( (mousey_initial-area_from_y)/y_zoom ),
+                                                       tick2,
+                                                       (int)( (mousey_current-area_from_y)/y_zoom ),
+                                                       controllerChoice->getControllerID()) );
+                }
+                else
+                {
+                    m_track->action( new Action::AddControllerSlide(tick2,
+                                                       (int)( (mousey_current-area_from_y)/y_zoom ),
+                                                       tick1,
+                                                       (int)( (mousey_initial-area_from_y)/y_zoom ),
+                                                       controllerChoice->getControllerID()) );
+                }
+            } // end if tick1==tick2
 
-        }// end if meta down
+        } // end if meta down
     }
 
     m_mouse_is_in_editor=false;
@@ -358,10 +391,14 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
 
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void ControllerEditor::rightClick(RelativeXCoord x, const int y)
 {
 
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void ControllerEditor::mouseExited(RelativeXCoord mousex_current, int mousey_current,
                                    RelativeXCoord mousex_initial, int mousey_initial)
@@ -370,39 +407,39 @@ void ControllerEditor::mouseExited(RelativeXCoord mousex_current, int mousey_cur
     this->mouseUp(mousex_current, mousey_current, mousex_initial, mousey_initial);
     Display::render();
 }
-    
-ControllerEditor::~ControllerEditor()
-{
-}
+
+// ----------------------------------------------------------------------------------------------------------
 
 int ControllerEditor::getSelectionBegin()
 {
     return selection_begin;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 int ControllerEditor::getSelectionEnd()
 {
     return selection_end;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void ControllerEditor::selectAll( bool selected )
 {
 
     // Select none
-    if (!selected)
+    if (not selected)
     {
         selection_begin = -1;
         selection_end = -1;
     }
     else
-        // Select all
     {
-
+        // Select all
         selection_begin = 0;
-        //selection_end = sequence->getMeasureAmount() * sequence->ticksPerMeasure();
         selection_end = getMeasureData()->getTotalTickAmount();
     }
 
 }
 
-}
+// ----------------------------------------------------------------------------------------------------------

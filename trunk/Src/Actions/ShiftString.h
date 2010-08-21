@@ -33,11 +33,13 @@ namespace AriaMaestosa
         class ShiftString : public SingleTrackAction
         {
             friend class AriaMaestosa::Track;
-            int amount, noteid;
             
-            NoteRelocator relocator;
-            std::vector<int> frets;
-            std::vector<int> strings;
+            int m_amount;
+            int m_note_id;
+            
+            NoteRelocator m_relocator;
+            std::vector<int> m_frets;
+            std::vector<int> m_strings;
             
         public:
             

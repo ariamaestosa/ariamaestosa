@@ -27,26 +27,33 @@ ShiftString::ShiftString(const int amount, const int noteid) :
     //I18N: (undoable) action name
     SingleTrackAction( _("string change") )
 {
-    ShiftString::amount = amount;
-    ShiftString::noteid = noteid;
+    m_amount = amount;
+    m_note_id = noteid;
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 ShiftString::~ShiftString()
 {
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void ShiftString::undo()
 {
     Note* current_note;
-    relocator.setParent(track);
-    relocator.prepareToRelocate();
-    int n=0;
-    while( (current_note = relocator.getNextNote()) and current_note != NULL)
+    m_relocator.setParent(track);
+    m_relocator.prepareToRelocate();
+    
+    int n = 0;
+    while ((current_note = m_relocator.getNextNote()) and current_note != NULL)
     {
-        current_note->setStringAndFret( strings[n], frets[n] );
+        current_note->setStringAndFret( m_strings[n], m_frets[n] );
         n++;
     }
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void ShiftString::perform()
 {
@@ -54,29 +61,30 @@ void ShiftString::perform()
     
     if (track->graphics->editorMode != GUITAR) return;
     
-    ASSERT(noteid != ALL_NOTES); // not supported in this function (mostly because not needed, but could logically be implmented)
+    // not supported in this function (mostly because not needed, but could logically be implmented)
+    ASSERT(m_note_id != ALL_NOTES);
     
     // only accept to do this in guitar mode
-    if (track->graphics->editorMode != GUITAR)
-        return;
+    if (track->graphics->editorMode != GUITAR) return;
     
-    if (noteid==SELECTED_NOTES)
+    if (m_note_id == SELECTED_NOTES)
     {
         
         bool played=false;
         const int amount_n = track->m_notes.size();
-        for(int n=0; n<amount_n; n++)
+        
+        for (int n=0; n<amount_n; n++)
         {
-            if (!track->m_notes[n].isSelected()) continue;
+            if (not track->m_notes[n].isSelected()) continue;
             
-            frets.push_back( track->m_notes[n].getFret() );
-            strings.push_back( track->m_notes[n].getString() );
+            m_frets.push_back( track->m_notes[n].getFret() );
+            m_strings.push_back( track->m_notes[n].getString() );
             
-            track->m_notes[n].shiftString(amount);
+            track->m_notes[n].shiftString(m_amount);
             
-            relocator.rememberNote( track->m_notes[n] );
+            m_relocator.rememberNote( track->m_notes[n] );
             
-            if (!played)
+            if (not played)
             {
                 track->m_notes[n].play(false);
                 played = true;
@@ -86,16 +94,16 @@ void ShiftString::perform()
     }
     else
     {
-        ASSERT_E(noteid,>=,0);
-        ASSERT_E(noteid,<,track->m_notes.size());
+        ASSERT_E(m_note_id,>=,0);
+        ASSERT_E(m_note_id,<,track->m_notes.size());
         
-        frets.push_back( track->m_notes[noteid].getFret() );
-        strings.push_back( track->m_notes[noteid].getString() );
-        track->m_notes[noteid].shiftString(amount);
-        relocator.rememberNote( track->m_notes[noteid] );
-        track->m_notes[noteid].play(false);
+        m_frets.push_back( track->m_notes[m_note_id].getFret() );
+        m_strings.push_back( track->m_notes[m_note_id].getString() );
+        track->m_notes[m_note_id].shiftString(m_amount);
+        m_relocator.rememberNote( track->m_notes[m_note_id] );
+        track->m_notes[m_note_id].play(false);
     }
     
 }
 
-
+// ----------------------------------------------------------------------------------------------------------
