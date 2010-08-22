@@ -556,7 +556,7 @@ namespace EditorStemParams
     }
     int getStemX(const NoteRenderInfo& info)
     {
-        return getStemX(info.tick, info.stem_type);
+        return getStemX(info.m_tick, info.m_stem_type);
     }
 }
 using namespace EditorStemParams;
@@ -568,7 +568,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
 {
     AriaRender::lineWidth(2);
 
-    renderInfo.setY( LEVEL_TO_Y(renderInfo.level) - head_radius + 4 );
+    renderInfo.setY( LEVEL_TO_Y(renderInfo.m_level) - head_radius + 4 );
 
     // note head
     /*
@@ -580,10 +580,10 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     else
      */
     
-    RelativeXCoord relX(renderInfo.tick, MIDI);
+    RelativeXCoord relX(renderInfo.m_tick, MIDI);
     const int noteX = relX.getRelativeTo(WINDOW);
     
-    if (renderInfo.instant_hit)
+    if (renderInfo.m_instant_hit)
     {
         AriaRender::primitives();
         AriaRender::color(0,0,0);
@@ -594,11 +594,11 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
         AriaRender::line(noteX-5, renderInfo.getY() + 7,
                          noteX+5, renderInfo.getY() - 7);
     }
-    else if (renderInfo.hollow_head)
+    else if (renderInfo.m_hollow_head)
     {
         AriaRender::images();
-        if (renderInfo.selected)    AriaRender::setImageState(AriaRender::STATE_SELECTED_NOTE);
-        else                        AriaRender::setImageState(AriaRender::STATE_NOTE);
+        if (renderInfo.m_selected) AriaRender::setImageState(AriaRender::STATE_SELECTED_NOTE);
+        else                       AriaRender::setImageState(AriaRender::STATE_NOTE);
         
         noteOpen->move(noteX, renderInfo.getY());
         noteOpen->render();
@@ -606,8 +606,8 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     else
     {
         AriaRender::images();
-        if (renderInfo.selected) AriaRender::setImageState(AriaRender::STATE_SELECTED_NOTE);
-        else                     AriaRender::setImageState(AriaRender::STATE_NOTE);
+        if (renderInfo.m_selected) AriaRender::setImageState(AriaRender::STATE_SELECTED_NOTE);
+        else                       AriaRender::setImageState(AriaRender::STATE_NOTE);
         
         noteClosed->move(noteX, renderInfo.getY());
         noteClosed->render();
@@ -630,9 +630,9 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     else if (g_clef) score_to_level = middle_c_level - 1;
 
     // draw small lines above score if needed
-    if (renderInfo.level < score_from_level)
+    if (renderInfo.m_level < score_from_level)
     {
-        for(int lvl=score_from_level+1; lvl>renderInfo.level+renderInfo.level%2; lvl -= 2)
+        for (int lvl=score_from_level+1; lvl>renderInfo.m_level + renderInfo.m_level%2; lvl -= 2)
         {
             const int lvly = getEditorYStart() + Y_STEP_HEIGHT*lvl - head_radius - getYScrollInPixels() + 2;
             AriaRender::line(noteX-5, lvly, noteX+15, lvly);
@@ -640,9 +640,9 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     }
 
     // draw small lines below score if needed
-    if (renderInfo.level > score_to_level)
+    if (renderInfo.m_level > score_to_level)
     {
-        for(int lvl=score_to_level; lvl<=renderInfo.level-renderInfo.level%2+2; lvl += 2)
+        for (int lvl=score_to_level; lvl<=renderInfo.m_level - renderInfo.m_level%2 + 2; lvl += 2)
         {
             const int lvly = getEditorYStart() + Y_STEP_HEIGHT*lvl - head_radius - getYScrollInPixels() + 2;
             AriaRender::line(noteX-5, lvly, noteX+15, lvly);
@@ -650,7 +650,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     }
 
     // draw small lines between both scores if needed
-    if (g_clef and f_clef and renderInfo.level == middle_c_level)
+    if (g_clef and f_clef and renderInfo.m_level == middle_c_level)
     {
         const int lvly = getEditorYStart() + Y_STEP_HEIGHT*(middle_c_level+1) - head_radius -
                          getYScrollInPixels() + 2;
@@ -660,35 +660,36 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     AriaRender::lineWidth(2);
 
     // dotted
-    if (renderInfo.dotted)
+    if (renderInfo.m_dotted)
     {
         AriaRender::color(1,1,1);
         AriaRender::pointSize(5);
         AriaRender::point(noteX + 14, renderInfo.getY() + 5);
 
-        if (renderInfo.selected) AriaRender::color(1,0,0);
-        else AriaRender::color(0,0,0);
+        if (renderInfo.m_selected) AriaRender::color(1,0,0);
+        else                       AriaRender::color(0,0,0);
+        
         AriaRender::pointSize(3);
 
         AriaRender::point(noteX + 14, renderInfo.getY() + 5);
     }
 
     // sharpness sign
-    if (renderInfo.sign == SHARP)
+    if (renderInfo.m_sign == SHARP)
     {
         AriaRender::images();
         sharpSign->move(noteX - 5, renderInfo.getY() + head_radius);
         sharpSign->render();
         AriaRender::primitives();
     }
-    else if (renderInfo.sign == FLAT)
+    else if (renderInfo.m_sign == FLAT)
     {
         AriaRender::images();
         flatSign->move(noteX - 5, renderInfo.getY() + head_radius);
         flatSign->render();
         AriaRender::primitives();
     }
-    else if (renderInfo.sign == NATURAL)
+    else if (renderInfo.m_sign == NATURAL)
     {
         AriaRender::images();
         naturalSign->move(noteX - 5, renderInfo.getY() + head_radius);
@@ -702,17 +703,17 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
 void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* analyser)
 {
     AriaRender::primitives();
-    if (renderInfo.selected) AriaRender::color(1,0,0);
-    else                     AriaRender::color(0,0,0);
+    if (renderInfo.m_selected) AriaRender::color(1,0,0);
+    else                       AriaRender::color(0,0,0);
 
     // stem
-    if (renderInfo.draw_stem)
+    if (renderInfo.m_draw_stem)
     {
 
-        if (renderInfo.stem_type == STEM_UP or renderInfo.stem_type == STEM_DOWN)
+        if (renderInfo.m_stem_type == STEM_UP or renderInfo.m_stem_type == STEM_DOWN)
         {
             int stem_from_y = LEVEL_TO_Y(renderInfo.getStemOriginLevel());
-            if (renderInfo.stem_type == STEM_DOWN) stem_from_y += 6;
+            if (renderInfo.m_stem_type == STEM_DOWN) stem_from_y += 6;
             
             AriaRender::line( getStemX(renderInfo), stem_from_y,
                               getStemX(renderInfo), LEVEL_TO_Y(analyser->getStemTo(renderInfo))   );
@@ -720,20 +721,20 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
 
 
         // flags
-        if (renderInfo.flag_amount>0 and not renderInfo.beam)
+        if (renderInfo.m_flag_amount > 0 and not renderInfo.m_beam)
         {
             static const int stem_height = noteFlag->getImageHeight();
             const int stem_end = LEVEL_TO_Y(analyser->getStemTo(renderInfo));
-            const int flag_y_origin = (renderInfo.stem_type==STEM_UP ? stem_end : stem_end - stem_height );
+            const int flag_y_origin = (renderInfo.m_stem_type == STEM_UP ? stem_end : stem_end - stem_height );
             const int flag_x_origin = getStemX(renderInfo);
-            const int flag_step = (renderInfo.stem_type==STEM_UP ? 7 : -7 );
+            const int flag_step = (renderInfo.m_stem_type == STEM_UP ? 7 : -7 );
 
-            noteFlag->setFlip( false, renderInfo.stem_type!=STEM_UP );
+            noteFlag->setFlip(false, renderInfo.m_stem_type != STEM_UP);
 
             AriaRender::images();
-            for (int n=0; n<renderInfo.flag_amount; n++)
+            for (int n=0; n<renderInfo.m_flag_amount; n++)
             {
-                noteFlag->move( flag_x_origin , flag_y_origin + n*flag_step);
+                noteFlag->move(flag_x_origin , flag_y_origin + n*flag_step);
                 noteFlag->render();
             }
             AriaRender::primitives();
@@ -741,19 +742,19 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
     }
 
     // triplet
-    if (renderInfo.draw_triplet_sign and renderInfo.triplet_arc_tick_start != -1)
+    if (renderInfo.m_draw_triplet_sign and renderInfo.m_triplet_arc_tick_start != -1)
     {
         int triplet_arc_x_start = -1;
         int triplet_arc_x_end = -1;
         
-        if (renderInfo.triplet_arc_tick_start != -1)
+        if (renderInfo.m_triplet_arc_tick_start != -1)
         {
-             RelativeXCoord relXStart(renderInfo.triplet_arc_tick_start, MIDI);
+             RelativeXCoord relXStart(renderInfo.m_triplet_arc_tick_start, MIDI);
              triplet_arc_x_start = relXStart.getRelativeTo(WINDOW) + 8;
         }
-        if (renderInfo.triplet_arc_tick_end != -1)
+        if (renderInfo.m_triplet_arc_tick_end != -1)
         {
-            RelativeXCoord relXEnd(renderInfo.triplet_arc_tick_end, MIDI);
+            RelativeXCoord relXEnd(renderInfo.m_triplet_arc_tick_end, MIDI);
             triplet_arc_x_end = relXEnd.getRelativeTo(WINDOW) + 8;
         }
         
@@ -766,13 +767,13 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
                               10 : (triplet_arc_x_end - triplet_arc_x_start)/2);
 
         AriaRender::color(0,0,0);
-        AriaRender::arc(center_x, LEVEL_TO_Y(renderInfo.triplet_arc_level) +
-                        (renderInfo.triplet_show_above ? 0 : 10), radius_x, 10,
-                        renderInfo.triplet_show_above);
+        AriaRender::arc(center_x, LEVEL_TO_Y(renderInfo.m_triplet_arc_level) +
+                        (renderInfo.m_triplet_show_above ? 0 : 10), radius_x, 10,
+                        renderInfo.m_triplet_show_above);
 
         AriaRender::images();
-        AriaRender::renderNumber(wxT("3"), center_x-2, LEVEL_TO_Y(renderInfo.triplet_arc_level) +
-                                 ( renderInfo.triplet_show_above? 2 : 20));
+        AriaRender::renderNumber(wxT("3"), center_x-2, LEVEL_TO_Y(renderInfo.m_triplet_arc_level) +
+                                 (renderInfo.m_triplet_show_above ? 2 : 20));
         AriaRender::primitives();
     }
 
@@ -781,12 +782,12 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
     if (renderInfo.getTiedToTick() != -1)
     {
     
-        const float center_tick = (renderInfo.getTiedToTick() + renderInfo.tick)/2.0;
+        const float center_tick = (renderInfo.getTiedToTick() + renderInfo.m_tick)/2.0;
         
         RelativeXCoord relXFrom(renderInfo.getTiedToTick(), MIDI);
         const int x_from = relXFrom.getRelativeTo(WINDOW);
         
-        RelativeXCoord relXTo(renderInfo.tick, MIDI);
+        RelativeXCoord relXTo(renderInfo.m_tick, MIDI);
         const int x_to = relXTo.getRelativeTo(WINDOW);
                 
         const bool show_above = renderInfo.isTieUp();
@@ -800,21 +801,21 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
     }
 
     // beam
-    if (renderInfo.beam)
+    if (renderInfo.m_beam)
     {
         AriaRender::color(0,0,0);
         AriaRender::lineWidth(2);
         
         const int x1 = getStemX(renderInfo);
         int y1       = LEVEL_TO_Y(analyser->getStemTo(renderInfo));
-        int y2       = LEVEL_TO_Y(renderInfo.beam_to_level);
+        int y2       = LEVEL_TO_Y(renderInfo.m_beam_to_level);
 
-        const int y_diff = (renderInfo.stem_type == STEM_UP ? 5 : -5);
+        const int y_diff = (renderInfo.m_stem_type == STEM_UP ? 5 : -5);
 
         AriaRender::lineSmooth(true);
-        for(int n=0; n<renderInfo.flag_amount; n++)
+        for (int n=0; n<renderInfo.m_flag_amount; n++)
         {
-            AriaRender::line(x1, y1, getStemX(renderInfo.beam_to_tick, renderInfo.stem_type), y2);
+            AriaRender::line(x1, y1, getStemX(renderInfo.m_beam_to_tick, renderInfo.m_stem_type), y2);
             y1 += y_diff;
             y2 += y_diff;
         }

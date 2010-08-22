@@ -94,7 +94,7 @@ void TablaturePrintable::earlySetup(const int trackID, Track* track)
          */
         virtual int getBeginMeasure(const int noteID) const
         {
-            return getMeasureData()->measureAtTick( m_analyser->noteRenderInfo[noteID].tick );
+            return getMeasureData()->measureAtTick( m_analyser->noteRenderInfo[noteID].m_tick );
         }
         
         /**
@@ -103,7 +103,7 @@ void TablaturePrintable::earlySetup(const int trackID, Track* track)
          */
         virtual int  getStartTick(const int noteID) const
         {
-            return m_analyser->noteRenderInfo[noteID].tick;
+            return m_analyser->noteRenderInfo[noteID].m_tick;
         }
         
         /**
@@ -112,7 +112,7 @@ void TablaturePrintable::earlySetup(const int trackID, Track* track)
          */
         virtual int getEndTick(const int noteID) const
         {
-            return m_analyser->noteRenderInfo[noteID].tick + m_analyser->noteRenderInfo[noteID].tick_length;
+            return m_analyser->noteRenderInfo[noteID].m_tick + m_analyser->noteRenderInfo[noteID].m_tick_length;
         }
     };
     

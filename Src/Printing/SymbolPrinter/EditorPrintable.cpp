@@ -44,23 +44,21 @@ EditorPrintable::~EditorPrintable()
 
 void EditorPrintable::setCurrentDC(wxDC* dc)
 {
-    EditorPrintable::dc = dc;
+    m_dc = dc;
 }
 
 // -------------------------------------------------------------------------------------------------------------
 
 void EditorPrintable::drawVerticalDivider(LayoutElement* el, const int y0, const int y1, const bool atEnd)
-{
-    //if (el->getType() == TIME_SIGNATURE_EL) return;
-    
+{    
     if (not el->m_render_start_bar and not atEnd) return;
     if (not el->m_render_end_bar and atEnd)       return;
 
     const int elem_x_start = (atEnd ? el->getXTo() : el->getXFrom());
     
     // draw vertical line that starts measure
-    dc->SetPen(  wxPen( wxColour(0,0,0), 10 ) );
-    dc->DrawLine( elem_x_start, y0, elem_x_start, y1);
+    m_dc->SetPen(  wxPen( wxColour(0,0,0), 10 ) );
+    m_dc->DrawLine( elem_x_start, y0, elem_x_start, y1);
 }
 
 // -------------------------------------------------------------------------------------------------------------
@@ -68,8 +66,8 @@ void EditorPrintable::drawVerticalDivider(LayoutElement* el, const int y0, const
 void EditorPrintable::drawVerticalDivider(const int x, const int y0, const int y1)
 {
     // draw vertical line that starts measure
-    dc->SetPen(  wxPen( wxColour(0,0,0), 10 ) );
-    dc->DrawLine( x, y0, x, y1);
+    m_dc->SetPen(  wxPen( wxColour(0,0,0), 10 ) );
+    m_dc->DrawLine( x, y0, x, y1);
 }
 
 // -------------------------------------------------------------------------------------------------------------
@@ -79,28 +77,28 @@ void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0,
     wxString num   = wxString::Format( wxT("%i"), el->num   );
     wxString denom = wxString::Format( wxT("%i"), el->denom );
     
-    wxFont oldfont = dc->GetFont();
+    wxFont oldfont = m_dc->GetFont();
 
     //FIXME: don't hardcode fonts here
     //FIXME: find why font sizes are so different between OS X and Linux
 #ifdef __WXMAC__
-    dc->SetFont( wxFont(150,wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD) );
+    m_dc->SetFont( wxFont(150,wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD) );
 #else
-    dc->SetFont( wxFont(100,wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD) );
+    m_dc->SetFont( wxFont(100,wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD) );
 #endif
-    dc->SetTextForeground( wxColour(0,0,0) );
+    m_dc->SetTextForeground( wxColour(0,0,0) );
     
-    wxSize text_size = dc->GetTextExtent(denom);
+    wxSize text_size = m_dc->GetTextExtent(denom);
     const int text_x = el->getXTo() - text_size.GetWidth() - 20;
     const int text_h = text_size.GetHeight();
 
     const int numY   = y0 + (y1 - y0)/4;
     const int denomY = y0 + (y1 - y0)*3/4;
 
-    dc->DrawText(num,   text_x, numY - text_h/2);
-    dc->DrawText(denom, text_x, denomY - text_h/2);
+    m_dc->DrawText(num,   text_x, numY - text_h/2);
+    m_dc->DrawText(denom, text_x, denomY - text_h/2);
     
-    dc->SetFont(oldfont);    
+    m_dc->SetFont(oldfont);    
 }
 
 // -------------------------------------------------------------------------------------------------------------
@@ -136,9 +134,9 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
             to_wxString(currElem.lastMeasureToRepeat+1);
         }
         
-        dc->SetTextForeground( wxColour(0,0,255) );
-        dc->DrawText( message, elem_x_start,
-                     (barYFrom + barYTo)/2 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()/2 );
+        m_dc->SetTextForeground( wxColour(0,0,255) );
+        m_dc->DrawText(message, elem_x_start,
+                       (barYFrom + barYTo)/2 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()/2 );
     }
     // ****** gathered rest
     else if (currElem.getType() == GATHERED_REST)
@@ -149,25 +147,26 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
         wxString label;
         label << currElem.amountOfTimes;
 
-        dc->SetTextForeground( wxColour(0,0,0) );
-        dc->SetFont( AriaPrintable::getCurrentPrintable()->getNormalFont() );
+        m_dc->SetTextForeground( wxColour(0,0,0) );
+        m_dc->SetFont( AriaPrintable::getCurrentPrintable()->getNormalFont() );
+        
         const int lx = (elem_x_start + elem_x_end)/2 -
                        AriaPrintable::getCurrentPrintable()->getCharacterWidth()*label.size()/2;
         const int ly = y - AriaPrintable::getCurrentPrintable()->getCharacterHeight()*1.5;
         
-        dc->DrawText( label, lx, ly );
+        m_dc->DrawText( label, lx, ly );
         
-        dc->SetPen( *wxBLACK_PEN );
-        dc->SetBrush( *wxBLACK_BRUSH );
+        m_dc->SetPen( *wxBLACK_PEN );
+        m_dc->SetBrush( *wxBLACK_BRUSH );
         
         const int rect_x_from = elem_x_start + 45;
         const int rect_x_to   = elem_x_end   - 45;
 
-        dc->DrawRectangle( rect_x_from, y - 15, (rect_x_to - rect_x_from), 30 );
+        m_dc->DrawRectangle( rect_x_from, y - 15, (rect_x_to - rect_x_from), 30 );
         
-        dc->SetPen( wxPen(wxColor(0,0,0), 12) );
-        dc->DrawLine( rect_x_from, y - 25, rect_x_from, y + 25 );
-        dc->DrawLine( rect_x_to  , y - 25, rect_x_to  , y + 25 );
+        m_dc->SetPen( wxPen(wxColor(0,0,0), 12) );
+        m_dc->DrawLine( rect_x_from, y - 25, rect_x_from, y + 25 );
+        m_dc->DrawLine( rect_x_to  , y - 25, rect_x_to  , y + 25 );
     }
     // ****** play again
     else if (currElem.getType() == PLAY_MANY_TIMES)
@@ -175,17 +174,17 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
         wxString label(wxT("X"));
         label << currElem.amountOfTimes;
         
-        dc->SetTextForeground( wxColour(0,0,255) );
-        dc->DrawText( label, elem_x_start,
-                     (barYFrom + barYTo)/2 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()/2 );
+        m_dc->SetTextForeground( wxColour(0,0,255) );
+        m_dc->DrawText(label, elem_x_start,
+                       (barYFrom + barYTo)/2 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()/2);
     }
     // ****** normal measure
     else if (currElem.getType() == SINGLE_MEASURE)
     {
         //std::cout << "---- element is normal\n";
         
-        dc->SetTextForeground( wxColour(0,0,255) );
-        dc->SetFont( AriaPrintable::getCurrentPrintable()->getNormalFont() );
+        m_dc->SetTextForeground( wxColour(0,0,255) );
+        m_dc->SetFont( AriaPrintable::getCurrentPrintable()->getNormalFont() );
 
         // draw measure ID
         if (drawMeasureNumbers)
@@ -195,11 +194,11 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
             wxString measureLabel;
             measureLabel << meas_id;
             
-            dc->DrawText( measureLabel,
-                         elem_x_start,
-                         y0 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()*1.4 );
+            m_dc->DrawText(measureLabel,
+                           elem_x_start,
+                           y0 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()*1.4);
         }
-        dc->SetTextForeground( wxColour(0,0,0) );
+        m_dc->SetTextForeground( wxColour(0,0,0) );
     }
     
     if (currElem.hasTempoChange() and drawMeasureNumbers)
@@ -211,17 +210,17 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
                             HEAD_RADIUS + 50;
         wxPoint tempoHeadLocation(tempo_x, tempo_y);
         
-        dc->SetPen(  wxPen( wxColour(0,0,0), 12 ) );
-        dc->SetBrush( *wxBLACK_BRUSH );
-        RenderRoutines::drawNoteHead(*dc, tempoHeadLocation, false /* not hollow head */);
+        m_dc->SetPen(  wxPen( wxColour(0,0,0), 12 ) );
+        m_dc->SetBrush( *wxBLACK_BRUSH );
+        RenderRoutines::drawNoteHead(*m_dc, tempoHeadLocation, false /* not hollow head */);
         
         const int tempo = currElem.getTempo();
-        dc->DrawText( wxString::Format(wxT("= %i"), tempo),
-                      tempo_x+HEAD_RADIUS*2,
-                      tempo_y+HEAD_RADIUS-AriaPrintable::getCurrentPrintable()->getCharacterHeight() );
+        m_dc->DrawText(wxString::Format(wxT("= %i"), tempo),
+                       tempo_x + HEAD_RADIUS*2,
+                       tempo_y + HEAD_RADIUS-AriaPrintable::getCurrentPrintable()->getCharacterHeight() );
         
         //FIXME: don't hardcode values
-        dc->DrawLine( tempo_x + HEAD_RADIUS - 8, tempo_y - 10, tempo_x + HEAD_RADIUS - 8, tempo_y-150 );
+        m_dc->DrawLine( tempo_x + HEAD_RADIUS - 8, tempo_y - 10, tempo_x + HEAD_RADIUS - 8, tempo_y-150 );
         
     }
     
@@ -237,7 +236,7 @@ void EditorPrintable::drawTrackName(wxDC& dc, const LineTrackRef& currentTrack, 
 
         wxString label = currentTrack.getTrack()->getName();
         wxSize textSize = dc.GetTextExtent(label);
-        dc.DrawRotatedText( label, x - textSize.GetHeight() - 20,
+        dc.DrawRotatedText(label, x - textSize.GetHeight() - 20,
                            (y0 + y1)/2 + textSize.GetWidth()/2,
                            90 /* degrees */ );
     }
