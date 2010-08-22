@@ -114,15 +114,16 @@ void InsertEmptyMeasures::perform()
     }
     
     // ----------------- move time sig changes -----------------
-    if (!getMeasureData()->isMeasureLengthConstant())
+    if (not getMeasureData()->isMeasureLengthConstant())
     {
         const int timeSigAmount = getMeasureData()->getTimeSigAmount();
-        for(int n=0; n<timeSigAmount; n++)
+        for (int n=0; n<timeSigAmount; n++)
         {
-            if ( getMeasureData()->getTimeSig(n).measure >= m_measure_ID+1 and
-                n!=0 /* dont move first time sig event*/ )
+            if (getMeasureData()->getTimeSig(n).getMeasure() >= m_measure_ID+1 and
+                n != 0 /* dont move first time sig event*/ )
             {
-                getMeasureData()->getTimeSig(n).measure += m_amount;
+                TimeSigChange& timeSig = getMeasureData()->getTimeSig(n);
+                timeSig.setMeasure( timeSig.getMeasure() + m_amount );
             }
         }//next
     }//endif

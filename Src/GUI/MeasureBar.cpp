@@ -266,7 +266,7 @@ void MeasureBar::render(int measureBarY_arg)
             for (int i=0; i<amount; i++)
             {
 
-                if (data->timeSigChanges[i].measure == measureID-1)
+                if (data->timeSigChanges[i].getMeasure() == measureID-1)
                 {
                     const bool selected = (data->selectedTimeSig == i);
                     if (selected)
@@ -287,8 +287,8 @@ void MeasureBar::render(int measureBarY_arg)
                     AriaRender::pointSize(1);
                     AriaRender::images();
 
-                    AriaRender::renderNumber(data->timeSigChanges[i].denom, n + 18, measureBarY + 42 );
-                    AriaRender::renderNumber(data->timeSigChanges[i].num, n + 10, measureBarY + 33 );
+                    AriaRender::renderNumber(data->timeSigChanges[i].getDenom(), n + 18, measureBarY + 42 );
+                    AriaRender::renderNumber(data->timeSigChanges[i].getNum(), n + 10, measureBarY + 33 );
                     AriaRender::primitives();
 
                     AriaRender::color(0,0,0);
@@ -441,7 +441,7 @@ void MeasureBar::rightClick(int x, int y)
         const int amount = data->timeSigChanges.size();
         for (int n=0; n<amount; n++)
         {
-            if (data->timeSigChanges[n].measure == measure)
+            if (data->timeSigChanges[n].getMeasure() == measure)
             {
                 std::cout << "trying to delete measure " << n << std::endl;
                 unselectedMenu->enable_deleteTimeSig_item(true, n);

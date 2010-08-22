@@ -121,6 +121,8 @@
 		9533F8F811DFBFF70002D3ED /* PresetManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 9533F8F611DFBFF70002D3ED /* PresetManager.h */; };
 		9533F8F911DFBFF70002D3ED /* PresetManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9533F8F511DFBFF70002D3ED /* PresetManager.cpp */; };
 		9533F8FA11DFBFF70002D3ED /* PresetManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 9533F8F611DFBFF70002D3ED /* PresetManager.h */; };
+		953C0439122197C0005DF729 /* prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 953C0438122197C0005DF729 /* prefix.pch */; };
+		953C043A122197C0005DF729 /* prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 953C0438122197C0005DF729 /* prefix.pch */; };
 		9544D68411582D5300E0A3BD /* wxEasyPrintWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9544D68211582D5300E0A3BD /* wxEasyPrintWrapper.cpp */; };
 		9544D68511582D5300E0A3BD /* wxEasyPrintWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 9544D68311582D5300E0A3BD /* wxEasyPrintWrapper.h */; };
 		9544D68611582D5300E0A3BD /* wxEasyPrintWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9544D68211582D5300E0A3BD /* wxEasyPrintWrapper.cpp */; };
@@ -735,6 +737,7 @@
 		9533F86011DFAA430002D3ED /* CustomKeyDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CustomKeyDialog.cpp; sourceTree = "<group>"; };
 		9533F8F511DFBFF70002D3ED /* PresetManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PresetManager.cpp; path = ../Src/PresetManager.cpp; sourceTree = SOURCE_ROOT; };
 		9533F8F611DFBFF70002D3ED /* PresetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PresetManager.h; path = ../Src/PresetManager.h; sourceTree = SOURCE_ROOT; };
+		953C0438122197C0005DF729 /* prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
 		9544D68211582D5300E0A3BD /* wxEasyPrintWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wxEasyPrintWrapper.cpp; path = ../Src/Printing/wxEasyPrintWrapper.cpp; sourceTree = SOURCE_ROOT; };
 		9544D68311582D5300E0A3BD /* wxEasyPrintWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wxEasyPrintWrapper.h; path = ../Src/Printing/wxEasyPrintWrapper.h; sourceTree = SOURCE_ROOT; };
 		955AB040115950610067DA80 /* PreferencesData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PreferencesData.cpp; path = ../Src/PreferencesData.cpp; sourceTree = SOURCE_ROOT; };
@@ -1518,6 +1521,7 @@
 				9571194F1125D8D200104BF5 /* OpenGL.h */,
 				955AB040115950610067DA80 /* PreferencesData.cpp */,
 				955AB041115950610067DA80 /* PreferencesData.h */,
+				953C0438122197C0005DF729 /* prefix.pch */,
 				9533F8F511DFBFF70002D3ED /* PresetManager.cpp */,
 				9533F8F611DFBFF70002D3ED /* PresetManager.h */,
 				9571197C1125D8D300104BF5 /* ptr_vector.h */,
@@ -1704,6 +1708,7 @@
 				95EC9F3511DD6FD0009A5743 /* GuitarTuning.h in Headers */,
 				9533F86311DFAA430002D3ED /* CustomKeyDialog.h in Headers */,
 				9533F8FA11DFBFF70002D3ED /* PresetManager.h in Headers */,
+				953C043A122197C0005DF729 /* prefix.pch in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1836,6 +1841,7 @@
 				95EC9F3311DD6FD0009A5743 /* GuitarTuning.h in Headers */,
 				9533F86111DFAA430002D3ED /* CustomKeyDialog.h in Headers */,
 				9533F8F811DFBFF70002D3ED /* PresetManager.h in Headers */,
+				953C0439122197C0005DF729 /* prefix.pch in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2273,7 +2279,8 @@
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = prefix.pch;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_UNKNOWN_PRAGMAS = NO;
 				HEADER_SEARCH_PATHS = "$(inherited)";
@@ -2311,7 +2318,8 @@
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_MODEL_TUNING = "";
 				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = prefix.pch;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_UNKNOWN_PRAGMAS = NO;
 				HEADER_SEARCH_PATHS = "$(inherited)";

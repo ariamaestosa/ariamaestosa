@@ -158,6 +158,9 @@ UNSURE/MINOR:
 
 ************************* BUGS: *************************
 
+** When adding time sig change, the pop-up that appears is not for the newly added time sig change
+   but the previously selected one
+
 *** New way to store preferences (with strings instead of integers) messes up on Windows (encoding issue?)
 
 ** Things like changing global tempo, changing song length, etc... are not actions and thus do not mark the

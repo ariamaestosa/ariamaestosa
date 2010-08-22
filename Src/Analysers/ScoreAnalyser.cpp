@@ -159,7 +159,7 @@ public:
 
         calculateLevel(noteRenderInfo, converter);
 
-        noteRenderInfo[m_first_id].m_beam_show_above = (m_mid_level < m_analyser->stemPivot ? false : true);
+        noteRenderInfo[m_first_id].m_beam_show_above = (m_mid_level < m_analyser->m_stem_pivot ? false : true);
         noteRenderInfo[m_first_id].m_beam = true;
 
         for (int j=m_first_id; j<=m_last_id; j++)
@@ -384,8 +384,8 @@ void NoteRenderInfo::setY(const int newY)
 
 ScoreAnalyser::ScoreAnalyser(Editor* parent, int stemPivot)
 {
-    ScoreAnalyser::editor = parent;
-    ScoreAnalyser::stemPivot = stemPivot;
+    m_editor = parent;
+    m_stem_pivot = stemPivot;
 
     stem_height = 5.2;
     min_stem_height = 4.5;
@@ -445,7 +445,7 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
     // if note duration is unknown it will be split
     const float relativeLength = renderInfo.m_tick_length / (float)(getMeasureData()->beatLengthInTicks()*4);
     
-    renderInfo.m_stem_type = (renderInfo.m_level >= stemPivot ? STEM_UP : STEM_DOWN);
+    renderInfo.m_stem_type = (renderInfo.m_level >= m_stem_pivot ? STEM_UP : STEM_DOWN);
     if (relativeLength >= 1) renderInfo.m_stem_type = STEM_NONE; // whole notes have no stem
     renderInfo.m_hollow_head = false;
     
@@ -538,7 +538,7 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
 
 void ScoreAnalyser::setStemPivot(const int level)
 {
-    stemPivot = level;
+    m_stem_pivot = level;
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -731,7 +731,7 @@ void ScoreAnalyser::findAndMergeChords()
                 if (max_level == -999) max_level = noteRenderInfo[first_note_of_chord].m_level;
                 const int mid_level = (int)round( (min_level + max_level)/2.0 );
 
-                const bool stem_up = mid_level >= stemPivot+2;
+                const bool stem_up = mid_level >= m_stem_pivot+2;
 
                 /*
                  * decide the one note to keep that will "summarize" all others.
@@ -898,7 +898,7 @@ void ScoreAnalyser::processTriplets()
 
                     int mid_level = (int)round( (min_level + max_level)/2.0 );
 
-                    noteRenderInfo[first_triplet].m_triplet_show_above = (mid_level < stemPivot);
+                    noteRenderInfo[first_triplet].m_triplet_show_above = (mid_level < m_stem_pivot);
 
                     if (i != first_triplet) // if not a triplet note alone, but a 'serie' of triplets
                     {
@@ -1001,7 +1001,7 @@ void ScoreAnalyser::processNoteBeam()
                 if (i > first_of_serie)
                 {
                     BeamGroup beam(this, first_of_serie, i);
-                    beam.doBeam(noteRenderInfo, dynamic_cast<ScoreEditor*>(editor));
+                    beam.doBeam(noteRenderInfo, dynamic_cast<ScoreEditor*>(m_editor));
                 }
 
                 // reset

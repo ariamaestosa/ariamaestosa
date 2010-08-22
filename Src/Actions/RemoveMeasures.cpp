@@ -90,12 +90,12 @@ void RemoveMeasures::RemoveMeasures::undo()
     const int t_amount = timeSigChangesBackup.size();
     
     // add back the backup copy of measure events
-    for(int n=0; n<t_amount; n++)
+    for (int n=0; n<t_amount; n++)
     {
         //timeSigChangesBackup.push_back( measureBar->getTimeSig(n) );
-        measureBar->addTimeSigChange( timeSigChangesBackup[n].measure,
-                                     timeSigChangesBackup[n].num,
-                                     timeSigChangesBackup[n].denom);
+        measureBar->addTimeSigChange(timeSigChangesBackup[n].getMeasure(),
+                                     timeSigChangesBackup[n].getNum(),
+                                     timeSigChangesBackup[n].getDenom());
     }
     
     measureBar->updateMeasureInfo();
@@ -205,28 +205,29 @@ void RemoveMeasures::perform()
         for (int n=0; n<measureBar->getTimeSigAmount(); n++)
         {
             
-            if (measureBar->getTimeSig(n).measure >= m_from_measure and
-                measureBar->getTimeSig(n).measure <= m_to_measure )
+            if (measureBar->getTimeSig(n).getMeasure() >= m_from_measure and
+                measureBar->getTimeSig(n).getMeasure() <= m_to_measure )
             {
                 // an event is located in the area we are trying to remove.
                 // check if there are measures after the deleted area that still need this event.
-                if ((n<measureBar->getTimeSigAmount()-1 and measureBar->getTimeSig(n+1).measure > m_to_measure) or
-                    n==measureBar->getTimeSigAmount()-1)
+                if ((n < measureBar->getTimeSigAmount() - 1 and
+                     measureBar->getTimeSig(n+1).getMeasure() > m_to_measure) or
+                    n == measureBar->getTimeSigAmount() - 1)
                 {
                     // dont move if its already there
-                    if (measureBar->getTimeSig(n).measure == m_from_measure) continue; 
+                    if (measureBar->getTimeSig(n).getMeasure() == m_from_measure) continue; 
                     
                     // check if there already was an event there if so remove it
                     for (int i=0; i<measureBar->getTimeSigAmount(); i++)
                     {
-                        if (measureBar->getTimeSig(i).measure == m_from_measure)
+                        if (measureBar->getTimeSig(i).getMeasure() == m_from_measure)
                         {
                             measureBar->eraseTimeSig(i);
                             i -= 2; if (i<-1) i=-1;
                         }
                     }
                     
-                    measureBar->getTimeSig(n).measure = m_from_measure; // move back event to its new location
+                    measureBar->getTimeSig(n).setMeasure(m_from_measure); // move back event to its new location
                     
                 }
                 else
@@ -238,20 +239,22 @@ void RemoveMeasures::perform()
                 
             }
             
-            if (measureBar->getTimeSig(n).tick >= toTick)
+            if (measureBar->getTimeSig(n).getTick() >= toTick)
             {
-                const int new_measure = measureBar->getTimeSig(n).measure - (m_to_measure - m_from_measure);
+                const int new_measure = measureBar->getTimeSig(n).getMeasure() -
+                                       (m_to_measure - m_from_measure);
+                
                 // check if there already was an event there if so remove it
                 for (int i=0; i<measureBar->getTimeSigAmount(); i++)
                 {
-                    if ( i != n and measureBar->getTimeSig(i).measure == new_measure)
+                    if ( i != n and measureBar->getTimeSig(i).getMeasure() == new_measure)
                     {
                         measureBar->eraseTimeSig(i);
                         i -= 2; if (i<0) i=0;
                     }
                 }
                 
-                measureBar->getTimeSig(n).measure = new_measure;
+                measureBar->getTimeSig(n).setMeasure(new_measure);
             }
             
         }//next

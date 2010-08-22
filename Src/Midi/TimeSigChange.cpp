@@ -15,14 +15,15 @@
  */
 
 #include "Midi/TimeSigChange.h"
-namespace AriaMaestosa
-{
+using namespace AriaMaestosa;
+
 
 TimeSigChange::TimeSigChange(int measure, int num, int denom)
 {
-    TimeSigChange::measure = measure;
-    TimeSigChange::num = num;
-    TimeSigChange::denom = denom;
+    m_measure = measure;
+    m_num     = num;
+    m_denom   = denom;
+    
+    // FIXME: m_tick is not set here and needs to be set manually after construction...
 }
 
-}
