@@ -124,7 +124,7 @@ void ControllerEditor::renderEvents()
 void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
                               RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {
-    AriaRender::beginScissors(10, getEditorYStart(), width - 15, 20+height);
+    AriaRender::beginScissors(10, getEditorYStart(), m_width - 15, 20 + m_height);
 
     // -------------------------------- background ----------------------------
 

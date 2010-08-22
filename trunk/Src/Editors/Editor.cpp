@@ -43,7 +43,7 @@ using namespace AriaMaestosa;
 
 Editor::Editor(Track* track)
 {
-    ystep = 10;
+    m_y_step = 10;
 
     m_track           = track;
     m_sequence        = track->getSequence();
@@ -57,7 +57,7 @@ Editor::Editor(Track* track)
 
     m_click_on_scrollbar = false;
 
-    selecting = false;
+    m_selecting = false;
     useVerticalScrollbar_bool = true;
 
     m_mouse_is_in_editor = false;
@@ -185,7 +185,7 @@ void Editor::renderScrollbar()
 
     // ---- scrollbar background -----
     sbBackgDrawable->move(getWidth() - 24, getEditorYStart());
-    sbBackgDrawable->scale(1, height/sbBackgDrawable->getImageHeight());
+    sbBackgDrawable->scale(1, m_height/sbBackgDrawable->getImageHeight());
     sbBackgDrawable->render();
 
     // ------ top arrow ------
@@ -198,7 +198,7 @@ void Editor::renderScrollbar()
     const int mouseY = Display:: getMouseY_initial();
     const int mouseY2 = Display:: getMouseY_current();
 
-    if (!m_vertical_scrolling and // ignore arrows if user is dragging thumb
+    if (not m_vertical_scrolling and // ignore arrows if user is dragging thumb
        Display:: isMouseDown() and // only if mouse is down
        mouseX  > sbArrowDrawable->getX() and mouseX2 > sbArrowDrawable->getX() and // and mouse is located on the arrow
        mouseY  > sbArrowDrawable->getY() and mouseY2 > sbArrowDrawable->getY() and
@@ -209,8 +209,8 @@ void Editor::renderScrollbar()
     {
 
         sbArrowDrawable->setImage( sbArrowDownImg );
-        m_scroll_up_arrow_pressed=true;
-        m_click_on_scrollbar = true;
+        m_scroll_up_arrow_pressed = true;
+        m_click_on_scrollbar      = true;
 
     }
     else
@@ -225,9 +225,9 @@ void Editor::renderScrollbar()
 
     // ------ bottom arrow ------
     sbArrowDrawable->setFlip(false, true);
-    sbArrowDrawable->move(getWidth() - 24, from_y+m_header_bar_height+height+12); //FIXME: fix this
+    sbArrowDrawable->move(getWidth() - 24, m_from_y + m_header_bar_height + m_height + 12); //FIXME: fix this
 
-    if (!m_vertical_scrolling and // ignore arrows if user is dragging thumb
+    if (not m_vertical_scrolling and // ignore arrows if user is dragging thumb
        Display:: isMouseDown() and // only if mouse is down
        mouseX  > sbArrowDrawable->getX() and mouseX2 > sbArrowDrawable->getX() and // and mouse is lcoated on the arrow
        mouseY  > sbArrowDrawable->getY() and mouseY2 > sbArrowDrawable->getY() and
@@ -240,20 +240,20 @@ void Editor::renderScrollbar()
         sbArrowDrawable->setImage( sbArrowDownImg );
         m_scroll_down_arrow_pressed=true;
         m_click_on_scrollbar = true;
-        //std::cout << "m_scroll_down_arrow_pressed = true" << std::endl;
+
     }
     else
     {
 
         sbArrowDrawable->setImage( sbArrowImg );
         m_scroll_down_arrow_pressed=false;
-        //std::cout << "m_scroll_down_arrow_pressed = false" << std::endl;
+
     }
 
     sbArrowDrawable->render();
 
     // -------- thumb ------
-    sbThumbDrawable->move(getWidth() - 24, (int)(getEditorYStart()+17+(height-36)*m_sb_position));
+    sbThumbDrawable->move(getWidth() - 24, (int)(getEditorYStart() + 17 + (m_height - 36)*m_sb_position));
     sbThumbDrawable->render();
 
 }
@@ -330,7 +330,7 @@ void Editor::trackDeleted(Track* track)
 void Editor::mouseDown(RelativeXCoord x, int y)
 {
     ASSERT( MAGIC_NUMBER_OK() );
-    selecting = false;
+    m_selecting = false;
 
     m_last_drag_y = y;
 
@@ -343,9 +343,9 @@ void Editor::mouseDown(RelativeXCoord x, int y)
         {
             m_click_on_scrollbar = true;
 
-            // grabbing the thumb
-            const int thumb_pos = (int)(getEditorYStart()+17+(height-36)*m_sb_position);
-            if (y>thumb_pos and y<thumb_pos + sbThumbDrawable->getImageHeight())
+            // grabbing the thumb (FIXME: correct these hardcoded sizes)
+            const int thumb_pos = (int)(getEditorYStart() + 17 + (m_height - 36)*m_sb_position);
+            if (y > thumb_pos and y < thumb_pos + sbThumbDrawable->getImageHeight())
             {
                 m_vertical_scrolling = true;
             }
@@ -399,7 +399,7 @@ void Editor::mouseDown(RelativeXCoord x, int y)
 
     }
 
-    selecting = false;
+    m_selecting = false;
 }
 
 // ------------------------------------------------------------------------------------------------------------
@@ -427,7 +427,7 @@ void Editor::mouseDrag(RelativeXCoord mousex_current, int mousey_current,
                 return;
             }
 
-            m_sb_position += (mousey_current - m_last_drag_y)/(float)(height-36);
+            m_sb_position += (mousey_current - m_last_drag_y)/(float)(m_height - 36);
 
             if (m_sb_position < 0) m_sb_position = 0;
             if (m_sb_position > 1) m_sb_position = 1;
@@ -437,15 +437,15 @@ void Editor::mouseDrag(RelativeXCoord mousex_current, int mousey_current,
     m_last_drag_y = mousey_current;
 
     // if user did not click on note and moved the mouse vertically, then he is selecting
-    if (not m_clicked_on_note and abs(mousey_current-mousey_initial) > ystep*2 and m_mouse_is_in_editor)
+    if (not m_clicked_on_note and abs(mousey_current-mousey_initial) > m_y_step*2 and m_mouse_is_in_editor)
     {
-        selecting = true;
+        m_selecting = true;
     }
 
     // if selection becomes thin again, come back in note add mode
-    if (selecting and abs(mousey_current-mousey_initial) < ystep)
+    if (m_selecting and abs(mousey_current-mousey_initial) < m_y_step)
     {
-        selecting = false;
+        m_selecting = false;
     }
 }
 
@@ -469,7 +469,7 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
         {
 
             // --------------------------  select notes  ---------------------
-            if (selecting)
+            if (m_selecting)
             {
                 selectNotesInRect(mousex_current, mousey_current, mousex_initial, mousey_initial);
             }
@@ -541,7 +541,7 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
             const int  y_difference = mousey_current-mousey_initial;
 
             const int relativeX = snapMidiTickToGrid(x_difference);
-            const int relativeY = (int)round( (float)y_difference / (float)ystep);
+            const int relativeY = (int)round( (float)y_difference / (float)m_y_step);
 
             if (relativeX == 0 and relativeY == 0)
             {
@@ -569,8 +569,8 @@ void Editor::mouseExited(RelativeXCoord mousex_current, int mousey_current,
 {
     ASSERT( MAGIC_NUMBER_OK() );
     
-    if (selecting) selectNotesInRect(mousex_current, mousey_current, mousex_initial, mousey_initial);
-    selecting = false;
+    if (m_selecting) selectNotesInRect(mousex_current, mousey_current, mousex_initial, mousey_initial);
+    m_selecting = false;
     m_mouse_is_in_editor = false;
 
     Display::render();
@@ -611,7 +611,7 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
     ASSERT( MAGIC_NUMBER_OK() );
     
     // ------------------------------- horizontal scroll by pushing mouse to side ------------------------------
-    if (not m_click_on_scrollbar and selecting and m_mouse_is_in_editor)
+    if (not m_click_on_scrollbar and m_selecting and m_mouse_is_in_editor)
     {
         mousex_initial.convertTo(MIDI);
 
@@ -664,12 +664,13 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 
                 // find where mouse is on scrollbar, in the same units at m_sb_position (0 to 1)
                 //FIXME; remove those hardcoded numbers to calculate height
-                const float goal = (mousey_current-from_y-m_header_bar_height-52)/(float)(height-36);
+                const float goal = (mousey_current - m_from_y - m_header_bar_height - 52)/(float)(m_height - 36);
 
                 // thumb has reached mouse, just continue as regular scrolling
                 float dist = goal-m_sb_position; // find distance betweem mouse and thumb in 0-1 units
                 if (dist<0) dist -= dist*2; // make positive
-                if (dist<0.01){
+                if (dist<0.01)
+                {
                     m_vertical_scrolling = true;
                 }
                 // move thumb towards mouse
@@ -736,30 +737,30 @@ void Editor::rightClick(RelativeXCoord x, int y)
 
 int Editor::getLevelAtY(const int y)
 {
-    return (y - getEditorYStart() + getYScrollInPixels())/ystep;
+    return (y - getEditorYStart() + getYScrollInPixels()) / m_y_step;
 }
     
 // ------------------------------------------------------------------------------------------------------------
 
 void Editor::makeMoveNoteEvent(const int relativeX, const int relativeY, const int noteID)
 {
-        // move a single note
-        if (noteID != -1)
-        {
-            m_track->action( new Action::MoveNotes(relativeX, relativeY, noteID) );
-        }
-        else
-        {
-            // move many notes
-            m_track->action( new Action::MoveNotes(relativeX, relativeY, SELECTED_NOTES) );
-        }
+    // move a single note
+    if (noteID != -1)
+    {
+        m_track->action( new Action::MoveNotes(relativeX, relativeY, noteID) );
+    }
+    else
+    {
+        // move many notes
+        m_track->action( new Action::MoveNotes(relativeX, relativeY, SELECTED_NOTES) );
+    }
 }
 
 // ------------------------------------------------------------------------------------------------------------
 
 void Editor::setYStep(const int ystep)
 {
-    Editor::ystep = ystep;
+    m_y_step = ystep;
 }
 
 // ------------------------------------------------------------------------------------------------------------
@@ -773,10 +774,10 @@ void Editor::setYStep(const int ystep)
 void Editor::updatePosition(int from_y, int to_y, int width, int height, int barHeight)
 {
     ASSERT( MAGIC_NUMBER_OK() );
-    Editor::from_y = from_y;
-    Editor::to_y = to_y;
-    Editor::width = width;
-    Editor::height = height;
+    m_from_y = from_y;
+    m_to_y = to_y;
+    m_width = width;
+    m_height = height;
     
     m_header_bar_height = barHeight;
 }

@@ -618,7 +618,7 @@ void DrumEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_cu
 int DrumEditor::getYScrollInPixels()
 {
     // check if visible area is large enough to display everything
-    if ((int)(drums.size()*Y_STEP) < height)
+    if ((int)(drums.size()*Y_STEP) < m_height)
     {
         useVerticalScrollbar(false);
         return 0;
@@ -628,7 +628,7 @@ int DrumEditor::getYScrollInPixels()
         useVerticalScrollbar(true);
     }
 
-    return (int)(   m_sb_position*(drums.size()*Y_STEP-height )   );
+    return (int)( m_sb_position*(drums.size()*Y_STEP - m_height ) );
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -720,7 +720,7 @@ void DrumEditor::mouseUp(RelativeXCoord mousex_current, const int mousey_current
 void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
                         RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {
-    AriaRender::beginScissors(10, getEditorYStart(), width - 15, 20+height);
+    AriaRender::beginScissors(10, getEditorYStart(), m_width - 15, 20 + m_height);
 
     drawVerticalMeasureLines(getEditorYStart(), getYEnd());
 
@@ -746,8 +746,8 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
                           Editor::getEditorXStart();
 
         // don't draw notes that won't visible
-        if (drumx < 0)     continue;
-        if (drumx > width) break;
+        if (drumx < 0)       continue;
+        if (drumx > m_width) break;
 
         ASSERT(m_track->getNotePitchID(n) >= 0);
         ASSERT(m_track->getNotePitchID(n) < 128);
@@ -779,7 +779,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
     if (not m_clicked_on_note and m_mouse_is_in_editor)
     {
         // selection
-        if (selecting)
+        if (m_selecting)
         {
             AriaRender::color(0,0,0);
             AriaRender::hollow_rect(mousex_initial.getRelativeTo(WINDOW), mousey_initial,

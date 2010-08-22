@@ -185,7 +185,7 @@ void KeyboardEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mouse
     
 int KeyboardEditor::getYScrollInPixels()
 {
-    return (int)(   m_sb_position*(120*11-height-20)   );
+    return (int)( m_sb_position*(120*11 - m_height - 20) );
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -214,10 +214,9 @@ void KeyboardEditor::moveNote(Note& note, const int relativeX, const int relativ
 void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
                             RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {
+    if (not ImageProvider::imagesLoaded()) return;
 
-    if (!ImageProvider::imagesLoaded()) return;
-
-    AriaRender::beginScissors(10, getEditorYStart(), width-15, 20+height);
+    AriaRender::beginScissors(10, getEditorYStart(), m_width - 15, 20 + m_height);
 
     // ------------------ draw lined background ----------------
 
@@ -305,8 +304,8 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
                 int x2 = m_track->getNoteEndInPixels(n)   - m_sequence->getXScrollInPixels();
 
                 // don't draw notes that won't be visible
-                if (x2 < 0)     continue;
-                if (x1 > width) break;
+                if (x2 < 0)       continue;
+                if (x1 > m_width) break;
 
                 const int pitch = track->getNotePitchID(n);
 
@@ -326,8 +325,8 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
         const int x2 = m_track->getNoteEndInPixels(n)   - m_sequence->getXScrollInPixels();
 
         // don't draw notes that won't be visible
-        if (x2 < 0)     continue;
-        if (x1 > width) break;
+        if (x2 < 0)       continue;
+        if (x1 > m_width) break;
 
         const int pitch = m_track->getNotePitchID(n);
         const int level = pitch;
@@ -363,7 +362,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     {
         int g_octave_y = g_octaveID*120 - getYScrollInPixels();
         
-        if (g_octave_y > -120 and g_octave_y < height+20)
+        if (g_octave_y > -120 and g_octave_y < m_height + 20)
         {
             AriaRender::images();
 
@@ -393,10 +392,10 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     AriaRender::primitives();
 
-    if (!m_clicked_on_note and m_mouse_is_in_editor)
+    if (not m_clicked_on_note and m_mouse_is_in_editor)
     {
 
-        if (selecting)
+        if (m_selecting)
         {
             // selection
             AriaRender::color(0,0,0);
