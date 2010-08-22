@@ -41,6 +41,8 @@ namespace AriaMaestosa
     {
         Track* m_track;
         
+        bool m_selected;
+        
     public:
         LEAK_CHECK();
         
@@ -63,12 +65,9 @@ namespace AriaMaestosa
         
         /** for guitar mode */
         short string, fret;
-        
-        bool selected;
-                
-        
+
         void setSelected(const bool selected);
-        bool isSelected() const;
+        bool isSelected() const { return m_selected; }
         
         Note(Track* parent, const int pitchID=-1, const int startTick=-1, const int endTick=-1, const int volume=-1, const int string=-1, const int fret=-1); // guitar mode only
         ~Note();
