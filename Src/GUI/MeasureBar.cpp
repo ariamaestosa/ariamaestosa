@@ -319,9 +319,8 @@ void MeasureBar::mouseDown(int x, int y)
 {
 
     // if click is in time sig change areas
-    if (y>20)
+    if (y > 20)
     {
-
         const int measureDivAt_x = data->measureDivisionAt(x);
 
         // we use the 'add' method, however if on event already exists at this location
@@ -332,7 +331,7 @@ void MeasureBar::mouseDown(int x, int y)
     }
 
     const int measure_amount = data->measureInfo.size();
-    for(int n=0; n<measure_amount; n++)
+    for (int n=0; n<measure_amount; n++)
     {
         data->measureInfo[n].selected = false;
     }
@@ -342,8 +341,6 @@ void MeasureBar::mouseDown(int x, int y)
 
     data->somethingSelected = true;
     lastMeasureInDrag = measure_vectorID;
-
-    // std::cout << "clicked on measure " << lastMeasureInDrag << std::endl;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -353,7 +350,6 @@ void MeasureBar::mouseDown(int x, int y)
   */
 void MeasureBar::mouseDrag(int mousex_current, int mousey_current, int mousex_initial, int mousey_initial)
 {
-
     const int measure_vectorID = data->measureAtPixel(mousex_current);
 
     if (lastMeasureInDrag == -1) return; //invalid
@@ -365,8 +361,8 @@ void MeasureBar::mouseDrag(int mousex_current, int mousey_current, int mousex_in
     if ( abs(lastMeasureInDrag-measure_vectorID) > 1 )
     {
 
-        for(int n=measure_vectorID; n != lastMeasureInDrag; n +=
-            (lastMeasureInDrag-measure_vectorID)/abs(lastMeasureInDrag-measure_vectorID))
+        for (int n=measure_vectorID; n != lastMeasureInDrag;
+             n += (lastMeasureInDrag-measure_vectorID)/abs(lastMeasureInDrag-measure_vectorID))
         {
             data->measureInfo[n].selected = true;
         }
@@ -382,7 +378,6 @@ void MeasureBar::mouseDrag(int mousex_current, int mousey_current, int mousex_in
   */
 void MeasureBar::mouseUp(int mousex_current, int mousey_current, int mousex_initial, int mousey_initial)
 {
-
     if (lastMeasureInDrag == -1) return; //invalid
 
     Sequence* sequence = getCurrentSequence();
@@ -391,7 +386,7 @@ void MeasureBar::mouseUp(int mousex_current, int mousey_current, int mousex_init
 
     // determine selection range in midi ticks
     int minimal_tick = -1, maximal_tick = -1;
-    for(int n=0; n<measureAmount; n++)
+    for (int n=0; n<measureAmount; n++)
     {
         // iterate through measures to find the first selected one
         if (data->measureInfo[n].selected)

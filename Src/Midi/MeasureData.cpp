@@ -546,7 +546,7 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
             {
                 // a time sig event already exists at this location
                 // if we're not importing, select it
-                if (!getCurrentSequence()->importing)
+                if (not getCurrentSequence()->importing)
                 {
                     selectedTimeSig = n;
                     getMainFrame()->changeShownTimeSig(timeSigChanges[selectedTimeSig].getNum(),
@@ -585,8 +585,8 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
                 if (not getCurrentSequence()->importing)
                 {
                     wxPoint pt = wxGetMousePosition();
-                    showTimeSigPicker( pt.x, pt.y, timeSigChanges[n].getNum(), timeSigChanges[n].getDenom() );
-                    if (!getCurrentSequence()->importing) updateMeasureInfo();
+                    showTimeSigPicker(pt.x, pt.y, timeSigChanges[n].getNum(), timeSigChanges[n].getDenom());
+                    if (not getCurrentSequence()->importing) updateMeasureInfo();
                 }
                 
                 break;
@@ -602,10 +602,12 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
                 else
                 {
                     timeSigChanges.add( new TimeSigChange(measure, num, denom), n+1 );
-                                                          selectedTimeSig = n+1;
                 }
-
-                getMainFrame()->changeShownTimeSig( timeSigChanges[n+1].getNum(), timeSigChanges[n+1].getDenom() );
+                
+                selectTimeSig(n+1);
+                
+                // selectedTimeSig = n + 1;
+                // getMainFrame()->changeShownTimeSig( timeSigChanges[n+1].getNum(), timeSigChanges[n+1].getDenom() );
 
                 if (not getCurrentSequence()->importing)
                 {
@@ -741,7 +743,7 @@ void MeasureData::addTimeSigChange_import(int tick, int num, int denom)
 
         if (timeSigChanges.size() == 0)
         {
-            timeSigChanges.push_back( new TimeSigChange(0,4,4) );
+            timeSigChanges.push_back( new TimeSigChange(0, 4, 4) );
             timeSigChanges[0].setTick(0);
         }
 
@@ -757,7 +759,7 @@ void MeasureData::addTimeSigChange_import(int tick, int num, int denom)
         }
         else
         {
-            std::cout << "Unexpected!! tick is " << timeSigChanges[0].getTick() << std::endl;
+            std::cerr << "Unexpected!! tick is " << timeSigChanges[0].getTick() << std::endl;
         }
     }
     else
