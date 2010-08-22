@@ -46,7 +46,7 @@ void NumberPressed::perform()
 {
     ASSERT(track != NULL);
 
-    if (track->graphics->editorMode != GUITAR) return;
+    if (track->graphics->getEditorMode() != GUITAR) return;
 
     bool played = false;
     const int noteAmount = track->m_notes.size();

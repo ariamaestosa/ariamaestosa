@@ -514,7 +514,7 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                     if (g_current_edit_tool == EDIT_TOOL_ADD and snapped_start == snapped_end) 
                     {
                         addNote(snapped_start,
-                                snapped_start + m_sequence->ticksPerBeat()*4 / m_graphical_track->grid->divider,
+                                snapped_start + m_sequence->ticksPerBeat()*4 / m_graphical_track->m_grid->divider,
                                 mousey_initial );
                     }
                     else if (snapped_start == snapped_end or snapped_start>snapped_end or snapped_start<0)
@@ -820,8 +820,8 @@ int Editor::snapMidiTickToGrid(int tick)
     }
 
     return origin_tick + (int)( round((float)(tick - origin_tick)/
-                                      (float)(m_sequence->ticksPerBeat()*4 / m_graphical_track->grid->divider))
-                                *(m_sequence->ticksPerBeat()*4 / m_graphical_track->grid->divider)
+                                      (float)(m_sequence->ticksPerBeat()*4 / m_graphical_track->m_grid->divider))
+                                *(m_sequence->ticksPerBeat()*4 / m_graphical_track->m_grid->divider)
                                 );
 
 }
@@ -840,8 +840,8 @@ int Editor::snapMidiTickToGrid_ceil(int tick)
     }
 
     return origin_tick + (int)( ceil((float)(tick - origin_tick)/
-                                     (float)(m_sequence->ticksPerBeat()*4 / m_graphical_track->grid->divider))
-                                *(m_sequence->ticksPerBeat()*4 / m_graphical_track->grid->divider)
+                                     (float)(m_sequence->ticksPerBeat()*4 / m_graphical_track->m_grid->divider))
+                                *(m_sequence->ticksPerBeat()*4 / m_graphical_track->m_grid->divider)
                                 );
 
 }

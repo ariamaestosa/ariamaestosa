@@ -74,7 +74,7 @@ void Paste::perform()
 {
     ASSERT(track != NULL);
 
-    if (track->graphics->editorMode == CONTROLLER)
+    if (track->graphics->getEditorMode() == CONTROLLER)
     {
         wxBell();
         return; // no copy/paste in controller mode
@@ -203,12 +203,18 @@ regular_paste: // FIXME - find better way than goto
         }
 
         track->graphics->getCurrentEditor()->moveNote(*tmp, shift , 0);
-        if (m_at_mouse) track->graphics->getCurrentEditor()->moveNote(*tmp, -beginning , 0);
+        if (m_at_mouse)
+        {
+            track->graphics->getCurrentEditor()->moveNote(*tmp, -beginning , 0);
+        }
 
         tmp->setParent( track );
         tmp->setSelected(true);
 
-        if (track->graphics->editorMode == GUITAR) tmp->checkIfStringAndFretMatchNote(true);
+        if (track->graphics->getEditorMode() == GUITAR)
+        {
+            tmp->checkIfStringAndFretMatchNote(true);
+        }
 
         track->addNote( tmp, false );
         relocator.rememberNote( *tmp );

@@ -59,13 +59,13 @@ void ShiftString::perform()
 {
     ASSERT(track != NULL);
     
-    if (track->graphics->editorMode != GUITAR) return;
+    if (track->graphics->getEditorMode() != GUITAR) return;
     
     // not supported in this function (mostly because not needed, but could logically be implmented)
     ASSERT(m_note_id != ALL_NOTES);
     
     // only accept to do this in guitar mode
-    if (track->graphics->editorMode != GUITAR) return;
+    if (track->graphics->getEditorMode() != GUITAR) return;
     
     if (m_note_id == SELECTED_NOTES)
     {

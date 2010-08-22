@@ -34,7 +34,7 @@ wxDialog(parent, wxID_ANY, _("Custom Key Editor"), wxDefaultPosition,
 {
     m_parent = gtrack;
     
-    const KeyInclusionType* curr_key_notes = gtrack->track->getKeyNotes();
+    const KeyInclusionType* curr_key_notes = gtrack->getTrack()->getKeyNotes();
     
     wxBoxSizer* maximizePaneSizer = new wxBoxSizer(wxVERTICAL);
     wxPanel* pane = new wxPanel(this);
@@ -234,7 +234,7 @@ void CustomKeyDialog::onOK(wxCommandEvent& evt)
     KeyInclusionType customKey[131];
     buildKey(customKey);
     
-    m_parent->track->setCustomKey(customKey);
+    m_parent->getTrack()->setCustomKey(customKey);
     
     EndModal( GetReturnCode() );
 }

@@ -55,8 +55,8 @@ namespace AriaMaestosa
       */
     class GraphicalTrack
     {
-        int height;
-        int lastMouseY;
+        int m_height;
+        int m_last_mouse_y;
         
         // widgets
         OwnerPtr< WidgetLayoutManager>  components ;
@@ -74,32 +74,36 @@ namespace AriaMaestosa
         BlankField* instrumentName;
         BlankField* channelButton;
         
+        /** Whether this track was collapsed with the triangle widget so that only its header is seen */
+        bool m_collapsed;
+        
+        /** Whether this track was "docked", i.e. minimized so that not even its header is visible */
+        bool m_docked;
+        
+        Sequence* m_sequence;
+        Track*    m_track;
+        
+        EditorType m_editor_mode;
+
     public:
         LEAK_CHECK();
         
         // ----------- read-only fields -----------
-        bool dragging_resize;
+        bool m_dragging_resize;
         
-        EditorType editorMode;
         
         /** Y coord on the current display where this track starts (this is updated on each rendering).
-         * Worth -1 when track is docked. */
-        int from_y;
+          * Worth -1 when track is docked.
+          */
+        int m_from_y;
         
         /** Y coord on the current display where this track ends (this is updated on each rendering).
-         * Worth -1 when track is docked. */
-        int to_y;
+          * Worth -1 when track is docked.
+          */
+        int m_to_y;
         
-        /** Whether this track was collapsed with the triangle widget so that only its header is seen */
-        bool collapsed;
-        
-        /** Whether this track was "docked", i.e. minimized so that not even its header is visible */
-        bool docked;
-        
-        Sequence* sequence;
-        Track* track;
-        
-        OwnerPtr<MagneticGrid>  grid ;
+
+        OwnerPtr<MagneticGrid>  m_grid ;
         
         // editors
         OwnerPtr<KeyboardEditor>    keyboardEditor   ;
@@ -109,7 +113,7 @@ namespace AriaMaestosa
         OwnerPtr<ScoreEditor>       scoreEditor      ;
         ptr_vector<Editor, REF>     m_all_editors    ;
         
-        AriaRenderString instrument_name;
+        AriaRenderString m_instrument_name;
 
         // ----------------------------------------
         
@@ -128,9 +132,19 @@ namespace AriaMaestosa
         
         void setEditorMode(EditorType mode);
         
+        bool isCollapsed() const { return m_collapsed; }
+        
+        bool isDocked   () const { return m_docked;    }
+        
+        Track* getTrack()        { return m_track;     }
+        
+        Sequence* getSequence()  { return m_sequence;  }
+        
+        EditorType getEditorMode() const { return m_editor_mode; }
+        
         /**
-         * @pre Track, Sequence and GraphicalTrack must be initialized properly upon calling this
-         */
+          * @pre Track, Sequence and GraphicalTrack must be initialized properly upon calling this
+          */
         void createEditors();
         
         Editor* getCurrentEditor();

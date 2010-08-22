@@ -232,7 +232,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
         const int trackAmount = sequence->getTrackAmount();
         for (int n=0; n<trackAmount; n++)
         {
-            bool drum_track = (sequence->getTrack(n)->graphics->editorMode == DRUM);
+            bool drum_track = (sequence->getTrack(n)->graphics->getEditorMode() == DRUM);
             
             int trackFirstNote =-1;
             trackLength = sequence->getTrack(n)->addMidiEvents(tracks.GetTrack(n+1), (drum_track ? 9 : channel),

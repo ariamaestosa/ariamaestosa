@@ -176,7 +176,7 @@ void KeyPicker::updateUserPresetsMenu()
 void KeyPicker::setParent(Track* parent_arg)
 {
     parent = parent_arg->graphics;
-    if (parent->editorMode == KEYBOARD)
+    if (parent->getEditorMode() == KEYBOARD)
     {
         if (score_items_added)
         {
@@ -189,7 +189,7 @@ void KeyPicker::setParent(Track* parent_arg)
             score_items_added = false;
         }
     }
-    else if (parent->editorMode == SCORE)
+    else if (parent->getEditorMode() == SCORE)
     {
         if (not score_items_added)
         {
@@ -354,15 +354,15 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
     }
     else if ( id == KEY_C_AM )
     {
-        parent->track->setKey(0, KEY_TYPE_C);
+        parent->getTrack()->setKey(0, KEY_TYPE_C);
     }
     else if ( id >= KEY_SHARPS_1 and id <= KEY_SHARPS_7 )
     {
-        parent->track->setKey(id-KEY_SHARPS_1+1, KEY_TYPE_SHARPS);
+        parent->getTrack()->setKey(id-KEY_SHARPS_1+1, KEY_TYPE_SHARPS);
     }
     else if ( id >= KEY_FLATS_1 and id <= KEY_FLATS_7 )
     {
-        parent->track->setKey(id-KEY_FLATS_1+1, KEY_TYPE_FLATS);
+        parent->getTrack()->setKey(id-KEY_FLATS_1+1, KEY_TYPE_FLATS);
     }
     else if ( id == KEY_CUSTOM )
     {
@@ -378,11 +378,11 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
         }
 
         // count how many A's, how many B's, etc., we have in this track
-        const int noteAmount = parent->track->getNoteAmount();
+        const int noteAmount = parent->getTrack()->getNoteAmount();
         for (int n=0; n<noteAmount; n++)
         {
-            const int pitch = parent->track->getNotePitchID(n);
-            int r = 11-pitch%12;
+            const int pitch = parent->getTrack()->getNotePitchID(n);
+            int r = 11 - pitch%12;
             if (r < 0)  r+=12;
             if (r > 11) r-=12;
             //std::cout << "r=" << r << std::endl;
@@ -483,7 +483,7 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
                 amount = 2;
                 break;
         }
-        parent->track->setKey(amount, type);
+        parent->getTrack()->setKey(amount, type);
     }
 
     Display::render();
@@ -502,7 +502,7 @@ void KeyPicker::onUserPresetSelected(wxCommandEvent& evt)
     
     KeyPreset* selection = m_custom_keys[id];
     
-    parent->track->setCustomKey( selection->getArray() );
+    parent->getTrack()->setCustomKey( selection->getArray() );
 }
 
 // ----------------------------------------------------------------------------------------------------------

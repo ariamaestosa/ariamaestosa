@@ -196,7 +196,7 @@ void CustomNoteSelectDialog::show(Track* currentTrack)
 {
     m_current_track = currentTrack;
     
-    if (currentTrack->graphics->editorMode == GUITAR)
+    if (currentTrack->graphics->getEditorMode() == GUITAR)
     {
         cb_string->Enable(true);
         cb_fret->Enable(true);
@@ -224,12 +224,12 @@ void CustomNoteSelectDialog::keyPress(wxKeyEvent& evt)
 void CustomNoteSelectDialog::okClicked(wxCommandEvent& evt)
 {
     
-    const bool pitch = cb_pitch->IsChecked();
-    const bool volume = cb_volume->IsChecked();
-    const bool string = cb_string->IsChecked() and m_current_track->graphics->editorMode == GUITAR;
-    const bool fret = cb_fret->IsChecked() and m_current_track->graphics->editorMode == GUITAR;
+    const bool pitch    = cb_pitch->IsChecked();
+    const bool volume   = cb_volume->IsChecked();
+    const bool string   = cb_string->IsChecked() and m_current_track->graphics->getEditorMode() == GUITAR;
+    const bool fret     = cb_fret->IsChecked()   and m_current_track->graphics->getEditorMode() == GUITAR;
     const bool duration = cb_duration->IsChecked();
-    const bool measure = cb_measure->IsChecked();
+    const bool measure  = cb_measure->IsChecked();
     
     wxString from_measure_c = from_measure->GetValue();
     wxString to_measure_c = to_measure->GetValue();
