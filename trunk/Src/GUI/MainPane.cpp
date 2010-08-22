@@ -133,7 +133,7 @@ namespace AriaMaestosa
 
 MainPane::MainPane(wxWindow* parent, int* args) : RenderPane(parent, args)
 {
-    currentTick = -1;
+    m_current_tick = -1;
     m_dragged_track_id = -1;
     isVisible = false;
     m_is_mouse_down = false;
@@ -225,7 +225,7 @@ bool MainPane::do_render()
 
     AriaRender::images();
 
-    getCurrentSequence()->renderTracks(currentTick,
+    getCurrentSequence()->renderTracks(m_current_tick,
                                        m_mouse_x_current,
                                        m_mouse_y_current,
                                        m_mouse_y_initial,
@@ -382,10 +382,10 @@ bool MainPane::do_render()
 
 
     // -------------------------- red line that follows playback, red arrows --------------------------
-    if ( currentTick!=-1 ) // if playing
+    if (m_current_tick != -1) // if playing
     {
 
-        RelativeXCoord tick(currentTick, MIDI);
+        RelativeXCoord tick(m_current_tick, MIDI);
 
         const int XStart = Editor::getEditorXStart();
         const int XEnd = getWidth();
@@ -396,15 +396,15 @@ bool MainPane::do_render()
         if (tick.getRelativeTo(WINDOW) < XStart) // current tick is before the visible area
         {
 
-            leftArrow=true;
-            rightArrow=false;
+            leftArrow  = true;
+            rightArrow = false;
 
             AriaRender::line(25, MEASURE_BAR_Y + 10, 10, MEASURE_BAR_Y + 10);
-            AriaRender::triangle(5, MEASURE_BAR_Y + 10,
+            AriaRender::triangle(5,  MEASURE_BAR_Y + 10,
                                  15, MEASURE_BAR_Y + 5,
                                  15, MEASURE_BAR_Y + 15);
         }
-        else if (tick.getRelativeTo(WINDOW) > XEnd ) // current tick is after the visible area
+        else if (tick.getRelativeTo(WINDOW) > XEnd) // current tick is after the visible area
         {
 
             leftArrow=false;
@@ -655,7 +655,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
     {
         click_area = CLICK_MEASURE_BAR;
 
-        if (not (currentTick != -1 and (leftArrow or rightArrow))) // ignore when playing
+        if (not (m_current_tick != -1 and (leftArrow or rightArrow))) // ignore when playing
         {
             getMeasureData()->graphics->mouseDown(m_mouse_x_current.getRelativeTo(WINDOW),
                                                   m_mouse_y_current - MEASURE_BAR_Y);
@@ -789,7 +789,7 @@ void MainPane::mouseReleased(wxMouseEvent& event)
         }
 
         // measure selection
-        if (not (currentTick!=-1 and (leftArrow or rightArrow)) ) // ignore when playing
+        if (not (m_current_tick!=-1 and (leftArrow or rightArrow)) ) // ignore when playing
         {
             getMeasureData()->graphics->mouseUp(m_mouse_x_current.getRelativeTo(WINDOW),
                                                 m_mouse_y_current - MEASURE_BAR_Y,
@@ -1104,83 +1104,83 @@ void MainPane::setPlaybackStartTick(int newValue)
 
 void MainPane::playbackRenderLoop()
 {
-        const int currentTick = PlatformMidiManager::get()->trackPlaybackProgression();
+    const int currentTick = PlatformMidiManager::get()->trackPlaybackProgression();
 
-        // check if song is over
-        if (currentTick == -1 or !PlatformMidiManager::get()->isPlaying())
+    // check if song is over
+    if (currentTick == -1 or !PlatformMidiManager::get()->isPlaying())
+    {
+        exitPlayLoop();
+        return;
+    }
+
+    // only draw if it has changed
+    if (lastTick != m_playback_start_tick + currentTick)
+    {
+
+        // if user has clicked on a little red arrow
+        if (m_scroll_to_playback_position)
         {
-            exitPlayLoop();
-            return;
+            m_scroll_to_playback_position=false;
+            const int x_scroll_in_pixels = (int)( (m_playback_start_tick + currentTick) *
+                getCurrentSequence()->getZoom() );
+            getCurrentSequence()->setXScrollInPixels(x_scroll_in_pixels);
+            DisplayFrame::updateHorizontalScrollbar( m_playback_start_tick + currentTick );
         }
 
-        // only draw if it has changed
-        if (lastTick != m_playback_start_tick + currentTick)
+        // if follow playback is checked in the menu
+        if (getCurrentSequence()->follow_playback)
         {
+            RelativeXCoord tick(m_playback_start_tick + currentTick, MIDI);
+            const int current_pixel = tick.getRelativeTo(WINDOW);
 
-            // if user has clicked on a little red arrow
-            if (m_scroll_to_playback_position)
+            //const float zoom = getCurrentSequence()->getZoom();
+            const int XStart = Editor::getEditorXStart();
+            const int XEnd = getWidth() - 50; // 50 is somewhat arbitrary
+            const int last_visible_measure = getMeasureData()->measureAtPixel( XEnd );
+            const int current_measure = getMeasureData()->measureAtTick(m_playback_start_tick + currentTick);
+
+            if (current_pixel < XStart or current_measure >= last_visible_measure)
             {
-                m_scroll_to_playback_position=false;
-                const int x_scroll_in_pixels = (int)( (m_playback_start_tick + currentTick) *
-                    getCurrentSequence()->getZoom() );
-                getCurrentSequence()->setXScrollInPixels(x_scroll_in_pixels);
+                int new_scroll_in_pixels = (m_playback_start_tick + currentTick) * getCurrentSequence()->getZoom();
+                if (new_scroll_in_pixels < 0) new_scroll_in_pixels=0;
+                // FIXME - we need a single call to update both data and widget
+                getCurrentSequence()->setXScrollInPixels(new_scroll_in_pixels);
                 DisplayFrame::updateHorizontalScrollbar( m_playback_start_tick + currentTick );
             }
 
-            // if follow playback is checked in the menu
-            if (getCurrentSequence()->follow_playback)
-            {
-                RelativeXCoord tick(m_playback_start_tick + currentTick, MIDI);
-                const int current_pixel = tick.getRelativeTo(WINDOW);
-
-                //const float zoom = getCurrentSequence()->getZoom();
-                const int XStart = Editor::getEditorXStart();
-                const int XEnd = getWidth() - 50; // 50 is somewhat arbitrary
-                const int last_visible_measure = getMeasureData()->measureAtPixel( XEnd );
-                const int current_measure = getMeasureData()->measureAtTick(m_playback_start_tick + currentTick);
-
-                if (current_pixel < XStart or current_measure >= last_visible_measure)
-                {
-                    int new_scroll_in_pixels = (m_playback_start_tick + currentTick) * getCurrentSequence()->getZoom();
-                    if (new_scroll_in_pixels < 0) new_scroll_in_pixels=0;
-                    // FIXME - we need a single call to update both data and widget
-                    getCurrentSequence()->setXScrollInPixels(new_scroll_in_pixels);
-                    DisplayFrame::updateHorizontalScrollbar( m_playback_start_tick + currentTick );
-                }
-
-                /*
-                int x_scroll_in_pixels = (int)( (m_playback_start_tick + currentTick - m_follow_playback_time) *
-                    getCurrentSequence()->getZoom() );
-                if ( x_scroll_in_pixels < 0 ) x_scroll_in_pixels = 0;
-                getCurrentSequence()->setXScrollInPixels(x_scroll_in_pixels);
-                DisplayFrame::updateHorizontalScrollbar( m_playback_start_tick + currentTick - m_follow_playback_time );
-                     */
-            }
-
-            setCurrentTick( m_playback_start_tick + currentTick );
-
-            RelativeXCoord tick(this->currentTick, MIDI);
-            const int XStart = Editor::getEditorXStart();
-            const int XEnd = getWidth();
-            const int tick_pixel = tick.getRelativeTo(WINDOW);
-
-            if (tick_pixel < XStart and leftArrow)
-            {
-                // current tick is before the visible area and arrow already there. no need to render again.
-            }
-            else if (tick_pixel > XEnd and rightArrow)
-            {
-                // current tick is after the visible area and arrow already there. no need to render again.
-            }
-            else
-            {
-                Display::render();
-            }
-            lastTick = m_playback_start_tick + currentTick;
+            /*
+            int x_scroll_in_pixels = (int)( (m_playback_start_tick + currentTick - m_follow_playback_time) *
+                getCurrentSequence()->getZoom() );
+            if ( x_scroll_in_pixels < 0 ) x_scroll_in_pixels = 0;
+            getCurrentSequence()->setXScrollInPixels(x_scroll_in_pixels);
+            DisplayFrame::updateHorizontalScrollbar( m_playback_start_tick + currentTick - m_follow_playback_time );
+                 */
         }
 
-        // FIXME - why pause the main thread, aren't there better ways?
-        wxMilliSleep(10);
+        setCurrentTick( m_playback_start_tick + currentTick );
+
+        RelativeXCoord tick(this->m_current_tick, MIDI);
+        const int XStart = Editor::getEditorXStart();
+        const int XEnd = getWidth();
+        const int tick_pixel = tick.getRelativeTo(WINDOW);
+
+        if (tick_pixel < XStart and leftArrow)
+        {
+            // current tick is before the visible area and arrow already there. no need to render again.
+        }
+        else if (tick_pixel > XEnd and rightArrow)
+        {
+            // current tick is after the visible area and arrow already there. no need to render again.
+        }
+        else
+        {
+            Display::render();
+        }
+        lastTick = m_playback_start_tick + currentTick;
+    }
+
+    // FIXME - why pause the main thread, aren't there better ways?
+    wxMilliSleep(10);
 }
 
 // --------------------------------------------------------------------------------------------------
@@ -1195,14 +1195,7 @@ void MainPane::scrollNowToPlaybackPosition()
 
 void MainPane::setCurrentTick(int currentTick)
 {
-    MainPane::currentTick = currentTick;
-}
-
-// --------------------------------------------------------------------------------------------------
-
-int MainPane::getCurrentTick() const
-{
-    return currentTick;
+    m_current_tick = currentTick;
 }
 
 // --------------------------------------------------------------------------------------------------

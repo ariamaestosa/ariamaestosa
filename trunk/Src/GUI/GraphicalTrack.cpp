@@ -56,26 +56,33 @@ namespace AriaMaestosa
     class AriaWidget
     {
     protected:
-        int x, y, width;
-        bool hidden;
+        int m_x, m_y;
+        int m_width;
+        bool m_hidden;
     public:
         LEAK_CHECK();
         
-        AriaWidget(int width){ AriaWidget::x = x; AriaWidget::width = width; hidden = false;}
-        int getX(){ return x; }
-        int getY(){ return y; }
-        int getWidth(){ return width; }
+        AriaWidget(int width)
+        {
+            m_x = 0;
+            m_width = width;
+            m_hidden = false;
+        }
         
-        bool isHidden(){ return hidden; }
-        void show(bool shown){ hidden = !shown; }
+        int getX() const { return m_x; }
+        int getY() const { return m_y; }
+        int getWidth() const { return m_width; }
+        
+        bool isHidden() const { return m_hidden; }
+        void show(bool shown){ m_hidden = not shown; }
         
         // don't call this, let WidgetLayoutManager do it
-        void setX(const int x){ AriaWidget::x = x; }
-        void setY(const int y){ AriaWidget::y = y; }
+        void setX(const int x){ m_x = x; }
+        void setY(const int y){ m_y = y; }
         
         bool clickIsOnThisWidget(const int mx, const int my)
         {
-            return (not hidden) and ( mx > x and my > y and mx < x+width and my < y+30);
+            return (not m_hidden) and ( mx > m_x and my > m_y and mx < m_x + m_width and my < m_y + 30);
         }
         
         virtual void render(){}
@@ -92,16 +99,16 @@ namespace AriaMaestosa
         
         void render()
         {
-            if (hidden) return;
-            comboBorderDrawable->move(x, y+7);
+            if (m_hidden) return;
+            comboBorderDrawable->move(m_x, m_y + 7);
             comboBorderDrawable->setFlip(false, false);
             comboBorderDrawable->render();
             
-            comboBodyDrawable->move(x + 14, y+7);
-            comboBodyDrawable->scale((width-28)/4.0 , 1);
+            comboBodyDrawable->move(m_x + 14, m_y + 7);
+            comboBodyDrawable->scale((m_width - 28)/4.0 , 1);
             comboBodyDrawable->render();
             
-            comboBorderDrawable->move(x + width - 14, y+7 );
+            comboBorderDrawable->move(m_x + m_width - 14, m_y + 7 );
             comboBorderDrawable->setFlip(true,false);
             comboBorderDrawable->render();
         }
@@ -117,16 +124,16 @@ namespace AriaMaestosa
         
         void render()
         {
-            if (hidden) return;
-            comboBorderDrawable->move(x, y+7);
+            if (m_hidden) return;
+            comboBorderDrawable->move(m_x, m_y + 7);
             comboBorderDrawable->setFlip(false, false);
             comboBorderDrawable->render();
             
-            comboBodyDrawable->move(x+14, y+7);
-            comboBodyDrawable->scale((width-28-18)/4.0, 1);
+            comboBodyDrawable->move(m_x + 14, m_y + 7);
+            comboBodyDrawable->scale((m_width - 28 - 18)/4.0, 1);
             comboBodyDrawable->render();
             
-            comboSelectDrawable->move(x+width-14-18, y+7);
+            comboSelectDrawable->move(m_x + m_width - 14 - 18, m_y + 7);
             comboSelectDrawable->render();
         }
     };
@@ -135,56 +142,60 @@ namespace AriaMaestosa
     
     class BitmapButton : public AriaWidget
     {
-        int y_offset;
-        bool enabled;
-        //bool toggleBtn;
-        bool centerX;
-        AriaRender::ImageState state;
-    public:
-        Drawable* drawable;
+        int m_y_offset;
+        bool m_enabled;
+        bool m_center_x;
+        AriaRender::ImageState m_state;
         
-        BitmapButton(int width, int y_offset, Drawable* drawable,/* bool toggleBtn=false,*/ bool centerX=false) : AriaWidget(width)
+    public:
+        Drawable* m_drawable;
+        
+        BitmapButton(int width, int y_offset, Drawable* drawable, bool centerX=false) : AriaWidget(width)
         {
-            BitmapButton::drawable = drawable;
-            BitmapButton::y_offset = y_offset;
-            enabled = true;
-            //BitmapButton::toggleBtn = toggleBtn;
-            BitmapButton::centerX = centerX;
-            state = AriaRender::STATE_NORMAL;
+            m_drawable = drawable;
+            m_y_offset = y_offset;
+            m_enabled = true;
+
+            m_center_x = centerX;
+            m_state = AriaRender::STATE_NORMAL;
         }
         virtual ~BitmapButton(){}
         
         BitmapButton* setImageState(AriaRender::ImageState state)
         {
-            BitmapButton::state = state;
+            m_state = state;
             return this;
         }
         
         void render()
         {
-            if (hidden) return;
+            if (m_hidden) return;
             
-            if (state != AriaRender::STATE_NORMAL)
-                AriaRender::setImageState(state);
-            else if (not enabled)
-                AriaRender::setImageState(AriaRender::STATE_DISABLED);
-            
-            if (centerX and drawable->getImageWidth() < width)
+            if (m_state != AriaRender::STATE_NORMAL)
             {
-                const int ajust = (width - drawable->getImageWidth())/2;
-                drawable->move(x + drawable->getHotspotX() + ajust, y+y_offset);
+                AriaRender::setImageState(m_state);
+            }
+            else if (not m_enabled)
+            {
+                AriaRender::setImageState(AriaRender::STATE_DISABLED);
+            }
+            
+            if (m_center_x and m_drawable->getImageWidth() < m_width)
+            {
+                const int ajust = (m_width - m_drawable->getImageWidth())/2;
+                m_drawable->move(m_x + m_drawable->getHotspotX() + ajust, m_y + m_y_offset);
             }
             else
             {
-                drawable->move(x + drawable->getHotspotX(), y+y_offset);
+                m_drawable->move(m_x + m_drawable->getHotspotX(), m_y + m_y_offset);
             }
             
-            drawable->render();
+            m_drawable->render();
         }
         
         void enable(const bool enabled)
         {
-            BitmapButton::enabled = enabled;
+            m_enabled = enabled;
         }
     };
     
@@ -193,52 +204,54 @@ namespace AriaMaestosa
     template<typename PARENT>
     class ToolBar : public PARENT
     {
-        ptr_vector<BitmapButton, HOLD> contents;
-        std::vector<int> margin;
+        ptr_vector<BitmapButton, HOLD> m_contents;
+        std::vector<int> m_margin;
+        
     public:
         ToolBar() : PARENT(22)
         {
         }
         void addItem(BitmapButton* btn, int margin_after)
         {
-            contents.push_back(btn);
-            margin.push_back(margin_after);
+            m_contents.push_back(btn);
+            m_margin.push_back(margin_after);
         }
         void layout()
         {
-            if (PARENT::hidden) return;
-            PARENT::width = 22;
-            int currentX = PARENT::x + 11;
+            if (PARENT::m_hidden) return;
             
-            const int amount = contents.size();
-            for(int n=0; n<amount; n++)
+            PARENT::m_width = 22;
+            int currentX = PARENT::m_x + 11;
+            
+            const int amount = m_contents.size();
+            for (int n=0; n<amount; n++)
             {
-                contents[n].setX(currentX);
-                contents[n].setY(PARENT::y);
+                m_contents[n].setX(currentX);
+                m_contents[n].setY(PARENT::m_y);
                 
-                currentX += contents[n].getWidth() + margin[n];
-                PARENT::width += contents[n].getWidth() + margin[n];
+                currentX        += m_contents[n].getWidth() + m_margin[n];
+                PARENT::m_width += m_contents[n].getWidth() + m_margin[n];
             }
         }
         
         BitmapButton& getItem(const int item)
         {
-            return contents[item];
+            return m_contents[item];
         }
         
         void render()
         {
-            if (PARENT::hidden) return;
+            if (PARENT::m_hidden) return;
             
             // render background
             PARENT::render();
             
             // render buttons
-            const int amount = contents.size();
+            const int amount = m_contents.size();
             
-            for(int n=0; n<amount; n++)
+            for (int n=0; n<amount; n++)
             {
-                contents[n].render();
+                m_contents[n].render();
             }
             AriaRender::setImageState(AriaRender::STATE_NORMAL);
         }
@@ -248,8 +261,9 @@ namespace AriaMaestosa
     
     class WidgetLayoutManager
     {
-        ptr_vector<AriaWidget, HOLD> widgetsLeft;
-        ptr_vector<AriaWidget, HOLD> widgetsRight;
+        ptr_vector<AriaWidget, HOLD> m_widgets_left;
+        ptr_vector<AriaWidget, HOLD> m_widgets_right;
+        
     public:
         LEAK_CHECK();
         
@@ -258,52 +272,54 @@ namespace AriaMaestosa
         }
         void addFromLeft(AriaWidget* w)
         {
-            widgetsLeft.push_back(w);
+            m_widgets_left.push_back(w);
         }
         void addFromRight(AriaWidget* w)
         {
-            widgetsRight.push_back(w);
+            m_widgets_right.push_back(w);
         }
         void layout(const int x_origin, const int y_origin)
         {
-            const int lamount = widgetsLeft.size();
+            const int lamount = m_widgets_left.size();
             int lx = x_origin;
-            for(int n=0; n<lamount; n++)
+            for (int n=0; n<lamount; n++)
             {
-                widgetsLeft[n].setX(lx);
-                widgetsLeft[n].setY(y_origin);
-                lx += widgetsLeft[n].getWidth();
+                m_widgets_left[n].setX(lx);
+                m_widgets_left[n].setY(y_origin);
+                lx += m_widgets_left[n].getWidth();
             }
             
-            const int ramount = widgetsRight.size();
+            const int ramount = m_widgets_right.size();
             int rx = Display::getWidth() - 17;
-            for(int n=0; n<ramount; n++)
+            
+            for (int n=0; n<ramount; n++)
             {
-                rx -= widgetsRight[n].getWidth();
-                widgetsRight[n].setX(rx);
-                widgetsRight[n].setY(y_origin);
+                rx -= m_widgets_right[n].getWidth();
+                m_widgets_right[n].setX(rx);
+                m_widgets_right[n].setY(y_origin);
             }
         }
+        
         void renderAll(bool focus)
         {
             AriaRender::images();
             
-            const int lamount = widgetsLeft.size();
-            for(int n=0; n<lamount; n++)
+            const int lamount = m_widgets_left.size();
+            for (int n=0; n<lamount; n++)
             {
-                if (!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
-                else AriaRender::setImageState(AriaRender::STATE_NORMAL);
+                if (not focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
+                else           AriaRender::setImageState(AriaRender::STATE_NORMAL);
                 
-                widgetsLeft.get(n)->render();
+                m_widgets_left.get(n)->render();
             }
             
-            const int ramount = widgetsRight.size();
-            for(int n=0; n<ramount; n++)
+            const int ramount = m_widgets_right.size();
+            for (int n=0; n<ramount; n++)
             {
-                if (!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
-                else AriaRender::setImageState(AriaRender::STATE_NORMAL);
+                if (not focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
+                else           AriaRender::setImageState(AriaRender::STATE_NORMAL);
                 
-                widgetsRight.get(n)->render();
+                m_widgets_right.get(n)->render();
             }
         }
     };
@@ -1009,11 +1025,11 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     }//end if
     
     // ------------------ prepare to draw components ------------------
-    if (collapsed) collapseButton->drawable->setImage( expandImg );
-    else           collapseButton->drawable->setImage( collapseImg );
+    if (collapsed) collapseButton->m_drawable->setImage( expandImg );
+    else           collapseButton->m_drawable->setImage( collapseImg );
     
-    if (track->isMuted()) muteButton->drawable->setImage( muteOnImg );
-    else                  muteButton->drawable->setImage( muteOffImg );
+    if (track->isMuted()) muteButton->m_drawable->setImage( muteOnImg );
+    else                  muteButton->m_drawable->setImage( muteOffImg );
     
     scoreButton -> enable( editorMode == SCORE      and focus );
     pianoButton -> enable( editorMode == KEYBOARD   and focus );

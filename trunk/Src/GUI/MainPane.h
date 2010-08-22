@@ -71,7 +71,7 @@ namespace AriaMaestosa
         /** Gives information about the location of the mouse in a drag */
         bool m_is_mouse_down;
 
-        int currentTick;
+        int m_current_tick;
 
         /** which track the user is dragging (in a track reordering process), or -1 if none */
         int m_dragged_track_id;
@@ -123,7 +123,7 @@ namespace AriaMaestosa
          * it needs to know where to draw the red line that follows playback. */
         void setCurrentTick(int currentTick=-1);
 
-        int  getCurrentTick() const;
+        int  getCurrentTick() const { return m_current_tick; }
         void exitPlayLoop();
         void scrollNowToPlaybackPosition();
 
