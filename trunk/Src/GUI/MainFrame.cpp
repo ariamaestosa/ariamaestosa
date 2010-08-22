@@ -776,7 +776,9 @@ void MainFrame::songLengthTextChanged(wxCommandEvent& evt)
 void MainFrame::timeSigClicked(wxCommandEvent& evt)
 {
     wxPoint pt = wxGetMousePosition();
-    showTimeSigPicker( pt.x, pt.y, getMeasureData()->getTimeSigNumerator(), getMeasureData()->getTimeSigDenominator() );
+    showTimeSigPicker(pt.x, pt.y,
+                      getMeasureData()->getTimeSigNumerator(),
+                      getMeasureData()->getTimeSigDenominator() );
 }
 
 // --------------------------------------------------------------------------------------------------------

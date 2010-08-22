@@ -158,13 +158,11 @@ UNSURE/MINOR:
 
 ************************* BUGS: *************************
 
-** When adding time sig change, the pop-up that appears is not for the newly added time sig change
-   but the previously selected one
-
 *** New way to store preferences (with strings instead of integers) messes up on Windows (encoding issue?)
 
 ** Things like changing global tempo, changing song length, etc... are not actions and thus do not mark the
    document as having unsaved changes!
+** Add Time Sig change is not an action and is not undone
 
 ** If a message dialog is shown during track loading, app freezes (conflict with WaitWindow, most likely)
 

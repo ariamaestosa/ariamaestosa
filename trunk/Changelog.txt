@@ -5,6 +5,7 @@
 - Fixed clicking on track header of drum editor unselects notes
 - Fixed measures appearing unselected when right-clicking on them
 - Fixed printing bug where notes appeared in the wrong measure
+- Fixed wrong time sig change being selected after adding a time sig effect
 - More code cleanup
 
 1.2.2
