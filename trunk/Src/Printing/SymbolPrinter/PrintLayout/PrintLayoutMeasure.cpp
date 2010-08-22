@@ -328,8 +328,9 @@ bool PrintLayoutMeasure::findConsecutiveRepetition(ptr_vector<PrintLayoutMeasure
     else
     {
         const int first_measure =  measures[m_measure_id].firstSimilarMeasure;
-        const int amount = measures[ first_measure ].similarMeasuresFoundLater.size();
-        for(int laterOccurence=0; laterOccurence<amount; laterOccurence++)
+        
+        const int similarMeasuresAmount = measures[ first_measure ].similarMeasuresFoundLater.size();
+        for (int laterOccurence=0; laterOccurence<similarMeasuresAmount; laterOccurence++)
         {
             const int checkFromMeasure = measures[ first_measure ].similarMeasuresFoundLater[laterOccurence];
             //std::cout << "        < lvl 2, testing measure " << checkFromMeasure << std::endl;
@@ -340,7 +341,7 @@ bool PrintLayoutMeasure::findConsecutiveRepetition(ptr_vector<PrintLayoutMeasure
             
             // check if there is a consecutive repetition with measures from this area
             
-            for(int iter=0; iter</*id-checkFromMeasure*/measureAmount; iter++)
+            for (int iter=0; iter</*id-checkFromMeasure*/measureAmount; iter++)
             {
                 if (not(checkFromMeasure+iter < m_measure_id and
                         checkFromMeasure+iter < measureAmount and m_measure_id+iter < measureAmount)) continue;

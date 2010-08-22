@@ -28,21 +28,29 @@ namespace AriaMaestosa
       */
     class TimeSigChange
     {
+        int m_measure;
+        int m_denom;
+        int m_num;
+        int m_tick;
+        
     public:
         LEAK_CHECK();
         
         TimeSigChange(int measure, int num, int denom);
         
-        int measure; // indicates the position of the measure
-        int denom;
-        int num;
+        int getMeasure() const { return m_measure; }
+        int getDenom  () const { return m_denom;   }
+        int getNum    () const { return m_num;     }
         
-        // these do not indicate where the measure is, it is just a way to speed up calculations by storing
-        // values there instead of recalculating them everytime. they will be changed everytime a time sig even is modified
-        // this way no need to recalculate every frame, only on change.
-        // MeasureBar::updateMeasureInfo() is the method that should be called whenever any of the TImeSig events has one of
-        // its above params changed
-        int tick, pixel;
+        int getTick   () const { return m_tick;    }
+        
+        void setMeasure(int newValue) { m_measure = newValue; }
+        void setDenom  (int newValue) { m_denom   = newValue; }
+        void setNum    (int newValue) { m_num     = newValue; }
+        
+        void setTick   (int newValue) { m_tick    = newValue; }
+        
+        //int m_tick, m_pixel;
     };
     
 }

@@ -194,8 +194,8 @@ namespace AriaMaestosa
     {
         friend class BeamGroup;
         
-        Editor* editor;
-        int stemPivot;
+        Editor* m_editor;
+        int m_stem_pivot;
         
         float stem_height;
         float min_stem_height;

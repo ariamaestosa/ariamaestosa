@@ -46,10 +46,9 @@ MeasureData::MeasureData(int measureAmount)
 
     m_measure_amount = measureAmount;
     timeSigChanges.push_back( new TimeSigChange(0,4,4) );
-    timeSigChanges[0].tick = 0;
-    timeSigChanges[0].measure = 0;
+    timeSigChanges[0].setTick(0);
 
-    firstMeasure=0;
+    firstMeasure = 0;
 
     graphics = new MeasureBar(this);
     expandedMode = false;
@@ -80,9 +79,8 @@ void MeasureData::setExpandedMode(bool arg_expanded)
         // remove all added events
         selectedTimeSig = 0;
         timeSigChanges.clearAndDeleteAll();
-        timeSigChanges.push_back( new TimeSigChange(0,4,4) );
-        timeSigChanges[0].tick = 0;
-        timeSigChanges[0].measure = 0;
+        timeSigChanges.push_back( new TimeSigChange(0, 4, 4) );
+        timeSigChanges[0].setTick(0);
     }
 
     expandedMode = arg_expanded;
@@ -261,10 +259,10 @@ int MeasureData::measureAtTick(int tick)
         tick -= timeSigChanges[ last_id ].tick;
 
         const int answer =  (int)(
-                     timeSigChanges[ last_id ].measure +
+                     timeSigChanges[ last_id ].getMeasure() +
                      tick / ( getCurrentSequence()->ticksPerBeat() *
-                              timeSigChanges[ last_id ].num *
-                              (4.0/ timeSigChanges[ last_id ].denom ) )
+                              timeSigChanges[ last_id ].getNum() *
+                              (4.0/ timeSigChanges[ last_id ].getDenom() ) )
                      );
         ASSERT_E(answer, <=, m_measure_amount);
         return answer;
@@ -446,7 +444,7 @@ void MeasureData::selectTimeSig(const int id)
 {
     // FIXE... not really what you'd expect considering the method's name
     selectedTimeSig = id;
-    getMainFrame()->changeShownTimeSig( timeSigChanges[id].num, timeSigChanges[id].denom );
+    getMainFrame()->changeShownTimeSig( timeSigChanges[id].getNum(), timeSigChanges[id].getDenom() );
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -457,13 +455,13 @@ int MeasureData::getTimeSigNumerator(int measure) const
     {
         measure+=1;
         const int timeSigChangeAmount = timeSigChanges.size();
-        for(int n=0; n<timeSigChangeAmount; n++)
+        for (int n=0; n<timeSigChangeAmount; n++)
         {
-            if ( timeSigChanges[n].measure >= measure ) return timeSigChanges[n-1].num;
+            if (timeSigChanges[n].getMeasure() >= measure) return timeSigChanges[n-1].getNum();
         }
-        return timeSigChanges[timeSigChangeAmount-1].num;
+        return timeSigChanges[timeSigChangeAmount-1].getNum();
     }
-    else return timeSigChanges[selectedTimeSig].num;
+    else return timeSigChanges[selectedTimeSig].getNum();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -476,15 +474,15 @@ int MeasureData::getTimeSigDenominator(int measure) const
         measure+=1;
 
         const int timeSigChangeAmount = timeSigChanges.size();
-        for(int n=0; n<timeSigChangeAmount; n++)
+        for (int n=0; n<timeSigChangeAmount; n++)
         {
-            if ( timeSigChanges[n].measure >= measure ) return timeSigChanges[n-1].denom;
+            if (timeSigChanges[n].getMeasure() >= measure) return timeSigChanges[n-1].getDenom();
         }
-        return timeSigChanges[timeSigChangeAmount-1].denom;
+        return timeSigChanges[timeSigChangeAmount-1].getDenom();
     }
     else
     {
-        return timeSigChanges[selectedTimeSig].denom;
+        return timeSigChanges[selectedTimeSig].getDenom();
     }
 }
 
@@ -494,8 +492,8 @@ void MeasureData::setTimeSig(int top, int bottom)
 {
     ASSERT_E(m_measure_amount, ==, (int)measureInfo.size());
     
-    timeSigChanges[selectedTimeSig].num = top;
-    timeSigChanges[selectedTimeSig].denom = bottom;
+    timeSigChanges[selectedTimeSig].setNum( top );
+    timeSigChanges[selectedTimeSig].setDenom( bottom );
     updateMeasureInfo();
 
 
@@ -524,7 +522,7 @@ void MeasureData::eraseTimeSig(int id)
     if (selectedTimeSig == id)
     {
         selectedTimeSig = 0;
-        getMainFrame()->changeShownTimeSig( timeSigChanges[0].num, timeSigChanges[0].denom );
+        getMainFrame()->changeShownTimeSig( timeSigChanges[0].getNum(), timeSigChanges[0].getDenom() );
     }
 }
 
@@ -544,36 +542,36 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
         // iterate through time sig events, until an iteration does something with the event
         for (int n=0; n<(int)timeSigChanges.size(); n++) 
         {
-            if ( timeSigChanges[n].measure == measure)
+            if (timeSigChanges[n].getMeasure() == measure)
             {
                 // a time sig event already exists at this location
                 // if we're not importing, select it
                 if (!getCurrentSequence()->importing)
                 {
                     selectedTimeSig = n;
-                    getMainFrame()->changeShownTimeSig(timeSigChanges[selectedTimeSig].num,
-                                                       timeSigChanges[selectedTimeSig].denom );
+                    getMainFrame()->changeShownTimeSig(timeSigChanges[selectedTimeSig].getNum(),
+                                                       timeSigChanges[selectedTimeSig].getDenom() );
 
                     wxPoint pt = wxGetMousePosition();
-                    showTimeSigPicker( pt.x, pt.y, timeSigChanges[n].num, timeSigChanges[n].denom );
+                    showTimeSigPicker( pt.x, pt.y, timeSigChanges[n].getNum(), timeSigChanges[n].getDenom() );
                     break;
                 }
                 // if we're importing, replace it with new value
                 else
                 {
-                    timeSigChanges[selectedTimeSig].num = num;
-                    timeSigChanges[selectedTimeSig].denom = denom;
+                    timeSigChanges[selectedTimeSig].setNum(num);
+                    timeSigChanges[selectedTimeSig].setDenom(denom);
                     break;
                 }
             }
             // we checked enough events so that we are past the point where the click occured.
             // we know there is no event already existing at the clicked measure.
-            if (timeSigChanges[n].measure > measure)
+            if (timeSigChanges[n].getMeasure() > measure)
             {
                 if (num == -1 or denom == -1)
                 {
-                    timeSigChanges.add( new TimeSigChange(measure, timeSigChanges[n].num,
-                                                          timeSigChanges[n].denom), n );
+                    timeSigChanges.add( new TimeSigChange(measure, timeSigChanges[n].getNum(),
+                                                          timeSigChanges[n].getDenom()), n );
                 }
                 else
                 {
@@ -582,12 +580,12 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
 
                 selectedTimeSig = n;
 
-                getMainFrame()->changeShownTimeSig( timeSigChanges[n].num, timeSigChanges[n].denom );
+                getMainFrame()->changeShownTimeSig( timeSigChanges[n].getNum(), timeSigChanges[n].getDenom() );
 
                 if (not getCurrentSequence()->importing)
                 {
                     wxPoint pt = wxGetMousePosition();
-                    showTimeSigPicker( pt.x, pt.y, timeSigChanges[n].num, timeSigChanges[n].denom );
+                    showTimeSigPicker( pt.x, pt.y, timeSigChanges[n].getNum(), timeSigChanges[n].getDenom() );
                     if (!getCurrentSequence()->importing) updateMeasureInfo();
                 }
                 
@@ -598,8 +596,8 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
 
                 if (num == -1 or denom == -1)
                 {
-                    timeSigChanges.add( new TimeSigChange(measure, timeSigChanges[n].num,
-                                                          timeSigChanges[n].denom), n+1 );
+                    timeSigChanges.add( new TimeSigChange(measure, timeSigChanges[n].getNum(),
+                                                          timeSigChanges[n].getDenom()), n+1 );
                 }
                 else
                 {
@@ -607,12 +605,12 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
                                                           selectedTimeSig = n+1;
                 }
 
-                getMainFrame()->changeShownTimeSig( timeSigChanges[n+1].num, timeSigChanges[n+1].denom );
+                getMainFrame()->changeShownTimeSig( timeSigChanges[n+1].getNum(), timeSigChanges[n+1].getDenom() );
 
                 if (not getCurrentSequence()->importing)
                 {
                     wxPoint pt = wxGetMousePosition();
-                    showTimeSigPicker( pt.x, pt.y, timeSigChanges[n].num, timeSigChanges[n].denom );
+                    showTimeSigPicker( pt.x, pt.y, timeSigChanges[n].getNum(), timeSigChanges[n].getDenom() );
                     if (not getCurrentSequence()->importing) updateMeasureInfo();
                 }
                 break;
@@ -625,7 +623,7 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
          std::cout << "-----" << std::endl;
          for(int n=0; n<(int)timeSigChanges.size(); n++)
          {
-             std::cout << "  " << timeSigChanges[n].measure << std::endl;
+             std::cout << "  " << timeSigChanges[n].getMeasure() << std::endl;
          }
          */
     }
@@ -661,17 +659,18 @@ void MeasureData::updateMeasureInfo()
     int timg_sig_event = 0;
 
     ASSERT_E(timg_sig_event,<,timeSigChanges.size());
-    timeSigChanges[timg_sig_event].tick = 0;
-    timeSigChanges[timg_sig_event].pixel = 0;
+    timeSigChanges[timg_sig_event].setTick(0);
+    //timeSigChanges[timg_sig_event].pixel = 0;
 
     for (int n=0; n<amount; n++)
     {
         // check if time sig changes on this measure
-        if (timg_sig_event != (int)timeSigChanges.size()-1 and timeSigChanges[timg_sig_event+1].measure == n)
+        if (timg_sig_event != (int)timeSigChanges.size()-1 and
+            timeSigChanges[timg_sig_event+1].getMeasure() == n)
         {
             timg_sig_event++;
-            timeSigChanges[timg_sig_event].tick = (int)round( tick );
-            timeSigChanges[timg_sig_event].pixel = (int)round( tick * zoom );
+            timeSigChanges[timg_sig_event].setTick((int)round( tick ));
+            //timeSigChanges[timg_sig_event].pixel = (int)round( tick * zoom );
         }
 
         // set end location of previous measure
@@ -687,8 +686,8 @@ void MeasureData::updateMeasureInfo()
         // calculations and drawing
         measureInfo[n].tick = (int)round( tick );
         measureInfo[n].pixel = (int)round( tick * zoom );
-        tick += ticksPerBeat * timeSigChanges[timg_sig_event].num *
-                (4.0 /(float)timeSigChanges[timg_sig_event].denom);
+        tick += ticksPerBeat * timeSigChanges[timg_sig_event].getNum() *
+                (4.0 /(float)timeSigChanges[timg_sig_event].getDenom());
     }
 
     // fill length and end of last measure
@@ -724,8 +723,8 @@ void MeasureData::beforeImporting()
 {
     timeSigChanges.clearAndDeleteAll();
     timeSigChanges.push_back(new TimeSigChange(0,4,4) );
-    timeSigChanges[0].tick = 0;
-    timeSigChanges[0].measure = 0;
+    timeSigChanges[0].setTick(0);
+
     last_event_tick = 0;
     measuresPassed = 0;
 }
@@ -743,23 +742,22 @@ void MeasureData::addTimeSigChange_import(int tick, int num, int denom)
         if (timeSigChanges.size() == 0)
         {
             timeSigChanges.push_back( new TimeSigChange(0,4,4) );
-            timeSigChanges[0].tick = 0;
-            timeSigChanges[0].measure = 0;
+            timeSigChanges[0].setTick(0);
         }
 
         // when an event already exists at the beginning, don't add another one, just modify it
-        if (timeSigChanges[0].tick == 0)
+        if (timeSigChanges[0].getTick() == 0)
         {
-            timeSigChanges[0].num = num;
-            timeSigChanges[0].denom = denom;
-            timeSigChanges[0].tick = 0;
-            timeSigChanges[0].measure = 0;
+            timeSigChanges[0].setNum(num);
+            timeSigChanges[0].setDenom(denom);
+            timeSigChanges[0].setTick(0);
+            timeSigChanges[0].setMeasure(0);
             last_event_tick = 0;
             return;
         }
         else
         {
-            std::cout << "Unexpected!! tick is " << timeSigChanges[0].tick << std::endl;
+            std::cout << "Unexpected!! tick is " << timeSigChanges[0].getTick() << std::endl;
         }
     }
     else
@@ -768,8 +766,8 @@ void MeasureData::addTimeSigChange_import(int tick, int num, int denom)
         measure = (int)(
                         measuresPassed + (tick - last_event_tick)  /
                         ( getCurrentSequence()->ticksPerBeat() *
-                          timeSigChanges[last_id].num *
-                          (4.0/ timeSigChanges[last_id].denom )
+                          timeSigChanges[last_id].getNum() *
+                          (4.0/ timeSigChanges[last_id].getDenom() )
                           )
                         );
     }
@@ -779,7 +777,7 @@ void MeasureData::addTimeSigChange_import(int tick, int num, int denom)
     measuresPassed = measure;
 
     last_event_tick = tick;
-    timeSigChanges[timeSigChanges.size()-1].tick = tick;
+    timeSigChanges[timeSigChanges.size()-1].setTick(tick);
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -882,15 +880,16 @@ bool MeasureData::readFromFile(irr::io::IrrXMLReader* xml)
             if (timeSigChanges.size()==0)
             {
                 timeSigChanges.push_back(new TimeSigChange(0,4,4) ); // add an event if one is not already there
-                timeSigChanges[0].tick = 0;
-                timeSigChanges[0].measure = 0;
+                timeSigChanges[0].setTick(0);
             }
-            timeSigChanges[0].denom = atoi( denom );
+            timeSigChanges[0].setDenom( atoi( denom ) );
 
-            if (timeSigChanges[0].denom < 0 or timeSigChanges[0].denom>64)
+            if (timeSigChanges[0].getDenom() < 0 or timeSigChanges[0].getDenom() > 64)
             {
-                std::cerr << "Wrong measureBar->getTimeSigDenominator(): " << timeSigChanges[0].denom << std::endl;
-                timeSigChanges[0].denom = 4;
+                std::cerr << "Wrong measureBar->getTimeSigDenominator(): "
+                          << timeSigChanges[0].getDenom() << std::endl;
+                
+                timeSigChanges[0].setDenom(4);
             }
         }
 
@@ -900,15 +899,14 @@ bool MeasureData::readFromFile(irr::io::IrrXMLReader* xml)
             if (timeSigChanges.size()==0)
             {
                 timeSigChanges.push_back(new TimeSigChange(0,4,4)); // add an event if one is not already there
-                timeSigChanges[0].tick = 0;
-                timeSigChanges[0].measure = 0;
+                timeSigChanges[0].setTick(0);
             }
-            timeSigChanges[0].num = atoi( num );
+            timeSigChanges[0].setNum( atoi( num ) );
 
-            if (timeSigChanges[0].num < 0 or timeSigChanges[0].num>64)
+            if (timeSigChanges[0].getNum() < 0 or timeSigChanges[0].getNum() > 64)
             {
-                std::cerr << "Wrong timeSigChanges[0].num: " << timeSigChanges[0].num << std::endl;
-                timeSigChanges[0].num = 4;
+                std::cerr << "Wrong timeSigChanges[0].getNum(): " << timeSigChanges[0].getNum() << std::endl;
+                timeSigChanges[0].setNum( 4 );
             }
         }
 
@@ -982,9 +980,9 @@ void MeasureData::saveToFile(wxFileOutputStream& fileout)
         const int timeSigAmount = timeSigChanges.size();
         for(int n=0; n<timeSigAmount; n++)
         {
-            writeData(wxT("<timesig num=\"") + to_wxString(timeSigChanges[n].num) +
-                      wxT("\" denom=\"") + to_wxString(timeSigChanges[n].denom) +
-                      wxT("\" measure=\"") + to_wxString(timeSigChanges[n].measure) + wxT("\"/>\n"),
+            writeData(wxT("<timesig num=\"") + to_wxString(timeSigChanges[n].getNum()) +
+                      wxT("\" denom=\"") + to_wxString(timeSigChanges[n].getDenom()) +
+                      wxT("\" measure=\"") + to_wxString(timeSigChanges[n].getMeasure()) + wxT("\"/>\n"),
                       fileout );
         }//next
         writeData(wxT("</measure>\n\n"), fileout );
