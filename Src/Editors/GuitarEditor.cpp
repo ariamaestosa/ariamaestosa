@@ -97,7 +97,7 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
     const GuitarTuning* tuning = m_track->getGuitarTuning();
     const int string_amount = tuning->tuning.size();
 
-    AriaRender::beginScissors(10, getEditorYStart(), width-15, 20+height);
+    AriaRender::beginScissors(10, getEditorYStart(), m_width - 15, 20 + m_height);
 
     // white background
     AriaRender::primitives();
@@ -127,8 +127,8 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
         int x2 = m_track->getNoteEndInPixels(n)   - m_sequence->getXScrollInPixels();
 
         // don't draw notes that won't visible
-        if (x2 < 0    ) continue;
-        if (x1 > width) break;
+        if (x2 < 0    )   continue;
+        if (x1 > m_width) break;
 
         AriaRender::primitives();
 
@@ -203,7 +203,7 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
     {
 
         // -------------------- selection ----------------------
-        if (selecting)
+        if (m_selecting)
         {
             AriaRender::color(0,0,0);
             AriaRender::hollow_rect(mousex_initial.getRelativeTo(WINDOW), mousey_initial,

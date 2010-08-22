@@ -169,16 +169,16 @@ namespace AriaMaestosa
         /** true if user is clicking on the scrollbar */
         bool m_click_on_scrollbar;
         
-        int from_y;
-        int to_y;
-        int width;
-        int height;
+        int m_from_y;
+        int m_to_y;
+        int m_width;
+        int m_height;
         
         /** height of the header bar of a track (editor) */
         int m_header_bar_height;
         
-        bool selecting;
-        int ystep;
+        bool m_selecting;
+        int m_y_step;
         
         bool m_mouse_is_in_editor;
         
@@ -354,12 +354,12 @@ namespace AriaMaestosa
         // methods that provide general information common to all editors
         // ------------------------------------------------------------------------------------------------------
 
-        static int getEditorXStart(){ return 90;                            }
-        int getXEnd()         const { return width - 5;                     } // FIXME - adapt to include vertical scrollbar
-        int getTrackYStart()  const { return from_y;                        }
-        int getEditorYStart() const { return from_y+m_header_bar_height+20; }
-        int getYEnd()         const { return to_y - 10;                     }
-        int getWidth()        const { return width;                         }
+        static int getEditorXStart(){ return 90;                                  }
+        int getXEnd        () const { return m_width - 5;                         } // FIXME - adapt to include vertical scrollbar
+        int getTrackYStart () const { return m_from_y;                            }
+        int getEditorYStart() const { return m_from_y + m_header_bar_height + 20; }
+        int getYEnd        () const { return m_to_y - 10;                         }
+        int getWidth       () const { return m_width;                             }
 
         
         //const Note7 pitchToNoteName

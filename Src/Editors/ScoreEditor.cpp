@@ -900,12 +900,12 @@ void renderSilence(const int duration, const int tick, const int type, const int
 void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
                          RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {
-    if (head_radius == -1) head_radius = noteOpen->getImageHeight()/2;
+    if (not ImageProvider::imagesLoaded()) return;
 
-    if (!ImageProvider::imagesLoaded()) return;
+    if (head_radius == -1) head_radius = noteOpen->getImageHeight()/2;
     const int yscroll = getYScrollInPixels();
 
-    AriaRender::beginScissors(10, getEditorYStart(), width-15, 20+height);
+    AriaRender::beginScissors(10, getEditorYStart(), m_width - 15, 20 + m_height);
 
     // white background
     AriaRender::primitives();
@@ -934,12 +934,17 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     const int noteAmount = m_track->getNoteAmount();
 
-    const int first_x_to_consider = getMeasureData()->firstPixelInMeasure( getMeasureData()->measureAtPixel(0) ) + 1;
-    const int last_x_to_consider  = getMeasureData()->lastPixelInMeasure ( getMeasureData()->measureAtPixel(width+15) );
+    const int first_x_to_consider = getMeasureData()->firstPixelInMeasure(
+                                        getMeasureData()->measureAtPixel(0)
+                                                                          ) + 1;
+    const int last_x_to_consider  = getMeasureData()->lastPixelInMeasure(
+                                        getMeasureData()->measureAtPixel(m_width+15)
+                                                                         );
 
     if (musicalNotationEnabled) converter->resetAccidentalsForNewRender();
 
-    // render pass 1. draw linear notation if relevant, gather information and do initial rendering for musical notation
+    // render pass 1. draw linear notation if relevant, gather information and do initial rendering for
+    // musical notation
     for (int n=0; n<noteAmount; n++)
     {
         PitchSign note_sign;
@@ -1096,10 +1101,10 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     AriaRender::primitives();
 
-    if (!m_clicked_on_note and m_mouse_is_in_editor)
+    if (not m_clicked_on_note and m_mouse_is_in_editor)
     {
         // selection
-        if (selecting)
+        if (m_selecting)
         {
             AriaRender::color(0, 0, 0);
             AriaRender::hollow_rect(mousex_initial.getRelativeTo(WINDOW), mousey_initial,
@@ -1464,7 +1469,7 @@ void ScoreEditor::rightClick(RelativeXCoord x, int y)
 int ScoreEditor::getYScrollInPixels()
 {
     // check if visible area is large enough to display everything
-    if (73*Y_STEP_HEIGHT <= height)
+    if (73*Y_STEP_HEIGHT <= m_height)
     {
         useVerticalScrollbar(false);
         return 0;
@@ -1474,7 +1479,7 @@ int ScoreEditor::getYScrollInPixels()
         useVerticalScrollbar(true);
     }
 
-    return (int)( m_sb_position*(73*Y_STEP_HEIGHT-height) );
+    return (int)( m_sb_position*(73*Y_STEP_HEIGHT - m_height) );
 }
 
 // ----------------------------------------------------------------------------------------------------------
