@@ -41,13 +41,12 @@ const int Y_STEP = 10;
 
 // ----------------------------------------------------------------------------------------------------------
 
-DrumEditor::DrumInfo::DrumInfo(int midiKey, const bool a_section)
+DrumEditor::DrumInfo::DrumInfo(int midiKey, const bool section)
 {
-    DrumInfo::midiKey = midiKey;
+    m_midi_key = midiKey;
+    m_section  = section;
 
-    section = a_section;
-
-    sectionExpanded = true;
+    m_section_expanded = true;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -344,7 +343,7 @@ void DrumEditor::useCustomDrumSet()
     const int count = drums.size();
     for (int n=0; n<count; n++)
     {
-        midiKeyToVectorID[ drums[n].midiKey ] = n;
+        midiKeyToVectorID[ drums[n].m_midi_key ] = n;
     }
 }
 
@@ -441,7 +440,7 @@ void DrumEditor::useDefaultDrumSet()
     const int count = drums.size();
     for (int n=0; n<count; n++)
     {
-        midiKeyToVectorID[ drums[n].midiKey ] = n;
+        midiKeyToVectorID[ drums[n].m_midi_key ] = n;
     }
 }
 
@@ -512,8 +511,8 @@ void DrumEditor::addNote(const int snappedX, const int mouseY)
     if (drumID < 0) return;
     if (drumID > (int)drums.size()-1) return;
 
-    const int note = drums[ drumID ].midiKey;
-    if (note == -1 or drums[ drumID ].section) return;
+    const int note = drums[ drumID ].m_midi_key;
+    if (note == -1 or drums[ drumID ].m_section) return;
 
     m_track->action(
                     new Action::AddNote(note,
@@ -559,7 +558,7 @@ void DrumEditor::moveNote(Note& note, const int relativeX, const int relativeY)
     newVectorLoc += relativeY;
 
     // skip sections
-    while (drums[newVectorLoc].section)
+    while (drums[newVectorLoc].m_section)
     {
         newVectorLoc += (relativeY/abs(relativeY)); // keep the same sign, but only move 1 step at a time from now on
 
@@ -571,7 +570,7 @@ void DrumEditor::moveNote(Note& note, const int relativeX, const int relativeY)
     }
 
     // find the midi key at the new location
-    const int new_pitchID = drums[newVectorLoc].midiKey;
+    const int new_pitchID = drums[newVectorLoc].m_midi_key;
     if (new_pitchID < 0 or new_pitchID > 127)
     {
         // invalid location - discard
@@ -650,20 +649,20 @@ void DrumEditor::mouseDown(RelativeXCoord x, const int y)
             // click in the left area
             if (x.getRelativeTo(EDITOR) < 0 and x.getRelativeTo(WINDOW) > 0)
             {
-                const int note = drums[ drumID ].midiKey;
+                const int note = drums[ drumID ].m_midi_key;
                 
-                if (note == -1 or drums[ drumID ].section) return;
+                if (note == -1 or drums[ drumID ].m_section) return;
 
                 PlatformMidiManager::get()->playNote(note, m_default_volume, 500 /* duration */, 9,
                                                      m_track->getDrumKit() );
             }    
             // click on section
-            else if (drums[ drumID ].section)
+            else if (drums[ drumID ].m_section)
             {
                 // user clicked on a section. if click is on the triangle, expand/collapse it. otherwise, it just selects nothing.
                 if (x.getRelativeTo(EDITOR) < 25 and x.getRelativeTo(EDITOR) > 0)
                 {
-                    drums[ drumID ].sectionExpanded = not drums[ drumID ].sectionExpanded;
+                    drums[ drumID ].m_section_expanded = not drums[ drumID ].m_section_expanded;
                     return;
                 }
                 // select none
@@ -891,7 +890,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         AriaRender::images();
         drum_names_renderer.bind();
 
-        if (drums[drumID].section) // section header
+        if (drums[drumID].m_section) // section header
         {
             AriaRender::primitives();
             AriaRender::color(0,0,0);
@@ -900,7 +899,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
             AriaRender::color(1,1,1);
 
-            if (!drums[drumID].sectionExpanded) // expand/collapse widget of section header
+            if (!drums[drumID].m_section_expanded) // expand/collapse widget of section header
             {
                 AriaRender::triangle( Editor::getEditorXStart()+7, y+2,
                                      Editor::getEditorXStart()+7, y+8,
@@ -917,24 +916,24 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
             AriaRender::images();
             AriaRender::color(1,1,1);
             // render twice otherwise it's too pale
-            drum_names_renderer.get(drums[drumID].midiKey-27).render( Editor::getEditorXStart()+20, y+12 );
-            drum_names_renderer.get(drums[drumID].midiKey-27).render( Editor::getEditorXStart()+20, y+12 );
+            drum_names_renderer.get(drums[drumID].m_midi_key-27).render( Editor::getEditorXStart()+20, y+12 );
+            drum_names_renderer.get(drums[drumID].m_midi_key-27).render( Editor::getEditorXStart()+20, y+12 );
 
         }//end if section
         else
         {
             AriaRender::color(0,0,0);
-            drum_names_renderer.get(drums[drumID].midiKey-27).render( Editor::getEditorXStart()-74, y+11 );
+            drum_names_renderer.get(drums[drumID].m_midi_key-27).render( Editor::getEditorXStart()-74, y+11 );
         }
 
         AriaRender::color(0,0,0);
 
         // if section is collapsed, skip all its elements
         ASSERT_E(drumID,<,(int)drums.size());
-        if (!drums[drumID].sectionExpanded)
+        if (!drums[drumID].m_section_expanded)
         {
             drumID++;
-            while (!drums[drumID].section && drumID < drumAmount)
+            while (!drums[drumID].m_section && drumID < drumAmount)
             {
                 drumID++;
             }
@@ -974,10 +973,10 @@ int DrumEditor::getDrumAtY(const int given_y)
 
         // if section is collapsed, skip all its elements
         ASSERT_E(drumID,<,drums.size());
-        if (!drums[drumID].sectionExpanded)
+        if (!drums[drumID].m_section_expanded)
         {
             drumID++;
-            while(!drums[drumID++].section){ ASSERT_E(drumID,<,drums.size()); }
+            while(!drums[drumID++].m_section){ ASSERT_E(drumID,<,drums.size()); }
             drumID=drumID-2;
             continue;
         }//end if section collapsed
@@ -1006,10 +1005,10 @@ int DrumEditor::getYForDrum(const int given_drumID)
 
         // if section is collapsed, skip all its elements
         ASSERT_E(drumID,<,drums.size());
-        if (!drums[drumID].sectionExpanded)
+        if (!drums[drumID].m_section_expanded)
         {
             drumID++;
-            while(!drums[drumID++].section){ ASSERT_E(drumID,<,drums.size()); }
+            while(!drums[drumID++].m_section){ ASSERT_E(drumID,<,drums.size()); }
             drumID=drumID-2;
             continue;
         }//end if section collapsed

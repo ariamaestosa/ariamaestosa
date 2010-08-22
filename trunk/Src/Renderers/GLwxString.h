@@ -250,7 +250,7 @@ namespace AriaMaestosa
     {
         ptr_vector<wxGLString, HOLD> strings;
         OwnerPtr<TextTexture> img;
-        wxFont font;
+        wxFont m_font;
         bool consolidated;
     public:
         /** constructs an empty array - add elements later using addString */

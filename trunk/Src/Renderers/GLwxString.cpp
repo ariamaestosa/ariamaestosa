@@ -525,15 +525,15 @@ void wxGLStringArray::addString(wxString string)
 }
 void wxGLStringArray::setFont(wxFont font)
 {
-    wxGLStringArray::font = font;
+    m_font = font;
 }
 
 void wxGLStringArray::consolidate(wxDC* dc)
 {
     int x=0, y=0;
 
-    if (font.IsOk()) dc->SetFont(font);
-    else             dc->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
+    if (m_font.IsOk()) dc->SetFont(m_font);
+    else               dc->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
 
     // find how much space we need
     int longest_string = 0;
@@ -573,8 +573,8 @@ void wxGLStringArray::consolidate(wxDC* dc)
 
         y = 0;
         x = 0;
-        if (font.IsOk()) temp_dc.SetFont(font);
-        else temp_dc.SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
+        if (m_font.IsOk()) temp_dc.SetFont(m_font);
+        else               temp_dc.SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
 
         for (int n=0; n<amount; n++)
         {
