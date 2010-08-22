@@ -41,9 +41,9 @@ namespace AriaMaestosa
         {
         public:
             DrumInfo(int midiKey, const bool a_section=false);
-            int midiKey;
-            bool section;
-            bool sectionExpanded;
+            int  m_midi_key;
+            bool m_section;
+            bool m_section_expanded;
         };
         
         bool showUsedDrumsOnly;

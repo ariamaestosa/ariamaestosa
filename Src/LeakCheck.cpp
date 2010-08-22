@@ -56,9 +56,9 @@ namespace AriaMaestosa
             //std::cout << "removeObj done" << std::endl;
         }
         
-        MyObject::MyObject(AbstractLeakCheck* obj)
+        MyObject::MyObject(AbstractLeakCheck* objArg)
         {
-            this->obj = obj;
+            obj = objArg;
             
 #if (GET_STACK_TRACE == 1) && defined(MAC_OS_X_VERSION_10_5)
             

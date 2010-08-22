@@ -39,13 +39,13 @@ namespace AriaMaestosa
     class AriaLanguage
     {
     public:
-        long wxlangcode;
-        wxString langname;
+        long     m_wx_langcode;
+        wxString m_langname;
         
         AriaLanguage(long wxlangcode, wxString langname)
         {
-            AriaLanguage::wxlangcode = wxlangcode;
-            AriaLanguage::langname = langname;
+            m_wx_langcode = wxlangcode;
+            m_langname    = langname;
         }
         
     };
@@ -77,17 +77,17 @@ namespace AriaMaestosa
         }
         // preferences contain Aria-ID of supported languages (see list above)
         // we need to convert this to a wx language code before using
-        language_wx_id = languages[language_aria_id].wxlangcode;
+        language_wx_id = languages[language_aria_id].m_wx_langcode;
         
         // check if this language is known. not really necessary, just informative
         // in case something goes wrong
         const int lang_amount = languages.size();
         bool language_known = false;
-        for(int i=0; i<lang_amount; i++)
+        for (int i=0; i<lang_amount; i++)
         {
-            if (language_wx_id == languages[i].wxlangcode)
+            if (language_wx_id == languages[i].m_wx_langcode)
             {
-                std::cout << "language : " << languages[i].langname.mb_str() << std::endl;
+                std::cout << "language : " << languages[i].m_langname.mb_str() << std::endl;
                 language_known = true;
             }
         }
@@ -143,9 +143,9 @@ namespace AriaMaestosa
         wxArrayString list;
         
         const int lang_amount = languages.size();
-        for(int i=0; i<lang_amount; i++)
+        for (int i=0; i<lang_amount; i++)
         {
-            list.Add(languages[i].langname);
+            list.Add(languages[i].m_langname);
         }
         
         return list;
