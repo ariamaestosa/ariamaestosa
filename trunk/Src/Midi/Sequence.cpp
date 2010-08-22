@@ -67,9 +67,8 @@ Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener
     m_seq_data_listener     = sequenceDataListener;
     m_play_with_metronome   = false;
     
-    //setZoom(100);
-    zoom         = (128.0/(beatResolution*4));
-    zoom_percent = 100;
+    m_zoom         = (128.0/(beatResolution*4));
+    m_zoom_percent = 100;
 
     sequenceFileName.set(wxString(_("Untitled")));
     sequenceFileName.setMaxWidth(155); // FIXME - won't work if lots of sequences are open (tabs will begin to get smaller)
@@ -81,7 +80,7 @@ Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener
 
     if (addDefautTrack) addTrack();
 
-    copyright = wxT("");
+    m_copyright = wxT("");
 
     channelManagement = CHANNEL_AUTO;
     measureData = new MeasureData(DEFAULT_SONG_LENGTH);
@@ -157,14 +156,7 @@ wxString Sequence::suggestFileName() const
 
 void Sequence::setCopyright( wxString copyright )
 {
-    Sequence::copyright = copyright;
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-wxString Sequence::getCopyright()
-{
-    return copyright;
+    m_copyright = copyright;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -186,7 +178,7 @@ void Sequence::setInternalName(wxString name)
 
 int Sequence::getXScrollInMidiTicks() const
 {
-    return (int)( x_scroll_in_pixels/zoom );
+    return (int)(x_scroll_in_pixels / m_zoom);
 }
 
 
@@ -194,7 +186,7 @@ int Sequence::getXScrollInMidiTicks() const
 
 void Sequence::setXScrollInMidiTicks(int value)
 {
-    x_scroll_in_pixels = (int)( value * zoom );
+    x_scroll_in_pixels = (int)(value * m_zoom);
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -230,10 +222,8 @@ void Sequence::setYScroll(int value)
 
 void Sequence::setZoom(int zoom)
 {
-
-    Sequence::zoom = (zoom/100.0) * 128.0 / ((float)getMeasureData()->beatLengthInTicks() * 4);
-    Sequence::zoom_percent = zoom;
-
+    m_zoom = (zoom/100.0) * 128.0 / ((float)getMeasureData()->beatLengthInTicks() * 4);
+    m_zoom_percent = zoom;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -396,23 +386,23 @@ void Sequence::snapNotesToGrid()
 #endif
 
 
-void Sequence::action( Action::MultiTrackAction* action)
+void Sequence::action( Action::MultiTrackAction* actionObj)
 {
-    addToUndoStack( action );
-    action->setParentSequence(this);
-    action->perform();
+    addToUndoStack( actionObj );
+    actionObj->setParentSequence(this);
+    actionObj->perform();
     
     if (m_action_stack_listener != NULL) m_action_stack_listener->onActionStackChanged();
 }
 
 // ----------------------------------------------------------------------------------------------------------
 
-void Sequence::addToUndoStack( Action::EditAction* action )
+void Sequence::addToUndoStack( Action::EditAction* actionObj )
 {
-    undoStack.push_back(action);
+    undoStack.push_back(actionObj);
 
     // remove old actions from undo stack, to not take memory uselessly
-    if (undoStack.size()>8) undoStack.erase(0);
+    if (undoStack.size() > 8) undoStack.erase(0);
     
     if (m_action_stack_listener != NULL) m_action_stack_listener->onActionStackChanged();
 }
@@ -945,7 +935,7 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
 
     writeData(wxT("<view xscroll=\"") + to_wxString(x_scroll_in_pixels) +
               wxT("\" yscroll=\"")    + to_wxString(y_scroll) +
-              wxT("\" zoom=\"")       + to_wxString(zoom_percent) +
+              wxT("\" zoom=\"")       + to_wxString(m_zoom_percent) +
               wxT("\"/>\n"), fileout );
 
     measureData->saveToFile(fileout);
@@ -1158,9 +1148,10 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                         std::cerr << "Missing info from file: zoom" << std::endl;
                     }
 
-                    if (zoom <= 0)
+                    if (m_zoom <= 0)
                     {
-                        std::cerr << "Fatal Error: Wrong Zoom: " << zoom  << "(char* = " << zoom_c << ") " << std::endl;
+                        std::cerr << "Fatal Error: Wrong Zoom: " << m_zoom 
+                                  << "(char* = " << zoom_c << ") " << std::endl;
                         setZoom( 100 );
                     }
 

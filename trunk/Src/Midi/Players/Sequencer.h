@@ -22,16 +22,16 @@ namespace jdkmidi{ class MIDISequencer; }
 namespace AriaMaestosa
 {
 
-class Sequence;
+    class Sequence;
 
-class AriaSequenceTimer
-{
-    Sequence* seq;
+    class AriaSequenceTimer
+    {
+        Sequence* m_seq;
     public:
 
-    AriaSequenceTimer(Sequence* seq);
-    void run(jdkmidi::MIDISequencer* jdksequencer, const int songLengthInTicks);
-};
+        AriaSequenceTimer(Sequence* seq);
+        void run(jdkmidi::MIDISequencer* jdksequencer, const int songLengthInTicks);
+    };
 
 }
 
