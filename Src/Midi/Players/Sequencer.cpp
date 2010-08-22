@@ -126,7 +126,7 @@ typedef DummyTimer BasicTimer;
 
 AriaSequenceTimer::AriaSequenceTimer(Sequence* seq)
 {
-    AriaSequenceTimer::seq = seq;
+    m_seq = seq;
 }
 
 BasicTimer* timer = NULL;
@@ -146,8 +146,8 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
 
     jdksequencer->GoToTimeMs( 0 );
 
-    int bpm = seq->getTempo();
-    const int beatlen = seq->ticksPerBeat();
+    int bpm = m_seq->getTempo();
+    const int beatlen = m_seq->ticksPerBeat();
 
     double ticks_per_millis = (double)bpm * (double)beatlen / (double)60000.0;
 
@@ -179,10 +179,10 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
     long last_millis = 0;
 
 
-    while(PlatformMidiManager::get()->seq_must_continue())
+    while (PlatformMidiManager::get()->seq_must_continue())
     {
         // process all events that need to be done by the current tick
-        while( next_event_time <= total_millis )
+        while (next_event_time <= total_millis)
         {
             if (not jdksequencer->GetNextEvent( &ev_track, &ev ))
             {
@@ -193,38 +193,38 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
             }
             const int channel = ev.GetChannel();
 
-            if ( ev.IsNoteOn() )
+            if (ev.IsNoteOn())
             {
                 const int note = ev.GetNote();
                 const int volume = ev.GetVelocity();
                 PlatformMidiManager::get()->seq_note_on(note, volume, channel);
             }
-            else if ( ev.IsNoteOff() )
+            else if (ev.IsNoteOff())
             {
                 const int note = ev.GetNote();
                 PlatformMidiManager::get()->seq_note_off(note, channel);
             }
-            else if ( ev.IsControlChange() )
+            else if (ev.IsControlChange())
             {
                 const int controllerID = ev.GetController();
                 const int value = ev.GetControllerValue();
                 PlatformMidiManager::get()->seq_controlchange(controllerID, value, channel);
             }
-            else if ( ev.IsPitchBend() )
+            else if (ev.IsPitchBend())
             {
                 const int pitchBendVal = ev.GetBenderValue();
                 PlatformMidiManager::get()->seq_pitch_bend(pitchBendVal, channel);
             }
-            else if ( ev.IsProgramChange() )
+            else if (ev.IsProgramChange())
             {
                 const int instrument = ev.GetPGValue();
                 PlatformMidiManager::get()->seq_prog_change(instrument, channel);
             }
-            else if ( ev.IsTempo() )
+            else if (ev.IsTempo())
             {
                 //std::cout << "tempo event" << std::endl;
-                const int bpm = ev.GetTempo32()/32;
-                ticks_per_millis = (double)bpm * (double)beatlen / (double)60000.0;
+                const int event_bpm = ev.GetTempo32()/32;
+                ticks_per_millis = (double)event_bpm * (double)beatlen / (double)60000.0;
             }
             /*
             else if ( ev.IsPolyPressure() )

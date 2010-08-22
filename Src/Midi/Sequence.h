@@ -89,7 +89,8 @@ namespace AriaMaestosa
         int m_tempo;
         int beatResolution;
 
-        float zoom; int zoom_percent;
+        // FIXME: this is graphics stuff, shouldn't go in this model class
+        float m_zoom; int m_zoom_percent;
 
         int x_scroll_in_pixels, y_scroll;
         //int measureWidth;
@@ -97,7 +98,7 @@ namespace AriaMaestosa
         int reordering_newPosition; //!< used when reordering tracks, to hold the new position of the track being moved
         int reorderYScroll;         //!< while reordering tracks, contains the vertical scrolling amount
 
-        wxString copyright;
+        wxString m_copyright;
         wxString internal_sequenceName;
 
         int currentTrack;
@@ -294,8 +295,8 @@ namespace AriaMaestosa
           */
         void  addTempoEvent_import( ControllerEvent* evt );
         
-        int   getZoomInPercent() const { return zoom_percent; }
-        float getZoom         () const { return zoom;         }
+        int   getZoomInPercent() const { return m_zoom_percent; }
+        float getZoom         () const { return m_zoom;         }
         void  setZoom(int percent);
 
         //FIXME: graphics information shouldn't be there
@@ -314,7 +315,8 @@ namespace AriaMaestosa
         void snapNotesToGrid();
 
         void setCopyright( wxString copyright );
-        wxString getCopyright();
+        wxString getCopyright() const { return m_copyright; }
+        
         void setInternalName(wxString name);
         wxString getInternalName() const
         {
