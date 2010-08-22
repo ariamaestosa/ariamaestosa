@@ -186,12 +186,11 @@ static const wxString g_drum_names[] =
 // ----------------------------------------------------------------------------------------------------------
 DrumEditor::DrumEditor(Track* track) : Editor(track), drum_names_renderer( g_drum_names, 96-27 )
 {
-
-    m_sb_position=0;
-    m_mouse_is_in_editor=false;
-    m_clicked_on_note=false;
-    m_last_clicked_note = -1;
-    showUsedDrumsOnly=false;
+    m_sb_position        = 0;
+    m_mouse_is_in_editor = false;
+    m_clicked_on_note    = false;
+    m_last_clicked_note  = -1;
+    showUsedDrumsOnly    = false;
 
     useDefaultDrumSet();
     Editor::useInstantNotes();
