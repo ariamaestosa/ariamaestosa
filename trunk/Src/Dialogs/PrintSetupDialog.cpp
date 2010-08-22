@@ -437,7 +437,9 @@ namespace AriaMaestosa
             {
                 Track* track = m_current_sequence->getTrack(n);
                 wxCheckBox* cb = new wxCheckBox(m_track_choice, wxID_ANY, wxT(""));
-                cb->SetValue(not (track->graphics->collapsed or track->isMuted() or track->graphics->docked));
+                cb->SetValue(not (track->graphics->isCollapsed() or track->isMuted() or
+                                  track->graphics->isDocked())
+                             );
 
                 wxStaticText* trackName = new wxStaticText(m_track_choice, wxID_ANY, track->getName() );
                 
@@ -448,9 +450,11 @@ namespace AriaMaestosa
                 choices.Add( _("Tablature") );
                 //I18N: printing notation type
                 choices.Add( _("Keyroll") );
-                wxChoice* editorType = new wxChoice( m_track_choice, wxID_ANY, wxDefaultPosition, wxDefaultSize, choices );
                 
-                switch (track->graphics->editorMode)
+                wxChoice* editorType = new wxChoice(m_track_choice, wxID_ANY, wxDefaultPosition, wxDefaultSize,
+                                                    choices );
+                
+                switch (track->graphics->getEditorMode())
                 {
                     case SCORE:
                         editorType->SetSelection(0);
@@ -688,7 +692,7 @@ namespace AriaMaestosa
             if (print_one_track)
             {
                 what_to_print.push_back( std::pair<Track*, EditorType>(m_current_sequence->getCurrentTrack(),
-                                                                       m_current_sequence->getCurrentTrack()->graphics->editorMode) );
+                                                                       m_current_sequence->getCurrentTrack()->graphics->getEditorMode()) );
             }
             else                            // print all selected from list
             {

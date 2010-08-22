@@ -360,7 +360,7 @@ bool MainPane::do_render()
 
             AriaRender::images();
             AriaRender::color(0,0,0);
-            AriaRenderString& trackname = getCurrentSequence()->dock[n].track->getNameRenderer();
+            AriaRenderString& trackname = getCurrentSequence()->dock[n].getTrack()->getNameRenderer();
             trackname.bind();
             trackname.render(x+5, getHeight()-2);
             x += trackname.getWidth() + 10;
@@ -558,7 +558,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
             const int y = getCurrentSequence()->getTrack(n)->graphics->getCurrentEditor()->getTrackYStart();
 
             // check if user is moving this track
-            if (not getCurrentSequence()->getTrack(n)->graphics->docked and
+            if (not getCurrentSequence()->getTrack(n)->graphics->isDocked() and
                 m_mouse_y_current > y and m_mouse_y_current < y+7)
             {
                 click_area = CLICK_REORDER;
@@ -593,7 +593,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
                 {
                     const int track_amount = getCurrentSequence()->getTrackAmount();
                     GraphicalTrack* undocked_track = getCurrentSequence()->dock.get(n/2);
-                    Track* undocked = undocked_track->track;
+                    Track* undocked = undocked_track->getTrack();
 
                     for (int i=0; i<track_amount; i++)
                     {
@@ -604,9 +604,16 @@ void MainPane::mouseDown(wxMouseEvent& event)
                             track->graphics->maximizeHeight();
                             continue;
                         }
-                        else if (!track->graphics->docked) track->graphics->dock();
+                        else if (not track->graphics->isDocked())
+                        {
+                            track->graphics->dock();
+                        }
                     }
-                    if (undocked->graphics->collapsed) undocked->graphics->setCollapsed(false);
+                    if (undocked->graphics->isCollapsed())
+                    {
+                        undocked->graphics->setCollapsed(false);
+                    }
+                    
                     DisplayFrame::updateVerticalScrollbar();
                     getCurrentSequence()->setCurrentTrack(undocked);
                 }
@@ -865,12 +872,12 @@ void MainPane::keyPressed(wxKeyEvent& evt)
     // FIXME - belongs to the editor, probably (move all editor stuff to editor files)
     // FIXME - too many renders there, maybe even actions do render
 
-    const int current_editor = getCurrentSequence()->getCurrentTrack()->graphics->editorMode;
+    const int current_editor = getCurrentSequence()->getCurrentTrack()->graphics->getEditorMode();
 
     // --------------- move by 1 measure ------------
-    if (current_editor != GUITAR and !commandDown and shiftDown)
+    if (current_editor != GUITAR and not commandDown and shiftDown)
     {
-        if (evt.GetKeyCode()==WXK_LEFT)
+        if (evt.GetKeyCode() == WXK_LEFT)
         {
             getCurrentSequence()->getCurrentTrack()->action(
                     new Action::MoveNotes(-getMeasureData()->measureLengthInTicks(),

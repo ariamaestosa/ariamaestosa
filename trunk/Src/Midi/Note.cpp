@@ -373,7 +373,7 @@ void Note::play(bool change)
     int durationMilli = (endTick - startTick)*60*1000 /
                         (m_track->getSequence()->getTempo() * m_track->getSequence()->ticksPerBeat());
 
-    if (m_track->graphics->editorMode == DRUM) 
+    if (m_track->graphics->getEditorMode() == DRUM) 
     {
         PlatformMidiManager::get()->playNote( pitchID, volume, durationMilli, 9, m_track->getDrumKit() );
     }

@@ -61,7 +61,7 @@ void ShiftBySemiTone::perform()
 {
     ASSERT(track != NULL);
     
-    if (track->graphics->editorMode != SCORE) return;
+    if (track->graphics->getEditorMode() != SCORE) return;
     
     // not supported in this function (mostly bacause not needed, but could logically be implemented)
     ASSERT(m_note_id != ALL_NOTES);

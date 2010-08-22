@@ -80,11 +80,11 @@ void DeleteSelected::perform()
 {
     ASSERT(track != NULL);
     
-    if (track->graphics->editorMode == CONTROLLER)
+    if (track->graphics->getEditorMode() == CONTROLLER)
     {
         
-        int selBegin = track->graphics->controllerEditor->getSelectionBegin();
-        int selEnd = track->graphics->controllerEditor->getSelectionEnd();
+        int selBegin   = track->graphics->controllerEditor->getSelectionBegin();
+        int selEnd     = track->graphics->controllerEditor->getSelectionEnd();
         const int type = track->graphics->controllerEditor->getCurrentControllerType();
 
         const int from = std::min(selBegin, selEnd);

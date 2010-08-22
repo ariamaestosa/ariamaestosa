@@ -192,8 +192,9 @@ bool Track::addNote(Note* note, bool check_for_overlapping_notes)
     {
         // check for overlapping notes
         // the only time where this is not checked is when pasting, because it is then logical that notes are pasted on top of their originals
-        if (check_for_overlapping_notes and m_notes[n].startTick == note->startTick and m_notes[n].pitchID == note->pitchID and
-           (graphics->editorMode!=GUITAR or m_notes[n].getString()==note->getString()) /*in guitar mode string must also match to be considered overlapping*/ )
+        if (check_for_overlapping_notes and m_notes[n].startTick == note->startTick and
+            m_notes[n].pitchID == note->pitchID and
+           (graphics->getEditorMode() != GUITAR or m_notes[n].getString() == note->getString()) /*in guitar mode string must also match to be considered overlapping*/ )
         {
             std::cout << "overlapping notes: rejected" << std::endl;
             return false;
@@ -733,7 +734,7 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
         // if this is a 'select none' command, unselect any selected measures in the top bar
         if (not selected) getMeasureData()->unselect();
 
-        if (graphics->editorMode == CONTROLLER)
+        if (graphics->getEditorMode() == CONTROLLER)
         { 
             // controller editor must be handled differently
             graphics->controllerEditor->selectAll( selected );
@@ -803,7 +804,7 @@ void Track::prepareNotesForGuitarEditor()
 void Track::copy()
 {
 
-    if (graphics->editorMode == CONTROLLER)
+    if (graphics->getEditorMode() == CONTROLLER)
     {
         wxBell();
         return; // no copy/paste in controller mode
@@ -822,8 +823,14 @@ void Track::copy()
         Clipboard::add(tmp);
 
         // if in guitar mode, make sure string/fret and note match
-        if (graphics->editorMode == GUITAR) Clipboard::getNote( Clipboard::getSize()-1 )->checkIfStringAndFretMatchNote(false);
-        else Clipboard::getNote( Clipboard::getSize()-1 )->checkIfStringAndFretMatchNote(true);
+        if (graphics->getEditorMode() == GUITAR)
+        {
+            Clipboard::getNote( Clipboard::getSize()-1 )->checkIfStringAndFretMatchNote(false);
+        }
+        else
+        {
+            Clipboard::getNote( Clipboard::getSize()-1 )->checkIfStringAndFretMatchNote(true);
+        }
 
         // find tickOfFirstSelectedNote of the first note
         if (m_notes[n].startTick < tickOfFirstSelectedNote or tickOfFirstSelectedNote==-1)
@@ -882,7 +889,7 @@ AriaRenderString& Track::getNameRenderer()
 
 int Track::getGridDivider()
 {
-    return graphics->grid->divider;
+    return graphics->m_grid->divider;
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -892,8 +899,8 @@ int Track::getChannel()
     // always 9 for drum tracks
     //const bool manual_mode = sequence->getChannelManagementType() == CHANNEL_MANUAL;
 
-    if (graphics->editorMode == DRUM) return 9;
-    else                              return m_channel;
+    if (graphics->getEditorMode() == DRUM) return 9;
+    else                                   return m_channel;
 
 }
 
@@ -1233,7 +1240,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     // ignore track if it's muted
     // (but for some reason drum track can't be completely omitted)
     // if we only play selection, ignore mute and play anyway
-    if (m_muted and graphics->editorMode != DRUM and not selectionOnly)
+    if (m_muted and graphics->getEditorMode() != DRUM and not selectionOnly)
     {
         return -1;
     }
@@ -1244,7 +1251,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     if (manual_mode) channel = getChannel();
 
     // drum tracks
-    if (graphics->editorMode == DRUM) channel = 9;
+    if (graphics->getEditorMode() == DRUM) channel = 9;
 
     //std::cout << "channel = " << track_ID << std::endl;
 
@@ -1307,8 +1314,8 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
         m.SetTime( 0 );
 
-        if (graphics->editorMode == DRUM) m.SetProgramChange( channel, getDrumKit() );
-        else                              m.SetProgramChange( channel, getInstrument() );
+        if (graphics->getEditorMode() == DRUM) m.SetProgramChange( channel, getDrumKit() );
+        else                                   m.SetProgramChange( channel, getInstrument() );
 
         if (not midiTrack->PutEvent( m ))
         {
@@ -1375,7 +1382,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     int last_event_tick = 0;
 
     // if muted and drums, return now
-    if (m_muted and graphics->editorMode == DRUM and not selectionOnly) return -1;
+    if (m_muted and graphics->getEditorMode() == DRUM and not selectionOnly) return -1;
 
     //std::cout << "-------------------- TRACK -------------" << std::endl;
 
@@ -1420,7 +1427,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                 m.SetTime( time );
 
 
-                if (graphics->editorMode == DRUM)
+                if (graphics->getEditorMode() == DRUM)
                 {
                     m.SetNoteOn( channel, m_notes[note_on_id].pitchID, m_notes[note_on_id].volume );
                 }
@@ -1452,13 +1459,13 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
             {
                 m.SetTime( time );
 
-                if (graphics->editorMode == DRUM)
+                if (graphics->getEditorMode() == DRUM)
                 {
                     m.SetNoteOff( channel, m_note_off[note_off_id].pitchID, 0 );
                 }
                 else
                 {
-                    m.SetNoteOff( channel, 131-m_note_off[note_off_id].pitchID, 0 );
+                    m.SetNoteOff( channel, 131 - m_note_off[note_off_id].pitchID, 0 );
                 }
                 
                 // find track end

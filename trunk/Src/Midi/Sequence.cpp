@@ -488,7 +488,7 @@ void Sequence::renderTracks(int currentTick, RelativeXCoord mousex, int mousey, 
 
         for (int tracknum=draggedTrack-1; tracknum>=0; tracknum--)
         {
-            if (tracks[tracknum].graphics->docked) continue;
+            if (tracks[tracknum].graphics->isDocked()) continue;
 
             first_y =  mousey_initial - (draggedTrack-tracknum)*50 - reorderYScroll;
             tracks[tracknum].graphics->renderHeader(0, first_y, true);
@@ -500,7 +500,7 @@ void Sequence::renderTracks(int currentTick, RelativeXCoord mousex, int mousey, 
 
         for (int tracknum=draggedTrack+1; tracknum<tracks.size(); tracknum++)
         {
-            if (tracks[tracknum].graphics->docked) continue;
+            if (tracks[tracknum].graphics->isDocked()) continue;
 
             last_y = mousey_initial + (tracknum-draggedTrack)*50 - reorderYScroll;
             tracks[tracknum].graphics->renderHeader(0, last_y, true);

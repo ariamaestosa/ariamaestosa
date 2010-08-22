@@ -783,19 +783,19 @@ void MainFrame::menuEvent_manualChannelModeSelected(wxCommandEvent& evt)
     {
         int channel = 0;
         // iterrate through tarcks, give each one a channel
-        for(int i=0; i<sequence->getTrackAmount(); i++)
+        for (int i=0; i<sequence->getTrackAmount(); i++)
         {
-            //if this is a drum track, give channel 9
-            if (sequence->getTrack(i)->graphics->editorMode == DRUM)
+            // if this is a drum track, give channel 9
+            if (sequence->getTrack(i)->graphics->getEditorMode() == DRUM)
             {
                 sequence->getTrack(i)->setChannel(9);
             }
             else
-                // otherwise, give any channel but 9
             {
+                // otherwise, give any channel but 9
                 sequence->getTrack(i)->setChannel(channel);
                 channel++;
-                if (channel==9) channel++;
+                if (channel == 9) channel++;
             }
         }
     }

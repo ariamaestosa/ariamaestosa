@@ -51,7 +51,7 @@ void ShiftFrets::perform()
     ASSERT(m_note_id != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
     
     // only accept to do this in guitar mode
-    if (track->graphics->editorMode != GUITAR)  return;
+    if (track->graphics->getEditorMode() != GUITAR)  return;
     
     // concerns all selected notes
     if (m_note_id == SELECTED_NOTES)

@@ -52,9 +52,10 @@ void ResizeNotes::perform()
 {
     ASSERT(track != NULL);
     
-    if (track->graphics->editorMode == DRUM) return;
+    if (track->graphics->getEditorMode() == DRUM) return;
     
-    ASSERT(m_note_ID != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
+    // not supported in this function (mostly bacause not needed, but could logically be implmented)
+    ASSERT(m_note_ID != ALL_NOTES); 
     
     if (m_note_ID == SELECTED_NOTES)
     {
