@@ -47,8 +47,7 @@ namespace AriaMaestosa
     class EditorPrintable
     {
     protected:
-        wxDC* dc;
-        //int getClosestTickFrom(const int trackID, LayoutLine& line, const int tick);
+        wxDC* m_dc;
 
         /**
           * Draws a vertical divider line

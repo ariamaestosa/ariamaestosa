@@ -51,95 +51,104 @@ namespace AriaMaestosa
     // FIXME: make less of these public!
     class NoteRenderInfo
     {
-        // used to display ties (display a tie between this note and specified tick). a value of -1 means no tie.
-        int tied_with_tick;
-        bool tie_up; // used if stem_type == STEM_NONE, otherwise tie location is determined with stem_type
+        /**
+          * used to display ties (display a tie between this note and specified tick).
+          * a value of -1 means no tie.
+          */
+        int m_tied_with_tick;
         
-        int y;
+        /** used if stem_type == STEM_NONE, otherwise tie location is determined with stem_type */
+        bool m_tie_up;
+        
+        int m_y;
+        
     public:
         /** for very short notes, e.g. drum notes. Note will appear as a X. */
-        bool instant_hit;
+        bool m_instant_hit;
         
         /** if note has a dot */
-        bool dotted;
+        bool m_dotted;
         
         /** Whether this "note" is a chord */
-        bool chord;
+        bool m_chord;
         
         /** Since a chord contains many notes, keep info about the highest and lowest note of the chord
          * Only valid if 'chord' is true. */
-        int min_chord_level, max_chord_level;
+        int m_min_chord_level, m_max_chord_level;
         
         /** Number of flags on note stem. e.g. a 1/4 will have none, a 1/8 has 1, a 1/16 has 2, etc. */
-        int flag_amount;
+        int m_flag_amount;
         
         /** Whether this note has a hollow head (like 1/1 and 1/2 figures) or a "black" (filled) head */
-        bool hollow_head;
+        bool m_hollow_head;
         
         /** Whether this note is selected in the score editor */
-        bool selected;
+        bool m_selected;
         
         /** is stem up, down? or is there no stem? */
-        STEM stem_type;
+        STEM m_stem_type;
         
         /** Whether to draw the stem. FIXME : stem_type == STEM_NONE can already carry this info!! */
-        bool draw_stem;
+        bool m_draw_stem;
         
         /** location and duration of note */
-        int tick, tick_length;
+        int m_tick, m_tick_length;
         
         /** vertical position of the note, in abstract level units */
-        int level;
+        int m_level;
         
         /** pitch ID of the note */
-        int pitch;
+        int m_pitch;
         
         /** measure where the note begins */
-        int measureBegin;
+        int m_measure_begin;
         
         /** measure where the note ends */
-        int measureEnd;
+        int m_measure_end;
         
         /** which alteration sigh to use, if any (sharp, flat, natural or none) */
-        PitchSign sign;
+        PitchSign m_sign;
         
         /** Whether this note has a triplet duration */
-        bool triplet;
+        bool m_triplet;
         
         /** Whether this particular note is responsible to draw a "triplet arc" with a 3 in it
          * (this is a separate options because many notes (e.g. 3) can share the same triplet arc)
          */
-        bool draw_triplet_sign;
+        bool m_draw_triplet_sign;
         
         /** where to display the "triplet arc" than contains a "3" */
-        int triplet_arc_tick_start, triplet_arc_tick_end, triplet_arc_level;
+        int m_triplet_arc_tick_start, m_triplet_arc_tick_end, m_triplet_arc_level;
         
         /** Whether the "triplet arc" is rendered above or below its Y base coordinate */
-        bool triplet_show_above;
+        bool m_triplet_show_above;
         
         // beams
         // FIXME - is beam_show_above really necessary, since it's always the same direction as stem_type?
-        bool beam_show_above, beam;
-        // if beam is true, the renderer will draw a beam between the end of this note's stem and the
-        // location specified by these variables.
-        int beam_to_tick;
-        PitchSign beam_to_sign; // sign of the note we beam to. (used for printing where it's not linear)
-        float beam_to_level;
+        bool m_beam_show_above, m_beam;
+        
+        /**
+          * if beam is true, the renderer will draw a beam between the end of this note's stem and the
+          * location specified by these variables.
+          */
+        int m_beam_to_tick;
+        PitchSign m_beam_to_sign; //!< sign of the note we beam to. (used for printing where it's not linear)
+        float m_beam_to_level;
         
         /**
          * If != -1, the renderer will use this y as stem end instead of calculating it itself.
          * Use ScoreAnalyser::getStemTo for a higher-level getter
          */
-        float stem_y_level;
+        float m_stem_y_level;
         
         
         NoteRenderInfo(int tick, int level, int tick_length, PitchSign sign, const bool selected, int pitch);
         
         void tieWith(NoteRenderInfo& renderInfo);
         void tieWith(const int tick);
-        int getTiedToTick();
         void setTieUp(const bool up);
-        bool isTieUp();
+        int  getTiedToTick() const { return m_tied_with_tick; }
+        bool isTieUp      () const { return (m_stem_type == STEM_NONE ? m_tie_up : m_stem_type != STEM_UP); }
         
         void setTriplet();
         
@@ -153,7 +162,7 @@ namespace AriaMaestosa
          * from level to coordinate, the renderer is given the option to store the Y coordinate
          * inside the noteRenderInfo.
          */
-        const int getY() const { return y; }
+        const int getY() const { return m_y; }
         
         /**
          * In an attempt t be view-independant, ScoreAnalyser tries to store Y locations as levels
@@ -251,19 +260,19 @@ namespace AriaMaestosa
         /** @brief implementing the INoteSource interface for the SilenceAnalyser to use */
         virtual int  getBeginMeasure(const int noteID) const
         {
-            return noteRenderInfo[noteID].measureBegin;
+            return noteRenderInfo[noteID].m_measure_begin;
         }
         
         /** @brief implementing the INoteSource interface for the SilenceAnalyser to use */
         virtual int  getStartTick(const int noteID) const
         {
-            return noteRenderInfo[noteID].tick;
+            return noteRenderInfo[noteID].m_tick;
         }
         
         /** @brief implementing the INoteSource interface for the SilenceAnalyser to use */
         virtual int  getEndTick(const int noteID) const
         {
-            return noteRenderInfo[noteID].tick + noteRenderInfo[noteID].tick_length;
+            return noteRenderInfo[noteID].m_tick + noteRenderInfo[noteID].m_tick_length;
         }
         
     protected:
