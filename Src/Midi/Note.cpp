@@ -48,7 +48,7 @@ Note::Note(Track* parent,
 
     m_track = parent;
 
-    selected=false;
+    m_selected = false;
 
     preferred_accidental_sign = -1;
 }
@@ -219,14 +219,7 @@ void Note::findNoteFromStringAndFret()
 
 void Note::setSelected(const bool selected)
 {
-    Note::selected = selected;
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-bool Note::isSelected() const
-{
-    return selected;
+    m_selected = selected;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -271,9 +264,9 @@ void Note::saveToFile(wxFileOutputStream& fileout)
 
     if (fret   != -1) writeData( wxT("\" fret=\"") + to_wxString(fret), fileout );
     if (string != -1) writeData( wxT("\" string=\"") + to_wxString(string), fileout );
-    if (selected)
+    if (m_selected)
     {
-        writeData( wxT("\" selected=\"") + wxString(selected ? wxT("true") : wxT("false")), fileout );
+        writeData( wxT("\" selected=\"") + wxString(m_selected ? wxT("true") : wxT("false")), fileout );
     }
 
     if (preferred_accidental_sign != -1)
@@ -342,18 +335,18 @@ bool Note::readFromFile(irr::io::IrrXMLReader* xml)
     const char* selected_c = xml->getAttributeValue("selected");
     if (selected_c != NULL)
     {
-        if (strcmp(selected_c, "true") == 0)       selected = true;
-        else if (strcmp(selected_c, "false") == 0) selected = false;
+        if (strcmp(selected_c, "true") == 0)       m_selected = true;
+        else if (strcmp(selected_c, "false") == 0) m_selected = false;
         else
         {
             std::cout << "Unknown keyword for attribute 'selected' in note: " << selected_c << std::endl;
-            selected = false;
+            m_selected = false;
         }
 
     }
     else
     {
-        selected = false;
+        m_selected = false;
     }
 
     return true;
@@ -365,10 +358,10 @@ void Note::play(bool change)
 {
     if (m_track->getSequence()->importing) return;
 
-    const int play = Core::playDuringEdit();
+    const int playSetting = Core::playDuringEdit();
 
-    if (play == PLAY_NEVER) return;
-    if (play == PLAY_ON_CHANGE and not change) return;
+    if (playSetting == PLAY_NEVER) return;
+    if (playSetting == PLAY_ON_CHANGE and not change) return;
 
     int durationMilli = (endTick - startTick)*60*1000 /
                         (m_track->getSequence()->getTempo() * m_track->getSequence()->ticksPerBeat());

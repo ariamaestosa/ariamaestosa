@@ -224,15 +224,15 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     const int yscroll = getYScrollInPixels();
     //const int y1 = getEditorYStart();
     const int last_note = ( yscroll + getYEnd() - getEditorYStart() )/Y_STEP_HEIGHT;
-    const int x1 = getEditorXStart();
-    const int x2 = getXEnd();
+    const int editor_x1 = getEditorXStart();
+    const int editor_x2 = getXEnd();
 
     const KeyInclusionType* key_notes = m_track->getKeyNotes();
     
     // white background
     AriaRender::primitives();
     AriaRender::color(1,1,1);
-    AriaRender::rect(x1, getEditorYStart(), x2, getYEnd());
+    AriaRender::rect(editor_x1, getEditorYStart(), editor_x2, getYEnd());
 
     // horizontal lines
     AriaRender::color(0.94, 0.94, 0.94, 1);
@@ -244,13 +244,13 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
         if (key_notes[pitchID] != KEY_INCLUSION_FULL)
         {
-            AriaRender::rect(x1, levelToY(levelid),
-                             x2, levelToY(levelid+1));
+            AriaRender::rect(editor_x1, levelToY(levelid),
+                             editor_x2, levelToY(levelid+1));
         }
         else
         {
-            AriaRender::line(x1, levelToY(levelid+1),
-                             x2, levelToY(levelid+1));
+            AriaRender::line(editor_x1, levelToY(levelid+1),
+                             editor_x2, levelToY(levelid+1));
         }
 
         

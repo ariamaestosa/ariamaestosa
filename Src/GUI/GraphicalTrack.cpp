@@ -851,9 +851,9 @@ void GraphicalTrack::maximizeHeight(bool maximize)
 
 // --------------------------------------------------------------------------------------------------
 
-void GraphicalTrack::dock(const bool dock)
+void GraphicalTrack::dock(const bool setDocked)
 {
-    if (dock)
+    if (setDocked)
     {
         m_docked = true;
         getCurrentSequence()->addToDock( this );
