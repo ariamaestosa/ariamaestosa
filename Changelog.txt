@@ -7,6 +7,7 @@
 - Fixed measures appearing unselected when right-clicking on them
 - Fixed printing bug where notes appeared in the wrong measure
 - Fixed wrong time sig change being selected after adding a time sig effect
+- Fixed Shift+left/Shift+right when multiple time sig changes are used
 - More code cleanup
 
 1.2.2

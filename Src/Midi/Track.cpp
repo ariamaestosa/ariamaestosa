@@ -717,11 +717,21 @@ int Track::getFirstNoteTick(bool selectionOnly) const
 
 // -------------------------------------------------------------------------------------------------------
 
+int Track::getFirstSelectedNote() const
+{
+    const int count = m_notes.size();
+    for (int n=0; n<count; n++)
+    {
+        if (m_notes[n].isSelected()) return n;
+    }
+    return -1;
+}
+
+// -------------------------------------------------------------------------------------------------------
+
 void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
 {
-
     ASSERT(id != SELECTED_NOTES); // not supported in this function
-
 
     if (not Display::isSelectMorePressed() and not Display::isSelectLessPressed())
     {
@@ -744,7 +754,8 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
 
             if (ignoreModifiers)
             {
-                for (int n=0; n<m_notes.size(); n++)
+                const int count = m_notes.size();
+                for (int n=0; n<count; n++)
                 {
                     m_notes[n].setSelected(selected);
                 }//next
