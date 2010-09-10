@@ -80,6 +80,8 @@ EVT_PAINT(MainPane::paintEvent)
 
 END_EVENT_TABLE()
 
+const int WHEEL_ZOOM_INCREMENT = 10;
+
 namespace AriaMaestosa
 {
     const int TAB_BAR_Y      = 0;
@@ -1053,6 +1055,35 @@ void MainPane::keyPressed(wxKeyEvent& evt)
 void MainPane::mouseWheelMoved(wxMouseEvent& event)
 {
     const int value = event.GetWheelRotation() / event.GetWheelDelta();
+    
+    
+    if (event.m_controlDown)
+	{
+	    // Ctrl key hold: Zoom in/out
+        //if (not changingValues)
+        {
+            int newZoom;
+            
+            newZoom = getCurrentSequence()->getZoomInPercent();
+            
+            if (value > 0)
+            {
+                newZoom += WHEEL_ZOOM_INCREMENT;
+            }
+            else
+            {
+                newZoom -= WHEEL_ZOOM_INCREMENT;
+            }
+            
+            if (newZoom > 1 and newZoom < 500)
+            {
+                getCurrentSequence()->setZoom(newZoom);
+                getMainFrame()->updateTopBarAndScrollbarsForSequence(getCurrentSequence());
+            }
+        }
+        return;
+	}
+    
     const int my = event.GetY();
     const int mx = event.GetX();
 

@@ -72,9 +72,6 @@
 #include "win32/Aria.xpm"
 #endif
 
-const int WHEEL_ZOOM_INCREMENT = 10;
-
-
 using namespace AriaMaestosa;
 
 namespace AriaMaestosa
@@ -555,56 +552,10 @@ void MainFrame::onDropFile(wxDropFilesEvent& event)
 }
 #endif
 
-// FIXME: mouse wheel is already handled in mainpane code. If we need to also catch events here for windows,
-// let's at least share code and not duplicate wheel handling in two areas of the code
+/** Apparently on Windows we need to catch events here too */
 void MainFrame::onMouseWheel(wxMouseEvent& event)
 {
-    int width, height;
-	int x,y;
-	int change;
-
-
-	change = event.GetWheelRotation();
-
-	if (event.m_controlDown)
-	{
-	    // Ctrl key hold: Zoom in/out
-        if (!changingValues)
-        {
-            int newZoom;
-
-            newZoom = displayZoom->GetValue();
-
-            if (change>0)
-            {
-                newZoom += WHEEL_ZOOM_INCREMENT;
-            }
-            else
-            {
-                 newZoom -= WHEEL_ZOOM_INCREMENT;
-            }
-
-            if (newZoom>1 && newZoom<500)
-            {
-                displayZoom->SetValue(newZoom);
-            }
-        }
-
-	}
-	else if ( event.m_shiftDown )
-	{
-		// x-axis
-		//Scroll(x - change, y);
-	}
-	else if ( event.m_altDown )
-	{
-		// y-axis
-		//Scroll(x - change, y);
-	}
-	else
-	{
-		event.Skip(true);
-	}
+    m_main_pane->mouseWheelMoved(event);
 }
 
 
