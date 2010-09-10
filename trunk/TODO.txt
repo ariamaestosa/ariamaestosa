@@ -177,8 +177,6 @@ UNSURE/MINOR:
 * score editor at wrong octave
  
 * red selection color in score editor should dim when switching to another track
- 
-* problem with render being being rendered one time out of two... :( (hard to reproduce)
 
 * red images
 * My CoreAudio player is deprecated on OS X 10.5...
