@@ -1,5 +1,6 @@
 1.2.3
 - Added metronome feature
+- Fixed extra silence being inserted at end of exported midi file, preventing looping
 - Fixed glitch with drum name when loading .aria file
 - Fixed keyboard focus not brought back to main pane after showing "Select Notes" dialog
 - Fixed clicking on track header of drum editor unselects notes

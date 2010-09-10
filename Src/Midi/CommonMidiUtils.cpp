@@ -425,19 +425,42 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
     // ---- add dummy event after the actual end to ensure it doesn't stop playing too quickly
     // adds event way after actual stop point, to make sure song the midi player will reach the last actual note before stopping
     // (e.g. i had issues with Quicktime stopping playback too soon and never actually reaching end of song event)
-    
+    if (playing)
     {
         jdkmidi::MIDITimedBigMessage m;
         m.SetTime( *songLengthInTicks + sequence->ticksPerBeat()*4 );
         m.SetControlChange(0, 127, 0);
         
-        for (int n=0; n<sequence->getTrackAmount(); n++)
+        const int count = sequence->getTrackAmount();
+        for (int n=0; n<count; n++)
         {
             if (not tracks.GetTrack(n+1)->PutEvent( m ))
             {
                 std::cerr << "Error adding dummy end midi event!" << std::endl;
             }
         }//next
+    }
+    else
+    {
+        // If not playing (but exporting to MIDI), add the event at the declared end of the song
+        // to account for empty measures at the end
+        
+        const int tick = sequence->measureData->lastTickInMeasure(sequence->measureData->getMeasureAmount() - 1);
+        if (tick > *songLengthInTicks)
+        {
+            jdkmidi::MIDITimedBigMessage m;
+            m.SetTime( tick );
+            m.SetControlChange(0, 127, 0);
+            
+            const int count = sequence->getTrackAmount();
+            for (int n=0; n<count; n++)
+            {
+                if (not tracks.GetTrack(n+1)->PutEvent( m ))
+                {
+                    std::cerr << "Error adding dummy end midi event!" << std::endl;
+                }
+            }//next
+        }
     }
     
     // ---- Add metronome track if enabled
