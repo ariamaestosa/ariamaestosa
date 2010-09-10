@@ -390,6 +390,12 @@ namespace AriaMaestosa
         void mergeTrackIn(Track* track);
         
         /**
+          * @brief Get the first selected note in this track
+          * @return the ID of the first selected note, or -1 if no note is selected
+          */
+        int getFirstSelectedNote() const;
+        
+        /**
          * The tick where the first note of the track starts playing.
          * Used mostly when scaling relative to track
          */

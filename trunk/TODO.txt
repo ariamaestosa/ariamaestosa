@@ -169,7 +169,7 @@ UNSURE/MINOR:
 
 ** Printing a song that has notes after the "official" song ending can cause assertion failures
 
-** Shift+left/Shift+right in score editor doesn't work properly if various time signatures are present
+** Shift+left/Shift+right may cause asertion failures if trying to move notes past the official end of the song
 
 * Undoing "delete track" places it back at the bottom, not where it was
 

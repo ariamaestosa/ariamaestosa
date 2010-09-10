@@ -879,25 +879,28 @@ void MainPane::keyPressed(wxKeyEvent& evt)
     // --------------- move by 1 measure ------------
     if (current_editor != GUITAR and not commandDown and shiftDown)
     {
-        if (evt.GetKeyCode() == WXK_LEFT)
+        if (evt.GetKeyCode() == WXK_RIGHT or evt.GetKeyCode() == WXK_LEFT)
         {
-            getCurrentSequence()->getCurrentTrack()->action(
-                    new Action::MoveNotes(-getMeasureData()->measureLengthInTicks(),
-                                          0,
-                                          SELECTED_NOTES)
-                    );
-            Display::render();
-            return;
-        }
-
-        if (evt.GetKeyCode()==WXK_RIGHT)
-        {
-            getCurrentSequence()->getCurrentTrack()->action(
-                    new Action::MoveNotes(getMeasureData()->measureLengthInTicks(),
-                                          0,
-                                          SELECTED_NOTES)
-                    );
-            Display::render();
+            Track* track = getCurrentSequence()->getCurrentTrack();
+            const int noteID = track->getFirstSelectedNote();
+            if (noteID == -1)
+            {
+                wxBell();
+            }
+            else
+            {
+                const int tick = track->getNoteStartInMidiTicks(noteID);
+                const int measure = getMeasureData()->measureAtTick(tick);
+                
+                const int factor = (evt.GetKeyCode() == WXK_LEFT ? -1 : 1);
+                
+                getCurrentSequence()->getCurrentTrack()->action(
+                        new Action::MoveNotes(factor*getMeasureData()->measureLengthInTicks(measure),
+                                              0,
+                                              SELECTED_NOTES)
+                        );
+                Display::render();
+            }
             return;
         }
     }
