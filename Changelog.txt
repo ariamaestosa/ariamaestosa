@@ -1,3 +1,6 @@
+1.2.4
+- Fixed song length when importing MIDIs with multiple time signatures
+
 1.2.3
 - Added metronome feature
 - Fixed extra silence being inserted at end of exported midi file, preventing looping

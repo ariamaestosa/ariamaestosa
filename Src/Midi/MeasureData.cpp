@@ -237,7 +237,7 @@ int MeasureData::measureAtTick(int tick)
     }
     else
     {
-        if (tick <0) tick = 0;
+        if (tick < 0) tick = 0;
         if (not getCurrentSequence()->importing)
         {
             // verify that we're within song bounds. except if importing, since the song length
@@ -252,21 +252,28 @@ int MeasureData::measureAtTick(int tick)
             if ( measureInfo[n].tick <= tick and measureInfo[n+1].tick > tick ) return n;
         }
 
-        // didnt find any... current song length is not long enough
-        return m_measure_amount-1;
-        /*
-        const int last_id = timeSigChanges.size()-1;
-        tick -= timeSigChanges[ last_id ].tick;
-
-        const int answer =  (int)(
-                     timeSigChanges[ last_id ].getMeasure() +
-                     tick / ( getCurrentSequence()->ticksPerBeat() *
-                              timeSigChanges[ last_id ].getNum() *
-                              (4.0/ timeSigChanges[ last_id ].getDenom() ) )
-                     );
-        ASSERT_E(answer, <=, m_measure_amount);
-        return answer;
-         */
+        // did not find this tick in our current measure set
+        if (getCurrentSequence()->importing)
+        {
+            // if we're currently importing, extrapolate beyond the current song end since we
+            // might be trying to determine needed song length (FIXME: this should not read the
+            // importing bool from the sequence, whether to extrapolate should be a parameter)
+            const int last_id = timeSigChanges.size()-1;
+            tick -= timeSigChanges[ last_id ].getTick();
+            
+            const int answer =  (int)(
+                                      timeSigChanges[ last_id ].getMeasure() +
+                                      tick / ( getCurrentSequence()->ticksPerBeat() *
+                                              timeSigChanges[ last_id ].getNum() *
+                                              (4.0/ timeSigChanges[ last_id ].getDenom() ) )
+                                      );
+            return answer;
+        }
+        else
+        {
+            // didnt find any... current song length is not long enough
+            return m_measure_amount-1;
+        }
     }
 
 }
