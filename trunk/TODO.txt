@@ -158,6 +158,8 @@ UNSURE/MINOR:
 
 ************************* BUGS: *************************
 
+*** Importing MIDI results in instrument names all being drum names
+
 * New way to store preferences (with strings instead of integers)
   messes up on Windows (encoding issue?) [can't reproduce]
 

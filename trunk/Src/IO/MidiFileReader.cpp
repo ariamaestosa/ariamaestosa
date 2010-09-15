@@ -518,7 +518,8 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
     // set song length
     int measureAmount_i = getMeasureData()->measureAtTick(lastEventTick) + 1;
 
-    std::cout << "song length = " << measureAmount_i << "measures, last_event_tick=" << lastEventTick << std::endl;
+    std::cout << "song length = " << measureAmount_i << " measures, last_event_tick="
+              << lastEventTick << ", beat length = " << getMeasureData()->beatLengthInTicks() << std::endl;
 
     if (measureAmount_i < 10) measureAmount_i=10;
 
