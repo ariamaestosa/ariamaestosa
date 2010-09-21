@@ -1,5 +1,6 @@
 1.2.4
 - Fixed song length when importing MIDIs with multiple time signatures
+- Added support for horizontal mouse wheel scrolling (wxWidgets 2.9.1+ only)
 
 1.2.3
 - Added metronome feature

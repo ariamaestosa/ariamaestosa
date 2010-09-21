@@ -80,8 +80,6 @@ EVT_PAINT(MainPane::paintEvent)
 
 END_EVENT_TABLE()
 
-const int WHEEL_ZOOM_INCREMENT = 10;
-
 namespace AriaMaestosa
 {
     const int TAB_BAR_Y      = 0;
@@ -89,6 +87,12 @@ namespace AriaMaestosa
     const int TAB_SIDE_WIDTH = 16;
     const int CLOSE_BUTTON_SPACE_FROM_RIGHT = 8;
 
+    const int WHEEL_ZOOM_INCREMENT = 10;
+    
+    /** By how many pixels does a step horizontally with the mouse wheel move scrolling */
+    const int WHEEL_X_SPEED = 25;
+
+    
     int tab_width = 145;
 
     /** when this is set to 'true', the app will wait for a new click to be begun to process any mouse events
@@ -1059,6 +1063,16 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
 {
     const int value = event.GetWheelRotation() / event.GetWheelDelta();
     
+#if wxCHECK_VERSION(2,9,1)
+    // horizontal scrolling
+    if (event.GetWheelAxis() == 1)
+    {
+        Sequence* sequence = getCurrentSequence();
+        sequence->setXScrollInPixels( sequence->getXScrollInPixels() - value*WHEEL_X_SPEED );
+        DisplayFrame::updateHorizontalScrollbar();
+        return;
+    }
+#endif
     
     if (event.m_controlDown)
 	{
@@ -1092,7 +1106,7 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
 
     const int measureBarHeight = getMeasureData()->graphics->getMeasureBarHeight();
 
-    // check click is within track area
+    // check pointer is within tracks area
     if (my < getHeight()-getCurrentSequence()->dockHeight and
         mx > MEASURE_BAR_Y+measureBarHeight)
     {
