@@ -348,7 +348,8 @@ def compile_Aria(which_os):
         env.Append(LIBS = ['asound'])
         env.Append(LIBS = ['dl','m'])
         env.ParseConfig( 'pkg-config --cflags glib-2.0' )
-
+        env.ParseConfig( 'pkg-config --libs glib-2.0' )
+        
     elif which_os == "unix":
         print "*** Adding libraries and defines for Unix"
         
@@ -363,7 +364,8 @@ def compile_Aria(which_os):
         env.Append(CPPPATH = ['/usr/local/include'])
         env.Append(LIBPATH = ['/usr/local/lib'])
         env.ParseConfig('pkg-config --cflags glib-2.0')
-
+        env.ParseConfig('pkg-config --libs glib-2.0')
+        
     # Windows
     elif which_os == "windows":
         pass
