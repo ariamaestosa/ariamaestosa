@@ -119,6 +119,8 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 
         const int eventAmount = track->GetNumEvents();
 
+        int programChanges = 0;
+        
         if (eventAmount == 0) continue;
         realTrackID ++;
         Track* ariaTrack = sequence->getTrack(realTrackID);
@@ -129,7 +131,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 
         bool need_reorder = false;
 
-        for(int eventID=0; eventID<eventAmount; eventID++)
+        for (int eventID=0; eventID<eventAmount; eventID++)
         {
 
             event = track->GetEvent( eventID );
@@ -137,7 +139,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
             const int tick = event->GetTime();
 
             if (tick < lastEventTick_inTrack) need_reorder = true;
-            else{ lastEventTick_inTrack = tick; }
+            else                              lastEventTick_inTrack = tick;
 
             const int channel = event->GetChannel();
             if (channel != last_channel and last_channel != -1 and not event->IsMetaEvent() and
@@ -248,11 +250,13 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
             // ----------------------------------- program chnage -------------------------------------
             else if ( event->IsProgramChange() )
             {
-
+                programChanges++;
+                if (programChanges > 1)
+                {
+                    std::cerr << "WARNING: Multiple program changes in track, this is not supported by Aria\n";
+                }
+                
                 const int instrument = event->GetPGValue();
-
-                //if (channel == 9)  sequence->getTrack(channel)->graphics->drumEditor->drumKit->setDrumID(instrument);
-                //else              sequence->getTrack(channel)->graphics->keyboardEditor->instrument->setInstrumentID(instrument);
 
                 if (channel == 9)  ariaTrack->setDrumKit(instrument);
                 else               ariaTrack->setInstrument(instrument);
@@ -438,11 +442,20 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
             sequence->setInternalName( trackName );
         }
 
-        if (ariaTrack->getChannel()==9) ariaTrack->graphics->setEditorMode(DRUM);
+        if (ariaTrack->getChannel() == 9)
+        {
+            ariaTrack->graphics->setEditorMode(DRUM);
+        }
+        else
+        {
+            // KEYBOARD editor is the default, but set it anyway, will force the instrument name
+            // to be updated
+            ariaTrack->graphics->setEditorMode(KEYBOARD);
+        }
 
         if (need_reorder)
         {
-            std::cout << "* midi file is wrong, it will be necessary to reorder midi events" << std::endl;
+            std::cerr << "* midi file is wrong, it will be necessary to reorder midi events" << std::endl;
             ariaTrack->reorderNoteVector();
             ariaTrack->reorderControlVector();
         }
@@ -462,7 +475,8 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
         }
     }
 
-    // check if we're in one-track-one-channel mode. by the way, make sure all tracks with the same channel use the same instrument
+    // check if we're in one-track-one-channel mode. by the way, make sure all tracks with the
+    // same channel use the same instrument
     const int trackAmount_inAriaSeq = sequence->getTrackAmount();
     bool one_track_one_channel = true;
     for (int n=0; n<trackAmount_inAriaSeq; n++)
@@ -481,8 +495,15 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                     // check that their instruments are different (ignore drum tracks)
                     if (sequence->getTrack(n)->getInstrument() != sequence->getTrack(j)->getInstrument() and sequence->getTrack(j)->getChannel() != 9)
                     {
-                        if (sequence->getTrack(n)->getInstrument() == 1) sequence->getTrack(n)->setInstrument( sequence->getTrack(j)->getInstrument() );
-                        else if (sequence->getTrack(j)->getInstrument() == 1) sequence->getTrack(j)->setInstrument( sequence->getTrack(n)->getInstrument() );
+                        // FIXME: why the "1" below???
+                        if (sequence->getTrack(n)->getInstrument() == 1)
+                        {
+                            sequence->getTrack(n)->setInstrument( sequence->getTrack(j)->getInstrument() );
+                        }
+                        else if (sequence->getTrack(j)->getInstrument() == 1)
+                        {
+                            sequence->getTrack(j)->setInstrument( sequence->getTrack(n)->getInstrument() );
+                        }
                         else
                         {
                             std::cout << "multiple program changes are not supported by Aria, sorry." << std::endl;
@@ -493,10 +514,18 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                 else
                 {
                     // same but in case of drum track
-                    if (sequence->getTrack(n)->getDrumKit() != sequence->getTrack(j)->getDrumKit() and sequence->getTrack(j)->getChannel() == 9)
+                    if (sequence->getTrack(n)->getDrumKit() != sequence->getTrack(j)->getDrumKit() and
+                        sequence->getTrack(j)->getChannel() == 9)
                     {
-                        if (sequence->getTrack(n)->getDrumKit() == 1) sequence->getTrack(n)->setDrumKit( sequence->getTrack(j)->getDrumKit() );
-                        else if (sequence->getTrack(j)->getDrumKit() == 1) sequence->getTrack(j)->setDrumKit( sequence->getTrack(n)->getDrumKit() );
+                        // FIXME: what is this "1" below???
+                        if (sequence->getTrack(n)->getDrumKit() == 1)
+                        {
+                            sequence->getTrack(n)->setDrumKit( sequence->getTrack(j)->getDrumKit() );
+                        }
+                        else if (sequence->getTrack(j)->getDrumKit() == 1)
+                        {
+                            sequence->getTrack(j)->setDrumKit( sequence->getTrack(n)->getDrumKit() );
+                        }
                         else
                         {
                             std::cout << "multiple program changes (drums) are not supported by Aria, sorry." << std::endl;

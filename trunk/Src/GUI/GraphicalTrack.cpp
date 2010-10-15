@@ -911,9 +911,6 @@ Editor* GraphicalTrack::getCurrentEditor()
 
 void GraphicalTrack::setEditorMode(EditorType mode)
 {
-    // if already in this mode, ignore.
-    if (m_editor_mode == mode) return;
-    
     m_editor_mode = mode;
     
     if (m_editor_mode == DRUM)
