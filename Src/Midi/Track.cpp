@@ -999,8 +999,12 @@ void Track::doSetDrumKit(int i, bool recursive)
     }
     
     
-    // if we're in manual channel management mode, change all tracks of the same channel to have the same instrument
-    if (m_sequence->getChannelManagementType() == CHANNEL_MANUAL and not recursive)
+    // if we're in manual channel management mode, change all tracks of the same channel to
+    // have the same instrument.
+    // FIXME: we ignore when importing since the midi importing algorithm will make sure all tracks on
+    //        the same channel have the same instrument, and this code would disrupt the importer.
+    //        But we should find a nicer way here...
+    if (m_sequence->getChannelManagementType() == CHANNEL_MANUAL and not recursive and not m_sequence->importing)
     {
 
         const int trackAmount = m_sequence->getTrackAmount();
@@ -1162,6 +1166,7 @@ void Track::onInstrumentChanged(const int newValue)
 
 void Track::onDrumkitChanged(const int newValue)
 {
+    // FIXME: doSetDrumKit also appears to invoke onInstrumentChange, double notification?
     graphics->onInstrumentChange(newValue, true);
     doSetDrumKit(newValue);
 }

@@ -213,6 +213,8 @@ namespace AriaMaestosa
         
         void setId(const int id);
         
+        int getId() const { return m_track_id; }
+        
         /**
           * @brief set notes while importing files.
           * @note when not importing, use edit actions instead.

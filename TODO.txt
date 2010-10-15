@@ -158,8 +158,6 @@ UNSURE/MINOR:
 
 ************************* BUGS: *************************
 
-*** Importing tetris-music_a_11.mid results in instrument names all being drum names
-
 * New way to store preferences (with strings instead of integers)
   messes up on Windows (encoding issue?) [can't reproduce]
 

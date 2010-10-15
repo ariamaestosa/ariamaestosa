@@ -1892,6 +1892,7 @@
 			isa = PBXProject;
 			buildConfigurationList = EF49C66D0AC4A6240054F45D /* Build configuration list for PBXProject "AriaMaestosa" */;
 			compatibilityVersion = "Xcode 3.0";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
