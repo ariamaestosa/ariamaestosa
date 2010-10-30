@@ -58,10 +58,11 @@
 #include "Clipboard.h"
 #include "Singleton.h"
 #include <iostream>
+#include <sstream>
 
-#include "wx/spinctrl.h"
-#include "wx/filename.h"
-
+#include <wx/spinctrl.h>
+#include <wx/filename.h>
+#include <wx/artprov.h>
 
 #ifdef __WXMAC__
 #include <ApplicationServices/ApplicationServices.h>
@@ -275,9 +276,9 @@ MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(1
 
     // FIXME: normally the main panel expands to the size of the parent frame automatically.
     // except on wxMSW when starting maximized *sigh*
-    wxBoxSizer* box = new wxBoxSizer(wxHORIZONTAL);
-    box->Add(m_main_panel, 1, wxEXPAND | wxALL, 0);
-    SetSizer(box);
+    m_root_sizer = new wxBoxSizer(wxVERTICAL);
+    m_root_sizer->Add(m_main_panel, 1, wxEXPAND | wxALL, 0);
+    SetSizer(m_root_sizer);
 
 #ifdef NO_WX_TOOLBAR
     toolbar = new CustomToolBar(m_main_panel);
@@ -415,6 +416,25 @@ void MainFrame::init()
 
     toolbar->realize();
 
+    // -------------------------- Notification Panel ----------------------------
+	{
+        wxBoxSizer* notification_sizer = new wxBoxSizer(wxHORIZONTAL);		
+        m_notification_panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_SIMPLE);
+        m_notification_text = new wxStaticText(m_notification_panel, wxID_ANY, "[No message]");
+        notification_sizer->Add( new wxStaticBitmap(m_notification_panel, wxID_ANY,
+                                                    wxArtProvider::GetBitmap(wxART_WARNING, wxART_OTHER , wxSize(48, 48))),
+                                0, wxALIGN_CENTER_VERTICAL | wxALL, 5 );	
+        notification_sizer->Add(m_notification_text, 1, wxEXPAND | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+        wxButton* hideNotif = new wxButton(m_notification_panel, wxID_ANY, _("Hide"));
+        notification_sizer->Add(hideNotif, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+        m_notification_panel->SetSizer(notification_sizer);
+        m_notification_panel->SetBackgroundColour(wxColor(255,225,110));
+        m_notification_panel->Hide();
+        hideNotif->Connect(hideNotif->GetId(), wxEVT_COMMAND_BUTTON_CLICKED,
+                           wxCommandEventHandler(MainFrame::onHideNotifBar), NULL, this);
+	}
+    m_root_sizer->Add( m_notification_panel, 0, wxEXPAND | wxALL, 2);
+    
     // -------------------------- Main Pane ----------------------------
 #ifdef RENDERER_OPENGL
     
@@ -518,6 +538,14 @@ void MainFrame::init()
     if (aboutDialog.raw_ptr == NULL) aboutDialog = new AboutDialog();
     aboutDialog->show();
 #endif
+}
+
+// --------------------------------------------------------------------------------------------------------
+
+void MainFrame::onHideNotifBar(wxCommandEvent& evt)
+{
+    m_notification_panel->Hide();
+    Layout();
 }
 
 // --------------------------------------------------------------------------------------------------------
@@ -1309,7 +1337,8 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
 
     WaitWindow::show( _("Please wait while midi file is loading."));
 
-    if (not AriaMaestosa::loadMidiFile( getCurrentSequence(), midiFilePath ) )
+    std::set<wxString> warnings;
+    if (not AriaMaestosa::loadMidiFile( getCurrentSequence(), midiFilePath, warnings ) )
     {
         std::cout << "Loading midi file failed." << std::endl;
         WaitWindow::hide();
@@ -1329,6 +1358,28 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
     if (PlatformMidiManager::get()->isPlaying()) setCurrentSequence(old_currentSequence);
 
     Display::render();
+    
+    if (not warnings.empty())
+    {
+        std::set<wxString>::iterator it;
+        std::ostringstream full;
+        
+        full << _("Some problems were encountered while importing this MIDI file :");
+        
+        for (it=warnings.begin() ; it != warnings.end(); it++)
+        {
+            std::cerr << (*it).utf8_str() << std::endl;
+            full << "\n";
+            full << "    " << (*it).utf8_str();
+        }
+        
+        m_notification_text->SetLabel(full.str());
+        m_notification_panel->Layout();
+        m_notification_panel->GetSizer()->SetSizeHints(m_notification_panel);
+		m_notification_panel->Show();
+		Layout();
+        
+    }
 }
 
 

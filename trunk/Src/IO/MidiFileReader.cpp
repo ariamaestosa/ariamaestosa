@@ -14,8 +14,6 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include <wx/timer.h>
-
 #include "AriaCore.h"
 #include "IO/MidiFileReader.h"
 #include "IO/IOUtils.h"
@@ -40,9 +38,11 @@
 #include <cmath>
 #include <string>
 
-namespace AriaMaestosa {
+// TODO: remove this include, this file should not need to know about wx controls
+#include <wx/textctrl.h>
 
-bool loadMidiFile(Sequence* sequence, wxString filepath)
+
+bool AriaMaestosa::loadMidiFile(Sequence* sequence, wxString filepath, std::set<wxString>& warnings)
 {
     // raise import flag
     sequence->importing = true;
@@ -148,7 +148,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
             {
                 if (event->IsNoteOn())
                 {
-                    std::cout << "WARNING : This midi file has tracks that play on multiple channels. this is not supported." << std::endl;
+                    warnings.insert( _("This MIDI file has tracks that play on multiple MIDI channels. This is not supported by Aria Maestosa.") );
                     ariaTrack->setChannel(channel);
                     last_channel = channel;
                 }
@@ -185,7 +185,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
 
                 // a note off event was found, find to which note on event it corresponds
                 // (start iterating from the end, because since events are in order it will probably be found near the end)
-                for(int n=ariaTrack->getNoteAmount()-1; n>-1; n--)
+                for (int n=ariaTrack->getNoteAmount()-1; n>-1; n--)
                 {
 
                     if (ariaTrack->getNotePitchID(n) == note and
@@ -199,9 +199,9 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                     }//end if
 
 
-                    if (n==0)
+                    if (n == 0)
                     {
-                        std::cout << "Failed to link note off to a corresponding note on event. (ignoring it)" << " // tick: " << tick << ", note: " << note << ", channel: " << channel << std::endl;
+                        warnings.insert( wxString::Format(_("This MIDI file appears to be incorrect; a note at tick %i in channel %i does not appear to have an end"), tick, channel) );
                     }
                 } // next
 
@@ -216,7 +216,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                 if (controllerID > 31 and controllerID < 64)
                 {
                     // LSB... not supported by Aria ATM
-                    std::cout << "WARNING: This midi files contains LSB controller data. Aria does not support fine control changes and will discard this info." << std::endl;
+                    std::cout << "WARNING: This MIDI files contains LSB controller data. Aria does not support fine control changes and will discard this info." << std::endl;
                     continue;
                 }
 
@@ -225,7 +225,14 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                    controllerID == 79 or (controllerID > 84 and controllerID < 91)
                    or (controllerID > 95 and controllerID < 200 and controllerID!=127 /*stereo mode*/))
                 {
-                    std::cout << "WARNING : This midi file uses unsupported controller #" << controllerID << ". Its events will be discarded." << std::endl;
+                    if (controllerID == 6 or controllerID == 38 or controllerID == 100 or controllerID == 101)
+                    {
+                        warnings.insert( _("This MIDI file uses Registered Parameters, which are currently not supported by Aria Maestosa.") );
+                    }
+                    else
+                    {
+                        warnings.insert( wxString::Format(_("This MIDI file uses unsupported MIDI controller #%i. Data related to this controller will be discarded."), controllerID) );
+                    }
                     continue;
                 }
 
@@ -253,7 +260,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                 programChanges++;
                 if (programChanges > 1)
                 {
-                    std::cerr << "WARNING: Multiple program changes in track, this is not supported by Aria\n";
+                    warnings.insert( _("This MIDI file plays several instruments on the same track; this is currently not supported by Aria Maestosa.") );
                 }
                 
                 const int instrument = event->GetPGValue();
@@ -273,6 +280,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                 {
                     sequence->setTempo(tempo);
 
+                    //FIXME: should *not* directly access the GUI control from here!!!
                     getMainFrame()->tempoCtrl->SetValue( to_wxString(tempo) );
                     firstTempoEvent=false;
                     continue;
@@ -305,7 +313,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                  */
                 int amount = (int)event->GetKeySigSharpFlats();
 
-                for(int trackn=0; trackn<real_track_amount; trackn++)
+                for (int trackn=0; trackn<real_track_amount; trackn++)
                 {
                     if (amount > 0)
                     {
@@ -341,7 +349,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                     name[length] = 0; // make zero-terminated
 
                     char* buf = (char*) event->GetSysEx()->GetBuf();
-                    for(int n=0; n<length; n++) name[n] = buf[n];
+                    for (int n=0; n<length; n++) name[n] = buf[n];
 
                     //std::cout << "s/t name: " << name << std::endl;
 
@@ -357,7 +365,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                     copyright[length] = 0; // make zero-terminated
 
                     char* buf = (char*) event->GetSysEx()->GetBuf();
-                    for(int n=0; n<length; n++) copyright[n] = buf[n];
+                    for (int n=0; n<length; n++) copyright[n] = buf[n];
 
                     sequence->setCopyright( fromCString(copyright) );
                     continue;
@@ -453,6 +461,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
             ariaTrack->graphics->setEditorMode(KEYBOARD);
         }
 
+        // FIXME: when does it happen?? a MIDI file contains only deltas AFAIK, I don't quite see how you can detect an incorrect order
         if (need_reorder)
         {
             std::cerr << "* midi file is wrong, it will be necessary to reorder midi events" << std::endl;
@@ -506,7 +515,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                         }
                         else
                         {
-                            std::cout << "multiple program changes are not supported by Aria, sorry." << std::endl;
+                            std::cerr << "multiple program changes are not supported by Aria, sorry." << std::endl;
                             sequence->getTrack(j)->setInstrument( sequence->getTrack(n)->getInstrument() ); // arbitrary
                         }
                     }
@@ -528,7 +537,7 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
                         }
                         else
                         {
-                            std::cout << "multiple program changes (drums) are not supported by Aria, sorry." << std::endl;
+                            std::cerr << "multiple program changes (drums) are not supported by Aria, sorry." << std::endl;
                             sequence->getTrack(j)->setDrumKit( sequence->getTrack(n)->getDrumKit() ); // arbitrary
                         }
                     }
@@ -571,4 +580,3 @@ bool loadMidiFile(Sequence* sequence, wxString filepath)
     return true;
 }
 
-}

@@ -17,13 +17,16 @@
 #ifndef _MidiFileReader_
 #define _MidiFileReader_
 
+#include <set>
+#include <wx/string.h>
+
 namespace AriaMaestosa
 {
     
     class Sequence; // forward
     
     /** @ingroup io */
-    bool loadMidiFile(Sequence* sequence, wxString filepath);
+    bool loadMidiFile(Sequence* sequence, wxString filepath, std::set<wxString>& warnings);
     
 }
 

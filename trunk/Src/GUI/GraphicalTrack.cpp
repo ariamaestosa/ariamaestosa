@@ -16,8 +16,9 @@
 
 
 #include <iostream>
-#include "wx/numdlg.h"
-#include "wx/wfstream.h"
+#include <wx/numdlg.h>
+#include <wx/wfstream.h>
+#include <wx/textdlg.h>
 
 #include "Utils.h"
 #include "GUI/GraphicalTrack.h"

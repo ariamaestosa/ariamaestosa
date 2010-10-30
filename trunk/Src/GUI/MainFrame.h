@@ -24,10 +24,7 @@
  * area (even though the contents of each track is managed by module Editors)
  */
 
-#include "wx/wx.h"
-//#include "wx/scrolbar.h"
-//#include "wx/image.h"
-//#include "wx/spinctrl.h"
+#include "wx/frame.h"
 
 #include "Utils.h"
 #include "AriaCore.h"
@@ -37,6 +34,11 @@
 class wxScrollBar;
 class wxSpinCtrl;
 class wxSpinEvent;
+class wxStaticText;
+class wxCommandEvent;
+class wxFlexGridSizer;
+class wxTextCtrl;
+class wxBoxSizer;
 
 namespace AriaMaestosa
 {
@@ -149,6 +151,11 @@ namespace AriaMaestosa
         
         wxMenuItem* m_metronome;
 
+        wxPanel* m_notification_panel;
+        wxStaticText* m_notification_text;
+        
+        wxBoxSizer* m_root_sizer;
+        
         int currentSequence;
         ptr_vector<Sequence> sequences; // contains all open sequences
 
@@ -191,6 +198,7 @@ namespace AriaMaestosa
         void firstMeasureChanged(wxCommandEvent& evt);
         void changeMeasureAmount(int i, bool throwEvent=true);
         void disableMenus(const bool disable);
+        void onHideNotifBar(wxCommandEvent& evt);
 
         void enterPressedInTopBar(wxCommandEvent& evt);
 
