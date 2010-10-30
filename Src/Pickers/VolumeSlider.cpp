@@ -25,6 +25,10 @@
 #include "Utils.h"
 #include "AriaCore.h"
 
+#include <wx/dialog.h>
+#include <wx/slider.h>
+#include <wx/textctrl.h>
+
 namespace AriaMaestosa
 {
     

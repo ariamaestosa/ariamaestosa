@@ -9,9 +9,10 @@
 #include "Midi/Sequence.h"
 
 //#include "wx/wx.h"
-#include "wx/print.h"
-#include "wx/printdlg.h"
 #include <iostream>
+#include <wx/dcmemory.h>
+#include <wx/print.h>
+#include <wx/printdlg.h>
 
 using namespace AriaMaestosa;
 

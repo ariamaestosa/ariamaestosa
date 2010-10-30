@@ -16,24 +16,25 @@
 
 #include "Utils.h"
 
-#include "Actions/EditAction.h"
-#include "Actions/InsertEmptyMeasures.h"
-#include "Actions/RemoveMeasures.h"
+//#include "Actions/EditAction.h"
+//#include "Actions/InsertEmptyMeasures.h"
+//#include "Actions/RemoveMeasures.h"
 
-#include "AriaCore.h"
-#include "Editors/Editor.h"
+//#include "AriaCore.h"
+//#include "Editors/Editor.h"
 #include "GUI/MeasureBar.h"
 #include "GUI/MainFrame.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 #include "Midi/TimeSigChange.h"
-#include "Midi/Players/PlatformMidiManager.h"
+//#include "Midi/Players/PlatformMidiManager.h"
 #include "Pickers/TimeSigPicker.h"
 
 #include <iostream>
 #include "irrXML/irrXML.h"
-#include "wx/spinbutt.h"
+#include <wx/spinbutt.h>
+#include <wx/msgdlg.h>
 
 using namespace AriaMaestosa;
 
@@ -72,6 +73,7 @@ void MeasureData::setExpandedMode(bool arg_expanded)
     //when turning it off, ask for a confirmation because all events will be lost
     if (this->expandedMode and not arg_expanded)
     {
+        // FIXME: this is GUI code and should not go in this model class
         const int answer = wxMessageBox(_("Are you sure you want to go back to having a single time signature? Any time sig events you may have added will be lost. This cannot be undone."),
                                         _("Confirm"), wxYES_NO);
         if (answer == wxNO){ getMainFrame()->updateMenuBarToSequence(); return; }
@@ -560,6 +562,8 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
                                                        timeSigChanges[selectedTimeSig].getDenom() );
 
                     wxPoint pt = wxGetMousePosition();
+                    
+                    // FIXME: this is GUI code and should not appear in this model
                     showTimeSigPicker( pt.x, pt.y, timeSigChanges[n].getNum(), timeSigChanges[n].getDenom() );
                     break;
                 }
