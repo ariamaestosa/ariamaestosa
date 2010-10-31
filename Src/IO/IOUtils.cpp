@@ -21,10 +21,12 @@
 
 #include "AriaCore.h"
 
-#include "wx/wx.h"
-#include "wx/wfstream.h"
-#include "wx/stdpaths.h"
-#include "wx/filename.h"
+#include <wx/string.h>
+#include <wx/wfstream.h>
+#include <wx/stdpaths.h>
+#include <wx/filename.h>
+#include <wx/msgdlg.h>
+#include <wx/filedlg.h>
 #include <iostream>
 
 namespace AriaMaestosa {

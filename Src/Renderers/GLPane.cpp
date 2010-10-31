@@ -21,8 +21,6 @@
 #include "Renderers/GLPane.h"
 #include "AriaCore.h"
 
-#include "wx/wx.h"
-
 #include "OpenGL.h"
 
 #include <iostream>

@@ -19,7 +19,11 @@
 #include "Pickers/KeyPicker.h"
 #include "PresetManager.h"
 
-#include "wx/wx.h"
+#include <wx/sizer.h>
+#include <wx/listbox.h>
+#include <wx/button.h>
+#include <wx/msgdlg.h>
+#include <wx/textdlg.h>
 
 using namespace AriaMaestosa;
 

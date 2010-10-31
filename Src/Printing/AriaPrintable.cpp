@@ -8,7 +8,6 @@
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
 
-//#include "wx/wx.h"
 #include <iostream>
 #include <wx/dcmemory.h>
 #include <wx/print.h>

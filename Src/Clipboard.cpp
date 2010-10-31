@@ -14,24 +14,26 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-
-/*
- The clipboard will always delete notes you give it.
- When you get notes from the Clipboard, or add notes to it,
- always make a copy of the Note object using the copy constructor.
-*/
-
 #include "Clipboard.h"
 #include "ptr_vector.h"
 #include "Midi/Note.h"
 
-namespace AriaMaestosa {
+namespace AriaMaestosa
+{
 
-    namespace Clipboard {
+    /**
+      * The clipboard will always delete notes you give it.
+      * When you get notes from the Clipboard, or add notes to it,
+      * always make a copy of the Note object using the copy constructor.
+      */    
+    namespace Clipboard
+    {
 
-        // a vector to store copied notes
+        /** a vector to store copied notes */
         ptr_vector<Note> clipboard;
-        int beat_length = 960; // store beat length of copied notes, in case you want to copy from a song to another with different beat lengths
+        
+        /** store beat length of copied notes, in case you want to copy from a song to another with different beat lengths */
+        int beat_length = 960;
 
         void clear()
         {

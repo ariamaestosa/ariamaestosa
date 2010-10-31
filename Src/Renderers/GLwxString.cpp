@@ -9,8 +9,13 @@
 #include <GL/gl.h>
 #endif
 
-#include "wx/wx.h"
-#include "wx/tokenzr.h"
+#include <wx/tokenzr.h>
+#include <wx/image.h>
+#include <wx/bitmap.h>
+#include <wx/dc.h>
+#include <wx/settings.h>
+#include <wx/dcmemory.h>
+
 #include "AriaCore.h"
 
 namespace AriaMaestosa

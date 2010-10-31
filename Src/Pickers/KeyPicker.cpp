@@ -24,9 +24,9 @@
 #include "Midi/KeyPresets.h"
 #include "Pickers/KeyPicker.h"
 
-#include "wx/wx.h"
-#include "wx/notebook.h"
-#include "wx/textdlg.h"
+#include <wx/notebook.h>
+#include <wx/textdlg.h>
+#include <wx/menu.h>
 
 namespace AriaMaestosa
 {
@@ -366,7 +366,7 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
     }
     else if ( id == KEY_CUSTOM )
     {
-        CustomKeyDialog dialog( (wxFrame*)getMainFrame(), parent );
+        CustomKeyDialog dialog( (wxWindow*)getMainFrame(), parent );
         dialog.ShowModal();
     }
     else if ( id == KEY_GUESS )
