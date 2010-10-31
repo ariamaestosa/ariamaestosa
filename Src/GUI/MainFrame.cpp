@@ -63,6 +63,13 @@
 #include <wx/spinctrl.h>
 #include <wx/filename.h>
 #include <wx/artprov.h>
+#include <wx/textctrl.h>
+#include <wx/button.h>
+#include <wx/scrolbar.h>
+#include <wx/sizer.h>
+#include <wx/stattext.h>
+#include <wx/msgdlg.h>
+#include <wx/statbmp.h>
 
 #ifdef __WXMAC__
 #include <ApplicationServices/ApplicationServices.h>

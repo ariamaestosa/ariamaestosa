@@ -17,24 +17,22 @@
 #include "Utils.h"
 #include "Dialogs/AboutDialog.h"
 
-#include "wx/wx.h"
-#include "wx/utils.h"
-#include "wx/stdpaths.h"
+//#include <wx/utils.h>
+#include <wx/bitmap.h>
+#include <wx/textctrl.h>
+#include <wx/bmpbuttn.h>
 
 #include "IO/IOUtils.h"
 
-namespace AriaMaestosa {
+using namespace AriaMaestosa;
+
+// ----------------------------------------------------------------------------------------------------------
 
 AboutDialog::AboutDialog() : wxDialog(NULL, wxID_ANY,  _("About Aria Maestosa"), wxDefaultPosition, wxSize(517, 500) )
 {
-
-
-    //wxImage* titleImage=new wxImage(wxStandardPaths::Get().GetResourcesDir() + wxT("/")  + wxT("title.jpg"), wxBITMAP_TYPE_JPEG);
-    //wxBitmap* titleBitmap=new wxBitmap(*titleImage, wxBITMAP_TYPE_PNG);
-
     wxBitmap titleBitmap;
     titleBitmap.LoadFile( getResourcePrefix()  + wxT("title.jpg") , wxBITMAP_TYPE_JPEG );
-    picture=new wxBitmapButton(this, 0, titleBitmap, wxPoint(0,0), wxSize(517,174) );
+    m_picture = new wxBitmapButton(this, 0, titleBitmap, wxPoint(0,0), wxSize(517,174) );
 
     //I18N: - in about dialog
     wxString about_text =  wxString::Format(_("version %s"), wxT("1.2.3") ) +
@@ -53,11 +51,14 @@ AboutDialog::AboutDialog() : wxDialog(NULL, wxID_ANY,  _("About Aria Maestosa"),
              wxString( wxT("\t it : Gianluca Pignalberi\n")) +
              wxString( wxT("\t de : Friedrich Weber\n"))
              );
-    textArea = new wxTextCtrl(this, 1, about_text, wxPoint(0,174), wxSize(517,500-174), wxTE_MULTILINE | wxTE_READONLY);
+    
+    m_text_area = new wxTextCtrl(this, 1, about_text, wxPoint(0,174), wxSize(517,500-174), wxTE_MULTILINE | wxTE_READONLY);
 #ifdef __WXMAC__
-    textArea->MacCheckSpelling(false);
+    m_text_area->MacCheckSpelling(false);
 #endif
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void AboutDialog::show()
 {
@@ -65,4 +66,5 @@ void AboutDialog::show()
     Show();
 }
 
-}
+// ----------------------------------------------------------------------------------------------------------
+
