@@ -18,7 +18,7 @@
 #ifndef __CONTROLLER_CHOICE_H__
 #define __CONTROLLER_CHOICE_H__
 
-#include "wx/menu.h"
+#include <wx/menu.h>
 
 #include "Renderers/RenderAPI.h"
 #include "Utils.h"

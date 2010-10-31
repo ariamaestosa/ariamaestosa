@@ -4,8 +4,8 @@
 
 #include "Utils.h"
 
-#include "wx/font.h"
-#include "wx/string.h"
+#include <wx/font.h>
+#include <wx/string.h>
 class wxImage;
 class wxBitmap;
 class wxDC;

@@ -17,7 +17,7 @@
 #ifndef __LANGUAGES_H__
 #define __LANGUAGES_H__
 
-#include "wx/arrstr.h"
+#include <wx/arrstr.h>
 
 namespace AriaMaestosa
 {

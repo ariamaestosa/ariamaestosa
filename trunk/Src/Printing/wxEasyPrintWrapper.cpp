@@ -3,16 +3,16 @@
 #include "PreferencesData.h"
 #include "Printing/AbstractPrintableSequence.h"
 #include "Printing/wxEasyPrintWrapper.h"
-#include "wx/paper.h"
-#include "wx/printdlg.h"
-#include "wx/dc.h"
+#include <wx/paper.h>
+#include <wx/printdlg.h>
+#include <wx/dc.h>
 
 #ifdef __WXMAC__
 
 #if wxMAJOR_VERSION > 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION == 9)
-#include "wx/osx/printdlg.h"
+#include <wx/osx/printdlg.h>
 #else
-#include "wx/mac/carbon/printdlg.h"
+#include <wx/mac/carbon/printdlg.h>
 #endif
 
 #endif

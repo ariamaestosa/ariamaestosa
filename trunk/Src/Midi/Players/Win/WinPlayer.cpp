@@ -24,9 +24,9 @@
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/CommonMidiUtils.h"
 #include "Midi/Sequence.h"
-#include "wx/wx.h"
-#include "wx/utils.h"
-#include "wx/process.h"
+#include <wx/wx.h>
+#include <wx/utils.h>
+#include <wx/process.h>
 
 /** macro to pack a MIDI short message */
 #define MAKEMIDISHORTMSG(cStatus, cChannel, cData1, cData2)            \

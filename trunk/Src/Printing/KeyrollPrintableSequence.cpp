@@ -21,7 +21,7 @@
 #include "Printing/AriaPrintable.h"
 #include "Printing/KeyrollPrintableSequence.h"
 
-#include "wx/dc.h"
+#include <wx/dc.h>
 
 using namespace AriaMaestosa;
 

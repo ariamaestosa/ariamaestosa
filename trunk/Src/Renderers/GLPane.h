@@ -22,7 +22,7 @@
 #define __GL_PANE_H__
 
 class wxSizeEvent;
-#include "wx/glcanvas.h"
+#include <wx/glcanvas.h>
 
 #include "Editors/RelativeXCoord.h"
 

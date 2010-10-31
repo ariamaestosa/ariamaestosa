@@ -18,7 +18,7 @@
 #ifndef _AriaFileWriter_
 #define _AriaFileWriter_
 
-#include "wx/string.h"
+#include <wx/string.h>
 
 namespace AriaMaestosa
 {

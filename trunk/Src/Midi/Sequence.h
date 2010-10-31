@@ -17,7 +17,7 @@
 #ifndef _sequence_
 #define _sequence_
 
-#include "wx/string.h"
+#include <wx/string.h>
 
 class wxFileOutputStream;
 // forward

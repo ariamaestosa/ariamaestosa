@@ -3,9 +3,9 @@
 #include <stdio.h>
 #include <vector>
 #include <map>
-#include "wx/string.h"
-#include "wx/tokenzr.h"
-#include "wx/filename.h"
+#include <wx/string.h>
+#include <wx/tokenzr.h>
+#include <wx/filename.h>
 
 namespace TestCaseList
 {

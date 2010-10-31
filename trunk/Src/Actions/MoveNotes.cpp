@@ -14,7 +14,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "wx/intl.h"
+#include <wx/intl.h>
 
 #include "Actions/MoveNotes.h"
 #include "Actions/EditAction.h"

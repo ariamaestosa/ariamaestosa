@@ -20,7 +20,7 @@
 #define __WX_RENDER_PANE_H__
 
 #include "Utils.h"
-#include "wx/panel.h"
+#include <wx/panel.h>
 
 class wxSizeEvent;
 

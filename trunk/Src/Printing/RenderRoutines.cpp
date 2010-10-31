@@ -18,9 +18,9 @@
 
 #include "IO/IOUtils.h"
 #include "Range.h"
-#include "wx/dc.h"
-#include "wx/filename.h"
-#include "wx/image.h"
+#include <wx/dc.h>
+#include <wx/filename.h>
+#include <wx/image.h>
 
 using namespace AriaMaestosa;
 using namespace AriaMaestosa::RenderRoutines;

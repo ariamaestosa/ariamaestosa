@@ -4,7 +4,7 @@
 #include "Utils.h"
 #include <alsa/asoundlib.h>
 #include "glib.h"
-#include "wx/string.h"
+#include <wx/string.h>
 #include "ptr_vector.h"
 
 #include "jdkmidi/world.h"

@@ -21,7 +21,7 @@
 #include "Editors/Editor.h"
 #include "Midi/Track.h"
 
-#include "wx/intl.h"
+#include <wx/intl.h>
 
 namespace AriaMaestosa
 {

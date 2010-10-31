@@ -18,7 +18,7 @@
 #ifndef __MAGNETIC_GRID_H__
 #define __MAGNETIC_GRID_H__
 
-#include "wx/menu.h"
+#include <wx/menu.h>
 
 class wxFileOutputStream;
 // forward

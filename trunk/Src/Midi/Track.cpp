@@ -50,7 +50,7 @@
 //#include "jdkmidi/driver.h"
 //#include "jdkmidi/process.h"
 
-#include "wx/utils.h"
+#include <wx/utils.h>
 #include "irrXML/irrXML.h"
 
 using namespace AriaMaestosa;

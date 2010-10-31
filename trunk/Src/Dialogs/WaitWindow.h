@@ -19,7 +19,7 @@
 #ifndef __WAIT_WINDOW_H__
 #define __WAIT_WINDOW_H__
 
-#include "wx/string.h"
+#include <wx/string.h>
 
 namespace AriaMaestosa
 {

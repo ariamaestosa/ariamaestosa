@@ -1,6 +1,6 @@
 #ifdef _ALSA
 
-#include "wx/wx.h"
+#include <wx/wx.h>
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Players/Alsa/AlsaNotePlayer.h"
 #include "Midi/Players/Alsa/AlsaPort.h"

@@ -17,7 +17,7 @@
 #ifndef __KEY_PICKER__
 #define __KEY_PICKER__
 
-#include "wx/menu.h"
+#include <wx/menu.h>
 #include "Utils.h"
 #include <map>
 

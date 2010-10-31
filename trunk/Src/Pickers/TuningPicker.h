@@ -17,7 +17,7 @@
 #ifndef __TUNING_PICKER_H__
 #define __TUNING_PICKER_H__
 
-#include "wx/menu.h"
+#include <wx/menu.h>
 #include "Utils.h"
 #include "Dialogs/TuningDialog.h"
 

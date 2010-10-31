@@ -15,11 +15,11 @@
  */
 
 #include "PresetManager.h"
-#include "wx/txtstrm.h"
-#include "wx/wfstream.h"
-#include "wx/stdpaths.h"
-#include "wx/msgdlg.h"
-#include "wx/filename.h"
+#include <wx/txtstrm.h>
+#include <wx/wfstream.h>
+#include <wx/stdpaths.h>
+#include <wx/msgdlg.h>
+#include <wx/filename.h>
 
 #include "unit_test.h"
 

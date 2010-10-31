@@ -19,7 +19,7 @@
 
 #include "Singleton.h"
 #include "ptr_vector.h"
-#include "wx/string.h"
+#include <wx/string.h>
 
 class wxTextOutputStream;
 class wxTextInputStream;

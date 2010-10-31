@@ -3,8 +3,8 @@
 
 #ifdef RENDERER_WXWIDGETS
 
-#include "wx/font.h"
-#include "wx/string.h"
+#include <wx/font.h>
+#include <wx/string.h>
 
 class wxDC;
 

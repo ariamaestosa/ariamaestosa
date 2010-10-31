@@ -45,9 +45,9 @@
 #include <pthread.h>
 #include <stdio.h>
 
-#include "wx/wx.h"
-#include "wx/utils.h"
-#include "wx/process.h"
+#include <wx/wx.h>
+#include <wx/utils.h>
+#include <wx/process.h>
 
 #include "jdkmidi/world.h"
 #include "jdkmidi/track.h"

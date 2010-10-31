@@ -23,9 +23,9 @@
 
 #include "AriaCore.h"
 
-#include "wx/dc.h"
-#include "wx/image.h"
-#include "wx/string.h"
+#include <wx/dc.h>
+#include <wx/image.h>
+#include <wx/string.h>
 
 namespace AriaMaestosa
 {

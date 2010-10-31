@@ -20,8 +20,8 @@
 #include "Renderers/wxRenderPane.h"
 #include "AriaCore.h"
 
-#include "wx/wx.h"
-#include "wx/brush.h"
+#include <wx/wx.h>
+#include <wx/brush.h>
 
 #include <iostream>
 #include <cmath>

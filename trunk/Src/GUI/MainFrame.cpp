@@ -11,38 +11,37 @@
 
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
- 51 Franklin Street, Fifth Floor, Boston, MA 0MENU_EDIT_FOLLOW_PLAYBACK0-1301 USA.
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
 #include "AriaCore.h"
+#include "Clipboard.h"
 #include "Utils.h"
-#include "languages.h"
-#include "main.h"
 
 #include "Actions/EditAction.h"
 #include "Actions/RemoveOverlapping.h"
 
+#include "Dialogs/AboutDialog.h"
+#include "Dialogs/CopyrightWindow.h"
+#include "Dialogs/CustomNoteSelectDialog.h"
+#include "Dialogs/Preferences.h"
+#include "Dialogs/ScaleDialog.h"
+#include "Dialogs/WaitWindow.h"
+
+#include "GUI/GraphicalTrack.h"
+#include "GUI/ImageProvider.h"
 #include "GUI/MainFrame.h"
 #include "GUI/MainPane.h"
-#include "GUI/GraphicalTrack.h"
 #include "GUI/MeasureBar.h"
+
+#include "IO/AriaFileWriter.h"
+#include "IO/IOUtils.h"
+#include "IO/MidiFileReader.h"
 
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/CommonMidiUtils.h"
-
-#include "Editors/KeyboardEditor.h"
-
-#include "GUI/ImageProvider.h"
-
-#include "Dialogs/CustomNoteSelectDialog.h"
-#include "Dialogs/WaitWindow.h"
-#include "Dialogs/ScaleDialog.h"
-#include "Dialogs/CopyrightWindow.h"
-#include "Dialogs/Preferences.h"
-#include "Dialogs/AboutDialog.h"
-#include "Dialogs/CustomNoteSelectDialog.h"
 
 #include "Pickers/InstrumentPicker.h"
 #include "Pickers/DrumPicker.h"
@@ -51,30 +50,24 @@
 #include "Pickers/KeyPicker.h"
 #include "Pickers/TimeSigPicker.h"
 
-#include "IO/IOUtils.h"
-#include "IO/AriaFileWriter.h"
-#include "IO/MidiFileReader.h"
-
-#include "Clipboard.h"
-#include "Singleton.h"
 #include <iostream>
 #include <sstream>
 
-#include <wx/spinctrl.h>
-#include <wx/filename.h>
 #include <wx/artprov.h>
-#include <wx/textctrl.h>
 #include <wx/button.h>
+#include <wx/filename.h>
+#include <wx/msgdlg.h>
+#include <wx/menu.h>
 #include <wx/scrolbar.h>
 #include <wx/sizer.h>
-#include <wx/stattext.h>
-#include <wx/msgdlg.h>
+#include <wx/spinctrl.h>
 #include <wx/statbmp.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
 
 #ifdef __WXMAC__
 #include <ApplicationServices/ApplicationServices.h>
 #endif
-
 
 #ifdef __WXMSW__
 #include "win32/Aria.xpm"
@@ -105,7 +98,6 @@ namespace AriaMaestosa
     DEFINE_LOCAL_EVENT_TYPE(wxEVT_SHOW_WAIT_WINDOW)
     DEFINE_LOCAL_EVENT_TYPE(wxEVT_UPDATE_WAIT_WINDOW)
     DEFINE_LOCAL_EVENT_TYPE(wxEVT_HIDE_WAIT_WINDOW)
-
 }
 
 

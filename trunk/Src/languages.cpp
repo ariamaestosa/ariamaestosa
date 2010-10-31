@@ -19,9 +19,9 @@
 #include <iostream>
 
 
-#include "wx/config.h"
-#include "wx/intl.h"
-#include "wx/stdpaths.h"
+#include <wx/config.h>
+#include <wx/intl.h>
+#include <wx/stdpaths.h>
 
 #include <vector>
 

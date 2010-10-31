@@ -20,7 +20,7 @@
 
 #include "Range.h"
 
-#include "wx/gdicmn.h"
+#include <wx/gdicmn.h>
 
 class wxDC;
 class wxImage;

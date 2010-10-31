@@ -23,7 +23,7 @@
 #include "Midi/Players/Mac/AudioToolboxPlayer.h"
 #include <iostream>
 
-#include "wx/timer.h"
+#include <wx/timer.h>
 
 namespace AriaMaestosa
 {

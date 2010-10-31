@@ -21,8 +21,8 @@
 
 #include "Utils.h"
 #include "Renderers/ImageBase.h"
-#include "wx/image.h"
-#include "wx/string.h"
+#include <wx/image.h>
+#include <wx/string.h>
 
 namespace AriaMaestosa
 {

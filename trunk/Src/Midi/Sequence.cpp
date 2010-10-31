@@ -37,9 +37,9 @@ const float CURRENT_FILE_VERSION = 2.0;
 //#include "Renderers/RenderAPI.h"
 #include "Utils.h"
 
-#include "wx/intl.h"
-#include "wx/utils.h"
-#include "wx/msgdlg.h"
+#include <wx/intl.h>
+#include <wx/utils.h>
+#include <wx/msgdlg.h>
 #include "irrXML/irrXML.h"
 
 using namespace AriaMaestosa;

@@ -24,7 +24,7 @@
  * area (even though the contents of each track is managed by module Editors)
  */
 
-#include "wx/frame.h"
+#include <wx/frame.h>
 
 #include "Utils.h"
 #include "AriaCore.h"
