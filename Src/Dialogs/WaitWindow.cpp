@@ -21,7 +21,11 @@
 #include <iostream>
 #include "Utils.h"
 
-#include "wx/wx.h"
+#include <wx/timer.h>
+#include <wx/dialog.h>
+#include <wx/stattext.h>
+#include <wx/gauge.h>
+#include <wx/sizer.h>
 
 namespace AriaMaestosa
 {

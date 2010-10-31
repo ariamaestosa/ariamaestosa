@@ -31,28 +31,30 @@
 #include <AudioToolbox/AudioToolbox.h> //for AUGraph
 
 
-#include "wx/wx.h"
+#include <wx/timer.h>
 
-namespace CoreAudioNotePlayer {
+namespace CoreAudioNotePlayer
+{
 
 // ==========================================================================================
 // ==========================================================================================
-class StopNoteTimer : public wxTimer {
+class StopNoteTimer : public wxTimer
+{
 
 public:
 
-StopNoteTimer() : wxTimer(){ }
+    StopNoteTimer() : wxTimer(){ }
 
-void Notify()
-{
-    CoreAudioNotePlayer::stopNote();
-    wxTimer::Stop();
-}
+    void Notify()
+    {
+        CoreAudioNotePlayer::stopNote();
+        wxTimer::Stop();
+    }
 
-void start(int duration)
-{
-    Start(duration);
-}
+    void start(int duration)
+    {
+        Start(duration);
+    }
 };
 // ==========================================================================================
 // ==========================================================================================
