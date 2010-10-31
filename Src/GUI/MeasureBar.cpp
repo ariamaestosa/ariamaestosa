@@ -16,9 +16,9 @@
 
 #include "Utils.h"
 
-#include "wx/numdlg.h"
-#include "wx/menu.h"
-#include "wx/msgdlg.h"
+#include <wx/numdlg.h>
+#include <wx/menu.h>
+#include <wx/msgdlg.h>
 
 #include "Actions/EditAction.h"
 #include "Actions/InsertEmptyMeasures.h"

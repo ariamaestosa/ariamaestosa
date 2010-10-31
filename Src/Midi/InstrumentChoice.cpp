@@ -17,7 +17,7 @@
 
 #include "Midi/InstrumentChoice.h"
 #include <map>
-#include "wx/string.h"
+#include <wx/string.h>
 
 using namespace AriaMaestosa;
 

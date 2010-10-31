@@ -17,7 +17,7 @@
 #ifndef __KEY_PRESET_H__
 #define __KEY_PRESET_H__
 
-#include "wx/string.h"
+#include <wx/string.h>
 #include "PresetManager.h"
 #include "Midi/Track.h"
 

@@ -17,7 +17,7 @@
 #ifndef __TIME_SIG_PICKER_H__
 #define __TIME_SIG_PICKER_H__
 
-#include "wx/event.h"
+#include <wx/event.h>
 
 #include "Utils.h"
 

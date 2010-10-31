@@ -17,7 +17,7 @@
 #ifndef __PRESET_EDITOR_H__
 #define __PRESET_EDITOR_H__
 
-#include "wx/dialog.h"
+#include <wx/dialog.h>
 
 #include "LeakCheck.h"
 class wxCommandEvent;

@@ -18,8 +18,8 @@
 #define __NOTE_PICKER_WIDGET_H__
 
 #include "Utils.h"
-#include "wx/panel.h"
-#include "wx/checkbox.h"
+#include <wx/panel.h>
+#include <wx/checkbox.h>
 
 class wxBoxSizer;
 class wxChoice;

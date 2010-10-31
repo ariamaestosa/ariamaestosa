@@ -26,7 +26,7 @@
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
 
-#include "wx/dc.h"
+#include <wx/dc.h>
 
 using namespace AriaMaestosa;
 

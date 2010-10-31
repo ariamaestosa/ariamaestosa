@@ -26,8 +26,8 @@
   * and only used to make a quick selection.
   */
 
-#include "wx/menu.h"
-#include "wx/string.h"
+#include <wx/menu.h>
+#include <wx/string.h>
 #include "Renderers/RenderAPI.h"
 
 #include "Utils.h"

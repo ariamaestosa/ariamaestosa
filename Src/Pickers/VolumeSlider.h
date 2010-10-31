@@ -17,7 +17,7 @@
 #ifndef __VOLUME_SLIDER_H__
 #define __VOLUME_SLIDER_H__
 
-#include "wx/event.h"
+#include <wx/event.h>
 
 #include "Utils.h"
 

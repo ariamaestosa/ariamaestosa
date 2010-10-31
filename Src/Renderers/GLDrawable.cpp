@@ -23,7 +23,7 @@
 
 #include "OpenGL.h"
 
-#include "wx/string.h"
+#include <wx/string.h>
 
 namespace AriaMaestosa
 {

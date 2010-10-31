@@ -1,3 +1,5 @@
 
 #include <iostream>
 #include <string>
+#include <wx/string.h>
+#include "Utils.h"

@@ -15,7 +15,7 @@
  */
 
 #include "Midi/DrumChoice.h"
-#include "wx/string.h"
+#include <wx/string.h>
 #include <iostream>
 
 using namespace AriaMaestosa;

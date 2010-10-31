@@ -18,8 +18,8 @@
 
 #include "Midi/Sequence.h"
 
-#include "wx/string.h"
-#include "wx/wfstream.h"
+#include <wx/string.h>
+#include <wx/wfstream.h>
 #include "irrXML/irrXML.h"
 
 namespace AriaMaestosa

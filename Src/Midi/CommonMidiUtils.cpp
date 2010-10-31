@@ -35,9 +35,9 @@
 #include "jdkmidi/msg.h"
 #include "jdkmidi/sysex.h"
 
-#include "wx/intl.h"
-#include "wx/timer.h"
-#include "wx/msgdlg.h"
+#include <wx/intl.h>
+#include <wx/timer.h>
+#include <wx/msgdlg.h>
 
 #include <iostream>
 

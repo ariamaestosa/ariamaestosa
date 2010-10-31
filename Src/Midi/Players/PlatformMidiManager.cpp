@@ -17,8 +17,8 @@
 #include "Midi/Players/PlatformMidiManager.h"
 #include "PreferencesData.h"
 #include "ptr_vector.h"
-#include "wx/intl.h"
-#include "wx/msgdlg.h"
+#include <wx/intl.h>
+#include <wx/msgdlg.h>
 
 using namespace AriaMaestosa;
 

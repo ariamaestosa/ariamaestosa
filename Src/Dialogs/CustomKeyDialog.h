@@ -17,7 +17,7 @@
 #ifndef __CUSTOM_KEY_H__
 #define __CUSTOM_KEY_H__
 
-#include "wx/dialog.h"
+#include <wx/dialog.h>
 #include "Midi/Track.h"
 
 class wxCheckBox;

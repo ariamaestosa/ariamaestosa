@@ -23,9 +23,9 @@
 #include <iostream>
 #include "Utils.h"
 
-#include "wx/intl.h"
-#include "wx/bitmap.h"
-#include "wx/msgdlg.h"
+#include <wx/intl.h>
+#include <wx/bitmap.h>
+#include <wx/msgdlg.h>
 
 using namespace AriaMaestosa;
 

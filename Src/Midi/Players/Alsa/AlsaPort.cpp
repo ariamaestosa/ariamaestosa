@@ -3,7 +3,7 @@
 #include "AriaCore.h"
 #include "Midi/Players/Alsa/AlsaPort.h"
 #include <iostream>
-#include "wx/wx.h"
+#include <wx/wx.h>
 #include "IO/IOUtils.h"
 
 namespace AriaMaestosa

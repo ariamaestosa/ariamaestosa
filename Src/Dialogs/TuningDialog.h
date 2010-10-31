@@ -19,7 +19,7 @@
 #ifndef __TUNING_DIALOG_H__
 #define __TUNING_DIALOG_H__
 
-#include "wx/frame.h"
+#include <wx/frame.h>
 class wxPanel;
 class wxButton;
 class wxBoxSizer;

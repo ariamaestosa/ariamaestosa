@@ -38,7 +38,7 @@
 
 #include <iostream>
 
-#include "wx/string.h"
+#include <wx/string.h>
 
 #include "Utils.h"
 #include "AriaCore.h"

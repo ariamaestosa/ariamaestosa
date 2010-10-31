@@ -21,7 +21,7 @@
 #include "Editors/Editor.h"
 #include "Renderers/RenderAPI.h"
 #include <vector>
-#include "wx/intl.h"
+#include <wx/intl.h>
 
 namespace AriaMaestosa
 {

@@ -26,10 +26,10 @@
 #include <iostream>
 #include <cmath>
 
-#include "wx/image.h"
-#include "wx/string.h"
-#include "wx/intl.h"
-#include "wx/msgdlg.h"
+#include <wx/image.h>
+#include <wx/string.h>
+#include <wx/intl.h>
+#include <wx/msgdlg.h>
 
 #include <IO/IOUtils.h>
 

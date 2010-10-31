@@ -20,7 +20,7 @@
 
 /** @defgroup io I/O */
 
-#include "wx/string.h"
+#include <wx/string.h>
 
 class wxFileOutputStream;
 

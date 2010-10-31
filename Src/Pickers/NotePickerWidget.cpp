@@ -17,8 +17,8 @@
 #include "Pickers/NotePickerWidget.h"
 
 #include "Editors/Editor.h"
-#include "wx/choice.h"
-#include "wx/sizer.h"
+#include <wx/choice.h>
+#include <wx/sizer.h>
 
 using namespace AriaMaestosa;
 

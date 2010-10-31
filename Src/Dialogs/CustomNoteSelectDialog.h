@@ -19,7 +19,7 @@
 #ifndef __CUSTOM_NOTE_SELECT_DIALOG_H__
 #define __CUSTOM_NOTE_SELECT_DIALOG_H__
 
-#include "wx/dialog.h"
+#include <wx/dialog.h>
 
 #include "Utils.h"
 

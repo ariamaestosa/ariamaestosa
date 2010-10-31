@@ -18,7 +18,7 @@
 
 #include "Utils.h"
 #include "AriaCore.h"
-#include "wx/wx.h"
+#include <wx/wx.h>
 #include "Renderers/RenderAPI.h"
 
 #include "Renderers/Drawable.h"

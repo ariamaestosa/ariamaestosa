@@ -19,7 +19,7 @@
 #include "GUI/GraphicalTrack.h"
 #include "Midi/Track.h"
 
-#include "wx/intl.h"
+#include <wx/intl.h>
 
 using namespace AriaMaestosa::Action;
 

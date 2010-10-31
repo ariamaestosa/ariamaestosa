@@ -18,7 +18,7 @@
 #include "Renderers/Drawable.h"
 #include "Utils.h"
 
-#include "wx/string.h"
+#include <wx/string.h>
 
 #define _DECLARE_IMAGES_
 #include "GUI/ImageProvider.h"

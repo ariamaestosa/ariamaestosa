@@ -19,7 +19,7 @@
 #define __WX_EASY_PRINT_WRAPPER_H__
 
 #include "Utils.h"
-#include "wx/print.h"
+#include <wx/print.h>
 
 namespace AriaMaestosa
 {

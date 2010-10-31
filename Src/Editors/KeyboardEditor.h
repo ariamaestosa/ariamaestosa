@@ -18,7 +18,7 @@
 #ifndef __KEYBOARD_EDITOR_H__
 #define __KEYBOARD_EDITOR_H__
 
-#include "wx/intl.h"
+#include <wx/intl.h>
 
 #include "Editors/Editor.h"
 #include "Editors/RelativeXCoord.h"

@@ -18,7 +18,7 @@
 #define __PLATFORM_MIDI_MANAGER_H__
 
 #include <vector>
-#include "wx/string.h"
+#include <wx/string.h>
 
 namespace AriaMaestosa
 {
