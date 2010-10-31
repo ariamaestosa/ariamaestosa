@@ -22,7 +22,12 @@
 #include "Midi/MeasureData.h"
 #include "GUI/GraphicalTrack.h"
 
-#include "wx/wx.h"
+#include <wx/sizer.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
+#include <wx/msgdlg.h>
+#include <wx/checkbox.h>
+#include <wx/button.h>
 
 namespace AriaMaestosa
 {

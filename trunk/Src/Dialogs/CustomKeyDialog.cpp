@@ -21,8 +21,14 @@
 #include "Pickers/KeyPicker.h"
 #include "PresetManager.h"
 
-#include "wx/wx.h"
-#include "wx/notebook.h"
+#include <wx/sizer.h>
+#include <wx/panel.h>
+#include <wx/notebook.h>
+#include <wx/stattext.h>
+#include <wx/button.h>
+#include <wx/checkbox.h>
+#include <wx/textdlg.h>
+#include <wx/scrolwin.h>
 
 using namespace AriaMaestosa;
 

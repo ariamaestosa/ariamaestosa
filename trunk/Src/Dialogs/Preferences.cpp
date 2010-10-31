@@ -23,9 +23,13 @@
 #include "Midi/Sequence.h"
 #include "PreferencesData.h"
 
-//#include "wx/scrolbar.h"
-//#include "wx/image.h"
-#include "wx/spinctrl.h"
+#include <wx/dialog.h>
+#include <wx/sizer.h>
+#include <wx/spinctrl.h>
+#include <wx/choice.h>
+#include <wx/checkbox.h>
+#include <wx/stattext.h>
+#include <wx/button.h>
 
 using namespace AriaMaestosa;
 
@@ -191,7 +195,7 @@ END_EVENT_TABLE()
 
 // ---------------------------------------------------------------------------------------------------------
 
-PreferencesDialog::PreferencesDialog(wxFrame* parent, PreferencesData* data) :
+PreferencesDialog::PreferencesDialog(wxWindow* parent, PreferencesData* data) :
 wxDialog(parent, wxID_ANY,
          //I18N: - title of the preferences dialog
          _("Preferences"), wxPoint(100,100), wxSize(500, 350), wxCAPTION | wxRESIZE_BORDER)

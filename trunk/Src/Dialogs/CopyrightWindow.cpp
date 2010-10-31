@@ -22,7 +22,11 @@
 
 #include <iostream>
 
-#include "wx/wx.h"
+#include <wx/dialog.h>
+#include <wx/sizer.h>
+#include <wx/button.h>
+#include <wx/textctrl.h>
+#include <wx/stattext.h>
 
 #include "Utils.h"
 

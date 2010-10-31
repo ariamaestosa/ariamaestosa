@@ -50,9 +50,12 @@
 #include <iostream>
 
 #ifdef __WXMAC__
-#include "wx/html/webkit.h"
+#include <wx/html/webkit.h>
 #endif
-#include "wx/filename.h"
+
+#include <wx/filename.h>
+#include <wx/msgdlg.h>
+#include <wx/sizer.h>
 
 namespace AriaMaestosa
 {

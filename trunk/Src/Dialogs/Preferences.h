@@ -15,12 +15,15 @@
  */
 
 
-#ifndef _preferences_
-#define _preferences_
+#ifndef __PREFERENCES_H__
+#define __PREFERENCES_H__
 
-#include "wx/wx.h"
+#include <wx/dialog.h>
 #include "PreferencesData.h"
 #include "Utils.h"
+
+class wxBoxSizer;
+class wxButton;
 
 namespace AriaMaestosa
 {
@@ -37,7 +40,6 @@ namespace AriaMaestosa
         int modalCode;
 
         wxBoxSizer* vert_sizer;
-
         wxButton* ok_btn;
         
         ptr_vector<SettingWidget> m_setting_widgets;
@@ -45,15 +47,11 @@ namespace AriaMaestosa
     public:
         LEAK_CHECK();
 
-        PreferencesDialog(wxFrame* parent, PreferencesData* data);
+        PreferencesDialog(wxWindow* parent, PreferencesData* data);
         ~PreferencesDialog();
         void show();
 
-        //void languageSelected(wxCommandEvent& evt);
         void okClicked(wxCommandEvent& evt);
-        //void playSelected(wxCommandEvent& evt);
-        //void followPlaybackChecked(wxCommandEvent& evt);
-        //void scoreViewSelected(wxCommandEvent& evt);
 
         void updateValuesFromWidgets();
         
@@ -66,11 +64,6 @@ namespace AriaMaestosa
 
         DECLARE_EVENT_TABLE()
     };
-
-    //bool followPlaybackByDefault();
-    //int playDuringEditByDefault();
-    //int showLinearViewByDefault();
-    //int showMusicalViewByDefault();
 
 
 }

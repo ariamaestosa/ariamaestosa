@@ -18,8 +18,12 @@
 #define __MAIN_H__
 
 
-#include "wx/wx.h"
+#include <wx/app.h>
 #include "Utils.h"
+
+class wxString;
+class wxIdleEvent;
+class wxActivateEvent;
 
 namespace AriaMaestosa
 {

@@ -14,9 +14,9 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "wx/wx.h"
-#include "wx/stdpaths.h"
-#include "wx/config.h"
+#include <wx/stdpaths.h>
+#include <wx/config.h>
+#include <wx/msgdlg.h>
 
 #include "Utils.h"
 #include "Dialogs/Preferences.h"
