@@ -23,9 +23,15 @@
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 
-#include "wx/wx.h"
-#include "wx/tokenzr.h"
-
+#include <wx/tokenzr.h>
+#include <wx/panel.h>
+#include <wx/button.h>
+#include <wx/dialog.h>
+#include <wx/utils.h>
+#include <wx/slider.h>
+#include <wx/textctrl.h>
+#include <wx/sizer.h>
+#include <wx/checkbox.h>
 #include <iostream>
 
 namespace AriaMaestosa

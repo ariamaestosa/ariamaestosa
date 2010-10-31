@@ -23,8 +23,8 @@
 #include "Utils.h"
 
 #include <iostream>
-
-#include "wx/wx.h"
+#include <wx/sizer.h>
+#include <wx/button.h>
 
 using namespace AriaMaestosa;
 

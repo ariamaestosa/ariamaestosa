@@ -18,8 +18,6 @@
 #include "GUI/MainPane.h"
 #include "AriaCore.h"
 
-#include "wx/wx.h"
-
 #include <iostream>
 #include <cmath>
 
@@ -49,7 +47,8 @@
 #include "Editors/RelativeXCoord.h"
 #include "Editors/KeyboardEditor.h"
 
-#include "wx/dcbuffer.h"
+#include <wx/dcbuffer.h>
+#include <wx/timer.h>
 
 #include "Utils.h"
 

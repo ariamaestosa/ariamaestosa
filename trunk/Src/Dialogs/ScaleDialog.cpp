@@ -23,7 +23,14 @@
 
 #include <iostream>
 
-#include "wx/wx.h"
+#include <wx/dialog.h>
+#include <wx/stattext.h>
+#include <wx/panel.h>
+#include <wx/sizer.h>
+#include <wx/radiobut.h>
+#include <wx/combobox.h>
+#include <wx/sizer.h>
+#include <wx/button.h>
 
 namespace AriaMaestosa
 {

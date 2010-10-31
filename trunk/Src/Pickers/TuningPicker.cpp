@@ -21,8 +21,6 @@
 #include "Midi/Sequence.h"
 #include "IO/IOUtils.h"
 
-#include "wx/wx.h"
-
 #include "AriaCore.h"
 
 #include <iostream>

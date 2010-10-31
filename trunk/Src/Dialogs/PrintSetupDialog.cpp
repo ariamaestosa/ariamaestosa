@@ -1,12 +1,18 @@
 
-#include "wx/wx.h"
-#include "wx/sizer.h"
-#include "wx/file.h"
-#include "wx/radiobut.h"
-#include "wx/print.h"
-#include "wx/renderer.h"
-#include "wx/clrpicker.h"
-#include "wx/spinctrl.h"
+#include <wx/sizer.h>
+#include <wx/file.h>
+#include <wx/radiobut.h>
+#include <wx/print.h>
+#include <wx/renderer.h>
+#include <wx/clrpicker.h>
+#include <wx/spinctrl.h>
+#include <wx/checkbox.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
+#include <wx/msgdlg.h>
+#include <wx/choice.h>
+#include <wx/valtext.h>
+#include <wx/dcclient.h>
 //#include <wx/listctrl.h>
 
 #include "Utils.h"
