@@ -97,7 +97,8 @@ namespace TestAddNote
 {
     
     UNIT_TEST(TestAdd)
-    {            
+    {
+        // TODO: make this class common to all tests instead of duplicating it
         class TestSeqProvider : public ICurrentSequenceProvider
         {
             Sequence* m_seq;

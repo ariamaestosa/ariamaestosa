@@ -22,6 +22,8 @@
 
 #include <wx/intl.h>
 
+#include "unit_test.h"
+
 using namespace AriaMaestosa::Action;
 
 // --------------------------------------------------------------------------------------------------------
@@ -58,4 +60,70 @@ void AddTrack::perform()
 
 // --------------------------------------------------------------------------------------------------------
 
+namespace TestAddTrack
+{
+    using namespace AriaMaestosa;
+    
+    UNIT_TEST( TestAction )
+    {
+        // TODO: make this class common to all tests instead of duplicating it
+        class TestSeqProvider : public ICurrentSequenceProvider
+        {
+            Sequence* m_seq;
+        public:
+            TestSeqProvider(Sequence* seq)
+            {
+                m_seq = seq;
+            }
+            
+            virtual Sequence* getCurrentSequence()
+            {
+                return m_seq;
+            }
+        };
+        
+        Sequence* seq = new Sequence(NULL, NULL, NULL, false);
+        
+        TestSeqProvider provider(seq);
+        AriaMaestosa::setCurrentSequenceProvider(&provider);
+        
+        Track* t = new Track(seq);
+        t->setName(wxT("TestTrack"));
+        seq->addTrack(t);
+        
+        t = new Track(seq);
+        t->setName(wxT("TestTrack2"));
+        seq->addTrack(t);
+        
+        // test the action
+        seq->action(new AddTrack(seq));
+        
+        require(seq->getTrackAmount() == 3, "track amount increased after performing action");
+        bool foundFirst = false, foundSecond = false, foundNew = false;
+        for (int n=0; n<3; n++)
+        {
+            if (seq->getTrack(n)->getName() == wxT("TestTrack")) foundFirst  = true;
+            else if (seq->getTrack(n)->getName() == wxT("TestTrack2")) foundSecond = true;
+            else foundNew = true;
+        }
+        
+        require(foundFirst and foundSecond and foundNew, "The right tracks are found in the sequence");
+        
+        // test undo
+        seq->undo();
+        
+        require(seq->getTrackAmount() == 2, "track amount decreased after undoing action");
+        
+        foundFirst = false; foundSecond = false; foundNew = false;
+        for (int n=0; n<2; n++)
+        {
+            if (seq->getTrack(n)->getName() == wxT("TestTrack")) foundFirst  = true;
+            else if (seq->getTrack(n)->getName() == wxT("TestTrack2")) foundSecond = true;
+            else foundNew = true;
+        }
+        require(foundFirst and foundSecond and not foundNew, "The right tracks are found in the sequence after undoing");
+        
+        delete seq;
+    }
+}
 
