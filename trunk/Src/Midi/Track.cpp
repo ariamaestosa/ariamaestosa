@@ -142,8 +142,12 @@ void Track::notifyOthersIWillBeRemoved()
 
 void Track::trackDeleted(Track* track)
 {
-    graphics->keyboardEditor->trackDeleted(track);
-
+    // FIXME: this data class should not talk to GUI classes
+    if (graphics != NULL)
+    {
+        graphics->keyboardEditor->trackDeleted(track);
+    }
+    
     /*
      // uncomment if these editors get background support too
     graphics->guitarEditor->trackDelete(track);
