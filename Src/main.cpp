@@ -29,7 +29,7 @@
 #include "Midi/Sequence.h"
 #include "Midi/KeyPresets.h"
 #include "languages.h"
-#include "unit_test.h"
+#include "UnitTest.h"
 
 #include <iostream>
 

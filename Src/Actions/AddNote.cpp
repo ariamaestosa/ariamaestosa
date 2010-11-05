@@ -23,7 +23,8 @@
 #include "Midi/Note.h"
 #include "Midi/Sequence.h"
 
-#include "unit_test.h"
+#include "UnitTest.h"
+#include "UnitTestUtils.h"
 
 using namespace AriaMaestosa::Action;
 
@@ -98,24 +99,9 @@ namespace TestAddNote
     
     UNIT_TEST(TestAdd)
     {
-        // TODO: make this class common to all tests instead of duplicating it
-        class TestSeqProvider : public ICurrentSequenceProvider
-        {
-            Sequence* m_seq;
-        public:
-            TestSeqProvider(Sequence* seq)
-            {
-                m_seq = seq;
-            }
-            
-            virtual Sequence* getCurrentSequence()
-            {
-                return m_seq;
-            }
-        };
-        
         Sequence* seq = new Sequence(NULL, NULL, NULL, false);
-        TestSeqProvider provider(seq);
+        
+        TestSequenceProvider provider(seq);
         AriaMaestosa::setCurrentSequenceProvider(&provider);
         
         Track* t = new Track(seq);
@@ -183,23 +169,9 @@ namespace TestAddNote
     
     UNIT_TEST(TestInsert)
     {            
-        class TestSeqProvider : public ICurrentSequenceProvider
-        {
-            Sequence* m_seq;
-        public:
-            TestSeqProvider(Sequence* seq)
-            {
-                m_seq = seq;
-            }
-            
-            virtual Sequence* getCurrentSequence()
-            {
-                return m_seq;
-            }
-        };
-        
         Sequence* seq = new Sequence(NULL, NULL, NULL, false);
-        TestSeqProvider provider(seq);
+        
+        TestSequenceProvider provider(seq);
         AriaMaestosa::setCurrentSequenceProvider(&provider);
         
         Track* t = new Track(seq);

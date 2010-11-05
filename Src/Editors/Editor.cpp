@@ -30,7 +30,7 @@
 #include "Renderers/Drawable.h"
 #include "IO/IOUtils.h"
 
-#include "unit_test.h"
+#include "UnitTest.h"
 
 namespace AriaMaestosa
 {

@@ -23,7 +23,7 @@
 #include "GUI/GraphicalTrack.h"
 #include "Editors/ControllerEditor.h"
 
-#include "unit_test.h"
+#include "UnitTest.h"
 #include <cmath>
 
 using namespace AriaMaestosa;

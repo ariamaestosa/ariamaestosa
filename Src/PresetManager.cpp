@@ -21,7 +21,7 @@
 #include <wx/msgdlg.h>
 #include <wx/filename.h>
 
-#include "unit_test.h"
+#include "UnitTest.h"
 
 using namespace AriaMaestosa;
 
