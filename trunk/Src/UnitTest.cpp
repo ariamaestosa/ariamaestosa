@@ -14,23 +14,50 @@ namespace TestCaseList
         std::string m_name;
         std::vector<UnitTestCase*> m_test_cases;
         std::map<wxString, Node> m_children;
+        Node* m_parent;
         
         Node()
         {
+            m_parent = NULL;
         }
-        Node(const char* name)
+        
+        Node(Node* parent)
+        {
+            m_parent = parent;
+        }
+        /*
+        Node(const Node& other)
+        {
+            m_name = other.m_name;
+            m_test_cases = other.m_test_cases;
+            m_children = other.m_children;
+            m_parent = other.m_parent;
+        }*/
+        Node(Node* parent, const char* name)
         {
             m_name = name;
+            m_parent = parent;
         }
     };
     
     Node* root = NULL;
+
+    /** @return the first "interesting" node of the tree */
+    Node* getEffectiveRoot()
+    {
+        TestCaseList::Node* from = TestCaseList::root;
+        while (from->m_children.size() == 1)
+        {
+            from = &(from->m_children.begin()->second);
+        }
+        return from;
+    }
     
     void add(UnitTestCase* testCase, const std::vector<wxString>& path)
     {
         if (root == NULL)
         {
-            root = new Node("All");
+            root = new Node(NULL, "All");
         }
         
         Node* currNode = root;
@@ -38,7 +65,7 @@ namespace TestCaseList
         {
             if (currNode->m_children.find(path[n]) == currNode->m_children.end())
             {
-                currNode->m_children[path[n]] = Node(path[n].mb_str());
+                currNode->m_children[path[n]] = Node(currNode, path[n].mb_str());
             }
             currNode = &currNode->m_children[path[n]];
         }
@@ -91,9 +118,22 @@ UnitTestCase::~UnitTestCase()
      */
 }
 
-void runTest(UnitTestCase* testCase)
+void runTest(UnitTestCase* testCase, TestCaseList::Node* currNode)
 {
-    std::cout << "Running test case " << testCase->getName() << "... ";
+    std::string path;
+    if (currNode != NULL)
+    {
+        TestCaseList::Node* root = TestCaseList::getEffectiveRoot();
+        TestCaseList::Node* node = currNode;
+        do
+        {
+            path = node->m_name + "." + path;
+            node = node->m_parent;
+        } while (node != NULL and node != root);
+        
+    }
+    
+    std::cout << "Running test case " << path << testCase->getName() << "... ";
     std::cout.flush();
     
     bool passed = true;
@@ -144,7 +184,7 @@ void runTestsIn(TestCaseList::Node* node)
 {
     for (unsigned int n=0; n<node->m_test_cases.size(); n++)
     {
-        runTest(node->m_test_cases[n]);
+        runTest(node->m_test_cases[n], node);
     }
     
     for (std::map<wxString, TestCaseList::Node>::iterator it = node->m_children.begin();
@@ -161,11 +201,7 @@ void UnitTestCase::showMenu()
     TestCaseList::testGroupsById.clear();
     id = 1;
     
-    TestCaseList::Node* from = TestCaseList::root;
-    while (from->m_children.size() == 1)
-    {
-        from = &(from->m_children.begin()->second);
-    }
+    TestCaseList::Node* from = TestCaseList::getEffectiveRoot();
     
     std::cout << "==== UNIT TESTS ===\n";
     std::cout << "(0) [group] All Tests\n";
@@ -189,7 +225,8 @@ void UnitTestCase::showMenu()
     }
     else if (TestCaseList::testCasesById.find(choice) != TestCaseList::testCasesById.end())
     {
-        runTest(TestCaseList::testCasesById[choice]);
+        // TODO: give a pointer to the node so we can display more info about the test
+        runTest(TestCaseList::testCasesById[choice], NULL);
     }
     else
     {
