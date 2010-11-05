@@ -18,7 +18,7 @@
 #define __RELATIVE_PLACEMENT_MANAGER__
 
 #include <vector>
-#include "unit_test.h"
+#include "UnitTest.h"
 #include "Range.h"
 #include "Analysers/SilenceAnalyser.h"
 

@@ -22,7 +22,8 @@
 
 #include <wx/intl.h>
 
-#include "unit_test.h"
+#include "UnitTest.h"
+#include "UnitTestUtils.h"
 
 using namespace AriaMaestosa::Action;
 
@@ -66,25 +67,9 @@ namespace TestAddTrack
     
     UNIT_TEST( TestAction )
     {
-        // TODO: make this class common to all tests instead of duplicating it
-        class TestSeqProvider : public ICurrentSequenceProvider
-        {
-            Sequence* m_seq;
-        public:
-            TestSeqProvider(Sequence* seq)
-            {
-                m_seq = seq;
-            }
-            
-            virtual Sequence* getCurrentSequence()
-            {
-                return m_seq;
-            }
-        };
-        
         Sequence* seq = new Sequence(NULL, NULL, NULL, false);
         
-        TestSeqProvider provider(seq);
+        TestSequenceProvider provider(seq);
         AriaMaestosa::setCurrentSequenceProvider(&provider);
         
         Track* t = new Track(seq);

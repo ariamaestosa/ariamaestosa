@@ -17,7 +17,7 @@
 #include "RelativePlacementManager.h"
 
 #include "AriaCore.h"
-#include "unit_test.h"
+#include "UnitTest.h"
 #include <iostream>
 #include <cmath>
 #include <cassert>

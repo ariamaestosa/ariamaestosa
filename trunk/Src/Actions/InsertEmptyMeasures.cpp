@@ -24,7 +24,7 @@
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
-#include "unit_test.h"
+#include "UnitTest.h"
 
 using namespace AriaMaestosa;
 using namespace AriaMaestosa::Action;
