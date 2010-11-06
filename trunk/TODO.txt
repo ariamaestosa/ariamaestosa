@@ -165,8 +165,6 @@ UNSURE/MINOR:
    document as having unsaved changes!
 ** Add Time Sig change is not an action and is not undone
 
-** If a message dialog is shown during track loading, app freezes (conflict with WaitWindow, most likely)
-
 ** Printing a song that has notes after the "official" song ending can cause assertion failures
 
 ** Shift+left/Shift+right may cause asertion failures if trying to move notes past the official end of the song
