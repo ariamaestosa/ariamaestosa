@@ -230,7 +230,7 @@ int MeasureData::measureAtTick(int tick)
         if (not getCurrentSequence()->importing)
         {
             // verify that we're within song bounds. except if importing, since the song length
-            // might not has been set yet.
+            // might not have been set yet.
             ASSERT_E(answer, <=, m_measure_amount);
         }
         
@@ -243,7 +243,7 @@ int MeasureData::measureAtTick(int tick)
         if (not getCurrentSequence()->importing)
         {
             // verify that we're within song bounds. except if importing, since the song length
-            // might not has been set yet.
+            // might not have been set yet.
             ASSERT_E(tick, <=, lastTickInMeasure(m_measure_amount-1));
         }
         
