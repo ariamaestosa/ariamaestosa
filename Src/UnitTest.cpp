@@ -145,10 +145,10 @@ void runTest(UnitTestCase* testCase, TestCaseList::Node* currNode)
     catch (const std::exception& ex)
     {
         passed = false;
-        std::cout << "FAILED : " << ex.what() << std::endl;
+        std::cout << "\033[1m\033[31mFAILED\033[0m : \033[43m" << ex.what() << "\033[0m" << std::endl;
     }
     
-    if (passed) std::cout << "passed" << std::endl;    
+    if (passed) std::cout << "\033[1m\033[32mpassed\033[0m" << std::endl;    
 }
 
 static int id = 1;
