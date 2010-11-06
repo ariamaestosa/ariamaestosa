@@ -51,8 +51,14 @@ namespace AriaMaestosa
             std::vector<short> undo_pitch; // for SCORE_VERTICAL mode
             std::vector<short> undo_fret; // for GUITAR_VERTICAL mode
             std::vector<short> undo_string;
+            
         public:
+            
+            /**
+              * @param noteID  ID of the note to move in range [0 .. noteAmount - 1], or SELECTED_NOTES
+              */
             MoveNotes(const int relativeX, const int relativeY, const int noteID);
+            
             void perform();
             void undo();
             

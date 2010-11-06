@@ -18,11 +18,17 @@
 
 #include "Actions/MoveNotes.h"
 #include "Actions/EditAction.h"
-#include "Midi/Track.h"
-#include "GUI/GraphicalTrack.h"
 #include "Editors/Editor.h"
+#include "GUI/GraphicalTrack.h"
+#include "Midi/MeasureData.h"
+#include "Midi/Sequence.h"
+#include "Midi/Track.h"
+
+#include "UnitTest.h"
 
 using namespace AriaMaestosa::Action;
+
+// ----------------------------------------------------------------------------------------------------------
 
 MoveNotes::MoveNotes(const int relativeX, const int relativeY, const int noteID) :
     //I18N: (undoable) action name
@@ -35,9 +41,13 @@ MoveNotes::MoveNotes(const int relativeX, const int relativeY, const int noteID)
     m_move_mode = DELTA;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 MoveNotes::~MoveNotes()
 {
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void MoveNotes::undo()
 {
@@ -70,6 +80,8 @@ void MoveNotes::undo()
         track->reorderNoteVector();
         track->reorderNoteOffVector();
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void MoveNotes::perform()
 {
@@ -122,6 +134,8 @@ void MoveNotes::perform()
     track->reorderNoteOffVector();
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void MoveNotes::doMoveOneNote(const int noteID)
 {
     /*
@@ -146,5 +160,115 @@ void MoveNotes::doMoveOneNote(const int noteID)
     relocator.rememberNote( track->m_notes[noteID] );
 }
 
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
+using namespace AriaMaestosa;
+
+namespace TestMoveNotes
+{
+    class TestSeqProvider : public ICurrentSequenceProvider
+    {
+    public:
+        Sequence* m_seq;
+        
+        TestSeqProvider()
+        {
+            m_seq = new Sequence(NULL, NULL, NULL, false);
+            AriaMaestosa::setCurrentSequenceProvider(this);
+            
+            Track* t = new Track(m_seq);
+            // FIXME: creating the graphics object shouldn't be manual nor necessary for tests
+            t->graphics = new GraphicalTrack(t, m_seq);
+            t->graphics->createEditors();
+            
+            MeasureData* measures = m_seq->measureData;
+            const int beatLen = measures->beatLengthInTicks();
+            
+            // make a factory sequence to work from
+            m_seq->importing = true;
+            for (int n=0; n<16; n++)
+            {
+                t->addNote_import(100 + n           /* pitch  */,
+                                  n*beatLen         /* start  */,
+                                  (n+1)*beatLen - 1 /* end    */,
+                                  127               /* volume */, -1);
+            }
+            m_seq->importing = false;
+            
+            require_e(t->getNoteAmount(), ==, 16, "sanity check"); // sanity check on the way...
+            
+            
+            m_seq->addTrack(t);            
+        }
+        
+        ~TestSeqProvider()
+        {
+            delete m_seq;
+        }
+        
+        virtual Sequence* getCurrentSequence()
+        {
+            return m_seq;
+        }
+        
+        void verifyUndo()
+        {
+            Track* t = m_seq->getTrack(0);
+            
+            MeasureData* measures = m_seq->measureData;
+            const int beatLen = measures->beatLengthInTicks();
+            
+            require(t->getNoteAmount() == 16, "the number of events is fine on undo");
+            require(t->getNoteOffVector().size() == 16, "Note off vector is fine on undo");
+            
+            for (int n=0; n<16; n++)
+            {
+                require(t->getNote(n)->getTick()    == n*beatLen, "events are OK after applying and undoing action");
+                require(t->getNote(n)->getPitchID() == 100 + n,   "events are OK after applying and undoing action");
+                require(t->getNoteOffVector()[n].endTick == (n + 1)*beatLen - 1,
+                        "Note off vector was properly restored");
+            }
+        }
+    };
+
+    // TODO: test guitar moving vertically
+    // TODO: test drum moving vertically
+    // TODO: test with SELECTED_NOTES
+    
+    UNIT_TEST(TestMove)
+    {
+        TestSeqProvider provider;
+        Track* t = provider.m_seq->getTrack(0);
+        
+        // test the action
+        t->action(new MoveNotes(25 /* relative X */, 0 /* relative Y */, 2 /* note ID */));
+        
+        MeasureData* measures = provider.m_seq->measureData;
+        const int beatLen = measures->beatLengthInTicks();
+        
+        // Check the move happened fine
+        for (int n=0; n<16; n++)
+        {
+            if (n == 2)
+            {
+                require(t->getNote(n)->getTick()    == n*beatLen + 25, "ticks are OK after move");
+                require(t->getNote(n)->getPitchID() == 100 + n,   "pitches are OK after move");
+                require(t->getNoteOffVector()[n].endTick == (n + 1)*beatLen - 1 + 25,
+                        "Note off events are OK after move");
+            }
+            else
+            {
+                require(t->getNote(n)->getTick()    == n*beatLen, "ticks are OK after move");
+                require(t->getNote(n)->getPitchID() == 100 + n,   "pitches are OK after move");
+                require(t->getNoteOffVector()[n].endTick == (n + 1)*beatLen - 1,
+                        "Note off events are OK after move");
+            }
+        }
+        
+        // test undo
+        provider.m_seq->undo();
+        provider.verifyUndo();
+    }
+}
 
