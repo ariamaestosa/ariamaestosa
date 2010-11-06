@@ -174,6 +174,8 @@ bool wxWidgetApp::OnInit()
     #endif
     #endif
     
+    frame = NULL;
+    
     for (int n=0; n<argc; n++)
     {
         if (wxString(argv[n]) == wxT("--utest"))
@@ -187,8 +189,6 @@ bool wxWidgetApp::OnInit()
             exit(0);
         }
     }
-    
-    frame = NULL;
     
     prefs = PreferencesData::getInstance();
     prefs->init();
