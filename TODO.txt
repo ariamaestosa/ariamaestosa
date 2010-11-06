@@ -17,6 +17,7 @@ NOTE: sorry, this is very raw :)
   ************************* LONG TERM: *************************
 
 == 1.3 ==
+- Move OSX player to AudioUnits since the currently used code is deprecated
 - Midi instrument support (record from keyboard, play to keyboard)
 - Fix pitch IDs and other cleanups
 - Allow showing several editors at once
