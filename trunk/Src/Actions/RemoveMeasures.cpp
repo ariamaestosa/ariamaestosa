@@ -227,7 +227,7 @@ void RemoveMeasures::perform()
                         }
                     }
                     
-                    measureBar->getTimeSig(n).setMeasure(m_from_measure); // move back event to its new location
+                    measureBar->setTimesigMeasure(n, m_from_measure); // move back event to its new location
                     
                 }
                 else
@@ -254,15 +254,16 @@ void RemoveMeasures::perform()
                     }
                 }
                 
-                measureBar->getTimeSig(n).setMeasure(new_measure);
+                measureBar->setTimesigMeasure(n, new_measure);
             }
             
         }//next
     }//endif
     
     // shorten song accordingly to the number of measures removed
-    DisplayFrame::changeMeasureAmount( sequence->measureData->getMeasureAmount() - (m_to_measure - m_from_measure) );
-    getMeasureData()->updateMeasureInfo();
+    MeasureData* md = sequence->m_measure_data;
+    DisplayFrame::changeMeasureAmount( md->getMeasureAmount() - (m_to_measure - m_from_measure) );
+    md->updateMeasureInfo();
 }
 
 
