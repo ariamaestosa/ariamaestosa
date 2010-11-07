@@ -74,7 +74,7 @@ public:
                       << answer << std::endl;
         }
 
-        getMeasureData()->graphics->unselectAll();
+        getCurrentSequence()->m_measure_bar->unselectAll();
         
         getCurrentSequence()->action( new Action::RemoveMeasures(remove_from, remove_to) );
         getMeasureData()->selectTimeSig(0);
@@ -193,8 +193,8 @@ MeasureBar::~MeasureBar()
 
 int MeasureBar::getMeasureBarHeight()
 {
-    if (data->expandedMode) return 40;
-    else                    return 20;
+    if (data->isExpandedMode()) return 40;
+    else                        return 20;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -204,12 +204,12 @@ void MeasureBar::render(int measureBarY_arg)
     measureBarY = measureBarY_arg;
 
     // if measure amount changed and MeasureBar is out of sync with its current number of measures, fix it
-    if ((int)data->measureInfo.size() != data->m_measure_amount)
+    if ((int)data->m_measure_info.size() != data->m_measure_amount)
     {
         data->updateVector(data->m_measure_amount);
     }
     
-    const int height = (data->expandedMode ? 40 : 20);
+    const int height = (data->isExpandedMode() ? 40 : 20);
     AriaRender::primitives();
     AriaRender::color(1, 1, 0.9);
     AriaRender::rect(0, measureBarY, Display::getWidth(), measureBarY+ height);
@@ -220,7 +220,7 @@ void MeasureBar::render(int measureBarY_arg)
     AriaRender::line(0, measureBarY, Display::getWidth(), measureBarY);
     AriaRender::line(0, measureBarY+20, Display::getWidth(), measureBarY+20);
 
-    if (data->expandedMode) AriaRender::line(0, measureBarY+40, Display::getWidth(), measureBarY+40);
+    if (data->isExpandedMode()) AriaRender::line(0, measureBarY+40, Display::getWidth(), measureBarY+40);
 
 
     // vertical lines and mesure ID
@@ -239,7 +239,7 @@ void MeasureBar::render(int measureBarY_arg)
         if (measureID > data->m_measure_amount) break;
 
         // if measure is selected, draw in blue
-        if ( data->measureInfo[measureID-1].selected )
+        if (data->m_measure_info[measureID-1].selected)
         {
 
             AriaRender::color(0.71, 0.84, 1);
@@ -247,7 +247,7 @@ void MeasureBar::render(int measureBarY_arg)
             if (measureLengthConstant)
                 AriaRender::rect(n, measureBarY+1, n+x_step, measureBarY+19);
             else
-                AriaRender::rect(n, measureBarY+1, n+data->measureInfo[measureID-1].widthInPixels, measureBarY+19);
+                AriaRender::rect(n, measureBarY+1, n+data->m_measure_info[measureID-1].widthInPixels, measureBarY+19);
 
             AriaRender::color(0,0,0);
         }
@@ -260,15 +260,15 @@ void MeasureBar::render(int measureBarY_arg)
         AriaRender::renderNumber(measureID, n+5, measureBarY+18 );
 
         AriaRender::primitives();
-        if (data->expandedMode)
+        if (data->isExpandedMode())
         {
-            const int amount = data->timeSigChanges.size();
+            const int amount = data->m_time_sig_changes.size();
             for (int i=0; i<amount; i++)
             {
 
-                if (data->timeSigChanges[i].getMeasure() == measureID-1)
+                if (data->m_time_sig_changes[i].getMeasure() == measureID-1)
                 {
-                    const bool selected = (data->selectedTimeSig == i);
+                    const bool selected = (data->m_selected_time_sig == i);
                     if (selected)
                     {
                         AriaRender::pointSize(11);
@@ -287,8 +287,8 @@ void MeasureBar::render(int measureBarY_arg)
                     AriaRender::pointSize(1);
                     AriaRender::images();
 
-                    AriaRender::renderNumber(data->timeSigChanges[i].getDenom(), n + 18, measureBarY + 42 );
-                    AriaRender::renderNumber(data->timeSigChanges[i].getNum(), n + 10, measureBarY + 33 );
+                    AriaRender::renderNumber(data->m_time_sig_changes[i].getDenom(), n + 18, measureBarY + 42 );
+                    AriaRender::renderNumber(data->m_time_sig_changes[i].getNum(),   n + 10, measureBarY + 33 );
                     AriaRender::primitives();
 
                     AriaRender::color(0,0,0);
@@ -306,7 +306,7 @@ void MeasureBar::unselectAll()
 {
     for (int n=remove_from; n<remove_to+1; n++)
     {
-        data->measureInfo[n].selected = false;
+        data->m_measure_info[n].selected = false;
     }
 }
 
@@ -317,7 +317,8 @@ void MeasureBar::unselectAll()
   */
 void MeasureBar::mouseDown(int x, int y)
 {
-
+    // FIXME: stop directly accessing the model's internal fields, call a method and let the model handle itself
+    
     // if click is in time sig change areas
     if (y > 20)
     {
@@ -330,16 +331,16 @@ void MeasureBar::mouseDown(int x, int y)
         return;
     }
 
-    const int measure_amount = data->measureInfo.size();
+    const int measure_amount = data->m_measure_info.size();
     for (int n=0; n<measure_amount; n++)
     {
-        data->measureInfo[n].selected = false;
+        data->m_measure_info[n].selected = false;
     }
 
     const int measure_vectorID = data->measureAtPixel( x );
-    data->measureInfo[measure_vectorID].selected = true;
+    data->m_measure_info[measure_vectorID].selected = true;
 
-    data->somethingSelected = true;
+    data->m_something_selected = true;
     lastMeasureInDrag = measure_vectorID;
 }
 
@@ -354,8 +355,8 @@ void MeasureBar::mouseDrag(int mousex_current, int mousey_current, int mousex_in
 
     if (lastMeasureInDrag == -1) return; //invalid
 
-    data->measureInfo[measure_vectorID].selected = true;
-    data->somethingSelected = true;
+    data->m_measure_info[measure_vectorID].selected = true;
+    data->m_something_selected = true;
 
     // previous measure seelcted and this one and contiguous - select all other measures inbetween
     if ( abs(lastMeasureInDrag-measure_vectorID) > 1 )
@@ -364,7 +365,7 @@ void MeasureBar::mouseDrag(int mousex_current, int mousey_current, int mousex_in
         for (int n=measure_vectorID; n != lastMeasureInDrag;
              n += (lastMeasureInDrag-measure_vectorID)/abs(lastMeasureInDrag-measure_vectorID))
         {
-            data->measureInfo[n].selected = true;
+            data->m_measure_info[n].selected = true;
         }
     }
 
@@ -382,18 +383,18 @@ void MeasureBar::mouseUp(int mousex_current, int mousey_current, int mousex_init
 
     Sequence* sequence = getCurrentSequence();
 
-    const int measureAmount = data->measureInfo.size();
+    const int measureAmount = data->m_measure_info.size();
 
     // determine selection range in midi ticks
     int minimal_tick = -1, maximal_tick = -1;
     for (int n=0; n<measureAmount; n++)
     {
         // iterate through measures to find the first selected one
-        if (data->measureInfo[n].selected)
+        if (data->m_measure_info[n].selected)
         {
             // we found a first selected measure, remember it as minimal tick
             minimal_tick = data->firstTickInMeasure(n);
-            do{ n++; } while(data->measureInfo[n].selected); // skip all uneslected measures
+            do{ n++; } while(data->m_measure_info[n].selected); // skip all uneslected measures
             maximal_tick = data->firstTickInMeasure(n);
             break;
         }
@@ -433,10 +434,10 @@ void MeasureBar::rightClick(int x, int y)
         int measure = data->measureDivisionAt(x);
 
         // check if click is on time sig event
-        const int amount = data->timeSigChanges.size();
+        const int amount = data->m_time_sig_changes.size();
         for (int n=0; n<amount; n++)
         {
-            if (data->timeSigChanges[n].getMeasure() == measure)
+            if (data->m_time_sig_changes[n].getMeasure() == measure)
             {
                 std::cout << "trying to delete measure " << n << std::endl;
                 unselectedMenu->enable_deleteTimeSig_item(true, n);
@@ -450,17 +451,17 @@ void MeasureBar::rightClick(int x, int y)
     const int measure_vectorID = data->measureAtPixel( x );
 
     // is the clicked measure selected?
-    if (data->measureInfo[measure_vectorID].selected)
+    if (data->m_measure_info[measure_vectorID].selected)
     {
-        const int measureAmount = data->measureInfo.size();
+        const int measureAmount = data->m_measure_info.size();
         for (int n=0; n<measureAmount; n++)
         {
             // iterate through measures to find which measures are selected
-            if (data->measureInfo[n].selected)
+            if (data->m_measure_info[n].selected)
             {
                 // we found a first selected measure, remember it
                 remove_from = n;
-                do{ n++; } while(data->measureInfo[n].selected); // skip all selected measures
+                do{ n++; } while(data->m_measure_info[n].selected); // skip all selected measures
                 remove_to = n;
                 break;
             }
@@ -469,7 +470,7 @@ void MeasureBar::rightClick(int x, int y)
         // unselect
         //for (int n=remove_from; n<remove_to+1; n++)
         //{
-        //    data->measureInfo[n].selected = false;
+        //    data->m_measure_info[n].selected = false;
         //}
         Display::popupMenu( (wxMenu*)selectedMenu, x, y+20);
     }

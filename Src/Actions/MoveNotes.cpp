@@ -182,7 +182,7 @@ namespace TestMoveNotes
             t->graphics = new GraphicalTrack(t, m_seq);
             t->graphics->createEditors();
             
-            MeasureData* measures = m_seq->measureData;
+            MeasureData* measures = m_seq->m_measure_data;
             const int beatLen = measures->beatLengthInTicks();
             
             // make a factory sequence to work from
@@ -197,7 +197,6 @@ namespace TestMoveNotes
             m_seq->importing = false;
             
             require_e(t->getNoteAmount(), ==, 16, "sanity check"); // sanity check on the way...
-            
             
             m_seq->addTrack(t);            
         }
@@ -216,7 +215,7 @@ namespace TestMoveNotes
         {
             Track* t = m_seq->getTrack(0);
             
-            MeasureData* measures = m_seq->measureData;
+            MeasureData* measures = m_seq->m_measure_data;
             const int beatLen = measures->beatLengthInTicks();
             
             require(t->getNoteAmount() == 16, "the number of events is fine on undo");
@@ -244,7 +243,7 @@ namespace TestMoveNotes
         // test the action
         t->action(new MoveNotes(25 /* relative X */, 0 /* relative Y */, 2 /* note ID */));
         
-        MeasureData* measures = provider.m_seq->measureData;
+        MeasureData* measures = provider.m_seq->m_measure_data;
         const int beatLen = measures->beatLengthInTicks();
         
         // Check the move happened fine

@@ -155,7 +155,10 @@ namespace AriaMaestosa
         int dockHeight;
 
         AriaRenderString sequenceFileName;
-        OwnerPtr<MeasureData>  measureData;
+        OwnerPtr<MeasureData>  m_measure_data;
+        
+        // TODO: extract graphics out of this model class
+        OwnerPtr<MeasureBar>  m_measure_bar;
 
         ptr_vector<ControllerEvent> tempoEvents;
         // ------------------------------------

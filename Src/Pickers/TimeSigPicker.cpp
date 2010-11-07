@@ -267,16 +267,19 @@ void TimeSigPicker::enterPressed(wxCommandEvent& evt)
         wxMessageBox(  _("Denominator must be a power of 2") );
         return;
     }
-
-    getMeasureData()->setTimeSig( top, bottom );
-    getMainFrame()->changeShownTimeSig( top, bottom );
+    
+    MainFrame* mainFrame = getMainFrame();
+    MeasureData* measures = getMeasureData();
+    
+    measures->setTimeSig( top, bottom );
+    mainFrame->changeShownTimeSig( top, bottom );
 
     // check if user changed measure mode
-    if (variable->IsChecked() != getMeasureData()->isExpandedMode())
+    if (variable->IsChecked() != measures->isExpandedMode())
     {
-        getCurrentSequence()->measureData->setExpandedMode( variable->IsChecked() );
-        getMainFrame()->updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
-        getMainFrame()->updateMenuBarToSequence();
+        measures->setExpandedMode( variable->IsChecked() );
+        mainFrame->updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
+        mainFrame->updateMenuBarToSequence();
     }
 
     closeWindow();

@@ -103,8 +103,8 @@ bool AriaMaestosa::exportMidiFile(Sequence* sequence, wxString filepath)
 {
     // when we're saving, we always want song to start at first measure, so temporarly switch
     // firstMeasure to 0, and set it back in the end
-    const int firstMeasureValue = sequence->measureData->getFirstMeasure();
-    sequence->measureData->setFirstMeasure(0);
+    const int firstMeasureValue = sequence->m_measure_data->getFirstMeasure();
+    sequence->m_measure_data->setFirstMeasure(0);
     
     jdkmidi::MIDIMultiTrack tracks;
     int length = -1, start = -1, numTracks = -1;
@@ -124,7 +124,7 @@ bool AriaMaestosa::exportMidiFile(Sequence* sequence, wxString filepath)
         return false;
     }
     
-    sequence->measureData->setFirstMeasure(firstMeasureValue);
+    sequence->m_measure_data->setFirstMeasure(firstMeasureValue);
     
     return true;
     
@@ -214,7 +214,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
         //  ---- add events to tracks
         trackLength = sequence->getCurrentTrack()->addMidiEvents(tracks.GetTrack(sequence->getCurrentTrackID()+1),
                                                                  channel,
-                                                                 sequence->measureData->getFirstMeasure(),
+                                                                 sequence->m_measure_data->getFirstMeasure(),
                                                                  true,
                                                                  *startTick );
         
@@ -236,7 +236,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
             
             int trackFirstNote =-1;
             trackLength = sequence->getTrack(n)->addMidiEvents(tracks.GetTrack(n+1), (drum_track ? 9 : channel),
-                                                               sequence->measureData->getFirstMeasure(), false,
+                                                               sequence->m_measure_data->getFirstMeasure(), false,
                                                                trackFirstNote );
             
             if ((trackFirstNote<(*startTick) and trackFirstNote != -1) or (*startTick) == -1)
@@ -445,7 +445,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
         // If not playing (but exporting to MIDI), add the event at the declared end of the song
         // to account for empty measures at the end
         
-        const int tick = sequence->measureData->lastTickInMeasure(sequence->measureData->getMeasureAmount() - 1);
+        const int tick = sequence->m_measure_data->lastTickInMeasure(sequence->m_measure_data->getMeasureAmount() - 1);
         if (tick > *songLengthInTicks)
         {
             jdkmidi::MIDITimedBigMessage m;

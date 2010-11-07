@@ -551,7 +551,7 @@ bool AriaMaestosa::loadMidiFile(Sequence* sequence, wxString filepath, std::set<
     getMeasureData()->afterImporting();
 
     sequence->setXScrollInPixels(0);
-    sequence->measureData->setFirstMeasure(0);
+    sequence->m_measure_data->setFirstMeasure(0);
 
     // set song length
     int measureAmount_i = getMeasureData()->measureAtTick(lastEventTick) + 1;
@@ -562,7 +562,7 @@ bool AriaMaestosa::loadMidiFile(Sequence* sequence, wxString filepath, std::set<
     if (measureAmount_i < 10) measureAmount_i=10;
 
     getMainFrame()->changeMeasureAmount( measureAmount_i );
-    sequence->measureData->setMeasureAmount( measureAmount_i );
+    sequence->m_measure_data->setMeasureAmount( measureAmount_i );
 
     getMainFrame()->updateTopBarAndScrollbarsForSequence(sequence);
     sequence->setZoom(100);

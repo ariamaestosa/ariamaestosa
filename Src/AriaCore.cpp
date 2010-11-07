@@ -115,7 +115,7 @@ namespace AriaMaestosa
 
     MeasureData* getMeasureData()
     {
-        return getCurrentSequence()->measureData;
+        return getCurrentSequence()->m_measure_data;
     }
     
     Sequence* getCurrentSequence()

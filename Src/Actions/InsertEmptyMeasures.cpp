@@ -61,21 +61,23 @@ void InsertEmptyMeasures::perform()
 {
     ASSERT(sequence != NULL);
     
+    MeasureData* md = getMeasureData();
+
     // convert measures into midi ticks
-    const int amountInTicks = m_amount * getMeasureData()->measureLengthInTicks(m_measure_ID);
-    const int afterTick = getMeasureData()->firstTickInMeasure(m_measure_ID) - 1;
+    const int amountInTicks = m_amount * md->measureLengthInTicks(m_measure_ID);
+    const int afterTick = md->firstTickInMeasure(m_measure_ID) - 1;
     
-    DisplayFrame::changeMeasureAmount( getMeasureData()->getMeasureAmount() + m_amount );
+    DisplayFrame::changeMeasureAmount( md->getMeasureAmount() + m_amount );
     
     // move all notes that are after given start tick by the necessary amount
     const int trackAmount = sequence->getTrackAmount();
-    for(int t=0; t<trackAmount; t++)
+    for (int t=0; t<trackAmount; t++)
     {
         Track* track = sequence->getTrack(t);
         
         // ----------------- move note events -----------------
         const int noteAmount = track->m_notes.size();
-        for(int n=0; n<noteAmount; n++)
+        for (int n=0; n<noteAmount; n++)
         {
             if (track->m_notes[n].startTick > afterTick)
             {
@@ -85,7 +87,7 @@ void InsertEmptyMeasures::perform()
         }
         // ----------------- move control events -----------------
         const int controlAmount = track->m_control_events.size();
-        for(int n=0; n<controlAmount; n++)
+        for (int n=0; n<controlAmount; n++)
         {
             if (track->m_control_events[n].getTick() > afterTick)
             {
@@ -103,7 +105,7 @@ void InsertEmptyMeasures::perform()
     {
         //const int first_tick = getMeasureData()->firstTickInMeasure(measureID+1) - 1;
         //const int amountInTicks = amount * getMeasureData()->measureLengthInTicks(measureID+1);
-        for(int n=0; n<tempo_event_amount; n++)
+        for (int n=0; n<tempo_event_amount; n++)
         {
             if (sequence->tempoEvents[n].getTick() > afterTick)
             {
@@ -114,21 +116,21 @@ void InsertEmptyMeasures::perform()
     }
     
     // ----------------- move time sig changes -----------------
-    if (not getMeasureData()->isMeasureLengthConstant())
+    if (not md->isMeasureLengthConstant())
     {
-        const int timeSigAmount = getMeasureData()->getTimeSigAmount();
+        
+        const int timeSigAmount = md->getTimeSigAmount();
         for (int n=0; n<timeSigAmount; n++)
         {
-            if (getMeasureData()->getTimeSig(n).getMeasure() >= m_measure_ID+1 and
+            if (md->getTimeSig(n).getMeasure() >= m_measure_ID+1 and
                 n != 0 /* dont move first time sig event*/ )
             {
-                TimeSigChange& timeSig = getMeasureData()->getTimeSig(n);
-                timeSig.setMeasure( timeSig.getMeasure() + m_amount );
+                md->setTimesigMeasure(n, md->getTimeSig(n).getMeasure() + m_amount);
             }
         }//next
     }//endif
     
-    getMeasureData()->updateMeasureInfo();
+    md->updateMeasureInfo();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -158,7 +160,7 @@ namespace InsertMeasuresTest
             t->graphics = new GraphicalTrack(t, m_seq);
             t->graphics->createEditors();
             
-            MeasureData* measures = m_seq->measureData;
+            MeasureData* measures = m_seq->m_measure_data;
             const int beatLen = measures->beatLengthInTicks();
             
             // make a factory sequence to work from
@@ -204,7 +206,7 @@ namespace InsertMeasuresTest
         {
             Track* t = m_seq->getTrack(0);
             
-            MeasureData* measures = m_seq->measureData;
+            MeasureData* measures = m_seq->m_measure_data;
             const int beatLen = measures->beatLengthInTicks();
             
             require(t->getNoteAmount() == 16, "the number of events is fine on undo");
@@ -247,7 +249,7 @@ namespace InsertMeasuresTest
         // TODO: test this action on tempo events too
         
         // verify the data is OK        
-        MeasureData* measures = provider.m_seq->measureData;
+        MeasureData* measures = provider.m_seq->m_measure_data;
         const int beatLen = measures->beatLengthInTicks();
         
         require(t->getNoteAmount() == 16, "the number of events is fine");

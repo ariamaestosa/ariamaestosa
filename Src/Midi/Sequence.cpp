@@ -30,6 +30,7 @@ const float CURRENT_FILE_VERSION = 2.0;
 #include "Editors/Editor.h"
 #include "IO/IOUtils.h"
 #include "GUI/GraphicalTrack.h"
+#include "GUI/MeasureBar.h"
 #include "Midi/CommonMidiUtils.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Players/PlatformMidiManager.h"
@@ -83,7 +84,9 @@ Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener
     m_copyright = wxT("");
 
     channelManagement = CHANNEL_AUTO;
-    measureData = new MeasureData(DEFAULT_SONG_LENGTH);
+    
+    m_measure_data = new MeasureData(DEFAULT_SONG_LENGTH);
+    m_measure_bar = new MeasureBar(m_measure_data);
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -923,7 +926,7 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
     writeData(wxT("<sequence"), fileout );
 
     writeData(wxT(" maintempo=\"")           + to_wxString(m_tempo) +
-              wxT("\" measureAmount=\"")     + to_wxString(measureData->getMeasureAmount()) +
+              wxT("\" measureAmount=\"")     + to_wxString(m_measure_data->getMeasureAmount()) +
               wxT("\" currentTrack=\"")      + to_wxString(currentTrack) +
               wxT("\" beatResolution=\"")    + to_wxString(beatResolution) +
               wxT("\" internalName=\"")      + internal_sequenceName +
@@ -938,7 +941,7 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
               wxT("\" zoom=\"")       + to_wxString(m_zoom_percent) +
               wxT("\"/>\n"), fileout );
 
-    measureData->saveToFile(fileout);
+    m_measure_data->saveToFile(fileout);
 
     writeData(wxT("<tempo>\n"), fileout );
     // tempo changes
@@ -969,7 +972,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
 {
     importing = true;
     tracks.clearAndDeleteAll();
-    measureData->beforeImporting();
+    m_measure_data->beforeImporting();
 
     bool copyright_mode = false;
     bool tempo_mode = false;
@@ -1020,8 +1023,8 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                     if (measureAmount_c != NULL)
                     {
                         std::cout << "measureAmount = " <<  atoi(measureAmount_c) << std::endl;
-                        measureData->setMeasureAmount( atoi(measureAmount_c) );
-                        DisplayFrame::changeMeasureAmount( measureData->getMeasureAmount(), false);
+                        m_measure_data->setMeasureAmount( atoi(measureAmount_c) );
+                        DisplayFrame::changeMeasureAmount( m_measure_data->getMeasureAmount(), false);
                     }
                     else
                     {
@@ -1160,13 +1163,13 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                 // ---------- measure ------
                 else if (strcmp("measure", xml->getNodeName()) == 0)
                 {
-                    if (not measureData->readFromFile(xml) ) return false;
+                    if (not m_measure_data->readFromFile(xml) ) return false;
                 }
                 
                 // ---------- time sig ------
                 else if (strcmp("timesig", xml->getNodeName()) == 0)
                 {
-                    if (not measureData->readFromFile(xml)) return false;
+                    if (not m_measure_data->readFromFile(xml)) return false;
                 }
                 
                 // ---------- track ------
@@ -1254,7 +1257,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
 
 over:
 
-    measureData->afterImporting();
+    m_measure_data->afterImporting();
     clearUndoStack();
 
     importing = false;

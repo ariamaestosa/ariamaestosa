@@ -234,7 +234,7 @@ bool MainPane::do_render()
                                        m_mouse_x_current,
                                        m_mouse_y_current,
                                        m_mouse_y_initial,
-                                       25 + getMeasureData()->graphics->getMeasureBarHeight());
+                                       25 + getCurrentSequence()->m_measure_bar->getMeasureBarHeight());
 
 
     // -------------------------- draw tab bar at top -------------------------
@@ -334,7 +334,7 @@ bool MainPane::do_render()
 
     // -------------------------- draw measure top bar -------------------------
 
-    getMeasureData()->graphics->render(MEASURE_BAR_Y);
+    getCurrentSequence()->m_measure_bar->render(MEASURE_BAR_Y);
 
     // -------------------------- draw dock -------------------------
     AriaRender::primitives();
@@ -488,7 +488,7 @@ void MainPane::mouseHeldDown()
 {
     // check click is within track area
     if (m_mouse_y_current < getHeight()-getCurrentSequence()->dockHeight and
-        m_mouse_y_current > MEASURE_BAR_Y+getMeasureData()->graphics->getMeasureBarHeight())
+        m_mouse_y_current > MEASURE_BAR_Y+getCurrentSequence()->m_measure_bar->getMeasureBarHeight())
     {
 
         // dispatch event to sequence
@@ -502,7 +502,7 @@ void MainPane::mouseHeldDown()
 
 void MainPane::rightClick(wxMouseEvent& event)
 {
-    const int measureBarHeight = getMeasureData()->graphics->getMeasureBarHeight();
+    const int measureBarHeight = getCurrentSequence()->m_measure_bar->getMeasureBarHeight();
 
     Display::requestFocus();
 
@@ -524,7 +524,7 @@ void MainPane::rightClick(wxMouseEvent& event)
     // ---- click is in measure bar
     if (event.GetY() > MEASURE_BAR_Y and event.GetY() < MEASURE_BAR_Y+measureBarHeight)
     {
-        getMeasureData()->graphics->rightClick(event.GetX(), event.GetY() - MEASURE_BAR_Y);
+        getCurrentSequence()->m_measure_bar->rightClick(event.GetX(), event.GetY() - MEASURE_BAR_Y);
     }
 
     Display::render();
@@ -546,7 +546,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
 
     m_is_mouse_down=true;
 
-    int measureBarHeight = getMeasureData()->graphics->getMeasureBarHeight();
+    int measureBarHeight = getCurrentSequence()->m_measure_bar->getMeasureBarHeight();
 
     // ----------------------------------- click is in track area ----------------------------
     // check click is within track area
@@ -669,7 +669,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
 
         if (not (m_current_tick != -1 and (leftArrow or rightArrow))) // ignore when playing
         {
-            getMeasureData()->graphics->mouseDown(m_mouse_x_current.getRelativeTo(WINDOW),
+            getCurrentSequence()->m_measure_bar->mouseDown(m_mouse_x_current.getRelativeTo(WINDOW),
                                                   m_mouse_y_current - MEASURE_BAR_Y);
         }
 
@@ -708,7 +708,7 @@ void MainPane::mouseMoved(wxMouseEvent& event)
             // ----------------------------------- click is in measure bar ----------------------------
             if (click_area == CLICK_MEASURE_BAR)
             {
-                getMeasureData()->graphics->mouseDrag(m_mouse_x_current.getRelativeTo(WINDOW),
+                getCurrentSequence()->m_measure_bar->mouseDrag(m_mouse_x_current.getRelativeTo(WINDOW),
                                                       m_mouse_y_current - MEASURE_BAR_Y,
                                                       m_mouse_x_initial.getRelativeTo(WINDOW),
                                                       m_mouse_y_initial - MEASURE_BAR_Y);
@@ -803,7 +803,7 @@ void MainPane::mouseReleased(wxMouseEvent& event)
         // measure selection
         if (not (m_current_tick!=-1 and (leftArrow or rightArrow)) ) // ignore when playing
         {
-            getMeasureData()->graphics->mouseUp(m_mouse_x_current.getRelativeTo(WINDOW),
+            getCurrentSequence()->m_measure_bar->mouseUp(m_mouse_x_current.getRelativeTo(WINDOW),
                                                 m_mouse_y_current - MEASURE_BAR_Y,
                                                 m_mouse_x_initial.getRelativeTo(WINDOW),
                                                 m_mouse_y_initial - MEASURE_BAR_Y);
@@ -1103,7 +1103,7 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
     const int my = event.GetY();
     const int mx = event.GetX();
 
-    const int measureBarHeight = getMeasureData()->graphics->getMeasureBarHeight();
+    const int measureBarHeight = getCurrentSequence()->m_measure_bar->getMeasureBarHeight();
 
     // check pointer is within tracks area
     if (my < getHeight()-getCurrentSequence()->dockHeight and

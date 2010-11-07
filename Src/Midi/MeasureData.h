@@ -20,6 +20,7 @@
 
 #include "ptr_vector.h"
 #include "Utils.h"
+#include "Midi/Sequence.h"
 #include "Midi/TimeSigChange.h"
 
 class wxFileOutputStream;
@@ -33,8 +34,6 @@ namespace AriaMaestosa
 {
     
     class MainFrame;
-    class MeasureBar;
-    
 
    /**
      * @brief This class takes care of everything related to measure data.
@@ -62,18 +61,18 @@ namespace AriaMaestosa
         };
         
         /** contains one item for each measure in the sequence */
-        std::vector<MeasureInfo> measureInfo;
+        std::vector<MeasureInfo> m_measure_info;
         
         int m_measure_amount;
-        int firstMeasure;
+        int m_first_measure;
         
-        bool expandedMode;
+        bool m_expanded_mode;
         
         /** contains one item for each time signature change event */
-        ptr_vector<TimeSigChange> timeSigChanges;
+        ptr_vector<TimeSigChange> m_time_sig_changes;
         
-        bool somethingSelected;
-        int selectedTimeSig;
+        bool m_something_selected;
+        int  m_selected_time_sig;
         
         // Only access this in expanded mode otherwise they're empty
         int totalNeededLengthInTicks;
@@ -87,20 +86,21 @@ namespace AriaMaestosa
     public:
         
         LEAK_CHECK();
-        
-        //FIXME: it's bad design that the data owns the graphics...
-        OwnerPtr<MeasureBar>  graphics;
-        
+                
         MeasureData(int measureAmount);
         ~MeasureData();
         
         void  setExpandedMode(bool expanded);
         
-        bool  isExpandedMode() const { return expandedMode; }
+        bool  isExpandedMode() const { return m_expanded_mode; }
         
         int   getTotalTickAmount();
         int   getTotalPixelAmount();
-        bool  isMeasureLengthConstant();
+        
+        bool  isMeasureLengthConstant() const
+        {
+            return (not m_expanded_mode and m_time_sig_changes.size() == 1);
+        }
         
         void  setMeasureAmount(int measureAmount);
         int   getMeasureAmount() const { return m_measure_amount; }
@@ -108,7 +108,7 @@ namespace AriaMaestosa
         float defaultMeasureLengthInPixels();
         int   defaultMeasureLengthInTicks();
         
-        int   getFirstMeasure() const { return firstMeasure; }
+        int   getFirstMeasure() const { return m_first_measure; }
         void  setFirstMeasure(int firstMeasureID);
         
         int   measureAtPixel(int pixel);
@@ -117,8 +117,21 @@ namespace AriaMaestosa
         
         float measureLengthInPixels(int measure =-1);
         int   measureLengthInTicks(int measure = -1);
-        float beatLengthInPixels();
-        int   beatLengthInTicks();
+        
+        // FIXME: GUI-related function should not go in model
+        /** Get the graphical size of one music beat, according to the current display */
+        float beatLengthInPixels() const
+        {
+            Sequence* sequence = getCurrentSequence();
+            
+            return sequence->ticksPerBeat() * sequence->getZoom();
+        }
+        
+        /** @return the length of one musical beat in midi ticks */
+        int   beatLengthInTicks() const
+        {
+            return getCurrentSequence()->ticksPerBeat();
+        }
         
         /** @brief get time sig num, either for a specific mesure, either the default value (no argument) */
         int   getTimeSigNumerator(int measure=-1) const;
@@ -129,11 +142,22 @@ namespace AriaMaestosa
         /** @brief Called either when user changes the numbers on the top bar, either when importing a song */
         void  setTimeSig(int num, int denom);
         
-        int   getTimeSigAmount() const { return timeSigChanges.size(); }
+        /** @return the amount of time signature events */
+        int   getTimeSigAmount() const { return m_time_sig_changes.size(); }
         
-        TimeSigChange& getTimeSig(int id);
+        const TimeSigChange& getTimeSig(int id)
+        {
+            ASSERT_E(id,>=,0);
+            ASSERT_E(id,<,m_time_sig_changes.size());
+            return m_time_sig_changes[id];
+        }
         
+        /** Move a timesig event to another measure */
+        void setTimesigMeasure(const int id, const int newMeasure);
+
         void  addTimeSigChange(int measure, int num, int denom);
+        
+        /** Erase the time signature event denoted by the given ID (range [0..getTimeSigAmount()-1] */
         void  eraseTimeSig(int id);
         
         void  selectTimeSig(const int id);
