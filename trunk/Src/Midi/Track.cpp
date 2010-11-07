@@ -675,10 +675,32 @@ int Track::findLastNoteInRange(const int fromTick, const int toTick) const
 
 // -------------------------------------------------------------------------------------------------------
 
-int Track::getControllerEventAmount(const int controllerTypeID) const
+int Track::getControllerEventAmount(const bool isTempo) const
 {
-    if (controllerTypeID==201 /*tempo*/) return m_sequence->tempoEvents.size();
-    return m_control_events.size();
+    if (isTempo) return m_sequence->tempoEvents.size();
+    else         return m_control_events.size();
+}
+
+// -------------------------------------------------------------------------------------------------------
+
+int Track::getControllerEventAmount(const int controller) const
+{
+    if (Track::isTempoController(controller))
+    {
+        return m_sequence->tempoEvents.size();
+    }
+    else
+    {
+        int occurrences = 0;
+        
+        const int count = m_control_events.size();
+        for (int n=0; n<count; n++)
+        {
+            if (m_control_events[n].getController() == controller) occurrences++;
+        }
+        
+        return occurrences;
+    }
 }
 
 // -------------------------------------------------------------------------------------------------------

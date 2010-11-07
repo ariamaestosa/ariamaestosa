@@ -183,11 +183,8 @@ namespace InsertMeasuresTest
             m_seq->importing = false;
             
             require_e(t->getNoteAmount(), ==, 16, "sanity check"); // sanity check on the way...
-            
-            // TODO: correct this after rectifying the semantics of "getControllerEventAmount"
-            require_e(t->getControllerEventAmount(0), ==, 64, "Controller events OK");
-            // require_e(t->getControllerEventAmount(0), ==, 32, "Controller events OK");
-            // require_e(t->getControllerEventAmount(1), ==, 32, "Controller events OK");
+            require_e(t->getControllerEventAmount(0), ==, 32, "Controller events OK");
+            require_e(t->getControllerEventAmount(1), ==, 32, "Controller events OK");
 
             m_seq->addTrack(t);            
         }
@@ -254,11 +251,8 @@ namespace InsertMeasuresTest
         
         require(t->getNoteAmount() == 16, "the number of events is fine");
         require(t->getNoteOffVector().size() == 16, "Note off vector is fine");
-        
-        // TODO: correct this after semantics of 'getControllerEventAmount' have been rectified
-        require(t->getControllerEventAmount(0) == 64, "Controller events OK");
-        //require(t->getControllerEventAmount(0) == 32, "Controller 0 events OK");
-        //require(t->getControllerEventAmount(1) == 32, "Controller 1 events OK");
+        require(t->getControllerEventAmount(0) == 32, "Controller 0 events OK");
+        require(t->getControllerEventAmount(1) == 32, "Controller 1 events OK");
 
         const int insertedShift = 2*(beatLen*4); // two measures of 4 beats were inserted
 
