@@ -80,7 +80,7 @@ void ControllerEditor::renderEvents()
 
     const int currentController = controllerChoice->getControllerID();
 
-    const int eventAmount = m_track->getControllerEventAmount( currentController );
+    const int eventAmount = m_track->getControllerEventAmount( Track::isTempoController(currentController) );
     const int scroll = m_sequence->getXScrollInPixels();
 
 

@@ -358,12 +358,23 @@ namespace AriaMaestosa
 
         void prepareNotesForGuitarEditor();
         
+        static bool isTempoController(const int controllerTypeID)
+        {
+            return controllerTypeID == 201;
+        }
+        
+        //FIXME: tempo events have nothing to do with tracks and should not be handled here at all
         /**
-         * @return                 the amount of ALL types of controller, not only of specified type
-         * @param controllerTypeID only to determine whether the app is searching for a control event
-         *                         or for a tempo event (FIXME: ugly)
+         * @return          the amount of ALL types of controller, not only of specified type
+         * @param isTempo   if true, returns amount of tempo events
          */
-        int getControllerEventAmount(const int controllerTypeID) const;
+        int getControllerEventAmount(const bool isTempo=false) const;
+        
+        /**
+         * @return            the amount of ALL types of controller, not only of specified type
+         * @param controller  which controller to count the events of
+         */
+        int getControllerEventAmount(const int controller) const;
         
         /**
           * @brief get a controller event object
