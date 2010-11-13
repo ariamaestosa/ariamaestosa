@@ -121,7 +121,7 @@ void MainFrame::initMenuBar()
 
 
     //I18N: menu item in the "file" menu
-    addIconItem(fileMenu, MENU_FILE_OPEN, _("Open\tCtrl-O"), wxART_FILE_OPEN);
+    addIconItem(fileMenu, MENU_FILE_OPEN, _("Open...\tCtrl-O"), wxART_FILE_OPEN);
     Connect(MENU_FILE_OPEN, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_open));
 
 
@@ -130,31 +130,31 @@ void MainFrame::initMenuBar()
     Connect(MENU_FILE_SAVE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_save));
 
     //I18N: menu item in the "file" menu
-    addIconItem(fileMenu, MENU_FILE_SAVE_AS, _("Save As\tCtrl-Shift-S"), wxART_FILE_SAVE_AS);
+    addIconItem(fileMenu, MENU_FILE_SAVE_AS, _("Save As...\tCtrl-Shift-S"), wxART_FILE_SAVE_AS);
     Connect(MENU_FILE_SAVE_AS, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_saveas));
 
     //I18N: menu item in the "file" menu
     fileMenu -> QUICK_ADD_MENU ( MENU_FILE_CLOSE, _("Close\tCtrl-W"), MainFrame::menuEvent_close);
 
     fileMenu->AppendSeparator();
-    fileMenu -> QUICK_ADD_MENU ( MENU_FILE_COPYRIGHT, wxString(_("Song info"))+wxT("\tCtrl-I"), MainFrame::menuEvent_copyright );
+    fileMenu -> QUICK_ADD_MENU ( MENU_FILE_COPYRIGHT, wxString(_("Song info..."))+wxT("\tCtrl-I"), MainFrame::menuEvent_copyright );
     //fileMenu->AppendSeparator();
 
-    addIconItem(fileMenu, MENU_FILE_EXPORT_NOTATION, wxString(_("Print musical notation"))+wxT("\tCtrl-P"), wxART_PRINT);
+    addIconItem(fileMenu, MENU_FILE_EXPORT_NOTATION, wxString(_("Print musical notation..."))+wxT("\tCtrl-P"), wxART_PRINT);
     Connect(MENU_FILE_EXPORT_NOTATION, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_exportNotation));
 
 
     fileMenu->AppendSeparator();
     //I18N: menu item in the "file" menu
-    fileMenu -> QUICK_ADD_MENU ( MENU_FILE_IMPORT_MIDI, _("Import Midi File"), MainFrame::menuEvent_importmidi );
+    fileMenu -> QUICK_ADD_MENU ( MENU_FILE_IMPORT_MIDI, _("Import Midi File..."), MainFrame::menuEvent_importmidi );
     //I18N: menu item in the "file" menu
-    fileMenu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_MIDI, _("Export to Midi"), MainFrame::menuEvent_exportmidi );
+    fileMenu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_MIDI, _("Export to Midi..."), MainFrame::menuEvent_exportmidi );
 
     // disable export to sampled audio if this feature is not supported by the current PlatformMidiManager
     if (not PlatformMidiManager::get()->getAudioExtension().IsEmpty())
     {
         //I18N: menu item in the "file" menu
-        fileMenu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_SAMPLED_AUDIO, _("Export to Audio"), MainFrame::menuEvent_exportSampledAudio );
+        fileMenu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_SAMPLED_AUDIO, _("Export to Audio..."), MainFrame::menuEvent_exportSampledAudio );
     }
 
     //I18N: menu item in the "file" menu
@@ -199,7 +199,7 @@ void MainFrame::initMenuBar()
     //I18N: menu item in the "edit" menu
     editMenu -> QUICK_ADD_MENU ( MENU_EDIT_SNAP_TO_GRID, _("Snap Notes to Grid"), MainFrame::menuEvent_snapToGrid );
     //I18N: menu item in the "edit" menu
-    editMenu -> QUICK_ADD_MENU ( MENU_EDIT_SCALE, _("Scale"), MainFrame::menuEvent_scale );
+    editMenu -> QUICK_ADD_MENU ( MENU_EDIT_SCALE, _("Scale..."), MainFrame::menuEvent_scale );
     //I18N: menu item in the "edit" menu
     editMenu -> QUICK_ADD_MENU ( MENU_EDIT_REMOVE_OVERLAPPING, _("Remove Overlapping Notes"), MainFrame::menuEvent_removeOverlapping );
 
