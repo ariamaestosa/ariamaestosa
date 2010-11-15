@@ -76,6 +76,8 @@ NOTE: sorry, this is very raw :)
 [1.3] shift-click on a selected notes unselects it
 [1.3] cursor should change when hitting key modifiers (at least a select icon when hitting shift in control editor)
 [1.3] clicking outside volume picker should close it (use wxPopupTransientWindow ?)
+[1.3] When a .aria file causes trouble during loading, show a warning message, don't just print errors to the terminal
+[1.3] Keyboard editor : show current key in left area
 
 [2.0+] Allow setting, in G+F score, whether each note is in the G or F clef
 [2.0+] Allow 8va to be applied to only some parts of track
@@ -83,10 +85,7 @@ NOTE: sorry, this is very raw :)
 [2.0+] when scaling entire song, scale control events and time sig changes too
 [2.0+] reordering tracks should be nicer
 [2.0+] controller support for fine values
- 
-* When a .aria file causes trouble during loading, show a warning message, don't just print errors to the terminal
-
-* Keyboard editor : show current key in left area
+[2.0+] Move build system to Waf
 
 * score print :
     * red images
