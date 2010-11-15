@@ -25,7 +25,7 @@ Aria is written in C++.
 <li/> <a href="http://www.opengl.org">OpenGL</A> if you use the OpenGL renderer, which is optional (OpenGL is included by default on mac OS X)
 <li/> <a href="http://www.jdkoftinoff.com/main/Free_Projects/C++_MIDI_Library/"> libjdkmidi</A> (included in the Aria source)
 <li/> <a href="http://www.ambiera.com/irrxml/index.html">irrXML</A> (included in the Aria source)
-<li/> On Linux/Unix systems, you need Alsa or Jack (experimental Jack support was added in 1.2.3/SVN).
+<li/> On Linux/Unix systems, you need Alsa or Jack (experimental Jack support is available starting from 1.2.3).
       [On OSX/Windows, the native MIDI librairies are used so nothing needs to be installed there]
 </ul>
 
@@ -51,7 +51,7 @@ Starting from Aria 1.2, I use wxOSX 2.9.x trunk. wxWidgets 2.8 will still work b
 Example terminal commands to build wx (read the instructions that come with wxWidgets or wxWiki for more info):<br/>
 <blockquote>
 <pre>cd wxMac2.x.x
-mkdir osx-build && cd osx-build
+mkdir osx-build &amp;&amp; cd osx-build
 ../configure --with-libjpeg=builtin --with-libpng=builtin --with-regex=builtin --with-libtiff=builtin
      --with-zlib=builtin --with-expat=builtin --with-opengl --enable-unicode --disable-shared
 make
@@ -67,7 +67,7 @@ The Linux version has been tested less than the mac one but appears to be gettin
 <b>Installing wxWidgets : </b> You can simply download wxWidgets 2.8 from your distribution's repositories. It needs OpenGL support enabled if you want to use the OpenGL renderer, and should be Unicode. Don't forget to install -dev packages if your distribution uses them.
 <br/><br/>If you want to build wxWidgets from source, you can use commands like (read the instructions that come with wxWidgets or wxWiki for more info):<br/>
 <blockquote>
-<pre>cd wxGTK2.8.x<br/>mkdir gtk-build && cd gtk-build<br/>../configure --with-opengl --enable-unicode<br/>make<br/>sudo make install</pre></blockquote>
+<pre>cd wxGTK2.8.x<br/>mkdir gtk-build &amp;&amp; cd gtk-build<br/>../configure --with-opengl --enable-unicode<br/>make<br/>sudo make install</pre></blockquote>
 </p>
 <p>
 Make sure <i>wx-config --libs</i> points to the 2.8 libs when run from a terminal. If it does not, it is likely that your distribution's wxWidgets (in /usr/) is picked up before the one you built (in /usr/local/). To fix this, you can pass WXCONFIG=/usr/local/bin/wx-config to scons when building - more info below.
@@ -151,7 +151,8 @@ many wxWidgets builds.
     And finally run the synth as an Alsa daemon with commands (in the case of Timidity) :
     
     <blockquote>
-    <pre>      timidity -iA -Os -EFreverb=0
+    <pre>
+      timidity -iA -Os -EFreverb=0
     </pre>
     </blockquote>
     
@@ -222,8 +223,7 @@ many wxWidgets builds.
 <b><center>Finishing on Windows</center></b>
 <p>
     If your wxWidgets build is a DLL build, copy the DLL(s) into the same directory as Aria so they are
-    found. If you use Aria 1.2.2, copy the resources in the same directory as Aria (or move the Aria
-    executable in the same directory as the resources) - this is no more necessary from 1.2.3/trunk.
+    found.
 </p>
 <br/>
 
