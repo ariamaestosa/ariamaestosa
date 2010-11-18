@@ -1194,7 +1194,9 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
         if (answer == wxYES)
         {
             wxCommandEvent dummy;
-            menuEvent_save(dummy);
+            if(doSave() == false)
+                // user canceled, don't quit
+                return false;
         }
     }
 

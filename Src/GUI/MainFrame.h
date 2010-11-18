@@ -218,7 +218,9 @@ namespace AriaMaestosa
         void menuEvent_paste(wxCommandEvent& evt);
         void menuEvent_pasteAtMouse(wxCommandEvent& evt);
         void menuEvent_save(wxCommandEvent& evt);
+        bool doSave();
         void menuEvent_saveas(wxCommandEvent& evt);
+        bool doSaveAs();
         void menuEvent_selectNone(wxCommandEvent& evt);
         void menuEvent_selectAll(wxCommandEvent& evt);
         void menuEvent_addTrack(wxCommandEvent& evt);

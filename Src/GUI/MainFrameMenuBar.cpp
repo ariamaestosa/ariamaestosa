@@ -402,13 +402,34 @@ void MainFrame::menuEvent_exportNotation(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_save(wxCommandEvent& evt)
 {
-    if (getCurrentSequence()->filepath.IsEmpty()) menuEvent_saveas(evt);
-    else saveAriaFile(getCurrentSequence(), getCurrentSequence()->filepath);
+    doSave();
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+bool MainFrame::doSave()
+{
+    if (getCurrentSequence()->filepath.IsEmpty())
+    {
+        return doSaveAs();
+    }
+    else
+    {
+        saveAriaFile(getCurrentSequence(), getCurrentSequence()->filepath);
+        return true;
+    }
 }
 
 // -----------------------------------------------------------------------------------------------------------
 
 void MainFrame::menuEvent_saveas(wxCommandEvent& evt)
+{
+    doSaveAs();
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+bool MainFrame::doSaveAs()
 {
     wxString suggestedName = getCurrentSequence()->suggestFileName() + wxT(".aria");
 
@@ -423,7 +444,7 @@ void MainFrame::menuEvent_saveas(wxCommandEvent& evt)
         {
             int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
                                         wxYES_NO, this);
-            if (answer != wxYES) return;
+            if (answer != wxYES) return true;
         }
 
         getCurrentSequence()->filepath = givenPath;
@@ -433,6 +454,12 @@ void MainFrame::menuEvent_saveas(wxCommandEvent& evt)
         getCurrentSequence()->sequenceFileName.set( extractTitle(getCurrentSequence()->filepath) );
         Display::render();
 
+        return true;
+    }
+    else
+    {
+        // if we are here, the user probably canceled the file dialog.
+        return false;
     }// end if
 }
 
