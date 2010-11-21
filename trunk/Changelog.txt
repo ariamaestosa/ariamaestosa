@@ -3,6 +3,7 @@
 - Added support for horizontal mouse wheel scrolling (wxWidgets 2.9.1+ only)
 - Fixed rare bug that could cause tracks to have an incorrect instrument name when importing a MIDI
 - Provide graphical warnings when a MIDI file cannot be perfectly loaded
+- Fixed rare printing crash
 - Don't exit when save dialog is cancelled
 - Code cleanup and unit tests
 
