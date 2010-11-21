@@ -556,7 +556,7 @@ namespace EditorStemParams
     }
     int getStemX(const NoteRenderInfo& info)
     {
-        return getStemX(info.m_tick, info.m_stem_type);
+        return getStemX(info.getTick(), info.m_stem_type);
     }
 }
 using namespace EditorStemParams;
@@ -580,7 +580,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     else
      */
     
-    RelativeXCoord relX(renderInfo.m_tick, MIDI);
+    RelativeXCoord relX(renderInfo.getTick(), MIDI);
     const int noteX = relX.getRelativeTo(WINDOW);
     
     if (renderInfo.m_instant_hit)
@@ -782,12 +782,12 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
     if (renderInfo.getTiedToTick() != -1)
     {
     
-        const float center_tick = (renderInfo.getTiedToTick() + renderInfo.m_tick)/2.0;
+        const float center_tick = (renderInfo.getTiedToTick() + renderInfo.getTick())/2.0;
         
         RelativeXCoord relXFrom(renderInfo.getTiedToTick(), MIDI);
         const int x_from = relXFrom.getRelativeTo(WINDOW);
         
-        RelativeXCoord relXTo(renderInfo.m_tick, MIDI);
+        RelativeXCoord relXTo(renderInfo.getTick(), MIDI);
         const int x_to = relXTo.getRelativeTo(WINDOW);
                 
         const bool show_above = renderInfo.isTieUp();
