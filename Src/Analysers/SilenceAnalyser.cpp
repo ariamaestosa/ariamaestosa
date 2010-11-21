@@ -48,7 +48,7 @@ namespace AriaMaestosa
             
             const int measure = getMeasureData()->measureAtTick(tick);
             const int end_measure = getMeasureData()->measureAtTick(tick+tick_length-1);
-            const int beat = getMeasureData()->beatLengthInTicks();
+            const int beatLength = getMeasureData()->beatLengthInTicks();
             
             if (tick_length<2) return;
             
@@ -59,10 +59,11 @@ namespace AriaMaestosa
                 const int split_tick = getMeasureData()->firstTickInMeasure(end_measure);
                 
                 // Check split is valid before attempting.
-                if (split_tick-tick>0 and tick_length-(split_tick-tick)>0)
+                if (split_tick - tick > 0 and tick_length - (split_tick - tick) > 0)
                 {
-                    recursivelyAnalyzeSilence(renderSilenceCallback, tick, split_tick-tick, silences_y);
-                    recursivelyAnalyzeSilence(renderSilenceCallback, split_tick, tick_length-(split_tick-tick), silences_y);
+                    recursivelyAnalyzeSilence(renderSilenceCallback, tick, split_tick - tick, silences_y);
+                    recursivelyAnalyzeSilence(renderSilenceCallback, split_tick,
+                                              tick_length - (split_tick - tick), silences_y);
                     return;
                 }
             }
@@ -77,29 +78,70 @@ namespace AriaMaestosa
             
             const float relativeLength = tick_length / (float)(getMeasureData()->beatLengthInTicks()*4);
             
-            const int tick_in_measure_start = (tick) - getMeasureData()->firstTickInMeasure( getMeasureData()->measureAtTick(tick) );
-            const int remaining = beat - (tick_in_measure_start % beat);
-            const bool starts_on_beat = aboutEqual(remaining,0) or aboutEqual(remaining,beat);
+            const int  tick_from_measure_start = tick - getMeasureData()->firstTickInMeasure( getMeasureData()->measureAtTick(tick) );
             
-            if ( aboutEqual(relativeLength, 1.0) ) type = 1;
-            else if (aboutEqual(relativeLength, 3.0/2.0) and starts_on_beat){ type = 1; dotted = true; dot_delta_x = 5; dot_delta_y = 2;}
-            else if (aboutEqual(relativeLength, 1.0/2.0)) type = 2;
-            else if (aboutEqual(relativeLength, 3.0/4.0) and starts_on_beat){ type = 2; dotted = true; dot_delta_x = 5; dot_delta_y = 2;}
-            else if (aboutEqual(relativeLength, 1.0/4.0)) type = 4;
-            else if (aboutEqual(relativeLength, 1.0/3.0)){ type = 2; triplet = true; }
-            else if (aboutEqual(relativeLength, 3.0/8.0) and starts_on_beat){ type = 4; dotted = true; dot_delta_x = -3; dot_delta_y = 10; }
-            else if (aboutEqual(relativeLength, 1.0/8.0)) type = 8;
-            else if (aboutEqual(relativeLength, 1.0/6.0)){ type = 4; triplet = true; }
-            else if (aboutEqual(relativeLength, 3.0/16.0) and starts_on_beat){ type = 8; dotted = true; }
-            else if (aboutEqual(relativeLength, 1.0/16.0)) type = 16;
-            else if (aboutEqual(relativeLength, 1.0/12.0)){ triplet = true; type = 8; }
-            else if (relativeLength < 1.0/16.0){ return; }
+            /** How many ticks remain before the first beat this note plays on */
+            const int  remaining      = beatLength - (tick_from_measure_start % beatLength);
+            const bool starts_on_beat = aboutEqual(remaining, 0) or aboutEqual(remaining, beatLength);
+            
+            if (aboutEqual(relativeLength, 1.0))
+            {
+                type = 1;
+            }
+            else if (aboutEqual(relativeLength, 3.0/2.0) and starts_on_beat)
+            {
+                type = 1; dotted = true; dot_delta_x = 5; dot_delta_y = 2;
+            }
+            else if (aboutEqual(relativeLength, 1.0/2.0))
+            {
+                type = 2;
+            }
+            else if (aboutEqual(relativeLength, 3.0/4.0) and starts_on_beat)
+            {
+                type = 2; dotted = true; dot_delta_x = 5; dot_delta_y = 2;
+            }
+            else if (aboutEqual(relativeLength, 1.0/4.0))
+            {
+                type = 4;
+            }
+            else if (aboutEqual(relativeLength, 1.0/3.0))
+            {
+                type = 2; triplet = true;
+            }
+            else if (aboutEqual(relativeLength, 3.0/8.0) and starts_on_beat)
+            {
+                type = 4; dotted = true; dot_delta_x = -3; dot_delta_y = 10;
+            }
+            else if (aboutEqual(relativeLength, 1.0/8.0))
+            {
+                type = 8;
+            }
+            else if (aboutEqual(relativeLength, 1.0/6.0))
+            {
+                type = 4; triplet = true;
+            }
+            else if (aboutEqual(relativeLength, 3.0/16.0) and starts_on_beat)
+            {
+                type = 8; dotted = true;
+            }
+            else if (aboutEqual(relativeLength, 1.0/16.0))
+            {
+                type = 16;
+            }
+            else if (aboutEqual(relativeLength, 1.0/12.0))
+            {
+                triplet = true; type = 8;
+            }
+            else if (relativeLength < 1.0/16.0)
+            {
+                return;
+            }
             else
             {
-                // silence is of unknown duration. split it in a serie of silences.
+                // This silence is of unknown duration. split it in a series of silences.
                 
                 // start by reaching the next beat if not already done
-                if (not starts_on_beat and not aboutEqual(remaining,tick_length))
+                if (not starts_on_beat and not aboutEqual(remaining, tick_length) and remaining <= tick_length)
                 {
                     ASSERT_E(remaining, <=, tick_length);
                     recursivelyAnalyzeSilence(renderSilenceCallback, tick, remaining, silences_y);
