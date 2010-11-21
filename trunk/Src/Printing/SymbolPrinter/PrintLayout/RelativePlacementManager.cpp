@@ -332,13 +332,14 @@ void RelativePlacementManager::addSymbol(int tickFrom, int tickTo, int symbolWid
     std::cout << "++++ addSymbol " << symbolWidth << "; tick " << tickFrom << " track " << trackID << std::endl;
 #endif
     
-    ASSERT (tickFrom < m_end_of_measure_tick);
+    ASSERT_E(tickFrom, <, m_end_of_measure_tick);
+    ASSERT_E(tickFrom, <=, tickTo);
     //ASSERT (tickTo <= m_end_of_measure_tick);
     
     const int interestingTickID = getInterestingTick( tickFrom, 0, m_all_interesting_ticks.size()-1 );
-    ASSERT( interestingTickID >= 0 );
-    ASSERT( interestingTickID < (int)m_all_interesting_ticks.size() );
-    ASSERT( m_all_interesting_ticks[interestingTickID].m_tick == tickFrom );
+    ASSERT_E( interestingTickID, >=, 0 );
+    ASSERT_E( interestingTickID, <, (int)m_all_interesting_ticks.size() );
+    ASSERT_E( m_all_interesting_ticks[interestingTickID].m_tick, ==, tickFrom );
     
     m_all_interesting_ticks[interestingTickID].m_all_symbols_on_that_tick.push_back(
                         Symbol(tickTo, symbolWidth, trackID) );

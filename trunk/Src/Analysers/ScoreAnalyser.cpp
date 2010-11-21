@@ -124,14 +124,14 @@ public:
 
             // try to find where beamed groups of such notes usually start and end in the measure
             // this is where splitting should be performed
-            const int group_len = noteRenderInfo[m_first_id].m_tick_length * max_amount_of_notes_beamed_toghether;
-            const int measId = getMeasureData()->measureAtTick(noteRenderInfo[m_first_id].m_tick);
+            const int group_len = noteRenderInfo[m_first_id].getTickLength() * max_amount_of_notes_beamed_toghether;
+            const int measId = getMeasureData()->measureAtTick(noteRenderInfo[m_first_id].getTick());
             const int first_tick_in_measure = getMeasureData()->firstTickInMeasure( measId );
 
             int split_at_id = -1;
             for (int n=m_first_id+1; n<=m_last_id; n++)
             {
-                if ((noteRenderInfo[n].m_tick - first_tick_in_measure) % group_len == 0)
+                if ((noteRenderInfo[n].getTick() - first_tick_in_measure) % group_len == 0)
                 {
                     split_at_id = n;
                     break;
@@ -172,7 +172,7 @@ public:
         }
 
         // set initial beam info in note
-        noteRenderInfo[m_first_id].m_beam_to_tick  = noteRenderInfo[m_last_id].m_tick;
+        noteRenderInfo[m_first_id].m_beam_to_tick  = noteRenderInfo[m_last_id].getTick();
         noteRenderInfo[m_first_id].m_beam_to_sign  = noteRenderInfo[m_last_id].m_sign;
         noteRenderInfo[m_first_id].m_beam_to_level = m_analyser->getStemTo(noteRenderInfo[m_last_id]);
         noteRenderInfo[m_first_id].m_stem_y_level  = m_analyser->getStemTo(noteRenderInfo[m_first_id]);
@@ -202,7 +202,7 @@ public:
         // fix all note stems so they all point in the same direction and have the correct height
         while (true)
         {
-            const int   from_tick  = noteRenderInfo[m_first_id].m_tick;
+            const int   from_tick  = noteRenderInfo[m_first_id].getTick();
             const float from_level = m_analyser->getStemTo(noteRenderInfo[m_first_id]);
             const int   to_tick    = noteRenderInfo[m_first_id].m_beam_to_tick;
             const float to_level   = noteRenderInfo[m_first_id].m_beam_to_level;
@@ -212,7 +212,7 @@ public:
             {
                 // give correct stem height (so it doesn't end above or below beam line)
                 // rel_pos will be 0 for first note of a beamed serie, and 1 for the last one
-                const float rel_pos = (float)(noteRenderInfo[j].m_tick - from_tick) / (float)(to_tick - from_tick);
+                const float rel_pos = (float)(noteRenderInfo[j].getTick() - from_tick) / (float)(to_tick - from_tick);
                 if (j != m_first_id)
                 {
                     noteRenderInfo[j].m_stem_y_level = (float)from_level +
@@ -279,6 +279,9 @@ using namespace AriaMaestosa;
 NoteRenderInfo::NoteRenderInfo(int tick, int level, int tick_length, PitchSign sign,
                                const bool selected, int pitch)
 {
+    ASSERT_E(tick_length, >=, 0);
+    ASSERT_E(tick, >=, 0);
+    
     // what we know before render pass 1
     m_selected    = selected;
     m_tick        = tick;
@@ -406,8 +409,8 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
     if (renderInfo.m_measure_end > renderInfo.m_measure_begin) 
     {
         const int firstEnd = getMeasureData()->lastTickInMeasure(renderInfo.m_measure_begin);
-        const int firstLength = firstEnd - renderInfo.m_tick;
-        const int secondLength = renderInfo.m_tick_length - firstLength;
+        const int firstLength = firstEnd - renderInfo.getTick();
+        const int secondLength = renderInfo.getTickLength() - firstLength;
         
         // split the note in two, and collect resulting notes in a vector.
         // then we can iterate through that vector and tie all notes together
@@ -419,7 +422,7 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
         if (aboutEqual(firstLength, 0)) return;
         if (aboutEqual(secondLength, 0)) return;
         
-        NoteRenderInfo part1(renderInfo.m_tick, renderInfo.m_level, firstLength,
+        NoteRenderInfo part1(renderInfo.getTick(), renderInfo.m_level, firstLength,
                              renderInfo.m_sign, renderInfo.m_selected, renderInfo.m_pitch);
         addToVector(part1, true);
         NoteRenderInfo part2(getMeasureData()->firstTickInMeasure(renderInfo.m_measure_begin+1),
@@ -443,14 +446,14 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
     
     // find how to draw notes. how many flags, dotted, triplet, etc.
     // if note duration is unknown it will be split
-    const float relativeLength = renderInfo.m_tick_length / (float)(getMeasureData()->beatLengthInTicks()*4);
+    const float relativeLength = renderInfo.getTickLength() / (float)(getMeasureData()->beatLengthInTicks()*4);
     
     renderInfo.m_stem_type = (renderInfo.m_level >= m_stem_pivot ? STEM_UP : STEM_DOWN);
     if (relativeLength >= 1) renderInfo.m_stem_type = STEM_NONE; // whole notes have no stem
     renderInfo.m_hollow_head = false;
     
     const int beat = getMeasureData()->beatLengthInTicks();
-    const int tick_in_measure_start = renderInfo.m_tick -
+    const int tick_in_measure_start = renderInfo.getTick() -
                                       getMeasureData()->firstTickInMeasure( renderInfo.m_measure_begin );
     const int remaining = beat - (tick_in_measure_start % beat);
     const bool starts_on_beat = aboutEqual(remaining,0) or aboutEqual(remaining,beat);
@@ -480,7 +483,7 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
         int firstLength_tick;
         
         // start by reaching the next beat if not already done
-        if (not starts_on_beat and not aboutEqual(remaining, renderInfo.m_tick_length))
+        if (not starts_on_beat and not aboutEqual(remaining, renderInfo.getTickLength()) and remaining <= renderInfo.getTickLength())
         {
             firstLength_tick = remaining;
         }
@@ -493,7 +496,7 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
             firstLength_tick = closestShorterDuration*(float)(getMeasureData()->beatLengthInTicks()*4);
         }
         
-        const int secondBeginning_tick = renderInfo.m_tick + firstLength_tick;
+        const int secondBeginning_tick = renderInfo.getTick() + firstLength_tick;
         
         int initial_id = -1;
         
@@ -502,11 +505,11 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
             initial_id = noteRenderInfo.size();
         }
         
-        NoteRenderInfo part1(renderInfo.m_tick, renderInfo.m_level, firstLength_tick, renderInfo.m_sign,
+        NoteRenderInfo part1(renderInfo.getTick(), renderInfo.m_level, firstLength_tick, renderInfo.m_sign,
                              renderInfo.m_selected, renderInfo.m_pitch);
         addToVector(part1, true);
         NoteRenderInfo part2(secondBeginning_tick, renderInfo.m_level,
-                             renderInfo.m_tick_length - firstLength_tick, renderInfo.m_sign,
+                             renderInfo.getTickLength() - firstLength_tick, renderInfo.m_sign,
                              renderInfo.m_selected, renderInfo.m_pitch);
         addToVector(part2, true);
         
@@ -526,7 +529,7 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
     
     if (renderInfo.m_triplet)
     {
-        renderInfo.m_triplet_arc_tick_start = renderInfo.m_tick;
+        renderInfo.m_triplet_arc_tick_start = renderInfo.getTick();
         renderInfo.m_triplet_arc_level      = renderInfo.m_level;
     }
     
@@ -579,7 +582,7 @@ ScoreAnalyser* ScoreAnalyser::getSubset(const int fromTick, const int toTick)
     
     for (int n=0; n<(int)out->noteRenderInfo.size(); n++)
     {
-        if (out->noteRenderInfo[n].m_tick < fromTick or out->noteRenderInfo[n].m_tick >= toTick)
+        if (out->noteRenderInfo[n].getTick() < fromTick or out->noteRenderInfo[n].getTick() >= toTick)
         {
             out->noteRenderInfo.erase(out->noteRenderInfo.begin() +  n);
             n--;
@@ -616,8 +619,8 @@ void ScoreAnalyser::putInTimeOrder()
 
         // put in time order
         // making sure notes without stem come before notes with a stem
-        if (noteRenderInfo[i].m_tick < noteRenderInfo[i-1].m_tick or
-            (noteRenderInfo[i].m_tick == noteRenderInfo[i-1].m_tick and
+        if (noteRenderInfo[i].getTick() < noteRenderInfo[i-1].getTick() or
+            (noteRenderInfo[i].getTick() == noteRenderInfo[i-1].getTick() and
              noteRenderInfo[i-1].m_stem_type != STEM_NONE and noteRenderInfo[i].m_stem_type == STEM_NONE)
            )
         {
@@ -665,7 +668,7 @@ void ScoreAnalyser::findAndMergeChords()
             // find next note's tick if there's one
             if (i + 1 < (int)noteRenderInfo.size())
             {
-                start_tick_of_next_note = noteRenderInfo[i+1].m_tick;
+                start_tick_of_next_note = noteRenderInfo[i+1].getTick();
             }
             else
             {
@@ -678,7 +681,7 @@ void ScoreAnalyser::findAndMergeChords()
             // check if we're in a chord (i.e. many notes that play at the same time). also check they have stems :
             // for instance wholes have no stems and thus there is no special processing to do on them.
             if (start_tick_of_next_note != -1 and
-                aboutEqual_tick(start_tick_of_next_note, noteRenderInfo[i].m_tick) and
+                aboutEqual_tick(start_tick_of_next_note, noteRenderInfo[i].getTick()) and
                 noteRenderInfo[i+1].m_stem_type != STEM_NONE)
             {
             }
@@ -702,7 +705,7 @@ void ScoreAnalyser::findAndMergeChords()
                 maxid = i;
             }
 
-            const int len = noteRenderInfo[i].m_tick_length;
+            const int len = noteRenderInfo[i].getTickLength();
             if (len < smallest_duration or smallest_duration == 99999)
             {
                 smallest_duration = len;
@@ -752,7 +755,7 @@ void ScoreAnalyser::findAndMergeChords()
                 summary.m_triplet = triplet;
                 summary.m_draw_stem = true;
                 summary.m_stem_type = (stem_up ? STEM_UP : STEM_DOWN);
-                summary.m_tick_length = smallest_duration;
+                summary.setLength( smallest_duration );
 
                 summary.tieWith( noteRenderInfo[ !stem_up ? minid : maxid ].getTiedToTick() );
                 summary.setTieUp( noteRenderInfo[ !stem_up ? minid : maxid ].isTieUp() );
@@ -805,7 +808,7 @@ void ScoreAnalyser::processTriplets()
             // ---- search for consecutive notes
             if (i + 1 < visibleNoteAmount)
             {
-                start_tick_of_next_note = noteRenderInfo[i+1].m_tick;
+                start_tick_of_next_note = noteRenderInfo[i+1].getTick();
             }
 
             if (not (i<visibleNoteAmount)) break;
@@ -813,7 +816,7 @@ void ScoreAnalyser::processTriplets()
             // if notes are consecutive
             if (start_tick_of_next_note != -1 and
                 aboutEqual_tick(start_tick_of_next_note,
-                                noteRenderInfo[i].m_tick + noteRenderInfo[i].m_tick_length))
+                                noteRenderInfo[i].getTick() + noteRenderInfo[i].getTickLength()))
             {
                 if (VERBOSE_ABOUT_TRIPLETS) std::cout << "(3)    consecutive\n";
             }
@@ -926,7 +929,7 @@ void ScoreAnalyser::processTriplets()
                     }
 
                     noteRenderInfo[first_triplet].m_draw_triplet_sign = true;
-                    noteRenderInfo[first_triplet].m_triplet_arc_tick_end = noteRenderInfo[i].m_tick;
+                    noteRenderInfo[first_triplet].m_triplet_arc_tick_end = noteRenderInfo[i].getTick();
                 }
 
                 // reset search for triplets
@@ -971,14 +974,14 @@ void ScoreAnalyser::processNoteBeam()
         {
             if (i + 1 < visibleNoteAmount)
             {
-                start_tick_of_next_note = noteRenderInfo[i+1].m_tick;
+                start_tick_of_next_note = noteRenderInfo[i+1].getTick();
             }
 
             if (not (i < visibleNoteAmount)) break;
 
             // if notes are consecutive and of same length
             if (start_tick_of_next_note != -1 and
-               aboutEqual_tick(start_tick_of_next_note, noteRenderInfo[i].m_tick + noteRenderInfo[i].m_tick_length) and
+               aboutEqual_tick(start_tick_of_next_note, noteRenderInfo[i].getTick() + noteRenderInfo[i].getTickLength()) and
                noteRenderInfo[i+1].m_flag_amount == flag_amount and flag_amount > 0 and
                noteRenderInfo[i+1].m_triplet == noteRenderInfo[i].m_triplet);
             else

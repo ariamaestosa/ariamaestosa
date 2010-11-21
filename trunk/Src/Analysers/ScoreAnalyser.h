@@ -62,6 +62,9 @@ namespace AriaMaestosa
         
         int m_y;
         
+        /** location and duration of note */
+        int m_tick, m_tick_length;
+        
     public:
         /** for very short notes, e.g. drum notes. Note will appear as a X. */
         bool m_instant_hit;
@@ -90,9 +93,6 @@ namespace AriaMaestosa
         
         /** Whether to draw the stem. FIXME : stem_type == STEM_NONE can already carry this info!! */
         bool m_draw_stem;
-        
-        /** location and duration of note */
-        int m_tick, m_tick_length;
         
         /** vertical position of the note, in abstract level units */
         int m_level;
@@ -171,6 +171,18 @@ namespace AriaMaestosa
          * inside the noteRenderInfo.
          */
         void setY(const int newY);
+        
+        /** Get start of notes in midi ticks */
+        int getTick() const { return m_tick; }
+        
+        /** Get length of note in midi ticks */
+        int getTickLength() const { return m_tick_length; }
+        
+        void setLength(const int newLength)
+        {
+            ASSERT_E(newLength, >=, 0);
+            m_tick_length = newLength;
+        }
     };
         
     class BeamGroup;
@@ -266,13 +278,13 @@ namespace AriaMaestosa
         /** @brief implementing the INoteSource interface for the SilenceAnalyser to use */
         virtual int  getStartTick(const int noteID) const
         {
-            return noteRenderInfo[noteID].m_tick;
+            return noteRenderInfo[noteID].getTick();
         }
         
         /** @brief implementing the INoteSource interface for the SilenceAnalyser to use */
         virtual int  getEndTick(const int noteID) const
         {
-            return noteRenderInfo[noteID].m_tick + noteRenderInfo[noteID].m_tick_length;
+            return noteRenderInfo[noteID].getTick() + noteRenderInfo[noteID].getTickLength();
         }
         
     protected:
