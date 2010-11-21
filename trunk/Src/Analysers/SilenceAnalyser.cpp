@@ -23,12 +23,26 @@ namespace AriaMaestosa
     namespace SilenceAnalyser
     {
         
+#ifdef _MORE_DEBUG_CHECKS
+        int recursionDepth = 0;
+        class IncRecDepth
+        {
+        public:
+            IncRecDepth() { recursionDepth++; }
+            ~IncRecDepth() { recursionDepth--; }
+        };
+#endif
+        
         /**
           * @internal
           */
         void recursivelyAnalyzeSilence(RenderSilenceCallback renderSilenceCallback,
                                        const int tick, const int tick_length, const int silences_y)
         {
+#ifdef _MORE_DEBUG_CHECKS
+            ASSERT(recursionDepth < 150)
+            IncRecDepth scopeObject;
+#endif
             
             if (tick_length<2) return;
             
@@ -85,8 +99,9 @@ namespace AriaMaestosa
                 // silence is of unknown duration. split it in a serie of silences.
                 
                 // start by reaching the next beat if not already done
-                if (!starts_on_beat and !aboutEqual(remaining,tick_length))
+                if (not starts_on_beat and not aboutEqual(remaining,tick_length))
                 {
+                    ASSERT_E(remaining, <=, tick_length);
                     recursivelyAnalyzeSilence(renderSilenceCallback, tick, remaining, silences_y);
                     recursivelyAnalyzeSilence(renderSilenceCallback, tick+remaining, tick_length - remaining, silences_y);
                     return;
