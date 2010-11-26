@@ -45,9 +45,8 @@ BEGIN_EVENT_TABLE(TuningPicker, wxMenu)
 EVT_MENU_RANGE(1, LAST_ID-1, TuningPicker::menuItemSelected)
 END_EVENT_TABLE()
 
-/*
- * This is the dropdown menu that lets you select a new tuning. It also takes care of sending new tuning data to GuitarEditor.
- */
+
+// ----------------------------------------------------------------------------------------------------------
 
 TuningPicker::TuningPicker() : wxMenu()
 {
@@ -65,16 +64,22 @@ TuningPicker::TuningPicker() : wxMenu()
     m_tuning_dialog = new TuningDialog();
 }
 
-void TuningPicker::setModel(GuitarTuning* model)
-{
-    m_model = model;
-    m_tuning_dialog->setModel(model);
-}
+// ----------------------------------------------------------------------------------------------------------
 
 TuningPicker::~TuningPicker()
 {
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
+void TuningPicker::setModel(GuitarTuning* model, Track* parent)
+{
+    m_model = model;
+    m_tuning_dialog->setModel(model);
+    m_parent = parent;
+}
+
+// ----------------------------------------------------------------------------------------------------------
 
 void TuningPicker::menuItemSelected(wxCommandEvent& evt)
 {
@@ -82,6 +87,8 @@ void TuningPicker::menuItemSelected(wxCommandEvent& evt)
 
     Display::render();
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void TuningPicker::loadTuning(const int id, const bool userTriggered) // if user-triggered, it will be undoable
 {
@@ -166,11 +173,11 @@ void TuningPicker::loadTuning(const int id, const bool userTriggered) // if user
 
         case REARRANGE: // rearrange notes
         {
-            // FIXME: add back Rearrange notes!!
-            //m_model->track->action( new Action::RearrangeNotes() );
+            m_parent->action( new Action::RearrangeNotes() );
             break;
         }
     }// end switch
-
 }
+
+// ----------------------------------------------------------------------------------------------------------
 

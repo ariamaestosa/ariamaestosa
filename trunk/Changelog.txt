@@ -5,6 +5,7 @@
 - Provide graphical warnings when a MIDI file cannot be perfectly loaded
 - Fixed rare printing crash
 - Fixed not staying centered when zooming with ctrl+mouse wheel
+- Fixed "rearrange notes" feature in tablature editor, which had accidentally been disabled
 - Don't exit when save dialog is cancelled
 - Code cleanup and unit tests
 

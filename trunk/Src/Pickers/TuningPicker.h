@@ -25,15 +25,17 @@ namespace AriaMaestosa
 {
     
     class GuitarTuning; // forward
+    class Track;
 
     /**
-      * @brief guitar tuning tuning (for the tablature editor)
+      * @brief guitar tuning popup menu (for the tablature editor)
       */
     class TuningPicker : public wxMenu
     {
         void resetChecks();
         GuitarTuning* m_model;
         WxOwnerPtr<TuningDialog>  m_tuning_dialog;
+        Track* m_parent;
         
     public:
         LEAK_CHECK();
@@ -43,7 +45,7 @@ namespace AriaMaestosa
         
         void menuItemSelected(wxCommandEvent& evt);
         void loadTuning(const int id, const bool user_triggered=true);
-        void setModel(GuitarTuning* model);
+        void setModel(GuitarTuning* model, Track* parent);
         
         DECLARE_EVENT_TABLE();
     };
