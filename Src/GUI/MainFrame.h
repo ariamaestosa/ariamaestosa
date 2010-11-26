@@ -257,7 +257,7 @@ namespace AriaMaestosa
         void stopClicked(wxCommandEvent& evt);
 
         // ---- I/O
-        void updateTopBarAndScrollbarsForSequence(Sequence* seq);
+        void updateTopBarAndScrollbarsForSequence(const Sequence* seq);
 
         /** Opens the .aria file in filepath, reads it and prepares the editor to display and edit it. */
         void loadAriaFile(wxString path);

@@ -49,6 +49,7 @@
 
 #include <wx/dcbuffer.h>
 #include <wx/timer.h>
+#include <wx/spinctrl.h> // for wxSpinEvent
 
 #include "Utils.h"
 
@@ -1093,8 +1094,19 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
             
             if (newZoom > 1 and newZoom < 500)
             {
-                getCurrentSequence()->setZoom(newZoom);
-                getMainFrame()->updateTopBarAndScrollbarsForSequence(getCurrentSequence());
+                Sequence* seq = getCurrentSequence();
+                const int ticks = seq->getXScrollInMidiTicks();
+                
+                // FIXME: scrolling should not need to be manually changed when zoom is...
+                //        A possible solution is to store a midi tick scroll instead of the current pixel scroll
+                seq->setZoom(newZoom);
+                
+                // update scrolling to new zoom
+                seq->setXScrollInMidiTicks( ticks );
+                                
+                getMainFrame()->updateTopBarAndScrollbarsForSequence(seq);
+                
+                Display::render();
             }
         }
         return;

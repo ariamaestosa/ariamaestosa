@@ -56,7 +56,7 @@ Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener
     dockHeight              = 0;
     currentTrack            = 0;
     m_tempo                 = 120;
-    x_scroll_in_pixels      = 0;
+    m_x_scroll_in_pixels    = 0;
     y_scroll                = 0;
     reorderYScroll          = 0;
     importing               = false;
@@ -181,7 +181,7 @@ void Sequence::setInternalName(wxString name)
 
 int Sequence::getXScrollInMidiTicks() const
 {
-    return (int)(x_scroll_in_pixels / m_zoom);
+    return (int)round(m_x_scroll_in_pixels / m_zoom);
 }
 
 
@@ -189,20 +189,21 @@ int Sequence::getXScrollInMidiTicks() const
 
 void Sequence::setXScrollInMidiTicks(int value)
 {
-    x_scroll_in_pixels = (int)(value * m_zoom);
+    m_x_scroll_in_pixels = value * m_zoom;
+    if (m_x_scroll_in_pixels < 0.0f) m_x_scroll_in_pixels = 0.0f;
 }
 
 // ----------------------------------------------------------------------------------------------------------
 
 void Sequence::setXScrollInPixels(int value)
 {
-    x_scroll_in_pixels = value;
+    m_x_scroll_in_pixels = value;
 
-    const int editor_size=Display::getWidth()-100,
-        total_size = getMeasureData()->getTotalPixelAmount();
+    const int editor_size = Display::getWidth()-100;
+    const int total_size  = getMeasureData()->getTotalPixelAmount();
 
-    if (x_scroll_in_pixels < 0) x_scroll_in_pixels = 0;
-    if (x_scroll_in_pixels >= total_size-editor_size) x_scroll_in_pixels = total_size-editor_size-1;
+    if (m_x_scroll_in_pixels < 0) m_x_scroll_in_pixels = 0;
+    if (m_x_scroll_in_pixels >= total_size-editor_size) m_x_scroll_in_pixels = total_size-editor_size - 1;
 
     if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
 }
@@ -852,7 +853,7 @@ void Sequence::spacePressed()
 void Sequence::copy()
 {
     tracks[currentTrack].copy();
-    x_scroll_upon_copying = x_scroll_in_pixels;
+    x_scroll_upon_copying = m_x_scroll_in_pixels;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -936,7 +937,7 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
               wxT("\" metronome=\"")         + (m_play_with_metronome ? wxT("true") : wxT("false")) +
               wxT("\">\n\n"), fileout );
 
-    writeData(wxT("<view xscroll=\"") + to_wxString(x_scroll_in_pixels) +
+    writeData(wxT("<view xscroll=\"") + to_wxString(m_x_scroll_in_pixels) +
               wxT("\" yscroll=\"")    + to_wxString(y_scroll) +
               wxT("\" zoom=\"")       + to_wxString(m_zoom_percent) +
               wxT("\"/>\n"), fileout );
@@ -1107,18 +1108,18 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                     const char* xscroll_c = xml->getAttributeValue("xscroll");
                     if (xscroll_c != NULL)
                     {
-                        x_scroll_in_pixels = atoi( xscroll_c );
+                        m_x_scroll_in_pixels = atoi( xscroll_c );
                     }
                     else
                     {
-                        x_scroll_in_pixels = 0;
+                        m_x_scroll_in_pixels = 0;
                         std::cerr << "Missing info from file: x scroll" << std::endl;
                     }
 
-                    if (x_scroll_in_pixels < 0)
+                    if (m_x_scroll_in_pixels < 0)
                     {
-                        std::cerr << "Wrong x_scroll_in_pixels: " << x_scroll_in_pixels << std::endl;
-                        x_scroll_in_pixels = 0;
+                        std::cerr << "Wrong x_scroll_in_pixels: " << m_x_scroll_in_pixels << std::endl;
+                        m_x_scroll_in_pixels = 0;
                     }
 
                     const char* yscroll_c = xml->getAttributeValue("yscroll");
@@ -1261,7 +1262,7 @@ over:
     clearUndoStack();
 
     importing = false;
-    DisplayFrame::updateHorizontalScrollbar( x_scroll_in_pixels );
+    DisplayFrame::updateHorizontalScrollbar( m_x_scroll_in_pixels );
     if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
 
     return true;

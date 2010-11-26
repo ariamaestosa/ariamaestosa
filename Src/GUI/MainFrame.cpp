@@ -687,17 +687,15 @@ void MainFrame::toolsExitPlaybackMode()
 #pragma mark Top Bar
 #endif
 
-void MainFrame::updateTopBarAndScrollbarsForSequence(Sequence* seq)
+void MainFrame::updateTopBarAndScrollbarsForSequence(const Sequence* seq)
 {
-
-    changingValues=true; // ignore events thrown while changing values in the top bar
+    changingValues = true; // ignore events thrown while changing values in the top bar
 
     // first measure
     firstMeasure->SetValue( to_wxString(getMeasureData()->getFirstMeasure()+1) );
 
     // time signature
     timeSig->SetLabel( wxString::Format(wxT("%i/%i"), getMeasureData()->getTimeSigNumerator(), getMeasureData()->getTimeSigDenominator() ));
-
 
     // tempo
     tempoCtrl->SetValue( to_wxString(seq->getTempo()) );
@@ -711,7 +709,8 @@ void MainFrame::updateTopBarAndScrollbarsForSequence(Sequence* seq)
     displayZoom->SetValue( seq->getZoomInPercent() );
 
     // set zoom (reason to set it again is because the first time you open it, it may not already have a zoom)
-    getCurrentSequence()->setZoom( seq->getZoomInPercent() );
+    // FIXME: what's that??
+    //getCurrentSequence()->setZoom( seq->getZoomInPercent() );
 
     expandedMeasuresMenuItem->Check( getMeasureData()->isExpandedMode() );
 
@@ -719,7 +718,7 @@ void MainFrame::updateTopBarAndScrollbarsForSequence(Sequence* seq)
     updateHorizontalScrollbar();
     updateVerticalScrollbar();
 
-    changingValues=false;
+    changingValues = false;
 }
 
 // --------------------------------------------------------------------------------------------------------
@@ -856,12 +855,11 @@ void MainFrame::changeShownTimeSig(int num, int denom)
 
 void MainFrame::zoomChanged(wxSpinEvent& evt)
 {
-
     if (changingValues) return; // discard events thrown because the computer changes values
 
-    const int newZoom=displayZoom->GetValue();
+    const int newZoom = displayZoom->GetValue();
 
-    if (newZoom<1 or newZoom>500) return;
+    if (newZoom < 1 or newZoom > 500) return;
 
     const float oldZoom = getCurrentSequence()->getZoom();
 
@@ -871,7 +869,7 @@ void MainFrame::zoomChanged(wxSpinEvent& evt)
 
     getCurrentSequence()->setXScrollInMidiTicks( newXScroll );
     updateHorizontalScrollbar( newXScroll );
-    if (!getMeasureData()->isMeasureLengthConstant()) getMeasureData()->updateMeasureInfo();
+    if (not getMeasureData()->isMeasureLengthConstant()) getMeasureData()->updateMeasureInfo();
 
     Display::render();
 }
@@ -1049,9 +1047,8 @@ void MainFrame::verticalScrolling_arrows(wxScrollEvent& evt)
 
 void MainFrame::updateHorizontalScrollbar(int thumbPos)
 {
-
-    const int editor_size=Display::getWidth()-100,
-    total_size = getMeasureData()->getTotalPixelAmount();
+    const int editor_size = Display::getWidth() - 100;
+    const int total_size  = getMeasureData()->getTotalPixelAmount();
 
     int position =
         thumbPos == -1 ?
@@ -1063,14 +1060,14 @@ void MainFrame::updateHorizontalScrollbar(int thumbPos)
 
     // if given value is wrong and needs to be changed, we'll need to throw a 'scrolling changed' event to make sure display adapts to new value
     bool changedGivenValue = false;
-    if ( position < 0 )
+    if (position < 0)
     {
         position = 0;
         changedGivenValue = true;
     }
-    if ( position >= total_size-editor_size)
+    if (position >= total_size - editor_size)
     {
-        position = total_size-editor_size-1;
+        position = total_size - editor_size - 1;
         changedGivenValue = true;
     }
 

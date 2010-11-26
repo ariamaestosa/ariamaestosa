@@ -92,8 +92,8 @@ namespace AriaMaestosa
         // FIXME: this is graphics stuff, shouldn't go in this model class
         float m_zoom; int m_zoom_percent;
 
-        int x_scroll_in_pixels, y_scroll;
-        //int measureWidth;
+        float m_x_scroll_in_pixels;
+        int y_scroll;
 
         int reordering_newPosition; //!< used when reordering tracks, to hold the new position of the track being moved
         int reorderYScroll;         //!< while reordering tracks, contains the vertical scrolling amount
@@ -306,7 +306,7 @@ namespace AriaMaestosa
         void  setXScrollInMidiTicks(int value);
         void  setXScrollInPixels(int value);
         int   getXScrollInMidiTicks() const;
-        int   getXScrollInPixels() const { return x_scroll_in_pixels; }
+        int   getXScrollInPixels() const { return round(m_x_scroll_in_pixels); }
 
         void  setYScroll(int value);
         int   getYScroll() const { return y_scroll; }
