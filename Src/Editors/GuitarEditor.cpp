@@ -348,7 +348,7 @@ void GuitarEditor::mouseDown(RelativeXCoord x, const int y)
     if (x.getRelativeTo(EDITOR) < 0 and x.getRelativeTo(EDITOR) > -75 and y > getEditorYStart())
     {
         TuningPicker* picker = Core::getTuningPicker();
-        picker->setModel( m_track->getGuitarTuning() );
+        picker->setModel( m_track->getGuitarTuning(), getTrack() );
         Display::popupMenu( picker, x.getRelativeTo(WINDOW), y );
         return;
     }
