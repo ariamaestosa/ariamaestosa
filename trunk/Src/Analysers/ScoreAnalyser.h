@@ -214,6 +214,7 @@ namespace AriaMaestosa
         
         void addToVector( NoteRenderInfo& renderInfo, const bool recursion );
         
+        
     public:
         LEAK_CHECK();
         
@@ -262,6 +263,8 @@ namespace AriaMaestosa
          */
         void putInTimeOrder();
         
+        /** Get whether a note at the given level should have its stem up (if false, then down) */
+        bool stemUp(const int level) const { return level >= m_stem_pivot; }
         
         /** @brief implementing the INoteSource interface for the SilenceAnalyser to use */
         virtual int  getNoteCount() const

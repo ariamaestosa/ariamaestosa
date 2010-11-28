@@ -159,7 +159,7 @@ public:
 
         calculateLevel(noteRenderInfo, converter);
 
-        noteRenderInfo[m_first_id].m_beam_show_above = (m_mid_level < m_analyser->m_stem_pivot ? false : true);
+        noteRenderInfo[m_first_id].m_beam_show_above = m_analyser->stemUp(m_mid_level);
         noteRenderInfo[m_first_id].m_beam = true;
 
         for (int j=m_first_id; j<=m_last_id; j++)
@@ -448,7 +448,7 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
     // if note duration is unknown it will be split
     const float relativeLength = renderInfo.getTickLength() / (float)(getMeasureData()->beatLengthInTicks()*4);
     
-    renderInfo.m_stem_type = (renderInfo.m_level >= m_stem_pivot ? STEM_UP : STEM_DOWN);
+    renderInfo.m_stem_type = (stemUp(renderInfo.m_level) ? STEM_UP : STEM_DOWN);
     if (relativeLength >= 1) renderInfo.m_stem_type = STEM_NONE; // whole notes have no stem
     renderInfo.m_hollow_head = false;
     
@@ -734,7 +734,7 @@ void ScoreAnalyser::findAndMergeChords()
                 if (max_level == -999) max_level = noteRenderInfo[first_note_of_chord].m_level;
                 const int mid_level = (int)round( (min_level + max_level)/2.0 );
 
-                const bool stem_up = mid_level >= m_stem_pivot+2;
+                const bool stem_up = stemUp(mid_level);
 
                 /*
                  * decide the one note to keep that will "summarize" all others.
