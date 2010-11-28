@@ -153,8 +153,6 @@ NoteSearchResult KeyboardEditor::noteAt(RelativeXCoord x, const int y, int& note
 void KeyboardEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current,
                                        RelativeXCoord& mousex_initial, int mousey_initial)
 {
-    printf("                selectNotesInRect on %i notes\n", (int)m_track->getNoteAmount());
-    
     const int mouse_x_min = std::min( mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR) );
     const int mouse_x_max = std::max( mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR) );
     const int mouse_y_min = std::min(mousey_current, mousey_initial);
@@ -174,13 +172,11 @@ void KeyboardEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mouse
             from_note*Y_STEP_HEIGHT + getEditorYStart() - yscroll > mouse_y_min and
             from_note*Y_STEP_HEIGHT + getEditorYStart() - yscroll < mouse_y_max )
         {
-            printf("                note %i : selected\n", n);
             m_track->selectNote(n, true);
         }
         else
         {
             m_track->selectNote(n, false);
-            printf("                note %i : UNselected\n", n);
         }
     }//next
 
