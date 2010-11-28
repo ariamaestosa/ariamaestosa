@@ -153,29 +153,34 @@ NoteSearchResult KeyboardEditor::noteAt(RelativeXCoord x, const int y, int& note
 void KeyboardEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current,
                                        RelativeXCoord& mousex_initial, int mousey_initial)
 {
-    for (int n=0; n<m_track->getNoteAmount(); n++)
+    printf("                selectNotesInRect on %i notes\n", (int)m_track->getNoteAmount());
+    
+    const int mouse_x_min = std::min( mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR) );
+    const int mouse_x_max = std::max( mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR) );
+    const int mouse_y_min = std::min(mousey_current, mousey_initial);
+    const int mouse_y_max = std::max(mousey_current, mousey_initial);
+    const int xscroll = m_sequence->getXScrollInPixels();
+    const int yscroll = getYScrollInPixels();
+    
+    const int count = m_track->getNoteAmount();
+    for (int n=0; n<count; n++)
     {
-
         int x1        = m_track->getNoteStartInPixels(n);
         int x2        = m_track->getNoteEndInPixels(n);
         int from_note = m_track->getNotePitchID(n);
 
-        if (x1 > std::min( mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR) ) +
-                m_sequence->getXScrollInPixels() and
-            x2 < std::max( mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR) ) +
-                m_sequence->getXScrollInPixels() and
-            from_note*Y_STEP_HEIGHT+getEditorYStart() - getYScrollInPixels() >
-                std::min(mousey_current, mousey_initial) and
-            from_note*Y_STEP_HEIGHT+getEditorYStart() - getYScrollInPixels() <
-                std::max(mousey_current, mousey_initial) )
+        if (x1 > mouse_x_min + xscroll and
+            x2 < mouse_x_max + xscroll and
+            from_note*Y_STEP_HEIGHT + getEditorYStart() - yscroll > mouse_y_min and
+            from_note*Y_STEP_HEIGHT + getEditorYStart() - yscroll < mouse_y_max )
         {
-
+            printf("                note %i : selected\n", n);
             m_track->selectNote(n, true);
-
         }
         else
         {
             m_track->selectNote(n, false);
+            printf("                note %i : UNselected\n", n);
         }
     }//next
 
