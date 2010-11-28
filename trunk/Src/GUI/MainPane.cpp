@@ -823,19 +823,38 @@ void MainPane::mouseReleased(wxMouseEvent& event)
 
 void MainPane::keyReleased(wxKeyEvent& evt)
 {
+    /*
+    if (isSelectMorePressed())
+    {
+        SetCursor( wxCursor(wxCURSOR_COPY_ARROW) );
+    }
+    else
+    {
+        SetCursor( wxNullCursor );
+    }
+     */
 }
 
 // --------------------------------------------------------------------------------------------------
 
 void MainPane::keyPressed(wxKeyEvent& evt)
 {
-
+    /*
+    if (isSelectMorePressed())
+    {
+        SetCursor( wxCursor(wxCURSOR_COPY_ARROW) );
+    }
+    else
+    {
+        SetCursor( wxNullCursor );
+    }*/
+    
 #ifdef __WXMAC__
-    const bool commandDown=evt.MetaDown() || evt.ControlDown();
+    const bool commandDown = evt.MetaDown() or evt.ControlDown();
 #else
-    const bool commandDown= evt.ControlDown();
+    const bool commandDown = evt.ControlDown();
 #endif
-    const bool shiftDown=evt.ShiftDown();
+    const bool shiftDown   = evt.ShiftDown();
 
     // ---------------- play selected notes -----------------
     if (evt.GetKeyCode() == WXK_SPACE)
