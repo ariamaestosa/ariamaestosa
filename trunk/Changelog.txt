@@ -8,6 +8,7 @@
 - Fixed not staying centered when zooming with ctrl+mouse wheel
 - Fixed "rearrange notes" feature in tablature editor, which had accidentally been disabled
 - Fixed issues in score editor with stem for some notes being sometimes up, sometimes down
+- Speedups in printing code
 - Don't exit when save dialog is cancelled
 - Code cleanup and unit tests
 
