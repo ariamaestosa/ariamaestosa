@@ -32,6 +32,7 @@
 #include <wx/textctrl.h>
 #include <wx/sizer.h>
 #include <wx/checkbox.h>
+#include <wx/stattext.h>
 #include <iostream>
 
 namespace AriaMaestosa
