@@ -113,10 +113,13 @@ This will do a release build with default wxWidgets. Issue <i>python scons/scons
 <br/>
 <center><b>Compiling Aria (Windows)</b></center>
 <p>
-The command may need to be slightly different, mainly because scons doesn't import environment variable like PATH or WXWIN :
+The command may need to be adapted a little, depending on your enviroment. Here are a few examples :
 
 <blockquote><pre>
-python.exe scons/scons.py WXCONFIG="C:\wx-config --debug=no --static=yes --prefix=C:\wxWidgets-2.8.10" renderer="wxwidgets"  WX_HOME="C:\wxWidgets-2.8.10\"</pre></blockquote>
+python.exe scons/scons.py WXCONFIG="C:\wx-config --debug=no --static=yes --prefix=C:\wxWidgets-2.8.10" renderer="wxwidgets"  WX_HOME="C:\wxWidgets-2.8.10\"
+python.exe scons/scons.py WXCONFIG="C:\wx-config  --prefix=C:\wxWidgets-2.9.1 --wxcfg=gcc_dll\mswud" renderer="wxwidgets"  WX_HOME="C:\wxWidgets-2.9.1\"
+</pre>
+</blockquote>
 </p>
 <p>
 Adapt the path to "wx-config" and to your wxWidgets build as needed. Modify the flags given to wx-config to get the right build if you have
