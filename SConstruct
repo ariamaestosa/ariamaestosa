@@ -254,7 +254,9 @@ def compile_Aria(which_os):
             sys.exit(1)
         
         try:
-            out = subprocess.Popen(["windres", "--include-dir="+wxHomePath+"\include", "--input", "win32\Aria.rc", "--output", "msvcr.o"], stdout = subprocess.PIPE).communicate()
+            command = ["windres", "--include-dir="+wxHomePath+"\include", "--input", "win32\Aria.rc", "--output", "msvcr.o"]
+            print command
+            out = subprocess.Popen(command, stdout = subprocess.PIPE, stderr = subprocess.PIPE).communicate()
         except:
             sys.stderr.write("could not execute 'windres', is mingw installed?\n")
         

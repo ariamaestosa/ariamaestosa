@@ -53,6 +53,7 @@
 #include <iostream>
 #include <sstream>
 
+#include <wx/image.h> 
 #include <wx/artprov.h>
 #include <wx/button.h>
 #include <wx/filename.h>
@@ -64,6 +65,7 @@
 #include <wx/statbmp.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
+#include <wx/bmpbuttn.h>
 
 #ifdef __WXMAC__
 #include <ApplicationServices/ApplicationServices.h>
