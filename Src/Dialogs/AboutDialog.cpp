@@ -20,7 +20,8 @@
 //#include <wx/utils.h>
 #include <wx/bitmap.h>
 #include <wx/textctrl.h>
-#include <wx/bmpbuttn.h>
+#include <wx/generic/statbmpg.h>
+#include <wx/menu.h>
 
 #include "IO/IOUtils.h"
 
@@ -28,12 +29,13 @@ using namespace AriaMaestosa;
 
 // ----------------------------------------------------------------------------------------------------------
 
-AboutDialog::AboutDialog() : wxDialog(NULL, wxID_ANY,  _("About Aria Maestosa"), wxDefaultPosition, wxSize(517, 500) )
+AboutDialog::AboutDialog() : wxFrame(NULL, wxID_ANY,  _("About Aria Maestosa"), wxDefaultPosition, wxSize(517, 500) )
 {
     wxBitmap titleBitmap;
     titleBitmap.LoadFile( getResourcePrefix()  + wxT("title.jpg") , wxBITMAP_TYPE_JPEG );
-    m_picture = new wxBitmapButton(this, 0, titleBitmap, wxPoint(0,0), wxSize(517,174) );
 
+    new wxGenericStaticBitmap(this, wxID_ANY, titleBitmap, wxPoint(0,0), wxSize(517,174));
+    
     //I18N: - in about dialog
     wxString about_text =  wxString::Format(_("version %s"), wxT("1.2.4") ) +
     //I18N: - in about dialog
@@ -52,10 +54,37 @@ AboutDialog::AboutDialog() : wxDialog(NULL, wxID_ANY,  _("About Aria Maestosa"),
              wxString( wxT("\t de : Friedrich Weber\n"))
              );
     
-    m_text_area = new wxTextCtrl(this, 1, about_text, wxPoint(0,174), wxSize(517,500-174), wxTE_MULTILINE | wxTE_READONLY);
+    wxTextCtrl* text_area = new wxTextCtrl(this, 1, about_text, wxPoint(0,174), wxSize(517,500-174),
+                                 wxTE_MULTILINE | wxTE_READONLY);
+    
 #ifdef __WXMAC__
-    m_text_area->MacCheckSpelling(false);
+    text_area->MacCheckSpelling(false);
 #endif
+    
+    wxMenuBar* menuBar = new wxMenuBar();
+    
+    wxMenu* window = new wxMenu();
+    window->Append(wxID_CLOSE, wxString(_("Close"))+wxT("\tCtrl-W"));
+    
+    menuBar->Append(window, wxT("Window"));
+    SetMenuBar(menuBar);
+    
+    Connect(wxID_CLOSE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(AboutDialog::onCloseMenu));
+    Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(AboutDialog::onClose));
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void AboutDialog::onCloseMenu(wxCommandEvent& evt)
+{
+    Destroy();
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void AboutDialog::onClose(wxCloseEvent& evt)
+{
+    Destroy();
 }
 
 // ----------------------------------------------------------------------------------------------------------

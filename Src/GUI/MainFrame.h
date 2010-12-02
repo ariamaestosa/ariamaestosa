@@ -113,7 +113,6 @@ namespace AriaMaestosa
     class MainFrame : public wxFrame, public IPlaybackModeListener, public IActionStackListener,
         public ISequenceDataListener, public ICurrentSequenceProvider
     {
-        WxOwnerPtr<AboutDialog>  aboutDialog;
         WxOwnerPtr<CustomNoteSelectDialog>  m_custom_note_select_dialog;
 
         wxPanel* m_main_panel;

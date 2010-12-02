@@ -24,11 +24,9 @@
   * @brief This module contains all dialogs/frames that can appear over the main frame.
   */
 
-#include <wx/dialog.h>
+#include <wx/frame.h>
 #include "Utils.h"
 
-class wxBitmapButton;
-class wxTextCtrl;
 
 namespace AriaMaestosa
 {
@@ -36,13 +34,10 @@ namespace AriaMaestosa
     /**
       * @ingroup dialogs
       */
-    class AboutDialog : public wxDialog
+    class AboutDialog : public wxFrame
     {
         
         int dialogID;
-        
-        wxBitmapButton* m_picture;
-        wxTextCtrl*     m_text_area;
         
     public:
         LEAK_CHECK();
@@ -50,7 +45,8 @@ namespace AriaMaestosa
         AboutDialog();
         void show();
         
-        
+        void onClose(wxCloseEvent& evt);
+        void onCloseMenu(wxCommandEvent& evt);
     };
     
 }
