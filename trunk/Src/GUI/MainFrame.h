@@ -25,12 +25,15 @@
  */
 
 #include <wx/frame.h>
+#include <wx/toolbar.h>
+#include <wx/panel.h>
 
 #include "Utils.h"
 #include "AriaCore.h"
 #include "ptr_vector.h"
 #include "Midi/Sequence.h"
 
+class wxButton;
 class wxScrollBar;
 class wxSpinCtrl;
 class wxSpinEvent;
