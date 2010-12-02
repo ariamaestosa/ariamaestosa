@@ -4,6 +4,7 @@
 - Fixed rare bug that could cause tracks to have an incorrect instrument name when importing a MIDI
 - Provide graphical warnings when a MIDI file cannot be perfectly loaded
 - Fixed rare printing crash
+- Fixed problems with silences when printing scores with uneven chords
 - Fixed not staying centered when zooming with ctrl+mouse wheel
 - Fixed "rearrange notes" feature in tablature editor, which had accidentally been disabled
 - Fixed issues in score editor with stem for some notes being sometimes up, sometimes down

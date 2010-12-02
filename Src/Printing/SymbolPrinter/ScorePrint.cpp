@@ -322,6 +322,9 @@ namespace AriaMaestosa
     {
         ASSERT( global_dc != NULL);
         
+        //std::cout << "[ScorePrint] renderSilenceCallback : " << PRINT_VAR(tick) << PRINT_VAR(duration)
+        //          << PRINT_VAR(type) << PRINT_VAR(triplet) << PRINT_VAR(dotted) << std::endl;
+        
         const Range<int> x = x_converter->tickToX(tick);
         
         //FIXME: don't rely on from_tick being negative!! what's that crap
@@ -403,7 +406,8 @@ namespace AriaMaestosa
         const int measureToTick   = measure.getLastTick();
         
 #if VERBOSE
-        std::cout << "\naddingTicks(measure " << (measure.id+1) << ", from " << measureFromTick << ", to " << measureToTick << "\n{\n";
+        std::cout << "[ScorePrintable] addingTicks(measure " << (measure.id+1) << ", from "
+                  << measureFromTick << ", to " << measureToTick << "\n{\n";
 #endif
         
         const Track* track = trackRef.getConstTrack();
@@ -482,6 +486,14 @@ namespace AriaMaestosa
         
 #if VERBOSE
         std::cout << "}\n";
+        std::cout << "[ScorePrintable] addUsedTicks : silences\n{\n";
+        for (int n=0; n< m_silences_ticks.size(); n++)
+        {
+            std::cout << "    tick " << m_silences_ticks[n].m_tick_range.from << " (beat "
+                      << m_silences_ticks[n].m_tick_range.from/float(getMeasureData()->beatLengthInTicks())
+                      << ")\n";
+        }
+        std::cout << "}\n";
 #endif
     }
     
@@ -500,8 +512,8 @@ namespace AriaMaestosa
         setCurrentDC(&dc);
         
         
-        std::cout << "ScorePrintable size : " << trackCoords->x0 << ", " << trackCoords->y0 << " to "
-                  << trackCoords->x1 << ", " << trackCoords->y1 << std::endl;
+        std::cout << "[ScorePrintable] ScorePrintable size : " << trackCoords->x0 << ", " << trackCoords->y0
+                  << " to " << trackCoords->x1 << ", " << trackCoords->y1 << std::endl;
         
         x_converter = new PrintXConverter(this, &currentLine, trackID);
         
@@ -885,7 +897,7 @@ namespace AriaMaestosa
         // --- collect notes in the vector
         // by iterating through measures so ScoreAnalyser can prepare the score
         
-        std::cout << " == gathering note list ==\n";
+        std::cout << "[ScorePrintable] earlySetup : gathering note list\n";
         for (int m=0; m<measureAmount; m++)
         {
             PerMeasureInfo& measInfo = perMeasureInfo[trackID*5000+m];
@@ -935,7 +947,7 @@ namespace AriaMaestosa
         }//next element
         
         // ---- Silences
-        std::cout << " == gathering silences ==\n";
+        std::cout << "[ScorePrintable] early setup : gathering silences\n";
         if (m_f_clef)
         {
             m_silences_ticks = SilenceAnalyser::findSilences( f_clef_analyser, 0, measureAmount-1,
@@ -966,9 +978,7 @@ namespace AriaMaestosa
         const int fromTick = getMeasureData()->firstTickInMeasure( line.getFirstMeasure() );
         const int toTick   = getMeasureData()->lastTickInMeasure ( line.getLastMeasure () );
         
-        std::cout << "==========================\n    analyseAndDrawScore " << (f_clef ? "F" : "G")
-                  << "\n==========================\n\n";
-        
+        std::cout << "[ScorePrintable] ==== analyseAndDrawScore " << (f_clef ? "F" : "G") << " ==== \n";
         
         analyser.putInTimeOrder();
         
@@ -1004,17 +1014,13 @@ namespace AriaMaestosa
         
         // since note is right-aligned. go towards the note to "blend" in it.
         stem_down_x_offset = -HEAD_RADIUS*2 + 3;
-        
-        //stem_up_y_offset = 0;
-        //stem_down_y_offset = 0;
-
 
 
 #define LEVEL_TO_Y( lvl ) (y0 + 1 + lineHeight*0.5*((lvl) - min_level))
                 
         
         // ------------ draw score background (horizontal lines) ------------
-        std::cout << " == rendering score background ==\n";
+        //std::cout << "[ScorePrintable] rendering score background ==\n";
         dc.SetPen(  wxPen( wxColour(125,125,125), 7 ) );
         const int lineAmount = 5 + extra_lines_above + extra_lines_under;
         const float lineHeight = (float)(y1 - y0) / (float)(lineAmount-1);
@@ -1063,9 +1069,9 @@ namespace AriaMaestosa
         */
         
         // ------------ render vertical dividers and time signature changes ---------
-        std::cout << " == rendering vertical dividers & time sig changes ==\n";
+        //std::cout << "[ScorePrintable] rendering vertical dividers & time sig changes ==\n";
         
-        //         const bool fclef = (clefType == F_CLEF_ALONE or clefType == F_CLEF_FROM_GRAND_STAFF);
+        // const bool fclef = (clefType == F_CLEF_ALONE or clefType == F_CLEF_FROM_GRAND_STAFF);
 
         /*
         //DEBUG
@@ -1145,7 +1151,7 @@ namespace AriaMaestosa
         {
             LayoutElement& headElement = line.getLayoutElement(0);
             
-            std::cout << " == rendering line header ==\n";
+            //std::cout << "[ScorePrintable] rendering line header\n";
             if (!f_clef)
             {
                 renderGClef(dc, headElement.getXFrom(),
@@ -1225,7 +1231,7 @@ namespace AriaMaestosa
             const int noteAmount = analyser.noteRenderInfo.size();
                 
             // ---- Draw small lines above/below score (ledger lines)
-            std::cout << " == rendering lines for notes out of score ==\n";
+            //std::cout << "[ScorePrintable] rendering lines for notes out of score\n";
             for (int i=0; i<noteAmount; i++)
             {
                 if (analyser.noteRenderInfo[i].getTick() < fromTick) continue;
@@ -1270,7 +1276,7 @@ namespace AriaMaestosa
             dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
             dc.SetBrush( *wxBLACK_BRUSH );
             
-            std::cout << " == rendering note heads ==\n";
+            std::cout << "[ScorePrintable] rendering note heads\n";
             for (int i=0; i<noteAmount; i++)
             {
                 /*
@@ -1368,15 +1374,46 @@ namespace AriaMaestosa
             } // next note
         } // end scope
 
-        // ------------------ second part : intelligent drawing of the rest -----------------
-        std::cout << " == analyzing score ==\n";
         
-        // analyse notes to know how to build the score
+        
         OwnerPtr<ScoreAnalyser> lineAnalyser;
         lineAnalyser = analyser.getSubset(fromTick, toTick);
+        
+        
+        g_printable = this;
+        
+        // ---- render silences
+        std::cout << "[ScorePrintable] rendering silences\n";
+        
+        const int first_measure = line.getFirstMeasure();
+        const int last_measure  = line.getLastMeasure();
+        
+        global_dc = &dc;
+        
+        //FIXME: we already have collected all silence info in a vector... don't call the SilenceAnalyser again!
+        if (f_clef)
+        {
+            const int silences_y = LEVEL_TO_Y(middle_c_level + 4);
+            g_line_height = lineHeight;
+            SilenceAnalyser::findSilences(&renderSilenceCallback, lineAnalyser, first_measure,
+                                          last_measure, silences_y );
+        }
+        else
+        {
+            const int silences_y = LEVEL_TO_Y(middle_c_level - 8);
+            g_line_height = lineHeight;
+            SilenceAnalyser::findSilences(&renderSilenceCallback, lineAnalyser, first_measure, last_measure,
+                                          silences_y );
+        }
+
+        
+        // ------------------ second part : intelligent drawing of the rest -----------------
+        std::cout << "[ScorePrintable] analyzing score\n";
+        
+        // analyse notes to know how to build the score
         lineAnalyser->analyseNoteInfo();
         
-        std::cout << " == rendering note ornaments ==\n";
+        std::cout << "[ScorePrintable] rendering note ornaments\n";
         // now that score was analysed, draw the remaining note bits
         const int noteAmount = lineAnalyser->noteRenderInfo.size();
         for (int i=0; i<noteAmount; i++)
@@ -1511,33 +1548,6 @@ namespace AriaMaestosa
             
             
         } // next note
-        
-        g_printable = this;
-        
-        // ---- render silences
-        std::cout << " == rendering silences ==\n";
-        
-        const int first_measure = line.getFirstMeasure();
-        const int last_measure  = line.getLastMeasure();
-        
-        global_dc = &dc;
-        
-        //FIXME: we already have collected all silence info in a vector... don't call the SilenceAnalyser again!
-        if (f_clef)
-        {
-            const int silences_y = LEVEL_TO_Y(middle_c_level + 4);
-            g_line_height = lineHeight;
-            SilenceAnalyser::findSilences(&renderSilenceCallback, lineAnalyser, first_measure,
-                                          last_measure, silences_y );
-        }
-        else
-        {
-            const int silences_y = LEVEL_TO_Y(middle_c_level - 8);
-            g_line_height = lineHeight;
-            SilenceAnalyser::findSilences(&renderSilenceCallback, lineAnalyser, first_measure, last_measure,
-                                          silences_y );
-        }
-        
     }
 
     // -------------------------------------------------------------------------------------------

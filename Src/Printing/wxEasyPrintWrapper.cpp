@@ -25,7 +25,7 @@ using namespace AriaMaestosa;
 #pragma mark wxEasyPrintWrapper : public interface
 #endif
 
-// -----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 
 wxEasyPrintWrapper::wxEasyPrintWrapper(wxString title, IPrintCallback* printCallBack, float units_per_cm) : wxPrintout( title )
@@ -54,12 +54,12 @@ wxEasyPrintWrapper::wxEasyPrintWrapper(wxString title, IPrintCallback* printCall
     m_unit_height    = -1.0f;
 }
 
-// -----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 bool wxEasyPrintWrapper::performPageSetup(const bool showPageSetupDialog)
 {
-    std::cout << "Showing PAGE SETUP dialog with paper " << wxThePrintPaperDatabase->ConvertIdToName( m_paper_id ).mb_str() << "\n";
-    
+    std::cout << "[wxEasyPrintWrapper] Showing PAGE SETUP dialog with paper "
+              << wxThePrintPaperDatabase->ConvertIdToName( m_paper_id ).mb_str() << "\n";
     
     wxPrintData printdata;
     printdata.SetPrintMode( wxPRINT_MODE_PRINTER );
@@ -75,7 +75,7 @@ bool wxEasyPrintWrapper::performPageSetup(const bool showPageSetupDialog)
     {
         // let user change default values if he wishes to
         wxPageSetupDialog dialog( NULL,  &m_page_setup );
-        if (dialog.ShowModal()==wxID_OK)
+        if (dialog.ShowModal() == wxID_OK)
         {
             m_page_setup     = dialog.GetPageSetupData();
             m_paper_id       = m_page_setup.GetPaperId();
@@ -89,7 +89,7 @@ bool wxEasyPrintWrapper::performPageSetup(const bool showPageSetupDialog)
         }
         else
         {
-            std::cout << "user canceled at page setup dialog" << std::endl;
+            std::cout << "[wxEasyPrintWrapper] user canceled at page setup dialog" << std::endl;
             return false;
         }
     }
@@ -101,7 +101,7 @@ bool wxEasyPrintWrapper::performPageSetup(const bool showPageSetupDialog)
     return true;
 }
 
-// -----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void wxEasyPrintWrapper::updateCoordinateSystem()
 {
@@ -159,7 +159,7 @@ void wxEasyPrintWrapper::updateCoordinateSystem()
 
     }
     
-    std::cout << "ASKING FOR " << PRINT_VAR(m_unit_width) << PRINT_VAR(m_unit_height) << "\n";
+    std::cout << "[wxEasyPrintWrapper] ASKING FOR " << PRINT_VAR(m_unit_width) << PRINT_VAR(m_unit_height) << "\n";
     
     ASSERT(m_unit_width  > 0);
     ASSERT(m_unit_height > 0);
@@ -170,7 +170,7 @@ void wxEasyPrintWrapper::updateCoordinateSystem()
     //          << " - " <<  PRINT_VAR(MARGIN_UNDER_PAGE_HEADER) << std::endl;
 }
 
-// -----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 #ifdef __WXMAC__
 
@@ -187,7 +187,7 @@ void wxEasyPrintWrapper::macEditMargins(wxFrame* parentFrame)
 
 #endif
 
-// -----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void wxEasyPrintWrapper::updateMarginMembers()
 {
@@ -205,14 +205,14 @@ void wxEasyPrintWrapper::updateMarginMembers()
     prefs->save();
 }
 
-// -----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 wxPrintData wxEasyPrintWrapper::getPrintData()
 {
     return m_page_setup.GetPrintData();
 }
 
-// -----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 wxString wxEasyPrintWrapper::getPageSetupSummary() const
 {
@@ -226,7 +226,7 @@ wxString wxEasyPrintWrapper::getPageSetupSummary() const
                             m_left_margin, m_right_margin, m_top_margin, m_bottom_margin);
 }
 
-// -----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void wxEasyPrintWrapper::setPageCount(const int pageCount)
 {
@@ -234,34 +234,31 @@ void wxEasyPrintWrapper::setPageCount(const int pageCount)
     m_page_amount = pageCount;
 }
 
-// -----------------------------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #pragma mark wxEasyPrintWrapper : callbacks from wxPrintout
 #endif
 
-// -----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void wxEasyPrintWrapper::OnBeginPrinting()
 {
-    std::cout << "---- ON BEGIN PRINTING ----\n"
-    << m_unit_width << "x" << m_unit_height << "\n";
+    std::cout << "[wxEasyPrintWrapper] onBeginPrinting :" << m_unit_width << "x" << m_unit_height << "\n";
 }
 
-// -----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 bool wxEasyPrintWrapper::OnBeginDocument(int startPage, int endPage)
 {
-    std::cout << "\n\n=============================\n";
-    std::cout << "beginning to print document, from page " << startPage << " to "
-    << endPage << std::endl;
-    std::cout << "=============================\n\n";
+    std::cout << "[wxEasyPrintWrapper] OnBeginDocument, from page " << startPage << " to "
+              << endPage << std::endl;
     
     return wxPrintout::OnBeginDocument(startPage, endPage);
 }
 
-// -----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void wxEasyPrintWrapper::GetPageInfo(int *minPage, int *maxPage, int *pageSelFrom, int *pageSelTo)
 {
@@ -288,7 +285,7 @@ bool wxEasyPrintWrapper::HasPage(int pageNum)
 
 bool wxEasyPrintWrapper::OnPrintPage(int pageNum)
 {
-    std::cout << "\n============\nprinting page " << pageNum << "\n==============" << std::endl;
+    std::cout << "\n============\n[OnBeginDocument] printing page " << pageNum << "\n==============" << std::endl;
     
     // ---- setup DC with coordinate system ----
     
@@ -306,7 +303,7 @@ bool wxEasyPrintWrapper::OnPrintPage(int pageNum)
     wxDC* ptr = GetDC();
     if (ptr == NULL or not ptr->IsOk())
     {
-        std::cerr << "DC is not Ok, interrupting printing" << std::endl;
+        std::cerr << "[OnBeginDocument] ERROR: DC is not Ok, interrupting printing" << std::endl;
         return false;
     }
     wxDC& dc = *ptr;
@@ -320,8 +317,8 @@ bool wxEasyPrintWrapper::OnPrintPage(int pageNum)
     const int x1 = x0 + width;
     const int y1 = y0 + height;
     
-    std::cout << "printable area : (" << x0 << ", " << y0 << ") to (" << x1 << ", " << y1 << ")" << std::endl;
-    
+    std::cout << "[OnBeginDocument] printable area : (" << x0 << ", " << y0 << ") to ("
+              << x1 << ", " << y1 << ")" << std::endl;
 
     m_print_callback->printPage(pageNum, dc, x0, y0, x1, y1);
     

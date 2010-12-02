@@ -89,7 +89,7 @@ AriaPrintable::AriaPrintable(wxString title, bool* success) :
     m_printer_manager = new wxEasyPrintWrapper( title, this, UNITS_PER_CM );
     if (not m_printer_manager->performPageSetup())
     {
-        std::cerr << "Default page setup failed!\n";
+        std::cerr << "[AriaPrintable] ERROR: Default page setup failed!\n";
         *success = false;
     }
     else
@@ -134,7 +134,7 @@ void AriaPrintable::findUsableHeight()
     m_usable_area_height_page_1 = height - m_title_font_height - m_subtitle_font_height - MARGIN_UNDER_PAGE_HEADER;
     m_usable_area_height        = height - m_subtitle_font_height - MARGIN_UNDER_PAGE_HEADER;
     
-    std::cout << "Calculating 'm_usable_area_height' with height=" << height << "\n";
+    std::cout << "[AriaPrintable] Calculating 'm_usable_area_height' with height=" << height << "\n";
     
     ASSERT(m_usable_area_height_page_1 > 0);
     ASSERT(m_usable_area_height > 0);
