@@ -26,7 +26,7 @@ namespace AriaMaestosa
     const PrintLayoutMeasure NULL_MEASURE(-1);
 }
 
-#define PLM_CHATTY 1
+#define PLM_CHATTY 0
 
 using namespace AriaMaestosa;
 
@@ -158,7 +158,7 @@ bool PrintLayoutMeasure::calculateIfMeasureIsSameAs(PrintLayoutMeasure& checkMea
 int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
 {
 #if PLM_CHATTY
-    std::cout << "PrintLayoutMeasure::addTrackReference / track is '" << track->getName().mb_str()
+    std::cout << "[PrintLayoutMeasure::addTrackReference] / track is '" << track->getName().mb_str()
               << "' // measure is " << (m_measure_id + 1) << " // looking from note " << firstNote << "\n";
 #endif
     
