@@ -301,8 +301,8 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             for (int n=0; n<noteAmount; n++)
             {
 
-                int x1 = m_track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels();
-                int x2 = m_track->getNoteEndInPixels(n)   - m_sequence->getXScrollInPixels();
+                int x1 = track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels();
+                int x2 = track->getNoteEndInPixels(n)   - m_sequence->getXScrollInPixels();
 
                 // don't draw notes that won't be visible
                 if (x2 < 0)       continue;
