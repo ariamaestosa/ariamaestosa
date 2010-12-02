@@ -574,19 +574,22 @@ void ScoreAnalyser::analyseNoteInfo()
 
 // -----------------------------------------------------------------------------------------------------------
 
-ScoreAnalyser* ScoreAnalyser::getSubset(const int fromTick, const int toTick)
+ScoreAnalyser* ScoreAnalyser::getSubset(const int fromTick, const int toTick) const
 {
-    ScoreAnalyser* out = new ScoreAnalyser(*this);
-    
-    //std::cout << "getting subset out of " << (int)(out->noteRenderInfo.size()) << " elements\n";
-    
-    for (int n=0; n<(int)out->noteRenderInfo.size(); n++)
+    ScoreAnalyser* out = new ScoreAnalyser();
+    out->m_editor        = m_editor;
+    out->m_stem_pivot    = m_stem_pivot;
+    out->min_stem_height = min_stem_height;
+    out->stem_height     = stem_height;
+        
+    // Copy only the note render infos that fit the specified tick range
+    // TODO: are the note render infos sorted by tick? If so this could be made faster
+    const int count = noteRenderInfo.size();
+    for (int n=0; n<count; n++)
     {
-        if (out->noteRenderInfo[n].getTick() < fromTick or out->noteRenderInfo[n].getTick() >= toTick)
+        if (noteRenderInfo[n].getTick() >= fromTick and noteRenderInfo[n].getTick() < toTick)
         {
-            out->noteRenderInfo.erase(out->noteRenderInfo.begin() +  n);
-            n--;
-            if (n<-1) n=-1;
+            out->noteRenderInfo.push_back( noteRenderInfo[n] );
         }
     }
     

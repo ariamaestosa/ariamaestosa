@@ -206,6 +206,7 @@ namespace AriaMaestosa
     {
         friend class BeamGroup;
         
+        // REMEMBER: on adding new members, don't forget to update the cloning code in 'getSubset'
         Editor* m_editor;
         int m_stem_pivot;
         
@@ -214,6 +215,7 @@ namespace AriaMaestosa
         
         void addToVector( NoteRenderInfo& renderInfo, const bool recursion );
         
+        ScoreAnalyser() {}
         
     public:
         LEAK_CHECK();
@@ -228,7 +230,7 @@ namespace AriaMaestosa
          * @return a new ScoreAnalyser, that contains a subset of the current one.
          * @note   The returned pointer must be freed.
          */
-        ScoreAnalyser* getSubset(const int fromTick, const int toTick);
+        ScoreAnalyser* getSubset(const int fromTick, const int toTick) const;
         
         float getStemTo(NoteRenderInfo& note);
         
