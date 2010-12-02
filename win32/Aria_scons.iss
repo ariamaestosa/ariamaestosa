@@ -3,8 +3,8 @@
 
 [Setup]
 AppName=Aria Maestosa
-AppVerName=Aria Maestosa V 1.2.3
-VersionInfoVersion=1.2.3
+AppVerName=Aria Maestosa V 1.2.4
+VersionInfoVersion=1.2.4
 AppPublisher=
 AppPublisherURL=http://ariamaestosa.sourceforge.net/
 AppSupportURL=
@@ -35,6 +35,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [Files]
 Source: "..\Aria.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\*.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Resources\*"; Excludes: "*.icns"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "..\international\*.mo"; DestDir: "{app}\Languages"; Flags: ignoreversion recursesubdirs
 Source: "..\license.txt"; DestDir: "{app}"; Flags: ignoreversion
