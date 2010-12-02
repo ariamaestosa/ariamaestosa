@@ -1,10 +1,23 @@
 Index: src/osx/core/printmac.cpp
 ===================================================================
---- src/osx/core/printmac.cpp	(revision 63701)
+--- src/osx/core/printmac.cpp	(revision 65558)
 +++ src/osx/core/printmac.cpp	(working copy)
-@@ -560,12 +560,30 @@
-     
-     printout->SetIsPreview(false);
+@@ -543,9 +543,9 @@
+ void wxOSXPrintData::TransferFrom( wxPrintDialogData* data )
+ {
+     // Respect the value of m_printAllPages
+-    if ( data->GetAllPages() )
+-        PMSetPageRange( m_macPrintSettings , data->GetMinPage() , (UInt32) kPMPrintAllPages ) ;
+-    else
++    //if ( data->GetAllPages() )
++    //    PMSetPageRange( m_macPrintSettings , data->GetMinPage() , (UInt32) kPMPrintAllPages ) ;
++    //else
+         PMSetPageRange( m_macPrintSettings , data->GetMinPage() , data->GetMaxPage() ) ;
+     PMSetCopies( m_macPrintSettings , data->GetNoCopies() , false ) ;
+     PMSetFirstPage( m_macPrintSettings , data->GetFromPage() , false ) ;
+@@ -596,6 +596,24 @@
+         return false;
+     }
  
 +    printout->OnPreparePrinting();
 +
@@ -12,13 +25,13 @@ Index: src/osx/core/printmac.cpp
 +    int fromPage, toPage;
 +    int minPage, maxPage;
 +    printout->GetPageInfo(&minPage, &maxPage, &fromPage, &toPage);
-+    
++
 +    if (maxPage == 0)
 +    {
 +        sm_lastError = wxPRINTER_ERROR;
 +        return false;
 +    }
-+    
++
 +    // Only set min and max, because from and to will be
 +    // set by the user
 +    m_printDialogData.SetMinPage(minPage);
@@ -27,35 +40,31 @@ Index: src/osx/core/printmac.cpp
      if (m_printDialogData.GetMinPage() < 1)
          m_printDialogData.SetMinPage(1);
      if (m_printDialogData.GetMaxPage() < 1)
-         m_printDialogData.SetMaxPage(9999);
-     
--    // Create a suitable device context
-+    // Show dialog if requested, Create a suitable device context
-     wxPrinterDC *dc = NULL;
-     if (prompt)
-     {
-@@ -630,24 +648,6 @@
+@@ -664,27 +682,8 @@
+     dc->GetSizeMM(&mw, &mh);
+     printout->SetPageSizeMM((int)mw, (int)mh);
  
-     // Create an abort window
+-    // Create an abort window
      wxBeginBusyCursor();
--
+ 
 -    printout->OnPreparePrinting();
 -
 -    // Get some parameters from the printout, if defined
 -    int fromPage, toPage;
 -    int minPage, maxPage;
 -    printout->GetPageInfo(&minPage, &maxPage, &fromPage, &toPage);
--    
+-
 -    if (maxPage == 0)
 -    {
 -        sm_lastError = wxPRINTER_ERROR;
 -        return false;
 -    }
--    
+-
 -    // Only set min and max, because from and to will be
 -    // set by the user
 -    m_printDialogData.SetMinPage(minPage);
 -    m_printDialogData.SetMaxPage(maxPage);
-         
+-
      printout->OnBeginPrinting();
  
+     bool keepGoing = true;
