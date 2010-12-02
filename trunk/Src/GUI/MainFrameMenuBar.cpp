@@ -860,7 +860,7 @@ void MainFrame::menuEvent_metronome(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_about(wxCommandEvent& evt)
 {
-    if (aboutDialog.raw_ptr == NULL) aboutDialog = new AboutDialog();
+    AboutDialog* aboutDialog = new AboutDialog();
     aboutDialog->show();
 }
 
