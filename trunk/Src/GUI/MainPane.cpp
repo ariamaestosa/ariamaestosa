@@ -861,6 +861,16 @@ void MainPane::keyPressed(wxKeyEvent& evt)
     {
         getCurrentSequence()->spacePressed();
     }
+    
+#ifdef _MORE_DEBUG_CHECKS
+    if (evt.GetKeyCode() == WXK_F3)
+    {
+        wxPoint p = wxGetMousePosition();
+        RelativeXCoord x;
+        x.setValue(ScreenToClient(p).x, WINDOW);
+        printf("Tick : %i\n", x.getRelativeTo(MIDI));
+    }
+#endif
 
     // ---------------- resize notes -----------------
     if (commandDown and not shiftDown)

@@ -64,7 +64,7 @@ bool SymbolPrintableSequence::addTrack(Track* track, EditorType mode)
     }
     else
     {
-        std::cerr << "SymbolPrintableSequence::addTrack : mode " << mode << " not supported for printing" << std::endl;
+        std::cerr << "[SymbolPrintableSequence] addTrack : mode " << mode << " not supported for printing" << std::endl;
         return false;
     }
     
@@ -155,8 +155,8 @@ void SymbolPrintableSequence::printLine(LayoutLine& line, wxDC& dc)
         dc.DrawLine( lineCoords->x1-3, my0, lineCoords->x1-3, my1); // right-side line
     }
     
-    std::cout << "\n======== Printing Line (contains " << line.getLayoutElementCount()
-              << " layout elements) from y=" << my0 << " to " << my1 << " ========" << std::endl;
+    std::cout << "[SymbolPrintableSequence] ==== Printing Line (contains " << line.getLayoutElementCount()
+              << " layout elements) from y=" << my0 << " to " << my1 << " ====" << std::endl;
     
     // ---- Debug guides
     if (PRINT_LAYOUT_HINTS)
@@ -175,14 +175,14 @@ void SymbolPrintableSequence::printLine(LayoutLine& line, wxDC& dc)
         // skip empty tracks
         if (line.getLineTrackRef(n).empty()) continue;
         
-        std::cout << "==== Printing track " << n << " ====" << std::endl;
+        std::cout << "[SymbolPrintableSequence] ==== Printing track " << n << " ====\n";
         
         const LineTrackRef& sizing = line.getLineTrackRef(n);
         const TrackCoords* trackCoords = sizing.m_track_coords.raw_ptr;
         ASSERT(trackCoords != NULL);
         
-        std::cout << "Coords : " << trackCoords->x0 << ", " << trackCoords->y0 << " to "
-                  << trackCoords->x1 << ", " << trackCoords->y1 << std::endl;
+        std::cout << "[SymbolPrintableSequence] Coords : " << trackCoords->x0 << ", " << trackCoords->y0
+                  << " to " << trackCoords->x1 << ", " << trackCoords->y1 << std::endl;
         
 #if DEBUG_DRAW
         dc.SetPen(  wxPen( wxColour(0,255,0), 12 ) );
