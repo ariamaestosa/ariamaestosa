@@ -1373,7 +1373,7 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
             full << "    " << (*it).utf8_str();
         }
         
-        m_notification_text->SetLabel(wxString(full.str()));
+        m_notification_text->SetLabel(wxString(full.str().c_str(), wxConvUTF8));
         m_notification_panel->Layout();
         m_notification_panel->GetSizer()->SetSizeHints(m_notification_panel);
 		m_notification_panel->Show();
