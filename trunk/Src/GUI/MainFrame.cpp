@@ -421,7 +421,7 @@ void MainFrame::init()
 	{
         wxBoxSizer* notification_sizer = new wxBoxSizer(wxHORIZONTAL);		
         m_notification_panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_SIMPLE);
-        m_notification_text = new wxStaticText(m_notification_panel, wxID_ANY, "[No message]");
+        m_notification_text = new wxStaticText(m_notification_panel, wxID_ANY, wxT("[No message]"));
         notification_sizer->Add( new wxStaticBitmap(m_notification_panel, wxID_ANY,
                                                     wxArtProvider::GetBitmap(wxART_WARNING, wxART_OTHER , wxSize(48, 48))),
                                 0, wxALIGN_CENTER_VERTICAL | wxALL, 5 );	
@@ -1373,7 +1373,7 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
             full << "    " << (*it).utf8_str();
         }
         
-        m_notification_text->SetLabel(full.str());
+        m_notification_text->SetLabel(wxString(full.str()));
         m_notification_panel->Layout();
         m_notification_panel->GetSizer()->SetSizeHints(m_notification_panel);
 		m_notification_panel->Show();
