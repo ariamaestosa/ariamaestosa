@@ -16,34 +16,6 @@ NOTE: sorry, this is very raw :)
 
   ************************* LONG TERM: *************************
 
-== 1.3 ==
-- Move OSX player to AudioUnits since the currently used code is deprecated
-- Midi instrument support (record from keyboard, play to keyboard)
-- Fix pitch IDs and other cleanups
-- Allow showing several editors at once
-- Multiple instrument changes per track
-
-== 2.0 (and beyond) ==
-- plug-in system (and move some features to plugins)
-    - plugin ideas :
-        * music theory/hearing/practice plugin
-        * song analysis plugin (make midi from audio)
-        * guitar tuner
-        * MIDI event lister
-        * re-arrange tablature to be easier to play
-        * chord builder
-        * stand-alone metronome
-- better synth support (go beyond midi)
-    * fluidsynth
-    * gervill
-    * audio units
-    * mod-like samples
-    * other ideas?
-- better control editor
-    * nodes, curves
-- guitar pro support
-- non-linear editing (a repeating chorus should not require copy-and-paste)
-
 == Pie in the sky ==
  - changes to song should be heard if done while playing
 
@@ -53,39 +25,6 @@ NOTE: sorry, this is very raw :)
     * Add sound selection to preferences (+ option to have a different sound on first measure beat?
                                          (+ option to have a different sound on half-beats?)
     * Add "enabled by default" option to preferences
-
-* Test Actions with Unit tests
-* remember printing orientation
-
-[1.3] OS X : allow sending playback to an external MIDI device (e.g. keyboard)
-[1.3] Add guitar tuning user-defined presets
-[1.3] In score and tab editors, show more clearly where you can click to hear the note
-[1.3] show which files have unsaved changes
-[1.3] find dialog should have options greyed out if brought up with no selected note
-[1.3] when closing last tab, show a "welcome screen" instead of exiting?
-[1.3] allow shift-clicking in measure bar to select more measures
-[1.3] .aria files don't remember whether drums are minimized
-[1.3] .aria files don't remember docked tracks
-[1.3] background choices are not saved to .aria files
-[1.3] Custom Key editor :
-    - add 'select all', 'select none'
-    - when performing changes in one of the two editors, mirror them in the other?
-[1.3] Afficher un chronomtre qui s'incrŽmente lorsque le morceau est jouŽ
-[1.3] song length should automatically grow when pasting goes past the end of the song
-[1.3] when changing measure length in a song that already has midi events in it, song length becomes wrong compared to midi events
-[1.3] shift-click on a selected notes unselects it
-[1.3] cursor should change when hitting key modifiers (at least a select icon when hitting shift in control editor)
-[1.3] clicking outside volume picker should close it (use wxPopupTransientWindow ?)
-[1.3] When a .aria file causes trouble during loading, show a warning message, don't just print errors to the terminal
-[1.3] Keyboard editor : show current key in left area
-
-[2.0+] Allow setting, in G+F score, whether each note is in the G or F clef
-[2.0+] Allow 8va to be applied to only some parts of track
-[2.0+] copy entire measures through measure bar
-[2.0+] when scaling entire song, scale control events and time sig changes too
-[2.0+] reordering tracks should be nicer
-[2.0+] controller support for fine values
-[2.0+] Move build system to Waf
 
 * score print :
     * red images
@@ -105,10 +44,6 @@ NOTE: sorry, this is very raw :)
 + contextual menu on right-click (copy, paste, track props, ...)
 + Include sample files along Aria?
  
-+ Pouvoir commencer ˆ jouer le morceau pas forcement au dŽbut ni le terminer forcŽment ˆ la fin
-  (sans passer par une sŽlection puis espace) : systme de 2 curseurs ˆ placer en haut (and add *loop*)
-
-+ make more features accessible graphically (as opposed to keyboard-only)
 - elements you get from clicking on the left area should appear in the main menubar too
 
 + linux : export to wav when not using timidity?
@@ -140,70 +75,17 @@ UNSURE/MINOR:
 * New way to store preferences (with strings instead of integers)
   messes up on Windows (encoding issue?) [can't reproduce]
 
-** Things like changing global tempo, changing song length, etc... are not actions and thus do not mark the
-   document as having unsaved changes!
-** Add Time Sig change is not an action and is not undone
-
-** Printing a song that has notes after the "official" song ending can cause assertion failures
-
-** Shift+left/Shift+right may cause asertion failures if trying to move notes past the official end of the song
-
-* Undoing "delete track" places it back at the bottom, not where it was
-
-* Sequence::setTempo / getTempo may get out of sync if first event is edited through controller editor!!
-
-* red selection color in score editor should dim when switching to another track
 
 * red images
 
-[1.3] score editor at wrong octave
-[1.3] error at startup (quicktime will not play dummy file to init it?)
-        error:
-        -->Mac OS error -208
-        -->(null)
-[1.3] My CoreAudio player is deprecated on OS X 10.5...
-    AudioToolboxPlayer.cpp:48: warning: 'MusicSequenceLoadSMFData' is deprecated (declared at /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/MusicPlayer.h:1613)
-    AudioToolboxPlayer.cpp:48: warning: 'MusicSequenceLoadSMFData' is deprecated (declared at /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/MusicPlayer.h:1613)
-    Midi/Players/Mac/CoreAudioNotePlayer.cpp: In function 'OSStatus CoreAudioNotePlayer::CreateAUGraph(OpaqueAUGraph*&, ComponentInstanceRecord*&)':
-    Midi/Players/Mac/CoreAudioNotePlayer.cpp:75: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
-    Midi/Players/Mac/CoreAudioNotePlayer.cpp:75: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
-    Midi/Players/Mac/CoreAudioNotePlayer.cpp:80: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
-    Midi/Players/Mac/CoreAudioNotePlayer.cpp:80: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
-    Midi/Players/Mac/CoreAudioNotePlayer.cpp:84: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
-    Midi/Players/Mac/CoreAudioNotePlayer.cpp:84: warning: 'AUGraphNewNode' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:674)
-    Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
-    Midi/Players/Mac/CoreAudioNotePlayer.cpp:92: warning: 'AUGraphGetNodeInfo' is deprecated (declared at /System/Library/Frameworks/AudioToolbox.framework/Headers/AUGraph.h:689)
-[1.3] controller editor should keep drum instrument in a drum track (would be fixed if control editor appears under current editor)
-[1.3] in .aria files, pitch should be midi pitch, not my reverse pitch
-
-[2.0+] repetition detection:
-    - sometimes does 41-42 43-44 and not 41-44
-    - x2 can appear on new line...
-    - repeated measures need measure numbers too
-    - sometimes uses, in repetitions, measures that are not printed (that are inside a previous repetition)
-[2.0+] "rearrange selected notes" doesn't always work optimally
-
-
-+ score editor - sharp or flat notes at time=0 have their sign hidden behind grey bar
-- score : flat/sharp/natural signs tend to appear obscured (behind note stem if in a group... behind silence... etc.)
-
-
-- hard to resize last track
-
-- in manual channel management mode, it's still a bit too easy to get multiple tracks on the same channel with different instruments
-  (for instance by switching to and from drum editor, etc.)
 
  MINOR / CLEANUP / UNSURE:
  - when wait dialog appears, you can still edit tracks and do operations that may be harmful to current process.
     yet you can't make it modal otherwise the background process stops.
 
- - if a midi has control events in an empty track they might be removed during import (though what could go there? tempo events are already stored in sequence)
  - linux: exporting to audio via timidity : give better feedback about progression?
  + many Actions are only used on selected notes, yet they offer an implementation for single notes. This implementation was never tested and may be buggy
  - score : moving a sharp/flat/natural note up or down makes it lose its properties
- - some drums that are not standard drumset preview fine but dont play correctly (SFX and one other. bug in QT?)
-        I say bug in QT since it also seems to affect songs made in other software
- - trigger coreaudio note player at startup?
 
  - FIXMEs
  - copyright editor should have the text field appear multiline but not accept line breaks (enter should default to activating OK button)
