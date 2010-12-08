@@ -19,8 +19,16 @@
 
 //#include <wx/utils.h>
 #include <wx/bitmap.h>
-#include <wx/textctrl.h>
+
+#if wxCHECK_VERSION(2,9,0)
 #include <wx/generic/statbmpg.h>
+typedef wxGenericStaticBitmap AboutImage;
+#else
+#include <wx/statbmp.h>
+typedef wxStaticBitmap AboutImage;
+#endif
+
+#include <wx/textctrl.h>
 #include <wx/menu.h>
 
 #include "IO/IOUtils.h"
@@ -34,7 +42,7 @@ AboutDialog::AboutDialog() : wxFrame(NULL, wxID_ANY,  _("About Aria Maestosa"), 
     wxBitmap titleBitmap;
     titleBitmap.LoadFile( getResourcePrefix()  + wxT("title.jpg") , wxBITMAP_TYPE_JPEG );
 
-    new wxGenericStaticBitmap(this, wxID_ANY, titleBitmap, wxPoint(0,0), wxSize(517,174));
+    new AboutImage(this, wxID_ANY, titleBitmap, wxPoint(0,0), wxSize(517,174));
     
     //I18N: - in about dialog
     wxString about_text =  wxString::Format(_("version %s"), wxT("1.2.4.1") ) +
