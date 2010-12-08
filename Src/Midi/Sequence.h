@@ -32,7 +32,7 @@ namespace irr { namespace io {
 #include "ptr_vector.h"
 #include "Utils.h"
 
-
+#include <math.h> // for 'round'
 #include <string>
 
 
