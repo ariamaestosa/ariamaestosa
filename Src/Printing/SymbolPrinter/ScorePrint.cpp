@@ -1484,28 +1484,29 @@ namespace AriaMaestosa
                 dc.SetPen(  wxPen( wxColour(0,0,0), 10 ) );
                 dc.SetBrush( *wxBLACK_BRUSH );
                 
-                const int x1 = getStemX(noteRenderInfo) - 2;
-                int y1       = LEVEL_TO_Y(analyser.getStemTo(noteRenderInfo));
-                int y2       = LEVEL_TO_Y(noteRenderInfo.m_beam_to_level);
+                const int beam_x1 = getStemX(noteRenderInfo) - 2;
+                int beam_y1       = LEVEL_TO_Y(analyser.getStemTo(noteRenderInfo));
+                int beam_y2       = LEVEL_TO_Y(noteRenderInfo.m_beam_to_level);
                 
                 const int y_diff = (noteRenderInfo.m_stem_type == STEM_UP ? 55 : -55);
                                 
-                const int beam_to_x = getStemX(noteRenderInfo.m_beam_to_tick, noteRenderInfo.m_beam_to_sign,
-                                               noteRenderInfo.m_stem_type) + 2;
+                const int beam_x2 = getStemX(noteRenderInfo.m_beam_to_tick,
+                                             noteRenderInfo.m_beam_to_sign,
+                                             noteRenderInfo.m_stem_type) + 2;
                 
                 for (int n=0; n<noteRenderInfo.m_flag_amount; n++)
                 {
                     wxPoint points[] =
                     {
-                        wxPoint(x1, y1),
-                        wxPoint(beam_to_x, y2),
-                        wxPoint(beam_to_x, y2+20),
-                        wxPoint(x1, y1+20)
+                        wxPoint(beam_x1, beam_y1),
+                        wxPoint(beam_x2, beam_y2),
+                        wxPoint(beam_x2, beam_y2 + 20),
+                        wxPoint(beam_x1, beam_y1 + 20)
                     };
                     dc.DrawPolygon(4, points);
                     
-                    y1 += y_diff;
-                    y2 += y_diff;
+                    beam_y1 += y_diff;
+                    beam_y2 += y_diff;
                 }
                 dc.SetBrush( *wxTRANSPARENT_BRUSH );
             }
