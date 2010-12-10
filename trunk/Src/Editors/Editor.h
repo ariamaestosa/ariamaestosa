@@ -155,10 +155,10 @@ namespace AriaMaestosa
         int m_last_drag_y;    
     
         /** Whether this particular editor wants a vertical scrollbar */
-        bool useVerticalScrollbar_bool;
+        bool m_use_vertical_scrollbar;
         
         /** true if notes have no duration (e.g. drums). false by default */
-        bool useInstantNotes_bool; 
+        bool m_use_instant_notes; 
         
         /** scrollbar position, 0 meaning at top and 1 at bottom */
         float m_sb_position; 
@@ -178,12 +178,12 @@ namespace AriaMaestosa
         int m_header_bar_height;
         
         bool m_selecting;
-        int m_y_step;
+        int  m_y_step;
         
-        bool m_mouse_is_in_editor;
+        bool  m_mouse_is_in_editor;
         
         /** contains the ID of the latest clicked note, or -1 (FIXME: document when -1 is used) */
-        int m_last_clicked_note; 
+        int  m_last_clicked_note; 
         
         bool m_clicked_on_note;
         
@@ -208,8 +208,8 @@ namespace AriaMaestosa
          */
         void setYStep(const int height);
         
-        Track* m_track;
-        Sequence* m_sequence;
+        Track*          m_track;
+        Sequence*       m_sequence;
         GraphicalTrack* m_graphical_track;
         
     public:
