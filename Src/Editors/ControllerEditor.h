@@ -15,10 +15,11 @@
  */
 
 
-#ifndef _controllereditor_
-#define _controllereditor_
+#ifndef __CONTROLLER_EDITOR_H__
+#define __CONTROLLER_EDITOR_H__
 
 #include "Editors/Editor.h"
+#include "Pickers/ControllerChoice.h"
 
 #include <wx/intl.h>
 
@@ -26,7 +27,6 @@ namespace AriaMaestosa
 {
     
     class Track; // forward
-    class ControllerChoice;
     
     /**
      * @brief editor for MIDI controllers (effects)
@@ -38,14 +38,15 @@ namespace AriaMaestosa
     class ControllerEditor : public Editor
     {
         
-        bool hasBeenResizing; // true if user has been resizing track anytime since last mouse down
-        bool m_mouse_is_in_editor; // true if mouse drag is within track bounds. false if is on header on scrollbar, etc.
+        bool m_has_been_resizing;  //!< true if user has been resizing track anytime since last mouse down
+        bool m_mouse_is_in_editor; //!< true if mouse drag is within track bounds. false if is on header on scrollbar, etc.
         
-        bool selecting;
+        bool m_selecting;
         
-        OwnerPtr<ControllerChoice>  controllerChoice;
+        OwnerPtr<ControllerChoice>  m_controller_choice;
         
         int selection_begin, selection_end;
+        
     public:
         
         ControllerEditor(Track* track);
@@ -72,7 +73,10 @@ namespace AriaMaestosa
         int getSelectionBegin();
         int getSelectionEnd();
         
-        int getCurrentControllerType();
+        int getCurrentControllerType() const
+        {
+            return m_controller_choice->getControllerID();
+        }
         
         /** implemented from base class Editor's required interface */
         virtual int getYScrollInPixels()

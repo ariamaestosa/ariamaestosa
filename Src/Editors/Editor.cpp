@@ -58,12 +58,12 @@ Editor::Editor(Track* track)
     m_click_on_scrollbar = false;
 
     m_selecting = false;
-    useVerticalScrollbar_bool = true;
+    m_use_vertical_scrollbar = true;
 
     m_mouse_is_in_editor = false;
     m_clicked_on_note    = false;
     m_last_clicked_note  = -1;
-    useInstantNotes_bool = false;
+    m_use_instant_notes = false;
 
     m_default_volume = 80;
 }
@@ -95,7 +95,7 @@ void Editor::setDefaultVolume(const int v)
 void Editor::useInstantNotes(bool enabled)
 {
     ASSERT( MAGIC_NUMBER_OK() );
-    useInstantNotes_bool = enabled;
+    m_use_instant_notes = enabled;
 }
 
 // ------------------------------------------------------------------------------------------------------------
@@ -103,7 +103,7 @@ void Editor::useInstantNotes(bool enabled)
 void Editor::useVerticalScrollbar(const bool useScrollbar)
 {
     ASSERT( MAGIC_NUMBER_OK() );
-    Editor::useVerticalScrollbar_bool = useScrollbar;
+    Editor::m_use_vertical_scrollbar = useScrollbar;
 }
 
 // ------------------------------------------------------------------------------------------------------------
@@ -179,7 +179,7 @@ void Editor::renderScrollbar()
 {
     ASSERT( MAGIC_NUMBER_OK() );
     
-    if ( !useVerticalScrollbar_bool ) return;
+    if ( !m_use_vertical_scrollbar ) return;
 
     AriaRender::images();
 
@@ -334,7 +334,7 @@ void Editor::mouseDown(RelativeXCoord x, int y)
 
     m_last_drag_y = y;
 
-    if (useVerticalScrollbar_bool)
+    if (m_use_vertical_scrollbar)
     {
         // check if user is grabbing the scroll bar
         if (x.getRelativeTo(WINDOW) > sbThumbDrawable->getX() and
@@ -364,11 +364,11 @@ void Editor::mouseDown(RelativeXCoord x, int y)
 
     if (y < getYEnd() - 5 and y > getEditorYStart())
     {
-        if (useVerticalScrollbar_bool and x.getRelativeTo(WINDOW) < getWidth() - 24)
+        if (m_use_vertical_scrollbar and x.getRelativeTo(WINDOW) < getWidth() - 24)
         {
             m_mouse_is_in_editor = true;
         }
-        else if (not useVerticalScrollbar_bool and x.getRelativeTo(WINDOW) < getXEnd())
+        else if (not m_use_vertical_scrollbar and x.getRelativeTo(WINDOW) < getXEnd())
         {
             m_mouse_is_in_editor = true;
         }
@@ -409,7 +409,7 @@ void Editor::mouseDrag(RelativeXCoord mousex_current, int mousey_current,
 {
     ASSERT( MAGIC_NUMBER_OK() );
     
-    if (useVerticalScrollbar_bool)
+    if (m_use_vertical_scrollbar)
     {
 
         // -------------------  drag scrollbar  ---------------
@@ -456,7 +456,7 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
 {
     ASSERT( MAGIC_NUMBER_OK() );
     
-    if (useVerticalScrollbar_bool)
+    if (m_use_vertical_scrollbar)
     {
         m_vertical_scrolling=false;
         m_click_on_scrollbar=false;
@@ -478,7 +478,7 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                 // --------------------------  add note  --------------------------
 
 
-                if (useVerticalScrollbar_bool)
+                if (m_use_vertical_scrollbar)
                 {
                     if (mousex_current.getRelativeTo(WINDOW) > sbThumbDrawable->getX() or
                         mousex_initial.getRelativeTo(WINDOW) > sbThumbDrawable->getX())
@@ -499,7 +499,7 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                 int snapped_end   = snapMidiTickToGrid(mousex_current.getRelativeTo(MIDI) );
 
                 // reject empty/malformed notes, add on success
-                if (useInstantNotes_bool) // for drums
+                if (m_use_instant_notes) // for drums
                 {
                     if (snapped_end < 0)
                     {
@@ -641,7 +641,7 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 
 
     // -------------- check if user is clicking on scroll bar, but not grabbing the thumb ----------------
-    if (useVerticalScrollbar_bool)
+    if (m_use_vertical_scrollbar)
     {
         m_click_on_scrollbar = false;
 
