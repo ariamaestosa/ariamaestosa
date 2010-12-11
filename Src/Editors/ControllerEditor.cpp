@@ -43,8 +43,8 @@ ControllerEditor::ControllerEditor(Track* track) : Editor(track)
 {
     m_mouse_is_in_editor=false;
 
-    selection_begin = -1;
-    selection_end = -1;
+    m_selection_begin = -1;
+    m_selection_end = -1;
 
     m_has_been_resizing = false;
 
@@ -139,11 +139,11 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     // -------------------------- selection ------------------------
 
-    if (selection_begin != -1 and focus)
+    if (m_selection_begin != -1 and focus)
     {
 
-        RelativeXCoord selectX1(selection_begin, MIDI);
-        RelativeXCoord selectX2(selection_end, MIDI);
+        RelativeXCoord selectX1(m_selection_begin, MIDI);
+        RelativeXCoord selectX2(m_selection_end, MIDI);
 
         AriaRender::color(0.8, 0.9, 1);
         AriaRender::rect(selectX1.getRelativeTo(WINDOW) , area_from_y,
@@ -188,7 +188,7 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     if (m_track->graphics->m_dragging_resize) m_has_been_resizing = true;
 
     const bool on_off = m_controller_choice->isOnOffController( m_controller_choice->getControllerID() );
-    if (m_mouse_is_in_editor and selection_begin == -1 and not on_off)
+    if (m_mouse_is_in_editor and m_selection_begin == -1 and not on_off)
     {
 
         AriaRender::lineWidth(3);
@@ -244,8 +244,8 @@ void ControllerEditor::mouseDown(RelativeXCoord x, const int y)
     m_has_been_resizing = false;
 
     // prepare coords
-    selection_begin = -1;
-    selection_end   = -1;
+    m_selection_begin = -1;
+    m_selection_end   = -1;
 
     // check if user is dragging on this track
     m_mouse_is_in_editor = false;
@@ -282,8 +282,8 @@ void ControllerEditor::mouseDrag(RelativeXCoord mousex_current, const int mousey
     {
 
         // ------------------------ select ---------------------
-        selection_begin = snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI) );
-        selection_end   = snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI) );
+        m_selection_begin = snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI) );
+        m_selection_end   = snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI) );
 
     }
 
@@ -301,22 +301,22 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
         {
             // ------------------------ select ---------------------
 
-            selection_begin = snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI) );
-            selection_end   = snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI) );
+            m_selection_begin = snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI) );
+            m_selection_end   = snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI) );
 
             // no selection
-            if (selection_begin == selection_end)
+            if (m_selection_begin == m_selection_end)
             {
-                selection_begin = -1;
-                selection_end = -1;
+                m_selection_begin = -1;
+                m_selection_end = -1;
             }
             m_selecting = false;
         }
         else
         {
 
-            selection_begin = -1;
-            selection_end   = -1;
+            m_selection_begin = -1;
+            m_selection_end   = -1;
 
             const int area_from_y = getEditorYStart() + 7;
             const int area_to_y   = getYEnd() - 15;
@@ -404,34 +404,20 @@ void ControllerEditor::mouseExited(RelativeXCoord mousex_current, int mousey_cur
 
 // ----------------------------------------------------------------------------------------------------------
 
-int ControllerEditor::getSelectionBegin()
-{
-    return selection_begin;
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-int ControllerEditor::getSelectionEnd()
-{
-    return selection_end;
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
 void ControllerEditor::selectAll( bool selected )
 {
 
     // Select none
     if (not selected)
     {
-        selection_begin = -1;
-        selection_end = -1;
+        m_selection_begin = -1;
+        m_selection_end   = -1;
     }
     else
     {
         // Select all
-        selection_begin = 0;
-        selection_end = getMeasureData()->getTotalTickAmount();
+        m_selection_begin = 0;
+        m_selection_end   = getMeasureData()->getTotalTickAmount();
     }
 
 }

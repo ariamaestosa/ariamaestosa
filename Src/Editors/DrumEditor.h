@@ -46,15 +46,15 @@ namespace AriaMaestosa
             bool m_section_expanded;
         };
         
-        bool showUsedDrumsOnly;
+        bool m_show_used_drums_only;
         
-        AriaRenderArray drum_names_renderer;
+        AriaRenderArray m_drum_names_renderer;
         
         /** says in which order the drums are drawn, how they're divided in sections, etc. */
-        std::vector<DrumInfo> drums;
+        std::vector<DrumInfo> m_drums;
         
         /** says where each midiKey is located in the vector. */
-        int midiKeyToVectorID[128];
+        int m_midi_key_to_vector_ID[128];
 
     public:
         
@@ -72,10 +72,10 @@ namespace AriaMaestosa
         
 
         /** @return vector that says in which order the drums are drawn, how they're divided in sections, etc. */
-        const std::vector<DrumInfo>& getDrums() const { return drums; }
+        const std::vector<DrumInfo>& getDrums() const { return m_drums; }
         
         /** @return array (of size 128) that says where each midiKey is located inside the vector. */
-        const int* getMidiKeyToVectorID() const { return midiKeyToVectorID; }
+        const int* getMidiKeyToVectorID() const { return m_midi_key_to_vector_ID; }
         
         /** event callback from base class */
         virtual void mouseDown(RelativeXCoord x, int y);

@@ -411,7 +411,7 @@ namespace AriaMaestosa
 #endif
         
         const Track* track = trackRef.getConstTrack();
-        ScoreEditor* scoreEditor = track->graphics->scoreEditor;
+        ScoreEditor* scoreEditor = track->graphics->getScoreEditor();
         
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         converter->updateConversionData();
@@ -602,7 +602,7 @@ namespace AriaMaestosa
         lineTrack.editor_data = scoreData;
         
         const Track* track = lineTrack.getTrack();
-        ScoreEditor* scoreEditor = track->graphics->scoreEditor;
+        ScoreEditor* scoreEditor = track->graphics->getScoreEditor();
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         
         // ---- Determine the y level of the highest and the lowest note
@@ -627,12 +627,12 @@ namespace AriaMaestosa
         }
 
         // ---- get some values useful for later
-        middle_c_level = converter->getScoreCenterCLevel(); //converter->getMiddleCLevel();
+        m_middle_c_level = converter->getScoreCenterCLevel(); //converter->getMiddleCLevel();
         
-        const int g_clef_from_level = middle_c_level-10;
-        const int g_clef_to_level   = middle_c_level-2;
-        const int f_clef_from_level = middle_c_level+2;
-        const int f_clef_to_level   = middle_c_level+10;
+        const int g_clef_from_level = m_middle_c_level - 10;
+        const int g_clef_to_level   = m_middle_c_level - 2;
+        const int f_clef_from_level = m_middle_c_level + 2;
+        const int f_clef_to_level   = m_middle_c_level + 10;
         
         m_g_clef = scoreEditor->isGClefEnabled();
         m_f_clef = scoreEditor->isFClefEnabled();
@@ -825,7 +825,7 @@ namespace AriaMaestosa
     
     void ScorePrintable::earlySetup(const int trackID, Track* track)
     {
-        ScoreEditor* scoreEditor = track->graphics->scoreEditor;
+        ScoreEditor* scoreEditor = track->graphics->getScoreEditor();
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         
         MeasureData* measures = getMeasureData();
@@ -994,7 +994,7 @@ namespace AriaMaestosa
             std::cout << "}\n";
         }
         */
-        ScoreEditor* scoreEditor = track->graphics->scoreEditor;
+        ScoreEditor* scoreEditor = track->graphics->getScoreEditor();
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         const int middle_c_level = converter->getScoreCenterCLevel();
         const int first_score_level = middle_c_level + (f_clef? 2 : -10);
@@ -1201,7 +1201,7 @@ namespace AriaMaestosa
             }
             
             // also show ottava bassa/alta if relevant
-            const int octave_shift = track->graphics->scoreEditor->getScoreMidiConverter()->getOctaveShift(); // FIXME - woot
+            const int octave_shift = track->graphics->getScoreEditor()->getScoreMidiConverter()->getOctaveShift(); // FIXME - woot
             if (octave_shift > 0)
             {
                 dc.SetTextForeground( wxColour(0,0,0) );

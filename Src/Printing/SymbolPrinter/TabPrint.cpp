@@ -40,8 +40,8 @@ const int CHAR_MARGIN = 35;
 
 TablaturePrintable::TablaturePrintable(Track* track) : EditorPrintable()
 {
-    string_amount = track->getGuitarTuning()->tuning.size();
-    editor        = track->graphics->guitarEditor;
+    m_string_amount = track->getGuitarTuning()->tuning.size();
+    m_editor        = track->graphics->getGuitarEditor();
 }
 
 // ------------------------------------------------------------------------------------------------------------
@@ -54,7 +54,7 @@ TablaturePrintable::~TablaturePrintable()
 
 void TablaturePrintable::earlySetup(const int trackID, Track* track)
 {
-    m_analyser = new ScoreAnalyser(editor, -1);
+    m_analyser = new ScoreAnalyser(m_editor, -1);
     const int trackAmount = track->getNoteAmount();
     for (int n=0; n<trackAmount; n++)
     {
@@ -194,10 +194,10 @@ int TablaturePrintable::calculateHeight(const int trackID, LineTrackRef& lineTra
     // check if empty
     //FIXME: if a note starts in previous line but ends in this one, track will still be reported empty
     //       even though it's not
-    if (from_note == -1 or to_note == -1) *empty  = true;
+    if (from_note == -1 or to_note == -1) *empty = true;
     else                                  *empty = false;
 
-    return string_amount;
+    return m_string_amount;
 }  
 
 // ------------------------------------------------------------------------------------------------------------
@@ -218,9 +218,9 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
     // draw tab background (guitar strings)
     dc.SetPen(  wxPen( wxColour(125,125,125), 5 ) );
     
-    const float stringHeight = (float)(trackCoords->y1 - trackCoords->y0) / (float)(string_amount-1);
+    const float stringHeight = (float)(trackCoords->y1 - trackCoords->y0) / (float)(m_string_amount - 1);
     
-    for (int s=0; s<string_amount; s++)
+    for (int s=0; s<m_string_amount; s++)
     {
         const int y = (int)round(trackCoords->y0 + stringHeight*s);
         dc.DrawLine(trackCoords->x0, y, trackCoords->x1, y);
@@ -268,7 +268,7 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
             
             // draw tuning
             const int tuning_x = currentElement->getXFrom()+140;
-            for (int n=0; n<string_amount; n++)
+            for (int n=0; n<m_string_amount; n++)
             {
                 const int note   = currentTrack.getTrack()->getConstGuitarTuning()->tuning[n]%12;
                 wxString label;
@@ -359,7 +359,7 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
     const int toTick   = getMeasureData()->lastTickInMeasure(currentLine.getLastMeasure());
 
     const int silencesY  = trackCoords->y0 + stringHeight;   // second string
-    const int silencesY2 = (string_amount > 5 ? trackCoords->y0 + stringHeight*2 : silencesY);
+    const int silencesY2 = (m_string_amount > 5 ? trackCoords->y0 + stringHeight*2 : silencesY);
 
     const int silenceAmount = m_silences.size();
     for (int n=0; n<silenceAmount; n++)

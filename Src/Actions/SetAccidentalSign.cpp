@@ -23,6 +23,8 @@
 
 using namespace AriaMaestosa::Action;
 
+// ----------------------------------------------------------------------------------------------------------
+
 SetAccidentalSign::SetAccidentalSign(const int sign) :
     //I18N: (undoable) action name
     SingleTrackAction( _("accidental change") )
@@ -30,24 +32,30 @@ SetAccidentalSign::SetAccidentalSign(const int sign) :
     m_sign = sign;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 SetAccidentalSign::~SetAccidentalSign()
 {
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void SetAccidentalSign::undo()
 {
-        Note* current_note;
-        relocator.setParent(track);
-        relocator.prepareToRelocate();
+    Note* current_note;
+    relocator.setParent(track);
+    relocator.prepareToRelocate();
 
-        int n=0;
-        while( (current_note = relocator.getNextNote()) and current_note != NULL)
-        {
-            current_note->preferred_accidental_sign = m_original_signs[n];
-            current_note->pitchID = m_pitch[n];
-            n++;
-        }
+    int n = 0;
+    while ((current_note = relocator.getNextNote()) and current_note != NULL)
+    {
+        current_note->preferred_accidental_sign = m_original_signs[n];
+        current_note->pitchID = m_pitch[n];
+        n++;
+    }
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void SetAccidentalSign::perform()
 {
@@ -55,14 +63,14 @@ void SetAccidentalSign::perform()
     bool played = false;
 
     const int noteAmount=track->getNoteAmount();
-    for(int n=0; n<noteAmount; n++)
+    for (int n=0; n<noteAmount; n++)
     {
-        if (!track->isNoteSelected(n)) continue;
+        if (not track->isNoteSelected(n)) continue;
 
         m_original_signs.push_back( track->m_notes[n].preferred_accidental_sign );
-        m_pitch.push_back(  track->m_notes[n].pitchID );
+        m_pitch.push_back( track->m_notes[n].pitchID );
 
-        track->graphics->scoreEditor->setNoteSign(m_sign, n);
+        track->graphics->getScoreEditor()->setNoteSign(m_sign, n);
         relocator.rememberNote( track->m_notes[n] );
 
         if (!played)
@@ -74,5 +82,5 @@ void SetAccidentalSign::perform()
 
 }
 
-
+// ----------------------------------------------------------------------------------------------------------
 

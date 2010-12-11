@@ -175,7 +175,7 @@ regular_paste: // FIXME - find better way than goto
         int measure = getMeasureData()->measureAtTick(track->getSequence()->getXScrollInMidiTicks())-1;
         if (measure < 0) measure = 0;
         const int lastMeasureStart = getMeasureData()->firstTickInMeasure( measure );
-        shift = track->graphics->keyboardEditor->snapMidiTickToGrid(lastMeasureStart);
+        shift = track->graphics->getKeyboardEditor()->snapMidiTickToGrid( lastMeasureStart );
 
         // find if all track->m_notes will be visible in the location just calculated,
         // otherwise move them one more measure ahead (if measure is half-visible because of scrolling)

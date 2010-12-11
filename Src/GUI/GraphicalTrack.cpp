@@ -338,11 +338,11 @@ const int COLLAPSED_BAR_HEIGHT = 5; //FIXME: what's that?? a collapsed bar is no
 
 GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
 {
-    keyboardEditor     = NULL;
-    guitarEditor       = NULL;
-    drumEditor         = NULL;
-    controllerEditor   = NULL;
-    scoreEditor        = NULL;
+    m_keyboard_editor     = NULL;
+    m_guitar_editor       = NULL;
+    m_drum_editor         = NULL;
+    m_controller_editor   = NULL;
+    m_score_editor        = NULL;
 
     m_sequence = seq;
     m_track = track;
@@ -361,56 +361,56 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
     m_height = 128;
 
     // create widgets
-    components = new WidgetLayoutManager();
+    m_components = new WidgetLayoutManager();
 
-    collapseButton = new BitmapButton(28, 15, collapseDrawable);
-    components->addFromLeft(collapseButton);
+    m_collapse_button = new BitmapButton(28, 15, collapseDrawable);
+    m_components->addFromLeft(m_collapse_button);
 
-    muteButton = new BitmapButton(28, 10, muteDrawable);
-    components->addFromLeft(muteButton);
+    m_mute_button = new BitmapButton(28, 10, muteDrawable);
+    m_components->addFromLeft(m_mute_button);
 
-    dockToolBar = new ToolBar<BlankField>();
-    dockToolBar->addItem( new BitmapButton( 16, 14, maximizeTrackDrawable, false), 0 );
-    dockToolBar->addItem( new BitmapButton( 16, 14, dockTrackDrawable    , false), 0 );
-    components->addFromLeft(dockToolBar);
-    dockToolBar->layout();
+    m_dock_toolbar = new ToolBar<BlankField>();
+    m_dock_toolbar->addItem( new BitmapButton( 16, 14, maximizeTrackDrawable, false), 0 );
+    m_dock_toolbar->addItem( new BitmapButton( 16, 14, dockTrackDrawable    , false), 0 );
+    m_components->addFromLeft(m_dock_toolbar);
+    m_dock_toolbar->layout();
 
-    trackName = new BlankField(140);
-    components->addFromLeft(trackName);
+    m_track_name = new BlankField(140);
+    m_components->addFromLeft(m_track_name);
 
-    gridCombo = new ToolBar<ComboBox>();
-    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_1, true ), 0 );
-    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_2, true ), 0 );
-    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_4, true ), 0 );
-    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_8, true ), 0 );
-    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_16, true ), 0 );
-    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_32, true ), 0 );
-    gridCombo->addItem( new BitmapButton( 16, 14, mgrid_triplet, true ), 25 );
-    components->addFromLeft(gridCombo);
-    gridCombo->layout();
+    m_grid_combo = new ToolBar<ComboBox>();
+    m_grid_combo->addItem( new BitmapButton( 16, 14, mgrid_1, true ), 0 );
+    m_grid_combo->addItem( new BitmapButton( 16, 14, mgrid_2, true ), 0 );
+    m_grid_combo->addItem( new BitmapButton( 16, 14, mgrid_4, true ), 0 );
+    m_grid_combo->addItem( new BitmapButton( 16, 14, mgrid_8, true ), 0 );
+    m_grid_combo->addItem( new BitmapButton( 16, 14, mgrid_16, true ), 0 );
+    m_grid_combo->addItem( new BitmapButton( 16, 14, mgrid_32, true ), 0 );
+    m_grid_combo->addItem( new BitmapButton( 16, 14, mgrid_triplet, true ), 25 );
+    m_components->addFromLeft(m_grid_combo);
+    m_grid_combo->layout();
 
-    scoreButton = new BitmapButton(32, 7, score_view);
-    components->addFromLeft(scoreButton);
-    pianoButton = new BitmapButton(32, 7, keyboard_view);
-    components->addFromLeft(pianoButton);
-    tabButton = new BitmapButton(32, 7, guitar_view);
-    components->addFromLeft(tabButton);
-    drumButton = new BitmapButton(32, 7, drum_view);
-    components->addFromLeft(drumButton);
-    ctrlButton = new BitmapButton(32, 7, controller_view);
-    components->addFromLeft(ctrlButton);
+    m_score_button = new BitmapButton(32, 7, score_view);
+    m_components->addFromLeft(m_score_button);
+    m_piano_button = new BitmapButton(32, 7, keyboard_view);
+    m_components->addFromLeft(m_piano_button);
+    m_tab_button = new BitmapButton(32, 7, guitar_view);
+    m_components->addFromLeft(m_tab_button);
+    m_drum_button = new BitmapButton(32, 7, drum_view);
+    m_components->addFromLeft(m_drum_button);
+    m_ctrl_button = new BitmapButton(32, 7, controller_view);
+    m_components->addFromLeft(m_ctrl_button);
 
-    sharpFlatPicker = new ToolBar<BlankField>();
-    sharpFlatPicker->addItem( (new BitmapButton( 14, 21, sharpSign,   true ))->setImageState(AriaRender::STATE_NOTE), 6 );
-    sharpFlatPicker->addItem( (new BitmapButton( 14, 24, flatSign,    true ))->setImageState(AriaRender::STATE_NOTE), 6 );
-    sharpFlatPicker->addItem( (new BitmapButton( 14, 21, naturalSign, true ))->setImageState(AriaRender::STATE_NOTE), 0 );
-    components->addFromLeft(sharpFlatPicker);
+    m_sharp_flat_picker = new ToolBar<BlankField>();
+    m_sharp_flat_picker->addItem( (new BitmapButton( 14, 21, sharpSign,   true ))->setImageState(AriaRender::STATE_NOTE), 6 );
+    m_sharp_flat_picker->addItem( (new BitmapButton( 14, 24, flatSign,    true ))->setImageState(AriaRender::STATE_NOTE), 6 );
+    m_sharp_flat_picker->addItem( (new BitmapButton( 14, 21, naturalSign, true ))->setImageState(AriaRender::STATE_NOTE), 0 );
+    m_components->addFromLeft(m_sharp_flat_picker);
 
-    instrumentName = new BlankField(144);
-    components->addFromRight(instrumentName);
+    m_instrument_field = new BlankField(144);
+    m_components->addFromRight(m_instrument_field);
 
-    channelButton = new BlankField(28);
-    components->addFromRight(channelButton);
+    m_channel_field = new BlankField(28);
+    m_components->addFromRight(m_channel_field);
     
     if (m_editor_mode == DRUM)
     {
@@ -438,20 +438,20 @@ GraphicalTrack::~GraphicalTrack()
     
 void GraphicalTrack::createEditors()
 {
-    keyboardEditor     = new KeyboardEditor(m_track);
-    m_all_editors.push_back(keyboardEditor);
+    m_keyboard_editor = new KeyboardEditor(m_track);
+    m_all_editors.push_back(m_keyboard_editor);
     
-    guitarEditor       = new GuitarEditor(m_track);
-    m_all_editors.push_back(guitarEditor);
+    m_guitar_editor = new GuitarEditor(m_track);
+    m_all_editors.push_back(m_guitar_editor);
     
-    drumEditor         = new DrumEditor(m_track);
-    m_all_editors.push_back(drumEditor);
+    m_drum_editor = new DrumEditor(m_track);
+    m_all_editors.push_back(m_drum_editor);
 
-    controllerEditor   = new ControllerEditor(m_track);
-    m_all_editors.push_back(controllerEditor);
+    m_controller_editor = new ControllerEditor(m_track);
+    m_all_editors.push_back(m_controller_editor);
 
-    scoreEditor        = new ScoreEditor(m_track);
-    m_all_editors.push_back(scoreEditor);
+    m_score_editor = new ScoreEditor(m_track);
+    m_all_editors.push_back(m_score_editor);
 }
 
 // --------------------------------------------------------------------------------------------------
@@ -502,14 +502,14 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 
         const int winX = mousex.getRelativeTo(WINDOW);
         // collapse
-        if (collapseButton->clickIsOnThisWidget(winX, mousey))
+        if (m_collapse_button->clickIsOnThisWidget(winX, mousey))
         {
             m_collapsed = not m_collapsed;
             DisplayFrame::updateVerticalScrollbar();
         }
 
         // maximize button
-        if (dockToolBar->getItem(0).clickIsOnThisWidget(winX, mousey))
+        if (m_dock_toolbar->getItem(0).clickIsOnThisWidget(winX, mousey))
         {
             if (not getCurrentSequence()->maximize_track_mode)
             {
@@ -544,7 +544,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
             }
         }
         // dock button
-        else if ( dockToolBar->getItem(1).clickIsOnThisWidget(winX, mousey) )
+        else if ( m_dock_toolbar->getItem(1).clickIsOnThisWidget(winX, mousey) )
         {
             // This button is disabled in maximized mode
             if (not getCurrentSequence()->maximize_track_mode)
@@ -555,14 +555,14 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         }
 
         // mute
-        if (muteButton->clickIsOnThisWidget(winX, mousey))
+        if (m_mute_button->clickIsOnThisWidget(winX, mousey))
         {
             m_track->toggleMuted();
             DisplayFrame::updateVerticalScrollbar();
         }
 
         // track name
-        if (trackName->clickIsOnThisWidget(winX, mousey))
+        if (m_track_name->clickIsOnThisWidget(winX, mousey))
         {
             wxString msg = wxGetTextFromUser(_("Choose a new track title."), wxT("Aria Maestosa"),
                                              m_track->getName() );
@@ -571,31 +571,31 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         }
 
         // grid
-        if ( gridCombo->clickIsOnThisWidget(winX, mousey) )
+        if (m_grid_combo->clickIsOnThisWidget(winX, mousey))
         {
             wxCommandEvent fake_event;
 
-            if ( gridCombo->getItem(0).clickIsOnThisWidget(winX, mousey) )
+            if ( m_grid_combo->getItem(0).clickIsOnThisWidget(winX, mousey) )
                 m_grid->grid1selected(fake_event);
-            else if ( gridCombo->getItem(1).clickIsOnThisWidget(winX, mousey) )
+            else if ( m_grid_combo->getItem(1).clickIsOnThisWidget(winX, mousey) )
                 m_grid->grid2selected(fake_event);
-            else if ( gridCombo->getItem(2).clickIsOnThisWidget(winX, mousey) )
+            else if ( m_grid_combo->getItem(2).clickIsOnThisWidget(winX, mousey) )
                 m_grid->grid4selected(fake_event);
-            else if ( gridCombo->getItem(3).clickIsOnThisWidget(winX, mousey) )
+            else if ( m_grid_combo->getItem(3).clickIsOnThisWidget(winX, mousey) )
                 m_grid->grid8selected(fake_event);
-            else if ( gridCombo->getItem(4).clickIsOnThisWidget(winX, mousey) )
+            else if ( m_grid_combo->getItem(4).clickIsOnThisWidget(winX, mousey) )
                 m_grid->grid16selected(fake_event);
-            else if ( gridCombo->getItem(5).clickIsOnThisWidget(winX, mousey) )
+            else if ( m_grid_combo->getItem(5).clickIsOnThisWidget(winX, mousey) )
                 m_grid->grid32selected(fake_event);
-            else if ( gridCombo->getItem(6).clickIsOnThisWidget(winX, mousey) )
+            else if ( m_grid_combo->getItem(6).clickIsOnThisWidget(winX, mousey) )
                 m_grid->toggleTriplet();
-            else if ( winX > gridCombo->getItem(5).getX() + 16)
-                Display::popupMenu(m_grid, gridCombo->getX() + 5, m_from_y + 30);
+            else if ( winX > m_grid_combo->getItem(5).getX() + 16)
+                Display::popupMenu(m_grid, m_grid_combo->getX() + 5, m_from_y + 30);
         }
 
 
         // instrument
-        if (instrumentName->clickIsOnThisWidget(winX, mousey))
+        if (m_instrument_field->clickIsOnThisWidget(winX, mousey))
         {
             if (m_editor_mode == DRUM)
             {
@@ -614,7 +614,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         if (m_sequence->getChannelManagementType() == CHANNEL_MANUAL)
         {
 
-            if (channelButton->clickIsOnThisWidget(winX, mousey))
+            if (m_channel_field->clickIsOnThisWidget(winX, mousey))
             {
                 const int channel = wxGetNumberFromUser( _("Enter the ID of the channel this track should play in"),
                                                          wxT(""),
@@ -634,11 +634,11 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         if (mousey > m_from_y + 10 and mousey < m_from_y + 40)
         {
             // modes
-            if (winX > scoreButton->getX() and winX < scoreButton->getX() + 30)
+            if (winX > m_score_button->getX() and winX < m_score_button->getX() + 30)
             {
                 setEditorMode(SCORE);
             }
-            else if (winX > pianoButton->getX() and winX < pianoButton->getX()+30)
+            else if (winX > m_piano_button->getX() and winX < m_piano_button->getX()+30)
             {
                 // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
                 if (m_editor_mode == DRUM and m_sequence->getChannelManagementType() == CHANNEL_MANUAL)
@@ -648,7 +648,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 
                 setEditorMode(KEYBOARD);
             }
-            else if (winX > tabButton->getX() and winX < tabButton->getX() + 30)
+            else if (winX > m_tab_button->getX() and winX < m_tab_button->getX() + 30)
             {
                 // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
                 if (m_editor_mode == DRUM and m_sequence->getChannelManagementType() == CHANNEL_MANUAL)
@@ -659,14 +659,14 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                 setEditorMode(GUITAR);
                 m_track->prepareNotesForGuitarEditor();
             }
-            else if (winX > drumButton->getX() and winX < drumButton->getX() + 30)
+            else if (winX > m_drum_button->getX() and winX < m_drum_button->getX() + 30)
             {
                 // in midi, drums go to channel 9 (10 if you start from one)
                 if (m_sequence->getChannelManagementType() == CHANNEL_MANUAL) m_track->setChannel(9);
 
                 setEditorMode(DRUM);
             }
-            else if (winX > ctrlButton->getX() and winX < ctrlButton->getX() + 30)
+            else if (winX > m_ctrl_button->getX() and winX < m_ctrl_button->getX() + 30)
             {
                 setEditorMode(CONTROLLER);
             }
@@ -675,15 +675,15 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         if (m_editor_mode == SCORE and mousey > m_from_y + 15 and mousey < m_from_y + 30)
         {
             // sharp/flat signs
-            if ( sharpFlatPicker->getItem(0).clickIsOnThisWidget(winX, mousey) )
+            if ( m_sharp_flat_picker->getItem(0).clickIsOnThisWidget(winX, mousey) )
             {
                 m_track->action( new Action::SetAccidentalSign(SHARP) );
             }
-            else if ( sharpFlatPicker->getItem(1).clickIsOnThisWidget(winX, mousey) )
+            else if ( m_sharp_flat_picker->getItem(1).clickIsOnThisWidget(winX, mousey) )
             {
                 m_track->action( new Action::SetAccidentalSign(FLAT) );
             }
-            else if ( sharpFlatPicker->getItem(2).clickIsOnThisWidget(winX, mousey) )
+            else if ( m_sharp_flat_picker->getItem(2).clickIsOnThisWidget(winX, mousey) )
             {
                 m_track->action( new Action::SetAccidentalSign(NATURAL) );
             }
@@ -895,14 +895,14 @@ int GraphicalTrack::getEditorHeight()
 
 Editor* GraphicalTrack::getCurrentEditor()
 {
-    if      (m_editor_mode == KEYBOARD)   return keyboardEditor;
-    else if (m_editor_mode == GUITAR)     return guitarEditor;
-    else if (m_editor_mode == DRUM)       return drumEditor;
-    else if (m_editor_mode == CONTROLLER) return controllerEditor;
-    else if (m_editor_mode == SCORE)      return scoreEditor;
+    if      (m_editor_mode == KEYBOARD)   return m_keyboard_editor;
+    else if (m_editor_mode == GUITAR)     return m_guitar_editor;
+    else if (m_editor_mode == DRUM)       return m_drum_editor;
+    else if (m_editor_mode == CONTROLLER) return m_controller_editor;
+    else if (m_editor_mode == SCORE)      return m_score_editor;
     else
     {
-        std::cout << "No such editor!" << std::endl;
+        std::cerr << "[GraphicalTrack] getCurrentEditor : unknown mode!" << std::endl;
         ASSERT(false);
         return NULL; // shut up warnings
     }
@@ -939,9 +939,9 @@ void GraphicalTrack::setEditorMode(EditorType mode)
 void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, const bool focus)
 {
     // mark 'dock' button as disabled when maximize mode is activated
-    dockToolBar->getItem(1).setImageState( getCurrentSequence()->maximize_track_mode ?
-                                           AriaRender::STATE_GHOST :
-                                           AriaRender::STATE_NORMAL );
+    m_dock_toolbar->getItem(1).setImageState(getCurrentSequence()->maximize_track_mode ?
+                                             AriaRender::STATE_GHOST :
+                                             AriaRender::STATE_NORMAL );
     
     const bool channel_mode = m_sequence->getChannelManagementType() == CHANNEL_MANUAL;
     
@@ -1040,28 +1040,28 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     }//end if
     
     // ------------------ prepare to draw components ------------------
-    if (m_collapsed) collapseButton->m_drawable->setImage( expandImg );
-    else             collapseButton->m_drawable->setImage( collapseImg );
+    if (m_collapsed) m_collapse_button->m_drawable->setImage( expandImg );
+    else             m_collapse_button->m_drawable->setImage( collapseImg );
     
-    if (m_track->isMuted()) muteButton->m_drawable->setImage( muteOnImg );
-    else                    muteButton->m_drawable->setImage( muteOffImg );
+    if (m_track->isMuted()) m_mute_button->m_drawable->setImage( muteOnImg );
+    else                    m_mute_button->m_drawable->setImage( muteOffImg );
     
-    scoreButton -> enable( m_editor_mode == SCORE      and focus );
-    pianoButton -> enable( m_editor_mode == KEYBOARD   and focus );
-    tabButton   -> enable( m_editor_mode == GUITAR     and focus );
-    drumButton  -> enable( m_editor_mode == DRUM       and focus );
-    ctrlButton  -> enable( m_editor_mode == CONTROLLER and focus );
+    m_score_button -> enable( m_editor_mode == SCORE      and focus );
+    m_piano_button -> enable( m_editor_mode == KEYBOARD   and focus );
+    m_tab_button   -> enable( m_editor_mode == GUITAR     and focus );
+    m_drum_button  -> enable( m_editor_mode == DRUM       and focus );
+    m_ctrl_button  -> enable( m_editor_mode == CONTROLLER and focus );
     
-    sharpFlatPicker->show(m_editor_mode == SCORE);
+    m_sharp_flat_picker->show(m_editor_mode == SCORE);
     
-    channelButton->show(channel_mode);
+    m_channel_field->show(channel_mode);
     
     // ------------------ layout and draw components ------------------
-    components->layout(20, y);
-    sharpFlatPicker->layout();
-    gridCombo->layout();
-    dockToolBar->layout();
-    components->renderAll(focus);
+    m_components->layout(20, y);
+    m_sharp_flat_picker->layout();
+    m_grid_combo->layout();
+    m_dock_toolbar->layout();
+    m_components->renderAll(focus);
     
     //  ------------------ post-drawing  ------------------
     
@@ -1070,7 +1070,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     AriaRender::color(0,0,0);
     AriaRenderString& track_name = m_track->getNameRenderer();
     track_name.bind();
-    track_name.render(trackName->getX()+11, y+29);
+    track_name.render(m_track_name->getX()+11, y+29);
     
     // draw grid label
     int grid_selection_x;
@@ -1112,7 +1112,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     // mark maximize mode as on if relevant
     if (getCurrentSequence()->maximize_track_mode)
     {
-        const int rectx = dockToolBar->getItem(0).getX();
+        const int rectx = m_dock_toolbar->getItem(0).getX();
         AriaRender::hollow_rect(rectx, y+13, rectx+16, y+29);
     }
     
@@ -1121,7 +1121,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     AriaRender::color(0,0,0);
     
     m_instrument_name.bind();
-    m_instrument_name.render(instrumentName->getX()+11 ,y+29);
+    m_instrument_name.render(m_instrument_field->getX()+11 ,y+29);
         
     // draw channel number
     if (channel_mode)
@@ -1131,11 +1131,13 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
         AriaRender::color(0,0,0);
         
         const int char_amount_in_channel_name = channelName.size();
-        if (char_amount_in_channel_name == 1) AriaRender::renderNumber(channelName, channelButton->getX()+10, y+28);
-        else AriaRender::renderNumber(channelName, channelButton->getX()+7, y+28);
+        if (char_amount_in_channel_name == 1)
+            AriaRender::renderNumber(channelName, m_channel_field->getX()+10, y+28);
+        else
+            AriaRender::renderNumber(channelName, m_channel_field->getX()+7, y+28);
     }
     
-}// end func
+}
 
 // --------------------------------------------------------------------------------------------------
 
@@ -1255,13 +1257,13 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
 
 void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
 {
-    const int octave_shift = scoreEditor->getScoreMidiConverter()->getOctaveShift();
+    const int octave_shift = m_score_editor->getScoreMidiConverter()->getOctaveShift();
 
     writeData( wxT("<editor mode=\"") + to_wxString(m_editor_mode) +
                wxT("\" height=\"") + to_wxString(m_height) +
                (m_collapsed ? wxT("\" collapsed=\"true") : wxT("")) +
-               wxT("\" g_clef=\"") + (scoreEditor->isGClefEnabled()?wxT("true"):wxT("false")) +
-               wxT("\" f_clef=\"") + (scoreEditor->isFClefEnabled()?wxT("true"):wxT("false")) +
+               wxT("\" g_clef=\"") + (m_score_editor->isGClefEnabled()?wxT("true"):wxT("false")) +
+               wxT("\" f_clef=\"") + (m_score_editor->isFClefEnabled()?wxT("true"):wxT("false")) +
                ( octave_shift != 0 ? wxT("\" octave_shift=\"")+to_wxString(octave_shift) : wxT("")) +
                wxT("\"/>\n")
                , fileout );
@@ -1348,11 +1350,11 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
         {
             if (strcmp(g_clef_c, "true") == 0)
             {
-                scoreEditor->enableGClef(true);
+                m_score_editor->enableGClef(true);
             }
             else if (strcmp(g_clef_c, "false") == 0)
             {
-                scoreEditor->enableGClef(false);
+                m_score_editor->enableGClef(false);
             }
             else
             {
@@ -1365,15 +1367,15 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
         {
             if (strcmp(f_clef_c, "true") == 0)
             {
-                scoreEditor->enableFClef(true);
+                m_score_editor->enableFClef(true);
             }
             else if (strcmp(f_clef_c, "false") == 0)
             {
-                scoreEditor->enableFClef(false);
+                m_score_editor->enableFClef(false);
             }
             else
             {
-                std::cout << "Unknown keyword for attribute 'f_clef' in track: " << f_clef_c << std::endl;
+                std::cerr << "[GraphicalTrack] readFromFile() : Unknown keyword for attribute 'f_clef' in track: " << f_clef_c << std::endl;
             }
 
         }
@@ -1381,7 +1383,7 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
         if ( octave_shift_c != NULL )
         {
             int new_value = atoi( octave_shift_c );
-            if (new_value != 0) scoreEditor->getScoreMidiConverter()->setOctaveShift(new_value);
+            if (new_value != 0) m_score_editor->getScoreMidiConverter()->setOctaveShift(new_value);
         }
         
         // compatibility code for older versions of .Aria file format (TODO: eventuall remove)

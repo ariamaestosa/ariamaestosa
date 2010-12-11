@@ -145,7 +145,7 @@ void Track::trackDeleted(Track* track)
     // FIXME: this data class should not talk to GUI classes
     if (graphics != NULL)
     {
-        graphics->keyboardEditor->trackDeleted(track);
+        graphics->getKeyboardEditor()->trackDeleted(track);
     }
     
     /*
@@ -773,7 +773,7 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
         if (graphics->getEditorMode() == CONTROLLER)
         { 
             // controller editor must be handled differently
-            graphics->controllerEditor->selectAll( selected );
+            graphics->getControllerEditor()->selectAll( selected );
         }
         else
         {

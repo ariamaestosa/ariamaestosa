@@ -82,46 +82,47 @@ namespace AriaMaestosa
           * indicates which notes on the staff are sharp/flat/natural,
           * where the array index is an element of the Note7 enum declared in ScoreEditor.h
           */
-        PitchSign scoreNotesSharpness[7];
-        bool going_in_sharps;
-        bool going_in_flats;
+        PitchSign m_score_notes_sharpness[7];
+        bool m_going_in_sharps;
+        bool m_going_in_flats;
         
         /** 0 = regular, +1 = alta, -1 = bassa */
-        int octave_shift;
+        int m_octave_shift;
         
         // for accidentals
-        bool accidentals;
-        int accidentalScoreNotesSharpness[7];
-        int accidentalsMeasure;         //!< because accidentals last only one measure
+        bool m_accidentals;
+        int m_accidental_score_notes_sharpness[7];
+        int m_accidentals_measure;         //!< because accidentals last only one measure
         
-        int midiNoteToLevel[128];
-        NoteToLevelType midiNoteToLevel_type[128];
+        int m_midi_note_to_level[128];
+        NoteToLevelType m_midi_note_to_level_type[128];
         
-        int levelToMidiNote[73];        //!< we need approximately 73 staff lines total to cover all midi notes
-        int levelToNaturalNote[73];
+        int m_level_to_midi_note[73];        //!< we need approximately 73 staff lines total to cover all midi notes
+        int m_level_to_natural_note[73];
         
-        int middleCLevel;
-        int ottavaAltaCLevel;
-        int ottavaBassaCLevel;
+        int m_middle_C_level;
+        int m_ottava_alta_C_level;
+        int m_ottava_bassa_C_level;
         
     public:
+        
         LEAK_CHECK();
         
         ScoreMidiConverter();
         void setNoteSharpness(Note7 note, PitchSign sharpness);
         
         /** @return are we using a key that will make flat signs appear next to the clef? */
-        bool goingInSharps();
+        bool goingInSharps() const { return m_going_in_sharps; }
         
         /** @return are we using a key that will make sharp signs appear next to the clef? */
-        bool goingInFlats();
+        bool goingInFlats() const { return m_going_in_flats; }
         
-        int  getMiddleCLevel();
+        int  getMiddleCLevel() const { return m_middle_C_level; }
         int  getScoreCenterCLevel();
-        int  getOctaveShift();
+        int  getOctaveShift() const { return m_octave_shift; }
         
         /** @return what sign should appear next to the key for this note? (FLAT, SHARP or PITCH_SIGN_NONE) */
-        PitchSign getKeySigSharpnessSignForLevel(const unsigned int level);
+        PitchSign getKeySigSharpnessSignForLevel(const unsigned int level) const;
         
         int getMidiNoteForLevelAndSign(const unsigned int level, int sharpness);
         
@@ -137,7 +138,7 @@ namespace AriaMaestosa
         int noteToLevel(const Note* noteObj, PitchSign* sign=NULL);
         
         /** what is the name of the note played on this level? */
-        int levelToNote7(const unsigned int level);
+        int levelToNote7(const unsigned int level) const;
         
         /** called when key has changed, rebuilds conversion tables and other
          * data needed for all conversions and information requests this class provides
@@ -156,13 +157,14 @@ namespace AriaMaestosa
       */
     class ScoreEditor : public Editor
     {
-        bool g_clef;
-        bool f_clef;
-        OwnerPtr<ScoreMidiConverter>  converter;
-        OwnerPtr<ScoreAnalyser>  g_clef_analyser;
-        OwnerPtr<ScoreAnalyser>  f_clef_analyser;
+        bool m_g_clef;
+        bool m_f_clef;
+        OwnerPtr<ScoreMidiConverter>  m_converter;
+        OwnerPtr<ScoreAnalyser>  m_g_clef_analyser;
+        OwnerPtr<ScoreAnalyser>  m_f_clef_analyser;
         
-        bool musicalNotationEnabled, linearNotationEnabled;
+        bool m_musical_notation_enabled;
+        bool m_linear_notation_enabled;
         
         /** helper method for rendering */
         void renderScore(ScoreAnalyser* analyser, const int silences_y);
@@ -174,21 +176,22 @@ namespace AriaMaestosa
         void renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* analyser);
         
     public:
+        
         ScoreEditor(Track* track);
         ~ScoreEditor();
 
-        ScoreMidiConverter* getScoreMidiConverter();
+        ScoreMidiConverter* getScoreMidiConverter() { return m_converter; }
         
         void enableFClef(bool enabled);
         void enableGClef(bool enabled);
         
         /** get info about clefs
           * @return whether the G clef is enabled in this score */
-        bool isGClefEnabled() const;
+        bool isGClefEnabled() const { return m_g_clef; }
         
         /** get info about clefs
           * @return whether the F clef is enabled in this score */
-        bool isFClefEnabled() const;
+        bool isFClefEnabled() const { return m_f_clef; }
         
         void enableMusicalNotation(const bool enabled);
         void enableLinearNotation(const bool enabled);

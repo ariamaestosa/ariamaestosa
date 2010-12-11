@@ -32,10 +32,10 @@ AddControllerSlide::AddControllerSlide(const int x1, const int value1, const int
     //I18N: (undoable) action name
     SingleTrackAction( _("add control slide") )
 {
-    m_x1 = x1;
-    m_value1 = value1;
-    m_x2 = x2;
-    m_value2 = value2;
+    m_x1         = x1;
+    m_value1     = value1;
+    m_x2         = x2;
+    m_value2     = value2;
     m_controller = controller;
 }
 
@@ -52,7 +52,7 @@ void AddControllerSlide::undo()
     //std::cout << "will undo control slide" << std::endl;
     // std::cout << "track->m_control_events.size() = " << track->m_control_events.size() << std::endl;
     
-    const int type = track->graphics->controllerEditor->getCurrentControllerType();
+    const int type = track->graphics->getControllerEditor()->getCurrentControllerType();
     
     if (type != 201 /*tempo*/)
     {
