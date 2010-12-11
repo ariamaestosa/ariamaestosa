@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-11 18:31-0500\n"
+"POT-Creation-Date: 2010-12-11 18:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -190,6 +190,11 @@ msgstr ""
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:173
 msgid "&Undo"
+msgstr ""
+
+#: Src/GUI/MainFrameMenuBar.cpp:348
+#, c-format
+msgid "&Undo %s"
 msgstr ""
 
 #. I18N: in the key editor
@@ -655,7 +660,7 @@ msgstr ""
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:190
-msgid "Paste at &cursor"
+msgid "Paste at cu&rsor"
 msgstr ""
 
 #: Src/GUI/MainFrame.cpp:366
@@ -964,11 +969,6 @@ msgstr ""
 
 #: Src/Dialogs/TrackPropertiesDialog.cpp:114
 msgid "Track Properties"
-msgstr ""
-
-#: Src/GUI/MainFrameMenuBar.cpp:348
-#, c-format
-msgid "Undo %s"
 msgstr ""
 
 #: Src/main.cpp:254
