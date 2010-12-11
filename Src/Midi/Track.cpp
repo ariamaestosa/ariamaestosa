@@ -653,7 +653,7 @@ int Track::findFirstNoteInRange(const int fromTick, const int toTick) const
 
     for (int n=0; n<noteAmount; n++)
     {
-        if (m_notes[n].startTick >= fromTick && m_notes[n].startTick < toTick) return n;
+        if (m_notes[n].startTick >= fromTick and m_notes[n].startTick < toTick) return n;
         if (m_notes[n].startTick >= toTick) return -1;
     }
     return -1;
@@ -667,7 +667,7 @@ int Track::findLastNoteInRange(const int fromTick, const int toTick) const
 
     for (int n=noteAmount-1; n>-1; n--)
     {
-        if (m_notes[n].startTick >= fromTick && m_notes[n].startTick < toTick) return n;
+        if (m_notes[n].startTick >= fromTick and m_notes[n].startTick < toTick) return n;
         if (m_notes[n].startTick < fromTick) return -1;
     }
     return -1;
@@ -2032,7 +2032,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
             default:break;
         }//end switch
 
-    } while(xml && xml->read());
+    } while (xml != NULL and xml->read());
 
     reorderNoteOffVector();
 

@@ -935,7 +935,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         if (not m_drums[drumID].m_section_expanded)
         {
             drumID++;
-            while (not m_drums[drumID].m_section && drumID < drumAmount)
+            while (not m_drums[drumID].m_section and drumID < drumAmount)
             {
                 drumID++;
             }

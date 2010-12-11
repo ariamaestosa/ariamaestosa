@@ -41,8 +41,8 @@ int LineTrackRef::getLastNote() const
         const PrintLayoutMeasure& current_meas = m_parent->getMeasureForElement(el);
         for (int i=0; i<track_amount; i++)
         {
-            if (current_meas.getTrackRefAmount() > 0 && // FIXME - find why it's sometimes 0
-                current_meas.getTrackRef(i).getConstTrack() == m_track &&
+            if (current_meas.getTrackRefAmount() > 0 and // FIXME - find why it's sometimes 0
+                current_meas.getTrackRef(i).getConstTrack() == m_track and
                 current_meas.getTrackRef(i).getLastNote() != -1)
             {
                 return current_meas.getTrackRef(i).getLastNote();
@@ -68,8 +68,8 @@ int LineTrackRef::getFirstNote() const
         const PrintLayoutMeasure& current_meas = m_parent->getMeasureForElement(el);
         for (int i=0; i<track_amount; i++)
         {
-            if (current_meas.getTrackRefAmount() > 0 && // FIXME - find why it's sometimes empty
-                current_meas.getTrackRef(i).getConstTrack() == m_track &&
+            if (current_meas.getTrackRefAmount() > 0 and // FIXME - find why it's sometimes empty
+                current_meas.getTrackRef(i).getConstTrack() == m_track and
                 current_meas.getTrackRef(i).getFirstNote() != -1)
             {
                 return current_meas.getTrackRef(i).getFirstNote();
