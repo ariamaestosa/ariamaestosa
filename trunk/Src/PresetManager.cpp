@@ -130,7 +130,7 @@ void PresetGroup::write()
         #endif
         if (not success and not wxDirExists(prefix))
         {
-            wxMessageBox(wxString::Format(_("Sorry, an error occurred : would not create %s"), (const char*)prefix.mb_str()));
+            wxMessageBox(wxString::Format(_("Sorry, an error occurred : could not create %s"), (const char*)prefix.mb_str()));
             return;
         }
     }
