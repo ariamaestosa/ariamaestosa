@@ -119,64 +119,66 @@ namespace AriaMaestosa
         WxOwnerPtr<CustomNoteSelectDialog>  m_custom_note_select_dialog;
 
         wxPanel* m_main_panel;
-        wxFlexGridSizer* borderSizer;
-        CustomToolBar* toolbar;
+        wxFlexGridSizer* m_border_sizer;
+        CustomToolBar* m_toolbar;
 
-        wxScrollBar* horizontalScrollbar;
-        wxScrollBar* verticalScrollbar;
+        wxScrollBar* m_horizontal_scrollbar;
+        wxScrollBar* m_vertical_scrollbar;
 
-        wxButton* timeSig;
-        wxTextCtrl* firstMeasure;
-        wxSpinCtrl* songLength;
-        wxSpinCtrl* displayZoom;
+        wxButton*   m_time_sig;
+        wxTextCtrl* m_first_measure;
+        wxSpinCtrl* m_song_length;
+        wxSpinCtrl* m_display_zoom;
 
-        wxMenu* fileMenu;
-        wxMenu* editMenu;
-        wxMenu* settingsMenu;
-        wxMenu* trackMenu;
-        wxMenu* helpMenu;
+        wxMenu* m_file_menu;
+        wxMenu* m_edit_menu;
+        wxMenu* m_settings_menu;
+        wxMenu* m_track_menu;
+        wxMenu* m_help_menu;
 
-        wxBitmap playBitmap;
-        wxBitmap pauseBitmap;
-        wxBitmap tool1Bitmap;
-        wxBitmap tool2Bitmap;
+        wxBitmap m_play_bitmap;
+        wxBitmap m_pause_bitmap;
+        wxBitmap m_tool1_bitmap;
+        wxBitmap m_tool2_bitmap;
 
-        wxMenuItem* followPlaybackMenuItem;
+        wxMenuItem* m_follow_playback_menu_item;
 
-        wxMenuItem* playDuringEdits_always;
-        wxMenuItem* playDuringEdits_onchange;
-        wxMenuItem* playDuringEdits_never;
+        wxMenuItem* m_play_during_edits_always;
+        wxMenuItem* m_play_during_edits_onchange;
+        wxMenuItem* m_play_during_edits_never;
 
-        wxMenuItem* channelManagement_automatic;
-        wxMenuItem* channelManagement_manual;
-        wxMenuItem* expandedMeasuresMenuItem;
+        wxMenuItem* m_channel_management_automatic;
+        wxMenuItem* m_channel_management_manual;
+        wxMenuItem* m_expanded_measures_menu_item;
         
         wxMenuItem* m_metronome;
 
-        wxPanel* m_notification_panel;
+        wxPanel*      m_notification_panel;
         wxStaticText* m_notification_text;
         
         wxBoxSizer* m_root_sizer;
         
-        int currentSequence;
-        ptr_vector<Sequence> sequences; // contains all open sequences
+        int m_current_sequence;
+        
+        /** Contains all open sequences */
+        ptr_vector<Sequence> m_sequences;
 
     public:
         LEAK_CHECK();
 
         // READ AND WRITE
         bool changingValues; // set this to true when modifying the controls in the top bar, this allows to ignore all events thrown by their modification.
-        wxTextCtrl* tempoCtrl;
+        wxTextCtrl* m_tempo_ctrl;
 
         // ------- read-only -------
-        int play_during_edit; // what is the user's preference for note preview during edits
-        bool playback_mode;
+        int m_play_during_edit; // what is the user's preference for note preview during edits
+        bool m_playback_mode;
         MainPane*                     m_main_pane;
-        WxOwnerPtr<PreferencesDialog> preferences;
-        OwnerPtr<InstrumentPicker>    instrument_picker;
-        OwnerPtr<DrumPicker>          drumKit_picker;
-        OwnerPtr<TuningPicker>        tuningPicker;
-        OwnerPtr<KeyPicker>           keyPicker;
+        WxOwnerPtr<PreferencesDialog> m_preferences;
+        OwnerPtr<InstrumentPicker>    m_instrument_picker;
+        OwnerPtr<DrumPicker>          m_drumKit_picker;
+        OwnerPtr<TuningPicker>        m_tuning_picker;
+        OwnerPtr<KeyPicker>           m_key_picker;
         // ----------------------
 
         MainFrame();
@@ -289,7 +291,7 @@ namespace AriaMaestosa
          * User scrolled vertically by dragging.
          * Just make sure to update the display to the new values.
          */
-        void m_vertical_scrolling(wxScrollEvent& evt);
+        void verticalScrolling(wxScrollEvent& evt);
 
         /**
          * User scrolled horizontally by clicking oin the arrows.
@@ -311,7 +313,7 @@ namespace AriaMaestosa
         void addSequence();
 
         /** Returns the amount of open sequences (files). */
-        int getSequenceAmount();
+        int getSequenceAmount() const { return m_sequences.size(); }
 
         /**
          * Close an open sequence.
@@ -324,7 +326,7 @@ namespace AriaMaestosa
         virtual Sequence* getCurrentSequence();
 
         Sequence* getSequence(int n);
-        int getCurrentSequenceID();
+        int getCurrentSequenceID() const { return m_current_sequence; }
         void setCurrentSequence(int n);
 
         void changeShownTimeSig(int num, int denom);

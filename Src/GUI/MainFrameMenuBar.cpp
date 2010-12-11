@@ -113,162 +113,162 @@ void MainFrame::initMenuBar()
 #define QUICK_ADD_CHECK_MENU( MENUID, MENUSTRING, METHOD ) AppendCheckItem( MENUID,  MENUSTRING ); Connect(MENUID, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( METHOD ) );
 
     // ---- File menu
-    fileMenu = new wxMenu();
+    m_file_menu = new wxMenu();
 
     //I18N: menu item in the "file" menu
-    addIconItem(fileMenu, MENU_FILE_NEW, _("New\tCtrl-N"), wxART_NEW);
+    addIconItem(m_file_menu, MENU_FILE_NEW, _("New\tCtrl-N"), wxART_NEW);
     Connect(MENU_FILE_NEW, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_new));
 
 
     //I18N: menu item in the "file" menu
-    addIconItem(fileMenu, MENU_FILE_OPEN, _("Open...\tCtrl-O"), wxART_FILE_OPEN);
+    addIconItem(m_file_menu, MENU_FILE_OPEN, _("Open...\tCtrl-O"), wxART_FILE_OPEN);
     Connect(MENU_FILE_OPEN, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_open));
 
 
     //I18N: menu item in the "file" menu
-    addIconItem(fileMenu, MENU_FILE_SAVE, _("Save\tCtrl-S"), wxART_FILE_SAVE);
+    addIconItem(m_file_menu, MENU_FILE_SAVE, _("Save\tCtrl-S"), wxART_FILE_SAVE);
     Connect(MENU_FILE_SAVE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_save));
 
     //I18N: menu item in the "file" menu
-    addIconItem(fileMenu, MENU_FILE_SAVE_AS, _("Save As...\tCtrl-Shift-S"), wxART_FILE_SAVE_AS);
+    addIconItem(m_file_menu, MENU_FILE_SAVE_AS, _("Save As...\tCtrl-Shift-S"), wxART_FILE_SAVE_AS);
     Connect(MENU_FILE_SAVE_AS, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_saveas));
 
     //I18N: menu item in the "file" menu
-    fileMenu -> QUICK_ADD_MENU ( MENU_FILE_CLOSE, _("Close\tCtrl-W"), MainFrame::menuEvent_close);
+    m_file_menu -> QUICK_ADD_MENU ( MENU_FILE_CLOSE, _("Close\tCtrl-W"), MainFrame::menuEvent_close);
 
-    fileMenu->AppendSeparator();
-    fileMenu -> QUICK_ADD_MENU ( MENU_FILE_COPYRIGHT, wxString(_("Song info..."))+wxT("\tCtrl-I"), MainFrame::menuEvent_copyright );
+    m_file_menu->AppendSeparator();
+    m_file_menu -> QUICK_ADD_MENU ( MENU_FILE_COPYRIGHT, wxString(_("Song info..."))+wxT("\tCtrl-I"), MainFrame::menuEvent_copyright );
     //fileMenu->AppendSeparator();
 
-    addIconItem(fileMenu, MENU_FILE_EXPORT_NOTATION, wxString(_("Print musical notation..."))+wxT("\tCtrl-P"), wxART_PRINT);
+    addIconItem(m_file_menu, MENU_FILE_EXPORT_NOTATION, wxString(_("Print musical notation..."))+wxT("\tCtrl-P"), wxART_PRINT);
     Connect(MENU_FILE_EXPORT_NOTATION, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_exportNotation));
 
 
-    fileMenu->AppendSeparator();
+    m_file_menu->AppendSeparator();
     //I18N: menu item in the "file" menu
-    fileMenu -> QUICK_ADD_MENU ( MENU_FILE_IMPORT_MIDI, _("Import Midi File..."), MainFrame::menuEvent_importmidi );
+    m_file_menu -> QUICK_ADD_MENU ( MENU_FILE_IMPORT_MIDI, _("Import Midi File..."), MainFrame::menuEvent_importmidi );
     //I18N: menu item in the "file" menu
-    fileMenu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_MIDI, _("Export to Midi..."), MainFrame::menuEvent_exportmidi );
+    m_file_menu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_MIDI, _("Export to Midi..."), MainFrame::menuEvent_exportmidi );
 
     // disable export to sampled audio if this feature is not supported by the current PlatformMidiManager
     if (not PlatformMidiManager::get()->getAudioExtension().IsEmpty())
     {
         //I18N: menu item in the "file" menu
-        fileMenu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_SAMPLED_AUDIO, _("Export to Audio..."), MainFrame::menuEvent_exportSampledAudio );
+        m_file_menu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_SAMPLED_AUDIO, _("Export to Audio..."), MainFrame::menuEvent_exportSampledAudio );
     }
 
     //I18N: menu item in the "file" menu
-    addIconItem(fileMenu, wxID_EXIT, _("Quit\tCtrl-Q"), wxART_QUIT);
+    addIconItem(m_file_menu, wxID_EXIT, _("Quit\tCtrl-Q"), wxART_QUIT);
     Connect(wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_quit));
 
 
 
     //I18N: name of a menu
-    menuBar->Append(fileMenu,  _("File") );
+    menuBar->Append(m_file_menu,  _("File") );
 
     // ---- Edit menu
-    editMenu = new wxMenu();
+    m_edit_menu = new wxMenu();
 
     //I18N: menu item in the "edit" menu
-    addIconItem(editMenu, MENU_EDIT_UNDO, _("Undo\tCtrl-Z"), wxART_UNDO);
+    addIconItem(m_edit_menu, MENU_EDIT_UNDO, _("Undo\tCtrl-Z"), wxART_UNDO);
     Connect(MENU_EDIT_UNDO, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_undo));
 
 
-    editMenu->AppendSeparator();
+    m_edit_menu->AppendSeparator();
 
     //I18N: menu item in the "edit" menu
-    addIconItem(editMenu, MENU_EDIT_COPY, _("Copy\tCtrl-C"), wxART_COPY);
+    addIconItem(m_edit_menu, MENU_EDIT_COPY, _("Copy\tCtrl-C"), wxART_COPY);
     Connect(MENU_EDIT_COPY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_copy));
 
 
     //I18N: menu item in the "edit" menu
-    addIconItem(editMenu, MENU_EDIT_PASTE, _("Paste\tCtrl-V"), wxART_PASTE);
+    addIconItem(m_edit_menu, MENU_EDIT_PASTE, _("Paste\tCtrl-V"), wxART_PASTE);
     Connect(MENU_EDIT_PASTE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_paste));
 
 
     //I18N: menu item in the "edit" menu
-    editMenu -> QUICK_ADD_MENU ( MENU_EDIT_PASTE_AT_CURSOR, _("Paste at cursor\tCtrl-Shift-V"), MainFrame::menuEvent_pasteAtMouse );
-    editMenu->AppendSeparator(); // ----- selection
+    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_PASTE_AT_CURSOR, _("Paste at cursor\tCtrl-Shift-V"), MainFrame::menuEvent_pasteAtMouse );
+    m_edit_menu->AppendSeparator(); // ----- selection
     //I18N: menu item in the "edit" menu
-    editMenu -> QUICK_ADD_MENU ( MENU_EDIT_SELECT_ALL, _("Select All\tCtrl-A"), MainFrame::menuEvent_selectAll );
+    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_SELECT_ALL, _("Select All\tCtrl-A"), MainFrame::menuEvent_selectAll );
     //I18N: menu item in the "edit" menu
-    editMenu -> QUICK_ADD_MENU ( MENU_EDIT_SELECT_NONE, _("Select None\tCtrl-Shift-A"), MainFrame::menuEvent_selectNone );
+    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_SELECT_NONE, _("Select None\tCtrl-Shift-A"), MainFrame::menuEvent_selectNone );
     //I18N: menu item in the "edit" menu
-    editMenu -> QUICK_ADD_MENU ( MENU_EDIT_SELECT_CUSTOM, _("Select Notes...\tCtrl-F"), MainFrame::menuEvent_customNoteSelect );
-    editMenu->AppendSeparator(); // ----- actions
+    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_SELECT_CUSTOM, _("Select Notes...\tCtrl-F"), MainFrame::menuEvent_customNoteSelect );
+    m_edit_menu->AppendSeparator(); // ----- actions
     //I18N: menu item in the "edit" menu
-    editMenu -> QUICK_ADD_MENU ( MENU_EDIT_SNAP_TO_GRID, _("Snap Notes to Grid"), MainFrame::menuEvent_snapToGrid );
+    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_SNAP_TO_GRID, _("Snap Notes to Grid"), MainFrame::menuEvent_snapToGrid );
     //I18N: menu item in the "edit" menu
-    editMenu -> QUICK_ADD_MENU ( MENU_EDIT_SCALE, _("Scale..."), MainFrame::menuEvent_scale );
+    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_SCALE, _("Scale..."), MainFrame::menuEvent_scale );
     //I18N: menu item in the "edit" menu
-    editMenu -> QUICK_ADD_MENU ( MENU_EDIT_REMOVE_OVERLAPPING, _("Remove Overlapping Notes"), MainFrame::menuEvent_removeOverlapping );
+    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_REMOVE_OVERLAPPING, _("Remove Overlapping Notes"), MainFrame::menuEvent_removeOverlapping );
 
     //I18N: name of a menu
-    menuBar->Append(editMenu,  _("Edit"));
+    menuBar->Append(m_edit_menu,  _("Edit"));
 
 
     // ---- Tracks menu
-    trackMenu = new wxMenu();
+    m_track_menu = new wxMenu();
 
     //I18N: menu item in the "track" menu
-    trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_ADD, wxString(_("Add Track"))+wxT("\tCtrl-Shift-N"), MainFrame::menuEvent_addTrack );
+    m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_ADD, wxString(_("Add Track"))+wxT("\tCtrl-Shift-N"), MainFrame::menuEvent_addTrack );
     //I18N: menu item in the "track" menu
-    trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_REMOVE, wxString(_("Delete Track"))+wxT("\tCtrl-DEL"), MainFrame::menuEvent_deleteTrack );
-    trackMenu->AppendSeparator();
+    m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_REMOVE, wxString(_("Delete Track"))+wxT("\tCtrl-DEL"), MainFrame::menuEvent_deleteTrack );
+    m_track_menu->AppendSeparator();
     //I18N: - in the track menu, allows choosing the properties of a track
-    trackMenu -> QUICK_ADD_MENU ( MENU_TRACK_BACKG, _("Properties"), MainFrame::menuEvent_trackBackground );
+    m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_BACKG, _("Properties"), MainFrame::menuEvent_trackBackground );
 
-    menuBar->Append(trackMenu,  _("Tracks"));
+    menuBar->Append(m_track_menu,  _("Tracks"));
 
     // ---- Settings menu
-    settingsMenu = new wxMenu();
-    followPlaybackMenuItem = settingsMenu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_FOLLOW_PLAYBACK, _("Follow Playback"), MainFrame::menuEvent_followPlayback );
-    expandedMeasuresMenuItem = settingsMenu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_MEASURE_EXPANDED, _("Expanded time sig management"), MainFrame::menuEvent_expandedMeasuresSelected );
+    m_settings_menu = new wxMenu();
+    m_follow_playback_menu_item   = m_settings_menu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_FOLLOW_PLAYBACK, _("Follow Playback"), MainFrame::menuEvent_followPlayback );
+    m_expanded_measures_menu_item = m_settings_menu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_MEASURE_EXPANDED, _("Expanded time sig management"), MainFrame::menuEvent_expandedMeasuresSelected );
 
-    followPlaybackMenuItem->Check( Core::getPrefsLongValue("followPlayback") != 0 );
+    m_follow_playback_menu_item->Check( Core::getPrefsLongValue("followPlayback") != 0 );
 
     wxMenu* channelMode_menu = new wxMenu();
 
     //I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
-    settingsMenu->AppendSubMenu(channelMode_menu,  _("Channel management") );
+    m_settings_menu->AppendSubMenu(channelMode_menu,  _("Channel management") );
     //I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
-    channelManagement_automatic = channelMode_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_CHANNELS_AUTO,  _("Automatic"), MainFrame::menuEvent_automaticChannelModeSelected);
-    channelManagement_automatic->Check();
+    m_channel_management_automatic = channelMode_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_CHANNELS_AUTO,  _("Automatic"), MainFrame::menuEvent_automaticChannelModeSelected);
+    m_channel_management_automatic->Check();
     //I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
-    channelManagement_manual = channelMode_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_CHANNEL_MANUAL,  _("Manual"), MainFrame::menuEvent_manualChannelModeSelected);
+    m_channel_management_manual = channelMode_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_CHANNEL_MANUAL,  _("Manual"), MainFrame::menuEvent_manualChannelModeSelected);
 
-    settingsMenu->AppendSeparator(); // ----- global
+    m_settings_menu->AppendSeparator(); // ----- global
 
     wxMenu* playDuringEdits_menu = new wxMenu();
     //I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-    settingsMenu->AppendSubMenu(playDuringEdits_menu,  _("Play during edit") );
+    m_settings_menu->AppendSubMenu(playDuringEdits_menu,  _("Play during edit") );
     //I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-    playDuringEdits_always = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_ALWAYS,  _("Always"), MainFrame::menuEvent_playAlways);
+    m_play_during_edits_always = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_ALWAYS,  _("Always"), MainFrame::menuEvent_playAlways);
     //I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-    playDuringEdits_onchange = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_ON_CHANGE,  _("On note change"), MainFrame::menuEvent_playOnChange);
+    m_play_during_edits_onchange = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_ON_CHANGE,  _("On note change"), MainFrame::menuEvent_playOnChange);
     //I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-    playDuringEdits_never = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_NEVER,  _("Never"), MainFrame::menuEvent_playNever);
+    m_play_during_edits_never = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_NEVER,  _("Never"), MainFrame::menuEvent_playNever);
 
-    m_metronome = settingsMenu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_METRONOME, _("Play with Metronome"), MainFrame::menuEvent_metronome );
+    m_metronome = m_settings_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_METRONOME, _("Play with Metronome"), MainFrame::menuEvent_metronome );
 
-    settingsMenu->QUICK_ADD_MENU( wxID_PREFERENCES,   _("Preferences"), MainFrame::menuEvent_preferences );
+    m_settings_menu->QUICK_ADD_MENU( wxID_PREFERENCES,   _("Preferences"), MainFrame::menuEvent_preferences );
 
     const int playValue = Core::getPrefsLongValue("playDuringEdit");
-    if (playValue == PLAY_ON_CHANGE)   playDuringEdits_onchange->Check();
-    else if (playValue == PLAY_ALWAYS) playDuringEdits_always->Check();
-    else if (playValue == PLAY_NEVER)  playDuringEdits_never->Check();
+    if (playValue == PLAY_ON_CHANGE)   m_play_during_edits_onchange->Check();
+    else if (playValue == PLAY_ALWAYS) m_play_during_edits_always->Check();
+    else if (playValue == PLAY_NEVER)  m_play_during_edits_never->Check();
     else                               {ASSERT(false);}
 
-    menuBar->Append(settingsMenu,  _("Settings"));
+    menuBar->Append(m_settings_menu,  _("Settings"));
 
     // ----Help menu
-    helpMenu = new wxMenu();
+    m_help_menu = new wxMenu();
 
-    helpMenu->QUICK_ADD_MENU(wxID_ABOUT,  _("About this app"), MainFrame::menuEvent_about);
+    m_help_menu->QUICK_ADD_MENU(wxID_ABOUT,  _("About this app"), MainFrame::menuEvent_about);
     //I18N: - in help menu - see the help files
-    helpMenu->QUICK_ADD_MENU(wxID_HELP,  _("Manual"), MainFrame::menuEvent_manual);
+    m_help_menu->QUICK_ADD_MENU(wxID_HELP,  _("Manual"), MainFrame::menuEvent_manual);
 
-    menuBar->Append(helpMenu, wxT("&Help"));
+    menuBar->Append(m_help_menu, wxT("&Help"));
 
     SetMenuBar(menuBar);
 }
@@ -293,22 +293,22 @@ void MainFrame::disableMenus(const bool disable)
 {
     const bool on = !disable;
 
-    fileMenu->Enable(MENU_FILE_NEW, on);
-    fileMenu->Enable(MENU_FILE_OPEN, on);
-    fileMenu->Enable(MENU_FILE_SAVE, on);
-    fileMenu->Enable(MENU_FILE_SAVE_AS, on);
-    fileMenu->Enable(MENU_FILE_CLOSE, on);
-    fileMenu->Enable(MENU_FILE_IMPORT_MIDI, on);
-    fileMenu->Enable(MENU_FILE_EXPORT_MIDI, on);
+    m_file_menu->Enable(MENU_FILE_NEW, on);
+    m_file_menu->Enable(MENU_FILE_OPEN, on);
+    m_file_menu->Enable(MENU_FILE_SAVE, on);
+    m_file_menu->Enable(MENU_FILE_SAVE_AS, on);
+    m_file_menu->Enable(MENU_FILE_CLOSE, on);
+    m_file_menu->Enable(MENU_FILE_IMPORT_MIDI, on);
+    m_file_menu->Enable(MENU_FILE_EXPORT_MIDI, on);
 
     if (not PlatformMidiManager::get()->getAudioExtension().IsEmpty())
     {
-        fileMenu->Enable(MENU_FILE_EXPORT_SAMPLED_AUDIO, on);
+        m_file_menu->Enable(MENU_FILE_EXPORT_SAMPLED_AUDIO, on);
     }
 
-    fileMenu->Enable(MENU_FILE_EXPORT_NOTATION, on);
-    fileMenu->Enable(MENU_FILE_COPYRIGHT, on);
-    fileMenu->Enable(wxID_EXIT, on);
+    m_file_menu->Enable(MENU_FILE_EXPORT_NOTATION, on);
+    m_file_menu->Enable(MENU_FILE_COPYRIGHT, on);
+    m_file_menu->Enable(wxID_EXIT, on);
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -320,17 +320,17 @@ void MainFrame::updateMenuBarToSequence()
 
     if (channelMode == CHANNEL_AUTO)
     {
-        channelManagement_automatic->Check(true);
-        channelManagement_manual->Check(false);
+        m_channel_management_automatic->Check(true);
+        m_channel_management_manual->Check(false);
     }
     else if (channelMode == CHANNEL_MANUAL)
     {
-        channelManagement_automatic->Check(false);
-        channelManagement_manual->Check(true);
+        m_channel_management_automatic->Check(false);
+        m_channel_management_manual->Check(true);
     }
 
-    followPlaybackMenuItem->Check( sequence->follow_playback );
-    expandedMeasuresMenuItem->Check(getMeasureData()->isExpandedMode());
+    m_follow_playback_menu_item->Check( sequence->follow_playback );
+    m_expanded_measures_menu_item->Check(getMeasureData()->isExpandedMode());
     m_metronome->Check( sequence->playWithMetronome() );
 }
 
@@ -708,24 +708,24 @@ void MainFrame::menuEvent_trackBackground(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_preferences(wxCommandEvent& evt)
 {
-    if (preferences == NULL) preferences = new PreferencesDialog(this, wxGetApp().prefs);
-    preferences->show();
+    if (m_preferences == NULL) m_preferences = new PreferencesDialog(this, wxGetApp().prefs);
+    m_preferences->show();
 }
 
 // -----------------------------------------------------------------------------------------------------------
 
 void MainFrame::menuEvent_followPlayback(wxCommandEvent& evt)
 {
-    getCurrentSequence()->follow_playback = followPlaybackMenuItem->IsChecked();
+    getCurrentSequence()->follow_playback = m_follow_playback_menu_item->IsChecked();
 }
 
 // -----------------------------------------------------------------------------------------------------------
 
 void MainFrame::menuEvent_playAlways(wxCommandEvent& evt)
 {
-    playDuringEdits_always->Check(true);
-    playDuringEdits_onchange->Check(false);
-    playDuringEdits_never->Check(false);
+    m_play_during_edits_always->Check(true);
+    m_play_during_edits_onchange->Check(false);
+    m_play_during_edits_never->Check(false);
     Core::setPlayDuringEdit(PLAY_ALWAYS);
 }
 
@@ -733,9 +733,9 @@ void MainFrame::menuEvent_playAlways(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_playOnChange(wxCommandEvent& evt)
 {
-    playDuringEdits_always->Check(false);
-    playDuringEdits_onchange->Check(true);
-    playDuringEdits_never->Check(false);
+    m_play_during_edits_always->Check(false);
+    m_play_during_edits_onchange->Check(true);
+    m_play_during_edits_never->Check(false);
     Core::setPlayDuringEdit(PLAY_ON_CHANGE);
 }
 
@@ -743,9 +743,9 @@ void MainFrame::menuEvent_playOnChange(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_playNever(wxCommandEvent& evt)
 {
-    playDuringEdits_always->Check(false);
-    playDuringEdits_onchange->Check(false);
-    playDuringEdits_never->Check(true);
+    m_play_during_edits_always->Check(false);
+    m_play_during_edits_onchange->Check(false);
+    m_play_during_edits_never->Check(true);
     Core::setPlayDuringEdit(PLAY_NEVER);
 }
 
@@ -765,8 +765,8 @@ void MainFrame::menuEvent_automaticChannelModeSelected(wxCommandEvent& evt)
         if (answer != wxYES)
         {
             // nothing will be changed, put checks back
-            channelManagement_automatic->Check(false);
-            channelManagement_manual->Check(true);
+            m_channel_management_automatic->Check(false);
+            m_channel_management_manual->Check(true);
             return;
         }
 
@@ -793,8 +793,8 @@ void MainFrame::menuEvent_automaticChannelModeSelected(wxCommandEvent& evt)
 
     }
 
-    channelManagement_automatic->Check(true);
-    channelManagement_manual->Check(false);
+    m_channel_management_automatic->Check(true);
+    m_channel_management_manual->Check(false);
 
     getCurrentSequence()->setChannelManagementType(CHANNEL_AUTO);
     Display::render();
@@ -804,8 +804,8 @@ void MainFrame::menuEvent_automaticChannelModeSelected(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_manualChannelModeSelected(wxCommandEvent& evt)
 {
-    channelManagement_automatic->Check(false);
-    channelManagement_manual->Check(true);
+    m_channel_management_automatic->Check(false);
+    m_channel_management_manual->Check(true);
 
     Sequence* sequence = getCurrentSequence();
     // we were in auto mode... we will need to set channels
@@ -838,7 +838,7 @@ void MainFrame::menuEvent_manualChannelModeSelected(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_expandedMeasuresSelected(wxCommandEvent& evt)
 {
-    getCurrentSequence()->m_measure_data->setExpandedMode( expandedMeasuresMenuItem->IsChecked() );
+    getCurrentSequence()->m_measure_data->setExpandedMode( m_expanded_measures_menu_item->IsChecked() );
     updateVerticalScrollbar();
 }
 

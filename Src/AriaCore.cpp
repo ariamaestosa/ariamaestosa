@@ -70,19 +70,19 @@ namespace AriaMaestosa
         }
         TuningPicker* getTuningPicker()
         {
-            return getMainFrame()->tuningPicker;
+            return getMainFrame()->m_tuning_picker;
         }
         KeyPicker* getKeyPicker()
         {
-            return getMainFrame()->keyPicker;
+            return getMainFrame()->m_key_picker;
         }
         DrumPicker* getDrumPicker()
         {
-            return getMainFrame()->drumKit_picker;
+            return getMainFrame()->m_drumKit_picker;
         }
         InstrumentPicker* getInstrumentPicker()
         {
-            return getMainFrame()->instrument_picker;
+            return getMainFrame()->m_instrument_picker;
         }
         
         // TODO: move this into the midi player
@@ -125,7 +125,7 @@ namespace AriaMaestosa
     
     bool isPlaybackMode()
     {
-        return getMainFrame()->playback_mode;
+        return getMainFrame()->m_playback_mode;
     }
     
     namespace Display
