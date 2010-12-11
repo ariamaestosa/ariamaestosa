@@ -281,7 +281,7 @@ bool AriaMaestosa::loadMidiFile(Sequence* sequence, wxString filepath, std::set<
                     sequence->setTempo(tempo);
 
                     //FIXME: should *not* directly access the GUI control from here!!!
-                    getMainFrame()->tempoCtrl->SetValue( to_wxString(tempo) );
+                    getMainFrame()->m_tempo_ctrl->SetValue( to_wxString(tempo) );
                     firstTempoEvent=false;
                     continue;
                 }
