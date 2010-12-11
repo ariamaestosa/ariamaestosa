@@ -48,7 +48,7 @@ AddControlEvent::~AddControlEvent()
 void AddControlEvent::undo()
 {
     
-    const int type = track->graphics->controllerEditor->getCurrentControllerType();
+    const int type = track->graphics->getControllerEditor()->getCurrentControllerType();
     
     if (type != 201 /*tempo*/)
     {

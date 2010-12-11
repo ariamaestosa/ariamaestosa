@@ -59,20 +59,20 @@ namespace AriaMaestosa
         int m_last_mouse_y;
         
         // widgets
-        OwnerPtr< WidgetLayoutManager>  components ;
-        BitmapButton* collapseButton;
-        BitmapButton* muteButton;
-        ToolBar<BlankField>* dockToolBar;
-        BlankField* trackName;
-        ToolBar<ComboBox>* gridCombo;
-        BitmapButton* scoreButton;
-        BitmapButton* pianoButton;
-        BitmapButton* tabButton;
-        BitmapButton* drumButton;
-        BitmapButton* ctrlButton;
-        ToolBar<BlankField>* sharpFlatPicker;
-        BlankField* instrumentName;
-        BlankField* channelButton;
+        OwnerPtr< WidgetLayoutManager>  m_components;
+        BitmapButton*                   m_collapse_button;
+        BitmapButton*                   m_mute_button;
+        ToolBar<BlankField>*            m_dock_toolbar;
+        BlankField*                     m_track_name;
+        ToolBar<ComboBox>*              m_grid_combo;
+        BitmapButton*                   m_score_button;
+        BitmapButton*                   m_piano_button;
+        BitmapButton*                   m_tab_button;
+        BitmapButton*                   m_drum_button;
+        BitmapButton*                   m_ctrl_button;
+        ToolBar<BlankField>*            m_sharp_flat_picker;
+        BlankField*                     m_instrument_field;
+        BlankField*                     m_channel_field;
         
         /** Whether this track was collapsed with the triangle widget so that only its header is seen */
         bool m_collapsed;
@@ -85,6 +85,13 @@ namespace AriaMaestosa
         
         EditorType m_editor_mode;
 
+        // editors
+        OwnerPtr<KeyboardEditor>    m_keyboard_editor  ;
+        OwnerPtr<GuitarEditor>      m_guitar_editor    ;
+        OwnerPtr<DrumEditor>        m_drum_editor      ;
+        OwnerPtr<ControllerEditor>  m_controller_editor;
+        OwnerPtr<ScoreEditor>       m_score_editor     ;
+        
     public:
         LEAK_CHECK();
         
@@ -105,13 +112,7 @@ namespace AriaMaestosa
 
         OwnerPtr<MagneticGrid>  m_grid ;
         
-        // editors
-        OwnerPtr<KeyboardEditor>    keyboardEditor   ;
-        OwnerPtr<GuitarEditor>      guitarEditor     ;
-        OwnerPtr<DrumEditor>        drumEditor       ;
-        OwnerPtr<ControllerEditor>  controllerEditor ;
-        OwnerPtr<ScoreEditor>       scoreEditor      ;
-        ptr_vector<Editor, REF>     m_all_editors    ;
+        ptr_vector<Editor, REF>     m_all_editors      ;
         
         AriaRenderString m_instrument_name;
 
@@ -148,6 +149,13 @@ namespace AriaMaestosa
         void createEditors();
         
         Editor* getCurrentEditor();
+        
+        // editors
+        KeyboardEditor*     getKeyboardEditor()   { return m_keyboard_editor;   }
+        GuitarEditor*       getGuitarEditor()     { return m_guitar_editor;     }
+        DrumEditor*         getDrumEditor()       { return m_drum_editor;       }
+        ControllerEditor*   getControllerEditor() { return m_controller_editor; }
+        ScoreEditor*        getScoreEditor()      { return m_score_editor;      }
         
         void dock(const bool dock=true);
         

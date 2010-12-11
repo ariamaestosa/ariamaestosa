@@ -34,8 +34,8 @@ namespace AriaMaestosa
       */
     class TablaturePrintable : public EditorPrintable
     {
-        int string_amount;
-        GuitarEditor* editor;
+        int m_string_amount;
+        GuitarEditor* m_editor;
         
         std::vector<SilenceAnalyser::SilenceInfo> m_silences;
         

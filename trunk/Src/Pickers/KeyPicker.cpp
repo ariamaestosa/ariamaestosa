@@ -304,53 +304,53 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
 
     if ( id == MUSICAL_NOTATION )
     {
-        parent -> scoreEditor -> enableMusicalNotation( musical_checkbox->IsChecked() );
+        parent -> getScoreEditor() -> enableMusicalNotation( musical_checkbox->IsChecked() );
 
         // don't allow disabling both
         if (not musical_checkbox->IsChecked() and not linear_checkbox->IsChecked())
         {
-            parent->scoreEditor->enableLinearNotation(true);
+            parent->getScoreEditor()->enableLinearNotation(true);
         }
     }
     else if ( id == LINEAR_NOTATION )
     {
-        parent -> scoreEditor -> enableLinearNotation( linear_checkbox->IsChecked() );
+        parent -> getScoreEditor() -> enableLinearNotation( linear_checkbox->IsChecked() );
 
         // don't allow disabling both
         if (not musical_checkbox->IsChecked() and not linear_checkbox->IsChecked())
         {
-            parent->scoreEditor->enableMusicalNotation(true);
+            parent->getScoreEditor()->enableMusicalNotation(true);
         }
     }
     else if ( id == F_CLEF )
     {
-        parent -> scoreEditor -> enableFClef( fclef->IsChecked() );
+        parent -> getScoreEditor() -> enableFClef( fclef->IsChecked() );
 
         // don't allow disabling both
         if (not gclef->IsChecked() and not fclef->IsChecked())
         {
-            parent->scoreEditor->enableGClef( true );
+            parent->getScoreEditor()->enableGClef( true );
         }
     }
     else if ( id == G_CLEF )
     {
-        parent -> scoreEditor -> enableGClef( gclef->IsChecked() );
+        parent -> getScoreEditor() -> enableGClef( gclef->IsChecked() );
 
         // don't allow disabling both
         if (not gclef->IsChecked() and not fclef->IsChecked())
         {
-            parent->scoreEditor->enableFClef( true );
+            parent->getScoreEditor()->enableFClef( true );
         }
     }
     else if ( id == OCTAVE_ABOVE )
     {
         octave_below -> Check(false);
-        parent -> scoreEditor -> getScoreMidiConverter() -> setOctaveShift( octave_above->IsChecked() ? 1 : 0 );
+        parent -> getScoreEditor() -> getScoreMidiConverter() -> setOctaveShift( octave_above->IsChecked() ? 1 : 0 );
     }
     else if ( id == OCTAVE_BELOW )
     {
         octave_above -> Check(false);
-        parent -> scoreEditor -> getScoreMidiConverter() -> setOctaveShift( octave_below->IsChecked() ? -1 : 0 );
+        parent -> getScoreEditor() -> getScoreMidiConverter() -> setOctaveShift( octave_below->IsChecked() ? -1 : 0 );
     }
     else if ( id == KEY_C_AM )
     {
@@ -383,8 +383,8 @@ void KeyPicker::menuItemSelected(wxCommandEvent& evt)
         {
             const int pitch = parent->getTrack()->getNotePitchID(n);
             int r = 11 - pitch%12;
-            if (r < 0)  r+=12;
-            if (r > 11) r-=12;
+            if (r < 0)  r += 12;
+            if (r > 11) r -= 12;
             //std::cout << "r=" << r << std::endl;
             note_12_occurance[r] += 1;
         }

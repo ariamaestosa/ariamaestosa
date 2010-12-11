@@ -45,7 +45,7 @@ namespace AriaMaestosa
         
         OwnerPtr<ControllerChoice>  m_controller_choice;
         
-        int selection_begin, selection_end;
+        int m_selection_begin, m_selection_end;
         
     public:
         
@@ -70,8 +70,8 @@ namespace AriaMaestosa
         void mouseExited(RelativeXCoord dragX_arg, int mousey_current,
                          RelativeXCoord XBeforeDrag_arg, int mousey_initial);
         
-        int getSelectionBegin();
-        int getSelectionEnd();
+        int getSelectionBegin() const { return m_selection_begin; }
+        int getSelectionEnd  () const { return m_selection_end;   }
         
         int getCurrentControllerType() const
         {

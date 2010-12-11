@@ -49,7 +49,7 @@ namespace AriaMaestosa
                                  bool show_measure_number, const int grandStaffCenterY);
         
         bool m_g_clef, m_f_clef;
-        int middle_c_level;
+        int m_middle_c_level;
         OwnerPtr<ScoreAnalyser> g_clef_analyser;
         OwnerPtr<ScoreAnalyser> f_clef_analyser;
         
