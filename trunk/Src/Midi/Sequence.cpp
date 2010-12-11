@@ -979,7 +979,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
     bool tempo_mode = false;
 
     // parse the file until end reached
-    while (xml && xml->read())
+    while (xml != NULL and xml->read())
     {
 
         switch (xml->getNodeType())

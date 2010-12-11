@@ -989,7 +989,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
         }
 
         // ---------------- shift frets -----------------
-        if (not commandDown && shiftDown)
+        if (not commandDown and shiftDown)
         {
 
             if (evt.GetKeyCode() == WXK_LEFT)
