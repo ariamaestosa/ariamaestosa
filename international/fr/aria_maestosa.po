@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-11 18:31-0500\n"
-"PO-Revision-Date: 2010-12-11 18:38-0500\n"
+"POT-Creation-Date: 2010-12-11 18:53-0500\n"
+"PO-Revision-Date: 2010-12-11 18:53-0500\n"
 "Last-Translator: Marianne Gagnon (Auria) <auria.mg@gmail.com>\n"
 "Language-Team: French <traduc@traduc.org>\n"
 "MIME-Version: 1.0\n"
@@ -202,6 +202,11 @@ msgstr "&Pistes"
 #: Src/GUI/MainFrameMenuBar.cpp:173
 msgid "&Undo"
 msgstr "&Annuler"
+
+#: Src/GUI/MainFrameMenuBar.cpp:348
+#, c-format
+msgid "&Undo %s"
+msgstr "&Annuler %s"
 
 #. I18N: in the key editor
 #: Src/Dialogs/CustomKeyDialog.cpp:153
@@ -672,8 +677,8 @@ msgstr "Papier :"
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:190
-msgid "Paste at &cursor"
-msgstr "Coller au &curseur"
+msgid "Paste at cu&rsor"
+msgstr "Coller au cu&rseur"
 
 #: Src/GUI/MainFrame.cpp:366
 msgid "Play"
@@ -981,11 +986,6 @@ msgstr "Arrière-plan"
 #: Src/Dialogs/TrackPropertiesDialog.cpp:114
 msgid "Track Properties"
 msgstr "Propriétés de la piste"
-
-#: Src/GUI/MainFrameMenuBar.cpp:348
-#, c-format
-msgid "Undo %s"
-msgstr "Annuler %s"
 
 #: Src/main.cpp:254
 msgid "Unknown file type: "

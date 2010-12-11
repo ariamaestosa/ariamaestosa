@@ -187,7 +187,7 @@ void MainFrame::initMenuBar()
 
 
     //I18N: menu item in the "edit" menu
-    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_PASTE_AT_CURSOR, wxString(_("Paste at &cursor"))+wxT("\tCtrl-Shift-V"), MainFrame::menuEvent_pasteAtMouse );
+    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_PASTE_AT_CURSOR, wxString(_("Paste at cu&rsor"))+wxT("\tCtrl-Shift-V"), MainFrame::menuEvent_pasteAtMouse );
     m_edit_menu->AppendSeparator(); // ----- selection
     //I18N: menu item in the "edit" menu
     m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_SELECT_ALL, wxString(_("Select &All"))+wxT("\tCtrl-A"), MainFrame::menuEvent_selectAll );
@@ -345,7 +345,7 @@ void MainFrame::updateUndoMenuLabel()
     {
         if (undo_what.size() > 0)
         {
-            wxString label =  wxString(_("Undo %s"))+wxT("\tCtrl-Z");
+            wxString label =  wxString(_("&Undo %s"))+wxT("\tCtrl-Z");
             label.Replace(wxT("%s"),undo_what );
             menuBar->SetLabel( MENU_EDIT_UNDO, label );
             menuBar->Enable( MENU_EDIT_UNDO, true );
