@@ -426,6 +426,7 @@ void MainFrame::init()
                                                     wxArtProvider::GetBitmap(wxART_WARNING, wxART_OTHER , wxSize(48, 48))),
                                 0, wxALIGN_CENTER_VERTICAL | wxALL, 5 );	
         notification_sizer->Add(m_notification_text, 1, wxEXPAND | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+        //I18N: to hide the panel that is shown when a file could not be imported successfully
         wxButton* hideNotif = new wxButton(m_notification_panel, wxID_ANY, _("Hide"));
         notification_sizer->Add(hideNotif, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
         m_notification_panel->SetSizer(notification_sizer);
