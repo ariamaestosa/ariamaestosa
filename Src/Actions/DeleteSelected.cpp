@@ -53,7 +53,7 @@ void DeleteSelected::undo()
     if (noteAmount > 0)
     {
         
-        for(int n=0; n<noteAmount; n++)
+        for (int n=0; n<noteAmount; n++)
         {
             track->addNote( removedNotes.get(n), false );
         }
@@ -64,7 +64,7 @@ void DeleteSelected::undo()
     else if (controlAmount > 0)
     {
         
-        for(int n=0; n<controlAmount; n++)
+        for (int n=0; n<controlAmount; n++)
         {
             track->addControlEvent( removedControlEvents.get(n) );
         }
@@ -130,12 +130,12 @@ void DeleteSelected::perform()
     else
     {
         
-        for(int n=0; n<track->m_notes.size(); n++)
+        for (int n=0; n<track->m_notes.size(); n++)
         {
-            if (!track->m_notes[n].isSelected()) continue;
+            if (not track->m_notes[n].isSelected()) continue;
             
             // also delete corresponding note off event
-            for(int i=0; i<track->m_note_off.size(); i++)
+            for (int i=0; i<track->m_note_off.size(); i++)
             {
                 if (&track->m_note_off[i] == &track->m_notes[n])
                 {

@@ -103,8 +103,8 @@ namespace AriaMaestosa
         ~SequencerThread()
         {
             std::cout << "cleaning up sequencer" << std::endl;
-            if(jdksequencer != NULL) delete jdksequencer;
-            if(jdkmidiseq != NULL) delete jdkmidiseq;
+            if (jdksequencer != NULL) delete jdksequencer;
+            if (jdkmidiseq != NULL) delete jdkmidiseq;
         }
         
         void prepareSequencer()
@@ -124,7 +124,7 @@ namespace AriaMaestosa
         
         void go(int* startTick /* out */)
         {
-            if(Create() != wxTHREAD_NO_ERROR)
+            if (Create() != wxTHREAD_NO_ERROR)
             {
                 std::cerr << "error creating thread" << std::endl;
                 return;
@@ -200,7 +200,7 @@ namespace AriaMaestosa
         // current_tick is updated by seq_notify_current_tick
         virtual int trackPlaybackProgression()
         {
-            if (current_tick > songLengthInTicks || current_tick == -1)
+            if (current_tick > songLengthInTicks or current_tick == -1)
             {
                 // song is over
                 playing = false;
@@ -416,7 +416,7 @@ namespace AriaMaestosa
         {
             current_tick = tick_arg;
 
-            if(tick_arg == -1)
+            if (tick_arg == -1)
             {
                 // song done
                 playing = false;

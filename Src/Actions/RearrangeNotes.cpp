@@ -41,7 +41,7 @@ void RearrangeNotes::undo()
     relocator.prepareToRelocate();
 
     int i=0;
-    while( (current_note = relocator.getNextNote()) and current_note != NULL)
+    while ((current_note = relocator.getNextNote()) and current_note != NULL)
     {
         current_note->setStringAndFret( string[i], fret[i] );
         i++;
@@ -67,7 +67,7 @@ void RearrangeNotes::perform()
         if (n<noteAmount-1 and track->getNoteStartInPixels(n+1)==x1)
         {
             n++;
-            while(n<noteAmount and track->getNoteStartInPixels(n)==x1)
+            while (n<noteAmount and track->getNoteStartInPixels(n)==x1)
             {
                 candidates.push_back(n);
                 n++;
@@ -82,7 +82,7 @@ void RearrangeNotes::perform()
 
             // check if any of them are selected
             bool selected = false;
-            for(int i=0; i<size; i++)
+            for (int i=0; i<size; i++)
             {
                 if (track->isNoteSelected( candidates[i] )) selected=true;
             }
@@ -91,9 +91,9 @@ void RearrangeNotes::perform()
             // check if more than one are on the same string (if they overlap)
             bool need_to_reorder=false;
 
-            for(int a=0; a<size; a++)
+            for (int a=0; a<size; a++)
             {
-                for(int b=0; b<size; b++)
+                for (int b=0; b<size; b++)
                 {
 
                     if (a != b) continue;

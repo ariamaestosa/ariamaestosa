@@ -27,7 +27,7 @@ MidiDevice* MidiContext::getDevice(int i)
 
 MidiDevice* MidiContext::getDevice(int client, int port)
 {
-    for(int n=0; n<(int)devices.size(); n++)
+    for (int n=0; n<(int)devices.size(); n++)
     {
         if(devices[n].client == client and devices[n].port == port) return &devices[n];
     }
@@ -101,25 +101,28 @@ void runTimidity()
 
 
     command_output = popen("ps -A", "r");
-    if(command_output != NULL)
+    if (command_output != NULL)
     {
-        while(amount_read > 0)
+        while (amount_read > 0)
         {
             amount_read = fread(output, 1, 127, command_output);
-            if(amount_read <= 0) break;
+            if (amount_read <= 0)
+            {
+                break;
+            }
             else
             {
                 output[amount_read] = '\0';
                 full_output += output;
                 //std::cout << output << std::endl;
             }
-        }
-    }
+        } // end while
+    } // end if
 
     pclose(command_output);
 
     const bool timidityIsRunning = full_output.find("timidity") != std::string::npos;
-    if(timidityIsRunning)
+    if (timidityIsRunning)
     {
         std::cout << "TiMidity appears to be already running.\n";
         return;
@@ -309,21 +312,21 @@ void MidiContext::setPlaying(bool playing)
 bool MidiContext::openDevice(MidiDevice* device)
 {
     MidiContext::device = device;
-    if(device == NULL) return false;
+    if (device == NULL) return false;
     return device->open();
 }
 
 bool MidiContext::openTimidityDevice()
 {
     std::cout << "Aria will try to pick a TiMidity port automatically\n";
-    for(int n=0; n<devices.size(); n++)
+    for (int n=0; n<devices.size(); n++)
     {
-        if(devices[n].name.Find( wxT("TiMidity") ) != wxNOT_FOUND)
+        if (devices[n].name.Find( wxT("TiMidity") ) != wxNOT_FOUND)
         {
             MidiContext::device = devices.get(n);
             std::cout << "Trying to open device " << device->name.mb_str() << " "
                       << device->client << ":" << device->port << std::endl;
-            if( device->open() ) return true;
+            if (device->open()) return true;
             std::cout << "Opening device failed.\n";
         }
     }

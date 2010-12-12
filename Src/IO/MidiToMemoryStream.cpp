@@ -63,9 +63,9 @@ int MidiToMemoryStream::getDataLength()
 void MidiToMemoryStream::storeMidiData(char* midiData)
 {
 
-    for(int n=0; n<length; n++)
+    for (int n=0; n<length; n++)
     {
-        midiData[n]=data[n];
+        midiData[n] = data[n];
     }
 
 }

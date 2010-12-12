@@ -131,7 +131,7 @@ void Track::notifyOthersIWillBeRemoved()
     // notify other tracks
     Sequence* seq = getCurrentSequence();
     const int trackAmount = seq->getTrackAmount();
-    for(int n=0; n<trackAmount; n++)
+    for (int n=0; n<trackAmount; n++)
     {
         Track* track = seq->getTrack(n);
         if (track != this) track->trackDeleted(this);
@@ -192,7 +192,7 @@ bool Track::addNote(Note* note, bool check_for_overlapping_notes)
     //------------------------ place note on -----------------------
     // iterate through notes to place them in order
     const int noteAmount = m_notes.size();
-    for(int n=0; n<noteAmount; n++)
+    for (int n=0; n<noteAmount; n++)
     {
         // check for overlapping notes
         // the only time where this is not checked is when pasting, because it is then logical that notes are pasted on top of their originals
@@ -228,7 +228,7 @@ bool Track::addNote(Note* note, bool check_for_overlapping_notes)
     noteAdded = false;
 
     const int noteOffAmount = m_note_off.size();
-    for(int n=0; n<noteOffAmount; n++)
+    for (int n=0; n<noteOffAmount; n++)
     {
         if (m_note_off[n].endTick > note->endTick)
         {
@@ -276,7 +276,7 @@ void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
     ASSERT_E(evt->getValue(),<,128);
 
     const int eventAmount=vector->size();
-    for(int n=0; n<eventAmount; n++)
+    for (int n=0; n<eventAmount; n++)
     {
         if ( (*vector)[n].getTick() == evt->getTick())
         {
@@ -337,7 +337,7 @@ void Track::removeNote(const int id)
 
     // also delete corresponding note off event
     const int namount = m_note_off.size();
-    for(int i=0; i<namount; i++)
+    for (int i=0; i<namount; i++)
     {
         if (&m_note_off[i] == &m_notes[id])
         {
@@ -361,7 +361,7 @@ void Track::markNoteToBeRemoved(const int id)
     const int namount = m_note_off.size();
     Note* note = m_notes.get(id);
 
-    for(int i=0; i<namount; i++)
+    for (int i=0; i<namount; i++)
     {
         if (m_note_off.get(i) == note)
         {
@@ -410,7 +410,7 @@ void Track::reorderNoteVector()
     }
 #endif
 
-    for(int n=0; n<noteAmount-1; n++)
+    for (int n=0; n<noteAmount-1; n++)
     {
 
         ASSERT_E(n+1,<,m_notes.size());
@@ -435,7 +435,7 @@ void Track::reorderNoteOffVector()
     if (m_notes.size() != m_note_off.size()) std::cout << "WARNING note on and off events differ in amount" << std::endl;
 #endif
 
-    for(int n=0; n<noteAmount-1; n++)
+    for (int n=0; n<noteAmount-1; n++)
     {
 
         ASSERT_E(n+1,<,m_note_off.size());
@@ -462,7 +462,7 @@ void Track::reorderControlVector()
     // FIXME - if bugs in controller editor are fixed that method shouldn't even be necessary
     const int ctrlAmount = m_control_events.size();
 
-    for(int n=0; n<ctrlAmount-1; n++)
+    for (int n=0; n<ctrlAmount-1; n++)
     {
 
         ASSERT_E(n+1,<,ctrlAmount);
@@ -482,14 +482,14 @@ void Track::reorderControlVector()
 void Track::mergeTrackIn(Track* track)
 {
     const int noteAmount = track->m_notes.size();
-    for(int n=0; n<noteAmount; n++)
+    for (int n=0; n<noteAmount; n++)
     {
         Note* a = new Note(track->m_notes[n]);
         addNote(a, false);
     }
 
     const int controllerAmount = track->m_control_events.size();
-    for(int n=0; n<controllerAmount; n++)
+    for (int n=0; n<controllerAmount; n++)
     {
         addControlEvent( new ControllerEvent(m_sequence, track->m_control_events[n].getController(),
                                              track->m_control_events[n].getTick(),
@@ -505,7 +505,7 @@ void Track::mergeTrackIn(Track* track)
 void Track::checkControlEventsOrder()
 {
     int ptick = -1;
-    for(int n=0; n<m_control_events.size(); n++)
+    for (int n=0; n<m_control_events.size(); n++)
     {
         if (ptick != -1 and m_control_events[n].getTick() < ptick)
         {
@@ -727,12 +727,12 @@ ControllerEvent* Track::getControllerEvent(const int id, const int controllerTyp
 int Track::getFirstNoteTick(bool selectionOnly) const
 {
 
-    if (!selectionOnly) return m_notes[0].startTick;
+    if (not selectionOnly) return m_notes[0].startTick;
 
     const int noteAmount = m_notes.size();
     int tick = -1;
 
-    for(int n=0; n<noteAmount; n++)
+    for (int n=0; n<noteAmount; n++)
     {
         if ( m_notes[n].isSelected() ) return m_notes[n].startTick;
     }//next
@@ -829,7 +829,7 @@ bool Track::isNoteSelected(const int id) const
 void Track::prepareNotesForGuitarEditor()
 {
 
-    for(int n=0; n<m_notes.size(); n++)
+    for (int n=0; n<m_notes.size(); n++)
     {
         m_notes[n].checkIfStringAndFretMatchNote(true);
     }

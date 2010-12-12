@@ -204,8 +204,10 @@ namespace AriaMaestosa
     }
     wxDCStringArray::wxDCStringArray(const wxString strings_arg[], int amount)
     {
-        for(int n=0; n<amount; n++)
+        for (int n=0; n<amount; n++)
+        {
             strings.push_back( wxDCString(strings_arg[n]) );
+        }
         consolidated = false;
     }
     
@@ -228,9 +230,11 @@ namespace AriaMaestosa
             if (not font.IsOk()) return;
             
             const int amount = strings.size();
-            for(int n=0; n<amount; n++)
+            for (int n=0; n<amount; n++)
+            {
                 strings[n].setFont(font);
-                
+            }
+            
             consolidated = true;
         }
     }

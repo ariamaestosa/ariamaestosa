@@ -235,7 +235,7 @@ namespace AriaMaestosa
             ASSERT( MAGIC_NUMBER_OK() );
             ASSERT( not m_performing_deletion );
 
-            for(unsigned int n=0; n<contentsVector.size(); n++)
+            for (unsigned int n=0; n<contentsVector.size(); n++)
             {
                 
                 TYPE * pointer = contentsVector[n];
@@ -254,7 +254,7 @@ namespace AriaMaestosa
 #ifndef NDEBUG
             m_performing_deletion = true;
 #endif
-            for(unsigned int n=0; n<contentsVector.size(); n++)
+            for (unsigned int n=0; n<contentsVector.size(); n++)
             {
                 
                 TYPE * pointer = contentsVector[n];
@@ -355,7 +355,7 @@ namespace AriaMaestosa
             ASSERT( not m_performing_deletion );
 
             int vectorSize = contentsVector.size();
-            for(int n=0; n<vectorSize; n++)
+            for (int n=0; n<vectorSize; n++)
             {
                 
                 if ( contentsVector[n] == 0 )

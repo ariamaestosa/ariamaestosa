@@ -101,9 +101,9 @@ void MoveNotes::perform()
         bool played = false;
 
         const int noteAmount=track->m_notes.size();
-        for(int n=0; n<noteAmount; n++)
+        for (int n=0; n<noteAmount; n++)
         {
-            if (!track->m_notes[n].isSelected()) continue;
+            if (not track->m_notes[n].isSelected()) continue;
 
             doMoveOneNote(n);
 

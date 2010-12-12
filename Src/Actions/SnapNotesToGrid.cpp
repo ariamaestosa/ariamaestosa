@@ -39,8 +39,8 @@ void SnapNotesToGrid::undo()
     Note* current_note;
     relocator.setParent(track);
     relocator.prepareToRelocate();
-    int n=0;
-    while( (current_note = relocator.getNextNote()) and current_note != NULL)
+    int n = 0;
+    while ((current_note = relocator.getNextNote()) and current_note != NULL)
     {
         current_note->startTick = note_start[n];
         current_note->endTick = note_end[n];
@@ -57,7 +57,7 @@ void SnapNotesToGrid::perform()
     ASSERT(track != NULL);
     
     const int n_amount = track->m_notes.size();
-    for(int n=0; n<n_amount; n++)
+    for (int n=0; n<n_amount; n++)
     {
         if (!track->m_notes[n].isSelected()) continue;
         

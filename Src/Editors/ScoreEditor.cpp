@@ -1236,7 +1236,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
         AriaRender::color(0,0,0);
 
         // draw horizontal score lines
-        for(int n = middle_c_level+2 ; n < middle_c_level + 11; n+=2)
+        for (int n = middle_c_level+2 ; n < middle_c_level + 11; n+=2)
         {
             const int liney = getEditorYStart() + n*Y_STEP_HEIGHT + Y_STEP_HEIGHT/2 - yscroll;
             AriaRender::line(0, liney, getXEnd(), liney);
@@ -1261,7 +1261,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
         AriaRender::images();
 
-        for(int n = min_level_with_signs; n < max_level_with_signs; n++)
+        for (int n = min_level_with_signs; n < max_level_with_signs; n++)
         {
             const int liney = getEditorYStart() + n*Y_STEP_HEIGHT + Y_STEP_HEIGHT/2 - yscroll;
             const int sharpness = m_converter->getKeySigSharpnessSignForLevel(n);
@@ -1320,7 +1320,7 @@ void ScoreEditor::renderScore(ScoreAnalyser* analyser, const int silences_y)
     int visibleNoteAmount = analyser->noteRenderInfo.size();
 
     // first note rendering pass
-    for(int i=0; i<visibleNoteAmount; i++) renderNote_pass1( analyser->noteRenderInfo[i] );
+    for (int i=0; i<visibleNoteAmount; i++) renderNote_pass1( analyser->noteRenderInfo[i] );
 
     // render silences
     const unsigned int first_visible_measure = getMeasureData()->measureAtPixel( Editor::getEditorXStart() );
@@ -1335,7 +1335,7 @@ void ScoreEditor::renderScore(ScoreAnalyser* analyser, const int silences_y)
 
     // triplet signs, tied notes, flags and beams
     visibleNoteAmount = analyser->noteRenderInfo.size();
-    for(int i=0; i<visibleNoteAmount; i++)
+    for (int i=0; i<visibleNoteAmount; i++)
     {
         ASSERT_E(i,<,(int)analyser->noteRenderInfo.size());
         renderNote_pass2(analyser->noteRenderInfo[i], analyser);

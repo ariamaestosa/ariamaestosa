@@ -770,9 +770,9 @@ void MainFrame::menuEvent_automaticChannelModeSelected(wxCommandEvent& evt)
             return;
         }
 
-        for(int i=0; i<sequence->getTrackAmount(); i++)
+        for (int i=0; i<sequence->getTrackAmount(); i++)
         {
-            for(int j=0; j<sequence->getTrackAmount(); j++)
+            for (int j=0; j<sequence->getTrackAmount(); j++)
             {
                 if (i == j) continue; //don't compare a track with itself
 

@@ -442,7 +442,7 @@ namespace AriaMaestosa
             
             // find shortest note
             int shortest = -1;
-            for(int n=0; n<noteAmount; n++)
+            for (int n=0; n<noteAmount; n++)
             {
                 const int tick = current_analyser->noteRenderInfo[n].getTick();
                 if (tick < measureFromTick or tick >= measureToTick) continue;
@@ -851,12 +851,12 @@ namespace AriaMaestosa
                 
                 const int pitch = track->getNotePitchID(n);
                 const int level = converter->noteToLevel(track->getNote(n));
-                if (pitch < highest_pitch || highest_pitch == -1)
+                if (pitch < highest_pitch or highest_pitch == -1)
                 {
                     highest_pitch = pitch;
                     smallest_level = level;
                 }
-                if (pitch > lowest_pitch  ||  lowest_pitch == -1)
+                if (pitch > lowest_pitch or lowest_pitch == -1)
                 {
                     lowest_pitch  = pitch;
                     biggest_level  = level;
@@ -1438,7 +1438,7 @@ namespace AriaMaestosa
                 const int flag_x_origin = getStemX(noteRenderInfo);
                 const int flag_step = (noteRenderInfo.m_stem_type==STEM_UP ? 7 : -7 );
                 
-                for( int n=0; n<noteRenderInfo.m_flag_amount; n++)
+                for (int n=0; n<noteRenderInfo.m_flag_amount; n++)
                 {
                     const int flag_y = stem_end + n*flag_step*5;
                     const int orient = (noteRenderInfo.m_stem_type == STEM_UP ? 1 : -1 );

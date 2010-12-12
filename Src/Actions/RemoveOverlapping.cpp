@@ -39,7 +39,7 @@ RemoveOverlapping::~RemoveOverlapping()
 void RemoveOverlapping::undo()
 {
     const int noteAmount = removedNotes.size();
-    for(int n=0; n<noteAmount; n++)
+    for (int n=0; n<noteAmount; n++)
     {
         track->addNote( removedNotes.get(n), false );
     }
@@ -56,10 +56,10 @@ void RemoveOverlapping::perform()
     const int noteAmount = track->m_notes.size();
     
     // compare all notes to see if they match
-    for(int n1=0; n1<noteAmount; n1++)
+    for (int n1=0; n1<noteAmount; n1++)
     {
         
-        for(int n2=0; n2<noteAmount; n2++)
+        for (int n2=0; n2<noteAmount; n2++)
         {
             
             if (n1 == n2) continue; // don't compare a note with itself

@@ -151,7 +151,7 @@ namespace AriaMaestosa
                 
                 // split in two smaller halves. render using a simple recursion.
                 float closestShorterDuration = 1;
-                while(closestShorterDuration >= relativeLength) closestShorterDuration /= 2.0;
+                while (closestShorterDuration >= relativeLength) closestShorterDuration /= 2.0;
                 
                 const int firstLength = closestShorterDuration*(float)(getMeasureData()->beatLengthInTicks()*4);
                 
@@ -171,7 +171,7 @@ namespace AriaMaestosa
         {
             const int visible_measure_amount = last_visible_measure-first_visible_measure+1;
             bool measure_empty[visible_measure_amount+1];
-            for(int i=0; i<=visible_measure_amount; i++) measure_empty[i] = true;
+            for (int i=0; i<=visible_measure_amount; i++) measure_empty[i] = true;
             
             const int visibleNoteAmount = noteSource->getNoteCount();
             if (visibleNoteAmount>0)

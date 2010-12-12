@@ -64,7 +64,7 @@ void UpdateGuitarTuning::perform()
     previous_tuning = track->getGuitarTuning()->previous_tuning;
     
     const int amount_n = track->m_notes.size();
-    for(int n=0; n<amount_n; n++)
+    for (int n=0; n<amount_n; n++)
     {
         frets.push_back( track->m_notes[n].getFret() );
         strings.push_back( track->m_notes[n].getString() );

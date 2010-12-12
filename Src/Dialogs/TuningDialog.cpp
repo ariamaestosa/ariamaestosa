@@ -45,7 +45,7 @@ wxFrame(NULL, wxID_ANY,  _("Custom Tuning Editor"), wxPoint(100,100), wxSize(500
     
     sizer = new wxBoxSizer(wxVERTICAL);
     
-    for(int n=0; n<10; n++)
+    for (int n=0; n<10; n++)
     {
         m_note_pickers[n] = new NotePickerWidget(this, true);
         sizer->Add(m_note_pickers[n], 0, wxALL, 5);

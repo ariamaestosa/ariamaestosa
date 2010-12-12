@@ -316,7 +316,7 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
         const int firstNote = currentLine.getFirstNoteInElement(trackID, currentElement);
         const int lastNote = currentLine.getLastNoteInElement(trackID, currentElement);
         
-        if (firstNote == -1 || lastNote == -1)
+        if (firstNote == -1 or lastNote == -1)
         {
             //std::cout << "Tablature : it's an empty measure\n";
             continue; // empty measure
