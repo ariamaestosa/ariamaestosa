@@ -48,9 +48,9 @@ GLuint* loadImage(wxImage* img)
 
     int rev_val=h-1;
 
-    for(int y=0; y<h; y++)
+    for (int y=0; y<h; y++)
     {
-        for(int x=0; x<w; x++)
+        for (int x=0; x<w; x++)
         {
             imageData[(x+y*w)*bytesPerPixel+0] = 255;
             imageData[(x+y*w)*bytesPerPixel+1] = 255;
@@ -506,8 +506,10 @@ wxGLStringArray::wxGLStringArray(const wxString strings_arg[], int amount)
     img = NULL;
     consolidated = false;
 
-    for(int n=0; n<amount; n++)
+    for (int n=0; n<amount; n++)
+    {
         strings.push_back( new wxGLString(strings_arg[n]) );
+    }
 }
     
 wxGLStringArray::~wxGLStringArray()

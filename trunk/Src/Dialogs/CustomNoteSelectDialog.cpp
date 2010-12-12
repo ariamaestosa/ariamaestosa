@@ -320,7 +320,7 @@ void CustomNoteSelectDialog::okClicked(wxCommandEvent& evt)
             bool passTest = false;
             
             const int test_value = m_current_track->getNoteString(n);
-            for(int i=0; i<referenceNoteAmount; i++)
+            for (int i=0; i<referenceNoteAmount; i++)
             {
                 if (test_value == referenceStrings[i]) passTest=true;
             }

@@ -85,7 +85,7 @@ bool AriaMaestosa::loadMidiFile(Sequence* sequence, wxString filepath, std::set<
 
     // check for empty tracks
     int real_track_amount=0;
-    for(int trackID=0; trackID<trackAmount; trackID++)
+    for (int trackID=0; trackID<trackAmount; trackID++)
     {
         if (jdksequence.GetTrack( trackID )->GetNumEvents() == 0){} // empty track...
         else real_track_amount++;

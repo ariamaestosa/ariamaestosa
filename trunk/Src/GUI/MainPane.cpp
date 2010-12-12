@@ -357,7 +357,7 @@ bool MainPane::do_render()
 
         m_positions_in_dock.clear();
 
-        for(int n=0; n<getCurrentSequence()->dockSize; n++)
+        for (int n=0; n<getCurrentSequence()->dockSize; n++)
         {
 
             m_positions_in_dock.push_back(x_before);
@@ -512,9 +512,9 @@ void MainPane::rightClick(wxMouseEvent& event)
     if (event.GetY() < getHeight()-getCurrentSequence()->dockHeight and
         event.GetY() > MEASURE_BAR_Y+measureBarHeight)
     {
-        for(int n=0; n<getCurrentSequence()->getTrackAmount(); n++)
+        for (int n=0; n<getCurrentSequence()->getTrackAmount(); n++)
         {
-            if (!getCurrentSequence()->getTrack(n)->graphics->processRightMouseClick( RelativeXCoord(event.GetX(),WINDOW) , event.GetY()))
+            if (not getCurrentSequence()->getTrack(n)->graphics->processRightMouseClick( RelativeXCoord(event.GetX(),WINDOW) , event.GetY()))
             {
                 getCurrentSequence()->setCurrentTrackID(n);
                 break;

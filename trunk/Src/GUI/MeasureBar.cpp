@@ -394,7 +394,7 @@ void MeasureBar::mouseUp(int mousex_current, int mousey_current, int mousex_init
         {
             // we found a first selected measure, remember it as minimal tick
             minimal_tick = data->firstTickInMeasure(n);
-            do{ n++; } while(data->m_measure_info[n].selected); // skip all uneslected measures
+            do{ n++; } while (data->m_measure_info[n].selected); // skip all uneslected measures
             maximal_tick = data->firstTickInMeasure(n);
             break;
         }
@@ -461,7 +461,7 @@ void MeasureBar::rightClick(int x, int y)
             {
                 // we found a first selected measure, remember it
                 remove_from = n;
-                do{ n++; } while(data->m_measure_info[n].selected); // skip all selected measures
+                do{ n++; } while (data->m_measure_info[n].selected); // skip all selected measures
                 remove_to = n;
                 break;
             }

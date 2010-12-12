@@ -613,7 +613,7 @@ void ScoreAnalyser::putInTimeOrder()
 #ifdef _MORE_DEBUG_CHECKS
     int iteration = 0;
 #endif
-    for(int i=1; i<visibleNoteAmount; i++)
+    for (int i=1; i<visibleNoteAmount; i++)
     {
 #ifdef _MORE_DEBUG_CHECKS
         iteration++;
@@ -961,7 +961,7 @@ void ScoreAnalyser::processNoteBeam()
     // all others have their flags removed
     // BeamGroup objects are used to ease beaming
 
-    for(int i=0; i<visibleNoteAmount; i++)
+    for (int i=0; i<visibleNoteAmount; i++)
     {
         int start_tick_of_next_note = -1;
 

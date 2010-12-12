@@ -185,7 +185,7 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
 
         noStartLine = false;
         
-        if (getMeasureData()->getTimeSigDenominator(measure) != previous_denom ||
+        if (getMeasureData()->getTimeSigDenominator(measure) != previous_denom or
             getMeasureData()->getTimeSigNumerator(measure)   != previous_num)
         {
             // ---- add time signature element
@@ -271,7 +271,7 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
             if (measure+1<measureAmount and m_measures[measure+1].firstSimilarMeasure == m_measures[measure].firstSimilarMeasure )
             {
                 int amountOfTimes = 1;
-                for(int iter=1; iter<measureAmount; iter++)
+                for (int iter=1; iter<measureAmount; iter++)
                 {
                     if (measure+iter<measureAmount and m_measures[measure+iter].firstSimilarMeasure == m_measures[measure].firstSimilarMeasure )
                     {
@@ -289,7 +289,7 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
                     std::cout << "    play many times refused, m_measures " << (measure+1) << " to " << (measure+amountOfTimes+1) << " are normal" << std::endl;
 #endif
                     // not enough repetitions, add as regular m_measures
-                    for(int i=0; i<amountOfTimes; i++)
+                    for (int i=0; i<amountOfTimes; i++)
                     {
                         layoutElements.push_back( LayoutElement(SINGLE_MEASURE, measure) );
                         measure++;

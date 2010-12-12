@@ -290,7 +290,7 @@ int MeasureData::measureDivisionAt(int pixel)
     {
         pixel -= (int)x1;
         const int measureAmount = m_measure_info.size();
-        for(int n=0; n<measureAmount; n++)
+        for (int n=0; n<measureAmount; n++)
         {
             //std::cout << "checking measur " << n << " : is " << pixel << " between "
             //          << m_measure_info[n].pixel-m_measure_info[n].widthInPixels/2 << " and "
@@ -306,39 +306,6 @@ int MeasureData::measureDivisionAt(int pixel)
     }
 
 }
-
-// ----------------------------------------------------------------------------------------------------------
-
-/*
-int MeasureData::measureAtPixel(int pixel)
-{
-    const float x1 = 90 - getCurrentSequence()->getXScrollInPixels();
-    pixel -= (int)x1;
-
-    if (isMeasureLengthConstant())
-    {
-        if (pixel < 0) pixel = 0;
-        // length of a measure
-        const float xstep = measureLengthInPixels();
-
-        return (int)( pixel/xstep );
-    }
-    else
-    {
-
-        if (pixel < 0) return 0;
-
-        const int amount = m_measure_info.size();
-        for(int n=0; n<amount; n++)
-        {
-            if (n==amount-1) return amount-1; // we hit end, return the last
-            if ( m_measure_info[n].pixel <= pixel and m_measure_info[n+1].pixel > pixel ) return n;
-        }
-
-        return 0;
-    }
-}
-*/
 
 // ----------------------------------------------------------------------------------------------------------
 
@@ -968,7 +935,7 @@ void MeasureData::saveToFile(wxFileOutputStream& fileout)
     {
         writeData(wxT("\">\n"), fileout );
         const int timeSigAmount = m_time_sig_changes.size();
-        for(int n=0; n<timeSigAmount; n++)
+        for (int n=0; n<timeSigAmount; n++)
         {
             writeData(wxT("<timesig num=\"") + to_wxString(m_time_sig_changes[n].getNum()) +
                       wxT("\" denom=\"") + to_wxString(m_time_sig_changes[n].getDenom()) +

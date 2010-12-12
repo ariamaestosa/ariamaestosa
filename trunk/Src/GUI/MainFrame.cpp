@@ -239,7 +239,7 @@ void CustomToolBar::realize()
     const int label_amount = labels.size();
     toolbarSizer->SetCols( label_amount );
 
-    for(int n=0; n<label_amount; n++)
+    for (int n=0; n<label_amount; n++)
     {
         toolbarSizer->Add(new wxStaticText(this, wxID_ANY,  labels[n]), 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
     }

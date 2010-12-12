@@ -149,7 +149,7 @@ public:
 			jack_midi_clear_buffer(buf);
 
 			ScopedLocker lock(&self->m_mutex);
-			if(self->m_playing)
+			if (self->m_playing)
 			{
 				// [bgn, end)
 				double bgn = self->m_frame * (1000.0 / srate);
@@ -158,13 +158,13 @@ public:
 				self->m_sequencer->GoToTimeMs(bgn);
 
 				float t;
-				while(self->m_sequencer->GetNextEventTimeMs(&t) && t < end)
+				while (self->m_sequencer->GetNextEventTimeMs(&t) && t < end)
 				{
 					int trackId;
 					jdkmidi::MIDITimedBigMessage msg;
 					self->m_sequencer->GetNextEvent(&trackId, &msg);
 
-					if(!msg.IsMetaEvent())
+					if (not msg.IsMetaEvent())
 					{
 						unsigned l = msg.GetLength();
 						assert(l < 4);
@@ -228,7 +228,7 @@ public:
 	{
 		jdkmidi::MIDIMultiTrack tracks(1);
 		tracks.SetClksPerBeat(960);
-		for(int ch = 0; ch < 16; ++ch)
+		for (int ch = 0; ch < 16; ++ch)
 		{
 			jdkmidi::MIDITimedBigMessage msg;
 			msg.SetTime(0);

@@ -210,7 +210,7 @@ void arc(int center_x, int center_y, int radius_x, int radius_y, bool show_above
 
     glColor3f(0,0,0);
     glBegin(GL_LINES);
-    for(float angle = 0.2; angle<=M_PI; angle +=0.2)
+    for (float angle = 0.2; angle<=M_PI; angle +=0.2)
     {
         glVertex2f( center_x + std::cos(angle)    *radius_x, center_y + std::sin(angle)*y_mult );
         glVertex2f( center_x + std::cos(angle-0.2)*radius_x, center_y + std::sin(angle-0.2)*y_mult );

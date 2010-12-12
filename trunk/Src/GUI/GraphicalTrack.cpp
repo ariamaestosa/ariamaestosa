@@ -515,7 +515,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
             {
                 // switch on maximize mode
                 const int track_amount = getCurrentSequence()->getTrackAmount();
-                for(int n=0; n<track_amount; n++)
+                for (int n=0; n<track_amount; n++)
                 {
                     Track* track = getCurrentSequence()->getTrack(n);
                     if (track->graphics == this)
@@ -533,7 +533,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
             {
                 // switch off maximize mode.
                 const int track_amount = getCurrentSequence()->getTrackAmount();
-                for(int n=0; n<track_amount; n++)
+                for (int n=0; n<track_amount; n++)
                 {
                     Track* track = getCurrentSequence()->getTrack(n);
                     if (track->graphics->m_docked) track->graphics->dock(false);

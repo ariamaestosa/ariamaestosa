@@ -53,13 +53,13 @@ void RemoveMeasures::RemoveMeasures::undo()
     opposite_action.perform();
     
     const int rmtrackamount = removedTrackParts.size();
-    for(int rm=0; rm<rmtrackamount; rm++)
+    for (int rm=0; rm<rmtrackamount; rm++)
     {
         RemovedTrackPart* removedBits = removedTrackParts.get(rm);
         
         // add removed notes again
         const int n_amount = removedBits->removedNotes.size();
-        for(int n=0; n<n_amount; n++)
+        for (int n=0; n<n_amount; n++)
         {
             removedBits->track->addNote( removedBits->removedNotes.get(n) );
         }
@@ -68,7 +68,7 @@ void RemoveMeasures::RemoveMeasures::undo()
         
         // add removed control events again
         const int c_amount = removedBits->removedControlEvents.size();
-        for(int n=0; n<c_amount; n++)
+        for (int n=0; n<c_amount; n++)
         {
             removedBits->track->addControlEvent( removedBits->removedControlEvents.get(n) );
         }
@@ -78,7 +78,7 @@ void RemoveMeasures::RemoveMeasures::undo()
     
     // add removed tempo events again
     const int s_amount = removedTempoEvents.size();
-    for(int n=0; n<s_amount; n++)
+    for (int n=0; n<s_amount; n++)
     {
         sequence->addTempoEvent( removedTempoEvents.get(n) );
     }
@@ -116,7 +116,7 @@ void RemoveMeasures::perform()
     const int amountInTicks = toTick - fromTick - 1;
     
     const int trackAmount = sequence->getTrackAmount();
-    for(int t=0; t<trackAmount; t++)
+    for (int t=0; t<trackAmount; t++)
     {
         RemovedTrackPart* removedBits = new RemovedTrackPart();
         removedTrackParts.push_back( removedBits );
@@ -126,7 +126,7 @@ void RemoveMeasures::perform()
         
         // ------------------------ erase/move notes ------------------------
         const int amount_n = track->m_notes.size();
-        for(int n=0; n<amount_n; n++)
+        for (int n=0; n<amount_n; n++)
         {
             // note is an area that is removed. remove it.
             if (track->m_notes[n].startTick > fromTick and track->m_notes[n].startTick < toTick)
@@ -145,7 +145,7 @@ void RemoveMeasures::perform()
         
         // ------------------------ erase/move control events ------------------------
         const int c_amount = track->m_control_events.size();
-        for(int n=0; n<c_amount; n++)
+        for (int n=0; n<c_amount; n++)
         {
             // delete all controller events located in the area to be deleted
             if (track->m_control_events[n].getTick() > fromTick and track->m_control_events[n].getTick() < toTick)
@@ -170,7 +170,7 @@ void RemoveMeasures::perform()
     if (sequence->tempoEvents.size()>0)
     {
         const int s_amount = sequence->tempoEvents.size();
-        for(int n=0; n<s_amount; n++)
+        for (int n=0; n<s_amount; n++)
         {
             // event is in deleted area
             if (sequence->tempoEvents[n].getTick() > fromTick and sequence->tempoEvents[n].getTick() < toTick)

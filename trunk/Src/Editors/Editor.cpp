@@ -144,7 +144,7 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
 
         // draw pale lines
         AriaRender::color(0.9, 0.9, 0.9);
-        for(; mx < new_mx; mx += beatLength)
+        for (; mx < new_mx; mx += beatLength)
         {
             AriaRender::line( (int)round(mx), from_y, (int)round(mx), to_y);
         }
@@ -161,10 +161,10 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
 
     // draw lines till end of screen if we're not there yet
     const int end_of_screen = Display::getWidth();
-    if ( mx < end_of_screen)
+    if (mx < end_of_screen)
     {
         AriaRender::color(0.9, 0.9, 0.9);
-        for(;mx<end_of_screen; mx +=beatLength)
+        for (;mx<end_of_screen; mx +=beatLength)
         {
             AriaRender::line((int)round(mx), from_y, (int)round(mx), to_y);
         }//next
@@ -292,7 +292,7 @@ bool Editor::hasAsBackground(Track* track)
     
     const int bgTrackAmount = m_background_tracks.size();
 
-    for(int m=0; m<bgTrackAmount; m++)
+    for (int m=0; m<bgTrackAmount; m++)
     {
         if (m_background_tracks.get(m) == track) return true;
     }
@@ -308,7 +308,7 @@ void Editor::trackDeleted(Track* track)
     //Sequence* seq = getCurrentSequence();
     const int bgTrackAmount = m_background_tracks.size();
 
-    for(int m=0; m<bgTrackAmount; m++)
+    for (int m=0; m<bgTrackAmount; m++)
     {
         if ( m_background_tracks.get(m) == track )
         {

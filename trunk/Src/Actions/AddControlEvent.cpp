@@ -53,7 +53,7 @@ void AddControlEvent::undo()
     if (type != 201 /*tempo*/)
     {
         const int controlEventsAmount = track->m_control_events.size();
-        for(int n=0; n<controlEventsAmount; n++)
+        for (int n=0; n<controlEventsAmount; n++)
         {
             
             if (track->m_control_events[n].getTick() == m_x and
@@ -77,7 +77,7 @@ void AddControlEvent::undo()
     {
         Sequence* sequence = track->getSequence();
         const int tempoEventsAmount = sequence->tempoEvents.size();
-        for(int n=0; n<tempoEventsAmount; n++)
+        for (int n=0; n<tempoEventsAmount; n++)
         {
             
             if (sequence->tempoEvents[n].getTick() == m_x and

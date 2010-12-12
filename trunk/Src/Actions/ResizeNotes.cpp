@@ -61,7 +61,7 @@ void ResizeNotes::perform()
     {
         
         bool played=false;
-        for(int n=0; n<track->m_notes.size(); n++)
+        for (int n=0; n<track->m_notes.size(); n++)
         {
             if (!track->m_notes[n].isSelected()) continue;
             

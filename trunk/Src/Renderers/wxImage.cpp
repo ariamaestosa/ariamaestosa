@@ -41,7 +41,7 @@ Image::Image(wxString path)
 
 void Image::load(wxString path)
 {
-    for(int n=0; n<AriaRender::STATE_AMOUNT; n++)
+    for (int n=0; n<AriaRender::STATE_AMOUNT; n++)
     {
         states[n] = NULL;
         states_bmp[n] = NULL;
@@ -60,7 +60,7 @@ void Image::load(wxString path)
 
 Image::~Image()
 {
-    for(int n=0; n<AriaRender::STATE_AMOUNT; n++)
+    for (int n=0; n<AriaRender::STATE_AMOUNT; n++)
     {
         if (states[n] != NULL)
         {
@@ -117,7 +117,7 @@ wxImage* Image::getImageForState(AriaRender::ImageState s)
 
     if (mode == MODE_MULTIPLY)
     {
-        for(unsigned int i=0; i<pixelcount; i++)
+        for (unsigned int i=0; i<pixelcount; i++)
         {
             data[0]= (unsigned char)( (float)(data[0])*r );
             data[1]= (unsigned char)( (float)(data[1])*g );
@@ -127,7 +127,7 @@ wxImage* Image::getImageForState(AriaRender::ImageState s)
     }
     else if (mode == MODE_FADE_TO)
     {
-        for(unsigned int i=0; i<pixelcount; i++)
+        for (unsigned int i=0; i<pixelcount; i++)
         {
             float pr = data[0]/255.0f;
             float pg = data[1]/255.0f;

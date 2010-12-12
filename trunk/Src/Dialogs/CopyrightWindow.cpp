@@ -99,7 +99,7 @@ namespace AriaMaestosa
             // find song duration
             int last_tick = -1;
             const int track_amount = seq->getTrackAmount();
-            for(int n=0; n<track_amount; n++)
+            for (int n=0; n<track_amount; n++)
             {
                 const int duration = seq->getTrack(n)->getDuration();
                 if (duration > last_tick) last_tick = duration;
@@ -126,7 +126,7 @@ namespace AriaMaestosa
                 //std::cout << "Firstly, " << (seq->tempoEvents[0].getTick()) << " ticks at " << seq->getTempo() << std::endl;
                 
                 // other events
-                for(int n=1; n<tempo_events_amount; n++)
+                for (int n=1; n<tempo_events_amount; n++)
                 {
                     tempos.push_back( convertTempoBendToBPM(seq->tempoEvents[n-1].getValue()) );
                     duration.push_back(seq->tempoEvents[n].getTick()-seq->tempoEvents[n-1].getTick());
@@ -142,7 +142,7 @@ namespace AriaMaestosa
             
             int song_duration = 0;
             const int amount = tempos.size();
-            for(int n=0; n<amount; n++)
+            for (int n=0; n<amount; n++)
             {
                 // std::cout << " -- adding " << (int)round( ((float)duration[n] * 60.0f ) / ((float)seq->ticksPerBeat() * (float)tempos[n])) << std::endl;
                 song_duration += (int)round( ((float)duration[n] * 60.0f ) / ((float)seq->ticksPerBeat() * (float)tempos[n]));
