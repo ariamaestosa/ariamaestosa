@@ -493,7 +493,7 @@ void MainFrame::init()
     wxIcon FrameIcon(Aria_xpm);
        SetIcon(FrameIcon);
 #elif defined(__WXGTK__)
-    wxIcon ariaIcon(getResourcePrefix()+wxT("/aria64.png"));
+    wxIcon ariaIcon(getResourcePrefix()+wxT("/aria64.png"), wxBITMAP_TYPE_PNG);
     if (not ariaIcon.IsOk())
     {
         fprintf(stderr, "Aria icon not found! (application will have a generic icon)\n");
