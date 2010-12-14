@@ -350,15 +350,12 @@ void MainFrame::init()
     averageTextCtrlSize.SetWidth(55);
 
     wxSize smallTextCtrlSize(wxDefaultSize);
-    smallTextCtrlSize.SetWidth(35);
-
-    wxSize tinyTextCtrlSize(wxDefaultSize);
-    tinyTextCtrlSize.SetWidth(25);
+    smallTextCtrlSize.SetWidth(45);
 
     // -------------------------- Toolbar ----------------------------
 #ifdef NO_WX_TOOLBAR
-    borderSizer->Add(toolbar, 0, wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALL, 2);
-    borderSizer->AddSpacer(10);
+    m_border_sizer->Add(m_toolbar, 0, wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALL, 2);
+    m_border_sizer->AddSpacer(10);
 #endif
 
     m_play_bitmap.LoadFile( getResourcePrefix()  + wxT("play.png") , wxBITMAP_TYPE_PNG);
