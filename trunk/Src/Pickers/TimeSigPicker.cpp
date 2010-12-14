@@ -157,8 +157,8 @@ void AriaMaestosa::showTimeSigPicker(const int x, const int y, const int num, co
 #endif
 
 TimeSigPicker::TimeSigPicker() : wxMiniFrame(getMainFrame(), wxNewId(),  _("Time Signature"),
-                                         wxDefaultPosition, wxSize(180,140),
-                                         wxCAPTION | wxCLOSE_BOX | wxWANTS_CHARS | wxFRAME_FLOAT_ON_PARENT | wxRESIZE_BORDER)
+                                         wxDefaultPosition, wxSize(200,130),
+                                         wxCAPTION | wxCLOSE_BOX | wxWANTS_CHARS | wxFRAME_FLOAT_ON_PARENT)
 {
     pane = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS | wxTAB_TRAVERSAL);
     pane->SetMinSize( wxSize(1,1) );
@@ -190,7 +190,7 @@ TimeSigPicker::TimeSigPicker() : wxMiniFrame(getMainFrame(), wxNewId(),  _("Time
     horizontal.add(slash, 0, 0);
     horizontal.add(valueTextDenom, 5, 0, wxRIGHT);
 
-    vertical->AddSpacer(3);
+    vertical->AddSpacer(7);
 
     //I18N: - when setting time signature, to indicate it's not constant through song
     variable = new wxCheckBox(pane, VARIES_ID, _("Varies throughout song"));
