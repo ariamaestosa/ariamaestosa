@@ -189,6 +189,7 @@ void MainPane::paintEvent(wxPaintEvent& evt)
 void MainPane::render(const bool isPaintEvent)
 {
     if (not prepareFrame()) return;
+    if (not isVisible) return;
 
     if (isPaintEvent)
     {
@@ -201,22 +202,8 @@ void MainPane::render(const bool isPaintEvent)
     }
     else
     {
-#ifdef __WXMAC__
-        wxClientDC mydc(this);
-#else
-    #ifdef RENDERER_WXWIDGETS
-        wxClientDC my_client_dc(this);
-        wxBufferedDC mydc(static_cast<wxDC*>(&my_client_dc), wxDefaultSize);
-    #elif defined(RENDERER_OPENGL)
-        wxClientDC mydc(this);
-    #endif
-#endif
-
-
-        Display::renderDC = static_cast<wxDC*>(&mydc);
-
-        beginFrame();
-        if (do_render()) endFrame();
+        Refresh();
+        return;
     }
 
 }
