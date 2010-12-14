@@ -30,6 +30,7 @@
 #include <wx/button.h>
 #include <wx/stattext.h>
 #include <wx/msgdlg.h>
+#include <wx/minifram.h>
 
 namespace AriaMaestosa
 {
@@ -46,7 +47,7 @@ namespace AriaMaestosa
      * @ingroup pickers
      * @brief small floating frame where the time signature can be entered
      */
-    class TimeSigPicker : public wxFrame
+    class TimeSigPicker : public wxMiniFrame
     {
         wxTextCtrl* valueTextNum;
         wxTextCtrl* valueTextDenom;
@@ -98,10 +99,10 @@ namespace AriaMaestosa
         public:
             wxPanel* pane;
             
-            QuickBoxLayout(wxWindow* component, wxSizer* parent, int orientation=wxHORIZONTAL)
+            QuickBoxLayout(wxWindow* component, wxSizer* parent, int orientation=wxHORIZONTAL, int proportion=1)
             {
                 pane = new wxPanel(component);
-                parent->Add(pane,1,wxEXPAND);
+                parent->Add(pane,proportion,wxEXPAND);
                 bsizer = new wxBoxSizer(orientation);
             }
             void add(wxWindow* window, int margin=2, int proportion=1, long margins = wxALL)
@@ -155,17 +156,23 @@ void AriaMaestosa::showTimeSigPicker(const int x, const int y, const int num, co
 #pragma mark Class implementation
 #endif
 
-TimeSigPicker::TimeSigPicker() : wxFrame(getMainFrame(), wxNewId(),  _("Time Signature"),
-                                         wxDefaultPosition, wxSize(185,130),
-                                         wxCAPTION | wxCLOSE_BOX | wxFRAME_TOOL_WINDOW | wxFRAME_FLOAT_ON_PARENT | wxWANTS_CHARS)
+TimeSigPicker::TimeSigPicker() : wxMiniFrame(getMainFrame(), wxNewId(),  _("Time Signature"),
+                                         wxDefaultPosition, wxSize(180,140),
+                                         wxCAPTION | wxCLOSE_BOX | wxWANTS_CHARS | wxFRAME_FLOAT_ON_PARENT | wxRESIZE_BORDER)
 {
     pane = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS | wxTAB_TRAVERSAL);
+    pane->SetMinSize( wxSize(1,1) );
+    wxBoxSizer* panelSizer = new wxBoxSizer(wxVERTICAL);
+    panelSizer->Add(pane, 1, wxEXPAND);
 
     wxSize smallsize = wxDefaultSize;
     smallsize.x = 50;
 
     wxBoxSizer* vertical = new wxBoxSizer(wxVERTICAL);
-    QuickBoxLayout horizontal(pane, vertical);
+
+    vertical->AddSpacer(5);
+
+    QuickBoxLayout horizontal(pane, vertical, wxHORIZONTAL, 0);
     valueTextNum=new wxTextCtrl(horizontal.pane, NUM_ID, wxT("4"), wxPoint(0,130), smallsize,
                                 wxTE_PROCESS_ENTER | wxWANTS_CHARS);
     wxStaticText* slash = new wxStaticText(horizontal.pane, wxID_ANY, wxT("/"), wxDefaultPosition, wxSize(15,15));
@@ -183,6 +190,8 @@ TimeSigPicker::TimeSigPicker() : wxFrame(getMainFrame(), wxNewId(),  _("Time Sig
     horizontal.add(slash, 0, 0);
     horizontal.add(valueTextDenom, 5, 0, wxRIGHT);
 
+    vertical->AddSpacer(3);
+
     //I18N: - when setting time signature, to indicate it's not constant through song
     variable = new wxCheckBox(pane, VARIES_ID, _("Varies throughout song"));
     vertical->Add(variable, 0, wxALL, 5);
@@ -192,7 +201,8 @@ TimeSigPicker::TimeSigPicker() : wxFrame(getMainFrame(), wxNewId(),  _("Time Sig
     vertical->Add(okbtn, 0, wxALL | wxALIGN_CENTER, 5);
 
     pane->SetSizer(vertical);
-
+    vertical->Layout();
+    vertical->SetSizeHints(pane);
 
     // Connect all widgets in order to catch key events like escape and enter no matter where keyboard focus is
     this          ->Connect(this->GetId(),           wxEVT_KEY_DOWN, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
@@ -204,6 +214,11 @@ TimeSigPicker::TimeSigPicker() : wxFrame(getMainFrame(), wxNewId(),  _("Time Sig
     pane          ->Connect(pane->GetId(),           wxEVT_CHAR, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
     valueTextDenom->Connect(valueTextDenom->GetId(), wxEVT_CHAR, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
     valueTextNum  ->Connect(valueTextNum->GetId(),   wxEVT_CHAR, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
+
+    SetSizer(panelSizer);
+    // FIXME: I should be able to Fit here, find why Fit allocates way too much space vertically
+    //panelSizer->SetSizeHints(this);
+    //Fit();
 }
 
 // --------------------------------------------------------------------------------------------------------
