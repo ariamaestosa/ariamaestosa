@@ -199,7 +199,7 @@ END_EVENT_TABLE()
 PreferencesDialog::PreferencesDialog(wxWindow* parent, PreferencesData* data) :
 wxDialog(parent, wxID_ANY,
          //I18N: - title of the preferences dialog
-         _("Preferences"), wxPoint(100,100), wxSize(500, 350), wxCAPTION | wxRESIZE_BORDER)
+         _("Preferences"), wxDefaultPosition, wxDefaultSize, wxCAPTION | wxRESIZE_BORDER)
 {
     m_data = data;
     
@@ -268,7 +268,8 @@ wxDialog(parent, wxID_ANY,
     
     SetSizer( vert_sizer );
     vert_sizer->Layout();
-    //vert_sizer->SetSizeHints( this );
+    vert_sizer->SetSizeHints( this );
+    Center();
 }
 
 // ---------------------------------------------------------------------------------------------------------
