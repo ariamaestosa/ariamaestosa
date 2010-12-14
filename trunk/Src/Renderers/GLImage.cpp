@@ -56,7 +56,11 @@ namespace AriaMaestosa
         }
         
         wxImage* img = new wxImage( getResourcePrefix() + path );
-        
+        if (not img->IsOk())
+        {
+            fprintf(stderr, "WARNING: failed to load image '%s'\n", (const char*)(getResourcePrefix() + path).mb_str() );
+        } 
+
         //std::cout << path.mb_str() << (img->HasAlpha() ? " has alpha" : " does NOT have alpha")
         //          << " and " << (img->HasMask() ? " DOES have a mask" : " does note have a mask") << std::endl;
         
