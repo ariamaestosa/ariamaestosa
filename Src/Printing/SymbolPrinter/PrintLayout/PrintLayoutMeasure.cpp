@@ -35,7 +35,7 @@ using namespace AriaMaestosa;
 PrintLayoutMeasure::PrintLayoutMeasure(const int measID) :
     ticks_placement_manager(measID == -1 ? 0 : getMeasureData()->lastTickInMeasure( measID ))
 {
-    m_shortest_duration  = -1;
+    //m_shortest_duration  = -1;
     firstSimilarMeasure  = -1;
     cutApart             = false;
     m_measure_id         = measID;
@@ -248,10 +248,10 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
         const float relativeLength = (end_tick - start_tick) / (float)(getMeasureData()->beatLengthInTicks()*4);
         if (relativeLength < 1.0/32.0) continue;
         
-        if (currentNoteDuration < m_shortest_duration or m_shortest_duration == -1)
-        {
-            m_shortest_duration = currentNoteDuration;
-        }
+        //if (currentNoteDuration < m_shortest_duration or m_shortest_duration == -1)
+        //{
+        //    m_shortest_duration = currentNoteDuration;
+        //}
     }
     ASSERT_E(lastNote,>,-1);
     ASSERT_E(lastNote,<,noteAmount);
@@ -266,7 +266,7 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
     else
     {
 #if PLM_CHATTY
-        std::cout << "    --> non-empty measure, m_shortest_duration = " << m_shortest_duration << "\n";
+        //std::cout << "    --> non-empty measure, m_shortest_duration = " << m_shortest_duration << "\n";
         std::cout << "    --> measure goes from note " << effectiveFirstNote << " to " << lastNote << "\n";
 #endif
         m_track_refs.push_back( new MeasureTrackReference(track, effectiveFirstNote, lastNote) );
