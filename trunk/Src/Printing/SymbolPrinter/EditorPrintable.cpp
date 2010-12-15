@@ -280,7 +280,7 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
             
             //std::cout << "tickToX found tick " << tick << std::endl;
             
-            Range<float> relative_pos = meas.ticks_placement_manager.getSymbolRelativeArea( tick );
+            const Range<float> relative_pos = meas.getTicksPlacementManager().getSymbolRelativeArea( tick );
             
             //if (meas.ticks_relative_position.find(tick) == meas.ticks_relative_position.end())
             //{

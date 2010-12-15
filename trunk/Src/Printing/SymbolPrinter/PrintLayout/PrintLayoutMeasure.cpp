@@ -33,7 +33,7 @@ using namespace AriaMaestosa;
 // -------------------------------------------------------------------------------------------
     
 PrintLayoutMeasure::PrintLayoutMeasure(const int measID) :
-    ticks_placement_manager(measID == -1 ? 0 : getMeasureData()->lastTickInMeasure( measID ))
+    m_ticks_placement_manager(measID == -1 ? 0 : getMeasureData()->lastTickInMeasure( measID ))
 {
     //m_shortest_duration  = -1;
     firstSimilarMeasure  = -1;
