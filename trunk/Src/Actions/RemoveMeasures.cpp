@@ -38,7 +38,7 @@ RemoveMeasures::RemoveMeasures(int from_measure, int to_measure) :
     m_to_measure = to_measure;
 }
 
-RemoveMeasures::RemoveMeasures::~RemoveMeasures()
+RemoveMeasures::~RemoveMeasures()
 {
 }
 
@@ -46,7 +46,7 @@ RemoveMeasures::RemovedTrackPart::~RemovedTrackPart()
 {
 }
 
-void RemoveMeasures::RemoveMeasures::undo()
+void RemoveMeasures::undo()
 {
     Action::InsertEmptyMeasures opposite_action(m_from_measure, (m_to_measure - m_from_measure));
     opposite_action.setParentSequence( sequence );
