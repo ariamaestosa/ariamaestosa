@@ -423,7 +423,7 @@ void PrintLayoutAbstract::calculateRelativeLengths(std::vector<LayoutElement>& l
             
             // Ask all editors to add their symbols to the list
             PrintLayoutMeasure& meas = m_measures[layoutElements[n].m_measure];
-            RelativePlacementManager& ticks_relative_position = meas.ticks_placement_manager;
+            RelativePlacementManager& ticks_relative_position = meas.getTicksPlacementManager();
             
             const int trackAmount = meas.getTrackRefAmount();
             

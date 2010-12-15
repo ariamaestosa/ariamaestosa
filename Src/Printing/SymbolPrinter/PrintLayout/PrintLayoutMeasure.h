@@ -76,13 +76,12 @@ namespace AriaMaestosa
          */
         ptr_vector<MeasureTrackReference> m_track_refs;
         
+        RelativePlacementManager m_ticks_placement_manager;
+        
     public:
         
         PrintLayoutMeasure(const int measID);
-        
-        //FIXME: make private
-        RelativePlacementManager ticks_placement_manager;
-        
+
         /** 
           * Finds the notes correcsponding to this measure
           * in the given track and keep the reference.
@@ -95,6 +94,11 @@ namespace AriaMaestosa
         int  getFirstTick     () const { return m_first_tick;             }
         int  getLastTick      () const { return m_last_tick;              }
 
+        const RelativePlacementManager& getTicksPlacementManager() const { return m_ticks_placement_manager; }
+
+        // FIXME: should not return a writable object probably?
+        RelativePlacementManager& getTicksPlacementManager() { return m_ticks_placement_manager; }
+        
         /** 
           * @return whether there is anything in this measure (a note that starts, or a note that starts in
           *         previous measure and continues in this one, etc...)
