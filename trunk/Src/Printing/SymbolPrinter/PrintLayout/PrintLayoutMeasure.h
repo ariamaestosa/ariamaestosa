@@ -62,14 +62,6 @@ namespace AriaMaestosa
         /** first and last tick in this measure */
         int m_first_tick, m_last_tick;
         
-        /**
-         * Shortest note in the measure. This value is worth -1 when nothing was added to the measure;
-         * it is updated on every  call to addTrackReference.
-         * FIXME: when is this used? there's no getter... I think something else recalculates this
-         *        somewhere else.....
-         */
-        int m_shortest_duration;
-        
         /** 
          * whether there is anything in this measure (a note that starts, or a note that starts in
          * previous measure and continues in this one, etc...) i.e. whether it's not empty
