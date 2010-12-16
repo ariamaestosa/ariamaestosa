@@ -24,7 +24,7 @@
 
 #include "Midi/MeasureData.h"
 
-
+using namespace AriaMaestosa;
 using namespace AriaMaestosa::Action;
 
 AddControllerSlide::AddControllerSlide(const int x1, const int value1, const int x2, const int value2,
