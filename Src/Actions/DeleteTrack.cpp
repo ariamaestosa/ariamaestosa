@@ -22,6 +22,7 @@
 
 #include <wx/intl.h>
 
+using namespace AriaMaestosa;
 using namespace AriaMaestosa::Action;
 
 // --------------------------------------------------------------------------------------------------------
