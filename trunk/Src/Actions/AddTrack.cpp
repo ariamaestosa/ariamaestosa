@@ -25,6 +25,7 @@
 #include "UnitTest.h"
 #include "UnitTestUtils.h"
 
+using namespace AriaMaestosa;
 using namespace AriaMaestosa::Action;
 
 // --------------------------------------------------------------------------------------------------------
