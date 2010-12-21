@@ -243,7 +243,8 @@ namespace jdkmidi
       sysex->PutSysByte( s[i] );
     }
     
-    AddEventToMultiTrack( msg, sysex, cur_track );		
+    AddEventToMultiTrack( msg, sysex, cur_track );
+    delete sysex; // AddEvent makes a copy
   }	
   
   
