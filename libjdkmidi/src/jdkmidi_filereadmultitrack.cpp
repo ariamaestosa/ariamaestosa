@@ -51,7 +51,7 @@ namespace jdkmidi
     
   }
   
-  void    MIDIFileReadMultiTrack::mf_error( char * )	
+  void    MIDIFileReadMultiTrack::mf_error( const char * )	
   {
   }	
   
