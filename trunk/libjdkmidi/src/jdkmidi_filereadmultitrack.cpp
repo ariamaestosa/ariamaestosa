@@ -180,6 +180,8 @@ namespace jdkmidi
     sysex->PutByte( (unsigned char)notated_32nd_per_quarter );
     
     AddEventToMultiTrack( msg, sysex, cur_track );
+      
+    delete sysex; // AddEventToMultiTrack makes a copy
   }	
   
   
