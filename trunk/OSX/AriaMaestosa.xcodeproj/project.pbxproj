@@ -555,6 +555,122 @@
 		9596933D1153E612001E321B /* ScoreAnalyser.h in Headers */ = {isa = PBXBuildFile; fileRef = 959693351153E612001E321B /* ScoreAnalyser.h */; };
 		9596933E1153E612001E321B /* SilenceAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959693361153E612001E321B /* SilenceAnalyser.cpp */; };
 		9596933F1153E612001E321B /* SilenceAnalyser.h in Headers */ = {isa = PBXBuildFile; fileRef = 959693371153E612001E321B /* SilenceAnalyser.h */; };
+		9597242312C1378C00BF73D3 /* advancedsequencer.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723B412C1378600BF73D3 /* advancedsequencer.h */; };
+		9597242412C1378C00BF73D3 /* driver.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723B512C1378600BF73D3 /* driver.h */; };
+		9597242512C1378C00BF73D3 /* driverdump.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723B612C1378600BF73D3 /* driverdump.h */; };
+		9597242612C1378C00BF73D3 /* driverwin32.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723B712C1378600BF73D3 /* driverwin32.h */; };
+		9597242712C1378C00BF73D3 /* edittrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723B812C1378600BF73D3 /* edittrack.h */; };
+		9597242812C1378C00BF73D3 /* file.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723B912C1378600BF73D3 /* file.h */; };
+		9597242912C1378C00BF73D3 /* fileread.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723BA12C1378600BF73D3 /* fileread.h */; };
+		9597242A12C1378C00BF73D3 /* filereadmultitrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723BB12C1378600BF73D3 /* filereadmultitrack.h */; };
+		9597242B12C1378C00BF73D3 /* fileshow.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723BC12C1378600BF73D3 /* fileshow.h */; };
+		9597242C12C1378C00BF73D3 /* filewrite.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723BD12C1378600BF73D3 /* filewrite.h */; };
+		9597242D12C1378C00BF73D3 /* filewritemultitrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723BE12C1378600BF73D3 /* filewritemultitrack.h */; };
+		9597242E12C1378C00BF73D3 /* keysig.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723BF12C1378600BF73D3 /* keysig.h */; };
+		9597242F12C1378C00BF73D3 /* manager.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723C012C1378600BF73D3 /* manager.h */; };
+		9597243012C1378C00BF73D3 /* matrix.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723C112C1378600BF73D3 /* matrix.h */; };
+		9597243112C1378C00BF73D3 /* midi.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723C212C1378600BF73D3 /* midi.h */; };
+		9597243212C1378C00BF73D3 /* msg.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723C312C1378600BF73D3 /* msg.h */; };
+		9597243312C1378C00BF73D3 /* multitrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723C412C1378600BF73D3 /* multitrack.h */; };
+		9597243412C1378C00BF73D3 /* parser.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723C512C1378600BF73D3 /* parser.h */; };
+		9597243512C1378C00BF73D3 /* process.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723C612C1378600BF73D3 /* process.h */; };
+		9597243612C1378C00BF73D3 /* queue.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723C712C1378600BF73D3 /* queue.h */; };
+		9597243712C1378C00BF73D3 /* sequencer.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723C812C1378600BF73D3 /* sequencer.h */; };
+		9597243812C1378C00BF73D3 /* showcontrol.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723C912C1378600BF73D3 /* showcontrol.h */; };
+		9597243912C1378C00BF73D3 /* showcontrolhandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723CA12C1378600BF73D3 /* showcontrolhandler.h */; };
+		9597243A12C1378C00BF73D3 /* smpte.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723CB12C1378600BF73D3 /* smpte.h */; };
+		9597243B12C1378C00BF73D3 /* song.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723CC12C1378600BF73D3 /* song.h */; };
+		9597243C12C1378C00BF73D3 /* sysex.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723CD12C1378600BF73D3 /* sysex.h */; };
+		9597243D12C1378C00BF73D3 /* tempo.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723CE12C1378600BF73D3 /* tempo.h */; };
+		9597243E12C1378C00BF73D3 /* tick.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723CF12C1378600BF73D3 /* tick.h */; };
+		9597243F12C1378C00BF73D3 /* track.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723D012C1378600BF73D3 /* track.h */; };
+		9597244012C1378C00BF73D3 /* world.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723D112C1378600BF73D3 /* world.h */; };
+		9597244212C1378C00BF73D3 /* jdkmidi_advancedsequencer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723EA12C1378600BF73D3 /* jdkmidi_advancedsequencer.cpp */; };
+		9597244312C1378C00BF73D3 /* jdkmidi_driver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723EB12C1378600BF73D3 /* jdkmidi_driver.cpp */; };
+		9597244412C1378C00BF73D3 /* jdkmidi_driverdump.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723EC12C1378600BF73D3 /* jdkmidi_driverdump.cpp */; };
+		9597244512C1378C00BF73D3 /* jdkmidi_edittrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723ED12C1378600BF73D3 /* jdkmidi_edittrack.cpp */; };
+		9597244612C1378C00BF73D3 /* jdkmidi_file.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723EE12C1378600BF73D3 /* jdkmidi_file.cpp */; };
+		9597244712C1378C00BF73D3 /* jdkmidi_fileread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723EF12C1378600BF73D3 /* jdkmidi_fileread.cpp */; };
+		9597244812C1378C00BF73D3 /* jdkmidi_filereadmultitrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723F012C1378600BF73D3 /* jdkmidi_filereadmultitrack.cpp */; };
+		9597244912C1378C00BF73D3 /* jdkmidi_fileshow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723F112C1378600BF73D3 /* jdkmidi_fileshow.cpp */; };
+		9597244A12C1378C00BF73D3 /* jdkmidi_filewrite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723F212C1378600BF73D3 /* jdkmidi_filewrite.cpp */; };
+		9597244B12C1378C00BF73D3 /* jdkmidi_filewritemultitrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723F312C1378600BF73D3 /* jdkmidi_filewritemultitrack.cpp */; };
+		9597244C12C1378C00BF73D3 /* jdkmidi_keysig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723F412C1378600BF73D3 /* jdkmidi_keysig.cpp */; };
+		9597244D12C1378C00BF73D3 /* jdkmidi_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723F512C1378600BF73D3 /* jdkmidi_manager.cpp */; };
+		9597244E12C1378C00BF73D3 /* jdkmidi_matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723F612C1378600BF73D3 /* jdkmidi_matrix.cpp */; };
+		9597244F12C1378C00BF73D3 /* jdkmidi_midi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723F712C1378600BF73D3 /* jdkmidi_midi.cpp */; };
+		9597245012C1378C00BF73D3 /* jdkmidi_msg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723F812C1378600BF73D3 /* jdkmidi_msg.cpp */; };
+		9597245112C1378C00BF73D3 /* jdkmidi_multitrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723F912C1378600BF73D3 /* jdkmidi_multitrack.cpp */; };
+		9597245212C1378C00BF73D3 /* jdkmidi_parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723FA12C1378600BF73D3 /* jdkmidi_parser.cpp */; };
+		9597245312C1378C00BF73D3 /* jdkmidi_process.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723FB12C1378600BF73D3 /* jdkmidi_process.cpp */; };
+		9597245412C1378C00BF73D3 /* jdkmidi_queue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723FC12C1378600BF73D3 /* jdkmidi_queue.cpp */; };
+		9597245512C1378C00BF73D3 /* jdkmidi_sequencer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723FD12C1378600BF73D3 /* jdkmidi_sequencer.cpp */; };
+		9597245612C1378C00BF73D3 /* jdkmidi_showcontrol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723FE12C1378600BF73D3 /* jdkmidi_showcontrol.cpp */; };
+		9597245712C1378C00BF73D3 /* jdkmidi_showcontrolhandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723FF12C1378600BF73D3 /* jdkmidi_showcontrolhandler.cpp */; };
+		9597245812C1378C00BF73D3 /* jdkmidi_smpte.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9597240012C1378600BF73D3 /* jdkmidi_smpte.cpp */; };
+		9597245912C1378C00BF73D3 /* jdkmidi_sysex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9597240112C1378600BF73D3 /* jdkmidi_sysex.cpp */; };
+		9597245A12C1378C00BF73D3 /* jdkmidi_tempo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9597240212C1378600BF73D3 /* jdkmidi_tempo.cpp */; };
+		9597245B12C1378C00BF73D3 /* jdkmidi_tick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9597240312C1378600BF73D3 /* jdkmidi_tick.cpp */; };
+		9597245C12C1378C00BF73D3 /* jdkmidi_track.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9597240412C1378600BF73D3 /* jdkmidi_track.cpp */; };
+		9597245D12C1378C00BF73D3 /* jdkmidi_driverwin32.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9597240612C1378600BF73D3 /* jdkmidi_driverwin32.cpp */; };
+		9597247912C1378C00BF73D3 /* advancedsequencer.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723B412C1378600BF73D3 /* advancedsequencer.h */; };
+		9597247A12C1378C00BF73D3 /* driver.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723B512C1378600BF73D3 /* driver.h */; };
+		9597247B12C1378C00BF73D3 /* driverdump.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723B612C1378600BF73D3 /* driverdump.h */; };
+		9597247C12C1378C00BF73D3 /* driverwin32.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723B712C1378600BF73D3 /* driverwin32.h */; };
+		9597247D12C1378C00BF73D3 /* edittrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723B812C1378600BF73D3 /* edittrack.h */; };
+		9597247E12C1378C00BF73D3 /* file.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723B912C1378600BF73D3 /* file.h */; };
+		9597247F12C1378C00BF73D3 /* fileread.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723BA12C1378600BF73D3 /* fileread.h */; };
+		9597248012C1378C00BF73D3 /* filereadmultitrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723BB12C1378600BF73D3 /* filereadmultitrack.h */; };
+		9597248112C1378C00BF73D3 /* fileshow.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723BC12C1378600BF73D3 /* fileshow.h */; };
+		9597248212C1378C00BF73D3 /* filewrite.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723BD12C1378600BF73D3 /* filewrite.h */; };
+		9597248312C1378C00BF73D3 /* filewritemultitrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723BE12C1378600BF73D3 /* filewritemultitrack.h */; };
+		9597248412C1378C00BF73D3 /* keysig.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723BF12C1378600BF73D3 /* keysig.h */; };
+		9597248512C1378C00BF73D3 /* manager.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723C012C1378600BF73D3 /* manager.h */; };
+		9597248612C1378C00BF73D3 /* matrix.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723C112C1378600BF73D3 /* matrix.h */; };
+		9597248712C1378C00BF73D3 /* midi.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723C212C1378600BF73D3 /* midi.h */; };
+		9597248812C1378C00BF73D3 /* msg.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723C312C1378600BF73D3 /* msg.h */; };
+		9597248912C1378C00BF73D3 /* multitrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723C412C1378600BF73D3 /* multitrack.h */; };
+		9597248A12C1378C00BF73D3 /* parser.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723C512C1378600BF73D3 /* parser.h */; };
+		9597248B12C1378C00BF73D3 /* process.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723C612C1378600BF73D3 /* process.h */; };
+		9597248C12C1378C00BF73D3 /* queue.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723C712C1378600BF73D3 /* queue.h */; };
+		9597248D12C1378C00BF73D3 /* sequencer.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723C812C1378600BF73D3 /* sequencer.h */; };
+		9597248E12C1378C00BF73D3 /* showcontrol.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723C912C1378600BF73D3 /* showcontrol.h */; };
+		9597248F12C1378C00BF73D3 /* showcontrolhandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723CA12C1378600BF73D3 /* showcontrolhandler.h */; };
+		9597249012C1378C00BF73D3 /* smpte.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723CB12C1378600BF73D3 /* smpte.h */; };
+		9597249112C1378C00BF73D3 /* song.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723CC12C1378600BF73D3 /* song.h */; };
+		9597249212C1378C00BF73D3 /* sysex.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723CD12C1378600BF73D3 /* sysex.h */; };
+		9597249312C1378C00BF73D3 /* tempo.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723CE12C1378600BF73D3 /* tempo.h */; };
+		9597249412C1378C00BF73D3 /* tick.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723CF12C1378600BF73D3 /* tick.h */; };
+		9597249512C1378C00BF73D3 /* track.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723D012C1378600BF73D3 /* track.h */; };
+		9597249612C1378C00BF73D3 /* world.h in Headers */ = {isa = PBXBuildFile; fileRef = 959723D112C1378600BF73D3 /* world.h */; };
+		9597249812C1378C00BF73D3 /* jdkmidi_advancedsequencer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723EA12C1378600BF73D3 /* jdkmidi_advancedsequencer.cpp */; };
+		9597249912C1378C00BF73D3 /* jdkmidi_driver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723EB12C1378600BF73D3 /* jdkmidi_driver.cpp */; };
+		9597249A12C1378C00BF73D3 /* jdkmidi_driverdump.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723EC12C1378600BF73D3 /* jdkmidi_driverdump.cpp */; };
+		9597249B12C1378C00BF73D3 /* jdkmidi_edittrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723ED12C1378600BF73D3 /* jdkmidi_edittrack.cpp */; };
+		9597249C12C1378C00BF73D3 /* jdkmidi_file.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723EE12C1378600BF73D3 /* jdkmidi_file.cpp */; };
+		9597249D12C1378C00BF73D3 /* jdkmidi_fileread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723EF12C1378600BF73D3 /* jdkmidi_fileread.cpp */; };
+		9597249E12C1378C00BF73D3 /* jdkmidi_filereadmultitrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723F012C1378600BF73D3 /* jdkmidi_filereadmultitrack.cpp */; };
+		9597249F12C1378C00BF73D3 /* jdkmidi_fileshow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723F112C1378600BF73D3 /* jdkmidi_fileshow.cpp */; };
+		959724A012C1378C00BF73D3 /* jdkmidi_filewrite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723F212C1378600BF73D3 /* jdkmidi_filewrite.cpp */; };
+		959724A112C1378C00BF73D3 /* jdkmidi_filewritemultitrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723F312C1378600BF73D3 /* jdkmidi_filewritemultitrack.cpp */; };
+		959724A212C1378C00BF73D3 /* jdkmidi_keysig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723F412C1378600BF73D3 /* jdkmidi_keysig.cpp */; };
+		959724A312C1378C00BF73D3 /* jdkmidi_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723F512C1378600BF73D3 /* jdkmidi_manager.cpp */; };
+		959724A412C1378C00BF73D3 /* jdkmidi_matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723F612C1378600BF73D3 /* jdkmidi_matrix.cpp */; };
+		959724A512C1378C00BF73D3 /* jdkmidi_midi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723F712C1378600BF73D3 /* jdkmidi_midi.cpp */; };
+		959724A612C1378C00BF73D3 /* jdkmidi_msg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723F812C1378600BF73D3 /* jdkmidi_msg.cpp */; };
+		959724A712C1378C00BF73D3 /* jdkmidi_multitrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723F912C1378600BF73D3 /* jdkmidi_multitrack.cpp */; };
+		959724A812C1378C00BF73D3 /* jdkmidi_parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723FA12C1378600BF73D3 /* jdkmidi_parser.cpp */; };
+		959724A912C1378C00BF73D3 /* jdkmidi_process.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723FB12C1378600BF73D3 /* jdkmidi_process.cpp */; };
+		959724AA12C1378C00BF73D3 /* jdkmidi_queue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723FC12C1378600BF73D3 /* jdkmidi_queue.cpp */; };
+		959724AB12C1378C00BF73D3 /* jdkmidi_sequencer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723FD12C1378600BF73D3 /* jdkmidi_sequencer.cpp */; };
+		959724AC12C1378C00BF73D3 /* jdkmidi_showcontrol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723FE12C1378600BF73D3 /* jdkmidi_showcontrol.cpp */; };
+		959724AD12C1378C00BF73D3 /* jdkmidi_showcontrolhandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959723FF12C1378600BF73D3 /* jdkmidi_showcontrolhandler.cpp */; };
+		959724AE12C1378C00BF73D3 /* jdkmidi_smpte.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9597240012C1378600BF73D3 /* jdkmidi_smpte.cpp */; };
+		959724AF12C1378C00BF73D3 /* jdkmidi_sysex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9597240112C1378600BF73D3 /* jdkmidi_sysex.cpp */; };
+		959724B012C1378C00BF73D3 /* jdkmidi_tempo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9597240212C1378600BF73D3 /* jdkmidi_tempo.cpp */; };
+		959724B112C1378C00BF73D3 /* jdkmidi_tick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9597240312C1378600BF73D3 /* jdkmidi_tick.cpp */; };
+		959724B212C1378C00BF73D3 /* jdkmidi_track.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9597240412C1378600BF73D3 /* jdkmidi_track.cpp */; };
+		959724B312C1378C00BF73D3 /* jdkmidi_driverwin32.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9597240612C1378600BF73D3 /* jdkmidi_driverwin32.cpp */; };
 		959FD68B1144493C00F22579 /* AddTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959FD6891144493C00F22579 /* AddTrack.cpp */; };
 		959FD68C1144493C00F22579 /* AddTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959FD68A1144493C00F22579 /* AddTrack.h */; };
 		959FD68D1144493C00F22579 /* AddTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959FD6891144493C00F22579 /* AddTrack.cpp */; };
@@ -994,6 +1110,64 @@
 		959693351153E612001E321B /* ScoreAnalyser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreAnalyser.h; path = ../Src/Analysers/ScoreAnalyser.h; sourceTree = SOURCE_ROOT; };
 		959693361153E612001E321B /* SilenceAnalyser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SilenceAnalyser.cpp; path = ../Src/Analysers/SilenceAnalyser.cpp; sourceTree = SOURCE_ROOT; };
 		959693371153E612001E321B /* SilenceAnalyser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SilenceAnalyser.h; path = ../Src/Analysers/SilenceAnalyser.h; sourceTree = SOURCE_ROOT; };
+		959723B412C1378600BF73D3 /* advancedsequencer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = advancedsequencer.h; path = ../libjdkmidi/include/jdkmidi/advancedsequencer.h; sourceTree = SOURCE_ROOT; };
+		959723B512C1378600BF73D3 /* driver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = driver.h; path = ../libjdkmidi/include/jdkmidi/driver.h; sourceTree = SOURCE_ROOT; };
+		959723B612C1378600BF73D3 /* driverdump.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = driverdump.h; path = ../libjdkmidi/include/jdkmidi/driverdump.h; sourceTree = SOURCE_ROOT; };
+		959723B712C1378600BF73D3 /* driverwin32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = driverwin32.h; path = ../libjdkmidi/include/jdkmidi/driverwin32.h; sourceTree = SOURCE_ROOT; };
+		959723B812C1378600BF73D3 /* edittrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = edittrack.h; path = ../libjdkmidi/include/jdkmidi/edittrack.h; sourceTree = SOURCE_ROOT; };
+		959723B912C1378600BF73D3 /* file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = file.h; path = ../libjdkmidi/include/jdkmidi/file.h; sourceTree = SOURCE_ROOT; };
+		959723BA12C1378600BF73D3 /* fileread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fileread.h; path = ../libjdkmidi/include/jdkmidi/fileread.h; sourceTree = SOURCE_ROOT; };
+		959723BB12C1378600BF73D3 /* filereadmultitrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = filereadmultitrack.h; path = ../libjdkmidi/include/jdkmidi/filereadmultitrack.h; sourceTree = SOURCE_ROOT; };
+		959723BC12C1378600BF73D3 /* fileshow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fileshow.h; path = ../libjdkmidi/include/jdkmidi/fileshow.h; sourceTree = SOURCE_ROOT; };
+		959723BD12C1378600BF73D3 /* filewrite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = filewrite.h; path = ../libjdkmidi/include/jdkmidi/filewrite.h; sourceTree = SOURCE_ROOT; };
+		959723BE12C1378600BF73D3 /* filewritemultitrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = filewritemultitrack.h; path = ../libjdkmidi/include/jdkmidi/filewritemultitrack.h; sourceTree = SOURCE_ROOT; };
+		959723BF12C1378600BF73D3 /* keysig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = keysig.h; path = ../libjdkmidi/include/jdkmidi/keysig.h; sourceTree = SOURCE_ROOT; };
+		959723C012C1378600BF73D3 /* manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = manager.h; path = ../libjdkmidi/include/jdkmidi/manager.h; sourceTree = SOURCE_ROOT; };
+		959723C112C1378600BF73D3 /* matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = matrix.h; path = ../libjdkmidi/include/jdkmidi/matrix.h; sourceTree = SOURCE_ROOT; };
+		959723C212C1378600BF73D3 /* midi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = midi.h; path = ../libjdkmidi/include/jdkmidi/midi.h; sourceTree = SOURCE_ROOT; };
+		959723C312C1378600BF73D3 /* msg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = msg.h; path = ../libjdkmidi/include/jdkmidi/msg.h; sourceTree = SOURCE_ROOT; };
+		959723C412C1378600BF73D3 /* multitrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = multitrack.h; path = ../libjdkmidi/include/jdkmidi/multitrack.h; sourceTree = SOURCE_ROOT; };
+		959723C512C1378600BF73D3 /* parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = parser.h; path = ../libjdkmidi/include/jdkmidi/parser.h; sourceTree = SOURCE_ROOT; };
+		959723C612C1378600BF73D3 /* process.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = process.h; path = ../libjdkmidi/include/jdkmidi/process.h; sourceTree = SOURCE_ROOT; };
+		959723C712C1378600BF73D3 /* queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = queue.h; path = ../libjdkmidi/include/jdkmidi/queue.h; sourceTree = SOURCE_ROOT; };
+		959723C812C1378600BF73D3 /* sequencer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sequencer.h; path = ../libjdkmidi/include/jdkmidi/sequencer.h; sourceTree = SOURCE_ROOT; };
+		959723C912C1378600BF73D3 /* showcontrol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = showcontrol.h; path = ../libjdkmidi/include/jdkmidi/showcontrol.h; sourceTree = SOURCE_ROOT; };
+		959723CA12C1378600BF73D3 /* showcontrolhandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = showcontrolhandler.h; path = ../libjdkmidi/include/jdkmidi/showcontrolhandler.h; sourceTree = SOURCE_ROOT; };
+		959723CB12C1378600BF73D3 /* smpte.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = smpte.h; path = ../libjdkmidi/include/jdkmidi/smpte.h; sourceTree = SOURCE_ROOT; };
+		959723CC12C1378600BF73D3 /* song.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = song.h; path = ../libjdkmidi/include/jdkmidi/song.h; sourceTree = SOURCE_ROOT; };
+		959723CD12C1378600BF73D3 /* sysex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sysex.h; path = ../libjdkmidi/include/jdkmidi/sysex.h; sourceTree = SOURCE_ROOT; };
+		959723CE12C1378600BF73D3 /* tempo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tempo.h; path = ../libjdkmidi/include/jdkmidi/tempo.h; sourceTree = SOURCE_ROOT; };
+		959723CF12C1378600BF73D3 /* tick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tick.h; path = ../libjdkmidi/include/jdkmidi/tick.h; sourceTree = SOURCE_ROOT; };
+		959723D012C1378600BF73D3 /* track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = track.h; path = ../libjdkmidi/include/jdkmidi/track.h; sourceTree = SOURCE_ROOT; };
+		959723D112C1378600BF73D3 /* world.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = world.h; path = ../libjdkmidi/include/jdkmidi/world.h; sourceTree = SOURCE_ROOT; };
+		959723EA12C1378600BF73D3 /* jdkmidi_advancedsequencer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_advancedsequencer.cpp; path = ../libjdkmidi/src/jdkmidi_advancedsequencer.cpp; sourceTree = SOURCE_ROOT; };
+		959723EB12C1378600BF73D3 /* jdkmidi_driver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_driver.cpp; path = ../libjdkmidi/src/jdkmidi_driver.cpp; sourceTree = SOURCE_ROOT; };
+		959723EC12C1378600BF73D3 /* jdkmidi_driverdump.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_driverdump.cpp; path = ../libjdkmidi/src/jdkmidi_driverdump.cpp; sourceTree = SOURCE_ROOT; };
+		959723ED12C1378600BF73D3 /* jdkmidi_edittrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_edittrack.cpp; path = ../libjdkmidi/src/jdkmidi_edittrack.cpp; sourceTree = SOURCE_ROOT; };
+		959723EE12C1378600BF73D3 /* jdkmidi_file.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_file.cpp; path = ../libjdkmidi/src/jdkmidi_file.cpp; sourceTree = SOURCE_ROOT; };
+		959723EF12C1378600BF73D3 /* jdkmidi_fileread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_fileread.cpp; path = ../libjdkmidi/src/jdkmidi_fileread.cpp; sourceTree = SOURCE_ROOT; };
+		959723F012C1378600BF73D3 /* jdkmidi_filereadmultitrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_filereadmultitrack.cpp; path = ../libjdkmidi/src/jdkmidi_filereadmultitrack.cpp; sourceTree = SOURCE_ROOT; };
+		959723F112C1378600BF73D3 /* jdkmidi_fileshow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_fileshow.cpp; path = ../libjdkmidi/src/jdkmidi_fileshow.cpp; sourceTree = SOURCE_ROOT; };
+		959723F212C1378600BF73D3 /* jdkmidi_filewrite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_filewrite.cpp; path = ../libjdkmidi/src/jdkmidi_filewrite.cpp; sourceTree = SOURCE_ROOT; };
+		959723F312C1378600BF73D3 /* jdkmidi_filewritemultitrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_filewritemultitrack.cpp; path = ../libjdkmidi/src/jdkmidi_filewritemultitrack.cpp; sourceTree = SOURCE_ROOT; };
+		959723F412C1378600BF73D3 /* jdkmidi_keysig.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_keysig.cpp; path = ../libjdkmidi/src/jdkmidi_keysig.cpp; sourceTree = SOURCE_ROOT; };
+		959723F512C1378600BF73D3 /* jdkmidi_manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_manager.cpp; path = ../libjdkmidi/src/jdkmidi_manager.cpp; sourceTree = SOURCE_ROOT; };
+		959723F612C1378600BF73D3 /* jdkmidi_matrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_matrix.cpp; path = ../libjdkmidi/src/jdkmidi_matrix.cpp; sourceTree = SOURCE_ROOT; };
+		959723F712C1378600BF73D3 /* jdkmidi_midi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_midi.cpp; path = ../libjdkmidi/src/jdkmidi_midi.cpp; sourceTree = SOURCE_ROOT; };
+		959723F812C1378600BF73D3 /* jdkmidi_msg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_msg.cpp; path = ../libjdkmidi/src/jdkmidi_msg.cpp; sourceTree = SOURCE_ROOT; };
+		959723F912C1378600BF73D3 /* jdkmidi_multitrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_multitrack.cpp; path = ../libjdkmidi/src/jdkmidi_multitrack.cpp; sourceTree = SOURCE_ROOT; };
+		959723FA12C1378600BF73D3 /* jdkmidi_parser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_parser.cpp; path = ../libjdkmidi/src/jdkmidi_parser.cpp; sourceTree = SOURCE_ROOT; };
+		959723FB12C1378600BF73D3 /* jdkmidi_process.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_process.cpp; path = ../libjdkmidi/src/jdkmidi_process.cpp; sourceTree = SOURCE_ROOT; };
+		959723FC12C1378600BF73D3 /* jdkmidi_queue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_queue.cpp; path = ../libjdkmidi/src/jdkmidi_queue.cpp; sourceTree = SOURCE_ROOT; };
+		959723FD12C1378600BF73D3 /* jdkmidi_sequencer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_sequencer.cpp; path = ../libjdkmidi/src/jdkmidi_sequencer.cpp; sourceTree = SOURCE_ROOT; };
+		959723FE12C1378600BF73D3 /* jdkmidi_showcontrol.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_showcontrol.cpp; path = ../libjdkmidi/src/jdkmidi_showcontrol.cpp; sourceTree = SOURCE_ROOT; };
+		959723FF12C1378600BF73D3 /* jdkmidi_showcontrolhandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_showcontrolhandler.cpp; path = ../libjdkmidi/src/jdkmidi_showcontrolhandler.cpp; sourceTree = SOURCE_ROOT; };
+		9597240012C1378600BF73D3 /* jdkmidi_smpte.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_smpte.cpp; path = ../libjdkmidi/src/jdkmidi_smpte.cpp; sourceTree = SOURCE_ROOT; };
+		9597240112C1378600BF73D3 /* jdkmidi_sysex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_sysex.cpp; path = ../libjdkmidi/src/jdkmidi_sysex.cpp; sourceTree = SOURCE_ROOT; };
+		9597240212C1378600BF73D3 /* jdkmidi_tempo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_tempo.cpp; path = ../libjdkmidi/src/jdkmidi_tempo.cpp; sourceTree = SOURCE_ROOT; };
+		9597240312C1378600BF73D3 /* jdkmidi_tick.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_tick.cpp; path = ../libjdkmidi/src/jdkmidi_tick.cpp; sourceTree = SOURCE_ROOT; };
+		9597240412C1378600BF73D3 /* jdkmidi_track.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_track.cpp; path = ../libjdkmidi/src/jdkmidi_track.cpp; sourceTree = SOURCE_ROOT; };
+		9597240612C1378600BF73D3 /* jdkmidi_driverwin32.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_driverwin32.cpp; path = ../libjdkmidi/src/win32/jdkmidi_driverwin32.cpp; sourceTree = SOURCE_ROOT; };
 		959FD6891144493C00F22579 /* AddTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AddTrack.cpp; path = ../Src/Actions/AddTrack.cpp; sourceTree = SOURCE_ROOT; };
 		959FD68A1144493C00F22579 /* AddTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddTrack.h; path = ../Src/Actions/AddTrack.h; sourceTree = SOURCE_ROOT; };
 		959FD6BD114451A400F22579 /* DeleteTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DeleteTrack.cpp; path = ../Src/Actions/DeleteTrack.cpp; sourceTree = SOURCE_ROOT; };
@@ -1499,6 +1673,108 @@
 			path = ../Src/Analysers;
 			sourceTree = SOURCE_ROOT;
 		};
+		9597232E12C1378600BF73D3 /* libjdkmidi */ = {
+			isa = PBXGroup;
+			children = (
+				959723B212C1378600BF73D3 /* include */,
+				959723E912C1378600BF73D3 /* src */,
+			);
+			name = libjdkmidi;
+			path = ../libjdkmidi;
+			sourceTree = SOURCE_ROOT;
+		};
+		959723B212C1378600BF73D3 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				959723B312C1378600BF73D3 /* jdkmidi */,
+			);
+			name = include;
+			path = ../libjdkmidi/include;
+			sourceTree = SOURCE_ROOT;
+		};
+		959723B312C1378600BF73D3 /* jdkmidi */ = {
+			isa = PBXGroup;
+			children = (
+				959723B412C1378600BF73D3 /* advancedsequencer.h */,
+				959723B512C1378600BF73D3 /* driver.h */,
+				959723B612C1378600BF73D3 /* driverdump.h */,
+				959723B712C1378600BF73D3 /* driverwin32.h */,
+				959723B812C1378600BF73D3 /* edittrack.h */,
+				959723B912C1378600BF73D3 /* file.h */,
+				959723BA12C1378600BF73D3 /* fileread.h */,
+				959723BB12C1378600BF73D3 /* filereadmultitrack.h */,
+				959723BC12C1378600BF73D3 /* fileshow.h */,
+				959723BD12C1378600BF73D3 /* filewrite.h */,
+				959723BE12C1378600BF73D3 /* filewritemultitrack.h */,
+				959723BF12C1378600BF73D3 /* keysig.h */,
+				959723C012C1378600BF73D3 /* manager.h */,
+				959723C112C1378600BF73D3 /* matrix.h */,
+				959723C212C1378600BF73D3 /* midi.h */,
+				959723C312C1378600BF73D3 /* msg.h */,
+				959723C412C1378600BF73D3 /* multitrack.h */,
+				959723C512C1378600BF73D3 /* parser.h */,
+				959723C612C1378600BF73D3 /* process.h */,
+				959723C712C1378600BF73D3 /* queue.h */,
+				959723C812C1378600BF73D3 /* sequencer.h */,
+				959723C912C1378600BF73D3 /* showcontrol.h */,
+				959723CA12C1378600BF73D3 /* showcontrolhandler.h */,
+				959723CB12C1378600BF73D3 /* smpte.h */,
+				959723CC12C1378600BF73D3 /* song.h */,
+				959723CD12C1378600BF73D3 /* sysex.h */,
+				959723CE12C1378600BF73D3 /* tempo.h */,
+				959723CF12C1378600BF73D3 /* tick.h */,
+				959723D012C1378600BF73D3 /* track.h */,
+				959723D112C1378600BF73D3 /* world.h */,
+			);
+			name = jdkmidi;
+			path = ../libjdkmidi/include/jdkmidi;
+			sourceTree = SOURCE_ROOT;
+		};
+		959723E912C1378600BF73D3 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				959723EA12C1378600BF73D3 /* jdkmidi_advancedsequencer.cpp */,
+				959723EB12C1378600BF73D3 /* jdkmidi_driver.cpp */,
+				959723EC12C1378600BF73D3 /* jdkmidi_driverdump.cpp */,
+				959723ED12C1378600BF73D3 /* jdkmidi_edittrack.cpp */,
+				959723EE12C1378600BF73D3 /* jdkmidi_file.cpp */,
+				959723EF12C1378600BF73D3 /* jdkmidi_fileread.cpp */,
+				959723F012C1378600BF73D3 /* jdkmidi_filereadmultitrack.cpp */,
+				959723F112C1378600BF73D3 /* jdkmidi_fileshow.cpp */,
+				959723F212C1378600BF73D3 /* jdkmidi_filewrite.cpp */,
+				959723F312C1378600BF73D3 /* jdkmidi_filewritemultitrack.cpp */,
+				959723F412C1378600BF73D3 /* jdkmidi_keysig.cpp */,
+				959723F512C1378600BF73D3 /* jdkmidi_manager.cpp */,
+				959723F612C1378600BF73D3 /* jdkmidi_matrix.cpp */,
+				959723F712C1378600BF73D3 /* jdkmidi_midi.cpp */,
+				959723F812C1378600BF73D3 /* jdkmidi_msg.cpp */,
+				959723F912C1378600BF73D3 /* jdkmidi_multitrack.cpp */,
+				959723FA12C1378600BF73D3 /* jdkmidi_parser.cpp */,
+				959723FB12C1378600BF73D3 /* jdkmidi_process.cpp */,
+				959723FC12C1378600BF73D3 /* jdkmidi_queue.cpp */,
+				959723FD12C1378600BF73D3 /* jdkmidi_sequencer.cpp */,
+				959723FE12C1378600BF73D3 /* jdkmidi_showcontrol.cpp */,
+				959723FF12C1378600BF73D3 /* jdkmidi_showcontrolhandler.cpp */,
+				9597240012C1378600BF73D3 /* jdkmidi_smpte.cpp */,
+				9597240112C1378600BF73D3 /* jdkmidi_sysex.cpp */,
+				9597240212C1378600BF73D3 /* jdkmidi_tempo.cpp */,
+				9597240312C1378600BF73D3 /* jdkmidi_tick.cpp */,
+				9597240412C1378600BF73D3 /* jdkmidi_track.cpp */,
+				9597240512C1378600BF73D3 /* win32 */,
+			);
+			name = src;
+			path = ../libjdkmidi/src;
+			sourceTree = SOURCE_ROOT;
+		};
+		9597240512C1378600BF73D3 /* win32 */ = {
+			isa = PBXGroup;
+			children = (
+				9597240612C1378600BF73D3 /* jdkmidi_driverwin32.cpp */,
+			);
+			name = win32;
+			path = ../libjdkmidi/src/win32;
+			sourceTree = SOURCE_ROOT;
+		};
 		EF9D1BEE09ABE00400CAF7A6 = {
 			isa = PBXGroup;
 			children = (
@@ -1553,6 +1829,7 @@
 				95711B2A1125D91500104BF5 /* mac-i18n */,
 				95711B2F1125D92700104BF5 /* Resources */,
 				950B3B411125DBCF006C9AF1 /* irrXML */,
+				9597232E12C1378600BF73D3 /* libjdkmidi */,
 				EFA04C2009BF39DF0079DEB2 /* Frameworks */,
 				EF9D1C0009ABE02100CAF7A6 /* Products */,
 			);
@@ -1718,6 +1995,36 @@
 				953C043A122197C0005DF729 /* prefix.pch in Headers */,
 				950962E11284A437003FC33E /* UnitTestUtils.h in Headers */,
 				950962E71284A50A003FC33E /* UnitTest.h in Headers */,
+				9597247912C1378C00BF73D3 /* advancedsequencer.h in Headers */,
+				9597247A12C1378C00BF73D3 /* driver.h in Headers */,
+				9597247B12C1378C00BF73D3 /* driverdump.h in Headers */,
+				9597247C12C1378C00BF73D3 /* driverwin32.h in Headers */,
+				9597247D12C1378C00BF73D3 /* edittrack.h in Headers */,
+				9597247E12C1378C00BF73D3 /* file.h in Headers */,
+				9597247F12C1378C00BF73D3 /* fileread.h in Headers */,
+				9597248012C1378C00BF73D3 /* filereadmultitrack.h in Headers */,
+				9597248112C1378C00BF73D3 /* fileshow.h in Headers */,
+				9597248212C1378C00BF73D3 /* filewrite.h in Headers */,
+				9597248312C1378C00BF73D3 /* filewritemultitrack.h in Headers */,
+				9597248412C1378C00BF73D3 /* keysig.h in Headers */,
+				9597248512C1378C00BF73D3 /* manager.h in Headers */,
+				9597248612C1378C00BF73D3 /* matrix.h in Headers */,
+				9597248712C1378C00BF73D3 /* midi.h in Headers */,
+				9597248812C1378C00BF73D3 /* msg.h in Headers */,
+				9597248912C1378C00BF73D3 /* multitrack.h in Headers */,
+				9597248A12C1378C00BF73D3 /* parser.h in Headers */,
+				9597248B12C1378C00BF73D3 /* process.h in Headers */,
+				9597248C12C1378C00BF73D3 /* queue.h in Headers */,
+				9597248D12C1378C00BF73D3 /* sequencer.h in Headers */,
+				9597248E12C1378C00BF73D3 /* showcontrol.h in Headers */,
+				9597248F12C1378C00BF73D3 /* showcontrolhandler.h in Headers */,
+				9597249012C1378C00BF73D3 /* smpte.h in Headers */,
+				9597249112C1378C00BF73D3 /* song.h in Headers */,
+				9597249212C1378C00BF73D3 /* sysex.h in Headers */,
+				9597249312C1378C00BF73D3 /* tempo.h in Headers */,
+				9597249412C1378C00BF73D3 /* tick.h in Headers */,
+				9597249512C1378C00BF73D3 /* track.h in Headers */,
+				9597249612C1378C00BF73D3 /* world.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1852,6 +2159,36 @@
 				953C0439122197C0005DF729 /* prefix.pch in Headers */,
 				950962DF1284A437003FC33E /* UnitTestUtils.h in Headers */,
 				950962E51284A50A003FC33E /* UnitTest.h in Headers */,
+				9597242312C1378C00BF73D3 /* advancedsequencer.h in Headers */,
+				9597242412C1378C00BF73D3 /* driver.h in Headers */,
+				9597242512C1378C00BF73D3 /* driverdump.h in Headers */,
+				9597242612C1378C00BF73D3 /* driverwin32.h in Headers */,
+				9597242712C1378C00BF73D3 /* edittrack.h in Headers */,
+				9597242812C1378C00BF73D3 /* file.h in Headers */,
+				9597242912C1378C00BF73D3 /* fileread.h in Headers */,
+				9597242A12C1378C00BF73D3 /* filereadmultitrack.h in Headers */,
+				9597242B12C1378C00BF73D3 /* fileshow.h in Headers */,
+				9597242C12C1378C00BF73D3 /* filewrite.h in Headers */,
+				9597242D12C1378C00BF73D3 /* filewritemultitrack.h in Headers */,
+				9597242E12C1378C00BF73D3 /* keysig.h in Headers */,
+				9597242F12C1378C00BF73D3 /* manager.h in Headers */,
+				9597243012C1378C00BF73D3 /* matrix.h in Headers */,
+				9597243112C1378C00BF73D3 /* midi.h in Headers */,
+				9597243212C1378C00BF73D3 /* msg.h in Headers */,
+				9597243312C1378C00BF73D3 /* multitrack.h in Headers */,
+				9597243412C1378C00BF73D3 /* parser.h in Headers */,
+				9597243512C1378C00BF73D3 /* process.h in Headers */,
+				9597243612C1378C00BF73D3 /* queue.h in Headers */,
+				9597243712C1378C00BF73D3 /* sequencer.h in Headers */,
+				9597243812C1378C00BF73D3 /* showcontrol.h in Headers */,
+				9597243912C1378C00BF73D3 /* showcontrolhandler.h in Headers */,
+				9597243A12C1378C00BF73D3 /* smpte.h in Headers */,
+				9597243B12C1378C00BF73D3 /* song.h in Headers */,
+				9597243C12C1378C00BF73D3 /* sysex.h in Headers */,
+				9597243D12C1378C00BF73D3 /* tempo.h in Headers */,
+				9597243E12C1378C00BF73D3 /* tick.h in Headers */,
+				9597243F12C1378C00BF73D3 /* track.h in Headers */,
+				9597244012C1378C00BF73D3 /* world.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2061,6 +2398,34 @@
 				953130D411FCDD3F00B75472 /* NullDevice.cpp in Sources */,
 				950962E01284A437003FC33E /* UnitTestUtils.cpp in Sources */,
 				950962E61284A50A003FC33E /* UnitTest.cpp in Sources */,
+				9597249812C1378C00BF73D3 /* jdkmidi_advancedsequencer.cpp in Sources */,
+				9597249912C1378C00BF73D3 /* jdkmidi_driver.cpp in Sources */,
+				9597249A12C1378C00BF73D3 /* jdkmidi_driverdump.cpp in Sources */,
+				9597249B12C1378C00BF73D3 /* jdkmidi_edittrack.cpp in Sources */,
+				9597249C12C1378C00BF73D3 /* jdkmidi_file.cpp in Sources */,
+				9597249D12C1378C00BF73D3 /* jdkmidi_fileread.cpp in Sources */,
+				9597249E12C1378C00BF73D3 /* jdkmidi_filereadmultitrack.cpp in Sources */,
+				9597249F12C1378C00BF73D3 /* jdkmidi_fileshow.cpp in Sources */,
+				959724A012C1378C00BF73D3 /* jdkmidi_filewrite.cpp in Sources */,
+				959724A112C1378C00BF73D3 /* jdkmidi_filewritemultitrack.cpp in Sources */,
+				959724A212C1378C00BF73D3 /* jdkmidi_keysig.cpp in Sources */,
+				959724A312C1378C00BF73D3 /* jdkmidi_manager.cpp in Sources */,
+				959724A412C1378C00BF73D3 /* jdkmidi_matrix.cpp in Sources */,
+				959724A512C1378C00BF73D3 /* jdkmidi_midi.cpp in Sources */,
+				959724A612C1378C00BF73D3 /* jdkmidi_msg.cpp in Sources */,
+				959724A712C1378C00BF73D3 /* jdkmidi_multitrack.cpp in Sources */,
+				959724A812C1378C00BF73D3 /* jdkmidi_parser.cpp in Sources */,
+				959724A912C1378C00BF73D3 /* jdkmidi_process.cpp in Sources */,
+				959724AA12C1378C00BF73D3 /* jdkmidi_queue.cpp in Sources */,
+				959724AB12C1378C00BF73D3 /* jdkmidi_sequencer.cpp in Sources */,
+				959724AC12C1378C00BF73D3 /* jdkmidi_showcontrol.cpp in Sources */,
+				959724AD12C1378C00BF73D3 /* jdkmidi_showcontrolhandler.cpp in Sources */,
+				959724AE12C1378C00BF73D3 /* jdkmidi_smpte.cpp in Sources */,
+				959724AF12C1378C00BF73D3 /* jdkmidi_sysex.cpp in Sources */,
+				959724B012C1378C00BF73D3 /* jdkmidi_tempo.cpp in Sources */,
+				959724B112C1378C00BF73D3 /* jdkmidi_tick.cpp in Sources */,
+				959724B212C1378C00BF73D3 /* jdkmidi_track.cpp in Sources */,
+				959724B312C1378C00BF73D3 /* jdkmidi_driverwin32.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2190,6 +2555,34 @@
 				953130D611FCDD3F00B75472 /* NullDevice.cpp in Sources */,
 				950962DE1284A437003FC33E /* UnitTestUtils.cpp in Sources */,
 				950962E41284A50A003FC33E /* UnitTest.cpp in Sources */,
+				9597244212C1378C00BF73D3 /* jdkmidi_advancedsequencer.cpp in Sources */,
+				9597244312C1378C00BF73D3 /* jdkmidi_driver.cpp in Sources */,
+				9597244412C1378C00BF73D3 /* jdkmidi_driverdump.cpp in Sources */,
+				9597244512C1378C00BF73D3 /* jdkmidi_edittrack.cpp in Sources */,
+				9597244612C1378C00BF73D3 /* jdkmidi_file.cpp in Sources */,
+				9597244712C1378C00BF73D3 /* jdkmidi_fileread.cpp in Sources */,
+				9597244812C1378C00BF73D3 /* jdkmidi_filereadmultitrack.cpp in Sources */,
+				9597244912C1378C00BF73D3 /* jdkmidi_fileshow.cpp in Sources */,
+				9597244A12C1378C00BF73D3 /* jdkmidi_filewrite.cpp in Sources */,
+				9597244B12C1378C00BF73D3 /* jdkmidi_filewritemultitrack.cpp in Sources */,
+				9597244C12C1378C00BF73D3 /* jdkmidi_keysig.cpp in Sources */,
+				9597244D12C1378C00BF73D3 /* jdkmidi_manager.cpp in Sources */,
+				9597244E12C1378C00BF73D3 /* jdkmidi_matrix.cpp in Sources */,
+				9597244F12C1378C00BF73D3 /* jdkmidi_midi.cpp in Sources */,
+				9597245012C1378C00BF73D3 /* jdkmidi_msg.cpp in Sources */,
+				9597245112C1378C00BF73D3 /* jdkmidi_multitrack.cpp in Sources */,
+				9597245212C1378C00BF73D3 /* jdkmidi_parser.cpp in Sources */,
+				9597245312C1378C00BF73D3 /* jdkmidi_process.cpp in Sources */,
+				9597245412C1378C00BF73D3 /* jdkmidi_queue.cpp in Sources */,
+				9597245512C1378C00BF73D3 /* jdkmidi_sequencer.cpp in Sources */,
+				9597245612C1378C00BF73D3 /* jdkmidi_showcontrol.cpp in Sources */,
+				9597245712C1378C00BF73D3 /* jdkmidi_showcontrolhandler.cpp in Sources */,
+				9597245812C1378C00BF73D3 /* jdkmidi_smpte.cpp in Sources */,
+				9597245912C1378C00BF73D3 /* jdkmidi_sysex.cpp in Sources */,
+				9597245A12C1378C00BF73D3 /* jdkmidi_tempo.cpp in Sources */,
+				9597245B12C1378C00BF73D3 /* jdkmidi_tick.cpp in Sources */,
+				9597245C12C1378C00BF73D3 /* jdkmidi_track.cpp in Sources */,
+				9597245D12C1378C00BF73D3 /* jdkmidi_driverwin32.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

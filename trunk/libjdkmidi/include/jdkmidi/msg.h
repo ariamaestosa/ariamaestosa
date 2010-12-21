@@ -314,8 +314,8 @@ namespace jdkmidi
 
     protected:
       
-      static	char * 	chan_msg_name[16]; ///< Simple ascii text strings describing each channel message type (0x8X to 0xeX)
-      static	char * 	sys_msg_name[16]; ///< Simple ascii text strings describing each system message type (0xf0 to 0xff)
+      static const char * 	chan_msg_name[16]; ///< Simple ascii text strings describing each channel message type (0x8X to 0xeX)
+      static const char * 	sys_msg_name[16]; ///< Simple ascii text strings describing each system message type (0xf0 to 0xff)
       
       unsigned char	status;
       unsigned char	byte1;

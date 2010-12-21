@@ -41,7 +41,7 @@ namespace jdkmidi
   
   
   
-  char * 	MIDIMessage::chan_msg_name[16] = 
+  const char * 	MIDIMessage::chan_msg_name[16] = 
   {
     "ERROR 00    ",		// 0x00
     "ERROR 10    ",		// 0x10
@@ -61,7 +61,7 @@ namespace jdkmidi
     "SYSTEM      " 		// 0xf0
   }; 
   
-  char * 	MIDIMessage::sys_msg_name[16] = 
+  const char * 	MIDIMessage::sys_msg_name[16] = 
   {
     "SYSEX       ",		// 0xf0
     "MTC         ",		// 0xf1

@@ -62,7 +62,7 @@ namespace jdkmidi
     
   } 
   
-  void    MIDIFileShow::mf_error( char *e )	
+  void    MIDIFileShow::mf_error( const char *e )	
   {
     fprintf( out, "\nParse Error: %s\n", e );
     MIDIFileEvents::mf_error( e );
@@ -292,7 +292,7 @@ namespace jdkmidi
   
   void    MIDIFileShow::mf_text(MIDIClockTime time, int type, int len, unsigned char *txt )	
   {
-    static char * text_event_names[16] =
+    static const char * text_event_names[16] =
       {
         "SEQ. #    ",
         "GENERIC   ",

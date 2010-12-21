@@ -141,7 +141,7 @@ namespace jdkmidi
 // the following methods are to be overridden for your specific purpose
 //
       
-      virtual void    mf_error( char * );
+      virtual void    mf_error( const char * );
       
       virtual void    mf_starttrack( int trk );
       virtual void    mf_endtrack( int trk );
@@ -177,7 +177,7 @@ namespace jdkmidi
       
       virtual	int  ReadHeader();
       
-      virtual void    mf_error( char * );
+      virtual void    mf_error( const char * );
       
     protected:
       int  no_merge;

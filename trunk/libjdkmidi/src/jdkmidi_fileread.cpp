@@ -174,7 +174,7 @@ namespace jdkmidi
     
   } 
   
-  void    MIDIFileEvents::mf_error( char *s )	
+  void    MIDIFileEvents::mf_error( const char *s )	
   {
     
   } 
@@ -341,7 +341,7 @@ namespace jdkmidi
     delete [] the_msg;
   } 
   
-  void MIDIFileRead::mf_error( char *e )	
+  void MIDIFileRead::mf_error( const char *e )	
   {
     event_handler->mf_error(e);
     abort_parse=true; 	
