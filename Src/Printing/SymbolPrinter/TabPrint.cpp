@@ -22,6 +22,7 @@
 #include "Editors/GuitarEditor.h"
 #include "GUI/GraphicalTrack.h"
 #include "IO/IOUtils.h"
+#include "PreferencesData.h"
 #include "Printing/AriaPrintable.h"
 #include "Printing/SymbolPrinter/PrintLayout/PrintLayoutAbstract.h"
 #include "Printing/SymbolPrinter/PrintLayout/PrintLayoutMeasure.h"
@@ -252,8 +253,7 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
         }
         if (currentElement->getType() == LINE_HEADER)
         {
-            //FIXME: dont" hardcode font here
-            dc.SetFont( wxFont(100,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD) );
+            dc.SetFont( getTabHeaderFont() );
             dc.SetTextForeground( wxColour(0,0,0) );
             
             const int h4 = (trackCoords->y1 - trackCoords->y0)/3 - 2;    

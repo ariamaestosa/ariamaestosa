@@ -19,6 +19,7 @@
 #include <wx/dc.h>
 
 #include "Midi/Track.h"
+#include "PreferencesData.h"
 #include "Printing/AriaPrintable.h"
 #include "Printing/RenderRoutines.h"
 #include "Printing/SymbolPrinter/EditorPrintable.h"
@@ -78,13 +79,7 @@ void EditorPrintable::renderTimeSignatureChange(LayoutElement* el, const int y0,
     
     wxFont oldfont = m_dc->GetFont();
 
-    //FIXME: don't hardcode fonts here
-    //FIXME: find why font sizes are so different between OS X and Linux
-#ifdef __WXMAC__
-    m_dc->SetFont( wxFont(150,wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD) );
-#else
-    m_dc->SetFont( wxFont(100,wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD) );
-#endif
+    m_dc->SetFont( getTimeSigPrintFont() );
     m_dc->SetTextForeground( wxColour(0,0,0) );
     
     wxSize text_size = m_dc->GetTextExtent(denom);

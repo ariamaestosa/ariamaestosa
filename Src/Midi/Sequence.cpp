@@ -35,7 +35,7 @@ const float CURRENT_FILE_VERSION = 2.0;
 #include "Midi/MeasureData.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Track.h"
-//#include "Renderers/RenderAPI.h"
+#include "PreferencesData.h"
 #include "Utils.h"
 
 #include <wx/intl.h>
@@ -73,11 +73,9 @@ Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener
 
     sequenceFileName.set(wxString(_("Untitled")));
     sequenceFileName.setMaxWidth(155); // FIXME - won't work if lots of sequences are open (tabs will begin to get smaller)
-#ifdef __WXMAC__
-    sequenceFileName.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-#else
-    sequenceFileName.setFont( wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-#endif
+    
+    // FIXME: GUI stuff has nothing to do here
+    sequenceFileName.setFont( getSequenceFilenameFont() );
 
     if (addDefautTrack) addTrack();
 

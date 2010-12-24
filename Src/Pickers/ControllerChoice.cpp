@@ -17,16 +17,15 @@
 
 #include "Pickers/ControllerChoice.h"
 
-#include "Pickers/ControllerChoice.h"
+#include "AriaCore.h"
 #include "GUI/GraphicalTrack.h"
-#include "Midi/Sequence.h"
 #include "IO/IOUtils.h"
+#include "Midi/Sequence.h"
+#include "PreferencesData.h"
+#include "Singleton.h"
+#include "Utils.h"
 
 #include <iostream>
-
-#include "Utils.h"
-#include "AriaCore.h"
-#include "Singleton.h"
 
 namespace AriaMaestosa
 {
@@ -206,13 +205,9 @@ ControllerChoice::ControllerChoice() : wxMenu()
         label_renderer->addString(wxT("+2"));
         label_renderer->addString(wxT("-2"));
     }
-#ifdef __WXMAC__
-    label_renderer->setFont( wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-    controller_label.setFont( wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-#else
-    label_renderer->setFont( wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-    controller_label.setFont( wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-#endif
+    
+    label_renderer->setFont( getControllerFont() );
+    controller_label.setFont( getControllerFont() );
 
     controllerID = 7;
     controller_label.setMaxWidth(75, true);

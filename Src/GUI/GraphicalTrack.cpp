@@ -44,6 +44,7 @@
 #include "Pickers/DrumPicker.h"
 #include "Pickers/InstrumentPicker.h"
 #include "Pickers/MagneticGrid.h"
+#include "PreferencesData.h"
 #include "Renderers/Drawable.h"
 #include "Renderers/ImageBase.h"
 #include "Renderers/RenderAPI.h"
@@ -421,11 +422,7 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
         m_instrument_name.set(InstrumentChoice::getInstrumentName( m_track->getInstrument() ));
     }
     
-#ifdef __WXMAC__
-    m_instrument_name.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-#else
-    m_instrument_name.setFont( wxFont(9,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-#endif
+    m_instrument_name.setFont( getInstrumentNameFont() );
 }
 
 // --------------------------------------------------------------------------------------------------
