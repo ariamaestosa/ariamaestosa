@@ -14,8 +14,6 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifdef RENDERER_OPENGL
-
 #include "Renderers/AbstractDrawable.h"
 #include "Renderers/ImageBase.h"
 #include "Utils.h"
@@ -131,5 +129,3 @@ void AbstractDrawable::rotate(int angle)
 }
 
 // -------------------------------------------------------------------------------------------------------
-
-#endif

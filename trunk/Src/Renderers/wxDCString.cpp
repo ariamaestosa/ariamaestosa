@@ -8,6 +8,7 @@
 #include <wx/string.h>
 #include <wx/tokenzr.h>
 #include "AriaCore.h"
+#include "PreferencesData.h"
 #include "Renderers/RenderAPI.h"
 
 namespace AriaMaestosa
