@@ -14,7 +14,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-
+#include "PreferencesData.h"
 #include "Printing/AriaPrintable.h"
 #include "Printing/SymbolPrinter/PrintLayout/PrintLayoutAbstract.h"
 #include "Printing/SymbolPrinter/PrintLayout/PrintLayoutNumeric.h"
@@ -114,7 +114,7 @@ void SymbolPrintableSequence::printLinesInArea(wxDC& dc, const int pageID,
                                                pageHeight, x0, x1);
     
     // ---- Draw the tracks
-    const wxFont regularFont = wxFont(75, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+    const wxFont regularFont = getPrintFont();
     
     const int lineAmount = page.getLineCount();
     for (int l=0; l<lineAmount; l++)

@@ -1,12 +1,27 @@
+/*
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+ 
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public License along
+ with this program; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
 #include "AriaCore.h"
-
-#include "Printing/AriaPrintable.h"
-#include "Printing/AbstractPrintableSequence.h"
-#include "Printing/RenderRoutines.h"
-
 #include "GUI/MainFrame.h"
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
+#include "PreferencesData.h"
+#include "Printing/AriaPrintable.h"
+#include "Printing/AbstractPrintableSequence.h"
+#include "Printing/RenderRoutines.h"
 
 #include <iostream>
 #include <wx/dcmemory.h>
@@ -26,19 +41,9 @@ AriaPrintable* AriaPrintable::m_current_printable = NULL;
 
 
 AriaPrintable::AriaPrintable(wxString title, bool* success) :
-#ifdef __WXMAC__
-    m_normal_font   (75,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL),
-#else
-    //FIXME: find why fonts sizes are different on linux and OS X
-    m_normal_font   (50,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL),
-#endif
-    m_title_font    (130, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD  ),
-#ifdef __WXMAC__
-    m_subtitle_font (90,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL)
-#else
-    //FIXME: find why fonts sizes are different on linux and OS X
-    m_subtitle_font (60,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL)
-#endif
+    m_normal_font   ( getPrintFont() ),
+    m_title_font    ( getPrintTitleFont()  ),
+    m_subtitle_font ( getPrintSubtitleFont() )
 {
     ASSERT(m_current_printable == NULL);
     

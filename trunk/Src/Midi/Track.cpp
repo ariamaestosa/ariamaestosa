@@ -33,22 +33,11 @@
 #include "Midi/DrumChoice.h"
 #include "Midi/MeasureData.h"
 #include "Pickers/MagneticGrid.h"
+#include "PreferencesData.h"
 
 #include <iostream>
 
-//#include "jdkmidi/world.h"
 #include "jdkmidi/track.h"
-//#include "jdkmidi/multitrack.h"
-//#include "jdkmidi/filereadmultitrack.h"
-//#include "jdkmidi/fileread.h"
-//#include "jdkmidi/fileshow.h"
-//#include "jdkmidi/filewritemultitrack.h"
-//#include "jdkmidi/msg.h"
-//#include "jdkmidi/sysex.h"
-
-//#include "jdkmidi/sequencer.h"
-//#include "jdkmidi/driver.h"
-//#include "jdkmidi/process.h"
 
 #include <wx/utils.h>
 #include "irrXML/irrXML.h"
@@ -69,13 +58,8 @@ Track::Track(Sequence* sequence)
     m_name.set( wxString( _("Untitled") ) );
     m_name.setMaxWidth(120);
 
-    //FIXME: find out why fonts are so different on mac and linux
     //FIXME: what does this do in the data class, and not in the graphics class?
-#ifdef __WXMAC__
-    m_name.setFont( wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-#else
-    m_name.setFont( wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-#endif
+    m_name.setFont( getTrackNameFont() );
 
     //m_parent_frame = parent;
 

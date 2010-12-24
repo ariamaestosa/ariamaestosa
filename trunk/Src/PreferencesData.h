@@ -22,6 +22,7 @@
 
 #include <wx/string.h>
 #include <wx/arrstr.h>
+#include <wx/font.h>
 
 namespace AriaMaestosa
 {
@@ -116,6 +117,18 @@ namespace AriaMaestosa
 
         ptr_vector<Setting>& getSettings() { return m_settings; }
     };
+    
+    wxFont getTabHeaderFont();
+    wxFont getDrumNamesFont();
+    wxFont getInstrumentNameFont();
+    wxFont getSequenceFilenameFont();
+    wxFont getTrackNameFont();
+    wxFont getControllerFont();
+    wxFont getTimeSigPrintFont();
+    wxFont getPrintFont();
+    wxFont getPrintTitleFont();
+    wxFont getPrintSubtitleFont();
+    wxFont getNumberFont();
     
 }
 

@@ -21,14 +21,16 @@
 #include "languages.h"
 #include <wx/config.h>
 #include <wx/intl.h>
+#include <wx/font.h>
+#include <wx/settings.h>
 
 #include "Midi/Players/PlatformMidiManager.h"
 
 
 using namespace AriaMaestosa; 
 
-// ----------------------------------------------------------------------------------------------------
-// ----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 #if 0
 #pragma mark Setting
@@ -44,22 +46,22 @@ Setting::Setting(wxString name, wxString user_name, SettingType type,
     m_visible_in_preferences = visibleInPreferences;
 }
 
-// ----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Setting::addChoice(wxString choice)
 {
     m_choices.Add(choice);
 }
 
-// ----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Setting::setChoices(wxArrayString choices)
 {
     m_choices = choices;
 }
 
-// ----------------------------------------------------------------------------------------------------
-// ----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 #if 0
 #pragma mark -
@@ -87,7 +89,7 @@ void PreferencesData::init()
     m_inited = true;
 }
 
-// ----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void PreferencesData::readValues()
 {
@@ -108,7 +110,7 @@ void PreferencesData::readValues()
     }    
 }
 
-// ----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void PreferencesData::prepareLanguageEntry()
 {
@@ -119,7 +121,7 @@ void PreferencesData::prepareLanguageEntry()
     m_settings.push_back( languages );
 }
 
-// ----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void PreferencesData::fillSettingsVector()
 {
@@ -210,7 +212,7 @@ void PreferencesData::fillSettingsVector()
     m_settings.push_back( paperType );
 }
 
-// ----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void PreferencesData::save()
 {
@@ -225,7 +227,7 @@ void PreferencesData::save()
     prefs->Flush();
 }
 
-// ----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 wxString PreferencesData::getValue(wxString entryName) const
 {
@@ -243,7 +245,7 @@ wxString PreferencesData::getValue(wxString entryName) const
     return wxEmptyString;
 }
 
-// ----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 long PreferencesData::getIntValue(wxString entryName) const
 {
@@ -258,7 +260,7 @@ long PreferencesData::getIntValue(wxString entryName) const
     return asInt;
 }
 
-// ----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void PreferencesData::setValue(wxString entryName, wxString newValue)
 {
@@ -274,4 +276,105 @@ void PreferencesData::setValue(wxString entryName, wxString newValue)
     ASSERT(false);
 }
 
-// ----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+
+#if 0
+#pragma mark -
+#pragma mark Fonts
+#endif
+
+// For now fonts are not configurable and do not appear in the config file but eventually this could be done
+
+// FIXME: find why fonts are so different on OSX
+
+wxFont AriaMaestosa::getTabHeaderFont()
+{
+    return wxFont(100,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD);
+}
+
+wxFont AriaMaestosa::getDrumNamesFont()
+{
+#ifdef __WXMAC__
+    return wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#else
+    return wxFont(7, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#endif
+}
+
+wxFont AriaMaestosa::getInstrumentNameFont()
+{
+#ifdef __WXMAC__
+    return wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#else
+    return wxFont(9,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#endif
+}
+
+wxFont AriaMaestosa::getSequenceFilenameFont()
+{
+#ifdef __WXMAC__
+    return wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#else
+    return wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#endif
+}
+
+wxFont AriaMaestosa::getTrackNameFont()
+{
+#ifdef __WXMAC__
+    return wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#else
+    return wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#endif
+}
+
+wxFont AriaMaestosa::getControllerFont()
+{
+#ifdef __WXMAC__
+    return wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#else
+    return wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#endif
+}
+
+wxFont AriaMaestosa::getTimeSigPrintFont()
+{
+#ifdef __WXMAC__
+    return wxFont(150,wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
+#else
+    return wxFont(100,wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
+#endif
+}
+
+wxFont AriaMaestosa::getPrintFont()
+{
+#ifdef __WXMAC__
+    return wxFont(75, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#else
+    return wxFont(50,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#endif
+}
+
+wxFont AriaMaestosa::getPrintTitleFont()
+{
+    return wxFont(130, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD  );
+}
+
+wxFont AriaMaestosa::getPrintSubtitleFont()
+{
+#ifdef __WXMAC__
+    return wxFont (90,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#else
+    return wxFont (60,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#endif
+}
+
+wxFont AriaMaestosa::getNumberFont()
+{
+#if defined(__WXMAC__)
+    return wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT);
+#else
+    return wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#endif
+}

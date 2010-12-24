@@ -30,6 +30,7 @@
 #include "Midi/Sequence.h"
 #include "Pickers/DrumPicker.h"
 #include "Pickers/MagneticGrid.h"
+#include "PreferencesData.h"
 #include "Renderers/RenderAPI.h"
 #include "Renderers/Drawable.h"
 
@@ -195,14 +196,7 @@ DrumEditor::DrumEditor(Track* track) : Editor(track), m_drum_names_renderer( g_d
     useDefaultDrumSet();
     Editor::useInstantNotes();
 
-    // FIXME: centralize font management
-#ifdef __WXMAC__
-    m_drum_names_renderer.setFont(wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
-                                         /*wxFONTWEIGHT_BOLD*/ wxFONTWEIGHT_NORMAL) );
-#else
-    m_drum_names_renderer.setFont(wxFont(7, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
-                                         /*wxFONTWEIGHT_BOLD*/ wxFONTWEIGHT_NORMAL) );
-#endif
+    m_drum_names_renderer.setFont(getDrumNamesFont());
 }
 
 // ----------------------------------------------------------------------------------------------------------
