@@ -22,22 +22,22 @@ namespace AriaMaestosa
     /** constructs an empty GLString. Set string later with operator=. */
     wxDCString::wxDCString()
     {
-        consolidated = false;
-        max_width = -1;
-        warp = false;
-        w = -1;
-        h = -1;
+        m_consolidated = false;
+        m_max_width = -1;
+        m_warp = false;
+        m_w = -1;
+        m_h = -1;
     }
     
     
     /** constructs a GLstring with 'message' as contents. */
     wxDCString::wxDCString(wxString message) : wxString(message)
     {
-        consolidated = false;
-        max_width = -1;
-        warp = false;
-        w = -1;
-        h = -1;
+        m_consolidated = false;
+        m_max_width = -1;
+        m_warp = false;
+        m_w = -1;
+        m_h = -1;
     }
     
     wxDCString::~wxDCString()
@@ -47,33 +47,33 @@ namespace AriaMaestosa
     
     void wxDCString::setMaxWidth(const int w, const bool warp)
     {
-        max_width = w;
-        this->warp = warp;
+        m_max_width = w;
+        m_warp = warp;
     }
     
     void wxDCString::setFont(wxFont font)
     {
-        this->font = font;
+        m_font = font;
     }
     
     void wxDCString::bind()
     {
-        if (not consolidated)
+        if (not m_consolidated)
         {
-            if (font.IsOk()) Display::renderDC->SetFont(font);
-            else Display::renderDC->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
+            if (m_font.IsOk()) Display::renderDC->SetFont(m_font);
+            else               Display::renderDC->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
             
-            Display::renderDC->GetTextExtent(*this, &w, &h);
+            Display::renderDC->GetTextExtent(*this, &m_w, &m_h);
             
-            consolidated = true;
+            m_consolidated = true;
         }
     }
     
     int wxDCString::getWidth()
     {
-        ASSERT_E(w, >=, 0);
-        ASSERT_E(w, <, 90000);
-        return w;
+        ASSERT_E(m_w, >=, 0);
+        ASSERT_E(m_w, <, 90000);
+        return m_w;
     }
     void wxDCString::scale(float f)
     {
@@ -84,29 +84,29 @@ namespace AriaMaestosa
     
     void wxDCString::render(const int x, const int y)
     {
-        if (not consolidated) bind();
+        if (not m_consolidated) bind();
             
-        ASSERT_E(h, >=, 0);
-        ASSERT_E(h, <, 90000);
+        ASSERT_E(m_h, >=, 0);
+        ASSERT_E(m_h, <, 90000);
         
-        if (font.IsOk()) Display::renderDC->SetFont(font);
-        else Display::renderDC->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
+        if (m_font.IsOk()) Display::renderDC->SetFont(m_font);
+        else               Display::renderDC->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
 
-        if (max_width != -1 and getWidth()>max_width)
+        if (m_max_width != -1 and getWidth() > m_max_width)
         {
-            if (not warp)
+            if (not m_warp)
             {
                 wxString shortened = *this;
                 
-                while (Display::renderDC->GetTextExtent(shortened).GetWidth() > max_width)
+                while (Display::renderDC->GetTextExtent(shortened).GetWidth() > m_max_width)
                 {
                     shortened = shortened.Truncate(shortened.size()-1);
                 }
-                Display::renderDC->DrawText(shortened, x, y-h);
+                Display::renderDC->DrawText(shortened, x, y - m_h);
             }
             else // wrap
             {
-                int my_y = y-h;
+                int my_y = y - m_h;
                 wxString multiline = *this;
                 multiline.Replace(wxT(" "),wxT("\n"));
                 multiline.Replace(wxT("/"),wxT("/\n"));
@@ -116,19 +116,21 @@ namespace AriaMaestosa
                 {
                     wxString token = tkz.GetNextToken();
                     Display::renderDC->DrawText(token, x, my_y);
-                    my_y += h;
+                    my_y += m_h;
                 }
             }
         }
         else
-            Display::renderDC->DrawText(*this, x, y-h);
+        {
+            Display::renderDC->DrawText(*this, x, y - m_h);
+        }
     }
     
     
-    void wxDCString::set(const wxString& string)
+    void wxDCString::set(const wxString& newstring)
     {
-        (*((wxString*)this))=string;
-        consolidated = false;
+        (*((wxString*)this)) = newstring;
+        m_consolidated = false;
     }
     
     
@@ -141,30 +143,30 @@ namespace AriaMaestosa
     
     wxDCNumberRenderer::wxDCNumberRenderer()
     {
-        consolidated = false;
-        w = -1;
-        h = -1;
+        m_consolidated = false;
+        m_w = -1;
+        m_h = -1;
     }
     wxDCNumberRenderer::~wxDCNumberRenderer(){}
     
     void wxDCNumberRenderer::bind()
     {
-        if (not consolidated)
+        if (not m_consolidated)
         {
             Display::renderDC->SetFont(getNumberFont());
-            Display::renderDC->GetTextExtent(wxT("0"), &w, &h);
+            Display::renderDC->GetTextExtent(wxT("0"), &m_w, &m_h);
             
-            consolidated = true;
+            m_consolidated = true;
         }
     }
     
     void wxDCNumberRenderer::renderNumber(wxString s, int x, int y)
     {
-        ASSERT_E(h, >, -1);
-        ASSERT_E(h, <, 90000);
+        ASSERT_E(m_h, >, -1);
+        ASSERT_E(m_h, <, 90000);
 
         Display::renderDC->SetFont( getNumberFont() );
-        Display::renderDC->DrawText(s, x, y-h);
+        Display::renderDC->DrawText(s, x, y - m_h);
     }
     
     void wxDCNumberRenderer::renderNumber(int i, int x, int y)
@@ -184,48 +186,48 @@ namespace AriaMaestosa
     
     wxDCStringArray::wxDCStringArray()
     {
-        consolidated = false;
+        m_consolidated = false;
     }
     wxDCStringArray::wxDCStringArray(const wxString strings_arg[], int amount)
     {
         for (int n=0; n<amount; n++)
         {
-            strings.push_back( wxDCString(strings_arg[n]) );
+            m_strings.push_back( wxDCString(strings_arg[n]) );
         }
-        consolidated = false;
+        m_consolidated = false;
     }
     
     wxDCStringArray::~wxDCStringArray(){}
     
     wxDCString& wxDCStringArray::get(const int id)
     {
-        return strings[id];
+        return m_strings[id];
     }
     
-    void wxDCStringArray::addString(wxString string)
+    void wxDCStringArray::addString(wxString newstring)
     {
-        strings.push_back( wxDCString(string) );
+        m_strings.push_back( wxDCString(newstring) );
     }
     
     void wxDCStringArray::bind()
     {
-        if (not consolidated)
+        if (not m_consolidated)
         {
-            if (not font.IsOk()) return;
+            if (not m_font.IsOk()) return;
             
-            const int amount = strings.size();
+            const int amount = m_strings.size();
             for (int n=0; n<amount; n++)
             {
-                strings[n].setFont(font);
+                m_strings[n].setFont(m_font);
             }
             
-            consolidated = true;
+            m_consolidated = true;
         }
     }
     
     void wxDCStringArray::setFont(wxFont font)
     {
-        this->font = font;
+        m_font = font;
     }
     
 

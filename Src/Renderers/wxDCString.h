@@ -23,18 +23,19 @@ namespace AriaMaestosa
     class wxDCString : public wxString
     {
     protected:
-        wxFont font;
+        wxFont m_font;
         
-        int w, h;
+        int m_w, m_h;
         friend class wxDCStringArray;
         
-        bool consolidated;
+        bool m_consolidated;
         
-        int max_width;
+        int m_max_width;
         
-        bool warp;
+        bool m_warp;
         
     public:
+        
         /** constructs an empty GLString. Set string later with operator=. */
         wxDCString();
         /** constructs a GLstring with 'message' as contents. */
@@ -73,9 +74,11 @@ namespace AriaMaestosa
      */
     class wxDCNumberRenderer : public Singleton<wxDCNumberRenderer>
     {
-        bool consolidated;
-        int w, h;
+        bool m_consolidated;
+        int m_w, m_h;
+        
     public:
+        
         wxDCNumberRenderer();
         ~wxDCNumberRenderer();
         
@@ -93,10 +96,12 @@ namespace AriaMaestosa
      */
     class wxDCStringArray
     {
-        std::vector<wxDCString> strings;
-        wxFont font;
-        bool consolidated;
+        std::vector<wxDCString> m_strings;
+        wxFont m_font;
+        bool m_consolidated;
+        
     public:
+        
         wxDCStringArray();
         wxDCStringArray(const wxString strings_arg[], int amount);
         ~wxDCStringArray();
@@ -106,7 +111,7 @@ namespace AriaMaestosa
         void bind();
         
         void addString(wxString string);
-        int getStringAmount() const { return strings.size(); }
+        int getStringAmount() const { return m_strings.size(); }
         
         void setFont(wxFont font);
         
