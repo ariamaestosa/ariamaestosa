@@ -83,9 +83,8 @@ bool wxEasyPrintWrapper::performPageSetup(const bool showPageSetupDialog)
             
             PreferencesData* prefs = PreferencesData::getInstance();
             prefs->setValue(SETTING_ID_PAPER_TYPE, to_wxString(m_paper_id));
-            // the call below will perform the save() (FIXME don't rely on this)
             
-            updateMarginMembers();
+            updateMarginMembers( true /* save preferences */ );
         }
         else
         {
@@ -179,9 +178,9 @@ void wxEasyPrintWrapper::macEditMargins(wxFrame* parentFrame)
     wxMacPageMarginsDialog dlg(parentFrame, &m_page_setup);
     dlg.ShowModal();
     
-    m_page_setup     = dlg.GetPageSetupDialogData();
+    m_page_setup = dlg.GetPageSetupDialogData();
 
-    updateMarginMembers();
+    updateMarginMembers( true );
     updateCoordinateSystem();
 }
 
@@ -189,7 +188,7 @@ void wxEasyPrintWrapper::macEditMargins(wxFrame* parentFrame)
 
 // ----------------------------------------------------------------------------------------------------------
 
-void wxEasyPrintWrapper::updateMarginMembers()
+void wxEasyPrintWrapper::updateMarginMembers( bool savePreferences )
 {
     m_left_margin    = m_page_setup.GetMarginTopLeft().x;
     m_top_margin     = m_page_setup.GetMarginTopLeft().y;
@@ -202,7 +201,11 @@ void wxEasyPrintWrapper::updateMarginMembers()
     prefs->setValue(SETTING_ID_MARGIN_TOP,    to_wxString(m_top_margin));
     prefs->setValue(SETTING_ID_MARGIN_RIGHT,  to_wxString(m_right_margin));
     prefs->setValue(SETTING_ID_MARGIN_BOTTOM, to_wxString(m_bottom_margin));
-    prefs->save();
+    
+    if (savePreferences)
+    {
+        prefs->save();
+    }
 }
 
 // ----------------------------------------------------------------------------------------------------------
