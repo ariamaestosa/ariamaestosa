@@ -26,17 +26,12 @@
 #include "AriaCore.h"
 
 #include <wx/dialog.h>
+#include <wx/event.h>
 #include <wx/slider.h>
 #include <wx/textctrl.h>
 
 namespace AriaMaestosa
 {
-    
-    enum
-    {
-        ID_SLIDER = wxID_HIGHEST + 1000, //hope there are no conflicts... FIXME: switch to wxNewID() + Bind when 3.0 is out
-        ID_TEXT_AREA
-    };
     
     /**
       * @ingroup pickers
@@ -68,30 +63,10 @@ namespace AriaMaestosa
         void closed(wxCloseEvent& evt);
         void keyPress(wxKeyEvent& evt);
         void onCancel(wxCommandEvent& evt);
-        
-        DECLARE_EVENT_TABLE();
     };
     
     
     DEFINE_LOCAL_EVENT_TYPE(wxEVT_DESTROY_VOLUME_SLIDER)
-    
-    //FIXME: don't mix event tables and Connect!
-    BEGIN_EVENT_TABLE(VolumeSlider, wxDialog)
-    
-    EVT_COMMAND_SCROLL_THUMBTRACK  (ID_SLIDER, VolumeSlider::volumeSlideChanging)
-    EVT_COMMAND_SCROLL_THUMBRELEASE(ID_SLIDER, VolumeSlider::volumeSlideChanged)
-    EVT_COMMAND_SCROLL_LINEUP      (ID_SLIDER, VolumeSlider::volumeSlideChanging)
-    EVT_COMMAND_SCROLL_LINEDOWN    (ID_SLIDER, VolumeSlider::volumeSlideChanging)
-    EVT_COMMAND_SCROLL_PAGEUP      (ID_SLIDER, VolumeSlider::volumeSlideChanging)
-    EVT_COMMAND_SCROLL_PAGEDOWN    (ID_SLIDER, VolumeSlider::volumeSlideChanging)
-    
-    EVT_TEXT      (ID_TEXT_AREA, VolumeSlider::volumeTextChanged)
-    EVT_TEXT_ENTER(ID_TEXT_AREA, VolumeSlider::enterPressed)
-    
-    EVT_CLOSE(VolumeSlider::closed)
-    EVT_COMMAND(wxID_CANCEL, wxEVT_COMMAND_BUTTON_CLICKED, VolumeSlider::onCancel )
-    
-    END_EVENT_TABLE()
     
     VolumeSlider* sliderframe = NULL;
     
@@ -137,13 +112,13 @@ VolumeSlider::VolumeSlider() : wxDialog(NULL, wxNewId(),  _("volume"), wxDefault
     m_pane = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(VOLUME_SLIDER_FRAME_WIDTH,
                                                                    VOLUME_SLIDER_FRAME_HEIGHT));
     
-    m_slider = new wxSlider(m_pane, ID_SLIDER, 60, 0, 127, wxDefaultPosition, wxSize(50,128),
+    m_slider = new wxSlider(m_pane, wxNewId(), 60, 0, 127, wxDefaultPosition, wxSize(50,128),
                             wxSL_VERTICAL | wxSL_INVERSE | wxWANTS_CHARS);
     
     wxSize smallsize = wxDefaultSize;
     smallsize.x = 50;
     
-    m_value_text = new wxTextCtrl(m_pane, ID_TEXT_AREA, wxT("0"), wxPoint(0,130), smallsize,
+    m_value_text = new wxTextCtrl(m_pane, wxNewId(), wxT("0"), wxPoint(0,130), smallsize,
                                   wxTE_PROCESS_ENTER | wxWANTS_CHARS);
     m_note_ID = -1;
     m_current_track = NULL;
@@ -160,6 +135,19 @@ VolumeSlider::VolumeSlider() : wxDialog(NULL, wxNewId(),  _("volume"), wxDefault
     m_pane      ->Connect(m_pane->GetId(),       wxEVT_CHAR, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
     m_value_text->Connect(m_value_text->GetId(), wxEVT_CHAR, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
     
+    Connect(m_slider->GetId(), wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler(VolumeSlider::volumeSlideChanging), NULL, this);
+    Connect(m_slider->GetId(), wxEVT_SCROLL_LINEUP,     wxScrollEventHandler(VolumeSlider::volumeSlideChanging), NULL, this);
+    Connect(m_slider->GetId(), wxEVT_SCROLL_LINEDOWN,   wxScrollEventHandler(VolumeSlider::volumeSlideChanging), NULL, this);
+    Connect(m_slider->GetId(), wxEVT_SCROLL_PAGEUP,     wxScrollEventHandler(VolumeSlider::volumeSlideChanging), NULL, this);
+    Connect(m_slider->GetId(), wxEVT_SCROLL_PAGEDOWN,   wxScrollEventHandler(VolumeSlider::volumeSlideChanging), NULL, this);
+    
+    Connect(m_slider->GetId(), wxEVT_SCROLL_THUMBRELEASE,    wxScrollEventHandler(VolumeSlider::volumeSlideChanged), NULL, this);
+
+    Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(VolumeSlider::closed), NULL, this);
+    Connect(m_value_text->GetId(), wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(VolumeSlider::volumeTextChanged), NULL, this);
+    Connect(m_value_text->GetId(), wxEVT_COMMAND_TEXT_ENTER,   wxCommandEventHandler(VolumeSlider::enterPressed),      NULL, this);
+    
+    Connect(wxID_CANCEL, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(VolumeSlider::onCancel), NULL, this);
 }
 
 // -------------------------------------------------------------------------------------------------------
