@@ -15,9 +15,25 @@
  */
 
 #ifdef RENDERER_WXWIDGETS
-#include "Renderers/wxDrawable.h"
-#endif
 
-#ifdef RENDERER_OPENGL
-#include "Renderers/GLDrawable.h"
+#include "Renderers/AbstractDrawable.h"
+
+namespace AriaMaestosa
+{
+    
+    void drawable_set_state(AriaRender::ImageState arg);
+    
+    class Drawable : public AbstractDrawable
+    {
+    public:
+        
+        Drawable(Image* image=NULL) : AbstractDrawable(image) {}
+        Drawable(wxString imagePath) : AbstractDrawable(imagePath) {}
+        
+        virtual void render();
+        
+    };
+    
+}
+
 #endif
