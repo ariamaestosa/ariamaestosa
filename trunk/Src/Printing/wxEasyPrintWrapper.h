@@ -87,7 +87,7 @@ namespace AriaMaestosa
         
         void updateCoordinateSystem();
 
-        void updateMarginMembers();
+        void updateMarginMembers( bool savePreferences );
         
     public:
         
