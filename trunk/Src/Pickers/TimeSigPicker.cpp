@@ -34,26 +34,18 @@
 
 namespace AriaMaestosa
 {
-    
-    enum
-    {
-        NUM_ID = wxID_HIGHEST,
-        DENOM_ID,
-        OK_BTN_ID,
-        VARIES_ID 
-    };
-    
+
     /**
      * @ingroup pickers
      * @brief small floating frame where the time signature can be entered
      */
     class TimeSigPicker : public wxMiniFrame
     {
-        wxTextCtrl* valueTextNum;
-        wxTextCtrl* valueTextDenom;
-        wxButton* okbtn;
-        wxPanel* pane;
-        wxCheckBox* variable;
+        wxTextCtrl* m_value_text_num;
+        wxTextCtrl* m_value_text_denom;
+        wxButton*   m_ok_btn;
+        wxPanel*    m_pane;
+        wxCheckBox* m_variable;
         
     public:
         LEAK_CHECK();
@@ -68,24 +60,9 @@ namespace AriaMaestosa
         void closed(wxCloseEvent& evt);
         void keyPress(wxKeyEvent& evt);
         void onFocus(wxFocusEvent& evt);
-        
-        DECLARE_EVENT_TABLE();
     };
     
     DEFINE_LOCAL_EVENT_TYPE(wxEVT_DESTROY_TIMESIG_PICKER)
-    
-    //FIXME: don't mix event tables and Connect for the same class
-    BEGIN_EVENT_TABLE(TimeSigPicker, wxFrame)
-    
-    //EVT_TEXT(NUM_ID, TimeSigPicker::textNumChanged)
-    //EVT_TEXT(DENOM_ID, TimeSigPicker::textDenomChanged)
-    EVT_TEXT_ENTER(NUM_ID,   TimeSigPicker::enterPressed)
-    EVT_TEXT_ENTER(DENOM_ID, TimeSigPicker::enterPressed)
-    EVT_BUTTON(OK_BTN_ID, TimeSigPicker::enterPressed)
-    
-    EVT_CLOSE(TimeSigPicker::closed)
-    
-    END_EVENT_TABLE()
     
     TimeSigPicker* timesigpicker_frame = NULL;
     
@@ -160,10 +137,10 @@ TimeSigPicker::TimeSigPicker() : wxMiniFrame(getMainFrame(), wxNewId(),  _("Time
                                          wxDefaultPosition, wxSize(200,130),
                                          wxCAPTION | wxCLOSE_BOX | wxWANTS_CHARS | wxFRAME_FLOAT_ON_PARENT)
 {
-    pane = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS | wxTAB_TRAVERSAL);
-    pane->SetMinSize( wxSize(1,1) );
+    m_pane = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS | wxTAB_TRAVERSAL);
+    m_pane->SetMinSize( wxSize(1,1) );
     wxBoxSizer* panelSizer = new wxBoxSizer(wxVERTICAL);
-    panelSizer->Add(pane, 1, wxEXPAND);
+    panelSizer->Add(m_pane, 1, wxEXPAND);
 
     wxSize smallsize = wxDefaultSize;
     smallsize.x = 50;
@@ -172,49 +149,69 @@ TimeSigPicker::TimeSigPicker() : wxMiniFrame(getMainFrame(), wxNewId(),  _("Time
 
     vertical->AddSpacer(5);
 
-    QuickBoxLayout horizontal(pane, vertical, wxHORIZONTAL, 0);
-    valueTextNum=new wxTextCtrl(horizontal.pane, NUM_ID, wxT("4"), wxPoint(0,130), smallsize,
-                                wxTE_PROCESS_ENTER | wxWANTS_CHARS);
+    QuickBoxLayout horizontal(m_pane, vertical, wxHORIZONTAL, 0);
+    m_value_text_num = new wxTextCtrl(horizontal.pane, wxNewId(), wxT("4"), wxPoint(0,130), smallsize,
+                                      wxTE_PROCESS_ENTER | wxWANTS_CHARS);
+    
     wxStaticText* slash = new wxStaticText(horizontal.pane, wxID_ANY, wxT("/"), wxDefaultPosition, wxSize(15,15));
     slash->SetMinSize(wxSize(15,15));
     slash->SetMaxSize(wxSize(15,15));
-    valueTextDenom=new wxTextCtrl(horizontal.pane, DENOM_ID, wxT("4"), wxPoint(0,130), smallsize,
-                                  wxTE_PROCESS_ENTER | wxWANTS_CHARS);
+    
+    m_value_text_denom = new wxTextCtrl(horizontal.pane, wxNewId(), wxT("4"), wxPoint(0,130), smallsize,
+                                        wxTE_PROCESS_ENTER | wxWANTS_CHARS);
+    
     //FIXME: don't use a mixture of event tables and Connect xD
-    valueTextNum  ->Connect( valueTextNum->GetId(), wxEVT_SET_FOCUS,
-                             wxFocusEventHandler(TimeSigPicker::onFocus), 0, this);
-    valueTextDenom->Connect( valueTextDenom->GetId(), wxEVT_SET_FOCUS,
-                             wxFocusEventHandler(TimeSigPicker::onFocus), 0, this);
+    m_value_text_num  ->Connect(m_value_text_num->GetId(), wxEVT_SET_FOCUS,
+                                wxFocusEventHandler(TimeSigPicker::onFocus), 0, this);
+    m_value_text_denom->Connect(m_value_text_denom->GetId(), wxEVT_SET_FOCUS,
+                                wxFocusEventHandler(TimeSigPicker::onFocus), 0, this);
 
-    horizontal.add(valueTextNum, 5, 0, wxLEFT | wxRIGHT);
+    horizontal.add(m_value_text_num, 5, 0, wxLEFT | wxRIGHT);
     horizontal.add(slash, 0, 0);
-    horizontal.add(valueTextDenom, 5, 0, wxRIGHT);
+    horizontal.add(m_value_text_denom, 5, 0, wxRIGHT);
 
     vertical->AddSpacer(7);
 
     //I18N: - when setting time signature, to indicate it's not constant through song
-    variable = new wxCheckBox(pane, VARIES_ID, _("Varies throughout song"));
-    vertical->Add(variable, 0, wxALL, 5);
+    m_variable = new wxCheckBox(m_pane, wxNewId(), _("Varies throughout song"));
+    vertical->Add(m_variable, 0, wxALL, 5);
     
-    okbtn = new wxButton(pane, OK_BTN_ID, _("OK"));
-    okbtn->SetDefault();
-    vertical->Add(okbtn, 0, wxALL | wxALIGN_CENTER, 5);
+    m_ok_btn = new wxButton(m_pane, wxNewId(), _("OK"));
+    m_ok_btn->SetDefault();
+    vertical->Add(m_ok_btn, 0, wxALL | wxALIGN_CENTER, 5);
 
-    pane->SetSizer(vertical);
+    m_pane->SetSizer(vertical);
     vertical->Layout();
-    vertical->SetSizeHints(pane);
+    vertical->SetSizeHints(m_pane);
 
     // Connect all widgets in order to catch key events like escape and enter no matter where keyboard focus is
-    this          ->Connect(this->GetId(),           wxEVT_KEY_DOWN, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
-    pane          ->Connect(pane->GetId(),           wxEVT_KEY_DOWN, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
-    valueTextDenom->Connect(valueTextDenom->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
-    valueTextNum  ->Connect(valueTextNum->GetId(),   wxEVT_KEY_DOWN, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
+    this              ->Connect(this->GetId(),               wxEVT_KEY_DOWN,
+                                wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
+    m_pane            ->Connect(m_pane->GetId(),             wxEVT_KEY_DOWN,
+                                wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
+    m_value_text_denom->Connect(m_value_text_denom->GetId(), wxEVT_KEY_DOWN,
+                                wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
+    m_value_text_num  ->Connect(m_value_text_num->GetId(),   wxEVT_KEY_DOWN,
+                                wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
 
-    this          ->Connect(this->GetId(),           wxEVT_CHAR, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
-    pane          ->Connect(pane->GetId(),           wxEVT_CHAR, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
-    valueTextDenom->Connect(valueTextDenom->GetId(), wxEVT_CHAR, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
-    valueTextNum  ->Connect(valueTextNum->GetId(),   wxEVT_CHAR, wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
+    this              ->Connect(this->GetId(),               wxEVT_CHAR,
+                                wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
+    m_pane            ->Connect(m_pane->GetId(),             wxEVT_CHAR,
+                                wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
+    m_value_text_denom->Connect(m_value_text_denom->GetId(), wxEVT_CHAR,
+                                wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
+    m_value_text_num  ->Connect(m_value_text_num->GetId(),   wxEVT_CHAR,
+                                wxKeyEventHandler(TimeSigPicker::keyPress), NULL, this);
 
+    m_value_text_num  ->Connect(m_value_text_num->GetId(),   wxEVT_COMMAND_TEXT_ENTER,
+                                wxCommandEventHandler(TimeSigPicker::enterPressed), NULL, this);
+    m_value_text_denom->Connect(m_value_text_denom->GetId(), wxEVT_COMMAND_TEXT_ENTER,
+                                wxCommandEventHandler(TimeSigPicker::enterPressed), NULL, this);
+    m_ok_btn          ->Connect(m_ok_btn->GetId(),           wxEVT_COMMAND_BUTTON_CLICKED,
+                                wxCommandEventHandler(TimeSigPicker::enterPressed), NULL, this);
+    
+    Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(TimeSigPicker::closed), NULL, this);
+    
     SetSizer(panelSizer);
     // FIXME: I should be able to Fit here, find why Fit allocates way too much space vertically
     //panelSizer->SetSizeHints(this);
@@ -252,30 +249,30 @@ void TimeSigPicker::show(const int x, const int y, const int num, const int deno
     // show the keysig picking dialog
     SetPosition(wxPoint(x,y));
 
-    valueTextNum->SetValue( to_wxString(num) );
-    valueTextDenom->SetValue( to_wxString(denom) );
-    variable->SetValue( getMeasureData()->isExpandedMode() );
+    m_value_text_num->SetValue( to_wxString(num) );
+    m_value_text_denom->SetValue( to_wxString(denom) );
+    m_variable->SetValue( getMeasureData()->isExpandedMode() );
     Show();
-    valueTextNum->SetFocus();
-    valueTextNum->SetSelection( -1, -1 ); // select everything
+    m_value_text_num->SetFocus();
+    m_value_text_num->SetSelection( -1, -1 ); // select everything
 }
 
 // --------------------------------------------------------------------------------------------------------
 
 void TimeSigPicker::enterPressed(wxCommandEvent& evt)
 {
-    int top    = atoi_u( valueTextNum->GetValue() );
-    int bottom = atoi_u( valueTextDenom->GetValue() );
+    int top    = atoi_u( m_value_text_num->GetValue() );
+    int bottom = atoi_u( m_value_text_denom->GetValue() );
 
-    if (bottom < 1 or top<1 or bottom>32 or top>32 or
-      not valueTextNum->GetValue().IsNumber() or not valueTextDenom->GetValue().IsNumber())
+    if (bottom < 1 or top < 1 or bottom > 32 or top > 32 or
+        not m_value_text_num->GetValue().IsNumber() or not m_value_text_denom->GetValue().IsNumber())
     {
         wxBell();
         return;
     }
 
     float denom_check = (float)log(bottom)/(float)log(2);
-    if ( (int)denom_check != (float)denom_check )
+    if ((int)denom_check != (float)denom_check)
     {
         wxBell();
         //I18N: - when setting a wrong time signature
@@ -290,9 +287,9 @@ void TimeSigPicker::enterPressed(wxCommandEvent& evt)
     mainFrame->changeShownTimeSig( top, bottom );
 
     // check if user changed measure mode
-    if (variable->IsChecked() != measures->isExpandedMode())
+    if (m_variable->IsChecked() != measures->isExpandedMode())
     {
-        measures->setExpandedMode( variable->IsChecked() );
+        measures->setExpandedMode( m_variable->IsChecked() );
         mainFrame->updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
         mainFrame->updateMenuBarToSequence();
     }
