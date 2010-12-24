@@ -143,6 +143,16 @@
 		95643A7211BC0B2B003CC6C0 /* NotePickerWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95643A7011BC0B2B003CC6C0 /* NotePickerWidget.cpp */; };
 		95643A7311BC0B2B003CC6C0 /* NotePickerWidget.h in Headers */ = {isa = PBXBuildFile; fileRef = 95643A6F11BC0B2B003CC6C0 /* NotePickerWidget.h */; };
 		95643A7411BC0B2B003CC6C0 /* NotePickerWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95643A7011BC0B2B003CC6C0 /* NotePickerWidget.cpp */; };
+		9565B4CD12C5093A009784B6 /* AbstractDrawable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9565B4CC12C5093A009784B6 /* AbstractDrawable.cpp */; };
+		9565B4CE12C5093A009784B6 /* AbstractDrawable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9565B4CC12C5093A009784B6 /* AbstractDrawable.cpp */; };
+		9565B4DD12C5099D009784B6 /* GLDrawable.h in Headers */ = {isa = PBXBuildFile; fileRef = 9565B4DC12C5099D009784B6 /* GLDrawable.h */; };
+		9565B4DE12C5099D009784B6 /* GLDrawable.h in Headers */ = {isa = PBXBuildFile; fileRef = 9565B4DC12C5099D009784B6 /* GLDrawable.h */; };
+		9565B4E612C509D0009784B6 /* AbstractDrawable.h in Headers */ = {isa = PBXBuildFile; fileRef = 9565B4E512C509D0009784B6 /* AbstractDrawable.h */; };
+		9565B4E712C509D0009784B6 /* AbstractDrawable.h in Headers */ = {isa = PBXBuildFile; fileRef = 9565B4E512C509D0009784B6 /* AbstractDrawable.h */; };
+		9565B4EF12C50A79009784B6 /* wxDrawable.h in Headers */ = {isa = PBXBuildFile; fileRef = 9565B4EE12C50A79009784B6 /* wxDrawable.h */; };
+		9565B4F012C50A79009784B6 /* wxDrawable.h in Headers */ = {isa = PBXBuildFile; fileRef = 9565B4EE12C50A79009784B6 /* wxDrawable.h */; };
+		9565B50012C50B37009784B6 /* Drawable.h in Headers */ = {isa = PBXBuildFile; fileRef = 9565B4FF12C50B37009784B6 /* Drawable.h */; };
+		9565B50112C50B37009784B6 /* Drawable.h in Headers */ = {isa = PBXBuildFile; fileRef = 9565B4FF12C50B37009784B6 /* Drawable.h */; };
 		9566E20F11FC8D4700684709 /* PlatformMidiManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9566E20E11FC8D4700684709 /* PlatformMidiManager.cpp */; };
 		9566E21011FC8D4700684709 /* PlatformMidiManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9566E20E11FC8D4700684709 /* PlatformMidiManager.cpp */; };
 		9568DE8010D54FE30089AAAF /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF9D1CB609ABE21F00CAF7A6 /* Carbon.framework */; };
@@ -301,7 +311,6 @@
 		95711A311125D8D300104BF5 /* AriaPrintable.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119651125D8D300104BF5 /* AriaPrintable.h */; };
 		95711A471125D8D300104BF5 /* ptr_vector.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571197C1125D8D300104BF5 /* ptr_vector.h */; };
 		95711A481125D8D300104BF5 /* Range.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571197D1125D8D300104BF5 /* Range.h */; };
-		95711A491125D8D300104BF5 /* Drawable.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571197F1125D8D300104BF5 /* Drawable.h */; };
 		95711A4A1125D8D300104BF5 /* GLDrawable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119801125D8D300104BF5 /* GLDrawable.cpp */; };
 		95711A4B1125D8D300104BF5 /* GLImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119811125D8D300104BF5 /* GLImage.cpp */; };
 		95711A4C1125D8D300104BF5 /* GLImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119821125D8D300104BF5 /* GLImage.h */; };
@@ -468,7 +477,6 @@
 		95711AFB1125D8D300104BF5 /* AriaPrintable.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119651125D8D300104BF5 /* AriaPrintable.h */; };
 		95711B111125D8D300104BF5 /* ptr_vector.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571197C1125D8D300104BF5 /* ptr_vector.h */; };
 		95711B121125D8D300104BF5 /* Range.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571197D1125D8D300104BF5 /* Range.h */; };
-		95711B131125D8D300104BF5 /* Drawable.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571197F1125D8D300104BF5 /* Drawable.h */; };
 		95711B141125D8D300104BF5 /* GLDrawable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119801125D8D300104BF5 /* GLDrawable.cpp */; };
 		95711B151125D8D300104BF5 /* GLImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119811125D8D300104BF5 /* GLImage.cpp */; };
 		95711B161125D8D300104BF5 /* GLImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119821125D8D300104BF5 /* GLImage.h */; };
@@ -868,6 +876,11 @@
 		955AB041115950610067DA80 /* PreferencesData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PreferencesData.h; path = ../Src/PreferencesData.h; sourceTree = SOURCE_ROOT; };
 		95643A6F11BC0B2B003CC6C0 /* NotePickerWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NotePickerWidget.h; path = ../Src/Pickers/NotePickerWidget.h; sourceTree = SOURCE_ROOT; };
 		95643A7011BC0B2B003CC6C0 /* NotePickerWidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NotePickerWidget.cpp; path = ../Src/Pickers/NotePickerWidget.cpp; sourceTree = SOURCE_ROOT; };
+		9565B4CC12C5093A009784B6 /* AbstractDrawable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AbstractDrawable.cpp; path = ../Src/Renderers/AbstractDrawable.cpp; sourceTree = SOURCE_ROOT; };
+		9565B4DC12C5099D009784B6 /* GLDrawable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDrawable.h; sourceTree = "<group>"; };
+		9565B4E512C509D0009784B6 /* AbstractDrawable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AbstractDrawable.h; path = ../Src/Renderers/AbstractDrawable.h; sourceTree = SOURCE_ROOT; };
+		9565B4EE12C50A79009784B6 /* wxDrawable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wxDrawable.h; path = ../Src/Renderers/wxDrawable.h; sourceTree = SOURCE_ROOT; };
+		9565B4FF12C50B37009784B6 /* Drawable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Drawable.h; path = ../Src/Renderers/Drawable.h; sourceTree = SOURCE_ROOT; };
 		9566E20E11FC8D4700684709 /* PlatformMidiManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlatformMidiManager.cpp; sourceTree = "<group>"; };
 		9568DC6310D54CA50089AAAF /* DebugConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugConfig.xcconfig; sourceTree = SOURCE_ROOT; };
 		9568DC6810D54DC70089AAAF /* ReleaseConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReleaseConfig.xcconfig; sourceTree = SOURCE_ROOT; };
@@ -1020,7 +1033,6 @@
 		957119651125D8D300104BF5 /* AriaPrintable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AriaPrintable.h; path = ../Src/Printing/AriaPrintable.h; sourceTree = SOURCE_ROOT; };
 		9571197C1125D8D300104BF5 /* ptr_vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ptr_vector.h; path = ../Src/ptr_vector.h; sourceTree = SOURCE_ROOT; };
 		9571197D1125D8D300104BF5 /* Range.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Range.h; path = ../Src/Range.h; sourceTree = SOURCE_ROOT; };
-		9571197F1125D8D300104BF5 /* Drawable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Drawable.h; path = ../Src/Renderers/Drawable.h; sourceTree = SOURCE_ROOT; };
 		957119801125D8D300104BF5 /* GLDrawable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GLDrawable.cpp; path = ../Src/Renderers/GLDrawable.cpp; sourceTree = SOURCE_ROOT; };
 		957119811125D8D300104BF5 /* GLImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GLImage.cpp; path = ../Src/Renderers/GLImage.cpp; sourceTree = SOURCE_ROOT; };
 		957119821125D8D300104BF5 /* GLImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLImage.h; path = ../Src/Renderers/GLImage.h; sourceTree = SOURCE_ROOT; };
@@ -1546,8 +1558,11 @@
 		9571197E1125D8D300104BF5 /* Renderers */ = {
 			isa = PBXGroup;
 			children = (
-				9571197F1125D8D300104BF5 /* Drawable.h */,
+				9565B4CC12C5093A009784B6 /* AbstractDrawable.cpp */,
+				9565B4E512C509D0009784B6 /* AbstractDrawable.h */,
+				9565B4FF12C50B37009784B6 /* Drawable.h */,
 				957119801125D8D300104BF5 /* GLDrawable.cpp */,
+				9565B4DC12C5099D009784B6 /* GLDrawable.h */,
 				957119811125D8D300104BF5 /* GLImage.cpp */,
 				957119821125D8D300104BF5 /* GLImage.h */,
 				957119831125D8D300104BF5 /* GLPane.cpp */,
@@ -1560,6 +1575,7 @@
 				9571198A1125D8D300104BF5 /* wxDCString.cpp */,
 				9571198B1125D8D300104BF5 /* wxDCString.h */,
 				9571198C1125D8D300104BF5 /* wxDrawable.cpp */,
+				9565B4EE12C50A79009784B6 /* wxDrawable.h */,
 				9571198D1125D8D300104BF5 /* wxImage.cpp */,
 				9571198E1125D8D300104BF5 /* wxImage.h */,
 				9571198F1125D8D300104BF5 /* wxRenderImp.cpp */,
@@ -1941,7 +1957,6 @@
 				95711AFB1125D8D300104BF5 /* AriaPrintable.h in Headers */,
 				95711B111125D8D300104BF5 /* ptr_vector.h in Headers */,
 				95711B121125D8D300104BF5 /* Range.h in Headers */,
-				95711B131125D8D300104BF5 /* Drawable.h in Headers */,
 				95711B161125D8D300104BF5 /* GLImage.h in Headers */,
 				95711B181125D8D300104BF5 /* GLPane.h in Headers */,
 				95711B1B1125D8D300104BF5 /* GLwxString.h in Headers */,
@@ -2025,6 +2040,10 @@
 				9597249412C1378C00BF73D3 /* tick.h in Headers */,
 				9597249512C1378C00BF73D3 /* track.h in Headers */,
 				9597249612C1378C00BF73D3 /* world.h in Headers */,
+				9565B4DE12C5099D009784B6 /* GLDrawable.h in Headers */,
+				9565B4E712C509D0009784B6 /* AbstractDrawable.h in Headers */,
+				9565B4F012C50A79009784B6 /* wxDrawable.h in Headers */,
+				9565B50112C50B37009784B6 /* Drawable.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2105,7 +2124,6 @@
 				95711A311125D8D300104BF5 /* AriaPrintable.h in Headers */,
 				95711A471125D8D300104BF5 /* ptr_vector.h in Headers */,
 				95711A481125D8D300104BF5 /* Range.h in Headers */,
-				95711A491125D8D300104BF5 /* Drawable.h in Headers */,
 				95711A4C1125D8D300104BF5 /* GLImage.h in Headers */,
 				95711A4E1125D8D300104BF5 /* GLPane.h in Headers */,
 				95711A511125D8D300104BF5 /* GLwxString.h in Headers */,
@@ -2189,6 +2207,10 @@
 				9597243E12C1378C00BF73D3 /* tick.h in Headers */,
 				9597243F12C1378C00BF73D3 /* track.h in Headers */,
 				9597244012C1378C00BF73D3 /* world.h in Headers */,
+				9565B4DD12C5099D009784B6 /* GLDrawable.h in Headers */,
+				9565B4E612C509D0009784B6 /* AbstractDrawable.h in Headers */,
+				9565B4EF12C50A79009784B6 /* wxDrawable.h in Headers */,
+				9565B50012C50B37009784B6 /* Drawable.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2426,6 +2448,7 @@
 				959724B112C1378C00BF73D3 /* jdkmidi_tick.cpp in Sources */,
 				959724B212C1378C00BF73D3 /* jdkmidi_track.cpp in Sources */,
 				959724B312C1378C00BF73D3 /* jdkmidi_driverwin32.cpp in Sources */,
+				9565B4CE12C5093A009784B6 /* AbstractDrawable.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2583,6 +2606,7 @@
 				9597245B12C1378C00BF73D3 /* jdkmidi_tick.cpp in Sources */,
 				9597245C12C1378C00BF73D3 /* jdkmidi_track.cpp in Sources */,
 				9597245D12C1378C00BF73D3 /* jdkmidi_driverwin32.cpp in Sources */,
+				9565B4CD12C5093A009784B6 /* AbstractDrawable.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,10 +14,24 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifdef RENDERER_WXWIDGETS
-#include "Renderers/wxDrawable.h"
-#endif
-
 #ifdef RENDERER_OPENGL
-#include "Renderers/GLDrawable.h"
+
+#include "Renderers/AbstractDrawable.h"
+
+namespace AriaMaestosa
+{
+    
+    class Drawable : public AbstractDrawable
+    {
+    public:
+        
+        Drawable(Image* image=NULL) : AbstractDrawable(image) {}
+        Drawable(wxString imagePath) : AbstractDrawable(imagePath) {}
+        
+        virtual void render();
+        
+    };
+    
+}
+
 #endif
