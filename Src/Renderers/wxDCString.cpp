@@ -151,16 +151,7 @@ namespace AriaMaestosa
     {
         if (not consolidated)
         {
-
-#if defined(__WXMSW__)
-            //FIXME: find why we need this special case
-            Display::renderDC->SetFont( wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-#else
-            //if (font.IsOk()) Display::renderDC->SetFont(font);
-            // else
-            Display::renderDC->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
-#endif
-            
+            Display::renderDC->SetFont(getNumberFont());
             Display::renderDC->GetTextExtent(wxT("0"), &w, &h);
             
             consolidated = true;
