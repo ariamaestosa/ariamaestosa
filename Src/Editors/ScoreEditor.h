@@ -104,11 +104,13 @@ namespace AriaMaestosa
         int m_ottava_alta_C_level;
         int m_ottava_bassa_C_level;
         
+        GraphicalSequence* m_sequence;
+        
     public:
         
         LEAK_CHECK();
         
-        ScoreMidiConverter();
+        ScoreMidiConverter(GraphicalSequence* parent);
         void setNoteSharpness(Note7 note, PitchSign sharpness);
         
         /** @return are we using a key that will make flat signs appear next to the clef? */

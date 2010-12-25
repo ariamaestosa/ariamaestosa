@@ -363,7 +363,7 @@ namespace AriaMaestosa
         
         //FIXME: tempo events have nothing to do with tracks and should not be handled here at all
         /**
-         * @return          the amount of ALL types of controller, not only of specified type
+         * @return          the amount of ALL types of controller events
          * @param isTempo   if true, returns amount of tempo events
          */
         int getControllerEventAmount(const bool isTempo=false) const;

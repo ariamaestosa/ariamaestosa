@@ -113,20 +113,20 @@ namespace AriaMaestosa
         g_provider = provider;
     }
 
-    MeasureData* getMeasureData()
-    {
-        return getCurrentSequence()->m_measure_data;
-    }
+    //MeasureData* getMeasureData()
+    //{
+    //    return getCurrentSequence()->m_measure_data;
+    //}
     
-    Sequence* getCurrentSequence()
-    {
-        return g_provider->getCurrentSequence();
-    }
+    //Sequence* getCurrentSequence()
+    //{
+    //    return g_provider->getCurrentSequence();
+    //}
     
-    GraphicalSequence* getCurrentGraphicalSequence()
-    {
-        return g_provider->getCurrentGraphicalSequence();
-    }
+    //GraphicalSequence* getCurrentGraphicalSequence()
+    //{
+    //    return g_provider->getCurrentGraphicalSequence();
+    //}
     
     bool isPlaybackMode()
     {
@@ -281,8 +281,8 @@ namespace AriaMaestosa
         else                 return false;
     }
 
-    bool aboutEqual_tick(const int int1, const int int2)
+    bool aboutEqual_tick(const int int1, const int int2, int beatLength)
     {
-        return abs(int1 - int2) < getMeasureData()->beatLengthInTicks()/16;
+        return abs(int1 - int2) < beatLength/16;
     }
 }

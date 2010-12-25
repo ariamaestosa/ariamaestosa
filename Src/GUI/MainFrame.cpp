@@ -595,8 +595,10 @@ void MainFrame::playClicked(wxCommandEvent& evt)
 {
     if (m_playback_mode)
     {
+        MeasureData* md = getCurrentSequence()->getMeasureData();
+        
         // already playing, this button does "pause" instead
-        getMeasureData()->setFirstMeasure( getMeasureData()->measureAtTick(m_main_pane->getCurrentTick()) );
+        md->setFirstMeasure( md->measureAtTick(m_main_pane->getCurrentTick()) );
         m_main_pane->exitPlayLoop();
         updateTopBarAndScrollbarsForSequence( getCurrentGraphicalSequence() );
         return;
@@ -752,10 +754,12 @@ void MainFrame::songLengthTextChanged(wxCommandEvent& evt)
 
 void MainFrame::timeSigClicked(wxCommandEvent& evt)
 {
+    MeasureData* md = getCurrentSequence()->getMeasureData();
+    
     wxPoint pt = wxGetMousePosition();
     showTimeSigPicker(pt.x, pt.y,
-                      getMeasureData()->getTimeSigNumerator(),
-                      getMeasureData()->getTimeSigDenominator() );
+                      md->getTimeSigNumerator(),
+                      md->getTimeSigDenominator() );
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -769,15 +773,17 @@ void MainFrame::firstMeasureChanged(wxCommandEvent& evt)
 
     if (m_first_measure->GetValue().Length() < 1) return; // text field empty, wait until user enters something to update data
 
-    if (not m_first_measure->GetValue().IsNumber() or start < 0 or start > getMeasureData()->getMeasureAmount())
+    MeasureData* md = getCurrentSequence()->getMeasureData();
+    
+    if (not m_first_measure->GetValue().IsNumber() or start < 0 or start > md->getMeasureAmount())
     {
         wxBell();
 
-        m_first_measure->SetValue(to_wxString(getMeasureData()->getFirstMeasure() + 1));
+        m_first_measure->SetValue(to_wxString(md->getFirstMeasure() + 1));
     }
     else
     {
-        getMeasureData()->setFirstMeasure( start-1 );
+        md->setFirstMeasure( start-1 );
     }
 
 }
@@ -824,7 +830,7 @@ void MainFrame::changeMeasureAmount(int i, bool throwEvent)
     if (changingValues) return; // discard events thrown because the computer changes values
 
     m_song_length->SetValue(i);
-    getMeasureData()->setMeasureAmount(i);
+    getCurrentSequence()->getMeasureData()->setMeasureAmount(i);
 
     if (throwEvent)
     {
@@ -870,7 +876,10 @@ void MainFrame::zoomChanged(wxSpinEvent& evt)
 
     gseq->setXScrollInMidiTicks( newXScroll );
     updateHorizontalScrollbar( newXScroll );
-    if (not getMeasureData()->isMeasureLengthConstant()) getMeasureData()->updateMeasureInfo();
+    
+    MeasureData* md = getCurrentSequence()->getMeasureData();
+    
+    if (not md->isMeasureLengthConstant()) md->updateMeasureInfo();
 
     Display::render();
 }
@@ -960,7 +969,7 @@ void MainFrame::songLengthChanged(wxSpinEvent& evt)
 
     if (newLength > 0)
     {
-        getMeasureData()->setMeasureAmount(newLength);
+        getCurrentSequence()->getMeasureData()->setMeasureAmount(newLength);
 
         updateHorizontalScrollbar();
     }
@@ -999,15 +1008,17 @@ void MainFrame::horizontalScrolling_arrows(wxScrollEvent& evt)
     GraphicalSequence* gseq = getCurrentGraphicalSequence();
     const int factor   = newValue - gseq->getXScrollInPixels();
 
+    MeasureData* md = getCurrentSequence()->getMeasureData();
+    
     const int newScrollInMidiTicks =
         (int)(
               gseq->getXScrollInMidiTicks() +
-              factor * getMeasureData()->defaultMeasureLengthInTicks()
+              factor * md->defaultMeasureLengthInTicks()
               );
 
     // check new scroll position is not out of bounds
-    const int editor_size=Display::getWidth()-100,
-        total_size = getMeasureData()->getTotalPixelAmount();
+    const int editor_size = Display::getWidth() - 100;
+    const int total_size  = md->getTotalPixelAmount();
 
     const int positionInPixels = (int)( newScrollInMidiTicks*gseq->getZoom() );
 
@@ -1051,7 +1062,7 @@ void MainFrame::verticalScrolling_arrows(wxScrollEvent& evt)
 void MainFrame::updateHorizontalScrollbar(int thumbPos)
 {
     const int editor_size = Display::getWidth() - 100;
-    const int total_size  = getMeasureData()->getTotalPixelAmount();
+    const int total_size  = getCurrentSequence()->getMeasureData()->getTotalPixelAmount();
 
     GraphicalSequence* gseq = getCurrentGraphicalSequence();
     

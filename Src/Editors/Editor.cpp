@@ -14,23 +14,23 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "Utils.h"
-#include "AriaCore.h"
-
-#include "Actions/MoveNotes.h"
 #include "Editors/Editor.h"
-#include "Midi/Track.h"
-#include "Midi/Sequence.h"
+
+#include "AriaCore.h"
+#include "Actions/MoveNotes.h"
+#include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
+#include "GUI/ImageProvider.h"
+#include "IO/IOUtils.h"
 #include "Midi/MeasureData.h"
-#include "Renderers/RenderAPI.h"
+#include "Midi/Sequence.h"
+#include "Midi/Track.h"
 #include "Pickers/MagneticGrid.h"
 #include "Pickers/VolumeSlider.h"
-#include "GUI/ImageProvider.h"
 #include "Renderers/Drawable.h"
-#include "IO/IOUtils.h"
-
+#include "Renderers/RenderAPI.h"
 #include "UnitTest.h"
+#include "Utils.h"
 
 namespace AriaMaestosa
 {
@@ -129,19 +129,20 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
     
     AriaRender::primitives();
     AriaRender::lineWidth(1);
-    const int measure = getMeasureData()->measureAtPixel( Editor::getEditorXStart() );
-    const int start_x = getMeasureData()->firstPixelInMeasure( measure );
+    
+    MeasureData* md = m_sequence->getMeasureData();
 
-    MeasureData* measureBar = getMeasureData();
-    const int measureAmount = measureBar->getMeasureAmount();
-    const float beatLength  = measureBar->beatLengthInPixels();
+    const int measure       = md->measureAtPixel( Editor::getEditorXStart() );
+    const int start_x       = md->firstPixelInMeasure( measure );
+    const int measureAmount = md->getMeasureAmount();
+    const float beatLength  = m_sequence->ticksPerBeat();
     float mx                = start_x;
-    const int measureID     = measureBar->measureAtPixel( Editor::getEditorXStart() );
+    const int measureID     = md->measureAtPixel( Editor::getEditorXStart() );
     float new_mx;
 
     for (int m=measureID; m<measureAmount; m+=1)
     {
-        new_mx = measureBar->firstPixelInMeasure(m);
+        new_mx = md->firstPixelInMeasure(m);
 
         // draw pale lines
         AriaRender::color(0.9, 0.9, 0.9);
@@ -620,7 +621,7 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
         if (mousex_current.getRelativeTo(WINDOW) > getXEnd()-75)
         {
             m_gsequence->setXScrollInPixels(m_gsequence->getXScrollInPixels()+
-                                                     (mousex_current.getRelativeTo(WINDOW)-getXEnd()+75)/5 );
+                                            (mousex_current.getRelativeTo(WINDOW)-getXEnd()+75)/5 );
             DisplayFrame::updateHorizontalScrollbar();
             Display::render();
             return;
@@ -813,10 +814,11 @@ int Editor::snapMidiTickToGrid(int tick)
     ASSERT( MAGIC_NUMBER_OK() );
     
     int origin_tick = 0;
-    if (not getMeasureData()->isMeasureLengthConstant())
+    MeasureData* md = m_sequence->getMeasureData();
+    if (not md->isMeasureLengthConstant())
     {
-        const int measure = getMeasureData()->measureAtTick(tick);
-        origin_tick = getMeasureData()->firstTickInMeasure(measure);
+        const int measure = md->measureAtTick(tick);
+        origin_tick = md->firstTickInMeasure(measure);
     }
 
     return origin_tick + (int)( round((float)(tick - origin_tick)/
@@ -833,10 +835,11 @@ int Editor::snapMidiTickToGrid_ceil(int tick)
     ASSERT( MAGIC_NUMBER_OK() );
     
     int origin_tick = 0;
-    if (not getMeasureData()->isMeasureLengthConstant())
+    MeasureData* md = m_sequence->getMeasureData();
+    if (not md->isMeasureLengthConstant())
     {
-        const int measure = getMeasureData()->measureAtTick(tick);
-        origin_tick = getMeasureData()->firstTickInMeasure(measure);
+        const int measure = md->measureAtTick(tick);
+        origin_tick = md->firstTickInMeasure(measure);
     }
 
     return origin_tick + (int)( ceil((float)(tick - origin_tick)/

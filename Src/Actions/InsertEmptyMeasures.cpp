@@ -61,7 +61,7 @@ void InsertEmptyMeasures::perform()
 {
     ASSERT(sequence != NULL);
     
-    MeasureData* md = getMeasureData();
+    MeasureData* md = sequence->getMeasureData();
 
     // convert measures into midi ticks
     const int amountInTicks = m_amount * md->measureLengthInTicks(m_measure_ID);
@@ -157,8 +157,7 @@ namespace InsertMeasuresTest
             
             Track* t = new Track(m_seq);
             
-            MeasureData* measures = m_seq->m_measure_data;
-            const int beatLen = measures->beatLengthInTicks();
+            const int beatLen = m_seq->ticksPerBeat();
             
             // make a factory sequence to work from
             m_seq->importing = true;
@@ -205,8 +204,7 @@ namespace InsertMeasuresTest
         {
             Track* t = m_seq->getTrack(0);
             
-            MeasureData* measures = m_seq->m_measure_data;
-            const int beatLen = measures->beatLengthInTicks();
+            const int beatLen = m_seq->ticksPerBeat();
             
             require(t->getNoteAmount() == 16, "the number of events is fine on undo");
             require(t->getNoteOffVector().size() == 16, "Note off vector is fine on undo");
@@ -248,8 +246,7 @@ namespace InsertMeasuresTest
         // TODO: test this action on tempo events too
         
         // verify the data is OK        
-        MeasureData* measures = provider.m_seq->m_measure_data;
-        const int beatLen = measures->beatLengthInTicks();
+        const int beatLen = provider.m_seq->ticksPerBeat();
         
         require(t->getNoteAmount() == 16, "the number of events is fine");
         require(t->getNoteOffVector().size() == 16, "Note off vector is fine");

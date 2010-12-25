@@ -16,11 +16,13 @@
 
 #include "Actions/EditAction.h"
 #include "Actions/AddNote.h"
+#include "Analysers/ScoreAnalyser.h"
 #include "Dialogs/Preferences.h"
 #include "Editors/ScoreEditor.h"
-#include "Analysers/ScoreAnalyser.h"
 #include "Editors/RelativeXCoord.h"
 #include "GUI/ImageProvider.h"
+#include "GUI/GraphicalSequence.h"
+#include "GUI/GraphicalTrack.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 #include "Midi/MeasureData.h"
@@ -71,8 +73,9 @@ namespace AriaMaestosa
 // ---------------------------------------      ScoreMidiConverter     --------------------------------------
 // ----------------------------------------------------------------------------------------------------------
 
-ScoreMidiConverter::ScoreMidiConverter()
+ScoreMidiConverter::ScoreMidiConverter(GraphicalSequence* parent)
 {
+    m_sequence = parent;
 
     for (int n=0; n<7; n++) m_score_notes_sharpness[n] = NATURAL;
 
@@ -214,7 +217,7 @@ int ScoreMidiConverter::noteToLevel(const Note* noteObj, PitchSign* sign)
     {
         if (m_accidentals)
         {
-            const int measure = getMeasureData()->measureAtTick(noteObj->startTick);
+            const int measure = m_sequence->getModel()->getMeasureData()->measureAtTick(noteObj->startTick);
 
             // when going to another measure, reset accidentals
             if (measure != m_accidentals_measure)
@@ -269,7 +272,7 @@ int ScoreMidiConverter::noteToLevel(const Note* noteObj, PitchSign* sign)
         if (answer_sign != PITCH_SIGN_NONE)
         {
             m_accidentals = true;
-            const int measure = getMeasureData()->measureAtTick(noteObj->startTick);
+            const int measure = m_sequence->getModel()->getMeasureData()->measureAtTick(noteObj->startTick);
             m_accidentals_measure = measure;
 
             m_accidental_score_notes_sharpness[ levelToNote7(answer_level) ] = answer_sign;
@@ -404,7 +407,7 @@ ScoreEditor::ScoreEditor(Track* track) : Editor(track)
     m_musical_notation_enabled = (scoreView == 0 or scoreView == 1);
     m_linear_notation_enabled  = (scoreView == 0 or scoreView == 2);
 
-    m_converter = new ScoreMidiConverter();
+    m_converter = new ScoreMidiConverter(m_gsequence);
 
     m_converter->updateConversionData();
 
@@ -897,12 +900,10 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     const int noteAmount = m_track->getNoteAmount();
 
-    const int first_x_to_consider = getMeasureData()->firstPixelInMeasure(
-                                        getMeasureData()->measureAtPixel(0)
-                                                                          ) + 1;
-    const int last_x_to_consider  = getMeasureData()->lastPixelInMeasure(
-                                        getMeasureData()->measureAtPixel(m_width+15)
-                                                                         );
+    MeasureData* md = m_sequence->getMeasureData();
+    
+    const int first_x_to_consider = md->firstPixelInMeasure( md->measureAtPixel(0) ) + 1;
+    const int last_x_to_consider  = md->lastPixelInMeasure( md->measureAtPixel(m_width + 15) );
 
     if (m_musical_notation_enabled) m_converter->resetAccidentalsForNewRender();
 
@@ -1323,8 +1324,9 @@ void ScoreEditor::renderScore(ScoreAnalyser* analyser, const int silences_y)
     for (int i=0; i<visibleNoteAmount; i++) renderNote_pass1( analyser->noteRenderInfo[i] );
 
     // render silences
-    const unsigned int first_visible_measure = getMeasureData()->measureAtPixel( Editor::getEditorXStart() );
-    const unsigned int last_visible_measure = getMeasureData()->measureAtPixel( getXEnd() );
+    MeasureData* md = m_sequence->getMeasureData();
+    const unsigned int first_visible_measure = md->measureAtPixel( Editor::getEditorXStart() );
+    const unsigned int last_visible_measure  = md->measureAtPixel( getXEnd() );
     
     SilenceAnalyser::findSilences( &renderSilence, analyser, first_visible_measure, last_visible_measure, silences_y );
 

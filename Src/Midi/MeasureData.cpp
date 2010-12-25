@@ -43,15 +43,13 @@ using namespace AriaMaestosa;
 MeasureData::MeasureData(int measureAmount)
 {
     m_something_selected = false;
-    m_selected_time_sig = 0;
-
-    m_measure_amount = measureAmount;
+    m_selected_time_sig  = 0;
+    m_measure_amount     = measureAmount;
+    m_first_measure      = 0;
+    m_expanded_mode      = false;
+    
     m_time_sig_changes.push_back( new TimeSigChange(0,4,4) );
     m_time_sig_changes[0].setTick(0);
-
-    m_first_measure = 0;
-
-    m_expanded_mode = false;
     updateVector(measureAmount);
 }
 

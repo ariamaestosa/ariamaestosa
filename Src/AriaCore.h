@@ -15,8 +15,8 @@
  */
 
 
-#ifndef _ariacore_
-#define _ariacore_
+#ifndef __ARIA_CORE_H__
+#define __ARIA_CORE_H__
 
 #include "Editors/RelativeXCoord.h"
 #include "Utils.h"
@@ -53,6 +53,7 @@ namespace AriaMaestosa
     
     extern bool okToLog;
     
+    // TODO: remove
     class ICurrentSequenceProvider
     {
     public:
@@ -62,9 +63,9 @@ namespace AriaMaestosa
     };
     
     MainFrame*         getMainFrame();
-    MeasureData*       getMeasureData();
-    Sequence*          getCurrentSequence();
-    GraphicalSequence* getCurrentGraphicalSequence();
+    //MeasureData*       getMeasureData();
+    //Sequence*          getCurrentSequence();
+    //GraphicalSequence* getCurrentGraphicalSequence();
     
     void         setCurrentSequenceProvider(ICurrentSequenceProvider* provider);
     
@@ -148,7 +149,7 @@ namespace AriaMaestosa
      * from those Aria uses. This is why i check for approximate lengths, otherwise the score
      * view may end up messed up when you import a midi made in another editor
      */
-    bool aboutEqual_tick(const int int1, const int int2);
+    bool aboutEqual_tick(const int int1, const int int2, int beatLength);
 }
 
 #endif

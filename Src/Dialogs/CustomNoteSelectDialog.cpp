@@ -377,7 +377,7 @@ void CustomNoteSelectDialog::okClicked(wxCommandEvent& evt)
             bool passTest = false;
             
             // find in which measure the note is
-            const int test_value = getMeasureData()->measureAtTick( m_current_track->getNoteStartInMidiTicks(n) );
+            const int test_value = m_current_track->getSequence()->getMeasureData()->measureAtTick( m_current_track->getNoteStartInMidiTicks(n) );
             
             if (test_value >= from_measure_value-1 and test_value <= to_measure_value-1) passTest=true;
             

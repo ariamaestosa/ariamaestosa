@@ -179,8 +179,7 @@ namespace TestMoveNotes
             
             Track* t = new Track(m_seq);
 
-            MeasureData* measures = m_seq->m_measure_data;
-            const int beatLen = measures->beatLengthInTicks();
+            const int beatLen = m_seq->ticksPerBeat();
             
             // make a factory sequence to work from
             m_seq->importing = true;
@@ -217,8 +216,7 @@ namespace TestMoveNotes
         {
             Track* t = m_seq->getTrack(0);
             
-            MeasureData* measures = m_seq->m_measure_data;
-            const int beatLen = measures->beatLengthInTicks();
+            const int beatLen = m_seq->ticksPerBeat();
             
             require(t->getNoteAmount() == 16, "the number of events is fine on undo");
             require(t->getNoteOffVector().size() == 16, "Note off vector is fine on undo");
@@ -245,8 +243,7 @@ namespace TestMoveNotes
         // test the action
         t->action(new MoveNotes(25 /* relative X */, 0 /* relative Y */, 2 /* note ID */));
         
-        MeasureData* measures = provider.m_seq->m_measure_data;
-        const int beatLen = measures->beatLengthInTicks();
+        const int beatLen = provider.m_seq->ticksPerBeat();
         
         // Check the move happened fine
         for (int n=0; n<16; n++)

@@ -23,6 +23,7 @@
 #include "Editors/ControllerEditor.h"
 #include "Editors/RelativeXCoord.h"
 #include "GUI/ImageProvider.h"
+#include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
@@ -417,7 +418,7 @@ void ControllerEditor::selectAll( bool selected )
     {
         // Select all
         m_selection_begin = 0;
-        m_selection_end   = getMeasureData()->getTotalTickAmount();
+        m_selection_end   = m_sequence->getMeasureData()->getTotalTickAmount();
     }
 
 }
