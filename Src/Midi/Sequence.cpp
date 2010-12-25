@@ -15,7 +15,7 @@
  */
 
 /** Version of the .aria file format. */
-const float CURRENT_FILE_VERSION = 2.0;
+const float CURRENT_FILE_VERSION = 3.0;
 
 #include "Midi/Sequence.h"
 
@@ -460,6 +460,8 @@ void Sequence::setCurrentTrackID(int ID)
 
 void Sequence::setCurrentTrack(Track* track)
 {
+    ASSERT(track != NULL);
+    
     const int trackAmount = tracks.size();
     for (int n=0; n<trackAmount; n++)
     {
@@ -471,7 +473,7 @@ void Sequence::setCurrentTrack(Track* track)
     }
 
     std::cerr << "Error: void Sequence::setCurrentTrack(Track* track) couldn't find any matching track" << std::endl;
-    assert(false);
+    ASSERT(false);
 }
 
 
@@ -597,6 +599,7 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
               wxT("\" currentTrack=\"")      + to_wxString(currentTrack) +
               wxT("\" beatResolution=\"")    + to_wxString(beatResolution) +
               wxT("\" internalName=\"")      + internal_sequenceName +
+              // FIXME: file format version doesn't quite belong in <sequence> anymore since that's not the top-level element anymore...
               wxT("\" fileFormatVersion=\"") + to_wxString(CURRENT_FILE_VERSION) +
               wxT("\" channelManagement=\"") + (getChannelManagementType() == CHANNEL_AUTO ?
                                                 wxT("auto") : wxT("manual")) +
