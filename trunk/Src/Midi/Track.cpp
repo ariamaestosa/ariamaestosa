@@ -1800,7 +1800,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                 }
                 else if (strcmp("editor", xml->getNodeName()) == 0)
                 {
-                    // FIXME: move creaitng graphics out of there...
+                    // FIXME: move creating graphics out of there...
                     graphics = new GraphicalTrack(this, getCurrentGraphicalSequence());
                     graphics->createEditors();
                     
@@ -1838,8 +1838,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                 }
                 else if (strcmp("guitartuning", xml->getNodeName()) == 0)
                 {
-                    if (! graphics->readFromFile(xml) )
-                        return false;
+                    if (not graphics->readFromFile(xml)) return false;
                 }
                 else if (strcmp("key", xml->getNodeName()) == 0)
                 {
@@ -2001,7 +2000,8 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
         }//end switch
 
     } while (xml != NULL and xml->read());
-
+    
+    // FIXME: this code is useless, will be never reached (see "return" above)
     reorderNoteOffVector();
 
     return true;

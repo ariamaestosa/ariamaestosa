@@ -387,9 +387,6 @@ void GraphicalSequence::saveToFile(wxFileOutputStream& fileout)
 
 bool GraphicalSequence::readFromFile(irr::io::IrrXMLReader* xml)
 {
-    // FIXME: backwards compat!!!
-    
-    
     bool inSeqView = false;
     
     // parse the file until end reached
@@ -494,14 +491,6 @@ bool GraphicalSequence::readFromFile(irr::io::IrrXMLReader* xml)
             }
         } // end switch
     } // end while
-    
-    const int count = m_sequence->tracks.size();
-    for (int n=0; n<count; n++)
-    {
-        Track* newTrack = m_sequence->getTrack(n);
-        newTrack->graphics = new GraphicalTrack(newTrack, this);
-        newTrack->graphics->createEditors();
-    }
     
     DisplayFrame::updateHorizontalScrollbar( m_x_scroll_in_pixels );
     
