@@ -337,7 +337,7 @@ namespace AriaMaestosa
 const int EXPANDED_BAR_HEIGHT = 20;
 const int COLLAPSED_BAR_HEIGHT = 5; //FIXME: what's that?? a collapsed bar is not 5 pixels high?? */
 
-GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
+GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq)
 {
     m_keyboard_editor     = NULL;
     m_guitar_editor       = NULL;
@@ -345,7 +345,7 @@ GraphicalTrack::GraphicalTrack(Track* track, Sequence* seq)
     m_controller_editor   = NULL;
     m_score_editor        = NULL;
 
-    m_sequence = seq;
+    m_gsequence = seq;
     m_track = track;
 
     ASSERT(track);
@@ -435,6 +435,8 @@ GraphicalTrack::~GraphicalTrack()
     
 void GraphicalTrack::createEditors()
 {
+    ASSERT(m_all_editors.size() == 0); // function to be called once per object only
+    
     m_keyboard_editor = new KeyboardEditor(m_track);
     m_all_editors.push_back(m_keyboard_editor);
     
@@ -483,7 +485,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 
     if (mousey > m_from_y and mousey < m_to_y)
     {
-        m_sequence->setCurrentTrack( m_track );
+        m_gsequence->getModel()->setCurrentTrack( m_track );
 
         // resize drag
         if (mousey > m_to_y - 15 and mousey < m_to_y - 5)
@@ -508,7 +510,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         // maximize button
         if (m_dock_toolbar->getItem(0).clickIsOnThisWidget(winX, mousey))
         {
-            if (not getCurrentSequence()->maximize_track_mode)
+            if (not m_gsequence->maximize_track_mode)
             {
                 // switch on maximize mode
                 const int track_amount = getCurrentSequence()->getTrackAmount();
@@ -522,9 +524,9 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                     }
                     track->graphics->dock();
                 }
-                getCurrentSequence()->setYScroll(0);
+                m_gsequence->setYScroll(0);
                 DisplayFrame::updateVerticalScrollbar();
-                getCurrentSequence()->maximize_track_mode = true;
+                m_gsequence->maximize_track_mode = true;
             }
             else
             {
@@ -537,14 +539,14 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                     track->graphics->maximizeHeight(false);
                 }
                 DisplayFrame::updateVerticalScrollbar();
-                getCurrentSequence()->maximize_track_mode = false;
+                m_gsequence->maximize_track_mode = false;
             }
         }
         // dock button
         else if ( m_dock_toolbar->getItem(1).clickIsOnThisWidget(winX, mousey) )
         {
             // This button is disabled in maximized mode
-            if (not getCurrentSequence()->maximize_track_mode)
+            if (not m_gsequence->maximize_track_mode)
             {
                 dock();
                 DisplayFrame::updateVerticalScrollbar();
@@ -608,7 +610,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         }
 
         // channel
-        if (m_sequence->getChannelManagementType() == CHANNEL_MANUAL)
+        if (m_gsequence->getModel()->getChannelManagementType() == CHANNEL_MANUAL)
         {
 
             if (m_channel_field->clickIsOnThisWidget(winX, mousey))
@@ -638,7 +640,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
             else if (winX > m_piano_button->getX() and winX < m_piano_button->getX()+30)
             {
                 // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
-                if (m_editor_mode == DRUM and m_sequence->getChannelManagementType() == CHANNEL_MANUAL)
+                if (m_editor_mode == DRUM and m_gsequence->getModel()->getChannelManagementType() == CHANNEL_MANUAL)
                 {
                     m_track->setChannel(0);
                 }
@@ -648,7 +650,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
             else if (winX > m_tab_button->getX() and winX < m_tab_button->getX() + 30)
             {
                 // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
-                if (m_editor_mode == DRUM and m_sequence->getChannelManagementType() == CHANNEL_MANUAL)
+                if (m_editor_mode == DRUM and m_gsequence->getModel()->getChannelManagementType() == CHANNEL_MANUAL)
                 {
                     m_track->setChannel(0);
                 }
@@ -659,7 +661,10 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
             else if (winX > m_drum_button->getX() and winX < m_drum_button->getX() + 30)
             {
                 // in midi, drums go to channel 9 (10 if you start from one)
-                if (m_sequence->getChannelManagementType() == CHANNEL_MANUAL) m_track->setChannel(9);
+                if (m_gsequence->getModel()->getChannelManagementType() == CHANNEL_MANUAL)
+                {
+                    m_track->setChannel(9);
+                }
 
                 setEditorMode(DRUM);
             }
@@ -838,7 +843,7 @@ void GraphicalTrack::maximizeHeight(bool maximize)
 {
     if (maximize)
     {
-        setHeight(Display::getHeight() - getCurrentSequence()->dockHeight -
+        setHeight(Display::getHeight() - m_gsequence->dockHeight -
                   (getMeasureData()->isExpandedMode() ? 150 : 130)  ); // FIXME - don't hardcode values
     }
     else
@@ -854,12 +859,12 @@ void GraphicalTrack::dock(const bool setDocked)
     if (setDocked)
     {
         m_docked = true;
-        getCurrentSequence()->addToDock( this );
+        m_gsequence->addToDock( this );
     }
     else
     {
         m_docked = false;
-        getCurrentSequence()->removeFromDock( this );
+        m_gsequence->removeFromDock( this );
     }
 }
 
@@ -927,7 +932,23 @@ void GraphicalTrack::setEditorMode(EditorType mode)
     }
 }
 
+// -------------------------------------------------------------------------------------------------------
+
+int GraphicalTrack::getNoteStartInPixels(const int id) const
+{
+    return (int)round( m_track->getNoteStartInMidiTicks(id) * m_gsequence->getZoom() );
+}
+
+// -------------------------------------------------------------------------------------------------------
+
+int GraphicalTrack::getNoteEndInPixels(const int id) const
+{
+    return (int)round( m_track->getNoteEndInMidiTicks(id) * m_gsequence->getZoom() );
+}
+
 // --------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------
+
 #if 0
 #pragma mark -
 #pragma mark Rendering
@@ -936,11 +957,11 @@ void GraphicalTrack::setEditorMode(EditorType mode)
 void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, const bool focus)
 {
     // mark 'dock' button as disabled when maximize mode is activated
-    m_dock_toolbar->getItem(1).setImageState(getCurrentSequence()->maximize_track_mode ?
+    m_dock_toolbar->getItem(1).setImageState(m_gsequence->maximize_track_mode ?
                                              AriaRender::STATE_GHOST :
                                              AriaRender::STATE_NORMAL );
     
-    const bool channel_mode = m_sequence->getChannelManagementType() == CHANNEL_MANUAL;
+    const bool channel_mode = (m_gsequence->getModel()->getChannelManagementType() == CHANNEL_MANUAL);
     
     int barHeight = EXPANDED_BAR_HEIGHT;
     if (closed) barHeight = COLLAPSED_BAR_HEIGHT;
@@ -1107,7 +1128,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
                                                      mgrid_triplet->getX() + 16, y + 30);
     
     // mark maximize mode as on if relevant
-    if (getCurrentSequence()->maximize_track_mode)
+    if (m_gsequence->maximize_track_mode)
     {
         const int rectx = m_dock_toolbar->getItem(0).getX();
         AriaRender::hollow_rect(rectx, y+13, rectx+16, y+29);

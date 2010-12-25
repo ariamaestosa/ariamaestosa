@@ -169,7 +169,7 @@ MainPane::~MainPane()
 void MainPane::isNowVisible()
 {
     getMainFrame()->addSequence();
-    getCurrentSequence()->addTrack();
+    getCurrentGraphicalSequence()->addTrack();
     isVisible=true;
 }
 
@@ -218,11 +218,13 @@ bool MainPane::do_render()
 
     AriaRender::images();
 
-    getCurrentSequence()->renderTracks(m_current_tick,
-                                       m_mouse_x_current,
-                                       m_mouse_y_current,
-                                       m_mouse_y_initial,
-                                       25 + getCurrentSequence()->m_measure_bar->getMeasureBarHeight());
+    GraphicalSequence* gseq = getCurrentGraphicalSequence();
+    
+    gseq->renderTracks(m_current_tick,
+                       m_mouse_x_current,
+                       m_mouse_y_current,
+                       m_mouse_y_initial,
+                       25 + gseq->m_measure_bar->getMeasureBarHeight());
 
 
     // -------------------------- draw tab bar at top -------------------------
@@ -321,30 +323,32 @@ bool MainPane::do_render()
     }//next
 
     // -------------------------- draw measure top bar -------------------------
-
-    getCurrentSequence()->m_measure_bar->render(MEASURE_BAR_Y);
+    
+    gseq->m_measure_bar->render(MEASURE_BAR_Y);
 
     // -------------------------- draw dock -------------------------
     AriaRender::primitives();
-    if (getCurrentSequence()->dockSize>0)
+    const int docksize = gseq->dock.size();
+    if (docksize > 0)
     {
-        getCurrentSequence()->dockHeight = 20;
+        // Make the dock visible
+        gseq->dockHeight = 20;
 
         AriaRender::primitives();
         AriaRender::color(1, 1, 0.9);
-        AriaRender::rect(0,getHeight()-getCurrentSequence()->dockHeight, getWidth(), getHeight());
+        AriaRender::rect(0, getHeight() - gseq->dockHeight, getWidth(), getHeight());
 
         // black line at the top and bottom
         AriaRender::color(0, 0, 0);
-        AriaRender::line(0, getHeight()-getCurrentSequence()->dockHeight,
-                         getWidth(), getHeight()-getCurrentSequence()->dockHeight);
+        AriaRender::line(0,          getHeight() - gseq->dockHeight,
+                         getWidth(), getHeight() - gseq->dockHeight);
 
-        int x=10;
+        int x = 10;
         int x_before = 0;
 
         m_positions_in_dock.clear();
 
-        for (int n=0; n<getCurrentSequence()->dockSize; n++)
+        for (int n=0; n<docksize; n++)
         {
 
             m_positions_in_dock.push_back(x_before);
@@ -353,7 +357,7 @@ bool MainPane::do_render()
 
             AriaRender::images();
             AriaRender::color(0,0,0);
-            AriaRenderString& trackname = getCurrentSequence()->dock[n].getTrack()->getNameRenderer();
+            AriaRenderString& trackname = gseq->dock[n].getTrack()->getNameRenderer();
             trackname.bind();
             trackname.render(x+5, getHeight()-2);
             x += trackname.getWidth() + 10;
@@ -361,7 +365,7 @@ bool MainPane::do_render()
             AriaRender::primitives();
             AriaRender::color(1, 0.8, 0.7);
             AriaRender::lineWidth(2);
-            AriaRender::hollow_rect(x, getHeight()-1, x_before, getHeight()-17);
+            AriaRender::hollow_rect(x, getHeight() - 1, x_before, getHeight() - 17);
 
             m_positions_in_dock.push_back(x);
         }//next
@@ -369,7 +373,8 @@ bool MainPane::do_render()
     }
     else
     {
-        getCurrentSequence()->dockHeight=0;
+        // Hide the dock
+        gseq->dockHeight = 0;
     }
 
 
@@ -474,14 +479,16 @@ bool MainPane::isCtrlDown         () const { return wxGetKeyState(WXK_CONTROL); 
 
 void MainPane::mouseHeldDown()
 {
+    GraphicalSequence* gseq = getCurrentGraphicalSequence();
+    
     // check click is within track area
-    if (m_mouse_y_current < getHeight()-getCurrentSequence()->dockHeight and
-        m_mouse_y_current > MEASURE_BAR_Y+getCurrentSequence()->m_measure_bar->getMeasureBarHeight())
+    if (m_mouse_y_current < getHeight() - gseq->dockHeight and
+        m_mouse_y_current > MEASURE_BAR_Y + gseq->m_measure_bar->getMeasureBarHeight())
     {
 
         // dispatch event to sequence
-        getCurrentSequence()->mouseHeldDown(m_mouse_x_current, m_mouse_y_current,
-                                            m_mouse_x_initial, m_mouse_y_initial);
+        gseq->mouseHeldDown(m_mouse_x_current, m_mouse_y_current,
+                            m_mouse_x_initial, m_mouse_y_initial);
 
     }// end if not on dock
 }
@@ -490,14 +497,15 @@ void MainPane::mouseHeldDown()
 
 void MainPane::rightClick(wxMouseEvent& event)
 {
-    const int measureBarHeight = getCurrentSequence()->m_measure_bar->getMeasureBarHeight();
+    GraphicalSequence* gseq = getCurrentGraphicalSequence();
+    const int measureBarHeight = gseq->m_measure_bar->getMeasureBarHeight();
 
     Display::requestFocus();
 
     // check click is not on dock before passing event to tracks
     // dispatch event to all tracks (stop when either of them uses it)
-    if (event.GetY() < getHeight()-getCurrentSequence()->dockHeight and
-        event.GetY() > MEASURE_BAR_Y+measureBarHeight)
+    if (event.GetY() < getHeight() - gseq->dockHeight and
+        event.GetY() > MEASURE_BAR_Y + measureBarHeight)
     {
         for (int n=0; n<getCurrentSequence()->getTrackAmount(); n++)
         {
@@ -510,9 +518,9 @@ void MainPane::rightClick(wxMouseEvent& event)
     }
 
     // ---- click is in measure bar
-    if (event.GetY() > MEASURE_BAR_Y and event.GetY() < MEASURE_BAR_Y+measureBarHeight)
+    if (event.GetY() > MEASURE_BAR_Y and event.GetY() < MEASURE_BAR_Y + measureBarHeight)
     {
-        getCurrentSequence()->m_measure_bar->rightClick(event.GetX(), event.GetY() - MEASURE_BAR_Y);
+        gseq->m_measure_bar->rightClick(event.GetX(), event.GetY() - MEASURE_BAR_Y);
     }
 
     Display::render();
@@ -525,6 +533,8 @@ void MainPane::mouseDown(wxMouseEvent& event)
     invalidateMouseEvents = false;
     Display::requestFocus();
 
+    GraphicalSequence* gseq = getCurrentGraphicalSequence();
+    
     m_mouse_x_current.setValue(event.GetX(), WINDOW);
     m_mouse_y_current = event.GetY();
 
@@ -534,11 +544,11 @@ void MainPane::mouseDown(wxMouseEvent& event)
 
     m_is_mouse_down=true;
 
-    int measureBarHeight = getCurrentSequence()->m_measure_bar->getMeasureBarHeight();
+    int measureBarHeight = gseq->m_measure_bar->getMeasureBarHeight();
 
     // ----------------------------------- click is in track area ----------------------------
     // check click is within track area
-    if (m_mouse_y_current < getHeight() - getCurrentSequence()->dockHeight and
+    if (m_mouse_y_current < getHeight() - gseq->dockHeight and
         event.GetY() > MEASURE_BAR_Y+measureBarHeight)
     {
         click_area = CLICK_TRACK;
@@ -572,20 +582,20 @@ void MainPane::mouseDown(wxMouseEvent& event)
     }// end if not on dock
 
     // ----------------------------------- click is in dock ----------------------------
-    if (event.GetY() > getHeight()-getCurrentSequence()->dockHeight)
+    if (event.GetY() > getHeight() - gseq->dockHeight)
     {
         click_area = CLICK_DOCK;
-        ASSERT_E( (int)m_positions_in_dock.size()/2 ,==,(int)getCurrentSequence()->dock.size());
+        ASSERT_E( (int)m_positions_in_dock.size()/2 ,==,(int)gseq->dock.size());
 
         for (unsigned int n=0; n<m_positions_in_dock.size(); n+=2)
         {
 
             if (event.GetX()>m_positions_in_dock[n] and event.GetX()<m_positions_in_dock[n+1])
             {
-                if (getCurrentSequence()->maximize_track_mode)
+                if (gseq->maximize_track_mode)
                 {
                     const int track_amount = getCurrentSequence()->getTrackAmount();
-                    GraphicalTrack* undocked_track = getCurrentSequence()->dock.get(n/2);
+                    GraphicalTrack* undocked_track = gseq->dock.get(n/2);
                     Track* undocked = undocked_track->getTrack();
 
                     for (int i=0; i<track_amount; i++)
@@ -612,7 +622,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
                 }
                 else
                 {
-                    getCurrentSequence()->dock[n/2].dock(false);
+                    gseq->dock[n/2].dock(false);
                     DisplayFrame::updateVerticalScrollbar();
                 }
                 return;
@@ -657,8 +667,8 @@ void MainPane::mouseDown(wxMouseEvent& event)
 
         if (not (m_current_tick != -1 and (leftArrow or rightArrow))) // ignore when playing
         {
-            getCurrentSequence()->m_measure_bar->mouseDown(m_mouse_x_current.getRelativeTo(WINDOW),
-                                                  m_mouse_y_current - MEASURE_BAR_Y);
+            gseq->m_measure_bar->mouseDown(m_mouse_x_current.getRelativeTo(WINDOW),
+                                           m_mouse_y_current - MEASURE_BAR_Y);
         }
 
     }
@@ -667,7 +677,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
 
     // ask sequence if it is necessary at this point to be notified of mouse held down events.
     // if so, start a timer that will take of it.
-    if (getCurrentSequence()->areMouseHeldDownEventsNeeded()) m_mouse_down_timer->start();
+    if (gseq->areMouseHeldDownEventsNeeded()) m_mouse_down_timer->start();
 
 }
 
@@ -696,10 +706,11 @@ void MainPane::mouseMoved(wxMouseEvent& event)
             // ----------------------------------- click is in measure bar ----------------------------
             if (click_area == CLICK_MEASURE_BAR)
             {
-                getCurrentSequence()->m_measure_bar->mouseDrag(m_mouse_x_current.getRelativeTo(WINDOW),
-                                                      m_mouse_y_current - MEASURE_BAR_Y,
-                                                      m_mouse_x_initial.getRelativeTo(WINDOW),
-                                                      m_mouse_y_initial - MEASURE_BAR_Y);
+                GraphicalSequence* gseq = getCurrentGraphicalSequence();
+                gseq->m_measure_bar->mouseDrag(m_mouse_x_current.getRelativeTo(WINDOW),
+                                               m_mouse_y_current - MEASURE_BAR_Y,
+                                               m_mouse_x_initial.getRelativeTo(WINDOW),
+                                               m_mouse_y_initial - MEASURE_BAR_Y);
             }
         }
 
@@ -762,11 +773,12 @@ void MainPane::mouseReleased(wxMouseEvent& event)
     m_is_mouse_down = false;
     if (invalidateMouseEvents) return;
 
-
+    GraphicalSequence* gseq = getCurrentGraphicalSequence();
+    
     // if releasing after having dragged a track
     if (m_dragged_track_id != -1)
     {
-        getCurrentSequence()->reorderTracks();
+        gseq->reorderTracks();
         m_dragged_track_id = -1;
     }
 
@@ -791,10 +803,10 @@ void MainPane::mouseReleased(wxMouseEvent& event)
         // measure selection
         if (not (m_current_tick!=-1 and (leftArrow or rightArrow)) ) // ignore when playing
         {
-            getCurrentSequence()->m_measure_bar->mouseUp(m_mouse_x_current.getRelativeTo(WINDOW),
-                                                m_mouse_y_current - MEASURE_BAR_Y,
-                                                m_mouse_x_initial.getRelativeTo(WINDOW),
-                                                m_mouse_y_initial - MEASURE_BAR_Y);
+            gseq->m_measure_bar->mouseUp(m_mouse_x_current.getRelativeTo(WINDOW),
+                                         m_mouse_y_current - MEASURE_BAR_Y,
+                                         m_mouse_x_initial.getRelativeTo(WINDOW),
+                                         m_mouse_y_initial - MEASURE_BAR_Y);
         }
     }
     else if (click_area == CLICK_TRACK and m_click_in_track != -1)
@@ -1078,13 +1090,13 @@ void MainPane::keyPressed(wxKeyEvent& evt)
 void MainPane::mouseWheelMoved(wxMouseEvent& event)
 {
     const int value = event.GetWheelRotation() / event.GetWheelDelta();
+    GraphicalSequence* gseq = getCurrentGraphicalSequence();
     
 #if wxCHECK_VERSION(2,9,1)
     // horizontal scrolling
     if (event.GetWheelAxis() == 1)
     {
-        Sequence* sequence = getCurrentSequence();
-        sequence->setXScrollInPixels( sequence->getXScrollInPixels() - value*WHEEL_X_SPEED );
+        gseq->setXScrollInPixels( gseq->getXScrollInPixels() - value*WHEEL_X_SPEED );
         DisplayFrame::updateHorizontalScrollbar();
         return;
     }
@@ -1097,7 +1109,7 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
         {
             int newZoom;
             
-            newZoom = getCurrentSequence()->getZoomInPercent();
+            newZoom = gseq->getZoomInPercent();
             
             if (value > 0)
             {
@@ -1110,17 +1122,16 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
             
             if (newZoom > 1 and newZoom < 500)
             {
-                Sequence* seq = getCurrentSequence();
-                const int ticks = seq->getXScrollInMidiTicks();
+                const int ticks = gseq->getXScrollInMidiTicks();
                 
                 // FIXME: scrolling should not need to be manually changed when zoom is...
                 //        A possible solution is to store a midi tick scroll instead of the current pixel scroll
-                seq->setZoom(newZoom);
+                gseq->setZoom(newZoom);
                 
                 // update scrolling to new zoom
-                seq->setXScrollInMidiTicks( ticks );
+                gseq->setXScrollInMidiTicks( ticks );
                                 
-                getMainFrame()->updateTopBarAndScrollbarsForSequence(seq);
+                getMainFrame()->updateTopBarAndScrollbarsForSequence(gseq);
                 
                 Display::render();
             }
@@ -1131,11 +1142,11 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
     const int my = event.GetY();
     const int mx = event.GetX();
 
-    const int measureBarHeight = getCurrentSequence()->m_measure_bar->getMeasureBarHeight();
+    const int measureBarHeight = gseq->m_measure_bar->getMeasureBarHeight();
 
     // check pointer is within tracks area
-    if (my < getHeight()-getCurrentSequence()->dockHeight and
-        mx > MEASURE_BAR_Y+measureBarHeight)
+    if (my < getHeight() - gseq->dockHeight and
+        mx > MEASURE_BAR_Y + measureBarHeight)
     {
 
         // dispatch event to all tracks (stop when either of them uses it)
@@ -1195,6 +1206,8 @@ void MainPane::playbackRenderLoop()
         return;
     }
 
+    GraphicalSequence* gseq = getCurrentGraphicalSequence();
+    
     // only draw if it has changed
     if (lastTick != m_playback_start_tick + currentTick)
     {
@@ -1203,9 +1216,8 @@ void MainPane::playbackRenderLoop()
         if (m_scroll_to_playback_position)
         {
             m_scroll_to_playback_position=false;
-            const int x_scroll_in_pixels = (int)( (m_playback_start_tick + currentTick) *
-                getCurrentSequence()->getZoom() );
-            getCurrentSequence()->setXScrollInPixels(x_scroll_in_pixels);
+            const int x_scroll_in_pixels = (int)( (m_playback_start_tick + currentTick) * gseq->getZoom() );
+            gseq->setXScrollInPixels(x_scroll_in_pixels);
             DisplayFrame::updateHorizontalScrollbar( m_playback_start_tick + currentTick );
         }
 
@@ -1223,10 +1235,10 @@ void MainPane::playbackRenderLoop()
 
             if (current_pixel < XStart or current_measure >= last_visible_measure)
             {
-                int new_scroll_in_pixels = (m_playback_start_tick + currentTick) * getCurrentSequence()->getZoom();
+                int new_scroll_in_pixels = (m_playback_start_tick + currentTick) * gseq->getZoom();
                 if (new_scroll_in_pixels < 0) new_scroll_in_pixels=0;
                 // FIXME - we need a single call to update both data and widget
-                getCurrentSequence()->setXScrollInPixels(new_scroll_in_pixels);
+                gseq->setXScrollInPixels(new_scroll_in_pixels);
                 DisplayFrame::updateHorizontalScrollbar( m_playback_start_tick + currentTick );
             }
 
@@ -1288,6 +1300,6 @@ void MainPane::setCurrentTick(int currentTick)
 
 void MainPane::saveToFile(wxFileOutputStream& fileout)
 {
-    getCurrentSequence()->saveToFile(fileout);
+    getCurrentGraphicalSequence()->saveToFile(fileout);
 }
 

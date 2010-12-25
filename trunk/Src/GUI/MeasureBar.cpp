@@ -74,7 +74,7 @@ public:
                       << answer << std::endl;
         }
 
-        getCurrentSequence()->m_measure_bar->unselectAll();
+        getCurrentGraphicalSequence()->getMeasureBar()->unselectAll();
         
         getCurrentSequence()->action( new Action::RemoveMeasures(remove_from, remove_to) );
         getMeasureData()->selectTimeSig(0);
@@ -229,7 +229,8 @@ void MeasureBar::render(int measureBarY_arg)
 
     const bool measureLengthConstant = data->isMeasureLengthConstant();
 
-    const float x_initial = Editor::getEditorXStart() - getCurrentSequence()->getXScrollInPixels();
+    GraphicalSequence* gseq = getCurrentGraphicalSequence();
+    const float x_initial = Editor::getEditorXStart() - gseq->getXScrollInPixels();
     const float x_step = data->measureLengthInPixels();
 
     for (float n=x_initial; n<Display::getWidth();

@@ -149,7 +149,7 @@ void AddControllerSlide::perform()
     {
         int previous_value = m_value1;
         
-        addOneEvent( new ControllerEvent(track->getSequence(), m_controller, m_x1, previous_value), vector, 0 );
+        addOneEvent( new ControllerEvent(m_controller, m_x1, previous_value), vector, 0 );
         addedAmount++;
         
         for (int tick=0; tick<m_x2-m_x1; tick++)
@@ -161,7 +161,7 @@ void AddControllerSlide::perform()
             
             if (newvalue == previous_value) continue;
             
-            addOneEvent( new ControllerEvent(track->getSequence(), m_controller, m_x1+tick, newvalue), vector,
+            addOneEvent( new ControllerEvent(m_controller, m_x1+tick, newvalue), vector,
                          addedAmount );
             addedAmount++;
             previous_value = newvalue;
@@ -232,7 +232,7 @@ void AddControllerSlide::perform()
         
         if (addAfterAll)
         {
-            pushBackOneEvent(new ControllerEvent(track->getSequence(), m_controller, m_x1+tick, newvalue),
+            pushBackOneEvent(new ControllerEvent(m_controller, m_x1+tick, newvalue),
                              vector);
         }
         else
@@ -252,7 +252,7 @@ void AddControllerSlide::perform()
             }
             if (notAtEnd)
             {
-                addOneEvent(new ControllerEvent(track->getSequence(), m_controller, m_x1+tick, newvalue),
+                addOneEvent(new ControllerEvent(m_controller, m_x1+tick, newvalue),
                             vector,
                             event_i);
                 event_i++;

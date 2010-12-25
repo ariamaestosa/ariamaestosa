@@ -16,6 +16,7 @@
 
 #include "AriaFileWriter.h"
 
+#include "GUI/GraphicalSequence.h"
 #include "Midi/Sequence.h"
 
 #include <wx/string.h>
@@ -25,7 +26,7 @@
 namespace AriaMaestosa
 {
     
-    void saveAriaFile(Sequence* sequence, wxString filepath)
+    void saveAriaFile(GraphicalSequence* sequence, wxString filepath)
     {
         // do not override a file previously there. If a file was there, move it to a different name and do not delete
         // it until we know the new file was successfully saved
@@ -39,7 +40,7 @@ namespace AriaMaestosa
         if (overriding_file) wxRemoveFile( temp_name );
     }
     
-    bool loadAriaFile(Sequence* sequence, wxString filepath)
+    bool loadAriaFile(GraphicalSequence* sequence, wxString filepath)
     {
         wxCSConv cs( wxFONTENCODING_UTF8 );
         wxCharBuffer output = cs.cWC2MB(filepath.wc_str());

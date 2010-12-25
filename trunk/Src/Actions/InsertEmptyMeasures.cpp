@@ -156,9 +156,6 @@ namespace InsertMeasuresTest
             AriaMaestosa::setCurrentSequenceProvider(this);
             
             Track* t = new Track(m_seq);
-            // FIXME: creating the graphics object shouldn't be manual nor necessary for tests
-            t->graphics = new GraphicalTrack(t, m_seq);
-            t->graphics->createEditors();
             
             MeasureData* measures = m_seq->m_measure_data;
             const int beatLen = measures->beatLengthInTicks();
@@ -197,6 +194,11 @@ namespace InsertMeasuresTest
         virtual Sequence* getCurrentSequence()
         {
             return m_seq;
+        }
+        
+        virtual GraphicalSequence* getCurrentGraphicalSequence()
+        {
+            return NULL;
         }
         
         void verifyUndo()

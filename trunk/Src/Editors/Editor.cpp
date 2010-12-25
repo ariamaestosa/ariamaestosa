@@ -48,6 +48,7 @@ Editor::Editor(Track* track)
     m_track           = track;
     m_sequence        = track->getSequence();
     m_graphical_track = track->graphics;
+    m_gsequence       = track->graphics->getSequence();
 
     m_vertical_scrolling = false;
     m_click_on_scrollbar = false;
@@ -618,8 +619,7 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
         // scroll forward
         if (mousex_current.getRelativeTo(WINDOW) > getXEnd()-75)
         {
-            getCurrentSequence()->setXScrollInPixels(
-                                                     getCurrentSequence()->getXScrollInPixels()+
+            m_gsequence->setXScrollInPixels(m_gsequence->getXScrollInPixels()+
                                                      (mousex_current.getRelativeTo(WINDOW)-getXEnd()+75)/5 );
             DisplayFrame::updateHorizontalScrollbar();
             Display::render();
@@ -628,10 +628,10 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
         else if (mousex_current.getRelativeTo(WINDOW) < Editor::getEditorXStart()+20)
             // scroll backwards
         {
-            const int new_scroll_value = getCurrentSequence()->getXScrollInPixels() -
+            const int new_scroll_value = m_gsequence->getXScrollInPixels() -
                     (Editor::getEditorXStart() + 20 - mousex_current.getRelativeTo(WINDOW))/4;
             
-            getCurrentSequence()->setXScrollInPixels( new_scroll_value );
+            m_gsequence->setXScrollInPixels( new_scroll_value );
             DisplayFrame::updateHorizontalScrollbar();
             Display::render();
             return;

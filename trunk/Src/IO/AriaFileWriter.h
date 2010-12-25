@@ -23,13 +23,13 @@
 namespace AriaMaestosa
 {
     
-    class Sequence; // forward
+    class GraphicalSequence; // forward
     
     /** @ingroup io */
-    bool loadAriaFile(Sequence* sequence, wxString filepath);
+    bool loadAriaFile(GraphicalSequence* sequence, wxString filepath);
     
     /** @ingroup io */
-    void saveAriaFile(Sequence* sequence, wxString filepath);
+    void saveAriaFile(GraphicalSequence* sequence, wxString filepath);
     
 }
 

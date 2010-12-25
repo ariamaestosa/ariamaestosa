@@ -16,7 +16,7 @@
 
 #include "Editors/Editor.h"
 #include "Editors/RelativeXCoord.h"
-#include "Midi/Sequence.h"
+#include "GUI/GraphicalSequence.h"
 #include "AriaCore.h"
 
 /*
@@ -87,7 +87,7 @@ void RelativeXCoord::setValue(int i, RelativeType relativeTo)
 void RelativeXCoord::convertTo(RelativeType relativeTo)
 {
 
-    Sequence* sequence = getCurrentSequence();
+    GraphicalSequence* sequence = getCurrentGraphicalSequence();
 
     switch(relativeTo)
     {
@@ -157,7 +157,7 @@ void RelativeXCoord::convertTo(RelativeType relativeTo)
 int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
 {
 
-    Sequence* sequence = getCurrentSequence();
+    GraphicalSequence* sequence = getCurrentGraphicalSequence();
     switch(returnRelativeTo)
     {
         case EDITOR:
@@ -169,7 +169,7 @@ int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
                 }
                 else if (relativeToMidi != -1)
                 {
-                    relativeToEditor = ( int )( relativeToMidi * getCurrentSequence()->getZoom() ) - getCurrentSequence()->getXScrollInPixels();
+                    relativeToEditor = ( int )( relativeToMidi * sequence->getZoom() ) - sequence->getXScrollInPixels();
                 }
                 else
                 {

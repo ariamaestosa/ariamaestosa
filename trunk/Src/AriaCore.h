@@ -49,6 +49,7 @@ namespace AriaMaestosa
     class KeyPicker;
     class DrumPicker;
     class InstrumentPicker;
+    class GraphicalSequence;
     
     extern bool okToLog;
     
@@ -56,12 +57,14 @@ namespace AriaMaestosa
     {
     public:
         virtual Sequence* getCurrentSequence() = 0;
+        virtual GraphicalSequence* getCurrentGraphicalSequence() = 0;
         virtual ~ICurrentSequenceProvider() {}
     };
     
-    MainFrame*   getMainFrame();
-    MeasureData* getMeasureData();
-    Sequence*    getCurrentSequence();
+    MainFrame*         getMainFrame();
+    MeasureData*       getMeasureData();
+    Sequence*          getCurrentSequence();
+    GraphicalSequence* getCurrentGraphicalSequence();
     
     void         setCurrentSequenceProvider(ICurrentSequenceProvider* provider);
     

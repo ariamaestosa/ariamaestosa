@@ -50,27 +50,16 @@ using namespace AriaMaestosa;
 Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener* actionStackListener,
                    ISequenceDataListener* sequenceDataListener, bool addDefautTrack)
 {
-    reordering_newPosition  = -1;
     beatResolution          = 960;
-    dockSize                = 0;
-    dockHeight              = 0;
     currentTrack            = 0;
     m_tempo                 = 120;
-    m_x_scroll_in_pixels    = 0;
-    y_scroll                = 0;
-    reorderYScroll          = 0;
     importing               = false;
-    maximize_track_mode     = false;
-    x_scroll_upon_copying   = -1;
     follow_playback         = Core::getPrefsLongValue("followPlayback") != 0;
     m_playback_listener     = playbackListener;
     m_action_stack_listener = actionStackListener;
     m_seq_data_listener     = sequenceDataListener;
     m_play_with_metronome   = false;
     
-    m_zoom         = (128.0/(beatResolution*4));
-    m_zoom_percent = 100;
-
     sequenceFileName.set(wxString(_("Untitled")));
     sequenceFileName.setMaxWidth(155); // FIXME - won't work if lots of sequences are open (tabs will begin to get smaller)
     
@@ -84,7 +73,6 @@ Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener
     channelManagement = CHANNEL_AUTO;
     
     m_measure_data = new MeasureData(DEFAULT_SONG_LENGTH);
-    m_measure_bar = new MeasureBar(m_measure_data);
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -107,15 +95,15 @@ Sequence::~Sequence()
 
 wxString Sequence::suggestTitle() const
 {
-    if (!getInternalName().IsEmpty())
+    if (not getInternalName().IsEmpty())
     {
         return getInternalName();
     }
-    else if (!sequenceFileName.IsEmpty())
+    else if (not sequenceFileName.IsEmpty())
     {
         return sequenceFileName;
     }
-    else if (!filepath.IsEmpty())
+    else if (not filepath.IsEmpty())
     {
         return extract_filename(filepath).BeforeLast('.');
     }
@@ -129,15 +117,15 @@ wxString Sequence::suggestTitle() const
 
 wxString Sequence::suggestFileName() const
 {
-    if (!filepath.IsEmpty())
+    if (not filepath.IsEmpty())
     {
         return extract_filename(filepath).BeforeLast('.');
     }
-    else if (!getInternalName().IsEmpty())
+    else if (not getInternalName().IsEmpty())
     {
         return getInternalName();
     }
-    else if (!sequenceFileName.IsEmpty())
+    else if (not sequenceFileName.IsEmpty())
     {
         return sequenceFileName;
     }
@@ -168,52 +156,6 @@ void Sequence::setInternalName(wxString name)
 }
 
 // ----------------------------------------------------------------------------------------------------------
-// ------------------------------------------------ Scrolling -----------------------------------------------
-// ----------------------------------------------------------------------------------------------------------
-
-#if 0
-#pragma mark -
-#pragma mark Scrolling
-#endif
-
-
-int Sequence::getXScrollInMidiTicks() const
-{
-    return (int)round(m_x_scroll_in_pixels / m_zoom);
-}
-
-
-// ----------------------------------------------------------------------------------------------------------
-
-void Sequence::setXScrollInMidiTicks(int value)
-{
-    m_x_scroll_in_pixels = value * m_zoom;
-    if (m_x_scroll_in_pixels < 0.0f) m_x_scroll_in_pixels = 0.0f;
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-void Sequence::setXScrollInPixels(int value)
-{
-    m_x_scroll_in_pixels = value;
-
-    const int editor_size = Display::getWidth()-100;
-    const int total_size  = getMeasureData()->getTotalPixelAmount();
-
-    if (m_x_scroll_in_pixels < 0) m_x_scroll_in_pixels = 0;
-    if (m_x_scroll_in_pixels >= total_size-editor_size) m_x_scroll_in_pixels = total_size-editor_size - 1;
-
-    if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-void Sequence::setYScroll(int value)
-{
-    y_scroll = value;
-}
-
-// ----------------------------------------------------------------------------------------------------------
 // --------------------------------------------- Getters/Setters --------------------------------------------
 // ----------------------------------------------------------------------------------------------------------
 
@@ -221,12 +163,6 @@ void Sequence::setYScroll(int value)
 #pragma mark -
 #pragma mark Getters/Setters/Actions
 #endif
-
-void Sequence::setZoom(int zoom)
-{
-    m_zoom = (zoom/100.0) * 128.0 / ((float)getMeasureData()->beatLengthInTicks() * 4);
-    m_zoom_percent = zoom;
-}
 
 // ----------------------------------------------------------------------------------------------------------
 
@@ -240,23 +176,6 @@ void Sequence::setChannelManagementType(ChannelManagementType type)
 void Sequence::setTicksPerBeat(int res)
 {
     beatResolution = res;
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-int Sequence::getTotalHeight() const
-{
-    
-    int totalHeight=0;
-    
-    for (int n=0; n<tracks.size(); n++)
-    {
-        totalHeight += tracks[n].graphics->getTotalHeight() + 10;
-    }
-    
-    if (getMeasureData()->isExpandedMode()) totalHeight += 20;
-    
-    return totalHeight;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -454,153 +373,6 @@ bool Sequence::somethingToUndo()
     return undoStack.size() > 0;
 }
 
-// ----------------------------------------------------------------------------------------------------------
-// ------------------------------------------------ Render --------------------------------------------------
-// ----------------------------------------------------------------------------------------------------------
-#if 0
-#pragma mark -
-#pragma mark Render
-#endif
-// FIXME - this class shouldn't do both rendering and data handling
-void Sequence::renderTracks(int currentTick, RelativeXCoord mousex, int mousey, int mousey_initial, int from_y)
-{
-    const int draggedTrack = Display::getDraggedTrackID();
-
-    // draw tracks normally
-    if (draggedTrack == -1)
-    {
-        reorderYScroll=0;
-
-        int y = from_y - y_scroll;
-        const int trackAmount = tracks.size();
-        for (int n=0; n<trackAmount; n++)
-        {
-            tracks[n].setId(n);
-            y = tracks[n].graphics->render(y, currentTick, n==currentTrack);
-        }
-
-    }
-    // reordering
-    else
-    {
-        reordering_newPosition = draggedTrack;
-
-        // draw tracks before current
-        int first_y = mousey_initial - reorderYScroll;
-
-        for (int tracknum=draggedTrack-1; tracknum>=0; tracknum--)
-        {
-            if (tracks[tracknum].graphics->isDocked()) continue;
-
-            first_y =  mousey_initial - (draggedTrack-tracknum)*50 - reorderYScroll;
-            tracks[tracknum].graphics->renderHeader(0, first_y, true);
-            if (mousey < mousey_initial - (draggedTrack-tracknum)*50+25 - reorderYScroll) reordering_newPosition=tracknum;
-        }
-
-        // draw tracks after current
-        int last_y = mousey_initial - reorderYScroll;
-
-        for (int tracknum=draggedTrack+1; tracknum<tracks.size(); tracknum++)
-        {
-            if (tracks[tracknum].graphics->isDocked()) continue;
-
-            last_y = mousey_initial + (tracknum-draggedTrack)*50 - reorderYScroll;
-            tracks[tracknum].graphics->renderHeader(0, last_y, true);
-            if (mousey > mousey_initial + (tracknum-draggedTrack)*50+25 - reorderYScroll) reordering_newPosition=tracknum+1;
-        }
-
-        // scroll up or down if mouse goes to the edges
-        if (mousey < 100)
-        {
-            if (mousey > first_y)
-                reorderYScroll -= (100-mousey)*4/100;
-        }
-
-        if (mousey > Display::getHeight()-100)
-        {
-            if (mousey < last_y+50)
-                reorderYScroll += (mousey - Display::getHeight()+100)*4/100;
-        }
-
-        // draw track the user is dragging
-        tracks[draggedTrack].graphics->renderHeader(0, mousey, true, true);
-
-        const int arrow_y = (reordering_newPosition > draggedTrack) ?
-            mousey_initial + (reordering_newPosition - draggedTrack)*50 - 5 - reorderYScroll :
-            mousey_initial - (draggedTrack - reordering_newPosition)*50 - 5 - reorderYScroll;
-
-        AriaRender::primitives();
-        AriaRender::color(1,0,0);
-        AriaRender::line(26, arrow_y, 10, arrow_y);
-        AriaRender::triangle( 35, arrow_y,
-                              25, arrow_y - 5,
-                              25, arrow_y + 5);
-    }//end if
-
-}
-
-
-// ----------------------------------------------------------------------------------------------------------
-// ------------------------------------------------ Mouse Rvents --------------------------------------------
-// ----------------------------------------------------------------------------------------------------------
-
-#if 0
-#pragma mark -
-#pragma mark Mouse Events
-#endif
-
-bool Sequence::areMouseHeldDownEventsNeeded()
-{
-    return true;
-
-    // FIXME - clarify status of this. fix or remove.
-
-    /*
-    const int draggedTrack = Display::getDraggedTrackID();
-
-    // we're reordering tracks, it is necessary. return true.
-    if (draggedTrack!=-1) return true;
-
-    // ask all editors if they need such events at this point.
-    const int trackAmount = tracks.size();
-    for(int n=0; n<trackAmount; n++)
-    {
-        // there's one editor that wants them, so return true.
-        if (tracks[n].graphics->getCurrentEditor()->areMouseHeldDownEventsNeeded()) return true;
-    }//next
-
-    // we're not reordering and no editor requested such events, so return false
-    return false;
-     */
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-void Sequence::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
-                             RelativeXCoord mousex_initial, int mousey_initial)
-{
-    // FIXME - dragging tracks has nothing to do in the display
-    const int draggedTrack = Display::getDraggedTrackID();
-
-    // if reordering tracks
-    if (draggedTrack != -1)
-    {
-        // reordering preview is done while rendering, so calling 'render' will update reordering onscreen.
-        // FIXME: hackish
-        if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
-        return;
-    }
-
-    // dispatch event to all tracks
-    const int trackAmount = tracks.size();
-    for (int n=0; n<trackAmount; n++)
-    {
-        tracks[n].graphics->getCurrentEditor()->mouseHeldDown(mousex_current, mousey_current,
-                                                              mousex_initial, mousey_initial);
-    }//next
-
-}
-
 
 // ----------------------------------------------------------------------------------------------------------
 // ----------------------------------------------- Tracks ---------------------------------------------------
@@ -615,10 +387,8 @@ Track* Sequence::addTrack()
     // FIXME: this track creationg processus is duplicated in many areas.
     // Furthermore, it's dubious that the Sequence track should handle graphical tracks.
     Track* result = new Track(this);
-    result->graphics = new GraphicalTrack(result, this);
-    result->graphics->createEditors();
     
-    if (currentTrack>=0 and currentTrack<tracks.size())
+    if (currentTrack >= 0 and currentTrack < tracks.size())
     {
         // add new track below active one
         tracks.add(result, currentTrack+1);
@@ -681,63 +451,9 @@ void Sequence::deleteTrack(Track* track)
 
 // ----------------------------------------------------------------------------------------------------------
 
-void Sequence::reorderTracks()
-{
-    const int draggedTrack = Display::getDraggedTrackID();
-
-    if (reordering_newPosition == draggedTrack) return;
-    if (reordering_newPosition == -1)           return;
-
-    Track* dragged_track = &tracks[draggedTrack];
-
-    // if we remove an element now, the IDs in the vector will be modified and reordering_newPosition may not be valid anymore.
-    // so we just 'mark' the element we don't want anymore, and it will be removed just after adding the new item.
-    tracks.markToBeRemoved(draggedTrack);
-    tracks.add(dragged_track, reordering_newPosition);
-    tracks.removeMarked();
-
-    currentTrack = reordering_newPosition-1;
-
-    if (not (currentTrack >= 0))            currentTrack=0;
-    if (not (currentTrack < tracks.size())) currentTrack=0;
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-Track* Sequence::getCurrentTrack()
-{
-    return &tracks[currentTrack];
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-int Sequence::getTrackAmount() const
-{
-    return tracks.size();
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-int Sequence::getCurrentTrackID() const
-{
-    return currentTrack;
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
 void Sequence::setCurrentTrackID(int ID)
 {
     currentTrack = ID;
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-Track* Sequence::getTrack(int ID)
-{
-    ASSERT_E(ID,>=,0);
-    ASSERT_E(ID,<,tracks.size());
-
-    return &tracks[ID];
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -754,40 +470,10 @@ void Sequence::setCurrentTrack(Track* track)
         }
     }
 
-    std::cout << "Error: void Sequence::setCurrentTrack(Track* track) couldn't find any matching track" << std::endl;
-
+    std::cerr << "Error: void Sequence::setCurrentTrack(Track* track) couldn't find any matching track" << std::endl;
+    assert(false);
 }
 
-// ----------------------------------------------------------------------------------------------------------
-
-// FIXME: I doubt this goes here, Sequence is a data class, the dock is display-related
-void Sequence::addToDock(GraphicalTrack* track)
-{
-    dock.push_back(track);
-    dockSize = dock.size();
-
-    currentTrack = 0;
-
-    DisplayFrame::updateVerticalScrollbar();
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-void Sequence::removeFromDock(GraphicalTrack* track)
-{
-
-    for (int n=0; n<dock.size(); n++)
-    {
-        if (&dock[n] == track)
-        {
-            dock.remove( n );
-            dockSize = dock.size();
-            return;
-        }
-    }
-    DisplayFrame::updateVerticalScrollbar();
-
-}
 
 // ----------------------------------------------------------------------------------------------------------
 // ----------------------------------------------- Playback -------------------------------------------------
@@ -851,7 +537,6 @@ void Sequence::spacePressed()
 void Sequence::copy()
 {
     tracks[currentTrack].copy();
-    x_scroll_upon_copying = m_x_scroll_in_pixels;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -902,23 +587,6 @@ void Sequence::selectNone()
 #pragma mark I/O
 #endif
 
-void Sequence::prepareEmptyTracksForLoading(int amount)
-{
-    tracks.clearAndDeleteAll();
-    for (int n=0; n<amount; n++)
-    {
-        // FIXME: this track creationg processus is duplicated in many areas.
-        // Furthermore, it's dubious that the Sequence track should handle graphical tracks.
-        Track* newTrack = new Track(this);
-        newTrack->graphics = new GraphicalTrack(newTrack, this);
-        newTrack->graphics->createEditors();
-        
-        tracks.push_back( newTrack );
-    }
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
 void Sequence::saveToFile(wxFileOutputStream& fileout)
 {
 
@@ -935,10 +603,10 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
               wxT("\" metronome=\"")         + (m_play_with_metronome ? wxT("true") : wxT("false")) +
               wxT("\">\n\n"), fileout );
 
-    writeData(wxT("<view xscroll=\"") + to_wxString(m_x_scroll_in_pixels) +
-              wxT("\" yscroll=\"")    + to_wxString(y_scroll) +
-              wxT("\" zoom=\"")       + to_wxString(m_zoom_percent) +
-              wxT("\"/>\n"), fileout );
+    //writeData(wxT("<view xscroll=\"") + to_wxString(m_x_scroll_in_pixels) +
+    //          wxT("\" yscroll=\"")    + to_wxString(y_scroll) +
+    //          wxT("\" zoom=\"")       + to_wxString(m_zoom_percent) +
+    //          wxT("\"/>\n"), fileout );
 
     m_measure_data->saveToFile(fileout);
 
@@ -1099,66 +767,6 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                     }
                 }
 
-                // ---------- view ------
-                else if (strcmp("view", xml->getNodeName()) == 0)
-                {
-
-                    const char* xscroll_c = xml->getAttributeValue("xscroll");
-                    if (xscroll_c != NULL)
-                    {
-                        m_x_scroll_in_pixels = atoi( xscroll_c );
-                    }
-                    else
-                    {
-                        m_x_scroll_in_pixels = 0;
-                        std::cerr << "Missing info from file: x scroll" << std::endl;
-                    }
-
-                    if (m_x_scroll_in_pixels < 0)
-                    {
-                        std::cerr << "Wrong x_scroll_in_pixels: " << m_x_scroll_in_pixels << std::endl;
-                        m_x_scroll_in_pixels = 0;
-                    }
-
-                    const char* yscroll_c = xml->getAttributeValue("yscroll");
-                    if ( yscroll_c != NULL )
-                    {
-                        y_scroll = atoi( yscroll_c );
-                    }
-                    else
-                    {
-                        y_scroll = 0;
-                        std::cerr << "Missing info from file: y scroll" << std::endl;
-                    }
-
-                    if (y_scroll < 0)
-                    {
-                        std::cerr << "Wrong y_scroll: " << y_scroll << std::endl;
-                        y_scroll = 0;
-                    }
-
-                    const char* zoom_c = xml->getAttributeValue("zoom");
-                    if (zoom_c != NULL)
-                    {
-                        int zoom_i = atoi(zoom_c);
-                        if (zoom_i > 0 and zoom_i<501) setZoom( zoom_i );
-                        else return false;
-                    }
-                    else
-                    {
-                        setZoom( 100 );
-                        std::cerr << "Missing info from file: zoom" << std::endl;
-                    }
-
-                    if (m_zoom <= 0)
-                    {
-                        std::cerr << "Fatal Error: Wrong Zoom: " << m_zoom 
-                                  << "(char* = " << zoom_c << ") " << std::endl;
-                        setZoom( 100 );
-                    }
-
-                }
-
                 // ---------- measure ------
                 else if (strcmp("measure", xml->getNodeName()) == 0)
                 {
@@ -1177,8 +785,6 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                     // FIXME: this track creationg processus is duplicated in many areas.
                     // Furthermore, it's dubious that the Sequence track should handle graphical tracks.
                     Track* newTrack = new Track(this);
-                    newTrack->graphics = new GraphicalTrack(newTrack, this);
-                    newTrack->graphics->createEditors();
                     tracks.push_back( newTrack );
                     
                     
@@ -1224,7 +830,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                         continue;
                     }
 
-                    tempoEvents.push_back( new ControllerEvent(this, 201, tempo_tick, tempo_value) );
+                    tempoEvents.push_back( new ControllerEvent(201, tempo_tick, tempo_value) );
 
                 }
 
@@ -1260,7 +866,6 @@ over:
     clearUndoStack();
 
     importing = false;
-    DisplayFrame::updateHorizontalScrollbar( m_x_scroll_in_pixels );
     if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
 
     return true;

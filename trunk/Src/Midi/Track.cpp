@@ -289,7 +289,7 @@ void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
 void Track::addControlEvent_import(const int x, const int value, const int controller)
 {
     ASSERT(m_sequence->importing); // not to be used when not importing
-    m_control_events.push_back(new ControllerEvent(m_sequence, controller, x, value) );
+    m_control_events.push_back(new ControllerEvent(controller, x, value) );
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -475,7 +475,7 @@ void Track::mergeTrackIn(Track* track)
     const int controllerAmount = track->m_control_events.size();
     for (int n=0; n<controllerAmount; n++)
     {
-        addControlEvent( new ControllerEvent(m_sequence, track->m_control_events[n].getController(),
+        addControlEvent( new ControllerEvent(track->m_control_events[n].getController(),
                                              track->m_control_events[n].getTick(),
                                              track->m_control_events[n].getValue()) );
 
@@ -512,26 +512,6 @@ Note* Track::getNote(const int id)
 {
     ASSERT_E(id,<,m_notes.size());
     return m_notes.get(id);
-}
-
-// -------------------------------------------------------------------------------------------------------
-
-int Track::getNoteStartInPixels(const int id) const
-{
-    ASSERT_E(id,>=,0);
-    ASSERT_E(id,<,m_notes.size());
-
-    return (int)round( m_notes[id].startTick * m_sequence->getZoom() );
-}
-
-// -------------------------------------------------------------------------------------------------------
-
-int Track::getNoteEndInPixels(const int id) const
-{
-    ASSERT_E(id,>=,0);
-    ASSERT_E(id,<,m_notes.size());
-
-    return (int)round( m_notes[id].endTick * m_sequence->getZoom() );
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -1820,6 +1800,10 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                 }
                 else if (strcmp("editor", xml->getNodeName()) == 0)
                 {
+                    // FIXME: move creaitng graphics out of there...
+                    graphics = new GraphicalTrack(this, getCurrentGraphicalSequence());
+                    graphics->createEditors();
+                    
                     if (not graphics->readFromFile(xml)) return false;
                 }
                 else if (strcmp("magneticgrid", xml->getNodeName()) == 0)
@@ -1985,7 +1969,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                 else if (strcmp("controlevent", xml->getNodeName()) == 0)
                 {
 
-                    ControllerEvent* temp = new ControllerEvent(m_sequence, 0, 0, 0);
+                    ControllerEvent* temp = new ControllerEvent(0, 0, 0);
                     if (not temp->readFromFile(xml))
                     {
                         // thre was an error when trying to load control event

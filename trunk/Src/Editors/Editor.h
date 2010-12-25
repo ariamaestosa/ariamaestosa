@@ -36,6 +36,7 @@ namespace AriaMaestosa
     class GraphicalTrack;
     class Note;
     class InstrumentChoice;
+    class GraphicalSequence;
     
     enum NoteSearchResult
     {
@@ -208,9 +209,10 @@ namespace AriaMaestosa
          */
         void setYStep(const int height);
         
-        Track*          m_track;
-        Sequence*       m_sequence;
-        GraphicalTrack* m_graphical_track;
+        Track*             m_track;
+        Sequence*          m_sequence;
+        GraphicalSequence* m_gsequence;
+        GraphicalTrack*    m_graphical_track;
         
     public:
         LEAK_CHECK();

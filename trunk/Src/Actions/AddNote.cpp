@@ -105,9 +105,6 @@ namespace TestAddNote
         AriaMaestosa::setCurrentSequenceProvider(&provider);
         
         Track* t = new Track(seq);
-        // FIXME: creating the graphics object shouldn't be manual nor necessary
-        t->graphics = new GraphicalTrack(t, seq);
-        t->graphics->createEditors();
         
         // make a factory sequence to work from
         seq->importing = true;
@@ -175,10 +172,7 @@ namespace TestAddNote
         AriaMaestosa::setCurrentSequenceProvider(&provider);
         
         Track* t = new Track(seq);
-        // FIXME: creating the graphics object shouldn't be manual nor necessary
-        t->graphics = new GraphicalTrack(t, seq);
-        t->graphics->createEditors();
-        
+
         // make a factory sequence to work from
         seq->importing = true;
         t->addNote_import(100 /* pitch */, 0   /* start */, 100 /* end */, 127 /* volume */, -1);

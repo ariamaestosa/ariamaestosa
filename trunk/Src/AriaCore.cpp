@@ -123,6 +123,11 @@ namespace AriaMaestosa
         return g_provider->getCurrentSequence();
     }
     
+    GraphicalSequence* getCurrentGraphicalSequence()
+    {
+        return g_provider->getCurrentGraphicalSequence();
+    }
+    
     bool isPlaybackMode()
     {
         return getMainFrame()->m_playback_mode;
