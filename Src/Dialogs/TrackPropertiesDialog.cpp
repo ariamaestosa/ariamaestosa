@@ -116,6 +116,8 @@ namespace AriaMaestosa
             m_ignore_events = true;
             m_parent = parent;
             
+            Sequence* seq = parent->getSequence();
+            
             modalid = -1;
             
             sizer = new wxBoxSizer(wxVERTICAL);
@@ -132,10 +134,10 @@ namespace AriaMaestosa
             // ------ track background -----
             wxStaticBoxSizer* bg_subsizer = new wxStaticBoxSizer(wxVERTICAL, properties_panel, _("Track Background"));
             
-            const int trackAmount = getCurrentSequence()->getTrackAmount();
+            const int trackAmount = seq->getTrackAmount();
             for (int n=0; n<trackAmount; n++)
             {
-                Track* track = getCurrentSequence()->getTrack(n);
+                Track* track = seq->getTrack(n);
                 bool enabled = true;
                 if (track == parent) enabled = false; // can't be background of itself
                 
@@ -224,7 +226,7 @@ namespace AriaMaestosa
             else wxBell();
             
             const int amount = m_choice_panels.size();
-            Sequence* seq = getCurrentSequence();
+            Sequence* seq = m_parent->getSequence();
             
             editor->clearBackgroundTracks();
             

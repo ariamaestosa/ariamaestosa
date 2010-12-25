@@ -25,6 +25,7 @@
 #include "Editors/RelativeXCoord.h"
 #include "Editors/DrumEditor.h"
 #include "Editors/ControllerEditor.h"
+#include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
 #include "IO/IOUtils.h"
 #include "Midi/Track.h"
@@ -113,7 +114,7 @@ Track::~Track()
 void Track::notifyOthersIWillBeRemoved()
 {
     // notify other tracks
-    Sequence* seq = getCurrentSequence();
+    Sequence* seq = m_sequence;
     const int trackAmount = seq->getTrackAmount();
     for (int n=0; n<trackAmount; n++)
     {
@@ -222,7 +223,7 @@ bool Track::addNote(Note* note, bool check_for_overlapping_notes)
         }//endif
     }//next
 
-    if (!noteAdded)
+    if (not noteAdded)
     {
         // add note at the end, or if the track does not yet contain any note
         // (both cases in which the for loop either won't find a location for the note, or won't iterate at all)
@@ -732,7 +733,7 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
     if (id == ALL_NOTES)
     {
         // if this is a 'select none' command, unselect any selected measures in the top bar
-        if (not selected) getMeasureData()->unselect();
+        if (not selected) graphics->getSequence()->getMeasureBar()->unselect();
 
         if (graphics->getEditorMode() == CONTROLLER)
         { 
@@ -842,7 +843,8 @@ void Track::copy()
     }//next
 
     // remove all empty measures before notes, so that they appear in the current measure when pasting
-    const int lastMeasureStart = getMeasureData()->firstTickInMeasure( getMeasureData()->measureAtTick(tickOfFirstSelectedNote) );
+    MeasureData* md = m_sequence->getMeasureData();
+    const int lastMeasureStart = md->firstTickInMeasure( md->measureAtTick(tickOfFirstSelectedNote) );
 
     const int clipboard_size = Clipboard::getSize();
     for (int n=0; n<clipboard_size; n++)
@@ -1287,7 +1289,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     }
     else
     {
-        firstNoteStartTick = getMeasureData()->firstTickInMeasure(firstMeasure);
+        firstNoteStartTick = m_sequence->getMeasureData()->firstTickInMeasure(firstMeasure);
         startTick = firstNoteStartTick;
     }
 
@@ -1801,7 +1803,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                 else if (strcmp("editor", xml->getNodeName()) == 0)
                 {
                     // FIXME: move creating graphics out of there...
-                    graphics = new GraphicalTrack(this, getCurrentGraphicalSequence());
+                    graphics = new GraphicalTrack(this, graphics->getSequence());
                     graphics->createEditors();
                     
                     if (not graphics->readFromFile(xml)) return false;

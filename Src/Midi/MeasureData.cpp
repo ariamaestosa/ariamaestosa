@@ -16,19 +16,11 @@
 
 #include "Utils.h"
 
-//#include "Actions/EditAction.h"
-//#include "Actions/InsertEmptyMeasures.h"
-//#include "Actions/RemoveMeasures.h"
-
-//#include "AriaCore.h"
-//#include "Editors/Editor.h"
-#include "GUI/MeasureBar.h"
 #include "GUI/MainFrame.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 #include "Midi/TimeSigChange.h"
-//#include "Midi/Players/PlatformMidiManager.h"
 #include "Pickers/TimeSigPicker.h"
 
 #include <iostream>
@@ -40,13 +32,14 @@ using namespace AriaMaestosa;
 
 // ----------------------------------------------------------------------------------------------------------
 
-MeasureData::MeasureData(int measureAmount)
+MeasureData::MeasureData(Sequence* seq, int measureAmount)
 {
     m_something_selected = false;
     m_selected_time_sig  = 0;
     m_measure_amount     = measureAmount;
     m_first_measure      = 0;
     m_expanded_mode      = false;
+    m_sequence           = seq;
     
     m_time_sig_changes.push_back( new TimeSigChange(0,4,4) );
     m_time_sig_changes[0].setTick(0);
@@ -114,23 +107,15 @@ void MeasureData::setFirstMeasure(int firstMeasureID)
 
 // ----------------------------------------------------------------------------------------------------------
 
-float MeasureData::measureLengthInPixels(int measure)
-{
-    if (measure==-1) measure=0; // no parameter passed, use measure 0 settings
-    return (float)measureLengthInTicks(measure) * (float)getCurrentGraphicalSequence()->getZoom();
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
 int MeasureData::measureLengthInTicks(int measure)
 {
-    if (measure==-1) measure=0; // no parameter passed, use measure 0 settings
-    Sequence* sequence = getCurrentSequence();
+    if (measure == -1) measure = 0; // no parameter passed, use measure 0 settings
 
-    const int num = getTimeSigNumerator(measure), denom=getTimeSigDenominator(measure);
+    const int num   = getTimeSigNumerator(measure);
+    const int denom = getTimeSigDenominator(measure);
 
     return (int)round(
-                 sequence->ticksPerBeat() * num * (4.0/(float)denom)
+                 m_sequence->ticksPerBeat() * num * (4.0/(float)denom)
                  );
 }
 
@@ -140,36 +125,7 @@ int MeasureData::measureLengthInTicks(int measure)
 // (i'm not sure if this is used at all or very much)
 int MeasureData::defaultMeasureLengthInTicks()
 {
-    Sequence* sequence = getCurrentSequence();
-
-    return (int)( sequence->ticksPerBeat() * getTimeSigNumerator(0) * (4.0/getTimeSigDenominator(0)) );
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-// right now, it's just the first measure that is considered "default". This may need to be reviewed.
-// (i'm not sure if this is used at all or very much)
-float MeasureData::defaultMeasureLengthInPixels()
-{
-    GraphicalSequence* sequence = getCurrentGraphicalSequence();
-    return (float)measureLengthInTicks(0) * (float)sequence->getZoom();
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-// FIXME- large bits of this belong to the GUI
-void MeasureData::unselect()
-{
-    if (not m_something_selected) return;
-    m_something_selected = false;
-
-    const int measureAmount = m_measure_info.size();
-    for (int n=0; n<measureAmount; n++)
-    {
-        m_measure_info[n].selected = false;
-    }
-    
-    getCurrentGraphicalSequence()->getMeasureBar()->lastMeasureInDrag = -1;
+    return (int)( m_sequence->ticksPerBeat() * getTimeSigNumerator(0) * (4.0/getTimeSigDenominator(0)) );
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -179,37 +135,6 @@ void MeasureData::unselect()
 #pragma mark Find Measure From Location
 #endif
 
-int MeasureData::measureAtPixel(int pixel)
-{
-    const float x1 = 90 - getCurrentGraphicalSequence()->getXScrollInPixels();
-    pixel -= (int)x1;
-
-    if (isMeasureLengthConstant())
-    {
-        if (pixel < 0) pixel = 0;
-        // length of a measure
-        const float xstep = measureLengthInPixels();
-
-        return (int)( pixel/xstep );
-    }
-    else
-    {
-
-        if (pixel < 0) return 0;
-
-        const int amount = m_measure_info.size();
-        for (int n=0; n<amount; n++)
-        {
-            if (n==amount-1) return amount-1; // we hit end, return the last
-            if ( m_measure_info[n].pixel <= pixel and m_measure_info[n+1].pixel > pixel ) return n;
-        }
-
-        return 0;
-    }
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
 int MeasureData::measureAtTick(int tick)
 {
     if (isMeasureLengthConstant())
@@ -218,7 +143,7 @@ int MeasureData::measureAtTick(int tick)
 
         const int answer = (int)( tick / step );
         
-        if (not getCurrentSequence()->importing)
+        if (not m_sequence->importing)
         {
             // verify that we're within song bounds. except if importing, since the song length
             // might not have been set yet.
@@ -231,7 +156,7 @@ int MeasureData::measureAtTick(int tick)
     else
     {
         if (tick < 0) tick = 0;
-        if (not getCurrentSequence()->importing)
+        if (not m_sequence->importing)
         {
             // verify that we're within song bounds. except if importing, since the song length
             // might not have been set yet.
@@ -246,7 +171,7 @@ int MeasureData::measureAtTick(int tick)
         }
 
         // did not find this tick in our current measure set
-        if (getCurrentSequence()->importing)
+        if (m_sequence->importing)
         {
             // if we're currently importing, extrapolate beyond the current song end since we
             // might be trying to determine needed song length (FIXME: this should not read the
@@ -256,7 +181,7 @@ int MeasureData::measureAtTick(int tick)
             
             const int answer =  (int)(
                                       m_time_sig_changes[ last_id ].getMeasure() +
-                                      tick / ( getCurrentSequence()->ticksPerBeat() *
+                                      tick / ( m_sequence->ticksPerBeat() *
                                               m_time_sig_changes[ last_id ].getNum() *
                                               (4.0/ m_time_sig_changes[ last_id ].getDenom() ) )
                                       );
@@ -269,79 +194,6 @@ int MeasureData::measureAtTick(int tick)
         }
     }
 
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-int MeasureData::measureDivisionAt(int pixel)
-{
-    ASSERT_E(m_measure_amount, ==, (int)m_measure_info.size());
-    const float x1 = 90 - getCurrentGraphicalSequence()->getXScrollInPixels();
-
-    if (isMeasureLengthConstant())
-    {
-        const float xstep = measureLengthInPixels();
-
-        return (int)( ( pixel - x1 + xstep/2)/xstep );
-    }
-    else
-    {
-        pixel -= (int)x1;
-        const int measureAmount = m_measure_info.size();
-        for (int n=0; n<measureAmount; n++)
-        {
-            //std::cout << "checking measur " << n << " : is " << pixel << " between "
-            //          << m_measure_info[n].pixel-m_measure_info[n].widthInPixels/2 << " and "
-            //          << m_measure_info[n].endPixel-m_measure_info[n].widthInPixels/2 << std::endl;
-            
-            if (pixel >= m_measure_info[n].pixel-m_measure_info[n].widthInPixels/2 and
-                pixel<m_measure_info[n].endPixel-m_measure_info[n].widthInPixels/2)
-            {
-                return n;
-            }
-        }
-        return measureAmount-1;
-    }
-
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-int MeasureData::firstPixelInMeasure(int id)
-{
-    ASSERT_E(m_measure_amount, ==, (int)m_measure_info.size());
-    if (isMeasureLengthConstant())
-    {
-        return (int)(
-                     id * measureLengthInTicks() * getCurrentGraphicalSequence()->getZoom() -
-                     getCurrentGraphicalSequence()->getXScrollInPixels() + 90
-                     );
-    }
-    else
-    {
-        ASSERT_E(id,<,(int)m_measure_info.size());
-        return m_measure_info[id].pixel -  getCurrentGraphicalSequence()->getXScrollInPixels() + 90;
-    }
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-int MeasureData::lastPixelInMeasure(int id)
-{
-    ASSERT_E(m_measure_amount, ==, (int)m_measure_info.size());
-    
-    if (isMeasureLengthConstant())
-    {
-        return (int)(
-                     (id+1) * measureLengthInTicks() * getCurrentGraphicalSequence()->getZoom() -
-                     getCurrentGraphicalSequence()->getXScrollInPixels() + 90
-                     );
-    }
-    else
-    {
-        ASSERT_E(id,<,(int)m_measure_info.size());
-        return m_measure_info[id].endPixel -  getCurrentGraphicalSequence()->getXScrollInPixels() + 90;
-    }
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -407,20 +259,11 @@ int MeasureData::lastTickInMeasure(int id)
 #pragma mark Time Signature Management
 #endif
 
-void MeasureData::selectTimeSig(const int id)
-{
-    // FIXE... not really what you'd expect considering the method's name
-    m_selected_time_sig = id;
-    getMainFrame()->changeShownTimeSig( m_time_sig_changes[id].getNum(), m_time_sig_changes[id].getDenom() );
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
 int MeasureData::getTimeSigNumerator(int measure) const
 {
     if (measure != -1)
     {
-        measure+=1;
+        measure += 1;
         const int timeSigChangeAmount = m_time_sig_changes.size();
         for (int n=0; n<timeSigChangeAmount; n++)
         {
@@ -462,15 +305,6 @@ void MeasureData::setTimeSig(int top, int bottom)
     m_time_sig_changes[m_selected_time_sig].setNum( top );
     m_time_sig_changes[m_selected_time_sig].setDenom( bottom );
     updateMeasureInfo();
-
-    GraphicalSequence* gseq = getCurrentGraphicalSequence();
-    // FIXME: confusing line, maybe rename 'setZoom' so it's clearer what it does...
-    gseq->setZoom( gseq->getZoomInPercent() ); // update zoom to new measure size
-
-    wxSpinEvent unused;
-    getMainFrame()->songLengthChanged(unused);
-
-    Display::render();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -487,7 +321,7 @@ void MeasureData::eraseTimeSig(int id)
 
 // ----------------------------------------------------------------------------------------------------------
 
-void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means "same as previous event"
+int MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means "same as previous event"
 {
     const int timeSig_amount_minus_one = m_time_sig_changes.size()-1;
 
@@ -495,6 +329,7 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
     if (m_time_sig_changes.size() == 0)
     {
         m_time_sig_changes.push_back( new TimeSigChange(measure, num, denom) );
+        return m_time_sig_changes.size() - 1;
     }
     else
     {
@@ -505,7 +340,7 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
             {
                 // a time sig event already exists at this location
                 // if we're not importing, select it
-                if (not getCurrentSequence()->importing)
+                if (not m_sequence->importing)
                 {
                     m_selected_time_sig = n;
                     getMainFrame()->changeShownTimeSig(m_time_sig_changes[m_selected_time_sig].getNum(),
@@ -513,16 +348,14 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
 
                     wxPoint pt = wxGetMousePosition();
                     
-                    // FIXME: this is GUI code and should not appear in this model
-                    showTimeSigPicker( pt.x, pt.y, m_time_sig_changes[n].getNum(), m_time_sig_changes[n].getDenom() );
-                    break;
+                    return n;
                 }
                 // if we're importing, replace it with new value
                 else
                 {
                     m_time_sig_changes[m_selected_time_sig].setNum(num);
                     m_time_sig_changes[m_selected_time_sig].setDenom(denom);
-                    break;
+                    return m_selected_time_sig;
                 }
             }
             // we checked enough events so that we are past the point where the click occured.
@@ -540,57 +373,28 @@ void MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means 
                 }
 
                 m_selected_time_sig = n;
-
-                getMainFrame()->changeShownTimeSig( m_time_sig_changes[n].getNum(), m_time_sig_changes[n].getDenom() );
-
-                if (not getCurrentSequence()->importing)
-                {
-                    wxPoint pt = wxGetMousePosition();
-                    showTimeSigPicker(pt.x, pt.y, m_time_sig_changes[n].getNum(), m_time_sig_changes[n].getDenom());
-                    if (not getCurrentSequence()->importing) updateMeasureInfo();
-                }
-                
-                break;
+                return n;
             }
             else if (n == timeSig_amount_minus_one)
             {
-
+                // Append a new event at the end
                 if (num == -1 or denom == -1)
                 {
                     m_time_sig_changes.add( new TimeSigChange(measure, m_time_sig_changes[n].getNum(),
-                                                          m_time_sig_changes[n].getDenom()), n+1 );
+                                                              m_time_sig_changes[n].getDenom()), n+1 );
                 }
                 else
                 {
                     m_time_sig_changes.add( new TimeSigChange(measure, num, denom), n+1 );
                 }
                 
-                selectTimeSig(n+1);
-                
-                // m_selected_time_sig = n + 1;
-                // getMainFrame()->changeShownTimeSig( m_time_sig_changes[n+1].getNum(), m_time_sig_changes[n+1].getDenom() );
-
-                if (not getCurrentSequence()->importing)
-                {
-                    wxPoint pt = wxGetMousePosition();
-                    showTimeSigPicker( pt.x, pt.y, m_time_sig_changes[n].getNum(), m_time_sig_changes[n].getDenom() );
-                    if (not getCurrentSequence()->importing) updateMeasureInfo();
-                }
-                break;
+                return m_time_sig_changes.size() - 1;
             }
         }//next
 
-        /*
-         // check order
-         // FIXME- debug, remove
-         std::cout << "-----" << std::endl;
-         for(int n=0; n<(int)m_time_sig_changes.size(); n++)
-         {
-             std::cout << "  " << m_time_sig_changes[n].getMeasure() << std::endl;
-         }
-         */
     }
-
+    ASSERT(false);
+    return -1;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -624,9 +428,9 @@ void MeasureData::updateVector(int newSize)
 void MeasureData::updateMeasureInfo()
 {
     const int amount = m_measure_info.size();
-    const float zoom = getCurrentGraphicalSequence()->getZoom();
-    GraphicalSequence* sequence = getCurrentGraphicalSequence();
-    const int ticksPerBeat = sequence->getModel()->ticksPerBeat();
+    //const float zoom = sequence->getZoom();
+    
+    const int ticksPerBeat = m_sequence->ticksPerBeat();
     float tick = 0;
     int timg_sig_event = 0;
 
@@ -646,30 +450,30 @@ void MeasureData::updateMeasureInfo()
         }
 
         // set end location of previous measure
-        if (n>0)
+        if (n > 0)
         {
             m_measure_info[n-1].endTick = (int)round( tick );
-            m_measure_info[n-1].endPixel = (int)round( tick * zoom );
+            //m_measure_info[n-1].endPixel = (int)round( tick * zoom );
             m_measure_info[n-1].widthInTicks = m_measure_info[n-1].endTick - m_measure_info[n-1].tick;
-            m_measure_info[n-1].widthInPixels = (int)( m_measure_info[n-1].widthInTicks * zoom );
+            //m_measure_info[n-1].widthInPixels = (int)( m_measure_info[n-1].widthInTicks * zoom );
         }
 
         // set the location of measure in both ticks and pixels so that it can be used later in
         // calculations and drawing
         m_measure_info[n].tick = (int)round( tick );
-        m_measure_info[n].pixel = (int)round( tick * zoom );
+        //m_measure_info[n].pixel = (int)round( tick * zoom );
         tick += ticksPerBeat * m_time_sig_changes[timg_sig_event].getNum() *
                 (4.0 /(float)m_time_sig_changes[timg_sig_event].getDenom());
     }
 
     // fill length and end of last measure
     m_measure_info[amount-1].endTick = (int)tick;
-    m_measure_info[amount-1].endPixel = (int)( tick * zoom );
+    //m_measure_info[amount-1].endPixel = (int)( tick * zoom );
     m_measure_info[amount-1].widthInTicks = m_measure_info[amount-1].endTick - m_measure_info[amount-1].tick;
-    m_measure_info[amount-1].widthInPixels = (int)( m_measure_info[amount-1].widthInTicks * zoom );
+    //m_measure_info[amount-1].widthInPixels = (int)( m_measure_info[amount-1].widthInTicks * zoom );
 
     totalNeededLengthInTicks = (int)tick;
-    totalNeededLengthInPixels = (int)( tick * zoom );
+    //totalNeededLengthInPixels = (int)( tick * zoom );
 
     DisplayFrame::updateHorizontalScrollbar();
     ASSERT_E(m_measure_amount, ==, (int)m_measure_info.size());
@@ -694,7 +498,7 @@ int measuresPassed;
 void MeasureData::beforeImporting()
 {
     m_time_sig_changes.clearAndDeleteAll();
-    m_time_sig_changes.push_back(new TimeSigChange(0,4,4) );
+    m_time_sig_changes.push_back(new TimeSigChange(0,4,4));
     m_time_sig_changes[0].setTick(0);
 
     last_event_tick = 0;
@@ -737,7 +541,7 @@ void MeasureData::addTimeSigChange_import(int tick, int num, int denom)
         const int last_id = m_time_sig_changes.size() - 1;
         measure = (int)(
                         measuresPassed + (tick - last_event_tick)  /
-                        ( getCurrentSequence()->ticksPerBeat() *
+                        ( m_sequence->ticksPerBeat() *
                           m_time_sig_changes[last_id].getNum() *
                           (4.0/ m_time_sig_changes[last_id].getDenom() )
                           )
@@ -782,20 +586,6 @@ int MeasureData::getTotalTickAmount()
     else
     {
         return totalNeededLengthInTicks;
-    }
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-int MeasureData::getTotalPixelAmount()
-{
-    if (isMeasureLengthConstant())
-    {
-        return (int)( m_measure_amount * measureLengthInTicks() * getCurrentGraphicalSequence()->getZoom() );
-    }
-    else
-    {
-        return totalNeededLengthInPixels;
     }
 }
 
@@ -920,7 +710,7 @@ bool MeasureData::readFromFile(irr::io::IrrXMLReader* xml)
 void MeasureData::saveToFile(wxFileOutputStream& fileout)
 {
     writeData(wxT("<measure ") +
-              wxString( wxT(" firstMeasure=\"") ) + to_wxString(getMeasureData()->getFirstMeasure()),
+              wxString( wxT(" firstMeasure=\"") ) + to_wxString(getFirstMeasure()),
               fileout);
 
     if (isMeasureLengthConstant())
@@ -936,9 +726,9 @@ void MeasureData::saveToFile(wxFileOutputStream& fileout)
         const int timeSigAmount = m_time_sig_changes.size();
         for (int n=0; n<timeSigAmount; n++)
         {
-            writeData(wxT("<timesig num=\"") + to_wxString(m_time_sig_changes[n].getNum()) +
-                      wxT("\" denom=\"") + to_wxString(m_time_sig_changes[n].getDenom()) +
-                      wxT("\" measure=\"") + to_wxString(m_time_sig_changes[n].getMeasure()) + wxT("\"/>\n"),
+            writeData(wxT("<timesig num=\"") + to_wxString(m_time_sig_changes[n].getNum())     +
+                      wxT("\" denom=\"")     + to_wxString(m_time_sig_changes[n].getDenom())   +
+                      wxT("\" measure=\"")   + to_wxString(m_time_sig_changes[n].getMeasure()) + wxT("\"/>\n"),
                       fileout );
         }//next
         writeData(wxT("</measure>\n\n"), fileout );

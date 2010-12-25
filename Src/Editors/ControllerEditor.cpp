@@ -143,8 +143,8 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     if (m_selection_begin != -1 and focus)
     {
 
-        RelativeXCoord selectX1(m_selection_begin, MIDI);
-        RelativeXCoord selectX2(m_selection_end, MIDI);
+        RelativeXCoord selectX1(m_selection_begin, MIDI, m_gsequence);
+        RelativeXCoord selectX2(m_selection_end, MIDI, m_gsequence);
 
         AriaRender::color(0.8, 0.9, 1);
         AriaRender::rect(selectX1.getRelativeTo(WINDOW) , area_from_y,

@@ -757,7 +757,8 @@ void MainFrame::timeSigClicked(wxCommandEvent& evt)
     MeasureData* md = getCurrentSequence()->getMeasureData();
     
     wxPoint pt = wxGetMousePosition();
-    showTimeSigPicker(pt.x, pt.y,
+    showTimeSigPicker(getCurrentGraphicalSequence(),
+                      pt.x, pt.y,
                       md->getTimeSigNumerator(),
                       md->getTimeSigDenominator() );
 }
@@ -1009,6 +1010,7 @@ void MainFrame::horizontalScrolling_arrows(wxScrollEvent& evt)
     const int factor   = newValue - gseq->getXScrollInPixels();
 
     MeasureData* md = getCurrentSequence()->getMeasureData();
+    MeasureBar* mb = getCurrentGraphicalSequence()->getMeasureBar();
     
     const int newScrollInMidiTicks =
         (int)(
@@ -1018,7 +1020,7 @@ void MainFrame::horizontalScrolling_arrows(wxScrollEvent& evt)
 
     // check new scroll position is not out of bounds
     const int editor_size = Display::getWidth() - 100;
-    const int total_size  = md->getTotalPixelAmount();
+    const int total_size  = mb->getTotalPixelAmount();
 
     const int positionInPixels = (int)( newScrollInMidiTicks*gseq->getZoom() );
 
@@ -1062,10 +1064,10 @@ void MainFrame::verticalScrolling_arrows(wxScrollEvent& evt)
 void MainFrame::updateHorizontalScrollbar(int thumbPos)
 {
     const int editor_size = Display::getWidth() - 100;
-    const int total_size  = getCurrentSequence()->getMeasureData()->getTotalPixelAmount();
 
     GraphicalSequence* gseq = getCurrentGraphicalSequence();
-    
+    const int total_size  = gseq->getMeasureBar()->getTotalPixelAmount();
+
     int position = (thumbPos == -1) ? gseq->getXScrollInPixels() : (int)(gseq->getZoom());
 
     // if given value is wrong and needs to be changed, we'll need to throw a 'scrolling changed' event to

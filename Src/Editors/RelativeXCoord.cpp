@@ -19,39 +19,41 @@
 #include "GUI/GraphicalSequence.h"
 #include "AriaCore.h"
 
-/*
- * This class is there to ease midi coord manipulation.
- * Each location can be expressed in 3 ways: pixel within the window, pixel within the editor, midi tick
- * This class allows to seamlessly work with all these data formats.
- */
-
 namespace AriaMaestosa
 {
-
-
-RelativeXCoord* nullOne = NULL;
-RelativeXCoord& RelativeXCoord_empty()
-{
-    if (nullOne == NULL) nullOne = new RelativeXCoord(-1,WINDOW);
-    return *nullOne;
+    RelativeXCoord* nullOne = NULL;
+    
+    RelativeXCoord& RelativeXCoord_empty()
+    {
+        if (nullOne == NULL) nullOne = new RelativeXCoord(-1, WINDOW, NULL);
+        return *nullOne;
+    }
 }
 
-RelativeXCoord::RelativeXCoord()
+using namespace AriaMaestosa;
+
+// ----------------------------------------------------------------------------------------------------------
+
+RelativeXCoord::RelativeXCoord(GraphicalSequence* seq)
 {
-    //verbose = false;
+    m_seq = seq;
     relativeToEditor = -1;
     relativeToWindow = -1;
     relativeToMidi   = -1;
 }
 
-RelativeXCoord::RelativeXCoord(int i, RelativeType relativeTo)
+// ----------------------------------------------------------------------------------------------------------
+
+RelativeXCoord::RelativeXCoord(int i, RelativeType relativeTo, GraphicalSequence* seq)
 {
+    m_seq = seq;
     setValue(i, relativeTo);
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void RelativeXCoord::setValue(int i, RelativeType relativeTo)
 {
-
     relativeToEditor = -1;
     relativeToWindow = -1;
     relativeToMidi   = -1;
@@ -78,35 +80,28 @@ void RelativeXCoord::setValue(int i, RelativeType relativeTo)
 
 }
 
-/*
- * Convert the way this data is stored. For instance, if you
- * enter data as pixels, but want to keep the same tick even
- * though scrolling occurs, you could convert it to midi ticks.
- */
+// ----------------------------------------------------------------------------------------------------------
 
 void RelativeXCoord::convertTo(RelativeType relativeTo)
 {
-
-    GraphicalSequence* sequence = getCurrentGraphicalSequence();
-
-    switch(relativeTo)
+    switch (relativeTo)
     {
 
         case EDITOR:
 
-                if (relativeToWindow != -1)
-                {
-                    relativeToEditor = relativeToWindow - Editor::getEditorXStart();
-                }
-                else if (relativeToMidi != -1)
-                {
-                    relativeToEditor = ( int )( relativeToMidi * sequence->getZoom() ) - sequence->getXScrollInPixels();
-                }
-                else
-                {
-                    std::cout << "!! RelativeXCoord ERROR - needs one of 3 (B)" << std::endl;
-                    ASSERT(0);
-                }
+            if (relativeToWindow != -1)
+            {
+                relativeToEditor = relativeToWindow - Editor::getEditorXStart();
+            }
+            else if (relativeToMidi != -1)
+            {
+                relativeToEditor = ( int )( relativeToMidi * m_seq->getZoom() ) - m_seq->getXScrollInPixels();
+            }
+            else
+            {
+                std::cerr << "!! RelativeXCoord ERROR - needs one of 3 (B)" << std::endl;
+                ASSERT(0);
+            }
             relativeToWindow = -1;
             relativeToMidi = -1;
             break;
@@ -117,11 +112,11 @@ void RelativeXCoord::convertTo(RelativeType relativeTo)
             {
                     if (relativeToMidi != -1)
                     {
-                        relativeToWindow = ( int )( relativeToMidi * sequence->getZoom() ) - sequence->getXScrollInPixels() + Editor::getEditorXStart();
+                        relativeToWindow = ( int )( relativeToMidi * m_seq->getZoom() ) - m_seq->getXScrollInPixels() + Editor::getEditorXStart();
                     }
                     else
                     {
-                        std::cout << "!! RelativeXCoord ERROR - needs one of 3 (C)" << std::endl;
+                        std::cerr << "!! RelativeXCoord ERROR - needs one of 3 (C)" << std::endl;
                         ASSERT(0);
                     }
             }
@@ -137,11 +132,12 @@ void RelativeXCoord::convertTo(RelativeType relativeTo)
 
                     if (relativeToWindow != -1)
                     {
-                        relativeToMidi = (int)( ( relativeToWindow - Editor::getEditorXStart() ) / sequence->getZoom() ) + sequence->getXScrollInMidiTicks();
+                        relativeToMidi = (int)((relativeToWindow - Editor::getEditorXStart()) / m_seq->getZoom()) +
+                                         m_seq->getXScrollInMidiTicks();
                     }
                     else
                     {
-                        std::cout << "!! RelativeXCoord ERROR - needs one of 3 (D)" << std::endl;
+                        std::cerr << "!! RelativeXCoord ERROR - needs one of 3 (D)" << std::endl;
                         ASSERT(0);
                     }
 
@@ -154,29 +150,28 @@ void RelativeXCoord::convertTo(RelativeType relativeTo)
 
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
 {
-
-    GraphicalSequence* sequence = getCurrentGraphicalSequence();
-    switch(returnRelativeTo)
+    switch (returnRelativeTo)
     {
         case EDITOR:
 
-
-                if (relativeToWindow != -1)
-                {
-                    relativeToEditor = relativeToWindow - Editor::getEditorXStart();
-                }
-                else if (relativeToMidi != -1)
-                {
-                    relativeToEditor = ( int )( relativeToMidi * sequence->getZoom() ) - sequence->getXScrollInPixels();
-                }
-                else
-                {
-                    std::cout << "!! RelativeXCoord ERROR - needs one of 3 (E)" << std::endl;
-                    return -1;
-                    //ASSERT(0);
-                }
+            if (relativeToWindow != -1)
+            {
+                relativeToEditor = relativeToWindow - Editor::getEditorXStart();
+            }
+            else if (relativeToMidi != -1)
+            {
+                relativeToEditor = ( int )( relativeToMidi * m_seq->getZoom() ) - m_seq->getXScrollInPixels();
+            }
+            else
+            {
+                std::cerr << "!! RelativeXCoord ERROR - needs one of 3 (E)" << std::endl;
+                return -1;
+                //ASSERT(0);
+            }
 
             return relativeToEditor;
             break;
@@ -191,12 +186,12 @@ int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
             {
                     if (relativeToMidi != -1)
                     {
-                        return int(relativeToMidi * sequence->getZoom()) -
-                                   sequence->getXScrollInPixels() + Editor::getEditorXStart();
+                        return int(relativeToMidi * m_seq->getZoom()) -
+                                   m_seq->getXScrollInPixels() + Editor::getEditorXStart();
                     }
                     else
                     {
-                        std::cout << "!! RelativeXCoord ERROR - needs one of 3 (F)" << std::endl;
+                        std::cerr << "!! RelativeXCoord ERROR - needs one of 3 (F)" << std::endl;
                         return -1;
                         //ASSERT(0);
                     }
@@ -215,11 +210,12 @@ int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
 
                     if (relativeToWindow != -1)
                     {
-                        return (int)( (relativeToWindow - Editor::getEditorXStart()) / sequence->getZoom() ) + sequence->getXScrollInMidiTicks();
+                        return (int)((relativeToWindow - Editor::getEditorXStart()) / m_seq->getZoom()) +
+                                    m_seq->getXScrollInMidiTicks();
                     }
                     else
                     {
-                        std::cout << "!! RelativeXCoord ERROR - needs one of 3 (G)" << std::endl;
+                        std::cerr << "!! RelativeXCoord ERROR - needs one of 3 (G)" << std::endl;
                         return -1;
                         //ASSERT(0);
                     }
@@ -228,9 +224,10 @@ int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
             break;
     }
     //ASSERT(0);
-    std::cout << "!! RelativeXCoord ERROR - Conversion failed!" << std::endl;
+    std::cerr << "!! RelativeXCoord ERROR - Conversion failed!" << std::endl;
     return -1;
 
 }
 
-}
+// ----------------------------------------------------------------------------------------------------------
+

@@ -30,6 +30,8 @@
 
 using namespace AriaMaestosa::Action;
 
+// ----------------------------------------------------------------------------------------------------------
+
 RemoveMeasures::RemoveMeasures(int from_measure, int to_measure) :
     //I18N: (undoable) action name
     MultiTrackAction( _("remove measure(s)") )
@@ -38,13 +40,19 @@ RemoveMeasures::RemoveMeasures(int from_measure, int to_measure) :
     m_to_measure = to_measure;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 RemoveMeasures::~RemoveMeasures()
 {
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 RemoveMeasures::RemovedTrackPart::~RemovedTrackPart()
 {
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void RemoveMeasures::undo()
 {
@@ -99,8 +107,9 @@ void RemoveMeasures::undo()
     }
     
     measureBar->updateMeasureInfo();
-    
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void RemoveMeasures::perform()
 {
@@ -263,7 +272,10 @@ void RemoveMeasures::perform()
     
     // shorten song accordingly to the number of measures removed
     DisplayFrame::changeMeasureAmount( md->getMeasureAmount() - (m_to_measure - m_from_measure) );
+    
     md->updateMeasureInfo();
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 

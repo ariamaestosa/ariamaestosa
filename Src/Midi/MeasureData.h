@@ -19,7 +19,6 @@
 
 
 #include "ptr_vector.h"
-#include "Midi/Sequence.h"
 #include "Midi/TimeSigChange.h"
 #include "Utils.h"
 
@@ -32,7 +31,7 @@ namespace irr { namespace io {
 
 namespace AriaMaestosa
 {
-    
+    class GraphicalSequence;
     class MainFrame;
 
    /**
@@ -52,12 +51,19 @@ namespace AriaMaestosa
         class MeasureInfo
         {
         public:
-            MeasureInfo() { selected = false, tick = 0, pixel = 0; endTick=-1; widthInTicks=-1; widthInPixels=-1;}
+            MeasureInfo()
+            {
+                selected = false;
+                tick = 0;
+                // pixel = 0; widthInPixels=-1;
+                endTick=-1; widthInTicks=-1;
+            }
             
             bool selected;
             int tick, endTick;
-            int pixel, endPixel;
-            int widthInTicks, widthInPixels;
+            //int pixel, endPixel;
+            int widthInTicks;
+            //int widthInPixels;
         };
         
         /** contains one item for each measure in the sequence */
@@ -76,18 +82,21 @@ namespace AriaMaestosa
         
         // Only access this in expanded mode otherwise they're empty
         int totalNeededLengthInTicks;
-        int totalNeededLengthInPixels;
+        //int totalNeededLengthInPixels;
                 
         /**
          * @brief Change the number of items in the selected vector sothat it contains the same amount of elements
          * as the number of measures.
          */
         void  updateVector(int newSize);
+        
+        Sequence* m_sequence;
+        
     public:
         
         LEAK_CHECK();
                 
-        MeasureData(int measureAmount);
+        MeasureData(Sequence* seq, int measureAmount);
         ~MeasureData();
         
         void  setExpandedMode(bool expanded);
@@ -95,7 +104,6 @@ namespace AriaMaestosa
         bool  isExpandedMode() const { return m_expanded_mode; }
         
         int   getTotalTickAmount();
-        int   getTotalPixelAmount();
         
         bool  isMeasureLengthConstant() const
         {
@@ -105,17 +113,13 @@ namespace AriaMaestosa
         void  setMeasureAmount(int measureAmount);
         int   getMeasureAmount() const { return m_measure_amount; }
         
-        float defaultMeasureLengthInPixels();
         int   defaultMeasureLengthInTicks();
         
         int   getFirstMeasure() const { return m_first_measure; }
         void  setFirstMeasure(int firstMeasureID);
         
-        int   measureAtPixel(int pixel);
         int   measureAtTick(int tick);
-        int   measureDivisionAt(int pixel);
         
-        float measureLengthInPixels(int measure =-1);
         int   measureLengthInTicks(int measure = -1);
         
         /** @brief get time sig num, either for a specific mesure, either the default value (no argument) */
@@ -140,18 +144,18 @@ namespace AriaMaestosa
         /** Move a timesig event to another measure */
         void setTimesigMeasure(const int id, const int newMeasure);
 
-        void  addTimeSigChange(int measure, int num, int denom);
+        /** @brief  Add a time signature change event
+          * @note   If a time sig changes already exists at the given measure, it is modified to bear the
+          *         new values
+          * @return the ID of the newly added _or modified) item
+          */
+        int  addTimeSigChange(int measure, int num, int denom);
         
         /** Erase the time signature event denoted by the given ID (range [0..getTimeSigAmount()-1] */
         void  eraseTimeSig(int id);
         
-        void  selectTimeSig(const int id);
-        void  unselect();
-        
         int   firstTickInMeasure(int id);
-        int   firstPixelInMeasure(int id);
         int   lastTickInMeasure(int id);
-        int   lastPixelInMeasure(int id);
         
         /**
          * @brief Time Signatures have changed, update and recalculate information about location of measures

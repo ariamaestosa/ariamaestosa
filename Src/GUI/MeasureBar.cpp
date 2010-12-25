@@ -25,12 +25,15 @@
 #include "Actions/RemoveMeasures.h"
 #include "AriaCore.h"
 #include "Editors/Editor.h"
+#include "GUI/GraphicalSequence.h"
+#include "GUI/MainFrame.h"
 #include "GUI/MeasureBar.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 #include "Midi/TimeSigChange.h"
 #include "Midi/Players/PlatformMidiManager.h"
+#include "Pickers/TimeSigPicker.h"
 #include "Renderers/RenderAPI.h"
 
 #include <iostream>
@@ -51,13 +54,15 @@ namespace AriaMaestosa
   */
 class SelectedMenu : public wxMenu
 {
+    GraphicalSequence* m_gseq;
 
 public:
     LEAK_CHECK();
     
-    SelectedMenu() : wxMenu()
+    SelectedMenu(GraphicalSequence* parent) : wxMenu()
     {
         Append(1, _("Remove selected measures"));
+        m_gseq = parent;
     }
 
     /**
@@ -74,10 +79,12 @@ public:
                       << answer << std::endl;
         }
 
-        getCurrentGraphicalSequence()->getMeasureBar()->unselectAll();
+        m_gseq->getMeasureBar()->unselect();
         
-        getCurrentSequence()->action( new Action::RemoveMeasures(remove_from, remove_to) );
-        getMeasureData()->selectTimeSig(0);
+        Sequence* seq = m_gseq->getModel();
+        
+        seq->action( new Action::RemoveMeasures(remove_from, remove_to) );
+        m_gseq->getMeasureBar()->selectTimeSig(0);
     }
 
     DECLARE_EVENT_TABLE();
@@ -100,15 +107,18 @@ class UnselectedMenu : public wxMenu
 {
     wxMenuItem* deleteTimeSig;
     int remove_timeSigID;
+    
+    GraphicalSequence* m_gseq;
 
 public:
     LEAK_CHECK();
 
-    UnselectedMenu() : wxMenu()
+    UnselectedMenu(GraphicalSequence* gseq) : wxMenu()
     {
         Append(2, _("Insert measures"));
         remove_timeSigID = -1;
         deleteTimeSig = Append(3, _("Remove time sig change"));
+        m_gseq = gseq;
     }
 
     void insert(wxCommandEvent& event)
@@ -119,7 +129,7 @@ public:
                                            _("Amount: "), wxT(""), 4 /*default*/, 1 /*min*/);
         if (number==-1) return;
 
-        Sequence* seq = getCurrentSequence();
+        Sequence* seq = m_gseq->getModel();
 
         // --------- move notes in all tracks -----------
 
@@ -147,9 +157,12 @@ public:
         
         ASSERT(remove_timeSigID != -1);
 
+        Sequence* seq = m_gseq->getModel();
+        MeasureData* md = seq->getMeasureData();
+        
         //std::cout << "really removing " << remove_timeSigID << std::endl;
-        getMeasureData()->eraseTimeSig(remove_timeSigID);
-        getMeasureData()->updateMeasureInfo();
+        md->eraseTimeSig(remove_timeSigID);
+        md->updateMeasureInfo();
         Display::render();
     }
 
@@ -172,14 +185,15 @@ using namespace AriaMaestosa;
 #pragma mark -
 #endif
 
-MeasureBar::MeasureBar(MeasureData* parent)
+MeasureBar::MeasureBar(MeasureData* parent, GraphicalSequence* gseq)
 {
-    selectedMenu  = new SelectedMenu();
-    unselectedMenu = new UnselectedMenu();
+    selectedMenu   = new SelectedMenu(gseq);
+    unselectedMenu = new UnselectedMenu(gseq);
 
     lastMeasureInDrag = -1;
 
     data = parent;
+    m_gseq = gseq;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -195,6 +209,53 @@ int MeasureBar::getMeasureBarHeight()
 {
     if (data->isExpandedMode()) return 40;
     else                        return 20;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+float MeasureBar::measureLengthInPixels(int measure)
+{
+    if (measure == -1) measure = 0; // no parameter passed, use measure 0 settings
+    return (float)data->measureLengthInTicks(measure) * (float)m_gseq->getZoom();
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+int MeasureBar::measureAtPixel(int pixel)
+{
+    const float x1 = 90 - m_gseq->getXScrollInPixels();
+    pixel -= (int)x1;
+    
+    if (data->isMeasureLengthConstant())
+    {
+        if (pixel < 0) pixel = 0;
+        // length of a measure
+        const float xstep = measureLengthInPixels();
+        
+        return (int)( pixel/xstep );
+    }
+    else
+    {
+        const float zoom = m_gseq->getZoom();
+        
+        if (pixel < 0) return 0;
+        
+        const int amount = data->m_measure_info.size();
+        for (int n=0; n<amount; n++)
+        {
+            if (n == amount - 1) return amount - 1; // we hit end, return the last
+            
+            const int pixel_of_n        = data->m_measure_info[n].tick * zoom;
+            const int pixel_of_n_plus_1 = data->m_measure_info[n+1].tick * zoom;
+
+            if (pixel_of_n <= pixel and pixel_of_n_plus_1 > pixel)
+            {
+                return n;
+            }
+        }
+        
+        return 0;
+    }
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -224,17 +285,19 @@ void MeasureBar::render(int measureBarY_arg)
 
 
     // vertical lines and mesure ID
-    int measureID=0;
+    int measureID = 0;
     AriaRender::color(0,0,0);
 
     const bool measureLengthConstant = data->isMeasureLengthConstant();
 
-    GraphicalSequence* gseq = getCurrentGraphicalSequence();
-    const float x_initial = Editor::getEditorXStart() - gseq->getXScrollInPixels();
-    const float x_step = data->measureLengthInPixels();
+    const float x_initial = Editor::getEditorXStart() - m_gseq->getXScrollInPixels();
+    const float x_step = measureLengthInPixels();
 
-    for (float n=x_initial; n<Display::getWidth();
-        (measureLengthConstant ? n+=x_step : n += data->measureLengthInPixels(measureID-1)) )
+    const int width = Display::getWidth();
+    const float zoom = m_gseq->getZoom();
+    
+    for (float n=x_initial; n<width;
+        (measureLengthConstant ? n+=x_step : n += measureLengthInPixels(measureID-1)) )
     {
         measureID++;
         if (measureID > data->m_measure_amount) break;
@@ -246,10 +309,16 @@ void MeasureBar::render(int measureBarY_arg)
             AriaRender::color(0.71, 0.84, 1);
 
             if (measureLengthConstant)
-                AriaRender::rect(n, measureBarY+1, n+x_step, measureBarY+19);
+            {
+                // FIXME: don't hardcode measure bar height
+                AriaRender::rect(n, measureBarY + 1, n + x_step, measureBarY + 19);
+            }
             else
-                AriaRender::rect(n, measureBarY+1, n+data->m_measure_info[measureID-1].widthInPixels, measureBarY+19);
-
+            {
+                const int mw = data->m_measure_info[measureID-1].widthInTicks * zoom;
+                AriaRender::rect(n, measureBarY + 1, n + mw, measureBarY + 19);
+            }
+            
             AriaRender::color(0,0,0);
         }
 
@@ -303,12 +372,116 @@ void MeasureBar::render(int measureBarY_arg)
 
 // ----------------------------------------------------------------------------------------------------------
 
-void MeasureBar::unselectAll()
+int MeasureBar::measureDivisionAt(int pixel)
 {
-    for (int n=remove_from; n<remove_to+1; n++)
+    ASSERT_E(data->m_measure_amount, ==, (int)data->m_measure_info.size());
+    const float x1 = 90 - m_gseq->getXScrollInPixels();
+    
+    if (data->isMeasureLengthConstant())
+    {
+        const float xstep = measureLengthInPixels();
+        
+        return (int)( ( pixel - x1 + xstep/2)/xstep );
+    }
+    else
+    {
+        const float zoom = m_gseq->getZoom();
+        
+        pixel -= (int)x1;
+        const int measureAmount = data->m_measure_info.size();
+        for (int n=0; n<measureAmount; n++)
+        {
+            const int pixel_of_n     = data->m_measure_info[n].tick * zoom;
+            const int width_of_n     = data->m_measure_info[n].widthInTicks * zoom;
+            const int end_pixel_of_n = pixel_of_n + width_of_n;
+
+            if (pixel >= pixel_of_n    - width_of_n/2 and
+                pixel < end_pixel_of_n - width_of_n/2)
+            {
+                return n;
+            }
+        }
+        return measureAmount-1;
+    }
+    
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+int MeasureBar::firstPixelInMeasure(int id)
+{
+    ASSERT_E(data->m_measure_amount, ==, (int)data->m_measure_info.size());
+    if (data->isMeasureLengthConstant())
+    {
+        return (int)(
+                     id * data->measureLengthInTicks() * m_gseq->getZoom() -
+                     m_gseq->getXScrollInPixels() + 90
+                     );
+    }
+    else
+    {
+        ASSERT_E(id,<,(int)data->m_measure_info.size());
+        return data->m_measure_info[id].tick*m_gseq->getZoom() - m_gseq->getXScrollInPixels() + 90;
+    }
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+int MeasureBar::lastPixelInMeasure(int id)
+{
+    ASSERT_E(data->m_measure_amount, ==, (int)data->m_measure_info.size());
+    
+    if (data->isMeasureLengthConstant())
+    {
+        return (int)(
+                     (id+1) * data->measureLengthInTicks() * m_gseq->getZoom() -
+                     m_gseq->getXScrollInPixels() + 90
+                     );
+    }
+    else
+    {
+        ASSERT_E(id,<,(int)data->m_measure_info.size());
+        return data->m_measure_info[id].endTick*m_gseq->getZoom() - m_gseq->getXScrollInPixels() + 90;
+    }
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+int MeasureBar::getTotalPixelAmount()
+{
+    if (data->isMeasureLengthConstant())
+    {
+        return (int)( data->m_measure_amount * data->measureLengthInTicks() * m_gseq->getZoom() );
+    }
+    else
+    {
+        return data->totalNeededLengthInTicks * m_gseq->getZoom();
+    }
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+// right now, it's just the first measure that is considered "default". This may need to be reviewed.
+// (i'm not sure if this is used at all or very much)
+float MeasureBar::defaultMeasureLengthInPixels()
+{
+    return (float)data->measureLengthInTicks(0) * (float)m_gseq->getZoom();
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void MeasureBar::unselect()
+{
+    if (not data->m_something_selected) return;
+    data->m_something_selected = false;
+    
+    const int measureAmount = data->m_measure_info.size();
+    for (int n=0; n<measureAmount; n++)
     {
         data->m_measure_info[n].selected = false;
     }
+    
+    m_gseq->getMeasureBar()->lastMeasureInDrag = -1;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -323,12 +496,27 @@ void MeasureBar::mouseDown(int x, int y)
     // if click is in time sig change areas
     if (y > 20)
     {
-        const int measureDivAt_x = data->measureDivisionAt(x);
+        const int measureDivAt_x = measureDivisionAt(x);
 
         // we use the 'add' method, however if on event already exists at this location
         // it will be selected and none will be added
-        data->addTimeSigChange(measureDivAt_x, -1, -1);
+        const int id = data->addTimeSigChange(measureDivAt_x, -1, -1);
 
+        selectTimeSig(id);
+        
+        // m_selected_time_sig = n + 1;
+        getMainFrame()->changeShownTimeSig(data->m_time_sig_changes[id].getNum(),
+                                           data->m_time_sig_changes[id].getDenom() );
+        
+        if (not m_gseq->getModel()->importing)
+        {
+            wxPoint pt = wxGetMousePosition();
+            showTimeSigPicker(pt.x, pt.y,
+                              data->m_time_sig_changes[id].getNum(),
+                              data->m_time_sig_changes[id].getDenom() );
+            data->updateMeasureInfo();
+        }
+        
         return;
     }
 
@@ -338,7 +526,7 @@ void MeasureBar::mouseDown(int x, int y)
         data->m_measure_info[n].selected = false;
     }
 
-    const int measure_vectorID = data->measureAtPixel( x );
+    const int measure_vectorID = measureAtPixel( x );
     data->m_measure_info[measure_vectorID].selected = true;
 
     data->m_something_selected = true;
@@ -347,12 +535,23 @@ void MeasureBar::mouseDown(int x, int y)
 
 // ----------------------------------------------------------------------------------------------------------
 
+void MeasureBar::selectTimeSig(const int id)
+{
+    // TODO: instead use an observer pattern to know when the selected time sig qas changed
+    data->m_selected_time_sig = id;
+    getMainFrame()->changeShownTimeSig(data->m_time_sig_changes[id].getNum(),
+                                       data->m_time_sig_changes[id].getDenom() );
+}
+
+
+// ----------------------------------------------------------------------------------------------------------
+
 /**
   * @brief When mouse is held down and dragged on Measure Bar
   */
 void MeasureBar::mouseDrag(int mousex_current, int mousey_current, int mousex_initial, int mousey_initial)
 {
-    const int measure_vectorID = data->measureAtPixel(mousex_current);
+    const int measure_vectorID = measureAtPixel(mousex_current);
 
     if (lastMeasureInDrag == -1) return; //invalid
 
@@ -382,7 +581,7 @@ void MeasureBar::mouseUp(int mousex_current, int mousey_current, int mousex_init
 {
     if (lastMeasureInDrag == -1) return; //invalid
 
-    Sequence* sequence = getCurrentSequence();
+    Sequence* sequence = m_gseq->getModel();
 
     const int measureAmount = data->m_measure_info.size();
 
@@ -432,7 +631,7 @@ void MeasureBar::rightClick(int x, int y)
     if (y > 20)
     {
         // find between which measures the user clicked
-        int measure = data->measureDivisionAt(x);
+        int measure = measureDivisionAt(x);
 
         // check if click is on time sig event
         const int amount = data->m_time_sig_changes.size();
@@ -449,7 +648,7 @@ void MeasureBar::rightClick(int x, int y)
 
     }
 
-    const int measure_vectorID = data->measureAtPixel( x );
+    const int measure_vectorID = measureAtPixel( x );
 
     // is the clicked measure selected?
     if (data->m_measure_info[measure_vectorID].selected)
@@ -478,7 +677,7 @@ void MeasureBar::rightClick(int x, int y)
     else
     {
         // find between which measures the user clicked
-        insert_at_measure = data->measureDivisionAt(x)-1;
+        insert_at_measure = measureDivisionAt(x) - 1;
 
         unselectedMenu->enable_deleteTimeSig_item(false);
         Display::popupMenu( (wxMenu*)unselectedMenu, x, y+20);

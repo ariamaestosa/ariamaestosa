@@ -20,6 +20,7 @@
 
 namespace AriaMaestosa
 {
+    class GraphicalSequence;
     
     /** @brief goes along class RelativeXCood */
     enum RelativeType
@@ -41,12 +42,24 @@ namespace AriaMaestosa
         int relativeToEditor;
         int relativeToWindow, relativeToMidi;
         
+        GraphicalSequence* m_seq;
+        
     public:
         
-        RelativeXCoord();
-        RelativeXCoord(int i, RelativeType relativeTo);
+        RelativeXCoord(GraphicalSequence* seq);
+        RelativeXCoord(int i, RelativeType relativeTo, GraphicalSequence* seq);
+        
         void setValue(int i, RelativeType relativeTo);
+        
+        void setSequence(GraphicalSequence* seq) { m_seq = seq; }
+        
+        /**
+         * @brief Convert the way this data is stored.
+         * For instance, if you enter data as pixels, but want to keep the same tick even
+         * though scrolling occurs, you could convert it to midi ticks.
+         */
         void convertTo(RelativeType relativeTo);
+        
         int getRelativeTo(RelativeType returnRelativeTo);
         
     };

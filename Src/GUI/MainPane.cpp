@@ -131,23 +131,26 @@ namespace AriaMaestosa
     };
 }
 
-// ==========================================================================================
-// ==========================================================================================
+// ==========================================================================================================
+// ==========================================================================================================
 #if 0
 #pragma mark -
 #endif
 
-MainPane::MainPane(wxWindow* parent, int* args) : RenderPane(parent, args)
+MainPane::MainPane(wxWindow* parent, int* args) :
+    RenderPane(parent, args),
+    m_mouse_x_initial(NULL),
+    m_mouse_x_current(NULL)
 {
-    m_current_tick = -1;
-    m_dragged_track_id = -1;
-    isVisible = false;
-    m_is_mouse_down = false;
+    m_current_tick        = -1;
+    m_dragged_track_id    = -1;
+    isVisible             = false;
+    m_is_mouse_down       = false;
     m_mouse_hovering_tabs = false;
 
-    m_mouse_x_initial.setValue(0,MIDI);
+    m_mouse_x_initial.setValue(0, MIDI);
     m_mouse_y_initial = 0;
-    m_mouse_x_current.setValue(0,WINDOW);
+    m_mouse_x_current.setValue(0, WINDOW);
     m_mouse_y_current = 0;
 
     leftArrow  = false;
@@ -385,7 +388,7 @@ bool MainPane::do_render()
     if (m_current_tick != -1) // if playing
     {
 
-        RelativeXCoord tick(m_current_tick, MIDI);
+        RelativeXCoord tick(m_current_tick, MIDI, gseq);
 
         const int XStart = Editor::getEditorXStart();
         const int XEnd = getWidth();
@@ -515,7 +518,7 @@ void MainPane::rightClick(wxMouseEvent& event)
         const int count = seq->getTrackAmount();
         for (int n=0; n<count; n++)
         {
-            if (not seq->getTrack(n)->graphics->processRightMouseClick( RelativeXCoord(event.GetX(),WINDOW) , event.GetY()))
+            if (not seq->getTrack(n)->graphics->processRightMouseClick( RelativeXCoord(event.GetX(), WINDOW, gseq) , event.GetY()))
             {
                 seq->setCurrentTrackID(n);
                 break;
@@ -542,6 +545,9 @@ void MainPane::mouseDown(wxMouseEvent& event)
     MainFrame* mf = getMainFrame();
     GraphicalSequence* gseq = mf->getCurrentGraphicalSequence();
     Sequence* seq = gseq->getModel();
+    
+    m_mouse_x_current.setSequence(gseq);
+    m_mouse_x_initial.setSequence(gseq);
     
     m_mouse_x_current.setValue(event.GetX(), WINDOW);
     m_mouse_y_current = event.GetY();
@@ -860,7 +866,8 @@ void MainPane::keyPressed(wxKeyEvent& evt)
     
     
     MainFrame* mf = getMainFrame();
-    Sequence* seq = mf->getCurrentSequence();
+    GraphicalSequence* gseq = mf->getCurrentGraphicalSequence();
+    Sequence* seq = gseq->getModel();
     
 #ifdef __WXMAC__
     const bool commandDown = evt.MetaDown() or evt.ControlDown();
@@ -879,7 +886,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
     if (evt.GetKeyCode() == WXK_F3)
     {
         wxPoint p = wxGetMousePosition();
-        RelativeXCoord x;
+        RelativeXCoord x(gseq);
         x.setValue(ScreenToClient(p).x, WINDOW);
         printf("Tick : %i\n", x.getRelativeTo(MIDI));
     }
@@ -1241,13 +1248,13 @@ void MainPane::playbackRenderLoop()
         // if follow playback is checked in the menu
         if (seq->follow_playback)
         {
-            RelativeXCoord tick(m_playback_start_tick + currentTick, MIDI);
+            RelativeXCoord tick(m_playback_start_tick + currentTick, MIDI, gseq);
             const int current_pixel = tick.getRelativeTo(WINDOW);
 
             //const float zoom = getCurrentSequence()->getZoom();
             const int XStart = Editor::getEditorXStart();
             const int XEnd = getWidth() - 50; // 50 is somewhat arbitrary
-            const int last_visible_measure = seq->getMeasureData()->measureAtPixel( XEnd );
+            const int last_visible_measure = gseq->getMeasureBar()->measureAtPixel( XEnd );
             const int current_measure = seq->getMeasureData()->measureAtTick(m_playback_start_tick + currentTick);
 
             if (current_pixel < XStart or current_measure >= last_visible_measure)
@@ -1270,7 +1277,7 @@ void MainPane::playbackRenderLoop()
 
         setCurrentTick( m_playback_start_tick + currentTick );
 
-        RelativeXCoord tick(this->m_current_tick, MIDI);
+        RelativeXCoord tick(m_current_tick, MIDI, gseq);
         const int XStart = Editor::getEditorXStart();
         const int XEnd = getWidth();
         const int tick_pixel = tick.getRelativeTo(WINDOW);
