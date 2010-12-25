@@ -127,9 +127,9 @@ void Paste::perform()
         trackMouseLoc_x > Editor::getEditorXStart())
     {
 
-        RelativeXCoord mx(trackMouseLoc_x, WINDOW);
+        RelativeXCoord mx(trackMouseLoc_x, WINDOW, track->graphics->getSequence());
 
-        shift=track->graphics->getCurrentEditor()->snapMidiTickToGrid( mx.getRelativeTo(MIDI) );
+        shift = track->graphics->getCurrentEditor()->snapMidiTickToGrid( mx.getRelativeTo(MIDI) );
 
     }
     else if (not m_at_mouse and
@@ -157,7 +157,7 @@ void Paste::perform()
         }
 
         // after visible area
-        RelativeXCoord screen_width( Display::getWidth(), WINDOW );
+        RelativeXCoord screen_width( Display::getWidth(), WINDOW, track->graphics->getSequence() );
 
         if ((tmp.startTick + tmp.endTick)/2 + shift > screen_width.getRelativeTo(MIDI) )
         {

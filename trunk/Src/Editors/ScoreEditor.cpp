@@ -506,23 +506,24 @@ void ScoreEditor::setNoteSign(const int sign, const int noteID)
 
 namespace EditorStemParams
 {
-    int stem_up_x_offset = 9;
-    float stem_up_y_offset = 0.4;
-    int stem_down_x_offset = 1;
+    int   stem_up_x_offset   = 9;
+    float stem_up_y_offset   = 0.4;
+    int   stem_down_x_offset = 1;
     float stem_down_y_offset = 0.8;
 
-    int getStemX(const int tick, const STEM stem_type)
+    int getStemX(const int tick, const STEM stem_type, GraphicalSequence* gseq)
     {
-        RelativeXCoord relX(tick, MIDI);
+        RelativeXCoord relX(tick, MIDI, gseq);
         const int noteX = relX.getRelativeTo(WINDOW);
         
-        if     (stem_type == STEM_UP)   return (noteX + stem_up_x_offset);
+        if      (stem_type == STEM_UP)   return (noteX + stem_up_x_offset);
         else if (stem_type == STEM_DOWN) return (noteX + stem_down_x_offset);
         else return -1;
     }
-    int getStemX(const NoteRenderInfo& info)
+    
+    int getStemX(const NoteRenderInfo& info, GraphicalSequence* gseq)
     {
-        return getStemX(info.getTick(), info.m_stem_type);
+        return getStemX(info.getTick(), info.m_stem_type, gseq);
     }
 }
 using namespace EditorStemParams;
@@ -546,7 +547,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     else
      */
     
-    RelativeXCoord relX(renderInfo.getTick(), MIDI);
+    RelativeXCoord relX(renderInfo.getTick(), MIDI, m_gsequence);
     const int noteX = relX.getRelativeTo(WINDOW);
     
     if (renderInfo.m_instant_hit)
@@ -681,8 +682,10 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
             int stem_from_y = LEVEL_TO_Y(renderInfo.getStemOriginLevel());
             if (renderInfo.m_stem_type == STEM_DOWN) stem_from_y += 6;
             
-            AriaRender::line( getStemX(renderInfo), stem_from_y,
-                              getStemX(renderInfo), LEVEL_TO_Y(analyser->getStemTo(renderInfo))   );
+            const int stemx = getStemX(renderInfo, m_gsequence);
+            
+            AriaRender::line(stemx, stem_from_y,
+                             stemx, LEVEL_TO_Y(analyser->getStemTo(renderInfo))   );
         }
 
 
@@ -692,7 +695,7 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
             static const int stem_height = noteFlag->getImageHeight();
             const int stem_end = LEVEL_TO_Y(analyser->getStemTo(renderInfo));
             const int flag_y_origin = (renderInfo.m_stem_type == STEM_UP ? stem_end : stem_end - stem_height );
-            const int flag_x_origin = getStemX(renderInfo);
+            const int flag_x_origin = getStemX(renderInfo, m_gsequence);
             const int flag_step = (renderInfo.m_stem_type == STEM_UP ? 7 : -7 );
 
             noteFlag->setFlip(false, renderInfo.m_stem_type != STEM_UP);
@@ -715,12 +718,12 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
         
         if (renderInfo.m_triplet_arc_tick_start != -1)
         {
-             RelativeXCoord relXStart(renderInfo.m_triplet_arc_tick_start, MIDI);
+             RelativeXCoord relXStart(renderInfo.m_triplet_arc_tick_start, MIDI, m_gsequence);
              triplet_arc_x_start = relXStart.getRelativeTo(WINDOW) + 8;
         }
         if (renderInfo.m_triplet_arc_tick_end != -1)
         {
-            RelativeXCoord relXEnd(renderInfo.m_triplet_arc_tick_end, MIDI);
+            RelativeXCoord relXEnd(renderInfo.m_triplet_arc_tick_end, MIDI, m_gsequence);
             triplet_arc_x_end = relXEnd.getRelativeTo(WINDOW) + 8;
         }
         
@@ -750,15 +753,15 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
     
         const float center_tick = (renderInfo.getTiedToTick() + renderInfo.getTick())/2.0;
         
-        RelativeXCoord relXFrom(renderInfo.getTiedToTick(), MIDI);
+        RelativeXCoord relXFrom(renderInfo.getTiedToTick(), MIDI, m_gsequence);
         const int x_from = relXFrom.getRelativeTo(WINDOW);
         
-        RelativeXCoord relXTo(renderInfo.getTick(), MIDI);
+        RelativeXCoord relXTo(renderInfo.getTick(), MIDI, m_gsequence);
         const int x_to = relXTo.getRelativeTo(WINDOW);
                 
         const bool show_above = renderInfo.isTieUp();
 
-        RelativeXCoord relCenter(center_tick, MIDI);
+        RelativeXCoord relCenter(center_tick, MIDI, m_gsequence);
         const int center_x = relCenter.getRelativeTo(WINDOW) + 6;
         const int radius_x = (x_to - x_from)/2;
         
@@ -772,16 +775,18 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
         AriaRender::color(0,0,0);
         AriaRender::lineWidth(2);
         
-        const int x1 = getStemX(renderInfo);
+        const int x1 = getStemX(renderInfo, m_gsequence);
         int y1       = LEVEL_TO_Y(analyser->getStemTo(renderInfo));
         int y2       = LEVEL_TO_Y(renderInfo.m_beam_to_level);
 
         const int y_diff = (renderInfo.m_stem_type == STEM_UP ? 5 : -5);
 
         AriaRender::lineSmooth(true);
-        for (int n=0; n<renderInfo.m_flag_amount; n++)
+        const int count = renderInfo.m_flag_amount;
+        for (int n=0; n<count; n++)
         {
-            AriaRender::line(x1, y1, getStemX(renderInfo.m_beam_to_tick, renderInfo.m_stem_type), y2);
+            const int xto = getStemX(renderInfo.m_beam_to_tick, renderInfo.m_stem_type, m_gsequence);
+            AriaRender::line(x1, y1, xto, y2);
             y1 += y_diff;
             y2 += y_diff;
         }
@@ -792,19 +797,19 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
 // ----------------------------------------------------------------------------------------------------------
 
 
-void renderSilence(const int duration, const int tick, const int type, const int silences_y,
-                   const bool triplet, const bool dotted,
+void renderSilence(GraphicalSequence* gseq, const int duration, const int tick, const int type,
+                   const int silences_y, const bool triplet, const bool dotted,
                    const int dot_delta_x, const int dot_delta_y)
 {
     ASSERT_E(tick,>,-1);
-    RelativeXCoord relX(tick, MIDI);
+    RelativeXCoord relX(tick, MIDI, gseq);
     const int x = relX.getRelativeTo(WINDOW) + 5;
     
     if ( type == 1 )
     {
         AriaRender::primitives();
         AriaRender::color(0,0,0);
-        AriaRender::rect(x,silences_y, x+15, silences_y+Y_STEP_HEIGHT);
+        AriaRender::rect(x, silences_y, x + 15, silences_y + Y_STEP_HEIGHT);
     }
     else if ( type == 2 )
     {
@@ -900,10 +905,11 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     const int noteAmount = m_track->getNoteAmount();
 
-    MeasureData* md = m_sequence->getMeasureData();
-    
-    const int first_x_to_consider = md->firstPixelInMeasure( md->measureAtPixel(0) ) + 1;
-    const int last_x_to_consider  = md->lastPixelInMeasure( md->measureAtPixel(m_width + 15) );
+    //MeasureData* md = m_sequence->getMeasureData();
+    MeasureBar* mb = m_gsequence->getMeasureBar();
+
+    const int first_x_to_consider = mb->firstPixelInMeasure( mb->measureAtPixel(0) ) + 1;
+    const int last_x_to_consider  = mb->lastPixelInMeasure( mb->measureAtPixel(m_width + 15) );
 
     if (m_musical_notation_enabled) m_converter->resetAccidentalsForNewRender();
 
@@ -992,9 +998,12 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
         if (m_musical_notation_enabled)
         {
+            MeasureData* md = m_sequence->getMeasureData();
+            
             // build visible notes vector with initial info in it
-            NoteRenderInfo currentNote(tick, noteLevel, noteLength, note_sign,
-                                       m_track->isNoteSelected(n), m_track->getNotePitchID(n));
+            NoteRenderInfo currentNote = NoteRenderInfo::factory(tick, noteLevel, noteLength, note_sign,
+                                                                 m_track->isNoteSelected(n),
+                                                                 m_track->getNotePitchID(n), md);
 
             // add note to either G clef score or F clef score
             if (m_g_clef and not m_f_clef)
@@ -1324,11 +1333,14 @@ void ScoreEditor::renderScore(ScoreAnalyser* analyser, const int silences_y)
     for (int i=0; i<visibleNoteAmount; i++) renderNote_pass1( analyser->noteRenderInfo[i] );
 
     // render silences
-    MeasureData* md = m_sequence->getMeasureData();
-    const unsigned int first_visible_measure = md->measureAtPixel( Editor::getEditorXStart() );
-    const unsigned int last_visible_measure  = md->measureAtPixel( getXEnd() );
+    //MeasureData* md = m_sequence->getMeasureData();
+    MeasureBar* mb = m_gsequence->getMeasureBar();
+
+    const unsigned int first_visible_measure = mb->measureAtPixel( Editor::getEditorXStart() );
+    const unsigned int last_visible_measure  = mb->measureAtPixel( getXEnd() );
     
-    SilenceAnalyser::findSilences( &renderSilence, analyser, first_visible_measure, last_visible_measure, silences_y );
+    SilenceAnalyser::findSilences(m_gsequence, &renderSilence, analyser, first_visible_measure,
+                                  last_visible_measure, silences_y );
 
     // ------------------------- second note rendering pass -------------------
 

@@ -72,7 +72,7 @@ Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener
 
     channelManagement = CHANNEL_AUTO;
     
-    m_measure_data = new MeasureData(DEFAULT_SONG_LENGTH);
+    m_measure_data = new MeasureData(this, DEFAULT_SONG_LENGTH);
 }
 
 // ----------------------------------------------------------------------------------------------------------

@@ -1202,11 +1202,11 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
         
         AriaRender::primitives();
         
-        if ( currentTick!=-1 and not Display::leftArrow() and not Display::rightArrow())
+        if (currentTick != -1 and not Display::leftArrow() and not Display::rightArrow())
         {
             AriaRender::color(0.8, 0, 0);
             
-            RelativeXCoord tick(currentTick, MIDI);
+            RelativeXCoord tick(currentTick, MIDI, m_gsequence);
             const int x_coord = tick.getRelativeTo(WINDOW);
             
             AriaRender::lineWidth(1);

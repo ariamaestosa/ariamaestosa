@@ -29,6 +29,7 @@
 
 namespace AriaMaestosa
 {
+    class MeasureData;
     
     enum STEM
     {
@@ -142,7 +143,11 @@ namespace AriaMaestosa
         float m_stem_y_level;
         
         
-        NoteRenderInfo(int tick, int level, int tick_length, PitchSign sign, const bool selected, int pitch);
+        NoteRenderInfo(int tick, int level, int tick_length, PitchSign sign, const bool selected, int pitch,
+                       const int measureBegin, const int measureEnd);
+        
+        static NoteRenderInfo factory(int tick, int level, int tick_length, PitchSign sign, const bool selected, int pitch,
+                                      MeasureData* md);
         
         void tieWith(NoteRenderInfo& renderInfo);
         void tieWith(const int tick);

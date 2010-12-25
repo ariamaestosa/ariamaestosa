@@ -343,14 +343,15 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
     // FIXME find real problem
     if (not playing)
     {
-        if (getMeasureData()->isMeasureLengthConstant())
+        MeasureData* md = sequence->getMeasureData();
+        if (md->isMeasureLengthConstant())
         {
             // time signature
             jdkmidi::MIDITimedBigMessage m;
             m.SetTime( 0 );
             
-            float denom = (float)log(getMeasureData()->getTimeSigDenominator())/(float)log(2);
-            m.SetTimeSig( getMeasureData()->getTimeSigNumerator(), (int)denom );
+            float denom = (float)log(md->getTimeSigDenominator())/(float)log(2);
+            m.SetTimeSig( md->getTimeSigNumerator(), (int)denom );
             
             if (not tracks.GetTrack(0)->PutEvent( m ))
             {
@@ -368,8 +369,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
         else
         {
             // add both tempo changes and measures in time order
-            MeasureData* measureData = getMeasureData();
-            const int timesig_amount = measureData->getTimeSigAmount();
+            const int timesig_amount = md->getTimeSigAmount();
             const int tempo_amount = sequence->tempoEvents.size();
             int timesig_id = 0; // which time sig event should be the next added
             int tempo_id = 0; // which tempo event should be the next added
@@ -378,7 +378,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
             while (true)
             {
                 const int timesig_tick = (timesig_id < timesig_amount ?
-                                          measureData->getTimeSig(timesig_id).getTick() :
+                                          md->getTimeSig(timesig_id).getTick() :
                                           -1);
                 const int tempo_tick = (tempo_id < tempo_amount ? sequence->tempoEvents[tempo_id].getTick() : -1);
                 
@@ -393,12 +393,12 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
                 }
                 else if (tempo_tick == -1)
                 {
-                    addTimeSigFromVector(timesig_id, timesig_amount, measureData, tracks, substract_ticks);
+                    addTimeSigFromVector(timesig_id, timesig_amount, md, tracks, substract_ticks);
                     timesig_id++;
                 }
                 else if (tempo_tick > timesig_tick)
                 {
-                    addTimeSigFromVector(timesig_id, timesig_amount, measureData, tracks, substract_ticks);
+                    addTimeSigFromVector(timesig_id, timesig_amount, md, tracks, substract_ticks);
                     timesig_id++;
                 }
                 else
@@ -466,7 +466,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
     // ---- Add metronome track if enabled
     if (addMetronome)
     {
-        const int beat = getMeasureData()->beatLengthInTicks();
+        const int beat = sequence->ticksPerBeat();
         
         const int metronomeInstrument = 37; // 31 (stick), 56 (cowbell), 37 (side stick)
         const int metronomeVolume = 127;

@@ -24,6 +24,7 @@
 #include "Midi/Sequence.h"
 
 #include <wx/checkbox.h>
+#include <wx/event.h>
 #include <wx/sizer.h>
 #include <wx/panel.h>
 #include <wx/textctrl.h>
@@ -31,6 +32,7 @@
 #include <wx/stattext.h>
 #include <wx/msgdlg.h>
 #include <wx/minifram.h>
+#include <wx/spinbutt.h>
 
 namespace AriaMaestosa
 {
@@ -47,12 +49,14 @@ namespace AriaMaestosa
         wxPanel*    m_pane;
         wxCheckBox* m_variable;
         
+        GraphicalSequence* m_gseq;
+        
     public:
         LEAK_CHECK();
         
         TimeSigPicker();
         
-        void show(const int x, const int y, const int num, const int denom);
+        void show(GraphicalSequence* parent, const int x, const int y, const int num, const int denom);
         void closeWindow();
         
         void enterPressed(wxCommandEvent& evt);
@@ -119,10 +123,10 @@ void AriaMaestosa::freeTimeSigPicker()
 
 // --------------------------------------------------------------------------------------------------------
 
-void AriaMaestosa::showTimeSigPicker(const int x, const int y, const int num, const int denom)
+void AriaMaestosa::showTimeSigPicker(GraphicalSequence* parent, const int x, const int y, const int num, const int denom)
 {
     if (timesigpicker_frame == NULL) timesigpicker_frame = new TimeSigPicker();
-    timesigpicker_frame->show(x, y, num, denom);
+    timesigpicker_frame->show(parent, x, y, num, denom);
 }
 
 // --------------------------------------------------------------------------------------------------------
@@ -243,14 +247,16 @@ void TimeSigPicker::onFocus(wxFocusEvent& evt)
 
 // --------------------------------------------------------------------------------------------------------
 
-void TimeSigPicker::show(const int x, const int y, const int num, const int denom)
+void TimeSigPicker::show(GraphicalSequence* parent, const int x, const int y, const int num, const int denom)
 {
+    m_gseq = parent;
+    
     // show the keysig picking dialog
     SetPosition(wxPoint(x,y));
 
     m_value_text_num->SetValue( to_wxString(num) );
     m_value_text_denom->SetValue( to_wxString(denom) );
-    m_variable->SetValue( getMeasureData()->isExpandedMode() );
+    m_variable->SetValue( parent->getModel()->getMeasureData()->isExpandedMode() );
     Show();
     m_value_text_num->SetFocus();
     m_value_text_num->SetSelection( -1, -1 ); // select everything
@@ -280,16 +286,26 @@ void TimeSigPicker::enterPressed(wxCommandEvent& evt)
     }
     
     MainFrame* mainFrame = getMainFrame();
-    MeasureData* measures = getMeasureData();
+    MeasureData* measures = m_gseq->getModel()->getMeasureData();
     
     measures->setTimeSig( top, bottom );
     mainFrame->changeShownTimeSig( top, bottom );
+    
+    // FIXME: confusing line, maybe rename 'setZoom' so it's clearer what it does...
+    m_gseq->setZoom( m_gseq->getZoomInPercent() ); // update zoom to new measure size
+    
+    // FIXME: avoid fake events
+    wxSpinEvent unused;
+    mainFrame->songLengthChanged(unused);
+    
+    Display::render();
+    
 
     // check if user changed measure mode
     if (m_variable->IsChecked() != measures->isExpandedMode())
     {
         measures->setExpandedMode( m_variable->IsChecked() );
-        mainFrame->updateTopBarAndScrollbarsForSequence( getCurrentGraphicalSequence() );
+        mainFrame->updateTopBarAndScrollbarsForSequence( m_gseq );
         mainFrame->updateMenuBarToSequence();
     }
 

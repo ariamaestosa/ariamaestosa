@@ -14,16 +14,15 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _measurebar_
-#define _measurebar_
+#ifndef __MEASURE_BAR_H__
+#define __MEASURE_BAR_H__
 
 #include "Utils.h"
 
 namespace AriaMaestosa
 {
-    
-    class MainFrame;
     class MeasureData;
+    class GraphicalSequence;
     
     class UnselectedMenu;
     class SelectedMenu;
@@ -49,10 +48,12 @@ namespace AriaMaestosa
         
         MeasureData* data;
         
+        GraphicalSequence* m_gseq;
+        
     public:
         LEAK_CHECK();
         
-        MeasureBar(MeasureData* parent);
+        MeasureBar(MeasureData* parent, GraphicalSequence* gseq);
         ~MeasureBar();
         
         void render(int from_y);
@@ -61,9 +62,21 @@ namespace AriaMaestosa
         void mouseUp(int mousex_current, int mousey_current, int mousex_initial, int mousey_initial);
         void rightClick(int x, int y);
         
-        
+        float measureLengthInPixels(int measure=-1);
+        int   measureAtPixel(int pixel);
+
         int getMeasureBarHeight();
-        void unselectAll();
+        float defaultMeasureLengthInPixels();
+        //void unselectAll();
+        
+        void  selectTimeSig(const int id);
+        void  unselect();
+        
+        int   getTotalPixelAmount();
+
+        int   measureDivisionAt(int pixel);
+        int   firstPixelInMeasure(int id);
+        int   lastPixelInMeasure(int id);
     };
     
 }

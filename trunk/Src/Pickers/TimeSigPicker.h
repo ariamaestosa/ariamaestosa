@@ -23,9 +23,7 @@
 
 namespace AriaMaestosa
 {
-    
-    class Note; // forward
-    class Track;
+    class GraphicalSequence;
     
     
     DECLARE_LOCAL_EVENT_TYPE(wxEVT_DESTROY_TIMESIG_PICKER, -1)
@@ -35,7 +33,7 @@ namespace AriaMaestosa
       * @ingroup pickers
       * @brief show a time signature picker frame
       */
-    void showTimeSigPicker(const int x, const int y, const int num, const int denom);
+    void showTimeSigPicker(GraphicalSequence* parent, const int x, const int y, const int num, const int denom);
     
     /**
       * @ingroup pickers

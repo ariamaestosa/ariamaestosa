@@ -62,7 +62,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
     jdkmidi::MIDIFileRead reader( &rs, &track_loader );
 
     // load the midifile into the multitrack object
-    if ( !reader.Parse() )
+    if (not reader.Parse())
     {
         std::cout << "Error: could not parse midi file" << std::endl;
         return false;
@@ -72,7 +72,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
     jdkmidi::MIDITimedBigMessage* event;
 
     sequence->setChannelManagementType(CHANNEL_MANUAL);
-    getMeasureData()->beforeImporting();
+    sequence->getMeasureData()->beforeImporting();
     
     const int resolution = jdksequence.GetClksPerBeat();
     sequence->setTicksPerBeat( resolution );
@@ -301,7 +301,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
             }
             else if ( event->IsTimeSig() )
             {
-                getMeasureData()->addTimeSigChange_import( tick, (int)event->GetTimeSigNumerator(), (int)event->GetTimeSigDenominator() );
+                sequence->getMeasureData()->addTimeSigChange_import( tick, (int)event->GetTimeSigNumerator(), (int)event->GetTimeSigDenominator() );
                 continue;
             }
             else if ( event->IsKeySig() )
@@ -549,21 +549,23 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
 
     if (one_track_one_channel) sequence->setChannelManagementType(CHANNEL_AUTO);
 
-    getMeasureData()->afterImporting();
+    MeasureData* md = sequence->getMeasureData();
+    
+    md->afterImporting();
 
     gseq->setXScrollInPixels(0);
-    sequence->getMeasureData()->setFirstMeasure(0);
+    md->setFirstMeasure(0);
 
     // set song length
-    int measureAmount_i = getMeasureData()->measureAtTick(lastEventTick) + 1;
+    int measureAmount_i = md->measureAtTick(lastEventTick) + 1;
 
     std::cout << "song length = " << measureAmount_i << " measures, last_event_tick="
-              << lastEventTick << ", beat length = " << getMeasureData()->beatLengthInTicks() << std::endl;
+              << lastEventTick << ", beat length = " << sequence->ticksPerBeat() << std::endl;
 
     if (measureAmount_i < 10) measureAmount_i=10;
 
     getMainFrame()->changeMeasureAmount( measureAmount_i );
-    sequence->m_measure_data->setMeasureAmount( measureAmount_i );
+    md->setMeasureAmount( measureAmount_i );
 
     // FIXME: this function shouldn't make GUI calls
     getMainFrame()->updateTopBarAndScrollbarsForSequence(gseq);
@@ -574,9 +576,13 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
     sequence->importing = false;
 
     getMainFrame()->updateMenuBarToSequence();
-    if (not getMeasureData()->isMeasureLengthConstant())
+    
+    // FIXME: ugly that you need to manually call 'updateMeasureInfo', it should update itself automatically when needed
+    // (transaction system? you do 'startTransaction' to get the right to modify measure data, and at the end of the
+    //  transaction the data is updated)
+    if (not md->isMeasureLengthConstant())
     {
-        getMeasureData()->updateMeasureInfo();
+        md->updateMeasureInfo();
     }
     
     return true;

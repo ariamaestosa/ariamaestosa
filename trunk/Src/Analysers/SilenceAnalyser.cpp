@@ -14,9 +14,12 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "SilenceAnalyser.h"
+#include "Analysers/SilenceAnalyser.h"
+
 #include "AriaCore.h"
+#include "GUI/GraphicalSequence.h"
 #include "Midi/MeasureData.h"
+#include "Midi/Sequence.h"
 
 namespace AriaMaestosa
 {
@@ -36,7 +39,7 @@ namespace AriaMaestosa
         /**
           * @internal
           */
-        void recursivelyAnalyzeSilence(RenderSilenceCallback renderSilenceCallback,
+        void recursivelyAnalyzeSilence(GraphicalSequence* gseq, RenderSilenceCallback renderSilenceCallback,
                                        const int tick, const int tick_length, const int silences_y)
         {
 #ifdef _MORE_DEBUG_CHECKS
@@ -44,25 +47,27 @@ namespace AriaMaestosa
             IncRecDepth scopeObject;
 #endif
             
-            if (tick_length<2) return;
+            if (tick_length < 2) return;
             
-            const int measure = getMeasureData()->measureAtTick(tick);
-            const int end_measure = getMeasureData()->measureAtTick(tick+tick_length-1);
-            const int beatLength = getMeasureData()->beatLengthInTicks();
+            MeasureData* md = gseq->getModel()->getMeasureData();
+            const int beatLen = gseq->getModel()->ticksPerBeat();
             
-            if (tick_length<2) return;
+            const int measure     = md->measureAtTick(tick);
+            const int end_measure = md->measureAtTick(tick + tick_length - 1);
+            
+            if (tick_length < 2) return;
             
             // check if silence spawns over more than one measure
             if (measure != end_measure)
             {
                 // we need to plit it in two
-                const int split_tick = getMeasureData()->firstTickInMeasure(end_measure);
+                const int split_tick = md->firstTickInMeasure(end_measure);
                 
                 // Check split is valid before attempting.
                 if (split_tick - tick > 0 and tick_length - (split_tick - tick) > 0)
                 {
-                    recursivelyAnalyzeSilence(renderSilenceCallback, tick, split_tick - tick, silences_y);
-                    recursivelyAnalyzeSilence(renderSilenceCallback, split_tick,
+                    recursivelyAnalyzeSilence(gseq, renderSilenceCallback, tick, split_tick - tick, silences_y);
+                    recursivelyAnalyzeSilence(gseq, renderSilenceCallback, split_tick,
                                               tick_length - (split_tick - tick), silences_y);
                     return;
                 }
@@ -76,13 +81,13 @@ namespace AriaMaestosa
             
             int dot_delta_x = 0, dot_delta_y = 0;
             
-            const float relativeLength = tick_length / (float)(getMeasureData()->beatLengthInTicks()*4);
+            const float relativeLength = tick_length / (float)(beatLen*4);
             
-            const int  tick_from_measure_start = tick - getMeasureData()->firstTickInMeasure( getMeasureData()->measureAtTick(tick) );
+            const int  tick_from_measure_start = tick - md->firstTickInMeasure( md->measureAtTick(tick) );
             
             /** How many ticks remain before the first beat this note plays on */
-            const int  remaining      = beatLength - (tick_from_measure_start % beatLength);
-            const bool starts_on_beat = aboutEqual(remaining, 0) or aboutEqual(remaining, beatLength);
+            const int  remaining      = beatLen - (tick_from_measure_start % beatLen);
+            const bool starts_on_beat = aboutEqual(remaining, 0) or aboutEqual(remaining, beatLen);
             
             if (aboutEqual(relativeLength, 1.0))
             {
@@ -144,8 +149,8 @@ namespace AriaMaestosa
                 if (not starts_on_beat and not aboutEqual(remaining, tick_length) and remaining <= tick_length)
                 {
                     ASSERT_E(remaining, <=, tick_length);
-                    recursivelyAnalyzeSilence(renderSilenceCallback, tick, remaining, silences_y);
-                    recursivelyAnalyzeSilence(renderSilenceCallback, tick+remaining, tick_length - remaining, silences_y);
+                    recursivelyAnalyzeSilence(gseq, renderSilenceCallback, tick, remaining, silences_y);
+                    recursivelyAnalyzeSilence(gseq, renderSilenceCallback, tick+remaining, tick_length - remaining, silences_y);
                     return;
                 }
                 
@@ -153,25 +158,27 @@ namespace AriaMaestosa
                 float closestShorterDuration = 1;
                 while (closestShorterDuration >= relativeLength) closestShorterDuration /= 2.0;
                 
-                const int firstLength = closestShorterDuration*(float)(getMeasureData()->beatLengthInTicks()*4);
+                const int firstLength = closestShorterDuration*(float)(beatLen*4);
                 
-                recursivelyAnalyzeSilence(renderSilenceCallback, tick, firstLength, silences_y);
-                recursivelyAnalyzeSilence(renderSilenceCallback, tick + firstLength, tick_length - firstLength, silences_y);
+                recursivelyAnalyzeSilence(gseq, renderSilenceCallback, tick, firstLength, silences_y);
+                recursivelyAnalyzeSilence(gseq, renderSilenceCallback, tick + firstLength, tick_length - firstLength, silences_y);
                 return;
             }
             
-            renderSilenceCallback(tick_length, tick, type, silences_y, triplet, dotted, dot_delta_x, dot_delta_y);
+            renderSilenceCallback(gseq, tick_length, tick, type, silences_y, triplet, dotted, dot_delta_x, dot_delta_y);
         }
         
         // ------------------------------------------------------------------------------------------------
         
-        void findSilences( RenderSilenceCallback renderSilenceCallback, INoteSource* noteSource,
+        void findSilences(RenderSilenceCallback renderSilenceCallback, INoteSource* noteSource,
                           const int first_visible_measure, const int last_visible_measure,
-                          const int silences_y)
+                          const int silences_y, GraphicalSequence* gseq)
         {
             const int visible_measure_amount = last_visible_measure-first_visible_measure+1;
             bool measure_empty[visible_measure_amount+1];
             for (int i=0; i<=visible_measure_amount; i++) measure_empty[i] = true;
+            
+            MeasureData* md = gseq->getModel()->getMeasureData();
             
             const int visibleNoteAmount = noteSource->getNoteCount();
             if (visibleNoteAmount>0)
@@ -201,26 +208,26 @@ namespace AriaMaestosa
                         // if the last note of previous measure does not finish at the end of the measure,
                         // we need to add a silence at the end of it
                         if (last_measure != -1 and
-                            not aboutEqual(last_note_end, getMeasureData()->firstTickInMeasure(measure) ))
+                            not aboutEqual(last_note_end, md->firstTickInMeasure(measure) ))
                         {
-                            const int last_measure_id = getMeasureData()->measureAtTick(last_note_end-1);
-                            const int silence_length  = getMeasureData()->lastTickInMeasure(last_measure_id) - 
+                            const int last_measure_id = md->measureAtTick(last_note_end-1);
+                            const int silence_length  = md->lastTickInMeasure(last_measure_id) - 
                             last_note_end;
                             if (silence_length < 0) continue;
                             
-                            recursivelyAnalyzeSilence(renderSilenceCallback, last_note_end,
+                            recursivelyAnalyzeSilence(gseq, renderSilenceCallback, last_note_end,
                                                       silence_length, silences_y);
                             
                         }
                         
                         // if note is not at the very beginning of the new measure, and it's the first note of
                         // the measure, we need to add a silence before it
-                        if (not aboutEqual(noteSource->getStartTick(i), getMeasureData()->firstTickInMeasure(measure) ))
+                        if (not aboutEqual(noteSource->getStartTick(i), md->firstTickInMeasure(measure) ))
                         {
                             const int silence_length = noteSource->getStartTick(i) -
-                            getMeasureData()->firstTickInMeasure(measure);
-                            recursivelyAnalyzeSilence(renderSilenceCallback,
-                                                      getMeasureData()->firstTickInMeasure(measure),
+                            md->firstTickInMeasure(measure);
+                            recursivelyAnalyzeSilence(gseq, renderSilenceCallback,
+                                                      md->firstTickInMeasure(measure),
                                                       silence_length, silences_y);
                         }
                         
@@ -249,7 +256,7 @@ namespace AriaMaestosa
                     if ( previous_note_end != -1 and !aboutEqual(previous_note_end, current_begin_tick) and
                         (current_begin_tick-previous_note_end)>0 /*and previous_note_end >= last_note_end*/)
                     {
-                        recursivelyAnalyzeSilence(renderSilenceCallback, previous_note_end, current_begin_tick-previous_note_end, silences_y);
+                        recursivelyAnalyzeSilence(gseq, renderSilenceCallback, previous_note_end, current_begin_tick-previous_note_end, silences_y);
                     }
                     
                     previous_note_end = noteSource->getEndTick(i);
@@ -265,12 +272,13 @@ namespace AriaMaestosa
                 }//next visible note
                 
                 // check for silence after last note
-                const int lastNoteMeasure = getMeasureData()->measureAtTick(noteSource->getStartTick(visibleNoteAmount-1));
-                const unsigned int last_measure_end = getMeasureData()->lastTickInMeasure(lastNoteMeasure);
-                if (!aboutEqual(last_note_end, last_measure_end ) and last_note_end>-1)
+                const int lastNoteMeasure           = md->measureAtTick(noteSource->getStartTick(visibleNoteAmount-1));
+                const unsigned int last_measure_end = md->lastTickInMeasure(lastNoteMeasure);
+                
+                if (not aboutEqual(last_note_end, last_measure_end ) and last_note_end > -1)
                 {
                     const int silence_length = last_measure_end-last_note_end;
-                    recursivelyAnalyzeSilence(renderSilenceCallback, last_note_end, silence_length, silences_y);
+                    recursivelyAnalyzeSilence(gseq, renderSilenceCallback, last_note_end, silence_length, silences_y);
                 }
                 
                 
@@ -281,9 +289,9 @@ namespace AriaMaestosa
             {
                 if (measure_empty[i])
                 {
-                    recursivelyAnalyzeSilence(renderSilenceCallback,
-                                              getMeasureData()->firstTickInMeasure(first_visible_measure+i),
-                                              getMeasureData()->measureLengthInTicks(first_visible_measure+i), silences_y);
+                    recursivelyAnalyzeSilence(gseq, renderSilenceCallback,
+                                              md->firstTickInMeasure(first_visible_measure+i),
+                                              md->measureLengthInTicks(first_visible_measure+i), silences_y);
                 }
             }
         } // end function
@@ -295,8 +303,8 @@ namespace AriaMaestosa
         /**
           * @internal
           */
-        void gatherSilenceCallback(const int duration, const int tick, const int type, const int silences_y,
-                                   const bool triplet,  const bool dotted,
+        void gatherSilenceCallback(GraphicalSequence* gseq, const int duration, const int tick, const int type,
+                                   const int silences_y, const bool triplet,  const bool dotted,
                                    const int dot_delta_x, const int dot_delta_y)
         {
             g_silences_ticks.push_back( SilenceInfo(tick, tick + duration, type, silences_y,
@@ -305,12 +313,12 @@ namespace AriaMaestosa
         
         // ------------------------------------------------------------------------------------------------
 
-        std::vector<SilenceInfo> findSilences(INoteSource* noteSource,
+        std::vector<SilenceInfo> findSilences(GraphicalSequence* gseq, INoteSource* noteSource,
                                               const int first_visible_measure, const int last_visible_measure,
                                               const int silences_y)
         {
             g_silences_ticks.clear();
-            findSilences(&gatherSilenceCallback, noteSource, first_visible_measure,
+            findSilences(gseq, &gatherSilenceCallback, noteSource, first_visible_measure,
                          last_visible_measure, silences_y);
             return g_silences_ticks;
         }

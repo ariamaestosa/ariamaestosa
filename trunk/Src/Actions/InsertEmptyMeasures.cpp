@@ -20,7 +20,6 @@
 #include "Actions/EditAction.h"
 #include "Actions/InsertEmptyMeasures.h"
 #include "Actions/RemoveMeasures.h"
-#include "GUI/GraphicalTrack.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
@@ -233,6 +232,8 @@ namespace InsertMeasuresTest
             }
         }
     };
+    
+    // ----------------------------------------------------------------------------------------------------------
     
     UNIT_TEST(TestInsert)
     {

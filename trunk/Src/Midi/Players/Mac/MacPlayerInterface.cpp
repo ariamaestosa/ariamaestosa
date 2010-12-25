@@ -93,13 +93,16 @@ namespace AriaMaestosa
     
     // Silly way to pass parameters to the thread
     wxString export_audio_filepath;
-    Sequence* g_sequence;
+    Sequence* g_sequence = NULL;
 
     void* add_events_func( void* ptr )
     {
+        ASSERT(g_sequence != NULL);
+        MeasureData* md = g_sequence->getMeasureData();
+        
         // when we're saving, we always want song to start at first measure, so temporarly switch firstMeasure to 0, and set it back in the end
-        const int firstMeasureValue=getMeasureData()->getFirstMeasure();
-        getMeasureData()->setFirstMeasure(0);
+        const int firstMeasureValue = md->getFirstMeasure();
+        md->setFirstMeasure(0);
         
         char* data;
         int length = -1;
@@ -111,7 +114,7 @@ namespace AriaMaestosa
         qtkit_setData(data, length);
         bool success = qtkit_exportToAiff( export_audio_filepath.mb_str() );
         
-        if (!success)
+        if (not success)
         {
             // FIXME - give visual message. warning this is a thread.
             std::cerr << "EXPORTING FAILED" << std::endl;
@@ -122,7 +125,7 @@ namespace AriaMaestosa
         getMainFrame()->GetEventHandler()->AddPendingEvent(event);
         
         free(data);
-        getMeasureData()->setFirstMeasure(firstMeasureValue);
+        md->setFirstMeasure(firstMeasureValue);
         
         return (void*)NULL;
     }
