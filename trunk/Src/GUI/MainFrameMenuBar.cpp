@@ -330,7 +330,7 @@ void MainFrame::updateMenuBarToSequence()
     }
 
     m_follow_playback_menu_item->Check( sequence->follow_playback );
-    m_expanded_measures_menu_item->Check(getMeasureData()->isExpandedMode());
+    m_expanded_measures_menu_item->Check( sequence->getMeasureData()->isExpandedMode() );
     m_metronome->Check( sequence->playWithMetronome() );
 }
 

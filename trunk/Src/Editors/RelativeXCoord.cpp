@@ -39,9 +39,9 @@ RelativeXCoord& RelativeXCoord_empty()
 RelativeXCoord::RelativeXCoord()
 {
     //verbose = false;
-    relativeToEditor=-1;
-    relativeToWindow=-1;
-    relativeToMidi=-1;
+    relativeToEditor = -1;
+    relativeToWindow = -1;
+    relativeToMidi   = -1;
 }
 
 RelativeXCoord::RelativeXCoord(int i, RelativeType relativeTo)
@@ -52,9 +52,9 @@ RelativeXCoord::RelativeXCoord(int i, RelativeType relativeTo)
 void RelativeXCoord::setValue(int i, RelativeType relativeTo)
 {
 
-    relativeToEditor=-1;
-    relativeToWindow=-1;
-    relativeToMidi=-1;
+    relativeToEditor = -1;
+    relativeToWindow = -1;
+    relativeToMidi   = -1;
 
     if (relativeTo == WINDOW)
     {

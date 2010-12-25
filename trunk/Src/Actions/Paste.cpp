@@ -14,15 +14,16 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include "AriaCore.h"
+#include "Clipboard.h"
 #include "Actions/Paste.h"
 #include "Actions/EditAction.h"
-#include "Midi/Track.h"
-#include "Midi/Sequence.h"
+#include "Editors/KeyboardEditor.h"
+#include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
 #include "Midi/MeasureData.h"
-#include "Clipboard.h"
-#include "AriaCore.h"
-#include "Editors/KeyboardEditor.h"
+#include "Midi/Track.h"
+#include "Midi/Sequence.h"
 
 #include <wx/intl.h>
 #include <wx/utils.h>
@@ -172,10 +173,15 @@ regular_paste: // FIXME - find better way than goto
          * This part will change to value of 'shift' variable to make sure pasted notes will be visible
          */
 
+        Sequence* sequence = track->getSequence();
+        MeasureData* md = sequence->getMeasureData();
+        
         // if not "paste at mouse", find first visible measure
-        int measure = getMeasureData()->measureAtTick(track->graphics->getSequence()->getXScrollInMidiTicks())-1;
+        int measure = md->measureAtTick(track->graphics->getSequence()->getXScrollInMidiTicks())-1;
         if (measure < 0) measure = 0;
-        const int lastMeasureStart = getMeasureData()->firstTickInMeasure( measure );
+        const int lastMeasureStart = md->firstTickInMeasure( measure );
+        
+        // FIXME: why keyboard editor???
         shift = track->graphics->getKeyboardEditor()->snapMidiTickToGrid( lastMeasureStart );
 
         // find if all track->m_notes will be visible in the location just calculated,
@@ -186,7 +192,7 @@ regular_paste: // FIXME - find better way than goto
         while ((first_note.startTick + first_note.endTick)/2 + shift <
                track->graphics->getSequence()->getXScrollInMidiTicks())
         {
-            shift = getMeasureData()->firstTickInMeasure( getMeasureData()->measureAtTick( shift )+1 );
+            shift = md->firstTickInMeasure( md->measureAtTick( shift )+1 );
         }
 
     }

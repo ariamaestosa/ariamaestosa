@@ -510,13 +510,16 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         // maximize button
         if (m_dock_toolbar->getItem(0).clickIsOnThisWidget(winX, mousey))
         {
+            Sequence* seq = m_gsequence->getModel();
+
             if (not m_gsequence->maximize_track_mode)
             {
+                
                 // switch on maximize mode
-                const int track_amount = getCurrentSequence()->getTrackAmount();
+                const int track_amount = seq->getTrackAmount();
                 for (int n=0; n<track_amount; n++)
                 {
-                    Track* track = getCurrentSequence()->getTrack(n);
+                    Track* track = seq->getTrack(n);
                     if (track->graphics == this)
                     {
                         maximizeHeight();
@@ -531,10 +534,10 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
             else
             {
                 // switch off maximize mode.
-                const int track_amount = getCurrentSequence()->getTrackAmount();
+                const int track_amount = seq->getTrackAmount();
                 for (int n=0; n<track_amount; n++)
                 {
-                    Track* track = getCurrentSequence()->getTrack(n);
+                    Track* track = seq->getTrack(n);
                     if (track->graphics->m_docked) track->graphics->dock(false);
                     track->graphics->maximizeHeight(false);
                 }
@@ -844,7 +847,7 @@ void GraphicalTrack::maximizeHeight(bool maximize)
     if (maximize)
     {
         setHeight(Display::getHeight() - m_gsequence->dockHeight -
-                  (getMeasureData()->isExpandedMode() ? 150 : 130)  ); // FIXME - don't hardcode values
+                  (m_gsequence->getModel()->getMeasureData()->isExpandedMode() ? 150 : 130)  ); // FIXME - don't hardcode values
     }
     else
     {

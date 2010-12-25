@@ -168,9 +168,10 @@ MainPane::~MainPane()
  */
 void MainPane::isNowVisible()
 {
-    getMainFrame()->addSequence();
-    getCurrentGraphicalSequence()->addTrack();
-    isVisible=true;
+    MainFrame* mf = getMainFrame();
+    mf->addSequence();
+    mf->getCurrentGraphicalSequence()->addTrack();
+    isVisible = true;
 }
 
 // --------------------------------------------------------------------------------------------------
@@ -212,13 +213,14 @@ void MainPane::render(const bool isPaintEvent)
 
 bool MainPane::do_render()
 {
-
-    if (not ImageProvider::imagesLoaded()) return false;
-    if (getCurrentSequence()->importing)   return false;
+    MainFrame* mf = getMainFrame();
+    
+    if (not ImageProvider::imagesLoaded())  return false;
+    if (mf->getCurrentSequence()->importing) return false;
 
     AriaRender::images();
 
-    GraphicalSequence* gseq = getCurrentGraphicalSequence();
+    GraphicalSequence* gseq = mf->getCurrentGraphicalSequence();
     
     gseq->renderTracks(m_current_tick,
                        m_mouse_x_current,
@@ -479,7 +481,8 @@ bool MainPane::isCtrlDown         () const { return wxGetKeyState(WXK_CONTROL); 
 
 void MainPane::mouseHeldDown()
 {
-    GraphicalSequence* gseq = getCurrentGraphicalSequence();
+    MainFrame* mf = getMainFrame();
+    GraphicalSequence* gseq = mf->getCurrentGraphicalSequence();
     
     // check click is within track area
     if (m_mouse_y_current < getHeight() - gseq->dockHeight and
@@ -497,7 +500,9 @@ void MainPane::mouseHeldDown()
 
 void MainPane::rightClick(wxMouseEvent& event)
 {
-    GraphicalSequence* gseq = getCurrentGraphicalSequence();
+    MainFrame* mf = getMainFrame();
+    GraphicalSequence* gseq   = mf->getCurrentGraphicalSequence();
+    Sequence* seq = gseq->getModel();
     const int measureBarHeight = gseq->m_measure_bar->getMeasureBarHeight();
 
     Display::requestFocus();
@@ -507,11 +512,12 @@ void MainPane::rightClick(wxMouseEvent& event)
     if (event.GetY() < getHeight() - gseq->dockHeight and
         event.GetY() > MEASURE_BAR_Y + measureBarHeight)
     {
-        for (int n=0; n<getCurrentSequence()->getTrackAmount(); n++)
+        const int count = seq->getTrackAmount();
+        for (int n=0; n<count; n++)
         {
-            if (not getCurrentSequence()->getTrack(n)->graphics->processRightMouseClick( RelativeXCoord(event.GetX(),WINDOW) , event.GetY()))
+            if (not seq->getTrack(n)->graphics->processRightMouseClick( RelativeXCoord(event.GetX(),WINDOW) , event.GetY()))
             {
-                getCurrentSequence()->setCurrentTrackID(n);
+                seq->setCurrentTrackID(n);
                 break;
             }
         }
@@ -533,7 +539,9 @@ void MainPane::mouseDown(wxMouseEvent& event)
     invalidateMouseEvents = false;
     Display::requestFocus();
 
-    GraphicalSequence* gseq = getCurrentGraphicalSequence();
+    MainFrame* mf = getMainFrame();
+    GraphicalSequence* gseq = mf->getCurrentGraphicalSequence();
+    Sequence* seq = gseq->getModel();
     
     m_mouse_x_current.setValue(event.GetX(), WINDOW);
     m_mouse_y_current = event.GetY();
@@ -555,13 +563,14 @@ void MainPane::mouseDown(wxMouseEvent& event)
 
         // dispatch event to all tracks (stop when either of them uses it)
         m_click_in_track = -1;
-        const unsigned int track_amount = getCurrentSequence()->getTrackAmount();
+        const unsigned int track_amount = seq->getTrackAmount();
         for (unsigned int n=0; n<track_amount; n++)
         {
-            const int y = getCurrentSequence()->getTrack(n)->graphics->getCurrentEditor()->getTrackYStart();
+            Track* t = seq->getTrack(n);
+            const int y = t->graphics->getCurrentEditor()->getTrackYStart();
 
             // check if user is moving this track
-            if (not getCurrentSequence()->getTrack(n)->graphics->isDocked() and
+            if (not t->graphics->isDocked() and
                 m_mouse_y_current > y and m_mouse_y_current < y+7)
             {
                 click_area = CLICK_REORDER;
@@ -570,7 +579,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
             else
             { 
                 // otherwise ask the track to check if it has something to do with this event
-                GraphicalTrack* gtrack = getCurrentSequence()->getTrack(n)->graphics;
+                GraphicalTrack* gtrack = t->graphics;
                 const bool event_processed = not gtrack->processMouseClick(m_mouse_x_current, event.GetY());
                 if (event_processed)
                 {
@@ -594,13 +603,13 @@ void MainPane::mouseDown(wxMouseEvent& event)
             {
                 if (gseq->maximize_track_mode)
                 {
-                    const int track_amount = getCurrentSequence()->getTrackAmount();
+                    const int track_amount = seq->getTrackAmount();
                     GraphicalTrack* undocked_track = gseq->dock.get(n/2);
                     Track* undocked = undocked_track->getTrack();
 
                     for (int i=0; i<track_amount; i++)
                     {
-                        Track* track = getCurrentSequence()->getTrack(i);
+                        Track* track = seq->getTrack(i);
                         if (track->graphics == undocked_track)
                         {
                             undocked_track->dock(false);
@@ -618,7 +627,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
                     }
                     
                     DisplayFrame::updateVerticalScrollbar();
-                    getCurrentSequence()->setCurrentTrack(undocked);
+                    seq->setCurrentTrack(undocked);
                 }
                 else
                 {
@@ -637,7 +646,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
         click_area = CLICK_TAB_BAR;
 
         int start_at_x = 0;
-        const int seqAmount = getMainFrame()->getSequenceAmount();
+        const int seqAmount = mf->getSequenceAmount();
         for (int n=0; n<seqAmount; n++)
         {
             start_at_x += TAB_SIDE_WIDTH + tab_width + TAB_SIDE_WIDTH;
@@ -647,13 +656,13 @@ void MainPane::mouseDown(wxMouseEvent& event)
                     event.GetX() < start_at_x - CLOSE_BUTTON_SPACE_FROM_RIGHT)
                 {
                     // click is on close button
-                    getMainFrame()->closeSequence(n);
+                    mf->closeSequence(n);
                     return;
                 }
                 else
                 {
                     // click is on tab body
-                    getMainFrame()->setCurrentSequence(n);
+                    mf->setCurrentSequence(n);
                     return;
                 }
             }
@@ -696,17 +705,18 @@ void MainPane::mouseMoved(wxMouseEvent& event)
         // we are not reordering tracks
         if (m_dragged_track_id == -1)
         {
+            
             // ----------------------------------- click is in track area ----------------------------
             if (click_area == CLICK_TRACK and m_click_in_track != -1)
             {
-                getCurrentSequence()->getTrack(m_click_in_track)->graphics->processMouseDrag(m_mouse_x_current,
-                                                                                             event.GetY());
+                Sequence* seq = getMainFrame()->getCurrentSequence();
+                seq->getTrack(m_click_in_track)->graphics->processMouseDrag(m_mouse_x_current, event.GetY());
             }
 
             // ----------------------------------- click is in measure bar ----------------------------
             if (click_area == CLICK_MEASURE_BAR)
             {
-                GraphicalSequence* gseq = getCurrentGraphicalSequence();
+                GraphicalSequence* gseq = getMainFrame()->getCurrentGraphicalSequence();
                 gseq->m_measure_bar->mouseDrag(m_mouse_x_current.getRelativeTo(WINDOW),
                                                m_mouse_y_current - MEASURE_BAR_Y,
                                                m_mouse_x_initial.getRelativeTo(WINDOW),
@@ -773,7 +783,7 @@ void MainPane::mouseReleased(wxMouseEvent& event)
     m_is_mouse_down = false;
     if (invalidateMouseEvents) return;
 
-    GraphicalSequence* gseq = getCurrentGraphicalSequence();
+    GraphicalSequence* gseq = getMainFrame()->getCurrentGraphicalSequence();
     
     // if releasing after having dragged a track
     if (m_dragged_track_id != -1)
@@ -812,7 +822,7 @@ void MainPane::mouseReleased(wxMouseEvent& event)
     else if (click_area == CLICK_TRACK and m_click_in_track != -1)
     {
         // disptach mouse up event to current track
-        getCurrentSequence()->getTrack(m_click_in_track)->graphics->processMouseRelease();
+        getMainFrame()->getCurrentSequence()->getTrack(m_click_in_track)->graphics->processMouseRelease();
     }
 
     Display::render();
@@ -848,6 +858,10 @@ void MainPane::keyPressed(wxKeyEvent& evt)
         SetCursor( wxNullCursor );
     }*/
     
+    
+    MainFrame* mf = getMainFrame();
+    Sequence* seq = mf->getCurrentSequence();
+    
 #ifdef __WXMAC__
     const bool commandDown = evt.MetaDown() or evt.ControlDown();
 #else
@@ -858,7 +872,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
     // ---------------- play selected notes -----------------
     if (evt.GetKeyCode() == WXK_SPACE)
     {
-        getCurrentSequence()->spacePressed();
+        seq->spacePressed();
     }
     
 #ifdef _MORE_DEBUG_CHECKS
@@ -877,11 +891,11 @@ void MainPane::keyPressed(wxKeyEvent& evt)
 
         if (evt.GetKeyCode() == WXK_LEFT)
         {
-            getCurrentSequence()->getCurrentTrack()->
+            seq->getCurrentTrack()->
             action( new Action::ResizeNotes(
-                        -getCurrentSequence()->ticksPerBeat() *
+                        -seq->ticksPerBeat() *
                         4 /
-                        getCurrentSequence()->getCurrentTrack()->getGridDivider() ,
+                        seq->getCurrentTrack()->getGridDivider() ,
                         SELECTED_NOTES)
                    );
             Display::render();
@@ -889,11 +903,11 @@ void MainPane::keyPressed(wxKeyEvent& evt)
 
         if (evt.GetKeyCode() == WXK_RIGHT)
         {
-            getCurrentSequence()->getCurrentTrack()->
+            seq->getCurrentTrack()->
             action( new Action::ResizeNotes(
-                        getCurrentSequence()->ticksPerBeat() *
+                        seq->ticksPerBeat() *
                         4 /
-                        getCurrentSequence()->getCurrentTrack()->getGridDivider() ,
+                        seq->getCurrentTrack()->getGridDivider() ,
                         SELECTED_NOTES)
                     );
             Display::render();
@@ -906,14 +920,14 @@ void MainPane::keyPressed(wxKeyEvent& evt)
     // FIXME - belongs to the editor, probably (move all editor stuff to editor files)
     // FIXME - too many renders there, maybe even actions do render
 
-    const int current_editor = getCurrentSequence()->getCurrentTrack()->graphics->getEditorMode();
+    const int current_editor = seq->getCurrentTrack()->graphics->getEditorMode();
 
     // --------------- move by 1 measure ------------
     if (current_editor != GUITAR and not commandDown and shiftDown)
     {
         if (evt.GetKeyCode() == WXK_RIGHT or evt.GetKeyCode() == WXK_LEFT)
         {
-            Track* track = getCurrentSequence()->getCurrentTrack();
+            Track* track = seq->getCurrentTrack();
             const int noteID = track->getFirstSelectedNote();
             if (noteID == -1)
             {
@@ -922,12 +936,12 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             else
             {
                 const int tick = track->getNoteStartInMidiTicks(noteID);
-                const int measure = getMeasureData()->measureAtTick(tick);
+                const int measure = seq->getMeasureData()->measureAtTick(tick);
                 
                 const int factor = (evt.GetKeyCode() == WXK_LEFT ? -1 : 1);
                 
-                getCurrentSequence()->getCurrentTrack()->action(
-                        new Action::MoveNotes(factor*getMeasureData()->measureLengthInTicks(measure),
+                seq->getCurrentTrack()->action(
+                        new Action::MoveNotes(factor*seq->getMeasureData()->measureLengthInTicks(measure),
                                               0,
                                               SELECTED_NOTES)
                         );
@@ -942,14 +956,14 @@ void MainPane::keyPressed(wxKeyEvent& evt)
     {
         if (evt.GetKeyCode() == WXK_UP)
         {
-            getCurrentSequence()->getCurrentTrack()->action(new Action::MoveNotes(0, -12, SELECTED_NOTES));
+            seq->getCurrentTrack()->action(new Action::MoveNotes(0, -12, SELECTED_NOTES));
             Display::render();
             return;
         }
 
         if (evt.GetKeyCode() == WXK_DOWN)
         {
-            getCurrentSequence()->getCurrentTrack()->action(new Action::MoveNotes(0, 12, SELECTED_NOTES));
+            seq->getCurrentTrack()->action(new Action::MoveNotes(0, 12, SELECTED_NOTES));
             Display::render();
             return;
         }
@@ -964,11 +978,11 @@ void MainPane::keyPressed(wxKeyEvent& evt)
         {
             if (shiftDown)
             {
-                getCurrentSequence()->getCurrentTrack()->action(new Action::NumberPressed(evt.GetKeyCode() - 48 + 10) );
+                seq->getCurrentTrack()->action(new Action::NumberPressed(evt.GetKeyCode() - 48 + 10) );
             }
             else
             {
-                getCurrentSequence()->getCurrentTrack()->action( new Action::NumberPressed(evt.GetKeyCode() - 48) );
+                seq->getCurrentTrack()->action( new Action::NumberPressed(evt.GetKeyCode() - 48) );
             }
             Display::render();
         }
@@ -978,11 +992,11 @@ void MainPane::keyPressed(wxKeyEvent& evt)
         {
             if (shiftDown)
             {
-                getCurrentSequence()->getCurrentTrack()->action( new Action::NumberPressed(evt.GetKeyCode() - 324 + 10) );
+                seq->getCurrentTrack()->action( new Action::NumberPressed(evt.GetKeyCode() - 324 + 10) );
             }
             else
             {
-                getCurrentSequence()->getCurrentTrack()->action( new Action::NumberPressed(evt.GetKeyCode() - 324) );
+                seq->getCurrentTrack()->action( new Action::NumberPressed(evt.GetKeyCode() - 324) );
             }
             Display::render();
         }
@@ -993,25 +1007,25 @@ void MainPane::keyPressed(wxKeyEvent& evt)
 
             if (evt.GetKeyCode() == WXK_LEFT)
             {
-                getCurrentSequence()->getCurrentTrack()->action( new Action::ShiftFrets(-1, SELECTED_NOTES) );
+                seq->getCurrentTrack()->action( new Action::ShiftFrets(-1, SELECTED_NOTES) );
                 Display::render();
             }
 
             if (evt.GetKeyCode() == WXK_RIGHT)
             {
-                getCurrentSequence()->getCurrentTrack()->action( new Action::ShiftFrets(1, SELECTED_NOTES) );
+                seq->getCurrentTrack()->action( new Action::ShiftFrets(1, SELECTED_NOTES) );
                 Display::render();
             }
 
             if (evt.GetKeyCode() == WXK_UP)
             {
-                getCurrentSequence()->getCurrentTrack()->action( new Action::ShiftString(-1, SELECTED_NOTES) );
+                seq->getCurrentTrack()->action( new Action::ShiftString(-1, SELECTED_NOTES) );
                 Display::render();
             }
 
             if (evt.GetKeyCode() == WXK_DOWN)
             {
-                getCurrentSequence()->getCurrentTrack()->action( new Action::ShiftString(1, SELECTED_NOTES) );
+                seq->getCurrentTrack()->action( new Action::ShiftString(1, SELECTED_NOTES) );
                 Display::render();
             }
 
@@ -1022,14 +1036,14 @@ void MainPane::keyPressed(wxKeyEvent& evt)
     {
             if (evt.GetKeyCode() == WXK_UP)
             {
-                getCurrentSequence()->getCurrentTrack()->action( new Action::ShiftBySemiTone(-1, SELECTED_NOTES) );
+                seq->getCurrentTrack()->action( new Action::ShiftBySemiTone(-1, SELECTED_NOTES) );
                 Display::render();
                 return;
             }
 
             if (evt.GetKeyCode() == WXK_DOWN)
             {
-                getCurrentSequence()->getCurrentTrack()->action( new Action::ShiftBySemiTone(1, SELECTED_NOTES) );
+                seq->getCurrentTrack()->action( new Action::ShiftBySemiTone(1, SELECTED_NOTES) );
                 Display::render();
                 return;
             }
@@ -1042,33 +1056,33 @@ void MainPane::keyPressed(wxKeyEvent& evt)
 
         if (evt.GetKeyCode() == WXK_LEFT)
         {
-            getCurrentSequence()->getCurrentTrack()->
+            seq->getCurrentTrack()->
             action( new Action::MoveNotes(
-                      -getCurrentSequence()->ticksPerBeat() * 4 /
-                      getCurrentSequence()->getCurrentTrack()->getGridDivider(), 0, SELECTED_NOTES)
+                      -seq->ticksPerBeat() * 4 /
+                      seq->getCurrentTrack()->getGridDivider(), 0, SELECTED_NOTES)
                     );
             Display::render();
         }
 
         if (evt.GetKeyCode() == WXK_RIGHT)
         {
-            getCurrentSequence()->getCurrentTrack()->
+            seq->getCurrentTrack()->
             action( new Action::MoveNotes(
-                      getCurrentSequence()->ticksPerBeat() * 4 /
-                      getCurrentSequence()->getCurrentTrack()->getGridDivider(), 0, SELECTED_NOTES)
+                      seq->ticksPerBeat() * 4 /
+                      seq->getCurrentTrack()->getGridDivider(), 0, SELECTED_NOTES)
                     );
             Display::render();
         }
 
         if (evt.GetKeyCode() == WXK_UP)
         {
-            getCurrentSequence()->getCurrentTrack()->action( new Action::MoveNotes(0,-1,SELECTED_NOTES) );
+            seq->getCurrentTrack()->action( new Action::MoveNotes(0,-1,SELECTED_NOTES) );
             Display::render();
         }
 
         if (evt.GetKeyCode() == WXK_DOWN)
         {
-            getCurrentSequence()->getCurrentTrack()->action( new Action::MoveNotes(0,1,SELECTED_NOTES) );
+            seq->getCurrentTrack()->action( new Action::MoveNotes(0,1,SELECTED_NOTES) );
             Display::render();
         }
 
@@ -1077,7 +1091,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
         if (evt.GetKeyCode() == WXK_BACK or evt.GetKeyCode() == WXK_DELETE)
         {
 
-            getCurrentSequence()->getCurrentTrack()->action( new Action::DeleteSelected() );
+            seq->getCurrentTrack()->action( new Action::DeleteSelected() );
             Display::render();
         }
 
@@ -1085,12 +1099,12 @@ void MainPane::keyPressed(wxKeyEvent& evt)
     }//end if command down
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void MainPane::mouseWheelMoved(wxMouseEvent& event)
 {
     const int value = event.GetWheelRotation() / event.GetWheelDelta();
-    GraphicalSequence* gseq = getCurrentGraphicalSequence();
+    GraphicalSequence* gseq = getMainFrame()->getCurrentGraphicalSequence();
     
 #if wxCHECK_VERSION(2,9,1)
     // horizontal scrolling
@@ -1150,9 +1164,11 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
     {
 
         // dispatch event to all tracks (stop when either of them uses it)
-        for (int n=0; n<getCurrentSequence()->getTrackAmount(); n++)
+        Sequence* seq = getMainFrame()->getCurrentSequence();
+        const int count = seq->getTrackAmount();
+        for (int n=0; n<count; n++)
         {
-            if (not getCurrentSequence()->getTrack(n)->graphics->mouseWheelMoved(mx, my, value))
+            if (not seq->getTrack(n)->graphics->mouseWheelMoved(mx, my, value))
             {
                 break;
             }
@@ -1160,7 +1176,7 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
     }// end if not on dock
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #pragma mark Playback Loop
@@ -1170,12 +1186,12 @@ void MainPane::enterPlayLoop()
 {
     leftArrow = false;
     rightArrow = false;
-    m_follow_playback_time = getMeasureData()->defaultMeasureLengthInTicks();
+    m_follow_playback_time = getMainFrame()->getCurrentSequence()->getMeasureData()->defaultMeasureLengthInTicks();
     lastTick = -1;
     Core::activateRenderLoop(true);
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void MainPane::exitPlayLoop()
 {
@@ -1206,7 +1222,8 @@ void MainPane::playbackRenderLoop()
         return;
     }
 
-    GraphicalSequence* gseq = getCurrentGraphicalSequence();
+    GraphicalSequence* gseq = getMainFrame()->getCurrentGraphicalSequence();
+    Sequence* seq = gseq->getModel();
     
     // only draw if it has changed
     if (lastTick != m_playback_start_tick + currentTick)
@@ -1222,7 +1239,7 @@ void MainPane::playbackRenderLoop()
         }
 
         // if follow playback is checked in the menu
-        if (getCurrentSequence()->follow_playback)
+        if (seq->follow_playback)
         {
             RelativeXCoord tick(m_playback_start_tick + currentTick, MIDI);
             const int current_pixel = tick.getRelativeTo(WINDOW);
@@ -1230,8 +1247,8 @@ void MainPane::playbackRenderLoop()
             //const float zoom = getCurrentSequence()->getZoom();
             const int XStart = Editor::getEditorXStart();
             const int XEnd = getWidth() - 50; // 50 is somewhat arbitrary
-            const int last_visible_measure = getMeasureData()->measureAtPixel( XEnd );
-            const int current_measure = getMeasureData()->measureAtTick(m_playback_start_tick + currentTick);
+            const int last_visible_measure = seq->getMeasureData()->measureAtPixel( XEnd );
+            const int current_measure = seq->getMeasureData()->measureAtTick(m_playback_start_tick + currentTick);
 
             if (current_pixel < XStart or current_measure >= last_visible_measure)
             {
@@ -1300,6 +1317,6 @@ void MainPane::setCurrentTick(int currentTick)
 
 void MainPane::saveToFile(wxFileOutputStream& fileout)
 {
-    getCurrentGraphicalSequence()->saveToFile(fileout);
+    getMainFrame()->getCurrentGraphicalSequence()->saveToFile(fileout);
 }
 

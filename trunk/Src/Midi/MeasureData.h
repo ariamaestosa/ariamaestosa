@@ -19,10 +19,9 @@
 
 
 #include "ptr_vector.h"
-#include "Utils.h"
-#include "GUI/GraphicalSequence.h"
 #include "Midi/Sequence.h"
 #include "Midi/TimeSigChange.h"
+#include "Utils.h"
 
 class wxFileOutputStream;
 // forward
@@ -78,7 +77,7 @@ namespace AriaMaestosa
         // Only access this in expanded mode otherwise they're empty
         int totalNeededLengthInTicks;
         int totalNeededLengthInPixels;
-        
+                
         /**
          * @brief Change the number of items in the selected vector sothat it contains the same amount of elements
          * as the number of measures.
@@ -118,21 +117,6 @@ namespace AriaMaestosa
         
         float measureLengthInPixels(int measure =-1);
         int   measureLengthInTicks(int measure = -1);
-        
-        // FIXME: GUI-related function should not go in model
-        /** Get the graphical size of one music beat, according to the current display */
-        float beatLengthInPixels() const
-        {
-            GraphicalSequence* gsequence = getCurrentGraphicalSequence();
-            
-            return gsequence->getModel()->ticksPerBeat() * gsequence->getZoom();
-        }
-        
-        /** @return the length of one musical beat in midi ticks */
-        int   beatLengthInTicks() const
-        {
-            return getCurrentSequence()->ticksPerBeat();
-        }
         
         /** @brief get time sig num, either for a specific mesure, either the default value (no argument) */
         int   getTimeSigNumerator(int measure=-1) const;
