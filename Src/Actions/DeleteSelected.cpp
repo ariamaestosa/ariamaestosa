@@ -180,10 +180,7 @@ namespace DeleteSelectedTest
             AriaMaestosa::setCurrentSequenceProvider(this);
             
             Track* t = new Track(m_seq);
-            // FIXME: creating the graphics object shouldn't be manual nor necessary for tests
-            t->graphics = new GraphicalTrack(t, m_seq);
-            t->graphics->createEditors();
-            
+
             // make a factory sequence to work from
             m_seq->importing = true;
             t->addNote_import(100 /* pitch */, 0   /* start */, 100 /* end */, 127 /* volume */, -1);
@@ -205,6 +202,11 @@ namespace DeleteSelectedTest
         virtual Sequence* getCurrentSequence()
         {
             return m_seq;
+        }
+        
+        virtual GraphicalSequence* getCurrentGraphicalSequence()
+        {
+            return NULL;
         }
         
         void verifyUndo()

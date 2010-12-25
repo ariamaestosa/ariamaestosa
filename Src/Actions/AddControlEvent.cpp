@@ -104,7 +104,7 @@ void AddControlEvent::undo()
 
 void AddControlEvent::perform()
 {
-    ControllerEvent* event = new ControllerEvent(track->getSequence(), m_controller, m_x, m_value);
+    ControllerEvent* event = new ControllerEvent(m_controller, m_x, m_value);
     track->addControlEvent( event, &m_removed_event_value );
 }
 

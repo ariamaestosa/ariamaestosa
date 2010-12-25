@@ -23,6 +23,7 @@
 #include "Actions/AddNote.h"
 #include "Editors/KeyboardEditor.h"
 #include "Editors/RelativeXCoord.h"
+#include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
 #include "GUI/ImageProvider.h"
 #include "Midi/Players/PlatformMidiManager.h"
@@ -123,8 +124,8 @@ NoteSearchResult KeyboardEditor::noteAt(RelativeXCoord x, const int y, int& note
     const int noteAmount = m_track->getNoteAmount();
     for (int n=0; n<noteAmount; n++)
     {
-        const int x1 = m_track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels();
-        const int x2 = m_track->getNoteEndInPixels(n)   - m_sequence->getXScrollInPixels();
+        const int x1 = m_graphical_track->getNoteStartInPixels(n) - m_gsequence->getXScrollInPixels();
+        const int x2 = m_graphical_track->getNoteEndInPixels(n)   - m_gsequence->getXScrollInPixels();
         const int y1 = m_track->getNotePitchID(n)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels();
 
         if (x_edit > x1 and x_edit < x2 and y > y1 and y < y1+12)
@@ -157,14 +158,14 @@ void KeyboardEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mouse
     const int mouse_x_max = std::max( mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR) );
     const int mouse_y_min = std::min(mousey_current, mousey_initial);
     const int mouse_y_max = std::max(mousey_current, mousey_initial);
-    const int xscroll = m_sequence->getXScrollInPixels();
+    const int xscroll = m_gsequence->getXScrollInPixels();
     const int yscroll = getYScrollInPixels();
     
     const int count = m_track->getNoteAmount();
     for (int n=0; n<count; n++)
     {
-        int x1        = m_track->getNoteStartInPixels(n);
-        int x2        = m_track->getNoteEndInPixels(n);
+        int x1        = m_graphical_track->getNoteStartInPixels(n);
+        int x2        = m_graphical_track->getNoteEndInPixels(n);
         int from_note = m_track->getNotePitchID(n);
 
         if (x1 > mouse_x_min + xscroll and
@@ -301,8 +302,8 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             for (int n=0; n<noteAmount; n++)
             {
 
-                int x1 = track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels();
-                int x2 = track->getNoteEndInPixels(n)   - m_sequence->getXScrollInPixels();
+                int x1 = m_graphical_track->getNoteStartInPixels(n) - m_gsequence->getXScrollInPixels();
+                int x2 = m_graphical_track->getNoteEndInPixels(n)   - m_gsequence->getXScrollInPixels();
 
                 // don't draw notes that won't be visible
                 if (x2 < 0)       continue;
@@ -322,8 +323,8 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     for (int n=0; n<noteAmount; n++)
     {
 
-        const int x1 = m_track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels();
-        const int x2 = m_track->getNoteEndInPixels(n)   - m_sequence->getXScrollInPixels();
+        const int x1 = m_graphical_track->getNoteStartInPixels(n) - m_gsequence->getXScrollInPixels();
+        const int x2 = m_graphical_track->getNoteEndInPixels(n)   - m_gsequence->getXScrollInPixels();
 
         // don't draw notes that won't be visible
         if (x2 < 0)       continue;
@@ -413,12 +414,12 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             int preview_x1 =
                 (int)(
                       (snapMidiTickToGrid(mousex_initial.getRelativeTo(MIDI)) -
-                       m_sequence->getXScrollInMidiTicks()) * m_sequence->getZoom()
+                       m_gsequence->getXScrollInMidiTicks()) * m_gsequence->getZoom()
                       );
             int preview_x2 =
                 (int)(
                       (snapMidiTickToGrid(mousex_current.getRelativeTo(MIDI)) -
-                       m_sequence->getXScrollInMidiTicks()) * m_sequence->getZoom()
+                       m_gsequence->getXScrollInMidiTicks()) * m_gsequence->getZoom()
                       );
 
             if (not (preview_x1 < 0 or preview_x2 < 0) and preview_x2 > preview_x1)
@@ -440,14 +441,16 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
         int x_difference = mousex_current.getRelativeTo(MIDI) - mousex_initial.getRelativeTo(MIDI);
         int y_difference = mousey_current - mousey_initial;
 
-        const int x_step_move = (int)( snapMidiTickToGrid(x_difference) * m_sequence->getZoom() );
+        const int x_step_move = (int)( snapMidiTickToGrid(x_difference) * m_gsequence->getZoom() );
         const int y_step_move = (int)round( (float)y_difference/ (float)Y_STEP_HEIGHT );
 
         // move a single note
         if (m_last_clicked_note != -1)
         {
-            int x1 = m_track->getNoteStartInPixels(m_last_clicked_note) - m_sequence->getXScrollInPixels();
-            int x2 = m_track->getNoteEndInPixels  (m_last_clicked_note) - m_sequence->getXScrollInPixels();
+            int x1 = m_graphical_track->getNoteStartInPixels(m_last_clicked_note) -
+                     m_gsequence->getXScrollInPixels();
+            int x2 = m_graphical_track->getNoteEndInPixels  (m_last_clicked_note) -
+                     m_gsequence->getXScrollInPixels();
             int y  = m_track->getNotePitchID(m_last_clicked_note);
 
             AriaRender::rect(x1 + x_step_move + getEditorXStart(),
@@ -463,8 +466,8 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             {
                 if (not m_track->isNoteSelected(n)) continue;
 
-                int x1 = m_track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels();
-                int x2 = m_track->getNoteEndInPixels  (n) - m_sequence->getXScrollInPixels();
+                int x1 = m_graphical_track->getNoteStartInPixels(n) - m_gsequence->getXScrollInPixels();
+                int x2 = m_graphical_track->getNoteEndInPixels  (n) - m_gsequence->getXScrollInPixels();
                 int y  = m_track->getNotePitchID(n);
 
                 AriaRender::rect(x1 + x_step_move + getEditorXStart(),

@@ -415,7 +415,7 @@ bool MainFrame::doSave()
     }
     else
     {
-        saveAriaFile(getCurrentSequence(), getCurrentSequence()->filepath);
+        saveAriaFile(getCurrentGraphicalSequence(), getCurrentSequence()->filepath);
         return true;
     }
 }
@@ -448,7 +448,7 @@ bool MainFrame::doSaveAs()
         }
 
         getCurrentSequence()->filepath = givenPath;
-        saveAriaFile(getCurrentSequence(), getCurrentSequence()->filepath);
+        saveAriaFile(getCurrentGraphicalSequence(), getCurrentSequence()->filepath);
 
         // change song name
         getCurrentSequence()->sequenceFileName.set( extractTitle(getCurrentSequence()->filepath) );
@@ -582,7 +582,7 @@ void MainFrame::menuEvent_quit(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_copy(wxCommandEvent& evt)
 {
-    getCurrentSequence()->copy();
+    getCurrentGraphicalSequence()->copy();
 }
 
 // -----------------------------------------------------------------------------------------------------------

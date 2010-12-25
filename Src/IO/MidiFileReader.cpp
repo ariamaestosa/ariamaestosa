@@ -42,8 +42,10 @@
 #include <wx/textctrl.h>
 
 
-bool AriaMaestosa::loadMidiFile(Sequence* sequence, wxString filepath, std::set<wxString>& warnings)
+bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std::set<wxString>& warnings)
 {
+    Sequence* sequence = gseq->getModel();
+    
     // raise import flag
     sequence->importing = true;
 
@@ -91,7 +93,7 @@ bool AriaMaestosa::loadMidiFile(Sequence* sequence, wxString filepath, std::set<
         else real_track_amount++;
     }
 
-    sequence->prepareEmptyTracksForLoading(real_track_amount /*16*/);
+    gseq->prepareEmptyTracksForLoading(real_track_amount /*16*/);
         
      // ----------------------------------- for each track -------------------------------------
     int realTrackID=-1;
@@ -288,8 +290,7 @@ bool AriaMaestosa::loadMidiFile(Sequence* sequence, wxString filepath, std::set<
                 else
                 {
                     sequence->addTempoEvent_import(
-                                                   new ControllerEvent(sequence,
-                                                                       201,
+                                                   new ControllerEvent(201,
                                                                        tick,
                                                                        127-(int)((tempo-20.0)/380.0*128.0)
                                                                        )
@@ -550,8 +551,8 @@ bool AriaMaestosa::loadMidiFile(Sequence* sequence, wxString filepath, std::set<
 
     getMeasureData()->afterImporting();
 
-    sequence->setXScrollInPixels(0);
-    sequence->m_measure_data->setFirstMeasure(0);
+    gseq->setXScrollInPixels(0);
+    sequence->getMeasureData()->setFirstMeasure(0);
 
     // set song length
     int measureAmount_i = getMeasureData()->measureAtTick(lastEventTick) + 1;
@@ -564,8 +565,9 @@ bool AriaMaestosa::loadMidiFile(Sequence* sequence, wxString filepath, std::set<
     getMainFrame()->changeMeasureAmount( measureAmount_i );
     sequence->m_measure_data->setMeasureAmount( measureAmount_i );
 
-    getMainFrame()->updateTopBarAndScrollbarsForSequence(sequence);
-    sequence->setZoom(100);
+    // FIXME: this function shouldn't make GUI calls
+    getMainFrame()->updateTopBarAndScrollbarsForSequence(gseq);
+    gseq->setZoom(100);
 
     sequence->clearUndoStack();
 

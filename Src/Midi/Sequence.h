@@ -89,15 +89,6 @@ namespace AriaMaestosa
         int m_tempo;
         int beatResolution;
 
-        // FIXME: this is graphics stuff, shouldn't go in this model class
-        float m_zoom; int m_zoom_percent;
-
-        float m_x_scroll_in_pixels;
-        int y_scroll;
-
-        int reordering_newPosition; //!< used when reordering tracks, to hold the new position of the track being moved
-        int reorderYScroll;         //!< while reordering tracks, contains the vertical scrolling amount
-
         wxString m_copyright;
         wxString internal_sequenceName;
 
@@ -118,6 +109,11 @@ namespace AriaMaestosa
         /** Whether a metronome should be heard during playback */
         bool m_play_with_metronome;
         
+        void copy();
+        
+        // TODO: get rif of friendship?
+        friend class GraphicalSequence;
+        
      public:
 
         LEAK_CHECK();
@@ -128,16 +124,9 @@ namespace AriaMaestosa
 
         // ---- these variables are to be modified by tracks
         
-        /** 
-          * will store the horizontal scrolling when copying, and upon pasting behaviour will depend if
-          * x_scroll has changed since copy
-          */
-        int x_scroll_upon_copying;
-        
         /** if no scrolling is done, this value will be used to determine where to place notes */
         int notes_shift_when_no_scrolling;
         
-        bool maximize_track_mode;
         
         // ------------ read-only -------------
         /** 
@@ -149,17 +138,9 @@ namespace AriaMaestosa
         /** set this flag true to follow playback */
         bool follow_playback;
 
-        // dock
-        int dockSize;
-        ptr_vector<GraphicalTrack, REF> dock;
-        int dockHeight;
-
         AriaRenderString sequenceFileName;
         OwnerPtr<MeasureData>  m_measure_data;
         
-        // TODO: extract graphics out of this model class
-        OwnerPtr<MeasureBar>  m_measure_bar;
-
         ptr_vector<ControllerEvent> tempoEvents;
         // ------------------------------------
 
@@ -195,41 +176,17 @@ namespace AriaMaestosa
 
         wxString suggestFileName() const;
         wxString suggestTitle() const;
-
-        /** @brief Hide a track by sending it to the 'dock' */
-        void addToDock(GraphicalTrack* track);
-        
-        void removeFromDock(GraphicalTrack* track);
-
-        void pushYScroll(int delta) { y_scroll += delta; }
         
         void spacePressed();
-        void renderTracks(int currentTick, RelativeXCoord mousex, int mousey, int mousey_initial, int from_y);
-
-        /**
-         * @brief called when mouse is released after having dragged a track.
-         *
-         * Called when a user has finished dragging the track to reorder it.
-         * Where the track ends was calculated while drawing the preview - all this methods needs to do is
-         * remove the track from its curren location and move it to its new location.
-         */    
-        void reorderTracks();
-
-        /** @brief called repeatedly when mouse is held down */
-        void mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
-                           RelativeXCoord mousex_initial, int mousey_initial);
-
-        /** @return do we need to start a timer that will frequently send mouse held down events? */
-        bool areMouseHeldDownEventsNeeded();
-
+        
         /** @return the number of tracks in this sequence */
-        int getTrackAmount() const;
+        int getTrackAmount() const { return tracks.size(); }
         
         /** @return the ID of the currently selected track */
-        int getCurrentTrackID() const;
+        int getCurrentTrackID() const { return currentTrack; }
         
-        Track* getTrack(int ID);
-        Track* getCurrentTrack();
+        Track* getTrack(int ID)  { return tracks.get(ID); }
+        Track* getCurrentTrack() { return tracks.get(currentTrack); }
         void setCurrentTrackID(int ID);
         void setCurrentTrack(Track* track);
         
@@ -267,16 +224,6 @@ namespace AriaMaestosa
           */
         void deleteTrack(Track* track);
         
-        /** @brief Called before loading, prepares empty tracks */    
-        void prepareEmptyTracksForLoading(int amount);
-
-        
-        /**
-         * @return the number of pixels it takes to draw all tracks, vertically.
-         * @note   This is used mostly by the code managing the vertical scrollbar.
-         */    
-        int   getTotalHeight() const;
-        
         /** 
           * @brief       sets the "default" tempo (tempo at start of song)
           * @param tempo the new tempo value
@@ -297,19 +244,6 @@ namespace AriaMaestosa
           *        so no time is wasted verifying that
           */
         void  addTempoEvent_import( ControllerEvent* evt );
-        
-        int   getZoomInPercent() const { return m_zoom_percent; }
-        float getZoom         () const { return m_zoom;         }
-        void  setZoom(int percent);
-
-        //FIXME: graphics information shouldn't be there
-        void  setXScrollInMidiTicks(int value);
-        void  setXScrollInPixels(int value);
-        int   getXScrollInMidiTicks() const;
-        int   getXScrollInPixels() const { return round(m_x_scroll_in_pixels); }
-
-        void  setYScroll(int value);
-        int   getYScroll() const { return y_scroll; }
 
         void  setChannelManagementType(ChannelManagementType m);
         ChannelManagementType getChannelManagementType() const { return channelManagement; }
@@ -332,7 +266,6 @@ namespace AriaMaestosa
                    bool affect_selection, bool affect_track, bool affect_song // scale what (only one must be true)
                    );
 
-        void copy();
         void paste();
         void pasteAtMouse();
         void selectAll();
@@ -351,6 +284,11 @@ namespace AriaMaestosa
           */
         void setTicksPerBeat(int res);
 
+        MeasureData* getMeasureData() { return m_measure_data; }
+        const MeasureData* getMeasureData() const { return m_measure_data.raw_ptr; }
+
+        void clear() { tracks.clearAndDeleteAll(); }
+        
         // ---- serialization
         
         /** Called when saving \<Sequence\> ... \</Sequence\> in .aria file */

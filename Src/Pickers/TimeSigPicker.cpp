@@ -160,7 +160,6 @@ TimeSigPicker::TimeSigPicker() : wxMiniFrame(getMainFrame(), wxNewId(),  _("Time
     m_value_text_denom = new wxTextCtrl(horizontal.pane, wxNewId(), wxT("4"), wxPoint(0,130), smallsize,
                                         wxTE_PROCESS_ENTER | wxWANTS_CHARS);
     
-    //FIXME: don't use a mixture of event tables and Connect xD
     m_value_text_num  ->Connect(m_value_text_num->GetId(), wxEVT_SET_FOCUS,
                                 wxFocusEventHandler(TimeSigPicker::onFocus), 0, this);
     m_value_text_denom->Connect(m_value_text_denom->GetId(), wxEVT_SET_FOCUS,
@@ -290,7 +289,7 @@ void TimeSigPicker::enterPressed(wxCommandEvent& evt)
     if (m_variable->IsChecked() != measures->isExpandedMode())
     {
         measures->setExpandedMode( m_variable->IsChecked() );
-        mainFrame->updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
+        mainFrame->updateTopBarAndScrollbarsForSequence( getCurrentGraphicalSequence() );
         mainFrame->updateMenuBarToSequence();
     }
 

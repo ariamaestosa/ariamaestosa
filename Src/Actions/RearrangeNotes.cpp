@@ -60,14 +60,14 @@ void RearrangeNotes::perform()
 
         // find notes that have the same tick
         candidates.clear();
-        int x1=track->getNoteStartInPixels(n);
+        int x1 = track->getNoteStartInMidiTicks(n);
         candidates.push_back(n);
 
         // found 2 consecutive notes with same tick - check if there are more
-        if (n<noteAmount-1 and track->getNoteStartInPixels(n+1)==x1)
+        if (n < noteAmount-1 and track->getNoteStartInMidiTicks(n + 1) == x1)
         {
             n++;
-            while (n<noteAmount and track->getNoteStartInPixels(n)==x1)
+            while (n < noteAmount and track->getNoteStartInMidiTicks(n) == x1)
             {
                 candidates.push_back(n);
                 n++;

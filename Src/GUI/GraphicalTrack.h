@@ -40,6 +40,7 @@ namespace AriaMaestosa
     class DrumEditor;
     class ScoreEditor;
     class RelativeXCoord;
+    class GraphicalSequence;
         
     // lightweight components
     class BlankField;
@@ -80,8 +81,8 @@ namespace AriaMaestosa
         /** Whether this track was "docked", i.e. minimized so that not even its header is visible */
         bool m_docked;
         
-        Sequence* m_sequence;
-        Track*    m_track;
+        GraphicalSequence* m_gsequence;
+        Track* m_track;
         
         EditorType m_editor_mode;
 
@@ -118,7 +119,7 @@ namespace AriaMaestosa
 
         // ----------------------------------------
         
-        GraphicalTrack(Track* track, Sequence* parent);
+        GraphicalTrack(Track* track, GraphicalSequence* parent);
         ~GraphicalTrack();
         
         int getEditorHeight();
@@ -139,7 +140,7 @@ namespace AriaMaestosa
         
         Track* getTrack()        { return m_track;     }
         
-        Sequence* getSequence()  { return m_sequence;  }
+        GraphicalSequence* getSequence()  { return m_gsequence;  }
         
         EditorType getEditorMode() const { return m_editor_mode; }
         
@@ -156,7 +157,7 @@ namespace AriaMaestosa
         DrumEditor*         getDrumEditor()       { return m_drum_editor;       }
         ControllerEditor*   getControllerEditor() { return m_controller_editor; }
         ScoreEditor*        getScoreEditor()      { return m_score_editor;      }
-        
+                
         void dock(const bool dock=true);
         
         bool mouseWheelMoved(int x, int y, int value);
@@ -183,6 +184,9 @@ namespace AriaMaestosa
 
         /** Called when a track's key changes */
         void onKeyChange(const int symbolAmount, const KeyType symbol);
+        
+        int getNoteStartInPixels(const int id) const;
+        int getNoteEndInPixels(const int id) const;
         
         // serialization
         void saveToFile(wxFileOutputStream& fileout);

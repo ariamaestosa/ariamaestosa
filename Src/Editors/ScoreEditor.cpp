@@ -917,9 +917,9 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
         const int noteLength = m_track->getNoteEndInMidiTicks(n) - m_track->getNoteStartInMidiTicks(n);
         const int tick = m_track->getNoteStartInMidiTicks(n);
 
-        int       x1 = m_track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels() +
+        int       x1 = m_graphical_track->getNoteStartInPixels(n) - m_gsequence->getXScrollInPixels() +
                        Editor::getEditorXStart();
-        const int x2 = m_track->getNoteEndInPixels(n)   - m_sequence->getXScrollInPixels() +
+        const int x2 = m_graphical_track->getNoteEndInPixels(n)   - m_gsequence->getXScrollInPixels() +
                        Editor::getEditorXStart();
 
         // don't consider notes that won't be visible
@@ -1087,12 +1087,12 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
             int preview_x1=
                 (int)(
                       (snapMidiTickToGrid(mousex_initial.getRelativeTo(MIDI) ) -
-                       m_sequence->getXScrollInMidiTicks()) * m_sequence->getZoom()
+                       m_gsequence->getXScrollInMidiTicks()) * m_gsequence->getZoom()
                       );
             int preview_x2=
                 (int)(
                       (snapMidiTickToGrid(mousex_current.getRelativeTo(MIDI) ) -
-                       m_sequence->getXScrollInMidiTicks()) * m_sequence->getZoom()
+                       m_gsequence->getXScrollInMidiTicks()) * m_gsequence->getZoom()
                       );
 
             if (not (preview_x1 < 0 or preview_x2 < 0) and preview_x2 > preview_x1)
@@ -1122,16 +1122,16 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
         int x_difference = mousex_current.getRelativeTo(MIDI) - mousex_initial.getRelativeTo(MIDI);
         int y_difference = mousey_current - mousey_initial;
 
-        const int x_pixel_move = (int)( snapMidiTickToGrid(x_difference) * m_sequence->getZoom() );
-        const int y_step_move = (int)round( (float)y_difference/ (float)Y_STEP_HEIGHT );
+        const int x_pixel_move = (int)( snapMidiTickToGrid(x_difference) * m_gsequence->getZoom() );
+        const int y_step_move  = (int)round( (float)y_difference/ (float)Y_STEP_HEIGHT );
 
         // move a single note
         if (m_last_clicked_note!=-1)
         {
-            int x1       = m_track->getNoteStartInPixels(m_last_clicked_note) -
-                           m_sequence->getXScrollInPixels() + Editor::getEditorXStart();
-            const int x2 = m_track->getNoteEndInPixels(m_last_clicked_note) -
-                           m_sequence->getXScrollInPixels() + Editor::getEditorXStart();
+            int x1       = m_graphical_track->getNoteStartInPixels(m_last_clicked_note) -
+                           m_gsequence->getXScrollInPixels() + Editor::getEditorXStart();
+            const int x2 = m_graphical_track->getNoteEndInPixels(m_last_clicked_note) -
+                           m_gsequence->getXScrollInPixels() + Editor::getEditorXStart();
             
             const int noteLevel = m_converter->noteToLevel( m_track->getNote(m_last_clicked_note) );
 
@@ -1149,10 +1149,10 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
             {
                 if (not m_track->isNoteSelected(n)) continue;
 
-                int x1 = m_track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels() +
-                         Editor::getEditorXStart();
+                const int x1 = m_graphical_track->getNoteStartInPixels(n) - m_gsequence->getXScrollInPixels() +
+                               Editor::getEditorXStart();
                 
-                const int x2 = m_track->getNoteEndInPixels(n) - m_sequence->getXScrollInPixels() +
+                const int x2 = m_graphical_track->getNoteEndInPixels(n) - m_gsequence->getXScrollInPixels() +
                                Editor::getEditorXStart();
 
                 const int noteLevel = m_converter->noteToLevel(m_track->getNote(n));
@@ -1466,10 +1466,10 @@ NoteSearchResult ScoreEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
         
         const int note_y  = getEditorYStart() + Y_STEP_HEIGHT*noteLevel - head_radius -
                             getYScrollInPixels() + 2;
-        const int note_x  = Editor::getEditorXStart() + m_track->getNoteStartInPixels(n) -
-                            m_sequence->getXScrollInPixels();
-        const int note_x2 = Editor::getEditorXStart() + m_track->getNoteEndInPixels(n) -
-                            m_sequence->getXScrollInPixels();
+        const int note_x  = Editor::getEditorXStart() + m_graphical_track->getNoteStartInPixels(n) -
+                            m_gsequence->getXScrollInPixels();
+        const int note_x2 = Editor::getEditorXStart() + m_graphical_track->getNoteEndInPixels(n) -
+                            m_gsequence->getXScrollInPixels();
 
         if (m_linear_notation_enabled)
         {
@@ -1586,8 +1586,8 @@ void ScoreEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_c
         if (noteLevel == -1) continue;
         
         const int note_y = getEditorYStart() + Y_STEP_HEIGHT*noteLevel - head_radius - getYScrollInPixels() + 2;
-        const int note_x = Editor::getEditorXStart() + m_track->getNoteStartInPixels(n) -
-                           m_sequence->getXScrollInPixels();
+        const int note_x = Editor::getEditorXStart() + m_graphical_track->getNoteStartInPixels(n) -
+                           m_gsequence->getXScrollInPixels();
 
         if (std::min(mxc, mxi) < note_x and std::max(mxc,mxi)>note_x and
             std::min(mousey_current, mousey_initial) < note_y and

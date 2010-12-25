@@ -20,6 +20,7 @@
 
 #include "ptr_vector.h"
 #include "Utils.h"
+#include "GUI/GraphicalSequence.h"
 #include "Midi/Sequence.h"
 #include "Midi/TimeSigChange.h"
 
@@ -122,9 +123,9 @@ namespace AriaMaestosa
         /** Get the graphical size of one music beat, according to the current display */
         float beatLengthInPixels() const
         {
-            Sequence* sequence = getCurrentSequence();
+            GraphicalSequence* gsequence = getCurrentGraphicalSequence();
             
-            return sequence->ticksPerBeat() * sequence->getZoom();
+            return gsequence->getModel()->ticksPerBeat() * gsequence->getZoom();
         }
         
         /** @return the length of one musical beat in midi ticks */

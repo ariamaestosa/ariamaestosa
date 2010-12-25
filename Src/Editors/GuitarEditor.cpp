@@ -21,6 +21,7 @@
 #include "Actions/UpdateGuitarTuning.h"
 #include "Actions/AddNote.h"
 #include "Actions/ShiftString.h"
+#include "GUI/GraphicalSequence.h"
 #include "Editors/RelativeXCoord.h"
 #include "GUI/ImageProvider.h"
 #include "Midi/Sequence.h"
@@ -123,8 +124,8 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
     const int noteAmount = m_track->getNoteAmount();
     for (int n=0; n<noteAmount; n++)
     {
-        int x1 = m_track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels();
-        int x2 = m_track->getNoteEndInPixels(n)   - m_sequence->getXScrollInPixels();
+        int x1 = m_graphical_track->getNoteStartInPixels(n) - m_gsequence->getXScrollInPixels();
+        int x2 = m_graphical_track->getNoteEndInPixels(n)   - m_gsequence->getXScrollInPixels();
 
         // don't draw notes that won't visible
         if (x2 < 0    )   continue;
@@ -218,12 +219,12 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
             const int preview_x1 =
                 (int)(
                       (snapMidiTickToGrid(mousex_initial.getRelativeTo(MIDI)) -
-                       m_sequence->getXScrollInMidiTicks()) * m_sequence->getZoom()
+                       m_gsequence->getXScrollInMidiTicks()) * m_gsequence->getZoom()
                       );
             const int preview_x2 =
                 (int)(
                       (snapMidiTickToGrid(mousex_current.getRelativeTo(MIDI)) -
-                       m_sequence->getXScrollInMidiTicks()) * m_sequence->getZoom()
+                       m_gsequence->getXScrollInMidiTicks()) * m_gsequence->getZoom()
                       );
 
             int string = (int)round( (float)(mousey_initial - getEditorYStart() - first_string_position) / (float)y_step);
@@ -251,16 +252,16 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
         const int x_difference = mousex_current.getRelativeTo(MIDI)-mousex_initial.getRelativeTo(MIDI);
         const int y_difference = mousey_current-mousey_initial;
 
-        const int x_steps_to_move = (int)( snapMidiTickToGrid(x_difference) * m_sequence->getZoom() );
+        const int x_steps_to_move = (int)( snapMidiTickToGrid(x_difference) * m_gsequence->getZoom() );
         const int y_steps_to_move = (int)round( (float)y_difference / (float)y_step );
 
         // move a single note
         if (m_last_clicked_note != -1)
         {
-            const int x1     = m_track->getNoteStartInPixels(m_last_clicked_note) -
-                               m_sequence->getXScrollInPixels();
-            const int x2     = m_track->getNoteEndInPixels(m_last_clicked_note) -
-                               m_sequence->getXScrollInPixels();
+            const int x1     = m_graphical_track->getNoteStartInPixels(m_last_clicked_note) -
+                               m_gsequence->getXScrollInPixels();
+            const int x2     = m_graphical_track->getNoteEndInPixels(m_last_clicked_note) -
+                               m_gsequence->getXScrollInPixels();
             const int string = m_track->getNoteString(m_last_clicked_note);
 
             AriaRender::rect(x1 + x_steps_to_move + Editor::getEditorXStart(),
@@ -276,14 +277,18 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
             {
                 if (not m_track->isNoteSelected(n)) continue;
 
-                const int x1     = m_track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels();
-                const int x2     = m_track->getNoteEndInPixels(n)   - m_sequence->getXScrollInPixels();
+                const int x1     = m_graphical_track->getNoteStartInPixels(n) -
+                                   m_gsequence->getXScrollInPixels();
+                const int x2     = m_graphical_track->getNoteEndInPixels(n)   -
+                                   m_gsequence->getXScrollInPixels();
                 const int string = m_track->getNoteString(n);
 
                 AriaRender::rect(x1+x_steps_to_move+Editor::getEditorXStart(),
-                                 string*y_step + getEditorYStart() + first_string_position - 5 + y_steps_to_move*y_step,
+                                 string*y_step + getEditorYStart() + first_string_position - 5 +
+                                 y_steps_to_move*y_step,
                                  x2-1+x_steps_to_move+Editor::getEditorXStart(),
-                                 string*y_step + getEditorYStart() + first_string_position - 5 + (y_steps_to_move+1)*y_step);
+                                 string*y_step + getEditorYStart() + first_string_position - 5 +
+                                 (y_steps_to_move+1)*y_step);
             } // next
 
         } // end if m_last_clicked_note!=-1
@@ -361,13 +366,14 @@ void GuitarEditor::mouseDown(RelativeXCoord x, const int y)
 void GuitarEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current,
                                      RelativeXCoord& mousex_initial, int mousey_initial)
 {
-    for (int n=0; n<m_track->getNoteAmount(); n++)
+    const int count = m_track->getNoteAmount();
+    for (int n=0; n<count; n++)
     {
         // on-screen pixel where note starts
-        const int x1 = m_track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels();
+        const int x1 = m_graphical_track->getNoteStartInPixels(n) - m_gsequence->getXScrollInPixels();
         
         // on-screen pixel where note ends
-        const int x2 = m_track->getNoteEndInPixels(n)   - m_sequence->getXScrollInPixels();
+        const int x2 = m_graphical_track->getNoteEndInPixels(n)   - m_gsequence->getXScrollInPixels();
 
         const int string = m_track->getNoteString(n);
 
@@ -415,11 +421,11 @@ NoteSearchResult GuitarEditor::noteAt(RelativeXCoord x, const int y, int& noteID
 
     const int noteAmount = m_track->getNoteAmount();
     
-    // iterate through note n reverse order (last drawn note appears on top and must be first selected)
+    // iterate through notes in reverse order (last drawn note appears on top and must be first selected)
     for (int n=noteAmount-1; n>-1; n--)
     {
-        const int x1 = m_track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels();
-        const int x2 = m_track->getNoteEndInPixels(n)   - m_sequence->getXScrollInPixels();
+        const int x1 = m_graphical_track->getNoteStartInPixels(n) - m_gsequence->getXScrollInPixels();
+        const int x2 = m_graphical_track->getNoteEndInPixels(n)   - m_gsequence->getXScrollInPixels();
 
         const int string = m_track->getNoteString(n);
 

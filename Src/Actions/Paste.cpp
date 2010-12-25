@@ -132,15 +132,16 @@ void Paste::perform()
 
     }
     else if (not m_at_mouse and
-             track->getSequence()->x_scroll_upon_copying == track->getSequence()->getXScrollInPixels() )
+             track->graphics->getSequence()->x_scroll_upon_copying == track->graphics->getSequence()->getXScrollInPixels() )
     {
 
         /*
          * scrolling has not changed since copy (i.e. user probably hit 'copy' and 'paste' consecutively)
-         * in this case, we want the track->m_notes to be pasted exactly where they were copied
-         * so we just overwrite the shift variable to make track->m_notes paste where they were copied.
-         * after this, check if all track->m_notes will be visible when pasting like this. If not, fall back to regular pasting method
-         * that will take care of finding track->m_notes an appropriate location to be pasted onto.
+         * in this case, we want the track->m_notes to be pasted exactly where they were copied so we just
+         * overwrite the shift variable to make track->m_notes paste where they were copied. after this,
+         * check if all track->m_notes will be visible when pasting like this. If not, fall back to regular
+         * pasting method that will take care of finding track->m_notes an appropriate location to be
+         * pasted onto.
          */
         shift = track->getSequence()->notes_shift_when_no_scrolling;
 
@@ -149,7 +150,7 @@ void Paste::perform()
         Note& tmp = *Clipboard::getNote(0);
 
         // before visible area
-        if ((tmp.startTick + tmp.endTick)/2 + shift < track->getSequence()->getXScrollInMidiTicks())
+        if ((tmp.startTick + tmp.endTick)/2 + shift < track->graphics->getSequence()->getXScrollInMidiTicks())
         {
             goto regular_paste;
         }
@@ -172,7 +173,7 @@ regular_paste: // FIXME - find better way than goto
          */
 
         // if not "paste at mouse", find first visible measure
-        int measure = getMeasureData()->measureAtTick(track->getSequence()->getXScrollInMidiTicks())-1;
+        int measure = getMeasureData()->measureAtTick(track->graphics->getSequence()->getXScrollInMidiTicks())-1;
         if (measure < 0) measure = 0;
         const int lastMeasureStart = getMeasureData()->firstTickInMeasure( measure );
         shift = track->graphics->getKeyboardEditor()->snapMidiTickToGrid( lastMeasureStart );
@@ -183,7 +184,7 @@ regular_paste: // FIXME - find better way than goto
 
         // check if note is before visible area
         while ((first_note.startTick + first_note.endTick)/2 + shift <
-               track->getSequence()->getXScrollInMidiTicks())
+               track->graphics->getSequence()->getXScrollInMidiTicks())
         {
             shift = getMeasureData()->firstTickInMeasure( getMeasureData()->measureAtTick( shift )+1 );
         }

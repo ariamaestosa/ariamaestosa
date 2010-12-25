@@ -598,7 +598,7 @@ void MainFrame::playClicked(wxCommandEvent& evt)
         // already playing, this button does "pause" instead
         getMeasureData()->setFirstMeasure( getMeasureData()->measureAtTick(m_main_pane->getCurrentTick()) );
         m_main_pane->exitPlayLoop();
-        updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
+        updateTopBarAndScrollbarsForSequence( getCurrentGraphicalSequence() );
         return;
     }
 
@@ -683,25 +683,27 @@ void MainFrame::toolsExitPlaybackMode()
 #endif
 
 
-void MainFrame::updateTopBarAndScrollbarsForSequence(const Sequence* seq)
+void MainFrame::updateTopBarAndScrollbarsForSequence(const GraphicalSequence* seq)
 {
     changingValues = true; // ignore events thrown while changing values in the top bar
 
+    const MeasureData* measData = seq->getModel()->getMeasureData();
+    
     // first measure
-    m_first_measure->SetValue( to_wxString(getMeasureData()->getFirstMeasure()+1) );
+    m_first_measure->SetValue( to_wxString(measData->getFirstMeasure()+1) );
 
     // time signature
     m_time_sig->SetLabel(wxString::Format(wxT("%i/%i"),
-                                          getMeasureData()->getTimeSigNumerator(),
-                                          getMeasureData()->getTimeSigDenominator()
+                                          measData->getTimeSigNumerator(),
+                                          measData->getTimeSigDenominator()
                                          )
                          );
 
     // tempo
-    m_tempo_ctrl->SetValue( to_wxString(seq->getTempo()) );
+    m_tempo_ctrl->SetValue( to_wxString(seq->getModel()->getTempo()) );
 
     // song length
-    m_song_length->SetValue( getMeasureData()->getMeasureAmount() );
+    m_song_length->SetValue( measData->getMeasureAmount() );
 
     // zoom
     m_display_zoom->SetValue( seq->getZoomInPercent() );
@@ -710,7 +712,7 @@ void MainFrame::updateTopBarAndScrollbarsForSequence(const Sequence* seq)
     // FIXME: what's that??
     //getCurrentSequence()->setZoom( seq->getZoomInPercent() );
 
-    m_expanded_measures_menu_item->Check( getMeasureData()->isExpandedMode() );
+    m_expanded_measures_menu_item->Check( measData->isExpandedMode() );
 
     // scrollbars
     updateHorizontalScrollbar();
@@ -858,13 +860,15 @@ void MainFrame::zoomChanged(wxSpinEvent& evt)
 
     if (newZoom < 1 or newZoom > 500) return;
 
-    const float oldZoom = getCurrentSequence()->getZoom();
+    GraphicalSequence* gseq = getCurrentGraphicalSequence();
+    
+    const float oldZoom = gseq->getZoom();
 
-    getCurrentSequence()->setZoom( newZoom );
+    gseq->setZoom( newZoom );
 
     const int newXScroll = (int)( m_horizontal_scrollbar->GetThumbPosition()/oldZoom );
 
-    getCurrentSequence()->setXScrollInMidiTicks( newXScroll );
+    gseq->setXScrollInMidiTicks( newXScroll );
     updateHorizontalScrollbar( newXScroll );
     if (not getMeasureData()->isMeasureLengthConstant()) getMeasureData()->updateMeasureInfo();
 
@@ -979,9 +983,11 @@ void MainFrame::horizontalScrolling(wxScrollEvent& evt)
     //static int last_scroll_position = 0;
 
     const int newValue = m_horizontal_scrollbar->GetThumbPosition();
-    if (newValue == getCurrentSequence()->getXScrollInPixels()) return;
+    
+    GraphicalSequence* gseq = getCurrentGraphicalSequence();
+    if (newValue == gseq->getXScrollInPixels()) return;
 
-    getCurrentSequence()->setXScrollInPixels(newValue);
+    gseq->setXScrollInPixels(newValue);
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -990,11 +996,12 @@ void MainFrame::horizontalScrolling_arrows(wxScrollEvent& evt)
 {
 
     const int newValue = m_horizontal_scrollbar->GetThumbPosition();
-    const int factor   = newValue - getCurrentSequence()->getXScrollInPixels();
+    GraphicalSequence* gseq = getCurrentGraphicalSequence();
+    const int factor   = newValue - gseq->getXScrollInPixels();
 
     const int newScrollInMidiTicks =
         (int)(
-              getCurrentSequence()->getXScrollInMidiTicks() +
+              gseq->getXScrollInMidiTicks() +
               factor * getMeasureData()->defaultMeasureLengthInTicks()
               );
 
@@ -1002,13 +1009,13 @@ void MainFrame::horizontalScrolling_arrows(wxScrollEvent& evt)
     const int editor_size=Display::getWidth()-100,
         total_size = getMeasureData()->getTotalPixelAmount();
 
-    const int positionInPixels = (int)( newScrollInMidiTicks*getCurrentSequence()->getZoom() );
+    const int positionInPixels = (int)( newScrollInMidiTicks*gseq->getZoom() );
 
     // scrollbar out of bounds
     if ( positionInPixels < 0 )
     {
         updateHorizontalScrollbar( 0 );
-        getCurrentSequence()->setXScrollInPixels( 0 );
+        gseq->setXScrollInPixels( 0 );
         return;
     }
 
@@ -1019,7 +1026,7 @@ void MainFrame::horizontalScrolling_arrows(wxScrollEvent& evt)
         return;
     }
 
-    getCurrentSequence()->setXScrollInPixels( positionInPixels );
+    gseq->setXScrollInPixels( positionInPixels );
     updateHorizontalScrollbar( newScrollInMidiTicks );
 }
 
@@ -1027,7 +1034,7 @@ void MainFrame::horizontalScrolling_arrows(wxScrollEvent& evt)
 
 void MainFrame::verticalScrolling(wxScrollEvent& evt)
 {
-    getCurrentSequence()->setYScroll( m_vertical_scrollbar->GetThumbPosition() );
+    getCurrentGraphicalSequence()->setYScroll( m_vertical_scrollbar->GetThumbPosition() );
     Display::render();
 }
 
@@ -1035,7 +1042,7 @@ void MainFrame::verticalScrolling(wxScrollEvent& evt)
 
 void MainFrame::verticalScrolling_arrows(wxScrollEvent& evt)
 {
-    getCurrentSequence()->setYScroll( m_vertical_scrollbar->GetThumbPosition() );
+    getCurrentGraphicalSequence()->setYScroll( m_vertical_scrollbar->GetThumbPosition() );
     Display::render();
 }
 
@@ -1046,15 +1053,12 @@ void MainFrame::updateHorizontalScrollbar(int thumbPos)
     const int editor_size = Display::getWidth() - 100;
     const int total_size  = getMeasureData()->getTotalPixelAmount();
 
-    int position =
-        thumbPos == -1 ?
-        getCurrentSequence()->getXScrollInPixels()
-                       :
-        (int)(
-              thumbPos*getCurrentSequence()->getZoom()
-              );
+    GraphicalSequence* gseq = getCurrentGraphicalSequence();
+    
+    int position = (thumbPos == -1) ? gseq->getXScrollInPixels() : (int)(gseq->getZoom());
 
-    // if given value is wrong and needs to be changed, we'll need to throw a 'scrolling changed' event to make sure display adapts to new value
+    // if given value is wrong and needs to be changed, we'll need to throw a 'scrolling changed' event to
+    // make sure display adapts to new value
     bool changedGivenValue = false;
     if (position < 0)
     {
@@ -1086,9 +1090,10 @@ void MainFrame::updateHorizontalScrollbar(int thumbPos)
 
 void MainFrame::updateVerticalScrollbar()
 {
-    int position = getCurrentSequence()->getYScroll();
+    GraphicalSequence* gseq = getCurrentGraphicalSequence();
+    int position = gseq->getYScroll();
 
-    const int total_size = getCurrentSequence()->getTotalHeight()+25;
+    const int total_size = gseq->getTotalHeight()+25;
     const int editor_size = Display::getHeight();
 
     // if given value is wrong and needs to be changed, we'll need to throw a 'scrolling changed'
@@ -1134,7 +1139,8 @@ void MainFrame::updateVerticalScrollbar()
 
 void MainFrame::addSequence()
 {
-    m_sequences.push_back( new Sequence(this, this, this, Display::isVisible()) );
+    Sequence* s = new Sequence(this, this, this, Display::isVisible());
+    m_sequences.push_back( new GraphicalSequence(s) );
     setCurrentSequence( m_sequences.size() - 1 );
     Display::render();
     getMainFrame()->updateUndoMenuLabel();
@@ -1150,19 +1156,25 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
     if (id == -1)
     {
         id = m_current_sequence;
-        if      (id > 0)                 whoToFocusAfter = m_sequences[id - 1].sequenceFileName;
-        else if (m_sequences.size() > 0) whoToFocusAfter = m_sequences[m_sequences.size() - 1].sequenceFileName;
+        if (id > 0)
+        {
+            whoToFocusAfter = m_sequences[id - 1].getModel()->sequenceFileName;
+        }
+        else if (m_sequences.size() > 0)
+        {
+            whoToFocusAfter = m_sequences[m_sequences.size() - 1].getModel()->sequenceFileName;
+        }
     }
     else
     {
-        whoToFocusAfter = m_sequences[m_current_sequence].sequenceFileName;
+        whoToFocusAfter = m_sequences[m_current_sequence].getModel()->sequenceFileName;
     }
 
 
-    if (m_sequences[id].somethingToUndo())
+    if (m_sequences[id].getModel()->somethingToUndo())
     {
         wxString message = _("You have unsaved changes in sequence '%s'. Do you want to save them before proceeding?");
-        message.Replace(wxT("%s"), m_sequences[id].sequenceFileName, false);
+        message.Replace(wxT("%s"), m_sequences[id].getModel()->sequenceFileName, false);
 
         int answer = wxMessageBox(  _("Selecting 'Yes' will save your document before closing") +
                                     wxString(wxT("\n")) + _("Selecting 'No' will discard unsaved changes") +
@@ -1192,7 +1204,7 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
     const int seqCount = m_sequences.size();
     for (int n=0; n<seqCount; n++)
     {
-        if (m_sequences[n].sequenceFileName == whoToFocusAfter)
+        if (m_sequences[n].getModel()->sequenceFileName == whoToFocusAfter)
         {
             newCurrent = n;
             break;
@@ -1213,7 +1225,14 @@ Sequence* MainFrame::getCurrentSequence()
     ASSERT_E(m_current_sequence,>=,0);
     ASSERT_E(m_current_sequence,<,m_sequences.size());
 
-    return &m_sequences[m_current_sequence];
+    return m_sequences.get(m_current_sequence)->getModel();
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+GraphicalSequence* MainFrame::getCurrentGraphicalSequence()
+{
+    return m_sequences.get(m_current_sequence);
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -1223,7 +1242,17 @@ Sequence* MainFrame::getSequence(int n)
     ASSERT_E(n,>=,0);
     ASSERT_E(n,<,m_sequences.size());
 
-    return &m_sequences[n];
+    return m_sequences[n].getModel();
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+GraphicalSequence* MainFrame::getGraphicalSequence(int n)
+{
+    ASSERT_E(n,>=,0);
+    ASSERT_E(n,<,m_sequences.size());
+    
+    return m_sequences.get(n);
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -1234,7 +1263,7 @@ void MainFrame::setCurrentSequence(int n)
     ASSERT_E(n,<,m_sequences.size());
 
     m_current_sequence = n;
-    updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
+    updateTopBarAndScrollbarsForSequence( getCurrentGraphicalSequence() );
     updateMenuBarToSequence();
 }
 
@@ -1261,7 +1290,7 @@ void MainFrame::loadAriaFile(wxString filePath)
 
     WaitWindow::show(_("Please wait while .aria file is loading.") );
 
-    const bool success = AriaMaestosa::loadAriaFile(getCurrentSequence(), getCurrentSequence()->filepath);
+    const bool success = AriaMaestosa::loadAriaFile(getCurrentGraphicalSequence(), getCurrentSequence()->filepath);
     if (not success)
     {
         std::cout << "Loading .aria file failed." << std::endl;
@@ -1286,7 +1315,7 @@ void MainFrame::loadAriaFile(wxString filePath)
     }
     else
     {
-        updateTopBarAndScrollbarsForSequence( getCurrentSequence() );
+        updateTopBarAndScrollbarsForSequence( getCurrentGraphicalSequence() );
         updateMenuBarToSequence();
     }
 
@@ -1308,7 +1337,7 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
     WaitWindow::show( _("Please wait while midi file is loading."));
 
     std::set<wxString> warnings;
-    if (not AriaMaestosa::loadMidiFile( getCurrentSequence(), midiFilePath, warnings ) )
+    if (not AriaMaestosa::loadMidiFile( getCurrentGraphicalSequence(), midiFilePath, warnings ) )
     {
         std::cout << "Loading midi file failed." << std::endl;
         WaitWindow::hide();

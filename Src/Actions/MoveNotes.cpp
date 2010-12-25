@@ -178,10 +178,7 @@ namespace TestMoveNotes
             AriaMaestosa::setCurrentSequenceProvider(this);
             
             Track* t = new Track(m_seq);
-            // FIXME: creating the graphics object shouldn't be manual nor necessary for tests
-            t->graphics = new GraphicalTrack(t, m_seq);
-            t->graphics->createEditors();
-            
+
             MeasureData* measures = m_seq->m_measure_data;
             const int beatLen = measures->beatLengthInTicks();
             
@@ -199,6 +196,11 @@ namespace TestMoveNotes
             require_e(t->getNoteAmount(), ==, 16, "sanity check"); // sanity check on the way...
             
             m_seq->addTrack(t);            
+        }
+        
+        virtual GraphicalSequence* getCurrentGraphicalSequence()
+        {
+            return NULL;
         }
         
         ~TestSeqProvider()

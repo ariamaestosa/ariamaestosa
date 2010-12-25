@@ -15,6 +15,7 @@
  */
 
 #include "Editors/Editor.h"
+#include "GUI/GraphicalSequence.h"
 #include "Midi/ControllerEvent.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
@@ -25,12 +26,11 @@ using namespace AriaMaestosa;
 
 // ----------------------------------------------------------------------------------------------------------
 
-ControllerEvent::ControllerEvent(Sequence* sequence, unsigned short controller, int tick, unsigned short value)
+ControllerEvent::ControllerEvent(unsigned short controller, int tick, unsigned short value)
 {
     m_controller = controller;
     m_tick       = tick;
     m_value      = value;
-    m_sequence   = sequence;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -49,10 +49,11 @@ void ControllerEvent::setValue(unsigned short value)
 
 // ----------------------------------------------------------------------------------------------------------
 
-int ControllerEvent::getPositionInPixels()
+// FIXME: this function probably does not belong here
+int ControllerEvent::getPositionInPixels(GraphicalSequence* gseq)
 {
     return (int)(
-                 m_tick*m_sequence->getZoom() + Editor::getEditorXStart()
+                 m_tick*gseq->getZoom() + Editor::getEditorXStart()
                  );
 }
 

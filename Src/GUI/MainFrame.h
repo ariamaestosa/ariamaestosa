@@ -28,10 +28,11 @@
 #include <wx/toolbar.h>
 #include <wx/panel.h>
 
-#include "Utils.h"
 #include "AriaCore.h"
-#include "ptr_vector.h"
+#include "GUI/GraphicalSequence.h"
 #include "Midi/Sequence.h"
+#include "ptr_vector.h"
+#include "Utils.h"
 
 class wxButton;
 class wxScrollBar;
@@ -161,7 +162,7 @@ namespace AriaMaestosa
         int m_current_sequence;
         
         /** Contains all open sequences */
-        ptr_vector<Sequence> m_sequences;
+        ptr_vector<GraphicalSequence> m_sequences;
 
     public:
         LEAK_CHECK();
@@ -261,7 +262,7 @@ namespace AriaMaestosa
         void stopClicked(wxCommandEvent& evt);
 
         // ---- I/O
-        void updateTopBarAndScrollbarsForSequence(const Sequence* seq);
+        void updateTopBarAndScrollbarsForSequence(const GraphicalSequence* seq);
 
         /** Opens the .aria file in filepath, reads it and prepares the editor to display and edit it. */
         void loadAriaFile(wxString path);
@@ -323,10 +324,12 @@ namespace AriaMaestosa
         bool closeSequence(int id = -1);
 
         /** Returns the sequence (file) currently being active. */
-        virtual Sequence* getCurrentSequence();
-
-        Sequence* getSequence(int n);
-        int getCurrentSequenceID() const { return m_current_sequence; }
+        virtual Sequence*  getCurrentSequence();
+        Sequence*          getSequence(int n);
+        GraphicalSequence* getCurrentGraphicalSequence();
+        GraphicalSequence* getGraphicalSequence(int n);
+        
+        int  getCurrentSequenceID() const { return m_current_sequence; }
         void setCurrentSequence(int n);
 
         void changeShownTimeSig(int num, int denom);

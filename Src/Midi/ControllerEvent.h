@@ -29,7 +29,7 @@ namespace irr { namespace io {
 namespace AriaMaestosa
 {
     
-    class Sequence;
+    class GraphicalSequence;
     
     /**
       * @brief represents a single control event
@@ -38,24 +38,25 @@ namespace AriaMaestosa
     class ControllerEvent
     {
         
-        int            m_tick;
-        unsigned short m_controller;
-        unsigned short m_value;
-        Sequence*      m_sequence;
+        int                m_tick;
+        unsigned short     m_controller;
+        unsigned short     m_value;
         
     public:
         LEAK_CHECK();
         
-        ControllerEvent(Sequence* sequence, unsigned short controller, int tick, unsigned short value);
+        ControllerEvent(unsigned short controller, int tick, unsigned short value);
         
         unsigned short getController() const { return m_controller; }
         int            getTick      () const { return m_tick;       }    
         unsigned short getValue     () const { return m_value;      }
-        int            getPositionInPixels();
+        
+        
+        int getPositionInPixels(GraphicalSequence* gseq);
         
         void setTick(int i);
         void setValue(unsigned short value);
-        
+          
         // ---- serialization
         void saveToFile(wxFileOutputStream& fileout);
         bool readFromFile(irr::io::IrrXMLReader* xml);

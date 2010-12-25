@@ -25,6 +25,11 @@ namespace AriaMaestosa
         {
             return m_seq;
         }
+        
+        virtual GraphicalSequence* getCurrentGraphicalSequence()
+        {
+            return NULL;
+        }
     };
         
 }

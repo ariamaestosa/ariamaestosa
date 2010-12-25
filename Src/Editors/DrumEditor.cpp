@@ -23,6 +23,7 @@
 #include "Actions/MoveNotes.h"
 #include "Editors/DrumEditor.h"
 #include "Editors/RelativeXCoord.h"
+#include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
 #include "GUI/ImageProvider.h"
 #include "Midi/Players/PlatformMidiManager.h"
@@ -455,7 +456,7 @@ NoteSearchResult DrumEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
     const int noteAmount = m_track->getNoteAmount();
     for (int n=0; n<noteAmount; n++)
     {
-        const int drumx = m_track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels();
+        const int drumx = m_graphical_track->getNoteStartInPixels(n) - m_gsequence->getXScrollInPixels();
 
         ASSERT(m_track->getNotePitchID(n)>0);
         ASSERT(m_track->getNotePitchID(n)<128);
@@ -581,9 +582,10 @@ void DrumEditor::moveNote(Note& note, const int relativeX, const int relativeY)
 void DrumEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_current,
                                    RelativeXCoord& mousex_initial, int mousey_initial)
 {
-    for (int n=0; n<m_track->getNoteAmount(); n++)
+    const int count = m_track->getNoteAmount();
+    for (int n=0; n<count; n++)
     {
-        const int drumx = m_track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels();
+        const int drumx = m_graphical_track->getNoteStartInPixels(n) - m_gsequence->getXScrollInPixels();
 
         ASSERT(m_track->getNotePitchID(n)>0);
         ASSERT(m_track->getNotePitchID(n)<128);
@@ -737,7 +739,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
     const int noteAmount = m_track->getNoteAmount();
     for (int n=0; n<noteAmount; n++)
     {
-        const int drumx = m_track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels() +
+        const int drumx = m_graphical_track->getNoteStartInPixels(n) - m_gsequence->getXScrollInPixels() +
                           Editor::getEditorXStart();
 
         // don't draw notes that won't visible
@@ -790,14 +792,14 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         const int x_difference = mousex_current.getRelativeTo(MIDI)-mousex_initial.getRelativeTo(MIDI);
         const int y_difference = mousey_current-mousey_initial;
 
-        const int x_steps_to_move = (int)(snapMidiTickToGrid(x_difference) * m_sequence->getZoom());
+        const int x_steps_to_move = (int)(snapMidiTickToGrid(x_difference) * m_gsequence->getZoom());
         const int y_steps_to_move = (int)round( y_difference/ (float)Y_STEP );
 
         // move a single note
         if (m_last_clicked_note != -1)
         {
-            const int drumx = m_track->getNoteStartInPixels(m_last_clicked_note) -
-                              m_sequence->getXScrollInPixels() +
+            const int drumx = m_graphical_track->getNoteStartInPixels(m_last_clicked_note) -
+                              m_gsequence->getXScrollInPixels() +
                               Editor::getEditorXStart();
 
             const int drumIDInVector = m_midi_key_to_vector_ID[ m_track->getNotePitchID(m_last_clicked_note) ];
@@ -820,7 +822,8 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
             {
                 if (not m_track->isNoteSelected(n)) continue;
 
-                const int drumx = m_track->getNoteStartInPixels(n) - m_sequence->getXScrollInPixels() +
+                const int drumx = m_graphical_track->getNoteStartInPixels(n) -
+                                  m_gsequence->getXScrollInPixels() +
                                   Editor::getEditorXStart();
 
                 ASSERT_E(m_track->getNotePitchID(n), >, 0);

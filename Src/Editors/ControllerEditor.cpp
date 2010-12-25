@@ -74,7 +74,7 @@ void ControllerEditor::renderEvents()
     const int currentController = m_controller_choice->getControllerID();
 
     const int eventAmount = m_track->getControllerEventAmount( Track::isTempoController(currentController) );
-    const int x_scroll = m_sequence->getXScrollInPixels();
+    const int x_scroll = m_gsequence->getXScrollInPixels();
 
 
     int eventsOfThisType=0;
@@ -84,7 +84,7 @@ void ControllerEditor::renderEvents()
         if (tmp->getController() != currentController) continue; // only draw events of this controller
         eventsOfThisType++;
 
-        const int xloc = tmp->getPositionInPixels();
+        const int xloc = tmp->getPositionInPixels(m_gsequence);
         const unsigned short value = tmp->getValue();
 
         if (previous_location - x_scroll > getXEnd()) // if events are no more visible, stop drawing
@@ -92,7 +92,7 @@ void ControllerEditor::renderEvents()
 
         if (xloc - x_scroll > Editor::getEditorXStart())
         {
-            if (previous_location!=-1 and previous_value!=-1)
+            if (previous_location != -1 and previous_value != -1)
             {
                 AriaRender::line(previous_location - x_scroll,
                                  area_from_y + previous_value*y_zoom,
@@ -207,10 +207,10 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
             if (tick2 < 0) tick2 = 0;
             if (tick1 < 0) tick1 = 0;
 
-            AriaRender::line((tick1 - m_sequence->getXScrollInMidiTicks()) *
-                             m_sequence->getZoom()+Editor::getEditorXStart(), mousey_initial,
-                             (tick2 - m_sequence->getXScrollInMidiTicks()) *
-                             m_sequence->getZoom()+Editor::getEditorXStart(), mousey_current);
+            AriaRender::line((tick1 - m_gsequence->getXScrollInMidiTicks()) *
+                             m_gsequence->getZoom() + Editor::getEditorXStart(), mousey_initial,
+                             (tick2 - m_gsequence->getXScrollInMidiTicks()) *
+                             m_gsequence->getZoom() + Editor::getEditorXStart(), mousey_current);
         }
     }
     AriaRender::lineWidth(1);

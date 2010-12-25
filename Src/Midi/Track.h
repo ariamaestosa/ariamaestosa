@@ -283,8 +283,6 @@ namespace AriaMaestosa
         
         // ---- get info on notes
         int   getNoteAmount           ()             const;
-        int   getNoteStartInPixels    (const int id) const;
-        int   getNoteEndInPixels      (const int id) const;
         int   getNoteStartInMidiTicks (const int id) const;
         int   getNoteEndInMidiTicks   (const int id) const;
         int   getNotePitchID          (const int id) const;

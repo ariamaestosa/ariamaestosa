@@ -23,10 +23,10 @@
 namespace AriaMaestosa
 {
     
-    class Sequence; // forward
+    class GraphicalSequence;
     
     /** @ingroup io */
-    bool loadMidiFile(Sequence* sequence, wxString filepath, std::set<wxString>& warnings);
+    bool loadMidiFile(GraphicalSequence* sequence, wxString filepath, std::set<wxString>& warnings);
     
 }
 

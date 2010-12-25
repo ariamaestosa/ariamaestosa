@@ -119,7 +119,7 @@ void MeasureData::setFirstMeasure(int firstMeasureID)
 float MeasureData::measureLengthInPixels(int measure)
 {
     if (measure==-1) measure=0; // no parameter passed, use measure 0 settings
-    return (float)measureLengthInTicks(measure) * (float)getCurrentSequence()->getZoom();
+    return (float)measureLengthInTicks(measure) * (float)getCurrentGraphicalSequence()->getZoom();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -153,7 +153,7 @@ int MeasureData::defaultMeasureLengthInTicks()
 // (i'm not sure if this is used at all or very much)
 float MeasureData::defaultMeasureLengthInPixels()
 {
-    Sequence* sequence = getCurrentSequence();
+    GraphicalSequence* sequence = getCurrentGraphicalSequence();
     return (float)measureLengthInTicks(0) * (float)sequence->getZoom();
 }
 
@@ -171,7 +171,7 @@ void MeasureData::unselect()
         m_measure_info[n].selected = false;
     }
     
-    getCurrentSequence()->m_measure_bar->lastMeasureInDrag = -1;
+    getCurrentGraphicalSequence()->getMeasureBar()->lastMeasureInDrag = -1;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -183,7 +183,7 @@ void MeasureData::unselect()
 
 int MeasureData::measureAtPixel(int pixel)
 {
-    const float x1 = 90 - getCurrentSequence()->getXScrollInPixels();
+    const float x1 = 90 - getCurrentGraphicalSequence()->getXScrollInPixels();
     pixel -= (int)x1;
 
     if (isMeasureLengthConstant())
@@ -278,7 +278,7 @@ int MeasureData::measureAtTick(int tick)
 int MeasureData::measureDivisionAt(int pixel)
 {
     ASSERT_E(m_measure_amount, ==, (int)m_measure_info.size());
-    const float x1 = 90 - getCurrentSequence()->getXScrollInPixels();
+    const float x1 = 90 - getCurrentGraphicalSequence()->getXScrollInPixels();
 
     if (isMeasureLengthConstant())
     {
@@ -315,14 +315,14 @@ int MeasureData::firstPixelInMeasure(int id)
     if (isMeasureLengthConstant())
     {
         return (int)(
-                     id * measureLengthInTicks() * getCurrentSequence()->getZoom() -
-                     getCurrentSequence()->getXScrollInPixels() + 90
+                     id * measureLengthInTicks() * getCurrentGraphicalSequence()->getZoom() -
+                     getCurrentGraphicalSequence()->getXScrollInPixels() + 90
                      );
     }
     else
     {
         ASSERT_E(id,<,(int)m_measure_info.size());
-        return m_measure_info[id].pixel -  getCurrentSequence()->getXScrollInPixels() + 90;
+        return m_measure_info[id].pixel -  getCurrentGraphicalSequence()->getXScrollInPixels() + 90;
     }
 }
 
@@ -335,14 +335,14 @@ int MeasureData::lastPixelInMeasure(int id)
     if (isMeasureLengthConstant())
     {
         return (int)(
-                     (id+1) * measureLengthInTicks() * getCurrentSequence()->getZoom() -
-                     getCurrentSequence()->getXScrollInPixels() + 90
+                     (id+1) * measureLengthInTicks() * getCurrentGraphicalSequence()->getZoom() -
+                     getCurrentGraphicalSequence()->getXScrollInPixels() + 90
                      );
     }
     else
     {
         ASSERT_E(id,<,(int)m_measure_info.size());
-        return m_measure_info[id].endPixel -  getCurrentSequence()->getXScrollInPixels() + 90;
+        return m_measure_info[id].endPixel -  getCurrentGraphicalSequence()->getXScrollInPixels() + 90;
     }
 }
 
@@ -465,8 +465,9 @@ void MeasureData::setTimeSig(int top, int bottom)
     m_time_sig_changes[m_selected_time_sig].setDenom( bottom );
     updateMeasureInfo();
 
-
-    getCurrentSequence()->setZoom( getCurrentSequence()->getZoomInPercent() ); // update zoom to new measure size
+    GraphicalSequence* gseq = getCurrentGraphicalSequence();
+    // FIXME: confusing line, maybe rename 'setZoom' so it's clearer what it does...
+    gseq->setZoom( gseq->getZoomInPercent() ); // update zoom to new measure size
 
     wxSpinEvent unused;
     getMainFrame()->songLengthChanged(unused);
@@ -625,9 +626,9 @@ void MeasureData::updateVector(int newSize)
 void MeasureData::updateMeasureInfo()
 {
     const int amount = m_measure_info.size();
-    const float zoom = getCurrentSequence()->getZoom();
-    Sequence* sequence = getCurrentSequence();
-    const int ticksPerBeat = sequence->ticksPerBeat();
+    const float zoom = getCurrentGraphicalSequence()->getZoom();
+    GraphicalSequence* sequence = getCurrentGraphicalSequence();
+    const int ticksPerBeat = sequence->getModel()->ticksPerBeat();
     float tick = 0;
     int timg_sig_event = 0;
 
@@ -765,7 +766,7 @@ void MeasureData::afterImporting()
     {
         m_expanded_mode = false;
     }
-    if (!isMeasureLengthConstant()) updateMeasureInfo();
+    if (not isMeasureLengthConstant()) updateMeasureInfo();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -792,7 +793,7 @@ int MeasureData::getTotalPixelAmount()
 {
     if (isMeasureLengthConstant())
     {
-        return (int)( m_measure_amount * measureLengthInTicks() * getCurrentSequence()->getZoom() );
+        return (int)( m_measure_amount * measureLengthInTicks() * getCurrentGraphicalSequence()->getZoom() );
     }
     else
     {
