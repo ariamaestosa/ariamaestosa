@@ -339,7 +339,7 @@ void GraphicalSequence::addToDock(GraphicalTrack* track)
 {
     dock.push_back(track);
     
-    m_sequence->setCurrentTrack(0);
+    m_sequence->setCurrentTrackID(0);
     
     DisplayFrame::updateVerticalScrollbar();
 }
@@ -413,6 +413,7 @@ bool GraphicalSequence::readFromFile(irr::io::IrrXMLReader* xml)
                     else
                     {
                         std::cerr << "WARNING: Found a misplaced <sequence> tag\n";
+                        m_sequence->readFromFile(xml); // for backwards compatibility, try to continue anyway
                     }
                 }
                 // ---------- view ------
