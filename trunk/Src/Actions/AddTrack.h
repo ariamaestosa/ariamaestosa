@@ -22,7 +22,7 @@
 namespace AriaMaestosa
 {
     class Track;
-    class Sequence;
+    class GraphicalSequence;
     
     namespace Action
     {
@@ -36,10 +36,10 @@ namespace AriaMaestosa
             Track*    m_added_track;
             
             /** In which sequence to add a track */
-            Sequence* m_parent_sequence;
+            GraphicalSequence* m_parent_sequence;
             
         public:
-            AddTrack(Sequence* whichSequence);
+            AddTrack(GraphicalSequence* whichSequence);
             virtual ~AddTrack();
 
             void perform();

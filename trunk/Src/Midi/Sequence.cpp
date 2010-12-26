@@ -638,7 +638,7 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
 
 // ----------------------------------------------------------------------------------------------------------
 
-bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
+bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
 {
     importing = true;
     tracks.clearAndDeleteAll();
@@ -786,7 +786,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml)
                     Track* newTrack = new Track(this);
                     tracks.push_back( newTrack );
                     
-                    if (not newTrack->readFromFile(xml)) return false;
+                    if (not newTrack->readFromFile(xml, gseq)) return false;
                 }
 
                 // ---------- copyright ------

@@ -405,12 +405,12 @@ bool GraphicalSequence::readFromFile(irr::io::IrrXMLReader* xml)
                 {
                     if (inSeqView)
                     {
-                        m_sequence->readFromFile(xml);
+                        m_sequence->readFromFile(xml, this);
                     }
                     else
                     {
                         std::cerr << "WARNING: Found a misplaced <sequence> tag\n";
-                        m_sequence->readFromFile(xml); // for backwards compatibility, try to continue anyway
+                        m_sequence->readFromFile(xml, this); // for backwards compatibility, try to continue anyway
                     }
                 }
                 // ---------- view ------

@@ -1732,7 +1732,8 @@ void Track::saveToFile(wxFileOutputStream& fileout)
 
 // -------------------------------------------------------------------------------------------------------
 
-bool Track::readFromFile(irr::io::IrrXMLReader* xml)
+// FIXME: remove references to GraphicalSequence
+bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
 {
 
     m_notes.clearAndDeleteAll();
@@ -1803,7 +1804,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml)
                 else if (strcmp("editor", xml->getNodeName()) == 0)
                 {
                     // FIXME: move creating graphics out of there...
-                    graphics = new GraphicalTrack(this, graphics->getSequence());
+                    graphics = new GraphicalTrack(this, gseq);
                     graphics->createEditors();
                     
                     if (not graphics->readFromFile(xml)) return false;
