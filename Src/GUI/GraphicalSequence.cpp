@@ -374,13 +374,13 @@ void GraphicalSequence::saveToFile(wxFileOutputStream& fileout)
 {
     
     writeData(wxT("<seqview xscroll=\"") + to_wxString(m_x_scroll_in_pixels) +
-              wxT("\" yscroll=\"")    + to_wxString(y_scroll) +
-              wxT("\" zoom=\"")       + to_wxString(m_zoom_percent) +
+              wxT("\" yscroll=\"")       + to_wxString(y_scroll) +
+              wxT("\" zoom=\"")          + to_wxString(m_zoom_percent) +
               wxT("\">\n"), fileout);
     
     m_sequence->saveToFile(fileout);
     
-    writeData("</seqview>\n", fileout);
+    writeData(wxT("</seqview>\n"), fileout);
 }
 
 // ----------------------------------------------------------------------------------------------------------
