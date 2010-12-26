@@ -56,6 +56,9 @@ TablaturePrintable::~TablaturePrintable()
 void TablaturePrintable::earlySetup(const int trackID, Track* track)
 {
     m_analyser = new ScoreAnalyser(m_editor, -1);
+    
+    MeasureData* md = track->getSequence()->getMeasureData();
+    
     const int trackAmount = track->getNoteAmount();
     for (int n=0; n<trackAmount; n++)
     {
@@ -66,8 +69,9 @@ void TablaturePrintable::earlySetup(const int trackID, Track* track)
         const int noteLength = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
         const int tick       = track->getNoteStartInMidiTicks(n);
         
-        NoteRenderInfo currentNote(tick, noteLevel, noteLength, note_sign,
-                                   track->isNoteSelected(n), track->getNotePitchID(n));
+        NoteRenderInfo currentNote = NoteRenderInfo::factory(tick, noteLevel, noteLength, note_sign,
+                                                             track->isNoteSelected(n),
+                                                             track->getNotePitchID(n), md);
         
         m_analyser->addToVector(currentNote);
     }
@@ -76,11 +80,14 @@ void TablaturePrintable::earlySetup(const int trackID, Track* track)
     class TabSilenceProxy : public SilenceAnalyser::INoteSource
     {
         ScoreAnalyser* m_analyser;
+        Sequence* m_seq;
+        
     public:
         
-        TabSilenceProxy(ScoreAnalyser* analyser)
+        TabSilenceProxy(ScoreAnalyser* analyser, Sequence* seq)
         {
             m_analyser = analyser;
+            m_seq = seq;
         }
         
         /** @return the number of notes that can be obtained through this interface */
@@ -95,7 +102,7 @@ void TablaturePrintable::earlySetup(const int trackID, Track* track)
          */
         virtual int getBeginMeasure(const int noteID) const
         {
-            return getMeasureData()->measureAtTick( m_analyser->noteRenderInfo[noteID].getTick() );
+            return m_seq->getMeasureData()->measureAtTick( m_analyser->noteRenderInfo[noteID].getTick() );
         }
         
         /**
@@ -117,11 +124,12 @@ void TablaturePrintable::earlySetup(const int trackID, Track* track)
         }
     };
     
-    TabSilenceProxy* adapter = new TabSilenceProxy(m_analyser);
-    m_silences =  SilenceAnalyser::findSilences( adapter,
-                                                 0 /* first measure */,
-                                                 getMeasureData()->getMeasureAmount()-1 /* last measure */,
-                                                 -1 /* y not important at this point */ );
+    TabSilenceProxy* adapter = new TabSilenceProxy(m_analyser, track->getSequence());
+    m_silences =  SilenceAnalyser::findSilences(track->graphics->getSequence(),
+                                                adapter,
+                                                0 /* first measure */,
+                                                md->getMeasureAmount() - 1 /* last measure */,
+                                                -1 /* y not important at this point */ );
     delete adapter;
 }
 
@@ -238,6 +246,8 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
     // draw track name
     drawTrackName(dc, currentTrack, trackCoords->x0, trackCoords->y0, trackCoords->y1);
     
+    const MeasureData* md = currentTrack.getTrack()->getSequence()->getMeasureData();
+    
     const int elementAmount = currentLine.getLayoutElementCount();
     for (int el=0; el<elementAmount; el++)
     {
@@ -352,11 +362,11 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
         }
         
         dc.SetFont(oldfont);
-    }//next element 
+    }//next element
     
     // ---- Silences
-    const int fromTick = getMeasureData()->firstTickInMeasure(currentLine.getFirstMeasure());
-    const int toTick   = getMeasureData()->lastTickInMeasure(currentLine.getLastMeasure());
+    const int fromTick = md->firstTickInMeasure(currentLine.getFirstMeasure());
+    const int toTick   = md->lastTickInMeasure(currentLine.getLastMeasure());
 
     const int silencesY  = trackCoords->y0 + stringHeight;   // second string
     const int silencesY2 = (m_string_amount > 5 ? trackCoords->y0 + stringHeight*2 : silencesY);

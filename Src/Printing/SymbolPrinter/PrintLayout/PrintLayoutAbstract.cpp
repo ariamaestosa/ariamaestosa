@@ -71,9 +71,11 @@ namespace AriaMaestosa
 
 void PrintLayoutAbstract::generateMeasures(ptr_vector<Track, REF>& tracks)
 {
+    const Sequence* seq = m_sequence->getSequence();
+    
     std::cout << "\n====\ngenerateMeasures\n====\n";
     const int trackAmount = tracks.size();
-    const int measureAmount = getMeasureData()->getMeasureAmount();
+    const int measureAmount = seq->getMeasureData()->getMeasureAmount();
     
     for (int tr=0; tr<trackAmount; tr++)
     {
@@ -82,7 +84,7 @@ void PrintLayoutAbstract::generateMeasures(ptr_vector<Track, REF>& tracks)
         // add m_measures
         for (int measure=0; measure<measureAmount; measure++)
         {
-            m_measures.push_back( new PrintLayoutMeasure(measure) );
+            m_measures.push_back( new PrintLayoutMeasure(measure, track->getSequence()) );
         }
         
         if (track->getNoteAmount() == 0) continue; //empty track
@@ -136,7 +138,8 @@ void PrintLayoutAbstract::calculateLayoutElements (ptr_vector<Track, REF>& track
     
 void PrintLayoutAbstract::findSimilarMeasures()
 {
-    const int measureAmount = getMeasureData()->getMeasureAmount();
+    const Sequence* seq = m_sequence->getSequence();
+    const int measureAmount = seq->getMeasureData()->getMeasureAmount();
 
     for (int measure=0; measure<measureAmount; measure++)
     {
@@ -165,7 +168,9 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
 {
     std::cout << "\n====\ncreateLayoutElements\n====\n";
     
-    const int measureAmount = getMeasureData()->getMeasureAmount();
+    const Sequence* seq = m_sequence->getSequence();
+    const MeasureData* md = seq->getMeasureData();
+    const int measureAmount = md->getMeasureAmount();
 
     int previous_num = -1, previous_denom = -1;
     
@@ -185,14 +190,14 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
 
         noStartLine = false;
         
-        if (getMeasureData()->getTimeSigDenominator(measure) != previous_denom or
-            getMeasureData()->getTimeSigNumerator(measure)   != previous_num)
+        if (md->getTimeSigDenominator(measure) != previous_denom or
+            md->getTimeSigNumerator(measure)   != previous_num)
         {
             // ---- add time signature element
             LayoutElement el2(LayoutElement(TIME_SIGNATURE_EL, -1));
             el2.width_in_print_units = TIME_SIG_LAYOUT_ELEMENT_WIDTH;
-            el2.num = getMeasureData()->getTimeSigNumerator(measure);
-            el2.denom = getMeasureData()->getTimeSigDenominator(measure);
+            el2.num   = md->getTimeSigNumerator(measure);
+            el2.denom = md->getTimeSigDenominator(measure);
             
             previous_num = el2.num;
             previous_denom = el2.denom;
@@ -200,7 +205,7 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
             noStartLine = true;
         }
         
-        const int tick      = getMeasureData()->firstTickInMeasure(measure);
+        const int tick      = md->firstTickInMeasure(measure);
         const int tempoHere = m_sequence->getSequence()->getTempoAtTick(tick);
 
         // check for empty measures

@@ -26,6 +26,7 @@ namespace AriaMaestosa
 {
     class PrintLayoutMeasure;
     class Track;
+    class Sequence;
 
     extern const PrintLayoutMeasure NULL_MEASURE;
 
@@ -78,9 +79,11 @@ namespace AriaMaestosa
         
         RelativePlacementManager m_ticks_placement_manager;
         
+        Sequence* m_sequence;
+        
     public:
         
-        PrintLayoutMeasure(const int measID);
+        PrintLayoutMeasure(const int measID, Sequence* seq);
 
         /** 
           * Finds the notes correcsponding to this measure

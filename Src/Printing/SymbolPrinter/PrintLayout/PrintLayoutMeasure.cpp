@@ -17,13 +17,14 @@
 #include "AriaCore.h"
 #include "PrintLayoutMeasure.h"
 #include "Midi/MeasureData.h"
+#include "Midi/Sequence.h"
 #include "Midi/Track.h"
 
 #include "Printing/SymbolPrinter/PrintLayout/PrintLayoutAbstract.h"
 
 namespace AriaMaestosa
 {
-    const PrintLayoutMeasure NULL_MEASURE(-1);
+    const PrintLayoutMeasure NULL_MEASURE(-1, NULL);
 }
 
 #define PLM_CHATTY 0
@@ -32,10 +33,10 @@ using namespace AriaMaestosa;
 
 // -------------------------------------------------------------------------------------------
     
-PrintLayoutMeasure::PrintLayoutMeasure(const int measID) :
-    m_ticks_placement_manager(measID == -1 ? 0 : getMeasureData()->lastTickInMeasure( measID ))
+PrintLayoutMeasure::PrintLayoutMeasure(const int measID, Sequence* seq) :
+    m_ticks_placement_manager(measID == -1 ? 0 : seq->getMeasureData()->lastTickInMeasure( measID ))
 {
-    //m_shortest_duration  = -1;
+    m_sequence = seq;
     firstSimilarMeasure  = -1;
     cutApart             = false;
     m_measure_id         = measID;
@@ -43,8 +44,8 @@ PrintLayoutMeasure::PrintLayoutMeasure(const int measID) :
     
     if (measID != -1)
     {
-        m_first_tick = getMeasureData()->firstTickInMeasure( measID );
-        m_last_tick  = getMeasureData()->lastTickInMeasure ( measID );
+        m_first_tick = seq->getMeasureData()->firstTickInMeasure( measID );
+        m_last_tick  = seq->getMeasureData()->lastTickInMeasure ( measID );
     }
 }
 
@@ -245,7 +246,7 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
         }
         
         // store duration if it's the shortest yet (but ignore dead/instant-hit notes)
-        const float relativeLength = (end_tick - start_tick) / (float)(getMeasureData()->beatLengthInTicks()*4);
+        const float relativeLength = (end_tick - start_tick) / (float)(m_sequence->ticksPerBeat()*4);
         if (relativeLength < 1.0/32.0) continue;
         
         //if (currentNoteDuration < m_shortest_duration or m_shortest_duration == -1)

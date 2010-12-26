@@ -28,7 +28,7 @@ GraphicalSequence::GraphicalSequence(Sequence* s)
     m_sequence              = s;
     reordering_newPosition  = -1;
     x_scroll_upon_copying   = -1;
-    m_measure_bar           = new MeasureBar(s->getMeasureData());
+    m_measure_bar           = new MeasureBar(s->getMeasureData(), this);
     m_zoom                  = (128.0/(s->ticksPerBeat()*4));
     m_zoom_percent          = 100;
     dockHeight              = 0;
@@ -108,7 +108,7 @@ void GraphicalSequence::setXScrollInPixels(int value)
     m_x_scroll_in_pixels = value;
     
     const int editor_size = Display::getWidth()-100;
-    const int total_size  = getMeasureData()->getTotalPixelAmount();
+    const int total_size  = m_measure_bar->getTotalPixelAmount();
     
     if (m_x_scroll_in_pixels < 0) m_x_scroll_in_pixels = 0;
     if (m_x_scroll_in_pixels >= total_size-editor_size) m_x_scroll_in_pixels = total_size-editor_size - 1;
@@ -132,7 +132,7 @@ void GraphicalSequence::setYScroll(int value)
 
 void GraphicalSequence::setZoom(int zoom)
 {
-    m_zoom = (zoom/100.0) * 128.0 / ((float)getMeasureData()->beatLengthInTicks() * 4);
+    m_zoom = (zoom/100.0) * 128.0 / ((float)m_sequence->ticksPerBeat() * 4);
     m_zoom_percent = zoom;
 }
 
@@ -149,7 +149,7 @@ int GraphicalSequence::getTotalHeight() const
         totalHeight += m_sequence->getTrack(n)->graphics->getTotalHeight() + 10;
     }
     
-    if (getMeasureData()->isExpandedMode()) totalHeight += 20;
+    if (m_sequence->getMeasureData()->isExpandedMode()) totalHeight += 20;
     
     return totalHeight;
 }

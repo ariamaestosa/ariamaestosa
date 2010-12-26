@@ -107,7 +107,7 @@ void MeasureData::setFirstMeasure(int firstMeasureID)
 
 // ----------------------------------------------------------------------------------------------------------
 
-int MeasureData::measureLengthInTicks(int measure)
+int MeasureData::measureLengthInTicks(int measure) const
 {
     if (measure == -1) measure = 0; // no parameter passed, use measure 0 settings
 
@@ -198,7 +198,7 @@ int MeasureData::measureAtTick(int tick)
 
 // ----------------------------------------------------------------------------------------------------------
 
-int MeasureData::firstTickInMeasure(int id)
+int MeasureData::firstTickInMeasure(int id) const
 {
     ASSERT_E(m_measure_amount, ==, (int)m_measure_info.size());
     
@@ -229,7 +229,7 @@ int MeasureData::firstTickInMeasure(int id)
 
 // ----------------------------------------------------------------------------------------------------------
 
-int MeasureData::lastTickInMeasure(int id)
+int MeasureData::lastTickInMeasure(int id) const
 {
     ASSERT_E(m_measure_amount, ==, (int)m_measure_info.size());
     
