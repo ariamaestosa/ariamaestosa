@@ -136,7 +136,7 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
     const int measure       = mb->measureAtPixel( Editor::getEditorXStart() );
     const int start_x       = mb->firstPixelInMeasure( measure );
     const int measureAmount = md->getMeasureAmount();
-    const float beatLength  = m_sequence->ticksPerBeat();
+    const float beatLength  = m_sequence->ticksPerBeat() * m_gsequence->getZoom();
     float mx                = start_x;
     const int measureID     = mb->measureAtPixel( Editor::getEditorXStart() );
     float new_mx;

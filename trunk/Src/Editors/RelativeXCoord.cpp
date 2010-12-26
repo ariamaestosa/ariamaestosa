@@ -154,6 +154,8 @@ void RelativeXCoord::convertTo(RelativeType relativeTo)
 
 int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
 {
+    ASSERT(m_seq != NULL);
+    
     switch (returnRelativeTo)
     {
         case EDITOR:

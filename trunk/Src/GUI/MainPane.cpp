@@ -225,6 +225,9 @@ bool MainPane::do_render()
 
     GraphicalSequence* gseq = mf->getCurrentGraphicalSequence();
     
+    m_mouse_x_initial.setSequence(gseq);
+    m_mouse_x_current.setSequence(gseq);
+    
     gseq->renderTracks(m_current_tick,
                        m_mouse_x_current,
                        m_mouse_y_current,
