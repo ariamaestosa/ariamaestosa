@@ -83,7 +83,7 @@ END_EVENT_TABLE()
 namespace AriaMaestosa
 {
     const int TAB_BAR_Y      = 0;
-    const int MEASURE_BAR_Y  = 20;
+    
     const int TAB_SIDE_WIDTH = 16;
     const int CLOSE_BUTTON_SPACE_FROM_RIGHT = 8;
 

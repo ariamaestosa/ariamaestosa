@@ -1405,13 +1405,13 @@
 				957119111125D8D200104BF5 /* GraphicalTrack.h */,
 				957119121125D8D200104BF5 /* ImageProvider.cpp */,
 				957119131125D8D200104BF5 /* ImageProvider.h */,
-				957119191125D8D200104BF5 /* MeasureBar.cpp */,
-				9571191A1125D8D200104BF5 /* MeasureBar.h */,
 				957119141125D8D200104BF5 /* MainFrame.cpp */,
 				957119151125D8D200104BF5 /* MainFrame.h */,
 				957119161125D8D200104BF5 /* MainFrameMenuBar.cpp */,
 				957119171125D8D200104BF5 /* MainPane.cpp */,
 				957119181125D8D200104BF5 /* MainPane.h */,
+				957119191125D8D200104BF5 /* MeasureBar.cpp */,
+				9571191A1125D8D200104BF5 /* MeasureBar.h */,
 			);
 			name = GUI;
 			path = ../Src/GUI;

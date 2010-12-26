@@ -32,7 +32,10 @@
 
 namespace AriaMaestosa
 {
-
+    const int MEASURE_BAR_Y  = 20;
+    const int MEASURE_BAR_H  = 20;
+    const int EXPANDED_MEASURE_BAR_H  = 40;
+    
     class MouseDownTimer;
     class MainFrame;
 

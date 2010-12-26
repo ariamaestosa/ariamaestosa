@@ -27,6 +27,7 @@
 #include "Editors/Editor.h"
 #include "GUI/GraphicalSequence.h"
 #include "GUI/MainFrame.h"
+#include "GUI/MainPane.h"
 #include "GUI/MeasureBar.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
@@ -270,7 +271,7 @@ void MeasureBar::render(int measureBarY_arg)
         data->updateVector(data->m_measure_amount);
     }
     
-    const int height = (data->isExpandedMode() ? 40 : 20);
+    const int height = (data->isExpandedMode() ? EXPANDED_MEASURE_BAR_H : MEASURE_BAR_H);
     AriaRender::primitives();
     AriaRender::color(1, 1, 0.9);
     AriaRender::rect(0, measureBarY, Display::getWidth(), measureBarY+ height);
@@ -279,9 +280,10 @@ void MeasureBar::render(int measureBarY_arg)
     AriaRender::color(0, 0, 0);
 
     AriaRender::line(0, measureBarY, Display::getWidth(), measureBarY);
-    AriaRender::line(0, measureBarY+20, Display::getWidth(), measureBarY+20);
+    AriaRender::line(0, measureBarY+MEASURE_BAR_H, Display::getWidth(), measureBarY+MEASURE_BAR_H);
 
-    if (data->isExpandedMode()) AriaRender::line(0, measureBarY+40, Display::getWidth(), measureBarY+40);
+    if (data->isExpandedMode()) AriaRender::line(0,                   measureBarY + EXPANDED_MEASURE_BAR_H,
+                                                 Display::getWidth(), measureBarY + EXPANDED_MEASURE_BAR_H);
 
 
     // vertical lines and mesure ID
@@ -310,24 +312,23 @@ void MeasureBar::render(int measureBarY_arg)
 
             if (measureLengthConstant)
             {
-                // FIXME: don't hardcode measure bar height
-                AriaRender::rect(n, measureBarY + 1, n + x_step, measureBarY + 19);
+                AriaRender::rect(n, measureBarY + 1, n + x_step, measureBarY + MEASURE_BAR_H - 1);
             }
             else
             {
                 const int mw = data->m_measure_info[measureID-1].widthInTicks * zoom;
-                AriaRender::rect(n, measureBarY + 1, n + mw, measureBarY + 19);
+                AriaRender::rect(n, measureBarY + 1, n + mw, measureBarY + MEASURE_BAR_H - 1);
             }
             
             AriaRender::color(0,0,0);
         }
 
         // vertical line
-        AriaRender::line(n, measureBarY, n, measureBarY+20);
+        AriaRender::line(n, measureBarY, n, measureBarY + MEASURE_BAR_H);
 
         // measure ID
         AriaRender::images();
-        AriaRender::renderNumber(measureID, n+5, measureBarY+18 );
+        AriaRender::renderNumber(measureID, n + 5, measureBarY + MEASURE_BAR_H - 2);
 
         AriaRender::primitives();
         if (data->isExpandedMode())
