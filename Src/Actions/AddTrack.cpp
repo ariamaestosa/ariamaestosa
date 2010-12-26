@@ -16,6 +16,7 @@
 
 #include "Actions/AddTrack.h"
 #include "Actions/EditAction.h"
+#include "GUI/GraphicalSequence.h"
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
 #include "AriaCore.h"
@@ -30,7 +31,8 @@ using namespace AriaMaestosa::Action;
 
 // --------------------------------------------------------------------------------------------------------
 
-AddTrack::AddTrack(Sequence* seq) :
+// FIXME: refers to 'GraphicalSequence', how to make this action independent of GUI while still making GUI follow along...
+AddTrack::AddTrack(GraphicalSequence* seq) :
     //I18N: (undoable) action name
     MultiTrackAction( _("add track") )
 {
@@ -49,7 +51,7 @@ AddTrack::~AddTrack()
 void AddTrack::undo()
 {
     ASSERT(m_added_track != NULL)
-    m_parent_sequence->deleteTrack(m_added_track);
+    sequence->deleteTrack(m_added_track);
     m_added_track = NULL;
 }
 
@@ -62,6 +64,8 @@ void AddTrack::perform()
 
 // --------------------------------------------------------------------------------------------------------
 
+// TODO: add back unit test when GraphicalSequence is not required anymore
+/*
 namespace TestAddTrack
 {
     using namespace AriaMaestosa;
@@ -112,4 +116,4 @@ namespace TestAddTrack
         delete seq;
     }
 }
-
+*/

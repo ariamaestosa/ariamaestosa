@@ -295,7 +295,7 @@ namespace AriaMaestosa
         void saveToFile(wxFileOutputStream& fileout);
         
         /** Called when reading \<sequence\> ... \</sequence\> in .aria file */
-        bool readFromFile(irr::io::IrrXMLReader* xml);
+        bool readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq);
 
     };
 

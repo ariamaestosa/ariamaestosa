@@ -524,7 +524,7 @@ namespace AriaMaestosa
         
         // serialization
         void saveToFile(wxFileOutputStream& fileout);
-        bool readFromFile(irr::io::IrrXMLReader* xml);
+        bool readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq);
     };
     
 }
