@@ -242,29 +242,34 @@ namespace AriaMaestosa
         
         void setName(wxString name);
         
-        AriaRenderString& getNameRenderer();
-        const wxString&   getName() const { return m_name; }
-        
         void selectNote(const int id, const bool selected, bool ignoreModifiers=false);
+
+        AriaRenderString& getNameRenderer();
+        const wxString&   getName   () const { return m_name; }
         
-        Sequence* getSequence ()       { return m_sequence;        }
+        /** @brief Get the sequence this track is part of */
+        Sequence* getSequence       ()       { return m_sequence;        }
+        
+        /** @brief Get the sequence this track is part of (const version) */
+        const Sequence* getSequence () const { return m_sequence;        }
+
         
         /** 
           * @return the type of key for this track
           */
-        KeyType getKeyType    () const { return m_key_type;        }
+        KeyType getKeyType          () const { return m_key_type;        }
         
         /** 
           * @return the number of sharp symbols in this track's key (or 0 if the key uses flats)
           * @note if key type (see Track::getKeyType) is not KEY_TYPE_SHARPS, will return 0
           */
-        int getKeySharpsAmount() const { return m_key_sharps_amnt; }
+        int getKeySharpsAmount      () const { return m_key_sharps_amnt; }
         
         /**
           * @return the number of flat symbols in this track's key (or 0 if the key uses sharps)
           * @note if key type (see Track::getKeyType) is not KEY_TYPE_FLATS, will return 0
           */
-        int getKeyFlatsAmount () const { return m_key_flats_amnt;  }
+        int getKeyFlatsAmount       () const { return m_key_flats_amnt;  }
         
         /**
           * @brief Sets the key of this track

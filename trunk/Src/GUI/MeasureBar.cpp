@@ -511,7 +511,7 @@ void MeasureBar::mouseDown(int x, int y)
         if (not m_gseq->getModel()->importing)
         {
             wxPoint pt = wxGetMousePosition();
-            showTimeSigPicker(pt.x, pt.y,
+            showTimeSigPicker(m_gseq, pt.x, pt.y,
                               data->m_time_sig_changes[id].getNum(),
                               data->m_time_sig_changes[id].getDenom() );
             data->updateMeasureInfo();

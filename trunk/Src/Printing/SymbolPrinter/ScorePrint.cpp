@@ -637,8 +637,11 @@ namespace AriaMaestosa
         m_g_clef = scoreEditor->isGClefEnabled();
         m_f_clef = scoreEditor->isFClefEnabled();
         
-        const int fromTick = getMeasureData()->firstTickInMeasure( line.getFirstMeasure() );
-        const int toTick   = getMeasureData()->lastTickInMeasure ( line.getLastMeasure() );
+        const Sequence* seq = track->getSequence();
+        const MeasureData* md = seq->getMeasureData();
+        
+        const int fromTick = md->firstTickInMeasure( line.getFirstMeasure() );
+        const int toTick   = md->lastTickInMeasure ( line.getLastMeasure() );
 
         // ---- check if some signs (stems, triplet signs, etc.) go out of bounds
         for (int n=0; n<2; n++) // 0 is G clef, 1 is F clef
@@ -828,7 +831,7 @@ namespace AriaMaestosa
         ScoreEditor* scoreEditor = track->graphics->getScoreEditor();
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         
-        MeasureData* measures = getMeasureData();
+        MeasureData* measures = track->getSequence()->getMeasureData();
         const int measureAmount = measures->getMeasureAmount();
         
         // ---- find highest and lowest note we need to render in each measure
@@ -897,6 +900,8 @@ namespace AriaMaestosa
         // --- collect notes in the vector
         // by iterating through measures so ScoreAnalyser can prepare the score
         
+        MeasureData* md = track->getSequence()->getMeasureData();
+        
         std::cout << "[ScorePrintable] earlySetup : gathering note list\n";
         for (int m=0; m<measureAmount; m++)
         {
@@ -915,8 +920,9 @@ namespace AriaMaestosa
                 const int noteLength = track->getNoteEndInMidiTicks(n) - track->getNoteStartInMidiTicks(n);
                 const int tick = track->getNoteStartInMidiTicks(n);
                 
-                NoteRenderInfo currentNote(tick, noteLevel, noteLength, note_sign,
-                                           track->isNoteSelected(n), track->getNotePitchID(n));
+                NoteRenderInfo currentNote = NoteRenderInfo::factory(tick, noteLevel, noteLength,
+                                                                     note_sign, track->isNoteSelected(n),
+                                                                     track->getNotePitchID(n), md);
                 
                 // add note to either G clef score or F clef score
                 if (m_g_clef and not m_f_clef)
@@ -950,14 +956,16 @@ namespace AriaMaestosa
         std::cout << "[ScorePrintable] early setup : gathering silences\n";
         if (m_f_clef)
         {
-            m_silences_ticks = SilenceAnalyser::findSilences( f_clef_analyser, 0, measureAmount-1,
+            m_silences_ticks = SilenceAnalyser::findSilences(track->graphics->getSequence(),
+                                                             f_clef_analyser, 0, measureAmount-1,
                                                              -1 /* y not important at this point */ );
         }
         if (m_g_clef)
         {
             std::vector< SilenceAnalyser::SilenceInfo > g_clef_silences =
-                    SilenceAnalyser::findSilences( g_clef_analyser, 0, measureAmount-1,
-                                                    -1 /* y not important at this point */ );
+                    SilenceAnalyser::findSilences(track->graphics->getSequence(),
+                                                  g_clef_analyser, 0, measureAmount-1,
+                                                  -1 /* y not important at this point */ );
             
             // append the new items to the existing F clef items if any
             m_silences_ticks.insert(m_silences_ticks.end(), g_clef_silences.begin(), g_clef_silences.end());
@@ -975,8 +983,11 @@ namespace AriaMaestosa
                                              bool show_measure_number, const int grandStaffCenterY)
     {
         const bool f_clef = (clefType == F_CLEF_ALONE or clefType == F_CLEF_FROM_GRAND_STAFF);
-        const int fromTick = getMeasureData()->firstTickInMeasure( line.getFirstMeasure() );
-        const int toTick   = getMeasureData()->lastTickInMeasure ( line.getLastMeasure () );
+        
+        const MeasureData* md = track->getSequence()->getMeasureData();
+        
+        const int fromTick = md->firstTickInMeasure( line.getFirstMeasure() );
+        const int toTick   = md->lastTickInMeasure ( line.getLastMeasure () );
         
         std::cout << "[ScorePrintable] ==== analyseAndDrawScore " << (f_clef ? "F" : "G") << " ==== \n";
         
@@ -1395,15 +1406,15 @@ namespace AriaMaestosa
         {
             const int silences_y = LEVEL_TO_Y(middle_c_level + 4);
             g_line_height = lineHeight;
-            SilenceAnalyser::findSilences(&renderSilenceCallback, lineAnalyser, first_measure,
-                                          last_measure, silences_y );
+            SilenceAnalyser::findSilences(track->graphics->getSequence(), &renderSilenceCallback, lineAnalyser,
+                                          first_measure, last_measure, silences_y );
         }
         else
         {
             const int silences_y = LEVEL_TO_Y(middle_c_level - 8);
             g_line_height = lineHeight;
-            SilenceAnalyser::findSilences(&renderSilenceCallback, lineAnalyser, first_measure, last_measure,
-                                          silences_y );
+            SilenceAnalyser::findSilences(track->graphics->getSequence(), &renderSilenceCallback, lineAnalyser,
+                                          first_measure, last_measure, silences_y );
         }
 
         

@@ -564,8 +564,8 @@ Range<float> RelativePlacementManager::getSymbolRelativeArea(int tick) const
     
     if (id == -1)
     {
-        std::cerr << "WARNING: RelativePlacementManager::getSymbolRelativeArea could not find tick " << tick 
-                  << " (beat " << tick/float(getMeasureData()->beatLengthInTicks()) << ")\n";
+        //std::cerr << "WARNING: RelativePlacementManager::getSymbolRelativeArea could not find tick " << tick 
+        //          << " (beat " << tick/float(getMeasureData()->beatLengthInTicks()) << ")\n";
         //ASSERT(false);
         return Range<float>(0, 0);
     }

@@ -120,7 +120,7 @@ namespace AriaMaestosa
         
         int   measureAtTick(int tick);
         
-        int   measureLengthInTicks(int measure = -1);
+        int   measureLengthInTicks(int measure = -1) const;
         
         /** @brief get time sig num, either for a specific mesure, either the default value (no argument) */
         int   getTimeSigNumerator(int measure=-1) const;
@@ -154,8 +154,8 @@ namespace AriaMaestosa
         /** Erase the time signature event denoted by the given ID (range [0..getTimeSigAmount()-1] */
         void  eraseTimeSig(int id);
         
-        int   firstTickInMeasure(int id);
-        int   lastTickInMeasure(int id);
+        int   firstTickInMeasure(int id) const;
+        int   lastTickInMeasure (int id) const;
         
         /**
          * @brief Time Signatures have changed, update and recalculate information about location of measures
