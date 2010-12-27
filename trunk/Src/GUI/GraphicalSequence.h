@@ -20,6 +20,7 @@
 #include "GUI/GraphicalTrack.h"
 #include "GUI/MeasureBar.h"
 #include "ptr_vector.h"
+#include <math.h> // for "round"
 
 namespace AriaMaestosa
 {
