@@ -160,7 +160,7 @@ namespace AriaMaestosa
     
     /** after dialog is shown, and user clicked 'OK', this is called to launch the actual printing */
     void doPrint(std::vector< std::pair<Track*, EditorType> > whatToPrint, Sequence* seq,
-                 AriaPrintable* printable, bool detect_repetitions)
+                 AriaPrintable* printable)
     {
         
         bool symbolPrinter = false;
@@ -257,7 +257,7 @@ namespace AriaMaestosa
             std::cout << "******************* CALCULATE LAYOUT *******************\n";
             std::cout << "********************************************************\n\n";
             
-            printableSeq->calculateLayout( detect_repetitions );
+            printableSeq->calculateLayout();
             
             std::cout << "\n********************************************************\n";
             std::cout << "********************* PRINT RESULT *********************\n";
@@ -375,7 +375,7 @@ namespace AriaMaestosa
     {
         Sequence* m_current_sequence;
 
-        bool m_detect_repetitions;
+        //bool m_detect_repetitions;
         
         wxRadioButton* m_current_track_radiobtn;
         wxRadioButton* m_visible_tracks_radiobtn;
@@ -402,7 +402,7 @@ namespace AriaMaestosa
                                   wxPoint(200,200), wxSize(500, 400), wxCAPTION | wxFRAME_FLOAT_ON_PARENT)
         {
             m_current_sequence = sequence;
-            m_detect_repetitions = false;
+            //m_detect_repetitions = false;
 
             bool success = false;
             m_printable = new AriaPrintable( AbstractPrintableSequence::getTitle(sequence), &success );
@@ -738,7 +738,7 @@ namespace AriaMaestosa
                 }
             }
             
-            m_detect_repetitions = false; //m_detect_repetitions_checkbox->IsChecked();
+            //m_detect_repetitions = false; //m_detect_repetitions_checkbox->IsChecked();
             
             m_printable->hideEmptyTracks( (print_one_track ? false : m_hide_empty_tracks->IsChecked()) );
             m_printable->showTrackNames( not print_one_track );
@@ -748,7 +748,7 @@ namespace AriaMaestosa
             Destroy();
             
             // continue with the printing sequence
-            doPrint(what_to_print, m_current_sequence, m_printable, m_detect_repetitions);
+            doPrint(what_to_print, m_current_sequence, m_printable);
         }
         
         

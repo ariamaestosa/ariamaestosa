@@ -710,9 +710,6 @@ void MainFrame::updateTopBarAndScrollbarsForSequence(const GraphicalSequence* se
     // zoom
     m_display_zoom->SetValue( seq->getZoomInPercent() );
 
-    // set zoom (reason to set it again is because the first time you open it, it may not already have a zoom)
-    // FIXME: what's that??
-    //getCurrentSequence()->setZoom( seq->getZoomInPercent() );
 
     m_expanded_measures_menu_item->Check( measData->isExpandedMode() );
 
@@ -1289,7 +1286,7 @@ void MainFrame::setCurrentSequence(int n)
 #endif
 
 
-// FIXME - it sounds very dubious that this task goes in MainFrame
+// FIXME(DESIGN) - it sounds very dubious that this task goes in MainFrame
 
 void MainFrame::loadAriaFile(wxString filePath)
 {
@@ -1337,7 +1334,7 @@ void MainFrame::loadAriaFile(wxString filePath)
 
 // ----------------------------------------------------------------------------------------------------------
 
-// FIXME - it sounds very dubious that this task goes in MainFrame
+// FIXME(DESIGN) - it sounds very dubious that this task goes in MainFrame
 void MainFrame::loadMidiFile(wxString midiFilePath)
 {
     if (midiFilePath.IsEmpty()) return;

@@ -73,17 +73,17 @@ bool SymbolPrintableSequence::addTrack(Track* track, EditorType mode)
 
 // -----------------------------------------------------------------------------------------------------------------
 
-void SymbolPrintableSequence::calculateLayout(bool checkRepetitions)
+void SymbolPrintableSequence::calculateLayout()
 {
     ASSERT( MAGIC_NUMBER_OK_FOR(&m_tracks) );
     
     m_abstract_layout_manager = new PrintLayoutAbstract(this);
-    m_abstract_layout_manager->addLayoutInformation(m_tracks, layoutPages /* out */, checkRepetitions);
+    m_abstract_layout_manager->addLayoutInformation(m_tracks, layoutPages /* out */);
     
     // prepare it for when we're ready to print
     m_numeric_layout_manager = new PrintLayoutNumeric();
     
-    AbstractPrintableSequence::calculateLayout(checkRepetitions);
+    AbstractPrintableSequence::calculateLayout();
 }
 
 // -----------------------------------------------------------------------------------------------------------------

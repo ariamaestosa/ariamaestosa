@@ -37,7 +37,7 @@ GraphicalSequence::GraphicalSequence(Sequence* s)
     y_scroll                = 0;
     reorderYScroll          = 0;
     
-    // create editors for any existing track (FIXME: flaky design)
+    // create editors for any existing track (FIXME(DESIGN): flaky design)
     const int count = s->getTrackAmount();
     for (int n=0; n<count; n++)
     {
@@ -289,7 +289,7 @@ bool GraphicalSequence::areMouseHeldDownEventsNeeded()
 void GraphicalSequence::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
                                       RelativeXCoord mousex_initial, int mousey_initial)
 {
-    // FIXME - dragging tracks has nothing to do in the display
+    // FIXME(DESIGN) - dragging tracks has nothing to do in the display
     const int draggedTrack = Display::getDraggedTrackID();
     
     // if reordering tracks

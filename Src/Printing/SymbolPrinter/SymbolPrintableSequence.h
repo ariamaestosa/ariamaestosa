@@ -80,7 +80,7 @@ namespace AriaMaestosa
           * Divides sequence in pages, decides contents of each line, etc.
           * Must be called before actually printing.
           */
-        virtual void calculateLayout(bool checkRepetitions);
+        virtual void calculateLayout();
         
         /**
           * @brief         Get the EditorPrintable derivate corresponding to the requested track

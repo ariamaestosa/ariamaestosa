@@ -24,7 +24,7 @@ using namespace AriaMaestosa;
 namespace AriaMaestosa
 {    
     /** Determined empirically. Used to determine when it's time to switch to another page */
-    const int MIN_LEVEL_HEIGHT = 60; //FIXME: PrintLayoutAbstract is not abstract at all, deals with absolute coords...
+    const int MIN_LEVEL_HEIGHT = 60; // FIXME(DESIGN): PrintLayoutAbstract is not abstract at all, deals with absolute coords...
 
     /** Minimal width of any element, in print units, to avoid elements that are too small and look funny */
     const int LAYOUT_ELEMENT_MIN_WIDTH = 300;
@@ -32,7 +32,7 @@ namespace AriaMaestosa
     /** Width, in print units, of a time signature (e.g. 4/4) element */
     const int TIME_SIG_LAYOUT_ELEMENT_WIDTH = 75;
     
-    /** width of a G or F clef symbol on the staff (FIXME: set more precisely) */
+    /** width of a G or F clef symbol on the staff (TODO: set more precisely) */
     const int CLEF_WIDTH = 250;
         
     const int MIN_NUMBER_OF_EMPTY_MEASURES_TO_COLLPASE = 4;
@@ -110,14 +110,13 @@ void PrintLayoutAbstract::generateMeasures(ptr_vector<Track, REF>& tracks)
 // -----------------------------------------------------------------------------------------------------
 
 void PrintLayoutAbstract::calculateLayoutElements (ptr_vector<Track, REF>& tracks,
-                                                   ptr_vector<LayoutPage>& layoutPages,
-                                                   const bool checkRepetitions_bool)
+                                                   ptr_vector<LayoutPage>& layoutPages)
 {
     ASSERT(m_measures.size() > 0); // generating m_measures must have been done first
     std::vector<LayoutElement> layoutElements;
     
     // search for repeated m_measures if necessary
-    if (checkRepetitions_bool) findSimilarMeasures();
+    //if (checkRepetitions_bool) findSimilarMeasures();
     
     const int trackAmount = tracks.size();
     for (int i=0; i<trackAmount; i++)
@@ -127,7 +126,7 @@ void PrintLayoutAbstract::calculateLayoutElements (ptr_vector<Track, REF>& track
         editorPrintable->earlySetup( i, tracks.get(i) );
     }
     
-    createLayoutElements(layoutElements, checkRepetitions_bool);
+    createLayoutElements(layoutElements);
     calculateRelativeLengths(layoutElements);
     
     // this will also move the layoutElements to their corresponding LayoutLine object
@@ -135,7 +134,7 @@ void PrintLayoutAbstract::calculateLayoutElements (ptr_vector<Track, REF>& track
 }
 
 // -----------------------------------------------------------------------------------------------------
-    
+#if 0
 void PrintLayoutAbstract::findSimilarMeasures()
 {
     const Sequence* seq = m_sequence->getSequence();
@@ -158,13 +157,13 @@ void PrintLayoutAbstract::findSimilarMeasures()
         }//next
     }//next
 }
+#endif
     
 // -----------------------------------------------------------------------------------------------------
     
 #define _verbose 1
     
-void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layoutElements,
-                                               bool checkRepetitions_bool)
+void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layoutElements)
 {
     std::cout << "\n====\ncreateLayoutElements\n====\n";
     
@@ -259,6 +258,7 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
             }// next track ref
         }// end if empty measure
         // repetition
+        /*
         else if (checkRepetitions_bool and m_measures[measure].firstSimilarMeasure!=-1)
         {
 
@@ -376,7 +376,7 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
                 layoutElements.push_back( LayoutElement(SINGLE_MEASURE, measure) );
             }
 
-        }
+        }*/
         else
             // ------ normal measure -----
         {
@@ -461,10 +461,11 @@ void PrintLayoutAbstract::calculateRelativeLengths(std::vector<LayoutElement>& l
             std::cout << "  -> Layout element " << n << " is " << layoutElements[n].width_in_print_units
                       << " unit(s) wide" << std::endl;
         }
+        /*
         else if (layoutElements[n].getType() == REPEATED_RIFF)
         {
             layoutElements[n].width_in_print_units = LAYOUT_ELEMENT_MIN_WIDTH;
-        }
+        }*/
 
         //std::cout << "$$ setting charwidth for element " << n << " : " << layoutElements[n].width_in_units << std::endl;
     } // end for elements
@@ -508,11 +509,11 @@ LayoutElement PrintLayoutAbstract::generateLineHeaderElement() const
     
     int header_width = CLEF_WIDTH;
     
-    //FIXME: let the score editor report the size it wants
+    // FIXME(DESIGN): let the score printable report the size it wants for its header instead of deciding it here
     if (m_sequence->isScoreEditorUsed())
     {
         // 50 being the max size of an accidental (FIXME: don't hardcode)
-        // FIXME: some numeric widths are used here, in the abstract layout manager
+        // FIXME(DESIGN): some numeric widths are used here, in the abstract layout manager
         header_width += m_sequence->getMaxKeySignatureSignCount()*50;
     }
     
@@ -686,14 +687,13 @@ PrintLayoutAbstract::PrintLayoutAbstract(SymbolPrintableSequence* sequence)
 // -----------------------------------------------------------------------------------------------------
 
 void PrintLayoutAbstract::addLayoutInformation(ptr_vector<Track, REF>& tracks,
-                                               ptr_vector<LayoutPage>& layoutPages,
-                                               const bool checkRepetitions_bool)
+                                               ptr_vector<LayoutPage>& layoutPages)
 {    
     ASSERT( MAGIC_NUMBER_OK_FOR(&tracks) );
 
     generateMeasures(tracks);
     
-    calculateLayoutElements(tracks, layoutPages, checkRepetitions_bool);
+    calculateLayoutElements(tracks, layoutPages);
 }
 
 // -----------------------------------------------------------------------------------------------------

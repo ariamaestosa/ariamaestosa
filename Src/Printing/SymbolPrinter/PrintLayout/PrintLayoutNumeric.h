@@ -59,7 +59,7 @@ namespace AriaMaestosa
         /**
          * Main method to use this class. Given a LayoutPage, calculates the actual print coordinates of the
          * lines and elements within this page. The output is achieved by setting previously not set values
-         * in the layout classes (FIXME: that's ugly!!)
+         * in the layout classes (FIXME(DESIGN): required call sequence exposes implementation details)
          *
          * @param page                Page for which to calculate and set absolute print coord
          * @param notation_area_y0    Y coordinate at which the actual notation can start being drawn (excluding header)

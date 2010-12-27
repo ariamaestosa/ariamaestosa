@@ -321,10 +321,6 @@ bool MainPane::do_render()
         AriaRenderString& seq_name = getMainFrame()->getSequence(n)->sequenceFileName;
         seq_name.bind();
 
-        // forbid name to be too long
-        // FIXME - find better way than scaling. add back '...'
-        //if (seq_name.getWidth() > tab_width+12) seq_name.scale( (float)(tab_width+12)/seq_name.getWidth() );
-        //else seq_name.scale(1.0f);
         seq_name.render( start_at_x+10, TAB_BAR_Y+20);
 
         start_at_x += TAB_SIDE_WIDTH+tab_width+TAB_SIDE_WIDTH;
@@ -927,7 +923,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
 
     // perform editor-specific event filtering
 
-    // FIXME - belongs to the editor, probably (move all editor stuff to editor files)
+    // FIXME(DESIGN) - belongs to the editor, probably (move all editor stuff to editor files)
     // FIXME - too many renders there, maybe even actions do render
 
     const int current_editor = seq->getCurrentTrack()->graphics->getEditorMode();
@@ -1148,8 +1144,8 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
             {
                 const int ticks = gseq->getXScrollInMidiTicks();
                 
-                // FIXME: scrolling should not need to be manually changed when zoom is...
-                //        A possible solution is to store a midi tick scroll instead of the current pixel scroll
+                // FIXME(DESIGN): scrolling should not need to be manually changed when zoom is...
+                //                A possible solution is to store a midi tick scroll instead of the current pixel scroll
                 gseq->setZoom(newZoom);
                 
                 // update scrolling to new zoom
@@ -1264,7 +1260,7 @@ void MainPane::playbackRenderLoop()
             {
                 int new_scroll_in_pixels = (m_playback_start_tick + currentTick) * gseq->getZoom();
                 if (new_scroll_in_pixels < 0) new_scroll_in_pixels=0;
-                // FIXME - we need a single call to update both data and widget
+                // FIXME(DESIGN) - we need a single call to update both data and widget
                 gseq->setXScrollInPixels(new_scroll_in_pixels);
                 DisplayFrame::updateHorizontalScrollbar( m_playback_start_tick + currentTick );
             }

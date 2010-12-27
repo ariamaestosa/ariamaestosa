@@ -102,7 +102,7 @@ namespace AriaMaestosa
           * @brief call early in the callback to draw a track.
           *
           * All base class methods doing rendering
-          * will use the passed DC to perform the rendering (FIXME: that's quite ugly)
+          * will use the passed DC to perform the rendering (FIXME(DESIGN): that's quite ugly)
           */
         void setCurrentDC(wxDC* dc);
 

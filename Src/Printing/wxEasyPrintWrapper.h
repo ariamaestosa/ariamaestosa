@@ -129,7 +129,7 @@ namespace AriaMaestosa
         /** 
          * Perform print setup (paper size, orientation, etc...), with our without dialog.
          * @postcondition sets m_unit_width and m_unit_height in AriaPrintable, as well
-         *                as usable_area_y* (FIXME: ugly design)
+         *                as usable_area_y*
          */
         bool performPageSetup(const bool showPageSetupDialog=false);
 

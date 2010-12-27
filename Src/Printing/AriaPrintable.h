@@ -93,7 +93,8 @@ namespace AriaMaestosa
         
         /**
          * Construct this object BEFORE calling 'calculateLayout' in the prntable sequence, since the printable
-         * sequence may need some info from the Ariaprintable (FIXME: confusing design)
+         * sequence may need some info from the Ariaprintable
+         * FIXME(DESIGN): call sequence relies on implementation details
          *
          * @param seq the sequence to print. Remains owned by the caller, AriaPrintable will not delete it.
          *            The caller must not delete the passed sequence before AriaPrintable is deleted too.

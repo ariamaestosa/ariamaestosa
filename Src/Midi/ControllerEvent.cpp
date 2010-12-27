@@ -49,7 +49,7 @@ void ControllerEvent::setValue(unsigned short value)
 
 // ----------------------------------------------------------------------------------------------------------
 
-// FIXME: this function probably does not belong here
+// FIXME(DESIGN): this function probably does not belong here
 int ControllerEvent::getPositionInPixels(GraphicalSequence* gseq)
 {
     return (int)(

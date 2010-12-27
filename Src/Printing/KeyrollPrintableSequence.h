@@ -68,7 +68,7 @@ namespace AriaMaestosa
         /**
          * @brief implement callback from parent
          */
-        virtual void calculateLayout(bool checkRepetitions);
+        virtual void calculateLayout();
 
     };
 }

@@ -102,7 +102,7 @@ namespace AriaMaestosa
       */
     class Track : public IInstrumentChoiceListener, public IDrumChoiceListener, public IGuitarTuningListener
     {
-        // FIXME - find better way then friends?
+        // FIXME(DESIGN) - find better way than friendship
         friend class FullTrackUndo;
         friend class NoteRelocator;
         friend class ControlEventRelocator;
@@ -186,7 +186,7 @@ namespace AriaMaestosa
         LEAK_CHECK();
                 
         // ------------- read-only -------------
-        // FIXME: it should be the graphics that refer to the data, not the data holding the graphics!
+        // FIXME(DESIGN): it should be the graphics that refer to the data, not the data holding the graphics!
         OwnerPtr<GraphicalTrack>  graphics;
         int trackUniqueID;
         // -------------------------------------

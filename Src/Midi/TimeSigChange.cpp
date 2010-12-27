@@ -24,6 +24,6 @@ TimeSigChange::TimeSigChange(int measure, int num, int denom)
     m_num     = num;
     m_denom   = denom;
     
-    // FIXME: m_tick is not set here and needs to be set manually after construction...
+    // FIXME(DESIGN): m_tick is not set here and needs to be set manually after construction...
 }
 
