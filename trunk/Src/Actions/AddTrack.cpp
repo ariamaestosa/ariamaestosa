@@ -31,7 +31,7 @@ using namespace AriaMaestosa::Action;
 
 // --------------------------------------------------------------------------------------------------------
 
-// FIXME: refers to 'GraphicalSequence', how to make this action independent of GUI while still making GUI follow along...
+// FIXME(DESIGN): refers to 'GraphicalSequence', how to make this action independent of GUI while still making GUI follow along...
 AddTrack::AddTrack(GraphicalSequence* seq) :
     //I18N: (undoable) action name
     MultiTrackAction( _("add track") )

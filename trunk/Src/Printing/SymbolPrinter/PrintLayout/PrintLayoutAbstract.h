@@ -70,12 +70,11 @@ namespace AriaMaestosa
           * Populates the 'layoutElements' vector with elements that represent the current sequence.
           *
           * @param[out] layoutElements   The vector that will be filled with LayoutElement objects
-          * @param checkRepetitions_bool Whether to attempt to automatically detect repeated song parts
           */
-        void createLayoutElements(std::vector<LayoutElement>& layoutElements, bool checkRepetitions_bool);
+        void createLayoutElements(std::vector<LayoutElement>& layoutElements);
         
         /** fills fields containing info about similar measures withing the PrintLayoutMeasure objects */
-        void findSimilarMeasures();
+        //void findSimilarMeasures();
         
         /** utility method invoked by 'layInLinesAndPages' when a line is complete */
         void terminateLine(LayoutLine* line, ptr_vector<LayoutPage>& layoutPages, const int maxLevelHeight,
@@ -90,8 +89,7 @@ namespace AriaMaestosa
           * @param[out] layoutPages
           */
         void calculateLayoutElements(ptr_vector<Track, REF>& tracks,
-                                     ptr_vector<LayoutPage>& layoutPages,
-                                     const bool checkRepetitions_bool);
+                                     ptr_vector<LayoutPage>& layoutPages);
         
         /**
           * Small factory function to generate line ehader elements
@@ -113,8 +111,7 @@ namespace AriaMaestosa
           * @param findReps         whether to use the feature to automatically attempt to detect
           *                         repeated song sections
           */
-        void addLayoutInformation(ptr_vector<Track, REF>& tracks, ptr_vector<LayoutPage>& layoutPages,
-                                  const bool findReps);
+        void addLayoutInformation(ptr_vector<Track, REF>& tracks, ptr_vector<LayoutPage>& layoutPages);
     };
     
 }

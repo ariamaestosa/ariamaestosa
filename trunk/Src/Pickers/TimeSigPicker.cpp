@@ -291,10 +291,10 @@ void TimeSigPicker::enterPressed(wxCommandEvent& evt)
     measures->setTimeSig( top, bottom );
     mainFrame->changeShownTimeSig( top, bottom );
     
-    // FIXME: confusing line, maybe rename 'setZoom' so it's clearer what it does...
+    // FIXME(DESIGN): confusing line, maybe rename 'setZoom' so it's clearer what it does...
     m_gseq->setZoom( m_gseq->getZoomInPercent() ); // update zoom to new measure size
     
-    // FIXME: avoid fake events
+    // FIXME(DESIGN): avoid fake events
     wxSpinEvent unused;
     mainFrame->songLengthChanged(unused);
     

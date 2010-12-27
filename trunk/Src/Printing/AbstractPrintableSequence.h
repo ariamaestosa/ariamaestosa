@@ -93,7 +93,7 @@ namespace AriaMaestosa
          * Must be called before actually printing.
          * Children classes will likely want to augment the default behavior.
          */
-        virtual void calculateLayout(bool checkRepetitions)
+        virtual void calculateLayout()
         {
             m_layout_calculated = true;
         }

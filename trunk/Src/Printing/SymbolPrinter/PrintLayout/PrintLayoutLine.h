@@ -40,7 +40,7 @@ namespace AriaMaestosa
      */
     class LineTrackRef
     {
-        //FIXME: find better way than 'friend'
+        //FIXME(DESIGN): remove friendship
         friend class LayoutLine;
         
         LayoutLine* m_parent;
@@ -151,8 +151,8 @@ namespace AriaMaestosa
         
         std::vector<LayoutElement> m_layout_elements;
 
-        //FIXME: find a better way than using "-1" to mean these values are not set
-        //       (having the object in a half-constructed at any point state is ugly anyway)
+        // FIXME(DESIGN): find a better way than using "-1" to mean these values are not set
+        //                (having the object in a half-constructed at any point state is ugly anyway)
         int m_level_from;
         int m_level_to;
         

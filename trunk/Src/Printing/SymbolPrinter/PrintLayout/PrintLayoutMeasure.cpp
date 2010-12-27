@@ -37,8 +37,8 @@ PrintLayoutMeasure::PrintLayoutMeasure(const int measID, Sequence* seq) :
     m_ticks_placement_manager(measID == -1 ? 0 : seq->getMeasureData()->lastTickInMeasure( measID ))
 {
     m_sequence = seq;
-    firstSimilarMeasure  = -1;
-    cutApart             = false;
+    //firstSimilarMeasure  = -1;
+    //cutApart             = false;
     m_measure_id         = measID;
     m_contains_something = false;
     
@@ -50,7 +50,7 @@ PrintLayoutMeasure::PrintLayoutMeasure(const int measID, Sequence* seq) :
 }
 
 // -------------------------------------------------------------------------------------------
-    
+#if 0
 bool PrintLayoutMeasure::calculateIfMeasureIsSameAs(PrintLayoutMeasure& checkMeasure)
 {
     
@@ -152,7 +152,8 @@ bool PrintLayoutMeasure::calculateIfMeasureIsSameAs(PrintLayoutMeasure& checkMea
     if (total_note_amount == 0) return false; // don't count empty measures as repeitions
     return true;
 }
-    
+#endif
+
 // -------------------------------------------------------------------------------------------
     
 // TODO: this method should be tested with unit tests
@@ -295,6 +296,7 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
     
 // -------------------------------------------------------------------------------------------
 
+#if 0
 bool PrintLayoutMeasure::findConsecutiveRepetition(ptr_vector<PrintLayoutMeasure>& measures, const int measureAmount,
                                                    int& firstMeasureThatRepeats /*out*/, int& lastMeasureThatRepeats /*out*/,
                                                    int& firstMeasureRepeated /*out*/, int& lastMeasureRepeated /*out*/)
@@ -384,4 +386,5 @@ bool PrintLayoutMeasure::findConsecutiveRepetition(ptr_vector<PrintLayoutMeasure
         return false;
     }
 }
+#endif
     

@@ -104,18 +104,9 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
     const int elem_x_start = currElem.getXFrom();
     
     // ****** repetitions
+    /*
     if (currElem.getType() == SINGLE_REPEATED_MEASURE or currElem.getType() == REPEATED_RIFF)
     {
-        // FIXME - why do I cut apart the measure and not the layout element?
-        /*
-         if (measures[layoutElements[n].measure].cutApart)
-         {
-         // TODO...
-         //dc.SetPen(  wxPen( wxColour(0,0,0), 4 ) );
-         //dc.DrawLine( elem_x_start, y0, elem_x_start, y1);
-         }
-         */
-        
         wxString message;
         if (currElem.getType() == SINGLE_REPEATED_MEASURE)
         {
@@ -133,7 +124,8 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
                        (barYFrom + barYTo)/2 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()/2 );
     }
     // ****** gathered rest
-    else if (currElem.getType() == GATHERED_REST)
+    else */
+    if (currElem.getType() == GATHERED_REST)
     {
         const int elem_x_end = currElem.getXTo();
         const int y          = (barYFrom + barYTo)/2;
@@ -163,6 +155,7 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
         m_dc->DrawLine( rect_x_to  , y - 25, rect_x_to  , y + 25 );
     }
     // ****** play again
+    /*
     else if (currElem.getType() == PLAY_MANY_TIMES)
     {
         wxString label(wxT("X"));
@@ -172,6 +165,7 @@ void EditorPrintable::drawElementBase(LayoutElement& currElem, const LayoutLine&
         m_dc->DrawText(label, elem_x_start,
                        (barYFrom + barYTo)/2 - AriaPrintable::getCurrentPrintable()->getCharacterHeight()/2);
     }
+     */
     // ****** normal measure
     else if (currElem.getType() == SINGLE_MEASURE)
     {
@@ -254,11 +248,14 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
     for (int n=0; n<line.getLayoutElementCount(); n++)
     {
         const LayoutElement& el = line.getLayoutElement(n);
+        /*
         if (el.getType() == GATHERED_REST or el.getType() == REPEATED_RIFF or
             el.getType() == SINGLE_REPEATED_MEASURE or el.getType() == PLAY_MANY_TIMES)
         {
             continue;
-        }
+        }*/
+        
+        if (el.getType() == GATHERED_REST) continue;
         
         const PrintLayoutMeasure& meas = line.getMeasureForElement(n);
         if (meas == NULL_MEASURE) continue;
@@ -289,8 +286,8 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
             int to = (int)round(relative_pos.to   * elem_w + elem_x_start);
             
             // FIXME: arbitrary max length for now
-            // FIXME: ideally, when one symbol is given too much space, the max size reached detection should
-            //        be detected earlier in order to allow other symbols on the line to use the available space
+            // TODO: ideally, when one symbol is given too much space, the max size reached detection should
+            //       be detected earlier in order to allow other symbols on the line to use the available space
             if ((to - from) > 175) to = from + 175;
             
             return Range<int>(from, to);

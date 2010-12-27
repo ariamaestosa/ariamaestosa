@@ -63,7 +63,7 @@ Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener
     sequenceFileName.set(wxString(_("Untitled")));
     sequenceFileName.setMaxWidth(155); // FIXME - won't work if lots of sequences are open (tabs will begin to get smaller)
     
-    // FIXME: GUI stuff has nothing to do here
+    // FIXME(DESIGN): GUI stuff has nothing to do here
     sequenceFileName.setFont( getSequenceFilenameFont() );
 
     if (addDefautTrack) addTrack();
@@ -384,8 +384,6 @@ bool Sequence::somethingToUndo()
 
 Track* Sequence::addTrack()
 {
-    // FIXME: this track creationg processus is duplicated in many areas.
-    // Furthermore, it's dubious that the Sequence track should handle graphical tracks.
     Track* result = new Track(this);
     
     if (currentTrack >= 0 and currentTrack < tracks.size())

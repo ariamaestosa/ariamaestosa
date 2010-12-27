@@ -43,10 +43,8 @@ KeyrollPrintableSequence::KeyrollPrintableSequence(Sequence* parent, float cmPer
 
 // -------------------------------------------------------------------------------------------------------
 
-void KeyrollPrintableSequence::calculateLayout(bool checkRepetitions)
+void KeyrollPrintableSequence::calculateLayout()
 {
-    ASSERT(not checkRepetitions); // not supported
-
     MeasureData* md = m_sequence->getMeasureData();
     
     const int tickCount = md->getTotalTickAmount();
@@ -133,7 +131,7 @@ void KeyrollPrintableSequence::calculateLayout(bool checkRepetitions)
         }
     }
 
-    AbstractPrintableSequence::calculateLayout(checkRepetitions);
+    AbstractPrintableSequence::calculateLayout();
 }
 
 // -------------------------------------------------------------------------------------------------------

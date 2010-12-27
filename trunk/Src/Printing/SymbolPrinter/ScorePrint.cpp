@@ -306,12 +306,12 @@ namespace AriaMaestosa
     // -------------------------------------------------------------------------------------------
 
     // leave a pointer to the dc for the callback
-    // FIXME find cleaner way
+    // FIXME: find cleaner way than globals
     wxDC* global_dc = NULL;
     ScorePrintable* g_printable = NULL;
     
     // leave height of lines for the renderSilence callback
-    // FIXME find cleaner way
+    // FIXME: find cleaner way than globals
     int g_line_height=5;
     
     // -------------------------------------------------------------------------------------------
@@ -327,7 +327,7 @@ namespace AriaMaestosa
         
         const Range<int> x = x_converter->tickToX(tick);
         
-        //FIXME: don't rely on from_tick being negative!! what's that crap
+        // FIXME: what is this, a silence with negative tick??
         if (x.from < 0) return; // this part of score is not printed (e.g. is in a repetition)
         ASSERT(x.to != -1);
         
@@ -467,7 +467,7 @@ namespace AriaMaestosa
                 
                 if (current_analyser->noteRenderInfo[n].m_sign != PITCH_SIGN_NONE)
                 {
-                    // if there's an accidental sign to show, allocate a bigger space for this note (FIXME)
+                    // if there's an accidental sign to show, allocate a bigger space for this note
                     ticks_relative_position.addSymbol( tick, tickTo,
                                                        HEAD_RADIUS*2 + MAX_ACCIDENTAL_SIZE + NOTE_HEAD_MARGIN,
                                                        trackID );

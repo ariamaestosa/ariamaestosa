@@ -59,7 +59,7 @@ Track::Track(Sequence* sequence)
     m_name.set( wxString( _("Untitled") ) );
     m_name.setMaxWidth(120);
 
-    //FIXME: what does this do in the data class, and not in the graphics class?
+    //FIXME(DESIGN): what does this do in the data class, and not in the graphics class?
     m_name.setFont( getTrackNameFont() );
 
     //m_parent_frame = parent;
@@ -127,7 +127,7 @@ void Track::notifyOthersIWillBeRemoved()
 
 void Track::trackDeleted(Track* track)
 {
-    // FIXME: this data class should not talk to GUI classes
+    // FIXME(DESIGN): this data class should not talk to GUI classes
     if (graphics != NULL)
     {
         graphics->getKeyboardEditor()->trackDeleted(track);
@@ -732,6 +732,8 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
     // ---- select/deselect all notes
     if (id == ALL_NOTES)
     {
+        // FIXME(DESIGN): GUI stuff that shouldn't be referred to in data class
+
         // if this is a 'select none' command, unselect any selected measures in the top bar
         if (not selected) graphics->getSequence()->getMeasureBar()->unselect();
 
@@ -771,9 +773,9 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
             // otherwise, check key modifiers and set value accordingly
             if (selected)
             {                
-                //FIXME: this belongs in graphics classes, not in data classes
+                //FIXME(DESIGN): this belongs in graphics classes, not in data classes
                 if      (Display::isSelectMorePressed()) m_notes[id].setSelected(true);
-                else if (Display::isSelectLessPressed()) m_notes[id].setSelected( !selected );
+                else if (Display::isSelectLessPressed()) m_notes[id].setSelected(not selected);
             }
         }//end if
 
@@ -1128,7 +1130,7 @@ void Track::setKey(const int symbolAmount, const KeyType type)
     }
 
     // ---- notify graphical track (and editors)
-    //FIXME: do not call this while editors are still null
+    // FIXME(DESIGN): GUI stuff shouldn't be here
     if (graphics != NULL) graphics->onKeyChange(symbolAmount, m_key_type);
 }
 
@@ -1555,8 +1557,6 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
                     m.SetTime( time );
 
-                    // FIXME
-                    // ((value * 127) - 8191) ?
                     int pitchBendVal = (127 - m_control_events[control_evt_id].getValue())*128 - 128*128;
 
                     if      (pitchBendVal > 0) pitchBendVal -= 8192;
@@ -1732,7 +1732,7 @@ void Track::saveToFile(wxFileOutputStream& fileout)
 
 // -------------------------------------------------------------------------------------------------------
 
-// FIXME: remove references to GraphicalSequence
+// FIXME(DESIGN): remove references to GraphicalSequence from model classes
 bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
 {
 
@@ -1803,7 +1803,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                 }
                 else if (strcmp("editor", xml->getNodeName()) == 0)
                 {
-                    // FIXME: move creating graphics out of there...
+                    // FIXME(DESIGN): move creating graphics out of there...
                     graphics = new GraphicalTrack(this, gseq);
                     graphics->createEditors();
                     

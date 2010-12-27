@@ -122,7 +122,7 @@ namespace AriaMaestosa
         
         void requestFocus();
         
-        // FIXME - should be removed/moved
+        // FIXME(DESIGN) - should be removed/moved
         int getDraggedTrackID();
         void setPlaybackStartTick(const int tick);
     }

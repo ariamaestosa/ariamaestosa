@@ -282,7 +282,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                 {
                     sequence->setTempo(tempo);
 
-                    //FIXME: should *not* directly access the GUI control from here!!!
+                    // FIXME(DESIGN): should *not* directly access the GUI control from here!!!
                     getMainFrame()->m_tempo_ctrl->SetValue( to_wxString(tempo) );
                     firstTempoEvent=false;
                     continue;
@@ -567,7 +567,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
     getMainFrame()->changeMeasureAmount( measureAmount_i );
     md->setMeasureAmount( measureAmount_i );
 
-    // FIXME: this function shouldn't make GUI calls
+    // FIXME(DESIGN): this function shouldn't make GUI calls
     getMainFrame()->updateTopBarAndScrollbarsForSequence(gseq);
     gseq->setZoom(100);
 
@@ -577,7 +577,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
 
     getMainFrame()->updateMenuBarToSequence();
     
-    // FIXME: ugly that you need to manually call 'updateMeasureInfo', it should update itself automatically when needed
+    // FIXME(DESIGN): ugly that you need to manually call 'updateMeasureInfo', it should update itself automatically when needed
     // (transaction system? you do 'startTransaction' to get the right to modify measure data, and at the end of the
     //  transaction the data is updated)
     if (not md->isMeasureLengthConstant())

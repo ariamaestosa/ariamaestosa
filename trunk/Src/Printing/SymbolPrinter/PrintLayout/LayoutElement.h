@@ -30,11 +30,11 @@ namespace AriaMaestosa
     enum LayoutElementType
     {
         SINGLE_MEASURE,
-        SINGLE_REPEATED_MEASURE,
+        //SINGLE_REPEATED_MEASURE,
         EMPTY_MEASURE,
         GATHERED_REST,
-        REPEATED_RIFF,
-        PLAY_MANY_TIMES,
+        //REPEATED_RIFF,
+        //PLAY_MANY_TIMES,
         LINE_HEADER, // like the clef and key (on a score) or the word TAB and the tuning (for tabs)
         TIME_SIGNATURE_EL
     };

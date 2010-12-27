@@ -222,7 +222,8 @@ int LayoutLine::calculateHeight(const bool hideEmptyTracks)
     bool nonEmptyTrackMetYet = false;
     
     // calculate the total height of this line (i.e. sum of heights of tracks within the line
-    // PLUS empty space between the tracks) FIXME: shouldn't that go in PrintLayoutAbstract ?
+    // PLUS empty space between the tracks)
+    // FIXME(DESIGN): empty space calculation should go in PrintLayoutAbstract ?
     const int trackAmount = getTrackAmount();
     for (int n=0; n<trackAmount; n++)
     {

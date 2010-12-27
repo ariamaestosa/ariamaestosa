@@ -246,7 +246,7 @@ namespace AriaMaestosa
     
     namespace DisplayFrame
     {
-        // FIXME: that function shouldn't exist. the MainFrame should register a listener on the measures
+        // FIXME(DESIGN): that function shouldn't exist. the MainFrame should register a listener on the measures
         // object and be notified automatically on change.
         void changeMeasureAmount(const int i, bool throwEvent)
         {

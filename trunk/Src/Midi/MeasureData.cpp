@@ -63,7 +63,7 @@ void MeasureData::setExpandedMode(bool arg_expanded)
     //when turning it off, ask for a confirmation because all events will be lost
     if (this->m_expanded_mode and not arg_expanded)
     {
-        // FIXME: this is GUI code and should not go in this model class
+        // FIXME(DESIGN): this is GUI code and should not go in this model class
         const int answer = wxMessageBox(_("Are you sure you want to go back to having a single time signature? Any time sig events you may have added will be lost. This cannot be undone."),
                                         _("Confirm"), wxYES_NO);
         if (answer == wxNO){ getMainFrame()->updateMenuBarToSequence(); return; }

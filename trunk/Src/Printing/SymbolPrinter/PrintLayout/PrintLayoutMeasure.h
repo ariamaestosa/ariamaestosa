@@ -99,7 +99,6 @@ namespace AriaMaestosa
 
         const RelativePlacementManager& getTicksPlacementManager() const { return m_ticks_placement_manager; }
 
-        // FIXME: should not return a writable object probably?
         RelativePlacementManager& getTicksPlacementManager() { return m_ticks_placement_manager; }
         
         /** 
@@ -123,25 +122,25 @@ namespace AriaMaestosa
         /** if this measure is later repeated and is not a repetition of a previous measure,
          * contains ID of all later measures similar to this one
          */
-        std::vector<int> similarMeasuresFoundLater;
+        //std::vector<int> similarMeasuresFoundLater;
         
         /** if this measure is a repetition of a previous measure, contains the ID of which one */
-        int firstSimilarMeasure;
+        //int firstSimilarMeasure;
         
         
         /** true if measure needs to be apart from others
           * mostly used with repetitions (e.g. x4) to tell where the repetition starts
           */
-        bool cutApart; // FIXME - doesn't really belong here, should be a layout element
+        //bool cutApart; // FIXME - doesn't really belong here, should be a layout element
         
-        bool calculateIfMeasureIsSameAs(PrintLayoutMeasure& checkMeasure);
+        //bool calculateIfMeasureIsSameAs(PrintLayoutMeasure& checkMeasure);
         
         /** if a repetition is found, it is stored in the variables and returns true,
           * otherwise returns false
           */
-        bool findConsecutiveRepetition(ptr_vector<PrintLayoutMeasure>& measures, const int measureAmount,
-                                       int& firstMeasureThatRepeats /*out*/, int& lastMeasureThatRepeats /*out*/,
-                                       int& firstMeasureRepeated /*out*/, int& lastMeasureRepeated /*out*/);
+        //bool findConsecutiveRepetition(ptr_vector<PrintLayoutMeasure>& measures, const int measureAmount,
+        //                               int& firstMeasureThatRepeats /*out*/, int& lastMeasureThatRepeats /*out*/,
+        //                               int& firstMeasureRepeated /*out*/, int& lastMeasureRepeated /*out*/);
     };
 
 }

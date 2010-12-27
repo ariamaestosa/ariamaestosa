@@ -48,7 +48,7 @@ namespace AriaMaestosa
         /** while reordering tracks, contains the vertical scrolling amount */
         int reorderYScroll;
         
-        // FIXME: remove friendship
+        // FIXME(DESIGN): remove friendship
         friend class GraphicalTrack;
         friend class MainPane;
         

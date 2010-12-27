@@ -45,7 +45,7 @@ namespace AriaMaestosa
      */
     class MeasureData
     {
-        // FIXME: find better way than friend
+        // FIXME(DESIGN): find better way than friend
         friend class MeasureBar;
         
         class MeasureInfo
