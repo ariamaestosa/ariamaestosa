@@ -16,15 +16,18 @@
 
 #include "Actions/AddTrack.h"
 #include "Actions/EditAction.h"
+#include "AriaCore.h"
+
+// FIXME(DESIGN) : actions shouldn't rely on GUI classes
 #include "GUI/GraphicalSequence.h"
+
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
-#include "AriaCore.h"
+#include "UnitTest.h"
+#include "UnitTestUtils.h"
 
 #include <wx/intl.h>
 
-#include "UnitTest.h"
-#include "UnitTestUtils.h"
 
 using namespace AriaMaestosa;
 using namespace AriaMaestosa::Action;

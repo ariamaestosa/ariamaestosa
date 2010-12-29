@@ -19,6 +19,8 @@
 #include "Actions/NumberPressed.h"
 #include "Actions/EditAction.h"
 #include "Midi/Track.h"
+
+// FIXME(DESIGN): actions should not depend on GUI classes
 #include "GUI/GraphicalTrack.h"
 
 using namespace AriaMaestosa::Action;

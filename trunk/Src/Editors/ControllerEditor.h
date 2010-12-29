@@ -124,6 +124,8 @@ namespace AriaMaestosa
         }
 
         virtual wxString getName() const { return _("Controller Editor"); }
+        
+        static int getPositionInPixels(int tick, GraphicalSequence* gseq);
     };
     
 }

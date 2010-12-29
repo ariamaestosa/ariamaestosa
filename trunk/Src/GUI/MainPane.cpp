@@ -901,7 +901,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             action( new Action::ResizeNotes(
                         -seq->ticksPerBeat() *
                         4 /
-                        seq->getCurrentTrack()->getGridDivider() ,
+                        seq->getCurrentTrack()->graphics->getGridDivider() ,
                         SELECTED_NOTES)
                    );
             Display::render();
@@ -913,7 +913,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             action( new Action::ResizeNotes(
                         seq->ticksPerBeat() *
                         4 /
-                        seq->getCurrentTrack()->getGridDivider() ,
+                        seq->getCurrentTrack()->graphics->getGridDivider() ,
                         SELECTED_NOTES)
                     );
             Display::render();
@@ -1065,7 +1065,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             seq->getCurrentTrack()->
             action( new Action::MoveNotes(
                       -seq->ticksPerBeat() * 4 /
-                      seq->getCurrentTrack()->getGridDivider(), 0, SELECTED_NOTES)
+                      seq->getCurrentTrack()->graphics->getGridDivider(), 0, SELECTED_NOTES)
                     );
             Display::render();
         }
@@ -1075,7 +1075,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             seq->getCurrentTrack()->
             action( new Action::MoveNotes(
                       seq->ticksPerBeat() * 4 /
-                      seq->getCurrentTrack()->getGridDivider(), 0, SELECTED_NOTES)
+                      seq->getCurrentTrack()->graphics->getGridDivider(), 0, SELECTED_NOTES)
                     );
             Display::render();
         }

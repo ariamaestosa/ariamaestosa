@@ -16,7 +16,10 @@
 
 #include "Actions/ResizeNotes.h"
 #include "Actions/EditAction.h"
+
+// FIXME(DESIGN) : actions shouldn't rely on GUI classes
 #include "GUI/GraphicalTrack.h"
+
 #include "Midi/Track.h"
 
 #include <wx/intl.h>
@@ -54,7 +57,7 @@ void ResizeNotes::perform()
     
     if (track->graphics->getEditorMode() == DRUM) return;
     
-    // not supported in this function (mostly bacause not needed, but could logically be implmented)
+    // not supported in this function (mostly because not needed)
     ASSERT(m_note_ID != ALL_NOTES); 
     
     if (m_note_ID == SELECTED_NOTES)

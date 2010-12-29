@@ -15,10 +15,13 @@
  */
 
 #include "AriaCore.h"
+
+// FIXME(DESIGN) : actions shouldn't refer to GUI classes
 #include "GUI/GraphicalTrack.h"
+
 #include "IO/IOUtils.h"
 #include "Midi/Note.h"
-#include "Pickers/MagneticGrid.h"
+//#include "Pickers/MagneticGrid.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Sequence.h"
 #include "Utils.h"
@@ -366,6 +369,7 @@ void Note::play(bool change)
     int durationMilli = (endTick - startTick)*60*1000 /
                         (m_track->getSequence()->getTempo() * m_track->getSequence()->ticksPerBeat());
 
+    // FIXME(DESIGN): remove this 131-pitch ugliness
     if (m_track->graphics->getEditorMode() == DRUM) 
     {
         PlatformMidiManager::get()->playNote( pitchID, volume, durationMilli, 9, m_track->getDrumKit() );

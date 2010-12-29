@@ -26,11 +26,11 @@ const float CURRENT_FILE_VERSION = 3.0;
 #include "Actions/Paste.h"
 #include "Actions/ScaleTrack.h"
 #include "Actions/ScaleSong.h"
+
+// FIXME(DESIGN) : data classes shouldn't refer to GUI classes
 #include "Dialogs/WaitWindow.h"
-#include "Editors/Editor.h"
+
 #include "IO/IOUtils.h"
-#include "GUI/GraphicalTrack.h"
-#include "GUI/MeasureBar.h"
 #include "Midi/CommonMidiUtils.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Players/PlatformMidiManager.h"

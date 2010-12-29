@@ -17,8 +17,10 @@
 #include "Actions/UpdateGuitarTuning.h"
 #include "Actions/EditAction.h"
 #include "Midi/Track.h"
-#include "Editors/GuitarEditor.h"
-#include "GUI/GraphicalTrack.h"
+//#include "Editors/GuitarEditor.h"
+//#include "GUI/GraphicalTrack.h"
+
+#include <wx/intl.h>
 
 using namespace AriaMaestosa::Action;
 

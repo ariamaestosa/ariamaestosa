@@ -20,26 +20,31 @@
 
 #include "Actions/EditAction.h"
 #include "Actions/UpdateGuitarTuning.h"
+
+//#include "Editors/GuitarEditor.h"
+//#include "Editors/RelativeXCoord.h"
+//#include "Editors/DrumEditor.h"
+
+// FIXME(DESIGN) : data classes shouldn't refer to GUI classes
+#include "GUI/GraphicalTrack.h"
 #include "Editors/KeyboardEditor.h"
-#include "Editors/GuitarEditor.h"
-#include "Editors/RelativeXCoord.h"
-#include "Editors/DrumEditor.h"
 #include "Editors/ControllerEditor.h"
 #include "GUI/GraphicalSequence.h"
-#include "GUI/GraphicalTrack.h"
+
 #include "IO/IOUtils.h"
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
 #include "Midi/ControllerEvent.h"
 #include "Midi/DrumChoice.h"
 #include "Midi/MeasureData.h"
-#include "Pickers/MagneticGrid.h"
+//#include "Pickers/MagneticGrid.h"
 #include "PreferencesData.h"
 
 #include <iostream>
 
 #include "jdkmidi/track.h"
 
+#include <wx/intl.h>
 #include <wx/utils.h>
 #include "irrXML/irrXML.h"
 
@@ -888,13 +893,6 @@ void Track::setName(wxString name)
 AriaRenderString& Track::getNameRenderer()
 {
     return m_name;
-}
-
-// -------------------------------------------------------------------------------------------------------
-
-int Track::getGridDivider()
-{
-    return graphics->m_grid->divider;
 }
 
 // -------------------------------------------------------------------------------------------------------

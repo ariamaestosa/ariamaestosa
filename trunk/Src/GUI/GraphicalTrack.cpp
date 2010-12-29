@@ -1463,4 +1463,9 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
 
 }
 
+int GraphicalTrack::getGridDivider() const
+{
+    return m_grid->divider;
+}
+
 

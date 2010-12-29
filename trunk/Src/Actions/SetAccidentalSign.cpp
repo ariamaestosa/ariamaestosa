@@ -16,10 +16,14 @@
 
 #include "Actions/SetAccidentalSign.h"
 #include "Actions/EditAction.h"
-#include "GUI/GraphicalTrack.h"
 #include "Midi/Track.h"
-#include "Editors/Editor.h"
+//#include "Editors/Editor.h"
+
+// FIXME(DESIGN): actions shouldn't rely on GUI classes
+#include "GUI/GraphicalTrack.h"
 #include "Editors/ScoreEditor.h"
+
+#include <wx/intl.h>
 
 using namespace AriaMaestosa::Action;
 

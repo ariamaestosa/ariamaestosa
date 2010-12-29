@@ -17,14 +17,16 @@
 #include "AriaCore.h"
 #include "Actions/AddNote.h"
 #include "Actions/EditAction.h"
-#include "GUI/GraphicalTrack.h"
-#include "Editors/GuitarEditor.h"
+//#include "GUI/GraphicalTrack.h"
+//#include "Editors/GuitarEditor.h"
 #include "Midi/Track.h"
 #include "Midi/Note.h"
 #include "Midi/Sequence.h"
 
 #include "UnitTest.h"
 #include "UnitTestUtils.h"
+
+#include <wx/intl.h>
 
 using namespace AriaMaestosa::Action;
 

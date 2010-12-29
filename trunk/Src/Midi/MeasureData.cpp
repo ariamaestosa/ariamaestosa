@@ -16,12 +16,12 @@
 
 #include "Utils.h"
 
-#include "GUI/MainFrame.h"
+//#include "GUI/MainFrame.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 #include "Midi/TimeSigChange.h"
-#include "Pickers/TimeSigPicker.h"
+//#include "Pickers/TimeSigPicker.h"
 
 #include <iostream>
 #include "irrXML/irrXML.h"
@@ -67,7 +67,7 @@ void MeasureData::setExpandedMode(bool arg_expanded)
         // FIXME(DESIGN): this is GUI code and should not go in this model class
         const int answer = wxMessageBox(_("Are you sure you want to go back to having a single time signature? Any time sig events you may have added will be lost. This cannot be undone."),
                                         _("Confirm"), wxYES_NO);
-        if (answer == wxNO){ getMainFrame()->updateMenuBarToSequence(); return; }
+        if (answer == wxNO){ return; }
 
         // remove all added events
         m_selected_time_sig = 0;
@@ -77,9 +77,6 @@ void MeasureData::setExpandedMode(bool arg_expanded)
     }
 
     m_expanded_mode = arg_expanded;
-    updateMeasureInfo();
-    getMainFrame()->updateMenuBarToSequence();
-    Display::render();
 }
 
 
@@ -315,7 +312,6 @@ void MeasureData::eraseTimeSig(int id)
     if (m_selected_time_sig == id)
     {
         m_selected_time_sig = 0;
-        getMainFrame()->changeShownTimeSig( m_time_sig_changes[0].getNum(), m_time_sig_changes[0].getDenom() );
     }
 }
 
@@ -343,11 +339,6 @@ int MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means "
                 if (not m_sequence->importing)
                 {
                     m_selected_time_sig = n;
-                    getMainFrame()->changeShownTimeSig(m_time_sig_changes[m_selected_time_sig].getNum(),
-                                                       m_time_sig_changes[m_selected_time_sig].getDenom() );
-
-                    wxPoint pt = wxGetMousePosition();
-                    
                     return n;
                 }
                 // if we're importing, replace it with new value
