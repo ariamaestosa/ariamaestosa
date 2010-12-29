@@ -18,7 +18,7 @@
 #include "Midi/Track.h"
 #include "Midi/ControllerEvent.h"
 
-#include "GUI/GraphicalTrack.h"
+//#include "GUI/GraphicalTrack.h"
 #include <vector>
 
 using namespace AriaMaestosa;

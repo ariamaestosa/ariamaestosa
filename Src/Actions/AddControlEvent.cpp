@@ -16,11 +16,11 @@
 
 #include "Actions/AddControlEvent.h"
 #include "Actions/EditAction.h"
+#include "Editors/ControllerEditor.h"
 #include "Midi/Track.h"
 #include "Midi/ControllerEvent.h"
 #include "Midi/Sequence.h"
-#include "GUI/GraphicalTrack.h"
-#include "Editors/ControllerEditor.h"
+//#include "GUI/GraphicalTrack.h"
 #include "UnitTest.h"
 
 using namespace AriaMaestosa::Action;
@@ -48,9 +48,7 @@ AddControlEvent::~AddControlEvent()
 void AddControlEvent::undo()
 {
     
-    const int type = track->graphics->getControllerEditor()->getCurrentControllerType();
-    
-    if (type != 201 /*tempo*/)
+    if (m_controller != 201 /*tempo*/)
     {
         const int controlEventsAmount = track->m_control_events.size();
         for (int n=0; n<controlEventsAmount; n++)

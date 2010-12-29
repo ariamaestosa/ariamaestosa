@@ -17,7 +17,10 @@
 #include "Analysers/SilenceAnalyser.h"
 
 #include "AriaCore.h"
+
+// FIXME(DESIGN): this class should not be using GUI classes
 #include "GUI/GraphicalSequence.h"
+
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 

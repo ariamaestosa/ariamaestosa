@@ -188,6 +188,8 @@ namespace AriaMaestosa
         int getNoteStartInPixels(const int id) const;
         int getNoteEndInPixels(const int id) const;
         
+        int getGridDivider() const;
+        
         // serialization
         void saveToFile(wxFileOutputStream& fileout);
         bool readFromFile(irr::io::IrrXMLReader* xml);

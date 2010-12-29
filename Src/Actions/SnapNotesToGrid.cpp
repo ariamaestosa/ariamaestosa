@@ -16,8 +16,11 @@
 
 #include "Actions/SnapNotesToGrid.h"
 #include "Actions/EditAction.h"
-#include "Editors/Editor.h"
+//#include "Editors/Editor.h"
+
+// FIXME(DESIGN) : actions shouldn't rely on GUI classes
 #include "GUI/GraphicalTrack.h"
+
 #include "Midi/Track.h"
 
 #include <wx/intl.h>

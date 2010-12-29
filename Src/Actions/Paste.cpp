@@ -18,9 +18,12 @@
 #include "Clipboard.h"
 #include "Actions/Paste.h"
 #include "Actions/EditAction.h"
+
+// FIXME(DESIGN): actions shouldn't depend on GUI classes
 #include "Editors/KeyboardEditor.h"
 #include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
+
 #include "Midi/MeasureData.h"
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"

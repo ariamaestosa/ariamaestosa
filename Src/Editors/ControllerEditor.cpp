@@ -85,7 +85,7 @@ void ControllerEditor::renderEvents()
         if (tmp->getController() != currentController) continue; // only draw events of this controller
         eventsOfThisType++;
 
-        const int xloc = tmp->getPositionInPixels(m_gsequence);
+        const int xloc = ControllerEditor::getPositionInPixels(tmp->getTick(), m_gsequence);
         const unsigned short value = tmp->getValue();
 
         if (previous_location - x_scroll > getXEnd()) // if events are no more visible, stop drawing
@@ -424,3 +424,11 @@ void ControllerEditor::selectAll( bool selected )
 }
 
 // ----------------------------------------------------------------------------------------------------------
+
+int ControllerEditor::getPositionInPixels(int tick, GraphicalSequence* gseq)
+{
+    return (int)(
+                 tick*gseq->getZoom() + Editor::getEditorXStart()
+                 );
+}
+

@@ -237,9 +237,7 @@ namespace AriaMaestosa
         
         // FIXME - debug function, remove
         void checkControlEventsOrder();
-        
-        int getGridDivider();
-        
+                
         void setName(wxString name);
         
         void selectNote(const int id, const bool selected, bool ignoreModifiers=false);

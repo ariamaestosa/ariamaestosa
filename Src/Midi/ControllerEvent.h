@@ -51,9 +51,6 @@ namespace AriaMaestosa
         int            getTick      () const { return m_tick;       }    
         unsigned short getValue     () const { return m_value;      }
         
-        
-        int getPositionInPixels(GraphicalSequence* gseq);
-        
         void setTick(int i);
         void setValue(unsigned short value);
           

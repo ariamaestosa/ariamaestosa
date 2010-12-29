@@ -14,8 +14,6 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "Editors/Editor.h"
-#include "GUI/GraphicalSequence.h"
 #include "Midi/ControllerEvent.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
@@ -45,16 +43,6 @@ void ControllerEvent::setTick(int i)
 void ControllerEvent::setValue(unsigned short value)
 {
     m_value = value;
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-// FIXME(DESIGN): this function probably does not belong here
-int ControllerEvent::getPositionInPixels(GraphicalSequence* gseq)
-{
-    return (int)(
-                 m_tick*gseq->getZoom() + Editor::getEditorXStart()
-                 );
 }
 
 // ----------------------------------------------------------------------------------------------------------

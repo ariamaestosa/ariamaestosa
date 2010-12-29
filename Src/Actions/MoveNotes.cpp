@@ -18,8 +18,11 @@
 
 #include "Actions/MoveNotes.h"
 #include "Actions/EditAction.h"
+
+// FIXME(DESIGN) : actions shouldn't depend on GUI
 #include "Editors/Editor.h"
 #include "GUI/GraphicalTrack.h"
+
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"

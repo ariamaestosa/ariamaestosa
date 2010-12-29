@@ -16,7 +16,10 @@
 
 #include "Actions/ShiftBySemiTone.h"
 #include "Actions/EditAction.h"
+
+// FIXME: actions shouldn't rely on GUI classes
 #include "GUI/GraphicalTrack.h"
+
 #include "Midi/Track.h"
 
 #include <wx/intl.h>

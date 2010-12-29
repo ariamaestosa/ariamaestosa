@@ -16,7 +16,10 @@
 
 #include "Actions/ShiftString.h"
 #include "Actions/EditAction.h"
+
+// FIXME(DESIGN) : actions classes shouldn't use GUI classes
 #include "GUI/GraphicalTrack.h"
+
 #include "Midi/Track.h"
 
 #include <wx/intl.h>
@@ -59,13 +62,11 @@ void ShiftString::perform()
 {
     ASSERT(track != NULL);
     
+    // only accept to do this in guitar mode
     if (track->graphics->getEditorMode() != GUITAR) return;
     
     // not supported in this function (mostly because not needed, but could logically be implmented)
     ASSERT(m_note_id != ALL_NOTES);
-    
-    // only accept to do this in guitar mode
-    if (track->graphics->getEditorMode() != GUITAR) return;
     
     if (m_note_id == SELECTED_NOTES)
     {

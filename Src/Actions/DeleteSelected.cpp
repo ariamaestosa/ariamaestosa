@@ -20,11 +20,15 @@
 #include "Midi/Note.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
+
+// FIXME(DESIGN): this action should not rely on GUI classes
 #include "GUI/GraphicalTrack.h"
 #include "Editors/ControllerEditor.h"
 
 #include "UnitTest.h"
 #include <cmath>
+
+#include <wx/intl.h>
 
 using namespace AriaMaestosa;
 using namespace AriaMaestosa::Action;

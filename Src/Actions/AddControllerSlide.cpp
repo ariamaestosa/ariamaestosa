@@ -16,13 +16,13 @@
 
 #include "Actions/AddControllerSlide.h"
 #include "Actions/EditAction.h"
-#include "Editors/ControllerEditor.h"
-#include "GUI/GraphicalTrack.h"
-#include "Midi/Track.h"
+//#include "Editors/ControllerEditor.h"
+//#include "GUI/GraphicalTrack.h"
 #include "Midi/ControllerEvent.h"
-#include "Midi/Sequence.h"
-
 #include "Midi/MeasureData.h"
+#include "Midi/Sequence.h"
+#include "Midi/Track.h"
+#include <wx/intl.h>
 
 using namespace AriaMaestosa;
 using namespace AriaMaestosa::Action;
@@ -52,9 +52,7 @@ void AddControllerSlide::undo()
     //std::cout << "will undo control slide" << std::endl;
     // std::cout << "track->m_control_events.size() = " << track->m_control_events.size() << std::endl;
     
-    const int type = track->graphics->getControllerEditor()->getCurrentControllerType();
-    
-    if (type != 201 /*tempo*/)
+    if (m_controller != 201 /*tempo*/)
     {
         while ((current_event = relocator.getNextControlEvent()) and current_event != NULL)
         {

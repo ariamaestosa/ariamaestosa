@@ -25,17 +25,94 @@
 #include <vector>
 
 #include "Analysers/SilenceAnalyser.h"
-#include "Editors/Editor.h"
+//#include "Editors/Editor.h"
 
 namespace AriaMaestosa
 {
     class MeasureData;
+    class Editor;
     
     enum STEM
     {
         STEM_UP,
         STEM_DOWN,
         STEM_NONE
+    };
+    
+    /**
+     * can have 2 uses : describing note and describing visual sign
+     * e.g. F# will be described as SHARP as note, but if you put it in a score where all Fs are #,
+     * its visible sign will be PITCH_SIGN_NONE. When describing a note's sign, use either NATURAL or
+     * PITCH_SIGN_NONE. When describing a note's pitch, PITCH_SIGN_NONE is not to be used
+     */
+    enum PitchSign
+    {
+        SHARP = 0,
+        FLAT = 1,
+        NATURAL = 2,
+        PITCH_SIGN_NONE = 3
+    };
+    
+    /** enum to denotate a note's name (A, B, C, ...) regardless of any accidental it may have */
+    enum Note7
+    {
+        NOTE_7_A = 0,
+        NOTE_7_B = 1,
+        NOTE_7_C = 2,
+        NOTE_7_D = 3,
+        NOTE_7_E = 4,
+        NOTE_7_F = 5,
+        NOTE_7_G = 6
+    };
+    
+    /** enum to denotate a note's name (A, B, C, ...) INCLUDING of any accidental it may have.
+     * What interests us here is the pitch, so we consider A# is the same as Bb. */
+    enum Note12
+    {
+        NOTE_12_A       = 0,
+        NOTE_12_A_SHARP = 1,
+        NOTE_12_B       = 2,
+        NOTE_12_C       = 3,
+        NOTE_12_C_SHARP = 4,
+        NOTE_12_D       = 5,
+        NOTE_12_D_SHARP = 6,
+        NOTE_12_E       = 7,
+        NOTE_12_F       = 8,
+        NOTE_12_F_SHARP = 9,
+        NOTE_12_G       = 10,
+        NOTE_12_G_SHARP = 11
+    };
+    
+    /** synonym; @see Note12 */
+    const Note12 NOTE_12_A_FLAT = NOTE_12_G_SHARP;
+    
+    /** synonym; @see Note12 */
+    const Note12 NOTE_12_B_FLAT = NOTE_12_A_SHARP;
+    
+    /** synonym; @see Note12 */
+    const Note12 NOTE_12_D_FLAT = NOTE_12_C_SHARP;
+    
+    /** synonym; @see Note12 */
+    const Note12 NOTE_12_E_FLAT = NOTE_12_D_SHARP;
+    
+    /** synonym; @see Note12 */
+    const Note12 NOTE_12_G_FLAT = NOTE_12_F_SHARP;
+    
+    //FIXME: what about flats?
+    static const wxString NOTE_12_NAME[] =
+    {
+        wxT("A"),
+        wxT("A#"),
+        wxT("B"),
+        wxT("C"),
+        wxT("C#"),
+        wxT("D"),
+        wxT("D#"),
+        wxT("E"),
+        wxT("F"),
+        wxT("F#"),
+        wxT("G"),
+        wxT("G#")
     };
     
     /**

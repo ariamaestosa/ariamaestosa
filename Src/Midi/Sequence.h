@@ -27,7 +27,7 @@ namespace irr { namespace io {
     typedef IIrrXMLReader<char, IXMLBase> IrrXMLReader; } }
 
 #include "AriaCore.h"
-#include "Editors/RelativeXCoord.h"
+//#include "Editors/RelativeXCoord.h"
 #include "Midi/Track.h"
 #include "ptr_vector.h"
 #include "Utils.h"

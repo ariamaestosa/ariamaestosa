@@ -16,7 +16,10 @@
 
 #include "Actions/ShiftFrets.h"
 #include "Actions/EditAction.h"
+
+// FIXME(DESIGN) : don't rely on GUI classes
 #include "GUI/GraphicalTrack.h"
+
 #include "Midi/Track.h"
 
 #include <wx/intl.h>
