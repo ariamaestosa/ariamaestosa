@@ -66,70 +66,73 @@ void InsertEmptyMeasures::perform()
     const int amountInTicks = m_amount * md->measureLengthInTicks(m_measure_ID);
     const int afterTick = md->firstTickInMeasure(m_measure_ID) - 1;
     
-    DisplayFrame::changeMeasureAmount( md->getMeasureAmount() + m_amount );
-    
-    // move all notes that are after given start tick by the necessary amount
-    const int trackAmount = sequence->getTrackAmount();
-    for (int t=0; t<trackAmount; t++)
     {
-        Track* track = sequence->getTrack(t);
+        ScopedMeasureTransaction tr(md->startTransaction());
         
-        // ----------------- move note events -----------------
-        const int noteAmount = track->m_notes.size();
-        for (int n=0; n<noteAmount; n++)
+        tr->setMeasureAmount( md->getMeasureAmount() + m_amount );
+    
+        // move all notes that are after given start tick by the necessary amount
+        const int trackAmount = sequence->getTrackAmount();
+        for (int t=0; t<trackAmount; t++)
         {
-            if (track->m_notes[n].startTick > afterTick)
+            Track* track = sequence->getTrack(t);
+            
+            // ----------------- move note events -----------------
+            const int noteAmount = track->m_notes.size();
+            for (int n=0; n<noteAmount; n++)
             {
-                track->m_notes[n].startTick += amountInTicks;
-                track->m_notes[n].endTick += amountInTicks;
+                if (track->m_notes[n].startTick > afterTick)
+                {
+                    track->m_notes[n].startTick += amountInTicks;
+                    track->m_notes[n].endTick += amountInTicks;
+                }
+            }
+            // ----------------- move control events -----------------
+            const int controlAmount = track->m_control_events.size();
+            for (int n=0; n<controlAmount; n++)
+            {
+                if (track->m_control_events[n].getTick() > afterTick)
+                {
+                    track->m_control_events[n].setTick( track->m_control_events[n].getTick() + amountInTicks );
+                }
+            }
+            
+            track->reorderNoteVector();
+            track->reorderNoteOffVector();
+        }
+        
+        // ----------------- move tempo events -----------------
+        const int tempo_event_amount = sequence->tempoEvents.size();
+        if (tempo_event_amount>0)
+        {
+            //const int first_tick = getMeasureData()->firstTickInMeasure(measureID+1) - 1;
+            //const int amountInTicks = amount * getMeasureData()->measureLengthInTicks(measureID+1);
+            for (int n=0; n<tempo_event_amount; n++)
+            {
+                if (sequence->tempoEvents[n].getTick() > afterTick)
+                {
+                    //std::cout << "starting at " << seq->tempoEvents[n].getTick() << std::endl;
+                    sequence->tempoEvents[n].setTick( sequence->tempoEvents[n].getTick() + amountInTicks );
+                }
             }
         }
-        // ----------------- move control events -----------------
-        const int controlAmount = track->m_control_events.size();
-        for (int n=0; n<controlAmount; n++)
-        {
-            if (track->m_control_events[n].getTick() > afterTick)
-            {
-                track->m_control_events[n].setTick( track->m_control_events[n].getTick() + amountInTicks );
-            }
-        }
         
-        track->reorderNoteVector();
-        track->reorderNoteOffVector();
-    }
-    
-    // ----------------- move tempo events -----------------
-    const int tempo_event_amount = sequence->tempoEvents.size();
-    if (tempo_event_amount>0)
-    {
-        //const int first_tick = getMeasureData()->firstTickInMeasure(measureID+1) - 1;
-        //const int amountInTicks = amount * getMeasureData()->measureLengthInTicks(measureID+1);
-        for (int n=0; n<tempo_event_amount; n++)
+        // ----------------- move time sig changes -----------------
+        if (not md->isMeasureLengthConstant())
         {
-            if (sequence->tempoEvents[n].getTick() > afterTick)
+            const int timeSigAmount = md->getTimeSigAmount();
+            for (int n=0; n<timeSigAmount; n++)
             {
-                //std::cout << "starting at " << seq->tempoEvents[n].getTick() << std::endl;
-                sequence->tempoEvents[n].setTick( sequence->tempoEvents[n].getTick() + amountInTicks );
-            }
-        }
-    }
-    
-    // ----------------- move time sig changes -----------------
-    if (not md->isMeasureLengthConstant())
-    {
+                if (md->getTimeSig(n).getMeasure() >= m_measure_ID + 1 and
+                    n != 0 /* dont move first time sig event*/ )
+                {
+                    tr->setTimesigMeasure(n, md->getTimeSig(n).getMeasure() + m_amount);
+                }
+            }//next
+        }//endif
         
-        const int timeSigAmount = md->getTimeSigAmount();
-        for (int n=0; n<timeSigAmount; n++)
-        {
-            if (md->getTimeSig(n).getMeasure() >= m_measure_ID+1 and
-                n != 0 /* dont move first time sig event*/ )
-            {
-                md->setTimesigMeasure(n, md->getTimeSig(n).getMeasure() + m_amount);
-            }
-        }//next
-    }//endif
+    } // end transaction
     
-    md->updateMeasureInfo();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -151,7 +154,7 @@ namespace InsertMeasuresTest
         
         TestSeqProvider()
         {
-            m_seq = new Sequence(NULL, NULL, NULL, false);
+            m_seq = new Sequence(NULL, NULL, NULL, NULL, false);
             AriaMaestosa::setCurrentSequenceProvider(this);
             
             Track* t = new Track(m_seq);

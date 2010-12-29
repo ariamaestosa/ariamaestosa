@@ -174,7 +174,7 @@ namespace TestMoveNotes
         
         TestSeqProvider()
         {
-            m_seq = new Sequence(NULL, NULL, NULL, false);
+            m_seq = new Sequence(NULL, NULL, NULL, NULL, false);
             AriaMaestosa::setCurrentSequenceProvider(this);
             
             Track* t = new Track(m_seq);

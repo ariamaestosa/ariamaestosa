@@ -34,6 +34,20 @@ namespace AriaMaestosa
     class GraphicalSequence;
     class MainFrame;
 
+    class IMeasureDataListener
+    {
+    public:
+        
+        const static int CHANGED_NOTHING = 0;
+        const static int CHANGED_AMOUNT = 1;
+        const static int CHANGED_TIME_SIGNATURES = 2;
+        const static int CHANGED_EXPANDED_MODE_STATE = 4;
+        
+        virtual ~IMeasureDataListener() {}
+        virtual void onMeasureDataChange(int change) = 0;
+    };
+    
+    
    /**
      * @brief This class takes care of everything related to measure data.
      *
@@ -92,44 +106,152 @@ namespace AriaMaestosa
         
         Sequence* m_sequence;
         
+        /**
+         * @brief Time Signatures have changed, update and recalculate information about location of measures
+         * and events.
+         */
+        void  updateMeasureInfo();
+        
+        void  setExpandedMode(bool expanded);
+        void  setMeasureAmount(int measureAmount);
+
+        /** @brief Called either when user changes the numbers on the top bar, either when importing a song */
+        void  setTimeSig(int num, int denom);
+        
+        /** @brief Erase the time signature event denoted by the given ID
+          * @param id Id of the time sig to erase, in range [0..getTimeSigAmount()-1]
+          */
+        void  eraseTimeSig(int id);
+        
+        /** @brief Move a timesig event to another measure */
+        void setTimesigMeasure(const int id, const int newMeasure);
+        
+        /** @brief  Add a time signature change event
+          * @note   If a time sig changes already exists at the given measure, it is modified to bear the
+          *         new values
+          * @return the ID of the newly added _or modified) item
+          */
+        int  addTimeSigChange(int measure, int num, int denom);
+        
+        std::vector<IMeasureDataListener*> m_listeners;
+        
     public:
+        
+        class Transaction
+        {
+            friend class MeasureData;
+            
+#ifdef _MORE_DEBUG_CHECKS
+            unsigned long m_magic_number;
+#endif
+            
+        protected:
+            MeasureData* m_parent;
+            int m_changes;
+            
+            Transaction(MeasureData* parent)
+            {
+#ifdef _MORE_DEBUG_CHECKS
+                m_magic_number = 0x54325432;
+#endif
+                m_parent = parent;
+                m_changes = IMeasureDataListener::CHANGED_NOTHING;
+            }
+            
+        public:
+            
+            ~Transaction()
+            {
+                ASSERT_E(m_magic_number, ==, 0x54325432);
+#ifdef _MORE_DEBUG_CHECKS
+                m_magic_number = 0xDEADBEEF;
+#endif
+                
+                if (m_parent != NULL) m_parent->updateMeasureInfo();
+                
+                const int count = m_parent->m_listeners.size();
+                for (int n=0; n<count; n++) m_parent->m_listeners[n]->onMeasureDataChange(m_changes);
+            }
+            
+            void  setExpandedMode(bool expanded)
+            {
+                ASSERT_E(m_magic_number, ==, 0x54325432);
+                m_changes = m_changes | IMeasureDataListener::CHANGED_EXPANDED_MODE_STATE;
+                m_parent->setExpandedMode(expanded);
+            }
+            
+            void  setMeasureAmount(int measureAmount)
+            {
+                ASSERT_E(m_magic_number, ==, 0x54325432);
+                m_changes = m_changes | IMeasureDataListener::CHANGED_AMOUNT;
+                m_parent->setMeasureAmount(measureAmount);
+            }
+            
+            /** @brief Called either when user changes the numbers on the top bar, either when importing a song */
+            void  setTimeSig(int num, int denom)
+            {
+                ASSERT_E(m_magic_number, ==, 0x54325432);
+                m_changes = m_changes | IMeasureDataListener::CHANGED_TIME_SIGNATURES;
+                m_parent->setTimeSig(num, denom);
+            }
+            
+            /** @brief Erase the time signature event denoted by the given ID
+              * @param id Id of the time sig to erase, in range [0..getTimeSigAmount()-1]
+              */
+            void  eraseTimeSig(int id)
+            {
+                ASSERT_E(m_magic_number, ==, 0x54325432);
+                m_changes = m_changes | IMeasureDataListener::CHANGED_TIME_SIGNATURES;
+                m_parent->eraseTimeSig(id);
+            }
+            
+            /** @brief Move a timesig event to another measure */
+            void setTimesigMeasure(const int id, const int newMeasure)
+            {
+                ASSERT_E(m_magic_number, ==, 0x54325432);
+                m_changes = m_changes | IMeasureDataListener::CHANGED_TIME_SIGNATURES;
+                m_parent->setTimesigMeasure(id, newMeasure);
+            }
+            
+            /** @brief  Add a time signature change event
+              * @note   If a time sig changes already exists at the given measure, it is modified to bear the
+              *         new values
+              * @return the ID of the newly added _or modified) item
+              */
+            int  addTimeSigChange(int measure, int num, int denom)
+            {
+                ASSERT_E(m_magic_number, ==, 0x54325432);
+                m_changes = m_changes | IMeasureDataListener::CHANGED_TIME_SIGNATURES;
+                return m_parent->addTimeSigChange(measure, num, denom);
+            }
+        };
         
         LEAK_CHECK();
                 
         MeasureData(Sequence* seq, int measureAmount);
         ~MeasureData();
         
-        void  setExpandedMode(bool expanded);
         
         bool  isExpandedMode() const { return m_expanded_mode; }
-        
         int   getTotalTickAmount();
-        
         bool  isMeasureLengthConstant() const
         {
             return (not m_expanded_mode and m_time_sig_changes.size() == 1);
         }
         
-        void  setMeasureAmount(int measureAmount);
         int   getMeasureAmount() const { return m_measure_amount; }
-        
         int   defaultMeasureLengthInTicks();
-        
-        int   getFirstMeasure() const { return m_first_measure; }
-        void  setFirstMeasure(int firstMeasureID);
-        
+        int   getFirstMeasure() const { return m_first_measure; }        
         int   measureAtTick(int tick);
-        
         int   measureLengthInTicks(int measure = -1) const;
         
+        void  setFirstMeasure(int firstMeasureID);
+
         /** @brief get time sig num, either for a specific mesure, either the default value (no argument) */
         int   getTimeSigNumerator(int measure=-1) const;
         
         /** @brief get time sig denom, either for a specific mesure, either the default value (no argument) */
         int   getTimeSigDenominator(int measure=-1) const;
-        
-        /** @brief Called either when user changes the numbers on the top bar, either when importing a song */
-        void  setTimeSig(int num, int denom);
         
         /** @return the amount of time signature events */
         int   getTimeSigAmount() const { return m_time_sig_changes.size(); }
@@ -140,34 +262,29 @@ namespace AriaMaestosa
             ASSERT_E(id,<,m_time_sig_changes.size());
             return m_time_sig_changes[id];
         }
-        
-        /** Move a timesig event to another measure */
-        void setTimesigMeasure(const int id, const int newMeasure);
 
-        /** @brief  Add a time signature change event
-          * @note   If a time sig changes already exists at the given measure, it is modified to bear the
-          *         new values
-          * @return the ID of the newly added _or modified) item
-          */
-        int  addTimeSigChange(int measure, int num, int denom);
-        
-        /** Erase the time signature event denoted by the given ID (range [0..getTimeSigAmount()-1] */
-        void  eraseTimeSig(int id);
-        
         int   firstTickInMeasure(int id) const;
         int   lastTickInMeasure (int id) const;
         
-        /**
-         * @brief Time Signatures have changed, update and recalculate information about location of measures
-         * and events.
-         */
-        void  updateMeasureInfo();
-        
+        // FIXME(DESIGN): remove those, use transaction system
         void  beforeImporting();
         void  afterImporting();
         
         /** @brief used only while loading midi files */
         void  addTimeSigChange_import(int tick, int num, int denom);
+        
+        /**
+         * @brief  Invoke this when you want to modify measure data
+         * @return A Transaction object that gives you write-access to measure data
+         * @note   Upon destruction, the Transaction object will initiate some post-processing on
+         *         the data. It is thus recommended to scope this object so it is always destroyed.
+         */
+        Transaction* startTransaction() { return new Transaction(this); }
+        
+        void addListener(IMeasureDataListener* l)
+        {
+            m_listeners.push_back(l);
+        }
         
         /** @brief deserializatiuon */
         bool  readFromFile(irr::io::IrrXMLReader* xml);
@@ -175,7 +292,8 @@ namespace AriaMaestosa
         /** @brief serializatiuon */
         void  saveToFile(wxFileOutputStream& fileout);
     };
-    
+
+    typedef OwnerPtr<MeasureData::Transaction> ScopedMeasureTransaction;
 }
 
 #endif

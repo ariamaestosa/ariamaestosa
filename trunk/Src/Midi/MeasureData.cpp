@@ -43,6 +43,7 @@ MeasureData::MeasureData(Sequence* seq, int measureAmount)
     
     m_time_sig_changes.push_back( new TimeSigChange(0,4,4) );
     m_time_sig_changes[0].setTick(0);
+    
     updateVector(measureAmount);
 }
 
@@ -304,7 +305,6 @@ void MeasureData::setTimeSig(int top, int bottom)
     
     m_time_sig_changes[m_selected_time_sig].setNum( top );
     m_time_sig_changes[m_selected_time_sig].setDenom( bottom );
-    updateMeasureInfo();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -419,8 +419,6 @@ void MeasureData::updateVector(int newSize)
     while ((int)m_measure_info.size() > newSize) m_measure_info.erase( m_measure_info.begin()+m_measure_info.size()-1 );
 
     ASSERT_E(m_measure_amount, ==, (int)m_measure_info.size());
-    
-    if (not isMeasureLengthConstant() or m_expanded_mode) updateMeasureInfo();
 }
 
 // ----------------------------------------------------------------------------------------------------------

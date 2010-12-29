@@ -246,6 +246,7 @@ namespace AriaMaestosa
     
     namespace DisplayFrame
     {
+        /*
         // FIXME(DESIGN): that function shouldn't exist. the MainFrame should register a listener on the measures
         // object and be notified automatically on change.
         void changeMeasureAmount(const int i, bool throwEvent)
@@ -255,6 +256,7 @@ namespace AriaMaestosa
                 getMainFrame()->changeMeasureAmount(i, throwEvent);
             }
         }
+         */
         void updateHorizontalScrollbar(const int thumbPos)
         {
             if (getMainFrame() != NULL)

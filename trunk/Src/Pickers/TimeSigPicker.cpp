@@ -285,29 +285,19 @@ void TimeSigPicker::enterPressed(wxCommandEvent& evt)
         return;
     }
     
-    MainFrame* mainFrame = getMainFrame();
     MeasureData* measures = m_gseq->getModel()->getMeasureData();
     
-    measures->setTimeSig( top, bottom );
-    mainFrame->changeShownTimeSig( top, bottom );
-    
-    // FIXME(DESIGN): confusing line, maybe rename 'setZoom' so it's clearer what it does...
-    m_gseq->setZoom( m_gseq->getZoomInPercent() ); // update zoom to new measure size
-    
-    // FIXME(DESIGN): avoid fake events
-    wxSpinEvent unused;
-    mainFrame->songLengthChanged(unused);
-    
-    Display::render();
-    
-
-    // check if user changed measure mode
-    if (m_variable->IsChecked() != measures->isExpandedMode())
     {
-        measures->setExpandedMode( m_variable->IsChecked() );
-        mainFrame->updateTopBarAndScrollbarsForSequence( m_gseq );
-        mainFrame->updateMenuBarToSequence();
-    }
+        ScopedMeasureTransaction tr(measures->startTransaction());
+        tr->setTimeSig( top, bottom );
+        
+        // check if user changed measure mode
+        if (m_variable->IsChecked() != measures->isExpandedMode())
+        {
+            tr->setExpandedMode( m_variable->IsChecked() );
+        }
+        
+    } // end transaction
 
     closeWindow();
 }

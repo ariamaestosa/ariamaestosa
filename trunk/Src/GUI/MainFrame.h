@@ -30,6 +30,7 @@
 
 #include "AriaCore.h"
 #include "GUI/GraphicalSequence.h"
+#include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "ptr_vector.h"
 #include "Utils.h"
@@ -115,7 +116,7 @@ namespace AriaMaestosa
       * @brief manages the main frame of Aria Maestosa
       */
     class MainFrame : public wxFrame, public IPlaybackModeListener, public IActionStackListener,
-        public ISequenceDataListener, public ICurrentSequenceProvider
+        public ISequenceDataListener, public ICurrentSequenceProvider, public IMeasureDataListener
     {
         WxOwnerPtr<CustomNoteSelectDialog>  m_custom_note_select_dialog;
 
@@ -201,7 +202,7 @@ namespace AriaMaestosa
         void toolButtonClicked(wxCommandEvent& evt);
         //void measureDenomChanged(wxCommandEvent& evt);
         void firstMeasureChanged(wxCommandEvent& evt);
-        void changeMeasureAmount(int i, bool throwEvent=true);
+        //void changeMeasureAmount(int i, bool throwEvent=true);
         void disableMenus(const bool disable);
         void onHideNotifBar(wxCommandEvent& evt);
 
@@ -350,6 +351,9 @@ namespace AriaMaestosa
 
         /** @brief Implement callback from ISequenceDataListener */
         virtual void onSequenceDataChanged();
+
+        /** @brief Implement callback from IMeasureDataListener */
+        virtual void onMeasureDataChange(int change);
 
         DECLARE_EVENT_TABLE();
     };

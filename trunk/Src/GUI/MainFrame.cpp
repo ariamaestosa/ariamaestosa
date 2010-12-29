@@ -821,7 +821,7 @@ void MainFrame::tempoChanged(wxCommandEvent& evt)
 }
 
 // ----------------------------------------------------------------------------------------------------------
-
+/*
 void MainFrame::changeMeasureAmount(int i, bool throwEvent)
 {
 
@@ -841,7 +841,7 @@ void MainFrame::changeMeasureAmount(int i, bool throwEvent)
         updateHorizontalScrollbar();
     }
 }
-
+*/
 // ----------------------------------------------------------------------------------------------------------
 
 void MainFrame::changeShownTimeSig(int num, int denom)
@@ -874,11 +874,7 @@ void MainFrame::zoomChanged(wxSpinEvent& evt)
 
     gseq->setXScrollInMidiTicks( newXScroll );
     updateHorizontalScrollbar( newXScroll );
-    
-    MeasureData* md = getCurrentSequence()->getMeasureData();
-    
-    if (not md->isMeasureLengthConstant()) md->updateMeasureInfo();
-
+        
     Display::render();
 }
 
@@ -967,8 +963,13 @@ void MainFrame::songLengthChanged(wxSpinEvent& evt)
 
     if (newLength > 0)
     {
-        getCurrentSequence()->getMeasureData()->setMeasureAmount(newLength);
+        MeasureData* md = getCurrentSequence()->getMeasureData();
 
+        {
+            ScopedMeasureTransaction tr(md->startTransaction());
+            tr->setMeasureAmount(newLength);
+        }
+        
         updateHorizontalScrollbar();
     }
 
@@ -1149,7 +1150,7 @@ void MainFrame::updateVerticalScrollbar()
 
 void MainFrame::addSequence()
 {
-    Sequence* s = new Sequence(this, this, this, Display::isVisible());
+    Sequence* s = new Sequence(this, this, this, this, Display::isVisible());
     m_sequences.push_back( new GraphicalSequence(s) );
     setCurrentSequence( m_sequences.size() - 1 );
     Display::render();
@@ -1454,6 +1455,26 @@ void MainFrame::evt_updateWaitWindow(wxCommandEvent& evt)
 void MainFrame::evt_hideWaitWindow(wxCommandEvent& evt)
 {
     WaitWindow::hide();
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void MainFrame::onMeasureDataChange(int change)
+{
+    GraphicalSequence* gseq = getCurrentGraphicalSequence();
+    
+    if (change & IMeasureDataListener::CHANGED_AMOUNT)
+    {
+        changingValues = true;
+        
+        m_song_length->SetValue( gseq->getModel()->getMeasureData()->getMeasureAmount() );
+        
+        changingValues = false;
+    }
+    
+    updateTopBarAndScrollbarsForSequence( gseq );
+    updateMenuBarToSequence();
+    Display::render();
 }
 
 // ----------------------------------------------------------------------------------------------------------

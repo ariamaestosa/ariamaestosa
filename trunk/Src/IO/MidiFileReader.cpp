@@ -559,32 +559,22 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
     // set song length
     int measureAmount_i = md->measureAtTick(lastEventTick) + 1;
 
-    std::cout << "song length = " << measureAmount_i << " measures, last_event_tick="
+    std::cout << "[loadMidiFile] song length = " << measureAmount_i << " measures, last_event_tick="
               << lastEventTick << ", beat length = " << sequence->ticksPerBeat() << std::endl;
 
     if (measureAmount_i < 10) measureAmount_i=10;
 
-    getMainFrame()->changeMeasureAmount( measureAmount_i );
-    md->setMeasureAmount( measureAmount_i );
-
-    // FIXME(DESIGN): this function shouldn't make GUI calls
-    getMainFrame()->updateTopBarAndScrollbarsForSequence(gseq);
+    {
+        ScopedMeasureTransaction tr(md->startTransaction());
+        tr->setMeasureAmount( measureAmount_i );
+    }
+    
     gseq->setZoom(100);
 
     sequence->clearUndoStack();
 
     sequence->importing = false;
 
-    getMainFrame()->updateMenuBarToSequence();
-    
-    // FIXME(DESIGN): ugly that you need to manually call 'updateMeasureInfo', it should update itself automatically when needed
-    // (transaction system? you do 'startTransaction' to get the right to modify measure data, and at the end of the
-    //  transaction the data is updated)
-    if (not md->isMeasureLengthConstant())
-    {
-        md->updateMeasureInfo();
-    }
-    
     return true;
 }
 

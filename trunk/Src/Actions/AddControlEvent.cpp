@@ -117,7 +117,7 @@ namespace TestAddControlEvent
     
     UNIT_TEST(TestInsert)
     {    
-        Sequence* seq = new Sequence(NULL, NULL, NULL, false);
+        Sequence* seq = new Sequence(NULL, NULL, NULL, NULL, false);
         
         Track* t = new Track(seq);
         
@@ -160,7 +160,7 @@ namespace TestAddControlEvent
     
     UNIT_TEST(TestOverwriteFirst)
     {    
-        Sequence* seq = new Sequence(NULL, NULL, NULL, false);
+        Sequence* seq = new Sequence(NULL, NULL, NULL, NULL, false);
         
         Track* t = new Track(seq);
         
@@ -215,7 +215,7 @@ namespace TestAddControlEvent
     
     UNIT_TEST(TestOverwriteLast)
     {    
-        Sequence* seq = new Sequence(NULL, NULL, NULL, false);
+        Sequence* seq = new Sequence(NULL, NULL, NULL, NULL, false);
         
         Track* t = new Track(seq);
         
@@ -270,7 +270,7 @@ namespace TestAddControlEvent
     
     UNIT_TEST(TestAppend)
     {    
-        Sequence* seq = new Sequence(NULL, NULL, NULL, false);
+        Sequence* seq = new Sequence(NULL, NULL, NULL, NULL, false);
         
         Track* t = new Track(seq);
         
@@ -313,7 +313,7 @@ namespace TestAddControlEvent
     
     UNIT_TEST(TestPrepend)
     {    
-        Sequence* seq = new Sequence(NULL, NULL, NULL, false);
+        Sequence* seq = new Sequence(NULL, NULL, NULL, NULL, false);
         
         Track* t = new Track(seq);
         
