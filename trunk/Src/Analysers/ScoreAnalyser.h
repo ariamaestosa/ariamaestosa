@@ -23,6 +23,9 @@
   */
 
 #include <vector>
+#include <wx/string.h>
+
+#include "Utils.h"
 
 #include "Analysers/SilenceAnalyser.h"
 //#include "Editors/Editor.h"
