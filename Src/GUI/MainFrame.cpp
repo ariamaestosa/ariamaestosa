@@ -1286,9 +1286,6 @@ void MainFrame::setCurrentSequence(int n)
 #pragma mark I/O
 #endif
 
-
-// FIXME(DESIGN) - it sounds very dubious that this task goes in MainFrame
-
 void MainFrame::loadAriaFile(wxString filePath)
 {
     if (filePath.IsEmpty()) return;
@@ -1335,7 +1332,6 @@ void MainFrame::loadAriaFile(wxString filePath)
 
 // ----------------------------------------------------------------------------------------------------------
 
-// FIXME(DESIGN) - it sounds very dubious that this task goes in MainFrame
 void MainFrame::loadMidiFile(wxString midiFilePath)
 {
     if (midiFilePath.IsEmpty()) return;

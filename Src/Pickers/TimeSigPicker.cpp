@@ -287,6 +287,13 @@ void TimeSigPicker::enterPressed(wxCommandEvent& evt)
     
     MeasureData* measures = m_gseq->getModel()->getMeasureData();
     
+    if (not m_variable->IsChecked() and measures->isExpandedMode())
+    {
+        const int answer = wxMessageBox(_("Are you sure you want to go back to having a single time signature? Any time sig events you may have added will be lost. This cannot be undone."),
+                                        _("Confirm"), wxYES_NO);
+        if (answer == wxNO) return;
+    }
+    
     {
         ScopedMeasureTransaction tr(measures->startTransaction());
         tr->setTimeSig( top, bottom );
