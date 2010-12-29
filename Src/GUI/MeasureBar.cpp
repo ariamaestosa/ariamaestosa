@@ -161,10 +161,10 @@ public:
         Sequence* seq = m_gseq->getModel();
         MeasureData* md = seq->getMeasureData();
         
-        //std::cout << "really removing " << remove_timeSigID << std::endl;
-        md->eraseTimeSig(remove_timeSigID);
-        md->updateMeasureInfo();
-        Display::render();
+        {
+            ScopedMeasureTransaction tr(md->startTransaction());
+            tr->eraseTimeSig(remove_timeSigID);
+        }
     }
 
     DECLARE_EVENT_TABLE();

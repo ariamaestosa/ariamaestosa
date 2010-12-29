@@ -838,7 +838,12 @@ void MainFrame::menuEvent_manualChannelModeSelected(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_expandedMeasuresSelected(wxCommandEvent& evt)
 {
-    getCurrentSequence()->m_measure_data->setExpandedMode( m_expanded_measures_menu_item->IsChecked() );
+    MeasureData* md = getCurrentSequence()->m_measure_data;
+    {
+        ScopedMeasureTransaction tr(md->startTransaction());
+        tr->setExpandedMode( m_expanded_measures_menu_item->IsChecked() );
+    }
+    
     updateVerticalScrollbar();
 }
 

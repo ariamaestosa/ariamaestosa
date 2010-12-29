@@ -129,7 +129,7 @@ namespace AriaMaestosa
     
     namespace DisplayFrame
     {
-        void changeMeasureAmount(const int i, bool throwEvent=true);
+        //void changeMeasureAmount(const int i, bool throwEvent=true);
         void updateHorizontalScrollbar(const int thumbPos=-1);
         void updateVerticalScrollbar();
     }

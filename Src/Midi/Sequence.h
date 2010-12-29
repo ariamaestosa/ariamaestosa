@@ -41,6 +41,7 @@ namespace AriaMaestosa
 
     class ControllerEvent;
     class MeasureBar;
+    class IMeasureDataListener;
 
     const int DEFAULT_SONG_LENGTH = 12;
     
@@ -144,8 +145,13 @@ namespace AriaMaestosa
         ptr_vector<ControllerEvent> tempoEvents;
         // ------------------------------------
 
+        /**
+          * @brief Sequence constructor
+          * @note  The listeners are optional, pass NULL where you don't need to be notified
+          */
         Sequence(IPlaybackModeListener* playbackListener, IActionStackListener* actionStackListener,
-                 ISequenceDataListener* sequenceDataListener, bool addDefautTrack);
+                 ISequenceDataListener* sequenceDataListener, IMeasureDataListener* measureListener,
+                 bool addDefautTrack);
         ~Sequence();
         
         /**

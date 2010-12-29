@@ -99,7 +99,7 @@ namespace TestAddNote
     
     UNIT_TEST(TestAdd)
     {
-        Sequence* seq = new Sequence(NULL, NULL, NULL, false);
+        Sequence* seq = new Sequence(NULL, NULL, NULL, NULL, false);
         
         TestSequenceProvider provider(seq);
         AriaMaestosa::setCurrentSequenceProvider(&provider);
@@ -166,7 +166,7 @@ namespace TestAddNote
     
     UNIT_TEST(TestInsert)
     {            
-        Sequence* seq = new Sequence(NULL, NULL, NULL, false);
+        Sequence* seq = new Sequence(NULL, NULL, NULL, NULL, false);
         
         TestSequenceProvider provider(seq);
         AriaMaestosa::setCurrentSequenceProvider(&provider);

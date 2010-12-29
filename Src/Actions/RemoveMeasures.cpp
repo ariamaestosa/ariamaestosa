@@ -94,19 +94,22 @@ void RemoveMeasures::undo()
     removedTempoEvents.clearWithoutDeleting();
     
     // add removed time sig events again
-    MeasureData* measureBar = sequence->getMeasureData();
+    MeasureData* md = sequence->getMeasureData();
     const int t_amount = timeSigChangesBackup.size();
     
-    // add back the backup copy of measure events
-    for (int n=0; n<t_amount; n++)
     {
-        //timeSigChangesBackup.push_back( measureBar->getTimeSig(n) );
-        measureBar->addTimeSigChange(timeSigChangesBackup[n].getMeasure(),
-                                     timeSigChangesBackup[n].getNum(),
-                                     timeSigChangesBackup[n].getDenom());
-    }
-    
-    measureBar->updateMeasureInfo();
+        ScopedMeasureTransaction tr(md->startTransaction());
+        
+        // add back the backup copy of measure events
+        for (int n=0; n<t_amount; n++)
+        {
+            //timeSigChangesBackup.push_back( measureBar->getTimeSig(n) );
+            tr->addTimeSigChange(timeSigChangesBackup[n].getMeasure(),
+                                 timeSigChangesBackup[n].getNum(),
+                                 timeSigChangesBackup[n].getDenom());
+        }
+        
+    } // end transaction
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -200,80 +203,86 @@ void RemoveMeasures::perform()
         sequence->tempoEvents.removeMarked();
     }
     
-    // ----------------------- erase/move time sig events ------------------------
-    timeSigChangesBackup.clear();
-    
-    if (not md->isMeasureLengthConstant())
     {
-        // keep a backup copy of measure events
-        for (int n=0; n<md->getTimeSigAmount(); n++)
-        {
-            timeSigChangesBackup.push_back( md->getTimeSig(n) );
-        }
+        ScopedMeasureTransaction tr(md->startTransaction());
         
+        // ----------------------- erase/move time sig events ------------------------
+        timeSigChangesBackup.clear();
         
-        for (int n=0; n<md->getTimeSigAmount(); n++)
+        if (not md->isMeasureLengthConstant())
         {
             
-            if (md->getTimeSig(n).getMeasure() >= m_from_measure and
-                md->getTimeSig(n).getMeasure() <= m_to_measure )
+            // keep a backup copy of measure events
+            for (int n=0; n<md->getTimeSigAmount(); n++)
             {
-                // an event is located in the area we are trying to remove.
-                // check if there are measures after the deleted area that still need this event.
-                if ((n < md->getTimeSigAmount() - 1 and
-                     md->getTimeSig(n+1).getMeasure() > m_to_measure) or
-                    n == md->getTimeSigAmount() - 1)
+                timeSigChangesBackup.push_back( md->getTimeSig(n) );
+            }
+            
+            
+            for (int n=0; n<md->getTimeSigAmount(); n++)
+            {
+                
+                if (md->getTimeSig(n).getMeasure() >= m_from_measure and
+                    md->getTimeSig(n).getMeasure() <= m_to_measure )
                 {
-                    // dont move if its already there
-                    if (md->getTimeSig(n).getMeasure() == m_from_measure) continue; 
+                    // an event is located in the area we are trying to remove.
+                    // check if there are measures after the deleted area that still need this event.
+                    if ((n < md->getTimeSigAmount() - 1 and
+                         md->getTimeSig(n+1).getMeasure() > m_to_measure) or
+                        n == md->getTimeSigAmount() - 1)
+                    {
+                        // dont move if its already there
+                        if (md->getTimeSig(n).getMeasure() == m_from_measure) continue; 
+                        
+                        // check if there already was an event there if so remove it
+                        for (int i=0; i<md->getTimeSigAmount(); i++)
+                        {
+                            if (md->getTimeSig(i).getMeasure() == m_from_measure)
+                            {
+                                tr->eraseTimeSig(i);
+                                i -= 2; if (i<-1) i=-1;
+                            }
+                        }
+                        
+                        tr->setTimesigMeasure(n, m_from_measure); // move back event to its new location
+                        
+                    }
+                    else
+                    {
+                        tr->eraseTimeSig(n);
+                    }
+                    n -= 2; if (n<-1) n=-1; // restart a bit earlier cause order in vector changed
+                    continue;
+                    
+                }
+                
+                if (md->getTimeSig(n).getTick() >= toTick)
+                {
+                    const int new_measure = md->getTimeSig(n).getMeasure() -
+                                           (m_to_measure - m_from_measure);
                     
                     // check if there already was an event there if so remove it
                     for (int i=0; i<md->getTimeSigAmount(); i++)
                     {
-                        if (md->getTimeSig(i).getMeasure() == m_from_measure)
+                        if ( i != n and md->getTimeSig(i).getMeasure() == new_measure)
                         {
-                            md->eraseTimeSig(i);
-                            i -= 2; if (i<-1) i=-1;
+                            tr->eraseTimeSig(i);
+                            i -= 2; if (i<0) i=0;
                         }
                     }
                     
-                    md->setTimesigMeasure(n, m_from_measure); // move back event to its new location
-                    
+                    tr->setTimesigMeasure(n, new_measure);
                 }
-                else
-                {
-                    md->eraseTimeSig(n);
-                }
-                n -= 2; if (n<-1) n=-1; // restart a bit earlier cause order in vector changed
-                continue;
                 
-            }
+            }//next
+                
             
-            if (md->getTimeSig(n).getTick() >= toTick)
-            {
-                const int new_measure = md->getTimeSig(n).getMeasure() -
-                                       (m_to_measure - m_from_measure);
-                
-                // check if there already was an event there if so remove it
-                for (int i=0; i<md->getTimeSigAmount(); i++)
-                {
-                    if ( i != n and md->getTimeSig(i).getMeasure() == new_measure)
-                    {
-                        md->eraseTimeSig(i);
-                        i -= 2; if (i<0) i=0;
-                    }
-                }
-                
-                md->setTimesigMeasure(n, new_measure);
-            }
+        }//endif
+        
+        // shorten song accordingly to the number of measures removed
+        tr->setMeasureAmount( md->getMeasureAmount() - (m_to_measure - m_from_measure) );
             
-        }//next
-    }//endif
-    
-    // shorten song accordingly to the number of measures removed
-    DisplayFrame::changeMeasureAmount( md->getMeasureAmount() - (m_to_measure - m_from_measure) );
-    
-    md->updateMeasureInfo();
+    } // end transaction
 }
 
 // ----------------------------------------------------------------------------------------------------------

@@ -48,7 +48,8 @@ using namespace AriaMaestosa;
 // ----------------------------------------------------------------------------------------------------------
 
 Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener* actionStackListener,
-                   ISequenceDataListener* sequenceDataListener, bool addDefautTrack)
+                   ISequenceDataListener* sequenceDataListener,
+                   IMeasureDataListener* measureListener, bool addDefautTrack)
 {
     beatResolution          = 960;
     currentTrack            = 0;
@@ -73,6 +74,11 @@ Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener
     channelManagement = CHANNEL_AUTO;
     
     m_measure_data = new MeasureData(this, DEFAULT_SONG_LENGTH);
+    
+    if (measureListener != NULL)
+    {
+        m_measure_data->addListener( measureListener );
+    }
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -671,8 +677,11 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
     if (measureAmount_c != NULL)
     {
         std::cout << "measureAmount = " <<  atoi(measureAmount_c) << std::endl;
-        m_measure_data->setMeasureAmount( atoi(measureAmount_c) );
-        DisplayFrame::changeMeasureAmount( m_measure_data->getMeasureAmount(), false);
+        
+        {
+            ScopedMeasureTransaction tr(m_measure_data->startTransaction());
+            tr->setMeasureAmount( atoi(measureAmount_c) );
+        }
     }
     else
     {

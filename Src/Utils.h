@@ -84,11 +84,12 @@ public:
         raw_ptr = NULL;
         owner = true;
     }
-    OwnerPtr(OwnerPtr& copyCtor)
+    
+    OwnerPtr(OwnerPtr<T>& ptr)
     {
-        this->raw_ptr = copyCtor.raw_ptr;
-        copyCtor.raw_ptr; // prevent the oldder instance from deleting the pointer
-        owner = true;
+        if (owner) delete raw_ptr;
+        raw_ptr = ptr;
+        ptr.owner = false; // prevent the older instance from deleting the pointer
     }
     
     OwnerPtr(T* obj)
@@ -100,12 +101,22 @@ public:
     ~OwnerPtr()
     {
         if (owner) delete raw_ptr;
+#ifdef _MORE_DEBUG_CHECKS
+        raw_ptr = (T*)0xDEADBEEF;
+#endif
     }
     
     OwnerPtr& operator=(T* ptr)
     {
         if (owner) delete raw_ptr;
         raw_ptr = ptr;
+        return *this;
+    }
+    OwnerPtr& operator=(OwnerPtr& other)
+    {
+        if (owner) delete raw_ptr;
+        raw_ptr = other.raw_ptr;
+        other.owner = false;
         return *this;
     }
     
@@ -159,6 +170,5 @@ public:
     }
     
 };
-
 
 #endif
