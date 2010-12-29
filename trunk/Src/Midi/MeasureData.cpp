@@ -25,8 +25,8 @@
 
 #include <iostream>
 #include "irrXML/irrXML.h"
-#include <wx/spinbutt.h>
-#include <wx/msgdlg.h>
+//#include <wx/spinbutt.h>
+//#include <wx/msgdlg.h>
 
 using namespace AriaMaestosa;
 
@@ -64,11 +64,6 @@ void MeasureData::setExpandedMode(bool arg_expanded)
     //when turning it off, ask for a confirmation because all events will be lost
     if (this->m_expanded_mode and not arg_expanded)
     {
-        // FIXME(DESIGN): this is GUI code and should not go in this model class
-        const int answer = wxMessageBox(_("Are you sure you want to go back to having a single time signature? Any time sig events you may have added will be lost. This cannot be undone."),
-                                        _("Confirm"), wxYES_NO);
-        if (answer == wxNO){ return; }
-
         // remove all added events
         m_selected_time_sig = 0;
         m_time_sig_changes.clearAndDeleteAll();

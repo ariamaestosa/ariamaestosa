@@ -838,6 +838,13 @@ void MainFrame::menuEvent_manualChannelModeSelected(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_expandedMeasuresSelected(wxCommandEvent& evt)
 {
+    if (not m_expanded_measures_menu_item->IsChecked())
+    {
+        const int answer = wxMessageBox(_("Are you sure you want to go back to having a single time signature? Any time sig events you may have added will be lost. This cannot be undone."),
+                                        _("Confirm"), wxYES_NO);
+        if (answer == wxNO) return;
+    }
+    
     MeasureData* md = getCurrentSequence()->m_measure_data;
     {
         ScopedMeasureTransaction tr(md->startTransaction());
@@ -845,6 +852,7 @@ void MainFrame::menuEvent_expandedMeasuresSelected(wxCommandEvent& evt)
     }
     
     updateVerticalScrollbar();
+    updateMenuBarToSequence();
 }
 
 // -----------------------------------------------------------------------------------------------------------
