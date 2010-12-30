@@ -729,6 +729,9 @@ int Track::getFirstSelectedNote() const
 
 void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
 {
+    if (graphics == NULL) return; // FIXME(DESIGN): because of the current design, graphics are needed
+                                  // to perform selections (mostly because of controller editor)
+    
     ASSERT(id != SELECTED_NOTES); // not supported in this function
 
     if (not Display::isSelectMorePressed() and not Display::isSelectLessPressed())

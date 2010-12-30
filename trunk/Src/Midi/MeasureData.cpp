@@ -88,7 +88,6 @@ void MeasureData::setMeasureAmount(int measureAmount)
     updateVector(measureAmount);
     
     ASSERT_E(m_measure_amount, ==, (int)m_measure_info.size());
-    Display::render();
 }
 
 // ----------------------------------------------------------------------------------------------------------
