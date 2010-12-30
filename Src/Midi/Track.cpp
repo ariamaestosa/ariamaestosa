@@ -728,10 +728,7 @@ int Track::getFirstSelectedNote() const
 // -------------------------------------------------------------------------------------------------------
 
 void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
-{
-    if (graphics == NULL) return; // FIXME(DESIGN): because of the current design, graphics are needed
-                                  // to perform selections (mostly because of controller editor)
-    
+{    
     ASSERT(id != SELECTED_NOTES); // not supported in this function
 
     if (not Display::isSelectMorePressed() and not Display::isSelectLessPressed())
@@ -745,10 +742,16 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
         // FIXME(DESIGN): GUI stuff that shouldn't be referred to in data class
 
         // if this is a 'select none' command, unselect any selected measures in the top bar
-        if (not selected) graphics->getSequence()->getMeasureBar()->unselect();
+        if (not selected and graphics != NULL)
+        {
+            graphics->getSequence()->getMeasureBar()->unselect();
+        }
 
         if (m_editor_mode == CONTROLLER)
         { 
+            if (graphics == NULL) return; // FIXME(DESIGN): because of the current design, graphics are needed
+                                          // to perform selections (mostly because of controller editor)
+            
             // controller editor must be handled differently
             graphics->getControllerEditor()->selectAll( selected );
         }
