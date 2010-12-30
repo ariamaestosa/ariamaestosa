@@ -18,7 +18,7 @@
 #include "main.h"
 #include "GUI/MainFrame.h"
 #include "GUI/MainPane.h"
-#include "Dialogs/Preferences.h"
+#include "PreferencesData.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 

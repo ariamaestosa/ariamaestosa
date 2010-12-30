@@ -30,10 +30,10 @@
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
 #include "Pickers/DrumPicker.h"
-#include "Pickers/MagneticGrid.h"
+//#include "Pickers/MagneticGrid.h"
 #include "PreferencesData.h"
-#include "Renderers/RenderAPI.h"
 #include "Renderers/Drawable.h"
+#include "Renderers/RenderAPI.h"
 
 #include "AriaCore.h"
 

@@ -19,7 +19,6 @@
 #define __SCORE_EDITOR_H__
 
 #include "Editors/Editor.h"
-#include "Midi/Track.h"
 
 #include <wx/intl.h>
 
@@ -35,6 +34,7 @@ namespace AriaMaestosa
     
     class NoteRenderInfo;
     class Note;
+    class Track;
     class ScoreAnalyser;
     
     const int sign_dist = 5;

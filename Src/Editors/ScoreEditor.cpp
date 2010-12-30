@@ -17,7 +17,7 @@
 #include "Actions/EditAction.h"
 #include "Actions/AddNote.h"
 #include "Analysers/ScoreAnalyser.h"
-#include "Dialogs/Preferences.h"
+//#include "Dialogs/Preferences.h"
 #include "Editors/ScoreEditor.h"
 #include "Editors/RelativeXCoord.h"
 #include "GUI/ImageProvider.h"

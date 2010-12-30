@@ -16,17 +16,14 @@
 
 #include "AriaCore.h"
 
-// FIXME(DESIGN) : actions shouldn't refer to GUI classes
+// FIXME(DESIGN) : Note shouldn't refer to GUI classes
 #include "GUI/GraphicalTrack.h"
 
 #include "IO/IOUtils.h"
 #include "Midi/Note.h"
-//#include "Pickers/MagneticGrid.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Sequence.h"
 #include "Utils.h"
-
-//#include "Editors/GuitarEditor.h"
 
 #include "irrXML/irrXML.h"
 
@@ -42,12 +39,12 @@ Note::Note(Track* parent,
            const int string_arg,
            const int fret_arg)
 {
-    Note::pitchID=pitchID_arg;
-    Note::startTick=startTick_arg;
-    Note::endTick=endTick_arg;
-    Note::volume=volume_arg;
-    Note::string=string_arg;
-    Note::fret=fret_arg;
+    Note::pitchID   = pitchID_arg;
+    Note::startTick = startTick_arg;
+    Note::endTick   = endTick_arg;
+    Note::volume    = volume_arg;
+    Note::string    = string_arg;
+    Note::fret      = fret_arg;
 
     m_track = parent;
 

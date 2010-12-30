@@ -29,7 +29,7 @@
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 #include "Pickers/ControllerChoice.h"
-#include "Pickers/TuningPicker.h"
+//#include "Pickers/TuningPicker.h"
 #include "Renderers/RenderAPI.h"
 
 #include <string>

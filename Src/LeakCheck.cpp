@@ -26,7 +26,6 @@
 #include <execinfo.h>
 #endif
 
-//#include "ptr_vector.h"
 #include <set>
 
 #include "LeakCheck.h"
@@ -37,7 +36,6 @@ namespace AriaMaestosa
     namespace MemoryLeaks
     {
         
-        //ptr_vector<MyObject> g_all_objs;
         std::set<MyObject*> g_all_objs;
         
         void addObj(MyObject* myObj)
