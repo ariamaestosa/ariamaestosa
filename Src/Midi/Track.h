@@ -284,6 +284,15 @@ namespace AriaMaestosa
         /** @brief Get the sequence this track is part of (const version) */
         const Sequence* getSequence () const { return m_sequence;        }
 
+        /** Snaps a tick to the magnetic grid
+          * @param absolute_x  A midi tick you want to snap
+          * @return            The given tick, snapped to the magnetic grid
+          */
+        int snapMidiTickToGrid(int absolute_x);
+        
+        /** Same as 'snapMidiTickToGrid', but will only snap the tick to a bigger value */
+        int snapMidiTickToGrid_ceil(int absolute_x);
+        
         
         /** 
           * @return the type of key for this track

@@ -216,15 +216,16 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
             AriaRender::color(1, 0.85, 0);
 
+            const int tscroll = m_gsequence->getXScrollInMidiTicks();
+            const float zoom = m_gsequence->getZoom();
+            
             const int preview_x1 =
                 (int)(
-                      (snapMidiTickToGrid(mousex_initial.getRelativeTo(MIDI)) -
-                       m_gsequence->getXScrollInMidiTicks()) * m_gsequence->getZoom()
+                      (m_track->snapMidiTickToGrid(mousex_initial.getRelativeTo(MIDI)) - tscroll) * zoom
                       );
             const int preview_x2 =
                 (int)(
-                      (snapMidiTickToGrid(mousex_current.getRelativeTo(MIDI)) -
-                       m_gsequence->getXScrollInMidiTicks()) * m_gsequence->getZoom()
+                      (m_track->snapMidiTickToGrid(mousex_current.getRelativeTo(MIDI)) - tscroll) * zoom
                       );
 
             int string = (int)round( (float)(mousey_initial - getEditorYStart() - first_string_position) / (float)y_step);
@@ -252,7 +253,7 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
         const int x_difference = mousex_current.getRelativeTo(MIDI)-mousex_initial.getRelativeTo(MIDI);
         const int y_difference = mousey_current-mousey_initial;
 
-        const int x_steps_to_move = (int)( snapMidiTickToGrid(x_difference) * m_gsequence->getZoom() );
+        const int x_steps_to_move = (int)( m_track->snapMidiTickToGrid(x_difference) * m_gsequence->getZoom() );
         const int y_steps_to_move = (int)round( (float)y_difference / (float)y_step );
 
         // move a single note

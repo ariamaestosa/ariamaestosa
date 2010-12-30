@@ -498,8 +498,8 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                     }
                 }
 
-                int snapped_start = snapMidiTickToGrid(mousex_initial.getRelativeTo(MIDI) );
-                int snapped_end   = snapMidiTickToGrid(mousex_current.getRelativeTo(MIDI) );
+                int snapped_start = m_track->snapMidiTickToGrid(mousex_initial.getRelativeTo(MIDI) );
+                int snapped_end   = m_track->snapMidiTickToGrid(mousex_current.getRelativeTo(MIDI) );
 
                 // reject empty/malformed notes, add on success
                 if (m_use_instant_notes) // for drums
@@ -540,10 +540,10 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
         if (m_clicked_on_note)
         {
 
-            const int  x_difference = mousex_current.getRelativeTo(MIDI)-mousex_initial.getRelativeTo(MIDI);
+            const int  x_difference = mousex_current.getRelativeTo(MIDI) - mousex_initial.getRelativeTo(MIDI);
             const int  y_difference = mousey_current-mousey_initial;
 
-            const int relativeX = snapMidiTickToGrid(x_difference);
+            const int relativeX = m_track->snapMidiTickToGrid(x_difference);
             const int relativeY = (int)round( (float)y_difference / (float)m_y_step);
 
             if (relativeX == 0 and relativeY == 0)
@@ -809,48 +809,6 @@ void Editor::scroll(float amount)
 #pragma mark -
 #pragma mark Utils/actions
 #endif
-
-int Editor::snapMidiTickToGrid(int tick)
-{
-    ASSERT( MAGIC_NUMBER_OK() );
-    
-    int origin_tick = 0;
-    MeasureData* md = m_sequence->getMeasureData();
-    if (not md->isMeasureLengthConstant())
-    {
-        const int measure = md->measureAtTick(tick);
-        origin_tick = md->firstTickInMeasure(measure);
-    }
-
-    return origin_tick + (int)( round((float)(tick - origin_tick)/
-                                      (float)(m_sequence->ticksPerBeat()*4 / m_graphical_track->m_grid->divider))
-                                *(m_sequence->ticksPerBeat()*4 / m_graphical_track->m_grid->divider)
-                                );
-
-}
-
-// ------------------------------------------------------------------------------------------------------------
-
-int Editor::snapMidiTickToGrid_ceil(int tick)
-{
-    ASSERT( MAGIC_NUMBER_OK() );
-    
-    int origin_tick = 0;
-    MeasureData* md = m_sequence->getMeasureData();
-    if (not md->isMeasureLengthConstant())
-    {
-        const int measure = md->measureAtTick(tick);
-        origin_tick = md->firstTickInMeasure(measure);
-    }
-
-    return origin_tick + (int)( ceil((float)(tick - origin_tick)/
-                                     (float)(m_sequence->ticksPerBeat()*4 / m_graphical_track->m_grid->divider))
-                                *(m_sequence->ticksPerBeat()*4 / m_graphical_track->m_grid->divider)
-                                );
-
-}
-
-// ------------------------------------------------------------------------------------------------------------
 
 int Editor::findNotePitch(Note7 note_7, PitchSign sharpness, const int octave)
 {

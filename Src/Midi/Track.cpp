@@ -21,15 +21,11 @@
 #include "Actions/EditAction.h"
 #include "Actions/UpdateGuitarTuning.h"
 
-//#include "Editors/GuitarEditor.h"
-//#include "Editors/RelativeXCoord.h"
-//#include "Editors/DrumEditor.h"
-
 // FIXME(DESIGN) : data classes shouldn't refer to GUI classes
 #include "GUI/GraphicalTrack.h"
 #include "Editors/KeyboardEditor.h"
-//#include "Editors/ControllerEditor.h"
 #include "GUI/GraphicalSequence.h"
+#include "Pickers/MagneticGrid.h"
 
 #include "IO/IOUtils.h"
 #include "Midi/Track.h"
@@ -37,7 +33,6 @@
 #include "Midi/ControllerEvent.h"
 #include "Midi/DrumChoice.h"
 #include "Midi/MeasureData.h"
-//#include "Pickers/MagneticGrid.h"
 #include "PreferencesData.h"
 
 #include <iostream>
@@ -797,6 +792,45 @@ void Track::prepareNotesForGuitarEditor()
         m_notes[n].checkIfStringAndFretMatchNote(true);
     }
 
+}
+
+// -------------------------------------------------------------------------------------------------------
+
+int Track::snapMidiTickToGrid(int tick)
+{    
+    int origin_tick = 0;
+    MeasureData* md = m_sequence->getMeasureData();
+    if (not md->isMeasureLengthConstant())
+    {
+        const int measure = md->measureAtTick(tick);
+        origin_tick = md->firstTickInMeasure(measure);
+    }
+    
+    // FIXME(DESIGN): the magnetic grid should not be in graphics perhaps?
+    return origin_tick + (int)( round((float)(tick - origin_tick)/
+                                      (float)(m_sequence->ticksPerBeat()*4 / graphics->m_grid->divider))
+                               *(m_sequence->ticksPerBeat()*4 / graphics->m_grid->divider)
+                               );
+    
+}
+
+// ------------------------------------------------------------------------------------------------------------
+
+int Track::snapMidiTickToGrid_ceil(int tick)
+{    
+    int origin_tick = 0;
+    MeasureData* md = m_sequence->getMeasureData();
+    if (not md->isMeasureLengthConstant())
+    {
+        const int measure = md->measureAtTick(tick);
+        origin_tick = md->firstTickInMeasure(measure);
+    }
+    
+    return origin_tick + (int)( ceil((float)(tick - origin_tick)/
+                                     (float)(m_sequence->ticksPerBeat()*4 / graphics->m_grid->divider))
+                               *(m_sequence->ticksPerBeat()*4 / graphics->m_grid->divider)
+                               );
+    
 }
 
 // -------------------------------------------------------------------------------------------------------
