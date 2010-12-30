@@ -78,6 +78,9 @@ namespace AriaMaestosa
         void  setYScroll(int value);
         int   getYScroll() const { return y_scroll; }
         
+        void selectAll();
+        void selectNone();
+        
         /**
          * @return the number of pixels it takes to draw all tracks, vertically.
          * @note   This is used mostly by the code managing the vertical scrollbar.

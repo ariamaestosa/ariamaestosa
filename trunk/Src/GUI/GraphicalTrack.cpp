@@ -951,6 +951,29 @@ int GraphicalTrack::getNoteEndInPixels(const int id) const
     return (int)round( m_track->getNoteEndInMidiTicks(id) * m_gsequence->getZoom() );
 }
 
+// -------------------------------------------------------------------------------------------------------
+
+void GraphicalTrack::selectNote(const int id, const bool selected, bool ignoreModifiers)
+{    
+    ASSERT(id != SELECTED_NOTES); // not supported in this function
+    
+    m_track->selectNote(id, selected, ignoreModifiers);
+
+    // ---- select/deselect all notes
+    if (id == ALL_NOTES)
+    {
+        // if this is a 'select none' command, unselect any selected measures in the top bar
+        if (not selected) getSequence()->getMeasureBar()->unselect();
+        
+        if (m_track->getNotationType() == CONTROLLER)
+        {
+            // FIXME(DESIGN): controller editor must be handled differently (special case)
+            m_controller_editor->selectAll( selected );
+        }
+    }
+}
+
+
 // --------------------------------------------------------------------------------------------------
 // --------------------------------------------------------------------------------------------------
 

@@ -28,7 +28,7 @@
 // FIXME(DESIGN) : data classes shouldn't refer to GUI classes
 #include "GUI/GraphicalTrack.h"
 #include "Editors/KeyboardEditor.h"
-#include "Editors/ControllerEditor.h"
+//#include "Editors/ControllerEditor.h"
 #include "GUI/GraphicalSequence.h"
 
 #include "IO/IOUtils.h"
@@ -739,23 +739,7 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
     // ---- select/deselect all notes
     if (id == ALL_NOTES)
     {
-        // FIXME(DESIGN): GUI stuff that shouldn't be referred to in data class
-
-        // if this is a 'select none' command, unselect any selected measures in the top bar
-        if (not selected and graphics != NULL)
-        {
-            graphics->getSequence()->getMeasureBar()->unselect();
-        }
-
-        if (m_editor_mode == CONTROLLER)
-        { 
-            if (graphics == NULL) return; // FIXME(DESIGN): because of the current design, graphics are needed
-                                          // to perform selections (mostly because of controller editor)
-            
-            // controller editor must be handled differently
-            graphics->getControllerEditor()->selectAll( selected );
-        }
-        else
+        if (m_editor_mode != CONTROLLER)
         {
 
             if (ignoreModifiers)
@@ -786,7 +770,6 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
             // otherwise, check key modifiers and set value accordingly
             if (selected)
             {                
-                //FIXME(DESIGN): this belongs in graphics classes, not in data classes
                 if      (Display::isSelectMorePressed()) m_notes[id].setSelected(true);
                 else if (Display::isSelectLessPressed()) m_notes[id].setSelected(not selected);
             }

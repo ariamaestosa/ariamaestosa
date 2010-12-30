@@ -632,14 +632,14 @@ void MainFrame::menuEvent_undo(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_selectNone(wxCommandEvent& evt)
 {
-    getCurrentSequence()->selectNone();
+    getCurrentGraphicalSequence()->selectNone();
 }
 
 // -----------------------------------------------------------------------------------------------------------
 
 void MainFrame::menuEvent_selectAll(wxCommandEvent& evt)
 {
-    getCurrentSequence()->selectAll();
+    getCurrentGraphicalSequence()->selectAll();
 }
 
 // -----------------------------------------------------------------------------------------------------------

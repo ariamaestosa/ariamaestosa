@@ -1535,8 +1535,8 @@ NoteSearchResult ScoreEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 
 void ScoreEditor::noteClicked(const int id)
 {
-    m_track->selectNote(ALL_NOTES, false);
-    m_track->selectNote(id, true);
+    m_track->graphics->selectNote(ALL_NOTES, false);
+    m_track->graphics->selectNote(id, true);
     m_track->playNote(id);
 }
 
@@ -1607,11 +1607,11 @@ void ScoreEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_c
             std::min(mousey_current, mousey_initial) < note_y and
             std::max(mousey_current, mousey_initial) > note_y)
         {
-            m_track->selectNote(n, true);
+            m_track->graphics->selectNote(n, true);
         }
         else
         {
-            m_track->selectNote(n, false);
+            m_track->graphics->selectNote(n, false);
         }
 
     }

@@ -186,6 +186,8 @@ namespace AriaMaestosa
         /** @brief Implement callback from ITrackListener */
         virtual void onNotationTypeChange();
         
+        void selectNote(const int id, const bool selected, bool ignoreModifiers=false);
+
         // serialization
         void saveToFile(wxFileOutputStream& fileout);
         bool readFromFile(irr::io::IrrXMLReader* xml);
