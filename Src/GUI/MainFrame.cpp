@@ -1470,7 +1470,7 @@ void MainFrame::onMeasureDataChange(int change)
     
     updateTopBarAndScrollbarsForSequence( gseq );
     updateMenuBarToSequence();
-    Display::render();
+    m_main_pane->render();
 }
 
 // ----------------------------------------------------------------------------------------------------------
