@@ -90,7 +90,7 @@ void MoveNotes::perform()
 {
     ASSERT(track != NULL);
 
-    m_mode = track->graphics->getEditorMode();
+    m_mode = track->getNotationType();
     if      (m_mode == SCORE  and m_relativeY != 0) m_move_mode = SCORE_VERTICAL;
     else if (m_mode == GUITAR and m_relativeY != 0) m_move_mode = GUITAR_VERTICAL;
     else if (m_mode == DRUM   and m_relativeY != 0) m_move_mode = DRUMS_VERTICAL;

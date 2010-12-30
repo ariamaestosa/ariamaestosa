@@ -55,7 +55,9 @@ using namespace AriaMaestosa;
 Track::Track(Sequence* sequence)
 {
     m_muted = false;
-
+    m_editor_mode     = KEYBOARD;
+    m_listener = NULL;
+    
     // init key data
     setKey(0, KEY_TYPE_C);
 
@@ -188,7 +190,7 @@ bool Track::addNote(Note* note, bool check_for_overlapping_notes)
         // the only time where this is not checked is when pasting, because it is then logical that notes are pasted on top of their originals
         if (check_for_overlapping_notes and m_notes[n].startTick == note->startTick and
             m_notes[n].pitchID == note->pitchID and
-           (graphics->getEditorMode() != GUITAR or m_notes[n].getString() == note->getString()) /*in guitar mode string must also match to be considered overlapping*/ )
+           (m_editor_mode != GUITAR or m_notes[n].getString() == note->getString()) /*in guitar mode string must also match to be considered overlapping*/ )
         {
             std::cout << "overlapping notes: rejected" << std::endl;
             return false;
@@ -742,7 +744,7 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
         // if this is a 'select none' command, unselect any selected measures in the top bar
         if (not selected) graphics->getSequence()->getMeasureBar()->unselect();
 
-        if (graphics->getEditorMode() == CONTROLLER)
+        if (m_editor_mode == CONTROLLER)
         { 
             // controller editor must be handled differently
             graphics->getControllerEditor()->selectAll( selected );
@@ -813,7 +815,7 @@ void Track::prepareNotesForGuitarEditor()
 void Track::copy()
 {
 
-    if (graphics->getEditorMode() == CONTROLLER)
+    if (m_editor_mode == CONTROLLER)
     {
         wxBell();
         return; // no copy/paste in controller mode
@@ -832,7 +834,7 @@ void Track::copy()
         Clipboard::add(tmp);
 
         // if in guitar mode, make sure string/fret and note match
-        if (graphics->getEditorMode() == GUITAR)
+        if (m_editor_mode == GUITAR)
         {
             Clipboard::getNote( Clipboard::getSize()-1 )->checkIfStringAndFretMatchNote(false);
         }
@@ -873,14 +875,14 @@ void Track::copy()
 #pragma mark Get/Set Other Stuff
 #endif
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::setId(const int id)
 {
     m_track_id = id;
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::setName(wxString name)
 {
@@ -888,26 +890,26 @@ void Track::setName(wxString name)
     else                       m_name.set(name);
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 AriaRenderString& Track::getNameRenderer()
 {
     return m_name;
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int Track::getChannel()
 {
     // always 9 for drum tracks
     //const bool manual_mode = sequence->getChannelManagementType() == CHANNEL_MANUAL;
 
-    if (graphics->getEditorMode() == DRUM) return 9;
+    if (m_editor_mode == DRUM) return 9;
     else                                   return m_channel;
 
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::setChannel(int i)
 {
@@ -926,14 +928,14 @@ void Track::setChannel(int i)
     }//next
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::setInstrument(int i)
 {
     m_instrument->setInstrument(i);
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::doSetInstrument(int i, bool recursive)
 {
@@ -960,14 +962,14 @@ void Track::doSetInstrument(int i, bool recursive)
     }//endif
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::setDrumKit(int i)
 {
     m_drum_kit->setDrumkit(i);
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::doSetDrumKit(int i, bool recursive)
 {
@@ -1009,7 +1011,7 @@ void Track::doSetDrumKit(int i, bool recursive)
     }//endif
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int Track::getDuration() const
 {
@@ -1018,7 +1020,7 @@ int Track::getDuration() const
     return m_note_off[m_note_off.size()-1].endTick;
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::setKey(const int symbolAmount, const KeyType type)
 {
@@ -1132,7 +1134,7 @@ void Track::setKey(const int symbolAmount, const KeyType type)
     if (graphics != NULL) graphics->onKeyChange(symbolAmount, m_key_type);
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::setCustomKey(const KeyInclusionType key_notes[131])
 {
@@ -1146,7 +1148,7 @@ void Track::setCustomKey(const KeyInclusionType key_notes[131])
     }
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::onInstrumentChanged(const int newValue)
 {
@@ -1154,7 +1156,7 @@ void Track::onInstrumentChanged(const int newValue)
     doSetInstrument(newValue);
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::onDrumkitChanged(const int newValue)
 {
@@ -1163,7 +1165,7 @@ void Track::onDrumkitChanged(const int newValue)
     doSetDrumKit(newValue);
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::onGuitarTuningUpdated(GuitarTuning* tuning, const bool userTriggered)
 {
@@ -1177,6 +1179,14 @@ void Track::onGuitarTuningUpdated(GuitarTuning* tuning, const bool userTriggered
         actionObj.setParentTrack(this);
         actionObj.perform();
     }
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void Track::setNotationType(NotationType t)
+{
+    m_editor_mode = t;
+    if (m_listener != NULL) m_listener->onNotationTypeChange();
 }
 
 // =======================================================================================================
@@ -1248,7 +1258,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     // ignore track if it's muted
     // (but for some reason drum track can't be completely omitted)
     // if we only play selection, ignore mute and play anyway
-    if (m_muted and graphics->getEditorMode() != DRUM and not selectionOnly)
+    if (m_muted and m_editor_mode != DRUM and not selectionOnly)
     {
         return -1;
     }
@@ -1259,7 +1269,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     if (manual_mode) channel = getChannel();
 
     // drum tracks
-    if (graphics->getEditorMode() == DRUM) channel = 9;
+    if (m_editor_mode == DRUM) channel = 9;
 
     //std::cout << "channel = " << track_ID << std::endl;
 
@@ -1322,7 +1332,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
         m.SetTime( 0 );
 
-        if (graphics->getEditorMode() == DRUM) m.SetProgramChange( channel, getDrumKit() );
+        if (m_editor_mode == DRUM) m.SetProgramChange( channel, getDrumKit() );
         else                                   m.SetProgramChange( channel, getInstrument() );
 
         if (not midiTrack->PutEvent( m ))
@@ -1390,7 +1400,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     int last_event_tick = 0;
 
     // if muted and drums, return now
-    if (m_muted and graphics->getEditorMode() == DRUM and not selectionOnly) return -1;
+    if (m_muted and m_editor_mode == DRUM and not selectionOnly) return -1;
 
     //std::cout << "-------------------- TRACK -------------" << std::endl;
 
@@ -1435,7 +1445,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                 m.SetTime( time );
 
 
-                if (graphics->getEditorMode() == DRUM)
+                if (m_editor_mode == DRUM)
                 {
                     m.SetNoteOn( channel, m_notes[note_on_id].pitchID, m_notes[note_on_id].volume );
                 }
@@ -1467,7 +1477,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
             {
                 m.SetTime( time );
 
-                if (graphics->getEditorMode() == DRUM)
+                if (m_editor_mode == DRUM)
                 {
                     m.SetNoteOff( channel, m_note_off[note_off_id].pitchID, 0 );
                 }

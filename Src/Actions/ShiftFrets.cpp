@@ -17,9 +17,6 @@
 #include "Actions/ShiftFrets.h"
 #include "Actions/EditAction.h"
 
-// FIXME(DESIGN) : don't rely on GUI classes
-#include "GUI/GraphicalTrack.h"
-
 #include "Midi/Track.h"
 
 #include <wx/intl.h>
@@ -54,7 +51,7 @@ void ShiftFrets::perform()
     ASSERT(m_note_id != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
     
     // only accept to do this in guitar mode
-    if (track->graphics->getEditorMode() != GUITAR)  return;
+    if (track->getNotationType() != GUITAR)  return;
     
     // concerns all selected notes
     if (m_note_id == SELECTED_NOTES)

@@ -347,6 +347,8 @@ GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq)
 
     m_gsequence = seq;
     m_track = track;
+    
+    track->setListener(this);
 
     ASSERT(track);
 
@@ -357,7 +359,6 @@ GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq)
     m_collapsed       = false;
     m_dragging_resize = false;
     m_docked          = false;
-    m_editor_mode     = KEYBOARD;
 
     m_height = 128;
 
@@ -413,7 +414,7 @@ GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq)
     m_channel_field = new BlankField(28);
     m_components->addFromRight(m_channel_field);
     
-    if (m_editor_mode == DRUM)
+    if (m_track->getNotationType() == DRUM)
     {
         m_instrument_name.set(DrumChoice::getDrumkitName( m_track->getDrumKit() ));
     }
@@ -599,7 +600,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         // instrument
         if (m_instrument_field->clickIsOnThisWidget(winX, mousey))
         {
-            if (m_editor_mode == DRUM)
+            if (m_track->getNotationType() == DRUM)
             {
                 Core::getDrumPicker()->setModel(m_track->getDrumkitModel());
                 Display::popupMenu((wxMenu*)(Core::getDrumPicker()), Display::getWidth() - 175, m_from_y + 30);
@@ -638,28 +639,30 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
             // modes
             if (winX > m_score_button->getX() and winX < m_score_button->getX() + 30)
             {
-                setEditorMode(SCORE);
+                m_track->setNotationType(SCORE);
             }
             else if (winX > m_piano_button->getX() and winX < m_piano_button->getX()+30)
             {
                 // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
-                if (m_editor_mode == DRUM and m_gsequence->getModel()->getChannelManagementType() == CHANNEL_MANUAL)
+                if (m_track->getNotationType() == DRUM and
+                    m_gsequence->getModel()->getChannelManagementType() == CHANNEL_MANUAL)
                 {
                     m_track->setChannel(0);
                 }
 
-                setEditorMode(KEYBOARD);
+                m_track->setNotationType(KEYBOARD);
             }
             else if (winX > m_tab_button->getX() and winX < m_tab_button->getX() + 30)
             {
                 // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
-                if (m_editor_mode == DRUM and m_gsequence->getModel()->getChannelManagementType() == CHANNEL_MANUAL)
+                if (m_track->getNotationType() == DRUM and
+                    m_gsequence->getModel()->getChannelManagementType() == CHANNEL_MANUAL)
                 {
                     m_track->setChannel(0);
                 }
 
-                setEditorMode(GUITAR);
-                m_track->prepareNotesForGuitarEditor();
+                m_track->setNotationType(GUITAR);
+                m_track->prepareNotesForGuitarEditor(); // FIXME(DESIGN): there should be no need to manually call this
             }
             else if (winX > m_drum_button->getX() and winX < m_drum_button->getX() + 30)
             {
@@ -669,15 +672,15 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                     m_track->setChannel(9);
                 }
 
-                setEditorMode(DRUM);
+                m_track->setNotationType(DRUM);
             }
             else if (winX > m_ctrl_button->getX() and winX < m_ctrl_button->getX() + 30)
             {
-                setEditorMode(CONTROLLER);
+                m_track->setNotationType(CONTROLLER);
             }
         }
 
-        if (m_editor_mode == SCORE and mousey > m_from_y + 15 and mousey < m_from_y + 30)
+        if (m_track->getNotationType() == SCORE and mousey > m_from_y + 15 and mousey < m_from_y + 30)
         {
             // sharp/flat signs
             if ( m_sharp_flat_picker->getItem(0).clickIsOnThisWidget(winX, mousey) )
@@ -900,26 +903,25 @@ int GraphicalTrack::getEditorHeight()
 
 Editor* GraphicalTrack::getCurrentEditor()
 {
-    if      (m_editor_mode == KEYBOARD)   return m_keyboard_editor;
-    else if (m_editor_mode == GUITAR)     return m_guitar_editor;
-    else if (m_editor_mode == DRUM)       return m_drum_editor;
-    else if (m_editor_mode == CONTROLLER) return m_controller_editor;
-    else if (m_editor_mode == SCORE)      return m_score_editor;
-    else
+    switch (m_track->getNotationType())
     {
-        std::cerr << "[GraphicalTrack] getCurrentEditor : unknown mode!" << std::endl;
-        ASSERT(false);
-        return NULL; // shut up warnings
+        case KEYBOARD:      return m_keyboard_editor;
+        case GUITAR:        return m_guitar_editor;
+        case DRUM:          return m_drum_editor;
+        case CONTROLLER:    return m_controller_editor;
+        case SCORE:         return m_score_editor;
+        default :
+            std::cerr << "[GraphicalTrack] getCurrentEditor : unknown mode!" << std::endl;
+            ASSERT(false);
+            return NULL; // shut up warnings
     }
 }
 
 // --------------------------------------------------------------------------------------------------
 
-void GraphicalTrack::setEditorMode(EditorType mode)
-{
-    m_editor_mode = mode;
-    
-    if (m_editor_mode == DRUM)
+void GraphicalTrack::onNotationTypeChange()
+{    
+    if (m_track->getNotationType() == DRUM)
     {
         m_instrument_name.set(DrumChoice::getDrumkitName( m_track->getDrumKit() ));
     }
@@ -1049,7 +1051,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     else
     {
         // white area
-        if (m_editor_mode != KEYBOARD) // keyboard editor draws its own backgound, so no need to draw it twice // FIXME no more true
+        if (m_track->getNotationType() != KEYBOARD) // keyboard editor draws its own backgound, so no need to draw it twice // FIXME no more true
         {
             AriaRender::primitives();
             AriaRender::color(1, 1, 1);
@@ -1067,13 +1069,14 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     if (m_track->isMuted()) m_mute_button->m_drawable->setImage( muteOnImg );
     else                    m_mute_button->m_drawable->setImage( muteOffImg );
     
-    m_score_button -> enable( m_editor_mode == SCORE      and focus );
-    m_piano_button -> enable( m_editor_mode == KEYBOARD   and focus );
-    m_tab_button   -> enable( m_editor_mode == GUITAR     and focus );
-    m_drum_button  -> enable( m_editor_mode == DRUM       and focus );
-    m_ctrl_button  -> enable( m_editor_mode == CONTROLLER and focus );
+    const NotationType notationType = m_track->getNotationType();
+    m_score_button -> enable( notationType == SCORE      and focus );
+    m_piano_button -> enable( notationType == KEYBOARD   and focus );
+    m_tab_button   -> enable( notationType == GUITAR     and focus );
+    m_drum_button  -> enable( notationType == DRUM       and focus );
+    m_ctrl_button  -> enable( notationType == CONTROLLER and focus );
     
-    m_sharp_flat_picker->show(m_editor_mode == SCORE);
+    m_sharp_flat_picker->show(m_track->getNotationType() == SCORE);
     
     m_channel_field->show(channel_mode);
     
@@ -1280,7 +1283,8 @@ void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
 {
     const int octave_shift = m_score_editor->getScoreMidiConverter()->getOctaveShift();
 
-    writeData( wxT("<editor mode=\"") + to_wxString(m_editor_mode) +
+    // TODO: move notation type to "Track"
+    writeData( wxT("<editor mode=\"") + to_wxString(m_track->getNotationType()) +
                wxT("\" height=\"") + to_wxString(m_height) +
                (m_collapsed ? wxT("\" collapsed=\"true") : wxT("")) +
                wxT("\" g_clef=\"") + (m_score_editor->isGClefEnabled()?wxT("true"):wxT("false")) +
@@ -1320,14 +1324,15 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
     if (strcmp("editor", xml->getNodeName()) == 0)
     {
 
+        // TODO: move notation type to "Track"
         const char* mode_c = xml->getAttributeValue("mode");
         if ( mode_c != NULL )
         {
-            setEditorMode((EditorType)atoi( mode_c ));
+            m_track->setNotationType((NotationType)atoi( mode_c ));
         }
         else
         {
-            m_editor_mode = KEYBOARD;
+            m_track->setNotationType(KEYBOARD);
             std::cout << "Missing info from file: editor mode" << std::endl;
         }
 

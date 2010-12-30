@@ -926,7 +926,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
     // FIXME(DESIGN) - belongs to the editor, probably (move all editor stuff to editor files)
     // FIXME - too many renders there, maybe even actions do render
 
-    const int current_editor = seq->getCurrentTrack()->graphics->getEditorMode();
+    const NotationType current_editor = seq->getCurrentTrack()->getNotationType();
 
     // --------------- move by 1 measure ------------
     if (current_editor != GUITAR and not commandDown and shiftDown)

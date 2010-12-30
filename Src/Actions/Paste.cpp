@@ -78,7 +78,7 @@ void Paste::perform()
 {
     ASSERT(track != NULL);
 
-    if (track->graphics->getEditorMode() == CONTROLLER)
+    if (track->getNotationType() == CONTROLLER)
     {
         wxBell();
         return; // no copy/paste in controller mode
@@ -221,7 +221,7 @@ regular_paste: // FIXME - find better way than goto
         tmp->setParent( track );
         tmp->setSelected(true);
 
-        if (track->graphics->getEditorMode() == GUITAR)
+        if (track->getNotationType() == GUITAR)
         {
             tmp->checkIfStringAndFretMatchNote(true);
         }

@@ -94,6 +94,24 @@ namespace AriaMaestosa
         KEY_INCLUSION_NONE = 0
     };
     
+    enum NotationType
+    {
+        KEYBOARD   = 0,
+        SCORE      = 1,
+        GUITAR     = 2,
+        DRUM       = 3,
+        CONTROLLER = 4
+    };
+    
+    class ITrackListener
+    {
+    public:
+        
+        virtual ~ITrackListener() {}
+        
+        virtual void onNotationTypeChange() = 0;
+    };
+    
     /**
       * @brief represents a track within a sequence.
       *
@@ -141,6 +159,7 @@ namespace AriaMaestosa
         
         int m_track_id;
         
+        // FIXME(DESIGN): GUI class should not go here
         /** Name of the track, and also object that can render it */
         AriaRenderString m_name;
         
@@ -182,6 +201,10 @@ namespace AriaMaestosa
         /** The sequence this track is part of */
         Sequence* m_sequence;
 
+        NotationType m_editor_mode;
+
+        ITrackListener* m_listener;
+        
     public:
         LEAK_CHECK();
                 
@@ -193,6 +216,16 @@ namespace AriaMaestosa
         
         Track(Sequence* sequence);
         ~Track();
+        
+        /**
+          * @brief Set a listener to be notified when some track properties change
+          * @note  Does not take ownership of the listener (will not delete it)
+          */
+        void setListener(ITrackListener* listener)
+        {
+            m_listener = listener;
+        }
+
         
         /**
          * when one track will be removed, all others are notified so they can remove any
@@ -514,6 +547,13 @@ namespace AriaMaestosa
          * @brief Get the guitar tuning model object
          */
         const GuitarTuning* getConstGuitarTuning() const { return m_tuning.raw_ptr; }
+        
+        /**
+          * @brief Get the type of notation this track uses
+          */
+        NotationType getNotationType() const { return m_editor_mode; }
+
+        void setNotationType(NotationType t);
         
         /**
           * @brief Implement callback from IGuitarTuningListener

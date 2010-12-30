@@ -20,7 +20,7 @@
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 #include "GUI/MainFrame.h"
-#include "GUI/GraphicalTrack.h"
+//#include "GUI/GraphicalTrack.h"
 #include "Midi/MeasureData.h"
 #include "Dialogs/WaitWindow.h"
 #include "Editors/DrumEditor.h"
@@ -453,13 +453,13 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
 
         if (ariaTrack->getChannel() == 9)
         {
-            ariaTrack->graphics->setEditorMode(DRUM);
+            ariaTrack->setNotationType(DRUM);
         }
         else
         {
             // KEYBOARD editor is the default, but set it anyway, will force the instrument name
             // to be updated
-            ariaTrack->graphics->setEditorMode(KEYBOARD);
+            ariaTrack->setNotationType(KEYBOARD);
         }
 
         // FIXME: when does it happen?? a MIDI file contains only deltas AFAIK, I don't quite see how you can detect an incorrect order
