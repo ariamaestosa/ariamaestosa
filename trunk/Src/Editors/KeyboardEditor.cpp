@@ -16,12 +16,12 @@
 
 
 #include <cmath>
-#include "Utils.h"
 
+#include "Editors/KeyboardEditor.h"
 
+#include "AriaCore.h"
 #include "Actions/EditAction.h"
 #include "Actions/AddNote.h"
-#include "Editors/KeyboardEditor.h"
 #include "Editors/RelativeXCoord.h"
 #include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
@@ -29,12 +29,11 @@
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
-#include "Pickers/MagneticGrid.h"
+//#include "Pickers/MagneticGrid.h"
 #include "Pickers/KeyPicker.h"
 #include "Renderers/Drawable.h"
 #include "Renderers/RenderAPI.h"
-
-#include "AriaCore.h"
+#include "Utils.h"
 
 #define SHOW_MIDI_PITCH 0
 

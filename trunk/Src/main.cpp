@@ -18,18 +18,14 @@
 #include <wx/config.h>
 #include <wx/msgdlg.h>
 
-#include "Utils.h"
-#include "Dialogs/Preferences.h"
 #include "GUI/MainFrame.h"
 #include "GUI/MainPane.h"
-#include "GUI/ImageProvider.h"
-#include "IO/IOUtils.h"
-#include "Midi/MeasureData.h"
 #include "Midi/Players/PlatformMidiManager.h"
-#include "Midi/Sequence.h"
 #include "Midi/KeyPresets.h"
+#include "PreferencesData.h"
 #include "languages.h"
 #include "UnitTest.h"
+#include "Utils.h"
 
 #include <iostream>
 

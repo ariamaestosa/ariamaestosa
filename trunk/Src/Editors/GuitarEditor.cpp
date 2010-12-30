@@ -17,10 +17,10 @@
 #include "Editors/GuitarEditor.h"
 
 #include "AriaCore.h"
-#include "Actions/EditAction.h"
-#include "Actions/UpdateGuitarTuning.h"
 #include "Actions/AddNote.h"
+#include "Actions/EditAction.h"
 #include "Actions/ShiftString.h"
+#include "Actions/UpdateGuitarTuning.h"
 #include "GUI/GraphicalSequence.h"
 #include "Editors/RelativeXCoord.h"
 #include "GUI/ImageProvider.h"

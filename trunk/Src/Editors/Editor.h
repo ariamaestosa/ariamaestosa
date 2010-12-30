@@ -24,18 +24,17 @@
 #include "Utils.h"
 #include "ptr_vector.h"
 
-#include "Analysers/ScoreAnalyser.h"
-#include "Editors/Editor.h"
+#include "Analysers/ScoreAnalyser.h" // for PitchSign
 #include "Editors/RelativeXCoord.h"
-#include "Midi/Track.h"
+#include "Midi/Note.h"  // for Note7, etc.
+#include "Midi/Track.h" // for KeyType, etc.
 
 namespace AriaMaestosa
 {
     
-    class Track; //forward
     class Sequence;
     class GraphicalTrack;
-    class Note;
+    class Track;
     class InstrumentChoice;
     class GraphicalSequence;
     
