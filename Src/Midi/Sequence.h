@@ -274,8 +274,6 @@ namespace AriaMaestosa
 
         void paste();
         void pasteAtMouse();
-        void selectAll();
-        void selectNone();
 
         void setPlayWithMetronome(const bool enabled) { m_play_with_metronome = enabled; }
         bool playWithMetronome   () const             { return m_play_with_metronome;    }

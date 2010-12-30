@@ -362,6 +362,29 @@ void GraphicalSequence::removeFromDock(GraphicalTrack* track)
 }
 
 // ----------------------------------------------------------------------------------------------------------
+// --------------------------------------------- Selection --------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+
+#if 0
+#pragma mark -
+#pragma mark Selection
+#endif
+
+void GraphicalSequence::selectAll()
+{
+    m_sequence->getCurrentTrack()->graphics->selectNote(ALL_NOTES, true, true);
+    if (m_sequence->m_seq_data_listener != NULL) m_sequence->m_seq_data_listener->onSequenceDataChanged();
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void GraphicalSequence::selectNone()
+{
+    m_sequence->getCurrentTrack()->graphics->selectNote(ALL_NOTES, false, true);
+    if (m_sequence->m_seq_data_listener != NULL) m_sequence->m_seq_data_listener->onSequenceDataChanged();
+}
+
+// ----------------------------------------------------------------------------------------------------------
 // ------------------------------------------------ I/O -----------------------------------------------------
 // ----------------------------------------------------------------------------------------------------------
 

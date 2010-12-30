@@ -506,7 +506,7 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                 {
                     if (snapped_end < 0)
                     {
-                        m_track->selectNote(ALL_NOTES, false);
+                        m_track->graphics->selectNote(ALL_NOTES, false);
                         goto end_of_func;
                     }
                     addNote( snapped_end, mousey_initial );
@@ -522,7 +522,7 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                     }
                     else if (snapped_start == snapped_end or snapped_start>snapped_end or snapped_start<0)
                     {
-                        m_track->selectNote(ALL_NOTES, false);
+                        m_track->graphics->selectNote(ALL_NOTES, false);
                         goto end_of_func;
                     }
                     else

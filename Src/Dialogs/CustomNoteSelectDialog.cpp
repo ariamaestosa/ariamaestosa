@@ -294,7 +294,7 @@ void CustomNoteSelectDialog::okClicked(wxCommandEvent& evt)
         }
     }
     
-    m_current_track->selectNote(ALL_NOTES, false, true); // deselect all currently selected notes
+    m_current_track->graphics->selectNote(ALL_NOTES, false, true); // deselect all currently selected notes
     
     // test all notes one by one
     for (int n=0; n<noteAmount; n++)
@@ -385,7 +385,7 @@ void CustomNoteSelectDialog::okClicked(wxCommandEvent& evt)
         }
         
         // if the flow reaches this part, it's because all checked tests succeeded. Select the note.
-        m_current_track->selectNote(n, true, true);
+        m_current_track->graphics->selectNote(n, true, true);
         
     }//next
     

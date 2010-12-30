@@ -613,11 +613,11 @@ void MeasureBar::mouseUp(int mousex_current, int mousey_current, int mousex_init
             // note is within selection range? if so, select it, else unselect it.
             if ( note_tick >= minimal_tick and note_tick < maximal_tick )
             {
-                sequence->getTrack(track)->selectNote(n, true, true);
+                sequence->getTrack(track)->graphics->selectNote(n, true, true);
             }
             else
             {
-                sequence->getTrack(track)->selectNote(n, false, true);
+                sequence->getTrack(track)->graphics->selectNote(n, false, true);
             }
         }
     }
