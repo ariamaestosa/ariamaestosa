@@ -99,7 +99,7 @@ namespace AriaMaestosa
          * @param mode     The type of view to use for printing (score, tablature, etc...)
          * @return         whether the track was successfully added
          */
-        virtual bool addTrack(Track* track, EditorType mode);
+        virtual bool addTrack(Track* track, NotationType mode);
         
         /** @return the max number of sharp/flats we'll need to display at header (useful to allocate proper size) */
         int getMaxKeySignatureSignCount() const { return m_max_signs_in_keysig; }

@@ -51,7 +51,7 @@ namespace AriaMaestosa
         {
             sizer = new wxBoxSizer(wxHORIZONTAL);
             
-            const EditorType editorMode = track->graphics->getEditorMode();
+            const NotationType editorMode = track->getNotationType();
             
             // checkbox
             active = new wxCheckBox(this, 200, wxT(" "));

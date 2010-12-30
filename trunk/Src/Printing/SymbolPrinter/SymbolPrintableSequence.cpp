@@ -43,7 +43,7 @@ SymbolPrintableSequence::SymbolPrintableSequence(Sequence* parent) : AbstractPri
 
 // -----------------------------------------------------------------------------------------------------------------
 
-bool SymbolPrintableSequence::addTrack(Track* track, EditorType mode)
+bool SymbolPrintableSequence::addTrack(Track* track, NotationType mode)
 {
     ASSERT(track->getSequence() == m_sequence);
     ASSERT(not m_layout_calculated);

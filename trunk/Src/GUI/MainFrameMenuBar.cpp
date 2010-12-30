@@ -808,15 +808,17 @@ void MainFrame::menuEvent_manualChannelModeSelected(wxCommandEvent& evt)
     m_channel_management_manual->Check(true);
 
     Sequence* sequence = getCurrentSequence();
+    
+    // TODO: this could should be moved inside "Sequence::setChannelManagementType"
     // we were in auto mode... we will need to set channels
-    if ( sequence->getChannelManagementType() == CHANNEL_AUTO)
+    if (sequence->getChannelManagementType() == CHANNEL_AUTO)
     {
         int channel = 0;
-        // iterrate through tarcks, give each one a channel
+        // iterate through tracks, give each one a channel
         for (int i=0; i<sequence->getTrackAmount(); i++)
         {
             // if this is a drum track, give channel 9
-            if (sequence->getTrack(i)->graphics->getEditorMode() == DRUM)
+            if (sequence->getTrack(i)->getNotationType() == DRUM)
             {
                 sequence->getTrack(i)->setChannel(9);
             }

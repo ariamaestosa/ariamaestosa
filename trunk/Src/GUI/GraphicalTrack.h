@@ -54,7 +54,7 @@ namespace AriaMaestosa
       * @brief The graphical part of a track (the data being held in Track)
       * @ingroup gui
       */
-    class GraphicalTrack
+    class GraphicalTrack : public ITrackListener
     {
         int m_height;
         int m_last_mouse_y;
@@ -83,8 +83,6 @@ namespace AriaMaestosa
         
         GraphicalSequence* m_gsequence;
         Track* m_track;
-        
-        EditorType m_editor_mode;
 
         // editors
         OwnerPtr<KeyboardEditor>    m_keyboard_editor  ;
@@ -131,19 +129,14 @@ namespace AriaMaestosa
         void setCollapsed(const bool collapsed);
         void setHeight(const int height);
         void maximizeHeight(bool maximize=true);
-        
-        void setEditorMode(EditorType mode);
-        
+                
         bool isCollapsed() const { return m_collapsed; }
-        
         bool isDocked   () const { return m_docked;    }
         
         Track* getTrack()        { return m_track;     }
         
         GraphicalSequence* getSequence()  { return m_gsequence;  }
-        
-        EditorType getEditorMode() const { return m_editor_mode; }
-        
+                
         /**
           * @pre Track, Sequence and GraphicalTrack must be initialized properly upon calling this
           */
@@ -189,6 +182,9 @@ namespace AriaMaestosa
         int getNoteEndInPixels(const int id) const;
         
         int getGridDivider() const;
+        
+        /** @brief Implement callback from ITrackListener */
+        virtual void onNotationTypeChange();
         
         // serialization
         void saveToFile(wxFileOutputStream& fileout);

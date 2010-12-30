@@ -84,7 +84,7 @@ void DeleteSelected::perform()
 {
     ASSERT(track != NULL);
     
-    if (track->graphics->getEditorMode() == CONTROLLER)
+    if (track->getNotationType() == CONTROLLER)
     {
         ControllerEditor* editor = track->graphics->getControllerEditor();
         int selBegin   = editor->getSelectionBegin();

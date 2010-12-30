@@ -65,7 +65,7 @@ namespace AriaMaestosa
          * @param mode     The type of view to use for printing (score, tablature, etc...)
          * @return         whether the track was successfully added
          */
-        virtual bool addTrack(Track* track, EditorType mode)
+        virtual bool addTrack(Track* track, NotationType mode)
         {
             m_tracks.push_back(track);
             return true;

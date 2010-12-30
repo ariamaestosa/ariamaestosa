@@ -20,9 +20,6 @@
 #include "Actions/EditAction.h"
 #include "Midi/Track.h"
 
-// FIXME(DESIGN): actions should not depend on GUI classes
-#include "GUI/GraphicalTrack.h"
-
 using namespace AriaMaestosa::Action;
 
 NumberPressed::NumberPressed(const int number) :
@@ -48,7 +45,7 @@ void NumberPressed::perform()
 {
     ASSERT(track != NULL);
 
-    if (track->graphics->getEditorMode() != GUITAR) return;
+    if (track->getNotationType() != GUITAR) return;
 
     bool played = false;
     const int noteAmount = track->m_notes.size();

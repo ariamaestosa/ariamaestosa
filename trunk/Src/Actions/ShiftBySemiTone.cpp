@@ -17,9 +17,6 @@
 #include "Actions/ShiftBySemiTone.h"
 #include "Actions/EditAction.h"
 
-// FIXME: actions shouldn't rely on GUI classes
-#include "GUI/GraphicalTrack.h"
-
 #include "Midi/Track.h"
 
 #include <wx/intl.h>
@@ -64,7 +61,7 @@ void ShiftBySemiTone::perform()
 {
     ASSERT(track != NULL);
     
-    if (track->graphics->getEditorMode() != SCORE) return;
+    if (track->getNotationType() != SCORE) return;
     
     // not supported in this function (mostly bacause not needed, but could logically be implemented)
     ASSERT(m_note_id != ALL_NOTES);

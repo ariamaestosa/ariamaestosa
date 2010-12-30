@@ -46,16 +46,6 @@ namespace AriaMaestosa
         FOUND_NOTHING
     };
     
-    enum EditorType
-    {
-        KEYBOARD   = 0,
-        SCORE      = 1,
-        GUITAR     = 2,
-        DRUM       = 3,
-        CONTROLLER = 4
-    };
-
-    
     /** List of tools that can be used during edition */
     enum EditTool
     {

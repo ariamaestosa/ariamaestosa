@@ -43,7 +43,7 @@ namespace AriaMaestosa
         bool m_ok_pressed;
         
     public:  
-        KeyrollPrintOptions(wxWindow* parent, const std::vector< std::pair<Track*, EditorType> >& whatToPrint) :
+        KeyrollPrintOptions(wxWindow* parent, const std::vector< std::pair<Track*, NotationType> >& whatToPrint) :
                 wxDialog(parent, wxID_ANY, _("Keyroll Printing Options"), wxDefaultPosition, wxDefaultSize,
                          wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
         {
@@ -159,7 +159,7 @@ namespace AriaMaestosa
     };
     
     /** after dialog is shown, and user clicked 'OK', this is called to launch the actual printing */
-    void doPrint(std::vector< std::pair<Track*, EditorType> > whatToPrint, Sequence* seq,
+    void doPrint(std::vector< std::pair<Track*, NotationType> > whatToPrint, Sequence* seq,
                  AriaPrintable* printable)
     {
         
@@ -460,7 +460,7 @@ namespace AriaMaestosa
                 wxChoice* editorType = new wxChoice(m_track_choice, wxID_ANY, wxDefaultPosition, wxDefaultSize,
                                                     choices );
                 
-                switch (track->graphics->getEditorMode())
+                switch (track->getNotationType())
                 {
                     case SCORE:
                         editorType->SetSelection(0);
@@ -694,11 +694,11 @@ namespace AriaMaestosa
         {
             const bool print_one_track = m_current_track_radiobtn->GetValue();
             
-            std::vector< std::pair<Track*, EditorType> > what_to_print;
+            std::vector< std::pair<Track*, NotationType> > what_to_print;
             if (print_one_track)
             {
-                what_to_print.push_back( std::pair<Track*, EditorType>(m_current_sequence->getCurrentTrack(),
-                                                                       m_current_sequence->getCurrentTrack()->graphics->getEditorMode()) );
+                what_to_print.push_back( std::pair<Track*, NotationType>(m_current_sequence->getCurrentTrack(),
+                                                                         m_current_sequence->getCurrentTrack()->getNotationType()) );
             }
             else                            // print all selected from list
             {
@@ -713,7 +713,7 @@ namespace AriaMaestosa
                         const wxChoice* editorChoice = dynamic_cast<wxChoice*>(m_track_choice->getRow(n)[2]);
                         ASSERT(editorChoice != NULL);
                         
-                        EditorType printType;
+                        NotationType printType;
                         if (editorChoice->GetSelection() == 0)
                         {
                             printType = SCORE;
@@ -732,8 +732,8 @@ namespace AriaMaestosa
                             continue;
                         }
                         
-                        what_to_print.push_back( std::pair<Track*, EditorType>(m_current_sequence->getTrack(n),
-                                                                               printType) );
+                        what_to_print.push_back( std::pair<Track*, NotationType>(m_current_sequence->getTrack(n),
+                                                                                 printType) );
                     }
                 }
             }
