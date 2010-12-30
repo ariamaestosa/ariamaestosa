@@ -1094,15 +1094,16 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
             AriaRender::color(1, 0.85, 0);
 
-            int preview_x1=
+            const int tscroll = m_gsequence->getXScrollInMidiTicks();
+            const float zoom = m_gsequence->getZoom();
+            
+            int preview_x1 =
                 (int)(
-                      (snapMidiTickToGrid(mousex_initial.getRelativeTo(MIDI) ) -
-                       m_gsequence->getXScrollInMidiTicks()) * m_gsequence->getZoom()
+                      (m_track->snapMidiTickToGrid(mousex_initial.getRelativeTo(MIDI) ) - tscroll) * zoom
                       );
-            int preview_x2=
+            int preview_x2 =
                 (int)(
-                      (snapMidiTickToGrid(mousex_current.getRelativeTo(MIDI) ) -
-                       m_gsequence->getXScrollInMidiTicks()) * m_gsequence->getZoom()
+                      (m_track->snapMidiTickToGrid(mousex_current.getRelativeTo(MIDI) ) - tscroll) * zoom
                       );
 
             if (not (preview_x1 < 0 or preview_x2 < 0) and preview_x2 > preview_x1)
@@ -1132,7 +1133,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
         int x_difference = mousex_current.getRelativeTo(MIDI) - mousex_initial.getRelativeTo(MIDI);
         int y_difference = mousey_current - mousey_initial;
 
-        const int x_pixel_move = (int)( snapMidiTickToGrid(x_difference) * m_gsequence->getZoom() );
+        const int x_pixel_move = (int)( m_track->snapMidiTickToGrid(x_difference) * m_gsequence->getZoom() );
         const int y_step_move  = (int)round( (float)y_difference/ (float)Y_STEP_HEIGHT );
 
         // move a single note

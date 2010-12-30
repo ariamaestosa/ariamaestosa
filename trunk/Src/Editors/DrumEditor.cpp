@@ -792,7 +792,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         const int x_difference = mousex_current.getRelativeTo(MIDI)-mousex_initial.getRelativeTo(MIDI);
         const int y_difference = mousey_current-mousey_initial;
 
-        const int x_steps_to_move = (int)(snapMidiTickToGrid(x_difference) * m_gsequence->getZoom());
+        const int x_steps_to_move = (int)(m_track->snapMidiTickToGrid(x_difference) * m_gsequence->getZoom());
         const int y_steps_to_move = (int)round( y_difference/ (float)Y_STEP );
 
         // move a single note

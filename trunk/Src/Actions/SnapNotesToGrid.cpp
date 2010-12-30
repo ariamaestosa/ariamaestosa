@@ -16,10 +16,6 @@
 
 #include "Actions/SnapNotesToGrid.h"
 #include "Actions/EditAction.h"
-//#include "Editors/Editor.h"
-
-// FIXME(DESIGN) : actions shouldn't rely on GUI classes
-#include "GUI/GraphicalTrack.h"
 
 #include "Midi/Track.h"
 
@@ -67,14 +63,14 @@ void SnapNotesToGrid::perform()
         note_start.push_back( track->m_notes[n].startTick );
         note_end.push_back( track->m_notes[n].endTick );
         
-        track->m_notes[n].startTick = track->graphics->getCurrentEditor()->snapMidiTickToGrid( track->m_notes[n].startTick );
+        track->m_notes[n].startTick = track->snapMidiTickToGrid( track->m_notes[n].startTick );
         
-        int end_tick = track->graphics->getCurrentEditor()->snapMidiTickToGrid( track->m_notes[n].endTick );
+        int end_tick = track->snapMidiTickToGrid( track->m_notes[n].endTick );
         if ( track->m_notes[n].startTick == end_tick )
         {
             // note was collapsed, not good.
             // use the 'ceil' variant of snapTickToGrid instead
-            end_tick = track->graphics->getCurrentEditor()->snapMidiTickToGrid_ceil( track->m_notes[n].endTick );
+            end_tick = track->snapMidiTickToGrid_ceil( track->m_notes[n].endTick );
         }
         
         track->m_notes[n].endTick = end_tick;

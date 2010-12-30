@@ -202,8 +202,8 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
             if (mousey_current<area_from_y) mousey_current=area_from_y;
             if (mousey_current>area_to_y) mousey_current=area_to_y;
 
-            int tick1 = snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI));
-            int tick2 = snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI));
+            int tick1 = m_track->snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI));
+            int tick2 = m_track->snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI));
 
             if (tick2 < 0) tick2 = 0;
             if (tick1 < 0) tick1 = 0;
@@ -283,8 +283,8 @@ void ControllerEditor::mouseDrag(RelativeXCoord mousex_current, const int mousey
     {
 
         // ------------------------ select ---------------------
-        m_selection_begin = snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI) );
-        m_selection_end   = snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI) );
+        m_selection_begin = m_track->snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI) );
+        m_selection_end   = m_track->snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI) );
 
     }
 
@@ -302,8 +302,8 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
         {
             // ------------------------ select ---------------------
 
-            m_selection_begin = snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI) );
-            m_selection_end   = snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI) );
+            m_selection_begin = m_track->snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI) );
+            m_selection_end   = m_track->snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI) );
 
             // no selection
             if (m_selection_begin == m_selection_end)
@@ -335,8 +335,8 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
             if (mousey_current < area_from_y) mousey_current=area_from_y;
             if (mousey_current > area_to_y) mousey_current=area_to_y;
 
-            int tick1 = snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI) );
-            int tick2 = snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI) );
+            int tick1 = m_track->snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI) );
+            int tick2 = m_track->snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI) );
 
             if (tick2 < 0) tick2 = 0;
             if (tick1 < 0) tick1 = 0;

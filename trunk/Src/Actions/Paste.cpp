@@ -132,7 +132,7 @@ void Paste::perform()
 
         RelativeXCoord mx(trackMouseLoc_x, WINDOW, track->graphics->getSequence());
 
-        shift = track->graphics->getCurrentEditor()->snapMidiTickToGrid( mx.getRelativeTo(MIDI) );
+        shift = track->snapMidiTickToGrid( mx.getRelativeTo(MIDI) );
 
     }
     else if (not m_at_mouse and
@@ -184,8 +184,7 @@ regular_paste: // FIXME - find better way than goto
         if (measure < 0) measure = 0;
         const int lastMeasureStart = md->firstTickInMeasure( measure );
         
-        // FIXME: why keyboard editor???
-        shift = track->graphics->getKeyboardEditor()->snapMidiTickToGrid( lastMeasureStart );
+        shift = track->snapMidiTickToGrid( lastMeasureStart );
 
         // find if all track->m_notes will be visible in the location just calculated,
         // otherwise move them one more measure ahead (if measure is half-visible because of scrolling)
