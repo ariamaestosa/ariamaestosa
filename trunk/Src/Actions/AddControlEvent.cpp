@@ -74,23 +74,23 @@ void AddControlEvent::undo()
     else //tempo
     {
         Sequence* sequence = track->getSequence();
-        const int tempoEventsAmount = sequence->tempoEvents.size();
-        for (int n=0; n<tempoEventsAmount; n++)
+        for (int n=0; n<sequence->getTempoEventAmount(); n++)
         {
             
-            if (sequence->tempoEvents[n].getTick() == m_x and
-                sequence->tempoEvents[n].getController() == m_controller)
+            if (sequence->getTempoEvent(n)->getTick() == m_x)
             {
+                ASSERT_E(sequence->getTempoEvent(n)->getController(), ==, m_controller);
+                
                 // if event was added where there was no event before
                 if (m_removed_event_value == -1)
                 {
-                    sequence->tempoEvents.erase(n);
+                    sequence->eraseTempoEvent(n);
                     break;
                 }
                 else
                     // if event replaced an event that existed before
                 {
-                    sequence->tempoEvents[n].setValue( m_removed_event_value );
+                    sequence->setTempoEventValue(n, m_removed_event_value);
                 }
             }//endif
         }//next

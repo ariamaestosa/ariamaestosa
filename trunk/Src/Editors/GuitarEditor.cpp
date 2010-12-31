@@ -397,21 +397,20 @@ void GuitarEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_
 
 void GuitarEditor::moveNote(Note& note, const int relativeX, const int relativeY)
 {
-    if (note.startTick + relativeX < 0) return; // refuse to move before song start
+    if (note.getTick() + relativeX < 0) return; // refuse to move before song start
 
-    note.startTick += relativeX;
-    note.endTick   += relativeX;
+    note.setTick( note.getTick() + relativeX );
+    note.setEndTick( note.getEndTick() + relativeX );
 
     GuitarTuning* tuning = m_track->getGuitarTuning();
     
-    if (note.string+relativeY < 0 or note.string+relativeY > (int)tuning->tuning.size()-1)
+    if (note.getStringConst() + relativeY < 0 or note.getStringConst() + relativeY > (int)tuning->tuning.size()-1)
     {
         // note will end on a string that doesn't exist if we move it like that
         return;
     }
 
-    note.string += relativeY;
-    note.findNoteFromStringAndFret();
+    note.shiftString(relativeY);
 }
 
 // ----------------------------------------------------------------------------------------------------------

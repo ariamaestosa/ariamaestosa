@@ -108,9 +108,9 @@ namespace AriaMaestosa
             std::vector<int> tempos;
             std::vector<int> duration;
             
-            const int tempo_events_amount = seq->tempoEvents.size();
+            const int tempo_events_amount = seq->getTempoEventAmount();
             //std::cout << "tempo_events_amount = " << tempo_events_amount << std::endl;
-            if (tempo_events_amount < 1 or (tempo_events_amount==1 and seq->tempoEvents[0].getTick()==0) )
+            if (tempo_events_amount < 1 or (tempo_events_amount == 1 and seq->getTempoEvent(0)->getTick() == 0) )
             {
                 tempos.push_back(seq->getTempo());
                 duration.push_back(last_tick);
@@ -121,21 +121,21 @@ namespace AriaMaestosa
                 
                 // from beginning to first event
                 tempos.push_back(seq->getTempo());
-                duration.push_back(seq->tempoEvents[0].getTick());
+                duration.push_back(seq->getTempoEvent(0)->getTick());
                 
                 //std::cout << "Firstly, " << (seq->tempoEvents[0].getTick()) << " ticks at " << seq->getTempo() << std::endl;
                 
                 // other events
                 for (int n=1; n<tempo_events_amount; n++)
                 {
-                    tempos.push_back( convertTempoBendToBPM(seq->tempoEvents[n-1].getValue()) );
-                    duration.push_back(seq->tempoEvents[n].getTick()-seq->tempoEvents[n-1].getTick());
+                    tempos.push_back( convertTempoBendToBPM(seq->getTempoEvent(n-1)->getValue()) );
+                    duration.push_back(seq->getTempoEvent(n)->getTick() - seq->getTempoEvent(n-1)->getTick());
                     //std::cout << (duration[duration.size()-1]) << " ticks at " << (tempos[tempos.size()-1]) << std::endl;
                 }
                 
                 // after last event
-                tempos.push_back( convertTempoBendToBPM(seq->tempoEvents[seq->tempoEvents.size()-1].getValue()) );
-                duration.push_back( last_tick - seq->tempoEvents[seq->tempoEvents.size()-1].getTick() );
+                tempos.push_back( convertTempoBendToBPM(seq->getTempoEvent(tempo_events_amount-1)->getValue()) );
+                duration.push_back( last_tick - seq->getTempoEvent(tempo_events_amount-1)->getTick() );
                 //std::cout << "Finally, " << (duration[duration.size()-1]) << " ticks at " << (tempos[tempos.size()-1]) << std::endl;
             }
             

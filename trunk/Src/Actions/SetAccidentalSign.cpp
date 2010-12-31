@@ -53,8 +53,8 @@ void SetAccidentalSign::undo()
     int n = 0;
     while ((current_note = relocator.getNextNote()) and current_note != NULL)
     {
-        current_note->preferred_accidental_sign = m_original_signs[n];
-        current_note->pitchID = m_pitch[n];
+        current_note->setPreferredAccidentalSign( m_original_signs[n] );
+        current_note->setPitchID( m_pitch[n] );
         n++;
     }
 }
@@ -71,13 +71,13 @@ void SetAccidentalSign::perform()
     {
         if (not track->isNoteSelected(n)) continue;
 
-        m_original_signs.push_back( track->m_notes[n].preferred_accidental_sign );
-        m_pitch.push_back( track->m_notes[n].pitchID );
+        m_original_signs.push_back( track->m_notes[n].getPreferredAccidentalSign() );
+        m_pitch.push_back( track->m_notes[n].getPitchID() );
 
         track->graphics->getScoreEditor()->setNoteSign(m_sign, n);
         relocator.rememberNote( track->m_notes[n] );
 
-        if (!played)
+        if (not played)
         {
             track->m_notes[n].play(true);
             played = true;

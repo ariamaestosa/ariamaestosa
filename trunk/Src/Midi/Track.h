@@ -205,13 +205,14 @@ namespace AriaMaestosa
 
         ITrackListener* m_listener;
         
+        int m_track_unique_ID;
+
     public:
         LEAK_CHECK();
                 
         // ------------- read-only -------------
         // FIXME(DESIGN): it should be the graphics that refer to the data, not the data holding the graphics!
         OwnerPtr<GraphicalTrack>  graphics;
-        int trackUniqueID;
         // -------------------------------------
         
         Track(Sequence* sequence);

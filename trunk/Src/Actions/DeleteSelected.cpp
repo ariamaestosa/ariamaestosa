@@ -116,18 +116,16 @@ void DeleteSelected::perform()
         {
             // remove tempo events
             Sequence* sequence = track->getSequence();
-            const int tempoEventsAmount = sequence->tempoEvents.size();
+            const int tempoEventsAmount = sequence->getTempoEventAmount();
             for (int n=0; n<tempoEventsAmount; n++)
             {
-                const int tick = sequence->tempoEvents[n].getTick();
+                const int tick = sequence->getTempoEvent(n)->getTick();
                 
                 if (tick < from or tick > to) continue; // this event is not concerned by selection
                 
-                removedControlEvents.push_back( sequence->tempoEvents.get(n) );
-                sequence->tempoEvents.markToBeRemoved(n);
-                //n--;
+                removedControlEvents.push_back( sequence->extractTempoEvent(n) );
             }//next
-            sequence->tempoEvents.removeMarked();
+            sequence->removeMarkedTempoEvents();
         }
         
     }
@@ -231,10 +229,10 @@ namespace DeleteSelectedTest
             require(t->getNote(3)->getPitchID() == 103, "events were properly ordered");
             
             require(t->getNoteOffVector().size() == 4, "Note off vector was restored on undo");
-            require(t->getNoteOffVector()[0].endTick == 100, "Note off vector is properly ordered");
-            require(t->getNoteOffVector()[1].endTick == 200, "Note off vector is properly ordered");
-            require(t->getNoteOffVector()[2].endTick == 300, "Note off vector is properly ordered");
-            require(t->getNoteOffVector()[3].endTick == 400, "Note off vector is properly ordered");  
+            require(t->getNoteOffVector()[0].getEndTick() == 100, "Note off vector is properly ordered");
+            require(t->getNoteOffVector()[1].getEndTick() == 200, "Note off vector is properly ordered");
+            require(t->getNoteOffVector()[2].getEndTick() == 300, "Note off vector is properly ordered");
+            require(t->getNoteOffVector()[3].getEndTick() == 400, "Note off vector is properly ordered");  
         }
     };
     
@@ -257,8 +255,8 @@ namespace DeleteSelectedTest
         require(t->getNote(1)->getPitchID() == 103, "events were properly ordered");
         
         require(t->getNoteOffVector().size() == 2, "Note off vector was decreased");
-        require(t->getNoteOffVector()[0].endTick == 100, "Note off vector is properly ordered");
-        require(t->getNoteOffVector()[1].endTick == 400, "Note off vector is properly ordered");
+        require(t->getNoteOffVector()[0].getEndTick() == 100, "Note off vector is properly ordered");
+        require(t->getNoteOffVector()[1].getEndTick() == 400, "Note off vector is properly ordered");
         
         // Now test undo
         provider.m_seq->undo();
@@ -287,9 +285,9 @@ namespace DeleteSelectedTest
         require(t->getNote(2)->getPitchID() == 103, "events were properly ordered");
         
         require(t->getNoteOffVector().size() == 3, "Note off vector was decreased");
-        require(t->getNoteOffVector()[0].endTick == 200, "Note off vector is properly ordered");
-        require(t->getNoteOffVector()[1].endTick == 300, "Note off vector is properly ordered");
-        require(t->getNoteOffVector()[2].endTick == 400, "Note off vector is properly ordered");
+        require(t->getNoteOffVector()[0].getEndTick() == 200, "Note off vector is properly ordered");
+        require(t->getNoteOffVector()[1].getEndTick() == 300, "Note off vector is properly ordered");
+        require(t->getNoteOffVector()[2].getEndTick() == 400, "Note off vector is properly ordered");
         
         // Now test undo
         provider.m_seq->undo();
@@ -319,9 +317,9 @@ namespace DeleteSelectedTest
         
 
         require(t->getNoteOffVector().size() == 3, "Note off vector was decreased");
-        require(t->getNoteOffVector()[0].endTick == 100, "Note off vector is properly ordered");
-        require(t->getNoteOffVector()[1].endTick == 200, "Note off vector is properly ordered");
-        require(t->getNoteOffVector()[2].endTick == 300, "Note off vector is properly ordered");
+        require(t->getNoteOffVector()[0].getEndTick() == 100, "Note off vector is properly ordered");
+        require(t->getNoteOffVector()[1].getEndTick() == 200, "Note off vector is properly ordered");
+        require(t->getNoteOffVector()[2].getEndTick() == 300, "Note off vector is properly ordered");
         
         // Now test undo
         provider.m_seq->undo();

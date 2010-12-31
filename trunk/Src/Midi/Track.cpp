@@ -183,15 +183,15 @@ bool Track::addNote(Note* note, bool check_for_overlapping_notes)
     {
         // check for overlapping notes
         // the only time where this is not checked is when pasting, because it is then logical that notes are pasted on top of their originals
-        if (check_for_overlapping_notes and m_notes[n].startTick == note->startTick and
-            m_notes[n].pitchID == note->pitchID and
+        if (check_for_overlapping_notes and m_notes[n].getTick() == note->getTick() and
+            m_notes[n].getPitchID() == note->getPitchID() and
            (m_editor_mode != GUITAR or m_notes[n].getString() == note->getString()) /*in guitar mode string must also match to be considered overlapping*/ )
         {
             std::cout << "overlapping notes: rejected" << std::endl;
             return false;
         }
 
-        if (m_notes[n].startTick > note->startTick)
+        if (m_notes[n].getTick() > note->getTick())
         {
 
             m_notes.add(note, n);
@@ -217,7 +217,7 @@ bool Track::addNote(Note* note, bool check_for_overlapping_notes)
     const int noteOffAmount = m_note_off.size();
     for (int n=0; n<noteOffAmount; n++)
     {
-        if (m_note_off[n].endTick > note->endTick)
+        if (m_note_off[n].getEndTick() > note->getEndTick())
         {
             m_note_off.add(note, n);
             noteAdded = true;
@@ -247,7 +247,7 @@ void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
     if (previousValue != NULL) *previousValue = -1;
 
     // tempo events
-    if (evt->getController()==201) vector = &m_sequence->tempoEvents;
+    if (evt->getController()==201) vector = &m_sequence->m_tempo_events;
     // controller and pitch bend events
     else vector = &m_control_events;
 
@@ -314,7 +314,7 @@ void Track::setNoteEnd_import(const int tick, const int noteID)
     ASSERT_E(noteID,<,m_notes.size());
     ASSERT_E(noteID,>=,0);
 
-    m_notes[noteID].setEnd(tick);
+    m_notes[noteID].setEndTick(tick);
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -402,7 +402,7 @@ void Track::reorderNoteVector()
 
         ASSERT_E(n+1,<,m_notes.size());
 
-        if (m_notes[n].startTick > m_notes[n+1].startTick)
+        if (m_notes[n].getTick() > m_notes[n+1].getTick())
         {
             m_notes.swap(n, n+1);
             if (n>2) n-= 2;
@@ -431,7 +431,7 @@ void Track::reorderNoteOffVector()
         ASSERT(m_note_off.get(n) != 0);
         ASSERT(m_note_off.get(n+1) != 0);
 
-        if (m_note_off[n].endTick > m_note_off[n+1].endTick)
+        if (m_note_off[n].getEndTick() > m_note_off[n+1].getEndTick())
         {
             m_note_off.swap(n, n+1);
             if (n>2) n-= 2;
@@ -524,7 +524,7 @@ int Track::getNoteStartInMidiTicks(const int id) const
     ASSERT_E(id,>=,0);
     ASSERT_E(id,<,m_notes.size());
 
-    return m_notes[id].startTick;
+    return m_notes[id].getTick();
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -534,7 +534,7 @@ int Track::getNoteEndInMidiTicks(const int id) const
     ASSERT_E(id,>=,0);
     ASSERT_E(id,<,m_notes.size());
 
-    return m_notes[id].endTick;
+    return m_notes[id].getEndTick();
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -543,7 +543,7 @@ int Track::getNotePitchID(const int id) const
 {
     ASSERT_E(id,>=,0);
     ASSERT_E(id,<,m_notes.size());
-    return m_notes[id].pitchID;
+    return m_notes[id].getPitchID();
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -559,7 +559,7 @@ int Track::getNoteVolume(const int id) const
 {
     ASSERT_E(id,>=,0);
     ASSERT_E(id,<,m_notes.size());
-    return m_notes[id].volume;
+    return m_notes[id].getVolume();
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -620,8 +620,8 @@ int Track::findFirstNoteInRange(const int fromTick, const int toTick) const
 
     for (int n=0; n<noteAmount; n++)
     {
-        if (m_notes[n].startTick >= fromTick and m_notes[n].startTick < toTick) return n;
-        if (m_notes[n].startTick >= toTick) return -1;
+        if (m_notes[n].getTick() >= fromTick and m_notes[n].getTick() < toTick) return n;
+        if (m_notes[n].getTick() >= toTick) return -1;
     }
     return -1;
 }
@@ -634,8 +634,8 @@ int Track::findLastNoteInRange(const int fromTick, const int toTick) const
 
     for (int n=noteAmount-1; n>-1; n--)
     {
-        if (m_notes[n].startTick >= fromTick and m_notes[n].startTick < toTick) return n;
-        if (m_notes[n].startTick < fromTick) return -1;
+        if (m_notes[n].getTick() >= fromTick and m_notes[n].getTick() < toTick) return n;
+        if (m_notes[n].getTick() < fromTick) return -1;
     }
     return -1;
 }
@@ -644,7 +644,7 @@ int Track::findLastNoteInRange(const int fromTick, const int toTick) const
 
 int Track::getControllerEventAmount(const bool isTempo) const
 {
-    if (isTempo) return m_sequence->tempoEvents.size();
+    if (isTempo) return m_sequence->getTempoEventAmount();
     else         return m_control_events.size();
 }
 
@@ -654,7 +654,7 @@ int Track::getControllerEventAmount(const int controller) const
 {
     if (Track::isTempoController(controller))
     {
-        return m_sequence->tempoEvents.size();
+        return m_sequence->getTempoEventAmount();
     }
     else
     {
@@ -677,14 +677,14 @@ ControllerEvent* Track::getControllerEvent(const int id, const int controllerTyp
     ASSERT_E(id,>=,0);
     if (controllerTypeID == 201 /*tempo*/) 
     {
-        ASSERT_E(id,<,m_sequence->tempoEvents.size());
+        ASSERT_E(id,<,m_sequence->getTempoEventAmount());
     }
     else
     {
         ASSERT_E(id,<,m_control_events.size());
     }
 
-    if (controllerTypeID == 201 /*tempo*/) return &m_sequence->tempoEvents[id];
+    if (controllerTypeID == 201 /*tempo*/) return &m_sequence->m_tempo_events[id];
     
     return &m_control_events[id];
 }
@@ -694,14 +694,14 @@ ControllerEvent* Track::getControllerEvent(const int id, const int controllerTyp
 int Track::getFirstNoteTick(bool selectionOnly) const
 {
 
-    if (not selectionOnly) return m_notes[0].startTick;
+    if (not selectionOnly) return m_notes[0].getTick();
 
     const int noteAmount = m_notes.size();
     int tick = -1;
 
     for (int n=0; n<noteAmount; n++)
     {
-        if ( m_notes[n].isSelected() ) return m_notes[n].startTick;
+        if ( m_notes[n].isSelected() ) return m_notes[n].getTick();
     }//next
 
     return tick;
@@ -808,8 +808,8 @@ int Track::snapMidiTickToGrid(int tick)
     
     // FIXME(DESIGN): the magnetic grid should not be in graphics perhaps?
     return origin_tick + (int)( round((float)(tick - origin_tick)/
-                                      (float)(m_sequence->ticksPerBeat()*4 / graphics->m_grid->divider))
-                               *(m_sequence->ticksPerBeat()*4 / graphics->m_grid->divider)
+                                      (float)(m_sequence->ticksPerBeat()*4 / graphics->getGridDivider()))
+                               *(m_sequence->ticksPerBeat()*4 / graphics->getGridDivider())
                                );
     
 }
@@ -827,8 +827,8 @@ int Track::snapMidiTickToGrid_ceil(int tick)
     }
     
     return origin_tick + (int)( ceil((float)(tick - origin_tick)/
-                                     (float)(m_sequence->ticksPerBeat()*4 / graphics->m_grid->divider))
-                               *(m_sequence->ticksPerBeat()*4 / graphics->m_grid->divider)
+                                     (float)(m_sequence->ticksPerBeat()*4 / graphics->getGridDivider()))
+                               *(m_sequence->ticksPerBeat()*4 / graphics->getGridDivider())
                                );
     
 }
@@ -867,9 +867,9 @@ void Track::copy()
         }
 
         // find tickOfFirstSelectedNote of the first note
-        if (m_notes[n].startTick < tickOfFirstSelectedNote or tickOfFirstSelectedNote==-1)
+        if (m_notes[n].getTick() < tickOfFirstSelectedNote or tickOfFirstSelectedNote==-1)
         {
-            tickOfFirstSelectedNote=m_notes[n].startTick;
+            tickOfFirstSelectedNote=m_notes[n].getTick();
         }
 
     }//next
@@ -885,7 +885,7 @@ void Track::copy()
         graphics->getCurrentEditor()->moveNote(*Clipboard::getNote(n), -lastMeasureStart, 0);
     }
 
-    m_sequence->notes_shift_when_no_scrolling = lastMeasureStart;
+    m_sequence->setNoteShiftWhenNoScrolling( lastMeasureStart );
 }
 
 
@@ -1040,7 +1040,7 @@ int Track::getDuration() const
 {
     if (m_note_off.size() < 1) return 0;
 
-    return m_note_off[m_note_off.size()-1].endTick;
+    return m_note_off[m_note_off.size()-1].getEndTick();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -1308,9 +1308,9 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         {
             if (m_notes[n].isSelected())
             {
-                if (m_notes[n].startTick < firstNoteStartTick or firstNoteStartTick==-1)
+                if (m_notes[n].getTick() < firstNoteStartTick or firstNoteStartTick==-1)
                 {
-                    firstNoteStartTick = m_notes[n].startTick;
+                    firstNoteStartTick = m_notes[n].getTick();
                 }
                 selectedNoteAmount++;
             }
@@ -1444,9 +1444,9 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         }
 
         const int tick_on  = (note_on_id < noteOnAmount)   ?
-                              m_notes[note_on_id].startTick - firstNoteStartTick   :  -1;
+                              m_notes[note_on_id].getTick() - firstNoteStartTick   :  -1;
         const int tick_off = (note_off_id < noteOffAmount) ?
-                              m_note_off[note_off_id].endTick - firstNoteStartTick :  -1;
+                              m_note_off[note_off_id].getEndTick() - firstNoteStartTick :  -1;
 
         // ignore control events when only playing selection
         const int tick_control = (control_evt_id < controllerAmount and not selectionOnly) ?
@@ -1461,7 +1461,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         //  ------------------------ add note on event ------------------------
         if (activeMin == 2)
         {
-            const int time = m_notes[note_on_id].startTick - firstNoteStartTick;
+            const int time = m_notes[note_on_id].getTick() - firstNoteStartTick;
             if (not (time < 0))
             {
 
@@ -1470,17 +1470,17 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
                 if (m_editor_mode == DRUM)
                 {
-                    m.SetNoteOn( channel, m_notes[note_on_id].pitchID, m_notes[note_on_id].volume );
+                    m.SetNoteOn( channel, m_notes[note_on_id].getPitchID(), m_notes[note_on_id].getVolume() );
                 }
                 else
                 {
-                    m.SetNoteOn( channel, 131-m_notes[note_on_id].pitchID, m_notes[note_on_id].volume );
+                    m.SetNoteOn( channel, 131-m_notes[note_on_id].getPitchID(), m_notes[note_on_id].getVolume() );
                 }
 
                 // find track end
-                if (m_notes[note_on_id].endTick > last_event_tick)
+                if (m_notes[note_on_id].getEndTick() > last_event_tick)
                 {
-                    last_event_tick = m_notes[note_on_id].endTick;
+                    last_event_tick = m_notes[note_on_id].getEndTick();
                 }
 
                 if (not midiTrack->PutEvent( m ))
@@ -1495,18 +1495,18 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         else if (activeMin == 0)
         {
 
-            const int time=m_note_off[note_off_id].endTick - firstNoteStartTick;
+            const int time=m_note_off[note_off_id].getEndTick() - firstNoteStartTick;
             if (not (time < 0))
             {
                 m.SetTime( time );
 
                 if (m_editor_mode == DRUM)
                 {
-                    m.SetNoteOff( channel, m_note_off[note_off_id].pitchID, 0 );
+                    m.SetNoteOff( channel, m_note_off[note_off_id].getPitchID(), 0 );
                 }
                 else
                 {
-                    m.SetNoteOff( channel, 131 - m_note_off[note_off_id].pitchID, 0 );
+                    m.SetNoteOff( channel, 131 - m_note_off[note_off_id].getPitchID(), 0 );
                 }
                 
                 // find track end

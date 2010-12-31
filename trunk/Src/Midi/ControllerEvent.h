@@ -54,6 +54,8 @@ namespace AriaMaestosa
         void setTick(int i);
         void setValue(unsigned short value);
           
+        ControllerEvent* clone() { return new ControllerEvent(m_controller, m_tick, m_value); }
+        
         // ---- serialization
         void saveToFile(wxFileOutputStream& fileout);
         bool readFromFile(irr::io::IrrXMLReader* xml);

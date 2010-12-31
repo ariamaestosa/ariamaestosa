@@ -45,6 +45,8 @@ namespace AriaMaestosa
 
     const int DEFAULT_SONG_LENGTH = 12;
     
+    namespace Action { class AddControllerSlide; }
+    
     /**
       * @brief Interface for listeners that are to be notified of playback start/end
       */
@@ -114,36 +116,34 @@ namespace AriaMaestosa
         
         // TODO: get rif of friendship?
         friend class GraphicalSequence;
+        friend class Action::AddControllerSlide;
+        friend class Track;
+        
+        // FIXME(DESIGN): not sure "follow playback" belongs here
+        /** set this flag true to follow playback */
+        bool m_follow_playback;
+        
+        AriaRenderString       m_sequence_filename;
+        OwnerPtr<MeasureData>  m_measure_data;
+        
+        ptr_vector<ControllerEvent> m_tempo_events;
+        
+        /** this object is to be modified by MainFrame, to remember where to save this sequence */
+        wxString m_filepath;
+        
+        /** if no scrolling is done, this value will be used to determine where to place notes */
+        int m_notes_shift_when_no_scrolling;
         
      public:
 
         LEAK_CHECK();
 
         //FIXME: remove read-write public members!
-        /** this object is to be modified by MainFrame, to remember where to save this sequence */
-        wxString filepath;
-
-        // ---- these variables are to be modified by tracks
-        
-        /** if no scrolling is done, this value will be used to determine where to place notes */
-        int notes_shift_when_no_scrolling;
-        
-        
-        // ------------ read-only -------------
         /** 
           * set to true when importing - indicates the sequence will have frequent changes and not compute
           * too much until it's over
           */
         bool importing;
-
-        /** set this flag true to follow playback */
-        bool follow_playback;
-
-        AriaRenderString sequenceFileName;
-        OwnerPtr<MeasureData>  m_measure_data;
-        
-        ptr_vector<ControllerEvent> tempoEvents;
-        // ------------------------------------
 
         /**
           * @brief Sequence constructor
@@ -244,6 +244,25 @@ namespace AriaMaestosa
         
         void  addTempoEvent( ControllerEvent* evt );
         
+        int                    getTempoEventAmount() const { return m_tempo_events.size();  }
+        const ControllerEvent* getTempoEvent(int id) const { return m_tempo_events.getConst(id); }
+        
+        void eraseTempoEvent(int id) { m_tempo_events.erase(id); }
+        
+        void setTempoEventValue(int id, int newValue) { m_tempo_events[id].setValue(newValue); }
+        void setTempoEventTick (int id, int newTick)  { m_tempo_events[id].setTick(newTick);  }
+
+        /** The tempo event with the given id will be extraced from this sequence (not deleted); the tempo
+            vector will not be packed until you call removeMarkedTempoEvents(). See ptr_vector for more
+            info */
+        ControllerEvent* extractTempoEvent(int id)
+        {
+            ControllerEvent* evt = m_tempo_events.get(id);
+            m_tempo_events.markToBeRemoved(id);
+            return evt;
+        }
+        void removeMarkedTempoEvents()        { m_tempo_events.removeMarked();      }
+        
         /**
           * @brief adds a tempo event.
           * @note  used during importing - then we know events are in time order
@@ -292,6 +311,20 @@ namespace AriaMaestosa
         const MeasureData* getMeasureData() const { return m_measure_data.raw_ptr; }
 
         void clear() { tracks.clearAndDeleteAll(); }
+        
+        int  getNoteShiftWhenNoScrolling() const  { return m_notes_shift_when_no_scrolling; }
+        void setNoteShiftWhenNoScrolling(int val) { m_notes_shift_when_no_scrolling = val;  }
+        int  isFollowPlaybackEnabled    () const  { return m_follow_playback;               }
+        void enableFollowPlayback(bool enabled)   { m_follow_playback = enabled;            }
+        
+        wxString getFilepath()                   { return m_filepath; }
+        void     setFilepath(wxString newpath)   { m_filepath = newpath; }
+        
+        wxString getSequenceFilename()           { return m_sequence_filename; }
+        void     setSequenceFilename(wxString a) { m_sequence_filename.set(a); }
+        
+        // FIXME(DESIGN): remove renderer from here
+        AriaRenderString& getNameRenderer() { return m_sequence_filename; }
         
         // ---- serialization
         

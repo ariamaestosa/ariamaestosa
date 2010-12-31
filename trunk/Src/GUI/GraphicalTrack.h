@@ -91,31 +91,27 @@ namespace AriaMaestosa
         OwnerPtr<ControllerEditor>  m_controller_editor;
         OwnerPtr<ScoreEditor>       m_score_editor     ;
         
-    public:
-        LEAK_CHECK();
-        
-        // ----------- read-only fields -----------
         bool m_dragging_resize;
         
         
         /** Y coord on the current display where this track starts (this is updated on each rendering).
-          * Worth -1 when track is docked.
-          */
+         * Worth -1 when track is docked.
+         */
         int m_from_y;
         
         /** Y coord on the current display where this track ends (this is updated on each rendering).
-          * Worth -1 when track is docked.
-          */
+         * Worth -1 when track is docked.
+         */
         int m_to_y;
         
+        OwnerPtr<MagneticGrid>  m_grid;
 
-        OwnerPtr<MagneticGrid>  m_grid ;
+        ptr_vector<Editor, REF> m_all_editors;
         
-        ptr_vector<Editor, REF>     m_all_editors      ;
+        AriaRenderString        m_instrument_name;
         
-        AriaRenderString m_instrument_name;
-
-        // ----------------------------------------
+    public:
+        LEAK_CHECK();
         
         GraphicalTrack(Track* track, GraphicalSequence* parent);
         ~GraphicalTrack();
@@ -154,6 +150,8 @@ namespace AriaMaestosa
         void dock(const bool dock=true);
         
         bool mouseWheelMoved(int x, int y, int value);
+        
+        bool isDragResize() const { return m_dragging_resize; }
         
         /**
          * Callback for mouse down events. The click may or may not be within this particular track; it's partly

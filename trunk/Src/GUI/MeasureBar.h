@@ -39,14 +39,14 @@ namespace AriaMaestosa
     {
         friend class MeasureData;
         
-        int measureBarY; //!< remember the latest value given by the renderer
+        int m_measure_bar_y; //!< remember the latest value given by the renderer
         
-        int lastMeasureInDrag;
+        int m_last_measure_in_drag;
         
-        OwnerPtr<UnselectedMenu>  unselectedMenu;
-        OwnerPtr<SelectedMenu>  selectedMenu;
+        OwnerPtr<UnselectedMenu> m_unselected_menu;
+        OwnerPtr<SelectedMenu>   m_selected_menu;
         
-        MeasureData* data;
+        MeasureData* m_data;
         
         GraphicalSequence* m_gseq;
         
@@ -67,7 +67,6 @@ namespace AriaMaestosa
 
         int getMeasureBarHeight();
         float defaultMeasureLengthInPixels();
-        //void unselectAll();
         
         void  selectTimeSig(const int id);
         void  unselect();

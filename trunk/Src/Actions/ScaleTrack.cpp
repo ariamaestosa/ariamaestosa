@@ -43,8 +43,8 @@ void ScaleTrack::undo()
     int n=0;
     while ((current_note = relocator.getNextNote()) and current_note != NULL)
     {
-        current_note->startTick = m_note_start[n];
-        current_note->endTick = m_note_end[n];
+        current_note->setTick( m_note_start[n] );
+        current_note->setEndTick( m_note_end[n] );
         n++;
     }
     track->reorderNoteVector();
@@ -62,15 +62,14 @@ void ScaleTrack::perform()
         // skip unselected notes if we only want to affect selection
         if (m_selection_only and not track->m_notes[n].isSelected()) continue; 
         
-        m_note_start.push_back( track->m_notes[n].startTick );
-        m_note_end.push_back( track->m_notes[n].endTick );
+        const int startTick = track->m_notes[n].getTick();
+        const int endTick = track->m_notes[n].getEndTick();
         
-        track->m_notes[n].startTick = (int)(
-                                          (track->m_notes[n].startTick-m_relative_to)*m_factor + m_relative_to
-                                          );
-        track->m_notes[n].endTick = (int)(
-                                        (track->m_notes[n].endTick-m_relative_to)*m_factor + m_relative_to
-                                        );
+        m_note_start.push_back( startTick );
+        m_note_end.push_back( endTick );
+        
+        track->m_notes[n].setTick( (int)( (startTick - m_relative_to)*m_factor + m_relative_to ) );
+        track->m_notes[n].setEndTick( (int)( (endTick - m_relative_to)*m_factor + m_relative_to ) );
         relocator.rememberNote(track->m_notes[n]);
         
     }//next

@@ -62,7 +62,7 @@ void SetNoteVolume::perform()
         {
             if (track->m_notes[n].isSelected())
             {
-                m_volumes.push_back( track->m_notes[n].volume  );
+                m_volumes.push_back( track->m_notes[n].getVolume()  );
                 track->m_notes[n].setVolume( m_volume );
                 relocator.rememberNote(track->m_notes[n]);
                 if (!played)
@@ -82,7 +82,7 @@ void SetNoteVolume::perform()
         ASSERT_E(m_note_ID,<,track->m_notes.size());
         
         // if user changed the volume of a note that is not selected, change the volume of this note only
-        m_volumes.push_back( track->m_notes[m_note_ID].volume  );
+        m_volumes.push_back( track->m_notes[m_note_ID].getVolume()  );
         track->m_notes[m_note_ID].setVolume( m_volume );
         relocator.rememberNote(track->m_notes[m_note_ID]);
         track->m_notes[m_note_ID].play(true);

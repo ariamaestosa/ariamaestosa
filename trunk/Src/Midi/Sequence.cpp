@@ -55,17 +55,17 @@ Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener
     currentTrack            = 0;
     m_tempo                 = 120;
     importing               = false;
-    follow_playback         = Core::getPrefsLongValue("followPlayback") != 0;
+    m_follow_playback       = Core::getPrefsLongValue("followPlayback") != 0;
     m_playback_listener     = playbackListener;
     m_action_stack_listener = actionStackListener;
     m_seq_data_listener     = sequenceDataListener;
     m_play_with_metronome   = false;
     
-    sequenceFileName.set(wxString(_("Untitled")));
-    sequenceFileName.setMaxWidth(155); // FIXME - won't work if lots of sequences are open (tabs will begin to get smaller)
+    m_sequence_filename.set(wxString(_("Untitled")));
+    m_sequence_filename.setMaxWidth(155); // FIXME - won't work if lots of sequences are open (tabs will begin to get smaller)
     
     // FIXME(DESIGN): GUI stuff has nothing to do here
-    sequenceFileName.setFont( getSequenceFilenameFont() );
+    m_sequence_filename.setFont( getSequenceFilenameFont() );
 
     if (addDefautTrack) addTrack();
 
@@ -105,13 +105,13 @@ wxString Sequence::suggestTitle() const
     {
         return getInternalName();
     }
-    else if (not sequenceFileName.IsEmpty())
+    else if (not m_sequence_filename.IsEmpty())
     {
-        return sequenceFileName;
+        return m_sequence_filename;
     }
-    else if (not filepath.IsEmpty())
+    else if (not m_filepath.IsEmpty())
     {
-        return extract_filename(filepath).BeforeLast('.');
+        return extract_filename(m_filepath).BeforeLast('.');
     }
     else
     {
@@ -123,17 +123,17 @@ wxString Sequence::suggestTitle() const
 
 wxString Sequence::suggestFileName() const
 {
-    if (not filepath.IsEmpty())
+    if (not m_filepath.IsEmpty())
     {
-        return extract_filename(filepath).BeforeLast('.');
+        return extract_filename(m_filepath).BeforeLast('.');
     }
     else if (not getInternalName().IsEmpty())
     {
         return getInternalName();
     }
-    else if (not sequenceFileName.IsEmpty())
+    else if (not m_sequence_filename.IsEmpty())
     {
-        return sequenceFileName;
+        return m_sequence_filename;
     }
     else
     {
@@ -259,12 +259,12 @@ int Sequence::getTempoAtTick(const int tick) const
 {
     int outTempo = getTempo();
     
-    const int amount = tempoEvents.size();
+    const int amount = m_tempo_events.size();
     for (int n=0; n<amount; n++)
     {
-        if (tempoEvents[n].getTick() <= tick)
+        if (m_tempo_events[n].getTick() <= tick)
         {
-            outTempo = convertTempoBendToBPM(tempoEvents[n].getValue());
+            outTempo = convertTempoBendToBPM(m_tempo_events[n].getValue());
         }
         else
         {
@@ -287,7 +287,7 @@ void Sequence::addTempoEvent( ControllerEvent* evt )
 
 void Sequence::addTempoEvent_import( ControllerEvent* evt )
 {
-    tempoEvents.push_back(evt);
+    m_tempo_events.push_back(evt);
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -596,9 +596,11 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
 
     writeData(wxT("<tempo>\n"), fileout );
     // tempo changes
-    for (int n=0; n<tempoEvents.size(); n++)
+    
+    const int count = m_tempo_events.size();
+    for (int n=0; n<count; n++)
     {
-        tempoEvents[n].saveToFile(fileout);
+        m_tempo_events[n].saveToFile(fileout);
     }
     writeData(wxT("</tempo>\n"), fileout );
 
@@ -812,7 +814,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                         continue;
                     }
 
-                    tempoEvents.push_back( new ControllerEvent(201, tempo_tick, tempo_value) );
+                    m_tempo_events.push_back( new ControllerEvent(201, tempo_tick, tempo_value) );
 
                 }
 

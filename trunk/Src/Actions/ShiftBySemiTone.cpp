@@ -50,7 +50,7 @@ void ShiftBySemiTone::undo()
     int n = 0;
     while ((current_note = m_relocator.getNextNote()) and current_note != NULL)
     {
-        current_note->pitchID -= m_delta_y;
+        current_note->setPitchID( current_note->getPitchID() - m_delta_y );
         n++;
     }
 }
@@ -73,14 +73,16 @@ void ShiftBySemiTone::perform()
         const int amount_n = track->m_notes.size();
         for (int n=0; n<amount_n; n++)
         {
-            if (not track->m_notes[n].isSelected()) continue;
+            Note* note = track->m_notes.get(n);
             
-            track->m_notes[n].pitchID += m_delta_y;
+            if (not note->isSelected()) continue;
+            
+            note->setPitchID( note->getPitchID() + m_delta_y );
             m_relocator.rememberNote( track->m_notes[n] );
             
             if (not played)
             {
-                track->m_notes[n].play(true);
+                note->play(true);
                 played = true;
             }
         }//next
@@ -93,10 +95,12 @@ void ShiftBySemiTone::perform()
         ASSERT_E(m_note_id,>=,0);
         ASSERT_E(m_note_id,<,track->m_notes.size());
         
-        track->m_notes[m_note_id].pitchID += m_delta_y;
+        Note* note = track->m_notes.get(m_note_id);
+
+        note->setPitchID( note->getPitchID() + m_delta_y );
         m_relocator.rememberNote( track->m_notes[m_note_id] );
         
-        track->m_notes[m_note_id].play(true);
+        note->play(true);
     }
     
 }

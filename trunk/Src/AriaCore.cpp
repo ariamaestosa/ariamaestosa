@@ -70,19 +70,19 @@ namespace AriaMaestosa
         }
         TuningPicker* getTuningPicker()
         {
-            return getMainFrame()->m_tuning_picker;
+            return getMainFrame()->getTuningPicker();
         }
         KeyPicker* getKeyPicker()
         {
-            return getMainFrame()->m_key_picker;
+            return getMainFrame()->getKeyPicker();
         }
         DrumPicker* getDrumPicker()
         {
-            return getMainFrame()->m_drumKit_picker;
+            return getMainFrame()->getDrumPicker();
         }
         InstrumentPicker* getInstrumentPicker()
         {
-            return getMainFrame()->m_instrument_picker;
+            return getMainFrame()->getInstrumentPicker();
         }
         
         // TODO: move this into the midi player
@@ -130,7 +130,7 @@ namespace AriaMaestosa
     
     bool isPlaybackMode()
     {
-        return getMainFrame()->m_playback_mode;
+        return getMainFrame()->isPlaybackMode();
     }
     
     namespace Display
@@ -193,16 +193,16 @@ namespace AriaMaestosa
         
         bool leftArrow()
         {
-            return mainPane->leftArrow;
+            return mainPane->isLeftArrowVisible();
         }
         bool rightArrow()
         {
-            return mainPane->rightArrow;
+            return mainPane->isRightArrowVisible();
         }
         
         bool isVisible()
         {
-            return mainPane->isVisible;
+            return mainPane->isVisible();
         }
         
         void clientToScreen(const int x_in, const int y_in, int* x_out, int* y_out)
