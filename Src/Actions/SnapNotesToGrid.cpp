@@ -41,8 +41,8 @@ void SnapNotesToGrid::undo()
     int n = 0;
     while ((current_note = relocator.getNextNote()) and current_note != NULL)
     {
-        current_note->startTick = note_start[n];
-        current_note->endTick = note_end[n];
+        current_note->setTick( note_start[n] );
+        current_note->setEndTick( note_end[n] );
         n++;
     }
     track->reorderNoteVector();
@@ -58,22 +58,23 @@ void SnapNotesToGrid::perform()
     const int n_amount = track->m_notes.size();
     for (int n=0; n<n_amount; n++)
     {
-        if (!track->m_notes[n].isSelected()) continue;
+        Note* note = track->m_notes.get(n);
+        if (not note->isSelected()) continue;
         
-        note_start.push_back( track->m_notes[n].startTick );
-        note_end.push_back( track->m_notes[n].endTick );
+        note_start.push_back( note->getTick() );
+        note_end.push_back( note->getEndTick() );
         
-        track->m_notes[n].startTick = track->snapMidiTickToGrid( track->m_notes[n].startTick );
+        note->setTick( track->snapMidiTickToGrid( note->getTick() ) );
         
-        int end_tick = track->snapMidiTickToGrid( track->m_notes[n].endTick );
-        if ( track->m_notes[n].startTick == end_tick )
+        int end_tick = track->snapMidiTickToGrid( note->getEndTick() );
+        if ( note->getTick() == end_tick )
         {
             // note was collapsed, not good.
             // use the 'ceil' variant of snapTickToGrid instead
-            end_tick = track->snapMidiTickToGrid_ceil( track->m_notes[n].endTick );
+            end_tick = track->snapMidiTickToGrid_ceil( note->getEndTick() );
         }
         
-        track->m_notes[n].endTick = end_tick;
+        note->setEndTick( end_tick );
         relocator.rememberNote(track->m_notes[n]);
     }
     

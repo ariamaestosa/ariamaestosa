@@ -81,10 +81,11 @@ void InsertEmptyMeasures::perform()
             const int noteAmount = track->m_notes.size();
             for (int n=0; n<noteAmount; n++)
             {
-                if (track->m_notes[n].startTick > afterTick)
+                Note* note = track->getNote(n);
+                if (note->getTick() > afterTick)
                 {
-                    track->m_notes[n].startTick += amountInTicks;
-                    track->m_notes[n].endTick += amountInTicks;
+                    note->setTick(note->getTick() + amountInTicks);
+                    note->setEndTick(note->getEndTick() + amountInTicks);
                 }
             }
             // ----------------- move control events -----------------
@@ -102,17 +103,18 @@ void InsertEmptyMeasures::perform()
         }
         
         // ----------------- move tempo events -----------------
-        const int tempo_event_amount = sequence->tempoEvents.size();
+        const int tempo_event_amount = sequence->getTempoEventAmount();
         if (tempo_event_amount>0)
         {
             //const int first_tick = getMeasureData()->firstTickInMeasure(measureID+1) - 1;
             //const int amountInTicks = amount * getMeasureData()->measureLengthInTicks(measureID+1);
             for (int n=0; n<tempo_event_amount; n++)
             {
-                if (sequence->tempoEvents[n].getTick() > afterTick)
+                const int tick = sequence->getTempoEvent(n)->getTick();
+                if (tick > afterTick)
                 {
                     //std::cout << "starting at " << seq->tempoEvents[n].getTick() << std::endl;
-                    sequence->tempoEvents[n].setTick( sequence->tempoEvents[n].getTick() + amountInTicks );
+                    sequence->setTempoEventTick(n, tick + amountInTicks);
                 }
             }
         }
@@ -215,7 +217,7 @@ namespace InsertMeasuresTest
             {
                 require(t->getNote(n)->getTick()    == n*beatLen, "events were properly restored");
                 require(t->getNote(n)->getPitchID() == 100 + n,   "events were properly restored");
-                require(t->getNoteOffVector()[n].endTick == (n + 1)*beatLen - 1,
+                require(t->getNoteOffVector()[n].getEndTick() == (n + 1)*beatLen - 1,
                         "Note off vector was properly restored");
             }
             
@@ -264,14 +266,14 @@ namespace InsertMeasuresTest
         {
             require(t->getNote(n)->getTick()    == n*beatLen, "events were properly modified by action");
             require(t->getNote(n)->getPitchID() == 100 + n,   "events were properly modified by action");
-            require(t->getNoteOffVector()[n].endTick == (n + 1)*beatLen - 1,
+            require(t->getNoteOffVector()[n].getEndTick() == (n + 1)*beatLen - 1,
                     "Note off vector was properly modified by action");
         }
         for (int n=8; n<16; n++)
         {
             require(t->getNote(n)->getTick() == insertedShift + n*beatLen, "events were properly modified by action");
             require(t->getNote(n)->getPitchID() == 100 + n,   "events were properly modified by action");
-            require(t->getNoteOffVector()[n].endTick == insertedShift + (n + 1)*beatLen - 1,
+            require(t->getNoteOffVector()[n].getEndTick() == insertedShift + (n + 1)*beatLen - 1,
                     "Note off vector was properly modified by action");
         }
         

@@ -144,7 +144,7 @@ MainPane::MainPane(wxWindow* parent, int* args) :
 {
     m_current_tick        = -1;
     m_dragged_track_id    = -1;
-    isVisible             = false;
+    m_is_visible          = false;
     m_is_mouse_down       = false;
     m_mouse_hovering_tabs = false;
 
@@ -153,8 +153,8 @@ MainPane::MainPane(wxWindow* parent, int* args) :
     m_mouse_x_current.setValue(0, WINDOW);
     m_mouse_y_current = 0;
 
-    leftArrow  = false;
-    rightArrow = false;
+    m_left_arrow  = false;
+    m_right_arrow = false;
 
     m_mouse_down_timer = new MouseDownTimer(this);
 
@@ -174,7 +174,7 @@ void MainPane::isNowVisible()
     MainFrame* mf = getMainFrame();
     mf->addSequence();
     mf->getCurrentGraphicalSequence()->addTrack();
-    isVisible = true;
+    m_is_visible = true;
 }
 
 // --------------------------------------------------------------------------------------------------
@@ -193,7 +193,7 @@ void MainPane::paintEvent(wxPaintEvent& evt)
 void MainPane::render(const bool isPaintEvent)
 {
     if (not prepareFrame()) return;
-    if (not isVisible) return;
+    if (not m_is_visible) return;
 
     if (isPaintEvent)
     {
@@ -318,7 +318,7 @@ bool MainPane::do_render()
         if (currentSeqID == n)  AriaRender::color(0,0,0);
         else                    AriaRender::color(0.4, 0.4, 0.4);
 
-        AriaRenderString& seq_name = getMainFrame()->getSequence(n)->sequenceFileName;
+        AriaRenderString& seq_name = getMainFrame()->getSequence(n)->getNameRenderer();
         seq_name.bind();
 
         seq_name.render( start_at_x+10, TAB_BAR_Y+20);
@@ -398,8 +398,8 @@ bool MainPane::do_render()
         if (tick.getRelativeTo(WINDOW) < XStart) // current tick is before the visible area
         {
 
-            leftArrow  = true;
-            rightArrow = false;
+            m_left_arrow  = true;
+            m_right_arrow = false;
 
             AriaRender::line(25, MEASURE_BAR_Y + 10, 10, MEASURE_BAR_Y + 10);
             AriaRender::triangle(5,  MEASURE_BAR_Y + 10,
@@ -409,8 +409,8 @@ bool MainPane::do_render()
         else if (tick.getRelativeTo(WINDOW) > XEnd) // current tick is after the visible area
         {
 
-            leftArrow=false;
-            rightArrow=true;
+            m_left_arrow  = false;
+            m_right_arrow = true;
 
             AriaRender::line(XEnd - 15 - 25, MEASURE_BAR_Y + 10,
                              XEnd - 15 - 10, MEASURE_BAR_Y + 10);
@@ -422,8 +422,8 @@ bool MainPane::do_render()
         else // current tick is inside the visible area
         {
 
-            leftArrow=false;
-            rightArrow=false;
+            m_left_arrow  = false;
+            m_right_arrow = false;
 
             // red line in measure bar
             AriaRender::line(tick.getRelativeTo(WINDOW), MEASURE_BAR_Y + 1,
@@ -435,8 +435,8 @@ bool MainPane::do_render()
     }
     else
     { // we're not playing, set arrows to false
-        leftArrow=false;
-        rightArrow=true;
+        m_left_arrow  = false;
+        m_right_arrow = true;
     }
 
     return true;
@@ -564,7 +564,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
     if (m_mouse_y_current < getHeight() - gseq->dockHeight and
         event.GetY() > MEASURE_BAR_Y+measureBarHeight)
     {
-        click_area = CLICK_TRACK;
+        m_click_area = CLICK_TRACK;
 
         // dispatch event to all tracks (stop when either of them uses it)
         m_click_in_track = -1;
@@ -578,7 +578,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
             if (not t->graphics->isDocked() and
                 m_mouse_y_current > y and m_mouse_y_current < y+7)
             {
-                click_area = CLICK_REORDER;
+                m_click_area = CLICK_REORDER;
                 m_dragged_track_id = n;
             }
             else
@@ -598,7 +598,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
     // ----------------------------------- click is in dock ----------------------------
     if (event.GetY() > getHeight() - gseq->dockHeight)
     {
-        click_area = CLICK_DOCK;
+        m_click_area = CLICK_DOCK;
         ASSERT_E( (int)m_positions_in_dock.size()/2 ,==,(int)gseq->dock.size());
 
         for (unsigned int n=0; n<m_positions_in_dock.size(); n+=2)
@@ -648,7 +648,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
     if (not PlatformMidiManager::get()->isPlaying() and event.GetY() > TAB_BAR_Y and
         event.GetY() < TAB_BAR_Y+20)
     {
-        click_area = CLICK_TAB_BAR;
+        m_click_area = CLICK_TAB_BAR;
 
         int start_at_x = 0;
         const int seqAmount = mf->getSequenceAmount();
@@ -677,9 +677,9 @@ void MainPane::mouseDown(wxMouseEvent& event)
     // ----------------------------------- click is in measure bar ----------------------------
     if (event.GetY() > MEASURE_BAR_Y and event.GetY() < MEASURE_BAR_Y+measureBarHeight)
     {
-        click_area = CLICK_MEASURE_BAR;
+        m_click_area = CLICK_MEASURE_BAR;
 
-        if (not (m_current_tick != -1 and (leftArrow or rightArrow))) // ignore when playing
+        if (not (m_current_tick != -1 and (m_left_arrow or m_right_arrow))) // ignore when playing
         {
             gseq->m_measure_bar->mouseDown(m_mouse_x_current.getRelativeTo(WINDOW),
                                            m_mouse_y_current - MEASURE_BAR_Y);
@@ -712,14 +712,14 @@ void MainPane::mouseMoved(wxMouseEvent& event)
         {
             
             // ----------------------------------- click is in track area ----------------------------
-            if (click_area == CLICK_TRACK and m_click_in_track != -1)
+            if (m_click_area == CLICK_TRACK and m_click_in_track != -1)
             {
                 Sequence* seq = getMainFrame()->getCurrentSequence();
                 seq->getTrack(m_click_in_track)->graphics->processMouseDrag(m_mouse_x_current, event.GetY());
             }
 
             // ----------------------------------- click is in measure bar ----------------------------
-            if (click_area == CLICK_MEASURE_BAR)
+            if (m_click_area == CLICK_MEASURE_BAR)
             {
                 GraphicalSequence* gseq = getMainFrame()->getCurrentGraphicalSequence();
                 gseq->m_measure_bar->mouseDrag(m_mouse_x_current.getRelativeTo(WINDOW),
@@ -798,17 +798,17 @@ void MainPane::mouseReleased(wxMouseEvent& event)
     }
 
     // ---- click is in measure bar
-    if (click_area == CLICK_MEASURE_BAR)
+    if (m_click_area == CLICK_MEASURE_BAR)
     {
         // check if user is clicking on red arrow that scrolls to current playback location
-        if (leftArrow)
+        if (m_left_arrow)
         {
             if (m_mouse_x_current.getRelativeTo(WINDOW)>5 and m_mouse_x_current.getRelativeTo(WINDOW)<25)
             {
                 scrollNowToPlaybackPosition();
             }
         }
-        else if (rightArrow)
+        else if (m_right_arrow)
         {
             if (m_mouse_x_current.getRelativeTo(WINDOW) > getWidth()-45 and
                 m_mouse_x_current.getRelativeTo(WINDOW) < getWidth()-20)
@@ -816,7 +816,7 @@ void MainPane::mouseReleased(wxMouseEvent& event)
         }
 
         // measure selection
-        if (not (m_current_tick!=-1 and (leftArrow or rightArrow)) ) // ignore when playing
+        if (not (m_current_tick!=-1 and (m_left_arrow or m_right_arrow)) ) // ignore when playing
         {
             gseq->m_measure_bar->mouseUp(m_mouse_x_current.getRelativeTo(WINDOW),
                                          m_mouse_y_current - MEASURE_BAR_Y,
@@ -824,7 +824,7 @@ void MainPane::mouseReleased(wxMouseEvent& event)
                                          m_mouse_y_initial - MEASURE_BAR_Y);
         }
     }
-    else if (click_area == CLICK_TRACK and m_click_in_track != -1)
+    else if (m_click_area == CLICK_TRACK and m_click_in_track != -1)
     {
         // disptach mouse up event to current track
         getMainFrame()->getCurrentSequence()->getTrack(m_click_in_track)->graphics->processMouseRelease();
@@ -1190,10 +1190,10 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
 
 void MainPane::enterPlayLoop()
 {
-    leftArrow = false;
-    rightArrow = false;
+    m_left_arrow  = false;
+    m_right_arrow = false;
     m_follow_playback_time = getMainFrame()->getCurrentSequence()->getMeasureData()->defaultMeasureLengthInTicks();
-    lastTick = -1;
+    m_last_tick = -1;
     Core::activateRenderLoop(true);
 }
 
@@ -1232,7 +1232,7 @@ void MainPane::playbackRenderLoop()
     Sequence* seq = gseq->getModel();
     
     // only draw if it has changed
-    if (lastTick != m_playback_start_tick + currentTick)
+    if (m_last_tick != m_playback_start_tick + currentTick)
     {
 
         // if user has clicked on a little red arrow
@@ -1245,7 +1245,7 @@ void MainPane::playbackRenderLoop()
         }
 
         // if follow playback is checked in the menu
-        if (seq->follow_playback)
+        if (seq->isFollowPlaybackEnabled())
         {
             RelativeXCoord tick(m_playback_start_tick + currentTick, MIDI, gseq);
             const int current_pixel = tick.getRelativeTo(WINDOW);
@@ -1281,11 +1281,11 @@ void MainPane::playbackRenderLoop()
         const int XEnd = getWidth();
         const int tick_pixel = tick.getRelativeTo(WINDOW);
 
-        if (tick_pixel < XStart and leftArrow)
+        if (tick_pixel < XStart and m_left_arrow)
         {
             // current tick is before the visible area and arrow already there. no need to render again.
         }
-        else if (tick_pixel > XEnd and rightArrow)
+        else if (tick_pixel > XEnd and m_right_arrow)
         {
             // current tick is after the visible area and arrow already there. no need to render again.
         }
@@ -1293,7 +1293,7 @@ void MainPane::playbackRenderLoop()
         {
             Display::render();
         }
-        lastTick = m_playback_start_tick + currentTick;
+        m_last_tick = m_playback_start_tick + currentTick;
     }
 
     // FIXME - why pause the main thread, aren't there better ways?

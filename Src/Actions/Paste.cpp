@@ -110,7 +110,7 @@ void Paste::perform()
     // find where track->m_notes begin if necessary
     if (m_at_mouse)
     {
-        beginning = Clipboard::getNote(0)->startTick;
+        beginning = Clipboard::getNote(0)->getTick();
     }
     int shift=0;
 
@@ -141,20 +141,20 @@ void Paste::perform()
 
         /*
          * scrolling has not changed since copy (i.e. user probably hit 'copy' and 'paste' consecutively)
-         * in this case, we want the track->m_notes to be pasted exactly where they were copied so we just
+         * in this case, we want the notes to be pasted exactly where they were copied so we just
          * overwrite the shift variable to make track->m_notes paste where they were copied. after this,
          * check if all track->m_notes will be visible when pasting like this. If not, fall back to regular
          * pasting method that will take care of finding track->m_notes an appropriate location to be
          * pasted onto.
          */
-        shift = track->getSequence()->notes_shift_when_no_scrolling;
+        shift = track->getSequence()->getNoteShiftWhenNoScrolling();
 
         // find if first note will be visible in the location just calculated,
         // otherwise just go to regular pasting code, it will paste them within visible measures
         Note& tmp = *Clipboard::getNote(0);
 
         // before visible area
-        if ((tmp.startTick + tmp.endTick)/2 + shift < track->graphics->getSequence()->getXScrollInMidiTicks())
+        if ((tmp.getTick() + tmp.getEndTick())/2 + shift < track->graphics->getSequence()->getXScrollInMidiTicks())
         {
             goto regular_paste;
         }
@@ -162,7 +162,7 @@ void Paste::perform()
         // after visible area
         RelativeXCoord screen_width( Display::getWidth(), WINDOW, track->graphics->getSequence() );
 
-        if ((tmp.startTick + tmp.endTick)/2 + shift > screen_width.getRelativeTo(MIDI) )
+        if ((tmp.getTick() + tmp.getEndTick())/2 + shift > screen_width.getRelativeTo(MIDI) )
         {
             goto regular_paste;
         }
@@ -191,7 +191,7 @@ regular_paste: // FIXME - find better way than goto
         Note& first_note = *(Clipboard::getNote(0));
 
         // check if note is before visible area
-        while ((first_note.startTick + first_note.endTick)/2 + shift <
+        while ((first_note.getTick() + first_note.getEndTick())/2 + shift <
                track->graphics->getSequence()->getXScrollInMidiTicks())
         {
             shift = md->firstTickInMeasure( md->measureAtTick( shift )+1 );
@@ -207,8 +207,8 @@ regular_paste: // FIXME - find better way than goto
 
         if (needToScalePastedNotes)
         {
-            tmp->startTick *= scalePastedNotes;
-            tmp->endTick   *= scalePastedNotes;
+            tmp->setTick(tmp->getTick() * scalePastedNotes);
+            tmp->setEndTick(tmp->getEndTick() * scalePastedNotes);
         }
 
         track->graphics->getCurrentEditor()->moveNote(*tmp, shift , 0);

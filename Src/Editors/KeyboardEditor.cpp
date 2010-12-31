@@ -193,13 +193,13 @@ int KeyboardEditor::getYScrollInPixels()
 
 void KeyboardEditor::moveNote(Note& note, const int relativeX, const int relativeY)
 {
-    if (note.startTick+relativeX < 0)    return; // refuse to move before song start
-    if (note.pitchID+relativeY   < 0)    return; // reject moves that would make illegal notes
-    if (note.pitchID+relativeY   >= 128) return;
+    if (note.getTick()    + relativeX < 0)    return; // refuse to move before song start
+    if (note.getPitchID() + relativeY < 0)    return; // reject moves that would make illegal notes
+    if (note.getPitchID() + relativeY >= 128) return;
 
-    note.startTick += relativeX;
-    note.endTick   += relativeX;
-    note.pitchID   += relativeY;
+    note.setTick( note.getTick() + relativeX );
+    note.setEndTick( note.getEndTick() + relativeX );
+    note.setPitchID( note.getPitchID() + relativeY );
 }
 
 // ************************************************************************************************************

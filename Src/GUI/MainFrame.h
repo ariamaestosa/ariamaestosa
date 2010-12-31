@@ -131,7 +131,8 @@ namespace AriaMaestosa
         wxTextCtrl* m_first_measure;
         wxSpinCtrl* m_song_length;
         wxSpinCtrl* m_display_zoom;
-
+        wxTextCtrl* m_tempo_ctrl;
+        
         wxMenu* m_file_menu;
         wxMenu* m_edit_menu;
         wxMenu* m_settings_menu;
@@ -165,14 +166,6 @@ namespace AriaMaestosa
         /** Contains all open sequences */
         ptr_vector<GraphicalSequence> m_sequences;
 
-    public:
-        LEAK_CHECK();
-
-        // READ AND WRITE
-        bool changingValues; // set this to true when modifying the controls in the top bar, this allows to ignore all events thrown by their modification.
-        wxTextCtrl* m_tempo_ctrl;
-
-        // ------- read-only -------
         int m_play_during_edit; // what is the user's preference for note preview during edits
         bool m_playback_mode;
         MainPane*                     m_main_pane;
@@ -181,7 +174,12 @@ namespace AriaMaestosa
         OwnerPtr<DrumPicker>          m_drumKit_picker;
         OwnerPtr<TuningPicker>        m_tuning_picker;
         OwnerPtr<KeyPicker>           m_key_picker;
-        // ----------------------
+        
+    public:
+        LEAK_CHECK();
+
+        // READ AND WRITE
+        bool changingValues; // set this to true when modifying the controls in the top bar, this allows to ignore all events thrown by their modification.
 
         MainFrame();
         void init();
@@ -254,14 +252,21 @@ namespace AriaMaestosa
         void menuEvent_metronome(wxCommandEvent& evt);
         
         void updateMenuBarToSequence();
-
+        
         // ---- playback
         void songHasFinishedPlaying();
         void toolsEnterPlaybackMode();
         void toolsExitPlaybackMode();
         void playClicked(wxCommandEvent& evt);
         void stopClicked(wxCommandEvent& evt);
-
+        bool isPlaybackMode() const { return m_playback_mode; }
+        
+        // ---- Pickers
+        InstrumentPicker* getInstrumentPicker() { return m_instrument_picker; }
+        DrumPicker*       getDrumPicker      () { return m_drumKit_picker;    }
+        TuningPicker*     getTuningPicker    () { return m_tuning_picker;     }
+        KeyPicker*        getKeyPicker       () { return m_key_picker;        }
+        
         // ---- I/O
         void updateTopBarAndScrollbarsForSequence(const GraphicalSequence* seq);
 
@@ -329,6 +334,8 @@ namespace AriaMaestosa
         Sequence*          getSequence(int n);
         GraphicalSequence* getCurrentGraphicalSequence();
         GraphicalSequence* getGraphicalSequence(int n);
+        
+        MainPane*          getMainPane() { return m_main_pane; }
         
         int  getCurrentSequenceID() const { return m_current_sequence; }
         void setCurrentSequence(int n);

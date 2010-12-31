@@ -257,7 +257,7 @@ namespace AriaMaestosa
             
             // if length==8, this is just the empty song to load QT. (when the app opens, Quicktime is triggered
             // with an empty song to make it load) - FIXME: this check is ugly
-            if (length == 8 or g_sequence->tempoEvents.size() == 0) use_qtkit = true;
+            if (length == 8 or g_sequence->getTempoEventAmount() == 0) use_qtkit = true;
             else use_qtkit=false;
             
             if (use_qtkit)

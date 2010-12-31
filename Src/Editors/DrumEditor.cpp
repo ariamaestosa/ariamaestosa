@@ -523,12 +523,12 @@ void DrumEditor::addNote(const int snappedX, const int mouseY)
 
 void DrumEditor::moveNote(Note& note, const int relativeX, const int relativeY)
 {
-    if (note.startTick+relativeX < 0) return; // refuse to move before song start
+    if (note.getTick() + relativeX < 0) return; // refuse to move before song start
 
-    note.startTick += relativeX;
-    note.endTick   += relativeX;
+    note.setTick( note.getTick() + relativeX );
+    note.setEndTick( note.getEndTick() + relativeX );
 
-    if (relativeY==0) return;
+    if (relativeY == 0) return;
 
     /*
      *  Since the drums are not in midi order on screen, the procedure to move drums up or down is to:
@@ -537,12 +537,11 @@ void DrumEditor::moveNote(Note& note, const int relativeX, const int relativeY)
      *      3. Find the new midi key at the new screen location
      */
 
-    //ASSERT(note.pitchID>=0);
-    ASSERT(note.pitchID<128);
+    ASSERT(note.getPitchID() < 128);
 
     // find where on screen this particular drum is drawn (their screen position is not in the same order
     // as the midi order)
-    int newVectorLoc = m_midi_key_to_vector_ID[note.pitchID];
+    int newVectorLoc = m_midi_key_to_vector_ID[note.getPitchID()];
     if (newVectorLoc == -1) return;
 
     // move to the new location (in screen order)
@@ -574,7 +573,7 @@ void DrumEditor::moveNote(Note& note, const int relativeX, const int relativeY)
         return;
     }
 
-    note.pitchID = new_pitchID;
+    note.setPitchID( new_pitchID );
 }
 
 // ----------------------------------------------------------------------------------------------------------

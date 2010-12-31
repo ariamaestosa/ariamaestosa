@@ -56,8 +56,7 @@ void AddControllerSlide::undo()
     {
         while ((current_event = relocator.getNextControlEvent()) and current_event != NULL)
         {
-            const int controlEventsAmount = track->m_control_events.size();
-            for (int n=0; n<controlEventsAmount; n++)
+            for (int n=0; n<track->m_control_events.size(); n++)
             {
                 if (track->m_control_events.get(n) == current_event)
                 {
@@ -73,12 +72,11 @@ void AddControllerSlide::undo()
         {
             // remove tempo events
             Sequence* sequence = track->getSequence();
-            const int tempoEventsAmount = sequence->tempoEvents.size();
-            for (int n=0; n<tempoEventsAmount; n++)
+            for (int n=0; n<sequence->getTempoEventAmount(); n++)
             {
-                if (sequence->tempoEvents.get(n) == current_event)
+                if (sequence->getTempoEvent(n) == current_event)
                 {
-                    sequence->tempoEvents.erase(n);
+                    sequence->eraseTempoEvent(n);
                     break;
                 }//endif
             }//next
@@ -131,7 +129,7 @@ void AddControllerSlide::perform()
     ptr_vector<ControllerEvent>* vector;
     
     // tempo events
-    if (m_controller == 201) vector = &track->getSequence()->tempoEvents;
+    if (m_controller == 201) vector = &track->getSequence()->m_tempo_events;
     // controller and pitch bend events
     else vector = &track->m_control_events;
     

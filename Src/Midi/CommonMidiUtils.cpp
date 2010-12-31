@@ -103,8 +103,8 @@ bool AriaMaestosa::exportMidiFile(Sequence* sequence, wxString filepath)
 {
     // when we're saving, we always want song to start at first measure, so temporarly switch
     // firstMeasure to 0, and set it back in the end
-    const int firstMeasureValue = sequence->m_measure_data->getFirstMeasure();
-    sequence->m_measure_data->setFirstMeasure(0);
+    const int firstMeasureValue = sequence->getMeasureData()->getFirstMeasure();
+    sequence->getMeasureData()->setFirstMeasure(0);
     
     jdkmidi::MIDIMultiTrack tracks;
     int length = -1, start = -1, numTracks = -1;
@@ -124,7 +124,7 @@ bool AriaMaestosa::exportMidiFile(Sequence* sequence, wxString filepath)
         return false;
     }
     
-    sequence->m_measure_data->setFirstMeasure(firstMeasureValue);
+    sequence->getMeasureData()->setFirstMeasure(firstMeasureValue);
     
     return true;
     
@@ -168,11 +168,11 @@ void AriaMaestosa::addTempoEventFromSequenceVector(int n, int amount, Sequence* 
 {
     jdkmidi::MIDITimedBigMessage m;
     
-    int tempo_time = sequence->tempoEvents[n].getTick() - substract_ticks;
+    int tempo_time = sequence->getTempoEvent(n)->getTick() - substract_ticks;
     
     if (tempo_time < 0)
     {
-        if ( (n+1<amount and sequence->tempoEvents[n+1].getTick() > substract_ticks) or n+1==amount)
+        if ( (n+1<amount and sequence->getTempoEvent(n + 1)->getTick() > substract_ticks) or n + 1 == amount)
         {
             tempo_time = 0; // we need to consider event because it's the last and will affect future measures
         }
@@ -184,7 +184,7 @@ void AriaMaestosa::addTempoEventFromSequenceVector(int n, int amount, Sequence* 
     }
     
     m.SetTime( tempo_time );
-    m.SetTempo32( convertTempoBendToBPM(sequence->tempoEvents[n].getValue()) * 32
+    m.SetTempo32( convertTempoBendToBPM(sequence->getTempoEvent(n)->getValue()) * 32
                  // tempo is stored as bpm * 32, giving 1/32 bpm resolution
                  );
     
@@ -209,12 +209,14 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
     
     tracks.SetClksPerBeat( sequence->ticksPerBeat() );
     
+    MeasureData* md = sequence->getMeasureData();
+    
     if (selectionOnly)
     {
         //  ---- add events to tracks
-        trackLength = sequence->getCurrentTrack()->addMidiEvents(tracks.GetTrack(sequence->getCurrentTrackID()+1),
+        trackLength = sequence->getCurrentTrack()->addMidiEvents(tracks.GetTrack(sequence->getCurrentTrackID() + 1),
                                                                  channel,
-                                                                 sequence->m_measure_data->getFirstMeasure(),
+                                                                 md->getFirstMeasure(),
                                                                  true,
                                                                  *startTick );
         
@@ -236,7 +238,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
             
             int trackFirstNote =-1;
             trackLength = sequence->getTrack(n)->addMidiEvents(tracks.GetTrack(n+1), (drum_track ? 9 : channel),
-                                                               sequence->m_measure_data->getFirstMeasure(), false,
+                                                               md->getFirstMeasure(), false,
                                                                trackFirstNote );
             
             if ((trackFirstNote<(*startTick) and trackFirstNote != -1) or (*startTick) == -1)
@@ -343,7 +345,6 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
     // FIXME find real problem
     if (not playing)
     {
-        MeasureData* md = sequence->getMeasureData();
         if (md->isMeasureLengthConstant())
         {
             // time signature
@@ -360,7 +361,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
             }
             
             // add tempo changes straight away, there's nothing else in track 0 so time order is not a problem
-            const int amount = sequence->tempoEvents.size();
+            const int amount = sequence->getTempoEventAmount();
             for (int n=0; n<amount; n++)
             {
                 addTempoEventFromSequenceVector(n, amount, sequence, tracks, substract_ticks);
@@ -370,7 +371,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
         {
             // add both tempo changes and measures in time order
             const int timesig_amount = md->getTimeSigAmount();
-            const int tempo_amount = sequence->tempoEvents.size();
+            const int tempo_amount = sequence->getTempoEventAmount();
             int timesig_id = 0; // which time sig event should be the next added
             int tempo_id = 0; // which tempo event should be the next added
             
@@ -380,7 +381,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
                 const int timesig_tick = (timesig_id < timesig_amount ?
                                           md->getTimeSig(timesig_id).getTick() :
                                           -1);
-                const int tempo_tick = (tempo_id < tempo_amount ? sequence->tempoEvents[tempo_id].getTick() : -1);
+                const int tempo_tick = (tempo_id < tempo_amount ? sequence->getTempoEvent(tempo_id)->getTick() : -1);
                 
                 if (timesig_tick == -1 and tempo_tick == -1)
                 {
@@ -413,7 +414,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
     else
     {
         // add tempo changes straight away, there's nothing else in track 0 so time order is not a problem
-        const int amount = sequence->tempoEvents.size();
+        const int amount = sequence->getTempoEventAmount();
         for (int n=0; n<amount; n++)
         {
             addTempoEventFromSequenceVector(n, amount, sequence, tracks, substract_ticks);
@@ -445,7 +446,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
         // If not playing (but exporting to MIDI), add the event at the declared end of the song
         // to account for empty measures at the end
         
-        const int tick = sequence->m_measure_data->lastTickInMeasure(sequence->m_measure_data->getMeasureAmount() - 1);
+        const int tick = md->lastTickInMeasure(md->getMeasureAmount() - 1);
         if (tick > *songLengthInTicks)
         {
             jdkmidi::MIDITimedBigMessage m;

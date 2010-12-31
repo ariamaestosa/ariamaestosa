@@ -83,12 +83,12 @@ namespace AriaMaestosa
 
         // used during playback
         int m_follow_playback_time;
-        int lastTick;
+        int m_last_tick;
         int m_playback_start_tick;
 
         bool m_scroll_to_playback_position;
 
-        ClickArea click_area;
+        ClickArea m_click_area;
 
         /** if click_area == CLICK_TRACK, contains the ID of the track */
         int m_click_in_track;
@@ -98,21 +98,18 @@ namespace AriaMaestosa
         /** Whether the mouse cursor is currently hovering the tab bar */
         bool m_mouse_hovering_tabs;
 
+        /** is frame shown */
+        bool m_is_visible;
+        
+        bool m_left_arrow;
+        bool m_right_arrow;
+        
     public:
         LEAK_CHECK();
 
         MainPane(wxWindow* parent, int* args);
         ~MainPane();
 
-        // --------------------- read-only --------------------
-
-        /** is frame shown */
-        bool isVisible;
-
-        bool leftArrow;
-        bool rightArrow;
-
-        // -----------------------------------------------------
         // render loop
 
         void enterPlayLoop();
@@ -139,6 +136,10 @@ namespace AriaMaestosa
         /** @brief called when frame is made visible */
         void isNowVisible();
 
+        bool isLeftArrowVisible () const { return m_left_arrow;  }
+        bool isRightArrowVisible() const { return m_right_arrow; }
+
+        
         // ---- events
 
         /** @brief Event sent whenever user drags mouse on OpenGL pane where everything is drawn. */
@@ -193,6 +194,7 @@ namespace AriaMaestosa
         }
 
         // ---- rendering
+        bool isVisible() const { return m_is_visible; }
         void render(const bool paintEvent = false);
         void paintEvent(wxPaintEvent& evt);
 

@@ -39,10 +39,10 @@ Note::Note(Track* parent,
            const int string_arg,
            const int fret_arg)
 {
-    Note::pitchID   = pitchID_arg;
-    Note::startTick = startTick_arg;
-    Note::endTick   = endTick_arg;
-    Note::volume    = volume_arg;
+    m_pitch_ID   = pitchID_arg;
+    m_start_tick = startTick_arg;
+    m_end_tick   = endTick_arg;
+    m_volume     = volume_arg;
     Note::string    = string_arg;
     Note::fret      = fret_arg;
 
@@ -50,7 +50,7 @@ Note::Note(Track* parent,
 
     m_selected = false;
 
-    preferred_accidental_sign = -1;
+    m_preferred_accidental_sign = -1;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -87,8 +87,8 @@ void Note::setFret(int i)
 
 void Note::setStringAndFret(int string_arg, int fret_arg)
 {
-    string=string_arg;
-    fret=fret_arg;
+    string = string_arg;
+    fret   = fret_arg;
     findNoteFromStringAndFret();
 }
 
@@ -105,7 +105,7 @@ void Note::checkIfStringAndFretMatchNote(const bool fixStringAndFret)
     }
 
 
-    if (string == -1 or fret == -1 or pitchID != tuning->tuning[string]-fret)
+    if (string == -1 or fret == -1 or m_pitch_ID != tuning->tuning[string] - fret)
     {
         if (fixStringAndFret) findStringAndFretFromNote();
         else                  findNoteFromStringAndFret();
@@ -128,16 +128,16 @@ void Note::setParent(Track* parent)
 void Note::shiftFret(const int amount)
 {
 
-    if (fret+amount < 0)
+    if (fret + amount < 0)
     {
-        pitchID -= amount;
+        m_pitch_ID -= amount;
         findStringAndFretFromNote();
     }
     else
     {
         // if the note would be out of bounds after applying this change, do not apply it.
         // An exception is granted if the current fret is under 0 and the user is trying to 'fix' this by making the fret number higher.
-        if ( (fret+amount>35) and not(fret < 0 and amount > 0) ) return;
+        if ( (fret + amount>35) and not (fret < 0 and amount > 0) ) return;
         // if ( (fret+amount < 0 or fret+amount>35) and not(fret < 0 and amount > 0) ) return;
 
         fret += amount;
@@ -154,12 +154,13 @@ void Note::shiftString(const int amount)
     // don't perform if result would be invalid
     if (string + amount < 0) return;
     if (string + amount > (int)tuning->tuning.size()-1) return;
-    if ((tuning->tuning)[string+amount] - pitchID < 0) return;
-    if ((tuning->tuning)[string+amount] - pitchID > 35) return;
+    if ((tuning->tuning)[string + amount] - m_pitch_ID < 0) return;
+    if ((tuning->tuning)[string + amount] - m_pitch_ID > 35) return;
 
     string += amount;
-    fret = (tuning->tuning)[string] - pitchID;
+    fret = (tuning->tuning)[string] - m_pitch_ID;
 
+    findNoteFromStringAndFret();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -173,11 +174,11 @@ void Note::findStringAndFretFromNote()
 
     GuitarTuning* tuning = m_track->getGuitarTuning();
     
-    if (pitchID > (tuning->tuning)[ tuning->tuning.size()-1] )
+    if (m_pitch_ID > (tuning->tuning)[ tuning->tuning.size()-1] )
     {
         // note is too low to appear on this tab, will have a negative fret number
         string = tuning->tuning.size()-1;
-        fret = (tuning->tuning)[ tuning->tuning.size()-1] - pitchID;
+        fret = (tuning->tuning)[ tuning->tuning.size() - 1] - m_pitch_ID;
         return;
     }
 
@@ -185,19 +186,19 @@ void Note::findStringAndFretFromNote()
     {
 
         // exact match (note can be played on a string at fret 0)
-        if ((tuning->tuning)[n] == pitchID)
+        if ((tuning->tuning)[n] == m_pitch_ID)
         {
             string = n;
             fret   = 0;
             return;
         }
 
-        if ((tuning->tuning)[n] > pitchID)
+        if ((tuning->tuning)[n] > m_pitch_ID)
         {
-            if ((tuning->tuning)[n] - pitchID < distance)
+            if ((tuning->tuning)[n] - m_pitch_ID < distance)
             {
                 nearest  = n;
-                distance = (tuning->tuning)[n] - pitchID;
+                distance = (tuning->tuning)[n] - m_pitch_ID;
             }//end if
         }//end if
     }//next
@@ -212,7 +213,7 @@ void Note::findStringAndFretFromNote()
 void Note::findNoteFromStringAndFret()
 {
     GuitarTuning* tuning = m_track->getGuitarTuning();
-    pitchID = (tuning->tuning)[string] - fret;
+    m_pitch_ID = (tuning->tuning)[string] - fret;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -226,25 +227,25 @@ void Note::setSelected(const bool selected)
 
 void Note::setVolume(const int vol)
 {
-    volume = vol;
+    m_volume = vol;
 }
 
 // ----------------------------------------------------------------------------------------------------------
 
 void Note::resize(const int ticks)
 {
-    if (endTick+ticks <= startTick) return; // refuse to shrink note so much that it disappears
+    if (m_end_tick + ticks <= m_start_tick) return; // refuse to shrink note so much that it disappears
 
-    endTick += ticks;
+    m_end_tick += ticks;
 }
 
 // ----------------------------------------------------------------------------------------------------------
 
-void Note::setEnd(const int ticks)
+void Note::setEndTick(const int ticks)
 {
     ASSERT_E(ticks,>=,0);
 
-    endTick = ticks;
+    m_end_tick = ticks;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -257,21 +258,21 @@ void Note::setEnd(const int ticks)
 
 void Note::saveToFile(wxFileOutputStream& fileout)
 {
-    writeData( wxT("<note pitch=\"") + to_wxString(pitchID)  , fileout );
-    writeData( wxT("\" start=\"")    + to_wxString(startTick), fileout );
-    writeData( wxT("\" end=\"")      + to_wxString(endTick)  , fileout );
-    writeData( wxT("\" volume=\"")   + to_wxString(volume)   , fileout );
+    writeData( wxT("<note pitch=\"") + to_wxString(m_pitch_ID)  , fileout );
+    writeData( wxT("\" start=\"")    + to_wxString(m_start_tick), fileout );
+    writeData( wxT("\" end=\"")      + to_wxString(m_end_tick)  , fileout );
+    writeData( wxT("\" volume=\"")   + to_wxString(m_volume)    , fileout );
 
-    if (fret   != -1) writeData( wxT("\" fret=\"") + to_wxString(fret), fileout );
+    if (fret   != -1) writeData( wxT("\" fret=\"")   + to_wxString(fret),   fileout );
     if (string != -1) writeData( wxT("\" string=\"") + to_wxString(string), fileout );
     if (m_selected)
     {
         writeData( wxT("\" selected=\"") + wxString(m_selected ? wxT("true") : wxT("false")), fileout );
     }
 
-    if (preferred_accidental_sign != -1)
+    if (m_preferred_accidental_sign != -1)
     {
-        writeData( wxT("\" accidentalsign=\"") + to_wxString(preferred_accidental_sign), fileout );
+        writeData( wxT("\" accidentalsign=\"") + to_wxString(m_preferred_accidental_sign), fileout );
     }
 
     writeData( wxT("\"/>\n"), fileout );
@@ -284,45 +285,45 @@ bool Note::readFromFile(irr::io::IrrXMLReader* xml)
     const char* pitch_c = xml->getAttributeValue("pitch");
     if (pitch_c != NULL)
     {
-        pitchID = atoi( pitch_c );
+        m_pitch_ID = atoi( pitch_c );
     }
     else
     {
-        pitchID = 60;
-        std::cout << "ERROR: Missing info from file: note pitch" << std::endl;
+        m_pitch_ID = 60;
+        std::cerr << "ERROR: Missing info from file: note pitch" << std::endl;
         return false;
     }
 
     const char* start_c = xml->getAttributeValue("start");
     if (start_c != NULL)
     {
-        startTick = atoi(start_c);
+        m_start_tick = atoi(start_c);
     }
     else
     {
-        startTick = 0;
-        std::cout << "ERROR: Missing info from file: note start" << std::endl;
+        m_start_tick = 0;
+        std::cerr << "ERROR: Missing info from file: note start" << std::endl;
         return false;
     }
 
     const char* end_c = xml->getAttributeValue("end");
     if (end_c != NULL)
     {
-        endTick = atoi(end_c);
+        m_end_tick = atoi(end_c);
     }
     else
     {
-        endTick = 0;
+        m_end_tick = 0;
         std::cout << "ERROR: Missing info from file: note end" << std::endl;
         return false;
     }
 
     const char* volume_c = xml->getAttributeValue("volume");
-    if (volume_c != NULL) volume = atoi(volume_c);
-    else                  volume = 80;
+    if (volume_c != NULL) m_volume = atoi(volume_c);
+    else                  m_volume = 80;
 
     const char* accsign_c = xml->getAttributeValue("accidentalsign");
-    if (accsign_c != NULL) preferred_accidental_sign = atoi(accsign_c);
+    if (accsign_c != NULL) m_preferred_accidental_sign = atoi(accsign_c);
 
     const char* fret_c = xml->getAttributeValue("fret");
     if (fret_c != NULL) fret = atoi(fret_c);
@@ -363,17 +364,18 @@ void Note::play(bool change)
     if (playSetting == PLAY_NEVER) return;
     if (playSetting == PLAY_ON_CHANGE and not change) return;
 
-    int durationMilli = (endTick - startTick)*60*1000 /
+    int durationMilli = (m_end_tick - m_start_tick)*60*1000 /
                         (m_track->getSequence()->getTempo() * m_track->getSequence()->ticksPerBeat());
 
     // FIXME(DESIGN): remove this 131-pitch ugliness
     if (m_track->getNotationType() == DRUM) 
     {
-        PlatformMidiManager::get()->playNote( pitchID, volume, durationMilli, 9, m_track->getDrumKit() );
+        PlatformMidiManager::get()->playNote(m_pitch_ID, m_volume, durationMilli, 9, m_track->getDrumKit() );
     }
     else
     {
-        PlatformMidiManager::get()->playNote( 131-pitchID, volume, durationMilli, 0, m_track->getInstrument() );
+        PlatformMidiManager::get()->playNote(131 - m_pitch_ID, m_volume, durationMilli, 0,
+                                             m_track->getInstrument() );
     }
 }
 

@@ -142,17 +142,19 @@ void RemoveMeasures::perform()
         const int amount_n = track->m_notes.size();
         for (int n=0; n<amount_n; n++)
         {
+            Note* note = track->m_notes.get(n);
+            
             // note is an area that is removed. remove it.
-            if (track->m_notes[n].startTick > fromTick and track->m_notes[n].startTick < toTick)
+            if (note->getTick() > fromTick and note->getTick() < toTick)
             {
-                removedBits->removedNotes.push_back(track->m_notes.get(n));
+                removedBits->removedNotes.push_back(note);
                 track->markNoteToBeRemoved(n);
             }
             // note is in after the removed area. move it back by necessary amound
-            else if (removedBits->track->m_notes[n].startTick >= toTick)
+            else if (removedBits->track->m_notes[n].getTick() >= toTick)
             {
-                track->m_notes[n].startTick -= amountInTicks;
-                track->m_notes[n].endTick -= amountInTicks;
+                note->setTick( note->getTick() - amountInTicks);
+                note->setEndTick( note->getEndTick() - amountInTicks);
             }
         }
         track->removeMarkedNotes();
@@ -181,26 +183,28 @@ void RemoveMeasures::perform()
     
     
     // ------------------------ erase/move tempo events ------------------------
-    if (sequence->tempoEvents.size()>0)
+    const int s_amount = sequence->getTempoEventAmount();
+
+    if (s_amount > 0)
     {
-        const int s_amount = sequence->tempoEvents.size();
         for (int n=0; n<s_amount; n++)
         {
+            const int tick = sequence->getTempoEvent(n)->getTick();
+            
             // event is in deleted area
-            if (sequence->tempoEvents[n].getTick() > fromTick and sequence->tempoEvents[n].getTick() < toTick)
+            if (tick > fromTick and tick < toTick)
             {
-                removedTempoEvents.push_back( sequence->tempoEvents.get(n) );
-                sequence->tempoEvents.markToBeRemoved(n);
+                removedTempoEvents.push_back( sequence->extractTempoEvent(n) );
             }
             //event is after deleted area
-            else if (sequence->tempoEvents[n].getTick() >= toTick)
+            else if (tick >= toTick)
             {
                 // move it back
-                sequence->tempoEvents[n].setTick( sequence->tempoEvents[n].getTick() - (toTick-fromTick-1) );
+                sequence->setTempoEventTick( n, tick - (toTick - fromTick - 1) );
             }
         }
         
-        sequence->tempoEvents.removeMarked();
+        sequence->removeMarkedTempoEvents();
     }
     
     {

@@ -158,7 +158,7 @@ void ScoreMidiConverter::resetAccidentalsForNewRender()
 
 int ScoreMidiConverter::noteToLevel(const Note* noteObj, PitchSign* sign)
 {
-    const int note = noteObj->pitchID;
+    const int note = noteObj->getPitchID();
     if (note >= 128 or note < 0) return -1;
 
     const int level = m_midi_note_to_level[note];
@@ -172,10 +172,10 @@ int ScoreMidiConverter::noteToLevel(const Note* noteObj, PitchSign* sign)
         // decide whether to use a flat or a sharp to display this note
         // first check if there's a user-specified sign. otherwise pick default (quite arbitrarly)
         bool useFlats = false;
-        if (noteObj->preferred_accidental_sign != -1)
+        if (noteObj->getPreferredAccidentalSign() != -1)
         {
-            if      (noteObj->preferred_accidental_sign == SHARP) useFlats = false;
-            else if (noteObj->preferred_accidental_sign == FLAT)  useFlats = true;
+            if      (noteObj->getPreferredAccidentalSign() == SHARP) useFlats = false;
+            else if (noteObj->getPreferredAccidentalSign() == FLAT)  useFlats = true;
         }
         else
         {
@@ -217,7 +217,7 @@ int ScoreMidiConverter::noteToLevel(const Note* noteObj, PitchSign* sign)
     {
         if (m_accidentals)
         {
-            const int measure = m_sequence->getModel()->getMeasureData()->measureAtTick(noteObj->startTick);
+            const int measure = m_sequence->getModel()->getMeasureData()->measureAtTick(noteObj->getTick());
 
             // when going to another measure, reset accidentals
             if (measure != m_accidentals_measure)
@@ -272,7 +272,7 @@ int ScoreMidiConverter::noteToLevel(const Note* noteObj, PitchSign* sign)
         if (answer_sign != PITCH_SIGN_NONE)
         {
             m_accidentals = true;
-            const int measure = m_sequence->getModel()->getMeasureData()->measureAtTick(noteObj->startTick);
+            const int measure = m_sequence->getModel()->getMeasureData()->measureAtTick(noteObj->getTick());
             m_accidentals_measure = measure;
 
             m_accidental_score_notes_sharpness[ levelToNote7(answer_level) ] = answer_sign;
@@ -490,9 +490,9 @@ void ScoreEditor::setNoteSign(const int sign, const int noteID)
     }
 
     Note* note = m_track->getNote(noteID);
-    note->pitchID = new_pitch;
+    note->setPitchID( new_pitch );
 
-    if (sign != NATURAL) note->preferred_accidental_sign = sign;
+    if (sign != NATURAL) note->setPreferredAccidentalSign( sign );
 
 }
 
@@ -1558,12 +1558,12 @@ void ScoreEditor::addNote(const int snapped_start_tick, const int snapped_end_ti
 
 void ScoreEditor::moveNote(Note& note, const int relativeX, const int relativeY)
 {
-        if (note.startTick+relativeX < 0) return; // refuse to move before song start
+        if (note.getTick() + relativeX < 0) return; // refuse to move before song start
 
-        note.startTick += relativeX;
-        note.endTick   += relativeX;
+        note.setTick( note.getTick() + relativeX );
+        note.setEndTick( note.getEndTick() + relativeX );
 
-        if (relativeY==0) return;
+        if (relativeY == 0) return;
         /*
         if (Display::isSelectMorePressed() or Display::isCtrlDown())
         {
@@ -1577,7 +1577,7 @@ void ScoreEditor::moveNote(Note& note, const int relativeX, const int relativeY)
             if (noteLevel > 0 and noteLevel < 73)
             {
                 // reject illegal notes
-                note.pitchID = m_converter->levelToNote(noteLevel);
+                note.setPitchID( m_converter->levelToNote(noteLevel) );
             }
             /*
         }

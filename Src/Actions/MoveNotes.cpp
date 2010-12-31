@@ -63,15 +63,13 @@ void MoveNotes::undo()
         {
             if (m_move_mode == SCORE_VERTICAL or m_move_mode == DRUMS_VERTICAL)
             {
-                current_note->pitchID = undo_pitch[n];
+                current_note->setPitchID( undo_pitch[n] );
                 track->graphics->getCurrentEditor()->moveNote(*current_note, -m_relativeX, 0);
                 n++;
             }
             else if (m_move_mode == GUITAR_VERTICAL)
             {
-                current_note->fret = undo_fret[n];
-                current_note->string = undo_string[n];
-                current_note->findNoteFromStringAndFret();
+                current_note->setStringAndFret(undo_fret[n], undo_string[n]);
                 track->graphics->getCurrentEditor()->moveNote(*current_note, -m_relativeX, 0);
                 n++;
             }
@@ -151,12 +149,12 @@ void MoveNotes::doMoveOneNote(const int noteID)
      */
     if (m_move_mode == SCORE_VERTICAL or m_move_mode == DRUMS_VERTICAL)
     {
-        undo_pitch.push_back( track->m_notes[noteID].pitchID );
+        undo_pitch.push_back( track->m_notes[noteID].getPitchID() );
     }
     else if (m_move_mode == GUITAR_VERTICAL)
     {
-        undo_fret.push_back( track->m_notes[noteID].fret );
-        undo_string.push_back( track->m_notes[noteID].string );
+        undo_fret.push_back( track->m_notes[noteID].getFretConst() );
+        undo_string.push_back( track->m_notes[noteID].getStringConst() );
     }
 
     track->graphics->getCurrentEditor()->moveNote(track->m_notes[noteID], m_relativeX, m_relativeY);
@@ -228,7 +226,7 @@ namespace TestMoveNotes
             {
                 require(t->getNote(n)->getTick()    == n*beatLen, "events are OK after applying and undoing action");
                 require(t->getNote(n)->getPitchID() == 100 + n,   "events are OK after applying and undoing action");
-                require(t->getNoteOffVector()[n].endTick == (n + 1)*beatLen - 1,
+                require(t->getNoteOffVector()[n].getEndTick() == (n + 1)*beatLen - 1,
                         "Note off vector was properly restored");
             }
         }

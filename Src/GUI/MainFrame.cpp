@@ -1169,23 +1169,23 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
         id = m_current_sequence;
         if (id > 0)
         {
-            whoToFocusAfter = m_sequences[id - 1].getModel()->sequenceFileName;
+            whoToFocusAfter = m_sequences[id - 1].getModel()->getSequenceFilename();
         }
         else if (m_sequences.size() > 0)
         {
-            whoToFocusAfter = m_sequences[m_sequences.size() - 1].getModel()->sequenceFileName;
+            whoToFocusAfter = m_sequences[m_sequences.size() - 1].getModel()->getSequenceFilename();
         }
     }
     else
     {
-        whoToFocusAfter = m_sequences[m_current_sequence].getModel()->sequenceFileName;
+        whoToFocusAfter = m_sequences[m_current_sequence].getModel()->getSequenceFilename();
     }
 
 
     if (m_sequences[id].getModel()->somethingToUndo())
     {
         wxString message = _("You have unsaved changes in sequence '%s'. Do you want to save them before proceeding?");
-        message.Replace(wxT("%s"), m_sequences[id].getModel()->sequenceFileName, false);
+        message.Replace(wxT("%s"), m_sequences[id].getModel()->getSequenceFilename(), false);
 
         int answer = wxMessageBox(  _("Selecting 'Yes' will save your document before closing") +
                                     wxString(wxT("\n")) + _("Selecting 'No' will discard unsaved changes") +
@@ -1215,7 +1215,7 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
     const int seqCount = m_sequences.size();
     for (int n=0; n<seqCount; n++)
     {
-        if (m_sequences[n].getModel()->sequenceFileName == whoToFocusAfter)
+        if (m_sequences[n].getModel()->getSequenceFilename() == whoToFocusAfter)
         {
             newCurrent = n;
             break;
@@ -1294,11 +1294,11 @@ void MainFrame::loadAriaFile(wxString filePath)
 
     addSequence();
     setCurrentSequence( getSequenceAmount()-1 );
-    getCurrentSequence()->filepath=filePath;
+    getCurrentSequence()->setFilepath( filePath );
 
     WaitWindow::show(_("Please wait while .aria file is loading.") );
 
-    const bool success = AriaMaestosa::loadAriaFile(getCurrentGraphicalSequence(), getCurrentSequence()->filepath);
+    const bool success = AriaMaestosa::loadAriaFile(getCurrentGraphicalSequence(), getCurrentSequence()->getFilepath());
     if (not success)
     {
         std::cout << "Loading .aria file failed." << std::endl;
@@ -1314,7 +1314,7 @@ void MainFrame::loadAriaFile(wxString filePath)
     updateVerticalScrollbar();
 
     // change song name
-    getCurrentSequence()->sequenceFileName.set( extractTitle(getCurrentSequence()->filepath) );
+    getCurrentSequence()->setSequenceFilename( extractTitle(getCurrentSequence()->getFilepath()) );
 
     // if a song is currently playing, it needs to stay on top
     if (PlatformMidiManager::get()->isPlaying())
@@ -1358,7 +1358,7 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
     updateVerticalScrollbar();
 
     // change song name
-    getCurrentSequence()->sequenceFileName.set( extractTitle(midiFilePath) );
+    getCurrentSequence()->setSequenceFilename( extractTitle(midiFilePath) );
 
     // if a song is currently playing, it needs to stay on top
     if (PlatformMidiManager::get()->isPlaying()) setCurrentSequence(old_currentSequence);

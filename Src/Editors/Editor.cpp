@@ -517,7 +517,7 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                     if (g_current_edit_tool == EDIT_TOOL_ADD and snapped_start == snapped_end) 
                     {
                         addNote(snapped_start,
-                                snapped_start + m_sequence->ticksPerBeat()*4 / m_graphical_track->m_grid->divider,
+                                snapped_start + m_sequence->ticksPerBeat()*4 / m_graphical_track->getGridDivider(),
                                 mousey_initial );
                     }
                     else if (snapped_start == snapped_end or snapped_start>snapped_end or snapped_start<0)

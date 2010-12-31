@@ -329,7 +329,7 @@ void MainFrame::updateMenuBarToSequence()
         m_channel_management_manual->Check(true);
     }
 
-    m_follow_playback_menu_item->Check( sequence->follow_playback );
+    m_follow_playback_menu_item->Check( sequence->isFollowPlaybackEnabled() );
     m_expanded_measures_menu_item->Check( sequence->getMeasureData()->isExpandedMode() );
     m_metronome->Check( sequence->playWithMetronome() );
 }
@@ -409,13 +409,13 @@ void MainFrame::menuEvent_save(wxCommandEvent& evt)
 
 bool MainFrame::doSave()
 {
-    if (getCurrentSequence()->filepath.IsEmpty())
+    if (getCurrentSequence()->getFilepath().IsEmpty())
     {
         return doSaveAs();
     }
     else
     {
-        saveAriaFile(getCurrentGraphicalSequence(), getCurrentSequence()->filepath);
+        saveAriaFile(getCurrentGraphicalSequence(), getCurrentSequence()->getFilepath());
         return true;
     }
 }
@@ -447,11 +447,11 @@ bool MainFrame::doSaveAs()
             if (answer != wxYES) return true;
         }
 
-        getCurrentSequence()->filepath = givenPath;
-        saveAriaFile(getCurrentGraphicalSequence(), getCurrentSequence()->filepath);
+        getCurrentSequence()->setFilepath( givenPath );
+        saveAriaFile(getCurrentGraphicalSequence(), getCurrentSequence()->getFilepath());
 
         // change song name
-        getCurrentSequence()->sequenceFileName.set( extractTitle(getCurrentSequence()->filepath) );
+        getCurrentSequence()->setSequenceFilename( extractTitle(getCurrentSequence()->getFilepath()) );
         Display::render();
 
         return true;
@@ -716,7 +716,7 @@ void MainFrame::menuEvent_preferences(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_followPlayback(wxCommandEvent& evt)
 {
-    getCurrentSequence()->follow_playback = m_follow_playback_menu_item->IsChecked();
+    getCurrentSequence()->enableFollowPlayback( m_follow_playback_menu_item->IsChecked() );
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -847,7 +847,7 @@ void MainFrame::menuEvent_expandedMeasuresSelected(wxCommandEvent& evt)
         if (answer == wxNO) return;
     }
     
-    MeasureData* md = getCurrentSequence()->m_measure_data;
+    MeasureData* md = getCurrentSequence()->getMeasureData();
     {
         ScopedMeasureTransaction tr(md->startTransaction());
         tr->setExpandedMode( m_expanded_measures_menu_item->IsChecked() );

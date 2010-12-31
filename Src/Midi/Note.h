@@ -103,30 +103,32 @@ namespace AriaMaestosa
     {
         Track* m_track;
         
-        bool m_selected;
-        
-    public:
-        LEAK_CHECK();
+        bool   m_selected;
         
         /**
           * used for score editor. by default, the editor will choose a default sign to display accidentals.
           * however computers are not smart enough to guess correctly so the user has the possibility to
           * tell explicitely what sign should be used to render that note (sharp, flat)
           */
-        short preferred_accidental_sign;
+        short m_preferred_accidental_sign;
         
         /**
           * The pitch used by Aria is not a midi pitch, it is (131 - midi pitch), for the simple reason that high
           * notes being drawn near the top of the screen, and low notes near the bottom, this reversed order
           * simplifies drawing routines (and in the code we draw much more often than we play) middle C being 71
           */
-        unsigned short pitchID;
+        unsigned short m_pitch_ID;
         
-        int startTick, endTick;
-        unsigned short volume;
+        int m_start_tick, m_end_tick;
+        
+        unsigned short m_volume;
         
         /** for guitar mode */
         short string, fret;
+        
+    public:
+        LEAK_CHECK();
+        
 
         void setSelected(const bool selected);
         bool isSelected() const { return m_selected; }
@@ -135,10 +137,6 @@ namespace AriaMaestosa
         ~Note();
         
         void setParent(Track* parent);
-        
-        void setVolume(int vol);
-        void resize(const int ticks);
-        void setEnd(const int ticks);
         
         /**
           * @note for guitar mode only
@@ -191,8 +189,25 @@ namespace AriaMaestosa
          */
         void play(bool change);
         
-        int   getTick   () const    { return startTick; }
-        short getPitchID() const    { return pitchID;   }
+        int   getTick   () const    { return m_start_tick; }
+        int   getEndTick() const    { return m_end_tick;   }
+        short getPitchID() const    { return m_pitch_ID;   }
+        
+        
+        short getPreferredAccidentalSign() const { return m_preferred_accidental_sign; }
+        void  setPreferredAccidentalSign(short newval) { m_preferred_accidental_sign = newval; }
+
+        int  getVolume() const { return m_volume; }
+        void setVolume(int vol);
+        
+        /** @brief Resize note by a delta
+          * @param ticksDelta positive or negative delta in ticks by which to resize this note
+          */
+        void resize(const int ticksDelta);
+        
+        void setTick(const int tick)     { ASSERT_E(tick,>=,0); m_start_tick = tick; }
+        void setPitchID(const int pitch) { m_pitch_ID = pitch; }
+        void setEndTick(const int ticks);
         
         // serialization
         void saveToFile(wxFileOutputStream& fileout);

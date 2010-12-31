@@ -67,13 +67,13 @@ void RemoveOverlapping::perform()
             if (track->m_notes.isMarked(n2)) continue; // skip notes already removed
             
             // both notes have the same pitch, they are candidates for overlapping
-            if (track->m_notes[n1].pitchID == track->m_notes[n2].pitchID)
+            if (track->m_notes[n1].getPitchID() == track->m_notes[n2].getPitchID())
             {
-                const int from = std::min(track->m_notes[n1].startTick, track->m_notes[n2].startTick);
-                const int to = std::max(track->m_notes[n1].endTick, track->m_notes[n2].endTick);
+                const int from = std::min(track->m_notes[n1].getTick(), track->m_notes[n2].getTick());
+                const int to = std::max(track->m_notes[n1].getEndTick(), track->m_notes[n2].getEndTick());
                 // total length of both notes
-                const int length =  (track->m_notes[n1].endTick - track->m_notes[n1].startTick) +
-                (track->m_notes[n2].endTick - track->m_notes[n2].startTick);
+                const int length =  (track->m_notes[n1].getEndTick() - track->m_notes[n1].getTick()) +
+                (track->m_notes[n2].getEndTick() - track->m_notes[n2].getTick());
                 
                 // if difference between beginning of first note and ending of second note is smaller than their lengths, then the notes overlap
                 // if they both begin at the same tick they also overlap
