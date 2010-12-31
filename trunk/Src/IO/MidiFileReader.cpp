@@ -259,16 +259,25 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
             // ----------------------------------- program chnage -------------------------------------
             else if ( event->IsProgramChange() )
             {
+                const int instrument = event->GetPGValue();
+
                 programChanges++;
                 if (programChanges > 1)
                 {
-                    warnings.insert( _("This MIDI file plays several instruments on the same track; this is currently not supported by Aria Maestosa.") );
-                }
+                    int current = (channel == 9 ? ariaTrack->getDrumKit() : ariaTrack->getInstrument());
+                    
+                    // only warn if there are multiple _different_ instrument changes
+                    if (instrument != current)
+                    {
+                        warnings.insert( _("This MIDI file plays several instruments on the same track; this is currently not supported by Aria Maestosa.") );
                 
-                const int instrument = event->GetPGValue();
-
-                if (channel == 9)  ariaTrack->setDrumKit(instrument);
-                else               ariaTrack->setInstrument(instrument);
+                    }
+                }
+                else
+                {
+                    if (channel == 9)  ariaTrack->setDrumKit(instrument);
+                    else               ariaTrack->setInstrument(instrument);
+                }
 
                 continue;
             }
