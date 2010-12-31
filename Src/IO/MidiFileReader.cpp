@@ -15,17 +15,12 @@
  */
 
 #include "AriaCore.h"
+#include "GUI/GraphicalSequence.h"
 #include "IO/MidiFileReader.h"
 #include "IO/IOUtils.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
-#include "GUI/MainFrame.h"
-//#include "GUI/GraphicalTrack.h"
 #include "Midi/MeasureData.h"
-#include "Dialogs/WaitWindow.h"
-#include "Editors/DrumEditor.h"
-#include "Editors/KeyboardEditor.h"
-#include "Editors/ScoreEditor.h"
 
 #include "jdkmidi/world.h"
 #include "jdkmidi/track.h"
@@ -37,10 +32,7 @@
 
 #include <cmath>
 #include <string>
-
-// TODO: remove this include, this file should not need to know about wx controls
-#include <wx/textctrl.h>
-
+#include <wx/intl.h>
 
 bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std::set<wxString>& warnings)
 {
