@@ -127,7 +127,7 @@ int MeasureData::defaultMeasureLengthInTicks()
 #pragma mark Find Measure From Location
 #endif
 
-int MeasureData::measureAtTick(int tick)
+int MeasureData::measureAtTick(int tick) const
 {
     if (isMeasureLengthConstant())
     {
@@ -560,7 +560,7 @@ void MeasureData::afterImporting()
 #pragma mark -
 #endif
 
-int MeasureData::getTotalTickAmount()
+int MeasureData::getTotalTickAmount() const
 {
     if (isMeasureLengthConstant())
     {

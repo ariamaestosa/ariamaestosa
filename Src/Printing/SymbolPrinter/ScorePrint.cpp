@@ -316,9 +316,9 @@ namespace AriaMaestosa
     
     // -------------------------------------------------------------------------------------------
     
-    void renderSilenceCallback(GraphicalSequence*, const int duration, const int tick, const int type, const int silences_y,
+    void renderSilenceCallback(const Sequence*, const int duration, const int tick, const int type, const int silences_y,
                                const bool triplet, const bool dotted, const int dot_delta_x,
-                               const int dot_delta_y)
+                               const int dot_delta_y, void* userdata)
     {
         ASSERT( global_dc != NULL);
         
@@ -956,14 +956,14 @@ namespace AriaMaestosa
         std::cout << "[ScorePrintable] early setup : gathering silences\n";
         if (m_f_clef)
         {
-            m_silences_ticks = SilenceAnalyser::findSilences(track->graphics->getSequence(),
+            m_silences_ticks = SilenceAnalyser::findSilences(track->getSequence(),
                                                              f_clef_analyser, 0, measureAmount-1,
                                                              -1 /* y not important at this point */ );
         }
         if (m_g_clef)
         {
             std::vector< SilenceAnalyser::SilenceInfo > g_clef_silences =
-                    SilenceAnalyser::findSilences(track->graphics->getSequence(),
+                    SilenceAnalyser::findSilences(track->getSequence(),
                                                   g_clef_analyser, 0, measureAmount-1,
                                                   -1 /* y not important at this point */ );
             
@@ -1406,15 +1406,15 @@ namespace AriaMaestosa
         {
             const int silences_y = LEVEL_TO_Y(middle_c_level + 4);
             g_line_height = lineHeight;
-            SilenceAnalyser::findSilences(track->graphics->getSequence(), &renderSilenceCallback, lineAnalyser,
-                                          first_measure, last_measure, silences_y );
+            SilenceAnalyser::findSilences(track->getSequence(), &renderSilenceCallback, lineAnalyser,
+                                          first_measure, last_measure, silences_y, NULL );
         }
         else
         {
             const int silences_y = LEVEL_TO_Y(middle_c_level - 8);
             g_line_height = lineHeight;
-            SilenceAnalyser::findSilences(track->graphics->getSequence(), &renderSilenceCallback, lineAnalyser,
-                                          first_measure, last_measure, silences_y );
+            SilenceAnalyser::findSilences(track->getSequence(), &renderSilenceCallback, lineAnalyser,
+                                          first_measure, last_measure, silences_y, NULL );
         }
 
         

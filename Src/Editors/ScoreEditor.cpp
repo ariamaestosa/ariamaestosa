@@ -797,11 +797,14 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
 // ----------------------------------------------------------------------------------------------------------
 
 
-void renderSilence(GraphicalSequence* gseq, const int duration, const int tick, const int type,
+void renderSilence(const Sequence* seq, const int duration, const int tick, const int type,
                    const int silences_y, const bool triplet, const bool dotted,
-                   const int dot_delta_x, const int dot_delta_y)
+                   const int dot_delta_x, const int dot_delta_y, void* userData)
 {
     ASSERT_E(tick,>,-1);
+    
+    GraphicalSequence* gseq = (GraphicalSequence*)userData;
+    
     RelativeXCoord relX(tick, MIDI, gseq);
     const int x = relX.getRelativeTo(WINDOW) + 5;
     
@@ -1340,8 +1343,8 @@ void ScoreEditor::renderScore(ScoreAnalyser* analyser, const int silences_y)
     const unsigned int first_visible_measure = mb->measureAtPixel( Editor::getEditorXStart() );
     const unsigned int last_visible_measure  = mb->measureAtPixel( getXEnd() );
     
-    SilenceAnalyser::findSilences(m_gsequence, &renderSilence, analyser, first_visible_measure,
-                                  last_visible_measure, silences_y );
+    SilenceAnalyser::findSilences(m_sequence, &renderSilence, analyser, first_visible_measure,
+                                  last_visible_measure, silences_y, m_gsequence);
 
     // ------------------------- second note rendering pass -------------------
 

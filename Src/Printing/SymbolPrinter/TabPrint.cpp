@@ -125,7 +125,7 @@ void TablaturePrintable::earlySetup(const int trackID, Track* track)
     };
     
     TabSilenceProxy* adapter = new TabSilenceProxy(m_analyser, track->getSequence());
-    m_silences =  SilenceAnalyser::findSilences(track->graphics->getSequence(),
+    m_silences =  SilenceAnalyser::findSilences(track->getSequence(),
                                                 adapter,
                                                 0 /* first measure */,
                                                 md->getMeasureAmount() - 1 /* last measure */,
