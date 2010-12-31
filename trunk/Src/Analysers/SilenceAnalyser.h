@@ -22,7 +22,7 @@
 
 namespace AriaMaestosa
 {
-    class GraphicalSequence;
+    class Sequence;
     
     /**
       * @brief Contains the necessary to determine (score) silences from a bunch of notes
@@ -32,9 +32,10 @@ namespace AriaMaestosa
     {
     
         /** "Delegate" type used to give back silence information to caller of 'SilenceAnalyser::findSilences' */
-        typedef void(*RenderSilenceCallback)(GraphicalSequence* gseq, const int duration, const int tick,
+        typedef void(*RenderSilenceCallback)(const Sequence* gseq, const int duration, const int tick,
                                              const int type, const int silences_y, const bool triplet,
-                                             const bool dotted, const int dot_delta_x, const int dot_delta_y);
+                                             const bool dotted, const int dot_delta_x, const int dot_delta_y,
+                                             void* userData);
 
         /** Describes a silence */
         class SilenceInfo
@@ -103,14 +104,14 @@ namespace AriaMaestosa
         };
         
         /** finds all silences, and invokes a passed callback function for each of them */
-        void findSilences(GraphicalSequence* gseq, RenderSilenceCallback renderSilenceCallback,
+        void findSilences(const Sequence* seq, RenderSilenceCallback renderSilenceCallback,
                           INoteSource* noteSource, const int first_visible_measure,
-                          const int last_visible_measure, const int silences_y);
+                          const int last_visible_measure, const int silences_y, void* userdata);
         
         /** variant of the above, but instead of using a function callback it justs returns a vector
           * @note the returned vector is NOT ordered
           */
-        std::vector<SilenceInfo> findSilences(GraphicalSequence* gseq, INoteSource* noteSource,
+        std::vector<SilenceInfo> findSilences(const Sequence* seq, INoteSource* noteSource,
                                               const int first_visible_measure, const int last_visible_measure,
                                               const int silences_y);
         

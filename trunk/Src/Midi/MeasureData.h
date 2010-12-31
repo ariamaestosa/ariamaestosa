@@ -231,18 +231,17 @@ namespace AriaMaestosa
         MeasureData(Sequence* seq, int measureAmount);
         ~MeasureData();
         
-        
-        bool  isExpandedMode() const { return m_expanded_mode; }
-        int   getTotalTickAmount();
+        int   getTotalTickAmount()      const;
+        int   getMeasureAmount()        const { return m_measure_amount; }
+        int   getFirstMeasure()         const { return m_first_measure;  }        
+        int   measureAtTick(int tick)   const;
+        bool  isExpandedMode()          const { return m_expanded_mode;  }
         bool  isMeasureLengthConstant() const
         {
             return (not m_expanded_mode and m_time_sig_changes.size() == 1);
         }
         
-        int   getMeasureAmount() const { return m_measure_amount; }
         int   defaultMeasureLengthInTicks();
-        int   getFirstMeasure() const { return m_first_measure; }        
-        int   measureAtTick(int tick);
         int   measureLengthInTicks(int measure = -1) const;
         
         void  setFirstMeasure(int firstMeasureID);
