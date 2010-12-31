@@ -33,10 +33,10 @@ namespace AriaMaestosa
         OwnerPtr<MeasureBar>  m_measure_bar;
 
         // dock
-        ptr_vector<GraphicalTrack, REF> dock;
-        int dockHeight;
+        ptr_vector<GraphicalTrack, REF> m_dock;
+        int m_dock_height;
         
-        bool maximize_track_mode;
+        bool m_maximize_track_mode;
         
         float m_zoom; int m_zoom_percent;
         
@@ -48,10 +48,6 @@ namespace AriaMaestosa
         
         /** while reordering tracks, contains the vertical scrolling amount */
         int reorderYScroll;
-        
-        // FIXME(DESIGN): remove friendship
-        friend class GraphicalTrack;
-        friend class MainPane;
         
     public:
         
@@ -115,6 +111,16 @@ namespace AriaMaestosa
         MeasureBar* getMeasureBar() { return m_measure_bar; }
         
         Track* addTrack();
+        
+        bool isTrackMaximized ()         const { return m_maximize_track_mode; }
+        void setTrackMaximized(bool max)       { m_maximize_track_mode = max;  }
+        int  getDockHeight    ()         const { return m_dock_height;         }
+        
+        int  getDockedTrackAmount()      const { return m_dock.size();         }
+        GraphicalTrack* getDockedTrack(int id)          { return m_dock.get(id);        }
+        
+        
+        void setDockVisible(bool visible)      { m_dock_height = (visible ? 20 : 0) ; }
         
         /** @brief Called before loading, prepares empty tracks */
         void prepareEmptyTracksForLoading(int amount);

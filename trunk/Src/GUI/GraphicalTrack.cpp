@@ -513,7 +513,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         {
             Sequence* seq = m_gsequence->getModel();
 
-            if (not m_gsequence->maximize_track_mode)
+            if (not m_gsequence->isTrackMaximized())
             {
                 
                 // switch on maximize mode
@@ -530,7 +530,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                 }
                 m_gsequence->setYScroll(0);
                 DisplayFrame::updateVerticalScrollbar();
-                m_gsequence->maximize_track_mode = true;
+                m_gsequence->setTrackMaximized(true);
             }
             else
             {
@@ -543,14 +543,14 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                     track->graphics->maximizeHeight(false);
                 }
                 DisplayFrame::updateVerticalScrollbar();
-                m_gsequence->maximize_track_mode = false;
+                m_gsequence->setTrackMaximized(false);
             }
         }
         // dock button
         else if ( m_dock_toolbar->getItem(1).clickIsOnThisWidget(winX, mousey) )
         {
             // This button is disabled in maximized mode
-            if (not m_gsequence->maximize_track_mode)
+            if (not m_gsequence->isTrackMaximized())
             {
                 dock();
                 DisplayFrame::updateVerticalScrollbar();
@@ -849,7 +849,7 @@ void GraphicalTrack::maximizeHeight(bool maximize)
 {
     if (maximize)
     {
-        setHeight(Display::getHeight() - m_gsequence->dockHeight -
+        setHeight(Display::getHeight() - m_gsequence->getDockHeight() -
                   (m_gsequence->getModel()->getMeasureData()->isExpandedMode() ? 150 : 130)  ); // FIXME - don't hardcode values
     }
     else
@@ -985,7 +985,7 @@ void GraphicalTrack::selectNote(const int id, const bool selected, bool ignoreMo
 void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, const bool focus)
 {
     // mark 'dock' button as disabled when maximize mode is activated
-    m_dock_toolbar->getItem(1).setImageState(m_gsequence->maximize_track_mode ?
+    m_dock_toolbar->getItem(1).setImageState(m_gsequence->isTrackMaximized() ?
                                              AriaRender::STATE_GHOST :
                                              AriaRender::STATE_NORMAL );
     
@@ -1157,7 +1157,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
                                                      mgrid_triplet->getX() + 16, y + 30);
     
     // mark maximize mode as on if relevant
-    if (m_gsequence->maximize_track_mode)
+    if (m_gsequence->isTrackMaximized())
     {
         const int rectx = m_dock_toolbar->getItem(0).getX();
         AriaRender::hollow_rect(rectx, y+13, rectx+16, y+29);
