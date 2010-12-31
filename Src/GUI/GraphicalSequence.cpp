@@ -33,8 +33,8 @@ GraphicalSequence::GraphicalSequence(Sequence* s)
     m_measure_bar           = new MeasureBar(s->getMeasureData(), this);
     m_zoom                  = (128.0/(s->ticksPerBeat()*4));
     m_zoom_percent          = 100;
-    dockHeight              = 0;
-    maximize_track_mode     = false;
+    m_dock_height           = 0;
+    m_maximize_track_mode   = false;
     m_x_scroll_in_pixels    = 0;
     y_scroll                = 0;
     reorderYScroll          = 0;
@@ -338,7 +338,7 @@ void GraphicalSequence::reorderTracks()
 
 void GraphicalSequence::addToDock(GraphicalTrack* track)
 {
-    dock.push_back(track);
+    m_dock.push_back(track);
     
     m_sequence->setCurrentTrackID(0);
     
@@ -350,11 +350,11 @@ void GraphicalSequence::addToDock(GraphicalTrack* track)
 void GraphicalSequence::removeFromDock(GraphicalTrack* track)
 {
     
-    for (int n=0; n<dock.size(); n++)
+    for (int n=0; n<m_dock.size(); n++)
     {
-        if (&dock[n] == track)
+        if (&m_dock[n] == track)
         {
-            dock.remove( n );
+            m_dock.remove( n );
             return;
         }
     }
