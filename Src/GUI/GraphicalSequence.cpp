@@ -15,6 +15,8 @@
  */
 
 #include "GUI/GraphicalSequence.h"
+#include "GUI/MainFrame.h"
+#include "GUI/MainPane.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "irrXML/irrXML.h"
@@ -165,7 +167,7 @@ int GraphicalSequence::getTotalHeight() const
 
 void GraphicalSequence::renderTracks(int currentTick, RelativeXCoord mousex, int mousey, int mousey_initial, int from_y)
 {
-    const int draggedTrack = Display::getDraggedTrackID();
+    const int draggedTrack = getMainFrame()->getMainPane()->getDraggedTrackID();
     
     // draw tracks normally
     if (draggedTrack == -1)
@@ -289,8 +291,7 @@ bool GraphicalSequence::areMouseHeldDownEventsNeeded()
 void GraphicalSequence::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
                                       RelativeXCoord mousex_initial, int mousey_initial)
 {
-    // FIXME(DESIGN) - dragging tracks has nothing to do in the display
-    const int draggedTrack = Display::getDraggedTrackID();
+    const int draggedTrack = getMainFrame()->getMainPane()->getDraggedTrackID();
     
     // if reordering tracks
     if (draggedTrack != -1)
@@ -313,7 +314,7 @@ void GraphicalSequence::mouseHeldDown(RelativeXCoord mousex_current, int mousey_
 
 void GraphicalSequence::reorderTracks()
 {
-    const int draggedTrack = Display::getDraggedTrackID();
+    const int draggedTrack = getMainFrame()->getMainPane()->getDraggedTrackID();
     
     if (reordering_newPosition == draggedTrack) return;
     if (reordering_newPosition == -1)           return;
