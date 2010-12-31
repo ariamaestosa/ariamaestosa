@@ -144,17 +144,20 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
             else                              lastEventTick_inTrack = tick;
 
             const int channel = event->GetChannel();
-            if (channel != last_channel and last_channel != -1 and not event->IsMetaEvent() and
-               not event->IsTextEvent() and not event->IsTempo() and
-               not event->IsSystemMessage() and not event->IsSysEx())
+            if (channel != last_channel and last_channel != -1)
             {
                 if (event->IsNoteOn())
                 {
                     warnings.insert( _("This MIDI file has tracks that play on multiple MIDI channels. This is not supported by Aria Maestosa.") );
-                    ariaTrack->setChannel(channel);
-                    last_channel = channel;
+                    //ariaTrack->setChannel(channel);
+                    //last_channel = channel;
                 }
-
+                else if (not event->IsMetaEvent() and
+                         not event->IsTextEvent() and not event->IsTempo() and
+                         not event->IsSystemMessage() and not event->IsSysEx())
+                {
+                    warnings.insert( _("This MIDI file has a track that sends events on multiple MIDI channels. This is not supported by Aria Maestosa.") );
+                }
             }
 
             if (last_channel == -1 and not event->IsMetaEvent() and
