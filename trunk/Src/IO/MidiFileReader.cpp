@@ -280,6 +280,8 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                 {
                     if (channel == 9)  ariaTrack->setDrumKit(instrument);
                     else               ariaTrack->setInstrument(instrument);
+                    
+                    if (channel == 9)  ariaTrack->setNotationType(DRUM);
                 }
 
                 continue;
