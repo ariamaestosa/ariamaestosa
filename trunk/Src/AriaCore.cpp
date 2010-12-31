@@ -232,11 +232,6 @@ namespace AriaMaestosa
             mainPane->SetFocus();
         }
         
-        int getDraggedTrackID()
-        {
-            return mainPane->getDraggedTrackID();
-        }
-        
         void setPlaybackStartTick(const int tick)
         {
             mainPane->setPlaybackStartTick(tick);
