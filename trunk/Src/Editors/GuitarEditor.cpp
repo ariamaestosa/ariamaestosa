@@ -410,7 +410,7 @@ void GuitarEditor::moveNote(Note& note, const int relativeX, const int relativeY
         return;
     }
 
-    note.shiftString(relativeY);
+    note.setStringAndFret(note.getString() + relativeY, note.getFret());
 }
 
 // ----------------------------------------------------------------------------------------------------------
