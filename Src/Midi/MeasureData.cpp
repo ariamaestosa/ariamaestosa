@@ -41,8 +41,7 @@ MeasureData::MeasureData(Sequence* seq, int measureAmount)
     m_expanded_mode      = false;
     m_sequence           = seq;
     
-    m_time_sig_changes.push_back( new TimeSigChange(0,4,4) );
-    m_time_sig_changes[0].setTick(0);
+    m_time_sig_changes.push_back( new TimeSigChange(0,0,4,4) );
     
     updateVector(measureAmount);
 }
@@ -67,8 +66,7 @@ void MeasureData::setExpandedMode(bool arg_expanded)
         // remove all added events
         m_selected_time_sig = 0;
         m_time_sig_changes.clearAndDeleteAll();
-        m_time_sig_changes.push_back( new TimeSigChange(0, 4, 4) );
-        m_time_sig_changes[0].setTick(0);
+        m_time_sig_changes.push_back( new TimeSigChange(0, 0, 4, 4) );
     }
 
     m_expanded_mode = arg_expanded;
@@ -318,7 +316,7 @@ int MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means "
     // if there are no events, just add it. otherwise, add in time order.
     if (m_time_sig_changes.size() == 0)
     {
-        m_time_sig_changes.push_back( new TimeSigChange(measure, num, denom) );
+        m_time_sig_changes.push_back( new TimeSigChange(measure, -1, num, denom) );
         return m_time_sig_changes.size() - 1;
     }
     else
@@ -349,12 +347,12 @@ int MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means "
             {
                 if (num == -1 or denom == -1)
                 {
-                    m_time_sig_changes.add( new TimeSigChange(measure, m_time_sig_changes[n].getNum(),
-                                                          m_time_sig_changes[n].getDenom()), n );
+                    m_time_sig_changes.add( new TimeSigChange(measure, -1, m_time_sig_changes[n].getNum(),
+                                                              m_time_sig_changes[n].getDenom()), n );
                 }
                 else
                 {
-                    m_time_sig_changes.add( new TimeSigChange(measure, num, denom), n );
+                    m_time_sig_changes.add( new TimeSigChange(measure, -1, num, denom), n );
                 }
 
                 m_selected_time_sig = n;
@@ -365,12 +363,12 @@ int MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means "
                 // Append a new event at the end
                 if (num == -1 or denom == -1)
                 {
-                    m_time_sig_changes.add( new TimeSigChange(measure, m_time_sig_changes[n].getNum(),
+                    m_time_sig_changes.add( new TimeSigChange(measure, -1, m_time_sig_changes[n].getNum(),
                                                               m_time_sig_changes[n].getDenom()), n+1 );
                 }
                 else
                 {
-                    m_time_sig_changes.add( new TimeSigChange(measure, num, denom), n+1 );
+                    m_time_sig_changes.add( new TimeSigChange(measure, -1, num, denom), n + 1 );
                 }
                 
                 return m_time_sig_changes.size() - 1;
@@ -481,8 +479,7 @@ int measuresPassed;
 void MeasureData::beforeImporting()
 {
     m_time_sig_changes.clearAndDeleteAll();
-    m_time_sig_changes.push_back(new TimeSigChange(0,4,4));
-    m_time_sig_changes[0].setTick(0);
+    m_time_sig_changes.push_back(new TimeSigChange(0,0,4,4));
 
     last_event_tick = 0;
     measuresPassed = 0;
@@ -500,8 +497,7 @@ void MeasureData::addTimeSigChange_import(int tick, int num, int denom)
 
         if (m_time_sig_changes.size() == 0)
         {
-            m_time_sig_changes.push_back( new TimeSigChange(0, 4, 4) );
-            m_time_sig_changes[0].setTick(0);
+            m_time_sig_changes.push_back( new TimeSigChange(0, 0, 4, 4) );
         }
 
         // when an event already exists at the beginning, don't add another one, just modify it
@@ -531,12 +527,11 @@ void MeasureData::addTimeSigChange_import(int tick, int num, int denom)
                         );
     }
 
-    m_time_sig_changes.push_back( new TimeSigChange(measure, num, denom) );
+    m_time_sig_changes.push_back( new TimeSigChange(measure, tick, num, denom) );
 
     measuresPassed = measure;
 
     last_event_tick = tick;
-    m_time_sig_changes[m_time_sig_changes.size()-1].setTick(tick);
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -606,10 +601,10 @@ bool MeasureData::readFromFile(irr::io::IrrXMLReader* xml)
         const char* denom = xml->getAttributeValue("denom");
         if (denom != NULL)
         {
-            if (m_time_sig_changes.size()==0)
+            // add an event if one is not already there
+            if (m_time_sig_changes.size() == 0)
             {
-                m_time_sig_changes.push_back(new TimeSigChange(0,4,4) ); // add an event if one is not already there
-                m_time_sig_changes[0].setTick(0);
+                m_time_sig_changes.push_back(new TimeSigChange(0,0,4,4) );
             }
             m_time_sig_changes[0].setDenom( atoi( denom ) );
 
@@ -625,10 +620,10 @@ bool MeasureData::readFromFile(irr::io::IrrXMLReader* xml)
         const char* num = xml->getAttributeValue("num");
         if (num != NULL)
         {
-            if (m_time_sig_changes.size()==0)
+            if (m_time_sig_changes.size() == 0)
             {
-                m_time_sig_changes.push_back(new TimeSigChange(0,4,4)); // add an event if one is not already there
-                m_time_sig_changes[0].setTick(0);
+                // add an event if one is not already there
+                m_time_sig_changes.push_back(new TimeSigChange(0,0,4,4));
             }
             m_time_sig_changes[0].setNum( atoi( num ) );
 
