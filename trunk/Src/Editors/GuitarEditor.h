@@ -41,7 +41,7 @@ namespace AriaMaestosa
         
     public:
         
-        GuitarEditor(Track* track);
+        GuitarEditor(GraphicalTrack* track);
         ~GuitarEditor();
         
         void updatePosition(const int from_y, const int to_y, const int width, const int height, const int barHeight);

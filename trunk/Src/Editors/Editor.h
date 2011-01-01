@@ -133,7 +133,7 @@ namespace AriaMaestosa
         LEAK_CHECK();
         DECLARE_MAGIC_NUMBER();
         
-        Editor(Track* track);
+        Editor(GraphicalTrack* track);
         virtual ~Editor();
         
         static EditTool getCurrentTool();

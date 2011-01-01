@@ -57,13 +57,14 @@ using namespace AriaMaestosa;
 
 // ----------------------------------------------------------------------------------------------------------
 
-GuitarEditor::GuitarEditor(Track* track) : Editor(track)
+GuitarEditor::GuitarEditor(GraphicalTrack* track) : Editor(track)
 {
     m_mouse_is_in_editor = false;
-    m_clicked_on_note      = false;
-    m_last_clicked_note    = -1;
+    m_clicked_on_note    = false;
+    m_last_clicked_note  = -1;
 
     //FIXME: find why font sizes are different on wxMac, and fix those issues cleanly
+    // FIXME(DESIGN): move this along the other font preferences
 #ifndef __WXMAC__
     GuitarNoteNamesSingleton::getInstance()->setFont( wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, /*wxFONTWEIGHT_BOLD*/ wxFONTWEIGHT_NORMAL) );
 #endif
@@ -76,7 +77,7 @@ GuitarEditor::GuitarEditor(Track* track) : Editor(track)
     newTuning.push_back( Editor::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 3) );
     newTuning.push_back( Editor::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 2) );
     newTuning.push_back( Editor::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 2) );
-    track->getGuitarTuning()->setTuning(newTuning, false);
+    m_track->getGuitarTuning()->setTuning(newTuning, false);
     
     Editor::useVerticalScrollbar(false);
 }
@@ -384,11 +385,11 @@ void GuitarEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_
             std::min(mousey_current, mousey_initial) < getEditorYStart() + first_string_position + string*y_step and
             std::max(mousey_current, mousey_initial) > getEditorYStart() + first_string_position + string*y_step)
         {
-            m_track->getGraphics()->selectNote(n, true);
+            m_graphical_track->selectNote(n, true);
         }
         else
         {
-            m_track->getGraphics()->selectNote(n, false);
+            m_graphical_track->selectNote(n, false);
         }
     }//next
 }
@@ -456,8 +457,8 @@ NoteSearchResult GuitarEditor::noteAt(RelativeXCoord x, const int y, int& noteID
 
 void GuitarEditor::noteClicked(const int id)
 {
-    m_track->getGraphics()->selectNote(ALL_NOTES, false);
-    m_track->getGraphics()->selectNote(id, true);
+    m_graphical_track->selectNote(ALL_NOTES, false);
+    m_graphical_track->selectNote(id, true);
     m_track->playNote(id);
 }
 

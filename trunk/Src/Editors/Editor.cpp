@@ -41,14 +41,14 @@ using namespace AriaMaestosa;
 
 // ------------------------------------------------------------------------------------------------------------
 
-Editor::Editor(Track* track)
+Editor::Editor(GraphicalTrack* track)
 {
     m_y_step = 10;
 
-    m_track           = track;
-    m_sequence        = track->getSequence();
-    m_graphical_track = track->getGraphics();
-    m_gsequence       = track->getGraphics()->getSequence();
+    m_track           = track->getTrack();
+    m_sequence        = m_track->getSequence();
+    m_graphical_track = track;
+    m_gsequence       = track->getSequence();
 
     m_vertical_scrolling = false;
     m_click_on_scrollbar = false;
@@ -506,7 +506,7 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                 {
                     if (snapped_end < 0)
                     {
-                        m_track->getGraphics()->selectNote(ALL_NOTES, false);
+                        m_graphical_track->selectNote(ALL_NOTES, false);
                         goto end_of_func;
                     }
                     addNote( snapped_end, mousey_initial );
@@ -522,7 +522,7 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                     }
                     else if (snapped_start == snapped_end or snapped_start>snapped_end or snapped_start<0)
                     {
-                        m_track->getGraphics()->selectNote(ALL_NOTES, false);
+                        m_graphical_track->selectNote(ALL_NOTES, false);
                         goto end_of_func;
                     }
                     else

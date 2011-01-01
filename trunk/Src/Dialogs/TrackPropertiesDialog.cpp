@@ -17,6 +17,7 @@
 #include "AriaCore.h"
 #include "Dialogs/TrackPropertiesDialog.h"
 #include "Editors/Editor.h"
+#include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
 #include "Midi/DrumChoice.h"
 #include "Midi/InstrumentChoice.h"
@@ -97,7 +98,7 @@ namespace AriaMaestosa
         
         ptr_vector<BackgroundChoicePanel> m_choice_panels;
         
-        Track* m_parent;
+        GraphicalTrack* m_parent;
         
         int modalid;
         
@@ -110,13 +111,15 @@ namespace AriaMaestosa
         {
         }
         
-        TrackPropertiesDialog(Track* parent) :
+        TrackPropertiesDialog(GraphicalTrack* parent) :
         wxDialog(NULL, wxID_ANY,  _("Track Properties"), wxPoint(100,100), wxSize(700,300), wxCAPTION | wxCLOSE_BOX | wxSTAY_ON_TOP )
         {
             m_ignore_events = true;
             m_parent = parent;
             
-            Sequence* seq = parent->getSequence();
+            Track* parent_t = parent->getTrack();
+            
+            Sequence* seq = parent->getSequence()->getModel();
             
             modalid = -1;
             
@@ -127,7 +130,7 @@ namespace AriaMaestosa
             sizer->Add(properties_panel, 1, wxEXPAND | wxALL, 5);
             sizer->Add(buttonPane, 0, wxALL, 5);
             
-            Editor* editor = parent->getGraphics()->getCurrentEditor();
+            Editor* editor = parent->getCurrentEditor();
             
             wxBoxSizer* props_sizer = new wxBoxSizer(wxHORIZONTAL);
             
@@ -139,7 +142,7 @@ namespace AriaMaestosa
             {
                 Track* track = seq->getTrack(n);
                 bool enabled = true;
-                if (track == parent) enabled = false; // can't be background of itself
+                if (track == parent_t) enabled = false; // can't be background of itself
                 
                 bool activated = false;
                 if (editor->hasAsBackground(track)) activated = true;
@@ -204,7 +207,7 @@ namespace AriaMaestosa
         {
             Center();
             
-            Editor* editor = m_parent->getGraphics()->getCurrentEditor();
+            Editor* editor = m_parent->getCurrentEditor();
             volume_text->SetValue( to_wxString(editor->getDefaultVolume()) );
             volume_slider->SetValue( editor->getDefaultVolume() );
             
@@ -220,13 +223,13 @@ namespace AriaMaestosa
         // when OK button of the tuning picker is pressed
         void okButton(wxCommandEvent& evt)
         {
-            Editor* editor = m_parent->getGraphics()->getCurrentEditor();
+            Editor* editor = m_parent->getCurrentEditor();
             const int value = atoi_u(volume_text->GetValue());
             if (value >=0 and value < 128) editor->setDefaultVolume( value );
             else wxBell();
             
             const int amount = m_choice_panels.size();
-            Sequence* seq = m_parent->getSequence();
+            Sequence* seq = m_parent->getSequence()->getModel();
             
             editor->clearBackgroundTracks();
             
@@ -284,7 +287,7 @@ namespace AriaMaestosa
     {
         
         
-        void show(Track* parent)
+        void show(GraphicalTrack* parent)
         {
             TrackPropertiesDialog frame(parent);
             frame.show();

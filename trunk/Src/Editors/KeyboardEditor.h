@@ -36,7 +36,7 @@ namespace AriaMaestosa
         static const int Y_STEP_HEIGHT = 10;
                 
     public:
-        KeyboardEditor(Track* data);
+        KeyboardEditor(GraphicalTrack* data);
         virtual ~KeyboardEditor();
         
         /** event callback from base class */

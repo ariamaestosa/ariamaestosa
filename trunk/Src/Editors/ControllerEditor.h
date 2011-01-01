@@ -49,7 +49,7 @@ namespace AriaMaestosa
         
     public:
         
-        ControllerEditor(Track* track);
+        ControllerEditor(GraphicalTrack* track);
         ~ControllerEditor();
         
         virtual void render(RelativeXCoord mousex_current, int mousey_current,

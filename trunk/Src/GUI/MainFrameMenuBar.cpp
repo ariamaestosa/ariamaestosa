@@ -694,7 +694,7 @@ void MainFrame::menuEvent_deleteTrack(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_trackBackground(wxCommandEvent& evt)
 {
-    TrackProperties::show(getCurrentSequence()->getCurrentTrack());
+    TrackProperties::show(getCurrentGraphicalSequence()->getCurrentTrack());
 }
 
 // -----------------------------------------------------------------------------------------------------------
