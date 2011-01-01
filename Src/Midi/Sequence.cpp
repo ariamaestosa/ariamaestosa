@@ -87,7 +87,7 @@ Sequence::~Sequence()
 {
     if (okToLog)
     {
-        std::cout << "cleaning up sequence " << suggestTitle().mb_str() << "..." << std::endl;
+        std::cout << "[Sequence::~Sequence()] cleaning up sequence " << suggestTitle().mb_str() << "..." << std::endl;
     }
 }
 
@@ -721,7 +721,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
     const char* measureAmount_c = xml->getAttributeValue("measureAmount");
     if (measureAmount_c != NULL)
     {
-        std::cout << "measureAmount = " <<  atoi(measureAmount_c) << std::endl;
+        std::cout << "[Sequence::readFromFile] measureAmount = " <<  atoi(measureAmount_c) << std::endl;
         
         {
             ScopedMeasureTransaction tr(m_measure_data->startTransaction());

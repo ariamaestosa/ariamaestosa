@@ -116,7 +116,6 @@ Track::Track(Sequence* sequence)
 Track::~Track()
 {
 #ifdef _MORE_DEBUG_CHECKS
-    std::cout << "[Track::~Track] bye bye track " << m_track_unique_ID << "\n";
     m_track_unique_ID = -m_track_unique_ID;
 #endif
 }
