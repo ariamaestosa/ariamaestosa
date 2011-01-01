@@ -40,9 +40,6 @@ namespace AriaMaestosa
      */
     class LineTrackRef
     {
-        //FIXME(DESIGN): remove friendship
-        friend class LayoutLine;
-        
         LayoutLine* m_parent;
         int m_track_id;
         
@@ -124,6 +121,9 @@ namespace AriaMaestosa
             ASSERT(m_level_to != -1);
             return m_level_to;
         }
+        
+        void setLevelFrom(int l) { m_level_from = l; }
+        void setLevelTo  (int l) { m_level_to   = l; }
     };
     
     /**
