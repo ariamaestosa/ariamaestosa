@@ -667,7 +667,7 @@ void MainFrame::menuEvent_removeOverlapping(wxCommandEvent& evt)
 void MainFrame::menuEvent_addTrack(wxCommandEvent& evt)
 {
     //getCurrentSequence()->addTrack();
-    getCurrentSequence()->action( new Action::AddTrack(getCurrentGraphicalSequence()) );
+    getCurrentSequence()->action( new Action::AddTrack() );
     updateVerticalScrollbar();
 }
 
