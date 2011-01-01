@@ -170,7 +170,6 @@ class SequencerThread : public wxThread
     }
     ~SequencerThread()
     {
-        std::cout << "cleaning up sequencer" << std::endl;
         if (jdksequencer != NULL) delete jdksequencer;
         if (jdkmidiseq != NULL) delete jdkmidiseq;
     }

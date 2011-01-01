@@ -44,7 +44,6 @@ GraphicalSequence::GraphicalSequence(Sequence* s)
 
 void GraphicalSequence::createViewForTrack(Track* t)
 {
-    std::cout << "createViewForTrack " << t << " (" << t->getName().mb_str() << ") -- " << t->m_track_unique_ID << "\n";
     ASSERT(t->getSequence() == m_sequence);
     
     GraphicalTrack* deja = getGraphicsFor(t);
@@ -85,9 +84,7 @@ void GraphicalSequence::onTrackAdded(Track* t)
 // ----------------------------------------------------------------------------------------------------------
 
 void GraphicalSequence::onTrackRemoved(Track* t)
-{
-    std::cout << "[GraphicalSequence] Bye bye from " << t->m_track_unique_ID << "\n";
-    
+{    
     GraphicalTrack* gt = getGraphicsFor(t);
     ASSERT(gt != NULL);
     const bool success = m_gtracks.erase(gt);
