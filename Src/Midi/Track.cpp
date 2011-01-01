@@ -26,7 +26,6 @@
 #include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
 #include "GUI/MainFrame.h"
-#include "Pickers/MagneticGrid.h"
 
 #include "IO/IOUtils.h"
 #include "Midi/Track.h"
