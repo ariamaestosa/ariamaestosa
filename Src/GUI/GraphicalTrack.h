@@ -116,8 +116,8 @@ namespace AriaMaestosa
         GraphicalTrack(Track* track, GraphicalSequence* parent);
         ~GraphicalTrack();
         
-        int getEditorHeight();
-        int getTotalHeight();
+        int getEditorHeight() const { return m_height; }
+        int getTotalHeight () const;
         
         void renderHeader(const int x, const int y, const bool close, const bool focus=false);
         

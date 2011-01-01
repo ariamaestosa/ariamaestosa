@@ -438,19 +438,19 @@ void GraphicalTrack::createEditors()
 {
     ASSERT(m_all_editors.size() == 0); // function to be called once per object only
     
-    m_keyboard_editor = new KeyboardEditor(m_track);
+    m_keyboard_editor = new KeyboardEditor(this);
     m_all_editors.push_back(m_keyboard_editor);
     
-    m_guitar_editor = new GuitarEditor(m_track);
+    m_guitar_editor = new GuitarEditor(this);
     m_all_editors.push_back(m_guitar_editor);
     
-    m_drum_editor = new DrumEditor(m_track);
+    m_drum_editor = new DrumEditor(this);
     m_all_editors.push_back(m_drum_editor);
 
-    m_controller_editor = new ControllerEditor(m_track);
+    m_controller_editor = new ControllerEditor(this);
     m_all_editors.push_back(m_controller_editor);
 
-    m_score_editor = new ScoreEditor(m_track);
+    m_score_editor = new ScoreEditor(this);
     m_all_editors.push_back(m_score_editor);
 }
 
@@ -876,7 +876,7 @@ void GraphicalTrack::dock(const bool setDocked)
 
 // --------------------------------------------------------------------------------------------------
 
-int GraphicalTrack::getTotalHeight()
+int GraphicalTrack::getTotalHeight() const
 {
 
     if (m_docked) return 0;
@@ -890,13 +890,6 @@ int GraphicalTrack::getTotalHeight()
         return EXPANDED_BAR_HEIGHT + 50 + m_height;
     }
 
-}
-
-// --------------------------------------------------------------------------------------------------
-
-int GraphicalTrack::getEditorHeight()
-{
-    return m_height;
 }
 
 // --------------------------------------------------------------------------------------------------

@@ -186,7 +186,7 @@ static const wxString g_drum_names[] =
 };
 
 // ----------------------------------------------------------------------------------------------------------
-DrumEditor::DrumEditor(Track* track) : Editor(track), m_drum_names_renderer( g_drum_names, 96-27 )
+DrumEditor::DrumEditor(GraphicalTrack* track) : Editor(track), m_drum_names_renderer( g_drum_names, 96-27 )
 {
     m_sb_position          = 0;
     m_mouse_is_in_editor   = false;
@@ -493,8 +493,8 @@ NoteSearchResult DrumEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 
 void DrumEditor::noteClicked(const int id)
 {
-    m_track->getGraphics()->selectNote(ALL_NOTES, false);
-    m_track->getGraphics()->selectNote(id, true);
+    m_graphical_track->selectNote(ALL_NOTES, false);
+    m_graphical_track->selectNote(id, true);
     m_track->playNote(id);
 }
 
@@ -599,11 +599,11 @@ void DrumEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_cu
             drumy > std::min(mousey_current, mousey_initial) and
             drumy < std::max(mousey_current, mousey_initial))
         {
-            m_track->getGraphics()->selectNote(n, true);
+            m_graphical_track->selectNote(n, true);
         }
         else
         {
-            m_track->getGraphics()->selectNote(n, false);
+            m_graphical_track->selectNote(n, false);
         }
 
     }//next note
@@ -665,14 +665,14 @@ void DrumEditor::mouseDown(RelativeXCoord x, const int y)
                 // select none
                 else
                 {
-                    m_track->getGraphics()->selectNote(ALL_NOTES, false, true);
+                    m_graphical_track->selectNote(ALL_NOTES, false, true);
                 }
             }// end if section
         }
         else
         {
             // select none
-            m_track->getGraphics()->selectNote(ALL_NOTES, false, true);
+            m_graphical_track->selectNote(ALL_NOTES, false, true);
         }
     }
     

@@ -398,7 +398,7 @@ int ScoreMidiConverter::getMidiNoteForLevelAndSign(const unsigned int level, int
 #endif
 
 
-ScoreEditor::ScoreEditor(Track* track) : Editor(track)
+ScoreEditor::ScoreEditor(GraphicalTrack* track) : Editor(track)
 {
     m_g_clef = true;
     m_f_clef = true;
@@ -1539,8 +1539,8 @@ NoteSearchResult ScoreEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 
 void ScoreEditor::noteClicked(const int id)
 {
-    m_track->getGraphics()->selectNote(ALL_NOTES, false);
-    m_track->getGraphics()->selectNote(id, true);
+    m_graphical_track->selectNote(ALL_NOTES, false);
+    m_graphical_track->selectNote(id, true);
     m_track->playNote(id);
 }
 
@@ -1611,11 +1611,11 @@ void ScoreEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_c
             std::min(mousey_current, mousey_initial) < note_y and
             std::max(mousey_current, mousey_initial) > note_y)
         {
-            m_track->getGraphics()->selectNote(n, true);
+            m_graphical_track->selectNote(n, true);
         }
         else
         {
-            m_track->getGraphics()->selectNote(n, false);
+            m_graphical_track->selectNote(n, false);
         }
 
     }

@@ -21,7 +21,7 @@
 
 namespace AriaMaestosa
 {
-    class Track;
+    class GraphicalTrack;
     
     /**
       * @ingroup dialogs
@@ -29,7 +29,7 @@ namespace AriaMaestosa
       */
     namespace TrackProperties
     {
-        void show(Track* parent);
+        void show(GraphicalTrack* parent);
     }
 }
 

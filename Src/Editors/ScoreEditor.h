@@ -179,7 +179,7 @@ namespace AriaMaestosa
         
     public:
         
-        ScoreEditor(Track* track);
+        ScoreEditor(GraphicalTrack* track);
         ~ScoreEditor();
 
         ScoreMidiConverter* getScoreMidiConverter() { return m_converter; }

@@ -58,7 +58,7 @@ namespace AriaMaestosa
 
     public:
         
-        DrumEditor(Track* track);
+        DrumEditor(GraphicalTrack* track);
         ~DrumEditor();
         
         void useCustomDrumSet();

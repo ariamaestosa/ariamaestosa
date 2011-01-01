@@ -194,7 +194,7 @@ int GraphicalSequence::getTotalHeight() const
     const int count = m_sequence->getTrackAmount();
     for (int n=0; n<count; n++)
     {
-        totalHeight += m_sequence->getTrack(n)->getGraphics()->getTotalHeight() + 10;
+        totalHeight += getGraphicsFor(m_sequence->getTrack(n))->getTotalHeight() + 10;
     }
     
     if (m_sequence->getMeasureData()->isExpandedMode()) totalHeight += 20;
@@ -228,7 +228,7 @@ void GraphicalSequence::renderTracks(int currentTick, RelativeXCoord mousex, int
         {
             Track* track = m_sequence->getTrack(n);
             track->setId(n);
-            y = track->getGraphics()->render(y, currentTick, (n == currentTrack));
+            y = getGraphicsFor(track)->render(y, currentTick, (n == currentTrack));
         }
         
     }
@@ -243,10 +243,10 @@ void GraphicalSequence::renderTracks(int currentTick, RelativeXCoord mousex, int
         for (int trackid=draggedTrack-1; trackid>=0; trackid--)
         {
             Track* track = m_sequence->getTrack(trackid);
-            if (track->getGraphics()->isDocked()) continue;
+            if (getGraphicsFor(track)->isDocked()) continue;
             
             first_y =  mousey_initial - (draggedTrack - trackid)*50 - reorderYScroll;
-            track->getGraphics()->renderHeader(0, first_y, true);
+            getGraphicsFor(track)->renderHeader(0, first_y, true);
             if (mousey < mousey_initial - (draggedTrack-trackid)*50+25 - reorderYScroll) reordering_newPosition=trackid;
         }
         
@@ -257,7 +257,7 @@ void GraphicalSequence::renderTracks(int currentTick, RelativeXCoord mousex, int
         for (int trackid=draggedTrack+1; trackid<trackCount; trackid++)
         {
             Track* track = m_sequence->getTrack(trackid);
-            if (track->getGraphics()->isDocked()) continue;
+            if (getGraphicsFor(track)->isDocked()) continue;
             
             last_y = mousey_initial + (trackid - draggedTrack)*50 - reorderYScroll;
             track->getGraphics()->renderHeader(0, last_y, true);
@@ -347,11 +347,12 @@ void GraphicalSequence::mouseHeldDown(RelativeXCoord mousex_current, int mousey_
     }
     
     // dispatch event to all tracks
+    // FIXME(DESIGN): simplify this code (and other loops in this file) by iterating directly on graphical tracks
     const int trackAmount = m_sequence->getTrackAmount();
     for (int n=0; n<trackAmount; n++)
     {
-        m_sequence->getTrack(n)->getGraphics()->getCurrentEditor()->mouseHeldDown(mousex_current, mousey_current,
-                                                                                  mousex_initial, mousey_initial);
+        getGraphicsFor(m_sequence->getTrack(n))->getCurrentEditor()->mouseHeldDown(mousex_current, mousey_current,
+                                                                                   mousex_initial, mousey_initial);
     }//next
     
 }
@@ -419,7 +420,7 @@ void GraphicalSequence::removeFromDock(GraphicalTrack* track)
 
 void GraphicalSequence::selectAll()
 {
-    m_sequence->getCurrentTrack()->getGraphics()->selectNote(ALL_NOTES, true, true);
+    getGraphicsFor(m_sequence->getCurrentTrack())->selectNote(ALL_NOTES, true, true);
     if (m_sequence->m_seq_data_listener != NULL) m_sequence->m_seq_data_listener->onSequenceDataChanged();
 }
 
@@ -427,7 +428,7 @@ void GraphicalSequence::selectAll()
 
 void GraphicalSequence::selectNone()
 {
-    m_sequence->getCurrentTrack()->getGraphics()->selectNote(ALL_NOTES, false, true);
+    getGraphicsFor(m_sequence->getCurrentTrack())->selectNote(ALL_NOTES, false, true);
     if (m_sequence->m_seq_data_listener != NULL) m_sequence->m_seq_data_listener->onSequenceDataChanged();
 }
 
