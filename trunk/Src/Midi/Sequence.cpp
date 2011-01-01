@@ -388,11 +388,11 @@ bool Sequence::somethingToUndo()
 #pragma mark Tracks
 #endif
 
-Track* Sequence::addTrack()
+Track* Sequence::addTrack(bool belowActive)
 {
     Track* result = new Track(this);
     
-    if (currentTrack >= 0 and currentTrack < tracks.size())
+    if (belowActive and currentTrack >= 0 and currentTrack < tracks.size())
     {
         // add new track below active one
         tracks.add(result, currentTrack+1);
@@ -404,6 +404,12 @@ Track* Sequence::addTrack()
     
     if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
     
+    const int count = m_listeners.size();
+    for (int n=0; n<count; n++)
+    {
+        m_listeners.get(n)->onTrackAdded(result);
+    }
+    
     return result;
 }
 
@@ -412,7 +418,34 @@ Track* Sequence::addTrack()
 void Sequence::addTrack(Track* track)
 {
     tracks.push_back(track);
+    
     if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
+    const int count = m_listeners.size();
+    for (int n=0; n<count; n++)
+    {
+        m_listeners.get(n)->onTrackAdded(track);
+    }
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void Sequence::prepareEmptyTracksForLoading(int amount)
+{
+    const int tc = tracks.size();
+    const int count = m_listeners.size();
+    for (int n=0; n<count; n++)
+    {
+        for (int m=0; m<tc; m++)
+        {
+            m_listeners.get(n)->onTrackRemoved( tracks.get(m) );
+        }
+    }
+    
+    clear();
+    for (int n=0; n<amount; n++)
+    {
+        addTrack();
+    }
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -427,6 +460,13 @@ Track* Sequence::removeSelectedTrack()
     while (currentTrack > tracks.size()-1) currentTrack -= 1;
 
     if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
+    
+    const int count = m_listeners.size();
+    for (int n=0; n<count; n++)
+    {
+        m_listeners.get(n)->onTrackRemoved(removedTrack);
+    }
+    
     return removedTrack;
 }
 
@@ -438,6 +478,13 @@ void Sequence::deleteTrack(int id)
     ASSERT_E(id,<,tracks.size());
 
     tracks[id].notifyOthersIWillBeRemoved();
+    
+    const int count = m_listeners.size();
+    for (int n=0; n<count; n++)
+    {
+        m_listeners.get(n)->onTrackRemoved(tracks.get(id));
+    }
+    
     tracks.erase( id );
 
     while (currentTrack > tracks.size()-1) currentTrack -= 1;
@@ -448,6 +495,13 @@ void Sequence::deleteTrack(int id)
 void Sequence::deleteTrack(Track* track)
 {
     track->notifyOthersIWillBeRemoved();
+    
+    const int count = m_listeners.size();
+    for (int n=0; n<count; n++)
+    {
+        m_listeners.get(n)->onTrackRemoved(track);
+    }
+    
     tracks.erase( track );
     
     while (currentTrack > tracks.size()-1) currentTrack -= 1;
@@ -624,7 +678,19 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
 bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
 {
     importing = true;
+    
+    const int tc = tracks.size();
+    const int count = m_listeners.size();
+    for (int n=0; n<count; n++)
+    {
+        for (int m=0; m<tc; m++)
+        {
+            m_listeners.get(n)->onTrackRemoved( tracks.get(m) );
+        }
+    }
+    
     tracks.clearAndDeleteAll();
+    
     m_measure_data->beforeImporting();
 
     ASSERT (strcmp("sequence", xml->getNodeName()) == 0);
@@ -770,7 +836,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                 else if (strcmp("track", xml->getNodeName()) == 0)
                 {
                     Track* newTrack = new Track(this);
-                    tracks.push_back( newTrack );
+                    addTrack( newTrack );
                     
                     if (not newTrack->readFromFile(xml, gseq)) return false;
                 }

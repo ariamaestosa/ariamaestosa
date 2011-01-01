@@ -64,18 +64,18 @@ void MoveNotes::undo()
             if (m_move_mode == SCORE_VERTICAL or m_move_mode == DRUMS_VERTICAL)
             {
                 current_note->setPitchID( undo_pitch[n] );
-                track->graphics->getCurrentEditor()->moveNote(*current_note, -m_relativeX, 0);
+                track->getGraphics()->getCurrentEditor()->moveNote(*current_note, -m_relativeX, 0);
                 n++;
             }
             else if (m_move_mode == GUITAR_VERTICAL)
             {
                 current_note->setStringAndFret(undo_fret[n], undo_string[n]);
-                track->graphics->getCurrentEditor()->moveNote(*current_note, -m_relativeX, 0);
+                track->getGraphics()->getCurrentEditor()->moveNote(*current_note, -m_relativeX, 0);
                 n++;
             }
             else
             {
-                track->graphics->getCurrentEditor()->moveNote(*current_note, -m_relativeX, -m_relativeY);
+                track->getGraphics()->getCurrentEditor()->moveNote(*current_note, -m_relativeX, -m_relativeY);
             }
         }
         track->reorderNoteVector();
@@ -157,7 +157,7 @@ void MoveNotes::doMoveOneNote(const int noteID)
         undo_string.push_back( track->m_notes[noteID].getStringConst() );
     }
 
-    track->graphics->getCurrentEditor()->moveNote(track->m_notes[noteID], m_relativeX, m_relativeY);
+    track->getGraphics()->getCurrentEditor()->moveNote(track->m_notes[noteID], m_relativeX, m_relativeY);
     relocator.rememberNote( track->m_notes[noteID] );
 }
 

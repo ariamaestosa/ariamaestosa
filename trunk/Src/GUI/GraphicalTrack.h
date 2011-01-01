@@ -129,8 +129,8 @@ namespace AriaMaestosa
         bool isCollapsed() const { return m_collapsed; }
         bool isDocked   () const { return m_docked;    }
         
-        Track* getTrack()        { return m_track;     }
-        
+        Track* getTrack()                { return m_track;     }
+        const Track* getTrack() const     { return m_track;     }
         GraphicalSequence* getSequence()  { return m_gsequence;  }
                 
         /**
@@ -141,12 +141,17 @@ namespace AriaMaestosa
         Editor* getCurrentEditor();
         
         // editors
-        KeyboardEditor*     getKeyboardEditor()   { return m_keyboard_editor;   }
-        GuitarEditor*       getGuitarEditor()     { return m_guitar_editor;     }
-        DrumEditor*         getDrumEditor()       { return m_drum_editor;       }
+              KeyboardEditor* getKeyboardEditor()       { return m_keyboard_editor;   }
+        const KeyboardEditor* getKeyboardEditor() const { return m_keyboard_editor;   }
+              GuitarEditor*   getGuitarEditor  ()       { return m_guitar_editor;     }
+        const GuitarEditor*   getGuitarEditor  () const { return m_guitar_editor;     }
+              DrumEditor*     getDrumEditor    ()       { return m_drum_editor;       }
+        const DrumEditor*     getDrumEditor    () const { return m_drum_editor;       }
+              ScoreEditor*    getScoreEditor   ()       { return m_score_editor;      }
+        const ScoreEditor*    getScoreEditor   () const { return m_score_editor;      }
+
         ControllerEditor*   getControllerEditor() { return m_controller_editor; }
-        ScoreEditor*        getScoreEditor()      { return m_score_editor;      }
-                
+
         void dock(const bool dock=true);
         
         bool mouseWheelMoved(int x, int y, int value);

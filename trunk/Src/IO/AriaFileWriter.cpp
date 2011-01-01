@@ -47,7 +47,7 @@ namespace AriaMaestosa
         
         irr::io::IrrXMLReader* xml = irr::io::createIrrXMLReader( (char*)output.data() );
         
-        if (! sequence->readFromFile(xml) )
+        if (not sequence->readFromFile(xml))
         {
             std::cout << "LOADING SEQUENCE FAILED" << std::endl;
             delete xml;

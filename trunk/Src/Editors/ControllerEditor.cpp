@@ -186,7 +186,7 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     renderEvents();
 
     // ----------------------- add controller events (preview) -------------------
-    if (m_track->graphics->isDragResize()) m_has_been_resizing = true;
+    if (m_track->getGraphics()->isDragResize()) m_has_been_resizing = true;
 
     const bool on_off = m_controller_choice->isOnOffController( m_controller_choice->getControllerID() );
     if (m_mouse_is_in_editor and m_selection_begin == -1 and not on_off)
@@ -266,7 +266,7 @@ void ControllerEditor::mouseDown(RelativeXCoord x, const int y)
     }
 
     if (x.getRelativeTo(WINDOW) < Editor::getEditorXStart() and y > getEditorYStart() and
-        not m_track->graphics->isCollapsed() )
+        not m_track->getGraphics()->isCollapsed() )
     {
         Display::popupMenu(m_controller_choice,x.getRelativeTo(WINDOW),y+15);
     }
@@ -331,7 +331,7 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
 
             if (mousey_initial < area_from_y) return;
             if (mousey_initial > area_to_y)   return;
-            if (m_track->graphics->isDragResize() or m_has_been_resizing) return;
+            if (m_track->getGraphics()->isDragResize() or m_has_been_resizing) return;
             if (mousey_current < area_from_y) mousey_current=area_from_y;
             if (mousey_current > area_to_y) mousey_current=area_to_y;
 

@@ -120,7 +120,7 @@ namespace AriaMaestosa
         bool goingInFlats() const { return m_going_in_flats; }
         
         int  getMiddleCLevel() const { return m_middle_C_level; }
-        int  getScoreCenterCLevel();
+        int  getScoreCenterCLevel() const;
         int  getOctaveShift() const { return m_octave_shift; }
         
         /** @return what sign should appear next to the key for this note? (FLAT, SHARP or PITCH_SIGN_NONE) */
@@ -183,7 +183,8 @@ namespace AriaMaestosa
         ~ScoreEditor();
 
         ScoreMidiConverter* getScoreMidiConverter() { return m_converter; }
-        
+        const ScoreMidiConverter* getScoreMidiConverter() const { return m_converter; }
+
         void enableFClef(bool enabled);
         void enableGClef(bool enabled);
         

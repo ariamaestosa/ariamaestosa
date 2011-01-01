@@ -384,11 +384,11 @@ void GuitarEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_
             std::min(mousey_current, mousey_initial) < getEditorYStart() + first_string_position + string*y_step and
             std::max(mousey_current, mousey_initial) > getEditorYStart() + first_string_position + string*y_step)
         {
-            m_track->graphics->selectNote(n, true);
+            m_track->getGraphics()->selectNote(n, true);
         }
         else
         {
-            m_track->graphics->selectNote(n, false);
+            m_track->getGraphics()->selectNote(n, false);
         }
     }//next
 }
@@ -456,8 +456,8 @@ NoteSearchResult GuitarEditor::noteAt(RelativeXCoord x, const int y, int& noteID
 
 void GuitarEditor::noteClicked(const int id)
 {
-    m_track->graphics->selectNote(ALL_NOTES, false);
-    m_track->graphics->selectNote(id, true);
+    m_track->getGraphics()->selectNote(ALL_NOTES, false);
+    m_track->getGraphics()->selectNote(id, true);
     m_track->playNote(id);
 }
 

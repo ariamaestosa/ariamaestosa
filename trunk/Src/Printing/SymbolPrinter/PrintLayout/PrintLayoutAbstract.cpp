@@ -439,7 +439,7 @@ void PrintLayoutAbstract::calculateRelativeLengths(std::vector<LayoutElement>& l
                 EditorPrintable* editorPrintable = m_sequence->getEditorPrintable( i );
                 ASSERT( editorPrintable != NULL );
                 
-                editorPrintable->addUsedTicks(meas, i, meas.getTrackRef(i), ticks_relative_position);
+                editorPrintable->addUsedTicks(meas, i, meas.getWritableTrackRef(i), ticks_relative_position);
             }
             
             ticks_relative_position.calculateRelativePlacement();

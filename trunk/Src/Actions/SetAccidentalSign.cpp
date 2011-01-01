@@ -74,7 +74,7 @@ void SetAccidentalSign::perform()
         m_original_signs.push_back( track->m_notes[n].getPreferredAccidentalSign() );
         m_pitch.push_back( track->m_notes[n].getPitchID() );
 
-        track->graphics->getScoreEditor()->setNoteSign(m_sign, n);
+        track->getGraphics()->getScoreEditor()->setNoteSign(m_sign, n);
         relocator.rememberNote( track->m_notes[n] );
 
         if (not played)

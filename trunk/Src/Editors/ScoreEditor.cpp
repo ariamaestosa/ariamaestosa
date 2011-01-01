@@ -128,9 +128,9 @@ void ScoreMidiConverter::setOctaveShift(int octaves)
 
 // ----------------------------------------------------------------------------------------------------------
 
-int ScoreMidiConverter::getScoreCenterCLevel()
+int ScoreMidiConverter::getScoreCenterCLevel() const
 {
-    if (m_octave_shift == 1)       return m_ottava_alta_C_level;
+    if      (m_octave_shift == 1)  return m_ottava_alta_C_level;
     else if (m_octave_shift == -1) return m_ottava_bassa_C_level;
 
     return m_middle_C_level;
@@ -1539,8 +1539,8 @@ NoteSearchResult ScoreEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 
 void ScoreEditor::noteClicked(const int id)
 {
-    m_track->graphics->selectNote(ALL_NOTES, false);
-    m_track->graphics->selectNote(id, true);
+    m_track->getGraphics()->selectNote(ALL_NOTES, false);
+    m_track->getGraphics()->selectNote(id, true);
     m_track->playNote(id);
 }
 
@@ -1611,11 +1611,11 @@ void ScoreEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_c
             std::min(mousey_current, mousey_initial) < note_y and
             std::max(mousey_current, mousey_initial) > note_y)
         {
-            m_track->graphics->selectNote(n, true);
+            m_track->getGraphics()->selectNote(n, true);
         }
         else
         {
-            m_track->graphics->selectNote(n, false);
+            m_track->getGraphics()->selectNote(n, false);
         }
 
     }

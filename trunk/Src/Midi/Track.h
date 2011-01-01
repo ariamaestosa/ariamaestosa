@@ -204,16 +204,14 @@ namespace AriaMaestosa
         NotationType m_editor_mode;
 
         ITrackListener* m_listener;
-        
-        int m_track_unique_ID;
-
+    
     public:
+        
+#ifdef _MORE_DEBUG_CHECKS
+        int m_track_unique_ID;
+#endif
+        
         LEAK_CHECK();
-                
-        // ------------- read-only -------------
-        // FIXME(DESIGN): it should be the graphics that refer to the data, not the data holding the graphics!
-        OwnerPtr<GraphicalTrack>  graphics;
-        // -------------------------------------
         
         Track(Sequence* sequence);
         ~Track();
@@ -352,6 +350,9 @@ namespace AriaMaestosa
         void markNoteToBeRemoved(const int id);
         void removeMarkedNotes();
         
+        GraphicalTrack* getGraphics();
+        const GraphicalTrack* getGraphics() const;
+
         /** 
          * @param id ID of the note to get the string of
          * @return   The string number of the specified note.

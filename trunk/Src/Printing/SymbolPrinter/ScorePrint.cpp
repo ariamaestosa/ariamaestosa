@@ -399,7 +399,7 @@ namespace AriaMaestosa
 #define VERBOSE 0
     
     void ScorePrintable::addUsedTicks(const PrintLayoutMeasure& measure, const int trackID,
-                                      const MeasureTrackReference& trackRef,
+                                      MeasureTrackReference& trackRef,
                                       RelativePlacementManager& ticks_relative_position)
     {
         const int measureFromTick = measure.getFirstTick();
@@ -410,8 +410,8 @@ namespace AriaMaestosa
                   << measureFromTick << ", to " << measureToTick << "\n{\n";
 #endif
         
-        const Track* track = trackRef.getConstTrack();
-        ScoreEditor* scoreEditor = track->graphics->getScoreEditor();
+        Track* track = trackRef.getTrack();
+        ScoreEditor* scoreEditor = track->getGraphics()->getScoreEditor();
         
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         converter->updateConversionData();
@@ -602,8 +602,8 @@ namespace AriaMaestosa
         lineTrack.editor_data = scoreData;
         
         const Track* track = lineTrack.getTrack();
-        ScoreEditor* scoreEditor = track->graphics->getScoreEditor();
-        ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
+        const ScoreEditor* scoreEditor = track->getGraphics()->getScoreEditor();
+        const ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         
         // ---- Determine the y level of the highest and the lowest note
         const int fromMeasure = line.getFirstMeasure();
@@ -828,7 +828,7 @@ namespace AriaMaestosa
     
     void ScorePrintable::earlySetup(const int trackID, Track* track)
     {
-        ScoreEditor* scoreEditor = track->graphics->getScoreEditor();
+        ScoreEditor* scoreEditor = track->getGraphics()->getScoreEditor();
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         
         MeasureData* measures = track->getSequence()->getMeasureData();
@@ -1005,8 +1005,8 @@ namespace AriaMaestosa
             std::cout << "}\n";
         }
         */
-        ScoreEditor* scoreEditor = track->graphics->getScoreEditor();
-        ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
+        const ScoreEditor* scoreEditor = track->getGraphics()->getScoreEditor();
+        const ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         const int middle_c_level = converter->getScoreCenterCLevel();
         const int first_score_level = middle_c_level + (f_clef? 2 : -10);
         const int last_score_level = first_score_level + 8;
@@ -1212,7 +1212,7 @@ namespace AriaMaestosa
             }
             
             // also show ottava bassa/alta if relevant
-            const int octave_shift = track->graphics->getScoreEditor()->getScoreMidiConverter()->getOctaveShift(); // FIXME - woot
+            const int octave_shift = track->getGraphics()->getScoreEditor()->getScoreMidiConverter()->getOctaveShift(); // FIXME - woot
             if (octave_shift > 0)
             {
                 dc.SetTextForeground( wxColour(0,0,0) );

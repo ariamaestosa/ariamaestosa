@@ -78,6 +78,15 @@ namespace AriaMaestosa
         virtual void onSequenceDataChanged() = 0;
     };
     
+    class ITrackSetListener
+    {
+    public:
+        virtual ~ITrackSetListener() {}
+        
+        virtual void onTrackAdded(Track* t) = 0;
+        virtual void onTrackRemoved(Track* t) = 0;
+    };
+    
     /**
       * @brief This is a midi Sequence, or a "file".
       *
@@ -134,6 +143,8 @@ namespace AriaMaestosa
         /** if no scrolling is done, this value will be used to determine where to place notes */
         int m_notes_shift_when_no_scrolling;
         
+        ptr_vector<ITrackSetListener, REF> m_listeners;
+        
      public:
 
         LEAK_CHECK();
@@ -153,6 +164,8 @@ namespace AriaMaestosa
                  ISequenceDataListener* sequenceDataListener, IMeasureDataListener* measureListener,
                  bool addDefautTrack);
         ~Sequence();
+        
+        void addTrackSetListener(ITrackSetListener* l) { m_listeners.push_back(l); }
         
         /**
          * @brief perform an action that affects multiple tracks
@@ -203,7 +216,7 @@ namespace AriaMaestosa
           *         a track, use the corresponding Action instead.
           * @return a pointer to the added track
           */
-        Track* addTrack();
+        Track* addTrack(bool belowActive = true);
         
         /** 
           * @brief Adds an existing track to the sequence.
@@ -213,6 +226,9 @@ namespace AriaMaestosa
           */
         void addTrack(Track* track);
         
+        /** @brief Called before loading, prepares empty tracks */
+        void prepareEmptyTracksForLoading(int amount);
+
         /** 
           * @brief  Removes (but does not delete) the currently selected track.
           * @return the removed track

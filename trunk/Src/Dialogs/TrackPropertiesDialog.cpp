@@ -127,7 +127,7 @@ namespace AriaMaestosa
             sizer->Add(properties_panel, 1, wxEXPAND | wxALL, 5);
             sizer->Add(buttonPane, 0, wxALL, 5);
             
-            Editor* editor = parent->graphics->getCurrentEditor();
+            Editor* editor = parent->getGraphics()->getCurrentEditor();
             
             wxBoxSizer* props_sizer = new wxBoxSizer(wxHORIZONTAL);
             
@@ -204,7 +204,7 @@ namespace AriaMaestosa
         {
             Center();
             
-            Editor* editor = m_parent->graphics->getCurrentEditor();
+            Editor* editor = m_parent->getGraphics()->getCurrentEditor();
             volume_text->SetValue( to_wxString(editor->getDefaultVolume()) );
             volume_slider->SetValue( editor->getDefaultVolume() );
             
@@ -220,7 +220,7 @@ namespace AriaMaestosa
         // when OK button of the tuning picker is pressed
         void okButton(wxCommandEvent& evt)
         {
-            Editor* editor = m_parent->graphics->getCurrentEditor();
+            Editor* editor = m_parent->getGraphics()->getCurrentEditor();
             const int value = atoi_u(volume_text->GetValue());
             if (value >=0 and value < 128) editor->setDefaultVolume( value );
             else wxBell();

@@ -85,7 +85,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
         else real_track_amount++;
     }
 
-    gseq->prepareEmptyTracksForLoading(real_track_amount /*16*/);
+    sequence->prepareEmptyTracksForLoading(real_track_amount /*16*/);
         
      // ----------------------------------- for each track -------------------------------------
     int realTrackID=-1;

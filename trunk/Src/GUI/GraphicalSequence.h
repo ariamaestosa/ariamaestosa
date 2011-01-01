@@ -19,15 +19,15 @@
 
 #include "GUI/GraphicalTrack.h"
 #include "GUI/MeasureBar.h"
+#include "Midi/Sequence.h"
 #include "ptr_vector.h"
 #include <math.h> // for "round"
 
 namespace AriaMaestosa
 {
-    class Sequence;
     class MainPane;
-    
-    class GraphicalSequence
+
+    class GraphicalSequence : public ITrackSetListener
     {
         OwnerPtr<Sequence> m_sequence;
         OwnerPtr<MeasureBar>  m_measure_bar;
@@ -35,6 +35,8 @@ namespace AriaMaestosa
         // dock
         ptr_vector<GraphicalTrack, REF> m_dock;
         int m_dock_height;
+        
+        ptr_vector<GraphicalTrack, HOLD> m_gtracks;
         
         bool m_maximize_track_mode;
         
@@ -49,6 +51,8 @@ namespace AriaMaestosa
         /** while reordering tracks, contains the vertical scrolling amount */
         int reorderYScroll;
         
+        void createViewForTrack(Track* t);
+
     public:
         
         /** 
@@ -58,6 +62,11 @@ namespace AriaMaestosa
         int x_scroll_upon_copying; // TODO: make private
         
         GraphicalSequence(Sequence* sequence);
+        
+        /**
+          * @param id  ID of the track to create graphics for, or -1 to create graphics for all tracks
+          */
+        void createViewForTracks(int id);
         
         Sequence* getModel() { return m_sequence; }
         const Sequence* getModel() const { return m_sequence.raw_ptr; }
@@ -109,21 +118,25 @@ namespace AriaMaestosa
         void reorderTracks();
         
         MeasureBar* getMeasureBar() { return m_measure_bar; }
-        
-        Track* addTrack();
-        
+                
+        GraphicalTrack*       getGraphicsFor(const Track* t);
+        const GraphicalTrack* getGraphicsFor(const Track* t) const;
+
         bool isTrackMaximized ()         const { return m_maximize_track_mode; }
         void setTrackMaximized(bool max)       { m_maximize_track_mode = max;  }
         int  getDockHeight    ()         const { return m_dock_height;         }
         
         int  getDockedTrackAmount()      const { return m_dock.size();         }
-        GraphicalTrack* getDockedTrack(int id)          { return m_dock.get(id);        }
+        GraphicalTrack* getDockedTrack(int id) { return m_dock.get(id);        }
         
         
         void setDockVisible(bool visible)      { m_dock_height = (visible ? 20 : 0) ; }
         
-        /** @brief Called before loading, prepares empty tracks */
-        void prepareEmptyTracksForLoading(int amount);
+        /** @brief Implement callback from ITrackSetListener */
+        virtual void onTrackAdded(Track* t);
+        
+        /** @brief Implement callback from ITrackSetListener */
+        virtual void onTrackRemoved(Track* t);
         
         void copy();
         

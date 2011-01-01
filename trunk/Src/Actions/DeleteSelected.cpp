@@ -86,7 +86,7 @@ void DeleteSelected::perform()
     
     if (track->getNotationType() == CONTROLLER)
     {
-        ControllerEditor* editor = track->graphics->getControllerEditor();
+        ControllerEditor* editor = track->getGraphics()->getControllerEditor();
         int selBegin   = editor->getSelectionBegin();
         int selEnd     = editor->getSelectionEnd();
         const int type = editor->getCurrentControllerType();

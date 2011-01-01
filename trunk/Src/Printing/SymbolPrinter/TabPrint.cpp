@@ -42,7 +42,7 @@ const int CHAR_MARGIN = 35;
 TablaturePrintable::TablaturePrintable(Track* track) : EditorPrintable()
 {
     m_string_amount = track->getGuitarTuning()->tuning.size();
-    m_editor        = track->graphics->getGuitarEditor();
+    m_editor        = track->getGraphics()->getGuitarEditor();
 }
 
 // ------------------------------------------------------------------------------------------------------------
@@ -136,7 +136,7 @@ void TablaturePrintable::earlySetup(const int trackID, Track* track)
 // ------------------------------------------------------------------------------------------------------------
     
 void TablaturePrintable::addUsedTicks(const PrintLayoutMeasure& measure,  const int trackID,
-                                      const MeasureTrackReference& trackRef,
+                                      MeasureTrackReference& trackRef,
                                       RelativePlacementManager& ticks_relative_position)
 {
     //const int first_note = trackRef.getFirstNote();
