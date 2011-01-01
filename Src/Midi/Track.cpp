@@ -22,9 +22,10 @@
 #include "Actions/UpdateGuitarTuning.h"
 
 // FIXME(DESIGN) : data classes shouldn't refer to GUI classes
-#include "GUI/GraphicalTrack.h"
 #include "Editors/KeyboardEditor.h"
 #include "GUI/GraphicalSequence.h"
+#include "GUI/GraphicalTrack.h"
+#include "GUI/MainFrame.h"
 #include "Pickers/MagneticGrid.h"
 
 #include "IO/IOUtils.h"
@@ -49,6 +50,11 @@ using namespace AriaMaestosa;
 
 Track::Track(Sequence* sequence)
 {
+#ifdef _MORE_DEBUG_CHECKS
+    static int id = 1000;
+    m_track_unique_ID = id++;
+#endif
+    
     m_muted = false;
     m_editor_mode     = KEYBOARD;
     m_listener = NULL;
@@ -109,6 +115,10 @@ Track::Track(Sequence* sequence)
 
 Track::~Track()
 {
+#ifdef _MORE_DEBUG_CHECKS
+    std::cout << "[Track::~Track] bye bye track " << m_track_unique_ID << "\n";
+    m_track_unique_ID = -m_track_unique_ID;
+#endif
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -129,10 +139,11 @@ void Track::notifyOthersIWillBeRemoved()
 
 void Track::trackDeleted(Track* track)
 {
-    // FIXME(DESIGN): this data class should not talk to GUI classes
-    if (graphics != NULL)
+    // FIXME(DESIGN): "track deleted" should be a listener callback, not a direct call to GUI classes
+    GraphicalTrack* gtrack = getGraphics();
+    if (gtrack != NULL)
     {
-        graphics->getKeyboardEditor()->trackDeleted(track);
+        gtrack->getKeyboardEditor()->trackDeleted(track);
     }
     
     /*
@@ -151,6 +162,20 @@ void Track::action( Action::SingleTrackAction* actionObj)
     actionObj->setParentTrack(this);
     m_sequence->addToUndoStack( actionObj );
     actionObj->perform();
+}
+
+// -------------------------------------------------------------------------------------------------------
+
+GraphicalTrack* Track::getGraphics()
+{
+    return getMainFrame()->getCurrentGraphicalSequence()->getGraphicsFor(this);
+}
+
+// -------------------------------------------------------------------------------------------------------
+
+const GraphicalTrack* Track::getGraphics() const
+{
+    return getMainFrame()->getCurrentGraphicalSequence()->getGraphicsFor(this);
 }
 
 
@@ -808,8 +833,8 @@ int Track::snapMidiTickToGrid(int tick)
     
     // FIXME(DESIGN): the magnetic grid should not be in graphics perhaps?
     return origin_tick + (int)( round((float)(tick - origin_tick)/
-                                      (float)(m_sequence->ticksPerBeat()*4 / graphics->getGridDivider()))
-                               *(m_sequence->ticksPerBeat()*4 / graphics->getGridDivider())
+                                      (float)(m_sequence->ticksPerBeat()*4 / getGraphics()->getGridDivider()))
+                               *(m_sequence->ticksPerBeat()*4 / getGraphics()->getGridDivider())
                                );
     
 }
@@ -827,8 +852,8 @@ int Track::snapMidiTickToGrid_ceil(int tick)
     }
     
     return origin_tick + (int)( ceil((float)(tick - origin_tick)/
-                                     (float)(m_sequence->ticksPerBeat()*4 / graphics->getGridDivider()))
-                               *(m_sequence->ticksPerBeat()*4 / graphics->getGridDivider())
+                                     (float)(m_sequence->ticksPerBeat()*4 / getGraphics()->getGridDivider()))
+                               *(m_sequence->ticksPerBeat()*4 / getGraphics()->getGridDivider())
                                );
     
 }
@@ -882,7 +907,7 @@ void Track::copy()
     for (int n=0; n<clipboard_size; n++)
     {
         //Clipboard::getNote(n)->move( -lastMeasureStart, 0, graphics->editorMode);
-        graphics->getCurrentEditor()->moveNote(*Clipboard::getNote(n), -lastMeasureStart, 0);
+        getGraphics()->getCurrentEditor()->moveNote(*Clipboard::getNote(n), -lastMeasureStart, 0);
     }
 
     m_sequence->setNoteShiftWhenNoScrolling( lastMeasureStart );
@@ -965,7 +990,7 @@ void Track::doSetInstrument(int i, bool recursive)
     if (m_instrument->getSelectedInstrument() != i)
     {
         m_instrument->setInstrument(i, false);
-        graphics->onInstrumentChange( getInstrument(), false );
+        getGraphics()->onInstrumentChange( getInstrument(), false );
     }
     
     // if we're in manual channel management mode, change all tracks of the same channel
@@ -1012,7 +1037,7 @@ void Track::doSetDrumKit(int i, bool recursive)
     if (m_drum_kit->getSelectedDrumkit() != i)
     {
         m_drum_kit->setDrumkit(i, false);
-        graphics->onInstrumentChange(i, true);
+        getGraphics()->onInstrumentChange(i, true);
     }
     
     
@@ -1154,7 +1179,8 @@ void Track::setKey(const int symbolAmount, const KeyType type)
 
     // ---- notify graphical track (and editors)
     // FIXME(DESIGN): GUI stuff shouldn't be here
-    if (graphics != NULL) graphics->onKeyChange(symbolAmount, m_key_type);
+    GraphicalTrack* gtrack = getGraphics();
+    if (gtrack != NULL) gtrack->onKeyChange(symbolAmount, m_key_type);
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -1175,7 +1201,8 @@ void Track::setCustomKey(const KeyInclusionType key_notes[131])
 
 void Track::onInstrumentChanged(const int newValue)
 {
-    graphics->onInstrumentChange(getInstrument(), false);
+    // FIXME(DESIGN): the data track should not be the one to directly notify the GUI
+    getGraphics()->onInstrumentChange(getInstrument(), false);
     doSetInstrument(newValue);
 }
 
@@ -1184,7 +1211,7 @@ void Track::onInstrumentChanged(const int newValue)
 void Track::onDrumkitChanged(const int newValue)
 {
     // FIXME: doSetDrumKit also appears to invoke onInstrumentChange, double notification?
-    graphics->onInstrumentChange(newValue, true);
+    getGraphics()->onInstrumentChange(newValue, true);
     doSetDrumKit(newValue);
 }
 
@@ -1742,7 +1769,7 @@ void Track::saveToFile(wxFileOutputStream& fileout)
             break;
     }
 
-    graphics->saveToFile(fileout);
+    getGraphics()->saveToFile(fileout);
 
     // notes
     for (int n=0; n<m_notes.size(); n++)
@@ -1834,15 +1861,11 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                 }
                 else if (strcmp("editor", xml->getNodeName()) == 0)
                 {
-                    // FIXME(DESIGN): move creating graphics out of there...
-                    graphics = new GraphicalTrack(this, gseq);
-                    graphics->createEditors();
-                    
-                    if (not graphics->readFromFile(xml)) return false;
+                    if (not getGraphics()->readFromFile(xml)) return false;
                 }
                 else if (strcmp("magneticgrid", xml->getNodeName()) == 0)
                 {
-                    if (not graphics->readFromFile(xml)) return false;
+                    if (not getGraphics()->readFromFile(xml)) return false;
                 }
                 else if (strcmp("instrument", xml->getNodeName()) == 0)
                 {
@@ -1872,7 +1895,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                 }
                 else if (strcmp("guitartuning", xml->getNodeName()) == 0)
                 {
-                    if (not graphics->readFromFile(xml)) return false;
+                    if (not getGraphics()->readFromFile(xml)) return false;
                 }
                 else if (strcmp("key", xml->getNodeName()) == 0)
                 {

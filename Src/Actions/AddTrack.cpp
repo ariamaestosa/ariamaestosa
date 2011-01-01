@@ -62,7 +62,7 @@ void AddTrack::undo()
 
 void AddTrack::perform()
 {
-    m_added_track = m_parent_sequence->addTrack();
+    m_added_track = m_parent_sequence->getModel()->addTrack();
 }
 
 // --------------------------------------------------------------------------------------------------------

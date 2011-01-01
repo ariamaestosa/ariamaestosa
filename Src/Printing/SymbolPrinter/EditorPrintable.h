@@ -137,7 +137,7 @@ namespace AriaMaestosa
           * the RelativePlacementManager.
           */ 
         virtual void addUsedTicks(const PrintLayoutMeasure& measure, const int trackID,
-                                  const MeasureTrackReference& trackRef, RelativePlacementManager& ticks) = 0;
+                                  MeasureTrackReference& trackRef, RelativePlacementManager& ticks) = 0;
 
         
         /** @brief draw some basic stuff common to all editors for the given layout element */

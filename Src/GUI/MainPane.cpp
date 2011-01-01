@@ -173,7 +173,7 @@ void MainPane::isNowVisible()
 {
     MainFrame* mf = getMainFrame();
     mf->addSequence();
-    mf->getCurrentGraphicalSequence()->addTrack();
+    mf->getCurrentSequence()->addTrack();
     m_is_visible = true;
 }
 
@@ -516,7 +516,7 @@ void MainPane::rightClick(wxMouseEvent& event)
         const int count = seq->getTrackAmount();
         for (int n=0; n<count; n++)
         {
-            if (not seq->getTrack(n)->graphics->processRightMouseClick( RelativeXCoord(event.GetX(), WINDOW, gseq) , event.GetY()))
+            if (not seq->getTrack(n)->getGraphics()->processRightMouseClick( RelativeXCoord(event.GetX(), WINDOW, gseq) , event.GetY()))
             {
                 seq->setCurrentTrackID(n);
                 break;
@@ -571,10 +571,10 @@ void MainPane::mouseDown(wxMouseEvent& event)
         for (unsigned int n=0; n<track_amount; n++)
         {
             Track* t = seq->getTrack(n);
-            const int y = t->graphics->getCurrentEditor()->getTrackYStart();
+            const int y = t->getGraphics()->getCurrentEditor()->getTrackYStart();
 
             // check if user is moving this track
-            if (not t->graphics->isDocked() and
+            if (not t->getGraphics()->isDocked() and
                 m_mouse_y_current > y and m_mouse_y_current < y+7)
             {
                 m_click_area = CLICK_REORDER;
@@ -583,7 +583,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
             else
             { 
                 // otherwise ask the track to check if it has something to do with this event
-                GraphicalTrack* gtrack = t->graphics;
+                GraphicalTrack* gtrack = t->getGraphics();
                 const bool event_processed = not gtrack->processMouseClick(m_mouse_x_current, event.GetY());
                 if (event_processed)
                 {
@@ -614,20 +614,20 @@ void MainPane::mouseDown(wxMouseEvent& event)
                     for (int i=0; i<track_amount; i++)
                     {
                         Track* track = seq->getTrack(i);
-                        if (track->graphics == undocked_track)
+                        if (track->getGraphics() == undocked_track)
                         {
                             undocked_track->dock(false);
-                            track->graphics->maximizeHeight();
+                            track->getGraphics()->maximizeHeight();
                             continue;
                         }
-                        else if (not track->graphics->isDocked())
+                        else if (not track->getGraphics()->isDocked())
                         {
-                            track->graphics->dock();
+                            track->getGraphics()->dock();
                         }
                     }
-                    if (undocked->graphics->isCollapsed())
+                    if (undocked->getGraphics()->isCollapsed())
                     {
-                        undocked->graphics->setCollapsed(false);
+                        undocked->getGraphics()->setCollapsed(false);
                     }
                     
                     DisplayFrame::updateVerticalScrollbar();
@@ -714,7 +714,7 @@ void MainPane::mouseMoved(wxMouseEvent& event)
             if (m_click_area == CLICK_TRACK and m_click_in_track != -1)
             {
                 Sequence* seq = getMainFrame()->getCurrentSequence();
-                seq->getTrack(m_click_in_track)->graphics->processMouseDrag(m_mouse_x_current, event.GetY());
+                seq->getTrack(m_click_in_track)->getGraphics()->processMouseDrag(m_mouse_x_current, event.GetY());
             }
 
             // ----------------------------------- click is in measure bar ----------------------------
@@ -765,7 +765,7 @@ void MainPane::mouseLeftWindow(wxMouseEvent& event)
         getMainFrame()->
         getCurrentSequence()->
         getCurrentTrack()->
-        graphics->
+        getGraphics()->
         processMouseExited(m_mouse_x_current, m_mouse_y_current,
                            m_mouse_x_initial, m_mouse_y_initial);
 
@@ -826,7 +826,7 @@ void MainPane::mouseReleased(wxMouseEvent& event)
     else if (m_click_area == CLICK_TRACK and m_click_in_track != -1)
     {
         // disptach mouse up event to current track
-        getMainFrame()->getCurrentSequence()->getTrack(m_click_in_track)->graphics->processMouseRelease();
+        getMainFrame()->getCurrentSequence()->getTrack(m_click_in_track)->getGraphics()->processMouseRelease();
     }
 
     Display::render();
@@ -900,7 +900,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             action( new Action::ResizeNotes(
                         -seq->ticksPerBeat() *
                         4 /
-                        seq->getCurrentTrack()->graphics->getGridDivider() ,
+                        seq->getCurrentTrack()->getGraphics()->getGridDivider() ,
                         SELECTED_NOTES)
                    );
             Display::render();
@@ -912,7 +912,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             action( new Action::ResizeNotes(
                         seq->ticksPerBeat() *
                         4 /
-                        seq->getCurrentTrack()->graphics->getGridDivider() ,
+                        seq->getCurrentTrack()->getGraphics()->getGridDivider() ,
                         SELECTED_NOTES)
                     );
             Display::render();
@@ -1064,7 +1064,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             seq->getCurrentTrack()->
             action( new Action::MoveNotes(
                       -seq->ticksPerBeat() * 4 /
-                      seq->getCurrentTrack()->graphics->getGridDivider(), 0, SELECTED_NOTES)
+                      seq->getCurrentTrack()->getGraphics()->getGridDivider(), 0, SELECTED_NOTES)
                     );
             Display::render();
         }
@@ -1074,7 +1074,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             seq->getCurrentTrack()->
             action( new Action::MoveNotes(
                       seq->ticksPerBeat() * 4 /
-                      seq->getCurrentTrack()->graphics->getGridDivider(), 0, SELECTED_NOTES)
+                      seq->getCurrentTrack()->getGraphics()->getGridDivider(), 0, SELECTED_NOTES)
                     );
             Display::render();
         }
@@ -1173,7 +1173,7 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
         const int count = seq->getTrackAmount();
         for (int n=0; n<count; n++)
         {
-            if (not seq->getTrack(n)->graphics->mouseWheelMoved(mx, my, value))
+            if (not seq->getTrack(n)->getGraphics()->mouseWheelMoved(mx, my, value))
             {
                 break;
             }

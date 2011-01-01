@@ -121,7 +121,7 @@ void Paste::perform()
 
     Display::screenToClient(mouseLoc.x, mouseLoc.y, &trackMouseLoc_x, &trackMouseLoc_y);
 
-    Editor* editor = track->graphics->getCurrentEditor();
+    Editor* editor = track->getGraphics()->getCurrentEditor();
     
     // Calculate 'shift' (i.e. X position of pasted notes)
     if (m_at_mouse and
@@ -130,13 +130,13 @@ void Paste::perform()
         trackMouseLoc_x > Editor::getEditorXStart())
     {
 
-        RelativeXCoord mx(trackMouseLoc_x, WINDOW, track->graphics->getSequence());
+        RelativeXCoord mx(trackMouseLoc_x, WINDOW, track->getGraphics()->getSequence());
 
         shift = track->snapMidiTickToGrid( mx.getRelativeTo(MIDI) );
 
     }
     else if (not m_at_mouse and
-             track->graphics->getSequence()->x_scroll_upon_copying == track->graphics->getSequence()->getXScrollInPixels() )
+             track->getGraphics()->getSequence()->x_scroll_upon_copying == track->getGraphics()->getSequence()->getXScrollInPixels() )
     {
 
         /*
@@ -154,13 +154,13 @@ void Paste::perform()
         Note& tmp = *Clipboard::getNote(0);
 
         // before visible area
-        if ((tmp.getTick() + tmp.getEndTick())/2 + shift < track->graphics->getSequence()->getXScrollInMidiTicks())
+        if ((tmp.getTick() + tmp.getEndTick())/2 + shift < track->getGraphics()->getSequence()->getXScrollInMidiTicks())
         {
             goto regular_paste;
         }
 
         // after visible area
-        RelativeXCoord screen_width( Display::getWidth(), WINDOW, track->graphics->getSequence() );
+        RelativeXCoord screen_width( Display::getWidth(), WINDOW, track->getGraphics()->getSequence() );
 
         if ((tmp.getTick() + tmp.getEndTick())/2 + shift > screen_width.getRelativeTo(MIDI) )
         {
@@ -180,7 +180,7 @@ regular_paste: // FIXME - find better way than goto
         MeasureData* md = sequence->getMeasureData();
         
         // if not "paste at mouse", find first visible measure
-        int measure = md->measureAtTick(track->graphics->getSequence()->getXScrollInMidiTicks())-1;
+        int measure = md->measureAtTick(track->getGraphics()->getSequence()->getXScrollInMidiTicks())-1;
         if (measure < 0) measure = 0;
         const int lastMeasureStart = md->firstTickInMeasure( measure );
         
@@ -192,7 +192,7 @@ regular_paste: // FIXME - find better way than goto
 
         // check if note is before visible area
         while ((first_note.getTick() + first_note.getEndTick())/2 + shift <
-               track->graphics->getSequence()->getXScrollInMidiTicks())
+               track->getGraphics()->getSequence()->getXScrollInMidiTicks())
         {
             shift = md->firstTickInMeasure( md->measureAtTick( shift )+1 );
         }
@@ -211,10 +211,10 @@ regular_paste: // FIXME - find better way than goto
             tmp->setEndTick(tmp->getEndTick() * scalePastedNotes);
         }
 
-        track->graphics->getCurrentEditor()->moveNote(*tmp, shift , 0);
+        track->getGraphics()->getCurrentEditor()->moveNote(*tmp, shift , 0);
         if (m_at_mouse)
         {
-            track->graphics->getCurrentEditor()->moveNote(*tmp, -beginning , 0);
+            track->getGraphics()->getCurrentEditor()->moveNote(*tmp, -beginning , 0);
         }
 
         tmp->setParent( track );

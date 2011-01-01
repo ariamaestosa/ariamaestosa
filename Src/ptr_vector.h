@@ -211,12 +211,13 @@ namespace AriaMaestosa
         }
         
         /** delete and remove an object from the vector. */
-        void erase(TYPE* obj)
+        bool erase(TYPE* obj)
         {
             ASSERT( MAGIC_NUMBER_OK() );
             ASSERT( not m_performing_deletion );
 
-            for (unsigned int n=0; n<contentsVector.size(); n++)
+            const unsigned int count = contentsVector.size();
+            for (unsigned int n=0; n<count; n++)
             {
                 
                 TYPE * pointer = contentsVector[n];
@@ -224,27 +225,30 @@ namespace AriaMaestosa
                 {
                     delete obj;
                     contentsVector.erase(contentsVector.begin()+n);
-                    return;
+                    return true;
                 }
             }
+            return false;
         }
         
         /** remove (but do not delete) an object from the vector. */
-        void remove(TYPE* obj)
+        bool remove(TYPE* obj)
         {
             ASSERT( MAGIC_NUMBER_OK() );
             ASSERT( not m_performing_deletion );
 
-            for (unsigned int n=0; n<contentsVector.size(); n++)
+            const int count = contentsVector.size();
+            for (unsigned int n=0; n<count; n++)
             {
                 
                 TYPE * pointer = contentsVector[n];
                 if (pointer == obj)
                 {
                     contentsVector.erase(contentsVector.begin()+n);
-                    return;
+                    return true;
                 }
             }
+            return false;
         }
         
         
@@ -254,7 +258,8 @@ namespace AriaMaestosa
 #ifndef NDEBUG
             m_performing_deletion = true;
 #endif
-            for (unsigned int n=0; n<contentsVector.size(); n++)
+            const unsigned int count = contentsVector.size();
+            for (unsigned int n=0; n<count; n++)
             {
                 
                 TYPE * pointer = contentsVector[n];

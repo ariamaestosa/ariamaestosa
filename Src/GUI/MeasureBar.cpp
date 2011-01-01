@@ -606,21 +606,22 @@ void MeasureBar::mouseUp(int mousex_current, int mousey_current, int mousex_init
 
     // iterate through notes and select those that are within the selection range just found
     const int trackAmount = sequence->getTrackAmount();
-    for (int track=0; track<trackAmount; track++)
+    for (int trackID=0; trackID<trackAmount; trackID++)
     {
-        const int noteAmount = sequence->getTrack(track)->getNoteAmount();
+        Track* track = sequence->getTrack(trackID);
+        const int noteAmount = track->getNoteAmount();
         for (int n=0; n<noteAmount; n++)
         {
-            const int note_tick = sequence->getTrack(track)->getNoteStartInMidiTicks(n);
+            const int note_tick = track->getNoteStartInMidiTicks(n);
             
             // note is within selection range? if so, select it, else unselect it.
             if ( note_tick >= minimal_tick and note_tick < maximal_tick )
             {
-                sequence->getTrack(track)->graphics->selectNote(n, true, true);
+                track->getGraphics()->selectNote(n, true, true);
             }
             else
             {
-                sequence->getTrack(track)->graphics->selectNote(n, false, true);
+                track->getGraphics()->selectNote(n, false, true);
             }
         }
     }

@@ -47,8 +47,8 @@ Editor::Editor(Track* track)
 
     m_track           = track;
     m_sequence        = track->getSequence();
-    m_graphical_track = track->graphics;
-    m_gsequence       = track->graphics->getSequence();
+    m_graphical_track = track->getGraphics();
+    m_gsequence       = track->getGraphics()->getSequence();
 
     m_vertical_scrolling = false;
     m_click_on_scrollbar = false;
@@ -506,7 +506,7 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                 {
                     if (snapped_end < 0)
                     {
-                        m_track->graphics->selectNote(ALL_NOTES, false);
+                        m_track->getGraphics()->selectNote(ALL_NOTES, false);
                         goto end_of_func;
                     }
                     addNote( snapped_end, mousey_initial );
@@ -522,7 +522,7 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                     }
                     else if (snapped_start == snapped_end or snapped_start>snapped_end or snapped_start<0)
                     {
-                        m_track->graphics->selectNote(ALL_NOTES, false);
+                        m_track->getGraphics()->selectNote(ALL_NOTES, false);
                         goto end_of_func;
                     }
                     else

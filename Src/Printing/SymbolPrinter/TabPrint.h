@@ -47,7 +47,7 @@ namespace AriaMaestosa
         
         /** @brief Implement method from EditorPrintable */
         virtual void addUsedTicks(const PrintLayoutMeasure& measure, const int trackID,
-                                  const MeasureTrackReference& trackRef, RelativePlacementManager& ticks);
+                                  MeasureTrackReference& trackRef, RelativePlacementManager& ticks);
         
         /** @brief Implement method from EditorPrintable */
         virtual void drawTrack(const int trackID, const LineTrackRef& track, LayoutLine& line,

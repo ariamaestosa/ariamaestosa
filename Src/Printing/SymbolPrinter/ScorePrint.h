@@ -60,7 +60,8 @@ namespace AriaMaestosa
         virtual ~ScorePrintable();
         
         /** Implement method from EditorPrintable */
-        virtual void addUsedTicks(const PrintLayoutMeasure& measure, const int trackID, const MeasureTrackReference& trackRef, RelativePlacementManager& ticks);
+        virtual void addUsedTicks(const PrintLayoutMeasure& measure, const int trackID,
+                                  MeasureTrackReference& trackRef, RelativePlacementManager& ticks);
         
         /** Implement method from EditorPrintable */
         virtual void earlySetup(const int trackID, Track* track);

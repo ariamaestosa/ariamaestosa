@@ -125,6 +125,11 @@ public:
         return raw_ptr; 
     }
     
+    operator const T*() const
+    {
+        return raw_ptr; 
+    }
+    
     T* operator->() const
     {
         return raw_ptr;

@@ -332,13 +332,16 @@ namespace AriaMaestosa
         /** Returns the sequence (file) currently being active. */
         virtual Sequence*  getCurrentSequence();
         Sequence*          getSequence(int n);
+        
         GraphicalSequence* getCurrentGraphicalSequence();
+        const GraphicalSequence* getCurrentGraphicalSequence() const;
+
         GraphicalSequence* getGraphicalSequence(int n);
         
         MainPane*          getMainPane() { return m_main_pane; }
         
         int  getCurrentSequenceID() const { return m_current_sequence; }
-        void setCurrentSequence(int n);
+        void setCurrentSequence(int n, bool update=true);
 
         void changeShownTimeSig(int num, int denom);
 

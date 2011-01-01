@@ -1151,8 +1151,13 @@ void MainFrame::updateVerticalScrollbar()
 void MainFrame::addSequence()
 {
     Sequence* s = new Sequence(this, this, this, this, Display::isVisible());
-    m_sequences.push_back( new GraphicalSequence(s) );
-    setCurrentSequence( m_sequences.size() - 1 );
+    GraphicalSequence* gs = new GraphicalSequence(s);
+    m_sequences.push_back( gs );
+    setCurrentSequence( m_sequences.size() - 1, false /* update */ );
+    gs->createViewForTracks(-1 /* all */);
+    
+    updateTopBarAndScrollbarsForSequence( getCurrentGraphicalSequence() );
+    updateMenuBarToSequence();
     Display::render();
     getMainFrame()->updateUndoMenuLabel();
 }
@@ -1248,6 +1253,13 @@ GraphicalSequence* MainFrame::getCurrentGraphicalSequence()
 
 // ----------------------------------------------------------------------------------------------------------
 
+const GraphicalSequence* MainFrame::getCurrentGraphicalSequence() const
+{
+    return m_sequences.getConst(m_current_sequence);
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
 Sequence* MainFrame::getSequence(int n)
 {
     ASSERT_E(n,>=,0);
@@ -1268,14 +1280,17 @@ GraphicalSequence* MainFrame::getGraphicalSequence(int n)
 
 // ----------------------------------------------------------------------------------------------------------
 
-void MainFrame::setCurrentSequence(int n)
+void MainFrame::setCurrentSequence(int n, bool updateView)
 {
     ASSERT_E(n,>=,0);
     ASSERT_E(n,<,m_sequences.size());
 
     m_current_sequence = n;
-    updateTopBarAndScrollbarsForSequence( getCurrentGraphicalSequence() );
-    updateMenuBarToSequence();
+    if (updateView)
+    {
+        updateTopBarAndScrollbarsForSequence( getCurrentGraphicalSequence() );
+        updateMenuBarToSequence();
+    }
 }
 
 

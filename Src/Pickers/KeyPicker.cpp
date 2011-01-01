@@ -175,7 +175,7 @@ void KeyPicker::updateUserPresetsMenu()
 
 void KeyPicker::setParent(Track* parent_arg)
 {
-    parent = parent_arg->graphics;
+    parent = parent_arg->getGraphics();
     if (parent_arg->getNotationType() == KEYBOARD)
     {
         if (score_items_added)

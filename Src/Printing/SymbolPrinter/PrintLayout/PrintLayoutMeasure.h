@@ -110,7 +110,8 @@ namespace AriaMaestosa
         int  getTrackRefAmount() const { return m_track_refs.size();      }
         
         const MeasureTrackReference& getTrackRef(const int id) const { return m_track_refs[id]; }
-        
+        MeasureTrackReference& getWritableTrackRef(const int id) { return m_track_refs[id]; }
+
         /**
           * @return  The ID of the measure, from 0 to the amount of measures in the sequence - 1
           */
