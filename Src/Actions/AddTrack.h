@@ -35,11 +35,8 @@ namespace AriaMaestosa
             /** A pointer to the track that was added, or NULL if action not performed yet */
             Track*    m_added_track;
             
-            /** In which sequence to add a track */
-            GraphicalSequence* m_parent_sequence;
-            
         public:
-            AddTrack(GraphicalSequence* whichSequence);
+            AddTrack();
             virtual ~AddTrack();
 
             void perform();

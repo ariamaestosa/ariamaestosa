@@ -18,9 +18,6 @@
 #include "Actions/EditAction.h"
 #include "AriaCore.h"
 
-// FIXME(DESIGN) : actions shouldn't rely on GUI classes
-#include "GUI/GraphicalSequence.h"
-
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
 #include "UnitTest.h"
@@ -34,13 +31,11 @@ using namespace AriaMaestosa::Action;
 
 // --------------------------------------------------------------------------------------------------------
 
-// FIXME(DESIGN): refers to 'GraphicalSequence', how to make this action independent of GUI while still making GUI follow along...
-AddTrack::AddTrack(GraphicalSequence* seq) :
+AddTrack::AddTrack() :
     //I18N: (undoable) action name
     MultiTrackAction( _("add track") )
 {
     m_added_track     = NULL;
-    m_parent_sequence = seq;
 }
 
 // --------------------------------------------------------------------------------------------------------
@@ -62,20 +57,18 @@ void AddTrack::undo()
 
 void AddTrack::perform()
 {
-    m_added_track = m_parent_sequence->getModel()->addTrack();
+    m_added_track = sequence->addTrack();
 }
 
 // --------------------------------------------------------------------------------------------------------
 
-// TODO: add back unit test when GraphicalSequence is not required anymore
-/*
 namespace TestAddTrack
 {
     using namespace AriaMaestosa;
     
     UNIT_TEST( TestAction )
     {
-        Sequence* seq = new Sequence(NULL, NULL, NULL, false);
+        Sequence* seq = new Sequence(NULL, NULL, NULL, NULL, false);
         
         TestSequenceProvider provider(seq);
         AriaMaestosa::setCurrentSequenceProvider(&provider);
@@ -89,7 +82,7 @@ namespace TestAddTrack
         seq->addTrack(t);
         
         // test the action
-        seq->action(new AddTrack(seq));
+        seq->action(new AddTrack());
         
         require(seq->getTrackAmount() == 3, "track amount increased after performing action");
         bool foundFirst = false, foundSecond = false, foundNew = false;
@@ -119,4 +112,4 @@ namespace TestAddTrack
         delete seq;
     }
 }
-*/
+
