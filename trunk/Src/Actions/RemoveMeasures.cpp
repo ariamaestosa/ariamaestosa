@@ -260,7 +260,7 @@ void RemoveMeasures::perform()
                     
                 }
                 
-                if (md->getTimeSig(n).getTick() >= toTick)
+                if (md->firstTickInMeasure( md->getTimeSig(n).getMeasure() ) >= toTick)
                 {
                     const int new_measure = md->getTimeSig(n).getMeasure() -
                                            (m_to_measure - m_from_measure);

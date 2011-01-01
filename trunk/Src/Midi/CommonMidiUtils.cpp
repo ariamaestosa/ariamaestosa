@@ -136,10 +136,11 @@ void AriaMaestosa::addTimeSigFromVector(int n, int amount, MeasureData* measureD
                                         jdkmidi::MIDIMultiTrack& tracks, int substract_ticks)
 {
     jdkmidi::MIDITimedBigMessage m;
-    int tick_time = measureData->getTimeSig(n).getTick() - substract_ticks < 0;
+    int tick_time =measureData->firstTickInMeasure( measureData->getTimeSig(n).getMeasure() ) - substract_ticks < 0;
     if (tick_time)
     {
-        if ( (n+1<amount and measureData->getTimeSig(n+1).getTick() > substract_ticks) or n + 1 == amount)
+        if ((n + 1 < amount and measureData->firstTickInMeasure( measureData->getTimeSig(n+1).getMeasure() ) > substract_ticks) or
+            n + 1 == amount)
         {
             tick_time = 0; // we need to consider event because it's the last and will affect future measures
         }
@@ -149,7 +150,7 @@ void AriaMaestosa::addTimeSigFromVector(int n, int amount, MeasureData* measureD
         }
         
     }
-    m.SetTime( measureData->getTimeSig(n).getTick() - substract_ticks );
+    m.SetTime( measureData->firstTickInMeasure( measureData->getTimeSig(n).getTick() ) - substract_ticks );
     
     float denom = (float)log(measureData->getTimeSig(n).getDenom())/(float)log(2);
     m.SetTimeSig( measureData->getTimeSig(n).getNum(), (int)denom );

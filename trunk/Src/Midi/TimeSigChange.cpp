@@ -17,13 +17,11 @@
 #include "Midi/TimeSigChange.h"
 using namespace AriaMaestosa;
 
-
-TimeSigChange::TimeSigChange(int measure, int num, int denom)
+TimeSigChange::TimeSigChange(int measure, int tick, int num, int denom)
 {
     m_measure = measure;
     m_num     = num;
     m_denom   = denom;
-    
-    // FIXME(DESIGN): m_tick is not set here and needs to be set manually after construction...
+    m_tick    = tick;
 }
 
