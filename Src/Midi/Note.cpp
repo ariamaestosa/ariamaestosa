@@ -16,9 +16,6 @@
 
 #include "AriaCore.h"
 
-// FIXME(DESIGN) : Note shouldn't refer to GUI classes
-#include "GUI/GraphicalTrack.h"
-
 #include "IO/IOUtils.h"
 #include "Midi/Note.h"
 #include "Midi/Players/PlatformMidiManager.h"
