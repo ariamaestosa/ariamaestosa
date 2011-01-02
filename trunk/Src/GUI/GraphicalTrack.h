@@ -54,7 +54,7 @@ namespace AriaMaestosa
       * @brief The graphical part of a track (the data being held in Track)
       * @ingroup gui
       */
-    class GraphicalTrack : public ITrackListener
+    class GraphicalTrack : public ITrackListener, public IInstrumentChoiceListener, public IDrumChoiceListener
     {
         int m_height;
         int m_last_mouse_y;
@@ -176,8 +176,19 @@ namespace AriaMaestosa
         void processMouseExited(RelativeXCoord x_now, int y_now,
                                 RelativeXCoord x_initial, int y_initial);
         
-        void onInstrumentChange(const int newInstrument, const bool isDrumKit);
+        //void onInstrumentChange(const int newInstrument, const bool isDrumKit);
 
+        /**
+         * @brief Implement callback from IInstrumentChoiceListener
+         */
+        virtual void onInstrumentChanged(const int newValue);
+        
+        /**
+         * @brief Implement callback from IDrumChoiceListener
+         */
+        virtual void onDrumkitChanged(const int newValue);
+        
+        
         /** Called when a track's key changes */
         void onKeyChange(const int symbolAmount, const KeyType symbol);
         

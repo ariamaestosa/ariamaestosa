@@ -148,8 +148,6 @@ namespace AriaMaestosa
         friend class Action::SetAccidentalSign;
         friend class Action::ShiftBySemiTone;
         
-        //MainFrame* m_parent_frame;
-        
         /** Holds all notes contained in this track, sorted in time order (of note start) */
         ptr_vector<Note> m_notes;
         
@@ -207,6 +205,9 @@ namespace AriaMaestosa
 
         ITrackListener* m_listener;
     
+        IInstrumentChoiceListener* m_next_instrument_listener;
+        IDrumChoiceListener* m_next_drumkit_listener;
+
     public:
         
 #ifdef _MORE_DEBUG_CHECKS
@@ -226,6 +227,9 @@ namespace AriaMaestosa
         {
             m_listener = listener;
         }
+        
+        void setInstrumentListener(IInstrumentChoiceListener* l) { m_next_instrument_listener = l; }
+        void setDrumListener      (IDrumChoiceListener* l)       { m_next_drumkit_listener    = l; }
         
         /** @brief place events in time order */
         void reorderNoteVector();
