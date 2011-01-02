@@ -283,8 +283,10 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
         // iterate through all tracks that need to be rendered as background
         for (int bgtrack=0; bgtrack<amount; bgtrack++)
         {
-            Track* track = m_background_tracks.get(bgtrack);
-            const int noteAmount = track->getNoteAmount();
+            Track* otherTrack = m_background_tracks.get(bgtrack);
+            GraphicalTrack* otherGTrack = m_gsequence->getGraphicsFor(otherTrack);
+            ASSERT(otherGTrack != NULL);
+            const int noteAmount = otherTrack->getNoteAmount();
 
             // pick a color
             switch (color)
@@ -301,14 +303,14 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             for (int n=0; n<noteAmount; n++)
             {
 
-                int x1 = m_graphical_track->getNoteStartInPixels(n) - m_gsequence->getXScrollInPixels();
-                int x2 = m_graphical_track->getNoteEndInPixels(n)   - m_gsequence->getXScrollInPixels();
+                int x1 = otherGTrack->getNoteStartInPixels(n) - m_gsequence->getXScrollInPixels();
+                int x2 = otherGTrack->getNoteEndInPixels(n)   - m_gsequence->getXScrollInPixels();
 
                 // don't draw notes that won't be visible
                 if (x2 < 0)       continue;
                 if (x1 > m_width) break;
 
-                const int pitch = track->getNotePitchID(n);
+                const int pitch = otherTrack->getNotePitchID(n);
 
                 AriaRender::rect(x1 + getEditorXStart(),   levelToY(pitch),
                                  x2 + getEditorXStart()-1, levelToY(pitch+1));

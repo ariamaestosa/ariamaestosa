@@ -226,13 +226,6 @@ namespace AriaMaestosa
         {
             m_listener = listener;
         }
-
-        
-        /**
-         * when one track will be removed, all others are notified so they can remove any
-         * link to that track they could have (like background)
-         */
-        void trackDeleted(Track* track);
         
         /** @brief place events in time order */
         void reorderNoteVector();
@@ -507,13 +500,6 @@ namespace AriaMaestosa
          */
         int addMidiEvents(jdkmidi::MIDITrack* track, int channel, int firstMeasure,
                           bool selectionOnly, int& startTick); // returns length
-        
-        /**
-          * Call this method before deleting a track, so that it can tell others it's going to
-          * be gone. Cannot be called from constructor since it would then cause problems when
-          * deleting the entire sequence.
-          */
-        void notifyOthersIWillBeRemoved();
 
         /**
           * @brief Get a read-only list of all notes in this track, but ordered by their end tick.

@@ -803,6 +803,19 @@ bool GraphicalTrack::processMouseDrag(RelativeXCoord x, int y)
 
 // --------------------------------------------------------------------------------------------------
 
+void GraphicalTrack::onTrackRemoved(Track* track)
+{
+    m_keyboard_editor->trackDeleted(track);
+    
+    // uncomment if these editors get background support too
+    // m_guitar_editor->trackDelete(track);
+    // m_drum_editor->trackDelete(track);
+    // m_controller_editor->trackDelete(track);
+    // m_score_editor->trackDelete(track);
+}
+
+// --------------------------------------------------------------------------------------------------
+
 void GraphicalTrack::onKeyChange(const int symbolAmount, const KeyType type)
 {
     const int count = m_all_editors.size();
