@@ -84,7 +84,6 @@ namespace AriaMaestosa
         // used during playback
         int m_follow_playback_time;
         int m_last_tick;
-        int m_playback_start_tick;
 
         bool m_scroll_to_playback_position;
 
@@ -116,8 +115,6 @@ namespace AriaMaestosa
 
         /** This method is called repeatedly during playback */
         void playbackRenderLoop();
-
-        void setPlaybackStartTick(int newValue);
 
         /** This is called when the song us playing. MainPane needs to know the current tick because when it renders
          * it needs to know where to draw the red line that follows playback. */

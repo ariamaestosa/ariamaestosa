@@ -593,9 +593,11 @@ void MainFrame::onMouseWheel(wxMouseEvent& event)
 
 void MainFrame::playClicked(wxCommandEvent& evt)
 {
+    Sequence* seq = getCurrentSequence();
+
     if (m_playback_mode)
     {
-        MeasureData* md = getCurrentSequence()->getMeasureData();
+        MeasureData* md = seq->getMeasureData();
         
         // already playing, this button does "pause" instead
         md->setFirstMeasure( md->measureAtTick(m_main_pane->getCurrentTick()) );
@@ -608,10 +610,10 @@ void MainFrame::playClicked(wxCommandEvent& evt)
 
     int startTick = -1;
 
-    const bool success = PlatformMidiManager::get()->playSequence( getCurrentSequence(), /*out*/ &startTick );
+    const bool success = PlatformMidiManager::get()->playSequence( seq, /*out*/ &startTick );
     if (not success) std::cerr << "Couldn't play" << std::endl;
 
-    m_main_pane->setPlaybackStartTick( startTick );
+    seq->setPlaybackStartTick( startTick );
 
     if (startTick == -1 or not success) m_main_pane->exitPlayLoop();
     else                                m_main_pane->enterPlayLoop();

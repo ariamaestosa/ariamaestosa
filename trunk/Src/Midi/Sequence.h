@@ -145,6 +145,8 @@ namespace AriaMaestosa
         
         ptr_vector<ITrackSetListener, REF> m_listeners;
         
+        int m_playback_start_tick;
+
      public:
 
         LEAK_CHECK();
@@ -208,6 +210,9 @@ namespace AriaMaestosa
         Track* getCurrentTrack() { return tracks.get(currentTrack); }
         void setCurrentTrackID(int ID);
         void setCurrentTrack(Track* track);
+        
+        void setPlaybackStartTick(int newValue);
+        int getPlaybackStartTick() const { return m_playback_start_tick; }
         
         /** 
           * @brief  Adds a new track (below currently selected track) to this sequence.

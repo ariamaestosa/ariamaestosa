@@ -121,9 +121,6 @@ namespace AriaMaestosa
         void screenToClient(const int x_in, const int y_in, int* x_out, int* y_out);
         
         void requestFocus();
-        
-        // FIXME(DESIGN) - should be removed/moved
-        void setPlaybackStartTick(const int tick);
     }
     
     namespace DisplayFrame
