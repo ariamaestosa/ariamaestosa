@@ -1175,10 +1175,7 @@ void Track::setKey(const int symbolAmount, const KeyType type)
         }
     }
 
-    // ---- notify graphical track (and editors)
-    // FIXME(DESIGN): GUI stuff shouldn't be here
-    GraphicalTrack* gtrack = getGraphics();
-    if (gtrack != NULL) gtrack->onKeyChange(symbolAmount, m_key_type);
+    if (m_listener != NULL) m_listener->onKeyChange(symbolAmount, m_key_type);
 }
 
 // ----------------------------------------------------------------------------------------------------------

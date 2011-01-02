@@ -110,6 +110,8 @@ namespace AriaMaestosa
         virtual ~ITrackListener() {}
         
         virtual void onNotationTypeChange() = 0;
+        virtual void onKeyChange(const int symbolAmount, const KeyType symbol) = 0;
+
     };
     
     /**
