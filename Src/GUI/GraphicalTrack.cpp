@@ -332,7 +332,7 @@ namespace AriaMaestosa
 #pragma mark GraphicalTrack (ctor & dtor)
 #endif
     
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
     
 const int EXPANDED_BAR_HEIGHT = 20;
 const int COLLAPSED_BAR_HEIGHT = 5; //FIXME: what's that?? a collapsed bar is not 5 pixels high?? */
@@ -349,6 +349,8 @@ GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq)
     m_track = track;
     
     track->setListener(this);
+    track->setInstrumentListener(this);
+    track->setDrumListener(this);
 
     ASSERT(track);
 
@@ -426,13 +428,13 @@ GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq)
     m_instrument_name.setFont( getInstrumentNameFont() );
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
     
 GraphicalTrack::~GraphicalTrack()
 {
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
     
 void GraphicalTrack::createEditors()
 {
@@ -454,7 +456,7 @@ void GraphicalTrack::createEditors()
     m_all_editors.push_back(m_score_editor);
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
     
 #if 0
 #pragma mark -
@@ -476,7 +478,7 @@ bool GraphicalTrack::mouseWheelMoved(int mx, int my, int value)
     }
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
     
 bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 {
@@ -705,7 +707,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
     }
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 bool GraphicalTrack::processRightMouseClick(RelativeXCoord x, int y)
 {
@@ -721,7 +723,7 @@ bool GraphicalTrack::processRightMouseClick(RelativeXCoord x, int y)
 
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void GraphicalTrack::processMouseRelease()
 {
@@ -740,22 +742,22 @@ void GraphicalTrack::processMouseRelease()
     }
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void GraphicalTrack::processMouseExited(RelativeXCoord x_now, int y_now, RelativeXCoord x_initial, int y_initial)
 {
     getCurrentEditor()->mouseExited(x_now, y_now, x_initial, y_initial);
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 bool GraphicalTrack::processMouseDrag(RelativeXCoord x, int y)
 {
 
     if ((y > m_from_y and y < m_to_y) or m_dragging_resize)
     {
-        // until the end of the method, mousex_current/mousey_current contain the location of the mouse last time this event was thrown in the dragging process.
-        // This can be used to determine the movement of the mouse.
+        // until the end of the method, mousex_current/mousey_current contain the location of the mouse last time
+        // this event was thrown in the dragging process. This can be used to determine the movement of the mouse.
         // At the end of the method, mousex_current/mousey_current are set to the current values.
 
         int barHeight = EXPANDED_BAR_HEIGHT;
@@ -801,7 +803,7 @@ bool GraphicalTrack::processMouseDrag(RelativeXCoord x, int y)
     }
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void GraphicalTrack::onTrackRemoved(Track* track)
 {
@@ -814,7 +816,7 @@ void GraphicalTrack::onTrackRemoved(Track* track)
     // m_score_editor->trackDelete(track);
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void GraphicalTrack::onKeyChange(const int symbolAmount, const KeyType type)
 {
@@ -825,21 +827,21 @@ void GraphicalTrack::onKeyChange(const int symbolAmount, const KeyType type)
     }
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
-void GraphicalTrack::onInstrumentChange(const int newInstrument, const bool isDrumKit)
+void GraphicalTrack::onDrumkitChanged(const int newInstrument)
 {
-    if (isDrumKit)
-    {
-        m_instrument_name.set(DrumChoice::getDrumkitName( newInstrument ));
-    }
-    else
-    {
-        m_instrument_name.set(InstrumentChoice::getInstrumentName( newInstrument ));
-    }
+    m_instrument_name.set(DrumChoice::getDrumkitName( newInstrument ));
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+
+void GraphicalTrack::onInstrumentChanged(const int newInstrument)
+{
+    m_instrument_name.set(InstrumentChoice::getInstrumentName( newInstrument ));
+}
+
+// ----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #pragma mark Getters/Setters
@@ -850,14 +852,14 @@ void GraphicalTrack::setCollapsed(const bool collapsed)
     m_collapsed = collapsed;
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void GraphicalTrack::setHeight(const int height)
 {
     m_height = height;
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void GraphicalTrack::maximizeHeight(bool maximize)
 {
@@ -872,7 +874,7 @@ void GraphicalTrack::maximizeHeight(bool maximize)
     }
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void GraphicalTrack::dock(const bool setDocked)
 {
@@ -888,7 +890,7 @@ void GraphicalTrack::dock(const bool setDocked)
     }
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int GraphicalTrack::getTotalHeight() const
 {
@@ -906,7 +908,7 @@ int GraphicalTrack::getTotalHeight() const
 
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 Editor* GraphicalTrack::getCurrentEditor()
 {
@@ -924,7 +926,7 @@ Editor* GraphicalTrack::getCurrentEditor()
     }
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void GraphicalTrack::onNotationTypeChange()
 {    
@@ -944,21 +946,21 @@ void GraphicalTrack::onNotationTypeChange()
     }
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
 
 int GraphicalTrack::getNoteStartInPixels(const int id) const
 {
     return (int)round( m_track->getNoteStartInMidiTicks(id) * m_gsequence->getZoom() );
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
 
 int GraphicalTrack::getNoteEndInPixels(const int id) const
 {
     return (int)round( m_track->getNoteEndInMidiTicks(id) * m_gsequence->getZoom() );
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
 
 void GraphicalTrack::selectNote(const int id, const bool selected, bool ignoreModifiers)
 {    
@@ -981,8 +983,8 @@ void GraphicalTrack::selectNote(const int id, const bool selected, bool ignoreMo
 }
 
 
-// --------------------------------------------------------------------------------------------------
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 #if 0
 #pragma mark -
@@ -1193,7 +1195,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
 {
@@ -1303,7 +1305,8 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
     return m_to_y;
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #pragma mark Serialization
@@ -1346,7 +1349,7 @@ void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
 
 }
 
-// --------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
 {
@@ -1498,9 +1501,11 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
 
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 int GraphicalTrack::getGridDivider() const
 {
     return m_grid->divider;
 }
 
-
+// ----------------------------------------------------------------------------------------------------------

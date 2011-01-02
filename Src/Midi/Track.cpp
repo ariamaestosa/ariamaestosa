@@ -71,6 +71,9 @@ Track::Track(Sequence* sequence)
 
     //m_parent_frame = parent;
 
+    m_next_instrument_listener = NULL;
+    m_next_drumkit_listener = NULL;
+    
     m_sequence = sequence;
 
     m_channel = 0;
@@ -954,7 +957,7 @@ void Track::doSetInstrument(int i, bool recursive)
     if (m_instrument->getSelectedInstrument() != i)
     {
         m_instrument->setInstrument(i, false);
-        getGraphics()->onInstrumentChange( getInstrument(), false );
+        if (m_next_instrument_listener != NULL) m_next_instrument_listener->onInstrumentChanged( getInstrument() );
     }
     
     // if we're in manual channel management mode, change all tracks of the same channel
@@ -1001,7 +1004,7 @@ void Track::doSetDrumKit(int i, bool recursive)
     if (m_drum_kit->getSelectedDrumkit() != i)
     {
         m_drum_kit->setDrumkit(i, false);
-        getGraphics()->onInstrumentChange(i, true);
+        if (m_next_drumkit_listener != NULL) m_next_drumkit_listener->onDrumkitChanged( i );
     }
     
     
@@ -1162,8 +1165,11 @@ void Track::setCustomKey(const KeyInclusionType key_notes[131])
 
 void Track::onInstrumentChanged(const int newValue)
 {
-    // FIXME(DESIGN): the data track should not be the one to directly notify the GUI
-    getGraphics()->onInstrumentChange(getInstrument(), false);
+    if (m_next_instrument_listener != NULL)
+    {
+        m_next_instrument_listener->onInstrumentChanged(newValue);
+    }
+    
     doSetInstrument(newValue);
 }
 
@@ -1171,8 +1177,11 @@ void Track::onInstrumentChanged(const int newValue)
 
 void Track::onDrumkitChanged(const int newValue)
 {
-    // FIXME: doSetDrumKit also appears to invoke onInstrumentChange, double notification?
-    getGraphics()->onInstrumentChange(newValue, true);
+    if (m_next_drumkit_listener != NULL)
+    {
+        m_next_drumkit_listener->onDrumkitChanged(newValue);
+    }
+    
     doSetDrumKit(newValue);
 }
 
