@@ -477,8 +477,6 @@ void Sequence::deleteTrack(int id)
 {
     ASSERT_E(id,>=,0);
     ASSERT_E(id,<,tracks.size());
-
-    tracks[id].notifyOthersIWillBeRemoved();
     
     const int count = m_listeners.size();
     for (int n=0; n<count; n++)
@@ -494,9 +492,7 @@ void Sequence::deleteTrack(int id)
 // ----------------------------------------------------------------------------------------------------------
 
 void Sequence::deleteTrack(Track* track)
-{
-    track->notifyOthersIWillBeRemoved();
-    
+{    
     const int count = m_listeners.size();
     for (int n=0; n<count; n++)
     {

@@ -86,7 +86,17 @@ void GraphicalSequence::onTrackAdded(Track* t)
 void GraphicalSequence::onTrackRemoved(Track* t)
 {    
     GraphicalTrack* gt = getGraphicsFor(t);
+    
+    const int count = m_gtracks.size();
+    for (int n=0; n<count; n++)
+    {
+        m_gtracks[n].onTrackRemoved(t);
+    }
+    
+    gt->onTrackRemoved(t);
+    
     ASSERT(gt != NULL);
+    
     const bool success = m_gtracks.erase(gt);
     ASSERT(success);
 }
@@ -191,10 +201,10 @@ int GraphicalSequence::getTotalHeight() const
     
     int totalHeight=0;
     
-    const int count = m_sequence->getTrackAmount();
+    const int count = m_gtracks.size();
     for (int n=0; n<count; n++)
     {
-        totalHeight += getGraphicsFor(m_sequence->getTrack(n))->getTotalHeight() + 10;
+        totalHeight += m_gtracks[n].getTotalHeight() + 10;
     }
     
     if (m_sequence->getMeasureData()->isExpandedMode()) totalHeight += 20;
@@ -223,6 +233,8 @@ void GraphicalSequence::renderTracks(int currentTick, RelativeXCoord mousex, int
         int y = from_y - y_scroll;
         const int trackAmount  = m_sequence->getTrackAmount();
         const int currentTrack = m_sequence->getCurrentTrackID();
+        
+        ASSERT(m_gtracks.size() == trackAmount);
         
         for (int n=0; n<trackAmount; n++)
         {
@@ -347,12 +359,11 @@ void GraphicalSequence::mouseHeldDown(RelativeXCoord mousex_current, int mousey_
     }
     
     // dispatch event to all tracks
-    // FIXME(DESIGN): simplify this code (and other loops in this file) by iterating directly on graphical tracks
-    const int trackAmount = m_sequence->getTrackAmount();
+    const int trackAmount = m_gtracks.size();
     for (int n=0; n<trackAmount; n++)
     {
-        getGraphicsFor(m_sequence->getTrack(n))->getCurrentEditor()->mouseHeldDown(mousex_current, mousey_current,
-                                                                                   mousex_initial, mousey_initial);
+        m_gtracks[n].getCurrentEditor()->mouseHeldDown(mousex_current, mousey_current,
+                                                       mousex_initial, mousey_initial);
     }//next
     
 }

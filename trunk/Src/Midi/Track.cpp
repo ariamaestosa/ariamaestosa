@@ -121,40 +121,6 @@ Track::~Track()
 
 // -------------------------------------------------------------------------------------------------------
 
-void Track::notifyOthersIWillBeRemoved()
-{
-    // notify other tracks
-    Sequence* seq = m_sequence;
-    const int trackAmount = seq->getTrackAmount();
-    for (int n=0; n<trackAmount; n++)
-    {
-        Track* track = seq->getTrack(n);
-        if (track != this) track->trackDeleted(this);
-    }
-}
-
-// -------------------------------------------------------------------------------------------------------
-
-void Track::trackDeleted(Track* track)
-{
-    // FIXME(DESIGN): "track deleted" should be a listener callback, not a direct call to GUI classes
-    GraphicalTrack* gtrack = getGraphics();
-    if (gtrack != NULL)
-    {
-        gtrack->getKeyboardEditor()->trackDeleted(track);
-    }
-    
-    /*
-     // uncomment if these editors get background support too
-    graphics->guitarEditor->trackDelete(track);
-    graphics->drumEditor->trackDelete(track);
-    graphics->controllerEditor->trackDelete(track);
-    graphics->scoreEditor->trackDelete(track);
-    */
-}
-
-// -------------------------------------------------------------------------------------------------------
-
 void Track::action( Action::SingleTrackAction* actionObj)
 {
     actionObj->setParentTrack(this);

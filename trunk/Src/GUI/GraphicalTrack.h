@@ -186,6 +186,8 @@ namespace AriaMaestosa
         
         int getGridDivider() const;
         
+        void onTrackRemoved(Track* t);
+        
         /** @brief Implement callback from ITrackListener */
         virtual void onNotationTypeChange();
         
