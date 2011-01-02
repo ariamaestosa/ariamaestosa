@@ -159,7 +159,6 @@ MainPane::MainPane(wxWindow* parent, int* args) :
     m_mouse_down_timer = new MouseDownTimer(this);
 
     m_scroll_to_playback_position = false;
-    m_playback_start_tick = 0; // tells from where the red line should start when playing back
 }
 
 MainPane::~MainPane()
@@ -1204,14 +1203,7 @@ void MainPane::exitPlayLoop()
     getMainFrame()->toolsExitPlaybackMode();
     Core::activateRenderLoop(false);
     setCurrentTick( -1 );
-    Display::render();
-}
-
-// --------------------------------------------------------------------------------------------------
-
-void MainPane::setPlaybackStartTick(int newValue)
-{
-    m_playback_start_tick = newValue;
+    render();
 }
 
 // --------------------------------------------------------------------------------------------------
@@ -1229,39 +1221,40 @@ void MainPane::playbackRenderLoop()
 
     GraphicalSequence* gseq = getMainFrame()->getCurrentGraphicalSequence();
     Sequence* seq = gseq->getModel();
+    const int startTick = seq->getPlaybackStartTick();
     
     // only draw if it has changed
-    if (m_last_tick != m_playback_start_tick + currentTick)
+    if (m_last_tick != startTick + currentTick)
     {
 
         // if user has clicked on a little red arrow
         if (m_scroll_to_playback_position)
         {
             m_scroll_to_playback_position=false;
-            const int x_scroll_in_pixels = (int)( (m_playback_start_tick + currentTick) * gseq->getZoom() );
+            const int x_scroll_in_pixels = (int)( (startTick + currentTick) * gseq->getZoom() );
             gseq->setXScrollInPixels(x_scroll_in_pixels);
-            DisplayFrame::updateHorizontalScrollbar( m_playback_start_tick + currentTick );
+            DisplayFrame::updateHorizontalScrollbar( startTick + currentTick );
         }
 
         // if follow playback is checked in the menu
         if (seq->isFollowPlaybackEnabled())
         {
-            RelativeXCoord tick(m_playback_start_tick + currentTick, MIDI, gseq);
+            RelativeXCoord tick(startTick + currentTick, MIDI, gseq);
             const int current_pixel = tick.getRelativeTo(WINDOW);
 
             //const float zoom = getCurrentSequence()->getZoom();
             const int XStart = Editor::getEditorXStart();
             const int XEnd = getWidth() - 50; // 50 is somewhat arbitrary
             const int last_visible_measure = gseq->getMeasureBar()->measureAtPixel( XEnd );
-            const int current_measure = seq->getMeasureData()->measureAtTick(m_playback_start_tick + currentTick);
+            const int current_measure = seq->getMeasureData()->measureAtTick(startTick + currentTick);
 
             if (current_pixel < XStart or current_measure >= last_visible_measure)
             {
-                int new_scroll_in_pixels = (m_playback_start_tick + currentTick) * gseq->getZoom();
+                int new_scroll_in_pixels = (startTick + currentTick) * gseq->getZoom();
                 if (new_scroll_in_pixels < 0) new_scroll_in_pixels=0;
                 // FIXME(DESIGN) - we need a single call to update both data and widget
                 gseq->setXScrollInPixels(new_scroll_in_pixels);
-                DisplayFrame::updateHorizontalScrollbar( m_playback_start_tick + currentTick );
+                DisplayFrame::updateHorizontalScrollbar( startTick + currentTick );
             }
 
             /*
@@ -1273,7 +1266,7 @@ void MainPane::playbackRenderLoop()
                  */
         }
 
-        setCurrentTick( m_playback_start_tick + currentTick );
+        setCurrentTick( startTick + currentTick );
 
         RelativeXCoord tick(m_current_tick, MIDI, gseq);
         const int XStart = Editor::getEditorXStart();
@@ -1292,7 +1285,7 @@ void MainPane::playbackRenderLoop()
         {
             Display::render();
         }
-        m_last_tick = m_playback_start_tick + currentTick;
+        m_last_tick = startTick + currentTick;
     }
 
     // FIXME - why pause the main thread, aren't there better ways?

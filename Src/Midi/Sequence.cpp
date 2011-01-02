@@ -60,7 +60,8 @@ Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener
     m_action_stack_listener = actionStackListener;
     m_seq_data_listener     = sequenceDataListener;
     m_play_with_metronome   = false;
-    
+    m_playback_start_tick   = 0;
+
     m_sequence_filename.set(wxString(_("Untitled")));
     m_sequence_filename.setMaxWidth(155); // FIXME - won't work if lots of sequences are open (tabs will begin to get smaller)
     
@@ -561,7 +562,7 @@ void Sequence::spacePressed()
 
         int startTick = -1;
         bool success = PlatformMidiManager::get()->playSelected(this, &startTick);
-        Display::setPlaybackStartTick( startTick ); // FIXME - start tick should NOT go in GlPane
+        setPlaybackStartTick( startTick );
 
         // FIXME: there's MainFrame::playback_mode AND MainPane::enterPlayLoop/exitPlayLoop. Fix this MESS
         if (not success or startTick == -1) // failure
@@ -583,6 +584,13 @@ void Sequence::spacePressed()
         if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
     }
 
+}
+
+// --------------------------------------------------------------------------------------------------
+
+void Sequence::setPlaybackStartTick(int newValue)
+{
+    m_playback_start_tick = newValue;
 }
 
 // ----------------------------------------------------------------------------------------------------------

@@ -232,10 +232,6 @@ namespace AriaMaestosa
             mainPane->SetFocus();
         }
         
-        void setPlaybackStartTick(const int tick)
-        {
-            mainPane->setPlaybackStartTick(tick);
-        }
     }// end Display namespace
     
     
