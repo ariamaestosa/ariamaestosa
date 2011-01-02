@@ -805,7 +805,8 @@ bool GraphicalTrack::processMouseDrag(RelativeXCoord x, int y)
 
 void GraphicalTrack::onKeyChange(const int symbolAmount, const KeyType type)
 {
-    for (int n=0; n<m_all_editors.size(); n++)
+    const int count = m_all_editors.size();
+    for (int n=0; n<count; n++)
     {
         m_all_editors[n].onKeyChange(symbolAmount, type);
     }
