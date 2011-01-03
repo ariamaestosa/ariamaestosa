@@ -65,7 +65,7 @@ Track::Track(Sequence* sequence)
     m_name.set( wxString( _("Untitled") ) );
     m_name.setMaxWidth(120);
 
-    //FIXME(DESIGN): what does this do in the data class, and not in the graphics class?
+    //FIXME(DESIGN): name renderer should go in GUI class
     m_name.setFont( getTrackNameFont() );
 
     //m_parent_frame = parent;

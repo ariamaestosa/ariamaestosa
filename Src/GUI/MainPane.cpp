@@ -1253,7 +1253,7 @@ void MainPane::playbackRenderLoop()
             {
                 int new_scroll_in_pixels = (startTick + currentTick) * gseq->getZoom();
                 if (new_scroll_in_pixels < 0) new_scroll_in_pixels=0;
-                // FIXME(DESIGN) - we need a single call to update both data and widget
+                // FIXME(DESIGN) - the GUI should not be updated independently of the model
                 gseq->setXScrollInPixels(new_scroll_in_pixels);
                 DisplayFrame::updateHorizontalScrollbar( startTick + currentTick );
             }
