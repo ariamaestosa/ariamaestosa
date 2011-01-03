@@ -337,7 +337,9 @@ namespace AriaMaestosa
 const int EXPANDED_BAR_HEIGHT = 20;
 const int COLLAPSED_BAR_HEIGHT = 5; //FIXME: what's that?? a collapsed bar is not 5 pixels high?? */
 
-GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq, MagneticGrid* magneticGrid)
+GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq, MagneticGrid* magneticGrid) :
+    m_instrument_name( m_instrument_string = new Model<wxString>(""), false ),
+    m_name_renderer(track->getNameModel(), false)
 {
     m_keyboard_editor     = NULL;
     m_guitar_editor       = NULL;
@@ -347,6 +349,10 @@ GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq, MagneticGri
 
     m_gsequence = seq;
     m_track = track;
+    
+    m_name_renderer.setMaxWidth(120);
+    m_name_renderer.setFont( getTrackNameFont() );
+
     
     track->setListener(this);
     track->setInstrumentListener(this);
@@ -418,11 +424,11 @@ GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq, MagneticGri
     
     if (m_track->getNotationType() == DRUM)
     {
-        m_instrument_name.set(DrumChoice::getDrumkitName( m_track->getDrumKit() ));
+        m_instrument_string->setValue(DrumChoice::getDrumkitName( m_track->getDrumKit() ));
     }
     else
     {
-        m_instrument_name.set(InstrumentChoice::getInstrumentName( m_track->getInstrument() ));
+        m_instrument_string->setValue(InstrumentChoice::getInstrumentName( m_track->getInstrument() ));
     }
     
     m_instrument_name.setFont( getInstrumentNameFont() );
@@ -831,14 +837,14 @@ void GraphicalTrack::onKeyChange(const int symbolAmount, const KeyType type)
 
 void GraphicalTrack::onDrumkitChanged(const int newInstrument)
 {
-    m_instrument_name.set(DrumChoice::getDrumkitName( newInstrument ));
+    m_instrument_string->setValue(DrumChoice::getDrumkitName( newInstrument ));
 }
 
 // ----------------------------------------------------------------------------------------------------------
 
 void GraphicalTrack::onInstrumentChanged(const int newInstrument)
 {
-    m_instrument_name.set(InstrumentChoice::getInstrumentName( newInstrument ));
+    m_instrument_string->setValue(InstrumentChoice::getInstrumentName( newInstrument ));
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -932,16 +938,16 @@ void GraphicalTrack::onNotationTypeChange()
 {    
     if (m_track->getNotationType() == DRUM)
     {
-        m_instrument_name.set(DrumChoice::getDrumkitName( m_track->getDrumKit() ));
+        m_instrument_string->setValue(DrumChoice::getDrumkitName( m_track->getDrumKit() ));
     }
     else
     {
         // only call 'set' if the string really changed, the OpenGL implementation of 'set' involves
         // RTT and is quite expensive.
         wxString name = InstrumentChoice::getInstrumentName( m_track->getInstrument() );
-        if (m_instrument_name != name)
+        if (m_instrument_string->getValue() != name)
         {
-            m_instrument_name.set(name);
+            m_instrument_string->setValue(name);
         }
     }
 }
@@ -1124,9 +1130,8 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     // draw track name
     AriaRender::images();
     AriaRender::color(0,0,0);
-    AriaRenderString& track_name = m_track->getNameRenderer();
-    track_name.bind();
-    track_name.render(m_track_name->getX()+11, y+29);
+    m_name_renderer.bind();
+    m_name_renderer.render(m_track_name->getX()+11, y+29);
     
     // draw grid label
     int grid_selection_x;

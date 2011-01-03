@@ -53,6 +53,8 @@ namespace AriaMaestosa
         
         void createViewForTrack(Track* t);
 
+        AriaRenderString m_name_renderer;
+        
     public:
         
         /** 
@@ -132,6 +134,7 @@ namespace AriaMaestosa
         GraphicalTrack* getDockedTrack(int id) { return m_dock.get(id);        }
         
         
+        AriaRenderString& getNameRenderer()    { return m_name_renderer; }
         void setDockVisible(bool visible)      { m_dock_height = (visible ? 20 : 0) ; }
         
         /** @brief Implement callback from ITrackSetListener */

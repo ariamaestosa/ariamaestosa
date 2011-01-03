@@ -19,13 +19,15 @@
 #include "GUI/MainPane.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
+#include "PreferencesData.h"
+
 #include "irrXML/irrXML.h"
 
 using namespace AriaMaestosa;
 
 // ----------------------------------------------------------------------------------------------------------
 
-GraphicalSequence::GraphicalSequence(Sequence* s)
+GraphicalSequence::GraphicalSequence(Sequence* s) : m_name_renderer(s->getNameModel(), false)
 {
     m_sequence              = s;
     reordering_newPosition  = -1;
@@ -38,6 +40,9 @@ GraphicalSequence::GraphicalSequence(Sequence* s)
     m_x_scroll_in_pixels    = 0;
     y_scroll                = 0;
     reorderYScroll          = 0;
+    
+    m_name_renderer.setMaxWidth(155); // FIXME - won't work if lots of sequences are open (tabs will begin to get smaller)
+    m_name_renderer.setFont( getSequenceFilenameFont() );
     
     s->addTrackSetListener(this);
 }

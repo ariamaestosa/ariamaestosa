@@ -19,20 +19,10 @@ namespace AriaMaestosa
 #pragma mark wxDCString
 #endif
     
-    /** constructs an empty GLString. Set string later with operator=. */
-    wxDCString::wxDCString()
+
+    wxDCString::wxDCString(Model<wxString* model)
     {
-        m_consolidated = false;
-        m_max_width = -1;
-        m_warp = false;
-        m_w = -1;
-        m_h = -1;
-    }
-    
-    
-    /** constructs a GLstring with 'message' as contents. */
-    wxDCString::wxDCString(wxString message) : wxString(message)
-    {
+        m_model = model;
         m_consolidated = false;
         m_max_width = -1;
         m_warp = false;
@@ -127,11 +117,6 @@ namespace AriaMaestosa
     }
     
     
-    void wxDCString::set(const wxString& newstring)
-    {
-        (*((wxString*)this)) = newstring;
-        m_consolidated = false;
-    }
     
     
 #if 0

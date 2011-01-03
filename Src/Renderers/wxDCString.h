@@ -20,7 +20,7 @@ namespace AriaMaestosa
      * @brief   wxWidgets render backend : text renderer
      * @ingroup renderers
      */
-    class wxDCString : public wxString
+    class wxDCString
     {
     protected:
         wxFont m_font;
@@ -34,12 +34,12 @@ namespace AriaMaestosa
         
         bool m_warp;
         
+        Model<wxString>* m_model;
+        
     public:
         
-        /** constructs an empty GLString. Set string later with operator=. */
-        wxDCString();
-        /** constructs a GLstring with 'message' as contents. */
-        wxDCString(wxString message);
+        wxDCString(Model<wxString* model);
+        
         ~wxDCString();
         
         
@@ -55,10 +55,7 @@ namespace AriaMaestosa
         
         void render(const int x, const int y);
         
-        /** changes the string of this element - has no immediate effect,
-         you need to call consolidate() to get results */
-        void set(const wxString& string);
-        
+        Model<wxString>* getModel() { return m_model; }
         
         int getWidth();
         void scale(float f);

@@ -317,7 +317,7 @@ bool MainPane::do_render()
         if (currentSeqID == n)  AriaRender::color(0,0,0);
         else                    AriaRender::color(0.4, 0.4, 0.4);
 
-        AriaRenderString& seq_name = getMainFrame()->getSequence(n)->getNameRenderer();
+        AriaRenderString& seq_name = getMainFrame()->getGraphicalSequence(n)->getNameRenderer();
         seq_name.bind();
 
         seq_name.render( start_at_x+10, TAB_BAR_Y+20);
@@ -360,7 +360,7 @@ bool MainPane::do_render()
 
             AriaRender::images();
             AriaRender::color(0,0,0);
-            AriaRenderString& trackname = gseq->getDockedTrack(n)->getTrack()->getNameRenderer();
+            AriaRenderString& trackname = gseq->getDockedTrack(n)->getNameRenderer();
             trackname.bind();
             trackname.render(x+5, getHeight()-2);
             x += trackname.getWidth() + 10;

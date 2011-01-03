@@ -268,23 +268,15 @@ TextTexture::~TextTexture()
 #pragma mark -
 #pragma mark wxGLString implementation
 #endif
-
-wxGLString::wxGLString() : wxString(wxT("")), TextGLDrawable()
+    
+wxGLString::wxGLString(Model<wxString>* model, bool ownModel) : TextGLDrawable()
 {
+    m_model = model;
     m_consolidated = false;
     m_warp_after = -1;
-}
-
-wxGLString::wxGLString(wxString message) : wxString(message), TextGLDrawable()
-{
-    m_consolidated = false;
-    m_warp_after = -1;
-}
-
-void wxGLString::set(const wxString& string)
-{
-    (*((wxString*)this)) = string;
-    m_consolidated = false;
+    
+    if (not ownModel) m_model.owner = false;
+    model->setListener(this);
 }
 
 void wxGLString::bind()
@@ -296,13 +288,13 @@ void wxGLString::bind()
     
 void wxGLString::calculateSize(wxDC* dc, const bool ignore_font /* when from array */)
 {
-    if (!ignore_font)
+    if (not ignore_font)
     {
         if (m_font.IsOk()) dc->SetFont(m_font);
         else               dc->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
     }
 
-    dc->GetTextExtent(*this, &m_w, &m_h);
+    dc->GetTextExtent(m_model->getValue(), &m_w, &m_h);
 }
 
 void wxGLString::consolidate(wxDC* dc)
@@ -314,11 +306,14 @@ void wxGLString::consolidate(wxDC* dc)
     int singleLineHeight = 0;
     if (m_warp_after != -1 and m_w > m_warp_after)
     {
-        Replace(wxT(" "),wxT("\n"));
-        Replace(wxT("/"),wxT("/\n"));
+        wxString val;
+        val.Replace(wxT(" "),wxT("\n"));
+        val.Replace(wxT("/"),wxT("/\n"));
+        m_model->setValue(val);
+        
         singleLineHeight = m_h;
-        dc->GetMultiLineTextExtent(*this, &m_w, &m_h);
-        std::cout << "new size: " << m_w << ", " << m_h << std::endl;
+        dc->GetMultiLineTextExtent(val, &m_w, &m_h);
+        //std::cout << "new size: " << m_w << ", " << m_h << std::endl;
         multiLine = true;
     }
     
@@ -340,7 +335,7 @@ void wxGLString::consolidate(wxDC* dc)
         if (multiLine)
         {
             int y = 0;
-            wxStringTokenizer tkz(*this, wxT("\n"));
+            wxStringTokenizer tkz(m_model->getValue(), wxT("\n"));
             while (tkz.HasMoreTokens())
             {
                 wxString token = tkz.GetNextToken();
@@ -351,7 +346,7 @@ void wxGLString::consolidate(wxDC* dc)
         }
         else
         {
-            temp_dc.DrawText(*this, 0, 0);
+            temp_dc.DrawText(m_model->getValue(), 0, 0);
         }
     }
     TextTexture* img = new TextTexture(bmp);
@@ -371,7 +366,7 @@ void wxGLString::consolidate(wxDC* dc)
     
 void wxGLString::consolidateFromArray(wxDC* dc, int x, int y)
 {
-    dc->DrawText(*this, x, y);
+    dc->DrawText(m_model->getValue(), x, y);
     m_consolidated = true;
 }
 
@@ -409,7 +404,7 @@ wxGLString::~wxGLString()
 #pragma mark wxGLNumberRenderer implementation
 #endif
 
-wxGLNumberRenderer::wxGLNumberRenderer() : wxGLString( wxT("0 1 2 3 4 5 6 7 8 9 . - ") )
+wxGLNumberRenderer::wxGLNumberRenderer() : wxGLString( new Model<wxString>(wxT("0 1 2 3 4 5 6 7 8 9 . - ")), true )
 {
     number_location = new int[13];
     setFont( getNumberFont() );
@@ -522,7 +517,7 @@ wxGLStringArray::wxGLStringArray(const wxString strings_arg[], int amount)
 
     for (int n=0; n<amount; n++)
     {
-        strings.push_back( new wxGLString(strings_arg[n]) );
+        strings.push_back( new wxGLString( new Model<wxString>(strings_arg[n]), true) );
     }
 }
     
@@ -542,7 +537,7 @@ void wxGLStringArray::bind()
 }
 void wxGLStringArray::addString(wxString string)
 {
-    strings.push_back( new wxGLString(string) );
+    strings.push_back( new wxGLString( new Model<wxString>(string), true) );
 }
 void wxGLStringArray::setFont(wxFont font)
 {
@@ -562,7 +557,7 @@ void wxGLStringArray::consolidate(wxDC* dc)
     const int amount = strings.size();
     for (int n=0; n<amount; n++)
     {
-        if (strings[n].IsEmpty()) continue;
+        if (strings[n].getModel()->getValue().IsEmpty()) continue;
         
         strings[n].calculateSize(dc, true);
         y += strings[n].m_h;
@@ -599,7 +594,7 @@ void wxGLStringArray::consolidate(wxDC* dc)
 
         for (int n=0; n<amount; n++)
         {
-            if (strings[n].IsEmpty()) continue;
+            if (strings[n].getModel()->getValue().IsEmpty()) continue;
             strings[n].consolidateFromArray(&temp_dc, x, y);
 
             strings[n].tex_coord_x1 = (float)x/(float)power_of_2_w;

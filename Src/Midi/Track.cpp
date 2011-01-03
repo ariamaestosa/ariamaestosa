@@ -62,13 +62,7 @@ Track::Track(Sequence* sequence)
 
     m_tuning = new GuitarTuning(this);
 
-    m_name.set( wxString( _("Untitled") ) );
-    m_name.setMaxWidth(120);
-
-    //FIXME(DESIGN): name renderer should go in GUI class
-    m_name.setFont( getTrackNameFont() );
-
-    //m_parent_frame = parent;
+    m_track_name = new Model<wxString>( _("Untitled") );
 
     m_next_instrument_listener = NULL;
     m_next_drumkit_listener = NULL;
@@ -904,15 +898,8 @@ void Track::setId(const int id)
 
 void Track::setName(wxString name)
 {
-    if (name.Trim().IsEmpty()) m_name.set( wxString( _("Untitled") ) );
-    else                       m_name.set(name);
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-AriaRenderString& Track::getNameRenderer()
-{
-    return m_name;
+    if (name.Trim().IsEmpty()) m_track_name->setValue( wxString( _("Untitled") ) );
+    else                       m_track_name->setValue(name);
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -1371,9 +1358,10 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         m.SetText( 3 );
         m.SetByte1( 3 );
 
-        // FIXME - I removed strcpy, but not sure it works anymore...
-        jdkmidi::MIDISystemExclusive sysex( (unsigned char*)(const char*)m_name.mb_str(wxConvUTF8),
-                                           m_name.size()+1, m_name.size()+1, false);
+        // FIXME: if the track-name contains characters that take more than 1 byte, the size parameters will be wrong
+        wxString track_name = m_track_name->getValue();
+        jdkmidi::MIDISystemExclusive sysex((unsigned char*)(const char*)track_name.mb_str(wxConvUTF8),
+                                           track_name.size()+1, track_name.size()+1, false);
 
         m.CopySysEx( &sysex );
         m.SetTime( 0 );
@@ -1700,7 +1688,7 @@ void Track::saveToFile(wxFileOutputStream& fileout)
     reorderNoteVector();
     reorderNoteOffVector();
 
-    writeData(wxT("\n<track name=\"") + m_name +
+    writeData(wxT("\n<track name=\"") + m_track_name->getValue() +
               wxT("\" channel=\"") + to_wxString(m_channel) +
               (m_muted ? wxT("\" muted=\"true") : wxT("") )  +
               wxT("\">\n"), fileout );
