@@ -607,26 +607,27 @@ void MainPane::mouseDown(wxMouseEvent& event)
                 if (gseq->isTrackMaximized())
                 {
                     const int track_amount = seq->getTrackAmount();
-                    GraphicalTrack* undocked_track = gseq->getDockedTrack(n/2);
-                    Track* undocked = undocked_track->getTrack();
+                    GraphicalTrack* undocked_gtrack = gseq->getDockedTrack(n/2);
+                    Track* undocked = undocked_gtrack->getTrack();
 
                     for (int i=0; i<track_amount; i++)
                     {
                         Track* track = seq->getTrack(i);
-                        if (track->getGraphics() == undocked_track)
+                        GraphicalTrack* gtrack = track->getGraphics();
+                        if (gtrack == undocked_gtrack)
                         {
-                            undocked_track->dock(false);
-                            track->getGraphics()->maximizeHeight();
+                            undocked_gtrack->dock(false);
+                            gtrack->maximizeHeight();
                             continue;
                         }
-                        else if (not track->getGraphics()->isDocked())
+                        else if (not gtrack->isDocked())
                         {
-                            track->getGraphics()->dock();
+                            gtrack->dock();
                         }
                     }
-                    if (undocked->getGraphics()->isCollapsed())
+                    if (undocked_gtrack->isCollapsed())
                     {
-                        undocked->getGraphics()->setCollapsed(false);
+                        undocked_gtrack->setCollapsed(false);
                     }
                     
                     DisplayFrame::updateVerticalScrollbar();
