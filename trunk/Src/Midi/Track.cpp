@@ -22,7 +22,6 @@
 #include "Actions/UpdateGuitarTuning.h"
 
 // FIXME(DESIGN) : data classes shouldn't refer to GUI classes
-#include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
 #include "GUI/MainFrame.h"
 
