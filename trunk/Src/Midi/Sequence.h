@@ -128,7 +128,6 @@ namespace AriaMaestosa
         friend class Action::AddControllerSlide;
         friend class Track;
         
-        // FIXME(DESIGN): not sure "follow playback" belongs here
         /** set this flag true to follow playback */
         bool m_follow_playback;
         
