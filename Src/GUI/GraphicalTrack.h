@@ -21,6 +21,7 @@
 #include "Utils.h"
 #include "Editors/Editor.h"
 #include "Midi/Track.h"
+#include "Pickers/MagneticGridPicker.h"
 
 class wxFileOutputStream;
 // forward
@@ -104,7 +105,7 @@ namespace AriaMaestosa
          */
         int m_to_y;
         
-        OwnerPtr<MagneticGrid>  m_grid;
+        OwnerPtr<MagneticGridPicker>  m_grid;
 
         ptr_vector<Editor, REF> m_all_editors;
         
@@ -113,7 +114,7 @@ namespace AriaMaestosa
     public:
         LEAK_CHECK();
         
-        GraphicalTrack(Track* track, GraphicalSequence* parent);
+        GraphicalTrack(Track* track, GraphicalSequence* parent, MagneticGrid* magneticGrid);
         ~GraphicalTrack();
         
         int getEditorHeight() const { return m_height; }
@@ -194,9 +195,7 @@ namespace AriaMaestosa
         
         int getNoteStartInPixels(const int id) const;
         int getNoteEndInPixels(const int id) const;
-        
-        int getGridDivider() const;
-        
+                
         void onTrackRemoved(Track* t);
         
         /** @brief Implement callback from ITrackListener */

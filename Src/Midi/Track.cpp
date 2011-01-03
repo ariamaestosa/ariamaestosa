@@ -22,7 +22,7 @@
 #include "Actions/UpdateGuitarTuning.h"
 
 // FIXME(DESIGN) : data classes shouldn't refer to GUI classes
-#include "Editors/KeyboardEditor.h"
+//#include "Editors/KeyboardEditor.h"
 #include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
 #include "GUI/MainFrame.h"
@@ -45,7 +45,7 @@
 
 using namespace AriaMaestosa;
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 Track::Track(Sequence* sequence)
 {
@@ -54,8 +54,9 @@ Track::Track(Sequence* sequence)
     m_track_unique_ID = id++;
 #endif
     
+    m_magnetic_grid = new MagneticGrid();
     m_muted = false;
-    m_editor_mode     = KEYBOARD;
+    m_editor_mode = KEYBOARD;
     m_listener = NULL;
     
     // init key data
@@ -113,7 +114,7 @@ Track::Track(Sequence* sequence)
     m_drum_kit   = new DrumChoice(0, this);
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 Track::~Track()
 {
@@ -122,7 +123,7 @@ Track::~Track()
 #endif
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::action( Action::SingleTrackAction* actionObj)
 {
@@ -131,14 +132,14 @@ void Track::action( Action::SingleTrackAction* actionObj)
     actionObj->perform();
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 GraphicalTrack* Track::getGraphics()
 {
     return getMainFrame()->getCurrentGraphicalSequence()->getGraphicsFor(this);
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 const GraphicalTrack* Track::getGraphics() const
 {
@@ -229,7 +230,7 @@ bool Track::addNote(Note* note, bool check_for_overlapping_notes)
 
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 // FIXME - find nicer solution than this pointer to an int...
 void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
@@ -279,7 +280,7 @@ void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
     vector->push_back( evt );
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::addControlEvent_import(const int x, const int value, const int controller)
 {
@@ -287,7 +288,7 @@ void Track::addControlEvent_import(const int x, const int value, const int contr
     m_control_events.push_back(new ControllerEvent(controller, x, value) );
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 bool Track::addNote_import(const int pitchID, const int startTick, const int endTick, const int volume, const int string)
 {
@@ -295,7 +296,7 @@ bool Track::addNote_import(const int pitchID, const int startTick, const int end
     return addNote( new Note(this, pitchID, startTick, endTick, volume, string) );
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::setNoteEnd_import(const int tick, const int noteID)
 {
@@ -309,7 +310,7 @@ void Track::setNoteEnd_import(const int tick, const int noteID)
     m_notes[noteID].setEndTick(tick);
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::removeNote(const int id)
 {
@@ -329,7 +330,7 @@ void Track::removeNote(const int id)
 
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::markNoteToBeRemoved(const int id)
 {
@@ -355,7 +356,7 @@ void Track::markNoteToBeRemoved(const int id)
     m_notes.markToBeRemoved(id);
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::removeMarkedNotes()
 {
@@ -374,7 +375,7 @@ void Track::removeMarkedNotes()
 #endif
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::reorderNoteVector()
 {
@@ -404,7 +405,7 @@ void Track::reorderNoteVector()
 
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::reorderNoteOffVector()
 {
@@ -433,7 +434,7 @@ void Track::reorderNoteOffVector()
 
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::reorderControlVector()
 {
@@ -456,7 +457,7 @@ void Track::reorderControlVector()
 
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::mergeTrackIn(Track* track)
 {
@@ -478,7 +479,7 @@ void Track::mergeTrackIn(Track* track)
 
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 // FIXME - debug function, remove
 void Track::checkControlEventsOrder()
@@ -509,7 +510,7 @@ Note* Track::getNote(const int id)
     return m_notes.get(id);
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int Track::getNoteStartInMidiTicks(const int id) const
 {
@@ -519,7 +520,7 @@ int Track::getNoteStartInMidiTicks(const int id) const
     return m_notes[id].getTick();
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int Track::getNoteEndInMidiTicks(const int id) const
 {
@@ -529,7 +530,7 @@ int Track::getNoteEndInMidiTicks(const int id) const
     return m_notes[id].getEndTick();
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int Track::getNotePitchID(const int id) const
 {
@@ -538,14 +539,14 @@ int Track::getNotePitchID(const int id) const
     return m_notes[id].getPitchID();
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int Track::getNoteAmount() const
 {
     return m_notes.size();
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int Track::getNoteVolume(const int id) const
 {
@@ -554,7 +555,7 @@ int Track::getNoteVolume(const int id) const
     return m_notes[id].getVolume();
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int Track::getNoteString(const int id)
 {
@@ -568,7 +569,7 @@ int Track::getNoteString(const int id)
 }
 
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int Track::getNoteFret(const int id)
 {
@@ -583,7 +584,7 @@ int Track::getNoteFret(const int id)
     return m_notes[id].getFret();
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int Track::getNoteStringConst(const int id) const
 {
@@ -593,7 +594,7 @@ int Track::getNoteStringConst(const int id) const
     return m_notes[id].getStringConst();
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int Track::getNoteFretConst(const int id) const
 {
@@ -604,7 +605,7 @@ int Track::getNoteFretConst(const int id) const
 }
 
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int Track::findFirstNoteInRange(const int fromTick, const int toTick) const
 {
@@ -618,7 +619,7 @@ int Track::findFirstNoteInRange(const int fromTick, const int toTick) const
     return -1;
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int Track::findLastNoteInRange(const int fromTick, const int toTick) const
 {
@@ -632,7 +633,7 @@ int Track::findLastNoteInRange(const int fromTick, const int toTick) const
     return -1;
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int Track::getControllerEventAmount(const bool isTempo) const
 {
@@ -640,7 +641,7 @@ int Track::getControllerEventAmount(const bool isTempo) const
     else         return m_control_events.size();
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int Track::getControllerEventAmount(const int controller) const
 {
@@ -662,7 +663,7 @@ int Track::getControllerEventAmount(const int controller) const
     }
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 ControllerEvent* Track::getControllerEvent(const int id, const int controllerTypeID)
 {
@@ -681,7 +682,7 @@ ControllerEvent* Track::getControllerEvent(const int id, const int controllerTyp
     return &m_control_events[id];
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int Track::getFirstNoteTick(bool selectionOnly) const
 {
@@ -700,7 +701,7 @@ int Track::getFirstNoteTick(bool selectionOnly) const
 
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int Track::getFirstSelectedNote() const
 {
@@ -712,7 +713,7 @@ int Track::getFirstSelectedNote() const
     return -1;
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
 {    
@@ -765,7 +766,7 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
     }//end if
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 bool Track::isNoteSelected(const int id) const
 {
@@ -774,19 +775,20 @@ bool Track::isNoteSelected(const int id) const
     return m_notes[id].isSelected();
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 void Track::prepareNotesForGuitarEditor()
 {
 
-    for (int n=0; n<m_notes.size(); n++)
+    const int amount = m_notes.size();
+    for (int n=0; n<amount; n++)
     {
         m_notes[n].checkIfStringAndFretMatchNote(true);
     }
 
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int Track::snapMidiTickToGrid(int tick)
 {    
@@ -798,15 +800,16 @@ int Track::snapMidiTickToGrid(int tick)
         origin_tick = md->firstTickInMeasure(measure);
     }
     
-    // FIXME(DESIGN): the magnetic grid should not be in graphics perhaps?
+    const int divider = getMagneticGrid()->getDivider();
+    
     return origin_tick + (int)( round((float)(tick - origin_tick)/
-                                      (float)(m_sequence->ticksPerBeat()*4 / getGraphics()->getGridDivider()))
-                               *(m_sequence->ticksPerBeat()*4 / getGraphics()->getGridDivider())
+                                      (float)(m_sequence->ticksPerBeat()*4 / divider))
+                               *(m_sequence->ticksPerBeat()*4 / divider)
                                );
     
 }
 
-// ------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int Track::snapMidiTickToGrid_ceil(int tick)
 {    
@@ -818,9 +821,11 @@ int Track::snapMidiTickToGrid_ceil(int tick)
         origin_tick = md->firstTickInMeasure(measure);
     }
     
+    const int divider = getMagneticGrid()->getDivider();
+    
     return origin_tick + (int)( ceil((float)(tick - origin_tick)/
-                                     (float)(m_sequence->ticksPerBeat()*4 / getGraphics()->getGridDivider()))
-                               *(m_sequence->ticksPerBeat()*4 / getGraphics()->getGridDivider())
+                                     (float)(m_sequence->ticksPerBeat()*4 / divider))
+                               *(m_sequence->ticksPerBeat()*4 / divider)
                                );
     
 }
@@ -1225,7 +1230,7 @@ void Track::playNote(const int id, const bool noteChange)
     m_notes[id].play(noteChange);
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 /** @return Smallest values, ignoring -1, a being prioritary to b (returns -1 for none, 0 for a, 1 for b) */
 int getActiveMin(int a, int b)
@@ -1238,7 +1243,7 @@ int getActiveMin(int a, int b)
     else return 1;//b
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 /**
   * @return Smallest values, -1 being considered as 'no value'
@@ -1266,7 +1271,7 @@ int getActiveMin(int a, int b, int c)
 
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                          int channel,
@@ -1758,7 +1763,7 @@ void Track::saveToFile(wxFileOutputStream& fileout)
 
 }
 
-// -------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 // FIXME(DESIGN): remove references to GraphicalSequence from model classes
 bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)

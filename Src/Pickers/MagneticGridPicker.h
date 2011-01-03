@@ -15,8 +15,8 @@
  */
 
 
-#ifndef __MAGNETIC_GRID_H__
-#define __MAGNETIC_GRID_H__
+#ifndef __MAGNETIC_GRID_PICKER_H__
+#define __MAGNETIC_GRID_PICKER_H__
 
 #include <wx/menu.h>
 
@@ -33,16 +33,15 @@ namespace AriaMaestosa
 {
     
     class GraphicalTrack; // forward
+    class MagneticGrid;
     
     /**
       * @ingroup pickers
       * @brief menu where users can choose the size of the magnetic grid and/or the current note length
       *        (depending on the current edit tool)
       */
-    class MagneticGrid : public wxMenu
-    {
-        bool triplet;
-        
+    class MagneticGridPicker : public wxMenu
+    {        
         wxMenuItem* grid1;
         wxMenuItem* grid2;
         wxMenuItem* grid4;
@@ -54,14 +53,15 @@ namespace AriaMaestosa
         wxMenuItem* gridTriplet;
         
         GraphicalTrack* m_parent;
+        MagneticGrid*   m_model;
         
         void resetChecks();
         
     public:
         LEAK_CHECK();
         
-        MagneticGrid(GraphicalTrack* parent);
-        ~MagneticGrid();
+        MagneticGridPicker(GraphicalTrack* parent, MagneticGrid* model);
+        ~MagneticGridPicker();
         
         void grid1selected(wxCommandEvent& evt);
         void grid2selected(wxCommandEvent& evt);
@@ -74,14 +74,8 @@ namespace AriaMaestosa
         void tripletChanged(wxCommandEvent& evt);
         
         void toggleTriplet();
-        bool isTriplet() const { return triplet; }
         
-        wxString label;
-        int divider;
-        
-        // serialization
-        void saveToFile(wxFileOutputStream& fileout);
-        bool readFromFile(irr::io::IrrXMLReader* xml);
+        MagneticGrid* getModel() { return m_model; }
         
         DECLARE_EVENT_TABLE();
     };

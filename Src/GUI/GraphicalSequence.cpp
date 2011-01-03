@@ -48,7 +48,7 @@ void GraphicalSequence::createViewForTrack(Track* t)
     
     GraphicalTrack* deja = getGraphicsFor(t);
     ASSERT( deja == NULL );
-    GraphicalTrack* gt = new GraphicalTrack(t, this);
+    GraphicalTrack* gt = new GraphicalTrack(t, this, t->getMagneticGrid());
     m_gtracks.push_back(gt);
     gt->createEditors();
 }

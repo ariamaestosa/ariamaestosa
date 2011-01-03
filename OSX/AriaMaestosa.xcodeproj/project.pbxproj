@@ -135,6 +135,14 @@
 		9544D68511582D5300E0A3BD /* wxEasyPrintWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 9544D68311582D5300E0A3BD /* wxEasyPrintWrapper.h */; };
 		9544D68611582D5300E0A3BD /* wxEasyPrintWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9544D68211582D5300E0A3BD /* wxEasyPrintWrapper.cpp */; };
 		9544D68711582D5300E0A3BD /* wxEasyPrintWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 9544D68311582D5300E0A3BD /* wxEasyPrintWrapper.h */; };
+		95593BB012D14A69001AF66B /* MagneticGridPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95593BAE12D14A69001AF66B /* MagneticGridPicker.cpp */; };
+		95593BB112D14A69001AF66B /* MagneticGridPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 95593BAF12D14A69001AF66B /* MagneticGridPicker.h */; };
+		95593BB212D14A69001AF66B /* MagneticGridPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95593BAE12D14A69001AF66B /* MagneticGridPicker.cpp */; };
+		95593BB312D14A69001AF66B /* MagneticGridPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 95593BAF12D14A69001AF66B /* MagneticGridPicker.h */; };
+		95593BB612D14A7E001AF66B /* MagneticGrid.h in Headers */ = {isa = PBXBuildFile; fileRef = 95593BB412D14A7E001AF66B /* MagneticGrid.h */; };
+		95593BB712D14A7E001AF66B /* MagneticGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95593BB512D14A7E001AF66B /* MagneticGrid.cpp */; };
+		95593BB812D14A7E001AF66B /* MagneticGrid.h in Headers */ = {isa = PBXBuildFile; fileRef = 95593BB412D14A7E001AF66B /* MagneticGrid.h */; };
+		95593BB912D14A7E001AF66B /* MagneticGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95593BB512D14A7E001AF66B /* MagneticGrid.cpp */; };
 		955AB042115950610067DA80 /* PreferencesData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955AB040115950610067DA80 /* PreferencesData.cpp */; };
 		955AB043115950610067DA80 /* PreferencesData.h in Headers */ = {isa = PBXBuildFile; fileRef = 955AB041115950610067DA80 /* PreferencesData.h */; };
 		955AB044115950610067DA80 /* PreferencesData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 955AB040115950610067DA80 /* PreferencesData.cpp */; };
@@ -303,8 +311,6 @@
 		95711A251125D8D300104BF5 /* InstrumentPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119581125D8D200104BF5 /* InstrumentPicker.h */; };
 		95711A261125D8D300104BF5 /* KeyPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119591125D8D200104BF5 /* KeyPicker.cpp */; };
 		95711A271125D8D300104BF5 /* KeyPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571195A1125D8D200104BF5 /* KeyPicker.h */; };
-		95711A281125D8D300104BF5 /* MagneticGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571195B1125D8D200104BF5 /* MagneticGrid.cpp */; };
-		95711A291125D8D300104BF5 /* MagneticGrid.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571195C1125D8D200104BF5 /* MagneticGrid.h */; };
 		95711A2A1125D8D300104BF5 /* TimeSigPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571195D1125D8D200104BF5 /* TimeSigPicker.cpp */; };
 		95711A2B1125D8D300104BF5 /* TimeSigPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571195E1125D8D200104BF5 /* TimeSigPicker.h */; };
 		95711A2C1125D8D300104BF5 /* TuningPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571195F1125D8D200104BF5 /* TuningPicker.cpp */; };
@@ -469,8 +475,6 @@
 		95711AEF1125D8D300104BF5 /* InstrumentPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119581125D8D200104BF5 /* InstrumentPicker.h */; };
 		95711AF01125D8D300104BF5 /* KeyPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119591125D8D200104BF5 /* KeyPicker.cpp */; };
 		95711AF11125D8D300104BF5 /* KeyPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571195A1125D8D200104BF5 /* KeyPicker.h */; };
-		95711AF21125D8D300104BF5 /* MagneticGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571195B1125D8D200104BF5 /* MagneticGrid.cpp */; };
-		95711AF31125D8D300104BF5 /* MagneticGrid.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571195C1125D8D200104BF5 /* MagneticGrid.h */; };
 		95711AF41125D8D300104BF5 /* TimeSigPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571195D1125D8D200104BF5 /* TimeSigPicker.cpp */; };
 		95711AF51125D8D300104BF5 /* TimeSigPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571195E1125D8D200104BF5 /* TimeSigPicker.h */; };
 		95711AF61125D8D300104BF5 /* TuningPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571195F1125D8D200104BF5 /* TuningPicker.cpp */; };
@@ -876,6 +880,10 @@
 		953C0438122197C0005DF729 /* prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
 		9544D68211582D5300E0A3BD /* wxEasyPrintWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wxEasyPrintWrapper.cpp; path = ../Src/Printing/wxEasyPrintWrapper.cpp; sourceTree = SOURCE_ROOT; };
 		9544D68311582D5300E0A3BD /* wxEasyPrintWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wxEasyPrintWrapper.h; path = ../Src/Printing/wxEasyPrintWrapper.h; sourceTree = SOURCE_ROOT; };
+		95593BAE12D14A69001AF66B /* MagneticGridPicker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MagneticGridPicker.cpp; path = ../Src/Pickers/MagneticGridPicker.cpp; sourceTree = SOURCE_ROOT; };
+		95593BAF12D14A69001AF66B /* MagneticGridPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MagneticGridPicker.h; path = ../Src/Pickers/MagneticGridPicker.h; sourceTree = SOURCE_ROOT; };
+		95593BB412D14A7E001AF66B /* MagneticGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagneticGrid.h; sourceTree = "<group>"; };
+		95593BB512D14A7E001AF66B /* MagneticGrid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MagneticGrid.cpp; sourceTree = "<group>"; };
 		955AB040115950610067DA80 /* PreferencesData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PreferencesData.cpp; path = ../Src/PreferencesData.cpp; sourceTree = SOURCE_ROOT; };
 		955AB041115950610067DA80 /* PreferencesData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PreferencesData.h; path = ../Src/PreferencesData.h; sourceTree = SOURCE_ROOT; };
 		95643A6F11BC0B2B003CC6C0 /* NotePickerWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NotePickerWidget.h; path = ../Src/Pickers/NotePickerWidget.h; sourceTree = SOURCE_ROOT; };
@@ -1027,8 +1035,6 @@
 		957119581125D8D200104BF5 /* InstrumentPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InstrumentPicker.h; path = ../Src/Pickers/InstrumentPicker.h; sourceTree = SOURCE_ROOT; };
 		957119591125D8D200104BF5 /* KeyPicker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KeyPicker.cpp; path = ../Src/Pickers/KeyPicker.cpp; sourceTree = SOURCE_ROOT; };
 		9571195A1125D8D200104BF5 /* KeyPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeyPicker.h; path = ../Src/Pickers/KeyPicker.h; sourceTree = SOURCE_ROOT; };
-		9571195B1125D8D200104BF5 /* MagneticGrid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MagneticGrid.cpp; path = ../Src/Pickers/MagneticGrid.cpp; sourceTree = SOURCE_ROOT; };
-		9571195C1125D8D200104BF5 /* MagneticGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MagneticGrid.h; path = ../Src/Pickers/MagneticGrid.h; sourceTree = SOURCE_ROOT; };
 		9571195D1125D8D200104BF5 /* TimeSigPicker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TimeSigPicker.cpp; path = ../Src/Pickers/TimeSigPicker.cpp; sourceTree = SOURCE_ROOT; };
 		9571195E1125D8D200104BF5 /* TimeSigPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimeSigPicker.h; path = ../Src/Pickers/TimeSigPicker.h; sourceTree = SOURCE_ROOT; };
 		9571195F1125D8D200104BF5 /* TuningPicker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TuningPicker.cpp; path = ../Src/Pickers/TuningPicker.cpp; sourceTree = SOURCE_ROOT; };
@@ -1449,6 +1455,8 @@
 				95EC9D3311DD2D56009A5743 /* InstrumentChoice.h */,
 				95866C6A11CE7C10008F2938 /* KeyPresets.cpp */,
 				95866C6911CE7C10008F2938 /* KeyPresets.h */,
+				95593BB512D14A7E001AF66B /* MagneticGrid.cpp */,
+				95593BB412D14A7E001AF66B /* MagneticGrid.h */,
 				9571192F1125D8D200104BF5 /* MeasureData.cpp */,
 				957119301125D8D200104BF5 /* MeasureData.h */,
 				957119311125D8D200104BF5 /* Note.cpp */,
@@ -1529,8 +1537,8 @@
 				957119581125D8D200104BF5 /* InstrumentPicker.h */,
 				957119591125D8D200104BF5 /* KeyPicker.cpp */,
 				9571195A1125D8D200104BF5 /* KeyPicker.h */,
-				9571195B1125D8D200104BF5 /* MagneticGrid.cpp */,
-				9571195C1125D8D200104BF5 /* MagneticGrid.h */,
+				95593BAE12D14A69001AF66B /* MagneticGridPicker.cpp */,
+				95593BAF12D14A69001AF66B /* MagneticGridPicker.h */,
 				95643A7011BC0B2B003CC6C0 /* NotePickerWidget.cpp */,
 				95643A6F11BC0B2B003CC6C0 /* NotePickerWidget.h */,
 				9571195D1125D8D200104BF5 /* TimeSigPicker.cpp */,
@@ -1958,7 +1966,6 @@
 				95711AED1125D8D300104BF5 /* DrumPicker.h in Headers */,
 				95711AEF1125D8D300104BF5 /* InstrumentPicker.h in Headers */,
 				95711AF11125D8D300104BF5 /* KeyPicker.h in Headers */,
-				95711AF31125D8D300104BF5 /* MagneticGrid.h in Headers */,
 				95711AF51125D8D300104BF5 /* TimeSigPicker.h in Headers */,
 				95711AF71125D8D300104BF5 /* TuningPicker.h in Headers */,
 				95711AF91125D8D300104BF5 /* VolumeSlider.h in Headers */,
@@ -2053,6 +2060,8 @@
 				9565B4F012C50A79009784B6 /* wxDrawable.h in Headers */,
 				9565B50112C50B37009784B6 /* Drawable.h in Headers */,
 				9565B59A12C535DE009784B6 /* GraphicalSequence.h in Headers */,
+				95593BB312D14A69001AF66B /* MagneticGridPicker.h in Headers */,
+				95593BB612D14A7E001AF66B /* MagneticGrid.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2126,7 +2135,6 @@
 				95711A231125D8D300104BF5 /* DrumPicker.h in Headers */,
 				95711A251125D8D300104BF5 /* InstrumentPicker.h in Headers */,
 				95711A271125D8D300104BF5 /* KeyPicker.h in Headers */,
-				95711A291125D8D300104BF5 /* MagneticGrid.h in Headers */,
 				95711A2B1125D8D300104BF5 /* TimeSigPicker.h in Headers */,
 				95711A2D1125D8D300104BF5 /* TuningPicker.h in Headers */,
 				95711A2F1125D8D300104BF5 /* VolumeSlider.h in Headers */,
@@ -2221,6 +2229,8 @@
 				9565B4EF12C50A79009784B6 /* wxDrawable.h in Headers */,
 				9565B50012C50B37009784B6 /* Drawable.h in Headers */,
 				9565B59812C535DE009784B6 /* GraphicalSequence.h in Headers */,
+				95593BB112D14A69001AF66B /* MagneticGridPicker.h in Headers */,
+				95593BB812D14A7E001AF66B /* MagneticGrid.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2376,7 +2386,6 @@
 				95711AEC1125D8D300104BF5 /* DrumPicker.cpp in Sources */,
 				95711AEE1125D8D300104BF5 /* InstrumentPicker.cpp in Sources */,
 				95711AF01125D8D300104BF5 /* KeyPicker.cpp in Sources */,
-				95711AF21125D8D300104BF5 /* MagneticGrid.cpp in Sources */,
 				95711AF41125D8D300104BF5 /* TimeSigPicker.cpp in Sources */,
 				95711AF61125D8D300104BF5 /* TuningPicker.cpp in Sources */,
 				95711AF81125D8D300104BF5 /* VolumeSlider.cpp in Sources */,
@@ -2460,6 +2469,8 @@
 				959724B312C1378C00BF73D3 /* jdkmidi_driverwin32.cpp in Sources */,
 				9565B4CE12C5093A009784B6 /* AbstractDrawable.cpp in Sources */,
 				9565B59B12C535DE009784B6 /* GraphicalSequence.cpp in Sources */,
+				95593BB212D14A69001AF66B /* MagneticGridPicker.cpp in Sources */,
+				95593BB712D14A7E001AF66B /* MagneticGrid.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2535,7 +2546,6 @@
 				95711A221125D8D300104BF5 /* DrumPicker.cpp in Sources */,
 				95711A241125D8D300104BF5 /* InstrumentPicker.cpp in Sources */,
 				95711A261125D8D300104BF5 /* KeyPicker.cpp in Sources */,
-				95711A281125D8D300104BF5 /* MagneticGrid.cpp in Sources */,
 				95711A2A1125D8D300104BF5 /* TimeSigPicker.cpp in Sources */,
 				95711A2C1125D8D300104BF5 /* TuningPicker.cpp in Sources */,
 				95711A2E1125D8D300104BF5 /* VolumeSlider.cpp in Sources */,
@@ -2619,6 +2629,8 @@
 				9597245D12C1378C00BF73D3 /* jdkmidi_driverwin32.cpp in Sources */,
 				9565B4CD12C5093A009784B6 /* AbstractDrawable.cpp in Sources */,
 				9565B59912C535DE009784B6 /* GraphicalSequence.cpp in Sources */,
+				95593BB012D14A69001AF66B /* MagneticGridPicker.cpp in Sources */,
+				95593BB912D14A7E001AF66B /* MagneticGrid.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

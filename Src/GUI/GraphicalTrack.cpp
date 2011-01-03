@@ -43,7 +43,7 @@
 #include "Midi/Track.h"
 #include "Pickers/DrumPicker.h"
 #include "Pickers/InstrumentPicker.h"
-#include "Pickers/MagneticGrid.h"
+#include "Pickers/MagneticGridPicker.h"
 #include "PreferencesData.h"
 #include "Renderers/Drawable.h"
 #include "Renderers/ImageBase.h"
@@ -337,7 +337,7 @@ namespace AriaMaestosa
 const int EXPANDED_BAR_HEIGHT = 20;
 const int COLLAPSED_BAR_HEIGHT = 5; //FIXME: what's that?? a collapsed bar is not 5 pixels high?? */
 
-GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq)
+GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq, MagneticGrid* magneticGrid)
 {
     m_keyboard_editor     = NULL;
     m_guitar_editor       = NULL;
@@ -354,7 +354,7 @@ GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq)
 
     ASSERT(track);
 
-    m_grid = new MagneticGrid(this);
+    m_grid = new MagneticGridPicker(this, magneticGrid);
 
     m_last_mouse_y = 0;
 
@@ -1130,7 +1130,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     
     // draw grid label
     int grid_selection_x;
-    switch (m_grid->divider)
+    switch (m_grid->getModel()->getDivider())
     {
         case 1:
             grid_selection_x = mgrid_1->getX();
@@ -1162,8 +1162,8 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     AriaRender::primitives();
     AriaRender::color(0,0,0);
     AriaRender::hollow_rect(grid_selection_x, y+15, grid_selection_x+16, y+30);
-    if (m_grid->isTriplet()) AriaRender::hollow_rect(mgrid_triplet->getX(),      y + 15,
-                                                     mgrid_triplet->getX() + 16, y + 30);
+    if (m_grid->getModel()->isTriplet()) AriaRender::hollow_rect(mgrid_triplet->getX(),      y + 15,
+                                                                 mgrid_triplet->getX() + 16, y + 30);
     
     // mark maximize mode as on if relevant
     if (m_gsequence->isTrackMaximized())
@@ -1326,7 +1326,7 @@ void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
                wxT("\"/>\n")
                , fileout );
 
-    m_grid->saveToFile( fileout );
+    m_grid->getModel()->saveToFile( fileout );
     //keyboardEditor->instrument->saveToFile(fileout);
     //drumEditor->drumKit->saveToFile(fileout);
 
@@ -1467,7 +1467,7 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
     }
     else if (strcmp("magneticgrid", xml->getNodeName()) == 0)
     {
-        if (not m_grid->readFromFile(xml)) return false;
+        if (not m_grid->getModel()->readFromFile(xml)) return false;
     }
     else if (strcmp("guitartuning", xml->getNodeName()) == 0)
     {
@@ -1499,13 +1499,6 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
 
     return true;
 
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-int GraphicalTrack::getGridDivider() const
-{
-    return m_grid->divider;
 }
 
 // ----------------------------------------------------------------------------------------------------------
