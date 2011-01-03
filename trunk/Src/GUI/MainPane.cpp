@@ -41,7 +41,7 @@
 #include "Midi/Sequence.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Players/PlatformMidiManager.h"
-#include "Pickers/MagneticGrid.h"
+#include "Pickers/MagneticGridPicker.h"
 #include "Pickers/InstrumentPicker.h"
 #include "Pickers/DrumPicker.h"
 #include "Editors/RelativeXCoord.h"
@@ -899,7 +899,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             action( new Action::ResizeNotes(
                         -seq->ticksPerBeat() *
                         4 /
-                        seq->getCurrentTrack()->getGraphics()->getGridDivider() ,
+                        seq->getCurrentTrack()->getMagneticGrid()->getDivider(),
                         SELECTED_NOTES)
                    );
             Display::render();
@@ -911,7 +911,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             action( new Action::ResizeNotes(
                         seq->ticksPerBeat() *
                         4 /
-                        seq->getCurrentTrack()->getGraphics()->getGridDivider() ,
+                        seq->getCurrentTrack()->getMagneticGrid()->getDivider(),
                         SELECTED_NOTES)
                     );
             Display::render();
@@ -1063,7 +1063,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             seq->getCurrentTrack()->
             action( new Action::MoveNotes(
                       -seq->ticksPerBeat() * 4 /
-                      seq->getCurrentTrack()->getGraphics()->getGridDivider(), 0, SELECTED_NOTES)
+                      seq->getCurrentTrack()->getMagneticGrid()->getDivider(), 0, SELECTED_NOTES)
                     );
             Display::render();
         }
@@ -1073,7 +1073,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             seq->getCurrentTrack()->
             action( new Action::MoveNotes(
                       seq->ticksPerBeat() * 4 /
-                      seq->getCurrentTrack()->getGraphics()->getGridDivider(), 0, SELECTED_NOTES)
+                      seq->getCurrentTrack()->getMagneticGrid()->getDivider(), 0, SELECTED_NOTES)
                     );
             Display::render();
         }

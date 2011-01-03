@@ -30,6 +30,7 @@ namespace jdkmidi { class MIDITrack; }
 #include "Midi/DrumChoice.h"
 #include "Midi/GuitarTuning.h"
 #include "Midi/InstrumentChoice.h"
+#include "Midi/MagneticGrid.h"
 #include "Midi/Note.h"
 
 #include "ptr_vector.h"
@@ -186,6 +187,8 @@ namespace AriaMaestosa
         
         OwnerPtr<GuitarTuning> m_tuning;
 
+        OwnerPtr<MagneticGrid> m_magnetic_grid;
+        
         /**
          * @brief set the MIDI instrument used by this track
          * @param recursive set to true when the method calls itself
@@ -291,6 +294,7 @@ namespace AriaMaestosa
         /** Same as 'snapMidiTickToGrid', but will only snap the tick to a bigger value */
         int snapMidiTickToGrid_ceil(int absolute_x);
         
+        MagneticGrid* getMagneticGrid() { return m_magnetic_grid; }
         
         /** 
           * @return the type of key for this track
