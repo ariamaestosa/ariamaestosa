@@ -97,12 +97,12 @@ void TuningPicker::loadTuning(const int id, const bool userTriggered) // if user
         case TUNING_STD: // standard
         {
             std::vector<int> newTuning;
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 4) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 3) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_G, PITCH_SIGN_NONE, 3) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 3) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 2) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 2) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 4) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 3) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_G, PITCH_SIGN_NONE, 3) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 3) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 2) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 2) );
             m_model->setTuning(newTuning, userTriggered);
             
             break;
@@ -110,58 +110,58 @@ void TuningPicker::loadTuning(const int id, const bool userTriggered) // if user
         case TUNING_DROPD: // drop D
         {
             std::vector<int> newTuning;
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 4) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 3) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_G, PITCH_SIGN_NONE, 3) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 3) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 2) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 2) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 4) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 3) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_G, PITCH_SIGN_NONE, 3) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 3) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 2) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 2) );
             m_model->setTuning(newTuning, userTriggered);
             break;
         }
         case TUNING_DROPC: // drop C
         {
             std::vector<int> newTuning;
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 4) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 3) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_F, PITCH_SIGN_NONE, 3) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_C, PITCH_SIGN_NONE, 3) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_G, PITCH_SIGN_NONE, 2) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_C, PITCH_SIGN_NONE, 2) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 4) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 3) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_F, PITCH_SIGN_NONE, 3) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_C, PITCH_SIGN_NONE, 3) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_G, PITCH_SIGN_NONE, 2) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_C, PITCH_SIGN_NONE, 2) );
             m_model->setTuning(newTuning, userTriggered);
             break;
         }
         case TUNING_DROPB: // drop B  //B-F#-B-e-g#-c#'
         {
             std::vector<int> newTuning;
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_C, SHARP,           4) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_G, SHARP,           3) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 3) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 2) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_F, SHARP,           2) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 1) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_C, SHARP,           4) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_G, SHARP,           3) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 3) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 2) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_F, SHARP,           2) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 1) );
             m_model->setTuning(newTuning, userTriggered);
             break;
         }
         case TUNING_BASS: // bass
         {
             std::vector<int> newTuning;
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 2) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_G, PITCH_SIGN_NONE, 2) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 2) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 1) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 1) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 2) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_G, PITCH_SIGN_NONE, 2) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 2) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 1) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 1) );
             m_model->setTuning(newTuning, userTriggered);
             break;
         }
         case TUNING_DROPDBASS: // drop-D bass
         {
             std::vector<int> newTuning;
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 2) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_G, PITCH_SIGN_NONE, 2) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 2) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 1) );
-            newTuning.push_back( Editor::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 1) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 2) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_G, PITCH_SIGN_NONE, 2) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 2) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 1) );
+            newTuning.push_back( Note::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 1) );
             m_model->setTuning(newTuning, userTriggered);
             break;
         }

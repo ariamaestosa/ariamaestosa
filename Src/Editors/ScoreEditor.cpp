@@ -334,7 +334,7 @@ void ScoreMidiConverter::updateConversionData()
     {
         const PitchSign sharpness = m_score_notes_sharpness[note_7];
 
-        m_level_to_midi_note[n] = Editor::findNotePitch( note_7, sharpness, 9 - octave); //FIXME: octave numbers are wrong in Score Editor
+        m_level_to_midi_note[n] = Note::findNotePitch( note_7, sharpness, 9 - octave); //FIXME: octave numbers are wrong in Score Editor
 
         ASSERT_E(m_level_to_midi_note[n],<,128);
         ASSERT_E(m_level_to_midi_note[n],>,-1);
@@ -350,7 +350,7 @@ void ScoreMidiConverter::updateConversionData()
         // if note is flat or sharp, also find what this line would be with a natural sign
         if (sharpness != NATURAL)
         {
-            const int natural_note_on_this_line = Editor::findNotePitch( note_7, NATURAL, 9 - octave); //FIXME: octave numbers are wrong in Score Editor
+            const int natural_note_on_this_line = Note::findNotePitch( note_7, NATURAL, 9 - octave); //FIXME: octave numbers are wrong in Score Editor
 
             // FIXME - it may not be necessary to fill it again every time
             m_level_to_midi_note[n] = natural_note_on_this_line;

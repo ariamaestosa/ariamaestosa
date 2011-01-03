@@ -21,13 +21,11 @@
 #ifndef __EDITOR_H__
 #define __EDITOR_H__
 
+#include "Midi/Track.h"
 #include "Utils.h"
 #include "ptr_vector.h"
 
-#include "Analysers/ScoreAnalyser.h" // for PitchSign
 #include "Editors/RelativeXCoord.h"
-#include "Midi/Note.h"  // for Note7, etc.
-#include "Midi/Track.h" // for KeyType, etc.
 
 namespace AriaMaestosa
 {
@@ -269,39 +267,6 @@ namespace AriaMaestosa
         int getYEnd        () const { return m_to_y - 10;                         }
         int getWidth       () const { return m_width;                             }
 
-        
-        //const Note7 pitchToNoteName
-        
-        /**
-          * Returns the pitch ID of a note from its name, sharpness sign and octave
-          */
-        static int findNotePitch(Note7 note_7, PitchSign sharpness, const int octave);
-
-        /**
-          * Finds a nome name (A, A#, B, etc..) and octave from its pitch ID
-          * @param pitchID      pitch for which you want to find the note name/octave
-          * @param[out] note_12 The name of the note at this pitch (A, A#, B, etc...)
-          * @param[out] octave  The octave at which this note is
-          * @return             Whether conversion was successful. If a problem occurred,
-          *                     returns false and out parameters should not be read.
-          */ 
-        static bool findNoteName(const int pitchID, Note12* note_12, int* octave);
-
-        /** @brief Converts a Note7 to its Note12 counterpart */
-        static Note12 note7ToNote12(Note7 note7)
-        {
-            static const Note12 note7_to_note12[] =
-            {
-                NOTE_12_A,
-                NOTE_12_B,
-                NOTE_12_C,
-                NOTE_12_D,
-                NOTE_12_E,
-                NOTE_12_F,
-                NOTE_12_G
-            };
-            return note7_to_note12[note7];
-        }
     };
 }
 
