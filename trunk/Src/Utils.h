@@ -176,4 +176,41 @@ public:
     
 };
 
+template<typename T>
+class IModelListener
+{
+public:
+    virtual ~IModelListener() {}
+    virtual void onModelChanged(T newval) = 0;
+};
+
+template<typename T>
+class Model
+{
+    T m_data;
+    IModelListener<T>* m_listener;
+    
+public:
+    
+    Model(T data)
+    {
+        m_data = data;
+        m_listener = NULL;
+    }
+    
+    void setListener(IModelListener<T>* listener)
+    {
+        m_listener = listener;
+    }
+    
+    T       getValue()       { return m_data; }
+    const T getValue() const { return m_data; }
+    
+    void    setValue(T nval)
+    {
+        m_data = nval;
+        if (m_listener != NULL) m_listener->onModelChanged(nval);
+    }
+};
+
 #endif

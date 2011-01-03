@@ -34,7 +34,7 @@ namespace jdkmidi { class MIDITrack; }
 #include "Midi/Note.h"
 
 #include "ptr_vector.h"
-#include "Renderers/RenderAPI.h"
+//#include "Renderers/RenderAPI.h"
 
 namespace AriaMaestosa
 {
@@ -160,10 +160,6 @@ namespace AriaMaestosa
         
         int m_track_id;
         
-        // FIXME(DESIGN): GUI class should not go here
-        /** Name of the track, and also object that can render it */
-        AriaRenderString m_name;
-        
         /** Only used if in manual channel management mode */
         int m_channel;
         
@@ -188,6 +184,8 @@ namespace AriaMaestosa
         OwnerPtr<GuitarTuning> m_tuning;
 
         OwnerPtr<MagneticGrid> m_magnetic_grid;
+        
+        OwnerPtr< Model<wxString> > m_track_name;
         
         /**
          * @brief set the MIDI instrument used by this track
@@ -276,14 +274,14 @@ namespace AriaMaestosa
         
         void selectNote(const int id, const bool selected, bool ignoreModifiers=false);
 
-        AriaRenderString& getNameRenderer();
-        const wxString&   getName   () const { return m_name; }
-        
+        const wxString    getName     () const { return m_track_name->getValue(); }
+        Model<wxString>*  getNameModel()       { return m_track_name;             }
+
         /** @brief Get the sequence this track is part of */
-        Sequence* getSequence       ()       { return m_sequence;        }
+        Sequence* getSequence         ()       { return m_sequence;        }
         
         /** @brief Get the sequence this track is part of (const version) */
-        const Sequence* getSequence () const { return m_sequence;        }
+        const Sequence* getSequence   () const { return m_sequence;        }
 
         /** Snaps a tick to the magnetic grid
           * @param absolute_x  A midi tick you want to snap

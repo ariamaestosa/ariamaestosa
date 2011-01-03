@@ -30,6 +30,7 @@ namespace irr { namespace io {
 //#include "Editors/RelativeXCoord.h"
 #include "Midi/Track.h"
 #include "ptr_vector.h"
+#include "Renderers/RenderAPI.h"
 #include "Utils.h"
 
 #include <math.h> // for 'round'
@@ -131,8 +132,8 @@ namespace AriaMaestosa
         /** set this flag true to follow playback */
         bool m_follow_playback;
         
-        AriaRenderString       m_sequence_filename;
-        OwnerPtr<MeasureData>  m_measure_data;
+        OwnerPtr< Model<wxString> > m_sequence_filename;
+        OwnerPtr<MeasureData>       m_measure_data;
         
         ptr_vector<ControllerEvent> m_tempo_events;
         
@@ -340,11 +341,9 @@ namespace AriaMaestosa
         wxString getFilepath()                   { return m_filepath; }
         void     setFilepath(wxString newpath)   { m_filepath = newpath; }
         
-        wxString getSequenceFilename()           { return m_sequence_filename; }
-        void     setSequenceFilename(wxString a) { m_sequence_filename.set(a); }
-        
-        // FIXME(DESIGN): remove renderer from here
-        AriaRenderString& getNameRenderer() { return m_sequence_filename; }
+        wxString getSequenceFilename()           { return m_sequence_filename->getValue(); }
+        void     setSequenceFilename(wxString a) { m_sequence_filename->setValue(a);       }
+        Model<wxString>* getNameModel()          { return m_sequence_filename;             }
         
         // ---- serialization
         

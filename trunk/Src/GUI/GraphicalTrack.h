@@ -14,14 +14,15 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _graphical_track_
-#define _graphical_track_
+#ifndef __GRAPHCIAL_TRACK_H__
+#define __GRAPHCIAL_TRACK_H__
 
 
 #include "Utils.h"
 #include "Editors/Editor.h"
 #include "Midi/Track.h"
 #include "Pickers/MagneticGridPicker.h"
+#include "Renderers/RenderAPI.h"
 
 class wxFileOutputStream;
 // forward
@@ -109,8 +110,12 @@ namespace AriaMaestosa
 
         ptr_vector<Editor, REF> m_all_editors;
         
+        OwnerPtr< Model<wxString> > m_instrument_string;
+        
         AriaRenderString        m_instrument_name;
         
+        AriaRenderString        m_name_renderer;
+
     public:
         LEAK_CHECK();
         
@@ -176,6 +181,8 @@ namespace AriaMaestosa
         void processMouseRelease();
         void processMouseExited(RelativeXCoord x_now, int y_now,
                                 RelativeXCoord x_initial, int y_initial);
+        
+        AriaRenderString& getNameRenderer() { return m_name_renderer; }
         
         //void onInstrumentChange(const int newInstrument, const bool isDrumKit);
 

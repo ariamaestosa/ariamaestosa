@@ -183,7 +183,7 @@ using namespace AriaMaestosa;
 
 // -----------------------------------------------------------------------------------------------------------
 
-ControllerChoice::ControllerChoice() : wxMenu()
+ControllerChoice::ControllerChoice() : wxMenu(), controller_label(new Model<wxString>(""), false)
 {
     LabelSingleton* label_renderer = LabelSingleton::getInstance();
     if (label_renderer->getStringAmount() == 0)
@@ -211,7 +211,7 @@ ControllerChoice::ControllerChoice() : wxMenu()
 
     controllerID = 7;
     controller_label.setMaxWidth(75, true);
-    controller_label.set(g_controller_names[controllerID]);
+    controller_label.getModel()->setValue(g_controller_names[controllerID]);
     
     Append( 7 ,  g_controller_names[7  ] ); // Volume // fine:39
     Append( 10 , g_controller_names[10 ] ); // Pan // fine:42
@@ -300,9 +300,9 @@ void ControllerChoice::menuSelected(wxCommandEvent& evt)
     controllerID=evt.GetId();
     
     // special cases (non-controllers)
-    if      (controllerID == 200)   controller_label.set(g_controller_names[30]);
-    else if (controllerID == 201)   controller_label.set(g_controller_names[31]);
-    else                            controller_label.set(g_controller_names[controllerID]);
+    if      (controllerID == 200)   controller_label.getModel()->setValue(g_controller_names[30]);
+    else if (controllerID == 201)   controller_label.getModel()->setValue(g_controller_names[31]);
+    else                            controller_label.getModel()->setValue(g_controller_names[controllerID]);
     
     ASSERT_E(controllerID,<,205);
     ASSERT_E(controllerID,>=,0);

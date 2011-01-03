@@ -62,12 +62,8 @@ Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener
     m_play_with_metronome   = false;
     m_playback_start_tick   = 0;
 
-    m_sequence_filename.set(wxString(_("Untitled")));
-    m_sequence_filename.setMaxWidth(155); // FIXME - won't work if lots of sequences are open (tabs will begin to get smaller)
+    m_sequence_filename     = new Model<wxString>( _("Untitled") );
     
-    // FIXME(DESIGN): GUI stuff has nothing to do here
-    m_sequence_filename.setFont( getSequenceFilenameFont() );
-
     if (addDefautTrack) addTrack();
 
     m_copyright = wxT("");
@@ -106,9 +102,9 @@ wxString Sequence::suggestTitle() const
     {
         return getInternalName();
     }
-    else if (not m_sequence_filename.IsEmpty())
+    else if (not m_sequence_filename->getValue().IsEmpty())
     {
-        return m_sequence_filename;
+        return m_sequence_filename->getValue();
     }
     else if (not m_filepath.IsEmpty())
     {
@@ -132,9 +128,9 @@ wxString Sequence::suggestFileName() const
     {
         return getInternalName();
     }
-    else if (not m_sequence_filename.IsEmpty())
+    else if (not m_sequence_filename->getValue().IsEmpty())
     {
-        return m_sequence_filename;
+        return m_sequence_filename->getValue();
     }
     else
     {

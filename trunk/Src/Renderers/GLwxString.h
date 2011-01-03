@@ -108,7 +108,7 @@ namespace AriaMaestosa
     };
     
     class wxGLStringArray;
-    
+     
     /**
      @brief OpenGL render backend : text renderer
      
@@ -130,7 +130,7 @@ namespace AriaMaestosa
 
      @ingroup renderers
      */
-    class wxGLString : public wxString, public TextGLDrawable
+    class wxGLString : public TextGLDrawable, public IModelListener<wxString>
     {
     protected:
         wxFont m_font;
@@ -143,11 +143,18 @@ namespace AriaMaestosa
         
         void calculateSize(wxDC* dc, const bool ignore_font=false /* when from array */);
         void consolidateFromArray(wxDC* dc, int x, int y);
+        
+        OwnerPtr< Model<wxString> > m_model;
+        
     public:    
-        /** constructs an empty GLString. Set string later with operator=. */
-        wxGLString();
-        /** constructs a GLstring with 'message' as contents. */
-        wxGLString(wxString message);
+        
+        /**
+          * Constructs a string with the given model
+          * @param model    String to render
+          * @param ownModel Whether the model should be owned and deleted by this wxGLString
+          */
+        wxGLString(Model<wxString>* model, bool ownModel);
+
         virtual ~wxGLString();
         
         /** call just before render() - binds the OpenGL. If you render the same string many
@@ -163,17 +170,14 @@ namespace AriaMaestosa
          The wxDC argument is only used to calculate text extents and will not be rendered on. */
         virtual void consolidate(wxDC* dc);
         
+        Model<wxString>* getModel() { return m_model; }
+        
         void setMaxWidth(const int w, const bool warp=false /*false: truncate. true: warp.*/);
         
         /** render this string at coordinates (x,y). Must be called after bind(). */
         void render(const int x, const int y);
         
-        /** changes the string of this element */
-        void set(const wxString& string);
-        
-        // override wxString's operators
-        wxString& operator =(const wxString& str){ set(str); return *this; }
-        wxString& operator =(const wxChar* psz){ set(wxString(psz)); return *this;}
+        virtual void onModelChanged(wxString newval) { m_consolidated = false; }
     };
     
     typedef wxGLString AriaRenderString;
