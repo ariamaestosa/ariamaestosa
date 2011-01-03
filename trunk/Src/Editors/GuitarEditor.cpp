@@ -71,12 +71,12 @@ GuitarEditor::GuitarEditor(GraphicalTrack* track) : Editor(track)
 
     // set standard tuning by default (FIXME: don't duplicate the tuning from the tuning picker)
     std::vector<int> newTuning;
-    newTuning.push_back( Editor::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 4) );
-    newTuning.push_back( Editor::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 3) );
-    newTuning.push_back( Editor::findNotePitch(NOTE_7_G, PITCH_SIGN_NONE, 3) );
-    newTuning.push_back( Editor::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 3) );
-    newTuning.push_back( Editor::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 2) );
-    newTuning.push_back( Editor::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 2) );
+    newTuning.push_back( Note::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 4) );
+    newTuning.push_back( Note::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 3) );
+    newTuning.push_back( Note::findNotePitch(NOTE_7_G, PITCH_SIGN_NONE, 3) );
+    newTuning.push_back( Note::findNotePitch(NOTE_7_D, PITCH_SIGN_NONE, 3) );
+    newTuning.push_back( Note::findNotePitch(NOTE_7_A, PITCH_SIGN_NONE, 2) );
+    newTuning.push_back( Note::findNotePitch(NOTE_7_E, PITCH_SIGN_NONE, 2) );
     m_track->getGuitarTuning()->setTuning(newTuning, false);
     
     Editor::useVerticalScrollbar(false);
@@ -322,7 +322,7 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
         Note12 noteName;
         int octave;
-        bool success = Editor::findNoteName(tuning->tuning[n], &noteName, &octave);
+        bool success = Note::findNoteName(tuning->tuning[n], &noteName, &octave);
 
         if (success)
         {

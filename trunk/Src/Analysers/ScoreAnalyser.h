@@ -25,6 +25,7 @@
 #include <vector>
 #include <wx/string.h>
 
+#include "Midi/Note.h"
 #include "Utils.h"
 
 #include "Analysers/SilenceAnalyser.h"
@@ -42,19 +43,6 @@ namespace AriaMaestosa
         STEM_NONE
     };
     
-    /**
-     * can have 2 uses : describing note and describing visual sign
-     * e.g. F# will be described as SHARP as note, but if you put it in a score where all Fs are #,
-     * its visible sign will be PITCH_SIGN_NONE. When describing a note's sign, use either NATURAL or
-     * PITCH_SIGN_NONE. When describing a note's pitch, PITCH_SIGN_NONE is not to be used
-     */
-    enum PitchSign
-    {
-        SHARP = 0,
-        FLAT = 1,
-        NATURAL = 2,
-        PITCH_SIGN_NONE = 3
-    };
     
     /**
       * @brief Contains info about how to render a single visible note.

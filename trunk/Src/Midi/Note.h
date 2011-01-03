@@ -63,6 +63,20 @@ namespace AriaMaestosa
         NOTE_12_G_SHARP = 11
     };
     
+    /**
+     * can have 2 uses : describing note and describing visual sign
+     * e.g. F# will be described as SHARP as note, but if you put it in a score where all Fs are #,
+     * its visible sign will be PITCH_SIGN_NONE. When describing a note's sign, use either NATURAL or
+     * PITCH_SIGN_NONE. When describing a note's pitch, PITCH_SIGN_NONE is not to be used
+     */
+    enum PitchSign
+    {
+        SHARP = 0,
+        FLAT = 1,
+        NATURAL = 2,
+        PITCH_SIGN_NONE = 3
+    };
+    
     /** synonym; @see Note12 */
     const Note12 NOTE_12_A_FLAT = NOTE_12_G_SHARP;
     
@@ -208,6 +222,37 @@ namespace AriaMaestosa
         void setTick(const int tick)     { ASSERT_E(tick,>=,0); m_start_tick = tick; }
         void setPitchID(const int pitch) { m_pitch_ID = pitch; }
         void setEndTick(const int ticks);
+        
+        /**
+         * Returns the pitch ID of a note from its name, sharpness sign and octave
+         */
+        static int findNotePitch(Note7 note_7, PitchSign sharpness, const int octave);
+        
+        /**
+         * Finds a nome name (A, A#, B, etc..) and octave from its pitch ID
+         * @param pitchID      pitch for which you want to find the note name/octave
+         * @param[out] note_12 The name of the note at this pitch (A, A#, B, etc...)
+         * @param[out] octave  The octave at which this note is
+         * @return             Whether conversion was successful. If a problem occurred,
+         *                     returns false and out parameters should not be read.
+         */ 
+        static bool findNoteName(const int pitchID, Note12* note_12, int* octave);
+        
+        /** @brief Converts a Note7 to its Note12 counterpart */
+        static Note12 note7ToNote12(Note7 note7)
+        {
+            static const Note12 note7_to_note12[] =
+            {
+                NOTE_12_A,
+                NOTE_12_B,
+                NOTE_12_C,
+                NOTE_12_D,
+                NOTE_12_E,
+                NOTE_12_F,
+                NOTE_12_G
+            };
+            return note7_to_note12[note7];
+        }
         
         // serialization
         void saveToFile(wxFileOutputStream& fileout);

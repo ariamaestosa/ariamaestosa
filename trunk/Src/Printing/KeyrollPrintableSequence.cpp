@@ -172,7 +172,7 @@ void KeyrollPrintableSequence::printLinesInArea(wxDC& dc, const int page, const 
 
             Note12 noteName;
             int octave;
-            const bool success = Editor::findNoteName(m_min_pitch+n, &noteName, &octave);
+            const bool success = Note::findNoteName(m_min_pitch+n, &noteName, &octave);
             if (success)
             {
                 dc.DrawText( NOTE_12_NAME[noteName] + wxString::Format(wxT("%i"), octave), x0 + 15, y );
@@ -190,7 +190,7 @@ void KeyrollPrintableSequence::printLinesInArea(wxDC& dc, const int page, const 
 
             Note12 noteName;
             int octave;
-            const bool success = Editor::findNoteName(note, &noteName, &octave);
+            const bool success = Note::findNoteName(note, &noteName, &octave);
             if (success)
             {
                 dc.DrawText( NOTE_12_NAME[noteName] + wxString::Format(wxT("%i"), octave), x0 + 15, y );

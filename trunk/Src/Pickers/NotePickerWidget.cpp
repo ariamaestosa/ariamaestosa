@@ -84,7 +84,7 @@ void NotePickerWidget::enterDefaultValue(int pitchID)
         Note12 noteName;
         int octave;
         
-        const bool success = Editor::findNoteName(pitchID, &noteName, &octave);
+        const bool success = Note::findNoteName(pitchID, &noteName, &octave);
         if (not success) return;
         
         octave_choice->SetStringSelection( to_wxString(octave) );
@@ -202,7 +202,7 @@ int findNote(char noteLetter, char flatSharpSign, int octave)
         return 0;
     }
     
-    return Editor::findNotePitch(note, sign, octave);
+    return Note::findNotePitch(note, sign, octave);
 }
 
 // ---------------------------------------------------------------------------------------------------------

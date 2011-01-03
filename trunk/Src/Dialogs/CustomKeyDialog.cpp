@@ -61,12 +61,12 @@ wxDialog(parent, wxID_ANY, _("Custom Key Editor"), wxDefaultPosition,
         Note12 note;
         int    octave;
         
-        const int pitchFrom = Editor::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 4);
-        const int pitchTo   = Editor::findNotePitch(NOTE_7_C, PITCH_SIGN_NONE, 4);
+        const int pitchFrom = Note::findNotePitch(NOTE_7_B, PITCH_SIGN_NONE, 4);
+        const int pitchTo   = Note::findNotePitch(NOTE_7_C, PITCH_SIGN_NONE, 4);
         
         for (int pitch=pitchFrom; pitch<=pitchTo; pitch++)
         {
-            const bool success = Editor::findNoteName(pitch, &note, &octave);
+            const bool success = Note::findNoteName(pitch, &note, &octave);
             ASSERT(success);
             wxString label = NOTE_12_NAME[note];
             wxCheckBox* cb = new wxCheckBox(page, wxID_ANY, label, 
@@ -107,7 +107,7 @@ wxDialog(parent, wxID_ANY, _("Custom Key Editor"), wxDefaultPosition,
         
         for (int pitch=4; pitch<=131; pitch++)
         {
-            const bool success = Editor::findNoteName(pitch, &note, &octave);
+            const bool success = Note::findNoteName(pitch, &note, &octave);
             ASSERT(success);
             
             wxString label = NOTE_12_NAME[note] + wxT(" ") + wxString::Format(wxT("%i"), octave);

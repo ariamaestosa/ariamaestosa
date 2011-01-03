@@ -22,7 +22,6 @@
 #include "Actions/UpdateGuitarTuning.h"
 
 // FIXME(DESIGN) : data classes shouldn't refer to GUI classes
-//#include "Editors/KeyboardEditor.h"
 #include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
 #include "GUI/MainFrame.h"
@@ -1139,7 +1138,7 @@ void Track::setKey(const int symbolAmount, const KeyType type)
 
     for (int n=0; n<131; n++)
     {
-        if (Editor::findNoteName(n, &noteName, &octave))
+        if (Note::findNoteName(n, &noteName, &octave))
         {
             m_key_notes[n] = (note_12_greyed_out[noteName] ? KEY_INCLUSION_ACCIDENTAL : KEY_INCLUSION_FULL);
         }
