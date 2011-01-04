@@ -338,7 +338,7 @@ const int EXPANDED_BAR_HEIGHT = 20;
 const int COLLAPSED_BAR_HEIGHT = 5; //FIXME: what's that?? a collapsed bar is not 5 pixels high?? */
 
 GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq, MagneticGrid* magneticGrid) :
-    m_instrument_name( m_instrument_string = new Model<wxString>(""), false ),
+    m_instrument_name( m_instrument_string = new Model<wxString>(wxT("")), false ),
     m_name_renderer(track->getNameModel(), false)
 {
     m_keyboard_editor     = NULL;

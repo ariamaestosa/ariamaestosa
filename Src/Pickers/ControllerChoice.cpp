@@ -183,7 +183,7 @@ using namespace AriaMaestosa;
 
 // -----------------------------------------------------------------------------------------------------------
 
-ControllerChoice::ControllerChoice() : wxMenu(), controller_label(new Model<wxString>(""), false)
+ControllerChoice::ControllerChoice() : wxMenu(), controller_label(new Model<wxString>(wxT("")), false)
 {
     LabelSingleton* label_renderer = LabelSingleton::getInstance();
     if (label_renderer->getStringAmount() == 0)
