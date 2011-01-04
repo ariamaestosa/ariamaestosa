@@ -51,7 +51,7 @@ bool SymbolPrintableSequence::addTrack(GraphicalTrack* gtrack, NotationType mode
     
     if (mode == GUITAR)
     {
-        m_editor_printables.push_back(new TablaturePrintable(track));
+        m_editor_printables.push_back(new TablaturePrintable(gtrack));
         m_is_guitar_editor_used = true;
     }
     else if (mode == SCORE)

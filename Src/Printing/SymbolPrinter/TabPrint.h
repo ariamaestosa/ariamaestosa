@@ -42,7 +42,7 @@ namespace AriaMaestosa
         OwnerPtr<ScoreAnalyser> m_analyser;
         
     public:
-        TablaturePrintable(Track* track_arg);
+        TablaturePrintable(GraphicalTrack* track_arg);
         virtual ~TablaturePrintable();
         
         /** @brief Implement method from EditorPrintable */

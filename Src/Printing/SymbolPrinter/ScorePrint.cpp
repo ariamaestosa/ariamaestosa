@@ -24,6 +24,7 @@
 #include "Analysers/ScoreAnalyser.h"
 #include "Editors/ScoreEditor.h"
 #include "IO/IOUtils.h"
+#include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
@@ -411,8 +412,7 @@ namespace AriaMaestosa
 #endif
         
         GraphicalTrack* gtrack = trackRef.getTrack();
-        Track* track = gtrack->getTrack();
-        ScoreEditor* scoreEditor = track->getGraphics()->getScoreEditor();
+        ScoreEditor* scoreEditor = gtrack->getScoreEditor();
         
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         converter->updateConversionData();
@@ -562,7 +562,7 @@ namespace AriaMaestosa
         if (m_g_clef)
         {
             ClefRenderType clef = (m_f_clef ? G_CLEF_FROM_GRAND_STAFF : G_CLEF_ALONE);
-            analyseAndDrawScore(clef, *g_clef_analyser, currentLine, currentTrack.getTrack(),
+            analyseAndDrawScore(clef, *g_clef_analyser, currentLine, currentTrack.getTrack()->getTrack(),
                                 dc, abs(scoreData->extra_lines_above_g_score),
                                 abs(scoreData->extra_lines_under_g_score),
                                 trackCoords->x0, g_clef_y_from, trackCoords->x1, g_clef_y_to,
@@ -573,7 +573,7 @@ namespace AriaMaestosa
         {
             ClefRenderType clef = (m_g_clef ? F_CLEF_FROM_GRAND_STAFF : F_CLEF_ALONE);
 
-            analyseAndDrawScore(clef, *f_clef_analyser, currentLine, currentTrack.getTrack(),
+            analyseAndDrawScore(clef, *f_clef_analyser, currentLine, currentTrack.getTrack()->getTrack(),
                                 dc, abs(scoreData->extra_lines_above_f_score),
                                 abs(scoreData->extra_lines_under_f_score),
                                 trackCoords->x0, f_clef_y_from, trackCoords->x1, f_clef_y_to,
@@ -602,8 +602,8 @@ namespace AriaMaestosa
         ScoreData* scoreData = new ScoreData();
         lineTrack.editor_data = scoreData;
         
-        const Track* track = lineTrack.getTrack();
-        const ScoreEditor* scoreEditor = track->getGraphics()->getScoreEditor();
+        const GraphicalTrack* gtrack = lineTrack.getTrack();
+        const ScoreEditor* scoreEditor = gtrack->getScoreEditor();
         const ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         
         // ---- Determine the y level of the highest and the lowest note
@@ -638,7 +638,7 @@ namespace AriaMaestosa
         m_g_clef = scoreEditor->isGClefEnabled();
         m_f_clef = scoreEditor->isFClefEnabled();
         
-        const Sequence* seq = track->getSequence();
+        const Sequence* seq = gtrack->getSequence()->getModel();
         const MeasureData* md = seq->getMeasureData();
         
         const int fromTick = md->firstTickInMeasure( line.getFirstMeasure() );

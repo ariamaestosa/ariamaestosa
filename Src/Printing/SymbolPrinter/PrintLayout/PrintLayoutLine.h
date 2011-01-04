@@ -50,7 +50,7 @@ namespace AriaMaestosa
         int m_level_to;
         
         /** The Track objet associated with this print track object */
-        const Track* m_track;
+        const GraphicalTrack* m_track;
         
     public:
         
@@ -72,7 +72,7 @@ namespace AriaMaestosa
         OwnerPtr<TrackCoords> m_track_coords;
         
         
-        LineTrackRef(LayoutLine* parent, int trackID, const Track* track) : m_track(track)
+        LineTrackRef(LayoutLine* parent, int trackID, const GraphicalTrack* track) : m_track(track)
         {
             m_parent              = parent;
             m_track_id            = trackID;
@@ -88,7 +88,7 @@ namespace AriaMaestosa
         int getLastNoteInElement(LayoutElement* layoutElement);
         
         /** @return The Track objet associated with this print track object */
-        const Track* getTrack() const { return m_track; }
+        const GraphicalTrack* getTrack() const { return m_track; }
         
         
         /** @return whether this track reference (on this line) is empty (contains no note or symbol) */
