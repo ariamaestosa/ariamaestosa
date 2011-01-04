@@ -584,9 +584,6 @@ void MeasureBar::mouseDrag(int mousex_current, int mousey_current, int mousex_in
 void MeasureBar::mouseUp(int mousex_current, int mousey_current, int mousex_initial, int mousey_initial)
 {
     if (m_last_measure_in_drag == -1) return; //invalid
-
-    Sequence* sequence = m_gseq->getModel();
-
     const int measureAmount = m_data->m_measure_info.size();
 
     // determine selection range in midi ticks
@@ -605,10 +602,12 @@ void MeasureBar::mouseUp(int mousex_current, int mousey_current, int mousex_init
     }
 
     // iterate through notes and select those that are within the selection range just found
-    const int trackAmount = sequence->getTrackAmount();
+    const int trackAmount = m_gseq->getTrackAmount();
     for (int trackID=0; trackID<trackAmount; trackID++)
     {
-        Track* track = sequence->getTrack(trackID);
+        GraphicalTrack* gtrack = m_gseq->getTrack(trackID);
+        Track* track = gtrack->getTrack();
+        
         const int noteAmount = track->getNoteAmount();
         for (int n=0; n<noteAmount; n++)
         {
@@ -617,11 +616,11 @@ void MeasureBar::mouseUp(int mousex_current, int mousey_current, int mousex_init
             // note is within selection range? if so, select it, else unselect it.
             if ( note_tick >= minimal_tick and note_tick < maximal_tick )
             {
-                track->getGraphics()->selectNote(n, true, true);
+                gtrack->selectNote(n, true, true);
             }
             else
             {
-                track->getGraphics()->selectNote(n, false, true);
+                gtrack->selectNote(n, false, true);
             }
         }
     }

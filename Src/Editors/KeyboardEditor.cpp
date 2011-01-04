@@ -74,7 +74,7 @@ void KeyboardEditor::mouseDown(RelativeXCoord x, const int y)
     if (x.getRelativeTo(EDITOR) < -30 and x.getRelativeTo(WINDOW) > 15 and y > getEditorYStart())
     {
         KeyPicker* picker = Core::getKeyPicker();
-        picker->setParent( m_track );
+        picker->setParent( m_graphical_track );
         Display::popupMenu(picker, x.getRelativeTo(WINDOW), y);
         return;
     }

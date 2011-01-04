@@ -43,7 +43,8 @@ namespace AriaMaestosa
             F_CLEF_FROM_GRAND_STAFF
         };
         
-        void analyseAndDrawScore(ClefRenderType clefType, ScoreAnalyser& analyser, LayoutLine& line, const Track* track,
+        void analyseAndDrawScore(ClefRenderType clefType, ScoreAnalyser& analyser, LayoutLine& line,
+                                 const GraphicalTrack* track,
                                  wxDC& dc, const int extra_lines_above, const int extra_lines_under,
                                  const int x0, const int y0, const int x1, const int y1,
                                  bool show_measure_number, const int grandStaffCenterY);

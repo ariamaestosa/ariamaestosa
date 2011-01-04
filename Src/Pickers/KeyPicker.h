@@ -84,7 +84,7 @@ public:
         void onUserPresetSelected(wxCommandEvent& evt);
         void onEditPresets(wxCommandEvent& evt);
 
-        void setParent(Track* parent_arg);
+        void setParent(GraphicalTrack* parent_arg);
 
         void updateUserPresetsMenu();
         

@@ -562,7 +562,7 @@ namespace AriaMaestosa
         if (m_g_clef)
         {
             ClefRenderType clef = (m_f_clef ? G_CLEF_FROM_GRAND_STAFF : G_CLEF_ALONE);
-            analyseAndDrawScore(clef, *g_clef_analyser, currentLine, currentTrack.getTrack()->getTrack(),
+            analyseAndDrawScore(clef, *g_clef_analyser, currentLine, currentTrack.getTrack(),
                                 dc, abs(scoreData->extra_lines_above_g_score),
                                 abs(scoreData->extra_lines_under_g_score),
                                 trackCoords->x0, g_clef_y_from, trackCoords->x1, g_clef_y_to,
@@ -573,7 +573,7 @@ namespace AriaMaestosa
         {
             ClefRenderType clef = (m_g_clef ? F_CLEF_FROM_GRAND_STAFF : F_CLEF_ALONE);
 
-            analyseAndDrawScore(clef, *f_clef_analyser, currentLine, currentTrack.getTrack()->getTrack(),
+            analyseAndDrawScore(clef, *f_clef_analyser, currentLine, currentTrack.getTrack(),
                                 dc, abs(scoreData->extra_lines_above_f_score),
                                 abs(scoreData->extra_lines_under_f_score),
                                 trackCoords->x0, f_clef_y_from, trackCoords->x1, f_clef_y_to,
@@ -980,13 +980,13 @@ namespace AriaMaestosa
     // -------------------------------------------------------------------------------------------
     
     void ScorePrintable::analyseAndDrawScore(ClefRenderType clefType, ScoreAnalyser& analyser, LayoutLine& line,
-                                             const Track* track, wxDC& dc,
+                                             const GraphicalTrack* gtrack, wxDC& dc,
                                              const int extra_lines_above, const int extra_lines_under,
                                              const int x0, const int y0, const int x1, const int y1,
                                              bool show_measure_number, const int grandStaffCenterY)
     {
         const bool f_clef = (clefType == F_CLEF_ALONE or clefType == F_CLEF_FROM_GRAND_STAFF);
-        
+        const Track* track = gtrack->getTrack();
         const MeasureData* md = track->getSequence()->getMeasureData();
         
         const int fromTick = md->firstTickInMeasure( line.getFirstMeasure() );
@@ -1008,7 +1008,7 @@ namespace AriaMaestosa
             std::cout << "}\n";
         }
         */
-        const ScoreEditor* scoreEditor = track->getGraphics()->getScoreEditor();
+        const ScoreEditor* scoreEditor = gtrack->getScoreEditor();
         const ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         const int middle_c_level = converter->getScoreCenterCLevel();
         const int first_score_level = middle_c_level + (f_clef? 2 : -10);
@@ -1215,7 +1215,7 @@ namespace AriaMaestosa
             }
             
             // also show ottava bassa/alta if relevant
-            const int octave_shift = track->getGraphics()->getScoreEditor()->getScoreMidiConverter()->getOctaveShift(); // FIXME - woot
+            const int octave_shift = gtrack->getScoreEditor()->getScoreMidiConverter()->getOctaveShift();
             if (octave_shift > 0)
             {
                 dc.SetTextForeground( wxColour(0,0,0) );
