@@ -1393,7 +1393,7 @@ void ScoreEditor::mouseDown(RelativeXCoord x, const int y)
     {
         KeyPicker* picker = Core::getKeyPicker();
         
-        picker->setParent( m_track );
+        picker->setParent( m_graphical_track );
         picker->setChecks(m_musical_notation_enabled, m_linear_notation_enabled, m_f_clef, m_g_clef,
                           m_converter->getOctaveShift());
         

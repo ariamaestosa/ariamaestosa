@@ -173,10 +173,12 @@ void KeyPicker::updateUserPresetsMenu()
 
 // ----------------------------------------------------------------------------------------------------------
 
-void KeyPicker::setParent(Track* parent_arg)
+void KeyPicker::setParent(GraphicalTrack* parent_arg)
 {
-    parent = parent_arg->getGraphics();
-    if (parent_arg->getNotationType() == KEYBOARD)
+    parent = parent_arg;
+    Track* track = parent_arg->getTrack();
+    
+    if (track->getNotationType() == KEYBOARD)
     {
         if (score_items_added)
         {
@@ -189,7 +191,7 @@ void KeyPicker::setParent(Track* parent_arg)
             score_items_added = false;
         }
     }
-    else if (parent_arg->getNotationType() == SCORE)
+    else if (track->getNotationType() == SCORE)
     {
         if (not score_items_added)
         {
@@ -221,7 +223,7 @@ void KeyPicker::setParent(Track* parent_arg)
     key_flats_7->Check(false);
     m_custom_key_menu->Check(false);
 
-    const KeyType type = parent_arg->getKeyType();
+    const KeyType type = track->getKeyType();
 
     switch (type)
     {
@@ -233,7 +235,7 @@ void KeyPicker::setParent(Track* parent_arg)
 
         case KEY_TYPE_SHARPS:
         {
-            const int sharps = parent_arg->getKeySharpsAmount();
+            const int sharps = track->getKeySharpsAmount();
 
             if (sharps == 1) key_sharps_1->Check(true);
             else if (sharps == 2) key_sharps_2->Check(true);
@@ -247,7 +249,7 @@ void KeyPicker::setParent(Track* parent_arg)
 
         case KEY_TYPE_FLATS:
         {
-            const int flats  = parent_arg->getKeyFlatsAmount();
+            const int flats  = track->getKeyFlatsAmount();
 
             if (flats == 1) key_flats_1->Check(true);
             else if (flats == 2) key_flats_2->Check(true);
