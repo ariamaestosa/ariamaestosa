@@ -43,7 +43,7 @@ namespace AriaMaestosa
         bool m_ok_pressed;
         
     public:  
-        KeyrollPrintOptions(wxWindow* parent, const std::vector< std::pair<Track*, NotationType> >& whatToPrint) :
+        KeyrollPrintOptions(wxWindow* parent, const std::vector< std::pair<GraphicalTrack*, NotationType> >& whatToPrint) :
                 wxDialog(parent, wxID_ANY, _("Keyroll Printing Options"), wxDefaultPosition, wxDefaultSize,
                          wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
         {
@@ -78,7 +78,7 @@ namespace AriaMaestosa
             const int size = whatToPrint.size();
             for (int t=0; t<size; t++)
             {
-                colorsSizer->Add(new wxStaticText(this, wxID_ANY, whatToPrint[t].first->getName()), 0,
+                colorsSizer->Add(new wxStaticText(this, wxID_ANY, whatToPrint[t].first->getTrack()->getName()), 0,
                                  wxALIGN_CENTER_VERTICAL  | wxALL, 5);
                 wxColourPickerCtrl* ctrl = new wxColourPickerCtrl(this, wxID_ANY);
                 
@@ -159,7 +159,7 @@ namespace AriaMaestosa
     };
     
     /** after dialog is shown, and user clicked 'OK', this is called to launch the actual printing */
-    void doPrint(std::vector< std::pair<Track*, NotationType> > whatToPrint, Sequence* seq,
+    void doPrint(std::vector< std::pair<GraphicalTrack*, NotationType> > whatToPrint, Sequence* seq,
                  AriaPrintable* printable)
     {
         
@@ -238,7 +238,7 @@ namespace AriaMaestosa
                 {
                     WaitWindow::hide();
                     
-                    wxString track_name = whatToPrint[n].first->getName();
+                    wxString track_name = whatToPrint[n].first->getTrack()->getName();
                     
                     //I18N: - %s is the name of the track
                     wxString message = _("Track '%s' could not be printed, since its current\nview (editor) does not support printing.");
@@ -694,11 +694,12 @@ namespace AriaMaestosa
         {
             const bool print_one_track = m_current_track_radiobtn->GetValue();
             
-            std::vector< std::pair<Track*, NotationType> > what_to_print;
+            std::vector< std::pair<GraphicalTrack*, NotationType> > what_to_print;
             if (print_one_track)
             {
-                what_to_print.push_back( std::pair<Track*, NotationType>(m_current_sequence->getCurrentTrack(),
-                                                                         m_current_sequence->getCurrentTrack()->getNotationType()) );
+                Track* t = m_current_sequence->getCurrentTrack();
+                what_to_print.push_back( std::pair<GraphicalTrack*, NotationType>(t->getGraphics(),
+                                                                                  t->getNotationType()) );
             }
             else                            // print all selected from list
             {
@@ -732,8 +733,8 @@ namespace AriaMaestosa
                             continue;
                         }
                         
-                        what_to_print.push_back( std::pair<Track*, NotationType>(m_current_sequence->getTrack(n),
-                                                                                 printType) );
+                        what_to_print.push_back( std::pair<GraphicalTrack*, NotationType>(m_current_sequence->getTrack(n)->getGraphics(),
+                                                                                          printType) );
                     }
                 }
             }

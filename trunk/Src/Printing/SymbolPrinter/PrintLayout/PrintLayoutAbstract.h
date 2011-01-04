@@ -81,14 +81,14 @@ namespace AriaMaestosa
                            bool hideEmptyTracks, int& current_height, int& current_page);
 
         /** generates measures. needs to be called before "calculateLayoutElements" */
-        void generateMeasures(ptr_vector<Track, REF>& tracks);
+        void generateMeasures(ptr_vector<GraphicalTrack, REF>& tracks);
         
         /**
           * @pre measures must have been generated.
           *
           * @param[out] layoutPages
           */
-        void calculateLayoutElements(ptr_vector<Track, REF>& tracks,
+        void calculateLayoutElements(ptr_vector<GraphicalTrack, REF>& tracks,
                                      ptr_vector<LayoutPage>& layoutPages);
         
         /**
@@ -111,7 +111,7 @@ namespace AriaMaestosa
           * @param findReps         whether to use the feature to automatically attempt to detect
           *                         repeated song sections
           */
-        void addLayoutInformation(ptr_vector<Track, REF>& tracks, ptr_vector<LayoutPage>& layoutPages);
+        void addLayoutInformation(ptr_vector<GraphicalTrack, REF>& tracks, ptr_vector<LayoutPage>& layoutPages);
     };
     
 }

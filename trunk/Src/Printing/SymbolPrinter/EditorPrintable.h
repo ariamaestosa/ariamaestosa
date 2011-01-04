@@ -26,7 +26,7 @@ class wxBitmap;
 
 namespace AriaMaestosa
 {
-
+    class GraphicalTrack;
     class LayoutLine;
     class LayoutElement;
     class LineTrackRef;
@@ -128,7 +128,7 @@ namespace AriaMaestosa
           * If this class needs to do some early setup to prepare the data for following calls,
           * this is the place to do so.
           */
-        virtual void earlySetup(const int trackID, Track* track) {}
+        virtual void earlySetup(const int trackID, GraphicalTrack* track) {}
         
         /**
           * Classes deriving from EditorPrintable must implemented this method. It will be

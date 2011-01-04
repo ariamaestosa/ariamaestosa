@@ -14,6 +14,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include "GUI/GraphicalTrack.h"
 #include "Printing/AriaPrintable.h"
 #include "Printing/SymbolPrinter/EditorPrintable.h"
 #include "Printing/SymbolPrinter/PrintLayout/PrintLayoutLine.h"
@@ -41,11 +42,16 @@ int LineTrackRef::getLastNote() const
         const PrintLayoutMeasure& current_meas = m_parent->getMeasureForElement(el);
         for (int i=0; i<track_amount; i++)
         {
-            if (current_meas.getTrackRefAmount() > 0 and // FIXME - find why it's sometimes 0
-                current_meas.getTrackRef(i).getConstTrack() == m_track and
-                current_meas.getTrackRef(i).getLastNote() != -1)
+            if (current_meas.getTrackRefAmount() > 0) // FIXME: find why it's sometimes 0
             {
-                return current_meas.getTrackRef(i).getLastNote();
+                const MeasureTrackReference& ref = current_meas.getTrackRef(i);
+                const GraphicalTrack* gtrack = ref.getConstTrack();
+                const Track* track = gtrack->getTrack();
+                
+                if (track == m_track and ref.getLastNote() != -1)
+                {
+                    return ref.getLastNote();
+                }
             }
         }
         
@@ -68,11 +74,16 @@ int LineTrackRef::getFirstNote() const
         const PrintLayoutMeasure& current_meas = m_parent->getMeasureForElement(el);
         for (int i=0; i<track_amount; i++)
         {
-            if (current_meas.getTrackRefAmount() > 0 and // FIXME - find why it's sometimes empty
-                current_meas.getTrackRef(i).getConstTrack() == m_track and
-                current_meas.getTrackRef(i).getFirstNote() != -1)
+            if (current_meas.getTrackRefAmount() > 0) // FIXME - find why it's sometimes empty
             {
-                return current_meas.getTrackRef(i).getFirstNote();
+                const MeasureTrackReference& ref = current_meas.getTrackRef(i);
+                const GraphicalTrack* gtrack = ref.getConstTrack();
+                const Track* track = gtrack->getTrack();
+                
+                if (track == m_track and ref.getFirstNote() != -1)
+                {
+                    return ref.getFirstNote();
+                }
             }
         }
     }
@@ -129,7 +140,7 @@ LayoutLine::LayoutLine(SymbolPrintableSequence* parent, ptr_vector<PrintLayoutMe
     const int trackAmount = parent->getTrackAmount();
     for (int trackID=0; trackID<trackAmount; trackID++)
     {
-        LineTrackRef* newTrack = new LineTrackRef(this, trackID, m_printable->getTrack(trackID));
+        LineTrackRef* newTrack = new LineTrackRef(this, trackID, m_printable->getTrack(trackID)->getTrack());
         
         m_tracks.push_back(newTrack);
     }

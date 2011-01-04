@@ -304,7 +304,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     // ---- draw track name at top if relevant
     if (pageNum == 1 and m_seq->getTrackAmount() == 1 and not showTrackNames())
     {
-        wxString name = m_seq->getTrack(0)->getName();
+        wxString name = m_seq->getTrack(0)->getTrack()->getName();
         dc.DrawText( name,
                      x1 - dc.GetTextExtent(name).GetWidth(),
                      subtitle_y );

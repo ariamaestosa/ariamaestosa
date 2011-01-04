@@ -25,7 +25,7 @@
 namespace AriaMaestosa
 {
     class PrintLayoutMeasure;
-    class Track;
+    class GraphicalTrack;
     class Sequence;
 
     extern const PrintLayoutMeasure NULL_MEASURE;
@@ -40,21 +40,22 @@ namespace AriaMaestosa
       */
     class MeasureTrackReference
     {
-        Track* m_track;
+        GraphicalTrack* m_track;
         int m_first_note, m_last_note;
+        
     public:
         
-        MeasureTrackReference (Track* parent, const int firstNote, const int lastNote)
+        MeasureTrackReference (GraphicalTrack* parent, const int firstNote, const int lastNote)
         {
             m_track      = parent;
             m_first_note = firstNote;
             m_last_note  = lastNote;
         }
                                                                         
-        const Track* getConstTrack() const { return m_track;      }
-        Track*       getTrack()            { return m_track;      }
-        int          getFirstNote() const  { return m_first_note; }
-        int          getLastNote()  const  { return m_last_note;  }
+        const GraphicalTrack* getConstTrack() const { return m_track;      }
+        GraphicalTrack*       getTrack()            { return m_track;      }
+        int                   getFirstNote() const  { return m_first_note; }
+        int                   getLastNote()  const  { return m_last_note;  }
 
     };
 
@@ -92,7 +93,7 @@ namespace AriaMaestosa
           * @return the ID of the next note to process (i.e. the first after this measure)
           *         or -1 if none
           */
-        int  addTrackReference(const int firstNote, Track* track);
+        int  addTrackReference(const int firstNote, GraphicalTrack* track);
         
         int  getFirstTick     () const { return m_first_tick;             }
         int  getLastTick      () const { return m_last_tick;              }

@@ -64,7 +64,7 @@ namespace AriaMaestosa
                                   MeasureTrackReference& trackRef, RelativePlacementManager& ticks);
         
         /** Implement method from EditorPrintable */
-        virtual void earlySetup(const int trackID, Track* track);
+        virtual void earlySetup(const int trackID, GraphicalTrack* track);
         
         /** Implement method from EditorPrintable */
         virtual void drawTrack(const int trackID, const LineTrackRef& track, LayoutLine& line,

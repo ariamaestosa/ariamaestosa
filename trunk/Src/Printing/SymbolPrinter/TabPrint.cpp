@@ -20,6 +20,7 @@
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Editors/GuitarEditor.h"
+#include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
 #include "IO/IOUtils.h"
 #include "PreferencesData.h"
@@ -53,9 +54,11 @@ TablaturePrintable::~TablaturePrintable()
 
 // ------------------------------------------------------------------------------------------------------------
 
-void TablaturePrintable::earlySetup(const int trackID, Track* track)
+void TablaturePrintable::earlySetup(const int trackID, GraphicalTrack* gtrack)
 {
     m_analyser = new ScoreAnalyser(m_editor, -1);
+    
+    Track* track = gtrack->getTrack();
     
     MeasureData* md = track->getSequence()->getMeasureData();
     
