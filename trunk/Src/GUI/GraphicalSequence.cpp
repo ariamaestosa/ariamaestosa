@@ -272,10 +272,12 @@ void GraphicalSequence::renderTracks(int currentTick, RelativeXCoord mousex, int
         for (int trackid=draggedTrack+1; trackid<trackCount; trackid++)
         {
             Track* track = m_sequence->getTrack(trackid);
-            if (getGraphicsFor(track)->isDocked()) continue;
+            GraphicalTrack* gtrack = getGraphicsFor(track);
+            
+            if (gtrack->isDocked()) continue;
             
             last_y = mousey_initial + (trackid - draggedTrack)*50 - reorderYScroll;
-            track->getGraphics()->renderHeader(0, last_y, true);
+            gtrack->renderHeader(0, last_y, true);
             if (mousey > mousey_initial + (trackid - draggedTrack)*50 + 25 - reorderYScroll)
             {
                 reordering_newPosition = trackid + 1;
@@ -296,7 +298,7 @@ void GraphicalSequence::renderTracks(int currentTick, RelativeXCoord mousex, int
         }
         
         // draw track the user is dragging
-        m_sequence->getTrack(draggedTrack)->getGraphics()->renderHeader(0, mousey, true, true);
+        getGraphicsFor(m_sequence->getTrack(draggedTrack))->renderHeader(0, mousey, true, true);
         
         const int arrow_y = (reordering_newPosition > draggedTrack) ?
         mousey_initial + (reordering_newPosition - draggedTrack)*50 - 5 - reorderYScroll :

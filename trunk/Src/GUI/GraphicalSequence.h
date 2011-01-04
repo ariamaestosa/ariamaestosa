@@ -88,8 +88,10 @@ namespace AriaMaestosa
         void selectAll();
         void selectNone();
         
-        GraphicalTrack* getCurrentTrack() { return getGraphicsFor( getModel()->getCurrentTrack() ); }
-        
+        GraphicalTrack* getCurrentTrack()      { return getGraphicsFor( getModel()->getCurrentTrack() ); }
+        GraphicalTrack* getTrack(const int id) { return m_gtracks.get(id); }
+        int getTrackAmount() const             { return m_gtracks.size();  }
+
         /**
          * @return the number of pixels it takes to draw all tracks, vertically.
          * @note   This is used mostly by the code managing the vertical scrollbar.

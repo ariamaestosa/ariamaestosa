@@ -566,14 +566,14 @@ void MainPane::mouseDown(wxMouseEvent& event)
 
         // dispatch event to all tracks (stop when either of them uses it)
         m_click_in_track = -1;
-        const unsigned int track_amount = seq->getTrackAmount();
+        const unsigned int track_amount = gseq->getTrackAmount();
         for (unsigned int n=0; n<track_amount; n++)
         {
-            Track* t = seq->getTrack(n);
-            const int y = t->getGraphics()->getCurrentEditor()->getTrackYStart();
+            GraphicalTrack* gtrack = gseq->getTrack(n);
+            const int y = gtrack->getCurrentEditor()->getTrackYStart();
 
             // check if user is moving this track
-            if (not t->getGraphics()->isDocked() and
+            if (not gtrack->isDocked() and
                 m_mouse_y_current > y and m_mouse_y_current < y+7)
             {
                 m_click_area = CLICK_REORDER;
@@ -582,7 +582,6 @@ void MainPane::mouseDown(wxMouseEvent& event)
             else
             { 
                 // otherwise ask the track to check if it has something to do with this event
-                GraphicalTrack* gtrack = t->getGraphics();
                 const bool event_processed = not gtrack->processMouseClick(m_mouse_x_current, event.GetY());
                 if (event_processed)
                 {
