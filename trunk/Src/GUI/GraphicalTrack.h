@@ -135,10 +135,11 @@ namespace AriaMaestosa
         bool isCollapsed() const { return m_collapsed; }
         bool isDocked   () const { return m_docked;    }
         
-        Track* getTrack()                { return m_track;     }
+        Track* getTrack()                 { return m_track;     }
         const Track* getTrack() const     { return m_track;     }
         GraphicalSequence* getSequence()  { return m_gsequence;  }
-                
+        const GraphicalSequence* getSequence() const  { return m_gsequence;  }
+
         /**
           * @pre Track, Sequence and GraphicalTrack must be initialized properly upon calling this
           */

@@ -18,6 +18,7 @@
 #include <wx/filename.h>
 #include <wx/dc.h>
 
+#include "GUI/GraphicalTrack.h"
 #include "Midi/Track.h"
 #include "PreferencesData.h"
 #include "Printing/AriaPrintable.h"
@@ -222,7 +223,8 @@ void EditorPrintable::drawTrackName(wxDC& dc, const LineTrackRef& currentTrack, 
     {
         dc.SetFont( AriaPrintable::getCurrentPrintable()->getNormalFont() );
 
-        wxString label = currentTrack.getTrack()->getName();
+        const GraphicalTrack* gtrack = currentTrack.getTrack();
+        wxString label = gtrack->getTrack()->getName();
         wxSize textSize = dc.GetTextExtent(label);
         dc.DrawRotatedText(label, x - textSize.GetHeight() - 20,
                            (y0 + y1)/2 + textSize.GetWidth()/2,
@@ -234,8 +236,8 @@ void EditorPrintable::drawTrackName(wxDC& dc, const LineTrackRef& currentTrack, 
 
 Range<int> EditorPrintable::getNoteSymbolX(const int trackID, LayoutLine& line, int noteID)
 {
-    return tickToX(trackID, line,
-                   line.getLineTrackRef(trackID).getTrack()->getNoteStartInMidiTicks(noteID));
+    const GraphicalTrack* gtrack = line.getLineTrackRef(trackID).getTrack();
+    return tickToX(trackID, line, gtrack->getTrack()->getNoteStartInMidiTicks(noteID));
 }
 
 // -------------------------------------------------------------------------------------------------------------

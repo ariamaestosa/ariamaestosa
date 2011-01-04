@@ -46,9 +46,8 @@ int LineTrackRef::getLastNote() const
             {
                 const MeasureTrackReference& ref = current_meas.getTrackRef(i);
                 const GraphicalTrack* gtrack = ref.getConstTrack();
-                const Track* track = gtrack->getTrack();
                 
-                if (track == m_track and ref.getLastNote() != -1)
+                if (gtrack == m_track and ref.getLastNote() != -1)
                 {
                     return ref.getLastNote();
                 }
@@ -78,9 +77,8 @@ int LineTrackRef::getFirstNote() const
             {
                 const MeasureTrackReference& ref = current_meas.getTrackRef(i);
                 const GraphicalTrack* gtrack = ref.getConstTrack();
-                const Track* track = gtrack->getTrack();
                 
-                if (track == m_track and ref.getFirstNote() != -1)
+                if (gtrack == m_track and ref.getFirstNote() != -1)
                 {
                     return ref.getFirstNote();
                 }
@@ -140,7 +138,7 @@ LayoutLine::LayoutLine(SymbolPrintableSequence* parent, ptr_vector<PrintLayoutMe
     const int trackAmount = parent->getTrackAmount();
     for (int trackID=0; trackID<trackAmount; trackID++)
     {
-        LineTrackRef* newTrack = new LineTrackRef(this, trackID, m_printable->getTrack(trackID)->getTrack());
+        LineTrackRef* newTrack = new LineTrackRef(this, trackID, m_printable->getTrack(trackID));
         
         m_tracks.push_back(newTrack);
     }

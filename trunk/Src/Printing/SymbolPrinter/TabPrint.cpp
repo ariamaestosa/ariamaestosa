@@ -40,10 +40,10 @@ const int CHAR_MARGIN = 35;
 
 // ------------------------------------------------------------------------------------------------------------
 
-TablaturePrintable::TablaturePrintable(Track* track) : EditorPrintable()
+TablaturePrintable::TablaturePrintable(GraphicalTrack* track) : EditorPrintable()
 {
-    m_string_amount = track->getGuitarTuning()->tuning.size();
-    m_editor        = track->getGraphics()->getGuitarEditor();
+    m_string_amount = track->getTrack()->getGuitarTuning()->tuning.size();
+    m_editor        = track->getGuitarEditor();
 }
 
 // ------------------------------------------------------------------------------------------------------------
@@ -249,7 +249,8 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
     // draw track name
     drawTrackName(dc, currentTrack, trackCoords->x0, trackCoords->y0, trackCoords->y1);
     
-    const MeasureData* md = currentTrack.getTrack()->getSequence()->getMeasureData();
+    const Track* track = currentTrack.getTrack()->getTrack();
+    const MeasureData* md = track->getSequence()->getMeasureData();
     
     const int elementAmount = currentLine.getLayoutElementCount();
     for (int el=0; el<elementAmount; el++)
@@ -283,7 +284,7 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
             const int tuning_x = currentElement->getXFrom()+140;
             for (int n=0; n<m_string_amount; n++)
             {
-                const int note   = currentTrack.getTrack()->getConstGuitarTuning()->tuning[n]%12;
+                const int note   = track->getConstGuitarTuning()->tuning[n]%12;
                 wxString label;
                 switch (note) //TODO: there is now a method to do this IIRC
                 {
@@ -342,8 +343,8 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
         
         for (int i=firstNote; i<=lastNote; i++)
         {
-            const int string = currentTrack.getTrack()->getNoteStringConst(i);
-            const int fret   = currentTrack.getTrack()->getNoteFretConst(i);
+            const int string = track->getNoteStringConst(i);
+            const int fret   = track->getNoteFretConst(i);
             
             if (fret < 0)  dc.SetTextForeground( wxColour(255,0,0) );
             
