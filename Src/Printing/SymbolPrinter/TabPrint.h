@@ -57,7 +57,7 @@ namespace AriaMaestosa
         virtual int calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line, bool* empty);
         
         /** @brief Implement method from EditorPrintable */
-        virtual void earlySetup(const int trackID, Track* track);
+        virtual void earlySetup(const int trackID, GraphicalTrack* track);
     };
     
 }

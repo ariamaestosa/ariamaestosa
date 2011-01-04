@@ -78,10 +78,11 @@ void KeyrollPrintableSequence::calculateLayout()
     const int trackAmount = m_tracks.size();
     for (int n=0; n<trackAmount; n++)
     {
-        const int noteAmount = m_tracks[n].getNoteAmount();
+        Track* track = m_tracks[n].getTrack();
+        const int noteAmount = track->getNoteAmount();
         for (int note=0; note<noteAmount; note++)
         {
-            const int pitch = m_tracks[n].getNotePitchID(note);
+            const int pitch = track->getNotePitchID(note);
             if (pitch < m_min_pitch or m_min_pitch == -1) m_min_pitch = pitch;
             if (pitch > m_max_pitch or m_max_pitch == -1) m_max_pitch = pitch;
         }
@@ -101,7 +102,7 @@ void KeyrollPrintableSequence::calculateLayout()
         int count = 0;
         for (int t=0; t<trackAmount; t++)
         {
-            const KeyInclusionType* keyNotes = m_tracks[t].getKeyNotes();
+            const KeyInclusionType* keyNotes = m_tracks[t].getTrack()->getKeyNotes();
 
             for (int p = m_min_pitch; p <= m_max_pitch; p++)
             {
@@ -228,16 +229,17 @@ void KeyrollPrintableSequence::printLinesInArea(wxDC& dc, const int page, const 
         ASSERT_E(n, <, (int)m_colors.size());
         dc.SetBrush( wxBrush(m_colors[n]) );
 
-        const int noteAmount = m_tracks[n].getNoteAmount();
+        Track* track = m_tracks[n].getTrack();
+        const int noteAmount = track->getNoteAmount();
         for (int note=0; note<noteAmount; note++)
         {
-            const int pitch = m_tracks[n].getNotePitchID(note);
+            const int pitch = track->getNotePitchID(note);
 
             // skip notes
             if (m_compact and m_compact_info[pitch] == -1) continue;
 
-            const int tick = m_tracks[n].getNoteStartInMidiTicks(note);
-            const int tickTo = m_tracks[n].getNoteEndInMidiTicks(note);
+            const int tick = track->getNoteStartInMidiTicks(note);
+            const int tickTo = track->getNoteEndInMidiTicks(note);
 
             if (tick > m_pages[page].m_last_tick) break;
 

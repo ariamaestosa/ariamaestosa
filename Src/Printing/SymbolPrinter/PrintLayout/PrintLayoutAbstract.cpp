@@ -2,10 +2,11 @@
 
 
 #include "Dialogs/WaitWindow.h"
+#include "Editors/GuitarEditor.h"
+#include "GUI/GraphicalTrack.h"
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
 #include "Midi/MeasureData.h"
-#include "Editors/GuitarEditor.h"
 #include "Printing/AriaPrintable.h"
 #include "Printing/SymbolPrinter/ScorePrint.h"
 #include "Printing/SymbolPrinter/TabPrint.h"
@@ -69,7 +70,7 @@ namespace AriaMaestosa
 
 // -----------------------------------------------------------------------------------------------------
 
-void PrintLayoutAbstract::generateMeasures(ptr_vector<Track, REF>& tracks)
+void PrintLayoutAbstract::generateMeasures(ptr_vector<GraphicalTrack, REF>& tracks)
 {
     const Sequence* seq = m_sequence->getSequence();
     
@@ -79,7 +80,8 @@ void PrintLayoutAbstract::generateMeasures(ptr_vector<Track, REF>& tracks)
     
     for (int tr=0; tr<trackAmount; tr++)
     {
-        Track* track = tracks.get(tr);
+        GraphicalTrack* gtrack = tracks.get(tr);
+        Track* track = gtrack->getTrack();
         
         // add m_measures
         for (int measure=0; measure<measureAmount; measure++)
@@ -96,7 +98,7 @@ void PrintLayoutAbstract::generateMeasures(ptr_vector<Track, REF>& tracks)
         {
             ASSERT_E(measure,<,m_measures.size());
             
-            note = m_measures[measure].addTrackReference(note, track);
+            note = m_measures[measure].addTrackReference(note, gtrack);
             
             //std::cout << "meas% " << (m_measures[measure].trackRef[0].track->getName().mb_str()) << std::endl;
             
@@ -109,7 +111,7 @@ void PrintLayoutAbstract::generateMeasures(ptr_vector<Track, REF>& tracks)
 
 // -----------------------------------------------------------------------------------------------------
 
-void PrintLayoutAbstract::calculateLayoutElements (ptr_vector<Track, REF>& tracks,
+void PrintLayoutAbstract::calculateLayoutElements (ptr_vector<GraphicalTrack, REF>& tracks,
                                                    ptr_vector<LayoutPage>& layoutPages)
 {
     ASSERT(m_measures.size() > 0); // generating m_measures must have been done first
@@ -243,7 +245,9 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
             const int track_ref_amount = m_measures[measure].getTrackRefAmount();
             for (int t=0; t<track_ref_amount; t++)
             {
-                const Track* track = m_measures[measure].getTrackRef(t).getConstTrack();
+                const GraphicalTrack* gtrack = m_measures[measure].getTrackRef(t).getConstTrack();
+                const Track* track = gtrack->getTrack();
+                
                 const int noteAmount = track->getNoteAmount();
                 for (int n=0; n<noteAmount; n++)
                 {
@@ -686,7 +690,7 @@ PrintLayoutAbstract::PrintLayoutAbstract(SymbolPrintableSequence* sequence)
 
 // -----------------------------------------------------------------------------------------------------
 
-void PrintLayoutAbstract::addLayoutInformation(ptr_vector<Track, REF>& tracks,
+void PrintLayoutAbstract::addLayoutInformation(ptr_vector<GraphicalTrack, REF>& tracks,
                                                ptr_vector<LayoutPage>& layoutPages)
 {    
     ASSERT( MAGIC_NUMBER_OK_FOR(&tracks) );

@@ -22,6 +22,7 @@ class wxString;
 
 #include "Utils.h"
 #include "ptr_vector.h"
+#include "GUI/GraphicalTrack.h"
 #include "Editors/Editor.h"
 
 namespace AriaMaestosa
@@ -37,7 +38,7 @@ namespace AriaMaestosa
         Sequence* m_sequence;
         
         /** A list of all tracks added to be printed. */
-        ptr_vector<Track, REF> m_tracks;        
+        ptr_vector<GraphicalTrack, REF> m_tracks;        
 
         /** Whether 'calculateLayout' was called on this object */
         bool m_layout_calculated;
@@ -65,7 +66,7 @@ namespace AriaMaestosa
          * @param mode     The type of view to use for printing (score, tablature, etc...)
          * @return         whether the track was successfully added
          */
-        virtual bool addTrack(Track* track, NotationType mode)
+        virtual bool addTrack(GraphicalTrack* track, NotationType mode)
         {
             m_tracks.push_back(track);
             return true;
@@ -82,7 +83,7 @@ namespace AriaMaestosa
          * @param id   ID of the track to get. Must be in range [0 .. getTrackAmount() - 1]
          * @return     The track
          */
-        const Track* getTrack(const int id) const { return m_tracks.getConst(id); }
+        const GraphicalTrack* getTrack(const int id) const { return m_tracks.getConst(id); }
         
         /** @return the title of this sequence. If none was provided, makes up one from the context if it can */
         static wxString getTitle(const Sequence* seq);

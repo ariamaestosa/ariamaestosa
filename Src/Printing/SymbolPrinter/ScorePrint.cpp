@@ -410,7 +410,8 @@ namespace AriaMaestosa
                   << measureFromTick << ", to " << measureToTick << "\n{\n";
 #endif
         
-        Track* track = trackRef.getTrack();
+        GraphicalTrack* gtrack = trackRef.getTrack();
+        Track* track = gtrack->getTrack();
         ScoreEditor* scoreEditor = track->getGraphics()->getScoreEditor();
         
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
@@ -826,9 +827,11 @@ namespace AriaMaestosa
     
     // -------------------------------------------------------------------------------------------
     
-    void ScorePrintable::earlySetup(const int trackID, Track* track)
+    void ScorePrintable::earlySetup(const int trackID, GraphicalTrack* gtrack)
     {
-        ScoreEditor* scoreEditor = track->getGraphics()->getScoreEditor();
+        Track* track = gtrack->getTrack();
+        
+        ScoreEditor* scoreEditor = gtrack->getScoreEditor();
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         
         MeasureData* measures = track->getSequence()->getMeasureData();

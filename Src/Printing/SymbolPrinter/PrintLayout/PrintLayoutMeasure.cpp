@@ -15,10 +15,11 @@
  */
 
 #include "AriaCore.h"
-#include "PrintLayoutMeasure.h"
+#include "GUI/GraphicalTrack.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
+#include "PrintLayoutMeasure.h"
 
 #include "Printing/SymbolPrinter/PrintLayout/PrintLayoutAbstract.h"
 
@@ -157,13 +158,14 @@ bool PrintLayoutMeasure::calculateIfMeasureIsSameAs(PrintLayoutMeasure& checkMea
 // -------------------------------------------------------------------------------------------
     
 // TODO: this method should be tested with unit tests
-int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
+int PrintLayoutMeasure::addTrackReference(const int firstNote, GraphicalTrack* gtrack)
 {
 #if PLM_CHATTY
     std::cout << "[PrintLayoutMeasure::addTrackReference] / track is '" << track->getName().mb_str()
               << "' // measure is " << (m_measure_id + 1) << " // looking from note " << firstNote << "\n";
 #endif
     
+    Track* track = gtrack->getTrack();
     const int noteAmount = track->getNoteAmount();
     
     //MeasureTrackReference* newTrackRef = new MeasureTrackReference();
@@ -186,7 +188,7 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
             }
         }
 
-        m_track_refs.push_back( new MeasureTrackReference(track, -1, -1) );
+        m_track_refs.push_back( new MeasureTrackReference(gtrack, -1, -1) );
 #if PLM_CHATTY
         std::cout << "    --> Received input -1, assuming empty\n";
 #endif
@@ -263,7 +265,7 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
 #if PLM_CHATTY
         std::cout << "    --> empty\n";
 #endif
-        m_track_refs.push_back( new MeasureTrackReference(track, -1, -1) );
+        m_track_refs.push_back( new MeasureTrackReference(gtrack, -1, -1) );
     }
     else
     {
@@ -271,7 +273,7 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, Track* track)
         //std::cout << "    --> non-empty measure, m_shortest_duration = " << m_shortest_duration << "\n";
         std::cout << "    --> measure goes from note " << effectiveFirstNote << " to " << lastNote << "\n";
 #endif
-        m_track_refs.push_back( new MeasureTrackReference(track, effectiveFirstNote, lastNote) );
+        m_track_refs.push_back( new MeasureTrackReference(gtrack, effectiveFirstNote, lastNote) );
     }
     
     m_contains_something = m_contains_something or not measure_empty_in_this_track;

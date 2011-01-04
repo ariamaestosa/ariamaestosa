@@ -43,8 +43,9 @@ SymbolPrintableSequence::SymbolPrintableSequence(Sequence* parent) : AbstractPri
 
 // -----------------------------------------------------------------------------------------------------------------
 
-bool SymbolPrintableSequence::addTrack(Track* track, NotationType mode)
+bool SymbolPrintableSequence::addTrack(GraphicalTrack* gtrack, NotationType mode)
 {
+    Track* track = gtrack->getTrack();
     ASSERT(track->getSequence() == m_sequence);
     ASSERT(not m_layout_calculated);
     
@@ -68,7 +69,7 @@ bool SymbolPrintableSequence::addTrack(Track* track, NotationType mode)
         return false;
     }
     
-    return AbstractPrintableSequence::addTrack(track, mode);
+    return AbstractPrintableSequence::addTrack(gtrack, mode);
 }
 
 // -----------------------------------------------------------------------------------------------------------------
