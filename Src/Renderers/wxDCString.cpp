@@ -20,7 +20,7 @@ namespace AriaMaestosa
 #endif
     
 
-    wxDCString::wxDCString(Model<wxString* model)
+    wxDCString::wxDCString(Model<wxString>* model, bool own)
     {
         m_model = model;
         m_consolidated = false;
@@ -28,6 +28,8 @@ namespace AriaMaestosa
         m_warp = false;
         m_w = -1;
         m_h = -1;
+        
+        if (not own) m_model.owner = false;
     }
     
     wxDCString::~wxDCString()
@@ -53,7 +55,7 @@ namespace AriaMaestosa
             if (m_font.IsOk()) Display::renderDC->SetFont(m_font);
             else               Display::renderDC->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
             
-            Display::renderDC->GetTextExtent(*this, &m_w, &m_h);
+            Display::renderDC->GetTextExtent(m_model->getValue(), &m_w, &m_h);
             
             m_consolidated = true;
         }
@@ -86,7 +88,7 @@ namespace AriaMaestosa
         {
             if (not m_warp)
             {
-                wxString shortened = *this;
+                wxString shortened = m_model->getValue();
                 
                 while (Display::renderDC->GetTextExtent(shortened).GetWidth() > m_max_width)
                 {
@@ -97,7 +99,7 @@ namespace AriaMaestosa
             else // wrap
             {
                 int my_y = y - m_h;
-                wxString multiline = *this;
+                wxString multiline = m_model->getValue();
                 multiline.Replace(wxT(" "),wxT("\n"));
                 multiline.Replace(wxT("/"),wxT("/\n"));
 
@@ -112,7 +114,7 @@ namespace AriaMaestosa
         }
         else
         {
-            Display::renderDC->DrawText(*this, x, y - m_h);
+            Display::renderDC->DrawText(m_model->getValue(), x, y - m_h);
         }
     }
     
@@ -177,7 +179,7 @@ namespace AriaMaestosa
     {
         for (int n=0; n<amount; n++)
         {
-            m_strings.push_back( wxDCString(strings_arg[n]) );
+            m_strings.push_back( new wxDCString( new Model<wxString>(strings_arg[n]), true ) );
         }
         m_consolidated = false;
     }
@@ -191,7 +193,7 @@ namespace AriaMaestosa
     
     void wxDCStringArray::addString(wxString newstring)
     {
-        m_strings.push_back( wxDCString(newstring) );
+        m_strings.push_back( new wxDCString( new Model<wxString>(newstring), true ) );
     }
     
     void wxDCStringArray::bind()

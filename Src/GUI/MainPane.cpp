@@ -515,7 +515,8 @@ void MainPane::rightClick(wxMouseEvent& event)
         const int count = seq->getTrackAmount();
         for (int n=0; n<count; n++)
         {
-            if (not seq->getTrack(n)->getGraphics()->processRightMouseClick( RelativeXCoord(event.GetX(), WINDOW, gseq) , event.GetY()))
+            GraphicalTrack* gtrack = gseq->getGraphicsFor(seq->getTrack(n));
+            if (not gtrack->processRightMouseClick( RelativeXCoord(event.GetX(), WINDOW, gseq) , event.GetY()))
             {
                 seq->setCurrentTrackID(n);
                 break;
@@ -1173,7 +1174,8 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
         const int count = seq->getTrackAmount();
         for (int n=0; n<count; n++)
         {
-            if (not seq->getTrack(n)->getGraphics()->mouseWheelMoved(mx, my, value))
+            GraphicalTrack* gtrack = gseq->getGraphicsFor(seq->getTrack(n));
+            if (not gtrack->mouseWheelMoved(mx, my, value))
             {
                 break;
             }

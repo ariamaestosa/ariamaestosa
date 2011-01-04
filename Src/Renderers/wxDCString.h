@@ -8,8 +8,9 @@
 
 class wxDC;
 
-#include <vector>
+#include "ptr_vector.h"
 #include "Singleton.h"
+#include "Utils.h"
 
 namespace AriaMaestosa
 {
@@ -34,11 +35,11 @@ namespace AriaMaestosa
         
         bool m_warp;
         
-        Model<wxString>* m_model;
+        OwnerPtr< Model<wxString> > m_model;
         
     public:
         
-        wxDCString(Model<wxString* model);
+        wxDCString(Model<wxString>* model, bool own);
         
         ~wxDCString();
         
@@ -93,7 +94,7 @@ namespace AriaMaestosa
      */
     class wxDCStringArray
     {
-        std::vector<wxDCString> m_strings;
+        ptr_vector<wxDCString, HOLD> m_strings;
         wxFont m_font;
         bool m_consolidated;
         
