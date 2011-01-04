@@ -119,23 +119,33 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
                         getXEnd(), getEditorYStart() + first_string_position + n*y_step);
     }
 
-
+    int lastNote[stringCount];
+    int lastNoteTick[stringCount];
+    
+    for (int n=0; n<stringCount; n++)
+    {
+        lastNote[n] = -1;
+        lastNoteTick[n] = -1;
+    }
 
     // ---------------------- draw notes ----------------------------
     const int noteAmount = m_track->getNoteAmount();
     for (int n=0; n<noteAmount; n++)
     {
-        int x1 = m_graphical_track->getNoteStartInPixels(n) - m_gsequence->getXScrollInPixels();
-        int x2 = m_graphical_track->getNoteEndInPixels(n)   - m_gsequence->getXScrollInPixels();
+        const int pscroll = m_gsequence->getXScrollInPixels();
+        int x1 = m_graphical_track->getNoteStartInPixels(n) - pscroll;
+        int x2 = m_graphical_track->getNoteEndInPixels(n)   - pscroll;
 
+        
         // don't draw notes that won't visible
         if (x2 < 0    )   continue;
         if (x1 > m_width) break;
 
         AriaRender::primitives();
-
-        int string = m_track->getNoteString(n);
-        int fret   = m_track->getNoteFret(n);
+        
+        const int tick   = m_track->getNoteStartInMidiTicks(n);
+        const int string = m_track->getNoteString(n);
+        const int fret   = m_track->getNoteFret(n);
         
         float volume = m_track->getNoteVolume(n)/127.0;
 
@@ -147,54 +157,71 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
         {
             AriaRender::color((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
         }
+        
+        //lastNote[string] = fret;
+        //lastNoteTick[string] = track->getNoteStartInMidiTick(n);
 
-        AriaRender::bordered_rect_no_start(x1 + Editor::getEditorXStart(),
-                                           getEditorYStart() + first_string_position + string*y_step - 2,
-                                           x2 - 1 + Editor::getEditorXStart(),
-                                           getEditorYStart() + first_string_position + string*y_step + 2);
-
-        // fret number
-        if (m_track->isNoteSelected(n) and focus)
+        const int minSize = 12; // TODO: don't hardcode
+        const int maxTickDistance = 960; // TODO: don't hardcode
+        
+        x1 += Editor::getEditorXStart();
+        x2 += Editor::getEditorXStart();
+        const int y = getEditorYStart()+first_string_position+string*y_step;
+        
+        // Check if we draw the number or the body only
+        if (x2 - x1 > minSize or lastNote[string] != fret or tick - lastNoteTick[string] > maxTickDistance)
         {
-            AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
+            AriaRender::bordered_rect_no_start(x1,  y - 2,  x2 - 1,  y + 2);
+
+            // fret number
+            if (m_track->isNoteSelected(n) and focus)
+            {
+                AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
+            }
+            else
+            {
+                AriaRender::color((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
+            }
+
+            if (fret < 10)
+            {
+                AriaRender::quad(x1 - 1,  y - 8,
+                                 x1 - 1,  y,
+                                 x1 + 14, y,
+                                 x1 + 9,  y - 8);
+            }
+            else
+            {
+                AriaRender::quad(x1 - 1,  y - 8,
+                                 x1 - 1,  y,
+                                 x1 + 18, y,
+                                 x1 + 13, y - 8);
+            }
+            
+            AriaRender::images();
+
+            // if note color is too dark, draw the fret number in white
+            if ((not m_track->isNoteSelected(n) or not focus) and volume > 0.5)
+            {
+                AriaRender::color(1, 1, 1);
+            }
+            else
+            {
+                AriaRender::color(0, 0, 0);
+            }
+
+            // FIXME: draw twice to make it more visible...
+            AriaRender::renderNumber(fret, x1, y + 3);
+            AriaRender::renderNumber(fret, x1, y + 3);
         }
         else
         {
-            AriaRender::color((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
-        }
-
-        if (fret < 10)
-        {
-            AriaRender::quad(x1+Editor::getEditorXStart()-1,  getEditorYStart()+first_string_position+string*y_step-8,
-                             x1+Editor::getEditorXStart()-1,  getEditorYStart()+first_string_position+string*y_step,
-                             x1+14+Editor::getEditorXStart(), getEditorYStart()+first_string_position+string*y_step,
-                             x1+9+Editor::getEditorXStart(),  getEditorYStart()+first_string_position+string*y_step-8);
-        }
-        else
-        {
-            AriaRender::quad(x1+Editor::getEditorXStart()-1,  getEditorYStart()+first_string_position+string*y_step-8,
-                             x1+Editor::getEditorXStart()-1,  getEditorYStart()+first_string_position+string*y_step,
-                             x1+18+Editor::getEditorXStart(), getEditorYStart()+first_string_position+string*y_step,
-                             x1+13+Editor::getEditorXStart(), getEditorYStart()+first_string_position+string*y_step-8);
+            // no fret number, display short note
+            AriaRender::bordered_rect(x1,  y - 2,  x2 - 1,  y + 2);
         }
         
-        AriaRender::images();
-
-        // if note color is too dark, draw the fret number in white
-        if ((not m_track->isNoteSelected(n) or not focus) and volume > 0.5)
-        {
-            AriaRender::color(1, 1, 1);
-        }
-        else
-        {
-            AriaRender::color(0, 0, 0);
-        }
-
-        // draw twice to make it more visible...
-        AriaRender::renderNumber(fret, x1+Editor::getEditorXStart(),
-                                 getEditorYStart() + first_string_position + string*y_step + 3);
-        AriaRender::renderNumber(fret, x1+Editor::getEditorXStart(),
-                                 getEditorYStart() + first_string_position + string*y_step + 3);
+        lastNote[string] = fret;
+        lastNoteTick[string] = tick;
         
     }//next
 
