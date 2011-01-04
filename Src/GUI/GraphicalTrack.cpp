@@ -529,12 +529,9 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                 for (int n=0; n<track_amount; n++)
                 {
                     Track* track = seq->getTrack(n);
-                    if (track->getGraphics() == this)
-                    {
-                        maximizeHeight();
-                        continue;
-                    }
-                    track->getGraphics()->dock();
+                    GraphicalTrack* gtrack = m_gsequence->getGraphicsFor(track);
+                    if (gtrack == this) maximizeHeight();
+                    else                gtrack->dock();
                 }
                 m_gsequence->setYScroll(0);
                 DisplayFrame::updateVerticalScrollbar();
@@ -547,8 +544,11 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                 for (int n=0; n<track_amount; n++)
                 {
                     Track* track = seq->getTrack(n);
-                    if (track->getGraphics()->m_docked) track->getGraphics()->dock(false);
-                    track->getGraphics()->maximizeHeight(false);
+                    GraphicalTrack* gtrack = m_gsequence->getGraphicsFor(track);
+                    
+                    if (gtrack->isDocked()) gtrack->dock(false);
+                    
+                    gtrack->maximizeHeight(false);
                 }
                 DisplayFrame::updateVerticalScrollbar();
                 m_gsequence->setTrackMaximized(false);
