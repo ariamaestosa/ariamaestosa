@@ -59,9 +59,7 @@ void GraphicalSequence::createViewForTrack(Track* t)
 }
 
 void GraphicalSequence::createViewForTracks(int id)
-{
-    // create editors for any existing track (FIXME(DESIGN): flaky design)
-    
+{    
     if (id == -1)
     {
         const int count = m_sequence->getTrackAmount();
