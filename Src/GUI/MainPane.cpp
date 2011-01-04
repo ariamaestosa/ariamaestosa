@@ -612,7 +612,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
                     for (int i=0; i<track_amount; i++)
                     {
                         Track* track = seq->getTrack(i);
-                        GraphicalTrack* gtrack = track->getGraphics();
+                        GraphicalTrack* gtrack = gseq->getGraphicsFor(track);
                         if (gtrack == undocked_gtrack)
                         {
                             undocked_gtrack->dock(false);
@@ -700,7 +700,6 @@ void MainPane::mouseMoved(wxMouseEvent& event)
     if (invalidateMouseEvents) return;
 
     m_mouse_x_current.setValue(event.GetX(),WINDOW);
-
     m_mouse_y_current = event.GetY();
 
     if (event.Dragging())
@@ -708,18 +707,20 @@ void MainPane::mouseMoved(wxMouseEvent& event)
         // we are not reordering tracks
         if (m_dragged_track_id == -1)
         {
+            GraphicalSequence* gseq = getMainFrame()->getCurrentGraphicalSequence();
+
             
             // ----------------------------------- click is in track area ----------------------------
             if (m_click_area == CLICK_TRACK and m_click_in_track != -1)
             {
                 Sequence* seq = getMainFrame()->getCurrentSequence();
-                seq->getTrack(m_click_in_track)->getGraphics()->processMouseDrag(m_mouse_x_current, event.GetY());
+                Track* track = seq->getTrack(m_click_in_track);
+                gseq->getGraphicsFor(track)->processMouseDrag(m_mouse_x_current, event.GetY());
             }
 
             // ----------------------------------- click is in measure bar ----------------------------
             if (m_click_area == CLICK_MEASURE_BAR)
             {
-                GraphicalSequence* gseq = getMainFrame()->getCurrentGraphicalSequence();
                 gseq->getMeasureBar()->mouseDrag(m_mouse_x_current.getRelativeTo(WINDOW),
                                                  m_mouse_y_current - MEASURE_BAR_Y,
                                                  m_mouse_x_initial.getRelativeTo(WINDOW),
@@ -762,9 +763,8 @@ void MainPane::mouseLeftWindow(wxMouseEvent& event)
     if (m_is_mouse_down)
     {
         getMainFrame()->
-        getCurrentSequence()->
+        getCurrentGraphicalSequence()->
         getCurrentTrack()->
-        getGraphics()->
         processMouseExited(m_mouse_x_current, m_mouse_y_current,
                            m_mouse_x_initial, m_mouse_y_initial);
 
@@ -825,7 +825,8 @@ void MainPane::mouseReleased(wxMouseEvent& event)
     else if (m_click_area == CLICK_TRACK and m_click_in_track != -1)
     {
         // disptach mouse up event to current track
-        getMainFrame()->getCurrentSequence()->getTrack(m_click_in_track)->getGraphics()->processMouseRelease();
+        Track* track = getMainFrame()->getCurrentSequence()->getTrack(m_click_in_track);
+        gseq->getGraphicsFor(track)->processMouseRelease();
     }
 
     Display::render();
