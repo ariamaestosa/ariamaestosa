@@ -87,7 +87,7 @@ namespace AriaMaestosa
         {
             if (language_wx_id == languages[i].m_wx_langcode)
             {
-                std::cout << "[initLanguageSupport()] language : " << languages[i].m_langname.mb_str() << std::endl;
+                std::cout << "[initLanguageSupport] language : " << languages[i].m_langname.mb_str() << std::endl;
                 language_known = true;
             }
         }

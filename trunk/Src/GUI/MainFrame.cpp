@@ -1068,8 +1068,12 @@ void MainFrame::updateHorizontalScrollbar(int thumbPos)
     GraphicalSequence* gseq = getCurrentGraphicalSequence();
     const int total_size  = gseq->getMeasureBar()->getTotalPixelAmount();
 
-    int position = (thumbPos == -1) ? gseq->getXScrollInPixels() : (int)(gseq->getZoom());
-
+    ASSERT_E( gseq->getXScrollInPixels(), >=, 0 );
+    
+    // FIXME: I think this line was broken, position was set to (int)(gseq->getZoom()) which makes no sense
+    //        Not sure I fixed it correctly
+    int position = (thumbPos == -1) ? gseq->getXScrollInPixels() : (int)(thumbPos*gseq->getZoom());
+        
     // if given value is wrong and needs to be changed, we'll need to throw a 'scrolling changed' event to
     // make sure display adapts to new value
     bool changedGivenValue = false;

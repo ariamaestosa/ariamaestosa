@@ -556,14 +556,13 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
     
     md->afterImporting();
 
-    gseq->setXScrollInPixels(0);
-    md->setFirstMeasure(0);
-
     // set song length
     int measureAmount_i = md->measureAtTick(lastEventTick) + 1;
 
     std::cout << "[loadMidiFile] song length = " << measureAmount_i << " measures, last_event_tick="
               << lastEventTick << ", beat length = " << sequence->ticksPerBeat() << std::endl;
+
+    gseq->setZoom(100);
 
     if (measureAmount_i < 10) measureAmount_i=10;
 
@@ -572,6 +571,8 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
         tr->setMeasureAmount( measureAmount_i );
     }
     
+    //gseq->setXScrollInPixels(0);
+    //md->setFirstMeasure(0);
     gseq->setZoom(100);
 
     sequence->clearUndoStack();

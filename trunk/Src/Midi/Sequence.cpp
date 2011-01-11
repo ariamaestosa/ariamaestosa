@@ -84,7 +84,7 @@ Sequence::~Sequence()
 {
     if (okToLog)
     {
-        std::cout << "[Sequence::~Sequence()] cleaning up sequence " << suggestTitle().mb_str() << "..." << std::endl;
+        std::cout << "[Sequence::~Sequence] cleaning up sequence " << suggestTitle().mb_str() << "..." << std::endl;
     }
 }
 
