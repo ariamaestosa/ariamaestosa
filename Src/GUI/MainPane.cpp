@@ -538,6 +538,7 @@ void MainPane::rightClick(wxMouseEvent& event)
 void MainPane::mouseDown(wxMouseEvent& event)
 {
     invalidateMouseEvents = false;
+    
     Display::requestFocus();
 
     MainFrame* mf = getMainFrame();
@@ -586,7 +587,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
                 const bool event_processed = not gtrack->processMouseClick(m_mouse_x_current, event.GetY());
                 if (event_processed)
                 {
-                    m_click_in_track = n;
+                    m_click_in_track = gtrack->getTrack()->getId();
                     break;
                 }
             }
@@ -691,7 +692,6 @@ void MainPane::mouseDown(wxMouseEvent& event)
     // ask sequence if it is necessary at this point to be notified of mouse held down events.
     // if so, start a timer that will take of it.
     if (gseq->areMouseHeldDownEventsNeeded()) m_mouse_down_timer->start();
-
 }
 
 // --------------------------------------------------------------------------------------------------
@@ -759,7 +759,7 @@ void MainPane::mouseMoved(wxMouseEvent& event)
 // --------------------------------------------------------------------------------------------------
 
 void MainPane::mouseLeftWindow(wxMouseEvent& event)
-{
+{    
     // if we are dragging, notify current track that mouse has left the window
     if (m_is_mouse_down)
     {
@@ -783,8 +783,8 @@ void MainPane::mouseLeftWindow(wxMouseEvent& event)
 
 void MainPane::mouseReleased(wxMouseEvent& event)
 {
-
     m_is_mouse_down = false;
+        
     if (invalidateMouseEvents) return;
 
     GraphicalSequence* gseq = getMainFrame()->getCurrentGraphicalSequence();

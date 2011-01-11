@@ -461,13 +461,12 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
     
     if (m_use_vertical_scrollbar)
     {
-        m_vertical_scrolling=false;
-        m_click_on_scrollbar=false;
+        m_vertical_scrolling = false;
+        m_click_on_scrollbar = false;
     }
-
+    
     if (m_mouse_is_in_editor)
     {
-
         if (not m_clicked_on_note)
         {
 
@@ -561,7 +560,7 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
 end_of_func:
 
     m_mouse_is_in_editor = false;
-    m_clicked_on_note      = false;
+    m_clicked_on_note    = false;
 
 }
 
@@ -574,6 +573,7 @@ void Editor::mouseExited(RelativeXCoord mousex_current, int mousey_current,
     
     if (m_selecting) selectNotesInRect(mousex_current, mousey_current, mousex_initial, mousey_initial);
     m_selecting = false;
+    
     m_mouse_is_in_editor = false;
 
     Display::render();
