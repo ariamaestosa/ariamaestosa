@@ -158,7 +158,12 @@ int GraphicalSequence::getXScrollInMidiTicks() const
 
 void GraphicalSequence::setXScrollInMidiTicks(int value)
 {
+    ASSERT_E(value, >=, 0);
+    
     m_x_scroll_in_pixels = value * m_zoom;
+    
+    ASSERT_E(m_x_scroll_in_pixels, >=, 0);
+    
     if (m_x_scroll_in_pixels < 0.0f) m_x_scroll_in_pixels = 0.0f;
 }
 
@@ -167,13 +172,16 @@ void GraphicalSequence::setXScrollInMidiTicks(int value)
 void GraphicalSequence::setXScrollInPixels(int value)
 {
     m_x_scroll_in_pixels = value;
-    
-    const int editor_size = Display::getWidth()-100;
+    ASSERT_E(m_x_scroll_in_pixels, >=, 0);
+
+    const int editor_size = Display::getWidth() - 100;
     const int total_size  = m_measure_bar->getTotalPixelAmount();
+    ASSERT_E(total_size, >=, editor_size);
     
     if (m_x_scroll_in_pixels < 0) m_x_scroll_in_pixels = 0;
     if (m_x_scroll_in_pixels >= total_size-editor_size) m_x_scroll_in_pixels = total_size-editor_size - 1;
-    
+    ASSERT_E(m_x_scroll_in_pixels, >=, 0);
+
     Display::render();
 }
 
@@ -509,6 +517,7 @@ bool GraphicalSequence::readFromFile(irr::io::IrrXMLReader* xml)
                     if (xscroll_c != NULL)
                     {
                         m_x_scroll_in_pixels = atoi( xscroll_c );
+                        ASSERT_E(m_x_scroll_in_pixels, >=, 0);
                     }
                     else
                     {

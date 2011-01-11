@@ -80,7 +80,11 @@ namespace AriaMaestosa
         void  setXScrollInMidiTicks(int value);
         void  setXScrollInPixels(int value);
         int   getXScrollInMidiTicks() const;
-        int   getXScrollInPixels() const { return round(m_x_scroll_in_pixels); }
+        int   getXScrollInPixels() const
+        {
+            ASSERT_E(m_x_scroll_in_pixels, >=, 0);
+            return round(m_x_scroll_in_pixels);
+        }
         
         void  setYScroll(int value);
         int   getYScroll() const { return y_scroll; }
