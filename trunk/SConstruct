@@ -137,16 +137,16 @@ def main_Aria_func():
 # ---------------------------- Install Mac OS X -----------------------------
 
 def install_Aria_mac():
-    sys_command("mkdir -p ./AriaMaestosa.app/Contents/MacOS")
-    sys_command("cp ./Aria ./AriaMaestosa.app/Contents/MacOS/Aria\ Maestosa")
-    sys_command("cp ./OSX/release.plist ./AriaMaestosa.app/Contents/Info.plist")
-    sys_command("cp -r ./Resources ./AriaMaestosa.app/Contents/")
-    sys_command("cp -r ./OSX/mac-i18n/. ./AriaMaestosa.app/Contents/Resources/.")
-    sys_command("cp -r ./OSX/*.icns ./AriaMaestosa.app/Contents/Resources/.")
-    sys_command("touch ./AriaMaestosa.app")
+    sys_command("mkdir -p ./Aria\ Maestosa.app/Contents/MacOS")
+    sys_command("cp ./Aria ./Aria\ Maestosa.app/Contents/MacOS/Aria\ Maestosa")
+    sys_command("cp ./OSX/release.plist ./Aria\ Maestosa.app/Contents/Info.plist")
+    sys_command("cp -r ./Resources ./Aria\ Maestosa.app/Contents/")
+    sys_command("cp -r ./OSX/mac-i18n/. ./Aria\ Maestosa.app/Contents/Resources/.")
+    sys_command("cp -r ./OSX/*.icns ./Aria\ Maestosa.app/Contents/Resources/.")
+    sys_command("touch ./Aria\ Maestosa.app")
 
     print "*** Cleaning up..."
-    os.system("cd ./AriaMaestosa.app && find . -name \".svn\" -exec rm -rf '{}' \;")
+    os.system("cd ./Aria\ Maestosa.app && find . -name \".svn\" -exec rm -rf '{}' \;")
     
     print "*** Done"
     sys.exit(0)
