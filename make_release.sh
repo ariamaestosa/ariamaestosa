@@ -57,7 +57,7 @@ python scons/scons.py config=release WXCONFIG=$USE_WX_CONFIG CXXFLAGS="$ADDITION
 python scons/scons.py install
 
 mkdir -p "$OUTPUT/AriaMaestosa-$VERSION/"
-cp -R "$OUTPUT/build/AriaMaestosa.app" "$OUTPUT/AriaMaestosa-$VERSION"
+cp -R "$OUTPUT/build/Aria Maestosa.app" "$OUTPUT/AriaMaestosa-$VERSION"
 cp "./license.txt" "$OUTPUT/AriaMaestosa-$VERSION/license.txt"
 
 # find "$OUTPUT/AriaMaestosa-$VERSION/" -name ".svn" -exec rm -rf '{}' \;
