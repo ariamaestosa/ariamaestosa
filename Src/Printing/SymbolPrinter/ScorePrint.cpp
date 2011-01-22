@@ -36,6 +36,8 @@
 #include "Printing/SymbolPrinter/ScorePrint.h"
 #include "Printing/RenderRoutines.h"
 
+#define BE_VERBOSE 0
+
 namespace AriaMaestosa
 {
     /** Width of the "natural" accidental symbol */
@@ -363,11 +365,13 @@ namespace AriaMaestosa
         const int from_note = lineTrack.getFirstNote();
         const int to_note   = lineTrack.getLastNote();
                 
+#if BE_VERBOSE
         std::cout <<
             PRINT_VAR(scoreData->extra_lines_under_g_score) <<
             PRINT_VAR(scoreData->extra_lines_above_g_score) <<
             PRINT_VAR(scoreData->extra_lines_under_f_score) <<
             PRINT_VAR(scoreData->extra_lines_above_f_score) << std::endl;
+#endif
         
         int total = (m_g_clef ? 5 : 0) + (m_f_clef ? 5 : 0) + 
                 abs(scoreData->extra_lines_under_g_score) +

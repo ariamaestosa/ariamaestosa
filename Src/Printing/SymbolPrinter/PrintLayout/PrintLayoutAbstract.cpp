@@ -20,6 +20,9 @@
 #include <cmath>
 #include <map>
 
+#define BE_VERBOSE 0
+
+
 using namespace AriaMaestosa;
 
 namespace AriaMaestosa
@@ -162,9 +165,7 @@ void PrintLayoutAbstract::findSimilarMeasures()
 #endif
     
 // -----------------------------------------------------------------------------------------------------
-    
-#define _verbose 1
-    
+        
 void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layoutElements)
 {
     std::cout << "\n====\ncreateLayoutElements\n====\n";
@@ -185,7 +186,7 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
             WaitWindow::setProgress( 10 + measure*25/measureAmount );
         }
         
-#ifdef _verbose
+#if BE_VERBOSE
         std::cout << "Generating layout element for measure " << (measure+1) << std::endl;
 #endif
 
@@ -232,7 +233,7 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
         // ----- empty measure -----
         else if (m_measures[measure].isEmpty())
         {
-#ifdef _verbose
+#if BE_VERBOSE
             std::cout << "    measure " << (measure+1) << " is empty\n";
 #endif
             layoutElements.push_back( LayoutElement(EMPTY_MEASURE, measure) );
@@ -262,129 +263,10 @@ void PrintLayoutAbstract::createLayoutElements(std::vector<LayoutElement>& layou
             }// next track ref
         }// end if empty measure
         // repetition
-        /*
-        else if (checkRepetitions_bool and m_measures[measure].firstSimilarMeasure!=-1)
-        {
-
-            if (getRepetitionMinimalLength()<2)
-            {
-                LayoutElement element(SINGLE_REPEATED_MEASURE, measure);
-                layoutElements.push_back( element );
-                continue;
-            }
-
-            int firstMeasureThatRepeats, lastMeasureThatRepeats, firstRepeatedMeasure, lastRepeatedMeasure; // used when finding repetitions
-
-            // -------- play same measure multiple times --------
-            // check if next measure is the same as current measure
-            if (measure+1<measureAmount and m_measures[measure+1].firstSimilarMeasure == m_measures[measure].firstSimilarMeasure )
-            {
-                int amountOfTimes = 1;
-                for (int iter=1; iter<measureAmount; iter++)
-                {
-                    if (measure+iter<measureAmount and m_measures[measure+iter].firstSimilarMeasure == m_measures[measure].firstSimilarMeasure )
-                    {
-                        amountOfTimes++;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }//next
-
-                if (amountOfTimes < getRepetitionMinimalLength())
-                {
-#ifdef _verbose
-                    std::cout << "    play many times refused, m_measures " << (measure+1) << " to " << (measure+amountOfTimes+1) << " are normal" << std::endl;
-#endif
-                    // not enough repetitions, add as regular m_measures
-                    for (int i=0; i<amountOfTimes; i++)
-                    {
-                        layoutElements.push_back( LayoutElement(SINGLE_MEASURE, measure) );
-                        measure++;
-                    }
-                    measure--;
-                }
-                else
-                {
-                    // check if we need to display the repetition first before adding play many times
-                    if (m_measures[measure].firstSimilarMeasure != -1 and m_measures[measure].firstSimilarMeasure != measure-1)
-                        // we don't need to if measure was not a repeptition, in which case it is already there
-                        // we need neither if it is the measure just before
-                    {
-                        LayoutElement element(SINGLE_REPEATED_MEASURE, measure);
-                        layoutElements.push_back( element );
-                    }
-                    else
-                    {
-                        amountOfTimes++; // if measure was already displayed... there were e.g. 3 additional repetitions, but we want to show x4
-                    }
-#ifdef _verbose
-                    std::cout << "    measure " << (measure+1) << " is played " << amountOfTimes << " times. all are the same as " << (m_measures[measure].firstSimilarMeasure+1) << std::endl;
-#endif
-                    LayoutElement element(PLAY_MANY_TIMES);
-                    element.amountOfTimes = amountOfTimes;
-                    m_measures[measure].cutApart = true;
-                    if (m_measures[measure].firstSimilarMeasure == measure-1) measure = measure + amountOfTimes-2;
-                    else measure = measure + amountOfTimes-1;
-                    layoutElements.push_back( element );
-                }
-
-            }
-
-            // ------- repeat a riff --------
-            // check if next measure is a reptition, and check this repetition is the next one compared to the current repeated measure
-            else if ( m_measures[measure].findConsecutiveRepetition(m_measures, measureAmount, firstMeasureThatRepeats, lastMeasureThatRepeats,
-                                                                 firstRepeatedMeasure, lastRepeatedMeasure) )
-            {
-
-                const int amount = lastMeasureThatRepeats - firstMeasureThatRepeats;
-                if (amount+1 >= getRepetitionMinimalLength())
-                {
-#ifdef _verbose
-                    std::cout << "    repetition from " << (firstMeasureThatRepeats+1) << " to " <<
-                    (lastMeasureThatRepeats+1) << "(" << (firstRepeatedMeasure+1) << ", " <<
-                    (lastRepeatedMeasure+1) << ")"  << std::endl;
-#endif
-
-                    //m_measures[firstMeasureThatRepeats].cutApart = true;
-
-                    LayoutElement element(REPEATED_RIFF);
-                    element.firstMeasure = firstMeasureThatRepeats;
-                    element.m_measure = firstMeasureThatRepeats;
-                    element.lastMeasure = lastMeasureThatRepeats;
-                    element.firstMeasureToRepeat = firstRepeatedMeasure;
-                    element.lastMeasureToRepeat = lastRepeatedMeasure;
-                    measure = lastMeasureThatRepeats;//measure + amount;
-                    layoutElements.push_back( element );
-                }
-                else
-                    // repetition is not long enough, use normal m_measures
-                {
-#ifdef _verbose
-                    std::cout << "    repetition refused because " << (amount+1) << " < " << getRepetitionMinimalLength() << " m_measures " << (measure+1) << " to " << (measure+getRepetitionMinimalLength()+1) << " are normal" << std::endl;
-#endif
-                    for (int iter=0; iter<getRepetitionMinimalLength(); iter++)
-                    {
-                        layoutElements.push_back( LayoutElement(SINGLE_MEASURE, measure+iter) );
-                    }
-                    measure += getRepetitionMinimalLength()-1;
-                }
-            }
-            else
-            {
-#ifdef _verbose
-                std::cout << "    measure " << (measure+1) << " looks like a repetition but treated as normal" << std::endl;
-#endif
-                // despite looking like a repetition, user settings are set to treat it as a normal measure
-                layoutElements.push_back( LayoutElement(SINGLE_MEASURE, measure) );
-            }
-
-        }*/
         else
             // ------ normal measure -----
         {
-#ifdef _verbose
+#if BE_VERBOSE
             std::cout << "    measure " << (measure+1) << " is normal" << std::endl;
 #endif
             layoutElements.push_back( LayoutElement(SINGLE_MEASURE, measure) );
@@ -417,8 +299,10 @@ void PrintLayoutAbstract::calculateRelativeLengths(std::vector<LayoutElement>& l
             WaitWindow::setProgress( 35 + n*25/layoutElementsAmount );
         }
         
+#if BE_VERBOSE
         std::cout << "= layout element " << n << " =\n";
-
+#endif
+        
         //layoutElements[n].width_in_print_units = LAYOUT_ELEMENT_MIN_WIDTH;
 
         if (layoutElements[n].getType() == SINGLE_MEASURE or layoutElements[n].getType() == EMPTY_MEASURE)
@@ -436,8 +320,10 @@ void PrintLayoutAbstract::calculateRelativeLengths(std::vector<LayoutElement>& l
             
             const int trackAmount = meas.getTrackRefAmount();
             
+#if BE_VERBOSE
             std::cout << "  -> collecting ticks from " << trackAmount << " tracks\n";
-
+#endif
+            
             for (int i=0; i<trackAmount; i++)
             {
                 EditorPrintable* editorPrintable = m_sequence->getEditorPrintable( i );
@@ -462,8 +348,10 @@ void PrintLayoutAbstract::calculateRelativeLengths(std::vector<LayoutElement>& l
                 layoutElements[n].width_in_print_units = LAYOUT_ELEMENT_MIN_WIDTH;
             }
             
+#if BE_VERBOSE
             std::cout << "  -> Layout element " << n << " is " << layoutElements[n].width_in_print_units
                       << " unit(s) wide" << std::endl;
+#endif
         }
         /*
         else if (layoutElements[n].getType() == REPEATED_RIFF)
