@@ -1362,18 +1362,6 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
     if (strcmp("editor", xml->getNodeName()) == 0)
     {
 
-        // TODO: move notation type to "Track"
-        const char* mode_c = xml->getAttributeValue("mode");
-        if ( mode_c != NULL )
-        {
-            m_track->setNotationType((NotationType)atoi( mode_c ));
-        }
-        else
-        {
-            m_track->setNotationType(KEYBOARD);
-            std::cout << "Missing info from file: editor mode" << std::endl;
-        }
-
         const char* height_c = xml->getAttributeValue("height");
         if (height_c != NULL)
         {
@@ -1469,37 +1457,6 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
             
         }
 
-    }
-    else if (strcmp("magneticgrid", xml->getNodeName()) == 0)
-    {
-        if (not m_grid->getModel()->readFromFile(xml)) return false;
-    }
-    else if (strcmp("guitartuning", xml->getNodeName()) == 0)
-    {
-        GuitarTuning* tuning = m_track->getGuitarTuning();
-
-        std::vector<int> newTuning;
-        
-        int n=0;
-        char* string_v = (char*)xml->getAttributeValue("string0");
-
-        while (string_v != NULL)
-        {
-            newTuning.push_back( atoi(string_v) );
-
-            n++;
-            wxString tmp = wxT("string") + to_wxString(n);
-            string_v = (char*)xml->getAttributeValue( tmp.mb_str() );
-        }
-
-        if (newTuning.size() < 3)
-        {
-            std::cout << "FATAL ERROR: Invalid tuning!! only " << newTuning.size() 
-                      << " strings found" << std::endl;
-            return false;
-        }
-
-        tuning->setTuning(newTuning, false);
     }
 
     return true;
