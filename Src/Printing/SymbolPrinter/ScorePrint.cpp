@@ -323,14 +323,10 @@ namespace AriaMaestosa
     {
         ASSERT( global_dc != NULL);
         
-        //std::cout << "[ScorePrint] renderSilenceCallback : " << PRINT_VAR(tick) << PRINT_VAR(duration)
-        //          << PRINT_VAR(type) << PRINT_VAR(triplet) << PRINT_VAR(dotted) << std::endl;
-        
         const Range<int> x = x_converter->tickToX(tick);
         
-        // FIXME: what is this, a silence with negative tick??
-        if (x.from < 0) return; // this part of score is not printed (e.g. is in a repetition)
-        ASSERT(x.to != -1);
+        // silences in gathered rests, for instance, will not be found by tickToX
+        if (x.from < 0 or x.to < 0) return;
         
         RenderRoutines::drawSilence(global_dc, x, silences_y, g_line_height, type, triplet, dotted);
     }

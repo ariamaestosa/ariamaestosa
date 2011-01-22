@@ -244,61 +244,54 @@ Range<int> EditorPrintable::getNoteSymbolX(const int trackID, LayoutLine& line, 
     
 Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const int tick)
 {
-    //LineTrackRef& renderInfo = line.getLineTrackRef(trackID);
-    
     // find in which measure this tick belongs
-    for (int n=0; n<line.getLayoutElementCount(); n++)
+    const int count = line.getLayoutElementCount();
+    for (int n=0; n<count; n++)
     {
         const LayoutElement& el = line.getLayoutElement(n);
-        /*
-        if (el.getType() == GATHERED_REST or el.getType() == REPEATED_RIFF or
-            el.getType() == SINGLE_REPEATED_MEASURE or el.getType() == PLAY_MANY_TIMES)
-        {
-            continue;
-        }*/
-        
-        if (el.getType() == GATHERED_REST) continue;
         
         const PrintLayoutMeasure& meas = line.getMeasureForElement(n);
-        if (meas == NULL_MEASURE) continue;
-        
         const int firstTickInMeasure = meas.getFirstTick();
         const int lastTickInMeasure  = meas.getLastTick();
+        if (el.getType() == GATHERED_REST and tick >= firstTickInMeasure and tick < lastTickInMeasure)
+        {
+            fprintf(stderr, "[EditorPrintable::tickToX] WARNING: tick is inside gathered rest!\n");
+            return Range<int>(-1, -1);
+        }
         
+        if (el.getType() == GATHERED_REST) continue;
+        if (meas == NULL_MEASURE) continue;
+
         if (tick >= firstTickInMeasure and tick < lastTickInMeasure)
         {
-            //std::cout << tick << " is within bounds " << firstTick << " - " << lastTick << std::endl;
             const int elem_x_start = line.getLayoutElement(n).getXFrom();
             const int elem_x_end = line.getLayoutElement(n).getXTo();
             const int elem_w = elem_x_end - elem_x_start;
-            
-            //std::cout << "tickToX found tick " << tick << std::endl;
-            
+                        
             const Range<float> relative_pos = meas.getTicksPlacementManager().getSymbolRelativeArea( tick );
-            
-            //if (meas.ticks_relative_position.find(tick) == meas.ticks_relative_position.end())
-            //{
-            //    std::cout << "\n/!\\ tickToX didn't find X for tick " << tick << " in measure "
-            //              << (meas.id+1) << "\n\n";
-            //}
             
             ASSERT_E(elem_w, >, 0);
             
             const int from = (int)round(relative_pos.from * elem_w + elem_x_start);
-            int to = (int)round(relative_pos.to   * elem_w + elem_x_start);
+            int to = (int)round(relative_pos.to * elem_w + elem_x_start);
             
             // FIXME: arbitrary max length for now
             // TODO: ideally, when one symbol is given too much space, the max size reached detection should
             //       be detected earlier in order to allow other symbols on the line to use the available space
             if ((to - from) > 175) to = from + 175;
             
+            ASSERT_E(to, >=, from);
+            ASSERT_E(from, >=, 0);
+            ASSERT_E(to, >=, 0);
+            
             return Range<int>(from, to);
         }
-        else 
-        // given tick is before the current line
-        if (tick < firstTickInMeasure) 
+        // We went beyond that tick and didn't find anything yet
+        else if (tick < firstTickInMeasure)
         {
-            //std::cout << "tickToX Returning -1 A\n";
+            std::cerr << "[EditorPrintable::tickToX] Cannot find X coordinate for tick " << tick
+                      << " (I'm now at tick " << firstTickInMeasure << " and still didn't find it.)\n";
+            
             return Range<int>(-1, -1);
         }
         /* the tick we were given is not on the current line, but on the next.
@@ -307,13 +300,15 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
          * FIXME - it's not necessarly a tie
          * FIXME - ties and line warping need better handling
          */
-        else if (n==line.getLayoutElementCount()-1 and tick >= lastTickInMeasure)
+        else if (n == line.getLayoutElementCount() - 1 and tick >= lastTickInMeasure)
         {
             //std::cout << "tickToX Returning -" <<  (currentLine->layoutElements[n].getXTo() + 10) << " B\n";
 
             return Range<int>(line.getLayoutElement(n).getXTo() + 10, line.getLayoutElement(n).getXTo() + 10);
         }
     }
+    
+    std::cerr << "[EditorPrintable::tickToX] Cannot find X coordinate for tick " << tick << "\n";
     
     return Range<int>(-1, -1);
 }
