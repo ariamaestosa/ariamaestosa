@@ -157,7 +157,10 @@ void SymbolPrintableSequence::printLine(LayoutLine& line, wxDC& dc)
     }
     
     std::cout << "[SymbolPrintableSequence] ==== Printing Line (contains " << line.getLayoutElementCount()
-              << " layout elements) from y=" << my0 << " to " << my1 << " ====" << std::endl;
+              << " layout elements), measures " << (line.getFirstMeasure()+1) << " to " << (line.getLastMeasure()+1)
+              << " (tick " << line.getMeasureForElement(0).getFirstTick() << " to "
+              << line.getMeasureForElement(line.getLayoutElementCount() - 1).getLastTick() << ")"
+              << "; from y=" << my0 << " to " << my1 << " ====" << std::endl;
     
     // ---- Debug guides
     if (PRINT_LAYOUT_HINTS)
@@ -176,7 +179,7 @@ void SymbolPrintableSequence::printLine(LayoutLine& line, wxDC& dc)
         // skip empty tracks
         if (line.getLineTrackRef(n).empty()) continue;
         
-        std::cout << "[SymbolPrintableSequence] ==== Printing track " << n << " ====\n";
+        std::cout << "[SymbolPrintableSequence] --- Printing track " << n << " ---\n";
         
         const LineTrackRef& sizing = line.getLineTrackRef(n);
         const TrackCoords* trackCoords = sizing.m_track_coords.raw_ptr;
