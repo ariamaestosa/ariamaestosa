@@ -343,7 +343,7 @@ namespace AriaMaestosa
         int  getCurrentSequenceID() const { return m_current_sequence; }
         void setCurrentSequence(int n, bool update=true);
 
-        void changeShownTimeSig(int num, int denom);
+        void onTimeSigSelectionChanged(int num, int denom);
 
         void evt_freeVolumeSlider( wxCommandEvent& evt );
         void evt_freeTimeSigPicker( wxCommandEvent& evt );

@@ -846,7 +846,7 @@ void MainFrame::changeMeasureAmount(int i, bool throwEvent)
 */
 // ----------------------------------------------------------------------------------------------------------
 
-void MainFrame::changeShownTimeSig(int num, int denom)
+void MainFrame::onTimeSigSelectionChanged(int num, int denom)
 {
     changingValues = true; // FIXME - still necessary?
     //measureTypeTop->SetValue( to_wxString(num) );
