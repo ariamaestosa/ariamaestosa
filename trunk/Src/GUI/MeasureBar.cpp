@@ -493,9 +493,7 @@ void MeasureBar::unselect()
   * @brief When mouse button is pushed on Measure Bar
   */
 void MeasureBar::mouseDown(int x, int y)
-{
-    // FIXME: stop directly accessing the model's internal fields, call a method and let the model handle itself
-    
+{    
     // if click is in time sig change areas
     if (y > 20)
     {
@@ -506,11 +504,6 @@ void MeasureBar::mouseDown(int x, int y)
         const int id = m_data->addTimeSigChange(measureDivAt_x, -1, -1);
 
         selectTimeSig(id);
-        
-        // m_selected_time_sig = n + 1;
-        // FIXME(DESIGN): we should not *tell* the main frame to update the change shown time sig, the listeners should do it
-        getMainFrame()->changeShownTimeSig(m_data->m_time_sig_changes[id].getNum(),
-                                           m_data->m_time_sig_changes[id].getDenom() );
         
         if (not m_gseq->getModel()->importing)
         {
@@ -523,6 +516,8 @@ void MeasureBar::mouseDown(int x, int y)
         
         return;
     }
+    
+    // FIXME: stop directly accessing the model's internal fields, call a method and let the model handle itself
 
     const int measure_amount = m_data->m_measure_info.size();
     for (int n=0; n<measure_amount; n++)
@@ -541,10 +536,9 @@ void MeasureBar::mouseDown(int x, int y)
 
 void MeasureBar::selectTimeSig(const int id)
 {
-    // FIXME(DESIGN): instead use an observer pattern to know when the selected time sig has changed
     m_data->m_selected_time_sig = id;
-    getMainFrame()->changeShownTimeSig(m_data->m_time_sig_changes[id].getNum(),
-                                       m_data->m_time_sig_changes[id].getDenom() );
+    getMainFrame()->onTimeSigSelectionChanged(m_data->m_time_sig_changes[id].getNum(),
+                                              m_data->m_time_sig_changes[id].getDenom() );
 }
 
 
