@@ -332,33 +332,6 @@ void GraphicalSequence::renderTracks(int currentTick, RelativeXCoord mousex, int
 #pragma mark Mouse Events
 #endif
 
-bool GraphicalSequence::areMouseHeldDownEventsNeeded()
-{
-    return true;
-    
-    // FIXME - clarify status of this. fix or remove.
-    
-    /*
-     const int draggedTrack = Display::getDraggedTrackID();
-     
-     // we're reordering tracks, it is necessary. return true.
-     if (draggedTrack!=-1) return true;
-     
-     // ask all editors if they need such events at this point.
-     const int trackAmount = tracks.size();
-     for(int n=0; n<trackAmount; n++)
-     {
-     // there's one editor that wants them, so return true.
-     if (tracks[n].graphics->getCurrentEditor()->areMouseHeldDownEventsNeeded()) return true;
-     }//next
-     
-     // we're not reordering and no editor requested such events, so return false
-     return false;
-     */
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
 void GraphicalSequence::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
                                       RelativeXCoord mousex_initial, int mousey_initial)
 {

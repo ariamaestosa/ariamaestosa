@@ -108,9 +108,6 @@ namespace AriaMaestosa
         void mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
                            RelativeXCoord mousex_initial, int mousey_initial);
         
-        /** @return do we need to start a timer that will frequently send mouse held down events? */
-        bool areMouseHeldDownEventsNeeded();
-        
         /** @brief Hide a track by sending it to the 'dock' */
         void addToDock(GraphicalTrack* track);
         

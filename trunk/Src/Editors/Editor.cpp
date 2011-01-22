@@ -581,33 +581,6 @@ void Editor::mouseExited(RelativeXCoord mousex_current, int mousey_current,
 
 // ------------------------------------------------------------------------------------------------------------
 
-/*
- * Is it necessary to send frequent mouse held down events?
- */
-/*
- bool Editor::areMouseHeldDownEventsNeeded()
- {
-
-     // if user is clicking on scrollbar but not on thumb, it is needed
-     if (m_click_on_scrollbar and
-        not m_scroll_up_arrow_pressed and
-        not m_scroll_down_arrow_pressed and
-        not m_vertical_scrolling
-        )
-     {
-         return true;
-     }
-
-     // is user is clicking on a scroll arrow, it is necessary
-     if (m_scroll_up_arrow_pressed or m_scroll_down_arrow_pressed) return true;
-
-     // otherwise, it is not necessary
-     return false;
- }
- */
-
-// ------------------------------------------------------------------------------------------------------------
-
 void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
                            RelativeXCoord mousex_initial, int mousey_initial)
 {

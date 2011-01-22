@@ -690,9 +690,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
 
     Display::render();
 
-    // ask sequence if it is necessary at this point to be notified of mouse held down events.
-    // if so, start a timer that will take of it.
-    if (gseq->areMouseHeldDownEventsNeeded()) m_mouse_down_timer->start();
+    m_mouse_down_timer->start();
 }
 
 // --------------------------------------------------------------------------------------------------
