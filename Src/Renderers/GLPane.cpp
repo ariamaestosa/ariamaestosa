@@ -123,7 +123,7 @@ int GLPane::getHeight()
 
 bool GLPane::prepareFrame()
 {
-    if (!GetParent()->IsShown()) return false;
+    if (not GetParent()->IsShown()) return false;
     wxGLCanvas::SetCurrent();
     return true;
 }

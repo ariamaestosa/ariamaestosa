@@ -1733,13 +1733,15 @@ void Track::saveToFile(wxFileOutputStream& fileout)
     getGraphics()->saveToFile(fileout);
 
     // notes
-    for (int n=0; n<m_notes.size(); n++)
+    const int noteCount = m_notes.size();
+    for (int n=0; n<noteCount; n++)
     {
         m_notes[n].saveToFile(fileout);
     }
 
     // controller changes
-    for (int n=0; n<m_control_events.size(); n++)
+    const int ctrlCount = m_control_events.size();
+    for (int n=0; n<ctrlCount; n++)
     {
         m_control_events[n].saveToFile(fileout);
     }
@@ -1820,14 +1822,6 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                     }
 
                 }
-                else if (strcmp("editor", xml->getNodeName()) == 0)
-                {
-                    if (not getGraphics()->readFromFile(xml)) return false;
-                }
-                else if (strcmp("magneticgrid", xml->getNodeName()) == 0)
-                {
-                    if (not getGraphics()->readFromFile(xml)) return false;
-                }
                 else if (strcmp("instrument", xml->getNodeName()) == 0)
                 {
                     const char* id = xml->getAttributeValue("id");
@@ -1841,6 +1835,53 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                         std::cerr << "Missing info from file: instrument ID" << std::endl;
                     }
                 }
+                else if (strcmp("magneticgrid", xml->getNodeName()) == 0)
+                {
+                    if (not m_magnetic_grid->readFromFile(xml)) return false;
+                }
+                else if (strcmp("editor", xml->getNodeName()) == 0)
+                {
+                    const char* mode_c = xml->getAttributeValue("mode");
+                                        
+                    if ( mode_c != NULL )
+                    {
+                        setNotationType((NotationType)atoi( mode_c ));
+                    }
+                    else
+                    {
+                        setNotationType(KEYBOARD);
+                        std::cout << "Missing info from file: editor mode" << std::endl;
+                    }
+                    
+                    getGraphics()->readFromFile(xml);
+                }                    
+                else if (strcmp("guitartuning", xml->getNodeName()) == 0)
+                {
+                    GuitarTuning* tuning = getGuitarTuning();
+                    
+                    std::vector<int> newTuning;
+                    
+                    int n=0;
+                    char* string_v = (char*)xml->getAttributeValue("string0");
+                    
+                    while (string_v != NULL)
+                    {
+                        newTuning.push_back( atoi(string_v) );
+                        
+                        n++;
+                        wxString tmp = wxT("string") + to_wxString(n);
+                        string_v = (char*)xml->getAttributeValue( tmp.mb_str() );
+                    }
+                    
+                    if (newTuning.size() < 3)
+                    {
+                        std::cout << "FATAL ERROR: Invalid tuning!! only " << newTuning.size() 
+                                  << " strings found" << std::endl;
+                        return false;
+                    }
+                    
+                    tuning->setTuning(newTuning, false);
+                }
                 else if (strcmp("drumkit", xml->getNodeName()) == 0)
                 {
                     const char* id = xml->getAttributeValue("id");
@@ -1853,10 +1894,6 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                     {
                         std::cerr << "Missing info from file: drum ID" << std::endl;
                     }
-                }
-                else if (strcmp("guitartuning", xml->getNodeName()) == 0)
-                {
-                    if (not getGraphics()->readFromFile(xml)) return false;
                 }
                 else if (strcmp("key", xml->getNodeName()) == 0)
                 {
