@@ -566,6 +566,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
     {
         m_click_area = CLICK_TRACK;
 
+        // FIXME: this kind of code is seemingly randomly spread between GraphicalSequence and MainPane
         // dispatch event to all tracks (stop when either of them uses it)
         m_click_in_track = -1;
         const unsigned int track_amount = gseq->getTrackAmount();
@@ -579,7 +580,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
                 m_mouse_y_current > y and m_mouse_y_current < y+7)
             {
                 m_click_area = CLICK_REORDER;
-                m_dragged_track_id = n;
+                m_dragged_track_id = gtrack->getTrack()->getId();
             }
             else
             { 
