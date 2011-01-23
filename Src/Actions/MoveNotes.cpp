@@ -71,7 +71,7 @@ void MoveNotes::undo()
         }
         else if (m_move_mode == GUITAR_VERTICAL)
         {
-            current_note->setStringAndFret(undo_fret[n], undo_string[n]);
+            current_note->setStringAndFret(undo_string[n], undo_fret[n]);
             ed->moveNote(*current_note, -m_relativeX, 0);
             n++;
         }
