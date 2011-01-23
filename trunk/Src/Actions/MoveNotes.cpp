@@ -54,41 +54,45 @@ MoveNotes::~MoveNotes()
 
 void MoveNotes::undo()
 {
-        Note* current_note;
-        relocator.setParent(track);
-        relocator.prepareToRelocate();
+    Note* current_note;
+    relocator.setParent(m_track);
+    relocator.prepareToRelocate();
 
-        int n = 0;
-        while ((current_note = relocator.getNextNote()) and current_note != NULL)
+    Editor* ed = m_track->getGraphics()->getCurrentEditor();
+    
+    int n = 0;
+    while ((current_note = relocator.getNextNote()) and current_note != NULL)
+    {
+        if (m_move_mode == SCORE_VERTICAL or m_move_mode == DRUMS_VERTICAL)
         {
-            if (m_move_mode == SCORE_VERTICAL or m_move_mode == DRUMS_VERTICAL)
-            {
-                current_note->setPitchID( undo_pitch[n] );
-                track->getGraphics()->getCurrentEditor()->moveNote(*current_note, -m_relativeX, 0);
-                n++;
-            }
-            else if (m_move_mode == GUITAR_VERTICAL)
-            {
-                current_note->setStringAndFret(undo_fret[n], undo_string[n]);
-                track->getGraphics()->getCurrentEditor()->moveNote(*current_note, -m_relativeX, 0);
-                n++;
-            }
-            else
-            {
-                track->getGraphics()->getCurrentEditor()->moveNote(*current_note, -m_relativeX, -m_relativeY);
-            }
+            current_note->setPitchID( undo_pitch[n] );
+            ed->moveNote(*current_note, -m_relativeX, 0);
+            n++;
         }
-        track->reorderNoteVector();
-        track->reorderNoteOffVector();
+        else if (m_move_mode == GUITAR_VERTICAL)
+        {
+            current_note->setStringAndFret(undo_fret[n], undo_string[n]);
+            ed->moveNote(*current_note, -m_relativeX, 0);
+            n++;
+        }
+        else
+        {
+            ed->moveNote(*current_note, -m_relativeX, -m_relativeY);
+        }
+    }
+    m_track->reorderNoteVector();
+    m_track->reorderNoteOffVector();
 }
 
 // ----------------------------------------------------------------------------------------------------------
 
 void MoveNotes::perform()
 {
-    ASSERT(track != NULL);
+    ASSERT(m_track != NULL);
 
-    m_mode = track->getNotationType();
+    ptr_vector<Note>& notes = m_visitor->getNotesVector();
+    
+    m_mode = m_track->getNotationType();
     if      (m_mode == SCORE  and m_relativeY != 0) m_move_mode = SCORE_VERTICAL;
     else if (m_mode == GUITAR and m_relativeY != 0) m_move_mode = GUITAR_VERTICAL;
     else if (m_mode == DRUM   and m_relativeY != 0) m_move_mode = DRUMS_VERTICAL;
@@ -101,17 +105,17 @@ void MoveNotes::perform()
 
         bool played = false;
 
-        const int noteAmount=track->m_notes.size();
+        const int noteAmount = notes.size();
         for (int n=0; n<noteAmount; n++)
         {
-            if (not track->m_notes[n].isSelected()) continue;
+            if (not notes[n].isSelected()) continue;
 
             doMoveOneNote(n);
 
             if (not played)
             {
-                if (m_relativeY != 0) track->m_notes[n].play(true);
-                else                  track->m_notes[n].play(false);
+                if (m_relativeY != 0) notes[n].play(true);
+                else                  notes[n].play(false);
                 played = true;
             }
         }//next
@@ -120,25 +124,27 @@ void MoveNotes::perform()
     {
         // move a single note
         ASSERT_E(m_note_ID,>=,0);
-        ASSERT_E(m_note_ID,<,track->m_notes.size());
+        ASSERT_E(m_note_ID,<,notes.size());
 
         doMoveOneNote(m_note_ID);
 
         if (m_relativeX != 0)
         {
-            if (m_relativeY != 0) track->m_notes[m_note_ID].play(true);
-            else                  track->m_notes[m_note_ID].play(false);
+            if (m_relativeY != 0) notes[m_note_ID].play(true);
+            else                  notes[m_note_ID].play(false);
         }
     }
 
-    track->reorderNoteVector();
-    track->reorderNoteOffVector();
+    m_track->reorderNoteVector();
+    m_track->reorderNoteOffVector();
 }
 
 // ----------------------------------------------------------------------------------------------------------
 
 void MoveNotes::doMoveOneNote(const int noteID)
 {
+    ptr_vector<Note>& notes = m_visitor->getNotesVector();
+    
     /*
       In score and drum mode, it is necessary to remember the pitch of the note on vertical moves
          In score editor because sharp/flats are not accounted in the number of steps
@@ -149,16 +155,16 @@ void MoveNotes::doMoveOneNote(const int noteID)
      */
     if (m_move_mode == SCORE_VERTICAL or m_move_mode == DRUMS_VERTICAL)
     {
-        undo_pitch.push_back( track->m_notes[noteID].getPitchID() );
+        undo_pitch.push_back( notes[noteID].getPitchID() );
     }
     else if (m_move_mode == GUITAR_VERTICAL)
     {
-        undo_fret.push_back( track->m_notes[noteID].getFretConst() );
-        undo_string.push_back( track->m_notes[noteID].getStringConst() );
+        undo_fret.push_back( notes[noteID].getFretConst() );
+        undo_string.push_back( notes[noteID].getStringConst() );
     }
 
-    track->getGraphics()->getCurrentEditor()->moveNote(track->m_notes[noteID], m_relativeX, m_relativeY);
-    relocator.rememberNote( track->m_notes[noteID] );
+    m_track->getGraphics()->getCurrentEditor()->moveNote(notes[noteID], m_relativeX, m_relativeY);
+    relocator.rememberNote( notes[noteID] );
 }
 
 // ----------------------------------------------------------------------------------------------------------

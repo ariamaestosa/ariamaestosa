@@ -49,7 +49,7 @@ AddTrack::~AddTrack()
 void AddTrack::undo()
 {
     ASSERT(m_added_track != NULL)
-    sequence->deleteTrack(m_added_track);
+    m_sequence->deleteTrack(m_added_track);
     m_added_track = NULL;
 }
 
@@ -57,7 +57,7 @@ void AddTrack::undo()
 
 void AddTrack::perform()
 {
-    m_added_track = sequence->addTrack();
+    m_added_track = m_sequence->addTrack();
 }
 
 // --------------------------------------------------------------------------------------------------------

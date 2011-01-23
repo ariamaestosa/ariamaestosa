@@ -37,7 +37,7 @@ RearrangeNotes::~RearrangeNotes()
 void RearrangeNotes::undo()
 {
     Note* current_note;
-    relocator.setParent(track);
+    relocator.setParent(m_track);
     relocator.prepareToRelocate();
 
     int i=0;
@@ -51,24 +51,26 @@ void RearrangeNotes::undo()
 void RearrangeNotes::perform()
 {
     // FIXME: fix this abuse of the importing feature
-    OwnerPtr<Sequence::Import> import(track->getSequence()->startImport()); // just to make sure notes are not played while reordering
+    OwnerPtr<Sequence::Import> import(m_track->getSequence()->startImport()); // just to make sure notes are not played while reordering
 
     std::vector<int> candidates;
 
-    const int noteAmount = track->getNoteAmount();
+    //ptr_vector<Note>& notes = m_visitor->getNotesVector();
+    
+    const int noteAmount = m_track->getNoteAmount();
     for (int n=0; n<noteAmount; n++)
     {
 
         // find notes that have the same tick
         candidates.clear();
-        int x1 = track->getNoteStartInMidiTicks(n);
+        int x1 = m_track->getNoteStartInMidiTicks(n);
         candidates.push_back(n);
 
         // found 2 consecutive notes with same tick - check if there are more
-        if (n < noteAmount-1 and track->getNoteStartInMidiTicks(n + 1) == x1)
+        if (n < noteAmount-1 and m_track->getNoteStartInMidiTicks(n + 1) == x1)
         {
             n++;
-            while (n < noteAmount and track->getNoteStartInMidiTicks(n) == x1)
+            while (n < noteAmount and m_track->getNoteStartInMidiTicks(n) == x1)
             {
                 candidates.push_back(n);
                 n++;
@@ -85,12 +87,12 @@ void RearrangeNotes::perform()
             bool selected = false;
             for (int i=0; i<size; i++)
             {
-                if (track->isNoteSelected( candidates[i] )) selected=true;
+                if (m_track->isNoteSelected( candidates[i] )) selected = true;
             }
-            if (!selected) continue;
+            if (not selected) continue;
 
             // check if more than one are on the same string (if they overlap)
-            bool need_to_reorder=false;
+            bool need_to_reorder = false;
 
             for (int a=0; a<size; a++)
             {
@@ -99,10 +101,10 @@ void RearrangeNotes::perform()
 
                     if (a != b) continue;
 
-                    if (track->getNoteString(candidates[a])==track->getNoteString(candidates[b]) /*overlapping notes*/
+                    if (m_track->getNoteString(candidates[a]) == m_track->getNoteString(candidates[b]) /*overlapping notes*/
                         or  /*split powerchord*/
-                        (abs(track->getNotePitchID(candidates[b])-track->getNotePitchID(candidates[b]))==7
-                         and abs(track->getNoteString(candidates[a])-track->getNoteString(candidates[b]))>1)
+                        (abs(m_track->getNotePitchID(candidates[b]) - m_track->getNotePitchID(candidates[b]))==7
+                         and abs(m_track->getNoteString(candidates[a]) - m_track->getNoteString(candidates[b]))>1)
                         )
                     {
 
@@ -120,7 +122,7 @@ void RearrangeNotes::perform()
                 for (int i=0; i<size-1; i++)
                 {
 
-                    if (track->getNotePitchID(candidates[i]) < track->getNotePitchID(candidates[i+1]))
+                    if (m_track->getNotePitchID(candidates[i]) < m_track->getNotePitchID(candidates[i+1]))
                     {
 
                         int tmp = candidates[i+1];
@@ -135,39 +137,39 @@ void RearrangeNotes::perform()
 
 
                 // shift first note down if possible (if necessary)
-                const int fstr = track->getNoteString(candidates[0])-(size-1); // calculate where highest note would end up this way
+                const int fstr = m_track->getNoteString(candidates[0]) - (size - 1); // calculate where highest note would end up this way
 
                 if (fstr < 0)
                 { // if highest note wouldn't fit in available space, shift down all notes as many times as needed
                     for (int m=0; m<abs(fstr); m++)
                     {
                         //FIXME: why do I do this to note 0 fstr times???
-                        Note* current = track->getNote(candidates[0]);
+                        Note* current = m_track->getNote(candidates[0]);
                         relocator.rememberNote( current );
 
-                        fret.push_back( track->getNoteFret(candidates[0]) );
-                        string.push_back( track->getNoteString(candidates[0]) );
+                        fret.push_back( m_track->getNoteFret(candidates[0]) );
+                        string.push_back( m_track->getNoteString(candidates[0]) );
 
                         Action::ShiftString action( 1, candidates[0] );
-                        action.setParentTrack(track);
+                        action.setParentTrack(m_track, m_visitor);
                         action.perform();
                     }
                 }
 
-                const int base_string = track->getNoteString(candidates[0]);
+                const int base_string = m_track->getNoteString(candidates[0]);
 
                 // lay them out
                 for (int i=1; i<size; i++)
                 {
-                    Note* current = track->getNote(candidates[i]);
+                    Note* current = m_track->getNote(candidates[i]);
                     relocator.rememberNote( current );
 
-                    fret.push_back( track->getNoteFret(candidates[i]) );
-                    string.push_back( track->getNoteString(candidates[i]) );
+                    fret.push_back( m_track->getNoteFret(candidates[i]) );
+                    string.push_back( m_track->getNoteString(candidates[i]) );
 
                     // place lowest note on lowest needed string, then second lowest note on second lowest string, etc
-                    Action::ShiftString action( base_string-i-track->getNoteString(candidates[i]) , candidates[i]);
-                    action.setParentTrack(track);
+                    Action::ShiftString action( base_string - i - m_track->getNoteString(candidates[i]) , candidates[i]);
+                    action.setParentTrack(m_track, m_visitor);
                     action.perform();
                 }
             }

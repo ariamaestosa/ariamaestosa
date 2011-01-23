@@ -22,6 +22,8 @@
 
 using namespace AriaMaestosa::Action;
 
+// ----------------------------------------------------------------------------------------------------------
+
 ScaleTrack::ScaleTrack(float factor, int relative_to, bool selectionOnly) :
     //I18N: (undoable) action name
     SingleTrackAction( _("scale note(s)") )
@@ -31,14 +33,18 @@ ScaleTrack::ScaleTrack(float factor, int relative_to, bool selectionOnly) :
     m_selection_only = selectionOnly;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 ScaleTrack::~ScaleTrack()
 {
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void ScaleTrack::undo()
 {
     Note* current_note;
-    relocator.setParent(track);
+    relocator.setParent(m_track);
     relocator.prepareToRelocate();
     int n=0;
     while ((current_note = relocator.getNextNote()) and current_note != NULL)
@@ -47,34 +53,39 @@ void ScaleTrack::undo()
         current_note->setEndTick( m_note_end[n] );
         n++;
     }
-    track->reorderNoteVector();
-    track->reorderNoteOffVector();
+    m_track->reorderNoteVector();
+    m_track->reorderNoteOffVector();
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void ScaleTrack::perform()
 {
-    ASSERT(track != NULL);
+    ASSERT(m_track != NULL);
     
-    const int noteAmount = track->m_notes.size();
+    ptr_vector<Note>& notes = m_visitor->getNotesVector();
+    const int noteAmount = notes.size();
     
     for (int n=0; n<noteAmount; n++)
     {
         // skip unselected notes if we only want to affect selection
-        if (m_selection_only and not track->m_notes[n].isSelected()) continue; 
+        if (m_selection_only and not notes[n].isSelected()) continue; 
         
-        const int startTick = track->m_notes[n].getTick();
-        const int endTick = track->m_notes[n].getEndTick();
+        const int startTick = notes[n].getTick();
+        const int endTick   = notes[n].getEndTick();
         
         m_note_start.push_back( startTick );
         m_note_end.push_back( endTick );
         
-        track->m_notes[n].setTick( (int)( (startTick - m_relative_to)*m_factor + m_relative_to ) );
-        track->m_notes[n].setEndTick( (int)( (endTick - m_relative_to)*m_factor + m_relative_to ) );
-        relocator.rememberNote(track->m_notes[n]);
+        notes[n].setTick   ( (int)( (startTick - m_relative_to)*m_factor + m_relative_to ) );
+        notes[n].setEndTick( (int)( (endTick   - m_relative_to)*m_factor + m_relative_to ) );
+        relocator.rememberNote(notes[n]);
         
     }//next
     
-    track->reorderNoteVector();
-    track->reorderNoteOffVector();
+    m_track->reorderNoteVector();
+    m_track->reorderNoteOffVector();
 }
+
+// ----------------------------------------------------------------------------------------------------------
 

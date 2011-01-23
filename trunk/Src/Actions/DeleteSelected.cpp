@@ -51,7 +51,7 @@ DeleteSelected::~DeleteSelected()
 
 void DeleteSelected::undo()
 {
-    const int noteAmount = removedNotes.size();
+    const int noteAmount    = removedNotes.size();
     const int controlAmount = removedControlEvents.size();
     
     if (noteAmount > 0)
@@ -59,7 +59,7 @@ void DeleteSelected::undo()
         
         for (int n=0; n<noteAmount; n++)
         {
-            track->addNote( removedNotes.get(n), false );
+            m_track->addNote( removedNotes.get(n), false );
         }
         // we will be using the notes again, make sure it doesn't delete them
         removedNotes.clearWithoutDeleting();
@@ -70,7 +70,7 @@ void DeleteSelected::undo()
         
         for (int n=0; n<controlAmount; n++)
         {
-            track->addControlEvent( removedControlEvents.get(n) );
+            m_track->addControlEvent( removedControlEvents.get(n) );
         }
         // we will be using the notes again, make sure it doesn't delete them
         removedControlEvents.clearWithoutDeleting();
@@ -82,11 +82,15 @@ void DeleteSelected::undo()
 
 void DeleteSelected::perform()
 {
-    ASSERT(track != NULL);
+    ASSERT(m_track != NULL);
     
-    if (track->getNotationType() == CONTROLLER)
+    // FIXME: controllers need an exceptional treatment
+    if (m_track->getNotationType() == CONTROLLER)
     {
-        ControllerEditor* editor = track->getGraphics()->getControllerEditor();
+        
+        ptr_vector<ControllerEvent>& ctrls = m_visitor->getControlEventVector();
+        
+        ControllerEditor* editor = m_track->getGraphics()->getControllerEditor();
         int selBegin   = editor->getSelectionBegin();
         int selEnd     = editor->getSelectionEnd();
         const int type = editor->getCurrentControllerType();
@@ -97,17 +101,17 @@ void DeleteSelected::perform()
         if (type != 201 /*tempo*/)
         {
             // remove controller events
-            for (int n=0; n<track->m_control_events.size(); n++)
+            for (int n=0; n<ctrls.size(); n++)
             {
                 
-                if (track->m_control_events[n].getController() != type) continue; // in another controller
+                if (ctrls[n].getController() != type) continue; // in another controller
                 
-                const int tick = track->m_control_events[n].getTick();
+                const int tick = ctrls[n].getTick();
                 
-                if (tick<from or tick>to) continue; // this event is not concerned by selection
+                if (tick < from or tick > to) continue; // this event is not concerned by selection
                 
-                removedControlEvents.push_back( track->m_control_events.get(n) );
-                track->m_control_events.remove(n);
+                removedControlEvents.push_back( ctrls.get(n) );
+                ctrls.remove(n);
                 n--;
             }//next
             
@@ -115,7 +119,7 @@ void DeleteSelected::perform()
         else
         {
             // remove tempo events
-            Sequence* sequence = track->getSequence();
+            Sequence* sequence = m_track->getSequence();
             const int tempoEventsAmount = sequence->getTempoEventAmount();
             for (int n=0; n<tempoEventsAmount; n++)
             {
@@ -131,32 +135,33 @@ void DeleteSelected::perform()
     }
     else
     {
-        
-        for (int n=0; n<track->m_notes.size(); n++)
+        ptr_vector<Note>& notes        = m_visitor->getNotesVector();
+        ptr_vector<Note, REF>& noteOff = m_visitor->getNoteOffVector();
+
+        for (int n=0; n<notes.size(); n++)
         {
-            if (not track->m_notes[n].isSelected()) continue;
+            if (not notes[n].isSelected()) continue;
             
             // also delete corresponding note off event
-            for (int i=0; i<track->m_note_off.size(); i++)
+            for (int i=0; i<noteOff.size(); i++)
             {
-                if (&track->m_note_off[i] == &track->m_notes[n])
+                if (noteOff.get(i) == notes.get(n))
                 {
-                    track->m_note_off.remove(i);
+                    noteOff.remove(i);
                     break;
                 }
             }
             
             //notes.erase(n);
-            removedNotes.push_back( track->m_notes.get(n) );
-            track->m_notes.remove(n);
+            removedNotes.push_back( notes.get(n) );
+            notes.remove(n);
             
             n--;
         }//next
         
     }
     
-    
-    track->reorderNoteOffVector();
+    m_track->reorderNoteOffVector();
 }
 
 // ----------------------------------------------------------------------------------------------------------

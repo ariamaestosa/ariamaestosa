@@ -313,7 +313,7 @@ void Sequence::snapNotesToGrid()
 void Sequence::action( Action::MultiTrackAction* actionObj)
 {
     addToUndoStack( actionObj );
-    actionObj->setParentSequence(this);
+    actionObj->setParentSequence(this, new SequenceVisitor(this));
     actionObj->perform();
     
     if (m_action_stack_listener != NULL) m_action_stack_listener->onActionStackChanged();

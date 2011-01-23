@@ -49,17 +49,17 @@ SingleTrackAction( _("add note") )
 void AddNote::undo()
 {
     Note* current_note;
-    relocator.setParent(track);
+    relocator.setParent(m_track);
     relocator.prepareToRelocate();
     
     while ((current_note = relocator.getNextNote()) and current_note != NULL)
     {
-        const int noteAmount = track->getNoteAmount();
+        const int noteAmount = m_track->getNoteAmount();
         for (int n=0; n<noteAmount; n++)
         {
-            if (track->getNote(n) == current_note)
+            if (m_track->getNote(n) == current_note)
             {
-                track->removeNote(n);
+                m_track->removeNote(n);
                 break;
             }//endif
         }//next
@@ -70,19 +70,18 @@ void AddNote::undo()
 
 void AddNote::perform()
 {
-    ASSERT(track != NULL);
-    
+    ASSERT(m_track != NULL);
     
     Note* tmp_note;
-    if (m_string == -1) tmp_note = new Note(track, m_pitch_ID, m_start_tick, m_end_tick, m_volume);
-    else                tmp_note = new Note(track, m_pitch_ID, m_start_tick, m_end_tick, m_volume, m_string, 0);
+    if (m_string == -1) tmp_note = new Note(m_track, m_pitch_ID, m_start_tick, m_end_tick, m_volume);
+    else                tmp_note = new Note(m_track, m_pitch_ID, m_start_tick, m_end_tick, m_volume, m_string, 0);
     
-    const bool success = track->addNote( tmp_note );
+    const bool success = m_track->addNote( tmp_note );
     
     if (success)
     {
         // select last added note
-        track->selectNote(ALL_NOTES, false, true); // select last added note
+        m_track->selectNote(ALL_NOTES, false, true); // select last added note
         tmp_note->setSelected(true);
     }
     

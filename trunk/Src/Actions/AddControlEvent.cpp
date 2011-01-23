@@ -50,30 +50,32 @@ void AddControlEvent::undo()
     
     if (m_controller != 201 /*tempo*/)
     {
-        const int controlEventsAmount = track->m_control_events.size();
+        ptr_vector<ControllerEvent>& control_events = m_visitor->getControlEventVector();
+        
+        const int controlEventsAmount = control_events.size();
         for (int n=0; n<controlEventsAmount; n++)
         {
             
-            if (track->m_control_events[n].getTick() == m_x and
-                track->m_control_events[n].getController() == m_controller)
+            if (control_events[n].getTick() == m_x and
+                control_events[n].getController() == m_controller)
             {
                 // if event was added where there was no event before
                 if (m_removed_event_value == -1)
                 {
-                    track->m_control_events.erase(n);
+                    control_events.erase(n);
                     break;
                 }
                 else
                     // if event replaced an event that existed before
                 {
-                    track->m_control_events[n].setValue( m_removed_event_value );
+                    control_events[n].setValue( m_removed_event_value );
                 }
             }//endif
         }//next
     }
     else //tempo
     {
-        Sequence* sequence = track->getSequence();
+        Sequence* sequence = m_track->getSequence();
         for (int n=0; n<sequence->getTempoEventAmount(); n++)
         {
             
@@ -103,7 +105,7 @@ void AddControlEvent::undo()
 void AddControlEvent::perform()
 {
     ControllerEvent* event = new ControllerEvent(m_controller, m_x, m_value);
-    track->addControlEvent( event, &m_removed_event_value );
+    m_track->addControlEvent( event, &m_removed_event_value );
 }
 
 // ---------------------------------------------------------------------------------------------------------

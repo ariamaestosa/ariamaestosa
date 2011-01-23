@@ -44,7 +44,7 @@ ShiftBySemiTone::~ShiftBySemiTone()
 void ShiftBySemiTone::undo()
 {
     Note* current_note;
-    m_relocator.setParent(track);
+    m_relocator.setParent(m_track);
     m_relocator.prepareToRelocate();
     
     int n = 0;
@@ -59,26 +59,28 @@ void ShiftBySemiTone::undo()
 
 void ShiftBySemiTone::perform()
 {
-    ASSERT(track != NULL);
+    ASSERT(m_track != NULL);
     
-    if (track->getNotationType() != SCORE) return;
+    if (m_track->getNotationType() != SCORE) return;
     
     // not supported in this function (mostly bacause not needed, but could logically be implemented)
     ASSERT(m_note_id != ALL_NOTES);
     
+    ptr_vector<Note>& notes = m_visitor->getNotesVector();
+    
     // concerns all selected notes
-    if (m_note_id==SELECTED_NOTES)
+    if (m_note_id == SELECTED_NOTES)
     {
         bool played = false;
-        const int amount_n = track->m_notes.size();
+        const int amount_n = notes.size();
         for (int n=0; n<amount_n; n++)
         {
-            Note* note = track->m_notes.get(n);
+            Note* note = notes.get(n);
             
             if (not note->isSelected()) continue;
             
             note->setPitchID( note->getPitchID() + m_delta_y );
-            m_relocator.rememberNote( track->m_notes[n] );
+            m_relocator.rememberNote( notes[n] );
             
             if (not played)
             {
@@ -93,12 +95,12 @@ void ShiftBySemiTone::perform()
     {
         // warning : not yet used so not tested
         ASSERT_E(m_note_id,>=,0);
-        ASSERT_E(m_note_id,<,track->m_notes.size());
+        ASSERT_E(m_note_id,<,notes.size());
         
-        Note* note = track->m_notes.get(m_note_id);
+        Note* note = notes.get(m_note_id);
 
         note->setPitchID( note->getPitchID() + m_delta_y );
-        m_relocator.rememberNote( track->m_notes[m_note_id] );
+        m_relocator.rememberNote( notes[m_note_id] );
         
         note->play(true);
     }

@@ -34,7 +34,6 @@ namespace jdkmidi { class MIDITrack; }
 #include "Midi/Note.h"
 
 #include "ptr_vector.h"
-//#include "Renderers/RenderAPI.h"
 
 namespace AriaMaestosa
 {
@@ -45,33 +44,13 @@ namespace AriaMaestosa
     class ControllerEvent;
     class FullTrackUndo;
     class NoteRelocator;
+    class SequenceVisitor;
     
     namespace Action
     {
         class EditAction;
         class SingleTrackAction;
         class MultiTrackAction;
-        
-        class MoveNotes;
-        class SetNoteVolume;
-        class ResizeNotes;
-        class DeleteSelected;
-        class RemoveOverlapping;
-        class SnapNotesToGrid;
-        class ScaleTrack;
-        class ScaleSong;
-        class InsertEmptyMeasures;
-        class RemoveMeasures;
-        class AddNote;
-        class AddControlEvent;
-        class AddControllerSlide;
-        class ShiftFrets;
-        class ShiftString;
-        class NumberPressed;
-        class UpdateGuitarTuning;
-        class Paste;
-        class SetAccidentalSign;
-        class ShiftBySemiTone;
     }
     
     const int SELECTED_NOTES = -1;
@@ -113,6 +92,7 @@ namespace AriaMaestosa
         virtual void onNotationTypeChange() = 0;
         virtual void onKeyChange(const int symbolAmount, const KeyType symbol) = 0;
 
+        LEAK_CHECK();
     };
     
     /**
@@ -123,32 +103,6 @@ namespace AriaMaestosa
       */
     class Track : public IInstrumentChoiceListener, public IDrumChoiceListener, public IGuitarTuningListener
     {
-        // FIXME(DESIGN) - find better way than friendship
-        friend class FullTrackUndo;
-        friend class NoteRelocator;
-        friend class ControlEventRelocator;
-        
-        friend class Action::MoveNotes;
-        friend class Action::SetNoteVolume;
-        friend class Action::ResizeNotes;
-        friend class Action::DeleteSelected;
-        friend class Action::RemoveOverlapping;
-        friend class Action::SnapNotesToGrid;
-        friend class Action::ScaleTrack;
-        friend class Action::ScaleSong;
-        friend class Action::InsertEmptyMeasures;
-        friend class Action::RemoveMeasures;
-        friend class Action::AddNote;
-        friend class Action::AddControlEvent;
-        friend class Action::AddControllerSlide;
-        friend class Action::ShiftFrets;
-        friend class Action::ShiftString;
-        friend class Action::NumberPressed;
-        friend class Action::UpdateGuitarTuning;
-        friend class Action::Paste;
-        friend class Action::SetAccidentalSign;
-        friend class Action::ShiftBySemiTone;
-        
         /** Holds all notes contained in this track, sorted in time order (of note start) */
         ptr_vector<Note> m_notes;
         
@@ -210,6 +164,30 @@ namespace AriaMaestosa
         IDrumChoiceListener* m_next_drumkit_listener;
 
     public:
+        
+        /** Through this visitor object, the Track class will let actions manipulate its internals
+          * in a controlled sequence
+          */
+        class TrackVisitor
+        {
+            friend class Track;
+            friend class SequenceVisitor;
+            
+            Track* m_track;
+            
+            TrackVisitor(Track* t)
+            {
+                m_track = t;
+            }
+            
+        public:
+            
+            ptr_vector<Note>&            getNotesVector()        { return m_track->m_notes;          }
+            ptr_vector<Note, REF>&       getNoteOffVector()      { return m_track->m_note_off;       }
+            ptr_vector<ControllerEvent>& getControlEventVector() { return m_track->m_control_events; }
+            
+            LEAK_CHECK();
+        };
         
 #ifdef _MORE_DEBUG_CHECKS
         int m_track_unique_ID;

@@ -14,22 +14,26 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _editaction_h_
-#define _editaction_h_
+#ifndef __EDIT_ACTION_H__
+#define __EDIT_ACTION_H__
 
-#include "Utils.h"
 #include "ptr_vector.h"
-#include "Midi/Note.h"
-#include "Midi/ControllerEvent.h"
 
+#include "Midi/ControllerEvent.h"
+#include "Midi/Note.h"
+#include "Midi/Sequence.h"
+#include "Midi/Track.h"
+#include "Utils.h"
+
+\
 /**
   * @defgroup actions
   */
 
 namespace AriaMaestosa
 {
-    class Track;
     class Sequence;
+    class SequenceVisitor;
     
     /*
      * In the opposite situation, when it is easy to revert the changes, NoteRelocator is used.
@@ -47,28 +51,32 @@ namespace AriaMaestosa
      */
     class NoteRelocator
     {
-        int id, noteamount_in_track, noteamount_in_relocator;
-        Track* track;
-        friend class Track;
+        int m_id;
+        
+        int m_noteamount_in_track, m_noteamount_in_relocator;
+        Track* m_track;
+        
     public:
         
         void rememberNote(Note& n);
         void rememberNote(Note* n);
         ~NoteRelocator();
         
-        //std::vector<NoteInfo> notes;
         ptr_vector<Note, REF> notes;
         void setParent(Track* t);
         void prepareToRelocate();
-        Note* getNextNote(); // returns one note at a time, and NULL when all of them where given
+        
+        /** returns one note at a time, and NULL when all of them where given */
+        Note* getNextNote(); 
     };
     
-    //class ControlEventInfo { public: int value, control, tick; };
     class ControlEventRelocator
     {
-        int id, amount_in_track, amount_in_relocator;
-        Track* track;
-        friend class Track;
+        int m_id;
+        int m_amount_in_track, m_amount_in_relocator;
+        Track* m_track;
+        Track::TrackVisitor* m_visitor;
+        
     public:
         ~ControlEventRelocator();
         
@@ -76,9 +84,11 @@ namespace AriaMaestosa
         
         ptr_vector<ControllerEvent, REF> events;
         
-        void setParent(Track* t);
+        void setParent(Track* t, Track::TrackVisitor* visitor);
         void prepareToRelocate();
-        ControllerEvent* getNextControlEvent(); // returns one note at a time, and NULL when all of them where given
+        
+        /** returns one note at a time, and NULL when all of them where given */
+        ControllerEvent* getNextControlEvent(); 
     };
     
     /**
@@ -102,7 +112,6 @@ namespace AriaMaestosa
          */
         class EditAction
         {
-            friend class AriaMaestosa::Track;
             wxString m_name;
 
         public:
@@ -122,15 +131,18 @@ namespace AriaMaestosa
         class SingleTrackAction : public EditAction
         {
         protected:
-            Track* track;
+            Track* m_track;
+            OwnerPtr<Track::TrackVisitor> m_visitor;
+            
         public:
+            
             SingleTrackAction(wxString name);
             virtual ~SingleTrackAction() {}
 
             virtual void perform() = 0;
             virtual void undo() = 0;
             
-            void setParentTrack(Track* parent);
+            void setParentTrack(Track* parent, Track::TrackVisitor* visitor);
         };
         
         /**
@@ -139,15 +151,18 @@ namespace AriaMaestosa
         class MultiTrackAction : public EditAction
         {
         protected:
-            Sequence* sequence;
+            Sequence* m_sequence;
+            OwnerPtr<SequenceVisitor> m_visitor;
+
         public:
+            
             MultiTrackAction(wxString name);
             virtual ~MultiTrackAction(){}
             
             virtual void perform() = 0;
             virtual void undo() = 0;
 
-            void setParentSequence(Sequence* parent);
+            void setParentSequence(Sequence* parent, SequenceVisitor* visitor);
         };
         
     }

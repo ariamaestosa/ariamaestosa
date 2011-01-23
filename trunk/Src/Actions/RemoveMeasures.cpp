@@ -57,7 +57,7 @@ RemoveMeasures::RemovedTrackPart::~RemovedTrackPart()
 void RemoveMeasures::undo()
 {
     Action::InsertEmptyMeasures opposite_action(m_from_measure, (m_to_measure - m_from_measure));
-    opposite_action.setParentSequence( sequence );
+    opposite_action.setParentSequence( m_sequence, m_visitor->clone() );
     opposite_action.perform();
     
     const int rmtrackamount = removedTrackParts.size();
@@ -88,13 +88,13 @@ void RemoveMeasures::undo()
     const int s_amount = removedTempoEvents.size();
     for (int n=0; n<s_amount; n++)
     {
-        sequence->addTempoEvent( removedTempoEvents.get(n) );
+        m_sequence->addTempoEvent( removedTempoEvents.get(n) );
     }
     // we will be using the events again, make sure it doesn't delete them
     removedTempoEvents.clearWithoutDeleting();
     
     // add removed time sig events again
-    MeasureData* md = sequence->getMeasureData();
+    MeasureData* md = m_sequence->getMeasureData();
     const int t_amount = timeSigChangesBackup.size();
     
     {
@@ -117,9 +117,9 @@ void RemoveMeasures::undo()
 void RemoveMeasures::perform()
 {
     
-    ASSERT(sequence != NULL);
+    ASSERT(m_sequence != NULL);
     
-    MeasureData* md = sequence->getMeasureData();
+    MeasureData* md = m_sequence->getMeasureData();
     
     // find the range of ticks that need to be removed (convert measure IDs to midi ticks)
     const int fromTick = md->firstTickInMeasure(m_from_measure) - 1;
@@ -129,20 +129,23 @@ void RemoveMeasures::perform()
     // after the area that is removed.
     const int amountInTicks = toTick - fromTick - 1;
     
-    const int trackAmount = sequence->getTrackAmount();
+    const int trackAmount = m_sequence->getTrackAmount();
     for (int t=0; t<trackAmount; t++)
     {
         RemovedTrackPart* removedBits = new RemovedTrackPart();
         removedTrackParts.push_back( removedBits );
         
-        Track* track = sequence->getTrack(t);
+        Track* track = m_sequence->getTrack(t);
         removedBits->track = track;
         
+        OwnerPtr<Track::TrackVisitor> tvisitor(m_visitor->getNewTrackVisitor(t));
+        ptr_vector<Note>& notes = tvisitor->getNotesVector();
+        
         // ------------------------ erase/move notes ------------------------
-        const int amount_n = track->m_notes.size();
+        const int amount_n = notes.size();
         for (int n=0; n<amount_n; n++)
         {
-            Note* note = track->m_notes.get(n);
+            Note* note = notes.get(n);
             
             // note is an area that is removed. remove it.
             if (note->getTick() > fromTick and note->getTick() < toTick)
@@ -151,7 +154,7 @@ void RemoveMeasures::perform()
                 track->markNoteToBeRemoved(n);
             }
             // note is in after the removed area. move it back by necessary amound
-            else if (removedBits->track->m_notes[n].getTick() >= toTick)
+            else if (notes[n].getTick() >= toTick)
             {
                 note->setTick( note->getTick() - amountInTicks);
                 note->setEndTick( note->getEndTick() - amountInTicks);
@@ -160,22 +163,25 @@ void RemoveMeasures::perform()
         track->removeMarkedNotes();
         
         // ------------------------ erase/move control events ------------------------
-        const int c_amount = track->m_control_events.size();
+        
+        ptr_vector<ControllerEvent>& ctrl = tvisitor->getControlEventVector();
+        
+        const int c_amount = ctrl.size();
         for (int n=0; n<c_amount; n++)
         {
             // delete all controller events located in the area to be deleted
-            if (track->m_control_events[n].getTick() > fromTick and track->m_control_events[n].getTick() < toTick)
+            if (ctrl[n].getTick() > fromTick and ctrl[n].getTick() < toTick)
             {
-                removedBits->removedControlEvents.push_back( track->m_control_events.get(n) );
-                track->m_control_events.markToBeRemoved(n);
+                removedBits->removedControlEvents.push_back( ctrl.get(n) );
+                ctrl.markToBeRemoved(n);
             }
             // move all controller events that are after given start tick by the necessary amount
-            else if (track->m_control_events[n].getTick() >= toTick)
+            else if (ctrl[n].getTick() >= toTick)
             {
-                removedBits->track->m_control_events[n].setTick(track->m_control_events[n].getTick() - amountInTicks);
+                ctrl[n].setTick(ctrl[n].getTick() - amountInTicks);
             }
         }
-        track->m_control_events.removeMarked();
+        ctrl.removeMarked();
         track->reorderNoteVector();
         track->reorderNoteOffVector();
         
@@ -183,28 +189,28 @@ void RemoveMeasures::perform()
     
     
     // ------------------------ erase/move tempo events ------------------------
-    const int s_amount = sequence->getTempoEventAmount();
+    const int s_amount = m_sequence->getTempoEventAmount();
 
     if (s_amount > 0)
     {
         for (int n=0; n<s_amount; n++)
         {
-            const int tick = sequence->getTempoEvent(n)->getTick();
+            const int tick = m_sequence->getTempoEvent(n)->getTick();
             
             // event is in deleted area
             if (tick > fromTick and tick < toTick)
             {
-                removedTempoEvents.push_back( sequence->extractTempoEvent(n) );
+                removedTempoEvents.push_back( m_sequence->extractTempoEvent(n) );
             }
             //event is after deleted area
             else if (tick >= toTick)
             {
                 // move it back
-                sequence->setTempoEventTick( n, tick - (toTick - fromTick - 1) );
+                m_sequence->setTempoEventTick( n, tick - (toTick - fromTick - 1) );
             }
         }
         
-        sequence->removeMarkedTempoEvents();
+        m_sequence->removeMarkedTempoEvents();
     }
     
     {

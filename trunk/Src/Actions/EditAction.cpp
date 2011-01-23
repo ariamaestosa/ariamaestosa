@@ -40,9 +40,10 @@ SingleTrackAction::SingleTrackAction(wxString name) : EditAction(name)
 
 // ----------------------------------------------------------------------------------------------------
 
-void SingleTrackAction::setParentTrack(Track* parent)
+void SingleTrackAction::setParentTrack(Track* parent, Track::TrackVisitor* visitor)
 {
-    track = parent;
+    m_track   = parent;
+    m_visitor = visitor;
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -55,9 +56,10 @@ MultiTrackAction::MultiTrackAction(wxString name) : EditAction(name)
 
 // ----------------------------------------------------------------------------------------------------
 
-void MultiTrackAction::setParentSequence(Sequence* parent)
+void MultiTrackAction::setParentSequence(Sequence* parent, SequenceVisitor* visitor)
 {
-    sequence = parent;
+    m_sequence = parent;
+    m_visitor  = visitor;
 }
 
 
@@ -66,26 +68,26 @@ void MultiTrackAction::setParentSequence(Sequence* parent)
 
 void NoteRelocator::setParent(Track* t)
 {
-    track = t;
+    m_track = t;
 }
 
 // ----------------------------------------------------------------------------------------------------
 
 void NoteRelocator::prepareToRelocate()
 {
-    id = 0;
-    noteamount_in_track = track->m_notes.size();
-    noteamount_in_relocator = notes.size();
+    m_id                      = 0;
+    m_noteamount_in_track     = m_track->getNoteAmount();
+    m_noteamount_in_relocator = notes.size();
 }
 
 // ----------------------------------------------------------------------------------------------------
 
 Note* NoteRelocator::getNextNote()
 {
-    if (id >= noteamount_in_relocator) return NULL;
+    if (m_id >= m_noteamount_in_relocator) return NULL;
     
-    id++;
-    return notes.get(id-1);
+    m_id++;
+    return notes.get(m_id - 1);
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -112,28 +114,29 @@ NoteRelocator::~NoteRelocator()
 // ----------------------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------
 
-void ControlEventRelocator::setParent(Track* t)
+void ControlEventRelocator::setParent(Track* t, Track::TrackVisitor* visitor)
 {
-    track = t;
+    m_track   = t;
+    m_visitor = visitor;
 }
 
 // ----------------------------------------------------------------------------------------------------
 
 void ControlEventRelocator::prepareToRelocate()
 {
-    id = 0;
-    amount_in_track = track->m_control_events.size();
-    amount_in_relocator = events.size();
+    m_id                  = 0;
+    m_amount_in_track     = m_visitor->getControlEventVector().size();
+    m_amount_in_relocator = events.size();
 }
 
 // ----------------------------------------------------------------------------------------------------
 
 ControllerEvent* ControlEventRelocator::getNextControlEvent()
 {
-    if (id >= amount_in_relocator) return NULL;
+    if (m_id >= m_amount_in_relocator) return NULL;
     
-    id++;
-    return events.get(id-1);
+    m_id++;
+    return events.get(m_id - 1);
 }
 
 // ----------------------------------------------------------------------------------------------------

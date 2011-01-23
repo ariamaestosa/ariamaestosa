@@ -49,7 +49,7 @@ InsertEmptyMeasures::~InsertEmptyMeasures()
 void InsertEmptyMeasures::undo()
 {
     Action::RemoveMeasures opposite_action( m_measure_ID, m_measure_ID + m_amount );
-    opposite_action.setParentSequence( sequence );
+    opposite_action.setParentSequence( m_sequence, m_visitor->clone() );
     opposite_action.perform();
     //undo_obj.restoreState(track);
 }
@@ -58,9 +58,9 @@ void InsertEmptyMeasures::undo()
 
 void InsertEmptyMeasures::perform()
 {
-    ASSERT(sequence != NULL);
+    ASSERT(m_sequence != NULL);
     
-    MeasureData* md = sequence->getMeasureData();
+    MeasureData* md = m_sequence->getMeasureData();
 
     // convert measures into midi ticks
     const int amountInTicks = m_amount * md->measureLengthInTicks(m_measure_ID);
@@ -72,13 +72,13 @@ void InsertEmptyMeasures::perform()
         tr->setMeasureAmount( md->getMeasureAmount() + m_amount );
     
         // move all notes that are after given start tick by the necessary amount
-        const int trackAmount = sequence->getTrackAmount();
+        const int trackAmount = m_sequence->getTrackAmount();
         for (int t=0; t<trackAmount; t++)
         {
-            Track* track = sequence->getTrack(t);
+            Track* track = m_sequence->getTrack(t);
             
             // ----------------- move note events -----------------
-            const int noteAmount = track->m_notes.size();
+            const int noteAmount = track->getNoteAmount();
             for (int n=0; n<noteAmount; n++)
             {
                 Note* note = track->getNote(n);
@@ -89,12 +89,16 @@ void InsertEmptyMeasures::perform()
                 }
             }
             // ----------------- move control events -----------------
-            const int controlAmount = track->m_control_events.size();
+            
+            OwnerPtr<Track::TrackVisitor> tvisitor(m_visitor->getNewTrackVisitor(t));
+            ptr_vector<ControllerEvent>& ctrl = tvisitor->getControlEventVector();
+            
+            const int controlAmount = ctrl.size();
             for (int n=0; n<controlAmount; n++)
             {
-                if (track->m_control_events[n].getTick() > afterTick)
+                if (ctrl[n].getTick() > afterTick)
                 {
-                    track->m_control_events[n].setTick( track->m_control_events[n].getTick() + amountInTicks );
+                    ctrl[n].setTick( ctrl[n].getTick() + amountInTicks );
                 }
             }
             
@@ -103,18 +107,18 @@ void InsertEmptyMeasures::perform()
         }
         
         // ----------------- move tempo events -----------------
-        const int tempo_event_amount = sequence->getTempoEventAmount();
+        const int tempo_event_amount = m_sequence->getTempoEventAmount();
         if (tempo_event_amount>0)
         {
             //const int first_tick = getMeasureData()->firstTickInMeasure(measureID+1) - 1;
             //const int amountInTicks = amount * getMeasureData()->measureLengthInTicks(measureID+1);
             for (int n=0; n<tempo_event_amount; n++)
             {
-                const int tick = sequence->getTempoEvent(n)->getTick();
+                const int tick = m_sequence->getTempoEvent(n)->getTick();
                 if (tick > afterTick)
                 {
                     //std::cout << "starting at " << seq->tempoEvents[n].getTick() << std::endl;
-                    sequence->setTempoEventTick(n, tick + amountInTicks);
+                    m_sequence->setTempoEventTick(n, tick + amountInTicks);
                 }
             }
         }
