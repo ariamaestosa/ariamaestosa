@@ -41,7 +41,7 @@ void RemoveOverlapping::undo()
     const int noteAmount = removedNotes.size();
     for (int n=0; n<noteAmount; n++)
     {
-        track->addNote( removedNotes.get(n), false );
+        m_track->addNote( removedNotes.get(n), false );
     }
     // we will be using the notes again, make sure it doesn't delete them
     removedNotes.clearWithoutDeleting();
@@ -49,11 +49,11 @@ void RemoveOverlapping::undo()
 
 void RemoveOverlapping::perform()
 {
-    ASSERT(track != NULL);
+    ASSERT(m_track != NULL);
     wxBeginBusyCursor();
     
-    //const int noteOffAmount = track->m_note_off.size();
-    const int noteAmount = track->m_notes.size();
+    ptr_vector<Note>& notes = m_visitor->getNotesVector();
+    const int noteAmount = notes.size();
     
     // compare all notes to see if they match
     for (int n1=0; n1<noteAmount; n1++)
@@ -63,24 +63,24 @@ void RemoveOverlapping::perform()
         {
             
             if (n1 == n2) continue; // don't compare a note with itself
-            if (track->m_notes.isMarked(n1)) continue; // skip notes already removed
-            if (track->m_notes.isMarked(n2)) continue; // skip notes already removed
+            if (notes.isMarked(n1)) continue; // skip notes already removed
+            if (notes.isMarked(n2)) continue; // skip notes already removed
             
             // both notes have the same pitch, they are candidates for overlapping
-            if (track->m_notes[n1].getPitchID() == track->m_notes[n2].getPitchID())
+            if (notes[n1].getPitchID() == notes[n2].getPitchID())
             {
-                const int from = std::min(track->m_notes[n1].getTick(), track->m_notes[n2].getTick());
-                const int to = std::max(track->m_notes[n1].getEndTick(), track->m_notes[n2].getEndTick());
+                const int from = std::min(notes[n1].getTick(), notes[n2].getTick());
+                const int to = std::max(notes[n1].getEndTick(), notes[n2].getEndTick());
                 // total length of both notes
-                const int length =  (track->m_notes[n1].getEndTick() - track->m_notes[n1].getTick()) +
-                (track->m_notes[n2].getEndTick() - track->m_notes[n2].getTick());
+                const int length =  (notes[n1].getEndTick() - notes[n1].getTick()) +
+                (notes[n2].getEndTick() - notes[n2].getTick());
                 
                 // if difference between beginning of first note and ending of second note is smaller than their lengths, then the notes overlap
                 // if they both begin at the same tick they also overlap
                 if ( (to - from < length) or (to - from == 0) )
                 {
-                    removedNotes.push_back(&track->m_notes[n1]);
-                    track->markNoteToBeRemoved(n1);
+                    removedNotes.push_back(&notes[n1]);
+                    m_track->markNoteToBeRemoved(n1);
                 }
                 
                 
@@ -90,7 +90,7 @@ void RemoveOverlapping::perform()
         
     }//next n1
     
-    track->removeMarkedNotes();
+    m_track->removeMarkedNotes();
     wxEndBusyCursor();
     
     Display::render();

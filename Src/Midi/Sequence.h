@@ -27,7 +27,7 @@ namespace irr { namespace io {
     typedef IIrrXMLReader<char, IXMLBase> IrrXMLReader; } }
 
 #include "AriaCore.h"
-//#include "Editors/RelativeXCoord.h"
+#include "Actions/EditAction.h"
 #include "Midi/Track.h"
 #include "ptr_vector.h"
 #include "Renderers/RenderAPI.h"
@@ -87,6 +87,8 @@ namespace AriaMaestosa
         virtual void onTrackAdded(Track* t) = 0;
         virtual void onTrackRemoved(Track* t) = 0;
     };
+
+    class SequenceVisitor;
     
     /**
       * @brief This is a midi Sequence, or a "file".
@@ -98,7 +100,8 @@ namespace AriaMaestosa
       */
     class Sequence
     {
-
+        friend class SequenceVisitor;
+        
         /**
          * @brief adds a tempo event.
          * @note  used during importing - then we know events are in time order
@@ -393,6 +396,33 @@ namespace AriaMaestosa
         /** Called when reading \<sequence\> ... \</sequence\> in .aria file */
         bool readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq);
 
+    };
+    
+    /** Class used to selectively grant access to the internal data */
+    class SequenceVisitor
+    {
+        friend class Sequence;
+        
+        Sequence* m_sequence;
+        SequenceVisitor(Sequence* parent)
+        {
+            m_sequence = parent;
+        }
+    public:
+        
+
+        Track::TrackVisitor* getNewTrackVisitor(const int trackId)
+        {
+            return new Track::TrackVisitor(m_sequence->getTrack(trackId));
+        }
+        
+        
+        SequenceVisitor* clone()
+        {
+            return new SequenceVisitor(m_sequence);
+        }
+        
+        LEAK_CHECK();
     };
 
 }

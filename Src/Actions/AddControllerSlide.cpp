@@ -46,7 +46,7 @@ AddControllerSlide::~AddControllerSlide()
 void AddControllerSlide::undo()
 {
     ControllerEvent* current_event;
-    relocator.setParent(track);
+    relocator.setParent(m_track, m_visitor);
     relocator.prepareToRelocate();
     
     //std::cout << "will undo control slide" << std::endl;
@@ -54,13 +54,15 @@ void AddControllerSlide::undo()
     
     if (m_controller != 201 /*tempo*/)
     {
+        ptr_vector<ControllerEvent>& control_events = m_visitor->getControlEventVector();
+        
         while ((current_event = relocator.getNextControlEvent()) and current_event != NULL)
         {
-            for (int n=0; n<track->m_control_events.size(); n++)
+            for (int n=0; n<control_events.size(); n++)
             {
-                if (track->m_control_events.get(n) == current_event)
+                if (control_events.get(n) == current_event)
                 {
-                    track->m_control_events.erase(n);
+                    control_events.erase(n);
                     break;
                 }//endif
             }//next
@@ -71,7 +73,7 @@ void AddControllerSlide::undo()
         while ((current_event = relocator.getNextControlEvent()) and current_event != NULL)
         {
             // remove tempo events
-            Sequence* sequence = track->getSequence();
+            Sequence* sequence = m_track->getSequence();
             for (int n=0; n<sequence->getTempoEventAmount(); n++)
             {
                 if (sequence->getTempoEvent(n) == current_event)
@@ -91,7 +93,7 @@ void AddControllerSlide::undo()
         for (int n=0; n<controlAmount; n++)
         {
             // FIXME - will iterate through all events everytime... could have better performances
-            track->addControlEvent( removedControlEvents.get(n) );
+            m_track->addControlEvent( removedControlEvents.get(n) );
         }
         // we will be using these events again, make sure it doesn't delete them
         removedControlEvents.clearWithoutDeleting();
@@ -129,9 +131,9 @@ void AddControllerSlide::perform()
     ptr_vector<ControllerEvent>* vector;
     
     // tempo events
-    if (m_controller == 201) vector = &track->getSequence()->m_tempo_events;
+    if (m_controller == 201) vector = &m_track->getSequence()->m_tempo_events;
     // controller and pitch bend events
-    else vector = &track->m_control_events;
+    else vector = &m_visitor->getControlEventVector();
     
     /*
      std::cout << "************************************************" << std::endl;
@@ -267,12 +269,11 @@ void AddControllerSlide::perform()
     
 #ifdef _MORE_DEBUG_CHECKS
     std::cout << "checking order" << std::endl;
-    track->checkControlEventsOrder();
+    m_track->checkControlEventsOrder();
 #endif
     
     // FIXME - until i'm sure this action is bug-free i'll leave this check after. Should be fixed and removed though.
-    track->reorderControlVector();
-    
+    m_track->reorderControlVector();
 }
 
 

@@ -39,11 +39,12 @@ ScaleSong::~ScaleSong()
 
 void ScaleSong::perform()
 {
-    const int trackAmount = sequence->getTrackAmount();
+    const int trackAmount = m_sequence->getTrackAmount();
     for (int t=0; t<trackAmount; t++)
     {
         Action::ScaleTrack* action = new Action::ScaleTrack(m_factor, m_relative_to, false);
-        action->setParentTrack(sequence->getTrack(t));
+        
+        action->setParentTrack(m_sequence->getTrack(t), m_visitor->getNewTrackVisitor(t));
         action->perform();
         actions.push_back(action);
     }

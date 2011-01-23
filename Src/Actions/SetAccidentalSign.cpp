@@ -47,7 +47,7 @@ SetAccidentalSign::~SetAccidentalSign()
 void SetAccidentalSign::undo()
 {
     Note* current_note;
-    relocator.setParent(track);
+    relocator.setParent(m_track);
     relocator.prepareToRelocate();
 
     int n = 0;
@@ -66,20 +66,22 @@ void SetAccidentalSign::perform()
 
     bool played = false;
 
-    const int noteAmount=track->getNoteAmount();
+    ptr_vector<Note>& notes = m_visitor->getNotesVector();
+    
+    const int noteAmount = notes.size();
     for (int n=0; n<noteAmount; n++)
     {
-        if (not track->isNoteSelected(n)) continue;
+        if (not notes[n].isSelected()) continue;
 
-        m_original_signs.push_back( track->m_notes[n].getPreferredAccidentalSign() );
-        m_pitch.push_back( track->m_notes[n].getPitchID() );
+        m_original_signs.push_back( notes[n].getPreferredAccidentalSign() );
+        m_pitch.push_back( notes[n].getPitchID() );
 
-        track->getGraphics()->getScoreEditor()->setNoteSign(m_sign, n);
-        relocator.rememberNote( track->m_notes[n] );
+        m_track->getGraphics()->getScoreEditor()->setNoteSign(m_sign, n);
+        relocator.rememberNote( notes[n] );
 
         if (not played)
         {
-            track->m_notes[n].play(true);
+            notes[n].play(true);
             played = true;
         }
     }//next

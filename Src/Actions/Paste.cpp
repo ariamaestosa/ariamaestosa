@@ -55,17 +55,17 @@ Paste::~Paste()
 void Paste::undo()
 {
     Note* current_note;
-    relocator.setParent(track);
+    relocator.setParent(m_track);
     relocator.prepareToRelocate();
 
     while ((current_note = relocator.getNextNote()) and current_note != NULL)
     {
-        const int noteAmount = track->getNoteAmount();
+        const int noteAmount = m_track->getNoteAmount();
         for (int n=0; n<noteAmount; n++)
         {
-            if (track->getNote(n) == current_note)
+            if (m_track->getNote(n) == current_note)
             {
-                track->removeNote(n);
+                m_track->removeNote(n);
                 break;
             }//endif
         }//next
@@ -76,19 +76,19 @@ void Paste::undo()
 
 void Paste::perform()
 {
-    ASSERT(track != NULL);
+    ASSERT(m_track != NULL);
 
-    if (track->getNotationType() == CONTROLLER)
+    if (m_track->getNotationType() == CONTROLLER)
     {
         wxBell();
         return; // no copy/paste in controller mode
     }
     if (Clipboard::getSize() == 0) return; // nothing copied
 
-    GraphicalTrack* gtrack = track->getGraphics();
+    GraphicalTrack* gtrack = m_track->getGraphics();
     
     const int copiedBeatLength = Clipboard::getBeatLength();
-    const int seqBeatLength = track->getSequence()->ticksPerBeat();
+    const int seqBeatLength = m_track->getSequence()->ticksPerBeat();
     float scalePastedNotes = 1;
     bool needToScalePastedNotes = false;
 
@@ -107,7 +107,9 @@ void Paste::perform()
     if (not m_at_mouse) beginning=0;
 
     // unselected previously selected track->m_notes
-    for (int n=0; n<track->m_notes.size(); n++) track->m_notes[n].setSelected(false);
+    ptr_vector<Note>& notes = m_visitor->getNotesVector();
+    const int count = notes.size();
+    for (int n=0; n<count; n++) notes[n].setSelected(false);
 
     // find where track->m_notes begin if necessary
     if (m_at_mouse)
@@ -134,7 +136,7 @@ void Paste::perform()
 
         RelativeXCoord mx(trackMouseLoc_x, WINDOW, gtrack->getSequence());
 
-        shift = track->snapMidiTickToGrid( mx.getRelativeTo(MIDI) );
+        shift = m_track->snapMidiTickToGrid( mx.getRelativeTo(MIDI) );
 
     }
     else if (not m_at_mouse and
@@ -149,7 +151,7 @@ void Paste::perform()
          * pasting method that will take care of finding track->m_notes an appropriate location to be
          * pasted onto.
          */
-        shift = track->getSequence()->getNoteShiftWhenNoScrolling();
+        shift = m_track->getSequence()->getNoteShiftWhenNoScrolling();
 
         // find if first note will be visible in the location just calculated,
         // otherwise just go to regular pasting code, it will paste them within visible measures
@@ -178,7 +180,7 @@ regular_paste: // FIXME - find better way than goto
          * This part will change to value of 'shift' variable to make sure pasted notes will be visible
          */
 
-        Sequence* sequence = track->getSequence();
+        Sequence* sequence = m_track->getSequence();
         MeasureData* md = sequence->getMeasureData();
         
         // if not "paste at mouse", find first visible measure
@@ -186,7 +188,7 @@ regular_paste: // FIXME - find better way than goto
         if (measure < 0) measure = 0;
         const int lastMeasureStart = md->firstTickInMeasure( measure );
         
-        shift = track->snapMidiTickToGrid( lastMeasureStart );
+        shift = m_track->snapMidiTickToGrid( lastMeasureStart );
 
         // find if all track->m_notes will be visible in the location just calculated,
         // otherwise move them one more measure ahead (if measure is half-visible because of scrolling)
@@ -219,20 +221,20 @@ regular_paste: // FIXME - find better way than goto
             gtrack->getCurrentEditor()->moveNote(*tmp, -beginning , 0);
         }
 
-        tmp->setParent( track );
+        tmp->setParent( m_track );
         tmp->setSelected(true);
 
-        if (track->getNotationType() == GUITAR)
+        if (m_track->getNotationType() == GUITAR)
         {
             tmp->checkIfStringAndFretMatchNote(true);
         }
 
-        track->addNote( tmp, false );
+        m_track->addNote( tmp, false );
         relocator.rememberNote( *tmp );
     }//next
 
-    track->reorderNoteVector();
-    track->reorderNoteOffVector();
+    m_track->reorderNoteVector();
+    m_track->reorderNoteOffVector();
 }
 
 // -------------------------------------------------------------------------------------------------------------

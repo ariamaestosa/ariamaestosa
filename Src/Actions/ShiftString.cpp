@@ -41,7 +41,7 @@ ShiftString::~ShiftString()
 void ShiftString::undo()
 {
     Note* current_note;
-    m_relocator.setParent(track);
+    m_relocator.setParent(m_track);
     m_relocator.prepareToRelocate();
     
     int n = 0;
@@ -56,34 +56,36 @@ void ShiftString::undo()
 
 void ShiftString::perform()
 {
-    ASSERT(track != NULL);
+    ASSERT(m_track != NULL);
     
     // only accept to do this in guitar mode
-    if (track->getNotationType() != GUITAR) return;
+    if (m_track->getNotationType() != GUITAR) return;
     
     // not supported in this function (mostly because not needed, but could logically be implmented)
     ASSERT(m_note_id != ALL_NOTES);
+    
+    ptr_vector<Note>& notes = m_visitor->getNotesVector();
     
     if (m_note_id == SELECTED_NOTES)
     {
         
         bool played=false;
-        const int amount_n = track->m_notes.size();
+        const int amount_n = notes.size();
         
         for (int n=0; n<amount_n; n++)
         {
-            if (not track->m_notes[n].isSelected()) continue;
+            if (not notes[n].isSelected()) continue;
             
-            m_frets.push_back( track->m_notes[n].getFret() );
-            m_strings.push_back( track->m_notes[n].getString() );
+            m_frets.push_back( notes[n].getFret() );
+            m_strings.push_back( notes[n].getString() );
             
-            track->m_notes[n].shiftString(m_amount);
+            notes[n].shiftString(m_amount);
             
-            m_relocator.rememberNote( track->m_notes[n] );
+            m_relocator.rememberNote( notes[n] );
             
             if (not played)
             {
-                track->m_notes[n].play(false);
+                notes[n].play(false);
                 played = true;
             }
         }//next
@@ -92,13 +94,13 @@ void ShiftString::perform()
     else
     {
         ASSERT_E(m_note_id,>=,0);
-        ASSERT_E(m_note_id,<,track->m_notes.size());
+        ASSERT_E(m_note_id,<,notes.size());
         
-        m_frets.push_back( track->m_notes[m_note_id].getFret() );
-        m_strings.push_back( track->m_notes[m_note_id].getString() );
-        track->m_notes[m_note_id].shiftString(m_amount);
-        m_relocator.rememberNote( track->m_notes[m_note_id] );
-        track->m_notes[m_note_id].play(false);
+        m_frets.push_back( notes[m_note_id].getFret() );
+        m_strings.push_back( notes[m_note_id].getString() );
+        notes[m_note_id].shiftString(m_amount);
+        m_relocator.rememberNote( notes[m_note_id] );
+        notes[m_note_id].play(false);
     }
     
 }

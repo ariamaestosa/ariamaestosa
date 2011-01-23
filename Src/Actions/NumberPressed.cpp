@@ -22,6 +22,8 @@
 
 using namespace AriaMaestosa::Action;
 
+// ----------------------------------------------------------------------------------------------------------
+
 NumberPressed::NumberPressed(const int number) :
     //I18N: (undoable) action name
     SingleTrackAction( _("change note fret") )
@@ -29,37 +31,46 @@ NumberPressed::NumberPressed(const int number) :
     m_number = number;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 NumberPressed::~NumberPressed()
 {
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void NumberPressed::undo()
 {
-    relocator.setParent(track);
+    relocator.setParent(m_track);
     relocator.prepareToRelocate();
     Note* note = relocator.getNextNote();
     note->setFret(m_previous_number);
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void NumberPressed::perform()
 {
-    ASSERT(track != NULL);
-
-    if (track->getNotationType() != GUITAR) return;
+    ASSERT(m_track != NULL);
+    ASSERT(m_track->getNotationType() == GUITAR);
+    
+    if (m_track->getNotationType() != GUITAR) return;
 
     bool played = false;
-    const int noteAmount = track->m_notes.size();
+    
+    ptr_vector<Note>& notes = m_visitor->getNotesVector();
+    const int noteAmount = notes.size();
     
     for (int n=0; n<noteAmount; n++)
     {
-        if (not track->m_notes[n].isSelected()) continue;
+        if (not notes[n].isSelected()) continue;
 
-        m_previous_number = track->m_notes[n].getFret();
-        track->m_notes[n].setFret(m_number);
-        relocator.rememberNote( track->m_notes[n] );
+        m_previous_number = notes[n].getFret();
+        notes[n].setFret(m_number);
+        relocator.rememberNote( notes[n] );
         if (not played)
         {
-            track->m_notes[n].play(true);
+            notes[n].play(true);
             played = true;
         }
         return;

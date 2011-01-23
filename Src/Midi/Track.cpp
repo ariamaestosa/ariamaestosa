@@ -119,7 +119,7 @@ Track::~Track()
 
 void Track::action( Action::SingleTrackAction* actionObj)
 {
-    actionObj->setParentTrack(this);
+    actionObj->setParentTrack(this, new TrackVisitor(this));
     m_sequence->addToUndoStack( actionObj );
     actionObj->perform();
 }
@@ -224,7 +224,6 @@ bool Track::addNote(Note* note, bool check_for_overlapping_notes)
 
 // ----------------------------------------------------------------------------------------------------------
 
-// FIXME - find nicer solution than this pointer to an int...
 void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
 {
     ptr_vector<ControllerEvent>* vector;
@@ -1186,7 +1185,7 @@ void Track::onGuitarTuningUpdated(GuitarTuning* tuning, const bool userTriggered
     else
     {
         Action::UpdateGuitarTuning actionObj;
-        actionObj.setParentTrack(this);
+        actionObj.setParentTrack(this, new TrackVisitor(this));
         actionObj.perform();
     }
 }

@@ -36,11 +36,11 @@ UpdateGuitarTuning::~UpdateGuitarTuning()
 
 void UpdateGuitarTuning::undo()
 {
-    GuitarTuning* tuning = track->getGuitarTuning();
+    GuitarTuning* tuning = m_track->getGuitarTuning();
     tuning->tuning = previous_tuning;
     
     Note* current_note;
-    relocator.setParent(track);
+    relocator.setParent(m_track);
     relocator.prepareToRelocate();
     
     {
@@ -52,28 +52,30 @@ void UpdateGuitarTuning::undo()
         }
     }
     
-    const int amount_n = track->m_notes.size();
+    ptr_vector<Note>& notes = m_visitor->getNotesVector();
+    const int amount_n = notes.size();
     for (int n=0; n<amount_n; n++)
     {
-        track->m_notes[n].checkIfStringAndFretMatchNote(true);
+        notes[n].checkIfStringAndFretMatchNote(true);
     }//next
 }
 
 void UpdateGuitarTuning::perform()
 {
-    ASSERT(track != NULL);
+    ASSERT(m_track != NULL);
     
-    previous_tuning = track->getGuitarTuning()->previous_tuning;
+    previous_tuning = m_track->getGuitarTuning()->previous_tuning;
     
-    const int amount_n = track->m_notes.size();
+    ptr_vector<Note>& notes = m_visitor->getNotesVector();
+    const int amount_n = notes.size();
     for (int n=0; n<amount_n; n++)
     {
-        frets.push_back( track->m_notes[n].getFret() );
-        strings.push_back( track->m_notes[n].getString() );
+        frets.push_back( notes[n].getFret() );
+        strings.push_back( notes[n].getString() );
         
-        track->m_notes[n].checkIfStringAndFretMatchNote(true);
+        notes[n].checkIfStringAndFretMatchNote(true);
         
-        relocator.rememberNote( track->m_notes[n] );
+        relocator.rememberNote( notes[n] );
     }//next
     
 }
