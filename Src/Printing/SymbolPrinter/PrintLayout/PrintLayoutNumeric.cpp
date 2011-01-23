@@ -140,31 +140,14 @@ void PrintLayoutNumeric::setLineCoordsAndDivideItsSpace(LayoutLine& line, const 
     if (heightAvailableForThisLine < 0.0001) return; // empty line. TODO: draw empty bars to show there's something?
     
     const int levelHeight = std::min(int(heightAvailableForThisLine/line.getCalculatedHeight()), MAX_LEVEL_HEIGHT);
-    //std::cout << "Level height within line : " << levelHeight << "\n";
-    
-    //FIXME; don't hardcode 70 here, have a formal minimal value
-    //ASSERT_E((heightAvailableForThisLine - margin_below - margin_above)/line.calculateHeight(), >=, 70);
-    
+
     // ---- Determine tracks positions and sizes
-    
-    //int nonEmptyTrackAmount = 0; // empty tracks must not be counted
-    //for (int n=0; n<trackAmount; n++)
-    //{        
-    //    if (not line.getLineTrackRef(n).empty()) nonEmptyTrackAmount++;
-    //}
-        
-    // space between individual tracks
-    //const int space_between_tracks = (nonEmptyTrackAmount > 1 ? SPACE_BETWEEN_TRACKS : 0);
-    
     for (int n=0; n<trackAmount; n++)
     {               
         // skip empty tracks
         if (line.getLineTrackRef(n).empty()) continue;
         
-        // determine how much vertical space is allocated for this track
-        //const float track_height = heightAvailableForThisLine * line.m_height_percent[n]/100.0f;
-        //const int trackLevelHeight = line.getLineTrackRef(n).getLevelHeight();
-        
+
         const int levelFrom = line.getLineTrackRef(n).getLevelFrom();
         const int levelTo   = line.getLineTrackRef(n).getLevelTo();
 

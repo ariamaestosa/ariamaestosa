@@ -36,21 +36,21 @@ int LineTrackRef::getLastNote() const
     const int elements = m_parent->getLayoutElementCount();
     const int track_amount = m_parent->getTrackAmount();
     
+    // start searching from last measure in this line
     for (int el=elements-1; el>=0; el--)
-    { // start searching from last measure in this line
-        
+    {
         const PrintLayoutMeasure& current_meas = m_parent->getMeasureForElement(el);
+        
+        if (current_meas == NULL_MEASURE) continue;
+        
         for (int i=0; i<track_amount; i++)
         {
-            if (current_meas.getTrackRefAmount() > 0) // FIXME: find why it's sometimes 0
+            const MeasureTrackReference& ref = current_meas.getTrackRef(i);
+            const GraphicalTrack* gtrack = ref.getConstTrack();
+            
+            if (gtrack == m_track and ref.getLastNote() != -1)
             {
-                const MeasureTrackReference& ref = current_meas.getTrackRef(i);
-                const GraphicalTrack* gtrack = ref.getConstTrack();
-                
-                if (gtrack == m_track and ref.getLastNote() != -1)
-                {
-                    return ref.getLastNote();
-                }
+                return ref.getLastNote();
             }
         }
         
@@ -69,19 +69,19 @@ int LineTrackRef::getFirstNote() const
     const int elements = m_parent->getLayoutElementCount();
     
     for (int el=0; el<elements; el++)
-    { // start searching from first measure in this line
+    { 
+        // start searching from first measure in this line
         const PrintLayoutMeasure& current_meas = m_parent->getMeasureForElement(el);
         for (int i=0; i<track_amount; i++)
         {
-            if (current_meas.getTrackRefAmount() > 0) // FIXME - find why it's sometimes empty
+            if (current_meas == NULL_MEASURE) continue;
+            
+            const MeasureTrackReference& ref = current_meas.getTrackRef(i);
+            const GraphicalTrack* gtrack = ref.getConstTrack();
+            
+            if (gtrack == m_track and ref.getFirstNote() != -1)
             {
-                const MeasureTrackReference& ref = current_meas.getTrackRef(i);
-                const GraphicalTrack* gtrack = ref.getConstTrack();
-                
-                if (gtrack == m_track and ref.getFirstNote() != -1)
-                {
-                    return ref.getFirstNote();
-                }
+                return ref.getFirstNote();
             }
         }
     }

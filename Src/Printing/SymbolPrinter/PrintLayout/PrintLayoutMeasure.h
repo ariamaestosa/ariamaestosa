@@ -108,7 +108,11 @@ namespace AriaMaestosa
           */
         bool isEmpty          () const { return not m_contains_something; }
         
-        int  getTrackRefAmount() const { return m_track_refs.size();      }
+        int  getTrackRefAmount() const
+        {
+            ASSERT(m_track_refs.size() > 0); // FIXME: temporary, remove
+            return m_track_refs.size();
+        }
         
         const MeasureTrackReference& getTrackRef(const int id) const { return m_track_refs[id]; }
         MeasureTrackReference& getWritableTrackRef(const int id) { return m_track_refs[id]; }
