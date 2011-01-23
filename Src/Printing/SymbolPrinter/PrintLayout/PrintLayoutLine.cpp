@@ -62,9 +62,6 @@ int LineTrackRef::getLastNote() const
 
 int LineTrackRef::getFirstNote() const
 {
-    //const int measure = getFirstMeasure();
-    // const int from_tick = getMeasureData()->firstTickInMeasure(measure);
-    
     const int track_amount = m_parent->getTrackAmount();
     const int elements = m_parent->getLayoutElementCount();
     
@@ -100,9 +97,9 @@ int LineTrackRef::getFirstNoteInElement(const int layoutElementID)
 
 int LineTrackRef::getLastNoteInElement(const int layoutElementID)
 {
-    std::cout << "last note in element " << layoutElementID << " of track " << m_track_id << " is "
-        << m_parent->getMeasureForElement(layoutElementID).getTrackRef(m_track_id).getLastNote()
-        << " from measure " << m_parent->getMeasureForElement(layoutElementID).getMeasureID() << std::endl;
+    //std::cout << "last note in element " << layoutElementID << " of track " << m_track_id << " is "
+    //          << m_parent->getMeasureForElement(layoutElementID).getTrackRef(m_track_id).getLastNote()
+    //          << " from measure " << m_parent->getMeasureForElement(layoutElementID).getMeasureID() << std::endl;
     
     return m_parent->getMeasureForElement(layoutElementID).getTrackRef(m_track_id).getLastNote();
 }
@@ -162,9 +159,9 @@ int LayoutLine::getFirstNoteInElement(const int trackID, const int layoutElement
 
 int LayoutLine::getLastNoteInElement(const int trackID, const int layoutElementID) const
 {
-    std::cout << "last note in element " << layoutElementID << " of track " << trackID << " is "
-              << getMeasureForElement(layoutElementID).getTrackRef(trackID).getLastNote()
-              << " from measure " << getMeasureForElement(layoutElementID).getMeasureID() << std::endl;
+    //std::cout << "last note in element " << layoutElementID << " of track " << trackID << " is "
+    //          << getMeasureForElement(layoutElementID).getTrackRef(trackID).getLastNote()
+    //          << " from measure " << getMeasureForElement(layoutElementID).getMeasureID() << std::endl;
     
     return getMeasureForElement(layoutElementID).getTrackRef(trackID).getLastNote();
 }
