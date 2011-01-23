@@ -133,7 +133,7 @@ int MeasureData::measureAtTick(int tick) const
 
         const int answer = (int)( tick / step );
         
-        if (not m_sequence->importing)
+        if (not m_sequence->isImportMode())
         {
             // verify that we're within song bounds. except if importing, since the song length
             // might not have been set yet.
@@ -146,7 +146,7 @@ int MeasureData::measureAtTick(int tick) const
     else
     {
         if (tick < 0) tick = 0;
-        if (not m_sequence->importing)
+        if (not m_sequence->isImportMode())
         {
             // verify that we're within song bounds. except if importing, since the song length
             // might not have been set yet.
@@ -161,7 +161,7 @@ int MeasureData::measureAtTick(int tick) const
         }
 
         // did not find this tick in our current measure set
-        if (m_sequence->importing)
+        if (m_sequence->isImportMode())
         {
             // if we're currently importing, extrapolate beyond the current song end since we
             // might be trying to determine needed song length (FIXME: this should not read the
@@ -328,7 +328,7 @@ int MeasureData::addTimeSigChange(int measure, int num, int denom) // -1 means "
             {
                 // a time sig event already exists at this location
                 // if we're not importing, select it
-                if (not m_sequence->importing)
+                if (not m_sequence->isImportMode())
                 {
                     m_selected_time_sig = n;
                     return n;

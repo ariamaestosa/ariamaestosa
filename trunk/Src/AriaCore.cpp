@@ -64,10 +64,6 @@ namespace AriaMaestosa
             return asInt;
         }
         
-        void setImporting(bool on)
-        {
-            getMainFrame()->getCurrentSequence()->importing = on;
-        }
         TuningPicker* getTuningPicker()
         {
             return getMainFrame()->getTuningPicker();

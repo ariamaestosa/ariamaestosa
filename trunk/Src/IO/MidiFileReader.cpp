@@ -38,8 +38,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
 {
     Sequence* sequence = gseq->getModel();
     
-    // raise import flag
-    sequence->importing = true;
+    OwnerPtr<Sequence::Import> import(sequence->startImport());
 
     // the stream used to read the input file
     jdkmidi::MIDIFileReadStreamFile rs( filepath.mb_str() );
@@ -292,12 +291,12 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                 }
                 else
                 {
-                    sequence->addTempoEvent_import(
-                                                   new ControllerEvent(201,
-                                                                       tick,
-                                                                       127-(int)((tempo-20.0)/380.0*128.0)
-                                                                       )
-                                                   );
+                    import->addTempoEvent(
+                                          new ControllerEvent(201,
+                                                              tick,
+                                                              127 - (int)((tempo - 20.0)/380.0*128.0)
+                                                              )
+                                          );
                     continue;
                 }
                 // ----------------------------------- time key/sig and beat marker -------------------------------------
@@ -564,20 +563,16 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
 
     gseq->setZoom(100);
 
-    if (measureAmount_i < 10) measureAmount_i=10;
+    if (measureAmount_i < 10) measureAmount_i = 10;
 
     {
         ScopedMeasureTransaction tr(md->startTransaction());
         tr->setMeasureAmount( measureAmount_i );
     }
     
-    //gseq->setXScrollInPixels(0);
-    //md->setFirstMeasure(0);
     gseq->setZoom(100);
 
     sequence->clearUndoStack();
-
-    sequence->importing = false;
 
     return true;
 }

@@ -54,7 +54,7 @@ Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener
     beatResolution          = 960;
     currentTrack            = 0;
     m_tempo                 = 120;
-    importing               = false;
+    m_importing               = false;
     m_follow_playback       = Core::getPrefsLongValue("followPlayback") != 0;
     m_playback_listener     = playbackListener;
     m_action_stack_listener = actionStackListener;
@@ -677,7 +677,7 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
 
 bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
 {
-    importing = true;
+    m_importing = true;
     
     const int tc = tracks.size();
     const int count = m_listeners.size();
@@ -915,7 +915,7 @@ over:
     m_measure_data->afterImporting();
     clearUndoStack();
 
-    importing = false;
+    m_importing = false;
     if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
 
     return true;

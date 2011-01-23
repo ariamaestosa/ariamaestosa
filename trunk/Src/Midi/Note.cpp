@@ -355,7 +355,7 @@ bool Note::readFromFile(irr::io::IrrXMLReader* xml)
 
 void Note::play(bool change)
 {
-    if (m_track->getSequence()->importing) return;
+    if (m_track->getSequence()->isImportMode()) return;
 
     const int playSetting = Core::playDuringEdit();
 

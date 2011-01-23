@@ -164,23 +164,24 @@ namespace InsertMeasuresTest
             const int beatLen = m_seq->ticksPerBeat();
             
             // make a factory sequence to work from
-            m_seq->importing = true;
-            for (int n=0; n<16; n++)
             {
-                t->addNote_import(100 + n           /* pitch  */,
-                                  n*beatLen         /* start  */,
-                                  (n+1)*beatLen - 1 /* end    */,
-                                  127               /* volume */, -1);
+                OwnerPtr<Sequence::Import> import(m_seq->startImport());
+                for (int n=0; n<16; n++)
+                {
+                    t->addNote_import(100 + n           /* pitch  */,
+                                      n*beatLen         /* start  */,
+                                      (n+1)*beatLen - 1 /* end    */,
+                                      127               /* volume */, -1);
+                }
+                for (int n=0; n<32; n++)
+                {
+                    t->addControlEvent_import((n*beatLen)/2 /* tick */, 64+n*2 /* value */,  0 /* controller */);
+                }
+                for (int n=0; n<32; n++)
+                {
+                    t->addControlEvent_import((n*beatLen)/2 /* tick */, 64-n*2 /* value */,  1 /* controller */);
+                }
             }
-            for (int n=0; n<32; n++)
-            {
-                t->addControlEvent_import((n*beatLen)/2 /* tick */, 64+n*2 /* value */,  0 /* controller */);
-            }
-            for (int n=0; n<32; n++)
-            {
-                t->addControlEvent_import((n*beatLen)/2 /* tick */, 64-n*2 /* value */,  1 /* controller */);
-            }
-            m_seq->importing = false;
             
             require_e(t->getNoteAmount(), ==, 16, "sanity check"); // sanity check on the way...
             require_e(t->getControllerEventAmount(0), ==, 32, "Controller events OK");

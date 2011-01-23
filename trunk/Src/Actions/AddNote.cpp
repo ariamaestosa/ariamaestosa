@@ -109,12 +109,13 @@ namespace TestAddNote
         Track* t = new Track(seq);
         
         // make a factory sequence to work from
-        seq->importing = true;
-        t->addNote_import(100 /* pitch */, 0   /* start */, 100 /* end */, 127 /* volume */, -1);
-        t->addNote_import(101 /* pitch */, 101 /* start */, 200 /* end */, 127 /* volume */, -1);
-        t->addNote_import(102 /* pitch */, 201 /* start */, 300 /* end */, 127 /* volume */, -1);
-        t->addNote_import(103 /* pitch */, 301 /* start */, 400 /* end */, 127 /* volume */, -1);
-        seq->importing = false;
+        {
+            OwnerPtr<Sequence::Import> import(seq->startImport());
+            t->addNote_import(100 /* pitch */, 0   /* start */, 100 /* end */, 127 /* volume */, -1);
+            t->addNote_import(101 /* pitch */, 101 /* start */, 200 /* end */, 127 /* volume */, -1);
+            t->addNote_import(102 /* pitch */, 201 /* start */, 300 /* end */, 127 /* volume */, -1);
+            t->addNote_import(103 /* pitch */, 301 /* start */, 400 /* end */, 127 /* volume */, -1);
+        }
         require(t->getNoteAmount() == 4, "sanity check"); // sanity check on the way...
         
         seq->addTrack(t);
@@ -176,12 +177,13 @@ namespace TestAddNote
         Track* t = new Track(seq);
 
         // make a factory sequence to work from
-        seq->importing = true;
-        t->addNote_import(100 /* pitch */, 0   /* start */, 100 /* end */, 127 /* volume */, -1);
-        t->addNote_import(101 /* pitch */, 101 /* start */, 200 /* end */, 127 /* volume */, -1);
-        t->addNote_import(102 /* pitch */, 201 /* start */, 300 /* end */, 127 /* volume */, -1);
-        t->addNote_import(103 /* pitch */, 301 /* start */, 400 /* end */, 127 /* volume */, -1);
-        seq->importing = false;
+        {
+            OwnerPtr<Sequence::Import> import(seq->startImport());
+            t->addNote_import(100 /* pitch */, 0   /* start */, 100 /* end */, 127 /* volume */, -1);
+            t->addNote_import(101 /* pitch */, 101 /* start */, 200 /* end */, 127 /* volume */, -1);
+            t->addNote_import(102 /* pitch */, 201 /* start */, 300 /* end */, 127 /* volume */, -1);
+            t->addNote_import(103 /* pitch */, 301 /* start */, 400 /* end */, 127 /* volume */, -1);
+        }
         require(t->getNoteAmount() == 4, "sanity check"); // sanity check on the way...
         
         seq->addTrack(t);
