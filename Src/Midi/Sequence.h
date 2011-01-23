@@ -99,6 +99,13 @@ namespace AriaMaestosa
     class Sequence
     {
 
+        /**
+         * @brief adds a tempo event.
+         * @note  used during importing - then we know events are in time order
+         *        so no time is wasted verifying that
+         */
+        void  addTempoEvent_import( ControllerEvent* evt );
+        
         int m_tempo;
         int beatResolution;
 
@@ -147,16 +154,44 @@ namespace AriaMaestosa
         
         int m_playback_start_tick;
 
+        /** 
+         * set to true when importing - indicates the sequence will have frequent changes and not compute
+         * too much until it's over
+         */
+        bool m_importing;
+        
      public:
+        
+        class Import
+        {
+            friend class Sequence;
+            Sequence* m_parent;
+            
+            Import(Sequence* parent)
+            {
+                m_parent = parent;
+                parent->m_importing = true;
+            }
+            
+        public:
+            
+            ~Import()
+            {
+                m_parent->m_importing = false;
+            }
+            
+            /**
+             * @brief adds a tempo event.
+             * @note  used during importing - then we know events are in time order
+             *        so no time is wasted verifying that
+             */
+            void addTempoEvent( ControllerEvent* evt )
+            {
+                m_parent->addTempoEvent_import(evt);
+            }
+        };
 
         LEAK_CHECK();
-
-        //FIXME: remove read-write public members!
-        /** 
-          * set to true when importing - indicates the sequence will have frequent changes and not compute
-          * too much until it's over
-          */
-        bool importing;
 
         /**
           * @brief Sequence constructor
@@ -283,13 +318,6 @@ namespace AriaMaestosa
             return evt;
         }
         void removeMarkedTempoEvents()        { m_tempo_events.removeMarked();      }
-        
-        /**
-          * @brief adds a tempo event.
-          * @note  used during importing - then we know events are in time order
-          *        so no time is wasted verifying that
-          */
-        void  addTempoEvent_import( ControllerEvent* evt );
 
         void  setChannelManagementType(ChannelManagementType m);
         ChannelManagementType getChannelManagementType() const { return channelManagement; }
@@ -344,6 +372,18 @@ namespace AriaMaestosa
         wxString getSequenceFilename()           { return m_sequence_filename->getValue(); }
         void     setSequenceFilename(wxString a) { m_sequence_filename->setValue(a);       }
         Model<wxString>* getNameModel()          { return m_sequence_filename;             }
+        
+        /**
+          * During importing, there are several differences :
+          * 1) Less checks need to be performed
+          * 2) The GUI is not to be update everytime a note is added, etc.
+          * Therefore, when you import a song, always create a transaction object.
+          * Scope it so it's destroyed when you're done.
+          */
+        Import* startImport() { return new Import(this); }
+        
+        /** @return whether we're currently in import mode (@see Sequence::startImport) */
+        bool isImportMode() const { return m_importing; }
         
         // ---- serialization
         

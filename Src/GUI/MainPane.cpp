@@ -218,7 +218,7 @@ bool MainPane::do_render()
     MainFrame* mf = getMainFrame();
     
     if (not ImageProvider::imagesLoaded())  return false;
-    if (mf->getCurrentSequence()->importing) return false;
+    if (mf->getCurrentSequence()->isImportMode()) return false;
 
     AriaRender::images();
 

@@ -505,7 +505,7 @@ void MeasureBar::mouseDown(int x, int y)
 
         selectTimeSig(id);
         
-        if (not m_gseq->getModel()->importing)
+        if (not m_gseq->getModel()->isImportMode())
         {
             wxPoint pt = wxGetMousePosition();
             showTimeSigPicker(m_gseq, pt.x, pt.y,

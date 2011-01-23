@@ -152,7 +152,7 @@ const GraphicalTrack* Track::getGraphics() const
 bool Track::addNote(Note* note, bool check_for_overlapping_notes)
 {
     // if we're importing, just push it to the end, we know they're in time order
-    if (m_sequence->importing)
+    if (m_sequence->isImportMode())
     {
         m_notes.push_back(note);
         m_note_off.push_back(note); // dont forget to reorder note off vector after importing
@@ -238,7 +238,7 @@ void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
 
     // don't bother checking order if we're importing, we know its in time order and all
     // FIXME - what about 'addControlEvent_import' ??
-    if (m_sequence->importing)
+    if (m_sequence->isImportMode())
     {
         vector->push_back( evt );
         return;
@@ -276,7 +276,7 @@ void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
 
 void Track::addControlEvent_import(const int x, const int value, const int controller)
 {
-    ASSERT(m_sequence->importing); // not to be used when not importing
+    ASSERT(m_sequence->isImportMode()); // not to be used when not importing
     m_control_events.push_back(new ControllerEvent(controller, x, value) );
 }
 
@@ -284,7 +284,7 @@ void Track::addControlEvent_import(const int x, const int value, const int contr
 
 bool Track::addNote_import(const int pitchID, const int startTick, const int endTick, const int volume, const int string)
 {
-    ASSERT(m_sequence->importing); // not to be used when not importing
+    ASSERT(m_sequence->isImportMode()); // not to be used when not importing
     return addNote( new Note(this, pitchID, startTick, endTick, volume, string) );
 }
 
@@ -292,7 +292,7 @@ bool Track::addNote_import(const int pitchID, const int startTick, const int end
 
 void Track::setNoteEnd_import(const int tick, const int noteID)
 {
-    ASSERT(m_sequence->importing); // not to be used when not importing
+    ASSERT(m_sequence->isImportMode()); // not to be used when not importing
     ASSERT(noteID != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
     ASSERT(noteID != SELECTED_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
 
@@ -1003,7 +1003,7 @@ void Track::doSetDrumKit(int i, bool recursive)
     // FIXME: we ignore when importing since the midi importing algorithm will make sure all tracks on
     //        the same channel have the same instrument, and this code would disrupt the importer.
     //        But we should find a nicer way here...
-    if (m_sequence->getChannelManagementType() == CHANNEL_MANUAL and not recursive and not m_sequence->importing)
+    if (m_sequence->getChannelManagementType() == CHANNEL_MANUAL and not recursive and not m_sequence->isImportMode())
     {
 
         const int trackAmount = m_sequence->getTrackAmount();

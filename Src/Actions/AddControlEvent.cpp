@@ -119,13 +119,15 @@ namespace TestAddControlEvent
         
         Track* t = new Track(seq);
         
-        // make a factory sequence to work from
-        seq->importing = true;
-        t->addControlEvent_import(0,   64,  0);
-        t->addControlEvent_import(100, 127, 0);
-        t->addControlEvent_import(200, 64,  0);
-        t->addControlEvent_import(300, 0,   0);
-        seq->importing = false;
+        {
+            // make a factory sequence to work from
+            OwnerPtr<Sequence::Import> import(seq->startImport());
+            t->addControlEvent_import(0,   64,  0);
+            t->addControlEvent_import(100, 127, 0);
+            t->addControlEvent_import(200, 64,  0);
+            t->addControlEvent_import(300, 0,   0);
+        }
+        
         require(t->getControllerEventAmount(0) == 4, "sanity check"); // sanity check on the way...
         
         seq->addTrack(t);
@@ -163,12 +165,14 @@ namespace TestAddControlEvent
         Track* t = new Track(seq);
         
         // make a factory sequence to work from
-        seq->importing = true;
-        t->addControlEvent_import(0,   64,  0);
-        t->addControlEvent_import(100, 127, 0);
-        t->addControlEvent_import(200, 64,  0);
-        t->addControlEvent_import(300, 0,   0);
-        seq->importing = false;
+        {
+            OwnerPtr<Sequence::Import> import(seq->startImport());
+            t->addControlEvent_import(0,   64,  0);
+            t->addControlEvent_import(100, 127, 0);
+            t->addControlEvent_import(200, 64,  0);
+            t->addControlEvent_import(300, 0,   0);
+        }
+        
         require(t->getControllerEventAmount(0) == 4, "sanity check"); // sanity check on the way...
         
         seq->addTrack(t);
@@ -218,12 +222,13 @@ namespace TestAddControlEvent
         Track* t = new Track(seq);
         
         // make a factory sequence to work from
-        seq->importing = true;
-        t->addControlEvent_import(0,   64,  0);
-        t->addControlEvent_import(100, 127, 0);
-        t->addControlEvent_import(200, 64,  0);
-        t->addControlEvent_import(300, 0,   0);
-        seq->importing = false;
+        {
+            OwnerPtr<Sequence::Import> import(seq->startImport());
+            t->addControlEvent_import(0,   64,  0);
+            t->addControlEvent_import(100, 127, 0);
+            t->addControlEvent_import(200, 64,  0);
+            t->addControlEvent_import(300, 0,   0);
+        }
         require(t->getControllerEventAmount(0) == 4, "sanity check"); // sanity check on the way...
         
         seq->addTrack(t);
@@ -273,12 +278,13 @@ namespace TestAddControlEvent
         Track* t = new Track(seq);
         
         // make a factory sequence to work from
-        seq->importing = true;
-        t->addControlEvent_import(0,   64,  0);
-        t->addControlEvent_import(100, 127, 0);
-        t->addControlEvent_import(200, 64,  0);
-        t->addControlEvent_import(300, 0,   0);
-        seq->importing = false;
+        {
+            OwnerPtr<Sequence::Import> import(seq->startImport());
+            t->addControlEvent_import(0,   64,  0);
+            t->addControlEvent_import(100, 127, 0);
+            t->addControlEvent_import(200, 64,  0);
+            t->addControlEvent_import(300, 0,   0);
+        }
         require(t->getControllerEventAmount(0) == 4, "sanity check"); // sanity check on the way...
         
         seq->addTrack(t);
@@ -316,12 +322,13 @@ namespace TestAddControlEvent
         Track* t = new Track(seq);
         
         // make a factory sequence to work from
-        seq->importing = true;
-        t->addControlEvent_import(50,   64,  0);
-        t->addControlEvent_import(100, 127, 0);
-        t->addControlEvent_import(200, 64,  0);
-        t->addControlEvent_import(300, 0,   0);
-        seq->importing = false;
+        {
+            OwnerPtr<Sequence::Import> import(seq->startImport());
+            t->addControlEvent_import(50,   64,  0);
+            t->addControlEvent_import(100, 127, 0);
+            t->addControlEvent_import(200, 64,  0);
+            t->addControlEvent_import(300, 0,   0);
+        }
         require(t->getControllerEventAmount(0) == 4, "sanity check"); // sanity check on the way...
         
         seq->addTrack(t);

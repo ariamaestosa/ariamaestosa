@@ -75,7 +75,6 @@ namespace AriaMaestosa
     {
         void activateRenderLoop(bool on);
         void setMainPane(MainPane* pane);
-        void setImporting(bool on);
         
         PlayDuringEditMode playDuringEdit();
         void setPlayDuringEdit(PlayDuringEditMode mode);

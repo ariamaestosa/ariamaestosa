@@ -50,7 +50,8 @@ void RearrangeNotes::undo()
 
 void RearrangeNotes::perform()
 {
-    Core::setImporting(true); // just to make sure notes are not played while reordering
+    // FIXME: fix this abuse of the importing feature
+    OwnerPtr<Sequence::Import> import(track->getSequence()->startImport()); // just to make sure notes are not played while reordering
 
     std::vector<int> candidates;
 
@@ -174,7 +175,6 @@ void RearrangeNotes::perform()
         }//endif
     }//next
 
-    Core::setImporting(false);
 }
 
 
