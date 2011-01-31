@@ -21,6 +21,7 @@
 
 #include <wx/string.h>
 #include <wx/wfstream.h>
+#include <wx/msgdlg.h>
 #include "irrXML/irrXML.h"
 
 namespace AriaMaestosa
@@ -41,11 +42,17 @@ namespace AriaMaestosa
     }
     
     bool loadAriaFile(GraphicalSequence* sequence, wxString filepath)
-    {
+    {		
         wxCSConv cs( wxFONTENCODING_UTF8 );
         wxCharBuffer output = cs.cWC2MB(filepath.wc_str());
         
         irr::io::IrrXMLReader* xml = irr::io::createIrrXMLReader( (char*)output.data() );
+        
+        if (xml == NULL)
+        {
+            wxMessageBox(wxString::Format( _("Could not open file '%s' for reading"),
+                         (const char*)output.data() ) );
+        }
         
         if (not sequence->readFromFile(xml))
         {
