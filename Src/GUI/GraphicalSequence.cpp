@@ -456,6 +456,14 @@ void GraphicalSequence::saveToFile(wxFileOutputStream& fileout)
 bool GraphicalSequence::readFromFile(irr::io::IrrXMLReader* xml)
 {
     bool inSeqView = false;
+	
+	bool foundSequenceNode = false;
+    
+    if (xml == NULL)
+    {
+        std::cerr << "XML reader is NULL\n";
+        return false;
+    }
     
     // parse the file until end reached
     while (xml != NULL and xml->read())
@@ -471,6 +479,7 @@ bool GraphicalSequence::readFromFile(irr::io::IrrXMLReader* xml)
             {
                 if (strcmp("sequence", xml->getNodeName()) == 0)
                 {
+					foundSequenceNode = true;
                     if (inSeqView)
                     {
                         m_sequence->readFromFile(xml, this);
@@ -563,6 +572,12 @@ bool GraphicalSequence::readFromFile(irr::io::IrrXMLReader* xml)
     
     DisplayFrame::updateHorizontalScrollbar( m_x_scroll_in_pixels );
     
+    if (not foundSequenceNode)
+    {
+        std::cerr << "ERROR: File contains no sequence node\n";
+        return false;
+    }
+	
     return true;
 }
 
