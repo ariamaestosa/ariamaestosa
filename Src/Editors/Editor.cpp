@@ -606,9 +606,12 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
             const int new_scroll_value = m_gsequence->getXScrollInPixels() -
                     (Editor::getEditorXStart() + 20 - mousex_current.getRelativeTo(WINDOW))/4;
             
-            m_gsequence->setXScrollInPixels( new_scroll_value );
-            DisplayFrame::updateHorizontalScrollbar();
-            Display::render();
+            if (new_scroll_value > 0)
+            {
+                m_gsequence->setXScrollInPixels( new_scroll_value );
+                DisplayFrame::updateHorizontalScrollbar();
+                Display::render();
+            }
             return;
         }
     }
