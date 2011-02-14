@@ -260,20 +260,8 @@ void AddControllerSlide::perform()
         previous_value = newvalue;
     }//next
     
-    /*
-     std::cout << "-------------" << std::endl;
-     std::cout << "we added new events" << std::endl;
-     for(int ixc=0; ixc<track->m_control_events.size(); ixc++)
-     std::cout << ((float)track->m_control_events[ixc].getTick()/(float)getMeasureData()->beatLengthInTicks()) << std::endl;
-     */
-    
-#ifdef _MORE_DEBUG_CHECKS
-    std::cout << "checking order" << std::endl;
-    m_track->checkControlEventsOrder();
-#endif
-    
-    // FIXME - until i'm sure this action is bug-free i'll leave this check after. Should be fixed and removed though.
-    m_track->reorderControlVector();
+
+    ASSERT(m_track->checkControlEventsOrder());
 }
 
 
