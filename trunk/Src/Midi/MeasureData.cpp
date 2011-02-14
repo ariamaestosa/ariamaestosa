@@ -119,6 +119,20 @@ int MeasureData::defaultMeasureLengthInTicks()
 }
 
 // ----------------------------------------------------------------------------------------------------------
+
+void MeasureData::selectOnly(const int measureID)
+{
+    const int measure_amount = m_measure_info.size();
+    for (int n=0; n<measure_amount; n++)
+    {
+        m_measure_info[n].selected = false;
+    }
+    
+    m_measure_info[measureID].selected = true;
+    m_something_selected = true;
+}
+
+// ----------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -

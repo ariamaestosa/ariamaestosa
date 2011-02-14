@@ -517,18 +517,8 @@ void MeasureBar::mouseDown(int x, int y)
         return;
     }
     
-    // FIXME: stop directly accessing the model's internal fields, call a method and let the model handle itself
-
-    const int measure_amount = m_data->m_measure_info.size();
-    for (int n=0; n<measure_amount; n++)
-    {
-        m_data->m_measure_info[n].selected = false;
-    }
-
     const int measure_vectorID = measureAtPixel( x );
-    m_data->m_measure_info[measure_vectorID].selected = true;
-
-    m_data->m_something_selected = true;
+    m_data->selectOnly(measure_vectorID);
     m_last_measure_in_drag = measure_vectorID;
 }
 

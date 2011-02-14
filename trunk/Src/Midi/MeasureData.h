@@ -241,6 +241,8 @@ namespace AriaMaestosa
             return (not m_expanded_mode and m_time_sig_changes.size() == 1);
         }
         
+        void  selectOnly(const int measureID);
+        
         int   defaultMeasureLengthInTicks();
         int   measureLengthInTicks(int measure = -1) const;
         

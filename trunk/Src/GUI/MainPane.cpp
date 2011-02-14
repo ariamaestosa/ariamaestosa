@@ -468,13 +468,9 @@ void MainPane::drumPopupSelected(wxCommandEvent& evt)
 #pragma mark Input
 #endif
 
-/**
- * Are key modifiers down on the keyboard?
- * FIXME: should be static methods
- */
-bool MainPane::isSelectMorePressed() const { return wxGetKeyState(WXK_SHIFT);   }
-bool MainPane::isSelectLessPressed() const { return wxGetKeyState(WXK_ALT);     }
-bool MainPane::isCtrlDown         () const { return wxGetKeyState(WXK_CONTROL); }
+bool MainPane::isSelectMorePressed() { return wxGetKeyState(WXK_SHIFT);   }
+bool MainPane::isSelectLessPressed() { return wxGetKeyState(WXK_ALT);     }
+bool MainPane::isCtrlDown         () { return wxGetKeyState(WXK_CONTROL); }
 
 
 // --------------------------------------------------------------------------------------------------
