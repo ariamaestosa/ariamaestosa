@@ -110,7 +110,7 @@ namespace AriaMaestosa
         
         int  getTrackRefAmount() const
         {
-            ASSERT(m_track_refs.size() > 0); // FIXME: temporary, remove
+            ASSERT(m_track_refs.size() > 0);
             return m_track_refs.size();
         }
         
@@ -123,30 +123,6 @@ namespace AriaMaestosa
         int  getMeasureID() const { return m_measure_id;              }
         
         bool operator==  (const PrintLayoutMeasure& meas) const { return meas.m_measure_id == m_measure_id; }
-        
-        // -------- Experimental : automatic repetition detection --------      
-        /** if this measure is later repeated and is not a repetition of a previous measure,
-         * contains ID of all later measures similar to this one
-         */
-        //std::vector<int> similarMeasuresFoundLater;
-        
-        /** if this measure is a repetition of a previous measure, contains the ID of which one */
-        //int firstSimilarMeasure;
-        
-        
-        /** true if measure needs to be apart from others
-          * mostly used with repetitions (e.g. x4) to tell where the repetition starts
-          */
-        //bool cutApart; // FIXME - doesn't really belong here, should be a layout element
-        
-        //bool calculateIfMeasureIsSameAs(PrintLayoutMeasure& checkMeasure);
-        
-        /** if a repetition is found, it is stored in the variables and returns true,
-          * otherwise returns false
-          */
-        //bool findConsecutiveRepetition(ptr_vector<PrintLayoutMeasure>& measures, const int measureAmount,
-        //                               int& firstMeasureThatRepeats /*out*/, int& lastMeasureThatRepeats /*out*/,
-        //                               int& firstMeasureRepeated /*out*/, int& lastMeasureRepeated /*out*/);
     };
 
 }
