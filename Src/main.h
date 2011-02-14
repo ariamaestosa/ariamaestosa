@@ -38,6 +38,8 @@ namespace AriaMaestosa
         MainFrame* frame;
         PreferencesData*  prefs;
 
+        bool m_render_loop_on;
+        
         /** implement callback from wxApp */
         bool OnInit();
         

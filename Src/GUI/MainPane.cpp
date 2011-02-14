@@ -1215,7 +1215,7 @@ void MainPane::playbackRenderLoop()
     const int currentTick = PlatformMidiManager::get()->trackPlaybackProgression();
 
     // check if song is over
-    if (currentTick == -1 or !PlatformMidiManager::get()->isPlaying())
+    if (currentTick == -1 or not PlatformMidiManager::get()->isPlaying())
     {
         exitPlayLoop();
         return;
