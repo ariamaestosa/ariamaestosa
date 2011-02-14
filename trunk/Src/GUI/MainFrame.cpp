@@ -275,8 +275,6 @@ MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(1
 {
     m_main_panel = new wxPanel(this);
 
-    // FIXME: normally the main panel expands to the size of the parent frame automatically.
-    // except on wxMSW when starting maximized *sigh*
     m_root_sizer = new wxBoxSizer(wxVERTICAL);
     m_root_sizer->Add(m_main_panel, 1, wxEXPAND | wxALL, 0);
     SetSizer(m_root_sizer);
@@ -848,12 +846,7 @@ void MainFrame::changeMeasureAmount(int i, bool throwEvent)
 
 void MainFrame::onTimeSigSelectionChanged(int num, int denom)
 {
-    changingValues = true; // FIXME - still necessary?
-    //measureTypeTop->SetValue( to_wxString(num) );
-    //measureTypeBottom->SetValue( to_wxString(denom) );
     m_time_sig->SetLabel( wxString::Format(wxT("%i/%i"), num, denom ));
-
-    changingValues = false;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -1070,8 +1063,6 @@ void MainFrame::updateHorizontalScrollbar(int thumbPos)
 
     ASSERT_E( gseq->getXScrollInPixels(), >=, 0 );
     
-    // FIXME: I think this line was broken, position was set to (int)(gseq->getZoom()) which makes no sense
-    //        Not sure I fixed it correctly
     int position = (thumbPos == -1) ? gseq->getXScrollInPixels() : (int)(thumbPos*gseq->getZoom());
         
     // if given value is wrong and needs to be changed, we'll need to throw a 'scrolling changed' event to

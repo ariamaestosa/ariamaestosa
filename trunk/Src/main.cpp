@@ -33,11 +33,6 @@
 
 IMPLEMENT_APP(AriaMaestosa::wxWidgetApp)
 
-//FIXME: remove global, make it member
-namespace AriaMaestosa
-{
-    bool render_loop_on = false;
-}
 using namespace AriaMaestosa;
 
 BEGIN_EVENT_TABLE(wxWidgetApp,wxApp)
@@ -121,16 +116,16 @@ void RedirectIOToConsole()
 
 void wxWidgetApp::activateRenderLoop(bool on)
 {
-    if (on and !render_loop_on)
+    if (on and not m_render_loop_on)
     {
         Connect( wxID_ANY, wxEVT_IDLE, wxIdleEventHandler(wxWidgetApp::onIdle) );
-        render_loop_on = true;
+        m_render_loop_on = true;
     }
 
-    else if (!on and render_loop_on)
+    else if (not on and m_render_loop_on)
     {
         Disconnect( wxEVT_IDLE, wxIdleEventHandler(wxWidgetApp::onIdle) );
-        render_loop_on = false;
+        m_render_loop_on = false;
     }
 }
 
@@ -138,7 +133,7 @@ void wxWidgetApp::activateRenderLoop(bool on)
 
 void wxWidgetApp::onIdle(wxIdleEvent& evt)
 {
-    if (render_loop_on)
+    if (m_render_loop_on)
     {
         frame->getMainPane()->playbackRenderLoop();
         evt.RequestMore();
@@ -161,6 +156,7 @@ void wxWidgetApp::onActivate(wxActivateEvent& evt)
 
 bool wxWidgetApp::OnInit()
 {
+    m_render_loop_on = false;
     
     #ifdef __WXMSW__
     #ifndef NDEBUG
