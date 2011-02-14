@@ -333,9 +333,10 @@ namespace AriaMaestosa
 #endif
     
 // ----------------------------------------------------------------------------------------------------------
-    
+
+/** This is the height *in addition to* the border, which is of a static size */
 const int EXPANDED_BAR_HEIGHT = 20;
-const int COLLAPSED_BAR_HEIGHT = 5; //FIXME: what's that?? a collapsed bar is not 5 pixels high?? */
+const int COLLAPSED_BAR_HEIGHT = 5;
 
 GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq, MagneticGrid* magneticGrid) :
     m_instrument_name( m_instrument_string = new Model<wxString>(wxT("")), false ),
@@ -903,6 +904,7 @@ int GraphicalTrack::getTotalHeight() const
 
     if (m_docked) return 0;
 
+    // FIXME: remove hardcoded numbers
     if (m_collapsed)
     {
         return 45; // COLLAPSED_BAR_HEIGHT
@@ -1010,7 +1012,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     if (closed) barHeight = COLLAPSED_BAR_HEIGHT;
     
     if (not focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
-    else          AriaRender::setImageState(AriaRender::STATE_NORMAL);
+    else           AriaRender::setImageState(AriaRender::STATE_NORMAL);
     
     AriaRender::images();
     
