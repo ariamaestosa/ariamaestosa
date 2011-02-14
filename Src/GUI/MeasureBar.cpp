@@ -242,13 +242,13 @@ int MeasureBar::measureAtPixel(int pixel)
         
         if (pixel < 0) return 0;
         
-        const int amount = m_data->m_measure_info.size();
+        const int amount = m_data->getMeasureInfoAmount();
         for (int n=0; n<amount; n++)
         {
             if (n == amount - 1) return amount - 1; // we hit end, return the last
             
-            const int pixel_of_n        = m_data->m_measure_info[n].tick * zoom;
-            const int pixel_of_n_plus_1 = m_data->m_measure_info[n+1].tick * zoom;
+            const int pixel_of_n        = m_data->getMeasureInfo(n).tick * zoom;
+            const int pixel_of_n_plus_1 = m_data->getMeasureInfo(n + 1).tick * zoom;
 
             if (pixel_of_n <= pixel and pixel_of_n_plus_1 > pixel)
             {
@@ -266,11 +266,7 @@ void MeasureBar::render(int m_measure_bar_y_arg)
 {
     m_measure_bar_y = m_measure_bar_y_arg;
 
-    // if measure amount changed and MeasureBar is out of sync with its current number of measures, fix it
-    if ((int)m_data->m_measure_info.size() != m_data->m_measure_amount)
-    {
-        m_data->updateVector(m_data->m_measure_amount);
-    }
+    m_data->checkUpToDate();
     
     const int height = (m_data->isExpandedMode() ? EXPANDED_MEASURE_BAR_H : MEASURE_BAR_H);
     AriaRender::primitives();
@@ -304,10 +300,10 @@ void MeasureBar::render(int m_measure_bar_y_arg)
         (measureLengthConstant ? n+=x_step : n += measureLengthInPixels(measureID-1)) )
     {
         measureID++;
-        if (measureID > m_data->m_measure_amount) break;
+        if (measureID > m_data->getMeasureAmount()) break;
 
         // if measure is selected, draw in blue
-        if (m_data->m_measure_info[measureID-1].selected)
+        if (m_data->getMeasureInfo(measureID-1).selected)
         {
 
             AriaRender::color(0.71, 0.84, 1);
@@ -318,7 +314,7 @@ void MeasureBar::render(int m_measure_bar_y_arg)
             }
             else
             {
-                const int mw = m_data->m_measure_info[measureID-1].widthInTicks * zoom;
+                const int mw = m_data->getMeasureInfo(measureID-1).widthInTicks * zoom;
                 AriaRender::rect(n, m_measure_bar_y + 1, n + mw, m_measure_bar_y + MEASURE_BAR_H - 1);
             }
             
@@ -335,13 +331,13 @@ void MeasureBar::render(int m_measure_bar_y_arg)
         AriaRender::primitives();
         if (m_data->isExpandedMode())
         {
-            const int amount = m_data->m_time_sig_changes.size();
+            const int amount = m_data->getTimeSigAmount();
             for (int i=0; i<amount; i++)
             {
 
-                if (m_data->m_time_sig_changes[i].getMeasure() == measureID-1)
+                if (m_data->getTimeSig(i).getMeasure() == measureID-1)
                 {
-                    const bool selected = (m_data->m_selected_time_sig == i);
+                    const bool selected = (m_data->getSelectedTimeSig() == i);
                     if (selected)
                     {
                         AriaRender::pointSize(11);
@@ -360,8 +356,8 @@ void MeasureBar::render(int m_measure_bar_y_arg)
                     AriaRender::pointSize(1);
                     AriaRender::images();
 
-                    AriaRender::renderNumber(m_data->m_time_sig_changes[i].getDenom(), n + 18, m_measure_bar_y + 42 );
-                    AriaRender::renderNumber(m_data->m_time_sig_changes[i].getNum(),   n + 10, m_measure_bar_y + 33 );
+                    AriaRender::renderNumber(m_data->getTimeSig(i).getDenom(), n + 18, m_measure_bar_y + 42 );
+                    AriaRender::renderNumber(m_data->getTimeSig(i).getNum(),   n + 10, m_measure_bar_y + 33 );
                     AriaRender::primitives();
 
                     AriaRender::color(0,0,0);
@@ -377,7 +373,7 @@ void MeasureBar::render(int m_measure_bar_y_arg)
 
 int MeasureBar::measureDivisionAt(int pixel)
 {
-    ASSERT_E(m_data->m_measure_amount, ==, (int)m_data->m_measure_info.size());
+    ASSERT_E(m_data->getMeasureAmount(), ==, (int)m_data->getMeasureInfoAmount());
     const float x1 = 90 - m_gseq->getXScrollInPixels();
     
     if (m_data->isMeasureLengthConstant())
@@ -391,11 +387,11 @@ int MeasureBar::measureDivisionAt(int pixel)
         const float zoom = m_gseq->getZoom();
         
         pixel -= (int)x1;
-        const int measureAmount = m_data->m_measure_info.size();
+        const int measureAmount = m_data->getMeasureAmount();
         for (int n=0; n<measureAmount; n++)
         {
-            const int pixel_of_n     = m_data->m_measure_info[n].tick * zoom;
-            const int width_of_n     = m_data->m_measure_info[n].widthInTicks * zoom;
+            const int pixel_of_n     = m_data->getMeasureInfo(n).tick * zoom;
+            const int width_of_n     = m_data->getMeasureInfo(n).widthInTicks * zoom;
             const int end_pixel_of_n = pixel_of_n + width_of_n;
 
             if (pixel >= pixel_of_n    - width_of_n/2 and
@@ -413,7 +409,7 @@ int MeasureBar::measureDivisionAt(int pixel)
 
 int MeasureBar::firstPixelInMeasure(int id)
 {
-    ASSERT_E(m_data->m_measure_amount, ==, (int)m_data->m_measure_info.size());
+    ASSERT_E(m_data->getMeasureAmount(), ==, (int)m_data->getMeasureInfoAmount());
     if (m_data->isMeasureLengthConstant())
     {
         return (int)(
@@ -423,8 +419,8 @@ int MeasureBar::firstPixelInMeasure(int id)
     }
     else
     {
-        ASSERT_E(id,<,(int)m_data->m_measure_info.size());
-        return m_data->m_measure_info[id].tick*m_gseq->getZoom() - m_gseq->getXScrollInPixels() + 90;
+        ASSERT_E(id,<,(int)m_data->getMeasureInfoAmount());
+        return m_data->getMeasureInfo(id).tick*m_gseq->getZoom() - m_gseq->getXScrollInPixels() + 90;
     }
 }
 
@@ -432,7 +428,7 @@ int MeasureBar::firstPixelInMeasure(int id)
 
 int MeasureBar::lastPixelInMeasure(int id)
 {
-    ASSERT_E(m_data->m_measure_amount, ==, (int)m_data->m_measure_info.size());
+    ASSERT_E(m_data->getMeasureAmount(), ==, (int)m_data->getMeasureInfoAmount());
     
     if (m_data->isMeasureLengthConstant())
     {
@@ -443,8 +439,8 @@ int MeasureBar::lastPixelInMeasure(int id)
     }
     else
     {
-        ASSERT_E(id,<,(int)m_data->m_measure_info.size());
-        return m_data->m_measure_info[id].endTick*m_gseq->getZoom() - m_gseq->getXScrollInPixels() + 90;
+        ASSERT_E(id,<,(int)m_data->getMeasureInfoAmount());
+        return m_data->getMeasureInfo(id).endTick*m_gseq->getZoom() - m_gseq->getXScrollInPixels() + 90;
     }
 }
 
@@ -454,11 +450,11 @@ int MeasureBar::getTotalPixelAmount()
 {
     if (m_data->isMeasureLengthConstant())
     {
-        return (int)( m_data->m_measure_amount * m_data->measureLengthInTicks() * m_gseq->getZoom() );
+        return (int)( m_data->getMeasureAmount() * m_data->measureLengthInTicks() * m_gseq->getZoom() );
     }
     else
     {
-        return m_data->totalNeededLengthInTicks * m_gseq->getZoom();
+        return m_data->getTotalNeededLengthInTicks() * m_gseq->getZoom();
     }
 }
 
@@ -475,15 +471,8 @@ float MeasureBar::defaultMeasureLengthInPixels()
 
 void MeasureBar::unselect()
 {
-    if (not m_data->m_something_selected) return;
-    m_data->m_something_selected = false;
-    
-    const int measureAmount = m_data->m_measure_info.size();
-    for (int n=0; n<measureAmount; n++)
-    {
-        m_data->m_measure_info[n].selected = false;
-    }
-    
+    if (not m_data->isSomethingSelected()) return;
+    m_data->selectNothing();
     m_last_measure_in_drag = -1;
 }
 
@@ -499,21 +488,19 @@ void MeasureBar::mouseDown(int x, int y)
     {
         const int measureDivAt_x = measureDivisionAt(x);
 
+        ScopedMeasureTransaction tr(m_data->startTransaction());
+
         // we use the 'add' method, however if on event already exists at this location
         // it will be selected and none will be added
-        const int id = m_data->addTimeSigChange(measureDivAt_x, -1, -1);
+        const int id = tr->addTimeSigChange(measureDivAt_x, -1, -1);
 
         selectTimeSig(id);
         
-        if (not m_gseq->getModel()->isImportMode())
-        {
-            wxPoint pt = wxGetMousePosition();
-            showTimeSigPicker(m_gseq, pt.x, pt.y,
-                              m_data->m_time_sig_changes[id].getNum(),
-                              m_data->m_time_sig_changes[id].getDenom() );
-            m_data->updateMeasureInfo();
-        }
-        
+        wxPoint pt = wxGetMousePosition();
+        showTimeSigPicker(m_gseq, pt.x, pt.y,
+                          m_data->getTimeSig(id).getNum(),
+                          m_data->getTimeSig(id).getDenom() );
+
         return;
     }
     
@@ -526,9 +513,9 @@ void MeasureBar::mouseDown(int x, int y)
 
 void MeasureBar::selectTimeSig(const int id)
 {
-    m_data->m_selected_time_sig = id;
-    getMainFrame()->onTimeSigSelectionChanged(m_data->m_time_sig_changes[id].getNum(),
-                                              m_data->m_time_sig_changes[id].getDenom() );
+    m_data->setSelectedTimeSig( id );
+    getMainFrame()->onTimeSigSelectionChanged(m_data->getTimeSig(id).getNum(),
+                                              m_data->getTimeSig(id).getDenom() );
 }
 
 
@@ -543,8 +530,7 @@ void MeasureBar::mouseDrag(int mousex_current, int mousey_current, int mousex_in
 
     if (m_last_measure_in_drag == -1) return; //invalid
 
-    m_data->m_measure_info[measure_vectorID].selected = true;
-    m_data->m_something_selected = true;
+    m_data->selectMeasure(measure_vectorID);
 
     // previous measure seelcted and this one and contiguous - select all other measures inbetween
     if ( abs(m_last_measure_in_drag-measure_vectorID) > 1 )
@@ -553,7 +539,7 @@ void MeasureBar::mouseDrag(int mousex_current, int mousey_current, int mousex_in
         for (int n=measure_vectorID; n != m_last_measure_in_drag;
              n += (m_last_measure_in_drag - measure_vectorID) / abs(m_last_measure_in_drag - measure_vectorID))
         {
-            m_data->m_measure_info[n].selected = true;
+            m_data->selectMeasure(n);
         }
     }
 
@@ -568,18 +554,18 @@ void MeasureBar::mouseDrag(int mousex_current, int mousey_current, int mousex_in
 void MeasureBar::mouseUp(int mousex_current, int mousey_current, int mousex_initial, int mousey_initial)
 {
     if (m_last_measure_in_drag == -1) return; //invalid
-    const int measureAmount = m_data->m_measure_info.size();
+    const int measureAmount = m_data->getMeasureInfoAmount();
 
     // determine selection range in midi ticks
     int minimal_tick = -1, maximal_tick = -1;
     for (int n=0; n<measureAmount; n++)
     {
         // iterate through measures to find the first selected one
-        if (m_data->m_measure_info[n].selected)
+        if (m_data->getMeasureInfo(n).selected)
         {
             // we found a first selected measure, remember it as minimal tick
             minimal_tick = m_data->firstTickInMeasure(n);
-            do{ n++; } while (m_data->m_measure_info[n].selected); // skip all uneslected measures
+            do{ n++; } while (m_data->getMeasureInfo(n).selected); // skip all uneslected measures
             maximal_tick = m_data->firstTickInMeasure(n);
             break;
         }
@@ -622,10 +608,10 @@ void MeasureBar::rightClick(int x, int y)
         int measure = measureDivisionAt(x);
 
         // check if click is on time sig event
-        const int amount = m_data->m_time_sig_changes.size();
+        const int amount = m_data->getTimeSigAmount();
         for (int n=0; n<amount; n++)
         {
-            if (m_data->m_time_sig_changes[n].getMeasure() == measure)
+            if (m_data->getTimeSig(n).getMeasure() == measure)
             {
                 std::cout << "trying to delete measure " << n << std::endl;
                 m_unselected_menu->enable_deleteTimeSig_item(true, n);
@@ -639,17 +625,17 @@ void MeasureBar::rightClick(int x, int y)
     const int measure_vectorID = measureAtPixel( x );
 
     // is the clicked measure selected?
-    if (m_data->m_measure_info[measure_vectorID].selected)
+    if (m_data->getMeasureInfo(measure_vectorID).selected)
     {
-        const int measureAmount = m_data->m_measure_info.size();
+        const int measureAmount = m_data->getMeasureInfoAmount();
         for (int n=0; n<measureAmount; n++)
         {
             // iterate through measures to find which measures are selected
-            if (m_data->m_measure_info[n].selected)
+            if (m_data->getMeasureInfo(n).selected)
             {
                 // we found a first selected measure, remember it
                 remove_from = n;
-                do{ n++; } while (m_data->m_measure_info[n].selected); // skip all selected measures
+                do{ n++; } while (m_data->getMeasureInfo(n).selected); // skip all selected measures
                 remove_to = n;
                 break;
             }

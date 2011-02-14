@@ -59,9 +59,7 @@ namespace AriaMaestosa
      */
     class MeasureData
     {
-        // FIXME(DESIGN): find better way than friend
-        friend class MeasureBar;
-        
+
         class MeasureInfo
         {
         public:
@@ -232,7 +230,6 @@ namespace AriaMaestosa
         ~MeasureData();
         
         int   getTotalTickAmount()      const;
-        int   getMeasureAmount()        const { return m_measure_amount; }
         int   getFirstMeasure()         const { return m_first_measure;  }        
         int   measureAtTick(int tick)   const;
         bool  isExpandedMode()          const { return m_expanded_mode;  }
@@ -266,6 +263,7 @@ namespace AriaMaestosa
 
         int   firstTickInMeasure(int id) const;
         int   lastTickInMeasure (int id) const;
+        int   getTimeSigChangeCount() const;
         
         // FIXME(DESIGN): remove those, use transaction system
         void  beforeImporting();
@@ -286,6 +284,51 @@ namespace AriaMaestosa
         {
             m_listeners.push_back(l);
         }
+        
+        bool isSomethingSelected() const
+        {
+            return m_something_selected;
+        }
+        
+        int getSelectedTimeSig() const
+        {
+            return m_selected_time_sig;
+        }
+        void setSelectedTimeSig(int i)
+        {
+            m_selected_time_sig = i;
+        }
+        
+        const MeasureInfo& getMeasureInfo(const int n) const
+        {
+            return m_measure_info[n];
+        }
+
+        // FIXME: we have those 2 sizes, they should be part of implementation details and NOT EXPOSED
+        int getMeasureInfoAmount()
+        {
+            return m_measure_info.size();
+        }
+        int getMeasureAmount() const
+        {
+            return m_measure_amount;
+        }
+
+        int getTotalNeededLength() const
+        {
+            return totalNeededLengthInTicks;
+        }
+        
+        void checkUpToDate();
+        
+        int getTotalNeededLengthInTicks() const
+        {
+            return totalNeededLengthInTicks;
+        }
+        
+        void selectNothing();
+        
+        void selectMeasure(int mid);
         
         /** @brief deserializatiuon */
         bool  readFromFile(irr::io::IrrXMLReader* xml);

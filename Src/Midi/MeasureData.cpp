@@ -133,6 +133,47 @@ void MeasureData::selectOnly(const int measureID)
 }
 
 // ----------------------------------------------------------------------------------------------------------
+
+void MeasureData::selectNothing()
+{
+    m_something_selected = false;
+    
+    const int measureAmount = m_measure_info.size();
+    for (int n=0; n<measureAmount; n++)
+    {
+        m_measure_info[n].selected = false;
+    }
+    
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void MeasureData::checkUpToDate()
+{
+    // if measure amount changed and MeasureBar is out of sync with its current number of measures, fix it
+    if ((int)m_measure_info.size() != m_measure_amount)
+    {
+        updateVector(m_measure_amount);
+    }
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+int MeasureData::getTimeSigChangeCount() const
+{
+    return m_time_sig_changes.size();
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void MeasureData::selectMeasure(int mid)
+{
+    m_measure_info[mid].selected = true;
+    m_something_selected = true;
+}
+
+
+// ----------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
