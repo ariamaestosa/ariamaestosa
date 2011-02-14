@@ -39,6 +39,8 @@ namespace AriaMaestosa
 
 using namespace AriaMaestosa;
 
+const int THUMB_HEIGHT = 18;
+
 // ------------------------------------------------------------------------------------------------------------
 
 Editor::Editor(GraphicalTrack* track)
@@ -228,7 +230,7 @@ void Editor::renderScrollbar()
 
     // ------ bottom arrow ------
     sbArrowDrawable->setFlip(false, true);
-    sbArrowDrawable->move(getWidth() - 24, m_from_y + m_header_bar_height + m_height + 12); //FIXME: fix this
+    sbArrowDrawable->move(getWidth() - 24, m_from_y + m_header_bar_height + m_height + THUMB_HEIGHT - 6); //FIXME: fix this
 
     if (not m_vertical_scrolling and // ignore arrows if user is dragging thumb
        Display:: isMouseDown() and // only if mouse is down
@@ -346,8 +348,8 @@ void Editor::mouseDown(RelativeXCoord x, int y)
         {
             m_click_on_scrollbar = true;
 
-            // grabbing the thumb (FIXME: correct these hardcoded sizes)
-            const int thumb_pos = (int)(getEditorYStart() + 17 + (m_height - 36)*m_sb_position);
+            // grabbing the thumb
+            const int thumb_pos = (int)(getEditorYStart() + THUMB_HEIGHT + (m_height - THUMB_HEIGHT*2)*m_sb_position - 1);
             if (y > thumb_pos and y < thumb_pos + sbThumbDrawable->getImageHeight())
             {
                 m_vertical_scrolling = true;
@@ -642,7 +644,7 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 
                 // find where mouse is on scrollbar, in the same units at m_sb_position (0 to 1)
                 //FIXME; remove those hardcoded numbers to calculate height
-                const float goal = (mousey_current - m_from_y - m_header_bar_height - 52)/(float)(m_height - 36);
+                const float goal = (mousey_current - m_from_y - m_header_bar_height - 52)/(float)(m_height - THUMB_HEIGHT*2);
 
                 // thumb has reached mouse, just continue as regular scrolling
                 float dist = goal-m_sb_position; // find distance betweem mouse and thumb in 0-1 units
