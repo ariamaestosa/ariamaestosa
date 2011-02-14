@@ -1025,25 +1025,25 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     borderDrawable->move(x+30, y);
     borderDrawable->setFlip(false, false);
     borderDrawable->rotate(0);
-    borderDrawable->scale((Display::getWidth() - 5 /*margin*/ -20 /*left round cornerDrawable*/ - 20 /*right round cornerDrawable*/)/20.0, 1 );
+    borderDrawable->scale((Display::getWidth() - MARGIN - BORDER_SIZE*2)/20.0, 1 );
     borderDrawable->render();
     
     // top right corner
-    cornerDrawable->move(x+Display::getWidth() - 5 /* margin*/ -20 /*left round cornerDrawable*/, y);
+    cornerDrawable->move(x+Display::getWidth() - MARGIN - BORDER_SIZE, y);
     cornerDrawable->setFlip(true, false);
     cornerDrawable->render();
     
     // --------------------------------------------------
     
     // left border
-    borderDrawable->move(x+ 30, y+20);
+    borderDrawable->move(x + 30, y + BORDER_SIZE);
     borderDrawable->setFlip(false, true);
     borderDrawable->rotate(90);
     borderDrawable->scale(1, barHeight /*number of pixels high*/ /20.0 );
     borderDrawable->render();
     
     // right border
-    borderDrawable->move(x+ Display::getWidth() - 5 /*margin*/ - 20 /*left round cornerDrawable*/ + 20 /*due to rotation of 90 degrees*/, y+20);
+    borderDrawable->move(x + Display::getWidth() - MARGIN - BORDER_SIZE + 20 /*due to rotation of 90 degrees*/, y + BORDER_SIZE);
     borderDrawable->setFlip(false, false);
     borderDrawable->rotate(90);
     borderDrawable->scale(1, barHeight /*number of pixels high*/ /20.0 );
@@ -1054,10 +1054,11 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     // center
     AriaRender::primitives();
     
-    if (!focus) AriaRender::color(0.31/2, 0.31/2, 0.31/2);
-    else AriaRender::color(0.31, 0.31, 0.31);
+    if (not focus) AriaRender::color(0.31/2, 0.31/2, 0.31/2);
+    else           AriaRender::color(0.31, 0.31, 0.31);
     
-    AriaRender::rect(x+30, y+20, x+ Display::getWidth() - 5 /* margin*/ - 20 /*right round cornerDrawable*/, y+20+barHeight);
+    // FIXME: don't hardcode numbers
+    AriaRender::rect(x+30, y + BORDER_SIZE, x + Display::getWidth() - MARGIN - BORDER_SIZE, y + BORDER_SIZE + barHeight);
     
     
     // --------------------------------------------------
@@ -1066,23 +1067,24 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     {
         AriaRender::images();
         
-        if (!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
-        else AriaRender::setImageState(AriaRender::STATE_NORMAL);
+        if (not focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
+        else           AriaRender::setImageState(AriaRender::STATE_NORMAL);
         
+        // FIXME: don't hardcode numbers
         // bottom left corner
-        cornerDrawable->move(x+10, y+20+barHeight);
+        cornerDrawable->move(x+10, y + BORDER_SIZE + barHeight);
         cornerDrawable->setFlip(false, true);
         cornerDrawable->render();
         
         // bottom border
-        borderDrawable->move(x+30, y+20+barHeight);
+        borderDrawable->move(x+30, y + BORDER_SIZE + barHeight);
         borderDrawable->setFlip(false, true);
         borderDrawable->rotate(0);
-        borderDrawable->scale((Display::getWidth() - 5 /*margin*/ -20 /*left round cornerDrawable*/ - 20 /*right round cornerDrawable*/)/20.0, 1 );
+        borderDrawable->scale((Display::getWidth() - MARGIN - BORDER_SIZE*2)/20.0, 1 );
         borderDrawable->render();
         
         // bottom right corner
-        cornerDrawable->move(x+ Display::getWidth() - 5 /*margin*/ -20 /*left round cornerDrawable*/, y+20+barHeight);
+        cornerDrawable->move(x+ Display::getWidth() - MARGIN - BORDER_SIZE, y + BORDER_SIZE + barHeight);
         cornerDrawable->setFlip(true, true);
         cornerDrawable->render();
         
@@ -1096,9 +1098,9 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
             AriaRender::primitives();
             AriaRender::color(1, 1, 1);
             AriaRender::rect(x + 10,
-                             y + barHeight + 20,
+                             y + barHeight + BORDER_SIZE,
                              x + Display::getWidth() - 5 ,
-                             y + barHeight + 40 + m_height);
+                             y + barHeight + BORDER_SIZE + 20 + m_height);
         }//end if
     }//end if
     

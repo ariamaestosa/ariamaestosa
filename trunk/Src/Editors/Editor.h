@@ -29,7 +29,9 @@
 
 namespace AriaMaestosa
 {
-    
+    const int BORDER_SIZE = 20;
+    const int MARGIN = 5;
+
     class Sequence;
     class GraphicalTrack;
     class Track;
@@ -260,12 +262,12 @@ namespace AriaMaestosa
         // methods that provide general information common to all editors
         // ------------------------------------------------------------------------------------------------------
 
-        static int getEditorXStart(){ return 90;                                  }
-        int getXEnd        () const { return m_width - 5;                         } // FIXME - adapt to include vertical scrollbar
-        int getTrackYStart () const { return m_from_y;                            }
-        int getEditorYStart() const { return m_from_y + m_header_bar_height + 20; }
-        int getYEnd        () const { return m_to_y - 10;                         }
-        int getWidth       () const { return m_width;                             }
+        static int getEditorXStart(){ return 90;                                           }
+        int getXEnd        () const { return m_width - MARGIN;                             } // FIXME - adapt to include vertical scrollbar
+        int getTrackYStart () const { return m_from_y;                                     }
+        int getEditorYStart() const { return m_from_y + m_header_bar_height + BORDER_SIZE; }
+        int getYEnd        () const { return m_to_y - 10;                                  }
+        int getWidth       () const { return m_width;                                      }
 
     };
 }
