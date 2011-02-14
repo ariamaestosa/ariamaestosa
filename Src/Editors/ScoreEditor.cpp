@@ -879,7 +879,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
     if (head_radius == -1) head_radius = noteOpen->getImageHeight()/2;
     const int yscroll = getYScrollInPixels();
 
-    AriaRender::beginScissors(10, getEditorYStart(), m_width - 15, 20 + m_height);
+    AriaRender::beginScissors(LEFT_EDGE_X, getEditorYStart(), m_width - 15, m_height + BORDER_SIZE);
 
     // white background
     AriaRender::primitives();

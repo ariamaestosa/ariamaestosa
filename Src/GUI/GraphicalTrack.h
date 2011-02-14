@@ -24,9 +24,6 @@
 #include "Pickers/MagneticGridPicker.h"
 #include "Renderers/RenderAPI.h"
 
-const int BORDER_SIZE = 20;
-const int MARGIN = 5;
-
 
 class wxFileOutputStream;
 // forward
