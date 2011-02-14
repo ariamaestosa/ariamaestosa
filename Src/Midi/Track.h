@@ -245,8 +245,7 @@ namespace AriaMaestosa
          */
         void addControlEvent_import(const int x, const int value, const int controller);
         
-        // FIXME - debug function, remove
-        void checkControlEventsOrder();
+        bool checkControlEventsOrder();
                 
         void setName(wxString name);
         

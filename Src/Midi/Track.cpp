@@ -472,18 +472,18 @@ void Track::mergeTrackIn(Track* track)
 
 // ----------------------------------------------------------------------------------------------------------
 
-// FIXME - debug function, remove
-void Track::checkControlEventsOrder()
+bool Track::checkControlEventsOrder()
 {
     int ptick = -1;
     for (int n=0; n<m_control_events.size(); n++)
     {
         if (ptick != -1 and m_control_events[n].getTick() < ptick)
         {
-            std::cout << "\n\n*** Error: control events in wrong order " << ptick << " then " << m_control_events[n].getTick() << std::endl;
+            return false;
         }
         ptick = m_control_events[n].getTick();
     }
+    return true;
 }
 
 // =======================================================================================================
