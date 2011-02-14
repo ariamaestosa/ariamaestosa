@@ -886,11 +886,15 @@ void MainFrame::zoomTextChanged(wxCommandEvent& evt)
     if (enter_pressed or (previousString.Length()>0 and evt.GetString().Length()>=previousString.Length()) )
     {
 
-        if (!evt.GetString().IsSameAs(previousString))
+        if (not evt.GetString().IsSameAs(previousString))
         {
-            if (evt.GetString().Length()==1) return; // too short to update now, user probably just typed the first character of something longer
-            if (evt.GetString().Length()==2 and atoi_u(evt.GetString())<30 )
+            // too short to update now, user probably just typed the first character of something longer
+            if (evt.GetString().Length() == 1) return;
+            
+            if (evt.GetString().Length() == 2 and atoi_u(evt.GetString()) < 30)
+            {
                 return; // zoom too small, user probably just typed the first characters of something longer
+            }
         }
 
         wxSpinEvent unused;

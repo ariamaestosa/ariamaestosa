@@ -178,9 +178,9 @@ namespace AriaMaestosa
         /** @brief Gives information about the location of the mouse in a drag */
         int getMouseY_initial()            const { return m_mouse_y_initial; }
 
-        bool isSelectMorePressed() const;
-        bool isSelectLessPressed() const;
-        bool isCtrlDown         () const;
+        static bool isSelectMorePressed();
+        static bool isSelectLessPressed();
+        static bool isCtrlDown         ();
 
         /** to be called e.g. when a track is deleted */
         //FIXME: that's ugly but it does the job...
