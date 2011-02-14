@@ -133,6 +133,13 @@ namespace AriaMaestosa
         
         std::vector<IMeasureDataListener*> m_listeners;
         
+        void  beforeImporting();
+        void  afterImporting();
+        
+        /** @brief used only while loading midi files */
+        void  addTimeSigChange_import(int tick, int num, int denom);
+        
+        
     public:
         
         class Transaction
@@ -224,6 +231,35 @@ namespace AriaMaestosa
             }
         };
         
+        
+        class ImportingTransaction
+        {
+            friend class MeasureData;
+            
+        protected:
+            MeasureData* m_parent;
+            
+            ImportingTransaction(MeasureData* parent)
+            {
+                m_parent = parent;
+                m_parent->beforeImporting();
+            }
+        
+        public:
+            
+            ~ImportingTransaction()
+            {
+                m_parent->afterImporting();
+            }
+            
+            void addTimeSigChange(int tick, int num, int denom)
+            {
+                m_parent->addTimeSigChange_import(tick, num, denom);
+            }
+            
+        };
+        
+        
         LEAK_CHECK();
                 
         MeasureData(Sequence* seq, int measureAmount);
@@ -265,13 +301,6 @@ namespace AriaMaestosa
         int   lastTickInMeasure (int id) const;
         int   getTimeSigChangeCount() const;
         
-        // FIXME(DESIGN): remove those, use transaction system
-        void  beforeImporting();
-        void  afterImporting();
-        
-        /** @brief used only while loading midi files */
-        void  addTimeSigChange_import(int tick, int num, int denom);
-        
         /**
          * @brief  Invoke this when you want to modify measure data
          * @return A Transaction object that gives you write-access to measure data
@@ -279,6 +308,8 @@ namespace AriaMaestosa
          *         the data. It is thus recommended to scope this object so it is always destroyed.
          */
         Transaction* startTransaction() { return new Transaction(this); }
+        
+        ImportingTransaction* startImportTransaction() { return new ImportingTransaction(this); }
         
         void addListener(IMeasureDataListener* l)
         {
@@ -338,6 +369,7 @@ namespace AriaMaestosa
     };
 
     typedef OwnerPtr<MeasureData::Transaction> ScopedMeasureTransaction;
+    typedef OwnerPtr<MeasureData::ImportingTransaction> ScopedMeasureITransaction;
 }
 
 #endif
