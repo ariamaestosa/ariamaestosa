@@ -593,7 +593,7 @@ void MeasureData::addTimeSigChange_import(int tick, int num, int denom)
 
 void MeasureData::afterImporting()
 {
-    if (m_time_sig_changes.size()>1)
+    if (m_time_sig_changes.size() > 1)
     {
         m_expanded_mode = true;
     }

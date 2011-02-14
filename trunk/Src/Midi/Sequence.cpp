@@ -691,228 +691,232 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
     
     tracks.clearAndDeleteAll();
     
-    m_measure_data->beforeImporting();
-
-    ASSERT (strcmp("sequence", xml->getNodeName()) == 0);
+    once
+    {
+        ScopedMeasureITransaction tr(m_measure_data->startImportTransaction());
         
-    const char* maintempo = xml->getAttributeValue("maintempo");
-    const int atoi_out = atoi( maintempo );
-    if (maintempo != NULL and atoi_out > 0)
-    {
-        m_tempo = atoi_out;
-    }
-    else
-    {
-        m_tempo = 120;
-        std::cerr << "Missing info from file: main tempo" << std::endl;
-    }
-    
-    const char* fileFormatVersion = xml->getAttributeValue("fileFormatVersion");
-    double fileversion = -1;
-    if (fileFormatVersion != NULL)
-    {
-        fileversion = atoi( (char*)fileFormatVersion );
-        if (fileversion > CURRENT_FILE_VERSION )
+        ASSERT (strcmp("sequence", xml->getNodeName()) == 0);
+            
+        const char* maintempo = xml->getAttributeValue("maintempo");
+        const int atoi_out = atoi( maintempo );
+        if (maintempo != NULL and atoi_out > 0)
         {
-            if (WaitWindow::isShown()) WaitWindow::hide();
-            wxMessageBox( _("Warning : you are opening a file saved with a version of\nAria Maestosa more recent than the version you currently have.\nIt may not open correctly.") );
-        }
-    }
-    const char* measureAmount_c = xml->getAttributeValue("measureAmount");
-    if (measureAmount_c != NULL)
-    {
-        std::cout << "[Sequence::readFromFile] measureAmount = " <<  atoi(measureAmount_c) << std::endl;
-        
-        {
-            ScopedMeasureTransaction tr(m_measure_data->startTransaction());
-            tr->setMeasureAmount( atoi(measureAmount_c) );
-        }
-    }
-    else
-    {
-        std::cerr << "Missing info from file: measure amount" << std::endl;
-        return false;
-    }
-    
-    const char* channelManagement_c = xml->getAttributeValue("channelManagement");
-    if (channelManagement_c != NULL)
-    {
-        if ( fromCString(channelManagement_c).IsSameAs( wxT("manual") ) ) setChannelManagementType(CHANNEL_MANUAL);
-        else if ( fromCString(channelManagement_c).IsSameAs(  wxT("auto") ) ) setChannelManagementType(CHANNEL_AUTO);
-        else std::cerr << "Unknown channel management type : " << channelManagement_c << std::endl;
-    }
-    else
-    {
-        std::cerr << "Missing info from file: channel management" << std::endl;
-    }
-    
-    const char* internalName_c = xml->getAttributeValue("internalName");
-    if (internalName_c != NULL)
-    {
-        internal_sequenceName = fromCString(internalName_c);
-    }
-    else
-    {
-        std::cerr << "Missing info from file: song internal name" << std::endl;
-    }
-    
-    const char* currentTrack_c = xml->getAttributeValue("currentTrack");
-    if (currentTrack_c != NULL)
-    {
-        currentTrack = atoi( currentTrack_c );
-    }
-    else
-    {
-        currentTrack = 0;
-        std::cerr << "Missing info from file: current track" << std::endl;
-    }
-    
-    const char* beatResolution_c = xml->getAttributeValue("beatResolution");
-    if (beatResolution_c != NULL)
-    {
-        beatResolution = atoi( beatResolution_c );
-    }
-    else
-    {
-        //beatResolution = 960;
-        std::cerr << "Missing info from file: beat resolution" << std::endl;
-        return false;
-    }
-    
-    const char* metronome_c = xml->getAttributeValue("metronome");
-    if (metronome_c != NULL)
-    {
-        if (strcmp(metronome_c, "true") == 0)
-        {
-            m_play_with_metronome = true;
-        }
-        else if (strcmp(metronome_c, "false") == 0)
-        {
-            m_play_with_metronome = false;
+            m_tempo = atoi_out;
         }
         else
         {
-            std::cerr << "Invalid value for 'metronome' property : " << metronome_c << "\n";
+            m_tempo = 120;
+            std::cerr << "Missing info from file: main tempo" << std::endl;
+        }
+        
+        const char* fileFormatVersion = xml->getAttributeValue("fileFormatVersion");
+        double fileversion = -1;
+        if (fileFormatVersion != NULL)
+        {
+            fileversion = atoi( (char*)fileFormatVersion );
+            if (fileversion > CURRENT_FILE_VERSION )
+            {
+                if (WaitWindow::isShown()) WaitWindow::hide();
+                wxMessageBox( _("Warning : you are opening a file saved with a version of\nAria Maestosa more recent than the version you currently have.\nIt may not open correctly.") );
+            }
+        }
+        const char* measureAmount_c = xml->getAttributeValue("measureAmount");
+        if (measureAmount_c != NULL)
+        {
+            std::cout << "[Sequence::readFromFile] measureAmount = " <<  atoi(measureAmount_c) << std::endl;
+            
+            {
+                ScopedMeasureTransaction tr2(m_measure_data->startTransaction());
+                tr2->setMeasureAmount( atoi(measureAmount_c) );
+            }
+        }
+        else
+        {
+            std::cerr << "Missing info from file: measure amount" << std::endl;
+            return false;
+        }
+        
+        const char* channelManagement_c = xml->getAttributeValue("channelManagement");
+        if (channelManagement_c != NULL)
+        {
+            if ( fromCString(channelManagement_c).IsSameAs( wxT("manual") ) ) setChannelManagementType(CHANNEL_MANUAL);
+            else if ( fromCString(channelManagement_c).IsSameAs(  wxT("auto") ) ) setChannelManagementType(CHANNEL_AUTO);
+            else std::cerr << "Unknown channel management type : " << channelManagement_c << std::endl;
+        }
+        else
+        {
+            std::cerr << "Missing info from file: channel management" << std::endl;
+        }
+        
+        const char* internalName_c = xml->getAttributeValue("internalName");
+        if (internalName_c != NULL)
+        {
+            internal_sequenceName = fromCString(internalName_c);
+        }
+        else
+        {
+            std::cerr << "Missing info from file: song internal name" << std::endl;
+        }
+        
+        const char* currentTrack_c = xml->getAttributeValue("currentTrack");
+        if (currentTrack_c != NULL)
+        {
+            currentTrack = atoi( currentTrack_c );
+        }
+        else
+        {
+            currentTrack = 0;
+            std::cerr << "Missing info from file: current track" << std::endl;
+        }
+        
+        const char* beatResolution_c = xml->getAttributeValue("beatResolution");
+        if (beatResolution_c != NULL)
+        {
+            beatResolution = atoi( beatResolution_c );
+        }
+        else
+        {
+            //beatResolution = 960;
+            std::cerr << "Missing info from file: beat resolution" << std::endl;
+            return false;
+        }
+        
+        const char* metronome_c = xml->getAttributeValue("metronome");
+        if (metronome_c != NULL)
+        {
+            if (strcmp(metronome_c, "true") == 0)
+            {
+                m_play_with_metronome = true;
+            }
+            else if (strcmp(metronome_c, "false") == 0)
+            {
+                m_play_with_metronome = false;
+            }
+            else
+            {
+                std::cerr << "Invalid value for 'metronome' property : " << metronome_c << "\n";
+                m_play_with_metronome = false;
+            }
+        }
+        else
+        {
             m_play_with_metronome = false;
         }
-    }
-    else
-    {
-        m_play_with_metronome = false;
-    }
 
-    
-    bool copyright_mode = false;
-    bool tempo_mode = false;
+        
+        bool copyright_mode = false;
+        bool tempo_mode = false;
 
-    // parse the file until end reached
-    while (xml != NULL and xml->read())
-    {
-
-        switch (xml->getNodeType())
+        bool done = false;
+        
+        // parse the file until end reached
+        while (xml != NULL and xml->read() and not done)
         {
-            case irr::io::EXN_TEXT:
-            {
-                if (copyright_mode) setCopyright( fromCString((char*)xml->getNodeData()) );
 
-                break;
-            }
-            case irr::io::EXN_ELEMENT:
-            {                
-                
-                // ---------- measure ------
-                if (strcmp("measure", xml->getNodeName()) == 0)
+            switch (xml->getNodeType())
+            {
+                case irr::io::EXN_TEXT:
                 {
-                    if (not m_measure_data->readFromFile(xml) ) return false;
+                    if (copyright_mode) setCopyright( fromCString((char*)xml->getNodeData()) );
+
+                    break;
                 }
-                
-                // ---------- time sig ------
-                else if (strcmp("timesig", xml->getNodeName()) == 0)
-                {
-                    if (not m_measure_data->readFromFile(xml)) return false;
-                }
-                
-                // ---------- track ------
-                else if (strcmp("track", xml->getNodeName()) == 0)
-                {
-                    Track* newTrack = new Track(this);
-                    addTrack( newTrack );
+                case irr::io::EXN_ELEMENT:
+                {                
                     
-                    if (not newTrack->readFromFile(xml, gseq)) return false;
-                }
-
-                // ---------- copyright ------
-                else if (strcmp("copyright", xml->getNodeName()) == 0)
-                {
-                    copyright_mode=true;
-                }
-
-                // ---------- tempo events ------
-                else if (strcmp("tempo", xml->getNodeName()) == 0)
-                {
-                    tempo_mode = true;
-                }
-                // all control events in <sequence> are tempo events
-                else if (strcmp("controlevent", xml->getNodeName()) == 0)
-                {
-
-                    if (not tempo_mode)
+                    // ---------- measure ------
+                    if (strcmp("measure", xml->getNodeName()) == 0)
                     {
-                        std::cerr << "Unexpected control event" << std::endl;
-                        continue;
+                        if (not m_measure_data->readFromFile(xml) ) return false;
+                    }
+                    
+                    // ---------- time sig ------
+                    else if (strcmp("timesig", xml->getNodeName()) == 0)
+                    {
+                        if (not m_measure_data->readFromFile(xml)) return false;
+                    }
+                    
+                    // ---------- track ------
+                    else if (strcmp("track", xml->getNodeName()) == 0)
+                    {
+                        Track* newTrack = new Track(this);
+                        addTrack( newTrack );
+                        
+                        if (not newTrack->readFromFile(xml, gseq)) return false;
                     }
 
-                    int tempo_tick = -1;
-                    const char* tick = xml->getAttributeValue("tick");
-                    if (tick != NULL) tempo_tick = atoi( tick );
-                    if (tempo_tick < 0)
+                    // ---------- copyright ------
+                    else if (strcmp("copyright", xml->getNodeName()) == 0)
                     {
-                        std::cerr << "Failed to read tempo event" << std::endl;
-                        continue;
+                        copyright_mode=true;
                     }
 
-                    int tempo_value = -1;
-                    const char* value = xml->getAttributeValue("value");
-                    if (value != NULL) tempo_value = atoi( value );
-                    if (tempo_value <= 0)
+                    // ---------- tempo events ------
+                    else if (strcmp("tempo", xml->getNodeName()) == 0)
                     {
-                        std::cerr << "Failed to read tempo event" << std::endl;
-                        continue;
+                        tempo_mode = true;
+                    }
+                    // all control events in <sequence> are tempo events
+                    else if (strcmp("controlevent", xml->getNodeName()) == 0)
+                    {
+
+                        if (not tempo_mode)
+                        {
+                            std::cerr << "Unexpected control event" << std::endl;
+                            continue;
+                        }
+
+                        int tempo_tick = -1;
+                        const char* tick = xml->getAttributeValue("tick");
+                        if (tick != NULL) tempo_tick = atoi( tick );
+                        if (tempo_tick < 0)
+                        {
+                            std::cerr << "Failed to read tempo event" << std::endl;
+                            continue;
+                        }
+
+                        int tempo_value = -1;
+                        const char* value = xml->getAttributeValue("value");
+                        if (value != NULL) tempo_value = atoi( value );
+                        if (tempo_value <= 0)
+                        {
+                            std::cerr << "Failed to read tempo event" << std::endl;
+                            continue;
+                        }
+
+                        m_tempo_events.push_back( new ControllerEvent(201, tempo_tick, tempo_value) );
+
                     }
 
-                    m_tempo_events.push_back( new ControllerEvent(201, tempo_tick, tempo_value) );
-
-                }
-
-            }// end case
-
-                break;
-            case irr::io::EXN_ELEMENT_END:
-            {
-
-                if (strcmp("sequence", xml->getNodeName()) == 0)
+                    break;
+                }// end case
+                    
+                case irr::io::EXN_ELEMENT_END:
                 {
-                    goto over;
+
+                    if (strcmp("sequence", xml->getNodeName()) == 0)
+                    {
+                        done = true;
+                    }
+                    else if (strcmp("copyright", xml->getNodeName()) == 0)
+                    {
+                        copyright_mode = false;
+                    }
+                    else if (strcmp("tempo", xml->getNodeName()) == 0)
+                    {
+                        tempo_mode = false;
+                    }
+                    break;
                 }
-                else if (strcmp("copyright", xml->getNodeName()) == 0)
-                {
-                    copyright_mode=false;
-                }
-                else if (strcmp("tempo", xml->getNodeName()) == 0)
-                {
-                    tempo_mode=false;
-                }
 
-            }
-                break;
+                default:
+                    break;
+            }//end switch
+        }// end while
 
-            default:break;
-        }//end switch
-    }// end while
-
-over:
-
-    m_measure_data->afterImporting();
+    }
+    
+// over:
     clearUndoStack();
 
     m_importing = false;

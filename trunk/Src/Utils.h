@@ -213,4 +213,6 @@ public:
     }
 };
 
+#define once for(int __xyzwrst=0; __xyzwrst<1; __xyzwrst++)
+
 #endif

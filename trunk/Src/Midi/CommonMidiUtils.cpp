@@ -150,7 +150,7 @@ void AriaMaestosa::addTimeSigFromVector(int n, int amount, MeasureData* measureD
         }
         
     }
-    m.SetTime( measureData->firstTickInMeasure( measureData->getTimeSig(n).getTick() ) - substract_ticks );
+    m.SetTime( measureData->firstTickInMeasure( measureData->getTimeSig(n).getMeasure() ) - substract_ticks );
     
     float denom = (float)log(measureData->getTimeSig(n).getDenom())/(float)log(2);
     m.SetTimeSig( measureData->getTimeSig(n).getNum(), (int)denom );
