@@ -14,8 +14,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef __GRAPHCIAL_TRACK_H__
-#define __GRAPHCIAL_TRACK_H__
+#ifndef __GRAPHICAL_TRACK_H__
+#define __GRAPHICAL_TRACK_H__
 
 
 #include "Utils.h"
@@ -23,6 +23,10 @@
 #include "Midi/Track.h"
 #include "Pickers/MagneticGridPicker.h"
 #include "Renderers/RenderAPI.h"
+
+const int BORDER_SIZE = 20;
+const int MARGIN = 5;
+
 
 class wxFileOutputStream;
 // forward
