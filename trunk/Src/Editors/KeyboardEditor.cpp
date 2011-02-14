@@ -217,7 +217,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 {
     if (not ImageProvider::imagesLoaded()) return;
 
-    AriaRender::beginScissors(10, getEditorYStart(), m_width - 15, 20 + m_height);
+    AriaRender::beginScissors(LEFT_EDGE_X, getEditorYStart(), m_width - 15, m_height + BORDER_SIZE);
 
     // ------------------ draw lined background ----------------
 
@@ -321,11 +321,11 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     // ---------------------- draw notes ----------------------------
     const int noteAmount = m_track->getNoteAmount();
+    const float pscroll = m_gsequence->getXScrollInPixels();
     for (int n=0; n<noteAmount; n++)
     {
-
-        const int x1 = m_graphical_track->getNoteStartInPixels(n) - m_gsequence->getXScrollInPixels();
-        const int x2 = m_graphical_track->getNoteEndInPixels(n)   - m_gsequence->getXScrollInPixels();
+        const int x1 = m_graphical_track->getNoteStartInPixels(n) - pscroll;
+        const int x2 = m_graphical_track->getNoteEndInPixels(n)   - pscroll;
 
         // don't draw notes that won't be visible
         if (x2 < 0)       continue;
@@ -486,8 +486,8 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     // ---------------------------- scrollbar -----------------------
     // FIXME - instead implement renderScrollbar(focus)...
-    if (!focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
-    else        AriaRender::setImageState(AriaRender::STATE_NORMAL);
+    if (not focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
+    else           AriaRender::setImageState(AriaRender::STATE_NORMAL);
 
     renderScrollbar();
 

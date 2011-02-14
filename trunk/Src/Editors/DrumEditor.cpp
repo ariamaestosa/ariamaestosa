@@ -716,7 +716,7 @@ void DrumEditor::mouseUp(RelativeXCoord mousex_current, const int mousey_current
 void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
                         RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {
-    AriaRender::beginScissors(10, getEditorYStart(), m_width - 15, 20 + m_height);
+    AriaRender::beginScissors(LEFT_EDGE_X, getEditorYStart(), m_width - 15, m_height + BORDER_SIZE);
 
     drawVerticalMeasureLines(getEditorYStart(), getYEnd());
 

@@ -1021,12 +1021,12 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     AriaRender::images();
     
     // top left corner
-    cornerDrawable->move(x+10,y);
+    cornerDrawable->move(x + LEFT_EDGE_X,y);
     cornerDrawable->setFlip(false, false);
     cornerDrawable->render();
     
     // top border
-    borderDrawable->move(x+30, y);
+    borderDrawable->move(x + LEFT_EDGE_X + BORDER_SIZE, y);
     borderDrawable->setFlip(false, false);
     borderDrawable->rotate(0);
     borderDrawable->scale((Display::getWidth() - MARGIN - BORDER_SIZE*2)/20.0, 1 );
@@ -1040,7 +1040,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     // --------------------------------------------------
     
     // left border
-    borderDrawable->move(x + 30, y + BORDER_SIZE);
+    borderDrawable->move(x + LEFT_EDGE_X + BORDER_SIZE, y + BORDER_SIZE);
     borderDrawable->setFlip(false, true);
     borderDrawable->rotate(90);
     borderDrawable->scale(1, barHeight /*number of pixels high*/ /20.0 );
@@ -1062,7 +1062,7 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     else           AriaRender::color(0.31, 0.31, 0.31);
     
     // FIXME: don't hardcode numbers
-    AriaRender::rect(x+30, y + BORDER_SIZE, x + Display::getWidth() - MARGIN - BORDER_SIZE, y + BORDER_SIZE + barHeight);
+    AriaRender::rect(x + LEFT_EDGE_X + BORDER_SIZE, y + BORDER_SIZE, x + Display::getWidth() - MARGIN - BORDER_SIZE, y + BORDER_SIZE + barHeight);
     
     
     // --------------------------------------------------
@@ -1074,14 +1074,13 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
         if (not focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
         else           AriaRender::setImageState(AriaRender::STATE_NORMAL);
         
-        // FIXME: don't hardcode numbers
         // bottom left corner
-        cornerDrawable->move(x+10, y + BORDER_SIZE + barHeight);
+        cornerDrawable->move(x + LEFT_EDGE_X, y + BORDER_SIZE + barHeight);
         cornerDrawable->setFlip(false, true);
         cornerDrawable->render();
         
         // bottom border
-        borderDrawable->move(x+30, y + BORDER_SIZE + barHeight);
+        borderDrawable->move(x + LEFT_EDGE_X + BORDER_SIZE, y + BORDER_SIZE + barHeight);
         borderDrawable->setFlip(false, true);
         borderDrawable->rotate(0);
         borderDrawable->scale((Display::getWidth() - MARGIN - BORDER_SIZE*2)/20.0, 1 );
@@ -1101,9 +1100,9 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
         {
             AriaRender::primitives();
             AriaRender::color(1, 1, 1);
-            AriaRender::rect(x + 10,
+            AriaRender::rect(x + LEFT_EDGE_X,
                              y + barHeight + BORDER_SIZE,
-                             x + Display::getWidth() - 5 ,
+                             x + Display::getWidth() - MARGIN,
                              y + barHeight + BORDER_SIZE + 20 + m_height);
         }//end if
     }//end if
@@ -1276,35 +1275,35 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
         if (not focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
         else           AriaRender::setImageState(AriaRender::STATE_NORMAL);
         
-        // bottom left corner (FIXME: remove those hardcoded numbers; they are in Editor too so avoid duplicating)
-        whiteCornerDrawable->move(10, y + 20 + barHeight + m_height);
+        // bottom left corner
+        whiteCornerDrawable->move(LEFT_EDGE_X, y + BORDER_SIZE + barHeight + m_height);
         whiteCornerDrawable->setFlip(false, false);
         whiteCornerDrawable->render();
         
-        // bottom border (FIXME: remove those hardcoded numbers; they are in Editor too so avoid duplicating)
-        whiteBorderDrawable->move(30, y + 20 + barHeight + m_height);
+        // bottom border
+        whiteBorderDrawable->move(LEFT_EDGE_X + BORDER_SIZE, y + BORDER_SIZE + barHeight + m_height);
         whiteBorderDrawable->setFlip(false, false);
         whiteBorderDrawable->rotate(0);
-        whiteBorderDrawable->scale((Display::getWidth() - MARGIN - BORDER_SIZE - 20 /*right round cornerDrawable*/)/20.0, 1 );
+        whiteBorderDrawable->scale((Display::getWidth() - MARGIN - BORDER_SIZE*2)/20.0, 1 );
         whiteBorderDrawable->render();
         
-        // bottom right corner (FIXME: remove those hardcoded numbers; they are in Editor too so avoid duplicating)
+        // bottom right corner
         whiteCornerDrawable->move(Display::getWidth() - MARGIN - BORDER_SIZE,
-                                  y + 20 + barHeight + m_height);
+                                  y + BORDER_SIZE + barHeight + m_height);
         whiteCornerDrawable->setFlip(true, false);
         whiteCornerDrawable->render();
         
         // --------------------------------------------------
         
-        // left borderDrawable (FIXME: remove those hardcoded numbers; they are in Editor too so avoid duplicating)
-        whiteBorderDrawable->move(30, y + barHeight + 20);
+        // left borderDrawable
+        whiteBorderDrawable->move(LEFT_EDGE_X + BORDER_SIZE, y + barHeight + BORDER_SIZE);
         whiteBorderDrawable->setFlip(false, false);
         whiteBorderDrawable->rotate(90);
         whiteBorderDrawable->scale(1, m_height / 20.0 );
         whiteBorderDrawable->render();
         
-        // right borderDrawable (FIXME: remove those hardcoded numbers; they are in Editor too so avoid duplicating)
-        whiteBorderDrawable->move(Display::getWidth() - 5 , y+barHeight+20);
+        // right borderDrawable
+        whiteBorderDrawable->move(Display::getWidth() - MARGIN , y + barHeight + BORDER_SIZE);
         whiteBorderDrawable->setFlip(false, true);
         whiteBorderDrawable->rotate(90);
         whiteBorderDrawable->scale(1, m_height / 20.0 );
