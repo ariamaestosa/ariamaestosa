@@ -338,6 +338,9 @@ namespace AriaMaestosa
 const int EXPANDED_BAR_HEIGHT = 20;
 const int COLLAPSED_BAR_HEIGHT = 5;
 
+const int EDITOR_ICON_SIZE = 30;
+const int TRACK_MIN_SIZE = 35;
+
 GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq, MagneticGrid* magneticGrid) :
     m_instrument_name( m_instrument_string = new Model<wxString>(wxT("")), false ),
     m_name_renderer(track->getNameModel(), false)
@@ -643,14 +646,14 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         }
 
 
-        if (mousey > m_from_y + 10 and mousey < m_from_y + 40)
+        if (mousey > m_from_y + 10 and mousey < m_from_y + 10 + EDITOR_ICON_SIZE)
         {
             // modes
-            if (winX > m_score_button->getX() and winX < m_score_button->getX() + 30)
+            if (winX > m_score_button->getX() and winX < m_score_button->getX() + EDITOR_ICON_SIZE)
             {
                 m_track->setNotationType(SCORE);
             }
-            else if (winX > m_piano_button->getX() and winX < m_piano_button->getX()+30)
+            else if (winX > m_piano_button->getX() and winX < m_piano_button->getX() + EDITOR_ICON_SIZE)
             {
                 // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
                 if (m_track->getNotationType() == DRUM and
@@ -661,7 +664,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 
                 m_track->setNotationType(KEYBOARD);
             }
-            else if (winX > m_tab_button->getX() and winX < m_tab_button->getX() + 30)
+            else if (winX > m_tab_button->getX() and winX < m_tab_button->getX() + EDITOR_ICON_SIZE)
             {
                 // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
                 if (m_track->getNotationType() == DRUM and
@@ -673,7 +676,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                 m_track->setNotationType(GUITAR);
                 m_track->prepareNotesForGuitarEditor(); // FIXME(DESIGN): there should be no need to manually call this
             }
-            else if (winX > m_drum_button->getX() and winX < m_drum_button->getX() + 30)
+            else if (winX > m_drum_button->getX() and winX < m_drum_button->getX() + EDITOR_ICON_SIZE)
             {
                 // in midi, drums go to channel 9 (10 if you start from one)
                 if (m_gsequence->getModel()->getChannelManagementType() == CHANNEL_MANUAL)
@@ -683,7 +686,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 
                 m_track->setNotationType(DRUM);
             }
-            else if (winX > m_ctrl_button->getX() and winX < m_ctrl_button->getX() + 30)
+            else if (winX > m_ctrl_button->getX() and winX < m_ctrl_button->getX() + EDITOR_ICON_SIZE)
             {
                 m_track->setNotationType(CONTROLLER);
             }
@@ -780,8 +783,7 @@ bool GraphicalTrack::processMouseDrag(RelativeXCoord x, int y)
         // resize drag
         if (m_dragging_resize)
         {
-            const int TRACK_MIN_SIZE = 35;
-            
+
             if (m_height == TRACK_MIN_SIZE)
             { 
                 // if it has reached minimal size, wait until mouse comes back over before resizing again
@@ -872,8 +874,10 @@ void GraphicalTrack::maximizeHeight(bool maximize)
 {
     if (maximize)
     {
-        setHeight(Display::getHeight() - m_gsequence->getDockHeight() -
-                  (m_gsequence->getModel()->getMeasureData()->isExpandedMode() ? 150 : 130)  ); // FIXME - don't hardcode values
+        const bool exp = m_gsequence->getModel()->getMeasureData()->isExpandedMode();
+        setHeight(Display::getHeight() - m_gsequence->getDockHeight() - MEASURE_BAR_Y -
+                  EXPANDED_BAR_HEIGHT - BORDER_SIZE - 50 -
+                  (exp ? EXPANDED_MEASURE_BAR_H : MEASURE_BAR_H)  );
     }
     else
     {
@@ -1281,11 +1285,11 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
         whiteBorderDrawable->move(30, y + 20 + barHeight + m_height);
         whiteBorderDrawable->setFlip(false, false);
         whiteBorderDrawable->rotate(0);
-        whiteBorderDrawable->scale((Display::getWidth() - 5 /* margin*/ - 20 /*left round cornerDrawable*/ - 20 /*right round cornerDrawable*/)/20.0, 1 );
+        whiteBorderDrawable->scale((Display::getWidth() - MARGIN - BORDER_SIZE - 20 /*right round cornerDrawable*/)/20.0, 1 );
         whiteBorderDrawable->render();
         
         // bottom right corner (FIXME: remove those hardcoded numbers; they are in Editor too so avoid duplicating)
-        whiteCornerDrawable->move(Display::getWidth() - 5 /* margin*/ - 20 /*left round cornerDrawable*/,
+        whiteCornerDrawable->move(Display::getWidth() - MARGIN - BORDER_SIZE,
                                   y + 20 + barHeight + m_height);
         whiteCornerDrawable->setFlip(true, false);
         whiteCornerDrawable->render();
