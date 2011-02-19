@@ -647,19 +647,21 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
                 const float goal = (mousey_current - m_from_y - m_header_bar_height - 52)/(float)(m_height - THUMB_HEIGHT*2);
 
                 // thumb has reached mouse, just continue as regular scrolling
-                float dist = goal-m_sb_position; // find distance betweem mouse and thumb in 0-1 units
-                if (dist<0) dist -= dist*2; // make positive
-                if (dist<0.01)
+                float dist = goal - m_sb_position; // find distance betweem mouse and thumb in 0-1 units
+                if (dist < 0) dist = fabsf(dist);
+                
+                if (dist < 0.01)
                 {
                     m_vertical_scrolling = true;
                 }
+                
                 // move thumb towards mouse
                 if (m_sb_position < goal) m_sb_position += 0.005;
                 if (m_sb_position > goal) m_sb_position -= 0.005;
 
                 // make sure thumb stays within bounds
-                if (m_sb_position<0) m_sb_position=0;
-                if (m_sb_position>1) m_sb_position=1;
+                if (m_sb_position < 0) m_sb_position = 0;
+                if (m_sb_position > 1) m_sb_position = 1;
 
                 Display::render();
             }
@@ -670,9 +672,7 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
         if (m_scroll_up_arrow_pressed)
         {
             m_sb_position -= 0.001;
-            if (m_sb_position<0) m_sb_position=0;
-
-            //std::cout << "scrolling up to " << m_sb_position << std::endl;
+            if (m_sb_position < 0) m_sb_position = 0;
 
             Display::render();
         }
@@ -680,9 +680,7 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
         if (m_scroll_down_arrow_pressed)
         {
             m_sb_position += 0.001;
-            if (m_sb_position>1) m_sb_position=1;
-
-            //std::cout << "scrolling down to " << m_sb_position << std::endl;
+            if (m_sb_position > 1) m_sb_position = 1;
 
             Display::render();
         }
@@ -703,7 +701,7 @@ void Editor::rightClick(RelativeXCoord x, int y)
     {
         int screen_x, screen_y;
         Display::clientToScreen(x.getRelativeTo(WINDOW),y, &screen_x, &screen_y);
-        showVolumeSlider( screen_x, screen_y, noteID, m_track);
+        showVolumeSlider(screen_x, screen_y, noteID, m_track);
     }
 
 }
