@@ -27,6 +27,7 @@
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 #include "Pickers/TuningPicker.h"
+#include "PreferencesData.h"
 #include "Renderers/RenderAPI.h"
 #include "Singleton.h"
 
@@ -63,11 +64,7 @@ GuitarEditor::GuitarEditor(GraphicalTrack* track) : Editor(track)
     m_clicked_on_note    = false;
     m_last_clicked_note  = -1;
 
-    //FIXME: find why font sizes are different on wxMac, and fix those issues cleanly
-    // FIXME(DESIGN): move this along the other font preferences
-#ifndef __WXMAC__
-    GuitarNoteNamesSingleton::getInstance()->setFont( wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, /*wxFONTWEIGHT_BOLD*/ wxFONTWEIGHT_NORMAL) );
-#endif
+    GuitarNoteNamesSingleton::getInstance()->setFont( getStringNameFont() );
 
     // set standard tuning by default (FIXME: don't duplicate the tuning from the tuning picker)
     std::vector<int> newTuning;
