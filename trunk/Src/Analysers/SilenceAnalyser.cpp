@@ -308,7 +308,7 @@ void gatherSilenceCallback(const Sequence* seq, const int duration, const int ti
                            const int dot_delta_x, const int dot_delta_y, void* userdata)
 {
     g_silences_ticks.push_back( SilenceInfo(tick, tick + duration, type, silences_y,
-                                            triplet, dotted, dot_delta_x, dot_delta_y) );
+                                            triplet, dotted) );
 }
 
 // ----------------------------------------------------------------------------------------------------------
