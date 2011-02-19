@@ -260,7 +260,7 @@ namespace AriaMaestosa
          *
          * Note that note heads are assumed to be already rendered at this point; this
          * will set up stems, beams, triplet signs, etc... but might very well remove
-         * some note heads, especially in chords (FIXME?)
+         * some note heads, especially in chords
          */
         void analyseNoteInfo();
         
