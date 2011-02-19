@@ -33,9 +33,8 @@ namespace AriaMaestosa
     
         /** "Delegate" type used to give back silence information to caller of 'SilenceAnalyser::findSilences' */
         typedef void(*RenderSilenceCallback)(const Sequence* gseq, const int duration, const int tick,
-                                             const int type, const int silences_y, const bool triplet,
-                                             const bool dotted, const int dot_delta_x, const int dot_delta_y,
-                                             void* userData);
+                                             const int type, const int silences_y, const bool triplet, const bool dotted, 
+                                             const int dot_delta_x, const int dot_delta_y, void* userData);
 
         /** Describes a silence */
         class SilenceInfo
@@ -56,18 +55,13 @@ namespace AriaMaestosa
             /** whether this silence is of triplet duration (and thus needs a "3" sign under it) */
             bool m_triplet;
             
-            /** relative coordinates of dot; set to fit the silence, depending on its size */
-            int m_dot_delta_x, m_dot_delta_y; //FIXME: this doesn't go there
-            
             SilenceInfo(int tickFrom, int tickTo, int type, const int silences_y, bool triplet,
-                        bool dotted, int dot_delta_x, int dot_delta_y) : m_tick_range(tickFrom, tickTo)
+                        bool dotted) : m_tick_range(tickFrom, tickTo)
             {
                 m_type        = type;
                 m_triplet     = triplet;
                 m_silences_y  = silences_y;
                 m_dotted      = dotted;
-                m_dot_delta_x = dot_delta_x;
-                m_dot_delta_y = dot_delta_y;
             }
         };
         
