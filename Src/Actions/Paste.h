@@ -36,6 +36,8 @@ namespace AriaMaestosa
             
             NoteRelocator relocator;
             
+            int getShiftForRegularPaste();
+            
         public:
             
             Paste(const bool atMouse);

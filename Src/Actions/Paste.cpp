@@ -74,6 +74,38 @@ void Paste::undo()
 
 // -------------------------------------------------------------------------------------------------------------
 
+int Paste::getShiftForRegularPaste()
+{
+    GraphicalTrack* gtrack = m_track->getGraphics();
+
+    int shift = 0;
+    
+    Sequence* sequence = m_track->getSequence();
+    MeasureData* md = sequence->getMeasureData();
+    
+    // if not "paste at mouse", find first visible measure
+    int measure = md->measureAtTick(gtrack->getSequence()->getXScrollInMidiTicks())-1;
+    if (measure < 0) measure = 0;
+    const int lastMeasureStart = md->firstTickInMeasure( measure );
+    
+    shift = m_track->snapMidiTickToGrid( lastMeasureStart );
+    
+    // find if all track->m_notes will be visible in the location just calculated,
+    // otherwise move them one more measure ahead (if measure is half-visible because of scrolling)
+    Note& first_note = *(Clipboard::getNote(0));
+    
+    // check if note is before visible area
+    while ((first_note.getTick() + first_note.getEndTick())/2 + shift <
+           gtrack->getSequence()->getXScrollInMidiTicks())
+    {
+        shift = md->firstTickInMeasure( md->measureAtTick( shift )+1 );
+    }
+    
+    return shift;
+}
+
+// -------------------------------------------------------------------------------------------------------------
+
 void Paste::perform()
 {
     ASSERT(m_track != NULL);
@@ -160,7 +192,7 @@ void Paste::perform()
         // before visible area
         if ((tmp.getTick() + tmp.getEndTick())/2 + shift < gtrack->getSequence()->getXScrollInMidiTicks())
         {
-            goto regular_paste;
+            shift = getShiftForRegularPaste();
         }
 
         // after visible area
@@ -168,42 +200,16 @@ void Paste::perform()
 
         if ((tmp.getTick() + tmp.getEndTick())/2 + shift > screen_width.getRelativeTo(MIDI) )
         {
-            goto regular_paste;
+            shift = getShiftForRegularPaste();
         }
 
     }
     else
     {
-
-regular_paste: // FIXME - find better way than goto
-        /*
-         * This part will change to value of 'shift' variable to make sure pasted notes will be visible
-         */
-
-        Sequence* sequence = m_track->getSequence();
-        MeasureData* md = sequence->getMeasureData();
-        
-        // if not "paste at mouse", find first visible measure
-        int measure = md->measureAtTick(gtrack->getSequence()->getXScrollInMidiTicks())-1;
-        if (measure < 0) measure = 0;
-        const int lastMeasureStart = md->firstTickInMeasure( measure );
-        
-        shift = m_track->snapMidiTickToGrid( lastMeasureStart );
-
-        // find if all track->m_notes will be visible in the location just calculated,
-        // otherwise move them one more measure ahead (if measure is half-visible because of scrolling)
-        Note& first_note = *(Clipboard::getNote(0));
-
-        // check if note is before visible area
-        while ((first_note.getTick() + first_note.getEndTick())/2 + shift <
-               gtrack->getSequence()->getXScrollInMidiTicks())
-        {
-            shift = md->firstTickInMeasure( md->measureAtTick( shift )+1 );
-        }
-
+        shift = getShiftForRegularPaste();
     }
 
-    // add new notes
+    // ---- add new notes
     const int clipboardSize = Clipboard::getSize();
     for (int n=0; n<clipboardSize; n++)
     {
