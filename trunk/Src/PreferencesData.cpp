@@ -338,6 +338,16 @@ wxFont AriaMaestosa::getControllerFont()
 #endif
 }
 
+wxFont AriaMaestosa::getStringNameFont()
+{
+#ifdef __WXMAC__
+    return wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#else
+    return wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#endif
+}
+
+
 wxFont AriaMaestosa::getTimeSigPrintFont()
 {
 #ifdef __WXMAC__
@@ -378,3 +388,4 @@ wxFont AriaMaestosa::getNumberFont()
     return wxFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 #endif
 }
+

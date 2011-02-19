@@ -350,9 +350,9 @@ void ScoreMidiConverter::updateConversionData()
         // if note is flat or sharp, also find what this line would be with a natural sign
         if (sharpness != NATURAL)
         {
-            const int natural_note_on_this_line = Note::findNotePitch( note_7, NATURAL, 9 - octave); //FIXME: octave numbers are wrong in Score Editor
+            //FIXME: octave numbers are wrong in Score Editor
+            const int natural_note_on_this_line = Note::findNotePitch( note_7, NATURAL, 9 - octave);
 
-            // FIXME - it may not be necessary to fill it again every time
             m_level_to_midi_note[n] = natural_note_on_this_line;
 
             // only use natural signs if this note cannot be displayed without natural sign on another line
@@ -365,7 +365,6 @@ void ScoreMidiConverter::updateConversionData()
         }
         else
         {
-            // FIXME - it may not be necessary to fill it again every time
             m_level_to_natural_note[n] = m_level_to_midi_note[n];
         }
 

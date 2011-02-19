@@ -129,6 +129,7 @@ namespace AriaMaestosa
     wxFont getPrintTitleFont();
     wxFont getPrintSubtitleFont();
     wxFont getNumberFont();
+    wxFont getStringNameFont();
     
 }
 
