@@ -512,15 +512,17 @@ int Note::findNotePitch(Note7 note_7, PitchSign sharpness, const int octave)
     else if (note_7 == NOTE_7_G) note += 4;
     else
     {
-        std::cerr << "Invalid note: " << note_7 << std::endl;
+        std::cerr << "[Note::findNotePitch] Invalid note: " << note_7 << std::endl;
         return 0;
     }
     
     if      (sharpness == SHARP) note -= 1;
     else if (sharpness == FLAT)  note += 1;
     
-    //FIXME: add sanity checks for the value of 'octave'
-    return note + (9 - octave)*12;
+    const int returnv = note + (9 - octave)*12;
+    ASSERT_E(returnv, >=, 0);
+    ASSERT_E(returnv, <=, 130);
+    return returnv;
 }
 
 UNIT_TEST( TestFindNotePitch )
