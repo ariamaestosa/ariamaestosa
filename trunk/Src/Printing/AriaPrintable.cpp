@@ -55,32 +55,24 @@ AriaPrintable::AriaPrintable(wxString title, bool* success) :
     m_font_height       = -1;
     m_character_width   = -1;
     
-    // wx only allows getting font size with a DC or a window... so I need to create
-    // a dummy one (FIXME)
-    wxBitmap dummyBmp(5,5);
-    wxMemoryDC dummy(dummyBmp);
-    ASSERT(dummy.IsOk());
-    dummy.SetFont( m_normal_font );
-    wxCoord txw = -1, txh = -1, descent = -1, externalLeading = -1;
-    dummy.GetTextExtent(wxT("X"), &txw, &txh, &descent, &externalLeading);
-    
+    wxCoord txw, txh, descent, externalLeading;
+    Display::getTextExtents(wxT("X"), m_normal_font, &txw, &txh, &descent, &externalLeading);
+
     m_font_height      = txh;
     m_character_width  =  txw;
     ASSERT(m_font_height     > 0);
     ASSERT(m_character_width > 0);
     
     txw = -1; txh = -1; descent = -1; externalLeading = -1;
-    dummy.SetFont( m_title_font );
-    dummy.GetTextExtent(wxT("X"), &txw, &txh, &descent, &externalLeading);
+    Display::getTextExtents(wxT("X"), m_title_font, &txw, &txh, &descent, &externalLeading);
     
     m_title_font_height = txh;
     ASSERT(m_title_font_height > 0);
 
     txw = -1; txh = -1; descent = -1; externalLeading = -1;
-    dummy.SetFont( m_subtitle_font );
-    dummy.GetTextExtent(wxT("X"), &txw, &txh, &descent, &externalLeading);
+    Display::getTextExtents(wxT("X"), m_subtitle_font, &txw, &txh, &descent, &externalLeading);
     
-    m_subtitle_font_height= txh;
+    m_subtitle_font_height = txh;
     ASSERT(m_subtitle_font_height > 0);
     
     // --------------------

@@ -23,6 +23,8 @@
 
 class wxMenu;
 class wxDC;
+class wxFont;
+#include <wx/defs.h>
 
 enum PlayDuringEditMode
 {
@@ -119,6 +121,9 @@ namespace AriaMaestosa
         void clientToScreen(const int x_in, const int y_in, int* x_out, int* y_out);
         void screenToClient(const int x_in, const int y_in, int* x_out, int* y_out);
         
+        void getTextExtents(wxString string, const wxFont& font, wxCoord* txw, wxCoord* txh,
+                            wxCoord* descent, wxCoord* externalLeading);
+
         void requestFocus();
     }
     
