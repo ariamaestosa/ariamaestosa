@@ -22,6 +22,10 @@
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 
+#include <wx/string.h>
+#include <wx/font.h>
+#include <wx/dcmemory.h>
+
 namespace AriaMaestosa
 {
     class TuningPicker;
@@ -226,6 +230,15 @@ namespace AriaMaestosa
         void requestFocus()
         {
             mainPane->SetFocus();
+        }
+        
+        void getTextExtents(wxString string, const wxFont& font, wxCoord* txw, wxCoord* txh, wxCoord* descent, wxCoord* externalLeading)
+        {
+            wxBitmap dummyBmp(5,5);
+            wxMemoryDC dummy(dummyBmp);
+            ASSERT(dummy.IsOk());
+            dummy.SetFont( font );
+            dummy.GetTextExtent(string, txw, txh, descent, externalLeading);
         }
         
     }// end Display namespace
