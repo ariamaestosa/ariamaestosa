@@ -202,7 +202,7 @@ void CustomNoteSelectDialog::show(Track* currentTrack)
 {
     m_current_track = currentTrack;
     
-    if (currentTrack->getNotationType() == GUITAR)
+    if (m_current_track->isNotationTypeEnabled(GUITAR))
     {
         cb_string->Enable(true);
         cb_fret->Enable(true);
@@ -214,6 +214,8 @@ void CustomNoteSelectDialog::show(Track* currentTrack)
     }
     returnCode = ShowModal();
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void CustomNoteSelectDialog::keyPress(wxKeyEvent& evt)
 {
@@ -232,8 +234,8 @@ void CustomNoteSelectDialog::okClicked(wxCommandEvent& evt)
     
     const bool pitch    = cb_pitch->IsChecked();
     const bool volume   = cb_volume->IsChecked();
-    const bool string   = cb_string->IsChecked() and m_current_track->getNotationType() == GUITAR;
-    const bool fret     = cb_fret->IsChecked()   and m_current_track->getNotationType() == GUITAR;
+    const bool string   = cb_string->IsChecked() and m_current_track->isNotationTypeEnabled(GUITAR);
+    const bool fret     = cb_fret->IsChecked()   and m_current_track->isNotationTypeEnabled(GUITAR);
     const bool duration = cb_duration->IsChecked();
     const bool measure  = cb_measure->IsChecked();
     

@@ -80,6 +80,10 @@ namespace AriaMaestosa
         {
             assert(false); // not supported in this editor
         }
+        
+        virtual NotationType getNotationType() const { return KEYBOARD; }
+        
+        virtual void processKeyPress(int keycode, bool commandDown, bool shiftDown);
     };
 }
 

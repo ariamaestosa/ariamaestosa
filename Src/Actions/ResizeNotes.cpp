@@ -23,6 +23,8 @@
 
 using namespace AriaMaestosa::Action;
 
+// ----------------------------------------------------------------------------------------------------------
+
 ResizeNotes::ResizeNotes(const int relativeWidth, const int noteID) :
     //I18N: (undoable) action name
     SingleTrackAction( _("resize note(s)") )
@@ -31,9 +33,13 @@ ResizeNotes::ResizeNotes(const int relativeWidth, const int noteID) :
     m_note_ID = noteID;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 ResizeNotes::~ResizeNotes()
 {
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 void ResizeNotes::undo()
 {
@@ -48,12 +54,12 @@ void ResizeNotes::undo()
     m_track->reorderNoteOffVector();
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void ResizeNotes::perform()
 {
     ASSERT(m_track != NULL);
-    
-    if (m_track->getNotationType() == DRUM) return;
-    
+        
     // not supported in this function (mostly because not needed)
     ASSERT(m_note_ID != ALL_NOTES); 
     
@@ -91,6 +97,4 @@ void ResizeNotes::perform()
     m_track->reorderNoteOffVector();
 }
 
-
-
-
+// ----------------------------------------------------------------------------------------------------------

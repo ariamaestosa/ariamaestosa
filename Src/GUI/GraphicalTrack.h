@@ -117,6 +117,8 @@ namespace AriaMaestosa
         
         AriaRenderString        m_name_renderer;
 
+        NotationType m_focused_editor;
+        
     public:
         LEAK_CHECK();
         
@@ -146,7 +148,7 @@ namespace AriaMaestosa
           */
         void createEditors();
         
-        Editor* getCurrentEditor();
+        //Editor* getCurrentEditor();
         
         // editors
               KeyboardEditor* getKeyboardEditor()       { return m_keyboard_editor;   }
@@ -158,6 +160,9 @@ namespace AriaMaestosa
               ScoreEditor*    getScoreEditor   ()       { return m_score_editor;      }
         const ScoreEditor*    getScoreEditor   () const { return m_score_editor;      }
 
+        Editor* getEditorAt(const int y);
+        Editor* getFocusedEditor();
+        
         ControllerEditor*   getControllerEditor() { return m_controller_editor; }
 
         void dock(const bool dock=true);
@@ -183,6 +188,8 @@ namespace AriaMaestosa
         void processMouseRelease();
         void processMouseExited(RelativeXCoord x_now, int y_now,
                                 RelativeXCoord x_initial, int y_initial);
+        
+        int getFromY() const { return m_from_y; }
         
         AriaRenderString& getNameRenderer() { return m_name_renderer; }
         

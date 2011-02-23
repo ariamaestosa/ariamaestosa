@@ -163,8 +163,7 @@ namespace AriaMaestosa
         bool hasAsBackground(Track* track);
         
         /** @brief method called by GraphicalTrack to let the Editor know about its position */
-        void updatePosition(const int from_y, const int to_y, const int width,
-                            const int height, const int barHeight);
+        void updatePosition(int from_y, int to_y, int width, int height, int barHeight);
         
         /** 
           * @brief  for default volume management.
@@ -258,6 +257,10 @@ namespace AriaMaestosa
                 
         /** @return the (potentially translated) name of this editor */
         virtual wxString getName() const = 0;
+        
+        virtual NotationType getNotationType() const = 0;
+        
+        virtual void processKeyPress(int keycode, bool commandDown, bool shiftDown);
         
         // ------------------------------------------------------------------------------------------------------
         // methods that provide general information common to all editors

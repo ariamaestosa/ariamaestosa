@@ -58,9 +58,7 @@ namespace AriaMaestosa
         void renderEvents();
         
         void selectAll( bool selected );
-        
-        void updatePosition(const int from_y, const int to_y, const int width, const int height, const int barHeight);
-        
+                
         void mouseDown(RelativeXCoord x, const int y);
         void mouseDrag(RelativeXCoord mousex_current, const int mousey_current,
                        RelativeXCoord, const int mousey_initial);
@@ -126,6 +124,8 @@ namespace AriaMaestosa
         virtual wxString getName() const { return _("Controller Editor"); }
         
         static int getPositionInPixels(int tick, GraphicalSequence* gseq);
+        
+        virtual NotationType getNotationType() const { return CONTROLLER; }
     };
     
 }

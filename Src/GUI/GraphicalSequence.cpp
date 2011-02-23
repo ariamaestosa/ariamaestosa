@@ -14,6 +14,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include "Actions/Paste.h"
 #include "GUI/GraphicalSequence.h"
 #include "GUI/MainFrame.h"
 #include "GUI/MainPane.h"
@@ -136,6 +137,24 @@ void GraphicalSequence::copy()
 {
     m_sequence->copy();
     x_scroll_upon_copying = m_x_scroll_in_pixels;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void GraphicalSequence::paste()
+{
+    GraphicalTrack* gtrack = getCurrentTrack();
+    gtrack->getTrack()->action( new Action::Paste(gtrack->getFocusedEditor(), false) );
+    if (m_sequence->m_seq_data_listener != NULL) m_sequence->m_seq_data_listener->onSequenceDataChanged();
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void GraphicalSequence::pasteAtMouse()
+{
+    GraphicalTrack* gtrack = getCurrentTrack();
+    gtrack->getTrack()->action( new Action::Paste(gtrack->getFocusedEditor(), true) );
+    if (m_sequence->m_seq_data_listener != NULL) m_sequence->m_seq_data_listener->onSequenceDataChanged();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -348,7 +367,7 @@ void GraphicalSequence::mouseHeldDown(RelativeXCoord mousex_current, int mousey_
     const int trackAmount = m_gtracks.size();
     for (int n=0; n<trackAmount; n++)
     {
-        m_gtracks[n].getCurrentEditor()->mouseHeldDown(mousex_current, mousey_current,
+        m_gtracks[n].getFocusedEditor()->mouseHeldDown(mousex_current, mousey_current,
                                                        mousex_initial, mousey_initial);
     }//next
     

@@ -54,7 +54,13 @@ Track::Track(Sequence* sequence)
     
     m_magnetic_grid = new MagneticGrid();
     m_muted = false;
-    m_editor_mode = KEYBOARD;
+    
+    for (int n=0; n<NOTATION_TYPE_COUNT; n++)
+    {
+        m_editor_mode[n] = false;
+    }
+    m_editor_mode[KEYBOARD] = true;
+    
     m_listener = NULL;
     
     // init key data
@@ -170,7 +176,7 @@ bool Track::addNote(Note* note, bool check_for_overlapping_notes)
         // the only time where this is not checked is when pasting, because it is then logical that notes are pasted on top of their originals
         if (check_for_overlapping_notes and m_notes[n].getTick() == note->getTick() and
             m_notes[n].getPitchID() == note->getPitchID() and
-           (m_editor_mode != GUITAR or m_notes[n].getString() == note->getString()) /*in guitar mode string must also match to be considered overlapping*/ )
+           (not m_editor_mode[GUITAR] or m_notes[n].getString() == note->getString()) /*in guitar mode string must also match to be considered overlapping*/ )
         {
             std::cout << "overlapping notes: rejected" << std::endl;
             return false;
@@ -718,8 +724,11 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
     // ---- select/deselect all notes
     if (id == ALL_NOTES)
     {
+        // FIXME: controller ediors checks don't belong here
+        /*
         if (m_editor_mode != CONTROLLER)
         {
+         */
 
             if (ignoreModifiers)
             {
@@ -730,8 +739,9 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
                 }//next
             }//end if
 
+        /*
         }// end if
-
+         */
     }
     else  // ---- select/deselect one specific note
     {
@@ -825,13 +835,15 @@ int Track::snapMidiTickToGrid_ceil(int tick)
 
 void Track::copy()
 {
-
+    // FIXME: controller editor checks don't belong here
+    /*
     if (m_editor_mode == CONTROLLER)
     {
         wxBell();
         return; // no copy/paste in controller mode
     }
-
+     */
+    
     Clipboard::clear();
     Clipboard::setBeatLength(m_sequence->ticksPerBeat());
 
@@ -845,7 +857,7 @@ void Track::copy()
         Clipboard::add(tmp);
 
         // if in guitar mode, make sure string/fret and note match
-        if (m_editor_mode == GUITAR)
+        if (m_editor_mode[GUITAR])
         {
             Clipboard::getNote( Clipboard::getSize()-1 )->checkIfStringAndFretMatchNote(false);
         }
@@ -869,8 +881,7 @@ void Track::copy()
     const int clipboard_size = Clipboard::getSize();
     for (int n=0; n<clipboard_size; n++)
     {
-        //Clipboard::getNote(n)->move( -lastMeasureStart, 0, graphics->editorMode);
-        getGraphics()->getCurrentEditor()->moveNote(*Clipboard::getNote(n), -lastMeasureStart, 0);
+        getGraphics()->getFocusedEditor()->moveNote(*Clipboard::getNote(n), -lastMeasureStart, 0);
     }
 
     m_sequence->setNoteShiftWhenNoScrolling( lastMeasureStart );
@@ -908,8 +919,8 @@ int Track::getChannel()
     // always 9 for drum tracks
     //const bool manual_mode = sequence->getChannelManagementType() == CHANNEL_MANUAL;
 
-    if (m_editor_mode == DRUM) return 9;
-    else                                   return m_channel;
+    if (m_editor_mode[DRUM]) return 9;
+    else                     return m_channel;
 
 }
 
@@ -1192,9 +1203,9 @@ void Track::onGuitarTuningUpdated(GuitarTuning* tuning, const bool userTriggered
 
 // ----------------------------------------------------------------------------------------------------------
 
-void Track::setNotationType(NotationType t)
+void Track::setNotationType(NotationType t, bool enabled)
 {
-    m_editor_mode = t;
+    m_editor_mode[t] = enabled;
     if (m_listener != NULL) m_listener->onNotationTypeChange();
 }
 
@@ -1267,7 +1278,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     // ignore track if it's muted
     // (but for some reason drum track can't be completely omitted)
     // if we only play selection, ignore mute and play anyway
-    if (m_muted and m_editor_mode != DRUM and not selectionOnly)
+    if (m_muted and not m_editor_mode[DRUM] and not selectionOnly)
     {
         return -1;
     }
@@ -1278,7 +1289,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     if (manual_mode) channel = getChannel();
 
     // drum tracks
-    if (m_editor_mode == DRUM) channel = 9;
+    if (m_editor_mode[DRUM]) channel = 9;
 
     //std::cout << "channel = " << track_ID << std::endl;
 
@@ -1341,8 +1352,8 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
         m.SetTime( 0 );
 
-        if (m_editor_mode == DRUM) m.SetProgramChange( channel, getDrumKit() );
-        else                                   m.SetProgramChange( channel, getInstrument() );
+        if (m_editor_mode[DRUM]) m.SetProgramChange( channel, getDrumKit() );
+        else                     m.SetProgramChange( channel, getInstrument() );
 
         if (not midiTrack->PutEvent( m ))
         {
@@ -1410,7 +1421,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     int last_event_tick = 0;
 
     // if muted and drums, return now
-    if (m_muted and m_editor_mode == DRUM and not selectionOnly) return -1;
+    if (m_muted and m_editor_mode[DRUM] and not selectionOnly) return -1;
 
     //std::cout << "-------------------- TRACK -------------" << std::endl;
 
@@ -1455,7 +1466,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                 m.SetTime( time );
 
 
-                if (m_editor_mode == DRUM)
+                if (m_editor_mode[DRUM])
                 {
                     m.SetNoteOn( channel, m_notes[note_on_id].getPitchID(), m_notes[note_on_id].getVolume() );
                 }
@@ -1487,7 +1498,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
             {
                 m.SetTime( time );
 
-                if (m_editor_mode == DRUM)
+                if (m_editor_mode[DRUM])
                 {
                     m.SetNoteOff( channel, m_note_off[note_off_id].getPitchID(), 0 );
                 }
@@ -1842,15 +1853,32 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                 {
                     const char* mode_c = xml->getAttributeValue("mode");
                                         
+                    // In support for old format
                     if ( mode_c != NULL )
                     {
-                        setNotationType((NotationType)atoi( mode_c ));
+                        setNotationType((NotationType)atoi( mode_c ), true);
                     }
                     else
                     {
-                        setNotationType(KEYBOARD);
+                        setNotationType(KEYBOARD, true);
                         std::cout << "Missing info from file: editor mode" << std::endl;
                     }
+                    
+                    // New format
+                    const char* mode_score = xml->getAttributeValue("score");
+                    if ( mode_score != NULL ) setNotationType(SCORE, true);
+                    
+                    const char* mode_keyb = xml->getAttributeValue("keyboard");
+                    if ( mode_keyb!= NULL ) setNotationType(KEYBOARD, true);
+                    
+                    const char* mode_guitar = xml->getAttributeValue("guitar");
+                    if ( mode_guitar != NULL ) setNotationType(GUITAR, true);
+                    
+                    const char* mode_drum = xml->getAttributeValue("drum");
+                    if ( mode_drum != NULL ) setNotationType(DRUM, true);
+                    
+                    const char* mode_ctrl = xml->getAttributeValue("controller");
+                    if ( mode_ctrl != NULL ) setNotationType(CONTROLLER, true);
                     
                     getGraphics()->readFromFile(xml);
                 }                    

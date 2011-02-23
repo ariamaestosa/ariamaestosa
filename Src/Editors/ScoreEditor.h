@@ -205,9 +205,7 @@ namespace AriaMaestosa
         virtual void render(RelativeXCoord mousex_current, int mousey_current,
                             RelativeXCoord mousex_initial, int mousey_initial, bool focus=false);
         
-        
-        void updatePosition(const int from_y, const int to_y, const int width, const int height, const int barHeight);
-        
+                
         /** event callback from base class */
         virtual void mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
                                    RelativeXCoord mousex_initial, int mousey_initial);
@@ -261,6 +259,9 @@ namespace AriaMaestosa
             assert(false);
         }
 
+        virtual NotationType getNotationType() const { return SCORE; }
+        
+        virtual void processKeyPress(int keycode, bool commandDown, bool shiftDown);
     };
     
 }

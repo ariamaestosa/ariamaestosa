@@ -343,8 +343,8 @@ namespace AriaMaestosa
                    bool affect_selection, bool affect_track, bool affect_song // scale what (only one must be true)
                    );
 
-        void paste();
-        void pasteAtMouse();
+        //void paste();
+        //void pasteAtMouse();
 
         void setPlayWithMetronome(const bool enabled) { m_play_with_metronome = enabled; }
         bool playWithMetronome   () const             { return m_play_with_metronome;    }

@@ -80,7 +80,8 @@ namespace AriaMaestosa
         SCORE      = 1,
         GUITAR     = 2,
         DRUM       = 3,
-        CONTROLLER = 4
+        CONTROLLER = 4,
+        NOTATION_TYPE_COUNT
     };
     
     class ITrackListener
@@ -156,7 +157,7 @@ namespace AriaMaestosa
         /** The sequence this track is part of */
         Sequence* m_sequence;
 
-        NotationType m_editor_mode;
+        bool m_editor_mode[NOTATION_TYPE_COUNT];
 
         ITrackListener* m_listener;
     
@@ -531,11 +532,11 @@ namespace AriaMaestosa
         const GuitarTuning* getConstGuitarTuning() const { return m_tuning.raw_ptr; }
         
         /**
-          * @brief Get the type of notation this track uses
+          * @brief Get whether the given notation type is enabled
           */
-        NotationType getNotationType() const { return m_editor_mode; }
+        bool isNotationTypeEnabled(const NotationType i) const { return m_editor_mode[i]; }
 
-        void setNotationType(NotationType t);
+        void setNotationType(NotationType t, bool enabled);
         
         /**
           * @brief Implement callback from IGuitarTuningListener

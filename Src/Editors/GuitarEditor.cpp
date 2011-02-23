@@ -19,6 +19,8 @@
 #include "AriaCore.h"
 #include "Actions/AddNote.h"
 #include "Actions/EditAction.h"
+#include "Actions/NumberPressed.h"
+#include "Actions/ShiftFrets.h"
 #include "Actions/ShiftString.h"
 #include "Actions/UpdateGuitarTuning.h"
 #include "GUI/GraphicalSequence.h"
@@ -499,4 +501,70 @@ void GuitarEditor::addNote(const int snapped_start_tick, const int snapped_end_t
 
     m_track->action( new Action::AddNote(tuning->tuning[string], snapped_start_tick, snapped_end_tick,
                                          m_default_volume, string ) );
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void GuitarEditor::processKeyPress(int keycode, bool commandDown, bool shiftDown)
+{
+    // ------------------- numbers -------------------
+    // number at the top of the keyboard
+    if (keycode >= 48 and keycode <= 57)
+    {
+        if (shiftDown)
+        {
+            m_track->action( new Action::NumberPressed(keycode - 48 + 10) );
+        }
+        else
+        {
+            m_track->action( new Action::NumberPressed(keycode - 48) );
+        }
+        Display::render();
+    }
+    
+    // numpad
+    if (keycode >= 324 and keycode <= 333)
+    {
+        if (shiftDown)
+        {
+            m_track->action( new Action::NumberPressed(keycode - 324 + 10) );
+        }
+        else
+        {
+            m_track->action( new Action::NumberPressed(keycode - 324) );
+        }
+        Display::render();
+    }
+    
+    // ---------------- shift frets -----------------
+    if (not commandDown and shiftDown)
+    {
+        
+        if (keycode == WXK_LEFT)
+        {
+            m_track->action( new Action::ShiftFrets(-1, SELECTED_NOTES) );
+            Display::render();
+        }
+        
+        if (keycode == WXK_RIGHT)
+        {
+            m_track->action( new Action::ShiftFrets(1, SELECTED_NOTES) );
+            Display::render();
+        }
+        
+        if (keycode == WXK_UP)
+        {
+            m_track->action( new Action::ShiftString(-1, SELECTED_NOTES) );
+            Display::render();
+        }
+        
+        if (keycode == WXK_DOWN)
+        {
+            m_track->action( new Action::ShiftString(1, SELECTED_NOTES) );
+            Display::render();
+        }
+        
+    }
+    
+    Editor::processKeyPress(keycode, commandDown, shiftDown);
 }

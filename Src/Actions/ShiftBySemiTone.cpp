@@ -61,7 +61,7 @@ void ShiftBySemiTone::perform()
 {
     ASSERT(m_track != NULL);
     
-    if (m_track->getNotationType() != SCORE) return;
+    if (not m_track->isNotationTypeEnabled(SCORE)) return;
     
     // not supported in this function (mostly bacause not needed, but could logically be implemented)
     ASSERT(m_note_id != ALL_NOTES);

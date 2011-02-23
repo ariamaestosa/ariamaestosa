@@ -17,6 +17,7 @@
 #include "Editors/Editor.h"
 
 #include "AriaCore.h"
+#include "Actions/DeleteSelected.h"
 #include "Actions/MoveNotes.h"
 #include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
@@ -725,12 +726,12 @@ void Editor::makeMoveNoteEvent(const int relativeX, const int relativeY, const i
     // move a single note
     if (noteID != -1)
     {
-        m_track->action( new Action::MoveNotes(relativeX, relativeY, noteID) );
+        m_track->action( new Action::MoveNotes(this, relativeX, relativeY, noteID) );
     }
     else
     {
         // move many notes
-        m_track->action( new Action::MoveNotes(relativeX, relativeY, SELECTED_NOTES) );
+        m_track->action( new Action::MoveNotes(this, relativeX, relativeY, SELECTED_NOTES) );
     }
 }
 
@@ -739,6 +740,88 @@ void Editor::makeMoveNoteEvent(const int relativeX, const int relativeY, const i
 void Editor::setYStep(const int ystep)
 {
     m_y_step = ystep;
+}
+
+// ------------------------------------------------------------------------------------------------------------
+
+void Editor::processKeyPress(int keycode, bool commandDown, bool shiftDown)
+{
+    // TODO: check this, there may be too many renders
+    
+    // --------------- move by 1 measure ------------
+    if (shiftDown and not commandDown)
+    {
+        if (keycode == WXK_RIGHT or keycode == WXK_LEFT)
+        {
+            const int noteID = m_track->getFirstSelectedNote();
+            if (noteID == -1)
+            {
+                wxBell();
+            }
+            else
+            {
+                const int tick = m_track->getNoteStartInMidiTicks(noteID);
+                const int measure = m_sequence->getMeasureData()->measureAtTick(tick);
+                
+                const int factor = (keycode == WXK_LEFT ? -1 : 1);
+                
+                m_track->action(
+                                new Action::MoveNotes(this, factor*m_sequence->getMeasureData()->measureLengthInTicks(measure),
+                                                      0,
+                                                      SELECTED_NOTES)
+                                );
+                Display::render();
+            }
+            return;
+        }
+    }
+    
+    if (not commandDown and not shiftDown)
+    {
+        // ---------------- move notes -----------------
+        
+        if (keycode == WXK_LEFT)
+        {
+            m_track->
+            action( new Action::MoveNotes(this,
+                                          -m_sequence->ticksPerBeat() * 4 /
+                                          m_track->getMagneticGrid()->getDivider(), 0, SELECTED_NOTES)
+                   );
+            Display::render();
+        }
+        
+        if (keycode == WXK_RIGHT)
+        {
+            m_track->
+            action( new Action::MoveNotes(this,
+                                          m_sequence->ticksPerBeat() * 4 /
+                                          m_track->getMagneticGrid()->getDivider(), 0, SELECTED_NOTES)
+                   );
+            Display::render();
+        }
+        
+        if (keycode == WXK_UP)
+        {
+            m_track->action( new Action::MoveNotes(this, 0, -1, SELECTED_NOTES) );
+            Display::render();
+        }
+        
+        if (keycode == WXK_DOWN)
+        {
+            m_track->action( new Action::MoveNotes(this, 0, 1, SELECTED_NOTES) );
+            Display::render();
+        }
+        
+        // ------------------------ delete notes ---------------------
+        
+        if (keycode == WXK_BACK or keycode == WXK_DELETE)
+        {
+            m_track->action( new Action::DeleteSelected(this) );
+            Display::render();
+        }
+        
+        
+    }
 }
 
 // ------------------------------------------------------------------------------------------------------------

@@ -33,14 +33,14 @@ using namespace AriaMaestosa::Action;
 
 // ----------------------------------------------------------------------------------------------------------
 
-MoveNotes::MoveNotes(const int relativeX, const int relativeY, const int noteID) :
+MoveNotes::MoveNotes(Editor* editor, const int relativeX, const int relativeY, const int noteID) :
     //I18N: (undoable) action name
     SingleTrackAction( _("move note(s)") )
 {
     m_relativeX = relativeX;
     m_relativeY = relativeY;
     m_note_ID = noteID;
-
+    m_editor = editor;
     m_move_mode = DELTA;
 }
 
@@ -57,8 +57,6 @@ void MoveNotes::undo()
     Note* current_note;
     relocator.setParent(m_track);
     relocator.prepareToRelocate();
-
-    Editor* ed = m_track->getGraphics()->getCurrentEditor();
     
     int n = 0;
     while ((current_note = relocator.getNextNote()) and current_note != NULL)
@@ -66,18 +64,18 @@ void MoveNotes::undo()
         if (m_move_mode == SCORE_VERTICAL or m_move_mode == DRUMS_VERTICAL)
         {
             current_note->setPitchID( undo_pitch[n] );
-            ed->moveNote(*current_note, -m_relativeX, 0);
+            m_editor->moveNote(*current_note, -m_relativeX, 0);
             n++;
         }
         else if (m_move_mode == GUITAR_VERTICAL)
         {
             current_note->setStringAndFret(undo_string[n], undo_fret[n]);
-            ed->moveNote(*current_note, -m_relativeX, 0);
+            m_editor->moveNote(*current_note, -m_relativeX, 0);
             n++;
         }
         else
         {
-            ed->moveNote(*current_note, -m_relativeX, -m_relativeY);
+            m_editor->moveNote(*current_note, -m_relativeX, -m_relativeY);
         }
     }
     m_track->reorderNoteVector();
@@ -92,7 +90,7 @@ void MoveNotes::perform()
 
     ptr_vector<Note>& notes = m_visitor->getNotesVector();
     
-    m_mode = m_track->getNotationType();
+    m_mode = m_editor->getNotationType();
     if      (m_mode == SCORE  and m_relativeY != 0) m_move_mode = SCORE_VERTICAL;
     else if (m_mode == GUITAR and m_relativeY != 0) m_move_mode = GUITAR_VERTICAL;
     else if (m_mode == DRUM   and m_relativeY != 0) m_move_mode = DRUMS_VERTICAL;
@@ -163,7 +161,7 @@ void MoveNotes::doMoveOneNote(const int noteID)
         undo_string.push_back( notes[noteID].getStringConst() );
     }
 
-    m_track->getGraphics()->getCurrentEditor()->moveNote(notes[noteID], m_relativeX, m_relativeY);
+    m_editor->moveNote(notes[noteID], m_relativeX, m_relativeY);
     relocator.rememberNote( notes[noteID] );
 }
 

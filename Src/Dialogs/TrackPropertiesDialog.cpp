@@ -52,18 +52,18 @@ namespace AriaMaestosa
         {
             sizer = new wxBoxSizer(wxHORIZONTAL);
             
-            const NotationType editorMode = track->getNotationType();
+            const bool isDrum = track->isNotationTypeEnabled(DRUM);
             
             // checkbox
             active = new wxCheckBox(this, 200, wxT(" "));
             sizer->Add(active, 0, wxALL, 5);
             
-            if (not enabled or editorMode == DRUM)  active->Enable(false);
-            else if (activated)                     active->SetValue(true);
+            if (not enabled or isDrum)  active->Enable(false);
+            else if (activated)         active->SetValue(true);
             
             wxString instrumentname;
-            if (editorMode == DRUM) instrumentname = DrumChoice::getDrumkitName( track->getDrumKit() );
-            else                    instrumentname = InstrumentChoice::getInstrumentName( track->getInstrument() );
+            if (isDrum) instrumentname = DrumChoice::getDrumkitName( track->getDrumKit() );
+            else        instrumentname = InstrumentChoice::getInstrumentName( track->getInstrument() );
             
             sizer->Add( new wxStaticText(this, wxID_ANY, to_wxString(trackID) + wxT(" : ") + track->getName() +
                                          wxT(" (") + instrumentname + wxT(")")) , 1, wxALL, 5);
@@ -130,7 +130,8 @@ namespace AriaMaestosa
             sizer->Add(properties_panel, 1, wxEXPAND | wxALL, 5);
             sizer->Add(buttonPane, 0, wxALL, 5);
             
-            Editor* editor = parent->getCurrentEditor();
+            // TODO: adapt with new multi-editor paradigm
+            Editor* editor = parent->getFocusedEditor();
             
             wxBoxSizer* props_sizer = new wxBoxSizer(wxHORIZONTAL);
             
@@ -207,7 +208,8 @@ namespace AriaMaestosa
         {
             Center();
             
-            Editor* editor = m_parent->getCurrentEditor();
+            // TODO: adapt with new multi-editor paradigm
+            Editor* editor = m_parent->getFocusedEditor();
             volume_text->SetValue( to_wxString(editor->getDefaultVolume()) );
             volume_slider->SetValue( editor->getDefaultVolume() );
             
@@ -223,7 +225,8 @@ namespace AriaMaestosa
         // when OK button of the tuning picker is pressed
         void okButton(wxCommandEvent& evt)
         {
-            Editor* editor = m_parent->getCurrentEditor();
+            // TODO: adapt with new multi-editor paradigm
+            Editor* editor = m_parent->getFocusedEditor();
             const int value = atoi_u(volume_text->GetValue());
             if (value >=0 and value < 128) editor->setDefaultVolume( value );
             else wxBell();

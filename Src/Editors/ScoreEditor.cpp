@@ -16,6 +16,7 @@
 
 #include "Actions/EditAction.h"
 #include "Actions/AddNote.h"
+#include "Actions/ShiftBySemiTone.h"
 #include "Analysers/ScoreAnalyser.h"
 //#include "Dialogs/Preferences.h"
 #include "Editors/ScoreEditor.h"
@@ -1619,4 +1620,30 @@ void ScoreEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_c
 
     }
 }
+
+// ----------------------------------------------------------------------------------------------------------
+
+void ScoreEditor::processKeyPress(int keycode, bool commandDown, bool shiftDown)
+{
+    if (commandDown or shiftDown)
+    {
+        if (keycode == WXK_UP)
+        {
+            m_track->action( new Action::ShiftBySemiTone(-1, SELECTED_NOTES) );
+            Display::render();
+            return;
+        }
+        
+        if (keycode == WXK_DOWN)
+        {
+            m_track->action( new Action::ShiftBySemiTone(1, SELECTED_NOTES) );
+            Display::render();
+            return;
+        }
+        
+    }
+    
+    Editor::processKeyPress(keycode, commandDown, shiftDown);
+}
+
 

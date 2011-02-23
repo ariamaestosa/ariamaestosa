@@ -14,14 +14,16 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _mvnotes_
-#define _mvnotes_
+#ifndef __MOVE_NOTES_H__
+#define __MOVE_NOTES_H__
 
 #include "Actions/EditAction.h"
 
 namespace AriaMaestosa
 {
     class Track;
+    class Editor;
+    
     namespace Action
     {
         
@@ -49,15 +51,17 @@ namespace AriaMaestosa
             
             // vertical movements in score require a little more than others because of possible accidentals
             std::vector<short> undo_pitch; // for SCORE_VERTICAL mode
-            std::vector<short> undo_fret; // for GUITAR_VERTICAL mode
+            std::vector<short> undo_fret;  // for GUITAR_VERTICAL mode
             std::vector<short> undo_string;
+            
+            Editor* m_editor;
             
         public:
             
             /**
               * @param noteID  ID of the note to move in range [0 .. noteAmount - 1], or SELECTED_NOTES
               */
-            MoveNotes(const int relativeX, const int relativeY, const int noteID);
+            MoveNotes(Editor* editor, const int relativeX, const int relativeY, const int noteID);
             
             void perform();
             void undo();

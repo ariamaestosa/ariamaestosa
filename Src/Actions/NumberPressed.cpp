@@ -51,11 +51,6 @@ void NumberPressed::undo()
 
 void NumberPressed::perform()
 {
-    ASSERT(m_track != NULL);
-    ASSERT(m_track->getNotationType() == GUITAR);
-    
-    if (m_track->getNotationType() != GUITAR) return;
-
     bool played = false;
     
     ptr_vector<Note>& notes = m_visitor->getNotesVector();

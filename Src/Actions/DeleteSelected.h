@@ -25,6 +25,7 @@ namespace AriaMaestosa
 {
     class Track;
     class Note;
+    class Editor;
     
     namespace Action
     {
@@ -38,8 +39,11 @@ namespace AriaMaestosa
             
             ptr_vector<Note> removedNotes;
             ptr_vector<ControllerEvent> removedControlEvents;
+            Editor* m_editor;
+            
         public:
-            DeleteSelected();
+            
+            DeleteSelected(Editor* editor);
             void perform();
             void undo();
             virtual ~DeleteSelected();

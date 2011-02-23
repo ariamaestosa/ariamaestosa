@@ -178,7 +178,7 @@ void KeyPicker::setParent(GraphicalTrack* parent_arg)
     parent = parent_arg;
     Track* track = parent_arg->getTrack();
     
-    if (track->getNotationType() == KEYBOARD)
+    if (not track->isNotationTypeEnabled(SCORE))
     {
         if (score_items_added)
         {
@@ -191,7 +191,7 @@ void KeyPicker::setParent(GraphicalTrack* parent_arg)
             score_items_added = false;
         }
     }
-    else if (track->getNotationType() == SCORE)
+    else 
     {
         if (not score_items_added)
         {
