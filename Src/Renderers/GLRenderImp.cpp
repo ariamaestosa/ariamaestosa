@@ -192,7 +192,7 @@ void hollow_rect(const int x1, const int y1, const int x2, const int y2)
     
 void select_rect(const int x1, const int y1, const int x2, const int y2)
 {
-    glColor4f(0.94f, 1.0f, 0.0f, 0.3f);
+    glColor4f(0.0f, 0.83f, 0.16f, 0.3f);
     
     glBegin(GL_QUADS);
     glVertex2f(x1*10.0, y1*10.0);
@@ -201,7 +201,7 @@ void select_rect(const int x1, const int y1, const int x2, const int y2)
     glVertex2f(x1*10.0, y2*10.0);
     glEnd();
     
-    glColor4f(0.94f, 1.0f, 0.0f, 1.0f);
+    glColor4f(0.0f, 0.83f, 0.16, 1.0f);
 
     glBegin(GL_LINES);
     
