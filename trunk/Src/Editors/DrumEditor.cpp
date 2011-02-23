@@ -777,8 +777,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         // selection
         if (m_selecting)
         {
-            AriaRender::color(0,0,0);
-            AriaRender::hollow_rect(mousex_initial.getRelativeTo(WINDOW), mousey_initial,
+            AriaRender::select_rect(mousex_initial.getRelativeTo(WINDOW), mousey_initial,
                                     mousex_current.getRelativeTo(WINDOW), mousey_current);
         }
     } // end if

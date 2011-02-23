@@ -1,6 +1,7 @@
 1.3 beta 1
 - Intensive code refactoring and cleanup
 - Improve rendering of short notes in tablature view
+- Improve selection to preview which notes are included
 
 ===================================================================================================
 
