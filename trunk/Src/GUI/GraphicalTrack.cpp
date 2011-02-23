@@ -1025,36 +1025,36 @@ void GraphicalTrack::selectNote(const int id, const bool selected, bool ignoreMo
 
 Editor* GraphicalTrack::getEditorAt(const int y)
 {
-    if (m_track->isNotationTypeEnabled(KEYBOARD) and m_keyboard_editor->getTrackYStart() >= y and
-        m_keyboard_editor->getYEnd() <= y)
+    if (m_track->isNotationTypeEnabled(KEYBOARD) and y >= m_keyboard_editor->getTrackYStart()and
+        y <= m_keyboard_editor->getYEnd())
     {
         m_focused_editor = KEYBOARD;
         return m_keyboard_editor;
     }
     
-    if (m_track->isNotationTypeEnabled(SCORE) and m_score_editor->getTrackYStart() >= y and
-        m_score_editor->getYEnd() <= y)
+    if (m_track->isNotationTypeEnabled(SCORE) and y >= m_score_editor->getTrackYStart() and
+        y <= m_score_editor->getYEnd())
     {
         m_focused_editor = SCORE;
         return m_score_editor;
     }
     
-    if (m_track->isNotationTypeEnabled(GUITAR) and m_guitar_editor->getTrackYStart() >= y and
-        m_guitar_editor->getYEnd() <= y)
+    if (m_track->isNotationTypeEnabled(GUITAR) and y >= m_guitar_editor->getTrackYStart() and
+        y <= m_guitar_editor->getYEnd())
     {
         m_focused_editor = GUITAR;
         return m_guitar_editor;
     }
     
-    if (m_track->isNotationTypeEnabled(DRUM) and m_drum_editor->getTrackYStart() >= y and
-        m_drum_editor->getYEnd() <= y)
+    if (m_track->isNotationTypeEnabled(DRUM) and y >= m_drum_editor->getTrackYStart() and
+        y <= m_drum_editor->getYEnd())
     {
         m_focused_editor = DRUM;
         return m_drum_editor;
     }
     
-    if (m_track->isNotationTypeEnabled(CONTROLLER) and m_controller_editor->getTrackYStart() >= y and
-        m_controller_editor->getYEnd() <= y)
+    if (m_track->isNotationTypeEnabled(CONTROLLER) and y >= m_controller_editor->getTrackYStart() and
+        y <= m_controller_editor->getYEnd())
     {
         m_focused_editor = CONTROLLER;
         return m_controller_editor;
