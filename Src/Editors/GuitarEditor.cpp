@@ -159,7 +159,7 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
         
         if (isInSelection)
         {
-            AriaRender::color(240, 255, 0);
+            AriaRender::color(0.94f, 1.0f, 0.0f);
         }
         else if (m_track->isNoteSelected(n) and focus)
         {
@@ -188,7 +188,7 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
             
             if (isInSelection)
             {
-                AriaRender::color(240, 255, 0);
+                AriaRender::color(0.94f, 1.0f, 0.0f);
             }
             else if (m_track->isNoteSelected(n) and focus)
             {

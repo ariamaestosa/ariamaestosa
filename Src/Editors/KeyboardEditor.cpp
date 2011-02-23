@@ -341,6 +341,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
         }
     }
 
+    AriaRender::primitives();
     // ---------------------- draw notes ----------------------------
     const float pscroll = m_gsequence->getXScrollInPixels();
 
@@ -376,13 +377,14 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
         }
         else if (m_selecting and x1 > mouse_x_min and x2 < mouse_x_max and y1 > mouse_y_min and y1 < mouse_y_max)
         {
-            AriaRender::color(240, 255, 0);
+            AriaRender::color(0.94f, 1.0f, 0.0f);
         }
         else
         {
             AriaRender::color((1-volume)*0.9, (1-volume)*0.9,  (1-volume)*0.9);
         }
 
+        
         AriaRender::bordered_rect(x1 + getEditorXStart() + 1, y1,
                                   x2 + getEditorXStart() - 1, y2);
     }
