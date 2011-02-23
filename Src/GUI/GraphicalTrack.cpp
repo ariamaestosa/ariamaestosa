@@ -509,7 +509,12 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         }
 
         // if track is not collapsed, let the editor handle the mouse event too
-        if (not m_collapsed) getEditorAt(mousey)->mouseDown(mousex, mousey);
+        if (not m_collapsed)
+        {
+            Editor* ed = getEditorAt(mousey);
+            if (ed == NULL) return true;
+            ed->mouseDown(mousex, mousey);
+        }
 
         if (not ImageProvider::imagesLoaded()) return true;
 
@@ -1060,7 +1065,6 @@ Editor* GraphicalTrack::getEditorAt(const int y)
         return m_controller_editor;
     }
     
-    ASSERT(false);
     return NULL;
 }
 
