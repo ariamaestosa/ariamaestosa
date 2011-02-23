@@ -248,7 +248,6 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     int levelid = getYScrollInPixels()/Y_STEP_HEIGHT;
     const int yscroll = getYScrollInPixels();
-    //const int y1 = getEditorYStart();
     const int last_note = ( yscroll + getYEnd() - getEditorYStart() )/Y_STEP_HEIGHT;
     const int editor_x1 = getEditorXStart();
     const int editor_x2 = getXEnd();
@@ -257,8 +256,6 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     
     // white background
     AriaRender::primitives();
-    AriaRender::color(1,1,1);
-    AriaRender::rect(editor_x1, getEditorYStart(), editor_x2, getYEnd());
 
     // horizontal lines
     AriaRender::color(0.94, 0.94, 0.94, 1);
@@ -345,8 +342,14 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     }
 
     // ---------------------- draw notes ----------------------------
-    const int noteAmount = m_track->getNoteAmount();
     const float pscroll = m_gsequence->getXScrollInPixels();
+
+    const int mouse_x_min = std::min(mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR) ) - pscroll;
+    const int mouse_x_max = std::max(mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR) ) - pscroll;
+    const int mouse_y_min = std::min(mousey_current, mousey_initial);
+    const int mouse_y_max = std::max(mousey_current, mousey_initial);
+    
+    const int noteAmount = m_track->getNoteAmount();
     for (int n=0; n<noteAmount; n++)
     {
         const int x1 = m_graphical_track->getNoteStartInPixels(n) - pscroll;
@@ -360,21 +363,28 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
         const int level = pitch;
         float volume    = m_track->getNoteVolume(n)/127.0;
 
+        const int y1 = levelToY(level);
+        const int y2 = levelToY(level+1);
+        
         if (key_notes[pitch] == KEY_INCLUSION_NONE)
         {
             AriaRender::color(1.0f, 0.0f, 0.0f);
         }
         else if (m_track->isNoteSelected(n) and focus)
         {
-            AriaRender::color((1-volume)*1,   (1-(volume/2))*1, 0);
+            AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
+        }
+        else if (m_selecting and x1 > mouse_x_min and x2 < mouse_x_max and y1 > mouse_y_min and y1 < mouse_y_max)
+        {
+            AriaRender::color(240, 255, 0);
         }
         else
         {
             AriaRender::color((1-volume)*0.9, (1-volume)*0.9,  (1-volume)*0.9);
         }
 
-        AriaRender::bordered_rect(x1 + getEditorXStart() + 1, levelToY(level),
-                                  x2 + getEditorXStart() - 1, levelToY(level+1));
+        AriaRender::bordered_rect(x1 + getEditorXStart() + 1, y1,
+                                  x2 + getEditorXStart() - 1, y2);
     }
 
 
@@ -416,24 +426,21 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     }//next
 
 
-    // ------------------------- mouse drag (preview) ------------------------
-
     AriaRender::primitives();
 
     if (not m_clicked_on_note and m_mouse_is_in_editor)
     {
 
+        // -------- Selection
         if (m_selecting)
         {
             // selection
-            AriaRender::color(0,0,0);
-            AriaRender::hollow_rect(mousex_initial.getRelativeTo(WINDOW), mousey_initial,
+            AriaRender::select_rect(mousex_initial.getRelativeTo(WINDOW), mousey_initial,
                                     mousex_current.getRelativeTo(WINDOW), mousey_current);
-
         }
         else
         {
-            // add note (preview)
+            // -------- Add note (preview)
             AriaRender::color(1, 0.85, 0);
 
             const int tscroll = m_gsequence->getXScrollInMidiTicks();

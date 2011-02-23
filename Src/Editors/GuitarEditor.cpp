@@ -129,6 +129,12 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     // ---------------------- draw notes ----------------------------
     const int noteAmount = m_track->getNoteAmount();
+    
+    const int mouse_x1 = std::min(mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR));
+    const int mouse_x2 = std::max(mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR));
+    const int mouse_y1 = std::min(mousey_current, mousey_initial);
+    const int mouse_y2 = std::max(mousey_current, mousey_initial);
+    
     for (int n=0; n<noteAmount; n++)
     {
         const int pscroll = m_gsequence->getXScrollInPixels();
@@ -145,10 +151,17 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
         const int tick   = m_track->getNoteStartInMidiTicks(n);
         const int string = m_track->getNoteString(n);
         const int fret   = m_track->getNoteFret(n);
-        
+        const int y = getEditorYStart()+first_string_position+string*y_step;
+
         float volume = m_track->getNoteVolume(n)/127.0;
 
-        if (m_track->isNoteSelected(n) and focus)
+        const bool isInSelection = m_selecting and x1 > mouse_x1 and x2 < mouse_x2 and mouse_y1 < y and mouse_y2 > y;
+        
+        if (isInSelection)
+        {
+            AriaRender::color(240, 255, 0);
+        }
+        else if (m_track->isNoteSelected(n) and focus)
         {
             AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
         }
@@ -165,7 +178,6 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
         
         x1 += Editor::getEditorXStart();
         x2 += Editor::getEditorXStart();
-        const int y = getEditorYStart()+first_string_position+string*y_step;
         
         // Check if we draw the number or the body only
         if (x2 - x1 > minSize or lastNote[string] != fret or tick - lastNoteTick[string] > maxTickDistance)
@@ -173,7 +185,12 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
             AriaRender::bordered_rect_no_start(x1,  y - 2,  x2 - 1,  y + 2);
 
             // fret number
-            if (m_track->isNoteSelected(n) and focus)
+            
+            if (isInSelection)
+            {
+                AriaRender::color(240, 255, 0);
+            }
+            else if (m_track->isNoteSelected(n) and focus)
             {
                 AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
             }
@@ -181,7 +198,7 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
             {
                 AriaRender::color((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
             }
-
+            
             if (fret < 10)
             {
                 AriaRender::quad(x1 - 1,  y - 8,
@@ -200,7 +217,7 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
             AriaRender::images();
 
             // if note color is too dark, draw the fret number in white
-            if ((not m_track->isNoteSelected(n) or not focus) and volume > 0.5)
+            if ((not m_track->isNoteSelected(n) or not focus) and volume > 0.5 and not isInSelection)
             {
                 AriaRender::color(1, 1, 1);
             }
@@ -233,8 +250,7 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
         // -------------------- selection ----------------------
         if (m_selecting)
         {
-            AriaRender::color(0,0,0);
-            AriaRender::hollow_rect(mousex_initial.getRelativeTo(WINDOW), mousey_initial,
+            AriaRender::select_rect(mousex_initial.getRelativeTo(WINDOW), mousey_initial,
                                     mousex_current.getRelativeTo(WINDOW), mousey_current);
         }
         // ----------------------- add note (preview) --------------------

@@ -124,6 +124,8 @@ namespace AriaMaestosa
           */
         void hollow_rect(const int x1, const int y1, const int x2, const int y2);
         
+        void select_rect(const int x1, const int y1, const int x2, const int y2);
+
         /**
           * @brief renders a rounded rectangle with a black outline within the given coordinates
           */

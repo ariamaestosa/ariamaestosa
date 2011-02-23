@@ -189,6 +189,36 @@ void hollow_rect(const int x1, const int y1, const int x2, const int y2)
     glEnd();
 }
 
+    
+void select_rect(const int x1, const int y1, const int x2, const int y2)
+{
+    glColor4f(0.94f, 1.0f, 0.0f, 0.3f);
+    
+    glBegin(GL_QUADS);
+    glVertex2f(x1*10.0, y1*10.0);
+    glVertex2f(x2*10.0, y1*10.0);
+    glVertex2f(x2*10.0, y2*10.0);
+    glVertex2f(x1*10.0, y2*10.0);
+    glEnd();
+    
+    glColor4f(0.94f, 1.0f, 0.0f, 1.0f);
+
+    glBegin(GL_LINES);
+    
+    glVertex2f(x1*10.0, y1*10.0);
+    glVertex2f(x1*10.0, y2*10.0);
+    
+    glVertex2f(round(x1-1.0)*10.0, y2*10.0);
+    glVertex2f(x2*10.0, y2*10.0);
+    
+    glVertex2f(x2*10.0, y2*10.0);
+    glVertex2f(x2*10.0, y1*10.0);
+    
+    glVertex2f(round(x1-1.0)*10.0, y1*10.0);
+    glVertex2f(x2*10.0, y1*10.0);
+    
+    glEnd();
+}
 
 void triangle(const int x1, const int y1, const int x2, const int y2, const int x3, const int y3)
 {

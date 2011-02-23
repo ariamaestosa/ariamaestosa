@@ -461,7 +461,7 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                      RelativeXCoord mousex_initial, int mousey_initial)
 {
     ASSERT( MAGIC_NUMBER_OK() );
-    
+        
     if (m_use_vertical_scrollbar)
     {
         m_vertical_scrolling = false;
@@ -562,9 +562,11 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
 
 end_of_func:
 
+    m_selecting          = false;
     m_mouse_is_in_editor = false;
     m_clicked_on_note    = false;
 
+    Display::render();
 }
 
 // ------------------------------------------------------------------------------------------------------------
