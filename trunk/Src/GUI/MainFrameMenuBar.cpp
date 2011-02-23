@@ -604,14 +604,14 @@ void MainFrame::menuEvent_customNoteSelect(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_paste(wxCommandEvent& evt)
 {
-    getCurrentSequence()->paste();
+    getCurrentGraphicalSequence()->paste();
 }
 
 // -----------------------------------------------------------------------------------------------------------
 
 void MainFrame::menuEvent_pasteAtMouse(wxCommandEvent& evt)
 {
-    getCurrentSequence()->pasteAtMouse();
+    getCurrentGraphicalSequence()->pasteAtMouse();
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -818,7 +818,7 @@ void MainFrame::menuEvent_manualChannelModeSelected(wxCommandEvent& evt)
         for (int i=0; i<sequence->getTrackAmount(); i++)
         {
             // if this is a drum track, give channel 9
-            if (sequence->getTrack(i)->getNotationType() == DRUM)
+            if (sequence->getTrack(i)->isNotationTypeEnabled(DRUM))
             {
                 sequence->getTrack(i)->setChannel(9);
             }

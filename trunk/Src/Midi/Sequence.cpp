@@ -600,7 +600,7 @@ void Sequence::copy()
 }
 
 // ----------------------------------------------------------------------------------------------------------
-
+/*
 void Sequence::paste()
 {
     tracks[currentTrack].action( new Action::Paste(false) );
@@ -613,7 +613,7 @@ void Sequence::pasteAtMouse()
 {
     tracks[currentTrack].action( new Action::Paste(true) );
     if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
-}
+}*/
 
 // ----------------------------------------------------------------------------------------------------------
 // ------------------------------------------------ I/O -----------------------------------------------------

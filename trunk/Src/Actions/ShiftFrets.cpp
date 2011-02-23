@@ -51,7 +51,7 @@ void ShiftFrets::perform()
     ASSERT(m_note_id != ALL_NOTES); // not supported in this function (mostly bacause not needed, but could logically be implmented)
     
     // only accept to do this in guitar mode
-    if (m_track->getNotationType() != GUITAR)  return;
+    if (not m_track->isNotationTypeEnabled(GUITAR))  return;
     
     ptr_vector<Note>& notes = m_visitor->getNotesVector();
     

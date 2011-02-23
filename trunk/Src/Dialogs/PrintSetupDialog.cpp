@@ -460,23 +460,20 @@ namespace AriaMaestosa
                 wxChoice* editorType = new wxChoice(m_track_choice, wxID_ANY, wxDefaultPosition, wxDefaultSize,
                                                     choices );
                 
-                switch (track->getNotationType())
+                // TODO: handle printing multiple tracks
+                if (track->isNotationTypeEnabled(SCORE))
                 {
-                    case SCORE:
-                        editorType->SetSelection(0);
-                        break;
-                    case GUITAR:
-                        editorType->SetSelection(1);
-                        break;
-                    case KEYBOARD:
-                        editorType->SetSelection(2);
-                        break;
-                    default:
-                        // unsupported editor, do nothing, leave default selection
-                        break;
+                    editorType->SetSelection(0);
                 }
-                //wxStaticText* editorType = new wxStaticText(m_track_choice, wxID_ANY, track->graphics->getCurrentEditor()->getName() );
-
+                else if (track->isNotationTypeEnabled(GUITAR))
+                {
+                    editorType->SetSelection(1);
+                }
+                else if (track->isNotationTypeEnabled(KEYBOARD))
+                {
+                    editorType->SetSelection(2);
+                }
+                
                 wxWindow* cells[3];
                 cells[0] = cb;
                 cells[1] = trackName;
@@ -698,8 +695,19 @@ namespace AriaMaestosa
             if (print_one_track)
             {
                 Track* t = m_current_sequence->getCurrentTrack();
-                what_to_print.push_back( std::pair<GraphicalTrack*, NotationType>(t->getGraphics(),
-                                                                                  t->getNotationType()) );
+                
+                if (t->isNotationTypeEnabled(SCORE))
+                {
+                    what_to_print.push_back( std::pair<GraphicalTrack*, NotationType>(t->getGraphics(), SCORE) );
+                }
+                if (t->isNotationTypeEnabled(GUITAR))
+                {
+                    what_to_print.push_back( std::pair<GraphicalTrack*, NotationType>(t->getGraphics(), GUITAR) );
+                }
+                if (t->isNotationTypeEnabled(KEYBOARD))
+                {
+                    what_to_print.push_back( std::pair<GraphicalTrack*, NotationType>(t->getGraphics(), KEYBOARD) );
+                }
             }
             else                            // print all selected from list
             {

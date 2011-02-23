@@ -35,10 +35,11 @@ using namespace AriaMaestosa::Action;
 
 // ----------------------------------------------------------------------------------------------------------
 
-DeleteSelected::DeleteSelected() :
+DeleteSelected::DeleteSelected(Editor* editor) :
     //I18N: (undoable) action name
     SingleTrackAction( _("delete note(s)") )
 {
+    m_editor = editor;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -85,9 +86,8 @@ void DeleteSelected::perform()
     ASSERT(m_track != NULL);
     
     // FIXME: controllers need an exceptional treatment
-    if (m_track->getNotationType() == CONTROLLER)
+    if (dynamic_cast<ControllerEditor*>(m_editor) != NULL)
     {
-        
         ptr_vector<ControllerEvent>& ctrls = m_visitor->getControlEventVector();
         
         ControllerEditor* editor = m_track->getGraphics()->getControllerEditor();
@@ -251,7 +251,7 @@ namespace DeleteSelectedTest
         t->selectNote(2, true);
 
         // test the action
-        t->action(new DeleteSelected());
+        t->action(new DeleteSelected(NULL));
         
         require(t->getNoteAmount() == 2, "the number of events was decreased");
         require(t->getNote(0)->getTick()    == 0,   "events were properly ordered");
@@ -277,7 +277,7 @@ namespace DeleteSelectedTest
         t->selectNote(0, true);
         
         // test the action
-        t->action(new DeleteSelected());
+        t->action(new DeleteSelected(NULL));
         
         require(t->getNoteAmount() == 3, "the number of events was decreased");
 
@@ -308,7 +308,7 @@ namespace DeleteSelectedTest
         t->selectNote(3, true);
         
         // test the action
-        t->action(new DeleteSelected());
+        t->action(new DeleteSelected(NULL));
         
         require(t->getNoteAmount() == 3, "the number of events was decreased");
         

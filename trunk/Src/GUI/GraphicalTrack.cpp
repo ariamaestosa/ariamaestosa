@@ -353,6 +353,7 @@ GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq, MagneticGri
 
     m_gsequence = seq;
     m_track = track;
+    m_focused_editor = KEYBOARD;
     
     m_name_renderer.setMaxWidth(120);
     m_name_renderer.setFont( getTrackNameFont() );
@@ -426,7 +427,7 @@ GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq, MagneticGri
     m_channel_field = new BlankField(28);
     m_components->addFromRight(m_channel_field);
     
-    if (m_track->getNotationType() == DRUM)
+    if (m_track->isNotationTypeEnabled(DRUM))
     {
         m_instrument_string->setValue(DrumChoice::getDrumkitName( m_track->getDrumKit() ));
     }
@@ -477,7 +478,7 @@ bool GraphicalTrack::mouseWheelMoved(int mx, int my, int value)
 {
     if (my > m_from_y and my < m_to_y)
     {
-        getCurrentEditor()->scroll( value / 75.0 );
+        getEditorAt(my)->scroll( value / 75.0 );
         Display::render();
 
         return false; // event belongs to this track and was processed, stop searching
@@ -508,7 +509,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         }
 
         // if track is not collapsed, let the editor handle the mouse event too
-        if (not m_collapsed) getCurrentEditor()->mouseDown(mousex, mousey);
+        if (not m_collapsed) getEditorAt(mousey)->mouseDown(mousex, mousey);
 
         if (not ImageProvider::imagesLoaded()) return true;
 
@@ -612,7 +613,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         // instrument
         if (m_instrument_field->clickIsOnThisWidget(winX, mousey))
         {
-            if (m_track->getNotationType() == DRUM)
+            if (m_track->isNotationTypeEnabled(DRUM))
             {
                 Core::getDrumPicker()->setModel(m_track->getDrumkitModel());
                 Display::popupMenu((wxMenu*)(Core::getDrumPicker()), Display::getWidth() - 175, m_from_y + 30);
@@ -651,48 +652,72 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
             // modes
             if (winX > m_score_button->getX() and winX < m_score_button->getX() + EDITOR_ICON_SIZE)
             {
-                m_track->setNotationType(SCORE);
+                m_track->setNotationType(GUITAR, false);
+                m_track->setNotationType(KEYBOARD, false);
+                m_track->setNotationType(DRUM, false);
+                m_track->setNotationType(CONTROLLER, false);
+                
+                m_track->setNotationType(SCORE, true);
             }
             else if (winX > m_piano_button->getX() and winX < m_piano_button->getX() + EDITOR_ICON_SIZE)
             {
+                m_track->setNotationType(SCORE, false);
+                m_track->setNotationType(GUITAR, false);
+                m_track->setNotationType(DRUM, false);
+                m_track->setNotationType(CONTROLLER, false);
+                
                 // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
-                if (m_track->getNotationType() == DRUM and
+                if (m_track->isNotationTypeEnabled(DRUM) and
                     m_gsequence->getModel()->getChannelManagementType() == CHANNEL_MANUAL)
                 {
                     m_track->setChannel(0);
                 }
 
-                m_track->setNotationType(KEYBOARD);
+                m_track->setNotationType(KEYBOARD, true);
             }
             else if (winX > m_tab_button->getX() and winX < m_tab_button->getX() + EDITOR_ICON_SIZE)
             {
+                m_track->setNotationType(SCORE, false);
+                m_track->setNotationType(KEYBOARD, false);
+                m_track->setNotationType(DRUM, false);
+                m_track->setNotationType(CONTROLLER, false);
+                
                 // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
-                if (m_track->getNotationType() == DRUM and
+                if (m_track->isNotationTypeEnabled(DRUM) and
                     m_gsequence->getModel()->getChannelManagementType() == CHANNEL_MANUAL)
                 {
                     m_track->setChannel(0);
                 }
 
-                m_track->setNotationType(GUITAR);
+                m_track->setNotationType(GUITAR, true);
                 m_track->prepareNotesForGuitarEditor(); // FIXME(DESIGN): there should be no need to manually call this
             }
             else if (winX > m_drum_button->getX() and winX < m_drum_button->getX() + EDITOR_ICON_SIZE)
             {
+                m_track->setNotationType(SCORE, false);
+                m_track->setNotationType(KEYBOARD, false);
+                m_track->setNotationType(GUITAR, false);
+                m_track->setNotationType(CONTROLLER, false);
+                
                 // in midi, drums go to channel 9 (10 if you start from one)
                 if (m_gsequence->getModel()->getChannelManagementType() == CHANNEL_MANUAL)
                 {
                     m_track->setChannel(9);
                 }
 
-                m_track->setNotationType(DRUM);
+                m_track->setNotationType(DRUM, true);
             }
             else if (winX > m_ctrl_button->getX() and winX < m_ctrl_button->getX() + EDITOR_ICON_SIZE)
             {
-                m_track->setNotationType(CONTROLLER);
+                m_track->setNotationType(SCORE, false);
+                m_track->setNotationType(KEYBOARD, false);
+                m_track->setNotationType(GUITAR, false);
+                m_track->setNotationType(DRUM, false);
+                m_track->setNotationType(CONTROLLER, true);
             }
         }
 
-        if (m_track->getNotationType() == SCORE and mousey > m_from_y + 15 and mousey < m_from_y + 30)
+        if (m_track->isNotationTypeEnabled(SCORE) and mousey > m_from_y + 15 and mousey < m_from_y + 30)
         {
             // sharp/flat signs
             if ( m_sharp_flat_picker->getItem(0).clickIsOnThisWidget(winX, mousey) )
@@ -723,7 +748,7 @@ bool GraphicalTrack::processRightMouseClick(RelativeXCoord x, int y)
 {
     if (y > m_from_y and y < m_to_y)
     {
-        getCurrentEditor()->rightClick(x,y);
+        getEditorAt(y)->rightClick(x,y);
         return false;
     }
     else
@@ -741,8 +766,10 @@ void GraphicalTrack::processMouseRelease()
 
     if (not m_dragging_resize)
     {
-        getCurrentEditor()->mouseUp(Display::getMouseX_current(), Display:: getMouseY_current(),
-                                    Display::getMouseX_initial(), Display:: getMouseY_initial());
+        getEditorAt(Display::getMouseY_initial())->mouseUp(Display::getMouseX_current(),
+                                                           Display::getMouseY_current(),
+                                                           Display::getMouseX_initial(),
+                                                           Display::getMouseY_initial());
     }
 
     if (m_dragging_resize)
@@ -756,7 +783,7 @@ void GraphicalTrack::processMouseRelease()
 
 void GraphicalTrack::processMouseExited(RelativeXCoord x_now, int y_now, RelativeXCoord x_initial, int y_initial)
 {
-    getCurrentEditor()->mouseExited(x_now, y_now, x_initial, y_initial);
+    getEditorAt(y_initial)->mouseExited(x_now, y_now, x_initial, y_initial);
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -775,9 +802,9 @@ bool GraphicalTrack::processMouseDrag(RelativeXCoord x, int y)
 
         if (not m_dragging_resize)
         {
-            getCurrentEditor()->mouseDrag(x, y,
-                                          Display::getMouseX_initial(),
-                                          Display::getMouseY_initial());
+            getEditorAt(Display::getMouseY_initial())->mouseDrag(x, y,
+                                                                 Display::getMouseX_initial(),
+                                                                 Display::getMouseY_initial());
         }
 
         // resize drag
@@ -921,7 +948,7 @@ int GraphicalTrack::getTotalHeight() const
 }
 
 // ----------------------------------------------------------------------------------------------------------
-
+/*
 Editor* GraphicalTrack::getCurrentEditor()
 {
     switch (m_track->getNotationType())
@@ -937,12 +964,12 @@ Editor* GraphicalTrack::getCurrentEditor()
             return NULL; // shut up warnings
     }
 }
-
+*/
 // ----------------------------------------------------------------------------------------------------------
 
 void GraphicalTrack::onNotationTypeChange()
 {    
-    if (m_track->getNotationType() == DRUM)
+    if (m_track->isNotationTypeEnabled(DRUM))
     {
         m_instrument_string->setValue(DrumChoice::getDrumkitName( m_track->getDrumKit() ));
     }
@@ -986,7 +1013,7 @@ void GraphicalTrack::selectNote(const int id, const bool selected, bool ignoreMo
         // if this is a 'select none' command, unselect any selected measures in the top bar
         if (not selected) getSequence()->getMeasureBar()->unselect();
         
-        if (m_track->getNotationType() == CONTROLLER)
+        if (m_track->isNotationTypeEnabled(CONTROLLER))
         {
             // FIXME(DESIGN): controller editor must be handled differently (special case)
             m_controller_editor->selectAll( selected );
@@ -994,6 +1021,105 @@ void GraphicalTrack::selectNote(const int id, const bool selected, bool ignoreMo
     }
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
+Editor* GraphicalTrack::getEditorAt(const int y)
+{
+    if (m_track->isNotationTypeEnabled(KEYBOARD) and m_keyboard_editor->getTrackYStart() >= y and
+        m_keyboard_editor->getYEnd() <= y)
+    {
+        m_focused_editor = KEYBOARD;
+        return m_keyboard_editor;
+    }
+    
+    if (m_track->isNotationTypeEnabled(SCORE) and m_score_editor->getTrackYStart() >= y and
+        m_score_editor->getYEnd() <= y)
+    {
+        m_focused_editor = SCORE;
+        return m_score_editor;
+    }
+    
+    if (m_track->isNotationTypeEnabled(GUITAR) and m_guitar_editor->getTrackYStart() >= y and
+        m_guitar_editor->getYEnd() <= y)
+    {
+        m_focused_editor = GUITAR;
+        return m_guitar_editor;
+    }
+    
+    if (m_track->isNotationTypeEnabled(DRUM) and m_drum_editor->getTrackYStart() >= y and
+        m_drum_editor->getYEnd() <= y)
+    {
+        m_focused_editor = DRUM;
+        return m_drum_editor;
+    }
+    
+    if (m_track->isNotationTypeEnabled(CONTROLLER) and m_controller_editor->getTrackYStart() >= y and
+        m_controller_editor->getYEnd() <= y)
+    {
+        m_focused_editor = CONTROLLER;
+        return m_controller_editor;
+    }
+    
+    ASSERT(false);
+    return NULL;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+Editor* GraphicalTrack::getFocusedEditor()
+{
+    if (m_focused_editor == KEYBOARD and m_track->isNotationTypeEnabled(KEYBOARD))
+    {
+        return m_keyboard_editor;
+    }
+    if (m_focused_editor == GUITAR and m_track->isNotationTypeEnabled(GUITAR))
+    {
+        return m_guitar_editor;
+    }
+    if (m_focused_editor == DRUM and m_track->isNotationTypeEnabled(DRUM))
+    {
+        return m_drum_editor;
+    }
+    if (m_focused_editor == SCORE and m_track->isNotationTypeEnabled(SCORE))
+    {
+        return m_score_editor;
+    }
+    if (m_focused_editor == CONTROLLER and m_track->isNotationTypeEnabled(CONTROLLER))
+    {
+        return m_controller_editor;
+    }
+    
+    // Focused editor not found!! Pick the firsdt we find
+    if (m_track->isNotationTypeEnabled(KEYBOARD))
+    {
+        m_focused_editor = KEYBOARD;
+        return m_keyboard_editor;
+    }
+    if (m_track->isNotationTypeEnabled(GUITAR))
+    {
+        m_focused_editor = GUITAR;
+        return m_guitar_editor;
+    }
+    if (m_track->isNotationTypeEnabled(DRUM))
+    {
+        m_focused_editor = DRUM;
+        return m_drum_editor;
+    }
+    if (m_track->isNotationTypeEnabled(SCORE))
+    {
+        m_focused_editor = SCORE;
+        return m_score_editor;
+    }
+    if (m_track->isNotationTypeEnabled(CONTROLLER))
+    {
+        m_focused_editor = CONTROLLER;
+        return m_controller_editor;
+    }
+    
+    // WTF??
+    ASSERT(false);
+    return NULL;
+}
 
 // ----------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------------
@@ -1096,15 +1222,12 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     else
     {
         // white area
-        if (m_track->getNotationType() != KEYBOARD) // keyboard editor draws its own backgound, so no need to draw it twice // FIXME no more true
-        {
-            AriaRender::primitives();
-            AriaRender::color(1, 1, 1);
-            AriaRender::rect(x + LEFT_EDGE_X,
-                             y + barHeight + BORDER_SIZE,
-                             x + Display::getWidth() - MARGIN,
-                             y + barHeight + BORDER_SIZE + 20 + m_height);
-        }//end if
+        AriaRender::primitives();
+        AriaRender::color(1, 1, 1);
+        AriaRender::rect(x + LEFT_EDGE_X,
+                         y + barHeight + BORDER_SIZE,
+                         x + Display::getWidth() - MARGIN,
+                         y + barHeight + BORDER_SIZE + 20 + m_height);
     }//end if
     
     // ------------------ prepare to draw components ------------------
@@ -1114,14 +1237,13 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     if (m_track->isMuted()) m_mute_button->m_drawable->setImage( muteOnImg );
     else                    m_mute_button->m_drawable->setImage( muteOffImg );
     
-    const NotationType notationType = m_track->getNotationType();
-    m_score_button -> enable( notationType == SCORE      and focus );
-    m_piano_button -> enable( notationType == KEYBOARD   and focus );
-    m_tab_button   -> enable( notationType == GUITAR     and focus );
-    m_drum_button  -> enable( notationType == DRUM       and focus );
-    m_ctrl_button  -> enable( notationType == CONTROLLER and focus );
+    m_score_button -> enable( m_track->isNotationTypeEnabled(SCORE)      and focus );
+    m_piano_button -> enable( m_track->isNotationTypeEnabled(KEYBOARD)   and focus );
+    m_tab_button   -> enable( m_track->isNotationTypeEnabled(GUITAR)     and focus );
+    m_drum_button  -> enable( m_track->isNotationTypeEnabled(DRUM)       and focus );
+    m_ctrl_button  -> enable( m_track->isNotationTypeEnabled(CONTROLLER) and focus );
     
-    m_sharp_flat_picker->show(m_track->getNotationType() == SCORE);
+    m_sharp_flat_picker->show(m_track->isNotationTypeEnabled(SCORE));
     
     m_channel_field->show(channel_mode);
     
@@ -1225,10 +1347,50 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
     m_from_y = y;
     
     if (m_collapsed) m_to_y = m_from_y + 45;
-    else             m_to_y = y + EXPANDED_BAR_HEIGHT + 50 + m_height;
+    else             m_to_y = y + EXPANDED_BAR_HEIGHT + 50 + m_height; // FIXME: don't hardcode '50'
     
-    // tell the editor about its new location
-    getCurrentEditor()->updatePosition(m_from_y, m_to_y, Display::getWidth(), m_height, EXPANDED_BAR_HEIGHT);
+    // tell the editor(s) about its/their new location
+    int count = 0;
+    if (m_track->isNotationTypeEnabled(SCORE))      count++;
+    if (m_track->isNotationTypeEnabled(KEYBOARD))   count++;
+    if (m_track->isNotationTypeEnabled(GUITAR))     count++;
+    if (m_track->isNotationTypeEnabled(DRUM))       count++;
+    if (m_track->isNotationTypeEnabled(CONTROLLER)) count++;
+    
+    int editor_from_y = m_from_y;
+    int editor_height = m_height/count;
+    int editor_to_y = y + EXPANDED_BAR_HEIGHT + 50 + editor_height;
+    
+    if (m_track->isNotationTypeEnabled(SCORE))
+    {
+        m_score_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), editor_height, EXPANDED_BAR_HEIGHT);
+        editor_from_y = editor_to_y + 1;
+        editor_to_y += editor_height;
+    }
+    if (m_track->isNotationTypeEnabled(GUITAR))
+    {
+        m_guitar_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), editor_height, EXPANDED_BAR_HEIGHT);
+        editor_from_y = editor_to_y + 1;
+        editor_to_y += editor_height;
+    }
+    if (m_track->isNotationTypeEnabled(KEYBOARD))
+    {
+        m_keyboard_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), editor_height, EXPANDED_BAR_HEIGHT);
+        editor_from_y = editor_to_y + 1;
+        editor_to_y += editor_height;
+    }
+    if (m_track->isNotationTypeEnabled(DRUM))
+    {
+        m_drum_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), editor_height, EXPANDED_BAR_HEIGHT);
+        editor_from_y = editor_to_y + 1;
+        editor_to_y += editor_height;
+    }
+    if (m_track->isNotationTypeEnabled(CONTROLLER))
+    {
+        m_controller_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), editor_height, EXPANDED_BAR_HEIGHT);
+        editor_from_y = editor_to_y + 1;
+        editor_to_y += editor_height;
+    }
     
     // don't waste time drawing it if out of bounds
     if (m_to_y < 0) return m_to_y;
@@ -1239,11 +1401,33 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
     if (not m_collapsed)
     {
         // --------------------------------------------------
-        // render editor
-        getCurrentEditor()->render(Display::getMouseX_current(),
-                                   Display::getMouseY_current(),
-                                   Display::getMouseX_initial(),
-                                   Display::getMouseY_initial(), focus);
+        // render editor(s)
+        
+        const RelativeXCoord x1 = Display::getMouseX_current();
+        const int y1 = Display::getMouseY_current();
+        const RelativeXCoord x2 = Display::getMouseX_initial();
+        const int y2 = Display::getMouseY_initial();
+        
+        if (m_track->isNotationTypeEnabled(SCORE))
+        {
+            m_score_editor->render(x1, y1, x2, y2, focus);
+        }
+        if (m_track->isNotationTypeEnabled(GUITAR))
+        {
+            m_guitar_editor->render(x1, y1, x2, y2, focus);
+        }
+        if (m_track->isNotationTypeEnabled(KEYBOARD))
+        {
+            m_keyboard_editor->render(x1, y1, x2, y2, focus);
+        }
+        if (m_track->isNotationTypeEnabled(DRUM))
+        {
+            m_drum_editor->render(x1, y1, x2, y2, focus);
+        }
+        if (m_track->isNotationTypeEnabled(CONTROLLER))
+        {
+            m_controller_editor->render(x1, y1, x2, y2, focus);
+        }
         // --------------------------------------------------
         // render playback progress line
         
@@ -1258,8 +1442,8 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
             
             AriaRender::lineWidth(1);
             
-            AriaRender::line(x_coord, getCurrentEditor()->getEditorYStart(),
-                             x_coord, getCurrentEditor()->getYEnd());
+            AriaRender::line(x_coord, m_from_y,
+                             x_coord, m_to_y);
             
         }
         
@@ -1329,7 +1513,11 @@ void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
     const int octave_shift = m_score_editor->getScoreMidiConverter()->getOctaveShift();
 
     // TODO: move notation type to "Track"
-    writeData( wxT("<editor mode=\"") + to_wxString(m_track->getNotationType()) +
+    writeData( wxT("<editor score=\"") + wxString(m_track->isNotationTypeEnabled(SCORE) ? wxT("true") : wxT("false")) +
+               wxT("\" keyboard=\"") + (m_track->isNotationTypeEnabled(KEYBOARD) ? wxT("true") : wxT("false")) +
+               wxT("\" guitar=\"") + (m_track->isNotationTypeEnabled(GUITAR) ? wxT("true") : wxT("false")) +
+               wxT("\" drum=\"") + (m_track->isNotationTypeEnabled(DRUM) ? wxT("true") : wxT("false")) +
+               wxT("\" controller=\"") + (m_track->isNotationTypeEnabled(CONTROLLER) ? wxT("true") : wxT("false")) +
                wxT("\" height=\"") + to_wxString(m_height) +
                (m_collapsed ? wxT("\" collapsed=\"true") : wxT("")) +
                wxT("\" g_clef=\"") + (m_score_editor->isGClefEnabled()?wxT("true"):wxT("false")) +

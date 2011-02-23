@@ -92,6 +92,9 @@ namespace AriaMaestosa
         void selectAll();
         void selectNone();
         
+        void paste();
+        void pasteAtMouse();
+        
         GraphicalTrack* getCurrentTrack()      { return getGraphicsFor( getModel()->getCurrentTrack() ); }
         GraphicalTrack* getTrack(const int id) { return m_gtracks.get(id); }
         int getTrackAmount() const             { return m_gtracks.size();  }

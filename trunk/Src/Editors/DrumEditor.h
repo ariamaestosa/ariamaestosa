@@ -67,10 +67,6 @@ namespace AriaMaestosa
         virtual void render(RelativeXCoord mousex_current, int mousey_current,
                             RelativeXCoord mousex_initial, int mousey_initial, bool focus=false);
         
-        void updatePosition(const int from_y, const int to_y, const int width, const int height,
-                            const int barHeight);
-        
-
         /** @return vector that says in which order the drums are drawn, how they're divided in sections, etc. */
         const std::vector<DrumInfo>& getDrums() const { return m_drums; }
         
@@ -115,6 +111,8 @@ namespace AriaMaestosa
             // not supported in this editor
             assert(false);
         }
+        
+        virtual NotationType getNotationType() const { return DRUM; }
     };
     
 }

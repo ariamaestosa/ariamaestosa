@@ -37,11 +37,12 @@ using namespace AriaMaestosa::Action;
 
 // -------------------------------------------------------------------------------------------------------------
 
-Paste::Paste(const bool atMouse) :
+Paste::Paste(Editor* editor, const bool atMouse) :
     //I18N: (undoable) action name
     SingleTrackAction( _("paste") )
 {
     m_at_mouse = atMouse;
+    m_editor = editor;
 }
 
 // -------------------------------------------------------------------------------------------------------------
@@ -109,8 +110,9 @@ int Paste::getShiftForRegularPaste()
 void Paste::perform()
 {
     ASSERT(m_track != NULL);
+    ASSERT(m_editor != NULL);
 
-    if (m_track->getNotationType() == CONTROLLER)
+    if (m_editor->getNotationType() == CONTROLLER)
     {
         wxBell();
         return; // no copy/paste in controller mode
@@ -156,13 +158,11 @@ void Paste::perform()
     int trackMouseLoc_x, trackMouseLoc_y;
 
     Display::screenToClient(mouseLoc.x, mouseLoc.y, &trackMouseLoc_x, &trackMouseLoc_y);
-
-    Editor* editor = gtrack->getCurrentEditor();
     
     // Calculate 'shift' (i.e. X position of pasted notes)
     if (m_at_mouse and
-        trackMouseLoc_y > editor->getEditorYStart() and
-        trackMouseLoc_y < editor->getYEnd() and
+        trackMouseLoc_y > m_editor->getEditorYStart() and
+        trackMouseLoc_y < m_editor->getYEnd() and
         trackMouseLoc_x > Editor::getEditorXStart())
     {
 
@@ -221,16 +221,16 @@ void Paste::perform()
             tmp->setEndTick(tmp->getEndTick() * scalePastedNotes);
         }
 
-        gtrack->getCurrentEditor()->moveNote(*tmp, shift , 0);
+        m_editor->moveNote(*tmp, shift , 0);
         if (m_at_mouse)
         {
-            gtrack->getCurrentEditor()->moveNote(*tmp, -beginning , 0);
+            m_editor->moveNote(*tmp, -beginning , 0);
         }
 
         tmp->setParent( m_track );
         tmp->setSelected(true);
 
-        if (m_track->getNotationType() == GUITAR)
+        if (m_editor->getNotationType() == GUITAR)
         {
             tmp->checkIfStringAndFretMatchNote(true);
         }

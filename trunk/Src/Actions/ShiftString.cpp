@@ -59,7 +59,7 @@ void ShiftString::perform()
     ASSERT(m_track != NULL);
     
     // only accept to do this in guitar mode
-    if (m_track->getNotationType() != GUITAR) return;
+    if (not m_track->isNotationTypeEnabled(GUITAR))  return;
     
     // not supported in this function (mostly because not needed, but could logically be implmented)
     ASSERT(m_note_id != ALL_NOTES);

@@ -366,7 +366,7 @@ void Note::play(bool change)
                         (m_track->getSequence()->getTempo() * m_track->getSequence()->ticksPerBeat());
 
     // FIXME(DESIGN): remove this 131-pitch ugliness
-    if (m_track->getNotationType() == DRUM) 
+    if (m_track->isNotationTypeEnabled(DRUM)) 
     {
         PlatformMidiManager::get()->playNote(m_pitch_ID, m_volume, durationMilli, 9, m_track->getDrumKit() );
     }

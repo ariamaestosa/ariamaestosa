@@ -14,14 +14,15 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _paste_
-#define _paste_
+#ifndef __PASTE_H__
+#define __PASTE_H__
 
 #include "Actions/EditAction.h"
 
 namespace AriaMaestosa
 {
     class Track;
+    class Editor;
     
     namespace Action
     {
@@ -37,10 +38,11 @@ namespace AriaMaestosa
             NoteRelocator relocator;
             
             int getShiftForRegularPaste();
+            Editor* m_editor;
             
         public:
             
-            Paste(const bool atMouse);
+            Paste(Editor* editor, const bool atMouse);
             void perform();
             void undo();
             virtual ~Paste();

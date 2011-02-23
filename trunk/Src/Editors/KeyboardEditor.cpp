@@ -20,8 +20,9 @@
 #include "Editors/KeyboardEditor.h"
 
 #include "AriaCore.h"
-#include "Actions/EditAction.h"
 #include "Actions/AddNote.h"
+#include "Actions/EditAction.h"
+#include "Actions/MoveNotes.h"
 #include "Editors/RelativeXCoord.h"
 #include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
@@ -29,7 +30,6 @@
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
-//#include "Pickers/MagneticGrid.h"
 #include "Pickers/KeyPicker.h"
 #include "Renderers/Drawable.h"
 #include "Renderers/RenderAPI.h"
@@ -200,6 +200,31 @@ void KeyboardEditor::moveNote(Note& note, const int relativeX, const int relativ
     note.setTick( note.getTick() + relativeX );
     note.setEndTick( note.getEndTick() + relativeX );
     note.setPitchID( note.getPitchID() + relativeY );
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+void KeyboardEditor::processKeyPress(int keycode, bool commandDown, bool shiftDown)
+{
+    // shift by octave
+    if (shiftDown and not commandDown)
+    {
+        if (keycode == WXK_UP)
+        {
+            m_track->action(new Action::MoveNotes(this, 0, -12, SELECTED_NOTES));
+            Display::render();
+            return;
+        }
+        
+        if (keycode == WXK_DOWN)
+        {
+            m_track->action(new Action::MoveNotes(this, 0, 12, SELECTED_NOTES));
+            Display::render();
+            return;
+        }
+    }
+    
+    Editor::processKeyPress(keycode, commandDown, shiftDown);
 }
 
 // ************************************************************************************************************

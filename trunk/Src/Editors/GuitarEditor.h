@@ -44,9 +44,6 @@ namespace AriaMaestosa
         GuitarEditor(GraphicalTrack* track);
         ~GuitarEditor();
         
-        void updatePosition(const int from_y, const int to_y, const int width, const int height, const int barHeight);
-        
-
         /** event callback from base class */
         virtual void mouseDown(RelativeXCoord, int y);
         
@@ -84,6 +81,9 @@ namespace AriaMaestosa
             return 0;
         }
         
+        virtual NotationType getNotationType() const { return GUITAR; }
+        
+        virtual void processKeyPress(int keycode, bool commandDown, bool shiftDown);
     };
     
 }

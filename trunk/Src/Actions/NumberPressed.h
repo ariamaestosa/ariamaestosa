@@ -14,8 +14,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _numpressed_
-#define _numpressed_
+#ifndef __NUMBER_PRESSED_H__
+#define __NUMBER_PRESSED_H__
 
 #include "Actions/EditAction.h"
 
