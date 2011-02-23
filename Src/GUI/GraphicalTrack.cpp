@@ -788,7 +788,9 @@ void GraphicalTrack::processMouseRelease()
 
 void GraphicalTrack::processMouseExited(RelativeXCoord x_now, int y_now, RelativeXCoord x_initial, int y_initial)
 {
-    getEditorAt(y_initial)->mouseExited(x_now, y_now, x_initial, y_initial);
+    Editor* ed = getEditorAt(y_initial);
+    if (ed == NULL) return;
+    ed->mouseExited(x_now, y_now, x_initial, y_initial);
 }
 
 // ----------------------------------------------------------------------------------------------------------
