@@ -208,10 +208,11 @@ void hollow_rect(const int x1, const int y1, const int x2, const int y2)
     
 void select_rect(const int x1, const int y1, const int x2, const int y2)
 {
-    AriaRender::color(0,0,0);
+    Display::renderDC -> SetPen( *wxBLACK_PEN );
     disableBrush();
     Display::renderDC -> DrawRectangle( x1, y1, x2-x1, y2-y1 );
     updateBrush();
+    updatePen();
 }
 
 void triangle(const int x1, const int y1, const int x2, const int y2, const int x3, const int y3)
