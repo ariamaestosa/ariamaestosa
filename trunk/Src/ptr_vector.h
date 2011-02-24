@@ -237,7 +237,7 @@ namespace AriaMaestosa
             ASSERT( MAGIC_NUMBER_OK() );
             ASSERT( not m_performing_deletion );
 
-            const int count = contentsVector.size();
+            const unsigned int count = contentsVector.size();
             for (unsigned int n=0; n<count; n++)
             {
                 
