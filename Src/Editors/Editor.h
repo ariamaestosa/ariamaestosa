@@ -91,9 +91,6 @@ namespace AriaMaestosa
         int m_width;
         int m_height;
         
-        /** height of the header bar of a track (editor) */
-        int m_header_bar_height;
-        
         bool m_selecting;
         int  m_y_step;
         
@@ -163,7 +160,7 @@ namespace AriaMaestosa
         bool hasAsBackground(Track* track);
         
         /** @brief method called by GraphicalTrack to let the Editor know about its position */
-        void updatePosition(int from_y, int to_y, int width, int height, int barHeight);
+        void updatePosition(int from_y, int to_y, int width, int height);
         
         /** 
           * @brief  for default volume management.
@@ -266,12 +263,12 @@ namespace AriaMaestosa
         // methods that provide general information common to all editors
         // ------------------------------------------------------------------------------------------------------
 
-        static int getEditorXStart(){ return 90;                                           }
-        int getXEnd        () const { return m_width - MARGIN;                             } // FIXME - adapt to include vertical scrollbar
-        int getTrackYStart () const { return m_from_y;                                     }
-        int getEditorYStart() const { return m_from_y + m_header_bar_height + BORDER_SIZE; }
-        int getYEnd        () const { return m_to_y - 10;                                  }
-        int getWidth       () const { return m_width;                                      }
+        static int getEditorXStart(){ return 90;                      }
+        int getXEnd        () const { return m_width - MARGIN;        } // FIXME - adapt to include vertical scrollbar
+        int getTrackYStart () const { return m_from_y;                }
+        int getEditorYStart() const { return m_from_y;                }
+        int getYEnd        () const { return m_to_y - 10;             }
+        int getWidth       () const { return m_width;                 }
 
     };
 }

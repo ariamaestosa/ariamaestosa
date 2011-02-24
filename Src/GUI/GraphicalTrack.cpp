@@ -502,9 +502,10 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         m_gsequence->getModel()->setCurrentTrack( m_track );
 
         // resize drag
-        if (mousey > m_to_y - 15 and mousey < m_to_y - 5)
+        if (mousey > m_to_y - 10 and mousey < m_to_y)
         {
             m_dragging_resize = true;
+
             return false;
         }
 
@@ -512,8 +513,7 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
         if (not m_collapsed)
         {
             Editor* ed = getEditorAt(mousey);
-            if (ed == NULL) return true;
-            ed->mouseDown(mousex, mousey);
+            if (ed != NULL) ed->mouseDown(mousex, mousey);
         }
 
         if (not ImageProvider::imagesLoaded()) return true;
@@ -771,12 +771,16 @@ void GraphicalTrack::processMouseRelease()
 
     if (not m_dragging_resize)
     {
-        getEditorAt(Display::getMouseY_initial())->mouseUp(Display::getMouseX_current(),
-                                                           Display::getMouseY_current(),
-                                                           Display::getMouseX_initial(),
-                                                           Display::getMouseY_initial());
+        Editor* ed = getEditorAt(Display::getMouseY_initial());
+        if (ed != NULL)
+        {
+            ed->mouseUp(Display::getMouseX_current(),
+                        Display::getMouseY_current(),
+                        Display::getMouseX_initial(),
+                        Display::getMouseY_initial());
+        }
     }
-
+    
     if (m_dragging_resize)
     {
         m_dragging_resize = false;
@@ -809,11 +813,15 @@ bool GraphicalTrack::processMouseDrag(RelativeXCoord x, int y)
 
         if (not m_dragging_resize)
         {
-            getEditorAt(Display::getMouseY_initial())->mouseDrag(x, y,
-                                                                 Display::getMouseX_initial(),
-                                                                 Display::getMouseY_initial());
+            Editor* ed = getEditorAt(Display::getMouseY_initial());
+            if (ed != NULL)
+            {
+                ed->mouseDrag(x, y,
+                              Display::getMouseX_initial(),
+                              Display::getMouseY_initial());
+            }
         }
-
+        
         // resize drag
         if (m_dragging_resize)
         {
@@ -1352,8 +1360,17 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
     
     m_from_y = y;
     
-    if (m_collapsed) m_to_y = m_from_y + 45;
-    else             m_to_y = y + EXPANDED_BAR_HEIGHT + 50 + m_height; // FIXME: don't hardcode '50'
+    int editor_from_y = m_from_y + BORDER_SIZE;
+
+    if (m_collapsed)
+    {
+        m_to_y = m_from_y + BORDER_SIZE + COLLAPSED_BAR_HEIGHT;
+    }
+    else
+    {
+        editor_from_y += EXPANDED_BAR_HEIGHT;
+        m_to_y = editor_from_y + m_height + 25; // FIXME: don't hardcode '25'
+    }
     
     // tell the editor(s) about its/their new location
     int count = 0;
@@ -1363,37 +1380,36 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
     if (m_track->isNotationTypeEnabled(DRUM))       count++;
     if (m_track->isNotationTypeEnabled(CONTROLLER)) count++;
     
-    int editor_from_y = m_from_y;
-    int editor_height = m_height/count;
-    int editor_to_y = y + EXPANDED_BAR_HEIGHT + 50 + editor_height;
+    int editor_height = (m_to_y - editor_from_y)/count;
+    int editor_to_y = m_to_y;
     
     if (m_track->isNotationTypeEnabled(SCORE))
     {
-        m_score_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), editor_height, EXPANDED_BAR_HEIGHT);
+        m_score_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), editor_height);
         editor_from_y = editor_to_y + 1;
         editor_to_y += editor_height;
     }
     if (m_track->isNotationTypeEnabled(GUITAR))
     {
-        m_guitar_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), editor_height, EXPANDED_BAR_HEIGHT);
+        m_guitar_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), editor_height);
         editor_from_y = editor_to_y + 1;
         editor_to_y += editor_height;
     }
     if (m_track->isNotationTypeEnabled(KEYBOARD))
     {
-        m_keyboard_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), editor_height, EXPANDED_BAR_HEIGHT);
+        m_keyboard_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), editor_height);
         editor_from_y = editor_to_y + 1;
         editor_to_y += editor_height;
     }
     if (m_track->isNotationTypeEnabled(DRUM))
     {
-        m_drum_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), editor_height, EXPANDED_BAR_HEIGHT);
+        m_drum_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), editor_height);
         editor_from_y = editor_to_y + 1;
         editor_to_y += editor_height;
     }
     if (m_track->isNotationTypeEnabled(CONTROLLER))
     {
-        m_controller_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), editor_height, EXPANDED_BAR_HEIGHT);
+        m_controller_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), editor_height);
         editor_from_y = editor_to_y + 1;
         editor_to_y += editor_height;
     }
@@ -1434,6 +1450,8 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
         {
             m_controller_editor->render(x1, y1, x2, y2, focus);
         }
+        
+        
         // --------------------------------------------------
         // render playback progress line
         
@@ -1448,8 +1466,8 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
             
             AriaRender::lineWidth(1);
             
-            AriaRender::line(x_coord, m_from_y,
-                             x_coord, m_to_y);
+            AriaRender::line(x_coord, editor_from_y,
+                             x_coord, editor_to_y);
             
         }
         
