@@ -1032,7 +1032,8 @@ void GraphicalTrack::selectNote(const int id, const bool selected, bool ignoreMo
         // if this is a 'select none' command, unselect any selected measures in the top bar
         if (not selected) getSequence()->getMeasureBar()->unselect();
         
-        if (m_track->isNotationTypeEnabled(CONTROLLER))
+        Editor* ed = getFocusedEditor();
+        if (ed != NULL and ed->getNotationType() == CONTROLLER)
         {
             // FIXME(DESIGN): controller editor must be handled differently (special case)
             m_controller_editor->selectAll( selected );
