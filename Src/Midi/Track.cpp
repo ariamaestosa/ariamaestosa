@@ -1852,7 +1852,13 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                 else if (strcmp("editor", xml->getNodeName()) == 0)
                 {
                     const char* mode_c = xml->getAttributeValue("mode");
-                                        
+                                    
+                    setNotationType(SCORE, false);
+                    setNotationType(KEYBOARD, false);
+                    setNotationType(DRUM, false);
+                    setNotationType(GUITAR, false);
+                    setNotationType(CONTROLLER, false);
+                    
                     // In support for old format
                     if ( mode_c != NULL )
                     {
@@ -1860,25 +1866,31 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                     }
                     else
                     {
-                        setNotationType(KEYBOARD, true);
-                        std::cout << "Missing info from file: editor mode" << std::endl;
+                        // New format
+                        const char* mode_score = xml->getAttributeValue("score");
+                        if ( mode_score != NULL ) setNotationType(SCORE, true);
+                        
+                        const char* mode_keyb = xml->getAttributeValue("keyboard");
+                        if ( mode_keyb!= NULL ) setNotationType(KEYBOARD, true);
+                        
+                        const char* mode_guitar = xml->getAttributeValue("guitar");
+                        if ( mode_guitar != NULL ) setNotationType(GUITAR, true);
+                        
+                        const char* mode_drum = xml->getAttributeValue("drum");
+                        if ( mode_drum != NULL ) setNotationType(DRUM, true);
+                        
+                        const char* mode_ctrl = xml->getAttributeValue("controller");
+                        if ( mode_ctrl != NULL ) setNotationType(CONTROLLER, true);
                     }
                     
-                    // New format
-                    const char* mode_score = xml->getAttributeValue("score");
-                    if ( mode_score != NULL ) setNotationType(SCORE, true);
                     
-                    const char* mode_keyb = xml->getAttributeValue("keyboard");
-                    if ( mode_keyb!= NULL ) setNotationType(KEYBOARD, true);
-                    
-                    const char* mode_guitar = xml->getAttributeValue("guitar");
-                    if ( mode_guitar != NULL ) setNotationType(GUITAR, true);
-                    
-                    const char* mode_drum = xml->getAttributeValue("drum");
-                    if ( mode_drum != NULL ) setNotationType(DRUM, true);
-                    
-                    const char* mode_ctrl = xml->getAttributeValue("controller");
-                    if ( mode_ctrl != NULL ) setNotationType(CONTROLLER, true);
+                    if (not isNotationTypeEnabled(SCORE)  and not isNotationTypeEnabled(KEYBOARD) and
+                        not isNotationTypeEnabled(GUITAR) and not isNotationTypeEnabled(DRUM) and
+                        not isNotationTypeEnabled(CONTROLLER))
+                    {
+                        std::cerr << "Missing info from file: notation type" << std::endl;
+                        setNotationType(KEYBOARD, true);
+                    }
                     
                     getGraphics()->readFromFile(xml);
                 }                    
