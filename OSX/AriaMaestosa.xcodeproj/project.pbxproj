@@ -131,6 +131,7 @@
 		9533F8FA11DFBFF70002D3ED /* PresetManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 9533F8F611DFBFF70002D3ED /* PresetManager.h */; };
 		953C0439122197C0005DF729 /* prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 953C0438122197C0005DF729 /* prefix.pch */; };
 		953C043A122197C0005DF729 /* prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 953C0438122197C0005DF729 /* prefix.pch */; };
+		953EE286131709E300AA3EA1 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 953EE285131709E300AA3EA1 /* CoreMIDI.framework */; };
 		9544D68411582D5300E0A3BD /* wxEasyPrintWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9544D68211582D5300E0A3BD /* wxEasyPrintWrapper.cpp */; };
 		9544D68511582D5300E0A3BD /* wxEasyPrintWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 9544D68311582D5300E0A3BD /* wxEasyPrintWrapper.h */; };
 		9544D68611582D5300E0A3BD /* wxEasyPrintWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9544D68211582D5300E0A3BD /* wxEasyPrintWrapper.cpp */; };
@@ -287,8 +288,8 @@
 		95711A0A1125D8D300104BF5 /* AlsaPort.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119391125D8D200104BF5 /* AlsaPort.h */; };
 		95711A0C1125D8D300104BF5 /* AudioToolboxPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571193D1125D8D200104BF5 /* AudioToolboxPlayer.cpp */; };
 		95711A0D1125D8D300104BF5 /* AudioToolboxPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571193E1125D8D200104BF5 /* AudioToolboxPlayer.h */; };
-		95711A0E1125D8D300104BF5 /* CoreAudioNotePlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571193F1125D8D200104BF5 /* CoreAudioNotePlayer.cpp */; };
-		95711A0F1125D8D300104BF5 /* CoreAudioNotePlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119401125D8D200104BF5 /* CoreAudioNotePlayer.h */; };
+		95711A0E1125D8D300104BF5 /* AUNotePlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571193F1125D8D200104BF5 /* AUNotePlayer.cpp */; };
+		95711A0F1125D8D300104BF5 /* AUNotePlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119401125D8D200104BF5 /* AUNotePlayer.h */; };
 		95711A101125D8D300104BF5 /* MacPlayerInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119411125D8D200104BF5 /* MacPlayerInterface.cpp */; };
 		95711A111125D8D300104BF5 /* QTKitPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119421125D8D200104BF5 /* QTKitPlayer.h */; };
 		95711A121125D8D300104BF5 /* QTKitPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 957119431125D8D200104BF5 /* QTKitPlayer.mm */; };
@@ -451,8 +452,8 @@
 		95711AD41125D8D300104BF5 /* AlsaPort.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119391125D8D200104BF5 /* AlsaPort.h */; };
 		95711AD61125D8D300104BF5 /* AudioToolboxPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571193D1125D8D200104BF5 /* AudioToolboxPlayer.cpp */; };
 		95711AD71125D8D300104BF5 /* AudioToolboxPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571193E1125D8D200104BF5 /* AudioToolboxPlayer.h */; };
-		95711AD81125D8D300104BF5 /* CoreAudioNotePlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571193F1125D8D200104BF5 /* CoreAudioNotePlayer.cpp */; };
-		95711AD91125D8D300104BF5 /* CoreAudioNotePlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119401125D8D200104BF5 /* CoreAudioNotePlayer.h */; };
+		95711AD81125D8D300104BF5 /* AUNotePlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571193F1125D8D200104BF5 /* AUNotePlayer.cpp */; };
+		95711AD91125D8D300104BF5 /* AUNotePlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119401125D8D200104BF5 /* AUNotePlayer.h */; };
 		95711ADA1125D8D300104BF5 /* MacPlayerInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119411125D8D200104BF5 /* MacPlayerInterface.cpp */; };
 		95711ADB1125D8D300104BF5 /* QTKitPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119421125D8D200104BF5 /* QTKitPlayer.h */; };
 		95711ADC1125D8D300104BF5 /* QTKitPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 957119431125D8D200104BF5 /* QTKitPlayer.mm */; };
@@ -878,6 +879,7 @@
 		9533F8F511DFBFF70002D3ED /* PresetManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PresetManager.cpp; path = ../Src/PresetManager.cpp; sourceTree = SOURCE_ROOT; };
 		9533F8F611DFBFF70002D3ED /* PresetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PresetManager.h; path = ../Src/PresetManager.h; sourceTree = SOURCE_ROOT; };
 		953C0438122197C0005DF729 /* prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
+		953EE285131709E300AA3EA1 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
 		9544D68211582D5300E0A3BD /* wxEasyPrintWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wxEasyPrintWrapper.cpp; path = ../Src/Printing/wxEasyPrintWrapper.cpp; sourceTree = SOURCE_ROOT; };
 		9544D68311582D5300E0A3BD /* wxEasyPrintWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wxEasyPrintWrapper.h; path = ../Src/Printing/wxEasyPrintWrapper.h; sourceTree = SOURCE_ROOT; };
 		95593BAE12D14A69001AF66B /* MagneticGridPicker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MagneticGridPicker.cpp; path = ../Src/Pickers/MagneticGridPicker.cpp; sourceTree = SOURCE_ROOT; };
@@ -1011,8 +1013,8 @@
 		957119391125D8D200104BF5 /* AlsaPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlsaPort.h; path = ../Src/Midi/Players/Alsa/AlsaPort.h; sourceTree = SOURCE_ROOT; };
 		9571193D1125D8D200104BF5 /* AudioToolboxPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AudioToolboxPlayer.cpp; path = ../Src/Midi/Players/Mac/AudioToolboxPlayer.cpp; sourceTree = SOURCE_ROOT; };
 		9571193E1125D8D200104BF5 /* AudioToolboxPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioToolboxPlayer.h; path = ../Src/Midi/Players/Mac/AudioToolboxPlayer.h; sourceTree = SOURCE_ROOT; };
-		9571193F1125D8D200104BF5 /* CoreAudioNotePlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CoreAudioNotePlayer.cpp; path = ../Src/Midi/Players/Mac/CoreAudioNotePlayer.cpp; sourceTree = SOURCE_ROOT; };
-		957119401125D8D200104BF5 /* CoreAudioNotePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreAudioNotePlayer.h; path = ../Src/Midi/Players/Mac/CoreAudioNotePlayer.h; sourceTree = SOURCE_ROOT; };
+		9571193F1125D8D200104BF5 /* AUNotePlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AUNotePlayer.cpp; path = ../Src/Midi/Players/Mac/AUNotePlayer.cpp; sourceTree = SOURCE_ROOT; };
+		957119401125D8D200104BF5 /* AUNotePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AUNotePlayer.h; path = ../Src/Midi/Players/Mac/AUNotePlayer.h; sourceTree = SOURCE_ROOT; };
 		957119411125D8D200104BF5 /* MacPlayerInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MacPlayerInterface.cpp; path = ../Src/Midi/Players/Mac/MacPlayerInterface.cpp; sourceTree = SOURCE_ROOT; };
 		957119421125D8D200104BF5 /* QTKitPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QTKitPlayer.h; path = ../Src/Midi/Players/Mac/QTKitPlayer.h; sourceTree = SOURCE_ROOT; };
 		957119431125D8D200104BF5 /* QTKitPlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = QTKitPlayer.mm; path = ../Src/Midi/Players/Mac/QTKitPlayer.mm; sourceTree = SOURCE_ROOT; };
@@ -1256,6 +1258,7 @@
 				4E1DA4F60B3D85C5008BE3E4 /* AudioUnit.framework in Frameworks */,
 				4E65A3030B4C3DEC0096E9C0 /* IOKit.framework in Frameworks */,
 				4E65A46F0B4C3E250096E9C0 /* Cocoa.framework in Frameworks */,
+				953EE286131709E300AA3EA1 /* CoreMIDI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1507,8 +1510,8 @@
 			children = (
 				9571193D1125D8D200104BF5 /* AudioToolboxPlayer.cpp */,
 				9571193E1125D8D200104BF5 /* AudioToolboxPlayer.h */,
-				9571193F1125D8D200104BF5 /* CoreAudioNotePlayer.cpp */,
-				957119401125D8D200104BF5 /* CoreAudioNotePlayer.h */,
+				9571193F1125D8D200104BF5 /* AUNotePlayer.cpp */,
+				957119401125D8D200104BF5 /* AUNotePlayer.h */,
 				957119411125D8D200104BF5 /* MacPlayerInterface.cpp */,
 				957119421125D8D200104BF5 /* QTKitPlayer.h */,
 				957119431125D8D200104BF5 /* QTKitPlayer.mm */,
@@ -1864,6 +1867,7 @@
 				9597232E12C1378600BF73D3 /* libjdkmidi */,
 				EFA04C2009BF39DF0079DEB2 /* Frameworks */,
 				EF9D1C0009ABE02100CAF7A6 /* Products */,
+				953EE285131709E300AA3EA1 /* CoreMIDI.framework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1954,7 +1958,7 @@
 				95711AD11125D8D300104BF5 /* AlsaNotePlayer.h in Headers */,
 				95711AD41125D8D300104BF5 /* AlsaPort.h in Headers */,
 				95711AD71125D8D300104BF5 /* AudioToolboxPlayer.h in Headers */,
-				95711AD91125D8D300104BF5 /* CoreAudioNotePlayer.h in Headers */,
+				95711AD91125D8D300104BF5 /* AUNotePlayer.h in Headers */,
 				95711ADB1125D8D300104BF5 /* QTKitPlayer.h in Headers */,
 				95711ADD1125D8D300104BF5 /* PlatformMidiManager.h in Headers */,
 				95711ADF1125D8D300104BF5 /* Sequencer.h in Headers */,
@@ -2123,7 +2127,7 @@
 				95711A071125D8D300104BF5 /* AlsaNotePlayer.h in Headers */,
 				95711A0A1125D8D300104BF5 /* AlsaPort.h in Headers */,
 				95711A0D1125D8D300104BF5 /* AudioToolboxPlayer.h in Headers */,
-				95711A0F1125D8D300104BF5 /* CoreAudioNotePlayer.h in Headers */,
+				95711A0F1125D8D300104BF5 /* AUNotePlayer.h in Headers */,
 				95711A111125D8D300104BF5 /* QTKitPlayer.h in Headers */,
 				95711A131125D8D300104BF5 /* PlatformMidiManager.h in Headers */,
 				95711A151125D8D300104BF5 /* Sequencer.h in Headers */,
@@ -2374,7 +2378,7 @@
 				95711AD21125D8D300104BF5 /* AlsaPlayer.cpp in Sources */,
 				95711AD31125D8D300104BF5 /* AlsaPort.cpp in Sources */,
 				95711AD61125D8D300104BF5 /* AudioToolboxPlayer.cpp in Sources */,
-				95711AD81125D8D300104BF5 /* CoreAudioNotePlayer.cpp in Sources */,
+				95711AD81125D8D300104BF5 /* AUNotePlayer.cpp in Sources */,
 				95711ADA1125D8D300104BF5 /* MacPlayerInterface.cpp in Sources */,
 				95711ADC1125D8D300104BF5 /* QTKitPlayer.mm in Sources */,
 				95711ADE1125D8D300104BF5 /* Sequencer.cpp in Sources */,
@@ -2534,7 +2538,7 @@
 				95711A081125D8D300104BF5 /* AlsaPlayer.cpp in Sources */,
 				95711A091125D8D300104BF5 /* AlsaPort.cpp in Sources */,
 				95711A0C1125D8D300104BF5 /* AudioToolboxPlayer.cpp in Sources */,
-				95711A0E1125D8D300104BF5 /* CoreAudioNotePlayer.cpp in Sources */,
+				95711A0E1125D8D300104BF5 /* AUNotePlayer.cpp in Sources */,
 				95711A101125D8D300104BF5 /* MacPlayerInterface.cpp in Sources */,
 				95711A121125D8D300104BF5 /* QTKitPlayer.mm in Sources */,
 				95711A141125D8D300104BF5 /* Sequencer.cpp in Sources */,

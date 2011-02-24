@@ -49,7 +49,7 @@
 #include "Midi/CommonMidiUtils.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Players/Mac/QTKitPlayer.h"
-#include "Midi/Players/Mac/CoreAudioNotePlayer.h"
+#include "Midi/Players/Mac/AUNotePlayer.h"
 #include "Midi/Players/Mac/AudioToolboxPlayer.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Sequence.h"
