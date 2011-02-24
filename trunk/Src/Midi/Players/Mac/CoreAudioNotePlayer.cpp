@@ -66,38 +66,38 @@ OSStatus    CreateAUGraph (AUGraph &outGraph, AudioUnit &outSynth)
     OSStatus result;
     //create the nodes of the graph
     AUNode synthNode, limiterNode, outNode;
-
+    
     ComponentDescription cd;
     cd.componentManufacturer = kAudioUnitManufacturer_Apple;
     cd.componentFlags = 0;
     cd.componentFlagsMask = 0;
-
-    require_noerr (result = NewAUGraph (&outGraph), home);
-
+    
+    require_noerr (result = NewAUGraph (&outGraph), CreateAUGraph_home);
+    
     cd.componentType = kAudioUnitType_MusicDevice;
     cd.componentSubType = kAudioUnitSubType_DLSSynth;
-
-    require_noerr (result = AUGraphNewNode (outGraph, &cd, 0, NULL, &synthNode), home);
-
+    
+    require_noerr (result = AUGraphAddNode (outGraph, &cd, &synthNode), CreateAUGraph_home);
+    
     cd.componentType = kAudioUnitType_Effect;
-    cd.componentSubType = kAudioUnitSubType_PeakLimiter;
-
-    require_noerr (result = AUGraphNewNode (outGraph, &cd, 0, NULL, &limiterNode), home);
-
+    cd.componentSubType = kAudioUnitSubType_PeakLimiter;  
+    
+    require_noerr (result = AUGraphAddNode (outGraph, &cd, &limiterNode), CreateAUGraph_home);
+    
     cd.componentType = kAudioUnitType_Output;
-    cd.componentSubType = kAudioUnitSubType_DefaultOutput;
-    require_noerr (result = AUGraphNewNode (outGraph, &cd, 0, NULL, &outNode), home);
-
-    require_noerr (result = AUGraphOpen (outGraph), home);
-
-    require_noerr (result = AUGraphConnectNodeInput (outGraph, synthNode, 0, limiterNode, 0), home);
-    require_noerr (result = AUGraphConnectNodeInput (outGraph, limiterNode, 0, outNode, 0), home);
-
+    cd.componentSubType = kAudioUnitSubType_DefaultOutput;  
+    require_noerr (result = AUGraphAddNode (outGraph, &cd, &outNode), CreateAUGraph_home);
+    
+    require_noerr (result = AUGraphOpen (outGraph), CreateAUGraph_home);
+    
+    require_noerr (result = AUGraphConnectNodeInput (outGraph, synthNode, 0, limiterNode, 0), CreateAUGraph_home);
+    require_noerr (result = AUGraphConnectNodeInput (outGraph, limiterNode, 0, outNode, 0), CreateAUGraph_home);
+    
     // ok we're good to go - get the Synth Unit...
-    require_noerr (result = AUGraphGetNodeInfo(outGraph, synthNode, 0, 0, 0, &outSynth), home);
-
-home:
-        return result;
+    require_noerr (result = AUGraphNodeInfo(outGraph, synthNode, 0, &outSynth), CreateAUGraph_home);
+    
+CreateAUGraph_home:
+    return result;
 }
 
 OSStatus PathToFSSpec(const char *filename, FSSpec &outSpec)
@@ -114,67 +114,87 @@ home:
 
 // some MIDI constants:
 enum {
-    kMidiMessage_ControlChange         = 0xB,
-    kMidiMessage_ProgramChange         = 0xC,
+    kMidiMessage_ControlChange      = 0xB,
+    kMidiMessage_ProgramChange      = 0xC,
     kMidiMessage_BankMSBControl     = 0,
-    kMidiMessage_BankLSBControl        = 32,
+    kMidiMessage_BankLSBControl     = 32,
     kMidiMessage_NoteOn             = 0x9
 };
+    
+enum Controllers
+{
+    kController_BankMSBControl 	= 0,
+    kController_BankLSBControl	= 32,
+};
+    
 
 AUGraph graph = 0;
 AudioUnit synthUnit;
 char* bankPath = 0;
-UInt8 midiChannelInUse = 0; //we're using midi channel 1...
+//uint8_t midiChannelInUse = 0; //we're using midi channel 1...
 bool playing = false;
 
 StopNoteTimer* stopNoteTimer = NULL;
 
-/*
- // set bank
- {
-     jdkmidi::MIDITimedBigMessage m;
+void programChange(uint8_t progChangeNum, uint8_t midiChannelInUse)
+{
+    OSStatus result;
+    require_noerr (result = MusicDeviceMIDIEvent(synthUnit, 
+                                                 kMidiMessage_ProgramChange << 4 | midiChannelInUse, 
+                                                 progChangeNum, 0,
+                                                 0 /*sample offset*/), home_programChange);
+    return;
+home_programChange:
+    fprintf(stderr, "Error in MidiPlayer::programChange\n");
+}
 
-     m.SetTime( 0 );
-     m.SetControlChange( channel, 0, 0 );
-
-     if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; exit(1); }
-
-     m.SetTime( 0 );
-     m.SetControlChange( channel, 32, 0 );
-
-     if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; exit(1); }
- }
-
- // set instrument
-...
-
- // set track name
-...
-
- // set maximum volume
- {
-     jdkmidi::MIDITimedBigMessage m;
-
-     m.SetTime( 0 );
-     m.SetControlChange( channel, 7, 127 );
-
-     if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding event" << std::endl; exit(1); }
- }
-
- */
-
+void setBank(uint8_t midiChannelInUse)
+{
+    OSStatus result;
+    require_noerr (result = MusicDeviceMIDIEvent(synthUnit, 
+                                                 kMidiMessage_ControlChange << 4 | midiChannelInUse, 
+                                                 kController_BankMSBControl, 0,
+                                                 0 /*sample offset*/), home_setBank);
+    return;
+home_setBank:
+    fprintf(stderr, "Error in MidiPlayer::setBank\n");
+}
+    
 void init()
 {
-
+    uint8_t midiChannelInUse = 0;
     stopNoteTimer = new StopNoteTimer();
 
     OSStatus result;
 
     require_noerr (result = CreateAUGraph (graph, synthUnit), home);
 
+    /*
+    // if the user supplies a sound bank, we'll set that before we initialize and start playing
+    if (bankPath) 
+    {
+        FSRef fsRef;
+        require_noerr (result = FSPathMakeRef ((const UInt8*)bankPath, &fsRef, 0), ctor_home);
+        
+        printf ("Setting Sound Bank:%s\n", bankPath);
+        
+        require_noerr (result = AudioUnitSetProperty (synthUnit,
+                                                      kMusicDeviceProperty_SoundBankFSRef,
+                                                      kAudioUnitScope_Global, 0,
+                                                      &fsRef, sizeof(fsRef)), ctor_home);
+        
+    }
+    */
+    
     // initialize and start the graph
     require_noerr (result = AUGraphInitialize (graph), home);
 
+    for (int n=0; n<15; n++)
+    {
+        programChange(0, n);
+        setBank(n);
+    }
+    
     //set our bank
     require_noerr (result = MusicDeviceMIDIEvent(synthUnit,
                                                  kMidiMessage_ControlChange << 4 | midiChannelInUse,
@@ -189,11 +209,11 @@ void init()
     //CAShow (graph); // prints out the graph so we can see what it looks like...
 
     require_noerr (result = AUGraphStart (graph), home);
-
+    return;
 
 home:
-
-        return;
+    fprintf(stderr, "An error seems to have occured when initing the AUDIO UNIT graph\n");
+    return;
 
 }
 
@@ -222,8 +242,8 @@ void playNote(int pitchID, int volume, int duration, int channel, int instrument
     if (playing) stopNote();
 
     OSStatus result;
-    UInt32 noteOnCommand =     kMidiMessage_NoteOn << 4 | channel;
-    UInt32 progamChange = kMidiMessage_ProgramChange << 4 | channel;
+    UInt32 noteOnCommand =        kMidiMessage_NoteOn << 4 | channel;
+    UInt32 progamChange  = kMidiMessage_ProgramChange << 4 | channel;
 
     lastNote = pitchID;
     lastChannel = channel;
@@ -243,7 +263,7 @@ home:
 
 void stopNote()
 {
-    if (!playing) return;
+    if (not playing) return;
 
     OSStatus result;
     UInt32 noteOnCommand =     kMidiMessage_NoteOn << 4 | lastChannel;
@@ -255,7 +275,7 @@ home:
 
         return;
 }
-
+    
 }
 
 #endif
