@@ -44,10 +44,18 @@ void AudioToolboxMidiPlayer::loadSequence(char* midiData, int length)
     if (NewMusicSequence(&musicSequence) != noErr)
         std::cout << "NewMusicSequence failed" << std::endl;
 
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
+    if (MusicSequenceFileLoadData(musicSequence, CFDataCreate(NULL, (UInt8*)midiData, length), kMusicSequenceFile_MIDIType, 0) != noErr)
+        std::cout << "MusicSequenceFileLoadData failed" << std::endl;
+    
+#else
+#warning Using deprecated code for OSX 10.5
     if (MusicSequenceLoadSMFData(musicSequence, CFDataCreate(NULL, (UInt8*)midiData, length) ) != noErr)
         std::cout << "MusicSequenceLoadSMFData failed" << std::endl;
 
+#endif
+    
     if (MusicPlayerSetSequence(musicPlayer, musicSequence) != noErr)
         std::cout << "MusicPlayerSetSequence failed" << std::endl;
 
