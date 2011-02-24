@@ -796,7 +796,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
                         RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {
     // FIXME: don't hardcode these numbers
-    AriaRender::beginScissors(LEFT_EDGE_X, getEditorYStart(), m_width - 15, m_height - 6);
+    AriaRender::beginScissors(LEFT_EDGE_X, getEditorYStart(), m_width - 15, m_height);
 
     drawVerticalMeasureLines(getEditorYStart(), getYEnd());
 
@@ -951,7 +951,7 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         drumY++;
 
         const int y = getEditorYStart() + drumY*Y_STEP - getYScrollInPixels();
-        if (y < getEditorYStart() - 10 or y > getYEnd()) continue;
+        if (y < getEditorYStart() - Y_STEP or y > getYEnd()) continue;
 
         // only show used drums widget
         if (drumY == 0)
@@ -987,12 +987,12 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
             if (not m_drums[drumID].m_section_expanded) // expand/collapse widget of section header
             {
                 AriaRender::triangle( Editor::getEditorXStart()+7, y+2,
-                                     Editor::getEditorXStart()+7, y+8,
+                                     Editor::getEditorXStart() +7, y+8,
                                      Editor::getEditorXStart()+17, y+5 );
             }
             else
             {
-                AriaRender::triangle(Editor::getEditorXStart()+7, y+1,
+                AriaRender::triangle(Editor::getEditorXStart()+7,  y+1,
                                      Editor::getEditorXStart()+13, y+1,
                                      Editor::getEditorXStart()+10, y+9 );
             }

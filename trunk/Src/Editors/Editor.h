@@ -267,7 +267,7 @@ namespace AriaMaestosa
         int getXEnd        () const { return m_width - MARGIN;        } // FIXME - adapt to include vertical scrollbar
         int getTrackYStart () const { return m_from_y;                }
         int getEditorYStart() const { return m_from_y;                }
-        int getYEnd        () const { return m_to_y - 10;             }
+        int getYEnd        () const { return m_to_y;                  }
         int getWidth       () const { return m_width;                 }
 
     };
