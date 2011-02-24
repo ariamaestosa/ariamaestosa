@@ -478,9 +478,12 @@ bool GraphicalTrack::mouseWheelMoved(int mx, int my, int value)
 {
     if (my > m_from_y and my < m_to_y)
     {
-        getEditorAt(my)->scroll( value / 75.0 );
-        Display::render();
-
+        Editor* ed = getEditorAt(my);
+        if (ed != NULL)
+        {
+            ed->scroll( value / 75.0 );
+            Display::render();
+        }
         return false; // event belongs to this track and was processed, stop searching
     }
     else
@@ -1383,6 +1386,8 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
     int editor_height = (m_to_y - editor_from_y)/count;
     int editor_to_y = m_to_y;
     
+    const int original_editor_from_y = editor_from_y;
+    
     if (m_track->isNotationTypeEnabled(SCORE))
     {
         m_score_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), editor_height);
@@ -1466,8 +1471,8 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
             
             AriaRender::lineWidth(1);
             
-            AriaRender::line(x_coord, editor_from_y,
-                             x_coord, editor_to_y);
+            AriaRender::line(x_coord, original_editor_from_y,
+                             x_coord, m_to_y);
             
         }
         
