@@ -500,28 +500,30 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
 
     m_last_mouse_y = mousey;
 
-    if (mousey > m_from_y and mousey < m_to_y)
+    // FIXME: m_to_y should indicate the very bottom; this is not the case atm
+    if (mousey > m_from_y and mousey < m_to_y + (m_collapsed ? 15 : 0))
     {
         m_gsequence->getModel()->setCurrentTrack( m_track );
 
-        // resize drag
-        if (mousey > m_to_y - 10 and mousey < m_to_y)
-        {
-            m_dragging_resize = true;
-
-            return false;
-        }
-
-        // if track is not collapsed, let the editor handle the mouse event too
         if (not m_collapsed)
         {
+            // resize drag
+            if (mousey > m_to_y - 10 and mousey < m_to_y)
+            {
+                m_dragging_resize = true;
+                
+                return false;
+            }
+            
+            // if track is not collapsed, let the editor handle the mouse event too
             Editor* ed = getEditorAt(mousey);
             if (ed != NULL) ed->mouseDown(mousex, mousey);
         }
 
         if (not ImageProvider::imagesLoaded()) return true;
-
+        
         const int winX = mousex.getRelativeTo(WINDOW);
+        
         // collapse
         if (m_collapse_button->clickIsOnThisWidget(winX, mousey))
         {
