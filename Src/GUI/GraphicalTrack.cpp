@@ -1152,6 +1152,22 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     
     AriaRender::images();
     
+    // --------------------------------------------------
+    
+    // left border
+    borderDrawable->move(x + LEFT_EDGE_X + BORDER_SIZE, y + BORDER_SIZE);
+    borderDrawable->setFlip(false, true);
+    borderDrawable->rotate(90);
+    borderDrawable->scale(1, barHeight /*number of pixels high*/ /20.0 );
+    borderDrawable->render();
+    
+    // right border
+    borderDrawable->move(x + Display::getWidth() - MARGIN - BORDER_SIZE + 20 /*due to rotation of 90 degrees*/, y + BORDER_SIZE);
+    borderDrawable->setFlip(false, false);
+    borderDrawable->rotate(90);
+    borderDrawable->scale(1, barHeight /*number of pixels high*/ /20.0 );
+    borderDrawable->render();
+    
     // top left corner
     cornerDrawable->move(x + LEFT_EDGE_X,y);
     cornerDrawable->setFlip(false, false);
@@ -1168,22 +1184,6 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     cornerDrawable->move(x+Display::getWidth() - MARGIN - BORDER_SIZE, y);
     cornerDrawable->setFlip(true, false);
     cornerDrawable->render();
-    
-    // --------------------------------------------------
-    
-    // left border
-    borderDrawable->move(x + LEFT_EDGE_X + BORDER_SIZE, y + BORDER_SIZE);
-    borderDrawable->setFlip(false, true);
-    borderDrawable->rotate(90);
-    borderDrawable->scale(1, barHeight /*number of pixels high*/ /20.0 );
-    borderDrawable->render();
-    
-    // right border
-    borderDrawable->move(x + Display::getWidth() - MARGIN - BORDER_SIZE + 20 /*due to rotation of 90 degrees*/, y + BORDER_SIZE);
-    borderDrawable->setFlip(false, false);
-    borderDrawable->rotate(90);
-    borderDrawable->scale(1, barHeight /*number of pixels high*/ /20.0 );
-    borderDrawable->render();
     
     // --------------------------------------------------
     
