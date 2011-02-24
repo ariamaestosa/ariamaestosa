@@ -756,7 +756,8 @@ bool GraphicalTrack::processRightMouseClick(RelativeXCoord x, int y)
 {
     if (y > m_from_y and y < m_to_y)
     {
-        getEditorAt(y)->rightClick(x,y);
+        Editor* ed = getEditorAt(y);
+        if (ed != NULL) ed->rightClick(x,y);
         return false;
     }
     else
