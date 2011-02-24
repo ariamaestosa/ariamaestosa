@@ -214,11 +214,11 @@ namespace AriaMaestosa
         
         /** render this number at coordinates (x,y), where wxString s contains the string
          representation of a number. Must be called after bind(). */
-        void renderNumber(wxString s, int x, int y);
+        void renderNumber(const char* s, int x, int y);
         /** render this number at coordinates (x,y). Must be called after bind(). */
-        void renderNumber(int i, int x, int y);
+        //void renderNumber(int i, int x, int y);
         /** render this number at coordinates (x,y). Must be called after bind(). */
-        void renderNumber(float f, int x, int y);
+        //void renderNumber(float f, int x, int y);
     };
     
     typedef wxGLNumberRenderer AriaRenderNumber;

@@ -150,7 +150,7 @@ namespace AriaMaestosa
         /**
          * @brief renders a stringized number at the given coordinate
          */
-        void renderNumber(const wxString number, const int x, const int y);
+        void renderNumber(const char* number, const int x, const int y);
         
         /**
          * @brief renders a triangle within the specified 3 points

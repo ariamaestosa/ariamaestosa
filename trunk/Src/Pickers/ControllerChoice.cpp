@@ -362,7 +362,7 @@ void ControllerChoice::renderTopLabel(const int x, const int y)
     else if ( isOnOffController(controllerID) )   label_renderer->get(0).render(x, y);
 
     // tempo
-    else if (controllerID == 201)                 AriaRender::renderNumber( wxT("400"), x, y );
+    else if (controllerID == 201)                 AriaRender::renderNumber( "400", x, y );
 
     else                                          label_renderer->get(3).render(x, y);
 }
@@ -387,7 +387,7 @@ void ControllerChoice::renderBottomLabel(const int x, const int y)
     else if ( isOnOffController(controllerID) ) label_renderer->get(1).render(x, y);
 
     // tempo
-    else if (controllerID == 201)               AriaRender::renderNumber( wxT("20"), x, y );
+    else if (controllerID == 201)               AriaRender::renderNumber( "20", x, y );
 
     else                                        label_renderer->get(2).render(x, y);
 }

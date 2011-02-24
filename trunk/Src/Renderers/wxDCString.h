@@ -83,7 +83,7 @@ namespace AriaMaestosa
         void bind();
         void consolidate(wxDC* dc){}
         
-        void renderNumber(wxString s, int x, int y);
+        void renderNumber(const wxString& s, int x, int y);
         void renderNumber(int i, int x, int y);
         void renderNumber(float f, int x, int y);
     };

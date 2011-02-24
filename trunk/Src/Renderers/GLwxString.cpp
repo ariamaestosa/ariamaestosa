@@ -439,6 +439,7 @@ void wxGLNumberRenderer::consolidate(wxDC* dc)
     space_w = dc->GetTextExtent(wxT(" ")).GetWidth();
     m_consolidated = true;
 }
+    /*
 void wxGLNumberRenderer::renderNumber(int i, int x, int y)
 {
     wxString s;
@@ -451,15 +452,19 @@ void wxGLNumberRenderer::renderNumber(float f, int x, int y)
     s << f;
     renderNumber(s, x, y);
 }
-void wxGLNumberRenderer::renderNumber(wxString s, int x, int y)
+     */
+void wxGLNumberRenderer::renderNumber(const char* s, int x, int y)
 {
+    // TODO: this can be sped a lot by using a single glBegin +  a single glEnd, the profiler shows
+    //       we get quite a hit from repeatedly calling glBegin here (through TextGLDrawable::render).
+    //       Since in tab mode we render a lot of single digits, it'd be even better to draw all digits
+    //       within the same glBegin...glEnd
     ASSERT_E(space_w, >=, 0);
     ASSERT_E(space_w, <, 90000);
     
     const int full_string_w = TextGLDrawable::texw;
 
-    const int char_amount = s.Length();
-    for (int c=0; c<char_amount; c++)
+    for (int c=0; c[s] != 0; c++)
     {
         int charid = -1;
 

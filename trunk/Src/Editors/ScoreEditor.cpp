@@ -741,7 +741,7 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
                         renderInfo.m_triplet_show_above);
 
         AriaRender::images();
-        AriaRender::renderNumber(wxT("3"), center_x-2, LEVEL_TO_Y(renderInfo.m_triplet_arc_level) +
+        AriaRender::renderNumber("3", center_x-2, LEVEL_TO_Y(renderInfo.m_triplet_arc_level) +
                                  (renderInfo.m_triplet_show_above ? 2 : 20));
         AriaRender::primitives();
     }
@@ -863,7 +863,7 @@ void renderSilence(const Sequence* seq, const int duration, const int tick, cons
         AriaRender::color(0,0,0);
 
         AriaRender::images();
-        AriaRender::renderNumber(wxT("3"), x+3, silences_y+31);
+        AriaRender::renderNumber("3", x+3, silences_y+31);
         AriaRender::primitives();
     }
 
