@@ -147,7 +147,7 @@ namespace AriaMaestosa
         }
     }
     
-    void wxDCNumberRenderer::renderNumber(wxString s, int x, int y)
+    void wxDCNumberRenderer::renderNumber(const wxString& s, int x, int y)
     {
         ASSERT_E(m_h, >, -1);
         ASSERT_E(m_h, <, 90000);

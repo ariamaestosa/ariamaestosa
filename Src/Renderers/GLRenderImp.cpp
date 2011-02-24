@@ -277,13 +277,47 @@ public:
  
 void renderNumber(const int number, const int x, const int y)
 {
-    renderNumber( to_wxString(number), x, y );
+    const char* number_c;
+    switch (number)
+    {
+        // We have many pre-defined strings to avoid the costly call to convert int to string
+        case 0: number_c = "0"; break;
+        case 1: number_c = "1"; break;
+        case 2: number_c = "2"; break;
+        case 3: number_c = "3"; break;
+        case 4: number_c = "4"; break;
+        case 5: number_c = "5"; break;
+        case 6: number_c = "6"; break;
+        case 7: number_c = "7"; break;
+        case 8: number_c = "8"; break;
+        case 9: number_c = "9"; break;
+        case 10: number_c = "10"; break;
+        case 11: number_c = "11"; break;
+        case 12: number_c = "12"; break;
+        case 13: number_c = "13"; break;
+        case 14: number_c = "14"; break;
+        case 15: number_c = "15"; break;
+        case 16: number_c = "16"; break;
+        case 17: number_c = "17"; break;
+        case 18: number_c = "18"; break;
+        case 19: number_c = "19"; break;
+        
+        default:
+        {
+            char buffer[32];
+            sprintf(buffer,"%i",number);
+            renderNumber( buffer, x, y );
+            return;
+        }
+    }
+
+    renderNumber( number_c, x, y );
 }
 void renderNumber(const float number, const int x, const int y)
 {
     renderNumber( to_wxString(number), x, y );
 }
-void renderNumber(const wxString number, const int x, const int y)
+void renderNumber(const char* number, const int x, const int y)
 {
     NumberRendererSingleton* singleton = NumberRendererSingleton::getInstance();
     singleton->bind();

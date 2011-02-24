@@ -53,13 +53,44 @@ int pointSize_i = 1;
 
 void renderNumber(const int number, const int x, const int y)
 {
-    renderNumber( to_wxString(number), x, y );
+    static wxString commonNumbers[] = {
+                wxString(wxT("0")),
+                wxString(wxT("1")),
+                wxString(wxT("2")),
+                wxString(wxT("3")),
+                wxString(wxT("4")),
+                wxString(wxT("5")),
+                wxString(wxT("6")),
+                wxString(wxT("7")),
+                wxString(wxT("8")),
+                wxString(wxT("9")),
+                wxString(wxT("10")),
+                wxString(wxT("11")),
+                wxString(wxT("12")),
+                wxString(wxT("13")),
+                wxString(wxT("14")),
+                wxString(wxT("15")),
+                wxString(wxT("16")),
+                wxString(wxT("17")),
+                wxString(wxT("18")),
+                wxString(wxT("19"))};
+    
+    if (number >= 0 and number < 20)
+    {
+        const wxString* number_s;
+        number_s = &commonNumbers[number];
+        renderNumber( *number_s, x, y );
+    }
+    else
+    {
+        renderNumber( to_wxString(number), x, y );
+    }
 }
 void renderNumber(const float number, const int x, const int y)
 {
     renderNumber( to_wxString(number), x, y );
 }
-void renderNumber(const wxString number, const int x, const int y)
+void renderNumber(const char* number, const int x, const int y)
 {
     wxDCNumberRenderer* renderer = wxDCNumberRenderer::getInstance();
     renderer->bind();
