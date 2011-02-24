@@ -817,13 +817,13 @@ void renderSilence(const Sequence* seq, const int duration, const int tick, cons
     {
         AriaRender::primitives();
         AriaRender::color(0,0,0);
-        AriaRender::rect(x, silences_y, x + 15, silences_y + Y_STEP_HEIGHT);
+        AriaRender::rect(x, silences_y + 1, x + 15, silences_y + Y_STEP_HEIGHT + 2);
     }
     else if ( type == 2 )
     {
         AriaRender::primitives();
         AriaRender::color(0,0,0);
-        AriaRender::rect(x, silences_y+Y_STEP_HEIGHT, x+15, silences_y+Y_STEP_HEIGHT*2);
+        AriaRender::rect(x, silences_y + Y_STEP_HEIGHT + 1, x + 15, silences_y + Y_STEP_HEIGHT*2 + 1);
     }
     else if ( type == 4 )
     {
