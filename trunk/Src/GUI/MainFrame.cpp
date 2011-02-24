@@ -363,7 +363,8 @@ void MainFrame::init()
     wxBitmap stopBitmap;
     stopBitmap.LoadFile( getResourcePrefix()  + wxT("stop.png") , wxBITMAP_TYPE_PNG);
     m_toolbar->AddTool(STOP_CLICKED, _("Stop"), stopBitmap);
-
+    m_toolbar->EnableTool(STOP_CLICKED, false);
+    
     m_toolbar->AddSeparator();
 
 
