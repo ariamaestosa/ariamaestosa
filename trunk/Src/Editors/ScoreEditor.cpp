@@ -927,6 +927,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
     const int mouse_x1 = std::min(mxc, mxi) ;
     const int mouse_x2 = std::max(mxc, mxi) ;
     const int mouse_y1 = std::min(mousey_current, mousey_initial);
+    const int mouse_y2 = std::max(mousey_current, mousey_initial);
     const int head_radius = noteOpen->getImageHeight()/2;
 
     // render pass 1. draw linear notation if relevant, gather information and do initial rendering for
@@ -964,7 +965,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
                 AriaRender::primitives();
                 if (m_selecting and mouse_x1 < original_x1 + head_radius and
                     mouse_x2 > original_x1 + head_radius and
-                    mouse_y1 < y1 - head_radius+2 and mouse_y1 < y1 - head_radius+2)
+                    mouse_y1 < y1+2 and mouse_y2 > y1+2)
                 {
                     AriaRender::color(0.94f, 1.0f, 0.0f);
                 }
@@ -1623,7 +1624,7 @@ void ScoreEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_c
         const int noteLevel = m_converter->noteToLevel( m_track->getNote(n) );
         if (noteLevel == -1) continue;
         
-        const int note_y = getEditorYStart() + Y_STEP_HEIGHT*noteLevel - head_radius - getYScrollInPixels() + 2;
+        const int note_y = getEditorYStart() + Y_STEP_HEIGHT*noteLevel - getYScrollInPixels() + 2;
         const int note_x = Editor::getEditorXStart() + m_graphical_track->getNoteStartInPixels(n) -
                            m_gsequence->getXScrollInPixels() + head_radius;
 
