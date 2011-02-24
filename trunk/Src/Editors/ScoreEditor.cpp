@@ -691,6 +691,10 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
 
 
         // flags
+        AriaRender::images();
+        if (renderInfo.m_selected) AriaRender::setImageState(AriaRender::STATE_SELECTED_NOTE);
+        else                       AriaRender::setImageState(AriaRender::STATE_NOTE);
+        
         if (renderInfo.m_flag_amount > 0 and not renderInfo.m_beam)
         {
             static const int stem_height = noteFlag->getImageHeight();
@@ -701,14 +705,14 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
 
             noteFlag->setFlip(false, renderInfo.m_stem_type != STEM_UP);
 
-            AriaRender::images();
+            
             for (int n=0; n<renderInfo.m_flag_amount; n++)
             {
                 noteFlag->move(flag_x_origin , flag_y_origin + n*flag_step);
                 noteFlag->render();
             }
-            AriaRender::primitives();
         }
+        AriaRender::primitives();
     }
 
     // triplet
@@ -1348,6 +1352,8 @@ void ScoreEditor::renderScore(ScoreAnalyser* analyser, const int silences_y)
     // first note rendering pass
     for (int i=0; i<visibleNoteAmount; i++) renderNote_pass1( analyser->noteRenderInfo[i] );
 
+    AriaRender::setImageState(AriaRender::STATE_NOTE);
+    
     // render silences
     //MeasureData* md = m_sequence->getMeasureData();
     MeasureBar* mb = m_gsequence->getMeasureBar();
@@ -1370,7 +1376,7 @@ void ScoreEditor::renderScore(ScoreAnalyser* analyser, const int silences_y)
         ASSERT_E(i,<,(int)analyser->noteRenderInfo.size());
         renderNote_pass2(analyser->noteRenderInfo[i], analyser);
     }
-
+    AriaRender::setImageState(AriaRender::STATE_NOTE);
 }
 
 
