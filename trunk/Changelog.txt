@@ -2,6 +2,7 @@
 - Intensive code refactoring and cleanup
 - Improve rendering of short notes in tablature view
 - Improve selection to preview which notes are included
+- Performance (fluidity/responsivity) improvements
 
 ===================================================================================================
 
