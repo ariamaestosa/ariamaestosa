@@ -363,8 +363,8 @@ void DrumEditor::useCustomDrumSet()
 void DrumEditor::useDefaultDrumSet()
 {
     m_drums.clear();
-
-    //FIXME: this can be improved a lot by reserving space ahead of time
+    
+    m_drums.reserve( 70 );
     
     m_drums.push_back( DrumInfo(88, true )); // Drumkit
     m_drums.push_back( DrumInfo(36)); // "Bass drum 1"
@@ -457,6 +457,69 @@ void DrumEditor::useDefaultDrumSet()
     }
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
+int DrumEditor::getDrumAtY(const int given_y)
+{
+    
+    int drumY = -1;
+    const int count = m_drums.size();
+    for (int drumID=0; drumID<count; drumID++)
+    {
+        drumY++;
+        
+        const int y = getEditorYStart() + drumY*Y_STEP - getYScrollInPixels();
+        
+        // check if given y is in the area drum drumID
+        if ( given_y > y and given_y < y+Y_STEP)  return drumID;
+        
+        // if section is collapsed, skip all its elements
+        ASSERT_E(drumID,<,(int)m_drums.size());
+        if (not m_drums[drumID].m_section_expanded)
+        {
+            drumID++;
+            while (not m_drums[drumID++].m_section){ ASSERT_E(drumID,<,(int)m_drums.size()); }
+            drumID = drumID - 2;
+            continue;
+        }//end if section collapsed
+    }//next drum
+    
+    return -1;
+    
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+int DrumEditor::getYForDrum(const int given_drumID)
+{
+    
+    int drumY = -1;
+    const int count = m_drums.size();
+    for (int drumID=0; drumID<count; drumID++)
+    {
+        drumY++;
+        
+        const int y = getEditorYStart() + drumY*Y_STEP - getYScrollInPixels();
+        
+        if ((int)given_drumID == (int)drumID)
+        {
+            return y;
+        }
+        
+        // if section is collapsed, skip all its elements
+        ASSERT_E(drumID,<,(int)m_drums.size());
+        if (not m_drums[drumID].m_section_expanded)
+        {
+            drumID++;
+            while (not m_drums[drumID++].m_section){ ASSERT_E(drumID,<,(int)m_drums.size()); }
+            drumID = drumID - 2;
+            continue;
+        }//end if section collapsed
+    }//next drum
+    
+    return -1;
+    
+}
 
 
 // ----------------------------------------------------------------------------------------------------------
@@ -967,70 +1030,6 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     AriaRender::color(1,1,1);
     AriaRender::endScissors();
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-int DrumEditor::getDrumAtY(const int given_y)
-{
-
-    int drumY = -1;
-    const int count = m_drums.size();
-    for (int drumID=0; drumID<count; drumID++)
-    {
-        drumY++;
-
-        const int y = getEditorYStart() + drumY*Y_STEP - getYScrollInPixels();
-
-        // check if given y is in the area drum drumID
-        if ( given_y > y and given_y < y+Y_STEP)  return drumID;
-
-        // if section is collapsed, skip all its elements
-        ASSERT_E(drumID,<,(int)m_drums.size());
-        if (not m_drums[drumID].m_section_expanded)
-        {
-            drumID++;
-            while (not m_drums[drumID++].m_section){ ASSERT_E(drumID,<,(int)m_drums.size()); }
-            drumID = drumID - 2;
-            continue;
-        }//end if section collapsed
-    }//next drum
-
-    return -1;
-
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-int DrumEditor::getYForDrum(const int given_drumID)
-{
-
-    int drumY = -1;
-    const int count = m_drums.size();
-    for (int drumID=0; drumID<count; drumID++)
-    {
-        drumY++;
-
-        const int y = getEditorYStart() + drumY*Y_STEP - getYScrollInPixels();
-
-        if ((int)given_drumID == (int)drumID)
-        {
-            return y;
-        }
-
-        // if section is collapsed, skip all its elements
-        ASSERT_E(drumID,<,(int)m_drums.size());
-        if (not m_drums[drumID].m_section_expanded)
-        {
-            drumID++;
-            while (not m_drums[drumID++].m_section){ ASSERT_E(drumID,<,(int)m_drums.size()); }
-            drumID = drumID - 2;
-            continue;
-        }//end if section collapsed
-    }//next drum
-
-    return -1;
-
 }
 
 // ----------------------------------------------------------------------------------------------------------
