@@ -912,19 +912,6 @@ void MainFrame::zoomTextChanged(wxCommandEvent& evt)
 
 void MainFrame::toolButtonClicked(wxCommandEvent& evt)
 {
-    std::cout << "toolButtonClicked\n";
-    /*
-    wxToolBarToolBase* ctrl = toolbar->FindById(TOOL_BUTTON);
-    if (ctrl == NULL)
-    {
-        std::cerr << "Tool is null :(\n";
-    }
-    else
-    {
-        wxPoint pos = ctrl->GetPosition();
-        std::cout << "Tool pos : " << pos.x << ", " << pos.y << std::endl;
-    }*/
-
     EditTool currTool = Editor::getCurrentTool();
     if (currTool == EDIT_TOOL_PENCIL)
     {
