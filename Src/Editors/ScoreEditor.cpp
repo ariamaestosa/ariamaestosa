@@ -940,8 +940,9 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
         const int noteLength = m_track->getNoteEndInMidiTicks(n) - m_track->getNoteStartInMidiTicks(n);
         const int tick = m_track->getNoteStartInMidiTicks(n);
 
-        int       x1 = m_graphical_track->getNoteStartInPixels(n) - m_gsequence->getXScrollInPixels() +
-                       Editor::getEditorXStart();
+        const int original_x1 = m_graphical_track->getNoteStartInPixels(n) - m_gsequence->getXScrollInPixels() +
+                                Editor::getEditorXStart();
+        int       x1 = original_x1;
         const int x2 = m_graphical_track->getNoteEndInPixels(n)   - m_gsequence->getXScrollInPixels() +
                        Editor::getEditorXStart();
 
@@ -961,8 +962,9 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
                 // draw the quad with black border that is visible in linear notation mode
                 AriaRender::primitives();
-                if (m_selecting and mouse_x1 < x1 and mouse_x2 > x2 and mouse_y1 < y1 - head_radius+2 and
-                    mouse_y1 < y1 - head_radius+2)
+                if (m_selecting and mouse_x1 < original_x1 + head_radius and
+                    mouse_x2 > original_x1 + head_radius and
+                    mouse_y1 < y1 - head_radius+2 and mouse_y1 < y1 - head_radius+2)
                 {
                     AriaRender::color(0.94f, 1.0f, 0.0f);
                 }
@@ -1623,7 +1625,7 @@ void ScoreEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mousey_c
         
         const int note_y = getEditorYStart() + Y_STEP_HEIGHT*noteLevel - head_radius - getYScrollInPixels() + 2;
         const int note_x = Editor::getEditorXStart() + m_graphical_track->getNoteStartInPixels(n) -
-                           m_gsequence->getXScrollInPixels();
+                           m_gsequence->getXScrollInPixels() + head_radius;
 
         if (std::min(mxc, mxi) < note_x and std::max(mxc,mxi)>note_x and
             std::min(mousey_current, mousey_initial) < note_y and
