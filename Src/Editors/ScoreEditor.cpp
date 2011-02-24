@@ -500,6 +500,7 @@ void ScoreEditor::setNoteSign(const int sign, const int noteID)
 
 #if 0
 #pragma mark -
+#pragma mark Rendering
 #endif
 
 #define LEVEL_TO_Y( lvl ) (Y_STEP_HEIGHT * (lvl) + getEditorYStart() - getYScrollInPixels()-2)
@@ -916,6 +917,15 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     if (m_musical_notation_enabled) m_converter->resetAccidentalsForNewRender();
 
+    
+    const int mxc = mousex_current.getRelativeTo(WINDOW);
+    const int mxi = mousex_initial.getRelativeTo(WINDOW);
+    const int mouse_x1 = std::min(mxc, mxi) ;
+    const int mouse_x2 = std::max(mxc, mxi) ;
+    const int mouse_y1 = std::min(mousey_current, mousey_initial);
+    const int mouse_y2 = std::max(mousey_current, mousey_initial);
+    const int head_radius = noteOpen->getImageHeight()/2;
+
     // render pass 1. draw linear notation if relevant, gather information and do initial rendering for
     // musical notation
     for (int n=0; n<noteAmount; n++)
@@ -942,21 +952,25 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
             if (x1 < x2) // when notes are too short to be visible, don't draw them
             {
+                const int y1 = noteLevel*Y_STEP_HEIGHT     + getEditorYStart() - getYScrollInPixels();
+                const int y2 = (noteLevel+1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels() - 1;
                 float volume = m_track->getNoteVolume(n)/127.0;
 
                 // draw the quad with black border that is visible in linear notation mode
                 AriaRender::primitives();
-                if (m_track->isNoteSelected(n) and focus)
+                if (m_selecting and mouse_x1 < x1 and mouse_x2 > x2 and mouse_y1 < y1 - head_radius+2 and
+                    mouse_y1 < y1 - head_radius+2)
+                {
+                    AriaRender::color(0.94f, 1.0f, 0.0f);
+                }
+                else if (m_track->isNoteSelected(n) and focus)
                 {
                     AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
                 }
                 else
                 {
                     AriaRender::color((1-volume*0.7), (1-volume*0.7), 1);
-                } 
-
-                const int y1 = noteLevel*Y_STEP_HEIGHT+1   + getEditorYStart() - getYScrollInPixels() - 1;
-                const int y2 = (noteLevel+1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels() - 1;
+                }
 
                 if (m_musical_notation_enabled)
                 {

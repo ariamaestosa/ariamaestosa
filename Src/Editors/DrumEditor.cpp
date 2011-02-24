@@ -814,6 +814,11 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
 
     // ---------------------- draw notes ----------------------------
+    const int mouse_x1 = std::min(mousex_current.getRelativeTo(WINDOW), mousex_initial.getRelativeTo(WINDOW));
+    const int mouse_x2 = std::max(mousex_current.getRelativeTo(WINDOW), mousex_initial.getRelativeTo(WINDOW));
+    const int mouse_y1 = std::min(mousey_current, mousey_initial);
+    const int mouse_y2 = std::max(mousey_current, mousey_initial);
+    
     const int noteAmount = m_track->getNoteAmount();
     for (int n=0; n<noteAmount; n++)
     {
@@ -832,8 +837,13 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         if (drumIDInVector == -1) continue;
 
         const float volume = m_track->getNoteVolume(n)/127.0;
+        const int drumy = getYForDrum(drumIDInVector);
 
-        if (m_track->isNoteSelected(n) and focus)
+        if (m_selecting and drumx > mouse_x1 and drumx < mouse_x2 and drumy + 5 > mouse_y1 and drumy + 5 < mouse_y2)
+        {
+            AriaRender::color(0.94f, 1.0f, 0.0f);
+        }
+        else if (m_track->isNoteSelected(n) and focus)
         {
             AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
         }
@@ -841,8 +851,6 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         {
             AriaRender::color((1-volume)*0.9, (1-volume)*0.9, (1-volume)*0.9);
         }
-
-        const int drumy = getYForDrum(drumIDInVector);
 
         AriaRender::triangle(drumx,     drumy,
                              drumx,     drumy+Y_STEP,
