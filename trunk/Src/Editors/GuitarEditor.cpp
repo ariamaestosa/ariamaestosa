@@ -552,22 +552,25 @@ void GuitarEditor::processKeyPress(int keycode, bool commandDown, bool shiftDown
         Display::render();
     }
     
-    // ---------------- shift frets -----------------
-    if (not commandDown and shiftDown)
+    // ---------------- shift frets/strings -----------------
+    if (commandDown and not shiftDown)
     {
         
-        if (keycode == WXK_LEFT)
-        {
-            m_track->action( new Action::ShiftFrets(-1, SELECTED_NOTES) );
-            Display::render();
-        }
-        
-        if (keycode == WXK_RIGHT)
+        if (keycode == WXK_UP)
         {
             m_track->action( new Action::ShiftFrets(1, SELECTED_NOTES) );
             Display::render();
         }
         
+        if (keycode == WXK_DOWN)
+        {
+            m_track->action( new Action::ShiftFrets(-1, SELECTED_NOTES) );
+            Display::render();
+        }
+        
+    }
+    if (not commandDown and shiftDown)
+    {
         if (keycode == WXK_UP)
         {
             m_track->action( new Action::ShiftString(-1, SELECTED_NOTES) );
