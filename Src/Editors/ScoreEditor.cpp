@@ -923,7 +923,6 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
     const int mouse_x1 = std::min(mxc, mxi) ;
     const int mouse_x2 = std::max(mxc, mxi) ;
     const int mouse_y1 = std::min(mousey_current, mousey_initial);
-    const int mouse_y2 = std::max(mousey_current, mousey_initial);
     const int head_radius = noteOpen->getImageHeight()/2;
 
     // render pass 1. draw linear notation if relevant, gather information and do initial rendering for
