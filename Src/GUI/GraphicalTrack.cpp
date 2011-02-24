@@ -660,19 +660,25 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
             // modes
             if (winX > m_score_button->getX() and winX < m_score_button->getX() + EDITOR_ICON_SIZE)
             {
-                m_track->setNotationType(GUITAR, false);
-                m_track->setNotationType(KEYBOARD, false);
-                m_track->setNotationType(DRUM, false);
-                m_track->setNotationType(CONTROLLER, false);
+                if (not Display::isSelectMorePressed())
+                {
+                    m_track->setNotationType(GUITAR, false);
+                    m_track->setNotationType(KEYBOARD, false);
+                    m_track->setNotationType(DRUM, false);
+                    m_track->setNotationType(CONTROLLER, false);
+                }
                 
                 m_track->setNotationType(SCORE, true);
             }
             else if (winX > m_piano_button->getX() and winX < m_piano_button->getX() + EDITOR_ICON_SIZE)
             {
-                m_track->setNotationType(SCORE, false);
-                m_track->setNotationType(GUITAR, false);
-                m_track->setNotationType(DRUM, false);
-                m_track->setNotationType(CONTROLLER, false);
+                if (not Display::isSelectMorePressed())
+                {
+                    m_track->setNotationType(SCORE, false);
+                    m_track->setNotationType(GUITAR, false);
+                    m_track->setNotationType(DRUM, false);
+                    m_track->setNotationType(CONTROLLER, false);
+                }
                 
                 // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
                 if (m_track->isNotationTypeEnabled(DRUM) and
@@ -685,10 +691,13 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
             }
             else if (winX > m_tab_button->getX() and winX < m_tab_button->getX() + EDITOR_ICON_SIZE)
             {
-                m_track->setNotationType(SCORE, false);
-                m_track->setNotationType(KEYBOARD, false);
-                m_track->setNotationType(DRUM, false);
-                m_track->setNotationType(CONTROLLER, false);
+                if (not Display::isSelectMorePressed())
+                {
+                    m_track->setNotationType(SCORE, false);
+                    m_track->setNotationType(KEYBOARD, false);
+                    m_track->setNotationType(DRUM, false);
+                    m_track->setNotationType(CONTROLLER, false);
+                }
                 
                 // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
                 if (m_track->isNotationTypeEnabled(DRUM) and
@@ -702,10 +711,13 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
             }
             else if (winX > m_drum_button->getX() and winX < m_drum_button->getX() + EDITOR_ICON_SIZE)
             {
-                m_track->setNotationType(SCORE, false);
-                m_track->setNotationType(KEYBOARD, false);
-                m_track->setNotationType(GUITAR, false);
-                m_track->setNotationType(CONTROLLER, false);
+                if (not Display::isSelectMorePressed())
+                {
+                    m_track->setNotationType(SCORE, false);
+                    m_track->setNotationType(KEYBOARD, false);
+                    m_track->setNotationType(GUITAR, false);
+                    m_track->setNotationType(CONTROLLER, false);
+                }
                 
                 // in midi, drums go to channel 9 (10 if you start from one)
                 if (m_gsequence->getModel()->getChannelManagementType() == CHANNEL_MANUAL)
@@ -717,10 +729,14 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
             }
             else if (winX > m_ctrl_button->getX() and winX < m_ctrl_button->getX() + EDITOR_ICON_SIZE)
             {
-                m_track->setNotationType(SCORE, false);
-                m_track->setNotationType(KEYBOARD, false);
-                m_track->setNotationType(GUITAR, false);
-                m_track->setNotationType(DRUM, false);
+                if (not Display::isSelectMorePressed())
+                {
+                    m_track->setNotationType(SCORE, false);
+                    m_track->setNotationType(KEYBOARD, false);
+                    m_track->setNotationType(GUITAR, false);
+                    m_track->setNotationType(DRUM, false);
+                }
+                
                 m_track->setNotationType(CONTROLLER, true);
             }
         }
@@ -1385,9 +1401,9 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
     if (m_track->isNotationTypeEnabled(DRUM))       count++;
     if (m_track->isNotationTypeEnabled(CONTROLLER)) count++;
     
-    int editor_height = (m_to_y - editor_from_y)/count;
-    int editor_to_y = m_to_y;
-    
+    const int editor_height = (m_to_y - editor_from_y)/count;
+    int editor_to_y = editor_from_y + editor_height;
+
     const int original_editor_from_y = editor_from_y;
     
     if (m_track->isNotationTypeEnabled(SCORE))
