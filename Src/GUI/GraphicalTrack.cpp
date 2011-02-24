@@ -1401,7 +1401,7 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
     if (m_track->isNotationTypeEnabled(DRUM))       count++;
     if (m_track->isNotationTypeEnabled(CONTROLLER)) count++;
     
-    const int editor_height = (m_to_y - editor_from_y)/count;
+    const int editor_height = (m_to_y - editor_from_y - 5)/count;
     int editor_to_y = editor_from_y + editor_height;
 
     const int original_editor_from_y = editor_from_y;

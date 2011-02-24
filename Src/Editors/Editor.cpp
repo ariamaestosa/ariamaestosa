@@ -42,7 +42,7 @@ using namespace AriaMaestosa;
 
 const int SCROLLBAR_ARROW_HEIGHT = 17;
 const int SCROLLBAR_THUMB_HEIGHT = 23;
-const int SCROLLBAR_BOTTOM_MARGIN = 10;
+const int SCROLLBAR_BOTTOM_MARGIN = 1;
 const int SCROLLBAR_X = -24;
 
 // ------------------------------------------------------------------------------------------------------------
