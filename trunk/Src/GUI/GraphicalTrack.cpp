@@ -1680,7 +1680,7 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
             if (new_value != 0) m_score_editor->getScoreMidiConverter()->setOctaveShift(new_value);
         }
         
-        // compatibility code for older versions of .Aria file format (TODO: eventuall remove)
+        // compatibility code for older versions of .Aria file format (TODO: eventually remove)
         const char* muted_c = xml->getAttributeValue("muted");
         if (muted_c != NULL)
         {

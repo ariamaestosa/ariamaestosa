@@ -1859,7 +1859,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                     setNotationType(GUITAR, false);
                     setNotationType(CONTROLLER, false);
                     
-                    // In support for old format
+                    // In support for old format (TODO: eventually remove)
                     if ( mode_c != NULL )
                     {
                         setNotationType((NotationType)atoi( mode_c ), true);
@@ -1868,19 +1868,19 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                     {
                         // New format
                         const char* mode_score = xml->getAttributeValue("score");
-                        if ( mode_score != NULL ) setNotationType(SCORE, true);
+                        if ( mode_score != NULL ) setNotationType(SCORE, strcmp(mode_score, "true") == 0);
                         
                         const char* mode_keyb = xml->getAttributeValue("keyboard");
-                        if ( mode_keyb!= NULL ) setNotationType(KEYBOARD, true);
+                        if ( mode_keyb!= NULL ) setNotationType(KEYBOARD, strcmp(mode_keyb, "true") == 0);
                         
                         const char* mode_guitar = xml->getAttributeValue("guitar");
-                        if ( mode_guitar != NULL ) setNotationType(GUITAR, true);
+                        if ( mode_guitar != NULL ) setNotationType(GUITAR, strcmp(mode_guitar, "true") == 0);
                         
                         const char* mode_drum = xml->getAttributeValue("drum");
-                        if ( mode_drum != NULL ) setNotationType(DRUM, true);
+                        if ( mode_drum != NULL ) setNotationType(DRUM, strcmp(mode_drum, "true") == 0);
                         
                         const char* mode_ctrl = xml->getAttributeValue("controller");
-                        if ( mode_ctrl != NULL ) setNotationType(CONTROLLER, true);
+                        if ( mode_ctrl != NULL ) setNotationType(CONTROLLER, strcmp(mode_ctrl, "true") == 0);
                     }
                     
                     
