@@ -217,10 +217,26 @@ void DrumEditor::useCustomDrumSet()
         inuse[n] = false;
     }
 
+    bool contains_something = false;
+    
     const int drum_amount = m_track->getNoteAmount();
     for (int drumID=0; drumID<drum_amount; drumID++)
     {
-        inuse[ m_track->getNotePitchID(drumID) ] = true;
+        const int pitch = m_track->getNotePitchID(drumID);
+        inuse[ pitch ] = true;
+        
+        if (pitch > 26 and pitch < 84)
+        {
+            contains_something = true;
+        }
+    }
+    
+    if (not contains_something)
+    {
+        wxBell();
+        m_show_used_drums_only = false;
+        useDefaultDrumSet();
+        return;
     }
 
     m_drums.clear();
