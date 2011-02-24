@@ -40,7 +40,10 @@ namespace AriaMaestosa
 
 using namespace AriaMaestosa;
 
-const int THUMB_HEIGHT = 18;
+const int SCROLLBAR_ARROW_HEIGHT = 17;
+const int SCROLLBAR_THUMB_HEIGHT = 23;
+const int SCROLLBAR_BOTTOM_MARGIN = 10;
+const int SCROLLBAR_X = -24;
 
 // ------------------------------------------------------------------------------------------------------------
 
@@ -185,23 +188,23 @@ void Editor::renderScrollbar()
 {
     ASSERT( MAGIC_NUMBER_OK() );
     
-    if ( !m_use_vertical_scrollbar ) return;
+    if (not m_use_vertical_scrollbar) return;
 
     AriaRender::images();
 
     // ---- scrollbar background -----
-    sbBackgDrawable->move(getWidth() - 24, getEditorYStart());
+    sbBackgDrawable->move(getWidth() + SCROLLBAR_X, getEditorYStart());
     sbBackgDrawable->scale(1, m_height/sbBackgDrawable->getImageHeight());
     sbBackgDrawable->render();
 
     // ------ top arrow ------
     sbArrowDrawable->setFlip(false, false);
-    sbArrowDrawable->move(getWidth() - 24, getEditorYStart());
+    sbArrowDrawable->move(getWidth() + SCROLLBAR_X, getEditorYStart());
 
-    const int mouseX = Display::getMouseX_initial().getRelativeTo(WINDOW);
+    const int mouseX  = Display::getMouseX_initial().getRelativeTo(WINDOW);
     const int mouseX2 = Display::getMouseX_current().getRelativeTo(WINDOW);
 
-    const int mouseY = Display:: getMouseY_initial();
+    const int mouseY  = Display:: getMouseY_initial();
     const int mouseY2 = Display:: getMouseY_current();
 
     if (not m_vertical_scrolling and // ignore arrows if user is dragging thumb
@@ -213,34 +216,31 @@ void Editor::renderScrollbar()
        mouseY  < sbArrowDrawable->getY() + sbArrowDrawable->getImageHeight() and
        mouseY2 < sbArrowDrawable->getY() + sbArrowDrawable->getImageHeight())
     {
-
         sbArrowDrawable->setImage( sbArrowDownImg );
         m_scroll_up_arrow_pressed = true;
         m_click_on_scrollbar      = true;
-
     }
     else
     {
-
         sbArrowDrawable->setImage( sbArrowImg );
-        m_scroll_up_arrow_pressed=false;
-
+        m_scroll_up_arrow_pressed = false;
     }
 
     sbArrowDrawable->render();
 
     // ------ bottom arrow ------
     sbArrowDrawable->setFlip(false, true);
-    sbArrowDrawable->move(getWidth() - 24, m_from_y + m_header_bar_height + m_height + THUMB_HEIGHT - 6); //FIXME: fix this
+    sbArrowDrawable->move(getWidth() + SCROLLBAR_X,
+                          m_from_y + m_height - sbArrowDrawable->getImageHeight() - SCROLLBAR_BOTTOM_MARGIN);
 
     if (not m_vertical_scrolling and // ignore arrows if user is dragging thumb
-       Display:: isMouseDown() and // only if mouse is down
-       mouseX  > sbArrowDrawable->getX() and mouseX2 > sbArrowDrawable->getX() and // and mouse is lcoated on the arrow
-       mouseY  > sbArrowDrawable->getY() and mouseY2 > sbArrowDrawable->getY() and
-       mouseX  < sbArrowDrawable->getX() + sbArrowDrawable->getImageWidth() and
-       mouseX2 < sbArrowDrawable->getX() + sbArrowDrawable->getImageWidth() and
-       mouseY  < sbArrowDrawable->getY() + sbArrowDrawable->getImageHeight() and
-       mouseY2 < sbArrowDrawable->getY() + sbArrowDrawable->getImageHeight())
+        Display:: isMouseDown() and // only if mouse is down
+        mouseX  > sbArrowDrawable->getX() and mouseX2 > sbArrowDrawable->getX() and // and mouse is located on the arrow
+        mouseY  > sbArrowDrawable->getY() and mouseY2 > sbArrowDrawable->getY() and
+        mouseX  < sbArrowDrawable->getX() + sbArrowDrawable->getImageWidth() and
+        mouseX2 < sbArrowDrawable->getX() + sbArrowDrawable->getImageWidth() and
+        mouseY  < sbArrowDrawable->getY() + sbArrowDrawable->getImageHeight() and
+        mouseY2 < sbArrowDrawable->getY() + sbArrowDrawable->getImageHeight())
     {
 
         sbArrowDrawable->setImage( sbArrowDownImg );
@@ -259,7 +259,9 @@ void Editor::renderScrollbar()
     sbArrowDrawable->render();
 
     // -------- thumb ------
-    sbThumbDrawable->move(getWidth() - 24, (int)(getEditorYStart() + 17 + (m_height - 36)*m_sb_position));
+    const int thumb_from_y = getEditorYStart() + SCROLLBAR_ARROW_HEIGHT;
+    const int net_scroll_height = m_height - SCROLLBAR_THUMB_HEIGHT - SCROLLBAR_ARROW_HEIGHT*2 - SCROLLBAR_BOTTOM_MARGIN;
+    sbThumbDrawable->move(getWidth() + SCROLLBAR_X, (int)(thumb_from_y + net_scroll_height*m_sb_position));
     sbThumbDrawable->render();
 
 }
@@ -350,7 +352,9 @@ void Editor::mouseDown(RelativeXCoord x, int y)
             m_click_on_scrollbar = true;
 
             // grabbing the thumb
-            const int thumb_pos = (int)(getEditorYStart() + THUMB_HEIGHT + (m_height - THUMB_HEIGHT*2)*m_sb_position - 1);
+            const int thumb_from_y = getEditorYStart() + SCROLLBAR_ARROW_HEIGHT;
+            const int net_scroll_height = m_height - SCROLLBAR_THUMB_HEIGHT - SCROLLBAR_ARROW_HEIGHT*2 - SCROLLBAR_BOTTOM_MARGIN;
+            const int thumb_pos = (int)(thumb_from_y + net_scroll_height*m_sb_position);
             if (y > thumb_pos and y < thumb_pos + sbThumbDrawable->getImageHeight())
             {
                 m_vertical_scrolling = true;
@@ -370,7 +374,7 @@ void Editor::mouseDown(RelativeXCoord x, int y)
 
     if (y < getYEnd() - 5 and y > getEditorYStart())
     {
-        if (m_use_vertical_scrollbar and x.getRelativeTo(WINDOW) < getWidth() - 24)
+        if (m_use_vertical_scrollbar and x.getRelativeTo(WINDOW) < getWidth() + SCROLLBAR_X)
         {
             m_mouse_is_in_editor = true;
         }
@@ -419,10 +423,10 @@ void Editor::mouseDrag(RelativeXCoord mousex_current, int mousey_current,
     {
 
         // -------------------  drag scrollbar  ---------------
-        if (m_vertical_scrolling and mousey_initial < getYEnd()-15 and mousey_initial>getEditorYStart())
+        if (m_vertical_scrolling and mousey_initial < getYEnd() - 15 and mousey_initial > getEditorYStart())
         {
             // if we reach scrollbar extremity, wait until mouse comes back to the middle of the thumb before starting to scroll again
-            if (m_sb_position == 0 and mousey_current < getEditorYStart()+25)
+            if (m_sb_position == 0 and mousey_current < getEditorYStart() + 25)
             {
                 m_last_drag_y = mousey_current;
                 return;
@@ -433,7 +437,8 @@ void Editor::mouseDrag(RelativeXCoord mousex_current, int mousey_current,
                 return;
             }
 
-            m_sb_position += (mousey_current - m_last_drag_y)/(float)(m_height - 36);
+            const int net_scroll_height = m_height - SCROLLBAR_THUMB_HEIGHT - SCROLLBAR_ARROW_HEIGHT*2 - SCROLLBAR_BOTTOM_MARGIN;
+            m_sb_position += (mousey_current - m_last_drag_y)/(float)(net_scroll_height);
 
             if (m_sb_position < 0) m_sb_position = 0;
             if (m_sb_position > 1) m_sb_position = 1;
@@ -630,13 +635,13 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
 
         // make thumb slide to mouse
         if (mousex_current.getRelativeTo(WINDOW) > sbThumbDrawable->getX() and
-           mousex_current.getRelativeTo(WINDOW) < sbThumbDrawable->getX() + sbThumbDrawable->getImageWidth() and
-           mousey_current < getYEnd()-15 and mousey_current>getEditorYStart())
+            mousex_current.getRelativeTo(WINDOW) < sbThumbDrawable->getX() + sbThumbDrawable->getImageWidth() and
+            mousey_current < getYEnd() - SCROLLBAR_BOTTOM_MARGIN - SCROLLBAR_ARROW_HEIGHT and
+            mousey_current > getEditorYStart() + SCROLLBAR_ARROW_HEIGHT)
         {
 
             m_click_on_scrollbar = true;
-            if (wxGetKeyState(WXK_F1)) std::cout << extract_filename( fromCString(__FILE__) ).mb_str() << "@" << __LINE__ << " m_click_on_scrollbar = true" << std::endl;
-
+            
             // not grabbing the thumb
             if (
                not m_scroll_up_arrow_pressed and
@@ -646,8 +651,10 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
             {
 
                 // find where mouse is on scrollbar, in the same units at m_sb_position (0 to 1)
-                //FIXME; remove those hardcoded numbers to calculate height
-                const float goal = (mousey_current - m_from_y - m_header_bar_height - 52)/(float)(m_height - THUMB_HEIGHT*2);
+                const int net_scroll_height = m_height - SCROLLBAR_THUMB_HEIGHT - SCROLLBAR_ARROW_HEIGHT*2 -
+                                              SCROLLBAR_BOTTOM_MARGIN;
+                const float goal = (mousey_current - m_from_y - SCROLLBAR_THUMB_HEIGHT/2 - SCROLLBAR_ARROW_HEIGHT)/
+                                   (float)(net_scroll_height);
 
                 // thumb has reached mouse, just continue as regular scrolling
                 float dist = goal - m_sb_position; // find distance betweem mouse and thumb in 0-1 units
@@ -834,15 +841,13 @@ void Editor::processKeyPress(int keycode, bool commandDown, bool shiftDown)
 #pragma mark Size Info
 #endif
 
-void Editor::updatePosition(int from_y, int to_y, int width, int height, int barHeight)
+void Editor::updatePosition(int from_y, int to_y, int width, int height)
 {
     ASSERT( MAGIC_NUMBER_OK() );
     m_from_y = from_y;
     m_to_y = to_y;
     m_width = width;
     m_height = height;
-    
-    m_header_bar_height = barHeight;
 }
 
 // ------------------------------------------------------------------------------------------------------------
