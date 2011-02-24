@@ -50,7 +50,7 @@ void AudioToolboxMidiPlayer::loadSequence(char* midiData, int length)
         std::cout << "MusicSequenceFileLoadData failed" << std::endl;
     
 #else
-#warning Using deprecated code for OSX 10.5
+#warning Using deprecated code for OSX 10.4
     if (MusicSequenceLoadSMFData(musicSequence, CFDataCreate(NULL, (UInt8*)midiData, length) ) != noErr)
         std::cout << "MusicSequenceLoadSMFData failed" << std::endl;
 
