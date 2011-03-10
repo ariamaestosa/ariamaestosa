@@ -1,5 +1,6 @@
 #ifdef _ALSA
 
+#include <glib.h>
 #include "AriaCore.h"
 #include "Midi/Players/Alsa/AlsaPort.h"
 #include <iostream>

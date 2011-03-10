@@ -79,22 +79,22 @@ void renderNumber(const int number, const int x, const int y)
     {
         const wxString* number_s;
         number_s = &commonNumbers[number];
-        renderNumber( *number_s, x, y );
+        renderNumber( number_s->mb_str(), x, y );
     }
     else
     {
-        renderNumber( to_wxString(number), x, y );
+        renderNumber( to_wxString(number).mb_str(), x, y );
     }
 }
 void renderNumber(const float number, const int x, const int y)
 {
-    renderNumber( to_wxString(number), x, y );
+    renderNumber( to_wxString(number).mb_str(), x, y );
 }
 void renderNumber(const char* number, const int x, const int y)
 {
     wxDCNumberRenderer* renderer = wxDCNumberRenderer::getInstance();
     renderer->bind();
-    renderer->renderNumber(number, x, y);
+    renderer->renderNumber(wxString(number, wxConvUTF8), x, y);
 }
 
     

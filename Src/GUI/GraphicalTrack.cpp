@@ -1359,9 +1359,9 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
         
         const int char_amount_in_channel_name = channelName.size();
         if (char_amount_in_channel_name == 1)
-            AriaRender::renderNumber(channelName, m_channel_field->getX()+10, y+28);
+            AriaRender::renderNumber(channelName.mb_str(), m_channel_field->getX()+10, y+28);
         else
-            AriaRender::renderNumber(channelName, m_channel_field->getX()+7, y+28);
+            AriaRender::renderNumber(channelName.mb_str(), m_channel_field->getX()+7, y+28);
     }
     
 }

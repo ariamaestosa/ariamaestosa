@@ -24,6 +24,7 @@
 
 #ifdef _ALSA
 
+#include <glib.h>
 
 #include "AriaCore.h"
 #include "Midi/Players/Alsa/AlsaNotePlayer.h"
