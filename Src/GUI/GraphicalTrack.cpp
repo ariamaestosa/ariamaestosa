@@ -1492,7 +1492,7 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
             AriaRender::lineWidth(1);
             
             AriaRender::line(x_coord, original_editor_from_y,
-                             x_coord, m_to_y);
+                             x_coord, m_to_y - 5);
             
         }
         
