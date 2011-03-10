@@ -315,7 +315,7 @@ void renderNumber(const int number, const int x, const int y)
 }
 void renderNumber(const float number, const int x, const int y)
 {
-    renderNumber( to_wxString(number), x, y );
+    renderNumber( to_wxString(number).mb_str(), x, y );
 }
 void renderNumber(const char* number, const int x, const int y)
 {
