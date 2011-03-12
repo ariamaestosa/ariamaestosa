@@ -172,6 +172,21 @@ void MeasureData::selectMeasure(int mid)
     m_something_selected = true;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
+void MeasureData::extendToTick(const int tick)
+{
+    ScopedMeasureTransaction tr(startTransaction());
+    
+    const int last_measure_length = getMeasureLength( getMeasureAmount() - 1 );
+    const int last_measure_tick = lastTickInMeasure( getMeasureAmount() - 1 );
+    
+    float add_measures = float(tick - last_measure_tick) / float(last_measure_length);
+    if (add_measures > 0.0f)
+    {
+        tr->setMeasureAmount(getMeasureAmount() + ceil(add_measures));
+    }
+}
 
 // ----------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------------
