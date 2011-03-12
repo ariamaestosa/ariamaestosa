@@ -144,16 +144,7 @@ void MoveNotes::perform()
 
     if (last_tick > len)
     {        
-        ScopedMeasureTransaction tr(md->startTransaction());
-        
-        const int last_measure_length = md->getMeasureLength( md->getMeasureAmount() - 1 );
-        const int last_measure_tick = md->lastTickInMeasure( md->getMeasureAmount() - 1 );
-        
-        float add_measures = float(last_tick - last_measure_tick) / float(last_measure_length);
-        if (add_measures > 0.0f)
-        {
-            tr->setMeasureAmount(md->getMeasureAmount() + ceil(add_measures));
-        }
+        md->extendToTick(last_tick);
     }
     
     m_track->reorderNoteVector();

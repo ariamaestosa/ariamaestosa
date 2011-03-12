@@ -306,6 +306,9 @@ namespace AriaMaestosa
             return lastTickInMeasure(id) - firstTickInMeasure(id);
         }
         
+        /** Extend the number of measures, if needed, to include the given tick in the song boundaries */
+        void extendToTick(const int tick);
+        
         /**
          * @brief  Invoke this when you want to modify measure data
          * @return A Transaction object that gives you write-access to measure data
