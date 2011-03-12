@@ -17,6 +17,7 @@
 #include "Actions/ResizeNotes.h"
 #include "Actions/EditAction.h"
 
+#include "Midi/MeasureData.h"
 #include "Midi/Track.h"
 
 #include <wx/intl.h>
@@ -64,7 +65,9 @@ void ResizeNotes::perform()
     ASSERT(m_note_ID != ALL_NOTES); 
     
     ptr_vector<Note>& notes = m_visitor->getNotesVector();
-
+    
+    int last_tick = -1;
+    
     if (m_note_ID == SELECTED_NOTES)
     {        
         bool played = false;
@@ -74,6 +77,8 @@ void ResizeNotes::perform()
             
             notes[n].resize(m_relative_width);
             relocator.rememberNote(notes[n]);
+            
+            if (notes[n].getEndTick() > last_tick) last_tick = notes[n].getEndTick();
             
             if (not played)
             {
@@ -91,7 +96,15 @@ void ResizeNotes::perform()
         
         notes[m_note_ID].resize(m_relative_width);
         notes[m_note_ID].play(false);
+        
+        last_tick = notes[m_note_ID].getEndTick();
         relocator.rememberNote(notes[m_note_ID]);
+    }
+    
+    MeasureData* md = m_track->getSequence()->getMeasureData();
+    if (last_tick > md->getTotalTickAmount())
+    {        
+        md->extendToTick(last_tick);
     }
     
     m_track->reorderNoteOffVector();
