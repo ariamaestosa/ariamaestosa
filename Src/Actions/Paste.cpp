@@ -120,6 +120,9 @@ void Paste::perform()
     if (Clipboard::getSize() == 0) return; // nothing copied
 
     GraphicalTrack* gtrack = m_track->getGraphics();
+    MeasureData* md = m_track->getSequence()->getMeasureData();
+    
+    int last_tick = -1;
     
     const int copiedBeatLength = Clipboard::getBeatLength();
     const int seqBeatLength = m_track->getSequence()->ticksPerBeat();
@@ -236,9 +239,20 @@ void Paste::perform()
         }
 
         m_track->addNote( tmp, false );
+        
+        if (tmp->getEndTick() > last_tick)
+        {
+            last_tick = tmp->getEndTick();
+        }
+        
         relocator.rememberNote( *tmp );
     }//next
 
+    if (last_tick > md->getTotalTickAmount())
+    {        
+        md->extendToTick(last_tick);
+    }
+    
     m_track->reorderNoteVector();
     m_track->reorderNoteOffVector();
 }
