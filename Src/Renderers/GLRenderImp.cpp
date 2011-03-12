@@ -321,7 +321,7 @@ void renderNumber(const char* number, const int x, const int y)
 {
     NumberRendererSingleton* singleton = NumberRendererSingleton::getInstance();
     singleton->bind();
-    singleton->renderNumber(number, x, y);
+    singleton->renderNumber(number, x, y-1);
 }
     
 void beginScissors(const int x, const int y, const int width, const int height)

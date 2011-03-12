@@ -228,8 +228,8 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
             }
 
             // FIXME: draw twice to make it more visible...
-            AriaRender::renderNumber(fret, x1, y + 3);
-            AriaRender::renderNumber(fret, x1, y + 3);
+            AriaRender::renderNumber(fret, x1, y + 4);
+            AriaRender::renderNumber(fret, x1, y + 4);
         }
         else
         {
