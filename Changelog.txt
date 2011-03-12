@@ -2,6 +2,7 @@
 - Intensive code refactoring and cleanup
 - Improve rendering of short notes in tablature view
 - Improve selection to preview which notes are included
+- Auto-extend song length when moving notes past end
 - Performance (fluidity/responsivity) improvements
 - Fixed glitches in software rendering mode
 
