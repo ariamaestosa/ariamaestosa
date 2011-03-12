@@ -89,6 +89,8 @@ void MoveNotes::perform()
     ASSERT(m_track != NULL);
 
     ptr_vector<Note>& notes = m_visitor->getNotesVector();
+    MeasureData* md = m_track->getSequence()->getMeasureData();
+    const int len = md->getTotalTickAmount();
     
     m_mode = m_editor->getNotationType();
     if      (m_mode == SCORE  and m_relativeY != 0) m_move_mode = SCORE_VERTICAL;
@@ -98,18 +100,23 @@ void MoveNotes::perform()
     // perform action
     ASSERT(m_note_ID != ALL_NOTES); // not supported in this function (not needed)
 
+    int last_tick = -1;
+
     if (m_note_ID == SELECTED_NOTES)
     {
 
         bool played = false;
-
+        
         const int noteAmount = notes.size();
         for (int n=0; n<noteAmount; n++)
         {
             if (not notes[n].isSelected()) continue;
 
             doMoveOneNote(n);
-
+            
+            
+            if (notes[n].getEndTick() > last_tick) last_tick = notes[n].getEndTick();
+                     
             if (not played)
             {
                 if (m_relativeY != 0) notes[n].play(true);
@@ -125,7 +132,9 @@ void MoveNotes::perform()
         ASSERT_E(m_note_ID,<,notes.size());
 
         doMoveOneNote(m_note_ID);
-
+        
+        last_tick = notes[m_note_ID].getEndTick();
+        
         if (m_relativeX != 0)
         {
             if (m_relativeY != 0) notes[m_note_ID].play(true);
@@ -133,6 +142,20 @@ void MoveNotes::perform()
         }
     }
 
+    if (last_tick > len)
+    {        
+        ScopedMeasureTransaction tr(md->startTransaction());
+        
+        const int last_measure_length = md->getMeasureLength( md->getMeasureAmount() - 1 );
+        const int last_measure_tick = md->lastTickInMeasure( md->getMeasureAmount() - 1 );
+        
+        float add_measures = float(last_tick - last_measure_tick) / float(last_measure_length);
+        if (add_measures > 0.0f)
+        {
+            tr->setMeasureAmount(md->getMeasureAmount() + ceil(add_measures));
+        }
+    }
+    
     m_track->reorderNoteVector();
     m_track->reorderNoteOffVector();
 }

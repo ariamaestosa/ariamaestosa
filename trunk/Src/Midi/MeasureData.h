@@ -301,6 +301,11 @@ namespace AriaMaestosa
         int   lastTickInMeasure (int id) const;
         int   getTimeSigChangeCount() const;
         
+        int   getMeasureLength(int id) const
+        {
+            return lastTickInMeasure(id) - firstTickInMeasure(id);
+        }
+        
         /**
          * @brief  Invoke this when you want to modify measure data
          * @return A Transaction object that gives you write-access to measure data
