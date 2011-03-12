@@ -16,6 +16,7 @@
 
 #include "Actions/ScaleTrack.h"
 #include "Actions/EditAction.h"
+#include "Midi/MeasureData.h"
 #include "Midi/Track.h"
 
 #include <wx/intl.h>
@@ -66,6 +67,8 @@ void ScaleTrack::perform()
     ptr_vector<Note>& notes = m_visitor->getNotesVector();
     const int noteAmount = notes.size();
     
+    int last_tick = -1;
+    
     for (int n=0; n<noteAmount; n++)
     {
         // skip unselected notes if we only want to affect selection
@@ -81,7 +84,16 @@ void ScaleTrack::perform()
         notes[n].setEndTick( (int)( (endTick   - m_relative_to)*m_factor + m_relative_to ) );
         relocator.rememberNote(notes[n]);
         
+        if (notes[n].getEndTick() > last_tick) last_tick = notes[n].getEndTick();
+        
     }//next
+    
+    MeasureData* md = m_track->getSequence()->getMeasureData();
+    if (last_tick > md->getTotalTickAmount())
+    {        
+        md->extendToTick(last_tick);
+    }
+    
     
     m_track->reorderNoteVector();
     m_track->reorderNoteOffVector();
