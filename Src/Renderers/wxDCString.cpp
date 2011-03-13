@@ -30,6 +30,8 @@ namespace AriaMaestosa
         m_h = -1;
         
         if (not own) m_model.owner = false;
+        
+        model->setListener(this);
     }
     
     wxDCString::~wxDCString()
@@ -56,7 +58,7 @@ namespace AriaMaestosa
             else               Display::renderDC->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
             
             Display::renderDC->GetTextExtent(m_model->getValue(), &m_w, &m_h);
-            
+
             m_consolidated = true;
         }
     }
@@ -80,10 +82,11 @@ namespace AriaMaestosa
             
         ASSERT_E(m_h, >=, 0);
         ASSERT_E(m_h, <, 90000);
+        ASSERT(m_consolidated);
         
         if (m_font.IsOk()) Display::renderDC->SetFont(m_font);
         else               Display::renderDC->SetFont(wxSystemSettings::GetFont(wxSYS_SYSTEM_FONT));
-
+        
         if (m_max_width != -1 and getWidth() > m_max_width)
         {
             if (not m_warp)
@@ -215,6 +218,7 @@ namespace AriaMaestosa
     void wxDCStringArray::setFont(wxFont font)
     {
         m_font = font;
+        m_consolidated = false;
     }
     
 

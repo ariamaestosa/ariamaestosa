@@ -21,7 +21,7 @@ namespace AriaMaestosa
      * @brief   wxWidgets render backend : text renderer
      * @ingroup renderers
      */
-    class wxDCString
+    class wxDCString : public IModelListener<wxString>
     {
     protected:
         wxFont m_font;
@@ -61,6 +61,8 @@ namespace AriaMaestosa
         int getWidth();
         void scale(float f);
         void rotate(int angle);
+        
+        virtual void onModelChanged(wxString newval) { m_consolidated = false; }
     };
     
     typedef wxDCString AriaRenderString;

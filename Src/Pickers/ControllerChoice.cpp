@@ -319,6 +319,7 @@ int ControllerChoice::getControllerID()
 
 // -----------------------------------------------------------------------------------------------------------
 
+// FIXME: it's dubious that rendering belongs here
 void ControllerChoice::renderControllerName(const int x, const int y)
 {
     controller_label.bind();
