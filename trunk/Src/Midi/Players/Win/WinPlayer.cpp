@@ -27,6 +27,8 @@
 #include <wx/wx.h>
 #include <wx/utils.h>
 #include <wx/process.h>
+#include <wx/strconv.h>
+#include <sstream>
 
 /** macro to pack a MIDI short message */
 #define MAKEMIDISHORTMSG(cStatus, cChannel, cData1, cData2)            \
@@ -214,8 +216,8 @@ namespace AriaMaestosa
             return current_tick;
         }
 
-
-        // Not used currently, but could be added to enumerate the MIDI devices (i. e. MIDI Yoke virtual devices)
+        wxArrayString m_devices;
+        
         void enumerateDevices()
         {
             int i;
@@ -237,9 +239,11 @@ namespace AriaMaestosa
                     if (wRtn == MMSYSERR_NOERROR)
                     {
                         // see http://msdn.microsoft.com/en-us/library/dd798467%28VS.85%29.aspx
-                        std::cout << midi_out_caps[i].wMid << " " << midi_out_caps[i].wPid << " "
-                                        << midi_out_caps[i].vDriverVersion << " "
-                                        << midi_out_caps[i].szPname << "\n";
+                        std::ostringstream s;
+                        s //<< midi_out_caps[i].wMid << " " << midi_out_caps[i].wPid << " "
+                          << wxString(midi_out_caps[i].szPname, wxMBConvUTF16()).mb_str()
+                          << " v" << midi_out_caps[i].vDriverVersion;      
+                        m_devices.Add(wxString(s.str().c_str(), wxConvUTF8));
                     }
                 }
                 free (midi_out_caps);
@@ -250,9 +254,12 @@ namespace AriaMaestosa
 
         virtual wxArrayString getOutputChoices()
         {
-            // TODO: list other devices
             wxArrayString out;
             out.Add( _("Windows Software Synthesizer") );
+            for (unsigned int n=0; n<m_devices.size(); n++)
+            {
+                out.Add(m_devices[n]);
+            }
             return out;
         }
 
