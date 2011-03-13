@@ -95,13 +95,13 @@ void Drawable::render()
             {
                 if (m_x_scale != 1)
                 {
-                    const int new_w = (int)(m_image->width  * m_x_scale);
+                    const int new_w = (int)round(m_image->width  * m_x_scale);
                     if (new_w == 0) return;
                     
                     //if (new_w < m_image->width) return;
                     
                     const int max_x = m_x - hotspotX_mod + new_w - m_image->width;
-                    for (int x = m_x - hotspotX_mod; x < max_x; x += m_image->width)
+                    for (int x = m_x - hotspotX_mod; x <= max_x; x += m_image->width)
                     {
                         Display::renderDC->DrawBitmap( it->m_bitmap, x, m_y - hotspotY_mod, true);
                     }
@@ -110,13 +110,13 @@ void Drawable::render()
                 }
                 else if (m_y_scale != 1)
                 {
-                    const int new_h = (int)(m_image->height * m_y_scale);
+                    const int new_h = (int)round(m_image->height * m_y_scale);
                     if (new_h == 0) return;
                     
                     //if (new_h < m_image->height) return;
                     
                     const int max_y = m_y - hotspotY_mod + new_h - m_image->height;
-                    for (int y = m_y - hotspotY_mod; y < max_y; y += m_image->height)
+                    for (int y = m_y - hotspotY_mod; y <= max_y; y += m_image->height)
                     {
                         Display::renderDC->DrawBitmap( it->m_bitmap, m_x - hotspotX_mod, y, true);
                     }
