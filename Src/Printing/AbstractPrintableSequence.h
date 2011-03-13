@@ -76,7 +76,7 @@ namespace AriaMaestosa
         const Sequence* getSequence() const { return m_sequence; }
         
         /** @return the number of tracks added through 'addTrack' */
-        const int getTrackAmount() const { return m_tracks.size();         }
+        int getTrackAmount() const { return m_tracks.size();         }
         
         /**
          * Get access to the tracks added for printing. This method returns the tracks added through 'addTrack'.

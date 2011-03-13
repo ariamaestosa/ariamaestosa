@@ -65,7 +65,7 @@ void TablaturePrintable::earlySetup(const int trackID, GraphicalTrack* gtrack)
     const int trackAmount = track->getNoteAmount();
     for (int n=0; n<trackAmount; n++)
     {
-        PitchSign note_sign;
+        PitchSign note_sign = PITCH_SIGN_NONE;
         const int noteLevel = 0;
         
         if (noteLevel == -1) continue;

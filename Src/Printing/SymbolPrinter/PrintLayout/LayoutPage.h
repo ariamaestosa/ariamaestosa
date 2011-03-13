@@ -37,7 +37,7 @@ namespace AriaMaestosa
             ;
         }
 
-        const int getLineCount() const
+        int getLineCount() const
         {
             ASSERT( MAGIC_NUMBER_OK() );
 

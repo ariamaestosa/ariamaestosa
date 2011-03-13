@@ -84,8 +84,8 @@ namespace AriaMaestosa
         
         void setXFrom(const int x) { m_x = x; };
         void setXTo  (const int x) { m_x2 = x; };
-        const int getXFrom() const { return m_x; }
-        const int getXTo()   const { return m_x2; }
+        int getXFrom () const      { return m_x; }
+        int getXTo   () const      { return m_x2; }
         
         /** @return       whether a tempo change occurs at this element */
         bool  hasTempoChange() const { return m_tempo_change != -1; }

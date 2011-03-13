@@ -808,7 +808,7 @@ namespace AriaMaestosa
         //float stem_down_y_offset;
         int note_x_shift = 0;
         
-        const int getStemX(const int tick, const PitchSign sign, const STEM stem_type)
+        int getStemX(const int tick, const PitchSign sign, const STEM stem_type)
         {
             const Range<int> noteX = x_converter->tickToX(tick);
             
@@ -818,7 +818,7 @@ namespace AriaMaestosa
             else if (stem_type == STEM_DOWN) return (noteX.to + stem_down_x_offset);
             else return -1;
         }
-        const int getStemX(const NoteRenderInfo& noteRenderInfo)
+        int getStemX(const NoteRenderInfo& noteRenderInfo)
         {
             return getStemX(noteRenderInfo.getTick(), noteRenderInfo.m_sign, noteRenderInfo.m_stem_type);
         }

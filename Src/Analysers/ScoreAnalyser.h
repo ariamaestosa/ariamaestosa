@@ -173,7 +173,7 @@ namespace AriaMaestosa
          * from level to coordinate, the renderer is given the option to store the Y coordinate
          * inside the noteRenderInfo.
          */
-        const int getY() const { return m_y; }
+        int getY() const { return m_y; }
         
         /**
          * In an attempt t be view-independant, ScoreAnalyser tries to store Y locations as levels

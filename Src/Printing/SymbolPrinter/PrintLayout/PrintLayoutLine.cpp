@@ -27,8 +27,10 @@ using namespace AriaMaestosa;
 /** how many levels (vertical units) to leave between the tracks of a line */
 const int INTER_TRACK_MARGIN_LEVELS = 3;
 
+#if 0
 #pragma mark LineTrackRef
-    
+#endif
+
 // -------------------------------------------------------------------------------------------
 
 int LineTrackRef::getLastNote() const
@@ -120,8 +122,10 @@ int LineTrackRef::getLastNoteInElement(LayoutElement* layoutElement)
 
 // -------------------------------------------------------------------------------------------
 // -------------------------------------------------------------------------------------------
+#if 0
 #pragma mark -
 #pragma mark LayoutLine
+#endif
 
 LayoutLine::LayoutLine(SymbolPrintableSequence* parent, ptr_vector<PrintLayoutMeasure, REF>& measures)
 {
