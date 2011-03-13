@@ -19,6 +19,7 @@
 
 #include <vector>
 #include <wx/string.h>
+#include <wx/arrstr.h>
 
 namespace AriaMaestosa
 {
@@ -132,6 +133,13 @@ namespace AriaMaestosa
          *         e.g. "AIFF file|*.aiff"
          */
         virtual const wxString getAudioWildcard() = 0;
+        
+        /**
+          * @return a list of possible MIDI output destinations (usually software synthesizers
+          *         or physical devices). The first of the list will be used as default. All
+          *         names must be unique and should remain persistent across runs.
+          */
+        virtual wxArrayString getOutputChoices() = 0;
         
         /* ---------- non-native sequencer interface ---------
          * fill these only if you use the generic AriaSequenceTimer midi sequencer/timer

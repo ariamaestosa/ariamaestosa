@@ -248,6 +248,13 @@ namespace AriaMaestosa
 
         }
 
+        virtual wxArrayString getOutputChoices()
+        {
+            // TODO: list other devices
+            wxArrayString out;
+            out.Add( _("Windows Software Synthesizer") );
+            return out;
+        }
 
         // called when app opens
         virtual void initMidiPlayer()

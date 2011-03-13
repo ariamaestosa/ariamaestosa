@@ -13,7 +13,9 @@
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
+
 #include "Midi/Players/PlatformMidiManager.h"
+#include <wx/intl.h>
 
 namespace AriaMaestosa
 {
@@ -53,6 +55,13 @@ namespace AriaMaestosa
         virtual const wxString getAudioWildcard()
         {
             return wxEmptyString;
+        }
+        
+        virtual wxArrayString getOutputChoices()
+        {
+            wxArrayString dummy;
+            dummy.Add( _("No sound available") );
+            return dummy;
         }
         
     };

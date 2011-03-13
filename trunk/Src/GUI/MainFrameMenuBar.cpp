@@ -96,7 +96,9 @@ namespace AriaMaestosa
 
         MENU_TRACK_ADD,
         MENU_TRACK_REMOVE,
-        MENU_TRACK_BACKG
+        MENU_TRACK_BACKG,
+        
+        MENU_OUTPUT_DEVICE
     };
 
 }
@@ -261,15 +263,32 @@ void MainFrame::initMenuBar()
 
     menuBar->Append(m_settings_menu,  _("&Settings"));
 
-    // ----Help menu
+    // ---- Output devices menu
+    m_output_menu = new wxMenu();
+    
+    wxArrayString choices = PlatformMidiManager::get()->getOutputChoices();
+    for (unsigned int n=0; n<choices.Count(); n++)
+    {
+        wxMenuItem* item = m_output_menu->QUICK_ADD_CHECK_MENU(MENU_OUTPUT_DEVICE+n, choices[n], MainFrame::menuEvent_outputDevice);
+        item->Check(n == 0);
+    }
+    
+    menuBar->Append(m_output_menu, _("&Output"));
+
+    // ---- Help menu
     m_help_menu = new wxMenu();
 
     m_help_menu->QUICK_ADD_MENU(wxID_ABOUT,  _("&About Aria Maestosa"), MainFrame::menuEvent_about);
     //I18N: - in help menu - see the help files
     m_help_menu->QUICK_ADD_MENU(wxID_HELP,  _("&Manual"), MainFrame::menuEvent_manual);
 
+#ifdef __WXMAC__
+    // On OSX a menu item named "&Help" will be translated by wx into a native help menu
     menuBar->Append(m_help_menu, wxT("&Help"));
-
+#else
+    menuBar->Append(m_help_menu, _("&Help"));
+#endif
+    
     SetMenuBar(menuBar);
 }
 
@@ -862,6 +881,20 @@ void MainFrame::menuEvent_expandedMeasuresSelected(wxCommandEvent& evt)
 void MainFrame::menuEvent_metronome(wxCommandEvent& evt)
 {
     getCurrentSequence()->setPlayWithMetronome( m_metronome->IsChecked() );
+}
+
+// -----------------------------------------------------------------------------------------------------------
+// ---------------------------------------- OUTPUT MENU EVENTS -----------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
+
+#if 0
+#pragma mark -
+#pragma mark Output Menu Events
+#endif
+
+void MainFrame::menuEvent_outputDevice(wxCommandEvent& evt)
+{
+    // TODO: make this menu actually  work
 }
 
 // -----------------------------------------------------------------------------------------------------------

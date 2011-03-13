@@ -138,6 +138,7 @@ namespace AriaMaestosa
         wxMenu* m_settings_menu;
         wxMenu* m_track_menu;
         wxMenu* m_help_menu;
+        wxMenu* m_output_menu;
 
         wxBitmap m_play_bitmap;
         wxBitmap m_pause_bitmap;
@@ -250,7 +251,8 @@ namespace AriaMaestosa
         void menuEvent_manualChannelModeSelected(wxCommandEvent& evt);
         void menuEvent_expandedMeasuresSelected(wxCommandEvent& evt);
         void menuEvent_metronome(wxCommandEvent& evt);
-        
+        void menuEvent_outputDevice(wxCommandEvent& evt);
+
         void updateMenuBarToSequence();
         
         // ---- playback

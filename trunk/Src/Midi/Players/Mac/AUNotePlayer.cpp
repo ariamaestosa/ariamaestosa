@@ -170,6 +170,14 @@ static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint)
     // Here, either the endpoint had no connections, or we failed to obtain names for any of them.
     return EndpointName(endpoint, false);
 }
+
+
+std::vector<Destination> g_destinations;
+    
+const std::vector<Destination>& getDestinations()
+{
+    return g_destinations;
+}
     
 // This call creates the Graph and the Synth unit...
 OSStatus    CreateAUGraph (AUGraph &outGraph, AudioUnit &outSynth)
@@ -186,6 +194,11 @@ OSStatus    CreateAUGraph (AUGraph &outGraph, AudioUnit &outSynth)
         char buffer[256];
         CFStringGetCString(nameCStr, buffer, 256, kCFStringEncodingISOLatin1);
         printf("[AUNotePlayer]   - '%s'\n", buffer);
+        
+        Destination d;
+        d.m_ref = ref;
+        d.m_name = buffer;
+        g_destinations.push_back(d);
     }
     // require_noerr (result = MusicSequenceSetMIDIEndpoint (sequence, MIDIGetDestination(0)), fail);
     // -----------------------------------
