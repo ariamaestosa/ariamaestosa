@@ -23,7 +23,7 @@
 #include "Renderers/ImageBase.h"
 #include <wx/image.h>
 #include <wx/string.h>
-
+#include "Renderers/RenderAPI.h"
 namespace AriaMaestosa
 {
     
