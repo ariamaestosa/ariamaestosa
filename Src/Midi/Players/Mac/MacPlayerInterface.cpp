@@ -209,7 +209,7 @@ namespace AriaMaestosa
             
             return true;
         }
-                
+        
         virtual void exportAudioFile(Sequence* sequence, wxString filepath)
         {
             g_sequence = sequence;
@@ -231,6 +231,18 @@ namespace AriaMaestosa
             {
                 return audioToolboxMidiPlayer->getPosition() * g_sequence->ticksPerBeat();
             }
+        }
+        
+        virtual wxArrayString getOutputChoices()
+        {
+            const std::vector<CoreAudioNotePlayer::Destination>& destinations = CoreAudioNotePlayer::getDestinations();
+            wxArrayString out;
+            out.Add(_("OSX Software Synthesizer"));
+            for (unsigned int n=0; n<destinations.size(); n++)
+            {
+                out.Add(wxString(destinations[n].m_name.c_str(), wxConvUTF8));
+            }
+            return out;
         }
         
         virtual int trackPlaybackProgression()

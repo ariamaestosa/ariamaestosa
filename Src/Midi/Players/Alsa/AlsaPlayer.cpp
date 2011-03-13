@@ -428,6 +428,14 @@ public:
     }
     */
 
+    virtual wxArrayString getOutputChoices()
+    {
+        // TODO: list other devices
+        wxArrayString out;
+        out.Add( _("ALSA MIDI") );
+        return out;
+    }
+    
     virtual void exportAudioFile(Sequence* sequence, wxString filepath)
     {
         g_sequence = sequence;

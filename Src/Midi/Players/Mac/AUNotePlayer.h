@@ -16,13 +16,25 @@
 
 #ifdef _MAC_QUICKTIME_COREAUDIO
 
-namespace CoreAudioNotePlayer {
+#include <vector>
+//#include <AudioUnit/AudioUnit.h>
+#include <AudioToolbox/AudioToolbox.h> //for AUGraph
 
-void init();
-void free();
+namespace CoreAudioNotePlayer
+{
 
-void playNote(int pitchID, int volume, int duration, int channel, int instrument);
-void stopNote();
+    struct Destination
+    {
+        MIDIEndpointRef m_ref;
+        std::string m_name;
+    };
+    const std::vector<Destination>& getDestinations();
+    
+    void init();
+    void free();
+
+    void playNote(int pitchID, int volume, int duration, int channel, int instrument);
+    void stopNote();
 
 }
 

@@ -224,6 +224,14 @@ public:
 		player.reset();
 	}
 
+    virtual wxArrayString getOutputChoices()
+    {
+        // TODO: list other devices
+        wxArrayString out;
+        out.Add( _("Jack") );
+        return out;
+    }
+    
 	void resetSync()
 	{
 		jdkmidi::MIDIMultiTrack tracks(1);
