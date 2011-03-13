@@ -12,11 +12,11 @@ namespace AriaMaestosa
 
 
 
-MidiDevice::MidiDevice(MidiContext* context, int client_arg, int port_arg, const char* name_arg)
+MidiDevice::MidiDevice(MidiContext* context, int client_arg, int port_arg, const char* name_arg) :
+	name(name_arg, wxConvUTF8)
 {
     client = client_arg;
     port = port_arg;
-    name = fromCString(name_arg);
     MidiDevice::midiContext = context;
 }
 

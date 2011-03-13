@@ -430,9 +430,16 @@ public:
 
     virtual wxArrayString getOutputChoices()
     {
-        // TODO: list other devices
-        wxArrayString out;
-        out.Add( _("ALSA MIDI") );
+		wxArrayString out;
+		
+		const int deviceAmount = context->getDeviceAmount();
+		for (int n=0; n<deviceAmount; n++)
+		{
+			MidiDevice* md = context->getDevice(n);
+			std::cout << (const char*)md->name.mb_str() << std::endl;
+			out.Add( wxString::Format(wxT("%i:%i "), md->client, md->port) + md->name );
+		}
+		
         return out;
     }
     
