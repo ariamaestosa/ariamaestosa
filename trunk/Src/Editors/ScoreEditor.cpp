@@ -380,7 +380,7 @@ void ScoreMidiConverter::updateConversionData()
 
 int ScoreMidiConverter::getMidiNoteForLevelAndSign(const unsigned int level, int sharpness)
 {
-    if (level < 0 or level > 73) return -1;
+    if (level > 73) return -1;
 
     if      (sharpness == PITCH_SIGN_NONE) return levelToNote(level);
     else if (sharpness == NATURAL)         return m_level_to_natural_note[level];
