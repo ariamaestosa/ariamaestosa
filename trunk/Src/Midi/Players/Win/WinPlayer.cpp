@@ -230,7 +230,7 @@ namespace AriaMaestosa
 
             if (midi_out_caps != NULL)
             {
-                std::cout << "==== MIDI Devices ====\nManufacturer ID | Product ID | Driver Version | Name\n";
+                //std::cout << "==== MIDI Devices ====\nManufacturer ID | Product ID | Driver Version | Name\n";
 
                 for (i = 0; i < midi_num_outputs; i++)
                 {
