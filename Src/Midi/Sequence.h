@@ -30,7 +30,6 @@ namespace irr { namespace io {
 #include "Actions/EditAction.h"
 #include "Midi/Track.h"
 #include "ptr_vector.h"
-#include "Renderers/RenderAPI.h"
 #include "Utils.h"
 
 #include <math.h> // for 'round'

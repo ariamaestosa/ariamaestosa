@@ -28,7 +28,6 @@
 
 #include <wx/menu.h>
 #include <wx/string.h>
-#include "Renderers/RenderAPI.h"
 
 #include "Utils.h"
 
