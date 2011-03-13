@@ -19,10 +19,8 @@
 #define __DRUM_PICKER_H__
 
 #include <wx/menu.h>
-#include <wx/string.h>
 
 #include "Utils.h"
-#include "Renderers/RenderAPI.h"
 
 class wxCommandEvent;
 

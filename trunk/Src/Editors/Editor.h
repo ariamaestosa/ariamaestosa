@@ -21,11 +21,11 @@
 #ifndef __EDITOR_H__
 #define __EDITOR_H__
 
-#include "Midi/Track.h"
-#include "Utils.h"
-#include "ptr_vector.h"
-
 #include "Editors/RelativeXCoord.h"
+#include "Midi/Track.h"
+#include "ptr_vector.h"
+#include "Utils.h"
+
 
 namespace AriaMaestosa
 {

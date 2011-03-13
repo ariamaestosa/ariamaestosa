@@ -14,10 +14,6 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "Utils.h"
-#include "Renderers/RenderAPI.h"
-
-
 #ifdef RENDERER_OPENGL
     #include "Renderers/GLImage.h"
 #elif defined(RENDERER_WXWIDGETS)

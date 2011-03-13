@@ -19,7 +19,6 @@
 
 #include "Utils.h"
 #include "Renderers/ImageBase.h"
-#include "Renderers/RenderAPI.h"
 #include <cstring> // for NULL
 
 namespace AriaMaestosa

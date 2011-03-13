@@ -19,9 +19,6 @@
 #define __GUITAR_EDITOR_H__
 
 #include "Editors/Editor.h"
-
-#include <vector>
-
 #include "Editors/RelativeXCoord.h"
 #include <wx/intl.h>
 
@@ -47,7 +44,7 @@ namespace AriaMaestosa
         /** event callback from base class */
         virtual void mouseDown(RelativeXCoord, int y);
         
-         virtual void render(RelativeXCoord mousex_current, int mousey_current,
+        virtual void render(RelativeXCoord mousex_current, int mousey_current,
                             RelativeXCoord mousex_initial, int mousey_initial, bool focus=false);
         
         /** implemented from base class Editor's required interface */
