@@ -25,7 +25,6 @@
 #include "Midi/Track.h"
 #include "Utils.h"
 
-\
 /**
   * @defgroup actions
   */
