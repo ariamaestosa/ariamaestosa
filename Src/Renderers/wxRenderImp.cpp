@@ -218,14 +218,14 @@ void bordered_rect(const int x1, const int y1, const int x2, const int y2)
 {
 
     disablePen();
-    Display::renderDC -> DrawRectangle( x1, y1, x2-x1+1, y2-y1+1 );
+    Display::renderDC -> DrawRectangle( x1, y1, x2-x1+1, y2-y1 );
 
     Display::renderDC -> SetPen( *wxBLACK_PEN );
-    Display::renderDC -> DrawLine( x1-1, y1, x1-1, y2 );
-    Display::renderDC -> DrawLine( x2+1, y1, x2+1, y2 );
+    Display::renderDC -> DrawLine( x1-1, y1, x1-1, y2-1 );
+    Display::renderDC -> DrawLine( x2+1, y1, x2+1, y2-1 );
 
-    Display::renderDC -> DrawLine( x1, y1-1, x2, y1-1 );
-    Display::renderDC -> DrawLine( x1, y2+1, x2, y2+1 );
+    Display::renderDC -> DrawLine( x1, y1-1, x2+1, y1-1 );
+    Display::renderDC -> DrawLine( x1, y2-1, x2+1, y2-1 );
 
     updatePen();
 }
