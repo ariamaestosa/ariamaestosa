@@ -72,7 +72,7 @@ namespace AriaMaestosa
 #define MAKE_UPDATE_PROGRESSBAR_EVENT(eventname, progress) wxCommandEvent eventname( wxEVT_UPDATE_WAIT_WINDOW, UPDT_WAIT_WINDOW_EVENT_ID ); eventname.SetInt(progress)
 #define MAKE_HIDE_PROGRESSBAR_EVENT(eventname) wxCommandEvent eventname( wxEVT_HIDE_WAIT_WINDOW, HIDE_WAIT_WINDOW_EVENT_ID )
 
-#ifndef __WXMAC__
+#ifdef __WXGTK__
 #define NO_WX_TOOLBAR
 #endif
 

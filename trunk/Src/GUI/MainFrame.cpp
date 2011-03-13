@@ -307,6 +307,9 @@ MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(1
 
 MainFrame::~MainFrame()
 {
+    m_border_sizer->Detach(m_main_panel);
+    m_main_panel->Destroy();
+    
     ImageProvider::unloadImages();
     PlatformMidiManager::get()->freeMidiPlayer();
     CopyrightWindow::free();
@@ -367,9 +370,8 @@ void MainFrame::init()
     
     m_toolbar->AddSeparator();
 
-
     m_song_length = new wxSpinCtrl(m_toolbar, LENGTH, to_wxString(DEFAULT_SONG_LENGTH), wxDefaultPosition,
-    #if defined(__WXGTK__) || defined(__WXMSW__)
+#if defined(__WXGTK__) || defined(__WXMSW__)
                               averageTextCtrlSize
 #else
                               wxDefaultSize
@@ -378,13 +380,26 @@ void MainFrame::init()
     m_song_length->SetRange(5, 9999);
     m_toolbar->add(m_song_length, _("Duration"));
 
+#if defined(__WXMSW__)
+    m_toolbar->AddSeparator();
+    m_toolbar->AddSeparator();
+#endif
+
     m_tempo_ctrl = new wxTextCtrl(m_toolbar, TEMPO, wxT("120"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER );
     m_toolbar->add(m_tempo_ctrl, _("Tempo"));
+
+#if defined(__WXMSW__)
+    m_toolbar->AddSeparator();
+    m_toolbar->AddSeparator();
+#endif
 
     m_time_sig = new wxButton(m_toolbar, TIME_SIGNATURE, wxT("4/4"));
     m_toolbar->add(m_time_sig, _("Time Sig") );
 
     m_toolbar->AddSeparator();
+#if defined(__WXMSW__)
+    m_toolbar->AddSeparator();
+#endif
 
     m_first_measure = new wxTextCtrl(m_toolbar, BEGINNING, wxT("1"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER);
     m_toolbar->add(m_first_measure, _("Start"));
@@ -396,6 +411,11 @@ void MainFrame::init()
                            wxDefaultSize
     #endif
                            );
+
+#if defined(__WXMSW__)
+    m_toolbar->AddSeparator();
+    m_toolbar->AddSeparator();
+#endif
 
     m_display_zoom->SetRange(25,500);
     m_toolbar->add(m_display_zoom, _("Zoom"));
