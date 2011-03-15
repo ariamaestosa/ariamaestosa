@@ -114,6 +114,12 @@ namespace AriaMaestosa
             comboBorderDrawable->setFlip(true,false);
             comboBorderDrawable->render();
         }
+		
+		int getUsableWidth() const
+		{
+			// some of the corner is usable for contents too so don't count  fully
+			return m_width - 1.5f*comboBorderDrawable->getImageWidth();
+		}
     };
     
     // --------------------------------------------------------------------------------------------------
@@ -421,8 +427,9 @@ GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq, MagneticGri
     m_sharp_flat_picker->addItem( (new BitmapButton( 14, 21, naturalSign, true ))->setImageState(AriaRender::STATE_NOTE), 0 );
     m_components->addFromLeft(m_sharp_flat_picker);
 
-    m_instrument_field = new BlankField(144);
+    m_instrument_field = new BlankField(155);
     m_components->addFromRight(m_instrument_field);
+	m_instrument_name.setMaxWidth( m_instrument_field->getUsableWidth() );
 
     m_channel_field = new BlankField(28);
     m_components->addFromRight(m_channel_field);
