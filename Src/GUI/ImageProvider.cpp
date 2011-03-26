@@ -39,7 +39,7 @@ namespace AriaMaestosa
             sbArrowDownImg  = new Image(wxT("sb_arrow_sel.png"));
             sbArrowDrawable = new Drawable(sbArrowImg);
             sbBackgDrawable = new Drawable(wxT("sb_backg.png"));
-            sbThumbDrawable = new Drawable(wxT("sb_thumb.tga"));
+            sbThumbDrawable = new Drawable(wxT("sb_thumb.png"));
             
             noteTrackDrawable = new Drawable(wxT("notetrack.png"));
             
