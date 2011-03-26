@@ -23,8 +23,8 @@
 #include "Analysers/SilenceAnalyser.h"
 
 // For unit tests
-test TestAddingAndFindingInterestingTicks;
-test TestFindingNextTick;
+utest TestAddingAndFindingInterestingTicks;
+utest TestFindingNextTick;
 
 namespace AriaMaestosa
 {
@@ -36,8 +36,8 @@ namespace AriaMaestosa
 class RelativePlacementManager
 {
     // For unit tests
-    friend test ::TestAddingAndFindingInterestingTicks;
-    friend test ::TestFindingNextTick;
+    friend utest ::TestAddingAndFindingInterestingTicks;
+    friend utest ::TestFindingNextTick;
     
     /** Last tick of the measure (A RelativePlacementManager object represents a single measure) */
     int m_end_of_measure_tick;
