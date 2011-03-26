@@ -28,7 +28,7 @@ public:
 
 #define require( CONDITION, MESSAGE ) if (!( CONDITION ))                          \
 {                                                                                  \
-char buffer[256];                                                                  \
+char buffer[512];                                                                  \
 sprintf(buffer, "Requirement failed at %s:%i : %s", __FILE__, __LINE__, MESSAGE);  \
 throw std::logic_error(buffer);                                                    \
 }
@@ -44,6 +44,6 @@ throw std::logic_error(buffer);                                                 
 }
 
 // pseudo-keyword :)
-#define test class
+#define utest class
 
 #endif
