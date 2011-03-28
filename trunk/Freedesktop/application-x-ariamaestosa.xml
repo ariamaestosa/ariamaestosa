@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
- <mime-type type="audio/auria-ariamaestosa">
+ <mime-type type="application/x-ariamaestosa">
    <comment>Aria Maestosa Sequence</comment>
    <glob pattern="*.aria"/>
  </mime-type>

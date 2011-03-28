@@ -2,7 +2,7 @@
 
 [Desktop Entry]
 Encoding=UTF-8
-Version=1.2.2
+Version=1.2.3
 Type=Application
 Terminal=false
 Exec=Aria %f
@@ -10,5 +10,5 @@ Comment[en_US]=Aria Maestosa music editor
 Name=AriaMaestosa
 Comment=Aria Maestosa music editor
 Icon=/usr/local/share/Aria/aria64.png
-MimeType=audio/auria-ariamaestosa
+MimeType=application/x-ariamaestosa
 Categories=AudioVideo;Audio

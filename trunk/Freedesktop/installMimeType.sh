@@ -4,10 +4,10 @@
 # This script will also install Aria in /usr/share/applications (path not configurable for now, sorry)
 
 # copies the icon file into '~/.local/share/icons/hicolor/64x64/mimetypes'
-xdg-icon-resource install --context mimetypes --size 64 ./aria_doc.png audio-auria-ariamaestosa
+xdg-icon-resource install --context mimetypes --size 64 ./aria_doc.png application-x-ariamaestosa
 
 # this copies the file into '~/.local/share/mime/packages'
-xdg-mime install ./auria-ariamaestosa.xml
+xdg-mime install ./application-x-ariamaestosa.xml
 
 sudo install ./Aria.desktop /usr/share/applications
 sudo update-desktop-database /usr/share/applications
