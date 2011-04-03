@@ -1192,24 +1192,24 @@ namespace AriaMaestosa
             {
                 // FIXME: remove hardcoded values
                 const int SPACE_FOR_CLEF = 300;
-                const int MAX_ACCIDENTAL_SIZE = 50;
+                const int KEY_MAX_ACCIDENTAL_SIZE = 50;
                 
                 int x_space_per_symbol = (headElement.getXTo() - headElement.getXFrom() -
                                           SPACE_FOR_CLEF - 50 /* some additional space */) / std::max(sharps, flats);
-                if (x_space_per_symbol > MAX_ACCIDENTAL_SIZE) x_space_per_symbol = MAX_ACCIDENTAL_SIZE;
+                if (x_space_per_symbol > KEY_MAX_ACCIDENTAL_SIZE) x_space_per_symbol = KEY_MAX_ACCIDENTAL_SIZE;
                 
                 for (int n=0; n<sharps; n++)
                 {
                     const int level = first_score_level + (f_clef ? 1 : -1) + sharp_sign_lvl[n];
                     renderSharp( dc,
-                                 headElement.getXFrom() + SPACE_FOR_CLEF + n*x_space_per_symbol + MAX_ACCIDENTAL_SIZE/2,
+                                 headElement.getXFrom() + SPACE_FOR_CLEF + n*x_space_per_symbol + KEY_MAX_ACCIDENTAL_SIZE/2,
                                  LEVEL_TO_Y(level) );
                 }
                 for (int n=0; n<flats; n++)
                 {
                     const int level = first_score_level + (f_clef ? 3 : 1) + flat_sign_lvl[n];
                     renderFlat( dc,
-                                headElement.getXFrom() + SPACE_FOR_CLEF + n*x_space_per_symbol + MAX_ACCIDENTAL_SIZE/2,
+                                headElement.getXFrom() + SPACE_FOR_CLEF + n*x_space_per_symbol + KEY_MAX_ACCIDENTAL_SIZE/2,
                                 LEVEL_TO_Y(level) );
                 }
             }
