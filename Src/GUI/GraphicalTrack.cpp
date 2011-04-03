@@ -1394,12 +1394,12 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
 
     if (m_collapsed)
     {
-        m_to_y = m_from_y + BORDER_SIZE + COLLAPSED_BAR_HEIGHT;
+        m_to_y = m_from_y + BORDER_SIZE + COLLAPSED_BAR_HEIGHT + BORDER_SIZE + MARGIN;
     }
     else
     {
         editor_from_y += EXPANDED_BAR_HEIGHT;
-        m_to_y = editor_from_y + m_height + 25; // FIXME: don't hardcode '25'
+        m_to_y = editor_from_y + m_height + BORDER_SIZE + MARGIN;
     }
     
     // tell the editor(s) about its/their new location
