@@ -5,6 +5,7 @@
 - Auto-extend song length when moving notes past end
 - Performance (fluidity/responsivity) improvements
 - Fixed glitches in software rendering mode
+- Fixed crash when trying to print a song containing an empty track
 
 ===================================================================================================
 

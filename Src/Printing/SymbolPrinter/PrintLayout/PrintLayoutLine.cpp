@@ -47,6 +47,8 @@ int LineTrackRef::getLastNote() const
         
         for (int i=0; i<track_amount; i++)
         {
+            if (i >= current_meas.getTrackRefAmount()) continue;
+            
             const MeasureTrackReference& ref = current_meas.getTrackRef(i);
             const GraphicalTrack* gtrack = ref.getConstTrack();
             
@@ -74,6 +76,7 @@ int LineTrackRef::getFirstNote() const
         for (int i=0; i<track_amount; i++)
         {
             if (current_meas == NULL_MEASURE) continue;
+            if (i >= current_meas.getTrackRefAmount()) continue;
             
             const MeasureTrackReference& ref = current_meas.getTrackRef(i);
             const GraphicalTrack* gtrack = ref.getConstTrack();
