@@ -121,8 +121,7 @@ void ControllerEditor::renderEvents()
 void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
                               RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {
-    // FIXME: don't hardcode these numbers
-    AriaRender::beginScissors(LEFT_EDGE_X, getEditorYStart(), m_width - 15, m_height);
+    AriaRender::beginScissors(LEFT_EDGE_X, getEditorYStart(), m_width - RIGHT_SCISSOR, m_height);
 
     // -------------------------------- background ----------------------------
 

@@ -1153,10 +1153,11 @@ namespace AriaMaestosa
                                                            LEVEL_TO_Y(first_score_level),
                                                            LEVEL_TO_Y(last_score_level));
             }
-            //FIXME: it's maybe unclean to require derivated classes to check this member
+            
             if (currElem.m_render_end_bar)
             {
-                drawVerticalDivider(&currElem, measure_dividers_from_y, measure_dividers_to_y, true /* at end */);
+                drawVerticalDivider(&currElem, measure_dividers_from_y, measure_dividers_to_y,
+                                    true /* at end */);
             }
         }
         
