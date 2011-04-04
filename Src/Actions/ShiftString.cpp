@@ -65,6 +65,7 @@ void ShiftString::perform()
     ASSERT(m_note_id != ALL_NOTES);
     
     ptr_vector<Note>& notes = m_visitor->getNotesVector();
+    ASSERT( MAGIC_NUMBER_OK_FOR(notes) );
     
     if (m_note_id == SELECTED_NOTES)
     {

@@ -30,6 +30,7 @@
 
 #include "GUI/GraphicalTrack.h"
 #include "GUI/ImageProvider.h"
+#include "GUI/Machelper.h"
 #include "GUI/MainFrame.h"
 #include "GUI/MainPane.h"
 #include "GUI/MeasureBar.h"
@@ -394,6 +395,7 @@ void MainFrame::init()
 #endif
 
     m_time_sig = new wxButton(m_toolbar, TIME_SIGNATURE, wxT("4/4"));
+    
     m_toolbar->add(m_time_sig, _("Time Sig") );
 
     m_toolbar->AddSeparator();
@@ -433,6 +435,11 @@ void MainFrame::init()
 
     m_toolbar->realize();
 
+#if defined(__WXOSX_COCOA__)
+    skinButton( m_time_sig->GetHandle() );
+    //skinToolbar( m_toolbar->GetHandle() );
+#endif
+    
     // -------------------------- Notification Panel ----------------------------
 	{
         wxBoxSizer* notification_sizer = new wxBoxSizer(wxHORIZONTAL);		

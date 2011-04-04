@@ -76,7 +76,7 @@ bool SymbolPrintableSequence::addTrack(GraphicalTrack* gtrack, NotationType mode
 
 void SymbolPrintableSequence::calculateLayout()
 {
-    ASSERT( MAGIC_NUMBER_OK_FOR(&m_tracks) );
+    ASSERT( MAGIC_NUMBER_OK_FOR(m_tracks) );
     
     m_abstract_layout_manager = new PrintLayoutAbstract(this);
     m_abstract_layout_manager->addLayoutInformation(m_tracks, layoutPages /* out */);
@@ -218,7 +218,7 @@ LayoutPage& SymbolPrintableSequence::getPage(const int id)
     
     LayoutPage& out = layoutPages[id];
     
-    ASSERT( MAGIC_NUMBER_OK_FOR(&out) );
+    ASSERT( MAGIC_NUMBER_OK_FOR(out) );
     
     return out;
 }

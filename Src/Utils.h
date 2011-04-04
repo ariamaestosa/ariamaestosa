@@ -51,7 +51,7 @@ struct AriaDebugMagicNumber
 
 #define DECLARE_MAGIC_NUMBER() AriaDebugMagicNumber ariadebug_magic_number
 #define MAGIC_NUMBER_OK() (this->ariadebug_magic_number.ariadebug_magic_number == 0xCAFEC001)
-#define MAGIC_NUMBER_OK_FOR(whom) ((whom)->ariadebug_magic_number.ariadebug_magic_number == 0xCAFEC001)
+#define MAGIC_NUMBER_OK_FOR(whom) ((whom).ariadebug_magic_number.ariadebug_magic_number == 0xCAFEC001)
 
 #else
 

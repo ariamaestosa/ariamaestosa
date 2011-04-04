@@ -69,6 +69,10 @@
 		9544D68511582D5300E0A3BD /* wxEasyPrintWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 9544D68311582D5300E0A3BD /* wxEasyPrintWrapper.h */; };
 		9544D68611582D5300E0A3BD /* wxEasyPrintWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9544D68211582D5300E0A3BD /* wxEasyPrintWrapper.cpp */; };
 		9544D68711582D5300E0A3BD /* wxEasyPrintWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 9544D68311582D5300E0A3BD /* wxEasyPrintWrapper.h */; };
+		954BECA813490A0F000024E6 /* Machelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 954BECA613490A0F000024E6 /* Machelper.h */; };
+		954BECA913490A0F000024E6 /* Machelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 954BECA713490A0F000024E6 /* Machelper.mm */; };
+		954BECAA13490A0F000024E6 /* Machelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 954BECA613490A0F000024E6 /* Machelper.h */; };
+		954BECAB13490A0F000024E6 /* Machelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 954BECA713490A0F000024E6 /* Machelper.mm */; };
 		95593BB012D14A69001AF66B /* MagneticGridPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95593BAE12D14A69001AF66B /* MagneticGridPicker.cpp */; };
 		95593BB112D14A69001AF66B /* MagneticGridPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 95593BAF12D14A69001AF66B /* MagneticGridPicker.h */; };
 		95593BB212D14A69001AF66B /* MagneticGridPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95593BAE12D14A69001AF66B /* MagneticGridPicker.cpp */; };
@@ -817,6 +821,8 @@
 		953EE285131709E300AA3EA1 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
 		9544D68211582D5300E0A3BD /* wxEasyPrintWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wxEasyPrintWrapper.cpp; path = ../Src/Printing/wxEasyPrintWrapper.cpp; sourceTree = SOURCE_ROOT; };
 		9544D68311582D5300E0A3BD /* wxEasyPrintWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wxEasyPrintWrapper.h; path = ../Src/Printing/wxEasyPrintWrapper.h; sourceTree = SOURCE_ROOT; };
+		954BECA613490A0F000024E6 /* Machelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Machelper.h; path = ../Src/GUI/Machelper.h; sourceTree = SOURCE_ROOT; };
+		954BECA713490A0F000024E6 /* Machelper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Machelper.mm; path = ../Src/GUI/Machelper.mm; sourceTree = SOURCE_ROOT; };
 		95593BAE12D14A69001AF66B /* MagneticGridPicker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MagneticGridPicker.cpp; path = ../Src/Pickers/MagneticGridPicker.cpp; sourceTree = SOURCE_ROOT; };
 		95593BAF12D14A69001AF66B /* MagneticGridPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MagneticGridPicker.h; path = ../Src/Pickers/MagneticGridPicker.h; sourceTree = SOURCE_ROOT; };
 		95593BB412D14A7E001AF66B /* MagneticGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagneticGrid.h; sourceTree = "<group>"; };
@@ -1351,6 +1357,8 @@
 				957119111125D8D200104BF5 /* GraphicalTrack.h */,
 				957119121125D8D200104BF5 /* ImageProvider.cpp */,
 				957119131125D8D200104BF5 /* ImageProvider.h */,
+				954BECA713490A0F000024E6 /* Machelper.mm */,
+				954BECA613490A0F000024E6 /* Machelper.h */,
 				957119141125D8D200104BF5 /* MainFrame.cpp */,
 				957119151125D8D200104BF5 /* MainFrame.h */,
 				957119161125D8D200104BF5 /* MainFrameMenuBar.cpp */,
@@ -2004,6 +2012,7 @@
 				9565B59A12C535DE009784B6 /* GraphicalSequence.h in Headers */,
 				95593BB312D14A69001AF66B /* MagneticGridPicker.h in Headers */,
 				95593BB612D14A7E001AF66B /* MagneticGrid.h in Headers */,
+				954BECAA13490A0F000024E6 /* Machelper.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2173,6 +2182,7 @@
 				9565B59812C535DE009784B6 /* GraphicalSequence.h in Headers */,
 				95593BB112D14A69001AF66B /* MagneticGridPicker.h in Headers */,
 				95593BB812D14A7E001AF66B /* MagneticGrid.h in Headers */,
+				954BECA813490A0F000024E6 /* Machelper.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2413,6 +2423,7 @@
 				9565B59B12C535DE009784B6 /* GraphicalSequence.cpp in Sources */,
 				95593BB212D14A69001AF66B /* MagneticGridPicker.cpp in Sources */,
 				95593BB712D14A7E001AF66B /* MagneticGrid.cpp in Sources */,
+				954BECAB13490A0F000024E6 /* Machelper.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2573,6 +2584,7 @@
 				9565B59912C535DE009784B6 /* GraphicalSequence.cpp in Sources */,
 				95593BB012D14A69001AF66B /* MagneticGridPicker.cpp in Sources */,
 				95593BB912D14A7E001AF66B /* MagneticGrid.cpp in Sources */,
+				954BECA913490A0F000024E6 /* Machelper.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
