@@ -30,7 +30,7 @@ void skinButton(WX_NSView view_p)
 {
     NSView* view = view_p;
     NSButton* btn = (NSButton*)view;
-    [btn setBezelStyle:NSRoundRectBezelStyle];//NSTexturedRoundedBezelStyle];
+    [btn setBezelStyle:NSTexturedRoundedBezelStyle]; // NSRoundRectBezelStyle NSTexturedRoundedBezelStyle
 }
 
 void skinToolbar(WX_NSView view_p)
