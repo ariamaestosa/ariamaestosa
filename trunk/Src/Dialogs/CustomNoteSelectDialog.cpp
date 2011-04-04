@@ -212,6 +212,26 @@ void CustomNoteSelectDialog::show(Track* currentTrack)
         cb_string->Enable(false);
         cb_fret->Enable(false);
     }
+    
+    if (currentTrack->getFirstSelectedNote() == -1)
+    {
+        cb_pitch->Enable(false);
+        cb_volume->Enable(false);
+        cb_string->Enable(false);
+        cb_fret->Enable(false);
+        cb_duration->Enable(false);
+        volume_tolerance->Enable(false);
+        //duration_tolerance->Enable(false);
+    }
+    else
+    {
+        cb_pitch->Enable(true);
+        cb_volume->Enable(true);
+        cb_duration->Enable(true);
+        volume_tolerance->Enable(true);
+        //duration_tolerance->Enable(true);
+    }
+    
     returnCode = ShowModal();
 }
 
