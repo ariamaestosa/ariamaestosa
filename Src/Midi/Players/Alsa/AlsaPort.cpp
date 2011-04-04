@@ -282,16 +282,9 @@ void MidiContext::findDevices()
                      //SND_SEQ_PORT_TYPE_MIDI_GENERIC);
 
     address.client = snd_seq_client_id (sequencer);
-
-    // FIXME - what's the use of creating a queue? seqlib does
-    //queue = snd_seq_alloc_queue (sequencer);
-    //if(queue < 0) printf("Failed to allocate queue\n");
-
-    //snd_seq_set_client_pool_output (midiContext.sequencer, 1024);
     snd_seq_set_client_pool_output (sequencer, 1024);
 
     destlist = g_array_new(0, 0, sizeof(snd_seq_addr_t));
-    // snd_seq_set_client_pool_output(seq_handle, (seq_len<<1) + 4);
 }
 
 int MidiContext::getDeviceAmount()
