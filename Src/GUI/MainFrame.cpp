@@ -438,6 +438,7 @@ void MainFrame::init()
 #if defined(__WXOSX_COCOA__)
     skinButton( m_time_sig->GetHandle() );
     //skinToolbar( m_toolbar->GetHandle() );
+    skinFrame( MacGetTopLevelWindowRef() );
 #endif
     
     // -------------------------- Notification Panel ----------------------------
