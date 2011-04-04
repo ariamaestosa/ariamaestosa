@@ -50,9 +50,12 @@ void RearrangeNotes::undo()
 
 void RearrangeNotes::perform()
 {
+    ASSERT( MAGIC_NUMBER_OK_FOR(*m_visitor.raw_ptr) );
     // FIXME: fix this abuse of the importing feature
     OwnerPtr<Sequence::Import> import(m_track->getSequence()->startImport()); // just to make sure notes are not played while reordering
 
+    ASSERT( MAGIC_NUMBER_OK_FOR(*m_visitor.raw_ptr) );
+    
     std::vector<int> candidates;
 
     //ptr_vector<Note>& notes = m_visitor->getNotesVector();
@@ -66,6 +69,8 @@ void RearrangeNotes::perform()
         int x1 = m_track->getNoteStartInMidiTicks(n);
         candidates.push_back(n);
 
+        ASSERT( MAGIC_NUMBER_OK_FOR(*m_visitor.raw_ptr) );
+        
         // found 2 consecutive notes with same tick - check if there are more
         if (n < noteAmount-1 and m_track->getNoteStartInMidiTicks(n + 1) == x1)
         {
@@ -78,6 +83,8 @@ void RearrangeNotes::perform()
             n--;
         }
 
+        ASSERT( MAGIC_NUMBER_OK_FOR(*m_visitor.raw_ptr) );
+        
         if (candidates.size()>1)
         { // we found many notes with the same tick
 
@@ -117,6 +124,7 @@ void RearrangeNotes::perform()
 
             if (need_to_reorder)
             {
+                ASSERT( MAGIC_NUMBER_OK_FOR(*m_visitor.raw_ptr) );
 
                 // order in pitch order (lowest to highest)
                 for (int i=0; i<size-1; i++)
@@ -158,6 +166,8 @@ void RearrangeNotes::perform()
 
                 const int base_string = m_track->getNoteString(candidates[0]);
 
+                ASSERT( MAGIC_NUMBER_OK_FOR(*m_visitor.raw_ptr) );
+                
                 // lay them out
                 for (int i=1; i<size; i++)
                 {
@@ -169,12 +179,15 @@ void RearrangeNotes::perform()
 
                     // place lowest note on lowest needed string, then second lowest note on second lowest string, etc
                     Action::ShiftString action( base_string - i - m_track->getNoteString(candidates[i]) , candidates[i]);
-                    action.setParentTrack(m_track, m_visitor);
+                    action.setParentTrack(m_track, new Track::TrackVisitor(*m_visitor));
                     action.perform();
                 }
+                ASSERT( MAGIC_NUMBER_OK_FOR(*m_visitor.raw_ptr) );
             }
 
         }//endif
+        
+        ASSERT( MAGIC_NUMBER_OK_FOR(*m_visitor.raw_ptr) );
     }//next
 
 }

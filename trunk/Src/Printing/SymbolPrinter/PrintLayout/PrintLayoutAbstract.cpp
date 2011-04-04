@@ -596,7 +596,7 @@ PrintLayoutAbstract::PrintLayoutAbstract(SymbolPrintableSequence* sequence)
 void PrintLayoutAbstract::addLayoutInformation(ptr_vector<GraphicalTrack, REF>& tracks,
                                                ptr_vector<LayoutPage>& layoutPages)
 {    
-    ASSERT( MAGIC_NUMBER_OK_FOR(&tracks) );
+    ASSERT( MAGIC_NUMBER_OK_FOR(tracks) );
 
     generateMeasures(tracks);
     

@@ -47,7 +47,7 @@ namespace AriaMaestosa
         LayoutLine& getLine(const int lineID)
         {
             ASSERT( MAGIC_NUMBER_OK() );
-            ASSERT( MAGIC_NUMBER_OK_FOR(&m_layout_lines) );
+            ASSERT( MAGIC_NUMBER_OK_FOR(m_layout_lines) );
 
             return m_layout_lines[lineID];
         }
@@ -55,7 +55,7 @@ namespace AriaMaestosa
         void addLine( LayoutLine* line )
         {
             ASSERT( MAGIC_NUMBER_OK() );
-            ASSERT( MAGIC_NUMBER_OK_FOR(&m_layout_lines) );
+            ASSERT( MAGIC_NUMBER_OK_FOR(m_layout_lines) );
             
             m_layout_lines.push_back(line);
         }

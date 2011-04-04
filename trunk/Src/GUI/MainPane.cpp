@@ -841,7 +841,7 @@ void MainPane::keyReleased(wxKeyEvent& evt)
     {
         SetCursor( wxNullCursor );
     }
-     */
+    */
 }
 
 // --------------------------------------------------------------------------------------------------
@@ -856,8 +856,8 @@ void MainPane::keyPressed(wxKeyEvent& evt)
     else
     {
         SetCursor( wxNullCursor );
-    }*/
-    
+    }
+    */
     
     MainFrame* mf = getMainFrame();
     GraphicalSequence* gseq = mf->getCurrentGraphicalSequence();

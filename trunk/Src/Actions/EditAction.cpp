@@ -42,6 +42,9 @@ SingleTrackAction::SingleTrackAction(wxString name) : EditAction(name)
 
 void SingleTrackAction::setParentTrack(Track* parent, Track::TrackVisitor* visitor)
 {
+    ASSERT( MAGIC_NUMBER_OK_FOR(*parent) );
+    ASSERT( MAGIC_NUMBER_OK_FOR(*visitor) );
+    
     m_track   = parent;
     m_visitor = visitor;
 }

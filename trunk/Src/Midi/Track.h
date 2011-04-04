@@ -166,6 +166,8 @@ namespace AriaMaestosa
 
     public:
         
+        DECLARE_MAGIC_NUMBER();
+        
         /** Through this visitor object, the Track class will let actions manipulate its internals
           * in a controlled sequence
           */
@@ -178,12 +180,26 @@ namespace AriaMaestosa
             
             TrackVisitor(Track* t)
             {
+                ASSERT( MAGIC_NUMBER_OK_FOR(*t) );
                 m_track = t;
             }
             
         public:
             
-            ptr_vector<Note>&            getNotesVector()        { return m_track->m_notes;          }
+            DECLARE_MAGIC_NUMBER();
+            
+            TrackVisitor(const TrackVisitor& other)
+            {
+                m_track = other.m_track;
+            }
+            
+            ptr_vector<Note>&            getNotesVector()
+            {
+                ASSERT( MAGIC_NUMBER_OK() );
+                ASSERT( MAGIC_NUMBER_OK_FOR(*m_track) );
+                ASSERT( MAGIC_NUMBER_OK_FOR(m_track->m_notes) );
+                return m_track->m_notes;
+            }
             ptr_vector<Note, REF>&       getNoteOffVector()      { return m_track->m_note_off;       }
             ptr_vector<ControllerEvent>& getControlEventVector() { return m_track->m_control_events; }
             
