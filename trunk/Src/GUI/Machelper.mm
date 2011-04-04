@@ -6,6 +6,7 @@
 
 #import <AppKit/NSButtonCell.h>
 #import <AppKit/NSToolbar.h>
+#import <AppKit/NSWindow.h>
 
 /*
  enum {
@@ -38,4 +39,12 @@ void skinToolbar(WX_NSView view_p)
     [tb setAllowsUserCustomization:YES];
 }
 
+void skinFrame(WX_NSWindow view_p)
+{
+    NSWindow* w = (NSWindow*)view_p;
+    if ([w toolbar])
+    {
+        [[w toolbar] setAllowsUserCustomization:YES];
+    }
+}
 #endif
