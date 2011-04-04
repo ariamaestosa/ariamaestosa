@@ -240,8 +240,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 {
     if (not ImageProvider::imagesLoaded()) return;
 
-    // FIXME: don't hardcode these numbers
-    AriaRender::beginScissors(LEFT_EDGE_X, getEditorYStart(), m_width - 15, m_height);
+    AriaRender::beginScissors(LEFT_EDGE_X, getEditorYStart(), m_width - RIGHT_SCISSOR, m_height);
 
     // ------------------ draw lined background ----------------
 

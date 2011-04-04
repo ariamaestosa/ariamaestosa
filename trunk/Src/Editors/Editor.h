@@ -33,6 +33,8 @@ namespace AriaMaestosa
     const int MARGIN = 5;
     const int LEFT_EDGE_X = 10;
     
+    const int RIGHT_SCISSOR = 15;
+    
     class Sequence;
     class GraphicalTrack;
     class Track;

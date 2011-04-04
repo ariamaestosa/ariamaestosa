@@ -52,7 +52,8 @@ void RearrangeNotes::perform()
 {
     ASSERT( MAGIC_NUMBER_OK_FOR(*m_visitor.raw_ptr) );
     // FIXME: fix this abuse of the importing feature
-    OwnerPtr<Sequence::Import> import(m_track->getSequence()->startImport()); // just to make sure notes are not played while reordering
+    // just to make sure notes are not played while reordering
+    OwnerPtr<Sequence::Import> import(m_track->getSequence()->startImport());
 
     ASSERT( MAGIC_NUMBER_OK_FOR(*m_visitor.raw_ptr) );
     
