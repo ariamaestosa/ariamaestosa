@@ -160,8 +160,13 @@ void ScoreMidiConverter::resetAccidentalsForNewRender()
 int ScoreMidiConverter::noteToLevel(const Note* noteObj, PitchSign* sign)
 {
     const int note = noteObj->getPitchID();
-    if (note >= 128 or note < 0) return -1;
+    return noteToLevel(noteObj, note, sign);
+}
 
+// ----------------------------------------------------------------------------------------------------------
+
+int ScoreMidiConverter::noteToLevel(const Note* noteObj, const int note, PitchSign* sign)
+{
     const int level = m_midi_note_to_level[note];
     const NoteToLevelType current_type = m_midi_note_to_level_type[note];
 
@@ -173,7 +178,7 @@ int ScoreMidiConverter::noteToLevel(const Note* noteObj, PitchSign* sign)
         // decide whether to use a flat or a sharp to display this note
         // first check if there's a user-specified sign. otherwise pick default (quite arbitrarly)
         bool useFlats = false;
-        if (noteObj->getPreferredAccidentalSign() != -1)
+        if (noteObj != NULL and noteObj->getPreferredAccidentalSign() != -1)
         {
             if      (noteObj->getPreferredAccidentalSign() == SHARP) useFlats = false;
             else if (noteObj->getPreferredAccidentalSign() == FLAT)  useFlats = true;
@@ -270,7 +275,7 @@ int ScoreMidiConverter::noteToLevel(const Note* noteObj, PitchSign* sign)
         }
 
         // set accidentals
-        if (answer_sign != PITCH_SIGN_NONE)
+        if (answer_sign != PITCH_SIGN_NONE and noteObj != NULL)
         {
             m_accidentals = true;
             const int measure = m_sequence->getModel()->getMeasureData()->measureAtTick(noteObj->getTick());
@@ -402,6 +407,7 @@ ScoreEditor::ScoreEditor(GraphicalTrack* track) : Editor(track)
 {
     m_g_clef = true;
     m_f_clef = true;
+    m_clicked_note = -1;
 
     const long scoreView = Core::getPrefsLongValue("scoreview");
     m_musical_notation_enabled = (scoreView == 0 or scoreView == 1);
@@ -1206,11 +1212,23 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     // --------------------------- grey left part -----------------------------
     if (not focus) AriaRender::color(0.4, 0.4, 0.4);
-    else          AriaRender::color(0.8, 0.8, 0.8);
+    else           AriaRender::color(0.8, 0.8, 0.8);
 
     AriaRender::rect(0,                           getEditorYStart(),
                      Editor::getEditorXStart()-3, getYEnd());
 
+    if (m_clicked_note != -1)
+    {
+        const int lvl = m_converter->noteToLevel( NULL, m_clicked_note );
+        
+        AriaRender::color(0.4, 0.4, 0.4);
+        AriaRender::rect(Editor::getEditorXStart() - 30,
+                         lvl*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels()-1,
+                         Editor::getEditorXStart() - 3,
+                         (lvl + 1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels()-1);
+        
+    }
+    
     // ------------------------------- draw keys and horizontal lines -------------------------------
 
     AriaRender::color(0,0,0);
@@ -1430,6 +1448,8 @@ void ScoreEditor::mouseDown(RelativeXCoord x, const int y)
         {
             PlatformMidiManager::get()->playNote(131 - pitchID, m_default_volume, 500 /* duration */, 0,
                                                  m_track->getInstrument() );
+            m_clicked_note = pitchID;
+            Display::render();
         }
         return;
     }
@@ -1452,7 +1472,11 @@ void ScoreEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                           RelativeXCoord mousex_initial, int mousey_initial)
 {
     Editor::mouseUp(mousex_current, mousey_current, mousex_initial, mousey_initial);
-
+    if (m_clicked_note)
+    {
+        m_clicked_note = -1;
+        Display::render();
+    }
 }
 
 // ----------------------------------------------------------------------------------------------------------

@@ -139,6 +139,8 @@ namespace AriaMaestosa
           */
         int noteToLevel(const Note* noteObj, PitchSign* sign=NULL);
         
+        int noteToLevel(const Note* noteObj, const int noteObj, PitchSign* sign=NULL);
+        
         /** what is the name of the note played on this level? */
         int levelToNote7(const unsigned int level) const;
         
@@ -167,6 +169,9 @@ namespace AriaMaestosa
         
         bool m_musical_notation_enabled;
         bool m_linear_notation_enabled;
+        
+        /** Used when clicking on notes in the left part to hear them */
+        int m_clicked_note;
         
         /** helper method for rendering */
         void renderScore(ScoreAnalyser* analyser, const int silences_y);
