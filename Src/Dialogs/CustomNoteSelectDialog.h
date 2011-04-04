@@ -52,7 +52,7 @@ namespace AriaMaestosa
         wxTextCtrl* from_measure;
         wxTextCtrl* to_measure;
         wxTextCtrl* volume_tolerance;
-        wxTextCtrl* duration_tolerance;
+        //wxTextCtrl* duration_tolerance;
         int returnCode;
         
         Track* m_current_track;
