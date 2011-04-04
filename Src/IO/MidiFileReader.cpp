@@ -55,7 +55,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
     // load the midifile into the multitrack object
     if (not reader.Parse())
     {
-        std::cout << "Error: could not parse midi file" << std::endl;
+        std::cerr << "[MidiFileReader] ERROR: could not parse midi file" << std::endl;
         return false;
     }
 
@@ -74,7 +74,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
 
         const int drum_note_duration = resolution/32+1;
 
-        bool firstTempoEvent=true;
+        bool firstTempoEvent = true;
 
         const int trackAmount = jdksequence.GetNumTracks();
 
@@ -141,14 +141,18 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                 {
                     if (event->IsNoteOn())
                     {
+                        fprintf(stderr, "[MidiFileReader] WARNING: note from channel %i != previous channel %i\n",
+                                channel, last_channel);
                         warnings.insert( _("This MIDI file has tracks that play on multiple MIDI channels. This is not supported by Aria Maestosa.") );
                         //ariaTrack->setChannel(channel);
                         //last_channel = channel;
                     }
-                    else if (not event->IsMetaEvent() and
+                    else if (not event->IsMetaEvent() and not event->IsAllNotesOff() and
                              not event->IsTextEvent() and not event->IsTempo() and
                              not event->IsSystemMessage() and not event->IsSysEx())
                     {
+                        fprintf(stderr, "[MidiFileReader] WARNING: event from channel %i != previous channel %i\n",
+                                channel, last_channel);
                         warnings.insert( _("This MIDI file has a track that sends events on multiple MIDI channels. This is not supported by Aria Maestosa.") );
                     }
                 }
@@ -214,14 +218,17 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                     if (controllerID > 31 and controllerID < 64)
                     {
                         // LSB... not supported by Aria ATM
-                        std::cout << "WARNING: This MIDI files contains LSB controller data. Aria does not support fine control changes and will discard this info." << std::endl;
+                        std::cerr << "[MidiFileReader] WARNING: This MIDI files contains LSB controller data."
+                                  << " Aria does not support fine control changes and will discard this info."
+                                  << std::endl;
                         continue;
                     }
 
 
-                    if (controllerID == 3 or controllerID == 6 or controllerID == 9 or (controllerID > 19 and controllerID < 32) or
-                       controllerID == 79 or (controllerID > 84 and controllerID < 91)
-                       or (controllerID > 95 and controllerID < 200 and controllerID!=127 /*stereo mode*/))
+                    if (controllerID == 3 or controllerID == 6 or controllerID == 9 or
+                        (controllerID > 19 and controllerID < 32) or controllerID == 79 or
+                        (controllerID > 84 and controllerID < 91) or
+                        (controllerID > 95 and controllerID < 200 and controllerID != 127 /*stereo mode*/))
                     {
                         if (controllerID == 6 or controllerID == 38 or controllerID == 100 or controllerID == 101)
                         {
