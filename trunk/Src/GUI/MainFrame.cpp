@@ -67,6 +67,8 @@
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 #include <wx/bmpbuttn.h>
+#include <wx/notebook.h>
+#include <wx/imaglist.h>
 
 #ifdef __WXMAC__
 #include <ApplicationServices/ApplicationServices.h>
@@ -395,7 +397,8 @@ void MainFrame::init()
 #endif
 
     m_time_sig = new wxButton(m_toolbar, TIME_SIGNATURE, wxT("4/4"));
-    
+    m_time_sig->SetMinSize( wxSize(60, 30) );
+    m_time_sig->SetSize( wxSize(60, 30) );
     m_toolbar->add(m_time_sig, _("Time Sig") );
 
     m_toolbar->AddSeparator();
@@ -433,6 +436,19 @@ void MainFrame::init()
     m_tool2_bitmap.LoadFile( getResourcePrefix()  + wxT("tool2.png") , wxBITMAP_TYPE_PNG);
     m_toolbar->AddTool(TOOL_BUTTON, _("Tool"), m_tool1_bitmap);
 
+#if defined(__WXOSX_COCOA__)
+    wxNotebook* test = new wxNotebook(m_toolbar, wxID_ANY);
+    wxImageList* imglist = new wxImageList();
+    int id1 = imglist->Add( wxArtProvider::GetBitmap(wxART_INFORMATION, wxART_OTHER, wxSize(32,32) ) );
+    int id2 = imglist->Add( wxArtProvider::GetBitmap(wxART_NORMAL_FILE, wxART_OTHER, wxSize(32,32) ) );
+    test->AssignImageList(imglist);
+    test->AddPage(new wxPanel(test), "A", true, id1);
+    test->AddPage(new wxPanel(test), "B", true, id2);
+    test->SetMinSize( wxSize(80, 30) );
+    test->SetSize( wxSize(80, 30) );
+    m_toolbar->add(test, _("Tool"));
+#endif
+    
     m_toolbar->realize();
 
 #if defined(__WXOSX_COCOA__)
