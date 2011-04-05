@@ -41,10 +41,12 @@ void skinToolbar(WX_NSView view_p)
 
 void skinFrame(WX_NSWindow view_p)
 {
+    /*
     NSWindow* w = (NSWindow*)view_p;
     if ([w toolbar])
     {
         [[w toolbar] setAllowsUserCustomization:YES];
     }
+    */
 }
 #endif
