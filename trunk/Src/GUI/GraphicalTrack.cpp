@@ -945,6 +945,7 @@ void GraphicalTrack::maximizeHeight(bool maximize)
 {
     if (maximize)
     {
+        setCollapsed(false);
         const bool exp = m_gsequence->getModel()->getMeasureData()->isExpandedMode();
         setHeight(Display::getHeight() - m_gsequence->getDockHeight() - MEASURE_BAR_Y -
                   EXPANDED_BAR_HEIGHT - BORDER_SIZE - 50 -
