@@ -521,7 +521,7 @@ int Note::findNotePitch(Note7 note_7, PitchSign sharpness, const int octave)
     
     const int returnv = note + (9 - octave)*12;
     ASSERT_E(returnv, >=, 0);
-    ASSERT_E(returnv, <=, 130);
+    ASSERT_E(returnv, <=, 131);
     return returnv;
 }
 
