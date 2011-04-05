@@ -76,24 +76,23 @@ namespace AriaMaestosa
         //FIXME: preferences use that too, move it out of here and make it common
         class QuickBoxLayout
         {
-            wxBoxSizer* bsizer;
+            wxBoxSizer* m_bsizer;
         public:
-            wxPanel* pane;
-            
-            QuickBoxLayout(wxWindow* component, wxSizer* parent, int orientation=wxHORIZONTAL, int proportion=1)
+
+            QuickBoxLayout(wxSizer* parent, int orientation=wxHORIZONTAL, int proportion=1)
             {
-                pane = new wxPanel(component);
-                parent->Add(pane,proportion,wxEXPAND);
-                bsizer = new wxBoxSizer(orientation);
+                m_bsizer = new wxBoxSizer(orientation);
+                parent->Add(m_bsizer, proportion, wxEXPAND);
             }
+            
             void add(wxWindow* window, int margin=2, int proportion=1, long margins = wxALL)
             {
-                bsizer->Add(window, proportion, margins | wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL, margin);
+                m_bsizer->Add(window, proportion, margins | wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL, margin);
             }
+            
             ~QuickBoxLayout()
             {
-                pane->SetSizer(bsizer);
-                bsizer->Layout();
+                //m_bsizer->Layout();
                 //bsizer->SetSizeHints(pane);
             }
         };
@@ -153,15 +152,15 @@ TimeSigPicker::TimeSigPicker() : wxMiniFrame(getMainFrame(), wxNewId(),  _("Time
 
     vertical->AddSpacer(5);
 
-    QuickBoxLayout horizontal(m_pane, vertical, wxHORIZONTAL, 0);
-    m_value_text_num = new wxTextCtrl(horizontal.pane, wxNewId(), wxT("4"), wxPoint(0,130), smallsize,
+    QuickBoxLayout horizontal(vertical, wxHORIZONTAL, 0);
+    m_value_text_num = new wxTextCtrl(m_pane, wxNewId(), wxT("4"), wxPoint(0,130), smallsize,
                                       wxTE_PROCESS_ENTER | wxWANTS_CHARS);
     
-    wxStaticText* slash = new wxStaticText(horizontal.pane, wxID_ANY, wxT("/"), wxDefaultPosition, wxSize(15,15));
+    wxStaticText* slash = new wxStaticText(m_pane, wxID_ANY, wxT("/"), wxDefaultPosition, wxSize(15,15));
     slash->SetMinSize(wxSize(15,15));
     slash->SetMaxSize(wxSize(15,15));
     
-    m_value_text_denom = new wxTextCtrl(horizontal.pane, wxNewId(), wxT("4"), wxPoint(0,130), smallsize,
+    m_value_text_denom = new wxTextCtrl(m_pane, wxNewId(), wxT("4"), wxPoint(0,130), smallsize,
                                         wxTE_PROCESS_ENTER | wxWANTS_CHARS);
     
     m_value_text_num  ->Connect(m_value_text_num->GetId(), wxEVT_SET_FOCUS,
