@@ -434,9 +434,9 @@ void MainFrame::init()
 
     m_tool1_bitmap.LoadFile( getResourcePrefix()  + wxT("tool1.png") , wxBITMAP_TYPE_PNG);
     m_tool2_bitmap.LoadFile( getResourcePrefix()  + wxT("tool2.png") , wxBITMAP_TYPE_PNG);
-    m_toolbar->AddTool(TOOL_BUTTON, _("Tool"), m_tool1_bitmap);
 
 #if defined(__WXOSX_COCOA__)
+    /*
     wxNotebook* test = new wxNotebook(m_toolbar, wxID_ANY);
     wxImageList* imglist = new wxImageList();
     int id1 = imglist->Add( wxArtProvider::GetBitmap(wxART_INFORMATION, wxART_OTHER, wxSize(32,32) ) );
@@ -447,6 +447,16 @@ void MainFrame::init()
     test->SetMinSize( wxSize(80, 30) );
     test->SetSize( wxSize(80, 30) );
     m_toolbar->add(test, _("Tool"));
+    */
+    
+    m_tools_bitmap = new wxStaticBitmap(m_toolbar /* test2 */, wxID_ANY, m_tool1_bitmap);
+    //wxBitmapButton* stbmp = new wxBitmapButton(m_toolbar /* test2 */, wxID_ANY, m_tool1_bitmap,
+    //                                           wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW | wxBORDER_NONE);
+    m_tools_bitmap->Connect(m_tools_bitmap->GetId(), wxEVT_LEFT_DOWN, wxMouseEventHandler(MainFrame::onToolsBitmapMousedown), NULL, this);
+    m_tools_bitmap->Connect(m_tools_bitmap->GetId(), wxEVT_LEFT_UP, wxMouseEventHandler(MainFrame::onToolsBitmapMouseup), NULL, this);
+    m_toolbar->add(m_tools_bitmap, _("Tool"));
+#else
+    m_toolbar->AddTool(TOOL_BUTTON, _("Tool"), m_tool1_bitmap);
 #endif
     
     m_toolbar->realize();
@@ -1006,6 +1016,39 @@ void MainFrame::songLengthChanged(wxSpinEvent& evt)
 
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
+#if defined(__WXOSX_COCOA__)
+//wxStaticBitmap* m_tools_bitmap;
+
+void MainFrame::onToolsBitmapMousedown(wxMouseEvent& evt)
+{
+    //wxSize size = m_tools_bitmap->GetSize();
+    //wxPoint pos = m_tools_bitmap->GetPosition();
+    //printf("mouse down %i,%i (m_tools_bitmap = %i,%i size = %i, %i)\n", evt.GetX(), evt.GetY(), pos.x, pos.y,
+    //       size.GetWidth(), size.GetHeight());
+    
+    //EditTool currTool = Editor::getCurrentTool();
+    if (evt.GetX()> 34)
+    {
+        m_tools_bitmap->SetBitmap(m_tool2_bitmap);
+        Editor::setEditTool(EDIT_TOOL_ADD);
+    }
+    else if (evt.GetX() < 34)
+    {
+        m_tools_bitmap->SetBitmap(m_tool1_bitmap);
+        Editor::setEditTool(EDIT_TOOL_PENCIL);
+    }
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void MainFrame::onToolsBitmapMouseup(wxMouseEvent& evt)
+{
+    //printf("mouse up\n");
+}
+
+#endif
 
 // ----------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------------

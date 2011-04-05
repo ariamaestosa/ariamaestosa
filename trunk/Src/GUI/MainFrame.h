@@ -44,6 +44,7 @@ class wxCommandEvent;
 class wxFlexGridSizer;
 class wxTextCtrl;
 class wxBoxSizer;
+class wxStaticBitmap;
 
 namespace AriaMaestosa
 {
@@ -175,6 +176,12 @@ namespace AriaMaestosa
         OwnerPtr<DrumPicker>          m_drumKit_picker;
         OwnerPtr<TuningPicker>        m_tuning_picker;
         OwnerPtr<KeyPicker>           m_key_picker;
+        
+#if defined(__WXOSX_COCOA__)
+        wxStaticBitmap* m_tools_bitmap;
+        void onToolsBitmapMousedown(wxMouseEvent& evt);
+        void onToolsBitmapMouseup(wxMouseEvent& evt);
+#endif
         
     public:
         LEAK_CHECK();
