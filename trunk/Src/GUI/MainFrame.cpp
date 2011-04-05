@@ -351,8 +351,12 @@ void MainFrame::init()
 
     // a few presets
     wxSize averageTextCtrlSize(wxDefaultSize);
+#if defined(__WXOSX_COCOA__)
+    averageTextCtrlSize.SetWidth(65);
+#else
     averageTextCtrlSize.SetWidth(55);
-
+#endif
+    
     wxSize smallTextCtrlSize(wxDefaultSize);
     smallTextCtrlSize.SetWidth(45);
 
@@ -374,7 +378,7 @@ void MainFrame::init()
     m_toolbar->AddSeparator();
 
     m_song_length = new wxSpinCtrl(m_toolbar, LENGTH, to_wxString(DEFAULT_SONG_LENGTH), wxDefaultPosition,
-#if defined(__WXGTK__) || defined(__WXMSW__)
+#if defined(__WXGTK__) || defined(__WXMSW__) || defined(__WXOSX_COCOA__)
                               averageTextCtrlSize
 #else
                               wxDefaultSize
@@ -410,7 +414,7 @@ void MainFrame::init()
     m_toolbar->add(m_first_measure, _("Start"));
 
     m_display_zoom = new wxSpinCtrl(m_toolbar, ZOOM, wxT("100"), wxDefaultPosition,
-    #if defined(__WXGTK__) || defined(__WXMSW__)
+    #if defined(__WXGTK__) || defined(__WXMSW__) || defined(__WXOSX_COCOA__)
                            averageTextCtrlSize
     #else
                            wxDefaultSize
