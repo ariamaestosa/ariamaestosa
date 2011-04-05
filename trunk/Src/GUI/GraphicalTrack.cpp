@@ -1463,21 +1463,59 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
         const RelativeXCoord x2 = Display::getMouseX_initial();
         const int y2 = Display::getMouseY_initial();
         
+        int rcount = 0;
+
         if (m_track->isNotationTypeEnabled(SCORE))
         {
+            rcount++;
             m_score_editor->render(x1, y1, x2, y2, focus);
+            
+            if (rcount < count)
+            {
+                AriaRender::primitives();
+                AriaRender::color( 0.5f, 0.5f, 0.5f );
+                AriaRender::rect(10, m_score_editor->getYEnd() - 3,
+                                 m_score_editor->getXEnd(), m_score_editor->getYEnd() + 1 );
+            }
         }
         if (m_track->isNotationTypeEnabled(GUITAR))
         {
+            rcount++;
             m_guitar_editor->render(x1, y1, x2, y2, focus);
+            
+            if (rcount < count)
+            {
+                AriaRender::primitives();
+                AriaRender::color( 0.5f, 0.5f, 0.5f );
+                AriaRender::rect(10, m_guitar_editor->getYEnd() - 3,
+                                 m_guitar_editor->getXEnd(), m_guitar_editor->getYEnd() + 1 );
+            }
         }
         if (m_track->isNotationTypeEnabled(KEYBOARD))
         {
+            rcount++;
             m_keyboard_editor->render(x1, y1, x2, y2, focus);
+            
+            if (rcount < count)
+            {
+                AriaRender::primitives();
+                AriaRender::color( 0.5f, 0.5f, 0.5f );
+                AriaRender::rect(10, m_keyboard_editor->getYEnd() - 3,
+                                 m_keyboard_editor->getXEnd(), m_keyboard_editor->getYEnd() + 1 );
+            }
         }
         if (m_track->isNotationTypeEnabled(DRUM))
         {
+            rcount++;
             m_drum_editor->render(x1, y1, x2, y2, focus);
+            
+            if (rcount < count)
+            {
+                AriaRender::primitives();
+                AriaRender::color( 0.5f, 0.5f, 0.5f );
+                AriaRender::rect(10, m_drum_editor->getYEnd() - 3,
+                                 m_drum_editor->getXEnd(), m_drum_editor->getYEnd() + 1 );
+            }
         }
         if (m_track->isNotationTypeEnabled(CONTROLLER))
         {
