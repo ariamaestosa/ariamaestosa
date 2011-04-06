@@ -65,8 +65,8 @@ OR, to build wxOSX/Cocoa (wxWidgets 2.9.2+ only) :
 <blockquote>
 <pre>
 ../configure --with-cocoa --with-libjpeg=builtin --with-libpng=builtin --with-regex=builtin --without-libtiff
-    --with-zlib=builtin --with-expat=builtin --disable-shared --with-macosx-version-min=10.5
-    --with-macosx-sdk=/Developer/SDKs/MacOSX10.5.sdk
+    --with-zlib=builtin --with-expat=builtin --disable-shared --enable-macosx_arch=i386
+    --with-macosx-version-min=10.5 --with-macosx-sdk=/Developer/SDKs/MacOSX10.5.sdk
 </pre></blockquote>
 
 Make sure <i>wx-config --libs</i> points to the 2.8 libs when run from a terminal. Mac OS X 10.4 comes with wxWidgets 2.5 pre-installed. It
@@ -79,17 +79,24 @@ will get the 2.5 libs. For getting 2.5 out of the way quickly, just get /usr/bin
 
 <br/><center><b>Prerequisites - Linux</b></center>
 <p>
-The Linux version has been tested less than the mac one but appears to be getting more stable. At this point, you might want to build it to help me test it - it might also be stable enough for production but no promise :) Midi on Linux is especially painful, synthesizers like TiMidity haven't been maintained for years, eat a lot of CPU and don't play nicely with PulseAudio. In the future I will consider alternative implementations.<br/>
-<br/>You will need Python, Alsa (including -dev packages if your distro uses them), wxGTK (wxWidgets), OpenGL (if you wish to use the OpenGL renderer, and also get -dev packages if any), gcc/g++ (build-essential in Ubuntu). For midi playback, you will need a softsynth like Timidity with a soundbank (more info below)
+Warningg : Midi on Linux is especially painful, synthesizers like TiMidity haven't been maintained for years, eat a lot of CPU and don't
+play nicely with PulseAudio. In the future I will consider alternative implementations.<br/>
+<br/>You will need Python, Alsa (including -dev packages if your distro uses them), wxGTK (wxWidgets), OpenGL (if you wish to use the OpenGL
+renderer, and also get -dev packages if any), gcc/g++ (build-essential in Ubuntu). For midi playback, you will need a softsynth like Timidity
+with a soundbank (more info below)
 </p>
 <p>
-<b>Installing wxWidgets : </b> You can simply download wxWidgets 2.8 from your distribution's repositories. It needs OpenGL support enabled if you want to use the OpenGL renderer, and should be Unicode. Don't forget to install -dev packages if your distribution uses them.
-<br/><br/>If you want to build wxWidgets from source, you can use commands like (read the instructions that come with wxWidgets or wxWiki for more info):<br/>
+<b>Installing wxWidgets : </b> You can simply download wxWidgets 2.8 from your distribution's repositories. It needs OpenGL support enabled if
+you want to use the OpenGL renderer, and should be Unicode. Don't forget to install -dev packages if your distribution uses them.
+<br/><br/>If you want to build wxWidgets from source, you can use commands like (read the instructions that come with wxWidgets or wxWiki for
+more info):<br/>
 <blockquote>
 <pre>cd wxGTK2.8.x<br/>mkdir gtk-build &amp;&amp; cd gtk-build<br/>../configure --with-opengl --enable-unicode<br/>make<br/>sudo make install</pre></blockquote>
 </p>
 <p>
-Make sure <i>wx-config --libs</i> points to the 2.8 libs when run from a terminal. If it does not, it is likely that your distribution's wxWidgets (in /usr/) is picked up before the one you built (in /usr/local/). To fix this, you can pass WXCONFIG=/usr/local/bin/wx-config to scons when building - more info below.
+Make sure <i>wx-config --libs</i> points to the 2.8 libs when run from a terminal. If it does not, it is likely that your distribution's wxWidgets
+(in /usr/) is picked up before the one you built (in /usr/local/). To fix this, you can pass WXCONFIG=/usr/local/bin/wx-config to scons when
+building - more info below.
 </p>
 <br/>
 
@@ -125,7 +132,8 @@ python scons/scons.py
 </pre></blockquote>
 </p>
 <p>
-This will do a release build with default wxWidgets. Issue <i>python scons/scons.py --help</i> for a summary of all possible options, like to get a debug build or to use a different wxWidgets build.
+This will do a release build with default wxWidgets. Issue <i>python scons/scons.py --help</i> for a summary of all possible options, like to get
+a debug build or to use a different wxWidgets build.
 </p>
 <br/>
 <center><b>Compiling Aria (Windows)</b></center>
@@ -133,8 +141,10 @@ This will do a release build with default wxWidgets. Issue <i>python scons/scons
 The command may need to be adapted a little, depending on your enviroment. Here are a few examples :
 
 <blockquote><pre>
-python.exe scons/scons.py WXCONFIG="C:\wx-config --debug=no --static=yes --prefix=C:\wxWidgets-2.8.10" renderer="wxwidgets"  WX_HOME="C:\wxWidgets-2.8.10\"
-python.exe scons/scons.py WXCONFIG="C:\wx-config  --prefix=C:\wxWidgets-2.9.1 --wxcfg=gcc_dll\mswud" renderer="wxwidgets"  WX_HOME="C:\wxWidgets-2.9.1\"
+python.exe scons/scons.py WXCONFIG="C:\wx-config --debug=no --static=yes --prefix=C:\wxWidgets-2.8.10"
+    renderer="wxwidgets" WX_HOME="C:\wxWidgets-2.8.10\"
+python.exe scons/scons.py WXCONFIG="C:\wx-config  --prefix=C:\wxWidgets-2.9.1 --wxcfg=gcc_dll\mswud"
+    renderer="wxwidgets" WX_HOME="C:\wxWidgets-2.9.1\"
 </pre>
 </blockquote>
 </p>
