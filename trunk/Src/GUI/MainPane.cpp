@@ -934,7 +934,9 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
     // horizontal scrolling
     if (event.GetWheelAxis() == 1)
     {
-        gseq->setXScrollInPixels( gseq->getXScrollInPixels() - value*WHEEL_X_SPEED );
+        int newval = gseq->getXScrollInPixels() - value*WHEEL_X_SPEED;
+        if (newval < 0) newval = 0;
+        gseq->setXScrollInPixels( newval );
         DisplayFrame::updateHorizontalScrollbar();
         return;
     }
