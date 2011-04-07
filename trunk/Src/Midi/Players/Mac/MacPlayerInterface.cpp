@@ -446,7 +446,7 @@ namespace AriaMaestosa
         
         void seq_pitch_bend(const int value, const int channel)
         {
-            CoreAudioNotePlayer::au_seq_pitch_bend(value, channel);
+            CoreAudioNotePlayer::au_seq_pitch_bend(value + 8192, channel);
         }
         
         /**
