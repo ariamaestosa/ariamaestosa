@@ -296,7 +296,7 @@ namespace AriaMaestosa
             free(data);
             */
             
-            SequencerThread* seqthread = new SequencerThread(false /* selection only */);
+            SequencerThread* seqthread = new SequencerThread(true /* selection only */);
             seqthread->go(startTick);
             
             return true;
