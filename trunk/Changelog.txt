@@ -7,6 +7,7 @@
 - Fixed glitches in software rendering mode
 - Fixed crash when trying to print a song containing an empty track
 - Grey out irrelevant fields in note select dialog
+- Migrate OSX player to Aria generic sequencer, like on other systems
 
 ===================================================================================================
 

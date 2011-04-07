@@ -141,10 +141,7 @@ namespace AriaMaestosa
           */
         virtual wxArrayString getOutputChoices() = 0;
         
-        /* ---------- non-native sequencer interface ---------
-         * fill these only if you use the generic AriaSequenceTimer midi sequencer/timer
-         * if you use a native sequencer in the above functions, these will not be called
-         */
+        // ---------- non-native sequencer interface ---------
         virtual void seq_note_on      (const int note, const int volume, const int channel)      { }
         virtual void seq_note_off     (const int note, const int channel)                        { }
         virtual void seq_prog_change  (const int instrument, const int channel)                  { }

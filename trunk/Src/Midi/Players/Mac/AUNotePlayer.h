@@ -35,7 +35,13 @@ namespace CoreAudioNotePlayer
 
     void playNote(int pitchID, int volume, int duration, int channel, int instrument);
     void stopNote();
-
+    
+    void au_seq_note_on(const int note, const int volume, const int channel);
+    void au_seq_note_off(const int note, const int channel);
+    void au_seq_prog_change(const int instrument, const int channel);
+    void au_seq_controlchange(const int controller, const int value, const int channel);
+    void au_seq_pitch_bend(const int value, const int channel);
+    void au_reset_all_controllers();
 }
 
 #endif
