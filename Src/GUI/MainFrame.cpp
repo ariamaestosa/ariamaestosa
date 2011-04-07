@@ -401,10 +401,12 @@ void MainFrame::init()
 #endif
 
     m_time_sig = new wxButton(m_toolbar, TIME_SIGNATURE, wxT("4/4"));
+#if defined(__WXOSX_COCOA__)
     m_time_sig->SetMinSize( wxSize(60, 30) );
     m_time_sig->SetSize( wxSize(60, 30) );
+#endif
     m_toolbar->add(m_time_sig, _("Time Sig") );
-
+    
     m_toolbar->AddSeparator();
 #if defined(__WXMSW__)
     m_toolbar->AddSeparator();
@@ -439,7 +441,7 @@ void MainFrame::init()
     m_tool1_bitmap.LoadFile( getResourcePrefix()  + wxT("tool1.png") , wxBITMAP_TYPE_PNG);
     m_tool2_bitmap.LoadFile( getResourcePrefix()  + wxT("tool2.png") , wxBITMAP_TYPE_PNG);
 
-#if defined(__WXOSX_COCOA__)
+#if defined(__WXOSX_COCOA__) || defined(__WXMSW__)
     /*
     wxNotebook* test = new wxNotebook(m_toolbar, wxID_ANY);
     wxImageList* imglist = new wxImageList();
@@ -1022,7 +1024,7 @@ void MainFrame::songLengthChanged(wxSpinEvent& evt)
 
 // ----------------------------------------------------------------------------------------------------------
 
-#if defined(__WXOSX_COCOA__)
+#if defined(__WXOSX_COCOA__) || defined(__WXMSW__)
 //wxStaticBitmap* m_tools_bitmap;
 
 void MainFrame::onToolsBitmapMousedown(wxMouseEvent& evt)
