@@ -259,7 +259,8 @@ namespace CoreAudioNotePlayer
         kMidiMessage_ProgramChange      = 0xC,
         kMidiMessage_BankMSBControl     = 0,
         kMidiMessage_BankLSBControl     = 32,
-        kMidiMessage_NoteOn             = 0x9
+        kMidiMessage_NoteOn             = 0x9,
+        kMidiMessage_PitchBend          = 0xE
     };
     
     enum Controllers
@@ -268,6 +269,9 @@ namespace CoreAudioNotePlayer
         kController_BankLSBControl	= 32,
     };
     
+    const int PITCH_BEND_LOWEST = 0;
+    const int PITCH_BEND_CENTER = 8192;
+    const int PITCH_BEND_HIGHEST = 16383;
     
     // ------------------------------------------------------------------------------------------------------
     
@@ -454,6 +458,8 @@ namespace CoreAudioNotePlayer
         return;
     }
     
+    // ------------------------------------------------------------------------------------------------------
+    
     void au_seq_note_off(const int note, const int channel)
     {
         OSStatus result;
@@ -466,6 +472,8 @@ namespace CoreAudioNotePlayer
         
         return;
     }
+    
+    // ------------------------------------------------------------------------------------------------------
     
     void au_seq_prog_change(const int instrument, const int channel)
     {
@@ -480,19 +488,49 @@ namespace CoreAudioNotePlayer
         return;        
     }
     
+    // ------------------------------------------------------------------------------------------------------
+    
     void au_seq_controlchange(const int controller, const int value, const int channel)
     {
-        // TODO
+        OSStatus result;
+        require_noerr (result = MusicDeviceMIDIEvent(synthUnit, 
+                                                     kMidiMessage_ControlChange << 4 | channel, 
+                                                     controller, value,
+                                                     0 /*sample offset*/), home_setBank);
+        return;
+        
+    home_setBank:
+        
+        fprintf(stderr, "Error in MidiPlayer::setBank\n");
     }
+    
+    // ------------------------------------------------------------------------------------------------------
     
     void au_seq_pitch_bend(const int value, const int channel)
     {
-        // TODO
+        OSStatus result;
+        require_noerr (result = MusicDeviceMIDIEvent(synthUnit, 
+                                                     kMidiMessage_PitchBend << 4 | channel, 
+                                                     (value & 0xFF), ((value >> 8) & 0xFF),
+                                                     0 /*sample offset*/), home_setBank);
+        return;
+        
+    home_setBank:
+        return;
     }
+ 
+    // ------------------------------------------------------------------------------------------------------
     
     void au_reset_all_controllers()
     {
-        // TODO
+        for (int channel=0; channel<16; channel++)
+        {
+            au_seq_controlchange(0x78 /*120*/ /* all sound off */, 0, channel);
+            au_seq_controlchange(0x79 /*121*/ /* reset controllers */, 0, channel);
+            au_seq_controlchange(7 /* reset volume */, 127, channel);
+            au_seq_controlchange(10 /* reset pan */, 64, channel);
+            au_seq_pitch_bend(127, channel);
+        }
     }
 }
 
