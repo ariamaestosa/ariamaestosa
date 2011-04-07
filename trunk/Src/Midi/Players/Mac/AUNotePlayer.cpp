@@ -511,14 +511,14 @@ namespace CoreAudioNotePlayer
         OSStatus result;
         require_noerr (result = MusicDeviceMIDIEvent(synthUnit, 
                                                      kMidiMessage_PitchBend << 4 | channel, 
-                                                     (value & 0xFF), ((value >> 8) & 0xFF),
+                                                     (value & 0x7F), ((value >> 7) & 0x7F),
                                                      0 /*sample offset*/), home_setBank);
         return;
         
     home_setBank:
         return;
     }
- 
+    
     // ------------------------------------------------------------------------------------------------------
     
     void au_reset_all_controllers()
