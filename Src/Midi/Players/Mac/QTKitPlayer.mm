@@ -27,6 +27,8 @@
 
 
 QTMovie* movie = nil;
+
+/*
 bool playing = false;
 
 void qtkit_init()
@@ -35,6 +37,8 @@ void qtkit_init()
 void qtkit_free()
 {
 }
+
+ */
 
 void qtkit_setData(char* data_bytes, int bytes_length)
 {
@@ -68,18 +72,18 @@ void qtkit_setData(char* data_bytes, int bytes_length)
     [pool release];
 }
 
+/*
 void qtkit_play()
 {
     
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
     
-/*
-    if (movie == nil)
-	{
-		printf("Movie is nil!\n");
-		return;
-	}
-*/
+
+    //if (movie == nil)
+	//{
+	//	printf("Movie is nil!\n");
+	//	return;
+	//}
 	
     [movie play];
     
@@ -87,6 +91,7 @@ void qtkit_play()
     
     [pool release];
 }
+*/
 
 bool qtkit_exportToAiff(const char* filename)
 {
@@ -117,6 +122,7 @@ bool qtkit_exportToAiff(const char* filename)
 	return success;
 }
 
+/*
 void qtkit_stop()
 {
     
@@ -156,5 +162,6 @@ float qtkit_getCurrentTime()
     return (float)lo / (float)timeRec.scale;
 
 }
+*/
 
 #endif

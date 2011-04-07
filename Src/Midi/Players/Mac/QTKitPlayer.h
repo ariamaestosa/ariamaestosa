@@ -21,14 +21,14 @@
 #define _qtkitplayer_
 
 void qtkit_setData(char* data, int length);
-void qtkit_play();
-void qtkit_stop();
-float qtkit_getCurrentTime(); 
+//void qtkit_play();
+//void qtkit_stop();
+//float qtkit_getCurrentTime(); 
 
 bool qtkit_exportToAiff(const char* filename);
 
-void qtkit_init();
-void qtkit_free();
+//void qtkit_init();
+//void qtkit_free();
 
 #endif
 
